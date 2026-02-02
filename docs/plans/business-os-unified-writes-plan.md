@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Draft
+Status: Active
 Domain: Platform / Business OS
 Created: 2026-02-02
 Last-updated: 2026-02-02
@@ -230,7 +230,7 @@ The following skill changes impact this plan:
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on |
 |---|---|---|---:|---:|---|---|
-| TASK-00 | IMPLEMENT | One-time markdown → D1 backfill migration | 85% | M | Pending | - |
+| TASK-00 | IMPLEMENT | One-time markdown → D1 backfill migration | 85% | M | Complete (2026-02-02) | - |
 | TASK-01 | IMPLEMENT | Create agent authentication middleware | 88% | S | Pending | - |
 | TASK-02 | IMPLEMENT | Create `/api/agent/cards` endpoint (GET/POST/PATCH) | 85% | M | Pending | TASK-01 |
 | TASK-02a | IMPLEMENT | Create `/api/agent/ideas` endpoint (GET/POST/PATCH) | 85% | M | Pending | TASK-01 |
@@ -298,6 +298,27 @@ The following skill changes impact this plan:
 - **Notes / references:**
   - Run this BEFORE enabling skills to use API (otherwise skills create new entities while markdown entities are missing)
   - Parser: Use gray-matter library consistent with existing codebase
+
+
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** 2050ba5cba
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03, TC-04, TC-05
+  - Red-green cycles: 2 (initial failure due to Jest module resolution; second run PASS)
+  - Initial test run: FAIL (module resolution for @acme/platform-core/d1)
+  - Post-implementation: PASS
+- **Confidence reassessment:**
+  - Original: 85%
+  - Post-test: 85%
+  - Delta reason: Tests validated assumptions; extra cycle due to runtime import resolution
+- **Validation:**
+  - Ran: `pnpm --filter business-os test --testPathPattern=backfill` — PASS (5 tests)
+  - Ran: `pnpm --filter @apps/business-os typecheck` — PASS
+  - Ran: `pnpm --filter @apps/business-os lint` — PASS (warnings only; pre-existing)
+- **Documentation updated:** None
+- **Implementation notes:** Added backfill script + tests; lazy-loaded `getD1FromGlobalThis` in CLI to avoid Jest module resolution errors.
+
 
 ### TASK-01: Create agent authentication middleware
 

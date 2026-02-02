@@ -259,6 +259,7 @@ export default [
           "./apps/*/tsconfig.json",
           "./packages/*/tsconfig.json",
           "./packages/*/tsconfig.eslint.json",
+          "./packages/*/scripts/tsconfig.json",
           "./functions/tsconfig.json",
           "./scripts/tsconfig.eslint.json",
         ],

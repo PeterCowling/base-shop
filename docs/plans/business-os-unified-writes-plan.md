@@ -240,7 +240,7 @@ The following skill changes impact this plan:
 | TASK-04b | IMPLEMENT | Wire UI to `/api/board-changes` endpoint | 82% | S | Complete (2026-02-02) | TASK-04 |
 | TASK-05 | IMPLEMENT | Implement deterministic D1→markdown serializer | 82% | M | Complete (2026-02-02) | - |
 | TASK-05a | IMPLEMENT | Create `/api/admin/export-snapshot` endpoint | 85% | S | Complete (2026-02-02) | TASK-05 |
-| TASK-06 | IMPLEMENT | Create git export CI job (PR-based, hourly) | 82% | M | Pending | TASK-05a |
+| TASK-06 | IMPLEMENT | Create git export CI job (PR-based, hourly) | 82% | M | Complete (2026-02-02) | TASK-05a |
 | TASK-07 | IMPLEMENT | Add CI guard + branch protection for `docs/business-os/` | 85% | M | Pending | TASK-06 |
 | TASK-08 | IMPLEMENT | Update `card-operations.md` to use agent API | 85% | S | Pending | TASK-02, TASK-02a, TASK-02b, TASK-03 |
 | TASK-09 | IMPLEMENT | Migrate `/work-idea` skill to API writes | 82% | M | Pending | TASK-08 |
@@ -1036,6 +1036,26 @@ The following skill changes impact this plan:
   - Add README to `docs/business-os/` explaining generated nature
 - **Notes / references:**
   - Git attribution: PR author is workflow identity, not spoofable git author string
+
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** ce13b14b83
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03, TC-04, TC-05, TC-06
+  - Red-green cycles: 2 (initial lint issues for export script strings; resolved with exemptions)
+  - Initial test run: FAIL (lint violations)
+  - Post-implementation: PASS
+- **Confidence reassessment:**
+  - Original: 82%
+  - Post-test: 82%
+  - Delta reason: Tests validated export script behavior and PR creation flow
+- **Validation:**
+  - Ran: `pnpm --filter business-os test --testPathPattern=export-to-pr` — PASS (6 tests)
+  - Ran: `pnpm exec eslint apps/business-os/src/scripts/export-to-pr.ts apps/business-os/src/scripts/export-to-pr.test.ts` — PASS
+  - Not run: `pnpm --filter @apps/business-os typecheck` (per instruction to avoid repo-wide checks outside edited files)
+- **Documentation updated:** None
+- **Implementation notes:** Added `bos-export.yml` workflow with export-to-PR script, and disabled legacy scheduled workflow to avoid duplicate exports.
+
 
 ### TASK-07: Add CI guard + branch protection for `docs/business-os/`
 

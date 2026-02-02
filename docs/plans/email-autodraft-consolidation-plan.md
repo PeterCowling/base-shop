@@ -153,9 +153,9 @@ Consolidate the disparate email autodraft system components into a world-class d
 ### TASK-00: Establish Baseline Metrics
 
 #### Baseline Progress (2026-02-02)
-- **Status:** In Progress
+- **Status:** Complete
 - **Report:** `docs/plans/email-autodraft-consolidation-baseline.md`
-- **Notes:** Report scaffolded; data collection pending Gmail MCP access.
+- **Notes:** Sample collected via gmail_list_query; see baseline report for distribution + gaps.
 
 
 - **Type:** INVESTIGATE
@@ -185,6 +185,14 @@ Consolidate the disparate email autodraft system components into a world-class d
 - **Notes / references:**
   - Must complete before implementation tasks can exceed 80% confidence
   - Use existing `gmail_list_pending` and `gmail_get_email` tools
+
+
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Report:** `docs/plans/email-autodraft-consolidation-baseline.md`
+- **Sample file:** `docs/plans/email-autodraft-consolidation-baseline-sample.txt` (contains PII; keep local/untracked)
+- **Validation:** Data collected via gmail_list_query (manual run in Claude session)
+- **Notes:** Baseline distribution skewed to system notifications; manual edit-time tracking recommended.
 
 ---
 

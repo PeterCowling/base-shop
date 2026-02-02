@@ -16,6 +16,8 @@ Plan-Link: docs/plans/email-autodraft-consolidation-plan.md
 
 | Task ID | Description | Status | Completed |
 | --- | --- | --- | --- |
+| TASK-00 | Establish baseline metrics | Complete | 2026-02-02 |
+| TASK-00A | Gmail inbox query tool | Complete | 2026-02-02 |
 | TASK-01 | Interpretation stage tool | Pending | - |
 | TASK-02 | Thread context summarizer | Pending | - |
 | TASK-03 | Quality gate tool | Pending | - |

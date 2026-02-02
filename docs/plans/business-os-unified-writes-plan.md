@@ -234,7 +234,7 @@ The following skill changes impact this plan:
 | TASK-01 | IMPLEMENT | Create agent authentication middleware | 88% | S | Complete (2026-02-02) | - |
 | TASK-02 | IMPLEMENT | Create `/api/agent/cards` endpoint (GET/POST/PATCH) | 85% | M | Complete (2026-02-02) | TASK-01 |
 | TASK-02a | IMPLEMENT | Create `/api/agent/ideas` endpoint (GET/POST/PATCH) | 85% | M | Complete (2026-02-02) | TASK-01 |
-| TASK-02b | IMPLEMENT | Create `/api/agent/stage-docs` endpoint (GET/POST/PATCH) | 82% | M | Pending | TASK-01 |
+| TASK-02b | IMPLEMENT | Create `/api/agent/stage-docs` endpoint (GET/POST/PATCH) | 82% | M | Complete (2026-02-02) | TASK-01 |
 | TASK-03 | IMPLEMENT | Create `/api/agent/allocate-id` endpoint | 90% | S | Pending | TASK-01 |
 | TASK-04 | IMPLEMENT | Create `/api/board-changes` cursor-based delta endpoint | 82% | M | Pending | - |
 | TASK-04b | IMPLEMENT | Wire UI to `/api/board-changes` endpoint | 82% | S | Pending | TASK-04 |
@@ -594,6 +594,25 @@ The following skill changes impact this plan:
 - **Notes / references:**
   - Stage doc locations: `docs/business-os/cards/{card-id}/{stage}.user.md`
   - Composite key: `(cardId, stage)` uniquely identifies a stage doc
+
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** c032c3c1b4
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03, TC-04, TC-05, TC-06, TC-07, TC-08
+  - Red-green cycles: 2 (initial failure due to missing agent stage-docs route module; second run PASS)
+  - Initial test run: FAIL (module not found for `/api/agent/stage-docs/[cardId]/[stage]`)
+  - Post-implementation: PASS
+- **Confidence reassessment:**
+  - Original: 82%
+  - Post-test: 82%
+  - Delta reason: Tests validated merge-patch and conflict behavior
+- **Validation:**
+  - Ran: `pnpm --filter business-os test --testPathPattern=agent/stage-docs` — PASS (8 tests)
+  - Ran: `pnpm --filter @apps/business-os typecheck` — PASS
+  - Ran: `pnpm --filter @apps/business-os lint` — PASS (warnings only; pre-existing)
+- **Documentation updated:** None
+- **Implementation notes:** Added agent stage-docs GET/POST/PATCH endpoints with merge-patch concurrency, conflict responses, audit logging (`actor: "agent"`), and parent card validation for POST.
 
 ### TASK-03: Create `/api/agent/allocate-id` endpoint
 

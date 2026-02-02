@@ -982,7 +982,7 @@ The following skill changes impact this plan:
 ### TASK-06: Create git export CI job (PR-based, hourly)
 
 - **Type:** IMPLEMENT
-- **Affects:** `.github/workflows/bos-export.yml` (new), `apps/business-os/src/scripts/export-to-pr.ts` (new)
+- **Affects:** `.github/workflows/bos-export.yml` (new), `apps/business-os/src/scripts/export-to-pr.ts` (new), `.github/workflows/business-os-export.yml` (update legacy workflow to avoid double schedule)
 - **Depends on:** TASK-05a
 - **Confidence:** 82%
   - Implementation: 85% — GitHub Actions scheduled workflow with PR creation

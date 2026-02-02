@@ -22,7 +22,7 @@ Plan-Link: docs/plans/email-autodraft-consolidation-plan.md
 | TASK-02 | Thread context summarizer | Complete | 2026-02-02 |
 | TASK-03 | Quality gate tool | Complete | 2026-02-02 |
 | TASK-04 | Draft quality framework resource | Complete | 2026-02-02 |
-| TASK-05 | Voice/tone examples resource | Pending | - |
+| TASK-05 | Voice/tone examples resource | Complete | 2026-02-02 |
 | TASK-06 | Port GAS email formatting | Complete | 2026-02-02 |
 | TASK-08 | Label state machine | Complete | 2026-02-02 |
 | TASK-09 | Agreement detection | Pending | - |
@@ -35,6 +35,13 @@ Plan-Link: docs/plans/email-autodraft-consolidation-plan.md
 | TASK-17 | Reception email routing | Complete | 2026-02-02 |
 
 ## Build Log
+
+
+### 2026-02-02 - TASK-05
+- **Action:** Added voice/tone examples resource and tests.
+- **Commits:** f504150c96
+- **Validation:** `pnpm --filter mcp-server test -- packages/mcp-server/src/__tests__/voice-examples.test.ts` (pass), `pnpm --filter mcp-server lint` (pass), `pnpm --filter mcp-server build` (pass)
+- **Notes:** Added brikette://voice-examples data set.
 
 
 ### 2026-02-02 - TASK-04

@@ -128,7 +128,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 | TASK-02 | IMPLEMENT | Thread context summarizer | 82% ✅ | M | Complete (2026-02-02) | TASK-01 |
 | TASK-03 | IMPLEMENT | Quality gate tool | 80% | M | Complete (2026-02-02) | TASK-01 |
 | TASK-04 | IMPLEMENT | Draft quality framework resource | 85% | M | Complete (2026-02-02) | TASK-00 |
-| TASK-05 | IMPLEMENT | Voice/tone examples resource | 85% | M | Pending | TASK-04 |
+| TASK-05 | IMPLEMENT | Voice/tone examples resource | 85% | M | Complete (2026-02-02) | TASK-04 |
 | TASK-06 | IMPLEMENT | Port GAS email formatting | 82% | M | Completed | - |
 | TASK-07 | INVESTIGATE | Email deliverability testing | 88% | S | Pending | TASK-06 |
 | TASK-08 | IMPLEMENT | Label state machine | 80% | M | Completed | - |
@@ -517,6 +517,26 @@ Consolidate the disparate email autodraft system components into a world-class d
 ---
 
 ### TASK-05: Voice/Tone Examples Resource
+
+
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** f504150c96
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03, TC-04
+  - Red-green cycles: 1 (tests executed after implementation)
+  - Initial test run: N/A
+  - Post-implementation: PASS
+- **Confidence reassessment:**
+  - Original: 85%
+  - Post-test: 85%
+  - Delta reason: tests validated assumptions
+- **Validation:**
+  - Ran: `pnpm --filter mcp-server test -- packages/mcp-server/src/__tests__/voice-examples.test.ts` — PASS
+  - Ran: `pnpm --filter mcp-server lint` — PASS
+  - Ran: `pnpm --filter mcp-server build` — PASS
+- **Documentation updated:** None required
+- **Implementation notes:** Added brikette://voice-examples resource with example sets per scenario.
 
 - **Type:** IMPLEMENT
 - **Affects:** `packages/mcp-server/src/resources/voice-examples.ts` (new), `packages/mcp-server/data/voice-examples.json` (new)

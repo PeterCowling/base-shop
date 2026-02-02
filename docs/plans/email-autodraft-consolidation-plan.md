@@ -138,7 +138,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 | TASK-12 | IMPLEMENT | Classification examples resource | 85% | S | Complete (2026-02-02) | TASK-00 |
 | TASK-13 | IMPLEMENT | Enhanced draft generation | 80% ✅ | L | Complete (2026-02-02) | TASK-01, TASK-03, TASK-04, TASK-11 |
 | TASK-14 | IMPLEMENT | Update process-emails skill | 82% | M | Complete (2026-02-02) | TASK-01, TASK-03, TASK-13 |
-| TASK-15 | IMPLEMENT | Template governance & linting | 85% | S | Pending | TASK-04 |
+| TASK-15 | IMPLEMENT | Template governance & linting | 85% | S | Complete (2026-02-02) | TASK-04 |
 | TASK-16 | INVESTIGATE | Security & logging review | 90% | S | Pending | TASK-01, TASK-13 |
 | TASK-17 | IMPLEMENT | Reception email routing | 80% ✅ | L | Complete (2026-02-02) | TASK-06, TASK-08 |
 | TASK-18 | INVESTIGATE | Integration testing | 82% ✅ | L | Pending | TASK-13, TASK-14 |
@@ -1216,10 +1216,32 @@ Consolidate the disparate email autodraft system components into a world-class d
 
 ---
 
+
 ### TASK-15: Template Governance & Linting
 
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** 5f1e5c2720
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03
+  - Red-green cycles: 1 (tests executed after implementation)
+  - Initial test run: N/A
+  - Post-implementation: PASS
+- **Confidence reassessment:**
+  - Original: 85%
+  - Post-test: 85%
+  - Delta reason: tests validated assumptions
+- **Validation:**
+  - Ran: `pnpm exec jest --runTestsByPath packages/mcp-server/src/__tests__/template-lint.test.ts --config ./jest.config.cjs` — PASS
+  - Ran: `pnpm --filter mcp-server lint` — PASS
+  - Ran: `pnpm --filter mcp-server build` — PASS
+  - Ran: `pnpm --filter mcp-server lint:templates` — PASS
+- **Documentation updated:** `packages/mcp-server/docs/template-governance.md`
+- **Implementation notes:** Added template linter script, lint helpers/tests, and CI integration.
+
+
 - **Type:** IMPLEMENT
-- **Affects:** `packages/mcp-server/scripts/lint-templates.ts` (new)
+- **Affects:** `packages/mcp-server/scripts/lint-templates.ts` (new), `packages/mcp-server/src/utils/template-lint.ts` (new), `packages/mcp-server/src/__tests__/template-lint.test.ts` (new), `packages/mcp-server/package.json`, `.github/workflows/ci.yml`, `packages/mcp-server/docs/template-governance.md`
 - **Depends on:** TASK-04
 - **Confidence:** 85%
   - Implementation: 90% — Linting is straightforward

@@ -31,7 +31,7 @@ Plan-Link: docs/plans/email-autodraft-consolidation-plan.md
 | TASK-12 | Classification examples resource | Complete | 2026-02-02 |
 | TASK-13 | Enhanced draft generation | Complete | 2026-02-02 |
 | TASK-14 | Update process-emails skill | Complete | 2026-02-02 |
-| TASK-15 | Template governance & linting | Pending | - |
+| TASK-15 | Template governance & linting | Complete | 2026-02-02 |
 | TASK-17 | Reception email routing | Complete | 2026-02-02 |
 
 ## Build Log
@@ -138,6 +138,14 @@ Plan-Link: docs/plans/email-autodraft-consolidation-plan.md
 - **Commits:** b5b0aa4513
 - **Validation:** Manual review (documentation)
 - **Notes:** Added draft_interpret → draft_generate → draft_quality_check flow and resource references.
+
+
+
+### 2026-02-02 - TASK-15
+- **Action:** Added template linting script, tests, and CI hook; documented governance rules.
+- **Commits:** 5f1e5c2720
+- **Validation:** `pnpm exec jest --runTestsByPath packages/mcp-server/src/__tests__/template-lint.test.ts --config ./jest.config.cjs` (pass), `pnpm --filter mcp-server lint` (pass), `pnpm --filter mcp-server build` (pass), `pnpm --filter mcp-server lint:templates` (pass)
+- **Notes:** Lints links, placeholders, and policy keyword alignment.
 
 ## Blockers
 

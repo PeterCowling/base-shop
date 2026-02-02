@@ -243,7 +243,7 @@ The following skill changes impact this plan:
 | TASK-06 | IMPLEMENT | Create git export CI job (PR-based, hourly) | 82% | M | Complete (2026-02-02) | TASK-05a |
 | TASK-07 | IMPLEMENT | Add CI guard + branch protection for `docs/business-os/` | 85% | M | Complete (2026-02-02) | TASK-06 |
 | TASK-08 | IMPLEMENT | Update `card-operations.md` to use agent API | 85% | S | Complete (2026-02-02) | TASK-02, TASK-02a, TASK-02b, TASK-03 |
-| TASK-09 | IMPLEMENT | Migrate `/work-idea` skill to API writes | 82% | M | Pending | TASK-08 |
+| TASK-09 | IMPLEMENT | Migrate `/work-idea` skill to API writes | 82% | M | Complete (2026-02-02) | TASK-08 |
 | TASK-10 | IMPLEMENT | Migrate `/build-feature` skill to API writes | 82% | M | Pending | TASK-08, TASK-02b |
 | TASK-11 | IMPLEMENT | Migrate remaining skills (`/fact-find`, etc.) | 82% | M | Pending | TASK-08 |
 | TASK-12 | IMPLEMENT | Update Business OS charter for D1-canonical reality | 90% | S | Pending | TASK-09 |
@@ -1177,6 +1177,23 @@ The following skill changes impact this plan:
   - Current file: `.claude/skills/_shared/card-operations.md`
 
 ### TASK-09: Migrate `/work-idea` skill to API writes
+
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** 3db094f8b5
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03 (doc review)
+  - Red-green cycles: 1
+  - Initial test run: N/A (documentation update)
+  - Post-implementation: N/A
+- **Confidence reassessment:**
+  - Original: 82%
+  - Post-test: 82%
+  - Delta reason: Skill updated to API-only workflow
+- **Validation:**
+  - Not run: tests (documentation-only change)
+- **Documentation updated:** `.claude/skills/work-idea/SKILL.md`
+- **Implementation notes:** Replaced file-based steps with agent API calls for idea read/update, card creation, and stage-doc creation; enforced fail-closed behavior.
 
 - **Type:** IMPLEMENT
 - **Affects:** `.claude/skills/work-idea/SKILL.md`

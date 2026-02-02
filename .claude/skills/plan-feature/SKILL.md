@@ -1,6 +1,6 @@
 ---
 name: plan-feature
-description: Create a confidence-gated implementation plan for a feature. Planning only - produces a plan doc with atomic tasks, acceptance criteria, and per-task confidence assessments. Build is gated at ≥80% confidence; CI≥90 is a motivation, not a quota.
+description: Create a confidence-gated implementation plan for a feature. Planning only - produces a plan doc with atomic tasks, acceptance criteria, and per-task confidence assessments. Build is gated at ≥80% confidence; Confidence ≥90% is a motivation, not a quota.
 ---
 
 # Plan Feature
@@ -15,7 +15,12 @@ Create a confidence-gated implementation plan for a feature. Planning only: prod
 
 **Allowed:** read files, search repo, inspect tests, trace dependencies, run tests (for validation), run read-only commands (e.g., `rg`, `ls`, `cat`, `npm test -- --listTests`), consult existing `docs/plans`, consult external docs if needed, write test stubs for L-effort tasks.
 
-**Not allowed:** implementation code changes, refactors, commits (except the plan file and test stubs), migrations applied, running destructive commands, opening PRs.
+**Not allowed:** implementation code changes, refactors, migrations applied, running destructive commands, opening PRs.
+
+**Commits allowed:**
+- Plan file (`docs/plans/<slug>-plan.md`)
+- Test stub files for L-effort tasks
+- If BOS integration active: card files (`docs/business-os/cards/{CARD-ID}.*`) and stage docs
 
 ## Inputs
 
@@ -27,6 +32,40 @@ Use the best available sources, in this priority order:
 4. Repo reality (current code + tests)
 
 If a fact-find brief does not exist, proceed only if the feature is genuinely well-understood; otherwise, create INVESTIGATION tasks to raise confidence rather than guessing.
+
+### Test Foundation Check (Required when fact-find exists)
+
+When starting from a fact-find brief, verify the brief provides adequate test foundation:
+
+**Required in fact-find brief:**
+- [ ] Test Landscape section with: infrastructure, patterns, coverage, gaps
+- [ ] Testability assessment (easy/hard to test, seams needed)
+- [ ] Testability confidence input (0-100%)
+
+**If Test Landscape is missing or incomplete:**
+- Do NOT proceed with planning
+- Return to `/fact-find` to complete the Test Landscape section
+- Planning without test foundation leads to undertested implementations
+
+### Consuming Fact-Find Confidence Inputs
+
+If the fact-find brief includes Confidence Inputs (Implementation, Approach, Impact, Testability), use them as **starting baselines** for task confidence:
+
+| Fact-Find Input | Informs |
+|-----------------|---------|
+| Implementation confidence | Individual task confidence scores |
+| Approach confidence | Overall plan confidence; triggers DECISION tasks if <80% |
+| Impact confidence | Blast radius accuracy; triggers INVESTIGATION tasks if <80% |
+| Testability confidence | Test contract completeness expectations |
+
+**Handoff rules:**
+- If any fact-find confidence input is <80%, the plan MUST include tasks to raise it (INVESTIGATION or DECISION)
+- Do not claim 90%+ task confidence if fact-find's testability confidence was <70%
+- Task confidence cannot exceed fact-find's implementation confidence by >10% without new evidence
+
+### Slug Stability
+
+When a Card-ID is present (BOS integration), read `Feature-Slug` from the card frontmatter rather than re-deriving it. This ensures consistency across fact-find → plan → build.
 
 ## Outputs
 
@@ -44,7 +83,7 @@ If a fact-find brief does not exist, proceed only if the feature is genuinely we
 - Under-classifying effort to avoid validation requirements
 - Deferring complex tasks because they require more upfront validation
 - Splitting L-effort tasks into smaller tasks solely to avoid writing test stubs
-- Deleting planned work purely to raise CI (phase or defer instead, unless the user explicitly changes scope)
+- Deleting planned work purely to raise confidence (phase or defer instead, unless the user explicitly changes scope)
 
 ## When to Use
 
@@ -59,15 +98,50 @@ Do **not** use `/plan-feature` if:
 - You're addressing low-confidence tasks in an existing plan → use `/re-plan`
 - You're ready to implement → use `/build-feature`
 
+## Fast Path (with argument)
+
+**If user provides a slug or card ID** (e.g., `/plan-feature commerce-core` or `/plan-feature BRIK-ENG-0020`):
+- Skip discovery entirely
+- If slug: read `docs/plans/<slug>-fact-find.md` directly (or create new plan)
+- If card ID: look up plan link from card file
+- **Target: <2 seconds to start planning**
+
+## Discovery Path (no argument)
+
+**If user provides no argument**, read the pre-computed index (single file):
+
+```
+docs/business-os/_meta/discovery-index.json
+```
+
+Present the `readyForPlanning` array as a table:
+
+```markdown
+## Ready for Planning
+
+| Slug | Title | Card | Business |
+|------|-------|------|----------|
+| commerce-core-readiness | Commerce Core Readiness | - | - |
+| email-autodraft-response-system | Email Autodraft Response System | BRIK-ENG-0020 | BRIK |
+
+Enter a slug to start planning, or describe a new feature.
+```
+
 ## Status Vocabulary (canonical)
 
 Use these values consistently across all plan documents:
 
 **Plan Status** (frontmatter):
-- `Draft` — plan is being written, not ready for review
-- `Active` — plan is approved and work may proceed
+- `Draft` — plan is being written, not ready for build (default for new plans)
+- `Active` — plan is approved and work may proceed (set when ready for `/build-feature`)
 - `Complete` — all tasks done
 - `Superseded` — replaced by a newer plan
+
+**Transition to Active:** Set Status to `Active` when:
+- All intended tasks are captured
+- DECISION tasks are either resolved or explicitly marked non-blocking
+- All IMPLEMENT tasks have test contracts (TC-XX enumerated)
+- The plan has been reviewed (by user or via explicit approval)
 
 **Task Status** (per-task field):
 - `Pending` — not yet started
@@ -116,9 +190,9 @@ Run existing tests to verify your understanding matches reality. The level of va
 
 | Effort | Required Validation |
 |--------|---------------------|
-| S | Run tests for directly affected files |
-| M | Run tests for affected modules + immediate integration boundaries |
-| L | Run full test suites for affected areas + write failing test stubs for acceptance criteria |
+| S | Run tests for directly affected files; ≥1 TC per acceptance criterion |
+| M | Run tests for affected modules + boundaries; test case specs with expected assertions |
+| L | Run full test suites + write test stubs (`test.todo`) that implement TC specifications |
 
 **Check for extinct tests first:**
 
@@ -141,10 +215,24 @@ Before relying on existing tests for validation, verify they are still valid:
 - Pure reasoning ("I read the code and it looks straightforward") caps at 75% for M/L tasks without test evidence
 
 **For L tasks — write test stubs:**
-- Translate acceptance criteria into failing test skeletons (describe blocks, test names, assertions that will fail)
+- Translate acceptance criteria into test skeletons using `test.todo()` or `it.skip()` (non-failing)
+- Include the test name, TC-XX reference, and a comment describing the expected assertion
 - These validate that you understand what "done" looks like in executable terms
 - Stubs become the starting point for build-feature's TDD cycle
 - Commit test stubs with the plan (allowed exception to "no code changes")
+
+**Test stub format (non-failing):**
+```typescript
+describe('Feature: <feature-name>', () => {
+  // TC-01: <scenario> → <expected outcome>
+  test.todo('should <expected behavior>');
+
+  // TC-02: <error case> → <expected outcome>
+  test.todo('should return error when <condition>');
+});
+```
+
+**Why non-failing:** Test stubs use `test.todo()` or `it.skip()` so they don't break CI. Build-feature converts them to active tests at task start, then watches them fail for the right reason.
 
 **If validation reveals problems:**
 - Document unexpected findings in the task
@@ -165,13 +253,27 @@ Before relying on existing tests for validation, verify they are still valid:
 - One logical unit per task (typically one file or one cohesive change set).
 - Order tasks by prerequisites (infra/contracts before consumers).
 - Each task must include:
-  - **Affects** (file paths/modules)
+  - **Affects** (file paths/modules — see format below)
   - **Dependencies** (TASK-IDs)
   - **Acceptance criteria**
-  - **Test plan** (what to add or run)
+  - **Test contract** (enumerated test cases — see below)
   - **Rollout/rollback** (feature flag, migration strategy, safe deploy)
   - **Documentation impact** (standing docs to update, or "None" if no docs affected)
   - **Notes** (links/pattern references)
+
+**Affects field format:**
+- **Primary** (files being modified): `src/path/to/file.ts`
+- **Secondary** (read-only dependencies): `[readonly] src/path/to/types.ts`
+
+Use `[readonly]` prefix for files that must be read to understand contracts but won't be changed. This helps `/build-feature` distinguish scope boundaries — modifying a `[readonly]` file is a scope expansion that requires re-planning.
+
+**Test contract requirements:**
+- Each acceptance criterion must map to ≥1 test case (TC-XX)
+- Test cases enumerate specific scenarios with expected outcomes
+- Format: `TC-XX: <scenario> → <expected outcome>`
+- Include: happy path, error cases, edge cases
+- For M/L tasks: test cases become the implementation contract
+- "Add tests" is not a test contract — enumerate the scenarios
 
 If something is uncertain, create an explicit **INVESTIGATION** task (to raise confidence) or a **DECISION** task (to choose between alternatives). Do not bury uncertainty inside implementation tasks.
 
@@ -219,7 +321,7 @@ For each task, assign three dimension scores (0–100%). The overall confidence 
 - **60–79:** Material uncertainty remains; proceed only with explicit risks and verification steps
 - **<60:** Do not build. Convert to INVESTIGATION/DECISION and trigger `/re-plan` for that area.
 
-**Interpretation note:** CI≥90 is not required to plan or build. If a task is <90, keep it in scope but include a short “What would make this ≥90%” note (tests, spikes, evidence, rollout rehearsal) that would raise confidence without deleting work.
+**Interpretation note:** Confidence ≥90% is not required to plan or build. If a task is <90, keep it in scope but include a short “What would make this ≥90%” note (tests, spikes, evidence, rollout rehearsal) that would raise confidence without deleting work.
 
 #### Required "why" text
 
@@ -229,9 +331,11 @@ For each dimension, include one sentence explaining the score and what evidence 
 
 | Effort | Required Evidence |
 |--------|-------------------|
-| S | Code patterns identified, file paths documented |
-| M | Above + existing tests ran successfully for affected areas |
-| L | Above + failing test stubs written for acceptance criteria |
+| S | Code patterns identified; file paths documented; ≥1 TC per acceptance criterion |
+| M | Above + existing tests pass + test cases with expected assertions documented |
+| L | Above + failing test stubs committed with the plan |
+
+**Test coverage gate:** A task cannot exceed 80% confidence without test cases that cover all acceptance criteria. Vague test plans ("add integration tests") cap confidence at 70%.
 
 A task cannot exceed 80% confidence without executable evidence proportional to its effort level. Pure reasoning without test evidence caps M/L tasks at 75%.
 
@@ -270,7 +374,7 @@ At the end, tell the user:
 ```markdown
 ---
 Type: Plan
-Status: Active
+Status: Draft
 Domain: <CMS | Platform | UI | API | Data | Infra | etc.>
 Created: YYYY-MM-DD
 Last-updated: YYYY-MM-DD
@@ -338,14 +442,20 @@ Card-ID: <from fact-find or manually provided>
   - Impact: 90% — <why>
 - **Acceptance:**
   - <bullet list of verifiable outcomes>
-- **Test plan:**
-  - Add/Update: <unit/integration/e2e tests>
-  - Run: <commands or suites>
+- **Test contract:**
+  - **Test cases (enumerated):**
+    - TC-01: <scenario> → <expected outcome>
+    - TC-02: <error case> → <expected outcome>
+    - TC-03: <edge case> → <expected outcome>
+  - **Acceptance coverage:** <which acceptance criteria each TC covers>
+  - **Test type:** <unit | integration | e2e | contract>
+  - **Test location:** <path/to/test.ts (existing) or path/to/new-test.ts (new)>
+  - **Run:** <command to execute>
 - **Planning validation:** (required for M/L effort)
   - Tests run: `<commands>` — <pass/fail, count>
-  - Test stubs written: <file paths, or "N/A" for S/M effort>
+  - Test stubs written: <file paths, or "N/A" for S effort>
   - Unexpected findings: <any behavior that differed from expectation, or "None">
-- **What would make this ≥90%:** (include when task CI <90)
+- **What would make this ≥90%:** (include when task confidence <90%)
   - <concrete evidence/tests/spike that would raise confidence>
 - **Rollout / rollback:**
   - Rollout: <flag/gradual rollout/migration steps>
@@ -421,7 +531,7 @@ Note: This is informational only; build gating is still per-task.
 A plan is considered complete only if:
 
 - [ ] All potentially affected areas have been studied (not assumed).
-- [ ] Each task has all required fields: Type, Affects, Depends on, Confidence (with dimension breakdown), Acceptance, Test plan, Planning validation (for M/L), Rollout/rollback, Documentation impact.
+- [ ] Each task has all required fields: Type, Affects, Depends on, Confidence (with dimension breakdown), Acceptance, Test contract, Planning validation (for M/L), Rollout/rollback, Documentation impact.
 - [ ] Confidence scores are justified with evidence (file paths, patterns, tests).
 - [ ] Test validation completed per effort level (S: affected files, M: modules + boundaries, L: full suites + stubs).
 - [ ] For M/L tasks claiming >80% confidence: test evidence is documented.
@@ -429,6 +539,24 @@ A plan is considered complete only if:
 - [ ] Dependencies are explicitly mapped and ordered correctly.
 - [ ] Risks and mitigations are documented.
 - [ ] User questions were asked only when genuinely unavoidable.
+
+### TDD Quality Checks
+
+- [ ] Every acceptance criterion maps to ≥1 enumerated test case (TC-XX).
+- [ ] Test cases include happy path, error cases, and edge cases.
+- [ ] M/L tasks have test case specifications with expected outcomes.
+- [ ] L tasks have test stubs committed with the plan.
+- [ ] No task claims >80% confidence without enumerated test cases.
+
+### Test Foundation Check (from Fact-Find)
+
+Before planning tasks, verify the fact-find brief includes:
+- [ ] Test infrastructure documented
+- [ ] Test patterns/conventions identified
+- [ ] Coverage gaps mapped
+- [ ] Testability assessment provided
+
+**If missing:** Create an INVESTIGATION task to complete test landscape, OR incorporate into first IMPLEMENT task with confidence penalty (-10% for missing test foundation).
 
 ## Decision Points
 

@@ -3,7 +3,7 @@ import "server-only";
 import { ulid } from "ulid";
 
 import { prisma } from "./db";
-import type { InventoryHoldDb } from "./inventoryHolds.db";
+import type { InventoryHoldDb, InventoryHoldItemRow } from "./inventoryHolds.db";
 import {
   InventoryBusyError,
   InventoryHoldInsufficientError,
@@ -16,7 +16,7 @@ import {
   normalizeHoldRequests,
   setLocalLockTimeout,
 } from "./inventoryHolds.utils";
-import type { InventoryValidationRequest } from "./inventoryValidation";
+import type { InventoryValidationFailure, InventoryValidationRequest } from "./inventoryValidation";
 import { validateShopName } from "./shops";
 
 export { InventoryBusyError, InventoryHoldInsufficientError };
@@ -58,8 +58,8 @@ export async function createInventoryHold(params: {
         await releaseExpiredInventoryHolds({ shopId, limit: reapLimit, tx, now });
       }
 
-      const itemsForHold = [];
-      const insufficient = [];
+      const itemsForHold: InventoryHoldItemRow[] = [];
+      const insufficient: InventoryValidationFailure[] = [];
 
       for (const entry of requested) {
         if (!Number.isInteger(entry.requested) || entry.requested <= 0) continue;
@@ -282,4 +282,3 @@ export async function releaseInventoryHold(params: {
 
   return releaseResult;
 }
-

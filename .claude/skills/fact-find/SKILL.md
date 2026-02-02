@@ -1,11 +1,15 @@
 ---
 name: fact-find
-description: Gather evidence and context before planning or as a standalone briefing. Produces either a Planning Fact-Find Brief (feeds /plan-feature) or a System Briefing Note (understanding-only explainer).
+description: Gather evidence and context before planning or as a standalone briefing. Helps discover available ideas/cards to fact-find, or accepts a specific topic. Produces either a Planning Fact-Find Brief (feeds /plan-feature) or a System Briefing Note (understanding-only explainer).
 ---
 
 # Fact Find
 
-Gather evidence and context before planning or as a standalone briefing. Produces one of two outcomes:
+Gather evidence and context before planning or as a standalone briefing.
+
+**Discovery mode:** When run without a specific topic, scans Business OS for raw ideas, cards in Inbox, and cards in Fact-finding lane, then presents options for the user to select.
+
+**Outcomes:**
 
 - **Outcome A — Planning Fact-Find Brief:** a structured brief that feeds directly into `/plan-feature`.
 - **Outcome B — System Briefing Note:** an explainer of how something works today (no planning deliverable).
@@ -16,15 +20,101 @@ Gather evidence and context before planning or as a standalone briefing. Produce
 
 **Allowed:** read files, search repo, inspect tests, trace dependencies, review `docs/plans`, review targeted git history, consult external official docs if needed.
 
-**Not allowed:** code changes, refactors, commits (except the brief/note file), migrations applied, destructive commands.
+**Not allowed:** code changes, refactors, migrations applied, destructive commands.
 
-## Step 0: User Intake and Outcome Selection (Required)
+**Commits allowed:**
+- Brief/note file (`docs/plans/<slug>-fact-find.md` or `docs/briefs/<slug>-briefing.md`)
+- If BOS integration active: card files (`docs/business-os/cards/{CARD-ID}.*`) and stage docs
 
-When the user runs `/fact-find`, begin by asking them to describe what they want fact-finding on.
+## Step 0: Discovery and Selection
 
-### Ask for these minimum inputs
+### Fast Path (with argument)
 
-You must collect enough to choose the correct outcome and scope the investigation.
+**If user provides a card ID or topic** (e.g., `/fact-find PLAT-ENG-0002` or `/fact-find email templates`):
+- Skip discovery entirely
+- If card ID: read `docs/business-os/cards/{CARD-ID}.user.md` directly
+- If topic: proceed to "Ask for minimum inputs"
+- **Target: <2 seconds to start investigating**
+
+### Discovery Path (no argument)
+
+**If user provides no topic**, read the pre-computed index (single file):
+
+```
+docs/business-os/_meta/discovery-index.json
+```
+
+This index contains all raw ideas, inbox cards, and fact-finding cards. Present immediately:
+
+2. **Present a discovery table** organized by readiness:
+
+   ```markdown
+   ## Available for Fact-Finding
+
+   ### Raw Ideas (need /work-idea first, then fact-find)
+   | ID | Title | Business | Summary |
+   |----|-------|----------|---------|
+   | BRIK-OPP-0002 | Hostel booking FAQs | BRIK | FAQ content for bookings |
+
+   ### Cards Ready to Start (Inbox lane → move to Fact-finding)
+   | ID | Title | Business | Priority |
+   |----|-------|----------|----------|
+   | PLAT-OPP-0002 | Example card | PLAT | P2 |
+
+   ### Cards In Progress (Fact-finding lane → needs completion)
+   | ID | Title | Business | Priority |
+   |----|-------|----------|----------|
+   | PLAT-ENG-0002 | Agent Context Optimization | PLAT | P2 |
+   | BRIK-ENG-0018 | Dashboard Upgrade Aggregator | BRIK | P2 |
+   ```
+
+3. **Ask user to select:**
+   - "Which would you like to fact-find? Enter an ID (e.g., `PLAT-ENG-0002`) or describe a new topic."
+   - Note: Raw ideas require `/work-idea` first to create a card before fact-finding.
+
+4. **If user selects a card:** Read the card file to extract context, then proceed.
+   **If user selects a raw idea:** Inform them to run `/work-idea {ID}` first, then return to `/fact-find`.
+   **If user describes a new topic:** Proceed to intake questions.
+
+### When user selects an existing card
+
+If the user selects a card ID from the discovery table:
+
+1. **Read the card file** (`docs/business-os/cards/{CARD-ID}.user.md`)
+2. **Extract pre-populated context:**
+   - `Title` → Topic/area
+   - `Business` → Business-Unit for frontmatter
+   - Card description → Initial scope context
+   - `Plan-Link` (if exists) → Check for existing fact-find brief
+3. **Confirm intent:**
+   - Cards in **Inbox lane**: Default to Outcome A (building/changing)
+   - Cards in **Fact-finding lane**: Ask if completing existing fact-find or starting fresh
+4. **Set frontmatter defaults:**
+   - `Business-Unit`: from card's `Business` field
+   - `Card-ID`: from the selected card
+   - `Feature-Slug`: derived from card title (kebab-case)
+5. **Skip to "Sufficiency gate"** with pre-filled context
+
+**Example flow for selected card:**
+```
+User: PLAT-ENG-0002
+Agent: I'll fact-find on "Agent Context Optimization Plan" (PLAT-ENG-0002).
+
+Pre-populated from card:
+- Business-Unit: PLAT
+- Card-ID: PLAT-ENG-0002
+- Current lane: Fact-finding (in progress)
+
+This card is already in Fact-finding lane. Would you like to:
+A) Complete the existing fact-find investigation
+B) Start a fresh fact-find with new scope
+
+What's the specific goal or question you want this fact-find to answer?
+```
+
+### Ask for minimum inputs (new topics only)
+
+For new topics not linked to an existing card, collect enough to choose the correct outcome and scope the investigation.
 
 **Intent (choose one):**
 - A. I want to build/change something (this should feed into `/plan-feature`)
@@ -48,6 +138,12 @@ If the user's answer is insufficient to meaningfully investigate, ask targeted q
 - a concrete area (feature/component name or user-facing behavior), and
 - the intended outcome (A vs. B), and
 - at least one anchor for where to look (a path guess, an entrypoint guess, a UI route, an endpoint name, a log/error message, or "where in the product it appears").
+
+**Pre-populated context from cards counts toward sufficiency:**
+- Card Title → satisfies "concrete area"
+- Card in Inbox/Fact-finding lane → implies Outcome A (building/changing)
+- Card description/linked docs → may provide anchors for where to look
+- Still ask for the specific goal/question if not obvious from the card
 
 ### Follow-up question bank (use selectively)
 
@@ -111,7 +207,7 @@ Capture:
 - Key modules/files and responsibilities
 - Data/contracts touched (types, schemas, DB models)
 - Upstream dependencies and downstream dependents (blast radius)
-- Tests present + gaps + extinct tests (tests asserting obsolete behavior must be flagged)
+- **Test landscape** (infrastructure, patterns, coverage gaps, testability, extinct tests)
 - Existing conventions/patterns to follow
 - Related docs/plans
 - Targeted recent git history in affected areas
@@ -148,7 +244,7 @@ Include:
 - What would raise each score to **≥80** (build-eligible planning), if currently below.
 - What would raise each score to **≥90** (high confidence), if currently below — tests, spikes, evidence, rollout rehearsal.
 
-**CI policy reminder:** CI≥90 is a motivation/diagnostic, not a quota. Do not recommend deleting planned work just to raise confidence; preserve it as phased/deferred with clear “what would make this ≥90%” actions.
+**Confidence policy reminder:** Confidence ≥90% is a motivation/diagnostic, not a quota. Do not recommend deleting planned work just to raise confidence; preserve it as phased/deferred with clear “what would make this ≥90%” actions.
 
 #### 6) Provide planning handoff artifacts
 
@@ -224,13 +320,43 @@ Card-ID: <auto-generated when card is created>
 - Likely blast radius:
   - ...
 
-### Tests & Quality Gates
-- Existing tests:
-  - `...`
-- Gaps:
-  - ...
-- Commands/suites:
-  - ...
+### Test Landscape
+
+#### Test Infrastructure
+- **Frameworks:** <Jest | Vitest | Cypress | Playwright | etc.>
+- **Commands:** `pnpm test`, `pnpm test:e2e`, etc.
+- **CI integration:** <how tests run in CI; required checks>
+- **Coverage tools:** <if any; current thresholds>
+
+#### Existing Test Coverage
+| Area | Test Type | Files | Coverage Notes |
+|------|-----------|-------|----------------|
+| `path/to/module` | unit | `path/to/test.ts` | <what's covered> |
+| `path/to/api` | integration | `path/to/test.ts` | <what's covered> |
+
+#### Test Patterns & Conventions
+- Unit tests: <patterns observed, e.g., "mock repositories, test services in isolation">
+- Integration tests: <patterns observed, e.g., "real DB with test fixtures">
+- E2E tests: <patterns observed, e.g., "Cypress with page objects">
+- Test data: <how fixtures/factories work>
+
+#### Coverage Gaps (Planning Inputs)
+- **Untested paths:**
+  - `path/to/module` — <what's not tested>
+- **Extinct tests** (tests asserting obsolete behavior):
+  - `path/to/test.ts:L42` — <why extinct; must update/remove during build>
+
+#### Testability Assessment
+- **Easy to test:** <areas with clear boundaries, existing patterns>
+- **Hard to test:** <areas with tight coupling, external dependencies, no seams>
+- **Test seams needed:** <where we need to add interfaces/mocks for testability>
+
+#### Recommended Test Approach
+- **Unit tests for:** <what should be unit tested>
+- **Integration tests for:** <what needs integration testing>
+- **E2E tests for:** <critical user flows>
+- **Contract tests for:** <API boundaries, if applicable>
+- **Note:** This informs test case enumeration in `/plan-feature`
 
 ### Recent Git History (Targeted)
 - `path/to/area/*` — <what changed + implications>
@@ -258,6 +384,9 @@ Card-ID: <auto-generated when card is created>
   - <why + tradeoffs; what's missing>
 - **Impact:** <0–100>%
   - <why + blast radius confidence; what's missing>
+- **Testability:** <0–100>%
+  - <how testable is this feature given current infrastructure and patterns?>
+  - <what would improve testability? test seams, mocks, fixtures needed?>
 
 ## Planning Constraints & Notes
 - Must-follow patterns:
@@ -429,6 +558,14 @@ If the user then decides to implement a change, instruct them to run `/fact-find
 - [ ] Unknowns are called out with a concrete verification path.
 - [ ] Output file is created/updated in the correct location; no code changes.
 
+### TDD Quality Checks (Outcome A only)
+
+- [ ] Test Landscape section is complete (infrastructure, patterns, coverage, gaps, testability).
+- [ ] Testability confidence input is provided (0-100%).
+- [ ] Recommended test approach is documented.
+- [ ] Extinct tests are identified and flagged for update/removal during build.
+- [ ] Coverage gaps are mapped as planning inputs.
+
 ## Final Hand-off Messages
 
 **Outcome A (Planning):**
@@ -497,6 +634,7 @@ Business: {BUSINESS-UNIT}
 Owner: Pete
 Created: {DATE}
 Title: {Feature title from brief}
+Feature-Slug: {feature-slug}
 Plan-Link: docs/plans/{feature-slug}-fact-find.md
 ---
 
@@ -525,6 +663,7 @@ Business: {BUSINESS-UNIT}
 Owner: Pete
 Created: {DATE}
 Title: {Feature title from brief}
+Feature-Slug: {feature-slug}
 Plan-Link: docs/plans/{feature-slug}-fact-find.md
 ---
 
@@ -628,3 +767,28 @@ When Business-Unit is present but card already exists:
 - No card is created unless `Business-Unit` is explicitly provided
 - Existing briefs are unaffected
 - The standard completion message is used when no Business OS integration
+
+---
+
+## Discovery Index Maintenance
+
+The discovery index at `docs/business-os/_meta/discovery-index.json` enables instant discovery without scanning.
+
+### When to Rebuild
+
+Rebuild after:
+- Adding/removing cards or ideas
+- Moving cards between lanes (especially to/from Inbox or Fact-finding)
+
+### Rebuild Command
+
+```bash
+docs/business-os/_meta/rebuild-discovery-index.sh > docs/business-os/_meta/discovery-index.json
+```
+
+### Automatic Updates
+
+The index is also rebuilt by:
+- `/work-idea` - when converting ideas to cards
+- `/propose-lane-move` - when moving cards between lanes
+- `/scan-repo` - when generating new ideas

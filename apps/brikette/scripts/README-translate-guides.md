@@ -1,6 +1,6 @@
 # Guide Translation Script
 
-Automated translation of travel guides to 17 languages using Claude API.
+Manual in-house translation of travel guides to 17 languages. **Do not obtain or use external API keys** for this workflow.
 
 ## Overview
 
@@ -22,12 +22,7 @@ This script translates 5 English guide files to 17 target languages (85 total fi
    pnpm install
    ```
 
-2. **Set up Anthropic API key:**
-   ```bash
-   export ANTHROPIC_API_KEY=your_api_key_here
-   ```
-
-   Get your API key from: https://console.anthropic.com/
+2. **Do not obtain or use any external API keys for translation.** This workflow is in-house only.
 
 ## Usage
 
@@ -35,7 +30,7 @@ This script translates 5 English guide files to 17 target languages (85 total fi
 # From the brikette app directory
 cd apps/brikette
 
-# Run the translation script
+# Run the translation script (local/manual workflow only)
 pnpm run translate-guides
 ```
 
@@ -51,7 +46,7 @@ pnpm exec tsx scripts/translate-guides.ts
 - Validates JSON structure
 
 ### 2. Translates Content
-- Uses Claude Sonnet 4.5 for high-quality translations
+- Uses in-house translation only (no external API keys or services)
 - Preserves special tokens:
   - `%LINK:guideKey|anchor text%` → translates only anchor text
   - `%IMAGE:filename.jpg|alt text%` → translates only alt text
@@ -107,7 +102,7 @@ The script includes:
 ```
 ❌ Error: ANTHROPIC_API_KEY environment variable is required
 ```
-**Solution:** Set the environment variable with your API key
+**Solution:** Use the manual in-house workflow below (do not obtain API keys).
 
 **2. Invalid JSON Output**
 ```
@@ -137,6 +132,19 @@ The script validates:
 - ✓ Directory structure is created
 
 ## Customization
+
+## Manual in-house workflow (no external services)
+
+If you’re running without API access, translate in-house and sequentially:
+
+1. Copy the English guide JSON as the source of truth.
+2. For each locale file:
+   - Preserve all tokens exactly (`%LINK:...%`, `%IMAGE:...%`, `%COMPONENT:...%`).
+   - Match section order, intro count, FAQ count, and gallery structure.
+   - Validate JSON parseability immediately after each write.
+3. Do **not** use third-party translation services or outsource translation work.
+
+If you’re using Claude, parallel translation subagents are recommended. In Codex, sequential translation is acceptable.
 
 ### Add More Guides
 

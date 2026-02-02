@@ -77,7 +77,7 @@ jobs:
   test:
     name: Test (shard ${{ matrix.shard }}/4)
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
@@ -90,6 +90,16 @@ jobs:
         with:
           turbo-token: ${{ secrets.TURBO_TOKEN }}
           turbo-team: ${{ vars.TURBO_TEAM }}
+      - name: Restore Jest/ts-jest caches
+        uses: actions/cache@v4
+        with:
+          path: |
+            .ts-jest
+            node_modules/.cache/jest
+            apps/cms/node_modules/.cache/jest
+          key: cms-jest-cache-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ matrix.shard }}
+          restore-keys: |
+            cms-jest-cache-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
       - name: Run tests (shard ${{ matrix.shard }}/4)
         run: |
           pnpm exec jest --ci --runInBand --detectOpenHandles --passWithNoTests \

@@ -11,7 +11,7 @@ description: Propagate updated EN guide content to all locales using parallel tr
 
 - First validates that EN content passes all SEO audits (FAIL if issues remain)
 - Propagates updated EN content to all 17 non-EN locales using parallel translation
-- Uses parallel subagents for concurrent translation (required)
+- Uses parallel subagents for concurrent translation (required in Claude; Codex runs sequentially)
 - Validates translations after propagation
 
 **Prerequisite:** Run `improve-en-guide` first to ensure EN content is audit-clean.
@@ -31,7 +31,8 @@ Non-EN locale content may have drifted. You must check and reconcile the entire 
 
 **Translation Policy (Non-Negotiable):**
 - **Always complete all translation work in-house.** Never ask about engaging professional translators or offloading translation work to external services.
-- **Always use parallel subagents for localization.** Spawn multiple Task tool subagents to translate locales concurrently, maximizing speed.
+- **Claude:** Always use parallel subagents for localization. Spawn multiple Task tool subagents to translate locales concurrently, maximizing speed.
+- **Codex:** Run locales sequentially (Task tool may be unavailable). This is the approved exception.
 - **Never defer or skip localization.** All 17 non-EN locales must be updated for every guide processed.
 
 ---
@@ -63,7 +64,7 @@ Non-EN locale content may have drifted. You must check and reconcile the entire 
 - Any remediation for corrupted JSON other than replacement with known-good content
 - **Asking about professional translators or external translation services** (forbidden)
 - **Suggesting to defer/skip localization or offload translation work** (forbidden)
-- **Sequential locale processing when parallel is possible** (forbidden - always use Task tool for parallel translation)
+- **Claude:** Sequential locale processing when parallel is possible (forbidden - always use Task tool for parallel translation)
 
 ---
 
@@ -110,11 +111,12 @@ Read audit output. Check:
 - STOP with message: "EN content has unresolved audit issues. Run improve-en-guide first to fix EN content, then re-run improve-translate-guide."
 - Do NOT proceed with translation
 
-### 2) Spawn parallel translation subagents (required)
+### 2) Spawn parallel translation subagents (required in Claude)
 
-Use the Task tool to spawn multiple parallel subagents for concurrent locale translation. **Never translate sequentially.**
+Use the Task tool to spawn multiple parallel subagents for concurrent locale translation. **Never translate sequentially in Claude.**  
+In Codex, proceed sequentially across locales.
 
-**Recommended parallelization strategy:**
+**Recommended parallelization strategy (Claude):**
 - Spawn 4-6 subagents in a single Task tool call (one message with multiple tool uses)
 - Each subagent handles 3-4 locales
 - Example grouping:
@@ -157,7 +159,7 @@ Compare locale's structure and coverage vs EN:
 
 ### 4) Completion report
 
-After all parallel subagents complete, report:
+After all translations complete, report:
 
 **Validation status:**
 - EN audit result (pass/fail with details)
@@ -165,14 +167,14 @@ After all parallel subagents complete, report:
 **Translation progress:**
 - Locales updated (count + list)
 - Any locale-specific issues encountered
-- Parallel translation efficiency (number of subagents spawned)
+- Parallel translation efficiency (number of subagents spawned) — Claude only
 
 **Per guide:**
 - Confirmation that:
   - EN was validated before translation
   - every write was validated immediately
   - any corruption was handled only by replacement with known-good content
-  - all 17 non-EN locales were successfully updated via parallel subagents
+  - all 17 non-EN locales were successfully updated (parallel subagents in Claude; sequential in Codex)
   - no translation work was deferred or suggested for external handling
 
 ---

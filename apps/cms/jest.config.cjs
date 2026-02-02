@@ -16,6 +16,16 @@ const relaxCoverage =
   process.env.JEST_ALLOW_PARTIAL_COVERAGE === "1" ||
   process.env.JEST_DISABLE_COVERAGE_THRESHOLD === "1";
 
+// When running Jest shards (`--shard=n/m`), each job only executes a subset of
+// test files. If we also force "all-files" coverage (via `collectCoverageFrom`),
+// Jest will repeatedly instrument the entire CMS source tree for every shard,
+// which is extremely slow and can exceed CI job timeouts.
+//
+// For sharded runs we intentionally collect coverage only for files actually
+// executed in that shard and disable coverage thresholds. Full, "all-files"
+// coverage can be enforced in a separate non-sharded job when needed.
+const isShardRun = process.argv.some((arg) => arg === "--shard" || arg.startsWith("--shard="));
+
 /** @type {import('jest').Config} */
 module.exports = {
   // Reuse the base Jest preset, but override coverage settings for CMS
@@ -95,19 +105,21 @@ module.exports = {
   ],
   // Collect coverage only from the CMS source code; exclude declarations and tests.
   collectCoverage: true,
-  collectCoverageFrom: [
-    "apps/cms/src/**/*.{ts,tsx}",
-    // Include UI page-builder internals when exercised from CMS tests
-    "packages/ui/src/components/cms/page-builder/**/*.{ts,tsx}",
-    "packages/ui/src/components/cms/PageBuilder.tsx",
-    "!apps/cms/src/**/*.d.ts",
-    "!apps/cms/src/**/?(*.)+(spec|test).{ts,tsx}",
-    "!apps/cms/src/**/__tests__/**",
-  ],
+  collectCoverageFrom: isShardRun
+    ? undefined
+    : [
+        "apps/cms/src/**/*.{ts,tsx}",
+        // Include UI page-builder internals when exercised from CMS tests
+        "packages/ui/src/components/cms/page-builder/**/*.{ts,tsx}",
+        "packages/ui/src/components/cms/PageBuilder.tsx",
+        "!apps/cms/src/**/*.d.ts",
+        "!apps/cms/src/**/?(*.)+(spec|test).{ts,tsx}",
+        "!apps/cms/src/**/__tests__/**",
+      ],
   coverageReporters: ["text", "lcov"],
   // Preserve the base coverage ignore patterns to avoid instrumenting other packages/apps
   coveragePathIgnorePatterns: base.coveragePathIgnorePatterns,
-  coverageThreshold: relaxCoverage
+  coverageThreshold: isShardRun || relaxCoverage
     ? {
         global: {
           statements: 0,

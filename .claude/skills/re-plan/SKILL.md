@@ -7,11 +7,33 @@ description: Resolve low-confidence tasks in an existing plan. Investigate, remo
 
 Resolve low-confidence tasks in an existing plan. Investigate, remove uncertainty, make decisions with evidence, and update the plan doc so that remaining work can proceed safely.
 
-## CI Policy
+## Confidence Policy
 
-- In plan docs, **CI** means **Confidence Index** (plan confidence), not CI/CD.
-- **CI ≥90 is a motivation, not a quota.** Increasing CI should come from reducing uncertainty (evidence, tests, spikes), not from deleting planned work.
-- If work is valuable but not yet high-confidence, preserve it as **deferred/Phase 3** and add **“What would make this ≥90%”** notes.
+- **Confidence ≥90 is a motivation, not a quota.** Increasing confidence should come from reducing uncertainty (evidence, tests, spikes), not from deleting planned work.
+- If work is valuable but not yet high-confidence, preserve it as **deferred/Phase 3** and add **"What would make this ≥90%"** notes.
+
+## TDD Compliance Requirement
+
+**Every IMPLEMENT task must have an enumerated test contract before it can be marked Ready.**
+
+A task without test cases (TC-XX) cannot proceed to `/build-feature`, regardless of confidence score. Re-plan must add test contracts to any tasks missing them.
+
+**Test contract format:**
+```markdown
+- **Test contract:**
+  - **TC-01:** <scenario> → <expected outcome>
+  - **TC-02:** <error case> → <expected outcome>
+  - **TC-03:** <edge case> → <expected outcome>
+  - **Test type:** <unit | integration | e2e | contract>
+  - **Test location:** <path/to/test.ts (existing) or path/to/new-test.ts (new)>
+  - **Run:** <command to execute>
+```
+
+**Minimum test contract requirements:**
+- At least one TC per acceptance criterion
+- Happy path covered (TC-01 typically)
+- At least one error/edge case for M/L effort tasks
+- Test type and location specified
 
 ## Operating Mode
 
@@ -46,9 +68,11 @@ Resolve low-confidence tasks in an existing plan. Investigate, remove uncertaint
 Run `/re-plan` when any of the following occurs:
 
 - A plan task has overall confidence <80% (or is explicitly flagged as blocked).
+- **A task is missing a test contract (TC-XX enumeration) — cannot proceed to build without it.**
 - During implementation, confidence drops due to unexpected complexity or new evidence.
 - New information invalidates assumptions, dependencies, or approach decisions.
 - Build was stopped due to uncertainty and needs a structured reset.
+- `/build-feature` rejected a task due to missing test contract.
 
 **Note:** `/re-plan` is not for generating a plan from scratch; that is `/plan-feature`. `/re-plan` operates on a specific plan and task IDs.
 
@@ -59,12 +83,14 @@ Run `/re-plan` when any of the following occurs:
 Identify the target tasks:
 - Prefer explicit task IDs provided by the user.
 - Otherwise, scan the plan and select any tasks with overall confidence <80% **and** any tasks that depend on them.
+- **Also select any IMPLEMENT tasks missing test contracts (TC-XX)** — these cannot proceed to build regardless of confidence.
 
 For each target task, record:
 - current confidence (overall + per dimension)
 - current acceptance criteria
 - dependencies (TASK-IDs)
 - affected files/modules
+- **test contract status:** complete (has TC-XX) | incomplete | missing
 
 ### 2) Diagnose the confidence gap by dimension
 
@@ -130,6 +156,47 @@ Record the diagnosis per task explicitly in the plan update.
 - tests and commands
 - extinct tests flagged for update during build
 
+### 3b) Complete test contracts for tasks missing them
+
+For each IMPLEMENT task missing a test contract (or with incomplete TC-XX enumeration):
+
+**Step 1: Review acceptance criteria**
+- Each acceptance criterion must map to at least one test case
+- Identify gaps: criteria without corresponding TCs
+
+**Step 2: Enumerate test cases**
+- **TC-01** (always): Happy path / primary success scenario
+- **TC-02+**: Error cases, edge cases, boundary conditions
+- For M/L effort tasks: at least 3 TCs required
+- For S effort tasks: at least 1 TC required (may be more based on complexity)
+
+**Step 3: Specify test metadata**
+- **Test type:** unit | integration | e2e | contract
+- **Test location:** existing file to extend, or new file path
+- **Run command:** exact command to execute tests
+
+**Step 4: Add test contract to task**
+Use this format:
+```markdown
+- **Test contract:**
+  - **TC-01:** <scenario> → <expected outcome>
+  - **TC-02:** <error case> → <expected outcome>
+  - **Acceptance coverage:** TC-01 covers criteria 1,2; TC-02 covers criteria 3
+  - **Test type:** <unit | integration | e2e>
+  - **Test location:** `path/to/test.ts`
+  - **Run:** `pnpm test --testPathPattern=<pattern>`
+```
+
+**Deriving test cases from acceptance criteria:**
+
+| Acceptance Criterion Type | Test Case Pattern |
+|---------------------------|-------------------|
+| "X returns Y" | TC: Call X → assert Y |
+| "X validates Y" | TC-a: Valid input → success; TC-b: Invalid input → error |
+| "X handles error Z" | TC: Trigger Z → assert error handling |
+| "X is visible in Y" | TC: Create X → query Y → assert presence |
+| "X with auth" | TC-a: With auth → success; TC-b: Without auth → 401 |
+
 ### 4) Resolve open questions (self-serve first; escalate last)
 
 **Rules:**
@@ -184,6 +251,23 @@ Before marking any task as Ready or finalizing confidence scores, verify:
 
 **If any checklist item fails, do NOT finalize the confidence score. Investigate or mark as Unknown.**
 
+### 5b) Test Contract Validation Checklist (Mandatory for all IMPLEMENT tasks)
+
+Before marking any IMPLEMENT task as Ready, verify:
+
+- [ ] **TC enumeration exists:** Task has at least one `TC-XX:` line
+- [ ] **Acceptance coverage:** Every acceptance criterion maps to at least one TC
+- [ ] **Scenario + outcome:** Each TC has format `<scenario> → <expected outcome>`
+- [ ] **Test type specified:** unit | integration | e2e | contract
+- [ ] **Test location specified:** file path (existing or new)
+- [ ] **Run command specified:** exact command to execute tests
+- [ ] **Minimum TC count met:**
+  - S-effort: ≥1 TC
+  - M-effort: ≥3 TCs (including at least one error/edge case)
+  - L-effort: ≥5 TCs (including error cases, edge cases, and integration scenarios)
+
+**If any checklist item fails, the task is NOT ready for build. Add the missing test contract elements.**
+
 ### 6) Re-assess knock-on effects
 
 After resolving the target tasks:
@@ -202,13 +286,16 @@ If the plan ordering changes, update dependencies explicitly.
 
 End by classifying the plan state:
 
-- **Ready to build:** all IMPLEMENT tasks are ≥80%
+- **Ready to build:** all IMPLEMENT tasks are ≥80% confidence **AND** have complete test contracts (TC-XX)
+- **TDD incomplete:** confidence ≥80% but some tasks missing test contracts — add test contracts before proceeding
 - **Partially ready:** some tasks are 60–79% with explicit verification steps; none below 60%
 - **Blocked:** any IMPLEMENT task is <60% or requires user input to proceed safely
 
+**TDD gate is mandatory.** A task with 90% confidence but no test contract is NOT ready for build.
+
 Provide the recommended next action:
-- `/build-feature` if ready (or for high-confidence subset)
-- `/re-plan` again if remaining blocked tasks exist
+- `/build-feature` if ready (confidence ≥80% AND test contracts complete)
+- `/re-plan` again if remaining blocked tasks exist or test contracts are missing
 - Ask user questions if genuinely required
 
 ## Plan Update Snippet (insert into each affected task)
@@ -243,14 +330,19 @@ Also add a short entry to the plan's **Decision Log** whenever an approach decis
 - [ ] Investigation is targeted and evidenced (file paths/tests/docs).
 - [ ] Any approach decision includes alternatives, tradeoffs, and rationale.
 - [ ] Impact is mapped (upstream/downstream) with explicit blast radius notes.
-- [ ] Plan doc updated: task confidence deltas, dependencies, acceptance criteria, test plan, rollout/rollback.
+- [ ] Plan doc updated: task confidence deltas, dependencies, acceptance criteria, test contract, rollout/rollback.
 - [ ] Related tasks re-assessed and updated where necessary.
 - [ ] User questions are only asked when genuinely unavoidable and are decision-framed.
+- [ ] **TDD compliance:** Every IMPLEMENT task has a complete test contract with TC-XX enumeration.
+- [ ] **Test contract validation:** All items in 5b) checklist pass for every IMPLEMENT task.
 
 ## Completion Messages
 
-**All ≥80%:**
-> "Re-plan complete. Updated `docs/plans/<feature-slug>-plan.md`. All implementation tasks are ≥80% confidence. Proceed to `/build-feature`."
+**All ≥80% with complete test contracts:**
+> "Re-plan complete. Updated `docs/plans/<feature-slug>-plan.md`. All implementation tasks are ≥80% confidence with complete test contracts. Proceed to `/build-feature`."
+
+**Confidence ≥80% but missing test contracts:**
+> "Re-plan complete. Updated plan. Tasks <IDs> are ≥80% confidence but missing test contracts (TC-XX). Run `/re-plan` again to add test contracts before proceeding to build."
 
 **Some caution tasks (60–79%) but none <60%:**
 > "Re-plan complete. Updated plan. Tasks <IDs> remain 60–79% with explicit verification steps; recommend building ≥80% tasks first and reassessing."

@@ -3707,6 +3707,7 @@ const manifestSeed: GuideManifestEntry[] = [
     structuredData: ["BreadcrumbList"],
     relatedGuides: [],
     blocks: [],
+    focusKeyword: "Chiesa Nuova / Bar Internazionale bus stop",
     expectations: {
       redirectOnly: true,
     },
@@ -3722,7 +3723,7 @@ const manifestSeed: GuideManifestEntry[] = [
     structuredData: ["BreadcrumbList"],
     relatedGuides: [],
     blocks: [],
-    focusKeyword: "Positano Chiesa Nuova bus stop",
+    focusKeyword: "Positano Chiesa Nuova / Bar Internazionale bus stop",
     expectations: {
       redirectOnly: true,
     },

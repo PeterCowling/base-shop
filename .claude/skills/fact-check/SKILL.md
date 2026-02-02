@@ -1,28 +1,28 @@
 ---
 name: fact-check
-description: Verify the accuracy of statements in markdown documents by auditing the actual repository state. Documentation-to-repo conformance audit that checks documentation against current repo reality.
+description: Verify the accuracy of statements in markdown documents by auditing the actual repository state. Directly fix inaccuracies in-place rather than producing a separate report.
 ---
 
 # Fact Check
 
-Verify the accuracy of statements in markdown documents by auditing the actual repository state. Produces an audit report showing which claims are accurate, which are inaccurate/outdated, and which cannot be verified.
+Verify the accuracy of statements in markdown documents by auditing the actual repository state. When inaccuracies are found, **directly update the source document** to correct them.
 
 ## Key Distinction: fact-check vs fact-find
 
 | Aspect | `/fact-find` | `/fact-check` |
 |--------|-------------|---------------|
 | Direction | Forward-looking | Documentation-to-repo conformance |
-| Purpose | Gather evidence BEFORE planning | Verify existing documentation |
+| Purpose | Gather evidence BEFORE planning | Verify and fix existing documentation |
 | Input | Topic/feature to investigate | Path to a markdown document |
-| Output | Planning brief or system briefing | Audit report with findings |
+| Output | Planning brief or system briefing | **Updated source document(s)** |
 | When | Before creating a plan | After documentation exists |
 
 **fact-find:** "What do we need to know to build this?"
-**fact-check:** "Is what we wrote still true?"
+**fact-check:** "Is what we wrote still true? Fix it if not."
 
 ## Operating Mode
 
-**READ + VERIFY + REPORT**
+**READ + VERIFY + FIX**
 
 **Allowed:**
 - Read the target document
@@ -30,16 +30,16 @@ Verify the accuracy of statements in markdown documents by auditing the actual r
 - Inspect tests, configs, and code
 - Check dependency versions in package.json/lockfiles
 - Review git history for file existence/changes
-- Produce an audit report
-- **Create a new audit report file** in `docs/audits/` or the document's directory (new file only)
+- **Edit the audited document to fix inaccuracies**
+- **Edit related documents if the inaccuracy spans multiple files**
+- Create a brief changelog entry in the document (if frontmatter supports it)
 
 **Not allowed:**
-- Modifying the audited document (user decides what to fix)
-- Editing existing files (except creating the new audit report)
-- Making code changes
-- Creating commits
-- Fixing inaccuracies automatically
+- Making code changes (only documentation fixes)
+- Creating commits (user reviews and commits)
 - Classification without explicit evidence pointer
+- Changing document meaning/intent (only factual corrections)
+- Removing sections entirely (flag for user if section is obsolete)
 
 ## Repo Anchor Requirement
 
@@ -50,10 +50,10 @@ Every audit must record what state of the repository was audited:
 
 To determine the anchor:
 1. Run `git rev-parse HEAD` to get current commit SHA
-2. Run `git status` to check for uncommitted changes in files relevant to the audit
-3. If relevant files have uncommitted changes, use `working-tree` with a warning in the report
+2. Run `git status` to check for uncommitted changes in relevant paths
+3. If relevant files have uncommitted changes, note this when reporting
 
-**Warning format for working-tree audits:**
+**Warning for working-tree audits:**
 > ⚠️ This audit was performed against the working tree, which contains uncommitted changes. Results may differ from the committed state.
 
 ## Inputs
@@ -63,7 +63,7 @@ To determine the anchor:
 
 **Optional:**
 - Scope: `focused` or `full` (see Scope Definitions below)
-- Verbosity: `summary`, `detailed` (default), or `detailed+appendix`
+- Mode: `fix` (default) or `report-only` (for cases where user wants review before changes)
 
 ## Scope Definitions
 
@@ -79,7 +79,7 @@ To determine the anchor:
 If a `full` audit identifies >200 claims:
 - Verify all Category 1–3 claims exhaustively
 - Sample Category 4–6 claims (at least 20% or 10 claims, whichever is greater)
-- Note in report: "Large document mode: sampled categories 4–6"
+- Note in completion message: "Large document mode: sampled categories 4–6"
 - User can explicitly request exhaustive audit to override
 
 ## Claim Categories
@@ -133,19 +133,6 @@ Examples of atomic claims:
 |---------------|---------------|
 | "The `useAuth` hook in `src/hooks/` handles authentication and session management" | C1: `useAuth` hook exists in `src/hooks/` <br> C2: `useAuth` handles authentication <br> C3: `useAuth` handles session management |
 
-**Claim Ledger (mandatory):**
-Maintain an internal ledger during audit. This ensures consistent counting and traceability:
-
-```
-Claim ID | Doc Line(s) | Category | Claim (atomic) | Status
----------|-------------|----------|----------------|--------
-C01      | 15          | 1        | File `src/config.ts` exists | Accurate
-C02      | 15          | 2        | `config.ts` exports `appConfig` | Accurate
-C03      | 23-24       | 3        | React version is 19 | Inaccurate
-```
-
-The ledger need not appear in full in the final report, but totals must be derivable from it.
-
 ## Exclusion Rules: Examples vs Claims
 
 **Decision rule for ambiguous content:**
@@ -162,7 +149,7 @@ If a path, code snippet, or technical reference appears:
 - "Our actual implementation..."
 - "Currently located at..."
 
-When in doubt, mark as a claim but note the ambiguity in findings.
+When in doubt, mark as a claim but note the ambiguity.
 
 ## Workflow
 
@@ -171,13 +158,12 @@ When in doubt, mark as a claim but note the ambiguity in findings.
 Before reading the document:
 1. Run `git rev-parse HEAD` to get commit SHA
 2. Check `git status` for uncommitted changes in relevant paths
-3. Record anchor in report metadata
+3. Note anchor for completion message
 
 ### 2) Parse the document
 
-Read the target document and extract all verifiable claims. For each claim, record in the Claim Ledger:
-- **Claim ID:** Sequential identifier (C01, C02, ...)
-- **Doc line(s):** Line number(s) using stable method (equivalent to `nl -ba` output)
+Read the target document and extract all verifiable claims. For each claim, track:
+- **Doc line(s):** Line number(s) where claim appears
 - **Category:** 1–6 per taxonomy above
 - **Claim text:** The atomic claim extracted
 - **What evidence would verify it**
@@ -204,31 +190,59 @@ For each claim:
 
 **b) Gather evidence:**
 - Record exact file path checked
-- Record line numbers: `<file-path>:<start-line>-<end-line>` or `<file-path>:<line>`
-- Quote relevant code snippets (keep brief, max ~10 lines)
-- Note commit SHA if version-sensitive
+- Record line numbers if relevant
+- Note what you found
 
 **c) Classify finding:**
 
-| Finding | Criteria | Evidence Required |
-|---------|----------|-------------------|
-| Accurate | Evidence confirms the claim exactly | Path verified, code snippet, version string |
-| Partially accurate | Claim is mostly true but details differ | Both confirming and contradicting evidence |
-| Inaccurate | Claim contradicts current repo state | Exact contradiction with path/line citation |
-| Outdated | Claim was true but repo has changed | **Git history evidence required** (see below) |
-| Unverifiable | Claim too vague or refers to external/runtime state | Explanation of why verification impossible |
+| Finding | Criteria | Action |
+|---------|----------|--------|
+| Accurate | Evidence confirms the claim exactly | No change needed |
+| Partially accurate | Claim is mostly true but details differ | Fix the details |
+| Inaccurate | Claim contradicts current repo state | Fix with correct information |
+| Outdated | Claim was true but repo has changed | Update to current state |
+| Unverifiable | Claim too vague or refers to external/runtime state | Add clarifying note or flag for user |
+| Obsolete section | Entire section no longer applies | Flag for user decision (don't delete) |
 
-### 5) Record discrepancies
+### 5) Fix inaccuracies in-place
 
-For inaccurate/outdated claims, document:
-- **Documented state:** What the doc says
-- **Actual state:** What the repo shows
-- **Evidence:** File path, line number, code snippet
-- **Severity:** High (blocking/misleading), Medium (confusing), Low (minor)
+For each inaccurate, outdated, or partially accurate claim:
 
-### 6) Generate audit report
+**a) Determine the correction:**
+- What is the actual current state?
+- What is the minimal change to make the claim accurate?
+- Does the fix affect document flow/meaning?
 
-Produce a structured report using the template below.
+**b) Apply the fix:**
+- Use the Edit tool to update the specific text
+- Preserve document structure and formatting
+- Keep the same voice/style as the original
+- If multiple related claims need fixing, batch them logically
+
+**c) For unverifiable claims:**
+- Add inline clarification: `(runtime behavior; not verified)`
+- Or convert to softer language: "is designed to" instead of "does"
+- Or flag with HTML comment: `<!-- FACT-CHECK: unverifiable, requires runtime test -->`
+
+**d) For obsolete sections:**
+- Do NOT delete
+- Add a note at the section start:
+  ```markdown
+  > **Note:** This section may be outdated. [Brief reason]. Review recommended.
+  ```
+- Flag in completion message for user decision
+
+### 6) Update document metadata (if applicable)
+
+If the document has frontmatter with `Last-updated`:
+- Update to today's date
+
+If the document has a changelog or revision history section:
+- Add brief entry: `YYYY-MM-DD: Fact-check corrections (paths, versions, counts)`
+
+### 7) Report completion
+
+Summarize what was checked and fixed in the completion message.
 
 ## Evidence Standards (Hard Requirements)
 
@@ -238,7 +252,7 @@ Produce a structured report using the template below.
 - Version string from package.json (for version claims)
 - Actual count with method shown (for quantity claims)
 
-### Required for "Inaccurate" classification:
+### Required for "Inaccurate" classification (before fixing):
 - Exact quote from document (the claim)
 - Exact evidence from repo (the contradiction)
 - Both must be cited with paths/line numbers
@@ -251,12 +265,6 @@ Produce a structured report using the template below.
 - `git show <sha>:<path>` demonstrating prior state
 
 **If you cannot prove prior truth, classify as Inaccurate, not Outdated.**
-
-Example git evidence for Outdated:
-```
-git log --oneline --follow -- src/old-path.ts
-a1b2c3d Rename old-path.ts to new-path.ts
-```
 
 ### Required for "Unverifiable" classification:
 - Explanation of what would be needed to verify
@@ -289,7 +297,7 @@ a1b2c3d Rename old-path.ts to new-path.ts
 - **For "version X":**
   - Accept if package.json major version matches (range OK)
   - If lockfile available, verify resolution for main app packages
-  - If multiple versions resolve: mark **Partially accurate** with note: "repo uses X vN, but some packages resolve vM"
+  - If multiple versions resolve: update to note both versions
 
 ### Category 4 & 5: Architecture/Behavioral Claims
 A claim can be **Accurate** only if:
@@ -297,214 +305,85 @@ A claim can be **Accurate** only if:
 2. Coverage exists in tests OR explicit contract code, OR
 3. The claim is trivially derivable from implementation (e.g., "uses React" when React imports exist throughout)
 
-**Otherwise:** Mark as **Unverifiable** with note: "requires runtime validation/manual test"
+**Otherwise:** Mark as **Unverifiable** and add inline note
 
 ### Category 6: Count Claims
 - **Evidence:** Show counting method
 - **Include exclusions:** e.g., "counted `packages/*/package.json`, excluding `node_modules` and build outputs"
 - **For approximate claims** ("about 15"): Accurate if within 10%
 
-## Evidence Log (Required)
+## Fix Guidelines
 
-Every audit report must include a reproducible evidence log:
+### Minimal changes principle
+Only change what's factually incorrect. Don't rewrite for style or expand scope.
 
+**Good fix:**
 ```markdown
-## Evidence Log
+# Before
+The config file is at `config/settings.json`.
 
-### Files Opened
-- `package.json` (dependency verification)
-- `src/hooks/useAuth.ts` (export verification)
-- `tsconfig.json` (config claims)
-
-### Search Patterns Used
-- `glob: "src/**/*.tsx"` → 47 files
-- `grep: "export.*useAuth"` → 3 matches in `src/hooks/`
-
-### Commands/Queries
-- `git rev-parse HEAD` → `abc123def`
-- `git log --follow -- src/old-utils.ts` → renamed in commit `xyz789`
-
-### Package Files Checked
-- `package.json` (root)
-- `apps/web/package.json`
-- `pnpm-lock.yaml` (version resolution)
+# After
+The config file is at `src/config/settings.json`.
 ```
 
-## Audit Report Template
-
+**Bad fix (over-editing):**
 ```markdown
----
-Type: Fact-Check Audit
-Document: <path to audited document>
-Audit-Ref: <commit SHA or "working-tree">
-Repo-Root: <absolute path to repo root>
-Audit-Date: YYYY-MM-DD
-Auditor: Agent
-Method: <tools used: glob/grep/read/git>
-Status: Complete | Partial (scope-limited)
----
+# Before
+The config file is at `config/settings.json`.
 
-# Fact-Check Audit: <Document Name>
-
-## Summary
-
-| Metric | Count |
-|--------|-------|
-| Total claims identified | N |
-| Total claims checked | N |
-| Accurate | N |
-| Partially accurate | N |
-| Inaccurate | N |
-| Outdated | N |
-| Unverifiable | N |
-
-**Accuracy rate:** X% (Accurate / (Total checked - Unverifiable))
-
-**Severity breakdown:**
-- High severity issues: N
-- Medium severity issues: N
-- Low severity issues: N
-
-## Issues (Inaccurate / Outdated / Partially Accurate)
-
-### FC-01: <Short description>
-- **Claim ID:** C03
-- **Line:** N
-- **Category:** N
-- **Document says:** "<exact quote>"
-- **Actual state:** "<what repo shows>"
-- **Evidence:** `path/to/file:lineNumber`
-- **Git evidence (if Outdated):** `<commit sha and description>`
-- **Severity:** High/Medium/Low
-- **Suggested fix:** "<how to correct the doc>"
-
-### FC-02: ...
-
-## Unverifiable Claims
-
-| Claim ID | Line | Claim | Reason |
-|----------|------|-------|--------|
-| C15 | 45 | "Supports dark mode" | Runtime behavior; no test coverage found |
-| C22 | 78 | "API returns within 200ms" | Performance claim; requires runtime measurement |
-
-## Accurate Claims Summary
-
-**By Category:**
-- Category 1 (Paths): N accurate
-- Category 2 (Code Structure): N accurate
-- Category 3 (Dependencies): N accurate
-- Category 4 (Architecture): N accurate
-- Category 5 (Behavioral): N accurate
-- Category 6 (Counts): N accurate
-
-**High-Impact Accurate Claims (sample):**
-- C01 (L5): "`src/index.ts` exists" - Verified
-- C07 (L12): "React 19" - Verified: `"react": "^19.0.0"`
-- C14 (L34): "Exports `useAuth`" - Verified: `src/hooks/useAuth.ts:15`
-
-<details>
-<summary>Full Accurate Claims List (N claims)</summary>
-
-[Only include if verbosity is `detailed+appendix`]
-
-| Claim ID | Line | Category | Claim | Evidence |
-|----------|------|----------|-------|----------|
-| C01 | 5 | 1 | File `src/index.ts` exists | File found |
-| ... | | | | |
-
-</details>
-
-## Recommendations
-
-### High Priority (fix before publishing/sharing)
-1. FC-01: <specific action>
-2. FC-02: <specific action>
-
-### Medium Priority (fix when updating document)
-3. FC-03: <specific action>
-
-### Low Priority (nice to have)
-4. FC-04: <specific action>
-
-## Evidence Log
-
-### Files Opened
-- <list>
-
-### Search Patterns Used
-- <pattern> → <result summary>
-
-### Git Commands
-- <command> → <result summary>
-
-### Package Files Checked
-- <list>
-
-## Audit Metadata
-
-- **Scope:** full | focused
-- **Verbosity:** summary | detailed | detailed+appendix
-- **Time spent:** ~N minutes
-- **Large doc mode:** Yes/No (if >200 claims)
-- **Sampling note:** [if applicable] Categories 4–6 sampled at N%
+# After
+The application configuration is stored in `src/config/settings.json`. This file contains all runtime settings including database connections, API keys, and feature flags. See the Configuration Guide for details.
 ```
 
-## Output Defaults by Verbosity
+### Version updates
+```markdown
+# Before
+Built with React 18.
 
-| Verbosity | Issues | Unverifiable | Accurate |
-|-----------|--------|--------------|----------|
-| `summary` | Counts only | Counts only | Counts only |
-| `detailed` (default) | Full detail | Full table | Summary + sample |
-| `detailed+appendix` | Full detail | Full table | Full appendix |
+# After
+Built with React 19.
+```
 
-## Examples of Claims to Check
+### Count updates
+```markdown
+# Before
+The monorepo contains 5 packages.
 
-### Example 1: Path Reference
-**Document says:** "Configuration is in `config/settings.json`"
-**Check:** glob for the file
-**Possible findings:**
-- Accurate: File exists at that path
-- Inaccurate: File is actually at `src/config/settings.json`
-- Outdated: File was renamed to `config/app-settings.json` (with git log evidence)
+# After
+The monorepo contains 7 packages.
+```
 
-### Example 2: Version Claim
-**Document says:** "Uses Next.js 14"
-**Check:** Read `package.json`, find `"next"` dependency; check lockfile resolution
-**Possible findings:**
-- Accurate: `"next": "^14.0.0"` and lockfile resolves to 14.x
-- Inaccurate: `"next": "^15.0.0"` (upgraded)
-- Partially accurate: Main app uses 14, but one package resolves to 13
+### Path updates with context
+```markdown
+# Before
+Authentication logic lives in `src/auth/`.
 
-### Example 3: Code Structure
-**Document says:** "The `validateEmail` function in `utils.ts`"
-**Check:** grep for `validateEmail` in utils.ts, read the file
-**Possible findings:**
-- Accurate: Function exists at line 45, show export
-- Inaccurate: Function is named `isValidEmail`
-- Outdated: Function moved to `validation.ts` (with git log --follow evidence)
+# After
+Authentication logic lives in `src/lib/auth/`.
+```
 
-### Example 4: Count Claim
-**Document says:** "The monorepo contains 5 packages"
-**Check:** glob for `packages/*/package.json`, exclude node_modules
-**Possible findings:**
-- Accurate: 5 packages found (list them)
-- Inaccurate: 7 packages found (2 were added)
-- Show counting method in evidence
+### Unverifiable claim handling
+```markdown
+# Before
+The API responds within 200ms.
 
-### Example 5: Architecture Claim
-**Document says:** "All API routes use the `withAuth` middleware"
-**Check:** grep for route handlers, check if they use `withAuth`
-**Possible findings:**
-- Accurate: All 12 routes use `withAuth` (show grep results)
-- Partially accurate: 10 of 12 routes use it (2 are explicitly public)
-- Unverifiable: Cannot determine without runtime analysis if middleware actually executes
+# After
+The API is designed to respond within 200ms (performance varies by load).
+```
 
-### Example 6: Behavioral Claim
-**Document says:** "Supports dark mode"
-**Check:** Search for theme provider, dark mode toggle, CSS variables
-**Possible findings:**
-- Accurate: ThemeProvider with dark mode in `src/providers/theme.tsx:12`, toggle in `src/components/ThemeSwitch.tsx`
-- Unverifiable: No theme infrastructure found, no test coverage; requires runtime validation
+### Obsolete section flagging
+```markdown
+# Before
+## Legacy Authentication
+The old auth system uses session cookies stored in Redis.
+
+# After
+## Legacy Authentication
+
+> **Note:** This section describes the legacy authentication system, which has been replaced. See [New Auth System](#new-auth-system) for current documentation.
+
+The old auth system uses session cookies stored in Redis.
+```
 
 ## When to Use
 
@@ -527,69 +406,90 @@ Status: Complete | Partial (scope-limited)
 ### 1. Assuming without checking
 "This path looks standard, probably accurate" - NO. Check every claim.
 
-### 2. Fixing while auditing
-Do not modify the document during the audit. Report findings; user decides fixes.
+### 2. Over-editing
+Don't rewrite sections for style. Only fix factual inaccuracies.
 
 ### 3. Marking vague claims as accurate
-"The system is well-tested" - Mark as unverifiable unless you can cite specific coverage metrics.
+"The system is well-tested" - Mark as unverifiable and add clarifying note.
 
 ### 4. Ignoring context
 A path in a code block might be an example, not a claim about repo state. Use the exclusion rules above.
 
-### 5. Over-reporting
-"The" vs "A" word choice is not a factual claim. Focus on verifiable technical assertions.
+### 5. Deleting content
+Never delete sections even if obsolete. Flag for user decision.
 
 ### 6. Skipping negative evidence
-If you find something that contradicts a claim, you must report it even if inconvenient.
+If you find something that contradicts a claim, you must fix it even if inconvenient.
 
 ### 7. Conflating "claim" with "intention"
 "We plan to add X" is not a factual claim to verify (it's a statement of intent).
 
 ### 8. Outdated without git evidence
-Never mark as "Outdated" unless you can prove via git history that it was previously true.
+Never classify as "Outdated" unless you can prove via git history that it was previously true.
 
 ### 9. Classifying without evidence
 Every classification (including Accurate) must have an explicit evidence pointer.
+
+### 10. Changing document meaning
+Fact-check fixes facts, not intent. If a section's purpose is unclear, flag for user.
 
 ## Integration with Other Skills
 
 | After fact-check... | Consider... |
 |---------------------|-------------|
-| High-severity issues found | Manual doc update, then re-run `/fact-check` |
-| Architecture docs outdated | `/fact-find` to create fresh briefing |
+| Many fixes made | User reviews changes, commits |
+| Architecture docs heavily outdated | `/fact-find` to create fresh briefing |
 | Plan doc inaccurate | `/re-plan` to update the plan |
-| Many issues in one doc | Consider rewriting vs. patching |
+| Obsolete sections flagged | User decides to remove or archive |
 
 ## Quality Checks
 
-Before finalizing the audit report:
+Before completing the fact-check:
 
-- [ ] Audit anchor recorded (commit SHA or working-tree with warning)
-- [ ] Claim Ledger completed with all claims identified
-- [ ] Every claim in the document was categorized (or explicitly marked as not a factual claim)
-- [ ] All "Accurate" findings cite evidence (path, line, snippet)
-- [ ] All "Inaccurate" findings quote both the doc AND the contradicting evidence
-- [ ] All "Outdated" findings include git history evidence
-- [ ] Severity ratings are consistent (High = blocks understanding, Medium = confusing, Low = minor)
-- [ ] Unverifiable claims explain WHY they cannot be verified
-- [ ] Recommendations are actionable (not just "fix the doc")
-- [ ] Evidence Log is complete and reproducible
+- [ ] Audit anchor noted (commit SHA or working-tree with warning)
+- [ ] Every verifiable claim was checked
+- [ ] All inaccuracies were fixed in-place
+- [ ] Unverifiable claims were annotated or flagged
+- [ ] Obsolete sections were flagged (not deleted)
+- [ ] Document metadata updated (Last-updated, changelog)
+- [ ] Fixes preserve original document voice/style
+- [ ] No over-editing (minimal changes only)
 
 ## Completion Messages
 
-**Clean audit:**
-> "Fact-check complete. Document `<path>` audited at `<sha>`. X claims checked; all N verifiable claims are accurate. No issues found."
+**Clean audit (no fixes needed):**
+> "Fact-check complete. Document `<path>` audited at `<sha>`. X claims checked; all verifiable claims are accurate. No changes made."
 
-**Issues found:**
-> "Fact-check complete. Document `<path>` audited at `<sha>`. X claims checked. Found N inaccuracies (Y high severity). Audit report saved to `<report-path>`."
+**Fixes applied:**
+> "Fact-check complete. Document `<path>` audited at `<sha>`. X claims checked. Fixed N inaccuracies:
+> - Line 23: Updated path from `config/` to `src/config/`
+> - Line 45: Updated React version from 18 to 19
+> - Line 67: Updated package count from 5 to 7
+>
+> Flagged for review:
+> - Line 89: Obsolete section on legacy auth (marked with note)
+> - Line 112: Unverifiable performance claim (added clarification)
+>
+> Please review the changes and commit when ready."
 
 **Partial audit:**
-> "Fact-check complete. Checked N of M claims in `<path>` (scope: focused / large doc mode). Found N issues. Consider full audit if document is critical."
+> "Fact-check complete (scope: focused). Checked N of M claims in `<path>`. Fixed N issues. Consider full audit if document is critical."
 
-## Output Location
+**Report-only mode:**
+> "Fact-check complete (report-only mode). X claims checked. Found N inaccuracies that need fixing:
+> - Line 23: Path `config/` should be `src/config/`
+> - Line 45: React version 18 should be 19
+>
+> Run `/fact-check <path>` again without `report-only` to apply fixes."
 
-Save audit reports to:
-- If `docs/audits/` exists: `docs/audits/<document-slug>-fact-check-YYYY-MM-DD.md`
-- Otherwise: same directory as audited document, named `<document-name>.fact-check.md`
+## Mode: report-only
 
-Or output directly to conversation if user prefers inline results.
+If the user specifies `report-only` mode, follow the same verification workflow but:
+- Do NOT make any edits
+- List all findings with line numbers and suggested fixes
+- User can then choose to run again in fix mode or make manual edits
+
+This is useful when:
+- User wants to review before any changes
+- Document is sensitive or requires careful review
+- Multiple stakeholders need to approve changes

@@ -12,6 +12,7 @@ jest.mock("child_process", () => ({
 const mockedExecFileSync = execFileSync as unknown as ReturnType<typeof jest.fn>;
 
 describe("docs-lint Business OS validation", () => {
+  const originalCwd = process.cwd();
   let tempDir: string;
   let docsDir: string;
 
@@ -27,6 +28,8 @@ describe("docs-lint Business OS validation", () => {
   });
 
   afterEach(async () => {
+    // Restore original working directory before cleanup
+    process.chdir(originalCwd);
     // Clean up
     await fs.rm(tempDir, { recursive: true, force: true });
   });

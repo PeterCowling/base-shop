@@ -133,3 +133,208 @@ Automate Brikette customer email responses by integrating Gmail API to generate 
 - MVP: Auto-draft only, Pete reviews/sends all drafts
 - Post-MVP: Learn from edits, auto-prioritize, multi-language, booking holds
 - Out of scope: Auto-send, payment processing, full booking automation
+
+---
+
+## Fact-Finding: Email Generation Patterns (from Booking Monitor)
+
+**Source:** Analysis of `apps/brikette-scripts/src/booking-monitor/` scripts (2026-02-01)
+
+### Existing Email Automation Architecture
+
+The Booking Monitor system already implements sophisticated email automation. Key components:
+
+| File | Purpose |
+|------|---------|
+| `_RunBookingMonitor.gs` | Entry point, config, trigger function |
+| `_BookingUtilities.gs` | Parse incoming booking emails, extract structured data |
+| `_BookingImporterEmail.gs` | Generate HTML + plain text welcome emails |
+| `_EmailsHelper.gs` | Formatting utilities, room details, booking source detection |
+| `_EmailsConfig.gs` | Color schemes, branding assets, header/footer/signature templates |
+
+### Key Patterns for Autodraft System
+
+**1. Dual-Format Email Generation**
+System generates both HTML and plain text versions of every email. Gmail API supports both via `textContent` and `htmlContent` fields. The autodraft system should follow this pattern.
+
+**2. Conditional Content Blocks**
+The "Action Required" block appears only for specific booking types:
+```javascript
+if (isNonRefund && !isTenDigits) {
+  // Include Action Required block
+}
+```
+This pattern extends naturally to:
+- Language-specific content
+- Inquiry type-specific sections
+- Urgency-based formatting
+
+**3. Structured Data Tables**
+Welcome emails use HTML tables with alternating row colors:
+```html
+<tr style="background-color:#FFF6A3;">...</tr>  <!-- highlight -->
+<tr style="background-color:#FFF9C4;">...</tr>  <!-- normal -->
+```
+Useful for pricing breakdowns, availability summaries, FAQ responses.
+
+**4. External Service Integration**
+"Digital Assistant" links demonstrate embedding external URLs:
+```javascript
+occupantLinks.forEach((linkObj) => {
+  html += `<a href="${linkObj.url}">${linkObj.label}</a>`;
+});
+```
+Autodraft can similarly include booking links, website deep links, etc.
+
+**5. Cached Lookups**
+Room details use in-memory caching:
+```javascript
+const roomDescCache = {};
+if (roomDescCache[rn]) return roomDescCache[rn];
+// ... compute and cache
+```
+Autodraft should cache: website content, FAQ answers, pricing.
+
+### Business Logic Discovered
+
+**Booking Source Detection:**
+- 10-digit code → Booking.com
+- 6-digit code → Website
+- Other formats → Hostelworld
+
+**Payment Terms Logic:**
+- Booking.com + Refundable: "Payment can be made before or during check-in"
+- Booking.com + Non-refundable: "Pre-paid and non-refundable"
+- Other + Refundable: "Payment is due upon arrival"
+- Other + Non-refundable: "Pre-paid and non-refundable"
+
+**Hostelworld Commission:**
+- Codes starting with `7763-` get 15% deducted (commission)
+- Calculation: `netTotal = total - (total / 1.1 * 0.15)`
+
+**Room Inventory (for availability inquiries):**
+| Room | Type | Beds | View |
+|------|------|------|------|
+| 3-4 | Value dorm | 8 beds | No view |
+| 5-6 | Superior dorm | 6-7 beds | Sea view, terrace |
+| 7 | Double (private) | 1 double | Sea view, terrace |
+| 8 | Garden dorm | 2 beds | Garden view |
+| 9-10 | Premium dorm | 3-6 beds | No view |
+| 11-12 | Superior dorm | 6 beds | Sea view terrace |
+
+### Captured Components
+
+All 5 booking monitor files are now in the repo:
+- `_RunBookingMonitor.gs` - Entry point and trigger
+- `_BookingUtilities.gs` - Email parsing
+- `_BookingImporterEmail.gs` - Email generation
+- `_EmailsHelper.gs` - Formatting utilities
+- `_EmailsConfig.gs` - **Branding and templates** (captured 2026-02-01)
+
+### Still Missing (lower priority)
+
+1. **Gmail send logic** - How emails are actually sent (may be in full `_RunBookingMonitor.gs`)
+2. **Spreadsheet/database integration** - References suggest additional storage
+
+### EmailsConfig Details (for Autodraft Reuse)
+
+The `_EmailsConfig.gs` file provides a complete email branding system:
+
+**Color Schemes (extensible):**
+```javascript
+ColorSchemes: {
+  yellow: { bgColourHeader: "#ffc107", bgColourMain: "#fff3cd", ... }
+  // Can add: blue, green, etc. for different email types
+}
+ActivityColors: { 1: "yellow" }  // Maps activity types to schemes
+```
+
+**AVIF Fallback Pattern:**
+```javascript
+getAvifFallbackImage(avifUrl, pngUrl, altText, styleStr)
+// Returns <picture> with AVIF source + PNG fallback
+```
+
+**Template Generators:**
+- `generateHeader(styles)` - Branded header with hostel name and logo
+- `generateSignature(styles)` - Dual-owner signature block (handwritten signatures)
+- `generateFooter(styles)` - Terms link + social media icons (Instagram, TikTok)
+
+**Brand Assets:**
+- Owner signature images (Cristiana + Peter) in PNG/AVIF
+- Hostel logo icon in PNG/AVIF
+- Social media icons in PNG/AVIF
+- URLs: hostel website, Instagram, TikTok, terms and conditions
+
+### Implications for Autodraft Design
+
+1. **Reuse existing patterns**: Don't reinvent email generation; extend the booking monitor approach
+2. **Consider Google Apps Script**: Current system runs on GAS, not Cloudflare. May be simpler to extend GAS than migrate
+3. **Knowledge base structure**: Room details pattern suggests JSON lookup tables work well
+4. **Mobile-responsive**: Current emails use viewport meta tag and inline styles; maintain this
+
+### Autodraft Recommendations (EmailsConfig Reuse Analysis)
+
+**1. Should new emails use the same branding?**
+- **Yes** - Reuse `EmailsConfig` directly for brand consistency
+- Same header (hostel name + logo), signature (both owners), footer (social links)
+- Guests who received booking confirmation will recognize inquiry responses
+- Maintains professional/personal touch with handwritten signatures
+
+**2. How can autodraft reuse EmailsConfig?**
+- Import `EmailsConfig` object directly (GAS) or extract to shared module (Workers)
+- Call same generators: `generateHeader()`, `generateSignature()`, `generateFooter()`
+- Use `getStyles()` for consistent CSS-in-JS approach
+- Reference same brand assets (images, URLs)
+
+**3. Could color schemes differentiate email types?**
+- **Yes** - Extend `ColorSchemes` with new palettes:
+  ```javascript
+  ColorSchemes: {
+    yellow: { ... },  // Booking confirmations (existing)
+    blue: {           // Inquiry responses (new)
+      bgColourHeader: "#2196F3",
+      bgColourMain: "#E3F2FD",
+      bgColourSignature: "#BBDEFB",
+      bgColourFooter: "#E3F2FD",
+      textColourMain: "#0D47A1"
+    },
+    green: {          // Availability confirmations (new)
+      bgColourHeader: "#4CAF50",
+      bgColourMain: "#E8F5E9",
+      ...
+    }
+  }
+  ActivityColors: {
+    1: "yellow",      // Booking confirmation
+    2: "blue",        // Inquiry response (new)
+    3: "green"        // Availability confirmation (new)
+  }
+  ```
+- Visual differentiation helps guests identify email type at a glance
+- Maintains brand cohesion while providing context
+
+**4. Should AVIF fallback pattern be used in autodraft emails?**
+- **Yes** - Use `getAvifFallbackImage()` for all images
+- Benefits:
+  - Smaller file sizes (AVIF is ~50% smaller than PNG)
+  - Faster email load times
+  - Graceful degradation for older email clients
+- Already tested and working in booking confirmation emails
+
+### Architecture Question
+
+**Should autodraft extend GAS or use Cloudflare Workers?**
+
+| Approach | Pros | Cons |
+|----------|------|------|
+| Extend GAS | Already integrated with Gmail, proven patterns, single codebase, reuse EmailsConfig directly | GAS execution limits, harder to version control, no Claude SDK |
+| Cloudflare Worker | Modern stack, TypeScript, better monitoring, Claude SDK | Separate system, need Gmail OAuth, more infrastructure |
+| Hybrid | GAS for Gmail access + email gen, Worker for LLM calls | Complexity, two systems to maintain |
+
+**Updated Recommendation:**
+With `EmailsConfig` now captured, the **Hybrid approach** becomes more attractive:
+- GAS handles Gmail monitoring, email generation (reusing `EmailsConfig`), and draft creation
+- Cloudflare Worker handles LLM classification and response generation via Claude API
+- GAS calls Worker via `UrlFetchApp.fetch()` for Claude processing
+- This preserves proven email patterns while adding modern LLM capabilities

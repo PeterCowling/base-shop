@@ -7,7 +7,7 @@ description: Implement tasks from an approved plan, one task at a time, with str
 
 Implement tasks from an approved plan, one task at a time, with strict confidence gating and mandatory validation. Update the plan as execution proceeds.
 
-**CI note:** CI≥90 is a motivation/diagnostic, not a requirement. The implementation gate is still **≥80%** confidence for IMPLEMENT tasks.
+**Confidence note:** Confidence ≥90% is a motivation/diagnostic, not a requirement. The implementation gate is still **≥80%** confidence for IMPLEMENT tasks.
 
 ## Operating Mode
 
@@ -29,6 +29,36 @@ Implement tasks from an approved plan, one task at a time, with strict confidenc
 **If any selected IMPLEMENT task is <80% → STOP and run `/re-plan` for that task.**
 
 **If a selected task is 80–89%:** it is eligible to build, but treat the “unknowns” as real—ensure the task has explicit risks/verification steps (or update the plan before proceeding).
+
+## Fast Path (with argument)
+
+**If user provides a slug or card ID** (e.g., `/build-feature commerce-core` or `/build-feature BRIK-ENG-0020`):
+- Skip discovery entirely
+- If slug: read `docs/plans/<slug>-plan.md` directly
+- If card ID: look up plan link from card file
+- **Target: <2 seconds to start building**
+
+## Discovery Path (no argument)
+
+**If user provides no argument**, read the pre-computed index (single file):
+
+```
+docs/business-os/_meta/discovery-index.json
+```
+
+Present the `readyForBuild` array (filtered to those with pending tasks) as a table:
+
+```markdown
+## Ready for Build
+
+| Slug | Title | Pending Tasks | Business |
+|------|-------|---------------|----------|
+| xa-client-readiness | XA Client Readiness | 15 | PIPE |
+
+Enter a slug to start building, or a specific TASK-ID.
+```
+
+Also check the `planned` array for cards with plan links.
 
 ## Inputs
 
@@ -71,12 +101,29 @@ Confirm:
 ### D) File-reading gate
 
 Before changing anything:
-- Read **all** files listed in "Affects"
+- Read **all** files listed in "Affects" (both primary and `[readonly]`)
 - Read any immediately adjacent files needed to understand invariants (callers, types, schemas, tests)
 - Check for test stubs from planning (L-effort tasks should have them; use as starting point for TDD)
 
-**If you discover additional files must be modified and they are not in "Affects", treat as new scope:**
-- STOP and update the plan (or `/re-plan`) before proceeding
+**Scope boundaries:**
+- **Primary files** (no prefix): may be modified as part of this task
+- **`[readonly]` files**: must NOT be modified — these are dependencies for understanding only
+
+**If you need to modify:**
+- A file not in "Affects" → STOP → `/re-plan` (new scope)
+- A `[readonly]` file → STOP → `/re-plan` (scope was wrong, dependency is actually a modification target)
+
+### E) Test Contract Gate
+
+Before implementing, verify the task has a complete test contract:
+- [ ] Enumerated test cases (TC-XX) covering all acceptance criteria
+- [ ] Expected outcomes specified for each TC
+- [ ] Test type and location identified
+- [ ] For M/L tasks: test case specs are detailed enough to write tests
+
+**If test contract is incomplete → treat as confidence drop → STOP → `/re-plan`.**
+
+A task without enumerated test cases cannot be built, regardless of its stated confidence.
 
 ## Build Loop (One Task per Cycle)
 
@@ -121,9 +168,26 @@ Before writing new tests, check for existing tests related to the code you're mo
 **Why this matters:** Extinct tests give false confidence signals. A passing test suite that includes outdated tests does not validate current behavior.
 
 **b) Write or complete tests first**
-- If test stubs exist from planning (L-effort tasks): flesh them out into full tests
-- If no stubs exist: write tests based on the task's acceptance criteria and test plan
+- If test stubs exist from planning (L-effort tasks):
+  1. Convert `test.todo()` / `it.skip()` to active tests with full assertions
+  2. Remove the `.todo` or `.skip` modifier
+  3. Implement the test body based on the TC-XX specification in the stub comment
+- If no stubs exist: write tests based on the task's test contract (TC-XX specifications)
 - Tests should cover the expected behavior before any implementation code is written
+
+**Activating test stubs:**
+```typescript
+// Before (from planning):
+test.todo('should return 409 when entity was modified'); // TC-02
+
+// After (build starts):
+test('should return 409 when entity was modified', async () => {
+  // TC-02: Concurrent modification → 409 Conflict
+  const result = await updateCard(id, { baseEntitySha: 'stale' });
+  expect(result.status).toBe(409);
+  expect(result.body.error).toBe('CONFLICT');
+});
+```
 
 **c) Run tests — verify they fail for the right reasons**
 - Tests should fail because the feature/fix doesn't exist yet
@@ -144,6 +208,30 @@ Before writing new tests, check for existing tests related to the code you're mo
 - Update all docs listed in the task's "Documentation impact" field
 - If the task specifies "None", skip this step
 - If implementation revealed additional docs needing updates not listed in the plan, update them and note the deviation
+
+### 3b) Confidence Reassessment Based on Test Outcomes (Mandatory)
+
+After the TDD cycle completes (tests written → fail → implement → pass), reassess task confidence based on what the tests revealed.
+
+#### Test Outcome → Confidence Impact
+
+| Test Outcome | Confidence Impact | Action |
+|--------------|-------------------|--------|
+| All TCs pass on first implementation | Confidence holds or +5% (max) | Note in plan: "Tests validated assumptions" |
+| TC reveals edge case not in plan | Confidence -5 to -10% | Add TC to plan; note the gap |
+| TC reveals missing dependency/contract | Confidence -10 to -20% | May need to update "Affects"; consider `/re-plan` |
+| TC reveals architectural issue | Confidence drops to <80% | STOP → `/re-plan` |
+| TC was wrong (not implementation) | Confidence holds | Fix TC; note correction |
+| Implementation required >1 red-green cycle | Confidence -5% per additional cycle | Document iteration in plan |
+
+#### Hard Stop on Confidence Drop
+
+**If post-test confidence drops below 80%:**
+- STOP immediately — do not commit
+- Document what tests revealed
+- Run `/re-plan` for this task and any dependent tasks
+
+This creates a feedback loop: test outcomes directly inform confidence, which gates further work.
 
 ### 4) Final validation (mandatory)
 
@@ -230,13 +318,18 @@ Add under the task:
 - **Status:** Complete
 - **Commits:** <hash1>, <hash2>
 - **TDD cycle:**
-  - Tests written/completed: <file paths>
+  - Test cases executed: TC-01, TC-02, TC-03
+  - Red-green cycles: <N> (1 = ideal; >1 = iteration needed)
   - Initial test run: FAIL (expected — feature not implemented)
   - Post-implementation: PASS
+- **Confidence reassessment:**
+  - Original: XX%
+  - Post-test: YY%
+  - Delta reason: <tests validated | edge case found | dependency discovered>
 - **Validation:**
   - Ran: `pnpm typecheck` — PASS
   - Ran: `pnpm lint` — PASS
-  - Ran: `pnpm test <relevant-suite>` — PASS
+  - Ran: `pnpm test <relevant-suite>` — PASS (N tests, N passed)
 - **Documentation updated:** <list of docs updated, or "None required">
 - **Implementation notes:** <what changed, any deviations from plan>
 ```
@@ -266,6 +359,19 @@ Move to the next eligible IMPLEMENT task and repeat the cycle.
 - Do not expand scope beyond the plan.
 - Update the plan after every completed task.
 
+## Feedback to Future Planning
+
+When confidence changes based on test outcomes, capture the learning for future work:
+
+| Finding Type | Feedback Action |
+|--------------|-----------------|
+| Edge case was missed | Note category of edge case for future fact-finds |
+| Dependency was missed | Note discovery pattern for future impact analysis |
+| Architecture issue found | Flag for architectural review; update conventions docs |
+| Test revealed undocumented behavior | Update system docs or briefings |
+
+This feedback loop improves future `/fact-find` and `/plan-feature` accuracy. When completing a task, explicitly note any learnings that should inform future planning.
+
 **Escalation to user:** Only ask the user when:
 - Business rules/UX intent cannot be inferred from repo or docs
 - Two approaches are truly equivalent and require preference
@@ -280,7 +386,7 @@ When you do ask:
 
 A build cycle is considered complete only if:
 
-- [ ] Pre-build checks (A–D) all passed before editing code.
+- [ ] Pre-build checks (A–E) all passed before editing code.
 - [ ] Existing related tests were audited for extinction (updated or removed if outdated).
 - [ ] Tests were written/completed BEFORE implementation code (TDD).
 - [ ] Tests initially failed for the expected reasons (feature not yet implemented).
@@ -292,6 +398,14 @@ A build cycle is considered complete only if:
 - [ ] Plan doc updated with Status, Commits, Validation evidence.
 - [ ] Confidence was re-assessed; if <80%, stopped and triggered `/re-plan`.
 - [ ] No failing code was committed.
+
+### TDD Quality Checks
+
+- [ ] Confidence was reassessed after TDD cycle completed.
+- [ ] Post-test confidence is documented in plan.
+- [ ] If confidence dropped below 80%, stopped and triggered `/re-plan`.
+- [ ] Test cycles documented (ideal: 1 red-green cycle).
+- [ ] All enumerated test cases (TC-XX) from plan were executed.
 
 ## Completion Messages
 
@@ -312,19 +426,38 @@ When the plan frontmatter includes `Card-ID`, `/build-feature` integrates with B
 
 ### When Card-ID is Present
 
-#### Step 1: Check for Build Stage Doc (First Task Only)
+#### Step 1: Start Build Transition (First Task Only)
 
-Before starting the first task, check if a build stage doc exists:
+Before starting the first task, perform the build start transition:
+
+**1a) Read card to get current lane:**
 
 ```bash
 CARD_ID="PLAT-ENG-0023"  # From plan frontmatter
+CARD_FILE="docs/business-os/cards/${CARD_ID}.user.md"
+```
 
+**1b) Create build stage doc if it doesn't exist:**
+
+```bash
 if [ ! -f "docs/business-os/cards/${CARD_ID}/build.user.md" ]; then
   # Create build stage doc (first task starting)
   mkdir -p "docs/business-os/cards/${CARD_ID}"
-  # Create build.user.md using template from stage-doc-operations.md
+  # Create build.user.md using template below
 fi
 ```
+
+**1c) Propose lane transition: Planned → In progress:**
+
+If the card's current `Lane:` is `Planned`:
+- Update card frontmatter in both `.user.md` and `.agent.md`:
+  ```yaml
+  Lane: In progress        # Changed from Planned
+  Last-Progress: YYYY-MM-DD
+  ```
+- This is a direct update, not a proposal, because starting build is the defined trigger for this transition
+
+**Why direct update (not proposal):** The Planned → In progress transition is mechanical — it happens when implementation begins. There's no judgment call; starting the first IMPLEMENT task *is* the transition event. The Done transition remains a proposal because it requires verification that all work is complete.
 
 **Build Stage Doc Template:**
 
@@ -444,9 +577,15 @@ This signals to the card owner (Pete in Phase 0) that the card is ready for revi
 - Tests are failing
 - DECISION tasks remain unresolved
 
-### Modified Build Loop (Steps 6-7)
+### Modified Build Loop (with Card-ID)
 
 When `Card-ID` is present, extend the standard build loop:
+
+**Before Step 1 (Select task) — First task only:**
+- Check card's current lane
+- If `Lane: Planned`: Update to `Lane: In progress` and set `Last-Progress: YYYY-MM-DD`
+- Create build stage doc if it doesn't exist
+- Commit these BOS artifacts: `git commit -m "docs(business-os): start build for {CARD-ID}"`
 
 **After Step 6 (Commit):**
 - Update card's `Last-Progress` frontmatter field with today's date
@@ -454,7 +593,6 @@ When `Card-ID` is present, extend the standard build loop:
 **After Step 7 (Update the plan):**
 - Append entry to build stage doc's Build Log
 - Update Progress Tracker table
-- If this was the first task, the build stage doc was created in Step 1
 
 ### Completion Messages (with Card-ID)
 

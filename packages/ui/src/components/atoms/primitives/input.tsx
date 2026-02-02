@@ -1,3 +1,4 @@
 "use client";
 
-export * from "@acme/design-system/primitives/input";
+export type { InputProps } from "@acme/design-system/primitives/input";
+export { Input } from "@acme/design-system/primitives/input";

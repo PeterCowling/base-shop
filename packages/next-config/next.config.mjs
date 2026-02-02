@@ -22,8 +22,22 @@ export default withShopCode(coreEnv.SHOP_CODE, {
     // Existing aliases…
     config.resolve ??= {};
     config.resolve.alias ??= {};
-    // Ensure .js files are resolved before .d.ts for ESM packages
-    config.resolve.extensions = ['.js', '.mjs', '.jsx', '.ts', '.tsx', '.json', ...(config.resolve.extensions || [])];
+    // Prefer TypeScript sources for extensionless imports in workspace packages.
+    // (Fully-specified ESM imports like "./file.js" are handled via `extensionAlias` below.)
+    config.resolve.extensions = [
+      ".ts",
+      ".tsx",
+      ".js",
+      ".jsx",
+      ".mjs",
+      ".json",
+      ...(config.resolve.extensions || []),
+    ];
+    // Allow TS sources to use Node ESM-style ".js" specifiers (tsc emits ".js"
+    // but Next may transpile from source in workspace packages).
+    config.resolve.extensionAlias ??= {};
+    config.resolve.extensionAlias[".js"] ??= [".ts", ".tsx", ".js", ".jsx"];
+    config.resolve.extensionAlias[".mjs"] ??= [".mts", ".mjs"];
     config.resolve.alias = {
       ...config.resolve.alias,
       "@": path.resolve(__dirname, "../template-app/src"),

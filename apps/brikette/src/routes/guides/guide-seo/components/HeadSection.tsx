@@ -59,6 +59,13 @@ export default function HeadSection({
   // hydration issues. Render-time side effects violate React expectations.
   // These mutations are primarily for test environments where route-level meta() isn't applied.
   useEffect(() => {
+    // In App Router, Next.js metadata is responsible for head tags. We only
+    // apply these DOM fallbacks in tests (where route-level meta()/links() and
+    // Next metadata aren't evaluated in the same way).
+    if (process.env.NODE_ENV !== "test") {
+      return;
+    }
+
     // Only run on client (SSR safe)
     if (
       typeof document === "undefined" ||

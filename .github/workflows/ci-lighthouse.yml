@@ -65,8 +65,7 @@ jobs:
 
       - name: Build apps for LHCI
         run: |
-          pnpm --filter @apps/cover-me-pretty build
-          pnpm --filter @apps/skylar build
+          pnpm --filter @apps/cover-me-pretty... --filter @apps/skylar... build
 
       - name: Setup Chrome for LHCI
         id: chrome

@@ -62,6 +62,9 @@ export const CardFrontmatterSchema = z.object({
   "Completed-Date": z.string().optional(),
   Blocked: z.boolean().optional(),
   "Blocked-Reason": z.string().optional(),
+  "Feature-Slug": z.string().optional(),
+  "Last-Progress": z.string().optional(),
+  "Plan-Link": z.string().optional(),
 });
 
 export type CardFrontmatter = z.infer<typeof CardFrontmatterSchema>;

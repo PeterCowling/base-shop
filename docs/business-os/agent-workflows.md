@@ -16,6 +16,28 @@ This guide covers agent operations for the **Business OS** coordination system. 
 3. Read `docs/business-os/business-os-charter.md` (Business OS fundamentals)
 4. Understand card lifecycle: Inbox → Fact-finding → Planned → In progress → Done → Reflected
 
+## Agent API (Phase 1)
+
+Agent writes must go through the Business OS agent API. Markdown writes are **not** allowed once an endpoint exists.
+
+**Auth header:** `X-Agent-API-Key: <value>` (env: `BOS_AGENT_API_KEY`)
+
+**Base URL:** `BOS_AGENT_API_BASE_URL` (local: `http://localhost:3000`, prod: `https://business-os.acme.dev`)
+
+**Endpoints:**
+- Cards: `GET /api/agent/cards`, `POST /api/agent/cards`, `GET /api/agent/cards/:id`, `PATCH /api/agent/cards/:id`
+- Ideas: `GET /api/agent/ideas`, `POST /api/agent/ideas`, `GET /api/agent/ideas/:id`, `PATCH /api/agent/ideas/:id`
+- Stage docs: `GET /api/agent/stage-docs`, `POST /api/agent/stage-docs`, `GET /api/agent/stage-docs/:cardId/:stage`, `PATCH /api/agent/stage-docs/:cardId/:stage`
+- ID allocation: `POST /api/agent/allocate-id`
+
+**PATCH contract:** JSON Merge Patch (RFC 7396) with optimistic concurrency. Use `GET` to obtain `entitySha`, then send:
+```json
+{
+  "baseEntitySha": "<sha from GET>",
+  "patch": { "Lane": "In progress", "Last-Progress": "2026-02-02" }
+}
+```
+
 ## Available Skills
 
 Business OS provides 5 specialized agent skills for coordination work. Read only the skill you need for the current task:

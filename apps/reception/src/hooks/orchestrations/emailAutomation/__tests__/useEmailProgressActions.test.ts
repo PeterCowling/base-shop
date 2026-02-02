@@ -12,12 +12,15 @@ let bookings: FirebaseBookings;
 const addActivityMock = jest.fn();
 
 jest.mock("../../../mutations/useActivitiesMutations", () => ({
+  __esModule: true,
   default: () => ({ addActivity: addActivityMock }),
 }));
 jest.mock("../../../data/useActivitiesData", () => ({
+  __esModule: true,
   default: () => ({ activities }),
 }));
 jest.mock("../../../data/useBookingsData", () => ({
+  __esModule: true,
   default: () => ({ bookings }),
 }));
 

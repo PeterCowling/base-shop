@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@acme/design-system": "workspace:*",
+    "@acme/mcp-server": "workspace:*",
     "@acme/ui": "workspace:*",
     "@daminort/reservation-grid": "^3.0.0",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",

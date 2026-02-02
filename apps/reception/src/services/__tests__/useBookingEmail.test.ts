@@ -17,9 +17,14 @@ function textResponse(text: string) {
   return { text: async () => text } as Response;
 }
 
+function jsonOkResponse<T>(data: T) {
+  return { ok: true, json: async () => data } as Response;
+}
+
 describe("useBookingEmail", () => {
   beforeEach(() => {
     jest.restoreAllMocks();
+    delete process.env.NEXT_PUBLIC_MCP_BOOKING_EMAIL_ENABLED;
   });
 
   afterEach(() => {
@@ -65,6 +70,50 @@ describe("useBookingEmail", () => {
     );
   });
 
+  it("sendBookingEmail uses MCP route when enabled", async () => {
+    process.env.NEXT_PUBLIC_MCP_BOOKING_EMAIL_ENABLED = "true";
+
+    const fetchMock = jest.fn();
+    (global as unknown as { fetch: typeof fetch }).fetch =
+      fetchMock as unknown as typeof fetch;
+
+    fetchMock.mockResolvedValueOnce(jsonResponse({ guestA: {}, guestB: {} }));
+    fetchMock.mockResolvedValueOnce(
+      jsonResponse({
+        guestA: { email: "a@example.com" },
+        guestB: { email: "b@example.com" },
+      })
+    );
+    fetchMock.mockResolvedValueOnce(jsonOkResponse({ success: true, messageId: "sent" }));
+
+    const { result } = renderHook(() => useBookingEmail());
+
+    await act(async () => {
+      await result.current.sendBookingEmail("BOOK123", {
+        guestA: "override@example.com",
+      });
+    });
+
+    const recipients = ["override@example.com", "b@example.com"];
+    const occupantLinks = ["guestA", "guestB"].map(
+      (id) => `${OCCUPANT_LINK_PREFIX}${id}`
+    );
+
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      3,
+      "/api/mcp/booking-email",
+      expect.objectContaining({
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          bookingRef: "BOOK123",
+          recipients,
+          occupantLinks,
+        }),
+      })
+    );
+  });
+
   it("fetchGuestEmails returns id to email map", async () => {
     const fetchMock = jest.fn();
     (global as unknown as { fetch: typeof fetch }).fetch =
@@ -104,7 +153,7 @@ describe("useBookingEmail", () => {
 
     fetchMock.mockResolvedValueOnce(jsonResponse("not-object"));
 
-    const errorSpy = vi
+    const errorSpy = jest
       .spyOn(console, "error")
       .mockImplementation(() => undefined);
 

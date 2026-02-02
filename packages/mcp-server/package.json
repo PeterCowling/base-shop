@@ -13,6 +13,11 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "default": "./dist/index.js"
+    },
+    "./booking-email": {
+      "types": "./dist/booking-email.d.ts",
+      "import": "./dist/booking-email.js",
+      "default": "./dist/booking-email.js"
     }
   },
   "files": [

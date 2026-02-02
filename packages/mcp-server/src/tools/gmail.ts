@@ -12,6 +12,7 @@ import type { gmail_v1 } from "googleapis";
 import { z } from "zod";
 
 import { getGmailClient } from "../clients/gmail.js";
+import { createRawEmail } from "../utils/email-mime.js";
 import {
   errorResult,
   formatError,
@@ -337,10 +338,13 @@ async function ensureLabelMap(
 ): Promise<Map<string, string>> {
   const response = await gmail.users.labels.list({ userId: "me" });
   const labels = response.data.labels || [];
-  const labelMap = new Map(
+  const labelMap = new Map<string, string>(
     labels
       .filter((label): label is gmail_v1.Schema$Label => !!label)
-      .map(label => [label.name || "", label.id || ""])
+      .map((label): [string, string] => [
+        label.name ?? "",
+        label.id ?? "",
+      ])
       .filter(([name, id]) => name.length > 0 && id.length > 0)
   );
 
@@ -377,7 +381,7 @@ function collectLabelIds(
 
 function isProcessingLockStale(
   lockTimestamp: number | undefined,
-  internalDate: string | undefined
+  internalDate: string | null | undefined
 ): boolean {
   if (lockTimestamp) {
     return Date.now() - lockTimestamp > PROCESSING_TIMEOUT_MS;
@@ -389,66 +393,6 @@ function isProcessingLockStale(
     }
   }
   return false;
-}
-
-/**
- * Create RFC 2822 formatted email for draft
- */
-function createRawEmail(
-  to: string,
-  subject: string,
-  bodyPlain: string,
-  bodyHtml?: string,
-  inReplyTo?: string,
-  references?: string
-): string {
-  const boundary = `boundary_${Date.now()}_${Math.random().toString(36).substring(2)}`;
-
-  const headers = [
-    `To: ${to}`,
-    `Subject: ${subject}`,
-    `MIME-Version: 1.0`,
-  ];
-
-  if (inReplyTo) {
-    headers.push(`In-Reply-To: ${inReplyTo}`);
-  }
-  if (references) {
-    headers.push(`References: ${references}`);
-  }
-
-  let body: string;
-
-  if (bodyHtml) {
-    // Multipart message with both plain and HTML
-    headers.push(`Content-Type: multipart/alternative; boundary="${boundary}"`);
-    body = [
-      `--${boundary}`,
-      `Content-Type: text/plain; charset="UTF-8"`,
-      ``,
-      bodyPlain,
-      ``,
-      `--${boundary}`,
-      `Content-Type: text/html; charset="UTF-8"`,
-      ``,
-      bodyHtml,
-      ``,
-      `--${boundary}--`,
-    ].join("\r\n");
-  } else {
-    // Plain text only
-    headers.push(`Content-Type: text/plain; charset="UTF-8"`);
-    body = bodyPlain;
-  }
-
-  const message = headers.join("\r\n") + "\r\n\r\n" + body;
-
-  // Encode to URL-safe base64
-  return Buffer.from(message)
-    .toString("base64")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/, "");
 }
 
 // =============================================================================

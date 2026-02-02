@@ -25,7 +25,7 @@ Plan-Link: docs/plans/email-autodraft-consolidation-plan.md
 | TASK-05 | Voice/tone examples resource | Complete | 2026-02-02 |
 | TASK-06 | Port GAS email formatting | Complete | 2026-02-02 |
 | TASK-08 | Label state machine | Complete | 2026-02-02 |
-| TASK-09 | Agreement detection | Pending | - |
+| TASK-09 | Agreement detection | Complete | 2026-02-02 |
 | TASK-10 | Prepayment chase integration | Pending | - |
 | TASK-11 | Hybrid template ranker | Pending | - |
 | TASK-12 | Classification examples resource | Pending | - |
@@ -90,6 +90,14 @@ Plan-Link: docs/plans/email-autodraft-consolidation-plan.md
 - **Commits:** 6d3ebce438
 - **Validation:** `pnpm exec jest --runTestsByPath packages/mcp-server/src/__tests__/gmail-label-state.test.ts --config ./jest.config.cjs` (pass), `pnpm lint` (pass), `pnpm typecheck` (pass)
 - **Notes:** Added workflow label transitions and processing lock behavior.
+
+
+
+### 2026-02-02 - TASK-09
+- **Action:** Implemented agreement detection in draft_interpret with evidence spans and confidence scoring.
+- **Commits:** 74d77371b6
+- **Validation:** `pnpm exec jest --runTestsByPath packages/mcp-server/src/__tests__/draft-interpret.test.ts --config ./jest.config.cjs` (pass), `pnpm --filter mcp-server lint` (pass), `pnpm --filter mcp-server build` (pass)
+- **Notes:** Added explicit/negated/ambiguous handling with human confirmation for unclear cases.
 
 ## Blockers
 

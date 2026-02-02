@@ -2,16 +2,24 @@
  * useBoardAutoRefresh Hook
  * BOS-D1-07: Auto-refresh board when cards/ideas change
  *
- * Polls /api/board-version every 30s and triggers router.refresh()
- * when version changes.
+ * Polls /api/board-changes every 30s and triggers router.refresh()
+ * when changes are detected. Stores cursor in localStorage per business.
  */
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
-interface BoardVersionResponse {
-  version: string;
-  business: string;
+interface BoardChangesResponse {
+  cursor: number;
+  changes: {
+    cards: unknown[];
+    ideas: unknown[];
+    stage_docs: unknown[];
+  };
+}
+
+interface StaleCursorResponse {
+  cursor?: number;
 }
 
 interface UseBoardAutoRefreshOptions {
@@ -20,16 +28,40 @@ interface UseBoardAutoRefreshOptions {
   pollingInterval?: number;
 }
 
+const CURSOR_STORAGE_PREFIX = "bos-board-changes-cursor:";
+
+function parseStoredCursor(raw: string | null): number {
+  if (!raw) return 0;
+  const parsed = Number.parseInt(raw, 10);
+  if (Number.isNaN(parsed) || parsed < 0) return 0;
+  return parsed;
+}
+
+function hasChanges(payload: BoardChangesResponse): boolean {
+  return (
+    payload.changes.cards.length > 0 ||
+    payload.changes.ideas.length > 0 ||
+    payload.changes.stage_docs.length > 0
+  );
+}
+
 export function useBoardAutoRefresh({
   businessCode,
   enabled = true,
   pollingInterval = 30000, // 30 seconds default
 }: UseBoardAutoRefreshOptions) {
   const router = useRouter();
-  const [lastVersion, setLastVersion] = useState<string | null>(null);
+  const [cursor, setCursor] = useState<number | null>(null);
+  const [isReady, setIsReady] = useState(false);
+  const cursorRef = useRef<number | null>(null);
   const [isPolling, setIsPolling] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const isMounted = useRef(true);
+
+  const storageKey = useMemo(
+    () => `${CURSOR_STORAGE_PREFIX}${businessCode}`,
+    [businessCode]
+  );
 
   useEffect(() => {
     isMounted.current = true;
@@ -43,44 +75,84 @@ export function useBoardAutoRefresh({
       return;
     }
 
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    setIsReady(false);
+    const storedCursor = window.localStorage.getItem(storageKey);
+    setCursor(parseStoredCursor(storedCursor));
+    setIsReady(true);
+  }, [enabled, storageKey]);
+
+  useEffect(() => {
+    cursorRef.current = cursor;
+  }, [cursor]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    if (cursor === null) {
+      return;
+    }
+
+    window.localStorage.setItem(storageKey, String(cursor));
+  }, [cursor, storageKey]);
+
+  useEffect(() => {
+    if (!enabled || !isReady) {
+      return;
+    }
+
     let intervalId: NodeJS.Timeout | null = null;
 
-    const checkVersion = async () => {
+    const checkChanges = async () => {
       if (!isMounted.current) return;
 
       try {
         setIsPolling(true);
-        const response = await fetch(
-          `/api/board-version?business=${encodeURIComponent(businessCode)}`
-        );
-
-        if (!response.ok) {
-          // i18n-exempt -- BOS-D1-07 internal error message [ttl=2026-03-31]
-          throw new Error("Failed to fetch board version");
+        const currentCursor = cursorRef.current ?? 0;
+        const query = new URLSearchParams({
+          cursor: String(currentCursor),
+        });
+        if (businessCode !== "global") {
+          query.set("business", businessCode);
         }
 
-        const data = (await response.json()) as BoardVersionResponse;
+        const response = await fetch(`/api/board-changes?${query.toString()}`);
 
-        if (!isMounted.current) return;
-
-        // On first check, just store the version
-        if (lastVersion === null) {
-          setLastVersion(data.version);
+        if (response.status === 410) {
+          const data = (await response.json()) as StaleCursorResponse;
+          if (!isMounted.current) return;
+          const nextCursor =
+            typeof data.cursor === "number" ? data.cursor : 0;
+          setCursor(nextCursor);
+          router.refresh();
           setError(null);
           return;
         }
 
-        // If version changed, refresh the board
-        if (data.version !== lastVersion) {
-          setLastVersion(data.version);
+        if (!response.ok) {
+          // i18n-exempt -- BOS-D1-07 internal error message [ttl=2026-03-31]
+          throw new Error("Failed to fetch board changes");
+        }
+
+        const data = (await response.json()) as BoardChangesResponse;
+
+        if (!isMounted.current) return;
+
+        setCursor(data.cursor);
+
+        if (hasChanges(data)) {
           router.refresh();
         }
 
         setError(null);
       } catch (err) {
         if (isMounted.current) {
-          // i18n-exempt -- BOS-D1-07 internal error message [ttl=2026-03-31]
-          setError(err instanceof Error ? err.message : "Unknown error");
+          setError(err instanceof Error ? err.message : String(err));
         }
       } finally {
         if (isMounted.current) {
@@ -90,11 +162,11 @@ export function useBoardAutoRefresh({
     };
 
     // Initial check
-    void checkVersion();
+    void checkChanges();
 
     // Set up polling interval
     intervalId = setInterval(() => {
-      void checkVersion();
+      void checkChanges();
     }, pollingInterval);
 
     return () => {
@@ -102,11 +174,12 @@ export function useBoardAutoRefresh({
         clearInterval(intervalId);
       }
     };
-  }, [businessCode, enabled, pollingInterval, lastVersion, router]);
+  }, [businessCode, enabled, isReady, pollingInterval, router]);
 
   return {
     isPolling,
     error,
-    lastVersion,
+    cursor,
+    isReady,
   };
 }

@@ -11,12 +11,22 @@ import {
   handleBriketteResourceRead,
 } from "./resources/brikette-knowledge.js";
 import { draftGuideResourceDefinition, handleDraftGuideRead } from "./resources/draft-guide.js";
+import {
+  emailExamplesResourceDefinition,
+  handleEmailExamplesRead,
+} from "./resources/email-examples.js";
 import { handleResourceRead, resourceDefinitions } from "./resources/schema.js";
 import { handleVoiceExamplesRead, voiceExamplesResourceDefinition } from "./resources/voice-examples.js";
 import { handleToolCall, toolDefinitions } from "./tools/index.js";
 
 // Combine all resource definitions
-const allResourceDefinitions = [...resourceDefinitions, ...briketteResourceDefinitions, draftGuideResourceDefinition, voiceExamplesResourceDefinition];
+const allResourceDefinitions = [
+  ...resourceDefinitions,
+  ...briketteResourceDefinitions,
+  draftGuideResourceDefinition,
+  voiceExamplesResourceDefinition,
+  emailExamplesResourceDefinition,
+];
 
 export const server = new Server(
   {
@@ -54,6 +64,10 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
 
   if (uri === voiceExamplesResourceDefinition.uri) {
     return handleVoiceExamplesRead();
+  }
+
+  if (uri === emailExamplesResourceDefinition.uri) {
+    return handleEmailExamplesRead();
   }
 
   if (uri.startsWith("brikette://")) {

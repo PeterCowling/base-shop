@@ -247,7 +247,7 @@ The following skill changes impact this plan:
 | TASK-10 | IMPLEMENT | Migrate `/build-feature` skill to API writes | 82% | M | Complete (2026-02-02) | TASK-08, TASK-02b |
 | TASK-11 | IMPLEMENT | Migrate remaining skills (`/fact-find`, etc.) | 82% | M | Complete (2026-02-02) | TASK-08 |
 | TASK-12 | IMPLEMENT | Update Business OS charter for D1-canonical reality | 90% | S | Complete (2026-02-02) | TASK-09 |
-| TASK-13 | IMPLEMENT | Remove deprecated `repo-writer.ts` and scan-based allocation | 85% | S | Pending | TASK-11, TASK-06 |
+| TASK-13 | IMPLEMENT | Remove deprecated `repo-writer.ts` and scan-based allocation | 80% | S | Complete (2026-02-02) | TASK-11, TASK-06 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -1496,6 +1496,27 @@ The following skill changes impact this plan:
   - Approach: 85% → 80% (agent queue path still git-based)
   - Impact: 80% → 75% (touches queue writer + docs)
 - **What would make this ≥90%:** run targeted unit tests for updated modules after refactor
+
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** 202cec8c0a
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03, TC-04, TC-05, TC-06
+  - Red-green cycles: 1
+  - Initial test run: N/A (removal)
+  - Post-implementation: N/A
+- **Confidence reassessment:**
+  - Original: 80%
+  - Post-test: 80%
+  - Delta reason: Repo-writer removed with references cleaned
+- **Validation:**
+  - `ls apps/business-os/src/lib/repo-writer.ts` (expected missing)
+  - `rg repo-writer apps/` (no matches)
+  - `rg MAX_ID= .claude/skills/_shared/card-operations.md` (no matches)
+- **Documentation updated:**
+  - `.claude/skills/_shared/card-operations.md`
+  - `apps/business-os/src/lib/repo/README.md`
+- **Implementation notes:** Deleted repo-writer + tests, removed repo references, and inlined WriteResult in AgentQueueWriter.
 
 - **Type:** IMPLEMENT
 - **Affects:**

@@ -57,9 +57,9 @@ function parseFileList(output: string | null) {
 function listFiles() {
   const utilAlternation = UTILITIES.join("|");
   const paletteAlternation = PALETTE.join("|");
-  const paletteRegex = `(?:${utilAlternation})-(?:${paletteAlternation})(?:-[0-9]{1,3})?(?:\\/[0-9]{1,3})?`;
-  const hexRegex = `(?:${utilAlternation})-\\[#(?:[0-9a-fA-F]{3,8})\\]`;
-  const funcRegex = `(?:${utilAlternation})-\\[[^\\]]*(?:rgb|rgba|hsl|hsla)\\([^\\)]*\\)[^\\]]*\\]`;
+  const paletteRegex = `(${utilAlternation})-(${paletteAlternation})(-[0-9]{1,3})?(\\/[0-9]{1,3})?`;
+  const hexRegex = `(${utilAlternation})-\\[#([0-9a-fA-F]{3,8})\\]`;
+  const funcRegex = `(${utilAlternation})-\\[[^\\]]*(rgb|rgba|hsl|hsla)\\([^\\)]*\\)[^\\]]*\\]`;
   const pattern = `${paletteRegex}|${hexRegex}|${funcRegex}`;
 
   const rg = run("rg", [

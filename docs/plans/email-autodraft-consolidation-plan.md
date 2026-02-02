@@ -139,7 +139,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 | TASK-14 | IMPLEMENT | Update process-emails skill | 82% | M | Pending | TASK-01, TASK-03, TASK-13 |
 | TASK-15 | IMPLEMENT | Template governance & linting | 85% | S | Pending | TASK-04 |
 | TASK-16 | INVESTIGATE | Security & logging review | 90% | S | Pending | TASK-01, TASK-13 |
-| TASK-17 | IMPLEMENT | Reception email routing | 80% ✅ | M | Pending | TASK-06, TASK-08 |
+| TASK-17 | IMPLEMENT | Reception email routing | 80% ✅ | L | Pending | TASK-06, TASK-08 |
 | TASK-18 | INVESTIGATE | Integration testing | 82% ✅ | L | Pending | TASK-13, TASK-14 |
 | TASK-19 | INVESTIGATE | Pilot measurement | 85% | M | Pending | TASK-18 |
 
@@ -992,7 +992,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 ### TASK-17: Reception Email Routing
 
 - **Type:** IMPLEMENT
-- **Affects:** `apps/reception/src/services/useBookingEmail.ts`, `apps/reception/src/hooks/orchestrations/emailAutomation/useEmailProgressActions.ts`, `apps/reception/src/services/__tests__/useBookingEmail.test.ts`, `apps/reception/src/hooks/orchestrations/emailAutomation/__tests__/useEmailProgressActions.test.ts`
+- **Affects:** `apps/reception/src/services/useBookingEmail.ts`, `apps/reception/src/app/api/mcp/booking-email/route.ts` (new), `apps/reception/package.json`, `packages/mcp-server/src/tools/booking-email.ts` (new), `packages/mcp-server/src/tools/index.ts`, `apps/reception/src/services/__tests__/useBookingEmail.test.ts`, `apps/reception/src/hooks/orchestrations/emailAutomation/__tests__/useEmailProgressActions.test.ts`, `packages/mcp-server/src/__tests__/booking-email.test.ts` (new)
 - **Depends on:** TASK-06, TASK-08
 - **Confidence:** 80% ✅ RAISED FROM 65%
   - Implementation: 82% — Reception email flow now fully documented; single GAS integration point
@@ -1005,6 +1005,8 @@ Consolidate the disparate email autodraft system components into a world-class d
     - Shared agreement detection (TASK-09)
   - Replace direct GAS calls with MCP tool calls where appropriate
   - Maintain backward compatibility with existing reception workflows
+  - Add reception API route that invokes MCP booking email tool server-side
+  - Add MCP tool `mcp_send_booking_email` that wraps existing GAS functionality
 - **Test plan:**
   - Add: Integration tests for reception → MCP routing
   - Validate: Existing reception email workflows still work
@@ -1015,12 +1017,12 @@ Consolidate the disparate email autodraft system components into a world-class d
   - TC-03: Activity code logging remains unchanged after routing change.
   - TC-04: Drafts use shared email template engine output.
   - Acceptance coverage: TC-01 covers routing change, TC-02 covers rollback behavior, TC-03 covers activity logging integrity, TC-04 covers template usage.
-  - Test type: integration (hook-level) + unit (service)
-  - Test location: `apps/reception/src/services/__tests__/useBookingEmail.test.ts`, `apps/reception/src/hooks/orchestrations/emailAutomation/__tests__/useEmailProgressActions.test.ts`
-  - Run: `pnpm --filter reception test -- --testPathPattern=useBookingEmail` and `pnpm --filter reception test -- --testPathPattern=useEmailProgressActions`
+  - Test type: integration (hook-level + API route) + unit (service + MCP tool)
+  - Test location: `apps/reception/src/services/__tests__/useBookingEmail.test.ts`, `apps/reception/src/hooks/orchestrations/emailAutomation/__tests__/useEmailProgressActions.test.ts`, `packages/mcp-server/src/__tests__/booking-email.test.ts`
+  - Run: `pnpm --filter reception test -- --testPathPattern=useBookingEmail`, `pnpm --filter reception test -- --testPathPattern=useEmailProgressActions`, `pnpm --filter mcp-server test -- packages/mcp-server/src/__tests__/booking-email.test.ts`
 - **Planning validation:**
   - Tests run: Reviewed existing reception tests (72 email-related files found)
-  - Test stubs written: N/A (M-effort)
+  - Test stubs written: N/A (L-effort)
   - Unexpected findings: Reception email flow is well-isolated
 - **What would make this ≥90%:**
   - End-to-end test with Firebase + MCP integration
@@ -1037,16 +1039,18 @@ Consolidate the disparate email autodraft system components into a world-class d
 #### Re-plan Update (2026-02-02)
 - **Previous confidence:** 80%
 - **Updated confidence:** 80%
-  - Implementation: 82% — No change; test scope clarified.
-  - Approach: 80% — No change.
-  - Impact: 78% — No change.
+  - Implementation: 82% — Added MCP tool + API route scope; confidence unchanged but effort raised.
+  - Approach: 80% — Reception API route will call MCP tool server-side.
+  - Impact: 78% — Added server-side dependency on MCP tool.
 - **Investigation performed:**
   - Tests: `apps/reception/src/services/__tests__/useBookingEmail.test.ts`, `apps/reception/src/hooks/orchestrations/emailAutomation/__tests__/useEmailProgressActions.test.ts`
 - **Decision / resolution:**
-  - Added explicit test locations/run commands and included test files in Affects for TDD compliance.
+  - Implement new reception API route that invokes MCP tool directly; add MCP tool to wrap GAS email send for reuse.
 - **Changes to task:**
-  - Affects: added existing test files for hook/service coverage
-  - Test contract: added acceptance coverage, test type, locations, and run commands
+  - Effort: M → L (new API route + MCP tool + cross-package dependency)
+  - Affects: added API route, MCP tool, tool index, package.json, and MCP test
+  - Acceptance: added API route + MCP tool requirements
+  - Test contract: expanded to include MCP tool coverage and run commands
 
 **Re-plan Update (2026-02-02):**
 - **Evidence found:** Reception email system is well-documented and isolated:

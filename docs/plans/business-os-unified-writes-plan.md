@@ -232,7 +232,7 @@ The following skill changes impact this plan:
 |---|---|---|---:|---:|---|---|
 | TASK-00 | IMPLEMENT | One-time markdown → D1 backfill migration | 85% | M | Complete (2026-02-02) | - |
 | TASK-01 | IMPLEMENT | Create agent authentication middleware | 88% | S | Complete (2026-02-02) | - |
-| TASK-02 | IMPLEMENT | Create `/api/agent/cards` endpoint (GET/POST/PATCH) | 85% | M | Pending | TASK-01 |
+| TASK-02 | IMPLEMENT | Create `/api/agent/cards` endpoint (GET/POST/PATCH) | 85% | M | Complete (2026-02-02) | TASK-01 |
 | TASK-02a | IMPLEMENT | Create `/api/agent/ideas` endpoint (GET/POST/PATCH) | 85% | M | Pending | TASK-01 |
 | TASK-02b | IMPLEMENT | Create `/api/agent/stage-docs` endpoint (GET/POST/PATCH) | 82% | M | Pending | TASK-01 |
 | TASK-03 | IMPLEMENT | Create `/api/agent/allocate-id` endpoint | 90% | S | Pending | TASK-01 |
@@ -458,6 +458,25 @@ The following skill changes impact this plan:
   - Added card schema file to Affects so `Feature-Slug`, `Last-Progress`, `Plan-Link` can be stored/validated.
 - **Changes to task:**
   - Affects: include card schema (`packages/platform-core/src/repositories/businessOsCards.server.ts`) and agent workflow doc (`docs/business-os/agent-workflows.md`).
+
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** d80c9649ab
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03, TC-04, TC-05, TC-06, TC-07
+  - Red-green cycles: 2 (initial failure due to missing agent card route module; second run PASS)
+  - Initial test run: FAIL (module not found for `/api/agent/cards/[id]`)
+  - Post-implementation: PASS
+- **Confidence reassessment:**
+  - Original: 85%
+  - Post-test: 85%
+  - Delta reason: Tests validated merge-patch and conflict behavior
+- **Validation:**
+  - Ran: `pnpm --filter business-os test --testPathPattern=agent/cards` — PASS (7 tests)
+  - Ran: `pnpm --filter @apps/business-os typecheck` — PASS
+  - Ran: `pnpm --filter @apps/business-os lint` — PASS (warnings only; pre-existing)
+- **Documentation updated:** `docs/business-os/agent-workflows.md`
+- **Implementation notes:** Added agent cards GET/POST/PATCH endpoints with merge-patch concurrency, conflict responses, audit logging (`actor: "agent"`), and card schema expansion for `Feature-Slug`, `Last-Progress`, `Plan-Link`.
 
 
 ### TASK-02a: Create `/api/agent/ideas` endpoint (GET/POST/PATCH)

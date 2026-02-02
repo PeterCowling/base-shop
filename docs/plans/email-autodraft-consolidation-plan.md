@@ -992,7 +992,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 ### TASK-17: Reception Email Routing
 
 - **Type:** IMPLEMENT
-- **Affects:** `apps/reception/src/services/useBookingEmail.ts`, `apps/reception/src/app/api/mcp/booking-email/route.ts` (new), `apps/reception/package.json`, `apps/reception/next.config.mjs`, `packages/mcp-server/src/tools/booking-email.ts` (new), `packages/mcp-server/src/tools/index.ts`, `packages/mcp-server/src/utils/email-mime.ts` (new), `packages/mcp-server/src/tools/gmail.ts`, `apps/reception/src/services/__tests__/useBookingEmail.test.ts`, `apps/reception/src/hooks/orchestrations/emailAutomation/__tests__/useEmailProgressActions.test.ts`, `packages/mcp-server/src/__tests__/booking-email.test.ts` (new)
+- **Affects:** `apps/reception/src/services/useBookingEmail.ts`, `apps/reception/src/app/api/mcp/booking-email/route.ts` (new), `apps/reception/package.json`, `apps/reception/next.config.mjs`, `packages/mcp-server/src/tools/booking-email.ts` (new), `packages/mcp-server/src/tools/index.ts`, `packages/mcp-server/src/utils/email-mime.ts` (new), `packages/mcp-server/src/tools/gmail.ts`, `packages/mcp-server/package.json`, `apps/reception/src/services/__tests__/useBookingEmail.test.ts`, `apps/reception/src/hooks/orchestrations/emailAutomation/__tests__/useEmailProgressActions.test.ts`, `packages/mcp-server/src/__tests__/booking-email.test.ts` (new)
 - **Depends on:** TASK-06, TASK-08
 - **Confidence:** 80% ✅ RAISED FROM 65%
   - Implementation: 82% — Reception email flow now fully documented; single GAS integration point
@@ -1048,7 +1048,7 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Implement new reception API route that invokes MCP tool directly; add MCP tool to wrap GAS email send for reuse.
 - **Changes to task:**
   - Effort: M → L (new API route + MCP tool + cross-package dependency)
-  - Affects: added API route, MCP tool, tool index, email mime utility, gmail tool refactor, next config, package.json, and MCP test
+  - Affects: added API route, MCP tool, tool index, email mime utility, gmail tool refactor, mcp-server package.json, next config, package.json, and MCP test
   - Acceptance: added API route + MCP tool requirements
   - Test contract: expanded to include MCP tool coverage and run commands
 

@@ -121,6 +121,8 @@ jobs:
         run: pnpm run docs:lint
       - name: Plans lint
         run: pnpm run plans:lint
+      - name: Template lint (email)
+        run: pnpm --filter @acme/mcp-server lint:templates
       - name: Agent manifest validation
         run: node scripts/validate-agent-manifest.js
       - name: Token validation

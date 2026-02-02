@@ -130,7 +130,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 | TASK-05 | IMPLEMENT | Voice/tone examples resource | 85% | M | Pending | TASK-04 |
 | TASK-06 | IMPLEMENT | Port GAS email formatting | 82% | M | Completed | - |
 | TASK-07 | INVESTIGATE | Email deliverability testing | 88% | S | Pending | TASK-06 |
-| TASK-08 | IMPLEMENT | Label state machine | 80% | M | Pending | - |
+| TASK-08 | IMPLEMENT | Label state machine | 80% | M | Completed | - |
 | TASK-09 | IMPLEMENT | Agreement detection | 80% ✅ | M | Pending | TASK-01 |
 | TASK-10 | IMPLEMENT | Prepayment chase integration | 82% ✅ | M | Pending | TASK-08, TASK-09 |
 | TASK-11 | IMPLEMENT | Hybrid template ranker | 85% ✅ | L | Pending | TASK-04 |
@@ -508,7 +508,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 ### TASK-08: Implement Label State Machine
 
 - **Type:** IMPLEMENT
-- **Affects:** `packages/mcp-server/src/tools/gmail.ts`
+- **Affects:** `packages/mcp-server/src/tools/gmail.ts`, `packages/mcp-server/src/__tests__/gmail-label-state.test.ts` (new)
 - **Depends on:** -
 - **Confidence:** 80%
   - Implementation: 85% — Extends existing gmail.ts, patterns clear
@@ -530,6 +530,10 @@ Consolidate the disparate email autodraft system components into a world-class d
   - TC-02: State transitions follow allowed paths (1→2→3→4 or →21).
   - TC-03: Timeout releases Processing label after 30 minutes.
   - TC-04: New labels are created and applied correctly.
+  - Acceptance coverage: TC-01 covers lock/race prevention; TC-02 covers transition rules; TC-03 covers timeout release; TC-04 covers label taxonomy application.
+  - Test type: unit + integration (mock Gmail label operations)
+  - Test location: `packages/mcp-server/src/__tests__/gmail-label-state.test.ts`
+  - Run: `pnpm --filter mcp-server test -- packages/mcp-server/src/__tests__/gmail-label-state.test.ts`
 - **Planning validation:**
   - Tests run: N/A (extends existing file, no existing tests)
   - Test stubs written: N/A (M-effort)
@@ -545,6 +549,39 @@ Consolidate the disparate email autodraft system components into a world-class d
 - **Notes / references:**
   - State machine diagram in fact-find
   - Reception activity codes: `apps/reception/src/constants/emailCodes.ts`
+
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** 6d3ebce438
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03, TC-04
+  - Red-green cycles: 1
+  - Initial test run: FAIL (expected — feature not implemented)
+  - Post-implementation: PASS
+- **Confidence reassessment:**
+  - Original: 80%
+  - Post-test: 80%
+  - Delta reason: Tests validated assumptions.
+- **Validation:**
+  - Ran: `pnpm exec jest --runTestsByPath packages/mcp-server/src/__tests__/gmail-label-state.test.ts --config ./jest.config.cjs` — PASS
+  - Ran: `pnpm lint` — PASS (warnings from unrelated packages)
+  - Ran: `pnpm typecheck` — PASS
+- **Documentation updated:** `docs/business-os/cards/BRIK-ENG-0020/build.user.md`
+- **Implementation notes:** Added workflow label taxonomy, processing lock + stale timeout, and workflow transition labels in `packages/mcp-server/src/tools/gmail.ts` with unit tests in `packages/mcp-server/src/__tests__/gmail-label-state.test.ts`.
+
+#### Re-plan Update (2026-02-02)
+- **Previous confidence:** 80%
+- **Updated confidence:** 80%
+  - Implementation: 85% — No change; test scope clarified.
+  - Approach: 80% — No change.
+  - Impact: 75% — No change.
+- **Investigation performed:**
+  - Tests: `packages/mcp-server/src/__tests__/email-template.test.ts` (existing test location pattern)
+- **Decision / resolution:**
+  - Added explicit test location/run command and included test file in Affects to satisfy TDD gate.
+- **Changes to task:**
+  - Affects: added `packages/mcp-server/src/__tests__/gmail-label-state.test.ts`
+  - Test contract: added acceptance coverage, test type, location, and run command
 
 ---
 

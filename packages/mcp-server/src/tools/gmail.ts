@@ -74,6 +74,11 @@ const listPendingSchema = z.object({
   limit: z.number().min(1).max(50).optional().default(20),
 });
 
+const listQuerySchema = z.object({
+  query: z.string().trim().min(1),
+  limit: z.number().min(1).max(100).optional().default(50),
+});
+
 const getEmailSchema = z.object({
   emailId: z.string().min(1),
   includeThread: z.boolean().optional().default(true),
@@ -116,6 +121,18 @@ export const gmailTools = [
       properties: {
         limit: { type: "number", description: "Max emails to return (1-50)", default: 20 },
       },
+    },
+  },
+  {
+    name: "gmail_list_query",
+    description: "List emails using a Gmail query string (e.g., in:inbox after:YYYY/MM/DD before:YYYY/MM/DD).",
+    inputSchema: {
+      type: "object",
+      properties: {
+        query: { type: "string", description: "Gmail search query" },
+        limit: { type: "number", description: "Max emails to return (1-100)", default: 50 },
+      },
+      required: ["query"],
     },
   },
   {
@@ -460,6 +477,56 @@ async function handleListPending(
   return jsonResult({
     emails,
     total: emails.length,
+    hasMore: messages.length === limit,
+  });
+}
+
+
+async function handleListQuery(
+  gmail: gmail_v1.Gmail,
+  args: unknown
+): Promise<ReturnType<typeof jsonResult> | ReturnType<typeof errorResult>> {
+  const { query, limit } = listQuerySchema.parse(args);
+
+  const response = await gmail.users.messages.list({
+    userId: "me",
+    q: query,
+    maxResults: limit,
+  });
+
+  const messages = response.data.messages || [];
+  if (messages.length == 0) {
+    return jsonResult({ emails: [] });
+  }
+
+  const emailDetails = await Promise.all(
+    messages.map(async message => {
+      if (!message.id) return null;
+      try {
+        const details = await gmail.users.messages.get({
+          userId: "me",
+          id: message.id,
+          format: "metadata",
+          metadataHeaders: ["Subject", "From", "Date"],
+        });
+
+        const headers = (details.data.payload?.headers || []) as EmailHeader[];
+        return {
+          id: details.data.id,
+          threadId: details.data.threadId,
+          subject: getHeader(headers, "Subject"),
+          from: getHeader(headers, "From"),
+          date: getHeader(headers, "Date"),
+          snippet: details.data.snippet || "",
+        };
+      } catch {
+        return null;
+      }
+    })
+  );
+
+  return jsonResult({
+    emails: emailDetails.filter((email): email is NonNullable<typeof email> => !!email),
     hasMore: messages.length === limit,
   });
 }
@@ -815,6 +882,10 @@ export async function handleGmailTool(name: string, args: unknown) {
     switch (name) {
       case "gmail_list_pending": {
         return await handleListPending(gmail, args);
+      }
+
+      case "gmail_list_query": {
+        return await handleListQuery(gmail, args);
       }
 
       case "gmail_get_email": {

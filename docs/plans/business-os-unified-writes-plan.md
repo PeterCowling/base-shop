@@ -1486,18 +1486,37 @@ The following skill changes impact this plan:
 
 ### TASK-13: Remove deprecated `repo-writer.ts` and scan-based allocation
 
+#### Re-plan Update (2026-02-02)
+- **Reason:** Repo-wide scan shows `repo-writer.ts` is still referenced by `AgentQueueWriter` and documentation; removing the file requires additional updates beyond the original Affects list.
+- **Scope updates:**
+  - Added code + docs that import or reference `repo-writer.ts`
+  - Added test file removal to keep repo clean after deletion
+- **Confidence update:** 85% → 80%
+  - Implementation: 90% → 85% (extra refactors)
+  - Approach: 85% → 80% (agent queue path still git-based)
+  - Impact: 80% → 75% (touches queue writer + docs)
+- **What would make this ≥90%:** run targeted unit tests for updated modules after refactor
+
 - **Type:** IMPLEMENT
-- **Affects:** `apps/business-os/src/lib/repo-writer.ts`, `.claude/skills/_shared/card-operations.md`
+- **Affects:**
+  - `apps/business-os/src/lib/repo-writer.ts`
+  - `apps/business-os/src/lib/repo-writer.test.ts`
+  - `apps/business-os/src/lib/repo/AgentQueueWriter.ts`
+  - `apps/business-os/src/lib/repo/README.md`
+  - `.claude/skills/_shared/card-operations.md`
 - **Depends on:** TASK-11, TASK-06
-- **Confidence:** 85%
-  - Implementation: 90% — delete files; remove references
-  - Approach: 85% — clean break after migration complete
-  - Impact: 80% — breaking change for any unmigrated skills
+- **Confidence:** 80%
+  - Implementation: 85% — delete files; remove references; update AgentQueueWriter type usage
+  - Approach: 80% — clean break after migration complete; queue writer still git-based
+  - Impact: 75% — touches queue writer + docs; blast radius still limited
 - **Acceptance:**
   - `repo-writer.ts` deleted
+  - `repo-writer.test.ts` deleted
   - Scan-based ID allocation removed from `card-operations.md`
   - CI guard catches any direct markdown writes
   - No imports of `repo-writer` remain in codebase
+  - AgentQueueWriter uses a local `WriteResult` type (or replacement) without importing repo-writer
+  - Repo documentation no longer references repo-writer
 - **Test contract:**
   - **TC-01:** repo-writer.ts deleted → file does not exist
     - `ls apps/business-os/src/lib/repo-writer.ts` → "No such file"
@@ -1505,16 +1524,20 @@ The following skill changes impact this plan:
     - `rg repo-writer apps/` → zero matches
   - **TC-03:** Scan-based allocation removed from card-operations.md
     - Search card-operations.md for `MAX_ID=` → zero matches (old pattern gone)
-  - **TC-04:** CI guard catches direct markdown writes
+  - **TC-04:** AgentQueueWriter no longer imports repo-writer
+    - `rg \"repo-writer\" apps/business-os/src/lib/repo/AgentQueueWriter.ts` → zero matches
+  - **TC-05:** Repo docs do not mention repo-writer
+    - `rg \"repo-writer\" apps/business-os/src/lib/repo/README.md` → zero matches
+  - **TC-06:** CI guard catches direct markdown writes
     - After removal, any skill attempting markdown write → CI guard blocks PR
-  - **Acceptance coverage:** TC-01,02 cover file deletion; TC-03 covers doc cleanup; TC-04 covers guard verification
+  - **Acceptance coverage:** TC-01,02 cover file deletion; TC-03 covers doc cleanup; TC-04,05 cover ref updates; TC-06 covers guard verification
   - **Test type:** Manual verification (file system + grep checks)
   - **Test location:** `apps/business-os/src/lib/`, `.claude/skills/_shared/card-operations.md`
   - **Run:** `rg repo-writer apps/ && rg MAX_ID= .claude/skills/_shared/card-operations.md`
 - **Planning validation:**
   - Tests run: N/A (removal)
   - Test stubs written: N/A (S effort)
-  - Unexpected findings: `repo-writer.ts` may be used by sync endpoint — verify and update
+  - Unexpected findings: `repo-writer.ts` referenced by AgentQueueWriter + repo README — must update alongside removal
 - **Rollout / rollback:**
   - Rollout: Delete after all skills migrated and export job running
   - Rollback: Restore files (emergency only; re-introduces dual-write risk)

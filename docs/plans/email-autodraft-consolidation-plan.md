@@ -123,6 +123,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on |
 |---|---|---|---:|---:|---|---|
 | TASK-00 | INVESTIGATE | Establish baseline metrics | 90% | M | In Progress (2026-02-02) | - |
+| TASK-00A | IMPLEMENT | Gmail inbox query tool | 82% ✅ | M | Pending | - |
 | TASK-01 | IMPLEMENT | Interpretation stage tool | 82% ✅ | L | Pending | TASK-00 |
 | TASK-02 | IMPLEMENT | Thread context summarizer | 82% ✅ | M | Pending | TASK-01 |
 | TASK-03 | IMPLEMENT | Quality gate tool | 80% | M | Pending | TASK-01 |
@@ -184,6 +185,47 @@ Consolidate the disparate email autodraft system components into a world-class d
 - **Notes / references:**
   - Must complete before implementation tasks can exceed 80% confidence
   - Use existing `gmail_list_pending` and `gmail_get_email` tools
+
+---
+
+
+### TASK-00A: Gmail Inbox Query Tool
+
+- **Type:** IMPLEMENT
+- **Affects:** `packages/mcp-server/src/tools/gmail.ts`, `packages/mcp-server/src/tools/index.ts`, `packages/mcp-server/src/__tests__/gmail-list-query.test.ts` (new)
+- **Depends on:** -
+- **Confidence:** 82%
+  - Implementation: 85% — Extends existing Gmail tool patterns with Zod schemas and list calls
+  - Approach: 80% — Gmail list API supports query strings for inbox + date filters
+  - Impact: 80% — Enables baseline sampling without changing label workflows
+- **Acceptance:**
+  - Add new MCP tool `gmail_list_query`
+  - Inputs: `query` (string), `limit` (1–100, default 50)
+  - Output: list of message IDs with thread ID, subject, from, date, snippet
+  - Must support queries like: `in:inbox after:2025/11/02 before:2026/02/03`
+  - Must not alter or remove existing Gmail tools/label workflows
+- **Test plan:**
+  - Add: Unit tests for schema validation and output shape
+  - Add: Integration-like test for query pass-through (mock Gmail client)
+  - Run: `pnpm --filter mcp-server test -- packages/mcp-server/src/__tests__/gmail-list-query.test.ts`
+- **Test contract:**
+  - TC-01: Requires `query`, rejects empty string.
+  - TC-02: Defaults limit to 50 when omitted.
+  - TC-03: Caps limit at 100.
+  - TC-04: Passes query to Gmail API list call and returns expected fields.
+- **Planning validation:**
+  - Tests run: N/A (new module)
+  - Test stubs written: N/A (M-effort)
+  - Unexpected findings: None
+- **What would make this ≥90%:**
+  - Verified with live Gmail MCP session on inbox queries
+- **Rollout / rollback:**
+  - Rollout: Add tool registration only (no behavior change to existing tools)
+  - Rollback: Remove tool registration and handler
+- **Documentation impact:**
+  - None
+- **Notes / references:**
+  - Pattern: `packages/mcp-server/src/tools/gmail.ts` existing list and get tools
 
 ---
 

@@ -737,7 +737,7 @@ The following skill changes impact this plan:
 ### TASK-04b: Wire UI to `/api/board-changes` endpoint
 
 - **Type:** IMPLEMENT
-- **Affects:** `apps/business-os/src/hooks/useBoardData.ts`, `apps/business-os/src/components/Board.tsx`
+- **Affects:** `apps/business-os/src/components/board/useBoardAutoRefresh.ts`, `apps/business-os/src/components/board/BoardView.tsx`
 - **Depends on:** TASK-04
 - **Confidence:** 82%
   - Implementation: 85% — update polling hook to use new endpoint
@@ -761,19 +761,19 @@ The following skill changes impact this plan:
   - **TC-05:** Stale cursor → full refresh fallback
     - Server returns "cursor too old" error → UI resets to cursor=0 and refetches all
   - **Test type:** Unit (merge logic) + Integration (polling behavior)
-  - **Test location:** `apps/business-os/src/hooks/useBoardData.test.ts` (extend existing or new)
+  - **Test location:** `apps/business-os/src/components/board/useBoardAutoRefresh.test.ts` (new)
   - **Run:** `pnpm --filter business-os test --testPathPattern=useBoardData`
 - **Planning validation:**
-  - Tests run: Reviewed current polling implementation
+  - Tests run: Reviewed `useBoardAutoRefresh.ts` (polling hook) and `BoardView.tsx` integration
   - Test stubs written: N/A (S effort)
-  - Unexpected findings: Current UI uses polling interval; can reuse that pattern
+  - Unexpected findings: Existing polling uses `/api/board-version`; can be swapped to cursor-based `/api/board-changes`
 - **Rollout / rollback:**
   - Rollout: Deploy UI changes; existing endpoint remains available
   - Rollback: Revert to board-version polling
 - **Documentation impact:**
   - None
 - **Notes / references:**
-  - Current hook: `apps/business-os/src/hooks/useBoardData.ts`
+  - Current hook: `apps/business-os/src/components/board/useBoardAutoRefresh.ts`
 
 ### TASK-05: Implement deterministic D1→markdown serializer
 

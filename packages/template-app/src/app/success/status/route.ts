@@ -25,7 +25,7 @@ export async function GET(req: NextRequest): Promise<NextResponse<ResponseBody>>
   const requestId = getOrCreateRequestId(req.headers);
   const shopId = getShopIdFromHeaders(req.headers);
   if (!shopId) {
-    const res = NextResponse.json({ ok: false, error: "Missing shop context" }, { status: 400 }); // i18n-exempt -- ABC-123: machine-readable API error
+    const res = NextResponse.json({ ok: false as const, error: "Missing shop context" }, { status: 400 }); // i18n-exempt -- ABC-123: machine-readable API error
     res.headers.set(REQUEST_ID_HEADER, requestId);
     return res;
   }
@@ -35,7 +35,7 @@ export async function GET(req: NextRequest): Promise<NextResponse<ResponseBody>>
   const orderId = searchParams.get("orderId")?.trim() || null;
 
   if (!sessionId && !orderId) {
-    const res = NextResponse.json({ ok: false, error: "Missing order id" }, { status: 400 }); // i18n-exempt -- ABC-123: machine-readable API error
+    const res = NextResponse.json({ ok: false as const, error: "Missing order id" }, { status: 400 }); // i18n-exempt -- ABC-123: machine-readable API error
     res.headers.set(REQUEST_ID_HEADER, requestId);
     return res;
   }

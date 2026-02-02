@@ -289,22 +289,94 @@ function extractConfirmations(text: string): IntentItem[] {
 
 function detectAgreement(text: string, language: string): AgreementDetection {
   const lower = text.toLowerCase();
-  const explicit = /\b(i agree|we agree|agreed|accetto|de acuerdo)\b/i.exec(text);
-  const negated = /\b(don't agree|do not agree|cannot agree|non sono d'accordo)\b/i.exec(text);
-  if (explicit && !negated) {
+  const explicitPatterns = [
+    /\b(i agree|we agree|agreed)\b/i,
+    /\baccetto\b/i,
+    /\bde acuerdo\b/i,
+  ];
+  const negationPatterns = [
+    /\b(don't agree|do not agree|cannot agree|can't agree)\b/i,
+    /\bnon sono d'accordo\b/i,
+    /\bno estoy de acuerdo\b/i,
+  ];
+  const contrastPatterns = [/\bbut\b/i, /\bhowever\b/i, /\bma\b/i, /\bpero\b/i];
+
+  const evidence_spans: AgreementDetection["evidence_spans"] = [];
+
+  let negated = false;
+  for (const pattern of negationPatterns) {
+    const match = pattern.exec(text);
+    if (match) {
+      negated = true;
+      evidence_spans.push({
+        text: match[0],
+        position: match.index ?? 0,
+        is_negated: true,
+      });
+      break;
+    }
+  }
+
+  let explicitMatch: RegExpExecArray | null = null;
+  for (const pattern of explicitPatterns) {
+    const match = pattern.exec(text);
+    if (match) {
+      explicitMatch = match;
+      evidence_spans.push({
+        text: match[0],
+        position: match.index ?? 0,
+        is_negated: false,
+      });
+      break;
+    }
+  }
+
+  const contrast = contrastPatterns.some(pattern => pattern.test(text));
+  const additional_content = explicitMatch
+    ? lower.replace(explicitMatch[0].toLowerCase(), "").trim().length > 0
+    : lower.trim().length > 0;
+
+  if (negated) {
     return {
-      status: "confirmed",
-      confidence: 0.9,
-      evidence_spans: [
-        {
-          text: explicit[0],
-          position: explicit.index ?? 0,
-          is_negated: false,
-        },
-      ],
+      status: "none",
+      confidence: 0,
+      evidence_spans,
       requires_human_confirmation: false,
       detected_language: language,
-      additional_content: lower.replace(explicit[0].toLowerCase(), "").trim().length > 0,
+      additional_content,
+    };
+  }
+
+  if (explicitMatch) {
+    if (contrast) {
+      return {
+        status: "likely",
+        confidence: 60,
+        evidence_spans,
+        requires_human_confirmation: true,
+        detected_language: language,
+        additional_content,
+      };
+    }
+
+    return {
+      status: "confirmed",
+      confidence: 90,
+      evidence_spans,
+      requires_human_confirmation: false,
+      detected_language: language,
+      additional_content,
+    };
+  }
+
+  if (/^\s*(yes|ok|okay)\s*[\.!]?$/.test(lower)) {
+    return {
+      status: "unclear",
+      confidence: 40,
+      evidence_spans: [],
+      requires_human_confirmation: true,
+      detected_language: language,
+      additional_content: false,
     };
   }
 
@@ -314,7 +386,7 @@ function detectAgreement(text: string, language: string): AgreementDetection {
     evidence_spans: [],
     requires_human_confirmation: false,
     detected_language: language,
-    additional_content: lower.trim().length > 0,
+    additional_content,
   };
 }
 

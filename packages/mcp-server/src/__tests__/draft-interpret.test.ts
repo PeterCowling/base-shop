@@ -7,7 +7,7 @@ function parseResult(result: { content: Array<{ text: string }> }) {
     normalized_text: string;
     language: string;
     intents: { questions: Array<{ text: string }>; requests: Array<{ text: string }>; confirmations: Array<{ text: string }> };
-    agreement: { status: string };
+    agreement: { status: string; confidence: number; requires_human_confirmation: boolean; additional_content: boolean };
     scenario: { category: string; confidence: number };
     thread_summary?: {
       prior_commitments: string[];
@@ -69,6 +69,34 @@ describe("draft_interpret", () => {
     const result = await handleDraftInterpretTool("draft_interpret", { body: "Hello" });
     const payload = parseResult(result);
     expect(payload.normalized_text).toBeDefined();
+  });
+
+  it("TC-09: agreement detection explicit phrases", async () => {
+    const en = await handleDraftInterpretTool("draft_interpret", { body: "I agree to the terms." });
+    expect(parseResult(en).agreement.status).toBe("confirmed");
+    const it = await handleDraftInterpretTool("draft_interpret", { body: "Accetto." });
+    expect(parseResult(it).agreement.status).toBe("confirmed");
+    const es = await handleDraftInterpretTool("draft_interpret", { body: "De acuerdo." });
+    expect(parseResult(es).agreement.status).toBe("confirmed");
+  });
+
+  it("TC-10: agreement detection negation and ambiguity", async () => {
+    const neg = await handleDraftInterpretTool("draft_interpret", { body: "I don't agree." });
+    const negPayload = parseResult(neg);
+    expect(negPayload.agreement.status).toBe("none");
+
+    const unclear = await handleDraftInterpretTool("draft_interpret", { body: "Yes." });
+    const unclearPayload = parseResult(unclear);
+    expect(unclearPayload.agreement.status).toBe("unclear");
+    expect(unclearPayload.agreement.requires_human_confirmation).toBe(true);
+  });
+
+  it("TC-11: additional content flagged", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "I agree, but what time is check-in?",
+    });
+    const payload = parseResult(result);
+    expect(payload.agreement.additional_content).toBe(true);
   });
 
   it("TC-07: summarizes thread context", async () => {

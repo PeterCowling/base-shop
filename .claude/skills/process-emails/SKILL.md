@@ -86,26 +86,41 @@ When user selects an email to process:
    gmail_get_email({ emailId: "...", includeThread: true })
    ```
 
-2. **Load relevant knowledge base resources**:
-   - `brikette://faq` - For common questions
-   - `brikette://rooms` - For room inquiries
-   - `brikette://pricing/menu` - For price questions
-   - `brikette://policies` - For policy questions
+2. **Run Interpretation stage** using `draft_interpret`:
+   ```typescript
+   draft_interpret({
+     body: email.body.plain,
+     subject: email.subject,
+     threadContext: email.thread_context
+   })
+   ```
+   Output: `EmailActionPlan` (intents, scenario, agreement status, workflow triggers).
 
-3. **Classify the email**:
-   - Type (availability, FAQ, pricing, directions, complaint, etc.)
-   - Priority (urgent, normal, low)
-   - Language (English, Italian, other)
-   - Sentiment (positive, neutral, negative)
+3. **Review the Action Plan**:
+   - Confirm `scenario.category`
+   - Check detected language
+   - Inspect agreement detection status
+   - Note workflow triggers (prepayment, T&C, booking monitor)
 
-4. **Generate draft response**:
-   - Address the customer's specific question(s)
-   - Use knowledge base for accurate information
-   - Include relevant links (booking page, guides)
-   - Professional but warm tone
-   - Include signature block (Peter & Cristiana)
+4. **Run Composition stage** using `draft_generate`:
+   ```typescript
+   draft_generate({
+     actionPlan,
+     subject: email.subject,
+     recipientName: email.from.name,
+     prepaymentStep: "first" | "second" | "third" | "success",
+     prepaymentProvider: "octorate" | "hostelworld"
+   })
+   ```
+   Output: draft (plain + HTML), template_used, answered_questions, knowledge_sources.
 
-5. **Present to user**:
+5. **Run Quality Gate** using `draft_quality_check`:
+   ```typescript
+   draft_quality_check({ actionPlan, draft })
+   ```
+   If `passed=false`, present failed checks and ask how to proceed (edit or regenerate).
+
+6. **Present to user**:
    ```markdown
    ## Email #1: Availability Inquiry
 
@@ -117,13 +132,13 @@ When user selects an email to process:
    > [Customer's email content]
 
    ### Classification:
-   - **Type:** Availability inquiry
-   - **Priority:** Normal
-   - **Language:** English
-   - **Sentiment:** Positive
+   - **Scenario:** [from EmailActionPlan]
+   - **Language:** [from EmailActionPlan]
+   - **Agreement:** confirmed / likely / unclear / none
+   - **Workflow triggers:** prepayment / terms_and_conditions / booking_monitor
 
    ### Relevant Knowledge:
-   - [Key facts from knowledge base]
+   - [Knowledge sources used]
 
    ### Draft Response:
 
@@ -193,6 +208,18 @@ gmail_mark_processed({ emailId: "...", action: "spam" })
 gmail_mark_processed({ emailId: "...", action: "deferred" })
 ```
 Keeps in queue for later handling.
+
+### Agreement Detection (T&C workflow)
+
+Agreement detection is high-stakes:
+- `confirmed` only for explicit agreement phrases (EN/IT/ES).
+- `likely` or `unclear` requires human confirmation before any payment workflow.
+- Always check `agreement.requires_human_confirmation`.
+
+If the email includes agreement **and** questions, treat as mixed response:
+1. Acknowledge agreement in the draft.
+2. Answer all questions.
+3. Keep the workflow state as awaiting confirmation if `likely/unclear`.
 
 ### 5. Processing Informational Emails
 
@@ -465,6 +492,9 @@ Before creating each draft, verify:
 | `brikette://rooms` | Room details and config |
 | `brikette://pricing/menu` | Bar and breakfast prices |
 | `brikette://policies` | Check-in, age restrictions, etc. |
+| `brikette://draft-guide` | Draft quality framework |
+| `brikette://voice-examples` | Voice/tone examples |
+| `brikette://email-examples` | Classification examples |
 
 ## Email Templates
 

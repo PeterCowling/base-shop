@@ -141,7 +141,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 | TASK-15 | IMPLEMENT | Template governance & linting | 85% | S | Complete (2026-02-02) | TASK-04 |
 | TASK-16 | INVESTIGATE | Security & logging review | 90% | S | Complete (2026-02-02) | TASK-01, TASK-13 |
 | TASK-17 | IMPLEMENT | Reception email routing | 80% ✅ | L | Complete (2026-02-02) | TASK-06, TASK-08 |
-| TASK-18 | INVESTIGATE | Integration testing | 82% ✅ | L | Pending | TASK-13, TASK-14 |
+| TASK-18 | INVESTIGATE | Integration testing | 82% ✅ | L | In Progress (blocked) | TASK-13, TASK-14 |
 | TASK-19 | INVESTIGATE | Pilot measurement | 85% | M | Pending | TASK-18 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
@@ -1421,7 +1421,15 @@ Consolidate the disparate email autodraft system components into a world-class d
 
 ---
 
+
 ### TASK-18: Integration Testing
+
+#### Pending Audit Work
+- **Blocked step:** Execute `gmail_list_query` and `gmail_get_email` for 50+ emails.
+- **Why blocked:** Gmail MCP tools are not available in this session.
+- **Next action:** Run integration pipeline in a session with MCP Gmail tools enabled and record results in `docs/plans/email-autodraft-consolidation-test-results.md`.
+- **Remaining scope:** Full pipeline execution + metrics aggregation for 50+ emails.
+
 
 - **Type:** INVESTIGATE
 - **Affects:** `docs/plans/email-autodraft-consolidation-test-results.md` (new)

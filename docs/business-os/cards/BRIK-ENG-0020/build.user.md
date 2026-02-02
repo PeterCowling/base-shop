@@ -33,6 +33,8 @@ Plan-Link: docs/plans/email-autodraft-consolidation-plan.md
 | TASK-14 | Update process-emails skill | Complete | 2026-02-02 |
 | TASK-15 | Template governance & linting | Complete | 2026-02-02 |
 | TASK-17 | Reception email routing | Complete | 2026-02-02 |
+| TASK-18 | Integration testing | In Progress (blocked) | - |
+| TASK-19 | Pilot measurement | Pending | - |
 
 ## Build Log
 
@@ -153,6 +155,13 @@ Plan-Link: docs/plans/email-autodraft-consolidation-plan.md
 - **Action:** Completed security & logging review for email autodraft tools.
 - **Report:** `docs/plans/email-autodraft-consolidation-security.md`
 - **Notes:** No PII logging or email body persistence found; prompt-injection mitigations documented.
+
+
+
+### 2026-02-02 - TASK-18
+- **Action:** Began integration testing; blocked due to missing Gmail MCP tools.
+- **Report:** `docs/plans/email-autodraft-consolidation-test-results.md`
+- **Notes:** Pending execution in a session with MCP Gmail tools enabled.
 
 ## Blockers
 

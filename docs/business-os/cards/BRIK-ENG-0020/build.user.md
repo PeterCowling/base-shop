@@ -19,7 +19,7 @@ Plan-Link: docs/plans/email-autodraft-consolidation-plan.md
 | TASK-00 | Establish baseline metrics | Complete | 2026-02-02 |
 | TASK-00A | Gmail inbox query tool | Complete | 2026-02-02 |
 | TASK-01 | Interpretation stage tool | Complete | 2026-02-02 |
-| TASK-02 | Thread context summarizer | Pending | - |
+| TASK-02 | Thread context summarizer | Complete | 2026-02-02 |
 | TASK-03 | Quality gate tool | Pending | - |
 | TASK-04 | Draft quality framework resource | Pending | - |
 | TASK-05 | Voice/tone examples resource | Pending | - |
@@ -35,6 +35,13 @@ Plan-Link: docs/plans/email-autodraft-consolidation-plan.md
 | TASK-17 | Reception email routing | Complete | 2026-02-02 |
 
 ## Build Log
+
+
+### 2026-02-02 - TASK-02
+- **Action:** Added thread summary extraction to draft_interpret.
+- **Commits:** 379676f792
+- **Validation:** `pnpm exec jest --runTestsByPath packages/mcp-server/src/__tests__/draft-interpret.test.ts --config ./jest.config.cjs` (pass), `pnpm --filter mcp-server lint` (pass), `pnpm --filter mcp-server build` (pass)
+- **Notes:** Summarizes commitments, open/resolved questions, tone, guest name, language, and response count.
 
 
 ### 2026-02-02 - TASK-01

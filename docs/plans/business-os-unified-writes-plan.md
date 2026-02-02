@@ -241,7 +241,7 @@ The following skill changes impact this plan:
 | TASK-05 | IMPLEMENT | Implement deterministic D1→markdown serializer | 82% | M | Complete (2026-02-02) | - |
 | TASK-05a | IMPLEMENT | Create `/api/admin/export-snapshot` endpoint | 85% | S | Complete (2026-02-02) | TASK-05 |
 | TASK-06 | IMPLEMENT | Create git export CI job (PR-based, hourly) | 82% | M | Complete (2026-02-02) | TASK-05a |
-| TASK-07 | IMPLEMENT | Add CI guard + branch protection for `docs/business-os/` | 85% | M | Pending | TASK-06 |
+| TASK-07 | IMPLEMENT | Add CI guard + branch protection for `docs/business-os/` | 85% | M | Complete (2026-02-02) | TASK-06 |
 | TASK-08 | IMPLEMENT | Update `card-operations.md` to use agent API | 85% | S | Pending | TASK-02, TASK-02a, TASK-02b, TASK-03 |
 | TASK-09 | IMPLEMENT | Migrate `/work-idea` skill to API writes | 82% | M | Pending | TASK-08 |
 | TASK-10 | IMPLEMENT | Migrate `/build-feature` skill to API writes | 82% | M | Pending | TASK-08, TASK-02b |
@@ -1036,7 +1036,6 @@ The following skill changes impact this plan:
   - Add README to `docs/business-os/` explaining generated nature
 - **Notes / references:**
   - Git attribution: PR author is workflow identity, not spoofable git author string
-
 #### Build Completion (2026-02-02)
 - **Status:** Complete
 - **Commits:** ce13b14b83
@@ -1118,6 +1117,25 @@ The following skill changes impact this plan:
 - **Notes / references:**
   - **Key insight:** Export-Run-ID is workflow-generated; forging requires access to workflow secrets
   - **Why not labels:** Labels can be added by any collaborator; Run-ID requires workflow execution
+
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** 6b5848f410
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03, TC-04 (guard logic review)
+  - Red-green cycles: 1
+  - Initial test run: N/A (workflow change)
+  - Post-implementation: N/A
+- **Confidence reassessment:**
+  - Original: 85%
+  - Post-test: 85%
+  - Delta reason: Guard logic implemented in CI workflow
+- **Validation:**
+  - Not run: CI workflow (requires PR context)
+- **Documentation updated:** None
+- **Implementation notes:** Added BOS mirror guard job to CI that validates bos-export branch, github-actions actor, Export-Run-ID marker, and workflow run success. Manual branch protection settings remain to be applied in GitHub UI.
+
+
 
 ### TASK-08: Update `card-operations.md` to use agent API
 

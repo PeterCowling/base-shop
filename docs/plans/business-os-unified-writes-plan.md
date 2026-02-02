@@ -394,7 +394,7 @@ The following skill changes impact this plan:
 ### TASK-02: Create `/api/agent/cards` endpoint (GET/POST/PATCH)
 
 - **Type:** IMPLEMENT
-- **Affects:** `apps/business-os/src/app/api/agent/cards/route.ts` (new), `apps/business-os/src/app/api/agent/cards/[id]/route.ts` (new), `packages/platform-core/src/repositories/businessOsCards.server.ts`
+- **Affects:** `apps/business-os/src/app/api/agent/cards/route.ts` (new), `apps/business-os/src/app/api/agent/cards/[id]/route.ts` (new), `packages/platform-core/src/repositories/businessOsCards.server.ts`, `docs/business-os/agent-workflows.md`
 - **Depends on:** TASK-01
 - **Confidence:** 85%
   - Implementation: 90% — existing `/api/cards` endpoints provide exact pattern to follow
@@ -457,7 +457,7 @@ The following skill changes impact this plan:
 - **Decision / resolution:**
   - Added card schema file to Affects so `Feature-Slug`, `Last-Progress`, `Plan-Link` can be stored/validated.
 - **Changes to task:**
-  - Affects: include card schema (`packages/platform-core/src/repositories/businessOsCards.server.ts`).
+  - Affects: include card schema (`packages/platform-core/src/repositories/businessOsCards.server.ts`) and agent workflow doc (`docs/business-os/agent-workflows.md`).
 
 
 ### TASK-02a: Create `/api/agent/ideas` endpoint (GET/POST/PATCH)

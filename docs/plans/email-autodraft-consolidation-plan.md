@@ -134,7 +134,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 | TASK-08 | IMPLEMENT | Label state machine | 80% | M | Completed | - |
 | TASK-09 | IMPLEMENT | Agreement detection | 80% ✅ | M | Complete (2026-02-02) | TASK-01 |
 | TASK-10 | IMPLEMENT | Prepayment chase integration | 82% ✅ | M | Complete (2026-02-02) | TASK-08, TASK-09 |
-| TASK-11 | IMPLEMENT | Hybrid template ranker | 85% ✅ | L | Pending | TASK-04 |
+| TASK-11 | IMPLEMENT | Hybrid template ranker | 85% ✅ | L | Complete (2026-02-02) | TASK-04 |
 | TASK-12 | IMPLEMENT | Classification examples resource | 85% | S | Pending | TASK-00 |
 | TASK-13 | IMPLEMENT | Enhanced draft generation | 80% ✅ | L | Pending | TASK-01, TASK-03, TASK-04, TASK-11 |
 | TASK-14 | IMPLEMENT | Update process-emails skill | 82% | M | Pending | TASK-01, TASK-03, TASK-13 |
@@ -925,7 +925,28 @@ Consolidate the disparate email autodraft system components into a world-class d
 
 ---
 
+
 ### TASK-11: Hybrid Template Ranker
+
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** 4936f6f672
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03, TC-04
+  - Red-green cycles: 1 (tests executed after implementation)
+  - Initial test run: N/A
+  - Post-implementation: PASS
+- **Confidence reassessment:**
+  - Original: 85%
+  - Post-test: 85%
+  - Delta reason: tests validated assumptions
+- **Validation:**
+  - Ran: `pnpm exec jest --runTestsByPath packages/mcp-server/src/__tests__/template-ranker.test.ts --config ./jest.config.cjs` — PASS
+  - Ran: `pnpm --filter mcp-server lint` — PASS
+  - Ran: `pnpm --filter mcp-server build` — PASS
+- **Documentation updated:** None required
+- **Implementation notes:** Added BM25-based ranker with synonym expansion, hard-rule overrides, and confidence thresholds.
+
 
 - **Type:** IMPLEMENT
 - **Affects:** `packages/mcp-server/src/utils/template-ranker.ts` (new)

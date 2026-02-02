@@ -27,7 +27,7 @@ Plan-Link: docs/plans/email-autodraft-consolidation-plan.md
 | TASK-08 | Label state machine | Complete | 2026-02-02 |
 | TASK-09 | Agreement detection | Complete | 2026-02-02 |
 | TASK-10 | Prepayment chase integration | Complete | 2026-02-02 |
-| TASK-11 | Hybrid template ranker | Pending | - |
+| TASK-11 | Hybrid template ranker | Complete | 2026-02-02 |
 | TASK-12 | Classification examples resource | Pending | - |
 | TASK-13 | Enhanced draft generation | Pending | - |
 | TASK-14 | Update process-emails skill | Pending | - |
@@ -106,6 +106,14 @@ Plan-Link: docs/plans/email-autodraft-consolidation-plan.md
 - **Commits:** 02d3e5a113
 - **Validation:** `pnpm exec jest --runTestsByPath packages/mcp-server/src/__tests__/workflow-triggers.test.ts packages/mcp-server/src/__tests__/gmail-label-state.test.ts --config ./jest.config.cjs` (pass; Jest warned about an exiting worker), `pnpm --filter mcp-server lint` (pass), `pnpm --filter mcp-server build` (pass)
 - **Notes:** Added prepayment workflow mappings and documented chase steps in the process-emails skill.
+
+
+
+### 2026-02-02 - TASK-11
+- **Action:** Added BM25-based hybrid template ranker with synonym expansion and thresholds.
+- **Commits:** 4936f6f672
+- **Validation:** `pnpm exec jest --runTestsByPath packages/mcp-server/src/__tests__/template-ranker.test.ts --config ./jest.config.cjs` (pass), `pnpm --filter mcp-server lint` (pass), `pnpm --filter mcp-server build` (pass)
+- **Notes:** Hard-rule overrides for prepayment/cancellation and confidence-based selection.
 
 ## Blockers
 

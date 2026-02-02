@@ -245,7 +245,7 @@ The following skill changes impact this plan:
 | TASK-08 | IMPLEMENT | Update `card-operations.md` to use agent API | 85% | S | Complete (2026-02-02) | TASK-02, TASK-02a, TASK-02b, TASK-03 |
 | TASK-09 | IMPLEMENT | Migrate `/work-idea` skill to API writes | 82% | M | Complete (2026-02-02) | TASK-08 |
 | TASK-10 | IMPLEMENT | Migrate `/build-feature` skill to API writes | 82% | M | Complete (2026-02-02) | TASK-08, TASK-02b |
-| TASK-11 | IMPLEMENT | Migrate remaining skills (`/fact-find`, etc.) | 82% | M | Pending | TASK-08 |
+| TASK-11 | IMPLEMENT | Migrate remaining skills (`/fact-find`, etc.) | 82% | M | Complete (2026-02-02) | TASK-08 |
 | TASK-12 | IMPLEMENT | Update Business OS charter for D1-canonical reality | 90% | S | Pending | TASK-09 |
 | TASK-13 | IMPLEMENT | Remove deprecated `repo-writer.ts` and scan-based allocation | 85% | S | Pending | TASK-11, TASK-06 |
 
@@ -1306,6 +1306,26 @@ The following skill changes impact this plan:
   - Skill: `.claude/skills/build-feature/SKILL.md`
 
 ### TASK-11: Migrate remaining skills (`/fact-find`, `/propose-lane-move`, etc.)
+
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** 9ed08c64af
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03, TC-04, TC-05, TC-06, TC-07 (doc review)
+  - Red-green cycles: 1
+  - Initial test run: N/A (documentation update)
+  - Post-implementation: N/A
+- **Confidence reassessment:**
+  - Original: 82%
+  - Post-test: 82%
+  - Delta reason: Skills updated to API-only workflow with conflict retry guidance
+- **Validation:**
+  - Not run: tests (documentation-only change)
+- **Documentation updated:**
+  - `.claude/skills/fact-find/SKILL.md`
+  - `.claude/skills/plan-feature/SKILL.md`
+  - `.claude/skills/propose-lane-move/SKILL.md`
+- **Implementation notes:** Replaced all card/stage-doc markdown writes with agent API calls, added fail-closed behavior and 409 retry guidance, and aligned templates to content-only payloads.
 
 - **Type:** IMPLEMENT
 - **Affects:**

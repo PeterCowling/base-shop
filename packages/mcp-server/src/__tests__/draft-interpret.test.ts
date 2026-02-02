@@ -9,6 +9,15 @@ function parseResult(result: { content: Array<{ text: string }> }) {
     intents: { questions: Array<{ text: string }>; requests: Array<{ text: string }>; confirmations: Array<{ text: string }> };
     agreement: { status: string };
     scenario: { category: string; confidence: number };
+    thread_summary?: {
+      prior_commitments: string[];
+      open_questions: string[];
+      resolved_questions: string[];
+      tone_history: string;
+      guest_name: string;
+      language_used: string;
+      previous_response_count: number;
+    };
   };
 }
 
@@ -60,5 +69,62 @@ describe("draft_interpret", () => {
     const result = await handleDraftInterpretTool("draft_interpret", { body: "Hello" });
     const payload = parseResult(result);
     expect(payload.normalized_text).toBeDefined();
+  });
+
+  it("TC-07: summarizes thread context", async () => {
+    const threadContext = {
+      messages: [
+        {
+          from: "Guest One <guest@example.com>",
+          date: "Mon, 01 Jan 2026 10:00:00 +0000",
+          snippet: "Hello, can we add one more person?",
+        },
+        {
+          from: "Hostel Brikette <info@hostel-positano.com>",
+          date: "Mon, 01 Jan 2026 12:00:00 +0000",
+          snippet: "We can add another guest for €20 per night.",
+        },
+        {
+          from: "Guest One <guest@example.com>",
+          date: "Tue, 02 Jan 2026 09:00:00 +0000",
+          snippet: "Thanks! Also, what time is check-in?",
+        },
+      ],
+    };
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "Thanks! Also, what time is check-in?",
+      threadContext,
+    });
+    const payload = parseResult(result);
+    expect(payload.thread_summary?.prior_commitments).toContain(
+      "We can add another guest for €20 per night."
+    );
+    expect(payload.thread_summary?.open_questions).toContain("Also, what time is check-in?");
+    expect(payload.thread_summary?.resolved_questions).toContain("Hello, can we add one more person?");
+    expect(payload.thread_summary?.guest_name).toBe("Guest One");
+    expect(payload.thread_summary?.previous_response_count).toBe(1);
+  });
+
+  it("TC-08: tone history detects mixed tone", async () => {
+    const threadContext = {
+      messages: [
+        {
+          from: "Guest Two <guest2@example.com>",
+          date: "Mon, 01 Jan 2026 10:00:00 +0000",
+          snippet: "Dear team, could you help?",
+        },
+        {
+          from: "Hostel Brikette <info@hostel-positano.com>",
+          date: "Mon, 01 Jan 2026 11:00:00 +0000",
+          snippet: "Hi! Sure thing.",
+        },
+      ],
+    };
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "Thanks!",
+      threadContext,
+    });
+    const payload = parseResult(result);
+    expect(payload.thread_summary?.tone_history).toBe("mixed");
   });
 });

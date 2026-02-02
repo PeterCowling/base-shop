@@ -27,6 +27,22 @@ type ScenarioClassification = {
   confidence: number;
 };
 
+type ThreadMessage = {
+  from: string;
+  date: string;
+  snippet: string;
+};
+
+type ThreadSummary = {
+  prior_commitments: string[];
+  open_questions: string[];
+  resolved_questions: string[];
+  tone_history: "formal" | "casual" | "mixed";
+  guest_name: string;
+  language_used: string;
+  previous_response_count: number;
+};
+
 export type EmailActionPlan = {
   normalized_text: string;
   language: "EN" | "IT" | "ES" | "UNKNOWN";
@@ -38,11 +54,23 @@ export type EmailActionPlan = {
   agreement: AgreementDetection;
   workflow_triggers: WorkflowTriggers;
   scenario: ScenarioClassification;
+  thread_summary?: ThreadSummary;
 };
 
 const draftInterpretSchema = z.object({
   body: z.string().min(1),
   subject: z.string().optional(),
+  threadContext: z
+    .object({
+      messages: z.array(
+        z.object({
+          from: z.string().min(1),
+          date: z.string().min(1),
+          snippet: z.string().min(1),
+        })
+      ),
+    })
+    .optional(),
 });
 
 export const draftInterpretTools = [
@@ -54,6 +82,24 @@ export const draftInterpretTools = [
       properties: {
         body: { type: "string", description: "Raw email body (plain text)" },
         subject: { type: "string", description: "Email subject (optional)" },
+        threadContext: {
+          type: "object",
+          description: "Optional thread context with prior messages",
+          properties: {
+            messages: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  from: { type: "string" },
+                  date: { type: "string" },
+                  snippet: { type: "string" },
+                },
+                required: ["from", "date", "snippet"],
+              },
+            },
+          },
+        },
       },
       required: ["body"],
     },
@@ -96,6 +142,113 @@ function detectLanguage(text: string): "EN" | "IT" | "ES" | "UNKNOWN" {
     return "EN";
   }
   return "UNKNOWN";
+}
+
+function parseDisplayName(from: string): string {
+  const angleMatch = from.match(/^(.*?)<[^>]+>$/);
+  if (angleMatch) {
+    return angleMatch[1].replace(/"/g, "").trim();
+  }
+  const atIndex = from.indexOf("@");
+  if (atIndex > 0) {
+    return from.slice(0, atIndex).trim();
+  }
+  return from.trim();
+}
+
+function isStaffSender(from: string): boolean {
+  const lower = from.toLowerCase();
+  return (
+    lower.includes("brikette") ||
+    lower.includes("hostel") ||
+    lower.includes("info@") ||
+    lower.includes("pete") ||
+    lower.includes("cristiana") ||
+    lower.includes("hostel-positano.com")
+  );
+}
+
+function extractQuestionsFromText(text: string): string[] {
+  return text
+    .split("?")
+    .map(segment => segment.trim())
+    .filter(segment => segment.length > 0)
+    .map(segment => segment.replace(/^(thanks!?\s*)/i, "").trim())
+    .map(segment => `${segment}?`);
+}
+
+function summarizeThreadContext(
+  threadContext: { messages: ThreadMessage[] } | undefined,
+  normalizedText: string
+): ThreadSummary | undefined {
+  if (!threadContext || threadContext.messages.length === 0) {
+    return undefined;
+  }
+
+  const messages = threadContext.messages;
+  const staffMessages = messages.filter(message => isStaffSender(message.from));
+  const guestMessages = messages.filter(message => !isStaffSender(message.from));
+
+  const prior_commitments = staffMessages
+    .map(message => message.snippet.trim())
+    .filter(
+      snippet =>
+        /\bwe\b/i.test(snippet) ||
+        /\bcan\b/i.test(snippet) ||
+        /\bwill\b/i.test(snippet) ||
+        /\bincluded\b/i.test(snippet) ||
+        /check-?in/i.test(snippet)
+    );
+
+  let pendingQuestions: string[] = [];
+  const resolved_questions: string[] = [];
+  for (const message of messages) {
+    if (isStaffSender(message.from)) {
+      if (pendingQuestions.length > 0) {
+        resolved_questions.push(...pendingQuestions);
+        pendingQuestions = [];
+      }
+      continue;
+    }
+    const questions = extractQuestionsFromText(message.snippet);
+    pendingQuestions.push(...questions);
+  }
+
+  const latestGuest = guestMessages[guestMessages.length - 1];
+  const open_questions = latestGuest
+    ? extractQuestionsFromText(latestGuest.snippet)
+    : extractQuestionsFromText(normalizedText);
+
+  const toneFlags = { formal: false, casual: false };
+  for (const message of messages) {
+    const snippet = message.snippet.toLowerCase();
+    if (/(\bdear\b|\bsincerely\b)/.test(snippet)) {
+      toneFlags.formal = true;
+    }
+    if (/(\bhi\b|\bhello\b|\bthanks\b)/.test(snippet)) {
+      toneFlags.casual = true;
+    }
+  }
+  const tone_history = toneFlags.formal && toneFlags.casual
+    ? "mixed"
+    : toneFlags.formal
+      ? "formal"
+      : "casual";
+
+  const guest_name = latestGuest ? parseDisplayName(latestGuest.from) : "";
+  const language_used = detectLanguage(
+    `${normalizedText}\n${messages.map(message => message.snippet).join(" ")}`
+  );
+
+  return {
+    prior_commitments,
+    open_questions,
+    resolved_questions,
+    tone_history,
+    guest_name,
+    language_used,
+    previous_response_count: staffMessages.length,
+  };
 }
 
 function extractQuestions(text: string): IntentItem[] {
@@ -197,7 +350,7 @@ export async function handleDraftInterpretTool(name: string, args: unknown) {
   }
 
   try {
-    const { body, subject } = draftInterpretSchema.parse(args);
+    const { body, subject, threadContext } = draftInterpretSchema.parse(args);
     const normalized = normalizeThread(body);
     const language = detectLanguage(normalized);
     const questions = extractQuestions(normalized);
@@ -217,6 +370,11 @@ export async function handleDraftInterpretTool(name: string, args: unknown) {
       workflow_triggers: detectWorkflowTriggers(`${subject ?? ""}\n${normalized}`),
       scenario: classifyScenario(`${subject ?? ""}\n${normalized}`),
     };
+
+    const threadSummary = summarizeThreadContext(threadContext, normalized);
+    if (threadSummary) {
+      plan.thread_summary = threadSummary;
+    }
 
     return jsonResult(plan);
   } catch (error) {

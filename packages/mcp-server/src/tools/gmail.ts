@@ -354,7 +354,7 @@ function createRawEmail(
 // Tool Handler
 // =============================================================================
 
-// eslint-disable-next-line complexity
+// eslint-disable-next-line complexity -- BRIK-ENG-0020
 export async function handleGmailTool(name: string, args: unknown) {
   // Get Gmail client
   const clientResult = await getGmailClient();

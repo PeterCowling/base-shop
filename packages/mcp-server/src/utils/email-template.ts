@@ -1,4 +1,4 @@
-/* eslint-disable ds/no-raw-color, ds/no-raw-font */
+/* eslint-disable ds/no-raw-color, ds/no-raw-font -- BRIK-ENG-0020 */
 /**
  * HTML Email Template for Brikette Draft Responses
  *

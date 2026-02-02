@@ -135,7 +135,7 @@ Plan-Link: docs/plans/email-autodraft-consolidation-plan.md
 
 ### 2026-02-02 - TASK-14
 - **Action:** Updated process-emails skill to the three-stage pipeline with agreement handling.
-- **Commits:** TBD
+- **Commits:** b5b0aa4513
 - **Validation:** Manual review (documentation)
 - **Notes:** Added draft_interpret → draft_generate → draft_quality_check flow and resource references.
 

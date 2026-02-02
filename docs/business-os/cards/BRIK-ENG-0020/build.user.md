@@ -21,7 +21,7 @@ Plan-Link: docs/plans/email-autodraft-consolidation-plan.md
 | TASK-01 | Interpretation stage tool | Complete | 2026-02-02 |
 | TASK-02 | Thread context summarizer | Complete | 2026-02-02 |
 | TASK-03 | Quality gate tool | Complete | 2026-02-02 |
-| TASK-04 | Draft quality framework resource | Pending | - |
+| TASK-04 | Draft quality framework resource | Complete | 2026-02-02 |
 | TASK-05 | Voice/tone examples resource | Pending | - |
 | TASK-06 | Port GAS email formatting | Complete | 2026-02-02 |
 | TASK-08 | Label state machine | Complete | 2026-02-02 |
@@ -35,6 +35,13 @@ Plan-Link: docs/plans/email-autodraft-consolidation-plan.md
 | TASK-17 | Reception email routing | Complete | 2026-02-02 |
 
 ## Build Log
+
+
+### 2026-02-02 - TASK-04
+- **Action:** Added draft quality guide resource and tests.
+- **Commits:** 40f4bb3493
+- **Validation:** `pnpm --filter mcp-server test -- packages/mcp-server/src/__tests__/draft-guide.test.ts` (pass), `pnpm --filter mcp-server lint` (pass), `pnpm --filter mcp-server build` (pass)
+- **Notes:** Added cached draft guide JSON and resource handler.
 
 
 ### 2026-02-02 - TASK-03

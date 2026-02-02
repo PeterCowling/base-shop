@@ -127,7 +127,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 | TASK-01 | IMPLEMENT | Interpretation stage tool | 82% ✅ | L | Complete (2026-02-02) | TASK-00 |
 | TASK-02 | IMPLEMENT | Thread context summarizer | 82% ✅ | M | Complete (2026-02-02) | TASK-01 |
 | TASK-03 | IMPLEMENT | Quality gate tool | 80% | M | Complete (2026-02-02) | TASK-01 |
-| TASK-04 | IMPLEMENT | Draft quality framework resource | 85% | M | Pending | TASK-00 |
+| TASK-04 | IMPLEMENT | Draft quality framework resource | 85% | M | Complete (2026-02-02) | TASK-00 |
 | TASK-05 | IMPLEMENT | Voice/tone examples resource | 85% | M | Pending | TASK-04 |
 | TASK-06 | IMPLEMENT | Port GAS email formatting | 82% | M | Completed | - |
 | TASK-07 | INVESTIGATE | Email deliverability testing | 88% | S | Pending | TASK-06 |
@@ -451,6 +451,26 @@ Consolidate the disparate email autodraft system components into a world-class d
 ---
 
 ### TASK-04: Create Draft Quality Framework Resource
+
+
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** 40f4bb3493
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03, TC-04
+  - Red-green cycles: 1 (tests executed after implementation)
+  - Initial test run: N/A
+  - Post-implementation: PASS
+- **Confidence reassessment:**
+  - Original: 85%
+  - Post-test: 85%
+  - Delta reason: tests validated assumptions
+- **Validation:**
+  - Ran: `pnpm --filter mcp-server test -- packages/mcp-server/src/__tests__/draft-guide.test.ts` — PASS
+  - Ran: `pnpm --filter mcp-server lint` — PASS
+  - Ran: `pnpm --filter mcp-server build` — PASS
+- **Documentation updated:** None required
+- **Implementation notes:** Added brikette://draft-guide resource with cached JSON guide.
 
 - **Type:** IMPLEMENT
 - **Affects:** `packages/mcp-server/src/resources/draft-guide.ts` (new), `packages/mcp-server/data/draft-guide.json` (new)

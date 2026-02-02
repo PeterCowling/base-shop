@@ -5,6 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
+  next: 15.3.9
   '@shadcn/ui': 0.0.4
   yallist: 4.0.0
   dom-serializer: 2.0.0
@@ -25,7 +26,7 @@ overrides:
   qs: '>=6.14.1'
   validator: '>=13.15.22'
   undici: '>=6.23.0'
-  tar: '>=7.5.4'
+  tar: '>=7.5.7'
   axios: '>=1.12.0'
 
 importers:
@@ -729,7 +730,7 @@ importers:
         specifier: ^14.1.0
         version: 14.1.0
       next:
-        specifier: ^15.3.9
+        specifier: 15.3.9
         version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       react:
         specifier: 19.2.1
@@ -795,7 +796,7 @@ importers:
         specifier: ^0.540.0
         version: 0.540.0(react@19.2.1)
       next:
-        specifier: ^15.3.9
+        specifier: 15.3.9
         version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       react:
         specifier: 19.2.1
@@ -980,7 +981,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/tailwind-config
       next:
-        specifier: ^15.3.9
+        specifier: 15.3.9
         version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       react:
         specifier: 19.2.1
@@ -1052,7 +1053,7 @@ importers:
         version: 19.2.1(react@19.2.1)
     devDependencies:
       next:
-        specifier: ^15.3.9
+        specifier: 15.3.9
         version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
 
   apps/dashboard:
@@ -1091,7 +1092,7 @@ importers:
         specifier: ^9.5.0
         version: 9.5.0(@types/react@19.1.8)(immer@10.1.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(three@0.182.0)
       next:
-        specifier: ^15.3.9
+        specifier: 15.3.9
         version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       react:
         specifier: 19.2.1
@@ -1173,7 +1174,7 @@ importers:
         specifier: ^0.540.0
         version: 0.540.0(react@19.2.1)
       next:
-        specifier: ^15.3.9
+        specifier: 15.3.9
         version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       react:
         specifier: 19.2.1
@@ -1240,7 +1241,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/themes/base
       next:
-        specifier: ^15.3.9
+        specifier: 15.3.9
         version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       react:
         specifier: 19.2.1
@@ -1297,7 +1298,7 @@ importers:
         specifier: ^0.540.0
         version: 0.540.0(react@19.2.1)
       next:
-        specifier: ^15.3.9
+        specifier: 15.3.9
         version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       react:
         specifier: 19.2.1
@@ -1349,7 +1350,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/tailwind-config
       next:
-        specifier: ^15.3.9
+        specifier: 15.3.9
         version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       react:
         specifier: 19.2.1
@@ -1420,7 +1421,7 @@ importers:
         version: 19.2.1(react@19.2.1)
     devDependencies:
       next:
-        specifier: ^15.3.9
+        specifier: 15.3.9
         version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       typescript:
         specifier: 5.8.3
@@ -1478,7 +1479,7 @@ importers:
         version: 19.2.1(react@19.2.1)
     devDependencies:
       next:
-        specifier: ^15.3.9
+        specifier: 15.3.9
         version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       typescript:
         specifier: 5.8.3
@@ -1538,7 +1539,7 @@ importers:
         version: 19.2.1(react@19.2.1)
     devDependencies:
       next:
-        specifier: ^15.3.9
+        specifier: 15.3.9
         version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       typescript:
         specifier: 5.8.3
@@ -1584,7 +1585,7 @@ importers:
         specifier: ^3.3.0
         version: 3.3.0
       next:
-        specifier: ^15.3.9
+        specifier: 15.3.9
         version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       typescript:
         specifier: 5.8.3
@@ -1617,13 +1618,13 @@ importers:
         version: 12.0.1
     devDependencies:
       next:
-        specifier: ^15.3.9
+        specifier: 15.3.9
         version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
 
   packages/cms-marketing:
     devDependencies:
       next:
-        specifier: ^15.3.9
+        specifier: 15.3.9
         version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
 
   packages/cms-ui:
@@ -1677,8 +1678,8 @@ importers:
         specifier: ^3.2.4
         version: 3.2.6
       next:
-        specifier: '>=15'
-        version: 15.3.8(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+        specifier: 15.3.9
+        version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       react:
         specifier: '>=19 <20'
         version: 19.2.1
@@ -1807,8 +1808,8 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       next:
-        specifier: '>=15'
-        version: 15.3.8(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+        specifier: 15.3.9
+        version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       react:
         specifier: '>=19 <20'
         version: 19.2.1
@@ -1950,7 +1951,7 @@ importers:
         version: link:../types
     devDependencies:
       next:
-        specifier: ^15.3.9
+        specifier: 15.3.9
         version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
 
   packages/lib:
@@ -1972,7 +1973,7 @@ importers:
         version: 3.25.73
     devDependencies:
       next:
-        specifier: ^15.3.9
+        specifier: 15.3.9
         version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
 
   packages/mcp-cloudflare:
@@ -2040,7 +2041,7 @@ importers:
         specifier: 15.3.5
         version: 15.3.5
       next:
-        specifier: ^15.3.9
+        specifier: 15.3.9
         version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
 
   packages/page-builder-core:
@@ -2053,7 +2054,7 @@ importers:
         version: 3.25.73
     devDependencies:
       next:
-        specifier: ^15.3.9
+        specifier: 15.3.9
         version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
 
   packages/page-builder-ui:
@@ -2069,7 +2070,7 @@ importers:
         version: link:../ui
     devDependencies:
       next:
-        specifier: ^15.3.9
+        specifier: 15.3.9
         version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
 
   packages/pipeline-engine: {}
@@ -2116,7 +2117,7 @@ importers:
         specifier: ^1.0.20
         version: 1.0.20
       next:
-        specifier: ^15.3.9
+        specifier: 15.3.9
         version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       react:
         specifier: '>=19 <20'
@@ -2154,7 +2155,7 @@ importers:
         version: 19.2.1(react@19.2.1)
     devDependencies:
       next:
-        specifier: ^15.3.9
+        specifier: 15.3.9
         version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
 
   packages/plugins/paypal:
@@ -2220,6 +2221,9 @@ importers:
       '@acme/auth':
         specifier: workspace:*
         version: link:../auth
+      '@acme/cms-ui':
+        specifier: workspace:*
+        version: link:../cms-ui
       '@acme/config':
         specifier: workspace:*
         version: link:../config
@@ -2261,7 +2265,7 @@ importers:
         version: 19.2.1(react@19.2.1)
     devDependencies:
       next:
-        specifier: ^15.3.9
+        specifier: 15.3.9
         version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
 
   packages/templates:
@@ -2274,7 +2278,7 @@ importers:
         version: link:../page-builder-core
     devDependencies:
       next:
-        specifier: ^15.3.9
+        specifier: 15.3.9
         version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
 
   packages/test-utils: {}
@@ -2311,7 +2315,7 @@ importers:
         version: 3.25.73
     devDependencies:
       next:
-        specifier: ^15.3.9
+        specifier: 15.3.9
         version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
 
   packages/ui:
@@ -4908,9 +4912,6 @@ packages:
   '@next/env@15.3.5':
     resolution: {integrity: sha512-7g06v8BUVtN2njAX/r8gheoVffhiKFVt4nx74Tt6G4Hqw9HCLYQVx/GkH2qHvPtAHZaUNZ0VXAa0pQP6v1wk7g==}
 
-  '@next/env@15.3.8':
-    resolution: {integrity: sha512-SAfHg0g91MQVMPioeFeDjE+8UPF3j3BvHjs8ZKJAUz1BG7eMPvfCKOAgNWJ6s1MLNeP6O2InKQRTNblxPWuq+Q==}
-
   '@next/env@15.3.9':
     resolution: {integrity: sha512-I7wMCjlHc85EvAebNYJCRBZ+shdrGhcIXBviWmDzGYXwTQ+WrYpfg1LBOnTK1Bn3b+ud5apesNObXKEGqi/C3g==}
 
@@ -6229,7 +6230,7 @@ packages:
   '@storybook/nextjs-vite@10.1.4':
     resolution: {integrity: sha512-pu7GqxLWJPNVTiZ+Gp9Yha+7j7hLlGsh9AdfqivvOWzMEEwAFJWPqFCThr2g2M9pARO7Jz4Yo11+QNyTHGw5FA==}
     peerDependencies:
-      next: ^14.1.0 || ^15.0.0 || ^16.0.0
+      next: 15.3.9
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       storybook: ^10.1.4
@@ -6242,7 +6243,7 @@ packages:
   '@storybook/nextjs@10.1.4':
     resolution: {integrity: sha512-s2URBLIXPnHaNFCcZRVs+zey01b2DRIH7NAYUQhX89KaTk55+R6oA3H5OG1uRnXf8mDgDJ7kWhR4QlaeHeuvgw==}
     peerDependencies:
-      next: ^14.1.0 || ^15.0.0 || ^16.0.0
+      next: 15.3.9
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       storybook: ^10.1.4
@@ -10937,7 +10938,7 @@ packages:
     peerDependencies:
       express: '>=4'
       koa: '>=2'
-      next: '>=10'
+      next: 15.3.9
     peerDependenciesMeta:
       express:
         optional: true
@@ -12656,7 +12657,7 @@ packages:
     resolution: {integrity: sha512-pCFXzIDQX7xmHFs4KVH4luCjaCbuPRtZ9oBUjUhOk84mZ9WVPf94n87TxYI4rSRf9HmfHEF8Yep3JrYDVOo3Cw==}
     peerDependencies:
       '@auth/core': 0.34.2
-      next: ^12.2.5 || ^13 || ^14 || ^15
+      next: 15.3.9
       nodemailer: ^6.6.5
       react: ^17.0.2 || ^18 || ^19
       react-dom: ^17.0.2 || ^18 || ^19
@@ -12669,7 +12670,7 @@ packages:
   next-intl@3.26.5:
     resolution: {integrity: sha512-EQlCIfY0jOhRldiFxwSXG+ImwkQtDEfQeSOEQp6ieAGSLWGlgjdb/Ck/O7wMfC430ZHGeUKVKax8KGusTPKCgg==}
     peerDependencies:
-      next: ^10.0.0 || ^11.0.0 || ^12.0.0 || ^13.0.0 || ^14.0.0 || ^15.0.0
+      next: 15.3.9
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || >=19.0.0-rc <19.0.0 || ^19.0.0
 
   next-secure-headers@2.2.0:
@@ -12679,30 +12680,9 @@ packages:
   next-seo@6.8.0:
     resolution: {integrity: sha512-zcxaV67PFXCSf8e6SXxbxPaOTgc8St/esxfsYXfQXMM24UESUVSXFm7f2A9HMkAwa0Gqn4s64HxYZAGfdF4Vhg==}
     peerDependencies:
-      next: ^8.1.1-canary.54 || >=9.0.0
+      next: 15.3.9
       react: '>=16.0.0'
       react-dom: '>=16.0.0'
-
-  next@15.3.8:
-    resolution: {integrity: sha512-L+4c5Hlr84fuaNADZbB9+ceRX9/CzwxJ+obXIGHupboB/Q1OLbSUapFs4bO8hnS/E6zV/JDX7sG1QpKVR2bguA==}
-    engines: {node: ^18.18.0 || ^19.8.0 || >= 20.0.0}
-    hasBin: true
-    peerDependencies:
-      '@opentelemetry/api': ^1.1.0
-      '@playwright/test': ^1.41.2
-      babel-plugin-react-compiler: '*'
-      react: ^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0
-      react-dom: ^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0
-      sass: ^1.3.0
-    peerDependenciesMeta:
-      '@opentelemetry/api':
-        optional: true
-      '@playwright/test':
-        optional: true
-      babel-plugin-react-compiler:
-        optional: true
-      sass:
-        optional: true
 
   next@15.3.9:
     resolution: {integrity: sha512-bat50ogkh2esjfkbqmVocL5QunR9RGCSO2oQKFjKeDcEylIgw3JY6CMfGnzoVfXJ9SDLHI546sHmsk90D2ivwQ==}
@@ -14948,10 +14928,9 @@ packages:
   tar-stream@3.1.7:
     resolution: {integrity: sha512-qJj60CXt7IU1Ffyc3NJMjh6EkuCFej46zUqJ4J7pqYlThyd9bO0XBTmcOIhSzZJVWfsLks0+nle/j538YAW9RQ==}
 
-  tar@7.5.6:
-    resolution: {integrity: sha512-xqUeu2JAIJpXyvskvU3uvQW8PAmHrtXp2KDuMJwQqW8Sqq0CaZBAQ+dKS3RBXVhU4wC5NjAdKrmh84241gO9cA==}
+  tar@7.5.7:
+    resolution: {integrity: sha512-fov56fJiRuThVFXD6o6/Q354S7pnWMJIVlDBYijsTNx6jKSE4pvrDTs6lUnmGvNyfJwFQQwWy3owKz1ucIhveQ==}
     engines: {node: '>=18'}
-    deprecated: Old versions of tar are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exhorbitant rates) by contacting i@izs.me
 
   term-img@5.0.0:
     resolution: {integrity: sha512-Wpi50MA7bJwJKi5bVYu/t+xu9kNqesdzg6gWHOh3+1R9NRx1LmYoCMly9bUiabMZPNPH3juT8lOhZxUYxPEIBw==}
@@ -15703,7 +15682,7 @@ packages:
   vite-plugin-storybook-nextjs@3.1.5:
     resolution: {integrity: sha512-Wwp9V2P9ZcAFbe3aWb0eTLEvZAiNtQ7Ry3k0p3vloE2fCgojZO44895ISXU3Fy9ndVGhaOOcmPfxmG4h1YqdcQ==}
     peerDependencies:
-      next: ^14.1.0 || ^15.0.0 || ^16.0.0
+      next: 15.3.9
       storybook: ^0.0.0-0 || ^9.0.0 || ^10.0.0 || ^10.0.0-0 || ^10.1.0-0 || ^10.2.0-0
       vite: ^5.0.0 || ^6.0.0 || ^7.0.0
 
@@ -18860,7 +18839,7 @@ snapshots:
       node-fetch: 2.7.0(encoding@0.1.13)
       nopt: 8.1.0
       semver: 7.7.3
-      tar: 7.5.6
+      tar: 7.5.7
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -18941,8 +18920,6 @@ snapshots:
   '@neoconfetti/react@1.0.0': {}
 
   '@next/env@15.3.5': {}
-
-  '@next/env@15.3.8': {}
 
   '@next/env@15.3.9': {}
 
@@ -20823,7 +20800,7 @@ snapshots:
   '@tailwindcss/oxide@4.1.11':
     dependencies:
       detect-libc: 2.1.0
-      tar: 7.5.6
+      tar: 7.5.7
     optionalDependencies:
       '@tailwindcss/oxide-android-arm64': 4.1.11
       '@tailwindcss/oxide-darwin-arm64': 4.1.11
@@ -21712,7 +21689,7 @@ snapshots:
       semver: 7.7.3
       stat-mode: 0.3.0
       stream-to-promise: 2.2.0
-      tar: 7.5.6
+      tar: 7.5.7
       tinyexec: 0.3.2
       tree-kill: 1.2.2
       uid-promise: 1.0.0
@@ -28614,33 +28591,6 @@ snapshots:
       react: 19.2.1
       react-dom: 19.2.1(react@19.2.1)
 
-  next@15.3.8(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
-    dependencies:
-      '@next/env': 15.3.8
-      '@swc/counter': 0.1.3
-      '@swc/helpers': 0.5.15
-      busboy: 1.6.0
-      caniuse-lite: 1.0.30001764
-      postcss: 8.4.31
-      react: 19.2.1
-      react-dom: 19.2.1(react@19.2.1)
-      styled-jsx: 5.1.6(@babel/core@7.28.4)(babel-plugin-macros@3.1.0)(react@19.2.1)
-    optionalDependencies:
-      '@next/swc-darwin-arm64': 15.3.5
-      '@next/swc-darwin-x64': 15.3.5
-      '@next/swc-linux-arm64-gnu': 15.3.5
-      '@next/swc-linux-arm64-musl': 15.3.5
-      '@next/swc-linux-x64-gnu': 15.3.5
-      '@next/swc-linux-x64-musl': 15.3.5
-      '@next/swc-win32-arm64-msvc': 15.3.5
-      '@next/swc-win32-x64-msvc': 15.3.5
-      '@opentelemetry/api': 1.9.0
-      '@playwright/test': 1.58.0
-      sharp: 0.34.5
-    transitivePeerDependencies:
-      - '@babel/core'
-      - babel-plugin-macros
-
   next@15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
     dependencies:
       '@next/env': 15.3.9
@@ -31264,7 +31214,7 @@ snapshots:
       fast-fifo: 1.3.2
       streamx: 2.22.1
 
-  tar@7.5.6:
+  tar@7.5.7:
     dependencies:
       '@isaacs/fs-minipass': 4.0.1
       chownr: 3.0.0

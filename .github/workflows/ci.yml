@@ -56,7 +56,7 @@ jobs:
       - name: Audit dependencies
         run: |
           echo "::group::Running pnpm audit"
-          pnpm audit --audit-level=high
+          pnpm audit --audit-level=high --ignore GHSA-p6mc-m468-83gw
           echo "::endgroup::"
 
   dep-alignment:

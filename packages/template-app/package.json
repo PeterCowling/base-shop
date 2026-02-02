@@ -31,6 +31,7 @@
     "@acme/sanity": "workspace:*",
     "@acme/page-builder-core": "workspace:*",
     "@acme/ui": "workspace:*",
+    "@acme/cms-ui": "workspace:*",
     "react": "19.2.1",
     "react-dom": "19.2.1"
   },

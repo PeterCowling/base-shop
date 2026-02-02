@@ -30,6 +30,9 @@ export default withShopCode(coreEnv.SHOP_CODE, {
       "drizzle-orm": false,
       // Allow platform-core theme loader to resolve local theme fixtures
       "@themes-local": path.resolve(__dirname, "../themes"),
+      // Explicitly map @acme/i18n to its dist output for proper resolution
+      
+      "@acme/i18n": path.resolve(__dirname, "../i18n/dist"),
     };
 
     // Map built-in node modules consistently (unchanged)

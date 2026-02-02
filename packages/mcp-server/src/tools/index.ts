@@ -2,6 +2,7 @@ import { errorResult } from "../utils/validation.js";
 
 import { analyticsTools, handleAnalyticsTool } from "./analytics.js";
 import { discountTools, handleDiscountTool } from "./discounts.js";
+import { gmailTools, handleGmailTool } from "./gmail.js";
 import { handleHealthTool,healthTools } from "./health.js";
 import { handleInventoryTool,inventoryTools } from "./inventory.js";
 import { handleOrderTool,orderTools } from "./orders.js";
@@ -26,6 +27,7 @@ export const toolDefinitions = [
   ...seoTools,
   ...discountTools,
   ...themeTools,
+  ...gmailTools,
 ];
 
 const shopToolNames = new Set(shopTools.map((t) => t.name));
@@ -40,6 +42,7 @@ const healthToolNames = new Set(healthTools.map((t) => t.name));
 const seoToolNames = new Set(seoTools.map((t) => t.name));
 const discountToolNames = new Set(discountTools.map((t) => t.name));
 const themeToolNames = new Set(themeTools.map((t) => t.name));
+const gmailToolNames = new Set(gmailTools.map((t) => t.name));
 
 export async function handleToolCall(name: string, args: unknown) {
   if (shopToolNames.has(name as never)) {
@@ -77,6 +80,9 @@ export async function handleToolCall(name: string, args: unknown) {
   }
   if (themeToolNames.has(name as never)) {
     return handleThemeTool(name, args);
+  }
+  if (gmailToolNames.has(name as never)) {
+    return handleGmailTool(name, args);
   }
   return errorResult(`Unknown tool: ${name}`);
 }

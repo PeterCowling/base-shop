@@ -2242,6 +2242,9 @@ importers:
       '@acme/page-builder-core':
         specifier: workspace:*
         version: link:../page-builder-core
+      '@acme/page-builder-ui':
+        specifier: workspace:*
+        version: link:../page-builder-ui
       '@acme/platform-core':
         specifier: workspace:*
         version: link:../platform-core

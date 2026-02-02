@@ -20,7 +20,7 @@ Create a confidence-gated implementation plan for a feature. Planning only: prod
 **Commits allowed:**
 - Plan file (`docs/plans/<slug>-plan.md`)
 - Test stub files for L-effort tasks
-- If BOS integration active: card files (`docs/business-os/cards/{CARD-ID}.*`) and stage docs
+- If BOS integration active: card/stage-doc updates via agent API (no markdown writes)
 
 ## Inputs
 
@@ -601,77 +601,60 @@ Include `Business-Unit` and/or `Card-ID` in the frontmatter when:
 
 **When:** After persisting the plan document, if `Card-ID` is present in frontmatter.
 
-**Step 1: Check for Card-ID**
+**Fail-closed:** if any API call fails, stop and surface the error. Do not write markdown files.
 
-If the fact-find brief or plan frontmatter contains `Card-ID`:
-- Verify the card exists at `docs/business-os/cards/{Card-ID}.user.md`
-- If card doesn't exist: warn user (card should have been created during /fact-find)
-- If card exists: proceed to Step 2
+**Step 1: Read card via API and lock Feature-Slug**
 
-**Step 2: Create planned stage doc**
+- Fetch the card via API.
+- If the card is missing: warn and stop (card should have been created during `/fact-find`).
+- Read `Feature-Slug` from the card frontmatter and use it (do not re-derive from title).
 
-Create `docs/business-os/cards/{CARD-ID}/planned.user.md`:
-
-```markdown
----
-Type: Stage-Doc
-Card-ID: {CARD-ID}
-Stage: Planned
-Created: {DATE}
-Owner: Pete
-Plan-Link: docs/plans/{feature-slug}-plan.md
-Plan-Confidence: {OVERALL-CONFIDENCE}%
----
-
-# Planned: {Feature Title}
-
-## Plan Reference
-
-**Plan Document:** `docs/plans/{feature-slug}-plan.md`
-
-**Overall Confidence:** {OVERALL-CONFIDENCE}%
-
-## Task Summary
-
-| Task ID | Description | Confidence | Status |
-|---------|-------------|------------|--------|
-{Table from plan document}
-
-## Key Decisions
-
-{Summarize key decisions from plan document}
-
-## Build Prerequisites
-
-- [ ] All IMPLEMENT tasks >=80% confidence
-- [ ] Dependencies resolved
-- [ ] Test infrastructure ready
-
-## Transition Criteria
-
-**To In Progress:**
-- Plan approved
-- At least one task ready to build
-- `/build-feature` initiated
+```json
+{
+  "method": "GET",
+  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/cards/PLAT-ENG-0023",
+  "headers": { "X-Agent-API-Key": "${BOS_AGENT_API_KEY}" }
+}
 ```
 
-See `.claude/skills/_shared/stage-doc-operations.md` for full template.
+**Step 2: Create planned stage doc via API**
 
-**Step 3: Update card frontmatter**
-
-Add plan metadata to the card's frontmatter in `docs/business-os/cards/{CARD-ID}.user.md`:
-
-```yaml
----
-Type: Card
-ID: {CARD-ID}
-Lane: Fact-finding
-# ... existing fields ...
-Plan-Link: docs/plans/{feature-slug}-plan.md
-Plan-Confidence: {OVERALL-CONFIDENCE}%
-Plan-Created: {DATE}
----
+```json
+{
+  "method": "POST",
+  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/stage-docs",
+  "headers": {
+    "X-Agent-API-Key": "${BOS_AGENT_API_KEY}",
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "cardId": "PLAT-ENG-0023",
+    "stage": "plan",
+    "content": "# Planned: {Feature Title}\n\n## Plan Reference\n\n**Plan Document:** `docs/plans/{feature-slug}-plan.md`\n\n**Overall Confidence:** {OVERALL-CONFIDENCE}%\n\n## Task Summary\n\n| Task ID | Description | Confidence | Status |\n|---------|-------------|------------|--------|\n{Table from plan document}\n\n## Key Decisions\n\n{Summarize key decisions from plan document}\n\n## Build Prerequisites\n\n- [ ] All IMPLEMENT tasks >=80% confidence\n- [ ] Dependencies resolved\n- [ ] Test infrastructure ready\n\n## Transition Criteria\n\n**To In Progress:**\n- Plan approved\n- At least one task ready to build\n- `/build-feature` initiated\n"
+  }
+}
 ```
+
+**Note:** `content` is the markdown body only (no frontmatter). The export job adds frontmatter.
+
+**Step 3: Update card Plan-Link via API**
+
+```json
+{
+  "method": "PATCH",
+  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/cards/PLAT-ENG-0023",
+  "headers": {
+    "X-Agent-API-Key": "${BOS_AGENT_API_KEY}",
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "baseEntitySha": "<entitySha from GET>",
+    "patch": { "Plan-Link": "docs/plans/{feature-slug}-plan.md" }
+  }
+}
+```
+
+**Conflict handling:** if PATCH returns 409, refetch and retry once. If it conflicts again, stop and surface the error.
 
 **Step 4: Propose lane transition (if all tasks >=80%)**
 
@@ -682,21 +665,25 @@ If all IMPLEMENT tasks are >=80% confidence, propose the lane transition.
 /propose-lane-move {CARD-ID} Planned
 ```
 
-**Option B: Inline proposal (set in card frontmatter)**
+**Option B: Inline proposal (API PATCH)**
 
-Add `Proposed-Lane` to the card's frontmatter:
-```yaml
----
-Type: Card
-ID: {CARD-ID}
-Lane: Fact-finding
-Proposed-Lane: Planned  # Lane transition proposal
-# ... other fields ...
----
+```json
+{
+  "method": "PATCH",
+  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/cards/PLAT-ENG-0023",
+  "headers": {
+    "X-Agent-API-Key": "${BOS_AGENT_API_KEY}",
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "baseEntitySha": "<entitySha from GET>",
+    "patch": { "Proposed-Lane": "Planned" }
+  }
+}
 ```
 
 **Evidence to cite for transition:**
-- Planned stage doc exists: `docs/business-os/cards/{CARD-ID}/planned.user.md`
+- Planned stage doc exists (API stage `plan`)
 - Plan doc with acceptance criteria: `docs/plans/{feature-slug}-plan.md`
 - All tasks have >=80% confidence
 
@@ -704,9 +691,7 @@ Proposed-Lane: Planned  # Lane transition proposal
 
 **Step 5: Validate**
 
-```bash
-pnpm docs:lint
-```
+- Documentation-only change; no automated validation required.
 
 ### Completion Message (with Business OS)
 
@@ -716,8 +701,8 @@ When Card-ID is present:
 >
 > **Business OS Integration:**
 > - Card: `<Card-ID>`
-> - Planned stage doc created: `docs/business-os/cards/<Card-ID>/planned.user.md`
-> - Card updated with plan link and confidence
+> - Planned stage doc created via API: `plan`
+> - Card updated with Plan-Link via API
 > - **Suggested lane transition:** Fact-finding -> Planned
 > - Run `/propose-lane-move <Card-ID> Planned` to formally propose transition
 >
@@ -729,8 +714,8 @@ When Card-ID is present but some tasks below threshold:
 >
 > **Business OS Integration:**
 > - Card: `<Card-ID>`
-> - Planned stage doc created: `docs/business-os/cards/<Card-ID>/planned.user.md`
-> - Card updated with plan link and confidence
+> - Planned stage doc created via API: `plan`
+> - Card updated with Plan-Link via API
 > - **Note:** Lane transition to Planned should wait until tasks >=80%
 >
 > Recommend `/re-plan` for blocked tasks."

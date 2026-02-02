@@ -12,10 +12,10 @@ Analyze a Business OS card's current state and propose a lane transition based o
 **READ-ONLY ANALYSIS + PROPOSAL**
 
 **Allowed:**
-- Read card frontmatter and content
-- Read all stage documents for the card
+- Read card data via agent API
+- Read all stage documents via agent API
 - Analyze evidence against lane transition criteria
-- Update card's `Proposed-Lane` frontmatter field with proposal
+- Update card's `Proposed-Lane` field via API PATCH
 
 **Not allowed:**
 - Moving card to new lane (Pete does this via UI after approval)
@@ -34,7 +34,7 @@ Analyze a Business OS card's current state and propose a lane transition based o
 
 ### From Inbox → Fact-finding
 - **Evidence required:** None (always allowed)
-- **Action:** Agent creates `fact-finding.user.md` stage doc via `/work-idea`
+- **Action:** Agent creates `fact-find` stage doc via `/work-idea` (API-backed)
 
 ### From Fact-finding → Planned
 - **Evidence required:**
@@ -78,11 +78,20 @@ Analyze a Business OS card's current state and propose a lane transition based o
 
 ## Workflow
 
-1. **Read card**
-   ```typescript
-   const reader = createRepoReader(repoRoot);
-   const card = await reader.getCard(cardId);
-   const stageDocs = await reader.getCardStageDocs(cardId);
+1. **Read card + stage docs via agent API**
+   ```json
+   {
+     "method": "GET",
+     "url": "${BOS_AGENT_API_BASE_URL}/api/agent/cards/BRIK-ENG-0001",
+     "headers": { "X-Agent-API-Key": "${BOS_AGENT_API_KEY}" }
+   }
+   ```
+   ```json
+   {
+     "method": "GET",
+     "url": "${BOS_AGENT_API_BASE_URL}/api/agent/stage-docs?cardId=BRIK-ENG-0001",
+     "headers": { "X-Agent-API-Key": "${BOS_AGENT_API_KEY}" }
+   }
    ```
 
 2. **Analyze current lane and evidence**
@@ -96,14 +105,14 @@ Analyze a Business OS card's current state and propose a lane transition based o
    - Consider lateral moves (In progress → Blocked, back to Planned)
 
 4. **Propose lane**
-   - Update card's `Proposed-Lane` frontmatter field
+   - Update card's `Proposed-Lane` field via API PATCH
    - Add comment explaining rationale and evidence references
    - Example:
      ```markdown
      ## Lane Move Proposal: Fact-finding → Planned
 
      **Evidence:**
-     - Fact-finding stage doc complete (see `cards/BRIK-ENG-0001/fact-finding.user.md`)
+     - Fact-finding stage doc complete (API stage `fact-find`)
      - Key questions answered in FAQ section
      - Blast radius: Medium (affects 3 files in `apps/brikette/src/components/`)
      - Evidence sources: repo-diff (commit abc123), measurement (page load reduced 200ms)
@@ -111,15 +120,23 @@ Analyze a Business OS card's current state and propose a lane transition based o
      **Recommendation:** Create plan doc before moving to Planned lane.
      ```
 
-5. **Commit proposal**
-   ```typescript
-   const writer = createRepoWriter(repoRoot);
-   await writer.updateCard(
-     cardId,
-     { "Proposed-Lane": targetLane },
-     CommitIdentities.agent
-   );
+5. **Persist proposal via API**
+   ```json
+   {
+     "method": "PATCH",
+     "url": "${BOS_AGENT_API_BASE_URL}/api/agent/cards/BRIK-ENG-0001",
+     "headers": {
+       "X-Agent-API-Key": "${BOS_AGENT_API_KEY}",
+       "Content-Type": "application/json"
+     },
+     "body": {
+       "baseEntitySha": "<entitySha from GET>",
+       "patch": { "Proposed-Lane": "Planned" }
+     }
+   }
    ```
+
+   **Conflict handling:** if PATCH returns 409, refetch and retry once. If it conflicts again, stop and surface the error.
 
 ## Evidence Quality Checks
 
@@ -167,7 +184,7 @@ Agent:
 I'll analyze BRIK-ENG-0001 and propose a lane move.
 
 [Reads card: currently in Fact-finding lane]
-[Reads stage docs: fact-finding.user.md exists]
+[Reads stage docs: fact-find stage exists]
 [Checks evidence: contains repo-diff evidence, measurement data, clear findings]
 
 Based on the analysis:
@@ -204,6 +221,7 @@ Done! Proposal added to BRIK-ENG-0001. Pete can review in the card detail view.
 - Pete-only approval (no automated approvals)
 - Agent identity used for all proposal commits
 - UI shows Proposed-Lane but Pete must manually update Lane field
+- Fail-closed: if API is unavailable or conflicts after retry, stop and surface the error
 - No notification system (Pete checks boards manually)
 
 ## Success Metrics

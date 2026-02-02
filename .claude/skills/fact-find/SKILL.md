@@ -24,7 +24,6 @@ Gather evidence and context before planning or as a standalone briefing.
 
 **Commits allowed:**
 - Brief/note file (`docs/plans/<slug>-fact-find.md` or `docs/briefs/<slug>-briefing.md`)
-- If BOS integration active: card files (`docs/business-os/cards/{CARD-ID}.*`) and stage docs
 
 ## Step 0: Discovery and Selection
 
@@ -32,7 +31,7 @@ Gather evidence and context before planning or as a standalone briefing.
 
 **If user provides a card ID or topic** (e.g., `/fact-find PLAT-ENG-0002` or `/fact-find email templates`):
 - Skip discovery entirely
-- If card ID: read `docs/business-os/cards/{CARD-ID}.user.md` directly
+- If card ID: read card via agent API (`GET /api/agent/cards/:id`)
 - If topic: proceed to "Ask for minimum inputs"
 - **Target: <2 seconds to start investigating**
 
@@ -72,7 +71,7 @@ This index contains all raw ideas, inbox cards, and fact-finding cards. Present 
    - "Which would you like to fact-find? Enter an ID (e.g., `PLAT-ENG-0002`) or describe a new topic."
    - Note: Raw ideas require `/work-idea` first to create a card before fact-finding.
 
-4. **If user selects a card:** Read the card file to extract context, then proceed.
+4. **If user selects a card:** Read the card via agent API to extract context, then proceed.
    **If user selects a raw idea:** Inform them to run `/work-idea {ID}` first, then return to `/fact-find`.
    **If user describes a new topic:** Proceed to intake questions.
 
@@ -80,7 +79,7 @@ This index contains all raw ideas, inbox cards, and fact-finding cards. Present 
 
 If the user selects a card ID from the discovery table:
 
-1. **Read the card file** (`docs/business-os/cards/{CARD-ID}.user.md`)
+1. **Read the card via agent API** (`GET /api/agent/cards/{CARD-ID}`)
 2. **Extract pre-populated context:**
    - `Title` → Topic/area
    - `Business` → Business-Unit for frontmatter
@@ -92,7 +91,7 @@ If the user selects a card ID from the discovery table:
 4. **Set frontmatter defaults:**
    - `Business-Unit`: from card's `Business` field
    - `Card-ID`: from the selected card
-   - `Feature-Slug`: derived from card title (kebab-case)
+   - `Feature-Slug`: read from card frontmatter if present (do not re-derive)
 5. **Skip to "Sufficiency gate"** with pre-filled context
 
 **Example flow for selected card:**
@@ -603,128 +602,87 @@ Include `Business-Unit` in the frontmatter when:
 
 **When:** After persisting the fact-find brief (Outcome A only), if `Business-Unit` is present in frontmatter.
 
+**Fail-closed:** if any API call fails, stop and surface the error. Do not write markdown files.
+
 **Step 1: Check for existing card**
 
-```bash
-# Check if Card-ID already exists in brief frontmatter
-# If yes: skip to Step 4 (create/update stage doc only)
-# If no: proceed to Step 2
+- If `Card-ID` already exists in the brief frontmatter: fetch the card via API and skip to Step 4.
+- Otherwise allocate a new ID via API (Step 2).
+
+```json
+{
+  "method": "GET",
+  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/cards/PLAT-ENG-0023",
+  "headers": { "X-Agent-API-Key": "${BOS_AGENT_API_KEY}" }
+}
 ```
 
-See `.claude/skills/_shared/card-operations.md` for idempotency check details.
+See `.claude/skills/_shared/card-operations.md` for idempotency details.
 
-**Step 2: Allocate Card-ID (scan-based)**
+**Step 2: Allocate Card-ID (API)**
 
-```bash
-BUSINESS="PLAT"  # From Business-Unit frontmatter
-MAX_ID=$(ls docs/business-os/cards/${BUSINESS}-ENG-*.user.md 2>/dev/null | \
-  sed 's/.*-ENG-\([0-9]*\)\.user\.md/\1/' | \
-  sort -n | tail -1)
-NEXT_ID=$(printf "%04d" $((${MAX_ID:-0} + 1)))
-CARD_ID="${BUSINESS}-ENG-${NEXT_ID}"
+```json
+{
+  "method": "POST",
+  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/allocate-id",
+  "headers": {
+    "X-Agent-API-Key": "${BOS_AGENT_API_KEY}",
+    "Content-Type": "application/json"
+  },
+  "body": { "business": "PLAT", "type": "card" }
+}
 ```
 
-**Step 3: Create card files**
+**Step 3: Create card via API**
 
-Create two files in `docs/business-os/cards/`:
+Use the returned ID (or the existing Card-ID). Include `Feature-Slug` and `Plan-Link` so later stages stay consistent.
 
-**`{CARD-ID}.user.md`:**
-```markdown
----
-Type: Card
-ID: {CARD-ID}
-Lane: Fact-finding
-Priority: P3
-Business: {BUSINESS-UNIT}
-Owner: Pete
-Created: {DATE}
-Title: {Feature title from brief}
-Feature-Slug: {feature-slug}
-Plan-Link: docs/plans/{feature-slug}-fact-find.md
----
-
-# {Feature Title}
-
-## Description
-{Summary from fact-find brief}
-
-## Value
-{Goals from fact-find brief}
-
-## Next Steps
-1. Complete fact-finding phase
-2. If findings are positive, proceed to /plan-feature
-3. Review evidence and transition to Planned lane
+```json
+{
+  "method": "POST",
+  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/cards",
+  "headers": {
+    "X-Agent-API-Key": "${BOS_AGENT_API_KEY}",
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "business": "PLAT",
+    "title": "{Feature title from brief}",
+    "description": "{Summary from fact-find brief}",
+    "lane": "Fact-finding",
+    "priority": "P3",
+    "owner": "Pete",
+    "Feature-Slug": "{feature-slug}",
+    "Plan-Link": "docs/plans/{feature-slug}-fact-find.md"
+  }
+}
 ```
 
-**`{CARD-ID}.agent.md`:**
-```markdown
----
-Type: Card
-ID: {CARD-ID}
-Lane: Fact-finding
-Priority: P3
-Business: {BUSINESS-UNIT}
-Owner: Pete
-Created: {DATE}
-Title: {Feature title from brief}
-Feature-Slug: {feature-slug}
-Plan-Link: docs/plans/{feature-slug}-fact-find.md
----
+**Step 4: Create fact-finding stage doc (API)**
 
-## Card: {CARD-ID}
-
-**Linked Artifacts:**
-- Fact-find: `docs/plans/{feature-slug}-fact-find.md`
-
-**Current Lane:** Fact-finding
-
-**Context for LLM:**
-- {Summary of what's being investigated}
-- {Key constraints from fact-find}
-
-**Transition Criteria:**
-- Fact-finding -> Planned: Requires completed fact-find with positive findings and /plan-feature
+```json
+{
+  "method": "POST",
+  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/stage-docs",
+  "headers": {
+    "X-Agent-API-Key": "${BOS_AGENT_API_KEY}",
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "cardId": "PLAT-ENG-0023",
+    "stage": "fact-find",
+    "content": "# Fact-Finding: {Feature Title}\n\n## Questions to Answer\n\n{Import questions from fact-find brief}\n\n## Findings\n\n{Import findings from fact-find brief or \"To be completed\"}\n\n## Recommendations\n\n{Import recommendations or \"To be completed based on findings\"}\n\n## Transition Decision\n\n**Status:** {Ready-for-planning | Needs-input | Needs more fact-finding}\n**Next Lane:** {If ready: Planned | Otherwise: Fact-finding}\n"
+  }
+}
 ```
 
-**Step 4: Create fact-finding stage doc**
-
-Create `docs/business-os/cards/{CARD-ID}/fact-finding.user.md`:
-
-```markdown
----
-Type: Stage-Doc
-Card-ID: {CARD-ID}
-Stage: Fact-finding
-Created: {DATE}
-Owner: Pete
----
-
-# Fact-Finding: {Feature Title}
-
-## Questions to Answer
-
-{Import questions from fact-find brief}
-
-## Findings
-
-{Import findings from fact-find brief or "To be completed"}
-
-## Recommendations
-
-{Import recommendations or "To be completed based on findings"}
-
-## Transition Decision
-
-**Status:** {Ready-for-planning | Needs-input | Needs more fact-finding}
-**Next Lane:** {If ready: Planned | Otherwise: Fact-finding}
-```
-
-See `.claude/skills/_shared/stage-doc-operations.md` for full template.
+**Note:** `content` is the markdown body only (no frontmatter). The export job adds frontmatter.
 
 **Step 5: Update brief frontmatter**
 
-Add `Card-ID` to the fact-find brief:
+- Add `Card-ID` to the fact-find brief.
+- If a card already existed, read `Feature-Slug` from the card and align the brief frontmatter (do not re-derive from title).
+
 ```yaml
 ---
 Type: Fact-Find
@@ -732,14 +690,9 @@ Outcome: Planning
 Status: Ready-for-planning
 # ... other fields ...
 Business-Unit: PLAT
-Card-ID: PLAT-ENG-0024  # Added after card creation
+Card-ID: PLAT-ENG-0023
+Feature-Slug: my-feature
 ---
-```
-
-**Step 6: Validate**
-
-```bash
-pnpm docs:lint
 ```
 
 ### Completion Message (with Business OS)
@@ -749,9 +702,8 @@ When Business-Unit is present and card is created:
 > "Fact-find complete. Brief saved to `docs/plans/<feature-slug>-fact-find.md`. Status: Ready-for-planning.
 >
 > **Business OS Integration:**
-> - Created card: `<Card-ID>`
-> - Card location: `docs/business-os/cards/<Card-ID>.user.md`
-> - Stage doc: `docs/business-os/cards/<Card-ID>/fact-finding.user.md`
+> - Created card via API: `<Card-ID>`
+> - Stage doc created via API: `fact-find`
 > - Card-ID added to brief frontmatter
 >
 > Proceed to `/plan-feature` once blocking questions are answered."
@@ -761,8 +713,8 @@ When Business-Unit is present but card already exists:
 > "Fact-find complete. Brief saved to `docs/plans/<feature-slug>-fact-find.md`. Status: Ready-for-planning.
 >
 > **Business OS Integration:**
-> - Using existing card: `<Card-ID>`
-> - Stage doc updated: `docs/business-os/cards/<Card-ID>/fact-finding.user.md`
+> - Using existing card via API: `<Card-ID>`
+> - Stage doc created/updated via API: `fact-find`
 >
 > Proceed to `/plan-feature` once blocking questions are answered."
 

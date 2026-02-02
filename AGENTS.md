@@ -56,6 +56,8 @@ pnpm typecheck && pnpm lint
 - **Single writer.** With 1 human + up to 10 agents, only one process may write at a time.
   - Start an “integrator shell” before editing, committing, or pushing: `scripts/agents/integrator-shell.sh -- codex`
   - Or open a locked shell: `scripts/agents/with-writer-lock.sh`
+  - If you are running in a non-interactive environment (no TTY; e.g. CI or API-driven agents), you cannot open a subshell. Wrap each write-related command instead:
+    - `scripts/agents/integrator-shell.sh -- <command> [args...]`
   - Check status: `scripts/git/writer-lock.sh status`
 - **Branch flow:** `dev` → `staging` → `main`
   - Commit locally on `dev`

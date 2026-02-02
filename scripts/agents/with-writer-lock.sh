@@ -44,6 +44,12 @@ release_lock() {
 trap release_lock EXIT INT TERM
 
 if [[ $# -eq 0 ]]; then
+  if [[ ! -t 0 ]]; then
+    echo "ERROR: stdin is not a terminal; cannot open an interactive locked subshell." >&2
+    echo "Run in command mode instead:" >&2
+    echo "  scripts/agents/with-writer-lock.sh -- <command> [args...]" >&2
+    exit 2
+  fi
   echo "Writer lock held for this shell. Exit to release." >&2
   exec bash
 fi
@@ -60,4 +66,3 @@ if [[ $# -eq 0 ]]; then
 fi
 
 exec "$@"
-

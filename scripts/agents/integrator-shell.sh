@@ -35,6 +35,12 @@ if [[ ! -x "$git_guard" ]]; then
 fi
 
 if [[ $# -eq 0 ]]; then
+  if [[ ! -t 0 ]]; then
+    echo "ERROR: stdin is not a terminal; cannot open an interactive integrator subshell." >&2
+    echo "Run in command mode instead:" >&2
+    echo "  scripts/agents/integrator-shell.sh -- <command> [args...]" >&2
+    exit 2
+  fi
   exec "$writer_lock" -- "$git_guard"
 fi
 
@@ -51,4 +57,3 @@ fi
 
 # Run the command inside both the writer lock and git guard.
 exec "$writer_lock" -- "$git_guard" -- "$@"
-

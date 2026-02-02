@@ -5,7 +5,7 @@ Domain: Repo
 Last-reviewed: 2026-01-20
 Created: 2026-01-17
 Created-by: Claude Opus 4.5
-Last-updated: 2026-01-24
+Last-updated: 2026-02-02
 Last-updated-by: Claude Opus 4.5
 ---
 
@@ -80,6 +80,13 @@ scripts/agents/integrator-shell.sh -- codex
 
 This blocks commands like `git reset --hard`, `git clean -fd`, force pushes, `rebase`, `stash`, and `commit --amend`,
 and enforces a single-writer lock for commits/pushes.
+
+If you are running Codex non-interactively (no TTY; e.g. CI or API-driven agents), you can't open an integrator subshell.
+Instead, wrap each command that may write (git operations, installs, builds) with:
+
+```bash
+scripts/agents/integrator-shell.sh -- <command> [args...]
+```
 
 ## Environment Awareness
 
@@ -234,6 +241,9 @@ When uncertain about the right approach:
 | `git-recovery` | Recover from confusing git state | `.claude/skills/git-recovery/SKILL.md` |
 | `dependency-conflicts` | Resolve pnpm workspace issues | `.claude/skills/dependency-conflicts/SKILL.md` |
 | `session-reflect` | Capture learnings and improve docs/skills | `.claude/skills/session-reflect/SKILL.md` |
+| `improve-guide` | Main entry point for guide improvement (audit, translation, or both) | `.claude/skills/improve-guide/SKILL.md` |
+| `improve-en-guide` | Run SEO audit for English guide content only | `.claude/skills/improve-en-guide/SKILL.md` |
+| `improve-translate-guide` | Propagate EN guide content to all locales | `.claude/skills/improve-translate-guide/SKILL.md` |
 
 ## What Stays the Same
 

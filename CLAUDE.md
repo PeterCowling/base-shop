@@ -24,8 +24,8 @@ Monorepo: Turborepo + pnpm workspaces.
 
 ## Model Usage Policy
 
-Always use **sonnet** as the default model for all sub-agents and delegated tasks.
-If a task appears too complex for sonnet (multi-package architecture, deep reasoning, or subtle concurrency),
+Always use **opus** as the default model for all sub-agents and delegated tasks.
+If a task appears too complex for opus (multi-package architecture, deep reasoning, or subtle concurrency),
 pause and ask the user before escalating.
 
 ## Workflow

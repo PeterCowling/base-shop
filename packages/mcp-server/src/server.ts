@@ -12,10 +12,11 @@ import {
 } from "./resources/brikette-knowledge.js";
 import { draftGuideResourceDefinition, handleDraftGuideRead } from "./resources/draft-guide.js";
 import { handleResourceRead, resourceDefinitions } from "./resources/schema.js";
+import { handleVoiceExamplesRead, voiceExamplesResourceDefinition } from "./resources/voice-examples.js";
 import { handleToolCall, toolDefinitions } from "./tools/index.js";
 
 // Combine all resource definitions
-const allResourceDefinitions = [...resourceDefinitions, ...briketteResourceDefinitions, draftGuideResourceDefinition];
+const allResourceDefinitions = [...resourceDefinitions, ...briketteResourceDefinitions, draftGuideResourceDefinition, voiceExamplesResourceDefinition];
 
 export const server = new Server(
   {
@@ -49,6 +50,10 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
   // Route to appropriate handler based on URI scheme
   if (uri === draftGuideResourceDefinition.uri) {
     return handleDraftGuideRead();
+  }
+
+  if (uri === voiceExamplesResourceDefinition.uri) {
+    return handleVoiceExamplesRead();
   }
 
   if (uri.startsWith("brikette://")) {

@@ -71,10 +71,12 @@ jobs:
       - name: Export summary
         if: always()
         run: |
-          echo "### Business OS D1 Export Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- **Trigger**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Branch**: work/business-os-export" >> $GITHUB_STEP_SUMMARY
-          echo "- **Dry run**: ${{ github.event.inputs.dry_run || 'false' }}" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Auto-PR workflow will handle PR creation and auto-merge." >> $GITHUB_STEP_SUMMARY
+          {
+            echo "### Business OS D1 Export Summary"
+            echo ""
+            echo "- **Trigger**: ${{ github.event_name }}"
+            echo "- **Branch**: work/business-os-export"
+            echo "- **Dry run**: ${{ github.event.inputs.dry_run || 'false' }}"
+            echo ""
+            echo "Auto-PR workflow will handle PR creation and auto-merge."
+          } >> "$GITHUB_STEP_SUMMARY"

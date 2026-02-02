@@ -1,0 +1,52 @@
+{
+  "length_calibration": {
+    "faq": { "min_words": 50, "max_words": 100 },
+    "policy": { "min_words": 100, "max_words": 150 },
+    "payment": { "min_words": 100, "max_words": 150 },
+    "cancellation": { "min_words": 80, "max_words": 140 },
+    "complaint": { "min_words": 120, "max_words": 180 },
+    "general": { "min_words": 80, "max_words": 140 }
+  },
+  "content_rules": {
+    "always": [
+      "Answer every guest question directly.",
+      "Confirm what you can and link to the website for live availability.",
+      "Keep tone professional and warm."
+    ],
+    "if": [
+      "If payment issues, acknowledge and provide next steps.",
+      "If policy questions, cite policy summary and link to policies.",
+      "If cancellation, explain policy and required actions."
+    ],
+    "never": [
+      "Never confirm availability.",
+      "Never state that a card will be charged immediately.",
+      "Never include internal notes or instructions."
+    ]
+  },
+  "information_order": [
+    "Direct answer to the primary question",
+    "Secondary questions",
+    "Policy constraints or caveats",
+    "Next steps or call to action",
+    "Offer further help"
+  ],
+  "format_decision_tree": [
+    "If multiple questions, use numbered list.",
+    "If listing options, use bullets.",
+    "If providing links, place on separate lines."
+  ],
+  "tone_triggers": {
+    "payment": "Firm but polite",
+    "complaint": "Empathetic and solution-focused",
+    "faq": "Friendly and concise",
+    "policy": "Clear and precise"
+  },
+  "quality_checklist": [
+    "All questions answered",
+    "No prohibited claims",
+    "Required links included",
+    "Signature present",
+    "HTML and plaintext both present"
+  }
+}

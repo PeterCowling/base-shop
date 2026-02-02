@@ -992,7 +992,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 ### TASK-17: Reception Email Routing
 
 - **Type:** IMPLEMENT
-- **Affects:** `apps/reception/src/services/useBookingEmail.ts`, `apps/reception/src/hooks/orchestrations/emailAutomation/useEmailProgressActions.ts`
+- **Affects:** `apps/reception/src/services/useBookingEmail.ts`, `apps/reception/src/hooks/orchestrations/emailAutomation/useEmailProgressActions.ts`, `apps/reception/src/services/__tests__/useBookingEmail.test.ts`, `apps/reception/src/hooks/orchestrations/emailAutomation/__tests__/useEmailProgressActions.test.ts`
 - **Depends on:** TASK-06, TASK-08
 - **Confidence:** 80% ✅ RAISED FROM 65%
   - Implementation: 82% — Reception email flow now fully documented; single GAS integration point
@@ -1014,6 +1014,10 @@ Consolidate the disparate email autodraft system components into a world-class d
   - TC-02: Feature flag disables MCP routing (falls back to GAS).
   - TC-03: Activity code logging remains unchanged after routing change.
   - TC-04: Drafts use shared email template engine output.
+  - Acceptance coverage: TC-01 covers routing change, TC-02 covers rollback behavior, TC-03 covers activity logging integrity, TC-04 covers template usage.
+  - Test type: integration (hook-level) + unit (service)
+  - Test location: `apps/reception/src/services/__tests__/useBookingEmail.test.ts`, `apps/reception/src/hooks/orchestrations/emailAutomation/__tests__/useEmailProgressActions.test.ts`
+  - Run: `pnpm --filter reception test -- --testPathPattern=useBookingEmail` and `pnpm --filter reception test -- --testPathPattern=useEmailProgressActions`
 - **Planning validation:**
   - Tests run: Reviewed existing reception tests (72 email-related files found)
   - Test stubs written: N/A (M-effort)
@@ -1029,6 +1033,20 @@ Consolidate the disparate email autodraft system components into a world-class d
 - **Notes / references:**
   - Reception email files: `apps/reception/src/services/useBookingEmail.ts`
   - Activity codes: `apps/reception/src/constants/emailCodes.ts`
+
+#### Re-plan Update (2026-02-02)
+- **Previous confidence:** 80%
+- **Updated confidence:** 80%
+  - Implementation: 82% — No change; test scope clarified.
+  - Approach: 80% — No change.
+  - Impact: 78% — No change.
+- **Investigation performed:**
+  - Tests: `apps/reception/src/services/__tests__/useBookingEmail.test.ts`, `apps/reception/src/hooks/orchestrations/emailAutomation/__tests__/useEmailProgressActions.test.ts`
+- **Decision / resolution:**
+  - Added explicit test locations/run commands and included test files in Affects for TDD compliance.
+- **Changes to task:**
+  - Affects: added existing test files for hook/service coverage
+  - Test contract: added acceptance coverage, test type, locations, and run commands
 
 **Re-plan Update (2026-02-02):**
 - **Evidence found:** Reception email system is well-documented and isolated:

@@ -1,4 +1,4 @@
-import { expect,test } from "@playwright/test";
+import { expect,test } from "playwright/test";
 
 test("tokens story lists base and brandx primary values", async ({ page }) => {
   // Base tokens should list primary as text in the table

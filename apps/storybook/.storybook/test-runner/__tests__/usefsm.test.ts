@@ -1,4 +1,4 @@
-import { expect,test } from "@playwright/test";
+import { expect,test } from "playwright/test";
 
 test("useFSM toggles button label", async ({ page }) => {
   await page.goto(

@@ -246,7 +246,7 @@ The following skill changes impact this plan:
 | TASK-09 | IMPLEMENT | Migrate `/work-idea` skill to API writes | 82% | M | Complete (2026-02-02) | TASK-08 |
 | TASK-10 | IMPLEMENT | Migrate `/build-feature` skill to API writes | 82% | M | Complete (2026-02-02) | TASK-08, TASK-02b |
 | TASK-11 | IMPLEMENT | Migrate remaining skills (`/fact-find`, etc.) | 82% | M | Complete (2026-02-02) | TASK-08 |
-| TASK-12 | IMPLEMENT | Update Business OS charter for D1-canonical reality | 90% | S | Pending | TASK-09 |
+| TASK-12 | IMPLEMENT | Update Business OS charter for D1-canonical reality | 90% | S | Complete (2026-02-02) | TASK-09 |
 | TASK-13 | IMPLEMENT | Remove deprecated `repo-writer.ts` and scan-based allocation | 85% | S | Pending | TASK-11, TASK-06 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
@@ -1428,6 +1428,25 @@ The following skill changes impact this plan:
   - Notes: Added excluded skills rationale
 
 ### TASK-12: Update Business OS charter for D1-canonical reality
+
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** 4603cd40bf
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03 (doc review)
+  - Red-green cycles: 1
+  - Initial test run: N/A (documentation update)
+  - Post-implementation: N/A
+- **Confidence reassessment:**
+  - Original: 90%
+  - Post-test: 90%
+  - Delta reason: Charter updated to D1-canonical model with read-only mirror guidance
+- **Validation:**
+  - Not run: tests (documentation-only change)
+- **Documentation updated:**
+  - `docs/business-os/business-os-charter.md`
+  - `docs/business-os/README.md`
+- **Implementation notes:** Documented D1 as source of truth, clarified read-only markdown mirror, and added API/Fail-closed guidance; added README for quick orientation.
 
 - **Type:** IMPLEMENT
 - **Affects:** `docs/business-os/business-os-charter.md` (README.md to be created)

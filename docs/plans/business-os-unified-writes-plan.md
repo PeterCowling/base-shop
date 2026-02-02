@@ -237,7 +237,7 @@ The following skill changes impact this plan:
 | TASK-02b | IMPLEMENT | Create `/api/agent/stage-docs` endpoint (GET/POST/PATCH) | 82% | M | Complete (2026-02-02) | TASK-01 |
 | TASK-03 | IMPLEMENT | Create `/api/agent/allocate-id` endpoint | 90% | S | Complete (2026-02-02) | TASK-01 |
 | TASK-04 | IMPLEMENT | Create `/api/board-changes` cursor-based delta endpoint | 82% | M | Complete (2026-02-02) | - |
-| TASK-04b | IMPLEMENT | Wire UI to `/api/board-changes` endpoint | 82% | S | Pending | TASK-04 |
+| TASK-04b | IMPLEMENT | Wire UI to `/api/board-changes` endpoint | 82% | S | Complete (2026-02-02) | TASK-04 |
 | TASK-05 | IMPLEMENT | Implement deterministic D1→markdown serializer | 82% | M | Pending | - |
 | TASK-05a | IMPLEMENT | Create `/api/admin/export-snapshot` endpoint | 85% | S | Pending | TASK-05 |
 | TASK-06 | IMPLEMENT | Create git export CI job (PR-based, hourly) | 82% | M | Pending | TASK-05a |
@@ -774,6 +774,26 @@ The following skill changes impact this plan:
   - None
 - **Notes / references:**
   - Current hook: `apps/business-os/src/components/board/useBoardAutoRefresh.ts`
+
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** 3c695340c0
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03, TC-04, TC-05
+  - Red-green cycles: 2 (initial tests timed out due to polling loop; resolved with cursor ref + test waitFor)
+  - Initial test run: FAIL (hook test timeouts)
+  - Post-implementation: PASS
+- **Confidence reassessment:**
+  - Original: 82%
+  - Post-test: 82%
+  - Delta reason: Tests validated cursor persistence + refresh triggers
+- **Validation:**
+  - Ran: `pnpm --filter business-os test --testPathPattern=useBoardAutoRefresh` — PASS (5 tests)
+  - Ran: `pnpm exec eslint apps/business-os/src/components/board/useBoardAutoRefresh.ts apps/business-os/src/components/board/useBoardAutoRefresh.test.ts` — PASS
+  - Not run: `pnpm --filter @apps/business-os typecheck` (per instruction to avoid repo-wide checks outside edited files)
+- **Documentation updated:** None
+- **Implementation notes:** Switched polling to `/api/board-changes` with cursor state + localStorage persistence; triggers `router.refresh()` on changes or stale cursor reset.
+
 
 ### TASK-05: Implement deterministic D1→markdown serializer
 

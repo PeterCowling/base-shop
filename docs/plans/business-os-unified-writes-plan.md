@@ -235,7 +235,7 @@ The following skill changes impact this plan:
 | TASK-02 | IMPLEMENT | Create `/api/agent/cards` endpoint (GET/POST/PATCH) | 85% | M | Complete (2026-02-02) | TASK-01 |
 | TASK-02a | IMPLEMENT | Create `/api/agent/ideas` endpoint (GET/POST/PATCH) | 85% | M | Complete (2026-02-02) | TASK-01 |
 | TASK-02b | IMPLEMENT | Create `/api/agent/stage-docs` endpoint (GET/POST/PATCH) | 82% | M | Complete (2026-02-02) | TASK-01 |
-| TASK-03 | IMPLEMENT | Create `/api/agent/allocate-id` endpoint | 90% | S | Pending | TASK-01 |
+| TASK-03 | IMPLEMENT | Create `/api/agent/allocate-id` endpoint | 90% | S | Complete (2026-02-02) | TASK-01 |
 | TASK-04 | IMPLEMENT | Create `/api/board-changes` cursor-based delta endpoint | 82% | M | Pending | - |
 | TASK-04b | IMPLEMENT | Wire UI to `/api/board-changes` endpoint | 82% | S | Pending | TASK-04 |
 | TASK-05 | IMPLEMENT | Implement deterministic D1→markdown serializer | 82% | M | Pending | - |
@@ -652,6 +652,25 @@ The following skill changes impact this plan:
   - None (covered in TASK-08)
 - **Notes / references:**
   - Implementation: `packages/platform-core/src/repositories/businessOsIds.server.ts`
+
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** 7abcf536ce
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03, TC-04
+  - Red-green cycles: 2 (initial failure due to missing allocate-id route module; second run PASS)
+  - Initial test run: FAIL (module not found for `/api/agent/allocate-id`)
+  - Post-implementation: PASS
+- **Confidence reassessment:**
+  - Original: 90%
+  - Post-test: 90%
+  - Delta reason: Tests validated allocation paths
+- **Validation:**
+  - Ran: `pnpm --filter business-os test --testPathPattern=allocate-id` — PASS (4 tests)
+  - Ran: `pnpm --filter @apps/business-os typecheck` — PASS
+  - Ran: `pnpm --filter @apps/business-os lint` — PASS (warnings only; pre-existing)
+- **Documentation updated:** None
+- **Implementation notes:** Added agent allocate-id POST endpoint with auth, business validation, and card/idea ID allocation.
 
 ### TASK-04: Create `/api/board-changes` cursor-based delta endpoint
 

@@ -1,89 +1,261 @@
 {
   "seo": {
-    "title": "Chiesa Nuova/Bar Internazionale til Hostel Brikette",
-    "description": "Kortrute fra Chiesa Nuova-stoppet til hostellet med minimale trapper; bagasjetips og alternativer."
+    "title": "Stoppet Chiesa Nuova / Bar Internazionale → Hostel Brikette",
+    "description": "Kommer du med buss til Positano? Gå av på Chiesa Nuova / Bar Internazionale (nærmest Hostel Brikette). Gi tegn til sjåføren, finn stoppet og gå 2–5 min til resepsjonen."
   },
-  "linkLabel": "Chiesa Nuova/Bar Internazionale til Hostel Brikette",
-  "intro": "Kommer du med buss? «Chiesa Nuova» eller «Bar Internazionale» er det stoppet som ligger nærmest hostellet. Denne kortruten minimerer trapper for både knær og bagasje.",
+  "linkLabel": "Chiesa Nuova / Bar Internazionale → Hostel Brikette (Ankomst)",
+  "lastUpdated": "2026-02-02",
+  "intro": "Kommer du med SITA‑buss i 2026? **Chiesa Nuova / Bar Internazionale‑stoppet** er nærmest Hostel Brikette, med kortest gåtur og færrest trapper. Denne guiden handler om selve stoppet: hvordan du kjenner det igjen, hvordan du sikrer at bussen stopper, og hvordan du går de siste 120–140 meterne til resepsjonen.\n\nDette er ikke en guide til hele bussreisen – det er den siste, viktige etappen. Her får du hva du skal se etter, når du skal trykke stopp, og hvordan du kommer frem med bagasje uten lange trapper. I FAQ‑en finner du også info om bagasjeoppbevaring, innsjekk‑tider og sene ankomster.",
   "image": {
-    "alt": "Positanos Chiesa Nuova SITA-stopp utenfor Bar Internazionale",
-    "caption": "Positano (Chiesa Nuova)-stoppet – vent utenfor Bar Internazionale; kom litt tidlig om sommeren siden bussene kan fylles raskt."
+    "alt": "SITA‑stoppet Chiesa Nuova / Bar Internazionale på Viale Pasitea",
+    "caption": "I rutetabeller kan det stå “Positano (Chiesa Nuova)”, og det ligger foran Bar Internazionale på Viale Pasitea."
   },
   "toc": {
     "onThisPage": "På denne siden",
-    "before": "Før du drar",
+    "before": "Før du går",
     "steps": "Steg for steg",
-    "knees": "Knær og bagasje",
-    "faqs": "Ofte stilte spørsmål"
+    "knees": "Ben og bagasje",
+    "faqs": "FAQ"
   },
   "sections": [
     {
-      "id": "why-stop",
-      "title": "Hvorfor dette stoppet fungerer",
+      "id": "why-this-stop",
+      "title": "Hvorfor Chiesa Nuova / Bar Internazionale er det beste ankomststoppet",
       "body": [
-        "Bussholdeplassen utenfor kafeen/baren Bar Internazionale ligger omtrent 120 meter (400 fot) fra Hostel Brikette – rundt 3 minutters gange.",
-        "Dette er det SITA-bussholdeplassen som ligger nærmest hostellet, med minimale trapper (kun hovedinngangstrappen)."
+        "Positano har flere stopp. Det enkleste for hostel‑ankomst er **Chiesa Nuova / Bar Internazionale** – det ligger nærmest Hostel Brikette og sparer deg for de lange trappene hvis du går av på “Positano Centro” eller “Spiaggia Grande / Positano Spiaggia”.",
+        "Herfra er det en kort og nesten flat gåtur (ca. 120–140 meter) pluss den korte trappen ved inngangen. Derfor anbefaler vi dette for **bagasje**, **trøtte ben** og **førstegangsankomster**.",
+        "Planlegger du hele reisen, se %LINK:howToGetToPositano|Slik kommer du til Positano%, og bruk denne siden for siste stopp og de siste 2–5 minuttene til fots."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.webp",
+          "alt": "SITA‑stoppeskilt for Positano Chiesa Nuova / Bar Internazionale",
+          "caption": "Se etter SITA‑skiltet utenfor Bar Internazionale."
+        },
+        {
+          "src": "/img/directions/chiesa-nuova-arrivals/positano-chiesa-nuova-church.jpg",
+          "alt": "Utsikt over Positano ved Chiesa Nuova / Bar Internazionale (Santa Maria delle Grazie)",
+          "caption": "Foto: Lorenzo Saprio (CC BY-SA 4.0) via Wikimedia Commons."
+        }
       ]
     },
     {
-      "id": "detailed-route",
-      "title": "Gangvei fra Bar Internazionale til hostellet",
+      "id": "fast-facts",
+      "title": "Kjappe fakta (sesongen 2026)",
       "body": [
-        "Gå av bussen ved Bar Internazionale-stoppet på Viale Pasitea (også kalt Chiesa Nuova-stoppet).",
-        "Gå langs Viale Pasitea i retning Montepertuso/Chiesa Nuova i omtrent 120 meter (400 fot). Du går på det asfalterte fortauet på høyre side av veien.",
-        "Etter rundt 3 minutter ser du inngangen til Hostel Brikette på høyre side – du vil se en kort trapp som fører opp til resepsjonen. Det er et skilt på terrassenivå før inngangstrappen.",
-        "Gå opp trappen for å komme til hoveddøren og resepsjonen."
+        "**Gåtider:** 2–5 minutter fra stoppet til resepsjonen, avhengig av bagasje og trafikk.",
+        "**Avstand:** ~120–140 meter langs Viale Pasitea og så en kort trapp opp til inngangen.",
+        "**Stoppetype:** Vinkestopp – gi beskjed til sjåføren og trykk stopp tidlig.",
+        "**Når du skal gjøre deg klar:** reis deg og gå mot døren 1–2 minutter før, særlig hvis bussen er full.",
+        "**Best for:** førstegangsankomster, tung bagasje og alle som vil unngå trapper.",
+        "**Billetter:** ikke kjøp hos sjåføren – kjøp før (se %LINK:sitaTickets|SITA‑billetter%).",
+        "**Travle tider:** sen formiddag og sen ettermiddag om sommeren; er bussen full, vent på neste.",
+        "**Hvis du er usikker om bord:** spør sjåføren eller en passasjer – dette er et vanlig stopp for hostel‑gjester.",
+        "**Hvis du kommer først med ferge:** bruk %LINK:ferryDockToBrikette|fergeleie → Hostel Brikette% for å nå dette stoppet uten å dra bagasje opp fra stranden."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-interno-yellow.webp",
+          "alt": "En liten lokalbuss på Positano‑ruten",
+          "caption": "Lokale busser er små og ofte fulle — still deg nær døren før stoppet."
+        }
       ]
     },
     {
-      "id": "bus-basics",
-      "title": "Busstider og billetter",
+      "id": "get-off-here",
+      "title": "Slik går du av riktig sted (hva du bør se etter på bussen)",
       "body": [
-        "Kjøp SITA-billetter på tabacchi-kiosken nær stoppet, eller valider forhåndskjøpte billetter ved ombordstigning; ha en ekstra billett til sene returer.",
-        "Kveldsbussene blir sjeldnere etter kl. 22.00 – sjekk rutetabellen på forhånd og sikt på nest siste avgang for å unngå taxipriser."
+        "På mange ruter annonseres **“Chiesa Nuova”**. I rutetabeller kan det stå **“Positano (Chiesa Nuova)”**. Lokalt sier man også **Chiesa Nuova / Bar Internazionale** fordi stoppet ligger rett utenfor bar/tabacchi.",
+        "**Si fra til sjåføren når du går om bord:** “Chiesa Nuova, per favore”. Det er den enkleste måten å unngå å gå glipp av stoppet på.",
+        "**Trykk stopp tidlig.** Når du ser Bar Internazionale (ofte til høyre i svingen), trykk stopp slik at sjåføren kan stoppe.",
+        "**Gi tegn hvis du står:** se sjåføren og løft hånden – dette er et vinkestopp.",
+        "Med bagasje, gå mot døren et minutt før — stoppet kan være veldig kort.",
+        "Hvis du er redd for å misse, spør 1–2 stopp før: “Prossima Chiesa Nuova?”. Sjåførene er vant til det.",
+        "Hvis bussen er svært full, ikke vent til siste sekund – still deg klar i god tid."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/chiesa-nuova-arrivals/amalfi-coast-sita-bus.jpg",
+          "alt": "En SITA Sud‑buss på Amalfikystens vei",
+          "caption": "Foto: Robot8A (CC BY-SA 4.0) via Wikimedia Commons."
+        },
+        {
+          "src": "/img/directions/ferry-dock-interno-red.webp",
+          "alt": "En kompakt lokalbuss på Amalfikysten",
+          "caption": "Gå mot utgangen før stoppet — bussen stopper ofte bare kort."
+        }
+      ]
+    },
+    {
+      "id": "what-youll-see",
+      "title": "Hva du ser når du kommer frem (så du vet hvor du skal gå av)",
+      "body": [
+        "Stoppet ligger **på Viale Pasitea**, foran **Bar Internazionale**. Se etter bar/tabacchi‑fasaden, en liten gruppe mennesker på fortauet og det blå‑hvite SITA‑skiltet.",
+        "Bussen setter deg av rett på fortauet. Det er ingen forhøyet plattform – du går av på gatenivå og bussen kjører videre.",
+        "Hvis du er usikker, spør en passasjer eller sjåføren: “Chiesa Nuova?”. Dette er et kjent stopp.",
+        "Når du går av, ser du hovedveien i begge retninger. Hostellet ligger noen få minutters gange langs samme vei — **ingen** lange trapper herfra.",
+        "I travle perioder kan det stå en liten kø til neste buss på samme fortau – hold deg på innsiden så du ikke blokkerer trafikken.",
+        "Bruk Bar Internazionale som referansepunkt — derfra er det bare noen få minutter til hostellets skilt."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.png",
+          "alt": "Stoppestedsskilt foran Bar Internazionale i Positano",
+          "caption": "Stoppet ligger rett foran Bar Internazionale på hovedveien."
+        }
+      ]
+    },
+    {
+      "id": "walk-to-hostel",
+      "title": "Gå fra Chiesa Nuova / Bar Internazionale til Hostel Brikette (2–5 minutter)",
+      "body": [
+        "Gå av foran Bar Internazionale og orienter deg på **Viale Pasitea** (hovedveien gjennom Positano).",
+        "Gå ca. 120–140 meter på fortauet. Du går langs hovedveien — hold bagasjen nær og gå på innsiden.",
+        "Se etter **Hostel Brikette**‑skiltet og den korte trappen opp til resepsjonen.",
+        "Hvis du bruker porter, avklar om de møter deg ved stoppet eller leverer bagasjen til inngangen.",
+        "Med stor koffert: ta det rolig i trappen og hvil på avsatsen om nødvendig.",
+        "Bruk dette %URL:https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!5e0!3m2!1sen!2sit!4v1700000000000|kart% for den nøyaktige ruten."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/hostel-brikette-entrance-steps.webp",
+          "alt": "Inngangstrapp og skilt til Hostel Brikette",
+          "caption": "Inngangen er opp en kort trapp fra veien."
+        }
+      ]
+    },
+    {
+      "id": "tickets-and-basics",
+      "title": "Billetter, bagasje og det viktigste (korte notater)",
+      "body": [
+        "Du kan ikke kjøpe SITA‑billetter hos sjåføren. Kjøp dem på forhånd i tabacchi/kiosk (Bar Internazionale kan hjelpe) og vis/valider ved ombordstigning. Se %LINK:sitaTickets|SITA‑billetter og validering%.",
+        "Hvis det finnes en validator i bussen, scan billetten ved påstigning. Er du usikker, vis den til sjåføren.",
+        "Billetter er små papirbiter: hold dem klare og unngå å brette eller fukte dem.",
+        "Om sommeren og etter fergeankomster kan bussene være fulle. Er bussen full, kan sjåføren nekte flere – den neste kommer som regel snart, men kan føles lang i høysesong.",
+        "Ha billetten klar for rask ombordstigning. Reiser du i gruppe, gå ombord sammen.",
+        "Med store kofferter kan en %LINK:porterServices|porter‑tjeneste% ta bagasjen.",
+        "For generelle tips om pass, budsjett og sesong, se %LINK:publicTransportAmalfi|offentlig transport på Amalfikysten% og %LINK:transportBudget|transportbudsjett%."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
+          "alt": "Busstopp på kystveien i Positano",
+          "caption": "De fleste SITA‑stopp er enkle innbuktninger — hold bagasjen nær og vær klar til å gå på."
+        }
+      ]
+    },
+    {
+      "id": "ferry-first",
+      "title": "Kommer du først med ferge? Slik passer stoppet inn",
+      "body": [
+        "Hvis reisen starter ved fergeleiet på stranden, er den enkleste bagasjeruten ofte: leie → porter → Interno‑buss → **Chiesa Nuova / Bar Internazionale** → kort gåtur til hostellet.",
+        "Denne ruten forklarer vi trinn for trinn i %LINK:ferryDockToBrikette|fergeleie → Hostel Brikette (med bagasje)% — den vanligste løsningen i høysesongen.",
+        "Er du allerede på stranden og vil ha den enkleste stigningen, ta bussen til Chiesa Nuova og følg denne guiden.",
+        "Uten porter går det med lett bagasje, men stigningen fra leiet til stoppet er jevn — de fleste sparer krefter til de siste trinnene."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-positano-spiaggia-view.jpg",
+          "alt": "Fergeleie i Positano og promenade ved sjøen",
+          "caption": "Fergene kommer inn på strandnivå — bussen gjør oppstigningen enklere."
+        },
+        {
+          "src": "/img/directions/ferry-dock-promenade-to-mulini.jpg",
+          "alt": "Promenade fra fergeleiet mot Piazza dei Mulini",
+          "caption": "Fra leiet går de fleste mot Piazza dei Mulini før de tar bussen."
+        }
+      ]
+    },
+    {
+      "id": "night-arrivals",
+      "title": "Ankomst om kvelden eller etter en lang reisedag",
+      "body": [
+        "Kveldsankomster kan føles mer forvirrende fordi veien er mørkere og trafikken fortsatt går. Stoppet er den samme lommen foran Bar Internazionale – bruk den som anker.",
+        "Med bagasje, gå rolig på fortauet og hold deg på innsiden. Turen er kort, men et smalt fortau krever ro.",
+        "Hvis det regner eller blåser, vent under barens markise til bussen stopper helt, og gå av forsiktig – fortauet kan være glatt."
+      ]
+    },
+    {
+      "id": "waiting-early",
+      "title": "Hvis du kommer tidlig eller trenger en pause",
+      "body": [
+        "Bar Internazionale ligger rett ved stoppet og er det mest praktiske stedet å vente hvis du kommer tidlig eller vil ha kaffe og skygge. Det er også en god måte å bekrefte at du er på riktig sted.",
+        "Med bagasje: hold den tett og ikke blokkér fortauet — busser og scootere passerer tett.",
+        "Er du trøtt eller jet‑lagged, ta et minutt til å sjekke kartet før du går, så du ikke går forbi hostel‑skiltet.",
+        "Trenger du hjelp, kan du kontakte hostellet eller se %LINK:checkinCheckout|check‑in & check‑out‑guiden% for tider og muligheter."
+      ]
+    },
+    {
+      "id": "accessibility-safety",
+      "title": "Tilgjengelighet og trafikksikkerhet",
+      "body": [
+        "Chiesa Nuova / Bar Internazionale minimerer trapper, derfor anbefales det for de fleste ankomster. De eneste trappene er ved inngangen.",
+        "Viale Pasitea kan være travel, og fortauet blir smalt enkelte steder. Hold bagasjen på innsiden, gå på rekke hvis nødvendig, og unngå å stå ut mot veien.",
+        "Reiser du med tung bagasje, barnevogn eller nedsatt mobilitet, vurder en %LINK:porterServices|porter‑tjeneste%.",
+        "Hvis du må stoppe, trekk inn i nisjen ved baren eller litt etter stoppet, så du ikke står i veien."
+      ]
+    },
+    {
+      "id": "wrong-stop",
+      "title": "Hvis du gikk av på feil stopp",
+      "body": [
+        "Hvis du går av ved **Positano Centro** eller **Spiaggia Grande / Positano Spiaggia**, må du regne med en mye brattere oppstigning med mange flere trapper.",
+        "Den enkleste løsningen er å ta en lokalbuss eller taxi til **Chiesa Nuova / Bar Internazionale**, og så følge den korte gåturen i denne guiden.",
+        "Er du usikker på hvor du er, åpne kartet og sikt mot Bar Internazionale — det er referansepunktet.",
+        "Med tung bagasje kan det være lurt å sette seg på en kafé eller spørre en lokal: “Bar Internazionale?” er en kjent referanse i Positano."
       ]
     }
   ],
   "beforeList": [
-    "Sjekk SITA-rutene på forhånd slik at du ikke må vente langs veien på siste avgang.",
-    "Valider billetten så snart du går om bord – kontrollører bøtelegger uvaliderte billetter selv på korte turer.",
-    "Send melding til hostellet hvis du kommer etter midnatt, så kan nattevakten ha dørkoden klar."
+    "Si “Chiesa Nuova, per favore” til sjåføren når du går ombord, og trykk stopp i god tid.",
+    "Kjøp eller valider billetten før du går ombord (se %LINK:sitaTickets|SITA‑billetter%).",
+    "Hold telefonen ladet for kart eller kontakt med hostellet."
   ],
   "stepsList": [
-    "Gå av bussen ved Bar Internazionale-stoppet og gå langs Viale Pasitea i retning Montepertuso/Chiesa Nuova.",
-    "Fortsett på det asfalterte fortauet i 120 meter (400 fot, rundt 3 minutter) – følg gangruten i kartet nedenfor.",
-    "Se etter Hostel Brikette-inngangen på høyre side med skiltet på terrassenivå, ta deretter trappen opp til resepsjonen."
+    "Gå av ved Chiesa Nuova / Bar Internazionale (veistopp foran bar/tabacchi).",
+    "Gå ca. 120–140 meter langs Viale Pasitea på fortauet.",
+    "Se etter Hostel Brikette‑skiltet og gå opp den korte trappen til resepsjonen."
   ],
   "stepsMapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!5e0!3m2!1sen!2sit!4v1700000000000",
   "kneesList": [
-    "Hele turen er asfaltert med kun én kort trapp ved inngangen.",
-    "Hvis stigninger er slitsomme for knærne, ta korte pauser – trafikken roer seg naturlig i svingen."
+    "Ruten unngår lange trapper — nesten bare fortau pluss den korte inngangstrappen.",
+    "Med tung bagasje kan en %LINK:porterServices|porter‑tjeneste% hente/levere ved Chiesa Nuova / Bar Internazionale.",
+    "Trenger du en komplett bagasjeplan? Se %LINK:luggageStorage|bagasjeoppbevaring% og %LINK:ferryDockToBrikette|fergeankomst‑guiden%."
   ],
-  "kneesDockPrefix": "Kommer du med ferge først?",
-  "kneesDockLinkLabel": "Kai → hostellets bagasjerute",
-  "kneesPorterPrefix": "Trenger du hjelp med tunge kofferter?",
-  "kneesPorterLinkLabel": "Guide til bæretjenesten",
+  "kneesDockPrefix": "Kommer du først med ferge?",
+  "kneesDockLinkLabel": "Leie → Hostel med bagasje",
+  "kneesPorterPrefix": "Trenger du hjelp med bagasje?",
+  "kneesPorterLinkLabel": "Porter‑guide",
   "faqs": [
     {
-      "q": "Er det fortau hele veien?",
-      "a": "Ja – ruten bruker fortauet langs hovedveien og unngår lange trappeløp."
+      "q": "Hvordan vet jeg at jeg er på riktig stopp?",
+      "a": "Du skal til veistoppet foran **Bar Internazionale** på Viale Pasitea. I annonseringer/køreplaner står ofte **“Positano (Chiesa Nuova)”** — lokalt sier man Chiesa Nuova / Bar Internazionale."
     },
     {
-      "q": "Er det opplyst om natten?",
-      "a": "Det finnes gatelys; bruk lommelykten på telefonen for ekstra synlighet i smug."
+      "q": "Må jeg trykke på en knapp for at bussen skal stoppe?",
+      "a": "Ja — dette er et vinkestopp. Si “Chiesa Nuova, per favore” ved ombordstigning, og trykk stopp når du ser Bar Internazionale nærme seg, så sjåføren kan stoppe."
     },
     {
-      "q": "Hvor lang tid tar turen?",
-      "a": "Rundt 3 minutter fra Bar Internazionale til hostellinngangen (120 meter/400 fot)."
+      "q": "Hvor lang tid tar gåturen?",
+      "a": "Ca. 2–5 minutter, avhengig av bagasje og trafikk, rundt 120–140 meter."
     },
     {
-      "q": "Vil jeg kunne finne inngangen lett?",
-      "a": "Ja – se etter Hostel Brikette-skiltet på terrassenivå på høyre side når du går langs Viale Pasitea. Inngangstrappen er tydelig merket og fører opp til resepsjonen."
+      "q": "Kan jeg oppbevare bagasjen før check‑in?",
+      "a": "Vanligvis ja: bagasjeoppbevaring er tilgjengelig fra 10:30 (avhengig av plass). Kommer du før 10:30, kan du måtte vente ved Bar Internazionale. Se %LINK:luggageStorage|bagasjeguiden%."
+    },
+    {
+      "q": "Hva er innsjekk‑tider, og hva trenger jeg?",
+      "a": "Vanlig innsjekk er fra 15:00 til 22:30. Ta med original legitimasjon (pass/ID‑kort). Ved innsjekk kreves et kontant depositum på €10 for nøkkelkort + sengetøypakke (refunderes kontant ved retur). Detaljer: %LINK:checkinCheckout|check‑in & check‑out‑guiden%."
+    },
+    {
+      "q": "Hva hvis jeg ankommer etter at resepsjonen stenger?",
+      "a": "Resepsjonen stenger kl. 22:30. Hvis du kommer senere, skriv til oss før du reiser — avhengig av dagen kan selv‑innsjekk være mulig."
     }
   ],
   "howtoSteps": [
-    "Fra «Chiesa Nuova»-stoppet går du 2–5 minutter til hostellet",
-    "Bruk smugene med færrest trapper; unngå lange trappeløp",
-    "Hvis du har tung bagasje, vurder bærerhenting ved stoppet"
+    "Gå av på Positano Chiesa Nuova / Bar Internazionale (nærmeste stopp til hostellet)",
+    "Si “Chiesa Nuova, per favore” til sjåføren og trykk stopp tidlig",
+    "Gå 120–140 meter langs Viale Pasitea og opp trappen til resepsjonen",
+    "Hvis du er i tvil, spør på Bar Internazionale eller sjekk kartet for hostel‑skiltet"
   ]
 }

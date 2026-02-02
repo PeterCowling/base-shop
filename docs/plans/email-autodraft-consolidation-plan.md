@@ -9,6 +9,7 @@ Overall-confidence: 82%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Business-Unit: BRIK
 Card-ID: BRIK-ENG-0020
+Audit-Ref: working-tree
 ---
 
 # Email Autodraft Consolidation Plan
@@ -68,8 +69,8 @@ Consolidate the disparate email autodraft system components into a world-class d
 ## Existing System Notes
 
 - Key modules/files:
-  - `packages/mcp-server/src/tools/gmail.ts` — Gmail MCP tools (680 lines, 4 tools)
-  - `packages/mcp-server/src/resources/brikette-knowledge.ts` — Knowledge resources (350 lines)
+  - `packages/mcp-server/src/tools/gmail.ts` — Gmail MCP tools (678 lines, 4 tools)
+  - `packages/mcp-server/src/resources/brikette-knowledge.ts` — Knowledge resources (348 lines)
   - `packages/mcp-server/src/utils/email-template.ts` — Current HTML email generation
   - `packages/mcp-server/data/email-templates.json` — 18 response templates
   - `.claude/skills/process-emails/SKILL.md` — Workflow skill (~500 lines)
@@ -127,7 +128,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 | TASK-03 | IMPLEMENT | Quality gate tool | 80% | M | Pending | TASK-01 |
 | TASK-04 | IMPLEMENT | Draft quality framework resource | 85% | M | Pending | TASK-00 |
 | TASK-05 | IMPLEMENT | Voice/tone examples resource | 85% | M | Pending | TASK-04 |
-| TASK-06 | IMPLEMENT | Port GAS email formatting | 82% | M | Pending | - |
+| TASK-06 | IMPLEMENT | Port GAS email formatting | 82% | M | Completed | - |
 | TASK-07 | INVESTIGATE | Email deliverability testing | 88% | S | Pending | TASK-06 |
 | TASK-08 | IMPLEMENT | Label state machine | 80% | M | Pending | - |
 | TASK-09 | IMPLEMENT | Agreement detection | 80% ✅ | M | Pending | TASK-01 |
@@ -202,6 +203,12 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Add: Unit tests for thread normalization, intent extraction
   - Add: Integration tests with sample emails from TASK-00 baseline
   - Run: `pnpm --filter mcp-server test`
+- **Test contract:**
+  - TC-01: Normalization removes quoted history and signatures; output contains only new message body.
+  - TC-02: Language detection returns EN/IT/ES for representative inputs.
+  - TC-03: Intent extraction splits questions/requests/confirmations correctly for mixed email.
+  - TC-04: Scenario classification returns category + confidence in expected range for known examples.
+  - TC-05: Output conforms to EmailActionPlan schema (no prose fields).
 - **Planning validation:**
   - Tests run: N/A (no existing tests for new module)
   - Test stubs written: Required (L-effort) — will write in plan phase
@@ -247,6 +254,12 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Add: Unit tests for commitment extraction, question tracking
   - Add: Integration tests with multi-message threads from baseline
   - Run: `pnpm --filter mcp-server test`
+- **Test contract:**
+  - TC-01: Prior commitments are extracted from earlier thread messages.
+  - TC-02: Open vs resolved questions are classified correctly across a 3‑message thread.
+  - TC-03: tone_history reflects tone shifts (formal→casual).
+  - TC-04: guest_name extracted from signature or greeting when present; empty when absent.
+  - TC-05: No contradictions: summary does not assert facts absent from thread.
 - **Planning validation:**
   - Tests run: Depends on TASK-01
   - Test stubs written: N/A (M-effort, but will document expected test cases)
@@ -297,6 +310,12 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Add: Unit tests for each rule
   - Add: Test with known-bad drafts (missing questions, prohibited claims)
   - Run: `pnpm --filter mcp-server test`
+- **Test contract:**
+  - TC-01: Missing answers to extracted questions yields failed_checks with specific IDs.
+  - TC-02: Prohibited claims are detected and fail the draft.
+  - TC-03: Length rule flags drafts outside ±20% target.
+  - TC-04: Missing required link triggers failed_checks.
+  - TC-05: HTML + plaintext validation fails if either is missing.
 - **Planning validation:**
   - Tests run: N/A (new module)
   - Test stubs written: N/A (M-effort)
@@ -338,6 +357,11 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Add: Unit tests for resource loading
   - Validate: All scenario types from fact-find covered
   - Run: `pnpm --filter mcp-server test`
+- **Test contract:**
+  - TC-01: Resource loads and caches (first call loads, second hits cache).
+  - TC-02: All scenario types referenced in fact‑find appear in the guide.
+  - TC-03: ALWAYS/IF/NEVER rules are present for each scenario group.
+  - TC-04: Guide JSON validates against expected schema shape.
 - **Planning validation:**
   - Tests run: Existing resource tests pass
   - Test stubs written: N/A (M-effort)
@@ -376,6 +400,11 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Add: Unit tests for resource loading
   - Validate: Coverage across all scenario types
   - Run: `pnpm --filter mcp-server test`
+- **Test contract:**
+  - TC-01: Resource loads and caches correctly.
+  - TC-02: Each scenario type has ≥5 examples (good/bad).
+  - TC-03: “Phrases to avoid” list is non‑empty per scenario.
+  - TC-04: Examples include attribution metadata (scenario, tone).
 - **Planning validation:**
   - Tests run: N/A (new module)
   - Test stubs written: N/A (M-effort)
@@ -396,7 +425,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 ### TASK-06: Port GAS Email Formatting to MCP
 
 - **Type:** IMPLEMENT
-- **Affects:** `packages/mcp-server/src/utils/email-template.ts`
+- **Affects:** `packages/mcp-server/src/utils/email-template.ts`, `packages/mcp-server/src/__tests__/email-template.test.ts`
 - **Depends on:** -
 - **Confidence:** 82%
   - Implementation: 85% — GAS patterns are clear and well-documented
@@ -416,7 +445,15 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Add: Unit tests for HTML generation
   - Add: Snapshot tests for template output
   - Validate: HTML passes email validation (https://www.htmlemailcheck.com/)
-  - Run: `pnpm --filter mcp-server test`
+  - Run: `pnpm exec jest --runTestsByPath packages/mcp-server/src/__tests__/email-template.test.ts --config ./jest.config.cjs`
+- **Execution notes (2026-02-02):**
+  - Tests run: `pnpm exec jest --runTestsByPath packages/mcp-server/src/__tests__/email-template.test.ts --config ./jest.config.cjs` (pass)
+- **Test contract:**
+  - TC-01: HTML output includes table‑based layout and expected brand colors.
+  - TC-02: Multipart/alternative output includes both text and HTML parts.
+  - TC-03: Logo uses <picture> with AVIF fallback and alt text.
+  - TC-04: Dual signature blocks render with images + alt text.
+  - TC-05: Social links + T&C link present in footer.
 - **Planning validation:**
   - Tests run: N/A (extends existing file, no existing tests)
   - Test stubs written: N/A (M-effort)
@@ -488,6 +525,11 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Add: Unit tests for state transitions
   - Add: Integration tests for race condition prevention
   - Run: `pnpm --filter mcp-server test`
+- **Test contract:**
+  - TC-01: Processing lock prevents concurrent processing (second call returns “being processed”).
+  - TC-02: State transitions follow allowed paths (1→2→3→4 or →21).
+  - TC-03: Timeout releases Processing label after 30 minutes.
+  - TC-04: New labels are created and applied correctly.
 - **Planning validation:**
   - Tests run: N/A (extends existing file, no existing tests)
   - Test stubs written: N/A (M-effort)
@@ -534,6 +576,12 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Add: Unit tests for ambiguous cases
   - Add: Integration tests with real agreement responses from baseline
   - Run: `pnpm --filter mcp-server test`
+- **Test contract:**
+  - TC-01: Explicit agreement phrases in EN/IT/ES yield status=confirmed.
+  - TC-02: Negated agreement phrases yield status=none with evidence_spans.
+  - TC-03: Ambiguous “Yes” alone yields status=unclear and requires_human_confirmation.
+  - TC-04: Additional content (agree + question) sets additional_content=true.
+  - TC-05: Detection uses only new message content (quoted text ignored).
 - **Planning validation:**
   - Tests run: Depends on TASK-01
   - Test stubs written: N/A (M-effort)
@@ -588,6 +636,11 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Add: Unit tests for template selection logic
   - Add: Integration tests for activity code transitions
   - Run: `pnpm --filter mcp-server test`
+- **Test contract:**
+  - TC-01: Correct template selected for chase step 1/2/3 and success.
+  - TC-02: Activity code transitions match reception semantics.
+  - TC-03: Label transitions apply Awaiting‑Agreement → Prepayment‑Chase‑*.
+  - TC-04: Firebase activity logging called with expected payload.
 - **Planning validation:**
   - Tests run: Depends on TASK-08
   - Test stubs written: N/A (M-effort)
@@ -608,7 +661,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 - **Evidence found:**
   - `emailCodes.ts` defines EMAIL_CODES = {1, 2, 3, 11, 15, 17, 18, 19, 20, 24} for eligibility
   - `useEmailProgressActions.ts:77-126` shows `logNextActivity()` transitions: 1→2, 2→3, 3→4 (cancel)
-  - `useEmailProgressData.ts` filters by non-refundable transactions + lead guest + activity code eligibility
+  - `apps/reception/src/hooks/client/checkin/useEmailProgressData.ts` filters by non-refundable transactions + lead guest + activity code eligibility
   - `useBookingEmail.ts` shows GAS integration pattern via fetch to Apps Script endpoint
 - **Pattern confirmed:** Reception app has complete working chase workflow; MCP just needs to integrate
 - **Decision:** Reuse reception app's activity code semantics; MCP tools call same Firebase paths
@@ -642,6 +695,11 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Add: Unit tests for similarity matching
   - Add: Integration tests with baseline emails
   - Run: `pnpm --filter mcp-server test`
+- **Test contract:**
+  - TC-01: Hard‑rule scenarios bypass BM25 and return forced templates.
+  - TC-02: BM25 returns top‑3 candidates with confidence + evidence.
+  - TC-03: Thresholds map to auto‑select / multi‑select / no‑template.
+  - TC-04: Synonym expansion affects ranking as expected.
 - **Planning validation:**
   - Tests run: N/A (new module)
   - Test stubs written: Required (L-effort) — will write in plan phase
@@ -691,6 +749,11 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Add: Unit tests for resource loading
   - Validate: Coverage across all categories
   - Run: `pnpm --filter mcp-server test`
+- **Test contract:**
+  - TC-01: Resource loads and caches correctly.
+  - TC-02: At least 30 examples exist across all categories.
+  - TC-03: Ambiguous examples include reasoning annotations.
+  - TC-04: Schema validation passes for example records.
 - **Planning validation:**
   - Tests run: N/A (new module)
   - Test stubs written: N/A (S-effort)
@@ -733,6 +796,12 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Add: Unit tests for template integration
   - Add: Integration tests with full pipeline
   - Run: `pnpm --filter mcp-server test`
+- **Test contract:**
+  - TC-01: Uses template ranker output when confidence ≥80%.
+  - TC-02: Includes knowledge sources list from MCP resources.
+  - TC-03: Outputs both plaintext and HTML via email template engine.
+  - TC-04: Quality gate invoked and failures reported.
+  - TC-05: answered_questions tracking matches EmailActionPlan questions.
 - **Planning validation:**
   - Tests run: Depends on TASK-01, TASK-03, TASK-04, TASK-11
   - Test stubs written: Required (L-effort) — will write in plan phase
@@ -787,6 +856,11 @@ Consolidate the disparate email autodraft system components into a world-class d
 - **Test plan:**
   - Manual testing with sample emails
   - Validate: Workflow follows three-stage pipeline
+- **Test contract:**
+  - TC-01: Skill workflow lists three‑stage pipeline in order.
+  - TC-02: Agreement detection workflow documented with mixed‑response handling.
+  - TC-03: References draft guide + voice examples resources.
+  - TC-04: Includes quality gate step and expected outputs.
 - **Planning validation:**
   - Tests run: N/A (skill documentation)
   - Test stubs written: N/A (M-effort)
@@ -823,6 +897,11 @@ Consolidate the disparate email autodraft system components into a world-class d
 - **Test plan:**
   - Add: Unit tests for each lint rule
   - Run: `pnpm --filter mcp-server lint:templates`
+- **Test contract:**
+  - TC-01: Linter fails on unresolved {placeholders}.
+  - TC-02: Linter fails on broken links (HTTP non‑200).
+  - TC-03: Linter flags conflicts with brikette://policies resource.
+  - TC-04: CI job runs lint:templates and reports failures.
 - **Planning validation:**
   - Tests run: N/A (new module)
   - Test stubs written: N/A (S-effort)
@@ -893,6 +972,11 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Add: Integration tests for reception → MCP routing
   - Validate: Existing reception email workflows still work
   - Run: `pnpm --filter reception test`
+- **Test contract:**
+  - TC-01: Reception email send routes through MCP tool (no GAS fetch).
+  - TC-02: Feature flag disables MCP routing (falls back to GAS).
+  - TC-03: Activity code logging remains unchanged after routing change.
+  - TC-04: Drafts use shared email template engine output.
 - **Planning validation:**
   - Tests run: Reviewed existing reception tests (72 email-related files found)
   - Test stubs written: N/A (M-effort)
@@ -911,10 +995,10 @@ Consolidate the disparate email autodraft system components into a world-class d
 
 **Re-plan Update (2026-02-02):**
 - **Evidence found:** Reception email system is well-documented and isolated:
-  - `useBookingEmail.ts` (143 lines): Single GAS integration point at line 125-128 (fetch to Apps Script)
-  - `useEmailProgressActions.ts` (171 lines): Activity code transitions (`logNextActivity`, `logConfirmActivity`)
-  - `useEmailProgressData.ts` (229 lines): Filters eligible occupants by EMAIL_CODES + non-refundable + lead guest
-  - `emailCodes.ts` (7 lines): Defines EMAIL_CODES = {1, 2, 3, 11, 15, 17, 18, 19, 20, 24}
+  - `useBookingEmail.ts` (142 lines): Single GAS integration point at line 125-128 (fetch to Apps Script)
+  - `useEmailProgressActions.ts` (170 lines): Activity code transitions (`logNextActivity`, `logConfirmActivity`)
+  - `apps/reception/src/hooks/client/checkin/useEmailProgressData.ts` (228 lines): Filters eligible occupants by EMAIL_CODES + non-refundable + lead guest
+  - `emailCodes.ts` (6 lines): Defines EMAIL_CODES = {1, 2, 3, 11, 15, 17, 18, 19, 20, 24}
   - 72 email-related files with existing test coverage
 - **GAS call sites identified:**
   1. `useBookingEmail.ts:125-128` — Single fetch to Apps Script endpoint (can be replaced with MCP tool)
@@ -1072,3 +1156,4 @@ Consolidate the disparate email autodraft system components into a world-class d
   - TASK-17: 65%→80% (single GAS integration point identified)
   - TASK-18: 75%→82% (testing approach clear, dependencies resolved)
 - 2026-02-02: Overall confidence raised 74%→82% (all tasks now build-eligible)
+- 2026-02-02: Fact-check corrections (file paths/line counts) did not materially affect confidence; scores unchanged.

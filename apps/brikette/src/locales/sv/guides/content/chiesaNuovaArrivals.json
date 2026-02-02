@@ -1,90 +1,261 @@
 {
   "seo": {
-    "title": "Chiesa Nuova/Bar Internazionale till Hostel Brikette",
-    "description": "Mikrorutt från Chiesa Nuova-hållplatsen till vandrarhemmet med minimala trappor; tips för bagage och alternativ."
+    "title": "Hållplats Chiesa Nuova / Bar Internazionale → Hostel Brikette",
+    "description": "Anländer du med buss till Positano? Gå av vid Chiesa Nuova / Bar Internazionale (närmast Hostel Brikette). Signalera föraren, hitta hållplatsen och gå 2–5 min till receptionen."
   },
-  "linkLabel": "Chiesa Nuova/Bar Internazionale till Hostel Brikette",
-  "lastUpdated": "2026-01-31",
-  "intro": "Anländer du med buss? \"Chiesa Nuova\" eller \"Bar Internazionale\" är den hållplats som ligger närmast vandrarhemmet. Den här mikrorutten minimerar antalet trappor för både knän och bagage.",
+  "linkLabel": "Chiesa Nuova / Bar Internazionale → Hostel Brikette (Ankomst)",
+  "lastUpdated": "2026-02-02",
+  "intro": "Anländer du med SITA‑buss 2026? **Chiesa Nuova / Bar Internazionale‑hållplatsen** ligger närmast Hostel Brikette, med kortast promenad och minst trappor. Den här guiden handlar om hållplatsen: hur du känner igen den, hur du ser till att bussen stannar och hur du går de sista 120–140 meterna till receptionen.\n\nDet här är inte en guide till hela bussresan – det är den sista, viktiga sträckan. Du får veta vad du ska titta efter, när du ska trycka stopp och hur du kommer fram med bagage utan långa trappor. I FAQ:en längst ner finns även info om bagageförvaring, incheckningstider och sena ankomster.",
   "image": {
-    "alt": "Positanos Chiesa Nuova SITA-hållplats utanför Bar Internazionale",
-    "caption": "Positano (Chiesa Nuova) – vänta utanför Bar Internazionale; kom lite tidigare på sommaren då bussarna snabbt kan bli fulla."
+    "alt": "SITA‑hållplatsen Chiesa Nuova / Bar Internazionale på Viale Pasitea",
+    "caption": "I tidtabeller kan den stå som “Positano (Chiesa Nuova)” och ligger framför Bar Internazionale på Viale Pasitea."
   },
   "toc": {
     "onThisPage": "På den här sidan",
-    "before": "Innan du ger dig iväg",
+    "before": "Innan du går",
     "steps": "Steg för steg",
-    "knees": "Knän och bagage",
-    "faqs": "Vanliga frågor"
+    "knees": "Ben & bagage",
+    "faqs": "FAQ"
   },
   "sections": [
     {
-      "id": "why-stop",
-      "title": "Varför den här hållplatsen fungerar",
+      "id": "why-this-stop",
+      "title": "Varför Chiesa Nuova / Bar Internazionale är bästa ankomsthållplatsen",
       "body": [
-        "Busshållplatsen utanför caféet/baren Bar Internazionale ligger cirka 120 meter (400 fot) från Hostel Brikette – ungefär 3 minuters promenad.",
-        "Detta är den närmaste SITA-busshållplatsen till vandrarhemmet, med minimala trappor (bara entrétrappan)."
+        "Positano har flera hållplatser. Den som gör ankomsten till hostellet enklast är **Chiesa Nuova / Bar Internazionale** – den ligger närmast Hostel Brikette och undviker de långa trapporna om du går av vid “Positano Centro” eller “Spiaggia Grande / Positano Spiaggia”.",
+        "Härifrån är det en kort, nästan plan promenad (ca 120–140 meter) plus den korta trappan upp till entrén. Därför rekommenderar vi den för **bagage**, **trötta ben** och **första ankomster**.",
+        "Planerar du hela resan, se %LINK:howToGetToPositano|Hur du tar dig till Positano% och använd den här sidan för sista hållplatsen och de sista 2–5 minuterna till fots."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.webp",
+          "alt": "SITA‑hållplatskylt för Positano Chiesa Nuova / Bar Internazionale",
+          "caption": "Leta efter SITA‑skylten utanför Bar Internazionale."
+        },
+        {
+          "src": "/img/directions/chiesa-nuova-arrivals/positano-chiesa-nuova-church.jpg",
+          "alt": "Utsikt över Positano nära Chiesa Nuova / Bar Internazionale (Santa Maria delle Grazie)",
+          "caption": "Foto: Lorenzo Saprio (CC BY-SA 4.0) via Wikimedia Commons."
+        }
       ]
     },
     {
-      "id": "detailed-route",
-      "title": "Gånganvisningar från Bar Internazionale till vandrarhemmet",
+      "id": "fast-facts",
+      "title": "Snabba fakta (säsongen 2026)",
       "body": [
-        "Gå av bussen vid Bar Internazionale-hållplatsen på Viale Pasitea (kallas också Chiesa Nuova-hållplatsen).",
-        "Gå längs Viale Pasitea i riktning mot Montepertuso/Chiesa Nuova i cirka 120 meter (400 fot). Du går på den asfalterade trottoaren på höger sida av vägen.",
-        "Efter ungefär 3 minuter, titta efter Hostel Brikette-entrén på din högra sida – du ser en kort trappa som leder upp till receptionen. Det finns en skylt på terrassnivå innan entrétrappan.",
-        "Gå uppför trappan för att nå huvuddörren och receptionen."
+        "**Gångtid:** 2–5 minuter från hållplatsen till receptionen, beroende på bagage och trafik.",
+        "**Avstånd:** ~120–140 meter längs Viale Pasitea, sedan en kort trappa upp till entrén.",
+        "**Typ av hållplats:** På begäran – säg till föraren och tryck stopp i god tid.",
+        "**När du ska förbereda dig:** Res dig och gå mot dörren 1–2 minuter innan, särskilt om bussen är full.",
+        "**Bäst för:** första ankomster, tungt bagage och den som vill undvika trappor.",
+        "**Biljetter:** köps inte på bussen – köp i förväg (se %LINK:sitaTickets|SITA‑biljetter%).",
+        "**Rusatider:** sen förmiddag och sen eftermiddag på sommaren; om bussen är full, vänta på nästa.",
+        "**Om du är osäker ombord:** fråga föraren eller en passagerare – det är en vanlig hållplats för hostelgäster.",
+        "**Om du först anländer med färja:** använd %LINK:ferryDockToBrikette|färjeläge → Hostel Brikette% för att nå hållplatsen utan att bära bagage upp från stranden."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-interno-yellow.webp",
+          "alt": "En liten lokalbuss på Positano‑linjen",
+          "caption": "Lokala bussar är små och ofta fulla — ställ dig nära dörren innan hållplatsen."
+        }
       ]
     },
     {
-      "id": "bus-basics",
-      "title": "Busstider och biljetter",
+      "id": "get-off-here",
+      "title": "Så går du av på rätt hållplats (vad du ska titta efter på bussen)",
       "body": [
-        "Köp SITA-biljetter i tabacchi nära hållplatsen eller validera förköpta biljetter vid påstigning; spara en extra för sena kvällsresor.",
-        "Kvällsbussarna blir glesare efter kl. 22:00 – kontrollera tidtabellen i förväg och sikta på näst sista turen för att undvika taxipriser."
+        "På många linjer annonseras **“Chiesa Nuova”**. I tidtabeller kan det stå **“Positano (Chiesa Nuova)”**. Lokalt säger man också **Chiesa Nuova / Bar Internazionale** eftersom hållplatsen ligger precis utanför bar/tabacchi.",
+        "**Säg till föraren när du kliver på:** “Chiesa Nuova, per favore”. Det är det enklaste sättet att inte missa hållplatsen.",
+        "**Tryck stopp i god tid.** När du ser Bar Internazionale (ofta till höger i kurvan), tryck stopp så att föraren hinner stanna.",
+        "**Ge tecken om du står:** få ögonkontakt och vinka – det är en hållplats på begäran.",
+        "Med bagage: gå mot dörren en minut innan – stoppet kan vara mycket kort.",
+        "Om du är nervös, fråga 1–2 hållplatser innan: “Prossima Chiesa Nuova?”. Förarna är vana vid det.",
+        "Om bussen är mycket full, vänta inte till sista sekunden – ställ dig i tid."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/chiesa-nuova-arrivals/amalfi-coast-sita-bus.jpg",
+          "alt": "En SITA Sud‑buss på vägen längs Amalfikusten",
+          "caption": "Foto: Robot8A (CC BY-SA 4.0) via Wikimedia Commons."
+        },
+        {
+          "src": "/img/directions/ferry-dock-interno-red.webp",
+          "alt": "En kompakt lokalbuss på Amalfikusten",
+          "caption": "Gå mot utgången innan stoppet — bussen stannar ofta kort."
+        }
+      ]
+    },
+    {
+      "id": "what-youll-see",
+      "title": "Vad du ser när du kommer fram (så du vet var du ska gå av)",
+      "body": [
+        "Hållplatsen ligger **på Viale Pasitea**, framför **Bar Internazionale**. Leta efter bar/tabacchi‑fasaden, en liten grupp personer på trottoaren och den blå‑vita SITA‑skylten.",
+        "Bussen släpper av dig direkt på trottoaren. Ingen upphöjd plattform – du kliver ner till gatunivå och bussen kör vidare.",
+        "Är du osäker, fråga en medpassagerare eller föraren: “Chiesa Nuova?”. Det är en välkänd hållplats.",
+        "När du kliver av ser du huvudvägen åt båda håll. Hostellet ligger några minuter bort längs samma väg — **inga** långa trappor härifrån.",
+        "Under rusning kan det stå en liten kö för nästa buss på samma trottoar: håll dig på insidan så du inte blockerar trafiken.",
+        "Använd Bar Internazionale som visuell referens — därifrån är det bara några minuter till hostelskylten."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.png",
+          "alt": "Hållplatsskylt framför Bar Internazionale i Positano",
+          "caption": "Hållplatsen ligger precis framför Bar Internazionale på huvudvägen."
+        }
+      ]
+    },
+    {
+      "id": "walk-to-hostel",
+      "title": "Gå från Chiesa Nuova / Bar Internazionale till Hostel Brikette (2–5 minuter)",
+      "body": [
+        "Kliva av framför Bar Internazionale och orientera dig på **Viale Pasitea** (huvudvägen genom Positano).",
+        "Gå cirka 120–140 meter på trottoaren. Du går längs huvudvägen — håll bagaget nära och gå på insidan.",
+        "Leta efter **Hostel Brikette**‑skylten och den korta trappan upp till receptionen.",
+        "Om du använder porter, bekräfta om de möter dig vid hållplatsen eller levererar bagaget direkt till entrén.",
+        "Med stor resväska: ta det lugnt i trappan och vila på avsatsen vid behov.",
+        "Använd denna %URL:https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!5e0!3m2!1sen!2sit!4v1700000000000|karta% för exakt rutt."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/hostel-brikette-entrance-steps.webp",
+          "alt": "Entrétrappa och skylt till Hostel Brikette",
+          "caption": "Entrén är uppför en kort trappa från vägen."
+        }
+      ]
+    },
+    {
+      "id": "tickets-and-basics",
+      "title": "Biljetter, bagage och det viktigaste (snabba noter)",
+      "body": [
+        "Du kan inte köpa SITA‑biljetter av föraren. Köp i förväg i tabacchi/kiosk (Bar Internazionale kan hjälpa) och visa/validera när du kliver på. Se %LINK:sitaTickets|SITA‑biljetter och validering%.",
+        "Om det finns en validator i bussen, scanna biljetten när du kliver på. Är du osäker, visa den för föraren.",
+        "Biljetter är små papperslappar: ha dem redo och undvik att blöta eller vika dem för mycket.",
+        "På sommaren och efter färjeankomster kan bussar vara fulla. Är den full kan föraren neka fler — nästa buss kommer oftast snart men kan kännas lång i högsäsong.",
+        "Ha biljetten redo för snabb ombordstigning. Reser ni i grupp, kliv på tillsammans.",
+        "Med stora väskor kan en %LINK:porterServices|porter‑tjänst% ta bagaget.",
+        "För generella tips om pass, budget och säsong, se %LINK:publicTransportAmalfi|kollektivtrafik på Amalfikusten% och %LINK:transportBudget|transportbudget%."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
+          "alt": "Busshållplats på kustvägen i Positano",
+          "caption": "De flesta SITA‑stopp är enkla fickor — håll bagaget nära och var redo att kliva på."
+        }
+      ]
+    },
+    {
+      "id": "ferry-first",
+      "title": "Kommer du först med färja? Så passar hållplatsen in",
+      "body": [
+        "Om resan börjar vid färjeläget på stranden är den enklaste bagagerutten ofta: läge → porter → Interno‑buss → **Chiesa Nuova / Bar Internazionale** → kort promenad till hostellet.",
+        "Vi går igenom den rutten steg för steg i %LINK:ferryDockToBrikette|färjeläge → Hostel Brikette (med bagage)% — den vanligaste lösningen i högsäsong.",
+        "Är du redan på stranden och vill ha den lättaste stigningen, ta bussen till Chiesa Nuova och följ den här guiden.",
+        "Utan porter går det med lätt bagage, men stigningen från läget till hållplatsen är jämn — de flesta sparar energi till de sista trappstegen."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-positano-spiaggia-view.jpg",
+          "alt": "Färjeläge i Positano och strandpromenad",
+          "caption": "Färjor anländer på strandnivå — bussen gör uppstigningen enklare."
+        },
+        {
+          "src": "/img/directions/ferry-dock-promenade-to-mulini.jpg",
+          "alt": "Promenaden från färjeläget mot Piazza dei Mulini",
+          "caption": "Från läget går de flesta mot Piazza dei Mulini innan bussen."
+        }
+      ]
+    },
+    {
+      "id": "night-arrivals",
+      "title": "Ankomst på kvällen eller efter en lång resdag",
+      "body": [
+        "Kvällsankomster kan kännas mer förvirrande eftersom vägen är mörkare och trafiken fortsätter. Hållplatsen är samma ficka framför Bar Internazionale – använd den som referens.",
+        "Med bagage: gå lugnt på trottoaren och håll dig på insidan. Sträckan är kort, men ett smalt trottoar kräver försiktighet.",
+        "Vid regn eller blåst, vänta under barens markis tills bussen stannat helt och kliv av försiktigt – trottoaren kan vara hal."
+      ]
+    },
+    {
+      "id": "waiting-early",
+      "title": "Om du kommer tidigt eller behöver en paus",
+      "body": [
+        "Bar Internazionale ligger precis vid hållplatsen och är det bästa stället att vänta om du kommer tidigt eller vill ha kaffe och skugga. Det hjälper också att bekräfta att du är rätt.",
+        "Med bagage: håll det nära och blockera inte trottoaren — bussar och scootrar passerar nära kanten.",
+        "Om du är trött eller jetlaggad, ta en minut att kolla kartan innan du går så att du inte missar hostelskylten.",
+        "Behöver du hjälp kan du skriva till hostellet eller se %LINK:checkinCheckout|check‑in & check‑out‑guiden% för tider och alternativ."
+      ]
+    },
+    {
+      "id": "accessibility-safety",
+      "title": "Tillgänglighet och trafiksäkerhet",
+      "body": [
+        "Chiesa Nuova / Bar Internazionale minimerar trappor, därför rekommenderar vi den för de flesta ankomster. Den enda trappan är vid ingången.",
+        "Viale Pasitea kan vara livlig och trottoaren blir smal på vissa ställen. Håll bagaget på insidan, gå i rad om det behövs och undvik att stanna ut mot vägen.",
+        "Reser du med tungt bagage, barnvagn eller nedsatt rörlighet, överväg en %LINK:porterServices|porter‑tjänst%.",
+        "Om du måste stanna, gå in i nischen vid baren eller stå strax efter hållplatsen så du inte står i vägen."
+      ]
+    },
+    {
+      "id": "wrong-stop",
+      "title": "Om du gick av vid fel hållplats",
+      "body": [
+        "Om du kliver av vid **Positano Centro** eller **Spiaggia Grande / Positano Spiaggia** väntar en mycket brantare uppgång med många fler trappor.",
+        "Den enklaste lösningen är att ta en lokal buss eller taxi till **Chiesa Nuova / Bar Internazionale** och sedan följa den korta promenaden i den här guiden.",
+        "Om du är osäker på var du är, öppna kartan och sikta på Bar Internazionale — det är referenspunkten.",
+        "Med tungt bagage kan det vara bättre att ta en paus på ett café eller fråga en lokal: “Bar Internazionale?” är en vanlig referens i Positano."
       ]
     }
   ],
   "beforeList": [
-    "Kontrollera SITA:s tidtabeller i förväg så att du inte väntar vid vägkanten på sista turen.",
-    "Validera din biljett så snart du kliver ombord – kontrollanter bötfäller ovaliderade biljetter även för korta resor.",
-    "Meddela vandrarhemmet om du anländer efter midnatt så kan nattpersonalen hålla dörrkoden redo."
+    "Säg “Chiesa Nuova, per favore” till föraren när du kliver på och tryck stopp i god tid.",
+    "Köp eller validera biljetten innan du kliver på (se %LINK:sitaTickets|SITA‑biljetter%).",
+    "Ha telefonen laddad för karta eller kontakt med hostellet."
   ],
   "stepsList": [
-    "Gå av bussen vid Bar Internazionale-hållplatsen och gå längs Viale Pasitea mot Montepertuso/Chiesa Nuova.",
-    "Fortsätt på den asfalterade trottoaren i 120 meter (400 fot, cirka 3 minuter) – följ gångrutten i kartan nedan.",
-    "Leta efter Hostel Brikette-entrén på din högra sida med en skylt på terrassnivå, ta sedan trappan upp till receptionen."
+    "Gå av vid Chiesa Nuova / Bar Internazionale (hållplats vid vägen framför bar/tabacchi).",
+    "Gå cirka 120–140 meter längs Viale Pasitea på trottoaren.",
+    "Leta efter Hostel Brikette‑skylten och gå upp den korta trappan till receptionen."
   ],
   "stepsMapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!5e0!3m2!1sen!2sit!4v1700000000000",
   "kneesList": [
-    "Hela promenaden är asfalterad med bara en kort trappa vid entrén.",
-    "Om backar belastar dina knän, ta korta pauser – trafiken saktar naturligt i kurvan."
+    "Rutten undviker långa trappor — nästan bara trottoar plus den korta ingångstrappan.",
+    "Med tungt bagage kan en %LINK:porterServices|porter‑tjänst% hämta/lämna vid Chiesa Nuova / Bar Internazionale.",
+    "Behöver du en komplett bagageplan? Se %LINK:luggageStorage|bagageförvaring% och %LINK:ferryDockToBrikette|färjeankomst‑guiden%."
   ],
-  "kneesDockPrefix": "Anländer du först via färja?",
-  "kneesDockLinkLabel": "Brygga → Vandrarhem bagagerutt",
-  "kneesPorterPrefix": "Behöver du hjälp med tunga väskor?",
-  "kneesPorterLinkLabel": "Guide för bärartjänst",
+  "kneesDockPrefix": "Kommer du först med färja?",
+  "kneesDockLinkLabel": "Läge → Hostel med bagage",
+  "kneesPorterPrefix": "Behöver du hjälp med bagaget?",
+  "kneesPorterLinkLabel": "Porter‑guide",
   "faqs": [
     {
-      "q": "Finns det trottoar hela vägen?",
-      "a": "Ja – rutten använder huvudvägens trottoar och undviker långa trappor."
+      "q": "Hur vet jag att jag är vid rätt hållplats?",
+      "a": "Du letar efter hållplatsen vid vägen framför **Bar Internazionale** på Viale Pasitea. I utrop/tidtabeller står ofta **“Positano (Chiesa Nuova)”** — lokalt säger man också Chiesa Nuova / Bar Internazionale."
     },
     {
-      "q": "Är det upplyst på natten?",
-      "a": "Gatubelysning finns; använd din telefons ficklampa för extra synlighet i gränder."
+      "q": "Måste jag trycka på en knapp för att bussen ska stanna?",
+      "a": "Ja — det är en hållplats på begäran. Säg “Chiesa Nuova, per favore” när du kliver på och tryck stopp när du ser Bar Internazionale närma sig så att föraren kan stanna."
     },
     {
       "q": "Hur lång tid tar promenaden?",
-      "a": "Cirka 3 minuter från Bar Internazionale till vandrarhemmets entré (120 meter/400 fot)."
+      "a": "Cirka 2–5 minuter, beroende på bagage och trafik, ungefär 120–140 meter."
     },
     {
-      "q": "Kommer jag kunna hitta entrén lätt?",
-      "a": "Ja – leta efter Hostel Brikette-skylten på terrassnivå till höger när du går längs Viale Pasitea. Entrétrappan är tydligt markerad och leder upp till receptionen."
+      "q": "Kan jag lämna bagaget före check‑in?",
+      "a": "Vanligtvis ja: bagageförvaring finns från 10:30 (beroende på plats). Kommer du före 10:30 kan du behöva vänta vid Bar Internazionale. Se %LINK:luggageStorage|bagageguiden%."
+    },
+    {
+      "q": "Vilka är check‑in‑tiderna och vad behöver jag?",
+      "a": "Ordinarie check‑in är 15:00–22:30. Ta med original‑ID (pass/ID‑kort). Vid check‑in krävs en kontant deposition på €10 för nyckelkort + lakan (återbetalas kontant vid återlämning). Detaljer: %LINK:checkinCheckout|check‑in & check‑out‑guide%."
+    },
+    {
+      "q": "Vad händer om jag anländer efter att receptionen stänger?",
+      "a": "Receptionen stänger 22:30. Om du kommer senare, skriv till oss före resan — beroende på dag kan själv‑incheckning vara möjlig."
     }
   ],
   "howtoSteps": [
-    "Från 'Chiesa Nuova'-hållplatsen, gå 2–5 minuter till vandrarhemmet",
-    "Använd gränder med minst trappor; undvik långa trappor",
-    "Om du bär tunga väskor, överväg bärare som hämtar vid hållplatsen"
+    "Gå av vid Positano Chiesa Nuova / Bar Internazionale (närmast hostellet)",
+    "Säg “Chiesa Nuova, per favore” till föraren och tryck stopp i god tid",
+    "Gå 120–140 meter längs Viale Pasitea och upp trappan till receptionen",
+    "Om du är osäker, fråga på Bar Internazionale eller kontrollera kartan för hostelskylten"
   ]
 }

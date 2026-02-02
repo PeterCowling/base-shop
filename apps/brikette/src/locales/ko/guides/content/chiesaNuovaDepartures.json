@@ -1,13 +1,13 @@
 {
   "seo": {
-    "title": "포지타노 Chiesa Nuova 버스 정류장: Hostel Brikette에서 도보",
-    "description": "Hostel Brikette에서 포지타노의 Chiesa Nuova 버스 정류장까지 도보: 방향, 시간표, 티켓, 아말피, 소렌토, 나폴리, 살레르노로의 연결."
+    "title": "포지타노 Chiesa Nuova / Bar Internazionale 버스 정류장",
+    "description": "포지타노 Chiesa Nuova / Bar Internazionale(SITA) 정류장 가이드: 줄 서는 쪽, 티켓, 시간표, 연결편—Hostel Brikette에서 도보 2–4분."
   },
-  "linkLabel": "Hostel Brikette에서 Chiesa Nuova/Bar Internazionale 버스 정류장까지",
-  "lastUpdated": "2026-01-30",
-  "intro": "포지타노 Chiesa Nuova 버스 정류장은 Hostel Brikette에서 아말피 해안 전체로 가는 관문입니다. 아말피, 소렌토 또는 더 먼 곳으로 가는 버스를 타기 위해 호스텔을 떠나시나요? 이 가이드는 Hostel Brikette에서 이 필수 정류장(Bar Internazionale로도 알려져 있음)까지 걷는 방법에 대해 알아야 할 모든 것을 다룹니다: 2분 도보 경로, 티켓 구매 장소, 도로 어느 쪽에 줄을 서야 하는지, 그리고 아말피 해안을 따라 주요 목적지로의 연결.",
+  "linkLabel": "Hostel Brikette → Chiesa Nuova / Bar Internazionale 버스 정류장",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": "Positano Chiesa Nuova / Bar Internazionale 버스 정류장은 Hostel Brikette 투숙객이 아말피, 소렌토, 나폴리, 살레르노 등으로 이동할 때 사용하는 주요 SITA 정류장입니다. 이 가이드는 정류장 자체에 대해 설명합니다. 시간표에서의 표기(보통 \"Positano (Chiesa Nuova)\"), 동/서행 버스 줄 서는 위치, 티켓 구매·검표 방법(편도 요금은 목적지에 따라 보통 €2.50–€4), 여름 혼잡, 그리고—간단히—호스텔에서 정류장까지 2–4분 걷는 가장 쉬운 길.",
   "image": {
-    "alt": "Bar Internazionale 앞 포지타노의 Chiesa Nuova SITA 정류장",
+    "alt": "포지타노의 Chiesa Nuova / Bar Internazionale SITA 정류장(Bar Internazionale 앞)",
     "caption": "Hostel Brikette는 정류장에서 한 커브 떨어진 곳에 있습니다. 특히 여름에 버스가 빨리 가득 찰 때 버스가 도착하기 전에 줄에 합류할 수 있도록 몇 분 여유를 두세요."
   },
   "toc": {
@@ -20,10 +20,11 @@
   "sections": [
     {
       "id": "why-route",
-      "title": "이 경로가 작동하는 이유",
+      "title": "Chiesa Nuova / Bar Internazionale 정류장이 중요한 이유",
       "body": [
-        "포지타노 Chiesa Nuova / Bar Internazionale 정류장은 Hostel Brikette에 가장 가까운 SITA 버스 정류장이며 해안을 따라 버스를 타기에 가장 쉬운 장소입니다. 지역 주민들은 두 이름을 같은 의미로 부릅니다. 호스텔 입구에서 포지타노를 통과하는 주요 해안 도로인 Viale Pasitea의 버스 정류장까지는 120미터(400피트) 도보입니다. 완만한 내리막길에서 2-4분이 걸립니다. 나갈 때 오른쪽에 호스텔 간판이 보입니다. 보도는 짐을 싣기에 충분히 넓으며 밤에는 조명이 좋습니다.",
-        "아말피 방향(동쪽)으로 가는 경우, 정류장은 Bar Internazionale 맞은편 도로의 바다 쪽에 있습니다—버스 정류장을 표시하는 지면의 금속 기둥을 찾으세요. 아말피 타운, 살레르노, 라벨로 방향 버스를 위해 여기서 기다리세요. 소렌토 방향(서쪽)으로 가는 경우, 바 바로 앞에서 기다립니다.",
+        "**Chiesa Nuova / Bar Internazionale** 정류장은 Hostel Brikette에서 가장 가까운 SITA 정류장이며, 포지타노의 긴 계단을 피하고 버스를 타기 가장 쉬운 곳입니다. 해안 당일치기, 소렌토 기차 환승, 살레르노 경유 장거리 이동 등 어떤 경우든 이곳이 호스텔의 실질적인 “베이스 정류장”입니다.",
+        "줄 서는 위치가 명확해서 사용하기 쉽습니다. **아말피/살레르노 방향(동쪽)** 은 Bar Internazionale 맞은편 바다 쪽, **소렌토/나폴리 방향(서쪽)** 은 바 앞 산쪽입니다.",
+        "Hostel Brikette에서 Viale Pasitea를 따라 120m(약 400피트), 2–4분 정도 걷습니다. 보도는 짐을 끌기 충분히 넓고 밤에도 조명이 있습니다.",
         "지도가 있는 도보 안내는 이 %URL:https://www.google.com/maps/dir/V.+G.+Marconi,+358,+84017+Positano+SA/Bar+Internazionale,+V.+G.+Marconi,+306,+84017+Positano+SA/@40.6294795,14.4790535,746m/data=!3m2!1e3!4b1!4m14!4m13!1m5!1m1!1s0x133b976683fb47c9:0x209c0949d4fb4c3b!2m2!1d14.4809356!2d40.6296237!1m5!1m1!1s0x133b976673927785:0x5187a720325ee588!2m2!1d14.482264!2d40.629495!3e0?hl=en&entry=ttu&g_ep=EgoyMDI2MDEyOC4wIKXMDSoKLDEwMDc5MjA3MUgBUAM%3D|Hostel Brikette에서 버스 정류장까지 Google 지도 경로%를 참조하세요."
       ],
       "images": [
@@ -38,7 +39,7 @@
       "id": "where-buses-go",
       "title": "이 정류장에서 버스가 가는 곳",
       "body": [
-        "Chiesa Nuova/Bar Internazionale 정류장에서 SITA 버스는 해안을 따라 양방향으로 운행합니다:",
+        "Chiesa Nuova / Bar Internazionale 정류장에서 SITA 버스는 해안을 따라 양방향으로 운행합니다:",
         "**아말피 방향(동쪽행):** 버스는 프라이아노를 거쳐 Marina di Praia와 Fiordo di Furore를 지나 %LINK:amalfiTownGuide|아말피 타운%에 도착합니다(30-40분). 아말피에서 %LINK:salernoPositano|살레르노%까지 계속 갈 수 있으며(추가 45분) 라벨로로 가는 연결 버스를 탈 수 있습니다.",
         "**소렌토 방향(서쪽행):** 버스는 %LINK:sorrentoGuide|소렌토%에 도착하기 전에 여러 경치 좋은 터널을 통과하며 해안을 따라 구불구불 갑니다(40-50분). 소렌토에서 %LINK:naplesPositano|나폴리%로 가는 기차로 환승할 수 있으며(Circumvesuviana 라인으로 나폴리 중앙역까지) 나폴리 공항까지 계속 갈 수 있습니다.",
         "포지타노에서 출발하는 완전한 여행 계획을 위해서는 전용 경로 가이드를 참조하세요: %LINK:positanoAmalfiBus|포지타노에서 아말피까지 버스로%, %LINK:positanoSorrentoBus|포지타노에서 소렌토까지 버스로%, %LINK:positanoNaplesCenterBusTrain|포지타노에서 나폴리까지% 소렌토 경유, 그리고 %LINK:positanoSalernoBus|포지타노에서 살레르노까지 버스로%.",
@@ -49,6 +50,11 @@
           "src": "https://simplyamalficoast.it/wp-content/uploads/2025/11/simply-amalfi-coast-bus-sita-4.jpg",
           "alt": "아말피로 향하는 포지타노 버스 정류장의 SITA 버스",
           "caption": "SITA 버스는 포지타노를 아말피 해안 전역의 목적지와 연결합니다"
+        },
+        {
+          "src": "/img/positano-panorama.avif",
+          "alt": "Viale Pasitea에서 본 포지타노 해안 파노라마",
+          "caption": "Chiesa Nuova / Bar Internazionale 정류장 근처 해안도로의 전망."
         }
       ]
     },
@@ -57,7 +63,7 @@
       "title": "버스 일정 및 빈도",
       "body": [
         "SITA 버스는 성수기(4월-10월) 동안 포지타노와 아말피 및 소렌토 사이를 자주 운행합니다. 낮 동안 20-30분마다 버스가 있으며, 이른 아침(오전 8시 이전)과 저녁(오후 9시 이후)에는 버스가 적습니다. 이동 시간은 아말피까지 약 40분, 소렌토까지 약 50분이 걸리지만, 교통이 많은 바쁜 여름날에는 더 오래 걸릴 수 있습니다.",
-        "**첫 버스:** 아말피 방향으로 가는 첫 동쪽행 버스는 일반적으로 오전 6:30-7:00경 Chiesa Nuova에서 출발합니다. 소렌토 방향으로 가는 첫 서쪽행 버스는 일반적으로 오전 6:45-7:15경 출발합니다. 일정은 계절에 따라 변경되므로 Bar Internazionale에서 현재 시간을 확인하거나 호스텔 리셉션에 문의하세요. 여름에는 겨울보다 버스가 더 많습니다.",
+        "**첫차:** 아말피 방향(동쪽) 첫 버스는 보통 Chiesa Nuova / Bar Internazionale 정류장에서 오전 6:30–7:00에 출발합니다. 소렌토 방향(서쪽) 첫 버스는 6:45–7:15경입니다. 계절마다 달라지므로 Bar Internazionale 또는 리셉션에서 확인하세요. 여름에는 운행 횟수가 더 많습니다.",
         "**마지막 버스:** 저녁 버스는 오후 10시 이후 훨씬 덜 자주 운행합니다. 아말피로 가는 마지막 버스는 일반적으로 오후 10:30경 출발하고, 소렌토로 가는 마지막 버스는 오후 11시경 출발합니다. 리셉션에서 정확한 시간을 항상 확인하거나 정류장에 게시된 SITA 시간표를 보세요. 밤에 여행하는 경우 마지막 버스를 놓치고 발이 묶이지 않도록 끝에서 두 번째 버스를 타도록 하세요.",
         "**겨울 일정(11월-3월):** 버스는 겨울에 덜 자주 운행하며 약 40-60분마다이고, 마지막 버스가 더 일찍 출발합니다. 일부 저녁 버스는 일요일이나 공휴일에 전혀 운행하지 않을 수 있습니다. 여행하기 전에 항상 겨울 일정을 확인하세요."
       ],
@@ -149,12 +155,23 @@
         "**날씨 고려사항:** 걷기는 요소에 노출됩니다—호스텔과 버스 정류장 사이에 덮인 구간이 없습니다. 폭우가 내릴 경우 2분 걷는 동안 젖게 됩니다. 예보가 불확실하면 우산이나 레인코트를 가져오세요. 여름 더위에서는 보도가 그늘을 제공하지 않습니다; 일찍 정류장에 도착하여 줄을 서는 경우 자외선 차단제를 바르고 물을 가져오세요. 겨울에는 Viale Pasitea의 이 노출된 구간을 따라 강한 바람이 불 수 있습니다—가방의 느슨한 물건을 고정하세요.",
         "**리셉션에 짐 맡기기:** 체크아웃하지만 버스 전에 포지타노를 몇 시간 탐험해야 하는 경우 리셉션에 짐을 맡기는 것에 대해 문의하세요. 이렇게 하면 나중에 가방 없이 정류장까지 걸어가서 버스를 탈 때 단순히 수거할 수 있습니다. 출발 전에 해변을 방문하거나 마을에서 점심을 먹고 싶은 경우 특히 유용합니다."
       ],
-      "images": []
+      "images": [
+        {
+          "src": "/img/directions/hostel-brikette-entrance-steps.png",
+          "alt": "밤의 Viale Pasitea에 있는 Hostel Brikette 입구 계단",
+          "caption": "입구 계단은 잘 조명되어 있지만, 어두워진 후 도착한다면 1분 정도 여유를 두세요."
+        },
+        {
+          "src": "/img/checkin-desk.avif",
+          "alt": "Hostel Brikette 리셉션 데스크",
+          "caption": "버스를 타기 전 둘러보고 싶다면 리셉션에서 짐을 보관할 수 있습니다."
+        }
+      ]
     }
   ],
   "beforeList": [
     "이른 아침 버스를 타는 경우(오전 7:30 이전) 전날 저녁 SITA 티켓을 구매하세요",
-    "리셉션이나 Bar Internazionale에서 현재 버스 일정을 확인하세요—일정은 계절에 따라 변경됩니다",
+    "최신 시간표는 리셉션이나 Chiesa Nuova / Bar Internazionale 정류장에서 확인하세요—계절에 따라 변합니다",
     "가능하면 가볍게 짐을 싸세요—버스의 짐 공간은 매우 제한적이며 특히 여름에",
     "성수기 여름 달에는 대기열에서 자리를 확보하기 위해 10-15분 일찍 도착하세요"
   ],
@@ -209,7 +226,7 @@
     }
   ],
   "howtoSteps": [
-    "Hostel Brikette에서 Bar Internazionale/Chiesa Nuova 정류장까지 2-4분 내리막길로 걸으세요",
+    "Hostel Brikette에서 내리막으로 2–4분 걸어 Chiesa Nuova / Bar Internazionale 정류장으로 이동",
     "tabacchi 또는 바에서 SITA 티켓을 구매하세요(버스에서는 구매할 수 없습니다)",
     "올바른 쪽에 줄을 서세요: 아말피/동쪽은 바다 쪽, 소렌토/서쪽은 산 쪽",
     "탑승할 때 운전사 또는 전자 검증기에서 티켓을 검증하세요",

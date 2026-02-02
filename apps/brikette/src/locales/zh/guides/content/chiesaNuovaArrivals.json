@@ -1,90 +1,261 @@
 {
   "seo": {
-    "title": "Chiesa Nuova/Bar Internazionale 抵达：前往 Hostel Brikette",
-    "description": "从 Chiesa Nuova 车站到旅舍的微路线，尽量减少台阶；含行李建议与替代方案。"
+    "title": "Chiesa Nuova / Bar Internazionale 车站 → Hostel Brikette",
+    "description": "乘车到 Positano？在 Chiesa Nuova / Bar Internazionale 下车（离 Hostel Brikette 最近）。提示司机、识别站点，步行 2–5 分钟到前台。"
   },
-  "linkLabel": "Chiesa Nuova/Bar Internazionale → Hostel Brikette",
-  "intro": "搭乘巴士前往？Chiesa Nuova 或 Bar Internazionale 是离旅舍最近的站点。这段短路线能把需要爬的阶梯降到最低，对膝盖和行李都更轻松。",
+  "linkLabel": "Chiesa Nuova / Bar Internazionale → Hostel Brikette（抵达）",
+  "lastUpdated": "2026-02-02",
+  "intro": "2026 年乘 SITA 巴士到达？**Chiesa Nuova / Bar Internazionale 车站**离 Hostel Brikette 最近，步行最短、台阶最少。本指南讲的是车站本身：如何识别站点、如何确保巴士停车、以及如何走完最后 120–140 米到前台。\n\n这不是整段巴士旅程的指南，而是最后关键一段。你会知道要看什么、何时按停靠按钮，以及如何带着行李避开长台阶到达。页面末尾 FAQ 还包含行李寄存、入住时间和晚到说明。",
   "image": {
-    "alt": "波西塔诺 Bar Internazionale 前的 SITA Chiesa Nuova 巴士站",
-    "caption": "波西塔诺（Chiesa Nuova）站——请在 Bar Internazionale 外等车；夏季建议提前抵达，巴士很快就会客满。"
+    "alt": "Viale Pasitea 上的 SITA Chiesa Nuova / Bar Internazionale 车站",
+    "caption": "在时刻表上可能显示为“Positano (Chiesa Nuova)”，位于 Viale Pasitea 的 Bar Internazionale 门口。"
   },
   "toc": {
-    "onThisPage": "页面导览",
+    "onThisPage": "本页内容",
     "before": "出发前",
-    "steps": "行程步骤",
-    "knees": "膝盖与行李",
-    "faqs": "常见问题"
+    "steps": "一步一步",
+    "knees": "腿和行李",
+    "faqs": "FAQ"
   },
   "sections": [
     {
-      "id": "why-stop",
-      "title": "为什么选这个站",
+      "id": "why-this-stop",
+      "title": "为什么 Chiesa Nuova / Bar Internazionale 是最佳下车点",
       "body": [
-        "Bar Internazionale 咖啡吧外的巴士站距离 Hostel Brikette 大约 120 米（400 英尺）—— 步行约 3 分钟。",
-        "这是距离旅舍最近的 SITA 巴士站，只需爬旅舍入口处的一小段台阶。"
+        "Positano 有多个车站。最方便抵达 Hostel 的是 **Chiesa Nuova / Bar Internazionale** ——它距离 Hostel Brikette 最近，并能避开在 “Positano Centro” 或 “Spiaggia Grande / Positano Spiaggia” 下车时要走的长台阶。",
+        "从这里到 Hostel 的步行几乎平坦（约 120–140 米），再加入口的短楼梯。因此我们推荐给 **有行李**、**腿累**、**首次到达** 的旅客。",
+        "如果你在规划整段行程，请先看 %LINK:howToGetToPositano|如何到达 Positano%，最后一站和 2–5 分钟步行请参考本页。"
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.webp",
+          "alt": "Positano Chiesa Nuova / Bar Internazionale 的 SITA 站牌",
+          "caption": "在 Bar Internazionale 门口寻找 SITA 站牌。"
+        },
+        {
+          "src": "/img/directions/chiesa-nuova-arrivals/positano-chiesa-nuova-church.jpg",
+          "alt": "Chiesa Nuova / Bar Internazionale 附近的 Positano 景色（Santa Maria delle Grazie）",
+          "caption": "照片：Lorenzo Saprio（CC BY-SA 4.0），来源 Wikimedia Commons。"
+        }
       ]
     },
     {
-      "id": "detailed-route",
-      "title": "从 Bar Internazionale 步行至旅舍",
+      "id": "fast-facts",
+      "title": "快速信息（2026 季）",
       "body": [
-        "在 Viale Pasitea 上的 Bar Internazionale 站下车（也称为 Chiesa Nuova 站）。",
-        "沿着 Viale Pasitea 朝 Montepertuso/Chiesa Nuova 方向步行约 120 米（400 英尺）。您将沿着道路右侧的铺砌人行道行走。",
-        "约 3 分钟后，留意右侧的 Hostel Brikette 入口——您会看到通往接待处的短楼梯。入口台阶前有一个露台层的招牌。",
-        "上台阶即可抵达正门和接待处。"
+        "**步行时间：** 从车站到前台 2–5 分钟，视行李和交通情况而定。",
+        "**距离：** 沿 Viale Pasitea 约 120–140 米，然后是短楼梯。",
+        "**站点类型：** 需示意停靠——上车时告知司机并提前按停靠按钮。",
+        "**何时准备下车：** 提前 1–2 分钟起身并走到车门附近，尤其在车上拥挤时。",
+        "**适合人群：** 首次到达、行李较重、想减少台阶的人。",
+        "**车票：** 司机不售票——需提前购买（见 %LINK:sitaTickets|SITA 车票%）。",
+        "**拥挤时段：** 夏季上午稍晚与下午较晚；若满员请等下一班。",
+        "**车上不确定时：** 询问司机或乘客——这是 hostel 常用下车点。",
+        "**如果先到码头：** 使用 %LINK:ferryDockToBrikette|码头 → Hostel Brikette% 可避免从海滩楼梯搬运行李。"
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-interno-yellow.webp",
+          "alt": "Positano 线路上的小型本地巴士",
+          "caption": "本地巴士体积小且常常拥挤——提前站到车门附近。"
+        }
       ]
     },
     {
-      "id": "bus-basics",
-      "title": "巴士时刻与车票",
+      "id": "get-off-here",
+      "title": "如何在正确车站下车（车上要注意什么）",
       "body": [
-        "可在站旁的烟草店购买 SITA 车票，或在上车时验证已预购的车票；留一张备用票以备深夜返回。",
-        "22:00 过后班次会减少——请提前查看时刻表，尽量搭乘倒数第二班车以避免打车费用。"
+        "许多线路会播报 **“Chiesa Nuova”**。时刻表上也可能写 **“Positano (Chiesa Nuova)”**。当地人常说 **Chiesa Nuova / Bar Internazionale**，因为车站就在 bar/tabacchi 门口。",
+        "**上车时告诉司机：** “Chiesa Nuova, per favore”。这是避免错过车站的最简单方法。",
+        "**提前按停靠按钮。** 当你看到 Bar Internazionale（通常在弯道右侧）时按下按钮，让司机有时间靠边。",
+        "**如果站着：** 与司机对视并举手示意——这是按需停靠站。",
+        "有行李的话，提前一分钟走向车门——停靠可能很短。",
+        "如果担心错过，可提前 1–2 站问司机：“Prossima Chiesa Nuova?” 司机很习惯。",
+        "如果车很满，不要等到最后一刻才移动——提前站到门口。"
+      ],
+      "images": [
+        {
+          "src": "/img/directions/chiesa-nuova-arrivals/amalfi-coast-sita-bus.jpg",
+          "alt": "阿马尔菲海岸公路上的 SITA Sud 巴士",
+          "caption": "照片：Robot8A（CC BY-SA 4.0），来源 Wikimedia Commons。"
+        },
+        {
+          "src": "/img/directions/ferry-dock-interno-red.webp",
+          "alt": "阿马尔菲海岸上的小型本地巴士",
+          "caption": "提前靠近出口——车辆停靠时间很短。"
+        }
+      ]
+    },
+    {
+      "id": "what-youll-see",
+      "title": "到站时你会看到什么（确认下车位置）",
+      "body": [
+        "车站位于 **Viale Pasitea**，在 **Bar Internazionale** 前。可看到 bar/tabacchi 的门面、小群候车人，以及蓝白色 SITA 站牌。",
+        "巴士会直接在路边放你下车。没有高站台——在路面高度下车后车辆会很快离开。",
+        "不确定时可以问乘客或司机：“Chiesa Nuova?” 这是很常见的站点。",
+        "下车后能看到主路向两侧延伸。Hostel 就在同一条路上，步行几分钟即可——**不需要**走长台阶。",
+        "高峰时同一侧人行道可能有人排队等下一班车——请站在靠内侧，避免阻碍交通。",
+        "把 Bar Internazionale 作为参照点——从那里到 Hostel 标牌只需几分钟。"
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.png",
+          "alt": "Positano 的 Bar Internazionale 门前公交站牌",
+          "caption": "车站就在主路上 Bar Internazionale 门前。"
+        }
+      ]
+    },
+    {
+      "id": "walk-to-hostel",
+      "title": "从 Chiesa Nuova / Bar Internazionale 步行到 Hostel Brikette（2–5 分钟）",
+      "body": [
+        "在 Bar Internazionale 前下车，并面向 **Viale Pasitea**（Positano 主路）。",
+        "沿人行道步行约 120–140 米。你走在主路边——行李尽量靠身，走内侧。",
+        "寻找 **Hostel Brikette** 的招牌和通往前台的短楼梯。",
+        "如果使用 porter 服务，请确认是在车站见面还是直接送到门口。",
+        "带大行李时请慢慢上楼梯，必要时在平台休息。",
+        "精确路线请看这张 %URL:https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!5e0!3m2!1sen!2sit!4v1700000000000|地图%。"
+      ],
+      "images": [
+        {
+          "src": "/img/directions/hostel-brikette-entrance-steps.webp",
+          "alt": "Hostel Brikette 入口楼梯与招牌",
+          "caption": "入口在主路旁的短楼梯上方。"
+        }
+      ]
+    },
+    {
+      "id": "tickets-and-basics",
+      "title": "车票、行李与要点（简要）",
+      "body": [
+        "SITA 车票不能向司机购买。请在 tabacchi/报刊亭提前购买（Bar Internazionale 可协助），上车时出示/打票。详见 %LINK:sitaTickets|SITA 车票与打票%。",
+        "如车内有打票机，上车时打票；不确定就给司机看票。",
+        "车票是小纸片：请放在随手可取处，避免弄湿或折损。",
+        "夏季及渡轮到达后常会拥挤。若满员，司机可能不再载客——下一班通常不久，但旺季会感觉久。",
+        "准备好车票以便快速上车。若是团队请一起上车。",
+        "大件行李可考虑 %LINK:porterServices|porter 服务%。",
+        "关于交通通票、预算与季节建议，请参阅 %LINK:publicTransportAmalfi|阿马尔菲海岸公共交通% 和 %LINK:transportBudget|交通预算%。"
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
+          "alt": "Positano 海岸公路上的巴士停靠区",
+          "caption": "大多数 SITA 站点都是路边小凹位——把行李靠近并准备上车。"
+        }
+      ]
+    },
+    {
+      "id": "ferry-first",
+      "title": "先到码头？这个站点如何衔接",
+      "body": [
+        "如果你从海滩的码头开始，最省力的行李路线通常是：码头 → porter → Interno Positano 巴士 → **Chiesa Nuova / Bar Internazionale** → 短距离步行到 hostel。",
+        "这条路线我们在 %LINK:ferryDockToBrikette|码头 → Hostel Brikette（带行李）% 中有详细说明，是旺季最常见的选择。",
+        "如果你已经在海滩并想要最轻松的上坡，可乘巴士到 Chiesa Nuova 并按本指南步行。",
+        "不使用 porter 也可以（轻装），但从码头到站点是持续上坡——多数人会把体力留给最后的台阶。"
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-positano-spiaggia-view.jpg",
+          "alt": "Positano 渡轮码头与海滨步道",
+          "caption": "渡轮在海滩高度靠岸——巴士让上坡更轻松。"
+        },
+        {
+          "src": "/img/directions/ferry-dock-promenade-to-mulini.jpg",
+          "alt": "从码头通往 Piazza dei Mulini 的步道",
+          "caption": "从码头出发，多数人会先走向 Piazza dei Mulini 再乘车。"
+        }
+      ]
+    },
+    {
+      "id": "night-arrivals",
+      "title": "夜间到达或长途后抵达",
+      "body": [
+        "夜间更容易迷路，因为道路更暗且仍有车流。车站仍是 Bar Internazionale 前的那个停靠口——以此为参照。",
+        "有行李请慢走并靠人行道内侧。路程虽短，但人行道较窄。",
+        "如果下雨或起风，请在酒吧遮檐下等待车辆完全停稳后再下车，路面可能打滑。"
+      ]
+    },
+    {
+      "id": "waiting-early",
+      "title": "如果到得早或需要休息",
+      "body": [
+        "Bar Internazionale 就在车站旁，是早到或想喝咖啡、找阴凉的最佳等候点，也方便确认你在正确位置。",
+        "请把行李放在身边，避免挡住人行道——巴士和摩托车会贴着通过。",
+        "如果疲惫或有时差，出发前先看一眼地图，避免错过 Hostel 招牌。",
+        "需要帮助可联系 hostel，或查看 %LINK:checkinCheckout|入住/退房指南% 了解时间与方案。"
+      ]
+    },
+    {
+      "id": "accessibility-safety",
+      "title": "无障碍与道路安全",
+      "body": [
+        "Chiesa Nuova / Bar Internazionale 将台阶降到最低，因此适合大多数到达者。仅入口处有短楼梯。",
+        "Viale Pasitea 人流车流较多，部分路段人行道狭窄。请把行李放在内侧，必要时排成一列行走，避免停在路边。",
+        "若你有重行李、婴儿车或行动不便，可考虑 %LINK:porterServices|porter 服务%。",
+        "需要停下时请站到酒吧门口的内凹处或稍微站到站点后方，避免挡路。"
+      ]
+    },
+    {
+      "id": "wrong-stop",
+      "title": "如果在错误站点下车",
+      "body": [
+        "若误在 **Positano Centro** 或 **Spiaggia Grande / Positano Spiaggia** 下车，会遇到更陡的上坡和更多台阶。",
+        "最简单的方式是乘本地巴士或出租到 **Chiesa Nuova / Bar Internazionale**，再按本指南步行。",
+        "如果不确定位置，请打开地图并以 Bar Internazionale 为目标——这是主要参照点。",
+        "行李较重时建议在咖啡馆休息或询问路人：“Bar Internazionale?” 是 Positano 常见地标。"
       ]
     }
   ],
   "beforeList": [
-    "提前查看 SITA 时刻表，这样就不会在路边等末班车。",
-    "一上车就验票——即使短程行驶，检票员也会对未验票开罚单。",
-    "如果午夜后抵达，请提前通知旅舍，这样夜班工作人员可以准备好门禁密码。"
+    "上车时对司机说 “Chiesa Nuova, per favore”，并提前按停靠按钮。",
+    "车票在上车前购买/打票（见 %LINK:sitaTickets|SITA 车票%）。",
+    "手机保持电量，便于查地图或联系 hostel。"
   ],
   "stepsList": [
-    "在 Bar Internazionale 站下车，沿 Viale Pasitea 朝 Montepertuso/Chiesa Nuova 方向步行。",
-    "继续沿铺砌人行道步行 120 米（400 英尺，约 3 分钟）——参照下方地图的步行路线。",
-    "留意右侧的 Hostel Brikette 入口，有露台层招牌，然后上台阶抵达接待处。"
+    "在 Chiesa Nuova / Bar Internazionale 下车（bar/tabacchi 前的路边站）。",
+    "沿 Viale Pasitea 人行道步行约 120–140 米。",
+    "找到 Hostel Brikette 标牌，沿短楼梯上到前台。"
   ],
   "stepsMapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!5e0!3m2!1sen!2sit!4v1700000000000",
   "kneesList": [
-    "整段路程都是铺砌路面，只有入口处一小段台阶。",
-    "如果坡度让膝盖吃力，可以短暂休息——转弯处车流自然会放慢。"
+    "这条路线避开了长台阶——几乎全程人行道，只有入口短楼梯。",
+    "携带重行李可考虑 %LINK:porterServices|porter 服务%，在 Chiesa Nuova / Bar Internazionale 接送。",
+    "需要完整的行李方案？请看 %LINK:luggageStorage|行李寄存% 和 %LINK:ferryDockToBrikette|码头到达指南%。"
   ],
-  "kneesDockPrefix": "先从渡轮抵达？",
-  "kneesDockLinkLabel": "码头 → 旅舍行李路线",
-  "kneesPorterPrefix": "需要帮忙搬运重行李？",
-  "kneesPorterLinkLabel": "搬运服务指南",
+  "kneesDockPrefix": "先到码头？",
+  "kneesDockLinkLabel": "码头 → Hostel（含行李）",
+  "kneesPorterPrefix": "需要行李协助？",
+  "kneesPorterLinkLabel": "porter 指南",
   "faqs": [
     {
-      "q": "整段路都有人行道吗？",
-      "a": "是的——路线使用主干道人行道，避开了长台阶。"
+      "q": "如何确认这是正确的车站？",
+      "a": "你要找的是 Viale Pasitea 上 **Bar Internazionale** 前的路边车站。广播/时刻表上常写 **“Positano (Chiesa Nuova)”**，当地也称 Chiesa Nuova / Bar Internazionale。"
     },
     {
-      "q": "晚上有照明吗？",
-      "a": "有街灯；走小巷时建议使用手机手电筒以增加能见度。"
+      "q": "需要按按钮让巴士停靠吗？",
+      "a": "需要——这是按需停靠站。上车时说 “Chiesa Nuova, per favore”，看到 Bar Internazionale 时按停靠按钮。"
     },
     {
-      "q": "步行需要多长时间？",
-      "a": "从 Bar Internazionale 到旅舍入口约 3 分钟（120 米/400 英尺）。"
+      "q": "步行大概要多久？",
+      "a": "约 2–5 分钟，视行李与交通情况而定，约 120–140 米。"
     },
     {
-      "q": "能轻松找到入口吗？",
-      "a": "可以——沿 Viale Pasitea 步行时留意右侧的 Hostel Brikette 露台层招牌。入口台阶有明确标识，通往接待处。"
+      "q": "可以在 check‑in 前寄存行李吗？",
+      "a": "通常可以：10:30 起可寄存（视空间而定）。若 10:30 前到达，可能需要在 Bar Internazionale 等候。详见 %LINK:luggageStorage|行李寄存指南%。"
+    },
+    {
+      "q": "check‑in 时间和所需物品？",
+      "a": "常规 check‑in 时间为 15:00–22:30。需出示原件证件（护照/ID）。check‑in 需 €10 现金押金用于门卡+床品套装（退还时现金返还）。详情：%LINK:checkinCheckout|入住/退房指南%。"
+    },
+    {
+      "q": "如果到达时间晚于前台关闭？",
+      "a": "前台 22:30 关闭。如将晚到，请提前联系——根据当天情况可提供自助晚到 check‑in。"
     }
   ],
   "howtoSteps": [
-    "从 Chiesa Nuova 站步行 2–5 分钟即可抵达旅舍",
-    "选择台阶最少的小巷；避开长台阶",
-    "如果携带重行李，可考虑在车站安排搬运服务接应"
-  ],
-  "lastUpdated": "2026-01-31"
+    "在 Positano Chiesa Nuova / Bar Internazionale 下车（距离 hostel 最近）",
+    "对司机说 “Chiesa Nuova, per favore” 并提前按停靠按钮",
+    "沿 Viale Pasitea 步行 120–140 米并上短楼梯到前台",
+    "如不确定，可询问 Bar Internazionale 或查看地图定位 hostel 标牌"
+  ]
 }

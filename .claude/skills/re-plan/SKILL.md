@@ -70,6 +70,7 @@ Run `/re-plan` when any of the following occurs:
 - A plan task has overall confidence <80% (or is explicitly flagged as blocked).
 - **A task is missing a test contract (TC-XX enumeration) — cannot proceed to build without it.**
 - During implementation, confidence drops due to unexpected complexity or new evidence.
+- A fact-check or repo audit finds factual inaccuracies in the plan that materially affect confidence.
 - New information invalidates assumptions, dependencies, or approach decisions.
 - Build was stopped due to uncertainty and needs a structured reset.
 - `/build-feature` rejected a task due to missing test contract.
@@ -217,6 +218,9 @@ Use this format:
 
 Update `docs/plans/<feature-slug>-plan.md` as follows:
 
+**Plan frontmatter:**
+- Set `Status: Active` after re-plan updates unless the user explicitly wants it to remain Draft.
+
 **For each re-planned task:**
 - Preserve the same TASK-ID (do not renumber).
 - Add a **Re-plan Update** block containing:
@@ -277,6 +281,7 @@ Identify any tasks whose confidence should change due to:
 - new dependencies
 - revised approach
 - newly discovered blast radius
+- factual corrections from fact-checks or audits
 
 Update those tasks' confidence (and notes) if materially affected.
 

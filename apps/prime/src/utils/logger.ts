@@ -30,8 +30,9 @@ function readEnv(key: string): string | undefined {
 }
 
 let currentLevel: LogLevel = (() => {
-  const raw = readEnv('NEXT_PUBLIC_LOG_LEVEL');
-  return raw && raw in levelOrder ? (raw as LogLevel) : 'info';
+  const raw = readEnv('NEXT_PUBLIC_LOG_LEVEL') ?? readEnv('LOG_LEVEL');
+  const normalized = raw === 'silent' ? 'none' : raw;
+  return normalized && normalized in levelOrder ? (normalized as LogLevel) : 'info';
 })();
 
 export function setLogLevel(level: LogLevel): void {

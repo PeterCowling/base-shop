@@ -132,7 +132,7 @@ Enter a slug to start planning, or describe a new feature.
 Use these values consistently across all plan documents:
 
 **Plan Status** (frontmatter):
-- `Draft` — plan is being written, not ready for build (default for new plans)
+- `Draft` — plan is being written and not ready for build (do not ship as final output)
 - `Active` — plan is approved and work may proceed (set when ready for `/build-feature`)
 - `Complete` — all tasks done
 - `Superseded` — replaced by a newer plan
@@ -361,6 +361,8 @@ When you do ask:
 
 Write/update `docs/plans/<feature-slug>-plan.md` using the template below.
 
+Set frontmatter `Status: Active` in the final persisted plan unless the user explicitly says the plan should remain Draft.
+
 ### 11) Completion message (decision-oriented)
 
 At the end, tell the user:
@@ -374,7 +376,7 @@ At the end, tell the user:
 ```markdown
 ---
 Type: Plan
-Status: Draft
+Status: Active
 Domain: <CMS | Platform | UI | API | Data | Infra | etc.>
 Created: YYYY-MM-DD
 Last-updated: YYYY-MM-DD

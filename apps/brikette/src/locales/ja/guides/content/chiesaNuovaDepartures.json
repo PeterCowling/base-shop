@@ -1,13 +1,13 @@
 {
   "seo": {
-    "title": "ポジターノChiesa Nuovaバス停：Hostel Briketteから徒歩",
-    "description": "Hostel BriketteからポジターノのChiesa Nuovaバス停まで徒歩：道順、時刻表、チケット、アマルフィ、ソレント、ナポリ、サレルノへの接続。"
+    "title": "ポジターノのChiesa Nuova / Bar Internazionaleバス停",
+    "description": "ポジターノのChiesa Nuova / Bar Internazionale（SITA）バス停ガイド：並ぶ側、チケット、時刻表、乗り継ぎ情報—Hostel Briketteから徒歩2〜4分。"
   },
-  "linkLabel": "Hostel BriketteからChiesa Nuova/Bar Internazionaleバス停まで",
-  "lastUpdated": "2026-01-30",
-  "intro": "ポジターノChiesa Nuovaバス停は、Hostel Briketteからアマルフィ海岸全体へのゲートウェイです。アマルフィ、ソレント、またはさらに遠くへ向かうバスでホステルを出発しますか？このガイドは、Hostel Briketteからこの重要な停留所（Bar Internazionaleとしても知られています）までの歩き方について知っておくべきことをすべてカバーしています：2分間の徒歩ルート、チケットの購入場所、道路のどちら側で列に並ぶか、そしてアマルフィ海岸沿いの主要な目的地への接続。",
+  "linkLabel": "Hostel BriketteからChiesa Nuova / Bar Internazionaleバス停へ",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": "Positano Chiesa Nuova / Bar Internazionaleバス停は、Hostel Briketteの宿泊者がアマルフィ、ソレント、ナポリ、サレルノなどへ向かう際の主要SITA停留所です。このガイドはバス停そのものについて解説します。時刻表での名称（多くは「Positano (Chiesa Nuova)」）、東行き/西行きの並ぶ側、チケットの購入・検札方法（片道料金は目的地により通常€2.50〜€4）、夏の混雑の傾向、そして—簡単に—ホステルから停留所までの最短2〜4分の徒歩ルート。",
   "image": {
-    "alt": "Bar Internazionale前のポジターノのChiesa Nuova SITA停留所",
+    "alt": "ポジターノのChiesa Nuova / Bar Internazionale SITA停留所（Bar Internazionale前）",
     "caption": "Hostel Briketteは停留所から1つカーブを上がった場所にあります。バスが到着する前に列に加わるため、特に夏にバスがすぐに満席になる場合は、数分余裕を持ってください。"
   },
   "toc": {
@@ -20,10 +20,11 @@
   "sections": [
     {
       "id": "why-route",
-      "title": "このルートが機能する理由",
+      "title": "Chiesa Nuova / Bar Internazionaleバス停が重要な理由",
       "body": [
-        "ポジターノChiesa Nuova / Bar Internazionale停留所は、Hostel Briketteに最も近いSITAバス停で、海岸沿いのバスに乗る最も簡単な場所です。地元の人々はどちらの名前も同じように呼んでいます。ホステルの入口からポジターノを通る主要な海岸道路であるViale Pasiteaのバス停までは120メートル（400フィート）の徒歩です。歩行は緩やかな下り坂で2〜4分かかります。出る時に右側にホステルの看板が見えます。歩道は荷物を持つのに十分な幅があり、夜間は照明も良好です。",
-        "アマルフィ方面（東）に向かう場合、停留所はBar Internazionaleの向かい側、道路の海側にあります—バス停を示す地面の金属製のポールを探してください。アマルフィの町、サレルノ、ラヴェッロ方面のバスはここで待ってください。ソレント方面（西）に向かう場合は、バーの前で直接待ちます。",
+        "**Chiesa Nuova / Bar Internazionale**停留所はHostel Briketteに最も近いSITAバス停で、ポジターノの長い階段を避けて乗車できる最も簡単な場所です。海岸を日帰りで回る場合でも、ソレントで電車に乗り継ぐ場合でも、サレルノ経由の長距離移動でも、ここがホステルの“拠点”の停留所です。",
+        "並ぶ場所が明確なのも使いやすい理由です。**東行き（アマルフィ/サレルノ）**は海側（Bar Internazionaleの向かい）、**西行き（ソレント/ナポリ）**は山側（バーの前）です。",
+        "Hostel BriketteからはViale Pasiteaを120m（約400フィート）、徒歩2〜4分。歩道は荷物を引くのに十分広く、夜も照明があります。",
         "地図付きの徒歩案内については、この%URL:https://www.google.com/maps/dir/V.+G.+Marconi,+358,+84017+Positano+SA/Bar+Internazionale,+V.+G.+Marconi,+306,+84017+Positano+SA/@40.6294795,14.4790535,746m/data=!3m2!1e3!4b1!4m14!4m13!1m5!1m1!1s0x133b976683fb47c9:0x209c0949d4fb4c3b!2m2!1d14.4809356!2d40.6296237!1m5!1m1!1s0x133b976673927785:0x5187a720325ee588!2m2!1d14.482264!2d40.629495!3e0?hl=en&entry=ttu&g_ep=EgoyMDI2MDEyOC4wIKXMDSoKLDEwMDc5MjA3MUgBUAM%3D|Hostel Briketteからバス停までのGoogleマップルート%をご覧ください。"
       ],
       "images": [
@@ -38,7 +39,7 @@
       "id": "where-buses-go",
       "title": "この停留所からバスが向かう場所",
       "body": [
-        "Chiesa Nuova/Bar Internazionale停留所から、SITAバスは海岸沿いの両方向に運行しています：",
+        "Chiesa Nuova / Bar Internazionale停留所からSITAバスは海岸沿いに両方向へ運行します:",
         "**アマルフィ方面（東行き）：** バスはプライアーノを通り、Marina di PraiaとFiordo di Furoreを通過してから%LINK:amalfiTownGuide|アマルフィの町%に到着します（30〜40分）。アマルフィから%LINK:salernoPositano|サレルノ%まで続けることができます（さらに45分）、またはラヴェッロへの接続バスに乗ることができます。",
         "**ソレント方面（西行き）：** バスは、%LINK:sorrentoGuide|ソレント%に到着する前に、いくつかの風光明媚なトンネルを通って海岸沿いを曲がります（40〜50分）。ソレントから、%LINK:naplesPositano|ナポリ%行きの列車に接続できます（Circumvesuviana線でナポリ中央駅まで）、またはナポリ空港まで続けることができます。",
         "ポジターノからの完全な旅行計画については、専用ルートガイドをご覧ください：%LINK:positanoAmalfiBus|ポジターノからアマルフィまでバスで%、%LINK:positanoSorrentoBus|ポジターノからソレントまでバスで%、%LINK:positanoNaplesCenterBusTrain|ポジターノからナポリまで%ソレント経由、および%LINK:positanoSalernoBus|ポジターノからサレルノまでバスで%。",
@@ -49,6 +50,11 @@
           "src": "https://simplyamalficoast.it/wp-content/uploads/2025/11/simply-amalfi-coast-bus-sita-4.jpg",
           "alt": "アマルフィに向かうポジターノバス停のSITAバス",
           "caption": "SITAバスはポジターノをアマルフィ海岸全域の目的地に接続します"
+        },
+        {
+          "src": "/img/positano-panorama.avif",
+          "alt": "Viale Pasiteaから見たポジターノ海岸のパノラマ",
+          "caption": "Chiesa Nuova / Bar Internazionale停留所近くの海岸道路の景色。"
         }
       ]
     },
@@ -57,7 +63,7 @@
       "title": "バスの時刻表と頻度",
       "body": [
         "SITAバスは、ピークシーズン（4月〜10月）にポジターノとアマルフィおよびソレントの間を頻繁に運行しています。日中は20〜30分ごとにバスがあり、早朝（午前8時前）と夕方（午後9時以降）はバスが少なくなります。乗車時間はアマルフィまで約40分、ソレントまで約50分ですが、交通量が多い夏の忙しい日はもっと時間がかかることがあります。",
-        "**最初のバス：** アマルフィ方面への最初の東行きバスは、通常午前6:30〜7:00頃にChiesa Nuovaから出発します。ソレント方面への最初の西行きバスは、通常午前6:45〜7:15頃に出発します。時刻表は季節によって変わるため、Bar Internazionaleで現在の時刻を確認するか、ホステルのレセプションで尋ねてください。夏は冬よりバスが多くなります。",
+        "**始発便:** 東行きのアマルフィ方面は通常6:30〜7:00頃にChiesa Nuova / Bar Internazionale停留所を出発します。西行きのソレント方面は6:45〜7:15頃が目安です。季節で変わるため、Bar Internazionaleや受付で最新の時刻を確認してください。夏は本数が増えます。",
         "**最終バス：** 夕方のバスは午後10時以降ずっと少なくなります。アマルフィ行きの最終バスは通常午後10:30頃に出発し、ソレント行きの最終バスは午後11時頃に出発します。レセプションで正確な時間を必ず確認するか、停留所に掲示されているSITAの時刻表を見てください。夜間に旅行する場合は、最終バスに乗り遅れて立ち往生しないように、最後から2番目のバスに乗るようにしてください。",
         "**冬の時刻表（11月〜3月）：** 冬はバスの頻度が少なく、約40〜60分ごとになり、最終バスの出発時刻が早くなります。日曜日や祝日には一部の夕方のバスがまったく運行しない場合があります。旅行前に必ず冬の時刻表を確認してください。"
       ],
@@ -149,12 +155,23 @@
         "**天候の考慮事項：** 歩行は天候にさらされます—ホステルとバス待合所の間に覆われた区間はありません。大雨の場合、2分間の歩行中に濡れます。予報が不確かな場合は、傘またはレインコートを持参してください。夏の暑さの中、歩道は日陰を提供しません；列に並ぶために早く停留所に到着する場合は、日焼け止めを塗り、水を持参してください。冬はViale Pasiteaのこの露出した区間に沿って強風が吹く可能性があります—バッグの中の緩い物を固定してください。",
         "**レセプションに荷物を預ける：** チェックアウトするがバスの前に数時間ポジターノを探索する必要がある場合は、レセプションで荷物を預けることについて尋ねてください。これにより、後でバッグなしで停留所まで歩き、バスに乗る途中で単に回収することができます。これは、出発前にビーチを訪れたり、町で昼食をとったりしたい場合に特に便利です。"
       ],
-      "images": []
+      "images": [
+        {
+          "src": "/img/directions/hostel-brikette-entrance-steps.png",
+          "alt": "夜のViale PasiteaにあるHostel Briketteの入口階段",
+          "caption": "入口階段はよく照明されていますが、暗くなってから到着する場合は1分余裕を。"
+        },
+        {
+          "src": "/img/checkin-desk.avif",
+          "alt": "Hostel Briketteのレセプションデスク",
+          "caption": "バスに乗る前に散策したい場合、レセプションで荷物を預かってもらえます。"
+        }
+      ]
     }
   ],
   "beforeList": [
     "早朝のバスに乗る場合（午前7:30前）、前夜にSITAチケットを購入してください",
-    "レセプションまたはBar Internazionaleで現在のバス時刻表を確認してください—時刻表は季節によって変わります",
+    "最新の時刻表は受付またはChiesa Nuova / Bar Internazionale停留所で確認（季節で変更）",
     "可能であれば軽く荷造りしてください—バスの荷物スペースは非常に限られており、特に夏は",
     "ピークの夏の月には、列での場所を確保するために10〜15分早く到着してください"
   ],
@@ -209,7 +226,7 @@
     }
   ],
   "howtoSteps": [
-    "Hostel BriketteからBar Internazionale/Chiesa Nuova停留所まで2〜4分下り坂を歩きます",
+    "Hostel Briketteから坂を下って2〜4分、Chiesa Nuova / Bar Internazionale停留所へ",
     "tabacchiまたはバーでSITAチケットを購入します（バスでは購入できません）",
     "正しい側で列に並びます：アマルフィ/東は海側、ソレント/西は山側",
     "乗車時に運転手または電子検証機でチケットを検証します",

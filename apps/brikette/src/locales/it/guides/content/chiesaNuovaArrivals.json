@@ -1,69 +1,261 @@
 {
   "seo": {
-    "title": "Arrivi a Chiesa Nuova/Bar Internazionale: percorso per Hostel Brikette",
-    "description": "Istruzioni dettagliate dalla fermata Chiesa Nuova all'ostello con rampe, ascensori e soste consigliate."
+    "title": "Fermata Chiesa Nuova / Bar Internazionale → Hostel Brikette",
+    "description": "Arrivi in bus a Positano? Scendi a Chiesa Nuova / Bar Internazionale (la fermata più vicina all’Hostel Brikette). Segnala al conducente, riconosci la fermata e cammina 2–5 min fino alla reception."
   },
-  "linkLabel": "Arrivi a Chiesa Nuova/Bar Internazionale: percorso per Hostel Brikette",
-  "intro": "Arrivi in autobus? “Chiesa Nuova” o “Bar Internazionale” è la fermata più vicina all'ostello. Questo micropercorso riduce al minimo le scale per ginocchia e bagagli.",
+  "linkLabel": "Chiesa Nuova / Bar Internazionale → Hostel Brikette (Arrivi)",
+  "lastUpdated": "2026-02-02",
+  "intro": "Arrivi con il bus SITA nel 2026? La **fermata Chiesa Nuova / Bar Internazionale** è la più vicina all’Hostel Brikette, con la camminata più breve e meno scale. Questa guida riguarda la fermata: come riconoscerla, come assicurarti che l’autobus si fermi e come percorrere gli ultimi 120–140 metri fino alla reception.\n\nNon è una guida all’intero viaggio in bus: è l’ultimo tratto, quello cruciale. Troverai cosa guardare, quando premere il pulsante e come arrivare senza affrontare le lunghe scale. In fondo, nella FAQ, trovi anche le informazioni essenziali su deposito bagagli, orari di check‑in e arrivi tardivi.",
   "image": {
-    "alt": "Fermata SITA Chiesa Nuova di Positano fuori dal Bar Internazionale",
-    "caption": "Positano (Chiesa Nuova) — attendi fuori dal Bar Internazionale; in estate arriva un po' in anticipo perché gli autobus si riempiono rapidamente."
+    "alt": "Fermata SITA Chiesa Nuova / Bar Internazionale su Viale Pasitea",
+    "caption": "Sulle tabelle orarie può comparire come “Positano (Chiesa Nuova)” ed è davanti al Bar Internazionale su Viale Pasitea."
   },
   "toc": {
     "onThisPage": "In questa pagina",
-    "before": "Prima di uscire",
+    "before": "Prima di partire",
     "steps": "Passo dopo passo",
     "knees": "Gambe e bagagli",
-    "faqs": "Domande frequenti"
+    "faqs": "FAQ"
   },
   "sections": [
     {
-      "id": "why-stop",
-      "title": "Perché questo stop funziona",
+      "id": "why-this-stop",
+      "title": "Perché Chiesa Nuova / Bar Internazionale è la fermata migliore per arrivare",
       "body": [
-        "La fermata dell'autobus davanti al bar/caffetteria chiamato Bar Internazionale è a circa 140 metri (490 piedi) dall'Hostel Brikette."
+        "A Positano ci sono più fermate. Quella più comoda per arrivare in ostello è **Chiesa Nuova / Bar Internazionale**: è la più vicina all’Hostel Brikette e ti evita le lunghe scale che troveresti scendendo a “Positano Centro” o “Spiaggia Grande / Positano Spiaggia”.",
+        "Da qui la camminata è breve e quasi in piano (circa 120–140 metri) più la scalinata d’ingresso dell’ostello. Per questo la consigliamo a chi ha **bagagli**, **gambe stanche** e per i **primi arrivi**.",
+        "Se stai pianificando l’arrivo completo, vedi la guida %LINK:howToGetToPositano|Come arrivare a Positano%, poi usa questa pagina per l’ultima fermata e gli ultimi 2–5 minuti a piedi."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.webp",
+          "alt": "Cartello della fermata SITA per Positano Chiesa Nuova / Bar Internazionale",
+          "caption": "Cerca il cartello SITA fuori dal Bar Internazionale."
+        },
+        {
+          "src": "/img/directions/chiesa-nuova-arrivals/positano-chiesa-nuova-church.jpg",
+          "alt": "Vista sulla collina di Positano vicino a Chiesa Nuova / Bar Internazionale (Santa Maria delle Grazie)",
+          "caption": "Foto: Lorenzo Saprio (CC BY-SA 4.0) via Wikimedia Commons."
+        }
       ]
     },
     {
-      "id": "bus-basics",
-      "title": "Orari e biglietti dell'autobus",
+      "id": "fast-facts",
+      "title": "Dati rapidi (stagione 2026)",
       "body": [
-        "Acquista i biglietti SITA presso il tabacchi vicino alla fermata oppure convalida all'imbarco i biglietti già comprati; tienine uno di riserva per i rientri a tarda notte.",
-        "Gli autobus serali si diradano dopo le 22:00: controlla gli orari in anticipo e punta al penultimo servizio per evitare le tariffe dei taxi."
+        "**Tempo a piedi:** 2–5 minuti dalla fermata alla reception, in base ai bagagli e al traffico.",
+        "**Distanza:** ~120–140 metri lungo Viale Pasitea, poi una breve scalinata fino all’ingresso.",
+        "**Tipo di fermata:** a richiesta — avvisa il conducente e premi il pulsante in anticipo.",
+        "**Quando prepararti a scendere:** alzati e avvicinati alla porta 1–2 minuti prima di Chiesa Nuova, soprattutto se il bus è affollato.",
+        "**Ideale per:** primi arrivi, bagagli pesanti e chi vuole evitare le scale.",
+        "**Biglietti:** non si comprano dal conducente — acquistali prima (vedi %LINK:sitaTickets|biglietti SITA%).",
+        "**Orari di punta:** tarda mattina e tardo pomeriggio in estate; se il bus è pieno, meglio aspettare il successivo.",
+        "**Se hai dubbi a bordo:** chiedi al conducente o a un passeggero — è una fermata comune per gli ospiti dell’ostello.",
+        "**Se arrivi prima in traghetto:** usa la guida %LINK:ferryDockToBrikette|molo → Hostel Brikette% per raggiungere questa fermata senza trascinare le valigie dalle scale della spiaggia."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-interno-yellow.webp",
+          "alt": "Un piccolo bus locale sulla tratta di Positano",
+          "caption": "I bus locali sono compatti e spesso pieni — posizionati vicino alla porta prima della fermata."
+        }
+      ]
+    },
+    {
+      "id": "get-off-here",
+      "title": "Come scendere alla fermata giusta (cosa guardare a bordo)",
+      "body": [
+        "Su molte tratte l’autista (o il display) annuncia **“Chiesa Nuova”**. Sulle tabelle può apparire come **“Positano (Chiesa Nuova)”**. A livello locale si usa anche **Chiesa Nuova / Bar Internazionale** perché la fermata è davanti al bar/tabacchi.",
+        "**Avvisa l’autista quando sali:** “Chiesa Nuova, per favore”. È il modo più semplice per non perderla, soprattutto se il bus è affollato o arrivi tardi.",
+        "**Premi il pulsante in anticipo.** Quando vedi il Bar Internazionale (spesso sulla destra mentre il bus curva), premi il pulsante così l’autista può accostare.",
+        "**Segnala se sei in piedi:** quando il bus si avvicina, fai cenno con la mano: è una fermata a richiesta.",
+        "Se sei con bagagli, inizia a muoverti verso la porta un minuto prima — la sosta può essere brevissima.",
+        "Se temi di perderla, chiedi una o due fermate prima: “Prossima Chiesa Nuova?”. Gli autisti sono abituati a questa domanda.",
+        "Se il bus è molto pieno, non scendere all’ultimo secondo: posizionati in tempo per evitare di restare bloccato tra le persone."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/chiesa-nuova-arrivals/amalfi-coast-sita-bus.jpg",
+          "alt": "Un bus SITA Sud sulla costiera amalfitana",
+          "caption": "Foto: Robot8A (CC BY-SA 4.0) via Wikimedia Commons."
+        },
+        {
+          "src": "/img/directions/ferry-dock-interno-red.webp",
+          "alt": "Un bus locale compatto sulla Costiera Amalfitana",
+          "caption": "Avvicinati all’uscita prima della fermata — gli autisti si fermano per poco."
+        }
+      ]
+    },
+    {
+      "id": "what-youll-see",
+      "title": "Cosa vedrai all’arrivo (per capire dove scendere)",
+      "body": [
+        "La fermata è **sulla strada di Viale Pasitea**, davanti al **Bar Internazionale**. Cerca l’insegna del bar/tabacchi, un piccolo gruppo di persone sul marciapiede e il cartello SITA bianco‑blu.",
+        "Il bus ti fa scendere direttamente sul marciapiede. Non c’è una piattaforma rialzata: fai un passo verso il bordo strada e il bus riparte subito.",
+        "Se non sei sicuro, chiedi a un passeggero o all’autista: “Chiesa Nuova?”. È una fermata molto conosciuta.",
+        "Appena scendi vedrai la strada principale in entrambe le direzioni. L’ostello è poco più avanti lungo la stessa strada — **non** serve salire le lunghe scale da questa fermata.",
+        "Nei momenti affollati potresti vedere persone in attesa del bus successivo sullo stesso marciapiede: resta sul lato interno per non intralciare il traffico.",
+        "Se ti serve un punto di riferimento visivo, considera il Bar Internazionale come “zero”: da lì camminerai pochi minuti fino al cartello dell’ostello."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.png",
+          "alt": "Cartello della fermata fuori dal Bar Internazionale a Positano",
+          "caption": "La fermata è proprio davanti al Bar Internazionale sulla strada principale."
+        }
+      ]
+    },
+    {
+      "id": "walk-to-hostel",
+      "title": "Cammina da Chiesa Nuova / Bar Internazionale all’Hostel Brikette (2–5 minuti)",
+      "body": [
+        "Scendi davanti al Bar Internazionale e orientati su **Viale Pasitea** (la strada principale di Positano).",
+        "Cammina sul marciapiede per circa 120–140 metri. Sei sulla strada principale — tieni i bagagli vicini e resta sul lato interno quando il marciapiede si stringe.",
+        "Cerca il cartello **Hostel Brikette** e la breve scalinata verso la reception. Sali i gradini per entrare.",
+        "Se utilizzi un porter, concorda se ti incontrerà alla fermata o se porterà le valigie direttamente all’ingresso.",
+        "Se hai una valigia grande, prenditi il tempo sui gradini e fermati al pianerottolo se serve: è una salita breve, ma è l’unica.",
+        "Per una mappa precisa, usa la %URL:https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!5e0!3m2!1sen!2sit!4v1700000000000|mappa% per la curva e la scalinata esatta."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/hostel-brikette-entrance-steps.webp",
+          "alt": "Scalinata e insegna dell’ingresso di Hostel Brikette",
+          "caption": "L’ingresso è su una breve scalinata dalla strada principale."
+        }
+      ]
+    },
+    {
+      "id": "tickets-and-basics",
+      "title": "Biglietti, bagagli e basi del viaggio (note rapide)",
+      "body": [
+        "I biglietti SITA non si comprano dall’autista. Comprali prima in un tabacchi/edicola (il Bar Internazionale può aiutarti), poi mostrali o convalidali quando sali. Per tutti i dettagli vedi %LINK:sitaTickets|biglietti e convalida SITA%.",
+        "Se a bordo c’è la macchinetta di convalida, passa il biglietto appena sali. In caso di dubbi, mostra il biglietto all’autista: ti indicherà cosa fare.",
+        "I biglietti sono piccoli foglietti: tienili a portata di mano e non bagnarli o piegarli troppo.",
+        "In estate e dopo gli arrivi dei traghetti i bus possono essere pieni. Se è completo, l’autista potrebbe non far salire altri passeggeri: il successivo di solito non è lontano, ma in alta stagione può sembrare lungo.",
+        "Tieni il biglietto pronto per mostrare velocemente quando sali. Se viaggi in gruppo, salite insieme per non rallentare la corsa.",
+        "Se arrivi con bagagli grandi, valuta un %LINK:porterServices|servizio porter% per portare le valigie mentre tu fai a piedi l’ultimo tratto.",
+        "Per consigli generali su pass, budget e stagionalità, vedi %LINK:publicTransportAmalfi|trasporti pubblici in Costiera% e %LINK:transportBudget|budget trasporti%."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
+          "alt": "Area fermata bus sulla strada costiera a Positano",
+          "caption": "Molte fermate SITA sono semplici rientranze sulla strada — tieni i bagagli vicini e preparati a salire."
+        }
+      ]
+    },
+    {
+      "id": "ferry-first",
+      "title": "Arrivi prima in traghetto? Ecco come questa fermata si inserisce nel percorso",
+      "body": [
+        "Se il tuo viaggio inizia al molo, il percorso più comodo per i bagagli di solito è: molo → porter → bus Interno Positano → **Chiesa Nuova / Bar Internazionale** → breve camminata fino all’ostello.",
+        "Spieghiamo quel percorso passo‑passo nella guida %LINK:ferryDockToBrikette|molo → Hostel Brikette (con bagagli)% — è la soluzione più comune in alta stagione.",
+        "Se sei già in spiaggia e vuoi la salita più semplice, prendi il bus fino a Chiesa Nuova e poi segui la breve camminata di questa guida.",
+        "Saltare il porter è possibile con bagagli leggeri, ma la salita dal molo a questa fermata è costante — molti ospiti preferiscono risparmiare energie per gli ultimi gradini verso l’ostello."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-positano-spiaggia-view.jpg",
+          "alt": "Molo dei traghetti di Positano e passeggiata sul lungomare",
+          "caption": "Gli arrivi via traghetto sono a livello spiaggia — il bus facilita il tratto in salita."
+        },
+        {
+          "src": "/img/directions/ferry-dock-promenade-to-mulini.jpg",
+          "alt": "Passeggiata sul lungomare di Positano verso Piazza dei Mulini",
+          "caption": "Dal molo si cammina verso Piazza dei Mulini prima di prendere il bus in salita."
+        }
+      ]
+    },
+    {
+      "id": "night-arrivals",
+      "title": "Arrivi di notte o dopo una lunga giornata di viaggio",
+      "body": [
+        "La sera può essere più disorientante perché la strada è buia e il traffico continua. La fermata è sempre la stessa rientranza davanti al Bar Internazionale: usalo come riferimento.",
+        "Se hai bagagli, cammina lentamente sul marciapiede e resta sul lato interno. Il percorso è breve, ma è meglio essere calmi e precisi che correre su un marciapiede stretto.",
+        "Se piove o c’è vento, aspetta sotto la tettoia del bar finché il bus è fermo, poi scendi con attenzione: il marciapiede può essere scivoloso."
+      ]
+    },
+    {
+      "id": "waiting-early",
+      "title": "Se arrivi presto o hai bisogno di una pausa",
+      "body": [
+        "Il Bar Internazionale è proprio alla fermata ed è il posto più comodo per aspettare se arrivi presto o vuoi un caffè e un po’ d’ombra. È anche un buon modo per verificare di essere alla fermata giusta.",
+        "Se arrivi con bagagli, tienili con te e non bloccare il marciapiede — autobus e scooter passano vicino al bordo.",
+        "Se sei stanco o hai il jet‑lag, prenditi un minuto per controllare la mappa prima di camminare, così non superi il cartello dell’ostello.",
+        "Se ti serve aiuto, puoi scrivere all’ostello o consultare la %LINK:checkinCheckout|guida al check‑in e check‑out% per orari e opzioni di arrivo."
+      ]
+    },
+    {
+      "id": "accessibility-safety",
+      "title": "Accessibilità e sicurezza in strada",
+      "body": [
+        "La fermata Chiesa Nuova / Bar Internazionale riduce al minimo le scale, per questo la consigliamo alla maggior parte degli arrivi. Le uniche scale sono la breve scalinata d’ingresso dell’ostello.",
+        "Viale Pasitea può essere trafficata e il marciapiede si restringe in alcuni punti. Tieni i bagagli sul lato interno, cammina in fila se serve e evita di fermarti lato strada.",
+        "Se viaggi con bagagli pesanti, passeggino o mobilità ridotta, valuta un %LINK:porterServices|servizio porter% per concentrarti solo sulla breve camminata.",
+        "Se devi fermarti, entra nell’area rientrata vicino al bar o aspetta appena oltre la fermata per non intralciare il flusso."
+      ]
+    },
+    {
+      "id": "wrong-stop",
+      "title": "Se sei sceso alla fermata sbagliata",
+      "body": [
+        "Se scendi per errore a **Positano Centro** o **Spiaggia Grande / Positano Spiaggia**, aspettati una salita molto più ripida con molte più scale per raggiungere l’ostello.",
+        "La soluzione più semplice è prendere un bus locale o un taxi fino a **Chiesa Nuova / Bar Internazionale**, poi seguire la breve camminata di questa guida.",
+        "Se non sai dove sei, apri la mappa e punta al Bar Internazionale — è il punto di riferimento della fermata.",
+        "Se hai bagagli pesanti e ti senti bloccato, fermati in un bar o chiedi indicazioni a un locale: “Bar Internazionale?” è una domanda che tutti capiscono a Positano."
       ]
     }
   ],
   "beforeList": [
-    "Controlla in anticipo gli orari SITA in modo da non dover aspettare l'ultimo servizio sul ciglio della strada.",
-    "Convalida il tuo biglietto non appena sali a bordo: gli ispettori multano i biglietti non convalidati anche per corse brevi.",
-    "Se arrivi dopo mezzanotte, invia un messaggio all'ostello in modo che il personale notturno possa tenere a portata di mano il codice della porta."
+    "Di' all’autista “Chiesa Nuova, per favore” quando sali e premi il pulsante in anticipo.",
+    "Compra o convalida il biglietto prima di salire (vedi %LINK:sitaTickets|biglietti SITA%).",
+    "Tieni il telefono carico per consultare la mappa o scrivere all’ostello se serve."
   ],
   "stepsList": [
-    "Dalla fermata fuori dal Bar Internazionale, cammina per poco più di 100 metri (330 piedi) in salita lungo Viale Pasitea: segui il percorso a piedi nella mappa qui sotto per indicazioni passo passo.",
-    "Alla curva, prosegui oltre il cartello Hostel Brikette a livello della terrazza, quindi prendi le scale che salgono sul lato destro della strada fino alla porta principale."
+    "Scendi a Chiesa Nuova / Bar Internazionale (fermata su strada davanti al bar/tabacchi).",
+    "Cammina lungo Viale Pasitea per circa 120–140 metri sul marciapiede.",
+    "Cerca il cartello Hostel Brikette e sali la breve scalinata verso la reception."
   ],
-  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sBar+Internazionale!4m1!2sHostel+Brikette",
+  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!5e0!3m2!1sen!2sit!4v1700000000000",
   "kneesList": [
-    "L'intero percorso è pavimentato con una sola breve scalinata all'ingresso.",
-    "Se le pendenze ti danno fastidio alle ginocchia, fai brevi pause: il traffico rallenta naturalmente in curva."
+    "Il percorso evita le lunghe scalinate — è quasi tutto marciapiede più la breve scalinata d’ingresso.",
+    "Se hai bagagli pesanti, valuta un %LINK:porterServices|servizio porter% con ritiro/arrivo a Chiesa Nuova / Bar Internazionale.",
+    "Ti serve un piano completo per i bagagli? Vedi %LINK:luggageStorage|deposito bagagli% e la %LINK:ferryDockToBrikette|guida per arrivi dal molo%."
   ],
-  "kneesDockPrefix": "Arrivando prima con il traghetto?",
-  "kneesDockLinkLabel": "Dock → Percorso bagagli dell'ostello",
-  "kneesPorterPrefix": "Hai bisogno di una mano con le borse pesanti?",
-  "kneesPorterLinkLabel": "Guida al servizio di facchinaggio",
+  "kneesDockPrefix": "Arrivi prima in traghetto?",
+  "kneesDockLinkLabel": "Molo → Ostello con bagagli",
+  "kneesPorterPrefix": "Serve aiuto con le valigie?",
+  "kneesPorterLinkLabel": "Guida al servizio porter",
   "faqs": [
     {
-      "q": "C'è un marciapiede per tutto il percorso?",
-      "a": "Sì, il percorso utilizza il marciapiede della strada principale, evitando lunghe scalinate."
+      "q": "Come capisco di essere alla fermata giusta?",
+      "a": "Cerca la fermata su strada davanti al **Bar Internazionale** su Viale Pasitea. Nelle comunicazioni può comparire come **“Positano (Chiesa Nuova)”** — i locali la chiamano anche Chiesa Nuova / Bar Internazionale."
     },
     {
-      "q": "Di notte è illuminato?",
-      "a": "E' presente l'illuminazione stradale; usa la torcia del telefono per una maggiore visibilità sui vicoli."
+      "q": "Devo premere un pulsante perché l’autobus si fermi?",
+      "a": "Sì: è una fermata a richiesta. Di' all’autista “Chiesa Nuova, per favore” quando sali e premi il pulsante quando vedi il Bar Internazionale avvicinarsi, così l’autista ha tempo di accostare."
+    },
+    {
+      "q": "Quanto dura la camminata?",
+      "a": "Circa 2–5 minuti, a seconda dei bagagli e del traffico, per circa 120–140 metri."
+    },
+    {
+      "q": "Posso lasciare i bagagli prima del check‑in?",
+      "a": "Di solito sì: il deposito bagagli è disponibile dalle 10:30 per gli ospiti in arrivo (salvo disponibilità). Se arrivi prima delle 10:30 potresti dover aspettare al Bar Internazionale. Dettagli completi nella %LINK:luggageStorage|guida al deposito bagagli%."
+    },
+    {
+      "q": "Quali sono gli orari di check‑in e cosa serve?",
+      "a": "Il check‑in regolare è dalle 15:00 alle 22:30. Porta un documento originale (passaporto/carta d’identità). Al check‑in serve un deposito di €10 in contanti per keycard + set lenzuola (rimborsato in contanti alla restituzione). Dettagli: %LINK:checkinCheckout|guida check‑in & check‑out%."
+    },
+    {
+      "q": "E se arrivo dopo la chiusura della reception?",
+      "a": "La reception chiude alle 22:30. Se arrivi più tardi, scrivici prima del viaggio — a seconda del giorno possiamo offrire un check‑in tardivo in autonomia."
     }
   ],
   "howtoSteps": [
-    "Dalla fermata \"Chiesa Nuova\", cammina per 2-5 minuti fino all'ostello",
-    "Usa i vicoli con il minor numero di scale; evita le scalinate lunghe",
-    "Se trasporti bagagli pesanti, valuta il ritiro del facchino alla fermata"
+    "Scendi a Positano Chiesa Nuova / Bar Internazionale (la fermata più vicina all’ostello)",
+    "Di' all’autista “Chiesa Nuova, per favore” e premi il pulsante in anticipo",
+    "Cammina 120–140 metri lungo Viale Pasitea e sali i gradini verso la reception",
+    "Se hai dubbi, chiedi al Bar Internazionale o controlla la mappa per il cartello dell’ostello"
   ]
 }

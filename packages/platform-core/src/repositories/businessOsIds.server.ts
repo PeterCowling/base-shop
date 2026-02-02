@@ -29,7 +29,6 @@ async function allocateCounter(params: {
 
   const row = await db
     .prepare(
-      // eslint-disable-next-line ds/no-raw-font
       `
       INSERT INTO business_os_metadata (key, value, updated_at)
       VALUES (?, '1', ?)
@@ -75,4 +74,3 @@ export async function allocateNextIdeaId(
 
   return `${business}-OPP-${pad3(counter)}`;
 }
-

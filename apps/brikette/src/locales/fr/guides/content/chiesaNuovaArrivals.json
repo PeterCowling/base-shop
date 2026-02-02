@@ -1,69 +1,261 @@
 {
   "seo": {
-    "title": "Arrivées via Chiesa Nuova/Bar Internazionale : itinéraire vers l’auberge Brikette",
-    "description": "Itinéraire détaillé depuis l'arrêt Chiesa Nuova jusqu'à l'auberge en minimisant les marches et en gérant les bagages."
+    "title": "Arrêt Chiesa Nuova / Bar Internazionale → Hostel Brikette",
+    "description": "Vous arrivez en bus à Positano ? Descendez à Chiesa Nuova / Bar Internazionale (l’arrêt le plus proche de l’Hostel Brikette). Signalez au conducteur, repérez l’arrêt et marchez 2–5 min jusqu’à la réception."
   },
-  "linkLabel": "Arrivées via Chiesa Nuova/Bar Internazionale : itinéraire vers l’auberge Brikette",
-  "intro": "Vous arrivez en bus ? « Chiesa Nuova » ou « Bar Internazionale » est l'arrêt le plus proche de l'auberge. Ce micro-itinéraire minimise les escaliers pour les genoux et les bagages.",
+  "linkLabel": "Chiesa Nuova / Bar Internazionale → Hostel Brikette (Arrivées)",
+  "lastUpdated": "2026-02-02",
+  "intro": "Vous arrivez en bus SITA en 2026 ? L’**arrêt Chiesa Nuova / Bar Internazionale** est le plus proche de l’Hostel Brikette, avec la marche la plus courte et le moins d’escaliers. Ce guide concerne l’arrêt : comment le reconnaître, comment s’assurer que le bus s’arrête et comment parcourir les 120–140 derniers mètres jusqu’à la réception.\n\nCe n’est pas un guide complet du trajet en bus : c’est le dernier tronçon, le plus important. Vous verrez quoi chercher, quand appuyer sur le bouton et comment arriver avec vos bagages sans prendre les longues escaliers. En fin de page, la FAQ couvre la consigne, les horaires de check‑in et les arrivées tardives.",
   "image": {
-    "alt": "Arrêt SITA Chiesa Nuova de Positano devant le Bar Internazionale",
-    "caption": "Arrêt Positano (Chiesa Nuova) — attendez devant le Bar Internazionale ; en été, arrivez un peu en avance car les bus se remplissent vite."
+    "alt": "Arrêt SITA Chiesa Nuova / Bar Internazionale sur Viale Pasitea",
+    "caption": "Dans les horaires, il peut apparaître comme “Positano (Chiesa Nuova)” et se trouve devant le Bar Internazionale sur Viale Pasitea."
   },
   "toc": {
     "onThisPage": "Sur cette page",
     "before": "Avant de partir",
     "steps": "Étape par étape",
-    "knees": "Jambes et bagages",
+    "knees": "Jambes & bagages",
     "faqs": "FAQ"
   },
   "sections": [
     {
-      "id": "why-stop",
-      "title": "Pourquoi cet arrêt fonctionne",
+      "id": "why-this-stop",
+      "title": "Pourquoi Chiesa Nuova / Bar Internazionale est le meilleur arrêt d’arrivée",
       "body": [
-        "L'arrêt de bus devant le café/bar appelé Bar Internazionale se trouve à environ 140 mètres (490 pieds) de l'Hostel Brikette."
+        "Positano a plusieurs arrêts. Le plus pratique pour arriver à l’auberge est **Chiesa Nuova / Bar Internazionale** : c’est l’arrêt le plus proche de l’Hostel Brikette et il évite les longues volées d’escaliers si vous descendez à “Positano Centro” ou “Spiaggia Grande / Positano Spiaggia”.",
+        "Depuis cet arrêt, la marche est courte et quasi plate (environ 120–140 m) puis la petite montée vers l’entrée. C’est pourquoi nous le recommandons pour **les bagages**, **les jambes fatiguées** et **les premières arrivées**.",
+        "Pour préparer votre arrivée complète, consultez %LINK:howToGetToPositano|Comment aller à Positano%, puis utilisez cette page pour l’arrêt final et les 2–5 dernières minutes à pied."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.webp",
+          "alt": "Panneau d’arrêt SITA pour Positano Chiesa Nuova / Bar Internazionale",
+          "caption": "Cherchez le panneau SITA à côté du Bar Internazionale."
+        },
+        {
+          "src": "/img/directions/chiesa-nuova-arrivals/positano-chiesa-nuova-church.jpg",
+          "alt": "Vue de Positano près de Chiesa Nuova / Bar Internazionale (Santa Maria delle Grazie)",
+          "caption": "Photo : Lorenzo Saprio (CC BY-SA 4.0) via Wikimedia Commons."
+        }
       ]
     },
     {
-      "id": "bus-basics",
-      "title": "Horaires et billets de bus",
+      "id": "fast-facts",
+      "title": "Infos rapides (saison 2026)",
       "body": [
-        "Achetez vos billets SITA au tabacchi près de l'arrêt ou validez à l'embarquement les billets préachetés ; gardez-en un de rechange pour les retours tard dans la nuit.",
-        "Les bus du soir se raréfient après 22 h : vérifiez les horaires à l'avance et visez l'avant-dernier service pour éviter les tarifs des taxis."
+        "**Temps de marche :** 2–5 minutes de l’arrêt à la réception, selon les bagages et la circulation.",
+        "**Distance :** ~120–140 m le long de Viale Pasitea, puis une courte volée de marches jusqu’à l’entrée.",
+        "**Type d’arrêt :** à la demande — prévenez le conducteur et appuyez sur le bouton à l’avance.",
+        "**Quand se préparer à descendre :** levez‑vous et approchez‑vous de la porte 1–2 minutes avant, surtout si le bus est bondé.",
+        "**Idéal pour :** premières arrivées, bagages lourds, et ceux qui veulent éviter les escaliers.",
+        "**Billets :** on ne les achète pas auprès du conducteur — achetez‑les avant (voir %LINK:sitaTickets|billets SITA%).",
+        "**Heures de pointe :** fin de matinée et fin d’après‑midi en été ; si le bus est plein, attendez le suivant.",
+        "**En cas de doute à bord :** demandez au conducteur ou à un passager — c’est un arrêt fréquent pour les clients de l’auberge.",
+        "**Si vous arrivez d’abord en ferry :** utilisez %LINK:ferryDockToBrikette|quai → Hostel Brikette% pour rejoindre cet arrêt sans porter vos bagages depuis la plage."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-interno-yellow.webp",
+          "alt": "Un petit bus local sur la ligne de Positano",
+          "caption": "Les bus locaux sont compacts et souvent pleins — placez‑vous près de la porte avant l’arrêt."
+        }
+      ]
+    },
+    {
+      "id": "get-off-here",
+      "title": "Comment descendre au bon arrêt (à quoi faire attention dans le bus)",
+      "body": [
+        "Sur de nombreuses lignes, le conducteur (ou l’affichage) annonce **“Chiesa Nuova”**. Dans les horaires, cela peut apparaître comme **“Positano (Chiesa Nuova)”**. Localement, on dit aussi **Chiesa Nuova / Bar Internazionale** car l’arrêt est juste devant le bar/tabacchi.",
+        "**Prévenez le conducteur en montant :** “Chiesa Nuova, per favore”. C’est le moyen le plus simple de ne pas le manquer, surtout si le bus est bondé ou si vous arrivez tard.",
+        "**Appuyez sur le bouton à l’avance.** Quand vous voyez le Bar Internazionale (souvent sur la droite en arrivant dans le virage), appuyez pour que le conducteur puisse s’arrêter.",
+        "**Faites signe si vous êtes debout :** quand le bus arrive, regardez le conducteur et levez la main — c’est un arrêt à la demande.",
+        "Avec des bagages, avancez vers la porte une minute avant — l’arrêt est parfois très bref.",
+        "Si vous avez peur de le rater, demandez une ou deux stations avant : “Prossima Chiesa Nuova ?”. Les conducteurs sont habitués à cette question.",
+        "Si le bus est très chargé, ne vous y prenez pas au dernier moment : placez‑vous à temps pour pouvoir descendre."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/chiesa-nuova-arrivals/amalfi-coast-sita-bus.jpg",
+          "alt": "Un bus SITA Sud sur la route de la côte amalfitaine",
+          "caption": "Photo : Robot8A (CC BY-SA 4.0) via Wikimedia Commons."
+        },
+        {
+          "src": "/img/directions/ferry-dock-interno-red.webp",
+          "alt": "Un petit bus local sur la côte amalfitaine",
+          "caption": "Approchez‑vous de la sortie avant l’arrêt — le bus ne s’arrête que brièvement."
+        }
+      ]
+    },
+    {
+      "id": "what-youll-see",
+      "title": "Ce que vous verrez en arrivant (pour savoir où descendre)",
+      "body": [
+        "L’arrêt se trouve **sur Viale Pasitea**, devant le **Bar Internazionale**. Repérez la façade du bar/tabacchi, un petit groupe de personnes sur le trottoir et le panneau SITA bleu‑blanc.",
+        "Le bus vous dépose directement sur le trottoir. Il n’y a pas de quai surélevé : vous descendez au niveau de la route et le bus repart vite.",
+        "Si vous n’êtes pas sûr, demandez à un passager ou au conducteur : “Chiesa Nuova ?”. C’est un arrêt très connu.",
+        "Une fois descendu, vous verrez la route principale dans les deux directions. L’auberge est un court trajet à pied le long de la même route — **pas besoin** de monter de longues escaliers depuis cet arrêt.",
+        "Aux heures d’affluence, il peut y avoir une petite file d’attente pour le bus suivant sur le même trottoir : restez du côté intérieur pour ne pas gêner la circulation.",
+        "Comme repère visuel, considérez le Bar Internazionale comme point de départ : vous ne marcherez que quelques minutes jusqu’au panneau de l’auberge."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.png",
+          "alt": "Panneau d’arrêt devant le Bar Internazionale à Positano",
+          "caption": "L’arrêt est juste devant le Bar Internazionale sur la route principale."
+        }
+      ]
+    },
+    {
+      "id": "walk-to-hostel",
+      "title": "Marchez de Chiesa Nuova / Bar Internazionale à l’Hostel Brikette (2–5 minutes)",
+      "body": [
+        "Descendez devant le Bar Internazionale et orientez‑vous sur **Viale Pasitea** (la route principale de Positano).",
+        "Marchez sur le trottoir sur environ 120–140 m. Vous êtes sur la route principale — gardez vos bagages près de vous et restez du côté intérieur quand le trottoir se rétrécit.",
+        "Cherchez le panneau **Hostel Brikette** et la petite volée de marches vers la réception. Montez pour entrer.",
+        "Si vous utilisez un porter, confirmez s’il vous rejoint à l’arrêt ou s’il apporte les bagages directement à l’entrée.",
+        "Avec une grande valise, prenez votre temps dans les marches et faites une pause au palier si besoin : la montée est courte, mais c’est la seule.",
+        "Pour la carte exacte, utilisez cette %URL:https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!5e0!3m2!1sen!2sit!4v1700000000000|carte% pour la courbe et l’escalier exact."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/hostel-brikette-entrance-steps.webp",
+          "alt": "Escalier d’entrée et panneau Hostel Brikette",
+          "caption": "L’entrée se fait par un court escalier depuis la route principale."
+        }
+      ]
+    },
+    {
+      "id": "tickets-and-basics",
+      "title": "Billets, bagages et bases du trajet (notes rapides)",
+      "body": [
+        "On ne peut pas acheter de billets SITA auprès du conducteur. Achetez‑les à l’avance dans un tabacchi/kiosque (le Bar Internazionale peut aider), puis montrez‑les ou validez‑les en montant. Détails : %LINK:sitaTickets|billets et validation SITA%.",
+        "S’il y a un validateur dans le bus, validez votre billet en entrant. En cas de doute, montrez‑le au conducteur : il vous indiquera quoi faire.",
+        "Les billets sont de petits tickets papier : gardez‑les à portée de main et évitez de les plier ou de les mouiller.",
+        "En été et après les arrivées de ferry, les bus peuvent être pleins. S’il est complet, le conducteur peut refuser d’autres passagers : le suivant n’est généralement pas loin, mais en haute saison cela peut sembler long.",
+        "Gardez le billet prêt à montrer rapidement. En groupe, montez ensemble pour ne pas retarder le bus.",
+        "Avec de gros bagages, pensez au %LINK:porterServices|service de porteurs% pour transporter les valises pendant que vous marchez.",
+        "Pour des conseils généraux (pass, budget, saison), voir %LINK:publicTransportAmalfi|transports publics sur la côte amalfitaine% et %LINK:transportBudget|budget transport%."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
+          "alt": "Zone d’arrêt de bus sur la route côtière de Positano",
+          "caption": "La plupart des arrêts SITA sont de simples renfoncements — gardez vos bagages près de vous et préparez‑vous à monter."
+        }
+      ]
+    },
+    {
+      "id": "ferry-first",
+      "title": "Vous arrivez d’abord en ferry ? Voici comment l’arrêt s’intègre",
+      "body": [
+        "Si votre trajet commence au quai au niveau de la plage, l’itinéraire le plus pratique est souvent : quai → porteurs → bus Interno Positano → **Chiesa Nuova / Bar Internazionale** → courte marche jusqu’à l’auberge.",
+        "Nous détaillons ce parcours dans %LINK:ferryDockToBrikette|quai → Hostel Brikette (avec bagages)% — c’est l’option la plus courante en haute saison.",
+        "Si vous êtes déjà à la plage et voulez la montée la plus facile, prenez le bus jusqu’à Chiesa Nuova puis suivez la courte marche de ce guide.",
+        "Sans porteurs, c’est possible avec des bagages légers, mais la montée depuis le quai jusqu’à cet arrêt est régulière — la plupart des voyageurs préfèrent garder de l’énergie pour les derniers marches."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-positano-spiaggia-view.jpg",
+          "alt": "Quai des ferries de Positano et promenade en bord de mer",
+          "caption": "Les arrivées en ferry se font au niveau de la plage — le bus facilite la montée."
+        },
+        {
+          "src": "/img/directions/ferry-dock-promenade-to-mulini.jpg",
+          "alt": "Promenade de Positano vers Piazza dei Mulini",
+          "caption": "Depuis le quai, on marche vers Piazza dei Mulini avant de prendre le bus."
+        }
+      ]
+    },
+    {
+      "id": "night-arrivals",
+      "title": "Arriver de nuit ou après une longue journée",
+      "body": [
+        "Les arrivées de nuit peuvent être déroutantes car la route est plus sombre et le trafic continue. L’arrêt est toujours le même renfoncement devant le Bar Internazionale : utilisez‑le comme repère.",
+        "Avec des bagages, marchez lentement sur le trottoir et restez du côté intérieur. Le trajet est court, mais mieux vaut être prudent sur un trottoir étroit.",
+        "S’il pleut ou s’il y a du vent, attendez sous l’auvent du bar jusqu’à l’arrêt complet du bus, puis descendez prudemment : le trottoir peut être glissant."
+      ]
+    },
+    {
+      "id": "waiting-early",
+      "title": "Si vous arrivez tôt ou avez besoin d’une pause",
+      "body": [
+        "Le Bar Internazionale est juste à l’arrêt et c’est l’endroit le plus pratique pour attendre si vous arrivez tôt ou voulez un café et de l’ombre. C’est aussi un bon moyen de vérifier que vous êtes au bon arrêt.",
+        "Si vous arrivez avec des bagages, gardez‑les avec vous et ne bloquez pas le trottoir — bus et scooters passent près du bord.",
+        "Si vous êtes fatigué ou en décalage horaire, prenez une minute pour vérifier la carte avant de marcher afin de ne pas dépasser le panneau de l’auberge.",
+        "Si vous avez besoin d’aide, vous pouvez écrire à l’auberge ou consulter la %LINK:checkinCheckout|guide check‑in & check‑out% pour les horaires et options d’arrivée."
+      ]
+    },
+    {
+      "id": "accessibility-safety",
+      "title": "Accessibilité et sécurité sur la route",
+      "body": [
+        "L’arrêt Chiesa Nuova / Bar Internazionale minimise les escaliers, c’est pourquoi nous le recommandons pour la plupart des arrivées. Les seules marches sont celles de l’entrée.",
+        "Viale Pasitea peut être très fréquentée et le trottoir se rétrécit par endroits. Gardez les bagages côté intérieur, marchez en file si nécessaire et évitez de vous arrêter côté route.",
+        "Si vous voyagez avec des bagages lourds, une poussette ou une mobilité réduite, pensez au %LINK:porterServices|service de porteurs% pour vous concentrer sur la courte marche.",
+        "Si vous devez vous arrêter, mettez‑vous dans le renfoncement près du bar ou un peu après l’arrêt pour ne pas gêner le passage."
+      ]
+    },
+    {
+      "id": "wrong-stop",
+      "title": "Si vous êtes descendu au mauvais arrêt",
+      "body": [
+        "Si vous descendez par erreur à **Positano Centro** ou **Spiaggia Grande / Positano Spiaggia**, attendez‑vous à une montée plus raide avec beaucoup plus d’escaliers pour atteindre l’auberge.",
+        "La solution la plus simple est de prendre un bus local ou un taxi jusqu’à **Chiesa Nuova / Bar Internazionale**, puis de suivre la courte marche de ce guide.",
+        "Si vous n’êtes pas sûr de votre position, ouvrez la carte et visez le Bar Internazionale — c’est le repère de l’arrêt.",
+        "Avec des bagages lourds et un sentiment de blocage, arrêtez‑vous dans un café ou demandez à un local : “Bar Internazionale ?” est une référence très connue à Positano."
       ]
     }
   ],
   "beforeList": [
-    "Vérifiez les horaires SITA à l'avance pour ne pas attendre sur le bord de la route le dernier service.",
-    "Validez votre billet dès votre embarquement : les inspecteurs imposent une amende aux billets non validés, même pour les trajets courts.",
-    "Envoyez un message à l'auberge si vous arrivez après minuit afin que le personnel de nuit puisse garder le code de la porte à portée de main."
+    "Dites au conducteur “Chiesa Nuova, per favore” en montant et appuyez sur le bouton à l’avance.",
+    "Achetez ou validez le billet avant de monter (voir %LINK:sitaTickets|billets SITA%).",
+    "Gardez votre téléphone chargé pour consulter la carte ou contacter l’auberge si besoin."
   ],
   "stepsList": [
-    "Depuis l'arrêt devant le Bar Internazionale, marchez un peu plus de 100 mètres (330 pieds) en montée le long de Viale Pasitea ; suivez l'itinéraire à pied sur la carte ci-dessous pour un guidage étape par étape.",
-    "Au virage, passez devant l'enseigne de l'Hostel Brikette au niveau de la terrasse, puis prenez les escaliers qui montent du côté droit de la route jusqu'à la porte principale."
+    "Descendez à Chiesa Nuova / Bar Internazionale (arrêt en bord de route devant le bar/tabacchi).",
+    "Marchez le long de Viale Pasitea sur environ 120–140 m.",
+    "Cherchez le panneau Hostel Brikette et montez la courte volée de marches jusqu’à la réception."
   ],
-  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sBar+Internazionale!4m1!2sHostel+Brikette",
+  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!5e0!3m2!1sen!2sit!4v1700000000000",
   "kneesList": [
-    "Toute l'allée est pavée avec un seul petit escalier à l'entrée.",
-    "Si les pentes fatiguent vos genoux, faites de courtes pauses : la circulation ralentit naturellement dans le virage."
+    "Le trajet évite les longues volées d’escaliers — c’est presque tout du trottoir plus la courte entrée.",
+    "Avec des bagages lourds, pensez à un %LINK:porterServices|service de porteurs% avec prise en charge à Chiesa Nuova / Bar Internazionale.",
+    "Besoin d’un plan complet pour les bagages ? Voir %LINK:luggageStorage|consigne bagages% et le %LINK:ferryDockToBrikette|guide d’arrivée depuis le quai%."
   ],
-  "kneesDockPrefix": "Vous arrivez d’abord par ferry ?",
-  "kneesDockLinkLabel": "Quai → Itinéraire des bagages de l'auberge",
-  "kneesPorterPrefix": "Besoin d'un coup de main avec des sacs lourds ?",
-  "kneesPorterLinkLabel": "Guide du service de portage",
+  "kneesDockPrefix": "Vous arrivez d’abord en ferry ?",
+  "kneesDockLinkLabel": "Quai → Auberge avec bagages",
+  "kneesPorterPrefix": "Besoin d’aide avec les bagages ?",
+  "kneesPorterLinkLabel": "Guide des porteurs",
   "faqs": [
     {
-      "q": "Y a-t-il un trottoir tout le long ?",
-      "a": "Oui, l'itinéraire emprunte le revêtement de la route principale, évitant ainsi les longs escaliers."
+      "q": "Comment savoir si je suis au bon arrêt ?",
+      "a": "Vous cherchez l’arrêt en bord de route devant le **Bar Internazionale** sur Viale Pasitea. Dans les annonces/horaires, c’est souvent **“Positano (Chiesa Nuova)”** — les locaux disent aussi Chiesa Nuova / Bar Internazionale."
     },
     {
-      "q": "Est-ce qu'il est éclairé la nuit ?",
-      "a": "L'éclairage public est présent ; utilisez la lampe torche de votre téléphone pour une visibilité supplémentaire dans les ruelles."
+      "q": "Dois‑je appuyer sur un bouton pour que le bus s’arrête ?",
+      "a": "Oui — c’est un arrêt à la demande. Dites “Chiesa Nuova, per favore” en montant, puis appuyez sur le bouton lorsque vous voyez Bar Internazionale approcher afin que le conducteur puisse s’arrêter."
+    },
+    {
+      "q": "Combien de temps dure la marche ?",
+      "a": "Environ 2–5 minutes selon les bagages et la circulation, pour ~120–140 m."
+    },
+    {
+      "q": "Puis‑je laisser mes bagages avant le check‑in ?",
+      "a": "En général oui : la consigne est disponible à partir de 10:30 pour les arrivées (sous réserve de place). Si vous arrivez avant 10:30, vous devrez peut‑être attendre au Bar Internazionale. Détails dans le %LINK:luggageStorage|guide de consigne%."
+    },
+    {
+      "q": "Quels sont les horaires de check‑in et que faut‑il ?",
+      "a": "Le check‑in standard est de 15:00 à 22:30. Apportez une pièce d’identité originale (passeport/ID). Un dépôt de 10 € en espèces est demandé pour la keycard + le kit de draps (remboursé en espèces au retour). Détails : %LINK:checkinCheckout|guide check‑in & check‑out%."
+    },
+    {
+      "q": "Et si j’arrive après la fermeture de la réception ?",
+      "a": "La réception ferme à 22:30. Si vous arrivez plus tard, écrivez‑nous avant de voyager — selon le jour, un check‑in tardif en autonomie peut être possible."
     }
   ],
   "howtoSteps": [
-    "Depuis l'arrêt « Chiesa Nuova », marchez 2 à 5 minutes jusqu'à l'auberge",
-    "Empruntez les ruelles avec le moins de marches ; évitez les longues volées",
-    "Si vous transportez des sacs lourds, pensez à demander une prise en charge par un porteur à l'arrêt"
+    "Descendez à Positano Chiesa Nuova / Bar Internazionale (arrêt le plus proche de l’auberge)",
+    "Dites “Chiesa Nuova, per favore” au conducteur et appuyez sur le bouton à l’avance",
+    "Marchez 120–140 m le long de Viale Pasitea et montez les marches vers la réception",
+    "En cas de doute, demandez au Bar Internazionale ou vérifiez la carte pour le panneau de l’auberge"
   ]
 }

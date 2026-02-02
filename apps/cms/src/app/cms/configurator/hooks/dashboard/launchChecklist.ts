@@ -3,11 +3,11 @@
 // Shared helper to derive the builder-facing launch checklist from
 // server-side ConfiguratorProgress + translations.
 
+import type { ConfiguratorProgress } from "@acme/types";
 import {
   OPTIONAL_CONFIG_CHECK_STEPS,
   REQUIRED_CONFIG_CHECK_STEPS,
-} from "@acme/platform-core/configurator";
-import type { ConfiguratorProgress } from "@acme/types";
+} from "@acme/types/configuratorSteps";
 
 import type { LaunchChecklistItem } from "./types";
 

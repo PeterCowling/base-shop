@@ -32,7 +32,8 @@
     },
     "./PageBuilder": {
       "types": "./dist/PageBuilder.d.ts",
-      "import": "./dist/PageBuilder.js"
+      "import": "./dist/PageBuilder.js",
+      "default": "./dist/PageBuilder.js"
     },
     "./ProductEditorForm": {
       "types": "./dist/ProductEditorForm.d.ts",

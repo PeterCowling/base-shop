@@ -219,19 +219,32 @@ function computeNextAction(
 /**
  * Calculate hours elapsed since check-in.
  */
-function calculateHoursElapsed(checkInDate: string, currentTime: number): number {
-  if (!checkInDate) return 0;
+function parseCheckInDate(checkInDate: string): number | null {
+  if (!checkInDate) return null;
 
-  try {
-    const checkIn = new Date(checkInDate);
-    // Set check-in to start of day (guests typically check in afternoon, but we count from day start)
-    checkIn.setHours(0, 0, 0, 0);
-
-    const elapsed = currentTime - checkIn.getTime();
-    return Math.max(0, elapsed / (1000 * 60 * 60));
-  } catch {
-    return 0;
+  const dateOnlyMatch = /^(\d{4})-(\d{2})-(\d{2})$/.exec(checkInDate);
+  if (dateOnlyMatch) {
+    const year = Number(dateOnlyMatch[1]);
+    const month = Number(dateOnlyMatch[2]) - 1;
+    const day = Number(dateOnlyMatch[3]);
+    const utcTime = Date.UTC(year, month, day, 0, 0, 0, 0);
+    return Number.isNaN(utcTime) ? null : utcTime;
   }
+
+  const parsed = new Date(checkInDate);
+  const parsedTime = parsed.getTime();
+  return Number.isNaN(parsedTime) ? null : parsedTime;
+}
+
+/**
+ * Calculate hours elapsed since check-in.
+ */
+function calculateHoursElapsed(checkInDate: string, currentTime: number): number {
+  const checkInTime = parseCheckInDate(checkInDate);
+  if (!checkInTime) return 0;
+
+  const elapsed = currentTime - checkInTime;
+  return Math.max(0, elapsed / (1000 * 60 * 60));
 }
 
 /**

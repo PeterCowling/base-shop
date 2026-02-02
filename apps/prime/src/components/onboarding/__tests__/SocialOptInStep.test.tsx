@@ -24,6 +24,16 @@ jest.mock('@acme/design-system/primitives', () => ({
   ),
 }));
 
+jest.mock('@/utils/logger', () => ({
+  __esModule: true,
+  default: {
+    debug: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+  },
+}));
+
 jest.mock('../OnboardingLayout', () => ({
   __esModule: true,
   default: ({ children, title }: any) => (

@@ -212,6 +212,11 @@ Capture:
 - Related docs/plans
 - Targeted recent git history in affected areas
 
+**If you discover factual inaccuracies in an existing plan or related docs that would change confidence scores:**
+- Note the inaccuracies in the fact-find brief, with evidence.
+- Flag the confidence impact explicitly (which task(s), which dimension(s)).
+- Recommend `/re-plan` to update the plan’s confidence scores accordingly.
+
 #### 3) External research (only if needed)
 
 Only if repo evidence cannot answer:

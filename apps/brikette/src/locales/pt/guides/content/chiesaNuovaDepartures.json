@@ -1,13 +1,13 @@
 {
   "seo": {
-    "title": "Ponto de Ônibus Chiesa Nuova de Positano: Caminhando do Hostel Brikette",
-    "description": "Caminhe do Hostel Brikette até o ponto de ônibus Chiesa Nuova de Positano: direções, horários, bilhetes, conexões para Amalfi, Sorrento, Nápoles, Salerno."
+    "title": "Parada de ônibus Chiesa Nuova / Bar Internazionale em Positano",
+    "description": "Guia da parada SITA Chiesa Nuova / Bar Internazionale em Positano: lado da fila, bilhetes, horários e conexões — além da caminhada de 2–4 minutos desde o Hostel Brikette."
   },
-  "linkLabel": "Hostel Brikette para parada de ônibus Chiesa Nuova/Bar Internazionale",
-  "lastUpdated": "2026-01-30",
-  "intro": "O ponto de ônibus Chiesa Nuova de Positano é seu portal do Hostel Brikette para toda a Costa Amalfitana. Saindo do albergue para pegar o ônibus para Amalfi, Sorrento ou mais além? Este guia cobre tudo o que você precisa saber sobre caminhar do Hostel Brikette até esta parada essencial (também conhecida como Bar Internazionale): a rota de caminhada de 2 minutos, onde comprar bilhetes, de que lado da estrada fazer fila e conexões para os principais destinos ao longo da Costa Amalfitana.",
+  "linkLabel": "Hostel Brikette até a parada de ônibus Chiesa Nuova / Bar Internazionale",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": "A parada de ônibus Positano Chiesa Nuova / Bar Internazionale é a principal parada SITA para hóspedes do Hostel Brikette rumo a Amalfi, Sorrento, Nápoles, Salerno ou além. Este guia é sobre a própria parada: como ela aparece nos horários (geralmente \"Positano (Chiesa Nuova)\"), em que lado ficar para ônibus leste vs oeste, onde comprar e validar bilhetes (viagens simples costumam custar €2,50–€4 dependendo do destino), o que esperar das filas de verão e — rapidamente — a caminhada mais fácil de 2–4 minutos do hostel até a parada.",
   "image": {
-    "alt": "Parada SITA Chiesa Nuova de Positano em frente ao Bar Internazionale",
+    "alt": "Parada SITA Chiesa Nuova / Bar Internazionale em Positano em frente ao Bar Internazionale",
     "caption": "O Hostel Brikette fica a uma curva da parada. Reserve alguns minutos para se juntar à fila antes que o ônibus chegue, especialmente no verão quando os serviços enchem rapidamente."
   },
   "toc": {
@@ -20,10 +20,11 @@
   "sections": [
     {
       "id": "why-route",
-      "title": "Por que esta rota funciona",
+      "title": "Por que a parada Chiesa Nuova / Bar Internazionale é importante",
       "body": [
-        "A parada Chiesa Nuova / Bar Internazionale de Positano é o ponto de ônibus SITA mais próximo do Hostel Brikette e o lugar mais fácil para pegar ônibus ao longo da costa. Os locais chamam de ambos os nomes alternadamente. É uma caminhada de 120 metros (400 pés) da entrada do hostel até a parada de ônibus na Viale Pasitea, a principal estrada costeira através de Positano. A caminhada leva 2-4 minutos em uma descida suave. Você verá a placa do hostel à sua direita ao sair. A calçada é larga o suficiente para bagagem e tem boa iluminação à noite.",
-        "Se você está indo para Amalfi (leste), a parada fica em frente ao Bar Internazionale no lado com vista para o mar da estrada—procure um poste metálico no chão marcando a parada de ônibus. Espere aqui por ônibus para a cidade de Amalfi, Salerno e Ravello. Se você está indo para Sorrento (oeste), você esperará diretamente em frente ao bar.",
+        "A parada **Chiesa Nuova / Bar Internazionale** é a parada SITA mais próxima do Hostel Brikette e geralmente o jeito mais fácil de pegar o ônibus sem encarar as longas escadarias de Positano. Se você vai explorar a costa no dia, fazer conexão de trem em Sorrento ou iniciar uma viagem mais longa via Salerno, esta é a parada “base” do hostel.",
+        "Também é uma das paradas mais fáceis de usar corretamente porque as filas são simples: **leste para Amalfi/Salerno** no lado do mar (em frente ao Bar Internazionale) e **oeste para Sorrento/Nápoles** no lado da montanha (em frente ao bar).",
+        "Do Hostel Brikette são 120 metros (400 pés), 2–4 minutos pela Viale Pasitea. A calçada é larga o suficiente para bagagens e bem iluminada à noite.",
         "Para instruções de caminhada com um mapa, veja esta %URL:https://www.google.com/maps/dir/V.+G.+Marconi,+358,+84017+Positano+SA/Bar+Internazionale,+V.+G.+Marconi,+306,+84017+Positano+SA/@40.6294795,14.4790535,746m/data=!3m2!1e3!4b1!4m14!4m13!1m5!1m1!1s0x133b976683fb47c9:0x209c0949d4fb4c3b!2m2!1d14.4809356!2d40.6296237!1m5!1m1!1s0x133b976673927785:0x5187a720325ee588!2m2!1d14.482264!2d40.629495!3e0?hl=en&entry=ttu&g_ep=EgoyMDI2MDEyOC4wIKXMDSoKLDEwMDc5MjA3MUgBUAM%3D|rota do Google Maps do Hostel Brikette até a parada de ônibus%."
       ],
       "images": [
@@ -38,7 +39,7 @@
       "id": "where-buses-go",
       "title": "Para onde vão os ônibus desta parada",
       "body": [
-        "Da parada Chiesa Nuova/Bar Internazionale, os ônibus SITA circulam em ambas as direções ao longo da costa:",
+        "Da parada Chiesa Nuova / Bar Internazionale, os ônibus SITA seguem em ambas as direções ao longo da costa:",
         "**Em direção a Amalfi (sentido leste):** Os ônibus seguem por Praiano, passando por Marina di Praia e Fiordo di Furore antes de chegar à %LINK:amalfiTownGuide|cidade de Amalfi% (30-40 minutos). De Amalfi, você pode continuar para %LINK:salernoPositano|Salerno% (45 minutos adicionais) ou pegar ônibus de conexão para Ravello.",
         "**Em direção a Sorrento (sentido oeste):** Os ônibus serpenteiam ao longo da costa através de vários túneis pitorescos antes de chegar a %LINK:sorrentoGuide|Sorrento% (40-50 minutos). De Sorrento, você pode conectar aos trens que vão para %LINK:naplesPositano|Nápoles% (linha Circumvesuviana até a Estação Central de Nápoles) ou continuar até o aeroporto de Nápoles.",
         "Para planejamento completo de viagem de Positano, consulte nossos guias de rota dedicados: %LINK:positanoAmalfiBus|Positano para Amalfi de ônibus%, %LINK:positanoSorrentoBus|Positano para Sorrento de ônibus%, %LINK:positanoNaplesCenterBusTrain|Positano para Nápoles% via Sorrento e %LINK:positanoSalernoBus|Positano para Salerno de ônibus%.",
@@ -49,6 +50,11 @@
           "src": "https://simplyamalficoast.it/wp-content/uploads/2025/11/simply-amalfi-coast-bus-sita-4.jpg",
           "alt": "Ônibus SITA na parada de Positano indo para Amalfi",
           "caption": "Os ônibus SITA conectam Positano a destinos por toda a Costa Amalfitana"
+        },
+        {
+          "src": "/img/positano-panorama.avif",
+          "alt": "Panorama da costa de Positano a partir da Viale Pasitea",
+          "caption": "Vistas ao longo da estrada costeira perto da parada Chiesa Nuova / Bar Internazionale."
         }
       ]
     },
@@ -57,7 +63,7 @@
       "title": "Horários de ônibus e frequência",
       "body": [
         "Os ônibus SITA circulam frequentemente entre Positano e tanto Amalfi quanto Sorrento durante a alta temporada (abril-outubro). Espere ônibus a cada 20-30 minutos durante o dia, com menos ônibus de manhã cedo (antes das 8h) e à noite (depois das 21h). A viagem leva cerca de 40 minutos para Amalfi e 50 minutos para Sorrento, mas pode levar mais tempo durante os dias de verão movimentados quando o tráfego está pesado.",
-        "**Primeiros ônibus:** O primeiro ônibus indo para leste para Amalfi geralmente sai de Chiesa Nuova por volta das 6:30-7:00. O primeiro ônibus indo para oeste para Sorrento geralmente sai por volta das 6:45-7:15. Verifique os horários atuais no Bar Internazionale ou pergunte na recepção do hostel porque o horário muda com as estações. No verão há mais ônibus do que no inverno.",
+        "**Primeiros ônibus:** O primeiro ônibus para leste rumo a Amalfi normalmente sai da parada Chiesa Nuova / Bar Internazionale por volta de 6:30–7:00. O primeiro ônibus para oeste rumo a Sorrento costuma sair por volta de 6:45–7:15. Confira os horários atuais no Bar Internazionale ou na recepção, pois variam conforme a estação. No verão há mais ônibus do que no inverno.",
         "**Últimos ônibus:** Os ônibus noturnos ficam muito menos frequentes depois das 22h. O último ônibus para Amalfi geralmente sai por volta das 22:30, e o último ônibus para Sorrento sai por volta das 23h. Sempre verifique os horários exatos na recepção ou olhe o horário SITA afixado na parada. Tente pegar o penúltimo ônibus se você estiver viajando à noite para não perder o último e ficar preso.",
         "**Horários de inverno (novembro-março):** Os ônibus circulam com menos frequência no inverno, aproximadamente a cada 40-60 minutos, e os últimos ônibus saem mais cedo. Alguns ônibus noturnos podem não circular aos domingos ou feriados. Sempre verifique o horário de inverno antes de viajar."
       ],
@@ -149,12 +155,23 @@
         "**Considerações climáticas:** A caminhada é exposta aos elementos—não há seção coberta entre o hostel e o abrigo de ônibus. Em chuva forte, você ficará molhado durante a caminhada de 2 minutos. Traga um guarda-chuva ou capa de chuva se a previsão parecer incerta. No calor do verão, a calçada não oferece sombra; use protetor solar e traga água se você estiver chegando cedo à parada para fazer fila. O inverno pode trazer ventos fortes ao longo desta seção exposta da Viale Pasitea—prenda itens soltos em sua bolsa.",
         "**Deixar malas na recepção:** Se você estiver fazendo check-out mas precisar explorar Positano por algumas horas antes do seu ônibus, pergunte na recepção sobre deixar sua bagagem. Isso permite que você caminhe até a parada mais tarde sem malas e simplesmente as pegue no caminho para pegar o ônibus. Isto é especialmente útil se você quiser visitar a praia ou almoçar na cidade antes de partir."
       ],
-      "images": []
+      "images": [
+        {
+          "src": "/img/directions/hostel-brikette-entrance-steps.png",
+          "alt": "Escadas de entrada do Hostel Brikette na Viale Pasitea à noite",
+          "caption": "As escadas de entrada são bem iluminadas, mas reserve um minuto extra se chegar após escurecer."
+        },
+        {
+          "src": "/img/checkin-desk.avif",
+          "alt": "Balcão de recepção do Hostel Brikette",
+          "caption": "A recepção pode guardar as malas se você quiser explorar antes de pegar o ônibus."
+        }
+      ]
     }
   ],
   "beforeList": [
     "Compre seu bilhete SITA na noite anterior se pegar um ônibus de manhã cedo (antes das 7:30)",
-    "Verifique os horários de ônibus atuais na recepção ou no Bar Internazionale—os horários mudam sazonalmente",
+    "Verifique os horários atuais na recepção ou na parada Chiesa Nuova / Bar Internazionale — os horários mudam conforme a estação",
     "Arrume leve se possível—o espaço para bagagem nos ônibus é muito limitado, especialmente no verão",
     "Chegue 10-15 minutos cedo nos meses de pico do verão para garantir seu lugar na fila"
   ],
@@ -204,12 +221,12 @@
       "a": [
         "**Lendo as Linhas:** As linhas na primeira coluna representam diferentes paradas de ônibus ao longo da rota.",
         "**Lendo as Colunas:** O horário atribui uma letra alfabética a cada viagem programada, que são listadas como cabeçalhos em cada coluna. Se você estiver viajando de segunda a sábado, procure as colunas 'F' e 'G'. Se você estiver viajando no domingo ou feriado, procure as colunas 'G' e 'H'.",
-        "**Combinando Linhas e Colunas:** Escolha suas paradas de partida e chegada, depois verifique as colunas para ver quando os ônibus estão disponíveis e a que horas chegarão ao seu destino. Por exemplo, para ver o horário de partida de Sorrento, olhe a linha de Sorrento. Para ver o horário de chegada em Positano (Chiesa Nuova / Bar Internazionale), olhe a linha Positano (Chiesa Nuova)."
+        "Para chegadas na parada Chiesa Nuova / Bar Internazionale, o horário geralmente está na linha \"Positano (Chiesa Nuova)\"."
       ]
     }
   ],
   "howtoSteps": [
-    "Caminhe 2-4 minutos descendo do Hostel Brikette até a parada Bar Internazionale/Chiesa Nuova",
+    "Caminhe 2–4 minutos morro abaixo do Hostel Brikette até a parada Chiesa Nuova / Bar Internazionale",
     "Compre bilhete SITA no tabacchi ou dentro do bar (não pode comprar no ônibus)",
     "Faça fila no lado correto: lado com vista para o mar para Amalfi/leste, lado da montanha para Sorrento/oeste",
     "Valide o bilhete com o motorista ou no validador eletrônico ao embarcar",

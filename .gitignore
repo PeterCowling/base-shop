@@ -96,6 +96,10 @@ packages/types/src/**/*.d.ts.map
 .agents/status/*
 !.agents/status/.gitkeep
 
+# Private agent artifacts (may contain PII; must never be committed)
+.agents/private/*
+!.agents/private/.gitkeep
+
 # Working-tree backup/restore reports (ephemeral; should not be committed)
 .agents/pre_rollback_reports/
 
@@ -109,3 +113,4 @@ packages/types/src/**/*.d.ts.map
 **/credentials.json
 # OAuth tokens (contain access/refresh tokens)
 **/token.json
+docs/plans/email-autodraft-consolidation-baseline-sample.txt

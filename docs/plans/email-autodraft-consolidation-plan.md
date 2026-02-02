@@ -190,7 +190,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 #### Build Completion (2026-02-02)
 - **Status:** Complete
 - **Report:** `docs/plans/email-autodraft-consolidation-baseline.md`
-- **Sample file:** `docs/plans/email-autodraft-consolidation-baseline-sample.txt` (contains PII; keep local/untracked)
+- **Sample file:** `.agents/private/email-autodraft-consolidation-baseline-sample.txt` (contains PII; keep local/gitignored)
 - **Validation:** Data collected via gmail_list_query (manual run in Claude session)
 - **Notes:** Baseline distribution skewed to system notifications; manual edit-time tracking recommended.
 

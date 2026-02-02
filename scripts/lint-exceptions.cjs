@@ -20,6 +20,7 @@
 */
 const fs = require("fs");
 const path = require("path");
+const { spawnSync } = require("child_process");
 const { minimatch } = require("minimatch");
 
 const ROOT = process.cwd();
@@ -80,10 +81,30 @@ function isExpired(dateStr) {
   return d.getTime() < t.getTime();
 }
 
+function ensureReport() {
+  if (fs.existsSync(REPORT_PATH)) {
+    return true;
+  }
+  console.log(`[lint-exceptions] ${REPORT_PATH} missing; generating via pnpm run lint:json`);
+  const result = spawnSync("pnpm", ["run", "lint:json"], {
+    cwd: ROOT,
+    stdio: "inherit",
+    env: process.env,
+  });
+  if (result.error) {
+    console.error(`[lint-exceptions] Failed to run lint:json: ${result.error.message}`);
+    return false;
+  }
+  return result.status === 0 && fs.existsSync(REPORT_PATH);
+}
+
 function main() {
+  if (!ensureReport()) {
+    process.exit(2);
+  }
   const report = readJson(REPORT_PATH);
   if (!report) {
-    console.error(`[lint-exceptions] Missing ${REPORT_PATH}. Run: pnpm run lint:json`);
+    console.error(`[lint-exceptions] Missing ${REPORT_PATH} after generation.`);
     process.exit(2);
   }
   const registry = readJson(REGISTRY_PATH) || { tickets: {} };

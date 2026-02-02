@@ -23,7 +23,7 @@
     "start": "turbo run start --parallel",
     "lint": "turbo run lint",
     "lint:json": "cross-env NODE_OPTIONS=\"--max-old-space-size=12288\" eslint \"{apps,packages,src}/**/*.{ts,tsx,js,jsx}\" --cache --cache-location .eslintcache --format json --output-file .eslint-report.json --ignore-pattern \"**/dist/**\" --ignore-pattern \"**/.next/**\" --no-warn-ignored",
-    "lint:exceptions": "pnpm run lint:json && node scripts/lint-exceptions.cjs",
+    "lint:exceptions": "node scripts/lint-exceptions.cjs",
     "lint:no-raw-tailwind-color:report": "pnpm tsx scripts/src/lint/report-no-raw-tailwind-color.ts",
     "lint:no-raw-tailwind-color:check": "pnpm run lint:no-raw-tailwind-color:report && pnpm tsx scripts/src/lint/check-no-raw-tailwind-color-baseline.ts --report tools/eslint-baselines/ds-no-raw-tailwind-color.report.json",
     "lint:no-raw-tailwind-color:baseline": "pnpm run lint:no-raw-tailwind-color:report && pnpm tsx scripts/src/lint/check-no-raw-tailwind-color-baseline.ts --report tools/eslint-baselines/ds-no-raw-tailwind-color.report.json --write-baseline",

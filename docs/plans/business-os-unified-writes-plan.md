@@ -242,7 +242,7 @@ The following skill changes impact this plan:
 | TASK-05a | IMPLEMENT | Create `/api/admin/export-snapshot` endpoint | 85% | S | Complete (2026-02-02) | TASK-05 |
 | TASK-06 | IMPLEMENT | Create git export CI job (PR-based, hourly) | 82% | M | Complete (2026-02-02) | TASK-05a |
 | TASK-07 | IMPLEMENT | Add CI guard + branch protection for `docs/business-os/` | 85% | M | Complete (2026-02-02) | TASK-06 |
-| TASK-08 | IMPLEMENT | Update `card-operations.md` to use agent API | 85% | S | Pending | TASK-02, TASK-02a, TASK-02b, TASK-03 |
+| TASK-08 | IMPLEMENT | Update `card-operations.md` to use agent API | 85% | S | Complete (2026-02-02) | TASK-02, TASK-02a, TASK-02b, TASK-03 |
 | TASK-09 | IMPLEMENT | Migrate `/work-idea` skill to API writes | 82% | M | Pending | TASK-08 |
 | TASK-10 | IMPLEMENT | Migrate `/build-feature` skill to API writes | 82% | M | Pending | TASK-08, TASK-02b |
 | TASK-11 | IMPLEMENT | Migrate remaining skills (`/fact-find`, etc.) | 82% | M | Pending | TASK-08 |
@@ -1334,6 +1334,24 @@ The following skill changes impact this plan:
 - **Notes / references:**
   - Skills directory: `.claude/skills/`
   - **Excluded skills rationale:** scan-repo, update-business-plan, update-people write to `docs/business-os/scans/`, `docs/business-os/strategy/`, `docs/business-os/people/` respectively. These are metadata/reference paths, not core business entities (cards/ideas/stage-docs). They are NOT migrated to D1 in this phase. TASK-07's CI guard allowlist must include these paths to avoid blocking these skills.
+
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** 7cdfebc04e
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02 (doc review)
+  - Red-green cycles: 1
+  - Initial test run: N/A (documentation update)
+  - Post-implementation: N/A
+- **Confidence reassessment:**
+  - Original: 85%
+  - Post-test: 85%
+  - Delta reason: Documentation updated to API-first workflow
+- **Validation:**
+  - Not run: tests (documentation-only change)
+- **Documentation updated:** `.claude/skills/_shared/card-operations.md`
+- **Implementation notes:** Replaced scan-based ID allocation with agent API instructions, added fail-closed guidance, and updated card creation to use `/api/agent/*` endpoints.
+
 
 #### Re-plan Update (2026-02-02)
 - **Previous confidence:** 78%

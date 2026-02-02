@@ -233,7 +233,7 @@ The following skill changes impact this plan:
 | TASK-00 | IMPLEMENT | One-time markdown → D1 backfill migration | 85% | M | Complete (2026-02-02) | - |
 | TASK-01 | IMPLEMENT | Create agent authentication middleware | 88% | S | Complete (2026-02-02) | - |
 | TASK-02 | IMPLEMENT | Create `/api/agent/cards` endpoint (GET/POST/PATCH) | 85% | M | Complete (2026-02-02) | TASK-01 |
-| TASK-02a | IMPLEMENT | Create `/api/agent/ideas` endpoint (GET/POST/PATCH) | 85% | M | Pending | TASK-01 |
+| TASK-02a | IMPLEMENT | Create `/api/agent/ideas` endpoint (GET/POST/PATCH) | 85% | M | Complete (2026-02-02) | TASK-01 |
 | TASK-02b | IMPLEMENT | Create `/api/agent/stage-docs` endpoint (GET/POST/PATCH) | 82% | M | Pending | TASK-01 |
 | TASK-03 | IMPLEMENT | Create `/api/agent/allocate-id` endpoint | 90% | S | Pending | TASK-01 |
 | TASK-04 | IMPLEMENT | Create `/api/board-changes` cursor-based delta endpoint | 82% | M | Pending | - |
@@ -524,6 +524,25 @@ The following skill changes impact this plan:
   - Covered in TASK-08
 - **Notes / references:**
   - Pattern: `apps/business-os/src/app/api/ideas/route.ts`
+
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** 6c6acac83b
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03, TC-04, TC-05, TC-06
+  - Red-green cycles: 2 (initial failure due to missing agent ideas route module; second run PASS)
+  - Initial test run: FAIL (module not found for `/api/agent/ideas/[id]`)
+  - Post-implementation: PASS
+- **Confidence reassessment:**
+  - Original: 85%
+  - Post-test: 85%
+  - Delta reason: Tests validated merge-patch and conflict behavior
+- **Validation:**
+  - Ran: `pnpm --filter business-os test --testPathPattern=agent/ideas` — PASS (6 tests)
+  - Ran: `pnpm --filter @apps/business-os typecheck` — PASS
+  - Ran: `pnpm --filter @apps/business-os lint` — PASS (warnings only; pre-existing)
+- **Documentation updated:** None
+- **Implementation notes:** Added agent ideas GET/POST/PATCH endpoints with merge-patch concurrency, conflict responses, audit logging (`actor: "agent"`), and location updates (`inbox`/`worked`).
 
 ### TASK-02b: Create `/api/agent/stage-docs` endpoint (GET/POST/PATCH)
 

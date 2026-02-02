@@ -147,6 +147,13 @@ Plan-Link: docs/plans/email-autodraft-consolidation-plan.md
 - **Validation:** `pnpm exec jest --runTestsByPath packages/mcp-server/src/__tests__/template-lint.test.ts --config ./jest.config.cjs` (pass), `pnpm --filter mcp-server lint` (pass), `pnpm --filter mcp-server build` (pass), `pnpm --filter mcp-server lint:templates` (pass)
 - **Notes:** Lints links, placeholders, and policy keyword alignment.
 
+
+
+### 2026-02-02 - TASK-16
+- **Action:** Completed security & logging review for email autodraft tools.
+- **Report:** `docs/plans/email-autodraft-consolidation-security.md`
+- **Notes:** No PII logging or email body persistence found; prompt-injection mitigations documented.
+
 ## Blockers
 
 _None currently_

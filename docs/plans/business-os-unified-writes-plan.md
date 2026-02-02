@@ -244,7 +244,7 @@ The following skill changes impact this plan:
 | TASK-07 | IMPLEMENT | Add CI guard + branch protection for `docs/business-os/` | 85% | M | Complete (2026-02-02) | TASK-06 |
 | TASK-08 | IMPLEMENT | Update `card-operations.md` to use agent API | 85% | S | Complete (2026-02-02) | TASK-02, TASK-02a, TASK-02b, TASK-03 |
 | TASK-09 | IMPLEMENT | Migrate `/work-idea` skill to API writes | 82% | M | Complete (2026-02-02) | TASK-08 |
-| TASK-10 | IMPLEMENT | Migrate `/build-feature` skill to API writes | 82% | M | Pending | TASK-08, TASK-02b |
+| TASK-10 | IMPLEMENT | Migrate `/build-feature` skill to API writes | 82% | M | Complete (2026-02-02) | TASK-08, TASK-02b |
 | TASK-11 | IMPLEMENT | Migrate remaining skills (`/fact-find`, etc.) | 82% | M | Pending | TASK-08 |
 | TASK-12 | IMPLEMENT | Update Business OS charter for D1-canonical reality | 90% | S | Pending | TASK-09 |
 | TASK-13 | IMPLEMENT | Remove deprecated `repo-writer.ts` and scan-based allocation | 85% | S | Pending | TASK-11, TASK-06 |
@@ -1235,6 +1235,23 @@ The following skill changes impact this plan:
   - Skill: `.claude/skills/work-idea/SKILL.md`
 
 ### TASK-10: Migrate `/build-feature` skill to API writes
+
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** 1cec9e85fa
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03, TC-04, TC-05, TC-06, TC-07 (doc review)
+  - Red-green cycles: 1
+  - Initial test run: N/A (documentation update)
+  - Post-implementation: N/A
+- **Confidence reassessment:**
+  - Original: 82%
+  - Post-test: 82%
+  - Delta reason: Skill updated to API-only workflow with conflict guidance
+- **Validation:**
+  - Not run: tests (documentation-only change)
+- **Documentation updated:** `.claude/skills/build-feature/SKILL.md`
+- **Implementation notes:** Replaced markdown file operations with agent API calls for card progress, stage-doc creation/updates, and lane transitions; added explicit 409 conflict retry guidance; enforced fail-closed behavior.
 
 - **Type:** IMPLEMENT
 - **Affects:** `.claude/skills/build-feature/SKILL.md`

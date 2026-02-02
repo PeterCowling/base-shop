@@ -239,7 +239,7 @@ The following skill changes impact this plan:
 | TASK-04 | IMPLEMENT | Create `/api/board-changes` cursor-based delta endpoint | 82% | M | Complete (2026-02-02) | - |
 | TASK-04b | IMPLEMENT | Wire UI to `/api/board-changes` endpoint | 82% | S | Complete (2026-02-02) | TASK-04 |
 | TASK-05 | IMPLEMENT | Implement deterministic D1→markdown serializer | 82% | M | Complete (2026-02-02) | - |
-| TASK-05a | IMPLEMENT | Create `/api/admin/export-snapshot` endpoint | 85% | S | Pending | TASK-05 |
+| TASK-05a | IMPLEMENT | Create `/api/admin/export-snapshot` endpoint | 85% | S | Complete (2026-02-02) | TASK-05 |
 | TASK-06 | IMPLEMENT | Create git export CI job (PR-based, hourly) | 82% | M | Pending | TASK-05a |
 | TASK-07 | IMPLEMENT | Add CI guard + branch protection for `docs/business-os/` | 85% | M | Pending | TASK-06 |
 | TASK-08 | IMPLEMENT | Update `card-operations.md` to use agent API | 85% | S | Pending | TASK-02, TASK-02a, TASK-02b, TASK-03 |
@@ -958,6 +958,26 @@ The following skill changes impact this plan:
 - **Notes / references:**
   - Separate secret: `BOS_EXPORT_API_KEY` (GitHub Actions secret only)
   - Content is pre-serialized markdown; CI job writes directly to files without transformation
+
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** b7ab6c5f59
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03, TC-04, TC-05
+  - Red-green cycles: 2 (initial tests failed on console.warn; silenced in test)
+  - Initial test run: FAIL (console.warn treated as failure)
+  - Post-implementation: PASS
+- **Confidence reassessment:**
+  - Original: 85%
+  - Post-test: 85%
+  - Delta reason: Tests validated auth + payload shape
+- **Validation:**
+  - Ran: `pnpm --filter business-os test --testPathPattern=export-snapshot` — PASS (5 tests)
+  - Ran: `pnpm exec eslint apps/business-os/src/app/api/admin/export-snapshot/route.ts apps/business-os/src/app/api/admin/export-snapshot/__tests__/route.test.ts` — PASS
+  - Not run: `pnpm --filter @apps/business-os typecheck` (per instruction to avoid repo-wide checks outside edited files)
+- **Documentation updated:** None
+- **Implementation notes:** Added export snapshot endpoint with dedicated auth header, audit cursor, D1-backed entity collection, and deterministic markdown serialization for cards/ideas/stage docs.
+
 
 ### TASK-06: Create git export CI job (PR-based, hourly)
 

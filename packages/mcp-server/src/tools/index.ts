@@ -3,6 +3,7 @@ import { errorResult } from "../utils/validation.js";
 import { analyticsTools, handleAnalyticsTool } from "./analytics.js";
 import { bookingEmailTools, handleBookingEmailTool } from "./booking-email.js";
 import { discountTools, handleDiscountTool } from "./discounts.js";
+import { draftGenerateTools, handleDraftGenerateTool } from "./draft-generate.js";
 import { draftInterpretTools, handleDraftInterpretTool } from "./draft-interpret.js";
 import { draftQualityTools, handleDraftQualityTool } from "./draft-quality-check.js";
 import { gmailTools, handleGmailTool } from "./gmail.js";
@@ -33,6 +34,7 @@ export const toolDefinitions = [
   ...gmailTools,
   ...bookingEmailTools,
   ...draftInterpretTools,
+  ...draftGenerateTools,
   ...draftQualityTools,
 ];
 
@@ -51,6 +53,7 @@ const themeToolNames = new Set(themeTools.map((t) => t.name));
 const gmailToolNames = new Set(gmailTools.map((t) => t.name));
 const bookingEmailToolNames = new Set(bookingEmailTools.map((t) => t.name));
 const draftInterpretToolNames = new Set(draftInterpretTools.map((t) => t.name));
+const draftGenerateToolNames = new Set(draftGenerateTools.map((t) => t.name));
 const draftQualityToolNames = new Set(draftQualityTools.map((t) => t.name));
 
 export async function handleToolCall(name: string, args: unknown) {
@@ -98,6 +101,9 @@ export async function handleToolCall(name: string, args: unknown) {
   }
   if (draftInterpretToolNames.has(name as never)) {
     return handleDraftInterpretTool(name, args);
+  }
+  if (draftGenerateToolNames.has(name as never)) {
+    return handleDraftGenerateTool(name, args);
   }
   if (draftQualityToolNames.has(name as never)) {
     return handleDraftQualityTool(name, args);

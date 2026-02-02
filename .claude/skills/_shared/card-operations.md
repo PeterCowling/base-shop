@@ -50,9 +50,7 @@ If any API call fails, **stop and surface the error**. Do **not** fall back to w
 
 ## ID Allocation (API)
 
-**Deprecated:** scan-based allocation in the repo.
-
-**Preferred:** call the API. You may either:
+Call the API. You may either:
 1) **Use the ID returned by `POST /api/agent/cards`** (recommended), or
 2) **Call `POST /api/agent/allocate-id`** if you must know the ID before creating the card.
 

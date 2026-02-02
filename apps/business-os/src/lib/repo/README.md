@@ -302,5 +302,4 @@ Phase 1+ concurrency handled by:
 - Security: `docs/business-os/security.md`
 
 **Legacy (Local-Only):**
-- Writer: `apps/business-os/src/lib/repo-writer.ts` (git worktree, no longer used in hosted)
 - Setup: `apps/business-os/scripts/setup-worktree.sh` (local dev only)

@@ -9,7 +9,6 @@ import {
   type CommitIdentity,
   getGitAuthorOptions,
 } from "../commit-identity";
-import type { WriteResult } from "../repo-writer";
 
 import type { RepoLock } from "./RepoLock";
 
@@ -29,6 +28,15 @@ export interface AgentQueueItemFrontmatter {
 export interface AgentQueueItem extends AgentQueueItemFrontmatter {
   content: string;
   queueId: string;
+}
+
+export interface WriteResult {
+  success: boolean;
+  filePath?: string;
+  commitHash?: string;
+  errorKey?: string;
+  errorDetails?: string;
+  needsManualResolution?: boolean;
 }
 
 /**

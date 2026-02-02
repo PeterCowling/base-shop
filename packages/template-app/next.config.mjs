@@ -30,6 +30,7 @@ const nextConfig = {
     "@acme/zod-utils",
     "@acme/platform-core",
     "@acme/i18n",
+    "@acme/design-system",
   ],
 };
 

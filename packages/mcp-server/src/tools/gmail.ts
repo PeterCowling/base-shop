@@ -29,10 +29,41 @@ import {
 const LABELS = {
   NEEDS_PROCESSING: "Brikette/Inbox/Needs-Processing",
   PROCESSING: "Brikette/Inbox/Processing",
+  AWAITING_AGREEMENT: "Brikette/Inbox/Awaiting-Agreement",
+  DEFERRED: "Brikette/Inbox/Deferred",
   READY_FOR_REVIEW: "Brikette/Drafts/Ready-For-Review",
   SENT: "Brikette/Drafts/Sent",
+  PROCESSED_DRAFTED: "Brikette/Processed/Drafted",
+  PROCESSED_ACKNOWLEDGED: "Brikette/Processed/Acknowledged",
+  PROCESSED_SKIPPED: "Brikette/Processed/Skipped",
+  WORKFLOW_PREPAYMENT_CHASE_1: "Brikette/Workflow/Prepayment-Chase-1",
+  WORKFLOW_PREPAYMENT_CHASE_2: "Brikette/Workflow/Prepayment-Chase-2",
+  WORKFLOW_PREPAYMENT_CHASE_3: "Brikette/Workflow/Prepayment-Chase-3",
+  WORKFLOW_AGREEMENT_RECEIVED: "Brikette/Workflow/Agreement-Received",
   PROMOTIONAL: "Brikette/Promotional",
+  SPAM: "Brikette/Spam",
 } as const;
+
+const REQUIRED_LABELS = [
+  LABELS.NEEDS_PROCESSING,
+  LABELS.PROCESSING,
+  LABELS.AWAITING_AGREEMENT,
+  LABELS.DEFERRED,
+  LABELS.READY_FOR_REVIEW,
+  LABELS.SENT,
+  LABELS.PROCESSED_DRAFTED,
+  LABELS.PROCESSED_ACKNOWLEDGED,
+  LABELS.PROCESSED_SKIPPED,
+  LABELS.WORKFLOW_PREPAYMENT_CHASE_1,
+  LABELS.WORKFLOW_PREPAYMENT_CHASE_2,
+  LABELS.WORKFLOW_PREPAYMENT_CHASE_3,
+  LABELS.WORKFLOW_AGREEMENT_RECEIVED,
+  LABELS.PROMOTIONAL,
+  LABELS.SPAM,
+];
+
+const PROCESSING_TIMEOUT_MS = 30 * 60 * 1000;
+const processingLocks = new Map<string, number>();
 
 // =============================================================================
 // Zod Schemas
@@ -56,7 +87,19 @@ const createDraftSchema = z.object({
 
 const markProcessedSchema = z.object({
   emailId: z.string().min(1),
-  action: z.enum(["drafted", "skipped", "spam", "deferred", "acknowledged", "promotional"]),
+  action: z.enum([
+    "drafted",
+    "skipped",
+    "spam",
+    "deferred",
+    "acknowledged",
+    "promotional",
+    "awaiting_agreement",
+    "agreement_received",
+    "prepayment_chase_1",
+    "prepayment_chase_2",
+    "prepayment_chase_3",
+  ]),
 });
 
 // =============================================================================
@@ -109,8 +152,20 @@ export const gmailTools = [
         emailId: { type: "string", description: "Gmail message ID" },
         action: {
           type: "string",
-          enum: ["drafted", "skipped", "spam", "deferred", "acknowledged", "promotional"],
-          description: "How the email was handled: drafted (draft created), skipped (no response needed), spam (mark as spam), deferred (keep for later), acknowledged (informational email - no reply needed but noted), promotional (marketing/newsletter - archive for batch review)",
+          enum: [
+            "drafted",
+            "skipped",
+            "spam",
+            "deferred",
+            "acknowledged",
+            "promotional",
+            "awaiting_agreement",
+            "agreement_received",
+            "prepayment_chase_1",
+            "prepayment_chase_2",
+            "prepayment_chase_3",
+          ],
+          description: "How the email was handled: drafted (draft created), skipped (no response needed), spam (mark as spam), deferred (pause processing), acknowledged (informational email - no reply needed but noted), promotional (marketing/newsletter - archive for batch review), awaiting_agreement (T&C reply needed), agreement_received (T&C confirmed), prepayment_chase_1/2/3 (payment reminders).",
         },
       },
       required: ["emailId", "action"],
@@ -276,18 +331,64 @@ function extractAttachments(payload: {
 /**
  * Get label ID by name
  */
-async function getLabelId(
+async function ensureLabelMap(
   gmail: gmail_v1.Gmail,
-  labelName: string
-): Promise<string | null> {
-  try {
-    const response = await gmail.users.labels.list({ userId: "me" });
-    const labels = response.data.labels || [];
-    const label = labels.find((l: gmail_v1.Schema$Label) => l.name === labelName);
-    return label?.id || null;
-  } catch {
-    return null;
+  labelNames: string[]
+): Promise<Map<string, string>> {
+  const response = await gmail.users.labels.list({ userId: "me" });
+  const labels = response.data.labels || [];
+  const labelMap = new Map(
+    labels
+      .filter((label): label is gmail_v1.Schema$Label => !!label)
+      .map(label => [label.name || "", label.id || ""])
+      .filter(([name, id]) => name.length > 0 && id.length > 0)
+  );
+
+  for (const labelName of labelNames) {
+    if (labelMap.has(labelName)) continue;
+    try {
+      const created = await gmail.users.labels.create({
+        userId: "me",
+        requestBody: {
+          name: labelName,
+          labelListVisibility: "labelShow",
+          messageListVisibility: "show",
+        },
+      });
+      if (created.data?.id) {
+        labelMap.set(labelName, created.data.id);
+      }
+    } catch {
+      // If creation fails (permissions, etc.), leave missing labels unresolved.
+    }
   }
+
+  return labelMap;
+}
+
+function collectLabelIds(
+  labelMap: Map<string, string>,
+  labelNames: string[]
+): string[] {
+  return labelNames
+    .map(labelName => labelMap.get(labelName))
+    .filter((labelId): labelId is string => !!labelId);
+}
+
+function isProcessingLockStale(
+  lockTimestamp: number | undefined,
+  internalDate: string | undefined
+): boolean {
+  if (lockTimestamp) {
+    return Date.now() - lockTimestamp > PROCESSING_TIMEOUT_MS;
+  }
+  if (internalDate) {
+    const parsed = Number(internalDate);
+    if (!Number.isNaN(parsed)) {
+      return Date.now() - parsed > PROCESSING_TIMEOUT_MS;
+    }
+  }
+  return false;
 }
 
 /**
@@ -351,10 +452,403 @@ function createRawEmail(
 }
 
 // =============================================================================
+// Tool Case Handlers
+// =============================================================================
+
+async function handleListPending(
+  gmail: gmail_v1.Gmail,
+  args: unknown
+): Promise<ReturnType<typeof jsonResult> | ReturnType<typeof errorResult>> {
+  const { limit } = listPendingSchema.parse(args);
+
+  const labelMap = await ensureLabelMap(gmail, REQUIRED_LABELS);
+  const labelId = labelMap.get(LABELS.NEEDS_PROCESSING);
+  if (!labelId) {
+    return errorResult(
+      `Label "${LABELS.NEEDS_PROCESSING}" not found in Gmail. ` +
+      `Please create the Brikette label hierarchy first.`
+    );
+  }
+
+  const response = await gmail.users.messages.list({
+    userId: "me",
+    labelIds: [labelId],
+    maxResults: limit,
+  });
+
+  const messages = response.data.messages || [];
+  const emails: PendingEmail[] = [];
+
+  for (const msg of messages) {
+    if (!msg.id) continue;
+
+    const detail = await gmail.users.messages.get({
+      userId: "me",
+      id: msg.id,
+      format: "metadata",
+      metadataHeaders: ["From", "Subject", "Date"],
+    });
+
+    const headers = (detail.data.payload?.headers || []) as EmailHeader[];
+    const from = parseEmailAddress(getHeader(headers, "From"));
+    const subject = getHeader(headers, "Subject") || "(no subject)";
+    const dateStr = getHeader(headers, "Date");
+
+    const thread = await gmail.users.threads.get({
+      userId: "me",
+      id: detail.data.threadId || "",
+      format: "minimal",
+    });
+    const isReply = (thread.data.messages?.length || 0) > 1;
+
+    emails.push({
+      id: msg.id,
+      threadId: detail.data.threadId || "",
+      from,
+      subject,
+      receivedAt: dateStr ? new Date(dateStr).toISOString() : new Date().toISOString(),
+      snippet: detail.data.snippet || "",
+      labels: detail.data.labelIds || [],
+      isReply,
+    });
+  }
+
+  return jsonResult({
+    emails,
+    total: emails.length,
+    hasMore: messages.length === limit,
+  });
+}
+
+async function handleGetEmail(
+  gmail: gmail_v1.Gmail,
+  args: unknown
+): Promise<ReturnType<typeof jsonResult> | ReturnType<typeof errorResult>> {
+  const { emailId, includeThread } = getEmailSchema.parse(args);
+
+  const response = await gmail.users.messages.get({
+    userId: "me",
+    id: emailId,
+    format: "full",
+  });
+
+  const msg = response.data;
+  if (!msg.id) {
+    return errorResult(`Email not found: ${emailId}`);
+  }
+
+  const labelMap = await ensureLabelMap(gmail, REQUIRED_LABELS);
+  const processingLabelId = labelMap.get(LABELS.PROCESSING);
+  const needsProcessingLabelId = labelMap.get(LABELS.NEEDS_PROCESSING);
+
+  if (!processingLabelId) {
+    return errorResult(`Label "${LABELS.PROCESSING}" not found in Gmail.`);
+  }
+
+  const messageLabelIds = msg.labelIds || [];
+  if (messageLabelIds.includes(processingLabelId)) {
+    const isStale = isProcessingLockStale(
+      processingLocks.get(emailId),
+      msg.internalDate
+    );
+    if (isStale) {
+      await gmail.users.messages.modify({
+        userId: "me",
+        id: emailId,
+        requestBody: {
+          removeLabelIds: [processingLabelId],
+        },
+      });
+      processingLocks.delete(emailId);
+    } else {
+      return errorResult(`Email ${emailId} is already being processed.`);
+    }
+  }
+
+  await gmail.users.messages.modify({
+    userId: "me",
+    id: emailId,
+    requestBody: {
+      addLabelIds: [processingLabelId],
+      removeLabelIds: needsProcessingLabelId ? [needsProcessingLabelId] : undefined,
+    },
+  });
+  processingLocks.set(emailId, Date.now());
+
+  const headers = (msg.payload?.headers || []) as EmailHeader[];
+  const from = parseEmailAddress(getHeader(headers, "From"));
+  const subject = getHeader(headers, "Subject") || "(no subject)";
+  const dateStr = getHeader(headers, "Date");
+  const messageId = getHeader(headers, "Message-ID");
+
+  const body = extractBody(msg.payload as Parameters<typeof extractBody>[0]);
+
+  const attachments = extractAttachments(msg.payload as Parameters<typeof extractAttachments>[0]);
+
+  let threadContext: EmailDetails["threadContext"];
+  if (includeThread && msg.threadId) {
+    const thread = await gmail.users.threads.get({
+      userId: "me",
+      id: msg.threadId,
+      format: "metadata",
+      metadataHeaders: ["From", "Date"],
+    });
+
+    const messages = thread.data.messages || [];
+    if (messages.length > 1) {
+      threadContext = {
+        messages: messages
+          .filter(m => m.id !== emailId)
+          .map(m => {
+            const msgHeaders = (m.payload?.headers || []) as EmailHeader[];
+            return {
+              from: getHeader(msgHeaders, "From"),
+              date: getHeader(msgHeaders, "Date"),
+              snippet: m.snippet || "",
+            };
+          }),
+      };
+    }
+  }
+
+  const emailDetails: EmailDetails = {
+    id: msg.id,
+    threadId: msg.threadId || "",
+    from,
+    subject,
+    receivedAt: dateStr ? new Date(dateStr).toISOString() : new Date().toISOString(),
+    snippet: msg.snippet || "",
+    labels: msg.labelIds || [],
+    isReply: !!threadContext,
+    body,
+    attachments,
+    threadContext,
+  };
+
+  return jsonResult({
+    ...emailDetails,
+    messageId,
+  });
+}
+
+async function handleCreateDraft(
+  gmail: gmail_v1.Gmail,
+  args: unknown
+): Promise<ReturnType<typeof jsonResult>> {
+  const { emailId, subject, bodyPlain, bodyHtml } = createDraftSchema.parse(args);
+
+  const original = await gmail.users.messages.get({
+    userId: "me",
+    id: emailId,
+    format: "metadata",
+    metadataHeaders: ["From", "Message-ID", "References"],
+  });
+
+  const headers = (original.data.payload?.headers || []) as EmailHeader[];
+  const from = getHeader(headers, "From");
+  const messageId = getHeader(headers, "Message-ID");
+  const existingRefs = getHeader(headers, "References");
+
+  const references = existingRefs
+    ? `${existingRefs} ${messageId}`
+    : messageId;
+
+  const raw = createRawEmail(
+    from,
+    subject,
+    bodyPlain,
+    bodyHtml,
+    messageId,
+    references
+  );
+
+  const draft = await gmail.users.drafts.create({
+    userId: "me",
+    requestBody: {
+      message: {
+        raw,
+        threadId: original.data.threadId,
+      },
+    },
+  });
+
+  const labelMap = await ensureLabelMap(gmail, REQUIRED_LABELS);
+  const reviewLabelId = labelMap.get(LABELS.READY_FOR_REVIEW);
+  if (reviewLabelId && draft.data.message?.id) {
+    try {
+      await gmail.users.messages.modify({
+        userId: "me",
+        id: draft.data.message.id,
+        requestBody: {
+          addLabelIds: [reviewLabelId],
+        },
+      });
+    } catch {
+      // Label might not exist, continue anyway
+    }
+  }
+
+  return jsonResult({
+    success: true,
+    draftId: draft.data.id,
+    threadId: original.data.threadId,
+    message: "Draft created successfully. Review and send from Gmail.",
+  });
+}
+
+async function handleMarkProcessed(
+  gmail: gmail_v1.Gmail,
+  args: unknown
+): Promise<ReturnType<typeof jsonResult>> {
+  const { emailId, action } = markProcessedSchema.parse(args);
+
+  const labelMap = await ensureLabelMap(gmail, REQUIRED_LABELS);
+  const needsProcessingId = labelMap.get(LABELS.NEEDS_PROCESSING);
+  const processingId = labelMap.get(LABELS.PROCESSING);
+  const workflowLabelIds = collectLabelIds(labelMap, [
+    LABELS.WORKFLOW_PREPAYMENT_CHASE_1,
+    LABELS.WORKFLOW_PREPAYMENT_CHASE_2,
+    LABELS.WORKFLOW_PREPAYMENT_CHASE_3,
+    LABELS.WORKFLOW_AGREEMENT_RECEIVED,
+  ]);
+  const processedLabelIds = collectLabelIds(labelMap, [
+    LABELS.PROCESSED_DRAFTED,
+    LABELS.PROCESSED_ACKNOWLEDGED,
+    LABELS.PROCESSED_SKIPPED,
+  ]);
+  const inboxStateLabelIds = collectLabelIds(labelMap, [
+    LABELS.AWAITING_AGREEMENT,
+    LABELS.DEFERRED,
+  ]);
+
+  const addLabelIds: string[] = [];
+  const removeLabelIds: string[] = [];
+
+  if (needsProcessingId) {
+    removeLabelIds.push(needsProcessingId);
+  }
+  if (processingId) {
+    removeLabelIds.push(processingId);
+  }
+
+  switch (action) {
+    case "drafted": {
+      const draftedLabelId = labelMap.get(LABELS.PROCESSED_DRAFTED);
+      removeLabelIds.push(...processedLabelIds, ...workflowLabelIds, ...inboxStateLabelIds);
+      if (draftedLabelId) {
+        addLabelIds.push(draftedLabelId);
+      }
+      break;
+    }
+    case "skipped": {
+      const skippedLabelId = labelMap.get(LABELS.PROCESSED_SKIPPED);
+      removeLabelIds.push(...processedLabelIds, ...workflowLabelIds, ...inboxStateLabelIds);
+      if (skippedLabelId) {
+        addLabelIds.push(skippedLabelId);
+      }
+      break;
+    }
+    case "acknowledged": {
+      const acknowledgedLabelId = labelMap.get(LABELS.PROCESSED_ACKNOWLEDGED);
+      removeLabelIds.push(...processedLabelIds, ...workflowLabelIds, ...inboxStateLabelIds);
+      if (acknowledgedLabelId) {
+        addLabelIds.push(acknowledgedLabelId);
+      }
+      break;
+    }
+    case "spam": {
+      const spamLabelId = labelMap.get(LABELS.SPAM);
+      removeLabelIds.push(...processedLabelIds, ...workflowLabelIds, ...inboxStateLabelIds);
+      if (spamLabelId) {
+        addLabelIds.push(spamLabelId);
+      }
+      addLabelIds.push("SPAM");
+      break;
+    }
+    case "promotional": {
+      const promoLabelId = labelMap.get(LABELS.PROMOTIONAL);
+      removeLabelIds.push(...processedLabelIds, ...workflowLabelIds, ...inboxStateLabelIds);
+      if (promoLabelId) {
+        addLabelIds.push(promoLabelId);
+      }
+      removeLabelIds.push("INBOX");
+      break;
+    }
+    case "deferred": {
+      const deferredLabelId = labelMap.get(LABELS.DEFERRED);
+      removeLabelIds.push(...processedLabelIds, ...workflowLabelIds);
+      removeLabelIds.push(...collectLabelIds(labelMap, [LABELS.AWAITING_AGREEMENT]));
+      if (deferredLabelId) {
+        addLabelIds.push(deferredLabelId);
+      }
+      break;
+    }
+    case "awaiting_agreement": {
+      const awaitingLabelId = labelMap.get(LABELS.AWAITING_AGREEMENT);
+      removeLabelIds.push(...processedLabelIds, ...workflowLabelIds, ...inboxStateLabelIds);
+      if (awaitingLabelId) {
+        addLabelIds.push(awaitingLabelId);
+      }
+      break;
+    }
+    case "agreement_received": {
+      const agreementLabelId = labelMap.get(LABELS.WORKFLOW_AGREEMENT_RECEIVED);
+      removeLabelIds.push(...processedLabelIds, ...workflowLabelIds, ...inboxStateLabelIds);
+      if (agreementLabelId) {
+        addLabelIds.push(agreementLabelId);
+      }
+      break;
+    }
+    case "prepayment_chase_1": {
+      const chaseLabelId = labelMap.get(LABELS.WORKFLOW_PREPAYMENT_CHASE_1);
+      removeLabelIds.push(...processedLabelIds, ...workflowLabelIds, ...inboxStateLabelIds);
+      if (chaseLabelId) {
+        addLabelIds.push(chaseLabelId);
+      }
+      break;
+    }
+    case "prepayment_chase_2": {
+      const chaseLabelId = labelMap.get(LABELS.WORKFLOW_PREPAYMENT_CHASE_2);
+      removeLabelIds.push(...processedLabelIds, ...workflowLabelIds, ...inboxStateLabelIds);
+      if (chaseLabelId) {
+        addLabelIds.push(chaseLabelId);
+      }
+      break;
+    }
+    case "prepayment_chase_3": {
+      const chaseLabelId = labelMap.get(LABELS.WORKFLOW_PREPAYMENT_CHASE_3);
+      removeLabelIds.push(...processedLabelIds, ...workflowLabelIds, ...inboxStateLabelIds);
+      if (chaseLabelId) {
+        addLabelIds.push(chaseLabelId);
+      }
+      break;
+    }
+  }
+
+  const uniqueAddLabelIds = Array.from(new Set(addLabelIds));
+  const uniqueRemoveLabelIds = Array.from(new Set(removeLabelIds));
+
+  await gmail.users.messages.modify({
+    userId: "me",
+    id: emailId,
+    requestBody: {
+      addLabelIds: uniqueAddLabelIds.length > 0 ? uniqueAddLabelIds : undefined,
+      removeLabelIds: uniqueRemoveLabelIds.length > 0 ? uniqueRemoveLabelIds : undefined,
+    },
+  });
+  processingLocks.delete(emailId);
+
+  return jsonResult({
+    success: true,
+    message: `Email marked as ${action}`,
+    action,
+  });
+}
+
+// =============================================================================
 // Tool Handler
 // =============================================================================
 
-// eslint-disable-next-line complexity -- BRIK-ENG-0020
 export async function handleGmailTool(name: string, args: unknown) {
   // Get Gmail client
   const clientResult = await getGmailClient();
@@ -376,282 +870,19 @@ export async function handleGmailTool(name: string, args: unknown) {
   try {
     switch (name) {
       case "gmail_list_pending": {
-        const { limit } = listPendingSchema.parse(args);
-
-        // Get the "Needs-Processing" label ID
-        const labelId = await getLabelId(gmail, LABELS.NEEDS_PROCESSING);
-        if (!labelId) {
-          return errorResult(
-            `Label "${LABELS.NEEDS_PROCESSING}" not found in Gmail. ` +
-            `Please create the Brikette label hierarchy first:\n` +
-            `- Brikette/Inbox/Needs-Processing\n` +
-            `- Brikette/Inbox/Processing\n` +
-            `- Brikette/Drafts/Ready-For-Review\n` +
-            `- Brikette/Drafts/Sent`
-          );
-        }
-
-        // List messages with the label
-        const response = await gmail.users.messages.list({
-          userId: "me",
-          labelIds: [labelId],
-          maxResults: limit,
-        });
-
-        const messages = response.data.messages || [];
-        const emails: PendingEmail[] = [];
-
-        // Fetch details for each message
-        for (const msg of messages) {
-          if (!msg.id) continue;
-
-          const detail = await gmail.users.messages.get({
-            userId: "me",
-            id: msg.id,
-            format: "metadata",
-            metadataHeaders: ["From", "Subject", "Date"],
-          });
-
-          const headers = (detail.data.payload?.headers || []) as EmailHeader[];
-          const from = parseEmailAddress(getHeader(headers, "From"));
-          const subject = getHeader(headers, "Subject") || "(no subject)";
-          const dateStr = getHeader(headers, "Date");
-
-          // Get thread to check if this is a reply
-          const thread = await gmail.users.threads.get({
-            userId: "me",
-            id: detail.data.threadId || "",
-            format: "minimal",
-          });
-          const isReply = (thread.data.messages?.length || 0) > 1;
-
-          emails.push({
-            id: msg.id,
-            threadId: detail.data.threadId || "",
-            from,
-            subject,
-            receivedAt: dateStr ? new Date(dateStr).toISOString() : new Date().toISOString(),
-            snippet: detail.data.snippet || "",
-            labels: detail.data.labelIds || [],
-            isReply,
-          });
-        }
-
-        return jsonResult({
-          emails,
-          total: emails.length,
-          hasMore: messages.length === limit,
-        });
+        return await handleListPending(gmail, args);
       }
 
       case "gmail_get_email": {
-        const { emailId, includeThread } = getEmailSchema.parse(args);
-
-        // Get full message
-        const response = await gmail.users.messages.get({
-          userId: "me",
-          id: emailId,
-          format: "full",
-        });
-
-        const msg = response.data;
-        if (!msg.id) {
-          return errorResult(`Email not found: ${emailId}`);
-        }
-
-        const headers = (msg.payload?.headers || []) as EmailHeader[];
-        const from = parseEmailAddress(getHeader(headers, "From"));
-        const subject = getHeader(headers, "Subject") || "(no subject)";
-        const dateStr = getHeader(headers, "Date");
-        const messageId = getHeader(headers, "Message-ID");
-
-        // Extract body content
-        const body = extractBody(msg.payload as Parameters<typeof extractBody>[0]);
-
-        // Extract attachments
-        const attachments = extractAttachments(msg.payload as Parameters<typeof extractAttachments>[0]);
-
-        // Get thread context if requested
-        let threadContext: EmailDetails["threadContext"];
-        if (includeThread && msg.threadId) {
-          const thread = await gmail.users.threads.get({
-            userId: "me",
-            id: msg.threadId,
-            format: "metadata",
-            metadataHeaders: ["From", "Date"],
-          });
-
-          const messages = thread.data.messages || [];
-          if (messages.length > 1) {
-            threadContext = {
-              messages: messages
-                .filter(m => m.id !== emailId) // Exclude current message
-                .map(m => {
-                  const msgHeaders = (m.payload?.headers || []) as EmailHeader[];
-                  return {
-                    from: getHeader(msgHeaders, "From"),
-                    date: getHeader(msgHeaders, "Date"),
-                    snippet: m.snippet || "",
-                  };
-                }),
-            };
-          }
-        }
-
-        const emailDetails: EmailDetails = {
-          id: msg.id,
-          threadId: msg.threadId || "",
-          from,
-          subject,
-          receivedAt: dateStr ? new Date(dateStr).toISOString() : new Date().toISOString(),
-          snippet: msg.snippet || "",
-          labels: msg.labelIds || [],
-          isReply: !!threadContext,
-          body,
-          attachments,
-          threadContext,
-        };
-
-        // Include Message-ID for threading replies
-        return jsonResult({
-          ...emailDetails,
-          messageId,
-        });
+        return await handleGetEmail(gmail, args);
       }
 
       case "gmail_create_draft": {
-        const { emailId, subject, bodyPlain, bodyHtml } = createDraftSchema.parse(args);
-
-        // Get the original email to get reply details
-        const original = await gmail.users.messages.get({
-          userId: "me",
-          id: emailId,
-          format: "metadata",
-          metadataHeaders: ["From", "Message-ID", "References"],
-        });
-
-        const headers = (original.data.payload?.headers || []) as EmailHeader[];
-        const from = getHeader(headers, "From");
-        const messageId = getHeader(headers, "Message-ID");
-        const existingRefs = getHeader(headers, "References");
-
-        // Build references header for threading
-        const references = existingRefs
-          ? `${existingRefs} ${messageId}`
-          : messageId;
-
-        // Create raw email
-        const raw = createRawEmail(
-          from,
-          subject,
-          bodyPlain,
-          bodyHtml,
-          messageId,
-          references
-        );
-
-        // Create draft in the same thread
-        const draft = await gmail.users.drafts.create({
-          userId: "me",
-          requestBody: {
-            message: {
-              raw,
-              threadId: original.data.threadId,
-            },
-          },
-        });
-
-        // Try to add "Ready-For-Review" label to the draft
-        const reviewLabelId = await getLabelId(gmail, LABELS.READY_FOR_REVIEW);
-        if (reviewLabelId && draft.data.message?.id) {
-          try {
-            await gmail.users.messages.modify({
-              userId: "me",
-              id: draft.data.message.id,
-              requestBody: {
-                addLabelIds: [reviewLabelId],
-              },
-            });
-          } catch {
-            // Label might not exist, continue anyway
-          }
-        }
-
-        return jsonResult({
-          success: true,
-          draftId: draft.data.id,
-          threadId: original.data.threadId,
-          message: "Draft created successfully. Review and send from Gmail.",
-        });
+        return await handleCreateDraft(gmail, args);
       }
 
       case "gmail_mark_processed": {
-        const { emailId, action } = markProcessedSchema.parse(args);
-
-        // Get label IDs
-        const needsProcessingId = await getLabelId(gmail, LABELS.NEEDS_PROCESSING);
-        const processingId = await getLabelId(gmail, LABELS.PROCESSING);
-
-        // Determine label changes based on action
-        const addLabelIds: string[] = [];
-        const removeLabelIds: string[] = [];
-
-        // Always remove from queue
-        if (needsProcessingId) {
-          removeLabelIds.push(needsProcessingId);
-        }
-        if (processingId) {
-          removeLabelIds.push(processingId);
-        }
-
-        switch (action) {
-          case "drafted":
-            // Draft created - labels updated by gmail_create_draft
-            break;
-          case "skipped":
-            // Just remove from queue (already done above)
-            break;
-          case "acknowledged":
-            // Informational email - no reply needed but we noted the content
-            // Remove from queue (already done above), no additional labels
-            break;
-          case "spam":
-            // Move to spam
-            addLabelIds.push("SPAM");
-            break;
-          case "promotional": {
-            // Archive and label for batch review/deletion later
-            const promoLabelId = await getLabelId(gmail, LABELS.PROMOTIONAL);
-            if (promoLabelId) {
-              addLabelIds.push(promoLabelId);
-            }
-            // Remove from inbox (archive)
-            removeLabelIds.push("INBOX");
-            break;
-          }
-          case "deferred":
-            // Put back in queue for later
-            if (needsProcessingId) {
-              removeLabelIds.pop(); // Don't remove needs-processing
-            }
-            break;
-        }
-
-        // Apply label changes
-        await gmail.users.messages.modify({
-          userId: "me",
-          id: emailId,
-          requestBody: {
-            addLabelIds: addLabelIds.length > 0 ? addLabelIds : undefined,
-            removeLabelIds: removeLabelIds.length > 0 ? removeLabelIds : undefined,
-          },
-        });
-
-        return jsonResult({
-          success: true,
-          message: `Email marked as ${action}`,
-          action,
-        });
+        return await handleMarkProcessed(gmail, args);
       }
 
       default:

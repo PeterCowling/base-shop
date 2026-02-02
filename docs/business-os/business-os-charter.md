@@ -5,7 +5,7 @@ Domain: Business OS
 Last-reviewed: 2026-01-31
 Primary code entrypoints:
   - apps/business-os/ — Next.js Kanban app
-  - docs/business-os/ — Canonical document storage
+  - docs/business-os/ — Read-only markdown mirror (exported from D1)
   - .claude/skills/work-idea/ — Agent skill: convert idea to card
   - .claude/skills/propose-lane-move/ — Agent skill: propose lane transitions
   - .claude/skills/scan-repo/ — Agent skill: create business-relevant ideas
@@ -27,24 +27,33 @@ Business OS is a **repo-native coordination system** for human and agent work ac
 
 **Design Principles:**
 
-- **Repo-native:** All state lives in `docs/business-os/` as markdown + JSON
+- **D1-canonical:** Cards, ideas, and stage docs live in D1 as the source of truth
+- **Exported mirror:** `docs/business-os/` is a read-only markdown snapshot exported from D1
 - **Evidence-based:** Every stage transition requires evidence documentation
 - **Dual-audience:** `.user.md` optimized for humans, `.agent.md` optimized for LLMs
 - **Lightweight:** Intentionally simple—not ERP complexity, just enough structure
-- **Git-backed:** Full audit trail, rollback capability, PR workflow for all changes
+- **PR-audited:** Export job opens PRs for markdown snapshots; Git provides audit/rollback
+
+## Source of Truth and Access
+
+- **Canonical data:** D1 for cards, ideas, and stage docs.
+- **Read-only mirror:** Markdown under `docs/business-os/` is exported from D1; do not edit these files directly.
+- **How to interact:** Use the Business OS UI or the agent API (`/api/agent/*`) for creates/updates.
+- **Fail-closed agents:** If the API is unavailable, skills stop with a clear error instead of writing markdown.
 
 ## Core Flows
 
 ### 1. Idea Submission (Human or Agent)
 - Submit raw idea via UI form or agent `/scan-repo` skill
-- Idea saved to `docs/business-os/ideas/inbox/<slug>.md`
+- Idea stored in D1 via API or UI
+- Export job mirrors ideas to `docs/business-os/ideas/` for review
 - Visible in Inbox lane on business boards
 
 ### 2. Idea → Card Workflow (Agent-assisted)
 - Agent uses `/work-idea` skill to convert idea to card
-- Creates card in `docs/business-os/cards/<ID>.user.md` + `.agent.md`
-- Creates initial Fact-finding stage doc
-- Idea moves to `ideas/worked/` with Card-ID reference
+- Creates card + initial fact-finding stage doc in D1 via agent API
+- Export job mirrors card + stage doc into `docs/business-os/cards/`
+- Idea moves to `ideas/worked/` in the exported mirror
 
 ### 3. Card Lifecycle (Lane Progression)
 - **Lanes:** Inbox → Fact-finding → Planned → In progress → Blocked → Done → Reflected
@@ -81,7 +90,6 @@ Business OS is a **repo-native coordination system** for human and agent work ac
 ## Out of Scope
 
 ### Phase 0 Explicitly Excluded
-- Agent APIs (no programmatic agent invocation)
 - Multi-agent runners (Pete runs agents manually)
 - Manual PR review/approval workflow (auto-merge after CI)
 - Public access (local-only, Pete-only)
@@ -98,15 +106,15 @@ Business OS is a **repo-native coordination system** for human and agent work ac
 ```
 docs/business-os/
 ├── cards/
-│   ├── <ID>.user.md              # Human-readable card
-│   ├── <ID>.agent.md             # Agent-readable card
+│   ├── <ID>.user.md              # Human-readable card (exported from D1)
+│   ├── <ID>.agent.md             # Agent-readable card (exported from D1)
 │   └── <ID>/
-│       ├── fact-finding.user.md  # Stage documentation
+│       ├── fact-finding.user.md  # Stage documentation (exported from D1)
 │       ├── planned.user.md
 │       └── ...
 ├── ideas/
-│   ├── inbox/*.md                # Raw ideas
-│   └── worked/*.md               # Ideas with Card-ID
+│   ├── inbox/*.md                # Raw ideas (exported from D1)
+│   └── worked/*.md               # Ideas with Card-ID (exported from D1)
 ├── strategy/
 │   ├── businesses.json           # Business catalog
 │   └── <BIZ>/
@@ -120,19 +128,22 @@ docs/business-os/
     └── history/*.json            # Historical scans
 ```
 
+**Note:** `strategy/`, `people/`, and `scans/` remain repo-native documents. Cards/ideas/stage docs are exported mirrors of D1 data.
+
 ## Governance
 
 ### Phase 0 Constraints
 - **Identity:** Pete-only (hardcoded identity, no auth)
 - **Runtime:** Local development only (`pnpm --filter @apps/business-os dev`)
-- **Write model:** App commits to `dev` → auto-PR (`dev` → `staging`) → auto-merge after CI
-- **Path authorization:** Server-side allowlist (writes restricted to `docs/business-os/**`)
+- **Write model:** UI/API writes to D1 → export job opens PRs for markdown mirror → auto-merge after CI
+- **Path authorization:** Agent API auth required for card/idea/stage-doc writes; direct markdown edits are blocked by CI guard
 
 ### Quality Gates
-- `pnpm docs:lint` validates all Business OS document headers
+- `pnpm docs:lint` validates exported Business OS document headers
 - TypeScript type checking enforced (`pnpm typecheck`)
 - Targeted tests required before commits (`pnpm test -- <specific-test>`)
 - No direct commits to `staging` or `main` (ship via pipeline PRs)
+- CI guard rejects non-export changes to `docs/business-os/cards/` and `docs/business-os/ideas/`
 
 ## Migration Notes
 
@@ -140,7 +151,6 @@ docs/business-os/
 - Hosted deployment (Cloudflare Pages)
 - Multi-user access with authentication
 - Real-time updates (WebSocket or SSE)
-- Agent APIs for programmatic invocation
 - Manual PR review workflow option
 
 ### Historical Context

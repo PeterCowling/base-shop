@@ -35,8 +35,8 @@ When you identify that the "right" solution requires significantly more work, ex
 |------|---------|
 | Install | `pnpm install` |
 | Build | `pnpm build` |
-| Typecheck | `pnpm typecheck` |
-| Lint | `pnpm lint` |
+| Typecheck | `pnpm --filter <pkg> typecheck` |
+| Lint | `pnpm --filter <pkg> lint` |
 | Test (single file) | `pnpm --filter <pkg> test -- path/to/file.test.ts` |
 | Test (pattern) | `pnpm --filter <pkg> test -- --testPathPattern="name"` |
 | Validate all | `bash scripts/validate-changes.sh` |
@@ -44,9 +44,17 @@ When you identify that the "right" solution requires significantly more work, ex
 ## Validation Gate (Before Every Commit)
 
 ```bash
-pnpm typecheck && pnpm lint
+# Scope validation to changed packages only (preferred default).
+pnpm --filter <pkg> typecheck && pnpm --filter <pkg> lint
 # Plus: targeted tests for changed files (see scripts/validate-changes.sh)
 ```
+
+If multiple packages changed, run typecheck + lint for each affected package.
+
+Only run full-repo `pnpm typecheck` / `pnpm lint` when:
+- The user explicitly asks for a full validation, or
+- The change is cross-cutting and impacts many packages, or
+- A targeted run fails with a non-localized error and full validation is needed to diagnose.
 
 **Rule:** Never commit code that fails validation. Fix first.
 
@@ -58,7 +66,8 @@ pnpm typecheck && pnpm lint
   - Or open a locked shell: `scripts/agents/with-writer-lock.sh`
   - If you are running in a non-interactive environment (no TTY; e.g. CI or API-driven agents), you cannot open a subshell. Wrap each write-related command instead:
     - `scripts/agents/integrator-shell.sh -- <command> [args...]`
-  - Check status: `scripts/git/writer-lock.sh status`
+  - Check status: `scripts/git/writer-lock.sh status` (token is redacted by default)
+  - Show full token (human only): `scripts/git/writer-lock.sh status --print-token`
 - **Branch flow:** `dev` → `staging` → `main`
   - Commit locally on `dev`
   - Ship `dev` to staging (PR + auto-merge): `scripts/git/ship-to-staging.sh`
@@ -196,7 +205,7 @@ Schema: [docs/AGENTS.docs.md](docs/AGENTS.docs.md)
 | Need to undo | Use `git revert`, never `reset --hard` |
 | Large-scale fix needed | Create plan in `docs/plans/`, don't take shortcuts |
 | MCP TypeScript intelligence | See `docs/ide/agent-language-intelligence-guide.md` |
-| Asked to check types | Use MCP TypeScript tools first; `pnpm typecheck` remains the validation gate |
+| Asked to check types | Use MCP TypeScript tools first; run `pnpm --filter <pkg> typecheck` for affected packages (full `pnpm typecheck` only if explicitly requested) |
 
 ## Session Reflection (Optional)
 

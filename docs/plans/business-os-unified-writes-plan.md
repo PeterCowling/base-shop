@@ -231,7 +231,7 @@ The following skill changes impact this plan:
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on |
 |---|---|---|---:|---:|---|---|
 | TASK-00 | IMPLEMENT | One-time markdown → D1 backfill migration | 85% | M | Complete (2026-02-02) | - |
-| TASK-01 | IMPLEMENT | Create agent authentication middleware | 88% | S | Pending | - |
+| TASK-01 | IMPLEMENT | Create agent authentication middleware | 88% | S | Complete (2026-02-02) | - |
 | TASK-02 | IMPLEMENT | Create `/api/agent/cards` endpoint (GET/POST/PATCH) | 85% | M | Pending | TASK-01 |
 | TASK-02a | IMPLEMENT | Create `/api/agent/ideas` endpoint (GET/POST/PATCH) | 85% | M | Pending | TASK-01 |
 | TASK-02b | IMPLEMENT | Create `/api/agent/stage-docs` endpoint (GET/POST/PATCH) | 82% | M | Pending | TASK-01 |
@@ -369,6 +369,27 @@ The following skill changes impact this plan:
   - Pattern: `apps/business-os/src/lib/auth/authorize.ts`
   - Env var: `BOS_AGENT_API_KEY` — set in `.env.local` locally, Cloudflare Pages secret in prod
   - Edge-compatible timing-safe compare: Use TextEncoder to convert strings to Uint8Array for `crypto.subtle.timingSafeEqual`
+
+
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** 3a30afa364
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03, TC-04, TC-05
+  - Red-green cycles: 2 (initial failure due to console.warn test guard; second run PASS)
+  - Initial test run: FAIL (unexpected console.warn)
+  - Post-implementation: PASS
+- **Confidence reassessment:**
+  - Original: 88%
+  - Post-test: 88%
+  - Delta reason: Tests validated assumptions
+- **Validation:**
+  - Ran: `pnpm --filter business-os test --testPathPattern=agent-auth` — PASS (5 tests)
+  - Ran: `pnpm --filter @apps/business-os typecheck` — PASS
+  - Ran: `pnpm --filter @apps/business-os lint` — PASS (warnings only; pre-existing)
+- **Documentation updated:** None
+- **Implementation notes:** Added agent auth middleware with timing-safe compare, rate limiting, and format validation; exported from auth middleware; added unit tests.
+
 
 ### TASK-02: Create `/api/agent/cards` endpoint (GET/POST/PATCH)
 

@@ -3,8 +3,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { type Locale,LOCALES } from "@acme/i18n";
-import { resolveLocale } from "@acme/i18n/locales";
+import { LOCALES } from "@acme/i18n";
+import { type Locale, resolveLocale } from "@acme/i18n/locales";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 import { getProductBySlug } from "@acme/platform-core/products";
 

@@ -1,7 +1,7 @@
 import { getRequestConfig } from "next-intl/server";
 
-import { type Locale, resolveLocale } from "@acme/i18n/locales";
 import en from "@acme/i18n/en.json";
+import { type Locale, resolveLocale } from "@acme/i18n/locales";
 
 // Provide messages for requests. Currently we ship English; other locales fall back to English.
 export default getRequestConfig(async ({ requestLocale }) => {

@@ -422,121 +422,153 @@ Use one of the following outcomes:
 
 ## Business OS Integration (Optional)
 
-When the plan frontmatter includes `Card-ID`, `/build-feature` integrates with Business OS card lifecycle management. This is **opt-in** — if no `Card-ID` is present, the skill works unchanged.
+When the plan frontmatter includes `Card-ID`, `/build-feature` integrates with Business OS card lifecycle management via the **agent API**. This is **opt-in** — if no `Card-ID` is present, the skill works unchanged.
+
+**Fail-closed rule:** if any API call fails, stop and surface the error. Do not write markdown files.
 
 ### When Card-ID is Present
 
 #### Step 1: Start Build Transition (First Task Only)
 
-Before starting the first task, perform the build start transition:
+Before starting the first task, perform the build start transition using the agent API.
 
-**1a) Read card to get current lane:**
+**1a) Read the card to get current lane (and entity SHA):**
 
-```bash
-CARD_ID="PLAT-ENG-0023"  # From plan frontmatter
-CARD_FILE="docs/business-os/cards/${CARD_ID}.user.md"
+```json
+{
+  "method": "GET",
+  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/cards/PLAT-ENG-0023",
+  "headers": { "X-Agent-API-Key": "${BOS_AGENT_API_KEY}" }
+}
 ```
+
+Response includes `{ entity, entitySha }`.
 
 **1b) Create build stage doc if it doesn't exist:**
 
-```bash
-if [ ! -f "docs/business-os/cards/${CARD_ID}/build.user.md" ]; then
-  # Create build stage doc (first task starting)
-  mkdir -p "docs/business-os/cards/${CARD_ID}"
-  # Create build.user.md using template below
-fi
+- First, list stage docs for the card (optional filter is fine):
+```json
+{
+  "method": "GET",
+  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/stage-docs?cardId=PLAT-ENG-0023&stage=build",
+  "headers": { "X-Agent-API-Key": "${BOS_AGENT_API_KEY}" }
+}
 ```
 
-**1c) Propose lane transition: Planned → In progress:**
-
-If the card's current `Lane:` is `Planned`:
-- Update card frontmatter in both `.user.md` and `.agent.md`:
-  ```yaml
-  Lane: In progress        # Changed from Planned
-  Last-Progress: YYYY-MM-DD
-  ```
-- This is a direct update, not a proposal, because starting build is the defined trigger for this transition
-
-**Why direct update (not proposal):** The Planned → In progress transition is mechanical — it happens when implementation begins. There's no judgment call; starting the first IMPLEMENT task *is* the transition event. The Done transition remains a proposal because it requires verification that all work is complete.
-
-**Build Stage Doc Template:**
-
-```markdown
----
-Type: Stage-Doc
-Card-ID: {CARD-ID}
-Stage: Build
-Created: {DATE}
-Owner: Pete
-Updated: {DATE}
-Plan-Link: docs/plans/{feature-slug}-plan.md
----
-
-# Build: {CARD-TITLE}
-
-## Progress Tracker
-
-**Last Updated:** {DATE}
-
-| Task ID | Description | Status | Completed |
-|---------|-------------|--------|-----------|
-| {ID} | {Description} | {Pending|In Progress|Complete} | {DATE or -} |
-
-## Build Log
-
-### {DATE} - {Task ID}
-- **Action:** {What was done}
-- **Commits:** {Commit hashes}
-- **Validation:** {Tests passed, etc.}
-- **Notes:** {Any issues or observations}
-
-## Blockers
-
-_None currently_
-
-## Transition Criteria
-
-**To Done:**
-- [ ] All tasks complete
-- [ ] All tests passing
-- [ ] Documentation updated
-- [ ] `pnpm typecheck && pnpm lint` passing
+- If none exists, create it:
+```json
+{
+  "method": "POST",
+  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/stage-docs",
+  "headers": {
+    "X-Agent-API-Key": "${BOS_AGENT_API_KEY}",
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "cardId": "PLAT-ENG-0023",
+    "stage": "build",
+    "content": "# Build: {CARD-TITLE}\n\n## Progress Tracker\n\n**Last Updated:** {DATE}\n\n| Task ID | Description | Status | Completed |\n|---------|-------------|--------|-----------|\n| {ID} | {Description} | {Pending|In Progress|Complete} | {DATE or -} |\n\n## Build Log\n\n### {DATE} - {Task ID}\n- **Action:** {What was done}\n- **Commits:** {Commit hashes}\n- **Validation:** {Tests passed, etc.}\n- **Notes:** {Any issues or observations}\n\n## Blockers\n\n_None currently_\n\n## Transition Criteria\n\n**To Done:**\n- [ ] All tasks complete\n- [ ] All tests passing\n- [ ] Documentation updated\n- [ ] `pnpm typecheck && pnpm lint` passing\n"
+  }
+}
 ```
+
+**Note:** `content` is the markdown body only (no frontmatter). The export job adds frontmatter.
+
+**1c) Planned → In progress (direct update when starting build):**
+
+If the card's current `Lane` is `Planned`, update it directly (mechanical transition) and set `Last-Progress`:
+
+```json
+{
+  "method": "PATCH",
+  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/cards/PLAT-ENG-0023",
+  "headers": {
+    "X-Agent-API-Key": "${BOS_AGENT_API_KEY}",
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "baseEntitySha": "<entitySha from GET>",
+    "patch": {
+      "Lane": "In progress",
+      "Last-Progress": "YYYY-MM-DD"
+    }
+  }
+}
+```
+
+**Why direct update (not proposal):** The Planned → In progress transition is mechanical — it happens when implementation begins. The Done transition remains a proposal because it requires verification that all work is complete.
+
+**Conflict handling (cards + stage docs):**
+- If a PATCH returns `409 CONFLICT`, refetch the latest entity (`GET`) and retry **once** with a new `baseEntitySha`.
+- If the retry also conflicts, stop and surface a clear error (fail-closed).
 
 #### Step 2: Update Card Progress (After Each Task)
 
-After each task is committed and the plan is updated, also update the card:
+After each task is committed and the plan is updated, also update the card and build stage doc via the API.
 
-1. **Update card's `Last-Progress` field:**
+1) **Update card `Last-Progress`:**
 
-```bash
-# In the card's .user.md and .agent.md frontmatter:
-# Last-Progress: YYYY-MM-DD
+```json
+{
+  "method": "GET",
+  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/cards/PLAT-ENG-0023",
+  "headers": { "X-Agent-API-Key": "${BOS_AGENT_API_KEY}" }
+}
 ```
 
-2. **Update build stage doc:**
+Then PATCH with a JSON Merge Patch:
 
-Add an entry to the Build Log section:
-
-```markdown
-### YYYY-MM-DD - TASK-XX
-- **Action:** {Brief description of what was implemented}
-- **Commits:** {commit hash(es)}
-- **Validation:** typecheck PASS, lint PASS, tests PASS
-- **Notes:** {Any deviations or observations}
+```json
+{
+  "method": "PATCH",
+  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/cards/PLAT-ENG-0023",
+  "headers": {
+    "X-Agent-API-Key": "${BOS_AGENT_API_KEY}",
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "baseEntitySha": "<entitySha from GET>",
+    "patch": { "Last-Progress": "YYYY-MM-DD" }
+  }
+}
 ```
 
-Update the Progress Tracker table with task status.
+2) **Update build stage doc content:**
+
+- Read current build stage doc (to get `entitySha` and current `content`):
+```json
+{
+  "method": "GET",
+  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/stage-docs/PLAT-ENG-0023/build",
+  "headers": { "X-Agent-API-Key": "${BOS_AGENT_API_KEY}" }
+}
+```
+
+- Update the `content` string (append Build Log entry + update Progress Tracker), then PATCH:
+```json
+{
+  "method": "PATCH",
+  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/stage-docs/PLAT-ENG-0023/build",
+  "headers": {
+    "X-Agent-API-Key": "${BOS_AGENT_API_KEY}",
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "baseEntitySha": "<entitySha from GET>",
+    "patch": {
+      "content": "..."
+    }
+  }
+}
+```
 
 #### Step 3: Check for Completion (After Each Task)
 
 After updating the plan, check if all IMPLEMENT tasks are complete:
 
-```bash
-# If all tasks in plan are marked Complete:
-# - Update build stage doc transition criteria (all checkboxes)
-# - Propose lane transition to Done (Step 4)
-```
+- If all tasks in the plan are marked Complete:
+  - Update build stage doc transition criteria (check all boxes in `content`)
+  - Propose lane transition to Done (Step 4)
 
 #### Step 4: Propose Lane Transition (All Tasks Complete)
 
@@ -558,10 +590,20 @@ Run `/propose-lane-move` with evidence:
 
 **Option B: Inline Proposal (Faster)**
 
-Update card frontmatter directly:
-```yaml
-# In card's .user.md and .agent.md frontmatter:
-Proposed-Lane: Done
+Update card via API:
+```json
+{
+  "method": "PATCH",
+  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/cards/PLAT-ENG-0023",
+  "headers": {
+    "X-Agent-API-Key": "${BOS_AGENT_API_KEY}",
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "baseEntitySha": "<entitySha from GET>",
+    "patch": { "Proposed-Lane": "Done" }
+  }
+}
 ```
 
 This signals to the card owner (Pete in Phase 0) that the card is ready for review and lane transition.
@@ -582,27 +624,26 @@ This signals to the card owner (Pete in Phase 0) that the card is ready for revi
 When `Card-ID` is present, extend the standard build loop:
 
 **Before Step 1 (Select task) — First task only:**
-- Check card's current lane
-- If `Lane: Planned`: Update to `Lane: In progress` and set `Last-Progress: YYYY-MM-DD`
-- Create build stage doc if it doesn't exist
-- Commit these BOS artifacts: `git commit -m "docs(business-os): start build for {CARD-ID}"`
+- Read card via API and confirm lane
+- If `Lane: Planned`: PATCH to `Lane: In progress` and set `Last-Progress: YYYY-MM-DD`
+- Create build stage doc via `POST /api/agent/stage-docs` if missing
+- Do not create or edit markdown files directly
 
 **After Step 6 (Commit):**
-- Update card's `Last-Progress` frontmatter field with today's date
+- PATCH card `Last-Progress` via API with today's date
 
 **After Step 7 (Update the plan):**
-- Append entry to build stage doc's Build Log
-- Update Progress Tracker table
+- PATCH build stage doc content (Build Log + Progress Tracker updates)
 
 ### Completion Messages (with Card-ID)
 
 Append to standard completion messages:
 
 **A) All eligible tasks complete (with Card-ID):**
-> "All eligible IMPLEMENT tasks are complete and validated. Plan updated with completion status and validation evidence. Card {CARD-ID} Last-Progress updated. Build stage doc updated. Ready for lane transition to Done — run `/propose-lane-move` or update card's `Proposed-Lane: Done`."
+> "All eligible IMPLEMENT tasks are complete and validated. Plan updated with completion status and validation evidence. Card {CARD-ID} Last-Progress updated via API. Build stage doc updated via API. Ready for lane transition to Done — run `/propose-lane-move` or PATCH `Proposed-Lane: Done`."
 
 **B) Some tasks remain (with Card-ID):**
-> "Completed N/M IMPLEMENT tasks. Card {CARD-ID} Last-Progress updated to {DATE}. Build stage doc updated with progress."
+> "Completed N/M IMPLEMENT tasks. Card {CARD-ID} Last-Progress updated to {DATE} via API. Build stage doc updated with progress."
 
 **C) Stopped mid-task (with Card-ID):**
 > "Stopped during TASK-XX. Card {CARD-ID} Last-Progress remains at previous value. Build stage doc notes the blocker."

@@ -30,9 +30,16 @@ Plan-Link: docs/plans/email-autodraft-consolidation-plan.md
 | TASK-13 | Enhanced draft generation | Pending | - |
 | TASK-14 | Update process-emails skill | Pending | - |
 | TASK-15 | Template governance & linting | Pending | - |
-| TASK-17 | Reception email routing | Pending | - |
+| TASK-17 | Reception email routing | Complete | 2026-02-02 |
 
 ## Build Log
+
+
+### 2026-02-02 - TASK-17
+- **Action:** Routed reception booking emails through MCP tool with feature-flagged fallback to GAS.
+- **Commits:** 5623ca032b
+- **Validation:** `pnpm typecheck` (pass), `pnpm lint` (pass; warnings in `@apps/business-os`), `pnpm --filter mcp-server test -- packages/mcp-server/src/__tests__/booking-email.test.ts` (pass), `pnpm --filter reception test -- --runTestsByPath src/services/__tests__/useBookingEmail.test.ts` (pass), `pnpm --filter reception test -- --runTestsByPath src/hooks/orchestrations/emailAutomation/__tests__/useEmailProgressActions.test.ts` (pass)
+- **Notes:** Added MCP booking email route/tool, shared MIME helper, and reception docs update.
 
 ### 2026-02-02 - TASK-08
 - **Action:** Implemented label state machine (lock, timeout, workflow labels).

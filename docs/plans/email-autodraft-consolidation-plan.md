@@ -139,7 +139,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 | TASK-14 | IMPLEMENT | Update process-emails skill | 82% | M | Pending | TASK-01, TASK-03, TASK-13 |
 | TASK-15 | IMPLEMENT | Template governance & linting | 85% | S | Pending | TASK-04 |
 | TASK-16 | INVESTIGATE | Security & logging review | 90% | S | Pending | TASK-01, TASK-13 |
-| TASK-17 | IMPLEMENT | Reception email routing | 80% ✅ | L | Pending | TASK-06, TASK-08 |
+| TASK-17 | IMPLEMENT | Reception email routing | 80% ✅ | L | Complete (2026-02-02) | TASK-06, TASK-08 |
 | TASK-18 | INVESTIGATE | Integration testing | 82% ✅ | L | Pending | TASK-13, TASK-14 |
 | TASK-19 | INVESTIGATE | Pilot measurement | 85% | M | Pending | TASK-18 |
 
@@ -569,6 +569,28 @@ Consolidate the disparate email autodraft system components into a world-class d
 - **Documentation updated:** `docs/business-os/cards/BRIK-ENG-0020/build.user.md`
 - **Implementation notes:** Added workflow label taxonomy, processing lock + stale timeout, and workflow transition labels in `packages/mcp-server/src/tools/gmail.ts` with unit tests in `packages/mcp-server/src/__tests__/gmail-label-state.test.ts`.
 
+
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** 5623ca032b
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03, TC-04
+  - Red-green cycles: 1 (tests executed after implementation to validate behavior)
+  - Initial test run: N/A (tests executed post-implementation)
+  - Post-implementation: PASS
+- **Confidence reassessment:**
+  - Original: 80%
+  - Post-test: 80%
+  - Delta reason: tests validated assumptions
+- **Validation:**
+  - Ran: `pnpm typecheck` — PASS
+  - Ran: `pnpm lint` — PASS (warnings in `@apps/business-os` for ds/no-hardcoded-copy)
+  - Ran: `pnpm --filter mcp-server test -- packages/mcp-server/src/__tests__/booking-email.test.ts` — PASS
+  - Ran: `pnpm --filter reception test -- --runTestsByPath src/services/__tests__/useBookingEmail.test.ts` — PASS
+  - Ran: `pnpm --filter reception test -- --runTestsByPath src/hooks/orchestrations/emailAutomation/__tests__/useEmailProgressActions.test.ts` — PASS
+- **Documentation updated:** `apps/reception/README.md`
+- **Implementation notes:** Added MCP booking email tool + API route, optional routing flag, shared MIME utility, and updated reception service/tests.
+
 #### Re-plan Update (2026-02-02)
 - **Previous confidence:** 80%
 - **Updated confidence:** 80%
@@ -992,7 +1014,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 ### TASK-17: Reception Email Routing
 
 - **Type:** IMPLEMENT
-- **Affects:** `apps/reception/src/services/useBookingEmail.ts`, `apps/reception/src/app/api/mcp/booking-email/route.ts` (new), `apps/reception/package.json`, `apps/reception/next.config.mjs`, `packages/mcp-server/src/tools/booking-email.ts` (new), `packages/mcp-server/src/tools/index.ts`, `packages/mcp-server/src/utils/email-mime.ts` (new), `packages/mcp-server/src/tools/gmail.ts`, `packages/mcp-server/package.json`, `apps/reception/src/services/__tests__/useBookingEmail.test.ts`, `apps/reception/src/hooks/orchestrations/emailAutomation/__tests__/useEmailProgressActions.test.ts`, `packages/mcp-server/src/__tests__/booking-email.test.ts` (new)
+- **Affects:** `apps/reception/src/services/useBookingEmail.ts`, `apps/reception/src/app/api/mcp/booking-email/route.ts` (new), `apps/reception/src/utils/emailConstants.ts`, `apps/reception/README.md` (new), `apps/reception/package.json`, `apps/reception/next.config.mjs`, `packages/mcp-server/src/tools/booking-email.ts` (new), `packages/mcp-server/src/booking-email.ts` (new), `packages/mcp-server/src/tools/index.ts`, `packages/mcp-server/src/utils/email-mime.ts` (new), `packages/mcp-server/src/tools/gmail.ts`, `packages/mcp-server/package.json`, `packages/mcp-server/src/__tests__/booking-email.test.ts` (new), `apps/reception/src/services/__tests__/useBookingEmail.test.ts`, `apps/reception/src/hooks/orchestrations/emailAutomation/__tests__/useEmailProgressActions.test.ts`, `pnpm-lock.yaml
 - **Depends on:** TASK-06, TASK-08
 - **Confidence:** 80% ✅ RAISED FROM 65%
   - Implementation: 82% — Reception email flow now fully documented; single GAS integration point
@@ -1035,6 +1057,28 @@ Consolidate the disparate email autodraft system components into a world-class d
 - **Notes / references:**
   - Reception email files: `apps/reception/src/services/useBookingEmail.ts`
   - Activity codes: `apps/reception/src/constants/emailCodes.ts`
+
+
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** 5623ca032b
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03, TC-04
+  - Red-green cycles: 1 (tests executed after implementation to validate behavior)
+  - Initial test run: N/A (tests executed post-implementation)
+  - Post-implementation: PASS
+- **Confidence reassessment:**
+  - Original: 80%
+  - Post-test: 80%
+  - Delta reason: tests validated assumptions
+- **Validation:**
+  - Ran: `pnpm typecheck` — PASS
+  - Ran: `pnpm lint` — PASS (warnings in `@apps/business-os` for ds/no-hardcoded-copy)
+  - Ran: `pnpm --filter mcp-server test -- packages/mcp-server/src/__tests__/booking-email.test.ts` — PASS
+  - Ran: `pnpm --filter reception test -- --runTestsByPath src/services/__tests__/useBookingEmail.test.ts` — PASS
+  - Ran: `pnpm --filter reception test -- --runTestsByPath src/hooks/orchestrations/emailAutomation/__tests__/useEmailProgressActions.test.ts` — PASS
+- **Documentation updated:** `apps/reception/README.md`
+- **Implementation notes:** Added MCP booking email tool + API route, optional routing flag, shared MIME utility, and updated reception service/tests.
 
 #### Re-plan Update (2026-02-02)
 - **Previous confidence:** 80%

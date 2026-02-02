@@ -3,6 +3,8 @@ import { NextResponse } from "next/server";
 
 import { authorizeWrite } from "./authorize";
 
+export { type AgentAuthContext,requireAgentAuth } from "./agent-auth";
+
 /**
  * Middleware helper to check write authorization
  *

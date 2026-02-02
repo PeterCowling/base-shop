@@ -27,6 +27,7 @@
     "@acme/i18n": "workspace:*",
     "@acme/next-config": "workspace:*",
     "@acme/page-builder-core": "workspace:*",
+    "@acme/page-builder-ui": "workspace:*",
     "@acme/platform-core": "workspace:*",
     "@acme/sanity": "workspace:*",
     "@acme/stripe": "workspace:*",

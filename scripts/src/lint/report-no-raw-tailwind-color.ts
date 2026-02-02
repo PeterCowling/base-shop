@@ -47,6 +47,13 @@ function run(cmd: string, args: string[]) {
   });
 }
 
+function parseFileList(output: string | null) {
+  return (output ?? "")
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+}
+
 function listFiles() {
   const utilAlternation = UTILITIES.join("|");
   const paletteAlternation = PALETTE.join("|");
@@ -65,6 +72,21 @@ function listFiles() {
     "packages",
     "src",
   ]);
+  if (rg.error || rg.stdout === null) {
+    const fallback = run("git", ["grep", "-l", "-E", pattern, "--", "apps", "packages", "src"]);
+    if (fallback.error) {
+      throw new Error(
+        `Failed to run rg and git grep fallback: ${fallback.error.message}`,
+      );
+    }
+    if (fallback.status !== null && fallback.status > 1) {
+      throw new Error(`Failed to list files with git grep: ${fallback.stderr || fallback.stdout}`);
+    }
+    if (fallback.status === null && fallback.signal) {
+      throw new Error(`git grep process killed by signal: ${fallback.signal}`);
+    }
+    return parseFileList(fallback.stdout);
+  }
   // rg returns exit code 1 when no matches are found, which is not an error
   // Exit code 2+ indicates an actual error
   if (rg.status !== null && rg.status > 1) {
@@ -74,10 +96,7 @@ function listFiles() {
   if (rg.status === null && rg.signal) {
     throw new Error(`rg process killed by signal: ${rg.signal}`);
   }
-  return rg.stdout
-    .split("\n")
-    .map((line) => line.trim())
-    .filter(Boolean);
+  return parseFileList(rg.stdout);
 }
 
 function chunk<T>(items: T[], size: number) {

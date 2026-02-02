@@ -135,7 +135,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 | TASK-09 | IMPLEMENT | Agreement detection | 80% ✅ | M | Complete (2026-02-02) | TASK-01 |
 | TASK-10 | IMPLEMENT | Prepayment chase integration | 82% ✅ | M | Complete (2026-02-02) | TASK-08, TASK-09 |
 | TASK-11 | IMPLEMENT | Hybrid template ranker | 85% ✅ | L | Complete (2026-02-02) | TASK-04 |
-| TASK-12 | IMPLEMENT | Classification examples resource | 85% | S | Pending | TASK-00 |
+| TASK-12 | IMPLEMENT | Classification examples resource | 85% | S | Complete (2026-02-02) | TASK-00 |
 | TASK-13 | IMPLEMENT | Enhanced draft generation | 80% ✅ | L | Pending | TASK-01, TASK-03, TASK-04, TASK-11 |
 | TASK-14 | IMPLEMENT | Update process-emails skill | 82% | M | Pending | TASK-01, TASK-03, TASK-13 |
 | TASK-15 | IMPLEMENT | Template governance & linting | 85% | S | Pending | TASK-04 |
@@ -1007,10 +1007,31 @@ Consolidate the disparate email autodraft system components into a world-class d
 
 ---
 
+
 ### TASK-12: Classification Examples Resource
 
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** d11e2afe1c
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03, TC-04
+  - Red-green cycles: 1 (tests executed after implementation)
+  - Initial test run: Failed due to ESM import.meta; reran with `JEST_FORCE_CJS=1`
+  - Post-implementation: PASS
+- **Confidence reassessment:**
+  - Original: 85%
+  - Post-test: 85%
+  - Delta reason: tests validated assumptions
+- **Validation:**
+  - Ran: `JEST_FORCE_CJS=1 pnpm --filter mcp-server test -- packages/mcp-server/src/__tests__/email-examples.test.ts` — PASS
+  - Ran: `pnpm --filter mcp-server lint` — PASS
+  - Ran: `pnpm --filter mcp-server build` — PASS
+- **Documentation updated:** None required
+- **Implementation notes:** Added brikette://email-examples resource, dataset (30+ examples), and server registration.
+
+
 - **Type:** IMPLEMENT
-- **Affects:** `packages/mcp-server/src/resources/email-examples.ts` (new), `packages/mcp-server/data/email-examples.json` (new)
+- **Affects:** `packages/mcp-server/src/resources/email-examples.ts` (new), `packages/mcp-server/data/email-examples.json` (new), `packages/mcp-server/src/server.ts`
 - **Depends on:** TASK-00
 - **Confidence:** 85%
   - Implementation: 90% — Same pattern as TASK-04

@@ -2230,6 +2230,9 @@ importers:
       '@acme/date-utils':
         specifier: workspace:*
         version: link:../date-utils
+      '@acme/design-system':
+        specifier: workspace:*
+        version: link:../design-system
       '@acme/i18n':
         specifier: workspace:*
         version: link:../i18n

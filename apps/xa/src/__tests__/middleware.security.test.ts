@@ -136,6 +136,45 @@ it("allows /access without invite cookie", async () => {
   expect(response.headers.get("location")).toBeNull();
 });
 
+it("returns 404 for /access when Cloudflare Access is required but missing", async () => {
+  process.env.STEALTH_MODE = "1";
+  process.env.XA_STEALTH_MODE = "1";
+  process.env.XA_REQUIRE_CF_ACCESS = "1";
+  process.env.XA_GUARD_TOKEN = "";
+
+  const response = await middleware(makeRequest({ pathname: "/access" }));
+
+  expect(response.status).toBe(404);
+});
+
+it("returns 404 for / when Cloudflare Access is required but missing", async () => {
+  process.env.STEALTH_MODE = "1";
+  process.env.XA_STEALTH_MODE = "1";
+  process.env.XA_REQUIRE_CF_ACCESS = "1";
+  process.env.XA_GUARD_TOKEN = "";
+
+  const response = await middleware(makeRequest({ pathname: "/" }));
+
+  expect(response.status).toBe(404);
+});
+
+it("allows / without invite cookie when Cloudflare Access headers are present", async () => {
+  process.env.STEALTH_MODE = "1";
+  process.env.XA_STEALTH_MODE = "1";
+  process.env.XA_REQUIRE_CF_ACCESS = "1";
+  process.env.XA_GUARD_TOKEN = "";
+
+  const response = await middleware(
+    makeRequest({
+      pathname: "/",
+      headers: { "cf-access-jwt-assertion": "jwt" },
+    }),
+  );
+
+  expect(response.status).toBe(200);
+  expect(response.headers.get("location")).toBeNull();
+});
+
 it("allows valid invite cookie", async () => {
   process.env.STEALTH_MODE = "1";
   process.env.XA_STEALTH_MODE = "1";

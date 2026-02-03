@@ -162,10 +162,18 @@ export async function middleware(request: NextRequest) {
 
     const guardToken = guardTokenConfig();
     const accessRequired = requiresCfAccess();
-    const secret = resolveAccessCookieSecret();
-    const hasInvite = await hasInviteCookie(request, secret);
+    const hasCfAccess = hasCfAccessHeader(request);
 
-    if (!isGateRoute && !isAdminRoute && !hasInvite) {
+    if (accessRequired && !hasCfAccess) {
+      return hiddenResponse();
+    }
+
+    const inviteRequired = !accessRequired && !isGateRoute && !isAdminRoute;
+    const hasInvite = inviteRequired
+      ? await hasInviteCookie(request, resolveAccessCookieSecret())
+      : false;
+
+    if (inviteRequired && !hasInvite) {
       if (strict) return hiddenResponse();
       const redirectUrl = request.nextUrl.clone();
       redirectUrl.pathname = "/access";
@@ -177,10 +185,6 @@ export async function middleware(request: NextRequest) {
     }
 
     if (!isGateRoute) {
-      if (accessRequired && !hasCfAccessHeader(request)) {
-        return hiddenResponse();
-      }
-
       if (!hasValidGuardToken(request, guardToken)) {
         return hiddenResponse();
       }

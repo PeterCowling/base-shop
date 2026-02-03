@@ -8,8 +8,9 @@ XA_STEALTH_MODE = "true"
 XA_REQUIRE_CF_ACCESS = "true"
 XA_STRICT_STEALTH = "true"
 NEXT_PUBLIC_STEALTH_MODE = "true"
-XA_ALLOWED_HOSTS = "thestylemarket.shop"
-NEXT_PUBLIC_SITE_DOMAIN = "thestylemarket.shop"
+# NOTE: Do not commit real hostnames/domains. Configure these per-environment in Cloudflare Pages:
+# - XA_ALLOWED_HOSTS
+# - NEXT_PUBLIC_SITE_DOMAIN
 
 [env.preview]
 name = "xa-preview"
@@ -19,8 +20,6 @@ XA_STEALTH_MODE = "true"
 XA_REQUIRE_CF_ACCESS = "true"
 XA_STRICT_STEALTH = "true"
 NEXT_PUBLIC_STEALTH_MODE = "true"
-XA_ALLOWED_HOSTS = "thestylemarket.shop"
-NEXT_PUBLIC_SITE_DOMAIN = "thestylemarket.shop"
 
 [env.backup]
 name = "xa-backup"
@@ -30,5 +29,3 @@ XA_STEALTH_MODE = "true"
 XA_REQUIRE_CF_ACCESS = "true"
 XA_STRICT_STEALTH = "true"
 NEXT_PUBLIC_STEALTH_MODE = "true"
-XA_ALLOWED_HOSTS = "thestylemarket.shop"
-NEXT_PUBLIC_SITE_DOMAIN = "thestylemarket.shop"

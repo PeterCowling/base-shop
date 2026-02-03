@@ -1,0 +1,23 @@
+{
+  "seo": {
+    "title": "디지털 컨시어지 (추천 + 예약 도움)",
+    "description": "Hostel Brikette 디지털 컨시어지: 빠른 추천, 교통 업데이트, 예약 도움—플랜이 바뀔 때."
+  },
+  "linkLabel": "디지털 컨시어지",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": [
+    "오늘 실행 가능한 플랜이 필요하면 시간/예산/우선순위/데드라인을 적어 주세요."
+  ],
+  "sections": [
+    {
+      "id": "templates",
+      "title": "템플릿",
+      "body": [
+        "“6시간 있고 차는 없어요. (A) 수영 + (B) 노을, 1인 40€ 예산. 가장 쉬운 플랜과 페리가 취소되면 플랜 B는?”",
+        "%LINK:positanoBudget|예산으로 즐기는 포시타노% + %LINK:terraceSunsets|테라스 노을%.",
+        "%LINK:ferryCancellations|페리 취소 + 날씨%."
+      ]
+    }
+  ],
+  "fallback": "디지털 컨시어지: 빠른 추천, 교통 업데이트, 예약 도움."
+}

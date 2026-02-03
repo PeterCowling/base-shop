@@ -1,0 +1,23 @@
+{
+  "seo": {
+    "title": "Digital concierge (tips + bestillinger)",
+    "description": "Digital concierge på Hostel Brikette: raske tips, transport og bookinghjelp—når planene endrer seg."
+  },
+  "linkLabel": "Digital concierge",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": [
+    "For en plan som funker i dag: skriv tidsvindu, budsjett, prioritet og frist."
+  ],
+  "sections": [
+    {
+      "id": "templates",
+      "title": "Mal",
+      "body": [
+        "“6 timer, ingen bil, (A) bade + (B) solnedgang, budsjett 40€ per person. Enkleste plan og plan B hvis ferger kanselleres?”",
+        "%LINK:positanoBudget|Positano på budsjett% + %LINK:terraceSunsets|solnedgang på terrassen%.",
+        "%LINK:ferryCancellations|fergekanselleringer + vær%."
+      ]
+    }
+  ],
+  "fallback": "Digital concierge: raske tips, transport og bookinger."
+}

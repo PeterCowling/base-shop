@@ -19,6 +19,15 @@ const args = process.argv.slice(2);
 const verbose = args.includes("--verbose");
 const failOnViolation = args.includes("--fail-on-violation");
 const localeFilter = args.find(arg => arg.startsWith("--locale="))?.slice("--locale=".length);
+const guideFilterArg = args.find(arg => arg.startsWith("--guides="))?.slice("--guides=".length);
+const guideFilter = guideFilterArg
+  ? new Set(
+      guideFilterArg
+        .split(",")
+        .map(entry => entry.trim())
+        .filter(Boolean),
+    )
+  : null;
 
 type ValidationViolation = {
   file: string;
@@ -128,6 +137,9 @@ const main = async (): Promise<void> => {
 
   console.log("Validating guide content...");
   console.log(`Locales: ${locales.join(", ")}`);
+  if (guideFilter) {
+    console.log(`Guide filter: ${Array.from(guideFilter).sort().join(", ")}`);
+  }
   console.log("");
 
   for (const locale of locales) {
@@ -145,8 +157,11 @@ const main = async (): Promise<void> => {
     }
 
     for (const relativeFile of contentFiles) {
-      result.total++;
       const guideKey = path.basename(relativeFile, ".json");
+      if (guideFilter && !guideFilter.has(guideKey)) {
+        continue;
+      }
+      result.total++;
       const contentPath = path.join(guidesContentDir, relativeFile);
 
       try {

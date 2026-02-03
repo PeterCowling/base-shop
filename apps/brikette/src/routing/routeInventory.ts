@@ -5,8 +5,7 @@
 // IMPORTANT: Keep imports minimal to avoid env config dependencies in tests.
 // Prefer direct JSON imports and simple data files over complex modules.
 
-import { ASSISTANCE_GUIDE_KEYS } from "@/data/assistanceGuideKeys";
-import { GUIDES_INDEX } from "@/data/guides.index";
+import { ASSISTANCE_GUIDES, GUIDES_INDEX } from "@/data/guides.index";
 import { HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS } from "@/data/how-to-get-here/routeGuides";
 import roomsData from "@/data/roomsData";
 import type { AppLanguage } from "@/i18n.config";
@@ -86,8 +85,9 @@ export function listAppRouterUrls(): string[] {
 
     // Dynamic: Assistance guides (converted from legacy articles)
     const assistanceSlug = getSlug("assistance", lang);
-    for (const key of ASSISTANCE_GUIDE_KEYS) {
-      const slug = guideSlug(lang, key);
+    const publishedAssistanceGuides = ASSISTANCE_GUIDES.filter((g) => g.status === "published");
+    for (const guide of publishedAssistanceGuides) {
+      const slug = guideSlug(lang, guide.key);
       urls.push(`/${lang}/${assistanceSlug}/${slug}`);
     }
   }
@@ -112,7 +112,7 @@ export function getUrlCounts(): Record<string, number> {
     tags: langCount * new Set(GUIDES_INDEX.flatMap((g) => g.tags)).size,
     // howToGetHere now enumerated from guide key list (TASK-05)
     howToGetHere: langCount * HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS.length,
-    assistance: langCount * ASSISTANCE_GUIDE_KEYS.length,
+    assistance: langCount * ASSISTANCE_GUIDES.filter((g) => g.status === "published").length,
     total: listAppRouterUrls().length,
   };
 }

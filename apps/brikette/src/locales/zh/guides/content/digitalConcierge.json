@@ -1,0 +1,23 @@
+{
+  "seo": {
+    "title": "数字礼宾（推荐 + 预订协助）",
+    "description": "Hostel Brikette 数字礼宾：快速建议、交通更新与预订协助—计划变化时更好用。"
+  },
+  "linkLabel": "数字礼宾",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": [
+    "想要“今天就能执行”的计划：写清时间窗口、预算、优先目标和截止时间。"
+  ],
+  "sections": [
+    {
+      "id": "templates",
+      "title": "模板",
+      "body": [
+        "“我们有6小时，没有车，(A) 下海 + (B) 看日落，预算每人40欧。最省心方案是什么？如果渡轮取消，Plan B 是什么？”",
+        "%LINK:positanoBudget|预算版波西塔诺% + %LINK:terraceSunsets|露台日落%。",
+        "%LINK:ferryCancellations|渡轮取消 + 天气%。"
+      ]
+    }
+  ],
+  "fallback": "数字礼宾：快速建议、交通更新与预订协助。"
+}

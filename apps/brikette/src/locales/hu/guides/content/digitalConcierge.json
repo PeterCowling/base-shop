@@ -1,0 +1,23 @@
+{
+  "seo": {
+    "title": "Digitális concierge (ajánlások + foglalások)",
+    "description": "Digitális concierge a Hostel Brikette‑nél: gyors tippek, közlekedés és foglalási segítség—ha változnak a tervek."
+  },
+  "linkLabel": "Digitális concierge",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": [
+    "Ma működő tervhez: írd le az időablakot, költségkeretet, prioritást és a határidőt."
+  ],
+  "sections": [
+    {
+      "id": "templates",
+      "title": "Sablon",
+      "body": [
+        "“6 óránk van, nincs autó, (A) fürdés + (B) naplemente, 40€ / fő. Mi a legegyszerűbb terv és a B‑terv, ha törlik a kompokat?”",
+        "%LINK:positanoBudget|Positano költségkerettel% + %LINK:terraceSunsets|teraszos naplemente%.",
+        "%LINK:ferryCancellations|komptörlések + időjárás%."
+      ]
+    }
+  ],
+  "fallback": "Digitális concierge: gyors tippek, közlekedés és foglalások."
+}

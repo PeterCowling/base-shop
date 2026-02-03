@@ -1,0 +1,32 @@
+{
+  "seo": {
+    "title": "Concierge digital (recommandations + réservations)",
+    "description": "Concierge digital de Hostel Brikette : tips rapides, transport et aide à la réservation—quand les plans changent."
+  },
+  "linkLabel": "Concierge digital",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": [
+    "Pour un plan qui marche aujourd’hui.",
+    "Envoyez créneau + budget + priorité, et mettez la deadline en première ligne."
+  ],
+  "sections": [
+    {
+      "id": "how-to-access",
+      "title": "Accès",
+      "body": [
+        "Demandez à la réception le contact/QR et le canal (souvent WhatsApp).",
+        "Premier message : dates, départ, créneau, budget, priorité."
+      ]
+    },
+    {
+      "id": "templates",
+      "title": "Modèle",
+      "body": [
+        "« 6 heures, pas de voiture, (A) baignade + (B) sunset, budget 40€ par personne. Plan simple + plan B si les ferries sont annulés ? »",
+        "%LINK:positanoBudget|Positano avec budget% + %LINK:terraceSunsets|sunset en terrasse%.",
+        "%LINK:ferryCancellations|annulations de ferries + météo%."
+      ]
+    }
+  ],
+  "fallback": "Concierge digital : tips rapides, transport et aide à la réservation."
+}

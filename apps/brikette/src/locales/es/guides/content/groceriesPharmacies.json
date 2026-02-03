@@ -1,99 +1,191 @@
 {
   "seo": {
-    "title": "Supermercados y farmacias en Positano",
-    "description": "Dónde comprar básicos en Positano: minimercados, horarios ampliados e información de farmacias."
+    "title": "Supermercados y farmacias en Positano (horarios + básicos)",
+    "description": "Dónde comprar comida, snacks, crema solar y medicinas en Positano: qué abre cuándo, horarios de siesta, planificación del domingo y consejos para farmacia fuera de horario."
   },
   "linkLabel": "Supermercados y farmacias en Positano",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
   "intro": [
-    "Abastecerte en Positano es posible sin gastar de más: combina minimercados cercanos al hostel con supermercados mayores en Sorrento o Amalfi.",
-    "Las farmacias locales cubren medicamentos básicos; para recetas o productos específicos conviene avisar con antelación."
+    "La compra y las farmacias en Positano funcionan distinto que en una gran ciudad: no hay grandes supermercados, así que planifica con tiendas pequeñas, horario de siesta y aperturas reducidas los domingos.",
+    "Si llegas tarde (o el mar se pone feo y los planes cambian), haz una cosa primero: compra lo básico para la noche (agua, snacks y cualquier medicación esencial). Lo demás puede esperar.",
+    "Consejo práctico “desde el hostel”: guarda una pequeña reserva de emergencia (frutos secos, crackers, snacks instantáneos). Evita que las tiendas cerradas se conviertan en estrés tras un día largo de viaje.",
+    "Si necesitas efectivo para puestos pequeños o importes bajos, %LINK:simsAtms|SIM/eSIM y cajeros% te ayuda a encontrar las opciones más cercanas.",
+    "Si quieres mantener el gasto predecible, combínalo con %LINK:positanoBudget|Positano con presupuesto% y elige tus “caprichos” a propósito."
   ],
   "sections": [
     {
-      "id": "minimarkets",
-      "title": "Minimercados cerca del hostel",
+      "id": "essentials-first",
+      "title": "Primero lo esencial (qué comprar en los primeros 10 minutos)",
       "body": [
-        "En Via Pasitea encontrarás colmados con frutas, pan, agua y snacks; abren hasta las 21:00 en temporada.",
-        "Pregunta por ofertas de packs de agua de 6 botellas y por la posibilidad de mantener tus compras en la nevera del hostel."
+        "No empieces buscando la tienda perfecta. Empieza haciendo fácil esta noche:",
+        "1) agua (o recarga), 2) algo simple para desayunar, 3) un par de snacks que puedas llevar por las escaleras, 4) protección solar o tiritas si mañana haces ruta o playa.",
+        "Esto importa mucho si mañana haces una excursión, o si pueden cancelarse ferris y quieres un Plan B sin estrés en el hostel. %LINK:ferryCancellations|Cancelaciones de ferri y mar agitado% explica lo rápido que puede cambiar el día."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
+          "alt": "Positano y su costa, donde las tiendas pequeñas están repartidas por la carretera principal"
+        }
       ]
     },
     {
-      "id": "supermarkets",
-      "title": "Supermercados completos",
+      "id": "mini-markets",
+      "title": "Minimarkets y delicatessen",
       "body": [
-        "Para una compra grande, toma el bus a Sorrento (parada final) y entra al supermercado frente a la estación de tren (Conad/Coop).",
-        "En Amalfi también hay opciones medianas; planifica la vuelta con bolsas reutilizables y evita horas de mayor calor."
+        "Las tiendas pequeñas y delicatessen a lo largo de Via Pasitea y Via dei Mulini van bien para pan, queso, fruta y cosas de picnic. Hay poco espacio, pero en temporada alta el stock rota rápido.",
+        "Los horarios suelen seguir la siesta: intenta comprar antes de ~13:00 o después de ~16:30 para evitar persianas bajadas.",
+        "Si llevas comida para un día de playa, elige cosas que aguanten calor y escaleras: fruta, frutos secos, crackers, un sándwich y una bebida. Si quieres un plan de cena más completo en modo presupuesto, %LINK:cheapEats|comer barato en Positano% tiene opciones realistas."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/cheapEats.jpg",
+          "alt": "Comida sencilla tipo picnic en Positano, una alternativa económica a un restaurante"
+        }
+      ]
+    },
+    {
+      "id": "produce",
+      "title": "Fruta, verdura y puestos",
+      "body": [
+        "A menudo aparecen puestos pequeños de fruta y verdura por la mañana cerca de la curva de Sponda y alrededor de paradas de bus; llevar algo de efectivo ayuda para compras rápidas.",
+        "Si ves fruta de temporada que se ve increíble, cómprala cuando la veas. En un pueblo pequeño, “vuelvo luego” suele convertirse en “ya no hay”.",
+        "Para una noche de cero esfuerzo: fruta + algo de panadería + una bebida con vistas pueden sentirse como una noche completa en Positano sin cuenta de restaurante. %LINK:terraceSunsets|Atardeceres en terraza% es la versión más fácil de ese plan."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/terraceSunsets.webp",
+          "alt": "Vistas del atardecer desde una terraza en Positano, un plan fácil con snacks simples"
+        }
+      ]
+    },
+    {
+      "id": "water",
+      "title": "Agua y snacks (el coste oculto de la semana)",
+      "body": [
+        "El agua parece una compra pequeña, pero suma rápido. Si vas con presupuesto, rellena cuando puedas y compra botellas grandes en vez de muchas pequeñas.",
+        "Si haces senderismo, los snacks importan más de lo que la gente cree. Plan simple: lleva un snack salado y uno dulce para no acabar comprando comida cara “de urgencia” a mitad de ruta.",
+        "Para ideas que encajan con el calor y las escaleras de Positano, %LINK:whatToPack|qué llevar en la mochila/maleta% es una buena lista."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
+          "alt": "Un día cálido en Positano, cuando agua y snacks sencillos facilitan las salidas"
+        }
       ]
     },
     {
       "id": "pharmacies",
-      "title": "Farmacias y turnos de guardia",
+      "title": "Farmacias y salud",
       "body": [
-        "La farmacia de Via G. Marconi cubre básicos (analgésicos, vendajes, repelente).",
-        "Consulta el cartel de guardia nocturna en la puerta o en la web del colegio farmacéutico de Salerno para urgencias fuera de horario."
+        "Las farmacias en el pueblo suelen tener lo básico: crema solar, tiritas, apósitos para ampollas, analgésicos, pastillas para mareo y pequeños artículos de viaje.",
+        "Para algo específico, lleva tu receta (o una foto clara) y pregunta pronto en el día: a veces pedirlo lleva tiempo.",
+        "El servicio fuera de horario rota (guardia farmaceutica). Mira el aviso en la puerta para detalles de guardia si necesitas medicación tarde.",
+        "Si te mareas en el mar, no esperes a estar en el muelle. Compra lo que necesites antes del día de ferri. %LINK:ferrySchedules|Horarios de ferri% ayuda a elegir una franja de salida más fiable."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
+          "alt": "Barcos en la bahía de Positano, recordatorio de preparar lo del mareo antes de los días de ferri"
+        }
       ]
     },
     {
-      "id": "saving",
-      "title": "Consejos para ahorrar",
+      "id": "sundays-siesta",
+      "title": "Domingos y siesta: cómo no quedarte tirado",
       "body": [
-        "Compra fruta y verduras en mercados de productores los martes/viernes por la mañana en la parte alta del pueblo.",
-        "Lleva tus propias bolsas reutilizables para evitar recargos y ayudar al medio ambiente.",
-        "Reparte compras pesadas en mochilas; las cuestas hacen que cada kilo cuente."
+        "Hay dos patrones que pillan a la gente: cierres por siesta y horarios reducidos los domingos.",
+        "Si te faltan esenciales, compra más temprano — y trata la tarde/noche como “si está abierto, genial”, no como garantía.",
+        "Si llegas en domingo, asume menos variedad y compra lo básico primero: agua, desayuno y snacks.",
+        "Si mañana tienes una caminata larga o un día de playa completo, haz la compra la tarde anterior. Es la forma más fácil de evitar “precios de pánico” el mismo día."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-main-beach.webp",
+          "alt": "Positano en temporada alta, cuando planificar horarios evita estrés de última hora"
+        }
       ]
-    }
-  ],
-  "gallery": [
-    {
-      "alt": "Tiendas en la carretera principal de Positano",
-      "caption": "Comercios a lo largo de la vía principal"
     },
     {
-      "alt": "Cestas de la compra con fruta fresca",
-      "caption": "Fruta y básicos"
+      "id": "dietary-special",
+      "title": "Dietas y productos específicos (lo realista)",
+      "body": [
+        "Si tienes necesidades alimentarias (sin gluten, sin lácteos, alergias), la clave es comprar cuando lo veas. Las tiendas pequeñas no reponen siempre a diario y la selección cambia según la temporada.",
+        "Enfoque práctico: trata Positano como “básicos + uno o dos productos concretos”. Lleva un pequeño respaldo (barritas, snacks proteicos, básicos) para no quedarte colgado si un estante está vacío.",
+        "Las farmacias pueden ayudar con ciertas necesidades específicas (por ejemplo, artículos médicos), pero para productos de alimentación los minimarkets suelen ser mejor punto de partida.",
+        "Si te quedas varias noches, haz un escaneo rápido el día 1. Así compras el producto específico cuando lo veas, en vez de confiar en encontrarlo más tarde.",
+        "Si viajas con amigos, comunica pronto tus no‑negociables. Es más fácil organizar una compra compartida que hacer compras de emergencia después.",
+        "Si necesitas planificar comidas con presupuesto, %LINK:positanoBudget|Positano con presupuesto% y %LINK:cheapEats|comer barato% ayudan a mezclar compras sencillas con uno o dos momentos de restaurante."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/positanoBeaches.webp",
+          "alt": "Un plan de día en Positano que funciona mejor cuando comida y snacks están planificados"
+        }
+      ]
+    },
+    {
+      "id": "day-trip-resupply",
+      "title": "Reabastecerse fuera de Positano (cuándo vale la pena)",
+      "body": [
+        "Si te quedas más de unos días y quieres más variedad o mejores precios, puede compensar hacer una “compra grande” fuera del pueblo durante una excursión.",
+        "La pregunta clave no es solo el precio: es el tiempo. Si te pasas medio día buscando un súper grande, quizá pierdas más valor del que ahorras.",
+        "Compromiso realista: compra lo básico en Positano (desayuno, snacks, agua) y reabastece extras solo si pasas por una tienda más grande en un día de transporte.",
+        "Si haces una compra grande, céntrate en lo que da pereza comprar repetidamente: crema solar, apósitos para ampollas, snacks reutilizables y básicos de desayuno.",
+        "Para cualquier cosa urgente (medicación, pastillas para mareo), compra localmente primero: son justo los productos que se vuelven urgentes en el peor momento.",
+        "Si no estás seguro de la fiabilidad de los ferris el día de tu traslado, revisa %LINK:ferryCancellations|cancelaciones de ferri% antes de depender de una conexión que requiere mar en calma."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/marina-di-praia.webp",
+          "alt": "Días de traslado en la Costa Amalfitana, cuando el reabastecimiento depende del tiempo y el transporte"
+        }
+      ]
+    },
+    {
+      "id": "late-hours",
+      "title": "Esenciales por la noche",
+      "body": [
+        "En temporada alta, algunas tiendas pequeñas abren hasta tarde; fuera de picos, asume cierres más tempranos y compra lo que necesites antes de subir las escaleras.",
+        "Si de verdad estás atascado, Sorrento tiene supermercados más grandes y más servicios — pero no subestimes el coste en tiempo. Mira horarios de bus y tiempo de trayecto antes de decidir."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/positanoDining.jpg",
+          "alt": "Las noches en Positano son más fáciles cuando planificas la comida antes de los cierres"
+        }
+      ]
     }
   ],
   "tips": [
-    "Pide ‘fresco’ en charcuterías para cortes del día; suelen preparar paninis a buen precio.",
-    "Para medicamentos con receta escribe a la farmacia con 24 h de margen: pueden pedir el producto a Salerno."
+    "Lleva una bolsa ligera o mochila para subir la compra por escaleras sin cargar una mano.",
+    "Lleva algo de efectivo para puestos y compras pequeñas (no siempre aceptan tarjeta para importes bajos).",
+    "Si vas a hacer picnic, combínalo con %LINK:instagramSpots|spots de foto% o %LINK:sunsetViewpoints|miradores de atardecer% para que una “cena barata” se sienta como una experiencia."
   ],
   "faqs": [
     {
-      "q": "¿Aceptan tarjeta los minimercados?",
+      "q": "¿Puedo comprar productos sin gluten en el pueblo?",
       "a": [
-        "Sí, la mayoría desde 10 €; lleva efectivo para compras pequeñas o cuando la red falla."
+        "Sí: busca estantes “senza glutine” en minimarkets o pregunta en la farmacia. El stock puede ser limitado, así que compra cuando lo veas."
       ]
     },
     {
-      "q": "¿Dónde comprar productos sin gluten o veganos?",
+      "q": "¿Las farmacias abren los domingos?",
       "a": [
-        "Pregunta en Delikatessen (Via Pasitea) o haz compra grande en Sorrento, donde hay más variedad."
+        "A menudo al menos una abre con horario reducido. Mira el aviso en la puerta (o pregunta en recepción) para saber cuál está de guardia."
       ]
     },
     {
-      "q": "¿Hay servicio a domicilio?",
+      "q": "¿Aceptan tarjeta las tiendas?",
       "a": [
-        "Algunos colmados locales entregan en hoteles/apartamentos cercanos por un pequeño recargo; acuerda hora y pago en efectivo."
+        "La mayoría de minimarkets grandes sí, pero puestos y algunas delicatessen pueden preferir efectivo, sobre todo para importes pequeños."
+      ]
+    },
+    {
+      "q": "¿Dónde compro pastillas para mareo o apósitos para ampollas?",
+      "a": [
+        "En la farmacia. Cómpralo antes del día de ferri o de senderismo para no ir con prisas a última hora."
       ]
     }
   ],
-  "fallback": "En Positano hay productos básicos en todo el pueblo: compra temprano y ten a mano las farmacias cercanas.",
-  "toc": [
-    {
-      "href": "#minimarkets",
-      "label": "Minimercados cerca"
-    },
-    {
-      "href": "#supermarkets",
-      "label": "Supermercados grandes"
-    },
-    {
-      "href": "#pharmacies",
-      "label": "Farmacias y guardias"
-    },
-    {
-      "href": "#saving",
-      "label": "Consejos de ahorro"
-    }
-  ]
+  "fallback": "Hay esenciales por todo Positano: compra temprano, planifica alrededor de la siesta y anota la farmacia de guardia por si necesitas algo fuera de horario."
 }

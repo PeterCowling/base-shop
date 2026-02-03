@@ -70,6 +70,15 @@ const LOCALES_ROOT = path.join(APP_ROOT, "src", "locales");
 const args = process.argv.slice(2);
 const verbose = args.includes("--verbose");
 const localeFilter = args.find(arg => arg.startsWith("--locale="))?.slice("--locale=".length);
+const guideFilterArg = args.find(arg => arg.startsWith("--guides="))?.slice("--guides=".length);
+const guideFilter = guideFilterArg
+  ? new Set(
+      guideFilterArg
+        .split(",")
+        .map(entry => entry.trim())
+        .filter(Boolean),
+    )
+  : null;
 
 // Token pattern from _linkTokens.tsx
 const TOKEN_PATTERN = /%([A-Z]+):([^|%]+)\|([^%]+)%/g;
@@ -315,6 +324,9 @@ const main = async (): Promise<void> => {
   console.log(`Locales: ${locales.join(", ")}`);
   console.log(`Valid guide keys: ${validGuideKeys.size}`);
   console.log(`Valid HOWTO slugs: ${validHowToSlugs.size}`);
+  if (guideFilter) {
+    console.log(`Guide filter: ${Array.from(guideFilter).sort().join(", ")}`);
+  }
   console.log("");
 
   const violations: LinkViolation[] = [];
@@ -336,8 +348,11 @@ const main = async (): Promise<void> => {
     }
 
     for (const relativeFile of contentFiles) {
-      totalFiles++;
       const guideKey = path.basename(relativeFile, ".json");
+      if (guideFilter && !guideFilter.has(guideKey)) {
+        continue;
+      }
+      totalFiles++;
       const contentPath = path.join(guidesContentDir, relativeFile);
 
       try {

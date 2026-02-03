@@ -1,0 +1,23 @@
+{
+  "seo": {
+    "title": "Cyfrowy concierge (polecenia + rezerwacje)",
+    "description": "Cyfrowy concierge Hostel Brikette: szybkie porady, transport i pomoc w rezerwacjach—gdy plany się zmieniają."
+  },
+  "linkLabel": "Cyfrowy concierge",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": [
+    "Gdy potrzebujesz planu na dziś: podaj czas, budżet i priorytet (deadline w 1. linijce)."
+  ],
+  "sections": [
+    {
+      "id": "templates",
+      "title": "Szablon",
+      "body": [
+        "“6 godzin, bez auta, (A) kąpiel + (B) zachód, budżet 40€ na osobę. Najprostszy plan i plan B, jeśli odwołają promy?”",
+        "%LINK:positanoBudget|Positano na budżecie% + %LINK:terraceSunsets|zachód na tarasie%.",
+        "%LINK:ferryCancellations|odwołania promów + pogoda%."
+      ]
+    }
+  ],
+  "fallback": "Cyfrowy concierge: szybkie porady, transport i rezerwacje."
+}

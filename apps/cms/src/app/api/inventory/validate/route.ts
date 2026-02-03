@@ -1,23 +1,16 @@
-import { type NextRequest,NextResponse } from "next/server";
-import { z } from "zod";
+import { type NextRequest, NextResponse } from "next/server";
+import type { z } from "zod";
 
 import {
   type InventoryValidationRequest,
   validateInventoryAvailability,
 } from "@acme/platform-core/inventoryValidation";
+import {
+  inventoryValidationBodySchema,
+  normalizeInventoryValidationItem,
+} from "@acme/platform-core/types/inventory";
 
 export const runtime = "nodejs";
-
-const requestSchema = z.object({
-  shopId: z.string().min(1),
-  items: z.array(
-    z.object({
-      sku: z.string(),
-      variantKey: z.string().optional(),
-      quantity: z.number().int().positive(),
-    })
-  ),
-});
 
 /**
  * Inventory Validation Endpoint
@@ -46,10 +39,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   // Parse and validate request body
-  let body: z.infer<typeof requestSchema>;
+  let body: z.infer<typeof inventoryValidationBodySchema>;
   try {
     const rawBody = await req.json();
-    const parsed = requestSchema.safeParse(rawBody);
+    const parsed = inventoryValidationBodySchema.safeParse(rawBody);
 
     if (!parsed.success) {
       return NextResponse.json(
@@ -69,11 +62,41 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     );
   }
 
+  const headerShopId = req.headers.get("x-shop-id")?.trim() || undefined;
+  const bodyShopId = body.shopId;
+
+  if (headerShopId && bodyShopId && headerShopId !== bodyShopId) {
+    return NextResponse.json(
+      { error: "Invalid request", details: { shopId: ["x-shop-id does not match shopId"] } },
+      { status: 400 },
+    );
+  }
+
+  const shopId = headerShopId ?? bodyShopId;
+  if (!shopId) {
+    return NextResponse.json(
+      { error: "Invalid request", details: { shopId: ["shopId is required"] } },
+      { status: 400 },
+    );
+  }
+
+  const normalizedItems: InventoryValidationRequest[] = [];
+  for (const item of body.items) {
+    const normalized = normalizeInventoryValidationItem(item);
+    if ("error" in normalized) {
+      return NextResponse.json(
+        { error: "Invalid request", details: { items: [normalized.error] } },
+        { status: 400 },
+      );
+    }
+    normalizedItems.push(normalized);
+  }
+
   // Validate inventory
   try {
     const result = await validateInventoryAvailability(
-      body.shopId,
-      body.items as InventoryValidationRequest[]
+      shopId,
+      normalizedItems,
     );
 
     if (!result.ok) {

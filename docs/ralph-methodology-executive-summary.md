@@ -1,7 +1,7 @@
 Type: Guide
 Status: Active
 Domain: Repo
-Last-reviewed: 2026-01-17
+Last-reviewed: 2026-01-31
 Created: 2026-01-17
 Created-by: Claude Opus 4.5
 
@@ -33,7 +33,7 @@ Purpose: Provide a concise, agent-focused operating model for working in Base-Sh
 
 ### Work Loop (One Task)
 
-1. Claim the task (PR title/comment/branch name).
+1. Claim the task (plan doc / Business OS card / issue).
 2. Read all affected files.
 3. Implement the change for this task only.
 4. Validate (typecheck, lint, targeted tests).
@@ -42,9 +42,10 @@ Purpose: Provide a concise, agent-focused operating model for working in Base-Sh
 
 ### Parallel Work
 
-- Use one worktree per agent/human.
-- Avoid editing custodian-owned global docs in parallel.
-- Use task claiming to prevent duplicate work.
+- No worktrees: Base-Shop uses a single shared checkout.
+- Only one writer at a time: acquire the writer lock before commit/push.
+- Non-integrator agents should stay read-only and propose patches.
+- Avoid editing custodian-owned global docs in parallel; claim tasks to prevent duplicate work.
 
 ### Deployment Verification
 
@@ -81,12 +82,12 @@ Benefit: faster orientation and less context thrash.
 
 - Planning mode: read and write a plan only.
 - Building mode: implement approved plan tasks, one per iteration.
-- Prompts: `.claude/prompts/plan-feature.md` and `.claude/prompts/build-feature.md`.
+- Skills: `.claude/skills/plan-feature/SKILL.md` and `.claude/skills/build-feature/SKILL.md`.
 
 ### 3) Ownership and Task Claiming
 
-- Preferred: draft PR titled with the task.
-- Alternate: plan PR comment or branch naming.
+- Preferred: claim tasks in plan docs / Business OS cards.
+- Alternate: draft PR titled with the task (if using feature branches).
 - Docs Custodian controls high-conflict global docs.
 
 ### 4) Automated Validation Script
@@ -112,8 +113,9 @@ Benefit: faster orientation and less context thrash.
 
 ### Parallel Work
 
-- Create a dedicated worktree: `scripts/git/new-worktree.sh <label>`.
-- Claim the task before editing.
+- Use a **single-writer** workflow: one integrator (human or designated agent) edits/commits at a time.
+- Start agents in integrator mode for any write work: `scripts/agents/integrator-shell.sh -- <agent>`
+- Keep other agents read-only: they should propose patches rather than editing the checkout directly.
 - Avoid custodian-owned files unless you are the custodian.
 
 ### Catch Bugs Before Commit
@@ -134,17 +136,17 @@ Benefit: faster orientation and less context thrash.
 |----------|--------------|------------------|
 | 2026-01-14 Git reset disaster | Destructive commands used to recover | Destructive commands prohibited; ask for help |
 | 2026-01-16 System slowdown | Orphaned test processes | Validation checks for orphans |
-| Parallel work conflicts | Multiple agents edited same files | Task claiming + custodian ownership |
+| Parallel work conflicts | Multiple agents edited same files | Single-writer lock + custodian ownership |
 
 ---
 
 ## Invariants (What Stays the Same)
 
-- Git worktrees for parallel work.
+- Single-writer lock for parallel work (no worktrees).
 - Plan documents in `docs/plans/` as task state.
 - TypeScript, ESLint, Jest remain primary validation tools.
 - Cloudflare Pages deployment pipeline remains.
-- Branching model (`work/*` branches, PRs to `main`).
+- Branching model (`dev` → `staging` → `main`).
 - Commit conventions with co-author attribution.
 
 ---
@@ -193,7 +195,7 @@ Rollback: restore from archive; new files are additive.
 
 - Use plans as persistent state.
 - Enforce one-task iterations with validation gates.
-- Isolate parallel work with worktrees and task claiming.
+- Serialize parallel work with writer lock and an integrator.
 - Verify deployments; do not assume success.
 
 For implementation details, see `docs/plans/ralph-methodology-adoption-plan.md`.

@@ -2,7 +2,7 @@
 Type: Runbook
 Status: Canonical
 Domain: Repo
-Last-reviewed: 2026-01-20
+Last-reviewed: 2026-01-31
 ---
 
 # AGENTS.md — Operational Runbook
@@ -52,16 +52,23 @@ pnpm typecheck && pnpm lint
 
 ## Git Rules
 
-- Work on `work/*` branches only — never commit to `main`
-- For parallel work: **one worktree per agent/human** (`scripts/git/new-worktree.sh <label>`)
+- **No worktrees.** Base-Shop runs with a single checkout to avoid cross-worktree confusion.
+- **Single writer.** With 1 human + up to 10 agents, only one process may write at a time.
+  - Start an “integrator shell” before editing, committing, or pushing: `scripts/agents/integrator-shell.sh -- codex`
+  - Or open a locked shell: `scripts/agents/with-writer-lock.sh`
+  - Check status: `scripts/git/writer-lock.sh status`
+- **Branch flow:** `dev` → `staging` → `main`
+  - Commit locally on `dev`
+  - Ship `dev` to staging (PR + auto-merge): `scripts/git/ship-to-staging.sh`
+  - Promote `staging` to production (PR + auto-merge): `scripts/git/promote-to-main.sh`
 - **Commit every 30 minutes** or after completing any significant change
-- **Push every 2 hours** (or every 3 commits) — GitHub is your backup
+- **Push `dev` every 2 hours** (or every 3 commits) — GitHub is your backup
 
-**Destructive commands:**
-- **Agents:** MUST NOT run `git reset --hard`, `git clean -fd`, `git push --force`
-- **Humans:** Avoid; if required, follow procedure in [docs/git-safety.md](docs/git-safety.md)
+**Destructive / history-rewriting commands (agents: never):**
+- `git reset --hard`, `git clean -fd`, `git push --force` / `-f`
+- Also treat these as forbidden: `git checkout -- .` / `git restore .`, `git stash drop` / `git stash clear`, `git rebase` (incl. `-i`), `git commit --amend`
 
-Full guide: [docs/git-safety.md](docs/git-safety.md)
+If one of these commands seems necessary, STOP and ask for help. Full guide: [docs/git-safety.md](docs/git-safety.md)
 
 ## Testing Rules
 
@@ -85,6 +92,16 @@ Full policy: [docs/testing-policy.md](docs/testing-policy.md)
 **Feature workflow**: `/fact-find` → `/plan-feature` → `/build-feature` → `/re-plan` (if confidence <80%)
 
 Skills live in `.claude/skills/<name>/SKILL.md`. Claude Code auto-discovers them; Codex reads them directly.
+For a short entrypoint into the workflow (progressive disclosure), see `docs/agents/feature-workflow-guide.md`.
+
+## Confidence Index (CI) Policy (Planning)
+
+In plan docs, **CI** means **Confidence Index** (plan confidence), not CI/CD.
+
+- **CI ≥90 is a motivation, not a quota.** Do not “raise CI” by deleting planned work or narrowing scope without an explicit user decision.
+- **How to raise CI credibly:** add evidence (file references, call-site maps), add/strengthen tests, run targeted validations, or add a small spike/INVESTIGATE task to remove uncertainty.
+- **If CI <90:** keep the work, but add a clear **“What would make this ≥90%”** section (concrete actions/evidence that would raise confidence).
+- **Build gate still applies:** `/build-feature` only proceeds on **IMPLEMENT** tasks that are **≥80%** confidence and unblocked. If <80%, stop and `/re-plan`.
 
 ## Progressive Context Loading
 
@@ -154,8 +171,9 @@ Schema: [docs/AGENTS.docs.md](docs/AGENTS.docs.md)
 
 ## Pull Requests & CI
 
-- PRs are zero-touch: auto-open on `work/*` push, labeled `zero-touch`, auto-merge on green, auto-close on failing checks or staleness (add `keep-open` to skip auto-close)
-- If auto-open fails, create PR manually (`gh pr create --fill`) and enable auto-merge (`gh pr merge --auto --squash --delete-branch`)
+- PRs are pipeline artifacts:
+  - `dev` → `staging` is shipped via PR + auto-merge (`scripts/git/ship-to-staging.sh`).
+  - `staging` → `main` is promoted via PR + auto-merge (`scripts/git/promote-to-main.sh`).
 - Keep PR green and mergeable — fix CI failures promptly
 - **Never merge directly to `main`** — always use PR workflow
 - All CI checks must pass before auto-merge
@@ -206,6 +224,7 @@ For comprehensive guidance, see:
 | Git hooks | [docs/git-hooks.md](docs/git-hooks.md) |
 | Testing policy | [docs/testing-policy.md](docs/testing-policy.md) |
 | Plan metadata schema | [docs/AGENTS.docs.md](docs/AGENTS.docs.md) |
+| Business OS charter | [docs/business-os/business-os-charter.md](docs/business-os/business-os-charter.md) |
 | Incident details | [docs/historical/RECOVERY-PLAN-2026-01-14.md](docs/historical/RECOVERY-PLAN-2026-01-14.md) |
 | Incident prevention | [docs/incident-prevention.md](docs/incident-prevention.md) |
 

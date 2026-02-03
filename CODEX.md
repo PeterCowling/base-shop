@@ -17,47 +17,69 @@ This file contains Codex-specific guidance. For universal commands, see `AGENTS.
 
 **IMPORTANT**: Codex does not have safety hooks like Claude Code. You MUST follow these rules based on documentation alone.
 
-### Destructive Commands — STOP and Ask Protocol
+### Destructive / History-Rewriting Commands — STOP (Do Not Run)
 
-Before running ANY of these commands, **STOP and ask the user for explicit confirmation**:
+Codex has no tool-level safety hooks in this repo. Treat the following as **forbidden for agents** (even if the user asks).
 
 | Command/Pattern | Why Dangerous | Required Action |
 |-----------------|---------------|-----------------|
-| `git reset --hard` | Loses all uncommitted work permanently | STOP, explain risk, ask user |
-| `git push --force` | Overwrites remote history, affects all collaborators | STOP, explain risk, ask user |
-| `git clean -fd` | Deletes all untracked files permanently | STOP, explain risk, ask user |
-| `rm -rf` on project directories | Irreversible deletion | STOP, explain risk, ask user |
-| `pnpm test` (unfiltered) | Spawns too many Jest workers, crashes machine | Use targeted tests instead |
-| Any commit to `main` branch | Protected branch | Work on `work/*` branches only |
+| `git reset --hard` | Loses uncommitted work; often used during “git is confusing” moments | STOP. Do not run. Ask for human guidance. |
+| `git clean -fd` | Permanently deletes untracked files (often includes new work) | STOP. Do not run. Ask for human guidance. |
+| `git push --force`, `git push -f`, `git push --force-with-lease` | Overwrites remote history; can destroy teammates’ commits | STOP. Do not run. Ask for human guidance. |
+| `git checkout -- .`, `git restore .` | Discards local modifications across the repo | STOP. Do not run. Ask for human guidance. |
+| `git stash drop`, `git stash clear` | Permanently deletes stashed work | STOP. Do not run. Ask for human guidance. |
+| `git rebase` (incl. `-i`), `git commit --amend` | Rewrites history; often leads to force-push pressure | STOP. Do not run. Ask for human guidance. |
+| `rm -rf` on project directories | Irreversible deletion | STOP. Do not run. Ask for human guidance. |
+| `pnpm test` (unfiltered) | Spawns too many Jest workers; can crash the machine | Use targeted tests instead. |
+| Any commit to `main` / `staging` | Protected branches; bypasses the release pipeline | Commit on `dev` only. |
 
-### How to STOP and Ask
+### How to STOP and Hand Off
 
-When you encounter a situation requiring a destructive command:
+When you hit a situation that *seems* to require one of the commands above:
 
 1. **Do NOT run the command**
-2. **Explain to the user**: "This operation would run `[command]` which [danger]. This is irreversible."
-3. **Offer alternatives**: "Instead, I can [safer alternative]."
-4. **Wait for explicit approval**: Only proceed if user explicitly confirms
+2. **Capture diagnostics** (safe, read-only):
+   - `git status --porcelain=v1 -b`
+   - `git diff --stat`
+   - `git log --oneline -10`
+   - `scripts/git/writer-lock.sh status`
+3. **Explain** which command would be risky and why it’s forbidden for agents
+4. **Offer safer alternatives** (checkpoint commit, revert, wait for writer lock)
+5. **Ask the user to decide next steps** and point them to `docs/git-safety.md` if a human must perform a destructive recovery
 
 **Example**:
 ```
 User: Clean up all the untracked files
-You: This would run `git clean -fd` which permanently deletes all untracked files.
-     This cannot be undone. Files that would be deleted include: [list them]
+You: The command you’re asking for is `git clean -fd`, which permanently deletes untracked files.
+     That is a common cause of accidental rollbacks / lost work, so I won’t run it as an agent.
 
-     Alternatives:
-     - Review untracked files first: `git status`
+     Safer options:
+     - Review what’s untracked: `git status --porcelain`
+     - Dry-run the clean: `git clean -n`
      - Delete specific files manually
-     - Add files to .gitignore instead
+     - Add patterns to `.gitignore` so they stop appearing
 
-     Do you want me to proceed with `git clean -fd`? (yes/no)
+     If you still want a full clean, please follow `docs/git-safety.md` and run it yourself.
 ```
 
 ### Reference
 
 For the full rationale behind these safety rules, see:
-- `AGENTS.md` § "Git Rules → Destructive commands"
+- `AGENTS.md` § "Git Rules → Destructive / history-rewriting commands"
 - `.agents/safety/rationale.md`
+- `docs/git-safety.md`
+
+### Local Enforcement (Recommended)
+
+Codex has no repo-native pre-execution hooks. To hard-block the most dangerous git commands for agent sessions,
+run Codex inside the repo’s “integrator mode” (writer lock + git guard):
+
+```bash
+scripts/agents/integrator-shell.sh -- codex
+```
+
+This blocks commands like `git reset --hard`, `git clean -fd`, force pushes, `rebase`, `stash`, and `commit --amend`,
+and enforces a single-writer lock for commits/pushes.
 
 ## Environment Awareness
 
@@ -123,6 +145,8 @@ Co-Authored-By: Codex <noreply@openai.com>
 ## Feature Workflow (Fact-Find → Plan → Build → Re-Plan)
 
 Codex follows the same confidence-gated workflow as Claude Code. Since Codex has no skill loader or slash commands, invoke each phase by reading the skill file and following its instructions.
+
+Workflow entrypoint (progressive disclosure): `docs/agents/feature-workflow-guide.md`.
 
 ### The Loop
 

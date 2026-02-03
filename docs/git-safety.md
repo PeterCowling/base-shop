@@ -1,7 +1,7 @@
 Type: Guide
 Status: Active
 Domain: Repo
-Last-reviewed: 2026-01-17
+Last-reviewed: 2026-01-31
 
 # Git Safety Guide (Agent Runbook)
 
@@ -31,12 +31,15 @@ These commands can permanently destroy work:
 | `git reset --hard` | 🔴 CATASTROPHIC | Destroys uncommitted changes AND moves HEAD |
 | `git reset --hard <commit>` | 🔴 CATASTROPHIC | Deletes ALL work since that commit |
 | `git clean -fd` | 🔴 HIGH | Permanently deletes untracked files |
-| `git checkout -- .` | 🔴 HIGH | Discards all local modifications |
+| `git checkout -- .`, `git restore .` | 🔴 HIGH | Discards all local modifications |
+| `git checkout --theirs .` | 🔴 HIGH | Overwrites files during conflict resolution (can destroy local changes) |
 | `git stash drop` | 🟠 MEDIUM | Permanently loses stashed changes |
 | `git stash clear` | 🟠 MEDIUM | Loses all stashes |
 | `git push --force` | 🔴 HIGH | Overwrites remote history (affects team) |
 | `git push -f` | 🔴 HIGH | Same as above (shorthand) |
-| `git rebase -i` | 🟠 MEDIUM | Interactive mode can rewrite/lose history |
+| `git push --force-with-lease` | 🔴 HIGH | Safer force-push variant, but still rewrites remote history |
+| `git rebase` (incl. `-i`) | 🟠 MEDIUM | Rewrites history; can lose commits |
+| `git commit --amend` | 🟠 MEDIUM | Rewrites the last commit (dangerous after push) |
 
 **If one of these commands seems necessary, STOP and read the alternatives below.**
 
@@ -47,7 +50,8 @@ These commands can permanently destroy work:
 | `git reset --hard` | Commit first, then discuss what to discard |
 | `git reset --hard <commit>` | **Never do this.** Ask for help instead. |
 | `git clean -fd` | Move files to `archive/` folder |
-| `git checkout -- .` | Commit first, then discuss what to discard |
+| `git checkout -- .`, `git restore .` | Commit first, then discuss what to discard |
+| `git rebase`, `git commit --amend` | Create a new commit; let PR merge handle history |
 | `git push --force` | Create a new branch instead |
 | Fixing a "broken" git state | Share `git status` output and ask for help |
 
@@ -59,41 +63,43 @@ These commands can permanently destroy work:
 | Every significant change | Commit immediately |
 | Every 2 hours | Push to GitHub |
 | Every 3 local commits | Push to GitHub |
-| After first push of a `work/*` branch | Open a PR |
+| When ready to update staging | Ship `dev` → `staging` (`scripts/git/ship-to-staging.sh`) |
 
 **Why:** Uncommitted work is unrecoverable. Unpushed commits are lost if the local machine fails.
 
-### 4. Never Work Directly on `main`
+### 4. Never Commit Directly on `main` or `staging`
 
 ```bash
 # Check current branch
 git branch --show-current
 
-# If on main, create a work branch:
-git checkout -b work/2026-01-15-my-feature
+# If on main/staging, switch to dev (create it if needed)
+git fetch origin --prune
+git checkout dev || git checkout -b dev origin/main
 ```
 
-**Why:** Direct commits to `main` risk accidental deployment and bypass CI gating.
+**Why:** Direct commits to `main`/`staging` bypass the release pipeline and can cause accidental deployments.
 
-### 5. Use Worktrees for Parallel Work (Recommended)
+### 5. Multi-Agent Rule: Single Writer Lock (Required)
 
-If you’re running multiple agents (or editing while an agent runs), don’t share one working tree.
+If you’re running multiple agents (or a human + agents), do **not** let multiple processes write to the same checkout.
 
-Create a dedicated worktree per agent/human:
+Before editing, committing, or pushing, enter integrator mode (writer lock + git guard):
 
 ```bash
-scripts/git/new-worktree.sh <label>
-# Example: scripts/git/new-worktree.sh codex-hooks
+scripts/agents/integrator-shell.sh -- codex
+# or open a subshell:
+scripts/agents/integrator-shell.sh
 ```
 
-Or manually:
+If the lock is held, wait:
 
 ```bash
-git fetch origin
-git worktree add -b work/$(date +%Y-%m-%d)-<desc> .worktrees/$(date +%Y-%m-%d)-<desc> origin/main
+scripts/git/writer-lock.sh status
+scripts/git/writer-lock.sh acquire --wait
 ```
 
-**Why:** Shared working trees cause “mystery edits” mid-task and make “save to GitHub” nondeterministic. Worktrees isolate changes so each branch can be committed/pushed independently.
+**Why:** A single checkout is safe only with a single-writer rule. The writer lock makes “save to GitHub” deterministic and prevents accidental overwrites.
 
 ---
 
@@ -103,47 +109,29 @@ git worktree add -b work/$(date +%Y-%m-%d)-<desc> .worktrees/$(date +%Y-%m-%d)-<
 
 | Branch | Purpose | Who Creates | Deploys To |
 |--------|---------|-------------|------------|
-| `main` | Production code | Humans only (via PR) | Production (live sites) |
-| `work/*` | Development work | Agents or humans | Preview only |
-| `hotfix/*` | Emergency fixes | Humans | Production (after CI green) |
-
-### Naming Convention
-
-```
-work/YYYY-MM-DD-brief-description
-```
-
-Examples:
-- `work/2026-01-15-add-user-auth`
-- `work/2026-01-15-fix-cart-bug`
-- `work/2026-01-15-update-translations`
+| `dev` | All local commits (integration branch) | Integrator (human or designated agent) | CI only |
+| `staging` | Staging deploy branch (auto from `dev`) | Pipeline (PR merge) | Staging environment |
+| `main` | Production code | Pipeline (PR merge) | Production (live sites) |
 
 ### Workflow
 
 ```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│ Create work │────▶│ Do work,    │────▶│ Push to     │
-│ branch      │     │ commit often│     │ GitHub      │
-└─────────────┘     └─────────────┘     └─────────────┘
+┌─────────────┐     ┌─────────────┐     ┌────────────────────┐
+│ Commit on   │────▶│ Push dev    │────▶│ PR dev → staging    │
+│ dev         │     │ (backup)    │     │ (auto-merge)        │
+└─────────────┘     └─────────────┘     └────────────────────┘
                                               │
                                               ▼
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│ Merge to    │◀────│ Human       │◀────│ Create PR   │
-│ main        │     │ approves    │     │ on GitHub   │
-└─────────────┘     └─────────────┘     └─────────────┘
-        │
-        ▼
-┌─────────────┐
-│ Auto-deploy │
-│ to staging  │
-└─────────────┘
-        │
-        ▼
-┌─────────────┐
-│ Manual      │
-│ promote to  │
-│ prod        │
-└─────────────┘
+                                      Auto-deploy to staging
+                                              │
+                                              ▼
+                                      Visual test on staging
+                                              │
+                                              ▼
+                                   PR staging → main (auto-merge)
+                                              │
+                                              ▼
+                                      Auto-deploy to production
 ```
 
 ---
@@ -168,25 +156,30 @@ Git hooks run automatically before commits and pushes:
 | Hook | Script | What It Does |
 |------|--------|--------------|
 | `pre-commit` | [pre-commit-check-env.sh](../scripts/git-hooks/pre-commit-check-env.sh) | Blocks commits of secret env files |
+| `pre-commit` | [require-writer-lock.sh](../scripts/git-hooks/require-writer-lock.sh) | Blocks commits unless the single-writer lock is held |
 | `pre-commit` | [no-partially-staged.js](../scripts/git-hooks/no-partially-staged.js) | Blocks partially staged files before lint-staged runs |
 | `pre-commit` | `lint-staged --no-stash` | Runs check-only linting on staged files without backup stashes |
 | `pre-commit` | `pnpm typecheck` | Runs typecheck before committing |
 | `pre-commit` | `pnpm lint` | Runs lint before committing |
-| `pre-push` | [pre-push-safety.sh](../scripts/git-hooks/pre-push-safety.sh) | Blocks non-fast-forward pushes to protected branches |
+| `pre-commit` | `pnpm validate:agent-context` | Checks for drift in always-on agent context files |
+| `prepare-commit-msg` | [prepare-commit-msg-safety.sh](../scripts/git-hooks/prepare-commit-msg-safety.sh) | Blocks amend-style / commit-message-reuse workflows by default |
+| `pre-rebase` | [pre-rebase-safety.sh](../scripts/git-hooks/pre-rebase-safety.sh) | Blocks `git rebase` by default |
+| `pre-push` | [require-writer-lock.sh](../scripts/git-hooks/require-writer-lock.sh) | Blocks pushes unless the single-writer lock is held |
+| `pre-push` | [pre-push-safety.sh](../scripts/git-hooks/pre-push-safety.sh) | Blocks direct pushes to protected branches and any non-fast-forward push |
 | `pre-push` | `pnpm typecheck` | Runs typecheck before pushing |
 | `pre-push` | `pnpm lint` | Runs lint before pushing |
 
 **Setup:**
 ```bash
 pnpm install
-pnpm exec simple-git-hooks
+pnpm run prepare
 ```
 
 **Documentation:** [Git Hooks](./git-hooks.md)
 
 ### Layer 3: GitHub Branch Protection (Server)
 
-GitHub enforces these rules on the `main` branch:
+GitHub should enforce these rules on `main` and `staging`:
 
 | Setting | Value | Why |
 |---------|-------|-----|
@@ -196,24 +189,19 @@ GitHub enforces these rules on the `main` branch:
 | Auto-merge enabled | ✅ On | Merges PRs when checks pass |
 | Block force pushes | ✅ On | Prevents history destruction |
 
-**Configuration:** GitHub → Settings → Rules → Rulesets → `main`
+**Configuration:** GitHub → Settings → Rules → Rulesets → `main` / `staging`
 
-### Layer 4: Claude Code Hooks (AI Level)
+### Layer 4: Agent Runner Guardrails (Optional)
 
-Claude Code has hooks that intercept destructive commands before execution:
+Some agent tools can be configured to deny-list destructive commands (tool permissions, wrappers, command filters, etc.).
 
-**Location:** [.claude/settings.json](../.claude/settings.json)
+**Do not rely on this layer.** Assume *no* tool will save you from a bad git command. Follow the rules above.
 
-**Blocked commands:**
-- `git reset --hard`
-- `git clean -fd`
-- `git checkout -- .`
-- `git stash drop`
-- `git stash clear`
-- `git push --force`
-- `git push -f`
-- `git rebase -i`
-- `--no-verify`
+If you run agents locally, you can optionally use integrator mode (writer lock + git guard):
+
+```bash
+scripts/agents/integrator-shell.sh -- <your-agent-command>
+```
 
 ---
 
@@ -222,23 +210,25 @@ Claude Code has hooks that intercept destructive commands before execution:
 ### Session Start Checklist
 
 ```bash
-# 1. Check current branch (must not be main)
+# 0. If you will WRITE, start in integrator mode (writer lock + git guard)
+scripts/agents/integrator-shell.sh -- codex
+
+# 1. Check current branch (commit only on dev)
 git branch --show-current
-# If "main", create work branch
 
 # 2. Check for uncommitted changes
 git status --porcelain
 # If not empty, commit them
 
-# 3. Pull latest changes
-git pull origin HEAD
+# 3. Sync remote refs (no merge/rebase)
+git fetch origin --prune
 ```
 
 ### During Session
 
 - Commit after every significant change
-- Push every 2 hours or 3 commits
-- Ensure a PR exists after the first push; keep it green with `zero-touch` + auto-merge enabled
+- Push `dev` every 2 hours or 3 commits
+- Ship to staging when ready: `scripts/git/ship-to-staging.sh`
 - Never run destructive commands
 - If git is confusing, STOP and ask the user
 
@@ -267,9 +257,9 @@ git push origin HEAD
 2. Run diagnostics:
    ```bash
    git status
-   git stash list
    git log --oneline -5
    git diff --stat
+   scripts/git/writer-lock.sh status
    ```
 3. Share output with user
 4. Say: "Git is in an unexpected state. Please advise how to proceed."
@@ -279,49 +269,38 @@ git push origin HEAD
 
 ## For Humans
 
-### Deploying to Staging + Production
+### Shipping and Promotion
 
-1. **Review the work branch:**
+1. **Ship `dev` → `staging` (auto-deploy to staging)**
    ```bash
-   git fetch origin
-   git log origin/main..origin/work/<branch> --oneline
-   git diff origin/main..origin/work/<branch> --stat
+   git fetch origin --prune
+   git checkout dev
+   scripts/git/ship-to-staging.sh
    ```
 
-2. **Ensure PR exists and is zero-touch:**
-   - If no PR, create one (`gh pr create --fill`)
-   - Confirm the `zero-touch` label and auto-merge are enabled
-   - Add `keep-open` if the PR should not auto-close on failures or staleness
-   - Resolve merge conflicts on the work branch before auto-merge
-   - Ensure GitHub Actions is green (fix failures, do not bypass)
+2. **Promote `staging` → `main` (auto-deploy to production)**
+   ```bash
+   git fetch origin --prune
+   git checkout staging
+   scripts/git/promote-to-main.sh
+   ```
 
-3. **Auto-merge (triggers staging):**
-   - Auto-merge runs when required checks pass
-   - If checks fail, the PR auto-closes; open a new PR after fixing
-
-4. **Verify staging and promote:**
-   - Check GitHub Actions tab
-   - Confirm staging URL (see `docs/deployment-workflow.md`)
-   - After visual review, trigger production deploy (see `docs/deployment-workflow.md`)
-
-### Cleaning Up
-
-After merge:
-```bash
-git branch -d work/<branch-name>
-git push origin --delete work/<branch-name>
-```
-
-### Emergency: Bypassing Hooks
+### Emergency: Bypassing Hooks (Humans only)
 
 **⚠️ Use only when absolutely necessary:**
 
 ```bash
-# Skip git hooks (local only)
-SKIP_GIT_HOOKS=1 git push --force
-
-# Skip pre-commit
+# Skip pre-commit / pre-push hooks
 git commit --no-verify -m "Emergency fix"
+git push --no-verify
+
+# Or: skip simple-git-hooks specifically
+SKIP_SIMPLE_GIT_HOOKS=1 git push origin HEAD
+
+# Or: skip only the writer-lock check
+SKIP_WRITER_LOCK=1 git commit -m "Emergency fix"
+
+# Never bypass in order to rewrite history or push to protected branches.
 ```
 
 **Document why hooks were bypassed and follow up to fix the root cause.**
@@ -332,20 +311,16 @@ git commit --no-verify -m "Emergency fix"
 
 ### "My changes disappeared"
 
-1. Check stash: `git stash list`
-2. Check reflog: `git reflog`
-3. Check recent commits: `git log --oneline -10`
-4. **Do NOT reset to try to recover**
-5. Ask for help
+1. Check reflog: `git reflog`
+2. Check recent commits: `git log --oneline -10`
+3. **Do NOT reset to try to recover**
+4. Ask for help
 
 ### "I accidentally committed to main"
 
-1. Don't push yet!
-2. Create a backup branch: `git branch backup-$(date +%Y%m%d)`
-3. Reset main to remote: `git reset origin/main`
-4. Create work branch: `git checkout -b work/$(date +%Y-%m-%d)-my-feature`
-5. Cherry-pick the commit: `git cherry-pick backup-<date>`
-6. Push work branch: `git push -u origin HEAD`
+1. Don’t push yet!
+2. Create/move the commit onto `dev`: `git checkout -b dev`
+3. Push `dev` and continue via the `dev` → `staging` pipeline
 
 ### "I want to undo a change"
 
@@ -355,7 +330,7 @@ git commit --no-verify -m "Emergency fix"
 git revert <commit-hash>
 
 # Restore a specific file to an earlier version
-git checkout <commit-hash> -- path/to/file
+git restore --source <commit-hash> -- path/to/file
 ```
 
 **NOT safe (don't do this):**
@@ -368,20 +343,21 @@ git reset --hard <commit>
 
 ```bash
 # Reinstall hooks
-pnpm exec simple-git-hooks
+pnpm run prepare
 
 # Verify installation
-cat .git/hooks/pre-commit
-ls -la .git/hooks/pre-commit
+hooks_dir="$(git config --get core.hooksPath || git rev-parse --git-path hooks)"
+cat "$hooks_dir/pre-commit"
+ls -la "$hooks_dir/pre-commit"
 ```
 
 ### "Push was rejected"
 
-If GitHub rejects a push to main:
-1. This is expected - main is protected
-2. Create a work branch instead
-3. Push the work branch
-4. Create a PR
+If GitHub rejects a push to `main`/`staging`:
+1. This is expected - these branches are protected by process
+2. Use the pipeline scripts instead:
+   - `scripts/git/ship-to-staging.sh`
+   - `scripts/git/promote-to-main.sh`
 
 ---
 

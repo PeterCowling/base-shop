@@ -76,10 +76,14 @@ yarn-error.log*
 **/.next/
 **/out/
 **/coverage/
-# Some apps may legitimately have a source folder named `coverage` (e.g. Next.js route segments).
-# Keep coverage outputs ignored, but allow `coverage/` under `src/`.
-!**/src/**/coverage/
-!**/src/**/coverage/**
+# Some apps may legitimately have a folder named `coverage` (e.g. Next.js route segments,
+# or test suites under `__tests__/coverage`). Keep coverage outputs ignored, but allow these.
+!**/src/app/**/coverage/
+!**/src/app/**/coverage/**
+!**/app/**/coverage/
+!**/app/**/coverage/**
+!**/__tests__/coverage/
+!**/__tests__/coverage/**
 **/.ts-jest/
 .lighthouseci/
 **/storybook-static/

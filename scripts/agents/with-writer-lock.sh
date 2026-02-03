@@ -45,7 +45,8 @@ trap release_lock EXIT INT TERM
 
 if [[ $# -eq 0 ]]; then
   echo "Writer lock held for this shell. Exit to release." >&2
-  exec bash
+  bash
+  exit $?
 fi
 
 if [[ "${1:-}" != "--" ]]; then
@@ -59,5 +60,4 @@ if [[ $# -eq 0 ]]; then
   exit 2
 fi
 
-exec "$@"
-
+"$@"

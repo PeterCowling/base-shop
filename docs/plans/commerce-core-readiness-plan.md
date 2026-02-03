@@ -1548,8 +1548,8 @@ These files currently use `it.todo()` and **do not satisfy the TDD gate**. Conve
 
 ## Re-plan Handoff (2026-02-02)
 
-- **Ready to build (≥80% + test contracts):** COM-101, COM-201, COM-202
-- **Ready after dependencies:** COM-203 (after COM-201), COM-401 (after COM-D03)
+- **Ready to build (≥80% + test contracts):** COM-101, COM-202, COM-203
+- **Ready after dependencies:** COM-401 (after COM-D03)
 - **Needs re-plan before build:** COM-102 (L-effort; TODO stubs must become enforcing tests), COM-104 (blocked on COM-D04), COM-301 (blocked on COM-D05)
 - **Investigation required:** COM-302, COM-402
 
@@ -1557,10 +1557,11 @@ These files currently use `it.todo()` and **do not satisfy the TDD gate**. Conve
 
 ## Next Steps
 
-1. Build COM-201 → COM-202 to lock down inventory contract + webhook tenancy (reduces cross-tenant risk early)
-2. Build COM-101 to enforce checkout repricing (includes fixing the cover-me-pretty checkout-session test harness issue surfaced in planning validation)
-3. Resolve Phase 0 decisions (start with COM-D04 + COM-D05; COM-D03 unblocks COM-401)
-4. Re-plan COM-102 once TODO stubs are converted to enforcing tests; then proceed with idempotent holds + Stripe failure classification (COM-103)
+1. Build COM-202 to lock down webhook tenant assertion (fail-closed cross-tenant protection)
+2. Build COM-203 to add contract tests for inventory validate (validates COM-201)
+3. Build COM-101 to enforce checkout repricing (includes fixing the cover-me-pretty checkout-session test harness issue surfaced in planning validation)
+4. Resolve Phase 0 decisions (start with COM-D04 + COM-D05; COM-D03 unblocks COM-401)
+5. Re-plan COM-102 once TODO stubs are converted to enforcing tests; then proceed with idempotent holds + Stripe failure classification (COM-103)
 
 ---
 
@@ -1569,3 +1570,4 @@ These files currently use `it.todo()` and **do not satisfy the TDD gate**. Conve
 | Date | Task | Status | Commit | Notes |
 |------|------|--------|--------|-------|
 | 2026-02-03 | COM-204 | Done | f4c4216159 | Added sale-mode checkout-session integration coverage; fixed template-app Jest `@auth` mapping |
+| 2026-02-03 | COM-201 | Done | 03b45c32fc | Unified inventory validate request contract, added strict mismatch checks, and documented the shared API contract |

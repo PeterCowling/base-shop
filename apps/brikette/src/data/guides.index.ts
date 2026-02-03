@@ -153,7 +153,7 @@ const GUIDES_INDEX_BASE: GuideIndexEntry[] = [
   { key: "hitchhikingAmalfi", tags: ["hitchhiking", "amalfi", "budgeting"] },
   { key: "walkingTourAudio", tags: ["walking-tour", "positano", "audio-guide"] },
   { key: "workExchangeItaly", tags: ["work-exchange", "hostel-life", "italy"] },
-  { key: "stayingFitAmalfi", tags: ["wellness", "hiking", "positano"] },
+  { key: "stayingFitPositano", tags: ["wellness", "hiking", "positano", "beach", "kayaking"] },
   { key: "couplesInHostels", tags: ["couples", "accommodation", "hostel-life"] },
   { key: "luminariaPraiano", tags: ["event", "seasonal", "amalfi"] },
   // — Assistance (general planning/help) additions —

@@ -130,6 +130,16 @@
       }
     },
     "directionsLabel": "Indicazioni",
+    "sections": {
+      "content": {
+        "title": "Guide alle esperienze",
+        "description": "Guide approfondite su spiagge, trekking, gite di un giorno e cose da fare"
+      },
+      "directions": {
+        "title": "Come arrivare",
+        "description": "Indicazioni passo passo da e per l’ostello"
+      }
+    },
     "directionLinks": {
       "capriDayTrip": {
         "positanoCapriFerry": "Positano → Capri in traghetto",

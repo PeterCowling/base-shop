@@ -1,3 +1,6 @@
+Type: Audit
+Status: Reference
+
 # I18N-PIPE-01: Comprehensive Translatable Content Audit
 
 ## Executive Summary

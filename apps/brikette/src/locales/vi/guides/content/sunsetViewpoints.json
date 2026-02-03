@@ -73,18 +73,5 @@
         "Bản dịch đang được chuẩn bị."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Photo gallery",
-    "items": [
-      {
-        "caption": "Chiesa Nuova terrace",
-        "alt": "Bản dịch đang được chuẩn bị."
-      },
-      {
-        "caption": "Nocelle",
-        "alt": "Sunset from Nocelle"
-      }
-    ]
-  }
+  ]
 }

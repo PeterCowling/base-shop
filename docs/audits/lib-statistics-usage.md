@@ -1,3 +1,6 @@
+Type: Audit
+Status: Reference
+
 # Statistics Patterns Audit (AUDIT-02)
 
 **Audit Date:** 2026-01-21

@@ -52,18 +52,5 @@
         "Prova färsk lemonad, granita eller citronsirap om du föredrar att hoppa över alkohol."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Photo gallery",
-    "items": [
-      {
-        "alt": "Positano vintage poster with lemons",
-        "caption": "Vintage lemons"
-      },
-      {
-        "alt": "Terrace table with limoncello glasses",
-        "caption": "Terrace limoncello"
-      }
-    ]
-  }
+  ]
 }

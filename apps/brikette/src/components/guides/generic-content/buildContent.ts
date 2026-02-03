@@ -295,7 +295,10 @@ export function buildGenericContentData(
     }
   }
 
-  const tips = toStringArray(tipsRaw);
+  const tipsContentKey = `content.${guideKey}.tips` as const;
+  const tips = toStringArray(tipsRaw).filter((value) =>
+    !looksLikePlaceholderTranslation(value, tipsContentKey, guideKey),
+  );
   const warnings = toStringArray(warningsRaw).filter((value) =>
     !looksLikePlaceholderTranslation(value, warningsContentKey, guideKey),
   );

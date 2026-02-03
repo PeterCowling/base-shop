@@ -52,18 +52,5 @@
         "Prøv frisk lemonade, granita eller citronsirupper, hvis du foretrækker uden alkohol."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Fotogalleri",
-    "items": [
-      {
-        "alt": "Vintageplakat fra Positano med citroner",
-        "caption": "Vintage-citroner"
-      },
-      {
-        "alt": "Terrassebord med limoncello-glas",
-        "caption": "Limoncello på terrassen"
-      }
-    ]
-  }
+  ]
 }

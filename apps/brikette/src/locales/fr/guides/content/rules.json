@@ -1,0 +1,25 @@
+{
+  "seo": {
+    "title": "Règles et Politiques de l’Auberge – Positano Hostel",
+    "description": "Veuillez lire et respecter nos règles essentielles – notamment l’interdiction d’alcool extérieur et les consignes de devoir de diligence – afin de garantir la sécurité de tous et de profiter pleinement de votre séjour."
+  },
+  "linkLabel": "Règles et Politiques de l’Auberge – Positano Hostel",
+  "sections": [
+    {
+      "id": "alcoholPolicy",
+      "title": "Interdiction d’Alcool Extérieur",
+      "body": [
+        "En tant qu’établissement licencié, il est interdit d’apporter ou de consommer de l’alcool acheté à l’extérieur dans l’enceinte de l’auberge. Si vous arrivez avec de l’alcool extérieur, notre équipe le conservera en lieu sûr et vous le restituera au départ (ou dès que vous confirmerez qu’il sera consommé hors site). La décision du personnel est définitive. Introduire ou boire de l’alcool extérieur entraînera l’annulation immédiate de votre réservation, sera traité comme un « No-Show » et aucun remboursement ne sera accordé."
+      ]
+    },
+    {
+      "id": "dutyOfCare",
+      "title": "Votre Devoir de Diligence",
+      "body": [
+        "Pendant votre séjour, vous partagez l’auberge avec d’autres clients, le personnel et des prestataires. Merci de :",
+        "* Respecter la vie privée et l’espace personnel de chacun.\n* Veiller à ne pas endommager les biens de l’auberge ou des autres clients.\n* Maintenir un niveau sonore raisonnable et contribuer à une atmosphère calme et conviviale.\n* Suivre toute règle ou instruction supplémentaire donnée par notre équipe.",
+        "Si vous ne respectez pas ces obligations, nous pourrons annuler immédiatement votre réservation (consignée comme « No-Show »), vous demander de quitter les lieux sans remboursement et vous tenir financièrement responsable des amendes, frais juridiques, préjudices d’image ou autres dépenses. Toute activité illégale sera signalée sans délai aux autorités locales."
+      ]
+    }
+  ]
+}

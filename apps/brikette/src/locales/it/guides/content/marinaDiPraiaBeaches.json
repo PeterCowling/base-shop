@@ -1,109 +1,217 @@
 {
   "seo": {
-    "title": "Marina di Praia e spiagge appartate",
-    "description": "Calette raggiungibili in barca o a piedi, servizi disponibili e come organizzarne la visita."
+    "title": "Guida Marina di Praia: bus SITA, lido e cena",
+    "description": "Guida per ospiti dell’ostello su Marina di Praia: come arrivare in bus SITA, dove sistemarsi (lido o area libera), cosa portare e dove cenare prima di rientrare."
   },
-  "linkLabel": "Marina di Praia e spiagge appartate",
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
+  "linkLabel": "Marina di Praia: cala scenografica tra le scogliere",
   "intro": [
-    "Esplora Marina di Praia e le calette vicine per cambiare ritmo rispetto alla spiaggia principale di Positano."
+    "Marina di Praia è una piccola cala di ciottoli a Praiano — un breve tragitto in bus SITA da Hostel Brikette, ma di solito più tranquilla delle spiagge “famosissime” di Positano. Barche da pesca, una torre di guardia e passerelle in pietra le danno un’aria nascosta, senza rinunciare a cibo e servizi.",
+    "Se vuoi una giornata mare senza stress (nuoto, snack, pausa all’ombra, poi una cena facile), è una delle scelte migliori nei dintorni per chi viaggia in ostello.",
+    "In questa guida trovi: come fare il tragitto in bus, com’è organizzata la spiaggia (lido vs area libera), cosa portare per stare comodo sui ciottoli e come rientrare a Positano dopo il tramonto."
+  ],
+  "toc": [
+    { "href": "#why-go", "label": "Perché andare" },
+    { "href": "#getting-there", "label": "Come arrivare" },
+    { "href": "#layout", "label": "Spiaggia e servizi" },
+    { "href": "#what-to-bring", "label": "Cosa portare" },
+    { "href": "#best-time", "label": "Quando andare" },
+    { "href": "#nearby", "label": "Nuotate appartate nei dintorni" },
+    { "href": "#evening", "label": "Cena e rientro" }
   ],
   "sections": [
     {
-      "id": "marina",
-      "title": "Essenziali su Marina di Praia",
+      "id": "why-go",
+      "title": "Perché questa cala è perfetta per chi sta in ostello",
       "body": [
-        "Cala di ciottoli appartata con barche da pesca, torretta storica e passerelle in pietra: servizi senza la folla di Positano.",
-        "E' un'ottima tappa per una giornata a Praiano o una pausa a meta settimana; meno lettini ma atmosfera piu tranquilla e fotogenica."
+        "A differenza di Spiaggia Grande o Fornillo, questa baia sta in una gola stretta appena fuori Praiano. Le scogliere riparano l’acqua dal moto ondoso, le barche da pesca restano nel piccolo porto e l’atmosfera è rilassata anche in alta stagione.",
+        "È una giornata “via di mezzo” ideale: più comoda delle calette selvagge con mille scale, ma meno caotica delle grandi spiagge di Positano. Hai docce e cibo, ma ti senti incastonato tra le rocce e non in mezzo al paese.",
+        "Pensala come mezza giornata al mare (nuotata al mattino + pranzo lungo) oppure come relax nel tardo pomeriggio che finisce con una cena vista acqua prima di tornare su."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/01-marina-di-praia-overlook.webp",
+          "width": 1600,
+          "height": 1066,
+          "alt": "Panoramica della cala di Marina di Praia con barche, ombrelloni e alte scogliere a Praiano",
+          "caption": "Riparata, scenografica e di solito più tranquilla delle grandi spiagge di Positano. Foto: Falk2 (CC BY-SA 4.0) via Wikimedia Commons."
+        }
       ]
     },
     {
-      "id": "coves",
-      "title": "Calette vicine",
+      "id": "getting-there",
+      "title": "Andata e ritorno in bus SITA",
       "body": [
-        "Noleggia un kayak per esplorare la Grotta di Suppraiano o fai un breve trasferimento in barca verso spiagge appartate come Gavitella o Laurito.",
-        "Porta scarpe da scoglio: i fondali scendono rapidamente e i ciottoli possono essere scivolosi."
+        "Da Hostel Brikette scendi lungo Via Pasitea fino alla fermata Sponda e prendi un bus SITA in direzione Amalfi. Dì al conducente che vuoi “Marina di Praia” così si ricorda di accostare — la fermata è tra Praiano e Furore e con il bus pieno è facile non notarla.",
+        "Scendi alla fermata segnalata, poi segui il percorso in pietra in discesa (circa due minuti) fino al lungomare. È tutto pavimentato, quindi è semplice anche con le infradito.",
+        "Per il ritorno attraversa la strada e aspetta il bus verso Positano. In estate la frequenza è in genere buona, ma la sera tardi le corse diminuiscono — controlla l’orario esposto quando arrivi e punta alla penultima corsa se resti per cena.",
+        "Compra e convalida i biglietti SITA prima di salire. Se ti serve un ripasso su tipologie di biglietto, dove comprarli e cosa fare quando i bus sono pieni, vedi la nostra %LINK:sitaTickets|guida ai biglietti SITA%. Se trasformi la giornata in un giro completo di Praiano (chiese, belvederi e passeggiate costiere), abbinala alla %LINK:praianoGuide|guida di Praiano%."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/02-marina-di-praia-waterfront.webp",
+          "width": 1200,
+          "height": 1600,
+          "alt": "Passerella in pietra sul lungomare di Marina di Praia con barche e pareti rocciose",
+          "caption": "La passeggiata in pietra rende facile l’ultimo tratto (due minuti) fino all’acqua. Foto: Falk2 (CC BY-SA 4.0) via Wikimedia Commons."
+        },
+        {
+          "src": "/img/guides/marina-di-praia/08-san-gennaro-church.webp",
+          "width": 1600,
+          "height": 1200,
+          "alt": "Chiesa di San Gennaro a Praiano con cupola maiolicata e vista sulla Costiera Amalfitana",
+          "caption": "Se unisci mare e giro a Praiano, la Chiesa di San Gennaro è un’aggiunta facilissima. Foto: Elliott Brown (CC BY 2.0) via Wikimedia Commons."
+        }
       ]
     },
     {
-      "id": "logistics",
-      "title": "Come arrivare",
+      "id": "layout",
+      "title": "Com’è fatta la spiaggia: lido e servizi",
       "body": [
-        "Da Positano prendi il bus SITA verso Amalfi e chiedi la fermata Marina di Praia: circa 20 minuti, traffico permettendo.",
-        "Scendi alla fermata segnalata e percorri il sentiero in discesa per due minuti fino al mare; per il ritorno aspetta sul lato opposto."
+        "La spiaggia è stretta, di ciottoli, e divisa tra un piccolo tratto pubblico e l’area principale del lido. Se vuoi l’area libera vicino all’acqua, arriva prima — è la prima a riempirsi nei weekend.",
+        "Il principale operatore è Marina di Praia Beach Club (lettini, ombrelloni, docce e di solito qualche tipo di paddle/ kayak). In alta stagione paghi soprattutto la comodità, ma ne vale la pena se vuoi bagni e una giornata più “appoggi e ti rilassi”.",
+        "Lungo la passerella trovi ristoranti e chioschi per bevande fredde. I POS possono essere capricciosi, quindi porta contanti per piccoli pagamenti e un piano B se il rivenditore dei biglietti bus è chiuso più tardi.",
+        "Reality check da ostello: non portare oggetti di valore che ti farebbero stare in ansia. Se sei da solo, scegli un punto ben visibile (vicino ad altri gruppi), tieni il telefono chiuso nello zaino e fai nuotate brevi invece di lasciare la borsa incustodita a lungo."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/03-marina-di-praia-from-sea.webp",
+          "width": 1600,
+          "height": 1045,
+          "alt": "La cala di Marina di Praia vista dal mare con spiaggia di ciottoli e passerella sulla scogliera",
+          "caption": "Dal mare si capisce quanto sia “stretta” la baia — meglio arrivare presto se vuoi spazio libero. Foto: Gilbert Bochenek (CC BY-SA 3.0) via Wikimedia Commons."
+        }
       ]
-    }
-  ],
-  "tips": [
-    "Convalida il biglietto SITA appena sali e tienine uno di scorta per il rientro se l'edicola e chiusa.",
-    "Porta scarpe da acqua: i ciottoli sono grossi e l'acqua si fa subito profonda."
-  ],
-  "faqs": [
+    },
     {
-      "q": "La spiaggia e gratuita?",
-      "a": [
-        "C'e una piccola area libera al centro della cala, ma i posti si riempiono presto. Il lido offre lettini, docce e bagni."
+      "id": "what-to-bring",
+      "title": "Cosa portare (per non odiare i ciottoli)",
+      "body": [
+        "Qui è ciottoli, non sabbia morbida. Fa una differenza enorme: se arrivi solo con un asciugamano sottile, finirai per spostarti ogni cinque minuti invece di rilassarti.",
+        "Fai uno zaino “da gita in ostello”: leggero da portare su al ritorno, ma con gli oggetti che rendono gestibili ciottoli e ombra."
+      ],
+      "list": [
+        "Scarpette da scoglio: la riva può essere scivolosa e i ciottoli fanno male dopo ore.",
+        "Telo spesso o stuoia: sui ciottoli si sente subito il “duro”.",
+        "Uno strato leggero per il tardo pomeriggio: la baia va in ombra presto e dopo il bagno fa più fresco.",
+        "Contanti + carta: alcuni pagamenti e POS non sono affidabili.",
+        "Sacca stagna o bustina zip per il telefono se entri ed esci spesso dall’acqua."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/05-praiano-coastline.webp",
+          "width": 1600,
+          "height": 1200,
+          "alt": "Costa di Praiano con scogliere e mare blu sulla Costiera Amalfitana",
+          "caption": "Le scogliere cambiano luce e ombra in fretta — porta uno strato leggero se resti fino a tardi. Foto: Barochat (CC BY-SA 3.0) via Wikimedia Commons."
+        }
       ]
     },
     {
-      "q": "Posso arrivarci a piedi da Positano?",
-      "a": [
-        "E' sconsigliato: il percorso e lungo e senza marciapiedi. Meglio bus SITA o taxi."
+      "id": "best-time",
+      "title": "Quando andare (e com’è l’acqua)",
+      "body": [
+        "Per una giornata calma e semplice, punta a un arrivo al mattino: più possibilità di trovare un posto comodo, meno affollamento sulla passerella e un ritmo più facile “base → nuotata”.",
+        "Nel primo/secondo pomeriggio le scogliere fanno più ombra. Può essere un bene se sei accaldato e vuoi rinfrescarti, ma significa anche che con vento la baia può risultare fresca — soprattutto dopo una nuotata lunga.",
+        "Il fondale scende rapidamente: entra con calma la prima volta e fai attenzione a dove lasci la borsa se le onde arrivano più in alto."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/06-praiano-view.webp",
+          "width": 1600,
+          "height": 1066,
+          "alt": "Veduta della costa di Praiano con scogliere sul mare e case sul pendio",
+          "caption": "Le scogliere qui determinano luce e ombra — pianifica di conseguenza. Foto: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons."
+        }
       ]
-    }
-  ],
-  "toc": [
-    {
-      "href": "#why-go",
-      "label": "Perche andarci"
     },
     {
-      "href": "#getting-there",
-      "label": "Come arrivare"
+      "id": "nearby",
+      "title": "Nuotate appartate nei dintorni (cosa è realistico)",
+      "body": [
+        "La Costiera Amalfitana è famosa per le “calette segrete”, ma molte sono private, raggiungibili solo in barca o richiedono sentieri su scogliere poco sicuri. Per chi sta in ostello, la strategia migliore è usare questa baia come base comoda e aggiungere un’unica tappa “wow” sulla stessa linea bus.",
+        "La tappa scenografica più facile nei dintorni è %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore%: vai presto per foto e bagno veloce, poi torna qui per pranzo, ombra e una nuotata più rilassata.",
+        "Se vuoi fare un’intera giornata “assaggi”, organizza l’ordine (e gli orari dei bus) con la nostra %LINK:beachHoppingAmalfi|guida al beach-hopping in Costiera Amalfitana% per non passare il pomeriggio a guardare bus pieni che tirano dritto."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/07-fiordo-di-furore.webp",
+          "width": 1200,
+          "height": 1600,
+          "alt": "Gola di Fiordo di Furore con acqua turchese e alte scogliere",
+          "caption": "Fiordo di Furore è la tappa “foto” drammatica qui vicino — abbinala a una spiaggia base più tranquilla. Foto: Luca Aless (CC BY-SA 4.0) via Wikimedia Commons."
+        }
+      ]
     },
     {
-      "href": "#layout",
-      "label": "Struttura e servizi"
-    },
-    {
-      "href": "#evening",
-      "label": "Resta per cena"
+      "id": "evening",
+      "title": "Cena sull’acqua, poi rientro senza stress",
+      "body": [
+        "Dopo il bagno, questa è una delle baie più belle dove restare fuori: quando cala il sole, i ristoranti passano alla modalità cena e le luci della passeggiata si riflettono sull’acqua. Se vuoi un tavolo preciso, prenota — soprattutto a luglio e agosto.",
+        "Per semplificarti il rientro, controlla l’orario del bus appena arrivi. Punta alla penultima corsa verso Positano così hai margine se un bus è pieno.",
+        "Se perdi l’ultimo bus, i taxi da Praiano a Positano possono essere costosi — quindi se resti fino a tardi, organizza una divisione con altri compagni di ostello."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/04-torre-a-mare-watchtower.webp",
+          "width": 1200,
+          "height": 1600,
+          "alt": "Torre costiera vicino a Praiano sopra le scogliere sul mare",
+          "caption": "La costa qui è punteggiata da torri storiche e sentieri sulla scogliera. Foto: Falk2 (CC BY-SA 4.0) via Wikimedia Commons."
+        }
+      ]
     }
   ],
   "essentialsTitle": "Cosa aspettarsi",
   "essentials": [
-    "20 minuti di autobus SITA da Positano; chiedete la fermata Marina di Praia e camminate due minuti in discesa.",
-    "Stretta spiaggia di ciottoli con un lido principale più una piccola parte libera al centro.",
-    "Ristoranti e chioschi di snack fiancheggiano la passerella, ideale per una cena al tramonto prima di tornare a casa."
+    "Breve tragitto in bus SITA da Positano; chiedi al conducente la fermata Marina di Praia e scendi due minuti a piedi fino al mare.",
+    "Baia stretta di ciottoli con un lido principale e un piccolo tratto libero; arriva presto se vuoi la parte pubblica.",
+    "Cibo e servizi sul posto (ristoranti, bevande, docce al lido): ideale per mezza giornata relax o per una cena prima di rientrare."
   ],
-  "typicalCostsTitle": "Costi indicativi",
+  "typicalCostsTitle": "Costi tipici",
   "typicalCosts": [
-    "Lettino + ombrellone presso Marina di Praia Beach Club: € 25–€ 35 al giorno (disponibili set da due persone).",
-    "Noleggio kayak: circa 20€ l'ora per due persone.",
-    "Portata principale della cena da Da Armandino o Il Pirata: € 16–€ 28 a seconda del pescato e delle specialità di pasta."
+    "Lettino + ombrellone al Marina di Praia Beach Club: €25–€35 al giorno (disponibili set per due).",
+    "Noleggio kayak: circa €20/ora per due persone.",
+    "Secondi/piatti principali da Da Armandino o Il Pirata: €16–€28 a seconda del pescato e della pasta del giorno."
   ],
   "tipsTitle": "Consigli rapidi",
+  "tips": [
+    "Convalida il biglietto del bus appena sali e tienine uno di scorta per il ritorno nel caso il rivenditore sia chiuso la sera.",
+    "Porta scarpette da acqua: i ciottoli possono essere scivolosi e il fondale diventa subito profondo.",
+    "Confronta altre opzioni lungo costa nella nostra %LINK:positanoBeaches|panoramica delle spiagge% se vuoi abbinare questa cala a una giornata a Positano."
+  ],
   "warningsTitle": "Da sapere",
   "warnings": [
-    "Lo spazio è limitato; l'area libera si riempie prima e i lettini del lido si esauriscono nei fine settimana.",
-    "Le scogliere bloccano il sole diretto a metà pomeriggio: ottimo per rinfrescarsi, ma può fare freddo nelle giornate ventose.",
-    "La ricezione mobile si immerge all'interno della gola; scarica in anticipo gli orari degli autobus o le conferme di prenotazione della cena."
+    "Lo spazio è limitato: l’area libera si riempie per prima e i lettini del lido possono esaurirsi nei weekend.",
+    "Le scogliere bloccano il sole diretto nel primo/secondo pomeriggio — ottimo per rinfrescarsi, ma con vento può fare fresco.",
+    "Il segnale mobile cala dentro la gola: scarica in anticipo orari bus o conferme di prenotazione per la cena."
   ],
   "faqsTitle": "FAQ su Marina di Praia",
-  "gallery": {
-    "title": "Galleria Marina di Praia",
-    "items": [
-      {
-        "alt": "Spiaggia di Marina di Praia tra le scogliere",
-        "caption": "Ciottoli e lettini ai piedi delle scogliere"
-      },
-      {
-        "alt": "Ristoranti a strapiombo a Marina di Praia",
-        "caption": "Il Pirata e Da Armandino affacciati sulla cala"
-      },
-      {
-        "alt": "Noleggio kayak a Marina di Praia",
-        "caption": "Kayak pronti per esplorare le grotte vicine"
-      }
-    ]
-  }
+  "faqs": [
+    {
+      "q": "Da dove prendo esattamente il bus da Positano?",
+      "a": [
+        "Usa la fermata Sponda su Via Pasitea per i bus in direzione Amalfi. È a circa 10 minuti a piedi in discesa dall’ostello; in alta stagione arriva 10 minuti prima per salire prima che il bus sia pieno."
+      ]
+    },
+    {
+      "q": "C’è una zona libera o devo per forza noleggiare i lettini?",
+      "a": [
+        "C’è un piccolo tratto pubblico al centro della baia. Porta una stuoia o un telo spesso — i ciottoli sono grossi — e tieni conto che con la marea potresti spostarti più verso le rocce. I lettini del Marina di Praia Beach Club includono docce e bagni se preferisci una sistemazione più comoda."
+      ]
+    },
+    {
+      "q": "Fino a che ora posso restare a cena e tornare comunque a Hostel Brikette?",
+      "a": [
+        "L’ultima corsa SITA verso Positano varia a seconda del mese, ma in estate di solito c’è servizio fino a circa le 21:30. Controlla l’orario esposto quando arrivi e punta alla penultima corsa nel caso una sia piena. Dopo l’ultima corsa, i taxi Praiano → Positano costano circa €35–€45, quindi dividilo con compagni di viaggio se resti più a lungo."
+      ]
+    },
+    {
+      "q": "Marina di Praia è una buona scelta se vado da solo?",
+      "a": [
+        "Sì — è una delle baie più “solo-friendly” perché ha servizi e una passeggiata ben visibile. Detto questo, usa il buon senso da ostello: porta solo ciò che sei disposto a trasportare, tieni il telefono ben chiuso e fai nuotate più brevi così non lasci lo zaino incustodito troppo a lungo."
+      ]
+    }
+  ]
 }
+

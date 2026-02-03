@@ -128,25 +128,11 @@
       ]
     }
   ],
-  "galleryTitle": "Bộ ảnh",
-  "gallery": {
-    "items": [
-      {
-        "alt": "Khung cảnh dọc Con Đường của Các Vị Thần",
-        "caption": "Dọc đường mòn"
-      },
-      {
-        "alt": "Khung cảnh làng Nocelle",
-        "caption": "Nocelle nhìn từ trên cao"
-      }
-    ]
-  },
   "toc": {
     "onThisPage": "Nội dung chính",
     "essentials": "Vật dụng cần có",
     "costs": "Chi phí tham khảo",
     "tips": "Thời điểm lý tưởng",
-    "faqs": "Câu hỏi thường gặp",
-    "gallery": "Bộ ảnh"
+    "faqs": "Câu hỏi thường gặp"
   }
 }

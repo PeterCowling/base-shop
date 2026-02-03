@@ -3,7 +3,7 @@
     "title": "Best sunset viewpoints in Positano",
     "description": "Top spots to watch the sunset in Positano, plus how to reach them on foot or by bus."
   },
-  "linkLabel": "Best sunset viewpoints in Positano",
+  "linkLabel": "Sunset in Positano: Best Viewpoints for Golden Hour",
   "intro": [
     "Sunsets in Positano are dramatic—choosing the right perch and timing makes the shot.",
     "Use these reliable angles and arrival times to dodge the biggest crowds."
@@ -73,18 +73,5 @@
         "Street lighting varies—bring a phone torch or small light for late descents."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Photo gallery",
-    "items": [
-      {
-        "caption": "Chiesa Nuova terrace",
-        "alt": "Sunset from Chiesa Nuova terrace"
-      },
-      {
-        "caption": "Nocelle",
-        "alt": "Sunset from Nocelle"
-      }
-    ]
-  }
+  ]
 }

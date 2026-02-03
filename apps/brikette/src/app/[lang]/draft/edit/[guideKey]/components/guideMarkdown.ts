@@ -27,7 +27,7 @@ export function createGuideMarkdownCodec(
 ): GuideMarkdownCodec {
   const md = MarkdownIt("commonmark", { html: false });
 
-  md.inline.ruler.disable(["link", "image", "autolink", "backtick", "html_inline"]);
+  md.inline.ruler.disable(["link", "image", "autolink", "backticks", "html_inline"]);
   md.block.ruler.disable([
     "blockquote",
     "heading",
@@ -42,21 +42,33 @@ export function createGuideMarkdownCodec(
     md.block.ruler.disable(["list"]);
   }
 
-  const parser = new MarkdownParser(schema, md, {
+  const tokens: Record<string, any> = {
     paragraph: { block: "paragraph" },
-    bullet_list: { block: "bulletList" },
-    list_item: { block: "listItem" },
     em: { mark: "italic" },
     strong: { mark: "bold" },
-  });
+  };
+
+  // Only include list tokens if lists are allowed in the schema
+  if (opts.allowLists) {
+    tokens.bullet_list = { block: "bulletList" };
+    tokens.list_item = { block: "listItem" };
+  }
+
+  const parser = new MarkdownParser(schema, md, tokens);
+
+  const serializerNodes: Record<string, any> = {
+    paragraph: defaultMarkdownSerializer.nodes.paragraph,
+    text: defaultMarkdownSerializer.nodes.text,
+  };
+
+  // Only include list serializers if lists are allowed in the schema
+  if (opts.allowLists) {
+    serializerNodes.bulletList = (state: any, node: any) => state.renderList(node, "  ", () => "* ");
+    serializerNodes.listItem = defaultMarkdownSerializer.nodes.list_item;
+  }
 
   const serializer = new MarkdownSerializer(
-    {
-      paragraph: defaultMarkdownSerializer.nodes.paragraph,
-      bulletList: (state, node) => state.renderList(node, "  ", () => "* "),
-      listItem: defaultMarkdownSerializer.nodes.list_item,
-      text: defaultMarkdownSerializer.nodes.text,
-    },
+    serializerNodes,
     {
       italic: defaultMarkdownSerializer.marks.em,
       bold: defaultMarkdownSerializer.marks.strong,

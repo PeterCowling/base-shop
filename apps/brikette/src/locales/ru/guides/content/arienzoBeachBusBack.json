@@ -47,15 +47,6 @@
     "В печатных расписаниях указаны только остановки в Позитано; ожидайте Ариенцо примерно за 2–5 минут до Позитано-Спонда на обратном пути.",
     "There is no ticket vendor at Arienzo. Buy your return ticket in town, or be ready to walk to Positano Sponda or take the water shuttle back to Spiaggia Grande.",
     "Read our %LINK:arienzoBeachClub|Arienzo Beach guide% for facilities, shuttles, and planning tips.",
-    "Browse the %LINK:beaches|Positano beaches overview% to compare other coves and plan future visits."
-  ],
-  "gallery": {
-    "title": "Ориентир остановки Arienzo",
-    "items": [
-      {
-        "alt": "Сине-белая табличка остановки SITA на металлическом столбе",
-        "caption": "Ищите знак остановки SITA на внутренней стороне дороги над Ариенцо."
-      }
-    ]
-  }
+    "Browse the %LINK:positanoBeaches|Positano beaches overview% to compare other coves and plan future visits."
+  ]
 }

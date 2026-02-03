@@ -3,6 +3,7 @@
     "title": "Przewodnik po Arienzo Beach Club",
     "description": "Zarezerwuj leżaki, wybierz między zejściem po 300 stopniach a łodzią wahadłową i zaplanuj jedzenie oraz transport do Arienzo Beach Club."
   },
+  "lastUpdated": "2026-01-30T00:00:00.000Z",
   "linkLabel": "Przewodnik po Arienzo Beach Club",
   "intro": [
     "Arienzo leży tuż na wschód od Positano, oferuje długie popołudniowe słońce, turkusową wodę i spektakularne schody prowadzące z drogi Amalfi. To najżywsze lido w zasięgu krótkiej drogi z Hostel Brikette, ale ze względu na schody i obowiązkowe rezerwacje warto przygotować plan, zanim wyruszysz.",
@@ -121,11 +122,5 @@
       ]
     }
   ],
-  "galleryHeading": "Arienzo – najciekawsze ujęcia",
-  "gallery": {
-    "primaryAlt": "Tarasy Arienzo Beach Club",
-    "primaryCaption": "Nadbrzeżne platformy z pomarańczowymi leżakami",
-    "secondaryAlt": "Pomost łodzi wahadłowej Arienzo",
-    "secondaryCaption": "Wejście na shuttle przy Spiaggia Grande"
-  }
+  "galleryHeading": "Arienzo – najciekawsze ujęcia"
 }

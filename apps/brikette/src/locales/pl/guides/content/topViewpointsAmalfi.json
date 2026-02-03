@@ -1,53 +1,53 @@
 {
   "seo": {
-    "title": "Najlepsze punkty widokowe na Wybrzeżu Amalfi",
-    "description": "Najpiękniejsze panoramy: gdzie stanąć, o jakiej porze i jak dojechać."
+    "title": "Najlepsze punkty widokowe na wybrzeżu Amalfi",
+    "description": "Gdzie łapać epickie panoramy z dostępem do miejscówek."
   },
-  "linkLabel": "Najlepsze punkty widokowe na Wybrzeżu Amalfi",
+  "linkLabel": "Najlepsze punkty widokowe na wybrzeżu Amalfi",
   "intro": [
-    "Tłumaczenie w przygotowaniu."
+    "Znajdź najlepsze punkty widokowe na wybrzeżu Amalfi na wschód słońca, złotą godzinę i nocne kadry."
   ],
   "sections": [
     {
       "id": "positano",
-      "title": "Positano classics",
+      "title": "Klasyki Positano",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Via Cristoforo Colombo i tarasy przy Hotelu Marincanto dają warstwowe widoki na wieś — fotografuj o wschodzie, gdy światło jest miękkie.",
+        "Taras La Tagliata w Nocelle skierowany jest na wyspy Li Galli; zarezerwuj kolację na zachód albo wpadnij po szlaku Szlaku Bogów."
       ]
     },
     {
       "id": "ravello",
-      "title": "Ravello terraces",
+      "title": "Tarasy Ravello",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Scena koncertowa Villa Rufolo wychodzi na wybrzeże; poranne światło najlepiej podkreśla kopuły.",
+        "Taras Nieskończoności w Villa Cimbrone oprawia linię brzegu marmurowymi rzeźbami — statywy są dozwolone, ale trzymaj nóżki blisko siebie, by nie blokować przejścia."
       ]
     },
     {
       "id": "road",
-      "title": "Roadside panoramas",
+      "title": "Panoramy drogowe",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Zatrzymaj się w zatoczce Belvedere di Laurito między Positano a Praiano, by złapać szerokie kadry; trzymaj się za barierkami dla bezpieczeństwa.",
+        "Droga SS163 między Amalfi a Minori ma oznaczone punkty widokowe — przesiądź się do autobusów, jeśli nie chcesz prowadzić."
       ]
     }
   ],
   "tips": [
-    "Tłumaczenie w przygotowaniu.",
-    "Tłumaczenie w przygotowaniu."
+    "Zabierz lekki statyw i filtr ND na jedwabiste nocne zdjęcia tras promowych.",
+    "Zawsze obserwuj ruch drogi — noś jasne ubrania i nie wchodź na jezdnię."
   ],
   "faqs": [
     {
-      "q": "Can I fly a drone?",
+      "q": "Czy mogę latać dronem?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Loty dronem są mocno ograniczone na wybrzeżu Amalfi. Sprawdź przepisy ENAC i lokalne zarządzenia; kary za nieautoryzowane loty są wysokie."
       ]
     },
     {
-      "q": "What time is best for sunset photos?",
+      "q": "Kiedy najlepiej robić zdjęcia o zachodzie?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Złota godzina zaczyna się około godziny przed zachodem (w lipcu około 19:00). Przyjdź 30 minut wcześniej, by ustawić sprzęt i zająć miejsce."
       ]
     }
   ]

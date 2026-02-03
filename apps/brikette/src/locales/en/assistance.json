@@ -6,6 +6,16 @@
   },
   "quickLinks": [
     {
+      "label": "Hostel FAQs",
+      "description": "Quick answers to common questions about staying at Hostel Brikette in Positano.",
+      "slug": "hostelFaqs"
+    },
+    {
+      "label": "House Rules",
+      "description": "Read our core house rules including our no-outside-alcohol policy and duty-of-care guidelines.",
+      "slug": "rules"
+    },
+    {
       "label": "Change or cancel a booking",
       "description": "See deadlines and tips to avoid extra fees when plans change.",
       "slug": "changingCancelling"
@@ -18,7 +28,7 @@
     {
       "label": "Getting to Positano",
       "description": "Compare ferries, buses, and taxis with our step-by-step transport guide.",
-      "slug": "travelHelp"
+      "href": "how-to-get-here"
     }
   ],
   "contactCta": {

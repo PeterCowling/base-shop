@@ -102,6 +102,90 @@
         "title": "Hva du bør pakke for Amalfikysten",
         "description": "Sesongbasert pakkeliste for Positano og Amalfikysten."
       }
+    },
+    "positanoBeaches": {
+      "linkLabel": "Positanos strender: Sol og hemmelige bukter"
+    },
+    "arienzoBeachClub": {
+      "linkLabel": "Arienzo strand: Positanos eksklusive strandklubb"
+    },
+    "fornilloBeachGuide": {
+      "linkLabel": "Fornillo strand: Positanos roligere alternativ"
+    },
+    "lauritoBeachGuide": {
+      "linkLabel": "Laurito strand: Skjult perle under klippene"
+    },
+    "gavitellaBeachGuide": {
+      "linkLabel": "Gavitella strand: Praianos solnedgangsbadeplass"
+    },
+    "marinaDiPraiaBeaches": {
+      "linkLabel": "Marina di Praia: Dramatisk bukt mellom klippene"
+    },
+    "fiordoDiFuroreBeachGuide": {
+      "linkLabel": "Fiordo di Furore: Fjordstranden under broen"
+    },
+    "reginaGiovannaBath": {
+      "linkLabel": "Regina Giovanna: Romerske ruiner møter naturlig basseng"
+    },
+    "positanoMainBeach": {
+      "linkLabel": "Spiaggia Grande: Positanos ikoniske hovedstrand"
+    },
+    "sunriseHike": {
+      "linkLabel": "Soloppgangstur: Se daggry over Positano"
+    },
+    "santaMariaDelCastelloHike": {
+      "linkLabel": "Santa Maria del Castello: Fjellandsbytur"
+    },
+    "topOfTheMountainHike": {
+      "linkLabel": "Monte Comune: Vandring til Positanos høyeste utsikt"
+    },
+    "stayingFitAmalfi": {
+      "linkLabel": "Hold deg i form i Positano: Trapper, stier og strandtrening"
+    },
+    "capriDayTrip": {
+      "linkLabel": "Dagstur til Capri: Øyflukt fra Positano"
+    },
+    "capriOnABudget": {
+      "linkLabel": "Capri uten å sprenge budsjettet"
+    },
+    "campingAmalfi": {
+      "linkLabel": "Camping på Amalfikysten: Budsjettvennlig alternativ til hoteller"
+    },
+    "boatTours": {
+      "linkLabel": "Båtturer: Solnedgangscruise til privat charter"
+    },
+    "cheapEats": {
+      "linkLabel": "Spis som en lokal: Positanos beste budsjettmat"
+    },
+    "eatingOutPositano": {
+      "linkLabel": "Hvor spise i Positano: Fra uformelt til festlig"
+    },
+    "positanoDining": {
+      "linkLabel": "Positanos beste restauranter nær Hostel Brikette"
+    },
+    "limoncelloCuisine": {
+      "linkLabel": "Smak Positano: Limoncello, sitroner og lokale smaker"
+    },
+    "instagramSpots": {
+      "linkLabel": "Instagram-verdig Positano: Beste fotosteder og tidspunkter"
+    },
+    "sunsetViewpoints": {
+      "linkLabel": "Solnedgang i Positano: Beste utsiktspunkter for den gylne timen"
+    },
+    "ravelloFestival": {
+      "linkLabel": "Ravello Festival: Klassiske konserter under stjernene"
+    },
+    "ferragostoPositano": {
+      "linkLabel": "Ferragosto: Italias 15. august-feiring i Positano"
+    },
+    "luminariaPraiano": {
+      "linkLabel": "Luminaria di Praiano: Tusenvis av stearinlys lyser opp natten"
+    },
+    "walkingTourAudio": {
+      "linkLabel": "Gratis lydguide: Oppdag Positanos skjulte historier"
+    },
+    "freeThingsPositano": {
+      "linkLabel": "Gratis ting i Positano: Budsjettvennlig moro"
     }
   },
   "dev": {

@@ -1,4 +1,4 @@
-import { generateMeta } from "@acme/lib";
+import { generateMeta } from "@acme/lib/server";
 
 import { authorize, fetchSettings, persistSettings } from "../helpers";
 import { generateSeo } from "../seoService";

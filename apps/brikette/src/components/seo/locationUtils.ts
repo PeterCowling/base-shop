@@ -1,6 +1,6 @@
- 
+
 // src/components/seo/locationUtils.ts
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 export function useOptionalRouterPathname(): string | undefined {
   try {
@@ -8,6 +8,23 @@ export function useOptionalRouterPathname(): string | undefined {
     return typeof pathname === "string" ? pathname : undefined;
   } catch {
     return undefined;
+  }
+}
+
+/**
+ * Safely access search params from Next.js router.
+ * Returns empty string if router context is unavailable (e.g., in tests).
+ *
+ * Use this instead of `window.location.search` to avoid SSR/client hydration mismatches.
+ */
+export function useOptionalSearchParams(): string {
+  try {
+    const searchParams = useSearchParams();
+    const search = searchParams?.toString() ?? "";
+    return search ? `?${search}` : "";
+  } catch {
+    // Router context unavailable (e.g., tests, SSR without router)
+    return "";
   }
 }
 

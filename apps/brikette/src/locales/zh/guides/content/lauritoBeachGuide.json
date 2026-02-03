@@ -91,7 +91,7 @@
   "tips": [
     "Screenshot confirmation emails — mobile signal fades near the dock.",
     "Pack reef-safe sunscreen and water shoes; the shoreline mixes pebbles and rock slabs.",
-    "Review our %LINK:beaches|Positano beaches overview% to compare Laurito with other coves."
+    "Review our %LINK:positanoBeaches|Positano beaches overview% to compare Laurito with other coves."
   ],
   "warningsTitle": "Good to know",
   "warnings": [
@@ -123,22 +123,46 @@
   "images": {
     "whyGo": {
       "alt": "悬崖环抱的拉乌里托海湾全景",
-      "caption": "拉乌里托比 Spiaggia Grande 更安静，午后阳光可持续到傍晚"
+      "caption": "拉乌里托比 Spiaggia Grande 更安静，午后阳光可持续到傍晚",
+      "src": "/img/guides/laurito-beach/02-beach-overview.jpg",
+      "width": 403,
+      "height": 500
     },
     "layout": {
       "alt": "拉乌里托海滩的三区布局示意",
-      "caption": "海湾分为公共区、Villa Tre Ville 与 Da Adolfo 三部分"
+      "caption": "海湾分为公共区、Villa Tre Ville 与 Da Adolfo 三部分",
+      "src": "/img/guides/laurito-beach/01-beach-layout-map.jpg",
+      "width": 1500,
+      "height": 1000
     },
     "treVille": {
       "alt": "Villa Tre Ville 海滩俱乐部的躺椅与海景",
-      "caption": "Villa Tre Ville 提供精品级服务与日落巡游"
+      "caption": "Villa Tre Ville 提供精品级服务与日落巡游",
+      "src": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg",
+      "width": 1280,
+      "height": 1600
     },
     "daAdolfo": {
       "alt": "Da Adolfo 码头与餐厅露台",
-      "caption": "接驳船会将客人送至 Da Adolfo 露台旁"
+      "caption": "接驳船会将客人送至 Da Adolfo 露台旁",
+      "src": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg",
+      "width": 512,
+      "height": 215
+    },
+    "positanoView": {
+      "src": "/img/guides/laurito-beach/05-positano-view.jpg",
+      "width": 1280,
+      "height": 1707,
+      "alt": "波西塔诺与海景全景，岸边有船只",
+      "caption": "Spiaggia Grande 是众多海滩接驳船和船只的主要出发点"
+    },
+    "sitaBus": {
+      "src": "/img/guides/laurito-beach/06-amalfi-coast-sita-bus.jpg",
+      "width": 1920,
+      "height": 1080,
+      "alt": "蓝色 SITA 巴士行驶在阿马尔菲海岸公路上，远处是大海",
+      "caption": "当船只暂停时的可靠备选方案：沿海公路上的 SITA 巴士"
     }
   },
-  "gallery": {
-    "alt": "拉乌里托海滩海岸线"
-  }
+  "lastUpdated": "2026-01-29T00:00:00.000Z"
 }

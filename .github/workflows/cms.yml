@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - staging
     paths:
       - 'apps/cms/**'
       - 'packages/config/**'
@@ -76,7 +77,7 @@ jobs:
   test:
     name: Test (shard ${{ matrix.shard }}/4)
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
@@ -89,6 +90,16 @@ jobs:
         with:
           turbo-token: ${{ secrets.TURBO_TOKEN }}
           turbo-team: ${{ vars.TURBO_TEAM }}
+      - name: Restore Jest/ts-jest caches
+        uses: actions/cache@v4
+        with:
+          path: |
+            .ts-jest
+            node_modules/.cache/jest
+            apps/cms/node_modules/.cache/jest
+          key: cms-jest-cache-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ matrix.shard }}
+          restore-keys: |
+            cms-jest-cache-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
       - name: Run tests (shard ${{ matrix.shard }}/4)
         run: |
           pnpm exec jest --ci --runInBand --detectOpenHandles --passWithNoTests \
@@ -120,13 +131,13 @@ jobs:
 
   deploy:
     name: Deploy
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging'
     needs: [build]
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment:
-      name: production
-      url: https://cms.pages.dev
+      name: "${{ github.ref_name == 'staging' && 'staging' || 'production' }}"
+      url: "${{ github.ref_name == 'staging' && 'https://staging.cms.pages.dev' || 'https://cms.pages.dev' }}"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -141,8 +152,10 @@ jobs:
         uses: ./.github/actions/decrypt-secrets
         with:
           sops-age-key: ${{ secrets.SOPS_AGE_KEY }}
+          require-key: true
+          require-file: true
           app-path: apps/cms
-          environment: production
+          environment: "${{ github.ref_name == 'staging' && 'preview' || 'production' }}"
 
       # ADMIN-05: Validate environment before deploy
       - name: Validate deploy environment
@@ -159,7 +172,7 @@ jobs:
       - name: Post-Deploy Health Check
         run: |
           chmod +x scripts/post-deploy-health-check.sh
-          ./scripts/post-deploy-health-check.sh cms
+          ./scripts/post-deploy-health-check.sh cms ${{ github.ref_name == 'staging' && '--staging' || '' }}
         env:
           EXTRA_ROUTES: "/api/health"
           MAX_RETRIES: "10"

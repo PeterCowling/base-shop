@@ -1,73 +1,63 @@
 {
   "seo": {
-    "title": "Élelmiszerboltok és gyógyszertárak Positanóban",
-    "description": "Nyitvatartások, elhelyezkedés, éjszakai opciók és házhozszállítási tippek."
+    "title": "Élelmiszer és gyógyszertárak Positanóban",
+    "description": "Hol szerezz be alapvető dolgokat: mini marketek, késő esti nyitvatartások és gyógyszertárak."
   },
-  "linkLabel": "Élelmiszerboltok és gyógyszertárak Positanóban",
+  "linkLabel": "Élelmiszer és gyógyszertárak Positanóban",
   "intro": [
-    "A fordítás folyamatban van."
+    "Positanóban nincsenek nagy szupermarketek, ezért készülj fel kompakt boltokra, heti piacra és pár megbízható gyógyszertárra."
   ],
   "sections": [
     {
       "id": "mini-markets",
-      "title": "Mini-markets & delis",
+      "title": "Mini marketek és delikáteszek",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "A Via Pasitea és Via dei Mulini menti helyi delikáteszek friss kenyeret, sajtokat és kész salátákat tartanak – korlátozott polchely, de napi szállításokkal.",
+        "A nyitvatartás a szieszta ritmusát követi – vásárolj 13:00 előtt vagy 16:30 után, hogy ne zárják le a boltokat."
       ]
     },
     {
       "id": "produce",
-      "title": "Produce & markets",
+      "title": "Zöldség- és piacválaszték",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Gyümölcs- és zöldségárusok minden reggel a Sponda kanyar és a Chiesa Nuova megálló környékén állnak fel; vigyél aprót gyors vásárláshoz.",
+        "Szerdánként Montepertuso ad otthont egy kis piacnak (13-as busz) szezonális zöldségekkel, tejtermékekkel és felvágottakkal."
       ]
     },
     {
       "id": "pharmacies",
-      "title": "Pharmacies & health items",
+      "title": "Gyógyszertárak és egészség",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "A Farmacia Positano (Via Pasitea) alap gyógyszereket, napvédőket és tengeri betegséget enyhítő tablettákat tart; a speciális recepteknél vidd magaddal az orvosi felírást.",
+        "Az ügyeleti szolgálat rotálódik – nézd meg a gyógyszertár ajtajára kifüggesztett értesítést, ha késő esti gyógyszerre lenne szükséged."
       ]
     },
     {
       "id": "late-hours",
-      "title": "Late-night essentials",
+      "title": "Késő esti szükségletek",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Néhány alimentari szezonban 22:00-ig nyitva tart; máskor válassz a buszmegállók melletti 24 órás automaták közül.",
+        "Sürgős esetben Sorrento (45–60 perc busszal) nagyobb szupermarketekkel és kórházi ügyelettel segít."
       ]
-    }
-  ],
-  "gallery": [
-    {
-      "alt": "Positano main road shops",
-      "caption": "A fordítás folyamatban van."
-    },
-    {
-      "alt": "A fordítás folyamatban van.",
-      "caption": "Fruit and essentials"
     }
   ],
   "tips": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
+    "Hozz könnyű táskát vagy hátizsákot, hogy a lépcsőkön fel tudj vinni egy csomagot anélkül, hogy túlterhelnéd az egyik kezed.",
+    "Tarts újratölthető kulacsot: a legtöbb bolt olcsó 1,5 literes utántöltést árul, és a hostel teraszain vannak szűrt csapok."
   ],
   "faqs": [
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Vásárolhatok gluténmentes élelmiszert helyben?",
       "a": [
-        "A fordítás folyamatban van."
+        "Igen – keresd a “senza glutine” polcokat a mini marketekben, vagy kérdezd meg a gyógyszerészt; a készlet kicsi, szóval ha találsz, vidd."
       ]
     },
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Nyitva vannak a gyógyszertárak vasárnap?",
       "a": [
-        "A fordítás folyamatban van."
+        "Legalább egy nyitva tart, korlátozott órákkal; nézd meg a kifüggesztett ügyeleti beosztást és hívj előre a recept miatt."
       ]
     }
   ],
-  "fallback": "A fordítás folyamatban van."
+  "fallback": "Az alapvető dolgok mindenütt elérhetők Positanóban – vásárolj korán, és jegyezd meg a helyi gyógyszertárakat."
 }

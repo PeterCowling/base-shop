@@ -209,3 +209,62 @@ STRICT=1 ./scripts/validate-changes.sh
 ```
 
 See the script for full details and options.
+
+---
+
+## Hydration Testing
+
+**Purpose:** Detect React server/client hydration mismatches that `suppressHydrationWarning` masks.
+
+**When to use:** When working on SSR components, especially guides, structured data, or any component that might render differently on server vs client.
+
+### Hydration Test Utilities
+
+Location: `apps/brikette/src/test/helpers/hydrationTestUtils.ts`
+
+**Available functions:**
+- `renderWithHydration({ server, client })` — Simulates SSR → client hydration cycle
+- `expectNoHydrationErrors(result)` — Asserts no hydration mismatches occurred
+
+### Usage Pattern
+
+```tsx
+import { renderWithHydration, expectNoHydrationErrors } from "@/test/helpers/hydrationTestUtils";
+
+it("renders consistently on server and client", () => {
+  const result = renderWithHydration({
+    server: <MyComponent prop="value" />,
+    client: <MyComponent prop="value" />,
+  });
+
+  // Assert no hydration errors
+  expectNoHydrationErrors(result);
+
+  // Optionally inspect rendered output
+  expect(result.serverHTML).toContain("expected content");
+  expect(result.container.querySelector(".my-class")).toBeTruthy();
+});
+```
+
+### Testing for Mismatches
+
+To verify your test harness catches real mismatches:
+
+```tsx
+it("detects when components diverge", () => {
+  const result = renderWithHydration({
+    server: <div>Server</div>,
+    client: <div>Client</div>,
+  });
+
+  // Should capture the mismatch
+  expect(result.hydrationErrors.length).toBeGreaterThan(0);
+});
+```
+
+### Important Notes
+
+- **SSR simulation:** The utility temporarily clears `window`/`document` during server render to simulate real SSR.
+- **Error capture:** Hydration errors are captured both via `onRecoverableError` and thrown exceptions (React 19 behavior).
+- **Jest limitations:** In Jest/JSDOM, some `typeof window` checks may not behave exactly like production SSR. The utility does its best to simulate the environment.
+- **Use for regression prevention:** Add hydration tests for components that have had hydration issues in the past.

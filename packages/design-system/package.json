@@ -60,7 +60,7 @@
     }
   },
   "scripts": {
-    "build": "tsc -b",
+    "build": "tsc -b && cp src/molecules/DatePicker.css dist/molecules/DatePicker.css",
     "dev": "tsc -b --watch",
     "clean": "rimraf dist *.tsbuildinfo",
     "typecheck": "tsc -p tsconfig.json --noEmit",

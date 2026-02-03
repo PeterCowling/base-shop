@@ -1,5 +1,6 @@
 import type { AppLanguage } from "@/i18n.config";
 import type { GuideKey } from "@/routes.guides-helpers";
+import type { SeoAuditResult } from "@/routes/guides/guide-manifest-overrides";
 
 export type GuideFieldStatus = {
   intro: boolean;
@@ -36,6 +37,13 @@ export type GuideDiagnosticResult = {
   faqCount: number;
 };
 
+export type DateValidationResult = {
+  hasEnglishDate: boolean;
+  englishDate?: string;
+  localesWithDate: AppLanguage[];
+  localesMissingDate: AppLanguage[];
+};
+
 export type GuideChecklistDiagnostics = {
   translations?: TranslationCoverageResult;
   content?: {
@@ -47,4 +55,6 @@ export type GuideChecklistDiagnostics = {
     hasFaqs: boolean;
   };
   seo?: SeoFieldStatus;
+  seoAudit?: SeoAuditResult;
+  dateValidation?: DateValidationResult;
 };

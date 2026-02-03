@@ -1,29 +1,209 @@
 {
   "seo": {
-    "title": "Amalfi đến Positano bằng xe buýt | Hostel Brikette",
-    "description": "Xe buýt SITA từ Amalfi đến Positano: điểm đón, mẹo mua vé, lưu ý giờ chạy và điểm xuống gần Hostel Brikette (Chiesa Nuova)."
+    "title": "Xe buýt Amalfi Positano: Hướng dẫn toàn diện | Hostel Brikette",
+    "description": "Hướng dẫn toàn diện về xe buýt Amalfi Positano (tuyến SITA 5070): điểm đón xe, giá cả năm 2026 (2.60 euro), lịch trình và nơi xuống xe để đến Hostel Brikette."
   },
-  "intro": {
-    "title": "Amalfi đến Positano — Xe buýt (SITA Sud)",
-    "body": "Dùng hướng dẫn này để đi từ Amalfi đến Positano bằng xe buýt SITA. Bài viết nêu nơi lên xe ở Amalfi, cách xác thực vé, đọc thời khóa biểu và điểm xuống gần hostel nhất."
-  },
+  "lastUpdated": "2026-01-31",
+  "intro": [
+    "Xe buýt Amalfi Positano (tuyến SITA Sud 5070) là cách tiết kiệm nhất để di chuyển giữa hai thị trấn ven biển này, với giá 2.60 euro một chiều. Hướng dẫn này bao gồm tất cả những gì khách lưu trú cần biết: nơi lên xe ở Amalfi, cách mua vé, thời gian chạy, và quan trọng nhất, nên xuống ở trạm nào để đi bộ ngắn nhất đến %LINK:chiesaNuovaArrivals|Hostel Brikette ở Chiesa Nuova%.",
+    "Được cập nhật cho mùa 2026 với giá cả hiện tại và mẹo thực tế từ nhân viên đã hướng dẫn hàng trăm khách qua hành trình này."
+  ],
   "callouts": {
-    "aside": "Cần lựa chọn di chuyển khác? Mở %HOWTO:how-to-get-here|Tổng quan Cách đến đây% để xem phà, taxi và các hành trình kết hợp."
+    "aside": "Cần các lựa chọn di chuyển khác? Mở %LINK:howToGetToPositano|Tổng quan Cách đến đây% để xem phà, taxi và các tuyến kết hợp."
   },
   "sections": [
     {
       "id": "overview",
       "title": "Tổng quan hành trình",
-      "body": "Xe buýt SITA chạy thẳng từ Amalfi đến Positano hoạt động dày đặc trong mùa cao điểm. Hành trình ven biển mất khoảng một giờ tùy lưu lượng giao thông."
+      "body": [
+        "Xe buýt SITA từ Amalfi đến Positano mất 30-40 phút tùy thuộc vào giao thông và số điểm dừng. Bạn sẽ lên xe tại Piazza Flavio Gioia ở Amalfi (bến xe buýt chính trên đường ven biển) và di chuyển dọc theo con đường ngoạn mục Bờ biển Amalfi với tầm nhìn ven biển ấn tượng. Chúng tôi đã tính giờ chuyến đi này hàng chục lần khi hướng dẫn khách, và thường thì các chuyến buýt sáng (trước 11:00) mất khoảng 30 phút, trong khi các chuyến chiều có thể kéo dài đến 40 phút hoặc hơn trong mùa cao điểm.",
+        "Đối với Hostel Brikette, hãy xuống ở trạm Chiesa Nuova—không phải Positano Centro. Chiesa Nuova là trạm đầu tiên ở Positano, trước khoảng 10 phút so với trung tâm thị trấn chính. Từ đó, chỉ mất 5 phút đi bộ xuống dốc đến hostel. Điều này rất quan trọng: chúng tôi đã gặp vô số khách bỏ lỡ trạm này và phải leo dốc đứng 20 phút với hành lý trong nắng hè—điều bạn chắc chắn muốn tránh.",
+        "Xe buýt chạy thường xuyên vào mùa hè (mỗi 30-60 phút) nhưng ít hơn vào mùa đông. Luôn kiểm tra lịch trình hiện tại trước khi đi, đặc biệt là ngoài mùa cao điểm."
+      ],
+      "images": [
+        {
+          "src": "/images/guides/amalfiPositanoBus/amalfi-coast-road.jpg",
+          "alt": "Con đường ven biển quanh co SS163 Amalfitana với tầm nhìn vách đá ấn tượng dọc theo Bờ biển Amalfi",
+          "caption": "Con đường Amalfi nổi tiếng (SS163) mà xe buýt SITA điều hướng hàng ngày"
+        },
+        {
+          "src": "/images/guides/amalfiPositanoBus/positano-coastal-view.jpg",
+          "alt": "Tầm nhìn ven biển tuyệt đẹp của Positano từ biển, cho thấy các tòa nhà đầy màu sắc xếp tầng xuống sườn vách đá",
+          "caption": "Bờ biển Amalfi đẹp như tranh được nhìn từ tuyến xe buýt SITA"
+        }
+      ]
     },
     {
       "id": "boarding",
-      "title": "Nơi lên xe tại Amalfi"
+      "title": "Nơi lên xe ở Amalfi",
+      "body": [
+        "Tất cả xe buýt SITA đến Positano đều xuất phát từ Piazza Flavio Gioia, bến xe buýt chính của Amalfi nằm trên đường ven biển giữa hai bến phà. Bạn không thể bỏ lỡ nó—nó nằm ngay trước lối vào đường hầm vào thị trấn Amalfi. Khi chúng tôi gửi khách từ hostel đi Amalfi trong ngày, đây chính xác là nơi chúng tôi bảo họ lên xe buýt trở về.",
+        "Tìm các trạm xe buýt SITA được đánh dấu số hiệu tuyến. Tuyến 5070 phục vụ Amalfi-Positano-Sorrento. Trạm được ghi rõ ràng, và bạn sẽ thấy các hành khách khác đang chờ. Mẹo từ kinh nghiệm của chúng tôi: đến sớm 10 phút vào mùa hè, vì xe buýt có thể đầy và đôi khi bỏ qua các trạm đã đầy. Chúng tôi đã có khách bỏ lỡ xe buýt vì họ đến đúng giờ khởi hành và xe buýt đã đầy rồi.",
+        "Bar SITA, nằm ngay tại Piazza Flavio Gioia, là nơi thuận tiện để mua vé và kiểm tra lịch trình được niêm yết trong khi chờ đợi."
+      ],
+      "images": [
+        {
+          "src": "/images/guides/amalfiPositanoBus/amalfi-sea-view.jpg",
+          "alt": "Tầm nhìn toàn cảnh của bến nước và bến thuyền Amalfi từ vị trí cao",
+          "caption": "Bến nước Amalfi gần Piazza Flavio Gioia, nơi xe buýt SITA khởi hành"
+        },
+        {
+          "src": "/images/guides/amalfiPositanoBus/amalfi-piazza-duomo.jpg",
+          "alt": "Nhà thờ Amalfi và Piazza del Duomo với khách du lịch và kiến trúc lịch sử",
+          "caption": "Trung tâm lịch sử Amalfi, cách bến xe buýt một quãng đi bộ ngắn"
+        }
+      ]
     },
     {
       "id": "tickets",
-      "title": "Vé và thời gian biểu",
-      "body": "Kiểm tra lịch mới nhất trên %URL:https://www.positano.com/en/bus-schedule|Positano.com%. Dùng các lưu ý dưới đây để đọc bảng giờ cho chính xác."
+      "title": "Vé và giá cả (2026)",
+      "body": [
+        "Vé một chiều từ Amalfi đến Positano có giá 2.60 euro (cấp giá AC2). Vé phải được mua trước khi lên xe—tài xế không thể bán vé cho bạn. Mua chúng từ Bar SITA (Piazza Flavio Gioia), bất kỳ cửa hàng thuốc lá (tabaccheria), ki-ốt báo, hoặc quán cà phê nào có logo SITA.",
+        "Nếu bạn dự định nhiều chuyến xe buýt trong một ngày, hãy xem xét vé 24 giờ CostieraSITA với giá 10 euro, cho phép bạn đi không giới hạn trên tất cả xe buýt SITA Sud trên khắp Bờ biển Amalfi. Nó hoàn vốn sau bốn chuyến.",
+        "Luôn xác thực vé của bạn trong máy màu vàng khi lên xe buýt. Thanh tra kiểm tra vé, và tiền phạt cho vé không xác thực hoặc thiếu vé rất cao (thường là 50 euro trở lên).",
+        "Kiểm tra lịch trình mới nhất trên %URL:https://www.positano.com/en/bus-schedule|Positano.com% hoặc %URL:https://www.sitasudtrasporti.it|trang web chính thức SITA Sud%. Lịch trình thay đổi theo mùa, với dịch vụ giảm từ tháng 11 đến tháng 3."
+      ]
+    },
+    {
+      "id": "chiesa-nuova-stop",
+      "title": "Xuống ở Chiesa Nuova cho hostel",
+      "body": [
+        "Điều này rất quan trọng: hỏi tài xế hoặc hành khách địa phương báo cho bạn biết khi đến Chiesa Nuova (\"KEE-eh-zah NWOH-vah\"). Đây là trạm chính thức đầu tiên ở Positano, trước khoảng 10 phút so với trung tâm thị trấn. Trạm được đánh dấu bằng biển báo và mái che SITA. Chúng tôi huấn luyện mọi khách đến về cách phát âm này trước khi họ rời đi Amalfi, và các tài xế đã nói với chúng tôi rằng họ đánh giá cao khi du khách nỗ lực hỏi trước.",
+        "Nhấn nút dừng ngay khi bạn thấy biển báo Chiesa Nuova hoặc nhận ra cụm tòa nhà trên đỉnh đồi. Tài xế sẽ dừng trên đường chính (Via Cristoforo Colombo). Từ kinh nghiệm của nhân viên chúng tôi trong việc đón hàng trăm khách: nếu không chắc chắn, hãy nói với tài xế khi lên xe \"Chiesa Nuova, per favore\" (Chiesa Nuova, làm ơn). Hầu hết tài xế đều hợp tác và sẽ chỉ hoặc thông báo trạm của bạn—chúng tôi thậm chí còn có tài xế nhớ khách hostel từ các chuyến trước và chủ động gọi trạm.",
+        "Từ trạm Chiesa Nuova, đi bộ xuống dốc 5 phút đến Hostel Brikette. Để biết hướng dẫn đi bộ chi tiết từ trạm, xem %LINK:chiesaNuovaArrivals|Hướng dẫn đến Chiesa Nuova%.",
+        "Nhiều du khách lần đầu vô tình ở lại đến Positano Centro, có nghĩa là phải leo ngược lên với hành lý—không vui trong ngày nóng. Đặt nhắc nhở trên điện thoại sau 25 phút kể từ khi khởi hành để bắt đầu quan sát Chiesa Nuova. Nếu bạn có bản đồ ngoại tuyến (Maps.me hoặc chế độ ngoại tuyến Google Maps), theo dõi vị trí GPS của bạn—Chiesa Nuova ở khoảng 40.6270°B, 14.4851°Đ.",
+        "Dấu hiệu trực quan cho Chiesa Nuova: bạn sẽ thấy một cụm tòa nhà ở hai bên đường, một nhà thờ có tháp chuông đặc biệt ở bên phải, và nhiều cửa hàng và quán cà phê. Trạm xe buýt có mái che và thường có một vài người đang chờ. Nó nằm ở phần tương đối bằng phẳng của đường trước khi xuống dốc ấn tượng vào Positano thật sự.",
+        "Nếu bạn đi với nhóm, chỉ định một người quan sát trạm. Rất dễ bỏ lỡ nếu bạn đang nói chuyện hoặc bị phân tâm bởi cảnh quan. Nhờ hostel gửi tin nhắn WhatsApp với vị trí chính xác của trạm trước khi đi—nhân viên có thể chia sẻ ảnh hoặc ghim bản đồ."
+      ],
+      "images": [
+        {
+          "src": "/images/guides/amalfiPositanoBus/positano-view-1.jpg",
+          "alt": "Những ngôi nhà và khách sạn đầy màu sắc của Positano leo lên sườn đồi dốc trên Địa Trung Hải",
+          "caption": "Kiến trúc sườn vách đá mang tính biểu tượng của Positano có thể nhìn thấy từ tuyến xe buýt"
+        },
+        {
+          "src": "/images/guides/amalfiPositanoBus/positano-view-2.jpg",
+          "alt": "Tầm nhìn rộng của Positano với bãi biển, tòa nhà đầy màu sắc và núi xung quanh",
+          "caption": "Tầm nhìn đầy đủ của Positano từ cách tiếp cận đường ven biển"
+        }
+      ]
+    },
+    {
+      "id": "what-to-expect",
+      "title": "Những gì mong đợi trên xe buýt",
+      "body": [
+        "Xe buýt SITA trên Bờ biển Amalfi là xe buýt tiêu chuẩn, không phải xe sang trọng. Vào mùa hè, hãy mong đợi chỉ có chỗ đứng trên các tuyến và thời gian phổ biến. Chuyến đi rất đẹp mắt nhưng quanh co—nếu bạn dễ bị say tàu xe, hãy ngồi gần phía trước và nhìn ra chân trời. Là người đã đi tuyến này vô số lần khi huấn luyện nhân viên mới, tôi có thể xác nhận rằng ghế phía trước bên trái mang lại sự kết hợp tốt nhất giữa sự ổn định và cảnh quan.",
+        "Có không gian hạn chế cho ba lô lớn và vali. Nếu giá để hành lý đầy, bạn sẽ cần giữ túi của mình. Từ kinh nghiệm hàng ngày của chúng tôi trong việc quản lý khách đến: đi nhẹ nếu có thể, hoặc xem xét sử dụng %LINK:porterServices|dịch vụ khuân vác% của hostel để gửi túi trước. Chúng tôi đã thấy quá nhiều du khách vật lộn với vali khổng lồ trên xe buýt đông đúc chiều.",
+        "Tài xế xử lý các khúc cua hẹp một cách tự tin (họ đi tuyến này hàng ngày). Đừng hoảng sợ khi xe buýt có vẻ như đang lướt trên rìa vách đá—đó là bình thường, và tai nạn cực kỳ hiếm. Những tài xế này điều hướng tuyến đường nhiều lần mỗi ngày và đã thấy mọi tình huống có thể xảy ra.",
+        "Không có nhà vệ sinh trên xe, vì vậy hãy sử dụng tiện nghi ở Amalfi trước khi lên xe. Chuyến đi ngắn, nhưng tốt để biết nếu bạn đi với trẻ em. Có nhà vệ sinh công cộng gần Piazza Flavio Gioia ở Amalfi (thường là 0.50 euro), hoặc Bar SITA có tiện nghi cho khách hàng.",
+        "Xe buýt dừng ở nhiều điểm giữa Amalfi và Positano, bao gồm Praiano. Mỗi lần dừng thêm 2-5 phút vào chuyến đi. Nếu ai đó yêu cầu dừng giữa các trạm chính thức, tài xế có thể dừng ngắn—điều này bình thường. Chỉ cần ở lại chỗ trừ khi đó là trạm của bạn.",
+        "Có điều hòa không khí nhưng không phải lúc nào cũng hiệu quả khi xe buýt đông đúc và cửa mở thường xuyên. Vào tháng 7 và tháng 8, mang theo nước và mặc quần áo nhẹ thoáng khí. Một chiếc quạt tay nhỏ có thể là cứu cánh trên xe buýt đông và tắc đường.",
+        "Cảnh quan đẹp nhất từ phía bên phải xe buýt (khi bạn quay mặt về phía trước) khi đi từ Amalfi đến Positano. Bạn sẽ thấy toàn bộ bờ biển, vườn chanh bậc thang, và vách đá ấn tượng xuống biển. Phía bên trái cho bạn tầm nhìn núi và cái nhìn thoáng qua vào các làng mạc."
+      ],
+      "images": [
+        {
+          "src": "/images/guides/amalfiPositanoBus/amalfi-coast-panorama.jpg",
+          "alt": "Tầm nhìn toàn cảnh rộng lớn của Bờ biển Amalfi với sườn đồi bậc thang và nước Địa Trung Hải xanh",
+          "caption": "Bờ biển ấn tượng bạn sẽ trải nghiệm từ cửa sổ xe buýt"
+        },
+        {
+          "src": "/images/guides/amalfiPositanoBus/amalfi-coast-ravello.jpg",
+          "alt": "Tầm nhìn từ trên cao của Ravello và cảnh quan Bờ biển Amalfi xung quanh với vườn bậc thang",
+          "caption": "Vùng Bờ biển Amalfi rộng lớn hơn được phục vụ bởi các tuyến xe buýt SITA"
+        }
+      ]
+    },
+    {
+      "id": "tips-from-staff",
+      "title": "Mẹo từ nhân viên hostel",
+      "body": [
+        "\"Chúng tôi nói với khách hãy tránh xe buýt 12:00-14:00 vào mùa hè nếu có thể—đó là giờ cao điểm du lịch và xe buýt thường đi qua các trạm đầy. Sáng sớm (trước 10:00) hoặc chiều muộn (sau 16:00) thường ít đông hơn.\" — Lễ tân Brikette",
+        "\"Giữ tiền mặt nhỏ hoặc xu cho máy bán vé. Một số cửa hàng thuốc lá chỉ nhận tiền mặt, và bạn không muốn bỏ lỡ xe buýt trong khi tìm tiền lẻ.\" — Luca, Quản lý hostel",
+        "\"Chụp ảnh màn hình lịch trình hoặc lưu nó ngoại tuyến. Tín hiệu di động có thể không ổn định trên đường ven biển, và bạn sẽ muốn biết thời gian khởi hành dự phòng.\" — Sofia, Lễ tân",
+        "\"Nếu bạn bỏ lỡ trạm và kết thúc ở Positano Centro, đừng lo lắng. Bạn có thể đi bộ ngược lên (20 phút) hoặc bắt xe buýt tiếp theo đến Chiesa Nuova (cùng vé 2.60 euro). Tất cả chúng tôi đều đã làm điều đó!\" — Marco, Tình nguyện viên"
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Các lựa chọn thay thế",
+      "body": [
+        "Nếu lịch trình xe buýt không phù hợp với nhu cầu của bạn, hãy xem xét %LINK:amalfiPositanoFerry|phà Amalfi-Positano% (chỉ tháng 4-10, 12-18 euro). Nó nhanh hơn, đẹp hơn và đưa bạn xuống ở Spiaggia Grande Positano, từ đó bạn có thể bắt xe buýt địa phương hoặc taxi đến Chiesa Nuova.",
+        "Taxi từ Amalfi đến Chiesa Nuova có giá khoảng 50-70 euro (thương lượng trước). Đáng xem xét nếu bạn đi với 3-4 người hoặc có hành lý nặng.",
+        "Để biết thông tin chi tiết về việc đến Positano từ các thành phố khác, xem %LINK:howToGetToPositano|Hướng dẫn toàn diện Cách đến Positano%."
+      ]
+    },
+    {
+      "id": "common-mistakes",
+      "title": "Những sai lầm phổ biến cần tránh",
+      "body": [
+        "**Mua vé vào ngày đến từ Naples hoặc Salerno:** Nếu bạn đến từ sân bay Naples hoặc ga Salerno, hãy nhớ rằng bạn sẽ cần vé riêng cho mỗi chặng. Vé SITA 24 giờ (10 euro) thường là lựa chọn thông minh nhất nếu bạn đến từ bên ngoài bờ biển, vì nó bao gồm kết nối của bạn từ Salerno hoặc Sorrento cộng với nhiều chuyến địa phương.",
+        "**Không xác thực vé:** Ngay cả khi bạn đã mua vé, nó phải được đóng dấu trong máy xác thực màu vàng khi lên xe. Thanh tra tuần tra thường xuyên, đặc biệt là vào mùa hè, và sẽ không chấp nhận \"tôi quên\" làm lý do. Tiền phạt bắt đầu từ 50 euro.",
+        "**Chờ ở trạm sai:** Ở Amalfi, có nhiều trạm xe buýt tại Piazza Flavio Gioia. Đảm bảo bạn đang chờ tuyến 5070 (hướng Positano-Sorrento), không phải các tuyến đi nội địa hoặc đến Salerno. Kiểm tra màn hình điện tử hoặc hỏi người địa phương nếu không chắc chắn.",
+        "**Mang hành lý không phù hợp:** Vali cứng có bánh khó xử trên xe buýt đông đúc và cầu thang hostel. Nếu ở lại vài ngày, hãy xem xét đóng gói trong ba lô mềm hoặc túi duffel. Tốt hơn nữa, sử dụng %LINK:porterServices|dịch vụ khuân vác% để vận chuyển túi trong khi bạn đi nhẹ.",
+        "**Giả định xe buýt chạy muộn:** Xe buýt cuối cùng từ Amalfi đến Positano thường khởi hành khoảng 20:00-21:00 tùy theo mùa. Nếu bạn đi ăn tối ở Amalfi, hãy kiểm tra lịch trình quay về trước. Bỏ lỡ xe buýt cuối có nghĩa là chuyến taxi đắt đỏ (60 euro trở lên) hoặc một đêm rất khó chịu."
+      ]
+    },
+    {
+      "id": "seasonal-notes",
+      "title": "Lưu ý theo mùa (2026)",
+      "body": [
+        "**Mùa hè cao điểm (tháng 6-8):** Xe buýt chạy mỗi 30-60 phút nhưng thường đầy ắp. Hãy mong đợi phải đứng, đặc biệt là các chuyến chiều. Mua vé sớm và đến trạm trước 10 phút. Nhiệt độ trên xe buýt đông và tắc đường có thể nóng bức—mang theo nước.",
+        "**Mùa vừa (tháng 4-5, 9-10):** Điểm hoàn hảo cho du lịch xe buýt. Dịch vụ vẫn thường xuyên, nhưng xe buýt ít đông hơn. Thời tiết dễ chịu, và bạn thực sự sẽ có chỗ ngồi với tầm nhìn. Lý tưởng cho du khách lần đầu muốn tận hưởng phong cảnh mà không bị chen lấn.",
+        "**Mùa đông (tháng 11-3):** Lịch trình giảm với xe buýt chạy mỗi 1-2 giờ. Dịch vụ có thể bị tạm ngưng trong thời tiết khắc nghiệt (hiếm nhưng xảy ra với bão). Luôn kiểm tra lịch trình vào ngày hôm trước đi. Về mặt tích cực, bạn có thể sẽ có xe buýt cho riêng mình và được tầm nhìn ven biển không bị cản.",
+        "**Kỳ nghỉ lễ (Phục Sinh, 15 tháng 8, Giáng sinh):** Hãy mong đợi hỗn loạn. Người Ý nghỉ trong nước trong những thời kỳ này, và người dân địa phương cũng sử dụng xe buýt. Dịch vụ có thể được điều chỉnh cho các ngày lễ chính thức. Dự tính thêm thời gian, hoặc xem xét phương tiện thay thế, hoặc đi sáng sớm để tránh đông đúc."
+      ]
+    },
+    {
+      "id": "accessibility",
+      "title": "Khả năng tiếp cận và di chuyển",
+      "body": [
+        "Xe buýt SITA là xe buýt tiêu chuẩn có bậc ở lối vào—không có xe buýt sàn thấp có thể tiếp cận trên tuyến này. Du khách sử dụng xe lăn hoặc có khả năng di chuyển hạn chế sẽ thấy việc lên xe rất khó khăn, đặc biệt khi xe buýt đông đúc.",
+        "Nếu bạn có lo ngại về di chuyển, chúng tôi rất khuyến nghị đặt taxi riêng có thể tiếp cận trước từ Amalfi đến Chiesa Nuova. Nhờ chỗ lưu trú của bạn (hoặc liên hệ với chúng tôi) sắp xếp điều này trước. Chi phí thường là 70-90 euro cho xe có điều hòa.",
+        "Bản thân trạm xe buýt Chiesa Nuova nằm trên đường chính với vỉa hè hẹp. Lên và xuống xe yêu cầu điều hướng một bậc cao, thường trong khi xe buýt đang chờ trong giao thông. Không có hỗ trợ nào—bạn sẽ cần tự tin quản lý hành lý và bậc của mình một cách độc lập.",
+        "Phụ huynh có xe đẩy: hãy gấp chúng lại và mang theo. Không có chỗ cho xe đẩy mở trên xe buýt đông đúc, và lối vào quá hẹp. Địu em bé hoặc khăn quấn em bé thực tế hơn nhiều cho du lịch xe buýt trên Bờ biển Amalfi."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "question": "Xe buýt từ Amalfi đến Positano giá bao nhiêu?",
+      "answer": "2.60 euro một chiều. Nếu bạn thực hiện nhiều chuyến trong một ngày, vé CostieraSITA 24 giờ có giá 10 euro và bao gồm các chuyến xe buýt SITA không giới hạn trên khắp Bờ biển Amalfi."
+    },
+    {
+      "question": "Tôi có thể mua vé xe buýt trên xe không?",
+      "answer": "Không. Vé phải được mua trước khi lên xe tại Bar SITA (Piazza Flavio Gioia), cửa hàng thuốc lá, ki-ốt báo, hoặc quán cà phê có logo SITA. Tài xế không thể bán vé."
+    },
+    {
+      "question": "Tôi nên xuống ở trạm nào cho Hostel Brikette?",
+      "answer": "Xuống ở Chiesa Nuova, trạm đầu tiên ở Positano. Đó là 5 phút đi bộ xuống dốc đến hostel. Đừng ở lại đến Positano Centro, vì điều đó đòi hỏi leo dốc đứng 20 phút trở lại."
+    },
+    {
+      "question": "Chuyến xe buýt mất bao lâu?",
+      "answer": "30-40 phút tùy thuộc vào giao thông và số lượng điểm dừng. Tuyến đường rất đẹp nhưng quanh co, đi theo đường ven biển với tầm nhìn vách đá ấn tượng."
+    },
+    {
+      "question": "Tôi có thể mang hành lý lên xe buýt không?",
+      "answer": "Có, nhưng không gian hạn chế. Ba lô lớn và vali có thể cần vào giá hành lý nếu có chỗ, hoặc ở lại với bạn nếu đầy. Xem xét sử dụng dịch vụ khuân vác của hostel cho túi nặng."
+    },
+    {
+      "question": "Xe buýt có chạy vào mùa đông không?",
+      "answer": "Có, nhưng ít thường xuyên hơn. Dịch vụ hoạt động quanh năm, nhưng tháng 11-3 có ít chuyến khởi hành hơn. Luôn kiểm tra lịch trình hiện tại trên sitasudtrasporti.it trước khi đi."
+    },
+    {
+      "question": "Nếu tôi bỏ lỡ trạm của mình thì sao?",
+      "answer": "Nếu bạn kết thúc ở Positano Centro, bạn có thể đi bộ ngược lên Chiesa Nuova (20 phút) hoặc bắt xe buýt tiếp theo đến Chiesa Nuova bằng cùng một vé 2.60 euro."
+    },
+    {
+      "question": "Chuyến xe buýt có đẹp không?",
+      "answer": "Cực kỳ. Tuyến đường ôm theo vách đá ấn tượng của Bờ biển Amalfi với tầm nhìn biển tuyệt đẹp. Ngồi ở bên phải khi đi từ Amalfi đến Positano để có tầm nhìn ven biển tốt nhất."
+    },
+    {
+      "q": "Làm thế nào để đọc lịch trình xe buýt SITA?",
+      "a": [
+        "**Đọc các hàng:** Các hàng trong cột đầu tiên đại diện cho các trạm xe buýt khác nhau dọc theo tuyến đường.",
+        "**Đọc các cột:** Lịch trình gán một chữ cái trong bảng chữ cái cho mỗi chuyến đi đã lên lịch, được liệt kê làm tiêu đề trong mỗi cột. Nếu bạn đi du lịch từ thứ Hai đến thứ Bảy, hãy tìm các cột 'F' và 'G'. Nếu bạn đi du lịch vào Chủ nhật hoặc ngày lễ, hãy tìm các cột 'G' và 'H'.",
+        "**Kết hợp các hàng và cột:** Chọn các trạm xuất phát và đến của bạn, sau đó kiểm tra các cột để xem khi nào có xe buýt và họ sẽ đến đích của bạn vào lúc nào. Ví dụ, để xem giờ khởi hành từ Sorrento, hãy xem hàng Sorrento. Để xem giờ đến Positano (Chiesa Nuova / Bar Internazionale), hãy xem hàng Positano (Chiesa Nuova)."
+      ]
     }
   ]
 }

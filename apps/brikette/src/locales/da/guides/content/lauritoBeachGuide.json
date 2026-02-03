@@ -78,19 +78,33 @@
   "images": {
     "whyGo": {
       "alt": "Laurito Beach bugt med strandklubber langs kysten",
-      "caption": "Lauritos klippebeskyttede bugt er roligere end hovedstranden."
+      "caption": "Lauritos klippebeskyttede bugt er roligere end hovedstranden.",
+      "src": "/img/guides/laurito-beach/02-beach-overview.jpg"
     },
     "layout": {
       "alt": "Stranddæk og kystlinje ved Laurito",
-      "caption": "Tre zoner deler bugten: offentlig strimmel, Villa Tre Ville-dæk og Da Adolfo-terrasse."
+      "caption": "Tre zoner deler bugten: offentlig strimmel, Villa Tre Ville-dæk og Da Adolfo-terrasse.",
+      "src": "/img/guides/laurito-beach/01-beach-layout-map.jpg"
     },
     "treVille": {
       "alt": "Villa Tre Ville strandklub liggestole og havudsigt",
-      "caption": "Villa Tre Ville fokuserer på premium-liggestole og concierge-service."
+      "caption": "Villa Tre Ville fokuserer på premium-liggestole og concierge-service.",
+      "src": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg"
     },
     "daAdolfo": {
       "alt": "Da Adolfo strandklub anlægsbro og siddeplads",
-      "caption": "Da Adolfos shuttlebåd sætter gæster af ved restaurantterrassen."
+      "caption": "Da Adolfos shuttlebåd sætter gæster af ved restaurantterrassen.",
+      "src": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg"
+    },
+    "positanoView": {
+      "src": "/img/guides/laurito-beach/05-positano-view.jpg",
+      "alt": "View over Positano and the sea with boats near the shore",
+      "caption": "Spiaggia Grande is the main launch point for many beach shuttles and boats."
+    },
+    "sitaBus": {
+      "src": "/img/guides/laurito-beach/06-amalfi-coast-sita-bus.jpg",
+      "alt": "Blue SITA bus driving along the Amalfi Coast road above the sea",
+      "caption": "The coastal SITA bus is a useful backup when boats are paused."
     }
   },
   "essentialsTitle": "Hvad du kan forvente",
@@ -109,7 +123,7 @@
   "tips": [
     "Tag skærmbillede af bekræftelsesmails – mobilsignalet forsvinder nær kajen.",
     "Pak rev-venlig solcreme og badesko; kysten er en blanding af sten og klippeplader.",
-    "Se vores %LINK:beaches|oversigt over Positanos strande% for at sammenligne Laurito med andre bugter."
+    "Se vores %LINK:positanoBeaches|oversigt over Positanos strande% for at sammenligne Laurito med andre bugter."
   ],
   "warningsTitle": "Godt at vide",
   "warnings": [
@@ -138,7 +152,5 @@
       ]
     }
   ],
-  "gallery": {
-    "alt": "Laurito Beach kystlinje"
-  }
+  "lastUpdated": "2026-01-29T00:00:00.000Z"
 }

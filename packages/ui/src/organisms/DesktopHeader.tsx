@@ -27,6 +27,9 @@ const BRAND_NAME = "hostel-brikette";
 const FALLBACK_PRIMARY_CTA_LABEL =
   /* i18n-exempt -- UI-1000 ttl=2026-12-31 fallback copy until tokens are wired. */
   "Check availability";
+const FALLBACK_BRAND_TITLE =
+  /* i18n-exempt -- UI-1000 ttl=2026-12-31 fallback brand name. */
+  "Hostel Brikette";
 
 function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JSX.Element {
   const fallbackLang = useCurrentLanguage();
@@ -110,11 +113,15 @@ function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JS
               decoding="async"
             />
             <span
-              className="text-lg font-bold notranslate"
+              className="text-lg font-bold text-white notranslate"
               translate="no"
               data-brand-name={BRAND_NAME}
             >
-              {headerT("title")}
+              {(() => {
+                const title = headerT("title") as string;
+                if (title && title !== "title") return title;
+                return FALLBACK_BRAND_TITLE;
+              })()}
             </span>
           </Link>
 

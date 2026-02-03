@@ -3,6 +3,7 @@
     "title": "Strandguide til Fiordo di Furore",
     "description": "Slik kommer du til Fiordo di Furore med buss fra Positano, hva du bør pakke og hva som venter i kløften."
   },
+  "lastUpdated": "2026-01-29T00:00:00Z",
   "linkLabel": "Strandguide til Fiordo di Furore",
   "intro": [
     "Fiordo di Furore er Amalfi-kystens postkortmotiv – en smal innløp under en buet bro med smaragdgrønt vann og stupbratte klipper. Viken er liten og nesten helt urørt, uten strandklubber eller restauranter, så kom forberedt på bading, noen bilder og spektakulære stup.",
@@ -75,6 +76,7 @@
     "Mat og drikke: ta med eget – det finnes ingen butikker eller restauranter på stedet."
   ],
   "sectionFigure": {
+    "src": "/img/guides/fiordo-di-furore/01-beach-and-bridge.jpg",
     "alt": "Utsikt over Fiordo di Furore-broen og kløften",
     "caption": "Smaragdgrønt vann under den berømte broen."
   }

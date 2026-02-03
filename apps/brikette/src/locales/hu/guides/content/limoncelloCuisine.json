@@ -1,9 +1,9 @@
 {
   "seo": {
-    "title": "A fordítás folyamatban van.",
+    "title": "Limoncello és helyi ízek az Amalfi-parton",
     "description": "Mit kóstolj: citromos desszertek, tenger gyümölcsei, DOC borok és hol találod meg."
   },
-  "linkLabel": "Limoncello & Local Cuisine",
+  "linkLabel": "Limoncello és helyi ízek",
   "intro": [
     "A citrom és a limoncello határozza meg az amalfi ízeket – a kóstoló soroktól az édes finálékig.",
     "Íme, hol kóstolj, mit vásárolj, és hogyan főzz velük otthon."
@@ -52,18 +52,5 @@
         "Próbáld ki a friss limonádét, a granitát vagy citromszirupokat, ha kerülnéd az alkoholt."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Fotógaléria",
-    "items": [
-      {
-        "alt": "Positano régi plakát citromokkal",
-        "caption": "Vintage citromok"
-      },
-      {
-        "alt": "Teraszasztal limoncellós poharakkal",
-        "caption": "Teraszon kortyolt limoncello"
-      }
-    ]
-  }
+  ]
 }

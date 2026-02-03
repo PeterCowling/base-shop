@@ -1,3 +1,6 @@
+Type: Benchmark
+Status: Reference
+
 # Repository Enterprise Benchmark
 
 **Overall Score: 82/100** | Target: 85 | Gap: 3 points

@@ -5,23 +5,23 @@
   },
   "linkLabel": "Miejsca na Instagram w Positano (bez tłumów)",
   "intro": [
-    "Tłumaczenie w przygotowaniu."
+    "Zabezpiecz klasyczne kadry Positano, planując lekki sprzęt, kąty i etykietę, żeby nie blokować mieszkańców ani innych podróżnych."
   ],
   "sections": [
     {
       "id": "classics",
-      "title": "Classic postcard shots",
+      "title": "Klasyczne pocztówki",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Strzelaj ze schodów kościoła Santa Maria Assunta tuż po wschodzie słońca; plaża jest pusta, a kopuła świeci ciepłem.",
+        "Idź na przystań promową, by uchwycić szeroki kąt w kierunku klifu — bądź tam przed 09:00, zanim ustawią się kolejki jednodniowych turystów."
       ]
     },
     {
       "id": "hidden",
-      "title": "Underrated angles",
+      "title": "Zaskakujące kąty",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Wspiąć się na punkt widokowy przy Via Trara Genoino nad Fornillo, by uchwycić warstwowe kadry łodzi i pastelowych domów.",
+        "Wsiądź do lokalnego autobusu do Nocelle, a potem sfotografuj wybrzeże z tarasu Szlaku Bogów; panorama jest nie do pobicia przy czystym niebie."
       ]
     },
     {
@@ -29,7 +29,7 @@
       "title": "Golden hour setups",
       "body": [
         "Zajmij miejsce na ławkach przy Via Cristoforo Colombo około 45 minut przed zachodem słońca; latem słońce zachodzi za wyspami Li Galli.",
-        "Tłumaczenie w przygotowaniu."
+        "Wybierz Laurito, by złapać sylwetki Positano w konturach skyline'u — schody bywają strome, więc zakładaj antypoślizgowe buty i zabierz latarkę na powrót."
       ]
     },
     {
@@ -37,30 +37,30 @@
       "title": "Photo etiquette",
       "body": [
         "Trzymaj statywy kompaktowe i odsuń się po zrobieniu ramy, aby klatki schodowe były przejezdne.",
-        "Tłumaczenie w przygotowaniu."
+        "Unikaj dronów w centrum; włoskie przepisy wymagają pozwoleń, a mandaty bywają wysokie, gdy strażnicy zauważą nielegalny lot."
       ]
     }
   ],
   "tips": [
-    "Tłumaczenie w przygotowaniu.",
+    "Zabierz mikrofibrową ściereczkę na zachlapania od morza i rozmazany filtr przeciwsłoneczny na obiektywie.",
     "Zapisz swoje ulubione kąty offline w Mapach Google; recepcja może zanurzyć się na tarasach i ścieżkach."
   ],
   "faqs": [
     {
       "q": "Is sunrise or sunset better for photos?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Wschód słońca daje pustsze ulice i delikatniejsze światło na Spiaggia Grande; zachody rozświetlają klif od zachodu, ale przyciągają więcej ludzi."
       ]
     },
     {
       "q": "Czy mogę pozować na hotelowych tarasach, jeśli nie jestem gościem?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Nie — tarasy są prywatne. Zarezerwuj stolik w restauracji, jeśli chcesz mieć tę perspektywę, i zapytaj obsługę przed ustawieniem sprzętu."
       ]
     }
   ],
   "fallback": {
-    "intro": "Tłumaczenie w przygotowaniu.",
+    "intro": "Positano fotografuje się praktycznie z każdej perspektywy, lecz najpopularniejsze miejsca są zajęte przez większość dnia. Oto jak uchwycić klasyczne widoki bez kolejek i gdzie szukać mniej znanych kadrów.",
     "toc": [
       {
         "href": "#classics",
@@ -92,11 +92,11 @@
         },
         {
           "title": "Fornillo path",
-          "description": "Tłumaczenie w przygotowaniu."
+          "description": "Łagodna nadbrzeżna ścieżka z warstwowym widokiem na klif; najlepiej wczesnym rankiem lub zaraz po zachodzie."
         },
         {
           "title": "Via Pasitea bends",
-          "description": "Tłumaczenie w przygotowaniu."
+          "description": "Podwyższone zakręty dają pocztówkową perspektywę bez tłumów — pozostań z dala od ruchu i nie stój na jezdni."
         }
       ]
     },
@@ -111,20 +111,20 @@
           "link": {
             "guideKey": "pathOfTheGods"
           },
-          "description": "Tłumaczenie w przygotowaniu."
+          "description": "Linie grzbietów robią wrażenie, światło jest najlepsze rano."
         },
         {
           "link": {
             "guideKey": "sunsetViewpoints"
           },
-          "description": "Tłumaczenie w przygotowaniu."
+          "description": "Lista miejsc do zróżnicowanych kompozycji."
         }
       ]
     },
     "sunset": {
       "heading": "Sunset choices",
       "paragraphs": [
-        "Tłumaczenie w przygotowaniu.",
+        "By uniknąć tłumów podczas złotej godziny, wybierz górne zjazdy z Via Pasitea lub tarasy przy Chiesa Nuova.",
         "Jeśli wolisz sylwetki na plaży, przyjedź do Fornillo 30–45 minut przed zachodem słońca."
       ]
     },
@@ -132,7 +132,7 @@
       "heading": "Etiquette & local tips",
       "items": [
         "Nie blokuj wąskich schodów ani dróg; oddaj strzał i odsuń się.",
-        "Tłumaczenie w przygotowaniu.",
+        "Uszanuj prywatną własność i nie wspinaj się na murki lub dachy.",
         "Poza szczytem używaj małego statywu; unikaj ruchliwych ścieżek w południe."
       ]
     },
@@ -147,7 +147,7 @@
     },
     "drone": {
       "summary": "Do I need a drone permit?",
-      "body": "Tłumaczenie w przygotowaniu."
+      "body": "Włochy mają surowe zasady dotyczące dronów i wiele stref zakazu lotów. Sprawdź wskazówki ENAC i lokalne regulacje; unikaj lotów nad tłumami."
     },
     "galleryAlt": [
       "Positano from above",

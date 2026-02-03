@@ -1,4 +1,5 @@
 {
+  "lastUpdated": "2026-01-31",
   "seo": {
     "title": "Amalfi do Positano promem | Hostel Brikette",
     "description": "Prom z Amalfi do Positano: rozkłady, bilety, miejsce wejścia na pokład w Amalfi oraz jak dojść z nabrzeża do Hostel Brikette przy minimalnej liczbie schodów."
@@ -47,6 +48,36 @@
         "Z bagażem rozważ usługę bagażową lub autobus Interno Positano, aby ograniczyć liczbę schodów.",
         "Wchodzenie pod górę z ciężkimi torbami może być wymagające w letnim upale."
       ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Czy mogę kupić bilety promowe w dniu podróży?",
+      "a": "Zazwyczaj tak w kwietniu, maju, wrześniu i październiku. Ale w lipcu i sierpniu wyprzedają się 1–2 dni wcześniej. Zarezerwuj online poprzedniego wieczora dla bezpieczeństwa, zwłaszcza na poranne łodzie."
+    },
+    {
+      "q": "Jak dostać się z przystani w Positano do Hostel Brikette?",
+      "a": "Trzy sposoby: iść pod górę (15–20 minut, strome schody), wziąć autobus Interno Positano (2 €) lub wynająć tragarz (20–25 € za torbę). Zobacz nasz %LINK:ferryDockToBrikette|przewodnik z przystani do Brikette% dla wskazówek i zdjęć."
+    },
+    {
+      "q": "Czy na pokładzie są toalety i przekąski?",
+      "a": "Większość łodzi Travelmar ma mały bar z napojami i lekkim jedzeniem. Toalety są na większych łodziach, ale nie na mniejszych w czasie poza szczytem. Skorzystaj z toalety przed wejściem na pokład, jeśli możesz."
+    },
+    {
+      "q": "Jaki jest najlepszy czas na prom?",
+      "a": "Poranne łodzie (08:25–10:00) mają spokojniejsze morza i lepsze światło do zdjęć. Popołudniowe rejsy są bardziej zatłoczone jednodniowymi wycieczkowiczami. Omiń ostatnią łódź (20:00), chyba że nie masz nic przeciwko przybyciu po zmroku."
+    },
+    {
+      "q": "Czy muszę wydrukować bilet, czy mogę pokazać telefon?",
+      "a": "Twój telefon jest w porządku. Personel skanuje kod QR z ekranu. Upewnij się, że telefon jest naładowany i możesz otworzyć e-mail lub rezerwację bez internetu (zapisz offline lub zrób zrzut ekranu)."
+    },
+    {
+      "q": "Gdzie dokładnie znajduje się przystań promowa w Amalfi?",
+      "a": "Idź do nadmorskiej promenady z Piazza Flavio Gioia (główny plac z fontanną). Stań twarzą do morza i skręć w prawo. Przystań Travelmar jest 2 minuty wzdłuż promenady. Szukaj niebiesko-białych znaków i kiosków z biletami."
+    },
+    {
+      "q": "Czy mogę przechować bagaż w Positano, jeśli przybędę wcześnie?",
+      "a": "Tak. Kilka %LINK:luggageStorage|miejsc przechowania bagażu% w pobliżu plaży Spiaggia Grande pobiera 5–8 € za torbę dziennie. Dobre, jeśli wylądowałeś przed meldowaniem w hostelu o 15:00."
     }
   ]
 }

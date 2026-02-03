@@ -5,7 +5,7 @@
   },
   "intro": {
     "title": "Salerno til Positano — færge",
-    "body": "Brug denne guide til at rejse fra Salerno til Positano med færge. Den dækker billetter, hvor du går ombord i Salerno, tips til tidstabeller og hvordan du kommer fra Positanos dock til Hostel Brikette."
+    "body": "Brug denne guide til at rejse fra Salerno til Positano med færge. Den dækker billetter, hvor du går ombord i Salerno, tips til tidstabeller og hvordan du kommer fra Positanos mole til Hostel Brikette."
   },
   "callouts": {
     "tip": "Brug for andre transportmuligheder? Åbn %HOWTO:how-to-get-here|oversigten over Sådan kommer du hertil% for busser, kombinerede ruter og lufthavnstransfer."
@@ -42,12 +42,13 @@
     {
       "id": "positanoArrival",
       "title": "Ankomst til Positano",
-      "body": "For en trin-for-trin-rute fra molen til vores dør kan du læse %LINK:ferryDockToBrikette|Færgemole → Hostel Brikette-guiden%.",
+      "body": "For en trin-for-trin-rute fra molen til vores dør kan du læse %LINK:ferryDockToBrikette|Færgemole → Hostel Brikette, med bagageguide%.",
       "list": [
         "Du ankommer til Positanos hovedfærgemole (Spiaggia Grande).",
         "Med bagage anbefaler vi porterservicen eller den lokale Interno-bus.",
         "At gå op ad bakke med tunge tasker anbefales ikke i sommervarmen."
       ]
     }
-  ]
+  ],
+  "lastUpdated": "2026-01-31"
 }

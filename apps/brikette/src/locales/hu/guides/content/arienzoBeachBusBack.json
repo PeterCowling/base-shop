@@ -47,15 +47,6 @@
     "Kinyomtatott menetrendek listája csak Positano megállók; Várják Arienzót körülbelül 2-5 perccel a Positano Sponda előtt a visszaúton.",
     "There is no ticket vendor at Arienzo. Buy your return ticket in town, or be ready to walk to Positano Sponda or take the water shuttle back to Spiaggia Grande.",
     "Read our %LINK:arienzoBeachClub|Arienzo Beach guide% for facilities, shuttles, and planning tips.",
-    "Browse the %LINK:beaches|Positano beaches overview% to compare other coves and plan future visits."
-  ],
-  "gallery": {
-    "title": "Arienzo buszmegálló támpont",
-    "items": [
-      {
-        "alt": "Kék-fehér SITA buszmegálló tábla fémoszlopon",
-        "caption": "Keresd a SITA táblát az út hegy felőli oldalán, Arienzo fölött."
-      }
-    ]
-  }
+    "Browse the %LINK:positanoBeaches|Positano beaches overview% to compare other coves and plan future visits."
+  ]
 }

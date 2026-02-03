@@ -1,0 +1,382 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-what-kind-of-breakfast-is-served-at-hostel-brikette",
+      "name": "What kind of breakfast is served at Hostel Brikette?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-what-kind-of-breakfast-is-served-at-hostel-brikette-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-what-kind-of-breakfast-is-served-at-hostel-brikette-answer",
+      "text": "Guests enjoy a highly-rated à la carte menu. Book direct for complimentary breakfast."
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-what-are-the-check-in-and-check-out-times-at-hostel-brikette",
+      "name": "What are the check-in and check-out times at Hostel Brikette?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-what-are-the-check-in-and-check-out-times-at-hostel-brikette-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-what-are-the-check-in-and-check-out-times-at-hostel-brikette-answer",
+      "text": "Regular check‑in is from 15:00 to 22:30, and check‑out is from 07:30 to 10:30."
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-how-much-does-it-cost-to-stay-at-hostel-brikette",
+      "name": "How much does it cost to stay at Hostel Brikette?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-how-much-does-it-cost-to-stay-at-hostel-brikette-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-how-much-does-it-cost-to-stay-at-hostel-brikette-answer",
+      "text": "Prices vary by date and room type. For up-to-date prices, search by room and date."
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-what-is-there-to-do-at-hostel-brikette",
+      "name": "What is there to do at Hostel Brikette?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-what-is-there-to-do-at-hostel-brikette-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-what-is-there-to-do-at-hostel-brikette-answer",
+      "text": "The hostel organises or recommends hiking; additional activities may incur charges."
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-how-far-is-hostel-brikette-from-the-centre-of-positano",
+      "name": "How far is Hostel Brikette from the centre of Positano?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-how-far-is-hostel-brikette-from-the-centre-of-positano-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-how-far-is-hostel-brikette-from-the-centre-of-positano-answer",
+      "text": "The property is about 350 metres from the centre of Positano."
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-how-close-to-the-beach-is-hostel-brikette",
+      "name": "How close to the beach is Hostel Brikette?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-how-close-to-the-beach-is-hostel-brikette-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-how-close-to-the-beach-is-hostel-brikette-answer",
+      "text": "The nearest beach is roughly 350 metres away."
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-what-room-types-are-available-at-hostel-brikette",
+      "name": "What room types are available at Hostel Brikette?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-what-room-types-are-available-at-hostel-brikette-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-what-room-types-are-available-at-hostel-brikette-answer",
+      "text": "You can book mixed dormitory beds, female-only dormitory beds, or private double rooms with ensuite."
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-does-hostel-brikette-have-a-terrace-with-sea-views",
+      "name": "Does Hostel Brikette have a terrace with sea views?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-does-hostel-brikette-have-a-terrace-with-sea-views-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-does-hostel-brikette-have-a-terrace-with-sea-views-answer",
+      "text": "Yes — a large shared terrace overlooks Positano, offering panoramic sea views."
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-is-free-wi-fi-provided",
+      "name": "Is free Wi-Fi provided?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-is-free-wi-fi-provided-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-is-free-wi-fi-provided-answer",
+      "text": "Yes — complimentary Wi-Fi is available throughout the property."
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-is-breakfast-included-in-the-rate",
+      "name": "Is breakfast included in the rate?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-is-breakfast-included-in-the-rate-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-is-breakfast-included-in-the-rate-answer",
+      "text": "Breakfast is included in the rate if you book directly; otherwise it is charged additionally."
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-does-hostel-brikette-have-an-on-site-bar",
+      "name": "Does Hostel Brikette have an on-site bar?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-does-hostel-brikette-have-an-on-site-bar-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-does-hostel-brikette-have-an-on-site-bar-answer",
+      "text": "Yes — the bar serves coffee, light snacks, breakfast, evening meals, and drinks between 07:30 and 23:30 each day."
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-can-i-store-my-luggage-before-check-in-or-after-check-out",
+      "name": "Can I store my luggage before check-in or after check-out?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-can-i-store-my-luggage-before-check-in-or-after-check-out-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-can-i-store-my-luggage-before-check-in-or-after-check-out-answer",
+      "text": "Yes — luggage storage is available from 10:30 for guests checking in, and from 07:30 to 15:30 for those checking out."
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-are-there-age-restrictions-at-hostel-brikette",
+      "name": "Are there age restrictions at Hostel Brikette?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-are-there-age-restrictions-at-hostel-brikette-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-are-there-age-restrictions-at-hostel-brikette-answer",
+      "text": "Check-in for dorm rooms is only possible for guests aged between 18 and 39 years. These restrictions do not apply to private rooms."
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-are-children-allowed",
+      "name": "Are children allowed?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-are-children-allowed-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-are-children-allowed-answer",
+      "text": "Dorm rooms are adults-only and cannot accommodate children. Book private rooms to overcome age restrictions."
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-are-pets-allowed",
+      "name": "Are pets allowed?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-are-pets-allowed-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-are-pets-allowed-answer",
+      "text": "Sorry, pets are not permitted on the premises."
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-does-the-hostel-have-its-own-parking",
+      "name": "Does the hostel have its own parking?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-does-the-hostel-have-its-own-parking-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-does-the-hostel-have-its-own-parking-answer",
+      "text": "The hostel does not have on-site parking; public parking garages are available in Positano for a fee."
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-is-air-conditioning-available",
+      "name": "Is air-conditioning available?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-is-air-conditioning-available-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-is-air-conditioning-available-answer",
+      "text": "Yes — all rooms and dorms are air-conditioned."
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-are-lockers-provided-in-the-dormitories",
+      "name": "Are lockers provided in the dormitories?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-are-lockers-provided-in-the-dormitories-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-are-lockers-provided-in-the-dormitories-answer",
+      "text": "Yes — each bed has an individual locker; bring your own padlock or purchase one at reception."
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-are-towels-included",
+      "name": "Are towels included?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-are-towels-included-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-are-towels-included-answer",
+      "text": "A shower towel is provided at check-in. Beach towels are available to rent."
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-is-bed-linen-included",
+      "name": "Is bed linen included?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-is-bed-linen-included-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-is-bed-linen-included-answer",
+      "text": "Yes — fresh linen is provided on check in."
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-does-hostel-brikette-have-laundry-facilities",
+      "name": "Does Hostel Brikette have laundry facilities?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-does-hostel-brikette-have-laundry-facilities-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-does-hostel-brikette-have-laundry-facilities-answer",
+      "text": "The hostel does not have laundry facilities; however, there are some close by."
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-does-hostel-brikette-have-quiet-hours",
+      "name": "Does Hostel Brikette have quiet hours?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-does-hostel-brikette-have-quiet-hours-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-does-hostel-brikette-have-quiet-hours-answer",
+      "text": "Quiet hours are observed from 23:30 to 07:30."
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-how-do-i-get-to-hostel-brikette-from-naples-airport",
+      "name": "How do I get to Hostel Brikette from Naples Airport?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-how-do-i-get-to-hostel-brikette-from-naples-airport-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-how-do-i-get-to-hostel-brikette-from-naples-airport-answer",
+      "text": "Take the Curreri shuttle to Sorrento, then the SITA bus to Positano; get off at Chiesa Nuova bus stop."
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-where-is-the-nearest-bus-stop",
+      "name": "Where is the nearest bus stop?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-where-is-the-nearest-bus-stop-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-where-is-the-nearest-bus-stop-answer",
+      "text": "The Chiesa Nuova bus stop is less than 80 m (250 ft) away with no stairs to the hostel."
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-what-payment-methods-are-accepted",
+      "name": "What payment methods are accepted?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-what-payment-methods-are-accepted-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-what-payment-methods-are-accepted-answer",
+      "text": "Visa, Mastercard, Maestro, ATM card, and cash are accepted at reception."
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-is-reception-open-24-hours",
+      "name": "Is reception open 24 hours?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-is-reception-open-24-hours-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-is-reception-open-24-hours-answer",
+      "text": "Reception opens at 07:30 and closes at 22:30. Late arrivals must be arranged in advance."
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-does-hostel-brikette-have-a-shared-kitchen",
+      "name": "Does Hostel Brikette have a shared kitchen?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-does-hostel-brikette-have-a-shared-kitchen-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-does-hostel-brikette-have-a-shared-kitchen-answer",
+      "text": "No communal kitchen is available, but guests have access to a fridge, kettle, and microwave."
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-does-hostel-brikette-offer-female-only-dorms",
+      "name": "Does Hostel Brikette offer female-only dorms?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-does-hostel-brikette-offer-female-only-dorms-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-does-hostel-brikette-offer-female-only-dorms-answer",
+      "text": "Yes — female-only dorm beds can be booked."
+    },
+    {
+      "@type": "Question",
+      "@id": "https://example.test#faq-is-the-property-wheelchair-accessible",
+      "name": "Is the property wheelchair accessible?",
+      "acceptedAnswer": {
+        "@id": "https://example.test#faq-is-the-property-wheelchair-accessible-answer"
+      }
+    },
+    {
+      "@type": "Answer",
+      "@id": "https://example.test#faq-is-the-property-wheelchair-accessible-answer",
+      "text": "The hostel is not wheelchair accessible."
+    }
+  ]
+}

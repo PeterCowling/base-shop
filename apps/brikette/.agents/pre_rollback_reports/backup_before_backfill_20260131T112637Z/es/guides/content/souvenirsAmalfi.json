@@ -1,0 +1,88 @@
+{
+  "seo": {
+    "title": "Souvenirs asequibles en la Costa Amalfitana",
+    "description": "Recuerdos económicos y fáciles de transportar: qué comprar, dónde y cómo enviarlos con seguridad."
+  },
+  "linkLabel": "Souvenirs asequibles en la Costa Amalfitana",
+  "intro": [
+    "Los souvenirs van de cerámica pintada a mano a delicias de despensa; los precios cambian mucho entre la playa y las calles altas.",
+    "Sigue estos consejos para detectar calidad, apoyar a artesanos locales y llevar tus compras a casa sin roturas."
+  ],
+  "tocTitle": "En esta página",
+  "toc": [
+    {
+      "href": "#what-to-buy",
+      "label": "Qué comprar"
+    },
+    {
+      "href": "#where-to-shop",
+      "label": "Dónde comprar"
+    },
+    {
+      "href": "#packing",
+      "label": "Empaque y envíos"
+    },
+    {
+      "href": "#faqs",
+      "label": "Preguntas frecuentes"
+    }
+  ],
+  "sections": [
+    {
+      "id": "what-to-buy",
+      "title": "Qué comprar",
+      "body": [
+        "Cerámica de Vietri firmada, limoncello IGP, colatura di alici y mermeladas de limón viajan bien y representan la región.",
+        "Busca firmas del artesano o sellos de cooperativa; evita piezas con pintura irregular o olor químico intenso."
+      ]
+    },
+    {
+      "id": "where-to-shop",
+      "title": "Dónde comprar",
+      "body": [
+        "Sube una o dos calles desde Via dei Mulini para comparar talleres con precios más honestos.",
+        "En Sorrento, Amalfi y Salerno hallarás mercados con los mismos productos a menor precio; calcula el coste del bus/ferry para decidir."
+      ]
+    },
+    {
+      "id": "packing",
+      "title": "Empaque y envíos",
+      "body": [
+        "Envuelve cerámicas en ropa enrollada o burbujas y separa platos con cartón o toallas reutilizables.",
+        "Si envías desde Italia, pide seguimiento y guarda el recibo; para alimentos verifica las normas aduaneras de tu país antes de pagar."
+      ]
+    },
+    {
+      "id": "price-checks",
+      "title": "Precios y autenticidad",
+      "body": [
+        "Comprueba etiquetas IGP en limoncello y precios escritos a mano; desconfía de letreros genéricos tipo ‘super offer’.",
+        "Si algo es demasiado barato, revisa uniones y esmalte: las piezas artesanas muestran pequeñas variaciones, no patrones idénticos."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Puedo llevar limoncello o alimentos en la maleta?",
+      "a": [
+        "Sí, pero líquidos de más de 100 ml van en equipaje facturado; declara alcohol si tu país lo exige y verifica límites de lácteos o embutidos."
+      ]
+    },
+    {
+      "q": "¿Aceptan tarjeta las tiendas?",
+      "a": [
+        "La mayoría sí, aunque talleres pequeños pueden pedir mínimo de 20 €; lleva efectivo para caprichos menores."
+      ]
+    },
+    {
+      "q": "¿Existe devolución del IVA?",
+      "a": [
+        "Sí para compras superiores al umbral legal en una misma tienda; solicita el formulario tax free, sella en el aeropuerto y envía los documentos a la empresa gestora."
+      ]
+    }
+  ],
+  "tips": [
+    "Pregunta por embalaje incluido: muchos talleres ofrecen cajas rígidas gratis si compras varias piezas.",
+    "Compra productos gourmet al final del viaje para mantener la cadena de frío y ahorrar espacio."
+  ]
+}

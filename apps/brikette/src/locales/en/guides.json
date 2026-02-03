@@ -48,39 +48,123 @@
       }
     },
     "pathOfTheGods": {
-      "linkLabel": "Path of the Gods from Positano",
+      "linkLabel": "Path of the Gods: Complete Guide from Positano",
       "seo": {
         "title": "Hike the Path of the Gods",
         "description": "Door-to-door instructions to hike Sentiero degli Dei from Positano."
       }
     },
     "pathOfTheGodsFerry": {
-      "linkLabel": "Path of the Gods via Amalfi (ferry)",
+      "linkLabel": "Path of the Gods: Scenic Ferry & Hike Route",
       "seo": {
         "title": "Path of the Gods via Amalfi (ferry)",
         "description": "Sail to Amalfi, bus up to Bomerano, then hike the Path of the Gods with return directions."
       }
     },
     "pathOfTheGodsBus": {
-      "linkLabel": "Path of the Gods via Amalfi (bus)",
+      "linkLabel": "Path of the Gods: Budget-Friendly Bus & Hike",
       "seo": {
         "title": "Path of the Gods via Amalfi (bus)",
         "description": "Take the SITA Sud bus to Bomerano and follow our Path of the Gods route back toward Positano."
       }
     },
     "pathOfTheGodsNocelle": {
-      "linkLabel": "Path of the Gods via Nocelle",
+      "linkLabel": "Path of the Gods: Short Hike from Nocelle",
       "seo": {
         "title": "Path of the Gods via Nocelle",
         "description": "Shorter out-and-back hike from Nocelle with directions to return to Hostel Brikette."
       }
     },
     "dayTripsAmalfi": {
-      "linkLabel": "Day trips from Positano",
+      "linkLabel": "Best Day Trips: Capri, Amalfi, Pompeii & More",
       "seo": {
         "title": "Day trips from Positano",
         "description": "Ideas for Amalfi, Ravello, Capri and Pompeii with timing and transport tips."
       }
+    },
+    "positanoBeaches": {
+      "linkLabel": "Positano Beaches: Sun & Secret Coves"
+    },
+    "arienzoBeachClub": {
+      "linkLabel": "Arienzo Beach: Positano's Boutique Beach Club"
+    },
+    "fornilloBeachGuide": {
+      "linkLabel": "Fornillo Beach: Positano's Quieter Alternative"
+    },
+    "lauritoBeachGuide": {
+      "linkLabel": "Laurito Beach: Hidden Gem Below the Cliffs"
+    },
+    "gavitellaBeachGuide": {
+      "linkLabel": "Gavitella Beach: Praiano's Sunset Swimming Spot"
+    },
+    "marinaDiPraiaBeaches": {
+      "linkLabel": "Marina di Praia: Dramatic Cove Between the Cliffs"
+    },
+    "fiordoDiFuroreBeachGuide": {
+      "linkLabel": "Fiordo di Furore: The Fjord Beach Under the Bridge"
+    },
+    "reginaGiovannaBath": {
+      "linkLabel": "Regina Giovanna: Roman Ruins Meet Natural Pool"
+    },
+    "positanoMainBeach": {
+      "linkLabel": "Spiaggia Grande: Positano's Iconic Main Beach"
+    },
+    "sunriseHike": {
+      "linkLabel": "Sunrise Hike: Watch Dawn Break Over Positano"
+    },
+    "santaMariaDelCastelloHike": {
+      "linkLabel": "Santa Maria del Castello: Mountain Village Hike"
+    },
+    "topOfTheMountainHike": {
+      "linkLabel": "Monte Comune: Hike to Positano's Highest Viewpoint"
+    },
+    "stayingFitAmalfi": {
+      "linkLabel": "Stay Fit in Positano: Stairs, Trails & Beach Workouts"
+    },
+    "capriDayTrip": {
+      "linkLabel": "Capri Day Trip: Island Escape from Positano"
+    },
+    "capriOnABudget": {
+      "linkLabel": "Capri Without Breaking the Bank"
+    },
+    "campingAmalfi": {
+      "linkLabel": "Camping the Amalfi Coast: Budget Alternative to Hotels"
+    },
+    "boatTours": {
+      "linkLabel": "Boat Tours: Sunset Cruises to Private Charters"
+    },
+    "cheapEats": {
+      "linkLabel": "Eat Like a Local: Positano's Best Budget Bites"
+    },
+    "eatingOutPositano": {
+      "linkLabel": "Where to Eat in Positano: Casual to Celebration"
+    },
+    "positanoDining": {
+      "linkLabel": "Positano's Best Restaurants Near Hostel Brikette"
+    },
+    "limoncelloCuisine": {
+      "linkLabel": "Taste Positano: Limoncello, Lemons & Local Flavors"
+    },
+    "instagramSpots": {
+      "linkLabel": "Instagram-Worthy Positano: Best Photo Spots & Times"
+    },
+    "sunsetViewpoints": {
+      "linkLabel": "Sunset in Positano: Best Viewpoints for Golden Hour"
+    },
+    "ravelloFestival": {
+      "linkLabel": "Ravello Festival: Classical Concerts Under the Stars"
+    },
+    "ferragostoPositano": {
+      "linkLabel": "Ferragosto: Italy's August 15th Celebration in Positano"
+    },
+    "luminariaPraiano": {
+      "linkLabel": "Luminaria di Praiano: Thousands of Candles Light the Night"
+    },
+    "walkingTourAudio": {
+      "linkLabel": "Free Audio Walking Tour: Discover Positano's Hidden Stories"
+    },
+    "freeThingsPositano": {
+      "linkLabel": "Free Things to Do in Positano: Budget-Friendly Fun"
     },
     "publicTransportAmalfi": {
       "linkLabel": "Amalfi Coast public transport guide",

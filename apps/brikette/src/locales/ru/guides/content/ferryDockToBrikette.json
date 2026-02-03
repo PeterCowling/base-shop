@@ -1,88 +1,227 @@
 {
   "seo": {
-    "title": "Паромный причал → Hostel Brikette с багажом",
-    "description": "Варианты с причала: носильщики или автобус SITA до ближайших остановок, практические советы и ответы на вопросы."
+    "title": "Ferry dock → Hostel Brikette, with luggage",
+    "description": "Complete 2026 guide: ferry dock to Hostel Brikette with luggage using porters and Interno bus. Costs, timing, step-by-step directions, and traveler tips."
   },
-  "linkLabel": "Паромный причал → Hostel Brikette с багажом",
+  "lastUpdated": "2026-01-31",
+  "linkLabel": "Ferry dock → Hostel Brikette, with luggage",
   "intro": [
-    "Прибываете в Позитано на пароме с чемоданами? Совместите автобус Interno Positano с услугами носильщиков порта, чтобы добраться до Hostel Brikette без изнурительного подъёма по лестницам."
+    "Arriving by ferry with luggage? Combine the Interno Positano bus with Positano's porters to reach Hostel Brikette without hauling bags up steep staircases. This route takes 20-45 minutes depending on porter and bus timing, costs €2-€6 per person plus optional porter fees, and eliminates most of Positano's infamous stair-climbing.",
+    "Updated for the 2026 season, this guide covers exact costs, bus schedules, porter pricing, and the step-by-step route our staff recommend to hundreds of arriving guests. Whether you're traveling solo with a backpack or as a group with multiple suitcases, you'll find practical advice for a smooth arrival."
   ],
   "beforeList": [
-    "Проверьте актуальное расписание Interno Positano — вот [текущий график и стоимость билетов](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
-    "Купите билеты Interno Positano в любом табакки/газетном киоске до посадки.",
-    "Подумайте, не передать ли тяжёлый багаж носильщикам прямо у парома — скажите, что остановились в Hostel Brikette."
+    "Check the latest Interno Positano timetable — here's the %URL:https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26|current timetable and ticket prices%.",
+    "Buy Interno Positano tickets at any tabacchi/newsagent before boarding.",
+    "Consider handing heavy luggage to the porters as they meet the ferry – tell them you're staying at Hostel Brikette."
   ],
   "sections": [
     {
-      "id": "dock-to-mulini",
-      "title": "От причала до Piazza dei Mulini",
+      "id": "ferry-dock-overview",
+      "title": "What to expect at Positano ferry dock",
       "body": [
-        "Пройдите от главного пляжа к Piazza dei Mulini по променаду с указателями — ориентируйтесь на [эту схему пути](https://www.google.com/maps/dir/Positano+Spiaggia/2+Viale+Pasitea+Positano,+Campania/@40.6289096,14.4857482,18z/data=!4m14!4m13!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!3e2).",
-        "Если у вас багаж, воспользуйтесь услугами носильщиков Позитано прямо на причале — они доставят сумки наверх. В [нашем гиде по носильщикам](guide:porterServices) указаны цены и способы бронирования."
+        "Positano's ferry dock (officially Positano Spiaggia) sits at beach level at the base of the town. When you disembark, you'll walk down a short gangway onto the main beach promenade. The entire waterfront area is compact — you can see the beach, the ticket kiosks, and the start of the uphill path all within 100 meters.",
+        "Porter services meet every ferry arrival. You'll spot them immediately — they wear bright vests and wait with wheeled carts near the gangway. From the dock, you have three main options: hire porters to transport your bags separately (recommended for heavy luggage), take the Interno Positano bus partway up (fastest and easiest), or walk the entire route (only practical with light daypack).",
+        "The beach area has restrooms (€1), a few cafés, and ticket kiosks where you can buy Interno bus tickets. Most ferries arrive between 09:00-19:00 in summer season (April-October), with the busiest periods around 11:00-14:00. If your ferry is running late, check the %LINK:ferrySchedules|current ferry schedules% for updated arrival times.",
+        "Ferry services to Positano run from multiple ports along the Amalfi Coast. If you're arriving from Salerno, Naples, or Sorrento, ferries typically dock at Positano Spiaggia between late morning and early evening. The dock handles both hydrofoils (aliscafi) and slower traditional ferries (traghetti). Hydrofoils are faster but more expensive, while traditional ferries offer outdoor seating and better views. Both arrive at the same dock and follow the same disembarkation process.",
+        "Weather can affect ferry schedules significantly. During rough seas or high winds (common in autumn and winter), ferries may be delayed, rerouted to alternative ports, or cancelled entirely. If you're traveling during shoulder season (March-April or September-November), always have a backup plan. The %LINK:amalfiPositanoBus|SITA bus from Amalfi% or other coastal towns can serve as an alternative if your ferry is cancelled, though you'll arrive at Chiesa Nuova instead of the beach level."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-positano-spiaggia-view.jpg",
+          "alt": "Positano ferry dock and beach promenade with boats in the bay.",
+          "caption": "The ferry dock at Positano Spiaggia — compact and easy to navigate from disembarkation."
+        }
+      ]
+    },
+    {
+      "id": "porter-costs-timing",
+      "title": "Porter costs and timing (2026 season)",
+      "body": [
+        "Positano's official porter service charges €15-€20 per bag depending on size and weight. A standard backpack or suitcase (up to 20kg) costs €15, while oversized bags or multiple items cost €18-€20. Payment is cash only — have euros ready at the dock.",
+        "Porters load your bags onto wheeled carts and deliver them directly to Hostel Brikette's entrance within 30-45 minutes. You hand over your luggage, tell them 'Hostel Brikette' (they know it), pay the fee, and keep your valuables with you. The porters take a different route using service paths and shortcuts, so you won't see your bags until you reach the hostel — this is normal.",
+        "From our experience hosting hundreds of ferry arrivals: porters are reliable and bags always arrive safely, but we recommend keeping medications, electronics, and travel documents in your daypack. If you're traveling as a couple or group, consider using porters for heavy bags while keeping one small bag each for the journey. Solo travelers with one bag typically find the porter service worth every euro — arriving relaxed rather than sweaty and exhausted makes a huge difference to your first impressions of Positano.",
+        "The porter service operates year-round and meets every scheduled ferry arrival. During peak summer months (July-August), multiple porter teams work simultaneously to handle the ferry crowds. You don't need to book in advance — simply approach them at the dock after disembarking. They accept cash payment only (euros), so stop at an ATM before your ferry departure if needed. For complete details on booking and pricing, see our %LINK:porterServices|porter service guide%."
+      ]
+    },
+    {
+      "id": "dock-to-mulini",
+      "title": "Port to Piazza dei Mulini",
+      "body": [
+        "Walk from the main beach up to Piazza dei Mulini following the signed promenade — use %URL:https://www.google.com/maps/dir/Positano+Spiaggia/2+Viale+Pasitea+Positano,+Campania/@40.6289096,14.4857482,18z/data=!4m14!4m13!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!3e2|these directions%.",
+        "If you are carrying bags, consider hiring one of Positano's porter services at the dock so they transport everything uphill for you — our %LINK:porterServices|porter service guide% covers pricing and how to book."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-promenade-to-mulini.jpg",
+          "alt": "Positano beachfront promenade with shops and cafés along the waterfront.",
+          "caption": "The promenade from the ferry dock toward Piazza dei Mulini — a short uphill walk through the beach area."
+        }
       ]
     },
     {
       "id": "mulini-to-bus",
-      "title": "Piazza dei Mulini → остановка Interno",
+      "title": "Piazza dei Mulini to the Interno bus stop",
       "body": [
-        "Добравшись до Piazza dei Mulini, купите билет interno в одном из угловых магазинов или табакки. Затем пройдите к остановке, которая находится у края площади, там, где она выходит на дорогу.",
-        "Автобус Interno ходит примерно каждые 30 минут с утра до полуночи и движется [по этому маршруту вверх](https://www.google.com/maps/dir/2+Viale+Pasitea+Positano,+Campania/Viale+Pasitea,+323,+84017+Positano+SA/@40.6309188,14.4819138,16z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!1m5!1m1!1s0x133b97667312711d:0xa2b15bca59b377fa!2m2!1d14.4824389!2d40.6293416!3e0) в сторону хостела."
+        "Piazza dei Mulini sits in Positano's shopping district near the pharmacy — it's the lowest traffic-accessible point in town, making it the natural hub for bus services.",
+        "When you arrive at Piazza dei Mulini, pick up an interno bus ticket from one of the corner stores or 'tabacchi'. And then go to the bus stop which is at the edge of the Piazza - where the Piazza joins the road.",
+        "The Interno bus runs every ~30 minutes from morning until midnight. %URL:https://www.google.com/maps/dir/2+Viale+Pasitea+Positano,+Campania/Viale+Pasitea,+323,+84017+Positano+SA/@40.6309188,14.4819138,16z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!1m5!1m1!1s0x133b97667312711d:0xa2b15bca59b377fa!2m2!1d14.4824389!2d40.6293416!3e0|View the complete bus route on Google Maps% to see exactly where the bus travels uphill towards the hostel."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-piazza-mulini-bus-stop.jpg",
+          "alt": "Piazza dei Mulini bus stop in Positano's town center shopping district.",
+          "caption": "The Interno bus stop at Piazza dei Mulini, located at the edge of the piazza where it joins the main road."
+        }
       ]
     },
     {
       "id": "identify-bus",
-      "title": "Как распознать автобус Interno Positano",
+      "title": "Spotting the Interno Positano bus",
       "body": [
-        "Машины могут различаться, но электронное табло спереди всегда показывает надпись \"interno positano\".",
-        "Это компактный городской автобус с местами для стояния; заходите с тротуара и прокомпостируйте или предъявите билет водителю."
+        "Fleet vehicles differ, but the electronic sign on the front will always read 'interno positano.'",
+        "Expect a compact city bus with standing room; board at the curb and validate or show your ticket to the driver."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-interno-yellow.jpg",
+          "alt": "A small Interno Positano bus with 'INTERNO POSITANO' on the electronic front sign.",
+          "caption": "Look for the 'INTERNO POSITANO' sign on the front."
+        },
+        {
+          "src": "/img/directions/ferry-dock-interno-red.jpg",
+          "alt": "An Interno Positano bus in Positano with 'INTERNO POSITANO' on the electronic front sign.",
+          "caption": "Buses vary, but the sign is consistent."
+        }
       ]
     },
     {
       "id": "bus-stop-to-hostel",
-      "title": "От местной остановки до Hostel Brikette",
+      "title": "From the local stop to Hostel Brikette",
       "body": [
-        "Выйдите у табакки на остановке \"Chiesa Nuova\". Сойдя, перейдите к основной дороге и поверните налево на Viale Pasitea.",
-        "Пройдите чуть больше 100 метров: хостел будет справа. Ищите нашу вывеску на террасе второго этажа, затем обойдите поворот и поднимитесь по лестнице справа к входу.",
-        "Нужен визуальный ориентир? Следуйте [этим финальным указаниям](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Tabacchi+Cafiero+Emanuele,+Viale+Pasitea,+325a,+84017+Positano+SA/@40.6292434,14.4813669,19z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b97660ef186c1:0xc9eb9ab54d880307!2m2!1d14.4823321!2d40.6293865!3e2)."
+        "Alight at the tabacchi at the 'Chiesa Nuova' stop (see the picture below).",
+        "Exit the bus, turn right, and walk to the main road.",
+        "Turn left onto Viale Pasitea and walk just over 100 metres (330 ft).",
+        "You will see the hostel on your right — look for our sign on the second-floor terrace.",
+        "Proceed past the sign, curve around the bend, and take the stairs up on the right to reach the hostel entrance.",
+        "Need a visual route? Follow %URL:https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Tabacchi+Cafiero+Emanuele,+Viale+Pasitea,+325a,+84017+Positano+SA/@40.6292434,14.4813669,19z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b97660ef186c1:0xc9eb9ab54d880307!2m2!1d14.4823321!2d40.6293865!3e2|these final directions%."
+      ],
+      "images": [
+        {
+          "src": "/img/tabacchi.webp",
+          "alt": "The tabacchi shop by the Chiesa Nuova bus stop with an awning that reads 'TABACCHI' and 'ARTICOLI DA REGALO'.",
+          "caption": "The bus stop is right outside this tabacchi."
+        },
+        {
+          "src": "/img/directions/hostel-brikette-entrance-steps.png",
+          "alt": "The road near Hostel Brikette with the hostel sign visible and the stairs to the entrance around the bend on the right.",
+          "caption": "Look for our sign, then take the stairs up on the right."
+        }
+      ]
+    },
+    {
+      "id": "total-journey-timing",
+      "title": "Total journey time and cost breakdown",
+      "body": [
+        "**With porters + Interno bus (recommended):** 20-30 minutes hands-free travel, €2-€6 per person for bus tickets, plus €15-€20 per bag for porters. Total cost for one person with one bag: approximately €17-€26. Groups of 2-3 can split porter costs if sharing luggage carts.",
+        "**Bus only (no porters):** 25-35 minutes carrying your own bags, €2-€6 per person. You'll manage stairs at the port (short flight), walk with luggage to Piazza dei Mulini (5 minutes uphill), and carry bags on/off the bus. Suitable for travelers with one small backpack or light luggage.",
+        "**Walking the entire route:** Not recommended with luggage. The route involves 300+ steps, steep gradients, and takes 45-60 minutes. Only consider this if you're arriving without bags or with a very light daypack. Most of our guests who attempt this with luggage end up exhausted or needing to stop multiple times.",
+        "If you're arriving from %LINK:chiesaNuovaArrivals|Chiesa Nuova bus stop% instead of the ferry dock, the final walking section (100m + stairs) is identical to what's described in the last section above."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-capri-ferry-img05.jpg",
+          "alt": "Ferry approaching Positano with the colorful hillside town in the background.",
+          "caption": "Arriving by ferry — your journey to Hostel Brikette begins at the beach-level dock."
+        }
+      ]
+    },
+    {
+      "id": "alternative-options",
+      "title": "Alternative options and when to use them",
+      "body": [
+        "**Taxi from the dock:** Costs €25-€35 for up to 4 people with luggage. Worth considering if you're a group of 3-4 sharing the fare, arriving very late (after midnight when buses stop), or during ferry cancellations when porter services are overwhelmed. Call or WhatsApp +39 379 125 6222 to book — say 'Hostel Brikette' and they know the location. Taxis can't drive all the way to the hostel entrance (no vehicle access), but they'll drop you at the closest road point, about 50 meters from our stairs. If you have mobility concerns, discuss this with the taxi driver beforehand.",
+        "**Late-night arrivals (after 23:00):** The Interno bus runs until approximately midnight, but check the exact schedule for your arrival date. If your ferry arrives after the last bus, your options are taxi (€25-€35) or walking without luggage if you've sent bags ahead. Don't attempt the full walk with heavy bags in darkness — the route has uneven stairs and poor lighting in sections. Our reception team can stay late to meet you if you message ahead with your arrival time.",
+        "**If Interno buses are full or delayed:** During peak season (July-August), the Interno bus can fill up quickly, especially around ferry arrival times. If you miss one bus, another arrives within 30 minutes. Alternatively, walk to Piazza dei Mulini and catch the bus there (it's usually less crowded at that stop), or use a taxi as backup. Some guests prefer to wait for the second or third bus rather than cramming into an overcrowded vehicle with luggage — this is perfectly fine and the extra 30 minutes won't significantly impact your arrival."
+      ]
+    },
+    {
+      "id": "staff-tips",
+      "title": "Tips from our reception team",
+      "body": [
+        "**Best arrival strategy according to our staff:** Hand your main luggage to porters at the dock (most guests use this — it's worth the €15-20 per bag), keep a small daypack with essentials, buy your Interno bus ticket during the walk to Piazza dei Mulini, and take the bus to Chiesa Nuova. This way you arrive relaxed, bags-free, and ready to enjoy Positano.",
+        "**When porters save the most effort:** If you have bags over 15kg, multiple suitcases, or traveling in summer heat, porters are essential. We've seen too many guests arrive exhausted from carrying bags uphill — the €15-20 cost is minor compared to starting your Positano stay stressed and sweaty.",
+        "**Coordinate porter delivery timing:** If you're arriving before our check-in time (15:00), tell the porters when you expect to arrive at the hostel so they can time the delivery. Bags usually arrive 30-45 minutes after you hand them over, which gives you time to take the bus and reach the hostel entrance. Early arrivals can leave bags with our reception team and explore town while waiting for your room to be ready.",
+        "**First-time visitors to Positano:** Don't be intimidated by the stairs and hills — combining porters with the Interno bus reduces the physical challenge significantly. Most of our guests tell us this arrival route is much easier than they expected, especially compared to horror stories they've heard about Positano's stairs.",
+        "**Keep bus change ready:** Interno bus tickets cost €2-€6 depending on season and exact route. Ticket vendors at tabacchi accept cash only (small bills preferred — don't expect them to break a €50 note). Have a few €5 or €10 notes ready at the dock."
       ]
     }
   ],
   "stepsList": [
-    "Передайте багаж носильщикам на причале и купите билеты Interno Positano в табакки.",
-    "Пройдите от главного пляжа до Piazza dei Mulini, затем дойдите до остановки Interno рядом с табакки на Viale Pasitea.",
-    "Сядьте на автобус Interno Positano (ищите табло \"interno positano\") и поднимайтесь по направлению к Viale Pasitea 325.",
-    "Выйдите у табакки, поверните налево по Viale Pasitea, пройдите чуть более 100 м и поднимитесь по лестнице справа к Hostel Brikette."
+    "Hand luggage to the dock porters and buy Interno Positano bus tickets at the tabacchi.",
+    "Walk from the main beach to Piazza dei Mulini, then continue to the Interno bus stop beside the tabacchi on Viale Pasitea.",
+    "Board the Interno Positano bus (look for the 'interno positano' sign) and ride uphill toward Viale Pasitea 325.",
+    "Get off outside the tabacchi, turn left along Viale Pasitea for just over 100 m, and climb the stairs on the right to reach Hostel Brikette."
   ],
   "kneesList": [
-    "Поездка на Interno Positano избавляет от сотен крутых ступеней.",
-    "Передав тяжёлые сумки носильщикам, вы останетесь свободны в автобусе и во время короткой прогулки."
+    "Taking the Interno Positano bus trims hundreds of steep steps from the journey.",
+    "Let the porters move heavy bags separately so you can stay hands-free on the ride and short walk."
   ],
-  "kneesPorterPrefix": "Нужны подробности о тарифах и бронировании носильщиков? Ознакомьтесь с",
-  "kneesPorterLinkLabel": "руководством по портерам",
+  "kneesPorterPrefix": "Need more detail on porter pricing and how to book? Read our",
+  "kneesPorterLinkLabel": "porter service guide",
   "faqs": [
     {
-      "q": "Где купить билеты на автобус Interno Positano?",
+      "q": "Where do I buy Interno Positano bus tickets?",
       "a": [
-        "Билеты продаются в любом табакки или газетном киоске в городе, включая павильон у остановки. Водители билеты не продают."
+        "Pick up tickets at any tabacchi/newsstand in town, including the kiosk beside the bus stop. Drivers do not sell tickets onboard."
       ]
     },
     {
-      "q": "Как часто ходит автобус Interno Positano?",
+      "q": "How often does the Interno Positano bus run?",
       "a": [
-        "Рейсы запланированы примерно каждые 30 минут с 08:00 до полуночи, в высокий сезон добавляют дополнительные отправления — перед поездкой всегда уточняйте расписание."
+        "Services are scheduled roughly every 30 minutes from about 08:00 until midnight, with extra departures in peak season — always confirm the timetable before sailing."
       ]
     },
     {
-      "q": "Как работают носильщики на причале?",
+      "q": "How do the dock porters work?",
       "a": [
-        "Носильщики встречают каждый паром, загружают ваш багаж и доставляют его наверх. Сообщите, что остановились в Hostel Brikette, оплатите названную сумму и держите ценности и лекарства при себе."
+        "Porters meet each ferry, load your bags, and deliver them uphill. Tell them you are staying at Hostel Brikette, pay the quoted fee, and keep valuables or medication with you."
+      ]
+    },
+    {
+      "q": "How much do porters cost from the ferry dock?",
+      "a": [
+        "Official porter rates for 2026 season are €15 per standard bag (up to 20kg) and €18-€20 for oversized or heavy items. Payment is cash only at the dock. For two people with two bags, expect to pay €30-40 total for porter service."
+      ]
+    },
+    {
+      "q": "What if I arrive after midnight when buses aren't running?",
+      "a": [
+        "The Interno bus runs until approximately midnight. For late arrivals, book a taxi in advance (€25-€35 to the hostel, WhatsApp +39 379 125 6222) or message our reception team so we can help arrange transport. Don't attempt to walk with luggage in darkness."
+      ]
+    },
+    {
+      "q": "Can I walk from the ferry dock to the hostel with luggage?",
+      "a": [
+        "Not recommended. The route involves 300+ steps, steep uphill sections, and takes 45-60 minutes with bags. Nearly all our guests use either porters + Interno bus (recommended) or taxi. Walking is only practical with a light daypack."
+      ]
+    },
+    {
+      "q": "Is this route accessible for wheelchairs or strollers?",
+      "a": [
+        "No, this route involves stairs and steep paths unsuitable for wheelchairs or strollers. Contact our reception team before arrival — we can arrange accessible taxi transport directly from the ferry dock to the hostel entrance (€25-€35)."
+      ]
+    },
+    {
+      "q": "What if my ferry is delayed or cancelled?",
+      "a": [
+        "Check current ferry status on the ferry company website or at the dock. If delayed by 30+ minutes, the Interno bus schedule may shift — ask at the tabacchi for updated timing. If your ferry is cancelled, alternative options include taking a ferry to a different port (Amalfi, Sorrento) and using SITA buses, or rebooking for the next available sailing."
       ]
     }
   ],
   "howtoSteps": [
-    "Купите билеты Interno и передайте багаж носильщикам на причале",
-    "Пройдите от пляжа до Piazza dei Mulini и остановки Interno",
-    "Поднимайтесь на автобусе Interno Positano (ищите табло \"interno positano\")",
-    "Выйдите у табакки, пройдите 100 м и поднимитесь по лестнице к Hostel Brikette"
+    "Buy Interno bus tickets and hand luggage to the dock porters",
+    "Walk from the beach to Piazza dei Mulini and the Interno bus stop",
+    "Ride the Interno Positano bus uphill (look for the 'interno positano' sign)",
+    "Alight by the tabacchi, walk 100 m, and climb the stairs to Hostel Brikette"
   ]
 }

@@ -1,7 +1,7 @@
 {
   "seo": {
     "title": "Salerno do Positano promem | Hostel Brikette",
-    "description": "Salerno do Positano promem: rozkłady, wskazówki biletowe oraz jak dotrzeć z portu do Hostel Brikette z pomocą bagażowych lub lokalnego autobusu."
+    "description": "Salerno do Positano promem: rozkłady, wskazówki biletowe oraz jak dotrzeć z portu do Hostel Brikette z pomocą tragarzy lub lokalnego autobusu."
   },
   "intro": {
     "title": "Salerno → Positano — prom",
@@ -15,7 +15,7 @@
       "id": "overview",
       "title": "Przegląd podróży",
       "list": [
-        "Sezonowe promy kursują z Salerno do Positano, oferując widoki na wybrzeże.",
+        "Sezonowe promy kursują z Salerno do Positano, oferując malownicze widoki na wybrzeże.",
         "Travelmar obsługuje najwięcej rejsów; w sezonie zaplanuj dodatkowy czas.",
         "Promy mogą być odwoływane przy złej pogodzie — zawsze sprawdź aktualne komunikaty przed podróżą."
       ]
@@ -42,12 +42,13 @@
     {
       "id": "positanoArrival",
       "title": "Przybycie do Positano",
-      "body": "Szczegółową trasę z przystani do naszych drzwi znajdziesz w przewodniku %LINK:ferryDockToBrikette|Przystań promowa → Hostel Brikette%.",
+      "body": "Szczegółową trasę krok po kroku z przystani do naszych drzwi znajdziesz w przewodniku %LINK:ferryDockToBrikette|Przystań promowa → Hostel Brikette, z przewodnikiem po bagażu%.",
       "list": [
         "Dopłyniesz do głównej przystani promowej Positano (Spiaggia Grande).",
-        "Z ciężkim bagażem polecamy skorzystanie z usług bagażowych lub lokalnego autobusu Interno.",
+        "Z ciężkim bagażem polecamy skorzystanie z usług tragarzy lub lokalnego autobusu Interno.",
         "Wchodzenie pod górę z ciężkimi walizkami nie jest zalecane w letnim upale."
       ]
     }
-  ]
+  ],
+  "lastUpdated": "2026-01-31"
 }

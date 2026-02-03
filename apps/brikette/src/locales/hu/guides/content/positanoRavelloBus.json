@@ -6,5 +6,15 @@
   "intro": {
     "title": "Positanóból Ravellóba – Amalfín át busszal",
     "body": "Utazz Positanóból Ravellóba egy egyszerű amalfi átszállással. Az útmutató bemutatja, hol vásárolj SITA jegyet, hogyan olvasd a menetrendet, mire számíts az amalfi átszállásnál, és hogyan jutsz el a positanói buszmegállóhoz a Hostel Brikette-ből."
-  }
+  },
+  "faqs": [
+    {
+      "q": "Hogyan olvassam a SITA buszmenetrendet?",
+      "a": [
+        "**Sorok olvasása:** Az első oszlopban lévő sorok az útvonal mentén található különböző buszmegállókat jelölik.",
+        "**Oszlopok olvasása:** A menetrend minden ütemezett járathoz egy betűt rendel, amelyek az egyes oszlopok fejlécében szerepelnek. Ha hétfőtől szombatig utazik, keresse az 'F' és 'G' oszlopokat. Ha vasárnap vagy ünnepnapon utazik, használja a 'G' és 'H' oszlopokat.",
+        "**Sorok és oszlopok kombinálása:** Válassza ki az indulási és érkezési megállókat, majd ellenőrizze az oszlopokban, hogy mikor közlekednek a buszok, és mikor érkeznek meg a célállomásra. Például a sorrentói indulási időt a Sorrento sorban találja. A positanói (Chiesa Nuova / Bar Internazionale) érkezési időt a Positano (Chiesa Nuova) sorban láthatja."
+      ]
+    }
+  ]
 }

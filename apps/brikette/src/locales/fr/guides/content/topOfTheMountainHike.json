@@ -112,22 +112,5 @@
     "labels": {
       "warnings": "Quand renoncer"
     }
-  },
-  "gallery": {
-    "title": "Galerie photo",
-    "items": [
-      {
-        "alt": "Vue à travers la péninsule vers Capri",
-        "caption": "Vue à travers la péninsule vers Capri"
-      },
-      {
-        "alt": "QR code à scanner pour partager",
-        "caption": "Scanner pour partager"
-      },
-      {
-        "alt": "Sentier près du sommet",
-        "caption": "À l’approche du sommet"
-      }
-    ]
   }
 }

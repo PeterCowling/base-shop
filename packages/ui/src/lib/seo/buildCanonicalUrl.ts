@@ -6,7 +6,9 @@ export function buildCanonicalUrl(baseUrl: string, path: string): string {
   if (/^https?:\/\//i.test(path)) {
     try {
       const absolute = new URL(path);
-      return absolute.toString().replace(/\/$/, "");
+      const urlStr = absolute.toString();
+      // Preserve trailing slash (align with server behavior)
+      return urlStr;
     } catch {
       return path;
     }
@@ -14,7 +16,8 @@ export function buildCanonicalUrl(baseUrl: string, path: string): string {
 
   try {
     const url = new URL(path, baseUrl);
-    return url.toString().replace(/\/$/, "");
+    // Preserve trailing slash (align with server behavior)
+    return url.toString();
   } catch {
     const normalizedBase = baseUrl.replace(/\/+$/, "");
     const normalizedPath = path.startsWith("/") ? path : `/${path}`;

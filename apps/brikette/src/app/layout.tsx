@@ -33,15 +33,69 @@ export const viewport: Viewport = {
   ],
 };
 
+const HEAD_RELOCATOR_SCRIPT = `
+(function () {
+  var selector = [
+    "title",
+    "meta[name=\\"description\\"]",
+    "meta[name=\\"robots\\"]",
+    "meta[property^=\\"og:\\"]",
+    "meta[name^=\\"twitter:\\"]",
+    "link[rel=\\"canonical\\"]",
+    "link[rel=\\"alternate\\"]"
+  ].join(",");
+
+  var scheduled = false;
+  function moveMetadataToHead() {
+    scheduled = false;
+    try {
+      var head = document.head;
+      var body = document.body;
+      if (!head || !body) return;
+      var nodes = body.querySelectorAll(selector);
+      for (var i = 0; i < nodes.length; i++) {
+        var el = nodes[i];
+        if (!el || el.parentNode === head) continue;
+        if (el.closest && el.closest("noscript")) continue;
+        head.appendChild(el);
+      }
+    } catch (e) {
+      // ignore
+    }
+  }
+
+  function scheduleMove() {
+    if (scheduled) return;
+    scheduled = true;
+    Promise.resolve().then(moveMetadataToHead);
+  }
+
+  scheduleMove();
+  try {
+    var obs = new MutationObserver(scheduleMove);
+    obs.observe(document.documentElement, { childList: true, subtree: true });
+    setTimeout(function () {
+      try {
+        obs.disconnect();
+      } catch (e) {
+        // ignore
+      }
+    }, 5000);
+  } catch (e) {
+    // ignore
+  }
+})();
+`;
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html suppressHydrationWarning>
       <head>
         <meta name="color-scheme" content="light dark" />
         {/* Theme init script - runs before React hydrates to prevent flash */}
-        <script
-          dangerouslySetInnerHTML={{ __html: initTheme }}
-        />
+        <script dangerouslySetInnerHTML={{ __html: initTheme }} />
+        {/* Ensure streamed metadata ends up in <head> for crawlers/audits */}
+        <script dangerouslySetInnerHTML={{ __html: HEAD_RELOCATOR_SCRIPT }} />
       </head>
       <body className="antialiased">{children}</body>
     </html>

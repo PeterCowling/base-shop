@@ -91,7 +91,7 @@
   "tips": [
     "कन्फर्मेशन ईमेल का स्क्रीनशॉट रखें — डॉक के पास मोबाइल सिग्नल कमजोर हो जाता है।",
     "रीफ-सेफ सनस्क्रीन और वाटर शूज़ साथ रखें; तटरेखा में कंकड़ और पत्थर की स्लैब मिलती हैं।",
-    "Laurito की तुलना अन्य कोव्स से करने के लिए हमारा %LINK:beaches|Positano बीच ओवरव्यू% देखें।"
+    "Laurito की तुलना अन्य कोव्स से करने के लिए हमारा %LINK:positanoBeaches|Positano बीच ओवरव्यू% देखें।"
   ],
   "warningsTitle": "जानने योग्य बातें",
   "warnings": [
@@ -101,20 +101,34 @@
   ],
   "images": {
     "whyGo": {
-      "alt": "तट के साथ बीच क्लब दिखाती Laurito खाड़ी",
-      "caption": "Laurito की चट्टानों से सुरक्षित खाड़ी मुख्य बीच से शांत है"
+      "src": "/img/guides/laurito-beach/02-beach-overview.jpg",
+      "alt": "Laurito Beach cove with beach clubs along the shoreline",
+      "caption": "Laurito's cliff-backed cove is calmer and quieter than the main beach."
     },
     "layout": {
-      "alt": "Laurito के टैरेस और तटरेखा",
-      "caption": "खाड़ी में तीन क्षेत्र: मुफ्त पट्टी, Villa Tre Ville टैरेस और Da Adolfo प्लेटफॉर्म"
+      "src": "/img/guides/laurito-beach/01-beach-layout-map.jpg",
+      "alt": "Beach decks and shoreline layout at Laurito",
+      "caption": "Three zones share the cove: public strip, Villa Tre Ville decks, and Da Adolfo terrace."
     },
     "treVille": {
-      "alt": "Villa Tre Ville बुटीक क्लब के प्लेटफॉर्म",
-      "caption": "Villa Tre Ville प्रीमियम डे-बेड और कंसीयज सेवा देता है"
+      "src": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg",
+      "alt": "Villa Tre Ville beach club loungers and sea views",
+      "caption": "Villa Tre Ville focuses on premium loungers and concierge-style service."
     },
     "daAdolfo": {
-      "alt": "Da Adolfo रेस्तरां के सामने लकड़ी की मेजें",
-      "caption": "Da Adolfo अपने नींबू पत्तों पर मोत्ज़ारेला और बोहेमियन माहौल के लिए प्रसिद्ध है"
+      "src": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg",
+      "alt": "Da Adolfo beach club dock and seating area",
+      "caption": "Da Adolfo's shuttle boat drops guests beside the restaurant terrace."
+    },
+    "positanoView": {
+      "src": "/img/guides/laurito-beach/05-positano-view.jpg",
+      "alt": "View over Positano and the sea with boats near the shore",
+      "caption": "Spiaggia Grande is the main launch point for many beach shuttles and boats."
+    },
+    "sitaBus": {
+      "src": "/img/guides/laurito-beach/06-amalfi-coast-sita-bus.jpg",
+      "alt": "Blue SITA bus driving along the Amalfi Coast road above the sea",
+      "caption": "The coastal SITA bus is a useful backup when boats are paused."
     }
   },
   "faqsTitle": "Laurito Beach प्रश्नोत्तर",
@@ -138,7 +152,5 @@
       ]
     }
   ],
-  "gallery": {
-    "alt": "Laurito बीच का किनारा"
-  }
+  "lastUpdated": "2026-01-29T00:00:00.000Z"
 }

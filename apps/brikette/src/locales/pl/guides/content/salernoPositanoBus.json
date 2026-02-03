@@ -1,10 +1,21 @@
 {
   "seo": {
-    "title": "Salerno do Positano autobusem – przewodnik po przystankach i rozkładach",
+    "title": "Salerno do Positano autobusem – przewodnik po przystankach i rozkładach | Hostel Brikette",
     "description": "Instrukcje krok po kroku dotyczące podróży z Salerno do Positano autobusem SITA Sud przez Amalfi. Dowiedz się, gdzie kupić bilety, jak czytać rozkład i który przystanek jest najlepszy dla Hostel Brikette."
   },
   "intro": {},
   "callouts": {
     "tip": "Chcesz poznać wszystkie opcje transportu? Otwórz %HOWTO:how-to-get-here|przegląd Jak do nas dotrzeć%, aby zobaczyć promy, taksówki i trasy łączone."
-  }
+  },
+  "lastUpdated": "2026-01-31",
+  "faqs": [
+    {
+      "q": "Jak czytać rozkład jazdy autobusów SITA?",
+      "a": [
+        "**Czytanie wierszy:** Wiersze w pierwszej kolumnie reprezentują różne przystanki autobusowe wzdłuż trasy.",
+        "**Czytanie kolumn:** Rozkład przypisuje literę alfabetyczną do każdego zaplanowanego kursu, które są wymienione jako nagłówki w każdej kolumnie. Jeśli podróżujesz od poniedziałku do soboty, sprawdź kolumny 'F' i 'G'. Jeśli podróżujesz w niedzielę lub święto, użyj kolumn 'G' i 'H'.",
+        "**Łączenie wierszy i kolumn:** Wybierz przystanki odjazdu i przyjazdu, a następnie sprawdź kolumny, aby zobaczyć, kiedy dostępne są autobusy i o której godzinie przyjadą do miejsca docelowego. Na przykład, aby zobaczyć czas odjazdu z Sorrento, sprawdź wiersz Sorrento. Aby zobaczyć czas przyjazdu do Positano (Chiesa Nuova / Bar Internazionale), sprawdź wiersz Positano (Chiesa Nuova)."
+      ]
+    }
+  ]
 }

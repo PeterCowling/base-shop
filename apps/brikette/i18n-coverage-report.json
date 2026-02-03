@@ -1,0 +1,182 @@
+{
+  "schemaVersion": 1,
+  "baselineLocale": "en",
+  "locales": [
+    "es",
+    "de",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh",
+    "ar",
+    "hi",
+    "vi",
+    "pl",
+    "sv",
+    "no",
+    "da",
+    "hu"
+  ],
+  "summary": {
+    "totalMissingFiles": 0,
+    "totalMissingKeys": 17
+  },
+  "reports": [
+    {
+      "locale": "es",
+      "missingFiles": [],
+      "missingKeys": {
+        "experiencesPage.json": [
+          "guideCollections.sections"
+        ]
+      }
+    },
+    {
+      "locale": "de",
+      "missingFiles": [],
+      "missingKeys": {
+        "experiencesPage.json": [
+          "guideCollections.sections"
+        ]
+      }
+    },
+    {
+      "locale": "fr",
+      "missingFiles": [],
+      "missingKeys": {
+        "experiencesPage.json": [
+          "guideCollections.sections"
+        ]
+      }
+    },
+    {
+      "locale": "it",
+      "missingFiles": [],
+      "missingKeys": {
+        "experiencesPage.json": [
+          "guideCollections.sections"
+        ]
+      }
+    },
+    {
+      "locale": "ja",
+      "missingFiles": [],
+      "missingKeys": {
+        "experiencesPage.json": [
+          "guideCollections.sections"
+        ]
+      }
+    },
+    {
+      "locale": "ko",
+      "missingFiles": [],
+      "missingKeys": {
+        "experiencesPage.json": [
+          "guideCollections.sections"
+        ]
+      }
+    },
+    {
+      "locale": "pt",
+      "missingFiles": [],
+      "missingKeys": {
+        "experiencesPage.json": [
+          "guideCollections.sections"
+        ]
+      }
+    },
+    {
+      "locale": "ru",
+      "missingFiles": [],
+      "missingKeys": {
+        "experiencesPage.json": [
+          "guideCollections.sections"
+        ]
+      }
+    },
+    {
+      "locale": "zh",
+      "missingFiles": [],
+      "missingKeys": {
+        "experiencesPage.json": [
+          "guideCollections.sections"
+        ]
+      }
+    },
+    {
+      "locale": "ar",
+      "missingFiles": [],
+      "missingKeys": {
+        "experiencesPage.json": [
+          "guideCollections.sections"
+        ]
+      }
+    },
+    {
+      "locale": "hi",
+      "missingFiles": [],
+      "missingKeys": {
+        "experiencesPage.json": [
+          "guideCollections.sections"
+        ]
+      }
+    },
+    {
+      "locale": "vi",
+      "missingFiles": [],
+      "missingKeys": {
+        "experiencesPage.json": [
+          "guideCollections.sections"
+        ]
+      }
+    },
+    {
+      "locale": "pl",
+      "missingFiles": [],
+      "missingKeys": {
+        "experiencesPage.json": [
+          "guideCollections.sections"
+        ]
+      }
+    },
+    {
+      "locale": "sv",
+      "missingFiles": [],
+      "missingKeys": {
+        "experiencesPage.json": [
+          "guideCollections.sections"
+        ]
+      }
+    },
+    {
+      "locale": "no",
+      "missingFiles": [],
+      "missingKeys": {
+        "experiencesPage.json": [
+          "guideCollections.sections"
+        ]
+      }
+    },
+    {
+      "locale": "da",
+      "missingFiles": [],
+      "missingKeys": {
+        "experiencesPage.json": [
+          "guideCollections.sections"
+        ]
+      }
+    },
+    {
+      "locale": "hu",
+      "missingFiles": [],
+      "missingKeys": {
+        "experiencesPage.json": [
+          "guideCollections.sections"
+        ]
+      }
+    }
+  ]
+}

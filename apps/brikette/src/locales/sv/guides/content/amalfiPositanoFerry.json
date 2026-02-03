@@ -1,4 +1,5 @@
 {
+  "lastUpdated": "2026-01-31",
   "seo": {
     "title": "Amalfi till Positano med färja | Hostel Brikette",
     "description": "Amalfi till Positano med färja: tider, biljetter, var du går ombord i Amalfi och hur du tar dig till Hostel Brikette från bryggan med minimalt antal trappor."
@@ -47,6 +48,48 @@
         "Med bagage kan du överväga bärhjälp eller Interno Positano-bussen för att minska antalet trappor.",
         "Att gå uppför med tunga väskor kan vara ansträngande i sommarvärmen."
       ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Kan jag ta med en stor ryggsäck eller resväska på färjan?",
+      "a": "Ja, men väskor större än 45cm × 35cm × 20cm kostar €2 extra per väska. Köp bagagebiljetten med färjebiljetten (online eller vid luckan). Lägg stora väskor på bagagehyllorna på däck."
+    },
+    {
+      "q": "Vad händer om färjan ställs in på grund av väder?",
+      "a": "Travelmar ställer in avgångar om havet är för oroligt (sällsynt, men händer tidigt/sent på säsongen). Du får mejl om du bokade online. Personalen sätter upp meddelanden vid piren. Ta SITA-bussen från Amalfi till Positano (€2–€3) eller ta taxi istället."
+    },
+    {
+      "q": "Är färjan bra för resenärer med rörelsehinder?",
+      "a": "Ombordstigning kräver en kort landgång och kanske trappor mellan pir och däck. De flesta Travelmar-färjor har inga rullstolsramper. Om du behöver hjälp, kom tidigt och fråga personalen. De kan låta dig gå ombord först via en säkrare rutt."
+    },
+    {
+      "q": "Kan jag köpa färjebiljetter samma dag?",
+      "a": "Vanligtvis ja i april, maj, september och oktober. Men juli och augusti är slutsålda 1–2 dagar i förväg. Boka online kvällen innan för att vara säker, särskilt för morgonbåtar."
+    },
+    {
+      "q": "Hur tar jag mig från Positanos pir till Hostel Brikette?",
+      "a": "Tre sätt: gå uppför (15–20 minuter, branta trappor), ta Interno Positano-bussen (€2), eller anlita bärare (€20–€25 per väska). Se vår %LINK:ferryDockToBrikette|guide från pir till Brikette% för vägbeskrivningar och foton."
+    },
+    {
+      "q": "Finns det toaletter och snacks ombord?",
+      "a": "De flesta Travelmar-båtar har en liten snackbar med drycker och lätt mat. Toaletter finns på större båtar, men inte på mindre under lågsäsong. Använd toaletten innan du går ombord om möjligt."
+    },
+    {
+      "q": "Vilken är bästa tiden att ta färjan?",
+      "a": "Morgonbåtar (08:25–10:00) har lugnare hav och bättre fotobelysning. Eftermiddagsavgångar blir fulare med dagsturister. Hoppa över sista båten (20:00) om du inte är OK med att anlända efter mörker."
+    },
+    {
+      "q": "Måste jag skriva ut biljetten eller kan jag visa på telefonen?",
+      "a": "Telefonen funkar. Personalen scannar QR-koden från skärmen. Se till att telefonen är laddad och att du kan öppna mejlet eller bokningen utan internet (spara offline eller ta en skärmdump)."
+    },
+    {
+      "q": "Var exakt ligger Amalfi-färjepiren?",
+      "a": "Gå till vattnet från Piazza Flavio Gioia (torg med fontän). Vänd ansiktet mot havet och sväng höger. Travelmar-piren ligger 2 minuter längs promenaden. Leta efter blå-vita skyltar och biljettluckor."
+    },
+    {
+      "q": "Kan jag förvara bagage i Positano om jag anländer tidigt?",
+      "a": "Ja. Flera %LINK:luggageStorage|bagageförvaringsplatser% nära Spiaggia Grande strand tar €5–€8 per väska per dag. Bra om du landar före incheckning på vandrarhemmet kl 15:00."
     }
   ]
 }

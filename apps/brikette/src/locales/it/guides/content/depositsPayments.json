@@ -1,0 +1,125 @@
+{
+  "seo": {
+    "title": "Guida a Depositi e Pagamenti – Hostel Brikette, Positano",
+    "description": "La guida completa a depositi, metodi di pagamento, conferme, modifiche, cancellazioni e blocchi di sicurezza per la tua prenotazione all’Hostel Brikette."
+  },
+  "linkLabel": "Guida a Depositi e Pagamenti – Hostel Brikette, Positano",
+  "sections": [
+    {
+      "id": "submittingBookingRequest",
+      "title": "Come Inviare la Richiesta",
+      "body": [
+        "Invia la richiesta tramite OTA autorizzata o sul nostro sito; chat o walk-in da soli non valgono. Cliccando “Prenota” confermi dati corretti e accetti i nostri T&C."
+      ]
+    },
+    {
+      "id": "processingBookingRequest",
+      "title": "Come La Elaboriamo",
+      "body": [
+        "Elaboriamo la richiesta appena riceviamo deposito, pre-autorizzazione o pagamento dovuto. La prenotazione deve riportare il nome del titolare carta; se diverso, inviaci un’autorizzazione scritta."
+      ]
+    },
+    {
+      "id": "decliningBookingRequest",
+      "title": "Quando Possiamo Rifiutare",
+      "body": [
+        "Raramente rifiutiamo, ma possiamo farlo in caso di pagamento fallito, dati mancanti o violazione T&C."
+      ]
+    },
+    {
+      "id": "requestSizeLimit",
+      "title": "Limite per Richiesta",
+      "body": [
+        "Una richiesta copre max 7 notti consecutive e 5 ospiti. Per più notti o persone invia richieste separate."
+      ]
+    },
+    {
+      "id": "counterOffer",
+      "title": "Se la Camera non è Disponibile",
+      "body": [
+        "Se la camera desiderata è occupata, invieremo una controproposta. Accettala e paga/pre-autorizza per confermare."
+      ]
+    },
+    {
+      "id": "prepaidNonRefundableBookingsPolicy",
+      "title": "Tariffe Prepagate Non Rimborsabili",
+      "body": [
+        "La tariffa prepagata è più economica ma richiede pagamento totale immediato. Tre tentativi carta; se falliscono, richiesta annullata. Nessun rimborso o modifica."
+      ]
+    },
+    {
+      "id": "confirmationEmail",
+      "title": "E-mail di Conferma",
+      "body": [
+        "Dopo il pagamento riceverai un’e-mail con riferimento, data arrivo, durata e extra. Controlla e segnala errori subito."
+      ]
+    },
+    {
+      "id": "numberOfGuestsIncluded",
+      "title": "Chi è Incluso",
+      "body": [
+        "La prenotazione include:",
+        "* 1 ospite per letto singolo\n* fino a 2 per letto matrimoniale\n* fino alla capienza dichiarata di un appartamento",
+        "Non possiamo superare i limiti di camera."
+      ]
+    },
+    {
+      "id": "scopeOfFacilitiesIncluded",
+      "title": "Cosa è Incluso",
+      "body": [
+        "Ogni ospite riceve:",
+        "* Lenzuola pulite e keycard\n* Docce in comune\n* Acqua calda (circa 07:00-10:30 & 17:00-22:30)\n* Aree comuni",
+        "Colazione, Wi-Fi, deposito bagagli ecc. sono gratuiti con regole dedicate."
+      ]
+    },
+    {
+      "id": "financialObligation",
+      "title": "Responsabilità Finanziaria",
+      "body": [
+        "Il titolare carta indicato risponde di tutti i costi: camera, danni, pulizia, multe. Importi non pagati saranno addebitati direttamente."
+      ]
+    },
+    {
+      "id": "roomAllocation",
+      "title": "Assegnazione Letti e Camere",
+      "body": [
+        "Garantiamo la categoria prenotata. Nei dormitori assicuri un letto, non che il gruppo sia nello stesso. I letti sono scelti in base all’ordine di arrivo."
+      ]
+    },
+    {
+      "id": "allocatingUpgrades",
+      "title": "Upgrade di Camera",
+      "body": [
+        "A volte offriamo upgrade gratuiti o a pagamento. Se l’upgrade gratuito diventa impraticabile, potremmo riportarti alla categoria originale."
+      ]
+    },
+    {
+      "id": "thirdPartyPayments",
+      "title": "Pagamenti via Terzi",
+      "body": [
+        "Con OTA paghi nel loro sistema; non vediamo i dati carta. Verifica sempre che il pagamento e la conferma siano andati a buon fine."
+      ]
+    },
+    {
+      "id": "bookingRequestDeposits",
+      "title": "Depositi di Prenotazione",
+      "body": [
+        "Alcune tariffe richiedono deposito. Le prepagate richiedono 100 % subito, non rimborsabile. Se non riusciamo a prelevare il deposito, la richiesta viene annullata."
+      ]
+    },
+    {
+      "id": "bookingRequestPreauthorisations",
+      "title": "Pre-autorizzazioni Carta",
+      "body": [
+        "Per tariffe flessibili possiamo pre-autorizzare la prima notte o l’intero soggiorno. Se fallisce, rifiutiamo la richiesta."
+      ]
+    },
+    {
+      "id": "safeguardingProcess",
+      "title": "Blocco di Sicurezza",
+      "body": [
+        "Al check-in possiamo bloccare l’equivalente di una notte per ospite. Se non possibile, accettiamo contanti o carta di un compagno; altrimenti dobbiamo cancellare la prenotazione."
+      ]
+    }
+  ]
+}

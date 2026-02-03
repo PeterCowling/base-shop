@@ -51,11 +51,5 @@
       ]
     }
   ],
-  "galleryHeading": "Фотогалерея",
-  "gallery": {
-    "primaryAlt": "Лодка у побережья Позитано",
-    "primaryCaption": "Круиз вдоль побережья",
-    "secondaryAlt": "Купальная остановка у скал Позитано",
-    "secondaryCaption": "Пауза для купания"
-  }
+  "galleryHeading": "Фотогалерея"
 }

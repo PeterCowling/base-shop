@@ -73,18 +73,5 @@
         "街灯は場所によって差があります。スマホのライトや小型ライトを持つと安心です。"
       ]
     }
-  ],
-  "gallery": {
-    "title": "フォトギャラリー",
-    "items": [
-      {
-        "caption": "Chiesa Nuova テラス",
-        "alt": "Chiesa Nuova テラスからの夕日"
-      },
-      {
-        "caption": "Nocelle",
-        "alt": "ノチェッレからの夕日"
-      }
-    ]
-  }
+  ]
 }

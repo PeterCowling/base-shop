@@ -320,6 +320,11 @@ const IGNORED_ERROR_PATTERNS: ConsolePattern[] = [
 
 const IGNORED_WARN_PATTERNS: ConsolePattern[] = [
   "⚠️ Invalid payments environment variables",
+  // Content readiness audit warnings (expected in content quality tests)
+  /\[WARN\] Found \d+ English strings copied into non-en guide locales/,
+  /\[WARN\] i18n parity\/quality issues found/,
+  /\[WARN\] Guide content parity\/quality issues found/,
+  /\[guide-manifest-overrides\] Malformed JSON, using empty defaults/,
 ];
 
 const shouldIgnoreConsoleMessage = (
@@ -358,11 +363,15 @@ const shouldIgnoreConsoleMessage = (
   patchedConsole.error = (...args: unknown[]) => {
     if (shouldIgnoreConsoleMessage(args, IGNORED_ERROR_PATTERNS)) return;
     originalConsole.error(...(args as []));
+    // Fail tests on unexpected console.error calls
+    throw new Error(`Unexpected console.error in test:\n${args.map(a => typeof a === 'string' ? a : JSON.stringify(a)).join(' ')}`);
   };
 
   patchedConsole.warn = (...args: unknown[]) => {
     if (shouldIgnoreConsoleMessage(args, IGNORED_WARN_PATTERNS)) return;
     originalConsole.warn(...(args as []));
+    // Fail tests on unexpected console.warn calls
+    throw new Error(`Unexpected console.warn in test:\n${args.map(a => typeof a === 'string' ? a : JSON.stringify(a)).join(' ')}`);
   };
 
   // eslint-disable-next-line no-console

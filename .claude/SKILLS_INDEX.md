@@ -1,13 +1,21 @@
 # Recommended Claude Skills for This Monorepo
 
-This document outlines custom skills/prompts that should be added to maximize Claude's effectiveness in this codebase.
+This document outlines custom skills (workflow playbooks) that should be added to maximize Claude's effectiveness in this codebase.
 
 ## Workflow Modes (Ralph Methodology)
 
-These are the primary workflow prompts — use them for structured work:
+These are the primary workflow skills — use them for structured work:
 
-- **plan-feature.md** - **Planning mode**: Create detailed plans before implementation
-- **build-feature.md** - **Building mode**: Implement tasks one-by-one from approved plans
+- **fact-find** — `.claude/skills/fact-find/SKILL.md` — Discover ideas/cards to fact-find, or provide a topic; produces evidence brief + impact map
+- **plan-feature** — `.claude/skills/plan-feature/SKILL.md` — Confidence-gated plan doc
+- **build-feature** — `.claude/skills/build-feature/SKILL.md` — Implement eligible tasks (≥80%)
+- **re-plan** — `.claude/skills/re-plan/SKILL.md` — Raise confidence with evidence (no building)
+
+## Business Operations Skills
+
+Domain-specific skills for business workflows:
+
+- **process-emails** — `.claude/skills/process-emails/SKILL.md` — Process Brikette customer emails with MCP tools
 
 ## Priority 1: Essential Skills (Implemented)
 

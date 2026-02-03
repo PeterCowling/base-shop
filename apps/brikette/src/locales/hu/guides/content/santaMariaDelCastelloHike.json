@@ -1,0 +1,132 @@
+{
+  "seo": {
+    "title": "Santa Maria del Castello túra a Hostel Brikette-től - Positano",
+    "description": "Teljes túraútmutató Santa Maria del Castellóba, egy hegyi faluba Positano felett útvonalakkal, kilátópontokkal és lélegzetelállító tengerparti látványokkal."
+  },
+  "linkLabel": "Santa Maria del Castello: Hegyi falu túra",
+  "intro": [
+    "Santa Maria del Castello 670 méter (2200 láb) magasságban található Positano felett, olyan kilátást kínálva, amely megegyezik vagy felülmúlja az Istenek ösvényét. Ez a hegyi falu egy étteremmel rendelkezik, amely jó ételeket kínál megfizethető áron és lenyűgöző panorámás kilátással.",
+    "Nagyszerű kilátások már 15 perccel a hostelből való indulás után megjelennek, így ez egy kifizetődő túra azok számára, akik rugalmasságot keresnek és el akarják kerülni a zsúfolt SITA buszokat."
+  ],
+  "sections": [
+    {
+      "id": "what-is-santa-maria",
+      "title": "Mi az a Santa Maria del Castello?",
+      "body": [
+        "Az úticélod egy hegyi falu Positano felett 670 méter (2200 láb) magasságban. A falu egy étteremmel rendelkezik, amely jó ételeket kínál megfizethető áron, valamint nagyszerű kilátással.",
+        "Egy dedikált kilátópont lenyűgöző panorámás kilátást kínál az Amalfi-partról, Positanóról és a környező hegyekről."
+      ]
+    },
+    {
+      "id": "why-do-this-hike",
+      "title": "Miért érdemes ezt a túrát megtenni?",
+      "body": [
+        "A kilátások megegyeznek vagy felülmúlják az Istenek ösvényét, látványos tengerparti panorámákat kínálva.",
+        "Nagyszerű kilátások már 15 perccel a hostelből való indulás után megjelennek—nem kell sokáig várnod a jutalmakra.",
+        "Rugalmasságot kínál és azok részesítik előnyben, akik kerülik a zsúfolt SITA buszokat.",
+        "Kiindulópontként szolgál más hegyi területek felfedezéséhez Positano környékén."
+      ]
+    },
+    {
+      "id": "considerations",
+      "title": "Fontos megfontolások",
+      "body": [
+        "Ez a túra lényegesen megerőltetőbb, mint az Istenek ösvénye. Készülj fel meredek emelkedőkre.",
+        "Lehet, hogy nem alkalmas azoknak, akik az Istenek ösvényének élményét helyezik előtérbe fő túracélként.",
+        "A nyári hőség megköveteli, hogy kerüld ezt a túrát 11:00 és 16:00 között. Korai reggeli vagy késő délutáni indulás elengedhetetlen a meleg hónapokban."
+      ]
+    },
+    {
+      "id": "directions-to-village",
+      "title": "Útvonal a faluhoz",
+      "body": [
+        "Kövesd ezeket a lépésről lépésre szóló utasításokat a Hostel Brikette-től Santa Maria del Castello faluhoz:"
+      ]
+    },
+    {
+      "id": "directions-to-lookout",
+      "title": "Útvonal a kilátóponthoz",
+      "body": [
+        "Miután eléred a kereszteződést, ahol az ösvény kiegyenlítődik, kövesd ezeket az utasításokat a lenyűgöző kilátóponthoz való hozzáféréshez."
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "name": "Hagyd el a hostelt és fordulj jobbra",
+      "text": "A hostel bejáratától fordulj jobbra és menj fel a lépcsőn az épület mellett."
+    },
+    {
+      "name": "Folytasd a gyalogösvényen",
+      "text": "A kezdeti lépcsők tetején folytasd a gyalogösvényt felfelé."
+    },
+    {
+      "name": "Válaszd a bal oldalt a kereszteződésnél",
+      "text": "Amikor elérsz egy kereszteződést, válaszd a bal felfelé vezető lehetőséget a mászás folytatásához."
+    },
+    {
+      "name": "Kövesd a lépcsőket az útig",
+      "text": "Folytasd a lépcsők követését, amíg el nem érsz egy pontot, ahol lépcsők vezetnek le egy útra."
+    },
+    {
+      "name": "Kelj át az úton",
+      "text": "Kelj át az úton és találd meg a lépcsőket, amelyek a házak mellett futnak az ellenkező oldalon."
+    },
+    {
+      "name": "Menj fel a lépcsőkön a házak mögött",
+      "text": "Kövesd ezeket a lépcsőket, ahogy kanyarognak a házak mögött, elvezetve téged a hegyi ösvényhez."
+    },
+    {
+      "name": "Folytasd a hegyi ösvényen",
+      "text": "Kövesd a hegyi ösvényt, ahogy felkapaszkodik a falu felé. Az út itt festőibbé válik."
+    },
+    {
+      "name": "Válaszd a felfelé irányuló utat az elágazásoknál",
+      "text": "Két ösvényelágazásnál az út mentén válaszd a felfelé vezető ösvényeket a falu felé való folytatáshoz."
+    },
+    {
+      "name": "Érkezz meg a falu kereszteződéséhez",
+      "text": "Elérsz egy kereszteződést, ahol az ösvény kiegyenlítődik. Ez jelzi az érkezésedet Santa Maria del Castellóba."
+    },
+    {
+      "name": "Fordulj jobbra a kilátópont felé (opcionális)",
+      "text": "A kilátópont eléréséhez fordulj jobbra a kereszteződésnél."
+    },
+    {
+      "name": "Vedd az utat felfelé a kereszteződésig",
+      "text": "Kövesd az utat felfelé, amíg el nem érsz egy kereszteződést."
+    },
+    {
+      "name": "Fordulj jobbra a kereszteződésnél",
+      "text": "A kereszteződésnél fordulj jobbra és kövesd az utat, ahogy jobbra kanyarodik."
+    },
+    {
+      "name": "Folytasd a füves szakaszig",
+      "text": "Folytasd, amíg el nem érsz egy füves szakaszt a főúton kívül."
+    },
+    {
+      "name": "Hozzáférés a kilátópontokhoz",
+      "text": "A kilátópontok ebből a füves területből érhetők el. Légy rendkívül óvatos—hirtelen több száz méteres esések vannak."
+    }
+  ],
+  "warningsTitle": "Biztonsági figyelmeztetések",
+  "warnings": [
+    "A kilátópontok hirtelen több száz méteres esésekkel rendelkeznek. Maradj jó messze a peremektől és felügyeld a gyerekeket alaposan.",
+    "Ez a túra lényegesen megerőltetőbb, mint az Istenek ösvénye. Értékeld az edzettségi szintedet a próbálkozás előtt.",
+    "Kerüld a túrázást 11:00 és 16:00 között a nyári hónapokban a hegyi ösvényen való szélsőséges hőhatás miatt."
+  ],
+  "essentialsTitle": "Mit vigyen magával",
+  "essentials": [
+    "Erős túracipő jó tapadással meredek, egyenetlen terephez",
+    "Legalább 1,5 liter víz személyenként—korlátozott utántöltési lehetőségek",
+    "Napvédelem: kalap, napvédő krém és napszemüveg a fedetlen szakaszokhoz",
+    "Könnyű snackek vagy ebéd, ha időt tervezel tölteni a falu éttermében"
+  ],
+  "tipsTitle": "Túratippek",
+  "tips": [
+    "Indulj korán reggel a nyári hónapokban a déli hőség elkerülése érdekében.",
+    "Szánj időt a meredek szakaszokra—a kilátások megérdemlik az élvezetet az út mentén.",
+    "Fontold meg az ebédelést a falu éttermében, mielőtt leereszkedsz vissza Positanóba.",
+    "Vigyél kamerát vagy teljesen feltöltött telefont—a fényképezési lehetőségek a kilátópontról kivételesek."
+  ]
+}

@@ -112,22 +112,5 @@
     "labels": {
       "warnings": "Quando reconsiderar"
     }
-  },
-  "gallery": {
-    "title": "Galeria de fotos",
-    "items": [
-      {
-        "alt": "Vista da península em direção a Capri",
-        "caption": "Vista pela península em direção a Capri"
-      },
-      {
-        "alt": "Código QR para compartilhar",
-        "caption": "Escaneie para compartilhar"
-      },
-      {
-        "alt": "Trilha perto do cume",
-        "caption": "Chegando ao cume"
-      }
-    ]
   }
 }

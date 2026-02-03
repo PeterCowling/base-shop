@@ -1,53 +1,53 @@
 {
   "seo": {
     "title": "Przewodnik po Ravello",
-    "description": "Co zobaczyć w Ravello: ogrody, koncerty, logistyka przyjazdu i powrotu."
+    "description": "Wille, koncerty i ogrody oraz dojazd z Amalfi lub Positano."
   },
   "linkLabel": "Przewodnik po Ravello",
   "intro": [
-    "Tłumaczenie w przygotowaniu."
+    "Ravello leży wysoko ponad Amalfi i kusi willowymi ogrodami, koncertami klasycznymi oraz rozległymi tarasami. Skorzystaj z tego przewodnika, by zaplanować spokojną wycieczkę."
   ],
   "sections": [
     {
       "id": "villas",
-      "title": "Villas & gardens",
+      "title": "Wille i ogrody",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Villa Rufolo ma panoramiczne tarasy i kultową scenę koncertową wychodzącą nad morze.",
+        "Taras Nieskończoności w Villa Cimbrone to obowiązkowy punkt do zdjęć; przybądź wcześnie, by ominąć kolejki na wąskim przejściu."
       ]
     },
     {
       "id": "music",
-      "title": "Music & events",
+      "title": "Muzyka i wydarzenia",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Sprawdź kalendarz Festiwalu Ravello (czerwiec–wrzesień) na wieczorne koncerty; bilety kosztują 25–70 € w zależności od miejsca.",
+        "Weź ze sobą lekką warstwę — wieczorne bryzy na wysokości 365 m potrafią ochłodzić nawet latem."
       ]
     },
     {
       "id": "logistics",
-      "title": "Getting there",
+      "title": "Dojazd",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Zapewnij dodatkowy czas na autobus powrotny; Odjazdy późnym popołudniem szybko się zapełniają, więc ustawiaj się w kolejce 20 minut wcześniej."
+        "Z Amalfi jedź autobusem SITA (25 minut w górę) lub podziel się taksówką, by skrócić podróż do około 15 minut.",
+        "Zarezerwuj więcej czasu na powrót — popołudniowe kursy szybko się zapełniają, więc ustaw się w kolejce 20 minut wcześniej."
       ]
     }
   ],
   "tips": [
-    "Noś wygodne buty — alejki Ravello są brukowane i mają łagodne zbocza.",
-    "Tłumaczenie w przygotowaniu."
+    "Noś wygodne buty — uliczki Ravello są brukowane i mają łagodne spadki.",
+    "Połącz Ravello z przystankiem w Minori i weź słodkości z Sal De Riso w drodze powrotnej do Positano."
   ],
   "faqs": [
     {
-      "q": "Can I walk to Ravello from Amalfi?",
+      "q": "Czy da się dojść pieszo z Amalfi?",
       "a": [
-        "Jest to stroma wspinaczka o długości 5 km (3,1 mil) po starożytnych schodach. Próbuj tylko wtedy, gdy jesteś w dobrej formie, zacznij wcześnie i noś ze sobą wodę."
+        "To strome 5 km (3,1 mi) w górę po dawnych schodach. Wyrusz tylko jeśli jesteś dobrej kondycji, zacznij wcześnie i zabierz wodę."
       ]
     },
     {
-      "q": "Do I need to pre-book villa tickets?",
+      "q": "Trzeba rezerwować bilety do willi?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Bilety kupuje się przy wejściu. W szczycie lata po południu zdarzają się krótkie kolejki, więc wybierz poranny czas, by sprawnie wejść."
       ]
     }
   ],
@@ -55,37 +55,37 @@
     "toc": [
       {
         "href": "#villas",
-        "label": "Villas & gardens"
+        "label": "Wille i ogrody"
       },
       {
         "href": "#concerts",
-        "label": "Concerts"
+        "label": "Koncerty"
       },
       {
         "href": "#getting",
-        "label": "Getting there"
+        "label": "Dojazd"
       }
     ],
     "sections": [
       {
         "id": "villas",
-        "title": "Villas & gardens",
+        "title": "Wille i ogrody",
         "body": [
-          "Tłumaczenie w przygotowaniu."
+          "Villa Rufolo i Villa Cimbrone zapewniają ikoniczne widoki. Przybądź rano, by ominąć kolejki."
         ]
       },
       {
         "id": "concerts",
-        "title": "Concerts",
+        "title": "Koncerty",
         "body": [
-          "Tłumaczenie w przygotowaniu."
+          "Festiwal Ravello trwa latem — sprawdź oficjalne informacje i ubierz się ciepło na wieczorne bryzy."
         ]
       },
       {
         "id": "getting",
-        "title": "Getting there",
+        "title": "Dojazd",
         "body": [
-          "Tłumaczenie w przygotowaniu."
+          "Autobus z Amalfi; powroty rzadziej po zmroku. Uwzględnij dodatkowy czas na wieczorną podróż."
         ]
       }
     ]

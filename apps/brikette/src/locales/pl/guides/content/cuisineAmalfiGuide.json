@@ -5,8 +5,8 @@
   },
   "linkLabel": "Kuchnia Wybrzeża Amalfi",
   "intro": [
-    "Tłumaczenie w przygotowaniu.",
-    "Tłumaczenie w przygotowaniu."
+    "Krótki wstęp do kuchni Wybrzeża Amalfi: podstawowe owoce morza, cytrusowe desery i miejsca, gdzie ich spróbujesz w Positano.",
+    "Użyj tego przewodnika jako ściągi, zanim zagłębisz się w menu lub odwiedzisz sąsiednie miejscowości po regionalne specjały."
   ],
   "tocTitle": "On this page",
   "sections": [
@@ -14,8 +14,8 @@
       "id": "staples",
       "title": "Seafood staples",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Spaghetti alle vongole, scialatielli ai frutti di mare i grillowany dzienny połów goszczą na większości menu.",
+        "Zapytaj o sezonowe specjalności — wiosenne groszki, pomidorki koktajlowe lub kwiaty cukinii często pojawiają się na tablicach."
       ]
     },
     {
@@ -31,7 +31,7 @@
       "title": "Desserts & pastries",
       "body": [
         "Delizia al limone, babà al limoncello i sfogliatella doskonale komponują się z espresso po obiedzie.",
-        "Tłumaczenie w przygotowaniu."
+        "Lodziarnie serwują sorbety cytrynowe, granitę i crema al limone — idealne na upalne popołudnia."
       ]
     },
     {
@@ -46,8 +46,8 @@
       "id": "etiquette",
       "title": "Ordering etiquette",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Udostępniaj talerze w rodzinnym stylu, ale powiadom personel o tym z góry, aby tempo i zastawa stołowa pozostały gładkie."
+        "Coperto (opłata za nakrycie) obejmuje chleb i zastawę — napiwek dawaj tylko za wyjątkową obsługę.",
+        "Dziel dania w stylu rodzinnym, ale uprzedź obsługę z wyprzedzeniem, aby tempo i zastawa pozostały płynne."
       ]
     }
   ],
@@ -55,17 +55,17 @@
     {
       "q": "Can vegetarians eat well here?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Tak — szukaj parmigiany z bakłażana, gnocchi alla sorrentina i sałatek z lokalnym serem oraz grillowanymi warzywami."
       ]
     },
     {
       "q": "Czy muszę rezerwować popularne trattorie?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "W sezonie wysokim rezerwuj z wyprzedzeniem miejsca na tarasie lub zachodzie słońca; bez rezerwacji łatwiej o lunch lub okresy poza szczytem."
       ]
     }
   ],
-  "itemListTitle": "Tłumaczenie w przygotowaniu.",
+  "itemListTitle": "Charakterystyczne dania i miejsca, gdzie ich spróbujesz",
   "itemList": [
     {
       "name": "La Tagliata (Nocelle)",
@@ -77,30 +77,13 @@
     },
     {
       "name": "Da Vincenzo",
-      "note": "Tłumaczenie w przygotowaniu."
+      "note": "Tradycyjna trattoria serwująca makarony z owocami morza, smażone przystawki i sezonowe specjały od 1958 roku."
     },
     {
       "name": "La Zagara Pasticceria",
-      "note": "Tłumaczenie w przygotowaniu."
+      "note": "Piekarnia z delizia al limone, babà al limoncello i wypiekami łatwymi do zapakowania na piknik w klifowej scenerii."
     }
   ],
-  "gallery": {
-    "title": "Dish highlights",
-    "items": [
-      {
-        "alt": "Seafood pasta with Amalfi Coast lemons",
-        "caption": "Podstawowe owoce morza z trattorii Positano"
-      },
-      {
-        "alt": "Delizia al limone pastry on a plate",
-        "caption": "Lemon desserts to sample"
-      },
-      {
-        "alt": "Przyjaciele brzęczą kieliszkami limoncello o zachodzie słońca",
-        "caption": "Digestivos with a view"
-      }
-    ]
-  },
   "fallback": {
     "toc": [
       {
@@ -121,8 +104,8 @@
         "id": "staples",
         "title": "Staples",
         "body": [
-          "Tłumaczenie w przygotowaniu.",
-          "Tłumaczenie w przygotowaniu."
+          "Makaron z owocami morza, grillowane ryby i cytrusowe sałatki z lokalną oliwą to stałe elementy kart na całym wybrzeżu.",
+          "Poproś o danie dnia — sezonowe dodatki, jak kwiaty cukinii lub pomidorki koktajlowe, często trafiają na tablice."
         ]
       },
       {
@@ -137,8 +120,8 @@
         "id": "drinks",
         "title": "Drinks",
         "body": [
-          "Tłumaczenie w przygotowaniu.",
-          "Tłumaczenie w przygotowaniu."
+          "Popijaj limoncello lub crema di limone jako digestivo i odkrywaj wina DOC z Tramonti, Ravello lub Furore.",
+          "Przeplataj je gazowaną wodą, by zachować świeżość — letnie wieczory pozostają wilgotne długo po zachodzie słońca."
         ]
       }
     ]

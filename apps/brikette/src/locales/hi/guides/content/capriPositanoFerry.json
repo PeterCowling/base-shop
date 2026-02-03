@@ -1,0 +1,104 @@
+{
+  "seo": {
+    "title": "कैप्रि से पोसितानो फेरी द्वारा | Hostel Brikette",
+    "description": "कैप्रि से पोसितानो फेरी से कैसे यात्रा करें, टिकट सुझाव, ऑपरेटर, आगमन सलाह और हॉस्टल तक ऊपर जाने का सबसे आसान तरीका जानें।"
+  },
+  "intro": {
+    "title": "कैप्रि से पोसितानो – फेरी",
+    "body": "इस गाइड का उपयोग करें ताकि आप केवल समुद्री मार्ग से कैप्रि से पोसितानो पहुँच सकें। इसमें सही ऑपरेटर चुनने, पोर्ट पर टिकट खरीदने और आगमन के बाद Hostel Brikette तक सबसे आसान पैदल (या बस) मार्ग के चरण शामिल हैं।"
+  },
+  "callouts": {
+    "tip": "जब समुद्र उबड़-खाबड़ हो तो अन्य मार्ग विकल्प या बैकअप चाहिए? %URL:https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26|यहाँ कैसे पहुँचे का अवलोकन% खोलें।"
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "यात्रा का अवलोकन",
+      "body": "कैप्रि और पोसितानो के बीच फेरी सेवाएँ वसंत और गर्मियों में सबसे अधिक चलती हैं। खराब समुद्री परिस्थितियों में, विशेषकर दिन के बाद के हिस्से में, सेवाएँ रद्द की जा सकती हैं। कुल यात्रा समय पोत और ऑपरेटर के अनुसार आमतौर पर 30–60 मिनट होता है।"
+    },
+    {
+      "id": "capriPort",
+      "title": "कैप्रि पोर्ट पर",
+      "body": "फेरी समय की तुलना करें और बुक करें: <capriLink>Capri.net – Capri ↔ Positano</capriLink> · <positanoLink>Positano.com (संकलित समय-सारणी)</positanoLink>।",
+      "list": [
+        "समय और कीमतें जाँचें, फिर अपने चुने हुए प्रस्थान का संचालन करने वाले ऑपरेटर की पहचान करें।",
+        "कैप्रि के टूरिस्ट पोर्ट जाएँ और ऑपरेटर के अपने टिकट कार्यालय से टिकट खरीदें।",
+        "किसी भी वाउचर को बदलने और बोर्डिंग के लिए कतार में लगने हेतु 20–30 मिनट पहले पहुँचे।"
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "पोसितानो में आगमन",
+      "list": [
+        "Positano Spiaggia Grande पियर पर उतरें।",
+        "पोर्टर आने वाली फेरी पर मिलते हैं; सामान के लिए उनकी मदद लें और शुल्क पहले ही तय कर लें।",
+        "समुद्रतट से ऊपर की ओर सीढ़ियों की अपेक्षा करें; हॉस्टल तक सीढ़ियाँ कम करने के लिए स्थानीय Interno बस सहायक है।"
+      ]
+    },
+    {
+      "id": "bus",
+      "title": "पोर्ट से हॉस्टल तक Interno बस",
+      "body": "पियर से Hostel Brikette तक सामान के साथ विस्तार से, सुविधाजनक मार्ग के लिए देखें: <link>फेरी डॉक → Hostel Brikette</link>।",
+      "list": [
+        "Interno Positano बस सुबह से लेकर लगभग मध्यरात्रि तक लगभग हर 30 मिनट में चलती है।",
+        "बस के सामने ‘Interno Positano’ लिखी इलेक्ट्रॉनिक पट्टी को देखें।",
+        "पोर्ट से Piazza dei Mulini तक पैदल जाएँ और Chiesa Nuova की ओर ऊपर जाने वाली बस में सवार हों।"
+      ]
+    },
+    {
+      "id": "finalWalk",
+      "title": "निकटतम स्टॉप से अंतिम पैदल मार्ग",
+      "list": [
+        "Chiesa Nuova के पास Tabacchi वाली स्टॉप पर उतरें।",
+        "मुख्य सड़क की ओर दाएँ मुड़ें, फिर Via G. Marconi के साथ बाएँ मुड़ें।",
+        "लगभग 100 मीटर (≈330 फुट) चलें — हॉस्टल आपके दाईं ओर होगा।",
+        "दाईं ओर मुड़ें और सीढ़ियों का अनुसरण करते हुए Hostel Brikette के मुख्य द्वार तक जाएँ।"
+      ]
+    },
+    {
+      "id": "cancelled",
+      "title": "यदि फेरी रद्द हो जाएँ",
+      "body": "मौसम या समुद्री परिस्थितियों के कारण रद्द होने पर सोरेंटो के माध्यम से रेल और बस मार्ग अपनाएँ। यह अधिक समय लेता है, लेकिन अधिकांश परिस्थितियों में चलता रहता है। यह बैकअप उपयोग करें: <link>Naples Center → Positano (पहले ट्रेन, फिर बस)</link>।"
+    }
+  ],
+  "galleries": [
+    {
+      "items": [
+        {
+          "src": "/img/directions/capri-positano-interno-yellow.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/capri-positano-interno-red.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/capri-positano-tabacchi.png",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        }
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "question": "How much does the Capri to Positano ferry cost?",
+      "answer": "Ferry tickets cost between €22-€35 per person for a one-way trip in 2026. Prices vary slightly by operator and season – expect to pay closer to €30-€35 during July and August peak season. There are no advance purchase discounts, but booking online guarantees you a spot on busy days."
+    },
+    {
+      "question": "Can I bring luggage on the Capri-Positano ferry?",
+      "answer": "Yes, you can bring luggage at no extra charge. Backpacks, suitcases, and large bags are all allowed. Store them in the designated luggage area near the entrance or under your seat. Most ferries have limited overhead storage, so keep valuables with you. From the hostel's experience, a full backpack fits comfortably under the seats on all operators."
+    },
+    {
+      "question": "What happens if my ferry from Capri is cancelled?",
+      "answer": "Ferry cancellations are common in afternoon rough weather. If cancelled, check with all operators at Marina Grande – sometimes one still runs. Otherwise, take the Capri-Sorrento ferry (runs in rougher conditions) then the SITA bus from Sorrento to Positano. Total journey: about 2.5 hours. Your ticket can usually be refunded or used on the next available sailing."
+    },
+    {
+      "question": "Do I need to book the Capri to Positano ferry in advance?",
+      "answer": "It depends on the season. In July and August, morning and early afternoon departures sell out quickly – book online 1-2 days ahead. In shoulder season (April-June, September-October), you can usually buy tickets at the port 30 minutes before departure. From the hostel, we have seen guests miss their preferred crossing in peak season, so advance booking is worth it if you have a tight schedule."
+    }
+  ],
+  "lastUpdated": "2026-01-31"
+}

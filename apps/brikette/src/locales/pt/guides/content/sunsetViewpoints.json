@@ -73,18 +73,5 @@
         "A iluminação varia — leve lanterna do telemóvel ou luz pequena para descidas tardias."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Galeria de fotos",
-    "items": [
-      {
-        "caption": "Terraço da Chiesa Nuova",
-        "alt": "Pôr do sol no terraço da Chiesa Nuova"
-      },
-      {
-        "caption": "Nocelle",
-        "alt": "Pôr do sol em Nocelle"
-      }
-    ]
-  }
+  ]
 }

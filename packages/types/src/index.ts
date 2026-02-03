@@ -4,6 +4,7 @@ export type * from "./Blog";
 export type { CartLine, CartState } from "./Cart";
 export type * from "./CmsUser";
 export type * from "./configurator";
+export * from "./configuratorSteps";
 export * from "./constants";
 export * from "./Coupon";
 export * from "./Coverage";

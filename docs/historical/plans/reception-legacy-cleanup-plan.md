@@ -1,6 +1,9 @@
+Type: Plan
+Status: Historical
+
 # Reception App Legacy Cleanup Plan
 
-**Status: COMPLETED**
+**Status: Historical**
 
 ## Problem
 

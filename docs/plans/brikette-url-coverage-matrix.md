@@ -1,3 +1,6 @@
+Type: Reference
+Status: Reference
+
 # Brikette URL Coverage Matrix
 
 Generated: 2026-01-21

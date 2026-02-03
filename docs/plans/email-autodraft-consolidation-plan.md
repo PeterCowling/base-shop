@@ -141,7 +141,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 | TASK-15 | IMPLEMENT | Template governance & linting | 85% | S | Complete (2026-02-02) | TASK-04 |
 | TASK-16 | INVESTIGATE | Security & logging review | 90% | S | Complete (2026-02-02) | TASK-01, TASK-13 |
 | TASK-17 | IMPLEMENT | Reception email routing | 80% ✅ | L | Complete (2026-02-02) | TASK-06, TASK-08 |
-| TASK-18 | INVESTIGATE | Integration testing | 95% | L | Complete (2026-02-02) | TASK-13, TASK-14 |
+| TASK-18 | INVESTIGATE | Integration testing | 82% ✅ | L | In Progress (blocked) | TASK-13, TASK-14 |
 | TASK-19 | INVESTIGATE | Pilot measurement | 85% | M | Pending | TASK-18 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
@@ -1422,72 +1422,60 @@ Consolidate the disparate email autodraft system components into a world-class d
 ---
 
 
-### TASK-18: Integration Testing ✅ COMPLETE
+### TASK-18: Integration Testing
+
+#### Pending Audit Work
+- **Blocked step:** Execute `gmail_list_query` and `gmail_get_email` for 50+ emails.
+- **Why blocked:** Gmail MCP tools are not available in this session.
+- **Next action:** Run integration pipeline in a session with MCP Gmail tools enabled and record results in `docs/plans/email-autodraft-consolidation-test-results.md`.
+- **Remaining scope:** Full pipeline execution + metrics aggregation for 50+ emails.
+
 
 - **Type:** INVESTIGATE
-- **Affects:** `docs/plans/email-autodraft-consolidation-test-results.md`
+- **Affects:** `docs/plans/email-autodraft-consolidation-test-results.md` (new)
 - **Depends on:** TASK-13, TASK-14
-- **Status:** ✅ Complete (2026-02-02)
-- **Confidence:** 95% (raised from 82%)
+- **Confidence:** 82% ✅ RAISED FROM 75%
+  - Implementation: 85% — Testing procedure clear; MCP tools support automation
+  - Approach: 80% — Success criteria defined in fact-find; category targets measurable
+  - Impact: 80% — Validates entire system; dependencies now well-understood
+- **Acceptance:**
+  - Test with 50+ real emails from TASK-00 sample:
+    - All category types (FAQ, policy, payment, cancellation, complaint, multi-question)
+    - Multi-question emails
+    - Thread replies (test context handling)
+    - Prepayment scenarios
+    - Mixed responses (agree + question)
+  - Measure against success criteria per category (from fact-find)
+  - Document results: acceptance rate, edit rate, critical error rate
+  - MUST achieve category targets before declaring complete
+- **Test plan:**
+  - Run: Full pipeline on 50+ emails
+  - Measure: Category acceptance rates
+  - Validate: Zero critical errors
+- **Planning validation:** N/A (INVESTIGATE task)
+- **What would make this ≥90%:**
+  - Automated test harness for reproducible evaluation
+  - All category targets met
+- **Rollout / rollback:**
+  - Rollout: Investigation only
+  - Rollback: N/A
+- **Documentation impact:**
+  - Create: `docs/plans/email-autodraft-consolidation-test-results.md`
+- **Notes / references:**
+  - Category targets in fact-find "Success Definition"
 
-#### Results Summary
-
-**Test Execution:**
-- Query: `in:inbox after:2025/11/02 before:2026/02/03`
-- Pipeline: draft_interpret → draft_generate → draft_quality_check
-- Emails tested: 50
-
-**Key Metrics:**
-| Metric | Result |
-|--------|--------|
-| Total Emails | 50 |
-| Quality Gate Passed | 5 (10%) |
-| Quality Gate Failed | 45 (90%) |
-| Pipeline Errors | 0 (0%) |
-| Critical Errors | 0 (0%) |
-
-**Category Breakdown:**
-| Category | Total | Passed | Rate | Target |
-|----------|-------|--------|------|--------|
-| payment | 29 | 3 | 10% | ≥70% |
-| faq | 9 | 0 | 0% | ≥85% |
-| general | 6 | 1 | 17% | - |
-| cancellation | 4 | 0 | 0% | ≥70% |
-| policy | 2 | 1 | 50% | ≥75% |
-
-**Findings:**
-1. **Pipeline Stability:** Zero errors across all 50 emails confirms robust implementation
-2. **Primary Failure Mode:** 100% of failures due to "unanswered_questions"
-3. **Template Gap:** No template matches (BM25 ranker returns "suggest" for all)
-4. **Question Detection Working:** Interpret stage correctly identifies 1-40 questions per email
-5. **Category Distribution:** 58% payment-related (OTA notifications, prepayment)
-
-**Root Cause Analysis:**
-- Template coverage insufficient for payment/OTA scenarios
-- Generic fallback response when no template matches cannot address questions
-- Quality gate correctly identifies this deficiency
-
-**Recommendations:**
-- TASK-16 scope: Add 15-20 templates for payment/prepayment/OTA
-- Future: LLM-generated custom responses when no template matches
-- Consider hybrid BM25 + semantic matching for template selection
-
-#### Acceptance Criteria Met
-- ✅ Tested 50+ real emails (50 emails tested)
-- ✅ Covered category types: FAQ (9), policy (2), payment (29), cancellation (4), general (6)
-- ✅ Zero critical errors (0 prohibited claims, 0 contradictions)
-- ✅ Documented results in `docs/plans/email-autodraft-consolidation-test-results.md`
-- ⚠️ Category targets NOT met (expected - requires template expansion + LLM integration)
-
-#### Artifacts
-- Test script: `packages/mcp-server/scripts/run-integration-test.ts`
-- Results file: `docs/plans/email-autodraft-consolidation-test-results.md`
-- Baseline sample: `docs/plans/email-autodraft-consolidation-baseline-sample.txt`
-
-#### Confidence Raised: 82% → 95%
-- Investigation complete with reproducible test harness
-- Clear findings documented with actionable recommendations
-- Remaining gap is template/LLM coverage, not architecture
+**Re-plan Update (2026-02-02):**
+- **Evidence found:**
+  - `gmail_list_pending` and `gmail_get_email` already support fetching test samples
+  - Category targets clearly defined in fact-find (FAQ ≥85%, Policy ≥75%, Payment ≥70%, etc.)
+  - MCP tool architecture enables reproducible test runs
+- **Dependency confidence raised:** TASK-13 now at 80%, TASK-11 at 85%, improving integration test feasibility
+- **Decision:** Build test harness that:
+  1. Uses `gmail_list_pending` with test label to get sample emails
+  2. Runs full pipeline (interpret → generate → quality gate)
+  3. Records results in structured format for category-level analysis
+  4. Compares against fact-find targets
+- **Confidence raised:** 75% → 82% — Dependencies resolved; testing approach clear
 
 ---
 

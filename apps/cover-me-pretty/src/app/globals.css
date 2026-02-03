@@ -32,5 +32,5 @@
 
 /* Try-on stepper active state */
 .tryon-step-active {
-  @apply font-medium text-foreground;
+  @apply font-medium text-fg;
 }

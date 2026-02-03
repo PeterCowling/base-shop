@@ -64,5 +64,15 @@
         "Vous verrez le « Bar Internazionale » sur la gauche ; l'arrêt SITA se trouve juste devant."
       ]
     }
+  ],
+  "faqs": [
+    {
+      "q": "Comment lire l'horaire des bus SITA ?",
+      "a": [
+        "**Lecture des lignes :** Les lignes de la première colonne représentent différents arrêts de bus le long de l'itinéraire.",
+        "**Lecture des colonnes :** L'horaire attribue une lettre alphabétique à chaque trajet prévu, qui sont répertoriés en tant qu'en-têtes dans chaque colonne. Si vous voyagez du lundi au samedi, recherchez les colonnes 'F' et 'G'. Si vous voyagez le dimanche ou un jour férié, recherchez les colonnes 'G' et 'H'.",
+        "**Combinaison des lignes et des colonnes :** Choisissez vos arrêts de départ et d'arrivée, puis vérifiez les colonnes pour voir quand les bus sont disponibles et à quelle heure ils arriveront à votre destination. Par exemple, pour voir l'heure de départ de Sorrente, regardez la ligne Sorrente. Pour voir l'heure d'arrivée à Positano (Chiesa Nuova / Bar Internazionale), regardez la ligne Positano (Chiesa Nuova)."
+      ]
+    }
   ]
 }

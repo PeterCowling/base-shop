@@ -52,18 +52,5 @@
         "Ja, probiere Limonata, alkoholfreien Zitronen-Sirup oder Crema di Limone ohne Alkohol – viele Shops kennzeichnen entsprechende Produkte."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Fotogalerie",
-    "items": [
-      {
-        "alt": "Limoncello-Verkostung in Positano",
-        "caption": "Verkostung mit Blick auf die Küste"
-      },
-      {
-        "alt": "Zitronen an einem Baum",
-        "caption": "Zitronenhaine der Amalfiküste"
-      }
-    ]
-  }
+  ]
 }

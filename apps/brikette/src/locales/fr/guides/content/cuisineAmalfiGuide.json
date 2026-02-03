@@ -84,23 +84,6 @@
       "note": "Pâtisserie pour delizia al limone, babà au limoncello et douceurs à emporter pour un pique-nique en hauteur."
     }
   ],
-  "gallery": {
-    "title": "Mets à découvrir",
-    "items": [
-      {
-        "alt": "Pâtes aux fruits de mer et citrons de la côte amalfitaine",
-        "caption": "Classiques marins des trattorie de Positano"
-      },
-      {
-        "alt": "Pâtisserie delizia al limone sur une assiette",
-        "caption": "Desserts au citron à goûter"
-      },
-      {
-        "alt": "Amis trinquant au limoncello au coucher du soleil",
-        "caption": "Digestifs avec vue"
-      }
-    ]
-  },
   "fallback": {
     "toc": [
       {

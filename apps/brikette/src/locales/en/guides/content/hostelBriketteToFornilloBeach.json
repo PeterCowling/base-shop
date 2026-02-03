@@ -41,23 +41,6 @@
       ]
     }
   ],
-  "gallery": {
-    "title": "Route maps and landmark turns",
-    "items": [
-      {
-        "alt": "Walking map from Hostel Brikette to Fornillo Beach",
-        "caption": "Hostel Brikette to Fornillo (map)"
-      },
-      {
-        "alt": "Turn onto the pedestrian path by Hotel Posa Posa",
-        "caption": "Fornillo shortcut turn"
-      },
-      {
-        "alt": "Route from Spiaggia Grande to the interno bus stop",
-        "caption": "Return route to the interno bus"
-      }
-    ]
-  },
   "tips": [
     "Avoid the stairs on the way back by taking the interno bus uphill.",
     "Buy bus tickets at any Tabacchi/newsagent before you need them.",

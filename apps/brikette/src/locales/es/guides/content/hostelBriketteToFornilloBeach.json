@@ -43,23 +43,6 @@
     "Planifique tiempo adicional en la playa con nuestra %LINK:fornilloBeachGuide|Fornillo beach Guide% y %LINK:positanoBeaches|Positano Beaches Overview%.",
     "Vea cómo esta caminata encaja en un viaje completo en la descripción general de viajes a Positano."
   ],
-  "gallery": {
-    "title": "Mapas de ruta y puntos de giro clave",
-    "items": [
-      {
-        "alt": "Mapa de la ruta a pie desde Hostel Brikette a Playa Fornillo",
-        "caption": "Hostel Brikette a Fornillo (mapa)"
-      },
-      {
-        "alt": "Giro hacia el camino peatonal junto al Hotel Posa Posa",
-        "caption": "Atajo a Fornillo, punto de giro"
-      },
-      {
-        "alt": "Ruta desde Spiaggia Grande hasta la parada del bus interno",
-        "caption": "Ruta de regreso al bus interno"
-      }
-    ]
-  },
   "faqsTitle": "Preguntas sobre la ruta",
   "faqs": [
     {

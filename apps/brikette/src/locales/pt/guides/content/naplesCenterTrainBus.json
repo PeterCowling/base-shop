@@ -44,5 +44,32 @@
       "id": "walk",
       "title": "Caminhada a partir da paragem de autocarro"
     }
+  ],
+  "lastUpdated": "2026-01-31",
+  "faqs": [
+    {
+      "q": "Quanto custa ir do centro de Nápoles para Positano de trem e ônibus?",
+      "a": "O custo total é de cerca de €7.20: €4.60 pelo trem Circumvesuviana de Nápoles para Sorrento, mais €2.60 pelo ônibus SITA de Sorrento para Positano (preços de 2026). Esta é a opção de transporte público mais barata."
+    },
+    {
+      "q": "Quanto tempo leva a viagem de Nápoles para Positano?",
+      "a": "O tempo total de viagem é de 2.5-3 horas: 70 minutos de trem, 50 minutos de ônibus, mais 20-40 minutos esperando as conexões em Sorrento. Reserve 3-3.5 horas no total para possíveis atrasos."
+    },
+    {
+      "q": "Posso comprar bilhetes no trem ou ônibus?",
+      "a": "Você pode comprar bilhetes de trem na estação Napoli Garibaldi nas máquinas ou no balcão, mas deve validar antes de embarcar. Bilhetes de ônibus SITA não podem ser comprados a bordo — você deve comprá-los num bar, tabacaria ou banca de jornais perto da estação de Sorrento antes de entrar no ônibus."
+    },
+    {
+      "q": "Esta rota é adequada para viajantes com bagagem pesada?",
+      "a": "Sim, mas pode ser desafiador durante horários de pico. Tanto o trem quanto o ônibus têm espaço limitado para bagagem, então embarque cedo se tiver malas grandes. A caminhada da parada de ônibus Chiesa Nuova até o hostel é plana e leva menos de 2 minutos, então a bagagem é administrável ao chegar. Se preferir, considere usar nossos serviços de carregador ou transfer privado."
+    },
+    {
+      "q": "Qual é o horário do último ônibus de Sorrento para Positano?",
+      "a": "O último ônibus varia conforme a estação. No verão (julho-agosto), o último ônibus geralmente é por volta das 21h-22h. No inverno (novembro-março), pode ser tão cedo quanto 19h-20h. Sempre verifique o horário atual em sitasudtrasporti.it antes de viajar, especialmente aos domingos e feriados quando os serviços são reduzidos."
+    },
+    {
+      "q": "Existe um trem ou ônibus direto de Nápoles para Positano?",
+      "a": "Não existe trem direto — você deve fazer baldeação em Sorrento. O ônibus Curreri oferece uma conexão direta de Nápoles para Positano, mas os horários são limitados (geralmente 2-3 serviços por dia). A combinação trem-ônibus é mais frequente e mais barata."
+    }
   ]
 }

@@ -148,17 +148,15 @@ describe('computeQuestState', () => {
     });
 
     it('keeps positano-explorer locked until 24 hours after check-in', () => {
-      // Check-in was today, only 12 hours elapsed
-      const checkInDate = new Date();
-      checkInDate.setHours(checkInDate.getHours() - 12);
+      const baseTime = new Date(Date.UTC(2026, 0, 15, 12, 0, 0, 0));
 
       const result = computeQuestState(
         createInput({
           questProgress: createQuestProgress({
             completedTiers: ['settle-in'],
-            checkInDate: checkInDate.toISOString().split('T')[0],
+            checkInDate: '2026-01-15',
           }),
-          currentTime: Date.now(),
+          currentTime: baseTime.getTime(),
         }),
       );
 
@@ -169,17 +167,13 @@ describe('computeQuestState', () => {
     });
 
     it('unlocks positano-explorer after 24 hours and settle-in complete', () => {
-      // Check-in was 48 hours ago
-      const checkInDate = new Date();
-      checkInDate.setHours(checkInDate.getHours() - 48);
-
       const result = computeQuestState(
         createInput({
           questProgress: createQuestProgress({
             completedTiers: ['settle-in'],
-            checkInDate: checkInDate.toISOString().split('T')[0],
+            checkInDate: '2026-01-15',
           }),
-          currentTime: Date.now(),
+          currentTime: Date.UTC(2026, 0, 16, 0, 0, 0, 0),
         }),
       );
 
@@ -254,9 +248,7 @@ describe('computeQuestState', () => {
     });
 
     it('suggests wait-for-unlock when tier is time-locked', () => {
-      // Just completed settle-in, 12 hours elapsed
-      const checkInDate = new Date();
-      checkInDate.setHours(checkInDate.getHours() - 12);
+      const baseTime = new Date(Date.UTC(2026, 0, 15, 12, 0, 0, 0));
 
       const result = computeQuestState(
         createInput({
@@ -267,9 +259,9 @@ describe('computeQuestState', () => {
           }),
           questProgress: createQuestProgress({
             completedTiers: ['settle-in', 'social-night'],
-            checkInDate: checkInDate.toISOString().split('T')[0],
+            checkInDate: '2026-01-15',
           }),
-          currentTime: Date.now(),
+          currentTime: baseTime.getTime(),
         }),
       );
 
@@ -306,22 +298,16 @@ describe('computeQuestState', () => {
     });
 
     it('calculates hours from check-in date', () => {
-      // Check-in was 48 hours ago
-      const checkInDate = new Date();
-      checkInDate.setDate(checkInDate.getDate() - 2);
-
       const result = computeQuestState(
         createInput({
           questProgress: createQuestProgress({
-            checkInDate: checkInDate.toISOString().split('T')[0],
+            checkInDate: '2026-01-10',
           }),
-          currentTime: Date.now(),
+          currentTime: Date.UTC(2026, 0, 12, 0, 0, 0, 0),
         }),
       );
 
-      // Should be approximately 48 hours (may vary due to time zone handling)
-      expect(result.hoursElapsed).toBeGreaterThan(40);
-      expect(result.hoursElapsed).toBeLessThan(60);
+      expect(result.hoursElapsed).toBe(48);
     });
   });
 });

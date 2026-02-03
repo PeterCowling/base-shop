@@ -64,5 +64,15 @@
       "title": "Llegada a Sorrento",
       "body": "El autobús SITA te deja en la terminal combinada de tren y autobús de Sorrento. Desde allí puedes continuar en Circumvesuviana hacia Nápoles o explorar el centro histórico de Sorrento justo al salir de la estación."
     }
+  ],
+  "faqs": [
+    {
+      "q": "¿Cómo leo el horario de autobuses SITA?",
+      "a": [
+        "**Lectura de las filas:** Las filas en la primera columna representan diferentes paradas de autobús a lo largo de la ruta.",
+        "**Lectura de las columnas:** El horario asigna una letra alfabética a cada viaje programado, que se enumeran como encabezados en cada columna. Si viaja de lunes a sábado, busque las columnas 'F' y 'G'. Si viaja en domingo o en un día festivo, busque las columnas 'G' y 'H'.",
+        "**Combinación de filas y columnas:** Elija sus paradas de salida y llegada, luego verifique las columnas para ver cuándo hay autobuses disponibles y a qué hora llegarán a su destino. Por ejemplo, para ver la hora de salida desde Sorrento, mire la fila de Sorrento. Para ver la hora de llegada a Positano (Chiesa Nuova / Bar Internazionale), mire la fila de Positano (Chiesa Nuova)."
+      ]
+    }
   ]
 }

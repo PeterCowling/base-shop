@@ -8,7 +8,8 @@
     "body": "Denne steg for steg-guiden tar deg fra Napoli lufthavn til Positano med Curreri-bussen til Sorrento og deretter SITA-bussen videre til Positano. Den dekker billetter, hvor du bytter, hvordan du leser SITA-rutetabellen og hvordan du kommer til Hostel Brikette fra nærmeste stopp."
   },
   "callouts": {
-    "aside": "Vil du se alle transportalternativer? Åpne %HOWTO:how-to-get-here|oversikten Slik kommer du hit% for ferger, taxi og alternative ruter."
+    "aside": "Vil du se alle transportalternativer? Åpne %HOWTO:how-to-get-here|oversikten Slik kommer du hit% for ferger, taxi og alternative ruter.",
+    "tip": "Trenger du andre ruter? Utforsk hele settet med ankomstbeskrivelser på %HOWTO:how-to-get-here|siden «Slik kommer du hit»%, inkludert %LINK:ferryDockToBrikette|fergeankomster% og %LINK:naplesAirportBus|flyplasstransporter%."
   },
   "sections": [
     {
@@ -57,5 +58,36 @@
         "Ta til høyre og følg trappene opp til hostellets hoveddør."
       ]
     }
-  ]
+  ],
+  "faqs": [
+    {
+      "q": "Hvor mye koster det å komme fra Napoli lufthavn til Positano med buss?",
+      "a": "Totalkostnaden er rundt €13–€16: Curreri-buss til Sorrento (€10) pluss SITA-buss til Positano (€2,60–€3). Dette er billigere enn privat transport, men tar lengre tid."
+    },
+    {
+      "q": "Hvor lang tid tar reisen?",
+      "a": "Totalt 2,5–3,5 timer: Curreri-bussen til Sorrento tar 70–90 minutter, SITA-bussen til Positano tar 45–50 minutter, pluss ventetid mellom forbindelser i Sorrento (15–60 minutter avhengig av rutetider)."
+    },
+    {
+      "q": "Kan jeg kjøpe billetter på forhånd?",
+      "a": "Ja, kjøp Curreri-billetter på nett på curreriviaggi.it for å sikre plass, spesielt i høysesongen. SITA-billetter kan kjøpes ved barer/kiosker nær Sorrento stasjon – de selges ikke om bord på bussen."
+    },
+    {
+      "q": "Hva skjer hvis jeg går glipp av forbindelsen i Sorrento?",
+      "a": "SITA-bussene går ca. hvert 40–60 minutt om sommeren. Hvis du går glipp av en buss, vent på neste eller ta en taxi (€40–€60 til Positano). Se alltid rutetabellen på sitasudtrasporti.it før du reiser."
+    },
+    {
+      "q": "Finnes det direkte buss fra Napoli lufthavn til Positano?",
+      "a": "Nei, det finnes ingen direkte buss. Du må bytte i Sorrento. Alternativt kan du ta ferge fra Napoli havn til Positano (sesongavhengig, april–oktober) – se vår %LINK:arrivingByFerry|fergeguide%."
+    },
+    {
+      "q": "Hvordan leser jeg SITA buss-rutetabellen?",
+      "a": [
+        "**Lesing av radene:** Radene i den første kolonnen representerer forskjellige bussholdeplasser langs ruten.",
+        "**Lesing av kolonnene:** Rutetabellen tildeler en alfabetisk bokstav til hver planlagte reise, som er oppført som overskrifter i hver kolonne. Hvis du reiser mandag til lørdag, se etter kolonnene 'F' og 'G'. Hvis du reiser på søndag eller en helligdag, se etter kolonnene 'G' og 'H'.",
+        "**Kombinasjon av rader og kolonner:** Velg dine avgangs- og ankomstholdeplasser, sjekk deretter kolonnene for å se når busser er tilgjengelige og når de ankommer destinasjonen din. For eksempel, for å se avgangstiden fra Sorrento, se på Sorrento-raden. For å se ankomsttiden i Positano (Chiesa Nuova / Bar Internazionale), se på Positano (Chiesa Nuova)-raden."
+      ]
+    }
+  ],
+  "lastUpdated": "2026-01-31"
 }

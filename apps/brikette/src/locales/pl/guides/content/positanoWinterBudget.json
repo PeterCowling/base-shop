@@ -1,55 +1,55 @@
 {
   "seo": {
-    "title": "Zima w Positano niskim kosztem",
-    "description": "Jak wygląda Positano zimą: otwarte lokale, transport i budżetowe wskazówki."
+    "title": "Positano zimą oszczędnie",
+    "description": "Co działa, jak się przemieszczać i jak cieszyć się Positano zimą bez przepłacania."
   },
-  "linkLabel": "Zima w Positano niskim kosztem",
+  "linkLabel": "Positano zimą oszczędnie",
   "intro": [
-    "Tłumaczenie w przygotowaniu.",
-    "Tłumaczenie w przygotowaniu."
+    "Zima w Positano jest spokojna, bardziej przystępna cenowo i chłodniejsza. Skorzystaj z przewodnika, by znaleźć otwarte miejsca, poruszać się po zawieszonych promach i zaplanować przytulne doświadczenia bez nadmiernego wydatku.",
+    "Spakuj warstwy (lekka puchówka plus nieprzemakalna kurtka) i buty z przyczepnością — schody bywają śliskie po deszczu."
   ],
   "sections": [
     {
       "id": "open",
-      "title": "What stays open",
+      "title": "Co pozostaje otwarte",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Sklepy spożywcze, kawiarnie przy Piazza dei Mulini i bar hostelu działają przez cały rok — godziny są krótsze, ale usługa pewna.",
+        "Promy przez wybrzeże zwykle zatrzymują się od listopada do marca, ale autobusy SITA i wybrane prywatne shuttle’e kursują według ograniczonych rozkładów."
       ]
     },
     {
       "id": "transport",
-      "title": "Getting around in winter",
+      "title": "Zimowe podróże",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Skorzystaj z pociągów regionalnych do Sorrento lub Salerno, a potem autobusem SITA; dolicz 20–30 minut na opóźnienia przy mokrej pogodzie.",
+        "Zabierz gotówkę na bilety autobusowe (2–3 € w jedną stronę) i miej aplikację UnicoCampania, gdy burze nagle zmieniają rozkład."
       ]
     },
     {
       "id": "budget",
-      "title": "Budget-friendly days",
+      "title": "Dni przyjazne budżetowi",
       "body": [
-        "Zaplanuj dni muzeów w Neapolu lub Salerno, korzystając z mokrych prognoz; ceny biletów kolejowych w obie strony oscylują wokół 10 euro (około 11 dolarów).",
-        "Wędruj Ścieżką Bogów z Nocelle, gdy niebo jest czyste: rześkie powietrze, puste punkty widokowe i brak letnich upałów."
+        "W deszczowe prognozy zaplanuj wycieczki do muzeów w Neapolu lub Salerno; bilety w obie strony kosztują około 10 €.",
+        "Przejdź Szlak Bogów z Nocelle przy przejrzystym niebie — świeże powietrze, puste punkty widokowe i brak latających upałów."
       ]
     }
   ],
   "tips": [
-    "Tłumaczenie w przygotowaniu.",
-    "Zachód słońca następuje wcześniej (w grudniu około 16:45) – zaplanuj czas na tarasie na późne popołudnie i spakuj ciepłą warstwę."
+    "Wybierz nocleg z ogrzewaniem i śniadaniem w cenie, by nie dokładać wydatków na kawę rano.",
+    "Zmierzch zapada wcześniej (około 16:45 w grudniu) — zaplanuj czas na tarasie późnym popołudniem i zabierz ciepłą warstwę."
   ],
   "faqs": [
     {
-      "q": "Tłumaczenie w przygotowaniu.",
+      "q": "Czy restauracje działają zimą?",
       "a": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Tak, choć wybór się kurczy. Rodzinne trattorie i pizzerie są otwarte w weekendy; wysoka kuchnia zwykle wraca do działania koło Wielkanocy.",
+        "Zadzwoń lub napisz przez WhatsApp przed zejściem w dół zbocza, by potwierdzić godziny."
       ]
     },
     {
-      "q": "How cold does it get?",
+      "q": "Jak zimno jest w Positano?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "W dzień temperatury sięgają 12–14°C. Wieczorami spada do około 8°C, więc zabierz ciepłą warstwę i skarpetki na kafelki."
       ]
     }
   ]

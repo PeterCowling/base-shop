@@ -34,7 +34,7 @@ jobs:
       - id: set-matrix
         run: |
           matrix=$(pnpm list -r --depth -1 --json | node -e "const fs=require('fs');const list=JSON.parse(fs.readFileSync(0,'utf8'));const cwd=process.cwd();const arr=list.filter(p=>p.path!==cwd).map(p=>p.path.replace(cwd+'/', '')).filter(p=>p!=='apps/cms' && p!=='apps/skylar');process.stdout.write(JSON.stringify(arr));")
-          echo "matrix=$matrix" >> $GITHUB_OUTPUT
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
 
   package-checks:
     name: Check ${{ matrix.workspace }}

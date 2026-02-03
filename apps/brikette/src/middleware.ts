@@ -39,6 +39,20 @@ const SUPPORTED_LANGS = new Set(
   (i18nConfig.supportedLngs as readonly string[]).map((l) => l.toLowerCase()),
 );
 
+// TASK-SEO-3: Build reverse lookup maps for detecting wrong-locale slugs
+// These maps allow us to identify English slugs and internal segments that
+// should be redirected to the correct localized slug for the current locale.
+const ENGLISH_SLUG_TO_KEY = new Map<string, SlugKey>();
+const INTERNAL_SEGMENT_TO_KEY = new Map<string, SlugKey>();
+
+for (const key of Object.keys(SLUGS) as SlugKey[]) {
+  const englishSlug = SLUGS[key].en.toLowerCase();
+  ENGLISH_SLUG_TO_KEY.set(englishSlug, key);
+
+  const internalSegment = INTERNAL_SEGMENT_BY_KEY[key].toLowerCase();
+  INTERNAL_SEGMENT_TO_KEY.set(internalSegment, key);
+}
+
 function resolveTopLevelKey(lang: AppLanguage, segment: string): SlugKey | null {
   const normalized = segment.toLowerCase();
   // Only check keys that represent the first path segment after /:lang.
@@ -89,6 +103,38 @@ export function middleware(request: NextRequest) {
   const key = resolveTopLevelKey(appLang, nextParts[1] ?? "");
   if (key) {
     nextParts[1] = INTERNAL_SEGMENT_BY_KEY[key];
+  } else {
+    // TASK-SEO-3: Detect English slug or internal segment in wrong locale
+    // If the first segment is NOT a localized slug for this language, check if
+    // it's an English slug or internal segment that should be redirected.
+    const segment = nextParts[1] ?? "";
+    const normalizedSegment = segment.toLowerCase();
+
+    // Check if this is an English slug (e.g., /de/rooms should redirect to /de/zimmer)
+    let wrongKey: SlugKey | undefined = ENGLISH_SLUG_TO_KEY.get(normalizedSegment);
+
+    // Check if this is an internal segment (e.g., /fr/assistance should redirect to /fr/aide)
+    if (!wrongKey) {
+      wrongKey = INTERNAL_SEGMENT_TO_KEY.get(normalizedSegment);
+    }
+
+    // If found, check if it's different from the current locale's slug
+    if (wrongKey) {
+      const correctSlug = SLUGS[wrongKey][appLang];
+      if (correctSlug.toLowerCase() !== normalizedSegment) {
+        // Build redirect URL with correct localized slug + trailing slash
+        const remainingPath = nextParts.slice(2).join("/");
+        const redirectPath = `/${appLang}/${correctSlug}${remainingPath ? `/${remainingPath}` : ""}/`;
+
+        // Construct redirect URL preserving query params and hash
+        const redirectUrl = new URL(
+          redirectPath + request.nextUrl.search + request.nextUrl.hash,
+          request.url,
+        );
+
+        return NextResponse.redirect(redirectUrl, 301);
+      }
+    }
   }
 
   // Special-case nested localized segments.
@@ -105,8 +151,10 @@ export function middleware(request: NextRequest) {
   const nextPathname = `/${nextParts.join("/")}`;
   if (nextPathname === pathname) return NextResponse.next();
 
-  const url = request.nextUrl.clone();
-  url.pathname = nextPathname;
+  const url = new URL(
+    nextPathname + request.nextUrl.search + request.nextUrl.hash,
+    request.url,
+  );
   return NextResponse.rewrite(url);
 }
 

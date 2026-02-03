@@ -112,22 +112,5 @@
     "labels": {
       "warnings": "Når du bør revurdere"
     }
-  },
-  "gallery": {
-    "title": "Fotogalleri",
-    "items": [
-      {
-        "alt": "Utsikt over halvøya mot Capri",
-        "caption": "Utsikt over halvøya mot Capri"
-      },
-      {
-        "alt": "Skann for å dele QR-kode",
-        "caption": "Skann for å dele"
-      },
-      {
-        "alt": "Sti nær toppen",
-        "caption": "På vei mot toppen"
-      }
-    ]
   }
 }

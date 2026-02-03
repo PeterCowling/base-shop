@@ -84,23 +84,6 @@
       "note": "Bäckerei für Delizia al limone, Babà al limoncello und Gebäck to-go für Picknicks an den Klippen."
     }
   ],
-  "gallery": {
-    "title": "Gerichte im Fokus",
-    "items": [
-      {
-        "alt": "Meeresfrüchte-Pasta mit Zitronen der Amalfiküste",
-        "caption": "Übersetzung in Arbeit."
-      },
-      {
-        "alt": "Delizia al limone auf einem Teller",
-        "caption": "Zitronendesserts zum Probieren"
-      },
-      {
-        "alt": "Freunde stoßen mit Limoncello zum Sonnenuntergang an",
-        "caption": "Digestivi mit Aussicht"
-      }
-    ]
-  },
   "fallback": {
     "toc": [
       {
@@ -129,7 +112,7 @@
         "id": "sweets",
         "title": "Süßes",
         "body": [
-          "Übersetzung in Arbeit.",
+          "Probiere delizia al limone, Babà al limoncello und Zitronensorbet als zitroniges Dessert-Trio.",
           "Kombiniere Gebäck mit Espresso oder Limoncello-Digestiv, um das Essen wie ein Local abzurunden."
         ]
       },

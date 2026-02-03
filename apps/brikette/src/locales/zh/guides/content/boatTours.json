@@ -51,11 +51,5 @@
       ]
     }
   ],
-  "galleryHeading": "照片集",
-  "gallery": {
-    "primaryAlt": "游船沿着波西塔诺海岸航行",
-    "primaryCaption": "海岸巡航",
-    "secondaryAlt": "波西塔诺峭壁附近的游泳停靠",
-    "secondaryCaption": "停船下水"
-  }
+  "galleryHeading": "照片集"
 }

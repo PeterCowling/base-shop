@@ -187,14 +187,6 @@ function AssistanceIndexContent({ lang }: Props): JSX.Element {
         <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-2">
           <li>
             <Link
-              href={guideHref(resolvedLang, "backpackerItineraries")}
-              className="block min-h-10 min-w-10 rounded-lg border border-brand-outline/40 bg-brand-bg px-4 py-3 text-brand-primary underline-offset-4 hover:underline dark:bg-brand-text dark:text-brand-secondary"
-            >
-              {getGuideLinkLabel(tGuides, guidesEnT, "backpackerItineraries")}
-            </Link>
-          </li>
-          <li>
-            <Link
               href={guideHref(resolvedLang, "onlyHostel")}
               className="block min-h-10 min-w-10 rounded-lg border border-brand-outline/40 bg-brand-bg px-4 py-3 text-brand-primary underline-offset-4 hover:underline dark:bg-brand-text dark:text-brand-secondary"
             >

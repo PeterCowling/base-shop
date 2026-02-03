@@ -1,53 +1,148 @@
 {
   "seo": {
-    "title": "Helyi legendák és folklór az Amalfi-parton",
-    "description": "Népszerű történetek a part mente mentén, és hol láthatod nyomukat ma."
+    "title": "Amalfi-part néphagyományai: Legendák, mítoszok és helyi mesék",
+    "description": "Amalfi-part néphagyományai és legendái – szirének, szentek, tengeri mítoszok és helyi hagyományok. Történetek fesztiválok, helynevek és kulturális hiedelmek mögött kíváncsi utazóknak.",
+    "lastUpdated": "2026-01-31"
   },
-  "linkLabel": "Helyi legendák és folklór az Amalfi-parton",
+  "linkLabel": "Amalfi-part néphagyományai: Legendák, mítoszok és helyi hagyományok",
   "intro": [
-    "A fordítás folyamatban van."
+    "Az Amalfi-part néphagyományai életre keltik a partvidéket. Látja a Li Galli szigeteket %LINK:positanoMainBeach|Positano strandjairól%? Ezek a legendás Szirén-szigetek Homérosz Odüsszeiájából. Részt vesz egy fesztiválon %LINK:amalfiTownGuide|Amalfiban%? 800 éves Szent András hagyományokat szemlél. Hallja a halászok mondásait? Ezek generációkon át továbbadott babonák. Ez az útmutató elmagyarázza a mítoszokat, legendákat és néphagyományokat, amelyek formálják, amit lát és megtapastal a parton.",
+    "Ez az útmutató az Amalfi-part leggazdagabb néphagyományait tárja fel. Néhány ősi görög és római mítosz. Néhány középkori katolikus szentek legendája. Néhány helyi babona, amelyet a halászok még mindig követnek. Mindegyik segít megmagyarázni a part jellegét és azt, hogy bizonyos hagyományok miért maradnak fenn ma is."
   ],
   "sections": [
     {
-      "id": "saint",
-      "title": "Saint Andrew",
+      "id": "sirens-li-galli",
+      "title": "A Li Galli szigetek Szirénei",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "%IMAGE:li-galli-islands-positano.jpg|Li Galli szigetek Positano partjainál, a szirének legendás otthona%",
+        "A leghíresebb Amalfi-parti legenda Homérosz Odüsszeiájából származik. A Li Galli szigetek (Sirenuse néven is ismert), egy kis szigetcsoport, amely Positano strandjairól látható, a monda szerint a Szirének otthona volt – mitikus lények, akik olyan gyönyörűen énekeltek, hogy a tengerészek feléjük kormányoztak és a szikláknak ütköztek. Az Odüsszeiában Odüsszeusz viasszal dugaszolta be legénysége fülét, és az árbochoz kötöztette magát, hogy hallhassa a Szirének énekét anélkül, hogy elveszítené hajója feletti uralmát.",
+        "A mítosz szerint három Szirén élt ezeken a szigeteken: Parthenopé, Leucosia és Ligeia. Amikor Odüsszeusz ellenállt éneküknek, a megalázott Szirének a tengerbe vetették magukat és megfulladtak. Parthenopé teste ott mosódott partra, ahol ma Nápoly áll (Nápoly ősi neve Parthenopé volt). A szigetek átkozottak maradtak, és a tengerészek évszázadokig elkerülték őket.",
+        "Ma a Li Galli magánszigetek. Rudolf Nurejev orosz balett-táncos birtokolta őket az 1980–1990-es években. A szigetek láthatók a %LINK:positanoMainBeach|Spiaggia Grande%-ról és a %LINK:fornilloBeachGuide|Fornillo-strandról% – néhány kilométerre a parttól helyezkednek el, sziklásak és lakatlannak tűnnek. A Positano körüli hajótúrák gyakran elhaladnak közel a szigetekhez, és az idegenvezetők szeretik elmesélni a Szirén-történetet. Néhány túra azt állítja, hogy még mindig hallható titokzatos hangok a sziklákról, amikor megfelelő a szél (ez csak szél a barlangokban, de a mítosz tovább él).",
+        "A Szirén-legenda ma is befolyásolja az Amalfi-part kultúráját. Kerámia tervezések sellőket és tengeri lényeket ábrázolnak. Éttermek Szirén-képeket használnak logójukban. Helyi művészek a mítosz értelmezéseit festik. A történet emlékezteti a helyieket és látogatókat, hogy a tenger erőteljes és kiszámíthatatlan – a szépség veszélyes lehet, és a víz tisztelete számít."
       ]
     },
     {
-      "id": "sirens",
-      "title": "Sirens of Li Galli",
+      "id": "saint-andrew",
+      "title": "Szent András: Amalfi védőszentje",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "%IMAGE:amalfi-cathedral-saint-andrew.jpg|Amalfi székesegyház, Szent Andrásnak szentelve%",
+        "Szent András Amalfi védőszentje és az Amalfi-part néphagyományának egyik legfontosabb alakja. A legenda szerint András ereklyéit (csontok és maradványok) 1206-ban hozták Amalfiba Konstantinápolyból a negyedik keresztes hadjárat során. Amalfi kereskedői és tengerészei erős kapcsolatokat ápoltak a Bizánci Birodalommal, és András ereklyéinek hazahozatala egyszerre volt vallási diadal és Amalfi hatalmának politikai kijelentése.",
+        "A %LINK:amalfiTownGuide|Amalfi városi% székesegyház Szent Andrásnak van szentelve. Ereklyéit a főoltár alatti kriptában őrzik. A helyiek hisznek abban, hogy Szent András védi a halászokat, lecsendesíti a viharokat és megóvja a partot a veszélyektől. Amikor rossz idő fenyeget, néhány idősebb halász még mindig Szent Andráshoz imádkozik, mielőtt tengerre száll. A hagyomány elhalványul, de megmarad a halászcsaládokban.",
+        "Amalfi évente kétszer ünnepli Szent András ünnepét nagy fesztiválokkal. Június 27-én (amikor ereklyéi megérkeztek Amalfiba) és november 30-án (hivatalos ünnepe a katolikus naptárban) a város összetett körmenetet tart. Szent András szobrát hordozzák végig az utcákon a székesegyháztól a vízpartig és vissza. Rézfúvós zenekarok játszanak. Tűzijáték világítja meg a kikötőt. Az egész város részt vesz – ez Amalfi legnagyobb kulturális eseménye a %LINK:ferragostoPositano|Ferragosto% után.",
+        "Egy csodás folyadék, az úgynevezett \"manna\" állítólag kiszivárog Szent András ereklyéiből a kriptában. Ez az olajos anyag időszakosan megjelenik a márványsírhelyen (tudományos elemzés szerint ez páralecsapódás vagy ásványi lerakódás, de a hívők isteniként látják). Zarándokok látogatják a kriptát, hogy tanúi legyenek a mannának és Szent András közbenjárását kérjék. Turistaként is látogathatja a kriptát (kis belépődíj) – sötét, díszes és atmoszferikus. Még ha nem is vallásos, a barokk építészet és történelmi jelentőség érdekessé teszi.",
+        "Szent András legendája megmagyarázza, miért éreznek az Amalfi-part halászközösségei mély kapcsolatot a tengerrel mint ellátóval és fenyegetéssel egyaránt. A szent a reményt képviseli, hogy a hit és tisztelet biztonságban tarthat a veszélyes vizeken."
       ]
     },
     {
-      "id": "traditions",
-      "title": "Living traditions",
+      "id": "fishermen-superstitions",
+      "title": "Halászok babonái és tengeri tudás",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Az Amalfi-parti halászoknak generációkon át továbbadott babonáik vannak. Sok elhomályosul, ahogy a fiatalabb generációk elhagyják a halászatot a turizmus javára, de az idősebb halászok még mindig követnek néhányat ezekből a hiedelmekből:",
+        "**Soha ne mondja \"disznó\" (maiale) szót hajón.** A disznók szárazföldi állatok és szerencsétlenek a tengeren. Ha sertéshúsra kell utalni, használjon eufemizmust vagy gesztust a szó kimondása helyett. Ez a babona olyan erős, hogy néhány halász megtagadja a hajózást, ha valaki megszegi a szabályt.",
+        "**Piros ég este, tengerész öröme. Piros ég reggel, tengerész figyelmeztetése.** Ez az időjárás-előrejelző rím (amely olaszul is működik: \"Rosso di sera, bel tempo si spera\") valódi meteorológián alapul – a piros napnyugta stabil magas nyomást jelez, míg a piros napkelte közeledő viharokat jelez. A halászok még mindig ellenőrzik az ég színét, mielőtt eldöntik, kihajóznak-e.",
+        "**Kerülje a hajózást pénteken.** A péntek szerencsétlennek számít az indulásokhoz, különösen, ha 13-ára esik. Ez a hiedelem a keresztény hagyományból ered (Jézust pénteken feszítették keresztre). Sok idősebb halász inkább elhalaszt egy utat, mint hogy pénteken elhagyja a kikötőt.",
+        "**Ne fordítsa meg a kenyeret.** A kenyér szent (Krisztus testét képviseli a katolikus hitben). A kenyér megfordítása egy asztalon vagy hajón tiszteletlen és rosszszerencsét von maga után. Ez a szárazföldön is érvényes – látni fogja, hogy az idősebb olaszok kijavítják bárkit, aki megfordítja a kenyeret.",
+        "**A fütyülés hajón szelet idéz.** A fütyülés tilos, mert állítólag viharokat hív elő. Ez a hiedelem sok tengeri kultúrában létezik világszerte. Ha csatlakozik egy halászhajó-túrához, ne füttyögjön – a kapitány tényleg megkérheti, hogy hagyja abba.",
+        "Ezek a babonák mutatják, milyen bizonytalan volt (és még mindig az) az élet a halászok számára. Amikor megélhetése és biztonsága a kiszámíthatatlan tengertől függ, a rituálék és hiedelmek pszichológiai vigaszt és közösségi összetartást nyújtanak. Még ha a fiatalabb generációk nem is hisznek a természetfeletti aspektusokban, sokan tisztelik a hagyományokat kulturális örökségként."
+      ]
+    },
+    {
+      "id": "luminaria-praiano",
+      "title": "Luminaria di San Domenico (Praiano)",
+      "body": [
+        "A part egyik legszebb néphagyománya a Luminaria di San Domenico Praianóban (a város Positano és Amalfi között). Minden év augusztus első vasárnapján a helyiek 2000+ papírlámpa ösvényt hoznak létre a strandtól a meredek lépcsőkön fel a San Domenico templomig. A gyertyákat napnyugtakor gyújtják meg, világító kígyót alkotva, amely felfelé kanyarog a hegyoldalon.",
+        "A hagyomány San Domenicót (Szent Domonkost) tiszteli, akiről a helyiek hiszik, hogy megvédte Praianót egy kolera-járványtól az 1800-as években. A Luminaria újraalkotja a fáklyás körményeket, amelyeket a falusiak tartottak, miközben a szent közbenjárásáért imádkoztak. Ma a vallási odaadást közösségi ünnepléssel ötvözi – családok kézzel készítik a papírlámpásokat, gyerekek segítenek elhelyezni és meggyújtani őket, és az egész város összegyűlik, hogy végigjárja a megvilágított ösvényt.",
+        "Ha augusztus elején az Amalfi-parton van, a Luminaria megéri. Az esemény körülbelül 19:00–20:00 órakor kezdődik (ellenőrizze a pontos dátumokat helyi turista irodákban vagy kérdezze meg a hostelban). Vehet SITA buszt Positanóból Praianóba (10 perc), végigsétálhat a gyertyafényes lépcsőkön a helyiekkel, részt vehet a templomi istentiszteleten (opcionális) és utána tűzijátékot nézhet a tenger felett. A légkör varázslatos – intim, közösség-központú és vizuálisan lenyűgöző.",
+        "A Luminaria az Amalfi-part katolikus hit és helyi néphagyomány keverékét képviseli. A szentek nem távoli alakok a mennyben – aktív védelmezők, akik beavatkoznak a falusi életbe. Az olyan rituálék, mint a Luminaria, életben tartják ezt a hiedelmet és megerősítik a közösségi kötelékeket."
+      ]
+    },
+    {
+      "id": "lemon-folklore",
+      "title": "Citrom néphagyományai és hagyományok",
+      "body": [
+        "%IMAGE:amalfi-lemon-grove-terraces.jpg|Teraszos citromligetek az Amalfi-part hegyoldalain%",
+        "A citromok nem csak mezőgazdaság az Amalfi-parton – szimbolikus és néphagyományi jelentőséggel bírnak. A gigantikus Amalfi citromok (sfusato amalfitano) IGP tanúsítással védettek és helyi mítoszokban és mondásokban szerepelnek.",
+        "**Citromok mint védelem a gonosz szem ellen.** A dél-olasz néphagyományban a \"gonosz szem\" (malocchio) egy átok, amelyet irigység vagy rosszindulatú tekintetek okoznak. Úgy tartják, a citromok elnyelik a negatív energiát. Néhány régebbi otthon és étterem citromokat akaszt bejáratok közelében, hogy elűzzék a balsorsot. Ez ma kevésbé gyakori, de alkalmanként még látható hagyományos családi vállalkozásokban.",
+        "**Citromlevelek a jó szerencséért.** Az Amalfi-parti esküvőkön a menyasszonyok néha citromvirágokat visznek vagy citromleveleket fonnak csokorjaikba. A fehér virágok a tisztaságot szimbolizálják, a gyümölcs pedig a bőséget és termékenységet. Ez a hagyomány elhalványul a modern esküvőkben, de megmarad vidéki családokban.",
+        "**Limoncello mint emésztést segítő gyógyszer.** A limoncello (citromlikőr) nem csak ital – hagyományos népi gyógyszer. Nehéz étkezések után a helyiek egy kis pohár jéghideg limoncellót isznak az emésztés elősegítésére. A magas alkoholtartalom és citromolajok állítólag megnyugtatják a gyomrot. A tudományos bizonyíték korlátozott, de a hagyomány erős. Sok hostelvendég a Brikette-nél próbálja először a limoncellót és átveszi az étkezés utáni rituálét.",
+        "**A mondás: \"Amikor az élet citromot ad, készíts limoncellót.\"** Ez egy modern változata egy régi olasz mondásnak, de megragadja a part filozófiáját. Citromok mindenhol vannak – miért ne csinálnánk belőlük valami ünnepit. Az Amalfi-part gazdasága citromokon épült (exportok Észak-Európába a 18–19. században), és a helyiek még mindig a citromokat látják a reziliencia és jólét szimbólumainak."
+      ]
+    },
+    {
+      "id": "festivals-folklore",
+      "title": "Fesztivál-néphagyományok és vallási körmenetek",
+      "body": [
+        "Sok Amalfi-parti fesztivál keveri a katolikus szentek napjait a kereszténység előtti néphagyományokkal. A helyi közösségek az ősi pogány aratási fesztiválokat és tengeri rituálékat keresztény ünnepekké alakították, amikor a Római Birodalom áttért a kereszténységre. Az eredmény a formális egyházi liturgia és népi hagyományok egyedi keveréke.",
+        "**Halászhajó-áldások.** Több tengerparti város évente egyszer megáldja a halászflottát (általában májusban vagy júniusban, a nyári halászati szezon előtt). Egy pap kis csónakkal kievez a tengerre, és a halászflotta követi. Megszenteli a hajókat szenteltvízzel és imákkal Szent Andráshoz vagy a Madonnához. Ez a rituálé védelmet kér a viharoktól és jó fogást. Az áldás után családok piknikeznek a strandon és zenével és étellel ünnepelnek. Az esemény inkább bulira, mint ünnepélyes vallási szertartásra hasonlít.",
+        "**Mária mennybevétele körmeneték (Ferragosto).** Augusztus 15-én a part városai a Madonna szobrát hordozzák végig az utcákon ünnepélyes körményekben. A hagyomány keveri a katolikus teológiát (Mária mennybevétele) az ősi aratási fesztivál szokásokkal. A helyiek virágszirmokat szórnak az erkélyekről, ahogy a szobor elhalad. Rézfúvós zenekarok himnuszokat játszanak. Tűzijáték zárja a napot. Ez a part legegyetemesebb hagyománya – minden város valamilyen formában ünnepel.",
+        "**Névnapi ünneplések.** Olaszországban a \"névnapja\" (azon szent ünnepe, akiről elnevezte) gyakran fontosabb, mint a születésnapja. Családok tortával, ajándékokkal és összejövetelekkel ünnepelnek. Ha a neve Andrea (András), június 27. és november 30. az ön névnapja Amalfiban. Ha a hostelban tartózkodik, és éppen a névnapja van, említse meg a személyzetnek – szervezhetnek egy kis ünneplést más vendégekkel."
+      ]
+    },
+    {
+      "id": "supernatural-creatures",
+      "title": "Természetfeletti lények és szellemtörténetek",
+      "body": [
+        "A híres Sziréneken túl az Amalfi-part néphagyományai más természetfeletti lényeket is tartalmaznak, amelyekről a helyiek egykor hitték (és néhányan még mindig félig hiszik), hogy a tájon laknak:",
+        "**Monachicchio (kis szerzetes szellemek).** Ezek huncut szellemek, amelyek állítólag régi kolostorokban és templomokban kísértenek. Úgy néznek ki, mint kis szerzetesek csuklyás köntösben. A monachicchio tréfacsináló – tárgyakat mozgat, éjszaka zajokat kelt, és eltévelyít embereket hegyi ösvényeken. A történetek valószínűleg azért keletkeztek, hogy megmagyarázzák a furcsa hangokat régi épületekben (szél, alapok süllyedése) és hogy távol tartsák a gyerekeket veszélyes romokból. Néhány idősebb helyi azt állítja, hogy látott monachicchiót, de ez ma már többnyire esti mese gyerekeknek.",
+        "**Janara (boszorkányok).** A dél-olasz néphagyományban a janare olyan boszorkányok, akik éjszaka repülnek és átkokat vetnek. Az Amalfi-partnak kevesebb janara története van, mint a belső Campaniának (Benevento Olaszország boszorkány-fővárosa), de a hiedelem létezik. Piros szalagok ajtónyílásokhoz kötve állítólag távol tartják a boszorkányokat. Néhány idős ember még mindig köt szalagokat bizonyos fesztiválok alatt, bár a legtöbben elismerik, hogy ez inkább hagyomány, mint valódi hiedelem.",
+        "**Szellemhajók és fantom tengerészek.** A halászok alkalmanként arról számolnak be, hogy titokzatos fényeket látnak a vízen éjszaka, vagy hangokat hallanak, amikor nincsenek látható hajók. Ezeket az észleléseket szellemhajóknak tulajdonítják – viharokban elveszett hajók, amelyek legénysége még mindig kísérti a partot. A történetek figyelmeztető mesékként szolgálnak a tenger veszélyeinek tiszteletéről. A modern magyarázatok (biolumineszcencia, távoli hajók fényei felhőkről visszaverődve) kevésbé romantikusak, de pontosabbak.",
+        "Ezek a természetfeletti történetek gyorsan elhalványulnak. A fiatalabb olaszok nagyrészt elutasítják őket régi babonákként. De továbbra is részei a kulturális háttérnek, és ismeretük segít megérteni a helyi attitűdöket a tenger, régi épületek és éjszakai rituálék iránt."
       ]
     }
   ],
+  "tipsTitle": "Néphagyományok megtapasztalása utazóként",
   "tips": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
+    "Vegyen részt egy vallási körményen, ha ünnepnap alatt van a parton – ellenőrizze az önkormányzati eseménynaptárakat vagy kérdezzen rá a Hostel Brikette-nél a közelgő dátumokról.",
+    "Látogassa meg a Szent András kriptát az %LINK:amalfiTownGuide|Amalfi székesegyházban%, hogy lássa az ereklyéket és a barokk építészetet (kis belépődíj, 10–15 perc).",
+    "Ha augusztusban Praianóban van, ne hagyja ki a Luminaria di San Domenicót – vegyen buszt Positanóból (10 perc) a gyertyafényes lépcsők megtapasztalásához.",
+    "Keressen kerámia művészetet szirénekkel, citromokkal és szentekkel a Via dei Mulini mentén lévő boltokban – ezek néphagyományi hivatkozások, nem csak turista díszek.",
+    "Kérdezze meg az idősebb helyieket (különösen halászokat vagy étterem tulajdonosokat) családi néphagyományaikról – sokan szeretnek történeteket megosztani, ha valódi érdeklődést mutat.",
+    "Vigyen könnyű kendőt vagy sálat, ha terv szerint templomokba lép fesztiválok alatt – szerény öltözék (váll és térd fedve) szükséges.",
+    "Próbáljon limoncellót egy nagy étkezés után, hogy kövesse a népi hagyományt, amely emésztést segítő szerként használja – sok étterem kínál egy ingyen stampedlit.",
+    "Ha a Li Galli szigeteket hajótúrán látogatja meg, kérje meg a kapitányt, hogy ossza meg a Szirén-legendát – mindegyikük ismeri és szereti elmesélni a történetet."
   ],
+  "faqsTitle": "GYIK",
   "faqs": [
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Bárki csatlakozhat a vallási körményekhez és fesztiválokhoz?",
       "a": [
-        "A fordítás folyamatban van."
+        "Igen – látogatók szívesen látottak a tiszteletteljes figyeléshez és részvételhez. Álljon a körmenet útvonala mentén, tapsoljon vagy ujjongjon, amikor megfelelő, és engedje elsőként elhaladni a szobrokat vagy vallási szimbólumokat vivő helyieket. Ne blokkolja az utat és ne szakítsa meg az imákat. Ha a körmenet belép egy templomba misére, részt vehet, ha szerényen öltözött (váll és térd fedve, nincs strandruha). Vigyen apró pénzt (€1–€2 érmék), ha gyertyát akar gyújtani vagy adományt tenni."
       ]
     },
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Hol hallhatok hagyományos népi zenét az Amalfi-parton?",
       "a": [
-        "A fordítás folyamatban van."
+        "A nyári fesztiválok Atraniban, %LINK:ravelloGuide|Ravellóban% és Amalfiban néha hagyományos tarantella zenét (néptánc zene Campaniából) mutatnak be. Ellenőrizze a turista iroda eseménynaptárait vagy plakátokat a buszmegállókban koncert dátumokért. A Ravello Fesztivál (nyári zenei fesztivál) alkalmanként népi előadásokat tartalmaz klasszikus koncertek mellett. Néhány családi étterem kisebb városokban lejátszik rögzített népi zenét vacsora során, bár élő előadások ritkák fesztiválokon kívül."
+      ]
+    },
+    {
+      "q": "A halászok babonáit még mindig komolyan veszik?",
+      "a": [
+        "Az idősebb halászok (60+) gyakran követik a hagyományos babonákat, mint a péntekek elkerülése, a \"disznó\" szó hajón való mellőzése és az ég színének ellenőrzése időjárás-előrejelzéshez. A fiatalabb halászok (40 alatt) ezeket többnyire kulturális hagyományokként kezelik, nem szó szerinti hiedelmekként. Azonban még a szkeptikusok is gyakran tisztelik a rituálékat családi szokásból vagy közösségi elvárásból. Ha csatlakozik egy halászhajó-túrához, udvarias követni a kapitány által említett babonákat – ne füttyögjön, ne fordítsa meg a kenyeret, és kerülje a szerencsétlen szavak mondását."
+      ]
+    },
+    {
+      "q": "A Szent András ereklyéiből származó \"manna\" valódi?",
+      "a": [
+        "Az olajos folyadék, amely Szent András sírján megjelenik az Amalfi székesegyház kriptájában, valódi (láthatja, ha meglátogatja). Tudományos elemzés szerint ez ásványi páralecsapódás vagy a márványon átszivárgás, nem természetfeletti jelenség. Azonban a katolikus zarándokok csodaként értelmezik – a szent folyamatos jelenlétének és közbenjárásának jeleként. Hogy hiszik-e a csodát, személyes. Maga a jelenség dokumentált és időszakosan előfordul."
+      ]
+    },
+    {
+      "q": "Melyik a legjobb néphagyományi fesztivál az Amalfi-parton?",
+      "a": [
+        "A Luminaria di San Domenico Praianóban (augusztus első vasárnap) a leginkább vizuálisan lenyűgöző és hozzáférhető utazók számára. A gyertyafényes lépcsők, közösségi légkör és intim léptékű, különlegessé teszi. Ha június végén vagy november végén a parton van, a Szent András körmeneyek %LINK:amalfiTownGuide|Amalfiban% lenyűgözőek – nagyobb tömegek, rézfúvós zenekarok, tűzijáték. A %LINK:ferragostoPositano|Ferragosto% (augusztus 15.) a legnagyobb ünneplés, de a legzsúfoltabb és legturisztikusabb is. Autentikus helyi hangulatért a Luminaria nyer."
+      ]
+    },
+    {
+      "q": "A helyiek még mindig hisznek szirénekben, boszorkányokban és szellemhajókban?",
+      "a": [
+        "A legtöbb modern olasz ezeket néphagyományként és kulturális történetként kezeli, nem szó szerinti hiedelmekként. Azonban az idősebb generációk (különösen vidéki területeken és halászcsaládokban) néha megtartanak egy fél-hiedelmet természetfeletti erőkben – lehet, hogy nem mondják, hogy hisznek szellemhajókban, de elkerülnek bizonyos viselkedéseket \"csak az esetben\". A fiatalabb emberek (40 alatt) általában szkeptikusak és a néphagyományt kulturális örökségként látják, nem aktív babonának. A történetek megmaradnak fesztiválokban, művészetben és helyi mondásokban, még ha a szó szerinti hiedelem elhalványult is."
+      ]
+    },
+    {
+      "q": "Miért jelennek meg a citromok oly gyakran az Amalfi-part néphagyományában és szimbolikájában?",
+      "a": [
+        "A citromok évszázadokig az Amalfi-part gazdasági alapját képezték. A gigantikus sfusato amalfitano citromokat a 18–19. században Európa-szerte exportálták, gazdagságot hozva a tengerparti városoknak. Mivel a citromok olyan fontosak voltak a túléléshez és jóléthez, jó szerencse, védelem és bőség szimbólumaivá váltak a helyi néphagyományban. A hagyományok (citromok használata a gonosz szem ellen, citromvirágok esküvőkbe való beépítése, limoncello ivása gyógyszerként) tükrözik, milyen központiak voltak a citromok a mindennapi életben. Bár a citrom gazdaság visszaesett, a szimbolikus jelentőség megmaradt."
       ]
     }
   ]

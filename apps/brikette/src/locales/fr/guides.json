@@ -102,6 +102,90 @@
         "title": "Que mettre dans sa valise pour la côte amalfitaine",
         "description": "Liste de bagages saisonnière pour Positano et la côte amalfitaine."
       }
+    },
+    "positanoBeaches": {
+      "linkLabel": "Plages de Positano : Sable, soleil et criques secrètes"
+    },
+    "arienzoBeachClub": {
+      "linkLabel": "Plage d'Arienzo : Le beach club chic de Positano"
+    },
+    "fornilloBeachGuide": {
+      "linkLabel": "Plage de Fornillo : L'alternative tranquille de Positano"
+    },
+    "lauritoBeachGuide": {
+      "linkLabel": "Plage de Laurito : Joyau caché sous les falaises"
+    },
+    "gavitellaBeachGuide": {
+      "linkLabel": "Plage de Gavitella : Baignade au coucher de soleil à Praiano"
+    },
+    "marinaDiPraiaBeaches": {
+      "linkLabel": "Marina di Praia : Crique spectaculaire entre les falaises"
+    },
+    "fiordoDiFuroreBeachGuide": {
+      "linkLabel": "Fiordo di Furore : La plage du fjord sous le pont"
+    },
+    "reginaGiovannaBath": {
+      "linkLabel": "Regina Giovanna : Ruines romaines et piscine naturelle"
+    },
+    "positanoMainBeach": {
+      "linkLabel": "Spiaggia Grande : La plage principale emblématique de Positano"
+    },
+    "sunriseHike": {
+      "linkLabel": "Randonnée au lever du soleil : Admirez l'aube sur Positano"
+    },
+    "topOfTheMountainHike": {
+      "linkLabel": "Monte Comune : Randonnée au point de vue le plus haut de Positano"
+    },
+    "stayingFitAmalfi": {
+      "linkLabel": "Rester en forme à Positano : Escaliers, sentiers et entraînements à la plage"
+    },
+    "capriDayTrip": {
+      "linkLabel": "Excursion à Capri : Escapade insulaire depuis Positano"
+    },
+    "capriOnABudget": {
+      "linkLabel": "Capri sans se ruiner"
+    },
+    "campingAmalfi": {
+      "linkLabel": "Camping sur la côte amalfitaine : Alternative économique aux hôtels"
+    },
+    "boatTours": {
+      "linkLabel": "Excursions en bateau : Croisières au coucher du soleil et charters privés"
+    },
+    "cheapEats": {
+      "linkLabel": "Manger comme un local : Les meilleurs petits prix de Positano"
+    },
+    "eatingOutPositano": {
+      "linkLabel": "Où manger à Positano : Du décontracté au festif"
+    },
+    "positanoDining": {
+      "linkLabel": "Les meilleurs restaurants de Positano près de Hostel Brikette"
+    },
+    "limoncelloCuisine": {
+      "linkLabel": "Saveurs de Positano : Limoncello, citrons et goûts locaux"
+    },
+    "instagramSpots": {
+      "linkLabel": "Positano instagrammable : Meilleurs spots photos et horaires"
+    },
+    "sunsetViewpoints": {
+      "linkLabel": "Coucher de soleil à Positano : Les meilleurs points de vue pour l'heure dorée"
+    },
+    "ravelloFestival": {
+      "linkLabel": "Festival de Ravello : Concerts classiques sous les étoiles"
+    },
+    "ferragostoPositano": {
+      "linkLabel": "Ferragosto : La fête du 15 août en Italie à Positano"
+    },
+    "luminariaPraiano": {
+      "linkLabel": "Luminaria di Praiano : Des milliers de bougies illuminent la nuit"
+    },
+    "walkingTourAudio": {
+      "linkLabel": "Audio tour gratuit : Découvrez les histoires cachées de Positano"
+    },
+    "freeThingsPositano": {
+      "linkLabel": "Activités gratuites à Positano : Amusement petit budget"
+    },
+    "santaMariaDelCastelloHike": {
+      "linkLabel": "Santa Maria del Castello: Mountain Village Hike"
     }
   },
   "dev": {

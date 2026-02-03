@@ -37,6 +37,14 @@ const guideIntroSchema = z.union([
   z.string().trim().min(1),
 ]);
 
+const guideSectionImageSchema = z.object({
+  src: z.string().trim().min(1, "section.images[].src is required"),
+  alt: z.string().trim().min(1, "section.images[].alt is required"),
+  caption: z.string().trim().min(1).optional(),
+  width: z.number().int().positive().optional(),
+  height: z.number().int().positive().optional(),
+});
+
 const guideSectionSchema = z.object({
   id: z.string().trim().min(1, "section.id is required"),
   title: z.string().trim().min(1, "section.title is required"),
@@ -45,6 +53,7 @@ const guideSectionSchema = z.object({
     z.array(z.string()),
   ]).optional(),
   list: z.array(z.string()).optional(),
+  images: z.array(guideSectionImageSchema).optional(),
 });
 
 const guideFaqSchema = z.object({
@@ -65,6 +74,7 @@ export const guideContentSchema = z
   .object({
     seo: guideSeoSchema,
     linkLabel: z.string().trim().min(1).optional(),
+    lastUpdated: z.string().datetime().optional(), // ISO 8601 date string, auto-updated on save
     intro: guideIntroSchema.optional(),
     sections: z.array(guideSectionSchema).optional(),
     faqs: z.array(guideFaqSchema).optional(),

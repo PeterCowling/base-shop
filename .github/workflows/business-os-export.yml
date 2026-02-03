@@ -1,0 +1,69 @@
+name: Business OS D1 Export
+
+# Deprecated: replaced by bos-export.yml (PR-based export)
+
+# BOS-D1-09: Scheduled export of D1 data to git mirror
+# Exports Business OS entities from D1 to markdown files in docs/business-os/**
+# Commits to work/business-os-export branch
+# Auto-PR workflow handles PR creation + auto-merge
+
+on:
+  workflow_dispatch:
+permissions:
+  contents: write  # Required for git push
+  pull-requests: write  # Required for auto-PR creation
+
+jobs:
+  export:
+    name: Export D1 to Git
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for proper git operations
+
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+
+      - name: Setup Wrangler auth
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          # Wrangler will use these environment variables for auth
+          echo "Wrangler auth configured via environment variables"
+
+      - name: Configure git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run D1 export
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [[ "${{ github.event.inputs.dry_run }}" == "true" ]]; then
+            echo "Running in dry-run mode"
+            pnpm tsx apps/business-os/scripts/export-d1-to-git.ts --dry-run
+          else
+            echo "Running export with commit"
+            pnpm tsx apps/business-os/scripts/export-d1-to-git.ts --commit
+          fi
+
+      - name: Export summary
+        if: always()
+        run: |
+          {
+            echo "### Business OS D1 Export Summary"
+            echo ""
+            echo "- **Trigger**: ${{ github.event_name }}"
+            echo "- **Branch**: work/business-os-export"
+            echo "- **Dry run**: ${{ github.event.inputs.dry_run || 'false' }}"
+            echo ""
+            echo "Auto-PR workflow will handle PR creation and auto-merge."
+          } >> "$GITHUB_STEP_SUMMARY"

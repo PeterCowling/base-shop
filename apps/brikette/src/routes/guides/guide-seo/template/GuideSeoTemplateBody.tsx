@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import dynamic from "next/dynamic";
 
 import { Section } from "@acme/design-system/atoms";
 
@@ -14,9 +15,18 @@ import DevStatusPill from "../components/DevStatusPill";
 import FaqStructuredDataBlock from "../components/FaqStructuredDataBlock";
 import FooterWidgets from "../components/FooterWidgets";
 import GenericOrFallbackContent from "../components/GenericOrFallbackContent";
-import GuideEditorialPanel from "../components/GuideEditorialPanel";
 import HeadSection from "../components/HeadSection";
 import StructuredTocBlock from "../components/StructuredTocBlock";
+
+// Dynamically import GuideEditorialPanel to avoid SSR hydration mismatches
+// Note: Even with server-side override loading, this component fetches translation
+// coverage client-side (useTranslationCoverage), which would cause hydration errors.
+// The server-side override loading still helps by providing initial data immediately
+// when the component mounts on the client.
+const GuideEditorialPanel = dynamic(
+  () => import("../components/GuideEditorialPanel"),
+  { ssr: false }
+);
 import { HOW_TO_JSON_TYPE } from "../constants";
 import type {
   GuideSeoTemplateContext,
@@ -51,6 +61,7 @@ export type GuideSeoTemplateBodyProps = {
   draftUrl?: string;
   articleHeadingWeightClass: string;
   subtitleText: string;
+  lastUpdated?: string;
   articleHeaderDebug: {
     lang: AppLanguage;
     guideKey: GuideSeoTemplateProps["guideKey"];
@@ -92,8 +103,6 @@ export type GuideSeoTemplateBodyProps = {
   showPlanChoice: boolean;
   showTransportNotice: boolean;
   relatedGuides?: GuideSeoTemplateProps["relatedGuides"];
-  showRelatedWhenLocalized: boolean;
-  alsoHelpful?: GuideSeoTemplateProps["alsoHelpful"];
   guideFaqFallback?: GuideSeoTemplateProps["guideFaqFallback"];
   alwaysProvideFaqFallback: boolean;
   suppressFaqWhenUnlocalized: boolean;
@@ -122,6 +131,7 @@ export function GuideSeoTemplateBody(props: GuideSeoTemplateBodyProps): JSX.Elem
     draftUrl,
     articleHeadingWeightClass,
     subtitleText,
+    lastUpdated,
     articleHeaderDebug,
     manualStructuredFallbackNode,
     manualStructuredFallbackRendered,
@@ -156,8 +166,6 @@ export function GuideSeoTemplateBody(props: GuideSeoTemplateBodyProps): JSX.Elem
     showPlanChoice,
     showTransportNotice,
     relatedGuides,
-    showRelatedWhenLocalized,
-    alsoHelpful,
     guideFaqFallback,
     alwaysProvideFaqFallback,
     suppressFaqWhenUnlocalized,
@@ -199,7 +207,7 @@ export function GuideSeoTemplateBody(props: GuideSeoTemplateBodyProps): JSX.Elem
         {...(typeof guideFaqFallback === "function" ? { guideFaqFallback } : {})}
       />
 
-      <Section as="div" padding="none" className="mx-auto max-w-3xl px-4 pt-35 md:px-8 lg:px-10">
+      <Section as="div" padding="none" className="mx-auto max-w-3xl px-4 pt-3 md:px-8 lg:px-10">
         <DevStatusPill guideKey={guideKey as any} />
         <article className={`prose prose-slate prose-lg sm:prose-xl dark:prose-invert ${articleHeadingWeightClass} prose-headings:tracking-tight prose-headings:text-brand-heading dark:prose-headings:text-brand-surface prose-p:text-left prose-p:leading-relaxed prose-li:leading-relaxed prose-strong:font-semibold prose-strong:text-brand-heading prose-ul:list-disc prose-ol:list-decimal prose-ul:pl-6 prose-ol:pl-6 prose-li:my-1 prose-li:marker:text-brand-primary/70 space-y-10`}>
           {shouldShowEditorialPanel && manifestEntry ? (
@@ -216,6 +224,8 @@ export function GuideSeoTemplateBody(props: GuideSeoTemplateBodyProps): JSX.Elem
           <ArticleHeader
             displayTitle={resolvedDisplayTitle}
             subtitle={subtitleText}
+            lastUpdated={lastUpdated}
+            locale={lang}
             debug={articleHeaderDebug}
           />
           {/* When routes prefer manual handling for unlocalized locales and a
@@ -286,13 +296,10 @@ export function GuideSeoTemplateBody(props: GuideSeoTemplateBodyProps): JSX.Elem
         <FooterWidgets
           lang={lang as any}
           guideKey={guideKey as any}
-          hasLocalizedContent={hasAnyLocalized}
           showTagChips={showTagChips}
           showPlanChoice={showPlanChoice}
           showTransportNotice={showTransportNotice}
           relatedGuides={relatedGuides as any}
-          showRelatedWhenLocalized={showRelatedWhenLocalized}
-          alsoHelpful={alsoHelpful as any}
           tGuides={tGuides as any}
         />
       </Section>

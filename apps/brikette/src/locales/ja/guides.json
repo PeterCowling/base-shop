@@ -102,6 +102,90 @@
         "title": "アマルフィ海岸の持ち物",
         "description": "ポジターノとアマルフィ海岸の季節別持ち物チェックリスト。"
       }
+    },
+    "positanoBeaches": {
+      "linkLabel": "ポジターノのビーチ：砂浜、太陽、秘密の入り江"
+    },
+    "arienzoBeachClub": {
+      "linkLabel": "アリエンツォビーチ：ポジターノの高級ビーチクラブ"
+    },
+    "fornilloBeachGuide": {
+      "linkLabel": "フォルニッロビーチ：ポジターノの静かな穴場"
+    },
+    "lauritoBeachGuide": {
+      "linkLabel": "ラウリートビーチ：断崖下の隠れた宝石"
+    },
+    "gavitellaBeachGuide": {
+      "linkLabel": "ガヴィテッラビーチ：プライアーノの夕日を眺める海水浴スポット"
+    },
+    "marinaDiPraiaBeaches": {
+      "linkLabel": "マリーナ・ディ・プライア：断崖に挟まれた絶景の入り江"
+    },
+    "fiordoDiFuroreBeachGuide": {
+      "linkLabel": "フューロレのフィヨルド：橋の下のフィヨルドビーチ"
+    },
+    "reginaGiovannaBath": {
+      "linkLabel": "レジーナ・ジョヴァンナ：ローマ遺跡と天然プール"
+    },
+    "positanoMainBeach": {
+      "linkLabel": "スピアッジャ・グランデ：ポジターノを象徴するメインビーチ"
+    },
+    "sunriseHike": {
+      "linkLabel": "日の出ハイキング：ポジターノの夜明けを眺める"
+    },
+    "santaMariaDelCastelloHike": {
+      "linkLabel": "サンタ・マリア・デル・カステッロ：山村ハイキング"
+    },
+    "topOfTheMountainHike": {
+      "linkLabel": "モンテ・コムーネ：ポジターノ最高峰の展望台ハイク"
+    },
+    "stayingFitAmalfi": {
+      "linkLabel": "ポジターノで体を動かす：階段、トレイル、ビーチワークアウト"
+    },
+    "capriDayTrip": {
+      "linkLabel": "カプリ島日帰り旅行：ポジターノからの島脱出"
+    },
+    "capriOnABudget": {
+      "linkLabel": "カプリをお財布に優しく楽しむ"
+    },
+    "campingAmalfi": {
+      "linkLabel": "アマルフィ海岸でキャンプ：ホテルに代わる低予算オプション"
+    },
+    "boatTours": {
+      "linkLabel": "ボートツアー：サンセットクルーズからプライベートチャーターまで"
+    },
+    "cheapEats": {
+      "linkLabel": "地元っ子のように食べる：ポジターノのベストお手頃グルメ"
+    },
+    "eatingOutPositano": {
+      "linkLabel": "ポジターノの食事処：カジュアルからお祝いまで"
+    },
+    "positanoDining": {
+      "linkLabel": "Hostel Brikette近くのポジターノのベストレストラン"
+    },
+    "limoncelloCuisine": {
+      "linkLabel": "ポジターノの味：リモンチェッロ、レモン、地元の風味"
+    },
+    "instagramSpots": {
+      "linkLabel": "インスタ映えするポジターノ：ベストフォトスポットと時間帯"
+    },
+    "sunsetViewpoints": {
+      "linkLabel": "ポジターノの夕日：ゴールデンアワーに最高の展望台"
+    },
+    "ravelloFestival": {
+      "linkLabel": "ラヴェッロ音楽祭：星空の下でクラシックコンサート"
+    },
+    "ferragostoPositano": {
+      "linkLabel": "フェラゴスト：8月15日のイタリアの祝日をポジターノで"
+    },
+    "luminariaPraiano": {
+      "linkLabel": "プライアーノのルミナリア：何千ものキャンドルが夜を照らす"
+    },
+    "walkingTourAudio": {
+      "linkLabel": "無料オーディオウォーキングツアー：ポジターノの隠れた物語を発見"
+    },
+    "freeThingsPositano": {
+      "linkLabel": "ポジターノで無料でできること：お財布に優しい楽しみ方"
     }
   },
   "dev": {

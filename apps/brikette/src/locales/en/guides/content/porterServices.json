@@ -53,10 +53,5 @@
         "Varies by distance and load; confirm rate before service begins."
       ]
     }
-  ],
-  "galleryTitle": "Photo gallery",
-  "gallery": {
-    "standsCaption": "Porter stands (example)",
-    "cartsCaption": "Porter carts"
-  }
+  ]
 }

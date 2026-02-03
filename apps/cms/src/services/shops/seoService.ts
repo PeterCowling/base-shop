@@ -145,7 +145,7 @@ export async function generateSeo(
   }
 
   const { id, locale, title, description } = data;
-  const { generateMeta } = await import("@acme/lib");
+  const { generateMeta } = await import("@acme/lib/server");
 
   const result = await generateMeta({ id, title, description });
   const current = await fetchSettings(shop);

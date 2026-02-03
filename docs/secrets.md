@@ -1,3 +1,6 @@
+Type: Guide
+Status: Reference
+
 # Secrets Management
 
 This guide covers how to manage secrets for Base-Shop applications using SOPS/age encryption.

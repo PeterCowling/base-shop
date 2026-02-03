@@ -93,6 +93,16 @@
     "filterHeading": "Фильтр гидов по впечатлениям",
     "filterDescription": "Выберите тег, чтобы сузить подборку впечатлений.",
     "directionsLabel": "Маршруты",
+    "sections": {
+      "content": {
+        "title": "Гиды по впечатлениям",
+        "description": "Подробные гиды о пляжах, прогулках, однодневных поездках и занятиях"
+      },
+      "directions": {
+        "title": "Как добраться",
+        "description": "Пошаговые маршруты до хостела и обратно"
+      }
+    },
     "directionLinks": {
       "capriDayTrip": {
         "positanoCapriFerry": "Позитано → Капри паром",

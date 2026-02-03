@@ -75,4 +75,79 @@ describe("guide link tokens + markdown-lite", () => {
     expect(stripGuideMarkup("Try **bold** and *italic*")).toBe("Try bold and italic");
     expect(stripGuideMarkup("Escaped literal star: \\*")).toBe("Escaped literal star: *");
   });
+
+  describe("URL tokens", () => {
+    it("renders %URL: token with https as external link", () => {
+      const nodes = renderGuideLinkTokens(
+        "Visit %URL:https://example.com|Example Site%",
+        "en",
+        "t",
+      );
+      render(<div data-cy="root">{nodes}</div>);
+
+      const link = screen.getByRole("link", { name: "Example Site" });
+      expect(link).toHaveAttribute("href", "https://example.com");
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(link).toHaveAttribute("rel", "noopener noreferrer");
+    });
+
+    it("renders %URL: token with http as external link", () => {
+      const nodes = renderGuideLinkTokens(
+        "Visit %URL:http://example.com|Example%",
+        "en",
+        "t",
+      );
+      render(<div data-cy="root">{nodes}</div>);
+
+      const link = screen.getByRole("link", { name: "Example" });
+      expect(link).toHaveAttribute("href", "http://example.com");
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(link).toHaveAttribute("rel", "noopener noreferrer");
+    });
+
+    it("renders %URL: token with mailto without target blank", () => {
+      const nodes = renderGuideLinkTokens(
+        "Contact us: %URL:mailto:test@example.com|Email us%",
+        "en",
+        "t",
+      );
+      render(<div data-cy="root">{nodes}</div>);
+
+      const link = screen.getByRole("link", { name: "Email us" });
+      expect(link).toHaveAttribute("href", "mailto:test@example.com");
+      expect(link).not.toHaveAttribute("target");
+      expect(link).not.toHaveAttribute("rel");
+    });
+
+    it("renders unsafe URL (javascript:) as plain text for security", () => {
+      const nodes = renderGuideLinkTokens(
+        "Click %URL:javascript:alert(1)|Click me%",
+        "en",
+        "t",
+      );
+      render(<div data-cy="root">{nodes}</div>);
+
+      expect(screen.getByTestId("root")).toHaveTextContent("Click Click me");
+      expect(screen.queryByRole("link")).toBeNull();
+    });
+
+    it("renders unsafe URL (data:) as plain text for security", () => {
+      const nodes = renderGuideLinkTokens(
+        "See %URL:data:text/html,<script>alert(1)</script>|Data URL%",
+        "en",
+        "t",
+      );
+      render(<div data-cy="root">{nodes}</div>);
+
+      expect(screen.getByTestId("root")).toHaveTextContent("See Data URL");
+      expect(screen.queryByRole("link")).toBeNull();
+    });
+
+    it("strips URL tokens for SEO text", () => {
+      expect(stripGuideMarkup("Visit %URL:https://example.com|our website%")).toBe(
+        "Visit our website",
+      );
+      expect(stripGuideMarkup("Email %URL:mailto:a@b.com|us%")).toBe("Email us");
+    });
+  });
 });

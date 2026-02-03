@@ -91,7 +91,7 @@
   "tips": [
     "Ta skjermbilde av bekreftelses‑e‑poster – mobilsignalet svekkes nær brygga.",
     "Pakk revvennlig solkrem og vannsko; strandlinjen blander rullestein og svaberg.",
-    "Se vår %LINK:beaches|oversikt over Positano-strender% for å sammenligne Laurito med andre viker."
+    "Se vår %LINK:positanoBeaches|oversikt over Positano-strender% for å sammenligne Laurito med andre viker."
   ],
   "warningsTitle": "Godt å vite",
   "warnings": [
@@ -120,25 +120,49 @@
       ]
     }
   ],
-  "gallery": {
-    "alt": "Strandlinjen ved Laurito-stranden"
-  },
   "images": {
     "whyGo": {
+      "src": "/img/guides/laurito/why-go.jpg",
       "alt": "Laurito-bukten med strandklubber langs strandlinjen",
-      "caption": "Lauritos klippeomkransede bukt er roligere og mer avslappet enn hovedstranden."
+      "caption": "Lauritos klippeomkransede bukt er roligere og mer avslappet enn hovedstranden.",
+      "width": 403,
+      "height": 500
     },
     "layout": {
+      "src": "/img/guides/laurito/layout.jpg",
       "alt": "Stranddekk og strandlinjeoppsett ved Laurito",
-      "caption": "Tre soner deler bukten: offentlig stripe, Villa Tre Villes dekk og Da Adolfos terrasse."
+      "caption": "Tre soner deler bukten: offentlig stripe, Villa Tre Villes dekk og Da Adolfos terrasse.",
+      "width": 403,
+      "height": 500
     },
     "treVille": {
+      "src": "/img/guides/laurito/tre-ville.jpg",
       "alt": "Villa Tre Ville strandklubb-solsenger og havutsikt",
-      "caption": "Villa Tre Ville fokuserer på premium solsenger og concierge-service."
+      "caption": "Villa Tre Ville fokuserer på premium solsenger og concierge-service.",
+      "width": 403,
+      "height": 500
     },
     "daAdolfo": {
+      "src": "/img/guides/laurito/da-adolfo.jpg",
       "alt": "Da Adolfo strandklubb brygge og sitteområde",
-      "caption": "Da Adolfos skyttelbåt slipper av gjester ved siden av restaurantterrassen."
+      "caption": "Da Adolfos skyttelbåt slipper av gjester ved siden av restaurantterrassen.",
+      "width": 403,
+      "height": 500
+    },
+    "positanoView": {
+      "src": "/img/guides/laurito/positano-view.jpg",
+      "alt": "Utsikt til Positano fra Laurito-stranden",
+      "caption": "Fra Laurito får du en fin utsikt tilbake til Positano langs kysten.",
+      "width": 403,
+      "height": 500
+    },
+    "sitaBus": {
+      "src": "/img/guides/laurito/sita-bus.jpg",
+      "alt": "SITA-buss på kystruten nær Laurito-stranden",
+      "caption": "SITA-bussen stopper ved trappeinngangen til Laurito langs kystruten.",
+      "width": 403,
+      "height": 500
     }
-  }
+  },
+  "lastUpdated": "2026-01-29T00:00:00.000Z"
 }

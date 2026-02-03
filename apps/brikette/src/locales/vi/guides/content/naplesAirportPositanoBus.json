@@ -1,4 +1,5 @@
 {
+  "lastUpdated": "2026-01-31",
   "seo": {
     "title": "Sân bay Naples đến Positano bằng xe buýt | Hostel Brikette",
     "description": "Từ sân bay Naples tới Positano bằng Curreri đến Sorrento rồi xe buýt SITA. Bao gồm vé, điểm dừng, mẹo đọc bảng giờ SITA và đường đi bộ tới Hostel Brikette."
@@ -8,6 +9,7 @@
     "body": "Hướng dẫn từng bước này đưa bạn từ sân bay Naples tới Positano bằng xe buýt Curreri tới Sorrento rồi tiếp tục xe buýt SITA tới Positano. Nội dung gồm vé, điểm chuyển tuyến, cách đọc bảng giờ SITA và đường đi bộ từ điểm dừng gần hostel nhất."
   },
   "callouts": {
+    "tip": "Cần các tuyến khác? Khám phá toàn bộ %HOWTO:how-to-get-here|Tổng quan Cách đến đây% để biết về %LINK:arrivingByFerry|đến bằng phà%, %LINK:porterServices|dịch vụ khuân vác% và %LINK:travelHelp|xe chuyên dụng%.",
     "aside": "Cần mọi lựa chọn di chuyển? Mở %HOWTO:how-to-get-here|Tổng quan Cách đến đây% để xem phà, taxi và các tuyến thay thế."
   },
   "sections": [
@@ -55,6 +57,56 @@
       "list": [
         "Đi bộ hơn 100 mét / 330 ft dọc Via G. Marconi.",
         "Rẽ phải và đi theo cầu thang lên cửa chính của hostel."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Chi phí đi từ sân bay Naples đến Positano bằng xe buýt là bao nhiêu?",
+      "a": "Tổng chi phí khoảng €12.60: €10 cho xe buýt Curreri từ sân bay Naples đến Sorrento, cộng €2.60 cho xe buýt SITA từ Sorrento đến Positano (giá 2026). Đây là phương án giao thông công cộng rẻ nhất."
+    },
+    {
+      "q": "Tổng thời gian di chuyển là bao lâu?",
+      "a": "Dự kiến 2.5-3.5 giờ tổng cộng: 75 phút trên xe buýt Curreri đến Sorrento, 15-30 phút thời gian chuyển đổi ở Sorrento, sau đó 50 phút trên xe buýt SITA đến Positano. Thời gian chờ đợi thay đổi tùy lịch trình bạn bắt kịp."
+    },
+    {
+      "q": "Tôi có cần đặt xe buýt trước không?",
+      "a": "Đối với Curreri (sân bay-Sorrento): đặt online trước 1-2 ngày vào tháng 7-8. Các thời điểm khác, mua tại quầy vé thường ổn. Đối với SITA (Sorrento-Positano): không cần đặt trước, nhưng đến sớm 10-15 phút vì xe buýt sẽ đầy."
+    },
+    {
+      "q": "Tôi bắt xe buýt Curreri ở đâu tại sân bay Naples?",
+      "a": "Terminal 1, tầng đến. Đi ra khỏi sảnh đến và rẽ phải. Điểm dừng xe buýt Curreri nằm cách lối ra chính khoảng 50 mét. Tìm biển hiệu xanh-trắng Curreri và quầy vé nhỏ."
+    },
+    {
+      "q": "Làm sao biết khi nào chuyển đổi ở Sorrento?",
+      "a": "Xe buýt Curreri dừng tại ga tàu điện Circumvesuviana Sorrento. Điểm dừng xe buýt SITA đến Positano nằm bên kia đường (Via degli Aranci). Băng qua đường và tìm biển hiệu 'SITA' và 'Positano'. Kiểm tra lịch SITA trước để biết cần chờ bao lâu."
+    },
+    {
+      "q": "Tôi có thể mang hành lý lớn lên các xe buýt này không?",
+      "a": "Có. Xe buýt Curreri có khoang hành lý (không tính phí thêm). Xe buýt SITA có giá phía trên ghế và một ít không gian sàn - phù hợp với ba lô/va li cỡ trung. Nếu bạn có thứ khổng lồ (ván lướt sóng, xe đạp), cân nhắc xe chuyển riêng."
+    },
+    {
+      "q": "Điều gì xảy ra nếu chuyến bay đến muộn hoặc tôi lỡ chuyến nối ở Sorrento?",
+      "a": "Xe buýt Curreri ngưng hoạt động khoảng 19:30-20:00. Nếu đến muộn hơn, đi taxi từ sân bay đến Sorrento (€90-120) rồi xe buýt SITA, hoặc taxi thẳng đến Positano (€120-150). Xe buýt SITA cuối cùng từ Sorrento khởi hành khoảng 22:00 vào mùa hè, 20:00 vào mùa đông."
+    },
+    {
+      "q": "Tuyến này hoạt động quanh năm không?",
+      "a": "Có. Xe buýt Curreri hoạt động quanh năm với dịch vụ giảm vào mùa đông. Xe buýt SITA cũng hoạt động quanh năm nhưng ít thường xuyên hơn vào tháng 11-3. Luôn kiểm tra lịch trình hiện tại tại sitasudtrasporti.it trước khi đi."
+    },
+    {
+      "q": "Làm thế nào để đến Hostel Brikette từ xe buýt SITA?",
+      "a": "Xuống tại điểm dừng Chiesa Nuova (nói với tài xế 'Chiesa Nuova per favore'). Đối diện tiệm tabacchi, rẽ phải về phía đường chính, sau đó rẽ trái vào Via G. Marconi. Đi bộ 100m, hostel ở bên phải. Rẽ phải và đi lên cầu thang."
+    },
+    {
+      "q": "Có lựa chọn thay thế nào nếu xe buýt đầy không?",
+      "a": "Có: (1) Xe chuyển riêng từ cửa đến cửa €120-150, (2) Taxi chung €30-40/người theo nhóm, (3) Xe buýt Curreri đến Sorrento sau đó phà đến Positano (chỉ tháng 4-10), (4) Tàu từ trung tâm Naples đến Sorrento sau đó xe buýt SITA (nếu bạn ở trung tâm thành phố)."
+    },
+    {
+      "q": "Làm thế nào để đọc lịch trình xe buýt SITA?",
+      "a": [
+        "**Đọc các hàng:** Các hàng trong cột đầu tiên đại diện cho các trạm xe buýt khác nhau dọc theo tuyến đường.",
+        "**Đọc các cột:** Lịch trình gán một chữ cái trong bảng chữ cái cho mỗi chuyến đi đã lên lịch, được liệt kê làm tiêu đề trong mỗi cột. Nếu bạn đi du lịch từ thứ Hai đến thứ Bảy, hãy tìm các cột 'F' và 'G'. Nếu bạn đi du lịch vào Chủ nhật hoặc ngày lễ, hãy tìm các cột 'G' và 'H'.",
+        "**Kết hợp các hàng và cột:** Chọn các trạm xuất phát và đến của bạn, sau đó kiểm tra các cột để xem khi nào có xe buýt và họ sẽ đến đích của bạn vào lúc nào. Ví dụ, để xem giờ khởi hành từ Sorrento, hãy xem hàng Sorrento. Để xem giờ đến Positano (Chiesa Nuova / Bar Internazionale), hãy xem hàng Positano (Chiesa Nuova)."
       ]
     }
   ]

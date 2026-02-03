@@ -1,3 +1,6 @@
+Type: Runbook
+Status: Active
+
 # Launch Shop Runbook
 
 This runbook describes how to launch a new shop using `pnpm launch-shop` — the single-command orchestrator that chains shop creation, CI setup, deploy, and smoke checks.

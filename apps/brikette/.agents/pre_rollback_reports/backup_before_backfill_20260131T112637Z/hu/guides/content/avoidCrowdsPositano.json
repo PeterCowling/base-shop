@@ -1,0 +1,56 @@
+{
+  "seo": {
+    "title": "Hogyan kerüld el a tömeget Positanóban",
+    "description": "Időzítés, csendes útvonalak, alternatív falvak és okos fotóhelyek, hogy sorban állás nélkül élvezd a várost."
+  },
+  "linkLabel": "Hogyan kerüld el a tömeget Positanóban (a mellékutakon)",
+  "intro": [
+    "A tömegek elkerüléséhez Positanóban fontos a jó időzítés, az eldugott sikátorok ismerete és az, hogy tudd, mikor érdemes csendesebb településre ugrani."
+  ],
+  "sections": [
+    {
+      "id": "timing",
+      "title": "Időzítés, ami működik",
+      "body": [
+        "Érkezz a Spiaggia Grande-ra vagy a fő kilátókra napkeltekor vagy aranyórában; a 14:30 utáni ebédek szintén elkerülik a csúcsidőt.",
+        "Délben tarts szünetet árnyékban vagy sziesztával – a legtöbb egynapos látogató 10:00 és 16:00 között tölti meg az utcákat."
+      ]
+    },
+    {
+      "id": "routes",
+      "title": "Útvonalak és csendesebb pontok",
+      "body": [
+        "Használd a felső sétányt Chiesa Nuova és Sponda között, így erkélyes kilátást kapsz a Via dei Mulini szűkülete helyett.",
+        "Menj át a Fornillo strandra vagy a Via Positanesi d’America kilátóhoz, ha nyugodtabb fürdésre és fotókra vágysz."
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Alternatív bázisok",
+      "body": [
+        "Praiano és Cetara lassabb estéket, könnyű naplementés spotokat és olcsóbb vacsorát kínál, miközben megmarad a tengerparti panoráma.",
+        "Ravello kertjei vagy Agerola hegyi falvai jó egynapos menedéket jelentenek, ha Positano telítettnek érződik."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Mikor csendes a Spiaggia Grande?",
+      "a": [
+        "09:00 előtt vagy 18:30 után találsz szabad helyet és puhább fényt a fotózáshoz – vigyél törölközőt és érkezz korán."
+      ]
+    },
+    {
+      "q": "Hol fotózhatok tömeg nélkül?",
+      "a": [
+        "Sétálj fel a Via Cristoforo Colombón a magasabban fekvő teraszokhoz, vagy buszozz fel Nocellébe a széles panorámáért."
+      ]
+    },
+    {
+      "q": "Érdemes a városon kívül megszállni a nyugodt estékért?",
+      "a": [
+        "Igen, ha nyugodtabb estét szeretnél – Praiano, Minori vagy Agerola kedvezőbb árakat kínál, és nappal busszal vagy komppal könnyen visszajutsz Positanóba."
+      ]
+    }
+  ]
+}

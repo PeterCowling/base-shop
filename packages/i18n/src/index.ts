@@ -1,6 +1,4 @@
 // packages/i18n/src/index.ts
-"use client";
-
 export { contentFallbackChain, fallbackChain } from "./fallbackChain.js";
 export { fillLocales } from "./fillLocales.js";
 export {

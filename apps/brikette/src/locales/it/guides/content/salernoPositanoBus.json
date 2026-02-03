@@ -6,5 +6,15 @@
   "intro": {},
   "callouts": {
     "tip": "Ti servono tutte le opzioni di trasporto? Apri la %HOWTO:how-to-get-here|panoramica di Come arrivare% per traghetti, taxi e itinerari combinati."
-  }
+  },
+  "faqs": [
+    {
+      "q": "Come si legge l'orario degli autobus SITA?",
+      "a": [
+        "**Lettura delle righe:** Le righe nella prima colonna rappresentano le diverse fermate lungo il percorso.",
+        "**Lettura delle colonne:** L'orario assegna una lettera alfabetica a ciascuna corsa programmata, elencate come intestazioni in ogni colonna. Se viaggi da lunedì a sabato, cerca le colonne 'F' e 'G'. Se viaggi di domenica o in un giorno festivo, usa le colonne 'G' e 'H'.",
+        "**Combinare righe e colonne:** Scegli le fermate di partenza e arrivo, quindi controlla le colonne per vedere quando gli autobus sono disponibili e a che ora arrivano a destinazione. Ad esempio, per vedere l'ora di partenza da Sorrento, guarda la riga Sorrento. Per l'ora di arrivo a Positano (Chiesa Nuova / Bar Internazionale), consulta la riga Positano (Chiesa Nuova)."
+      ]
+    }
+  ]
 }

@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, ds/no-hardcoded-copy -- DEV-000 [ttl=2099-12-31] Template helper (_-prefixed) not shipped as a route. It intentionally contains placeholders, broad typing, and debug strings. Suppress to reduce IDE noise per src/routes/AGENTS.md; real routes must not rely on these disables. */
 import { memo, useMemo, useRef } from "react";
 
+import { useOptionalSearchParams } from "@/components/seo/locationUtils";
 import { IS_DEV } from "@/config/env";
 import { GUIDE_SECTION_BY_KEY } from "@/data/guides.index";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
@@ -78,7 +79,6 @@ function GuideSeoTemplate({
   ogType = "article",
   includeHowToStructuredData,
   relatedGuides,
-  alsoHelpful,
   articleLead,
   articleExtras,
   afterArticle,
@@ -94,7 +94,6 @@ function GuideSeoTemplate({
   showTransportNotice = true,
   showTagChips = true,
   showTocWhenUnlocalized = true,
-  showRelatedWhenLocalized = true,
   twitterCardKey = "meta.twitterCard",
   twitterCardDefault,
   buildHowToSteps,
@@ -105,13 +104,15 @@ function GuideSeoTemplate({
   renderGenericWhenEmpty = false,
   fallbackToEnTocTitle = true,
   preferLocalizedSeoTitle = false,
+  serverOverrides,
 }: GuideSeoTemplateProps): JSX.Element {
   const isExperiencesGuide = GUIDE_SECTION_BY_KEY[guideKey] === "experiences";
   const articleHeadingWeightClass = isExperiencesGuide
     ? "prose-headings:font-bold"
     : "prose-headings:font-semibold";
   const lang = useCurrentLanguage();
-  const search = typeof window !== "undefined" ? window.location?.search ?? "" : "";
+  // Use Next.js router search params instead of window.location.search to avoid hydration mismatches
+  const search = useOptionalSearchParams();
   const translations = useGuideTranslations(lang);
   const t = translations.tGuides;
   const hookI18n: any = (translations as any)?.i18n;
@@ -140,13 +141,19 @@ function GuideSeoTemplate({
     lang,
     canonicalPathname,
     preferManualWhenUnlocalized,
+    serverOverrides,
   });
 
-  // TASK-01: Wire manifest blocks into template
-  // When manifestEntry.blocks is non-empty, buildBlockTemplate() produces slot props/config
-  // that will be merged with explicit route props (explicit props have higher precedence).
+  // TASK-01 + GUIDE-XREF-01: Wire manifest blocks into template
+  // buildBlockTemplate() produces slot props/config from blocks and applies default relatedGuides
+  // when manifest.relatedGuides is non-empty (even without explicit relatedGuides block).
+  // Explicit route props have higher precedence over block-derived props.
   const blockTemplate = useMemo(() => {
-    if (!manifestEntry?.blocks?.length) {
+    if (!manifestEntry) {
+      return { template: {}, warnings: [] };
+    }
+    // Call buildBlockTemplate when blocks exist OR relatedGuides exist
+    if (!manifestEntry.blocks?.length && !manifestEntry.relatedGuides?.length) {
       return { template: {}, warnings: [] };
     }
     const result = buildBlockTemplate(manifestEntry);
@@ -185,6 +192,17 @@ function GuideSeoTemplate({
     // (and thus ToC derivation) when tests expect only curated fallbacks.
     suppressEnglishStructuredWhenUnlocalized: Boolean(preferManualWhenUnlocalized),
   });
+
+  // Extract lastUpdated from guide content
+  const lastUpdated = useMemo(() => {
+    try {
+      const result = translations.tGuides(`content.${guideKey}.lastUpdated`, { returnObjects: false });
+      return typeof result === "string" && result.trim().length > 0 ? result : undefined;
+    } catch {
+      return undefined;
+    }
+  }, [guideKey, translations.tGuides]);
+
   const targetLocale = (requestedLang ?? lang)?.trim().toLowerCase();
   const hasLocalizedResourcesForRequested = useHasLocalizedResources({
     targetLocale,
@@ -444,7 +462,6 @@ function GuideSeoTemplate({
   const mergedShowPlanChoice = showPlanChoice !== undefined ? showPlanChoice : (blockTemplate.template.showPlanChoice ?? true);
   const mergedShowTransportNotice = showTransportNotice !== undefined ? showTransportNotice : (blockTemplate.template.showTransportNotice ?? true);
   const mergedRelatedGuides = relatedGuides !== undefined ? relatedGuides : blockTemplate.template.relatedGuides;
-  const mergedAlsoHelpful = alsoHelpful !== undefined ? alsoHelpful : blockTemplate.template.alsoHelpful;
 
   const { articleLeadNode, articleExtrasNode, afterArticleNode } = useGuideSlotNodes({
     context,
@@ -496,6 +513,7 @@ function GuideSeoTemplate({
       draftUrl={draftUrl}
       articleHeadingWeightClass={articleHeadingWeightClass}
       subtitleText={subtitleText}
+      lastUpdated={lastUpdated}
       articleHeaderDebug={articleHeaderDebug}
       manualStructuredFallbackNode={manualStructuredFallback.node}
       manualStructuredFallbackRendered={manualStructuredFallback.hasContent}
@@ -530,8 +548,6 @@ function GuideSeoTemplate({
       showPlanChoice={mergedShowPlanChoice}
       showTransportNotice={mergedShowTransportNotice}
       relatedGuides={mergedRelatedGuides}
-      showRelatedWhenLocalized={showRelatedWhenLocalized}
-      alsoHelpful={mergedAlsoHelpful}
       guideFaqFallback={guideFaqFallback}
       alwaysProvideFaqFallback={alwaysProvideFaqFallback}
       suppressFaqWhenUnlocalized={suppressFaqWhenUnlocalized}

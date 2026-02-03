@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "cross-env NODE_OPTIONS=\"--require ./scripts/ssr-polyfills.cjs\" next dev -p 3012",
     "prebuild": "pnpm --filter @acme/telemetry clean && pnpm --filter @acme/telemetry build",
+    "postbuild": "pnpm exec tsx --tsconfig tsconfig.scripts.json scripts/generate-public-seo.ts",
     "build": "cross-env NODE_OPTIONS=\"--require ./scripts/ssr-polyfills.cjs\" next build",
     "start": "cross-env NODE_OPTIONS=\"--require ./scripts/ssr-polyfills.cjs\" next start -p 3012",
     "lint": "echo 'Lint temporarily disabled - see eslint.config.mjs ignores'",
@@ -17,8 +18,11 @@
     "migrate-route": "pnpm exec tsx ./scripts/migrate-transport-route.ts",
     "validate-content": "pnpm exec tsx ./scripts/validate-guide-content.ts",
     "validate-links": "pnpm exec tsx ./scripts/validate-guide-links.ts",
+    "validate-manifest": "pnpm exec tsx ./scripts/validate-guide-manifest.ts",
+    "report-coverage": "pnpm exec tsx ./scripts/report-guide-coverage.ts",
     "check-i18n-coverage": "pnpm exec tsx ./scripts/check-i18n-coverage.ts",
-    "test:content-readiness": "pnpm exec jest --testPathPattern '(test/i18n/|routes/guides/__tests__|data/assistanceGuideKeys)' --maxWorkers=2"
+    "translate-guides": "pnpm exec tsx ./scripts/translate-guides.ts",
+    "test:content-readiness": "pnpm exec jest --testPathPattern 'test/content-readiness/' --maxWorkers=2"
   },
   "dependencies": {
     "@acme/design-system": "workspace:*",
@@ -27,6 +31,7 @@
     "@acme/platform-core": "workspace:*",
     "@acme/telemetry": "workspace:*",
     "@acme/ui": "workspace:*",
+    "@anthropic-ai/sdk": "^0.32.1",
     "@headlessui/react": "^2.2.3",
     "@tiptap/core": "^2.24.1",
     "@tiptap/extension-placeholder": "^2.27.2",
@@ -39,7 +44,7 @@
     "i18next-resources-to-backend": "^1.2.1",
     "lucide-react": "^0.540.0",
     "markdown-it": "^14.1.0",
-    "next": "^15.3.8",
+    "next": "^15.3.9",
     "react": "19.2.1",
     "react-datepicker": "^8.3.0",
     "react-dom": "19.2.1",
@@ -47,5 +52,9 @@
     "swiper": "^11.2.6",
     "web-vitals": "^5.0.2",
     "zod": "^3.25.73"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "js-yaml": "^4.1.1"
   }
 }

@@ -10,7 +10,7 @@
   "beforeList": [
     "Consulte el horario actual de Interno Positano: aquí están los [horarios y tarifas más recientes](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
     "Recoja los boletos de Interno Positano en el tabacchi al lado de Chiesa Nuova antes de abordar (o pregunte en recepción para confirmar las existencias).",
-    "Solicite ayuda de portero si tiene maletas voluminosas; la recepción puede llamar con anticipación o consultar la [guía de porteros](guide:porterServices) para obtener números y precios."
+    "Solicite ayuda de portero si tiene maletas voluminosas; la recepción puede llamar con anticipación o consultar la %LINK:porterServices|guía de porteros% para obtener números y precios."
   ],
   "sections": [
     {

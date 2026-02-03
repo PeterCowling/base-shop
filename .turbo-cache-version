@@ -1,0 +1,5 @@
+# Turbo Cache Version
+# Bump this to invalidate the remote cache when needed
+# Current: 2026-02-01-v2
+# Reason: Force rebuild of all packages to fix stale useCurrency export in dist files
+2

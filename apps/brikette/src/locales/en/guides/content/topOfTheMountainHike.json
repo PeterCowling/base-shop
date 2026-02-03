@@ -3,7 +3,7 @@
     "title": "Top of the Mountain Hike from Hostel Brikette",
     "description": "Reach Monte Sant'Angelo, the Amalfi Coast's highest point, with these directions, prep tips, and warnings."
   },
-  "linkLabel": "Top of the Mountain hike from Hostel Brikette",
+  "linkLabel": "Monte Comune: Hike to Positano's Highest Viewpoint",
   "intro": [
     "This itinerary starts from Hostel Brikette, guides you up to Santa Maria del Castello, and explains the final push to the summit so you know exactly what to expect before committing."
   ],
@@ -37,7 +37,7 @@
       "id": "getting-to-santa-maria",
       "title": "Getting to Santa Maria del Castello",
       "body": [
-        "Follow the [Santa Maria del Castello hike guide](guide:santaMariaDelCastelloHike) directions until you arrive in the village; that climb covers just over one third of the total elevation for the day.",
+        "Follow the %LINK:santaMariaDelCastelloHike|Santa Maria del Castello hike guide% directions until you arrive in the village; that climb covers just over one third of the total elevation for the day.",
         "Take a breather in the square, refill water if the bar is open, and check that everyone in your group still feels strong before committing to the exposed upper trail."
       ]
     },
@@ -123,13 +123,6 @@
       ]
     }
   ],
-  "gallery": {
-    "title": "Photo gallery",
-    "items": [
-      { "alt": "Panoramic view across the Amalfi Coast and Capri", "caption": "Looking out from the summit ridge." },
-      { "alt": "Elevation profile showing Santa Maria del Castello and the summit climb", "caption": "Santa Maria del Castello sits about one third of the way up." }
-    ]
-  },
   "toc": {
     "labels": {
       "warnings": "When to reconsider"

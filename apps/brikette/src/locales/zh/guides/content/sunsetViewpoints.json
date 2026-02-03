@@ -73,18 +73,5 @@
         "路灯覆盖度不一，建议携带手机手电或小灯。"
       ]
     }
-  ],
-  "gallery": {
-    "title": "照片集",
-    "items": [
-      {
-        "caption": "Chiesa Nuova 露台",
-        "alt": "Chiesa Nuova 露台的日落"
-      },
-      {
-        "caption": "Nocelle",
-        "alt": "Nocelle 日落景色"
-      }
-    ]
-  }
+  ]
 }

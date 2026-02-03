@@ -24,8 +24,6 @@ This document explains WHY each safety rule exists, including incident history a
 
 **If a human truly needs to do this anyway:** follow `docs/git-safety.md` and create a backup branch first. Agents must not run `git reset --hard`.
 
----
-
 ### Bulk discards via `git restore` / `git checkout --` — PROHIBITED for agents
 
 **Why dangerous:**
@@ -43,7 +41,6 @@ This document explains WHY each safety rule exists, including incident history a
 | Discard a single file | Only after reviewing `git diff -- <file>` and confirming with the user; never discard more than one file at a time |
 
 ---
-
 ### `git push --force` — PROHIBITED for agents
 
 **Why dangerous:**

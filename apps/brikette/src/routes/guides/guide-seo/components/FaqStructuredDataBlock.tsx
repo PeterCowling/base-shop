@@ -34,7 +34,20 @@ export default function FaqStructuredDataBlock({
   tGuides,
   hookI18n,
 }: FaqStructuredDataBlockProps): JSX.Element | null {
-  if (suppressFaqWhenUnlocalized && !hasLocalizedContent) return null;
+  // IMPORTANT: Always render a JSON-LD <script> placeholder when suppressing FAQ output.
+  // This prevents structural mismatches (e.g., <div> ↔ <script>) when FAQ eligibility
+  // differs between SSR and the first client render (common when i18n readiness diverges).
+  const jsonLdPlaceholder = (
+    <script
+      type="application/ld+json"
+      suppressHydrationWarning
+      // Valid, empty JSON-LD graph. Keeps markup stable without asserting FAQ entries.
+      dangerouslySetInnerHTML={{ __html: '{"@context":"https://schema.org","@graph":[]}' }}
+    />
+  );
+  if (suppressFaqWhenUnlocalized && !hasLocalizedContent) {
+    return jsonLdPlaceholder;
+  }
 
   const shouldProvideFaqFallback = Boolean(
     // Honor explicit request to always expose a fallback builder
@@ -249,8 +262,10 @@ export default function FaqStructuredDataBlock({
     return undefined;
   })();
 
+  // Always render a container to maintain stable DOM structure during hydration
+  // When not eligible, render hidden container to avoid structural mismatches
   if (!hasLocalizedContent && !fallbackProp && !preferManualFallbackActive) {
-    return null;
+    return jsonLdPlaceholder;
   }
 
   return (

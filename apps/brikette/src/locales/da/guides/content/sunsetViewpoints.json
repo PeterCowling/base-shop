@@ -73,18 +73,5 @@
         "Gadebelysningen varierer – medbring telefonlommelygte eller en lille lampe til sene nedstigninger."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Fotogalleri",
-    "items": [
-      {
-        "caption": "Chiesa Nuova-terrassen",
-        "alt": "Solnedgang set fra Chiesa Nuova-terrassen"
-      },
-      {
-        "caption": "Nocelle",
-        "alt": "Solnedgang set fra Nocelle"
-      }
-    ]
-  }
+  ]
 }

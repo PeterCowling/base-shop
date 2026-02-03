@@ -44,13 +44,6 @@ const GUIDE_IMAGES_BASE: Partial<Record<string, string>> = {
   limoncelloCuisine: "/img/guides/topics/limoncelloCuisine.jpg",
   positanoDining: "/img/guides/topics/positanoDining.jpg",
 
-  // Itineraries
-  backpackerItineraries: "/img/guides/topics/backpackerItineraries.jpg",
-  itinerariesPillar: "/img/guides/topics/itinerariesPillar.jpg",
-  weekend48Positano: "/img/guides/topics/weekend48Positano.jpg",
-  sevenDayNoCar: "/img/guides/topics/sevenDayNoCar.jpg",
-  backpackingSouthernItaly: "/img/guides/topics/backpackingSouthernItaly.jpg",
-
   // Photography/viewpoints
   sunsetViewpoints: "/img/guides/topics/sunsetViewpoints.jpg",
   instagramSpots: "/img/guides/topics/instagramSpots.jpg",

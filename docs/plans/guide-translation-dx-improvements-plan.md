@@ -1,7 +1,10 @@
+Type: Plan
+Status: Accepted
+
 # Guide Translation DX Improvements - Implementation Plan
 
 **Date:** 2026-01-25
-**Status:** Approved
+**Status:** Accepted
 **Related:** [Problem Audit](guide-translation-dx-problems.md)
 
 ## Summary

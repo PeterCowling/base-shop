@@ -47,15 +47,6 @@
     "印刷された時刻表にはポジターノの停車駅のみが記載されています。帰りのポジターノ・スポンダの2～5分前にアリエンソが到着する予定です。",
     "There is no ticket vendor at Arienzo. Buy your return ticket in town, or be ready to walk to Positano Sponda or take the water shuttle back to Spiaggia Grande.",
     "Read our %LINK:arienzoBeachClub|Arienzo Beach guide% for facilities, shuttles, and planning tips.",
-    "Browse the %LINK:beaches|Positano beaches overview% to compare other coves and plan future visits."
-  ],
-  "gallery": {
-    "title": "アリエンツォのバス停案内",
-    "items": [
-      {
-        "alt": "金属ポールに付いた青と白のSITAバス停標識",
-        "caption": "アリエンツォ上の内側車線にあるSITAの標識を目印にしてください。"
-      }
-    ]
-  }
+    "Browse the %LINK:positanoBeaches|Positano beaches overview% to compare other coves and plan future visits."
+  ]
 }

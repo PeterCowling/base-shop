@@ -6,5 +6,15 @@
   "intro": {
     "title": "Positano til Ravello – via Amalfi med buss",
     "body": "Reis fra Positano til Ravello med et enkelt bytte i Amalfi. Denne guiden forklarer hvor du kjøper SITA-billetter, hvordan du leser rutetabellen, hva du kan forvente under byttet i Amalfi – og hvordan du kommer deg til bussholdeplassen i Positano fra Hostel Brikette."
-  }
+  },
+  "faqs": [
+    {
+      "q": "Hvordan leser jeg SITA-bussrutetabellen?",
+      "a": [
+        "**Lese radene:** Radene i første kolonne representerer forskjellige bussholdeplasser langs ruten.",
+        "**Lese kolonnene:** Rutetabellen tildeler en alfabetisk bokstav til hver planlagte reise, som er oppført som overskrifter i hver kolonne. Hvis du reiser mandag til lørdag, se på kolonnene 'F' og 'G'. Hvis du reiser søndag eller en helligdag, bruk kolonnene 'G' og 'H'.",
+        "**Kombinere rader og kolonner:** Velg avgangs- og ankomststoppene dine, og sjekk deretter kolonnene for å se når busser er tilgjengelige og når de ankommer destinasjonen din. For eksempel, for å se avgangstid fra Sorrento, se på Sorrento-raden. For ankomsttid i Positano (Chiesa Nuova / Bar Internazionale), sjekk Positano (Chiesa Nuova)-raden."
+      ]
+    }
+  ]
 }

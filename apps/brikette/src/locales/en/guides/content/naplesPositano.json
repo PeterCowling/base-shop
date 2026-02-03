@@ -8,13 +8,34 @@
     "From Naples Airport or city, reach Positano year‑round by taking a shuttle or Alibus + train to Sorrento, then the SITA bus toward Amalfi. In summer, ferries run when seas are calm. This guide shows exactly where to get off (Chiesa Nuova/Bar Internazionale) and how to walk the final 2–5 minutes to Hostel Brikette."
   ],
   "toc": [
-    { "href": "#train-bus", "label": "Train + bus (year‑round)" },
-    { "href": "#sorrento-bus", "label": "Sorrento → Positano by SITA" },
-    { "href": "#get-off", "label": "Get off: Chiesa Nuova" },
-    { "href": "#walk", "label": "Walk to Hostel Brikette" },
-    { "href": "#ferry", "label": "Ferry (summer)" },
-    { "href": "#transfer", "label": "Late arrivals & transfers" },
-    { "href": "#faqs", "label": "FAQs" }
+    {
+      "href": "#train-bus",
+      "label": "Train + bus (year‑round)"
+    },
+    {
+      "href": "#sorrento-bus",
+      "label": "Sorrento → Positano by SITA"
+    },
+    {
+      "href": "#get-off",
+      "label": "Get off: Chiesa Nuova"
+    },
+    {
+      "href": "#walk",
+      "label": "Walk to Hostel Brikette"
+    },
+    {
+      "href": "#ferry",
+      "label": "Ferry (summer)"
+    },
+    {
+      "href": "#transfer",
+      "label": "Late arrivals & transfers"
+    },
+    {
+      "href": "#faqs",
+      "label": "FAQs"
+    }
   ],
   "sections": [
     {
@@ -86,20 +107,5 @@
         "About 2–5 minutes and roughly 140 m (450 ft) with only a short staircase at the entrance."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Reference images",
-    "items": [
-      {
-        "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
-        "alt": "Chiesa Nuova / Bar Internazionale SITA stop in Positano",
-        "caption": "Bar Internazionale / Chiesa Nuova stop"
-      },
-      {
-        "src": "/img/directions/naples-airport-positano-bus-hostel-entrance-steps.png",
-        "alt": "Stairs to the main entrance of Hostel Brikette",
-        "caption": "Hostel Brikette entrance stairs"
-      }
-    ]
-  }
+  ]
 }

@@ -93,6 +93,16 @@
     "filterHeading": "Élménykalauzok szűrése",
     "filterDescription": "Válasszon címkét, hogy szűkítse a kiemelt élményeket.",
     "directionsLabel": "Útbaigazítások",
+    "sections": {
+      "content": {
+        "title": "Élmény-útmutatók",
+        "description": "Részletes útmutatók strandokról, túrákról, egynapos kiruccanásokról és programokról"
+      },
+      "directions": {
+        "title": "Hogyan jutsz oda",
+        "description": "Lépésről lépésre útbaigazítás a hostelhez és onnan vissza"
+      }
+    },
     "directionLinks": {
       "capriDayTrip": {
         "positanoCapriFerry": "Positano → Capri komp",

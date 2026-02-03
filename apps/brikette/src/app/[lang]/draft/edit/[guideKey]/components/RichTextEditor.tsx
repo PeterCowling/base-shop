@@ -110,6 +110,7 @@ function RichTextEditorInner({
 
   const editor = useEditor({
     extensions,
+    immediatelyRender: false,
     content: codec.parse(initialMarkdown).toJSON(),
     editable: !disabled,
     editorProps: {

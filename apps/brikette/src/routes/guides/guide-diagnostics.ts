@@ -5,6 +5,7 @@ import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
 
 import { isPlaceholderString } from "./guide-seo/content-detection";
 import {
+  type DateValidationResult,
   type GuideDiagnosticResult,
   type GuideFieldStatus,
   type SeoFieldStatus,
@@ -134,12 +135,14 @@ export function analyzeTranslationCoverage(
   locales: readonly AppLanguage[],
 ): TranslationCoverageResult {
   // Determine which fields are required based on English reference.
-  // FAQs are only required if English has them - not all guides use FAQs.
+  // Only require fields that the English source actually provides so we
+  // don't flag locales for optional content (ex: guides without intros).
   const englishFields = buildFieldStatus(guideKey, "en");
-  const requiredFields: Array<keyof GuideFieldStatus> = ["intro", "sections", "seo"];
-  if (englishFields.faqs) {
-    requiredFields.push("faqs");
-  }
+  const requiredFields: Array<keyof GuideFieldStatus> = [];
+  if (englishFields.intro) requiredFields.push("intro");
+  if (englishFields.sections) requiredFields.push("sections");
+  if (englishFields.seo) requiredFields.push("seo");
+  if (englishFields.faqs) requiredFields.push("faqs");
 
   const results = locales.map((locale) => {
     const fields = buildFieldStatus(guideKey, locale);
@@ -169,5 +172,54 @@ export function analyzeTranslationCoverage(
     locales: results,
     completeLocales,
     missingLocales,
+  };
+}
+
+export function analyzeDateValidation(
+  guideKey: GuideKey,
+  locales: readonly AppLanguage[],
+): DateValidationResult {
+  // Check if English has a lastUpdated date
+  const englishDateRaw = getGuideResource<string>("en", `content.${guideKey}.lastUpdated`, { includeFallback: false });
+  const englishDate = englishDateRaw && typeof englishDateRaw === "string" && englishDateRaw.trim().length > 0
+    ? englishDateRaw
+    : undefined;
+  const hasEnglishDate = Boolean(englishDate);
+
+  if (!hasEnglishDate) {
+    // If English doesn't have a date, no validation needed
+    return {
+      hasEnglishDate: false,
+      localesWithDate: [],
+      localesMissingDate: [],
+    };
+  }
+
+  const localesWithDate: AppLanguage[] = [];
+  const localesMissingDate: AppLanguage[] = [];
+
+  // Check each locale for lastUpdated
+  for (const locale of locales) {
+    if (locale === "en") {
+      // Skip English since we already checked it
+      localesWithDate.push("en");
+      continue;
+    }
+
+    const localeDate = getGuideResource<string>(locale, `content.${guideKey}.lastUpdated`, { includeFallback: false });
+    const hasDate = Boolean(localeDate && typeof localeDate === "string" && localeDate.trim().length > 0);
+
+    if (hasDate) {
+      localesWithDate.push(locale);
+    } else {
+      localesMissingDate.push(locale);
+    }
+  }
+
+  return {
+    hasEnglishDate,
+    englishDate,
+    localesWithDate,
+    localesMissingDate,
   };
 }

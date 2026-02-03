@@ -13,6 +13,11 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "default": "./dist/index.js"
+    },
+    "./booking-email": {
+      "types": "./dist/booking-email.d.ts",
+      "import": "./dist/booking-email.js",
+      "default": "./dist/booking-email.js"
     }
   },
   "files": [
@@ -23,18 +28,22 @@
     "clean": "rimraf dist *.tsbuildinfo",
     "start": "node ./dist/index.js",
     "dev": "tsx ./src/index.ts",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "lint:templates": "tsx ./scripts/lint-templates.ts"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.0.0",
-    "@acme/platform-core": "workspace:^",
     "@acme/config": "workspace:^",
+    "@acme/platform-core": "workspace:^",
     "@acme/zod-utils": "workspace:^",
+    "@google-cloud/local-auth": "^3.0.1",
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "google-auth-library": "^10.5.0",
+    "googleapis": "^171.0.0",
     "zod": "^3.25.73"
   },
   "devDependencies": {
-    "tsx": "^4.19.0",
     "@types/node": "^20.19.4",
+    "tsx": "^4.19.0",
     "typescript": "^5.8.3"
   }
 }

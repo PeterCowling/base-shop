@@ -5,8 +5,18 @@ import type { Metadata } from "next";
 import { toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
+import {
+  buildGuideChecklist,
+  listGuideManifestEntries,
+  resolveDraftPathSegment,
+  type GuideManifestEntry,
+} from "@/routes/guides/guide-manifest";
+import { loadGuideManifestOverridesFromFs } from "@/routes/guides/guide-manifest-overrides.node";
+import type { ManifestOverrides } from "@/routes/guides/guide-manifest-overrides";
+import type { GuideSeoTemplateProps } from "@/routes/guides/guide-seo/types";
+import type { AppLanguage } from "@/i18n.config";
 
-import DraftDashboardContent from "./DraftDashboardContent";
+import DraftDashboardContent, { type DraftGuideSummary } from "./DraftDashboardContent";
 
 type Props = {
   params: Promise<{ lang: string }>;
@@ -28,12 +38,36 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: "Track publication status and outstanding tasks for every guide.",
     path,
     ogType: "website",
+    isPublished: false, // Prevent indexing of internal draft dashboard
   });
+}
+
+function buildSummary(
+  entry: GuideManifestEntry,
+  lang: AppLanguage,
+  overrides: ManifestOverrides,
+): DraftGuideSummary {
+  const overridePath = overrides[entry.key]?.draftPathSegment;
+  return {
+    key: entry.key,
+    slug: entry.slug,
+    status: entry.status,
+    areas: entry.areas,
+    primaryArea: entry.primaryArea,
+    checklist: buildGuideChecklist(entry, { includeDiagnostics: true, lang }),
+    draftPath: resolveDraftPathSegment(entry, overridePath),
+  };
 }
 
 export default async function DraftPage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
 
-  return <DraftDashboardContent lang={validLang} />;
+  // Load manifest overrides server-side
+  const overrides = loadGuideManifestOverridesFromFs();
+
+  // Fetch guide data on the server to ensure consistent SSR/hydration
+  const guides = listGuideManifestEntries().map((entry) => buildSummary(entry, validLang, overrides));
+
+  return <DraftDashboardContent lang={validLang} guides={guides} />;
 }

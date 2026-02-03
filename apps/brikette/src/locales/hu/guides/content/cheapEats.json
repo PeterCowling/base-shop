@@ -4,128 +4,115 @@
     "description": "Pizzaszeletek, delik, pékségek, aperitivo – hol kapsz jó ár-érték arányt."
   },
   "linkLabel": "Olcsó étkezések Positanóban",
-  "heroAlt": "A fordítás folyamatban van.",
+  "heroAlt": "Megfizethető elvitel Positanóban",
   "intro": [
-    "A fordítás folyamatban van."
+    "Positanóban is jól ehetsz anélkül, hogy túlköltekeznél, ha összeállítod az elvitelre szánt klasszikusokat, deli-piknikeket és helyi pékségeket."
   ],
   "sections": [
     {
       "id": "grab-and-go",
-      "title": "Grab-and-go staples",
+      "title": "Gyors harapnivalók",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "A Via dei Mulini menti bárokban reggel 12 előtt vegyél pizza al taglio-t, paninit vagy arancinit, hogy megelőzd a sorokat.",
+        "Kérj espressot a pultnál („al banco”), így 1,20 euró körüli helyi áron kapsz kávét ahelyett, hogy asztalt foglalnál."
       ]
     },
     {
       "id": "casual-dining",
-      "title": "Casual sit-down spots",
+      "title": "Kényelmes, de megfizethető éttermek",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Keresd a tengerpart feletti trattoriákat, ahol a coperto alacsony, és a ház bora kanna szerint is kapható.",
+        "Oszd meg az előételeket, hagyd ki a desszertet, és kérj csapvizet („acqua del rubinetto”), hogy szoros maradjon a számla."
       ]
     },
     {
       "id": "picnics",
-      "title": "Picnics with a view",
+      "title": "Piknik kilátással",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Töltsd meg az hátizsákot sajtokkal, focacciával és gyümölccsel a mini-marketekben, majd piknikezz a hostel teraszán vagy Fornillo közösségi részében.",
+        "Vidd magaddal az újratölthető evőeszközt és szalvétát, hogy kevesebb egyszer használatos hulladékod legyen."
       ]
     },
     {
       "id": "sweet-breaks",
-      "title": "Sweet breaks & treats",
+      "title": "Édes szünetek",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Próbáld ki a 3 eurós citromgránitát az utcai kocsikról a drágább bárkoktélok helyett.",
+        "Oszd meg a pékségben a delizia al limone vagy tiramisù szeletét, hogy megfizethető desszertet kapj."
       ]
     }
   ],
   "tips": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
+    "Kérd a “menu del giorno” vagy ebéd ajánlatot — sok helyen tészta, víz és kávé együtt 18 euró alatt van.",
+    "Hozz magaddal összecsukható dobozt a maradékoknak, hogy később a hostelben újra élvezhesd őket."
   ],
-  "recommendationsTitle": "Where to eat",
+  "recommendationsTitle": "Hol érdemes enni",
   "recommendations": [
     {
       "name": "Collina Bakery",
-      "note": "A fordítás folyamatban van."
+      "note": "Paninik, pizza al taglio, saláták és elvitelre szánt péksütemények gyors étkezéshez."
     },
     {
-      "name": "A fordítás folyamatban van.",
-      "note": "A fordítás folyamatban van."
+      "name": "Helyi delikátesz pultok",
+      "note": "Rendelj deli tálakat, focacciát és piknik-kellékeket a vízparti felárak nélkül."
     },
     {
-      "name": "Minimarkets & fruit stands",
-      "note": "A fordítás folyamatban van."
+      "name": "Mini marketek és gyümölcsstandok",
+      "note": "Tankolj fel gyümölccsel, nagy vizes palackkal és nassolnivalóval a teraszos piknikhez."
     }
   ],
-  "gallery": {
-    "title": "Photo gallery",
-    "items": [
-      {
-        "alt": "Panini from a local deli",
-        "caption": "Panini & deli"
-      },
-      {
-        "alt": "A fordítás folyamatban van.",
-        "caption": "Picnic viewpoints"
-      }
-    ]
-  },
   "faqs": [
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Ingyen tölthetek vizet?",
       "a": [
-        "A fordítás folyamatban van."
+        "Igen — töltsd meg a palackokat a hostelben vagy a Chiesa Nuova melletti nyilvános kutaknál; mindig legyen legalább 750 ml (25 oz)."
       ]
     },
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Vannak vegetáriánus olcsó fogások?",
       "a": [
-        "A fordítás folyamatban van."
+        "Természetesen — rendelj caprese paninit, padlizsán parmigianát szeletben, vagy pasta al pomodoro-t a casual trattoriákban."
       ]
     }
   ],
   "fallbackIntro": [
-    "A fordítás folyamatban van."
+    "Positano tele van megfizethető falatokkal, ha tudod, hol keress."
   ],
   "fallbackRecommendations": [
     {
       "name": "Collina Bakery",
-      "note": "A fordítás folyamatban van."
+      "note": "Paninik, pizza al taglio, saláták és elvitelre szánt péksütemények gyors étkezéshez."
     },
     {
-      "name": "A fordítás folyamatban van.",
-      "note": "A fordítás folyamatban van."
+      "name": "Helyi delikátesz pultok",
+      "note": "Rendelj deli tálakat, focacciát és piknik-kellékeket a vízparti felárak nélkül."
     },
     {
-      "name": "Minimarkets & fruit stands",
-      "note": "A fordítás folyamatban van."
+      "name": "Mini marketek és gyümölcsstandok",
+      "note": "Tankolj fel gyümölccsel, nagy vizes palackkal és nassolnivalóval a teraszos piknikhez."
     }
   ],
   "fallbackGalleryItems": [
     {
-      "alt": "Panini from a local deli",
-      "caption": "Panini & deli"
+      "alt": "Panini egy helyi deliből",
+      "caption": "Panini és deli"
     },
     {
-      "alt": "A fordítás folyamatban van.",
-      "caption": "Picnic viewpoints"
+      "alt": "Piknik Positano panorámával",
+      "caption": "Piknik kilátások"
     }
   ],
   "fallbackFaqs": [
     {
-      "q": "Do places accept cards?",
+      "q": "Elfogadnak kártyát?",
       "a": [
-        "A fordítás folyamatban van."
+        "A legtöbb helyen igen, de jó, ha van apró készpénz kioszkokhoz vagy minimális költési értékhez."
       ]
     },
     {
-      "q": "Are takeaway fees common?",
+      "q": "Gyakori az elvitel csomagolási díja?",
       "a": [
-        "A fordítás folyamatban van."
+        "Néhány hely kis csomagolási díjat számol fel; hozz újrahasználható dobozt a spórolás és hulladékcsökkentés érdekében."
       ]
     }
   ]

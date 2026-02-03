@@ -10,7 +10,7 @@ import { isGuideAuthoringEnabled } from "@/routes/guides/guide-authoring/gate";
 import { listGuideManifestEntries } from "@/routes/guides/guide-manifest";
 import { isPreviewAllowed } from "@/routes/guides/guide-seo/utils/preview";
 
-import GuideEditor from "./GuideEditor";
+import GuideEditorWrapper from "./GuideEditorWrapper";
 
 export const dynamic = "force-dynamic";
 
@@ -60,7 +60,7 @@ export default async function GuideEditPage({ params, searchParams }: Props) {
       as="main"
       className="mx-auto max-w-5xl space-y-6 px-4 py-8 sm:px-6 lg:px-8"
     >
-      <GuideEditor
+      <GuideEditorWrapper
         lang={validLang}
         guideKey={guideKey}
         contentKey={entry.contentKey}

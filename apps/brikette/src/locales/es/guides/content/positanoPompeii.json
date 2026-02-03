@@ -1,134 +1,162 @@
 {
   "seo": {
-    "title": "Positano - Pompeya: cómo ir",
-    "description": "Indicaciones paso a paso para visitar Pompeya desde Positano en bus + tren o ferry + tren (en verano)."
+    "title": "Excursión de un Día de Positano a Pompeya: Guía de Transporte y Tour",
+    "description": "Guía completa para visitar Pompeya desde Positano. Direcciones en autobús y tren, qué ver, consejos de timing y asesoramiento práctico para huéspedes de hostel planificando una excursión de un día.",
+    "lastUpdated": "2026-01-31"
   },
-  "linkLabel": "Positano a Pompeya: cómo llegar",
+  "linkLabel": "Excursión de un Día de Positano a Pompeya: Guía de Transporte y Tour",
   "intro": [
-    "Pompeya es inmensa, impactante y fácil de sobrecargar en la agenda. Este plan te ayuda a ver lo esencial sin pasar todo el día en traslados.",
-    "En verano habrá calor, polvo y mucha gente: lleva agua, protección solar y sé realista con la cantidad de recinto que puedes recorrer."
-  ],
-  "toc": [
-    {
-      "href": "#at-a-glance",
-      "label": "De un vistazo"
-    },
-    {
-      "href": "#entry-cost-and-hours",
-      "label": "Precios y horarios"
-    },
-    {
-      "href": "#other-facilities",
-      "label": "Servicios"
-    },
-    {
-      "href": "#getting-there",
-      "label": "Cómo llegar"
-    },
-    {
-      "href": "#self-guided-tour",
-      "label": "Recorrido autoguiado"
-    },
-    {
-      "href": "#faqs",
-      "label": "Preguntas frecuentes"
-    }
+    "Visitar Pompeya desde Positano constituye una excursión de un día convincente. La ciudad antigua enterrada por el Monte Vesubio en el 79 d.C. ofrece un contraste dramático con la relajación costera: ruinas extensas, calles preservadas, casas con frescos e historia romana tangible. El viaje de Positano a Pompeya toma aproximadamente 2 horas en cada dirección por autobús y tren. Planifica un día completo (saliendo a las 08:00, regresando a las 18:00–19:00). Esta guía cubre transporte, timing, qué ver y consejos prácticos para huéspedes de hostel haciendo el viaje.",
+    "Pompeya es vasta y puede ser abrumadora sin un plan. Muchos visitantes por primera vez subestiman la escala del sitio (66 hectáreas, aproximadamente 165 acres) y las demandas físicas (calor, polvo, sombra mínima). Esta guía te ayuda a ver los puntos destacados eficientemente, evitar errores comunes y regresar a Positano satisfecho en lugar de exhausto."
   ],
   "sections": [
     {
-      "id": "at-a-glance",
-      "title": "De un vistazo",
+      "id": "why-visit-pompeii",
+      "title": "¿Por qué visitar Pompeya desde Positano?",
       "body": [
-        "La escala de Pompeya impresiona en cuanto cruzas la entrada: casi toda la ciudad ha sido excavada y se recorre con facilidad.",
-        "Es una excursión económica si decides visitarla por tu cuenta: el contexto histórico se aprecia igual sin guía privada.",
-        "Herculano es más pequeña y está mejor conservada, así que tenla en cuenta si prefieres ver frescos y mosaicos intactos en vez de las calles abiertas de Pompeya.",
-        "Si viajas en transporte público desde Positano, prevé calor, polvo y trayectos largos."
-      ]
-    },
-    {
-      "id": "entry-cost-and-hours",
-      "title": "Precios y horarios de apertura",
-      "body": [
-        "Los precios y horarios cambian según la temporada; consulta la web oficial del Parco Archeologico di Pompei antes de salir.",
-        "La entrada general suele rondar la mitad de la veintena de euros; el último acceso varía entre última hora de la tarde y primeras horas de la noche según el mes."
-      ]
-    },
-    {
-      "id": "other-facilities",
-      "title": "Servicios",
-      "body": [
-        "Recoge el mapa gratuito en el punto de información junto a las taquillas: facilita mucho orientarse dentro del yacimiento.",
-        "En la entrada puedes alquilar audioguías o contratar guías oficiales si quieres explicaciones adicionales.",
-        "Hay puestos de comida y bebida, pero pueden ser escasos: llega con abundante agua, sobre todo en los meses cálidos.",
-        "Puedes guardar el equipaje en la estación de Pompeii Scavi (de pago) o dejarlo gratis en la consigna que hay justo tras la entrada."
+        "%IMAGE:pompeii-ruins-overview.jpg|Vista aérea del sitio arqueológico de Pompeya con el Monte Vesubio%",
+        "Pompeya es uno de los sitios arqueológicos más significativos del mundo. Cuando el Monte Vesubio erupcionó el 24 de agosto del 79 d.C., enterró Pompeya bajo 4–6 metros de ceniza volcánica y piedra pómez. La ciudad permaneció congelada en el tiempo durante casi 1,700 años hasta que comenzaron las excavaciones en el siglo XVIII. Lo que hace extraordinaria a Pompeya no es solo su edad sino su completitud: calles enteras, casas, tiendas, templos, teatros y baños públicos preservados con frescos, mosaicos, grafitis e incluso restos humanos moldeados en yeso. Si estás interesado en otros %LINK:historyPositano|sitios históricos en la Costa Amalfitana%, Pompeya ofrece un complemento dramático a la herencia medieval y romana de Positano.",
+        "Para viajeros alojándose en %LINK:onlyHostel|Hostel Brikette%, Pompeya ofrece un contrapunto histórico poderoso a la belleza natural de la Costa Amalfitana. Puedes pasear por calles donde romanos caminaron hace 2,000 años, ver cómo vivían, compraban, adoraban y se entretenían. La escala es humillante: Pompeya era una ciudad próspera de 11,000–20,000 personas cuando ocurrió la erupción. Hoy puedes caminar por sus hogares, leer sus grafitis en las paredes y estar de pie en su anfiteatro.",
+        "El viaje de Positano a Pompeya también ofrece variedad práctica. Si has estado en la playa por varios días en %LINK:positanoMainBeach|Spiaggia Grande% o explorando %LINK:pathOfTheGods|senderos costeros de senderismo%, una excursión cultural rompe el ritmo. Pompeya funciona bien en días nublados cuando las playas son menos atractivas. Y a diferencia de las %LINK:avoidCrowdsPositano|densas multitudes turísticas de Positano%, la vastedad de Pompeya dispersa a los visitantes: a menudo tendrás calles enteras para ti solo, especialmente si llegas temprano o visitas fuera de temporada."
       ]
     },
     {
       "id": "getting-there",
-      "title": "Cómo llegar",
+      "title": "Cómo llegar de Positano a Pompeya",
       "body": [
-        "Desde Positano toma el autobús SITA hasta Sorrento; compra los billetes en un estanco o a bordo y calcula cerca de una hora de viaje.",
-        "En Sorrento sube las escaleras hasta los andenes de la Circumvesuviana y toma el tren local a ‘Pompei Scavi – Villa dei Misteri’.",
-        "Al salir de la estación gira a la derecha: en menos de un minuto llegarás a la entrada de Porta Marina Superiore, a la izquierda."
+        "%IMAGE:sita-bus-sorrento.jpg|Autobús SITA en la estación de Sorrento conectando con Circumvesuviana%",
+        "El viaje de Positano a Pompeya requiere dos tramos: autobús SITA de Positano a Sorrento, luego tren Circumvesuviana de Sorrento a Pompeya. El tiempo total de viaje es aproximadamente 1.5–2 horas en cada dirección, dependiendo de los tiempos de espera de autobús y tren. Aquí está el proceso paso a paso:",
+        "**Paso 1: Autobús de Positano a Sorrento (50–60 minutos).** Toma el autobús SITA desde Chiesa Nuova (cerca del hostel) o la parada principal de autobús de Positano (Spiaggia Grande). Los autobuses corren cada 20–40 minutos dependiendo de la temporada. Compra boletos en tiendas tabacchi antes de abordar o usa la aplicación SITA. Los boletos cuestan ~€2.50–€3.00. El viaje en autobús por la %LINK:chiesaNuovaArrivals|carretera de la Costa Amalfitana% ofrece vistas impresionantes pero puede estar abarrotado: intenta abordar temprano en Chiesa Nuova para asegurar un asiento. Para horarios detallados y consejos, consulta %LINK:sorrentoPositanoBus|Positano a Sorrento en autobús%.",
+        "**Paso 2: Tren de Sorrento a Pompeya Scavi (30–35 minutos).** En Sorrento, el autobús para en Piazza Tasso (la plaza principal). Desde allí, camina 5 minutos hasta la estación de tren Circumvesuviana (sigue las señales o pregunta a los locales). Compra un boleto a \"Pompei Scavi – Villa dei Misteri\" en la taquilla o máquinas. Los boletos cuestan ~€3.00–€4.00. La Circumvesuviana es un tren de cercanías local: básico, a menudo abarrotado, sin aire acondicionado. Los trenes corren cada 20–30 minutos. El viaje toma unos 30 minutos. Sal en la estación \"Pompei Scavi\" (NO en la estación \"Pompeii\", que está más lejos de las ruinas).",
+        "**Paso 3: Camina hasta la entrada (1–2 minutos).** Sal de la estación Pompei Scavi, gira a la derecha y verás la entrada al sitio arqueológico de Pompeya (Porta Marina Superiore) a 50 metros. Esta es la entrada principal para visitantes independientes. Las taquillas y el almacenamiento de equipaje están aquí.",
+        "**Tiempo total de viaje:** Permite 2–2.5 horas desde Positano hasta la entrada de Pompeya, incluyendo espera de autobús, viaje en autobús, transferencia en Sorrento, viaje en tren y caminata. Sal de Positano a las 08:00 para llegar a Pompeya a las 10:00–10:30, dándote 4–5 horas para explorar antes de regresar."
       ]
     },
     {
-      "id": "self-guided-tour",
-      "title": "Recorrido autoguiado",
+      "id": "timing-and-planning",
+      "title": "Cuándo visitar y cuánto tiempo pasar",
       "body": [
-        "Nada más entrar gira a la izquierda hacia el punto de información para recoger el mapa y, si lo necesitas, gestionar la consigna antes de comprar las entradas en las taquillas de enfrente.",
-        "Una vez dentro localiza Porta Marina Superiore en el mapa: estarás en Via Marina con señalización clara frente a ti.",
-        "Sigue Via Marina en dirección al anfiteatro, desviándote por las casas, termas y foros que te interesen antes de volver al camino principal.",
-        "Tras recorrer el anfiteatro, regresa atravesando la parte baja del yacimiento para cubrir más puntos destacados sin tener que desandar lo ya visitado.",
-        "Este circuito permite ver entre el 60 % y el 80 % de los lugares clave en mucho menos tiempo que tratando de caminar por todas las calles."
+        "%IMAGE:pompeii-summer-crowds.jpg|Turistas explorando las ruinas de Pompeya en día de verano%",
+        "**Mejor hora del día:** Llega a Pompeya a las 09:00–10:00 para vencer las multitudes pico y el calor del mediodía. El sitio abre a las 09:00 (verifica las horas oficiales estacionalmente). Las temperaturas de la mañana son más frescas, la luz es más suave para fotos y los grupos turísticos llegan más tarde (11:00–12:00). Si llegas a las 09:30, tendrás 1–2 horas de ruinas relativamente vacías antes de que se acumulen las multitudes.",
+        "**Cuánto tiempo pasar:** Planifica 3–4 horas mínimo para ver los principales puntos destacados sin apresurarte. Los entusiastas serios de arqueología pueden pasar 6–8 horas explorando cada rincón, pero la mayoría de los huéspedes del hostel encuentran 3–4 horas suficientes para apreciar la escala del sitio y ver áreas clave. Si tienes tiempo limitado, 2 horas cubren lo absolutamente esencial (foro, anfiteatro, algunas casas), pero te perderás mucho.",
+        "**Mejor temporada:** Abril–junio y septiembre–octubre ofrecen el mejor equilibrio: temperaturas agradables, multitudes manejables y acceso completo al sitio. Julio–agosto traen calor extremo (35–40°C), sol intenso, sombra mínima y multitudes turísticas pico. Noviembre–marzo son más tranquilos pero arriesgan lluvia y horas de luz más cortas. Si visitas en verano, trae el doble del agua que crees necesitar, usa un sombrero de ala ancha y toma descansos frecuentes en áreas sombreadas.",
+        "**Itinerario de muestra para huéspedes del hostel:**\n- 08:00: Sal de Positano por autobús SITA\n- 09:00: Llega a Sorrento, transfiere a Circumvesuviana\n- 09:30: Sal de Sorrento en tren\n- 10:00–10:30: Llega a Pompeya, compra boletos, entra al sitio\n- 10:30–14:00: Explora ruinas (3.5 horas)\n- 14:00–14:30: Pausa para almuerzo (trae almuerzo empacado o compra en el café del sitio)\n- 14:30: Sal de Pompeya en tren\n- 15:00–15:30: Llega a Sorrento, toma autobús SITA\n- 16:30–17:30: Llega de vuelta a Positano\n\nEste horario permite 3–4 horas en Pompeya con tiempo de margen para retrasos de transporte. Regresas a Positano con tiempo para descansar antes de la cena. Muchos huéspedes del hostel siguen este itinerario exacto y reportan que funciona bien: no demasiado apresurado, no demasiado relajado, con suficiente tiempo para ver puntos destacados sin agotamiento. Los huéspedes que intentan meter más en el día (por ejemplo, agregar Herculano o extender Pompeya a 5+ horas) reportan consistentemente sentirse agotados para la noche."
+      ]
+    },
+    {
+      "id": "what-to-see",
+      "title": "Qué ver en Pompeya: tour de puntos destacados",
+      "body": [
+        "%IMAGE:pompeii-forum-columns.jpg|Antiguo foro romano en Pompeya con columnas preservadas%",
+        "Las 66 hectáreas de Pompeya contienen cientos de edificios. Ver todo es imposible en una visita. Enfócate en los principales puntos destacados para un tour autoguiado gratificante. Toma el mapa gratuito del sitio en la entrada (esencial para la navegación) y sigue esta ruta sugerida:",
+        "**1. Foro (Foro).** El foro era el centro político, religioso y comercial de Pompeya. Es una gran plaza rectangular rodeada de templos, edificios administrativos y mercados. El Templo de Júpiter ancla el extremo norte, con el Monte Vesubio elevándose detrás: un poderoso recordatorio visual de lo que destruyó la ciudad. El foro da contexto para todo lo demás que verás. Pasa 20–30 minutos aquí.",
+        "%IMAGE:pompeii-basilica-interior.jpg|Interior de la antigua basílica en Pompeya con columnas%",
+        "**2. Basílica.** Adyacente al foro, la basílica era el tribunal y centro de negocios de Pompeya. El interior masivo (65m x 28m) alguna vez albergó procedimientos legales y negociaciones comerciales. La escala de las columnas y arquitectura demuestra la ingeniería romana. Pasa 10 minutos.",
+        "**3. Casa del Fauno (Casa del Fauno).** Una de las casas privadas más grandes y opulentas de Pompeya, cubriendo una manzana completa. Famosa por la estatua de bronce del fauno en el atrio (el original está en el Museo Arqueológico de Nápoles, pero una réplica está in situ) y el Mosaico de Alejandro (también movido a Nápoles). La casa demuestra cómo vivía la élite rica de Pompeya: múltiples patios, comedores, cuartos de sirvientes, mosaicos elaborados. Pasa 15–20 minutos.",
+        "%IMAGE:house-vettii-frescoes.jpg|Coloridos frescos preservados en la Casa de los Vettii%",
+        "**4. Casa de los Vettii (Casa dei Vettii).** Otra casa adinerada, famosa por sus frescos notablemente preservados. El comedor (triclinium) presenta escenas mitológicas en rojos, azules y dorados vívidos. El jardín ha sido reconstruido basándose en restos de plantas antiguas. Esta casa muestra mejor el arte y color de Pompeya. Pasa 15 minutos.",
+        "**5. Baños Stabianos (Terme Stabiane).** Los baños públicos más antiguos y mejor preservados de Pompeya. Puedes ver el caldarium (sala caliente), tepidarium (sala tibia), frigidarium (sala fría) y apodyterium (vestuario). La ingeniería es visible: pisos calefaccionados, plomería, incluso grafitis antiguos en las paredes. Esto da una visión de la vida diaria romana y costumbres sociales. Pasa 15 minutos.",
+        "**6. Lupanar (Burdel).** Un pequeño edificio de dos pisos con camas de piedra y frescos eróticos. El lupanar es uno de los sitios más visitados (y fotografiados) de Pompeya. Proporciona evidencia franca de la industria del sexo comercial de Pompeya. Los dormitorios del piso superior y el arte explícito conmocionan a algunos visitantes pero ofrecen verdad histórica sin barnizar. Pasa 5–10 minutos (a menudo abarrotado).",
+        "%IMAGE:pompeii-amphitheater.jpg|Antiguo anfiteatro en Pompeya con el Monte Vesubio de fondo%",
+        "**7. Anfiteatro (Anfiteatro).** El anfiteatro de Pompeya albergaba 20,000 espectadores para juegos de gladiadores y espectáculos públicos. Construido alrededor del 70 a.C., es uno de los anfiteatros romanos más antiguos que sobreviven. Puedes caminar por el piso de la arena y subir las gradas para vistas sobre las ruinas y el Monte Vesubio. La escala es impresionante: imagina el rugido de 20,000 romanos vitoreando deportes sangrientos. Pasa 20 minutos.",
+        "%IMAGE:pompeii-plaster-casts.jpg|Moldes de yeso de víctimas de Pompeya en el Jardín de los Fugitivos%",
+        "**8. Jardín de los Fugitivos (Orto dei Fugitivi).** Un viñedo donde 13 residentes de Pompeya murieron intentando escapar de la erupción. Sus cuerpos fueron preservados en ceniza; los arqueólogos llenaron las cavidades con yeso para crear moldes inquietantes. Ver los moldes de yeso—adultos, niños, contorsionados en sus momentos finales—hace la tragedia de Pompeya visceral. Esto es emocionalmente pesado pero históricamente importante. Pasa 10 minutos.",
+        "%IMAGE:via-abbondanza-street.jpg|Antigua calle romana Via dell'Abbondanza con tiendas%",
+        "**9. Via dell'Abbondanza.** La calle principal de Pompeya, bordeada de tiendas, tabernas y casas. Caminar por esta calle se siente como entrar en una ciudad romana: puedes ver mostradores donde comerciantes vendían comida y vino, grafitis en paredes (lemas electorales, notas de amor, insultos), piedras para cruzar calles fangosas. Aquí es donde Pompeya se siente más viva. Pasa 20–30 minutos paseando.",
+        "Esta ruta cubre los puntos destacados esenciales en 3–3.5 horas a un ritmo relajado. Si tienes más tiempo, explora el distrito del teatro, más casas (Casa del Poeta Trágico, Casa de Menandro) y calles laterales. Si tienes menos tiempo, prioriza el foro, una casa adinerada (Vettii o Fauno), los baños y el anfiteatro."
+      ]
+    },
+    {
+      "id": "practical-tips",
+      "title": "Consejos prácticos para tu visita",
+      "body": [
+        "%IMAGE:pompeii-map-tourists.jpg|Turistas consultando mapa del sitio en la entrada de Pompeya%",
+        "**Consigue el mapa gratuito en la entrada.** El mostrador de información dentro de Porta Marina Superiore distribuye mapas impresos gratuitos. Toma uno. Pompeya es enorme y confusa sin un mapa. El mapa marca sitios principales, baños, salidas y áreas de sombra. No confíes en la navegación del teléfono: la recepción celular es irregular y deambular sin rumbo desperdicia tiempo.",
+        "**Trae mucha agua.** Pompeya está expuesta: sombra mínima, superficies de piedra reflectantes amplificando el calor. En verano, las temperaturas en el sitio pueden alcanzar 40°C. Trae al menos 1.5 litros de agua por persona. Las fuentes dentro del sitio ofrecen agua potable para rellenar. La deshidratación es un riesgo real: muchos visitantes lo subestiman. Desde el hostel, hemos visto huéspedes regresar de Pompeya con insolación y dolores de cabeza por deshidratación porque trajeron solo una botella pequeña. El personal recomienda llenar dos botellas de 750ml antes de salir y rellenar en las fuentes de Pompeya durante el día.",
+        "**Usa zapatos cómodos y resistentes.** Las calles de Pompeya están pavimentadas con grandes piedras irregulares. Las sandalias o chanclas llevan a tobillos torcidos y pies adoloridos. Usa zapatos cerrados para caminar con buen soporte. Caminarás 5–8 km (3–5 millas) explorando el sitio.",
+        "**La protección solar es crítica.** Usa protector solar (SPF 30+), un sombrero de ala ancha y gafas de sol. El sol es implacable y casi no hay sombra. Las mangas largas en tela ligera y transpirable ayudan a prevenir quemaduras solares mejor que aplicar protector solar repetidamente.",
+        "**Almacenamiento de equipaje disponible.** Si estás combinando Pompeya con viaje posterior (por ejemplo, visitando Pompeya en ruta a Nápoles), puedes almacenar equipaje en la estación de tren Pompei Scavi (servicio pagado) o en el guardarropa gratuito justo dentro de la entrada del sitio. Se permiten mochilas grandes adentro pero dificultan maniobrar por puertas estrechas.",
+        "**Audioguías y tours.** Las audioguías (€8–€10) están disponibles en la entrada y proporcionan contexto para sitios principales. Guías turísticos licenciados ofrecen tours grupales (€15–€20 por persona para tours de 2 horas) o tours privados (€100–€150 para grupos pequeños). Para visitantes por primera vez, una audioguía o unirse a un tour grupal agrega valor significativo: las ruinas son más significativas con contexto histórico. Las visitas autoguiadas funcionan bien con una guía o el mapa gratuito, pero te pierdes historias y detalles.",
+        "**Comida y bebida adentro.** Hay un café cerca del foro vendiendo sándwiches, bebidas y bocadillos a precios inflados. La calidad es mediocre. Muchos huéspedes del hostel traen almuerzos empacados preparados en la %LINK:onlyHostel|cocina del hostel%—sándwiches, fruta, bocadillos de tiendas de comestibles de Chiesa Nuova—y comen en áreas sombreadas cerca del anfiteatro o foro. Esto ahorra dinero (€15–€20 por persona) y te permite descansar sin salir del sitio. Hemos probado los sándwiches del café; están sobrevalorados (€8–€10) y decepcionantes. Empaca el tuyo.",
+        "**Los baños son limitados.** Hay baños cerca de la entrada, foro y anfiteatro. Úsalos cuando los veas: hay largos espacios entre instalaciones. Son básicos pero funcionales.",
+        "**Se permite fotografía.** Puedes tomar fotos en toda Pompeya (sin flash dentro de edificios con frescos). Las mejores oportunidades fotográficas son el foro con fondo del Vesubio, el anfiteatro, escenas callejeras de Via dell'Abbondanza y los moldes de yeso en el Jardín de los Fugitivos. La luz de la mañana y tarde son mejores; el sol del mediodía crea sombras duras."
+      ]
+    },
+    {
+      "id": "herculaneum-alternative",
+      "title": "Herculano como alternativa o adición",
+      "body": [
+        "%IMAGE:herculaneum-villa-fresco.jpg|Frescos bien preservados en el sitio arqueológico de Herculano%",
+        "Herculano (Ercolano) es una ciudad romana más pequeña también destruida por el Vesubio en el 79 d.C. Está más cerca de Nápoles que Pompeya (unos 40 minutos en Circumvesuviana desde Sorrento). Muchos arqueólogos e historiadores consideran Herculano superior a Pompeya en términos de calidad de preservación. Herculano fue enterrado bajo material volcánico más profundo (hasta 20 metros vs 6 metros de Pompeya), lo que creó un sello hermético. Esto preservó materiales orgánicos—madera, tela, comida—que se desintegraron en Pompeya. Los frescos y mosaicos en Herculano retienen más color. Los edificios tienen pisos superiores y techos intactos.",
+        "**Herculano vs Pompeya: ¿cuál visitar?** Si tienes tiempo para solo uno, la mayoría de los visitantes por primera vez eligen Pompeya por su escala y fama. Pompeya entrega el factor \"wow\" de una ciudad entera congelada en el tiempo. Herculano es más pequeño (4.5 hectáreas vs 66 de Pompeya), menos abrumador y más íntimo. Puedes ver todo el sitio en 1.5–2 horas vs las 3–4 de Pompeya. Herculano es mejor para apreciar arte, arquitectura y detalles de la vida diaria romana. Pompeya es mejor para entender la planificación urbana y experimentar la escala de una ciudad romana.",
+        "**¿Puedes visitar ambos en un día desde Positano?** Técnicamente sí, pero es agotador. Ambos sitios en un día requiere salir de Positano a las 07:30, visitar Herculano primero (09:00–11:00), luego Pompeya (12:00–15:00), regresando a las 18:00–19:00. Pasarás 5–6 horas en transporte y 4–5 horas en los sitios. La mayoría de los huéspedes del hostel encuentran esto demasiado apresurado. Si quieres ambos, considera quedarte de noche en Nápoles o Sorrento para distribuir las visitas en dos días."
+      ]
+    },
+    {
+      "id": "returning-to-positano",
+      "title": "Regresando a Positano",
+      "body": [
+        "%IMAGE:circumvesuviana-train.jpg|Tren Circumvesuviana regresando de Pompeya a Sorrento%",
+        "Invierte la ruta de la mañana: camina de vuelta a la estación de tren Pompei Scavi, toma la Circumvesuviana a Sorrento, luego %LINK:sorrentoPositanoBus|autobús SITA de vuelta a Positano%. Los autobuses de la tarde desde Sorrento a Positano (15:00–18:00) pueden estar muy abarrotados: turistas de verano y pasajeros regresando a casa. Espera estar de pie por parte o todo el viaje si abordas en Sorrento. Alternativamente, toma el autobús ligeramente más tarde (después de las 18:30) cuando las multitudes disminuyen, aunque esto significa llegar a Positano alrededor de las 19:30–20:00.",
+        "Si los autobuses están imposiblemente llenos, taxis y conductores privados operan desde Sorrento a Positano (€60–€80 para hasta 4 pasajeros). Esto es caro pero ahorra 45–60 minutos y garantiza un asiento. Algunos huéspedes del hostel comparten un taxi después de largos días calurosos en Pompeya. Pide recomendaciones de conductores al %LINK:onlyHostel|personal del hostel% si quieres esta opción. Una vez de vuelta en Positano, muchos huéspedes toman cena en restaurantes locales o recogen comestibles para cocinar en la %LINK:onlyHostel|cocina del hostel% y compartir historias de Pompeya con otros viajeros."
       ]
     }
   ],
-  "howTo": {
-    "steps": [
-      {
-        "name": "Autobús a Sorrento",
-        "text": "Toma el autobús SITA desde Positano hasta la estación principal de Sorrento (unos 60 minutos)."
-      },
-      {
-        "name": "Tren a Pompeii Scavi",
-        "text": "Sube a los andenes de la Circumvesuviana y toma el tren hacia ‘Pompei Scavi – Villa dei Misteri’."
-      },
-      {
-        "name": "Camina hasta la entrada",
-        "text": "Al salir de la estación gira a la derecha; Porta Marina Superiore está a unos 50 metros, a la izquierda."
-      }
-    ]
-  },
-  "tipsTitle": "Consejos para el día",
+  "tipsTitle": "Consejos rápidos para excursión de un día a Pompeya",
   "tips": [
-    "Consigue el mapa gratuito antes de pasar los tornos para planificar desvíos sin tener que retroceder.",
-    "Lleva mucha agua y rellena las botellas en cuanto veas una fuente: en verano los quioscos forman colas largas.",
-    "Anota los puntos fotogénicos o frescos que quieras revisar al salir; es fácil pasarlos por alto con el calor del día."
+    "Sal de Positano a las 08:00 para llegar a Pompeya a las 10:00–10:30 y vencer las multitudes pico.",
+    "Toma el mapa gratuito del sitio en la entrada: esencial para navegación en las ruinas extensas.",
+    "Trae 1.5+ litros de agua por persona; el calor y la exposición al sol son intensos en verano.",
+    "Usa zapatos cerrados resistentes: las calles irregulares de piedra de Pompeya destruyen sandalias y chanclas.",
+    "Empaca un almuerzo para comer dentro del sitio y ahorrar €15–€20 en comida cara del café.",
+    "Usa protector solar, sombrero y gafas de sol: Pompeya casi no tiene sombra.",
+    "Prioriza foro, Casa de los Vettii, Baños Stabianos, anfiteatro y Via dell'Abbondanza para una visita de 3 horas.",
+    "Considera una audioguía (€8–€10) para contexto histórico: hace las ruinas mucho más significativas.",
+    "Almacena equipaje en la estación Pompei Scavi o el guardarropa gratuito dentro de la entrada.",
+    "Los autobuses de regreso desde Sorrento a Positano están abarrotados 15:00–18:00; viaja más temprano o tarde si es posible."
   ],
-  "warningsTitle": "Avisos importantes",
-  "warnings": [
-    "En temporada alta las colas del autobús SITA y de la Circumvesuviana pueden añadir 20–30 minutos a cada trayecto: deja margen en tu agenda.",
-    "Gran parte del yacimiento está expuesta sin sombra, así que evita las visitas a mediodía si eres sensible al calor."
-  ],
-  "faqsTitle": "Preguntas frecuentes",
+  "faqsTitle": "Preguntas Frecuentes",
   "faqs": [
     {
-      "q": "¿Cuál es la mejor entrada?",
+      "q": "¿Cuánto tiempo toma llegar de Positano a Pompeya?",
       "a": [
-        "Porta Marina Superiore, junto a la estación de Pompei Scavi, es la más práctica para quienes visitan por su cuenta: está a pocos metros del tren y cerca de la consigna."
+        "Aproximadamente 1.5–2 horas en cada dirección. El autobús SITA de Positano a Sorrento toma 50–60 minutos, el tren Circumvesuviana de Sorrento a Pompei Scavi toma 30–35 minutos, más 5–10 minutos para la transferencia en Sorrento. Permite 2–2.5 horas en total incluyendo tiempos de espera."
       ]
     },
     {
-      "q": "¿Puedo recorrerlo sin guía?",
+      "q": "¿Cuánto cuesta una excursión de un día a Pompeya desde Positano?",
       "a": [
-        "Sí. El mapa oficial gratuito es detallado y la mayoría de los edificios principales tienen paneles en italiano e inglés. También hay audioguías y guías acreditados si quieres más contexto."
+        "Presupuesto €30–€40 por persona: autobús SITA Positano-Sorrento (€2.50–€3), tren Circumvesuviana Sorrento-Pompei (€3–€4), boleto de entrada a Pompeya (€16–€18), transporte de regreso (€5.50–€7), más comida/bebidas. Una audioguía agrega €8–€10. Presupuesto total de excursión de un día: €35–€50 por persona."
       ]
     },
     {
-      "q": "¿Hay un lugar seguro para dejar maletas?",
+      "q": "¿Vale la pena visitar Pompeya desde Positano?",
       "a": [
-        "Puedes guardar bolsos pequeños en la estación de Pompei Scavi pagando, y el yacimiento ofrece una consigna gratuita justo tras la entrada."
+        "Sí, especialmente si quieres variedad cultural/histórica más allá de las playas. Pompeya es uno de los sitios arqueológicos más significativos del mundo. El viaje es largo (4+ horas de transporte ida y vuelta) pero manejable como una excursión de día completo. Mejor para viajeros pasando 4+ días en Positano que quieren un descanso de actividades costeras."
+      ]
+    },
+    {
+      "q": "¿Puedo visitar Pompeya y Herculano en un día desde Positano?",
+      "a": [
+        "Técnicamente sí pero muy apresurado. Necesitarías salir de Positano a las 07:30, visitar Herculano primero (09:00–11:00), luego Pompeya (12:00–15:00), regresando a las 18:00–19:00. Total 5–6 horas de transporte, 4–5 horas en sitios. La mayoría de los viajeros encuentran esto agotador. Mejor elegir un sitio o quedarse de noche en Nápoles/Sorrento para distribuir visitas en dos días."
+      ]
+    },
+    {
+      "q": "¿Qué debo traer a Pompeya?",
+      "a": [
+        "Esencial: 1.5+ litros de agua por persona, protector solar, sombrero, gafas de sol, zapatos resistentes para caminar, mapa del sitio (gratuito en la entrada). Recomendado: almuerzo empacado, mochila pequeña, cámara, guía o audioguía. Verano: el doble del agua, mangas largas ligeras para protección solar. El sitio es caluroso, expuesto y requiere 3–4 horas de caminata."
+      ]
+    },
+    {
+      "q": "¿Necesito un guía o puedo explorar Pompeya yo mismo?",
+      "a": [
+        "Puedes explorar independientemente con el mapa gratuito del sitio. Sin embargo, una audioguía (€8–€10) o unirte a un tour grupal (€15–€20) mejora significativamente la experiencia al proporcionar contexto histórico, historias y detalles que te perderías de otra manera. Los visitantes por primera vez se benefician más del contexto guiado."
+      ]
+    },
+    {
+      "q": "¿Cuándo es el mejor momento para visitar Pompeya?",
+      "a": [
+        "Abril–junio y septiembre–octubre ofrecen el mejor clima y multitudes manejables. Llega al sitio a las 09:00–10:00 para vencer grupos turísticos y calor del mediodía. Evita julio–agosto si es posible (calor extremo, sol intenso, multitudes pico). Noviembre–marzo son más tranquilos pero arriesgan lluvia y horas de luz más cortas."
       ]
     }
   ]

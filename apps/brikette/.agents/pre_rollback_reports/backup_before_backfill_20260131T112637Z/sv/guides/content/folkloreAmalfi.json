@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Lokala legender och folklore från Amalfikusten",
+    "description": "Sagor och berättelser från kusten som ger extra färg åt platserna du besöker."
+  },
+  "linkLabel": "Lokala legender och folklore från Amalfikusten",
+  "intro": [
+    "Utforska legenderna och sägnerna från Amalfikusten som präglar festivaler, statyer och lokala uttryck."
+  ],
+  "sections": [
+    {
+      "id": "saint",
+      "title": "Sankt Andreas",
+      "body": [
+        "Amalfis katedral förvarar reliker av Sankt Andreas; lokalborna tillskriver honom att stilla stormar och skydda fiskare.",
+        "Den 27 juni och 30 november bär processioner hans staty genom staden ackompanjerad av fyrverkerier och brassband."
+      ]
+    },
+    {
+      "id": "sirens",
+      "title": "Sirenerna vid Li Galli",
+      "body": [
+        "Enligt myten lockade öarna Li Galli sjömän med sin sång; idag berättas sagan på båtturer som passerar de privata holmarna.",
+        "Lyssna efter referenser till Parthenope och sirenerna när du besöker Neapel – historierna knyter samman regionerna."
+      ]
+    },
+    {
+      "id": "traditions",
+      "title": "Levande traditioner",
+      "body": [
+        "Praianos Luminaria och Positanos fiskarvälsignelser förenar tro och folklore i ljusfyllda ritualer.",
+        "Handmålade kakelplattor skildrar ofta helgon, citroner eller lokala legender – lägg märke till dem vid portar och kyrktrappor."
+      ]
+    }
+  ],
+  "tips": [
+    "Kolla kommunernas evenemangskalendrar för att pricka in högtidsdagar och delta på ett respektfullt sätt.",
+    "Ta med en lätt sjal – många evenemang övergår i kyrkliga ceremonier där diskret klädsel uppskattas."
+  ],
+  "faqs": [
+    {
+      "q": "Kan vem som helst gå med i processionerna?",
+      "a": [
+        "Ja – ställ dig längs vägen, applådera respektfullt och låt lokalborna som bär statyerna passera först."
+      ]
+    },
+    {
+      "q": "Var hör jag traditionell musik?",
+      "a": [
+        "Sök efter folkmusikkonserter i Atrani och Ravello under sommarfestivalerna; turistbyråerna publicerar veckoprogram."
+      ]
+    }
+  ]
+}

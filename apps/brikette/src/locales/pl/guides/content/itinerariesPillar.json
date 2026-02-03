@@ -1,61 +1,61 @@
 {
   "seo": {
-    "title": "Wybrzeże Amalfitańskie bez auta: przewodniki po trasach",
-    "description": "Przegląd tras bez samochodu: jak łączyć promy, autobusy i spacery, by zobaczyć jak najwięcej."
+    "title": "Trasy wybrzeża Amalfi (bez samochodu)",
+    "description": "Plany na 2–7 dni przez Positano, Amalfi, Ravello i Capri/Sorrento z promami i autobusami."
   },
-  "linkLabel": "Wybrzeże Amalfitańskie bez auta: przewodniki po trasach",
+  "linkLabel": "Trasy wybrzeża Amalfi (bez samochodu)",
   "intro": [
-    "Zbuduj trasę bez samochodu po Wybrzeżu Amalfi, łącząc promy i autobusy w logiczną pętlę, pozostawiając czas na powolne poranki i zmiany pogody."
+    "Zbuduj trasę bez auta, łącząc promy i autobusy logiczną pętlą i zostawiając czas na leniwe poranki i zmiany planów pogodowych."
   ],
   "sections": [
     {
       "id": "two-day",
-      "title": "2-day snapshot",
+      "title": "2-dniowy skrót",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Dzień 1: przybądź wcześnie, poznaj zaułki Positano, odpocznij na Fornillo i złap zachód z Via Cristoforo Colombo.",
+        "Dzień 2: poranny prom do Amalfi na Duomo i granitę cytrynową, popołudniowy autobus do Ravello, a wieczorem powrót do Positano na kolację."
       ]
     },
     {
       "id": "four-day",
-      "title": "3–4 day stretch",
+      "title": "3–4 dni",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Dodaj wycieczkę na Capri trzeciego dnia — pierwszy prom rano, wizyta w Anacapri i wieczorny powrót.",
+        "Czwarty dzień poświęć na Szlak Bogów lub rejs łodzią; miej w zanadrzu opcję deszczowego dnia, np. Pompeje."
       ]
     },
     {
       "id": "five-day",
-      "title": "5–6 day slow roll",
+      "title": "5–6 dni powolnie",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Zaplanuj dzień na plaży między Arienzo, Laurito i Marina di Praia, korzystając z przybrzeżnych promów lub taksówek wodnych."
+        "Dodaj kulinarny wypad do Salerno lub Sorrento, by spróbować targów i uzupełnić zapasy.",
+        "Zaplanuj dzień na plażowanie między Arienzo, Laurito i Mariną di Praia promami lub taxi wodnymi."
       ]
     },
     {
       "id": "seven-day",
-      "title": "7-day loop",
+      "title": "7-dniowa pętla",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Ostatni dzień zostaw elastyczny na powtórki lub dzień odpoczynku przed dalszą podróżą."
+        "Zaplanuj dwa luźne dni w Positano, dwa wyjazdy (Capri + Pompeje) i dwa spokojniejsze (winnice Tramonti lub ruiny w Paestum).",
+        "Pozostaw ostatni dzień elastyczny na powtórki albo odpoczynek przed dalszą podróżą."
       ]
     }
   ],
   "tips": [
-    "Tłumaczenie w przygotowaniu.",
-    "Grupuj zajęcia według położenia geograficznego, aby wspinać się po dużych schodach tylko raz dziennie."
+    "Zarezerwuj dłuższe odcinki (promy na Capri, pociąg do Pompejów), ale zostaw jeden dzień luzu na pogodowe zmiany.",
+    "Grupuj aktywności geograficznie, żeby nie pokonywać największych schodów więcej niż raz dziennie."
   ],
   "faqs": [
     {
-      "q": "Tłumaczenie w przygotowaniu.",
+      "q": "Ile nocy zostać w Positano?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Cztery noce pozwalają na sam Positano i dwa większe wyjazdy bez pośpiechu; dodaj więcej, jeśli wolisz spokojniejsze poranki."
       ]
     },
     {
-      "q": "Czy przy złej pogodzie mogę zamienić promy na autobusy?",
+      "q": "Czy mogę zamienić promy na autobusy przy złej pogodzie?",
       "a": [
-        "Tak – autobusy kursują przez cały rok. Zacznij wcześnie, kup bilety z wyprzedzeniem i spodziewaj się, że podróż zajmie 20–30 minut dłużej."
+        "Tak — autobusy kursują przez cały rok. Zacznij wcześnie, kup bilety wcześniej i spodziewaj się, że podróże zajmą 20–30 minut dłużej."
       ]
     }
   ]

@@ -1,0 +1,107 @@
+{
+  "seo": {
+    "title": "Guide complet d’enregistrement et de départ de l’Hostel Brikette à Positano",
+    "description": "Instructions étape par étape sur les horaires d’arrivée, les pièces d’identité requises, la consigne des bagages, les dépôts de garantie et l’assistance au check-out à l’Hostel Brikette de Positano."
+  },
+  "linkLabel": "Guide complet d’enregistrement et de départ de l’Hostel Brikette à Positano",
+  "sections": [
+    {
+      "id": "checkInRequest",
+      "title": "Demande de check-in",
+      "body": [
+        "À votre arrivée, veuillez vous présenter à la réception pour commencer votre check-in et recevoir l’attribution de votre chambre."
+      ]
+    },
+    {
+      "id": "earlyArrival",
+      "title": "Arrivée anticipée",
+      "body": [
+        "Si vous arrivez avant 10 h 30 le jour de votre réservation, l’accès à l’auberge n’est pas encore possible."
+      ]
+    },
+    {
+      "id": "middayArrival",
+      "title": "Arrivée à midi",
+      "body": [
+        "Si vous arrivez entre 10 h 30 et 15 h 00, vous pourrez être admis·e comme Visiteur·rice de jour, sous réserve d’accord. Vous pouvez demander la consigne des bagages, sous réserve de disponibilité. Ce service est indépendant de la réservation de votre chambre et possède ses propres conditions."
+      ]
+    },
+    {
+      "id": "checkInWindow",
+      "title": "Plage horaire de check-in",
+      "body": [
+        "Le check-in est ouvert chaque jour de 15 h 00 à 22 h 30. Durant ce créneau, la procédure standard s’applique."
+      ]
+    },
+    {
+      "id": "lateArrival",
+      "title": "Arrivée tardive",
+      "body": [
+        "Si vous prévoyez d’arriver après la fermeture de la réception à 22 h 30, nous pourrons proposer, sous réserve de disponibilité, une option d’auto-check-in tardif. Les instructions seront envoyées aux coordonnées fournies lors de la réservation. Veillez à ce que votre appareil soit chargé et vos informations exactes ; nous ne pourrons être tenus responsables des problèmes dus à des données erronées ou à des défaillances techniques."
+      ]
+    },
+    {
+      "id": "necessityOfProcess",
+      "title": "Nécessité du processus complet",
+      "body": [
+        "Vous devez terminer l’intégralité du check-in pour accéder à l’auberge. Dans le cas contraire, la réservation sera annulée et considérée comme « No-Show »."
+      ]
+    },
+    {
+      "id": "proofOfIdentity",
+      "title": "Justificatif d’identité",
+      "body": [
+        "Vous devez présenter une pièce d’identité originale et valide (passeport, CNI, permis de conduire ou carte militaire) à votre arrivée. Si aucune pièce n’est présentée avant 22 h 30 le jour prévu, la réservation sera annulée comme « No-Show »."
+      ]
+    },
+    {
+      "id": "paymentBalance",
+      "title": "Solde à payer",
+      "body": [
+        "Tout solde dû doit être réglé intégralement à l’aide d’un moyen de paiement accepté avant la fin du check-in. À défaut, la réservation sera annulée et notée « No-Show »."
+      ]
+    },
+    {
+      "id": "keycardLinenDeposit",
+      "title": "Dépôt carte-clé & linge",
+      "body": [
+        "Un dépôt de 10 € en espèces est requis pour la carte-clé et le linge lors du check-in. Il sera remboursé en espèces au check-out, après restitution des deux articles. Les cartes bancaires ne sont pas acceptées pour ce dépôt."
+      ]
+    },
+    {
+      "id": "checkoutWindow",
+      "title": "Plage horaire de check-out",
+      "body": [
+        "Le check-out s’effectue de 7 h 30 à 10 h 30. Après le check-out, vous ne pourrez plus entrer dans la chambre ni y laisser d’effets personnels."
+      ]
+    },
+    {
+      "id": "earlyCheckout",
+      "title": "Check-out anticipé",
+      "body": [
+        "Si vous devez partir avant 7 h 30, organisez un check-out anticipé à la réception la veille afin de récupérer votre dépôt en espèces. Déposer la carte-clé sans confirmation entraînera la perte du dépôt."
+      ]
+    },
+    {
+      "id": "lateCheckout",
+      "title": "Check-out tardif",
+      "body": [
+        "Le check-out tardif n’est pas proposé. Il doit être terminé avant 10 h 30."
+      ]
+    },
+    {
+      "id": "failureToCheckout",
+      "title": "Absence de check-out",
+      "body": [
+        "Si vous ne libérez pas la chambre à l’heure prévue, nous pourrons retirer vos effets personnels sans responsabilité. Ils pourront être stockés chez un service de portage local à vos frais. Toute intrusion ultérieure sera considérée comme une violation de sécurité."
+      ]
+    },
+    {
+      "id": "postCheckout",
+      "title": "Après le check-out",
+      "body": [
+        "Après le check-out, votre réservation prend fin. Vous pouvez rester dans l’auberge en tant que Visiteur·rice de jour jusqu’à 15 h 30. Une consigne des bagages est possible sous réserve de disponibilité et de conditions distinctes."
+      ]
+    }
+  ]
+}

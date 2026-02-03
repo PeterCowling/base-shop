@@ -87,25 +87,11 @@
     }
   ],
   "faqsTitle": "FAQ",
-  "galleryTitle": "Galeria zdjęć",
-  "gallery": {
-    "items": [
-      {
-        "alt": "Widok na Sentiero degli Dei",
-        "caption": "Na trasie"
-      },
-      {
-        "alt": "Panorama wioski Nocelle",
-        "caption": "Widoki w Nocelle"
-      }
-    ]
-  },
   "toc": {
     "onThisPage": "Na tej stronie",
     "essentials": "Niezbędnik",
     "costs": "Typowe koszty",
     "faqs": "FAQ",
-    "gallery": "Galeria zdjęć",
     "tips": "Smart timing"
   },
   "tipsTitle": "Smart timing",

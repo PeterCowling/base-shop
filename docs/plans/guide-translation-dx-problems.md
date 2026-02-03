@@ -1,8 +1,11 @@
+Type: Audit
+Status: Reference
+
 # Guide Translation Developer Experience: Problem Audit
 
 **Date:** 2026-01-25
 **Context:** Visiting `/en/draft/guides/48-hour-positano-weekend` reveals significant productivity barriers
-**Status:** Complete - see [Implementation Plan](guide-translation-dx-improvements-plan.md)
+**Status:** Reference - see [Implementation Plan](guide-translation-dx-improvements-plan.md)
 
 ---
 

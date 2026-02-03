@@ -87,25 +87,11 @@
     }
   ],
   "faqsTitle": "よくある質問",
-  "galleryTitle": "フォトギャラリー",
-  "gallery": {
-    "items": [
-      {
-        "alt": "神の道から望む稜線の景色",
-        "caption": "Along the trail"
-      },
-      {
-        "alt": "Nocelle village views",
-        "caption": "Nocelle views"
-      }
-    ]
-  },
   "toc": {
     "onThisPage": "このページの内容",
     "essentials": "必携アイテム",
     "costs": "想定コスト",
     "faqs": "よくある質問",
-    "gallery": "フォトギャラリー",
     "tips": "Smart timing"
   },
   "tipsTitle": "Smart timing",

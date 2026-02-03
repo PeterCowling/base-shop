@@ -1,0 +1,107 @@
+{
+  "seo": {
+    "title": "Complete Check-in & Checkout Guide for Hostel Brikette Positano",
+    "description": "Step-by-step instructions on arrival times, ID requirements, luggage storage, deposits, and checkout support at Hostel Brikette in Positano."
+  },
+  "linkLabel": "Complete Check-in & Checkout Guide for Hostel Brikette Positano",
+  "sections": [
+    {
+      "id": "checkInRequest",
+      "title": "Check-in Request",
+      "body": [
+        "When you arrive, please visit our reception desk to start your check-in process and receive your room assignment."
+      ]
+    },
+    {
+      "id": "earlyArrival",
+      "title": "Early Arrival",
+      "body": [
+        "If you arrive before 10:30 AM on your booking date, please note that you will not yet be able to enter the hostel."
+      ]
+    },
+    {
+      "id": "middayArrival",
+      "title": "Midday Arrival",
+      "body": [
+        "If you arrive between 10:30 AM and 3:00 PM, you may be allowed entry as a Temporary Guest, pending approval. During this time, you may request luggage storage, provided space is available. Please note luggage storage is separate from your room booking and has its own terms and conditions."
+      ]
+    },
+    {
+      "id": "checkInWindow",
+      "title": "Check-in Window",
+      "body": [
+        "You can check in from 3:00 PM to 10:30 PM daily. During this time, you'll follow our standard check-in process."
+      ]
+    },
+    {
+      "id": "lateArrival",
+      "title": "Late Arrival",
+      "body": [
+        "If you plan to arrive after our reception closes at 10:30 PM, we may offer you a self-service late check-in option, subject to availability. We will send instructions to the contact details you provided during booking. Make sure your device is charged and your details are correct, as we cannot be responsible for issues caused by incorrect information or technical failures."
+      ]
+    },
+    {
+      "id": "necessityOfProcess",
+      "title": "Necessity of Full Check-in Process",
+      "body": [
+        "You must complete the full check-in procedure to enter the hostel. If you cannot complete check-in, your reservation will be canceled and treated as a No Show."
+      ]
+    },
+    {
+      "id": "proofOfIdentity",
+      "title": "Proof of Identity",
+      "body": [
+        "You must present a valid original form of identification (passport, national ID card, driver's license, or military ID) upon arrival. If you do not provide valid ID by 10:30 PM on your scheduled check-in day, your reservation will be canceled as a No Show."
+      ]
+    },
+    {
+      "id": "paymentBalance",
+      "title": "Payment Balance",
+      "body": [
+        "You must fully settle any outstanding balance using an Accepted Payment Method before completing check-in. If you cannot make the full payment, your reservation will be canceled and marked as a No Show."
+      ]
+    },
+    {
+      "id": "keycardLinenDeposit",
+      "title": "Keycard & Linen Deposit",
+      "body": [
+        "At check-in, you'll need to provide a €10 cash deposit for your keycard and linen set. This deposit will be fully refunded in cash upon checkout once you return both items. Credit or debit cards cannot be accepted for this deposit."
+      ]
+    },
+    {
+      "id": "checkoutWindow",
+      "title": "Checkout Window",
+      "body": [
+        "Checkout is from 7:30 AM to 10:30 AM. After checkout, you cannot re-enter your room or leave any personal belongings behind."
+      ]
+    },
+    {
+      "id": "earlyCheckout",
+      "title": "Early Checkout",
+      "body": [
+        "If you need to depart before 7:30 AM, please arrange early checkout at reception the evening before to receive your deposit refund in cash. Leaving your keycard without staff confirmation will result in forfeiture of the deposit."
+      ]
+    },
+    {
+      "id": "lateCheckout",
+      "title": "Late Checkout",
+      "body": [
+        "We cannot provide late checkout. Checkout should be complete by 10:30am."
+      ]
+    },
+    {
+      "id": "failureToCheckout",
+      "title": "Failure to Checkout",
+      "body": [
+        "If you don't vacate your room by the official checkout time, we may remove your belongings without liability. Your items could be stored with a local porter service at your expense. Any unauthorized entry afterward will be treated as a security breach."
+      ]
+    },
+    {
+      "id": "postCheckout",
+      "title": "Post Checkout",
+      "body": [
+        "Once you checkout, your reservation officially ends. You may remain on the hostel premises as a Temporary Guest until 3:30 PM. You can request luggage storage, subject to availability and separate conditions."
+      ]
+    }
+  ]
+}

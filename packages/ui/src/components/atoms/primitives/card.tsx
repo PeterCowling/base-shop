@@ -1,3 +1,9 @@
 "use client";
 
-export * from "@acme/design-system/primitives/card";
+export type { CardProps } from "@acme/design-system/primitives/card";
+export {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@acme/design-system/primitives/card";

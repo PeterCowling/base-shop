@@ -43,19 +43,6 @@
     "想延长海滩行程，可参阅我们的 %LINK:fornilloBeachGuide|Fornillo 海滩指南% 与 %LINK:positanoBeaches|波西塔诺海滩总览%。",
     "想安排完整行程，请查看 Positano 旅行总览了解如何搭配。"
   ],
-  "gallery": {
-    "title": "沿途风景",
-    "items": [
-      {
-        "alt": "从 Hostel Brikette 出发的下坡台阶",
-        "caption": "步行路线从旅舍主楼梯开始下行"
-      },
-      {
-        "alt": "铺装道路通向 Fornillo 海滩",
-        "caption": "过了酒店后，沿着步道一路向下即可抵达海滩"
-      }
-    ]
-  },
   "faqsTitle": "路线常见问题",
   "faqs": [
     {

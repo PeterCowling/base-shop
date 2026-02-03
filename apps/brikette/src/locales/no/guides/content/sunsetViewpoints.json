@@ -73,18 +73,5 @@
         "Gatebelysningen varierer – ta med mobillys eller en liten lommelykt for nedstigninger sent på kvelden."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Bildegalleri",
-    "items": [
-      {
-        "caption": "Chiesa Nuova terrace",
-        "alt": "Solnedgang sett fra terrassen ved Chiesa Nuova"
-      },
-      {
-        "caption": "Nocelle",
-        "alt": "Solnedgang sett fra Nocelle"
-      }
-    ]
-  }
+  ]
 }

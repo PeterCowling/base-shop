@@ -8,7 +8,7 @@
     "body": "按照以下指引，完全通过海路从那不勒斯市中心前往波西塔诺。本指南说明如何从 Napoli Centrale 前往港口、购买渡轮票、完成登船以及抵达波西塔诺码头后的注意事项。"
   },
   "callouts": {
-    "tip": "想准备其他路线或恶劣海况时的备选方案？请打开%HOWTO:how-to-get-here|“如何到达”总览%。"
+    "tip": "想准备其他路线或恶劣海况时的备选方案？请打开%HOWTO:how-to-get-here|如何到达总览%。"
   },
   "sections": [
     {
@@ -19,7 +19,7 @@
     {
       "id": "transfer",
       "title": "从 Napoli Centrale 前往港口",
-      "body": "最快的公共交通方式是从 Garibaldi 广场乘坐 1 号电车前往 Municipio（Molo Beverello 快速水翼船）或 Marittima（Porta di Massa 慢速渡轮）。如多人同行，打车也便捷且价格合理。"
+      "body": "最快的公共交通方式是从 Piazza Garibaldi 乘坐 1 号电车前往 Municipio（前往 Molo Beverello）或 Marittima（前往 Porta di Massa）。如多人同行，打车也便捷且价格合理。"
     },
     {
       "id": "tickets",
@@ -28,7 +28,7 @@
     {
       "id": "boarding",
       "title": "港口登船",
-      "body": "请提前 20–30 分钟抵达码头，若需兑换预订单据可预留时间，并在登船前排队等候。按照工作人员指示摆放行李，并留意潮汐造成的跳板晃动。"
+      "body": "请提前 20–30 分钟抵达码头，若需兑换预订单据可预留时间，并在登船前排队等候。按照工作人员指示摆放行李，并留意因海浪造成的跳板晃动。"
     },
     {
       "id": "arrival",
@@ -37,7 +37,8 @@
     {
       "id": "fallback",
       "title": "若渡轮取消",
-      "body": "如因天气或海况取消航班，可改走经索伦托的火车 + 巴士路线。虽然耗时较长，但大多数情况下都能运行。 请使用此备选方案：%HOWTO:naples-center-train-bus|那不勒斯市中心 → 波西塔诺（先火车后巴士）%。"
+      "body": "如因天气或海况取消航班，可改走经索伦托的火车 + 巴士路线。虽然耗时较长，但大多数情况下都能运行。请使用此备选方案：%HOWTO:naples-center-train-bus|那不勒斯市中心 → 波西塔诺（先火车后巴士）%。"
     }
-  ]
+  ],
+  "lastUpdated": "2026-01-31"
 }

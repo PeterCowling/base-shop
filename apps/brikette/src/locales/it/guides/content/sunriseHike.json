@@ -7,22 +7,5 @@
   "intro": [],
   "sections": [],
   "tips": [],
-  "faqs": [],
-  "gallery": {
-    "title": "Immagini",
-    "items": [
-      {
-        "alt": "QR code to share the guide",
-        "caption": "Scansiona per condividere"
-      },
-      {
-        "alt": "House at the top of the initial climb",
-        "caption": "Casa in cima alle scale"
-      },
-      {
-        "alt": "Viewpoint over Positano at sunrise",
-        "caption": "Belvedere con alba su Positano"
-      }
-    ]
-  }
+  "faqs": []
 }

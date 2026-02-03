@@ -62,18 +62,6 @@
     "intro": [
       "Positano es vertical, preciosa y muy concurrida en temporada alta. Esta guía se centra en decisiones prácticas: dónde alojarte, cuándo venir, cómo moverte y qué hacer realmente cuando estés aquí."
     ],
-    "gallery": {
-      "items": [
-        {
-          "alt": "Terraza del hostel con vista panorámica",
-          "caption": "Atardecer desde la terraza: alójate a pocos pasos de la parada de bus Chiesa Nuova."
-        },
-        {
-          "alt": "Panorama de Positano",
-          "caption": "Fornillo y Spiaggia Grande se recorren a pie; prepárate para escaleras."
-        }
-      ]
-    },
     "sections": {
       "whereToStay": {
         "title": "Dónde alojarse",

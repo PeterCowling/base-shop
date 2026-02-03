@@ -36,7 +36,7 @@ export default function PdpClient({ product }: { product: SKU }) {
 
         <section className="flex flex-col gap-6">
           <h1 className="text-3xl font-bold">{product.title}</h1>
-          <p className="text-foreground">{product.description}</p>
+          <p className="text-fg">{product.description}</p>
 
           <div>
             <div className="mb-2 font-medium">{t("pdp.selectSize")}</div>

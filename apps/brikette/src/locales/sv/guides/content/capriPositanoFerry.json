@@ -1,0 +1,128 @@
+{
+  "lastUpdated": "2026-01-31",
+  "seo": {
+    "title": "Capri till Positano med färja | Hostel Brikette",
+    "description": "Hur du reser från Capri till Positano med färja, med tips om biljetter, operatörer, råd vid ankomst och det enklaste sättet upp till vandrarhemmet."
+  },
+  "intro": {
+    "title": "Capri till Positano – färja",
+    "body": "Använd den här guiden för att resa från Capri till Positano helt via havet. Den förklarar hur du väljer rätt operatör, köper biljetter i hamnen och vad du gör vid ankomst för den smidigaste promenaden (eller bussen) upp till Hostel Brikette."
+  },
+  "callouts": {
+    "tip": "Behöver du andra ruttalternativ eller reservplaner när havet är oroligt? Öppna översikten %URL:https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26|Så tar du dig hit%."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Översikt över resan",
+      "body": "Färjor mellan Capri och Positano går som mest frekvent under våren och sommaren. Turer kan ställas in vid hårt väder, särskilt senare på dagen. Den totala restiden är vanligtvis 30–60 minuter beroende på fartyg och operatör."
+    },
+    {
+      "id": "capriPort",
+      "title": "I Capris hamn",
+      "body": "Jämför färjetider och boka: <capriLink>Capri.net – Capri ↔ Positano</capriLink> · <positanoLink>Positano.com (samlad tidtabell)</positanoLink>.",
+      "list": [
+        "Kontrollera tider och priser och identifiera sedan operatören för din avgång.",
+        "Gå till Capris turistport. Köp biljetter i operatörens egen biljettkassa.",
+        "Kom 20–30 minuter före avgång för att lösa in eventuella vouchers och ställa dig i ombordstigningskön."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Ankomst till Positano",
+      "list": [
+        "Gå i land vid piren Positano Spiaggia Grande.",
+        "Hamnens bärare möter färjorna; överväg att använda dem för bagage och kom överens om priset i förväg.",
+        "Räkna med trappor upp från stranden; den lokala Interno-bussen minskar antalet trappsteg upp till vandrarhemmet."
+      ]
+    },
+    {
+      "id": "bus",
+      "title": "Från hamnen till vandrarhemmet med Interno-bussen",
+      "body": "För en detaljerad, bagagevänlig väg från piren till Hostel Brikette, se: <link>Färjepiren → Hostel Brikette</link>.",
+      "list": [
+        "Interno Positano-bussen går ungefär var 30:e minut från morgon till omkring midnatt.",
+        "Titta efter den elektroniska skyltningen ‘Interno Positano’ på bussens front.",
+        "Från hamnen, gå till Piazza dei Mulini och kliv på bussen upp mot Chiesa Nuova."
+      ]
+    },
+    {
+      "id": "finalWalk",
+      "title": "Sista sträckan från närmaste hållplats",
+      "list": [
+        "Gå av vid hållplatsen vid Tabacchi nära Chiesa Nuova.",
+        "Sväng höger mot huvudvägen och sedan vänster längs Via G. Marconi.",
+        "Gå drygt 100 m (≈330 fot) — vandrarhemmet ligger på höger sida.",
+        "Sväng höger och följ trapporna upp till Hostel Brikettes huvudentré."
+      ]
+    },
+    {
+      "id": "cancelled",
+      "title": "Om färjorna ställs in",
+      "body": "Om turerna ställs in på grund av väder eller sjöförhållanden, byt till tåg- och bussrutten via Sorrento. Den tar längre tid men körs i de flesta väder. Använd det här alternativet: <link>Neapel centrum → Positano med tåg och sedan buss</link>."
+    }
+  ],
+  "galleries": [
+    {
+      "items": [
+        {
+          "src": "/img/directions/capri-positano-interno-yellow.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/capri-positano-interno-red.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/capri-positano-tabacchi.png",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        }
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "question": "Hur mycket kostar färjan från Capri till Positano?",
+      "answer": "Färjebiljetter kostar mellan €22-€35 per person för en enkel resa 2026. Priserna varierar något beroende på operatör och säsong – förvänta dig att betala närmare €30-€35 under högsäsongen i juli-augusti. Det finns inga rabatter för förhandsköp, men att boka online garanterar dig en plats under hektiska dagar."
+    },
+    {
+      "question": "Hur långt i förväg ska jag boka färjan?",
+      "answer": "För april, maj, september och oktober kan du vanligtvis köpa biljetter samma dag. För juli-augusti, boka 1-2 dagar i förväg, särskilt för morgonbåtar. Helger är slut snabbare. Köp online via operatörens webbplats (Positano Jet, NLG, etc.) eller vid hamnens biljettkontor på Capri."
+    },
+    {
+      "question": "Vad händer om färjan ställs in på grund av väder?",
+      "answer": "Färjor ställs in vid hårt väder, särskilt i april/maj och oktober. Du får ett mejl om du bokade online. Reservbussrutten är: Capri → Neapel (färja), sedan Neapel → Sorrento (Circumvesuviana-tåget), sedan Sorrento → Positano (SITA-buss). Tar 3-4 timmar men fungerar när havet är oroligt."
+    },
+    {
+      "question": "Hur tar jag mig till Hostel Brikette från Positanos pir med bagage?",
+      "answer": "Tre alternativ: (1) Bärare väntar vid piren – förhandla priset i förväg (€20-€30 per stor väska), (2) Ta Interno Positano-bussen från Piazza dei Mulini till Chiesa Nuova (€2, färre trappor), (3) Gå 15-20 minuter uppför (brant med väskor). Se guiden %LINK:ferryDockToBrikette|Färjepir → Hostel Brikette% för steg-för-steg-instruktioner."
+    },
+    {
+      "question": "Vilken sida av båten ska jag sitta på för bästa utsikt?",
+      "answer": "På färjan från Capri till Positano, sitt på **höger** sida (framåtvänd) för utsikt över Positanos kustlinje, klippor och staden när du närmar dig. Vänster sida tittar ut mot öppet hav. Kom 20-30 minuter tidigt för att få utomhusplatser på däck."
+    },
+    {
+      "question": "Kan jag ta med stort bagage på färjan?",
+      "answer": "Ja. Alla operatörer tillåter ryggsäckar och stora väskor utan extra kostnad. Placera väskor på bagagehyllor på däck eller under ditt säte. Det finns ingen viktgräns, men om du har något enormt (surfbräda, cykel), bekräfta med operatören först."
+    },
+    {
+      "question": "Finns det toaletter och mat på båten?",
+      "answer": "De flesta större färjor har toalett. Mindre båtar under lågsäsong kanske inte har. Några har en liten snackbar som säljer drycker och lätta snacks. Ta med vatten och snacks från Capri för att spara pengar – priserna ombord är höga."
+    },
+    {
+      "question": "När går färjor från Capri till Positano?",
+      "answer": "Färjor går dagligen från slutet av mars/början av april till slutet av oktober. Högsäsong (juli-augusti) har fler avgångar per dag (8-12 båtar). Mellansäsong (april-maj, september-oktober) har 4-6 båtar per dag. På vintern (november-mars) är trafiken begränsad eller obefintlig."
+    },
+    {
+      "question": "Måste jag skriva ut biljetten eller kan jag visa på telefonen?",
+      "answer": "Du kan visa på telefonen. Ladda ner QR-koden till din fotoapp innan ombordstigning – mobilsignalen är svag i hamnen. Personalen scannar koden från skärmen. Se till att batteriet är laddat."
+    },
+    {
+      "question": "Var ligger exakt färjehamnen på Capri?",
+      "answer": "Marina Grande är Capris huvudfärjehamn, på öns norra kust. Om du anländer med färja från Neapel/Sorrento är du redan där. Operatörernas biljettkontor (Positano Jet, NLG, etc.) står uppradade längs strandpromenaden. Leta efter 'Positano'-skyltar i biljettluckorna."
+    }
+  ]
+}

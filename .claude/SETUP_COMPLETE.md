@@ -16,14 +16,13 @@ Your repository is now fully optimized for working with Claude Code.
 - ✅ `.vscode/extensions.json` - Recommended VSCode extensions
 - ✅ `.vscode/settings.json` - Enhanced IDE settings
 
-### Prompt Templates (Skills)
-Created in `.claude/prompts/`:
-1. ✅ `README.md` - Guide to using prompts
-2. ✅ `create-ui-component.md` - Create atomic design components
-3. ✅ `migrate-to-app-router.md` - Next.js App Router migration
-4. ✅ `apply-design-system.md` - Use design tokens correctly
-5. ✅ `add-component-tests.md` - Comprehensive testing guide
-6. ✅ `create-prisma-model.md` - Database model creation
+### Skills (Prompted Workflows)
+Created in `.claude/skills/`:
+1. ✅ `.claude/skills/create-ui-component/SKILL.md` - Create atomic design components
+2. ✅ `.claude/skills/migrate-to-app-router/SKILL.md` - Next.js App Router migration
+3. ✅ `.claude/skills/apply-design-system/SKILL.md` - Use design tokens correctly
+4. ✅ `.claude/skills/add-component-tests/SKILL.md` - Comprehensive testing guide
+5. ✅ `.claude/skills/create-prisma-model/SKILL.md` - Database model creation
 
 ## 🎯 Recommended Skills to Add Next
 
@@ -82,7 +81,7 @@ Two ways to use the skills:
 
 **2. Copy and fill in:**
 ```
-Open .claude/prompts/create-ui-component.md
+Open .claude/skills/create-ui-component/SKILL.md
 Fill in {{componentName}}, {{layer}}, etc.
 Paste into Claude
 ```
@@ -97,7 +96,7 @@ Paste into Claude
 ### For Reference
 - `.claude/SKILLS_INDEX.md` - All recommended skills
 - `docs/claude-optimization-recommendations.md` - Full implementation plan
-- `.claude/prompts/README.md` - How to use prompts
+- `.claude/HOW_TO_USE_SKILLS.md` - How to use skills
 
 ## 🎨 What Makes This Setup Special
 
@@ -242,7 +241,7 @@ Your repository now has:
 **Questions?**
 - Check `docs/claude-optimization-recommendations.md` for detailed explanations
 - Review `.claude/SKILLS_INDEX.md` for full skill catalog
-- Reference individual prompt templates in `.claude/prompts/`
+- Reference individual skill docs in `.claude/skills/<skill>/SKILL.md`
 
 **Feedback?**
 - Update the documentation

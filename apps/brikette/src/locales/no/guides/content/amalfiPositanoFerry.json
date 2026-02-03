@@ -48,5 +48,48 @@
         "Å gå oppover med tunge kofferter kan være krevende i sommervarmen."
       ]
     }
-  ]
+  ],
+  "faqs": [
+    {
+      "q": "Kan jeg ta med stor ryggsekk eller koffert på fergen?",
+      "a": "Ja, men vesker større enn 45cm × 35cm × 20cm koster €2 ekstra per veske. Kjøp bagasjebillett sammen med fergebilletten (på nett eller ved kiosken). Store vesker plasseres i bagasjestativene på dekk."
+    },
+    {
+      "q": "Hva skjer hvis fergen kanselleres på grunn av vær?",
+      "a": "Travelmar kansellerer avganger hvis sjøen er røff (sjeldent, men forekommer i tidlig/sen sesong). Du får en e-post hvis du har bestilt på nett. Personalet setter opp beskjeder ved kaien. Ta SITA-bussen fra Amalfi til Positano (€2–€3) eller ta taxi i stedet."
+    },
+    {
+      "q": "Er fergen egnet for reisende med bevegelseshemming?",
+      "a": "Ombordstiging krever gange over kort gangvei og kanskje trapper mellom kai og dekk. De fleste Travelmar-ferger har ikke rullestoramper. Hvis du trenger hjelp, kom tidlig og spør personalet. De kan ta deg om bord først via tryggere rute."
+    },
+    {
+      "q": "Kan jeg kjøpe fergebilletter på reisedagen?",
+      "a": "Vanligvis ja i april, mai, september og oktober. Men juli og august er utsolgt 1–2 dager på forhånd. Bestill på nett kvelden før for å være sikker, spesielt for morgenbåter."
+    },
+    {
+      "q": "Hvordan kommer jeg fra Positano kai til Hostel Brikette?",
+      "a": "Tre måter: gå oppover (15–20 minutter, bratte trapper), ta Interno Positano-bussen (€2), eller leie porter (€20–€25 per veske). Se vår %LINK:ferryDockToBrikette|kai til Brikette-guide% for veibeskrivelse og bilder."
+    },
+    {
+      "q": "Finnes det toaletter og kiosk om bord?",
+      "a": "De fleste Travelmar-båter har liten kiosk med drikke og lette retter. Toaletter finnes på større båter, men ikke på mindre båter i lavsesongen. Bruk toalettet før du går om bord hvis du kan."
+    },
+    {
+      "q": "Når er det best å ta fergen?",
+      "a": "Morgenbåter (08:25–10:00) har roligere sjø og bedre fotolys. Ettermiddagsavganger blir mer travle med dagturister. Unngå siste båt (20:00) med mindre du er komfortabel med å ankomme etter mørkets frembrudd."
+    },
+    {
+      "q": "Må jeg skrive ut billetten eller kan jeg vise telefonen?",
+      "a": "Telefonen er grei. Personalet skanner QR-koden fra skjermen din. Sørg for at telefonen er ladet og at du kan åpne e-posten eller bestillingen uten internett (lagre offline eller ta skjermbilde)."
+    },
+    {
+      "q": "Hvor nøyaktig er Amalfi fergekaia?",
+      "a": "Gå til vannkanten fra Piazza Flavio Gioia (hovedtorget med fontenen). Vend deg mot sjøen og sving til høyre. Travelmar-kaien ligger 2 minutter langs promenaden. Se etter blå-hvite skilt og billettkiosker."
+    },
+    {
+      "q": "Kan jeg lagre bagasje i Positano hvis jeg ankommer tidlig?",
+      "a": "Ja. Flere %LINK:luggageStorage|bagasjeoppleveringssteder% nær Spiaggia Grande strand tar €5–€8 per veske per dag. Greit hvis du lander før hostellets innsjekking kl. 15:00."
+    }
+  ],
+  "lastUpdated": "2026-01-31"
 }

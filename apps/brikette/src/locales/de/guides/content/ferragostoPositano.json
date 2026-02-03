@@ -1,7 +1,8 @@
 {
   "seo": {
     "title": "Ferragosto in Positano (Mariä Himmelfahrt)",
-    "description": "Was dich am 15. August erwartet: Menschenmengen, Schließzeiten, Feuerwerk und Verkehrstipps."
+    "description": "Was dich am 15. August erwartet: Menschenmengen, Schließzeiten, Feuerwerk und Verkehrstipps.",
+    "lastUpdated": "2026-01-31"
   },
   "linkLabel": "Ferragosto in Positano (Mariä Aufnahme)",
   "intro": [
@@ -58,5 +59,7 @@
         "Ja – die Terrasse bietet freien Blick über die Bucht. Komm früh für einen Platz und bring eine leichte Schicht für die Meeresbrise mit."
       ]
     }
-  ]
+  ],
+  "faqsTitle": "FAQs",
+  "tipsTitle": "Practical tips for hostel guests"
 }

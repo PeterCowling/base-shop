@@ -1,0 +1,23 @@
+{
+  "seo": {
+    "title": "Resehjälp | Hostel Brikette Positano",
+    "description": "Tvåminutersöversikt över hur du tar dig hit och vilka utflykter gästerna oftast gör, med länkar till våra fullständiga transport- och upplevelseguider."
+  },
+  "linkLabel": "Resehjälp | Hostel Brikette Positano",
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Resehjälp i korthet",
+      "body": [
+        "Börja med våra steg-för-steg-guider Hitta hit för tåg, färjor, privata transferer och vad du gör om något blir försenat. Här sammanfattar vi bara det viktigaste: räkna med cirka 2 timmar från Neapel till Positano, köp SITA-biljetterna innan du kliver ombord och skicka oss ett meddelande om du blir sen så kan vi planera incheckningen."
+      ]
+    },
+    {
+      "id": "excursions",
+      "title": "Snabb vägledning till populära utflykter",
+      "body": [
+        "När du är på plats ger samlingen Upplevelser vägledning från dörr till dörr för gästernas favoritutflykter – Capri-färjor, lederna till Gudarnas stig, bussar mot Amalfi och Ravello, tåg till Pompeji och Vesuvius och mer. Läs guiderna för att se första avgångar, biljettips och vad du bör packa."
+      ]
+    }
+  ]
+}

@@ -1,109 +1,217 @@
 {
   "seo": {
-    "title": "Marina di Praia et plages secrètes",
-    "description": "Explorer Marina di Praia et d'autres criques discrètes : accès, services et sécurité."
+    "title": "Guide Marina di Praia : bus SITA, lido et dîner",
+    "description": "Guide Marina di Praia pour clients d’auberge : y aller en bus SITA, choisir sa place (lido ou zone gratuite), quoi emporter, et où dîner avant de rentrer."
   },
-  "linkLabel": "Marina di Praia et plages secrètes",
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
+  "linkLabel": "Marina di Praia : crique spectaculaire entre les falaises",
   "intro": [
-    "Explorez Marina di Praia et les criques voisines pour changer du rythme de la plage principale de Positano."
+    "Marina di Praia est une petite crique de galets à Praiano — un court trajet en bus SITA depuis Hostel Brikette, mais souvent plus calme que les plages les plus connues de Positano. Barques de pêche, tour de guet et passerelles en pierre donnent un côté “caché” tout en restant proche de quoi manger et des services.",
+    "Si tu veux une journée plage sans prise de tête (baignade, snack, sieste à l’ombre, puis dîner facile), c’est l’un des meilleurs choix à proximité pour les voyageurs en auberge.",
+    "Ce guide couvre le bus, l’organisation de la plage (lido vs zone gratuite), quoi emporter pour être à l’aise sur les galets, et la manière la plus simple de rentrer à Positano après le coucher du soleil."
+  ],
+  "toc": [
+    { "href": "#why-go", "label": "Pourquoi y aller" },
+    { "href": "#getting-there", "label": "Comment y aller" },
+    { "href": "#layout", "label": "Organisation & services" },
+    { "href": "#what-to-bring", "label": "Quoi emporter" },
+    { "href": "#best-time", "label": "Meilleur moment" },
+    { "href": "#nearby", "label": "Baignades tranquilles autour" },
+    { "href": "#evening", "label": "Dîner & retour" }
   ],
   "sections": [
     {
-      "id": "marina",
-      "title": "L’essentiel de Marina di Praia",
+      "id": "why-go",
+      "title": "Pourquoi cette crique est idéale pour les voyageurs en auberge",
       "body": [
-        "Blottie entre les falaises, cette plage de galets propose des transats, des locations de kayak et des restaurants de fruits de mer incrustés dans la roche.",
-        "Arrivez avant 10 h 30 pour obtenir les premiers rangs ; l’ombre gagne la plage après 16 h."
+        "Contrairement à Spiaggia Grande ou Fornillo, cette baie se trouve dans une gorge étroite juste à l’extérieur de Praiano. Les falaises protègent l’eau de la houle, les barques flottent dans le petit port, et l’ambiance reste tranquille même en plein été.",
+        "C’est une journée “entre-deux” parfaite : plus confortable que les criques sauvages pleines d’escaliers, mais moins chaotique que les grandes plages de Positano. Tu as douches et nourriture, tout en ayant l’impression d’être niché entre les falaises plutôt qu’en plein centre-ville.",
+        "Prévois-la en demi-journée (baignade le matin + long déjeuner) ou en plan fin d’après-midi qui se termine par un dîner au bord de l’eau avant de remonter."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/01-marina-di-praia-overlook.webp",
+          "width": 1600,
+          "height": 1066,
+          "alt": "Vue sur la crique de Marina di Praia avec des bateaux, des parasols et des falaises à Praiano",
+          "caption": "À l’abri, spectaculaire, et souvent plus calme que les grandes plages de Positano. Photo : Falk2 (CC BY-SA 4.0) via Wikimedia Commons."
+        }
       ]
     },
     {
-      "id": "coves",
-      "title": "Criques voisines",
+      "id": "getting-there",
+      "title": "Aller-retour en bus SITA",
       "body": [
-        "Louez un kayak pour explorer la Grotta di Suppraiano ou prenez une navette bateau vers des coins confidentiels comme Gavitella ou Laurito.",
-        "Emportez une crème solaire respectueuse des récifs et des chaussures d’eau — le fond rocheux offre une excellente visibilité pour le snorkeling."
+        "Depuis Hostel Brikette, descends Via Pasitea jusqu’à l’arrêt Sponda et prends un bus SITA en direction d’Amalfi. Dis au chauffeur que tu veux “Marina di Praia” pour qu’il s’en souvienne : l’arrêt est entre Praiano et Furore et il est facile à rater quand le bus est bondé.",
+        "Descends à l’arrêt indiqué, puis suis le chemin en pierre en descente (environ deux minutes) jusqu’au front de mer. C’est pavé, donc facile même en tongs.",
+        "Pour le retour, traverse la route et attends un bus vers Positano. En été la fréquence est généralement correcte, mais en soirée les bus se font plus rares : consulte l’horaire affiché en arrivant et vise l’avant-dernier bus si tu restes pour dîner.",
+        "Achète et valide les tickets SITA avant de monter. Si tu veux un rappel sur les types de tickets, où les acheter et quoi faire quand les bus sont pleins, vois notre %LINK:sitaTickets|guide des tickets SITA%. Si tu transformes la journée en balade à Praiano (églises, points de vue, et marche côtière), combine-la avec le %LINK:praianoGuide|guide de Praiano%."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/02-marina-di-praia-waterfront.webp",
+          "width": 1200,
+          "height": 1600,
+          "alt": "Promenade en pierre au bord de Marina di Praia avec des bateaux et des parois rocheuses",
+          "caption": "La promenade en pierre rend les deux dernières minutes jusqu’à l’eau très simples. Photo : Falk2 (CC BY-SA 4.0) via Wikimedia Commons."
+        },
+        {
+          "src": "/img/guides/marina-di-praia/08-san-gennaro-church.webp",
+          "width": 1600,
+          "height": 1200,
+          "alt": "Église San Gennaro à Praiano avec dôme en faïence et vue sur la côte amalfitaine",
+          "caption": "Si tu combines plage et balade à Praiano, l’église San Gennaro est un ajout facile. Photo : Elliott Brown (CC BY 2.0) via Wikimedia Commons."
+        }
       ]
     },
     {
-      "id": "logistics",
-      "title": "S’y rendre",
+      "id": "layout",
+      "title": "Organisation : lido et services",
       "body": [
-        "Prenez le bus SITA depuis Positano en direction d’Amalfi ; demandez au chauffeur l’arrêt Marina di Praia puis descendez la rampe (cinq minutes).",
-        "Les scooters peuvent se garer en haut de la crique — ayez de la monnaie pour les places payantes."
+        "La plage est étroite, en galets, et partagée entre une petite zone publique et la zone principale du lido. Si tu veux la partie gratuite près de l’eau, arrive tôt : c’est la première à se remplir le week-end.",
+        "L’opérateur principal est Marina di Praia Beach Club (transats, parasols, douches, et souvent paddle/kayak). En haute saison tu paies surtout le confort, mais c’est idéal si tu veux des toilettes et une journée “je pose mes affaires et je chill”.",
+        "Le long de la promenade tu trouveras des restaurants et des kiosques pour boissons fraîches. Les paiements par carte peuvent être capricieux : prends un peu de cash pour les petits montants et prévois un plan B si le kiosque à tickets est fermé plus tard.",
+        "Réalité auberge : n’apporte pas d’objets de valeur qui te stressent. Si tu es seul, choisis un endroit visible (près d’autres groupes), garde ton téléphone zippé dans un sac, et fais des baignades plus courtes au lieu de laisser tes affaires sans surveillance longtemps."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/03-marina-di-praia-from-sea.webp",
+          "width": 1600,
+          "height": 1045,
+          "alt": "Marina di Praia vue depuis la mer avec plage de galets et promenade au pied des falaises",
+          "caption": "Depuis l’eau, on voit à quel point la crique est compacte : arrive tôt si tu veux de la place gratuite. Photo : Gilbert Bochenek (CC BY-SA 3.0) via Wikimedia Commons."
+        }
       ]
-    }
-  ],
-  "tips": [
-    "Réservez le déjeuner chez Il Pirata ou La Praia pour un repas à flanc de falaise entre deux baignades.",
-    "Prévoyez un sac étanche pour vos objets de valeur ; l’espace est compté et tout reste plus propre regroupé."
-  ],
-  "faqs": [
+    },
     {
-      "q": "La plage est-elle gratuite ?",
-      "a": [
-        "Une portion est gratuite, mais l’espace est limité. Comptez 20 à 25 € pour une paire de transats et un parasol dans les beach clubs en haute saison."
+      "id": "what-to-bring",
+      "title": "Quoi emporter (pour ne pas souffrir sur les galets)",
+      "body": [
+        "Ici, c’est galets, pas sable fin. La différence est énorme : si tu arrives avec une serviette fine, tu vas bouger toutes les cinq minutes au lieu de te détendre.",
+        "Prépare un sac “journée auberge” : léger pour la remontée, mais avec le minimum qui rend galets et ombre faciles."
+      ],
+      "list": [
+        "Chaussures d’eau : le bord peut être glissant et les galets font mal sur la durée.",
+        "Tapis/serviette épaisse : sur les galets, on sent vite que c’est dur.",
+        "Une couche légère pour la fin d’après-midi : l’ombre arrive tôt et ça refroidit après la baignade.",
+        "Cash + carte : certains petits paiements et terminaux peuvent être instables.",
+        "Un petit dry bag ou une pochette zip pour le téléphone si tu alternes baignade et promenade."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/05-praiano-coastline.webp",
+          "width": 1600,
+          "height": 1200,
+          "alt": "Côte de Praiano avec falaises et mer bleue sur la côte amalfitaine",
+          "caption": "Les falaises changent vite lumière et ombre : prends une couche si tu restes tard. Photo : Barochat (CC BY-SA 3.0) via Wikimedia Commons."
+        }
       ]
     },
     {
-      "q": "Puis-je y aller à pied depuis Positano ?",
-      "a": [
-        "La marche prend environ 50 minutes le long de la route aux bas-côtés étroits. Le bus ou le scooter reste plus sûr, surtout avec la circulation estivale."
+      "id": "best-time",
+      "title": "Meilleur moment (et sensation de l’eau)",
+      "body": [
+        "Pour une journée simple et calme, arrive le matin. Tu auras plus de chances de trouver une place confortable, moins de foule sur la promenade, et un rythme “je pose une base puis je me baigne”.",
+        "En milieu/fin d’après-midi, les falaises font plus d’ombre. C’est parfait si tu as trop chaud, mais la crique peut sembler fraîche quand il y a du vent — surtout après une longue baignade.",
+        "La pente sous l’eau devient vite profonde : entre doucement la première fois et surveille où tu poses ton sac si les vagues montent."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/06-praiano-view.webp",
+          "width": 1600,
+          "height": 1066,
+          "alt": "Vue le long de la côte de Praiano avec falaises et maisons sur la pente",
+          "caption": "Ici, les falaises dictent la lumière et l’ombre : planifie en conséquence. Photo : Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons."
+        }
       ]
-    }
-  ],
-  "toc": [
-    {
-      "href": "#why-go",
-      "label": "Pourquoi y aller"
     },
     {
-      "href": "#getting-there",
-      "label": "S’y rendre"
+      "id": "nearby",
+      "title": "Baignades tranquilles autour (ce qui est réaliste)",
+      "body": [
+        "La côte amalfitaine est célèbre pour ses “criques secrètes”, mais beaucoup sont privées, accessibles uniquement en bateau, ou demandent des sentiers de falaises un peu risqués. Pour les voyageurs en auberge, le plus simple est d’utiliser cette crique comme base confortable et d’ajouter une seule halte “wow” sur la même ligne de bus.",
+        "La halte spectaculaire la plus facile à proximité est %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore% : viens tôt pour les photos et une baignade rapide, puis reviens ici pour déjeuner, l’ombre, et une baignade plus relax.",
+        "Si tu veux une journée “échantillon” complète, planifie l’ordre (et les horaires de bus) avec notre %LINK:beachHoppingAmalfi|guide beach-hopping côte amalfitaine% pour ne pas passer l’après-midi à voir des bus pleins défiler."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/07-fiordo-di-furore.webp",
+          "width": 1200,
+          "height": 1600,
+          "alt": "Gorge du Fiordo di Furore avec eau turquoise et falaises abruptes",
+          "caption": "Fiordo di Furore est la halte photo spectaculaire du coin : combine-la avec une plage-base plus calme. Photo : Luca Aless (CC BY-SA 4.0) via Wikimedia Commons."
+        }
+      ]
     },
     {
-      "href": "#layout",
-      "label": "Configuration et services"
-    },
-    {
-      "href": "#evening",
-      "label": "Rester pour le dîner"
+      "id": "evening",
+      "title": "Dîner au bord de l’eau, puis rentrer sans stress",
+      "body": [
+        "C’est l’une des plus jolies baies pour prolonger après la baignade : quand le soleil baisse, les restaurants passent en mode dîner et les lumières de la promenade se reflètent sur l’eau. Si tu veux une table précise, réserve — surtout en juillet et août.",
+        "Pour simplifier le retour, regarde l’horaire du bus dès ton arrivée. Vise l’avant-dernier bus vers Positano pour avoir une marge si un bus est plein.",
+        "Si tu rates le dernier bus, les taxis de Praiano à Positano peuvent coûter cher : si tu restes tard, organise-toi pour partager avec d’autres de l’auberge."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/04-torre-a-mare-watchtower.webp",
+          "width": 1200,
+          "height": 1600,
+          "alt": "Tour côtière près de Praiano au-dessus des falaises sur la mer",
+          "caption": "La côte ici est ponctuée de tours historiques et de sentiers de falaises. Photo : Falk2 (CC BY-SA 4.0) via Wikimedia Commons."
+        }
+      ]
     }
   ],
   "essentialsTitle": "À quoi s’attendre",
   "essentials": [
-    "À 20 minutes en bus SITA de Positano ; demandez l'arrêt Marina di Praia et descendez pendant deux minutes.",
-    "Plage de galets étroite avec un lido principal et une petite section gratuite au milieu.",
-    "Des restaurants et des kiosques de collations bordent l'allée, idéal pour un dîner au coucher du soleil avant de rentrer chez vous."
+    "Court trajet en bus SITA depuis Positano : demande l’arrêt Marina di Praia et descends deux minutes à pied vers l’eau.",
+    "Baie étroite de galets avec un lido principal et une petite zone gratuite : arrive tôt si tu veux la partie publique.",
+    "Nourriture et services sur place (restaurants, boissons, douches au lido) : idéal en demi-journée ou pour un dîner avant de rentrer."
   ],
-  "typicalCostsTitle": "Coûts typiques",
+  "typicalCostsTitle": "Coûts habituels",
   "typicalCosts": [
-    "Chaise longue + parasol au Marina di Praia Beach Club : 25 à 35 € la journée (sets pour deux personnes disponibles).",
-    "Location de kayak : environ 20 € l'heure pour deux personnes.",
-    "Plats du dîner chez Da Armandino ou Il Pirata : 16 € – 28 € selon prises et spécialités de pâtes."
+    "Transat + parasol au Marina di Praia Beach Club : €25–€35 la journée (packs pour deux disponibles).",
+    "Location de kayak : environ €20/heure pour deux personnes.",
+    "Plats au Da Armandino ou Il Pirata : €16–€28 selon le poisson et les pâtes du jour."
   ],
   "tipsTitle": "Conseils rapides",
+  "tips": [
+    "Valide ton ticket de bus dès que tu montes et garde-en un en réserve pour le retour au cas où le kiosque soit fermé le soir.",
+    "Prends des chaussures d’eau : les galets peuvent être glissants et la plage descend rapidement.",
+    "Compare d’autres options sur notre %LINK:positanoBeaches|aperçu des plages% si tu veux combiner cette crique avec une journée à Positano."
+  ],
   "warningsTitle": "Bon à savoir",
   "warnings": [
-    "L'espace est limité ; la zone gratuite se remplit en premier et les transats du lido se vendent le week-end.",
-    "Les falaises bloquent le soleil direct en milieu d’après-midi – idéales pour se rafraîchir, mais il peut faire froid les jours venteux.",
-    "La réception mobile plonge à l’intérieur de la gorge ; téléchargez au préalable les horaires de bus ou les confirmations de réservation de dîner."
+    "L’espace est limité : la zone gratuite se remplit d’abord et les transats du lido peuvent être complets le week-end.",
+    "Les falaises bloquent le soleil direct en milieu d’après-midi : parfait pour se rafraîchir, mais ça peut être frais quand il y a du vent.",
+    "Le réseau mobile baisse dans la gorge : télécharge les horaires de bus ou confirmations de réservation à l’avance."
   ],
   "faqsTitle": "FAQ Marina di Praia",
-  "gallery": {
-    "title": "Galerie Marina di Praia",
-    "items": [
-      {
-        "alt": "Plage de Marina di Praia entre les falaises",
-        "caption": "Galets et transats au pied des falaises"
-      },
-      {
-        "alt": "Restaurants à flanc de falaise à Marina di Praia",
-        "caption": "Il Pirata et Da Armandino surplombent la crique"
-      },
-      {
-        "alt": "Location de kayaks à Marina di Praia",
-        "caption": "Kayaks prêts pour explorer les grottes voisines"
-      }
-    ]
-  }
+  "faqs": [
+    {
+      "q": "Où prendre exactement le bus depuis Positano ?",
+      "a": [
+        "Utilise l’arrêt Sponda sur Via Pasitea pour les bus vers Amalfi. C’est à environ 10 minutes à pied en descente depuis l’auberge ; en haute saison, arrive 10 minutes tôt pour monter avant que le bus ne soit plein."
+      ]
+    },
+    {
+      "q": "Y a-t-il une zone gratuite ou faut-il louer un transat ?",
+      "a": [
+        "Il y a une petite zone publique au centre de la crique. Prends un tapis ou une serviette épaisse — les galets sont grossiers — et sois prêt à te rapprocher des rochers selon la marée. Les transats du Marina di Praia Beach Club incluent douches et toilettes si tu préfères plus de confort."
+      ]
+    },
+    {
+      "q": "Jusqu’à quelle heure puis-je dîner tout en rentrant à Hostel Brikette ?",
+      "a": [
+        "Le dernier bus SITA vers Positano dépend du mois, mais en été il circule généralement jusqu’à environ 21:30. Vérifie l’horaire affiché en arrivant et vise l’avant-dernier au cas où un bus soit complet. Après le dernier bus, les taxis Praiano → Positano coûtent environ €35–€45 : partage si tu restes plus longtemps."
+      ]
+    },
+    {
+      "q": "Marina di Praia est-elle une bonne option en solo ?",
+      "a": [
+        "Oui — c’est l’une des baies les plus “solo-friendly” car il y a des services et une promenade visible. Mais garde les réflexes d’auberge : n’emporte que ce que tu peux porter, garde ton téléphone zippé, et fais des baignades plus courtes pour ne pas laisser ton sac sans surveillance longtemps."
+      ]
+    }
+  ]
 }
+

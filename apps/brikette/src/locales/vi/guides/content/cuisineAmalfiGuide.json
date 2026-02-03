@@ -84,23 +84,6 @@
       "note": "Bản dịch đang được chuẩn bị."
     }
   ],
-  "gallery": {
-    "title": "Món nổi bật",
-    "items": [
-      {
-        "alt": "Bản dịch đang được chuẩn bị.",
-        "caption": "Bản dịch đang được chuẩn bị."
-      },
-      {
-        "alt": "Bản dịch đang được chuẩn bị.",
-        "caption": "Tráng miệng vị chanh nên thử"
-      },
-      {
-        "alt": "Bạn bè cụng ly limoncello lúc hoàng hôn",
-        "caption": "Digestivo với tầm nhìn đẹp"
-      }
-    ]
-  },
   "fallback": {
     "toc": [
       {

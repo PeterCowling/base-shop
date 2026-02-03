@@ -1,0 +1,15 @@
+{
+  "name": "@apps/brikette-scripts",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Google Apps Scripts for Brikette email automation and guest communications",
+  "scripts": {
+    "lint": "echo 'No linting for .gs files'",
+    "typecheck": "echo 'No type checking for .gs files'"
+  },
+  "keywords": [
+    "google-apps-script",
+    "brikette",
+    "email-automation"
+  ]
+}

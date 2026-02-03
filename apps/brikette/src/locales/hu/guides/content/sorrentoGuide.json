@@ -1,46 +1,61 @@
 {
   "seo": {
-    "title": "Sorrento útmutató (kapu az Amalfi-parthoz)",
-    "description": "Megér-e bázisnak vagy elég egynapos kirándulás? Látnivalók és közlekedési kapcsolatok."
+    "title": "Sorrento útikalauz",
+    "description": "Közlekedés, kikapcsolódás és panorámás helyek a Sorrento környékén."
   },
-  "linkLabel": "Sorrento útmutató (kapu az Amalfi-parthoz)",
+  "linkLabel": "Sorrento útikalauz",
   "intro": [
-    "A fordítás folyamatban van."
+    "Sorrento az Amalfi-part vasúti és buszközpontja, ahol könnyű kapcsolatokat építeni, miközben élvezed a tengerparti hangulatot."
   ],
   "sections": [
     {
-      "id": "why",
-      "title": "Why base in Sorrento",
+      "id": "stay",
+      "title": "Hol érdemes megszállni",
       "body": [
-        "A fordítás folyamatban van."
+        "Keress szobát a Viale degli Aranci vagy a Via degli Aranci környékén, hogy közel legyél a part felé vezető lépcsőkhöz.",
+        "Ha a költségek fontosak, válogass a belső utcákban található családi panziók közül."
       ]
     },
     {
-      "id": "connections",
-      "title": "Connections to Positano",
+      "id": "eat",
+      "title": "Étkezés és kávézás",
       "body": [
-        "A fordítás folyamatban van."
+        "A Piazza Tasso környékén rengeteg kávézó van, de a helyi delikáteszüzletekben fillérekért vehetsz paniniket és limoncellót.",
+        "A szárazföldi saláták vagy tészták mellé kérj tengerre néző teraszos helyet."
       ]
     },
     {
-      "id": "see",
-      "title": "What to see",
+      "id": "transport",
+      "title": "Közlekedési csomópont",
       "body": [
-        "A fordítás folyamatban van."
+        "A Circumvesuviana vonat gyorsan visz Nápolyba és Pompejibe; a buszmegállók pedig Amalfi felé tartanak.",
+        "Szobatársaid lehetnek más utazók – érdemes jegyet venni előre, főleg a ferries és a buszok átfedésekor."
+      ]
+    },
+    {
+      "id": "dayTrips",
+      "title": "Egynapos kirándulások",
+      "body": [
+        "Capri, Pompeji, szőlőskertek vagy Salerno mind járhatók egy nap alatt – tervezz közlekedési puffert a több csatlakozás miatt.",
+        "Ha csak Sorrentót fedeznéd fel, sétálj végig a Marina Grande-ig és nézd meg a helyi kézműves műhelyeket."
       ]
     }
   ],
+  "tips": [
+    "Sétálj fel a Vallone dei Mulini-völgyhöz reggel, amikor még hűvös a levegő.",
+    "Használd a helyi buszokat helyette, ha nem szeretnél taxit hívni."
+  ],
   "faqs": [
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Mikor a legjobb ide látogatni?",
       "a": [
-        "A fordítás folyamatban van."
+        "Tavasztól kora őszig maradnak nyitva a legtöbb látnivaló; április és május kiváló az enyhébb tömeg miatt."
       ]
     },
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Milyen készpénzt vigyek magammal?",
       "a": [
-        "A fordítás folyamatban van."
+        "Mini címletekkel ruházz be, mert sok kis kávézó és piac nem fogad nagy bankjegyet."
       ]
     }
   ]

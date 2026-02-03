@@ -21,10 +21,29 @@ type TokenParseResult =
       endIndex: number;
     }
   | {
+      kind: "externalLink";
+      href: string;
+      label: string;
+      endIndex: number;
+    }
+  | {
       kind: "text";
       text: string;
       endIndex: number;
 };
+
+/**
+ * Validates that a URL is safe for rendering as a link.
+ * Only allows http, https, and mailto protocols.
+ */
+function isSafeUrl(url: string): boolean {
+  const trimmed = url.trim().toLowerCase();
+  return (
+    trimmed.startsWith("http://") ||
+    trimmed.startsWith("https://") ||
+    trimmed.startsWith("mailto:")
+  );
+}
 
 function normalizeTokenLabel(value: string): string {
   // Token labels come from translation content, but we still normalize whitespace
@@ -70,7 +89,14 @@ function tryParsePercentToken(text: string, startIndex: number, lang: AppLanguag
   i += 1;
 
   const keyStart = i;
-  while (i < text.length && text[i] !== "|" && text[i] !== "%") i += 1;
+  const tokenType = type.toUpperCase();
+  // For URL tokens, allow % characters in the key (for percent-encoded URLs like %20, %3D, etc.)
+  // For other tokens (LINK, HOWTO), stop at % as before
+  const allowPercentInKey = tokenType === "URL";
+  while (i < text.length && text[i] !== "|") {
+    if (!allowPercentInKey && text[i] === "%") break;
+    i += 1;
+  }
   if (i >= text.length || text[i] !== "|") return null;
   const rawKey = text.slice(keyStart, i);
   i += 1;
@@ -81,7 +107,6 @@ function tryParsePercentToken(text: string, startIndex: number, lang: AppLanguag
   const rawLabel = text.slice(labelStart, i);
   const endIndex = i + 1;
 
-  const tokenType = type.toUpperCase();
   const key = rawKey.trim();
   const label = normalizeTokenLabel(rawLabel);
   if (key.length === 0 || label.length === 0) return null;
@@ -94,6 +119,15 @@ function tryParsePercentToken(text: string, startIndex: number, lang: AppLanguag
     if (howToBase.length === 0) return { kind: "text", text: label, endIndex };
     const href = `/${lang}/${howToBase}/${key}`;
     return { kind: "link", href, label, endIndex };
+  }
+  if (tokenType === "URL") {
+    // External URL token: %URL:https://example.com|Label% or %URL:mailto:test@example.com|Email%
+    // Only allow safe protocols (http, https, mailto)
+    if (isSafeUrl(key)) {
+      return { kind: "externalLink", href: key.trim(), label, endIndex };
+    }
+    // Unsafe URL: render as plain text for security
+    return { kind: "text", text: label, endIndex };
   }
 
   // Unknown token types: fall back to the label.
@@ -167,7 +201,7 @@ function renderInline(text: string, lang: AppLanguage, keyBase: string): ReactNo
       }
     };
 
-    const appendLinkLocal = (href: string, label: string) => {
+    const appendLinkLocal = (href: string, label: string, isExternal = false) => {
       flushLocal();
       const prev = out[out.length - 1];
       if (typeof prev === "string") {
@@ -175,11 +209,31 @@ function renderInline(text: string, lang: AppLanguage, keyBase: string): ReactNo
       } else if (prev != null) {
         out.push(" ");
       }
-      out.push(
-        <Link key={`${keyBase}-link-${linkIndex}`} href={href}>
-          {label}
-        </Link>,
-      );
+      if (isExternal) {
+        // External link: use native <a> with security attributes
+        // mailto: links don't need target="_blank"
+        const isMailto = href.toLowerCase().startsWith("mailto:");
+        out.push(
+          <a
+            key={`${keyBase}-extlink-${linkIndex}`}
+            href={href}
+            className="font-medium text-primary-700 underline decoration-primary-300 underline-offset-2 transition-colors hover:text-primary-900 hover:decoration-primary-500 dark:text-primary-400 dark:decoration-primary-600 dark:hover:text-primary-300 dark:hover:decoration-primary-400"
+            {...(isMailto ? {} : { target: "_blank", rel: "noopener noreferrer" })}
+          >
+            {label}
+          </a>,
+        );
+      } else {
+        out.push(
+          <Link
+            key={`${keyBase}-link-${linkIndex}`}
+            href={href}
+            className="font-medium text-primary-700 underline decoration-primary-300 underline-offset-2 transition-colors hover:text-primary-900 hover:decoration-primary-500 dark:text-primary-400 dark:decoration-primary-600 dark:hover:text-primary-300 dark:hover:decoration-primary-400"
+          >
+            {label}
+          </Link>,
+        );
+      }
       linkIndex += 1;
     };
 
@@ -203,7 +257,9 @@ function renderInline(text: string, lang: AppLanguage, keyBase: string): ReactNo
         if (parsed) {
           if (parsed.kind === "link") {
             appendLinkLocal(parsed.href, parsed.label);
-          } else {
+          } else if (parsed.kind === "externalLink") {
+            appendLinkLocal(parsed.href, parsed.label, true);
+          } else if (parsed.kind === "text") {
             localBuffer += parsed.text;
           }
           i = parsed.endIndex;
@@ -215,7 +271,7 @@ function renderInline(text: string, lang: AppLanguage, keyBase: string): ReactNo
         const parsed = tryParseLegacyToken(text, i, lang);
         if (parsed) {
           if (parsed.kind === "link") appendLinkLocal(parsed.href, parsed.label);
-          else localBuffer += parsed.text;
+          else if (parsed.kind === "text") localBuffer += parsed.text;
           i = parsed.endIndex;
           continue;
         }
@@ -225,7 +281,7 @@ function renderInline(text: string, lang: AppLanguage, keyBase: string): ReactNo
         const parsed = tryParseMustacheToken(text, i, lang);
         if (parsed) {
           if (parsed.kind === "link") appendLinkLocal(parsed.href, parsed.label);
-          else localBuffer += parsed.text;
+          else if (parsed.kind === "text") localBuffer += parsed.text;
           i = parsed.endIndex;
           continue;
         }

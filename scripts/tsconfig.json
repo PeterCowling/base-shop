@@ -19,8 +19,8 @@
     "target": "ES2022",
     "moduleResolution": "bundler",
 
-    /* ───── Node typings only ───── */
-    "types": ["node"],
+    /* ───── Node typings + test framework ───── */
+    "types": ["node", "jest"],
 
     /* ───── workspace package resolution ───── */
     "paths": {
@@ -55,6 +55,7 @@
   "exclude": [
     "dist", // freshly emitted output
     "__tests__", // unit/integration tests
+    "**/*.test.ts", // test files using @jest/globals
     ".turbo", // turbo cache
     "node_modules", // package deps (if any local)
     "src/release-deposits.ts" // checked via apps/cms project

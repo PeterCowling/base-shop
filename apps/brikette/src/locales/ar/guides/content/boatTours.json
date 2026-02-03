@@ -51,11 +51,5 @@
       ]
     }
   ],
-  "galleryHeading": "معرض الصور",
-  "gallery": {
-    "primaryAlt": "قارب يبحر بمحاذاة ساحل بوسيتانو",
-    "primaryCaption": "رحلة على الساحل",
-    "secondaryAlt": "توقف سباحة قرب منحدرات بوسيتانو",
-    "secondaryCaption": "توقف للسباحة"
-  }
+  "galleryHeading": "معرض الصور"
 }

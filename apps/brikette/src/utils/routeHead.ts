@@ -139,7 +139,7 @@ export function buildRouteMeta({
       });
     } catch {
       // If buildLinks throws (e.g., during partial mocks), fall back to canonical only.
-      const canonicalPath = path !== "/" && path.endsWith("/") ? path.slice(0, -1) : path;
+      const canonicalPath = path === "/" || path.endsWith("/") ? path : `${path}/`;
       tags.push({
         tagName: "link",
         rel: "canonical",

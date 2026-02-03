@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - staging
     paths:
       - 'apps/prime/**'
       - 'packages/design-system/**'
@@ -38,4 +39,7 @@ jobs:
         --branch ${{ github.ref_name }}
         --functions apps/prime/functions
       project-name: "prime"
+      environment-name: "${{ github.ref_name == 'staging' && 'staging' || 'production' }}"
+      environment-url: "${{ github.ref_name == 'staging' && 'https://staging.prime.pages.dev' || 'https://prime.pages.dev' }}"
+      healthcheck-args: "${{ github.ref_name == 'staging' && '--staging' || '' }}"
     secrets: inherit

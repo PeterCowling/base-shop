@@ -14,7 +14,7 @@ import { serializeJsonLdValue } from "@/utils/seo/jsonld";
 
 function DealsStructuredData(): JSX.Element | null {
   const lang = useCurrentLanguage();
-  const pageUrl = `${BASE_URL}/${lang}/${getSlug("deals", lang)}`;
+  const pageUrl = `${BASE_URL}/${lang}/${getSlug("deals", lang)}/`;
   const now = new Date();
   const currentDeal = DEALS.find((deal) => getDealStatus(deal, now) !== "expired") ?? null;
 

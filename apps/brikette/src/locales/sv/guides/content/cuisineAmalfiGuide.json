@@ -84,23 +84,6 @@
       "note": "Bageri för delizia al limone, babà al limoncello och bakverk som är lätta att ta med till klipp-picknick."
     }
   ],
-  "gallery": {
-    "title": "Rätterna i fokus",
-    "items": [
-      {
-        "alt": "Skaldjurspasta med Amalficitron",
-        "caption": "Skaldjursklassiker från Positanos trattorior"
-      },
-      {
-        "alt": "Delizia al limone på ett fat",
-        "caption": "Citronbaserade desserter att prova"
-      },
-      {
-        "alt": "Vänner som skålar med limoncello i solnedgången",
-        "caption": "Digestif med utsikt"
-      }
-    ]
-  },
   "fallback": {
     "toc": [
       {

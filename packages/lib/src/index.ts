@@ -13,8 +13,6 @@ export * from "./string";
  * root.  The root of @acme/zod-utils lacks a compiled index.d.ts, which
  * causes TS6305 errors.  Importing from the specific module files avoids this.
  */
-export type { GeneratedMeta,ProductData } from "./generateMeta";
-export { generateMeta } from "./generateMeta";
 export {
   applyFriendlyZodMessages,
   friendlyErrorMap,

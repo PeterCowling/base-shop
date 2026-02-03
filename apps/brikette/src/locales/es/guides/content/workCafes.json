@@ -25,13 +25,6 @@
       ]
     }
   ],
-  "galleryTitle": "Galería",
-  "gallery": {
-    "item1Alt": "Portátil sobre una mesa de café",
-    "item1Caption": "Rincón tranquilo para llamadas",
-    "item2Alt": "Espresso y cuaderno",
-    "item2Caption": "Alterna locales y consume con regularidad"
-  },
   "faqs": [
     {
       "q": "¿Puedo quedarme muchas horas?",

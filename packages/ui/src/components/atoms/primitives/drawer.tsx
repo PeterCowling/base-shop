@@ -7,7 +7,15 @@ import type { DrawerContentProps } from "@acme/design-system/primitives/drawer";
 
 import { cn } from "../../../utils/style";
 
-export * from "@acme/design-system/primitives/drawer";
+export type { DrawerContentProps } from "@acme/design-system/primitives/drawer";
+export {
+  Drawer,
+  DrawerDescription,
+  DrawerOverlay,
+  DrawerPortal,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@acme/design-system/primitives/drawer";
 
 export const DrawerContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,

@@ -1,0 +1,51 @@
+{
+  "seo": {
+    "title": "Hogyan juss el a positanói kompkiktől a Hostel Brikette‑ig – lépésről lépésre",
+    "description": "Érkezz stresszmentesen: sétálj, szállj fel az Interno Positano buszra, és kövesd csomagtippjeinket — kevesebb mint 15 perc alatt a hostelnél lehetsz. Élő Google Maps linkekkel, jegyinformációval és akadálymentesítési tanácsokkal."
+  },
+  "linkLabel": "Hogyan juss el a positanói kompkiktől a Hostel Brikette‑ig – lépésről lépésre",
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Positano kikötő → hostel az Interno busszal",
+      "body": [
+        "**1. tipp:** %URL:https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26|Interno busz menetrend és jegyárak%. **2. tipp:** Jegyet bármelyik *Tabacchi*-ban vagy újságosnál vehetsz. **3. tipp:** Sok csomaggal érkezel? A móló hordárai közvetlenül a hostelbe szállítják a poggyászt."
+      ]
+    },
+    {
+      "id": "portToPiazza",
+      "title": "Kikötő a Piazza dei Muliniig",
+      "body": [
+        "Kövesd %URL:https://www.google.com/maps/dir/Positano+Spiaggia/2+Viale+Pasitea+Positano,+Campania/@40.6289096,14.4857482,18z/data=!4m14!4m13!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!3e2|ezeket a lépéseket% a fő strandtól (Spiaggia Grande) a Piazza dei Muliniig."
+      ]
+    },
+    {
+      "id": "piazzaToStop",
+      "title": "Piazza dei Mulini → helyi buszmegálló",
+      "body": [
+        "* Ne a lépcsőt válaszd – szállj fel az Interno buszra.\n* A járat kb. 30 percenként indul 8:00 és éjfél között.\n* Az útvonal a %URL:https://www.google.com/maps/dir/2+Viale+Pasitea+Positano,+Campania/Viale+Pasitea,+323,+84017+Positano+SA/@40.6309188,14.4819138,16z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!1m5!1m1!1s0x133b97667312711d:0xa2b15bca59b377fa!2m2!1d14.4824389!2d40.6293416!3e0|Google Térképen% is megnézhető."
+      ]
+    },
+    {
+      "id": "busLook",
+      "title": "Milyen a busz?",
+      "body": [
+        "Többféle buszt használnak, de az LED-kijelzőn mindig ez áll: *„Interno Positano”*."
+      ]
+    },
+    {
+      "id": "stopToHostel",
+      "title": "Helyi buszmegálló → hostel",
+      "body": [
+        "* A busz a lenti képen látható Tabacchi előtt áll meg.\n* Leszállás után fordulj **jobbra**, és sétálj ki a főútra.\n* Fordulj **balra**, majd haladj kb. 100 métert.\n* A hostel a jobb oldalon lesz – a lépcsőn menj fel a recepcióhoz.\n* Részletes navigáció kell? %URL:https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Tabacchi+Cafiero+Emanuele,+Viale+Pasitea,+325a,+84017+Positano+SA/@40.6292434,14.4813669,19z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b97660ef186c1:0xc9eb9ab54d880307!2m2!1d14.4823321!2d40.6293865!3e2|Nyisd meg a Google Térképet%."
+      ]
+    },
+    {
+      "id": "approach",
+      "title": "Tipp: közelítés a hostelhez",
+      "body": [
+        "* A hostelhez közeledve meglátod a második emeleti teraszunk tábláját.\n* Menj el mellette, kövesd az ívet, majd a jobb oldali lépcsőn menj fel a recepcióhoz."
+      ]
+    }
+  ]
+}

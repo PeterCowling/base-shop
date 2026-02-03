@@ -91,7 +91,7 @@
   "tips": [
     "Screenshot confirmation emails — mobile signal fades near the dock.",
     "Pack reef-safe sunscreen and water shoes; the shoreline mixes pebbles and rock slabs.",
-    "Review our %LINK:beaches|Positano beaches overview% to compare Laurito with other coves."
+    "Review our %LINK:positanoBeaches|Positano beaches overview% to compare Laurito with other coves."
   ],
   "warningsTitle": "Good to know",
   "warnings": [
@@ -123,22 +123,34 @@
   "images": {
     "whyGo": {
       "alt": "Cala de la playa de Laurito con clubes de playa a lo largo de la orilla",
-      "caption": "La cala de Laurito, respaldada por acantilados, es más tranquila que la playa principal."
+      "caption": "La cala de Laurito, respaldada por acantilados, es más tranquila que la playa principal.",
+      "src": "/img/guides/laurito-beach/02-beach-overview.jpg"
     },
     "layout": {
       "alt": "Plataformas y distribución de la playa de Laurito",
-      "caption": "Tres zonas comparten la cala: franja pública, plataformas de Villa Tre Ville y terraza de Da Adolfo."
+      "caption": "Tres zonas comparten la cala: franja pública, plataformas de Villa Tre Ville y terraza de Da Adolfo.",
+      "src": "/img/guides/laurito-beach/01-beach-layout-map.jpg"
     },
     "treVille": {
       "alt": "Tumbonas y vistas al mar del club de playa Villa Tre Ville",
-      "caption": "Villa Tre Ville se centra en tumbonas premium y servicio de conserjería."
+      "caption": "Villa Tre Ville se centra en tumbonas premium y servicio de conserjería.",
+      "src": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg"
     },
     "daAdolfo": {
       "alt": "Muelle y zona de asientos del club de playa Da Adolfo",
-      "caption": "La lancha de Da Adolfo deja a los huéspedes junto a la terraza del restaurante."
+      "caption": "La lancha de Da Adolfo deja a los huéspedes junto a la terraza del restaurante.",
+      "src": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg"
+    },
+    "positanoView": {
+      "src": "/img/guides/laurito-beach/05-positano-view.jpg",
+      "alt": "View over Positano and the sea with boats near the shore",
+      "caption": "Spiaggia Grande is the main launch point for many beach shuttles and boats."
+    },
+    "sitaBus": {
+      "src": "/img/guides/laurito-beach/06-amalfi-coast-sita-bus.jpg",
+      "alt": "Blue SITA bus driving along the Amalfi Coast road above the sea",
+      "caption": "The coastal SITA bus is a useful backup when boats are paused."
     }
   },
-  "gallery": {
-    "alt": "Orilla de la playa de Laurito"
-  }
+  "lastUpdated": "2026-01-29T00:00:00.000Z"
 }

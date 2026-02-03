@@ -61,12 +61,6 @@
     }
   ],
   "galleryHeading": "Galería de fotos",
-  "gallery": {
-    "primaryAlt": "Barco navegando por la costa de Positano",
-    "primaryCaption": "Navegando la costa",
-    "secondaryAlt": "Parada para nadar cerca de los acantilados de Positano",
-    "secondaryCaption": "Parada de baño"
-  },
   "toc": [
     {
       "href": "#group",

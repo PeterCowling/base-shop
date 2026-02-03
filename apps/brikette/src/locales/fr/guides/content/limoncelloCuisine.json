@@ -52,18 +52,5 @@
         "Optez pour une limonade fraîche, une granita ou des sirops de citron si vous souhaitez éviter l’alcool."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Galerie photo",
-    "items": [
-      {
-        "alt": "Affiche vintage de Positano avec des citrons",
-        "caption": "Citrons vintage"
-      },
-      {
-        "alt": "Table en terrasse avec des verres de limoncello",
-        "caption": "Limoncello en terrasse"
-      }
-    ]
-  }
+  ]
 }

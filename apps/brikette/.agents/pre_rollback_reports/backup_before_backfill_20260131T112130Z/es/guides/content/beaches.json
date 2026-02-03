@@ -1,0 +1,218 @@
+{
+  "seo": {
+    "title": "Las mejores playas de Positano",
+    "description": "Resumen de Spiaggia Grande, Fornillo, Arienzo y cómo llegar a cada una sin perderte."
+  },
+  "linkLabel": "Las mejores playas de Positano",
+  "intro": [
+    "Para que tengas un fantástico día de playa, hemos recopilado una lista de las principales playas disponibles. La lista se presenta en formato de tabla, brindando una descripción general de las características y servicios que ofrece cada playa.",
+    "Para obtener más información sobre cada playa, haga clic en el nombre de la playa en la siguiente tabla. Esto lo llevará a nuestras guías, cada una de las cuales incluye direcciones de viaje y descripciones de las distintas secciones de la playa."
+  ],
+  "toc": [
+    {
+      "href": "#guides-directions",
+      "label": "Guías con indicaciones"
+    },
+    {
+      "href": "#positano-beaches",
+      "label": "Playas de Positano"
+    },
+    {
+      "href": "#praiano-beaches",
+      "label": "Playas de Praiano"
+    },
+    {
+      "href": "#furore-beach",
+      "label": "Playa de Furore"
+    },
+    {
+      "href": "#sorrento-beaches",
+      "label": "Playas de Sorrento"
+    },
+    {
+      "href": "#amalfi-beaches",
+      "label": "Playas de Amalfi"
+    },
+    {
+      "href": "#capri-day-trips",
+      "label": "Excursiones de un día a Capri"
+    }
+  ],
+  "sections": [
+    {
+      "id": "guides-directions",
+      "title": "Guías, incluidas direcciones",
+      "body": [
+        "Toque o haga clic en los nombres de las playas a continuación para acceder a nuestras guías detalladas. Cada uno cubre indicaciones de transporte, dónde comienzan las zonas gratuitas y de pago, y consejos para navegar por los diferentes tramos."
+      ]
+    },
+    {
+      "id": "positano-beaches",
+      "title": "Playas de Positano",
+      "body": [
+        "Fornillo, Spiaggia Grande, Arienzo y Laurito son las principales opciones a poca distancia a pie o en transporte desde el albergue. Utilice la pasarela junto al acantilado o los taxis acuáticos locales para desplazarse entre ellos y planifique con antelación si desea volver cuesta arriba en autobús o barco después de un largo día."
+      ]
+    },
+    {
+      "id": "praiano-beaches",
+      "title": "Playas de Praiano",
+      "body": [
+        "Las calas de Praiano son fáciles de realizar excursiones de un día desde Positano. Gavitella es el favorito para tomar un aperitivo y una cena al atardecer, mientras que Marina di Praia es un pueblo de pescadores con clubes de playa y una pequeña plataforma pública escondida entre los barcos."
+      ]
+    },
+    {
+      "id": "furore-beach",
+      "title": "Playa de Furore",
+      "body": [
+        "Fiordo di Furore es la espectacular playa estilo fiordo que ves en Instagram. El acceso es gratuito, pero el transporte y las empinadas escaleras hacen imprescindible la planificación, sobre todo si quieres salir antes de que se llene la pequeña zona de aparcamiento."
+      ]
+    },
+    {
+      "id": "sorrento-beaches",
+      "title": "Playas de Sorrento",
+      "body": [
+        "El baño Regina Giovanna es la opción destacada para nadar en Sorrento. Es una piscina natural con acceso gratuito, agua fresca y vistas al acantilado, perfecta si quieres escapar de las multitudes por una tarde."
+      ]
+    },
+    {
+      "id": "amalfi-beaches",
+      "title": "Playas de Amalfi",
+      "body": [
+        "La playa de la ciudad de Amalfi se encuentra frente al puerto deportivo y está llena de lidos como Stella Maris, Marina Grande Beach Club, Silver Moon, Bagni Mar di Cobalto y Tonino ò Beach. Reserve con anticipación en los meses pico o llegue temprano para reclamar un lugar público."
+      ]
+    },
+    {
+      "id": "capri-day-trips",
+      "title": "Excursiones de un día a Capri",
+      "body": [
+        "Si va a Capri, las principales zonas de playa a tener en cuenta son Marina di Mulo, Bagni di Tiberio y Marina Grande. Cada uno ofrece tumbonas de pago con agua clara y acceso rápido en ferry a las conexiones de transporte de la isla."
+      ]
+    }
+  ],
+  "prosCons": [
+    {
+      "title": "Fornillo (Positano)",
+      "pros": [
+        "Los clubes de playa Pupetto, Grassi, Ferdinando y La Marinella cuestan alrededor de 15 € por un juego de tumbonas.",
+        "Dos secciones públicas, incluida una “secreta” menos conocida, se extienden más allá de la zona franca principal."
+      ],
+      "cons": [
+        "El camino de regreso al Hostel Brikette es empinado; Si estás cansado, dirígete a la playa principal y toma el autobús local cuesta arriba."
+      ]
+    },
+    {
+      "title": "Playa Grande (Positano)",
+      "pros": [
+        "Vistas clásicas de postal de Positano con la ciudad como telón de fondo.",
+        "Área pública disponible si llegas lo suficientemente temprano."
+      ],
+      "cons": [
+        "L'Incanto cuesta unos 25 € por tumbona, mientras que La Scogliera oscila entre 100 y 400 € aproximadamente.",
+        "La mayoría de los huéspedes prefieren el ambiente y la relación calidad-precio de Fornillo."
+      ]
+    },
+    {
+      "title": "Arienzo (Positano)",
+      "pros": [
+        "Los paquetes con tumbonas, almuerzo y bebidas cuestan alrededor de 60 € y ofrecen una gran relación calidad-precio para la ubicación.",
+        "Disfruta de largas horas de sol y vistas panorámicas de la costa."
+      ],
+      "cons": [
+        "El acceso es un desafío a menos que reserve el taxi acuático del club de playa o se comprometa a subir largas escaleras."
+      ]
+    },
+    {
+      "title": "Laurito (Positano)",
+      "pros": [
+        "Da Adolfo incluye tumbonas cuando pides en el restaurante, mientras que el set de Villa Tre Ville cuesta alrededor de 30 €.",
+        "Larga exposición al sol y vistas exclusivas; Da Adolfo es icónico y Villa Tre Ville se siente exclusiva."
+      ],
+      "cons": [
+        "Llegar a la cala es más fácil a través de los taxis acuáticos del club de playa, y el tramo gratuito es extremadamente pequeño."
+      ]
+    },
+    {
+      "title": "Gavitella (Praiano)",
+      "pros": [
+        "Perfecto al final del día para nadar al atardecer, tomar un aperitivo y cenar en la terraza."
+      ],
+      "cons": [
+        "Las plataformas de baño de hormigón dominan durante las horas del día, por lo que el espacio puede parecer limitado sin reserva.",
+        "No hay una sección totalmente gratuita; espere pagar por una tumbona si se queda mucho tiempo."
+      ]
+    },
+    {
+      "title": "Puerto deportivo de Praia (Praiano)",
+      "pros": [
+        "Ambiente de pueblo pesquero con trattoria de marisco junto al agua.",
+        "Un pequeño punto de acceso público te permite nadar sin reservar una piscina."
+      ],
+      "cons": [
+        "La estrecha cala pierde el sol a primera hora de la tarde.",
+        "Los clubes de playa bordean la mayor parte de la costa, así que reserve con anticipación las tumbonas."
+      ]
+    },
+    {
+      "title": "Fiordo di Furore",
+      "pros": [
+        "Entrada gratuita con espectaculares acantilados y sombra natural.",
+        "Popular para saltar desde acantilados y fotografiar; es el clásico de Instagram."
+      ],
+      "cons": [
+        "La logística del transporte y las escaleras empinadas dificultan las llegadas y salidas, especialmente cuando los aparcamientos se llenan."
+      ]
+    },
+    {
+      "title": "Baño Regina Giovanna (Sorrento)",
+      "pros": [
+        "Piscina natural relativamente desconocida de agua cristalina.",
+        "Acceso gratuito y un refrescante descanso de los puertos deportivos de Sorrento."
+      ],
+      "cons": [
+        "El acceso rocoso requiere calzado resistente y cuidado al entrar al agua.",
+        "No hay instalaciones en el lugar: traiga agua, refrigerios y protección solar."
+      ]
+    },
+    {
+      "title": "Playa de la ciudad de Amalfi",
+      "pros": [
+        "Ubicación central frente al muelle del ferry con múltiples lidos para elegir.",
+        "Las opciones incluyen Stella Maris, Marina Grande Beach Club, Silver Moon, Bagni Mar di Cobalto y Tonino ò Beach."
+      ],
+      "cons": [
+        "Precios premium en temporada alta; Se recomienda reservar con antelación.",
+        "El espacio público es limitado y se llena rápidamente cada mañana."
+      ]
+    }
+  ],
+  "itemList": [
+    {
+      "name": "Fornillo",
+      "note": "Clubs de playa económicos desde unos 15€ más dos secciones separadas gratuitas."
+    },
+    {
+      "name": "Spiaggia Grande",
+      "note": "Playa principal icónica con vistas de postal y lidos de precios premium."
+    },
+    {
+      "name": "Arienzo",
+      "note": "Cala soleada con paquetes de almuerzo por 60 € y servicio de traslado en taxi acuático de temporada."
+    },
+    {
+      "name": "Laurito",
+      "note": "Acceso en taxi acuático a Da Adolfo o Villa Tre Ville, además de una pequeña franja pública."
+    },
+    {
+      "name": "Fiordo di Furore",
+      "note": "Playa libre estilo fiordo famosa por saltar desde acantilados y paisajes espectaculares."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Las playas son gratuitas?",
+      "a": [
+        "Todas las playas destacadas aquí incluyen algún tipo de acceso público, pero las piscinas de pago ofrecen tumbonas, sombrillas y servicio de comida. Planifique con anticipación si desea sombra garantizada o traslados en taxi acuático."
+      ]
+    }
+  ]
+}

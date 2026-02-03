@@ -1,36 +1,101 @@
 {
   "seo": {
-    "title": "Regina Giovanna Bath Beach Guide",
-    "description": "Plan a crowd-free swim at Sorrento's natural pool with bus directions, packing tips, and safety notes."
+    "title": "Bagni della Regina Giovanna (Sorrento) Beach Guide",
+    "description": "Hostel-friendly guide to Bagni della Regina Giovanna in Sorrento: how to get there by bus, what to pack, swim safety, and a simple day plan."
   },
-  "linkLabel": "Regina Giovanna Bath Beach Guide",
+  "lastUpdated": "2026-01-30T00:00:00.000Z",
+  "linkLabel": "Regina Giovanna: Roman Ruins Meet Natural Pool",
   "intro": [
-    "Bagni della Regina Giovanna is a collapsed sea cave on the Sorrento peninsula where clear water flows into a sheltered natural pool. There are no beach clubs or snack bars here — just limestone cliffs, emerald shallows, and photo-friendly arches.",
-    "Use this guide to reach the cove by public bus, pack like a local, and make the most of the swimming ledges before looping back through Sorrento for food."
+    "Bagni della Regina Giovanna is a collapsed sea cave on the Sorrento peninsula where clear water flows into a sheltered natural pool. There are no beach clubs or snack bars here — just limestone cliffs, emerald shallows, and a natural arch that makes the water glow on sunny mornings.",
+    "This guide is written for hostel guests. If you want the exact step-by-step route from Positano (tickets, transfer points, and the final downhill lane), start with %LINK:hostelBriketteToReginaGiovannaBath|Hostel Brikette → Bagni della Regina Giovanna directions% and come back here for the “what it’s like” part.",
+    "Plan it as a two-stage day: swim early while the ledges are quiet, then return to Sorrento for lunch and a wander before heading back on the %LINK:sorrentoPositanoBus|Sorrento → Positano bus% (or the %LINK:sorrentoPositanoFerry|Sorrento → Positano ferry% when seas are calm)."
   ],
   "toc": [
     { "href": "#why-go", "label": "Why go" },
     { "href": "#getting-there", "label": "Getting there" },
+    { "href": "#best-time", "label": "Best time & day plan" },
     { "href": "#what-to-pack", "label": "What to pack" },
     { "href": "#swimming", "label": "Swimming & safety" },
-    { "href": "#pair-it", "label": "Pair it with Sorrento" }
+    { "href": "#pair-it", "label": "Pair it with Sorrento" },
+    { "href": "#sources", "label": "Sources" }
   ],
   "sections": [
     {
       "id": "why-go",
       "title": "Why Regina Giovanna Bath is worth the detour",
       "body": [
-        "The Roman villa ruins above the pool frame turquoise water that funnels in from the sea through a natural arch. Arrive early and you can float beneath the cliffs with only a handful of locals for company.",
-        "Unlike Positano’s lidos this spot is free year-round. Bring everything you need and be ready to scramble over rocks — the reward is a dramatic swimming hole that photographs beautifully at golden hour."
+        "The Roman villa ruins above the pool frame turquoise water that funnels in from the sea through a natural arch. When the sea is calm, the pool stays sheltered even if the open coast looks choppy — it feels like a secret swimming “room” carved into the limestone.",
+        "Unlike Positano’s lidos, this spot is free year-round. That freedom comes with trade-offs: no shade rentals, no toilets, no lifeguards, and a rocky access route. If you pack smart, it’s one of the most memorable swims you can do near Sorrento without booking a boat.",
+        "From the hostel, our staff recommend treating it like a sunrise-or-early-morning mission. The ledges are narrow, and once groups arrive, it stops being relaxing. Get in, swim, take your photos, then leave before the midday heat turns the climb back up into a punishment."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/reginaGiovannaBath.webp",
+          "width": 760,
+          "height": 516,
+          "alt": "Bagni della Regina Giovanna natural pool in Sorrento, seen from above with swimmers in clear turquoise water",
+          "caption": "This is the spot: a sheltered natural pool by the Roman ruins — best enjoyed early before the ledges fill up"
+        }
       ]
     },
     {
       "id": "getting-there",
       "title": "How to ride the bus to the trailhead",
       "body": [
-        "From Hostel Brikette, ride the SITA bus to Sorrento and connect with local bus line A or C (operated by EAV). Ask for \"Capo di Sorrento\" or \"Regina Giovanna\" so the driver knows you plan to hop off near the trailhead.",
-        "The stop is about 15 minutes from Sorrento’s station. Follow Via Capo until you see signs for \"Bagni della Regina Giovanna\" and take the paved lane downhill. Allow 10 minutes to reach the ruins and another five to descend the stone steps into the cove.",
-        "Return buses run roughly every 30 minutes until early evening; keep an eye on the posted timetable and plan to be back at the road before sunset."
+        "From Hostel Brikette, ride the SITA bus to Sorrento and connect with a local EAV bus toward Capo di Sorrento. If you’re unsure where to change, use the full route guide: %LINK:hostelBriketteToReginaGiovannaBath|Hostel Brikette → Bagni della Regina Giovanna% (it includes the transfer point and the “last kilometre” walk).",
+        "Once you are on Via Capo, you are looking for signage that says “Bagni della Regina Giovanna”. The downhill lane is paved at first, then becomes a rougher path as you approach the ruins. Allow around 10 minutes to reach the villa area and another five to descend the stone steps into the cove.",
+        "Brikette staff tip: screenshot your return options before you drop down to the water. Mobile signal can be patchy by the rocks, and you don’t want to be guessing your way back at sunset.",
+        "Return buses thin out in the evening. Plan to be back on the road with time to spare, especially outside peak summer."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image3.png",
+          "alt": "Bar Internazionale in Positano (Chiesa Nuova) on the roadside",
+          "caption": "Step 1: Start at the Chiesa Nuova bus stop outside Bar Internazionale (buy tickets here)"
+        },
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image5.png",
+          "alt": "Map screenshot showing the bus route from Positano toward Sorrento (Hotel Metropole stop)",
+          "caption": "Step 2: Ride to Sorrento and get off at the Hotel Metropole stop"
+        },
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image1.png",
+          "alt": "Map screenshot showing Hotel Metropole at the Via Capo junction in Sorrento",
+          "caption": "Step 3: From Hotel Metropole, continue via the Via Capo road"
+        },
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image2.png",
+          "alt": "Map screenshot showing the walking route along Via Capo toward the Bagni della Regina Giovanna area",
+          "caption": "Step 4: Walk along Via Capo (about 1.1 km / 0.7 mi) toward the turnoff"
+        },
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image4.png",
+          "alt": "Street view of the pedestrian lane entrance at 49 Via Capo in Sorrento",
+          "caption": "Step 5: At 49 Via Capo, turn into the pedestrian-only lane downhill"
+        },
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image7.png",
+          "alt": "Satellite view of the Bagni Regina Giovanna area and nearby paths above the swimming cove",
+          "caption": "Step 6: Follow the lane down to the ruins and the natural pool cove"
+        }
+      ]
+    },
+    {
+      "id": "best-time",
+      "title": "Best time to go (and a hostel-friendly day plan)",
+      "body": [
+        "If you only remember one thing: go early. The “beach” here is not a wide stretch of sand — it’s rock ledges. When a few groups arrive, it gets crowded fast, and it becomes harder to find a safe entry point into the water.",
+        "Season matters. In shoulder season, the water can be cold and the steps can stay damp; in mid-summer, the heat on the rocks is intense and shade is limited. Either way, stable weather makes the experience better: after storms the access route can be slippery with algae and debris.",
+        "A simple Brikette day plan: leave after breakfast, arrive for a morning swim, then head back to Sorrento for lunch and a walk. If you want a “big views” add-on, finish the day at a viewpoint or a waterfront aperitivo — and keep your return route in mind via %LINK:sorrentoPositanoBus|bus% or %LINK:sorrentoPositanoFerry|ferry%."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/hostelBriketteToReginaGiovannaBath.webp",
+          "width": 1332,
+          "height": 1000,
+          "alt": "The rocky natural pool at Bagni della Regina Giovanna with a low arch opening to the sea",
+          "caption": "Aim for calm sea and good light: you’ll enjoy safer entries, clearer water, and better photos"
+        }
       ]
     },
     {
@@ -38,8 +103,9 @@
       "title": "What to pack when there are no services",
       "body": [
         "There are no lifeguards, bathrooms, or kiosks on site. Pack water, snacks, and a rubbish bag so you can carry everything back out.",
-        "Wear sturdy shoes for the rocky trail and bring water shoes for the slippery ledges. A lightweight towel and dry bag make it easier to keep belongings out of the spray.",
-        "In peak summer add sunscreen, a hat, and at least 1.5 litres of water per person — there is little shade once the sun clears the cliffs."
+        "Wear sturdy shoes for the approach and bring water shoes for the slippery ledges. A lightweight towel, a dry bag (or zip bags), and a cheap phone lanyard help you keep valuables out of the spray.",
+        "In peak summer add sunscreen, a hat, and at least 1.5 litres of water per person — there is little shade once the sun clears the cliffs. If you run hot, bring an electrolyte sachet: the climb back up feels steeper than it looks on a map.",
+        "Snorkel mask optional, but worth it on calm days: the sheltered pool makes it easier to spot fish than many open pebble beaches."
       ]
     },
     {
@@ -47,16 +113,27 @@
       "title": "Swimming, jumps, and safety notes",
       "body": [
         "The pool is deep enough for confident swimmers, but there is no formal ladder. Enter slowly using the natural rock shelves and avoid diving unless you have checked the depth yourself.",
-        "Locals sometimes jump from the arch at high tide; only follow their lead if the sea is calm and you are comfortable with the height. Otherwise, float inside the pool and climb over to the sea-facing side for broader views.",
-        "After storms the access steps can be slick with algae. Move carefully and consider gloves if you rely on the handrail for balance."
+        "Locals sometimes jump from the arch at high tide; only follow their lead if the sea is calm and you are comfortable with the height. Otherwise, float inside the pool and climb over to the sea-facing side for wider views (but stay well back from the edge if there is swell).",
+        "After storms the access steps can be slick with algae. Move carefully, keep one hand free, and don’t carry glass.",
+        "If you are swimming with a group, set a simple rule: one person stays “dry” to watch bags and keep an eye on anyone who is tired. With no lifeguards and uneven footing, this is an easy safety upgrade."
       ]
     },
     {
       "id": "pair-it",
       "title": "Pair the swim with Sorrento staples",
       "body": [
-        "Pack a picnic or plan a late lunch in Sorrento’s historic centre after your swim. Bar Ruccio at Marina Piccola and Da Emilia along the waterfront both offer casual seafood plates with a view.",
-        "If you stay for sunset, give yourself 20 minutes to climb back to the bus stop and catch the ride into town. Trains and ferries back towards Naples and the Amalfi Coast thin out after 20:30, so check onward schedules before you linger."
+        "This swim pairs well with a low-effort Sorrento afternoon: refuel in the historic centre, do a quick viewpoint loop, then head back to Positano. If you want a bigger beach comparison day later in your trip, bookmark %LINK:positanoBeaches|our Positano beaches overview% for a “which cove suits us?” breakdown.",
+        "If you stay for sunset, give yourself time to climb back to the road and catch a reliable return. In choppy weather, the %LINK:sorrentoPositanoBus|bus% is usually the safer bet than the ferry."
+      ]
+    },
+    {
+      "id": "sources",
+      "title": "Sources and further reading",
+      "body": [
+        "Background on the site’s Roman-era villa ruins (often associated with Pollio Felice): %URL:https://aboutsorrento.com/cosa-vedere/sorrento/i-bagni-della-regina-giovanna/|About Sorrento — I Bagni della Regina Giovanna%.",
+        "Additional notes on the villa (history + practical info): %URL:https://www.museionline.info/tipologie-museo/villa-di-pollio-felice|MuseiOnline — Villa di Pollio Felice%.",
+        "Photo credit for the Sorrento coastline image used above: %URL:https://commons.wikimedia.org/wiki/File:Sorrento_2013_-_3_(9694522728).jpg|Wikimedia Commons (CC BY 2.0)%.",
+        "Always confirm transport times on the day (seasonal schedules change), and follow local signage and any access notices at the site."
       ]
     }
   ],

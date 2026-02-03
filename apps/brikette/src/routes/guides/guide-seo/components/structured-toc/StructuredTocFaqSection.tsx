@@ -70,7 +70,7 @@ export function FaqSectionBlock({
     return (
       <section id="faqs" className="space-y-3">
         {faqsHeading.trim().length > 0 ? (
-          <h2 className="text-pretty text-2xl font-semibold tracking-tight text-brand-heading">
+          <h2 className="mt-[30px] text-pretty text-2xl font-semibold tracking-tight text-brand-heading">
             {faqsHeading}
           </h2>
         ) : null}

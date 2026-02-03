@@ -1,7 +1,7 @@
 /**
  * Module resolution utilities for block composition.
  *
- * Handles webpack context resolution for JSON-LD and gallery modules.
+ * Handles webpack context resolution for JSON-LD modules.
  */
 import type { ReactNode } from "react";
 import { createElement } from "react";
@@ -35,13 +35,6 @@ export const JSON_LD_MODULES: Record<string, unknown> = {
   ...webpackContextToRecord<Record<string, unknown>>(JSON_LD_CONTEXT),
   ...TEST_JSON_LD_MODULES,
 };
-
-export const GALLERY_CONTEXT = supportsWebpackGlob
-  ? getWebpackContext("..", true, /\.gallery\.tsx?$/)
-  : undefined;
-
-export const GALLERY_MODULES: Record<string, unknown> =
-  webpackContextToRecord<Record<string, unknown>>(GALLERY_CONTEXT);
 
 type HeadRenderer = (context: GuideSeoTemplateContext) => ReactNode;
 type ComponentType = React.ComponentType<Record<string, never>>;

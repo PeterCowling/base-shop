@@ -65,20 +65,5 @@
         "En estancos/kioscos. Compra antes de subir y valida en el bus."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Imágenes de referencia",
-    "items": [
-      {
-        "src": "/img/direcciones/aeropuerto-de-napoles-positano-bus-parada-de-autobus.png",
-        "alt": "Parada SITA Chiesa Nuova / Bar Internazionale en Positano",
-        "caption": "Parada Bar Internazionale / Chiesa Nuova"
-      },
-      {
-        "src": "/img/directions/naples-airport-positano-bus-hostel-entrance-steps.png",
-        "alt": "Escaleras a la entrada principal del Hostel Brikette",
-        "caption": "Escaleras de entrada al Hostel Brikette"
-      }
-    ]
-  }
+  ]
 }

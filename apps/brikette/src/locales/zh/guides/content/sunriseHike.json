@@ -73,22 +73,5 @@
         "If you plan to stay for sunrise photos, consider a tripod or phone stand."
       ]
     }
-  ],
-  "gallery": {
-    "title": "参考图片",
-    "items": [
-      {
-        "alt": "QR code to share the guide",
-        "caption": "扫码分享"
-      },
-      {
-        "alt": "House at the top of the initial climb",
-        "caption": "楼梯顶端的小房子"
-      },
-      {
-        "alt": "Viewpoint over Positano at sunrise",
-        "caption": "俯瞰波西塔诺的日出观景点"
-      }
-    ]
-  }
+  ]
 }

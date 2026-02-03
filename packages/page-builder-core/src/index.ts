@@ -49,4 +49,13 @@ export {
 
 // Shared block registry contracts used by CMS and runtime apps.
 export { coreBlockDescriptors } from "./blocks/core-blocks";
-export * from "./blocks/registry";
+export type {
+  BlockDescriptor,
+  BlockDescriptorMap,
+  BlockFeatureFlags,
+  BlockProps,
+  BlockRegistry,
+  BlockRegistryEntryConfig,
+  BlockTypeId,
+} from "./blocks/registry";
+export { buildBlockRegistry } from "./blocks/registry";

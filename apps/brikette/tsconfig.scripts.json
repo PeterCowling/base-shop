@@ -1,0 +1,73 @@
+{
+  "extends": "@acme/config/tsconfig.app.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "strict": false,
+    "noImplicitAny": false,
+    "allowJs": false,
+    "exactOptionalPropertyTypes": false,
+    "noUncheckedIndexedAccess": false,
+    "noImplicitOverride": false,
+    "noPropertyAccessFromIndexSignature": false,
+    "useUnknownInCatchVariables": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "disableSourceOfProjectReferenceRedirect": true,
+    "skipLibCheck": true,
+    "paths": {
+      "@/*": [
+        "src/*",
+        "dist/*",
+        "../../packages/ui/dist/*"
+      ],
+      "@acme/ui": [
+        "../../packages/ui/src/index.ts",
+        "../../packages/ui/dist/index.js"
+      ],
+      "@acme/ui/*": [
+        "../../packages/ui/src/*",
+        "../../packages/ui/dist/*"
+      ],
+      "@acme/guides-core": [
+        "../../packages/guides-core/src/index.ts",
+        "../../packages/guides-core/dist/index.js"
+      ],
+      "@acme/guides-core/*": [
+        "../../packages/guides-core/src/*",
+        "../../packages/guides-core/dist/*"
+      ],
+      "@acme/telemetry": [
+        "../../packages/telemetry/src/index.ts",
+        "../../packages/telemetry/dist/index.js"
+      ],
+      "@acme/telemetry/*": [
+        "../../packages/telemetry/src/*",
+        "../../packages/telemetry/dist/*"
+      ],
+      "@ui": [
+        "../../packages/ui/src/index.ts",
+        "../../packages/ui/dist/index.js"
+      ],
+      "@ui/*": [
+        "../../packages/ui/src/*",
+        "../../packages/ui/dist/*"
+      ]
+    },
+    "jsx": "preserve",
+    "strictNullChecks": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "instrumentation.ts",
+    "src/**/*.d.ts",
+    "src/**/*.json",
+    "src/**/*",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    ".next/types/server.d.ts",
+    "**/__tests__/**",
+    "**/*.spec.*",
+    "**/*.test.*"
+  ]
+}

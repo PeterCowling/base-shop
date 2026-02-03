@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Ankomst via Chiesa Nuova/Bar Internazionale: väg till Hostel Brikette",
+    "description": "Steg-för-steg-väg från busshållplatsen Chiesa Nuova till Hostel Brikette med så få trappor som möjligt."
+  },
+  "linkLabel": "Ankomst via Chiesa Nuova/Bar Internazionale: väg till Hostel Brikette",
+  "intro": "Kommer du med buss? ”Chiesa Nuova” eller ”Bar Internazionale” är den hållplats som ligger närmast vandrarhemmet. Den här korta rutten minimerar antalet trappor för både knän och bagage.",
+  "image": {
+    "alt": "SITA-hållplatsen Chiesa Nuova i Positano utanför Bar Internazionale",
+    "caption": "Positano (Chiesa Nuova) – vänta utanför Bar Internazionale; kom gärna lite tidigare på sommaren då bussarna snabbt fylls."
+  },
+  "toc": {
+    "onThisPage": "På den här sidan",
+    "before": "Innan du ger dig av",
+    "steps": "Steg för steg",
+    "knees": "Knän och bagage",
+    "faqs": "Vanliga frågor"
+  },
+  "sections": [
+    {
+      "id": "why-stop",
+      "title": "Varför den här hållplatsen",
+      "body": [
+        "Busshållplatsen utanför caféet/baren Bar Internazionale ligger cirka 140 meter från Hostel Brikette."
+      ]
+    },
+    {
+      "id": "bus-basics",
+      "title": "Busstider och biljetter",
+      "body": [
+        "Köp SITA-biljetter i tabacchi-kiosken vid hållplatsen eller stämpla förköpta biljetter när du kliver på; spara en extra biljett för sena kvällsresor.",
+        "Efter klockan 22 blir kvällsbussarna glesare – kontrollera tidtabellen i förväg och satsa på näst sista avgången för att undvika taxipriser."
+      ]
+    }
+  ],
+  "beforeList": [
+    "Titta på SITA-tidtabellen i god tid så slipper du stå vid vägkanten och vänta på sista bussen.",
+    "Stämpla biljetten direkt när du kliver på – kontrollanter bötfäller även korta resor utan giltig stämpling.",
+    "Meddela vandrarhemmet om du anländer efter midnatt så att nattpersonalen kan hålla dörrkoden redo."
+  ],
+  "stepsList": [
+    "Från hållplatsen utanför Bar Internazionale går du drygt 100 meter (330 fot) uppför längs Viale Pasitea – följ gångrutten i kartan nedan för vägledning steg för steg.",
+    "Vid kurvan passerar du skylten för Hostel Brikette på terrassnivå och tar sedan trappan på höger sida av vägen upp till huvudentrén."
+  ],
+  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sBar+Internazionale!4m1!2sHostel+Brikette",
+  "kneesList": [
+    "Hela sträckan är belagd och vid entrén finns bara en kort trappa.",
+    "Om backen känns i knäna, ta korta pauser – trafiken saktar ändå ned i kurvan."
+  ],
+  "kneesDockPrefix": "Anländer du först med färja?",
+  "kneesDockLinkLabel": "Hamn → vandrarhemmets bagagerutt",
+  "kneesPorterPrefix": "Behöver du hjälp med tungt bagage?",
+  "kneesPorterLinkLabel": "Guide till portertjänsten",
+  "faqs": [
+    {
+      "q": "Finns det trottoar hela vägen?",
+      "a": "Ja – rutten går längs huvudvägens trottoar och undviker långa trappor."
+    },
+    {
+      "q": "Är det upplyst på kvällen?",
+      "a": "Det finns gatubelysning; använd gärna telefonens ficklampa för bättre sikt i gränderna."
+    }
+  ],
+  "howtoSteps": [
+    "Från hållplatsen ”Chiesa Nuova” tar det 2–5 minuters promenad till vandrarhemmet",
+    "Välj gränder med så få trappsteg som möjligt och undvik långa trappor",
+    "Med tungt bagage kan du boka porterservice som möter upp vid hållplatsen"
+  ]
+}

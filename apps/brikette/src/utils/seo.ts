@@ -1,24 +1,16 @@
- 
+
 // /src/utils/seo.ts
 /* ────────────────────────────────────────────────────────────────
    SEO helpers – canonical, hreflang, breadcrumb, meta
-   Handles one-level slugs and nested Assistance-article slugs.
+   Handles one-level slugs and nested guide slugs (including assistance guides).
    ---------------------------------------------------------------- */
 
 import React from "react";
 
-import { ARTICLE_SLUGS } from "@/article-slug-map";
 import { GUIDE_SLUG_LOOKUP_BY_LANG,type GuideKey, guideNamespace,guideSlug } from "@/guides/slugs";
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
-// Use a namespace import to avoid hard failures when tests partially mock
-// the module without all named exports (e.g. ARTICLE_KEYS).
-// Build a reverse-lookup for assistance article slugs without importing
-// assistance helpers (keeps tests resilient to partial mocks)
 import { SLUGS } from "@/slug-map";
 import type { SlugKey, SlugMap } from "@/types/slugs";
-
-type ArticleSlugEntry = Readonly<Partial<Record<AppLanguage, string>>> & { readonly en: string };
-const ARTICLE_SLUGS_BY_KEY = ARTICLE_SLUGS as unknown as Record<string, ArticleSlugEntry>;
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
@@ -49,12 +41,9 @@ const slugLookup: Record<AppLanguage, Record<string, SlugKey>> = {} as Record<
   AppLanguage,
   Record<string, SlugKey>
 >;
+// Guide lookup includes assistance guides via slug parity (GUIDE_SLUG_OVERRIDES)
 const guideLookup: Record<AppLanguage, Record<string, GuideKey>> =
   GUIDE_SLUG_LOOKUP_BY_LANG as unknown as Record<AppLanguage, Record<string, GuideKey>>;
-const assistanceArticleLookup: Record<AppLanguage, Record<string, string>> = {} as Record<
-  AppLanguage,
-  Record<string, string>
->;
 
 const slugs: SlugMap = SLUGS;
 (Object.keys(slugs) as SlugKey[]).forEach((key) => {
@@ -71,25 +60,11 @@ const SUPPORTED_LANGS_SAFE: readonly AppLanguage[] = (() => {
   return (arr.length > 0 ? arr : ["en"]) as readonly AppLanguage[];
 })();
 
-// Assistance article slug reverse-lookup based on ARTICLE_SLUGS map
-for (const lng of SUPPORTED_LANGS_SAFE as readonly AppLanguage[]) {
-  assistanceArticleLookup[lng] = {} as Record<string, string>;
-}
-Object.keys(ARTICLE_SLUGS).forEach((k) => {
-  const key = k; // HelpArticleKey at runtime — Object.keys returns string[]
-  for (const lng of SUPPORTED_LANGS_SAFE as readonly AppLanguage[]) {
-    const slug = ARTICLE_SLUGS_BY_KEY[key]?.[lng] ?? ARTICLE_SLUGS_BY_KEY[key]?.en;
-    if (typeof slug === "string" && slug) {
-      assistanceArticleLookup[lng][slug] = key;
-    }
-  }
-});
-
 /* ------------------------------------------------------------------ */
 /* Helper utilities                                                   */
 /* ------------------------------------------------------------------ */
-const trimTrailingSlash = (p: string): string =>
-  p !== "/" && p.endsWith("/") ? p.slice(0, -1) : p;
+export const ensureTrailingSlash = (p: string): string =>
+  p === "/" || p.endsWith("/") ? p : `${p}/`;
 
 const stripLang = (p: string, l: string): string => {
   const parts = p.split("/").filter(Boolean);
@@ -129,7 +104,7 @@ export function buildLinks({
   const lang: AppLanguage = urlLang;
 
   /* ── Canonical link ── */
-  const canonicalPath = trimTrailingSlash(path);
+  const canonicalPath = ensureTrailingSlash(path);
   const canonical: HtmlLinkDescriptor = {
     rel: "canonical",
     href: `${origin}${canonicalPath === "/" ? "" : canonicalPath}`,
@@ -143,18 +118,11 @@ export function buildLinks({
   const afterFirst = segments.slice(1).join("/");
   const remainder = afterFirst ? `/${afterFirst}` : "";
 
-  /* Assistance-article mapping (for second segment) */
+  /* Guide key resolution (for second segment) */
+  // Assistance guides are now in guideLookup via slug parity (GUIDE_SLUG_OVERRIDES)
   let guideKey: GuideKey | null = null;
-  // Map assistance article slug → canonical key using precomputed lookup.
-  let articleKey: string | null = null;
-  if (slugKey === "assistance" && afterFirst) {
-    articleKey = assistanceArticleLookup[lang]?.[afterFirst] ?? null;
-    if (!articleKey) {
-      guideKey = guideLookup[lang]?.[afterFirst] ?? null;
-    }
-  }
   if (
-    (slugKey === "guides" || slugKey === "experiences" || slugKey === "howToGetHere") &&
+    (slugKey === "assistance" || slugKey === "guides" || slugKey === "experiences" || slugKey === "howToGetHere") &&
     afterFirst
   ) {
     guideKey = guideLookup[lang]?.[afterFirst] ?? null;
@@ -172,16 +140,9 @@ export function buildLinks({
         : slugKey
         ? SLUGS[slugKey][targetLang]
         : firstSeg;
-      const translatedRest =
-        articleKey !== null
-          ? `/${
-              ARTICLE_SLUGS_BY_KEY[articleKey]?.[targetLang] ??
-              ARTICLE_SLUGS_BY_KEY[articleKey]?.en ??
-              ""
-            }`
-          : guideKey !== null
-          ? `/${guideSlug(targetLang, guideKey)}`
-          : remainder;
+      const translatedRest = guideKey !== null
+        ? `/${guideSlug(targetLang, guideKey)}`
+        : remainder;
 
       const suffix =
         translatedFirst || translatedRest
@@ -205,12 +166,9 @@ export function buildLinks({
     : slugKey
     ? SLUGS[slugKey][defaultLang]
     : firstSeg;
-  const defRest =
-    articleKey !== null
-      ? `/${(ARTICLE_SLUGS_BY_KEY[articleKey]?.[defaultLang] ?? ARTICLE_SLUGS_BY_KEY[articleKey]?.en ?? "")}`
-      : guideKey !== null
-      ? `/${guideSlug(defaultLang, guideKey)}`
-      : remainder;
+  const defRest = guideKey !== null
+    ? `/${guideSlug(defaultLang, guideKey)}`
+    : remainder;
 
   alternates.push({
     rel: "alternate",
@@ -260,13 +218,13 @@ export function buildBreadcrumb({
     },
   ];
 
-  const trimmed = trimTrailingSlash(path);
-  if (trimmed !== `/${lang}`) {
+  const normalized = ensureTrailingSlash(path);
+  if (normalized !== `/${lang}/`) {
     items.push({
       "@type": "ListItem",
       position: 2,
       name: title,
-      item: `${origin}${trimmed}`,
+      item: `${origin}${normalized}`,
     });
   }
 

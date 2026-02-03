@@ -1,0 +1,218 @@
+{
+  "seo": {
+    "title": "Melhores praias de Positano",
+    "description": "Praias públicas vs. lidos, como chegar, o que levar e dicas de segurança na água."
+  },
+  "linkLabel": "Melhores praias de Positano",
+  "intro": [
+    "Para garantir um dia de praia excelente, reunimos as principais opções disponíveis. A lista aparece em formato de tabela e resume os serviços e características de cada praia.",
+    "Para saber mais sobre cada praia, clique no nome correspondente na tabela abaixo. Assim, você abre nossos guias com instruções de transporte e descrições das diferentes áreas da praia."
+  ],
+  "toc": [
+    {
+      "href": "#guides-directions",
+      "label": "Guias com direções"
+    },
+    {
+      "href": "#positano-beaches",
+      "label": "Praias em Positano"
+    },
+    {
+      "href": "#praiano-beaches",
+      "label": "Praias em Praiano"
+    },
+    {
+      "href": "#furore-beach",
+      "label": "Praia de Furore"
+    },
+    {
+      "href": "#sorrento-beaches",
+      "label": "Praias em Sorrento"
+    },
+    {
+      "href": "#amalfi-beaches",
+      "label": "Praias em Amalfi"
+    },
+    {
+      "href": "#capri-day-trips",
+      "label": "Passeios a Capri"
+    }
+  ],
+  "sections": [
+    {
+      "id": "guides-directions",
+      "title": "Guias com direções",
+      "body": [
+        "Toque ou clique nos nomes abaixo para abrir nossos guias detalhados. Em cada um você encontra rotas de transporte, onde começam as áreas pagas e gratuitas e dicas para circular entre os diferentes trechos."
+      ]
+    },
+    {
+      "id": "positano-beaches",
+      "title": "Praias em Positano",
+      "body": [
+        "Fornillo, Spiaggia Grande, Arienzo e Laurito são as principais escolhas a poucos minutos a pé ou de shuttle do hostel. Use a passarela na encosta ou os táxis aquáticos locais para ir de uma praia a outra e planeje com antecedência se precisar de ônibus ou barco para subir de volta depois de um dia longo ao sol."
+      ]
+    },
+    {
+      "id": "praiano-beaches",
+      "title": "Praias em Praiano",
+      "body": [
+        "As enseadas de Praiano são passeios fáceis a partir de Positano. Gavitella é a favorita no pôr do sol para aperitivo e jantar, enquanto Marina di Praia é uma vila de pesca ativa com clubes de praia e uma pequena plataforma pública entre os barcos."
+      ]
+    },
+    {
+      "id": "furore-beach",
+      "title": "Praia de Furore",
+      "body": [
+        "Fiordo di Furore é a praia em estilo fiorde que você vê no Instagram. A entrada é gratuita, mas o transporte e as escadas íngremes exigem planejamento, especialmente se quiser sair antes de o pequeno estacionamento lotar."
+      ]
+    },
+    {
+      "id": "sorrento-beaches",
+      "title": "Praias em Sorrento",
+      "body": [
+        "O banho de Regina Giovanna é a melhor escolha para mergulhar em Sorrento. Trata-se de uma piscina natural com acesso gratuito, água fresca e vistas do penhasco — perfeita para fugir das multidões por uma tarde."
+      ]
+    },
+    {
+      "id": "amalfi-beaches",
+      "title": "Praias em Amalfi",
+      "body": [
+        "A praia principal de Amalfi fica em frente à marina e é ladeada por lidos como Stella Maris, Marina Grande Beach Club, Silver Moon, Bagni Mar di Cobalto e Tonino ò Beach. Reserve com antecedência nos meses de maior movimento ou chegue cedo para garantir um espaço público."
+      ]
+    },
+    {
+      "id": "capri-day-trips",
+      "title": "Passeios a Capri",
+      "body": [
+        "Se estiver dando um pulo em Capri, observe Marina di Mulo, Bagni di Tiberio e Marina Grande. Todas oferecem espreguiçadeiras pagas, água cristalina e fácil acesso aos ferries que ligam o restante da ilha."
+      ]
+    }
+  ],
+  "prosCons": [
+    {
+      "title": "Fornillo (Positano)",
+      "pros": [
+        "Os clubes Pupetto, Grassi, Ferdinando e La Marinella começam em cerca de 15 € por conjunto de espreguiçadeiras.",
+        "Duas áreas públicas, incluindo um trecho “secreto” menos conhecido além da zona gratuita principal."
+      ],
+      "cons": [
+        "A subida de volta ao Hostel Brikette é íngreme; se estiver cansado, vá até a praia principal e pegue o ônibus local morro acima."
+      ]
+    },
+    {
+      "title": "Spiaggia Grande (Positano)",
+      "pros": [
+        "Cartão-postal clássico de Positano com a cidade como pano de fundo.",
+        "Área pública disponível para quem chega bem cedo."
+      ],
+      "cons": [
+        "O L’Incanto parte de cerca de 25 € por espreguiçadeira, enquanto o La Scogliera varia de aproximadamente 100 € a 400 €.",
+        "A maioria dos hóspedes prefere o clima e o custo-benefício de Fornillo."
+      ]
+    },
+    {
+      "title": "Arienzo (Positano)",
+      "pros": [
+        "Pacotes com espreguiçadeiras, almoço e bebidas começam em torno de 60 € e oferecem ótimo valor para a localização.",
+        "Horas longas de sol e vistas amplas da costa."
+      ],
+      "cons": [
+        "O acesso é desafiador sem reservar o táxi aquático do clube ou encarar a longa escadaria."
+      ]
+    },
+    {
+      "title": "Laurito (Positano)",
+      "pros": [
+        "No Da Adolfo, as espreguiçadeiras estão incluídas quando você consome no restaurante; o conjunto da Villa Tre Ville começa por cerca de 30 €.",
+        "Muito sol e vistas icônicas; o Da Adolfo é um clássico e a Villa Tre Ville tem clima exclusivo."
+      ],
+      "cons": [
+        "O acesso mais fácil é pelos táxis aquáticos dos clubes, e a faixa gratuita é minúscula."
+      ]
+    },
+    {
+      "title": "Gavitella (Praiano)",
+      "pros": [
+        "Perfeita no final do dia para mergulhos ao pôr do sol, aperitivo e jantar no terraço."
+      ],
+      "cons": [
+        "As plataformas de concreto dominam durante o dia, então pode ficar apertado sem reserva.",
+        "Não há área totalmente gratuita — conte em pagar por espreguiçadeira se quiser ficar mais tempo."
+      ]
+    },
+    {
+      "title": "Marina di Praia (Praiano)",
+      "pros": [
+        "Clima de vila de pescadores com trattorias à beira d’água.",
+        "Um pequeno acesso público permite nadar sem reservar um lido."
+      ],
+      "cons": [
+        "A enseada estreita perde o sol mais cedo à tarde.",
+        "Os clubes ocupam quase toda a faixa de areia, portanto reserve espreguiçadeira com antecedência."
+      ]
+    },
+    {
+      "title": "Fiordo di Furore",
+      "pros": [
+        "Entrada gratuita com penhascos dramáticos e sombra natural.",
+        "Popular para saltos das rochas e fotos — é o clássico do Instagram."
+      ],
+      "cons": [
+        "Logística de transporte e escadarias íngremes tornam a chegada e a saída mais complicadas, especialmente quando o estacionamento lota."
+      ]
+    },
+    {
+      "title": "Regina Giovanna Bath (Sorrento)",
+      "pros": [
+        "Piscina natural pouco conhecida com água cristalina.",
+        "Acesso gratuito e pausa refrescante das marinas de Sorrento."
+      ],
+      "cons": [
+        "Acesso rochoso exige calçado firme e cuidado ao entrar na água.",
+        "Sem estrutura no local — leve água, lanches e proteção solar."
+      ]
+    },
+    {
+      "title": "Praia de Amalfi",
+      "pros": [
+        "Localização central em frente ao píer com vários lidos à escolha.",
+        "Entre as opções estão Stella Maris, Marina Grande Beach Club, Silver Moon, Bagni Mar di Cobalto e Tonino ò Beach."
+      ],
+      "cons": [
+        "Preços elevados na alta temporada; recomenda-se reservar com antecedência.",
+        "O espaço público é limitado e lota rapidamente todas as manhãs."
+      ]
+    }
+  ],
+  "itemList": [
+    {
+      "name": "Fornillo",
+      "note": "Clube de praia acessível a partir de 15 € e duas áreas gratuitas separadas."
+    },
+    {
+      "name": "Spiaggia Grande",
+      "note": "Praia principal com vistas icônicas e lidos de alto valor, além de uma faixa pública central."
+    },
+    {
+      "name": "Arienzo",
+      "note": "Enseada ensolarada com pacotes de almoço por 60 € e shuttle aquático sazonal."
+    },
+    {
+      "name": "Laurito",
+      "note": "Acesso de táxi aquático para Da Adolfo ou Villa Tre Ville, com uma faixa pública minúscula."
+    },
+    {
+      "name": "Fiordo di Furore",
+      "note": "Praia em formato de fiorde, gratuita, famosa por saltos das rochas e cenários dramáticos."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "As praias são gratuitas?",
+      "a": [
+        "Todas as praias mencionadas têm algum acesso público, mas os lidos pagos oferecem espreguiçadeiras, guarda-sóis e serviço de comida. Planeje com antecedência se precisar de sombra garantida ou transfer de táxi aquático."
+      ]
+    }
+  ]
+}

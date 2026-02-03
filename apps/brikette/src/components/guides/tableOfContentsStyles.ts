@@ -54,6 +54,7 @@ export const linkClasses = [
   "transition",
   "duration-150",
   "ease-out",
+  "hover:bg-warning-soft",
   "focus-visible:border-brand-primary/30",
   "focus-visible:bg-brand-surface",
   "focus-visible:outline-none",
@@ -81,11 +82,9 @@ export const linkClasses = [
 export const inactiveLinkClasses = [
   "text-brand-heading",
   "hover:border-brand-outline/30",
-  "hover:bg-brand-surface",
   "hover:shadow-sm",
   "dark:text-brand-text",
   "dark:hover:border-brand-outline/50",
-  "dark:hover:bg-brand-surface/20",
 ] as const;
 
 export const currentLinkClasses = [
@@ -125,12 +124,6 @@ export const labelClasses = [
   "font-semibold",
   "break-words",
   "leading-snug",
-  "group-hover:underline",
-  "group-hover:decoration-brand-primary/40",
-  "group-hover:underline-offset-2",
-  "group-focus-visible:underline",
-  "group-focus-visible:decoration-brand-primary/50",
-  "group-focus-visible:underline-offset-2",
 ] as const;
 
 export const chevronClasses = [

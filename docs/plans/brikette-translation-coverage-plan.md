@@ -84,7 +84,7 @@ Relates-to charter: none
 
 ## Validation
 - JSON validity: run the parse scan in `docs/brikette-translation-coverage.md` ("Validate Locale JSON").
-- Targeted tests: `pnpm --filter @apps/brikette test -- src/test/i18n/translation-language.test.ts`
+- Targeted tests: `pnpm --filter @apps/brikette test:content-readiness`
 
 ## Active tasks
 

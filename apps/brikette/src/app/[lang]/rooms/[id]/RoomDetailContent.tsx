@@ -212,15 +212,6 @@ export default function RoomDetailContent({ lang, id }: Props) {
               {getGuideLinkLabel(tGuides, guidesEnT, "reachBudget")}
             </Link>
           </li>
-          <li>
-            <Link
-              href={guideHref(lang, "backpackerItineraries")}
-              prefetch={true}
-              className="block rounded-lg border border-brand-outline/40 bg-brand-bg px-4 py-3 text-brand-primary underline-offset-4 hover:underline dark:bg-brand-text dark:text-brand-secondary"
-            >
-              {getGuideLinkLabel(tGuides, guidesEnT, "backpackerItineraries")}
-            </Link>
-          </li>
         </Grid>
       </Section>
 

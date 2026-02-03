@@ -1,0 +1,1227 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "HotelRoom",
+      "@id": "https://example.test#room-double_room",
+      "name": "Double Room",
+      "description": "Our Double Room is a private space featuring one double bed for up to two guests. Located on the third floor, it offers an ensuite bathroom, sea-view terrace, air conditioning and secure keycard door entry. Bed linen and towels are provided.",
+      "occupancy": {
+        "@type": "QuantitativeValue",
+        "value": 2,
+        "unitCode": "C62"
+      },
+      "amenityFeature": [
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Private room",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "One double bed for up to two guests",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Located on the third floor",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Ensuite Bathroom",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Sea View Terrace",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Air Conditioning",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Keycard Door Entry",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Bed Linen and Towel Provided",
+          "value": true
+        }
+      ],
+      "image": [
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/7/landing.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1279,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/7/7_1.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 2558,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/7/7_2.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 2558,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/7/7_3.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 2558,
+            "unitText": "px"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "HotelRoom",
+      "@id": "https://example.test#room-room_10",
+      "name": "Premium Mixed Dorm",
+      "description": "Our Premium Dorm is a mixed dorm with three dorm beds, accommodating up to six guests in total. Located on the fourth floor, it includes air conditioning, secure keycard door entry and an ensuite bathroom (no view). Bed linen and a towel are provided on check-in.",
+      "occupancy": {
+        "@type": "QuantitativeValue",
+        "value": 6,
+        "unitCode": "C62"
+      },
+      "amenityFeature": [
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Mixed Dorm",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Three dorm beds, for a total of six beds, for up to six guests",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Located on the fourth floor",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Ensuite Bathroom",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "No view",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Air Conditioning",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Keycard Door Entry",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Bed Linen and Towel Provided",
+          "value": true
+        }
+      ],
+      "image": [
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/10/landing.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 451,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 300,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/10/10_1.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1213,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/10/10_2.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1277,
+            "unitText": "px"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "HotelRoom",
+      "@id": "https://example.test#room-room_11",
+      "name": "Superior Female Dorm – Large Terrace",
+      "description": "Our Superior All-Female Dorm includes three dorm beds for a total of six beds, accommodating up to six guests. Located on the fourth floor, it has air conditioning, secure keycard door entry, an ensuite bathroom and a sea-view with an extra-large terrace. Bed linen and a towel are provided on check-in.",
+      "occupancy": {
+        "@type": "QuantitativeValue",
+        "value": 6,
+        "unitCode": "C62"
+      },
+      "amenityFeature": [
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "All-Female Dorm",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Three dorm beds, for a total of six beds, for up to six guests",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Located on the fourth floor",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Ensuite Bathroom",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Sea-view with Extra-Large Terrace",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Air Conditioning",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Keycard Door Entry",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Bed Linen and Towel Provided",
+          "value": true
+        }
+      ],
+      "image": [
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/11/landing.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 2558,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/11/11_1.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/11/11_2.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1296,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/11/11_3.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1277,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/11/11_4.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1287,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/11/11_5.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1297,
+            "unitText": "px"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "HotelRoom",
+      "@id": "https://example.test#room-room_12",
+      "name": "Superior Mixed Dorm",
+      "description": "Our Superior Mixed Dorm features three dorm beds for a total of six beds, accommodating up to six guests. Located on the fourth floor, it includes air conditioning, secure keycard door entry, a private bathroom and a sea-view with an extra-large terrace. Bed linen and a towel are provided on check-in.",
+      "occupancy": {
+        "@type": "QuantitativeValue",
+        "value": 6,
+        "unitCode": "C62"
+      },
+      "amenityFeature": [
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Mixed Dorm",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Three dorm beds, for a total of six beds, for up to six guests",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Located on the fourth floor",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Private Bathroom",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Sea-view with Extra-Large Terrace",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Air Conditioning",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Keycard Door Entry",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Bed Linen and Towel Provided",
+          "value": true
+        }
+      ],
+      "image": [
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/12/landing.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 2558,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/12/12_1.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 2558,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/12/12_2.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 2475,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/12/12_3.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 2558,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/12/12_4.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/12/12_5.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 2558,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/12/12_6.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 2558,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "HotelRoom",
+      "@id": "https://example.test#room-room_3",
+      "name": "Value Female Dorm",
+      "description": "Our Value All-Female Dorm accommodates up to eight guests across four dorm beds. Located on the third floor, it offers air conditioning, secure keycard door entry and access to a shared female bathroom. There is no view. Bed linen and a towel are provided on check-in.",
+      "occupancy": {
+        "@type": "QuantitativeValue",
+        "value": 8,
+        "unitCode": "C62"
+      },
+      "amenityFeature": [
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "All-Female Dorm",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Four dorm beds, for a total of eight beds, for up to eight guests",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Located on the third floor",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Shared Female Bathroom",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "No view",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Air Conditioning",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Keycard Door Entry",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Bed Linen and Towel Provided",
+          "value": true
+        }
+      ],
+      "image": [
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/3/landing.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1280,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/4/4_1.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1277,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/4/4_2.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1280,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/4/4_3.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1277,
+            "unitText": "px"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "HotelRoom",
+      "@id": "https://example.test#room-room_4",
+      "name": "Value Mixed Dorm",
+      "description": "Our Value Mixed Dorm accommodates up to eight guests across four dorm beds. Located on the third floor, it offers air conditioning, secure keycard door entry and access to a shared female bathroom. There is no view. Bed linen and a towel are provided on check-in.",
+      "occupancy": {
+        "@type": "QuantitativeValue",
+        "value": 8,
+        "unitCode": "C62"
+      },
+      "amenityFeature": [
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Mixed Dorm",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Four dorm beds, for a total of eight beds, for up to eight guests",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Located on the third floor",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Shared Female Bathroom",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "No view",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Air Conditioning",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Keycard Door Entry",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Bed Linen and Towel Provided",
+          "value": true
+        }
+      ],
+      "image": [
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/4/4_1.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1277,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/4/4_2.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1280,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/4/4_3.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1277,
+            "unitText": "px"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "HotelRoom",
+      "@id": "https://example.test#room-room_5",
+      "name": "Superior Female Dorm – Sea View",
+      "description": "Our Superior All-Female Dorm accommodates up to six guests in three dorm beds. Located on the third floor, it provides an ensuite bathroom, a sea-view terrace, air conditioning and secure keycard door entry. Bed linen and a towel are provided on check-in.",
+      "occupancy": {
+        "@type": "QuantitativeValue",
+        "value": 6,
+        "unitCode": "C62"
+      },
+      "amenityFeature": [
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "All-Female Dorm",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Three dorm beds, for a total of six beds, for up to six guests",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Located on the third floor",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Ensuite Bathroom",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Sea View Terrace",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Air Conditioning",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Keycard Door Entry",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Bed Linen and Towel Provided",
+          "value": true
+        }
+      ],
+      "image": [
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/5/landing.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 400,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 266,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/6/6_1.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1215,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/6/6_2.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 400,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 266,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/6/6_3.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1240,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/6/6_4.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1370,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/6/6_5.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1277,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/6/6_6.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1277,
+            "unitText": "px"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "HotelRoom",
+      "@id": "https://example.test#room-room_6",
+      "name": "Superior Female Dorm – 7 Beds",
+      "description": "Our Superior All-Female Dorm features three dorm beds plus one single bed, accommodating up to seven guests. Located on the third floor, it includes an ensuite bathroom, sea-view terrace, air conditioning and secure keycard door entry. Bed linen and a towel are provided on check-in.",
+      "occupancy": {
+        "@type": "QuantitativeValue",
+        "value": 7,
+        "unitCode": "C62"
+      },
+      "amenityFeature": [
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "All-Female Dorm",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Three dorm beds plus one single bed, for a total of seven beds, for up to seven guests",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Located on the third floor",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Ensuite Bathroom",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Sea View Terrace",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Air Conditioning",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Keycard Door Entry",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Bed Linen and Towel Provided",
+          "value": true
+        }
+      ],
+      "image": [
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/6/landing.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1253,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/6/6_1.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1215,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/6/6_2.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 400,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 266,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/6/6_3.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1240,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/6/6_4.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1370,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/6/6_5.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1277,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/6/6_6.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1277,
+            "unitText": "px"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "HotelRoom",
+      "@id": "https://example.test#room-room_9",
+      "name": "Deluxe Mixed Room",
+      "description": "Our Deluxe Mixed Room offers three single beds, accommodating up to three guests. Located on the fourth floor, it provides an ensuite bathroom, a courtyard view, air conditioning and secure keycard door entry. Bed linen and a towel are provided on check-in.",
+      "occupancy": {
+        "@type": "QuantitativeValue",
+        "value": 3,
+        "unitCode": "C62"
+      },
+      "amenityFeature": [
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Mixed Dorm",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Three single beds, for up to three guests",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Located on the fourth floor",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Ensuite Bathroom",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Courtyard View",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Air Conditioning",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Keycard Door Entry",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Bed Linen and Towel Provided",
+          "value": true
+        }
+      ],
+      "image": [
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/9/landing.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 2558,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/9/9_1.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 2558,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/9/9_2.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 2558,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/9/9_3.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1024,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1536,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/9/9_4.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 2558,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "HotelRoom",
+      "@id": "https://example.test#room-room_8",
+      "name": "All Female Dorm with one Bunkbed",
+      "description": "Our All Female Dorm with one Bunkbed has one bunk (dorm) bed, accommodating up to two guests. Located on the third floor, it offers air conditioning, secure keycard door entry, a garden view and is next to the shared female bathroom. Bed linen and a towel are provided on check-in.",
+      "occupancy": {
+        "@type": "QuantitativeValue",
+        "value": 2,
+        "unitCode": "C62"
+      },
+      "amenityFeature": [
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "All-Female Dorm",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "One dorm bed, for a total of two beds, for up to two guests",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Located on the third floor",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Shared Female Bathroom",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Garden View",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Air Conditioning",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Keycard Door Entry",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Bed Linen and Towel Provided",
+          "value": true
+        }
+      ],
+      "image": [
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/8/landing.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1536,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1024,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/8/8_1.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1239,
+            "unitText": "px"
+          }
+        }
+      ]
+    }
+  ]
+}

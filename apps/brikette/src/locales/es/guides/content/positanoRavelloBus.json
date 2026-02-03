@@ -6,5 +6,15 @@
   "intro": {
     "title": "Positano a Ravello – vía Amalfi en autobús",
     "body": "Viaja de Positano a Ravello con un cambio sencillo en Amalfi. Esta guía explica dónde comprar los billetes de SITA, cómo leer el horario y qué esperar al hacer el transbordo en Amalfi, además de cómo llegar a la parada de Positano desde el Hostel Brikette."
-  }
+  },
+  "faqs": [
+    {
+      "q": "¿Cómo leo el horario de autobuses SITA?",
+      "a": [
+        "**Leer las filas:** Las filas de la primera columna representan las distintas paradas de autobús a lo largo de la ruta.",
+        "**Leer las columnas:** El horario asigna una letra alfabética a cada trayecto programado, que aparece como encabezado de cada columna. Si viajas de lunes a sábado, busca las columnas 'F' y 'G'. Si viajas en domingo o festivo, utiliza las columnas 'G' y 'H'.",
+        "**Combinar filas y columnas:** Elige tus paradas de salida y llegada, luego consulta las columnas para ver cuándo hay autobuses disponibles y a qué hora llegan a tu destino. Por ejemplo, para ver la hora de salida desde Sorrento, mira la fila de Sorrento. Para ver la hora de llegada a Positano (Chiesa Nuova / Bar Internazionale), consulta la fila de Positano (Chiesa Nuova)."
+      ]
+    }
+  ]
 }

@@ -1,0 +1,48 @@
+{
+  "seo": {
+    "title": "Rimelig overnatting utenfor Positano",
+    "description": "Hvor du får mest for pengene (Sorrento, Salerno, Amalfi-området) og hvilke kompromisser det innebærer."
+  },
+  "linkLabel": "Rimelig overnatting utenfor Positano",
+  "intro": [
+    "Budsjettvennlige baser utenfor Positano med realistiske transportkompromisser."
+  ],
+  "sections": [
+    {
+      "id": "sorrento",
+      "title": "Sorrento",
+      "body": [
+        "Godt prisnivå med hyppige tog og ferjer; enklere ved sen ankomst."
+      ]
+    },
+    {
+      "id": "salerno",
+      "title": "Salerno",
+      "body": [
+        "Rimelig og godt knyttet; sesongferjer går til Amalfi og Positano."
+      ]
+    },
+    {
+      "id": "amalfi-area",
+      "title": "Amalfi-området",
+      "body": [
+        "Mindre byer kan gi gode lavsesongtilbud; følg med på bussavgangene."
+      ]
+    },
+    {
+      "id": "tradeoffs",
+      "title": "Fordeler og ulemper",
+      "body": [
+        "Lengre reiser kontra lavere priser. For korte opphold lønner det seg å bo i Positano for å spare tid."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Lønner det seg å pendle?",
+      "a": [
+        "Hvis pris er viktigst og du tåler lengre transport, ja – spesielt i skuldersesongene."
+      ]
+    }
+  ]
+}

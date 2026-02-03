@@ -30,7 +30,8 @@ type Props = {
   lang: AppLanguage;
 };
 
-// Filter guides to only include experiences section
+// Filter guides to only include published experiences.
+// Draft guides are excluded so category headers won't show for empty categories.
 function getExperienceGuides(): GuideMeta[] {
   return GUIDES_INDEX.filter(
     (g) => g.section === "experiences" && g.status === "published"

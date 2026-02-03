@@ -87,25 +87,11 @@
     }
   ],
   "faqsTitle": "Häufige Fragen",
-  "galleryTitle": "Fotogalerie",
-  "gallery": {
-    "items": [
-      {
-        "alt": "Blick entlang des Sentiero degli Dei",
-        "caption": "Entlang des Pfads"
-      },
-      {
-        "alt": "Blick auf das Dorf Nocelle",
-        "caption": "Blick auf Nocelle"
-      }
-    ]
-  },
   "toc": {
     "onThisPage": "Auf dieser Seite",
     "essentials": "Das Wichtigste",
     "costs": "Typische Kosten",
     "faqs": "Häufige Fragen",
-    "gallery": "Fotogalerie",
     "tips": "Gute Zeitwahl"
   },
   "tipsTitle": "Gute Zeitwahl",

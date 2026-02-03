@@ -101,13 +101,19 @@ export async function PUT(
     );
   }
 
+  // Auto-update lastUpdated timestamp on save
+  const contentWithDate = {
+    ...parsed.data,
+    lastUpdated: new Date().toISOString(),
+  };
+
   const existing = loadGuidesNamespaceFromFs(locale);
   const existingContent = isPlainRecord(existing?.content) ? existing?.content : {};
   const nextBundle: GuidesNamespace = {
     ...(existing ?? { content: {} }),
     content: {
       ...existingContent,
-      [entry.contentKey]: parsed.data,
+      [entry.contentKey]: contentWithDate,
     },
   };
 

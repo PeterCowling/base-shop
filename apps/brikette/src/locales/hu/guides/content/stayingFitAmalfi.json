@@ -1,53 +1,53 @@
 {
   "seo": {
-    "title": "Formában maradni az Amalfi-parti utazás alatt",
-    "description": "Lépcsőedzés, tengerparti futás, túraötletek és regeneráció nagy melegben."
+    "title": "Fit maradni az Amalfi-parton",
+    "description": "Lépcsőedzések, partifutás és reális aktív rutinok."
   },
-  "linkLabel": "Formában maradni utazás közben (Amalfi-part)",
+  "linkLabel": "Legyél aktív Positanóban: lépcsők, ösvények, strandtréning",
   "intro": [
-    "A fordítás folyamatban van."
+    "Mozogj az Amalfi-parton edzőterem nélkül: használd a lépcsőket, a strandokat és hostelbarát gyakorlatokat."
   ],
   "sections": [
     {
       "id": "stairs",
-      "title": "A fordítás folyamatban van.",
+      "title": "Alakítsd át a lépcsőket edzéssé",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Kelj korán, és gyors sétával vagy futással tedd meg a 500+ lépcsőt Spiaggia Grande és Chiesa Nuova között, hogy elkerüld a tömeget és a hőséget.",
+        "Vezess be intervallumokat: két perc lendületes mászás, egy perc pihenés, ismételd 5–8-szor."
       ]
     },
     {
       "id": "outdoor",
-      "title": "Outdoor training spots",
+      "title": "Kinti edzőpontok",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Használd a Fornillo strandot testsúlyos körökhöz (guggolás, fekvőtámasz, plank) – vigyél utazómatracot a kövek ellen.",
+        "Fussatok a part menti úton Positano és Praiano között napfelkeltekor; viselj fényvisszaverős ruhát és maradj a belső sávban."
       ]
     },
     {
       "id": "recovery",
-      "title": "Recovery & fuel",
+      "title": "Regeneráció és feltöltés",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Igyál 750 ml-es újratölthető palackból, és pótold az elektrolitokat citrommal vagy gránitával edzés után.",
+        "Nyújtsd a vádlit és csípőt este; a meredek lépcsők gyorsan megfeszítik az izmokat, ha kihagyod a levezetést."
       ]
     }
   ],
   "tips": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
+    "Csomagolj ellenállás szalagot és ugrókötél, könnyű felszerelést, amit kézipoggyászban is vihetsz.",
+    "Jegyezd fel az edzéseid egy jegyzetalkalmazásban, hogy még az aperitivó óráiban is tartsd magad."
   ],
   "faqs": [
     {
-      "q": "Are there gyms nearby?",
+      "q": "Van a közelben edzőterem?",
       "a": [
-        "A fordítás folyamatban van."
+        "Positanóban korlátozottak a fitnesz lehetőségek. Néhány hotelnél napi jegyet is árulnak, vagy Sorrentóba buszozhatsz, ahol nagyobb centrumok vannak."
       ]
     },
     {
-      "q": "Can I swim year-round?",
+      "q": "Egész évben lehet úszni?",
       "a": [
-        "A fordítás folyamatban van."
+        "Igen, de télen a tenger 14–16 °C-ra hűl. Viselj rövid neoprén inget a hosszabb fürdésekhez a nyári szezonon kívül."
       ]
     }
   ]

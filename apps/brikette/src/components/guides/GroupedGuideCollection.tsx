@@ -5,7 +5,6 @@ import { memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { usePathname, useSearchParams } from "next/navigation";
 import type { TFunction } from "i18next";
-import clsx from "clsx";
 
 import type { GuideMeta } from "@/data/guides.index";
 import { splitGuidesByType } from "@/data/guides.index";
@@ -18,11 +17,8 @@ import GroupedGuideSection, { type TopicConfig } from "./GroupedGuideSection";
 import { useGuideSummaryResolver } from "./useGuideSummaryResolver";
 import type { GuideFilterOption } from "./useGuideFilterOptions";
 
-// Section types for content vs directions split
-type GuideSection = "content" | "directions";
-
 // Topic display order and minimum guide threshold
-const MAIN_TOPICS = ["beaches", "hiking", "day-trip", "boat", "cuisine", "itinerary"] as const;
+const MAIN_TOPICS = ["beaches", "hiking", "day-trip", "boat", "cuisine"] as const;
 const MORE_TOPICS = ["transport", "photography", "culture"] as const;
 const MIN_GUIDES_FOR_MAIN = 1;
 
@@ -33,7 +29,6 @@ const TOPIC_IMAGES: Record<string, string> = {
   "day-trip": "/img/topics/day-trip.jpg",
   boat: "/img/topics/boat.jpg",
   cuisine: "/img/topics/cuisine.jpg",
-  itinerary: "/img/topics/itinerary.jpg",
   more: "/img/topics/more.jpg",
 };
 
@@ -44,7 +39,6 @@ const TOPIC_LABELS: Record<string, string> = {
   "day-trip": "Day trips",
   boat: "Boat tours",
   cuisine: "Food & Drink",
-  itinerary: "Itineraries",
   more: "More",
 };
 
@@ -122,10 +116,6 @@ function GroupedGuideCollection({
     [guides],
   );
 
-  // Get active section from URL (defaults to showing all)
-  const sectionParam = searchParams?.get("section") ?? "";
-  const normalizedSectionParam = sectionParam.trim().toLowerCase() as GuideSection | "";
-
   // Helper function to group guides by topic
   const groupByTopic = useCallback((guidesToGroup: GuideMeta[]): Record<string, GuideMeta[]> => {
     const groups: Record<string, GuideMeta[]> = {};
@@ -185,28 +175,6 @@ function GroupedGuideCollection({
     return groups;
   }, [groupedContentGuides, groupedDirectionsGuides]);
 
-  // Build section filter options
-  const sectionFilterOptions = useMemo<GuideFilterOption[]>(() => {
-    const options: GuideFilterOption[] = [];
-
-    if (contentGuides.length > 0) {
-      options.push({
-        value: "content",
-        label: "Experience Guides",
-        count: contentGuides.length,
-      });
-    }
-
-    if (directionsGuides.length > 0) {
-      options.push({
-        value: "directions",
-        label: "Getting There",
-        count: directionsGuides.length,
-      });
-    }
-
-    return options;
-  }, [contentGuides.length, directionsGuides.length]);
 
   // Build topic filter options from grouped guides
   const filterOptions = useMemo<GuideFilterOption[]>(() => {
@@ -236,22 +204,6 @@ function GroupedGuideCollection({
     return options;
   }, [groupedGuides]);
 
-  // Make href for section filter
-  const makeSectionHref = useCallback(
-    (value: string | null): string => {
-      const params = new URLSearchParams(searchString);
-      if (value) {
-        params.set("section", value);
-      } else {
-        params.delete("section");
-      }
-      params.delete("topic"); // Clear topic param when changing section
-      params.delete("tag");
-      const query = params.toString();
-      return `${basePath}${query ? `?${query}` : ""}`;
-    },
-    [basePath, searchString],
-  );
 
   // Build topic configs from translations
   const topicConfigs = useMemo(() => {
@@ -298,87 +250,37 @@ function GroupedGuideCollection({
   }, [i18n, t, ready]);
 
   const allHref = makeHref(null);
-  const allSectionsHref = makeSectionHref(null);
   const filterHeading = copy.filterHeading || "Filter by experience type";
   const filterDescription = copy.filterDescription || "";
   const clearFilterLabel = copy.clearFilterLabel || "All experiences";
 
-  // Section labels from translations or defaults
-  const contentSectionTitle = t("guideCollections.sections.content.title", { ns: "experiencesPage", defaultValue: "Experience Guides" });
-  const contentSectionDescription = t("guideCollections.sections.content.description", { ns: "experiencesPage", defaultValue: "In-depth guides about places, experiences, and things to do" });
-  const directionsSectionTitle = t("guideCollections.sections.directions.title", { ns: "experiencesPage", defaultValue: "Getting There" });
-  const directionsSectionDescription = t("guideCollections.sections.directions.description", { ns: "experiencesPage", defaultValue: "Step-by-step directions to and from the hostel" });
-
-  // Filter topic configs based on section
+  // Filter topic configs to only include topics with published guides in the section.
+  // This ensures no header is shown for a category where all guides are draft/unpublished.
   const getFilteredTopicConfigsForSection = (
     sectionGuides: Record<string, GuideMeta[]>,
   ): TopicConfig[] => {
+    const hasPublishedGuides = (topicId: string): boolean => {
+      const guides = sectionGuides[topicId];
+      return Array.isArray(guides) && guides.length > 0;
+    };
+
     if (normalizedTopicParam) {
       return topicConfigs.filter(
-        (config) => config.id === normalizedTopicParam && (sectionGuides[config.id]?.length ?? 0) > 0,
+        (config) => config.id === normalizedTopicParam && hasPublishedGuides(config.id),
       );
     }
-    return topicConfigs.filter((config) => (sectionGuides[config.id]?.length ?? 0) > 0);
+    return topicConfigs.filter((config) => hasPublishedGuides(config.id));
   };
 
   const contentTopicConfigs = getFilteredTopicConfigsForSection(groupedContentGuides);
   const directionsTopicConfigs = getFilteredTopicConfigsForSection(groupedDirectionsGuides);
 
-  // Determine which sections to show based on section filter
-  const showContentSection = !normalizedSectionParam || normalizedSectionParam === "content";
-  const showDirectionsSection = !normalizedSectionParam || normalizedSectionParam === "directions";
-
-  // Section header styles
-  const SECTION_HEADER_CLASSES = [
-    "mb-6",
-    "rounded-xl",
-    "border",
-    "border-brand-outline/30",
-    "bg-brand-surface/50",
-    "p-4",
-    "dark:border-brand-outline/40",
-    "dark:bg-brand-text/5",
-  ] as const;
+  // Show both sections (no filter needed)
+  const showContentSection = true;
+  const showDirectionsSection = true;
 
   return (
     <div id="guides" className="space-y-8">
-      {/* Section filter pills */}
-      {sectionFilterOptions.length > 1 ? (
-        <div className="flex flex-wrap items-center gap-2">
-          <a
-            href={allSectionsHref}
-            className={clsx(
-              "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition",
-              !normalizedSectionParam
-                ? "border-brand-primary bg-brand-primary/10 text-brand-primary dark:border-brand-secondary/70 dark:bg-brand-secondary/20 dark:text-brand-secondary"
-                : "border-brand-outline/40 text-brand-paragraph hover:border-brand-primary/50 hover:text-brand-primary dark:border-brand-outline/60 dark:text-brand-muted dark:hover:border-brand-secondary/60 dark:hover:text-brand-secondary",
-            )}
-          >
-            All
-            <span className="rounded-full bg-brand-surface/80 px-2 py-0.5 text-xs font-semibold text-brand-muted dark:bg-brand-text/15">
-              {guides.length}
-            </span>
-          </a>
-          {sectionFilterOptions.map((option) => (
-            <a
-              key={option.value}
-              href={makeSectionHref(option.value)}
-              className={clsx(
-                "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition",
-                normalizedSectionParam === option.value
-                  ? "border-brand-primary bg-brand-primary/10 text-brand-primary dark:border-brand-secondary/70 dark:bg-brand-secondary/20 dark:text-brand-secondary"
-                  : "border-brand-outline/40 text-brand-paragraph hover:border-brand-primary/50 hover:text-brand-primary dark:border-brand-outline/60 dark:text-brand-muted dark:hover:border-brand-secondary/60 dark:hover:text-brand-secondary",
-              )}
-            >
-              {option.label}
-              <span className="rounded-full bg-brand-surface/80 px-2 py-0.5 text-xs font-semibold text-brand-muted dark:bg-brand-text/15">
-                {option.count}
-              </span>
-            </a>
-          ))}
-        </div>
-      ) : null}
-
       {/* Topic filter panel */}
       {filterOptions.length > 1 ? (
         <GuideCollectionFilters
@@ -396,69 +298,49 @@ function GroupedGuideCollection({
 
       {/* Content guides section */}
       {showContentSection && contentGuides.length > 0 && contentTopicConfigs.length > 0 ? (
-        <div className="space-y-8">
-          <div className={clsx(SECTION_HEADER_CLASSES)}>
-            <h2 className="text-xl font-bold text-brand-heading dark:text-brand-heading">
-              {contentSectionTitle}
-            </h2>
-            <p className="mt-1 text-sm text-brand-paragraph dark:text-brand-muted">
-              {contentSectionDescription}
-            </p>
-          </div>
-          <div className="space-y-12">
-            {contentTopicConfigs.map((topic) => {
-              const topicGuides = groupedContentGuides[topic.id] || [];
-              if (!topicGuides.length) return null;
+        <div className="space-y-12">
+          {contentTopicConfigs.map((topic) => {
+            const topicGuides = groupedContentGuides[topic.id] || [];
+            if (!topicGuides.length) return null;
 
-              return (
-                <GroupedGuideSection
-                  key={`content-${topic.id}`}
-                  topic={topic}
-                  guides={topicGuides}
-                  lang={lang}
-                  translate={translate}
-                  fallbackTranslate={fallbackGuidesT}
-                  cardCtaTemplate={copy.cardCta}
-                  directionsLabel={copy.directionsLabel}
-                  resolveSummary={resolveSummary}
-                />
-              );
-            })}
-          </div>
+            return (
+              <GroupedGuideSection
+                key={`content-${topic.id}`}
+                topic={topic}
+                guides={topicGuides}
+                lang={lang}
+                translate={translate}
+                fallbackTranslate={fallbackGuidesT}
+                cardCtaTemplate={copy.cardCta}
+                directionsLabel={copy.directionsLabel}
+                resolveSummary={resolveSummary}
+              />
+            );
+          })}
         </div>
       ) : null}
 
       {/* Directions guides section */}
       {showDirectionsSection && directionsGuides.length > 0 && directionsTopicConfigs.length > 0 ? (
-        <div className="space-y-8">
-          <div className={clsx(SECTION_HEADER_CLASSES)}>
-            <h2 className="text-xl font-bold text-brand-heading dark:text-brand-heading">
-              {directionsSectionTitle}
-            </h2>
-            <p className="mt-1 text-sm text-brand-paragraph dark:text-brand-muted">
-              {directionsSectionDescription}
-            </p>
-          </div>
-          <div className="space-y-12">
-            {directionsTopicConfigs.map((topic) => {
-              const topicGuides = groupedDirectionsGuides[topic.id] || [];
-              if (!topicGuides.length) return null;
+        <div className="space-y-12">
+          {directionsTopicConfigs.map((topic) => {
+            const topicGuides = groupedDirectionsGuides[topic.id] || [];
+            if (!topicGuides.length) return null;
 
-              return (
-                <GroupedGuideSection
-                  key={`directions-${topic.id}`}
-                  topic={topic}
-                  guides={topicGuides}
-                  lang={lang}
-                  translate={translate}
-                  fallbackTranslate={fallbackGuidesT}
-                  cardCtaTemplate={copy.cardCta}
-                  directionsLabel={copy.directionsLabel}
-                  resolveSummary={resolveSummary}
-                />
-              );
-            })}
-          </div>
+            return (
+              <GroupedGuideSection
+                key={`directions-${topic.id}`}
+                topic={topic}
+                guides={topicGuides}
+                lang={lang}
+                translate={translate}
+                fallbackTranslate={fallbackGuidesT}
+                cardCtaTemplate={copy.cardCta}
+                directionsLabel={copy.directionsLabel}
+                resolveSummary={resolveSummary}
+              />
+            );
+          })}
         </div>
       ) : null}
     </div>

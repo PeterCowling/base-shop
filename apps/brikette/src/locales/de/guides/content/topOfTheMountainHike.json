@@ -112,22 +112,5 @@
     "labels": {
       "warnings": "Wann du es dir noch einmal überlegen solltest"
     }
-  },
-  "gallery": {
-    "title": "Fotogalerie",
-    "items": [
-      {
-        "alt": "Blick über die Halbinsel Richtung Capri",
-        "caption": "Blick über die Halbinsel nach Capri"
-      },
-      {
-        "alt": "QR-Code zum Teilen",
-        "caption": "Scannen zum Teilen"
-      },
-      {
-        "alt": "Pfad nahe dem Gipfel",
-        "caption": "Kurz vor dem Gipfel"
-      }
-    ]
   }
 }

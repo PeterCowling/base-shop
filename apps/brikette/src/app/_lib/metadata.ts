@@ -43,21 +43,30 @@ export function buildAppMetadata({
   isPublished = true,
 }: AppMetadataArgs): Metadata {
   const origin = BASE_URL || "https://hostel-positano.com";
-  const url = `${origin}${path}`;
+  const url = seo.ensureTrailingSlash(`${origin}${path}`);
 
   // Normalize image to extract src, width, height
   const imageUrl = typeof image === "string" ? image : image?.src;
   const finalImageWidth = typeof image === "object" ? image.width : imageWidth;
   const finalImageHeight = typeof image === "object" ? image.height : imageHeight;
 
-  // Build hreflang alternates
+  // Build hreflang alternates using proven buildLinks() logic
+  const links = seo.buildLinks({ lang, origin, path });
   const languages: Record<string, string> = {};
-  for (const supportedLang of i18nConfig.supportedLngs) {
-    // Replace current lang segment with alternate lang
-    const alternatePath = path.replace(`/${lang}`, `/${supportedLang}`);
-    languages[supportedLang] = `${origin}${alternatePath}`;
+
+  // Convert HtmlLinkDescriptor[] → Record<string, string> for Next.js alternates.languages
+  // Apply trailing-slash policy to alternates (buildLinks only applies it to canonical)
+  for (const link of links) {
+    if (link.rel === "alternate" && link.hrefLang) {
+      languages[link.hrefLang] = seo.ensureTrailingSlash(link.href);
+    }
   }
-  languages["x-default"] = `${origin}${path.replace(`/${lang}`, `/${i18nConfig.fallbackLng}`)}`;
+
+
+  // Use provided image or fall back to default OG image
+  const ogImageUrl = imageUrl || `${origin}${DEFAULT_OG_IMAGE.path}`;
+  const ogImageWidth = imageUrl ? finalImageWidth : DEFAULT_OG_IMAGE.width;
+  const ogImageHeight = imageUrl ? finalImageHeight : DEFAULT_OG_IMAGE.height;
 
   const metadata: Metadata = {
     title,
@@ -67,30 +76,29 @@ export function buildAppMetadata({
       languages,
     },
     openGraph: {
+      siteName: "Hostel Brikette",
       title,
       description,
       url,
       type: ogType,
       locale: lang,
       alternateLocale: i18nConfig.supportedLngs.filter((l) => l !== lang),
-      ...(imageUrl
-        ? {
-            images: [
-              {
-                url: imageUrl,
-                width: finalImageWidth,
-                height: finalImageHeight,
-                ...(imageAlt ? { alt: imageAlt } : {}),
-              },
-            ],
-          }
-        : {}),
+      images: [
+        {
+          url: ogImageUrl,
+          width: ogImageWidth,
+          height: ogImageHeight,
+          ...(imageAlt ? { alt: imageAlt } : {}),
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
+      site: "@hostelbrikette",
+      creator: "@hostelbrikette",
       title,
       description,
-      ...(imageUrl ? { images: [imageUrl] } : {}),
+      images: [ogImageUrl],
     },
   };
 

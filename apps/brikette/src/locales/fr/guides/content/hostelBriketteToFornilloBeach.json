@@ -57,22 +57,5 @@
         "Le raccourci descend plusieurs étages depuis l'auberge avant de passer à une voie pavée. Utilisez le bus pour le retour si vous préférez éviter de remonter."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Cartes de l'itinéraire et points de repère",
-    "items": [
-      {
-        "alt": "Carte de l'itinéraire à pied de l'Hostel Brikette à la plage de Fornillo",
-        "caption": "Hostel Brikette vers Fornillo (carte)"
-      },
-      {
-        "alt": "Virage vers le chemin piéton près de l'Hôtel Posa Posa",
-        "caption": "Raccourci vers Fornillo, point de virage"
-      },
-      {
-        "alt": "Itinéraire de Spiaggia Grande à l'arrêt du bus interno",
-        "caption": "Chemin de retour vers le bus interno"
-      }
-    ]
-  }
+  ]
 }

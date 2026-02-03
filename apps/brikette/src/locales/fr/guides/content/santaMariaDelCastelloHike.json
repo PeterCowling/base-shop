@@ -1,0 +1,132 @@
+{
+  "seo": {
+    "title": "Randonnée Santa Maria del Castello depuis Hostel Brikette - Positano",
+    "description": "Guide complet de randonnée vers Santa Maria del Castello, village de montagne au-dessus de Positano avec itinéraires, points de vue et vues côtières spectaculaires."
+  },
+  "linkLabel": "Santa Maria del Castello : Randonnée au village de montagne",
+  "intro": [
+    "Santa Maria del Castello est situé à 670 mètres (2 200 pieds) au-dessus de Positano, offrant des vues qui égalent ou surpassent celles du Sentier des Dieux. Ce village de montagne dispose d'un restaurant proposant une bonne cuisine à des prix abordables et des vues panoramiques époustouflantes.",
+    "De superbes vues apparaissent à seulement 15 minutes après avoir quitté l'auberge, faisant de cette randonnée un choix gratifiant pour ceux qui recherchent la flexibilité et veulent éviter les bus SITA bondés."
+  ],
+  "sections": [
+    {
+      "id": "what-is-santa-maria",
+      "title": "Qu'est-ce que Santa Maria del Castello ?",
+      "body": [
+        "Votre destination est un village de montagne situé au-dessus de Positano à 670 mètres (2 200 pieds) d'altitude. Le village dispose d'un restaurant offrant une bonne cuisine à des prix abordables, ainsi que de superbes vues.",
+        "Un point de vue dédié offre des vues panoramiques époustouflantes sur la côte amalfitaine, Positano et les montagnes environnantes."
+      ]
+    },
+    {
+      "id": "why-do-this-hike",
+      "title": "Pourquoi faire cette randonnée ?",
+      "body": [
+        "Les vues égalent ou surpassent celles du Sentier des Dieux, offrant des panoramas côtiers spectaculaires.",
+        "De superbes vues apparaissent à seulement 15 minutes après avoir quitté l'auberge – vous n'avez pas à attendre longtemps pour être récompensé.",
+        "Offre de la flexibilité et est préférée par ceux qui évitent les bus SITA bondés.",
+        "Sert de point de départ pour explorer d'autres zones de montagne autour de Positano."
+      ]
+    },
+    {
+      "id": "considerations",
+      "title": "Considérations importantes",
+      "body": [
+        "Cette randonnée est nettement plus exigeante que le Sentier des Dieux. Préparez-vous à des montées raides.",
+        "Peut ne pas convenir à ceux qui privilégient l'expérience du Sentier des Dieux comme objectif principal de randonnée.",
+        "La chaleur estivale nécessite d'éviter cette randonnée entre 11h00 et 16h00. Les départs tôt le matin ou en fin d'après-midi sont essentiels pendant les mois chauds."
+      ]
+    },
+    {
+      "id": "directions-to-village",
+      "title": "Itinéraire vers le village",
+      "body": [
+        "Suivez ces instructions étape par étape depuis Hostel Brikette pour atteindre le village de Santa Maria del Castello :"
+      ]
+    },
+    {
+      "id": "directions-to-lookout",
+      "title": "Itinéraire vers le point de vue",
+      "body": [
+        "Une fois que vous atteignez le carrefour où le sentier se nivelle, suivez ces instructions pour accéder au magnifique point de vue."
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "name": "Sortez de l'auberge et tournez à droite",
+      "text": "Depuis l'entrée de l'auberge, tournez à droite et montez les marches à côté du bâtiment."
+    },
+    {
+      "name": "Continuez sur le sentier",
+      "text": "En haut des marches initiales, continuez à suivre le sentier vers le haut."
+    },
+    {
+      "name": "Choisissez la gauche au carrefour",
+      "text": "Lorsque vous arrivez à un carrefour, choisissez l'option de montée à gauche pour continuer à monter."
+    },
+    {
+      "name": "Suivez les marches jusqu'à la route",
+      "text": "Continuez à suivre les marches jusqu'à ce que vous atteigniez un point avec des escaliers menant à une route."
+    },
+    {
+      "name": "Traversez la route",
+      "text": "Traversez la route et localisez les escaliers qui longent les maisons du côté opposé."
+    },
+    {
+      "name": "Montez les escaliers derrière les maisons",
+      "text": "Suivez ces escaliers qui serpentent derrière les maisons, vous menant au sentier de montagne."
+    },
+    {
+      "name": "Continuez sur le sentier de montagne",
+      "text": "Suivez le sentier de montagne pendant qu'il grimpe vers le village. Le chemin devient plus pittoresque ici."
+    },
+    {
+      "name": "Choisissez la montée aux bifurcations",
+      "text": "À deux bifurcations du sentier en cours de route, choisissez les chemins de montée pour continuer vers le village."
+    },
+    {
+      "name": "Arrivez au carrefour du village",
+      "text": "Vous arriverez à un carrefour où le sentier se nivelle. Cela marque votre arrivée à Santa Maria del Castello."
+    },
+    {
+      "name": "Tournez à droite vers le point de vue (facultatif)",
+      "text": "Pour atteindre le point de vue, tournez à droite au carrefour."
+    },
+    {
+      "name": "Prenez la route en montée jusqu'au carrefour",
+      "text": "Suivez la route en montée jusqu'à ce que vous atteigniez un carrefour."
+    },
+    {
+      "name": "Tournez à droite au carrefour",
+      "text": "Au carrefour, tournez à droite et suivez la route alors qu'elle se courbe vers la droite."
+    },
+    {
+      "name": "Continuez jusqu'à la section herbeuse",
+      "text": "Continuez jusqu'à ce que vous atteigniez une section herbeuse en dehors de la route principale."
+    },
+    {
+      "name": "Accédez aux points de vue",
+      "text": "Les points de vue sont accessibles depuis cette zone herbeuse. Soyez extrêmement prudent – il y a des chutes soudaines de plusieurs centaines de mètres."
+    }
+  ],
+  "warningsTitle": "Avertissements de sécurité",
+  "warnings": [
+    "Les points de vue ont des chutes soudaines de plusieurs centaines de mètres. Restez bien en retrait des bords et surveillez les enfants de près.",
+    "Cette randonnée est nettement plus exigeante que le Sentier des Dieux. Évaluez votre niveau de forme physique avant de tenter.",
+    "Évitez de randonner entre 11h00 et 16h00 pendant les mois d'été en raison de l'exposition extrême à la chaleur sur le sentier de montagne."
+  ],
+  "essentialsTitle": "Que apporter",
+  "essentials": [
+    "Chaussures de randonnée robustes avec une bonne adhérence pour terrain escarpé et irrégulier",
+    "Au moins 1,5 litre d'eau par personne – possibilités de remplissage limitées",
+    "Protection solaire : chapeau, crème solaire et lunettes de soleil pour les sections exposées",
+    "Collations légères ou déjeuner si vous prévoyez de passer du temps au restaurant du village"
+  ],
+  "tipsTitle": "Conseils de randonnée",
+  "tips": [
+    "Partez tôt le matin pendant les mois d'été pour éviter la chaleur de midi.",
+    "Prenez votre temps sur les sections raides – les vues valent la peine d'être savourées en chemin.",
+    "Envisagez de déjeuner au restaurant du village avant de redescendre à Positano.",
+    "Apportez un appareil photo ou un téléphone complètement chargé – les opportunités photographiques depuis le point de vue sont exceptionnelles."
+  ]
+}

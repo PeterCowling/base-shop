@@ -1,0 +1,59 @@
+{
+  "seo": {
+    "title": "Guía de Defectos y Daños del Hostel Brikette, Positano",
+    "description": "Aprende a reportar defectos, nuestra respuesta a problemas graves, políticas de depósito y responsabilidad, y la prevención de chinches en el único hostel de Positano."
+  },
+  "linkLabel": "Guía de Defectos y Daños del Hostel Brikette, Positano",
+  "sections": [
+    {
+      "id": "reportingDefects",
+      "title": "Reportar Defectos",
+      "body": [
+        "Si detectas algún problema en tu habitación, avísanos de inmediato. Tu notificación temprana nos permite resolverlo rápidamente."
+      ]
+    },
+    {
+      "id": "assessingDefects",
+      "title": "Evaluación de Defectos",
+      "body": [
+        "Una vez reportado, evaluaremos el defecto y priorizaremos la respuesta según su impacto en tu comodidad."
+      ]
+    },
+    {
+      "id": "responseToSeriousDefects",
+      "title": "Respuesta a Defectos Graves",
+      "body": [
+        "Si un defecto grave no puede repararse al momento, te ofreceremos alojamiento alternativo. Si es más barato que tu reserva, reembolsaremos la diferencia. Si lo rechazas, podrás solicitar un reembolso proporcional por las noches restantes."
+      ]
+    },
+    {
+      "id": "unreportedDefects",
+      "title": "Defectos No Reportados",
+      "body": [
+        "Si encontramos un problema que no reportaste en un plazo razonable, evaluaremos los daños y podría aplicarse nuestra política de daños."
+      ]
+    },
+    {
+      "id": "damagesPolicy",
+      "title": "Política de Daños",
+      "body": [
+        "Para seguridad mutua, podemos preautorizar tu tarjeta o pedir un depósito en efectivo al llegar. Sin depósito, la reserva puede cancelarse. El depósito se devuelve al salir, menos los costos por daños, pérdidas, mano de obra o administración. Si superan el depósito, deberás pagar la diferencia. Tarifas por hora: Director (50 €), Gerente (35 €), Personal (25 €)."
+      ]
+    },
+    {
+      "id": "bedBugsPolicy",
+      "title": "Política de Chinches",
+      "body": [
+        "Controlamos y tratamos los casos de chinches con rapidez. Si se detectan chinches en tu estancia, podrías asumir costos por pérdida de ingresos, limpieza y desinsectación. Informa cualquier signo inmediatamente."
+      ]
+    },
+    {
+      "id": "bedBugsPrevention",
+      "title": "Prevención de Chinches",
+      "body": [
+        "Para prevenir chinches:",
+        "* Informa en el check-in si estuviste en un lugar con chinches.\n* Desinfecta bien tu equipaje.\n* Revisa maletas y ropa antes de entrar a la habitación."
+      ]
+    }
+  ]
+}

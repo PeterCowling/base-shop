@@ -77,22 +77,37 @@
   ],
   "images": {
     "whyGo": {
+      "src": "/img/guides/laurito-beach/02-beach-overview.jpg",
       "alt": "해안선에 비치클럽이 늘어선 라우리토 해변 만",
       "caption": "라우리토의 절벽 배경 만은 메인 해변보다 조용하고 한산합니다."
     },
     "layout": {
+      "src": "/img/guides/laurito-beach/01-beach-layout-map.jpg",
       "alt": "라우리토의 해변 데크와 해안선 배치",
       "caption": "세 구역이 만을 나눕니다: 무료 구역, 빌라 트레 빌레 데크, 다 아돌포 테라스."
     },
     "treVille": {
+      "src": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg",
       "alt": "빌라 트레 빌레 비치클럽 라운저와 바다 전망",
       "caption": "빌라 트레 빌레는 프리미엄 라운저와 컨시어지 스타일 서비스에 집중합니다."
     },
     "daAdolfo": {
+      "src": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg",
       "alt": "다 아돌포 비치클럽 선착장과 좌석 구역",
       "caption": "다 아돌포 셔틀 보트는 레스토랑 테라스 옆에 손님을 내려줍니다."
+    },
+    "positanoView": {
+      "src": "/img/guides/laurito-beach/05-positano-view.jpg",
+      "alt": "포지타노와 해안 근처의 보트 전망",
+      "caption": "스피아자 그란데는 많은 비치 셔틀과 보트의 주요 출발 지점입니다."
+    },
+    "sitaBus": {
+      "src": "/img/guides/laurito-beach/06-amalfi-coast-sita-bus.jpg",
+      "alt": "바다 위의 아말피 해안 도로를 달리는 파란 SITA 버스",
+      "caption": "보트가 일시 중단될 때 믿을 수 있는 대안: 해안 도로를 따라 운행하는 SITA 버스."
     }
   },
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
   "essentialsTitle": "간단 요약",
   "essentials": [
     "여름에는 두 클럽 모두 예약 필수이며, 워크인은 10:00 이전에만 가능성이 높습니다.",
@@ -109,7 +124,7 @@
   "tips": [
     "예약 메일을 캡처해 두세요 — 부두 근처에서는 신호가 약합니다.",
     "리프 세이프 선크림과 워터 슈즈를 챙기세요. 자갈과 바위가 섞여 있습니다.",
-    "%LINK:beaches|포시타노 해변 개요%에서 라우리토와 다른 만을 비교하세요."
+    "%LINK:positanoBeaches|포시타노 해변 개요%에서 라우리토와 다른 만을 비교하세요."
   ],
   "warningsTitle": "알아두면 좋은 점",
   "warnings": [
@@ -137,8 +152,5 @@
         "여름에는 보통 18:00 전에 종료되며, 간절기에는 더 일찍 끝납니다. 도착 시 막차를 확인하고 버스 시간표를 백업으로 저장하세요."
       ]
     }
-  ],
-  "gallery": {
-    "alt": "라우리토 해변 해안선"
-  }
+  ]
 }

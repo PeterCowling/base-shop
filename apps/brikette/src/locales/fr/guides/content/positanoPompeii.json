@@ -1,134 +1,162 @@
 {
   "seo": {
-    "title": "Positano - Pompéi : comment y aller",
-    "description": "Itinéraire détaillé pour visiter Pompéi depuis Positano en bus + train ou ferry + train (en été)."
+    "title": "Excursion Positano à Pompéi : Guide Transport et Visite",
+    "description": "Guide complet pour visiter Pompéi depuis Positano. Directions en bus et train, que voir, conseils de timing et conseils pratiques pour les voyageurs planifiant une excursion d'une journée.",
+    "lastUpdated": "2026-01-31"
   },
-  "linkLabel": "Positano - Pompéi : comment y aller",
+  "linkLabel": "Excursion Positano à Pompéi : Guide Transport et Visite",
   "intro": [
-    "Pompéi est immense, spectaculaire et facile à surcharger. Ce plan t'aide à voir l'essentiel sans passer toute la journée dans les transports.",
-    "Attends-toi à de la chaleur, de la poussière et de la foule en été : emporte de l'eau, de la protection solaire et sois réaliste sur la portion du site que tu peux couvrir."
-  ],
-  "toc": [
-    {
-      "href": "#at-a-glance",
-      "label": "En un coup d'œil"
-    },
-    {
-      "href": "#entry-cost-and-hours",
-      "label": "Tarifs et horaires"
-    },
-    {
-      "href": "#other-facilities",
-      "label": "Services sur place"
-    },
-    {
-      "href": "#getting-there",
-      "label": "S'y rendre"
-    },
-    {
-      "href": "#self-guided-tour",
-      "label": "Parcours autonome"
-    },
-    {
-      "href": "#faqs",
-      "label": "FAQ"
-    }
+    "Visiter Pompéi depuis Positano fait une excursion d'une journée captivante. La cité antique ensevelie par le Vésuve en 79 ap. J.-C. offre un contraste dramatique avec la détente côtière—ruines tentaculaires, rues préservées, maisons à fresques et histoire romaine tangible. Le trajet de Positano à Pompéi prend environ 2 heures dans chaque sens par bus et train. Prévoyez une journée complète (départ à 8h, retour à 18h-19h). Ce guide couvre le transport, le timing, que voir et les conseils pratiques pour les voyageurs faisant le trajet.",
+    "Pompéi est vaste et peut être accablant sans plan. Beaucoup de visiteurs pour la première fois sous-estiment l'échelle du site (66 hectares—environ 165 acres) et les exigences physiques (chaud, poussiéreux, ombre minimale). Ce guide vous aide à voir les points forts efficacement, à éviter les erreurs courantes et à retourner à Positano satisfait plutôt qu'épuisé."
   ],
   "sections": [
     {
-      "id": "at-a-glance",
-      "title": "En un coup d'œil",
+      "id": "why-visit-pompeii",
+      "title": "Pourquoi visiter Pompéi depuis Positano ?",
       "body": [
-        "La taille de Pompéi impressionne dès l'entrée : presque toute la ville a été mise au jour et se parcourt facilement à pied.",
-        "C'est une sortie peu coûteuse si tu visites en autonomie — le contexte historique reste parlant sans guide privé.",
-        "Herculanum est plus petite et mieux conservée, à privilégier si tu veux voir des fresques et mosaïques intactes plutôt que les larges rues de Pompéi.",
-        "Depuis Positano en transports publics, prévois chaleur, poussière et trajets longs."
-      ]
-    },
-    {
-      "id": "entry-cost-and-hours",
-      "title": "Tarifs et horaires d'ouverture",
-      "body": [
-        "Les tarifs et horaires varient selon la saison : vérifie le site officiel du Parco Archeologico di Pompei avant de partir.",
-        "Le billet plein tarif tourne généralement autour de la quinzaine d'euros; la dernière entrée va de la fin d'après-midi au début de soirée selon le mois."
-      ]
-    },
-    {
-      "id": "other-facilities",
-      "title": "Services sur place",
-      "body": [
-        "Récupère le plan gratuit au point d'information à côté des guichets : il facilite grandement l'orientation dans les ruines.",
-        "Tu peux louer des audioguides ou engager des guides agréés à l'entrée si tu souhaites davantage de commentaires.",
-        "Des stands de restauration existent mais restent limités — arrive avec beaucoup d'eau, surtout pendant les mois chauds.",
-        "Tu peux laisser tes bagages à la gare de Pompeii Scavi (service payant) ou les déposer gratuitement juste après l'entrée du site."
+        "%IMAGE:pompeii-ruins-overview.jpg|Vue aérienne du site archéologique de Pompéi avec le Vésuve%",
+        "Pompéi est l'un des sites archéologiques les plus importants au monde. Quand le Vésuve est entré en éruption le 24 août 79 ap. J.-C., il a enseveli Pompéi sous 4-6 mètres de cendres volcaniques et de pierre ponce. La ville est restée figée dans le temps pendant près de 1 700 ans jusqu'à ce que les fouilles commencent au 18ème siècle. Ce qui rend Pompéi extraordinaire n'est pas seulement son âge mais son exhaustivité—rues entières, maisons, boutiques, temples, théâtres et thermes préservés avec fresques, mosaïques, graffitis et même restes humains moulés en plâtre. Si vous êtes intéressé par d'autres %LINK:historyPositano|sites historiques sur la Côte amalfitaine%, Pompéi offre un complément dramatique à l'héritage médiéval et romain de Positano.",
+        "Pour les voyageurs séjournant à l'%LINK:onlyHostel|Hostel Brikette%, Pompéi offre un contrepoint historique puissant à la beauté naturelle de la Côte amalfitaine. Vous pouvez déambuler dans des rues où les Romains marchaient il y a 2 000 ans, voir comment ils vivaient, faisaient leurs courses, vénéraient et se divertissaient. L'échelle est humiliante—Pompéi était une ville prospère de 11 000-20 000 personnes quand l'éruption a frappé. Aujourd'hui, vous pouvez marcher dans leurs maisons, lire leurs graffitis muraux et vous tenir dans leur amphithéâtre.",
+        "Le trajet de Positano à Pompéi offre également une variété pratique. Si vous avez été à la plage pendant plusieurs jours à %LINK:positanoMainBeach|Spiaggia Grande% ou explorant les %LINK:pathOfTheGods|sentiers de randonnée côtiers%, une excursion culturelle brise le rythme. Pompéi fonctionne bien les jours nuageux quand les plages sont moins attrayantes. Et contrairement aux %LINK:avoidCrowdsPositano|foules touristiques denses de Positano%, la vastitude de Pompéi disperse les visiteurs—vous aurez souvent des rues entières pour vous seul, surtout si vous arrivez tôt ou visitez hors saison."
       ]
     },
     {
       "id": "getting-there",
-      "title": "S'y rendre",
+      "title": "Comment se rendre de Positano à Pompéi",
       "body": [
-        "Depuis Positano, prends le bus SITA jusqu'à Sorrente; achète les billets au tabac ou à bord et compte environ une heure de trajet.",
-        "À Sorrente, monte les escaliers vers les quais de la Circumvesuviana et prends le train local pour ‘Pompei Scavi – Villa dei Misteri’.",
-        "En sortant de la gare, tourne à droite : tu atteindras l'entrée Porta Marina Superiore en moins d'une minute, sur la gauche."
+        "%IMAGE:sita-bus-sorrento.jpg|Bus SITA à la station de Sorrente se connectant au Circumvesuviana%",
+        "Le trajet de Positano à Pompéi nécessite deux étapes : bus SITA de Positano à Sorrente, puis train Circumvesuviana de Sorrente à Pompéi. Le temps de trajet total est d'environ 1,5-2 heures dans chaque sens, selon les temps d'attente du bus et du train. Voici le processus étape par étape :",
+        "**Étape 1 : Bus de Positano à Sorrente (50-60 minutes).** Prenez le bus SITA depuis Chiesa Nuova (près de l'auberge) ou l'arrêt de bus principal de Positano (Spiaggia Grande). Les bus circulent toutes les 20-40 minutes selon la saison. Achetez les billets dans les tabacchi avant d'embarquer ou utilisez l'application SITA. Les billets coûtent environ 2,50-3,00€. Le trajet en bus le long de la %LINK:chiesaNuovaArrivals|route de la Côte amalfitaine% offre des vues magnifiques mais peut être bondé—visez à embarquer tôt à Chiesa Nuova pour garantir un siège. Pour des horaires détaillés et des conseils, voir %LINK:sorrentoPositanoBus|Positano à Sorrente en bus%.",
+        "**Étape 2 : Train de Sorrente à Pompéi Scavi (30-35 minutes).** À Sorrente, le bus s'arrête à Piazza Tasso (la place principale). De là, marchez 5 minutes jusqu'à la station de train Circumvesuviana (suivez les panneaux ou demandez aux locaux). Achetez un billet pour \"Pompei Scavi – Villa dei Misteri\" au guichet ou aux machines. Les billets coûtent environ 3,00-4,00€. Le Circumvesuviana est un train de banlieue local—basique, souvent bondé, pas de climatisation. Les trains circulent toutes les 20-30 minutes. Le trajet prend environ 30 minutes. Sortez à la station \"Pompei Scavi\" (PAS la station \"Pompeii\", qui est plus loin des ruines).",
+        "**Étape 3 : Marche jusqu'à l'entrée (1-2 minutes).** Sortez de la station Pompei Scavi, tournez à droite, et vous verrez l'entrée du site archéologique de Pompéi (Porta Marina Superiore) dans les 50 mètres. C'est l'entrée principale pour les visiteurs indépendants. Les guichets et le dépôt de bagages sont ici.",
+        "**Temps de trajet total :** Prévoyez 2-2,5 heures de Positano à l'entrée de Pompéi, incluant l'attente du bus, le trajet en bus, le transfert à Sorrente, le trajet en train et la marche. Quittez Positano à 8h pour arriver à Pompéi vers 10h-10h30, vous donnant 4-5 heures pour explorer avant de rentrer."
       ]
     },
     {
-      "id": "self-guided-tour",
-      "title": "Parcours autonome",
+      "id": "timing-and-planning",
+      "title": "Quand visiter et combien de temps passer",
       "body": [
-        "À l'entrée, tourne à gauche vers le point d'information pour récupérer le plan et, si besoin, organiser la consigne avant d'acheter les billets aux guichets en face.",
-        "Une fois à l'intérieur, repère Porta Marina Superiore sur le plan : tu te tiens sur Via Marina avec une signalétique claire devant toi.",
-        "Suis Via Marina vers l'amphithéâtre en faisant des détours par les maisons, thermes et forums qui t'intéressent, puis reviens sur l'axe principal.",
-        "Après l'amphithéâtre, traverse la partie basse du site pour voir d'autres points forts sans refaire le même chemin.",
-        "Cet itinéraire couvre généralement 60 à 80 % des sites majeurs en bien moins de temps que si tu essayais d'arpenter toutes les rues."
+        "%IMAGE:pompeii-summer-crowds.jpg|Touristes explorant les ruines de Pompéi lors d'une journée d'été%",
+        "**Meilleur moment de la journée :** Arrivez à Pompéi vers 9h-10h pour battre les foules de pointe et la chaleur de midi. Le site ouvre à 9h (vérifiez les horaires officiels selon la saison). Les températures matinales sont plus fraîches, la lumière est plus douce pour les photos, et les groupes touristiques arrivent plus tard (11h-12h). Si vous arrivez vers 9h30, vous aurez 1-2 heures de ruines relativement vides avant que les foules s'accumulent.",
+        "**Combien de temps passer :** Prévoyez 3-4 heures minimum pour voir les points forts majeurs sans vous presser. Les passionnés d'archéologie sérieux peuvent passer 6-8 heures à explorer chaque recoin, mais la plupart des voyageurs trouvent que 3-4 heures suffisent pour apprécier l'échelle du site et voir les zones clés. Si vous avez un temps limité, 2 heures couvrent l'essentiel absolu (forum, amphithéâtre, quelques maisons), mais vous manquerez beaucoup.",
+        "**Meilleure saison :** Avril-juin et septembre-octobre offrent le meilleur équilibre—températures agréables, foules gérables et accès complet au site. Juillet-août apportent une chaleur extrême (35-40°C), un soleil intense, une ombre minimale et des foules touristiques de pointe. Novembre-mars sont plus calmes mais risquent la pluie et des heures de jour plus courtes. Si vous visitez en été, apportez le double de l'eau que vous pensez nécessaire, portez un chapeau à large bord et prenez des pauses fréquentes dans les zones ombragées.",
+        "**Exemple d'itinéraire pour les voyageurs :**\n- 08h00 : Quitter Positano par bus SITA\n- 09h00 : Arriver à Sorrente, transfert vers Circumvesuviana\n- 09h30 : Départ de Sorrente en train\n- 10h00-10h30 : Arriver à Pompéi, acheter les billets, entrer sur le site\n- 10h30-14h00 : Explorer les ruines (3,5 heures)\n- 14h00-14h30 : Pause déjeuner (apportez un déjeuner emballé ou achetez au café du site)\n- 14h30 : Départ de Pompéi en train\n- 15h00-15h30 : Arriver à Sorrente, prendre le bus SITA\n- 16h30-17h30 : Arriver de retour à Positano\n\nCet horaire permet 3-4 heures à Pompéi avec du temps tampon pour les retards de transport. Vous retournez à Positano avec le temps de vous reposer avant le dîner. Beaucoup de voyageurs suivent exactement cet itinéraire et rapportent qu'il fonctionne bien—pas trop précipité, pas trop tranquille, avec assez de temps pour voir les points forts sans épuisement. Les voyageurs qui essaient d'entasser plus dans la journée (par ex., ajouter Herculanum ou prolonger Pompéi à 5+ heures) rapportent systématiquement se sentir épuisés le soir."
+      ]
+    },
+    {
+      "id": "what-to-see",
+      "title": "Que voir à Pompéi : visite des points forts",
+      "body": [
+        "%IMAGE:pompeii-forum-columns.jpg|Forum romain antique à Pompéi avec colonnes préservées%",
+        "Les 66 hectares de Pompéi contiennent des centaines de bâtiments. Tout voir est impossible en une visite. Concentrez-vous sur les points forts majeurs pour une visite autoguidée enrichissante. Prenez le plan gratuit du site à l'entrée (essentiel pour la navigation) et suivez cet itinéraire suggéré :",
+        "**1. Forum (Foro).** Le forum était le centre politique, religieux et commercial de Pompéi. C'est une grande place rectangulaire entourée de temples, de bâtiments administratifs et de halles de marché. Le Temple de Jupiter ancre l'extrémité nord, avec le Vésuve qui se profile derrière—un rappel visuel puissant de ce qui a détruit la ville. Le forum donne du contexte pour tout le reste que vous verrez. Passez 20-30 minutes ici.",
+        "%IMAGE:pompeii-basilica-interior.jpg|Intérieur de l'ancienne basilique à Pompéi avec colonnes%",
+        "**2. Basilique.** Adjacent au forum, la basilique était le tribunal et le centre d'affaires de Pompéi. L'intérieur massif (65m x 28m) accueillait autrefois des procédures juridiques et des négociations commerciales. L'échelle des colonnes et de l'architecture démontre l'ingénierie romaine. Passez 10 minutes.",
+        "**3. Maison du Faune (Casa del Fauno).** L'une des plus grandes et opulentes maisons privées de Pompéi, couvrant un pâté de maisons entier. Célèbre pour la statue en bronze du faune dans l'atrium (l'original est au Musée archéologique de Naples, mais une réplique se tient in situ) et la Mosaïque d'Alexandre (également déplacée à Naples). La maison démontre comment vivait l'élite riche de Pompéi—plusieurs cours, salles à manger, quartiers des serviteurs, mosaïques élaborées. Passez 15-20 minutes.",
+        "%IMAGE:house-vettii-frescoes.jpg|Fresques colorées préservées dans la Maison des Vettii%",
+        "**4. Maison des Vettii (Casa dei Vettii).** Une autre maison riche, célèbre pour ses fresques remarquablement préservées. La salle à manger (triclinium) présente des scènes mythologiques en rouges, bleus et ors vifs. Le jardin a été reconstruit sur la base de restes de plantes anciennes. Cette maison montre le mieux l'art et la couleur de Pompéi. Passez 15 minutes.",
+        "**5. Thermes Stabianes (Terme Stabiane).** Les plus anciens et les mieux préservés thermes publics de Pompéi. Vous pouvez voir le caldarium (salle chaude), tepidarium (salle tiède), frigidarium (salle froide) et apodyterium (vestiaire). L'ingénierie est visible—sols chauffés, plomberie, même graffitis anciens sur les murs. Cela donne un aperçu de la vie quotidienne et des coutumes sociales romaines. Passez 15 minutes.",
+        "**6. Lupanar (Bordel).** Un petit bâtiment de deux étages avec des lits en pierre et des fresques érotiques. Le lupanar est l'un des sites les plus visités (et photographiés) de Pompéi. Il fournit des preuves franches de l'industrie du sexe commercial de Pompéi. Les chambres à l'étage et l'art explicite choquent certains visiteurs mais offrent une vérité historique non vernie. Passez 5-10 minutes (souvent bondé).",
+        "%IMAGE:pompeii-amphitheater.jpg|Amphithéâtre antique à Pompéi avec le Vésuve en arrière-plan%",
+        "**7. Amphithéâtre (Anfiteatro).** L'amphithéâtre de Pompéi accueillait 20 000 spectateurs pour les jeux de gladiateurs et les spectacles publics. Construit vers 70 av. J.-C., c'est l'un des plus anciens amphithéâtres romains survivants. Vous pouvez marcher sur le sol de l'arène et grimper sur les gradins pour des vues sur les ruines et le Vésuve. L'échelle est impressionnante—imaginez le rugissement de 20 000 Romains acclamant les sports sanglants. Passez 20 minutes.",
+        "%IMAGE:pompeii-plaster-casts.jpg|Moulages en plâtre des victimes de Pompéi au Jardin des Fugitifs%",
+        "**8. Jardin des Fugitifs (Orto dei Fugitivi).** Un vignoble où 13 résidents de Pompéi sont morts en essayant d'échapper à l'éruption. Leurs corps ont été préservés dans la cendre ; les archéologues ont rempli les cavités avec du plâtre pour créer des moulages obsédants. Voir les moulages en plâtre—adultes, enfants, contorsionnés dans leurs derniers moments—rend la tragédie de Pompéi viscérale. C'est émotionnellement lourd mais historiquement important. Passez 10 minutes.",
+        "%IMAGE:via-abbondanza-street.jpg|Rue romaine antique Via dell'Abbondanza avec boutiques%",
+        "**9. Via dell'Abbondanza.** La rue principale de Pompéi, bordée de boutiques, tavernes et maisons. Marcher dans cette rue donne l'impression de plonger dans une ville romaine—vous pouvez voir des comptoirs où les marchands vendaient nourriture et vin, des graffitis sur les murs (slogans électoraux, mots d'amour, insultes), des pierres de passage pour traverser les rues boueuses. C'est là que Pompéi semble le plus vivant. Passez 20-30 minutes à flâner.",
+        "Cet itinéraire couvre les points forts essentiels en 3-3,5 heures à un rythme détendu. Si vous avez plus de temps, explorez le quartier des théâtres, plus de maisons (Maison du Poète Tragique, Maison de Ménandre) et des rues latérales. Si vous avez moins de temps, priorisez le forum, une maison riche (Vettii ou Faune), les thermes et l'amphithéâtre."
+      ]
+    },
+    {
+      "id": "practical-tips",
+      "title": "Conseils pratiques pour votre visite",
+      "body": [
+        "%IMAGE:pompeii-map-tourists.jpg|Touristes consultant le plan du site à l'entrée de Pompéi%",
+        "**Prenez le plan gratuit à l'entrée.** Le bureau d'information à l'intérieur de Porta Marina Superiore distribue des plans imprimés gratuits. Prenez-en un. Pompéi est énorme et déroutant sans plan. Le plan marque les sites majeurs, les toilettes, les sorties et les zones ombragées. Ne comptez pas sur la navigation téléphonique—la réception cellulaire est inégale, et errer sans but fait perdre du temps.",
+        "**Apportez beaucoup d'eau.** Pompéi est exposé—ombre minimale, surfaces en pierre réfléchissantes amplifiant la chaleur. En été, les températures sur site peuvent atteindre 40°C. Apportez au moins 1,5 litre d'eau par personne. Les fontaines à l'intérieur du site offrent de l'eau potable pour les recharges. La déshydratation est un risque réel—beaucoup de visiteurs sous-estiment cela. Depuis l'auberge, nous avons vu des voyageurs revenir de Pompéi avec des insolations et des maux de tête de déshydratation parce qu'ils n'avaient apporté qu'une petite bouteille. Le personnel recommande de remplir deux bouteilles de 750ml avant de partir et de recharger aux fontaines de Pompéi tout au long de la journée.",
+        "**Portez des chaussures confortables et robustes.** Les rues de Pompéi sont pavées de grandes pierres inégales. Les sandales ou tongs conduisent à des chevilles tordues et des pieds endoloris. Portez des chaussures de marche fermées avec un bon soutien. Vous marcherez 5-8 km (3-5 miles) en explorant le site.",
+        "**La protection solaire est critique.** Portez de la crème solaire (SPF 30+), un chapeau à large bord et des lunettes de soleil. Le soleil est implacable, et il n'y a presque pas d'ombre. Des manches longues en tissu léger et respirant aident à prévenir les coups de soleil mieux que d'appliquer répétitivement de la crème solaire.",
+        "**Dépôt de bagages disponible.** Si vous combinez Pompéi avec un voyage ultérieur (par ex., visiter Pompéi en route vers Naples), vous pouvez entreposer les bagages à la station de train Pompei Scavi (service payant) ou au vestiaire gratuit juste à l'intérieur de l'entrée du site. Les gros sacs à dos sont autorisés à l'intérieur mais rendent les manœuvres dans les portes étroites difficiles.",
+        "**Audioguides et visites.** Les audioguides (8-10€) sont disponibles à l'entrée et fournissent du contexte pour les sites majeurs. Les guides touristiques agréés offrent des visites de groupe (15-20€ par personne pour des visites de 2 heures) ou des visites privées (100-150€ pour petits groupes). Pour les visiteurs pour la première fois, un audioguide ou rejoindre une visite de groupe ajoute une valeur significative—les ruines sont plus significatives avec un contexte historique. Les visites autoguidées fonctionnent bien avec un guide ou le plan gratuit, mais vous manquez des histoires et des détails.",
+        "**Nourriture et boisson à l'intérieur.** Il y a un café près du forum vendant des sandwichs, boissons et collations à des prix gonflés. La qualité est médiocre. Beaucoup de voyageurs apportent des déjeuners emballés préparés dans la %LINK:onlyHostel|cuisine de l'auberge%—sandwichs, fruits, collations des épiceries de Chiesa Nuova—et mangent dans les zones ombragées près de l'amphithéâtre ou du forum. Cela économise de l'argent (15-20€ par personne) et vous permet de vous reposer sans quitter le site. Nous avons essayé les sandwichs du café ; ils sont trop chers (8-10€) et décevants. Emballez les vôtres.",
+        "**Les toilettes sont limitées.** Il y a des toilettes près de l'entrée, du forum et de l'amphithéâtre. Utilisez-les quand vous les voyez—de longs écarts entre les installations. Elles sont basiques mais fonctionnelles.",
+        "**La photographie est autorisée.** Vous pouvez prendre des photos dans tout Pompéi (pas de flash à l'intérieur des bâtiments avec fresques). Les meilleures opportunités photo sont le forum avec le Vésuve en arrière-plan, l'amphithéâtre, les scènes de rue de Via dell'Abbondanza et les moulages en plâtre au Jardin des Fugitifs. La lumière du matin et de fin d'après-midi est meilleure ; le soleil de midi crée des ombres dures."
+      ]
+    },
+    {
+      "id": "herculaneum-alternative",
+      "title": "Herculanum comme alternative ou ajout",
+      "body": [
+        "%IMAGE:herculaneum-villa-fresco.jpg|Fresques bien préservées au site archéologique d'Herculanum%",
+        "Herculanum (Ercolano) est une plus petite ville romaine également détruite par le Vésuve en 79 ap. J.-C. Elle se trouve plus près de Naples que Pompéi (environ 40 minutes par Circumvesuviana depuis Sorrente). Beaucoup d'archéologues et d'historiens considèrent Herculanum supérieur à Pompéi en termes de qualité de préservation. Herculanum a été enseveli sous un matériau volcanique plus profond (jusqu'à 20 mètres contre 6 mètres pour Pompéi), ce qui a créé un sceau hermétique. Cela a préservé des matériaux organiques—bois, tissu, nourriture—qui se sont désintégrés à Pompéi. Les fresques et mosaïques à Herculanum conservent plus de couleur. Les bâtiments ont des étages supérieurs et des toits intacts.",
+        "**Herculanum vs Pompéi : lequel visiter ?** Si vous n'avez le temps que pour un, la plupart des visiteurs pour la première fois choisissent Pompéi pour son échelle et sa renommée. Pompéi délivre le facteur \"wow\" d'une ville entière figée dans le temps. Herculanum est plus petit (4,5 hectares contre 66 pour Pompéi), moins accablant et plus intime. Vous pouvez voir l'ensemble du site en 1,5-2 heures contre 3-4 pour Pompéi. Herculanum est meilleur pour apprécier l'art, l'architecture et les détails de la vie quotidienne romains. Pompéi est meilleur pour comprendre l'urbanisme et vivre l'échelle d'une ville romaine.",
+        "**Pouvez-vous visiter les deux en une journée depuis Positano ?** Techniquement oui, mais c'est épuisant. Les deux sites en une journée nécessitent de quitter Positano à 7h30, de visiter Herculanum d'abord (9h-11h), puis Pompéi (12h-15h), de rentrer vers 18h-19h. Vous passerez 5-6 heures en transport et 4-5 heures sur les sites. La plupart des voyageurs trouvent cela trop précipité. Si vous voulez les deux, envisagez de passer la nuit à Naples ou Sorrente pour répartir les visites sur deux jours."
+      ]
+    },
+    {
+      "id": "returning-to-positano",
+      "title": "Retour à Positano",
+      "body": [
+        "%IMAGE:circumvesuviana-train.jpg|Train Circumvesuviana retournant de Pompéi à Sorrente%",
+        "Inversez l'itinéraire du matin : retournez à la station de train Pompei Scavi, prenez le Circumvesuviana vers Sorrente, puis le %LINK:sorrentoPositanoBus|bus SITA de retour à Positano%. Les bus de l'après-midi de Sorrente à Positano (15h-18h) peuvent être très bondés—touristes d'été et navetteurs rentrant chez eux. Attendez-vous à rester debout pour une partie ou la totalité du trajet si vous embarquez à Sorrente. Alternativement, prenez le bus légèrement plus tard (après 18h30) quand les foules s'amincissent, bien que cela signifie arriver à Positano vers 19h30-20h.",
+        "Si les bus sont impossiblement pleins, les taxis et chauffeurs privés opèrent de Sorrente à Positano (60-80€ pour jusqu'à 4 passagers). C'est cher mais économise 45-60 minutes et garantit un siège. Certains voyageurs partagent un taxi après de longues journées chaudes à Pompéi. Demandez au %LINK:onlyHostel|personnel de l'auberge% des recommandations de chauffeurs si vous voulez cette option. Une fois de retour à Positano, beaucoup de voyageurs prennent un dîner dans les restaurants locaux ou achètent des provisions pour cuisiner à la %LINK:onlyHostel|cuisine de l'auberge% et partager des histoires de Pompéi avec d'autres voyageurs."
       ]
     }
   ],
-  "howTo": {
-    "steps": [
-      {
-        "name": "Bus jusqu'à Sorrente",
-        "text": "Prends le bus SITA depuis Positano jusqu'à la gare principale de Sorrente (environ 60 minutes)."
-      },
-      {
-        "name": "Train pour Pompeii Scavi",
-        "text": "Monte sur les quais de la Circumvesuviana et prends le train pour ‘Pompei Scavi – Villa dei Misteri’."
-      },
-      {
-        "name": "Marche jusqu'à l'entrée",
-        "text": "En sortant de la gare, tourne à droite : Porta Marina Superiore se trouve à une cinquantaine de mètres sur la gauche."
-      }
-    ]
-  },
-  "tipsTitle": "Conseils du jour J",
+  "tipsTitle": "Conseils rapides pour l'excursion à Pompéi",
   "tips": [
-    "Récupère le plan gratuit avant de passer les tourniquets afin de planifier les détours sans revenir sur tes pas.",
-    "Emporte beaucoup d'eau et remplis tes gourdes dès que tu vois une fontaine : en été, les kiosques peuvent avoir de longues files.",
-    "Note les points photo ou les fresques à revoir à la sortie; on les oublie facilement sous la chaleur."
+    "Quittez Positano à 8h pour arriver à Pompéi vers 10h-10h30 et battre les foules de pointe.",
+    "Prenez le plan gratuit du site à l'entrée—essentiel pour la navigation dans les ruines tentaculaires.",
+    "Apportez 1,5+ litres d'eau par personne ; la chaleur et l'exposition au soleil sont intenses en été.",
+    "Portez des chaussures robustes fermées—les rues en pierre inégales de Pompéi détruisent les sandales et tongs.",
+    "Emballez un déjeuner à manger à l'intérieur du site et économisez 15-20€ sur la nourriture trop chère du café.",
+    "Utilisez crème solaire, chapeau et lunettes de soleil—Pompéi n'a presque pas d'ombre.",
+    "Priorisez le forum, la Maison des Vettii, les Thermes Stabianes, l'amphithéâtre et Via dell'Abbondanza pour une visite de 3 heures.",
+    "Envisagez un audioguide (8-10€) pour le contexte historique—rend les ruines bien plus significatives.",
+    "Entreposez les bagages à la station Pompei Scavi ou au vestiaire gratuit à l'intérieur de l'entrée.",
+    "Les bus de retour de Sorrente à Positano sont bondés 15h-18h ; voyagez plus tôt ou plus tard si possible."
   ],
-  "warningsTitle": "À savoir absolument",
-  "warnings": [
-    "En haute saison, les files pour le bus SITA et la Circumvesuviana peuvent ajouter 20 à 30 minutes à chaque trajet : garde une marge dans ton planning.",
-    "De vastes portions du site sont en plein soleil; évite les visites à midi si tu es sensible à la chaleur."
-  ],
-  "faqsTitle": "FAQ",
+  "faqsTitle": "Questions fréquentes",
   "faqs": [
     {
-      "q": "Quelle est la meilleure entrée ?",
+      "q": "Combien de temps faut-il pour aller de Positano à Pompéi ?",
       "a": [
-        "Porta Marina Superiore, juste à côté de la gare Pompei Scavi, est la plus pratique pour les visiteurs autonomes — à quelques mètres du train et proche de la consigne."
+        "Environ 1,5-2 heures dans chaque sens. Le bus SITA de Positano à Sorrente prend 50-60 minutes, le train Circumvesuviana de Sorrente à Pompei Scavi prend 30-35 minutes, plus 5-10 minutes pour le transfert à Sorrente. Prévoyez 2-2,5 heures au total incluant les temps d'attente."
       ]
     },
     {
-      "q": "Peut-on visiter sans guide ?",
+      "q": "Combien coûte une excursion d'une journée à Pompéi depuis Positano ?",
       "a": [
-        "Oui. Le plan officiel gratuit est détaillé et la plupart des bâtiments principaux disposent de panneaux en italien et en anglais. Des audioguides et guides agréés restent disponibles pour davantage de contexte."
+        "Budget 30-40€ par personne : bus SITA Positano-Sorrente (2,50-3€), train Circumvesuviana Sorrente-Pompéi (3-4€), billet d'entrée à Pompéi (16-18€), transport retour (5,50-7€), plus nourriture/boissons. Un audioguide ajoute 8-10€. Budget total excursion journée : 35-50€ par personne."
       ]
     },
     {
-      "q": "Existe-t-il une consigne sécurisée ?",
+      "q": "Pompéi vaut-il la visite depuis Positano ?",
       "a": [
-        "Tu peux laisser les petits bagages à la gare Pompei Scavi moyennant un supplément, et le site offre une consigne gratuite juste après l'entrée."
+        "Oui, surtout si vous voulez de la variété culturelle/historique au-delà des plages. Pompéi est l'un des sites archéologiques les plus importants au monde. Le trajet est long (4+ heures de transport aller-retour) mais gérable comme excursion d'une journée complète. Meilleur pour les voyageurs passant 4+ jours à Positano qui veulent une pause des activités côtières."
+      ]
+    },
+    {
+      "q": "Puis-je visiter Pompéi et Herculanum en une journée depuis Positano ?",
+      "a": [
+        "Techniquement oui mais très précipité. Vous devriez quitter Positano à 7h30, visiter Herculanum d'abord (9h-11h), puis Pompéi (12h-15h), rentrer vers 18h-19h. Total 5-6 heures de transport, 4-5 heures sur les sites. La plupart des voyageurs trouvent cela épuisant. Mieux vaut choisir un site ou passer la nuit à Naples/Sorrente pour répartir les visites sur deux jours."
+      ]
+    },
+    {
+      "q": "Que devrais-je apporter à Pompéi ?",
+      "a": [
+        "Essentiel : 1,5+ litres d'eau par personne, crème solaire, chapeau, lunettes de soleil, chaussures de marche robustes, plan du site (gratuit à l'entrée). Recommandé : déjeuner emballé, petit sac à dos, appareil photo, guide ou audioguide. Été : le double de l'eau, manches longues légères pour protection solaire. Le site est chaud, exposé et nécessite 3-4 heures de marche."
+      ]
+    },
+    {
+      "q": "Ai-je besoin d'un guide ou puis-je explorer Pompéi moi-même ?",
+      "a": [
+        "Vous pouvez explorer de manière indépendante avec le plan gratuit du site. Cependant, un audioguide (8-10€) ou rejoindre une visite de groupe (15-20€) améliore significativement l'expérience en fournissant du contexte historique, des histoires et des détails que vous manqueriez autrement. Les visiteurs pour la première fois bénéficient le plus d'un contexte guidé."
+      ]
+    },
+    {
+      "q": "Quand est le meilleur moment pour visiter Pompéi ?",
+      "a": [
+        "Avril-juin et septembre-octobre offrent le meilleur temps et des foules gérables. Arrivez au site vers 9h-10h pour battre les groupes touristiques et la chaleur de midi. Évitez juillet-août si possible (chaleur extrême, soleil intense, foules de pointe). Novembre-mars sont plus calmes mais risquent la pluie et des heures de jour plus courtes."
       ]
     }
   ]

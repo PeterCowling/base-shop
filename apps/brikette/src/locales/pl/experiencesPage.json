@@ -93,6 +93,16 @@
     "filterHeading": "Filtruj przewodniki po doświadczeniach",
     "filterDescription": "Wybierz tag, aby zawęzić wyróżniane doświadczenia.",
     "directionsLabel": "Jak tu dotrzeć",
+    "sections": {
+      "content": {
+        "title": "Przewodniki po doświadczeniach",
+        "description": "Szczegółowe przewodniki o plażach, wędrówkach, wycieczkach jednodniowych i atrakcjach"
+      },
+      "directions": {
+        "title": "Jak dotrzeć",
+        "description": "Instrukcje krok po kroku do i z hostelu"
+      }
+    },
     "directionLinks": {
       "walkFromHostel": "Pieszo z hostelu",
       "busFromHostel": "Autobusem",

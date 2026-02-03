@@ -112,22 +112,5 @@
     "labels": {
       "warnings": "Kiedy warto się wycofać"
     }
-  },
-  "gallery": {
-    "title": "Galeria zdjęć",
-    "items": [
-      {
-        "alt": "Widok przez półwysep na Capri",
-        "caption": "Widok przez półwysep na Capri"
-      },
-      {
-        "alt": "Kod QR do udostępnienia",
-        "caption": "Zeskanuj, aby udostępnić"
-      },
-      {
-        "alt": "Szlak w pobliżu szczytu",
-        "caption": "Podejście tuż przed szczytem"
-      }
-    ]
   }
 }

@@ -1,56 +1,56 @@
 {
-  "linkLabel": "Parkolás Positanóban: hol és mennyiért",
+  "seo": {
+    "title": "Parkolás Positano környékén",
+    "description": "Hol parkolj, milyen árak vannak, és hogyan kerülheted el a tömeget."
+  },
+  "linkLabel": "Parkolás Positano körül",
   "intro": [
-    "A fordítás folyamatban van."
+    "Positano egy meredek falakkal körülvett város, ezért a parkolás sokszor kihívást jelent. Íme néhány tipp, hogy elkerüld a stresszt."
   ],
   "sections": [
     {
-      "id": "garages",
-      "title": "Private garages in town",
+      "id": "official",
+      "title": "Hivatalos parkolók",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Használd a kifejezetten turistáknak fenntartott parkolókat a SS163 mellett vagy a Via dei Mulini szakaszán.",
+        "A díjak 3–5 € óránként mozognak; a főszezonban érdemes korábban érkezni."
       ]
     },
     {
-      "id": "drop-off",
-      "title": "A fordítás folyamatban van.",
+      "id": "alternatives",
+      "title": "Alternatívák",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Parkolj Praianóban vagy Sant'Agnello-ban, és szállj át buszra vagy kompra.",
+        "Gondolj a közösségi parkolókra a hegyoldalban, ahol kisbuszok visznek le téged a városba."
       ]
     },
     {
-      "id": "park-elsewhere",
-      "title": "A fordítás folyamatban van.",
+      "id": "tips",
+      "title": "Tippek",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Ne hagyd a kocsit a lépcsők tetején sokáig; sok helyen óránként ellenőrzik a menetlevelet.",
+        "Adj helyi parkolóharangot vagy jegyet a szélvédőre, hogy elkerüld a büntetést."
       ]
     }
-  ],
-  "tips": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
   ],
   "faqs": [
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Honnan indul a parkolóbusz?",
       "a": [
-        "A fordítás folyamatban van."
+        "A fő parkolókból helyi minibusz visz a belső utcákhoz; kérdezd meg a parkolóőröket a menetrendről."
       ]
     },
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Mennyi az éjszakai parkolás?",
       "a": [
-        "A fordítás folyamatban van."
+        "A legtöbb parkoló 20:00 után alacsonyabb díjat kér; nézd meg a tábla tájékoztatóját induláskor."
       ]
     }
   ],
-  "tocTitle": "On this page",
-  "faqsTitle": "FAQs",
-  "seo": {
-    "title": "Parkolás Positanóban: garázsok, utcai szabályok és alternatívák",
-    "description": "Hol lehet parkolni Positanóban, mennyibe kerülnek a garázsok, mikor reális az utcai parkolás, és okosabb autómentes lehetőségek."
-  }
+  "tocTitle": "Ezen az oldalon",
+  "faqsTitle": "GYIK",
+  "tips": [
+    "Nézd meg a ZTL/alternáló rendszámos korlátozásokat az SS163 előtt — a bírságok hónapokkal később érkezhetnek.",
+    "Készíts napi táskát a legfontosabb dolgokkal, mielőtt leadod a kulcsot — a garázsok gyakran egymás mögé parkolják az autókat."
+  ]
 }

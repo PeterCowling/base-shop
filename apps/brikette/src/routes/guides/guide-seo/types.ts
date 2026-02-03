@@ -10,6 +10,7 @@ import type { GuideSection } from "@/data/guides.index";
 import type { AppLanguage } from "@/i18n.config";
 import type { BuildCfImageOptions } from "@acme/ui/lib/buildCfImageUrl";
 import type { GuideKey } from "@/routes.guides-helpers";
+import type { ManifestOverrides } from "../guide-manifest-overrides";
 
 export type GuideSeoGenericContentOptions = Record<string, unknown> & {
   showToc?: boolean;
@@ -42,7 +43,14 @@ export interface AlsoHelpfulConfig {
 }
 
 export type TocItem = { href: string; label: string };
-export type NormalisedSection = { id: string; title: string; body: string[] };
+export type GuideSectionImage = {
+  src: string;
+  alt: string;
+  caption?: string;
+  width?: number;
+  height?: number;
+};
+export type NormalisedSection = { id: string; title: string; body: string[]; images?: GuideSectionImage[] };
 export type NormalisedFaq = { q: string; a: string[] };
 export type HowToStep = { name: string; text?: string };
 export type HowToObjectPayload = {
@@ -131,4 +139,10 @@ export interface GuideSeoTemplateProps {
    * that need the H1 to reflect whichever content block is active.
    */
   preferLocalizedSeoTitle?: boolean;
+  /**
+   * Server-loaded manifest overrides (includes SEO audit results).
+   * When provided, these are used as the initial state for client-side overrides,
+   * ensuring audit scores are available immediately on first render.
+   */
+  serverOverrides?: ManifestOverrides;
 }

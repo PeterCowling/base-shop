@@ -16,7 +16,7 @@
     "@acme/i18n": "workspace:*",
     "@acme/next-config": "workspace:*",
     "@acme/tailwind-config": "workspace:*",
-    "next": "^15.3.8",
+    "next": "^15.3.9",
     "react": "19.2.1",
     "react-dom": "19.2.1"
   }

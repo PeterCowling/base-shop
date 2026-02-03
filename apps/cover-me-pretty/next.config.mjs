@@ -32,6 +32,9 @@ const { default: sharedConfig } = await import("@acme/next-config/next.config.mj
 
 const config = {
   ...sharedConfig,
+  typescript: {
+    tsconfigPath: "./tsconfig.next.json",
+  },
   // Shop BCD should not be exported as static HTML when OUTPUT_EXPORT is set.
   // Override the shared `output: "export"` flag so dynamic API routes such as
   // `/api/collections/[id]` remain valid during workspace builds.

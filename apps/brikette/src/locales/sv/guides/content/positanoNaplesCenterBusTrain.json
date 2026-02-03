@@ -40,5 +40,15 @@
       "id": "naples",
       "body": "Stanna kvar på Circumvesuviana tills den avslutar vid Napoli Garibaldi. Följ sedan skyltarna upp till huvudentrén för att byta till fjärrtåg, tunnelbana eller flygbussar. Piazza Garibaldi ligger precis utanför stationens ingång."
     }
+  ],
+  "faqs": [
+    {
+      "q": "Hur läser jag SITA busstidtabellen?",
+      "a": [
+        "**Läsning av raderna:** Raderna i den första kolumnen representerar olika busshållplatser längs rutten.",
+        "**Läsning av kolumnerna:** Tidtabellen tilldelar en alfabetisk bokstav till varje planerad resa, som listas som rubriker i varje kolumn. Om du reser måndag till lördag, leta efter kolumnerna 'F' och 'G'. Om du reser på en söndag eller helgdag, leta efter kolumnerna 'G' och 'H'.",
+        "**Kombinering av rader och kolonner:** Välj dina avgångs- och ankomsthållplatser och kontrollera sedan kolumnerna för att se när bussar är tillgängliga och när de kommer att anlända till din destination. Till exempel, för att se avgångstiden från Sorrento, titta på Sorrento-raden. För att se ankomsttiden i Positano (Chiesa Nuova / Bar Internazionale), titta på Positano (Chiesa Nuova)-raden."
+      ]
+    }
   ]
 }

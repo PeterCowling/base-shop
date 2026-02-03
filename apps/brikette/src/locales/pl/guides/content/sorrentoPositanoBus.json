@@ -27,17 +27,17 @@
       "list": [
         "Wiersze w pierwszej kolumnie zawierają wszystkie przystanki na trasie.",
         "Kolumny odpowiadają zaplanowanym kursom oznaczonym literami.",
-        "Podróż od poniedziałku do soboty? Korzystaj z kolumn “F” i “G”.",
-        "Podróż w niedzielę lub święto? Korzystaj z kolumn “G” i “H”."
+        "Podróż od poniedziałku do soboty? Korzystaj z kolumn „F\" i „G\".",
+        "Podróż w niedzielę lub święto? Korzystaj z kolumn „G\" i „H\"."
       ]
     },
     {
       "id": "arrival",
       "title": "Przyjazd do Positano (Chiesa Nuova)",
       "list": [
-        "Dla Positano znajdują się dwa przystanki SITA: “Sponda” i “Chiesa Nuova”.",
-        "Do hostelu najdogodniejszy jest przystanek “Positano (Chiesa Nuova)” przy Via G. Marconi.",
-        "Przystanek znajduje się przed kawiarnią/barem “Bar Internazionale”."
+        "Dla Positano znajdują się dwa przystanki SITA: „Sponda\" i „Chiesa Nuova\".",
+        "Do hostelu najdogodniejszy jest przystanek „Positano (Chiesa Nuova)\" przy Via G. Marconi.",
+        "Przystanek znajduje się przed kawiarnią/barem „Bar Internazionale\"."
       ]
     },
     {
@@ -47,6 +47,17 @@
         "Przejdź nieco ponad 100 metrów (330 stóp) wzdłuż Via G. Marconi.",
         "Wypatruj naszego szyldu nad tarasem na drugim piętrze po prawej stronie.",
         "Skręć w prawo na schody, aby dotrzeć do głównych drzwi hostelu."
+      ]
+    }
+  ],
+  "lastUpdated": "2026-01-31",
+  "faqs": [
+    {
+      "q": "Jak czytać rozkład jazdy autobusów SITA?",
+      "a": [
+        "**Czytanie wierszy:** Wiersze w pierwszej kolumnie reprezentują różne przystanki autobusowe wzdłuż trasy.",
+        "**Czytanie kolumn:** Rozkład jazdy przypisuje literę alfabetyczną do każdego zaplanowanego kursu, które są wymienione jako nagłówki w każdej kolumnie. Jeśli podróżujesz od poniedziałku do soboty, szukaj kolumn 'F' i 'G'. Jeśli podróżujesz w niedzielę lub święto, szukaj kolumn 'G' i 'H'.",
+        "**Łączenie wierszy i kolumn:** Wybierz przystanki odjazdu i przyjazdu, a następnie sprawdź kolumny, aby zobaczyć, kiedy są dostępne autobusy i o której godzinie dotrą do celu. Na przykład, aby zobaczyć godzinę odjazdu z Sorrento, spójrz na wiersz Sorrento. Aby zobaczyć godzinę przyjazdu do Positano (Chiesa Nuova / Bar Internazionale), spójrz na wiersz Positano (Chiesa Nuova)."
       ]
     }
   ]

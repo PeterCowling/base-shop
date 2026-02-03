@@ -44,5 +44,40 @@
       "id": "walk",
       "title": "Gå fra busstoppet"
     }
-  ]
+  ],
+  "faqs": [
+    {
+      "q": "Hvor mye koster det å komme fra Napoli sentrum til Positano med tog og buss?",
+      "a": "Den totale kostnaden er rundt €7,20: €4,60 for Circumvesuviana-toget fra Napoli til Sorrento, pluss €2,60 for SITA-bussen fra Sorrento til Positano (2026-priser). Dette er det billigste alternativet for offentlig transport."
+    },
+    {
+      "q": "Hvor lang tid tar reisen fra Napoli til Positano?",
+      "a": "Total reisetid er 2,5–3 timer: 70 minutter på toget, 50 minutter på bussen, pluss 20–40 minutter venting på forbindelser i Sorrento. Beregn 3–3,5 timer totalt for å ta høyde for eventuelle forsinkelser."
+    },
+    {
+      "q": "Kan jeg kjøpe billetter på toget eller bussen?",
+      "a": "Du kan kjøpe togbilletter på Napoli Garibaldi stasjon fra billettautomater eller billettkontoret, men du må validere før ombordstigning. SITA-bussbilletter kan ikke kjøpes om bord – du må kjøpe dem fra en bar, tobakksbutikk eller kiosk nær Sorrento stasjon før du går på bussen."
+    },
+    {
+      "q": "Er denne ruten egnet for reisende med tungt bagasje?",
+      "a": "Ja, men det kan være utfordrende i høytiden. Både toget og bussen har begrenset bagasjeplass, så gå om bord tidlig hvis du har store vesker. Gåturen fra Chiesa Nuova busstopp til hostellet er flat og under 2 minutter, så bagasje er håndterbart når du ankommer. Hvis du foretrekker det, vurder å bruke våre bæretjenester eller privat transport."
+    },
+    {
+      "q": "Når går siste buss fra Sorrento til Positano?",
+      "a": "Siste buss varierer etter sesong. Om sommeren (juli–august) er siste buss vanligvis rundt kl. 21–22. Om vinteren (november–mars) kan det være så tidlig som kl. 19–20. Sjekk alltid den gjeldende rutetabellen på sitasudtrasporti.it før du reiser, spesielt på søndager og helligdager når tjenestene er redusert."
+    },
+    {
+      "q": "Finnes det et direktetog eller buss fra Napoli til Positano?",
+      "a": "Ingen direktetog finnes – du må bytte i Sorrento. Curreri-bussen tilbyr en direkte forbindelse fra Napoli til Positano, men rutetabellene er begrenset (vanligvis 2–3 avganger per dag). Tog-buss-kombinasjonen går oftere og er billigere."
+    },
+    {
+      "q": "Hvordan leser jeg SITA buss-rutetabellen?",
+      "a": [
+        "**Lesing av radene:** Radene i den første kolonnen representerer forskjellige bussholdeplasser langs ruten.",
+        "**Lesing av kolonnene:** Rutetabellen tildeler en alfabetisk bokstav til hver planlagte reise, som er oppført som overskrifter i hver kolonne. Hvis du reiser mandag til lørdag, se etter kolonnene 'F' og 'G'. Hvis du reiser på en søndag eller helligdag, se etter kolonnene 'G' og 'H'.",
+        "**Kombinering av rader og kolonner:** Velg avgangs- og ankomststoppene dine, og sjekk deretter kolonnene for å se når busser er tilgjengelige og når de vil ankomme destinasjonen din. For eksempel, for å se avgangstiden fra Sorrento, se på Sorrento-raden. For å se ankomsttiden i Positano (Chiesa Nuova / Bar Internazionale), se på Positano (Chiesa Nuova)-raden."
+      ]
+    }
+  ],
+  "lastUpdated": "2026-01-31"
 }

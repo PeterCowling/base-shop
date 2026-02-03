@@ -1,7 +1,7 @@
 // apps/cms/src/app/cms/wizard/services/seedShop.ts
 "use client";
 
-import { validateShopName } from "@acme/platform-core/shops";
+import { validateShopName } from "@acme/platform-core/shops/client";
 
 export interface SeedResult {
   ok: boolean;

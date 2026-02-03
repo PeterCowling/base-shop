@@ -51,11 +51,5 @@
       ]
     }
   ],
-  "galleryHeading": "포토 갤러리",
-  "gallery": {
-    "primaryAlt": "포시타노 해안을 따라 항해하는 보트",
-    "primaryCaption": "해안을 가르는 항해",
-    "secondaryAlt": "포시타노 절벽 근처 수영 정차",
-    "secondaryCaption": "수영 정차"
-  }
+  "galleryHeading": "포토 갤러리"
 }

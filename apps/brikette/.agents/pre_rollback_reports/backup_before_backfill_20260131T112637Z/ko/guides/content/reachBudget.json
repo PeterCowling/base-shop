@@ -1,0 +1,99 @@
+{
+  "seo": {
+    "title": "예산에 맞게 포시타노 가는 방법",
+    "description": "기차·버스·페리를 조합해 비용을 줄이는 이동 전략을 정리했습니다."
+  },
+  "linkLabel": "예산에 맞게 포시타노 가는 방법",
+  "intro": "나폴리 공항에서 소렌토까지는 셔틀, 소렌토에서 포지타노까지는 SITA 버스를 이용하면 가장 저렴하고 안정적인 조합입니다.",
+  "sections": [
+    {
+      "id": "why-route",
+      "title": "이 경로가 효율적인 이유",
+      "body": [
+        "셔틀(약 €10)과 SITA 버스(약 €2.10)만 이용하면 총비용이 €13 이하로, 페리나 택시보다 훨씬 저렴합니다.",
+        "두 구간 모두 키에사 누오바 근처에서 내리기 때문에 짐을 들고 포지타노 계단을 오래 오르내릴 필요가 없습니다."
+      ]
+    },
+    {
+      "id": "before-you-go",
+      "title": "출발 전에",
+      "body": [
+        "성수기에는 Curreri 셔틀을 온라인으로 예매하거나, 도착층 밖 매표소에서 구입하되 착륙 후 15분 정도의 여유 시간을 잡으세요.",
+        "소렌토에서 SITA 티켓을 살 때는 잔돈을 준비하세요. Corso Italia 주변 탭박키(담배 가게)나 키오스크에서 판매하며, 늦은 시간에는 큰 지폐를 거절할 수 있습니다."
+      ]
+    },
+    {
+      "id": "timing-backup",
+      "title": "시간 관리 & 예비 플랜",
+      "body": [
+        "셔틀의 마지막 출발 시간(성수기 약 21:30, 비수기에는 더 이른 시간)을 확인하고 항공편을 계획하세요.",
+        "셔틀을 놓쳤다면 Alibus + Circumvesuviana 또는 Campania Express로 소렌토까지 이동한 뒤 동일한 SITA 버스 경로를 이용하세요."
+      ]
+    }
+  ],
+  "mapTitle": "인터랙티브 지도",
+  "stepByStepTitle": "단계별 안내",
+  "steps": [
+    {
+      "name": "나폴리 공항 → 소렌토 (Curreri Viaggi)",
+      "text": "도착층을 나와 Curreri 셔틀을 타고 소렌토 역까지 이동하세요. 요금은 약 €10, 소요 시간은 약 1시간 15분입니다."
+    },
+    {
+      "name": "소렌토 → 포지타노 (SITA 버스)",
+      "text": "SITA CIS 티켓(약 €2.10)을 구입하고, 아말피 방향 버스를 타서 포지타노 Chiesa Nuova 정류장에서 내리세요."
+    },
+    {
+      "name": "Hostel Brikette까지 도보 이동",
+      "text": "Chiesa Nuova 정류장에서 약 80m만 내려오면 계단 없이 호스텔 입구에 도착합니다."
+    }
+  ],
+  "alternativesTitle": "대안 경로",
+  "trainTitle": "기차 + 버스(조금 더 비용, 때로 더 빠름)",
+  "train": [
+    "Alibus로 NAP → 나폴리 첸트랄레(가리발디) 이동 후 Circumvesuviana를 타고 소렌토까지 (총 약 €6).",
+    "소렌토에서 SITA 버스로 포지타노까지(약 €2.10). 전체 소요 시간은 약 2~2.5시간."
+  ],
+  "ferryTitle": "페리(계절 운항, 경치 좋지만 비용 높음)",
+  "ferry": [
+    "Alibus → 몰로 베베렐로, 포지타노행 페리(여름에만 운항, 운영사에 따라 €20~€38).",
+    "실시간 페리 시간표는 전용 페리 가이드에서 확인하세요."
+  ],
+  "costsTitle": "비용 한눈에 보기",
+  "costs": [
+    "셔틀(NAP → 소렌토): 약 €10",
+    "SITA 버스(소렌토 → 포지타노): 약 €2.10",
+    "총 예산 경로: 약 €12.10"
+  ],
+  "faq": [
+    {
+      "q": "가장 저렴한 이동 경로는 무엇인가요?",
+      "a": "나폴리 공항 → 소렌토 셔틀 후 SITA 버스로 포지타노(Chiesa Nuova)에 내리는 경로가 가장 저렴합니다."
+    },
+    {
+      "q": "버스 티켓은 어디에서 사나요?",
+      "a": "역 주변 타바키(담배 가게)나 키오스크에서 탑승 전에 구입하고, 버스에 오를 때 검표하세요."
+    },
+    {
+      "q": "얼마나 걸리나요?",
+      "a": "환승이 순조롭다면 총 소요 시간은 약 2시간 30분입니다."
+    }
+  ],
+  "ferryCta": "여름철 페리를 선호하시나요? 페리 전용 가이드와 “페리로 도착하기” 도움말에서 항구 이용 팁과 접근성을 확인하세요.",
+  "mapIframeTitle": "나폴리 공항에서 소렌토 경유 포지타노까지",
+  "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d768989.930376533!2d14.43034800958525!3d40.7530661290345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e3!4m5!1s0x133b089b2b18a3e3%3A0x4bafc3f58a62a2a2!2sNaples%20International%20Airport%20(NAP)!3m2!1d40.8860031!2d14.2907817!4m5!1s0x133b98d2a1b9f60f%3A0x54a8f4e7a3413732!2sHostel%20Brikette%2C%20Via%20Guglielmo%20Marconi%2C%20358%2C%2084017%20Positano%20SA!3m2!1d40.6308766!2d14.487226!5e0!3m2!1sen!2sit!4v1700000000000",
+  "mapReferrerPolicy": "no-referrer-when-downgrade",
+  "howTo": {
+    "totalTime": "PT2H30M",
+    "estimatedCost": {
+      "currency": "EUR",
+      "value": "12.10"
+    }
+  },
+  "sectionIds": {
+    "map": "reach-budget-map",
+    "steps": "reach-budget-steps",
+    "alternatives": "reach-budget-alternatives",
+    "costs": "reach-budget-costs",
+    "tips": "reach-budget-tips"
+  }
+}

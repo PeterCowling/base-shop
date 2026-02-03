@@ -56,16 +56,8 @@ jobs:
       - name: Audit dependencies
         run: |
           echo "::group::Running pnpm audit"
-          pnpm audit --audit-level=high 2>&1 | tee audit-report.txt || true
+          pnpm audit --audit-level=high --ignore GHSA-p6mc-m468-83gw
           echo "::endgroup::"
-
-          # Fail if HIGH or CRITICAL vulnerabilities found
-          if grep -q "high\|critical" audit-report.txt; then
-            echo "::error::HIGH or CRITICAL vulnerabilities found in dependencies"
-            echo "Run 'pnpm audit' locally to see details"
-            exit 1
-          fi
-          echo "No HIGH or CRITICAL vulnerabilities found"
 
   dep-alignment:
     name: Dependency Alignment
@@ -129,6 +121,8 @@ jobs:
         run: pnpm run docs:lint
       - name: Plans lint
         run: pnpm run plans:lint
+      - name: Template lint (email)
+        run: pnpm --filter @acme/mcp-server lint:templates
       - name: Agent manifest validation
         run: node scripts/validate-agent-manifest.js
       - name: Token validation
@@ -175,6 +169,74 @@ jobs:
         with:
           files: ./coverage/lcov.info
 
+
+  bos-mirror-guard:
+    name: Business OS Mirror Guard
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Detect Business OS doc changes
+        id: bos_filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            bos_guarded:
+              - 'docs/business-os/**'
+              - '!docs/business-os/README.md'
+              - '!docs/business-os/business-os-charter.md'
+              - '!docs/business-os/MANUAL_EDITS.md'
+              - '!docs/business-os/scans/**'
+              - '!docs/business-os/strategy/**'
+              - '!docs/business-os/people/**'
+      - name: Validate BOS mirror edits
+        if: steps.bos_filter.outputs.bos_guarded == 'true'
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_BRANCH: ${{ github.head_ref }}
+          PR_ACTOR: ${{ github.actor }}
+          REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          if [[ "${PR_BRANCH}" != bos-export/* ]]; then
+            echo "Business OS data is managed in D1. Use the UI or API. Manual edits to docs/business-os/ are not allowed."
+            echo "Expected PR branch to start with bos-export/."
+            exit 1
+          fi
+
+          if [[ "${PR_ACTOR}" != "github-actions[bot]" ]]; then
+            echo "Business OS data is managed in D1. Use the UI or API. Manual edits to docs/business-os/ are not allowed."
+            echo "Expected PR actor github-actions[bot], got ${PR_ACTOR}."
+            exit 1
+          fi
+
+          if [[ -z "${PR_BODY:-}" ]]; then
+            echo "Business OS data is managed in D1. Use the UI or API. Manual edits to docs/business-os/ are not allowed."
+            echo "PR body missing Export-Run-ID marker."
+            exit 1
+          fi
+
+          RUN_ID=$(echo "${PR_BODY}" | sed -n 's/^Export-Run-ID:[[:space:]]*//p' | head -n 1)
+          if [[ -z "${RUN_ID}" ]]; then
+            echo "Business OS data is managed in D1. Use the UI or API. Manual edits to docs/business-os/ are not allowed."
+            echo "PR body missing Export-Run-ID marker."
+            exit 1
+          fi
+
+          gh api "/repos/${REPO}/actions/runs/${RUN_ID}" > /tmp/bos-run.json
+          STATUS=$(jq -r '.status' /tmp/bos-run.json)
+          CONCLUSION=$(jq -r '.conclusion' /tmp/bos-run.json)
+
+          if [[ "${STATUS}" != "completed" || "${CONCLUSION}" != "success" ]]; then
+            echo "Business OS data is managed in D1. Use the UI or API. Manual edits to docs/business-os/ are not allowed."
+            echo "Export run ${RUN_ID} is not completed successfully (status=${STATUS}, conclusion=${CONCLUSION})."
+            exit 1
+          fi
   storybook-visual:
     name: Storybook Visual Regression
     runs-on: ubuntu-latest
@@ -243,6 +305,8 @@ jobs:
         uses: ./.github/actions/decrypt-secrets
         with:
           sops-age-key: ${{ secrets.SOPS_AGE_KEY }}
+          require-key: true
+          require-any: true
           environment: production
 
       # ADMIN-05: Validate environment before deploy

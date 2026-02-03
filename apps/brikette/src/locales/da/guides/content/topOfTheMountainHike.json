@@ -112,22 +112,5 @@
     "labels": {
       "warnings": "Hvornår du bør overveje at lade være"
     }
-  },
-  "gallery": {
-    "title": "Fotogalleri",
-    "items": [
-      {
-        "alt": "Udsigt over halvøen mod Capri",
-        "caption": "Udsigt over halvøen mod Capri"
-      },
-      {
-        "alt": "Scan for at dele QR-kode",
-        "caption": "Scan for at dele"
-      },
-      {
-        "alt": "Sti nær toppen",
-        "caption": "På vej mod toppen"
-      }
-    ]
   }
 }

@@ -91,6 +91,16 @@
     "clearFilter": "显示全部体验指南",
     "cardCta": "探索「{{guideTitle}}」体验指南",
     "directionsLabel": "路线指引",
+    "sections": {
+      "content": {
+        "title": "体验指南",
+        "description": "关于海滩、徒步、一日游和活动的深度指南"
+      },
+      "directions": {
+        "title": "如何到达",
+        "description": "从/到旅舍的分步交通指引"
+      }
+    },
     "directionLinks": {
       "capriDayTrip": {
         "positanoCapriFerry": "波西塔诺 → 卡普里 渡轮",

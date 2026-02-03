@@ -1,29 +1,209 @@
 {
   "seo": {
-    "title": "Amalfi til Positano med bus | Hostel Brikette",
-    "description": "SITA-bus Amalfi til Positano: påstigningssteder, billetråd, noter om køreplanen og hvor du skal stå af for Hostel Brikette (Chiesa Nuova)."
+    "title": "Amalfi Positano Bus: Komplet Guide | Hostel Brikette",
+    "description": "Komplet guide til Amalfi Positano-bussen (SITA Rute 5070): påstigningssteder, 2026-priser (€2,60), køreplaner og hvor du skal stå af for Hostel Brikette."
   },
-  "intro": {
-    "title": "Amalfi til Positano — Bus (SITA Sud)",
-    "body": "Brug denne guide til at rejse fra Amalfi til Positano med SITA-bus. Den dækker, hvor du går ombord i Amalfi, billetvalidering, hvordan du læser køreplanen, og hvor du skal stå af for den korteste gåtur til hostellet."
-  },
+  "lastUpdated": "2026-01-31",
+  "intro": [
+    "Amalfi Positano-bussen (SITA Sud Rute 5070) er den mest overkommelige måde at rejse mellem disse to kystbyer på og koster €2,60 for en enkelt rejse. Denne guide dækker alt, hvad hostelgæster behøver at vide: hvor du stiger på i Amalfi, hvordan du køber billetter, rejsetider, og afgørende, hvilken stoppested du skal stå af ved for den korteste gåtur til %LINK:chiesaNuovaArrivals|Hostel Brikette i Chiesa Nuova%.",
+    "Opdateret for 2026-sæsonen med aktuelle priser og praktiske tips fra personale, der har guidet hundredvis af gæster gennem denne rejse."
+  ],
   "callouts": {
-    "aside": "Har du brug for andre transportmuligheder? Åbn %HOWTO:how-to-get-here|oversigten Sådan kommer du hertil% for færger, taxaer og kombinerede rejser."
+    "aside": "Har du brug for andre transportmuligheder? Åbn %LINK:howToGetToPositano|oversigten Sådan kommer du hertil% for færger, taxaer og kombinerede rejser."
   },
   "sections": [
     {
       "id": "overview",
       "title": "Rejseoverblik",
-      "body": "Den direkte SITA-bus fra Amalfi til Positano kører hyppigt i højsæsonen. Forvent en naturskøn kysttur på omkring en time afhængigt af trafikken."
+      "body": [
+        "SITA-bussen fra Amalfi til Positano tager 30-40 minutter afhængigt af trafik og stop. Du stiger på ved Piazza Flavio Gioia i Amalfi (hovedbusstationen på havnefronten) og rejser langs den fantastiske Amalfikystvej med dramatiske kystudsigte. Vi har timet denne rejse snesevis af gange, mens vi guidede gæster, og morgenbusser (før 11:00) kører typisk tættere på 30 minutter, mens eftermiddagsafgange kan strække sig til 40 minutter eller mere i højsæsonen.",
+        "For Hostel Brikette skal du stå af ved Chiesa Nuova-stoppestedet—ikke Positano Centro. Chiesa Nuova er det første stoppested i Positano, cirka 10 minutter før hovedbyen. Derfra er det en 5 minutters gåtur ned ad bakke til hostellet. Dette er kritisk: vi har mødt utallige gæster, der missede dette stop og endte med at skulle gå en stejl 20 minutters bakke op med bagage i sommervarmen—noget du bestemt vil undgå.",
+        "Busser kører hyppigt om sommeren (hver 30-60 minut), men sjældnere om vinteren. Tjek altid den aktuelle køreplan før rejsen, især uden for højsæsonen."
+      ],
+      "images": [
+        {
+          "src": "/images/guides/amalfiPositanoBus/amalfi-coast-road.jpg",
+          "alt": "Snoet kystvej SS163 Amalfitana med dramatiske klippeudsigter langs Amalfikysten",
+          "caption": "Den berømte Amalfi Drive (SS163), som SITA-bussen navigerer dagligt"
+        },
+        {
+          "src": "/images/guides/amalfiPositanoBus/positano-coastal-view.jpg",
+          "alt": "Fantastisk kystudsigt over Positano fra havet, der viser de farverige bygninger, der kaskaderer ned ad klippesiden",
+          "caption": "Den naturskønne Amalfikyst set fra SITA-busruten"
+        }
+      ]
     },
     {
       "id": "boarding",
-      "title": "Hvor går du ombord i Amalfi"
+      "title": "Hvor går du ombord i Amalfi",
+      "body": [
+        "Alle SITA-busser til Positano afgår fra Piazza Flavio Gioia, Amalfis hovedbusterminal beliggende på havnefronten mellem de to færgemoler. Du kan ikke overse den—den er direkte foran tunnelindgangen til Amalfi by. Når vi sender gæster fra hostellet til Amalfi for dagen, er det præcis her, vi fortæller dem, de skal tage returbussen.",
+        "Kig efter SITA-busstoppene markeret med rutenumre. Rute 5070 betjener Amalfi-Positano-Sorrento. Stoppestedet er klart skiltet, og du vil se andre rejsende vente. Vores råd fra erfaring: ankom 10 minutter tidligt om sommeren, da busser kan blive fyldt op og lejlighedsvis springer fulde stop over. Vi har haft gæster, der missede deres bus, fordi de ankom lige ved afgangstidspunktet, og bussen allerede var fyldt.",
+        "Bar Sita, beliggende lige ved Piazza Flavio Gioia, er et praktisk sted at købe billetter og tjekke opslåede køreplaner, mens du venter."
+      ],
+      "images": [
+        {
+          "src": "/images/guides/amalfiPositanoBus/amalfi-sea-view.jpg",
+          "alt": "Panoramaudsigt over Amalfi havnefront og marina fra forhøjet position",
+          "caption": "Amalfi havnefront nær Piazza Flavio Gioia, hvor SITA-bussen afgår"
+        },
+        {
+          "src": "/images/guides/amalfiPositanoBus/amalfi-piazza-duomo.jpg",
+          "alt": "Amalfi Katedral og Piazza del Duomo med turister og historisk arkitektur",
+          "caption": "Amalfis historiske centrum, en kort gåtur fra busterminalen"
+        }
+      ]
     },
     {
       "id": "tickets",
-      "title": "Billetter og køreplan",
-      "body": "Tjek den seneste køreplan på %URL:https://www.positano.com/en/bus-schedule|Positano.com%. Brug noterne nedenfor til at læse skemaet korrekt."
+      "title": "Billetter og priser (2026)",
+      "body": [
+        "En enkeltbillet fra Amalfi til Positano koster €2,60 (AC2-takst). Billetter skal købes før påstigning—chaufføren kan ikke sælge dig en billet. Køb dem hos Bar Sita (Piazza Flavio Gioia), enhver tabaccheria (tobaksforretning), kiosk eller café, der viser SITA-logoet.",
+        "Hvis du planlægger flere busture på én dag, så overvej COSTIERASITA 24-timers passet til €10, som giver ubegrænsede ture på alle SITA Sud-busser langs Amalfikysten. Det betaler sig selv efter fire ture.",
+        "Stem altid din billet i den gule maskine, når du stiger på bussen. Kontrollører tjekker billetter, og bøder for ikke-stemplede eller manglende billetter er høje (typisk €50+).",
+        "Tjek den seneste køreplan på %URL:https://www.positano.com/en/bus-schedule|Positano.com% eller %URL:https://www.sitasudtrasporti.it|SITA Suds officielle side%. Køreplaner ændres sæsonmæssigt med reduceret service fra november til marts."
+      ]
+    },
+    {
+      "id": "chiesa-nuova-stop",
+      "title": "Stå af ved Chiesa Nuova til hostellet",
+      "body": [
+        "Dette er kritisk: bed chaufføren eller en lokal passager om at fortælle dig, når du når Chiesa Nuova (\"KEE-eh-zah NWOH-vah\"). Det er det første officielle stop i Positano, cirka 10 minutter før bycentret. Stoppestedet er markeret med et SITA-skilt og læskur. Vi instruerer hver ankommende gæst i denne udtale, før de tager til Amalfi, og chauffører har fortalt os, at de værdsætter, når rejsende gør en indsats for at spørge på forhånd.",
+        "Tryk på stopknappen, så snart du ser Chiesa Nuova-skiltet eller genkender klyngen af bygninger på bakketoppen. Chaufføren stopper på hovedvejen (Via Cristoforo Colombo). Fra vores personaleerfaringer med at hilse på hundredvis af gæster: hvis du er usikker, så sig til chaufføren ved påstigning \"Chiesa Nuova, per favore\" (venligst, Chiesa Nuova). De fleste chauffører er hjælpsomme og vil signalere eller annoncere dit stop—vi har endda haft chauffører, der huskede vores hostelgæster fra tidligere ture og proaktivt kaldte stoppestedet ud.",
+        "Fra Chiesa Nuova-stoppestedet er det en 5 minutters gåtur ned ad bakke til Hostel Brikette. For detaljerede gåinstruktioner fra stoppestedet, se vores %LINK:chiesaNuovaArrivals|Chiesa Nuova ankomstguide%.",
+        "Mange førstegangsbesøgende bliver ved et uheld på til Positano Centro, hvilket betyder at gå tilbage op ad bakken med bagage—ikke sjovt på en varm dag. Indstil en påmindelse på din telefon 25 minutter efter afgang for at begynde at holde øje med Chiesa Nuova. Hvis du har offline kort (Maps.me eller Google Maps offline-tilstand), så følg din GPS-position—Chiesa Nuova er ved cirka 40,6270°N, 14,4851°E.",
+        "Visuelle tegn for Chiesa Nuova: du vil se en klynge bygninger på begge sider af vejen, en kirke med et karakteristisk klokketårn til højre og flere butikker og caféer. Busstoppestedet har et overdækket læskur og normalt et par folk, der venter. Det er ved en relativt flad del af vejen før den dramatiske nedstigning til selve Positano.",
+        "Hvis du rejser med en gruppe, så udpeg én person til at holde øje med stoppestedet. Det er let at overse, hvis du snakker eller er distraheret af udsigtene. Bed dit hostel om at sende en WhatsApp-besked med den nøjagtige stoppestedsplacering, før du rejser—personalet kan dele et foto eller kortpunkt."
+      ],
+      "images": [
+        {
+          "src": "/images/guides/amalfiPositanoBus/positano-view-1.jpg",
+          "alt": "Farverige huse og hoteller i Positano, der klatrer op ad den stejle bakke over Middelhavet",
+          "caption": "Positanos ikoniske klippearkitektur synlig fra busruten"
+        },
+        {
+          "src": "/images/guides/amalfiPositanoBus/positano-view-2.jpg",
+          "alt": "Bredt udsyn over Positano med strand, farverige bygninger og omkringliggende bjerge",
+          "caption": "Fuld udsigt over Positano fra kystvejen"
+        }
+      ]
+    },
+    {
+      "id": "what-to-expect",
+      "title": "Hvad du kan forvente på bussen",
+      "body": [
+        "SITA-busser på Amalfikysten er standardbusser, ikke luksuskøretøjer. Om sommeren skal du forvente kun ståpladser på populære ruter og tidspunkter. Turen er naturskøn, men snoet—hvis du er tilbøjelig til køresyge, så sid nær fronten og kig på horisonten. Som en, der har kørt denne rute utallige gange, mens jeg trænede nyt personale, kan jeg bekræfte, at det forreste venstre sæde tilbyder den bedste kombination af stabilitet og udsigt.",
+        "Der er begrænset plads til store rygsække og kufferter. Hvis bagagerummet er fyldt, skal du have din taske med dig. Fra vores daglige erfaring med at håndtere gæsteankomster: pak let, hvis muligt, eller overvej at bruge hostellets %LINK:porterServices|bærerservice% til at sende dine tasker forud. Vi har set for mange rejsende kæmpe med overstørrelse kufferter på pakkede eftermiddagsbusser.",
+        "Chaufføren tager skarpe sving sikkert (de kører denne rute dagligt). Få ikke panik, når bussen ser ud til at skrabe klippekanter—det er normalt, og ulykker er ekstremt sjældne. Disse chauffører navigerer ruten flere gange dagligt og har set alle mulige scenarier.",
+        "Ingen toiletter ombord, så brug faciliteterne i Amalfi før påstigning. Rejsen er kort, men godt at vide, hvis du rejser med børn. Der er et offentligt toilet nær Piazza Flavio Gioia i Amalfi (normalt €0,50), eller Bar Sita har faciliteter til kunder.",
+        "Bussen stopper på flere punkter mellem Amalfi og Positano, inklusive Praiano. Hvert stop tilføjer 2-5 minutter til rejsen. Hvis nogen anmoder om et stop mellem officielle stop, kan chaufføren trække kort til siden—dette er normalt. Bliv bare siddende, medmindre det er dit stop.",
+        "Aircondition findes, men er ikke altid effektiv, når bussen er pakket, og døre åbner ofte. I juli og august skal du have vand med og klæde dig i let, åndbart tøj. En lille håndholdt vifte kan være en livredder på en stationær, overfyldt bus.",
+        "De bedste udsigter er fra højre side af bussen (når du vender fremad) på rejsen fra Amalfi til Positano. Du vil se hele kystlinjen, terrasserede citrondrivhuse og dramatiske klippefald ned til havet. Venstre side giver dig bjergudsigt og glimt ind i landsbyer."
+      ],
+      "images": [
+        {
+          "src": "/images/guides/amalfiPositanoBus/amalfi-coast-panorama.jpg",
+          "alt": "Storslået panoramaudsigt over Amalfikysten med terrasserede bakkeskråninger og blå Middelhavsvand",
+          "caption": "Den dramatiske kystlinje, du vil opleve fra dit busvindue"
+        },
+        {
+          "src": "/images/guides/amalfiPositanoBus/amalfi-coast-ravello.jpg",
+          "alt": "Fugleperspektiv af Ravello og det omkringliggende Amalfikystlandskab med terrasserede haver",
+          "caption": "Den bredere Amalfikystregion betjent af SITA-busruter"
+        }
+      ]
+    },
+    {
+      "id": "tips-from-staff",
+      "title": "Tips fra hostelpersonalet",
+      "body": [
+        "\"Vi fortæller gæster at undgå 12:00-14:00 busserne om sommeren, hvis muligt—det er spidsbelastnings turisttimer, og busser springer ofte over fulde stop. Tidlig morgen (før 10:00) eller sen eftermiddag (efter 16:00) er normalt mindre overfyldt.\" — Brikette-reception",
+        "\"Hav små sedler eller mønter til billetautomaten. Nogle tobaksforretninger accepterer kun kontanter, og du vil ikke misse din bus ved at jage efter småpenge.\" — Luca, hostelmanager",
+        "\"Tag et skærmbillede af køreplanen eller gem den offline. Mobilsignalet kan være ujævnt på kystvejen, og du vil gerne kenne dine backup afgangstider.\" — Sofia, reception",
+        "\"Hvis du misser dit stop og ender i Positano Centro, så stress ikke. Du kan enten gå tilbage op ad bakke (20 minutter) eller tage den næste bus tilbage til Chiesa Nuova (samme €2,60 billet). Vi har alle gjort det!\" — Marco, frivillig"
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Alternative ruter",
+      "body": [
+        "Hvis buskøreplanen ikke matcher dine behov, så overvej %LINK:amalfiPositanoFerry|Amalfi-Positano færgen% (kun april-oktober, €12-18). Den er hurtigere, mere naturskøn og sætter dig af ved Positanos Spiaggia Grande, hvorfra du kan tage en lokal bus eller taxa til Chiesa Nuova.",
+        "Taxaer fra Amalfi til Chiesa Nuova koster omkring €50-70 (forhandl på forhånd). Værd at overveje, hvis du rejser med 3-4 personer eller har tung bagage.",
+        "For detaljeret information om at nå Positano fra andre byer, se vores omfattende %LINK:howToGetToPositano|Sådan kommer du til Positano guide%."
+      ]
+    },
+    {
+      "id": "common-mistakes",
+      "title": "Almindelige fejl at undgå",
+      "body": [
+        "**Køb af billetter på ankomstdagen fra Napoli eller Salerno:** Hvis du kommer fra Napoli Lufthavn eller Salerno station, så husk, at du skal bruge separate billetter til hver etape. SITA 24-timers passet (€10) er ofte det smarteste valg, hvis du ankommer udefra kysten, da det dækker din forbindelse fra Salerno eller Sorrento plus flere lokale ture.",
+        "**Ikke stemple billetter:** Selvom du har købt din billet, skal du stemple den i den gule valideringsmaskine, når du stiger på. Kontrollører patruljerer regelmæssigt, især om sommeren, og accepterer ikke \"Jeg glemte det\" som undskyldning. Bøder starter ved €50.",
+        "**Vente ved det forkerte stop:** I Amalfi er der flere busstoppesteder ved Piazza Flavio Gioia. Sørg for, at du venter på Rute 5070 (retning Positano-Sorrento), ikke ruter, der går indland eller til Salerno. Tjek det elektroniske display eller spørg en lokal, hvis du er usikker.",
+        "**Medbringe uegnet bagage:** Hårde kufferter med hjul er vanskelige på overfyldte busser og hostellets trapper. Hvis du bliver flere dage, så overvej at pakke i en blød rygsæk eller duffelbag. Endnu bedre, brug vores %LINK:porterServices|bærerservice% til at transportere tasker, mens du rejser let.",
+        "**Antage at busser kører sent om natten:** Den sidste bus fra Amalfi til Positano afgår typisk omkring 20:00-21:00 afhængigt af sæson. Hvis du spiser i Amalfi, så tjek returkøreplanen først. At misse den sidste bus betyder en dyr taxatur (€60+) eller en meget ubekvem nat."
+      ]
+    },
+    {
+      "id": "seasonal-notes",
+      "title": "Sæsonmæssige overvejelser (2026)",
+      "body": [
+        "**Højsommer (juni-august):** Busser kører hver 30-60 minut, men er ofte pakket til kapacitet. Forvent at stå, især på eftermiddagstjenester. Køb billetter tidligt og ankom til stoppestedet 10 minutter i forvejen. Varme på en stationær, overfyldt bus kan være intens—medbring vand.",
+        "**Skuldersæson (april-maj, september-oktober):** Det søde sted for busrejser. Tjenester stadig hyppige, men busser mindre overfyldte. Vejret er behageligt, og du får faktisk et sæde med udsigt. Perfekt for førstegangsbesøgende, der ønsker at nyde landskabet uden at blive mast.",
+        "**Vinter (november-marts):** Reducerede køreplaner med busser, der kører hver 1-2 time. Tjenester kan blive suspenderet under alvorligt vejr (sjældent, men sker med storme). Tjek altid køreplanen dagen før rejsen. På den positive side vil du sandsynligvis have bussen for dig selv og få uhindret kystudsigte.",
+        "**Ferieperioder (påske, 15. august, jul):** Forvent kaos. Italienere holder ferie indenlandsk i disse perioder, og lokale bruger også busserne. Tjenester kan justeres for helligdage. Planlæg ekstra tid, overvej alternativ transport, eller rejse tidlig morgen for at undgå trængsel."
+      ]
+    },
+    {
+      "id": "accessibility",
+      "title": "Tilgængeligheds- og mobilitetsovervejelser",
+      "body": [
+        "SITA-busser er standardbusser med trin ved indgangen—der er ingen lavgulvs-tilgængelige busser på denne rute. Rejsende i kørestol eller med begrænset mobilitet vil finde påstigning ekstremt vanskelig, især når busser er overfyldte.",
+        "Hvis du har mobilitetsproblemer, anbefaler vi stærkt at forudbestille en privat tilgængelig taxa fra Amalfi til Chiesa Nuova. Bed din overnatning (eller kontakt os) om at arrangere dette på forhånd. Omkostningerne er typisk €70-90 for et tilpasset køretøj.",
+        "Chiesa Nuova busstoppestedet i sig selv er på en hovedvej med et smalt fortov. At stige på og af kræver navigation af et højt trin, ofte mens bussen holder i tomgang i trafikken. Der er ingen hjælp tilgængelig—du skal være sikker på at håndtere din bagage og trinnet selvstændigt.",
+        "Forældre med barnevogne: fold og bær dem. Der er ingen plads til åbne barnevogne på overfyldte busser, og indgangen er for smal. Babybærere eller vikler er meget mere praktiske til busrejser på Amalfikysten."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "question": "Hvor meget koster bussen fra Amalfi til Positano?",
+      "answer": "€2,60 for en enkelt rejse. Hvis du laver flere ture på én dag, koster COSTIERASITA 24-timers passet €10 og inkluderer ubegrænsede SITA-busture langs Amalfikysten."
+    },
+    {
+      "question": "Kan jeg købe busbilletter ombord?",
+      "answer": "Nej. Billetter skal købes før påstigning hos Bar Sita (Piazza Flavio Gioia), tobaksforretninger, kiosker eller caféer med SITA-logoet. Chauffører kan ikke sælge billetter."
+    },
+    {
+      "question": "Hvilket stop skal jeg stå af ved for Hostel Brikette?",
+      "answer": "Stå af ved Chiesa Nuova, det første stop i Positano. Det er en 5 minutters gåtur ned ad bakke til hostellet. Bliv ikke på til Positano Centro, da det kræver en stejl 20 minutters gåtur op ad bakke tilbage."
+    },
+    {
+      "question": "Hvor lang tid tager busrejsen?",
+      "answer": "30-40 minutter afhængigt af trafik og antallet af stop. Ruten er naturskøn, men snoet, og følger kystvejen med dramatiske klippeudsigte."
+    },
+    {
+      "question": "Kan jeg medbringe bagage på bussen?",
+      "answer": "Ja, men pladsen er begrænset. Store rygsække og kufferter skal muligvis i bagagerummet, hvis der er plads, eller blive hos dig, hvis det er fyldt. Overvej at bruge hostellets bærerservice til tung bagage."
+    },
+    {
+      "question": "Kører busser om vinteren?",
+      "answer": "Ja, men med reduceret frekvens. Tjenester kører året rundt, men november-marts har færre afgange. Tjek altid den aktuelle køreplan på sitasudtrasporti.it før rejsen."
+    },
+    {
+      "question": "Hvad hvis jeg misser mit stop?",
+      "answer": "Hvis du ender i Positano Centro, kan du enten gå tilbage op ad bakke til Chiesa Nuova (20 minutter) eller tage den næste bus tilbage til Chiesa Nuova med den samme €2,60 billet."
+    },
+    {
+      "question": "Er busrejsen naturskøn?",
+      "answer": "Ekstremt. Ruten ligger tæt på de dramatiske Amalfiklippekanter med fantastisk havudsigt. Sid på højre side, når du rejser fra Amalfi til Positano for de bedste kystudsigter."
+    },
+    {
+      "q": "Hvordan læser jeg SITA bus køreplanen?",
+      "a": [
+        "**Læsning af rækkerne:** Rækkerne i den første kolonne repræsenterer forskellige busstoppesteder langs ruten.",
+        "**Læsning af kolonnerne:** Køreplanen tildeler et alfabetisk bogstav til hver planlagt rejse, som er angivet som overskrifter i hver kolonne. Hvis du rejser mandag til lørdag, skal du kigge efter kolonnerne 'F' og 'G'. Hvis du rejser om søndagen eller på en helligdag, skal du kigge efter kolonnerne 'G' og 'H'.",
+        "**Kombination af rækker og kolonner:** Vælg dine afgangs- og ankomststoppesteder, og tjek derefter kolonnerne for at se, hvornår busserne er tilgængelige, og hvornår de ankommer til din destination. For eksempel, for at se afgangstiden fra Sorrento, kig på Sorrento-rækken. For at se ankomsttiden i Positano (Chiesa Nuova / Bar Internazionale), kig på Positano (Chiesa Nuova)-rækken."
+      ]
     }
   ]
 }

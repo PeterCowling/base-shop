@@ -1,0 +1,59 @@
+{
+  "seo": {
+    "title": "Guide des Défauts et Dégâts – Auberge Brikette, Positano",
+    "description": "Découvrez comment signaler un défaut, notre réaction aux problèmes graves, la politique de dépôt de garantie, la responsabilité des hôtes et la prévention des punaises de lit dans l’unique auberge de Positano."
+  },
+  "linkLabel": "Guide des Défauts et Dégâts – Auberge Brikette, Positano",
+  "sections": [
+    {
+      "id": "reportingDefects",
+      "title": "Signaler un Défaut",
+      "body": [
+        "Si vous constatez un défaut dans votre chambre, prévenez-nous immédiatement afin que nous puissions intervenir rapidement."
+      ]
+    },
+    {
+      "id": "assessingDefects",
+      "title": "Évaluation des Défauts",
+      "body": [
+        "Après votre signalement, nous évaluons le problème et priorisons notre action selon son impact sur votre confort."
+      ]
+    },
+    {
+      "id": "responseToSeriousDefects",
+      "title": "Réponse aux Défauts Graves",
+      "body": [
+        "Si un défaut majeur ne peut pas être réparé sur-le-champ, nous proposerons un hébergement alternatif. S’il est moins cher que votre chambre, la différence vous sera remboursée. Si vous refusez, vous pouvez demander un remboursement au prorata des nuits restantes."
+      ]
+    },
+    {
+      "id": "unreportedDefects",
+      "title": "Défauts Non Signalés",
+      "body": [
+        "Si nous découvrons un défaut non signalé dans un délai raisonnable, nous évaluerons les dommages et pourrons appliquer la politique de dégâts."
+      ]
+    },
+    {
+      "id": "damagesPolicy",
+      "title": "Politique de Dégâts",
+      "body": [
+        "Pour votre sécurité et la nôtre, nous pouvons pré-autoriser votre carte ou demander un dépôt en espèces à l’arrivée. Sans dépôt, la réservation peut être annulée. Le dépôt est restitué au départ, déduction faite des coûts de dégâts, pertes, main-d’œuvre ou frais administratifs. Si ces coûts dépassent le dépôt, la différence reste à votre charge. Taux horaires : Directeur (50 €), Manager (35 €), Employé (25 €)."
+      ]
+    },
+    {
+      "id": "bedBugsPolicy",
+      "title": "Politique sur les Punaises de Lit",
+      "body": [
+        "Nous gérons activement tout problème de punaises de lit. Si des punaises sont détectées dans votre chambre, vous pourrez être tenu responsable des coûts liés (perte de revenus, nettoyage, traitement). Signalez tout signe immédiatement."
+      ]
+    },
+    {
+      "id": "bedBugsPrevention",
+      "title": "Prévention des Punaises de Lit",
+      "body": [
+        "Pour aider à prévenir les punaises :",
+        "* Signalez au check-in tout séjour récent dans un lieu infesté.\n* Désinfectez soigneusement vos affaires.\n* Inspectez bagages et vêtements avant d’entrer dans la chambre."
+      ]
+    }
+  ]
+}

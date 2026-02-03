@@ -1,9 +1,9 @@
 {
   "schema_version": "v1",
-  "name_for_human": "Hostel Brikette Booking",
+  "name_for_human": "Hostel Brikette Rates",
   "name_for_model": "hostel_brikette",
-  "description_for_human": "Check live beds, prices, and book directly with Hostel Brikette.",
-  "description_for_model": "Plugin for reading room availability and reserving beds at Hostel Brikette.",
+  "description_for_human": "Check live availability and prices at Hostel Brikette.",
+  "description_for_model": "Plugin for reading room availability and rate information at Hostel Brikette.",
   "auth": {
     "type": "none"
   },
@@ -12,7 +12,7 @@
     "url": "https://hostel-positano.com/.well-known/openapi.yaml",
     "is_user_authenticated": false
   },
-  "logo_url": "https://hostel-positano.com/favicon/android-chrome-512x512.png",
+  "logo_url": "https://hostel-positano.com/android-chrome-512x512.png",
   "contact_email": "hostelpositano@gmail.com",
-  "legal_info_url": "https://hostel-positano.com/en/legal"
+  "legal_info_url": "https://hostel-positano.com/en/terms"
 }

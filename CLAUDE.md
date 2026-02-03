@@ -2,7 +2,7 @@
 Type: Runbook
 Status: Canonical
 Domain: Repo
-Last-reviewed: 2026-01-20
+Last-reviewed: 2026-02-01
 ---
 
 # Claude Coding Assistant Guide
@@ -24,17 +24,18 @@ Monorepo: Turborepo + pnpm workspaces.
 
 ## Model Usage Policy
 
-Always use **sonnet** as the default model for all sub-agents and delegated tasks.
-If a task appears too complex for sonnet (multi-package architecture, deep reasoning, or subtle concurrency),
+Always use **opus** as the default model for all sub-agents and delegated tasks.
+If a task appears too complex for opus (multi-package architecture, deep reasoning, or subtle concurrency),
 pause and ask the user before escalating.
 
 ## Workflow
 
 Feature flow: `/fact-find` → `/plan-feature` → `/build-feature` → `/re-plan` (if confidence <80%).
+Workflow entrypoint (progressive disclosure): `docs/agents/feature-workflow-guide.md`.
 
 ## Type Intelligence (MCP)
 
-When asked to “check types” or “check TypeScript errors,” use the MCP TypeScript language tools first (fast, on-demand). See `docs/ide/agent-language-intelligence-guide.md` for setup and scripts. `pnpm typecheck && pnpm lint` remains the final validation gate before commits.
+When asked to “check types” or “check TypeScript errors,” use the MCP TypeScript language tools first (fast, on-demand). See `docs/ide/agent-language-intelligence-guide.md` for setup and scripts. `pnpm typecheck && pnpm lint` remains the final validation gate before pushing (and CI re-enforces it before merge).
 
 Prompt template to enforce MCP usage: see `docs/ide/type-check-sop.md`.
 

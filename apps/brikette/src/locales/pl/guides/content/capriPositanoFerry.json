@@ -1,0 +1,104 @@
+{
+  "lastUpdated": "2026-01-31",
+  "seo": {
+    "title": "Capri do Positano promem | Hostel Brikette",
+    "description": "Jak popłynąć z Capri do Positano promem: porady dotyczące biletów, przewoźników, przyjazdu oraz najłatwiejszego dojścia do hostelu."
+  },
+  "intro": {
+    "title": "Capri do Positano – prom",
+    "body": "Skorzystaj z tego przewodnika, aby dostać się z Capri do Positano wyłącznie drogą morską. Znajdziesz tu wskazówki dotyczące wyboru przewoźnika, zakupu biletów w porcie oraz tego, co zrobić po przypłynięciu, by najłatwiej dojść (lub dojechać autobusem) do Hostel Brikette."
+  },
+  "callouts": {
+    "tip": "Szukasz innych tras lub planu awaryjnego przy wzburzonym morzu? Zobacz %URL:https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26|przegląd Jak do nas dotrzeć%."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Przegląd podróży",
+      "body": "Promy między Capri a Positano kursują najczęściej wiosną i latem. Przy silnym wietrze, zwłaszcza później w ciągu dnia, rejsy mogą zostać odwołane. Cała podróż zajmuje zwykle 30–60 minut w zależności od jednostki i przewoźnika."
+    },
+    {
+      "id": "capriPort",
+      "title": "W porcie na Capri",
+      "body": "Porównaj godziny rejsów i zarezerwuj: <capriLink>Capri.net – Capri ↔ Positano</capriLink> · <positanoLink>Positano.com (zbiorczy rozkład)</positanoLink>.",
+      "list": [
+        "Sprawdź godziny i ceny, a następnie wybierz przewoźnika obsługującego dany rejs.",
+        "Udaj się do portu turystycznego na Capri. Kup bilety w kasie wybranego przewoźnika.",
+        "Przyjdź 20–30 minut wcześniej, aby wymienić vouchery i ustawić się w kolejce do wejścia na pokład."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Przyjazd do Positano",
+      "list": [
+        "Wysiądź na molo Spiaggia Grande w Positano.",
+        "Na przypływające promy czekają tragarze — rozważ skorzystanie z ich pomocy przy bagażu i ustal cenę z góry.",
+        "Z plaży prowadzi wiele schodów w górę; lokalny autobus Interno pomaga ograniczyć liczbę stopni do pokonania."
+      ]
+    },
+    {
+      "id": "bus",
+      "title": "Z portu do hostelu autobusem Interno",
+      "body": "Szczegółową, przyjazną bagażowi trasę z molo do Hostel Brikette znajdziesz w przewodniku: <link>Molo promowe → Hostel Brikette</link>.",
+      "list": [
+        "Autobus Interno Positano kursuje mniej więcej co 30 minut od rana do około północy.",
+        "Szukaj elektronicznego napisu ‘Interno Positano’ na przedniej szybie autobusu.",
+        "Z portu przejdź na Piazza dei Mulini i wsiądź do autobusu jadącego pod górę w kierunku Chiesa Nuova."
+      ]
+    },
+    {
+      "id": "finalWalk",
+      "title": "Końcowy spacer od najbliższego przystanku",
+      "list": [
+        "Wysiądź na przystanku przy Tabacchi w pobliżu Chiesa Nuova.",
+        "Skręć w prawo w stronę głównej drogi, a następnie w lewo w Via G. Marconi.",
+        "Przejdź nieco ponad 100 m (≈330 stóp) — hostel będzie po prawej stronie.",
+        "Skręć w prawo i wejdź po schodach do głównych drzwi Hostel Brikette."
+      ]
+    },
+    {
+      "id": "cancelled",
+      "title": "Gdy promy są odwołane",
+      "body": "Jeśli rejs zostanie odwołany z powodu pogody lub warunków na morzu, wybierz trasę kolejowo-autobusową przez Sorrento. Trwa dłużej, ale zwykle działa w każdej pogodzie. Skorzystaj z tej opcji awaryjnej: <link>Neapol (centrum) → Positano pociągiem i autobusem</link>."
+    }
+  ],
+  "galleries": [
+    {
+      "items": [
+        {
+          "src": "/img/directions/capri-positano-interno-yellow.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/capri-positano-interno-red.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/capri-positano-tabacchi.png",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        }
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "question": "Ile kosztuje prom z Capri do Positano?",
+      "answer": "Bilety promowe kosztują od 22 do 35 € na osobę w jedną stronę w 2026 roku. Ceny nieznacznie różnią się w zależności od operatora i sezonu – w szczycie sezonu lipiec-sierpień spodziewaj się cen bliżej 30-35 €. Nie ma zniżek przy wcześniejszym zakupie, ale rezerwacja online gwarantuje miejsce w ruchliwe dni."
+    },
+    {
+      "question": "Czy mogę zabrać bagaż na prom Capri-Positano?",
+      "answer": "Tak, bagaż można zabrać bez dodatkowych opłat. Plecaki, walizki i duże torby są dozwolone. Przechowuj je w wyznaczonym miejscu na bagaż przy wejściu lub pod siedzeniem. Większość promów ma ograniczoną przestrzeń nad głową, więc trzymaj przy sobie cenne rzeczy. Z doświadczenia hostelu pełny plecak wygodnie mieści się pod siedzeniami u wszystkich operatorów."
+    },
+    {
+      "question": "Co się stanie, jeśli mój prom z Capri zostanie odwołany?",
+      "answer": "Odwołania promów są częste przy wzburzonym morzu po południu. Jeśli zostanie odwołany, sprawdź u wszystkich operatorów w Marina Grande – czasami jeden nadal kursuje. W przeciwnym razie weź prom Capri-Sorrento (kursuje w trudniejszych warunkach), a następnie autobus SITA z Sorrento do Positano. Całkowita podróż: około 2,5 godziny. Twój bilet można zwykle zwrócić lub wykorzystać na następny dostępny rejs."
+    },
+    {
+      "question": "Czy muszę rezerwować prom z Capri do Positano z wyprzedzeniem?",
+      "answer": "To zależy od sezonu. W lipcu i sierpniu poranne i wczesne popołudniowe odjazdy szybko się wyprzedają – zarezerwuj online 1-2 dni wcześniej. W sezonie wakacyjnym (kwiecień-czerwiec, wrzesień-październik) zazwyczaj możesz kupić bilety w porcie 30 minut przed wyjazdem. Z doświadczenia hostelu widzieliśmy gości, którzy przegapili preferowane przeprawy w szczycie sezonu, więc wcześniejsza rezerwacja jest warta zachodu, jeśli masz napięty harmonogram."
+    }
+  ]
+}

@@ -3,6 +3,7 @@
     "title": "Laurito Beach guide",
     "description": "Choose between Da Adolfo and Tre Ville, learn how the shuttle boats work, and plan a stress-free beach day in Laurito."
   },
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
   "linkLabel": "Laurito Beach guide",
   "intro": [
     "Laurito is a pocket-sized cove tucked between Positano and Praiano. Two beach clubs — Da Adolfo and Villa Tre Ville — dominate the shoreline, leaving just a sliver of public sand. The reward is west-facing sunshine, iconic lunch spots, and a quieter atmosphere than Spiaggia Grande.",
@@ -77,20 +78,46 @@
   ],
   "images": {
     "whyGo": {
+      "src": "/img/guides/laurito-beach/02-beach-overview.jpg",
       "alt": "Vịnh Laurito với các câu lạc bộ bãi biển dọc bờ",
-      "caption": "Vịnh được vách đá bao quanh của Laurito yên tĩnh hơn bãi biển chính"
+      "caption": "Vịnh được vách đá bao quanh của Laurito yên tĩnh hơn bãi biển chính",
+      "width": 403,
+      "height": 500
     },
     "layout": {
+      "src": "/img/guides/laurito-beach/01-beach-layout-map.jpg",
       "alt": "Các sân thượng và bờ biển Laurito",
-      "caption": "Vịnh chia thành ba khu: dải miễn phí, sân thượng Villa Tre Ville và bục Da Adolfo"
+      "caption": "Vịnh chia thành ba khu: dải miễn phí, sân thượng Villa Tre Ville và bục Da Adolfo",
+      "width": 1500,
+      "height": 1000
     },
     "treVille": {
+      "src": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg",
       "alt": "Bục của câu lạc bộ boutique Villa Tre Ville",
-      "caption": "Villa Tre Ville cung cấp ghế tắm nắng hạng sang và dịch vụ concierge"
+      "caption": "Villa Tre Ville cung cấp ghế tắm nắng hạng sang và dịch vụ concierge",
+      "width": 1280,
+      "height": 1600
     },
     "daAdolfo": {
+      "src": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg",
       "alt": "Bàn gỗ trước nhà hàng Da Adolfo",
-      "caption": "Da Adolfo nổi tiếng với mozzarella nướng trên lá chanh và không khí bohemian"
+      "caption": "Da Adolfo nổi tiếng với mozzarella nướng trên lá chanh và không khí bohemian",
+      "width": 512,
+      "height": 215
+    },
+    "positanoView": {
+      "src": "/img/guides/laurito-beach/05-positano-view.jpg",
+      "alt": "View over Positano and the sea with boats near the shore",
+      "caption": "Spiaggia Grande is the main launch point for many beach shuttles and boats.",
+      "width": 1280,
+      "height": 1707
+    },
+    "sitaBus": {
+      "src": "/img/guides/laurito-beach/06-amalfi-coast-sita-bus.jpg",
+      "alt": "Blue SITA bus driving along the Amalfi Coast road above the sea",
+      "caption": "The coastal SITA bus is a useful backup when boats are paused.",
+      "width": 1920,
+      "height": 1080
     }
   },
   "essentialsTitle": "What to expect",
@@ -109,7 +136,7 @@
   "tips": [
     "Screenshot confirmation emails — mobile signal fades near the dock.",
     "Pack reef-safe sunscreen and water shoes; the shoreline mixes pebbles and rock slabs.",
-    "Review our %LINK:beaches|Positano beaches overview% to compare Laurito with other coves."
+    "Review our %LINK:positanoBeaches|Positano beaches overview% to compare Laurito with other coves."
   ],
   "warningsTitle": "Good to know",
   "warnings": [
@@ -137,8 +164,5 @@
         "Most return shuttles finish by 18:00 in summer, earlier in shoulder season. Always confirm the last departure on arrival and have the bus timetable saved as a backup."
       ]
     }
-  ],
-  "gallery": {
-    "alt": "Laurito Beach shoreline"
-  }
+  ]
 }

@@ -1,0 +1,132 @@
+{
+  "seo": {
+    "title": "Santa Maria del Castello-vandring fra Hostel Brikette - Positano",
+    "description": "Komplet vandringguide til Santa Maria del Castello, en bjerglandsby over Positano med retninger, udsigts punkter og fantastisk kystvisning."
+  },
+  "linkLabel": "Santa Maria del Castello: Bjerglandsbysvandring",
+  "intro": [
+    "Santa Maria del Castello ligger 670 meter (2.200 fod) over Positano og tilbyder udsigter, der matcher eller overgår dem fra Guds sti. Denne bjerglandsby har en restaurant, der tilbyder god mad til rimelige priser og fantastiske panoramaudsigter.",
+    "Flotte udsigter vises kun 15 minutter efter afrejse fra herberget, hvilket gør dette til en givende vandring for dem, der søger fleksibilitet og ønsker at undgå overfyldte SITA-busser."
+  ],
+  "sections": [
+    {
+      "id": "what-is-santa-maria",
+      "title": "Hvad er Santa Maria del Castello?",
+      "body": [
+        "Din destination er en bjerglandsby placeret over Positano på 670 meters (2.200 fods) højde. Landsbyen har en restaurant, der tilbyder god mad til rimelige priser, samt fremragende udsigter.",
+        "Et dedikeret udsigts punkt giver fantastiske panoramaudsigter over Amalfikysten, Positano og de omkringliggende bjerge."
+      ]
+    },
+    {
+      "id": "why-do-this-hike",
+      "title": "Hvorfor lave denne vandring?",
+      "body": [
+        "Udsigterne matcher eller overgår dem fra Guds sti og tilbyder spektakulære kystpanoramer.",
+        "Flotte udsigter vises kun 15 minutter efter afrejse fra herberget – du behøver ikke vente længe på belønninger.",
+        "Tilbyder fleksibilitet og foretrækkes af dem, der undgår overfyldte SITA-busser.",
+        "Fungerer som udgangspunkt for at udforske andre bjergområder omkring Positano."
+      ]
+    },
+    {
+      "id": "considerations",
+      "title": "Vigtige overvejelser",
+      "body": [
+        "Denne vandring er betydeligt mere krævende end Guds sti. Vær forberedt på stejle opadstigninger.",
+        "Passer måske ikke for dem, der prioriterer oplevelsen af Guds sti som deres hoved vandringsmål.",
+        "Sommervarmen kræver at man undgår denne vandring mellem kl. 11:00 og 16:00. Tidlige morgener eller sene eftermiddagsafgange er essentielle i varme måneder."
+      ]
+    },
+    {
+      "id": "directions-to-village",
+      "title": "Vejvisning til landsbyen",
+      "body": [
+        "Følg disse trin-for-trin-instruktioner fra Hostel Brikette for at nå landsbyen Santa Maria del Castello:"
+      ]
+    },
+    {
+      "id": "directions-to-lookout",
+      "title": "Vejvisning til udsigts punktet",
+      "body": [
+        "Når du når krydset, hvor stien flades ud, følg disse retninger for at få adgang til det fantastiske udsigts punkt."
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "name": "Forlad herberget og drej til højre",
+      "text": "Fra herbergets indgang, drej til højre og gå op ad trapperne ved siden af bygningen."
+    },
+    {
+      "name": "Fortsæt på gangstien",
+      "text": "Øverst på de første trin, fortsæt med at følge gangstien opad."
+    },
+    {
+      "name": "Vælg venstre ved krydset",
+      "text": "Når du når et kryds, vælg venstre opad mulighed for at fortsætte opstigningen."
+    },
+    {
+      "name": "Følg trinene til vejen",
+      "text": "Fortsæt med at følge trinene, indtil du når et punkt med trapper, der fører ned til en vej."
+    },
+    {
+      "name": "Kryds vejen",
+      "text": "Kryds vejen og find trapperne, der løber langs husene på den modsatte side."
+    },
+    {
+      "name": "Gå op ad trapperne bag husene",
+      "text": "Følg disse trapper, mens de slynger sig bag husene og leder dig til bjergstien."
+    },
+    {
+      "name": "Fortsæt på bjergstien",
+      "text": "Følg bjergstien, mens den klatrer mod landsbyen. Vejen bliver mere naturskøn her."
+    },
+    {
+      "name": "Vælg opad ved stiforgreninger",
+      "text": "Ved to stiforgreninger langs vejen, vælg opadbakkerne for at fortsætte mod landsbyen."
+    },
+    {
+      "name": "Nå landsbykrydset",
+      "text": "Du vil nå et kryds, hvor stien flades ud. Dette markerer din ankomst til Santa Maria del Castello."
+    },
+    {
+      "name": "Drej til højre mod udsigts punktet (valgfrit)",
+      "text": "For at nå udsigts punktet, drej til højre ved krydset."
+    },
+    {
+      "name": "Tag vejen opad til krydset",
+      "text": "Følg vejen opad, indtil du når et kryds."
+    },
+    {
+      "name": "Drej til højre ved krydset",
+      "text": "Ved krydset, drej til højre og følg vejen, når den drejer til højre."
+    },
+    {
+      "name": "Fortsæt til græsafsnittet",
+      "text": "Fortsæt, indtil du når et græsafsnit uden for hovedvejen."
+    },
+    {
+      "name": "Få adgang til udsigts punkterne",
+      "text": "Udsigts punkterne er tilgængelige fra dette græsområde. Vær ekstremt forsigtig – der er pludselige fald på flere hundrede meter."
+    }
+  ],
+  "warningsTitle": "Sikkerhedsadvarsler",
+  "warnings": [
+    "Udsigts punkterne har pludselige fald på flere hundrede meter. Hold dig godt væk fra kanterne og overvåg børn nøje.",
+    "Denne vandring er betydeligt mere krævende end Guds sti. Vurder dit konditionsniveau, før du prøver.",
+    "Undgå vandring mellem kl. 11:00 og 16:00 i sommermånederne på grund af ekstrem varmeeksponering på bjergstien."
+  ],
+  "essentialsTitle": "Hvad du skal medbringe",
+  "essentials": [
+    "Robuste vandresko med godt greb til stejlt, ujævnt terræn",
+    "Mindst 1,5 liter vand per person – begrænsede genopfyldningsmuligheder",
+    "Solbeskyttelse: hat, solcreme og solbriller til eksponerede afsnit",
+    "Lette snacks eller frokost, hvis du planlægger at tilbringe tid på landsbyens restaurant"
+  ],
+  "tipsTitle": "Vandringstips",
+  "tips": [
+    "Begynd tidligt om morgenen i sommermånederne for at undgå middagsvarmen.",
+    "Tag din tid på de stejle afsnit – udsigterne er værd at nyde undervejs.",
+    "Overvej at spise frokost på landsbyens restaurant, før du går ned tilbage til Positano.",
+    "Medbring et kamera eller en fuldt opladet telefon – fotomul ighederne fra udsigts punktet er eksceptionelle."
+  ]
+}

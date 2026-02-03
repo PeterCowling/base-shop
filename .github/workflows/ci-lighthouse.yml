@@ -12,8 +12,7 @@ concurrency:
 jobs:
   changes:
     name: Detect app changes
-    # Only needed for pull requests; pushes to main always run LHCI.
-    if: ${{ github.event_name == 'pull_request' }}
+    # Always run so downstream jobs with `needs: [changes]` aren't skipped on push.
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
@@ -30,6 +29,9 @@ jobs:
             shop_skylar:
               - 'apps/cover-me-pretty/**'
               - 'apps/skylar/**'
+              - '.lighthouseci/**'
+              - 'lighthouserc*.json'
+              - '.github/workflows/ci-lighthouse.yml'
 
   lhci:
     name: Lighthouse (${{ matrix.config }})
@@ -63,8 +65,7 @@ jobs:
 
       - name: Build apps for LHCI
         run: |
-          pnpm --filter @apps/cover-me-pretty build
-          pnpm --filter @apps/skylar build
+          pnpm --filter @apps/cover-me-pretty... --filter @apps/skylar... build
 
       - name: Setup Chrome for LHCI
         id: chrome

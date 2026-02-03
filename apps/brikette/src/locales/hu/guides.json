@@ -20,88 +20,172 @@
   },
   "content": {
     "onlyHostel": {
-      "linkLabel": "The only hostel in Positano",
+      "linkLabel": "Az egyetlen hostel Positanóban",
       "seo": {
-        "title": "The only hostel in Positano",
-        "description": "Affordable beds in Positano with panoramic views and friendly vibes."
+        "title": "Az egyetlen hostel Positanóban",
+        "description": "Megfizethető ágyak Positanóban panorámás kilátással és barátságos hangulattal."
       }
     },
     "backpackerItineraries": {
-      "linkLabel": "Backpacker itineraries",
+      "linkLabel": "Hátizsákos útvonalak",
       "seo": {
-        "title": "Backpacker itineraries on the Amalfi Coast",
-        "description": "Practical, budget-first routes for 2 to 7 days without a car."
+        "title": "Hátizsákos útvonalak az Amalfi-parton",
+        "description": "Praktikus, költségbarát útvonalak 2–7 napra autó nélkül."
       }
     },
     "reachBudget": {
-      "linkLabel": "Reach Positano on a budget",
+      "linkLabel": "Jutni Positanóba olcsón",
       "seo": {
-        "title": "Reach Positano on a budget",
-        "description": "Cheapest ways to get to Positano by bus, train and ferry."
+        "title": "Jutni Positanóba olcsón",
+        "description": "A legolcsóbb módok Positanóba jutni busszal, vonattal és komppal."
       }
     },
     "ferrySchedules": {
-      "linkLabel": "Ferry schedules",
+      "linkLabel": "Kompjáratok",
       "seo": {
-        "title": "Positano ferry schedules",
-        "description": "Up-to-date ferry operators and seasonal timetables for Positano."
+        "title": "Positano kompjáratok",
+        "description": "Friss kompüzemeltetők és szezonális menetrendek Positanóhoz."
       }
     },
     "pathOfTheGods": {
-      "linkLabel": "Path of the Gods from Positano",
+      "linkLabel": "Istenek ösvénye: Teljes útmutató Positanóból",
       "seo": {
-        "title": "Hike the Path of the Gods",
-        "description": "Door-to-door instructions to hike Sentiero degli Dei from Positano."
+        "title": "Túrázz az Istenek ösvényén",
+        "description": "Lépésről lépésre útmutató a Sentiero degli Dei túrához Positanóból."
       }
     },
     "pathOfTheGodsFerry": {
-      "linkLabel": "Path of the Gods via Amalfi (ferry)",
+      "linkLabel": "Istenek ösvénye: Festői komp és túraútvonal",
       "seo": {
-        "title": "Path of the Gods via Amalfi (ferry)",
-        "description": "Sail to Amalfi, bus up to Bomerano, then hike the Path of the Gods with return directions."
+        "title": "Istenek ösvénye Amalfin keresztül (komp)",
+        "description": "Hajózz Amalfiba, busz Bomeranóba, majd túrázz az Istenek ösvényén visszaútleírással."
       }
     },
     "pathOfTheGodsBus": {
-      "linkLabel": "Path of the Gods via Amalfi (bus)",
+      "linkLabel": "Istenek ösvénye: Költségbarát buszos útvonal",
       "seo": {
-        "title": "Path of the Gods via Amalfi (bus)",
-        "description": "Take the SITA Sud bus to Bomerano and follow our Path of the Gods route back toward Positano."
+        "title": "Istenek ösvénye Amalfin keresztül (busz)",
+        "description": "SITA Sud busszal Bomeranóba, majd az Istenek ösvénye útvonalunkon vissza Positanóba."
       }
     },
     "pathOfTheGodsNocelle": {
-      "linkLabel": "Path of the Gods via Nocelle",
+      "linkLabel": "Istenek ösvénye: Rövid túra Nocelléből",
       "seo": {
-        "title": "Path of the Gods via Nocelle",
-        "description": "Shorter out-and-back hike from Nocelle with directions to return to Hostel Brikette."
+        "title": "Istenek ösvénye Nocellén keresztül",
+        "description": "Rövidebb oda-vissza túra Nocelléből útmutatással a Hostel Brikette-be való visszatéréshez."
       }
     },
     "dayTripsAmalfi": {
-      "linkLabel": "Day trips from Positano",
+      "linkLabel": "Legjobb egynapos kirándulások: Capri, Amalfi, Pompeii és még több",
       "seo": {
-        "title": "Day trips from Positano",
-        "description": "Ideas for Amalfi, Ravello, Capri and Pompeii with timing and transport tips."
+        "title": "Egynapos kirándulások Positanóból",
+        "description": "Ötletek Amalfiba, Ravellóba, Caprira és Pompeiibe időzítési és közlekedési tippekkel."
       }
     },
     "publicTransportAmalfi": {
-      "linkLabel": "Amalfi Coast public transport guide",
+      "linkLabel": "Az Amalfi-part tömegközlekedési útmutatója",
       "seo": {
-        "title": "Amalfi Coast public transport guide",
-        "description": "How to use buses and ferries on the Amalfi Coast with passes, timing and routes."
+        "title": "Az Amalfi-part tömegközlekedési útmutatója",
+        "description": "Hogyan használd a buszokat és kompokat az Amalfi-parton bérletekkel, menetrendekkel és útvonalakkal."
       }
     },
     "travelTipsFirstTime": {
-      "linkLabel": "Positano travel tips for first-time visitors",
+      "linkLabel": "Positano tippek első látogatóknak",
       "seo": {
-        "title": "Positano travel tips for first-time visitors",
-        "description": "Arrivals, luggage, payments and connectivity — practical advice for your first trip."
+        "title": "Positano tippek első látogatóknak",
+        "description": "Érkezés, csomag, fizetés és kapcsolódás — gyakorlati tanácsok első utadhoz."
       }
     },
     "whatToPack": {
-      "linkLabel": "What to pack for the Amalfi Coast",
+      "linkLabel": "Mit vigyél az Amalfi-partra",
       "seo": {
-        "title": "What to pack for the Amalfi Coast",
-        "description": "Seasonal packing checklist for Positano and the Amalfi Coast."
+        "title": "Mit vigyél az Amalfi-partra",
+        "description": "Szezonális csomagolási lista Positanóhoz és az Amalfi-parthoz."
       }
+    },
+    "positanoBeaches": {
+      "linkLabel": "Positano strandjai: Homok, nap és titkos öblök"
+    },
+    "arienzoBeachClub": {
+      "linkLabel": "Arienzo strand: Positano butik strandklubbja"
+    },
+    "fornilloBeachGuide": {
+      "linkLabel": "Fornillo strand: Positano csendesebb alternatívája"
+    },
+    "lauritoBeachGuide": {
+      "linkLabel": "Laurito strand: Rejtett gyöngyszem a sziklák alatt"
+    },
+    "gavitellaBeachGuide": {
+      "linkLabel": "Gavitella strand: Praiano naplementés fürdőhelye"
+    },
+    "marinaDiPraiaBeaches": {
+      "linkLabel": "Marina di Praia: Drámai öböl a sziklák között"
+    },
+    "fiordoDiFuroreBeachGuide": {
+      "linkLabel": "Fiordo di Furore: A fjord strand a híd alatt"
+    },
+    "reginaGiovannaBath": {
+      "linkLabel": "Regina Giovanna: Római romok és természetes medence"
+    },
+    "positanoMainBeach": {
+      "linkLabel": "Spiaggia Grande: Positano ikonikus főstrandja"
+    },
+    "sunriseHike": {
+      "linkLabel": "Napfelkelte túra: Nézd a hajnalt Positano felett"
+    },
+    "topOfTheMountainHike": {
+      "linkLabel": "Monte Comune: Túra Positano legmagasabb kilátópontjához"
+    },
+    "stayingFitAmalfi": {
+      "linkLabel": "Maradj fitt Positanóban: Lépcsők, ösvények és strand edzés"
+    },
+    "capriDayTrip": {
+      "linkLabel": "Capri egynapos kirándulás: Szigetszökés Positanóból"
+    },
+    "capriOnABudget": {
+      "linkLabel": "Capri költségvetésbarát módon"
+    },
+    "campingAmalfi": {
+      "linkLabel": "Kemping az Amalfi-parton: Költségbarát alternatíva szállodákkal szemben"
+    },
+    "boatTours": {
+      "linkLabel": "Hajókirándulások: Naplementés hajózástól privát charterig"
+    },
+    "cheapEats": {
+      "linkLabel": "Egyél mint egy helyi: Positano legjobb olcsó falatjai"
+    },
+    "eatingOutPositano": {
+      "linkLabel": "Hol egyél Positanóban: A lezser étkezéstől az ünnepig"
+    },
+    "positanoDining": {
+      "linkLabel": "Positano legjobb éttermei a Hostel Brikette közelében"
+    },
+    "limoncelloCuisine": {
+      "linkLabel": "Ízleld Positanót: Limoncello, citrom és helyi ízek"
+    },
+    "instagramSpots": {
+      "linkLabel": "Instagramra való Positano: Legjobb fotóhelyek és időpontok"
+    },
+    "sunsetViewpoints": {
+      "linkLabel": "Naplemente Positanóban: Legjobb kilátópontok az aranyórához"
+    },
+    "ravelloFestival": {
+      "linkLabel": "Ravello Fesztivál: Klasszikus koncertek a csillagok alatt"
+    },
+    "ferragostoPositano": {
+      "linkLabel": "Ferragosto: Olaszország augusztus 15-i ünnepe Positanóban"
+    },
+    "luminariaPraiano": {
+      "linkLabel": "Luminaria di Praiano: Ezer gyertya világítja meg az éjszakát"
+    },
+    "walkingTourAudio": {
+      "linkLabel": "Ingyenes audio sétatúra: Fedezd fel Positano rejtett történeteit"
+    },
+    "freeThingsPositano": {
+      "linkLabel": "Ingyenes tevékenységek Positanóban: Költségbarát szórakozás"
+    },
+    "santaMariaDelCastelloHike": {
+      "linkLabel": "Santa Maria del Castello: Mountain Village Hike"
     }
   },
   "dev": {

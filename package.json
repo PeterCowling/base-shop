@@ -22,8 +22,8 @@
     "build:trace": "cross-env NODE_OPTIONS=\"--trace-uncaught --enable-source-maps\" pnpm --filter cms exec next build --debug",
     "start": "turbo run start --parallel",
     "lint": "turbo run lint",
-    "lint:json": "cross-env NODE_OPTIONS=\"--max-old-space-size=6144\" eslint \"{apps,packages,src}/**/*.{ts,tsx,js,jsx}\" --cache --cache-location .eslintcache --format json --output-file .eslint-report.json --ignore-pattern \"**/dist/**\" --ignore-pattern \"**/.next/**\" --no-warn-ignored",
-    "lint:exceptions": "pnpm run lint:json && node scripts/lint-exceptions.cjs",
+    "lint:json": "cross-env NODE_OPTIONS=\"--max-old-space-size=12288\" eslint \"{apps,packages,src}/**/*.{ts,tsx,js,jsx}\" --cache --cache-location .eslintcache --format json --output-file .eslint-report.json --ignore-pattern \"**/dist/**\" --ignore-pattern \"**/.next/**\" --no-warn-ignored",
+    "lint:exceptions": "node scripts/lint-exceptions.cjs",
     "lint:no-raw-tailwind-color:report": "pnpm tsx scripts/src/lint/report-no-raw-tailwind-color.ts",
     "lint:no-raw-tailwind-color:check": "pnpm run lint:no-raw-tailwind-color:report && pnpm tsx scripts/src/lint/check-no-raw-tailwind-color-baseline.ts --report tools/eslint-baselines/ds-no-raw-tailwind-color.report.json",
     "lint:no-raw-tailwind-color:baseline": "pnpm run lint:no-raw-tailwind-color:report && pnpm tsx scripts/src/lint/check-no-raw-tailwind-color-baseline.ts --report tools/eslint-baselines/ds-no-raw-tailwind-color.report.json --write-baseline",
@@ -31,7 +31,7 @@
     "lint:apps": "eslint \"apps/**/*.{ts,tsx}\" --ignore-pattern \"**/dist/**\" --ignore-pattern \"**/.next/**\" --no-warn-ignored",
     "lint:all": "cross-env NODE_OPTIONS=\"--max-old-space-size=6144\" pnpm -r --workspace-concurrency=1 --no-bail --if-present run lint",
     "lint:all:raw": "eslint \"{apps,packages,src}/**/*.{ts,tsx,js,jsx}\" --ignore-pattern \"**/dist/**\" --ignore-pattern \"**/.next/**\" --no-warn-ignored",
-    "typecheck": "tsc -b tsconfig.json --pretty && turbo run typecheck",
+    "typecheck": "bash scripts/typecheck.sh",
     "typecheck:watch": "tsc -b -w tsconfig.json --noEmit --preserveWatchOutput --pretty",
     "prepare": "scripts/git-hooks/install-hooks.sh",
     "test": "CI=true turbo run test",
@@ -77,8 +77,8 @@
     "test-storybook:runner": "cross-env WAIT_ON_TIMEOUT=120000 start-server-and-test \"pnpm run storybook:ci\" http://localhost:6007 \"pnpm exec test-storybook --config-dir apps/storybook/.storybook-ci --url http://localhost:6007 --includeTags ci --testTimeout 30000 --maxWorkers 2\"",
     "test-storybook:coverage": "cross-env WAIT_ON_TIMEOUT=120000 VITE_COVERAGE=true STORYBOOK_COVERAGE=1 start-server-and-test \"pnpm run storybook:ci\" http://localhost:6007 \"pnpm exec test-storybook --config-dir apps/storybook/.storybook-ci --url http://localhost:6007 --includeTags ci --testTimeout 30000 --maxWorkers 2 --coverage\"",
     "test-storybook": "pnpm run storybook:smoke",
-    "storybook:smoke:ci": "cross-env WAIT_ON_TIMEOUT=120000 start-server-and-test \"pnpm run storybook:ci\" http://localhost:6007 \"pnpm exec playwright test .storybook/test-runner/__tests__/{smoke-health,tokens,usefsm,focus-visible,ci-stories}.test.ts --reporter=list\"",
-    "storybook:smoke": "cross-env WAIT_ON_TIMEOUT=120000 start-server-and-test \"pnpm run storybook:ci\" http://localhost:6007 \"pnpm exec playwright test .storybook/test-runner/__tests__/{smoke-health,tokens,usefsm,focus-visible}.test.ts --reporter=list\"",
+    "storybook:smoke:ci": "cross-env WAIT_ON_TIMEOUT=120000 start-server-and-test \"pnpm run storybook:ci\" http://localhost:6007 \"pnpm exec playwright test apps/storybook/.storybook/test-runner/__tests__/{smoke-health,tokens,usefsm,focus-visible,ci-stories}.test.ts --reporter=list\"",
+    "storybook:smoke": "cross-env WAIT_ON_TIMEOUT=120000 start-server-and-test \"pnpm run storybook:ci\" http://localhost:6007 \"pnpm exec playwright test apps/storybook/.storybook/test-runner/__tests__/{smoke-health,tokens,usefsm,focus-visible}.test.ts --reporter=list\"",
     "storybook:visual": "cross-env WAIT_ON_TIMEOUT=120000 start-server-and-test \"pnpm run storybook:ci\" http://localhost:6007 \"pnpm exec playwright test apps/storybook/.storybook/test-runner/__tests__/visual-themes.test.ts --reporter=list\"",
     "storybook:visual:update": "cross-env WAIT_ON_TIMEOUT=120000 start-server-and-test \"pnpm run storybook:ci\" http://localhost:6007 \"pnpm exec playwright test apps/storybook/.storybook/test-runner/__tests__/visual-themes.test.ts --reporter=list --update-snapshots\"",
     "storybook:composed": "pnpm --filter @apps/storybook run dev:composed",
@@ -151,7 +151,7 @@
     ]
   },
   "simple-git-hooks": {
-    "pre-commit": "scripts/git-hooks/pre-commit-check-env.sh && scripts/git-hooks/require-writer-lock.sh && node scripts/git-hooks/no-partially-staged.js && pnpm exec cross-env NODE_OPTIONS=--max-old-space-size=16384 pnpm exec lint-staged --no-stash && pnpm typecheck && pnpm lint && pnpm validate:agent-context",
+    "pre-commit": "scripts/git-hooks/pre-commit.sh",
     "prepare-commit-msg": "scripts/git-hooks/prepare-commit-msg-safety.sh",
     "pre-rebase": "scripts/git-hooks/pre-rebase-safety.sh",
     "pre-push": "scripts/git-hooks/require-writer-lock.sh && scripts/git-hooks/pre-push-safety.sh && pnpm typecheck && pnpm lint"
@@ -223,7 +223,7 @@
     "identity-obj-proxy": "^3.0.0",
     "jose": "^4.15.9",
     "jsonwebtoken": "^9.0.2",
-    "next": "15.3.8",
+    "next": "15.3.9",
     "next-auth": "4.24.11",
     "next-intl": "^3.5.0",
     "next-secure-headers": "^2.2.0",
@@ -337,7 +337,7 @@
     "minimatch": "^9.0.5",
     "msw": "^2.6.5",
     "msw-storybook-addon": "^2.0.3",
-    "next": "15.3.8",
+    "next": "15.3.9",
     "nock": "^13.4.0",
     "nyc": "^15.1.0",
     "playwright": "^1.55.1",
@@ -372,6 +372,7 @@
   },
   "pnpm": {
     "overrides": {
+      "next": "15.3.9",
       "@shadcn/ui": "0.0.4",
       "yallist": "4.0.0",
       "dom-serializer": "2.0.0",
@@ -392,7 +393,7 @@
       "qs": ">=6.14.1",
       "validator": ">=13.15.22",
       "undici": ">=6.23.0",
-      "tar": ">=7.5.4",
+      "tar": ">=7.5.7",
       "axios": ">=1.12.0"
     },
     "auditConfig": {

@@ -1,125 +1,125 @@
 {
   "seo": {
-    "title": "Hosszabb tartózkodás szezonon kívül",
-    "description": "Lakhatás, közművek, bevásárlás és munkához kapcsolódó tippek téli hónapokra."
+    "title": "Téli hosszabb tartózkodási tippek Positanóra",
+    "description": "Kapcsolódás, zárva tartások és mindennapi élet a csendesebb hónapokban."
   },
-  "linkLabel": "Hosszabb tartózkodás szezonon kívül",
+  "linkLabel": "Téli hosszabb tartózkodási tippek",
   "intro": [
-    "A fordítás folyamatban van."
+    "Néhány hetes télies tartózkodás hűvösebb időt, kevesebb kompot és több helyi ritmust jelent."
   ],
   "sections": [
     {
       "id": "housing",
-      "title": "Housing & rates",
+      "title": "Szállás és árak",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "alkudozz közvetlenül a positanói felső negyedekben lévő vendégházakkal havi tartózkodásra; novembertől márciusig 20–30% kedvezmény gyakori.",
+        "Ha szupermarketet és sík sétát szeretnél, nézd Praiano vagy Minori helyszíneit; buszozz, amikor Positano esti hangulatára vágysz."
       ]
     },
     {
       "id": "weather",
-      "title": "Weather & packing",
+      "title": "Időjárás és csomagolás",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Nappali maximumok 12–16 °C között, némi esővel — pakolj rétegeket, vízálló kabátot és tapadós cipőt a csúszós lépcsők miatt.",
+        "Tarts magadnál egy kompakt esernyőt; a völgyekbe befújó szelek erősebbeknek érződnek a meteorológiai térképnél."
       ]
     },
     {
       "id": "work-life",
-      "title": "Work & daily rhythm",
+      "title": "Munka és napi ritmus",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Sok kávézó csökkenti a nyitvatartást, így a coworkinget a hostel vagy a lakás stabil Wi-Fi-jéhez igazítsd.",
+        "Főzz többször — Meta vagy Sorrento piacai szélesebb választékot adnak, a bevásárlóutak pedig csendesebbek a buszokon."
       ]
     },
     {
       "id": "community",
-      "title": "Staying social",
+      "title": "Közösségi élet",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Csatlakozz helyi Facebook vagy WhatsApp csoportokhoz nyelvgyakorlásért és közösségi vacsorákért.",
+        "Önkénteskedj szemétszedésen vagy kulturális eseményeken; a közösség a Piazza dei Mulini mellett kifüggesztett táblákon jelzi az ütemterveket."
       ]
     }
   ],
   "tips": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
+    "Tarts néhány eurócentet a fűtésre és mosodákra — télen sok géphez pénzbedobós rendszer tartozik.",
+    "Kövesd hétenként a csökkentett busz- és kompmenetrendeket; a menetrendek ünnepekhez igazodnak."
   ],
   "faqs": [
     {
-      "q": "Do restaurants stay open?",
+      "q": "Maradnak nyitva éttermek?",
       "a": [
-        "A fordítás folyamatban van."
+        "Néhány hely egész évben nyitva tart Positanóban, de több választék Amalfi és Sorrento részen van — tervezd oda az esti vacsorákat."
       ]
     },
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Télies napokon biztonságos a Szlak Bogok?",
       "a": [
-        "A fordítás folyamatban van."
+        "Száraz napokon igen, de nagy eső után kerüld — a sziklák csúszósak, kisebb földcsuszamlások is gyakoribbak."
       ]
     }
   ],
   "fallback": {
-    "tocTitle": "On this page",
+    "tocTitle": "Tartalom",
     "intro": [],
     "toc": [
       {
         "href": "#connectivity",
-        "label": "Connectivity"
+        "label": "Kapcsolódás"
       },
       {
         "href": "#groceries",
-        "label": "Groceries & essentials"
+        "label": "Bevásárlás és alapok"
       },
       {
         "href": "#transport",
-        "label": "Transport in off‑season"
+        "label": "Téli közlekedés"
       },
       {
         "href": "#weather",
-        "label": "Weather & packing"
+        "label": "Időjárás és csomagolás"
       },
       {
         "href": "#faqs",
-        "label": "FAQs"
+        "label": "GYIK"
       }
     ],
     "sections": [
       {
         "id": "connectivity",
-        "title": "Connectivity",
+        "title": "Kapcsolódás",
         "body": [
-          "A fordítás folyamatban van."
+          "Kombináld a stabil Wi-Fi kávézókat eSIM tartalékokkal; ellenőrizd a szolgáltatók (TIM/Vodafone/WindTre) térképeit."
         ]
       },
       {
         "id": "groceries",
-        "title": "Groceries & essentials",
+        "title": "Bevásárlás és alapok",
         "body": [
-          "A fordítás folyamatban van."
+          "A téli órák változóak; vásárolj korábban a nap folyamán és hétköznap."
         ]
       },
       {
         "id": "transport",
-        "title": "Transport in off‑season",
+        "title": "Téli közlekedés",
         "body": [
-          "A fordítás folyamatban van."
+          "A kompok lecsökkentik a járatokat; buszokra támaszkodj és tervezz esős/ szeles napokra."
         ]
       },
       {
         "id": "weather",
-        "title": "Weather & packing",
+        "title": "Időjárás és csomagolás",
         "body": [
-          "A fordítás folyamatban van."
+          "Hozz rétegeket és esővédőt; jó cipők kellenek a vizes lépcsőkön."
         ]
       }
     ],
-    "faqsTitle": "FAQs",
+    "faqsTitle": "GYIK",
     "faqs": [
       {
-        "q": "A fordítás folyamatban van.",
+        "q": "Nyitva van valami télen?",
         "a": [
-          "A fordítás folyamatban van."
+          "Igen, de kevesebb lehetőség van. Koncentrálj bevásárlásra, túrákra, kilátókra és közeli városokra."
         ]
       }
     ]

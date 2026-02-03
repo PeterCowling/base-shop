@@ -3,10 +3,19 @@ import type { Namespace, TFunction } from "i18next";
 
 export type GenericContentTranslator = TFunction<Namespace, unknown>;
 
+export type SectionImage = {
+  src: string;
+  alt: string;
+  caption?: string;
+  width?: number;
+  height?: number;
+};
+
 export type Section = {
   id: string;
   title: string;
   body?: string[];
+  images?: SectionImage[];
 };
 
 export type FAQ = {
@@ -37,6 +46,7 @@ export type ResolvedSection = {
   title: string;
   label: string;
   body: string[];
+  images?: SectionImage[];
   /**
    * When false, the section should not be included in the derived Table of
    * Contents. Used to suppress entries for legacy sections that lacked a

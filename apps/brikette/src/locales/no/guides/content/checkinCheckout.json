@@ -1,0 +1,107 @@
+{
+  "seo": {
+    "title": "Full veiledning for innsjekk og utsjekk på Hostel Brikette i Positano",
+    "description": "Trinnvise instruksjoner om ankomsttider, ID-krav, bagasjeoppbevaring, depositum og støtte ved utsjekk på Hostel Brikette i Positano."
+  },
+  "linkLabel": "Full veiledning for innsjekk og utsjekk på Hostel Brikette i Positano",
+  "sections": [
+    {
+      "id": "checkInRequest",
+      "title": "Innsjekkingsforespørsel",
+      "body": [
+        "Når du ankommer, gå til resepsjonen for å starte innsjekkingen og få tildelt rom."
+      ]
+    },
+    {
+      "id": "earlyArrival",
+      "title": "Tidlig ankomst",
+      "body": [
+        "Hvis du kommer før kl. 10.30 på ankomstdagen, kan du ikke gå inn i hostellet ennå."
+      ]
+    },
+    {
+      "id": "middayArrival",
+      "title": "Ankomst midt på dagen",
+      "body": [
+        "Hvis du ankommer mellom kl. 10.30 og 15.00, kan du, avhengig av godkjenning, få midlertidig adgang som gjest. I dette tidsrommet kan du be om bagasjeoppbevaring dersom det er ledig plass. Merk at bagasjeoppbevaring er en egen tjeneste med egne vilkår."
+      ]
+    },
+    {
+      "id": "checkInWindow",
+      "title": "Innsjekkingsvindu",
+      "body": [
+        "Innsjekk er mulig hver dag mellom kl. 15.00 og 22.30. I dette tidsrommet følger du vår vanlige innsjekkingsprosess."
+      ]
+    },
+    {
+      "id": "lateArrival",
+      "title": "Sen ankomst",
+      "body": [
+        "Hvis du planlegger å ankomme etter at resepsjonen stenger kl. 22.30, kan vi tilby selvbetjent sen innsjekk dersom det er kapasitet. Vi sender instruksjoner til kontaktopplysningene du oppga ved bestilling. Sørg for at enheten din er oppladet og at opplysningene er korrekte; vi kan ikke holdes ansvarlige for problemer som skyldes feil informasjon eller tekniske feil."
+      ]
+    },
+    {
+      "id": "necessityOfProcess",
+      "title": "Krav til full innsjekksprosess",
+      "body": [
+        "Du må fullføre hele innsjekkingsprosessen for å få adgang til hostellet. Hvis du ikke kan fullføre innsjekkingen, annulleres reservasjonen din og regnes som uteblivelse."
+      ]
+    },
+    {
+      "id": "proofOfIdentity",
+      "title": "ID‑dokument",
+      "body": [
+        "Du må vise et gyldig originalt ID-dokument (pass, nasjonalt ID-kort, førerkort eller militært ID) ved ankomst. Dersom du ikke fremviser gyldig ID innen kl. 22.30 på planlagt innsjekksdag, annulleres reservasjonen som uteblivelse."
+      ]
+    },
+    {
+      "id": "paymentBalance",
+      "title": "Utestående beløp",
+      "body": [
+        "Utestående beløp må betales fullt ut med en godkjent betalingsmåte før innsjekkingen fullføres. Hvis du ikke kan betale fullt, annulleres reservasjonen og registreres som uteblivelse."
+      ]
+    },
+    {
+      "id": "keycardLinenDeposit",
+      "title": "Depositum for nøkkelkort og sengetøy",
+      "body": [
+        "Ved innsjekk må du betale et depositum på €10 kontant for nøkkelkort og sengetøy. Depositumet refunderes kontant ved utsjekk når begge deler leveres tilbake. Vi kan ikke ta imot depositum med kort."
+      ]
+    },
+    {
+      "id": "checkoutWindow",
+      "title": "Utsjekkingsvindu",
+      "body": [
+        "Utsjekk er mellom kl. 07.30 og 10.30. Etter utsjekk kan du ikke gå tilbake til rommet eller etterlate personlige eiendeler."
+      ]
+    },
+    {
+      "id": "earlyCheckout",
+      "title": "Tidlig utsjekk",
+      "body": [
+        "Hvis du trenger å reise før kl. 07.30, ordner du tidlig utsjekk i resepsjonen kvelden før for å få depositumet tilbake i kontanter. Å legge igjen nøkkelkortet uten bekreftelse fra personalet fører til tap av depositumet."
+      ]
+    },
+    {
+      "id": "lateCheckout",
+      "title": "Sen utsjekk",
+      "body": [
+        "Vi tilbyr ikke sen utsjekk. Utsjekk må være fullført innen kl. 10.30."
+      ]
+    },
+    {
+      "id": "failureToCheckout",
+      "title": "Manglende utsjekk",
+      "body": [
+        "Hvis du ikke forlater rommet innen den offisielle utsjekkstiden, kan vi fjerne eiendelene dine uten ansvar. Gjenstander kan oppbevares hos en lokal portertjeneste for egen regning. All uautorisert adgang etterpå behandles som et sikkerhetsbrudd."
+      ]
+    },
+    {
+      "id": "postCheckout",
+      "title": "Etter utsjekk",
+      "body": [
+        "Når du har sjekket ut, avsluttes reservasjonen. Du kan oppholde deg på hostellets område som midlertidig gjest til kl. 15.30. Du kan be om bagasjeoppbevaring, avhengig av kapasitet og egne vilkår."
+      ]
+    }
+  ]
+}

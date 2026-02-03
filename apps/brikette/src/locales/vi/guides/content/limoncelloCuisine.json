@@ -52,18 +52,5 @@
         "Bản dịch đang được chuẩn bị."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Photo gallery",
-    "items": [
-      {
-        "alt": "Bản dịch đang được chuẩn bị.",
-        "caption": "Vintage lemons"
-      },
-      {
-        "alt": "Bản dịch đang được chuẩn bị.",
-        "caption": "Terrace limoncello"
-      }
-    ]
-  }
+  ]
 }

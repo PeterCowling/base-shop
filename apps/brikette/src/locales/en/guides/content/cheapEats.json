@@ -3,7 +3,7 @@
     "title": "Cheap Eats in Positano: Budget Food Guide",
     "description": "Where to find affordable meals in Positano: panini, pizza al taglio, takeaway salads, minimarkets, and picnic spots."
   },
-  "linkLabel": "Cheap Eats in Positano",
+  "linkLabel": "Eat Like a Local: Positano's Best Budget Bites",
   "heroAlt": "Affordable takeaway food in Positano",
   "intro": [
     "Eat well in Positano without overspending by mixing takeaway classics, deli picnics, and local bakeries."
@@ -61,19 +61,6 @@
       "note": "Stock up on fruit, large water bottles, and snacks for terrace picnics."
     }
   ],
-  "gallery": {
-    "title": "Photo gallery",
-    "items": [
-      {
-        "alt": "Panini from a local deli",
-        "caption": "Panini & deli"
-      },
-      {
-        "alt": "Picnic with Positano view",
-        "caption": "Picnic viewpoints"
-      }
-    ]
-  },
   "faqs": [
     {
       "q": "Can I refill water for free?",

@@ -10,18 +10,18 @@ import { Bus, CalendarDays, Clock, CreditCard, FileText, IdCard, Info, MapPin, S
 
 import HelpCentreNavUI, { type AssistanceNavItem } from "@acme/ui/organisms/HelpCentreNav";
 
+import { ASSISTANCE_GUIDE_KEYS } from "@/data/assistanceGuideKeys";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { useHelpDrawer } from "@/hooks/useHelpDrawer";
 import type { AppLanguage } from "@/i18n.config";
-import type { HelpArticleKey } from "@/routes.assistance-helpers";
-// Namespace import to tolerate partial mocks
-import * as assistance from "@/routes.assistance-helpers";
+import { guideSlug, type GuideKey } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
 
 /* ── static helpers ─────────────────────────────────────────── */
 type IconComponent = typeof IdCard;
 
-const ICONS: Record<HelpArticleKey, IconComponent> = {
+// Icons for assistance guide keys (subset of GuideKey)
+const ICONS: Partial<Record<GuideKey, IconComponent>> = {
   ageAccessibility: IdCard,
   bookingBasics: CalendarDays,
   changingCancelling: Undo2,
@@ -46,7 +46,7 @@ const defaultLabel = (key: string): string =>
 // src/locales/<lang>/assistanceCommon.json and are resolved via i18n.
 
 interface Props {
-  currentKey: HelpArticleKey;
+  currentKey: GuideKey;
   className?: string;
   lang?: AppLanguage;
 }
@@ -89,14 +89,10 @@ function HelpCentreNav({ currentKey, className = "lg:w-80", lang: explicitLang }
 
   const root = `/${lang}/${getSlug("assistance", lang)}`;
 
-  type AssistanceModule = typeof assistance;
-  const keys: readonly HelpArticleKey[] =
-    ((assistance as Partial<AssistanceModule>).ARTICLE_KEYS ?? []) as readonly HelpArticleKey[];
-  const toSlug = (assistance as Partial<AssistanceModule>).articleSlug;
-  const items = keys.map((key) => ({
+  const items = ASSISTANCE_GUIDE_KEYS.map((key) => ({
     key,
     label: translate(`nav.${key}`, () => defaultLabel(key)),
-    href: `${root}/${toSlug ? toSlug(lang, key) : String(key)}`,
+    href: `${root}/${guideSlug(lang, key)}`,
     icon: ICONS[key],
     isActive: currentKey === key,
   }));
@@ -163,8 +159,7 @@ function HelpCentreNav({ currentKey, className = "lg:w-80", lang: explicitLang }
   );
 }
 
-type AssistanceModule = typeof assistance;
-export const HELP_ARTICLE_KEYS: readonly HelpArticleKey[] =
-  ((assistance as Partial<AssistanceModule>).ARTICLE_KEYS ?? []) as readonly HelpArticleKey[];
-export type { HelpArticleKey };
+// Re-export for consumers that depend on this module
+export { ASSISTANCE_GUIDE_KEYS };
+export type { GuideKey };
 export default memo(HelpCentreNav);

@@ -77,20 +77,34 @@
   ],
   "images": {
     "whyGo": {
-      "alt": "Insenatura della spiaggia di Laurito con stabilimenti lungo la costa",
-      "caption": "La baia di Laurito tra le scogliere è più calma e tranquilla della spiaggia principale."
+      "src": "/img/guides/laurito-beach/02-beach-overview.jpg",
+      "alt": "Laurito Beach cove with beach clubs along the shoreline",
+      "caption": "Laurito's cliff-backed cove is calmer and quieter than the main beach."
     },
     "layout": {
-      "alt": "Piattaforme e struttura della spiaggia di Laurito",
-      "caption": "Tre zone si dividono la baia: area libera, piattaforme di Villa Tre Ville e terrazza di Da Adolfo."
+      "src": "/img/guides/laurito-beach/01-beach-layout-map.jpg",
+      "alt": "Beach decks and shoreline layout at Laurito",
+      "caption": "Three zones share the cove: public strip, Villa Tre Ville decks, and Da Adolfo terrace."
     },
     "treVille": {
-      "alt": "Lettini e vista mare del beach club Villa Tre Ville",
-      "caption": "Villa Tre Ville offre lettini premium e servizio in stile concierge."
+      "src": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg",
+      "alt": "Villa Tre Ville beach club loungers and sea views",
+      "caption": "Villa Tre Ville focuses on premium loungers and concierge-style service."
     },
     "daAdolfo": {
-      "alt": "Molo e area posti del beach club Da Adolfo",
-      "caption": "La navetta di Da Adolfo lascia gli ospiti accanto alla terrazza del ristorante."
+      "src": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg",
+      "alt": "Da Adolfo beach club dock and seating area",
+      "caption": "Da Adolfo's shuttle boat drops guests beside the restaurant terrace."
+    },
+    "positanoView": {
+      "src": "/img/guides/laurito-beach/05-positano-view.jpg",
+      "alt": "View over Positano and the sea with boats near the shore",
+      "caption": "Spiaggia Grande is the main launch point for many beach shuttles and boats."
+    },
+    "sitaBus": {
+      "src": "/img/guides/laurito-beach/06-amalfi-coast-sita-bus.jpg",
+      "alt": "Blue SITA bus driving along the Amalfi Coast road above the sea",
+      "caption": "The coastal SITA bus is a useful backup when boats are paused."
     }
   },
   "essentialsTitle": "Cosa aspettarsi",
@@ -109,7 +123,7 @@
   "tips": [
     "Fai uno screenshot delle email di conferma — il segnale mobile svanisce vicino al molo.",
     "Porta crema solare reef-safe e scarpe da scoglio; la riva alterna ciottoli e lastre di roccia.",
-    "Consulta la nostra %LINK:beaches|panoramica delle spiagge di Positano% per confrontare Laurito con altre baie."
+    "Consulta la nostra %LINK:positanoBeaches|panoramica delle spiagge di Positano% per confrontare Laurito con altre baie."
   ],
   "warningsTitle": "Da sapere",
   "warnings": [
@@ -138,7 +152,5 @@
       ]
     }
   ],
-  "gallery": {
-    "alt": "Riva della spiaggia di Laurito"
-  }
+  "lastUpdated": "2026-01-29T00:00:00.000Z"
 }

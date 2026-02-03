@@ -1,134 +1,162 @@
 {
   "seo": {
-    "title": "Bản dịch đang được chuẩn bị.",
-    "description": "Hướng dẫn từng bước tới Pompeii từ Positano bằng xe buýt + tàu hoặc phà + tàu (mùa hè)."
+    "title": "Chuyến Đi Trong Ngày Từ Positano Đến Pompeii: Hướng Dẫn Vận Chuyển & Du Lịch",
+    "description": "Hướng dẫn đầy đủ để đến thăm Pompeii từ Positano. Hướng dẫn xe buýt và tàu hỏa, những gì cần xem, mẹo về thời gian và lời khuyên thực tế cho khách nhà nghỉ lên kế hoạch chuyến đi trong ngày.",
+    "lastUpdated": "2026-01-31"
   },
-  "linkLabel": "Positano to Pompeii: how to go",
+  "linkLabel": "Chuyến Đi Trong Ngày Từ Positano Đến Pompeii: Hướng Dẫn Vận Chuyển & Du Lịch",
   "intro": [
-    "Pompeii rộng lớn, ấn tượng và rất dễ lên lịch quá tải. Lộ trình này giúp bạn thấy những điểm chính mà không phải dành cả ngày cho việc di chuyển.",
-    "Mùa hè sẽ có nắng gắt, bụi và đông người — hãy mang theo nước, kem chống nắng và xác định thực tế bạn có thể tham quan được bao nhiêu."
-  ],
-  "toc": [
-    {
-      "href": "#at-a-glance",
-      "label": "Tóm tắt nhanh"
-    },
-    {
-      "href": "#entry-cost-and-hours",
-      "label": "Giá vé & giờ mở cửa"
-    },
-    {
-      "href": "#other-facilities",
-      "label": "Tiện ích tại chỗ"
-    },
-    {
-      "href": "#getting-there",
-      "label": "Cách đi"
-    },
-    {
-      "href": "#self-guided-tour",
-      "label": "Lộ trình tự do"
-    },
-    {
-      "href": "#faqs",
-      "label": "Câu hỏi thường gặp"
-    }
+    "Thăm Pompeii từ Positano tạo nên một chuyến đi trong ngày hấp dẫn. Thành phố cổ bị chôn vùi bởi núi Vesuvius vào năm 79 SCN mang lại sự tương phản đáng kể với thư giãn ven biển—tàn tích rộng lớn, đường phố được bảo tồn, nhà có bích họa và lịch sử La Mã hữu hình. Hành trình từ Positano đến Pompeii mất khoảng 2 giờ mỗi chiều qua xe buýt và tàu hỏa. Lên kế hoạch cho một ngày đầy đủ (rời đi lúc 08:00, quay lại lúc 18:00–19:00). Hướng dẫn này bao gồm vận chuyển, thời gian, những gì cần xem và mẹo thực tế cho khách nhà nghỉ thực hiện chuyến đi.",
+    "Pompeii rộng lớn và có thể choáng ngợp nếu không có kế hoạch. Nhiều du khách lần đầu đánh giá thấp quy mô của địa điểm (66 ha—khoảng 165 mẫu Anh) và nhu cầu thể chất (nóng, bụi bặm, bóng râm tối thiểu). Hướng dẫn này giúp bạn xem các điểm nổi bật một cách hiệu quả, tránh các sai lầm phổ biến và quay lại Positano hài lòng hơn là kiệt sức."
   ],
   "sections": [
     {
-      "id": "at-a-glance",
-      "title": "Tóm tắt nhanh",
+      "id": "why-visit-pompeii",
+      "title": "Tại sao thăm Pompeii từ Positano?",
       "body": [
-        "Ngay khi bước vào bạn sẽ cảm nhận được quy mô khổng lồ của Pompeii; gần như toàn bộ thành phố đã được khai quật và có thể đi bộ dễ dàng.",
-        "Nếu tự khám phá, chi phí khá thấp — bối cảnh lịch sử vẫn hiện lên rõ ràng ngay cả khi không có hướng dẫn viên riêng.",
-        "Herculaneum nhỏ hơn và được bảo tồn tốt hơn, nên cân nhắc nếu bạn muốn thấy các bức bích họa và khảm còn nguyên vẹn thay vì những con phố trải dài của Pompeii.",
-        "Đi từ Positano bằng phương tiện công cộng nghĩa là phải chịu nắng nóng, bụi và thời gian di chuyển dài; nhớ dự trù trong kế hoạch."
-      ]
-    },
-    {
-      "id": "entry-cost-and-hours",
-      "title": "Giá vé & giờ mở cửa",
-      "body": [
-        "Giá vé và giờ mở cửa thay đổi theo mùa — hãy kiểm tra trang chính thức của Parco Archeologico di Pompei trước khi khởi hành.",
-        "Vé tiêu chuẩn thường ở mức hơn 15 euro một chút; thời gian vào cửa cuối cùng dao động từ cuối buổi chiều đến đầu buổi tối tùy tháng."
-      ]
-    },
-    {
-      "id": "other-facilities",
-      "title": "Tiện ích tại chỗ",
-      "body": [
-        "Nhận bản đồ miễn phí tại quầy thông tin bên cạnh quầy vé; bản đồ giúp bạn định hướng trong khu di tích dễ dàng hơn nhiều.",
-        "Ngay cổng vào có cho thuê audio guide và có thể thuê hướng dẫn viên được cấp phép nếu muốn nghe giải thích chi tiết.",
-        "Có quầy đồ ăn nhẹ nhưng số lượng hạn chế — đặc biệt vào mùa nóng hãy chủ động mang đủ nước.",
-        "Bạn có thể gửi hành lý có phí tại ga Pompeii Scavi hoặc gửi miễn phí ở phòng ký gửi ngay bên trong cổng."
+        "%IMAGE:pompeii-ruins-overview.jpg|Cảnh trên không của địa điểm khảo cổ Pompeii với núi Vesuvius%",
+        "Pompeii là một trong những địa điểm khảo cổ quan trọng nhất thế giới. Khi núi Vesuvius phun trào vào ngày 24 tháng 8 năm 79 SCN, nó chôn vùi Pompeii dưới 4–6 mét tro núi lửa và đá bọt. Thành phố vẫn đóng băng trong thời gian gần 1.700 năm cho đến khi khai quật bắt đầu vào thế kỷ 18. Điều làm cho Pompeii phi thường không chỉ là tuổi tác của nó mà còn là tính hoàn chỉnh của nó—toàn bộ đường phố, nhà cửa, cửa hàng, đền thờ, nhà hát và nhà tắm được bảo tồn với bích họa, khảm, graffiti và thậm chí cả di cốt người được đúc bằng thạch cao. Nếu bạn quan tâm đến các %LINK:historyPositano|địa điểm lịch sử khác trên Bờ biển Amalfi%, Pompeii mang lại một sự bổ sung đáng kể cho di sản thời trung cổ và La Mã của Positano.",
+        "Đối với du khách ở lại %LINK:onlyHostel|Hostel Brikette%, Pompeii mang lại một sự đối lập lịch sử mạnh mẽ với vẻ đẹp tự nhiên của Bờ biển Amalfi. Bạn có thể lang thang trên những con phố mà người La Mã đi bộ cách đây 2.000 năm, xem cách họ sống, mua sắm, thờ phượng và giải trí. Quy mô khiêm tốn—Pompeii là một thành phố thịnh vượng với 11.000–20.000 người khi vụ phun trào xảy ra. Ngày nay, bạn có thể đi qua nhà của họ, đọc graffiti trên tường của họ và đứng trong nhà đấu thú của họ.",
+        "Chuyến đi từ Positano đến Pompeii cũng mang lại sự đa dạng thực tế. Nếu bạn đã đi biển trong vài ngày tại %LINK:positanoMainBeach|Spiaggia Grande% hoặc khám phá %LINK:pathOfTheGods|các đường mòn đi bộ đường dài ven biển%, một chuyến tham quan văn hóa phá vỡ nhịp điệu. Pompeii hoạt động tốt vào những ngày u ám khi bãi biển kém hấp dẫn hơn. Và không giống như %LINK:avoidCrowdsPositano|đám đông du lịch dày đặc của Positano%, sự rộng lớn của Pompeii phân tán du khách—bạn thường sẽ có toàn bộ đường phố cho riêng mình, đặc biệt nếu bạn đến sớm hoặc đến thăm ngoài mùa."
       ]
     },
     {
       "id": "getting-there",
-      "title": "Cách đi",
+      "title": "Cách đến từ Positano đến Pompeii",
       "body": [
-        "Từ Positano, bắt xe buýt SITA tới Sorrento; mua vé ở quầy tabacchi hoặc trên xe, thời gian di chuyển khoảng một tiếng.",
-        "Đến Sorrento, đi lên cầu thang tới sân ga Circumvesuviana và lên tàu địa phương tới ‘Pompei Scavi – Villa dei Misteri’.",
-        "Ra khỏi ga rẽ phải, đi chưa tới một phút là tới cổng Porta Marina Superiore ở phía bên trái."
+        "%IMAGE:sita-bus-sorrento.jpg|Xe buýt SITA tại ga Sorrento kết nối với Circumvesuviana%",
+        "Hành trình từ Positano đến Pompeii yêu cầu hai chặng: xe buýt SITA từ Positano đến Sorrento, sau đó tàu Circumvesuviana từ Sorrento đến Pompeii. Tổng thời gian di chuyển khoảng 1,5–2 giờ mỗi chiều, tùy thuộc vào thời gian chờ xe buýt và tàu. Đây là quá trình từng bước:",
+        "**Bước 1: Xe buýt từ Positano đến Sorrento (50–60 phút).** Bắt xe buýt SITA từ Chiesa Nuova (gần nhà nghỉ) hoặc điểm dừng xe buýt Positano chính (Spiaggia Grande). Xe buýt chạy mỗi 20–40 phút tùy theo mùa. Mua vé tại cửa hàng tabacchi trước khi lên xe hoặc sử dụng ứng dụng SITA. Vé có giá ~€2,50–€3,00. Chuyến xe buýt dọc theo %LINK:chiesaNuovaArrivals|đường Bờ biển Amalfi% mang lại tầm nhìn tuyệt đẹp nhưng có thể đông đúc—hãy cố gắng lên xe sớm tại Chiesa Nuova để đảm bảo chỗ ngồi. Để biết lịch trình chi tiết và mẹo, xem %LINK:sorrentoPositanoBus|Positano đến Sorrento bằng xe buýt%.",
+        "**Bước 2: Tàu từ Sorrento đến Pompeii Scavi (30–35 phút).** Tại Sorrento, xe buýt dừng ở Piazza Tasso (quảng trường chính). Từ đó, đi bộ 5 phút đến ga tàu Circumvesuviana (theo biển báo hoặc hỏi người địa phương). Mua vé đến \"Pompei Scavi – Villa dei Misteri\" tại quầy vé hoặc máy. Vé có giá ~€3,00–€4,00. Circumvesuviana là tàu đi lại địa phương—cơ bản, thường đông đúc, không có điều hòa không khí. Tàu chạy mỗi 20–30 phút. Chuyến đi mất khoảng 30 phút. Xuống ở ga \"Pompei Scavi\" (KHÔNG phải ga \"Pompeii\", xa tàn tích hơn).",
+        "**Bước 3: Đi bộ đến lối vào (1–2 phút).** Thoát ga Pompei Scavi, rẽ phải và bạn sẽ thấy lối vào địa điểm khảo cổ Pompeii (Porta Marina Superiore) trong vòng 50 mét. Đây là lối vào chính cho du khách độc lập. Quầy bán vé và lưu trữ hành lý ở đây.",
+        "**Tổng thời gian hành trình:** Cho phép 2–2,5 giờ từ Positano đến lối vào Pompeii, bao gồm chờ xe buýt, đi xe buýt, chuyển tiếp tại Sorrento, đi tàu và đi bộ. Rời Positano lúc 08:00 để đến Pompeii lúc 10:00–10:30, cho bạn 4–5 giờ để khám phá trước khi quay lại."
       ]
     },
     {
-      "id": "self-guided-tour",
-      "title": "Lộ trình tự do",
+      "id": "timing-and-planning",
+      "title": "Khi nào đến thăm và dành bao nhiêu thời gian",
       "body": [
-        "Vừa qua cổng hãy rẽ trái tới quầy thông tin để lấy bản đồ và gửi hành lý nếu cần, sau đó quay lại quầy đối diện để mua vé.",
-        "Bên trong, hãy xác định vị trí Porta Marina Superiore trên bản đồ — bạn đang đứng ở Via Marina với bảng chỉ dẫn rõ ràng trước mặt.",
-        "Đi theo Via Marina về phía đấu trường, rẽ vào các ngôi nhà, nhà tắm hay quảng trường bạn quan tâm rồi quay lại trục chính.",
-        "Sau khi tham quan đấu trường, đi qua nửa dưới của khu di tích để quay về và tranh thủ xem thêm các điểm nổi bật khác mà không phải vòng lại đường cũ.",
-        "Tuyến này giúp bạn bao quát khoảng 60–80% điểm quan trọng nhanh hơn nhiều so với việc cố gắng đi hết mọi con phố."
+        "%IMAGE:pompeii-summer-crowds.jpg|Du khách khám phá tàn tích Pompeii vào ngày hè%",
+        "**Thời gian tốt nhất trong ngày:** Đến Pompeii lúc 09:00–10:00 để đánh bại đám đông cao điểm và cái nóng giữa trưa. Địa điểm mở cửa lúc 09:00 (kiểm tra giờ chính thức theo mùa). Nhiệt độ buổi sáng mát hơn, ánh sáng mềm hơn cho ảnh và các nhóm du lịch đến muộn hơn (11:00–12:00). Nếu bạn đến lúc 09:30, bạn sẽ có 1–2 giờ tàn tích tương đối trống rỗng trước khi đám đông xây dựng.",
+        "**Dành bao nhiêu thời gian:** Lên kế hoạch 3–4 giờ tối thiểu để xem các điểm nổi bật chính mà không vội vã. Những người đam mê khảo cổ nghiêm túc có thể dành 6–8 giờ khám phá mọi ngóc ngách, nhưng hầu hết khách nhà nghỉ thấy 3–4 giờ là đủ để đánh giá cao quy mô của địa điểm và xem các khu vực chính. Nếu bạn có thời gian hạn chế, 2 giờ bao gồm những điều cần thiết tuyệt đối (diễn đàn, nhà đấu thú, một vài ngôi nhà), nhưng bạn sẽ bỏ lỡ rất nhiều.",
+        "**Mùa tốt nhất:** Tháng 4–tháng 6 và tháng 9–tháng 10 mang lại sự cân bằng tốt nhất—nhiệt độ dễ chịu, đám đông có thể quản lý và quyền truy cập địa điểm đầy đủ. Tháng 7–tháng 8 mang lại cái nóng cực độ (35–40°C), mặt trời dữ dội, bóng râm tối thiểu và đám đông du lịch cao điểm. Tháng 11–tháng 3 yên tĩnh hơn nhưng có nguy cơ mưa và giờ ban ngày ngắn hơn. Nếu đến thăm vào mùa hè, hãy mang gấp đôi nước bạn nghĩ bạn cần, đội mũ rộng vành và nghỉ ngơi thường xuyên trong các khu vực có bóng râm.",
+        "**Lịch trình mẫu cho khách nhà nghỉ:**\n- 08:00: Rời Positano qua xe buýt SITA\n- 09:00: Đến Sorrento, chuyển sang Circumvesuviana\n- 09:30: Khởi hành Sorrento bằng tàu\n- 10:00–10:30: Đến Pompeii, mua vé, vào địa điểm\n- 10:30–14:00: Khám phá tàn tích (3,5 giờ)\n- 14:00–14:30: Nghỉ ăn trưa (mang bữa trưa đóng gói hoặc mua tại quán cà phê địa điểm)\n- 14:30: Khởi hành Pompeii bằng tàu\n- 15:00–15:30: Đến Sorrento, bắt xe buýt SITA\n- 16:30–17:30: Đến lại Positano\n\nLịch trình này cho phép 3–4 giờ tại Pompeii với thời gian đệm cho chậm trễ vận chuyển. Bạn quay lại Positano với thời gian để nghỉ ngơi trước bữa tối. Nhiều khách nhà nghỉ làm theo lịch trình chính xác này và báo cáo nó hoạt động tốt—không quá vội vã, không quá nhàn nhã, với đủ thời gian để xem các điểm nổi bật mà không kiệt sức. Khách cố gắng nhồi nhét nhiều hơn vào ngày (ví dụ: thêm Herculaneum hoặc kéo dài Pompeii đến 5+ giờ) liên tục báo cáo cảm thấy kiệt sức vào buổi tối."
+      ]
+    },
+    {
+      "id": "what-to-see",
+      "title": "Những gì cần xem tại Pompeii: chuyến tham quan điểm nổi bật",
+      "body": [
+        "%IMAGE:pompeii-forum-columns.jpg|Diễn đàn La Mã cổ đại tại Pompeii với các cột được bảo tồn%",
+        "66 ha của Pompeii chứa hàng trăm tòa nhà. Xem mọi thứ là không thể trong một chuyến thăm. Tập trung vào các điểm nổi bật chính cho một chuyến tham quan tự hướng dẫn bổ ích. Lấy bản đồ địa điểm miễn phí tại lối vào (cần thiết để điều hướng) và làm theo tuyến đường được đề xuất này:",
+        "**1. Diễn đàn (Foro).** Diễn đàn là trung tâm chính trị, tôn giáo và thương mại của Pompeii. Đó là một quảng trường hình chữ nhật lớn được bao quanh bởi các đền thờ, tòa nhà hành chính và hội trường chợ. Đền thờ Jupiter neo đậu ở cuối phía bắc, với núi Vesuvius lờ mờ phía sau nó—một lời nhắc nhở trực quan mạnh mẽ về những gì phá hủy thành phố. Diễn đàn cung cấp bối cảnh cho mọi thứ khác bạn sẽ thấy. Dành 20–30 phút ở đây.",
+        "%IMAGE:pompeii-basilica-interior.jpg|Nội thất của giáo đường cổ đại tại Pompeii với các cột%",
+        "**2. Giáo đường.** Liền kề với diễn đàn, giáo đường là tòa án và trung tâm kinh doanh của Pompeii. Nội thất khổng lồ (65m x 28m) từng tổ chức các thủ tục pháp lý và đàm phán thương mại. Quy mô của các cột và kiến trúc thể hiện kỹ thuật La Mã. Dành 10 phút.",
+        "**3. Nhà của Faun (Casa del Fauno).** Một trong những ngôi nhà tư nhân lớn nhất và xa hoa nhất của Pompeii, bao phủ toàn bộ một khối thành phố. Nổi tiếng với bức tượng faun đồng trong tràng giang (bản gốc ở Bảo tàng Khảo cổ Naples, nhưng một bản sao đứng tại chỗ) và khảm Alexander (cũng được chuyển đến Naples). Ngôi nhà thể hiện cách tầng lớp giàu có của Pompeii sống—nhiều sân, phòng ăn, khu vực người hầu, khảm tinh vi. Dành 15–20 phút.",
+        "%IMAGE:house-vettii-frescoes.jpg|Bích họa đầy màu sắc được bảo tồn trong Nhà của Vettii%",
+        "**4. Nhà của Vettii (Casa dei Vettii).** Một ngôi nhà giàu có khác, nổi tiếng với các bích họa được bảo tồn đáng chú ý. Phòng ăn (triclinium) có các cảnh thần thoại với màu đỏ, xanh và vàng sống động. Khu vườn đã được tái tạo dựa trên tàn tích thực vật cổ đại. Ngôi nhà này thể hiện tốt nhất nghệ thuật và màu sắc của Pompeii. Dành 15 phút.",
+        "**5. Nhà tắm Stabian (Terme Stabiane).** Nhà tắm công cộng lâu đời nhất và được bảo tồn tốt nhất của Pompeii. Bạn có thể thấy caldarium (phòng nóng), tepidarium (phòng ấm), frigidarium (phòng lạnh) và apodyterium (phòng thay đồ). Kỹ thuật hiển thị—sàn sưởi, ống nước, thậm chí cả graffiti cổ đại trên tường. Điều này cung cấp cái nhìn sâu sắc về cuộc sống hàng ngày và phong tục xã hội La Mã. Dành 15 phút.",
+        "**6. Lupanar (Nhà thổ).** Một tòa nhà nhỏ hai tầng với giường đá và bích họa khiêu dâm. Lupanar là một trong những địa điểm được ghé thăm (và chụp ảnh) nhiều nhất của Pompeii. Nó cung cấp bằng chứng thẳng thắn về ngành công nghiệp tình dục thương mại của Pompeii. Các phòng ngủ tầng trên và nghệ thuật rõ ràng gây sốc cho một số du khách nhưng cung cấp sự thật lịch sử không trang trí. Dành 5–10 phút (thường đông đúc).",
+        "%IMAGE:pompeii-amphitheater.jpg|Nhà đấu thú cổ đại tại Pompeii với phông nền núi Vesuvius%",
+        "**7. Nhà đấu thú (Anfiteatro).** Nhà đấu thú của Pompeii chứa 20.000 khán giả cho các trò chơi đấu sĩ và các cảnh tượng công cộng. Được xây dựng khoảng 70 TCN, nó là một trong những nhà đấu thú La Mã lâu đời nhất còn sống sót. Bạn có thể đi bộ trên sàn đấu trường và leo các tầng chỗ ngồi để có tầm nhìn ra tàn tích và núi Vesuvius. Quy mô ấn tượng—hãy tưởng tượng tiếng gầm của 20.000 người La Mã cổ vũ thể thao đẫm máu. Dành 20 phút.",
+        "%IMAGE:pompeii-plaster-casts.jpg|Khuôn thạch cao của nạn nhân Pompeii tại Vườn của Những Người Chạy Trốn%",
+        "**8. Vườn của Những Người Chạy Trốn (Orto dei Fugitivi).** Một vườn nho nơi 13 cư dân Pompeii chết khi cố gắng thoát khỏi vụ phun trào. Cơ thể của họ được bảo tồn trong tro; các nhà khảo cổ đã lấp đầy các khoang bằng thạch cao để tạo ra các khuôn ám ảnh. Nhìn thấy các khuôn thạch cao—người lớn, trẻ em, bị bóp méo trong những khoảnh khắc cuối cùng của họ—làm cho bi kịch của Pompeii trở nên hữu hình. Đây là nặng nề về mặt cảm xúc nhưng quan trọng về mặt lịch sử. Dành 10 phút.",
+        "%IMAGE:via-abbondanza-street.jpg|Con phố La Mã cổ đại Via dell'Abbondanza với các cửa hàng%",
+        "**9. Via dell'Abbondanza.** Phố chính của Pompeii, với các cửa hàng, quán rượu và nhà cửa. Đi bộ trên con phố này cảm giác như bước vào một thành phố La Mã—bạn có thể thấy quầy nơi thương nhân bán thức ăn và rượu, graffiti trên tường (khẩu hiệu bầu cử, ghi chú tình yêu, xúc phạm), đá bước để băng qua đường lầy lội. Đây là nơi Pompeii cảm thấy sống động nhất. Dành 20–30 phút lang thang.",
+        "Tuyến đường này bao gồm các điểm nổi bật thiết yếu trong 3–3,5 giờ với tốc độ thư giãn. Nếu bạn có nhiều thời gian hơn, hãy khám phá khu vực nhà hát, nhiều ngôi nhà hơn (Nhà của Nhà thơ Bi kịch, Nhà của Menander) và các con phố phụ. Nếu bạn có ít thời gian hơn, ưu tiên diễn đàn, một ngôi nhà giàu có (Vettii hoặc Faun), nhà tắm và nhà đấu thú."
+      ]
+    },
+    {
+      "id": "practical-tips",
+      "title": "Mẹo thực tế cho chuyến thăm của bạn",
+      "body": [
+        "%IMAGE:pompeii-map-tourists.jpg|Du khách tham khảo bản đồ địa điểm tại lối vào Pompeii%",
+        "**Lấy bản đồ miễn phí tại lối vào.** Bàn thông tin bên trong Porta Marina Superiore phân phối bản đồ in miễn phí. Lấy một cái. Pompeii rộng lớn và khó hiểu nếu không có bản đồ. Bản đồ đánh dấu các địa điểm chính, nhà vệ sinh, lối ra và khu vực bóng râm. Đừng dựa vào điều hướng điện thoại—tiếp nhận tế bào không đều và lang thang vô định lãng phí thời gian.",
+        "**Mang nhiều nước.** Pompeii bị lộ—bóng râm tối thiểu, bề mặt đá phản xạ khuếch đại nhiệt. Vào mùa hè, nhiệt độ tại địa điểm có thể đạt 40°C. Mang ít nhất 1,5 lít nước mỗi người. Đài phun nước bên trong địa điểm cung cấp nước uống để nạp lại. Mất nước là rủi ro thực sự—nhiều du khách đánh giá thấp điều này. Từ nhà nghỉ, chúng tôi đã thấy khách trở về từ Pompeii với say nắng và nhức đầu mất nước vì họ chỉ mang một chai nhỏ. Nhân viên khuyên bạn nên đổ đầy hai chai 750ml trước khi bạn rời đi và nạp lại tại các đài phun nước của Pompeii trong suốt cả ngày.",
+        "**Mang giày thoải mái, chắc chắn.** Các con phố của Pompeii được trải bằng đá lớn, không đều. Dép hoặc dép xỏ ngón dẫn đến mắt cá chân bị vặn và bàn chân đau. Mang giày đi bộ kín ngón với hỗ trợ tốt. Bạn sẽ đi bộ 5–8 km (3–5 dặm) khám phá địa điểm.",
+        "**Bảo vệ khỏi nắng là quan trọng.** Bôi kem chống nắng (SPF 30+), đội mũ rộng vành và đeo kính râm. Mặt trời không ngừng nghỉ và hầu như không có bóng râm. Tay áo dài bằng vải nhẹ, thoáng khí giúp ngăn ngừa cháy nắng tốt hơn so với việc bôi kem chống nắng nhiều lần.",
+        "**Lưu trữ hành lý có sẵn.** Nếu bạn kết hợp Pompeii với du lịch tiếp theo (ví dụ: thăm Pompeii trên đường đến Naples), bạn có thể lưu trữ hành lý tại ga tàu Pompei Scavi (dịch vụ trả phí) hoặc tại phòng giữ đồ miễn phí ngay bên trong lối vào địa điểm. Ba lô lớn được phép bên trong nhưng làm cho việc di chuyển qua cửa hẹp trở nên khó khăn.",
+        "**Hướng dẫn âm thanh và chuyến tham quan.** Hướng dẫn âm thanh (€8–€10) có sẵn tại lối vào và cung cấp bối cảnh cho các địa điểm chính. Hướng dẫn viên du lịch được cấp phép cung cấp các chuyến tham quan theo nhóm (€15–€20 mỗi người cho chuyến tham quan 2 giờ) hoặc chuyến tham quan riêng (€100–€150 cho nhóm nhỏ). Đối với du khách lần đầu, hướng dẫn âm thanh hoặc tham gia chuyến tham quan theo nhóm tăng thêm giá trị đáng kể—tàn tích có ý nghĩa hơn với bối cảnh lịch sử. Các chuyến thăm tự hướng dẫn hoạt động tốt với sách hướng dẫn hoặc bản đồ miễn phí, nhưng bạn bỏ lỡ câu chuyện và chi tiết.",
+        "**Đồ ăn và đồ uống bên trong.** Có một quán cà phê gần diễn đàn bán bánh sandwich, đồ uống và đồ ăn nhẹ với giá tăng cao. Chất lượng tầm thường. Nhiều khách nhà nghỉ mang bữa trưa đóng gói được chuẩn bị trong %LINK:onlyHostel|bếp nhà nghỉ%—bánh sandwich, trái cây, đồ ăn nhẹ từ tạp hóa Chiesa Nuova—và ăn trong các khu vực có bóng râm gần nhà đấu thú hoặc diễn đàn. Điều này tiết kiệm tiền (€15–€20 mỗi người) và cho phép bạn nghỉ ngơi mà không rời khỏi địa điểm. Chúng tôi đã thử bánh sandwich quán cà phê; chúng quá đắt (€8–€10) và không ấn tượng. Đóng gói của riêng bạn.",
+        "**Nhà vệ sinh bị hạn chế.** Có nhà vệ sinh gần lối vào, diễn đàn và nhà đấu thú. Sử dụng chúng khi bạn nhìn thấy chúng—khoảng cách dài giữa các cơ sở. Chúng cơ bản nhưng chức năng.",
+        "**Chụp ảnh được phép.** Bạn có thể chụp ảnh trong toàn bộ Pompeii (không có đèn flash bên trong các tòa nhà có bích họa). Các cơ hội chụp ảnh tốt nhất là diễn đàn với phông nền Vesuvius, nhà đấu thú, cảnh đường phố Via dell'Abbondanza và các khuôn thạch cao tại Vườn của Những Người Chạy Trốn. Ánh sáng buổi sáng và chiều muộn là tốt nhất; mặt trời giữa trưa tạo ra bóng tối khắc nghiệt."
+      ]
+    },
+    {
+      "id": "herculaneum-alternative",
+      "title": "Herculaneum như một sự thay thế hoặc bổ sung",
+      "body": [
+        "%IMAGE:herculaneum-villa-fresco.jpg|Bích họa được bảo tồn tốt tại địa điểm khảo cổ Herculaneum%",
+        "Herculaneum (Ercolano) là một thị trấn La Mã nhỏ hơn cũng bị phá hủy bởi Vesuvius vào năm 79 SCN. Nó nằm gần Naples hơn Pompeii (khoảng 40 phút bằng Circumvesuviana từ Sorrento). Nhiều nhà khảo cổ và sử gia coi Herculaneum vượt trội hơn Pompeii về chất lượng bảo tồn. Herculaneum bị chôn vùi dưới vật chất núi lửa sâu hơn (lên đến 20 mét so với 6 mét của Pompeii), tạo ra một con dấu kín không khí. Điều này bảo tồn vật liệu hữu cơ—gỗ, vải, thức ăn—mà tan rã tại Pompeii. Bích họa và khảm tại Herculaneum giữ lại nhiều màu sắc hơn. Các tòa nhà có tầng trên và mái nguyên vẹn.",
+        "**Herculaneum so với Pompeii: thăm cái nào?** Nếu bạn chỉ có thời gian cho một, hầu hết du khách lần đầu chọn Pompeii vì quy mô và danh tiếng của nó. Pompeii mang lại yếu tố \"wow\" của toàn bộ thành phố đóng băng trong thời gian. Herculaneum nhỏ hơn (4,5 ha so với 66 của Pompeii), ít choáng ngợp hơn và thân mật hơn. Bạn có thể xem toàn bộ địa điểm trong 1,5–2 giờ so với 3–4 của Pompeii. Herculaneum tốt hơn để đánh giá cao nghệ thuật, kiến trúc và chi tiết cuộc sống hàng ngày của La Mã. Pompeii tốt hơn để hiểu quy hoạch đô thị và trải nghiệm quy mô của một thành phố La Mã.",
+        "**Bạn có thể thăm cả hai trong một ngày từ Positano không?** Về mặt kỹ thuật có, nhưng nó kiệt sức. Cả hai địa điểm trong một ngày yêu cầu rời Positano lúc 07:30, thăm Herculaneum trước (09:00–11:00), sau đó Pompeii (12:00–15:00), quay lại lúc 18:00–19:00. Bạn sẽ dành 5–6 giờ vận chuyển và 4–5 giờ tại các địa điểm. Hầu hết khách nhà nghỉ thấy điều này quá vội vã. Nếu bạn muốn cả hai, hãy cân nhắc ở lại qua đêm tại Naples hoặc Sorrento để trải rộng các chuyến thăm qua hai ngày."
+      ]
+    },
+    {
+      "id": "returning-to-positano",
+      "title": "Quay lại Positano",
+      "body": [
+        "%IMAGE:circumvesuviana-train.jpg|Tàu Circumvesuviana quay lại từ Pompeii đến Sorrento%",
+        "Đảo ngược tuyến đường buổi sáng: đi bộ trở lại ga tàu Pompei Scavi, đi Circumvesuviana đến Sorrento, sau đó %LINK:sorrentoPositanoBus|xe buýt SITA trở lại Positano%. Xe buýt buổi chiều từ Sorrento đến Positano (15:00–18:00) có thể rất đông đúc—du khách mùa hè và người đi làm về nhà. Mong đợi đứng cho một phần hoặc tất cả hành trình nếu bạn lên xe tại Sorrento. Ngoài ra, bắt xe buýt hơi muộn hơn (sau 18:30) khi đám đông mỏng đi, mặc dù điều này có nghĩa là đến Positano khoảng 19:30–20:00.",
+        "Nếu xe buýt đầy không thể, taxi và tài xế riêng hoạt động từ Sorrento đến Positano (€60–€80 cho tối đa 4 hành khách). Điều này tốn kém nhưng tiết kiệm 45–60 phút và đảm bảo chỗ ngồi. Một số khách nhà nghỉ chia sẻ taxi sau những ngày dài, nóng tại Pompeii. Hỏi %LINK:onlyHostel|nhân viên nhà nghỉ% để được khuyến nghị tài xế nếu bạn muốn tùy chọn này. Khi trở lại Positano, nhiều khách lấy bữa tối tại nhà hàng địa phương hoặc nhặt tạp hóa để nấu ăn tại %LINK:onlyHostel|bếp nhà nghỉ% và chia sẻ câu chuyện Pompeii với các du khách khác."
       ]
     }
   ],
-  "howTo": {
-    "steps": [
-      {
-        "name": "Xe buýt tới Sorrento",
-        "text": "Bắt xe buýt SITA từ Positano đến ga trung tâm Sorrento (khoảng 60 phút)."
-      },
-      {
-        "name": "Tàu tới Pompeii Scavi",
-        "text": "Lên sân ga Circumvesuviana và đi tàu đến ‘Pompei Scavi – Villa dei Misteri’."
-      },
-      {
-        "name": "Đi bộ tới cổng",
-        "text": "Ra khỏi ga rẽ phải; Porta Marina Superiore nằm bên trái cách khoảng 50 mét."
-      }
-    ]
-  },
-  "tipsTitle": "Mẹo trong ngày",
+  "tipsTitle": "Mẹo nhanh cho chuyến đi Pompeii trong ngày",
   "tips": [
-    "Nhận bản đồ miễn phí trước khi qua cổng soát vé để lập kế hoạch rẽ nhánh mà không phải quay lại.",
-    "Mang đủ nước và tranh thủ tiếp nước khi gặp vòi phun — mùa hè quầy bán hàng thường có hàng dài.",
-    "Ghi chú lại những góc chụp đẹp hoặc bích họa muốn xem lại lúc ra về để khỏi lỡ vì trời nóng."
-  ],
-  "warningsTitle": "Lưu ý quan trọng",
-  "warnings": [
-    "Vào mùa cao điểm, hàng chờ xe buýt SITA và tàu Circumvesuviana có thể khiến mỗi chặng chậm thêm 20–30 phút; hãy chừa thời gian dự phòng.",
-    "Phần lớn khu di tích ngoài trời và ít bóng mát, vì vậy nếu bạn nhạy cảm với nhiệt hãy tránh đi vào giữa trưa."
+    "Rời Positano lúc 08:00 để đến Pompeii lúc 10:00–10:30 và đánh bại đám đông cao điểm.",
+    "Lấy bản đồ địa điểm miễn phí tại lối vào—cần thiết để điều hướng trong tàn tích rộng lớn.",
+    "Mang 1,5+ lít nước mỗi người; nhiệt và phơi nắng dữ dội vào mùa hè.",
+    "Mang giày kín ngón chắc chắn—đường đá không đều của Pompeii phá hủy dép và dép xỏ ngón.",
+    "Đóng gói bữa trưa để ăn bên trong địa điểm và tiết kiệm €15–€20 trên đồ ăn quán cà phê quá đắt.",
+    "Sử dụng kem chống nắng, mũ và kính râm—Pompeii hầu như không có bóng râm.",
+    "Ưu tiên diễn đàn, Nhà của Vettii, Nhà tắm Stabian, nhà đấu thú và Via dell'Abbondanza cho chuyến thăm 3 giờ.",
+    "Cân nhắc hướng dẫn âm thanh (€8–€10) cho bối cảnh lịch sử—làm cho tàn tích có ý nghĩa hơn nhiều.",
+    "Lưu trữ hành lý tại ga Pompei Scavi hoặc phòng giữ đồ miễn phí bên trong lối vào.",
+    "Xe buýt trở về từ Sorrento đến Positano đông đúc 15:00–18:00; đi lại sớm hơn hoặc muộn hơn nếu có thể."
   ],
   "faqsTitle": "Câu hỏi thường gặp",
   "faqs": [
     {
-      "q": "Cổng nào tiện nhất?",
+      "q": "Mất bao lâu để đến từ Positano đến Pompeii?",
       "a": [
-        "Porta Marina Superiore ngay cạnh ga Pompei Scavi thuận tiện nhất cho khách tự túc — cách tàu vài bước và phòng gửi đồ nằm ngay bên cạnh."
+        "Khoảng 1,5–2 giờ mỗi chiều. Xe buýt SITA từ Positano đến Sorrento mất 50–60 phút, tàu Circumvesuviana từ Sorrento đến Pompei Scavi mất 30–35 phút, cộng với 5–10 phút cho việc chuyển tiếp tại Sorrento. Cho phép 2–2,5 giờ tổng cộng bao gồm thời gian chờ."
       ]
     },
     {
-      "q": "Có thể tự đi mà không cần hướng dẫn viên không?",
+      "q": "Chuyến đi Pompeii trong ngày từ Positano có giá bao nhiêu?",
       "a": [
-        "Được. Bản đồ chính thức miễn phí rất chi tiết và hầu hết các công trình chính đều có bảng thông tin tiếng Ý và tiếng Anh. Nếu muốn nghe giải thích sâu hơn, bạn có thể thuê audio guide hoặc hướng dẫn viên được cấp phép."
+        "Ngân sách €30–€40 mỗi người: xe buýt SITA Positano-Sorrento (€2,50–€3), tàu Circumvesuviana Sorrento-Pompei (€3–€4), vé vào Pompeii (€16–€18), vận chuyển trở về (€5,50–€7), cộng với đồ ăn/đồ uống. Hướng dẫn âm thanh thêm €8–€10. Tổng chuyến đi ngân sách trong ngày: €35–€50 mỗi người."
       ]
     },
     {
-      "q": "Gửi hành lý ở đâu?",
+      "q": "Pompeii có đáng để thăm từ Positano không?",
       "a": [
-        "Hành lý nhỏ có thể gửi mất phí tại ga Pompei Scavi, còn ngay sau cổng vào cũng có phòng ký gửi miễn phí."
+        "Có, đặc biệt nếu bạn muốn sự đa dạng văn hóa/lịch sử ngoài bãi biển. Pompeii là một trong những địa điểm khảo cổ quan trọng nhất thế giới. Hành trình dài (4+ giờ vận chuyển khứ hồi) nhưng có thể quản lý như một chuyến tham quan cả ngày. Tốt nhất cho du khách dành 4+ ngày ở Positano muốn nghỉ ngơi từ các hoạt động ven biển."
+      ]
+    },
+    {
+      "q": "Tôi có thể thăm cả Pompeii và Herculaneum trong một ngày từ Positano không?",
+      "a": [
+        "Về mặt kỹ thuật có nhưng rất vội vã. Bạn sẽ cần rời Positano lúc 07:30, thăm Herculaneum trước (09:00–11:00), sau đó Pompeii (12:00–15:00), quay lại lúc 18:00–19:00. Tổng cộng 5–6 giờ vận chuyển, 4–5 giờ tại các địa điểm. Hầu hết du khách thấy điều này kiệt sức. Tốt hơn là chọn một địa điểm hoặc ở lại qua đêm tại Naples/Sorrento để trải rộng các chuyến thăm qua hai ngày."
+      ]
+    },
+    {
+      "q": "Tôi nên mang gì đến Pompeii?",
+      "a": [
+        "Cần thiết: 1,5+ lít nước mỗi người, kem chống nắng, mũ, kính râm, giày đi bộ chắc chắn, bản đồ địa điểm (miễn phí tại lối vào). Khuyến nghị: bữa trưa đóng gói, ba lô nhỏ, máy ảnh, sách hướng dẫn hoặc hướng dẫn âm thanh. Mùa hè: gấp đôi nước, tay áo dài nhẹ để bảo vệ khỏi nắng. Địa điểm nóng, bị lộ và yêu cầu 3–4 giờ đi bộ."
+      ]
+    },
+    {
+      "q": "Tôi có cần hướng dẫn viên hoặc có thể khám phá Pompeii một mình không?",
+      "a": [
+        "Bạn có thể khám phá độc lập với bản đồ địa điểm miễn phí. Tuy nhiên, hướng dẫn âm thanh (€8–€10) hoặc tham gia chuyến tham quan theo nhóm (€15–€20) tăng cường đáng kể trải nghiệm bằng cách cung cấp bối cảnh lịch sử, câu chuyện và chi tiết bạn sẽ bỏ lỡ nếu không. Du khách lần đầu hưởng lợi nhiều nhất từ bối cảnh hướng dẫn."
+      ]
+    },
+    {
+      "q": "Khi nào là thời gian tốt nhất để thăm Pompeii?",
+      "a": [
+        "Tháng 4–tháng 6 và tháng 9–tháng 10 mang lại thời tiết tốt nhất và đám đông có thể quản lý. Đến địa điểm lúc 09:00–10:00 để đánh bại các nhóm du lịch và cái nóng giữa trưa. Tránh tháng 7–tháng 8 nếu có thể (nhiệt độ cực độ, mặt trời dữ dội, đám đông cao điểm). Tháng 11–tháng 3 yên tĩnh hơn nhưng có nguy cơ mưa và giờ ban ngày ngắn hơn."
       ]
     }
   ]

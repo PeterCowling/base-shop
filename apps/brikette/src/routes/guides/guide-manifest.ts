@@ -14,8 +14,9 @@ import {
   GUIDE_BLOCK_DECLARATION_SCHEMA,
   type GuideBlockDeclaration,
 } from "./blocks/types";
-import { analyzeGuideCompleteness, analyzeTranslationCoverage } from "./guide-diagnostics";
+import { analyzeGuideCompleteness, analyzeTranslationCoverage, analyzeDateValidation } from "./guide-diagnostics";
 import type { GuideChecklistDiagnostics } from "./guide-diagnostics.types";
+import type { ManifestOverrides } from "./guide-manifest-overrides";
 
 /**
  * Supported publish status values for guides. These power both routing (draft vs live)
@@ -51,7 +52,7 @@ export function guideAreaToSlugKey(area: GuideArea): GuideAreaSlugKey {
  * of a guide still need attention before promotion. Items intentionally stay generic so
  * we can derive them from content analysis in a follow-up iteration.
  */
-export const CHECKLIST_ITEM_IDS = ["translations", "jsonLd", "faqs", "content", "media"] as const;
+export const CHECKLIST_ITEM_IDS = ["translations", "jsonLd", "faqs", "content", "seoAudit"] as const;
 export type ChecklistItemId = (typeof CHECKLIST_ITEM_IDS)[number];
 
 export const CHECKLIST_STATUS_VALUES = ["missing", "inProgress", "complete"] as const;
@@ -89,6 +90,9 @@ export type StructuredDataDeclaration =
       type: StructuredDataType;
       options?: Record<string, unknown> | undefined;
     };
+
+export const GUIDE_TEMPLATE_VALUES = ["help", "experience", "localGuide", "pillar"] as const;
+export type GuideTemplate = (typeof GUIDE_TEMPLATE_VALUES)[number];
 
 const STRUCTURED_DATA_SCHEMA = z.union([
   z.enum(STRUCTURED_DATA_TYPES),
@@ -210,6 +214,14 @@ export type GuideManifestEntry = {
   options?: GuideRouteOptions;
   expectations?: GuideRouteExpectations;
   checklist?: GuideChecklistItem[];
+  /**
+   * Optional SEO/content auditing hints.
+   * These are intentionally non-blocking fields that can be rolled out incrementally.
+   */
+  template?: GuideTemplate;
+  focusKeyword?: string;
+  primaryQuery?: string;
+  timeSensitive?: boolean;
 };
 
 const GUIDE_MANIFEST_ENTRY_SCHEMA_BASE = z
@@ -229,6 +241,10 @@ const GUIDE_MANIFEST_ENTRY_SCHEMA_BASE = z
     options: GUIDE_ROUTE_OPTIONS_SCHEMA,
     expectations: GUIDE_ROUTE_EXPECTATIONS_SCHEMA,
     checklist: z.array(CHECKLIST_ITEM_SCHEMA).optional(),
+    template: z.enum(GUIDE_TEMPLATE_VALUES).optional(),
+    focusKeyword: z.string().trim().min(3).optional(),
+    primaryQuery: z.string().trim().min(3).optional(),
+    timeSensitive: z.boolean().optional(),
   })
   .superRefine((value, ctx) => {
     const ogType = value.options?.ogType?.trim();
@@ -250,7 +266,18 @@ export const GUIDE_MANIFEST_ENTRY_SCHEMA: z.ZodEffects<
   typeof GUIDE_MANIFEST_ENTRY_SCHEMA_BASE,
   GuideManifestEntry
 > = GUIDE_MANIFEST_ENTRY_SCHEMA_BASE.transform((value) => {
-  const { draftPathSegment, metaKey, options, expectations, checklist, ...rest } = value;
+  const {
+    draftPathSegment,
+    metaKey,
+    options,
+    expectations,
+    checklist,
+    template,
+    focusKeyword,
+    primaryQuery,
+    timeSensitive,
+    ...rest
+  } = value;
   const cleanOptions = options
     ? (Object.fromEntries(Object.entries(options).filter(([, v]) => typeof v !== "undefined")) as GuideRouteOptions)
     : undefined;
@@ -273,6 +300,10 @@ export const GUIDE_MANIFEST_ENTRY_SCHEMA: z.ZodEffects<
     ...(typeof cleanOptions !== "undefined" ? { options: cleanOptions } : {}),
     ...(typeof cleanExpectations !== "undefined" ? { expectations: cleanExpectations } : {}),
     ...(Array.isArray(cleanChecklist) ? { checklist: cleanChecklist } : {}),
+    ...(typeof template === "string" ? { template } : {}),
+    ...(typeof focusKeyword === "string" ? { focusKeyword } : {}),
+    ...(typeof primaryQuery === "string" ? { primaryQuery } : {}),
+    ...(typeof timeSensitive === "boolean" ? { timeSensitive } : {}),
     status: (value.status ?? "draft") as GuideStatus,
     structuredData: value.structuredData ?? [],
     relatedGuides: value.relatedGuides ?? [],
@@ -576,6 +607,30 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "content", status: "complete" },
     ],
   }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "hostelFaqs",
+    slug: "hostel-faqs",
+    contentKey: "hostelFaqs",
+    status: "draft",
+    draftPathSegment: "assistance/hostel-faqs",
+    areas: ["help"],
+    primaryArea: "help",
+    structuredData: ["Article", "FAQPage", "BreadcrumbList"],
+    relatedGuides: ["checkinCheckout", "bookingBasics", "rules"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "hostelFaqs", showToc: true },
+      },
+    ],
+    options: {
+      suppressUnlocalizedFallback: false,
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+    ],
+  }),
   // --- End assistance articles ---
 
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -617,12 +672,6 @@ const manifestSeed: GuideManifestEntry[] = [
         },
       },
       {
-        type: "gallery",
-        options: {
-          source: "luggage-storage-positano",
-        },
-      },
-      {
         type: "alsoHelpful",
         options: {
           tags: ["porters", "logistics", "positano"],
@@ -645,7 +694,6 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "complete" },
       { id: "faqs", status: "complete" },
       { id: "content", status: "complete" },
-      { id: "media", status: "complete" },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -726,7 +774,6 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "inProgress", note: "Ensure HowTo schema mirrors localized steps." },
       { id: "faqs", status: "complete" },
       { id: "content", status: "complete" },
-      { id: "media", status: "inProgress", note: "Confirm gallery assets for all locales." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -759,7 +806,6 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "inProgress", note: "Review Article metadata for regional schema requirements." },
       { id: "faqs", status: "inProgress", note: "Ensure FAQ entries mirror updated tasting notes." },
       { id: "content", status: "complete" },
-      { id: "media", status: "inProgress", note: "Confirm gallery photography rights." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -783,7 +829,6 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "inProgress", note: "Validate HowTo payload for totalTime extras." },
       { id: "faqs", status: "complete" },
       { id: "content", status: "complete" },
-      { id: "media", status: "inProgress", note: "Confirm gallery imagery licensing." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -816,7 +861,6 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "inProgress", note: "Confirm HowTo schema reflects bus timings." },
       { id: "faqs", status: "complete" },
       { id: "content", status: "complete" },
-      { id: "media", status: "complete" },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -849,7 +893,6 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "inProgress", note: "Ensure HowTo steps include ferry legs." },
       { id: "faqs", status: "complete" },
       { id: "content", status: "complete" },
-      { id: "media", status: "missing", note: "Source imagery for ferry terminals." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -871,7 +914,6 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "inProgress", note: "Confirm FAQ fallback mirrors guidesFallback strings." },
       { id: "faqs", status: "complete" },
       { id: "content", status: "complete" },
-      { id: "media", status: "missing", note: "Add imagery for SIM shops/ATMs." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -907,7 +949,6 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "missing", note: "Add Article structured data for budget experiences." },
       { id: "faqs", status: "inProgress", note: "Ensure fallback FAQs match localized content." },
       { id: "content", status: "complete" },
-      { id: "media", status: "missing", note: "Source imagery for featured free experiences." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -945,27 +986,27 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "missing", note: "Add Article structured data when ready." },
       { id: "faqs", status: "inProgress", note: "Ensure fallback FAQs align with localized content." },
       { id: "content", status: "inProgress", note: "Verify couple-friendly sections render as expected." },
-      { id: "media", status: "missing", note: "Add imagery showcasing private hostel spaces for couples." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
-    key: "stayingFitAmalfi",
-    slug: "staying-fit-while-traveling-amalfi-coast",
-    contentKey: "stayingFitAmalfi",
+    key: "stayingFitPositano",
+    slug: "stay-fit-positano",
+    contentKey: "stayingFitPositano",
     status: "draft",
-    draftPathSegment: "guides/staying-fit-while-traveling-amalfi-coast",
+    draftPathSegment: "guides/stay-fit-positano",
     areas: ["experience"],
     primaryArea: "experience",
     structuredData: ["Article"],
+    focusKeyword: "stay fit Positano",
     relatedGuides: ["pathOfTheGods", "sunsetViewpoints", "positanoTravelGuide"],
     blocks: [
       {
         type: "genericContent",
-        options: { contentKey: "stayingFitAmalfi" },
+        options: { contentKey: "stayingFitPositano" },
       },
       {
         type: "faq",
-        options: { fallbackKey: "stayingFitAmalfi", alwaysProvideFallback: true },
+        options: { fallbackKey: "stayingFitPositano", alwaysProvideFallback: true },
       },
     ],
     options: {
@@ -977,7 +1018,6 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "missing", note: "Add Article structured data when finalized." },
       { id: "faqs", status: "inProgress", note: "Ensure fallback FAQs capture wellness tips." },
       { id: "content", status: "inProgress", note: "Verify workout sections render correctly." },
-      { id: "media", status: "missing", note: "Add imagery for fitness routes if available." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -1017,7 +1057,6 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "missing", note: "Add Article structured data for transport advice." },
       { id: "faqs", status: "inProgress", note: "Ensure fallback FAQs cover route options." },
       { id: "content", status: "complete" },
-      { id: "media", status: "missing", note: "Add gallery imagery for transit routes." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -1116,7 +1155,6 @@ const manifestSeed: GuideManifestEntry[] = [
       suppressUnlocalizedFallback: true,
     },
     checklist: [
-      { id: "media", status: "inProgress", note: "Curate Capri gallery coverage before launch." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -1224,6 +1262,12 @@ const manifestSeed: GuideManifestEntry[] = [
     relatedGuides: ["topOfTheMountainHike", "pathOfTheGods", "sunriseHike"],
     blocks: [
       {
+        type: "hero",
+        options: {
+          image: "santa-maria-castello/smaria-to-positano.jpg",
+        },
+      },
+      {
         type: "genericContent",
         options: { contentKey: "santaMariaDelCastelloHike", showToc: true },
       },
@@ -1246,7 +1290,7 @@ const manifestSeed: GuideManifestEntry[] = [
     areas: ["experience"],
     primaryArea: "experience",
     structuredData: ["Article"],
-    relatedGuides: ["pathOfTheGods", "sunsetViewpoints", "stayingFitAmalfi"],
+    relatedGuides: ["pathOfTheGods", "sunsetViewpoints", "stayingFitPositano"],
     blocks: [
       {
         type: "genericContent",
@@ -1258,7 +1302,7 @@ const manifestSeed: GuideManifestEntry[] = [
       },
       {
         type: "relatedGuides",
-        options: { guides: ["pathOfTheGods", "sunsetViewpoints", "stayingFitAmalfi"] },
+        options: { guides: ["pathOfTheGods", "sunsetViewpoints", "stayingFitPositano"] },
       },
     ],
     options: {
@@ -1308,6 +1352,7 @@ const manifestSeed: GuideManifestEntry[] = [
     areas: ["experience"],
     primaryArea: "experience",
     structuredData: ["Article"],
+    focusKeyword: "history of Positano",
     relatedGuides: ["positanoTravelGuide", "instagramSpots", "scenicWalksPositano"],
     blocks: [
       {
@@ -1389,6 +1434,123 @@ const manifestSeed: GuideManifestEntry[] = [
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "positanoBeaches",
+    slug: "positano-beaches",
+    contentKey: "positanoBeaches",
+    status: "draft",
+    draftPathSegment: "experiences/positano-beaches",
+    areas: ["experience"],
+    primaryArea: "experience",
+    structuredData: ["Article", "ItemList"],
+    focusKeyword: "Positano beaches",
+    relatedGuides: ["fornilloBeachGuide", "positanoMainBeach", "gavitellaBeachGuide", "marinaDiPraiaBeaches"],
+    blocks: [
+      {
+        type: "hero",
+        options: {
+          image: "/img/guides/positano-beaches/positano-main-beach.webp",
+          alt: "Positano's main beach with colorful umbrellas and the town rising up the cliffs",
+          showIntro: true,
+        },
+      },
+      {
+        type: "genericContent",
+        options: { contentKey: "positanoBeaches", showToc: true },
+      },
+      {
+        type: "table",
+        options: {
+          id: "beach-comparison",
+          titleKey: "comparisonTable.title",
+          columns: [
+            { key: "beach", label: "Beach", align: "left" },
+            { key: "price", label: "Lounger Prices", align: "left" },
+            { key: "freeArea", label: "Free Area?", align: "center" },
+            { key: "pros", label: "Pros", align: "left" },
+            { key: "cons", label: "Cons", align: "left" },
+          ],
+          rows: [
+            {
+              beach: "Fornillo",
+              price: "€15+ (Pupetto, Grassi, Ferdinando, La Marinella)",
+              freeArea: "Yes",
+              pros: "Cheaper; large free section; secret free area",
+              cons: "Steep walk back; easier route via main beach & bus",
+            },
+            {
+              beach: "Main (Grande)",
+              price: "€25+ (L'Incanto); €100-400 (La Scogliera)",
+              freeArea: "Yes",
+              pros: "Classic Positano views; town backdrop",
+              cons: "Most expensive; crowded",
+            },
+            {
+              beach: "Arienzo",
+              price: "€60+ with food/drink deals",
+              freeArea: "Yes",
+              pros: "Long sunshine; stunning views; good value packages",
+              cons: "Hundreds of stairs; water taxi needed",
+            },
+            {
+              beach: "Laurito",
+              price: "Free with restaurant purchase (Da Adolfo); €30+ (Villa Tre Ville)",
+              freeArea: "Yes",
+              pros: "Extended sunshine; remarkable views",
+              cons: "Da Adolfo overrated; small free area; water taxi needed",
+            },
+            {
+              beach: "Gavitella (Praiano)",
+              price: "Not listed",
+              freeArea: "No",
+              pros: "Ideal evening; sunset/aperitif atmosphere",
+              cons: "Concrete jungle during day",
+            },
+            {
+              beach: "Marina di Praia",
+              price: "Not listed",
+              freeArea: "Yes",
+              pros: "Charming fishing cove",
+              cons: "Narrow; limited morning sun",
+            },
+            {
+              beach: "Fiordo di Furore",
+              price: "Not listed",
+              freeArea: "Yes",
+              pros: "Instagram-worthy; cliff jumping; budget-friendly",
+              cons: "Difficult access; extremely limited space",
+            },
+            {
+              beach: "Regina Giovanna Bath (Sorrento)",
+              price: "Free entry",
+              freeArea: "Yes",
+              pros: "Free natural pool; relatively unknown",
+              cons: "No facilities",
+            },
+            {
+              beach: "Amalfi Marina Grande",
+              price: "Premium pricing (multiple clubs)",
+              freeArea: "Varies",
+              pros: "Multiple clubs; easy ferry/bus access",
+              cons: "Premium pricing; book ahead in peak",
+            },
+          ],
+        },
+      },
+      {
+        type: "faq",
+        options: { fallbackKey: "positanoBeaches", alwaysProvideFallback: true },
+      },
+      {
+        type: "relatedGuides",
+        options: { guides: ["fornilloBeachGuide", "positanoMainBeach", "gavitellaBeachGuide", "marinaDiPraiaBeaches"] },
+      },
+    ],
+    options: {
+      showTagChips: true,
+      showPlanChoice: true,
+    },
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "positanoMainBeach",
     slug: "positano-main-beach-guide",
     contentKey: "positanoMainBeach",
@@ -1397,6 +1559,7 @@ const manifestSeed: GuideManifestEntry[] = [
     areas: ["experience"],
     primaryArea: "experience",
     structuredData: ["Article"],
+    focusKeyword: "Spiaggia Grande Positano",
     relatedGuides: ["positanoBeaches", "fornilloBeachGuide", "positanoMainBeachBusDown"],
     blocks: [
       {
@@ -1514,6 +1677,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "avoidCrowdsPositano",
     slug: "avoid-crowds-off-the-beaten-path-positano",
     contentKey: "avoidCrowdsPositano",
+    focusKeyword: "avoid crowds Positano",
     status: "draft",
     draftPathSegment: "guides/avoid-crowds-off-the-beaten-path-positano",
     areas: ["experience"],
@@ -1642,6 +1806,7 @@ const manifestSeed: GuideManifestEntry[] = [
     areas: ["experience"],
     primaryArea: "experience",
     structuredData: ["Article"],
+    focusKeyword: "Ferragosto Positano",
     relatedGuides: ["bestTimeToVisit", "sunsetViewpoints", "positanoBeaches"],
     blocks: [
       {
@@ -1820,7 +1985,7 @@ const manifestSeed: GuideManifestEntry[] = [
     areas: ["help"],
     primaryArea: "help",
     structuredData: ["Article", "FAQPage"],
-    relatedGuides: ["stayingFitAmalfi", "safetyAmalfi", "workAndTravelPositano"],
+    relatedGuides: ["stayingFitPositano", "safetyAmalfi", "workAndTravelPositano"],
     blocks: [
       {
         type: "genericContent",
@@ -1832,7 +1997,7 @@ const manifestSeed: GuideManifestEntry[] = [
       },
       {
         type: "relatedGuides",
-        options: { guides: ["stayingFitAmalfi", "safetyAmalfi", "workAndTravelPositano"] },
+        options: { guides: ["stayingFitPositano", "safetyAmalfi", "workAndTravelPositano"] },
       },
     ],
     options: {
@@ -2345,6 +2510,43 @@ const manifestSeed: GuideManifestEntry[] = [
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "positanoMainBeachBusBack",
+    slug: "bus-back-to-hostel-brikette-from-positano-main-beach",
+    contentKey: "positanoMainBeachBusBack",
+    status: "draft",
+    draftPathSegment: "guides/bus-back-to-hostel-brikette-from-positano-main-beach",
+    areas: ["experience"],
+    primaryArea: "experience",
+    structuredData: ["Article"],
+    relatedGuides: ["positanoMainBeachBusDown", "positanoMainBeachWalkBack", "positanoBeaches"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "positanoMainBeachBusBack", showToc: true },
+      },
+      {
+        type: "faq",
+        options: { fallbackKey: "positanoMainBeachBusBack", alwaysProvideFallback: true },
+      },
+      {
+        type: "relatedGuides",
+        options: { guides: ["positanoMainBeachBusDown", "positanoMainBeachWalkBack", "positanoBeaches"] },
+      },
+      {
+        type: "alsoHelpful",
+        options: {
+          tags: ["beaches", "positano", "bus"],
+          excludeGuide: ["positanoMainBeachBusDown", "positanoMainBeachBusBack", "positanoBeaches"],
+          includeRooms: true,
+        },
+      },
+    ],
+    options: {
+      showTagChips: true,
+      showPlanChoice: true,
+    },
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "drivingAmalfi",
     slug: "driving-the-amalfi-coast-tips",
     contentKey: "drivingAmalfi",
@@ -2523,6 +2725,7 @@ const manifestSeed: GuideManifestEntry[] = [
     areas: ["experience"],
     primaryArea: "experience",
     structuredData: ["Article"],
+    focusKeyword: "Amalfi Coast folklore",
     relatedGuides: ["luminariaPraiano", "ravelloFestival", "ferragostoPositano"],
     blocks: [
       {
@@ -2622,6 +2825,7 @@ const manifestSeed: GuideManifestEntry[] = [
     slug: "gavitella-beach-guide",
     contentKey: "gavitellaBeachGuide",
     status: "draft",
+    focusKeyword: "Gavitella Beach Praiano",
     draftPathSegment: "guides/gavitella-beach-guide",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2708,6 +2912,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "lauritoBeachGuide",
     slug: "laurito-beach-guide",
     contentKey: "lauritoBeachGuide",
+    focusKeyword: "Laurito Beach",
     status: "draft",
     draftPathSegment: "guides/laurito-beach-guide",
     areas: ["experience"],
@@ -2854,6 +3059,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "etiquetteItalyAmalfi",
     slug: "italy-travel-etiquette-amalfi-examples",
     contentKey: "etiquetteItalyAmalfi",
+    focusKeyword: "Italy travel etiquette",
     status: "draft",
     draftPathSegment: "guides/italy-travel-etiquette-amalfi-examples",
     areas: ["experience"],
@@ -2984,6 +3190,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "reginaGiovannaBath",
     slug: "regina-giovanna-bath-beach-guide",
     contentKey: "reginaGiovannaBath",
+    focusKeyword: "Bagni della Regina Giovanna",
     status: "draft",
     draftPathSegment: "guides/regina-giovanna-bath-beach-guide",
     areas: ["experience"],
@@ -3463,6 +3670,7 @@ const manifestSeed: GuideManifestEntry[] = [
     slug: "ferry-dock-to-hostel-brikette-with-luggage",
     contentKey: "ferryDockToBrikette",
     status: "draft",
+    focusKeyword: "ferry dock to hostel brikette",
     draftPathSegment: "guides/ferry-dock-to-hostel-brikette-with-luggage",
     areas: ["howToGetHere"],
     primaryArea: "howToGetHere",
@@ -3499,6 +3707,7 @@ const manifestSeed: GuideManifestEntry[] = [
     structuredData: ["BreadcrumbList"],
     relatedGuides: [],
     blocks: [],
+    focusKeyword: "Chiesa Nuova / Bar Internazionale bus stop",
     expectations: {
       redirectOnly: true,
     },
@@ -3514,6 +3723,7 @@ const manifestSeed: GuideManifestEntry[] = [
     structuredData: ["BreadcrumbList"],
     relatedGuides: [],
     blocks: [],
+    focusKeyword: "Positano Chiesa Nuova / Bar Internazionale bus stop",
     expectations: {
       redirectOnly: true,
     },
@@ -3527,6 +3737,7 @@ const manifestSeed: GuideManifestEntry[] = [
     areas: ["howToGetHere"],
     primaryArea: "howToGetHere",
     structuredData: ["HowTo", "BreadcrumbList"],
+    focusKeyword: "Amalfi to Positano ferry",
     relatedGuides: ["ferryDockToBrikette"],
     blocks: [
       {
@@ -3554,6 +3765,7 @@ const manifestSeed: GuideManifestEntry[] = [
     status: "live",
     areas: ["howToGetHere"],
     primaryArea: "howToGetHere",
+    focusKeyword: "Amalfi Positano bus",
     structuredData: ["HowTo", "BreadcrumbList"],
     relatedGuides: [],
     blocks: [
@@ -3584,6 +3796,7 @@ const manifestSeed: GuideManifestEntry[] = [
     primaryArea: "howToGetHere",
     structuredData: ["HowTo", "BreadcrumbList"],
     relatedGuides: [],
+    focusKeyword: "naples airport to positano bus",
     blocks: [
       {
         type: "genericContent",
@@ -3610,6 +3823,7 @@ const manifestSeed: GuideManifestEntry[] = [
     status: "live",
     areas: ["howToGetHere"],
     primaryArea: "howToGetHere",
+    focusKeyword: "Naples to Positano train bus",
     structuredData: ["HowTo", "BreadcrumbList"],
     relatedGuides: [],
     blocks: [
@@ -3797,6 +4011,35 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "translations", status: "complete" },
       { id: "content", status: "complete" },
       { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "capriPositanoFerry",
+    slug: "capri-positano-ferry",
+    contentKey: "capriPositanoFerry",
+    status: "draft",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "capriPositanoFerry", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "inProgress" },
+      { id: "content", status: "inProgress" },
+      { id: "jsonLd", status: "complete" },
+      { id: "seoAudit", status: "inProgress" },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -4201,12 +4444,13 @@ export function listGuideManifestEntries(): GuideManifestEntry[] {
  */
 export function mergeManifestOverride(
   entry: GuideManifestEntry,
-  override: { areas?: GuideArea[]; primaryArea?: GuideArea } | undefined,
+  override: { areas?: GuideArea[]; primaryArea?: GuideArea; status?: GuideManifestEntry["status"] } | undefined,
 ): GuideManifestEntry {
   if (!override) return entry;
 
   const areas = override.areas ?? entry.areas;
   const primaryArea = override.primaryArea ?? entry.primaryArea;
+  const status = override.status ?? entry.status;
 
   // Ensure primaryArea is valid for the areas
   const validPrimary = areas.includes(primaryArea) ? primaryArea : areas[0];
@@ -4215,6 +4459,7 @@ export function mergeManifestOverride(
     ...entry,
     areas,
     primaryArea: validPrimary,
+    status,
   };
 }
 
@@ -4224,7 +4469,7 @@ export function mergeManifestOverride(
  */
 export function getGuideManifestEntryWithOverrides(
   key: GuideKey,
-  overrides?: Partial<Record<GuideKey, { areas?: GuideArea[]; primaryArea?: GuideArea }>>,
+  overrides?: Partial<Record<GuideKey, { areas?: GuideArea[]; primaryArea?: GuideArea; status?: GuideManifestEntry["status"] }>>,
 ): GuideManifestEntry | undefined {
   const entry = guideManifest[key];
   if (!entry) return undefined;
@@ -4258,17 +4503,22 @@ export const CHECKLIST_LABELS: Record<ChecklistItemId, string> = {
   jsonLd: "Structured data",
   faqs: "FAQs",
   content: "Content sections",
-  media: "Media & galleries",
+  seoAudit: "SEO Audit",
 };
 
 /**
  * Build the checklist payload surfaced in editorial dashboards. When entries omit a particular
- * checklist item we treat it as “missing” by default so gaps remain obvious. Future iterations
+ * checklist item we treat it as "missing" by default so gaps remain obvious. Future iterations
  * will replace these heuristics with lint-driven signals.
  */
 export function buildGuideChecklist(
   entry: GuideManifestEntry,
-  options?: { includeDiagnostics?: boolean; lang?: AppLanguage; includeTranslationCoverage?: boolean },
+  options?: {
+    includeDiagnostics?: boolean;
+    lang?: AppLanguage;
+    includeTranslationCoverage?: boolean;
+    overrides?: ManifestOverrides;
+  },
 ): ChecklistSnapshot {
   const resolvedLang = options?.lang ?? (i18nConfig.fallbackLng as AppLanguage);
   const diagnostics = (() => {
@@ -4285,8 +4535,16 @@ export function buildGuideChecklist(
           i18nConfig.supportedLngs as AppLanguage[],
         )
       : undefined;
+    // Date validation: check if English has a date but other locales don't
+    const dateValidation = options?.includeTranslationCoverage
+      ? analyzeDateValidation(
+          entry.key,
+          i18nConfig.supportedLngs as AppLanguage[],
+        )
+      : undefined;
     return {
       translations: coverage,
+      dateValidation,
       content: {
         intro: completeness.fields.intro,
         sections: completeness.fields.sections,
@@ -4311,6 +4569,12 @@ export function buildGuideChecklist(
     if (id === "faqs" && diagnostics?.faqs) {
       if (diagnostics.faqs.hasFaqs && diagnostics.faqs.count > 0) return "complete";
     }
+    if (id === "seoAudit" && options?.overrides) {
+      const audit = options.overrides[entry.key]?.auditResults;
+      if (!audit) return "missing";
+      if (audit.score >= 9.0) return "complete";
+      return "inProgress";
+    }
     return "missing";
   };
 
@@ -4318,27 +4582,52 @@ export function buildGuideChecklist(
     if (id === "jsonLd" && entry.structuredData.length > 0) {
       return "Structured data declared; validate generators.";
     }
+    if (id === "seoAudit" && options?.overrides) {
+      const audit = options.overrides[entry.key]?.auditResults;
+      if (audit) {
+        return `Score: ${audit.score.toFixed(1)}/10`;
+      }
+      return "Not audited";
+    }
     return undefined;
   };
 
   const defaults: Record<ChecklistItemId, ChecklistSnapshotItem> = Object.fromEntries(
-    CHECKLIST_ITEM_IDS.map((id) => [
-      id,
-      {
+    CHECKLIST_ITEM_IDS.map((id) => {
+      // Add audit results to seoAudit item diagnostics
+      const itemDiagnostics = id === "seoAudit" && options?.overrides
+        ? {
+            ...diagnostics,
+            seoAudit: options.overrides[entry.key]?.auditResults,
+          }
+        : diagnostics;
+
+      return [
         id,
-        status: inferStatus(id),
-        note: inferNote(id),
-        diagnostics,
-      },
-    ]),
+        {
+          id,
+          status: inferStatus(id),
+          note: inferNote(id),
+          diagnostics: itemDiagnostics,
+        },
+      ];
+    }),
   ) as Record<ChecklistItemId, ChecklistSnapshotItem>;
 
   const overrides = (entry.checklist ?? []).reduce<Record<ChecklistItemId, ChecklistSnapshotItem>>((acc, item) => {
+    // Add audit results to seoAudit item diagnostics
+    const itemDiagnostics = item.id === "seoAudit" && options?.overrides
+      ? {
+          ...diagnostics,
+          seoAudit: options.overrides[entry.key]?.auditResults,
+        }
+      : diagnostics;
+
     acc[item.id] = {
       id: item.id,
       status: item.status,
       note: item.note ?? CHECKLIST_LABELS[item.id],
-      diagnostics,
+      diagnostics: itemDiagnostics,
     };
     return acc;
   }, {} as Record<ChecklistItemId, ChecklistSnapshotItem>);
@@ -4357,9 +4646,29 @@ export function buildGuideChecklist(
   };
 }
 
-export function resolveDraftPathSegment(entry: GuideManifestEntry): string {
+/**
+ * Resolves the draft path segment for a guide entry.
+ * Priority order:
+ * 1. Override draftPathSegment (from JSON overrides file)
+ * 2. Entry draftPathSegment (from TypeScript manifest)
+ * 3. Computed from slug or key
+ *
+ * @param entry - The guide manifest entry
+ * @param overridePath - Optional override from the JSON overrides file
+ */
+export function resolveDraftPathSegment(
+  entry: GuideManifestEntry,
+  overridePath?: string | undefined,
+): string {
+  // Check override first
+  const override = overridePath?.trim();
+  if (override) return override;
+
+  // Then check explicit entry value
   const explicit = entry.draftPathSegment?.trim();
   if (explicit) return explicit;
+
+  // Fall back to computed value from slug
   const slug = entry.slug.trim();
   if (!slug) return `guides/${entry.key}`;
   return slug.includes("/") ? slug : `guides/${slug}`;

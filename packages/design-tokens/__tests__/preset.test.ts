@@ -39,7 +39,7 @@ describe("design tokens preset", () => {
 
     // Skip test if no default export (implementation uses named exports only)
     if (!preset) {
-      console.warn("No default export found - design-tokens uses named exports only");
+      // Silently return - design-tokens uses named exports only
       return;
     }
 

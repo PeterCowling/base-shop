@@ -45,6 +45,7 @@
     "**/*.cy.*"
   ],
   "references": [
-    { "path": "../../packages/types" }
+    { "path": "../../packages/types" },
+    { "path": "../../packages/ui" }
   ]
 }

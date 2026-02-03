@@ -1,131 +1,235 @@
 {
   "seo": {
-    "title": "Arienzo Beach Club-guide",
-    "description": "Reserver solsenge, vælg mellem de 300 trin ned eller shuttle-båden, og planlæg mad og transport til Arienzo Beach Club."
+    "title": "Arienzo Beach Positano: shuttle-båd, trapper og strandklub",
+    "description": "Arienzo Beach Positano for hostelgæster: book solsenge, tag shuttle fra Spiaggia Grande eller gå de 300 trin, hvad du skal pakke, frokostbudget og nem retur."
   },
-  "linkLabel": "Arienzo Beach Club-guide",
+  "lastUpdated": "2026-01-30T00:00:00.000Z",
+  "linkLabel": "Arienzo Beach: Positanos boutique-strandklub",
   "intro": [
-    "Arienzo ligger lige øst for Positano med lang eftermiddagssol, turkis vand og en dramatisk trappe ned fra Amalfivejen. Det er den mest livlige lido i nærheden af Hostel Brikette, men på grund af trapperne og krav om reservationer er det en god idé at lægge en plan, før du tager afsted.",
-    "Brug denne guide til at sikre din plads, vælge om du vil tage shuttle-båden eller gå de 300 trin, og lægge budget for frokost, drikkevarer og turen hjem."
+    "Arienzo Beach Positano ligger lige øst for byen med lang eftermiddagssol, klart vand og en dramatisk trappe ned fra Amalfikystvejen. For gæster på Hostel Brikette er det en af de nemmeste “forkæl dig selv”-strande — men med trapper, både og reservationer er det smart at have en plan.",
+    "Guiden er skrevet til hostelgæster: hvad du skal booke, hvordan de 300 trin føles i virkeligheden, hvordan shuttle-båden fra Spiaggia Grande fungerer, hvad du skal have med for ikke at lide på vej op, og hvordan du kommer hjem uden stress."
   ],
   "toc": [
     {
       "href": "#why-go",
-      "label": "Hvorfor vælge Arienzo"
+      "label": "Hvorfor Arienzo"
+    },
+    {
+      "href": "#when-to-go",
+      "label": "Bedste tidspunkt"
     },
     {
       "href": "#getting-there",
       "label": "Sådan kommer du dertil"
     },
     {
+      "href": "#stairs",
+      "label": "Trapper & tilgængelighed"
+    },
+    {
       "href": "#layout",
-      "label": "Layout og faciliteter"
+      "label": "Layout & faciliteter"
     },
     {
       "href": "#packages",
-      "label": "Pakker og spisesteder"
+      "label": "Pakker & frokost"
+    },
+    {
+      "href": "#what-to-pack",
+      "label": "Hvad du skal pakke"
+    },
+    {
+      "href": "#sea-conditions",
+      "label": "Hvis båden aflyses"
     },
     {
       "href": "#heading-back",
-      "label": "Tilbage til hostellet"
+      "label": "Sådan kommer du hjem"
     }
   ],
   "sections": [
     {
       "id": "why-go",
-      "title": "Derfor passer Arienzo til gæster fra Hostel Brikette",
+      "title": "Hvorfor Arienzo fungerer for Hostel Brikette-gæster",
       "body": [
-        "Arienzo er den nærmeste strandklub med fuld service uden for trængslen på Spiaggia Grande. Terrasserne på klippesiden fanger sollyset til først på aftenen, vandet forbliver klart til svømning, og baren holder stemningen festlig uden at blive til natteliv.",
-        "I kan dele gruppen mellem pakker, der inkluderer solsenge og frokost, eller reservere en forreste platform til en ekstravagant dag. Med lidt planlægning undgår I køer og er tilbage på hostellet før solnedgangsdrinks på terrassen."
+        "Arienzo er den nærmeste fuld-service strandklub uden for trængslen ved Spiaggia Grande. Klippeterrasserne får sol til sen eftermiddag, vandet er ofte klart til svømning, og baren giver stemning uden at blive decideret natteliv.",
+        "I kan vælge mellem pakker med solsenge og frokost eller gå all-in på første række for en luksusdag. Med lidt planlægning undgår du køer, “vi glemte håndklæderne”-panik og er tilbage på hostellet i tide til solnedgangsdrinks.",
+        "Staff-tip fra receptionen: tænk Arienzo som en eftermiddagsstrand. Tidligt giver flere timer, men magien er det lange lys og “golden hour på vandet”, når andre bugter allerede ligger i skygge."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/02-arienzo-cliffs.webp",
+          "alt": "Udsigt over Arienzo-bugten med stenstrand under stejle klipper nær Positano",
+          "caption": "Arienzo ligger under kystvejen øst for Positano. Foto: %URL:https://commons.wikimedia.org/wiki/File:84017_Arienzo_SA,_Italy_-_panoramio_(1).jpg|Luigi Biondi% (CC BY 3.0) — %URL:https://creativecommons.org/licenses/by/3.0/|licens%."
+        }
+      ]
+    },
+    {
+      "id": "when-to-go",
+      "title": "Bedste tidspunkt (og hvornår du bør springe over)",
+      "body": [
+        "Arienzo har lang eftermiddagssol, så den er perfekt, hvis du vil starte roligt og stadig have lys sent. Hvis du vælger mellem “morgen-solengemaraton” og “nem golden hour”, så er Arienzo golden-hour-valget.",
+        "Undgå meget blæsende dage med urolig sø. Shuttle-både kan stoppe, og svømning bliver mere besværlig. Ser det råt ud, så skift til en mere beskyttet plan (eller tag en bydag og gem Arienzo til en rolig eftermiddag).",
+        "I højsæsonen bliver weekender udsolgt først. Book i forvejen og vælg et tidsrum, der passer jeres energi: tidligt for mere badetid, sent for solnedgangsvibes."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/05-amalfi-coast-positano.webp",
+          "alt": "Udsigt langs Amalfikysten ved Positano med klipper og hav i eftermiddagslys",
+          "caption": "Eftermiddagslyset er grunden til at vælge denne side af Positano. Foto: %URL:https://commons.wikimedia.org/wiki/File:Amalfi_Coast_(Positano).jpg|Ron Clausen% (CC BY-SA 2.0) — %URL:https://creativecommons.org/licenses/by-sa/2.0/|licens%."
+        }
       ]
     },
     {
       "id": "getting-there",
-      "title": "Sådan kommer du dertil: shuttle-båd eller 300 trin",
+      "title": "Sådan kommer du dertil: shuttle-båd, bus eller taxi",
       "body": [
-        "Den nemmeste rute er shuttle-båden fra Arienzo Beach Club, som sejler fra Spiaggia Grande. Bådene afgår cirka hver 30. minut fra kl. 09.30, og den sidste udgående tur er omkring kl. 13.30. Din reservationsbekræftelse indeholder en QR-kode – vis den på kajen og hav returkøreplanen klar.",
-        "Du kan gå, hvis du helst vil undgå båden. Tag SITA-bussen mod Amalfi (stig på ved Sponda-stoppet 10 minutters gang ned ad bakken fra hostellet), og stå af ved Arienzo-stoppet, som er tydeligt skiltet. Derfra går du ned ad 300 trin gennem citronlunde for at nå indgangen til klubben.",
-        "Det frarådes at ankomme i bil eller på scooter; parkering er meget begrænset, og færdselsbetjente bøder køretøjer, der spærrer svingene."
+        "Den nemmeste rute er Arienzo Beach Clubs shuttle-båd fra Spiaggia Grande (Positanos hovedstrand). Hvis din booking inkluderer båden, står der typisk, hvor du stiller dig, og hvad du viser ved kajen. Gem returtiderne før du går i vandet — det sparer dig for “er vi strandet?”-stress.",
+        "Vil du hellere via land? SITA-bussen fungerer fint. Fra Hostel Brikette bruger du Sponda-stoppestedet (ca. 10 minutter ned ad bakken) mod Amalfi. Stå af ved Arienzo og gå ned ad trapperne gennem citronterrasser til indgangen. Brug %LINK:hostelBriketteToArienzoBus|vores hostel → Arienzo busguide% for trin-for-trin og backup-stops.",
+        "Taxi er “red benene”-muligheden, hvis du kommer sent eller har mere end en lille dagtaske. Den kører dig ikke helt til stranden, men tæt på trappeadgangen uden tidsplan-stress.",
+        "Bil eller scooter kan sjældent betale sig: meget lidt parkering og stram kontrol om sommeren."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/04-positano-beach.webp",
+          "alt": "Spiaggia Grande i Positano med farverige parasoller og både i bugten",
+          "caption": "Spiaggia Grande er ofte udgangspunktet for shuttle-båden. Foto: %URL:https://commons.wikimedia.org/wiki/File:Positano_Beach_(42919362342).jpg|Chris% (CC BY 2.0) — %URL:https://creativecommons.org/licenses/by/2.0/|licens%."
+        }
+      ]
+    },
+    {
+      "id": "stairs",
+      "title": "Trapper & tilgængelighed (sådan føles 300 trin)",
+      "body": [
+        "Trapperne er ægte. De er stejle, ujævne nogle steder og føles hårdere på vej op, fordi du er våd og salt. Hvis du ikke er til mange trin eller bærer tungt, så vælg båden og pak let.",
+        "Brug sko med godt greb (sneakers eller solide sandaler) og bær tungt i rygsæk. Hold pauser på repos’erne — det gør alle.",
+        "Hvis nogen har knæproblemer eller en skade, så gør Arienzo til en “båd-only” dag. Trapperne kan ellers ødelægge aftenen."
+      ],
+      "list": [
+        "Ned: fint hvis du går roligt og bruger skyggen.",
+        "Op: regn med 15–25 minutter afhængigt af varme og form.",
+        "Sent: føles hårdere — aftal hjemturen i god tid."
       ]
     },
     {
       "id": "layout",
-      "title": "Layout, faciliteter og solforhold",
+      "title": "Layout, zoner og faciliteter",
       "body": [
-        "Hovedterrassen tilhører Arienzo Beach Club med orange solsenge, håndklædeservice, ferskvandsbrusere og en livlig bar. Et mindre gratis område ligger helt ude til højre nær bådbroen, men pladsen forsvinder efter kl. 10.30, og du skal stadig klare trapperne med alt dit udstyr.",
-        "Solen når de to forreste rækker indtil omkring kl. 17.30 om sommeren, før klipperne giver skygge. Bed personalet om at dreje parasollerne, når lyset ændrer sig, især hvis du ønsker en hel dag med solbadning.",
-        "Ferskvandsbrusere, skabe og omklædningskabiner er inkluderet i dagspakkerne. Wi-Fi er ustabilt; download playlister eller færgeopdateringer, før du ankommer."
+        "Hoveddækket tilhører Arienzo Beach Club med orange solsenge, håndklædeservice, ferskvandsbrusere og en livlig bar. Der er en lille gratis stribe længst til højre ved bådlandingen, men den bliver hurtigt fyldt, og du skal stadig håndtere trapperne med alt dit grej.",
+        "Solen rammer de første to rækker til cirka 17:30 om sommeren, før klippen giver skygge. Bed personalet om at justere parasollen, når lyset flytter sig.",
+        "Brusere, skabe og omklædningskabiner er ofte inkluderet i pakkerne. Wi‑Fi kan være ustabilt — download musik og ferry-info før du går ned."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/01-beach-layout.webp",
+          "alt": "Layoutdiagram af Arienzo Beach Club med hoveddæk og lille gratis område ved bådlandingen",
+          "caption": "Layout: hoveddæk (orange solsenge, bar og brusere) + lille gratis område ved bådlandingen."
+        },
+        {
+          "src": "/img/guides/arienzo-beach/03-positano-umbrellas.webp",
+          "alt": "Rækker af strandparasoller på en stenstrand i Positano",
+          "caption": "Forvent lido-stil: parasoller, solsenge og service. Foto: %URL:https://commons.wikimedia.org/wiki/File:Beach_Umbrellas_in_Positano_(41158690680).jpg|Chris% (CC BY 2.0) — %URL:https://creativecommons.org/licenses/by/2.0/|licens%."
+        }
       ]
     },
     {
       "id": "packages",
-      "title": "Pakker, spisning og reservationer",
+      "title": "Pakker, frokost og reservationer",
       "body": [
-        "Standard-dagsenge starter omkring €70 for to personer og inkluderer parasol, håndklæder, to velkomstdrinks og shuttle-båden. Platforme på forreste række og prestige-cabanas koster €120–€200 afhængigt af måneden.",
-        "Frokost serveres fra kl. 12.30 med fisk og skaldyrspasta, salater og grillede hovedretter. Forvent €18–€28 pr. ret; reserver et bord ved indtjekning for at undgå myldretid kl. 14.00.",
-        "Reservationer håndteres direkte via Arienzos hjemmeside eller ved at skrive til deres WhatsApp-linje. Betalingsoplysninger sikrer din plads; aflysninger inden for 48 timer medfører som regel et gebyr, så bekræft vejrudsigten og færgeplanerne først."
+        "Solsenge for to starter ofte omkring 70 € og inkluderer parasol, håndklæder, to velkomstdrinks og båden. Første række og cabanas kan ligge på 120–200 € afhængigt af måned.",
+        "Frokost serveres fra ca. 12:30 (seafood-pasta, salater, grill). Regn med 18–28 € pr. ret; book bord ved check‑in for at undgå 14:00-rushet.",
+        "Booking via hjemmeside eller WhatsApp. Der kan være gebyr for sene aflysninger, så tjek vejr og sø før du bekræfter.",
+        "Hostel-budget-tip: Arienzo kan blive dyrt uden du opdager det. Aftal på forhånd: en delt ret + vand, eller fuld frokost + cocktails. Begge er gode — bare undgå at “drive” ind i det."
+      ]
+    },
+    {
+      "id": "what-to-pack",
+      "title": "Hvad du skal pakke (så trapperne ikke straffer dig)",
+      "body": [
+        "Tænk mini-vandretur til en strandklub. Jo mindre du bærer, desto bedre føles dagen — især på vej hjem.",
+        "Hvis du tager båden, kan du have lidt mere med. Hvis du tager trapperne, så hold dig til det vigtigste og undgå tungt og skrøbeligt."
+      ],
+      "list": [
+        "Badesko eller sandaler med greb (sten + våde trin).",
+        "Lille drybag/zip-pose (telefon, kontanter, billetter).",
+        "Genopfyldelig flaske (opstigningen dehydrere).",
+        "Reef-safe solcreme + solbriller (kraftigt genskin).",
+        "Let lag til hjemturen (bris efter bad)."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/06-positano-umbrellas-panorama.webp",
+          "alt": "Panoramaview af Positanos parasoller og byen op ad klipperne",
+          "caption": "Pak let og planlæg udgangen, så du kan nyde udsigten uden stress. Foto: %URL:https://commons.wikimedia.org/wiki/File:Positano_Beach_Umbrellas_-_panoramio.jpg|Mauro% (CC BY-SA 3.0) — %URL:https://creativecommons.org/licenses/by-sa/3.0/|licens%."
+        }
+      ]
+    },
+    {
+      "id": "sea-conditions",
+      "title": "Hvis båden aflyses (en plan B der virker)",
+      "body": [
+        "På blæsende dage kan søen stoppe shuttle-bådene. Ingen panik — skift til landlogistik.",
+        "Er du allerede ved Arienzo, er den sikre løsning at gå op til vejen og tage næste bus eller en taxi. Giv dig selv buffer, især sent når busser kan køre forbi fyldte.",
+        "Hvis du ikke er taget afsted endnu, og havet ser dårligt ud, så vælg en strand med nemmere logistik (se %LINK:positanoBeaches|vores strandoversigt%) eller en “uden båd”-mulighed som %LINK:fornilloBeachGuide|Fornillo Beach%."
       ]
     },
     {
       "id": "heading-back",
-      "title": "Tilbage til Hostel Brikette",
+      "title": "Sådan kommer du tilbage til Hostel Brikette",
       "body": [
-        "Returbådene afgår fra Arienzo på halve timer fra omkring kl. 15.00; den sidste shuttle sejler normalt kl. 18.00, men tiderne ændrer sig i skuldersæsonen – tjek tavlen ved receptionen en ekstra gang.",
-        "Hvis du gik ned, skal du afsætte 15–20 minutter til at gå op ad trappen til vejen. Busser mod Positano passerer hver 30.–40. minut om eftermiddagen; stemple din billet om bord og hav en ekstra til sene hjemture.",
-        "Vil du have en aftensvømmetur? Aftal taxahentning på forhånd via receptionen eller den digitale concierge, da delebilstjenester ikke fungerer stabilt langs kysten."
+        "Kom du med båd, så bekræft den sidste retur tidligt (spørg personalet eller tjek tavlen ved receptionen). Tider kan ændre sig med sæson og sø.",
+        "Gik du ned, så regn med 15–25 minutter op (varmere og mere træt). Busser mod Positano kommer ofte hver 30–40 minutter, men forsinkelser og fyldte busser sker — lidt tålmodighed og ekstra vand hjælper.",
+        "Vil du være sikker, så brug %LINK:arienzoBeachBusBack|vores guide Arienzo → Positano bus tilbage% så du ikke ender ved forkert stop.",
+        "Bliver du sent, så bestil taxi via reception eller digital concierge — ride‑hailing apps er ikke pålidelige her."
       ]
     }
   ],
   "essentialsTitle": "Det kan du forvente",
   "essentials": [
-    "Obligatoriske reservationer i højsæsonen – book online eller via WhatsApp, før du forlader hostellet.",
-    "Vælg mellem shuttle-båden fra Spiaggia Grande eller trappen med 300 trin fra SITA-busstoppet.",
-    "Strandklub med fuld service, hvor bar, restaurant, brusere og håndklædeservice er inkluderet i dagspakkerne."
+    "Reservationer er næsten obligatoriske i højsæsonen: book online eller via WhatsApp før du går.",
+    "Vælg mellem shuttle-båd fra Spiaggia Grande eller 300 trin fra SITA-stoppet.",
+    "Fuld-service lido med bar/restaurant, brusere og håndklædeservice i pakkerne."
   ],
-  "typicalCostsTitle": "Typiske omkostninger",
+  "typicalCostsTitle": "Typiske priser",
   "typicalCosts": [
-    "Dagseng til to inklusive shuttle-båd: €70–€90 afhængigt af sæsonen.",
-    "Platform på forreste række eller cabana: €120–€200 for to gæster.",
-    "Hovedretter til frokost: €18–€28, cocktails €12–€15, flaskevand €3–€4."
+    "Solseng for to inkl. båd: €70–€90 afhængigt af sæson.",
+    "Første række/cabana: €120–€200 for to.",
+    "Retter €18–€28, cocktails €12–€15, vand €3–€4."
   ],
   "tipsTitle": "Hurtige tips",
   "tips": [
-    "Tag et skærmbillede af din reservationsbekræftelse; mobilsignalet forsvinder langs trappen og ved kajen.",
-    "Pak en genopfyldelig vandflaske – der kan fyldes op i baren, og det holder udgifterne nede på varme dage.",
-    "Sammenlign andre muligheder langs kysten i vores %LINK:positanoBeaches|oversigt over strande%, hvis du ønsker et roligere eller gratis alternativ."
+    "%LINK:hostelBriketteToArienzoBus|Sådan kommer du til stranden med bus%.",
+    "%LINK:arienzoBeachBusBack|Sådan kommer du tilbage med bus%.",
+    "Tag et screenshot af din booking: signalet falder på trapperne og ved kajen.",
+    "Medbring en genopfyldelig flaske: du kan ofte fylde den ved baren og spare på varme dage.",
+    "Sammenlign andre muligheder i %LINK:positanoBeaches|strandoversigten% hvis du vil have roligere eller gratis."
   ],
-  "warningsTitle": "Værd at vide",
+  "warningsTitle": "Godt at vide",
   "warnings": [
-    "Ingen kontantrefusion ved sen ankomst; ring i forvejen, hvis du er forsinket, så personalet kan holde jeres solsenge.",
-    "Det gratis område er meget lille og kræver stadig, at du tager hele trappen med alt dit udstyr.",
-    "Bølgeforhold kan lejlighedsvis stoppe shuttle-båden – personalet sender sms’er med opdateringer, men hav busplanen klar."
+    "Ingen kontant refusion ved forsinket ankomst; ring hvis du er bagud, så de kan holde dine solsenge.",
+    "Gratisområdet er meget lille og kræver stadig hele trappen med dit udstyr.",
+    "Båden kan pauses ved bølger/sø: personalet sender updates, men hav busplanen klar."
   ],
-  "faqsTitle": "Arienzo Beach Club – ofte stillede spørgsmål",
+  "faqsTitle": "Arienzo Beach Club FAQ",
   "faqs": [
     {
-      "q": "Hvor lang tid i forvejen skal jeg reservere?",
+      "q": "Hvor lang tid i forvejen skal jeg booke?",
       "a": [
-        "Book mindst tre til fem dage i forvejen i juni–september, især til weekendpladser eller platforme på forreste række. I skuldersæsonen (april, maj, oktober) er der ofte ledigt fra dag til dag, men bekræft stadig shuttle-tiderne."
+        "Book 3–5 dage i forvejen i juni–september, især weekender eller første række. I skuldersæsonen (april, maj, oktober) kan der være plads næste dag, men bekræft stadig shuttle-tiderne."
       ]
     },
     {
-      "q": "Kan jeg besøge stedet uden at købe en pakke?",
+      "q": "Kan jeg besøge uden pakke?",
       "a": [
-        "Ja, men mulighederne er begrænsede. Et lille offentligt område ligger ved siden af klubben og er fyldt op midt på formiddagen. Du får ikke adgang til toiletter eller brusere uden en pakke, og du skal stadig klare den lange trappe."
+        "Ja, men mulighederne er begrænsede. Der er en lille offentlig stribe ved siden af klubben, som fyldes hurtigt. Uden pakke har du ikke adgang til brusere/toiletter, og trapperne er stadig en del af turen."
       ]
     },
     {
-      "q": "Hvad skal jeg have på til trappeturen?",
+      "q": "Hvad skal jeg have på til trappen?",
       "a": [
-        "Brug solide sandaler eller sneakers til nedstigningen. Bær de tungeste ting i en rygsæk og hold pause på reposerne undervejs. På vejen op igen skal du holde pauser i skyggen og drikke vand, før du går om bord på bus eller taxi."
+        "Brug solide sandaler eller sneakers på vej ned. Bær tungt i rygsæk og hold pauser på repos’erne. På vej op: pauser i skyggen og drik vand før bus eller taxi."
       ]
     }
   ],
-  "galleryHeading": "Fotohøjdepunkter fra Arienzo",
-  "gallery": {
-    "primaryAlt": "Terrasserne ved Arienzo Beach Club",
-    "primaryCaption": "Klippe-dæk med orange solsenge",
-    "secondaryAlt": "Mole til Arienzos shuttlebåd",
-    "secondaryCaption": "Gå om bord på shuttlen ved Spiaggia Grande"
-  }
+  "galleryHeading": "Arienzo foto-højdepunkter"
 }

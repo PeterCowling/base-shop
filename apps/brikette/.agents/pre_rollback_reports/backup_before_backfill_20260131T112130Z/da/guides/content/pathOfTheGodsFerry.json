@@ -1,0 +1,173 @@
+{
+  "seo": {
+    "title": "Gudernes Sti via Amalfi-færgen",
+    "description": "Sejl fra Positano til Amalfi, tag bussen til Bomerano, og vandr Sentiero degli Dei tilbage til Nocelle med billetråd og tidsplan."
+  },
+  "linkLabel": "Gudernes Sti via Amalfi (færge + vandring)",
+  "intro": [
+    "Denne rute kombinerer en naturskøn færgetur til Amalfi med den klassiske vandring fra Bomerano til Nocelle på Sentiero degli Dei. Det er den mest komplette oplevelse fra Hostel Brikette, fordi du ser klipperne fra havet, inden du følger dem fra højderyggen.",
+    "Sæt en hel formiddag eller tidlig eftermiddag af. Færger bliver udsolgt i højsæsonen, så køb billetter, så snart du når havnen, og hav en backup-køreplan med busser, hvis havet bliver uroligt."
+  ],
+  "sections": [
+    {
+      "id": "prep",
+      "title": "Før du forlader hostellet",
+      "body": [
+        "Pak vand, snacks, solcreme og lag på lag. Der er ingen faciliteter mellem Bomerano og Nocelle, når du først forlader landsbyerne.",
+        "Tjek de seneste færgeafgange (Travelmar eller Lucibello) og SITA-køreplaner. Sigt efter en morgenafgang for at undgå middagsvarmen på den åbne højderyg.",
+        "Medbring tre SITA-billetter pr. person: Amalfi → Bomerano, Nocelle → Positano og en ekstra i reserve."
+      ]
+    },
+    {
+      "id": "walk-to-port",
+      "title": "Gå til havnen i Positano og køb busbilletter",
+      "body": [
+        "Forlad hostellet, drej til venstre og gå ca. 100 meter til Bar Internazionale. Køb SITA-billetter ved tabacchi-disken, før du fortsætter ned ad bakken.",
+        "Følg genvejstrapperne mod Spiaggia Grande. Gåturen tager cirka 20–30 minutter; sæt ekstra tid af på travle dage.",
+        "Ved stranden drejer du til højre mod den lille havn, hvor færgeselskaberne har sideordnede billetboder."
+      ]
+    },
+    {
+      "id": "buy-ferry-ticket",
+      "title": "Sikre en færge til Amalfi",
+      "body": [
+        "Tjek tavlerne udenfor Lucibello og Travelmar for næste afgang. I højsæsonen sejler morgenturene typisk hver 30–60 minut.",
+        "Køb en enkeltbillet til Amalfi og hav den klar ved ombordstigning; operatøren kalder på passagerer få minutter før afgang.",
+        "Køerne vokser hurtigt, så kom mindst 15 minutter før den valgte afgang for at sikre en plads på dækket."
+      ]
+    },
+    {
+      "id": "sail-to-amalfi",
+      "title": "Sejl til Amalfi og nyd byen",
+      "body": [
+        "Overfarten varer omkring 25 minutter. Stil dig i styrbordssiden for udsigt tilbage mod Positano og Praiano.",
+        "Når du lægger til, gå straks i land og fortsæt ligeud til busstationen, der ligger til venstre for havnepladsen.",
+        "Har du tid, før bussen kører, så udforsk katedralpladsen i Amalfi eller snup en espresso – men hold øje med busperronen til Agerola."
+      ]
+    },
+    {
+      "id": "bus-to-bomerano",
+      "title": "Tag bussen til Bomerano",
+      "body": [
+        "Find SITA-bussen med teksten “Agerola/Bomerano”. Stem billetten, når du stiger på, og sæt dig forrest for færre hårnålesving.",
+        "Efter cirka 45 minutter står du af ved stoppet i Bomerano ved siden af Ristorante Jerla. Kryds vejen og følg sidegaden ned til piazzaen.",
+        "Fortsæt til venstre hen over pladsen, og følg skiltene mod “Sentiero degli Dei” til opslagstavlen ved stiens start."
+      ]
+    },
+    {
+      "id": "hike",
+      "title": "Vandringen fra Bomerano til Nocelle",
+      "body": [
+        "Ruten bølger frem og tilbage i cirka 6 kilometer. Forvent stentrapper, smalle passager og spektakulære udsigtspunkter over kysten.",
+        "Hold pauser ved markerede udsigtspunkter og tag alt affald med tilbage. Vis hensyn til lokale landmænd og hold dig til de afmærkede stier.",
+        "Når jordstien møder den betonbelagte gangsti ind i Nocelle, er du i mål."
+      ]
+    },
+    {
+      "id": "nocelle",
+      "title": "Gennem Nocelle",
+      "body": [
+        "Følg den brolagte sti ind i byen, og hold til højre i det første kryds for at undgå de 1.700 trapper ned til Positano.",
+        "Gå omkring 175 meter til busstoppet ved den lille parkeringsplads. Kiosken ved kirken sælger kolde drikke i sæsonen.",
+        "Kom mindst 10 minutter før – busserne kan standse lige før læskuret, hvis parkeringsområdet er travlt."
+      ]
+    },
+    {
+      "id": "return",
+      "title": "Tilbage til Positano",
+      "body": [
+        "Stig på Montepertuso/Nocelle-bussen tilbage til Positano, og stig af ved Bar Internazionale eller Chiesa Nuova for den korteste gåtur til hostellet.",
+        "Vælger du at gå ned ad vejen i stedet, så afsæt 45–60 minutter og vær opmærksom på lokalt trafik på svingene.",
+        "Tilbage i byen kan du fejre med en granita eller sen frokost – dagens hårdeste del er klaret."
+      ]
+    },
+    {
+      "id": "journey-planner",
+      "title": "Eksempler på tidsplaner",
+      "body": [
+        "06.30 afgang fra hostel → 07.10 færge → 08.40 ankomst Bomerano → 3 timers vandring → 12.30 bus retur → 13.00 tilbage i Positano.",
+        "08.00 afgang passer stadig før frokost: 08.00 fra hostel, 08.40 færge, 10.15 ved stien, 14.30 retur i byen.",
+        "Senere afgange virker i skuldersæsonen, men tjek altid sidste Nocelle-bus, før du starter om eftermiddagen."
+      ]
+    }
+  ],
+  "essentialsTitle": "Det skal du have med",
+  "essentials": [
+    "Færgebillet Positano ⇄ Amalfi plus tre SITA-billetter pr. person (Amalfi → Bomerano, Nocelle → Positano, reserve).",
+    "1,5–2 liter vand, snacks eller en panino, solcreme og hat.",
+    "Behagelige sko med godt greb til ujævne trapper og klippekanter."
+  ],
+  "typicalCostsTitle": "Typiske udgifter",
+  "typicalCosts": [
+    "Færge Positano → Amalfi: €12–€16 enkelt afhængigt af operatør og sæson.",
+    "SITA-bus Amalfi → Bomerano og Nocelle → Positano: €2–€4 pr. stræk, hvis de købes på forhånd.",
+    "Snacks eller panini fra minimarkedet på vejen: €4–€8."
+  ],
+  "tipsTitle": "Råd til ruten",
+  "tips": [
+    "Start tidligt for at slå varmen og sikre pladser på færgen – de første afgange er de roligste.",
+    "Køb en panino to-go i det andet minimarked på Via Pasitea for en prisvenlig frokost på stien.",
+    "Opbevar færge- og busbilletter samlet i en vandtæt pose, så du nemt kan fremvise dem ved ombordstigning."
+  ],
+  "warningsTitle": "Pas på",
+  "warnings": [
+    "Følg ikke de skiltede trapper fra Nocelle til Positano, medmindre du specifikt ønsker en nedstigning på 1.700 trin, der ender langt fra hostellet.",
+    "Havet kan blive groft, og færger kan aflyses med kort varsel – tjek forholdene i havnen og skift til busruten, hvis det sker.",
+    "Sommer eftermiddage er varme og uden skygge; hvis du misser morgenfærgen, så vent til sen eftermiddag i stedet for at gå under den stærkeste sol."
+  ],
+  "steps": [
+    {
+      "name": "Gå til havnen",
+      "text": "Forlad Hostel Brikette, køb busbilletter ved Bar Internazionale, og gå ned til Spiaggia Grande."
+    },
+    {
+      "name": "Køb færgebilletter",
+      "text": "Vælg næste afgang hos Travelmar eller Lucibello til Amalfi og stil dig i kø 15 minutter før."
+    },
+    {
+      "name": "Sejl til Amalfi",
+      "text": "Nyd den 25 minutter lange overfart, og gå direkte til busstoppene ved havnen."
+    },
+    {
+      "name": "Bus til Bomerano",
+      "text": "Tag SITA-bussen mærket Agerola/Bomerano og følg sidegaden til stiens begyndelse."
+    },
+    {
+      "name": "Vandring til Nocelle",
+      "text": "Følg markeringerne for Sentiero degli Dei hen over højderyggen, til gangstien i beton begynder."
+    },
+    {
+      "name": "Tilbage til Positano",
+      "text": "Tag Nocelle-bussen tilbage til Bar Internazionale, eller gå ad vejen, hvis busserne er fulde."
+    }
+  ],
+  "faqsTitle": "Ofte stillede spørgsmål",
+  "faqs": [
+    {
+      "q": "Hvor skal jeg købe transportbilletter?",
+      "a": [
+        "Køb SITA-billetter ved Bar Internazionale, før du går ned ad bakken, og køb færgebilletten direkte hos Lucibello eller Travelmar i havneboderne."
+      ]
+    },
+    {
+      "q": "Hvor meget tid skal jeg sætte af i Amalfi?",
+      "a": [
+        "Planlæg et buffer på 20–30 minutter til at skifte fra færge til Agerola-bussen. Brug tiden på en hurtig kaffe, men bliv inden for synsvidde af busperronerne, så du ikke misser ombordstigningen."
+      ]
+    },
+    {
+      "q": "Hvad hvis færgen bliver aflyst?",
+      "a": [
+        "Tjek forholdene i havnen. Hvis bådene ikke sejler, skift til busruten via Amalfi – du følger samme sti, når du når til Bomerano."
+      ]
+    }
+  ],
+  "toc": {
+    "onThisPage": "På denne side",
+    "essentials": "Det skal du have med",
+    "costs": "Typiske udgifter",
+    "tips": "Råd til ruten",
+    "warnings": "Pas på",
+    "faqs": "Ofte stillede spørgsmål"
+  }
+}

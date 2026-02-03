@@ -37,23 +37,6 @@
       ]
     }
   ],
-  "gallery": {
-    "title": "Mapy trasy i charakterystyczne zakręty",
-    "items": [
-      {
-        "alt": "Mapa piesza z Hostel Brikette do plaży Fornillo",
-        "caption": "Hostel Brikette do Fornillo (mapa)"
-      },
-      {
-        "alt": "Skręt w ścieżkę dla pieszych przy Hotel Posa Posa",
-        "caption": "Zakręt na skrót do Fornillo"
-      },
-      {
-        "alt": "Trasa ze Spiaggia Grande do przystanku autobusu interno",
-        "caption": "Trasa powrotna do autobusu interno"
-      }
-    ]
-  },
   "tips": [
     "Wjedź autobusem Interno Positano z powrotem pod górę, aby uniknąć stromego podjazdu powrotnego.",
     "Noś wodę na klatkę schodową – dopóki nie dotrzesz do brzegu, nie ma sklepów.",

@@ -144,14 +144,22 @@ function DiagnosticDetails({
     const incompleteCount = totalLocales - completeLocales.length;
     const hasIncomplete = incompleteCount > 0;
 
+    const dateValidation = diagnostics.dateValidation;
+    const hasMissingDates = dateValidation?.hasEnglishDate && (dateValidation.localesMissingDate.length > 0);
+
     return (
-      <details className={clsx(DETAIL_CONTAINER_CLASSES)} open={hasIncomplete}>
+      <details className={clsx(DETAIL_CONTAINER_CLASSES)} open={hasIncomplete || hasMissingDates}>
         <summary className="cursor-pointer text-xs font-semibold text-brand-primary inline-flex items-center gap-2 list-none [&::-webkit-details-marker]:hidden">
           <ChevronIcon className="h-4 w-4 transition-transform [[open]>&]:rotate-90" />
           <span>Translation coverage: {completeLocales.length}/{totalLocales} locales</span>
           {hasIncomplete && (
             <span className="rounded-full bg-brand-terra/20 px-2 py-0.5 text-[10px] font-semibold text-brand-terra">
               {incompleteCount} incomplete
+            </span>
+          )}
+          {hasMissingDates && (
+            <span className="rounded-full bg-brand-secondary/20 px-2 py-0.5 text-[10px] font-semibold text-brand-secondary">
+              {dateValidation.localesMissingDate.length} missing dates
             </span>
           )}
         </summary>
@@ -189,6 +197,29 @@ function DiagnosticDetails({
             </tbody>
           </table>
         </div>
+        {hasMissingDates && (
+          <div className="mt-3 rounded bg-brand-secondary/10 p-2">
+            <p className="text-[10px] font-semibold text-brand-secondary">
+              ⚠ Date Translation Warning
+            </p>
+            <p className="mt-1 text-[11px] text-brand-text/80">
+              English guide has a lastUpdated date, but {dateValidation.localesMissingDate.length} {dateValidation.localesMissingDate.length === 1 ? 'locale is' : 'locales are'} missing dates:
+            </p>
+            <div className="mt-2 flex flex-wrap gap-1">
+              {dateValidation.localesMissingDate.map((locale) => (
+                <span
+                  key={locale}
+                  className="rounded bg-brand-secondary/20 px-2 py-0.5 text-[10px] font-semibold text-brand-secondary"
+                >
+                  {locale}
+                </span>
+              ))}
+            </div>
+            <p className="mt-2 text-[10px] text-brand-text/50">
+              Add a lastUpdated field to each locale's guide content, or the date will fallback to English.
+            </p>
+          </div>
+        )}
       </details>
     );
   }
@@ -258,26 +289,95 @@ function DiagnosticDetails({
     );
   }
 
-  if (itemId === "media" && manifest) {
-    const hasHeroBlock = manifest.blocks.some((b) => b.type === "hero");
-    const hasGalleryBlock = manifest.blocks.some((b) => b.type === "gallery");
+  if (itemId === "seoAudit") {
+    const auditResults = diagnostics?.seoAudit;
+
+    if (!auditResults) {
+      // No audit run yet - show explanatory text
+      return (
+        <div className={clsx(DETAIL_CONTAINER_CLASSES)}>
+          <p className="text-[10px] font-semibold uppercase text-brand-text/60">SEO Audit</p>
+          <Stack className="mt-2 gap-2">
+            <p className="text-[11px] text-brand-text/80">
+              SEO audits analyze guide content quality across multiple factors:
+            </p>
+            <ul className="list-disc list-inside space-y-1 text-[11px] text-brand-text/70 pl-2">
+              <li>Meta tags (title and description)</li>
+              <li>Content length and structure</li>
+              <li>Internal links and FAQs</li>
+              <li>Images and freshness signals</li>
+              <li>Structured data declarations</li>
+            </ul>
+            <p className="text-[10px] text-brand-text/50 pt-1">
+              Guides must score 9.0/10 or higher to be published to "live" status.
+              Click "Run SEO Audit" above to analyze this guide.
+            </p>
+          </Stack>
+        </div>
+      );
+    }
+
+    // Audit results available - show detailed analysis
+    const { analysis } = auditResults;
+    const hasStrengths = analysis.strengths.length > 0;
+    const hasIssues = analysis.criticalIssues.length > 0;
+    const hasImprovements = analysis.improvements.length > 0;
 
     return (
       <div className={clsx(DETAIL_CONTAINER_CLASSES)}>
-        <p className="text-[10px] font-semibold uppercase text-brand-text/60">Media blocks</p>
-        <Stack className="mt-2 gap-1">
-          <Inline className="gap-2">
-            <span className="min-w-16 text-[11px] font-medium text-brand-text">Hero</span>
-            {renderFieldStatus(hasHeroBlock)}
-          </Inline>
-          <Inline className="gap-2">
-            <span className="min-w-16 text-[11px] font-medium text-brand-text">Gallery</span>
-            {renderFieldStatus(hasGalleryBlock)}
-          </Inline>
+        <p className="text-[10px] font-semibold uppercase text-brand-text/60">Audit Results</p>
+        <Stack className="mt-2 gap-3">
+          {hasIssues && (
+            <Stack className="gap-1">
+              <p className="text-[10px] font-semibold text-brand-terra">
+                Critical Issues ✗ (sorted by impact)
+              </p>
+              <Stack className="gap-1">
+                {analysis.criticalIssues.map(({ issue, impact }, i) => (
+                  <Inline key={i} className="gap-2 items-start">
+                    <span className="shrink-0 rounded bg-brand-terra/20 px-1.5 py-0.5 text-[10px] font-bold text-brand-terra">
+                      -{impact.toFixed(1)}
+                    </span>
+                    <span className="text-[11px] text-brand-terra/90">{issue}</span>
+                  </Inline>
+                ))}
+              </Stack>
+            </Stack>
+          )}
+
+          {hasImprovements && (
+            <Stack className="gap-1">
+              <p className="text-[10px] font-semibold text-brand-secondary">
+                Improvements Recommended (sorted by impact)
+              </p>
+              <Stack className="gap-1">
+                {analysis.improvements.map(({ issue, impact }, i) => (
+                  <Inline key={i} className="gap-2 items-start">
+                    <span className="shrink-0 rounded bg-brand-secondary/20 px-1.5 py-0.5 text-[10px] font-bold text-brand-secondary">
+                      -{impact.toFixed(1)}
+                    </span>
+                    <span className="text-[11px] text-brand-text/80">{issue}</span>
+                  </Inline>
+                ))}
+              </Stack>
+            </Stack>
+          )}
+
+          {hasStrengths && (
+            <Stack className="gap-1">
+              <p className="text-[10px] font-semibold text-brand-primary">Strengths ✓</p>
+              <ul className="list-disc list-inside space-y-0.5 text-[11px] text-brand-text/80 pl-2">
+                {analysis.strengths.map((strength, i) => (
+                  <li key={i}>{strength}</li>
+                ))}
+              </ul>
+            </Stack>
+          )}
+
+          <p className="text-[10px] text-brand-text/50 pt-1 border-t border-brand-outline/20">
+            Score must be 9.0/10 or higher to publish. Address highest-impact items first.
+          </p>
         </Stack>
-        <p className="mt-2 text-[10px] text-brand-text/50">
-          Media blocks are declared in guide-manifest.ts
-        </p>
       </div>
     );
   }

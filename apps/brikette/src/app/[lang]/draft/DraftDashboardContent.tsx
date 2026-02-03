@@ -3,8 +3,9 @@
 // src/app/[lang]/draft/DraftDashboardContent.tsx
 // Client component for draft dashboard - migrated from routes/guides/draft.index.tsx
 /* eslint-disable ds/no-hardcoded-copy -- TECH-DEBT-000 [ttl=2025-12-31] Editorial dashboard copy awaiting i18n coverage */
-import { memo } from "react";
+import { memo, useCallback, useState } from "react";
 import Link from "next/link";
+import clsx from "clsx";
 
 import { Section } from "@acme/design-system/atoms";
 
@@ -16,22 +17,16 @@ import { isGuideAuthoringEnabled } from "@/routes/guides/guide-authoring/gate";
 import { buildGuideEditUrl } from "@/routes/guides/guide-authoring/urls";
 import { guideSlug } from "@/routes.guides-helpers";
 import {
-  buildGuideChecklist,
   type ChecklistSnapshotItem,
   type ChecklistSnapshot,
   guideAreaToSlugKey,
   type GuideManifestEntry,
-  listGuideManifestEntries,
-  resolveDraftPathSegment,
+  GUIDE_STATUS_VALUES,
 } from "@/routes/guides/guide-manifest";
 import type { GuideSeoTemplateProps } from "@/routes/guides/guide-seo/types";
 import { getSlug } from "@/utils/slug";
 
-type Props = {
-  lang: AppLanguage;
-};
-
-type DraftGuideSummary = {
+export type DraftGuideSummary = {
   key: GuideSeoTemplateProps["guideKey"];
   slug: string;
   status: GuideManifestEntry["status"];
@@ -39,6 +34,11 @@ type DraftGuideSummary = {
   primaryArea: GuideManifestEntry["primaryArea"];
   checklist: ChecklistSnapshot;
   draftPath: string;
+};
+
+type Props = {
+  lang: AppLanguage;
+  guides: DraftGuideSummary[];
 };
 
 type DraftGuideStatus = DraftGuideSummary["status"];
@@ -84,23 +84,94 @@ function formatOutstandingLabel(item: ChecklistSnapshotItem): string {
   return item.note ?? item.id;
 }
 
-function buildSummary(entry: GuideManifestEntry, lang: AppLanguage): DraftGuideSummary {
-  return {
-    key: entry.key,
-    slug: entry.slug,
-    status: entry.status,
-    areas: entry.areas,
-    primaryArea: entry.primaryArea,
-    checklist: buildGuideChecklist(entry, { includeDiagnostics: true, lang }),
-    draftPath: resolveDraftPathSegment(entry),
-  };
+type StatusDropdownProps = {
+  guideKey: string;
+  initialStatus: DraftGuideStatus;
+  canEdit: boolean;
+};
+
+function StatusDropdown({ guideKey, initialStatus, canEdit }: StatusDropdownProps) {
+  const [status, setStatus] = useState<DraftGuideStatus>(initialStatus);
+  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+
+  const handleStatusChange = useCallback(
+    async (newStatus: DraftGuideStatus) => {
+      if (!canEdit) return;
+
+      setStatus(newStatus);
+      setSaveStatus("saving");
+
+      try {
+        const response = await fetch(`/api/guides/${guideKey}/manifest`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "x-preview-token": PREVIEW_TOKEN ?? "",
+          },
+          body: JSON.stringify({ status: newStatus }),
+        });
+
+        const data = await response.json() as { ok?: boolean; error?: string };
+
+        if (!response.ok || !data.ok) {
+          throw new Error(data.error ?? "Failed to save status");
+        }
+
+        setSaveStatus("saved");
+        setTimeout(() => setSaveStatus("idle"), 2000);
+      } catch (err) {
+        setSaveStatus("error");
+        setStatus(initialStatus); // Revert on error
+        setTimeout(() => setSaveStatus("idle"), 3000);
+      }
+    },
+    [canEdit, guideKey, initialStatus]
+  );
+
+  if (!canEdit) {
+    return (
+      <Inline
+        as="span"
+        className={`rounded-full px-3 py-1 text-xs font-semibold ${STATUS_CLASS[status]}`}
+      >
+        {STATUS_LABEL[status]}
+      </Inline>
+    );
+  }
+
+  return (
+    <div className="flex items-center gap-2">
+      <select
+        value={status}
+        onChange={(e) => void handleStatusChange(e.target.value as DraftGuideStatus)}
+        className={clsx(
+          "cursor-pointer rounded-full px-3 py-1 text-xs font-semibold transition-colors",
+          "hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-1",
+          STATUS_CLASS[status]
+        )}
+      >
+        {GUIDE_STATUS_VALUES.map((statusValue) => (
+          <option key={statusValue} value={statusValue}>
+            {STATUS_LABEL[statusValue]}
+          </option>
+        ))}
+      </select>
+      {saveStatus === "saving" && (
+        <span className="text-xs text-brand-secondary">Saving...</span>
+      )}
+      {saveStatus === "saved" && (
+        <span className="text-xs text-brand-primary">Saved</span>
+      )}
+      {saveStatus === "error" && (
+        <span className="text-xs text-brand-terra">Error</span>
+      )}
+    </div>
+  );
 }
 
-function DraftDashboardContent({ lang }: Props) {
+function DraftDashboardContent({ lang, guides }: Props) {
   usePagePreload({ lang, namespaces: ["guides"] });
   const canEdit = isGuideAuthoringEnabled() && Boolean(PREVIEW_TOKEN);
-
-  const guides = listGuideManifestEntries().map((entry) => buildSummary(entry, lang));
 
   const sortedGuides = (() => {
     return [...guides].sort((a, b) => {
@@ -113,9 +184,20 @@ function DraftDashboardContent({ lang }: Props) {
   return (
     <Section as="main" className="mx-auto max-w-5xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
       <Stack as="header" className="gap-2">
-        <p className="text-xs font-semibold uppercase tracking-wide text-brand-text/60">
-          Guides editorial
-        </p>
+        <div className="flex items-center justify-between">
+          <p className="text-xs font-semibold uppercase tracking-wide text-brand-text/60">
+            Guides editorial
+          </p>
+          <Link
+            href={`/${lang}/draft/validation`}
+            className="inline-flex items-center gap-2 rounded-lg border border-brand-primary bg-brand-primary/10 px-4 py-2 text-sm font-medium text-brand-primary hover:bg-brand-primary/20 transition-colors"
+          >
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            View Validation Report
+          </Link>
+        </div>
         <h1 className="text-2xl font-semibold text-brand-heading">Draft & publication checklist</h1>
         <p className="text-sm text-brand-text/80">
           Every guide listed here can be previewed under the draft URL. Use the checklist to confirm
@@ -183,12 +265,11 @@ function DraftDashboardContent({ lang }: Props) {
                     </Cluster>
                   </td>
                   <td className="px-4 py-3">
-                    <Inline
-                      as="span"
-                      className={`rounded-full px-3 py-1 text-xs font-semibold ${STATUS_CLASS[guide.status]}`}
-                    >
-                      {STATUS_LABEL[guide.status]}
-                    </Inline>
+                    <StatusDropdown
+                      guideKey={guide.key}
+                      initialStatus={guide.status}
+                      canEdit={canEdit}
+                    />
                   </td>
                   <td className="px-4 py-3">
                     <Stack className="gap-1">

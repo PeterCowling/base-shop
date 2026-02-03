@@ -3,7 +3,7 @@
     "title": "Path of the Gods via Amalfi ferry",
     "description": "Sail from Positano to Amalfi, bus to Bomerano, and hike the Sentiero degli Dei back to Nocelle with ticket advice and timings."
   },
-  "linkLabel": "Path of the Gods via Amalfi (ferry + hike)",
+  "linkLabel": "Path of the Gods: Scenic Ferry & Hike Route",
   "intro": [
     "This itinerary combines a scenic ferry ride to Amalfi with the classic Bomerano → Nocelle traverse of the Path of the Gods. It is the most complete experience from Hostel Brikette, letting you admire the cliffs from sea level before hiking along them.",
     "Allow a full morning or early afternoon. Ferries sell out in high season, so buy tickets as soon as you reach the harbour and keep a backup bus schedule in case seas turn rough."
@@ -25,6 +25,48 @@
         "Exit the hostel, turn left, and walk about 100 metres to Bar Internazionale. Purchase SITA tickets at the tabacchi counter before continuing downhill.",
         "Follow the shortcut stairs toward Spiaggia Grande. The walk takes roughly 20–30 minutes; allow extra time on busy days.",
         "At the beach, turn right to reach the small harbour where the ferry operators have adjacent ticket booths."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/01-nav.jpg",
+          "alt": "Route map from Hostel Brikette to Positano port with numbered waypoints (1-5)",
+          "caption": "Overview map showing the walking route from hostel to port with key reference points"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/02-nav.jpg",
+          "alt": "Street corner intersection marking Point 1 on the route",
+          "caption": "Point 1: Turn left at this corner intersection and head downhill"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/03-nav.jpg",
+          "alt": "Tabacchi shop storefront where SITA bus tickets can be purchased",
+          "caption": "Tabacchi shop at Bar Internazionale — buy your SITA bus tickets here before heading to the port"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/04-nav.jpg",
+          "alt": "Switchback bend in the road at Point 2 where you leave the main road",
+          "caption": "Point 2: Switchback bend — leave the road here and take the shortcut stairs"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/05-nav.jpg",
+          "alt": "Stone stairs descending downhill at Point 3",
+          "caption": "Point 3: Descend these stairs toward Spiaggia Grande"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/06-nav.jpg",
+          "alt": "Road junction at Point 4 showing the crossing point",
+          "caption": "Point 4: Cross the road and continue down the pedestrian path"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/07-nav.jpg",
+          "alt": "Final stairway section leading down at Point 5",
+          "caption": "Point 5: Last section of stairs before reaching the beach level"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/08-nav.jpg",
+          "alt": "Archway entrance marking the arrival at Positano port",
+          "caption": "Port entrance archway — you've reached the harbour, ferry ticket booths are ahead"
+        }
       ]
     },
     {
@@ -34,6 +76,18 @@
         "Check the boards outside Lucibello and Travelmar for the next sailing. Morning boats typically run every 30–60 minutes in season.",
         "Buy a one-way ticket to Amalfi and keep it handy for boarding; each operator calls passengers a few minutes before departure.",
         "Queues form quickly, so arrive at least 15 minutes before your chosen ferry to guarantee a spot on deck."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/09-nav.jpg",
+          "alt": "Lucibello and Travelmar ferry ticket booths at Positano port",
+          "caption": "Ferry operator booths — check schedule boards and buy your one-way ticket to Amalfi"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/10-nav.jpg",
+          "alt": "Port waiting area with ferry passengers",
+          "caption": "Waiting area at the port — queue 15 minutes before departure to guarantee boarding"
+        }
       ]
     },
     {
@@ -42,16 +96,30 @@
       "body": [
         "The crossing lasts about 25 minutes. Stand on the starboard side for views back toward Positano and Praiano.",
         "Once you dock, disembark promptly and walk straight ahead to the bus terminal located to the left of the harbour piazza.",
-        "If you have time before the bus, explore Amalfi’s cathedral square or grab an espresso—just keep an eye on the bus bay for the Agerola departure."
+        "If you have time before the bus, explore Amalfi's cathedral square or grab an espresso—just keep an eye on the bus bay for the Agerola departure."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/11-nav.jpg",
+          "alt": "Walking route from Amalfi ferry dock to SITA bus terminal",
+          "caption": "After disembarking at Amalfi, walk straight ahead to the bus terminal on the left of the piazza"
+        }
       ]
     },
     {
       "id": "bus-to-bomerano",
       "title": "Catch the bus to Bomerano",
       "body": [
-        "Look for the SITA bus marked “Agerola/Bomerano”. Validate your ticket as you board and sit toward the front for fewer switchbacks.",
+        "Look for the SITA bus marked 'Agerola/Bomerano'. Validate your ticket as you board and sit toward the front for fewer switchbacks.",
         "After about 45 minutes, disembark at the Bomerano stop beside Ristorante Jerla. Cross the road and follow the side street downhill to the piazza.",
-        "Continue left across the square, then follow signs for “Sentiero degli Dei” to reach the trailhead notice board."
+        "Continue left across the square, then follow signs for 'Sentiero degli Dei' to reach the trailhead notice board."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/12-nav.jpg",
+          "alt": "Bomerano bus stop location with Ristorante Jerla signpost marker",
+          "caption": "Bomerano stop — disembark here when you see the Jerla restaurant sign, then cross the road"
+        }
       ]
     },
     {
@@ -61,6 +129,28 @@
         "The trail undulates for roughly 6 kilometres. Expect stone steps, narrow ledges, and spectacular balconies overlooking the coast.",
         "Take breaks at marked viewpoints and carry out all rubbish. Respect local farmers and stay on the signed path.",
         "When the dirt path meets the concrete walkway into Nocelle, you have reached the finish."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/13-nav.jpg",
+          "alt": "Side street from Bomerano bus stop descending toward the piazza",
+          "caption": "Cross the road from the bus stop and follow this side street downhill to the piazza"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/14-nav.jpg",
+          "alt": "Town square (piazza) in Bomerano with left-hand route markers",
+          "caption": "Continue left across the piazza following signs for 'Sentiero degli Dei'"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/15-nav.jpg",
+          "alt": "Wooden steps ascending along the hiking trail ridge",
+          "caption": "Trail section with wooden steps — the path undulates with climbs and descents along the ridge"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/16-nav.jpg",
+          "alt": "Concrete paved walkway marking entry into Nocelle village",
+          "caption": "When the dirt trail meets this concrete walkway, you've reached Nocelle"
+        }
       ]
     },
     {
@@ -70,6 +160,23 @@
         "Follow the paved path into town, keeping right at the first junction to avoid the 1,700-step staircase to Positano.",
         "Walk about 175 metres to the bus stop near the small car park. The kiosk by the church sells cold drinks in season.",
         "Arrive at least 10 minutes early; buses sometimes stop just before the shelter when the parking area is busy."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/17-nav.jpg",
+          "alt": "Nocelle village navigation map showing route to bus stop and staircase warning",
+          "caption": "Nocelle map — keep right at the junction to reach the bus stop; avoid the 1,700-step staircase to Positano"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/18-nav.jpg",
+          "alt": "Directional signpost in Nocelle showing the stairs-to-Positano option to avoid",
+          "caption": "CRITICAL: Do NOT follow the signs to 'Positano' down the stairs — take the bus instead"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/19-nav.jpg",
+          "alt": "Stone steps ascending through Nocelle streets toward the bus stop",
+          "caption": "Climb these steps for roughly 175 meters to reach the bus stop at the car park"
+        }
       ]
     },
     {

@@ -40,5 +40,15 @@
       "id": "naples",
       "body": "Bleib in der Circumvesuviana, bis sie in Napoli Garibaldi endet. Folge den Schildern zur Haupthalle, um zu Fernzügen, Metro oder Flughafenbussen zu wechseln. Die Piazza Garibaldi liegt direkt vor dem Bahnhofseingang."
     }
+  ],
+  "faqs": [
+    {
+      "q": "Wie lese ich den SITA-Busfahrplan?",
+      "a": [
+        "**Zeilen lesen:** Die Zeilen in der ersten Spalte repräsentieren verschiedene Bushaltestellen entlang der Route.",
+        "**Spalten lesen:** Der Fahrplan weist jeder geplanten Fahrt einen alphabetischen Buchstaben zu, der als Überschrift in jeder Spalte aufgeführt ist. Wenn Sie Montag bis Samstag reisen, suchen Sie nach den Spalten 'F' und 'G'. Wenn Sie an einem Sonntag oder Feiertag reisen, suchen Sie nach den Spalten 'G' und 'H'.",
+        "**Zeilen und Spalten kombinieren:** Wählen Sie Ihre Abfahrts- und Ankunftshaltestellen aus und überprüfen Sie dann die Spalten, um zu sehen, wann Busse verfügbar sind und wann sie an Ihrem Ziel ankommen. Um beispielsweise die Abfahrtszeit von Sorrento zu sehen, schauen Sie sich die Sorrento-Zeile an. Um die Ankunftszeit in Positano (Chiesa Nuova / Bar Internazionale) zu sehen, schauen Sie sich die Positano (Chiesa Nuova)-Zeile an."
+      ]
+    }
   ]
 }

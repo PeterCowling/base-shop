@@ -53,10 +53,5 @@
         "Varierer etter avstand og belastning; bekreft satsen før tjenesten starter."
       ]
     }
-  ],
-  "galleryTitle": "Bildegalleri",
-  "gallery": {
-    "standsCaption": "Portørstasjoner (eksempel)",
-    "cartsCaption": "Portørvogner"
-  }
+  ]
 }

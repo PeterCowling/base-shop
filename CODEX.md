@@ -81,6 +81,7 @@ scripts/agents/integrator-shell.sh -- codex
 
 This blocks commands like `git reset --hard`, `git clean -fd`, force pushes, `rebase`, `stash`, and `commit --amend`,
 blocks repo-wide/bulk discard patterns (`git restore` / `git checkout --`), and enforces a single-writer lock for commits/pushes.
+blocks repo-wide/bulk discard patterns (`git restore` / `git checkout --`), and enforces a single-writer lock for commits/pushes.
 
 If you are running Codex non-interactively (no TTY; e.g. CI or API-driven agents), you can't open an integrator subshell.
 Instead, wrap each command that may write (git operations, installs, builds) with:

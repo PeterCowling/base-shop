@@ -1,3 +1,6 @@
+Type: Runbook
+Status: Active
+
 # Launch Shop Runbook
 
 This runbook guides operators through launching a new shop using the `pnpm launch-shop` pipeline.

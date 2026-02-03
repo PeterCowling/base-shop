@@ -1,70 +1,70 @@
 {
   "seo": {
-    "title": "A fordítás folyamatban van.",
-    "description": "Busz + átszállás, komp + busz kombók és privát transzferek Ravellóba."
+    "title": "Positano → Ravello: útmutató",
+    "description": "Hogyan juthatsz el Ravellóba Positanóból Amalfi felé: busz + busz vagy nyáron komp + busz."
   },
-  "linkLabel": "Positano to Ravello: how to go",
+  "linkLabel": "Positano ↔ Ravello útvonal",
   "intro": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
+    "Positano és Ravello között Amalfi felé busszal egész évben, nyári szezonban pedig komppal és busszal is utazhatsz.",
+    "Számolj rá időt az amalfi átszállásra, és ha az utolsó kompra támaszkodsz, térj vissza naplemente előtt."
   ],
   "toc": [
     {
       "href": "#via-amalfi",
-      "label": "Via Amalfi"
+      "label": "Amalfin át"
     },
     {
       "href": "#gardens",
-      "label": "Gardens & villas"
+      "label": "Kertek és villák"
     },
     {
       "href": "#timing",
-      "label": "Timing & returns"
+      "label": "Időzítés és visszaút"
     }
   ],
   "sections": [
     {
       "id": "via-amalfi",
-      "title": "Via Amalfi",
+      "title": "Amalfin át",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Indulj SITA busszal vagy szezonális komppal Amalfiig; vásárolj jegyet felszállás előtt és számolj a sorokra.",
+        "Amalfin (5-ös állás) szállj át a Ravello buszra, majd kb. 10 perc sétával jutsz el a Villa Rufolohoz és Villa Cimbronéhoz."
       ]
     },
     {
       "id": "gardens",
-      "title": "Gardens & villas",
+      "title": "Kertek és villák",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "A Villa Rufolo koncertjeiről és teraszairól híres, a Villa Cimbrone pedig az Infinity-terasszal vonzó.",
+        "Főszezonban foglald le előre a jegyeket az online oldalon, hogy elkerüld a sorban állást."
       ]
     },
     {
       "id": "timing",
-      "title": "Timing & returns",
+      "title": "Időzítés és visszatérés",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Indulj Positanóból korán, hogy elkerüld a legforróbb órákat és a zsúfolt csatlakozásokat.",
+        "Ha a lépcsők miatt nappali fényt vagy biztos kompkapcsolatot szeretnél, térj vissza naplemente előtt."
       ]
     }
   ],
-  "tipsTitle": "Tips",
+  "tipsTitle": "Tippek",
   "tips": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
+    "Hozz magaddal vizet és nassolnivalót – az Amalfi buszpályaudvar környékén kevés a kínálat, és drágábbak a boltok.",
+    "Viselj tapadós cipőt Ravello emelkedőin és a villák közötti sétákon."
   ],
-  "faqsTitle": "FAQs",
+  "faqsTitle": "GYIK",
   "faqs": [
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Családbarát útvonal?",
       "a": [
-        "A fordítás folyamatban van."
+        "Igen, ha szüneteket tartasz és rugalmas tempót választasz; babakocsiváros csak Amalfiig, Ravellóban a lépcsők miatt nem."
       ]
     },
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Megvalósítható Capri is ugyanazon a napon?",
       "a": [
-        "A fordítás folyamatban van."
+        "Lehetséges, de rohanós – külön napot érdemes szentelni mindkét célpontnak."
       ]
     }
   ],
@@ -72,55 +72,55 @@
     "steps": [
       {
         "name": "Positano → Amalfi",
-        "text": "A fordítás folyamatban van."
+        "text": "SITA busszal vagy nyári komppal Amalfi felé."
       },
       {
         "name": "Amalfi → Ravello",
-        "text": "A fordítás folyamatban van."
+        "text": "Amalfin szállj át a Ravello buszra; vásárolj jegyet felszállás előtt."
       }
     ]
   },
   "fallback": {
     "intro": [
-      "A fordítás folyamatban van."
+      "Utazz Amalfin át. Nyáron komp + busz kombinációval időt nyerhetsz."
     ],
     "toc": [
       {
         "href": "#via-amalfi",
-        "label": "Via Amalfi (bus + bus)"
+        "label": "Amalfin át (busz + busz)"
       },
       {
         "href": "#ferry",
-        "label": "Ferry to Amalfi (seasonal)"
+        "label": "Komp Amalfiig (szezonális)"
       },
       {
         "href": "#faqs",
-        "label": "FAQs"
+        "label": "GYIK"
       }
     ],
     "sections": [
       {
         "id": "via-amalfi",
-        "title": "Via Amalfi (bus + bus)",
+        "title": "Amalfin át (busz + busz)",
         "body": [
-          "A fordítás folyamatban van."
+          "Amalfin szállj át a Ravello buszra; vegyél jegyet felszállás előtt és állj sorba korán."
         ]
       },
       {
         "id": "ferry",
-        "title": "Ferry to Amalfi (seasonal)",
+        "title": "Komp Amalfiig (szezonális)",
         "body": [
-          "A fordítás folyamatban van."
+          "Reggeli komp Amalfiig + busz Ravellóba gyors lehet; figyeld az utolsó visszatérést."
         ]
       }
     ],
-    "tipsTitle": "Tips",
-    "faqsTitle": "FAQs",
+    "tipsTitle": "Tippek",
+    "faqsTitle": "GYIK",
     "faqs": [
       {
-        "q": "A fordítás folyamatban van.",
+        "q": "Mennyi időt tölts Ravellóban?",
         "a": [
-          "A fordítás folyamatban van."
+          "Szánj legalább 3–4 órát, hogy megnézd a villákat és élvezd a kilátást; ha eseményre mész, még többet."
         ]
       }
     ]

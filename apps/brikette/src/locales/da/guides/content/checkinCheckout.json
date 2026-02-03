@@ -1,0 +1,107 @@
+{
+  "seo": {
+    "title": "Komplet guide til check‑in og check‑out på Hostel Brikette i Positano",
+    "description": "Trin-for-trin-instruktioner om ankomsttider, ID-krav, bagageopbevaring, deposita og hjælp ved check‑out på Hostel Brikette i Positano."
+  },
+  "linkLabel": "Komplet guide til check‑in og check‑out på Hostel Brikette i Positano",
+  "sections": [
+    {
+      "id": "checkInRequest",
+      "title": "Check‑in anmodning",
+      "body": [
+        "Når du ankommer, bedes du gå til receptionen for at starte check-in-processen og få tildelt dit værelse."
+      ]
+    },
+    {
+      "id": "earlyArrival",
+      "title": "Tidlig ankomst",
+      "body": [
+        "Hvis du ankommer før kl. 10.30 på din ankomstdag, skal du være opmærksom på, at du endnu ikke kan få adgang til hostellet."
+      ]
+    },
+    {
+      "id": "middayArrival",
+      "title": "Ankomst midt på dagen",
+      "body": [
+        "Hvis du ankommer mellem kl. 10.30 og 15.00, kan du efter godkendelse få adgang som midlertidig gæst. I dette tidsrum kan du anmode om bagageopbevaring, hvis der er plads. Bemærk, at bagageopbevaring er adskilt fra din værelsesreservation og har egne vilkår og betingelser."
+      ]
+    },
+    {
+      "id": "checkInWindow",
+      "title": "Check‑in tidsrum",
+      "body": [
+        "Check-in er dagligt fra kl. 15.00 til 22.30. I dette tidsrum følger du vores standard check-in-proces."
+      ]
+    },
+    {
+      "id": "lateArrival",
+      "title": "Sen ankomst",
+      "body": [
+        "Hvis du planlægger at ankomme efter at receptionen lukker kl. 22.30, kan vi muligvis tilbyde selvbetjent sen check-in, hvis der er kapacitet. Vi sender instruktionerne til de kontaktoplysninger, du oplyste ved booking. Sørg for, at din enhed er opladet, og at dine oplysninger er korrekte, da vi ikke kan holdes ansvarlige for problemer forårsaget af forkerte oplysninger eller tekniske fejl."
+      ]
+    },
+    {
+      "id": "necessityOfProcess",
+      "title": "Krav om fuld check‑in‑proces",
+      "body": [
+        "Du skal gennemføre hele check-in-proceduren for at få adgang til hostellet. Hvis du ikke kan fuldføre check-in, annulleres reservationen og registreres som en udeblivelse."
+      ]
+    },
+    {
+      "id": "proofOfIdentity",
+      "title": "ID‑dokumentation",
+      "body": [
+        "Du skal fremvise en gyldig original legitimation (pas, nationalt ID-kort, kørekort eller militært ID) ved ankomst. Hvis du ikke viser gyldigt ID senest kl. 22.30 på din planlagte check-in-dag, annulleres reservationen som en udeblivelse."
+      ]
+    },
+    {
+      "id": "paymentBalance",
+      "title": "Restbetaling",
+      "body": [
+        "Enhver udestående saldo skal betales fuldt ud med en accepteret betalingsmetode, før check-in kan afsluttes. Hvis du ikke kan betale hele beløbet, annulleres reservationen og markeres som en udeblivelse."
+      ]
+    },
+    {
+      "id": "keycardLinenDeposit",
+      "title": "Depositum for nøglekort og linned",
+      "body": [
+        "Ved check-in skal du betale et depositum på €10 kontant for nøglekort og linned. Depositummet refunderes fuldt ud kontant ved check-out, når begge dele afleveres. Kredit- eller betalingskort accepteres ikke til dette depositum."
+      ]
+    },
+    {
+      "id": "checkoutWindow",
+      "title": "Check‑out tidsrum",
+      "body": [
+        "Check-out er mellem kl. 7.30 og 10.30. Efter check-out kan du ikke gå tilbage til dit værelse eller efterlade ejendele dér."
+      ]
+    },
+    {
+      "id": "earlyCheckout",
+      "title": "Tidlig check‑out",
+      "body": [
+        "Hvis du skal afsted før kl. 7.30, så aftal tidlig check-out i receptionen aftenen før for at få dit depositum udbetalt kontant. Efterlader du nøglekortet uden bekræftelse fra personalet, fortabes depositummet."
+      ]
+    },
+    {
+      "id": "lateCheckout",
+      "title": "Sen check‑out",
+      "body": [
+        "Vi kan ikke tilbyde sen check-out. Check-out skal være afsluttet senest kl. 10.30."
+      ]
+    },
+    {
+      "id": "failureToCheckout",
+      "title": "Manglende check‑out",
+      "body": [
+        "Hvis du ikke forlader værelset inden for det officielle check-out-tidspunkt, kan vi uden ansvar fjerne dine ejendele. Dine ting kan blive opbevaret hos en lokal portørservice for din regning. Enhver uautoriseret adgang efterfølgende betragtes som et sikkerhedsbrud."
+      ]
+    },
+    {
+      "id": "postCheckout",
+      "title": "Efter check‑out",
+      "body": [
+        "Når du har checket ud, slutter din reservation officielt. Du kan blive på hostellets område som midlertidig gæst indtil kl. 15.30. Du kan anmode om bagageopbevaring, afhængigt af ledig kapacitet og særskilte betingelser."
+      ]
+    }
+  ]
+}

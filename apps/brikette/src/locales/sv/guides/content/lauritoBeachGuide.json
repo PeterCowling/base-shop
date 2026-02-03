@@ -4,6 +4,7 @@
     "description": "Choose between Da Adolfo and Tre Ville, learn how the shuttle boats work, and plan a stress-free beach day in Laurito."
   },
   "linkLabel": "Laurito Beach guide",
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
   "intro": [
     "Laurito is a pocket-sized cove tucked between Positano and Praiano. Two beach clubs — Da Adolfo and Villa Tre Ville — dominate the shoreline, leaving just a sliver of public sand. The reward is west-facing sunshine, iconic lunch spots, and a quieter atmosphere than Spiaggia Grande.",
     "Use this guide to decide which club suits your style, understand how the water taxis operate, and map out the bus-and-stairs route back to Hostel Brikette."
@@ -35,7 +36,7 @@
       "id": "why-go",
       "title": "Why Laurito is worth the effort",
       "body": [
-        "Laurito sits just outside Positano’s centre, so crowds thin out compared with Spiaggia Grande. Sun hits the deck until early evening, the water stays calm for swimming, and the cliff backdrop makes for classic Amalfi Coast photos.",
+        "Laurito sits just outside Positano's centre, so crowds thin out compared with Spiaggia Grande. Sun hits the deck until early evening, the water stays calm for swimming, and the cliff backdrop makes for classic Amalfi Coast photos.",
         "You will need either a confirmed reservation or patience for the tiny free strip, but once you are settled it is one of the most relaxed spots within a short ride of Hostel Brikette."
       ]
     },
@@ -43,7 +44,7 @@
       "id": "layout",
       "title": "Layout and who runs what",
       "body": [
-        "The cove splits into three zones. A narrow public area sits on the far right for those who bring their own towels. Villa Tre Ville’s club occupies the central decks with terracotta loungers, while Da Adolfo operates the left-hand side with wooden beds and the restaurant terrace.",
+        "The cove splits into three zones. A narrow public area sits on the far right for those who bring their own towels. Villa Tre Ville's club occupies the central decks with terracotta loungers, while Da Adolfo operates the left-hand side with wooden beds and the restaurant terrace.",
         "All guests arrive by boat or via the steep stairway from the SITA bus stop. Expect to queue at peak times because both clubs control access to most of the shoreline."
       ]
     },
@@ -77,20 +78,46 @@
   ],
   "images": {
     "whyGo": {
+      "src": "/img/guides/laurito-beach/02-beach-overview.jpg",
       "alt": "Laurito Beach-viken med strandklubbar längs strandlinjen",
-      "caption": "Lauritos klippomgärdade vik är lugnare och tystare än huvudstranden."
+      "caption": "Lauritos klippomgärdade vik är lugnare och tystare än huvudstranden.",
+      "width": 403,
+      "height": 500
     },
     "layout": {
+      "src": "/img/guides/laurito-beach/01-beach-layout-map.jpg",
       "alt": "Stranddäck och strandlinjelayout vid Laurito",
-      "caption": "Tre zoner delar viken: offentlig remsa, Villa Tre Villes däck och Da Adolfos terrass."
+      "caption": "Tre zoner delar viken: offentlig remsa, Villa Tre Villes däck och Da Adolfos terrass.",
+      "width": 1500,
+      "height": 1000
     },
     "treVille": {
+      "src": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg",
       "alt": "Villa Tre Ville beach club-solstolar och havsutsikt",
-      "caption": "Villa Tre Ville fokuserar på premiumsolstolar och concierge-service."
+      "caption": "Villa Tre Ville fokuserar på premiumsolstolar och concierge-service.",
+      "width": 1280,
+      "height": 1600
     },
     "daAdolfo": {
+      "src": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg",
       "alt": "Da Adolfo beach club brygga och sittplatsområde",
-      "caption": "Da Adolfos skyttelbåt släpper av gäster bredvid restaurangterrassen."
+      "caption": "Da Adolfos skyttelbåt släpper av gäster bredvid restaurangterrassen.",
+      "width": 512,
+      "height": 215
+    },
+    "positanoView": {
+      "src": "/img/guides/laurito-beach/05-positano-view.jpg",
+      "alt": "View over Positano and the sea with boats near the shore",
+      "caption": "Spiaggia Grande is the main launch point for many beach shuttles and boats.",
+      "width": 1280,
+      "height": 1707
+    },
+    "sitaBus": {
+      "src": "/img/guides/laurito-beach/06-amalfi-coast-sita-bus.jpg",
+      "alt": "Blue SITA bus driving along the Amalfi Coast road above the sea",
+      "caption": "The coastal SITA bus is a useful backup when boats are paused.",
+      "width": 1920,
+      "height": 1080
     }
   },
   "essentialsTitle": "What to expect",
@@ -109,7 +136,7 @@
   "tips": [
     "Screenshot confirmation emails — mobile signal fades near the dock.",
     "Pack reef-safe sunscreen and water shoes; the shoreline mixes pebbles and rock slabs.",
-    "Review our %LINK:beaches|Positano beaches overview% to compare Laurito with other coves."
+    "Review our %LINK:positanoBeaches|Positano beaches overview% to compare Laurito with other coves."
   ],
   "warningsTitle": "Good to know",
   "warnings": [
@@ -137,8 +164,5 @@
         "Most return shuttles finish by 18:00 in summer, earlier in shoulder season. Always confirm the last departure on arrival and have the bus timetable saved as a backup."
       ]
     }
-  ],
-  "gallery": {
-    "alt": "Laurito Beach shoreline"
-  }
+  ]
 }

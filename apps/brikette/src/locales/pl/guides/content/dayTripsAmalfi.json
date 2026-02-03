@@ -5,14 +5,14 @@
   },
   "linkLabel": "Wycieczki jednodniowe z Positano",
   "intro": [
-    "Tłumaczenie w przygotowaniu."
+    "Wykorzystaj Positano jako bazę do jednodniowych wypadów promem i autobusem — ruszaj wcześnie, zarezerwuj kluczowe bilety i zawsze miej plan pogodowy."
   ],
   "sections": [
     {
       "id": "capri",
       "title": "Capri highlights",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
+        "Rezerwuj pierwszy prom, wjedź kolejką na Monte Solaro i spaceruj po Giardini di Augusto, zanim nadejdą wycieczkowce.",
         "Wróć rejsem późnym popołudniem i zachowaj zrzut ekranu rozkładu jazdy autobusów na wypadek, gdyby morze się wzburzyło."
       ]
     },
@@ -20,42 +20,42 @@
       "id": "pompeii",
       "title": "Pompeii or Herculaneum",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Wybierz się wczesnym autobusem do Sorrento i przesiądź na Circumvesuviana; kup bilety z pominięciem kolejki online, by zaoszczędzić czas.",
+        "Noś ze sobą wodę i kapelusz przeciwsłoneczny — na miejscu jest niewiele cienia, a zwiedzanie zajmuje 3–4 godziny."
       ]
     },
     {
       "id": "amalfi-ravello",
       "title": "Amalfi & Ravello combo",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Wpłyń do Amalfi, zwiedź Duomo, a potem wsiądź do autobusu 5110 do Ravello, by zobaczyć Villa Cimbrone i zjeść lunch z widokiem.",
+        "Zostań na późne popołudniowe światło i złap prom albo autobus o zmierzchu — kolejki są krótsze po 18:00."
       ]
     },
     {
       "id": "sorrento",
       "title": "Sorrento & food focus",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Wsiądź w prom przed południem do Sorrento na targowe rundy, degustacje limoncello i zachód słońca na tarasie Villa Comunale.",
+        "Wróć późnym autobusem do Positano, gdy ostatni prom jest wyprzedany — jazda trwa około 50 minut."
       ]
     }
   ],
   "tips": [
-    "Wstępnie załaduj mapy i rozkłady jazdy offline; Dane mobilne mogą docierać do tuneli kolejowych i na klifach Capri.",
-    "Tłumaczenie w przygotowaniu."
+    "Wstępnie załaduj mapy i rozkłady jazdy offline; dane mobilne mogą zanikać w tunelach kolejowych i na klifach Capri.",
+    "Spakuj lekki płaszcz przeciwdeszczowy — letnie burze nadciągają szybko, a promy przerywają kursy podczas wyładowań."
   ],
   "faqs": [
     {
       "q": "Która jednodniowa wycieczka wymaga najwcześniejszego rozpoczęcia?",
       "a": [
-        "Capri i Pompeje korzystają z pierwszych odlotów; do południa stają się zatłoczone i wymagają więcej czasu na podróż."
+        "Capri i Pompeje korzystają z pierwszych odlotów; do południa robi się tam ciasno, a podróż zajmuje więcej czasu."
       ]
     },
     {
-      "q": "Tłumaczenie w przygotowaniu.",
+      "q": "Czy mogę zobaczyć dwa miasta jednego dnia?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Tak — połącz Amalfi z Ravello albo Sorrento z Pompejami. Unikaj łączenia Capri z czymkolwiek innym; poświęć mu cały dzień."
       ]
     }
   ]

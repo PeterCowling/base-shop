@@ -218,6 +218,7 @@ export function GenericContentFaqSection({
         }
         const HeadingTag: "h2" | "h3" = faqHeadingLevel === 3 ? "h3" : "h2";
         const faqHeadingClassName = [
+          "mt-[30px]",
           "text-pretty",
           "text-2xl",
           "font-semibold",

@@ -73,18 +73,5 @@
         "La iluminación urbana varía; lleva la linterna del móvil o una luz pequeña para descensos tardíos."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Galería de fotos",
-    "items": [
-      {
-        "caption": "Terraza de Chiesa Nuova",
-        "alt": "Puesta de sol desde la terraza de Chiesa Nuova"
-      },
-      {
-        "caption": "Nocelle",
-        "alt": "Puesta de sol desde Nocelle"
-      }
-    ]
-  }
+  ]
 }

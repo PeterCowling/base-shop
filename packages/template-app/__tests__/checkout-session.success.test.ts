@@ -107,3 +107,41 @@ test("builds Stripe session with correct items and metadata and forwards IP", as
   expect(args.metadata.subtotal).toBe("30");
   expect(body.clientSecret).toBe("cs_test");
 });
+
+test("builds Stripe session for sale mode without deposit line-items and with rentalDays=0", async () => {
+  jest.useFakeTimers().setSystemTime(new Date("2025-01-01T00:00:00Z"));
+  stripeCreate.mockResolvedValue({
+    id: "sess_test",
+    client_secret: "cs_test",
+  });
+
+  readShopMock.mockResolvedValue({ coverageIncluded: true, type: "sale" });
+
+  const cart = {
+    "sku1:40": {
+      sku: { id: "sku1", title: "Test Item", price: 100, deposit: 50 },
+      qty: 2,
+      size: "40",
+    },
+    "sku2:41": {
+      sku: { id: "sku2", title: "Test Item 2", price: 25, deposit: 10 },
+      qty: 1,
+      size: "41",
+    },
+  };
+  mockCart = cart;
+  const cookie = encodeCartCookie("test");
+
+  const req = createRequest({}, cookie);
+  const res = await POST(req as any);
+  const body = await res.json();
+
+  expect(stripeCreate).toHaveBeenCalled();
+  const [args] = stripeCreate.mock.calls[stripeCreate.mock.calls.length - 1];
+
+  const productNames = args.line_items.map((item: any) => item.price_data.product_data.name);
+  expect(productNames).toEqual(["Test Item (40)", "Test Item 2 (41)"]);
+  expect(args.metadata.rentalDays).toBe("0");
+  expect(args.metadata.depositTotal).toBe("0");
+  expect(body.clientSecret).toBe("cs_test");
+});

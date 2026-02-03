@@ -1,5 +1,10 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const base = require("@acme/config/jest.preset.cjs")();
+const base = require("@acme/config/jest.preset.cjs")({
+  moduleNameMapper: {
+    "^@auth$": "<rootDir>/../auth/src/index.ts",
+    "^@auth/(.*)$": "<rootDir>/../auth/src/$1",
+  },
+});
 
 /** @type {import('jest').Config} */
 module.exports = {

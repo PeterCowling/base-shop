@@ -15,6 +15,7 @@ import { getCustomerSession } from "@acme/auth";
 import { CART_COOKIE, type CartState,decodeCartCookie } from "@acme/platform-core/cartCookie";
 import { getCart } from "@acme/platform-core/cartStore";
 import {
+  CheckoutValidationError,
   createCheckoutSession,
   INSUFFICIENT_STOCK_ERROR,
 } from "@acme/platform-core/checkout/session";
@@ -277,6 +278,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
     if (err instanceof Error && err.message === INSUFFICIENT_STOCK_ERROR) {
       return NextResponse.json({ error: INSUFFICIENT_STOCK_ERROR }, { status: 409 }); // i18n-exempt -- ABC-123 machine-readable API error, not user-facing UI [ttl=2025-06-30]
+    }
+    if (err instanceof CheckoutValidationError) {
+      return NextResponse.json(
+        { error: err.message, code: err.code, details: err.details },
+        { status: 409 },
+      );
     }
     console.error(
       "Failed to create Stripe checkout session" /* i18n-exempt -- ABC-123 developer log [ttl=2025-06-30] */,

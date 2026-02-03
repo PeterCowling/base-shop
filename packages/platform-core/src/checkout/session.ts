@@ -6,4 +6,5 @@ export {
 } from "./createSession";
 export { buildLineItemsForItem } from "./lineItems";
 export { buildCheckoutMetadata } from "./metadata";
+export { CheckoutValidationError } from "./reprice";
 export { computeTotals } from "./totals";

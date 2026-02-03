@@ -3,8 +3,9 @@ import * as dateUtils from "@acme/date-utils";
 import { stripe } from "@acme/stripe";
 
 import { trackEvent } from "../src/analytics";
-import { createCheckoutSession } from "../src/checkout/session";
+import { type CheckoutValidationError,createCheckoutSession } from "../src/checkout/session";
 import { findCoupon } from "../src/coupons";
+import { priceForDays } from "../src/pricing";
 import { PRODUCTS } from "../src/products/index";
 import { getTaxRate } from "../src/tax";
 
@@ -27,11 +28,14 @@ jest.mock("../src/coupons", () => ({
 
 jest.mock("../src/analytics", () => ({ trackEvent: jest.fn() }));
 const stripeCreate = stripe.checkout.sessions.create as jest.Mock;
+const priceForDaysMock = priceForDays as unknown as jest.Mock;
 
 beforeEach(() => {
   stripeCreate.mockReset();
   (trackEvent as jest.Mock).mockReset();
   (findCoupon as jest.Mock).mockReset();
+  priceForDaysMock.mockReset();
+  priceForDaysMock.mockImplementation(async () => 10);
 });
 
 const sku1 = PRODUCTS[0];
@@ -280,21 +284,26 @@ test("omits optional fields when not provided", async () => {
 });
 
 test("throws when inventory is insufficient", async () => {
-  const sku = { ...PRODUCTS[0], stock: 1 };
-  const size = sku.sizes[0];
-  const lowStockCart = {
-    [`${sku.id}:${size}`]: { sku, qty: 2, size },
-  } as any;
+  const originalStock = sku1.stock;
+  (sku1 as any).stock = 1;
+  try {
+    const size = sku1.sizes[0];
+    const lowStockCart = {
+      [`${sku1.id}:${size}`]: { sku: sku1, qty: 2, size },
+    } as any;
 
-  await expect(
-    createCheckoutSession(lowStockCart, {
-      returnDate: "2025-01-02",
-      currency: "EUR",
-      taxRegion: "EU",
-      returnUrl: "x",
-      shopId: "shop",
-    }),
-  ).rejects.toThrow(/Insufficient stock/);
+    await expect(
+      createCheckoutSession(lowStockCart, {
+        returnDate: "2025-01-02",
+        currency: "EUR",
+        taxRegion: "EU",
+        returnUrl: "x",
+        shopId: "shop",
+      }),
+    ).rejects.toThrow(/Insufficient stock/);
+  } finally {
+    (sku1 as any).stock = originalStock;
+  }
 });
 
 test("throws when Stripe session is missing client_secret", async () => {
@@ -349,4 +358,94 @@ test("sale mode skips rental-specific fields and deposits", async () => {
   expect(args.metadata.rentalDays).toBe("0");
   expect(args.metadata.depositTotal).toBe("0");
   expect(result.clientSecret).toBe("cs_sale");
+});
+
+test("reprices checkout using authoritative prices and flags drift (sale mode)", async () => {
+  stripeCreate.mockResolvedValue({
+    id: "sess_sale_drift",
+    client_secret: "cs_sale_drift",
+    payment_intent: "pi_sale_drift",
+  });
+
+  const staleSku1 = { ...sku1, price: sku1.price + 999 };
+  const staleCart = {
+    [`${sku1.id}:${size1}`]: { sku: staleSku1, qty: 2, size: size1 },
+    [`${sku2.id}:${size2}`]: { sku: sku2, qty: 1, size: size2 },
+  } as any;
+
+  const result = await createCheckoutSession(staleCart, {
+    mode: "sale",
+    currency: "EUR",
+    taxRegion: "EU",
+    returnUrl: "x",
+    shopId: "shop",
+  });
+
+  expect(result.priceChanged).toBe(true);
+
+  const [args] = stripeCreate.mock.calls[0];
+  const name = `${sku1.title} (${size1})`;
+  const sku1Line = (args.line_items as any[]).find(
+    (li) => li.price_data?.product_data?.name === name,
+  );
+  expect(sku1Line?.price_data?.unit_amount).toBe(sku1.price * 100);
+});
+
+test("can reject checkout when drift exceeds threshold (enforce_and_reject)", async () => {
+  const previousPolicy = process.env.CHECKOUT_REPRICE_POLICY;
+  process.env.CHECKOUT_REPRICE_POLICY = "enforce_and_reject";
+
+  try {
+    const staleSku1 = { ...sku1, price: sku1.price + 999 };
+    const staleCart = {
+      [`${sku1.id}:${size1}`]: { sku: staleSku1, qty: 2, size: size1 },
+      [`${sku2.id}:${size2}`]: { sku: sku2, qty: 1, size: size2 },
+    } as any;
+
+    await expect(
+      createCheckoutSession(staleCart, {
+        mode: "sale",
+        currency: "EUR",
+        taxRegion: "EU",
+        returnUrl: "x",
+        shopId: "shop",
+      }),
+    ).rejects.toMatchObject<Partial<CheckoutValidationError>>({
+      code: "PRICE_CHANGED",
+    });
+  } finally {
+    if (typeof previousPolicy === "string") {
+      process.env.CHECKOUT_REPRICE_POLICY = previousPolicy;
+    } else {
+      delete process.env.CHECKOUT_REPRICE_POLICY;
+    }
+  }
+});
+
+test("reprices checkout using authoritative prices and flags drift (rental mode)", async () => {
+  stripeCreate.mockResolvedValue({
+    id: "sess_rental_drift",
+    client_secret: "cs_rental_drift",
+    payment_intent: "pi_rental_drift",
+  });
+
+  priceForDaysMock.mockImplementation(async (sku: any, days: number) =>
+    (sku.price ?? 0) * days,
+  );
+
+  const staleSku1 = { ...sku1, price: sku1.price + 999 };
+  const staleCart = {
+    [`${sku1.id}:${size1}`]: { sku: staleSku1, qty: 2, size: size1 },
+    [`${sku2.id}:${size2}`]: { sku: sku2, qty: 1, size: size2 },
+  } as any;
+
+  const result = await createCheckoutSession(staleCart, {
+    returnDate: "2025-01-02",
+    currency: "EUR",
+    taxRegion: "EU",
+    returnUrl: "x",
+    shopId: "shop",
+  });
+
+  expect(result.priceChanged).toBe(true);
 });

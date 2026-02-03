@@ -34,6 +34,17 @@ export class CheckoutValidationError extends Error {
   }
 }
 
+export type RepriceCartOptions = {
+  /**
+   * Whether to validate stock using SKU.stock.
+   *
+   * Some checkout flows validate inventory via a dedicated inventory subsystem
+   * (e.g. holds / central inventory). In those cases the SKU record may not be
+   * the authoritative source of availability.
+   */
+  validateStock?: boolean;
+};
+
 /**
  * Reprice cart with authoritative data from database
  *
@@ -48,8 +59,10 @@ export class CheckoutValidationError extends Error {
  */
 export async function repriceCart(
   cart: CartStateSecure,
-  shopId?: string
+  shopId?: string,
+  options: RepriceCartOptions = {},
 ): Promise<RepricedLineItem[]> {
+  const validateStock = options.validateStock !== false;
   const items: RepricedLineItem[] = [];
   const errors: Array<{ skuId: string; code: string; message: string }> = [];
 
@@ -83,14 +96,16 @@ export async function repriceCart(
           return;
         }
 
-        // Validate stock availability
-        if (sku.stock < line.qty) {
-          errors.push({
-            skuId: line.skuId,
-            code: 'INSUFFICIENT_STOCK',
-            message: `Only ${sku.stock} available (requested ${line.qty})`,
-          });
-          return;
+        if (validateStock) {
+          // Validate stock availability
+          if (sku.stock < line.qty) {
+            errors.push({
+              skuId: line.skuId,
+              code: 'INSUFFICIENT_STOCK',
+              message: `Only ${sku.stock} available (requested ${line.qty})`,
+            });
+            return;
+          }
         }
 
         // Validate size if required

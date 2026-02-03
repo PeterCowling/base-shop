@@ -5,7 +5,7 @@ import { calculateRentalDays } from "@acme/date-utils";
 import { stripe } from "@acme/stripe";
 
 import { trackEvent } from "../analytics";
-import type { CartState } from "../cart";
+import { type CartState,migrateCartState } from "../cart";
 import { findCoupon } from "../coupons";
 import { incrementOperationalError } from "../shops/health";
 import { getTaxRate } from "../tax";
@@ -16,7 +16,8 @@ import {
   buildSaleLineItemsForItem,
 } from "./lineItems";
 import { buildCheckoutMetadata } from "./metadata";
-import { computeSaleTotals,computeTotals } from "./totals";
+import { CheckoutValidationError, repriceCart } from "./reprice";
+import { computeSaleTotals, computeTotals } from "./totals";
 
 export interface CreateCheckoutSessionOptions {
   /**
@@ -83,6 +84,50 @@ function assertInventoryAvailable(cart: CartState): void {
       throw new Error(INSUFFICIENT_STOCK_ERROR);
     }
   }
+}
+
+type RepriceDriftPolicy = "enforce_and_proceed" | "enforce_and_reject" | "log_only";
+
+const DEFAULT_REPRICE_POLICY: RepriceDriftPolicy = "enforce_and_proceed";
+const DEFAULT_REPRICE_DRIFT_ABS = 0.1; // 10 cents
+const DEFAULT_REPRICE_DRIFT_PCT = 0.01; // 1%
+
+function getRepriceDriftPolicy(): RepriceDriftPolicy {
+  const raw = (process.env.CHECKOUT_REPRICE_POLICY ?? "").trim().toLowerCase();
+  if (raw === "enforce_and_reject") return "enforce_and_reject";
+  if (raw === "log_only") return "log_only";
+  if (raw === "enforce_and_proceed") return "enforce_and_proceed";
+  return DEFAULT_REPRICE_POLICY;
+}
+
+function getRepriceDriftAbsThreshold(): number {
+  const raw = Number(process.env.CHECKOUT_REPRICE_DRIFT_ABS ?? "");
+  if (!Number.isFinite(raw) || raw < 0) return DEFAULT_REPRICE_DRIFT_ABS;
+  return raw;
+}
+
+function getRepriceDriftPctThreshold(): number {
+  const raw = Number(process.env.CHECKOUT_REPRICE_DRIFT_PCT ?? "");
+  if (!Number.isFinite(raw) || raw < 0) return DEFAULT_REPRICE_DRIFT_PCT;
+  return raw;
+}
+
+function getTaxAmount(subtotal: number, taxRate: number): { cents: number; amount: number } {
+  const cents = Math.round(subtotal * taxRate * 100);
+  return { cents, amount: cents / 100 };
+}
+
+async function repriceHydratedCart(cart: CartState, shopId: string): Promise<CartState> {
+  const secureCart = migrateCartState(cart);
+  const repriced = await repriceCart(secureCart, shopId, { validateStock: false });
+  const skuById = new Map(repriced.map((item) => [item.skuId, item.sku]));
+
+  const updated: CartState = {};
+  for (const [key, line] of Object.entries(cart)) {
+    const freshSku = skuById.get(line.sku.id);
+    updated[key] = { ...line, sku: freshSku ?? line.sku };
+  }
+  return updated;
 }
 
 function buildCheckoutIdempotencyKey(params: {
@@ -197,10 +242,13 @@ export async function createCheckoutSession(
   currency: string;
   paymentIntentId?: string;
   orderId?: string;
+  priceChanged: boolean;
 }> {
   try {
+    const driftPolicy = getRepriceDriftPolicy();
+    const repricedCart = await repriceHydratedCart(cart, shopId);
     if (!skipInventoryValidation) {
-      assertInventoryAvailable(cart);
+      assertInventoryAvailable(repricedCart);
     }
     const couponDef = await findCoupon(shopId, coupon);
     if (couponDef) {
@@ -211,32 +259,44 @@ export async function createCheckoutSession(
     }
 
     const discountRate = couponDef ? couponDef.discountPercent / 100 : 0;
+    const taxRate = await getTaxRate(taxRegion);
+
     let rentalDays = 0;
     let effectiveReturnDate: string | undefined = returnDate;
 
-    let line_items: Stripe.Checkout.SessionCreateParams.LineItem[];
-    let subtotal: number;
-    let depositTotal: number;
-    let discount: number;
+    let line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
+    let subtotal = 0;
+    let depositTotal = 0;
+    let discount = 0;
+    let priceChanged = false;
+
+    let originalAmount = 0;
+    let repricedAmount = 0;
+    let repricedTax = { cents: 0, amount: 0 };
 
     if (mode === "sale") {
+      const originalTotals = await computeSaleTotals(cart, discountRate, currency);
+      const repricedTotals = await computeSaleTotals(repricedCart, discountRate, currency);
+
       const lineItemsNested = await Promise.all(
-        Object.values(cart).map((item) =>
+        Object.values(repricedCart).map((item) =>
           buildSaleLineItemsForItem(item, discountRate, currency),
         ),
       );
       line_items = lineItemsNested.flat();
-      if (lineItemsExtra.length) {
-        line_items = line_items.concat(lineItemsExtra);
-      }
+      if (lineItemsExtra.length) line_items = line_items.concat(lineItemsExtra);
 
-      const totals = await computeSaleTotals(cart, discountRate, currency);
-      ({ subtotal, depositTotal, discount } = totals);
-      subtotal += subtotalExtra;
-      // Deposit totals are always zero for sale flows; depositAdjustment is ignored.
+      subtotal = repricedTotals.subtotal + subtotalExtra;
       depositTotal = 0;
+      discount = repricedTotals.discount;
       rentalDays = 0;
       effectiveReturnDate = undefined;
+
+      const originalSubtotal = originalTotals.subtotal + subtotalExtra;
+      const originalTax = getTaxAmount(originalSubtotal, taxRate);
+      repricedTax = getTaxAmount(subtotal, taxRate);
+      originalAmount = originalSubtotal + originalTax.amount;
+      repricedAmount = subtotal + repricedTax.amount;
     } else {
       try {
         rentalDays = calculateRentalDays(returnDate);
@@ -248,34 +308,64 @@ export async function createCheckoutSession(
       }
 
       const lineItemsNested = await Promise.all(
-        Object.values(cart).map((item) =>
+        Object.values(repricedCart).map((item) =>
           buildLineItemsForItem(item, rentalDays, discountRate, currency),
         ),
       );
       line_items = lineItemsNested.flat();
-      if (lineItemsExtra.length) {
-        line_items = line_items.concat(lineItemsExtra);
-      }
+      if (lineItemsExtra.length) line_items = line_items.concat(lineItemsExtra);
 
-      const totals = await computeTotals(
-        cart,
-        rentalDays,
-        discountRate,
-        currency,
-      );
-      ({ subtotal, depositTotal, discount } = totals);
-      subtotal += subtotalExtra;
-      depositTotal += depositAdjustment;
+      const originalTotals = await computeTotals(cart, rentalDays, discountRate, currency);
+      const repricedTotals = await computeTotals(repricedCart, rentalDays, discountRate, currency);
+
+      subtotal = repricedTotals.subtotal + subtotalExtra;
+      depositTotal = repricedTotals.depositTotal + depositAdjustment;
+      discount = repricedTotals.discount;
+
+      const originalSubtotal = originalTotals.subtotal + subtotalExtra;
+      const originalDepositTotal = originalTotals.depositTotal + depositAdjustment;
+      const originalTax = getTaxAmount(originalSubtotal, taxRate);
+      repricedTax = getTaxAmount(subtotal, taxRate);
+
+      originalAmount = originalSubtotal + originalDepositTotal + originalTax.amount;
+      repricedAmount = subtotal + depositTotal + repricedTax.amount;
     }
 
-    const taxRate = await getTaxRate(taxRegion);
-    const taxAmountCents = Math.round(subtotal * taxRate * 100);
-    const taxAmount = taxAmountCents / 100;
-    if (taxAmountCents > 0) {
+    const diff = repricedAmount - originalAmount;
+    const threshold = Math.max(
+      getRepriceDriftAbsThreshold(),
+      getRepriceDriftPctThreshold() * Math.max(0, repricedAmount),
+    );
+    if (Math.abs(diff) >= threshold) {
+      priceChanged = true;
+      recordMetric("cart_reprice_drift_total", {
+        shopId,
+        service: "platform-core",
+        mode,
+        policy: driftPolicy,
+        direction: diff > 0 ? "up" : "down",
+      });
+
+      if (driftPolicy === "enforce_and_reject") {
+        throw new CheckoutValidationError(
+          "PRICE_CHANGED",
+          {
+            originalAmount,
+            repricedAmount,
+            diff,
+            threshold,
+            currency,
+          },
+          "Price changed",
+        );
+      }
+    }
+
+    if (repricedTax.cents > 0) {
       line_items.push({
         price_data: {
           currency: currency.toLowerCase(),
-          unit_amount: taxAmountCents,
+          unit_amount: repricedTax.cents,
           product_data: { name: "Tax" }, // i18n-exempt -- Stripe product label, not user copy
         },
         quantity: 1,
@@ -284,7 +374,7 @@ export async function createCheckoutSession(
 
     const sizesMeta = JSON.stringify(
       Object.fromEntries(
-        Object.values(cart).map((item) => [item.sku.id, item.size ?? ""]),
+        Object.values(repricedCart).map((item) => [item.sku.id, item.size ?? ""]),
       ),
     );
 
@@ -303,7 +393,7 @@ export async function createCheckoutSession(
       coupon: couponDef?.code,
       currency,
       taxRate,
-      taxAmount,
+      taxAmount: repricedTax.amount,
       taxMode: taxMode ?? "static_rates",
       environment: environment ?? process.env.NODE_ENV ?? "",
       inventoryReservationId,
@@ -345,7 +435,7 @@ export async function createCheckoutSession(
       depositAdjustment,
       shipping,
       billing_details,
-      cart,
+      cart: repricedCart,
     });
 
     const session = await stripe.checkout.sessions.create(
@@ -390,14 +480,14 @@ export async function createCheckoutSession(
       status: "success",
     });
 
-    const amount = subtotal + depositTotal + taxAmount;
     return {
       clientSecret,
       sessionId: session.id,
-      amount,
+      amount: repricedAmount,
       currency,
       paymentIntentId,
       orderId: sessionOrderId ?? orderId,
+      priceChanged,
     };
   } catch (err) {
     incrementOperationalError(shopId);

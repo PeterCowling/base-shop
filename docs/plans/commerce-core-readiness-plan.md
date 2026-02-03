@@ -834,6 +834,7 @@ pnpm --filter @apps/cover-me-pretty test -- stripe-webhook.test.ts
 - `apps/cover-me-pretty/src/api/inventory/validate/route.ts`
 - `apps/cochlearfit-worker/src/index.ts`
 - `packages/platform-core/src/types/inventory.ts` (contract types)
+- `docs/contracts/inventory-authority-contract.md` (new)
 
 **Depends on:** -
 

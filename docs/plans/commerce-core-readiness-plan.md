@@ -310,6 +310,11 @@ Production-grade reliability:
 
 **Context:** CMS Node rate limiter patterns won't work unchanged in Workers runtime. The gateway runs in Cloudflare Workers which has different runtime, storage, and timer capabilities.
 
+**Clarification (naming):**
+- Cloudflare primitives: Durable Objects (DO), KV, D1
+- D1 is Cloudflare’s SQL database; generally a poor fit for hot per-request counters vs DO/KV/product limits
+- Redis is not a Cloudflare product (in this repo it’s typically Upstash Redis via REST); it can be used from Workers but adds an external dependency
+
 **Options:**
 - **Option A: Cloudflare Rate Limiting product** — native, lowest latency, lowest ops burden
 - **Option B: Cloudflare Durable Objects** — reliable, stateful, per-PoP, allows granular per-shop limits
@@ -334,6 +339,8 @@ Production-grade reliability:
   - Repo: `wrangler.toml:5-19` (existing KV + Durable Object bindings in this repo; DO is already in use for carts/sessions)
   - Repo: `packages/auth/src/rateLimiter.ts:24-115` (existing KV-based limiter pattern; could be reused for a coarse gateway limit)
   - Repo: `packages/platform-core/src/cartStore/cloudflareDurableStore.ts:8-88` (DO patterns + minimal type surface used in-repo)
+  - Repo: `apps/cochlearfit-worker/wrangler.toml:1-26` (reference: worker app packaging + bindings live alongside the worker)
+  - Repo: `apps/checkout-gateway-worker/` (no `package.json`/`wrangler.toml` today; D04 decision should account for how this worker is built/deployed/tested)
 - **Decision / resolution:** No decision made; still needs user/stakeholder input.
 - **Changes to task:** Confidence corrected to reflect “needs-input” approach uncertainty (not an implementation unknown).
 
@@ -461,7 +468,7 @@ Production-grade reliability:
   - Repo: `packages/platform-core/src/checkout/reprice.ts:49-137` (repricing API + validation behavior)
   - Repo: `packages/platform-core/src/cart/cartLineSecure.ts:13-36` (secure cart line shape)
   - Repo: `apps/cover-me-pretty/src/api/checkout-session/route.ts:57-68` (cart hydration) and `:203-231` (Stripe session creation call site)
-- **Decision / resolution:** Proceed with route-boundary repricing using a `CartState` → `CartStateSecure` conversion (no storage migration required for Phase 1).
+- **Decision / resolution:** Enforce repricing inside platform-core checkout session creation (all call sites) using a `CartState` → `CartStateSecure` conversion + re-hydration (no storage migration required for Phase 1).
 - **Changes to task:** Updated confidence + updated implementation steps to reflect the secure-cart input requirement.
 
 **What would make this >=90%:**
@@ -470,22 +477,24 @@ Production-grade reliability:
 - Validate drift thresholds against real tax/rounding behavior in Stripe test mode
 
 **Planning validation:**
-- Tests run: `pnpm --filter @acme/platform-core test -- checkout-session.test.ts` — PASS (11 tests) (re-verified 2026-02-02)
-- Tests run: `pnpm --filter @apps/cover-me-pretty test -- checkout-session.test.ts` — FAIL (re-verified 2026-02-02)
-  - Root cause: In tests, `@acme/platform-core` uses `createTestPrismaStub()` (`packages/platform-core/src/db.ts:153-157`) which currently lacks `inventoryHold`/`inventoryHoldItem` delegates; `createInventoryHold` crashes on `tx.inventoryHold.findMany` inside the reaper (`packages/platform-core/src/inventoryHolds.reaper.ts:13-18`). The route logs this via `console.error` (`apps/cover-me-pretty/src/api/checkout-session/route.ts:174`) and Jest hard-fails on unexpected `console.error` (`jest.setup.ts:364-369`). Fix options: (1) mock `@acme/platform-core/inventoryHolds` in `apps/cover-me-pretty/__tests__/checkout-session.test.ts` (route-unit scope), or (2) implement the missing prisma stubs + seed inventory in tests (aligns with COM-102).
-- Code reviewed: `packages/platform-core/src/checkout/createSession.ts`, `packages/platform-core/src/checkout/reprice.ts`, `packages/platform-core/src/cart/cartLineSecure.ts`, `apps/cover-me-pretty/src/api/checkout-session/route.ts`
+- Tests run: `pnpm --filter @acme/platform-core test -- checkout-session.test.ts` — PASS (14 tests) (2026-02-03)
+- Tests run: `pnpm --filter @apps/cover-me-pretty test -- checkout-session.test.ts` — PASS (2026-02-03)
+  - Note: route tests still log `console.error` from hold-stub gaps (`inventoryHolds.reaper`); address as part of COM-102’s stub hardening.
+- Lint: `pnpm --filter @acme/platform-core lint` — PASS (2026-02-03)
+- Lint: `pnpm --filter @apps/cover-me-pretty lint` — PASS (2026-02-03)
+- Lint: `pnpm --filter @acme/template-app lint` — PASS (2026-02-03)
 
 **Acceptance:**
-- [ ] `repriceCart` called before `createCheckoutSession`
-- [ ] Session always uses server-repriced values (never client values)
-- [ ] Price drift threshold: $0.10 or 1% (not 1 cent - avoids rounding false positives)
-- [ ] Return `priceChanged: true` flag when drift detected but proceeding
-- [ ] Metrics: `cart_reprice_drift_total` counter added
+- [x] Checkout session creation reprices cart server-side (no stored cart pricing trust)
+- [x] Price drift threshold defaults: `$0.10` or `1%` (configurable)
+- [x] Response includes `priceChanged: true` when drift detected but proceeding
+- [x] Metric: `cart_reprice_drift_total` recorded on drift
+- [x] Policy supports strict rejection via 409 `PRICE_CHANGED`
 
 **Test contract:**
 - **TC-01:** Cart contains stale `sku.price` → session uses repriced SKU values and returns `priceChanged: true`
 - **TC-02:** Drift ≤ threshold → session proceeds and returns `priceChanged: false` (no user-facing “price changed”)
-- **TC-03:** Drift > threshold + `CHECKOUT_REPRICING_MODE=enforce_and_reject` → route returns 409 `PRICE_CHANGED`
+- **TC-03:** Drift > threshold + `CHECKOUT_REPRICE_POLICY=enforce_and_reject` → route returns 409 `PRICE_CHANGED`
 - **TC-04:** Drift detected → `cart_reprice_drift_total` increments with `{ shopId, mode }`
 - **Acceptance coverage:** TC-01/TC-03 cover “session uses repriced values”; TC-02/TC-03 cover drift policy; TC-04 covers metrics
 - **Test type:** integration (route) + unit (platform-core)
@@ -493,13 +502,15 @@ Production-grade reliability:
 - **Run:** `pnpm --filter @apps/cover-me-pretty test -- checkout-session.test.ts && pnpm --filter @acme/platform-core test -- checkout-session.test.ts`
 
 **Rollout/rollback:**
-- Feature flag: `CHECKOUT_REPRICING_MODE` with values:
-  - `log_only` - reprice but don't enforce (initial rollout)
-  - `enforce_and_proceed` - recommended for launch
-  - `enforce_and_reject` - strict mode
-- Rollback: Set to `log_only`
+- Policy: `CHECKOUT_REPRICE_POLICY` (`log_only` | `enforce_and_proceed` | `enforce_and_reject`; default: `enforce_and_proceed`)
+- Thresholds: `CHECKOUT_REPRICE_DRIFT_ABS` (default: `0.10`) and `CHECKOUT_REPRICE_DRIFT_PCT` (default: `0.01`)
+- Rollback: Set `CHECKOUT_REPRICE_POLICY=log_only` (drift still observed + reported; no rejection)
 
 **Documentation impact:** Update `docs/orders.md` with repricing behavior
+
+#### Build Update (2026-02-03)
+- **Commit:** `265a971b6b`
+- **Implemented:** server-side repricing in `@acme/platform-core` checkout session creation, drift detection + metric, and 409 `PRICE_CHANGED` path (configurable)
 
 **Notes/references:**
 - Security comment in `reprice.ts:40-46` explains rationale
@@ -762,6 +773,7 @@ Production-grade reliability:
   - Repo: `apps/xa/src/lib/rateLimit.ts:24-78` (header patterns incl. `Retry-After`)
   - Repo: `wrangler.toml:5-19` (existing KV/DO bindings patterns in this repo)
   - Repo: `apps/cms/src/lib/server/rateLimiter.ts:11-110` (Node-side limiter patterns and trusted IP extraction)
+  - Repo: `apps/cochlearfit-worker/wrangler.toml:1-26` (reference: a worker app that is deployable/testable in isolation; gateway worker currently lacks this scaffolding)
 - **Decision / resolution:** Blocked on COM-D04 backend choice.
 - **Changes to task:** Updated evidence and raised implementation/impact confidence (approach still decision-gated).
 
@@ -1211,6 +1223,9 @@ pnpm --filter @apps/cover-me-pretty test -- stripe-webhook.test.ts
   - Impact: 60% — Key incompatibilities are now proven (CochlearFit relies on routes not allowed by the platform front-door/gateway allowlists).
 - **Investigation performed:**
   - Repo: `apps/cochlearfit/package.json:8-9` (static export preview is a first-class workflow)
+  - Repo: `apps/cochlearfit/README.md:1-60` (current topology: static export + separate Worker API; `NEXT_PUBLIC_API_BASE_URL` can point at the Worker)
+  - Repo: `apps/cochlearfit/src/lib/api.ts:1-7` (`NEXT_PUBLIC_API_BASE_URL` + relative `/api/*` calls)
+  - Repo: `apps/cochlearfit-worker/src/index.ts:480-579` (current Worker implements POST `/api/checkout/session` + GET `/api/checkout/session/:id`)
   - Repo: `apps/checkout-gateway-worker/src/index.ts:70-81` (gateway requires `x-shop-id` for shop-scoped endpoints)
   - Repo: `apps/cochlearfit/src/lib/checkout.ts:16-46` (current API surface: POST `/api/checkout/session`, GET `/api/checkout/session/:id`)
   - Repo: `apps/cochlearfit-worker/src/index.ts:513-555` (worker implements GET `/api/checkout/session/:id` which the platform routing layer does not allow)
@@ -1412,6 +1427,7 @@ pnpm --filter @apps/cover-me-pretty test -- stripe-webhook.test.ts
   - Repo: `packages/platform-core/src/cartStore/redisStore.ts:63-107` (Redis persists full `SKU` object JSON today; needs secure serialization)
   - Repo: `packages/platform-core/src/cartStore/cloudflareDurableStore.ts:51-52` and `:177-199` (DO persists full `CartState` today; needs secure storage format)
   - Repo: `packages/platform-core/src/cartStore.ts:15-30` (store API currently requires `SKU` objects on write; migration likely needs a new secure write surface or wrapper)
+  - Repo: `packages/platform-core/src/cartApi.ts:1-210` (edge cart API currently reads/writes legacy `CartState` with hydrated `SKU` objects; migration must account for this API surface)
   - Repo: `packages/template-app/src/api/cart/route.ts:10-15` + `apps/cover-me-pretty/src/api/cart/route.ts:11-18` + `apps/cms/src/app/api/cart/route.ts:1-30` (multiple cart API entrypoints exist; all currently return legacy cart shape)
   - Repo: `packages/ui/src/components/layout/Header.tsx:49-58` (server UI reads cart via `createCartStore().getCart()` and expects `CartLine.sku`)
   - Repo: `packages/platform-core/__tests__/cart.secureMigration.test.ts:1-153` (existing TODO stub scenarios)
@@ -1504,6 +1520,7 @@ pnpm --filter @apps/cover-me-pretty test -- stripe-webhook.test.ts
 | 2026-02-02 | Investigation pass | Identified inventory-hold stub gaps + clarified D04/D05 evidence | Re-plan Updates in tasks |
 | 2026-02-02 | Investigation pass | Mapped COM-401 blast radius + confirmed shop settings source-of-truth and env/metrics patterns | COM-401 Re-plan Update |
 | 2026-02-02 | Investigation pass | Mapped COM-104/COM-302/COM-402 routing + storage constraints; tightened test/rollout assumptions | Re-plan Updates in tasks |
+| 2026-02-03 | Investigation pass | Clarified Cloudflare storage primitives and expanded evidence for COM-D04/COM-104/COM-302/COM-402 | Re-plan Updates in tasks |
 | TBD | COM-D01: CochlearFit Architecture | Pending | - |
 | TBD | COM-D02: Checkout Mode | Pending | - |
 | TBD | COM-D03: Inventory Enforcement | Pending | - |
@@ -1552,7 +1569,7 @@ These files currently use `it.todo()` and **do not satisfy the TDD gate**. Conve
 
 ## Re-plan Handoff (2026-02-02)
 
-- **Ready to build (≥80% + test contracts):** COM-101
+- **Ready to build (≥80% + test contracts):** - (none; complete COM-D0x decisions + re-plan COM-102 next)
 - **Ready after dependencies:** COM-401 (after COM-D03)
 - **Needs re-plan before build:** COM-102 (L-effort; TODO stubs must become enforcing tests), COM-104 (blocked on COM-D04), COM-301 (blocked on COM-D05)
 - **Investigation required:** COM-302, COM-402
@@ -1561,9 +1578,9 @@ These files currently use `it.todo()` and **do not satisfy the TDD gate**. Conve
 
 ## Next Steps
 
-1. Build COM-101 to enforce checkout repricing (includes fixing the cover-me-pretty checkout-session test harness issue surfaced in planning validation)
-2. Resolve Phase 0 decisions (start with COM-D04 + COM-D05; COM-D03 unblocks COM-401)
-3. Re-plan COM-102 once TODO stubs are converted to enforcing tests; then proceed with idempotent holds + Stripe failure classification (COM-103)
+1. Resolve Phase 0 decisions (start with COM-D04 + COM-D05; COM-D03 unblocks COM-401)
+2. Re-plan COM-102 once TODO stubs are converted to enforcing tests; then proceed with idempotent holds + Stripe failure classification (COM-103)
+3. After COM-D03, build COM-401 (central inventory fail-closed enforcement)
 
 ---
 
@@ -1575,3 +1592,4 @@ These files currently use `it.todo()` and **do not satisfy the TDD gate**. Conve
 | 2026-02-03 | COM-201 | Done | 03b45c32fc | Unified inventory validate request contract, added strict mismatch checks, and documented the shared API contract |
 | 2026-02-03 | COM-202 | Done | 4c916f54c5 | Enforced fail-closed webhook tenant assertion with mismatch/unresolvable tests and metrics |
 | 2026-02-03 | COM-203 | Done | effdeb6053 | Added contract tests for CMS + tenant inventory validate routes (canonical + deprecated shapes + fail-closed mismatches) |
+| 2026-02-03 | COM-101 | Done | 265a971b6b | Enforced checkout repricing at session creation with drift detection + optional `PRICE_CHANGED` rejection |

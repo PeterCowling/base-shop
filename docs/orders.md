@@ -69,6 +69,22 @@ Checkout sessions for both rentals and straight sales are created via the shared
 
 Both flows share the same Stripe integration (session creation, tax line calculation, metadata layout) so storefront apps can switch between them by changing configuration rather than reimplementing checkout logic.
 
+## Checkout repricing (fail-closed optional)
+
+`createCheckoutSession` performs **server-side repricing** at session creation time: it re-resolves authoritative SKU data and builds Stripe line items from that, rather than trusting stored cart pricing.
+
+Drift handling:
+
+- Response includes `priceChanged: boolean` (true when drift was detected).
+- Drift is tracked via `cart_reprice_drift_total`.
+- Policy env:
+  - `CHECKOUT_REPRICE_POLICY=enforce_and_proceed` (default): proceed with repriced values and return `priceChanged: true`.
+  - `CHECKOUT_REPRICE_POLICY=enforce_and_reject`: throw `CheckoutValidationError` with code `PRICE_CHANGED` (routes translate this to HTTP 409).
+  - `CHECKOUT_REPRICE_POLICY=log_only`: proceed with repriced values and report drift (no rejection).
+- Threshold env:
+  - `CHECKOUT_REPRICE_DRIFT_ABS` (default `0.10`)
+  - `CHECKOUT_REPRICE_DRIFT_PCT` (default `0.01`)
+
 ## Stripe webhook tenancy (fail-closed)
 
 Webhook endpoints must enforce **tenant isolation** to prevent cross-shop event processing.

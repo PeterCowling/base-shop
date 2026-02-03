@@ -33,6 +33,7 @@ pnpm typecheck && pnpm lint && git diff --staged
 | `git clean -fd` | STOP. Do not run. Ask for help. |
 | `git push --force` / `-f` / `--force-with-lease` | STOP. Do not run. Ask for help. |
 | `git checkout -- .` / `git restore .` | STOP. Do not run. Ask for help. |
+| `git restore -- <pathspec...>` / `git checkout -- <pathspec...>` | STOP. Do not run bulk discards (multiple paths, directories, or globs). |
 | `git stash drop` / `git stash clear` | STOP. Do not run. Ask for help. |
 | `git rebase` (incl. `-i`) / `git commit --amend` | STOP. Do not run. Ask for help. |
 | `rm -rf <dir>` | STOP. Do not run. Ask for help. |

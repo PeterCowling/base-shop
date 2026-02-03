@@ -1,7 +1,17 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "noEmit": true
+    "noEmit": false,
+    "jsx": "react-jsx",
+    "outDir": ".ts-jest",
+    "rootDir": ".",
+    "types": [
+      "node",
+      "jest",
+      "@testing-library/jest-dom"
+    ],
+    "allowJs": true,
+    "resolveJsonModule": true
   },
   "include": [
     "src/**/*.test.ts",
@@ -12,4 +22,3 @@
     "__tests__/**/*.tsx"
   ]
 }
-

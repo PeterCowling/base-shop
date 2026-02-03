@@ -40,7 +40,8 @@ These commands are blocked by one or more protection layers:
 | `git reset --hard` | Destroys uncommitted work |
 | `git reset --hard <commit>` | **CATASTROPHIC** - Deletes all work since that commit |
 | `git clean -fd` | Permanently deletes untracked files |
-| `git checkout -- .` | Discards all local modifications |
+| `git checkout -- .` / `git restore .` | Discards all local modifications |
+| `git restore -- <pathspec...>` / `git checkout -- <pathspec...>` | Bulk discards local modifications (multiple paths, directories, or globs) |
 | `git stash drop/clear` | Loses stashed work permanently |
 | `git push --force` / `-f` | Overwrites remote history |
 | `git rebase -i` | Can rewrite/lose history |
@@ -93,4 +94,4 @@ These commands are blocked by one or more protection layers:
 
 ---
 
-**Last Updated:** 2026-01-17
+**Last Updated:** 2026-02-02

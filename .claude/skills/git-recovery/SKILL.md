@@ -12,12 +12,13 @@ Use this skill when git state is confusing, commits seem lost, or you need to re
 ## First Response: STOP and Assess
 
 **Do NOT run any git commands until you understand the current state.**
+In particular, do not run any command that discards changes (`git restore`, `git checkout --`), especially in bulk.
 
 ```bash
 git status
 git log --oneline -10
 git branch -vv
-git stash list
+scripts/git/writer-lock.sh status
 ```
 
 Share this output with the user before proceeding.
@@ -52,15 +53,9 @@ If `git status` shows "HEAD detached":
    git log --oneline -5
    ```
 
-2. **If you have uncommitted work, stash it**:
+2. **If you have work you want to keep, create a branch to attach it**:
    ```bash
-   git stash
-   ```
-
-3. **Return to your branch**:
-   ```bash
-   git checkout <your-branch>
-   git stash pop  # if you stashed
+   git checkout -b recovery-branch
    ```
 
 ### Scenario 3: Merge Conflict Overwhelm
@@ -72,10 +67,10 @@ If conflicts are too complex:
    git merge --abort
    ```
 
-2. **Try rebasing instead** (often cleaner):
+2. **Don’t “fix” this by rewriting history.** Prefer a plain merge (or ask for human guidance):
    ```bash
-   git rebase <target-branch>
-   # Resolve conflicts one commit at a time
+   git fetch origin --prune
+   git merge <target-branch>
    ```
 
 ### Scenario 4: Wrong Commits on Branch
@@ -93,11 +88,13 @@ If commits ended up on wrong branch:
    git cherry-pick <commit-hash>
    ```
 
-3. **Remove from wrong branch** (soft reset keeps changes):
-   ```bash
-   git checkout wrong-branch
-   git reset --soft HEAD~1
-   ```
+3. **Clean up the wrong branch safely**:
+   - Prefer abandoning the wrong branch and continuing on the correct one, or
+   - Revert the commits on the wrong branch:
+     ```bash
+     git checkout wrong-branch
+     git revert <commit-hash>
+     ```
 
 ## Safe Commands (Always OK)
 
@@ -106,21 +103,23 @@ If commits ended up on wrong branch:
 | `git status` | See current state |
 | `git log` | See commit history |
 | `git reflog` | See all recent HEAD movements |
-| `git stash` | Temporarily save uncommitted work |
-| `git stash list` | See saved stashes |
 | `git branch -a` | List all branches |
 | `git diff` | See uncommitted changes |
 
-## Dangerous Commands (STOP and Ask)
+## Dangerous Commands (Agents: Never)
 
-Never run these without explicit user approval:
+Never run these as an agent in Base-Shop. If one seems necessary, STOP and ask for human guidance.
 
 | Command | Danger |
 |---------|--------|
 | `git reset --hard` | Loses uncommitted work |
 | `git clean -fd` | Deletes untracked files |
-| `git push --force` | Overwrites remote history |
-| `git rebase -i` on shared branches | Rewrites shared history |
+| `git push --force` / `-f` / `--force-with-lease` | Overwrites remote history |
+| `git checkout -- .` / `git restore .` | Discards local modifications |
+| `git restore -- <pathspec...>` / `git checkout -- <pathspec...>` | Bulk discards local modifications (multiple paths, directories, or globs) |
+| `git stash drop` / `git stash clear` | Permanently deletes stashed work |
+| `git rebase` (incl. `-i`) | Rewrites history (often leads to force-push pressure) |
+| `git commit --amend` | Rewrites the last commit (dangerous after push) |
 
 ## Common Pitfalls
 
@@ -128,5 +127,5 @@ Never run these without explicit user approval:
 - Don't use `reset --hard` to "fix" things
 - Don't force push to fix local issues
 - Do run `git status` and share output first
-- Do use `git stash` to protect uncommitted work
+- Do create a recovery branch (or checkpoint commit) to protect work
 - Do check `git reflog` for recovery options

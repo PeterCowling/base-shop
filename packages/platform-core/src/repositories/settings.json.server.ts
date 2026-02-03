@@ -25,6 +25,41 @@ export type Settings = ShopSettings;
 
 // paths resolved via safeFs helpers
 
+export function getDefaultShopSettings(): Settings {
+  return {
+    languages: DEFAULT_LANGUAGES,
+    seo: {
+      aiCatalog: {
+        enabled: true,
+        fields: ["id", "title", "description", "price", "media"],
+        pageSize: 50,
+      },
+    },
+    analytics: undefined,
+    leadCapture: { enabled: true },
+    freezeTranslations: false,
+    currency: "EUR",
+    taxRegion: "",
+    depositService: { enabled: false, intervalMinutes: 60 },
+    reverseLogisticsService: { enabled: false, intervalMinutes: 60 },
+    returnService: { upsEnabled: false, bagEnabled: false, homePickupEnabled: false },
+    premierDelivery: undefined,
+    stockAlert: { recipients: [] },
+    luxuryFeatures: {
+      blog: false,
+      contentMerchandising: false,
+      raTicketing: false,
+      fraudReviewThreshold: 0,
+      requireStrongCustomerAuth: false,
+      strictReturnConditions: false,
+      trackingDashboard: false,
+      premierDelivery: false,
+    },
+    updatedAt: "",
+    updatedBy: "",
+  } as Settings;
+}
+
 function setPatchValue<T extends object, K extends keyof T>(
   patch: Partial<T>,
   key: K,
@@ -102,38 +137,7 @@ export async function getShopSettings(shop: string): Promise<Settings> {
   } catch {
     // ignore
   }
-  return {
-    languages: DEFAULT_LANGUAGES,
-    seo: {
-      aiCatalog: {
-        enabled: true,
-        fields: ["id", "title", "description", "price", "media"],
-        pageSize: 50,
-      },
-    },
-    analytics: undefined,
-    leadCapture: { enabled: true },
-    freezeTranslations: false,
-    currency: "EUR",
-    taxRegion: "",
-    depositService: { enabled: false, intervalMinutes: 60 },
-    reverseLogisticsService: { enabled: false, intervalMinutes: 60 },
-    returnService: { upsEnabled: false, bagEnabled: false, homePickupEnabled: false },
-    premierDelivery: undefined,
-    stockAlert: { recipients: [] },
-    luxuryFeatures: {
-      blog: false,
-      contentMerchandising: false,
-      raTicketing: false,
-      fraudReviewThreshold: 0,
-      requireStrongCustomerAuth: false,
-      strictReturnConditions: false,
-      trackingDashboard: false,
-      premierDelivery: false,
-    },
-    updatedAt: "",
-    updatedBy: "",
-  } as Settings;
+  return getDefaultShopSettings();
 }
 
 export async function saveShopSettings(

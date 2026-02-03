@@ -1,7 +1,7 @@
 Type: Guide
 Status: Active
 Domain: Repo
-Last-reviewed: 2026-01-16
+Last-reviewed: 2026-02-02
 
 # Git Hooks (Agent Runbook)
 
@@ -14,6 +14,12 @@ This project uses [simple-git-hooks](https://github.com/toplenboren/simple-git-h
 Git hooks are automatically installed when `pnpm install` runs (via the `prepare` script in [package.json](../package.json)).
 
 `prepare` runs `scripts/git-hooks/install-hooks.sh`, which configures `core.hooksPath` so hook installation works in git worktrees (where `.git` is a file), then invokes `simple-git-hooks`.
+
+## Important Limitation: Hooks Can’t Prevent Discards
+
+Hooks run on `git commit` and `git push`. They do **not** protect you from losing uncommitted work via `git restore` / `git checkout --`.
+
+**Agents:** never run bulk discard commands (multiple paths, directories, or globs). If you need to undo work, create a checkpoint commit and use `git revert`, or ask a human to perform any discard step.
 
 ## Active Hooks
 

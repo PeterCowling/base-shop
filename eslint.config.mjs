@@ -269,6 +269,22 @@ export default [
     },
   },
 
+  /* ▸ MCP server scripts: allow default project (no type-aware lint) */
+  {
+    files: ["packages/mcp-server/scripts/**/*.ts"],
+    languageOptions: {
+      parserOptions: {
+        projectService: false,
+        allowDefaultProject: true,
+      },
+    },
+    rules: {
+      // Scripts are inherently procedural; keep guardrails but allow more complexity/depth.
+      complexity: ["error", 80],
+      "max-depth": ["error", 10],
+    },
+  },
+
   /* ▸ Design system token enforcement (global) */
   {
     plugins: { ds: dsPlugin },
@@ -1995,6 +2011,14 @@ export default [
         "error",
         { max: 300, skipBlankLines: true, skipComments: true },
       ],
+    },
+  },
+  /* ▸ MCP server scripts: allow extra complexity/depth */
+  {
+    files: ["packages/mcp-server/scripts/**/*.ts"],
+    rules: {
+      complexity: ["error", 80],
+      "max-depth": ["error", 10],
     },
   },
   /* ▸ LINT-01: Relaxed limits for ESLint plugin (AST visitors are inherently complex) */

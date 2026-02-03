@@ -42,7 +42,7 @@ jest.mock("next/link", () => ({
 
 jest.mock("next/image", () => ({
   __esModule: true,
-  default: ({ fill, ...props }: { fill?: boolean } & Record<string, unknown>) => (
+  default: ({ fill, priority, ...props }: { fill?: boolean; priority?: boolean } & Record<string, unknown>) => (
     <img alt="" {...props} />
   ),
 }));
@@ -213,11 +213,13 @@ describe("XA components", () => {
 
   it("renders XaProductListing legacy", () => {
     render(
-      <XaProductListing
-        title="Listing"
-        breadcrumbs={[{ label: "Home", href: "/" }]}
-        products={[makeProduct({})]}
-      />,
+      <Providers>
+        <XaProductListing
+          title="Listing"
+          breadcrumbs={[{ label: "Home", href: "/" }]}
+          products={[makeProduct({})]}
+        />
+      </Providers>,
     );
   });
 

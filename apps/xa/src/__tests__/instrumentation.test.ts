@@ -18,6 +18,8 @@ describe("instrumentation", () => {
         return process;
       });
 
+    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+
     await register();
 
     expect(handlers.uncaughtException).toBeDefined();
@@ -27,6 +29,7 @@ describe("instrumentation", () => {
     handlers.unhandledRejection?.("bad");
 
     expect(captureError).toHaveBeenCalled();
+    consoleErrorSpy.mockRestore();
     onSpy.mockRestore();
   });
 });

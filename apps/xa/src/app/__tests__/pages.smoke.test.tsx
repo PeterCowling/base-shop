@@ -31,7 +31,9 @@ jest.mock("next/link", () => ({
 
 jest.mock("next/image", () => ({
   __esModule: true,
-  default: (props: Record<string, unknown>) => <img alt="" {...props} />,
+  default: ({ fill, priority, ...props }: Record<string, unknown> & { fill?: boolean; priority?: boolean }) => (
+    <img alt="" {...props} />
+  ),
 }));
 
 jest.mock("next/dynamic", () => {

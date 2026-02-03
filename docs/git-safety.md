@@ -1,7 +1,7 @@
 Type: Guide
 Status: Active
 Domain: Repo
-Last-reviewed: 2026-01-31
+Last-reviewed: 2026-02-02
 
 # Git Safety Guide (Agent Runbook)
 
@@ -32,6 +32,7 @@ These commands can permanently destroy work:
 | `git reset --hard <commit>` | 🔴 CATASTROPHIC | Deletes ALL work since that commit |
 | `git clean -fd` | 🔴 HIGH | Permanently deletes untracked files |
 | `git checkout -- .`, `git restore .` | 🔴 HIGH | Discards all local modifications |
+| `git restore -- <pathspec...>`, `git checkout -- <pathspec...>` | 🔴 HIGH | Bulk discards local modifications (multiple paths, directories, or globs) |
 | `git checkout --theirs .` | 🔴 HIGH | Overwrites files during conflict resolution (can destroy local changes) |
 | `git stash drop` | 🟠 MEDIUM | Permanently loses stashed changes |
 | `git stash clear` | 🟠 MEDIUM | Loses all stashes |
@@ -51,6 +52,7 @@ These commands can permanently destroy work:
 | `git reset --hard <commit>` | **Never do this.** Ask for help instead. |
 | `git clean -fd` | Move files to `archive/` folder |
 | `git checkout -- .`, `git restore .` | Commit first, then discuss what to discard |
+| `git restore -- <pathspec...>`, `git checkout -- <pathspec...>` | Commit first, then revert/select changes intentionally (never bulk-discard) |
 | `git rebase`, `git commit --amend` | Create a new commit; let PR merge handle history |
 | `git push --force` | Create a new branch instead |
 | Fixing a "broken" git state | Share `git status` output and ask for help |
@@ -203,6 +205,8 @@ If you run agents locally, you can optionally use integrator mode (writer lock +
 scripts/agents/integrator-shell.sh -- <your-agent-command>
 ```
 
+The git guard blocks destructive/history-rewriting commands and bulk discard patterns (for example: bulk `git restore` / `git checkout --`).
+
 ---
 
 ## For AI Agents (Claude/Codex)
@@ -332,6 +336,8 @@ git revert <commit-hash>
 # Restore a specific file to an earlier version
 git restore --source <commit-hash> -- path/to/file
 ```
+
+**Agents:** Restore only **one file at a time**. Never use `git restore` / `git checkout --` with multiple paths, directories, or globs — that’s a bulk discard and can silently destroy work.
 
 **NOT safe (don't do this):**
 ```bash

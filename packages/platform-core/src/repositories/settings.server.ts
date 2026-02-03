@@ -55,4 +55,4 @@ export async function diffHistory(
 }
 
 export type { Settings, SettingsDiffEntry } from "./settings.json.server";
-
+export { getDefaultShopSettings } from "./settings.json.server";

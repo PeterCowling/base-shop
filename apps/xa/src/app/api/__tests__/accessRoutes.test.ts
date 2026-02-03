@@ -54,7 +54,14 @@ beforeEach(async () => {
     configurable: true,
   });
   delete globalThis.__xaRateLimitStore;
+  delete globalThis.__xaAccessStore;
+  delete globalThis.__xaAccessStoreMode;
   await cleanupStoreFile();
+  await fs.writeFile(
+    STORE_PATH,
+    JSON.stringify({ invites: [], requests: [] }, null, 2),
+    "utf-8",
+  );
 });
 
 afterEach(async () => {
@@ -69,6 +76,8 @@ afterEach(async () => {
     configurable: true,
   });
   delete globalThis.__xaRateLimitStore;
+  delete globalThis.__xaAccessStore;
+  delete globalThis.__xaAccessStoreMode;
   jest.restoreAllMocks();
   await cleanupStoreFile();
 });
@@ -253,6 +262,9 @@ describe("access request + access code routes", () => {
   });
 
   it("marks access as closed when no invites exist", async () => {
+    delete process.env.XA_STEALTH_INVITE_CODES;
+    delete process.env.STEALTH_INVITE_CODES;
+    delete process.env.STEALTH_INVITE_CODE;
     const form = new FormData();
     form.set("code", "wrong");
     const req = new Request("https://example.com/access", {

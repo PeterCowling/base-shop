@@ -2,7 +2,7 @@
 Type: Runbook
 Status: Canonical
 Domain: Repo
-Last-reviewed: 2026-01-31
+Last-reviewed: 2026-02-02
 ---
 
 # AGENTS.md — Operational Runbook
@@ -35,8 +35,8 @@ When you identify that the "right" solution requires significantly more work, ex
 |------|---------|
 | Install | `pnpm install` |
 | Build | `pnpm build` |
-| Typecheck | `pnpm typecheck` |
-| Lint | `pnpm lint` |
+| Typecheck | `pnpm --filter <pkg> typecheck` |
+| Lint | `pnpm --filter <pkg> lint` |
 | Test (single file) | `pnpm --filter <pkg> test -- path/to/file.test.ts` |
 | Test (pattern) | `pnpm --filter <pkg> test -- --testPathPattern="name"` |
 | Validate all | `bash scripts/validate-changes.sh` |
@@ -44,9 +44,17 @@ When you identify that the "right" solution requires significantly more work, ex
 ## Validation Gate (Before Every Commit)
 
 ```bash
-pnpm typecheck && pnpm lint
+# Scope validation to changed packages only (preferred default).
+pnpm --filter <pkg> typecheck && pnpm --filter <pkg> lint
 # Plus: targeted tests for changed files (see scripts/validate-changes.sh)
 ```
+
+If multiple packages changed, run typecheck + lint for each affected package.
+
+Only run full-repo `pnpm typecheck` / `pnpm lint` when:
+- The user explicitly asks for a full validation, or
+- The change is cross-cutting and impacts many packages, or
+- A targeted run fails with a non-localized error and full validation is needed to diagnose.
 
 **Rule:** Never commit code that fails validation. Fix first.
 
@@ -56,7 +64,10 @@ pnpm typecheck && pnpm lint
 - **Single writer.** With 1 human + up to 10 agents, only one process may write at a time.
   - Start an “integrator shell” before editing, committing, or pushing: `scripts/agents/integrator-shell.sh -- codex`
   - Or open a locked shell: `scripts/agents/with-writer-lock.sh`
-  - Check status: `scripts/git/writer-lock.sh status`
+  - If you are running in a non-interactive environment (no TTY; e.g. CI or API-driven agents), you cannot open a subshell. Wrap each write-related command instead:
+    - `scripts/agents/integrator-shell.sh -- <command> [args...]`
+  - Check status: `scripts/git/writer-lock.sh status` (token is redacted by default)
+  - Show full token (human only): `scripts/git/writer-lock.sh status --print-token`
 - **Branch flow:** `dev` → `staging` → `main`
   - Commit locally on `dev`
   - Ship `dev` to staging (PR + auto-merge): `scripts/git/ship-to-staging.sh`
@@ -66,7 +77,7 @@ pnpm typecheck && pnpm lint
 
 **Destructive / history-rewriting commands (agents: never):**
 - `git reset --hard`, `git clean -fd`, `git push --force` / `-f`
-- Also treat these as forbidden: `git checkout -- .` / `git restore .`, `git stash drop` / `git stash clear`, `git rebase` (incl. `-i`), `git commit --amend`
+- Also treat these as forbidden: `git checkout -- .` / `git restore .`, **any bulk discard** via `git checkout -- <pathspec...>` or `git restore -- <pathspec...>` (multiple files, directories, or globs), `git stash drop` / `git stash clear`, `git rebase` (incl. `-i`), `git commit --amend`
 
 If one of these commands seems necessary, STOP and ask for help. Full guide: [docs/git-safety.md](docs/git-safety.md)
 
@@ -194,7 +205,7 @@ Schema: [docs/AGENTS.docs.md](docs/AGENTS.docs.md)
 | Need to undo | Use `git revert`, never `reset --hard` |
 | Large-scale fix needed | Create plan in `docs/plans/`, don't take shortcuts |
 | MCP TypeScript intelligence | See `docs/ide/agent-language-intelligence-guide.md` |
-| Asked to check types | Use MCP TypeScript tools first; `pnpm typecheck` remains the validation gate |
+| Asked to check types | Use MCP TypeScript tools first; run `pnpm --filter <pkg> typecheck` for affected packages (full `pnpm typecheck` only if explicitly requested) |
 
 ## Session Reflection (Optional)
 

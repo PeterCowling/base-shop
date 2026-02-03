@@ -1004,6 +1004,7 @@ pnpm --filter @apps/cover-me-pretty test -- stripe-webhook.test.ts
 **Affects:**
 - `packages/platform-core/__tests__/inventory-validate-contract.test.ts` (new)
 - `apps/cover-me-pretty/__tests__/inventory-validate.test.ts` (new)
+- `apps/cms/__tests__/inventory-validate.test.ts` (new)
 
 **Depends on:** COM-201
 

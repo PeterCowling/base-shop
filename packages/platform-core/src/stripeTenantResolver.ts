@@ -73,3 +73,40 @@ export async function resolveShopIdFromStripeEventWithFallback(
 
   return resolveShopIdFromRentalOrders(candidates);
 }
+
+export type StripeWebhookTenantAssertion =
+  | { ok: true; shopId: string }
+  | {
+      ok: false;
+      status: 403 | 503;
+      reason: "mismatch" | "unresolvable";
+      expectedShopId: string;
+      resolvedShopId?: string;
+    };
+
+export async function assertStripeWebhookTenant(
+  event: Stripe.Event,
+  expectedShopId: string,
+): Promise<StripeWebhookTenantAssertion> {
+  const resolvedShopId = await resolveShopIdFromStripeEventWithFallback(event);
+  if (!resolvedShopId) {
+    return {
+      ok: false,
+      status: 503,
+      reason: "unresolvable",
+      expectedShopId,
+    };
+  }
+
+  if (resolvedShopId !== expectedShopId) {
+    return {
+      ok: false,
+      status: 403,
+      reason: "mismatch",
+      expectedShopId,
+      resolvedShopId,
+    };
+  }
+
+  return { ok: true, shopId: resolvedShopId };
+}

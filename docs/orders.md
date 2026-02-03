@@ -1,7 +1,7 @@
 Type: Contract
 Status: Canonical
 Domain: Orders
-Last-reviewed: 2025-12-21
+Last-reviewed: 2026-02-03
 
 Primary code entrypoints:
 - packages/platform-core/src/repositories/rentalOrders.server.ts
@@ -68,6 +68,25 @@ Checkout sessions for both rentals and straight sales are created via the shared
   - Flow selection is typically based on `Shop.type` (`"sale"` vs `"rental"`) and catalogue flags (`forSale`/`forRental`), with `ShopSettings.currency` and `ShopSettings.taxRegion` continuing to drive totals and tax.
 
 Both flows share the same Stripe integration (session creation, tax line calculation, metadata layout) so storefront apps can switch between them by changing configuration rather than reimplementing checkout logic.
+
+## Stripe webhook tenancy (fail-closed)
+
+Webhook endpoints must enforce **tenant isolation** to prevent cross-shop event processing.
+
+Resolution model:
+
+1. Resolve the tenant shop ID from the Stripe event (`shop_id`/`shopId` metadata fast-path, then safe fallbacks).
+2. Compare resolved shop ID to the tenant implied by the route/deployment.
+
+Fail-closed behavior:
+
+- If the resolved shop ID **differs** from the route tenant → return **403** and do not process.
+- If the tenant **cannot be resolved** → return **503** so Stripe retries (never return 400 for this case).
+
+Metrics:
+
+- `webhook_tenant_mismatch_total`
+- `webhook_tenant_unresolvable_total`
 
 ## Interactions
 When `addOrder` is called with a `customerId` and the shop has subscriptions enabled, it calls `incrementSubscriptionUsage` to record a shipment for that customer. Orders are also tracked via the analytics module through `trackOrder`.

@@ -925,6 +925,9 @@ pnpm --filter @apps/cover-me-pretty test -- stripe-webhook.test.ts
 - `packages/platform-core/src/stripeTenantResolver.ts`
 - `apps/cover-me-pretty/src/api/stripe-webhook/route.ts`
 - `packages/template-app/src/api/stripe-webhook/route.ts`
+- `apps/cover-me-pretty/__tests__/stripe-webhook.test.ts` (extend)
+- `packages/template-app/__tests__/stripe-webhook.test.ts` (extend)
+- `docs/orders.md` (update)
 
 **Depends on:** -
 

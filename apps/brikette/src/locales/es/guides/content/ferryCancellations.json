@@ -1,94 +1,194 @@
 {
   "seo": {
-    "title": "Cancelaciones de ferris y mares agitados",
-    "description": "Qué hacer si cancelan los ferris por el clima, alternativas y cómo comprobar el estado."
+    "title": "Cancelaciones de ferri y mar agitado (qué hacer)",
+    "description": "Qué hacer cuando cancelan ferris por el tiempo: cómo comprobar el estado, mejores planes B por carretera y cómo proteger una conexión de tren/avión."
   },
-  "linkLabel": "Cancelaciones de ferris y mares agitados",
+  "linkLabel": "Cancelaciones de ferri y mar agitado",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
   "intro": [
-    "El viento y el oleaje pueden suspender ferris sin previo aviso, incluso en pleno verano.",
-    "Ten siempre un plan alternativo con buses SITA o taxis compartidos para no quedarte bloqueado entre pueblos."
+    "Las cancelaciones de ferri en la Costa Amalfitana pueden pasar con poco aviso, incluso si el cielo se ve perfecto. El oleaje, el viento y decisiones del puerto importan más que el sol.",
+    "La mejor estrategia es simple: revisa temprano, ten listo un plan B por carretera y no dependas del último barco del día para una conexión importante.",
+    "Si conectas con tren o avión, trata los ferris como “genial si funcionan”, no como transporte garantizado. Tener un plan B antes de salir del alojamiento evita un día de taxi caro.",
+    "Desde el hostel, la regla más simple es: decide tu plan B antes de ir al muelle. Cuando cancelan, quien ya sabe su ruta por carretera se mueve primero."
   ],
   "sections": [
     {
-      "id": "motivos",
-      "title": "Por qué se suspenden los ferris",
+      "id": "quick-decision",
+      "title": "Guía rápida de decisión (60 segundos)",
       "body": [
-        "Las autoridades portuarias limitan salidas cuando la previsión marca viento fuerte o mar de fondo.",
-        "En días nublados puede mantenerse el servicio; revisa señales amarillas/rojas en los tablones del muelle."
+        "Si tienes una hora límite (tren/avión): cambia a rutas terrestres pronto. Esperar en el muelle es como se pierden conexiones.",
+        "Si eres flexible: monitoriza solo las próximas 1–2 salidas. Si cancelan, pasa a rutas terrestres en vez de esperar toda la tarde.",
+        "Si dudas: pregunta en recepción la ruta más segura hoy a Sorrento / Nápoles / Salerno. %LINK:digitalConcierge|Concierge digital% está pensado para este tipo de problema."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
+          "alt": "Barcos en la bahía de Positano con condiciones de mar cambiantes"
+        }
       ]
     },
     {
-      "id": "alternativas",
-      "title": "Alternativas rápidas de transporte",
+      "id": "monitoring",
+      "title": "Sigue actualizaciones en directo",
       "body": [
-        "Buses SITA entre Positano, Amalfi y Sorrento funcionan con mayor frecuencia en temporada.",
-        "Para traslados con equipaje pesado, coordina taxi compartido o porteadores desde el muelle.",
-        "Si te diriges a Nápoles, conecta en Sorrento (Circumvesuviana) o Salerno (tren regional)."
+        "Revisa actualizaciones del operador y paneles del puerto. En días ventosos, refresca a menudo: el estado puede cambiar cerca de la hora de salida.",
+        "Haz capturas de horarios y avisos de “cancelado”: ayudan con reembolsos y mantienen el plan claro cuando la cobertura falla.",
+        "Si viajas ese día, merece la pena comprobar por la mañana antes de comprometerte con una excursión, especialmente fuera del verano pico cuando hay menos servicios."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
+          "alt": "Positano y su costa, donde el plan de ferri suele necesitar un respaldo por carretera"
+        }
       ]
     },
     {
-      "id": "reembolsos",
-      "title": "Billetes, cambios y reembolsos",
+      "id": "at-the-pier",
+      "title": "Qué hacer en el muelle (sin perder horas)",
       "body": [
-        "Las compañías suelen ofrecer reembolso completo o cambio a otro horario; guarda el ticket físico o email de confirmación.",
-        "Si compraste a través de una agencia, contacta directamente con ellos para acelerar la devolución.",
-        "En caso de excursiones, pregunta si incluyen traslado terrestre como plan B."
+        "Si cancelan tu ferri, no entres en modo “esperemos aquí toda la tarde”. Fija una ventana de decisión (por ejemplo: “esperamos la siguiente actualización y luego cambiamos”).",
+        "Haz una pregunta clara en taquilla: “¿Es probable que salga el siguiente, o cambiamos a buses ya?” Si la respuesta es “quizá”, trátalo como “cambia”.",
+        "Haz una captura del aviso de cancelación y ten a mano billete/recibo. Ahorra tiempo para reembolso o reprogramación.",
+        "Si viajas con equipaje, recuerda que multitudes + escaleras lo ralentizan todo. Si hace falta, %LINK:porterServices|porteadores% puede valer la pena en un día caótico."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-main-beach.webp",
+          "alt": "Zona del muelle en Positano, donde anuncios y colas pueden cambiar los planes rápido"
+        }
       ]
     },
     {
-      "id": "prep",
-      "title": "Cómo prepararte",
+      "id": "plan-b",
+      "title": "Cambia a rutas terrestres",
       "body": [
-        "Consulta apps o redes sociales de las navieras la mañana del viaje.",
-        "Ten cargador portátil y agua: las filas para el bus pueden durar 30–40 minutos.",
-        "Informa a tu alojamiento si llegas más tarde por el cambio de ruta."
+        "Si se paran las salidas, cambia rápido: buses SITA a Sorrento y luego tren; o ir vía Amalfi hasta Salerno para trenes regionales.",
+        "Evita las últimas salidas si puedes. Si debes tomarlas, añade margen extra y revisa dónde validar billetes antes de subir.",
+        "Puntos de partida útiles:",
+        "- %LINK:naplesPositano|Nápoles ↔ Positano% (opciones por carretera cuando se paran los barcos)",
+        "- %LINK:salernoPositano|Salerno ↔ Positano% (a menudo la conexión ferroviaria más limpia)",
+        "- %LINK:sitaTickets|billetes SITA% (evita líos de billetes cuando estás estresado)"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/fiordo-di-furore-bridge.webp",
+          "alt": "Carreteras de la costa, cuando las rutas terrestres se convierten en el plan B"
+        }
+      ]
+    },
+    {
+      "id": "protect-connection",
+      "title": "Cómo proteger una conexión de tren o vuelo",
+      "body": [
+        "Si debes estar en un sitio a una hora concreta, mete más margen del que crees. El fallo no es solo “ferri cancelado”: es “ferri cancelado y todos hacen cola para el mismo bus”.",
+        "Elige viajar antes aunque fastidie. La costa es preciosa, pero no está hecha para tiempos muy ajustados cuando el tiempo es inestable.",
+        "Si dudas entre esperar o ir por carretera, cuando la deadline importa, elige carretera. Es más predecible.",
+        "Si tienes seguro, guarda recibos y capturas. %LINK:travelInsuranceAmalfi|Consejos de seguro de viaje% explica qué conviene documentar."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/marina-di-praia.webp",
+          "alt": "Condiciones del mar en la Costa Amalfitana, que pueden cambiar rápido y afectar la fiabilidad del ferri"
+        }
+      ]
+    },
+    {
+      "id": "if-youre-stuck",
+      "title": "Si estás tirado unas horas (hazlo indoloro)",
+      "body": [
+        "Si terminas esperando, trátalo como un “problema de confort”, no de transporte. La decisión suele estar tomada: o esperas una salida o ya vas por carretera.",
+        "Asegura lo básico: agua, snacks y móvil cargado. Batería muerta es caos.",
+        "Si tienes hambre, manténlo simple. Un plato calmado es mejor que comprar cosas caras por estrés.",
+        "Si llevas equipaje pesado, planifica alrededor. Consigna o porteador pueden convertir una espera horrible en algo manejable. %LINK:luggageStorage|Consigna de equipaje% ayuda si tienes huecos largos entre check‑out y viaje.",
+        "Si viajas con amigos, acordad el punto de decisión (“si el siguiente update dice cancelado, cambiamos”). Evita discusiones con cansancio.",
+        "Si no estás seguro de la opción más fiable hoy, pregunta en recepción antes de ir al muelle. Un check‑in local es más rápido que rumores.",
+        "Sobre todo: no dejes que la espera te obligue a tomar la última salida del día. Si el día es inestable, elige antes la opción segura."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/cheapEats.jpg",
+          "alt": "Un plan de comida simple durante retrasos, útil para reducir estrés y gasto"
+        }
+      ]
+    },
+    {
+      "id": "refunds",
+      "title": "Reembolsos y vouchers",
+      "body": [
+        "Guarda recibos y capturas de cancelación: suelen ser necesarios para reembolso, reprogramación o crédito.",
+        "Si puedes viajar más tarde, pide reprogramación en la siguiente salida disponible. Si no, pregunta el proceso de reembolso/voucher antes de irte.",
+        "Si reservaste con agencia, envíales la captura y tu referencia: no asumas que operador y agencia se hablan."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
+          "alt": "Un día concurrido en Positano, cuando guardar recibos y capturas ayuda con reembolsos"
+        }
+      ]
+    },
+    {
+      "id": "seasickness",
+      "title": "Mareo y confort (pequeña preparación, gran diferencia)",
+      "body": [
+        "Si te mareas, compra lo que necesites antes del día de ferri. Esperar al muelle es cuando las farmacias están cerradas o vas con prisas.",
+        "Lleva lo esencial accesible: agua, un snack ligero y medicación en un bolsillo fácil, no enterrado en la maleta.",
+        "Si no sabes si aguantarás en el mar, elige una salida por la mañana y ten listo un plan B por carretera. El objetivo es llegar tranquilo, no demostrar nada."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/arienzo-beach-positano.webp",
+          "alt": "Condiciones del mar en la Costa, donde prepararse para el confort importa en días de ferri"
+        }
+      ]
+    },
+    {
+      "id": "overnight",
+      "title": "Gestionar retrasos con noche extra",
+      "body": [
+        "Escribe a tu alojamiento o al anfitrión del tour en cuanto anuncien retrasos: avisar pronto es lo que permite flexibilidad.",
+        "Si estás tirado hasta la mañana, pregunta por consigna y por las opciones terrestres más tempranas para moverte antes de las colas.",
+        "Si llevas equipaje pesado y llegas en ferri (o te mueves entre muelle y paradas), %LINK:porterServices|porteadores% puede valer la pena: escaleras + presión de tiempo es mala combinación."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/arienzo-beach-positano.webp",
+          "alt": "Condiciones costeras, donde el tiempo puede interrumpir los planes de ferri"
+        }
       ]
     }
   ],
   "tips": [
-    "Compra billetes de bus SITA con antelación cuando el mar esté agitado: se agotan rápido tras una cancelación.",
-    "Viaja con calzado cómodo; las colas se forman en pendientes y suelos mojados.",
-    "Las salidas matutinas son las más fiables; evita depender del último ferry del día si se anuncian tormentas."
+    "Las salidas de la mañana suelen ser las más fiables; evita depender del último barco del día si hay tormenta prevista.",
+    "Guarda un plan B por carretera en el móvil antes de ir al muelle: cuando cancelan, agradecerás no investigar bajo presión.",
+    "Si te mareas, compra lo que necesites antes del día de ferri y llévalo accesible (no enterrado en la mochila)."
   ],
   "faqs": [
     {
-      "q": "¿Cómo sé si cancelarán antes de llegar al muelle?",
+      "q": "¿Cómo sé cuándo vuelven a salir ferris?",
       "a": [
-        "Sigue a las navieras en redes sociales y consulta el parte marítimo del puerto de Salerno la noche anterior; si hay alerta naranja, espera cambios.",
-        "El personal de taquilla también puede confirmar si el siguiente barco opera antes de que abandones el puerto."
+        "Actualiza los avisos del operador y escucha anuncios en el muelle: a menudo cambian cerca de la hora de salida.",
+        "El personal de taquilla suele poder confirmar si el siguiente barco está previsto antes de que salgas del puerto."
       ]
     },
     {
-      "q": "¿Puedo usar el mismo billete otro día?",
+      "q": "¿Qué pasa con mi billete?",
       "a": [
-        "Depende de la compañía: algunas reprograman automáticamente dentro de la misma semana, otras requieren pasar por taquilla para nuevo cupón.",
-        "Si compraste en una agencia online, envíales la captura de la cancelación en menos de 24 horas para iniciar el reembolso."
+        "Muestra recibo o QR para pedir reembolso, voucher o reprogramación en la siguiente salida.",
+        "Si reservaste vía agencia online, envía la captura de cancelación y la referencia para iniciar el reembolso."
       ]
     },
     {
-      "q": "¿Los autobuses aceptan más equipaje cuando se suspenden los ferris?",
+      "q": "¿Hay ferris garantizados con mal tiempo?",
       "a": [
-        "Sí, pero el maletero se llena rápido; llega con tiempo y considera dividir tu grupo en dos salidas consecutivas.",
-        "Algunos charters privados navegan con mar moderado, pero son caros y dependen del criterio del capitán; valora bien comodidad y coste."
+        "No: cuando la Guardia Costera cierra el puerto, se paran todas las salidas. Ten lista una ruta por carretera.",
+        "Algunos charters privados pueden salir con mar moderado, pero son caros y dependen del capitán; valora confort y coste."
       ]
-    }
-  ],
-  "toc": [
-    {
-      "href": "#motivos",
-      "label": "Por qué cancelan"
     },
     {
-      "href": "#alternativas",
-      "label": "Alternativas rápidas"
-    },
-    {
-      "href": "#reembolsos",
-      "label": "Entradas y reembolsos"
-    },
-    {
-      "href": "#prep",
-      "label": "Cómo prepararte"
+      "q": "¿Espero en el muelle o cambio ya?",
+      "a": [
+        "Si tienes conexión, cambia a rutas terrestres pronto. Si eres flexible, puedes esperar una salida más; después, cambia para no perder medio día."
+      ]
     }
   ]
 }

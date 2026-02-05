@@ -1,6 +1,7 @@
 {
   "name": "@apps/reception",
   "private": true,
+  "version": "1.0.0",
   "scripts": {
     "dev": "next dev -p 3020",
     "build": "next build",

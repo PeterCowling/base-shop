@@ -10,4 +10,7 @@ const config = require("@acme/config/jest.preset.cjs")({
   },
 });
 
+// Add short timeout to fail fast if tests hang
+config.testTimeout = 10000; // 10 seconds per test
+
 module.exports = config;

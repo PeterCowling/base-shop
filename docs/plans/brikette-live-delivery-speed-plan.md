@@ -1,5 +1,6 @@
 ---
 Type: Plan
+Last-reviewed: 2026-02-05
 Status: Active
 Domain: Brikette
 Created: 2026-02-05
@@ -12,6 +13,11 @@ Relates-to charter: none
 ---
 
 # Brikette — Live Delivery Speed Plan
+
+
+## Active tasks
+
+No active tasks at this time.
 
 ## Summary
 

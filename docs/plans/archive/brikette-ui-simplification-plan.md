@@ -11,6 +11,11 @@ Overall-confidence: 95%
 
 # Brikette UI Simplification Plan
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Summary
 
 This plan simplified Brikette UI by consolidating button/link styling into the design system where it fits, extracting large class maps, and making informed decisions about layout primitives. **All 8 tasks are resolved** — 6 completed, 2 deferred with documented rationale.

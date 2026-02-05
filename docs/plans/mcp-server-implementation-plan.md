@@ -1,5 +1,10 @@
+---
 Type: Plan
 Status: Draft
+Domain: Infrastructure
+Last-reviewed: 2026-01-19
+Relates-to charter: none
+---
 
 # MCP Server Implementation Plan
 
@@ -248,3 +253,8 @@ export async function handleShopList(args: unknown) {
 - [MCP Specification](https://modelcontextprotocol.io/docs)
 - [MCP TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk)
 - [Existing MCP Servers](https://github.com/modelcontextprotocol/servers)
+
+
+## Active tasks
+
+No active tasks at this time.

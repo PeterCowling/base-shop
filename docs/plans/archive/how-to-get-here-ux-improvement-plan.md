@@ -12,6 +12,11 @@ Overall-confidence: 91%
 
 # How To Get Here UX Improvement Plan
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Summary
 
 Improve the user experience of the `/[lang]/how-to-get-here` page in the Brikette app. The page helps visitors find transportation options to reach a hostel in Positano. Current issues include a non-functional RoutePicker wizard, duplicated filter controls, buried critical information, and unclear mobile UX patterns.

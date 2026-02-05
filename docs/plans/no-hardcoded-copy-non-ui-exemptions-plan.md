@@ -12,6 +12,11 @@ Last-updated-by: Claude
 
 # No-Hardcoded-Copy Non-UI Exemptions Plan
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Problem
 The `ds/no-hardcoded-copy` rule is flagging strings that are not customer-facing copy, which forces repeated inline disables. This adds noise and masks real copy issues in UI surfaces that should be localized.
 

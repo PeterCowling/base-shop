@@ -12,6 +12,11 @@ Last-updated-by: Codex (GPT-5)
 
 # Plan: Re-enable linting for apps/cover-me-pretty
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Summary
 Cover-me-pretty is the runtime storefront we use for e2e smoke flows, but its package currently skips eslint via a global ignore and a dummy `lint` script (see `eslint.config.mjs` and `apps/cover-me-pretty/package.json`). The next step in hardening the runtime is to run lint for this app so CI and pre-commit hooks start flagging regressions. That requires:
 

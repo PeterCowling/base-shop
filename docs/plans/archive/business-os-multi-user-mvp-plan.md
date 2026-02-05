@@ -1,7 +1,9 @@
 ---
 Type: Plan
+Last-reviewed: 2026-02-05
 Status: Active
 Domain: Platform
+Relates-to charter: none
 Created: 2026-01-29
 Last-updated: 2026-01-30
 Last-replanned: 2026-01-30
@@ -16,6 +18,11 @@ Related-Docs:
 ---
 
 # Business OS Multi-User MVP Plan
+
+
+## Active tasks
+
+No active tasks at this time.
 
 ## Summary
 

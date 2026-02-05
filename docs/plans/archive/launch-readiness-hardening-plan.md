@@ -16,6 +16,11 @@ Source: `docs/repo-quality-audit-2026-01.md` (Launch Readiness) + `docs/security
 
 This plan translates “good ideas” into a small-PR execution sequence that is shippable in stages and measurably improves reliability and safety for new shop launches.
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Inputs / Related Work
 
 - Audit: `docs/repo-quality-audit-2026-01.md`

@@ -11,6 +11,11 @@ Overall-confidence: 88%
 
 # Editable Guide Areas Plan
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Summary
 
 Enable content editors to select which site areas a guide publishes to (Experiences, Help, How to get here) via the editorial panel UI. Currently, areas are hardcoded in TypeScript (`guide-manifest.ts`) and require developer intervention to change.

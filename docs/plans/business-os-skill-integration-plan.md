@@ -1,7 +1,9 @@
 ---
 Type: Plan
+Last-reviewed: 2026-02-05
 Status: Historical
 Domain: Agents / Business OS
+Relates-to charter: none
 Created: 2026-02-01
 Last-updated: 2026-02-02
 Feature-Slug: business-os-skill-integration
@@ -10,6 +12,11 @@ Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effo
 ---
 
 # Business OS Skill Integration Plan
+
+
+## Active tasks
+
+No active tasks at this time.
 
 ## Summary
 

@@ -8,6 +8,11 @@ Relates-to charter: docs/i18n/i18n-charter.md
 
 # Content Translation Pipeline Plan
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Goals
 - Enable authors to write content in a primary language and generate machine translations for one or more target locales.
 - Integrate translation output into existing `TranslatableText` inline content so runtime rendering stays unchanged.

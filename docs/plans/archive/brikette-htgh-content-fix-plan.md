@@ -8,6 +8,11 @@ Relates-to charter: docs/i18n/i18n-charter.md
 
 # Plan: Fix Brikette How-to-Get-Here Content Loading for Next.js SSG
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Problem Summary
 
 The brikette app build fails during static page generation with:

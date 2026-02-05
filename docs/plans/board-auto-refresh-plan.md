@@ -1,7 +1,9 @@
 ---
 Type: Plan
+Last-reviewed: 2026-02-05
 Status: Active
 Domain: Platform
+Relates-to charter: none
 Created: 2026-01-30
 Last-updated: 2026-01-30
 Feature-Slug: board-auto-refresh
@@ -11,6 +13,11 @@ Critical-Findings: Plan/repo drift (script exists, needs fix); Jest TSX broken; 
 ---
 
 # Board Auto-Refresh Implementation Plan
+
+
+## Active tasks
+
+No active tasks at this time.
 
 ## Summary
 

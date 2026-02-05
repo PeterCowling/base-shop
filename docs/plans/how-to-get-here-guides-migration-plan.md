@@ -14,6 +14,11 @@ Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effo
 
 # How-To-Get-Here Guides Migration Plan
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Summary
 
 Register the 24 “how-to-get-here” transport routes (currently defined in `routes.json`) as first-class guide keys so they participate in the unified guide slug/namespace helpers, tags discovery, and URL inventory — **without changing how the pages render** today. Existing URLs (`/[lang]/how-to-get-here/[slug]`) remain unchanged.

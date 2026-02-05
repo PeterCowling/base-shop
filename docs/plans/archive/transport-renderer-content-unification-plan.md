@@ -15,6 +15,11 @@ Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effo
 
 # Transport Renderer / Content Unification Plan
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Summary
 
 Migrate the 24 how-to-get-here transport routes from the legacy renderer (`HowToGetHereContent`) + `howToGetHere` i18n namespace into the guide system (`GuideSeoTemplate`) + `guides` content, **without changing URLs**.

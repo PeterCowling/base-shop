@@ -12,6 +12,11 @@ Last-updated-by: Codex (doc updates: skills path + progressive disclosure pointe
 
 # Agent Enhancement Plan
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Summary
 
 Unify and enhance agent configuration for both Claude Code and Codex (and future agents) based on insights from the "Flywheel" approach to agent tooling. The goal is to create agent-first tooling that enables recursive self-improvement, composable skills, and safe multi-agent orchestration.

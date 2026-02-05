@@ -663,3 +663,8 @@ Goal: remove ambiguity and raise Phase 3 confidence by enumerating every JSON‑
 **Dependencies:**
 - Phase 7a benefits from Phase 2's clearer guide typing/routing, but can ship independently.
 - Phase 7b should not start until Phase 7a diagnostics prove what needs editing (avoids building the wrong editor).
+
+
+## Active tasks
+
+No active tasks at this time.

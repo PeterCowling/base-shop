@@ -160,3 +160,8 @@ Stop generating legacy `/[lang]/guides/[slug]` URLs (internal links, canonicals/
 
 ## Pending Audit Work
 - None. BRK-GUIDE-005 completed.
+
+
+## Active tasks
+
+No active tasks at this time.

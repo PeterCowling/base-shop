@@ -1,7 +1,9 @@
 ---
 Type: Plan
+Last-reviewed: 2026-02-05
 Status: Historical
 Domain: i18n
+Relates-to charter: none
 Created: 2026-01-26
 Last-updated: 2026-01-26
 Completed: 2026-01-26
@@ -9,6 +11,11 @@ Overall-confidence: 85%
 ---
 
 # Translation Gap Resolution Plan
+
+
+## Active tasks
+
+No active tasks at this time.
 
 ## Summary
 

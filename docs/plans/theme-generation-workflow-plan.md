@@ -15,6 +15,11 @@ Last-updated-by: Claude Opus 4.5
 
 Source: `docs/repo-quality-audit-2026-01.md` (Recommendation `P1.3`).
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Summary
 
 Create a standardized workflow for generating new theme packages from a brand brief, enabling operators to create production-ready custom themes within the 3-hour shop launch target.

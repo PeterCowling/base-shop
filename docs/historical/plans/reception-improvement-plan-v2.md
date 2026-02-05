@@ -4,6 +4,7 @@ Status: Historical
 Domain: Reception
 Created: 2026-01-23
 Last-reviewed: 2026-01-23
+Relates-to charter: none
 Completed: 2026-01-23
 Carried-forward-from:
   - docs/plans/archive/reception-functionality-improvements-plan.md

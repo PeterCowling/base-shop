@@ -13,6 +13,11 @@ Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effo
 
 # i18n Missing Key Detection Plan
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Summary
 
 Add test-time detection and reporting for missing i18n keys that end up rendered as raw keys (because i18next returns the key when missing). Today, many component tests mock `useTranslation()` and don’t surface this class of regression. This plan adds a dedicated render-audit test suite plus improved coverage reporting, producing actionable reports (locale, namespace, key) without blocking CI by default.

@@ -13,6 +13,11 @@ Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effo
 
 # Guide Cross-Referencing & Route Links Plan
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Summary
 
 Improve guide discoverability by making related guides blocks render by default when configured in the manifest, adding validation and coverage reporting for cross-references, and establishing editorial patterns for inline links and Google Maps route URLs. This work builds on existing infrastructure (link tokens, RelatedGuides component, manifest structure) and focuses on making cross-referencing easy, consistent, and complete across 167 English guides.

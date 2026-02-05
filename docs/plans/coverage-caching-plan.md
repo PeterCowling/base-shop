@@ -13,6 +13,11 @@ Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effo
 
 # Coverage Caching Plan
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Summary
 
 Speed up the “Package Quality Matrix” workflow (`.github/workflows/test.yml`) by leveraging Turbo **remote cache** for the “tests with coverage” step. Today the workflow runs `pnpm --filter ... test -- --coverage --coverage-dir=coverage` for *every* workspace on every push to `main` (and nightly), even when a package’s inputs have not changed. By running the test step via Turbo and tightening cache invalidation inputs, unchanged packages can become fast cache hits while preserving existing behaviour: coverage artifacts are still produced and uploaded per workspace, and coverage thresholds remain enforced by each package’s Jest config.

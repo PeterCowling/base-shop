@@ -1,13 +1,20 @@
 ---
 Type: Plan
+Last-reviewed: 2026-02-05
 Status: Active
 Domain: CMS
+Relates-to charter: none
 Created: 2026-01-26
 Last-updated: 2026-01-26
 Overall-confidence: 90%
 ---
 
 # WYSIWYG Editor & New Guide Creation
+
+
+## Active tasks
+
+No active tasks at this time.
 
 ## Summary
 

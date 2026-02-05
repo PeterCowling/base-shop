@@ -11,6 +11,11 @@ Created: 2026-01-31
 
 This document is the recovery runbook for the **2026-01-31 brikette locale rollback incident**, where automated `git checkout` commands overwrote large portions of `apps/brikette/src/locales/**`, potentially destroying **uncommitted** translation/content work.
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## CRITICAL: This Must Be Done Right
 
 - **Do not run any more `git checkout`, `git restore`, or reset commands** against `apps/brikette/src/locales/**` until you have a clear restore plan and a backup.

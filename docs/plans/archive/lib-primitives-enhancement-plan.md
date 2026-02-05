@@ -26,6 +26,11 @@ Review-notes: |
 
 # @acme/lib Primitives Enhancement Plan
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Summary
 
 Enhance `@acme/lib` with reusable mathematical, geometric, and computational primitives to reduce ad-hoc implementations across the monorepo and provide open-source-quality foundational utilities.

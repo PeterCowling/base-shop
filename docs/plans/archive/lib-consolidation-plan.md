@@ -14,6 +14,11 @@ Archived-by: Claude Opus 4.5
 
 # @acme/lib Consolidation Plan
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Summary
 
 Consolidated `@acme/shared-utils` into `@acme/lib` with organized subfolders. The `@acme/shared-utils` package has been **fully removed** from the monorepo.

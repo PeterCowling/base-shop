@@ -1,7 +1,9 @@
 ---
 Type: Plan
+Last-reviewed: 2026-02-05
 Status: Active
 Domain: UI / i18n / Content
+Relates-to charter: none
 Created: 2026-01-27
 Last-updated: 2026-01-27
 Feature-Slug: fix-placeholder-translations
@@ -10,6 +12,11 @@ Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effo
 ---
 
 # Fix Placeholder Translations Plan
+
+
+## Active tasks
+
+No active tasks at this time.
 
 ## Summary
 

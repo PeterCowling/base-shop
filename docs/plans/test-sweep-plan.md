@@ -3,11 +3,17 @@ Type: Plan
 Status: Active
 Domain: Testing
 Last-reviewed: 2026-01-20
+Relates-to charter: none
 Created: 2026-01-20
 Created-by: Claude Opus 4.5
 ---
 
 # Test Sweep Plan
+
+
+## Active tasks
+
+No active tasks at this time.
 
 ## Goal
 Systematically run all tests across the monorepo, fix failures, and identify opportunities to improve test breadth, depth, and quality — without triggering the resource exhaustion issues documented in `docs/testing-policy.md`.

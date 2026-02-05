@@ -14,6 +14,11 @@ Completed-by: Claude (audit verified all tasks done)
 
 # Lint Warnings for Restored Mission Control and Brikette Scripts
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Problem
 Targeted ESLint on the restored files fails with warnings treated as errors. The warnings are:
 - `ds/no-hardcoded-copy` on Brikette CLI scripts (diagnostic strings).

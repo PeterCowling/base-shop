@@ -17,6 +17,11 @@ Completed: 2026-01-20
 
 Source: `docs/repo-quality-audit-2026-01.md` (Recommendation `P0.1`).
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Summary
 
 Create a single, non-interactive pipeline that chains:

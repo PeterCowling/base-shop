@@ -13,3 +13,8 @@ This plan has been renamed and broadened.
 
 - Canonical plan: `docs/plans/guides-publication-readiness-plan.md`
 
+
+## Active tasks
+
+No active tasks at this time.
+

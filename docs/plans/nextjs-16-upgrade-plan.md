@@ -11,6 +11,11 @@ Priority: P1 — Platform upgrade
 
 # Next.js 16 Upgrade Plan
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Background
 
 Base-Shop is a multi-app Next.js monorepo currently on Next 15.x with shared Next config and a mix of App Router apps. Next.js 16 introduces runtime minimums, defaults Turbopack for dev/build, and includes breaking changes across request APIs, middleware, and image configuration that require coordinated changes across apps and shared packages. citeturn5view4turn5view5turn5view6turn6view7turn14view0turn14view2turn5view10

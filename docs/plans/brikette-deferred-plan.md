@@ -11,6 +11,11 @@ Consolidates:
 
 # Brikette Deferred Work Plan
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Context
 
 This plan consolidates all deferred and blocked items from two completed brikette plans:

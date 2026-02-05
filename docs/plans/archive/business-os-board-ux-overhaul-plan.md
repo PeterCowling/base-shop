@@ -1,7 +1,9 @@
 ---
 Type: Plan
+Last-reviewed: 2026-02-05
 Status: Active
 Domain: Platform
+Relates-to charter: none
 Created: 2026-01-29
 Last-updated: 2026-01-29
 Feature-Slug: business-os-board-ux-overhaul
@@ -10,6 +12,11 @@ Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effo
 ---
 
 # Business OS Board UX Overhaul Plan
+
+
+## Active tasks
+
+No active tasks at this time.
 
 ## Summary
 

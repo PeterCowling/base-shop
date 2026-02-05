@@ -5,10 +5,16 @@ Domain: Launch
 Created: 2026-01-23
 Created-by: Claude Opus 4.5
 Last-reviewed: 2026-01-23
+Relates-to charter: none
 Predecessor: docs/plans/archive/launch-shop-pipeline-plan.md
 ---
 
 # Plan: Rapid Shop Launch (v2)
+
+
+## Active tasks
+
+No active tasks at this time.
 
 ## Objectives
 

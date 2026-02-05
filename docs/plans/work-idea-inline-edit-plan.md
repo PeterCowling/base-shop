@@ -1,7 +1,9 @@
 ---
 Type: Plan
+Last-reviewed: 2026-02-05
 Status: Historical
 Domain: UI
+Relates-to charter: none
 Created: 2026-01-29
 Last-updated: 2026-01-29
 Feature-Slug: work-idea-inline-edit
@@ -10,6 +12,11 @@ Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effo
 ---
 
 # Work Idea Inline Edit Plan
+
+
+## Active tasks
+
+No active tasks at this time.
 
 ## Summary
 

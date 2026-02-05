@@ -1,7 +1,9 @@
 ---
 Type: Plan
+Last-reviewed: 2026-02-05
 Status: Active
 Domain: CMS
+Relates-to charter: none
 Created: 2026-01-30
 Last-updated: 2026-01-30
 Feature-Slug: remove-gallery-feature
@@ -10,6 +12,11 @@ Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effo
 ---
 
 # Remove Gallery Feature Plan
+
+
+## Active tasks
+
+No active tasks at this time.
 
 ## Summary
 

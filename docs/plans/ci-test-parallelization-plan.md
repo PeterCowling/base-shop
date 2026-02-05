@@ -1,7 +1,9 @@
 ---
 Type: Plan
+Last-reviewed: 2026-02-05
 Status: Active
 Domain: CI/Infrastructure
+Relates-to charter: none
 Created: 2026-01-22
 Created-by: Claude Opus 4.5
 Last-updated: 2026-01-22
@@ -11,6 +13,11 @@ Priority: P2 — Improvement
 ---
 
 # CI Test Parallelization Plan
+
+
+## Active tasks
+
+No active tasks at this time.
 
 ## Background
 

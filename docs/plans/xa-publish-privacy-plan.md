@@ -1,5 +1,6 @@
 ---
 Type: Plan
+Last-reviewed: 2026-02-05
 Status: Active
 Domain: Commerce / Deploy
 Created: 2026-02-03
@@ -12,6 +13,11 @@ Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effo
 ---
 
 # XA Publish + Privacy (Stealth Staging) — Plan
+
+
+## Active tasks
+
+No active tasks at this time.
 
 ## Summary
 

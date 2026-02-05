@@ -3,6 +3,7 @@ Type: Plan
 Status: Active
 Domain: Infrastructure
 Last-reviewed: 2026-01-19
+Relates-to charter: none
 Created: 2026-01-19
 Created-by: Claude (Opus 4.5)
 Last-updated: 2026-01-19
@@ -12,6 +13,11 @@ Last-updated-by: Claude (Opus 4.5)
 # Plan: Administrative & Infrastructure Debt
 
 This plan tracks infrastructure, configuration, and administrative items that are prerequisites for production deployment but don't involve application code changes.
+
+
+## Active tasks
+
+No active tasks at this time.
 
 ## Summary
 

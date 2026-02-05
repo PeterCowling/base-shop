@@ -15,6 +15,11 @@ Last-updated-by: Claude (Opus 4.5)
 
 Source: Linting audit conducted 2026-01-19, cross-referenced with `docs/repo-quality-audit-2026-01.md`.
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Summary
 
 Enhance the existing ESLint configuration with additional rules and plugins to close gaps in:

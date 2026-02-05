@@ -15,6 +15,11 @@ Archived: 2026-01-27
 
 # Guide System Unification Plan
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Summary
 
 Unify the “guide system layer” across Brikette so that:

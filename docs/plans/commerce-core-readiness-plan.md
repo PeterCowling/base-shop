@@ -1,7 +1,9 @@
 ---
 Type: Plan
+Last-reviewed: 2026-02-05
 Status: Active
 Domain: Platform / Commerce
+Relates-to charter: none
 Created: 2026-02-01
 Last-updated: 2026-02-03
 Relates-to-charter: docs/plans/edge-commerce-standardization-implementation-plan.md
@@ -12,6 +14,11 @@ Fact-Find-Reference: docs/plans/commerce-core-readiness-fact-find.md
 ---
 
 # Commerce Core Readiness Implementation Plan
+
+
+## Active tasks
+
+No active tasks at this time.
 
 ## Summary
 

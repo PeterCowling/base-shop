@@ -1,5 +1,10 @@
+---
 Type: Plan
 Status: Accepted
+Domain: DX
+Last-reviewed: 2026-01-25
+Relates-to charter: none
+---
 
 # Guide Translation DX Improvements - Implementation Plan
 
@@ -514,3 +519,8 @@ These problems require architectural changes beyond DX surface improvements:
 | Time to identify incomplete translations | ~2 min | <5 sec |
 | Time to find translation file | ~1 min | <10 sec |
 | P0/P1 problems solved | 0/8 | 8/8 |
+
+
+## Active tasks
+
+No active tasks at this time.

@@ -12,6 +12,11 @@ Last-updated-by: Codex (GPT-5)
 
 # Agent Language Intelligence Plan (TypeScript in VS Code)
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Executive Summary
 
 Provide both Claude Code and Codex with fast, on-demand TypeScript “semantic truth” (types + diagnostics + navigation) without constantly running `pnpm typecheck`, while preserving `pnpm typecheck && pnpm lint` as the validation gate before commits.

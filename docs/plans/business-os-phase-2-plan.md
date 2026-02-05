@@ -4,6 +4,7 @@ Status: Draft
 Domain: Business OS
 Created: 2026-01-29
 Last-reviewed: 2026-01-29
+Relates-to charter: none
 Last-updated: 2026-01-29 (BOS-P2-01/02/05 complete, BOS-P2-04 deferred)
 Feature-Slug: business-os-phase-2
 Overall-confidence: TBD
@@ -14,6 +15,11 @@ Supersedes:
 ---
 
 # Business OS Phase 2+ Plan
+
+
+## Active tasks
+
+No active tasks at this time.
 
 ## Summary
 

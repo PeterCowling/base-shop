@@ -12,6 +12,11 @@ Overall-confidence: 100%
 
 # Article Helpers to Guide Helpers Migration Plan
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Summary
 
 Migrate components that use legacy article helpers (`ARTICLE_KEYS`, `articleSlug`, `HelpArticleKey`, `ARTICLE_SLUGS`) to use guide helpers instead (`GUIDE_KEYS`, `guideSlug`, `GuideKey`). This completes the content unification by removing the dual-system overhead.

@@ -12,6 +12,11 @@ Last-updated-by: Claude Opus 4.5
 
 # Agent Context Optimization Plan
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Executive Summary
 
 Reduce the fixed token cost of every Claude Code and Codex session by restructuring always-on context files. The current `.claude/config.json` loads ~2,032 lines across 8 files on every conversation start. This plan replaces that with a lean two-file always-on context (operational rules + a curated digest), while ensuring agents can still navigate the full documentation on demand.

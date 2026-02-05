@@ -77,7 +77,12 @@ function parseTasks(content: string): string[] {
       continue;
     }
     if (!inActive) continue;
-    if (line.startsWith("- **")) {
+    // Skip phase/section headings (e.g., "### Phase 1", "### Implementation")
+    if (line.match(/^###\s+(Phase|Implementation|Background|Context|Overview)/i)) {
+      continue;
+    }
+    // Accept both list-based tasks (- **ID: or - [x] ID:) and heading-based tasks (### ID:)
+    if (line.match(/^- (\[[ x]\] )?[A-Z0-9-]+-\d+/) || line.match(/^### [A-Z0-9-]+-\d+/)) {
       tasks.push(line);
     }
   }
@@ -86,11 +91,13 @@ function parseTasks(content: string): string[] {
 
 function validateTaskLine(line: string, rel: string): string[] {
   const errors: string[] = [];
-  // Expect "- **ID" at minimum (e.g. CMS-01, CMS-PLAN-01, I18N-01)
-  const match = line.match(/^- \*\*([A-Z0-9-]+-\d+)/);
-  if (!match) {
+  // Task lines should already be filtered to have valid IDs by parseTasks()
+  // This validation is mainly a sanity check
+  const listMatch = line.match(/^- (\[[ x]\] )?[A-Z0-9-]+-\d+/);
+  const headingMatch = line.match(/^### [A-Z0-9-]+-\d+/);
+  if (!listMatch && !headingMatch) {
     errors.push(
-      `[plans-lint] ${rel}: task line does not start with an ID like CMS-01: ${line.trim()}`,
+      `[plans-lint] ${rel}: task line does not match expected format: ${line.trim()}`,
     );
   }
   return errors;

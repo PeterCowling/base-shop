@@ -14,6 +14,11 @@ Last-updated-by: Codex (GPT-5)
 
 Source: `apps/cochlearfit` progress report (2026-01-24) + lint gating on text-heavy policy files.
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Summary
 
 - The EU Terms of Sale content lives in `apps/cochlearfit/src/components/policies/terms-sale-eu/*` and currently embeds dozens of literal strings. ESLint’s `ds/no-hardcoded-copy` flag forces the package to stay on the global “ignore” list.

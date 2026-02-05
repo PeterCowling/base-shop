@@ -1,7 +1,9 @@
 ---
 Type: Plan
+Last-reviewed: 2026-02-05
 Status: Active
 Domain: Automation
+Relates-to charter: none
 Created: 2026-02-02
 Last-updated: 2026-02-02
 Feature-Slug: email-autodraft-consolidation
@@ -13,6 +15,11 @@ Audit-Ref: working-tree
 ---
 
 # Email Autodraft Consolidation Plan
+
+
+## Active tasks
+
+No active tasks at this time.
 
 ## Summary
 

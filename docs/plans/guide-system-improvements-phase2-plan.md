@@ -16,6 +16,11 @@ Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effo
 
 # Guide System Improvements — Phase 2 (Guardrails) + Phase 3 (Bigger Bets)
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Summary
 
 This plan keeps the **full breadth** of the guide-system improvements workstream, while making CI an **honest diagnostic**:

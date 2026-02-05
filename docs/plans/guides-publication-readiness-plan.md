@@ -12,6 +12,11 @@ Feature-Slug: guides-publication-readiness
 
 # Guides Publication Readiness Plan
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Summary
 
 Track and drive “ready to go live” status for Brikette guides. This plan is a **readiness tracker** (what’s left, what’s done, and the evidence) plus a set of **promotion gates** so moving a guide to `status: "live"` is deliberate and repeatable.

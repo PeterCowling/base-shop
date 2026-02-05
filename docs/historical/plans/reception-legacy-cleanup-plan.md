@@ -1,5 +1,10 @@
+---
 Type: Plan
 Status: Historical
+Domain: Reception
+Last-reviewed: 2026-01-17
+Relates-to charter: none
+---
 
 # Reception App Legacy Cleanup Plan
 
@@ -38,3 +43,8 @@ The reception app contained a `/src/compat/` directory with React Router compati
 
 - All tests pass after cleanup
 - No broken imports
+
+
+## Active tasks
+
+No active tasks at this time.

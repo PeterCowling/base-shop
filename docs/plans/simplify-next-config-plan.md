@@ -1,5 +1,10 @@
+---
 Type: Plan
 Status: Draft
+Domain: Build
+Last-reviewed: 2026-01-19
+Relates-to charter: none
+---
 
 # Plan: Simplify Next.js Webpack Configuration
 
@@ -364,3 +369,8 @@ If issues arise, we can:
 - [x] **NEXT-CONFIG-04:** Decide on TS paths strategy — **Decision #4 set to A.1 (remove paths)** (2026-01-19)
 - [x] **NEXT-CONFIG-05:** Added `concurrently` dev dependency (2026-01-19)
 - [ ] **NEXT-CONFIG-06:** Test with representative app build (not just typecheck)
+
+
+## Active tasks
+
+No active tasks at this time.

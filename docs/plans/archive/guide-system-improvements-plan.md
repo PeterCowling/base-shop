@@ -1,7 +1,9 @@
 ---
 Type: Plan
+Last-reviewed: 2026-02-05
 Status: Historical
 Domain: CMS / UI / Platform
+Relates-to charter: none
 Created: 2026-01-27
 Last-updated: 2026-01-27
 Completed: 2026-01-27
@@ -12,6 +14,11 @@ Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effo
 ---
 
 # Guide System Improvements Plan - Phase 1 (Quick Wins)
+
+
+## Active tasks
+
+No active tasks at this time.
 
 ## Summary
 

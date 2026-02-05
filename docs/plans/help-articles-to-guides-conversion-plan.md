@@ -30,6 +30,11 @@ Overall-confidence: 90%
 
 # Help Articles to Guides Conversion Plan
 
+
+## Active tasks
+
+No active tasks at this time.
+
 ## Summary
 
 Convert the existing assistance help articles from the legacy article format to the guide format. This unifies help content under the guide system, enabling consistent rendering, translation workflow, and editorial tooling — while preserving existing `/[lang]/assistance/[slug]` URLs across locales.

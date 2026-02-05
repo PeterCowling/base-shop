@@ -1,7 +1,9 @@
 ---
 Type: Plan
+Last-reviewed: 2026-02-05
 Status: Active
 Domain: Testing
+Relates-to charter: none
 Created: 2026-01-18
 Created-by: Claude Opus 4.5
 Last-updated: 2026-01-18
@@ -9,6 +11,11 @@ Last-updated-by: Codex
 ---
 
 # Test Typechecking Plan
+
+
+## Active tasks
+
+No active tasks at this time.
 
 ## Problem Statement
 

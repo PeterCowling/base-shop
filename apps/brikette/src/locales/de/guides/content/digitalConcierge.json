@@ -22,7 +22,7 @@
       "id": "templates",
       "title": "Kopieren/Einfügen-Vorlage",
       "body": [
-        "\"Wir haben 6 Stunden, kein Auto, wir möchten (A) schwimmen + (B) Sonnenuntergang, Budget €40 pro Person. Was ist der einfachste Plan und Plan B, falls die Fähren ausfallen?\"",
+        "\\\\\"Wir haben 6 Stunden, kein Auto, wir möchten (A) schwimmen + (B) Sonnenuntergang, Budget €40 pro Person. Was ist der einfachste Plan und Plan B, falls die Fähren ausfallen?\\\\\"",
         "Budget-Grundlage: %LINK:positanoBudget|Positano mit kleinem Budget% + %LINK:terraceSunsets|Terrassen-Sonnenuntergang%.",
         "Wenn Transport kritisch ist: %LINK:ferryCancellations|Fährausfälle + Wetter%."
       ]

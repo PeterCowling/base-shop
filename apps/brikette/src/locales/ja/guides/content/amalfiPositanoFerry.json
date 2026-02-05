@@ -9,263 +9,263 @@
     "body": "このアマルフィからポジターノへのフェリーガイドは、アマルフィ海岸を旅する最も風光明媚な方法をカバーしています：3月下旬から10月までの毎日のボート。正確なコスト（€9〜€10）、アマルフィでの乗船場所、船上で最高の座席を確保する方法、および荷物を持ってポジターノのフェリー桟橋からホステル ブリケットにスムーズに接続する方法が含まれています。"
   },
   "callouts": {
-    "tip": "Need other transport options? Open the %HOWTO:how-to-get-here|How to Get Here overview% for buses, mixed routes, and airport transfers."
+    "tip": "他の交通手段が必要ですか？ バス、混合ルート、空港送迎については、%HOWTO:how-to-get-here|ここに到着する方法の概要%を開いてください。"
   },
   "sections": [
     {
       "id": "overview",
-      "title": "Quick overview",
-      "body": "The Amalfi to Positano ferry (often written as the Amalfi–Positano ferry) is operated primarily by Travelmar, running 8 daily sailings from late March through October. Journey time is 15–25 minutes depending on sea conditions and intermediate stops.",
+      "title": "クイック概要",
+      "body": "アマルフィからポジターノへのフェリー（しばしばアマルフィ–ポジターノフェリーと書かれます）は主にTravelmarによって運営されており、3月下旬から10月まで毎日8便を運航しています。海の状況と中間停車地によって、所要時間は15〜25分です。",
       "list": [
-        "**Cost:** €9–€10 per person one-way (2026 season)",
-        "**Luggage:** €2 per bag over the included carry-on (max 45cm × 35cm × 20cm)",
-        "**First departure:** Approximately 08:25 from Amalfi",
-        "**Last departure:** Approximately 20:00 from Amalfi",
-        "**Season:** Late March to late October (weather dependent)"
+        "**コスト：** 1人あたり片道€9〜€10（2026年シーズン）",
+        "**手荷物：** 含まれる機内持ち込み手荷物（最大45cm × 35cm × 20cm）を超える荷物1個につき€2",
+        "**最初の出発：** アマルフィから約08:25",
+        "**最後の出発：** アマルフィから約20:00",
+        "**シーズン：** 3月下旬から10月下旬まで（天候による）"
       ],
       "images": [
         {
           "src": "/img/guides/amalfi-positano-ferry/01-amalfi-dock.webp",
-          "alt": "Amalfi waterfront and harbor area with boats, seen from near the ferry dock",
-          "caption": "Amalfi’s ferry docks sit on the waterfront beside town — you’ll board here for Positano. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Amalfi_02_View_from_Ferry_Dock.jpg|Grueslayer% (%URL:https://creativecommons.org/licenses/by-sa/4.0|CC BY-SA 4.0%)."
+          "alt": "フェリー桟橋の近くから見たボートのあるアマルフィのウォーターフロントと港エリア",
+          "caption": "アマルフィのフェリー桟橋は町の横のウォーターフロントにあります — ここからポジターノに乗船します。写真クレジット：%URL:https://commons.wikimedia.org/wiki/File:Amalfi_02_View_from_Ferry_Dock.jpg|Grueslayer% (%URL:https://creativecommons.org/licenses/by-sa/4.0|CC BY-SA 4.0%)。"
         }
       ]
     },
     {
       "id": "whyFerry",
-      "title": "Why take the ferry?",
-      "body": "The ferry beats the SITA bus in many ways. You skip the crowded Strada Statale 163 coastal road. You don't fight for bus seats in peak season. You land right at Spiaggia Grande beach in Positano, closer to the hostel than the Chiesa Nuova or Sponda bus stops. And you get amazing coastal views for just €9.",
+      "title": "なぜフェリーに乗るのですか？",
+      "body": "フェリーは多くの点でSITAバスに勝ります。混雑したStrada Statale 163の海岸道路をスキップします。ピークシーズンにバスの座席を争う必要がありません。ポジターノのSpiaggia Grandeビーチに直接着陸し、Chiesa NuovaやSponda のバス停よりもホステルに近いです。そして、わずか€9で素晴らしい海岸の景色が得られます。",
       "list": [
-        "See cliffside towns like Praiano, hidden coves, and vertical lemon terraces up close",
-        "No traffic jams—ferries leave on time even when the SS163 road is gridlocked",
-        "Dock at Positano's main beach, near %LINK:porterServices|porter services% and the %LINK:ferryDockToBrikette|hostel route%",
-        "Fresh sea air and outdoor deck seats (first-come, first-served)",
-        "Often faster than the bus in July and August when road traffic is worst"
+        "プライアーノのような崖の町、隠れた入り江、垂直のレモンテラスを間近で見る",
+        "渋滞なし—SS163道路が渋滞していてもフェリーは時間通りに出発します",
+        "ポジターノのメインビーチに停泊、%LINK:porterServices|ポーターサービス%と%LINK:ferryDockToBrikette|ホステルルート%の近く",
+        "新鮮な海の空気と屋外デッキシート（先着順）",
+        "道路交通が最悪の7月と8月にはバスよりも速いことが多い"
       ],
       "images": [
         {
           "src": "/img/guides/amalfi-positano-ferry/05-li-galli.webp",
-          "alt": "The small Li Galli islands in the sea off the Amalfi Coast",
-          "caption": "On a clear day you may spot Li Galli islands offshore on the Amalfi Coast ferry routes. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Isolotti_de_Li_Galli_(Costiera_Sorrentina).jpg|IlSistemone% (%URL:https://creativecommons.org/licenses/by-sa/3.0|CC BY-SA 3.0%)."
+          "alt": "アマルフィ海岸沖の海にある小さなLi Galli諸島",
+          "caption": "晴れた日にはアマルフィ海岸のフェリールートで沖合のLi Galli諸島を見ることができます。写真クレジット：%URL:https://commons.wikimedia.org/wiki/File:Isolotti_de_Li_Galli_(Costiera_Sorrentina).jpg|IlSistemone% (%URL:https://creativecommons.org/licenses/by-sa/3.0|CC BY-SA 3.0%)。"
         }
       ]
     },
     {
       "id": "tickets",
-      "title": "Tickets and schedules",
-      "body": "Buy Travelmar tickets online at travelmar.it, at the Amalfi waterfront office, or from kiosks near Piazza Flavio Gioia. In July and August, book online 1–2 days ahead. Same-day tickets work in April, May, September, and October, but weekends can sell out.",
+      "title": "チケットとスケジュール",
+      "body": "Travelmarのチケットは、travelmar.itでオンライン、アマルフィのウォーターフロントオフィス、またはPiazza Flavio Gioia近くのキオスクで購入してください。7月と8月は、1〜2日前にオンラインで予約してください。4月、5月、9月、10月は当日券が機能しますが、週末は売り切れになる可能性があります。",
       "list": [
-        "**Online:** Book at travelmar.it. Ticket comes to your email as a QR code.",
-        "**In person:** Ticket office on Amalfi waterfront opens 30 minutes before first boat.",
-        "**Price:** €9–€10 per adult. Kids and babies may cost less.",
-        "**Luggage:** One small bag (45cm × 35cm × 20cm) is free. Bigger backpacks and rollers cost €2 each.",
-        "**Payment:** Cash and card work at kiosks. Online needs a card or PayPal."
+        "**オンライン：** travelmar.itで予約。チケットはQRコードとしてメールに届きます。",
+        "**対面：** アマルフィのウォーターフロントのチケットオフィスは最初のボートの30分前に開きます。",
+        "**価格：** 大人1人あたり€9〜€10。子供と幼児は安くなる場合があります。",
+        "**手荷物：** 小さな袋（45cm × 35cm × 20cm）は無料です。大きなバックパックとローラーはそれぞれ€2かかります。",
+        "**支払い：** キオスクでは現金とカードが使えます。オンラインにはカードまたはPayPalが必要です。"
       ],
       "images": [
         {
           "src": "/img/guides/amalfi-positano-ferry/03-ferry-ride.webp",
-          "alt": "Passenger ferry cruising along the Amalfi Coast between Amalfi and Positano",
-          "caption": "Fast ferries and hydrofoils run between Amalfi and Positano in season. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Ferry_Ride_Between_Amalfi_and_Positano_(42250218604).jpg|Nan Palmero from San Antonio, TX, USA% (%URL:https://creativecommons.org/licenses/by/2.0|CC BY 2.0%)."
+          "alt": "アマルフィとポジターノの間のアマルフィ海岸沿いを航行する旅客フェリー",
+          "caption": "高速フェリーと水中翼船がシーズン中にアマルフィとポジターノの間を運航しています。写真クレジット：%URL:https://commons.wikimedia.org/wiki/File:Ferry_Ride_Between_Amalfi_and_Positano_(42250218604).jpg|Nan Palmero from San Antonio, TX, USA% (%URL:https://creativecommons.org/licenses/by/2.0|CC BY 2.0%)。"
         }
       ]
     },
     {
       "id": "amalfiBoarding",
-      "title": "Where to board in Amalfi",
-      "body": "The ferry pier is on Amalfi's waterfront, a 2-minute walk from Piazza Flavio Gioia (the main square with the big fountain and SITA bus stop). Face the sea from the piazza. The pier is to your right. Look for Travelmar signs, blue-and-white kiosks, and queues 15–20 minutes before boats leave.",
+      "title": "アマルフィでの乗船場所",
+      "body": "フェリー桟橋はアマルフィのウォーターフロントにあり、Piazza Flavio Gioia（大きな噴水とSITAバス停のあるメイン広場）から徒歩2分です。広場から海に向かって。桟橋はあなたの右側にあります。Travelmarの標識、青と白のキオスク、ボートが出発する15〜20分前の行列を探してください。",
       "list": [
-        "**Location:** Amalfi port, upper level, east of Piazza Flavio Gioia next to Via Lorenzo d'Amalfi",
-        "**From SITA stop:** Walk to the water and turn right along Lungomare dei Cavalieri promenade",
-        "**Signs:** Travelmar desks are clear. Staff in blue vests help with boarding.",
-        "**Departure gate:** Check your ticket for the right pier. Two piers exist. Bigger boats use the outer one.",
-        "**Timing:** Arrive 15–20 minutes early to grab outdoor deck seats and skip the rush."
+        "**場所：** アマルフィ港、上層階、Piazza Flavio Gioiaの東、Via Lorenzo d'Amalfiの隣",
+        "**SITA停留所から：** 水に向かって歩き、Lungomare dei Cavalieri遊歩道に沿って右に曲がります",
+        "**標識：** Travelmarのデスクは明確です。青いベストのスタッフが乗船を手伝います。",
+        "**出発ゲート：** 正しい桟橋のチケットを確認してください。2つの桟橋があります。大きなボートは外側を使用します。",
+        "**タイミング：** 屋外デッキシートを確保し、ラッシュをスキップするために15〜20分前に到着してください。"
       ],
       "images": [
         {
           "src": "/img/guides/amalfi-positano-ferry/02-piazza-flavio-gioia.webp",
-          "alt": "Piazza Flavio Gioia in Amalfi with the fountain and nearby bus stop area",
-          "caption": "Piazza Flavio Gioia is the easiest landmark in Amalfi: find the fountain, face the sea, then walk right to the ferry pier. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Flavio_Gioia_(17734991371).jpg|Alpha 350 from Hungary% (%URL:https://creativecommons.org/licenses/by/2.0|CC BY 2.0%)."
+          "alt": "噴水と近くのバス停エリアがあるアマルフィのPiazza Flavio Gioia",
+          "caption": "Piazza Flavio Gioiaはアマルフィで最も簡単な目印です：噴水を見つけ、海に向かい、フェリー桟橋まで右に歩きます。写真クレジット：%URL:https://commons.wikimedia.org/wiki/File:Flavio_Gioia_(17734991371).jpg|Alpha 350 from Hungary% (%URL:https://creativecommons.org/licenses/by/2.0|CC BY 2.0%)。"
         }
       ]
     },
     {
       "id": "onboard",
-      "title": "What to expect onboard",
-      "body": "Travelmar boats have indoor air-con seats and outdoor deck space. For the best views, go straight to the outdoor deck when boarding starts. Seats fill fast. On the Amalfi-to-Positano route, sit on the **left side** (facing forward) to see the cliffs, towns like Conca dei Marini, and hidden beaches. The trip is 15–25 minutes. No cabins or beds—just seats.",
+      "title": "船上で期待すること",
+      "body": "Travelmarのボートには室内エアコンシートと屋外デッキスペースがあります。最高の景色を得るには、乗船が始まったらすぐに屋外デッキに行ってください。座席はすぐに埋まります。アマルフィからポジターノへのルートでは、**左側**（前を向いて）に座って崖、Conca dei Mariniのような町、隠れたビーチを見てください。旅行は15〜25分です。キャビンやベッドはありません—座席だけです。",
       "list": [
-        "**Best seats:** Outdoor deck, left side, facing forward for max views of Furore fjord and Li Galli islands",
-        "**Indoor cabin:** Air-con lounge with benches. Good for rough seas or hot sun at noon.",
-        "**Snack bar:** Some boats have a counter with drinks, snacks, and gelato (cash and card both work).",
-        "**Luggage:** Put bags in deck racks or under your seat. Staff help if bags are big.",
-        "**Seasickness:** Usually calm. If you get seasick, sit inside near the middle. Don't read or use your phone."
+        "**最高の座席：** 屋外デッキ、左側、前を向いてFuroreフィヨルドとLi Galli諸島の最大の景色",
+        "**室内キャビン：** ベンチ付きエアコンラウンジ。荒れた海や正午の暑い太陽に適しています。",
+        "**スナックバー：** 一部のボートには飲み物、スナック、ジェラートのカウンターがあります（現金とカードの両方が機能します）。",
+        "**手荷物：** バッグをデッキラックまたは座席の下に置きます。バッグが大きい場合はスタッフが手伝います。",
+        "**船酔い：** 通常は穏やかです。船酔いになった場合は、中央の内側に座ってください。読んだり電話を使ったりしないでください。"
       ],
       "images": [
         {
           "src": "/img/guides/amalfi-positano-ferry/04-furore-fiord.webp",
-          "alt": "Fiordo di Furore bridge and cliffs seen from the sea along the Amalfi Coast",
-          "caption": "From the left-side deck seats you can spot dramatic cliffs and sights like Fiordo di Furore. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Fiordo_di_Furore_bridge,_as_seen_from_the_sea,_Furore,_2010.jpg|DimiTalen% (%URL:http://creativecommons.org/publicdomain/zero/1.0/deed.en|CC0%)."
+          "alt": "アマルフィ海岸に沿って海から見たFiordo di Furoreの橋と崖",
+          "caption": "左側のデッキシートからFiordo di Furoreのような劇的な崖と光景を見ることができます。写真クレジット：%URL:https://commons.wikimedia.org/wiki/File:Fiordo_di_Furore_bridge,_as_seen_from_the_sea,_Furore,_2010.jpg|DimiTalen% (%URL:http://creativecommons.org/publicdomain/zero/1.0/deed.en|CC0%)。"
         }
       ]
     },
     {
       "id": "positanoArrival",
-      "title": "Arriving in Positano",
-      "body": "Boats dock at the main pier on Spiaggia Grande (the big public beach). You walk off the pier onto the beach road. From here, three ways to Hostel Brikette: walk uphill (steep, 15–20 min with bags), take the Interno Positano bus (€2, fewer stairs), or hire a porter (€20–€25 per bag, best if you have heavy stuff). See the %LINK:ferryDockToBrikette|dock to Brikette guide% for step-by-step photos.",
+      "title": "ポジターノへの到着",
+      "body": "ボートはSpiaggia Grande（大きな公共ビーチ）のメイン桟橋に停泊します。桟橋からビーチロードに降ります。ここから、ホステル ブリケットへの3つの方法：坂を歩く（急、バッグで15〜20分）、Interno Positanoバスに乗る（€2、階段が少ない）、またはポーターを雇う（バッグ1個につき€20〜€25、重いものがある場合に最適）。ステップバイステップの写真については、%LINK:ferryDockToBrikette|桟橋からブリケットまでのガイド%を参照してください。",
       "list": [
-        "**Dock:** Spiaggia Grande pier, center of Positano, near Via Positanesi d'America",
-        "**Porters:** Wait at the dock. Ask the price before you give them your bags (€20–€25 per bag to Brikette).",
-        "**Interno bus:** Leaves from Via Cristoforo Colombo near the dock. Buy tickets at kiosks or on the bus.",
-        "**Walking:** Steep stairs and slopes. OK with a daypack. Hard with rollers in summer heat.",
-        "**Early arrival:** If you land early and don’t want to carry bags around town, use %LINK:luggageStorage|luggage storage% near the beach (€5–€8 per bag)."
+        "**桟橋：** Spiaggia Grande桟橋、ポジターノの中心、Via Positanesi d'Americaの近く",
+        "**ポーター：** 桟橋で待っています。バッグを渡す前に価格を尋ねてください（ブリケットまでバッグ1個につき€20〜€25）。",
+        "**Interno バス：** 桟橋近くのVia Cristoforo Colomboから出発します。キオスクまたはバスでチケットを購入してください。",
+        "**徒歩：** 急な階段と坂。デイパックなら大丈夫。夏の暑さの中でローラーは困難です。",
+        "**早期到着：** 早く着陸してバッグを持って町を歩き回りたくない場合は、ビーチ近くの%LINK:luggageStorage|荷物保管所%を使用してください（バッグ1個につき€5〜€8）。"
       ],
       "images": [
         {
           "src": "/img/guides/amalfi-positano-ferry/06-positano-panorama.webp",
-          "alt": "Wide panorama of Positano's hillside houses above Spiaggia Grande beach",
-          "caption": "The ferry drops you at Spiaggia Grande — the main beach at the base of Positano’s hillside. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Positano_panorama_01.jpg|Mihael Grmek% (%URL:https://creativecommons.org/licenses/by-sa/4.0|CC BY-SA 4.0%)."
+          "alt": "Spiaggia Grandeビーチの上のポジターノの丘の家の広いパノラマ",
+          "caption": "フェリーはSpiaggia Grandeに降ろします — ポジターノの丘の麓のメインビーチ。写真クレジット：%URL:https://commons.wikimedia.org/wiki/File:Positano_panorama_01.jpg|Mihael Grmek% (%URL:https://creativecommons.org/licenses/by-sa/4.0|CC BY-SA 4.0%)。"
         },
         {
           "src": "/img/guides/amalfi-positano-ferry/07-positano-umbrellas.webp",
-          "alt": "Crowded Spiaggia Grande beach in Positano with rows of umbrellas and boats in the bay",
-          "caption": "In peak season, Spiaggia Grande is busy — keep your bags close and plan your next step before you join the crowd. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Beach_Umbrellas_in_Positano_(41158690680).jpg|Nan Palmero from San Antonio, TX, USA% (%URL:https://creativecommons.org/licenses/by/2.0|CC BY 2.0%)."
+          "alt": "パラソルの列と湾のボートがあるポジターノの混雑したSpiaggia Grandeビーチ",
+          "caption": "ピークシーズンには、Spiaggia Grandeは混雑しています — バッグを近くに保ち、群衆に参加する前に次のステップを計画してください。写真クレジット：%URL:https://commons.wikimedia.org/wiki/File:Beach_Umbrellas_in_Positano_(41158690680).jpg|Nan Palmero from San Antonio, TX, USA% (%URL:https://creativecommons.org/licenses/by/2.0|CC BY 2.0%)。"
         }
       ]
     },
     {
       "id": "hostelTips",
-      "title": "Tips from the hostel",
-      "body": "We've seen a lot of guests arrive by ferry from Amalfi. Here's what works best, based on real feedback and common mistakes.",
+      "title": "ホステルからのヒント",
+      "body": "アマルフィからフェリーで到着する多くのゲストを見てきました。実際のフィードバックと一般的な間違いに基づいて、最もうまくいくものは次のとおりです。",
       "list": [
-        "**Take the 08:25 or 09:00 boat** to get the most out of your first day. You'll land in time to check in, drop bags, and explore before lunch.",
-        "**Skip the last ferry (20:00)** unless you're OK with stairs in the dark. Positano's paths don't have much light after sunset.",
-        "**Bring a small daypack** for your valuables. Keep it with you on deck. Big bags go in the racks, but don't leave phones or wallets there.",
-        "**Wear layers.** The deck gets breezy even in summer. A light jacket helps for morning or evening trips.",
-        "**Download offline maps** before you board. Cell signal drops mid-crossing. You want directions ready when you land.",
-        "**Budget for porters** if you have more than one bag or anything over 15kg. The walk up Via Pasitea to Brikette is steeper than it looks."
+        "**08:25または09:00のボートに乗る**と、初日を最大限に活用できます。チェックインし、バッグを降ろし、昼食前に探索する時間に着陸します。",
+        "**最後のフェリー（20:00）をスキップする**、暗闇の中で階段で大丈夫でない限り。ポジターノの小道は日没後あまり光がありません。",
+        "**貴重品用に小さなデイパックを持参する。** デッキで持ち歩いてください。大きなバッグはラックに入りますが、電話や財布をそこに置かないでください。",
+        "**レイヤーを着用する。** デッキは夏でも風が強くなります。軽いジャケットは朝や夕方の旅行に役立ちます。",
+        "**乗船前にオフラインマップをダウンロードする。** クロッシングの途中で携帯電話の信号が落ちます。着陸したときに道案内の準備ができているようにしたいです。",
+        "**ポーターの予算**、1個以上のバッグまたは15kg以上のものがある場合。ブリケットまでのVia Pasiteaを歩くと、見た目よりも急です。"
       ],
       "images": [
         {
           "src": "/img/guides/amalfi-positano-ferry/10-positano-street.webp",
-          "alt": "Steep pedestrian street and steps in Positano lined with buildings",
-          "caption": "Positano is beautiful but vertical — plan your uphill connection from the dock if you have luggage. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Positano_street_II.jpg|Jensens% (%URL:https://commons.wikimedia.org/wiki/Commons:Licensing|Public domain%)."
+          "alt": "建物が並ぶポジターノの急な歩行者通りと階段",
+          "caption": "ポジターノは美しいが垂直です — 荷物がある場合は、桟橋からの上り接続を計画してください。写真クレジット：%URL:https://commons.wikimedia.org/wiki/File:Positano_street_II.jpg|Jensens% (%URL:https://commons.wikimedia.org/wiki/Commons:Licensing|パブリックドメイン%)。"
         }
       ]
     },
     {
       "id": "alternativeRoutes",
-      "title": "Other ways to reach Positano",
-      "body": "If the ferry time doesn't work, or if boats stop due to weather (rare but happens in April and October), try these backups. See the %HOWTO:how-to-get-here|How to Get Here guide% for full details.",
+      "title": "ポジターノに到達する他の方法",
+      "body": "フェリーの時間が機能しない場合、または天候のためにボートが停止する場合（まれですが4月と10月に発生します）、これらのバックアップを試してください。詳細については、%HOWTO:how-to-get-here|ここに到達する方法ガイド%を参照してください。",
       "list": [
-        "**SITA bus:** Amalfi to Positano via SS163 coast road, €2–€3, runs all year but gets packed in peak season.",
-        "**Private water taxi:** Faster and more flexible than scheduled boats, but costs €80–€120 for the whole boat (split among 4–6 people).",
-        "**Road taxi:** Goes via Agerola and inland routes like SP2, €40–€60, good when ferries don't run.",
-        "**Direct from Naples:** Coming from Naples Capodichino Airport? See %LINK:naplesAirportBus|Naples Airport to Positano by bus% to skip Amalfi."
+        "**SITAバス：** SS163海岸道路を経由してアマルフィからポジターノへ、€2〜€3、一年中運行していますが、ピークシーズンには満員になります。",
+        "**プライベートウォータータクシー：** スケジュールされたボートよりも速く柔軟ですが、ボート全体で€80〜€120かかります（4〜6人で分割）。",
+        "**道路タクシー：** AgegolaとSP2のような内陸ルートを経由します、€40〜€60、フェリーが運行していないときに良いです。",
+        "**ナポリから直接：** ナポリ・カポディキーノ空港から来ていますか？アマルフィをスキップするには%LINK:naplesAirportBus|ナポリ空港からポジターノへバスで%を参照してください。"
       ],
       "images": [
         {
           "src": "/img/guides/amalfi-positano-ferry/08-sita-bus.webp",
-          "alt": "Blue SITA bus driving along the coastal road above the sea on the Amalfi Coast",
-          "caption": "When seas are rough, the SITA bus becomes the main backup from Amalfi to Positano (but it can be crowded). Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Amalfi_Drive_Sita_Bus.jpeg|Robot8A% (%URL:https://creativecommons.org/licenses/by-sa/4.0|CC BY-SA 4.0%)."
+          "alt": "アマルフィ海岸の海の上の海岸道路沿いを走る青いSITAバス",
+          "caption": "海が荒れているとき、SITAバスはアマルフィからポジターノへのメインバックアップになります（ただし混雑する可能性があります）。写真クレジット：%URL:https://commons.wikimedia.org/wiki/File:Amalfi_Drive_Sita_Bus.jpeg|Robot8A% (%URL:https://creativecommons.org/licenses/by-sa/4.0|CC BY-SA 4.0%)。"
         }
       ]
     },
     {
       "id": "whenToGo",
-      "title": "Best months for the ferry",
-      "body": "Ferry season runs late March to late October. Peak months (July and August) see the most sailings but also the biggest crowds and highest prices. Shoulder months (April, May, September, October) offer better value, calmer seas, and easier ticket availability.",
+      "title": "フェリーに最適な月",
+      "body": "フェリーシーズンは3月下旬から10月下旬まで続きます。ピーク月（7月と8月）は最も多くの便を見ますが、最大の群衆と最高の価格もあります。ショルダー月（4月、5月、9月、10月）はより良い価値、より穏やかな海、より簡単なチケットの入手可能性を提供します。",
       "list": [
-        "**April–May:** Fewer tourists, calm seas, easier to get tickets same-day. Weather can be cool in early April.",
-        "**June:** Busy weekends, calm seas, full ferry schedule starts. Book 1 day ahead for weekends.",
-        "**July–August:** Peak season. Book 2 days ahead. Boats fill fast. Expect crowds at Amalfi and Positano piers.",
-        "**September–October:** Shoulder season returns. Calmer than summer, but October can have rough seas and early season closures."
+        "**4月〜5月：** 観光客が少なく、穏やかな海、当日チケットを取得しやすい。4月初旬は天候が涼しいかもしれません。",
+        "**6月：** 忙しい週末、穏やかな海、完全なフェリースケジュールが始まります。週末は1日前に予約してください。",
+        "**7月〜8月：** ピークシーズン。2日前に予約してください。ボートはすぐに埋まります。アマルフィとポジターノの桟橋で群衆を期待してください。",
+        "**9月〜10月：** ショルダーシーズンが戻ります。夏よりも穏やかですが、10月には荒れた海と早期シーズン閉鎖がある可能性があります。"
       ],
       "images": [
         {
           "src": "/img/guides/amalfi-positano-ferry/09-amalfi-coast.webp",
-          "alt": "View of the Amalfi Coast cliffs and sea on a clear day",
-          "caption": "Spring and early autumn often have calmer seas and lighter crowds — but always keep a backup bus plan in mind. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Amalfi_coast_(17735555990).jpg|Alpha 350 from Hungary% (%URL:https://creativecommons.org/licenses/by/2.0|CC BY 2.0%)."
+          "alt": "晴れた日のアマルフィ海岸の崖と海の眺め",
+          "caption": "春と初秋はしばしばより穏やかな海とより軽い群衆があります — しかし、常にバックアップバス計画を心に留めておいてください。写真クレジット：%URL:https://commons.wikimedia.org/wiki/File:Amalfi_coast_(17735555990).jpg|Alpha 350 from Hungary% (%URL:https://creativecommons.org/licenses/by/2.0|CC BY 2.0%)。"
         }
       ]
     },
     {
       "id": "budgetTips",
-      "title": "Budget tips for hostel guests",
-      "body": "The ferry costs €9–€10, which is fair for 25 minutes of coastal views. But extra costs add up fast. Here's how to keep it cheap.",
+      "title": "ホステルゲストのための予算のヒント",
+      "body": "フェリーは€9〜€10かかります。これは25分の海岸の景色にとって公正です。しかし、追加費用はすぐに積み重なります。安く保つ方法は次のとおりです。",
       "list": [
-        "**Pack light.** One small bag under 45cm × 35cm × 20cm is free. A second bag costs €2. If you have a big backpack and a daypack, wear the daypack and carry the backpack to avoid the fee.",
-        "**Skip the snack bar.** Drinks and snacks on the boat cost double what you'd pay at a shop in Amalfi. Buy water and snacks at a supermarket near Piazza del Duomo before you board.",
-        "**Book direct.** Buy tickets from travelmar.it or the pier kiosk. Third-party sites like Viator or GetYourGuide add a markup. Save €2–€3 by booking direct.",
-        "**Travel in shoulder season.** Ferries run the same route in April, May, September, and October, but tickets are easier to get and crowds are thinner. You get the same views for less stress.",
-        "**Share a water taxi.** If you're in a group of 4–6 people, a private water taxi (€80–€120) can work out cheaper per person than ferries. Plus you skip queues and choose your own time."
+        "**軽く詰める。** 45cm × 35cm × 20cm未満の小さなバッグは無料です。2番目のバッグは€2かかります。大きなバックパックとデイパックがある場合は、デイパックを着用し、バックパックを運んで料金を回避してください。",
+        "**スナックバーをスキップする。** ボートの飲み物とスナックは、アマルフィの店で支払う金額の2倍です。乗船前にPiazza del Duomo近くのスーパーマーケットで水とスナックを購入してください。",
+        "**直接予約する。** travelmar.itまたは桟橋のキオスクからチケットを購入してください。ViatorやGetYourGuideのようなサードパーティのサイトは割増を追加します。直接予約することで€2〜€3を節約してください。",
+        "**ショルダーシーズンに旅行する。** フェリーは4月、5月、9月、10月に同じルートを走りますが、チケットは取得しやすく、群衆は薄いです。ストレスが少ない同じ景色を得ます。",
+        "**ウォータータクシーを共有する。** 4〜6人のグループにいる場合、プライベートウォータータクシー（€80〜€120）はフェリーよりも1人あたり安くなる可能性があります。さらに、列をスキップして自分の時間を選択できます。"
       ]
     },
     {
       "id": "commonMistakes",
-      "title": "Common mistakes to avoid",
-      "body": "We've watched hundreds of hostel guests take the Amalfi-Positano ferry. Here are the top mistakes that trip people up.",
+      "title": "避けるべき一般的な間違い",
+      "body": "数百人のホステルゲストがアマルフィ–ポジターノフェリーに乗るのを見てきました。人々をつまずかせる主な間違いは次のとおりです。",
       "list": [
-        "**Arriving late to the pier.** Travelmar boards 10–15 minutes before departure. If you show up 5 minutes before the boat leaves, you'll miss it or get stuck inside with bad seats. Arrive 20 minutes early.",
-        "**Not checking the weather.** Ferries cancel if seas are rough. Check the Travelmar website or call ahead on windy days, especially in April and October. Have a backup plan (SITA bus or taxi).",
-        "**Forgetting cash.** Most kiosks take cards, but the snack bar on board is often cash-only. Bring €5–€10 in coins if you want drinks or snacks.",
-        "**Sitting on the right side.** On the Amalfi-to-Positano route, the best views are on the left (facing forward). The right side faces open sea. Tourists always sit on the wrong side first.",
-        "**Not knowing which pier.** Amalfi has two piers. Check your ticket. If you go to the wrong one, you'll have to run back. Look for Travelmar signs and ask staff if unsure.",
-        "**Overestimating the walk from Positano dock.** The walk up to Brikette is steep. Don't try it with a big roller bag in July heat. Budget for a porter or bus. See the %LINK:ferryDockToBrikette|dock to hostel guide% for the exact route."
+        "**桟橋に遅れて到着する。** Travelmarは出発の10〜15分前に乗船します。ボートが出発する5分前に現れると、それを逃すか、悪い座席で中に閉じ込められます。20分前に到着してください。",
+        "**天候をチェックしない。** 海が荒れているとフェリーはキャンセルします。特に4月と10月の風の強い日には、Travelmarのウェブサイトをチェックするか、事前に電話してください。バックアッププラン（SITAバスまたはタクシー）を持ってください。",
+        "**現金を忘れる。** ほとんどのキオスクはカードを受け入れますが、船上のスナックバーは現金のみのことが多いです。飲み物やスナックが欲しい場合は€5〜€10のコインを持参してください。",
+        "**右側に座る。** アマルフィからポジターノへのルートでは、最高の景色は左側（前を向いて）にあります。右側は外洋に面しています。観光客は常に最初に間違った側に座ります。",
+        "**どちらの桟橋か知らない。** アマルフィには2つの桟橋があります。チケットを確認してください。間違ったものに行くと、戻って走らなければなりません。不確かな場合は、Travelmarの標識を探し、スタッフに尋ねてください。",
+        "**ポジターノ桟橋からの歩行を過大評価する。** ブリケットまでの歩行は急です。7月の暑さの中で大きなローラーバッグでそれを試みないでください。ポーターまたはバスの予算を立ててください。正確なルートについては、%LINK:ferryDockToBrikette|桟橋からホステルまでのガイド%を参照してください。"
       ]
     },
     {
       "id": "whatToBring",
-      "title": "What to bring on the ferry",
-      "body": "The crossing is short (15–25 minutes), so you don't need much. But a few items make the trip better.",
+      "title": "フェリーに何を持っていくか",
+      "body": "横断は短い（15〜25分）ので、あまり必要ありません。しかし、いくつかのアイテムが旅行をより良くします。",
       "list": [
-        "**Water bottle.** The deck gets hot in summer. Bring a refillable bottle filled from your hostel or a fountain in Amalfi.",
-        "**Sunscreen and sunglasses.** No shade on the outdoor deck. The sun reflects off the water and burns fast, even on cloudy days.",
-        "**Light jacket or sweater.** Morning and evening ferries get breezy. Sea spray can soak light shirts if you sit at the front.",
-        "**Phone charger or power bank.** You'll take a lot of photos. Make sure your phone has juice for when you land in Positano.",
-        "**Offline maps.** Download Google Maps or Maps.me before boarding. Cell signal drops mid-crossing, and you'll want directions when you dock.",
-        "**Small daypack.** Keep valuables with you. Don't leave bags unattended in the luggage racks. Pickpockets target tourists on crowded boats in peak season."
+        "**ウォーターボトル。** デッキは夏に暑くなります。ホステルまたはアマルフィの噴水から満たされた詰め替え可能なボトルを持参してください。",
+        "**日焼け止めとサングラス。** 屋外デッキには日陰がありません。太陽は水から反射し、曇りの日でも速く燃えます。",
+        "**軽いジャケットまたはセーター。** 朝と夕方のフェリーは風が強くなります。前に座ると、海のスプレーが軽いシャツを浸すことがあります。",
+        "**電話充電器またはパワーバンク。** たくさんの写真を撮ります。ポジターノに着陸するときに電話に充電があることを確認してください。",
+        "**オフラインマップ。** 乗船前にGoogle MapsまたはMaps.meをダウンロードしてください。クロッシングの途中で携帯電話の信号が落ち、停泊したときに道案内が必要になります。",
+        "**小さなデイパック。** 貴重品を持ち歩いてください。荷物ラックにバッグを無人のままにしないでください。スリはピークシーズンの混雑したボートで観光客を標的にします。"
       ]
     }
   ],
   "faqs": [
     {
-      "q": "Can I bring a large backpack or roller bag on the ferry?",
-      "a": "Yes, but bags larger than 45cm × 35cm × 20cm cost €2 extra per bag. Buy the luggage ticket with your ferry ticket (online or at the kiosk). Put large bags in the luggage racks on deck."
+      "q": "フェリーに大きなバックパックまたはローラーバッグを持ち込めますか？",
+      "a": "はい、ただし45cm × 35cm × 20cmより大きいバッグはバッグごとに€2追加でかかります。フェリーチケットと一緒に荷物チケットを購入してください（オンラインまたはキオスクで）。大きなバッグはデッキの荷物ラックに入れてください。"
     },
     {
-      "q": "What happens if the ferry is canceled due to weather?",
-      "a": "Travelmar cancels sailings if seas are rough (rare, but happens in early/late season). You'll get an email if you booked online. Staff post notices at the pier. Take the SITA bus from Amalfi to Positano (€2–€3) or get a taxi instead."
+      "q": "天候のためにフェリーがキャンセルされた場合はどうなりますか？",
+      "a": "海が荒れているとTravelmarは便をキャンセルします（まれですが、シーズン初期/後期に発生します）。オンラインで予約した場合はメールが届きます。スタッフは桟橋に通知を掲示します。代わりにアマルフィからポジターノへのSITAバス（€2〜€3）に乗るか、タクシーに乗ってください。"
     },
     {
-      "q": "Is the ferry good for travelers with mobility issues?",
-      "a": "Boarding needs a short gangway walk and maybe stairs between pier and deck. Most Travelmar ferries don't have wheelchair ramps. If you need help, arrive early and ask staff. They can board you first via a safer route."
+      "q": "フェリーは移動問題のある旅行者に適していますか？",
+      "a": "乗船には短い舷門の歩行と、桟橋とデッキの間の階段が必要な場合があります。ほとんどのTravelmarフェリーには車椅子用スロープがありません。助けが必要な場合は、早く到着してスタッフに尋ねてください。より安全なルートを経由して最初に乗船させることができます。"
     },
     {
-      "q": "Can I buy ferry tickets on the day of travel?",
-      "a": "Usually yes in April, May, September, and October. But July and August sell out 1–2 days ahead. Book online the night before to be safe, especially for morning boats."
+      "q": "旅行日にフェリーチケットを購入できますか？",
+      "a": "通常、4月、5月、9月、10月にはい。しかし、7月と8月は1〜2日前に売り切れます。特に朝のボートでは、安全のために前日の夜にオンラインで予約してください。"
     },
     {
-      "q": "How do I get from Positano dock to Hostel Brikette?",
-      "a": "Three ways: walk uphill (15–20 minutes, steep stairs), take the Interno Positano bus (€2), or hire a porter (€20–€25 per bag). See our %LINK:ferryDockToBrikette|dock to Brikette luggage guide% for directions and photos."
+      "q": "ポジターノの桟橋からホステル ブリケットにどうやって行きますか？",
+      "a": "3つの方法：坂を歩く（15〜20分、急な階段）、Interno Positanoバスに乗る（€2）、またはポーターを雇う（バッグ1個につき€20〜€25）。道案内と写真については、%LINK:ferryDockToBrikette|桟橋からブリケットへの荷物ガイド%を参照してください。"
     },
     {
-      "q": "Are there toilets and snacks on board?",
-      "a": "Most Travelmar boats have a small snack bar with drinks and light food. Toilets are on larger boats, but not on smaller ones in off-peak times. Use the toilet before you board if you can."
+      "q": "船上にトイレとスナックはありますか？",
+      "a": "ほとんどのTravelmarボートには、飲み物と軽食の小さなスナックバーがあります。トイレは大きなボートにありますが、オフピーク時には小さなボートにはありません。可能であれば、乗船前にトイレを使用してください。"
     },
     {
-      "q": "What's the best time to take the ferry?",
-      "a": "Morning boats (08:25–10:00) have calmer seas and better photo light. Afternoon trips get busier with day-trippers. Skip the last boat (20:00) unless you're OK arriving after dark."
+      "q": "フェリーに乗る最良の時間は何ですか？",
+      "a": "朝のボート（08:25〜10:00）はより穏やかな海とより良い写真の光を持っています。午後の旅行は日帰り旅行者でより忙しくなります。暗くなった後に到着しても大丈夫でない限り、最後のボート（20:00）をスキップしてください。"
     },
     {
-      "q": "Do I need to print my ticket or can I show my phone?",
-      "a": "Your phone is fine. Staff scan the QR code from your screen. Make sure your phone is charged and you can open the email or booking without internet (save it offline or screenshot it)."
+      "q": "チケットを印刷する必要がありますか、それとも電話を見せることができますか？",
+      "a": "あなたの電話は大丈夫です。スタッフはあなたの画面からQRコードをスキャンします。電話が充電されていて、インターネットなしでメールまたは予約を開くことができることを確認してください（オフラインで保存するかスクリーンショットを撮ってください）。"
     },
     {
-      "q": "Where exactly is the Amalfi ferry pier?",
-      "a": "Walk to the waterfront from Piazza Flavio Gioia (main square with the fountain). Face the sea and turn right. The Travelmar pier is 2 minutes along the promenade. Look for blue-and-white signs and ticket kiosks."
+      "q": "アマルフィのフェリー桟橋は正確にどこですか？",
+      "a": "Piazza Flavio Gioia（噴水のあるメイン広場）からウォーターフロントに歩きます。海に向かって右に曲がります。Travelmar桟橋は遊歩道に沿って2分です。青と白の標識とチケットキオスクを探してください。"
     },
     {
-      "q": "Can I store luggage in Positano if I arrive early?",
-      "a": "Yes. Several %LINK:luggageStorage|luggage storage spots% near Spiaggia Grande beach charge €5–€8 per bag per day. Good if you land before hostel check-in at 15:00."
+      "q": "早く到着した場合、ポジターノに荷物を保管できますか？",
+      "a": "はい。Spiaggia Grandeビーチ近くのいくつかの%LINK:luggageStorage|荷物保管所%は、1日あたりバッグ1個につき€5〜€8を請求します。ホステルのチェックインが15:00前に着陸する場合に良いです。"
     }
   ]
 }

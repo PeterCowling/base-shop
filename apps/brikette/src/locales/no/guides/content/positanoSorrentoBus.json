@@ -8,7 +8,7 @@
     "body": "Bruk denne guiden når du reiser fra Hostel Brikette til Sorrento med SITA-buss. Vi dekker billetter, hvordan du leser rutetabellen og hvor du går om bord i Positano (Chiesa Nuova)."
   },
   "callouts": {
-    "tip": "Trenger du alle transportalternativene? Åpne %HOWTO:how-to-get-here|oversikten «Slik kommer du hit»% for ferger, taxier og kombinasjonsruter."
+    "tip": "Trenger du alle transportalternativene? Åpne %HOWTO:how-to-get-here|oversikten \\\\\"Slik kommer du hit\\\\\"% for ferger, taxier og kombinasjonsruter."
   },
   "sections": [
     {
@@ -28,17 +28,17 @@
       "list": [
         "Radene i første kolonne viser hver holdeplass langs ruten.",
         "Kolonnene tilsvarer planlagte avganger merket med bokstaver.",
-        "Reiser du mandag til lørdag? Bruk kolonnene «F» og «G».",
-        "Reiser du på søndag eller helligdag? Bruk kolonnene «G» og «H»."
+        "Reiser du mandag til lørdag? Bruk kolonnene \\\\\"F\\\\\" og \\\\\"G\\\\\".",
+        "Reiser du på søndag eller helligdag? Bruk kolonnene \\\\\"G\\\\\" og \\\\\"H\\\\\"."
       ]
     },
     {
       "id": "positanoStop",
       "title": "Bussholdeplassen Positano (Chiesa Nuova)",
       "list": [
-        "Den nærmeste bussholdeplassen ligger i området «Chiesa Nuova» i Positano.",
+        "Den nærmeste bussholdeplassen ligger i området \\\\\"Chiesa Nuova\\\\\" i Positano.",
         "Den er omtrent 140 meter fra hostellet.",
-        "Holdeplassen ligger utenfor kafeen/baren «Bar Internazionale»."
+        "Holdeplassen ligger utenfor kafeen/baren \\\\\"Bar Internazionale\\\\\"."
       ]
     },
     {
@@ -47,7 +47,7 @@
       "list": [
         "Gå ut hoveddøren fra hostellet og ned trappene til veien.",
         "Sving til venstre og gå omtrent 100 meter (330 fot).",
-        "Du ser «Bar Internazionale» på venstre side; SITA-holdeplassen er rett utenfor."
+        "Du ser \\\\\"Bar Internazionale\\\\\" på venstre side; SITA-holdeplassen er rett utenfor."
       ]
     },
     {
@@ -56,7 +56,7 @@
       "list": [
         "Kjøp billett til bussen mot Sorrento (inne i baren/aviskiosken).",
         "Vent utenfor baren på bussen mot Sorrento.",
-        "Dobbeltsjekk at destinasjonsskiltet på bussen viser «Sorrento»."
+        "Dobbeltsjekk at destinasjonsskiltet på bussen viser \\\\\"Sorrento\\\\\"."
       ]
     },
     {

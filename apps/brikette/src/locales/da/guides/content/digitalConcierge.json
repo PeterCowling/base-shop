@@ -22,7 +22,7 @@
       "id": "templates",
       "title": "Kopier/indsæt skabelon",
       "body": [
-        "\"Vi har 6 timer, ingen bil, vi vil have (A) et bad + (B) solnedgang, budget €40 per person. Hvad er den simpleste plan og plan B, hvis færgerne aflyses?\"",
+        "\\\\\"Vi har 6 timer, ingen bil, vi vil have (A) et bad + (B) solnedgang, budget €40 per person. Hvad er den simpleste plan og plan B, hvis færgerne aflyses?\\\\\"",
         "Budget baseline: %LINK:positanoBudget|Positano på et budget% + %LINK:terraceSunsets|Terasse solnedgang%.",
         "Hvis transport er følsom: %LINK:ferryCancellations|færgeaflysninger + vejr%."
       ]

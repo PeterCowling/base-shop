@@ -69,7 +69,7 @@
     "whatToPack",
     "workCafes"
   ],
-  "arrivalText": "「Chiesa Nuova」SITA停留所から約80m、階段なしで到着できます。フェリー到着ならポーター利用か、SITAバスで上るのが便利です。",
+  "arrivalText": "\\\"Chiesa Nuova\\\"SITA停留所から約80m、階段なしで到着できます。フェリー到着ならポーター利用か、SITAバスで上るのが便利です。",
   "arrivalLinks": [
     "chiesaNuovaArrivals",
     "ferryDockToBrikette",

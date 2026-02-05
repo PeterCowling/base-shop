@@ -12,7 +12,7 @@
       "id": "naples",
       "title": "Nápoly ízei",
       "body": [
-        "A pizza az egyik legkézenfekvőbb érv, de figyelj a valódi fatüzelésű kemencékre és a rövid sorokra. Kóstolj meg egy olaszország széles körben dicsért „ragù” ragut és a sfogliatellét egy kávé mellé.",
+        "A pizza az egyik legkézenfekvőbb érv, de figyelj a valódi fatüzelésű kemencékre és a rövid sorokra. Kóstolj meg egy olaszország széles körben dicsért \\\"ragù” ragut és a sfogliatellét egy kávé mellé.",
         "Ha lazább élményre vágysz, keress családi trattoriát a Spaccanapoli környékén, és kérj ajánlást helyi pincérektől."
       ]
     },
@@ -34,7 +34,7 @@
     }
   ],
   "tips": [
-    "Ha valamelyik étteremben bizonytalan vagy, kérj „antipasti” tálat – több kis falatból álló élmény, ami megmutatja a konyha karakterét.",
+    "Ha valamelyik étteremben bizonytalan vagy, kérj \\\"antipasti” tálat – több kis falatból álló élmény, ami megmutatja a konyha karakterét.",
     "Vásárolj helyi olívaolajat vagy szárított tésztát kisebb csomagolásban; a kézműves üzletek általában gondosan csomagolnak a hazaszállításhoz."
   ],
   "faqs": [

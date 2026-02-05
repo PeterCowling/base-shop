@@ -11,13 +11,34 @@
     "Denne guide dækker busturen, hvordan stranden er indrettet (lido vs fri zone), hvad du skal have med for at være komfortabel på småsten, og den nemmeste måde at komme tilbage til Positano efter solnedgang."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Hvorfor tage dertil" },
-    { "href": "#getting-there", "label": "Sådan kommer du dertil" },
-    { "href": "#layout", "label": "Indretning & faciliteter" },
-    { "href": "#what-to-bring", "label": "Hvad du skal pakke" },
-    { "href": "#best-time", "label": "Bedste tidspunkt" },
-    { "href": "#nearby", "label": "Rolige badesteder i nærheden" },
-    { "href": "#evening", "label": "Middag & hjemtur" }
+    {
+      "href": "#why-go",
+      "label": "Hvorfor tage dertil"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Sådan kommer du dertil"
+    },
+    {
+      "href": "#layout",
+      "label": "Indretning & faciliteter"
+    },
+    {
+      "href": "#what-to-bring",
+      "label": "Hvad du skal pakke"
+    },
+    {
+      "href": "#best-time",
+      "label": "Bedste tidspunkt"
+    },
+    {
+      "href": "#nearby",
+      "label": "Rolige badesteder i nærheden"
+    },
+    {
+      "href": "#evening",
+      "label": "Middag & hjemtur"
+    }
   ],
   "sections": [
     {
@@ -214,4 +235,3 @@
     }
   ]
 }
-

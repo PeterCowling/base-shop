@@ -22,7 +22,7 @@
       "id": "templates",
       "title": "Modèle copier/coller",
       "body": [
-        "\"Nous avons 6 heures, pas de voiture, nous voulons (A) nager + (B) coucher de soleil, budget €40 par personne. Quel est le plan le plus simple et le plan B si les ferries sont annulés ?\"",
+        "\\\\\"Nous avons 6 heures, pas de voiture, nous voulons (A) nager + (B) coucher de soleil, budget €40 par personne. Quel est le plan le plus simple et le plan B si les ferries sont annulés ?\\\\\"",
         "Référence budgétaire : %LINK:positanoBudget|Positano avec budget% + %LINK:terraceSunsets|Coucher de soleil terrasse%.",
         "Si le transport est sensible : %LINK:ferryCancellations|annulations de ferry + météo%."
       ]

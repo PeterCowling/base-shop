@@ -27,17 +27,17 @@
       "list": [
         "Các hàng ở cột đầu tiên liệt kê từng trạm xe buýt dọc tuyến.",
         "Các cột tương ứng với các chuyến xe theo lịch trình được gắn nhãn bằng chữ cái.",
-        "Đi từ thứ Hai đến thứ Bảy? Sử dụng cột \"F\" và \"G\".",
-        "Đi vào Chủ nhật hoặc ngày lễ? Sử dụng cột \"G\" và \"H\"."
+        "Đi từ thứ Hai đến thứ Bảy? Sử dụng cột \\\\\"F\\\\\" và \\\\\"G\\\\\".",
+        "Đi vào Chủ nhật hoặc ngày lễ? Sử dụng cột \\\\\"G\\\\\" và \\\\\"H\\\\\"."
       ]
     },
     {
       "id": "arrival",
       "title": "Đến Positano (Chiesa Nuova)",
       "list": [
-        "Có hai trạm SITA được liệt kê cho Positano: \"Sponda\" và \"Chiesa Nuova\".",
-        "Để đến hostel, trạm đúng là \"Positano (Chiesa Nuova)\" trên Via G. Marconi.",
-        "Trạm nằm bên ngoài quán cà phê/bar \"Bar Internazionale\"."
+        "Có hai trạm SITA được liệt kê cho Positano: \\\\\"Sponda\\\\\" và \\\\\"Chiesa Nuova\\\\\".",
+        "Để đến hostel, trạm đúng là \\\\\"Positano (Chiesa Nuova)\\\\\" trên Via G. Marconi.",
+        "Trạm nằm bên ngoài quán cà phê/bar \\\\\"Bar Internazionale\\\\\"."
       ]
     },
     {

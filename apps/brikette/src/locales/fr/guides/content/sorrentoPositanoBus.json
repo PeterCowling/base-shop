@@ -15,9 +15,9 @@
       "id": "arrival",
       "title": "Arrivée à Positano (Chiesa Nuova)",
       "list": [
-        "Deux arrêts SITA sont listés pour Positano : « Sponda » et « Chiesa Nuova ».",
-        "Pour l'auberge, « Positano (Chiesa Nuova) » est le bon arrêt sur la Via G. Marconi.",
-        "L'arrêt se trouve devant le café/bar « Bar Internazionale »."
+        "Deux arrêts SITA sont listés pour Positano : \\\\\" Sponda \\\\\" et \\\\\" Chiesa Nuova \\\\\".",
+        "Pour l'auberge, \\\\\" Positano (Chiesa Nuova) \\\\\" est le bon arrêt sur la Via G. Marconi.",
+        "L'arrêt se trouve devant le café/bar \\\\\" Bar Internazionale \\\\\"."
       ]
     },
     {
@@ -36,8 +36,8 @@
       "list": [
         "Les lignes de la première colonne listent chaque arrêt de bus sur le trajet.",
         "Les colonnes correspondent aux trajets programmés identifiés par des lettres.",
-        "Vous voyagez du lundi au samedi ? Utilisez les colonnes « F » et « G ».",
-        "Vous voyagez le dimanche ou un jour férié ? Utilisez les colonnes « G » et « H »."
+        "Vous voyagez du lundi au samedi ? Utilisez les colonnes \\\\\" F \\\\\" et \\\\\" G \\\\\".",
+        "Vous voyagez le dimanche ou un jour férié ? Utilisez les colonnes \\\\\" G \\\\\" et \\\\\" H \\\\\"."
       ]
     },
     {

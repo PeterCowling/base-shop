@@ -11,13 +11,34 @@
     "Ce guide couvre le bus, l’organisation de la plage (lido vs zone gratuite), quoi emporter pour être à l’aise sur les galets, et la manière la plus simple de rentrer à Positano après le coucher du soleil."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Pourquoi y aller" },
-    { "href": "#getting-there", "label": "Comment y aller" },
-    { "href": "#layout", "label": "Organisation & services" },
-    { "href": "#what-to-bring", "label": "Quoi emporter" },
-    { "href": "#best-time", "label": "Meilleur moment" },
-    { "href": "#nearby", "label": "Baignades tranquilles autour" },
-    { "href": "#evening", "label": "Dîner & retour" }
+    {
+      "href": "#why-go",
+      "label": "Pourquoi y aller"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Comment y aller"
+    },
+    {
+      "href": "#layout",
+      "label": "Organisation & services"
+    },
+    {
+      "href": "#what-to-bring",
+      "label": "Quoi emporter"
+    },
+    {
+      "href": "#best-time",
+      "label": "Meilleur moment"
+    },
+    {
+      "href": "#nearby",
+      "label": "Baignades tranquilles autour"
+    },
+    {
+      "href": "#evening",
+      "label": "Dîner & retour"
+    }
   ],
   "sections": [
     {
@@ -214,4 +235,3 @@
     }
   ]
 }
-

@@ -22,7 +22,7 @@
       "id": "templates",
       "title": "Kopier/lim inn mal",
       "body": [
-        "\"Vi har 6 timer, ingen bil, vi vil ha (A) et bad + (B) solnedgang, budsjett €40 per person. Hva er den enkleste planen og plan B hvis fergene blir kansellert?\"",
+        "\\\\\"Vi har 6 timer, ingen bil, vi vil ha (A) et bad + (B) solnedgang, budsjett €40 per person. Hva er den enkleste planen og plan B hvis fergene blir kansellert?\\\\\"",
         "Budsjett grunnlinje: %LINK:positanoBudget|Positano på budsjett% + %LINK:terraceSunsets|Terrasse solnedgang%.",
         "Hvis transport er følsom: %LINK:ferryCancellations|fergekanseleringer + vær%."
       ]

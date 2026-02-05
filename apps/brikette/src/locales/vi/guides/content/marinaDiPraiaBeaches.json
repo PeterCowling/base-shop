@@ -11,13 +11,34 @@
     "Bài này hướng dẫn đường bus, bố cục bãi (lido vs khu miễn phí), đồ nên mang để thoải mái trên bãi sỏi, và cách đơn giản nhất để quay về Positano sau hoàng hôn."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Vì sao nên đi" },
-    { "href": "#getting-there", "label": "Cách đi" },
-    { "href": "#layout", "label": "Bố cục & dịch vụ" },
-    { "href": "#what-to-bring", "label": "Nên mang gì" },
-    { "href": "#best-time", "label": "Thời điểm đẹp nhất" },
-    { "href": "#nearby", "label": "Chỗ bơi yên tĩnh gần đó" },
-    { "href": "#evening", "label": "Ăn tối & về lại" }
+    {
+      "href": "#why-go",
+      "label": "Vì sao nên đi"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Cách đi"
+    },
+    {
+      "href": "#layout",
+      "label": "Bố cục & dịch vụ"
+    },
+    {
+      "href": "#what-to-bring",
+      "label": "Nên mang gì"
+    },
+    {
+      "href": "#best-time",
+      "label": "Thời điểm đẹp nhất"
+    },
+    {
+      "href": "#nearby",
+      "label": "Chỗ bơi yên tĩnh gần đó"
+    },
+    {
+      "href": "#evening",
+      "label": "Ăn tối & về lại"
+    }
   ],
   "sections": [
     {
@@ -214,4 +235,3 @@
     }
   ]
 }
-

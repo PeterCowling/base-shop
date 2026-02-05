@@ -22,7 +22,7 @@
       "id": "templates",
       "title": "Kopiera/klistra in mall",
       "body": [
-        "\"Vi har 6 timmar, ingen bil, vi vill ha (A) ett dopp + (B) solnedgång, budget €40 per person. Vad är den enklaste planen och plan B om färjorna ställs in?\"",
+        "\\\\\"Vi har 6 timmar, ingen bil, vi vill ha (A) ett dopp + (B) solnedgång, budget €40 per person. Vad är den enklaste planen och plan B om färjorna ställs in?\\\\\"",
         "Budget baslinje: %LINK:positanoBudget|Positano på budget% + %LINK:terraceSunsets|Terrass solnedgång%.",
         "Om transport är känsligt: %LINK:ferryCancellations|färjeinställningar + väder%."
       ]

@@ -6,18 +6,39 @@
   "lastUpdated": "2026-01-29T00:00:00.000Z",
   "linkLabel": "Marina di Praia: drámai öböl a sziklák között",
   "intro": [
-    "Marina di Praia egy eldugott, kavicsos öböl Praianóban — rövid SITA buszútra a Hostel Brikette-től, és általában jóval nyugodtabb, mint Positano “nagynevű” strandjai. Halászhajók, egy őrtorony és kőből rakott sétányok adják a „titkos hely” hangulatot, miközben étel és alap szolgáltatások is vannak a közelben.",
+    "Marina di Praia egy eldugott, kavicsos öböl Praianóban — rövid SITA buszútra a Hostel Brikette-től, és általában jóval nyugodtabb, mint Positano “nagynevű” strandjai. Halászhajók, egy őrtorony és kőből rakott sétányok adják a \\\"titkos hely” hangulatot, miközben étel és alap szolgáltatások is vannak a közelben.",
     "Ha stresszmentes strandnapot szeretnél (úszás, snack, szunyókálás árnyékban, majd egy könnyű vacsora), ez az egyik legjobb közeli választás hostelvendégeknek.",
     "Ebben az útmutatóban: buszos odajutás, a partszakasz felosztása (lido vs ingyenes rész), mit vigyél a kavicsokra és az árnyékhoz, illetve hogyan jutsz vissza a legegyszerűbben Positanóba naplemente után."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Miért érdemes menni" },
-    { "href": "#getting-there", "label": "Odajutás" },
-    { "href": "#layout", "label": "Kialakítás és szolgáltatások" },
-    { "href": "#what-to-bring", "label": "Mit vigyél" },
-    { "href": "#best-time", "label": "Mikor a legjobb" },
-    { "href": "#nearby", "label": "Nyugis úszások a közelben" },
-    { "href": "#evening", "label": "Vacsora és hazajutás" }
+    {
+      "href": "#why-go",
+      "label": "Miért érdemes menni"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Odajutás"
+    },
+    {
+      "href": "#layout",
+      "label": "Kialakítás és szolgáltatások"
+    },
+    {
+      "href": "#what-to-bring",
+      "label": "Mit vigyél"
+    },
+    {
+      "href": "#best-time",
+      "label": "Mikor a legjobb"
+    },
+    {
+      "href": "#nearby",
+      "label": "Nyugis úszások a közelben"
+    },
+    {
+      "href": "#evening",
+      "label": "Vacsora és hazajutás"
+    }
   ],
   "sections": [
     {
@@ -214,4 +235,3 @@
     }
   ]
 }
-

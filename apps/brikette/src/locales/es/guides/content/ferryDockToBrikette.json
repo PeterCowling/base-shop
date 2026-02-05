@@ -159,7 +159,7 @@
   "stepsList": [
     "Entrega el equipaje a los porteadores del muelle y compra billetes de autobús Interno Positano en el estanco.",
     "Camina desde la playa principal hasta Piazza dei Mulini, luego continúa hasta la parada de autobús Interno junto al estanco en Viale Pasitea.",
-    "Sube al autobús Interno Positano (busca el letrero \"interno positano\") y viaja cuesta arriba hacia Viale Pasitea 325.",
+    "Sube al autobús Interno Positano (busca el letrero \\\\\"interno positano\\\\\") y viaja cuesta arriba hacia Viale Pasitea 325.",
     "Bájate fuera del estanco, gira a la izquierda por Viale Pasitea durante poco más de 100 m y sube las escaleras a la derecha para llegar al Hostel Brikette."
   ],
   "kneesList": [
@@ -227,7 +227,7 @@
   "howtoSteps": [
     "Compra billetes de autobús Interno y entrega el equipaje a los porteadores del muelle",
     "Camina desde la playa hasta Piazza dei Mulini y la parada de autobús Interno",
-    "Toma el autobús Interno Positano cuesta arriba (busca el letrero \"interno positano\")",
+    "Toma el autobús Interno Positano cuesta arriba (busca el letrero \\\\\"interno positano\\\\\")",
     "Bájate junto al estanco, camina 100 m y sube las escaleras hasta Hostel Brikette"
   ]
 }

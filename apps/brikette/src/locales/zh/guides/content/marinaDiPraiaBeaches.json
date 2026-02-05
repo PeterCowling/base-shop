@@ -11,13 +11,34 @@
     "本指南会讲清：巴士怎么坐、海滩结构（lido vs 免费区）、卵石滩的舒适装备，以及日落后最省心的回波西塔诺方式。"
   ],
   "toc": [
-    { "href": "#why-go", "label": "为什么值得去" },
-    { "href": "#getting-there", "label": "怎么去" },
-    { "href": "#layout", "label": "布局与设施" },
-    { "href": "#what-to-bring", "label": "带什么" },
-    { "href": "#best-time", "label": "最佳时间" },
-    { "href": "#nearby", "label": "附近更“隐”的下水点" },
-    { "href": "#evening", "label": "晚餐与回程" }
+    {
+      "href": "#why-go",
+      "label": "为什么值得去"
+    },
+    {
+      "href": "#getting-there",
+      "label": "怎么去"
+    },
+    {
+      "href": "#layout",
+      "label": "布局与设施"
+    },
+    {
+      "href": "#what-to-bring",
+      "label": "带什么"
+    },
+    {
+      "href": "#best-time",
+      "label": "最佳时间"
+    },
+    {
+      "href": "#nearby",
+      "label": "附近更“隐”的下水点"
+    },
+    {
+      "href": "#evening",
+      "label": "晚餐与回程"
+    }
   ],
   "sections": [
     {
@@ -214,4 +235,3 @@
     }
   ]
 }
-

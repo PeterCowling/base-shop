@@ -38,11 +38,15 @@
   "faqs": [
     {
       "q": "Is Positano safe at night?",
-      "a": ["Yes. Petty crime is rare; stick to lit stairs and lanes and you’ll be fine."]
+      "a": [
+        "Yes. Petty crime is rare; stick to lit stairs and lanes and you’ll be fine."
+      ]
     },
     {
       "q": "What number do I call in an emergency?",
-      "a": ["Dial 112 — the EU emergency number for police, ambulance and fire services."]
+      "a": [
+        "Dial 112 — the EU emergency number for police, ambulance and fire services."
+      ]
     }
   ]
 }

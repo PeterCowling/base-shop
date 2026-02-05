@@ -11,13 +11,34 @@
     "Denne guiden dekker bussruta, hvordan stranden er lagt opp (lido vs gratisområde), hva du bør ta med for å være komfortabel på rullestein, og den enkleste måten å komme tilbake til Positano etter solnedgang."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Hvorfor dra" },
-    { "href": "#getting-there", "label": "Slik kommer du dit" },
-    { "href": "#layout", "label": "Oppsett & fasiliteter" },
-    { "href": "#what-to-bring", "label": "Hva du bør pakke" },
-    { "href": "#best-time", "label": "Beste tidspunkt" },
-    { "href": "#nearby", "label": "Rolige badestopp i nærheten" },
-    { "href": "#evening", "label": "Middag & hjemreise" }
+    {
+      "href": "#why-go",
+      "label": "Hvorfor dra"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Slik kommer du dit"
+    },
+    {
+      "href": "#layout",
+      "label": "Oppsett & fasiliteter"
+    },
+    {
+      "href": "#what-to-bring",
+      "label": "Hva du bør pakke"
+    },
+    {
+      "href": "#best-time",
+      "label": "Beste tidspunkt"
+    },
+    {
+      "href": "#nearby",
+      "label": "Rolige badestopp i nærheten"
+    },
+    {
+      "href": "#evening",
+      "label": "Middag & hjemreise"
+    }
   ],
   "sections": [
     {
@@ -214,4 +235,3 @@
     }
   ]
 }
-

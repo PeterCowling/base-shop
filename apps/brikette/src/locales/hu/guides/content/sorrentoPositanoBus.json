@@ -27,17 +27,17 @@
       "list": [
         "Az első oszlop sorai az útvonal összes buszmegállóját sorolják fel.",
         "Az oszlopok betűkkel jelölt menetrendi járatokat jelentenek.",
-        "Hétfőtől szombatig utazol? Használd az \"F\" és \"G\" oszlopokat.",
-        "Vasárnap vagy ünnepnapon utazol? Használd a \"G\" és \"H\" oszlopokat."
+        "Hétfőtől szombatig utazol? Használd az \\\\\"F\\\\\" és \\\\\"G\\\\\" oszlopokat.",
+        "Vasárnap vagy ünnepnapon utazol? Használd a \\\\\"G\\\\\" és \\\\\"H\\\\\" oszlopokat."
       ]
     },
     {
       "id": "arrival",
       "title": "Érkezés Positanóba (Chiesa Nuova)",
       "list": [
-        "Positanóban két SITA megálló szerepel a listán: \"Sponda\" és \"Chiesa Nuova\".",
-        "A hostelhez a \"Positano (Chiesa Nuova)\" a megfelelő megálló a Via G. Marconin.",
-        "A megálló a \"Bar Internazionale\" kávézó/bár előtt található."
+        "Positanóban két SITA megálló szerepel a listán: \\\\\"Sponda\\\\\" és \\\\\"Chiesa Nuova\\\\\".",
+        "A hostelhez a \\\\\"Positano (Chiesa Nuova)\\\\\" a megfelelő megálló a Via G. Marconin.",
+        "A megálló a \\\\\"Bar Internazionale\\\\\" kávézó/bár előtt található."
       ]
     },
     {

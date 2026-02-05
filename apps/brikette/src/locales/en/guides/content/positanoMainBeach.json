@@ -11,17 +11,50 @@
     "If you’re staying at Hostel Brikette, this guide is built for you: how to time the walk down, where to stash bags, what to bring for pebbles, and how to keep the day relaxed (and affordable) even in peak season."
   ],
   "toc": [
-    { "href": "#getting-there", "label": "Getting there from the hostel" },
-    { "href": "#when-to-go", "label": "Best time to go (crowds & shade)" },
-    { "href": "#what-to-pack", "label": "What to pack (pebbles & heat)" },
-    { "href": "#layout", "label": "Layout & main zones" },
-    { "href": "#free-zone", "label": "Free beach section" },
-    { "href": "#residents", "label": "Residents’ zone" },
-    { "href": "#lincanto", "label": "L’Incanto beach club" },
-    { "href": "#la-scogliera", "label": "La Scogliera deck" },
-    { "href": "#fornillo-link", "label": "Walkway to Fornillo" },
-    { "href": "#practicalities", "label": "Facilities, food & costs" },
-    { "href": "#hostel-day-plan", "label": "Hostel Brikette day plan" }
+    {
+      "href": "#getting-there",
+      "label": "Getting there from the hostel"
+    },
+    {
+      "href": "#when-to-go",
+      "label": "Best time to go (crowds & shade)"
+    },
+    {
+      "href": "#what-to-pack",
+      "label": "What to pack (pebbles & heat)"
+    },
+    {
+      "href": "#layout",
+      "label": "Layout & main zones"
+    },
+    {
+      "href": "#free-zone",
+      "label": "Free beach section"
+    },
+    {
+      "href": "#residents",
+      "label": "Residents’ zone"
+    },
+    {
+      "href": "#lincanto",
+      "label": "L’Incanto beach club"
+    },
+    {
+      "href": "#la-scogliera",
+      "label": "La Scogliera deck"
+    },
+    {
+      "href": "#fornillo-link",
+      "label": "Walkway to Fornillo"
+    },
+    {
+      "href": "#practicalities",
+      "label": "Facilities, food & costs"
+    },
+    {
+      "href": "#hostel-day-plan",
+      "label": "Hostel Brikette day plan"
+    }
   ],
   "sections": [
     {

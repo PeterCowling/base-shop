@@ -28,17 +28,17 @@
       "list": [
         "Le righe nella prima colonna elencano ogni fermata lungo la tratta.",
         "Le colonne corrispondono alle corse programmate contrassegnate da lettere.",
-        "Viaggi da lunedì a sabato? Usa le colonne \"F\" e \"G\".",
-        "Viaggi di domenica o in un giorno festivo? Usa le colonne \"G\" e \"H\"."
+        "Viaggi da lunedì a sabato? Usa le colonne \\\\\"F\\\\\" e \\\\\"G\\\\\".",
+        "Viaggi di domenica o in un giorno festivo? Usa le colonne \\\\\"G\\\\\" e \\\\\"H\\\\\"."
       ]
     },
     {
       "id": "positanoStop",
       "title": "Fermata autobus di Positano (Chiesa Nuova)",
       "list": [
-        "La fermata più vicina si trova nella zona \"Chiesa Nuova\" di Positano.",
+        "La fermata più vicina si trova nella zona \\\\\"Chiesa Nuova\\\\\" di Positano.",
         "Si trova a circa 140 metri (490 piedi) dall'ostello.",
-        "La fermata è davanti al bar/caffè \"Bar Internazionale\"."
+        "La fermata è davanti al bar/caffè \\\\\"Bar Internazionale\\\\\"."
       ]
     },
     {
@@ -47,7 +47,7 @@
       "list": [
         "Esci dall'ostello dalla porta principale e scendi i gradini fino alla strada.",
         "Svolta a sinistra e cammina per circa 100 metri (330 piedi).",
-        "Vedrai il \"Bar Internazionale\" sulla sinistra; la fermata SITA è all'esterno."
+        "Vedrai il \\\\\"Bar Internazionale\\\\\" sulla sinistra; la fermata SITA è all'esterno."
       ]
     },
     {
@@ -56,7 +56,7 @@
       "list": [
         "Acquista un biglietto per l'autobus verso Sorrento (all'interno del bar/edicola).",
         "Attendi fuori dal bar l'autobus diretto a Sorrento.",
-        "Controlla due volte che il display della destinazione indichi \"Sorrento\"."
+        "Controlla due volte che il display della destinazione indichi \\\\\"Sorrento\\\\\"."
       ]
     },
     {

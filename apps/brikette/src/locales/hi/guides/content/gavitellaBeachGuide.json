@@ -1,267 +1,267 @@
 {
   "seo": {
-    "title": "Gavitella Beach Praiano Guide: Sunset, Steps & Beach Clubs",
-    "description": "A hostel-friendly guide to Gavitella Beach Praiano: how to get there, pick La Gavitella vs One Fire, what it costs, and how to get back without suffering."
+    "title": "गैवितेल्ला बीच प्रायानो गाइड: सूर्यास्त, सीढ़ियां और बीच क्लब",
+    "description": "गैवितेल्ला बीच प्रायानो के लिए हॉस्टल-फ्रेंडली गाइड: वहां कैसे पहुंचें, ला गैवितेल्ला बनाम वन फायर चुनें, लागत क्या है, और बिना कष्ट के वापस कैसे आएं।"
   },
   "lastUpdated": "2026-01-30T00:00:00.000Z",
-  "linkLabel": "Gavitella Beach: Praiano's Sunset Swimming Spot",
+  "linkLabel": "गैवितेल्ला बीच: प्रायानो का सनसेट स्विमिंग स्पॉट",
   "intro": [
-    "Gavitella Beach Praiano is the coast’s “sunset beach”: the small cove faces west, so you get long afternoon light and golden-hour views back toward Positano and Capri.",
-    "Most of the waterfront is run by two lidos (beach clubs) — La Gavitella and One Fire — plus a slim public strip carved into the rock between them. In high season, space is limited and reservations matter.",
-    "This guide is written for Hostel Brikette guests. From the hostel desk, we see the same two mistakes every week: people overpack for the stairs, and people stay for sunset without a return plan. We’ll help you avoid both.",
-    "It focuses on the practical stuff: the staircase down from Piazza San Gennaro, how to time your day so you are not stranded after sunset, what to pack (water shoes are non‑negotiable), and how to choose between a calm lunch club vs a party setup.",
-    "Quick rule of thumb: arrive earlier than you think, swim before the crowds and the wind pick up, and decide your “return plan” before you commit to sunset events."
+    "गैवितेल्ला बीच प्रायानो तट का \\\\\"सूर्यास्त समुद्र तट\\\\\" है: छोटी खाड़ी पश्चिम की ओर है, इसलिए आपको लंबी दोपहर की रोशनी और पोसिटानो और कैप्री की ओर सुनहरे घंटे के दृश्य मिलते हैं।",
+    "अधिकांश समुद्र तट दो लिडो (बीच क्लब) द्वारा चलाया जाता है — ला गैवितेल्ला और वन फायर — साथ ही उनके बीच चट्टान में उकेरी गई एक पतली सार्वजनिक पट्टी। उच्च सीजन में, जगह सीमित है और आरक्षण महत्वपूर्ण हैं।",
+    "यह गाइड हॉस्टल ब्रिकेट मेहमानों के लिए लिखा गया है। हॉस्टल डेस्क से, हम हर हफ्ते वही दो गलतियां देखते हैं: लोग सीढ़ियों के लिए बहुत अधिक पैक करते हैं, और लोग वापसी योजना के बिना सूर्यास्त के लिए रहते हैं। हम आपको दोनों से बचने में मदद करेंगे।",
+    "यह व्यावहारिक चीजों पर केंद्रित है: पियाज़ा सैन जेनारो से नीचे की सीढ़ी, अपने दिन को कैसे समय दें ताकि आप सूर्यास्त के बाद फंसे न रहें, क्या पैक करें (पानी के जूते गैर-परक्राम्य हैं), और शांत लंच क्लब बनाम पार्टी सेटअप के बीच कैसे चुनें।",
+    "त्वरित नियम: आप सोचते हैं उससे पहले पहुंचें, भीड़ और हवा बढ़ने से पहले तैरें, और सूर्यास्त कार्यक्रमों के लिए प्रतिबद्ध होने से पहले अपनी \\\\\"वापसी योजना\\\\\" तय करें।"
   ],
   "toc": [
     {
       "href": "#overview",
-      "label": "Layout & vibe"
+      "label": "लेआउट और माहौल"
     },
     {
       "href": "#access",
-      "label": "How to reach Gavitella"
+      "label": "गैवितेल्ला तक कैसे पहुंचें"
     },
     {
       "href": "#gavitella-club",
-      "label": "La Gavitella Beach Club"
+      "label": "ला गैवितेल्ला बीच क्लब"
     },
     {
       "href": "#one-fire",
-      "label": "One Fire Beach Club"
+      "label": "वन फायर बीच क्लब"
     },
     {
       "href": "#amenities",
-      "label": "Facilities & planning"
+      "label": "सुविधाएं और योजना"
     },
     {
       "href": "#best-time",
-      "label": "Best time to go"
+      "label": "जाने का सबसे अच्छा समय"
     },
     {
       "href": "#hostel-day-plan",
-      "label": "Hostel-friendly day plan"
+      "label": "हॉस्टल-फ्रेंडली दिन योजना"
     },
     {
       "href": "#what-to-pack",
-      "label": "What to bring"
+      "label": "क्या लाना है"
     },
     {
       "href": "#backup-plan",
-      "label": "If it's windy (backup plan)"
+      "label": "अगर हवा हो (बैकअप योजना)"
     }
   ],
   "sections": [
     {
       "id": "overview",
-      "title": "Layout and vibe",
+      "title": "लेआउट और माहौल",
       "body": [
-        "Gavitella sits below Praiano’s Piazza San Gennaro. Roughly 400 steps weave past villas and lemon terraces to a stone platform, a pebble shelf, and a narrow public strip between the two lidos.",
-        "La Gavitella occupies the left-hand side (facing the sea) with restaurant tables, sun decks, and moorings for tender boats. One Fire lines the right-hand pier with bright loungers, a DJ podium, and a dock for their party boats.",
-        "It helps to think of the cove as two experiences: a classic “Amalfi Coast lunch and swim” on the La Gavitella side, and a louder, social afternoon at One Fire. Both can be fun — but if you show up expecting a big free sandy beach, you will be disappointed.",
-        "Hostel reality check: the steps are what make the place special (fewer day-trippers), but they also make it easy to overpack. Keep your bag light and plan your return before sunset."
+        "गैवितेल्ला प्रायानो के पियाज़ा सैन जेनारो के नीचे स्थित है। लगभग 400 सीढ़ियां विला और नींबू की छतों से होकर एक पत्थर के प्लेटफॉर्म, एक कंकड़ शेल्फ, और दो लिडो के बीच एक संकीर्ण सार्वजनिक पट्टी तक जाती हैं।",
+        "ला गैवितेल्ला बाईं ओर (समुद्र की ओर मुंह करके) रेस्तरां टेबल, सन डेक और टेंडर नावों के लिए मूरिंग के साथ है। वन फायर दाएं घाट पर चमकीले लाउंजर, एक डीजे पोडियम और उनकी पार्टी नावों के लिए एक डॉक के साथ है।",
+        "खाड़ी को दो अनुभवों के रूप में सोचना मददगार है: ला गैवितेल्ला पक्ष पर एक क्लासिक \\\\\"अमाल्फी कोस्ट लंच और स्विम\\\\\", और वन फायर पर एक शोर, सामाजिक दोपहर। दोनों मजेदार हो सकते हैं — लेकिन अगर आप एक बड़े मुफ्त रेतीले समुद्र तट की उम्मीद करते हुए आते हैं, तो आप निराश होंगे।",
+        "हॉस्टल रियलिटी चेक: सीढ़ियां ही जगह को विशेष बनाती हैं (कम दिन-यात्री), लेकिन वे अधिक पैक करना भी आसान बनाती हैं। अपना बैग हल्का रखें और सूर्यास्त से पहले अपनी वापसी की योजना बनाएं।"
       ],
       "images": [
         {
           "src": "/img/guides/topics/gavitellaBeachGuide.webp",
-          "alt": "View of Gavitella Beach in Praiano with cliffside platforms and the sea",
-          "caption": "Gavitella Beach Praiano is small, cliff-carved, and best enjoyed as an afternoon-to-sunset swim spot"
+          "alt": "प्रायानो में गैवितेल्ला बीच का दृश्य चट्टान के किनारे प्लेटफार्मों और समुद्र के साथ",
+          "caption": "गैवितेल्ला बीच प्रायानो छोटा है, चट्टान में उकेरा गया है, और दोपहर से सूर्यास्त तक तैराकी स्थल के रूप में सबसे अच्छा आनंद लिया जाता है"
         },
         {
           "src": "/img/guides/gavitella-beach/01-beach-layout.webp",
-          "alt": "Gavitella Beach layout diagram showing La Gavitella and One Fire beach clubs",
-          "caption": "The beach layout: La Gavitella on the left with restaurant, One Fire on the right with DJ podium"
+          "alt": "गैवितेल्ला बीच लेआउट आरेख ला गैवितेल्ला और वन फायर बीच क्लबों को दिखाता है",
+          "caption": "समुद्र तट लेआउट: बाईं ओर रेस्तरां के साथ ला गैवितेल्ला, दाईं ओर डीजे पोडियम के साथ वन फायर"
         },
         {
           "src": "/img/guides/gavitella-beach/04-steps-and-return.webp",
-          "alt": "Infographic showing the 400-step descent to Gavitella Beach and return options",
-          "caption": "Plan the stairs: down is easy; up after sunset is the hard part — decide your return before you go"
+          "alt": "इन्फोग्राफिक गैवितेल्ला बीच के लिए 400-कदम वंश और वापसी विकल्पों को दिखाता है",
+          "caption": "सीढ़ियों की योजना बनाएं: नीचे आसान है; सूर्यास्त के बाद ऊपर कठिन हिस्सा है — जाने से पहले अपनी वापसी तय करें"
         }
       ]
     },
     {
       "id": "access",
-      "title": "How to reach Gavitella",
+      "title": "गैवितेल्ला तक कैसे पहुंचें",
       "body": [
-        "From Hostel Brikette or central Positano, take the SITA bus toward Amalfi and hop off at Praiano’s Piazza San Gennaro. From the square, follow the signed stairway down to the sea; give yourself 10–15 minutes for the descent (more if you are carrying a beach bag).",
-        "If you are meeting friends or you have a reservation time, treat the staircase as a “hard deadline”. In July/August it is common to arrive sweaty — bring water, and do not plan to sprint the last part.",
-        "For the return, think in options: (1) commit to the stairs back up, (2) use Praiano’s interno shuttle where possible, or (3) arrange a boat shuttle when seas are calm and staff confirm it is running. Do not assume boats are always operating — the sea decides."
+        "हॉस्टल ब्रिकेट या केंद्रीय पोसिटानो से, अमाल्फी की ओर सीटा बस लें और प्रायानो के पियाज़ा सैन जेनारो पर उतरें। चौक से, समुद्र तक चिह्नित सीढ़ी का पालन करें; वंश के लिए अपने आप को 10-15 मिनट दें (अधिक अगर आप समुद्र तट बैग ले जा रहे हैं)।",
+        "यदि आप दोस्तों से मिल रहे हैं या आपके पास आरक्षण समय है, तो सीढ़ी को \\\\\"कठोर समय सीमा\\\\\" के रूप में मानें। जुलाई/अगस्त में पसीने से भीगे आना आम है — पानी लाएं, और अंतिम भाग को स्प्रिंट करने की योजना न बनाएं।",
+        "वापसी के लिए, विकल्पों में सोचें: (1) सीढ़ियों को वापस चढ़ने के लिए प्रतिबद्ध हों, (2) जहां संभव हो प्रायानो की इंटर्नो शटल का उपयोग करें, या (3) जब समुद्र शांत हो और कर्मचारी पुष्टि करें कि यह चल रही है तो नाव शटल की व्यवस्था करें। मान न लें कि नाव हमेशा संचालित होती है — समुद्र तय करता है।"
       ],
       "images": [
         {
           "src": "/img/guides/gavitella-beach/05-getting-there.webp",
-          "alt": "Infographic with steps for getting to Gavitella Beach from the SITA bus stop in Praiano",
-          "caption": "Hostel-friendly approach: SITA to Piazza San Gennaro, then stairs down — plan extra time in summer"
+          "alt": "प्रायानो में सीटा बस स्टॉप से गैवितेल्ला बीच तक पहुंचने के चरणों के साथ इन्फोग्राफिक",
+          "caption": "हॉस्टल-फ्रेंडली दृष्टिकोण: पियाज़ा सैन जेनारो के लिए सीटा, फिर सीढ़ियां नीचे — गर्मियों में अतिरिक्त समय की योजना बनाएं"
         }
       ]
     },
     {
       "id": "gavitella-club",
-      "title": "La Gavitella Beach Club",
+      "title": "ला गैवितेल्ला बीच क्लब",
       "body": [
-        "La Gavitella is the “classic” option: slow lunches, aperitivi, and sunset vibes without the full party energy. The kitchen leans seafood-forward with seasonal plates (and plenty of lemon in true Amalfi Coast style).",
-        "If you are doing this as a special day, the best version is simple: arrive early enough to swim, change, then settle in for a long lunch that naturally becomes sunset drinks.",
-        "Staff tip: when you reserve, ask two practical questions up front — (1) what time they want you on-site for your table/loungers, and (2) what the return options are that day. If boats are running, staff can coordinate tender transfers for guests, but it depends on conditions."
+        "ला गैवितेल्ला \\\\\"क्लासिक\\\\\" विकल्प है: धीमा लंच, एपरिटिवी, और पूर्ण पार्टी ऊर्जा के बिना सूर्यास्त वाइब्स। रसोई मौसमी प्लेटों के साथ समुद्री भोजन की ओर झुकती है (और सच्चे अमाल्फी तट शैली में बहुत सारा नींबू)।",
+        "यदि आप इसे एक विशेष दिन के रूप में कर रहे हैं, तो सबसे अच्छा संस्करण सरल है: तैरने के लिए पर्याप्त जल्दी पहुंचें, बदलें, फिर एक लंबे लंच के लिए बस जाएं जो स्वाभाविक रूप से सूर्यास्त पेय बन जाता है।",
+        "कर्मचारी टिप: जब आप आरक्षित करते हैं, तो आगे दो व्यावहारिक प्रश्न पूछें — (1) वे आपको अपनी मेज/लाउंजर के लिए किस समय साइट पर चाहते हैं, और (2) उस दिन वापसी विकल्प क्या हैं। यदि नावें चल रही हैं, तो कर्मचारी मेहमानों के लिए टेंडर ट्रांसफर का समन्वय कर सकते हैं, लेकिन यह स्थितियों पर निर्भर करता है।"
       ],
       "images": [
         {
           "src": "/img/guides/gavitella-beach/02-la-gavitella-club.webp",
-          "alt": "La Gavitella Beach Club terrace with sea views and sunset dining",
-          "caption": "La Gavitella — slow lunches, aperitivi, and sunset boat cruises around the Li Galli islets"
+          "alt": "समुद्र के दृश्य और सूर्यास्त भोजन के साथ ला गैवितेल्ला बीच क्लब छत",
+          "caption": "ला गैवितेल्ला — धीमा लंच, एपरिटिवी, और ली गैली द्वीपों के आसपास सूर्यास्त नाव क्रूज"
         }
       ]
     },
     {
       "id": "one-fire",
-      "title": "One Fire Beach Club",
+      "title": "वन फायर बीच क्लब",
       "body": [
-        "One Fire is the party option: DJ sets, high energy, and a crowd that ramps up as the afternoon goes on (often timed perfectly with sunset). If you are looking for a social day where you will meet other travellers, this is the obvious pick.",
-        "Book loungers or cabanas via WhatsApp — deposits are common in July and August. Confirm what is included (beds vs towels vs minimum spend) so you do not get surprised on arrival.",
-        "Hostel guest reality check: One Fire is fun, but it is easy to lose track of time. If you plan to stay until sunset, confirm your return plan early (stairs vs interno vs boat shuttle) so you are not negotiating logistics when you are tired."
+        "वन फायर पार्टी विकल्प है: डीजे सेट, उच्च ऊर्जा, और एक भीड़ जो दोपहर बढ़ने के साथ बढ़ती है (अक्सर सूर्यास्त के साथ पूरी तरह से समयबद्ध)। यदि आप एक सामाजिक दिन की तलाश में हैं जहां आप अन्य यात्रियों से मिलेंगे, तो यह स्पष्ट पसंद है।",
+        "व्हाट्सएप के माध्यम से लाउंजर या कबाना बुक करें — जुलाई और अगस्त में जमा आम है। पुष्टि करें कि क्या शामिल है (बिस्तर बनाम तौलिये बनाम न्यूनतम खर्च) ताकि आप आगमन पर आश्चर्यचकित न हों।",
+        "हॉस्टल अतिथि रियलिटी चेक: वन फायर मजेदार है, लेकिन समय का ट्रैक खोना आसान है। यदि आप सूर्यास्त तक रहने की योजना बनाते हैं, तो अपनी वापसी योजना की जल्दी पुष्टि करें (सीढ़ियां बनाम इंटर्नो बनाम नाव शटल) ताकि जब आप थके हों तो आप रसद पर बातचीत न कर रहे हों।"
       ],
       "images": [
         {
           "src": "/img/guides/gavitella-beach/03-one-fire-club.webp",
-          "alt": "One Fire Beach Club with bright loungers, DJ podium, and party atmosphere",
-          "caption": "One Fire — the Amalfi Coast's party beach with DJ sets, watermelon ritual, and sunset choreography"
+          "alt": "चमकीले लाउंजर, डीजे पोडियम और पार्टी वातावरण के साथ वन फायर बीच क्लब",
+          "caption": "वन फायर — अमाल्फी कोस्ट का पार्टी बीच डीजे सेट, तरबूज अनुष्ठान, और सूर्यास्त कोरियोग्राफी के साथ"
         }
       ]
     },
     {
       "id": "amenities",
-      "title": "Facilities & planning",
+      "title": "सुविधाएं और योजना",
       "body": [
-        "Both clubs typically provide showers and changing cabins; lockers are often paid. Towels may be included with the lounger fee, but do not rely on it — pack a small towel if you can.",
-        "The entry is rocky and the platform can be slippery. Water shoes make the day better (and safer). Bring reef-safe sunscreen and a refillable bottle; the sun is still strong late in the day.",
-        "The tiny public strip between the lidos is real, but it is small. If you are going “spiaggia libera” (free beach), arrive early with your own mat and a simple setup. In rougher seas, staff may need to move chairs inland and the free strip can feel even tighter."
+        "दोनों क्लब आम तौर पर शॉवर और बदलते केबिन प्रदान करते हैं; लॉकर अक्सर भुगतान किए जाते हैं। तौलिये लाउंजर शुल्क में शामिल हो सकते हैं, लेकिन इस पर भरोसा न करें — यदि आप कर सकते हैं तो एक छोटा तौलिया पैक करें।",
+        "प्रवेश चट्टानी है और प्लेटफॉर्म फिसलन भरा हो सकता है। पानी के जूते दिन को बेहतर (और सुरक्षित) बनाते हैं। रीफ-सुरक्षित सनस्क्रीन और एक रिफिल करने योग्य बोतल लाएं; दिन के अंत में सूरज अभी भी मजबूत है।",
+        "लिडो के बीच की छोटी सार्वजनिक पट्टी वास्तविक है, लेकिन यह छोटी है। यदि आप \\\\\"स्पियाग्जिया लिबेरा\\\\\" (मुफ्त समुद्र तट) जा रहे हैं, तो अपनी खुद की चटाई और एक सरल सेटअप के साथ जल्दी पहुंचें। खुरदरे समुद्रों में, कर्मचारियों को कुर्सियां अंतर्देशीय स्थानांतरित करने की आवश्यकता हो सकती है और मुफ्त पट्टी और भी तंग महसूस कर सकती है।"
       ],
       "images": [
         {
           "src": "/img/guides/gavitella-beach/06-packing-checklist.webp",
-          "alt": "Packing checklist infographic for Gavitella Beach day trip from a hostel",
-          "caption": "Pack light: water shoes, sunscreen, refillable bottle, and a small towel make the stairs easier"
+          "alt": "एक हॉस्टल से गैवितेल्ला बीच डे ट्रिप के लिए पैकिंग चेकलिस्ट इन्फोग्राफिक",
+          "caption": "हल्का पैक करें: पानी के जूते, सनस्क्रीन, रिफिल करने योग्य बोतल, और एक छोटा तौलिया सीढ़ियों को आसान बनाते हैं"
         }
       ]
     },
     {
       "id": "best-time",
-      "title": "Best time to go (and what the sea does)",
+      "title": "जाने का सबसे अच्छा समय (और समुद्र क्या करता है)",
       "body": [
-        "Gavitella Beach Praiano is best from mid‑afternoon into golden hour. Because the cove faces west, it keeps sunlight later than many Amalfi Coast beaches — which is exactly why sunset here is famous.",
-        "If you want the calmest swim, go earlier in the day and treat sunset as a bonus. Wind and chop can build later, and the platforms feel smaller when the sea is active.",
-        "Shoulder season (late spring / early autumn) can be the sweet spot for hostel travellers: fewer reservations, more breathing room, and you can still get that warm late light without the peak-summer crush."
+        "गैवितेल्ला बीच प्रायानो मध्य दोपहर से सुनहरे घंटे में सबसे अच्छा है। क्योंकि खाड़ी पश्चिम की ओर है, यह कई अमाल्फी तट समुद्र तटों की तुलना में बाद में धूप रखती है — यही वजह है कि यहां सूर्यास्त प्रसिद्ध है।",
+        "यदि आप सबसे शांत तैराकी चाहते हैं, तो दिन में पहले जाएं और सूर्यास्त को बोनस के रूप में मानें। हवा और तरंगें बाद में बन सकती हैं, और जब समुद्र सक्रिय होता है तो प्लेटफ़ॉर्म छोटे महसूस होते हैं।",
+        "शोल्डर सीज़न (देर से वसंत / शुरुआती शरद ऋतु) हॉस्टल यात्रियों के लिए मीठा स्थान हो सकता है: कम आरक्षण, अधिक सांस लेने की जगह, और आप अभी भी चरम-गर्मी की भीड़ के बिना उस गर्म देर से प्रकाश प्राप्त कर सकते हैं।"
       ],
       "images": [
         {
           "src": "/img/guides/gavitella-beach/07-sunset-window.webp",
-          "alt": "Infographic explaining why Gavitella faces west and catches late afternoon sun",
-          "caption": "Why it’s a sunset beach: west-facing light lasts longer, so the best vibe is late afternoon"
+          "alt": "इन्फोग्राफिक समझाता है कि गैवितेल्ला पश्चिम की ओर क्यों है और देर दोपहर का सूरज पकड़ता है",
+          "caption": "यह सूर्यास्त समुद्र तट क्यों है: पश्चिम की ओर प्रकाश लंबे समय तक रहता है, इसलिए सबसे अच्छा वाइब देर दोपहर है"
         }
       ]
     },
     {
       "id": "hostel-day-plan",
-      "title": "A hostel-friendly Gavitella day plan",
+      "title": "एक हॉस्टल-फ्रेंडली गैवितेल्ला दिन योजना",
       "body": [
-        "If you want the “best version” of Gavitella without blowing your energy (or budget), this plan works well for most guests.",
-        "1) Leave after breakfast and take the SITA bus toward Amalfi. Get off at Piazza San Gennaro and start the stairs down with water in hand.",
-        "2) Swim first. The earlier you swim, the less crowded it feels and the easier it is to claim a comfortable spot.",
-        "3) Decide your vibe: La Gavitella for a long lunch + sunset aperitivo, or One Fire if you want a social afternoon with music.",
-        "4) Lock in your return plan early. If you are staying for sunset, confirm (stairs vs interno shuttle vs boat shuttle) before the day gets loud.",
-        "5) Back at Hostel Brikette: shower, rehydrate, and you are ready for aperitivo in town. If you want an easier second beach day, compare options in our %LINK:positanoBeaches|Positano beaches overview%."
+        "यदि आप अपनी ऊर्जा (या बजट) को उड़ाए बिना गैवितेल्ला का \\\\\"सर्वश्रेष्ठ संस्करण\\\\\" चाहते हैं, तो यह योजना अधिकांश मेहमानों के लिए अच्छी तरह से काम करती है।",
+        "1) नाश्ते के बाद निकलें और अमाल्फी की ओर सीटा बस लें। पियाज़ा सैन जेनारो पर उतरें और हाथ में पानी के साथ सीढ़ियां शुरू करें।",
+        "2) पहले तैरें। जितनी जल्दी आप तैरते हैं, उतनी कम भीड़ महसूस होती है और आरामदायक स्थान का दावा करना उतना ही आसान होता है।",
+        "3) अपना वाइब तय करें: लंबे लंच + सूर्यास्त एपरिटिवो के लिए ला गैवितेल्ला, या यदि आप संगीत के साथ सामाजिक दोपहर चाहते हैं तो वन फायर।",
+        "4) अपनी वापसी योजना को जल्दी लॉक करें। यदि आप सूर्यास्त के लिए रह रहे हैं, तो दिन के शोर होने से पहले पुष्टि करें (सीढ़ियां बनाम इंटर्नो शटल बनाम नाव शटल)।",
+        "5) हॉस्टल ब्रिकेट पर वापस: शॉवर, पुनर्जलीकरण करें, और आप शहर में एपरिटिवो के लिए तैयार हैं। यदि आप एक आसान दूसरे समुद्र तट दिन चाहते हैं, तो हमारे %LINK:positanoBeaches|पोसिटानो समुद्र तट अवलोकन% में विकल्पों की तुलना करें।"
       ],
       "images": [
         {
           "src": "/img/guides/gavitella-beach/08-hostel-day-plan.webp",
-          "alt": "Timeline infographic for a hostel-friendly day at Gavitella Beach from morning to sunset",
-          "caption": "A simple day plan: bus + stairs, swim early, choose your lido, and confirm the return before sunset"
+          "alt": "सुबह से सूर्यास्त तक गैवितेल्ला बीच पर हॉस्टल-फ्रेंडली दिन के लिए टाइमलाइन इन्फोग्राफिक",
+          "caption": "एक सरल दिन योजना: बस + सीढ़ियां, जल्दी तैरें, अपना लिडो चुनें, और सूर्यास्त से पहले वापसी की पुष्टि करें"
         }
       ]
     },
     {
       "id": "what-to-pack",
-      "title": "What to bring (so you do not overpack)",
+      "title": "क्या लाना है (ताकि आप अधिक पैक न करें)",
       "body": [
-        "A light bag is the secret to enjoying Gavitella. The stairs are the whole point — but they punish overpacking.",
-        "Bring: water shoes, sunscreen, a hat, a small towel, and a refillable bottle. Add a light layer for the ride back if you will be out after sunset (sea breeze + wet skin gets chilly fast).",
-        "Skip: passports and big cash. Keep valuables locked up at the hostel. Carry just enough cash as backup for small extras and transport surprises."
+        "एक हल्का बैग गैवितेल्ला का आनंद लेने का रहस्य है। सीढ़ियां पूरा बिंदु हैं — लेकिन वे अधिक पैकिंग को दंडित करती हैं।",
+        "लाएं: पानी के जूते, सनस्क्रीन, एक टोपी, एक छोटा तौलिया, और एक रिफिल करने योग्य बोतल। यदि आप सूर्यास्त के बाद बाहर होंगे तो वापसी की सवारी के लिए एक हल्की परत जोड़ें (समुद्र की हवा + गीली त्वचा तेजी से ठंडी हो जाती है)।",
+        "छोड़ें: पासपोर्ट और बड़ी नकदी। हॉस्टल में कीमती सामान बंद रखें। छोटे अतिरिक्त और परिवहन आश्चर्य के लिए बैकअप के रूप में पर्याप्त नकदी ले जाएं।"
       ]
     },
     {
       "id": "backup-plan",
-      "title": "If it’s windy (backup plan)",
+      "title": "अगर हवा हो (बैकअप योजना)",
       "body": [
-        "When the sea is rough, the platforms feel smaller and boat shuttles often pause. If you arrive and it feels chaotic, switch plans instead of forcing it.",
-        "Two simple hostel-friendly backups: (1) choose a more sheltered cove like %LINK:marinaDiPraiaBeaches|Marina di Praia%, or (2) do a town day and save Gavitella for your next calm-weather window.",
-        "If your goal is “sunset + good vibes” rather than “swim”, you can still use Praiano’s viewpoints and terraces for golden hour without committing to the stairs."
+        "जब समुद्र खुरदरा होता है, तो प्लेटफ़ॉर्म छोटे महसूस होते हैं और नाव शटल अक्सर रुकती हैं। यदि आप पहुंचते हैं और यह अराजक महसूस करता है, तो इसे मजबूर करने के बजाय योजनाओं को बदलें।",
+        "दो सरल हॉस्टल-फ्रेंडली बैकअप: (1) %LINK:marinaDiPraiaBeaches|मरीना डि प्रैया% जैसी अधिक आश्रय वाली खाड़ी चुनें, या (2) एक शहर का दिन करें और अपनी अगली शांत-मौसम खिड़की के लिए गैवितेल्ला बचाएं।",
+        "यदि आपका लक्ष्य \\\\\"तैरना\\\\\" के बजाय \\\\\"सूर्यास्त + अच्छे वाइब्स\\\\\" है, तो आप अभी भी सीढ़ियों के लिए प्रतिबद्ध हुए बिना सुनहरे घंटे के लिए प्रायानो के दृश्य बिंदुओं और छतों का उपयोग कर सकते हैं।"
       ]
     }
   ],
   "images": {
     "overview": {
       "src": "/img/guides/gavitella-beach/01-beach-layout.webp",
-      "alt": "Aerial view of Gavitella Beach cove and the sun decks",
-      "caption": "The two beach clubs share a narrow platform carved into the cliff."
+      "alt": "गैवितेल्ला बीच खाड़ी और सन डेक का हवाई दृश्य",
+      "caption": "दो बीच क्लब चट्टान में उकेरे गए एक संकीर्ण प्लेटफॉर्म को साझा करते हैं।"
     },
     "gavitellaClub": {
       "src": "/img/guides/gavitella-beach/02-la-gavitella-club.webp",
-      "alt": "Terrace dinner table overlooking the Amalfi Coast at sunset",
-      "caption": "La Gavitella's sunset dinners pair sea views with long aperitivi."
+      "alt": "सूर्यास्त पर अमाल्फी कोस्ट की अनदेखी करते हुए टेरेस डिनर टेबल",
+      "caption": "ला गैवितेल्ला के सूर्यास्त डिनर लंबे एपरिटिवी के साथ समुद्र के दृश्यों को जोड़ते हैं।"
     },
     "oneFire": {
       "src": "/img/guides/gavitella-beach/03-one-fire-club.webp",
-      "alt": "Bright orange umbrellas and sunbeds at One Fire Beach Club",
-      "caption": "One Fire is known for lively afternoons and a DJ-led sunset scene."
+      "alt": "वन फायर बीच क्लब में चमकीले नारंगी छतरियां और सनबेड",
+      "caption": "वन फायर जीवंत दोपहर और डीजे के नेतृत्व वाले सूर्यास्त दृश्य के लिए जाना जाता है।"
     }
   },
-  "essentialsTitle": "Essentials",
+  "essentialsTitle": "आवश्यक बातें",
   "essentials": [
-    "Reserve in advance for both clubs; sunset slots and weekends sell out first.",
-    "Plan for 400+ steps down from Piazza San Gennaro and a steep return unless you take the interno shuttle.",
-    "Pack water shoes for the rocky platform and reef-safe sunscreen for late-afternoon sun."
+    "दोनों क्लबों के लिए अग्रिम में आरक्षित करें; सूर्यास्त स्लॉट और सप्ताहांत पहले बिक जाते हैं।",
+    "पियाज़ा सैन जेनारो से 400+ कदम नीचे और एक खड़ी वापसी की योजना बनाएं जब तक कि आप इंटर्नो शटल नहीं लेते।",
+    "चट्टानी प्लेटफॉर्म के लिए पानी के जूते और देर दोपहर के सूरज के लिए रीफ-सुरक्षित सनस्क्रीन पैक करें।"
   ],
-  "typicalCostsTitle": "Typical costs",
+  "typicalCostsTitle": "विशिष्ट लागत",
   "typicalCosts": [
-    "La Gavitella lounger set for two: €70–€100 depending on season.",
-    "One Fire day bed or cabana for two: €100–€180, often with a deposit in peak months.",
-    "Boat shuttle add-on (when available): €10–€20 per person each way."
+    "दो के लिए ला गैवितेल्ला लाउंजर सेट: सीज़न के आधार पर €70–€100।",
+    "दो के लिए वन फायर डे बेड या कबाना: €100–€180, अक्सर शिखर महीनों में जमा के साथ।",
+    "नाव शटल ऐड-ऑन (जब उपलब्ध हो): प्रत्येक तरफ प्रति व्यक्ति €10–€20।"
   ],
-  "tipsTitle": "Quick tips",
+  "tipsTitle": "त्वरित टिप्स",
   "tips": [
-    "Use %LINK:positanoAmalfi|our Positano ↔ Amalfi transport guide% to plan the SITA ride to Piazza San Gennaro before you tackle the 400 steps down.",
-    "Check the %LINK:sitaTickets|SITA bus ticket tips% for return options; Praiano's interno loop saves you from climbing back up in the dark.",
-    "Reserve La Gavitella's cliffside restaurant when you book loungers — the seafood tasting menu and sunset boat spin are worth the splurge.",
-    "Compare loungers, free zones, and alternative coves in our %LINK:positanoBeaches|Positano beaches overview% before you commit."
+    "400 कदम नीचे से निपटने से पहले पियाज़ा सैन जेनारो तक सीटा सवारी की योजना बनाने के लिए %LINK:positanoAmalfi|हमारे पोसिटानो ↔ अमाल्फी परिवहन गाइड% का उपयोग करें।",
+    "वापसी विकल्पों के लिए %LINK:sitaTickets|सीटा बस टिकट टिप्स% की जाँच करें; प्रायानो का इंटर्नो लूप आपको अंधेरे में वापस चढ़ने से बचाता है।",
+    "जब आप लाउंजर बुक करते हैं तो ला गैवितेल्ला के क्लिफसाइड रेस्तरां को आरक्षित करें — समुद्री भोजन चखने वाला मेनू और सूर्यास्त नाव स्पिन खर्च के लायक हैं।",
+    "प्रतिबद्ध होने से पहले हमारे %LINK:positanoBeaches|पोसिटानो समुद्र तट अवलोकन% में लाउंजर, मुफ्त ज़ोन और वैकल्पिक खाड़ियों की तुलना करें।"
   ],
-  "warningsTitle": "Good to know",
+  "warningsTitle": "जानने के लिए अच्छा",
   "warnings": [
-    "Expect around 400 uneven steps each way; Gavitella is not accessible for wheelchairs or heavy luggage.",
-    "The free section can vanish during rough seas — keep a backup plan for windy days.",
-    "Boat shuttles pause when the sea turns, so confirm your return ride before sunset events begin."
+    "प्रत्येक तरफ लगभग 400 असमान कदमों की अपेक्षा करें; गैवितेल्ला व्हीलचेयर या भारी सामान के लिए सुलभ नहीं है।",
+    "खुरदरे समुद्रों के दौरान मुफ्त खंड गायब हो सकता है — हवादार दिनों के लिए बैकअप योजना रखें।",
+    "जब समुद्र बदलता है तो नाव शटल रुकती हैं, इसलिए सूर्यास्त कार्यक्रम शुरू होने से पहले अपनी वापसी सवारी की पुष्टि करें।"
   ],
-  "faqsTitle": "Gavitella FAQs",
+  "faqsTitle": "गैवितेल्ला FAQs",
   "faqs": [
     {
-      "q": "How do I reach Gavitella from Hostel Brikette?",
+      "q": "मैं हॉस्टल ब्रिकेट से गैवितेल्ला तक कैसे पहुंचूं?",
       "a": [
-        "Walk to the Chiesa Nuova stop and board the SITA bus toward Amalfi. Get off at Praiano's Piazza San Gennaro, then follow the signed stairway for roughly 400 steps to the beach. In calm weather you can also pre-book boat shuttles from Positano's main pier."
+        "चीसा नुओवा स्टॉप पर चलें और अमाल्फी की ओर सीटा बस पर सवार हों। प्रायानो के पियाज़ा सैन जेनारो पर उतरें, फिर समुद्र तट तक लगभग 400 कदमों के लिए चिह्नित सीढ़ी का पालन करें। शांत मौसम में आप पोसिटानो के मुख्य घाट से नाव शटल को भी पूर्व-बुक कर सकते हैं।"
       ]
     },
     {
-      "q": "Do I need to reserve in advance?",
+      "q": "क्या मुझे अग्रिम में आरक्षित करने की आवश्यकता है?",
       "a": [
-        "Yes. Contact La Gavitella or One Fire via WhatsApp or their online forms, share your arrival time, and ask about deposits. Weekends and sunset slots sell out quickly from June through September."
+        "हाँ। व्हाट्सएप या उनके ऑनलाइन फॉर्म के माध्यम से ला गैवितेल्ला या वन फायर से संपर्क करें, अपने आगमन का समय साझा करें, और जमा के बारे में पूछें। सप्ताहांत और सूर्यास्त स्लॉट जून से सितंबर तक जल्दी बिक जाते हैं।"
       ]
     },
     {
-      "q": "Is there a free area if I don't rent loungers?",
+      "q": "यदि मैं लाउंजर किराए पर नहीं लेता तो क्या कोई मुफ्त क्षेत्र है?",
       "a": [
-        "A narrow public strip sits between the two clubs. Bring a mat or water shoes, arrive early, and respect any ropes or walkways staff set for boat access."
+        "दो क्लबों के बीच एक संकीर्ण सार्वजनिक पट्टी बैठती है। एक चटाई या पानी के जूते लाएं, जल्दी पहुंचें, और नाव पहुंच के लिए कर्मचारियों द्वारा सेट किए गए किसी भी रस्सी या रास्ते का सम्मान करें।"
       ]
     },
     {
-      "q": "Can I stay for dinner or late events?",
+      "q": "क्या मैं रात के खाने या देर से घटनाओं के लिए रह सकता हूं?",
       "a": [
-        "La Gavitella serves dinner on the terrace and often pairs it with a short boat cruise. One Fire runs sunset parties that finish around the last interno bus. Confirm return transport with staff so you are not climbing the stairs at night."
+        "ला गैवितेल्ला छत पर रात का खाना परोसता है और अक्सर इसे एक छोटी नाव क्रूज के साथ जोड़ता है। वन फायर सूर्यास्त पार्टियां चलाता है जो अंतिम इंटर्नो बस के आसपास समाप्त होती हैं। कर्मचारियों के साथ वापसी परिवहन की पुष्टि करें ताकि आप रात में सीढ़ियां न चढ़ रहे हों।"
       ]
     }
   ]

@@ -6,18 +6,39 @@
   "lastUpdated": "2026-01-29T00:00:00.000Z",
   "linkLabel": "Marina di Praia: Dramatische Bucht zwischen Klippen",
   "intro": [
-    "Marina di Praia ist eine versteckte Kiesbucht in Praiano – eine kurze SITA-Busfahrt von Hostel Brikette, aber meist deutlich ruhiger als Positanos große Strand-Hotspots. Fischerboote, ein Wachturm und steinerne Wege geben der Bucht dieses „hidden gem“-Gefühl, ohne dass du auf Essen und Infrastruktur verzichten musst.",
+    "Marina di Praia ist eine versteckte Kiesbucht in Praiano – eine kurze SITA-Busfahrt von Hostel Brikette, aber meist deutlich ruhiger als Positanos große Strand-Hotspots. Fischerboote, ein Wachturm und steinerne Wege geben der Bucht dieses \\\"hidden gem“-Gefühl, ohne dass du auf Essen und Infrastruktur verzichten musst.",
     "Wenn du einen stressfreien Strandtag willst (schwimmen, snacken, im Schatten chillen und danach unkompliziert essen gehen), ist das eine der besten Optionen in der Nähe für Hostelgäste.",
     "Dieser Guide erklärt die Bus-Route, die Strandaufteilung (Lido vs. freier Abschnitt), was du für Kies und Schatten einpackst und wie du nach Sonnenuntergang am einfachsten zurück nach Positano kommst."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Warum hin" },
-    { "href": "#getting-there", "label": "Anreise" },
-    { "href": "#layout", "label": "Aufbau & Services" },
-    { "href": "#what-to-bring", "label": "Was mitnehmen" },
-    { "href": "#best-time", "label": "Beste Zeit" },
-    { "href": "#nearby", "label": "Ruhige Spots in der Nähe" },
-    { "href": "#evening", "label": "Dinner & Rückweg" }
+    {
+      "href": "#why-go",
+      "label": "Warum hin"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Anreise"
+    },
+    {
+      "href": "#layout",
+      "label": "Aufbau & Services"
+    },
+    {
+      "href": "#what-to-bring",
+      "label": "Was mitnehmen"
+    },
+    {
+      "href": "#best-time",
+      "label": "Beste Zeit"
+    },
+    {
+      "href": "#nearby",
+      "label": "Ruhige Spots in der Nähe"
+    },
+    {
+      "href": "#evening",
+      "label": "Dinner & Rückweg"
+    }
   ],
   "sections": [
     {
@@ -25,7 +46,7 @@
       "title": "Warum diese Bucht perfekt für Hostelgäste ist",
       "body": [
         "Anders als Spiaggia Grande oder Fornillo liegt diese Bucht in einer schmalen Schlucht direkt außerhalb von Praiano. Die Klippen schützen das Wasser vor Wellen, Fischerboote schaukeln im kleinen Hafen, und selbst im Hochsommer bleibt die Stimmung eher entspannt.",
-        "Das ist ein idealer „Mittelweg“-Tag: bequemer als wilde, treppenlastige Buchten, aber weniger chaotisch als die großen Positano-Strände. Du hast Duschen und Essen – fühlst dich aber trotzdem zwischen Felsen statt mitten im Ort.",
+        "Das ist ein idealer \\\"Mittelweg“-Tag: bequemer als wilde, treppenlastige Buchten, aber weniger chaotisch als die großen Positano-Strände. Du hast Duschen und Essen – fühlst dich aber trotzdem zwischen Felsen statt mitten im Ort.",
         "Plane es als Halbtag (Morgenschwimmen + langes Lunch) oder als spätnachmittägliches Chill-Setup, das mit einem Dinner am Wasser endet, bevor du zurückfährst."
       ],
       "images": [
@@ -42,10 +63,10 @@
       "id": "getting-there",
       "title": "Hin und zurück mit dem SITA-Bus",
       "body": [
-        "Vom Hostel Brikette läufst du die Via Pasitea hinunter zur Haltestelle Sponda und nimmst einen SITA-Bus Richtung Amalfi. Sag dem Fahrer, dass du nach „Marina di Praia“ willst – die Haltestelle liegt zwischen Praiano und Furore und ist bei vollem Bus leicht zu übersehen.",
+        "Vom Hostel Brikette läufst du die Via Pasitea hinunter zur Haltestelle Sponda und nimmst einen SITA-Bus Richtung Amalfi. Sag dem Fahrer, dass du nach \\\"Marina di Praia“ willst – die Haltestelle liegt zwischen Praiano und Furore und ist bei vollem Bus leicht zu übersehen.",
         "Steig an der ausgeschilderten Haltestelle aus und folge dem steinernen Weg bergab (ca. zwei Minuten) zum Wasser. Der Zugang ist gepflastert, also auch mit Flip-Flops unkompliziert.",
         "Für die Rückfahrt gehst du auf die andere Straßenseite und wartest auf einen Bus zurück nach Positano. Im Sommer passt die Frequenz oft, aber abends wird es dünner – check den Aushang, sobald du ankommst, und nimm lieber den vorletzten Bus, wenn du zum Dinner bleibst.",
-        "Kaufe und entwerte SITA-Tickets vor dem Einsteigen. Wenn du Ticketarten, Verkaufsstellen und „Was tun, wenn der Bus voll ist?“ nachlesen willst, schau in unseren %LINK:sitaTickets|SITA-Ticket-Guide%. Wenn du den Tag als Praiano-Spaziergang planst (Kirchen, Aussichtspunkte, Küstenwege), kombiniere es mit dem %LINK:praianoGuide|Praiano-Guide%."
+        "Kaufe und entwerte SITA-Tickets vor dem Einsteigen. Wenn du Ticketarten, Verkaufsstellen und \\\"Was tun, wenn der Bus voll ist?“ nachlesen willst, schau in unseren %LINK:sitaTickets|SITA-Ticket-Guide%. Wenn du den Tag als Praiano-Spaziergang planst (Kirchen, Aussichtspunkte, Küstenwege), kombiniere es mit dem %LINK:praianoGuide|Praiano-Guide%."
       ],
       "images": [
         {
@@ -69,7 +90,7 @@
       "title": "Strandaufbau: Lido & Services",
       "body": [
         "Der Strand ist schmal, kiesig, und teilt sich in einen kleinen freien Abschnitt und den Hauptbereich des Lidos. Wenn du den kostenlosen Teil nah am Wasser willst, komm früher – am Wochenende füllt er sich zuerst.",
-        "Der wichtigste Anbieter ist Marina di Praia Beach Club (Liegen, Schirme, Duschen und meist irgendwas Richtung Paddle/Kajak). In der Hochsaison zahlst du eher für Komfort als für Platz – lohnt sich aber, wenn du Toiletten und ein entspanntes „Sachen ablegen und relaxen“-Setup willst.",
+        "Der wichtigste Anbieter ist Marina di Praia Beach Club (Liegen, Schirme, Duschen und meist irgendwas Richtung Paddle/Kajak). In der Hochsaison zahlst du eher für Komfort als für Platz – lohnt sich aber, wenn du Toiletten und ein entspanntes \\\"Sachen ablegen und relaxen“-Setup willst.",
         "Entlang der Promenade gibt’s Restaurants und Kioske für kalte Drinks. Kartenterminals können zicken: nimm etwas Bargeld für kleine Beträge mit und plan ein Backup, falls der Ticketkiosk später zu ist.",
         "Hostel-Realität: bring keine Wertsachen mit, die dich stressen. Wenn du solo bist, such dir einen gut sichtbaren Spot (nahe bei anderen Gruppen), pack dein Handy in eine Reißverschlusstasche und geh lieber öfter kurz ins Wasser, statt dein Zeug lange unbeaufsichtigt zu lassen."
       ],
@@ -92,7 +113,7 @@
       ],
       "list": [
         "Wasserschuhe: am Ufer kann’s rutschig sein und Kies tut nach Stunden weh.",
-        "Dickeres Handtuch oder Matte: auf Kies wird’s schnell „hart“.",
+        "Dickeres Handtuch oder Matte: auf Kies wird’s schnell \\\"hart“.",
         "Leichte Schicht für den späten Nachmittag: die Klippen bringen früh Schatten und nach dem Schwimmen wird’s kühler.",
         "Bargeld + Karte: manche kleinen Zahlungen/Terminals sind unzuverlässig.",
         "Kleiner Drybag oder Zip-Beutel fürs Handy, wenn du oft ins Wasser gehst."
@@ -111,7 +132,7 @@
       "id": "best-time",
       "title": "Beste Zeit (und wie sich das Wasser anfühlt)",
       "body": [
-        "Für einen ruhigen, einfachen Tag komm am besten morgens. Du findest eher einen bequemen Platz, es ist weniger Gedränge auf der Promenade, und das „Base → Swim“-Timing ist entspannter.",
+        "Für einen ruhigen, einfachen Tag komm am besten morgens. Du findest eher einen bequemen Platz, es ist weniger Gedränge auf der Promenade, und das \\\"Base → Swim“-Timing ist entspannter.",
         "Ab mittags/nachmittags werfen die Klippen mehr Schatten. Das ist super, wenn du überhitzt bist, kann aber auch bedeuten, dass es bei Wind schneller frisch wird – vor allem nach einem langen Swim.",
         "Der Strand fällt schnell ab: geh beim ersten Einstieg langsam rein und achte darauf, wo du deine Tasche ablegst, wenn die Wellen höher laufen."
       ],
@@ -129,9 +150,9 @@
       "id": "nearby",
       "title": "Ruhige Spots in der Nähe (realistisch geplant)",
       "body": [
-        "Die Amalfiküste ist berühmt für „Secret Coves“, aber viele sind privat, nur per Boot erreichbar oder haben fragwürdige Klippenpfade. Für Hostelgäste ist die beste Strategie: diese Bucht als komfortable Base nutzen und einen kurzen „Wow“-Stop auf derselben Buslinie hinzufügen.",
+        "Die Amalfiküste ist berühmt für \\\"Secret Coves“, aber viele sind privat, nur per Boot erreichbar oder haben fragwürdige Klippenpfade. Für Hostelgäste ist die beste Strategie: diese Bucht als komfortable Base nutzen und einen kurzen \\\"Wow“-Stop auf derselben Buslinie hinzufügen.",
         "Der einfachste dramatische Stop in der Nähe ist %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore%: früh hin für Fotos und einen kurzen Swim, danach zurück hierher für Lunch, Schatten und entspannteres Baden.",
-        "Wenn du einen ganzen „Sampler Day“ willst, plane Reihenfolge (und Bus-Timing) mit unserem %LINK:beachHoppingAmalfi|Beach-Hopping-Guide Amalfiküste%, damit du nicht den halben Nachmittag vollgepackten Bussen hinterherschaust."
+        "Wenn du einen ganzen \\\"Sampler Day“ willst, plane Reihenfolge (und Bus-Timing) mit unserem %LINK:beachHoppingAmalfi|Beach-Hopping-Guide Amalfiküste%, damit du nicht den halben Nachmittag vollgepackten Bussen hinterherschaust."
       ],
       "images": [
         {
@@ -209,9 +230,8 @@
     {
       "q": "Ist Marina di Praia gut, wenn ich alleine hingehe?",
       "a": [
-        "Ja – die Bucht ist relativ „solo-friendly“, weil es Services gibt und die Promenade gut einsehbar ist. Trotzdem: Hostel-Common-Sense. Nimm nur mit, was du tragen willst, halte dein Handy sicher verstaut und geh lieber öfter kurz schwimmen, statt deinen Rucksack lange unbeaufsichtigt zu lassen."
+        "Ja – die Bucht ist relativ \\\"solo-friendly“, weil es Services gibt und die Promenade gut einsehbar ist. Trotzdem: Hostel-Common-Sense. Nimm nur mit, was du tragen willst, halte dein Handy sicher verstaut und geh lieber öfter kurz schwimmen, statt deinen Rucksack lange unbeaufsichtigt zu lassen."
       ]
     }
   ]
 }
-

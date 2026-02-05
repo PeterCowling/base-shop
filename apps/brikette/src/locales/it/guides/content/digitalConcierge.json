@@ -22,7 +22,7 @@
       "id": "templates",
       "title": "Template copia/incolla",
       "body": [
-        "\"Abbiamo 6 ore, nessuna auto, vogliamo (A) nuotare + (B) tramonto, budget €40 a persona. Qual è il piano più semplice e il piano B se i traghetti vengono cancellati?\"",
+        "\\\\\"Abbiamo 6 ore, nessuna auto, vogliamo (A) nuotare + (B) tramonto, budget €40 a persona. Qual è il piano più semplice e il piano B se i traghetti vengono cancellati?\\\\\"",
         "Base di budget: %LINK:positanoBudget|Positano con budget% + %LINK:terraceSunsets|Tramonto dalla terrazza%.",
         "Se il trasporto è sensibile: %LINK:ferryCancellations|cancellazioni traghetti + meteo%."
       ]

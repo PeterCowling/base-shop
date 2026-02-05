@@ -22,7 +22,7 @@
       "id": "templates",
       "title": "Modelo copiar/colar",
       "body": [
-        "\"Temos 6 horas, sem carro, queremos (A) nadar + (B) pôr do sol, orçamento €40 por pessoa. Qual é o plano mais simples e o plano B se os ferries forem cancelados?\"",
+        "\\\\\"Temos 6 horas, sem carro, queremos (A) nadar + (B) pôr do sol, orçamento €40 por pessoa. Qual é o plano mais simples e o plano B se os ferries forem cancelados?\\\\\"",
         "Linha de base do orçamento: %LINK:positanoBudget|Positano com orçamento% + %LINK:terraceSunsets|Pôr do sol no terraço%.",
         "Se o transporte for sensível: %LINK:ferryCancellations|cancelamentos de ferry + clima%."
       ]

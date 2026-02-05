@@ -27,17 +27,17 @@
       "list": [
         "Wiersze w pierwszej kolumnie zawierają wszystkie przystanki na trasie.",
         "Kolumny odpowiadają zaplanowanym kursom oznaczonym literami.",
-        "Podróż od poniedziałku do soboty? Korzystaj z kolumn „F\" i „G\".",
-        "Podróż w niedzielę lub święto? Korzystaj z kolumn „G\" i „H\"."
+        "Podróż od poniedziałku do soboty? Korzystaj z kolumn \\\"F\\\\\" i \\\"G\\\\\".",
+        "Podróż w niedzielę lub święto? Korzystaj z kolumn \\\"G\\\\\" i \\\"H\\\\\"."
       ]
     },
     {
       "id": "arrival",
       "title": "Przyjazd do Positano (Chiesa Nuova)",
       "list": [
-        "Dla Positano znajdują się dwa przystanki SITA: „Sponda\" i „Chiesa Nuova\".",
-        "Do hostelu najdogodniejszy jest przystanek „Positano (Chiesa Nuova)\" przy Via G. Marconi.",
-        "Przystanek znajduje się przed kawiarnią/barem „Bar Internazionale\"."
+        "Dla Positano znajdują się dwa przystanki SITA: \\\"Sponda\\\\\" i \\\"Chiesa Nuova\\\\\".",
+        "Do hostelu najdogodniejszy jest przystanek \\\"Positano (Chiesa Nuova)\\\\\" przy Via G. Marconi.",
+        "Przystanek znajduje się przed kawiarnią/barem \\\"Bar Internazionale\\\\\"."
       ]
     },
     {

@@ -25,9 +25,9 @@
       "id": "positanoStop",
       "title": "Arrêt de bus Positano (Chiesa Nuova)",
       "list": [
-        "L'arrêt de bus le plus proche se situe dans le quartier « Chiesa Nuova » de Positano.",
+        "L'arrêt de bus le plus proche se situe dans le quartier \\\\\" Chiesa Nuova \\\\\" de Positano.",
         "Il se trouve à environ 140 mètres (490 pieds) de l'auberge.",
-        "L'arrêt est devant le café/bar appelé « Bar Internazionale »."
+        "L'arrêt est devant le café/bar appelé \\\\\" Bar Internazionale \\\\\"."
       ]
     },
     {
@@ -42,8 +42,8 @@
       "list": [
         "Les lignes de la première colonne indiquent chaque arrêt le long du trajet.",
         "Les colonnes correspondent aux trajets programmés identifiés par des lettres.",
-        "Vous voyagez du lundi au samedi ? Utilisez les colonnes « F » et « G ».",
-        "Vous voyagez le dimanche ou un jour férié ? Utilisez les colonnes « G » et « H »."
+        "Vous voyagez du lundi au samedi ? Utilisez les colonnes \\\\\" F \\\\\" et \\\\\" G \\\\\".",
+        "Vous voyagez le dimanche ou un jour férié ? Utilisez les colonnes \\\\\" G \\\\\" et \\\\\" H \\\\\"."
       ]
     },
     {
@@ -52,7 +52,7 @@
       "list": [
         "Achetez un billet pour le bus vers Sorrente (à l'intérieur du bar/maison de presse).",
         "Attendez à l'extérieur du bar le bus en direction de Sorrente.",
-        "Vérifiez que l'affichage de destination du bus indique « Sorrente »."
+        "Vérifiez que l'affichage de destination du bus indique \\\\\" Sorrente \\\\\"."
       ]
     },
     {
@@ -61,7 +61,7 @@
       "list": [
         "Sortez de l'auberge par la porte principale et descendez les marches jusqu'à la route.",
         "Tournez à gauche et marchez environ 100 mètres (330 pieds).",
-        "Vous verrez le « Bar Internazionale » sur la gauche ; l'arrêt SITA se trouve juste devant."
+        "Vous verrez le \\\\\" Bar Internazionale \\\\\" sur la gauche ; l'arrêt SITA se trouve juste devant."
       ]
     }
   ],

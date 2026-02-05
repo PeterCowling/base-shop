@@ -27,17 +27,17 @@
       "list": [
         "As linhas da primeira coluna listam cada paragem ao longo do percurso.",
         "As colunas correspondem às viagens programadas, identificadas por letras.",
-        "Vai viajar de segunda a sábado? Utilize as colunas \"F\" e \"G\".",
-        "Vai viajar ao domingo ou feriado? Utilize as colunas \"G\" e \"H\"."
+        "Vai viajar de segunda a sábado? Utilize as colunas \\\\\"F\\\\\" e \\\\\"G\\\\\".",
+        "Vai viajar ao domingo ou feriado? Utilize as colunas \\\\\"G\\\\\" e \\\\\"H\\\\\"."
       ]
     },
     {
       "id": "arrival",
       "title": "Chegada a Positano (Chiesa Nuova)",
       "list": [
-        "Existem duas paragens SITA listadas para Positano: \"Sponda\" e \"Chiesa Nuova\".",
-        "Para o hostel, \"Positano (Chiesa Nuova)\" é a paragem correta na Via G. Marconi.",
-        "A paragem fica no exterior do café/bar \"Bar Internazionale\"."
+        "Existem duas paragens SITA listadas para Positano: \\\\\"Sponda\\\\\" e \\\\\"Chiesa Nuova\\\\\".",
+        "Para o hostel, \\\\\"Positano (Chiesa Nuova)\\\\\" é a paragem correta na Via G. Marconi.",
+        "A paragem fica no exterior do café/bar \\\\\"Bar Internazionale\\\\\"."
       ]
     },
     {

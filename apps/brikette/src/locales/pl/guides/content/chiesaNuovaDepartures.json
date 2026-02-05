@@ -5,7 +5,7 @@
   },
   "linkLabel": "Hostel Brikette → przystanek Chiesa Nuova / Bar Internazionale",
   "lastUpdated": "2026-02-02T00:00:00.000Z",
-  "intro": "Przystanek Positano Chiesa Nuova / Bar Internazionale to główny przystanek SITA dla gości Hostel Brikette jadących do Amalfi, Sorrento, Neapolu, Salerno lub dalej. Ten przewodnik dotyczy samego przystanku: jak nazywa się w rozkładach (często „Positano (Chiesa Nuova)”), po której stronie ustawić się na autobus wschodni lub zachodni, gdzie kupić i skasować bilet (pojedyncze przejazdy zwykle kosztują €2,50–€4 w zależności od celu), czego spodziewać się latem w kolejkach oraz – krótko – najłatwiejszej 2–4‑minutowej drogi z hostelu do przystanku.",
+  "intro": "Przystanek Positano Chiesa Nuova / Bar Internazionale to główny przystanek SITA dla gości Hostel Brikette jadących do Amalfi, Sorrento, Neapolu, Salerno lub dalej. Ten przewodnik dotyczy samego przystanku: jak nazywa się w rozkładach (często \\\"Positano (Chiesa Nuova)”), po której stronie ustawić się na autobus wschodni lub zachodni, gdzie kupić i skasować bilet (pojedyncze przejazdy zwykle kosztują €2,50–€4 w zależności od celu), czego spodziewać się latem w kolejkach oraz – krótko – najłatwiejszej 2–4‑minutowej drogi z hostelu do przystanku.",
   "image": {
     "alt": "Przystanek SITA Chiesa Nuova / Bar Internazionale w Positano przed Bar Internazionale",
     "caption": "Hostel Brikette znajduje się jeden zakręt od przystanku. Zarezerwuj kilka minut, aby dołączyć do kolejki przed przyjazdem autobusu, szczególnie latem, gdy autobusy szybko się zapełniają."
@@ -22,7 +22,7 @@
       "id": "why-route",
       "title": "Dlaczego warto skorzystać z przystanku Chiesa Nuova / Bar Internazionale",
       "body": [
-        "Przystanek **Chiesa Nuova / Bar Internazionale** to najbliższy przystanek SITA do Hostel Brikette i zwykle najłatwiejsze miejsce, aby wsiąść do autobusu bez pokonywania długich schodów Positano. Niezależnie od tego, czy zwiedzasz wybrzeże, przesiadasz się w Sorrento na pociąg, czy zaczynasz dłuższą podróż przez Salerno — to praktyczny „bazowy” przystanek hostelu.",
+        "Przystanek **Chiesa Nuova / Bar Internazionale** to najbliższy przystanek SITA do Hostel Brikette i zwykle najłatwiejsze miejsce, aby wsiąść do autobusu bez pokonywania długich schodów Positano. Niezależnie od tego, czy zwiedzasz wybrzeże, przesiadasz się w Sorrento na pociąg, czy zaczynasz dłuższą podróż przez Salerno — to praktyczny \\\"bazowy” przystanek hostelu.",
         "Jest też łatwy w użyciu, bo miejsca kolejek są jasne: **na wschód do Amalfi/Salerno** — po stronie morza (naprzeciwko Bar Internazionale), a **na zachód do Sorrento/Neapolu** — po stronie górskiej (tuż przy barze).",
         "Z Hostel Brikette to krótki spacer 120 metrów (400 stóp), 2–4 minuty wzdłuż Viale Pasitea. Chodnik jest wystarczająco szeroki na bagaż i dobrze oświetlony nocą.",
         "Aby uzyskać wskazówki dojazdu z mapą, zobacz ten %URL:https://www.google.com/maps/dir/V.+G.+Marconi,+358,+84017+Positano+SA/Bar+Internazionale,+V.+G.+Marconi,+306,+84017+Positano+SA/@40.6294795,14.4790535,746m/data=!3m2!1e3!4b1!4m14!4m13!1m5!1m1!1s0x133b976683fb47c9:0x209c0949d4fb4c3b!2m2!1d14.4809356!2d40.6296237!1m5!1m1!1s0x133b976673927785:0x5187a720325ee588!2m2!1d14.482264!2d40.629495!3e0?hl=en&entry=ttu&g_ep=EgoyMDI2MDEyOC4wIKXMDSoKLDEwMDc5MjA3MUgBUAM%3D|trasę Google Maps z Hostelu Brikette do przystanku autobusowego%."
@@ -221,7 +221,7 @@
       "a": [
         "**Czytanie wierszy:** Wiersze w pierwszej kolumnie reprezentują różne przystanki autobusowe wzdłuż trasy.",
         "**Czytanie kolumn:** Rozkład jazdy przypisuje literę alfabetyczną do każdej zaplanowanej podróży, która jest wymieniona jako nagłówki w każdej kolumnie. Jeśli podróżujesz od poniedziałku do soboty, szukaj kolumn 'F' i 'G'. Jeśli podróżujesz w niedzielę lub święto, szukaj kolumn 'G' i 'H'.",
-        "Dla przystanku Chiesa Nuova / Bar Internazionale w rozkładzie jest zwykle wiersz „Positano (Chiesa Nuova)”."
+        "Dla przystanku Chiesa Nuova / Bar Internazionale w rozkładzie jest zwykle wiersz \\\"Positano (Chiesa Nuova)”."
       ]
     }
   ],

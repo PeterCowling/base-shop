@@ -11,13 +11,34 @@
     "In questa guida trovi: come fare il tragitto in bus, com’è organizzata la spiaggia (lido vs area libera), cosa portare per stare comodo sui ciottoli e come rientrare a Positano dopo il tramonto."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Perché andare" },
-    { "href": "#getting-there", "label": "Come arrivare" },
-    { "href": "#layout", "label": "Spiaggia e servizi" },
-    { "href": "#what-to-bring", "label": "Cosa portare" },
-    { "href": "#best-time", "label": "Quando andare" },
-    { "href": "#nearby", "label": "Nuotate appartate nei dintorni" },
-    { "href": "#evening", "label": "Cena e rientro" }
+    {
+      "href": "#why-go",
+      "label": "Perché andare"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Come arrivare"
+    },
+    {
+      "href": "#layout",
+      "label": "Spiaggia e servizi"
+    },
+    {
+      "href": "#what-to-bring",
+      "label": "Cosa portare"
+    },
+    {
+      "href": "#best-time",
+      "label": "Quando andare"
+    },
+    {
+      "href": "#nearby",
+      "label": "Nuotate appartate nei dintorni"
+    },
+    {
+      "href": "#evening",
+      "label": "Cena e rientro"
+    }
   ],
   "sections": [
     {
@@ -214,4 +235,3 @@
     }
   ]
 }
-

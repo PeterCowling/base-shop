@@ -27,17 +27,17 @@
       "list": [
         "Rækkerne i første kolonne viser hvert busstoppested på ruten.",
         "Kolonnerne svarer til planlagte afgange markeret med bogstaver.",
-        "Rejser du mandag til lørdag? Brug kolonne \"F\" og \"G\".",
-        "Rejser du søndag eller på helligdage? Brug kolonne \"G\" og \"H\"."
+        "Rejser du mandag til lørdag? Brug kolonne \\\\\"F\\\\\" og \\\\\"G\\\\\".",
+        "Rejser du søndag eller på helligdage? Brug kolonne \\\\\"G\\\\\" og \\\\\"H\\\\\"."
       ]
     },
     {
       "id": "arrival",
       "title": "Ankomst til Positano (Chiesa Nuova)",
       "list": [
-        "Positano har to SITA-stoppesteder: \"Sponda\" og \"Chiesa Nuova\".",
-        "Til hostellet er \"Positano (Chiesa Nuova)\" det rigtige stop på Via G. Marconi.",
-        "Stoppet ligger foran caféen/baren \"Bar Internazionale\"."
+        "Positano har to SITA-stoppesteder: \\\\\"Sponda\\\\\" og \\\\\"Chiesa Nuova\\\\\".",
+        "Til hostellet er \\\\\"Positano (Chiesa Nuova)\\\\\" det rigtige stop på Via G. Marconi.",
+        "Stoppet ligger foran caféen/baren \\\\\"Bar Internazionale\\\\\"."
       ]
     },
     {

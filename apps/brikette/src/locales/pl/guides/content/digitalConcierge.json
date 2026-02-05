@@ -22,7 +22,7 @@
       "id": "templates",
       "title": "Szablon kopiuj/wklej",
       "body": [
-        "\"Mamy 6 godzin, bez samochodu, chcemy (A) pływać + (B) zachód słońca, budżet €40 na osobę. Jaki jest najprostszy plan i plan B, jeśli promy zostaną odwołane?\"",
+        "\\\\\"Mamy 6 godzin, bez samochodu, chcemy (A) pływać + (B) zachód słońca, budżet €40 na osobę. Jaki jest najprostszy plan i plan B, jeśli promy zostaną odwołane?\\\\\"",
         "Podstawa budżetowa: %LINK:positanoBudget|Positano na budżecie% + %LINK:terraceSunsets|Zachód słońca z tarasu%.",
         "Jeśli transport jest wrażliwy: %LINK:ferryCancellations|odwołania promów + pogoda%."
       ]

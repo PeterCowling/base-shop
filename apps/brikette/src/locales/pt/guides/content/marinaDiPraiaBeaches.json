@@ -11,13 +11,34 @@
     "Este guia explica o trajeto de autocarro, como a praia está organizada (lido vs zona livre), o que levar para estar confortável nos seixos e a forma mais simples de regressar a Positano depois do pôr do sol."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Porque ir" },
-    { "href": "#getting-there", "label": "Como chegar" },
-    { "href": "#layout", "label": "Estrutura & serviços" },
-    { "href": "#what-to-bring", "label": "O que levar" },
-    { "href": "#best-time", "label": "Melhor hora para ir" },
-    { "href": "#nearby", "label": "Banhos mais reservados por perto" },
-    { "href": "#evening", "label": "Jantar & regresso" }
+    {
+      "href": "#why-go",
+      "label": "Porque ir"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Como chegar"
+    },
+    {
+      "href": "#layout",
+      "label": "Estrutura & serviços"
+    },
+    {
+      "href": "#what-to-bring",
+      "label": "O que levar"
+    },
+    {
+      "href": "#best-time",
+      "label": "Melhor hora para ir"
+    },
+    {
+      "href": "#nearby",
+      "label": "Banhos mais reservados por perto"
+    },
+    {
+      "href": "#evening",
+      "label": "Jantar & regresso"
+    }
   ],
   "sections": [
     {
@@ -214,4 +235,3 @@
     }
   ]
 }
-

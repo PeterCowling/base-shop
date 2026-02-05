@@ -11,13 +11,34 @@
     "Esta guía cubre el bus, cómo se organiza la playa (lido vs zona libre), qué llevar para estar cómodo en los guijarros y la forma más simple de volver a Positano después del atardecer."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Por qué ir" },
-    { "href": "#getting-there", "label": "Cómo llegar" },
-    { "href": "#layout", "label": "Distribución y servicios" },
-    { "href": "#what-to-bring", "label": "Qué llevar" },
-    { "href": "#best-time", "label": "Mejor hora para ir" },
-    { "href": "#nearby", "label": "Baños tranquilos cerca" },
-    { "href": "#evening", "label": "Cena y regreso" }
+    {
+      "href": "#why-go",
+      "label": "Por qué ir"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Cómo llegar"
+    },
+    {
+      "href": "#layout",
+      "label": "Distribución y servicios"
+    },
+    {
+      "href": "#what-to-bring",
+      "label": "Qué llevar"
+    },
+    {
+      "href": "#best-time",
+      "label": "Mejor hora para ir"
+    },
+    {
+      "href": "#nearby",
+      "label": "Baños tranquilos cerca"
+    },
+    {
+      "href": "#evening",
+      "label": "Cena y regreso"
+    }
   ],
   "sections": [
     {
@@ -214,4 +235,3 @@
     }
   ]
 }
-

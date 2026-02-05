@@ -28,17 +28,17 @@
       "list": [
         "Las filas de la primera columna enumeran cada parada del recorrido.",
         "Las columnas corresponden a viajes programados identificados con letras.",
-        "¿Viajas de lunes a sábado? Usa las columnas «F» y «G».",
-        "¿Viajas en domingo o festivo? Usa las columnas «G» y «H»."
+        "¿Viajas de lunes a sábado? Usa las columnas \\\\\"F\\\\\" y \\\\\"G\\\\\".",
+        "¿Viajas en domingo o festivo? Usa las columnas \\\\\"G\\\\\" y \\\\\"H\\\\\"."
       ]
     },
     {
       "id": "positanoStop",
       "title": "Parada Positano (Chiesa Nuova)",
       "list": [
-        "La parada más cercana está en la zona de «Chiesa Nuova» de Positano.",
+        "La parada más cercana está en la zona de \\\\\"Chiesa Nuova\\\\\" de Positano.",
         "Se encuentra aproximadamente a 140 metros (490 pies) del hostal.",
-        "La parada está frente al café/bar llamado «Bar Internazionale»."
+        "La parada está frente al café/bar llamado \\\\\"Bar Internazionale\\\\\"."
       ]
     },
     {
@@ -47,7 +47,7 @@
       "list": [
         "Sal del hostal por la puerta principal y baja las escaleras hasta la carretera.",
         "Gira a la izquierda y camina unos 100 metros (330 pies).",
-        "Verás el «Bar Internazionale» a la izquierda; la parada de SITA está afuera."
+        "Verás el \\\\\"Bar Internazionale\\\\\" a la izquierda; la parada de SITA está afuera."
       ]
     },
     {
@@ -56,7 +56,7 @@
       "list": [
         "Compra un billete para el autobús a Sorrento (dentro del bar/quiosco).",
         "Espera fuera del bar al autobús con destino a Sorrento.",
-        "Comprueba que el letrero del autobús indique «Sorrento»."
+        "Comprueba que el letrero del autobús indique \\\\\"Sorrento\\\\\"."
       ]
     },
     {

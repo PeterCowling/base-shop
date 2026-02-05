@@ -89,7 +89,7 @@ export const useRates = (): RatesState => {
   // Only fetch rates when a consumer opts in by calling the hook.
   useEffect(() => {
     ctx.requestRates();
-  }, [ctx.requestRates]);
+  }, [ctx]);
 
   return { rates: ctx.rates, loading: ctx.loading, error: ctx.error };
 };

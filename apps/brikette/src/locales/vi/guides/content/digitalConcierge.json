@@ -22,7 +22,7 @@
       "id": "templates",
       "title": "Mẫu sao chép/dán",
       "body": [
-        "\"Chúng tôi có 6 giờ, không có xe, chúng tôi muốn (A) bơi + (B) hoàng hôn, ngân sách €40 mỗi người. Kế hoạch đơn giản nhất và kế hoạch B là gì nếu phà bị hủy?\"",
+        "\\\\\"Chúng tôi có 6 giờ, không có xe, chúng tôi muốn (A) bơi + (B) hoàng hôn, ngân sách €40 mỗi người. Kế hoạch đơn giản nhất và kế hoạch B là gì nếu phà bị hủy?\\\\\"",
         "Ngân sách cơ bản: %LINK:positanoBudget|Positano tiết kiệm% + %LINK:terraceSunsets|Hoàng hôn sân thượng%.",
         "Nếu giao thông nhạy cảm: %LINK:ferryCancellations|hủy phà + thời tiết%."
       ]

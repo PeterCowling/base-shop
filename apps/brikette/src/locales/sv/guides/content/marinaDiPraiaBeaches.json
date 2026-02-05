@@ -11,13 +11,34 @@
     "Den här guiden går igenom bussresan, hur stranden är upplagd (lido vs gratisdel), vad du bör ta med för klappersten och skugga, och enklaste sättet att ta dig tillbaka till Positano efter solnedgång."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Varför åka" },
-    { "href": "#getting-there", "label": "Så tar du dig dit" },
-    { "href": "#layout", "label": "Upplägg & service" },
-    { "href": "#what-to-bring", "label": "Vad du ska packa" },
-    { "href": "#best-time", "label": "Bästa tid" },
-    { "href": "#nearby", "label": "Lugna badstopp i närheten" },
-    { "href": "#evening", "label": "Middag & hemresa" }
+    {
+      "href": "#why-go",
+      "label": "Varför åka"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Så tar du dig dit"
+    },
+    {
+      "href": "#layout",
+      "label": "Upplägg & service"
+    },
+    {
+      "href": "#what-to-bring",
+      "label": "Vad du ska packa"
+    },
+    {
+      "href": "#best-time",
+      "label": "Bästa tid"
+    },
+    {
+      "href": "#nearby",
+      "label": "Lugna badstopp i närheten"
+    },
+    {
+      "href": "#evening",
+      "label": "Middag & hemresa"
+    }
   ],
   "sections": [
     {
@@ -214,4 +235,3 @@
     }
   ]
 }
-

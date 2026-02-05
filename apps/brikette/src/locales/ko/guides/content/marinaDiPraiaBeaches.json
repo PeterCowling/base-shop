@@ -11,13 +11,34 @@
     "이 가이드는 버스 이동, 해변 구조(리도 vs 무료 구역), 자갈 해변에서 편하게 보내는 준비물, 그리고 해 질 무렵 이후 포지타노로 가장 간단하게 돌아오는 방법을 정리합니다."
   ],
   "toc": [
-    { "href": "#why-go", "label": "왜 추천하나요" },
-    { "href": "#getting-there", "label": "가는 방법" },
-    { "href": "#layout", "label": "해변 구조 & 시설" },
-    { "href": "#what-to-bring", "label": "준비물" },
-    { "href": "#best-time", "label": "언제 가면 좋을까" },
-    { "href": "#nearby", "label": "근처 조용한 수영 스팟" },
-    { "href": "#evening", "label": "저녁 & 돌아오기" }
+    {
+      "href": "#why-go",
+      "label": "왜 추천하나요"
+    },
+    {
+      "href": "#getting-there",
+      "label": "가는 방법"
+    },
+    {
+      "href": "#layout",
+      "label": "해변 구조 & 시설"
+    },
+    {
+      "href": "#what-to-bring",
+      "label": "준비물"
+    },
+    {
+      "href": "#best-time",
+      "label": "언제 가면 좋을까"
+    },
+    {
+      "href": "#nearby",
+      "label": "근처 조용한 수영 스팟"
+    },
+    {
+      "href": "#evening",
+      "label": "저녁 & 돌아오기"
+    }
   ],
   "sections": [
     {
@@ -214,4 +235,3 @@
     }
   ]
 }
-

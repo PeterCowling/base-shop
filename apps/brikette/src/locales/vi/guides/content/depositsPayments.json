@@ -5,21 +5,142 @@
   },
   "linkLabel": "Hướng Dẫn Đặt Cọc và Thanh Toán cho Positano Hostel",
   "sections": [
-    {"id": "submittingBookingRequest", "title": "Cách Gửi Yêu Cầu Đặt Phòng", "body": ["Gửi yêu cầu đặt phòng cho chúng tôi thông qua Đại lý Du lịch Trực tuyến (OTA) được ủy quyền hoặc trực tiếp trên trang web của chúng tôi - chỉ trò chuyện hoặc ghé thăm không được tính. Bằng cách nhấp vào 'Đặt phòng', bạn xác nhận rằng tất cả các tên, ngày và thời gian lưu trú đều chính xác và bạn chấp nhận Điều khoản và Điều kiện của chúng tôi."]},
-    {"id": "processingBookingRequest", "title": "Cách Chúng Tôi Xử Lý Yêu Cầu", "body": ["Chúng tôi bắt đầu xử lý yêu cầu của bạn ngay khi chúng tôi nhận được thành công bất kỳ khoản đặt cọc, ủy quyền trước hoặc thanh toán được yêu cầu bằng một trong các phương thức thanh toán được chấp nhận của chúng tôi. Đảm bảo rằng đặt phòng hiển thị tên của chủ thẻ tín dụng sẽ thanh toán. Nếu tên người thanh toán khác, hãy gửi email cho chúng tôi một ủy quyền ngắn từ chủ thẻ trước khi chúng tôi xử lý yêu cầu của bạn."], "images": [{"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Payment_terminal_at_the_Berlin_immigration_office.jpg/960px-Payment_terminal_at_the_Berlin_immigration_office.jpg", "alt": "Bàn phím và màn hình thiết bị thanh toán thẻ.", "caption": "Chúng tôi có thể lấy tiền đặt cọc, chạy thanh toán hoặc đặt ủy quyền trước để bảo đảm đặt phòng của bạn - Ảnh: Wikimedia Commons (CC0)."}]},
-    {"id": "decliningBookingRequest", "title": "Khi Chúng Tôi Có Thể Từ Chối Yêu Cầu", "body": ["Chúng tôi hiếm khi từ chối đặt phòng, nhưng chúng tôi giữ quyền làm như vậy theo quyết định của mình - ví dụ, nếu thanh toán thất bại, thiếu thông tin bắt buộc hoặc yêu cầu vi phạm Điều khoản và Điều kiện của chúng tôi."]},
-    {"id": "requestSizeLimit", "title": "Giới Hạn Kích Thước cho Một Yêu Cầu", "body": ["Một yêu cầu đặt phòng có thể bao gồm tối đa bảy (7) đêm liên tiếp và tối đa năm (5) khách. Cần lưu trú lâu hơn hoặc nhóm lớn hơn? Chỉ cần chia thành các yêu cầu riêng biệt."]},
-    {"id": "counterOffer", "title": "Điều Gì Xảy Ra Nếu Phòng Của Bạn Không Có Sẵn", "body": ["Nếu phòng ưa thích của bạn đã được đặt, chúng tôi sẽ gửi email cho bạn một lời đề nghị ngược với giải pháp thay thế gần nhất. Chấp nhận lời đề nghị và hoàn thành thanh toán hoặc ủy quyền trước để khóa kỳ nghỉ của bạn."]},
-    {"id": "prepaidNonRefundableBookingsPolicy", "title": "Đặt Phòng Trả Trước Không Hoàn Tiền", "body": ["Chọn mức giá trả trước không hoàn tiền giúp bạn tiết kiệm tiền nhưng yêu cầu thanh toán đầy đủ trước. Chúng tôi sẽ thử thẻ của bạn tối đa ba lần. Nếu tất cả các lần thử đều thất bại, chúng tôi sẽ hủy yêu cầu. Những đặt phòng này không thể được hoàn tiền hoặc sửa đổi."]},
-    {"id": "confirmationEmail", "title": "Email Xác Nhận của Bạn", "body": ["Sau khi thanh toán của bạn được xử lý, chúng tôi sẽ gửi email xác nhận đến địa chỉ bạn cung cấp cho chúng tôi. Nó liệt kê tham chiếu đặt phòng, ngày đến, thời gian lưu trú và bất kỳ dịch vụ bổ sung nào. Đọc kỹ và cho chúng tôi biết ngay lập tức nếu có gì không đúng."], "images": [{"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Email_on_Phone_Flat_Icon.svg/960px-Email_on_Phone_Flat_Icon.svg.png", "alt": "Biểu tượng email trên màn hình điện thoại.", "caption": "Email xác nhận của bạn là nơi tốt nhất để kiểm tra lại ngày, tên và chi tiết thanh toán - Ảnh: Wikimedia Commons (CC BY-SA 4.0)."}]},
-    {"id": "numberOfGuestsIncluded", "title": "Ai Được Bao Gồm trong Đặt Phòng", "body": ["Đặt phòng của bạn tự động bao gồm những điều sau:", "* 1 khách cho giường đơn\n* Tối đa 2 khách cho giường đôi\n* Đến sức chứa được quảng cáo của bất kỳ căn hộ nào bạn đặt", "Vì an toàn và thoải mái, chúng tôi không thể chứa thêm khách vượt quá giới hạn phòng."]},
-    {"id": "scopeOfFacilitiesIncluded", "title": "Điều Gì Được Bao Gồm trong Kỳ Nghỉ", "body": ["Mỗi khách nhận được:", "* Ga trải giường sạch và thẻ chìa khóa\n* Sử dụng vòi sen chung\n* Nước nóng trong giờ lên lịch (khoảng 07:00-10:30 và 17:00-22:30)\n* Truy cập vào các khu vực chung của chúng tôi", "Các lợi ích khác (bữa sáng, Wi-Fi, lưu trữ hành lý, v.v.) là miễn phí và tuân theo các quy tắc đơn giản riêng của họ."]},
-    {"id": "financialObligation", "title": "Trách Nhiệm Tài Chính của Bạn", "body": ["Chủ thẻ tín dụng được đặt tên trên đặt phòng của bạn chịu trách nhiệm về tất cả các khoản phí - phí phòng, thiệt hại, phí dọn dẹp, tiền phạt hoặc hình phạt vì vi phạm quy tắc nhà. Các khoản chưa thanh toán có thể được tính trực tiếp vào thẻ được lưu trữ."]},
-    {"id": "roomAllocation", "title": "Cách Phân Bổ Giường và Phòng", "body": ["Chúng tôi đảm bảo loại giường và hạng phòng bạn đã đặt. Đặt phòng ký túc xá đảm bảo giường trong hạng được chọn, nhưng chúng tôi không thể hứa rằng các nhóm sẽ chia sẻ cùng phòng. Giường trong ký túc xá được chọn theo thứ tự đến trước phục vụ trước khi bạn nhận phòng."]},
-    {"id": "allocatingUpgrades", "title": "Nâng Cấp Phòng", "body": ["Đôi khi chúng tôi nâng cấp bạn lên phòng tốt hơn miễn phí, hoặc bạn có thể trả tiền để nâng cấp khi đặt. Nếu nâng cấp miễn phí sau đó trở nên không thực tế, chúng tôi có thể chuyển bạn trở lại hạng bạn ban đầu trả tiền."]},
-    {"id": "thirdPartyPayments", "title": "Thanh Toán Qua Các Trang Web Bên Thứ Ba", "body": ["Khi bạn đặt qua OTA, bạn sẽ thanh toán thông qua hệ thống của họ theo điều khoản của họ. Chúng tôi không bao giờ thấy chi tiết thẻ của bạn từ OTA và không chịu trách nhiệm về các vấn đề trên nền tảng của họ. Luôn kiểm tra rằng thanh toán của bạn đã qua và bạn đã nhận được xác nhận."]},
-    {"id": "bookingRequestDeposits", "title": "Tiền Đặt Cọc", "body": ["Một số mức giá cần tiền đặt cọc để giữ phòng. Mức giá trả trước yêu cầu 100% trước. Tiền đặt cọc không được hoàn lại. Nếu chúng tôi không thể lấy tiền đặt cọc, yêu cầu đặt phòng sẽ tự động bị hủy."]},
-    {"id": "bookingRequestPreauthorisations", "title": "Ủy Quyền Trước Thẻ", "body": ["Đối với mức giá linh hoạt, chúng tôi có thể ủy quyền trước thẻ của bạn cho đêm đầu tiên hoặc toàn bộ kỳ nghỉ để đảm bảo đặt phòng của bạn. Nếu ủy quyền trước thất bại, chúng tôi sẽ từ chối yêu cầu."]},
-    {"id": "safeguardingProcess", "title": "Giữ Tiền Bảo Đảm của Chúng Tôi", "body": ["Khi nhận phòng, chúng tôi có thể đặt giữ tiền bảo đảm bằng một đêm cho mỗi khách để chi trả các khoản phạt, phí, gia hạn hoặc thiệt hại có thể xảy ra. Nếu không thể giữ thẻ, bạn có thể để lại cùng số tiền mặt hoặc sử dụng thẻ của khách khác. Nếu không có tùy chọn nào hoạt động, rất tiếc chúng tôi phải hủy đặt phòng của bạn."], "images": [{"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Euro_coins_in_hand.jpg/960px-Euro_coins_in_hand.jpg", "alt": "Một bàn tay cầm nhiều đồng xu euro.", "caption": "Nếu không thể giữ thẻ khi nhận phòng, chúng tôi có thể yêu cầu tiền đặt cọc tiền mặt tương đương - Ảnh: Wikimedia Commons (CC BY-SA 4.0)."}]}
+    {
+      "id": "submittingBookingRequest",
+      "title": "Cách Gửi Yêu Cầu Đặt Phòng",
+      "body": [
+        "Gửi yêu cầu đặt phòng cho chúng tôi thông qua Đại lý Du lịch Trực tuyến (OTA) được ủy quyền hoặc trực tiếp trên trang web của chúng tôi - chỉ trò chuyện hoặc ghé thăm không được tính. Bằng cách nhấp vào 'Đặt phòng', bạn xác nhận rằng tất cả các tên, ngày và thời gian lưu trú đều chính xác và bạn chấp nhận Điều khoản và Điều kiện của chúng tôi."
+      ]
+    },
+    {
+      "id": "processingBookingRequest",
+      "title": "Cách Chúng Tôi Xử Lý Yêu Cầu",
+      "body": [
+        "Chúng tôi bắt đầu xử lý yêu cầu của bạn ngay khi chúng tôi nhận được thành công bất kỳ khoản đặt cọc, ủy quyền trước hoặc thanh toán được yêu cầu bằng một trong các phương thức thanh toán được chấp nhận của chúng tôi. Đảm bảo rằng đặt phòng hiển thị tên của chủ thẻ tín dụng sẽ thanh toán. Nếu tên người thanh toán khác, hãy gửi email cho chúng tôi một ủy quyền ngắn từ chủ thẻ trước khi chúng tôi xử lý yêu cầu của bạn."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Payment_terminal_at_the_Berlin_immigration_office.jpg/960px-Payment_terminal_at_the_Berlin_immigration_office.jpg",
+          "alt": "Bàn phím và màn hình thiết bị thanh toán thẻ.",
+          "caption": "Chúng tôi có thể lấy tiền đặt cọc, chạy thanh toán hoặc đặt ủy quyền trước để bảo đảm đặt phòng của bạn - Ảnh: Wikimedia Commons (CC0)."
+        }
+      ]
+    },
+    {
+      "id": "decliningBookingRequest",
+      "title": "Khi Chúng Tôi Có Thể Từ Chối Yêu Cầu",
+      "body": [
+        "Chúng tôi hiếm khi từ chối đặt phòng, nhưng chúng tôi giữ quyền làm như vậy theo quyết định của mình - ví dụ, nếu thanh toán thất bại, thiếu thông tin bắt buộc hoặc yêu cầu vi phạm Điều khoản và Điều kiện của chúng tôi."
+      ]
+    },
+    {
+      "id": "requestSizeLimit",
+      "title": "Giới Hạn Kích Thước cho Một Yêu Cầu",
+      "body": [
+        "Một yêu cầu đặt phòng có thể bao gồm tối đa bảy (7) đêm liên tiếp và tối đa năm (5) khách. Cần lưu trú lâu hơn hoặc nhóm lớn hơn? Chỉ cần chia thành các yêu cầu riêng biệt."
+      ]
+    },
+    {
+      "id": "counterOffer",
+      "title": "Điều Gì Xảy Ra Nếu Phòng Của Bạn Không Có Sẵn",
+      "body": [
+        "Nếu phòng ưa thích của bạn đã được đặt, chúng tôi sẽ gửi email cho bạn một lời đề nghị ngược với giải pháp thay thế gần nhất. Chấp nhận lời đề nghị và hoàn thành thanh toán hoặc ủy quyền trước để khóa kỳ nghỉ của bạn."
+      ]
+    },
+    {
+      "id": "prepaidNonRefundableBookingsPolicy",
+      "title": "Đặt Phòng Trả Trước Không Hoàn Tiền",
+      "body": [
+        "Chọn mức giá trả trước không hoàn tiền giúp bạn tiết kiệm tiền nhưng yêu cầu thanh toán đầy đủ trước. Chúng tôi sẽ thử thẻ của bạn tối đa ba lần. Nếu tất cả các lần thử đều thất bại, chúng tôi sẽ hủy yêu cầu. Những đặt phòng này không thể được hoàn tiền hoặc sửa đổi."
+      ]
+    },
+    {
+      "id": "confirmationEmail",
+      "title": "Email Xác Nhận của Bạn",
+      "body": [
+        "Sau khi thanh toán của bạn được xử lý, chúng tôi sẽ gửi email xác nhận đến địa chỉ bạn cung cấp cho chúng tôi. Nó liệt kê tham chiếu đặt phòng, ngày đến, thời gian lưu trú và bất kỳ dịch vụ bổ sung nào. Đọc kỹ và cho chúng tôi biết ngay lập tức nếu có gì không đúng."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Email_on_Phone_Flat_Icon.svg/960px-Email_on_Phone_Flat_Icon.svg.png",
+          "alt": "Biểu tượng email trên màn hình điện thoại.",
+          "caption": "Email xác nhận của bạn là nơi tốt nhất để kiểm tra lại ngày, tên và chi tiết thanh toán - Ảnh: Wikimedia Commons (CC BY-SA 4.0)."
+        }
+      ]
+    },
+    {
+      "id": "numberOfGuestsIncluded",
+      "title": "Ai Được Bao Gồm trong Đặt Phòng",
+      "body": [
+        "Đặt phòng của bạn tự động bao gồm những điều sau:",
+        "* 1 khách cho giường đơn\n* Tối đa 2 khách cho giường đôi\n* Đến sức chứa được quảng cáo của bất kỳ căn hộ nào bạn đặt",
+        "Vì an toàn và thoải mái, chúng tôi không thể chứa thêm khách vượt quá giới hạn phòng."
+      ]
+    },
+    {
+      "id": "scopeOfFacilitiesIncluded",
+      "title": "Điều Gì Được Bao Gồm trong Kỳ Nghỉ",
+      "body": [
+        "Mỗi khách nhận được:",
+        "* Ga trải giường sạch và thẻ chìa khóa\n* Sử dụng vòi sen chung\n* Nước nóng trong giờ lên lịch (khoảng 07:00-10:30 và 17:00-22:30)\n* Truy cập vào các khu vực chung của chúng tôi",
+        "Các lợi ích khác (bữa sáng, Wi-Fi, lưu trữ hành lý, v.v.) là miễn phí và tuân theo các quy tắc đơn giản riêng của họ."
+      ]
+    },
+    {
+      "id": "financialObligation",
+      "title": "Trách Nhiệm Tài Chính của Bạn",
+      "body": [
+        "Chủ thẻ tín dụng được đặt tên trên đặt phòng của bạn chịu trách nhiệm về tất cả các khoản phí - phí phòng, thiệt hại, phí dọn dẹp, tiền phạt hoặc hình phạt vì vi phạm quy tắc nhà. Các khoản chưa thanh toán có thể được tính trực tiếp vào thẻ được lưu trữ."
+      ]
+    },
+    {
+      "id": "roomAllocation",
+      "title": "Cách Phân Bổ Giường và Phòng",
+      "body": [
+        "Chúng tôi đảm bảo loại giường và hạng phòng bạn đã đặt. Đặt phòng ký túc xá đảm bảo giường trong hạng được chọn, nhưng chúng tôi không thể hứa rằng các nhóm sẽ chia sẻ cùng phòng. Giường trong ký túc xá được chọn theo thứ tự đến trước phục vụ trước khi bạn nhận phòng."
+      ]
+    },
+    {
+      "id": "allocatingUpgrades",
+      "title": "Nâng Cấp Phòng",
+      "body": [
+        "Đôi khi chúng tôi nâng cấp bạn lên phòng tốt hơn miễn phí, hoặc bạn có thể trả tiền để nâng cấp khi đặt. Nếu nâng cấp miễn phí sau đó trở nên không thực tế, chúng tôi có thể chuyển bạn trở lại hạng bạn ban đầu trả tiền."
+      ]
+    },
+    {
+      "id": "thirdPartyPayments",
+      "title": "Thanh Toán Qua Các Trang Web Bên Thứ Ba",
+      "body": [
+        "Khi bạn đặt qua OTA, bạn sẽ thanh toán thông qua hệ thống của họ theo điều khoản của họ. Chúng tôi không bao giờ thấy chi tiết thẻ của bạn từ OTA và không chịu trách nhiệm về các vấn đề trên nền tảng của họ. Luôn kiểm tra rằng thanh toán của bạn đã qua và bạn đã nhận được xác nhận."
+      ]
+    },
+    {
+      "id": "bookingRequestDeposits",
+      "title": "Tiền Đặt Cọc",
+      "body": [
+        "Một số mức giá cần tiền đặt cọc để giữ phòng. Mức giá trả trước yêu cầu 100% trước. Tiền đặt cọc không được hoàn lại. Nếu chúng tôi không thể lấy tiền đặt cọc, yêu cầu đặt phòng sẽ tự động bị hủy."
+      ]
+    },
+    {
+      "id": "bookingRequestPreauthorisations",
+      "title": "Ủy Quyền Trước Thẻ",
+      "body": [
+        "Đối với mức giá linh hoạt, chúng tôi có thể ủy quyền trước thẻ của bạn cho đêm đầu tiên hoặc toàn bộ kỳ nghỉ để đảm bảo đặt phòng của bạn. Nếu ủy quyền trước thất bại, chúng tôi sẽ từ chối yêu cầu."
+      ]
+    },
+    {
+      "id": "safeguardingProcess",
+      "title": "Giữ Tiền Bảo Đảm của Chúng Tôi",
+      "body": [
+        "Khi nhận phòng, chúng tôi có thể đặt giữ tiền bảo đảm bằng một đêm cho mỗi khách để chi trả các khoản phạt, phí, gia hạn hoặc thiệt hại có thể xảy ra. Nếu không thể giữ thẻ, bạn có thể để lại cùng số tiền mặt hoặc sử dụng thẻ của khách khác. Nếu không có tùy chọn nào hoạt động, rất tiếc chúng tôi phải hủy đặt phòng của bạn."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Euro_coins_in_hand.jpg/960px-Euro_coins_in_hand.jpg",
+          "alt": "Một bàn tay cầm nhiều đồng xu euro.",
+          "caption": "Nếu không thể giữ thẻ khi nhận phòng, chúng tôi có thể yêu cầu tiền đặt cọc tiền mặt tương đương - Ảnh: Wikimedia Commons (CC BY-SA 4.0)."
+        }
+      ]
+    }
   ]
 }

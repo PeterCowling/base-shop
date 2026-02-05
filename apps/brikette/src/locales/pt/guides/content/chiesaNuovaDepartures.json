@@ -5,7 +5,7 @@
   },
   "linkLabel": "Hostel Brikette até a parada de ônibus Chiesa Nuova / Bar Internazionale",
   "lastUpdated": "2026-02-02T00:00:00.000Z",
-  "intro": "A parada de ônibus Positano Chiesa Nuova / Bar Internazionale é a principal parada SITA para hóspedes do Hostel Brikette rumo a Amalfi, Sorrento, Nápoles, Salerno ou além. Este guia é sobre a própria parada: como ela aparece nos horários (geralmente \"Positano (Chiesa Nuova)\"), em que lado ficar para ônibus leste vs oeste, onde comprar e validar bilhetes (viagens simples costumam custar €2,50–€4 dependendo do destino), o que esperar das filas de verão e — rapidamente — a caminhada mais fácil de 2–4 minutos do hostel até a parada.",
+  "intro": "A parada de ônibus Positano Chiesa Nuova / Bar Internazionale é a principal parada SITA para hóspedes do Hostel Brikette rumo a Amalfi, Sorrento, Nápoles, Salerno ou além. Este guia é sobre a própria parada: como ela aparece nos horários (geralmente \\\\\"Positano (Chiesa Nuova)\\\\\"), em que lado ficar para ônibus leste vs oeste, onde comprar e validar bilhetes (viagens simples costumam custar €2,50–€4 dependendo do destino), o que esperar das filas de verão e — rapidamente — a caminhada mais fácil de 2–4 minutos do hostel até a parada.",
   "image": {
     "alt": "Parada SITA Chiesa Nuova / Bar Internazionale em Positano em frente ao Bar Internazionale",
     "caption": "O Hostel Brikette fica a uma curva da parada. Reserve alguns minutos para se juntar à fila antes que o ônibus chegue, especialmente no verão quando os serviços enchem rapidamente."
@@ -221,7 +221,7 @@
       "a": [
         "**Lendo as Linhas:** As linhas na primeira coluna representam diferentes paradas de ônibus ao longo da rota.",
         "**Lendo as Colunas:** O horário atribui uma letra alfabética a cada viagem programada, que são listadas como cabeçalhos em cada coluna. Se você estiver viajando de segunda a sábado, procure as colunas 'F' e 'G'. Se você estiver viajando no domingo ou feriado, procure as colunas 'G' e 'H'.",
-        "Para chegadas na parada Chiesa Nuova / Bar Internazionale, o horário geralmente está na linha \"Positano (Chiesa Nuova)\"."
+        "Para chegadas na parada Chiesa Nuova / Bar Internazionale, o horário geralmente está na linha \\\\\"Positano (Chiesa Nuova)\\\\\"."
       ]
     }
   ],

@@ -8,7 +8,7 @@
     "body": "Nutze diesen Leitfaden für die Reise von Sorrent nach Positano. Du nimmst den SITA-Sud-Bus und steigst in Positano (Chiesa Nuova) aus – der nächstgelegenen Haltestelle zum Hostel. Wir erklären Ticketgrundlagen, den Fahrplan und den kurzen Fußweg."
   },
   "callouts": {
-    "tip": "Du brauchst alle Transportoptionen? Die %HOWTO:how-to-get-here|Übersicht „So kommst du zu uns“% zeigt Fähren, Taxi-Infos und Alternativen."
+    "tip": "Du brauchst alle Transportoptionen? Die %HOWTO:how-to-get-here|Übersicht \\\"So kommst du zu uns“% zeigt Fähren, Taxi-Infos und Alternativen."
   },
   "sections": [
     {
@@ -27,17 +27,17 @@
       "list": [
         "Die Zeilen in der ersten Spalte listen alle Haltestellen der Strecke.",
         "Die Spalten stehen für Fahrten, die mit Buchstaben gekennzeichnet sind.",
-        "Reist du Montag bis Samstag? Nutze die Spalten „F“ und „G“.",
-        "Reist du sonntags oder an Feiertagen? Nutze die Spalten „G“ und „H“."
+        "Reist du Montag bis Samstag? Nutze die Spalten \\\"F“ und \\\"G“.",
+        "Reist du sonntags oder an Feiertagen? Nutze die Spalten \\\"G“ und \\\"H“."
       ]
     },
     {
       "id": "arrival",
       "title": "Ankunft in Positano (Chiesa Nuova)",
       "list": [
-        "Für Positano gibt es zwei SITA-Haltestellen: „Sponda“ und „Chiesa Nuova“.",
-        "Für das Hostel ist „Positano (Chiesa Nuova)\" die richtige Haltestelle an der Via G. Marconi.",
-        "Die Haltestelle liegt direkt vor der Bar „Bar Internazionale“."
+        "Für Positano gibt es zwei SITA-Haltestellen: \\\"Sponda“ und \\\"Chiesa Nuova“.",
+        "Für das Hostel ist \\\"Positano (Chiesa Nuova)\\\\\" die richtige Haltestelle an der Via G. Marconi.",
+        "Die Haltestelle liegt direkt vor der Bar \\\"Bar Internazionale“."
       ]
     },
     {

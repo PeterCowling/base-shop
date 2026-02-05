@@ -11,13 +11,34 @@
     "यह गाइड बस रूट, बीच का लेआउट (lido बनाम फ्री एरिया), कंकड़ों पर आराम के लिए क्या पैक करें, और सनसेट के बाद Positano लौटने का सबसे सरल तरीका कवर करता है।"
   ],
   "toc": [
-    { "href": "#why-go", "label": "क्यों जाएँ" },
-    { "href": "#getting-there", "label": "कैसे पहुँचें" },
-    { "href": "#layout", "label": "लेआउट और सुविधाएँ" },
-    { "href": "#what-to-bring", "label": "क्या साथ रखें" },
-    { "href": "#best-time", "label": "सबसे अच्छा समय" },
-    { "href": "#nearby", "label": "पास के शांत स्विम स्पॉट" },
-    { "href": "#evening", "label": "डिनर और वापसी" }
+    {
+      "href": "#why-go",
+      "label": "क्यों जाएँ"
+    },
+    {
+      "href": "#getting-there",
+      "label": "कैसे पहुँचें"
+    },
+    {
+      "href": "#layout",
+      "label": "लेआउट और सुविधाएँ"
+    },
+    {
+      "href": "#what-to-bring",
+      "label": "क्या साथ रखें"
+    },
+    {
+      "href": "#best-time",
+      "label": "सबसे अच्छा समय"
+    },
+    {
+      "href": "#nearby",
+      "label": "पास के शांत स्विम स्पॉट"
+    },
+    {
+      "href": "#evening",
+      "label": "डिनर और वापसी"
+    }
   ],
   "sections": [
     {
@@ -214,4 +235,3 @@
     }
   ]
 }
-

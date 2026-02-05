@@ -22,7 +22,7 @@
       "id": "templates",
       "title": "Másolás/beillesztés sablon",
       "body": [
-        "\"6 óránk van, nincs autónk, szeretnénk (A) úszni + (B) naplementét, költségvetés €40 személyenként. Mi a legegyszerűbb terv és a B terv, ha a kompok törlődnek?\"",
+        "\\\\\"6 óránk van, nincs autónk, szeretnénk (A) úszni + (B) naplementét, költségvetés €40 személyenként. Mi a legegyszerűbb terv és a B terv, ha a kompok törlődnek?\\\\\"",
         "Költségvetési alapvonal: %LINK:positanoBudget|Positano költségvetéssel% + %LINK:terraceSunsets|Terasz naplement%.",
         "Ha a közlekedés érzékeny: %LINK:ferryCancellations|komptörlések + időjárás%."
       ]

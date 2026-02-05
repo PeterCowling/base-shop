@@ -6,18 +6,39 @@
   "lastUpdated": "2026-01-29T00:00:00.000Z",
   "linkLabel": "Marina di Praia: malownicza zatoczka między klifami",
   "intro": [
-    "Marina di Praia to ukryta, kamienista zatoczka w Praiano — krótki przejazd autobusem SITA z Hostel Brikette, a zwykle znacznie spokojniejsza niż najbardziej znane plaże Positano. Łodzie rybackie, wieża strażnicza i kamienne ścieżki dają wrażenie „sekretnego miejsca”, a jednocześnie masz blisko jedzenie i podstawowe udogodnienia.",
+    "Marina di Praia to ukryta, kamienista zatoczka w Praiano — krótki przejazd autobusem SITA z Hostel Brikette, a zwykle znacznie spokojniejsza niż najbardziej znane plaże Positano. Łodzie rybackie, wieża strażnicza i kamienne ścieżki dają wrażenie \\\"sekretnego miejsca”, a jednocześnie masz blisko jedzenie i podstawowe udogodnienia.",
     "Jeśli chcesz plażowego dnia bez stresu (kąpiel, przekąska, drzemka w cieniu i prosta kolacja), to jedna z najlepszych opcji w okolicy dla hostelowych podróżników.",
     "W tym przewodniku znajdziesz: dojazd autobusem, układ plaży (lido vs darmowy odcinek), co zabrać na kamienie i cień oraz najprostszy sposób powrotu do Positano po zachodzie słońca."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Dlaczego warto" },
-    { "href": "#getting-there", "label": "Dojazd" },
-    { "href": "#layout", "label": "Układ i udogodnienia" },
-    { "href": "#what-to-bring", "label": "Co zabrać" },
-    { "href": "#best-time", "label": "Najlepsza pora" },
-    { "href": "#nearby", "label": "Spokojne kąpiele w pobliżu" },
-    { "href": "#evening", "label": "Kolacja i powrót" }
+    {
+      "href": "#why-go",
+      "label": "Dlaczego warto"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Dojazd"
+    },
+    {
+      "href": "#layout",
+      "label": "Układ i udogodnienia"
+    },
+    {
+      "href": "#what-to-bring",
+      "label": "Co zabrać"
+    },
+    {
+      "href": "#best-time",
+      "label": "Najlepsza pora"
+    },
+    {
+      "href": "#nearby",
+      "label": "Spokojne kąpiele w pobliżu"
+    },
+    {
+      "href": "#evening",
+      "label": "Kolacja i powrót"
+    }
   ],
   "sections": [
     {
@@ -25,7 +46,7 @@
       "title": "Dlaczego ta zatoczka pasuje gościom hostelu",
       "body": [
         "W przeciwieństwie do Spiaggia Grande czy Fornillo, ta zatoka leży w wąskim wąwozie tuż za Praiano. Klify osłaniają wodę przed falą, łodzie kołyszą się w małym porcie, a klimat pozostaje spokojny nawet w szczycie sezonu.",
-        "To idealny „złoty środek”: wygodniej niż w dzikich zatoczkach z masą schodów, ale mniej chaotycznie niż na dużych plażach Positano. Masz prysznice i jedzenie, a jednocześnie czujesz się „wciśnięty” między klify, a nie w środku miasta.",
+        "To idealny \\\"złoty środek”: wygodniej niż w dzikich zatoczkach z masą schodów, ale mniej chaotycznie niż na dużych plażach Positano. Masz prysznice i jedzenie, a jednocześnie czujesz się \\\"wciśnięty” między klify, a nie w środku miasta.",
         "Zaplanuj jako pół dnia (poranna kąpiel + długi lunch) albo jako relaks popołudniowy zakończony kolacją przy wodzie przed powrotem."
       ],
       "images": [
@@ -42,7 +63,7 @@
       "id": "getting-there",
       "title": "Dojazd i powrót autobusem SITA",
       "body": [
-        "Z Hostel Brikette zejdź Via Pasitea do przystanku Sponda i wsiądź w autobus SITA w kierunku Amalfi. Powiedz kierowcy, że chcesz wysiąść na „Marina di Praia” — przystanek jest między Praiano a Furore i łatwo go przegapić, gdy autobus jest pełny.",
+        "Z Hostel Brikette zejdź Via Pasitea do przystanku Sponda i wsiądź w autobus SITA w kierunku Amalfi. Powiedz kierowcy, że chcesz wysiąść na \\\"Marina di Praia” — przystanek jest między Praiano a Furore i łatwo go przegapić, gdy autobus jest pełny.",
         "Wysiądź na oznaczonym przystanku i zejdź kamienną ścieżką w dół (około dwie minuty) do nabrzeża. Dojście jest wyłożone, więc spokojnie dasz radę nawet w klapkach.",
         "W drodze powrotnej przejdź na drugą stronę ulicy i czekaj na autobus do Positano. Latem kursy bywają dość częste, ale wieczorem robi się rzadziej — sprawdź rozkład na miejscu i celuj w przedostatni autobus, jeśli zostajesz na kolację.",
         "Kup bilety SITA i skasuj je przed wejściem. Jeśli potrzebujesz przypomnienia o typach biletów, gdzie je kupić i co robić, gdy autobusy przejeżdżają pełne, zobacz nasz %LINK:sitaTickets|przewodnik po biletach SITA%. Jeśli łączysz plażę ze spacerem po Praiano (kościoły, punkty widokowe, ścieżki wzdłuż wybrzeża), dołóż %LINK:praianoGuide|przewodnik po Praiano%."
@@ -69,7 +90,7 @@
       "title": "Układ plaży: lido i usługi",
       "body": [
         "Plaża jest wąska, kamienista i podzielona na mały darmowy odcinek oraz główną strefę lido. Jeśli chcesz darmową część bliżej wody, przyjdź wcześniej — w weekendy zapełnia się najszybciej.",
-        "Główny operator to Marina di Praia Beach Club (leżaki, parasole, prysznice i zwykle coś w stylu paddle/kajak). W szczycie sezonu płaci się bardziej za wygodę niż za przestrzeń, ale warto, jeśli zależy ci na toaletach i prostym „rozłóż rzeczy i odpoczywaj”.",
+        "Główny operator to Marina di Praia Beach Club (leżaki, parasole, prysznice i zwykle coś w stylu paddle/kajak). W szczycie sezonu płaci się bardziej za wygodę niż za przestrzeń, ale warto, jeśli zależy ci na toaletach i prostym \\\"rozłóż rzeczy i odpoczywaj”.",
         "Wzdłuż promenady są restauracje i kioski z zimnymi napojami. Terminale kart potrafią szwankować, więc weź trochę gotówki na drobne płatności i miej plan B, jeśli kioski z biletami autobusu będą zamknięte później.",
         "Hostel reality check: nie bierz wartościowych rzeczy, które będą cię stresować. Jeśli jesteś sam, wybierz widoczne miejsce (blisko innych grup), trzymaj telefon w zamykanej kieszeni i pływaj krótkimi seriami zamiast zostawiać rzeczy bez nadzoru na długo."
       ],
@@ -111,7 +132,7 @@
       "id": "best-time",
       "title": "Najlepsza pora (i jak czuje się woda)",
       "body": [
-        "Na spokojny, prosty dzień najlepiej przyjść rano. Masz większą szansę na wygodne miejsce, mniej tłoku na promenadzie i płynniejszy rytm „baza → kąpiel”.",
+        "Na spokojny, prosty dzień najlepiej przyjść rano. Masz większą szansę na wygodne miejsce, mniej tłoku na promenadzie i płynniejszy rytm \\\"baza → kąpiel”.",
         "W połowie/późnym popołudniem klify dają więcej cienia. To świetne, gdy jest upał, ale zatoczka może wydawać się chłodna w wietrzne dni — zwłaszcza po dłuższym pływaniu.",
         "Dno robi się głębokie dość szybko: wejdź powoli za pierwszym razem i pilnuj, gdzie kładziesz plecak, gdy fale podchodzą wyżej."
       ],
@@ -129,9 +150,9 @@
       "id": "nearby",
       "title": "Spokojne kąpiele w pobliżu (co jest realne)",
       "body": [
-        "Wybrzeże Amalfitańskie słynie z „sekretnych zatoczek”, ale wiele z nich jest prywatnych, dostępnych tylko łodzią albo wymaga ryzykownych ścieżek na klifach. Dla gości hostelu najlepsza strategia to potraktować tę zatokę jako wygodną bazę i dodać jedną krótką „wow” atrakcję na tej samej linii autobusowej.",
+        "Wybrzeże Amalfitańskie słynie z \\\"sekretnych zatoczek”, ale wiele z nich jest prywatnych, dostępnych tylko łodzią albo wymaga ryzykownych ścieżek na klifach. Dla gości hostelu najlepsza strategia to potraktować tę zatokę jako wygodną bazę i dodać jedną krótką \\\"wow” atrakcję na tej samej linii autobusowej.",
         "Najłatwiejszy dramatyczny przystanek w pobliżu to %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore%: jedź wcześnie na zdjęcia i szybkie pływanie, a potem wróć tutaj na lunch, cień i spokojniejszą kąpiel.",
-        "Jeśli chcesz cały dzień „próbowania”, zaplanuj kolejność (i rozkład autobusów) z naszym %LINK:beachHoppingAmalfi|przewodnikiem po beach-hopping na Wybrzeżu Amalfitańskim% — inaczej możesz spędzić popołudnie patrząc, jak przejeżdżają pełne autobusy."
+        "Jeśli chcesz cały dzień \\\"próbowania”, zaplanuj kolejność (i rozkład autobusów) z naszym %LINK:beachHoppingAmalfi|przewodnikiem po beach-hopping na Wybrzeżu Amalfitańskim% — inaczej możesz spędzić popołudnie patrząc, jak przejeżdżają pełne autobusy."
       ],
       "images": [
         {
@@ -139,7 +160,7 @@
           "width": 1200,
           "height": 1600,
           "alt": "Wąwóz Fiordo di Furore z turkusową wodą i stromymi klifami",
-          "caption": "Fiordo di Furore to najbardziej „filmowy” przystanek w pobliżu — połącz go z spokojniejszą plażą bazową. Zdjęcie: Luca Aless (CC BY-SA 4.0) via Wikimedia Commons."
+          "caption": "Fiordo di Furore to najbardziej \\\"filmowy” przystanek w pobliżu — połącz go z spokojniejszą plażą bazową. Zdjęcie: Luca Aless (CC BY-SA 4.0) via Wikimedia Commons."
         }
       ]
     },
@@ -214,4 +235,3 @@
     }
   ]
 }
-

@@ -74,7 +74,7 @@
     {
       "id": "wait",
       "title": "购票并等待上车",
-      "body": "在排队前从Bar Internazionale或附近报亭购买到索伦托的SITA巴士票。购买时说明\"Sorrento\"——无论在波西塔诺和索伦托之间哪里上车，票价相同。\n\n拿到车票后，站在Bar Internazionale外观察巴士。再次确认巴士前部的目的地显示——应显示**Sorrento**。极少数情况下，巴士可能提前终止或走替代路线；如不确定，上车前问司机\"Sorrento？\"。"
+      "body": "在排队前从Bar Internazionale或附近报亭购买到索伦托的SITA巴士票。购买时说明\\\\\"Sorrento\\\\\"——无论在波西塔诺和索伦托之间哪里上车，票价相同。\n\n拿到车票后，站在Bar Internazionale外观察巴士。再次确认巴士前部的目的地显示——应显示**Sorrento**。极少数情况下，巴士可能提前终止或走替代路线；如不确定，上车前问司机\\\\\"Sorrento？\\\\\"。"
     },
     {
       "id": "busRide",
@@ -91,7 +91,7 @@
     {
       "id": "sorrento",
       "title": "在索伦托火车站",
-      "body": "SITA巴士在索伦托综合火车和巴士总站（环维苏威站）旁下客。爬楼梯到主大厅，然后购买到**Napoli Garibaldi**的环维苏威车票。\n\n**购票：**\n- 售票机位于主大厅（接受现金和银行卡）。\n- 人工售票柜台在进入大厅左侧（接受银行卡；夏季可能排长队）。\n- 费用：每人约€4.00。\n\n**登车前：**\n- 在站台附近的黄色或绿色验票机验票后再上车。未验票若检票员检查将当场罚款。\n- 查看出发显示屏确认下一班到Napoli Garibaldi的列车站台号。环维苏威在专用轨道运行，不会与Trenitalia主线服务混淆。\n\n**找站台：**\n- 跟随\"Circumvesuviana\"或\"Napoli\"标志（都通向同一站台）。\n- 站台通过楼梯或短坡道到达——无电梯，如有重行李或行动不便请提前规划。",
+      "body": "SITA巴士在索伦托综合火车和巴士总站（环维苏威站）旁下客。爬楼梯到主大厅，然后购买到**Napoli Garibaldi**的环维苏威车票。\n\n**购票：**\n- 售票机位于主大厅（接受现金和银行卡）。\n- 人工售票柜台在进入大厅左侧（接受银行卡；夏季可能排长队）。\n- 费用：每人约€4.00。\n\n**登车前：**\n- 在站台附近的黄色或绿色验票机验票后再上车。未验票若检票员检查将当场罚款。\n- 查看出发显示屏确认下一班到Napoli Garibaldi的列车站台号。环维苏威在专用轨道运行，不会与Trenitalia主线服务混淆。\n\n**找站台：**\n- 跟随\\\\\"Circumvesuviana\\\\\"或\\\\\"Napoli\\\\\"标志（都通向同一站台）。\n- 站台通过楼梯或短坡道到达——无电梯，如有重行李或行动不便请提前规划。",
       "images": [
         {
           "src": "/img/directions/sorrento-station-ticket-machines.jpg",
@@ -120,7 +120,7 @@
     {
       "id": "naples",
       "title": "抵达那不勒斯",
-      "body": "留在环维苏威列车直到终点**Napoli Garibaldi**（部分地图上也称Napoli Porta Nolana，但官方站名为Garibaldi）。从那里，跟随标志上到主大厅换乘：\n\n- Trenitalia长途列车（Frecciarossa、Intercity、区域服务）\n- 那不勒斯地铁1号线（通过Garibaldi地铁站到市中心、Vomero、机场）\n- 那不勒斯地铁2号线（Garibaldi也是主要铁路站）\n- Alibus机场班车（从站外的Piazza Garibaldi出发）\n- 当地公交车和出租车（主入口外）\n\n**离站：**\n- 跟随\"Uscita\"（出口）或\"Stazione Centrale\"（中央车站）标志到达主大厅。\n- Piazza Garibaldi就在主入口外——一个大型繁忙广场，设有出租车站、公交站和地铁入口。\n\n**方位：**\n- Napoli Centrale（Trenitalia主站）和Napoli Garibaldi（环维苏威终点）在同一建筑群内，由主大厅连接。服务间换乘无需出站再进站。\n\n**安全和注意：**\n- Piazza Garibaldi是繁忙的交通枢纽，可能感觉混乱，尤其是夜间。保管好包，注意周围环境，自信地前往下一个换乘点。\n- 正规出租车为白色，车顶有\"Taxi\"标志，车内有计价器。避免接近您提供载客的无牌司机。"
+      "body": "留在环维苏威列车直到终点**Napoli Garibaldi**（部分地图上也称Napoli Porta Nolana，但官方站名为Garibaldi）。从那里，跟随标志上到主大厅换乘：\n\n- Trenitalia长途列车（Frecciarossa、Intercity、区域服务）\n- 那不勒斯地铁1号线（通过Garibaldi地铁站到市中心、Vomero、机场）\n- 那不勒斯地铁2号线（Garibaldi也是主要铁路站）\n- Alibus机场班车（从站外的Piazza Garibaldi出发）\n- 当地公交车和出租车（主入口外）\n\n**离站：**\n- 跟随\\\\\"Uscita\\\\\"（出口）或\\\\\"Stazione Centrale\\\\\"（中央车站）标志到达主大厅。\n- Piazza Garibaldi就在主入口外——一个大型繁忙广场，设有出租车站、公交站和地铁入口。\n\n**方位：**\n- Napoli Centrale（Trenitalia主站）和Napoli Garibaldi（环维苏威终点）在同一建筑群内，由主大厅连接。服务间换乘无需出站再进站。\n\n**安全和注意：**\n- Piazza Garibaldi是繁忙的交通枢纽，可能感觉混乱，尤其是夜间。保管好包，注意周围环境，自信地前往下一个换乘点。\n- 正规出租车为白色，车顶有\\\\\"Taxi\\\\\"标志，车内有计价器。避免接近您提供载客的无牌司机。"
     },
     {
       "id": "luggage",

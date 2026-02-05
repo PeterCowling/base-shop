@@ -28,17 +28,17 @@
       "list": [
         "Rækkerne i den første kolonne viser hvert stop på ruten.",
         "Kolonnerne svarer til planlagte afgange markeret med bogstaver.",
-        "Rejser du mandag til lørdag? Brug kolonnerne \"F\" og \"G\".",
-        "Rejser du søndag eller på en helligdag? Brug kolonnerne \"G\" og \"H\"."
+        "Rejser du mandag til lørdag? Brug kolonnerne \\\\\"F\\\\\" og \\\\\"G\\\\\".",
+        "Rejser du søndag eller på en helligdag? Brug kolonnerne \\\\\"G\\\\\" og \\\\\"H\\\\\"."
       ]
     },
     {
       "id": "positanoStop",
       "title": "Busstoppet Positano (Chiesa Nuova)",
       "list": [
-        "Det nærmeste busstoppested ligger i området \"Chiesa Nuova\" i Positano.",
+        "Det nærmeste busstoppested ligger i området \\\\\"Chiesa Nuova\\\\\" i Positano.",
         "Det er cirka 140 meter (490 fod) fra hostellet.",
-        "Stoppet ligger foran caféen/baren \"Bar Internazionale\"."
+        "Stoppet ligger foran caféen/baren \\\\\"Bar Internazionale\\\\\"."
       ]
     },
     {
@@ -47,7 +47,7 @@
       "list": [
         "Forlad hostellet gennem hoveddøren og gå ned ad trappen til vejen.",
         "Drej til venstre og gå cirka 100 meter (330 fod).",
-        "\"Bar Internazionale\" ligger på venstre hånd; SITA-stoppet er udenfor."
+        "\\\\\"Bar Internazionale\\\\\" ligger på venstre hånd; SITA-stoppet er udenfor."
       ]
     },
     {
@@ -56,7 +56,7 @@
       "list": [
         "Køb en billet til bussen mod Sorrento (inde i baren/kiosken).",
         "Vent udenfor baren på bussen mod Sorrento.",
-        "Tjek en ekstra gang, at destinationsskiltet på bussen viser \"Sorrento\"."
+        "Tjek en ekstra gang, at destinationsskiltet på bussen viser \\\\\"Sorrento\\\\\"."
       ]
     },
     {

@@ -17,149 +17,149 @@
   "sections": [
     {
       "id": "ferry-dock-overview",
-      "title": "What to expect at Positano ferry dock",
+      "title": "ما يمكن توقعه في رصيف العبارة في بوزيتانو",
       "body": [
-        "Positano's ferry dock (officially Positano Spiaggia) sits at beach level at the base of the town. When you disembark, you'll walk down a short gangway onto the main beach promenade. The entire waterfront area is compact — you can see the beach, the ticket kiosks, and the start of the uphill path all within 100 meters.",
-        "Porter services meet every ferry arrival. You'll spot them immediately — they wear bright vests and wait with wheeled carts near the gangway. From the dock, you have three main options: hire porters to transport your bags separately (recommended for heavy luggage), take the Interno Positano bus partway up (fastest and easiest), or walk the entire route (only practical with light daypack).",
-        "The beach area has restrooms (€1), a few cafés, and ticket kiosks where you can buy Interno bus tickets. Most ferries arrive between 09:00-19:00 in summer season (April-October), with the busiest periods around 11:00-14:00. If your ferry is running late, check the %LINK:ferrySchedules|current ferry schedules% for updated arrival times.",
-        "Ferry services to Positano run from multiple ports along the Amalfi Coast. If you're arriving from Salerno, Naples, or Sorrento, ferries typically dock at Positano Spiaggia between late morning and early evening. The dock handles both hydrofoils (aliscafi) and slower traditional ferries (traghetti). Hydrofoils are faster but more expensive, while traditional ferries offer outdoor seating and better views. Both arrive at the same dock and follow the same disembarkation process.",
-        "Weather can affect ferry schedules significantly. During rough seas or high winds (common in autumn and winter), ferries may be delayed, rerouted to alternative ports, or cancelled entirely. If you're traveling during shoulder season (March-April or September-November), always have a backup plan. The %LINK:amalfiPositanoBus|SITA bus from Amalfi% or other coastal towns can serve as an alternative if your ferry is cancelled, though you'll arrive at Chiesa Nuova instead of the beach level."
+        "يقع رصيف عبارة بوزيتانو (رسميًا بوزيتانو سبياجيا) على مستوى الشاطئ في قاعدة المدينة. عند النزول، ستمشي عبر ممر قصير إلى كورنيش الشاطئ الرئيسي. منطقة الواجهة البحرية بأكملها مدمجة - يمكنك رؤية الشاطئ وأكشاك التذاكر وبداية المسار الصاعد كلها في نطاق 100 متر.",
+        "تلتقي خدمات الحمالين بكل وصول للعبارات. ستلاحظهم على الفور - يرتدون سترات زاهية وينتظرون بعربات بعجلات بالقرب من الممر. من الرصيف، لديك ثلاثة خيارات رئيسية: استئجار حمالين لنقل حقائبك بشكل منفصل (موصى به للأمتعة الثقيلة)، أو أخذ حافلة إنترنو بوزيتانو جزئيًا نحو الأعلى (الأسرع والأسهل)، أو المشي على الطريق بالكامل (عملي فقط مع حقيبة ظهر خفيفة).",
+        "تحتوي منطقة الشاطئ على دورات مياه (1 يورو) وبعض المقاهي وأكشاك التذاكر حيث يمكنك شراء تذاكر حافلة إنترنو. تصل معظم العبارات بين الساعة 09:00-19:00 في موسم الصيف (أبريل-أكتوبر)، مع أكثر الفترات ازدحامًا حوالي 11:00-14:00. إذا كانت عبارتك متأخرة، تحقق من %LINK:ferrySchedules|جداول العبارات الحالية% للحصول على أوقات الوصول المحدثة.",
+        "تعمل خدمات العبارات إلى بوزيتانو من موانئ متعددة على طول ساحل أمالفي. إذا كنت قادمًا من ساليرنو أو نابولي أو سورينتو، ترسو العبارات عادةً في بوزيتانو سبياجيا بين أواخر الصباح وأوائل المساء. يتعامل الرصيف مع كل من القوارب المائية السريعة (aliscafi) والعبارات التقليدية الأبطأ (traghetti). القوارب المائية السريعة أسرع ولكنها أغلى، بينما توفر العبارات التقليدية مقاعد في الهواء الطلق ومناظر أفضل. كلاهما يصل إلى نفس الرصيف ويتبع نفس عملية النزول.",
+        "يمكن أن يؤثر الطقس بشكل كبير على جداول العبارات. أثناء البحار الهائجة أو الرياح القوية (شائعة في الخريف والشتاء)، قد تتأخر العبارات أو يعاد توجيهها إلى موانئ بديلة أو تُلغى تمامًا. إذا كنت تسافر خلال موسم الكتف (مارس-أبريل أو سبتمبر-نوفمبر)، احتفظ دائمًا بخطة احتياطية. يمكن أن تكون %LINK:amalfiPositanoBus|حافلة SITA من أمالفي% أو المدن الساحلية الأخرى بديلاً إذا تم إلغاء عبارتك، على الرغم من أنك ستصل إلى كييزا نووفا بدلاً من مستوى الشاطئ."
       ],
       "images": [
         {
           "src": "/img/directions/ferry-dock-positano-spiaggia-view.jpg",
-          "alt": "Positano ferry dock and beach promenade with boats in the bay.",
-          "caption": "The ferry dock at Positano Spiaggia — compact and easy to navigate from disembarkation."
+          "alt": "رصيف عبارة بوزيتانو وكورنيش الشاطئ مع القوارب في الخليج.",
+          "caption": "رصيف العبارة في بوزيتانو سبياجيا - مدمج وسهل التنقل من النزول."
         }
       ]
     },
     {
       "id": "porter-costs-timing",
-      "title": "Porter costs and timing (2026 season)",
+      "title": "تكاليف الحمالين والتوقيت (موسم 2026)",
       "body": [
-        "Positano's official porter service charges €15-€20 per bag depending on size and weight. A standard backpack or suitcase (up to 20kg) costs €15, while oversized bags or multiple items cost €18-€20. Payment is cash only — have euros ready at the dock.",
-        "Porters load your bags onto wheeled carts and deliver them directly to Hostel Brikette's entrance within 30-45 minutes. You hand over your luggage, tell them 'Hostel Brikette' (they know it), pay the fee, and keep your valuables with you. The porters take a different route using service paths and shortcuts, so you won't see your bags until you reach the hostel — this is normal.",
-        "From our experience hosting hundreds of ferry arrivals: porters are reliable and bags always arrive safely, but we recommend keeping medications, electronics, and travel documents in your daypack. If you're traveling as a couple or group, consider using porters for heavy bags while keeping one small bag each for the journey. Solo travelers with one bag typically find the porter service worth every euro — arriving relaxed rather than sweaty and exhausted makes a huge difference to your first impressions of Positano.",
-        "The porter service operates year-round and meets every scheduled ferry arrival. During peak summer months (July-August), multiple porter teams work simultaneously to handle the ferry crowds. You don't need to book in advance — simply approach them at the dock after disembarking. They accept cash payment only (euros), so stop at an ATM before your ferry departure if needed. For complete details on booking and pricing, see our %LINK:porterServices|porter service guide%."
+        "تفرض خدمة الحمالين الرسمية في بوزيتانو 15-20 يورو لكل حقيبة حسب الحجم والوزن. تكلف حقيبة الظهر أو الحقيبة العادية (حتى 20 كجم) 15 يورو، بينما تكلف الحقائب الكبيرة أو العناصر المتعددة 18-20 يورو. الدفع نقدًا فقط - جهز اليورو في الرصيف.",
+        "يحمل الحمالون حقائبك على عربات بعجلات ويسلمونها مباشرة إلى مدخل نزل بريكيت في غضون 30-45 دقيقة. تسلم أمتعتك، أخبرهم 'نزل بريكيت' (يعرفونه)، ادفع الرسوم، واحتفظ بأغراضك الثمينة معك. يأخذ الحمالون طريقًا مختلفًا باستخدام مسارات الخدمة والطرق المختصرة، لذلك لن ترى حقائبك حتى تصل إلى النزل - هذا طبيعي.",
+        "من تجربتنا في استضافة مئات الوصول بالعبارات: الحمالون موثوقون والحقائب تصل دائمًا بأمان، لكننا نوصي بالاحتفاظ بالأدوية والإلكترونيات ووثائق السفر في حقيبة ظهرك. إذا كنت تسافر كزوجين أو مجموعة، ففكر في استخدام الحمالين للحقائب الثقيلة مع الاحتفاظ بحقيبة صغيرة لكل شخص للرحلة. يجد المسافرون المنفردون بحقيبة واحدة عادةً أن خدمة الحمالين تستحق كل يورو - الوصول مسترخيًا بدلاً من متعرقًا ومرهقًا يحدث فرقًا كبيرًا في انطباعاتك الأولى عن بوزيتانو.",
+        "تعمل خدمة الحمالين على مدار العام وتلتقي بكل وصول مجدول للعبارات. خلال أشهر الصيف الذروة (يوليو-أغسطس)، تعمل عدة فرق من الحمالين في وقت واحد للتعامل مع حشود العبارات. لا تحتاج إلى الحجز مسبقًا - فقط اقترب منهم في الرصيف بعد النزول. يقبلون الدفع النقدي فقط (باليورو)، لذا توقف عند ماكينة صراف آلي قبل مغادرة عبارتك إذا لزم الأمر. للحصول على تفاصيل كاملة عن الحجز والأسعار، راجع %LINK:porterServices|دليل خدمة الحمالين%."
       ]
     },
     {
       "id": "dock-to-mulini",
-      "title": "Port to Piazza dei Mulini",
+      "title": "من الميناء إلى ساحة دي موليني",
       "body": [
-        "Walk from the main beach up to Piazza dei Mulini following the signed promenade — use %URL:https://www.google.com/maps/dir/Positano+Spiaggia/2+Viale+Pasitea+Positano,+Campania/@40.6289096,14.4857482,18z/data=!4m14!4m13!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!3e2|these directions%.",
-        "If you are carrying bags, consider hiring one of Positano's porter services at the dock so they transport everything uphill for you — our %LINK:porterServices|porter service guide% covers pricing and how to book."
+        "امشِ من الشاطئ الرئيسي إلى ساحة دي موليني متبعًا الكورنيش الموقّع - استخدم %URL:https://www.google.com/maps/dir/Positano+Spiaggia/2+Viale+Pasitea+Positano,+Campania/@40.6289096,14.4857482,18z/data=!4m14!4m13!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!3e2|هذه الاتجاهات%.",
+        "إذا كنت تحمل حقائب، ففكر في استئجار إحدى خدمات الحمالين في بوزيتانو في الرصيف حتى ينقلوا كل شيء للأعلى نيابة عنك - يغطي %LINK:porterServices|دليل خدمة الحمالين% التسعير وكيفية الحجز."
       ],
       "images": [
         {
           "src": "/img/directions/ferry-dock-promenade-to-mulini.jpg",
-          "alt": "Positano beachfront promenade with shops and cafés along the waterfront.",
-          "caption": "The promenade from the ferry dock toward Piazza dei Mulini — a short uphill walk through the beach area."
+          "alt": "كورنيش شاطئ بوزيتانو مع المحلات والمقاهي على طول الواجهة البحرية.",
+          "caption": "الكورنيش من رصيف العبارة نحو ساحة دي موليني - مشي قصير صاعد عبر منطقة الشاطئ."
         }
       ]
     },
     {
       "id": "mulini-to-bus",
-      "title": "Piazza dei Mulini to the Interno bus stop",
+      "title": "من ساحة دي موليني إلى محطة حافلة إنترنو",
       "body": [
-        "Piazza dei Mulini sits in Positano's shopping district near the pharmacy — it's the lowest traffic-accessible point in town, making it the natural hub for bus services.",
-        "When you arrive at Piazza dei Mulini, pick up an interno bus ticket from one of the corner stores or 'tabacchi'. And then go to the bus stop which is at the edge of the Piazza - where the Piazza joins the road.",
-        "The Interno bus runs every ~30 minutes from morning until midnight. %URL:https://www.google.com/maps/dir/2+Viale+Pasitea+Positano,+Campania/Viale+Pasitea,+323,+84017+Positano+SA/@40.6309188,14.4819138,16z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!1m5!1m1!1s0x133b97667312711d:0xa2b15bca59b377fa!2m2!1d14.4824389!2d40.6293416!3e0|View the complete bus route on Google Maps% to see exactly where the bus travels uphill towards the hostel."
+        "تقع ساحة دي موليني في منطقة التسوق في بوزيتانو بالقرب من الصيدلية - إنها أدنى نقطة يمكن الوصول إليها بحركة المرور في المدينة، مما يجعلها المركز الطبيعي لخدمات الحافلات.",
+        "عندما تصل إلى ساحة دي موليني، احصل على تذكرة حافلة إنترنو من أحد المحلات الصغيرة أو 'tabacchi'. ثم اذهب إلى محطة الحافلة التي تقع في حافة الساحة - حيث تلتقي الساحة بالطريق.",
+        "تعمل حافلة إنترنو كل ~30 دقيقة من الصباح حتى منتصف الليل. %URL:https://www.google.com/maps/dir/2+Viale+Pasitea+Positano,+Campania/Viale+Pasitea,+323,+84017+Positano+SA/@40.6309188,14.4819138,16z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!1m5!1m1!1s0x133b97667312711d:0xa2b15bca59b377fa!2m2!1d14.4824389!2d40.6293416!3e0|اطلع على مسار الحافلة الكامل على خرائط جوجل% لمعرفة أين تسافر الحافلة صعودًا نحو النزل بالضبط."
       ],
       "images": [
         {
           "src": "/img/directions/ferry-dock-piazza-mulini-bus-stop.jpg",
-          "alt": "Piazza dei Mulini bus stop in Positano's town center shopping district.",
-          "caption": "The Interno bus stop at Piazza dei Mulini, located at the edge of the piazza where it joins the main road."
+          "alt": "محطة حافلة ساحة دي موليني في منطقة التسوق في وسط مدينة بوزيتانو.",
+          "caption": "محطة حافلة إنترنو في ساحة دي موليني، تقع في حافة الساحة حيث تلتقي بالطريق الرئيسي."
         }
       ]
     },
     {
       "id": "identify-bus",
-      "title": "Spotting the Interno Positano bus",
+      "title": "تحديد حافلة إنترنو بوزيتانو",
       "body": [
-        "Fleet vehicles differ, but the electronic sign on the front will always read 'interno positano.'",
-        "Expect a compact city bus with standing room; board at the curb and validate or show your ticket to the driver."
+        "تختلف مركبات الأسطول، لكن اللافتة الإلكترونية في الأمام ستقرأ دائمًا 'interno positano.'",
+        "توقع حافلة مدينة صغيرة مع مساحة للوقوف؛ اصعد عند الرصيف وتحقق من صحة تذكرتك أو أظهرها للسائق."
       ],
       "images": [
         {
           "src": "/img/directions/ferry-dock-interno-yellow.jpg",
-          "alt": "A small Interno Positano bus with 'INTERNO POSITANO' on the electronic front sign.",
-          "caption": "Look for the 'INTERNO POSITANO' sign on the front."
+          "alt": "حافلة إنترنو بوزيتانو صغيرة مع 'INTERNO POSITANO' على اللافتة الإلكترونية الأمامية.",
+          "caption": "ابحث عن لافتة 'INTERNO POSITANO' في الأمام."
         },
         {
           "src": "/img/directions/ferry-dock-interno-red.jpg",
-          "alt": "An Interno Positano bus in Positano with 'INTERNO POSITANO' on the electronic front sign.",
-          "caption": "Buses vary, but the sign is consistent."
+          "alt": "حافلة إنترنو بوزيتانو في بوزيتانو مع 'INTERNO POSITANO' على اللافتة الإلكترونية الأمامية.",
+          "caption": "تختلف الحافلات، لكن اللافتة متسقة."
         }
       ]
     },
     {
       "id": "bus-stop-to-hostel",
-      "title": "From the local stop to Hostel Brikette",
+      "title": "من المحطة المحلية إلى نزل بريكيت",
       "body": [
-        "Alight at the tabacchi at the 'Chiesa Nuova' stop (see the picture below).",
-        "Exit the bus, turn right, and walk to the main road.",
-        "Turn left onto Viale Pasitea and walk just over 100 metres (330 ft).",
-        "You will see the hostel on your right — look for our sign on the second-floor terrace.",
-        "Proceed past the sign, curve around the bend, and take the stairs up on the right to reach the hostel entrance.",
-        "Need a visual route? Follow %URL:https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Tabacchi+Cafiero+Emanuele,+Viale+Pasitea,+325a,+84017+Positano+SA/@40.6292434,14.4813669,19z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b97660ef186c1:0xc9eb9ab54d880307!2m2!1d14.4823321!2d40.6293865!3e2|these final directions%."
+        "انزل عند الtabacchi في محطة 'كييزا نووفا' (انظر الصورة أدناه).",
+        "اخرج من الحافلة، استدر يمينًا، وامشِ إلى الطريق الرئيسي.",
+        "استدر يسارًا إلى Viale Pasitea وامشِ أكثر من 100 متر قليلاً (330 قدمًا).",
+        "سترى النزل على يمينك - ابحث عن لافتتنا على تراس الطابق الثاني.",
+        "تابع بعد اللافتة، انحنِ حول المنعطف، واصعد الدرج على اليمين للوصول إلى مدخل النزل.",
+        "تحتاج إلى مسار بصري؟ اتبع %URL:https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Tabacchi+Cafiero+Emanuele,+Viale+Pasitea,+325a,+84017+Positano+SA/@40.6292434,14.4813669,19z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b97660ef186c1:0xc9eb9ab54d880307!2m2!1d14.4823321!2d40.6293865!3e2|هذه الاتجاهات النهائية%."
       ],
       "images": [
         {
           "src": "/img/tabacchi.webp",
-          "alt": "The tabacchi shop by the Chiesa Nuova bus stop with an awning that reads 'TABACCHI' and 'ARTICOLI DA REGALO'.",
-          "caption": "The bus stop is right outside this tabacchi."
+          "alt": "متجر tabacchi بجانب محطة حافلة كييزا نووفا مع مظلة تقرأ 'TABACCHI' و 'ARTICOLI DA REGALO'.",
+          "caption": "محطة الحافلة مباشرة خارج هذا الtabacchi."
         },
         {
           "src": "/img/directions/hostel-brikette-entrance-steps.png",
-          "alt": "The road near Hostel Brikette with the hostel sign visible and the stairs to the entrance around the bend on the right.",
-          "caption": "Look for our sign, then take the stairs up on the right."
+          "alt": "الطريق بالقرب من نزل بريكيت مع لافتة النزل المرئية والدرج إلى المدخل حول المنعطف على اليمين.",
+          "caption": "ابحث عن لافتتنا، ثم اصعد الدرج على اليمين."
         }
       ]
     },
     {
       "id": "total-journey-timing",
-      "title": "Total journey time and cost breakdown",
+      "title": "إجمالي وقت الرحلة وتفصيل التكلفة",
       "body": [
-        "**With porters + Interno bus (recommended):** 20-30 minutes hands-free travel, €2-€6 per person for bus tickets, plus €15-€20 per bag for porters. Total cost for one person with one bag: approximately €17-€26. Groups of 2-3 can split porter costs if sharing luggage carts.",
-        "**Bus only (no porters):** 25-35 minutes carrying your own bags, €2-€6 per person. You'll manage stairs at the port (short flight), walk with luggage to Piazza dei Mulini (5 minutes uphill), and carry bags on/off the bus. Suitable for travelers with one small backpack or light luggage.",
-        "**Walking the entire route:** Not recommended with luggage. The route involves 300+ steps, steep gradients, and takes 45-60 minutes. Only consider this if you're arriving without bags or with a very light daypack. Most of our guests who attempt this with luggage end up exhausted or needing to stop multiple times.",
-        "If you're arriving from %LINK:chiesaNuovaArrivals|Chiesa Nuova bus stop% instead of the ferry dock, the final walking section (100m + stairs) is identical to what's described in the last section above."
+        "**مع الحمالين + حافلة إنترنو (موصى به):** 20-30 دقيقة سفر بدون حمل، 2-6 يورو للشخص لتذاكر الحافلة، بالإضافة إلى 15-20 يورو لكل حقيبة للحمالين. التكلفة الإجمالية لشخص واحد بحقيبة واحدة: حوالي 17-26 يورو. يمكن للمجموعات المكونة من 2-3 أشخاص تقسيم تكاليف الحمالين إذا شاركوا عربات الأمتعة.",
+        "**الحافلة فقط (بدون حمالين):** 25-35 دقيقة حمل حقائبك الخاصة، 2-6 يورو للشخص. ستدير الدرج في الميناء (رحلة قصيرة)، وتمشي مع الأمتعة إلى ساحة دي موليني (5 دقائق صعودًا)، وتحمل الحقائب على/من الحافلة. مناسب للمسافرين بحقيبة ظهر صغيرة واحدة أو أمتعة خفيفة.",
+        "**المشي على الطريق بالكامل:** غير موصى به مع الأمتعة. يتضمن الطريق أكثر من 300 درجة، منحدرات حادة، ويستغرق 45-60 دقيقة. فكر في هذا فقط إذا كنت تصل بدون حقائب أو مع حقيبة ظهر خفيفة جدًا. معظم ضيوفنا الذين يحاولون هذا مع الأمتعة ينتهي بهم الأمر مرهقين أو يحتاجون إلى التوقف عدة مرات.",
+        "إذا كنت تصل من %LINK:chiesaNuovaArrivals|محطة حافلة كييزا نووفا% بدلاً من رصيف العبارة، فإن قسم المشي النهائي (100 متر + درج) مطابق لما هو موصوف في القسم الأخير أعلاه."
       ],
       "images": [
         {
           "src": "/img/directions/positano-capri-ferry-img05.jpg",
-          "alt": "Ferry approaching Positano with the colorful hillside town in the background.",
-          "caption": "Arriving by ferry — your journey to Hostel Brikette begins at the beach-level dock."
+          "alt": "عبارة تقترب من بوزيتانو مع مدينة التلال الملونة في الخلفية.",
+          "caption": "الوصول بالعبارة - تبدأ رحلتك إلى نزل بريكيت في الرصيف على مستوى الشاطئ."
         }
       ]
     },
     {
       "id": "alternative-options",
-      "title": "Alternative options and when to use them",
+      "title": "الخيارات البديلة ومتى تستخدمها",
       "body": [
-        "**Taxi from the dock:** Costs €25-€35 for up to 4 people with luggage. Worth considering if you're a group of 3-4 sharing the fare, arriving very late (after midnight when buses stop), or during ferry cancellations when porter services are overwhelmed. Call or WhatsApp +39 379 125 6222 to book — say 'Hostel Brikette' and they know the location. Taxis can't drive all the way to the hostel entrance (no vehicle access), but they'll drop you at the closest road point, about 50 meters from our stairs. If you have mobility concerns, discuss this with the taxi driver beforehand.",
-        "**Late-night arrivals (after 23:00):** The Interno bus runs until approximately midnight, but check the exact schedule for your arrival date. If your ferry arrives after the last bus, your options are taxi (€25-€35) or walking without luggage if you've sent bags ahead. Don't attempt the full walk with heavy bags in darkness — the route has uneven stairs and poor lighting in sections. Our reception team can stay late to meet you if you message ahead with your arrival time.",
-        "**If Interno buses are full or delayed:** During peak season (July-August), the Interno bus can fill up quickly, especially around ferry arrival times. If you miss one bus, another arrives within 30 minutes. Alternatively, walk to Piazza dei Mulini and catch the bus there (it's usually less crowded at that stop), or use a taxi as backup. Some guests prefer to wait for the second or third bus rather than cramming into an overcrowded vehicle with luggage — this is perfectly fine and the extra 30 minutes won't significantly impact your arrival."
+        "**سيارة أجرة من الرصيف:** تكلف 25-35 يورو لما يصل إلى 4 أشخاص مع الأمتعة. يستحق النظر إذا كنت مجموعة من 3-4 تتقاسم الأجرة، أو تصل في وقت متأخر جدًا (بعد منتصف الليل عندما تتوقف الحافلات)، أو أثناء إلغاء العبارات عندما تكون خدمات الحمالين مثقلة. اتصل أو واتساب +39 379 125 6222 للحجز - قل 'نزل بريكيت' وهم يعرفون الموقع. لا يمكن لسيارات الأجرة القيادة حتى مدخل النزل (لا يوجد وصول للمركبات)، لكنها ستنزلك في أقرب نقطة طريق، حوالي 50 مترًا من سلالمنا. إذا كانت لديك مخاوف بشأن التنقل، ناقش هذا مع سائق سيارة الأجرة مسبقًا.",
+        "**الوصول في وقت متأخر من الليل (بعد 23:00):** تعمل حافلة إنترنو حتى منتصف الليل تقريبًا، لكن تحقق من الجدول الدقيق لتاريخ وصولك. إذا وصلت عبارتك بعد آخر حافلة، فخياراتك هي سيارة أجرة (25-35 يورو) أو المشي بدون أمتعة إذا أرسلت الحقائب مسبقًا. لا تحاول المشي الكامل مع حقائب ثقيلة في الظلام - الطريق له درجات غير متساوية وإضاءة ضعيفة في الأقسام. يمكن لفريق الاستقبال لدينا البقاء متأخرًا لمقابلتك إذا أرسلت رسالة مسبقًا مع وقت وصولك.",
+        "**إذا كانت حافلات إنترنو ممتلئة أو متأخرة:** خلال موسم الذروة (يوليو-أغسطس)، يمكن أن تمتلئ حافلة إنترنو بسرعة، خاصة حول أوقات وصول العبارات. إذا فاتتك حافلة واحدة، تصل أخرى في غضون 30 دقيقة. بدلاً من ذلك، امشِ إلى ساحة دي موليني والتقط الحافلة هناك (عادةً ما تكون أقل ازدحامًا في تلك المحطة)، أو استخدم سيارة أجرة كاحتياطي. يفضل بعض الضيوف الانتظار للحافلة الثانية أو الثالثة بدلاً من الاكتظاظ في مركبة مزدحمة مع الأمتعة - هذا جيد تمامًا ولن تؤثر الـ 30 دقيقة الإضافية بشكل كبير على وصولك."
       ]
     },
     {
       "id": "staff-tips",
-      "title": "Tips from our reception team",
+      "title": "نصائح من فريق الاستقبال لدينا",
       "body": [
-        "**Best arrival strategy according to our staff:** Hand your main luggage to porters at the dock (most guests use this — it's worth the €15-20 per bag), keep a small daypack with essentials, buy your Interno bus ticket during the walk to Piazza dei Mulini, and take the bus to Chiesa Nuova. This way you arrive relaxed, bags-free, and ready to enjoy Positano.",
-        "**When porters save the most effort:** If you have bags over 15kg, multiple suitcases, or traveling in summer heat, porters are essential. We've seen too many guests arrive exhausted from carrying bags uphill — the €15-20 cost is minor compared to starting your Positano stay stressed and sweaty.",
-        "**Coordinate porter delivery timing:** If you’re arriving before rooms are ready, tell the porters when you expect to reach the hostel so they can time the delivery. Bags usually arrive 30–45 minutes after you hand them over, which gives you time to take the bus and reach the hostel entrance. If you arrive early, you can usually request luggage storage and explore town while you wait.",
-        "**First-time visitors to Positano:** Don't be intimidated by the stairs and hills — combining porters with the Interno bus reduces the physical challenge significantly. Most of our guests tell us this arrival route is much easier than they expected, especially compared to horror stories they've heard about Positano's stairs.",
-        "**Keep bus change ready:** Interno bus tickets cost €2-€6 depending on season and exact route. Ticket vendors at tabacchi accept cash only (small bills preferred — don't expect them to break a €50 note). Have a few €5 or €10 notes ready at the dock."
+        "**أفضل استراتيجية وصول وفقًا لموظفينا:** سلم أمتعتك الرئيسية للحمالين في الرصيف (معظم الضيوف يستخدمون هذا - إنه يستحق 15-20 يورو لكل حقيبة)، احتفظ بحقيبة ظهر صغيرة مع الأساسيات، اشترِ تذكرة حافلة إنترنو أثناء المشي إلى ساحة دي موليني، وخذ الحافلة إلى كييزا نووفا. بهذه الطريقة تصل مسترخيًا، خاليًا من الحقائب، وجاهزًا للاستمتاع ببوزيتانو.",
+        "**عندما يوفر الحمالون معظم الجهد:** إذا كانت لديك حقائب تزيد عن 15 كجم، أو حقائب متعددة، أو تسافر في حرارة الصيف، فالحمالون ضروريون. لقد رأينا الكثير من الضيوف يصلون مرهقين من حمل الحقائب صعودًا - تكلفة 15-20 يورو طفيفة مقارنة ببدء إقامتك في بوزيتانو متوترًا ومتعرقًا.",
+        "**تنسيق توقيت تسليم الحمالين:** إذا كنت تصل قبل أن تكون الغرف جاهزة، أخبر الحمالين متى تتوقع الوصول إلى النزل حتى يتمكنوا من توقيت التسليم. عادة ما تصل الحقائب بعد 30-45 دقيقة من تسليمها، مما يمنحك وقتًا لأخذ الحافلة والوصول إلى مدخل النزل. إذا وصلت مبكرًا، يمكنك عادة طلب تخزين الأمتعة واستكشاف المدينة أثناء الانتظار.",
+        "**الزوار لأول مرة إلى بوزيتانو:** لا تخف من الدرج والتلال - الجمع بين الحمالين وحافلة إنترنو يقلل التحدي البدني بشكل كبير. يخبرنا معظم ضيوفنا أن طريق الوصول هذا أسهل بكثير مما توقعوا، خاصة مقارنة بقصص الرعب التي سمعوها عن سلالم بوزيتانو.",
+        "**احتفظ بفكة الحافلة جاهزة:** تكلف تذاكر حافلة إنترنو 2-6 يورو حسب الموسم والطريق الدقيق. يقبل بائعو التذاكر في tabacchi النقد فقط (الفواتير الصغيرة مفضلة - لا تتوقع منهم كسر ورقة 50 يورو). احتفظ ببعض الأوراق النقدية 5 أو 10 يورو جاهزة في الرصيف."
       ]
     }
   ],
   "stepsList": [
     "سلم الأمتعة لحمالي الرصيف واشتر تذاكر حافلة إنترنو بوزيتانو في كشك التبغ.",
     "امش من الشاطئ الرئيسي إلى ساحة دي موليني، ثم استمر إلى محطة حافلة إنترنو بجانب كشك التبغ على فيالي باسيتيا.",
-    "اصعد إلى حافلة إنترنو بوزيتانو (ابحث عن لافتة \"إنترنو بوزيتانو\") واركب صعودًا نحو فيالي باسيتيا 325.",
+    "اصعد إلى حافلة إنترنو بوزيتانو (ابحث عن لافتة \\\\\"إنترنو بوزيتانو\\\\\") واركب صعودًا نحو فيالي باسيتيا 325.",
     "انزل خارج كشك التبغ، استدر يسارًا على طول فيالي باسيتيا لأكثر من 100 متر قليلاً، واصعد الدرج على اليمين للوصول إلى نزل بريكيت."
   ],
   "kneesList": [
@@ -170,64 +170,64 @@
   "kneesPorterLinkLabel": "دليل خدمة الحمالين",
   "faqs": [
     {
-      "q": "Where do I buy Interno Positano bus tickets?",
+      "q": "أين أشتري تذاكر حافلة إنترنو بوزيتانو؟",
       "a": [
-        "Pick up tickets at any tabacchi/newsstand in town, including the kiosk beside the bus stop. Drivers do not sell tickets onboard."
+        "احصل على التذاكر من أي كشك تبغ/بائع صحف في المدينة، بما في ذلك الكشك بجانب محطة الحافلة. السائقون لا يبيعون التذاكر على متن الحافلة."
       ]
     },
     {
-      "q": "How often does the Interno Positano bus run?",
+      "q": "كم مرة تعمل حافلة إنترنو بوزيتانو؟",
       "a": [
-        "Services are scheduled roughly every 30 minutes from about 08:00 until midnight, with extra departures in peak season — always confirm the timetable before sailing."
+        "يتم جدولة الخدمات تقريبًا كل 30 دقيقة من حوالي الساعة 08:00 حتى منتصف الليل، مع رحلات إضافية في موسم الذروة - تأكد دائمًا من الجدول الزمني قبل الإبحار."
       ]
     },
     {
-      "q": "How do the dock porters work?",
+      "q": "كيف يعمل حمالو الرصيف؟",
       "a": [
-        "Porters meet each ferry, load your bags, and deliver them uphill. Tell them you are staying at Hostel Brikette, pay the quoted fee, and keep valuables or medication with you."
+        "يلتقي الحمالون بكل عبارة، ويحملون حقائبك، ويسلمونها صعودًا. أخبرهم أنك تقيم في نزل بريكيت، ادفع الرسوم المذكورة، واحتفظ بالأشياء الثمينة أو الأدوية معك."
       ]
     },
     {
-      "q": "How much do porters cost from the ferry dock?",
+      "q": "كم تكلفة الحمالين من رصيف العبارة؟",
       "a": [
-        "Official porter rates for 2026 season are €15 per standard bag (up to 20kg) and €18-€20 for oversized or heavy items. Payment is cash only at the dock. For two people with two bags, expect to pay €30-40 total for porter service."
+        "أسعار الحمالين الرسمية لموسم 2026 هي 15 يورو لكل حقيبة عادية (حتى 20 كجم) و18-20 يورو للعناصر الكبيرة أو الثقيلة. الدفع نقدًا فقط في الرصيف. لشخصين بحقيبتين، توقع دفع 30-40 يورو إجمالاً لخدمة الحمالين."
       ]
     },
     {
-      "q": "What if I arrive after midnight when buses aren't running?",
+      "q": "ماذا لو وصلت بعد منتصف الليل عندما لا تعمل الحافلات؟",
       "a": [
-        "The Interno bus runs until approximately midnight. For late arrivals, book a taxi in advance (€25-€35 to the hostel, WhatsApp +39 379 125 6222) or message our reception team so we can help arrange transport. Don't attempt to walk with luggage in darkness."
+        "تعمل حافلة إنترنو حتى منتصف الليل تقريبًا. للوصول المتأخر، احجز سيارة أجرة مسبقًا (25-35 يورو إلى النزل، واتساب +39 379 125 6222) أو راسل فريق الاستقبال لدينا حتى نتمكن من المساعدة في ترتيب النقل. لا تحاول المشي مع الأمتعة في الظلام."
       ]
     },
     {
-      "q": "What are the check-in times, and can I store luggage if I arrive early?",
+      "q": "ما هي أوقات تسجيل الوصول، وهل يمكنني تخزين الأمتعة إذا وصلت مبكرًا؟",
       "a": [
-        "Regular check-in is from 15:00 to 22:30. Luggage storage is available from 10:30 for guests checking in (subject to space). For full details (ID requirements, deposits, and late arrival options), see our check-in & checkout guide: %LINK:checkinCheckout|check-in & checkout%."
+        "تسجيل الوصول المنتظم من الساعة 15:00 إلى 22:30. تتوفر خدمة تخزين الأمتعة من الساعة 10:30 للضيوف الذين يسجلون الوصول (حسب المساحة). للحصول على التفاصيل الكاملة (متطلبات الهوية والودائع وخيارات الوصول المتأخر)، راجع دليل تسجيل الوصول والمغادرة: %LINK:checkinCheckout|تسجيل الوصول والمغادرة%."
       ]
     },
     {
-      "q": "Can I walk from the ferry dock to the hostel with luggage?",
+      "q": "هل يمكنني المشي من رصيف العبارة إلى النزل مع الأمتعة؟",
       "a": [
-        "Not recommended. The route involves 300+ steps, steep uphill sections, and takes 45-60 minutes with bags. Nearly all our guests use either porters + Interno bus (recommended) or taxi. Walking is only practical with a light daypack."
+        "غير موصى به. يتضمن الطريق أكثر من 300 درجة، وأقسام صاعدة حادة، ويستغرق 45-60 دقيقة مع الحقائب. يستخدم معظم ضيوفنا إما الحمالين + حافلة إنترنو (موصى به) أو سيارة أجرة. المشي عملي فقط مع حقيبة ظهر خفيفة."
       ]
     },
     {
-      "q": "Is this route accessible for wheelchairs or strollers?",
+      "q": "هل هذا الطريق متاح للكراسي المتحركة أو عربات الأطفال؟",
       "a": [
-        "No, this route involves stairs and steep paths unsuitable for wheelchairs or strollers. Contact our reception team before arrival — we can arrange accessible taxi transport directly from the ferry dock to the hostel entrance (€25-€35)."
+        "لا، يتضمن هذا الطريق سلالم ومسارات حادة غير مناسبة للكراسي المتحركة أو عربات الأطفال. اتصل بفريق الاستقبال لدينا قبل الوصول - يمكننا ترتيب نقل سيارة أجرة متاحة مباشرة من رصيف العبارة إلى مدخل النزل (25-35 يورو)."
       ]
     },
     {
-      "q": "What if my ferry is delayed or cancelled?",
+      "q": "ماذا لو تأخرت عبارتي أو ألغيت؟",
       "a": [
-        "Check current ferry status on the ferry company website or at the dock. If delayed by 30+ minutes, the Interno bus schedule may shift — ask at the tabacchi for updated timing. If your ferry is cancelled, alternative options include taking a ferry to a different port (Amalfi, Sorrento) and using SITA buses, or rebooking for the next available sailing."
+        "تحقق من حالة العبارة الحالية على موقع شركة العبارات أو في الرصيف. إذا تأخرت بأكثر من 30 دقيقة، قد يتغير جدول حافلة إنترنو - اسأل في tabacchi للحصول على التوقيت المحدث. إذا تم إلغاء عبارتك، تشمل الخيارات البديلة أخذ عبارة إلى ميناء مختلف (أمالفي، سورينتو) واستخدام حافلات SITA، أو إعادة الحجز للإبحار التالي المتاح."
       ]
     }
   ],
   "howtoSteps": [
     "اشتر تذاكر حافلة إنترنو وسلم الأمتعة لحمالي الرصيف",
     "امش من الشاطئ إلى ساحة دي موليني ومحطة حافلة إنترنو",
-    "اركب حافلة إنترنو بوزيتانو صعودًا (ابحث عن لافتة \"إنترنو بوزيتانو\")",
+    "اركب حافلة إنترنو بوزيتانو صعودًا (ابحث عن لافتة \\\\\"إنترنو بوزيتانو\\\\\")",
     "انزل بجانب كشك التبغ، وامش 100 متر، واصعد الدرج إلى نزل بريكيت"
   ]
 }

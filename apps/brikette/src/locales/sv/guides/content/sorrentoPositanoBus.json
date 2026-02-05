@@ -29,8 +29,8 @@
       "list": [
         "Raderna i första kolumnen visar varje busshållplats längs linjen.",
         "Kolumnerna motsvarar schemalagda turer som markeras med bokstäver.",
-        "Reser du måndag till lördag? Använd kolumnerna \"F\" och \"G\".",
-        "Reser du på söndag eller helgdag? Använd kolumnerna \"G\" och \"H\"."
+        "Reser du måndag till lördag? Använd kolumnerna \\\\\"F\\\\\" och \\\\\"G\\\\\".",
+        "Reser du på söndag eller helgdag? Använd kolumnerna \\\\\"G\\\\\" och \\\\\"H\\\\\"."
       ],
       "lastUpdated": "2026-01-31"
     },
@@ -38,9 +38,9 @@
       "id": "arrival",
       "title": "Ankomst till Positano (Chiesa Nuova)",
       "list": [
-        "Det finns två SITA-hållplatser listade för Positano: \"Sponda\" och \"Chiesa Nuova\".",
-        "För vandrarhemmet är \"Positano (Chiesa Nuova)\" rätt hållplats på Via G. Marconi.",
-        "Hållplatsen ligger utanför caféet/baren \"Bar Internazionale\"."
+        "Det finns två SITA-hållplatser listade för Positano: \\\\\"Sponda\\\\\" och \\\\\"Chiesa Nuova\\\\\".",
+        "För vandrarhemmet är \\\\\"Positano (Chiesa Nuova)\\\\\" rätt hållplats på Via G. Marconi.",
+        "Hållplatsen ligger utanför caféet/baren \\\\\"Bar Internazionale\\\\\"."
       ],
       "lastUpdated": "2026-01-31"
     },

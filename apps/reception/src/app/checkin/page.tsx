@@ -1,3 +1,5 @@
+"use client";
+
 import dynamicImport from 'next/dynamic';
 
 // Disable static generation - this page requires runtime data

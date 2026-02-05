@@ -165,6 +165,8 @@ describe("parseLaunchArgs", () => {
         dryRun: false,
         force: true,
         allowDirtyGit: true,
+        resume: false,
+        fresh: false,
       });
     });
   });

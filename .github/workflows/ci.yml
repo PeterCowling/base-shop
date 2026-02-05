@@ -109,12 +109,23 @@ jobs:
           restore-keys: |
             eslint-cache-${{ github.ref_name }}-
             eslint-cache-
+      - name: Restore Tailwind color report cache
+        uses: actions/cache@v4
+        with:
+          path: tools/eslint-baselines/ds-no-raw-tailwind-color.report.json
+          key: tailwind-color-report-${{ github.sha }}
+          restore-keys: |
+            tailwind-color-report-${{ github.ref_name }}-
+            tailwind-color-report-
       - name: Lint (standard)
         run: pnpm lint
       - name: Lint (JSON report)
         run: pnpm run lint:json || true
       - name: Lint (raw Tailwind color baseline)
         run: pnpm run lint:no-raw-tailwind-color:check
+        timeout-minutes: 5
+        env:
+          LINT_TIMEOUT_MS: 240000
       - name: Lint (exceptions governance)
         run: pnpm run lint:exceptions
       - name: Docs lint

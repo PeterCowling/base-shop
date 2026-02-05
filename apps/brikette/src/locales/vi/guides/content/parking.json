@@ -1,4 +1,9 @@
 {
+  "seo": {
+    "title": "Đậu xe ở Positano: bãi gửi, quy định đỗ xe đường phố và lựa chọn thay thế",
+    "description": "Nên đậu xe ở đâu tại Positano, chi phí bãi gửi, khi nào đỗ xe đường phố khả thi và các lựa chọn thông minh không cần xe."
+  },
+  "lastUpdated": "2026-02-04T00:00:00.000Z",
   "linkLabel": "Parking in Positano: where and costs",
   "intro": [
     "Bản dịch đang được chuẩn bị."
@@ -29,10 +34,12 @@
       ]
     }
   ],
+  "tipsTitle": "Quick tips",
   "tips": [
     "Bản dịch đang được chuẩn bị.",
     "Bản dịch đang được chuẩn bị."
   ],
+  "faqsTitle": "FAQs",
   "faqs": [
     {
       "q": "Bản dịch đang được chuẩn bị.",
@@ -47,10 +54,5 @@
       ]
     }
   ],
-  "tocTitle": "On this page",
-  "faqsTitle": "FAQs",
-  "seo": {
-    "title": "Đậu xe ở Positano: bãi gửi, quy định đỗ xe đường phố và lựa chọn thay thế",
-    "description": "Nên đậu xe ở đâu tại Positano, chi phí bãi gửi, khi nào đỗ xe đường phố khả thi và các lựa chọn thông minh không cần xe."
-  }
+  "tocTitle": "On this page"
 }

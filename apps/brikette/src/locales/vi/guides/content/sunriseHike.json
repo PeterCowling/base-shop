@@ -1,76 +1,138 @@
 {
   "seo": {
-    "title": "Hostel Brikette sunrise hike",
-    "description": "Tuyến đường trước bình minh từ Hostel Brikette đến điểm ngắm cảnh yên tĩnh trên đỉnh vách đá với tầm nhìn không bị cản trở ra mặt trời mọc trên Positano."
+    "title": "Đi bộ ngắm bình minh từ Hostel Brikette (Positano)",
+    "description": "Một chuyến đi bộ ngắn trước bình minh từ Hostel Brikette đến điểm ngắm cảnh yên tĩnh phía trên Positano, với các bức ảnh điều hướng theo đúng thứ tự."
   },
-  "linkLabel": "Hostel Brikette sunrise hike",
+  "linkLabel": "Đi bộ ngắm bình minh: Xem bình minh ló dạng trên Positano",
+  "lastUpdated": "2026-02-04",
   "intro": [
-    "Head out before dawn to catch the first light over the Amalfi Coast from a quiet vantage point above Positano.",
-    "This walk starts at Hostel Brikette and takes around 25 minutes including the stair climb to the viewpoint."
+    "Nếu bạn muốn bình minh đơn giản nhất, bạn có thể xem bình minh từ sân thượng chung của hostel khi mặt trời mọc bên trái (khi bạn nhìn ra biển).",
+    "Nếu bạn muốn toàn cảnh rộng hơn và khoảnh khắc yên tĩnh hơn phía trên thị trấn, hãy đi theo chuyến đi bộ ngắn này lên đồi đến điểm ngắm cảnh trên vách đá phía trên Positano."
   ],
   "sections": [
     {
-      "id": "overview",
-      "title": "What is the sunrise hike?",
+      "id": "what-is",
+      "title": "Đi bộ ngắm bình minh là gì?",
       "body": [
-        "If you prefer to stay put, you can watch the sunrise from the hostel terrace as it rises to the left of the building.",
-        "For a wider panorama, follow this short hike to a nearby cliff where you can watch the sun clear the horizon and light up the town below."
+        "Đây là một chuyến đi bộ đi và về ngắn trước bình minh từ Hostel Brikette đến một điểm ngắm cảnh nhỏ phía trên Positano.",
+        "Nếu bạn muốn lựa chọn núi dài hơn, %LINK:santaMariaDelCastelloHike|Santa Maria del Castello% là một lựa chọn tuyệt vời, nhưng tuyến đường dưới đây là cách nhanh nhất để có được cảnh bình minh ấn tượng mà không cần cam kết với chuyến đi bộ cả ngày."
       ]
     },
     {
-      "id": "reach-stairs",
-      "title": "Reach the stairway trailhead",
+      "id": "before-you-go",
+      "title": "Trước khi đi (trời sẽ tối)",
       "body": [
-        "Exit the hostel through the main door and walk down to Via Pasitea.",
-        "Turn right towards Sorrento and follow the road for roughly 350 metres.",
-        "Look for a flight of stairs on your left heading uphill — the first section is paved and has a handrail."
+        "Mang theo đèn pin điện thoại hoặc đèn đội đầu và giữ tay rảnh (đặc biệt là trên cầu thang).",
+        "Đi giày có độ bám — phần đầu được lát đá, nhưng đường mòn rừng có thể xốp hoặc ẩm.",
+        "Bắt đầu đủ sớm để đến trước 10-15 phút trước khi mặt trời mọc để bạn có thể ổn định, tìm vị trí của mình và tận hưởng ánh sáng đầu tiên."
       ]
     },
     {
-      "id": "climb-to-viewpoint",
-      "title": "Climb to the viewpoint",
+      "id": "step-1",
+      "title": "Bước 1: Đi từ hostel đến cầu thang (≈350 m)",
       "body": [
-        "Take the stairs all the way up until you reach a small house at the top of the initial climb.",
-        "At the house, turn left to join the woodland trail.",
-        "When the path forks, take the right-hand branch and continue climbing through the trees.",
-        "As the path opens up and you can see the sea directly ahead, bear left.",
-        "Continue around the rocks to reach the exposed vantage point with sweeping sunrise views."
+        "Ra khỏi hostel qua cửa chính và đi xuống đường.",
+        "Rẽ về phía Sorrento và đi khoảng **350 mét** dọc theo con đường chính cho đến khi bạn đến một cầu thang leo lên từ đường."
       ]
     },
     {
-      "id": "enjoy-sunrise",
-      "title": "Enjoy the sunrise safely",
+      "id": "step-2",
+      "title": "Bước 2: Leo lên đến ngôi nhà, sau đó rẽ trái",
       "body": [
-        "The final rocks can be slick with morning dew; move carefully and avoid standing on loose edges.",
-        "From the main ledge you can watch the sun crest the horizon, or scramble a little higher for photos once there is enough light."
+        "Leo cầu thang lên đến ngôi nhà trắng cũ được minh họa bên dưới.",
+        "Tại ngôi nhà, **rẽ trái** để vào đường mòn rừng."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/02-house.jpg",
+          "alt": "Ngôi nhà trắng cũ bên cạnh cầu thang trên tuyến đường đi bộ ngắm bình minh phía trên Positano",
+          "caption": "Tòa nhà này đánh dấu kết thúc leo cầu thang; rẽ trái tại đây để vào đường mòn rừng.",
+          "width": 876,
+          "height": 530
+        }
+      ]
+    },
+    {
+      "id": "step-3",
+      "title": "Bước 3: Đi theo đường mòn rừng đến điểm ngắm cảnh",
+      "body": [
+        "Đi theo đường mòn rừng khi nó leo lên nhẹ nhàng ra khỏi ngôi nhà.",
+        "Khi đường mòn rẽ nhánh, chọn nhánh **bên phải**.",
+        "Cuối cùng bạn sẽ đến một điểm mà cây cối mở ra và bạn có thể nhìn thấy biển thẳng phía trước. Từ đó, đi vòng sang **bên trái** của bạn.",
+        "Con đường bên trái đó đưa bạn đến điểm ngắm cảnh. Bạn có thể cẩn thận leo lên những tảng đá để có chỗ ngồi cao hơn, hoặc ở lại điểm chính để có tầm nhìn ổn định."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/03-viewpoint.jpg",
+          "alt": "Bản đồ nhìn từ trên cao cho thấy những khúc rẽ cuối cùng trên tuyến đường đi bộ ngắm bình minh đến điểm ngắm cảnh phía trên Positano",
+          "caption": "Sử dụng góc nhìn từ trên cao này để xác nhận rẽ trái cuối cùng về phía điểm ngắm cảnh sau khi đường mòn mở ra biển.",
+          "width": 677,
+          "height": 600
+        }
+      ]
+    },
+    {
+      "id": "share",
+      "title": "Chia sẻ hướng dẫn này (QR)",
+      "body": [
+        "Nếu bạn đi ra ngoài với bạn bè, bạn có thể sử dụng mã QR này để nhanh chóng chia sẻ hướng dẫn trên điện thoại khác."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/01-qr.png",
+          "alt": "Mã QR liên kết đến hướng dẫn đi bộ ngắm bình minh Hostel Brikette",
+          "width": 450,
+          "height": 450
+        }
       ]
     }
   ],
-  "tips": [
-    "Allow around 25 minutes from the hostel to the viewpoint and aim to arrive 10 minutes before the posted sunrise time.",
-    "Bring a headlamp or phone torch — the stair sections are dark before dawn.",
-    "Wear shoes with good grip and pack a layer; sea breezes make early mornings feel cooler."
+  "essentialsTitle": "Đồ cần thiết",
+  "essentials": [
+    "Đèn đội đầu hoặc đèn điện thoại (cộng với pin đã sạc).",
+    "Giày có độ bám và một lớp áo nhẹ — có thể cảm thấy mát và gió trước bình minh.",
+    "Nước và một bữa ăn nhẹ nhỏ nếu bạn dự định ngồi và xem mặt trời mọc."
   ],
+  "tipsTitle": "Thời gian thông minh",
+  "tips": [
+    "Kiểm tra dự báo nhanh: gió và mây thấp có thể che khuất mặt trời mọc ngay cả vào những ngày trong khác.",
+    "Nếu bạn không chắc chắn về ngã ba trong bóng tối, hãy dừng lại và xác nhận phương hướng của bạn thay vì đoán."
+  ],
+  "warningsTitle": "Ghi chú an toàn",
+  "warnings": [
+    "Đi chậm trên cầu thang và giữ tay rảnh — dễ bị sảy chân trong ánh sáng yếu.",
+    "Nếu đường mòn cảm thấy trơn sau mưa, hãy xem xét xem từ sân thượng của hostel thay thế."
+  ],
+  "steps": [
+    {
+      "name": "Đi bộ đến cầu thang",
+      "text": "Từ hostel, đi bộ ~350 m về phía Sorrento trên đường chính cho đến khi bạn nhìn thấy cầu thang leo lên."
+    },
+    {
+      "name": "Leo lên đến ngôi nhà",
+      "text": "Đi theo cầu thang đến ngôi nhà trắng cũ, sau đó rẽ trái vào đường mòn rừng."
+    },
+    {
+      "name": "Chọn nhánh bên phải",
+      "text": "Khi đường mòn rừng rẽ nhánh, giữ bên phải và tiếp tục cho đến khi bạn có thể nhìn thấy biển."
+    },
+    {
+      "name": "Rẽ trái đến điểm ngắm cảnh",
+      "text": "Sau khi đường mòn mở ra biển, đi sang trái để đến điểm ngắm cảnh (leo cẩn thận nếu bạn muốn chỗ cao hơn)."
+    }
+  ],
+  "faqsTitle": "Câu hỏi thường gặp",
   "faqs": [
     {
-      "q": "Can I just watch the sunrise from the hostel?",
+      "q": "Tôi có thể chỉ xem bình minh từ hostel không?",
       "a": [
-        "Yes. The terrace faces east and you can see the sun rise to the left of the building without leaving the property.",
-        "The hike is for guests who want a wider panorama or photos without foreground buildings."
+        "Có — sân thượng của hostel là lựa chọn đơn giản nhất và mặt trời mọc ở bên trái tòa nhà khi bạn đối mặt với biển."
       ]
     },
     {
-      "q": "Is the trail marked or difficult to follow?",
+      "q": "Chuyến đi bộ mất bao lâu?",
       "a": [
-        "The route follows local stairs and an informal woodland trail. There are no signposts, so bring a phone with offline maps or follow these instructions closely.",
-        "In the dark, walk slowly and use a torch to pick out uneven steps and tree roots."
-      ]
-    },
-    {
-      "q": "What should I bring?",
-      "a": [
-        "Wear trainers or hiking shoes with grip, carry water, and pack a light layer for the breeze.",
-        "If you plan to stay for sunrise photos, consider a tripod or phone stand."
+        "Đó là một tuyến đường ngắn, nhưng thời gian phụ thuộc vào tốc độ của bạn và bạn dành bao lâu tại điểm ngắm cảnh. Để đủ thời gian để đến trước 10-15 phút trước khi mặt trời mọc."
       ]
     }
   ]

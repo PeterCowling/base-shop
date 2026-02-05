@@ -24,6 +24,7 @@
     },
     "timetable": {
       "title": "Jak czytać rozkład SITA",
+      "link": "Sprawdź aktualny rozkład na <link>Positano.com</link>.",
       "body": "Oficjalny rozkład przedstawia przystanki w wierszach, a kursy w kolumnach oznaczonych literami. Dopasuj wiersze Positano i Amalfi w tej samej kolumnie odpowiadającej dniu podróży.",
       "list": [
         "Wiersze w pierwszej kolumnie pokazują każdy przystanek na trasie.",
@@ -31,7 +32,6 @@
         "Podróżujesz od poniedziałku do soboty? Korzystaj z kolumn „F” i „G”.",
         "Podróżujesz w niedzielę lub święto? Sprawdź kolumny „G” i „H”."
       ],
-      "link": "Sprawdź aktualny rozkład na <link>Positano.com</link>.",
       "linkHref": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result"
     },
     "positanoStop": {
@@ -56,7 +56,7 @@
       ]
     },
     "wait": {
-      "title": "Kup bilet i poczekaj na boarding",
+      "title": "Kup bilet i poczekaj na wejście do autobusu",
       "list": [
         "Kup bilet autobusowy SITA w barze lub pobliskim kiosku (tabacchi).",
         "Przejdź na drugą stronę ulicy i ustaw się w kolejce na autobus do Amalfi.",

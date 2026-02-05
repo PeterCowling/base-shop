@@ -6,7 +6,7 @@
   },
   "intro": {
     "title": "Amalfi to Positano Ferry — Complete Guide",
-    "body": "Amalfi to Positano ferry service runs daily from late March to October, offering the most scenic way to travel the Amalfi Coast. This guide covers everything hostel guests need to know: exact costs (€9–€10), where to board in Amalfi, getting the best seats onboard, and connecting smoothly to Hostel Brikette from Positano's ferry dock with your luggage."
+    "body": "This Amalfi to Positano ferry guide covers the most scenic way to travel the Amalfi Coast: daily boats from late March to October. It includes exact costs (€9–€10), where to board in Amalfi, how to grab the best seats onboard, and how to connect smoothly to Hostel Brikette from Positano's ferry dock with your luggage."
   },
   "callouts": {
     "tip": "Need other transport options? Open the %HOWTO:how-to-get-here|How to Get Here overview% for buses, mixed routes, and airport transfers."
@@ -15,13 +15,20 @@
     {
       "id": "overview",
       "title": "Quick overview",
-      "body": "The Amalfi-Positano ferry is operated primarily by Travelmar, running 8 daily sailings from late March through October. Journey time is 15–25 minutes depending on sea conditions and intermediate stops.",
+      "body": "The Amalfi to Positano ferry (often written as the Amalfi–Positano ferry) is operated primarily by Travelmar, running 8 daily sailings from late March through October. Journey time is 15–25 minutes depending on sea conditions and intermediate stops.",
       "list": [
         "**Cost:** €9–€10 per person one-way (2026 season)",
         "**Luggage:** €2 per bag over the included carry-on (max 45cm × 35cm × 20cm)",
         "**First departure:** Approximately 08:25 from Amalfi",
         "**Last departure:** Approximately 20:00 from Amalfi",
         "**Season:** Late March to late October (weather dependent)"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/01-amalfi-dock.webp",
+          "alt": "Amalfi waterfront and harbor area with boats, seen from near the ferry dock",
+          "caption": "Amalfi’s ferry docks sit on the waterfront beside town — you’ll board here for Positano. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Amalfi_02_View_from_Ferry_Dock.jpg|Grueslayer% (%URL:https://creativecommons.org/licenses/by-sa/4.0|CC BY-SA 4.0%)."
+        }
       ]
     },
     {
@@ -34,6 +41,13 @@
         "Dock at Positano's main beach, near %LINK:porterServices|porter services% and the %LINK:ferryDockToBrikette|hostel route%",
         "Fresh sea air and outdoor deck seats (first-come, first-served)",
         "Often faster than the bus in July and August when road traffic is worst"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/05-li-galli.webp",
+          "alt": "The small Li Galli islands in the sea off the Amalfi Coast",
+          "caption": "On a clear day you may spot Li Galli islands offshore on the Amalfi Coast ferry routes. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Isolotti_de_Li_Galli_(Costiera_Sorrentina).jpg|IlSistemone% (%URL:https://creativecommons.org/licenses/by-sa/3.0|CC BY-SA 3.0%)."
+        }
       ]
     },
     {
@@ -46,6 +60,13 @@
         "**Price:** €9–€10 per adult. Kids and babies may cost less.",
         "**Luggage:** One small bag (45cm × 35cm × 20cm) is free. Bigger backpacks and rollers cost €2 each.",
         "**Payment:** Cash and card work at kiosks. Online needs a card or PayPal."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/03-ferry-ride.webp",
+          "alt": "Passenger ferry cruising along the Amalfi Coast between Amalfi and Positano",
+          "caption": "Fast ferries and hydrofoils run between Amalfi and Positano in season. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Ferry_Ride_Between_Amalfi_and_Positano_(42250218604).jpg|Nan Palmero from San Antonio, TX, USA% (%URL:https://creativecommons.org/licenses/by/2.0|CC BY 2.0%)."
+        }
       ]
     },
     {
@@ -58,6 +79,13 @@
         "**Signs:** Travelmar desks are clear. Staff in blue vests help with boarding.",
         "**Departure gate:** Check your ticket for the right pier. Two piers exist. Bigger boats use the outer one.",
         "**Timing:** Arrive 15–20 minutes early to grab outdoor deck seats and skip the rush."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/02-piazza-flavio-gioia.webp",
+          "alt": "Piazza Flavio Gioia in Amalfi with the fountain and nearby bus stop area",
+          "caption": "Piazza Flavio Gioia is the easiest landmark in Amalfi: find the fountain, face the sea, then walk right to the ferry pier. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Flavio_Gioia_(17734991371).jpg|Alpha 350 from Hungary% (%URL:https://creativecommons.org/licenses/by/2.0|CC BY 2.0%)."
+        }
       ]
     },
     {
@@ -70,6 +98,13 @@
         "**Snack bar:** Some boats have a counter with drinks, snacks, and gelato (cash and card both work).",
         "**Luggage:** Put bags in deck racks or under your seat. Staff help if bags are big.",
         "**Seasickness:** Usually calm. If you get seasick, sit inside near the middle. Don't read or use your phone."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/04-furore-fiord.webp",
+          "alt": "Fiordo di Furore bridge and cliffs seen from the sea along the Amalfi Coast",
+          "caption": "From the left-side deck seats you can spot dramatic cliffs and sights like Fiordo di Furore. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Fiordo_di_Furore_bridge,_as_seen_from_the_sea,_Furore,_2010.jpg|DimiTalen% (%URL:http://creativecommons.org/publicdomain/zero/1.0/deed.en|CC0%)."
+        }
       ]
     },
     {
@@ -82,6 +117,18 @@
         "**Interno bus:** Leaves from Via Cristoforo Colombo near the dock. Buy tickets at kiosks or on the bus.",
         "**Walking:** Steep stairs and slopes. OK with a daypack. Hard with rollers in summer heat.",
         "**Early arrival:** If you land early and don’t want to carry bags around town, use %LINK:luggageStorage|luggage storage% near the beach (€5–€8 per bag)."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/06-positano-panorama.webp",
+          "alt": "Wide panorama of Positano's hillside houses above Spiaggia Grande beach",
+          "caption": "The ferry drops you at Spiaggia Grande — the main beach at the base of Positano’s hillside. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Positano_panorama_01.jpg|Mihael Grmek% (%URL:https://creativecommons.org/licenses/by-sa/4.0|CC BY-SA 4.0%)."
+        },
+        {
+          "src": "/img/guides/amalfi-positano-ferry/07-positano-umbrellas.webp",
+          "alt": "Crowded Spiaggia Grande beach in Positano with rows of umbrellas and boats in the bay",
+          "caption": "In peak season, Spiaggia Grande is busy — keep your bags close and plan your next step before you join the crowd. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Beach_Umbrellas_in_Positano_(41158690680).jpg|Nan Palmero from San Antonio, TX, USA% (%URL:https://creativecommons.org/licenses/by/2.0|CC BY 2.0%)."
+        }
       ]
     },
     {
@@ -95,6 +142,13 @@
         "**Wear layers.** The deck gets breezy even in summer. A light jacket helps for morning or evening trips.",
         "**Download offline maps** before you board. Cell signal drops mid-crossing. You want directions ready when you land.",
         "**Budget for porters** if you have more than one bag or anything over 15kg. The walk up Via Pasitea to Brikette is steeper than it looks."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/10-positano-street.webp",
+          "alt": "Steep pedestrian street and steps in Positano lined with buildings",
+          "caption": "Positano is beautiful but vertical — plan your uphill connection from the dock if you have luggage. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Positano_street_II.jpg|Jensens% (%URL:https://commons.wikimedia.org/wiki/Commons:Licensing|Public domain%)."
+        }
       ]
     },
     {
@@ -106,6 +160,13 @@
         "**Private water taxi:** Faster and more flexible than scheduled boats, but costs €80–€120 for the whole boat (split among 4–6 people).",
         "**Road taxi:** Goes via Agerola and inland routes like SP2, €40–€60, good when ferries don't run.",
         "**Direct from Naples:** Coming from Naples Capodichino Airport? See %LINK:naplesAirportBus|Naples Airport to Positano by bus% to skip Amalfi."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/08-sita-bus.webp",
+          "alt": "Blue SITA bus driving along the coastal road above the sea on the Amalfi Coast",
+          "caption": "When seas are rough, the SITA bus becomes the main backup from Amalfi to Positano (but it can be crowded). Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Amalfi_Drive_Sita_Bus.jpeg|Robot8A% (%URL:https://creativecommons.org/licenses/by-sa/4.0|CC BY-SA 4.0%)."
+        }
       ]
     },
     {
@@ -117,6 +178,13 @@
         "**June:** Busy weekends, calm seas, full ferry schedule starts. Book 1 day ahead for weekends.",
         "**July–August:** Peak season. Book 2 days ahead. Boats fill fast. Expect crowds at Amalfi and Positano piers.",
         "**September–October:** Shoulder season returns. Calmer than summer, but October can have rough seas and early season closures."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/09-amalfi-coast.webp",
+          "alt": "View of the Amalfi Coast cliffs and sea on a clear day",
+          "caption": "Spring and early autumn often have calmer seas and lighter crowds — but always keep a backup bus plan in mind. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Amalfi_coast_(17735555990).jpg|Alpha 350 from Hungary% (%URL:https://creativecommons.org/licenses/by/2.0|CC BY 2.0%)."
+        }
       ]
     },
     {

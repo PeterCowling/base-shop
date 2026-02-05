@@ -1,49 +1,244 @@
 {
   "seo": {
     "title": "Positano til Amalfi med færge | Hostel Brikette",
-    "description": "Trin-for-trin færgerejse fra Positano til Amalfi: billetter, hvor du går ombord ved Spiaggia Grande, køreplaner og hvad du kan forvente ved ankomst."
+    "description": "Trin-for-trin færgerejse fra Positano til Amalfi: hvor du går ombord ved Spiaggia Grande, billetter, live-køreplaner og en enkel plan B, hvis havet aflyser bådene."
   },
   "intro": {
     "title": "Positano til Amalfi — færge",
-    "body": "Følg disse trin for at rejse fra Positano til Amalfi med færge. Du får tips om billetter, hvor du går ombord i Positano, hvad du kan forvente ved ankomst, og links til live-køreplaner."
+    "body": "Færgen fra Positano til Amalfi er en af de mest smukke måder at rejse langs kysten på. Du vil se fantastiske udsigter over pastellfarvede landsbyer, dramatiske klipper og turkisblåt vand. Denne komplette guide dækker alt, hvad du har brug for: billetter og priser, ombordstigning ved Spiaggia Grande, ankomst til Amalfi, sæsonkøreplaner og hvad du skal gøre, hvis både aflyst på grund af vejret."
   },
+  "callouts": {
+    "tip": "Har du brug for andre transportmuligheder? Åbn %HOWTO:how-to-get-here|Sådan kommer du her-oversigten% for busser, blandede ruter og lufthavnstransport."
+  },
+  "lastUpdated": "2026-02-04",
   "sections": [
     {
       "id": "overview",
-      "title": "Rejseoverblik",
+      "title": "Rejseoversigt",
+      "body": "Færgerejsen fra Positano til Amalfi tager omkring 25-40 minutter afhængigt af operatøren og antallet af stop. De fleste afgange kører fra april til oktober, med flere afgange i højsæsonen om sommeren (juni til september). Forvent at betale €10-€18 pr. person for en enkeltbillet, selvom priserne varierer efter operatør og tidspunkt på dagen.",
       "list": [
-        "Sæsonfærger forbinder Positano og Amalfi med smuk kystudsigt.",
-        "Afgange varierer efter sæson og vejr; tjek altid dagens køreplan.",
-        "Afsæt ekstra tid i højsæsonen til køer ved molen."
+        "Færger er sæsonbestemte (normalt april-oktober) og vejrafhængige — hård sø kan aflyse afgange med kort varsel.",
+        "Rejsetid: 25-40 minutter afhængigt af stop (nogle færger standser i Praiano eller andre landsbyer undervejs).",
+        "Pris: €10-€18 enkeltbillet pr. voksen; børn får ofte reduceret pris.",
+        "I højsæsonen (juli-august) kan afgange blive udsolgt, og der dannes køer ved Spiaggia Grande — kom 30+ minutter før.",
+        "Hvis havet er hårdt, og bådene stopper med at sejle, er %HOWTO:positano-amalfi-bus|Positano → Amalfi-bussen% din pålidelige backup."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/07-positano-umbrellas.webp",
+          "alt": "Udsigt over Positanos hovedfærgekaj ved Spiaggia Grande med både ved kajen og farverige bygninger på bjergsiden"
+        }
+      ]
+    },
+    {
+      "id": "whyFerry",
+      "title": "Hvorfor tage færgen?",
+      "body": "Færgen har fordele i forhold til bussen, men det er ikke altid det bedste valg for alle rejsende. Her er, hvad du skal tænke over:",
+      "list": [
+        "Smuk rute: Du vil se Amalfikysten fra vandet, inklusive skjulte bugter, havstakke og landsbyer på klippeafsatser, som du ikke kan se fra vejen.",
+        "Spring trafikken over: Kystvejen (SS163) bliver meget trafikeret om sommeren. Færger undgår alle vejforsinkelser.",
+        "Hurtigere i højsæsonen: Når busser kravler gennem trafikken, kan færgen være meget hurtigere.",
+        "Frisk luft og komfort: Åbent dækområde, havbrise og ingen snoede bjergveje (godt, hvis du bliver køresyg i busser).",
+        "Vejrafhængig: I modsætning til busser aflyst færger, når havet er hårdt — normalt under efterårs- og vinterstorme, og nogle gange sommertordenvejr.",
+        "Højere pris: Færgebilletter er normalt 2-3 gange dyrere end busbilletter."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/03-ferry-ride.webp",
+          "alt": "Smuk udsigt over Amalfikysten fra en færge, der viser landsbyer på klippetoppe og turkisblåt vand"
+        }
       ]
     },
     {
       "id": "tickets",
       "title": "Billetter og køreplaner",
-      "body": "Se de nyeste tider og priser på %URL:https://travelmar.it/en|Travelmar% og %URL:https://www.positano.com/en/ferry-schedule|Positano.com — færgetider%.",
+      "body": "To hovedoperatører kører Positano-Amalfi-ruten: Travelmar og Alilauro. Køreplanerne ændres efter sæson, og afgangene bliver meget hyppigere om sommeren. Tjek altid live-køreplanerne dagen før (eller morgenen på) din rejse, da vejraflysninger er almindelige. Tjek de seneste tider og priser på %URL:https://travelmar.it/en|Travelmar% og %URL:https://www.positano.com/en/ferry-schedule|Positano.com — færgekøreplaner%. For en hurtig guide om operatører, sæsoner og almindelige problemer, se %LINK:ferrySchedules|vores guide til færgekøreplaner%.",
       "list": [
-        "Køb billetter online på forhånd i højsæsonen eller i operatørernes boder ved molen.",
-        "Ankom 15–20 minutter før afgang for at bytte vouchers og stille dig i kø til ombordstigning.",
-        "Hav billet eller QR-kode klar til kontrol fra personalet."
+        "Book online i forvejen i højsæsonen (juni-september), især til eftermiddagsrejser, når dagsgæster vender tilbage fra Amalfi.",
+        "Billetter sælges ved vandfrontboder i Positano (kontanter og kort accepteret), eller online via operatørernes hjemmesider.",
+        "Ankom 20-30 minutter før afgang for at bytte vouchers om nødvendigt, finde din operatørs ombordstigningsområde og stille dig i kø.",
+        "Gem et skærmbillede af din QR-kode eller bekræftelsesmail — mobilsignal kan være svagt nær stranden og kajen.",
+        "Tjek, hvilken operatør du har booket hos: Travelmar og Alilauro har forskellige ombordstigningsområder og tager ikke hinandens billetter.",
+        "Hvis du har store tasker (kufferter, store rygsække), skal du spørge personalet om bagageregler og hvor du kan lægge tasker om bord. De fleste færger har begrænset bagageplads."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/07-positano-umbrellas.webp",
+          "alt": "Færgebilletbod ved Spiaggia Grande-stranden i Positano med synlige køreplanstavler"
+        }
+      ]
+    },
+    {
+      "id": "scheduleDetails",
+      "title": "Køreplanmønstre (hvad du kan forvente)",
+      "body": "At vide, hvordan færgekøreplaner fungerer på kysten, hjælper dig med at planlægge din dagstur eller hjemrejse bedre.",
+      "list": [
+        "Højsæson (juli-august): 10-15 daglige rejser fra tidlig morgen (~9:00) til tidlig aften (~18:00).",
+        "Skuldersæson (april-juni, september-oktober): 5-8 daglige rejser, med færre eftermiddagsmuligheder.",
+        "Første rejser: Normalt 8:30-9:30, perfekt til dagsture til Amalfi (kom tidligt, undgå folkemængder).",
+        "Sidste rejser: Normalt 17:00-18:30 om sommeren (men tjek dagligt — dette ændres, og afgange kan blive udsolgt eller aflyst).",
+        "Huller midt på dagen: Nogle operatører holder pause mellem 12:00-14:00 i lavsæsonen. Antag ikke, at der er en båd hver time.",
+        "Hjemrejsetiming: Hvis du planlægger en dagstur til Amalfi, skal du bekræfte din returfærgetid, før du forlader Positano — antag ikke 'der vil være en båd senere.'"
+      ]
+    },
+    {
+      "id": "gettingToPier",
+      "title": "Sådan kommer du til kajen fra Hostel Brikette",
+      "body": "Fra herberget går du ned til Positano by og derefter til Spiaggia Grande-stranden, hvor færgerne afgår fra. Gåturen har stejle trapper og smalle stier, så læg ekstra tid. Brug %LINK:briketteToFerryDock|vores trin-for-trin gåtur til færgekajen% for nemt at nå Spiaggia Grande. Turen tager 15-25 minutter afhængigt af dit tempo og folkemængder.",
+      "list": [
+        "Læg buffertid til trapper (omkring 400+ trin), varme og langsom gangtrafik i byen — især i juli-august, når gaderne er fyldte.",
+        "Start 45+ minutter før din færge afgår for at give tid til at gå, finde den rigtige operatørbod og stille sig i kø.",
+        "Tag vand med, og opbevar vigtige ting (pas, tegnebog, telefon) i en lomme, der er let at nå til ombordstigningskontroller.",
+        "Bær behagelige sko med godt greb — trin kan være glatte, især tidligt om morgenen, når skyggefulde områder stadig kan være fugtige.",
+        "Hvis du har bagage, så overvej at tage en taxa fra herberget til stranden (omkring €10-€15) for at springe over at bære tasker ned ad stejle trapper."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/10-positano-street.webp",
+          "alt": "Trapper, der fører ned gennem Positano bymidte mod Spiaggia Grande-stranden"
+        }
       ]
     },
     {
       "id": "positanoPier",
       "title": "Hvor du går ombord i Positano",
+      "body": "Alle færger afgår fra Positanos hovedkaj ved Spiaggia Grande-stranden. Kajen er i den østlige ende af stranden, let at få øje på, når du nærmer dig vandkanten. Flere operatører deler samme generelle ombordstigningsområde, så hold øje med skilte og personalevejledning.",
       "list": [
-        "Afgangene sker fra Positanos hovedmole på Spiaggia Grande.",
-        "Operatørernes boder ligger langs vandkanten; skilte viser næste afgang for hvert selskab.",
-        "Bekræft den rigtige mole på din billet; personalet kan hjælpe, hvis du er i tvivl."
+        "Operatørboder langs vandkanten nær kajen. Tavler viser næste rejser for Travelmar, Alilauro og andre selskaber.",
+        "Dobbelttjek operatøren og destinationen på din billet, før du stiller dig i kø. Personale ved boder kan hjælpe, hvis du er usikker.",
+        "Ombordstigning åbner normalt 10-15 minutter før afgang. Personalet kalder passagerer frem og tjekker billetter, når du går ombord.",
+        "Hvis du ankommer tidligt, og der endnu ikke er kø, skal du vente nær operatørens bod i stedet for at gå rundt på stranden — ombordstigning kan starte pludseligt.",
+        "Toiletter er på Spiaggia Grande (lille gebyr), hvis du har brug for dem før ombordstigning. Færger har begrænsede eller ingen toiletter på korte ruter."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/06-positano-panorama.webp",
+          "alt": "Passagerer går ombord på en færge ved hovedkajen på Spiaggia Grande-stranden i Positano"
+        }
+      ]
+    },
+    {
+      "id": "onBoard",
+      "title": "Om bord på færgen",
+      "body": "De fleste færger på denne rute er små til mellemstore både med åbent dækområde og overdækkede sæder. Turen er smuk og normalt rolig, men vær klar til noget bevægelse, hvis havet er uroligt.",
+      "list": [
+        "Få et sæde på øverste dæk eller sideskinner for den bedste udsigt — disse fyldes hurtigt op, så gå hurtigt ombord, når du bliver kaldt.",
+        "Venstre side (bagbord) har bedre udsigt over kysten, når du går fra Positano til Amalfi.",
+        "Nogle færger standser i Praiano eller andre landsbyer undervejs. Lyt efter meddelelser og tjek din billet, hvis du er usikker på, om din afgang er direkte eller multi-stop.",
+        "Sol kan være stærk på dækket om sommeren — tag solcreme, hat og solbriller med.",
+        "Hvis du nemt bliver søsyg, skal du sidde nær midten af båden, hvor bevægelsen er mindre, og holde øjnene på horisonten.",
+        "Snacks og drikkevarer sælges ikke altid om bord — tag vand og snacks med, hvis du har brug for dem (især til børn).",
+        "Hold din billet klar, indtil du går af — nogle operatører tjekker billetter, når du ankommer."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/05-li-galli.webp",
+          "alt": "Passagerer på det åbne dæk af en færge, der rejser langs Amalfikysten med kystudsigt"
+        }
       ]
     },
     {
       "id": "amalfiArrival",
       "title": "Ankomst til Amalfi",
+      "body": "Færger ankommer til Amalfis vandkantkajer nær Piazza Flavio Gioia, i hjertet af byen. At gå af er hurtigt og nemt, og du vil være få skridt fra Amalfis hovedattraktioner.",
       "list": [
-        "Bådene anløber Amalfis moler ved Piazza Flavio Gioia.",
-        "Den historiske bymidte og promenaden ligger lige ved havnen.",
-        "For videre busser (fx Ravello eller Sorrento) følger du skiltene til SITA-stoppet nær vandet."
+        "Det historiske centrum er lige ved siden af havnen — det er 2 minutters gang til Duomo og hovedtorvet.",
+        "Hvis du skal tage en bus videre (som til Ravello, Salerno eller tilbage til Positano), er SITA-busstoppestedet nær vandkanten. Følg skilte eller spørg lokalbefolkningen for at finde den rigtige kø — flere linjer afgår fra nærliggende stop.",
+        "Toiletter, cafeer og pengeautomater er alle inden for 5 minutters gang fra kajen.",
+        "Hvis du planlægger at vende tilbage til Positano med færge senere, skal du bemærke, hvor afgangkajen er (samme område, hvor du ankom) og tjekke returkøreplaner ved operatørboder, før du forlader vandkanten.",
+        "Amalfis vandkant bliver fyldt om sommeren — hold værdigenstande sikre og pas på lommetyve i travle områder.",
+        "For en komplet guide til at udforske Amalfi by, se %LINK:dayTripsAmalfi|vores dagstureguid fra Positano%."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/01-amalfi-dock.webp",
+          "alt": "Færge ankommer til Amalfis vandkantkaj med byen og Duomo synlig i baggrunden"
+        }
       ]
+    },
+    {
+      "id": "planB",
+      "title": "Hvis færgen aflyses (backupplan, der virker)",
+      "body": "Færgeaflysninger sker ofte, når havet er hårdt, især under efterårs- og vinterstorme, og nogle gange om sommeren under tordenvejr. Bare rolig — %HOWTO:positano-amalfi-bus|Positano → Amalfi-bussen% kører hele året og er din pålidelige backup. Læs %LINK:ferryCancellations|vores guide til færgeaflysninger% for timing, tips og hvordan du tjekker status, før du forlader herberget.",
+      "list": [
+        "Hvis du allerede er på stranden, når aflysninger annonceres, skal du gå tilbage til hovedvejen (Via Pasitea eller SS163) og tage den næste SITA-bus eller delt taxa.",
+        "Busbilletter kan købes i tabacchi-butikker i byen eller hos chaufføren (kun kontanter, små sedler fungerer bedst).",
+        "Læg buffertid: busser kan ankomme fyldte i topmåneder (især juli-august), og forsinkelser på 15-30 minutter er normale.",
+        "Hvis du rejser sent på dagen, skal du tjekke den sidste mulige afgang (færge eller bus) tidligt, så du ikke sidder fast i Amalfi, efter at offentlig transport stopper.",
+        "I lavsæsonen (november-marts) er færgeafgange meget begrænsede eller kører slet ikke — planlæg at tage bussen."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/09-amalfi-coast.webp",
+          "alt": "Hårde havforhold ved Positano-stranden, der viser, hvorfor færger aflyses i dårligt vejr"
+        }
+      ]
+    },
+    {
+      "id": "tips",
+      "title": "Tips fra herberget",
+      "body": "Vores gæster rejser denne rute hele tiden, og vi har samlet praktiske råd fra deres oplevelser og vores eget personales rejser langs kysten.",
+      "list": [
+        "Book morgenfærger, når du kan: roligere hav, mindre folkemængder, og du får hele dagen i Amalfi.",
+        "Eftermiddagsreturfærger (især 16:00-18:00) bliver hurtigt udsolgt om sommeren — book returbilletter i forvejen eller med det samme, du kommer til Amalfi.",
+        "Hvis du kun er i Amalfi i et par timer, skal du fokusere på Duomo og en tur langs vandkanten. Andre seværdigheder (Papirmuseet, Valle delle Ferriere-vandreturen) kræver mere tid.",
+        "Bland færge og bus for variation: tag færgen til Amalfi (smuk), udforsk byen, og vend derefter tilbage med bus (hurtigere, billigere, og du får vejen at se).",
+        "Tjek vejret før booking: hvis kraftige vinde eller storme er forventet, skal du antage, at færger vil blive aflyst og planlægge at tage bussen i stedet.",
+        "Vi har set gæster gå glip af returfærger, fordi de ikke indser, hvor fyldt Amalfi bliver om sommeren. Indstil en telefonalarm 30 minutter før afgang og gå tilbage til kajen tidligt."
+      ]
+    },
+    {
+      "id": "practical",
+      "title": "Praktiske detaljer",
+      "body": "Et par ting mere at vide, før du går.",
+      "list": [
+        "Betaling: De fleste operatører accepterer kreditkort ved boder og online. Kontanter er stadig nyttige til små køb på stranden.",
+        "Sprog: Personale ved operatørboder taler normalt engelsk, italiensk og ofte spansk eller tysk. Peg på din billet, hvis du er usikker.",
+        "Kæledyr: Små kæledyr i bærere er normalt tilladt, men tjek operatørens politikker, hvis du rejser med dyr.",
+        "Gruppetur: Hvis I er en gruppe på 6+ personer, skal I overveje at booke alle billetter sammen online for at garantere sæder på samme afgang.",
+        "Fotografering: Tag dit kamera eller telefon med — kystudsigten fra færgen er fantastisk, og du vil have billeder.",
+        "Søsygemidler: Hvis du er tilbøjelig til søsyge, skal du tage medicin 30-60 minutter før ombordstigning. Ingefærslik kan også hjælpe.",
+        "Sikkerhed: Redningsveste er om bord, og besætningen vil forklare sikkerhedsprocedurer. Vær opmærksom på meddelelser i tilfælde af nødsituationer.",
+        "Drikkepenge: Ikke forventet, men påskønnet, hvis besætningen hjælper med bagage eller giver ekstra assistance."
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Andre måder at rejse fra Positano til Amalfi",
+      "body": "Færgen er populær, men det er ikke din eneste mulighed. Her er en hurtig sammenligning med andre transportmetoder.",
+      "list": [
+        "SITA-bus: Billigere (€2-€3), kører hele året, men kan være langsom i trafik og fyldt om sommeren. Se %HOWTO:positano-amalfi-bus|vores busguide%.",
+        "Privat taxa eller biltjeneste: Hurtig, behagelig, dør-til-dør service. Koster omkring €40-€60 afhængigt af tidspunkt og udbyder. God til grupper eller hvis du har meget bagage.",
+        "Scooter eller motorcykeludlejning: Kun for selvsikre kørere. SS163-kystvejen er smal, snoet og travl. Parkering i Amalfi er begrænset og ofte dyr.",
+        "Privat bådtur: Dyrere (€100+ pr. person), men inkluderer stop ved skjulte strande og svømning. Book gennem lokale operatører eller din indkvartering.",
+        "At gå: Gudernes sti forbinder Positano-området med områder nær Amalfi, men det er en seriøs vandring (3-4 timer) og går ikke direkte til Amalfi by. Se %LINK:pathOfTheGods|vores guide til Gudernes sti%, hvis du er interesseret."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Kan jeg købe færgebilletter på dagen?",
+      "a": "Ja, billetter sælges ved vandfrontboder i Positano, men i højsæsonen (juli-august) bliver populære tider udsolgt. Book online i forvejen for sindsro, især til eftermiddagsrejser."
+    },
+    {
+      "q": "Hvad sker der, hvis min færge aflyses, og jeg har en forudbetalt billet?",
+      "a": "De fleste operatører tilbyder refusion eller ombooking for vejraflysninger. Tjek operatørens aflysingspolitik, når du booker, og behold din billet eller bekræftelsesmail. Hvis færger aflyses, skift til bussen — den kører hele året og påvirkes ikke af havforhold."
+    },
+    {
+      "q": "Er færgen god til små børn eller ældre passagerer?",
+      "a": "Ja, men tænk over mobilitet og komfort: ombordstigning betyder at træde ind i en båd (nogle gange med en lille rampe), og havet kan være uroligt. Redningsveste er tilgængelige. Hvis mobilitet er et problem, eller vejret ser usikkert ud, kan bussen være et bedre valg."
+    },
+    {
+      "q": "Kan jeg tage en barnevogn eller kørestol med på færgen?",
+      "a": "De fleste færger kan rumme barnevogne og kørestole, men pladsen er begrænset, og ombordstigningshjælp kan være minimal. Kontakt operatøren i forvejen for at bekræfte adgang og bed om hjælp. Bussen kan være lettere for nogle rejsende."
+    },
+    {
+      "q": "Hvor tidligt skal jeg ankomme til kajen?",
+      "a": "Ankom mindst 20-30 minutter før afgang i lavsæsonen og 30-45 minutter i højsæsonen (juli-august). Dette giver dig tid til at finde den rigtige bod, bytte vouchers om nødvendigt og stille sig i kø uden stress."
+    },
+    {
+      "q": "Kører færger om vinteren?",
+      "a": "Færgeafgange er meget begrænsede eller stopper helt fra november til marts. Tjek altid operatørernes hjemmesider før planlægning af vinterrejser. Bussen er din bedste mulighed i vintermånederne."
     }
   ]
 }

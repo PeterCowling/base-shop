@@ -7,7 +7,6 @@
   "intro": [
     "Praktyczne sposoby na obniżenie kosztów transportu: karnety, odpowiednie godziny podróży, mieszanie autobusu i promu oraz plany awaryjne na pogorszenie pogody."
   ],
-  "planChoiceTitle": "Wybierz cel oszczędności",
   "sections": [
     {
       "id": "passes",
@@ -38,7 +37,7 @@
       ]
     }
   ],
-  "faqsTitle": "FAQs",
+  "faqsTitle": "Najczęściej zadawane pytania",
   "faqs": [
     {
       "q": "Czy bilety łączone się opłacają?",

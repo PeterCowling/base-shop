@@ -1,47 +1,34 @@
 {
   "seo": {
-    "title": "Viajar en pareja alojándote en hostels",
-    "description": "Consejos para dormitorios o privadas, encontrar calma y gestionar expectativas."
+    "title": "Viajar en pareja en albergues",
+    "description": "Consejos para dormitorios o habitaciones privadas, encontrar tranquilidad y establecer expectativas."
   },
-  "linkLabel": "Viajar en pareja alojándote en hostels",
+  "linkLabel": "Viajar en pareja en albergues",
   "intro": [
-    "Compartir un hostel como pareja funciona si alinean expectativas sobre privacidad y rutinas compartidas.",
-    "En Positano viajar ligero y elegir bien la habitación ayuda con las escaleras y el descanso."
+    "Los albergues funcionan para parejas cuando eliges el tipo de habitación correcto, empacas ligero y establecen expectativas juntos."
   ],
   "sections": [
     {
       "id": "room-types",
-      "title": "Tipos de habitación",
+      "title": "Tipos de habitaciones",
       "body": [
-        "Si priorizas privacidad, reserva habitaciones privadas; si el presupuesto es ajustado, opta por literas en la misma habitación y coordina horarios.",
-        "Empaca ligero: las escaleras del pueblo hacen que cada kilo cuente al llegar o salir."
+        "Reserva una habitación privada para privacidad; si estás ajustando el presupuesto, compartan literas en el mismo dormitorio y mantengan el equipaje ligero para las escaleras."
       ]
     },
     {
       "id": "quiet",
       "title": "Encontrar tranquilidad",
       "body": [
-        "Lleva tapones y antifaz, y pide habitaciones lejos del bar o zonas comunes para dormir mejor.",
-        "Aprovecha las mañanas para explorar con calma antes de que lleguen los grupos de día."
-      ]
-    },
-    {
-      "id": "etiquette",
-      "title": "Rutinas y acuerdos",
-      "body": [
-        "Habla con tu pareja sobre expectativas: respeto por compañeros de cuarto, uso de luces y organización del equipaje.",
-        "Reserva tiempo propio: turnos para duchas, ratos en terrazas o escapadas breves ayudan a mantener el equilibrio."
+        "Lleva tapones para los oídos y un antifaz, elige habitaciones alejadas del bar o áreas comunes, y usa las mañanas tempranas para un turismo más tranquilo."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "¿Un hostel es adecuado para parejas?",
+      "q": "¿Es un albergue adecuado para parejas?",
       "a": [
-        "Sí: ofrece ambiente social y buen valor; las habitaciones privadas equilibran comodidad y presupuesto."
+        "Sí — obtienes energía social y buen valor; las habitaciones privadas equilibran comodidad y costo."
       ]
     }
-  ],
-  "faqsTitle": "Preguntas frecuentes",
-  "tocTitle": "En esta página"
+  ]
 }

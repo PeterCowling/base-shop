@@ -7,15 +7,6 @@
     "eyebrow": "Trải nghiệm",
     "title": "Trải nghiệm tại Hostel Brikette",
     "description": "Nhâm nhi một ly spritz trên quán bar sân thượng, tham gia các buổi trekking ngắm toàn cảnh và nhận gợi ý tức thì từ trợ lý số của chúng tôi.",
-    "supporting": "Tất cả hoạt động đều dành cho khách đã đăng ký; nếu đi cùng bạn bè ở nơi khác, cứ nhắn cho chúng tôi nhé.",
-    "primaryCta": "Đặt phòng ngay",
-    "secondaryCta": "Xem menu quán bar",
-    "tertiaryCta": "Nhắn trợ lý số",
-    "primaryCtaAria": "Đặt phòng tại Hostel Brikette",
-    "secondaryCtaAria": "Bản dịch đang được chuẩn bị.",
-    "tertiaryCtaAria": "Gửi tin nhắn cho trợ lý số Hostel Brikette",
-    "breakfastCta": "Xem menu bữa sáng",
-    "breakfastCtaAria": "Xem menu bữa sáng",
     "scrollNudge": "Tìm hiểu thêm"
   },
   "sections": {
@@ -104,9 +95,6 @@
       }
     },
     "directionLinks": {
-      "walkFromHostel": "Đi bộ từ hostel",
-      "busFromHostel": "Đi xe buýt",
-      "returnWalk": "Đường về",
       "capriDayTrip": {
         "positanoCapriFerry": "Phà Positano → Capri",
         "capriPositanoFerry": "Phà Capri → Positano"
@@ -141,52 +129,27 @@
       "beaches": {
         "title": "Bãi biển & Bơi lội",
         "description": "Địa điểm bơi lội, hướng dẫn câu lạc bộ bãi biển và đường đến bờ.",
-        "imageAlt": "Vịnh đá với làn nước ngọc lam dọc bờ biển Amalfi",
-        "guides": {
-          "heading": "Hướng dẫn bãi biển",
-          "description": "Chọn bãi cát phù hợp và lên kế hoạch cho ngày của bạn."
-        },
-        "directions": {
-          "heading": "Chỉ đường đến bãi biển",
-          "description": "Hướng dẫn từng bước từ Hostel Brikette xuống bờ biển."
-        }
+        "imageAlt": "Vịnh đá với làn nước ngọc lam dọc bờ biển Amalfi"
       },
       "boat": {
         "title": "Tour thuyền & Phà",
         "description": "Chuyến thuyền, tuyến phà và ý tưởng cho ngày trên biển.",
-        "imageAlt": "Hoàng hôn trên biển nhìn từ Positano",
-        "guides": {
-          "heading": "Hướng dẫn thuyền",
-          "description": "Tour, thuê thuyền và lịch phà."
-        }
+        "imageAlt": "Hoàng hôn trên biển nhìn từ Positano"
       },
       "cuisine": {
         "title": "Ẩm thực & Đặc sản địa phương",
         "description": "Địa điểm ăn uống, chợ và trải nghiệm ẩm thực.",
-        "imageAlt": "Bữa ăn Ý truyền thống bên bờ biển",
-        "guides": {
-          "heading": "Hướng dẫn ẩm thực",
-          "description": "Món ăn và đặc sản địa phương ngon nhất."
-        }
+        "imageAlt": "Bữa ăn Ý truyền thống bên bờ biển"
       },
       "day-trip": {
         "title": "Chuyến đi trong ngày",
         "description": "Chuyến đi một ngày từ Positano — Capri, Ravello, Pompeii và hơn thế nữa.",
-        "imageAlt": "Tầm nhìn toàn cảnh bờ biển Amalfi từ ban công Ravello",
-        "guides": {
-          "heading": "Hướng dẫn chuyến đi trong ngày",
-          "description": "Những chuyến đi đáng giá trong một ngày."
-        }
+        "imageAlt": "Tầm nhìn toàn cảnh bờ biển Amalfi từ ban công Ravello"
       },
       "hiking": {
         "title": "Trekking & Đường mòn",
         "description": "Các tuyến đi bộ từ dạo chơi nhẹ nhàng đến hành trình cả ngày.",
         "imageAlt": "Những người trekking trên đường mòn Con Đường Của Các Vị Thần với tầm nhìn bờ biển"
-      },
-      "itinerary": {
-        "title": "Lịch trình",
-        "description": "Kế hoạch nhiều ngày cho các độ dài chuyến đi khác nhau.",
-        "imageAlt": "Tầm nhìn ngoạn mục của bờ biển Amalfi từ trên cao"
       },
       "more": {
         "title": "Hướng dẫn khác",

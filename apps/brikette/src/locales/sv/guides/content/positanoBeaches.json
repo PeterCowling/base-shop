@@ -166,12 +166,13 @@
     },
     {
       "id": "logistics",
-      "title": "Att ta sig till och från stranden",
+      "title": "Hur du tar dig till och från stränderna",
       "body": [
-        "Från hostelet är snabbaste upplägget ofta: gå ner till Spiaggia Grande (eller ta bussen), och bestäm sedan om du fortsätter längs promenaden till Fornillo, hoppar på en shuttle-båt eller stannar vid huvudstranden.",
-        "Om du gör en beach club-dag som inkluderar båttransfer (Arienzo eller Laurito) är det ofta enklast att börja vid Spiaggia Grande så att du kan ställa dig i kö tidigt och undvika trapporna.",
-        "Sommaren 2026: räkna med värme i backarna. Fyll på vatten innan du går upp igen, och om du är trött, ta den interna bussen istället för att gå varje steg.",
-        "För dagsturer (Praiano, Amalfi, Sorrento): kolla sista returen innan du bestämmer dig. Färjor är den skönaste resan när de går, men bussar är backup. Om havet är stökigt eller färjor ställs in, lägg in extra tid och håll planen flexibel. Packa snacks för resan."
+        "Varje strand har olika åtkomstalternativ, så kolla den specifika guiden innan du ger dig iväg. Här är snabblänkar till de mest användbara vägbeskrivningarna:",
+        "Positano-stränder: %LINK:positanoMainBeachWalkDown|Gå till Spiaggia Grande% • %LINK:positanoMainBeachBusDown|Buss till Spiaggia Grande% • %LINK:hostelBriketteToFornilloBeach|Gå till Fornillo% • %LINK:hostelBriketteToArienzoBus|Buss till Arienzo% • %LINK:lauritoBeachBusDown|Buss till Laurito%",
+        "Returvägar: %LINK:positanoMainBeachWalkBack|Gå tillbaka från Spiaggia Grande% • %LINK:positanoMainBeachBusBack|Buss tillbaka från Spiaggia Grande% • %LINK:fornilloBeachToBrikette|Gå tillbaka från Fornillo% • %LINK:arienzoBeachBusBack|Buss tillbaka från Arienzo% • %LINK:lauritoBeachBusBack|Buss tillbaka från Laurito%",
+        "Dagsturstränder: %LINK:hostelBriketteToFiordoDiFuroreBus|Fiordo di Furore% • %LINK:gavitellaBeachGuide|Gavitella (Praiano)% • %LINK:marinaDiPraiaBeaches|Marina di Praia% • %LINK:reginaGiovannaBath|Regina Giovanna (Sorrento)%",
+        "Allmänna tips: Under sommaren 2026, planera för värme vid stigningarna—fyll på vatten innan du går tillbaka och använd den interna bussen om du är trött. För dagsutflykter, kolla det sista returtillfället (färja eller buss) innan du bestämmer dig och ta med snacks för resan. Om havet är grovt eller färjor är inställda, planera extra tid och håll ditt schema flexibelt."
       ],
       "images": [
         {

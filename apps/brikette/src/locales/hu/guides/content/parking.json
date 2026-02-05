@@ -3,6 +3,7 @@
     "title": "Parkolás Positano környékén",
     "description": "Hol parkolj, milyen árak vannak, és hogyan kerülheted el a tömeget."
   },
+  "lastUpdated": "2026-02-04T00:00:00.000Z",
   "linkLabel": "Parkolás Positano körül",
   "intro": [
     "Positano egy meredek falakkal körülvett város, ezért a parkolás sokszor kihívást jelent. Íme néhány tipp, hogy elkerüld a stresszt."
@@ -33,6 +34,12 @@
       ]
     }
   ],
+  "tipsTitle": "Quick tips",
+  "tips": [
+    "Nézd meg a ZTL/alternáló rendszámos korlátozásokat az SS163 előtt — a bírságok hónapokkal később érkezhetnek.",
+    "Készíts napi táskát a legfontosabb dolgokkal, mielőtt leadod a kulcsot — a garázsok gyakran egymás mögé parkolják az autókat."
+  ],
+  "faqsTitle": "GYIK",
   "faqs": [
     {
       "q": "Honnan indul a parkolóbusz?",
@@ -47,10 +54,5 @@
       ]
     }
   ],
-  "tocTitle": "Ezen az oldalon",
-  "faqsTitle": "GYIK",
-  "tips": [
-    "Nézd meg a ZTL/alternáló rendszámos korlátozásokat az SS163 előtt — a bírságok hónapokkal később érkezhetnek.",
-    "Készíts napi táskát a legfontosabb dolgokkal, mielőtt leadod a kulcsot — a garázsok gyakran egymás mögé parkolják az autókat."
-  ]
+  "tocTitle": "Ezen az oldalon"
 }

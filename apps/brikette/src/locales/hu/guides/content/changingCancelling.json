@@ -1,43 +1,50 @@
 {
   "seo": {
-    "title": "Foglalás módosítása és lemondása a positanói hostelben",
-    "description": "Részletes útmutató a lemondási lehetőségekről, no‑show szabályokról, foglalás módosításáról, átruházási feltételekről és az előre fizetett, nem visszatéríthető foglalásokról a positanói hostelben."
+    "title": "Positano Hostel Foglalásának Módosítása és Lemondása",
+    "description": "Részletes útmutató a lemondási lehetőségekről, be nem jelentkezési szabályzatokról, foglalás módosításáról, foglalás átruházási szabályokról és előre fizetett, nem visszatérítendő foglalásokról Positano egyetlen hostelében."
   },
-  "linkLabel": "Foglalás módosítása és lemondása a positanói hostelben",
+  "linkLabel": "Positano Hostel Foglalásának Módosítása és Lemondása",
   "sections": [
     {
       "id": "noShowCharges",
-      "title": "No‑show díjak",
+      "title": "Be Nem Jelentkezési Díjak",
       "body": [
-        "Ha az érkezés napján 22:30-ig nem jelentkezel be, a foglalást automatikusan no-show-ként rögzítjük. Ilyenkor a magasabb összeget kell megfizetni: vagy az első éjszaka díját, vagy a nem visszatéríthető előleget. Több foglalás esetén mindegyikre külön lemondási határidő és díj vonatkozhat."
+        "Ha nem jelentkezel be 22:30-ig (este 10:30) a foglalásod első napján, a foglalásod automatikusan 'Be Nem Jelentkezésként' kerül megjelölésre. A magasabb összeget számítjuk fel: vagy az első éjszaka díját, vagy a nem visszatérítendő foglaló összeget. Ha több foglalásod van, mindegyik saját lemondási időszakkal és díjakkal rendelkezhet."
       ]
     },
     {
       "id": "cancellationsPolicy",
-      "title": "Lemondási szabályzat",
+      "title": "Lemondási Szabályzat",
       "body": [
-        "A lemondási kérelmeket mindig írásban, a hivatalos e-mail címünkre küldd (%URL:mailto:hostelpositano@gmail.com|hostelpositano@gmail.com%). A lemondási időszak attól a pillanattól számít, amikor megkapjuk az e-mailedet, és a tervezett bejelentkezési nap 00:01-kor zárul. A foglalás addig érvényben marad, amíg nem kapsz visszaigazoló e-mailt a feldolgozásról. Külön Lemondási adminisztrációs díjat számítunk fel – jellemzően a foglalási ár 15%-át, a külső jutalékok nélkül. Írásos kérés nélkül is törölhetjük a foglalást, ha az érkezés napján 22:30 előtt nem jelentkezel be, engedély nélkül előbb távozol, vagy megszeged a házirendet. Elégtelen értesítés esetén a no-show díjszabás lép életbe."
+        "Minden lemondási kérelmet írásban küldj el hivatalos e-mail címünkre (%URL:mailto:hostelpositano@gmail.com|hostelpositano@gmail.com%). A lemondási időszak akkor kezdődik, amikor a hostel megkapja az e-mailt, és az ütemezett bejelentkezési dátum 00:01-kor ér véget. A foglalásod aktív marad, amíg meg nem kapod az e-mail megerősítést, hogy a lemondást feldolgozták. Külön lemondási adminisztrációs díj - általában a foglalási ár 15%-a, harmadik féltől származó jutalékok nélkül - kerül felszámításra. A hostel lemondhatja foglalásodat írásos kérelem nélkül, ha nem jelentkezel be az érkezési nap recepciójának zárása előtt, idő előtt távozol megfelelő értesítés nélkül, vagy megsérted a hostel szabályzatát. Ha nem adsz elegendő értesítést, be nem jelentkezéssel egyenértékű díjakat kell fizetned."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/f/f4/Man_with_smartphone_and_laptop_%28Unsplash%29.jpg",
+          "alt": "Okostelefont és laptopot használó személy",
+          "caption": "Az e-mail a leggyorsabb módja a módosítások vagy lemondások írásos rögzítésének."
+        }
       ]
     },
     {
       "id": "changingConfirmedBookings",
-      "title": "Megerősített foglalások módosítása",
+      "title": "Megerősített Foglalások Módosítása",
       "body": [
-        "A meglévő foglalásokat nem módosítjuk közvetlenül; a változtatás új foglalással történik. A kérést az előírt határidőn belül e-mailben küldd a hivatalos címre, és jóváhagyás után írásos visszaigazolást kapsz. Minden módosítás a szabad kapacitástól és egyéb feltételektől függ. Ha rövidebb vagy hosszabb tartózkodást kérsz, azt lemondásként vagy hosszabbításként kezeljük, a hosszabbítás pedig új foglalásnak minősül. Ha a visszaigazolt távozási dátum előtt távozol hivatalos lemondási visszaigazolás nélkül, az eredeti feltételek maradnak érvényben."
+        "A meglévő foglalások nem módosíthatók közvetlenül; helyette teljesen új foglalásokkal kerülnek helyettesítésre. Küld el módosítási kérelmedet e-mailben hivatalos címünkre a szükséges értesítési időn belül. E-mailt kapsz, amint a módosítást jóváhagyták. Minden módosítás a szobák elérhetőségétől és más feltételektől függ. Ha lerövidíted vagy meghosszabbítod tartózkodásodat, a módosítást lemondási vagy meghosszabbítási kérelemként kezelik, és minden meghosszabbítás új foglalásként kerül kezelésre. Ha a megerősített távozási dátum előtt távozol anélkül, hogy hivatalos lemondási megerősítést kapnál, az eredeti foglalási feltételek érvényben maradnak."
       ]
     },
     {
       "id": "bookingTransferability",
-      "title": "Foglalás átruházhatósága",
+      "title": "Foglalás Átruházhatósága",
       "body": [
-        "A foglalás a teljes tartózkodás alatt a te neveden marad. A név vagy a jogosult vendég cseréje nem megengedett. Ha valaki átruházott foglalással próbál bejelentkezni, a foglalást azonnal töröljük, és a teljes összegért továbbra is te tartozol."
+        "A foglalásodnak a neved alatt kell maradnia a teljes tartózkodás alatt. A foglalás átruházása vagy a vendég nevének megváltoztatása nem megengedett. Ha valaki megpróbál bejelentkezni átruházott foglalással, a foglalást azonnal lemondják, és te maradsz anyagilag felelős a teljes összegért."
       ]
     },
     {
       "id": "prepaidNonRefundableBookings",
-      "title": "Előre fizetett, nem visszatéríthető foglalások",
+      "title": "Előre Fizetett, Nem Visszatérítendő Foglalások",
       "body": [
-        "Az előre fizetett, nem visszatéríthető foglalásokat a foglalás pillanatában kell teljes összegben rendezni. Sikertelen fizetés esetén a rendszer automatikusan töröl. Ezek az összegek sem lemondáskor, sem no-show esetén nem téríthetők vissza. Ha hosszabbítanál, az külön, új nem visszatéríthető foglalásként kerül rögzítésre."
+        "Az előre fizetett, nem visszatérítendő foglalások teljes befizetést igényelnek a foglalás időpontjában. Ha a fizetés nem megy át, a foglalásod automatikusan törlődik. Ezek a foglalások nem visszatéríthetők, még akkor sem, ha lemondod vagy nem jelensz meg. Tartózkodásod bármilyen meghosszabbítása külön, új nem visszatérítendő foglalásként kerül feldolgozásra."
       ]
     }
   ]

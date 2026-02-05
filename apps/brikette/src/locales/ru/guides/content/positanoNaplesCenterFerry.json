@@ -12,51 +12,61 @@
       "items": [
         {
           "src": "/img/directions/positano-capri-ferry-img01.png",
+          "alt": "Изображение шага маршрута 1",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img02.jpg",
+          "alt": "Изображение шага маршрута 2",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img03.jpg",
+          "alt": "Изображение шага маршрута 3",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img04.png",
+          "alt": "Изображение шага маршрута 4",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img05.jpg",
+          "alt": "Изображение шага маршрута 5",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img06.jpg",
+          "alt": "Изображение шага маршрута 6",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img07.jpg",
+          "alt": "Изображение шага маршрута 7",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img08.jpg",
+          "alt": "Изображение шага маршрута 8",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img09.jpg",
+          "alt": "Изображение шага маршрута 9",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img10.jpg",
+          "alt": "Изображение шага маршрута 10",
           "aspectRatio": "4/3",
           "preset": "gallery"
         }

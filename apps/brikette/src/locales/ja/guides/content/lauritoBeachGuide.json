@@ -1,77 +1,201 @@
 {
   "seo": {
-    "title": "Laurito Beach guide",
-    "description": "Choose between Da Adolfo and Tre Ville, learn how the shuttle boats work, and plan a stress-free beach day in Laurito."
+    "title": "ラウリート・ビーチ、ポジターノ：ダ・アドルフォ、トレ・ヴィッレ＆アクセスガイド",
+    "description": "ホステル滞在者向けラウリート・ビーチガイド：ダ・アドルフォ vs ヴィラ・トレ・ヴィッレ、予約方法、シャトルボート、バス＋階段のバックアップ、費用、持ち物。"
   },
-  "linkLabel": "Laurito Beach guide",
+  "linkLabel": "ラウリート・ビーチ：崖の下に隠れた宝石",
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
   "intro": [
-    "Laurito is a pocket-sized cove tucked between Positano and Praiano. Two beach clubs — Da Adolfo and Villa Tre Ville — dominate the shoreline, leaving just a sliver of public sand. The reward is west-facing sunshine, iconic lunch spots, and a quieter atmosphere than Spiaggia Grande.",
-    "Use this guide to decide which club suits your style, understand how the water taxis operate, and map out the bus-and-stairs route back to Hostel Brikette."
+    "ラウリートは、ポジターノとプライアーノの間に隠れた小さな入り江です。2つのビーチクラブ — ダ・アドルフォとヴィラ・トレ・ヴィッレ — が海岸線を占有し、わずかな公共のビーチエリアが残されています。その見返りは西向きの日差し、象徴的なランチスポット、そしてスピアッジャ・グランデよりも静かな雰囲気です。",
+    "ホステル滞在者にとって、ラウリートは「自分へのご褒美」ビーチデー：穏やかな湾で泳ぎ、ゆっくりとランチを楽しみ、それでも夕日のドリンクのために町に戻ることができます — 帰りの計画を立てる限り。",
+    "このガイドを使って、ダ・アドルフォとヴィラ・トレ・ヴィッレのどちらを選ぶか、シャトルボートの仕組みを理解し、%LINK:lauritoBeachBusDown|バスルート%と%LINK:lauritoBeachBusBack|復路ガイド%で信頼できるバックアッププランを立てましょう。"
   ],
   "toc": [
     {
+      "href": "#quick-plan",
+      "label": "クイックプラン（ホステルから）"
+    },
+    {
       "href": "#why-go",
-      "label": "Why visit Laurito"
+      "label": "ラウリートを訪れる理由"
+    },
+    {
+      "href": "#getting-there",
+      "label": "アクセス方法（ボート vs バス）"
     },
     {
       "href": "#layout",
-      "label": "Layout & services"
+      "label": "レイアウト＆サービス"
     },
     {
       "href": "#tre-ville",
-      "label": "Villa Tre Ville beach club"
+      "label": "ヴィラ・トレ・ヴィッレ ビーチクラブ"
     },
     {
       "href": "#da-adolfo",
-      "label": "Da Adolfo beach club"
+      "label": "ダ・アドルフォ ビーチクラブ"
     },
     {
-      "href": "#logistics",
-      "label": "Logistics & getting back"
+      "href": "#returns",
+      "label": "タイミング＆帰路"
+    },
+    {
+      "href": "#pack",
+      "label": "持ち物"
+    },
+    {
+      "href": "#image-credits",
+      "label": "画像クレジット"
     }
   ],
   "sections": [
     {
-      "id": "why-go",
-      "title": "Why Laurito is worth the effort",
+      "id": "quick-plan",
+      "title": "ホステル・ブリケットからのクイックプラン（2分まとめ）",
       "body": [
-        "Laurito sits just outside Positano’s centre, so crowds thin out compared with Spiaggia Grande. Sun hits the deck until early evening, the water stays calm for swimming, and the cliff backdrop makes for classic Amalfi Coast photos.",
-        "You will need either a confirmed reservation or patience for the tiny free strip, but once you are settled it is one of the most relaxed spots within a short ride of Hostel Brikette."
+        "簡単な方法が必要な場合：ホステルを出る前に1つの「メインルート」と1つの「バックアップルート」を選びましょう。ラウリートは小さく、リラックスして到着できれば最高の一日になります — 信号のない桟橋で即興するのではなく。",
+        "スタッフのアドバイス：ピーク時に計画を狂わせる2つの要因は（1）満員のボートと（2）荒れた海でシャトルが停止すること。この2つに備えれば、あとは簡単です。"
+      ],
+      "list": [
+        "雰囲気を選ぶ：クラシックなランチ＆ラウンジャーの一日ならダ・アドルフォ、プレミアムデッキと静かなサービスならヴィラ・トレ・ヴィッレ。入り江だけを楽しみたい場合は、早めに小さな公共エリアを目指し、自分で日よけを持参しましょう。",
+        "メインルート（最も便利）：スピアッジャ・グランデからのシャトルボート。到着時に列に並ぶ場所を確認し、最終便の時間を尋ねましょう。",
+        "バックアップルート（最も信頼できる）：%LINK:lauritoBeachBusDown|バスでラウリートへ%＋階段、その後%LINK:lauritoBeachBusBack|バスで戻る%。",
+        "「行く/行かない」の時間を設定：予約がない場合、早めに出発すれば成功の可能性が高まります。すでに午前中遅くでボートの列が見える場合は、ラウリートを無理に押し通すのではなく、%LINK:positanoBeaches|別のポジターノビーチ%などの代替案を検討しましょう。",
+        "基本を持参：ウォーターシューズ、現金/カード、日焼け止め、ボートの帰り道用の軽い上着（午後遅くに風が強まります）。"
+      ]
+    },
+    {
+      "id": "why-go",
+      "title": "ラウリートが努力する価値がある理由",
+      "body": [
+        "ラウリートはポジターノの中心部のすぐ外にあるため、スピアッジャ・グランデに比べて人混みが少なくなります。夕方まで太陽が入り江を照らし、水は通常穏やかで泳ぎやすく、崖が湾を囲んでアマルフィ海岸の象徴的な写真を撮ることができます。",
+        "また、ビーチデーを思い出に残る「長いランチデー」に変える最も簡単な場所の1つです。両クラブともしっかりしたキッチンを運営しているので（スナックだけではなく）、町に戻ることなく泳いで、食べて、くつろぐことができます。",
+        "トレードオフはアクセスです：海岸線のほとんどはクラブによって管理されており、公共エリアは本当に小さいです。計画なしで現れると、ラウリートは行き止まりのように感じられるかもしれません。予約や明確なバックアッププランを持って現れれば、ホステル・ブリケットからの最もリラックスした半日旅行の1つです。",
+        "その日ラウリートが厳しそうな場合（列、満員のボート、またはより自由なスペースが欲しい場合）、%LINK:positanoBeaches|ポジターノビーチの概要%で代替案と比較しましょう。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/02-beach-overview.jpg",
+          "alt": "崖を背景にしたラウリート・ビーチの入り江と海岸線に並ぶビーチクラブ",
+          "caption": "ラウリート・ビーチの配置：1. 無料エリア 2. トレヴィッラ・ビーチクラブ 3. ダ・アドルフォ",
+          "width": 403,
+          "height": 500
+        }
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "アクセス方法：シャトルボート vs バス＋階段",
+      "body": [
+        "ラウリートに到達する現実的な方法は2つあります：スピアッジャ・グランデからのシャトルボート（最も便利）またはSITAバスの後に階段（海が荒れているときやボートが満員のときに最も信頼できる）。",
+        "ボートルート（予約がある場合に最適）：スピアッジャ・グランデに向かい、ビーチシャトルが使用する小さな桟橋/乗船地点を見つけます。特に穏やかで晴れた日には、列がすぐに形成されることがあります。不確かな場合は、桟橋で尋ね、目指しているクラブ名を見せて、正しいボートに乗りましょう。",
+        "バスルート（最良のバックアップ）：%LINK:lauritoBeachBusDown|ステップバイステップのバスガイド%に従ってラウリート停留所に到着し、標識のある階段を降ります。これはボートよりも遅いですが、水上タクシーが停止してもまだ機能する計画です。",
+        "復路計画：ボートで到着した場合でも、%LINK:lauritoBeachBusBack|バスでの復路ガイド%をスマートフォンに保存しておきましょう。最終シャトルに乗り遅れたり、海が荒れたりした場合の最もシンプルな「プランB」です。",
+        "時刻表は変更されます。最新のSITAスケジュールについては、遅い帰りを決める前に%URL:https://www.positano.com/en/bus-schedule|Positano.comのバス時刻表%を確認してください。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/06-amalfi-coast-sita-bus.jpg",
+          "alt": "海の上のアマルフィ海岸道路を走る青いSITAバス",
+          "caption": "ボートが停止したときの信頼できるバックアップ：海岸道路沿いのSITAバス",
+          "width": 1920,
+          "height": 1080
+        }
       ]
     },
     {
       "id": "layout",
-      "title": "Layout and who runs what",
+      "title": "レイアウトと運営者",
       "body": [
-        "The cove splits into three zones. A narrow public area sits on the far right for those who bring their own towels. Villa Tre Ville’s club occupies the central decks with terracotta loungers, while Da Adolfo operates the left-hand side with wooden beds and the restaurant terrace.",
-        "All guests arrive by boat or via the steep stairway from the SITA bus stop. Expect to queue at peak times because both clubs control access to most of the shoreline."
+        "入り江は3つのゾーンに分かれています。狭い公共エリアが右端にあり、自分のタオルを持参する人向けです。ヴィラ・トレ・ヴィッレのクラブは中央のデッキをテラコッタのラウンジャーで占有し、ダ・アドルフォは左側を木製のベッドとレストランテラスで運営しています。",
+        "すべてのゲストはボートまたはSITAバス停からの急な階段で到着します。両クラブが海岸線のほとんどへのアクセスを管理しているため、ピーク時には列に並ぶことを予想してください。",
+        "実用的な注意：公共エリアを目指す場合は、早めに到着し、自分の水と日よけを持参し、柔らかい砂ではなく小石/岩盤に備えてください。クラブを予約する場合は、タオルが含まれているか、追加料金に現金が必要かを確認してください。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/01-beach-layout-map.jpg",
+          "alt": "ラウリート・ビーチのレイアウト図：無料セクション、ヴィラ・トレ・ヴィッレ、ダ・アドルフォの3つのゾーン",
+          "caption": "ラウリートのレイアウト：狭い公共エリア（右端）、ヴィラ・トレ・ヴィッレの中央デッキ、ダ・アドルフォのテラス（左）",
+          "width": 1500,
+          "height": 1000
+        }
       ]
     },
     {
       "id": "tre-ville",
-      "title": "Villa Tre Ville beach club",
+      "title": "ヴィラ・トレ・ヴィッレ ビーチクラブ",
       "body": [
-        "Villa Tre Ville hosts a boutique club with limited loungers, attentive service, and pricing to match. Expect premium day beds, à la carte dining, and prosecco served to your chair.",
-        "Reservations run through the hotel concierge. Seats can exceed €200 for two in high season, but include towels, showers, and return boat service to Spiaggia Grande.",
-        "Late afternoon is particularly scenic; staff often arrange sunset spritz tastings before the final shuttle back to Positano."
+        "ヴィラ・トレ・ヴィッレは、限られたラウンジャー、行き届いたサービス、そしてそれに見合った価格のブティッククラブを運営しています。プレミアムデイベッド、アラカルトダイニング、そして椅子に運ばれるプロセッコを期待してください。",
+        "予約はホテルのコンシェルジュを通じて行われます。価格はシーズンと列によって変わりますが、これはラウリートの「プレミアム」オプションです：より高い最低支出と、当日の飛び込み客の可能性が少ないことを計画してください。",
+        "価値がある理由：混雑が少なく、ラウンジャー間のスペースが広く、平和に読書、昼寝、または二日酔いを処理したい場合に穏やかな雰囲気です。カップルや小グループで旅行していて、予測可能な一日を望む場合、これは通常よりスムーズな選択です。",
+        "午後遅くは特に風光明媚です。チェックイン時にスタッフに最終便の時間を尋ね、太陽がまだ出ているからといって遅くまで運行すると仮定しないでください。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg",
+          "alt": "テラコッタのラウンジャーとプレミアムサービスのヴィラ・トレ・ヴィッレ ビーチクラブ",
+          "caption": "ヴィラ・トレ・ヴィッレ — プレミアムデイベッドとコンシェルジュスタイルのサービスを備えたブティックビーチクラブ",
+          "width": 1280,
+          "height": 1600
+        }
       ]
     },
     {
       "id": "da-adolfo",
-      "title": "Da Adolfo beach club",
+      "title": "ダ・アドルフォ ビーチクラブ",
       "body": [
-        "Da Adolfo is famous for its grilled mozzarella on lemon leaves and relaxed, bohemian vibe. Booking is notoriously difficult — they reply slowly, and day-of slots go to returning guests first.",
-        "If you cannot secure a reservation, arrive early at Spiaggia Grande and ask to join the Da Adolfo water taxi as a standby guest. Once at the dock, staff will add you to their waitlist for any no-shows.",
-        "Lounger packages hover around €50–€70 for two people including the shuttle. Lunch mains run €18–€26 and the kitchen stays open through late afternoon."
+        "ダ・アドルフォは、レモンの葉の上で焼いたモッツァレラとリラックスした、ボヘミアンな雰囲気で有名です。予約は非常に難しいことで知られています — 返信が遅く、当日の枠は常連客が優先されます。",
+        "予約が確保できない場合は、スタンバイを試してみてください：スピアッジャ・グランデに早めに到着し、ダ・アドルフォの水上タクシーに乗せてもらうように丁寧に頼みましょう。早めに始めるほど、キャンセルが出る可能性が高まります。",
+        "ここでは「ランチファースト」の雰囲気を期待してください：人々は泳ぎと同じくらい食事と雰囲気を求めて来ます。予約がある場合は、慌ただしい朝に詰め込もうとするのではなく、落ち着いてしばらく滞在する計画を立てましょう。",
+        "価格はシーズンと空き状況によって異なります。目安として、ラウンジャーパッケージは、シャトルを含めて2人で€50〜€70の範囲であることが多く、ランチのメインは一般的に€18〜€30の範囲です。これらを見積もりとして扱い、到着時に確認してください。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg",
+          "alt": "ボヘミアンな雰囲気のダ・アドルフォ ビーチクラブの桟橋とレストランテラス",
+          "caption": "ダ・アドルフォ — リラックスしたランチの雰囲気とスピアッジャ・グランデからの水上タクシーアクセスで有名",
+          "width": 512,
+          "height": 215
+        }
       ]
     },
     {
-      "id": "logistics",
-      "title": "Logistics, tickets, and getting back",
+      "id": "returns",
+      "title": "タイミング、海の状況、ホステルへの帰路",
       "body": [
-        "Water taxis for both clubs depart from the small pier on Spiaggia Grande. Boats typically run every 30 minutes from 09:30 until early afternoon, then resume returns around 15:00. Keep an eye on the chalkboard at the dock for changes when seas are rough.",
-        "Prefer public transport? Follow our %LINK:lauritoBeachBusDown|bus guide% for the outbound journey and %LINK:lauritoBeachBusBack|return guide% for the climb back. Buy your bus tickets before leaving town — there is nowhere to purchase them at Laurito.",
-        "On the way home, the coastal bus towards Sorrento or Positano stops beside the staircase entrance. Services thin out after 19:00, so confirm the last departure or budget for a taxi arranged via the hostel."
+        "ラウリートのストレスのほとんどは、1日の始まりではなく終わりに起こります。帰りのルートを早めに決め、到着したらすぐに「最終便」の時間を確認しましょう（海の状況とシーズンによって変わる可能性があります）。",
+        "クラブの水上タクシーはスピアッジャ・グランデから出発します。海が荒れるとシャトルが停止することがあります。その場合、桟橋で無期限に待つのではなく、バスと階段の計画に切り替えるのが最善の策です。",
+        "最初から公共交通機関を好む場合は、往路は%LINK:lauritoBeachBusDown|バスガイド%、復路は%LINK:lauritoBeachBusBack|復路ガイド%に従ってください。町を出る前にバスチケットを購入してください — ラウリートでは購入場所がありません。",
+        "長いランチの後に戻る場合は、バッファ時間を確保しましょう。バスは混雑して遅くなることがあり、最終便を逃すよりも早めのバスに乗る方が簡単です。暗くなってから外に出る場合、タクシーは可能ですが高額です — その日の最良の選択肢をホステルに尋ねましょう。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/05-positano-view.jpg",
+          "alt": "ポジターノと海岸近くのボートの眺め",
+          "caption": "スピアッジャ・グランデは多くのビーチシャトルやボートの主要な出発地点です",
+          "width": 1280,
+          "height": 1707
+        }
+      ]
+    },
+    {
+      "id": "pack",
+      "title": "持ち物（ホステル滞在者向けチェックリスト）",
+      "body": [
+        "ラウリートは「小さな入り江」の日です。つまり、クラブの外では限られた施設しかないと仮定する必要があります。予約がある場合でも、賢く荷造りすることで一日がよりスムーズになります。",
+        "持参するもの：ウォーターシューズ（小石/岩盤）、サンゴ礁に安全な日焼け止め、ボートの帰り道用の軽い上着、そして少額の現金/カード。公共エリアを試す予定がある場合は、自分のタオル/マットと日よけを追加してください。",
+        "桟橋では携帯電話の信号が不安定になることがあります。予約確認のスクリーンショットを撮り、%LINK:lauritoBeachBusBack|バスでの復路ステップ%をバックアップとして保存しておきましょう。"
+      ]
+    },
+    {
+      "id": "image-credits",
+      "title": "画像クレジット",
+      "body": [
+        "このガイドの一部の写真は、クリエイティブ・コモンズ・ライセンスの下で使用されています："
+      ],
+      "list": [
+        "ポジターノの海岸線 — 写真クレジット：%URL:https://commons.wikimedia.org/wiki/File:Positano_sea.jpg|Alexis Lours% (%URL:https://creativecommons.org/licenses/by/4.0/|CC BY 4.0%)。",
+        "SITAバス — 写真クレジット：%URL:https://commons.wikimedia.org/wiki/File:Amalfi_Drive_Sita_Bus.jpeg|Robot8A% (%URL:https://creativecommons.org/licenses/by-sa/4.0/|CC BY-SA 4.0%)。"
       ]
     }
   ],
@@ -79,77 +203,88 @@
     "whyGo": {
       "src": "/img/guides/laurito-beach/02-beach-overview.jpg",
       "alt": "海岸線に沿ってビーチクラブが並ぶラウリート・ビーチの入り江",
-      "caption": "崖に囲まれたラウリートの入り江は、メインビーチより穏やかで静かです。"
+      "caption": "ラウリート・ビーチの配置：1. 無料エリア 2. トレヴィッラ・ビーチクラブ 3. ダ・アドルフォ",
+      "width": 403,
+      "height": 500
     },
     "layout": {
       "src": "/img/guides/laurito-beach/01-beach-layout-map.jpg",
       "alt": "ラウリートのビーチデッキと海岸線のレイアウト",
-      "caption": "入り江は3つのゾーンに分かれています：公共エリア、ヴィラ・トレ・ヴィッレのデッキ、ダ・アドルフォのテラス。"
+      "caption": "入り江は3つのゾーンに分かれています：公共エリア、ヴィラ・トレ・ヴィッレのデッキ、ダ・アドルフォのテラス。",
+      "width": 1500,
+      "height": 1000
     },
     "treVille": {
       "src": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg",
       "alt": "ヴィラ・トレ・ヴィッレ・ビーチクラブのサンベッドと海の眺め",
-      "caption": "ヴィラ・トレ・ヴィッレはプレミアムなサンベッドとコンシェルジュスタイルのサービスが特徴です。"
+      "caption": "ヴィラ・トレ・ヴィッレはプレミアムなサンベッドとコンシェルジュスタイルのサービスが特徴です。",
+      "width": 1280,
+      "height": 1600
     },
     "daAdolfo": {
       "src": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg",
       "alt": "ダ・アドルフォ・ビーチクラブの桟橋と座席エリア",
-      "caption": "ダ・アドルフォのシャトルボートはレストランテラスの横にゲストを降ろします。"
+      "caption": "ダ・アドルフォのシャトルボートはレストランテラスの横にゲストを降ろします。",
+      "width": 512,
+      "height": 215
     },
     "positanoView": {
       "src": "/img/guides/laurito-beach/05-positano-view.jpg",
       "alt": "ポジターノと海岸近くのボートの眺め",
-      "caption": "スピアッジャ・グランデは多くのビーチシャトルやボートの主要な出発地点です。"
+      "caption": "スピアッジャ・グランデは多くのビーチシャトルやボートの主要な出発地点です。",
+      "width": 1280,
+      "height": 1707
     },
     "sitaBus": {
       "src": "/img/guides/laurito-beach/06-amalfi-coast-sita-bus.jpg",
       "alt": "海の上のアマルフィ海岸道路を走る青いSITAバス",
-      "caption": "ボートが一時停止した場合の信頼できるバックアップ：海岸道路沿いのSITAバス。"
+      "caption": "ボートが一時停止した場合の信頼できるバックアップ：海岸道路沿いのSITAバス。",
+      "width": 1920,
+      "height": 1080
     }
   },
-  "lastUpdated": "2026-01-29T00:00:00.000Z",
-  "essentialsTitle": "What to expect",
+  "essentialsTitle": "期待すること",
   "essentials": [
-    "Reservations are essential for both clubs in summer; walk-ins only succeed before 10:00.",
-    "Tiny public section fills quickly — arrive with your own umbrella and mat if you plan to use it.",
-    "Return boats leave mid-afternoon; have the bus backup ready for evening plans."
+    "夏は両クラブとも予約が必須です。飛び込みは10:00前にのみ成功します。",
+    "小さな公共エリアはすぐにいっぱいになります — 使用する予定がある場合は、自分のパラソルとマットを持参してください。",
+    "復路ボートは午後半ばに出発します。夕方の計画のためにバスのバックアップを準備してください。"
   ],
-  "typicalCostsTitle": "Typical costs",
+  "typicalCostsTitle": "標準的な費用",
   "typicalCosts": [
-    "Da Adolfo lounger set for two: €50–€70 including shuttle boat.",
-    "Villa Tre Ville premium deck for two: €180–€220 with towels and concierge service.",
-    "Lunch mains at either club: €18–€30, cocktails €12–€15, bottled water €3–€4."
+    "ダ・アドルフォのラウンジャーセット2人用：シャトルボートを含めて€50〜€70。",
+    "ヴィラ・トレ・ヴィッレのプレミアムデッキ2人用：タオルとコンシェルジュサービス付きで€180〜€220。",
+    "どちらのクラブでもランチメイン：€18〜€30、カクテル€12〜€15、ボトル水€3〜€4。"
   ],
-  "tipsTitle": "Quick tips",
+  "tipsTitle": "クイックヒント",
   "tips": [
-    "Screenshot confirmation emails — mobile signal fades near the dock.",
-    "Pack reef-safe sunscreen and water shoes; the shoreline mixes pebbles and rock slabs.",
-    "Review our %LINK:positanoBeaches|Positano beaches overview% to compare Laurito with other coves."
+    "確認メールのスクリーンショットを撮りましょう — 桟橋近くでは携帯電話の信号が弱まります。",
+    "サンゴ礁に安全な日焼け止めとウォーターシューズを持参してください。海岸線は小石と岩盤が混在しています。",
+    "ラウリートを他の入り江と比較するために、%LINK:positanoBeaches|ポジターノビーチの概要%をレビューしてください。"
   ],
-  "warningsTitle": "Good to know",
+  "warningsTitle": "知っておくべきこと",
   "warnings": [
-    "Rough seas pause shuttle boats; staff will text updates but the bus may be your only route back.",
-    "No ATMs or shops at the cove — bring cash or cards for meals and extras.",
-    "The stairway is steep with uneven steps; plan breaks and wear grippy footwear."
+    "荒れた海はシャトルボートを停止させます。スタッフがテキストで更新しますが、バスが唯一の帰路になる可能性があります。",
+    "入り江にはATMや店がありません — 食事や追加料金のために現金またはカードを持参してください。",
+    "階段は急で段差が不均一です。休憩を計画し、グリップのある履物を着用してください。"
   ],
-  "faqsTitle": "Laurito Beach FAQs",
+  "faqsTitle": "ラウリート・ビーチ FAQ",
   "faqs": [
     {
-      "q": "Do I need a reservation?",
+      "q": "予約は必要ですか？",
       "a": [
-        "Yes. Both clubs prioritise guests with confirmed bookings. Da Adolfo accepts standby visitors on a waitlist, but only after pre-booked guests are seated."
+        "はい。両クラブとも確定予約のあるゲストを優先します。ダ・アドルフォはウェイティングリストでスタンバイの訪問者を受け入れますが、事前予約のゲストが着席した後にのみです。"
       ]
     },
     {
-      "q": "Can I use the public section?",
+      "q": "公共エリアを使用できますか？",
       "a": [
-        "You can, but space is extremely limited. Bring everything you need, including shade and water, and arrive before 09:30 to claim a spot."
+        "できますが、スペースは非常に限られています。日よけと水を含め、必要なものをすべて持参し、09:30前に到着して場所を確保してください。"
       ]
     },
     {
-      "q": "How late do the boats run?",
+      "q": "ボートは何時まで運行していますか？",
       "a": [
-        "Most return shuttles finish by 18:00 in summer, earlier in shoulder season. Always confirm the last departure on arrival and have the bus timetable saved as a backup."
+        "ほとんどの復路シャトルは夏は18:00までに終了し、シーズンオフはそれより早くなります。常に到着時に最終出発時間を確認し、バスの時刻表をバックアップとして保存してください。"
       ]
     }
   ]

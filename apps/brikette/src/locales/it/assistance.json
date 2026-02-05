@@ -6,19 +6,29 @@
   },
   "quickLinks": [
     {
+      "label": "FAQ dell'ostello",
+      "description": "Risposte rapide alle domande comuni sul soggiorno all'Hostel Brikette di Positano.",
+      "slug": "hostelFaqs"
+    },
+    {
+      "label": "Regolamento interno",
+      "description": "Leggi le nostre regole principali, inclusa la politica di divieto di alcol esterno e le linee guida di assistenza.",
+      "slug": "rules"
+    },
+    {
       "label": "Modificare o cancellare una prenotazione",
-      "description": "Consulta le scadenze e i suggerimenti per evitare costi extra quando i piani cambiano.",
+      "description": "Consulta le scadenze e i consigli per evitare costi extra quando i piani cambiano.",
       "slug": "changingCancelling"
     },
     {
       "label": "Guida al check-in e check-out",
-      "description": "Segui la nostra guida passo dopo passo per arrivo e partenza all’Hostel Brikette di Positano.",
+      "description": "Segui la nostra guida passo dopo passo per arrivo e partenza dall'Hostel Brikette di Positano.",
       "slug": "checkinCheckout"
     },
     {
-      "label": "Come arrivare a Positano",
-      "description": "Confronta traghetti, autobus e taxi con la nostra guida passo dopo passo.",
-      "slug": "travelHelp"
+      "label": "Arrivare a Positano",
+      "description": "Confronta traghetti, autobus e taxi con la nostra guida ai trasporti passo dopo passo.",
+      "href": "how-to-get-here"
     }
   ],
   "contactCta": {

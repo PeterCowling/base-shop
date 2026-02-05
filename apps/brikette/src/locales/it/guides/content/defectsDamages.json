@@ -1,58 +1,66 @@
 {
   "seo": {
-    "title": "Guida a Difetti e Danni – Hostel Brikette, Positano",
-    "description": "Scopri come segnalare difetti, la nostra risposta ai problemi gravi, le politiche di deposito cauzionale, la responsabilità degli ospiti e la prevenzione delle cimici da letto nell’unico ostello di Positano."
+    "title": "Guida ai difetti e ai danni per l'Ostello di Positano",
+    "description": "Comprendi come segnalare i difetti della camera, la nostra risposta ai problemi gravi, le politiche del deposito cauzionale, la responsabilità degli ospiti e le informazioni essenziali sulla prevenzione delle cimici dei letti nell'ostello esclusivo di Positano."
   },
-  "linkLabel": "Guida a Difetti e Danni – Hostel Brikette, Positano",
+  "linkLabel": "Guida ai difetti e ai danni per l'Ostello di Positano",
   "sections": [
     {
       "id": "reportingDefects",
-      "title": "Segnalazione Difetti",
+      "title": "Segnalazione dei difetti",
       "body": [
-        "Se noti un problema nella tua stanza, informaci subito: la segnalazione tempestiva ci consente di intervenire rapidamente."
+        "Se noti un problema o un difetto nella tua camera, ti preghiamo di informarci immediatamente. La tua tempestiva segnalazione ci aiuta ad affrontare e risolvere rapidamente il problema.",
+        "Il modo più veloce per segnalare è di persona alla reception. Quando possibile, includi: cosa non va, quando l'hai notato e una foto rapida o un breve video."
       ]
     },
     {
       "id": "assessingDefects",
-      "title": "Valutazione Difetti",
+      "title": "Valutazione dei difetti",
       "body": [
-        "Dopo la segnalazione valuteremo il difetto e daremo priorità all’intervento in base all’impatto sul tuo comfort."
+        "Una volta che segnali un difetto, valuteremo prontamente il problema e daremo priorità alla nostra risposta in base a quanto influisce significativamente sul tuo comfort e soggiorno."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/2/27/ISO_7010_W008.svg",
+          "alt": "Segnale di avvertimento generale ISO 7010 W008 (triangolo giallo con punto esclamativo)",
+          "caption": "Diamo priorità prima alla sicurezza, poi a tutto ciò che influisce sul sonno e sul comfort."
+        }
       ]
     },
     {
       "id": "responseToSeriousDefects",
-      "title": "Risposta a Difetti Gravi",
+      "title": "Risposta ai difetti gravi",
       "body": [
-        "Se un difetto grave non è riparabile immediatamente, offriremo un alloggio alternativo. Se il prezzo è inferiore, rimborsiamo la differenza. Se rifiuti, puoi chiedere il rimborso pro-rata delle notti rimanenti."
+        "Se c'è un difetto grave che non può essere riparato immediatamente, forniremo una sistemazione alternativa. Se l'alternativa è più economica della tua camera prenotata, ti rimborseremo la differenza di prezzo. Se decidi di non accettare la nostra alternativa, puoi richiedere un rimborso proporzionale per le notti rimanenti del tuo soggiorno."
       ]
     },
     {
       "id": "unreportedDefects",
-      "title": "Difetti Non Segnalati",
+      "title": "Difetti non segnalati",
       "body": [
-        "Se rileviamo un problema non segnalato entro un lasso di tempo ragionevole, valuteremo i danni e potremmo applicare la politica danni."
+        "Se scopriamo un problema nella tua camera che non hai segnalato entro un periodo di tempo ragionevole, valuteremo eventuali danni risultanti e potrebbe essere applicata la nostra politica sui danni."
       ]
     },
     {
       "id": "damagesPolicy",
-      "title": "Politica Danni",
+      "title": "Politica sui danni",
       "body": [
-        "Per sicurezza potremmo pre-autorizzare la carta o richiedere un deposito in contanti al check-in. Senza deposito la prenotazione può essere annullata. Il deposito è rimborsato al check-out meno costi per danni, perdite, manodopera o spese amministrative. Se superano il deposito, la differenza resta a tuo carico. Tariffe orarie: Direttore (50 €), Manager (35 €), Staff (25 €)."
+        "Per la tua sicurezza e la nostra, potremmo pre-autorizzare la tua carta di credito o richiedere un deposito in contanti al check-in per coprire potenziali danni o perdite. Se non puoi fornire un deposito o una pre-autorizzazione, la tua prenotazione potrebbe essere annullata. I depositi sono completamente rimborsabili al check-out, meno gli addebiti per eventuali danni, perdite, manodopera o spese amministrative sostenute. Se questi addebiti superano il tuo deposito, sarai responsabile dei costi aggiuntivi. Le tariffe della manodopera per riparazioni o pulizie vengono fatturate a ore: Direttore (50 €/ora), Manager (35 €/ora) e Personale (25 €/ora)."
       ]
     },
     {
       "id": "bedBugsPolicy",
-      "title": "Politica Cimici da Letto",
+      "title": "Politica sulle cimici dei letti",
       "body": [
-        "Gestiamo in modo proattivo eventuali infestazioni di cimici. Se trovate nella tua camera, potresti essere responsabile di costi per mancati ricavi, pulizia e disinfestazione. Segnala subito qualsiasi indizio."
+        "Gestiamo proattivamente e affrontiamo prontamente qualsiasi problema di cimici dei letti. Tuttavia, se vengono trovate cimici dei letti nella tua camera durante il tuo soggiorno, potresti essere ritenuto responsabile per i costi associati, come perdita di entrate da prenotazioni, spese di pulizia e disinfestazione. Ti preghiamo di segnalare immediatamente al nostro personale qualsiasi segno di cimici dei letti."
       ]
     },
     {
       "id": "bedBugsPrevention",
-      "title": "Prevenzione Cimici da Letto",
+      "title": "Prevenzione delle cimici dei letti",
       "body": [
-        "Per prevenire le cimici:",
-        "* Comunica al check-in se hai soggiornato di recente in luoghi infestati.\n* Disinfetta accuratamente i tuoi effetti personali.\n* Controlla valigia e indumenti prima di entrare in camera."
+        "Per aiutare a prevenire problemi di cimici dei letti, ti preghiamo di:",
+        "* Informarci al check-in se hai recentemente soggiornato in un luogo con problemi noti di cimici dei letti.\n* Disinfettare accuratamente i tuoi effetti personali.\n* Ispezionare attentamente i tuoi bagagli e vestiti per le cimici dei letti prima di entrare nella tua camera."
       ]
     }
   ]

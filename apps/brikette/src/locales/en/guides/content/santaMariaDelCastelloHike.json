@@ -1,4 +1,5 @@
 {
+  "lastUpdated": "2026-02-04",
   "seo": {
     "title": "Santa Maria del Castello Hike from Hostel Brikette - Positano",
     "description": "Complete hiking guide to Santa Maria del Castello village above Positano with directions, lookout points, and stunning coastal views."
@@ -9,6 +10,20 @@
     "Great views appear within just 15 minutes of departure from the hostel, making this a rewarding hike for those seeking flexibility and wanting to avoid crowded SITA buses."
   ],
   "sections": [
+    {
+      "id": "scan-to-share",
+      "title": "Scan to share",
+      "body": [
+        "Want to open this guide on another phone or share it with a hiking buddy? Scan the QR code below."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/santa-maria-castello/scan-to-share.png",
+          "alt": "QR code to open and share the Santa Maria del Castello hike guide.",
+          "caption": "Scan to open/share this guide."
+        }
+      ]
+    },
     {
       "id": "what-is-santa-maria",
       "title": "What is Santa Maria del Castello?",
@@ -21,92 +36,101 @@
       "id": "why-do-this-hike",
       "title": "Why should you do this hike?",
       "body": [
-        "Views match or exceed those from the Path of the Gods, offering spectacular coastal panoramas.",
-        "Great vistas appear within 15 minutes of departure from the hostel—you don't have to wait long for rewards.",
-        "Offers flexibility and is preferred by those avoiding crowded SITA buses.",
-        "Serves as a starting point for exploring other mountain areas around Positano."
+        "The views are breathtaking and at least as good as those on the Path of the Gods.",
+        "You can expect to see great views within 15 minutes of leaving the hostel, so you don't have to hike all the way to the top to enjoy them.",
+        "This hike offers more flexibility and is a good alternative if you don't enjoy using the SITA buses or prefer a peaceful and quiet environment.",
+        "It is also a good starting point if you plan to explore other parts of the mountain."
       ]
     },
     {
       "id": "considerations",
-      "title": "Important considerations",
+      "title": "Why should you avoid this hike?",
       "body": [
-        "This hike is significantly more strenuous than the Path of the Gods. Be prepared for steep ascents.",
-        "May not suit those prioritizing the Path of the Gods experience as their main hiking goal.",
-        "Summer heat requires avoiding this hike between 11am and 4pm. Early morning or late afternoon departures are essential in warm months."
+        "It is quite strenuous compared to the Path of the Gods.",
+        "If you don't have much time and really want to check the Path of the Gods off your bucket list, you may want to prioritize that hike instead.",
+        "During the summer months, it can get very hot and we do not recommend doing this hike between 11am and 4pm to avoid the hottest parts of the day."
       ]
     },
     {
       "id": "directions-to-village",
       "title": "Directions to the village",
       "body": [
-        "Follow these step-by-step directions from Hostel Brikette to reach Santa Maria del Castello village:"
+        "Here are the detailed directions to the village:",
+        "1) From the hostel, turn right and take the steps that lead up the side of the building.",
+        "2) At the top of the steps, continue on the footpath.",
+        "3) You will reach a junction where you have the option to turn left and go uphill, or turn right and go downhill. Choose to turn left and go uphill.",
+        "4) Follow the steps until you reach a point where you can either turn right and go up more stairs that lead to a road, or continue on the path by turning left. Choose to turn right and go up the stairs.",
+        "5) At the top of the stairs, look across the road and you will see a set of stairs leading alongside some houses. Cross the road and take those stairs.",
+        "6) Follow the stairs behind the houses and it will lead you to a mountain trail.",
+        "7) Continue on the mountain trail, which will take you to the village.",
+        "8) In two places, the mountain trail will split in two directions. Choose the path that goes uphill.",
+        "9) You have reached the top when the mountain trail levels out and you reach a crossroads."
       ]
     },
     {
       "id": "directions-to-lookout",
       "title": "Directions to the lookout point",
       "body": [
-        "Once you reach the crossroads where the trail levels out, follow these directions to access the stunning lookout point."
+        "Please be aware that the vantage points have sudden drop-offs of several hundred meters, so consider whether you will feel comfortable proceeding before continuing on:",
+        "1) At the crossroads, turn right. Please note that cars do travel on this road.",
+        "2) Take the road uphill until you reach a junction.",
+        "3) At the junction, turn right and follow the road around to the right.",
+        "4) When you see a grassy section off the road, go there and proceed to the vantage points."
       ]
     }
   ],
   "steps": [
     {
-      "name": "Exit the hostel and turn right",
-      "text": "From the hostel entrance, turn right and ascend the steps beside the building."
+      "name": "Turn right and take the steps",
+      "text": "From the hostel, turn right and take the steps that lead up the side of the building."
     },
     {
       "name": "Continue on the footpath",
-      "text": "At the top of the initial steps, continue following the footpath upward."
+      "text": "At the top of the steps, continue on the footpath."
     },
     {
-      "name": "Choose left at the junction",
-      "text": "When you reach a junction, choose the left uphill option to continue ascending."
+      "name": "Turn left at the junction",
+      "text": "At the junction, choose the left option to go uphill (not right/downhill)."
     },
     {
-      "name": "Follow steps to the road",
-      "text": "Keep following the steps until you reach a point with stairs leading down to a road."
+      "name": "Turn right up more stairs",
+      "text": "Follow the steps until you reach a point where you can either turn right up more stairs that lead to a road, or continue left on the path. Choose to turn right and go up the stairs."
     },
     {
-      "name": "Cross the road",
-      "text": "Cross the road and locate the stairs that run alongside the houses on the opposite side."
+      "name": "Cross the road to the next stairs",
+      "text": "At the top of the stairs, look across the road for a set of stairs leading alongside some houses. Cross the road and take those stairs."
     },
     {
-      "name": "Climb stairs behind houses",
-      "text": "Follow these stairs as they wind behind the houses, leading you up to the mountain trail."
+      "name": "Follow stairs behind the houses",
+      "text": "Follow the stairs behind the houses until they lead you to a mountain trail."
     },
     {
-      "name": "Continue on mountain trail",
-      "text": "Follow the mountain trail as it climbs toward the village. The path becomes more scenic here."
+      "name": "Continue on the mountain trail",
+      "text": "Continue on the mountain trail, which will take you to the village."
     },
     {
-      "name": "Choose uphill at trail splits",
-      "text": "At two trail splits along the way, choose the uphill paths to continue toward the village."
+      "name": "Take the uphill splits",
+      "text": "In two places the mountain trail splits in two directions. Choose the path that goes uphill."
     },
     {
-      "name": "Reach the village crossroads",
-      "text": "You'll arrive at a crossroads where the trail levels out. This marks your arrival at Santa Maria del Castello."
+      "name": "Reach the crossroads",
+      "text": "You have reached the top when the mountain trail levels out and you reach a crossroads."
     },
     {
-      "name": "Turn right toward lookout (optional)",
-      "text": "To reach the lookout point, turn right at the crossroads."
+      "name": "Turn right at the crossroads",
+      "text": "For the lookout point, turn right at the crossroads. Please note that cars do travel on this road."
     },
     {
-      "name": "Take road uphill to junction",
-      "text": "Follow the road uphill until you reach a junction."
+      "name": "Take the road uphill",
+      "text": "Take the road uphill until you reach a junction."
     },
     {
-      "name": "Turn right at junction",
-      "text": "At the junction, turn right and follow the road as it curves rightward."
+      "name": "Turn right at the junction",
+      "text": "At the junction, turn right and follow the road around to the right."
     },
     {
-      "name": "Proceed to grassy section",
-      "text": "Continue until you reach a grassy section off the main road."
-    },
-    {
-      "name": "Access vantage points",
-      "text": "The lookout vantage points are accessible from this grassy area. Use extreme caution—there are sudden drop-offs of several hundred meters."
+      "name": "Head to the grassy section and viewpoints",
+      "text": "When you see a grassy section off the road, go there and proceed to the vantage points. Use extreme caution—there are sudden drop-offs of several hundred meters."
     }
   ],
   "warningsTitle": "Safety warnings",

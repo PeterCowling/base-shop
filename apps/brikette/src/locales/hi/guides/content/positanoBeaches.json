@@ -166,12 +166,13 @@
     },
     {
       "id": "logistics",
-      "title": "बीच तक जाना और लौटना",
+      "title": "बीचों तक पहुँचना और वापस आना",
       "body": [
-        "हॉस्टल से सबसे तेज़ तरीका अक्सर यह होता है: Spiaggia Grande तक पैदल (या बस से) नीचे जाएँ, फिर तय करें — प्रोमेनेड से Fornillo की तरफ आगे बढ़ना है, शटल बोट लेनी है, या मुख्य बीच पर रहना है।",
-        "अगर आपका बीच‑क्लब‑डे बोट ट्रांसफर (Arienzo या Laurito) के साथ है, तो आमतौर पर Spiaggia Grande से शुरू करना सबसे आसान रहता है ताकि आप जल्दी लाइन में लग सकें और सीढ़ियों से बचें।",
-        "समर 2026 में चढ़ाई पर गर्मी के लिए तैयार रहें: ऊपर लौटने से पहले पानी भर लें, और अगर थक जाएँ तो हर सीढ़ी चलने के बजाय अंदर वाली बस लें।",
-        "डे‑ट्रिप्स (Praiano, Amalfi, Sorrento) के लिए कमिट करने से पहले आख़िरी रिटर्न ऑप्शन चेक करें। फेरी चल रही हो तो सबसे अच्छा विकल्प है, लेकिन बैकअप बस है। अगर समुद्र खराब हो या फेरी कैंसिल हो जाए, तो अतिरिक्त समय रखें और प्लान लचीला रखें। सफर के लिए स्नैक्स पैक करें।"
+        "हर बीच के अलग-अलग पहुँच विकल्प हैं, इसलिए निकलने से पहले विशिष्ट गाइड देख लें। यहाँ सबसे उपयोगी दिशा-निर्देश गाइड के लिए त्वरित लिंक दिए हैं:",
+        "Positano के बीच: %LINK:positanoMainBeachWalkDown|Spiaggia Grande तक पैदल% • %LINK:positanoMainBeachBusDown|Spiaggia Grande तक बस% • %LINK:hostelBriketteToFornilloBeach|Fornillo तक पैदल% • %LINK:hostelBriketteToArienzoBus|Arienzo तक बस% • %LINK:lauritoBeachBusDown|Laurito तक बस%",
+        "वापसी के रूट: %LINK:positanoMainBeachWalkBack|Spiaggia Grande से पैदल लौटें% • %LINK:positanoMainBeachBusBack|Spiaggia Grande से बस से लौटें% • %LINK:fornilloBeachToBrikette|Fornillo से पैदल लौटें% • %LINK:arienzoBeachBusBack|Arienzo से बस से लौटें% • %LINK:lauritoBeachBusBack|Laurito से बस से लौटें%",
+        "डे-ट्रिप बीच: %LINK:hostelBriketteToFiordoDiFuroreBus|Fiordo di Furore% • %LINK:gavitellaBeachGuide|Gavitella (Praiano)% • %LINK:marinaDiPraiaBeaches|Marina di Praia% • %LINK:reginaGiovannaBath|Regina Giovanna (Sorrento)%",
+        "सामान्य सुझाव: समर 2026 में चढ़ाई पर गर्मी के लिए तैयार रहें—ऊपर लौटने से पहले पानी भर लें, और अगर थक जाएँ तो अंदर वाली बस लें। डे‑ट्रिप्स के लिए कमिट करने से पहले आख़िरी रिटर्न ऑप्शन (फेरी या बस) चेक करें, और सफर के लिए स्नैक्स पैक करें। अगर समुद्र खराब हो या फेरी कैंसिल हो जाए, तो अतिरिक्त समय रखें और प्लान लचीला रखें।"
       ],
       "images": [
         {

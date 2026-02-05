@@ -1,18 +1,18 @@
 {
   "seo": {
-    "title": "Ferry dock → Hostel Brikette, with luggage",
-    "description": "Complete 2026 guide: ferry dock to Hostel Brikette with luggage using porters and Interno bus. Costs, timing, step-by-step directions, and traveler tips."
+    "title": "Molo dei traghetti → Hostel Brikette, con bagagli",
+    "description": "Guida completa 2026: molo dei traghetti all'Hostel Brikette con bagagli utilizzando facchini e autobus Interno. Costi, tempistiche, indicazioni passo-passo e consigli dei viaggiatori."
   },
   "lastUpdated": "2026-01-31",
-  "linkLabel": "Ferry dock → Hostel Brikette, with luggage",
+  "linkLabel": "Molo dei traghetti → Hostel Brikette, con bagagli",
   "intro": [
-    "Arriving by ferry with luggage? Combine the Interno Positano bus with Positano's porters to reach Hostel Brikette without hauling bags up steep staircases. This route takes 20-45 minutes depending on porter and bus timing, costs €2-€6 per person plus optional porter fees, and eliminates most of Positano's infamous stair-climbing.",
-    "Updated for the 2026 season, this guide covers exact costs, bus schedules, porter pricing, and the step-by-step route our staff recommend to hundreds of arriving guests. Whether you're traveling solo with a backpack or as a group with multiple suitcases, you'll find practical advice for a smooth arrival."
+    "Arrivi in traghetto con i bagagli? Combina l'autobus Interno Positano con i facchini di Positano per raggiungere Hostel Brikette senza trascinare le valigie su ripide scale. Questo percorso richiede 20-45 minuti a seconda dei tempi dei facchini e dell'autobus, costa €2-€6 a persona più tariffe opzionali dei facchini, ed elimina la maggior parte della famigerata salita delle scale di Positano.",
+    "Aggiornata per la stagione 2026, questa guida copre i costi esatti, gli orari degli autobus, i prezzi dei facchini e il percorso passo-passo che il nostro staff raccomanda a centinaia di ospiti in arrivo. Che tu stia viaggiando da solo con uno zaino o in gruppo con più valigie, troverai consigli pratici per un arrivo senza intoppi."
   ],
   "beforeList": [
-    "Check the latest Interno Positano timetable — here's the %URL:https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26|current timetable and ticket prices%.",
-    "Buy Interno Positano tickets at any tabacchi/newsagent before boarding.",
-    "Consider handing heavy luggage to the porters as they meet the ferry – tell them you're staying at Hostel Brikette."
+    "Controlla l'ultimo orario Interno Positano – ecco l'%URL:https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26|orario attuale e i prezzi dei biglietti%.",
+    "Acquista i biglietti Interno Positano presso qualsiasi tabaccheria/edicola prima di salire.",
+    "Considera di consegnare i bagagli pesanti ai facchini quando incontrano il traghetto – di' loro che alloggi all'Hostel Brikette."
   ],
   "sections": [
     {
@@ -150,24 +150,24 @@
       "body": [
         "**Best arrival strategy according to our staff:** Hand your main luggage to porters at the dock (most guests use this — it's worth the €15-20 per bag), keep a small daypack with essentials, buy your Interno bus ticket during the walk to Piazza dei Mulini, and take the bus to Chiesa Nuova. This way you arrive relaxed, bags-free, and ready to enjoy Positano.",
         "**When porters save the most effort:** If you have bags over 15kg, multiple suitcases, or traveling in summer heat, porters are essential. We've seen too many guests arrive exhausted from carrying bags uphill — the €15-20 cost is minor compared to starting your Positano stay stressed and sweaty.",
-        "**Coordinate porter delivery timing:** If you're arriving before our check-in time (15:00), tell the porters when you expect to arrive at the hostel so they can time the delivery. Bags usually arrive 30-45 minutes after you hand them over, which gives you time to take the bus and reach the hostel entrance. Early arrivals can leave bags with our reception team and explore town while waiting for your room to be ready.",
+        "**Coordinate porter delivery timing:** If you’re arriving before rooms are ready, tell the porters when you expect to reach the hostel so they can time the delivery. Bags usually arrive 30–45 minutes after you hand them over, which gives you time to take the bus and reach the hostel entrance. If you arrive early, you can usually request luggage storage and explore town while you wait.",
         "**First-time visitors to Positano:** Don't be intimidated by the stairs and hills — combining porters with the Interno bus reduces the physical challenge significantly. Most of our guests tell us this arrival route is much easier than they expected, especially compared to horror stories they've heard about Positano's stairs.",
         "**Keep bus change ready:** Interno bus tickets cost €2-€6 depending on season and exact route. Ticket vendors at tabacchi accept cash only (small bills preferred — don't expect them to break a €50 note). Have a few €5 or €10 notes ready at the dock."
       ]
     }
   ],
   "stepsList": [
-    "Hand luggage to the dock porters and buy Interno Positano bus tickets at the tabacchi.",
-    "Walk from the main beach to Piazza dei Mulini, then continue to the Interno bus stop beside the tabacchi on Viale Pasitea.",
-    "Board the Interno Positano bus (look for the 'interno positano' sign) and ride uphill toward Viale Pasitea 325.",
-    "Get off outside the tabacchi, turn left along Viale Pasitea for just over 100 m, and climb the stairs on the right to reach Hostel Brikette."
+    "Consegna i bagagli ai facchini del molo e acquista i biglietti dell'autobus Interno Positano alla tabaccheria.",
+    "Cammina dalla spiaggia principale fino a Piazza dei Mulini, poi continua fino alla fermata dell'autobus Interno accanto alla tabaccheria su Viale Pasitea.",
+    "Sali sull'autobus Interno Positano (cerca il cartello \"interno positano\") e viaggia in salita verso Viale Pasitea 325.",
+    "Scendi davanti alla tabaccheria, gira a sinistra su Viale Pasitea per poco più di 100 m e sali le scale a destra per raggiungere l'Hostel Brikette."
   ],
   "kneesList": [
-    "Taking the Interno Positano bus trims hundreds of steep steps from the journey.",
-    "Let the porters move heavy bags separately so you can stay hands-free on the ride and short walk."
+    "Prendere l'autobus Interno Positano elimina centinaia di ripidi gradini dal viaggio.",
+    "Lascia che i facchini spostino i bagagli pesanti separatamente in modo da poter tenere le mani libere durante il viaggio e la breve camminata."
   ],
-  "kneesPorterPrefix": "Need more detail on porter pricing and how to book? Read our",
-  "kneesPorterLinkLabel": "porter service guide",
+  "kneesPorterPrefix": "Hai bisogno di maggiori dettagli sui prezzi dei facchini e come prenotare? Leggi la nostra",
+  "kneesPorterLinkLabel": "guida al servizio facchini",
   "faqs": [
     {
       "q": "Where do I buy Interno Positano bus tickets?",
@@ -200,6 +200,12 @@
       ]
     },
     {
+      "q": "What are the check-in times, and can I store luggage if I arrive early?",
+      "a": [
+        "Regular check-in is from 15:00 to 22:30. Luggage storage is available from 10:30 for guests checking in (subject to space). For full details (ID requirements, deposits, and late arrival options), see our check-in & checkout guide: %LINK:checkinCheckout|check-in & checkout%."
+      ]
+    },
+    {
       "q": "Can I walk from the ferry dock to the hostel with luggage?",
       "a": [
         "Not recommended. The route involves 300+ steps, steep uphill sections, and takes 45-60 minutes with bags. Nearly all our guests use either porters + Interno bus (recommended) or taxi. Walking is only practical with a light daypack."
@@ -219,9 +225,9 @@
     }
   ],
   "howtoSteps": [
-    "Buy Interno bus tickets and hand luggage to the dock porters",
-    "Walk from the beach to Piazza dei Mulini and the Interno bus stop",
-    "Ride the Interno Positano bus uphill (look for the 'interno positano' sign)",
-    "Alight by the tabacchi, walk 100 m, and climb the stairs to Hostel Brikette"
+    "Acquista i biglietti dell'autobus Interno e consegna i bagagli ai facchini del molo",
+    "Cammina dalla spiaggia a Piazza dei Mulini e alla fermata dell'autobus Interno",
+    "Prendi l'autobus Interno Positano in salita (cerca il cartello \"interno positano\")",
+    "Scendi vicino alla tabaccheria, cammina 100 m e sali le scale fino all'Hostel Brikette"
   ]
 }

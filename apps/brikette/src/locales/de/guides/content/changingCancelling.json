@@ -1,43 +1,50 @@
 {
   "seo": {
-    "title": "Reservierung im Hostel Brikette ändern oder stornieren",
-    "description": "Ausführliche Informationen zu Stornierungsoptionen, No-Show-Regelungen, zur Änderung Ihrer Buchung, zu Übertragungsregeln sowie zu vorausbezahlten, nicht erstattbaren Tarifen im einzigen Hostel von Positano."
+    "title": "Änderung und Stornierung Ihrer Positano Hostel Reservierung",
+    "description": "Ausführliche Hinweise zu Ihren Stornierungsoptionen, No-Show-Richtlinien, wie Sie Ihre Reservierung ändern, Buchungsübertragungsregeln und vorausbezahlte nicht erstattungsfähige Buchungen im einzigen Hostel in Positano."
   },
-  "linkLabel": "Reservierung im Hostel Brikette ändern oder stornieren",
+  "linkLabel": "Änderung und Stornierung Ihrer Positano Hostel Reservierung",
   "sections": [
     {
       "id": "noShowCharges",
-      "title": "Gebühren bei No-Show",
+      "title": "No-Show-Gebühren",
       "body": [
-        "Wenn Sie am ersten Buchungstag bis 22:30 Uhr nicht eingecheckt haben, wird Ihre Reservierung automatisch als „No-Show“ markiert. Es wird der höhere Betrag aus der ersten Übernachtung oder Ihrer nicht erstattbaren Anzahlung berechnet. Bei mehreren Buchungen können jeweils eigene Stornofristen und Gebühren gelten."
+        "Wenn Sie bis 22:30 Uhr am ersten Tag Ihrer Reservierung nicht eingecheckt haben, wird Ihre Buchung automatisch als 'No-Show' markiert. Ihnen wird der höhere Betrag entweder der ersten Übernachtung oder Ihrer nicht erstattungsfähigen Anzahlung berechnet. Wenn Sie mehrere Buchungen haben, kann jede ihre eigene Kündigungsfrist und Gebühren haben."
       ]
     },
     {
       "id": "cancellationsPolicy",
       "title": "Stornierungsrichtlinie",
       "body": [
-        "Senden Sie Stornierungsanfragen schriftlich an unsere offizielle E-Mail-Adresse (%URL:mailto:hostelpositano@gmail.com|hostelpositano@gmail.com%). Die Stornofrist beginnt, sobald wir Ihre E-Mail erhalten, und endet um 00:01 Uhr an Ihrem geplanten Anreisetag. Ihre Buchung bleibt bis zur schriftlichen Bestätigung der Stornierung aktiv. Eine separate Verwaltungsgebühr für Stornierungen – in der Regel 15 % des Buchungspreises ohne Drittanbieterprovisionen – wird berechnet. Das Hostel kann Ihre Buchung ohne schriftliche Anfrage stornieren, wenn Sie am Anreisetag vor Schließung der Rezeption nicht einchecken, vorzeitig ohne Meldung abreisen oder gegen Hausregeln verstoßen. Bei unzureichender Frist wird eine Gebühr in Höhe einer No-Show erhoben."
+        "Senden Sie alle Stornierungsanfragen schriftlich an unsere offizielle E-Mail-Adresse (%URL:mailto:hostelpositano@gmail.com|hostelpositano@gmail.com%). Die Stornierungsfrist beginnt, wenn das Hostel Ihre E-Mail erhält und endet um 00:01 Uhr an Ihrem geplanten Check-in-Datum. Ihre Buchung bleibt aktiv, bis Sie eine E-Mail-Bestätigung erhalten, dass die Stornierung bearbeitet wurde. Eine separate Stornierungsbearbeitungsgebühr – normalerweise 15% des Buchungspreises ohne Drittanbieterprovisionen – wird berechnet. Das Hostel kann Ihre Buchung ohne schriftliche Anfrage stornieren, wenn Sie nicht einchecken, bevor die Rezeption am Anreisetag schließt, früh abreisen ohne ordnungsgemäße Benachrichtigung oder gegen Hostel-Richtlinien verstoßen. Wenn Sie keine ausreichende Vorankündigung geben, fallen Gebühren an, die einem No-Show entsprechen."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/f/f4/Man_with_smartphone_and_laptop_%28Unsplash%29.jpg",
+          "alt": "Person mit Smartphone und Laptop",
+          "caption": "E-Mail ist der schnellste Weg, um eine schriftliche Aufzeichnung von Änderungen oder Stornierungen zu erhalten."
+        }
       ]
     },
     {
       "id": "changingConfirmedBookings",
-      "title": "Bestätigte Buchungen ändern",
+      "title": "Änderung Bestätigter Buchungen",
       "body": [
-        "Bestehende Reservierungen können nicht direkt geändert, sondern nur durch neue Buchungen ersetzt werden. Senden Sie Ihre Änderungswünsche innerhalb der geltenden Frist per E-Mail an unsere offizielle Adresse. Nach Genehmigung erhalten Sie eine Bestätigung. Alle Änderungen unterliegen der Verfügbarkeit und weiteren Bedingungen. Verkürzungen oder Verlängerungen gelten als Stornierung bzw. Verlängerung; jede Verlängerung wird als neue Reservierung behandelt. Reisen Sie vor dem bestätigten Abreisedatum ohne schriftliche Stornobestätigung ab, gelten weiterhin die ursprünglichen Buchungsbedingungen."
+        "Bestehende Reservierungen können nicht direkt geändert werden; stattdessen werden sie vollständig durch neue Buchungen ersetzt. Senden Sie Ihre Änderungsanfrage per E-Mail an unsere offizielle E-Mail-Adresse innerhalb der erforderlichen Kündigungsfrist. Sie erhalten eine E-Mail, sobald die Änderung genehmigt wurde. Alle Änderungen unterliegen der Zimmerverfügbarkeit und anderen Bedingungen. Wenn Sie Ihren Aufenthalt verkürzen oder verlängern, wird die Anpassung als Stornierung oder Verlängerungsanfrage behandelt, und jede Verlängerung wird als neue Reservierung behandelt. Wenn Sie vor Ihrem bestätigten Abreisedatum abreisen, ohne eine offizielle Stornierungsbestätigung zu erhalten, bleiben die ursprünglichen Buchungsbedingungen in Kraft."
       ]
     },
     {
       "id": "bookingTransferability",
-      "title": "Übertragbarkeit von Buchungen",
+      "title": "Übertragbarkeit der Buchung",
       "body": [
-        "Die Buchung muss während des gesamten Aufenthalts auf Ihren Namen laufen. Eine Übertragung oder Namensänderung ist nicht zulässig. Versucht eine andere Person mit einer übertragenen Buchung einzuchecken, wird die Reservierung sofort storniert und Sie haften weiterhin für den vollen Betrag."
+        "Ihre Buchung muss für den gesamten Aufenthalt auf Ihren Namen lauten. Eine Übertragung der Reservierung oder Änderung des Gastnamens ist nicht gestattet. Wenn jemand versucht, unter einer übertragenen Buchung einzuchecken, wird die Reservierung sofort storniert, und Sie bleiben für den vollen Betrag finanziell verantwortlich."
       ]
     },
     {
       "id": "prepaidNonRefundableBookings",
-      "title": "Vorausbezahlte, nicht erstattbare Buchungen",
+      "title": "Vorausbezahlte, Nicht Erstattungsfähige Buchungen",
       "body": [
-        "Für vorausbezahlte, nicht erstattbare Buchungen ist die vollständige Zahlung bei Reservierung erforderlich. Schlägt die Zahlung fehl, wird die Buchung automatisch storniert. Diese Tarife sind in keinem Fall erstattbar, auch nicht bei Stornierung oder No-Show. Jede Verlängerung Ihres Aufenthalts wird als separate, neue nicht erstattbare Buchung behandelt."
+        "Vorausbezahlte, nicht erstattungsfähige Reservierungen erfordern die vollständige Zahlung zum Zeitpunkt der Buchung. Wenn die Zahlung nicht durchgeht, wird Ihre Reservierung automatisch storniert. Diese Buchungen sind nicht erstattungsfähig, auch wenn Sie stornieren oder nicht erscheinen. Jede Verlängerung Ihres Aufenthalts wird als separate neue nicht erstattungsfähige Buchung bearbeitet."
       ]
     }
   ]

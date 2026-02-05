@@ -1,43 +1,50 @@
 {
   "seo": {
-    "title": "Cambiar o Cancelar tu Reserva en el Hostel Brikette de Positano",
-    "description": "Guía detallada sobre opciones de cancelación, políticas de no presentación, cómo modificar tu reserva, normas de transferencia y reservas prepago no reembolsables en el único hostel de Positano."
+    "title": "Cambiar y Cancelar tu Reserva en el Hostel de Positano",
+    "description": "Guía detallada sobre tus opciones de cancelación, políticas de no-show, cómo modificar tu reserva, reglas de transferencia de reservas y reservas prepagadas no reembolsables en el único hostel de Positano."
   },
-  "linkLabel": "Cambiar o Cancelar tu Reserva en el Hostel Brikette de Positano",
+  "linkLabel": "Cambiar y Cancelar tu Reserva en el Hostel de Positano",
   "sections": [
     {
       "id": "noShowCharges",
-      "title": "Cargos por No-Show",
+      "title": "Cargos por No Presentación",
       "body": [
-        "Si no has realizado el check-in antes de las 22:30 del primer día de tu reserva, esta se marcará automáticamente como «No-Show». Se te cobrará el importe mayor entre la primera noche o el depósito no reembolsable. Si tienes varias reservas, cada una puede tener su propio plazo de cancelación y cargos."
+        "Si no has hecho el check-in antes de las 22:30 (10:30 PM) del primer día de tu reserva, tu reserva se marcará automáticamente como 'No-Show'. Se te cobrará el mayor de los dos: la primera noche de estancia o tu depósito no reembolsable. Si tienes múltiples reservas, cada una puede tener su propio período de aviso de cancelación y tarifas."
       ]
     },
     {
       "id": "cancellationsPolicy",
       "title": "Política de Cancelación",
       "body": [
-        "Envía todas las solicitudes de cancelación por escrito a nuestro correo oficial (%URL:mailto:hostelpositano@gmail.com|hostelpositano@gmail.com%). El plazo de cancelación comienza cuando recibimos tu correo y termina a las 00:01 de la fecha prevista de llegada. La reserva sigue activa hasta que recibas un email confirmando la cancelación. Se aplicará una Tasa Administrativa de Cancelación, normalmente el 15 % del precio de la reserva excluyendo comisiones de terceros. El hostel puede cancelar tu reserva sin solicitud escrita si no haces check-in antes del cierre de recepción, te marchas antes sin notificación o incumples las normas. Si no das el aviso suficiente, se aplicarán cargos equivalentes a un No-Show."
+        "Envía todas las solicitudes de cancelación por escrito a nuestra dirección de correo oficial (%URL:mailto:hostelpositano@gmail.com|hostelpositano@gmail.com%). El período de cancelación comienza cuando el hostel recibe tu correo y finaliza a las 00:01 de tu fecha programada de check-in. Tu reserva permanece activa hasta que recibas confirmación por correo electrónico de que la cancelación ha sido procesada. Se cobrará una Tarifa de Administración de Cancelación separada, generalmente del 15% del precio de la reserva excluyendo comisiones de terceros. El hostel puede cancelar tu reserva sin una solicitud por escrito si no haces el check-in antes de que cierre la recepción el día de llegada, te vas temprano sin notificación adecuada o violas las políticas del hostel. Si no proporcionas aviso suficiente, incurrirás en cargos equivalentes a un No-Show."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/f/f4/Man_with_smartphone_and_laptop_%28Unsplash%29.jpg",
+          "alt": "Persona usando un smartphone y laptop",
+          "caption": "El correo electrónico es la forma más rápida de obtener un registro escrito de cambios o cancelaciones."
+        }
       ]
     },
     {
       "id": "changingConfirmedBookings",
       "title": "Cambiar Reservas Confirmadas",
       "body": [
-        "Las reservas existentes no se modifican directamente; se sustituyen por nuevas. Envía tu solicitud de cambio dentro del plazo establecido al correo oficial. Recibirás un email cuando la modificación sea aprobada. Todos los cambios dependen de la disponibilidad y otras condiciones. Si acortas o alargas la estancia, se tramitará como cancelación o extensión; cualquier extensión se considera una nueva reserva. Si te marchas antes de la fecha confirmada sin recibir la cancelación oficial, seguirán vigentes los términos originales."
+        "Las reservas existentes no pueden modificarse directamente; en su lugar, se reemplazan completamente con nuevas reservas. Envía tu solicitud de cambio por correo a nuestra dirección oficial dentro del período de aviso requerido. Recibirás un correo una vez que se apruebe el cambio. Todos los cambios están sujetos a disponibilidad de habitaciones y otras condiciones. Si acortas o extiendes tu estancia, el ajuste se manejará como una solicitud de cancelación o extensión, y cualquier extensión se trata como una nueva reserva. Si te vas antes de tu fecha de salida confirmada sin recibir una confirmación oficial de cancelación, los términos originales de la reserva permanecerán vigentes."
       ]
     },
     {
       "id": "bookingTransferability",
       "title": "Transferibilidad de la Reserva",
       "body": [
-        "La reserva debe permanecer a tu nombre durante toda la estancia. No se permite transferirla ni cambiar el nombre del huésped. Si alguien intenta registrarse con una reserva transferida, esta se cancelará de inmediato y seguirás siendo responsable del pago completo."
+        "Tu reserva debe permanecer a tu nombre durante toda la estancia. No se permite transferir la reserva o cambiar el nombre del huésped. Si alguien intenta hacer el check-in con una reserva transferida, la reserva se cancelará inmediatamente y seguirás siendo responsable financieramente del monto total."
       ]
     },
     {
       "id": "prepaidNonRefundableBookings",
-      "title": "Reservas Prepago No Reembolsables",
+      "title": "Reservas Prepagadas No Reembolsables",
       "body": [
-        "Las reservas prepago no reembolsables requieren el pago íntegro al reservar. Si el pago falla, la reserva se cancelará automáticamente. Estas reservas no son reembolsables, incluso si cancelas o no te presentas. Cualquier extensión se procesará como una nueva reserva no reembolsable."
+        "Las reservas prepagadas no reembolsables requieren el pago completo al momento de la reserva. Si el pago no se procesa, tu reserva se cancelará automáticamente. Estas reservas no son reembolsables, incluso si cancelas o no te presentas. Cualquier extensión de tu estancia se procesará como una nueva reserva no reembolsable separada."
       ]
     }
   ]

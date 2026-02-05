@@ -4,73 +4,135 @@
     "description": "Rute før daggry fra Hostel Brikette til et stille udsigtspunkt på en klippetop med uhindret udsigt over solopgangen over Positano."
   },
   "linkLabel": "Hostel Brikette sunrise hike",
+  "lastUpdated": "2026-02-04",
   "intro": [
-    "Head out before dawn to catch the first light over the Amalfi Coast from a quiet vantage point above Positano.",
-    "This walk starts at Hostel Brikette and takes around 25 minutes including the stair climb to the viewpoint."
+    "Hvis du ønsker den simpleste solopgang, kan du se daggry fra hostellets fælles terrasse, når solen står op til venstre (når du kigger ud mod havet).",
+    "Hvis du ønsker et bredere panorama og et mere stille øjeblik over byen, skal du følge denne korte vandring op i bjergene til et udsigtspunkt på en klippetop over Positano."
   ],
   "sections": [
     {
-      "id": "overview",
-      "title": "What is the sunrise hike?",
+      "id": "what-is",
+      "title": "Hvad er solopgangsvandringen?",
       "body": [
-        "If you prefer to stay put, you can watch the sunrise from the hostel terrace as it rises to the left of the building.",
-        "For a wider panorama, follow this short hike to a nearby cliff where you can watch the sun clear the horizon and light up the town below."
+        "Dette er en kort tur-retur-vandring før daggry fra Hostel Brikette til et lille udsigtspunkt over Positano.",
+        "Hvis du ønsker en længere bjergtur, er %LINK:santaMariaDelCastelloHike|Santa Maria del Castello% et godt alternativ, men ruten nedenfor er den hurtigste måde at få en dramatisk solopgangsudsigt uden at forpligte sig til en heldagsvandring."
       ]
     },
     {
-      "id": "reach-stairs",
-      "title": "Reach the stairway trailhead",
+      "id": "before-you-go",
+      "title": "Før du går (det vil være mørkt)",
       "body": [
-        "Exit the hostel through the main door and walk down to Via Pasitea.",
-        "Turn right towards Sorrento and follow the road for roughly 350 metres.",
-        "Look for a flight of stairs on your left heading uphill — the first section is paved and has a handrail."
+        "Tag en telefonlommelygte eller pandelampe med, og hold dine hænder fri (især på trapperne).",
+        "Bær sko med godt greb — den første del er brolagt, men skovstien kan være løs eller fugtig.",
+        "Start tidligt nok til, at du ankommer 10-15 minutter før solopgang, så du kan finde dig til rette, finde din plads og nyde det første lys."
       ]
     },
     {
-      "id": "climb-to-viewpoint",
-      "title": "Climb to the viewpoint",
+      "id": "step-1",
+      "title": "Trin 1: Gå fra hostelett til trappen (≈350 m)",
       "body": [
-        "Take the stairs all the way up until you reach a small house at the top of the initial climb.",
-        "At the house, turn left to join the woodland trail.",
-        "When the path forks, take the right-hand branch and continue climbing through the trees.",
-        "As the path opens up and you can see the sea directly ahead, bear left.",
-        "Continue around the rocks to reach the exposed vantage point with sweeping sunrise views."
+        "Forlad hostelett gennem hoveddøren, og gå ned til vejen.",
+        "Drej mod Sorrento, og gå ca. **350 meter** langs hovedvejen, indtil du når en trappe, der klatrer op fra vejen."
       ]
     },
     {
-      "id": "enjoy-sunrise",
-      "title": "Enjoy the sunrise safely",
+      "id": "step-2",
+      "title": "Trin 2: Klatr op til huset, og drej derefter til venstre",
       "body": [
-        "The final rocks can be slick with morning dew; move carefully and avoid standing on loose edges.",
-        "From the main ledge you can watch the sun crest the horizon, or scramble a little higher for photos once there is enough light."
+        "Tag trappen helt op, indtil du når det gamle hvide hus vist nedenfor.",
+        "Ved huset skal du **dreje til venstre** for at slutte dig til skovstien."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/02-house.jpg",
+          "alt": "Gammelt hvidt hus ved siden af trappen på solopgangsvandreruten over Positano",
+          "caption": "Denne bygning markerer slutningen af trappeklatringen; drej til venstre her for at komme ind på skovstien.",
+          "width": 876,
+          "height": 530
+        }
+      ]
+    },
+    {
+      "id": "step-3",
+      "title": "Trin 3: Følg skovstien til udsigtspunktet",
+      "body": [
+        "Følg skovstien, når den klatrer forsigtigt væk fra huset.",
+        "Når stien forgrener sig, skal du tage den **højre** gren.",
+        "Du vil til sidst nå et punkt, hvor træerne åbner sig, og du kan se havet lige foran dig. Derfra skal du gå rundt til **venstre**.",
+        "Denne venstre sti fører dig til udsigtspunktet. Du kan klatre forsigtigt op på klipperne for at få en højere udsigt, eller blive på hovedstedet for en stabil udsigt."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/03-viewpoint.jpg",
+          "alt": "Overheadkortvisning, der viser de sidste sving på solopgangsvandreruten til udsigtspunktet over Positano",
+          "caption": "Brug denne overheadvisning til at bekræfte det sidste venstresvang mod udsigtspunktet, efter at stien åbner sig til havet.",
+          "width": 677,
+          "height": 600
+        }
+      ]
+    },
+    {
+      "id": "share",
+      "title": "Del denne guide (QR)",
+      "body": [
+        "Hvis du tager afsted med venner, kan du bruge denne QR-kode til hurtigt at dele guiden på en anden telefon."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/01-qr.png",
+          "alt": "QR-kode, der linker til Hostel Brikette solopgangsvandrerguiden",
+          "width": 450,
+          "height": 450
+        }
       ]
     }
   ],
-  "tips": [
-    "Allow around 25 minutes from the hostel to the viewpoint and aim to arrive 10 minutes before the posted sunrise time.",
-    "Bring a headlamp or phone torch — the stair sections are dark before dawn.",
-    "Wear shoes with good grip and pack a layer; sea breezes make early mornings feel cooler."
+  "essentialsTitle": "Det vigtigste",
+  "essentials": [
+    "Pandelampe eller telefonlys (plus et opladet batteri).",
+    "Sko med godt greb og et let lag — det kan føles køligt og blæsende før daggry.",
+    "Vand og en lille snack, hvis du planlægger at sidde og se solopgangen."
   ],
+  "tipsTitle": "Smart timing",
+  "tips": [
+    "Lav et hurtigt vejrudsigtstjek: vind og lavt skydække kan skjule solopgangen selv på ellers klare dage.",
+    "Hvis du er usikker på et vejkryds i mørket, skal du stoppe og bekræfte din retning i stedet for at gætte."
+  ],
+  "warningsTitle": "Sikkerhedsnoter",
+  "warnings": [
+    "Gå langsomt på trapperne og hold dine hænder fri — det er nemt at snuble i svagt lys.",
+    "Hvis stien føles glat efter regn, bør du overveje at se fra hostellets terrasse i stedet."
+  ],
+  "steps": [
+    {
+      "name": "Gå til trappen",
+      "text": "Fra hostelett skal du gå ca. 350 m mod Sorrento på hovedvejen, indtil du ser trappen, der klatrer opad."
+    },
+    {
+      "name": "Klatr op til huset",
+      "text": "Følg trappen til det gamle hvide hus, og drej derefter til venstre ind på skovstien."
+    },
+    {
+      "name": "Tag den højre gren",
+      "text": "Når skovstien forgrener sig, skal du holde til højre og fortsætte, indtil du kan se havet."
+    },
+    {
+      "name": "Drej til venstre til udsigtspunktet",
+      "text": "Efter at stien åbner sig til havet, skal du gå til venstre for at nå udsigtspunktet (klatr forsigtigt op, hvis du vil have en højere udsigt)."
+    }
+  ],
+  "faqsTitle": "FAQ",
   "faqs": [
     {
-      "q": "Can I just watch the sunrise from the hostel?",
+      "q": "Kan jeg bare se solopgangen fra hostellet?",
       "a": [
-        "Yes. The terrace faces east and you can see the sun rise to the left of the building without leaving the property.",
-        "The hike is for guests who want a wider panorama or photos without foreground buildings."
+        "Ja — hostellets terrasse er den simpleste mulighed, og solen står op til venstre for bygningen, når du vender ansigtet mod havet."
       ]
     },
     {
-      "q": "Is the trail marked or difficult to follow?",
+      "q": "Hvor lang tid tager vandringen?",
       "a": [
-        "The route follows local stairs and an informal woodland trail. There are no signposts, so bring a phone with offline maps or follow these instructions closely.",
-        "In the dark, walk slowly and use a torch to pick out uneven steps and tree roots."
-      ]
-    },
-    {
-      "q": "What should I bring?",
-      "a": [
-        "Wear trainers or hiking shoes with grip, carry water, and pack a light layer for the breeze.",
-        "If you plan to stay for sunrise photos, consider a tripod or phone stand."
+        "Det er en kort rute, men timing afhænger af dit tempo og hvor lang tid du bruger på udsigtspunktet. Giv dig selv tid nok til at ankomme 10-15 minutter før solopgang."
       ]
     }
   ]

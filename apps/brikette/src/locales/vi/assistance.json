@@ -6,6 +6,16 @@
   },
   "quickLinks": [
     {
+      "label": "Câu hỏi thường gặp về nhà trọ",
+      "description": "Câu trả lời nhanh cho các câu hỏi phổ biến về việc lưu trú tại Hostel Brikette ở Positano.",
+      "slug": "hostelFaqs"
+    },
+    {
+      "label": "Nội quy nhà trọ",
+      "description": "Đọc các quy định cốt lõi của chúng tôi bao gồm chính sách không mang rượu từ bên ngoài vào và hướng dẫn về nghĩa vụ chăm sóc.",
+      "slug": "rules"
+    },
+    {
       "label": "Đổi hoặc hủy đặt phòng",
       "description": "Xem thời hạn báo trước tối thiểu và cách tránh phí phát sinh khi bạn cần điều chỉnh kế hoạch.",
       "slug": "changingCancelling"
@@ -16,9 +26,9 @@
       "slug": "checkinCheckout"
     },
     {
-      "label": "Đến Positano thuận tiện",
-      "description": "Chọn tuyến phà, xe buýt hoặc taxi phù hợp và nhận hướng dẫn từng bước từ Naples hoặc Sorrento.",
-      "slug": "travelHelp"
+      "label": "Đến Positano",
+      "description": "So sánh các tuyến phà, xe buýt và taxi với hướng dẫn vận chuyển từng bước của chúng tôi.",
+      "href": "how-to-get-here"
     }
   ],
   "contactCta": {

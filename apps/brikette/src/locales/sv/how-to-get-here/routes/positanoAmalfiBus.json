@@ -24,6 +24,7 @@
     },
     "timetable": {
       "title": "Så läser du SITA:s tidtabell",
+      "link": "Se den senaste tidtabellen på <link>Positano.com</link>.",
       "body": "I den officiella tidtabellen listas hållplatserna som rader och avgångarna som bokstavsmarkerade kolumner. Matcha raderna för Positano och Amalfi inom samma bokstavskolumn för din resdag.",
       "list": [
         "Raderna i första kolumnen visar varje hållplats längs linjen.",
@@ -31,7 +32,6 @@
         "Reser du måndag–lördag? Använd kolumnerna F och G.",
         "Reser du på söndag eller helgdag? Använd kolumnerna G och H."
       ],
-      "link": "Se den senaste tidtabellen på <link>Positano.com</link>.",
       "linkHref": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result"
     },
     "positanoStop": {

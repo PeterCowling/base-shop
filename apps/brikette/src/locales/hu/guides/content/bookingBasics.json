@@ -1,132 +1,141 @@
 {
   "seo": {
-    "title": "Foglalási alapok: Útmutató a Hostel Brikette-ben való tartózkodáshoz Positanóban – az egyetlen hostel Positanóban",
-    "description": "Tudjon meg mindent, amit a foglalás előtt érdemes ismerni Positano egyetlen hosteléről az Amalfi-parton. Ismerje meg a biztonságos fizetési módokat, a rugalmas és nem visszatéríthető foglalásokat, a bejelentkezési szabályokat, a lemondási feltételeket és a bennfentes tippeket a felejthetetlen tartózkodásért."
+    "title": "Foglalási Alapok: Alapvető Útmutató a Hostel Brikette-ben Való Tartózkodáshoz, Positano - Positano Egyetlen Hostel-je",
+    "description": "Tudjon meg mindent, amit tudnia kell mielőtt lefoglalja Positano egyetlen hostelét az olaszországi Amalfi-parton. Ismerje meg a biztonságos fizetéseket, a rugalmas és nem visszatéríthető foglalásokat, a bejelentkezési szabályokat, a lemondási szabályzatokat és a bennfentes tippeket a felejthetetlen tartózkodásért Positano egyetlen hostelében."
   },
-  "linkLabel": "Foglalási alapok: Útmutató a Hostel Brikette-ben való tartózkodáshoz Positanóban – az egyetlen hostel Positanóban",
+  "linkLabel": "Foglalási Alapok: Alapvető Útmutató a Hostel Brikette-ben Való Tartózkodáshoz, Positano - Positano Egyetlen Hostel-je",
   "sections": [
     {
       "id": "aboutHostel",
-      "title": "About Our Hostel",
+      "title": "A Hostelemről",
       "body": [
-        "**A hostelemről**",
-        "A Skylar SRL büszkén üzemelteti a Hostel Brikette-et, Positano egyetlen hostelét. A címünk: Via Guglielmo Marconi 358, 84017 Positano, Salerno, Olaszország. Ideális kiindulópont vagyunk az Amalfi-part felfedezéséhez, Amalfi, Ravello, Szorrento és Capri között félúton – így nemcsak Positanóhoz, hanem egynapos kirándulásokhoz is tökéletes választás. Panorámás teraszunkról hegyek vesznek körül, miközben a híres mészkősziklák lenyűgöző kilátása tárul fel, ahogy a tengerbe buknak. Ha megfizethető, társaságkedvelő, lenyűgöző kilátással és remek kiszolgálással járó szállást keres, válassza a Hostel Brikette-et.",
-        "**Positano egyetlen hostelje**",
-        "A Hostel Brikette Positano egyetlen hostelje. Foglaljon közvetlenül vagy vegye fel velünk a kapcsolatot, hogy biztosan érvényes foglalást készítsen. Felhívjuk figyelmét, hogy a foglalások engedély nélküli továbbértékesítése vagy átadása szigorúan tilos, és azonnali, visszatérítés nélküli törlést von maga után.",
-        "**Hostelszolgáltatások és közösségi terek**",
-        "Közösségi tereinket úgy alakítottuk ki, hogy egyszerre biztosítsanak társasági életet és páratlan mediterrán panorámát. Reggeli cappuccinót kortyolhat a teraszon, csatlakozhat naplementés aperitivóhoz Positano öblére nézve, vagy távmunkázhat a hangulatos, ingyenes Wi-Fi-vel felszerelt társalgóban. Tágas, nemek szerint elkülönített közös fürdőszobákat biztosítunk, a meleg víz pedig éjjel-nappal elérhető. A látogatási időben érkező vendégek ezeket a tereket használhatják, amennyiben érvényes személyivel jelentkeznek a recepción.",
+        "**A Hostelemről**",
+        "A Skylar SRL büszkén üzemelteti a Hostel Brikette-et, Positano - Positano egyetlen hostelét. Megtalál minket a Via Guglielmo Marconi 358, 84017 Positano, Salerno, Olaszország címen. Tökéletes helyen vagyunk az Amalfi-part számára, mivel Amalfi, Ravello, Szorrento és Capri szigete között helyezkedünk el - így tökéletesek vagyunk nem csak Positano, hanem e helyek mindegyikének egynapos kirándulásaihoz is. Panorámás teraszunkról hegyekkel leszel körülvéve, és nagyszerű kilátásod lesz a híres mészkősziklákra, ahogy a tenger alá zuhannak. Ha megfizethető árat, társas légkört, verhetetlen kilátást, nagyszerű szolgáltatást keresel, nézd meg a Hostel Brikette-et.",
+        "**Positano Egyetlen Hostele**",
+        "A Hostel Brikette Positano egyetlen hostele. Foglalj közvetlenül vagy lépj kapcsolatba velünk, hogy biztosítsd, érvényes foglalást készítesz a hostelemben. Kérjük, vedd figyelembe azt is, hogy a foglalások jogosulatlan továbbértékesítése vagy átruházása szigorúan tilos, és azonnali visszatérítés nélküli törlést von maga után.",
+        "**Hostelsajátosságok és Közösségi Terek**",
+        "Közösségi tereink a társas interakció és a páratlan mediterrán kilátások kialakítására szolgálnak. Élvezd a reggeli cappuccinót a teraszunkon, csatlakozz a naplementés aperitivo órához Positano öblére néző kilátással, vagy dolgozz a távmunkán gyönyörű lobbynkban ingyenes Wi-Fi-vel felszerelve. Tágas, nemek szerint elkülönített közös fürdőszobákat is biztosítunk, meleg vízzel 24/7 elérhetően. Az ideiglenes látogatók megoszthatják ezeket a tereket a látogatási időben, amennyiben érvényes személyi igazolványt mutatnak be a recepción.",
         "**Szállástípusok**",
-        "Szállástípusaink között 4, 6, 7 és 8 ágyas hálótermek szerepelnek. Választhat koedukált vagy csak nőknek fenntartott szobát, kilátással vagy anélkül. Privát, saját fürdőszobás franciaágyas szobánk is van. Minden hálóteremben zárható szekrény, olvasólámpa, USB-töltő, Wi-Fi és légkondicionálás várja."
+        "Válassz a szállástípusok közül: 4 ágyas, 6 ágyas, 7 ágyas és 8 ágyas hálótermek. Akár vegyes ágyat vagy csak nőknek fenntartott szobát szeretnél. Vannak kilátással és kilátás nélküli szobáink. Van egy privát kétszemélyes szobánk saját fürdőszobával. Minden hálóteremben biztonságos szekrények, olvasólámpák, USB töltőportok, WiFi és légkondicionálás van."
       ]
     },
     {
       "id": "bookingProcess",
-      "title": "How to Book",
+      "title": "Hogyan Foglalj",
       "body": [
-        "**Hogyan foglalhatja le tartózkodását**",
-        "A Hostel Brikette-nél a foglalás gyors és biztonságos. Foglaljon közvetlenül a %URL:https://www.hostel-positano.com/|Hostel Brikette hivatalos weboldalán%, hogy a legjobb árakat, rugalmas feltételeket és ingyenes reggelit, valamint esti italokat kapjon. Foglalhat megbízható online utazási irodákon (OTA-kon) keresztül is, mint például a %URL:https://www.hostelworld.com/hostels/p/7763/hostel-brikette/|Hostelworld% vagy a %URL:https://www.booking.com/hotel/it/hostel-brikette.en-gb.html|Booking.com%.",
-        "**A kártyatulajdonosi követelmények megértése**",
-        "A bankkártya tulajdonosa – akinek a neve a foglaláshoz használt kártyán szerepel – végső soron felel minden szállásköltségért, extra szolgáltatásért és esetleges díjért. Ha más nevében foglal, győződjön meg róla, hogy rendelkezik a kártyabirtokos írásos engedélyével, vagy kérje, hogy biztonságos, harmadik fél számára küldött fizetési linket állítsunk ki.",
-        "**Elérhetőség és ellenajánlatok**",
-        "A legkeresettebb időszakokban, például június és szeptember között, egyes szobatípusok gyorsan betelnek. Ha az Ön által preferált hálótermi ágy vagy privát szoba nem elérhető, barátságos ellenajánlatot küldünk alternatív dátumokkal vagy szobakategóriákkal. Elfogadhatja, elutasíthatja vagy javaslatot tehet – csapatunk mind itt, az Amalfi-parton dolgozik, és segít megtalálni az ideális hostélélményt.",
-        "**Foglalása megerősítése**",
-        "Foglalása abban a pillanatban tekinthető véglegesnek, amikor megkapja automatizált visszaigazoló e-mailünket. Ez tartalmazza a foglalási azonosítót, az érkezés dátumát, az éjszakák számát, az ágy típusát (koedukált hálóterem, csak nőknek fenntartott hálóterem vagy privát szoba) és a teljes árat. Őrizze meg ezt az e-mailt – bejelentkezéskor szüksége lehet rá, ha a családnév nem egyezik a foglalásban szereplő névvel.",
-        "**Online utazási irodák**",
-        "Bár a közvetlen foglalás garantálja a legjobb árat és rugalmasságot, büszkén működünk együtt a Hostelworlddel, a Booking.commal és más OTA-kkal, hogy több ezer hiteles vendégértékelést olvashasson, mielőtt eldönti, hogy a Hostel Brikette-ben száll meg – Olaszország legendás Amalfi-partjának legjobbra értékelt, egyetlen hostelében."
+        "**Hogyan Foglald Le Tartózkodásodat**",
+        "Tartózkodásod lefoglalása a Hostel Brikette-ben gyors és biztonságos. Közvetlenül %URL:https://www.hostel-positano.com/|ezen a weboldalon% foglalhatsz a legjobb árakért, rugalmas szabályzatokért és hogy hozzáférj az ingyenes reggelihez és esti italokhoz. A hostelen is foglalhatsz megbízható online utazási irodákon (OTA-kon) keresztül, mint például %URL:https://www.hostelworld.com/hostels/p/7763/hostel-brikette/|Hostelworld% és %URL:https://www.booking.com/hotel/it/hostel-brikette.en-gb.html|Booking.com%.",
+        "**A Kártyatulajdonosi Követelmények Megértése**",
+        "A kártyatulajdonos - az a személy, akinek a neve megjelenik a foglalás biztosítására használt kártyán - végső soron felelős minden szállásköltségért, kiegészítőkért és felszámított büntetésekért. Ha más nevében foglalsz, kérjük, győződj meg róla, hogy van írásos engedélyed a kártyabirtokostól, vagy lépj kapcsolatba velünk, hogy biztonságos harmadik féltől származó fizetési linket tudjunk intézni.",
+        "**Elérhetőség és Ellenajánlatok**",
+        "Nagy keresleti időszakokban, mint például június-szeptember, bizonyos szobatípusok gyorsan elfogyhatnak. Ha a preferált hálótermi ágyadat vagy privát szobád nem elérhető, azonnal küldünk neked egy barátságos ellenajánlatot, amely alternatív dátumokat vagy szobakategóriákat javasol. Nyugodtan elfogadhatod, visszautasíthatod vagy tárgyalhatsz - csapatunk mind itt, az Amalfi-parton van, és segít neked az ideális hostelélményben.",
+        "**Szobafoglalásod Megerősítése**",
+        "Foglalásod abban a pillanatban megerősítettnek tekinthető, amikor megkapod az automatikus megerősítő e-mailünket. Ez a dokumentum részletezi foglalási hivatkozásodat, érkezési dátumod, éjszakák számát, ágy típusát (vegyes hálóterem, csak nőknek fenntartott hálóterem vagy privát szoba) és teljes költséget. Tartsd kéznél ezt az e-mailt - be kell mutatnod a bejelentkezéskor, ha a vezetékneved nem egyezik a foglalás nevével.",
+        "**Online Utazási Irodák**",
+        "Bár a közvetlen foglalás garantálja a legjobb árat és rugalmasságot, büszkén működünk együtt a Hostelworld-del, a Booking.commal és más OTA-kkal, hogy több ezer ellenőrzött utazói értékelést olvashass, mielőtt úgy döntesz, hogy a Hostel Brikette-ben szállsz meg - Olaszország legendás Amalfi-partjának legmagasabbra értékelt, egyetlen hostelében."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Iphone_calendar_screen.jpg/1280px-Iphone_calendar_screen.jpg",
+          "alt": "iPhone naptár képernyő dátumokkal és eseményekkel láthatóan",
+          "caption": "Mentsd el a megerősítésedet, hogy gyorsan megtaláld az érkezés napján.",
+          "width": 1280,
+          "height": 960
+        }
       ]
     },
     {
       "id": "paymentsDeposits",
-      "title": "Payments and Deposits",
+      "title": "Fizetések és Letétek",
       "body": [
-        "**Elfogadott fizetési módok**",
-        "Elfogadunk Visa és Mastercard hitel- vagy betéti kártyát, valamint készpénzt euróban. Vállalatok és egyetemek csoportos utak esetén előzetes egyeztetés után banki átutalással fizethetnek. American Expresset és kriptovalutát jelenleg nem fogadunk el.",
-        "**Fizetési előengedélyezés**",
-        "Helyének biztosítása érdekében ideiglenes előengedélyezést végezhetünk a kártyáján az első éjszaka díjának megfelelő összegben. A bank pár napon belül automatikusan feloldja a zárolást saját szabályzata szerint. Ez nem levonás, csupán garancia arra, hogy valóban el szeretne jönni a Hostel Brikette-be.",
-        "**Előre fizetett, nem visszatéríthető foglalások**",
-        "Az előre fizetett, nem visszatéríthető foglalásokkal a legalacsonyabb áron biztosíthatja a választott dátumokat. A teljes összeget a foglalás után azonnal levonjuk, és semmilyen körülmények között nem téríthető vissza, még utazási fennakadások esetén sem. Ez a tarifa azoknak ideális, akik 100%-ig biztosak útitervükben, és szeretnék garantálni helyüket Positano egyetlen hostelében a zsúfolt nyári hónapokban.",
-        "**Rugalmas, visszatéríthető foglalások**",
-        "A rugalmas, visszatéríthető foglalások nyugalmat adnak azoknak az utazóknak, akiknek bizonytalan az időbeosztása. Most csak egy kis előleget fizet, a fennmaradó összeget érkezéskor rendezi. A határidőn belüli lemondás díjmentes, és a dátummódosítás általában megoldható, amennyiben van szabad kapacitás."
+        "**Elfogadott Fizetési Módok**",
+        "Elfogadunk Visa és Mastercard hitel- vagy betéti kártyát, valamint készpénzt euróban. A csoportutakat szervező vállalatok és egyetemek előzetes megállapodás alapján banki átutalással fizethetnek. Sajnos jelenleg nem fogadunk el American Expresst vagy kriptovalutát.",
+        "**Fizetési Előengedélyezés**",
+        "Helyének biztosítása érdekében ideiglenes előengedélyezést végezhetünk a kártyádon az első éjszaka költségével egyenlő összegben. Ez a zárolás automatikusan feloldódik a bankoddal néhány napon belül, a szabályzataik szerint. Ez nem terhelés - egyszerűen csak garancia arra, hogy szándékodban áll élvezni tartózkodásodat a Hostel Brikette-ben.",
+        "**Előre Fizetett, Nem Visszatéríthető Foglalások**",
+        "Az előre fizetett, nem visszatéríthető foglalások rögzítik a legalacsonyabb elérhető árat a választott dátumaidra. A teljes összeget a foglalás után azonnal felszámítjuk, és semmilyen körülmények között nem téríthető vissza, még utazási fennakadások esetén sem. Ez az ár ideális azoknak az utazóknak, akik 100%-ban biztosak útvonaltervükben, és szeretnék biztosítani egy ágyat Positano egyetlen hostelében a zsúfolt nyári hónapokban.",
+        "**Rugalmas, Visszatéríthető Foglalások**",
+        "A rugalmas, visszatéríthető foglalások nyugalmat nyújtanak a bizonytalan időbeosztású utazóknak. Ma csak kis előleget fizess, és az egyenleget érkezéskor rendezd. A megengedett időkereten belüli lemondások nem járnak további díjjal, és a dátummódosítások általában lehetségesek a rendelkezésre állás függvényében."
       ]
     },
     {
       "id": "termsConditions",
-      "title": "Terms and Conditions",
+      "title": "Általános Szerződési Feltételek",
       "body": [
-        "**Általános feltételek**",
-        "Átlátható, tömör, és mindkét felet védő házirenddel dolgozunk. Ezek tartalmazzák a fizetési ütemezést, az óvadékszabályokat, a csendes időszakra vonatkozó előírásokat és a hálótermek kizárólag vendégek számára fenntartott használatát. Feltételeink összhangban vannak az olasz turisztikai jogszabályokkal és az európai hostelgyakorlatokkal. Nyomatékosan javasoljuk, hogy érkezés előtt ismerje meg ezeket a feltételeket, így nem érik meglepetések check-in után. Foglalásának véglegesítésével kijelenti, hogy elolvasta, megértette és elfogadta a Hostel Brikette Általános Szerződési Feltételeit.",
-        "**Kinek szól ez az útmutató**",
-        "Ez a foglalási útmutató minden olyan vendégnek segít, aki éjszakára marad vagy más nevében intézi ügyeit a hostelnél. Legyen szó hátizsákos egyedül utazóról, digitális nomádról, romantikus pihenésre érkező párról, iskolai kirándulást szervező csoportvezetőről vagy csak a teraszt meglátogató barátról – ezek az irányelvek biztosítják, hogy mindenkit igazságosan kezeljünk, és a hostel gördülékenyen működjön."
+        "**Általános Szerződési Feltételek**",
+        "Általános szerződési feltételeink átláthatóak, tömörek és mind téged, mind minket védeni hivatottak. Felvázolják az alapvető részleteket, mint a fizetési ütemezések, biztonsági letéti szabályok, csendes óra szabályzatok és csak vendégeknek fenntartott hozzáférés a hálótermekhez. Az általános szerződési feltételek összhangban vannak az olasz turisztikai jogszabályokkal és az Európa-szerte alkalmazott standard hostelgyakorlatokkal. Erősen bátorítunk minden vendéget, hogy ismerkedjenek meg ezekkel a feltételekkel érkezés előtt, hogy ne legyenek meglepetések bejelentkezés után. Foglalásod befejezésével elismered, hogy elolvastad, megértetted és elfogadtad a Hostel Brikette Általános Szerződési Feltételeit.",
+        "**Kire Vonatkozik Ez az Útmutató**",
+        "Ez a foglalási útmutató segíteni kívánja minden vendéget, aki éjszakázik vagy más nevében lép kapcsolatba a hostellel. Akár egyedül utazó hátizsákos vagy, digitális nomád, pár romantikus kiruccanáson, iskolai kirándulást koordináló csoportvezető vagy egyszerűen egy ideiglenes látogató, aki csak a teraszt szeretné élvezni, ezek az irányelvek biztosítják, hogy mindenkit igazságosan kezeljenek, és a hostel zökkenőmentesen működjön."
       ]
     },
     {
       "id": "cancellationsChanges",
-      "title": "Cancellations and Changes",
+      "title": "Lemondások és Módosítások",
       "body": [
-        "**Meg nem jelenés és terhelések**",
-        "Meg nem jelenésnek minősül, ha a vendég az érkezési napon 22:00 óráig nem jelentkezik be. Kis, független vállalkozásként a kieső bevétel ellen védekezve a meg nem jelenéskor felszámítjuk az első éjszaka díját, vagy – nem visszatéríthető foglalások esetén – a teljes összeget, attól függően, melyik magasabb. Ha késve érkezik, írjon nekünk 21:00 előtt, hogy önkiszolgáló késői check-in csomagot készíthessünk.",
-        "**Foglalás lemondása**",
-        "Megértjük, hogy a tervek változhatnak. Ha le kell mondania positanói tartózkodását, jelezze nekünk minél előbb a %URL:mailto:hostelpositano@gmail.com|hostelpositano@gmail.com% címen. A korai lemondás felszabadítja az ágyakat más hátizsákos utazók számára, és csökkentheti vagy megszüntetheti az esetleges díjakat.",
-        "**Lemondási határidő**",
-        "Ha a díjszabás másként nem rendelkezik, alapértelmezés szerint 72 órás lemondási szabályt alkalmazunk. Ez azt jelenti, hogy az érkezés előtti harmadik nap 15:00 óráig kell lemondania, hogy elkerülje a díjakat. A nem visszatéríthető vagy \"early bird\" kedvezményes árak eltérhetnek, ezért mindig ellenőrizze a visszaigazoló e-mailben szereplő feltételeket.",
-        "**Lemondási adminisztrációs díjak**",
-        "Foglalásonként 5 € adminisztrációs díjat számíthatunk fel a visszatérítések feldolgozásával és a több foglalási platformon történő készletfrissítéssel járó költségek fedezésére. Ezt a díjat a foglaláskor egyértelműen feltüntetjük, és a visszaigazoló e-mailben is megismételjük.",
-        "**Foglalás módosítása**",
-        "Előrébb hozná a foglalást, csatlakozna még egy utazó, vagy tengerre néző privát szobára váltana? Küldje el kérését e-mailben \"Booking Change - [vezetékneve, érkezési dátum]\" tárggyal. A módosítások elérhetőségtől függnek, de mindent megteszünk a vendégek elégedettségéért és a rugalmasságért.",
-        "**Tartózkodás meghosszabbítása**",
-        "Amint átéli Positano sziklás varázsát, lehet, hogy maradna még. Semmi gond – írjon vagy beszéljen a recepcióval a hosszabbításról. A plusz éjszakákat érkezési sorrendben tudjuk biztosítani, ezért főleg a főszezonban jelezze időben a kérését."
+        "**Meg nem Jelenések és Díjak**",
+        "\"Meg nem jelenés\" akkor történik, amikor a vendég nem érkezik meg és nem fejezi be a bejelentkezést 22:00-ig (helyi idő szerint) a tervezett érkezési napon. Kis, független vállalkozásunk elveszett bevételektől való védelme érdekében a meg nem jelenéseket az első éjszaka teljes összegével vagy a teljes nem visszatéríthető egyenleggel terheljük, amelyik összeg magasabb. Ha késői érkezést várnak, egyszerűen küldj nekünk e-mailt 21:00 előtt, hogy késői önbejelentkezési csomagot tudjunk intézni.",
+        "**Foglalásod Lemondása**",
+        "A tervek változnak - értjük! Ha le kell mondanod tartózkodásodat Positanóban, kérjük, értesíts minket a lehető leghamarabb e-mailben a %URL:mailto:hostelpositano@gmail.com|hostelpositano@gmail.com% címen. A korai lemondások felszabadítják az ágyakat más, az Amalfi-partot felfedező hátizsákosok számára, és csökkenthetik vagy megszüntethetik a vonatkozó díjakat számodra.",
+        "**Lemondási Értesítési Időszak**",
+        "Hacsak a díjtervedben másként nem szerepel, standard 72 órás lemondási szabályzat érvényes. Ez azt jelenti, hogy az érkezési dátumod előtt három teljes nappal, 15:00-ig kell lemondanod a díjak elkerülése érdekében. A nem visszatéríthető vagy \"korai madár\" kedvezményes díjak más feltételekkel rendelkezhetnek, ezért mindig ellenőrizd a megerősítő e-mailedet a részletekért.",
+        "**Lemondási Adminisztrációs Díjak**",
+        "Foglalasonként €5 kis adminisztrációs díj vonatkozhat a visszatérítések feldolgozásával és a készlet frissítésével kapcsolatos tranzakciós költségek fedezésére több foglalási platformon. Ez a díj egyértelműen megjelenik a foglalás időpontjában, és megismétlődik a megerősítő e-mailedben.",
+        "**Foglalásod Módosítása**",
+        "Szükséged van arra, hogy előrébb vidd foglalásodat egy héttel, hozzáadj egy másik utazót vagy frissíts tengerre néző privát szobára? Küld el kérésedet e-mailben \"Booking Change - [Vezetékneved, Érkezési Dátum]\" tárggyal. A változtatások a rendelkezésre állás függvényei, de mindig megteszünk minden tőlünk telhetőt, hogy a vendégek elégedettek maradjanak, és a rugalmasság magas legyen.",
+        "**Tartózkodásod Meghosszabbítása**",
+        "Miután megtapasztaltad Positano sziklaparti varázsát, lehet, hogy úgy döntesz, soha nem akarsz elmenni. Semmi gond - küldj e-mailt vagy beszélj a recepcióval tartózkodásod meghosszabbításáról. Az extra éjszakákat első jött, első kapott alapon adjuk, ezért tudass velünk korán, különösen a csúcs Amalfi-part szezonban."
       ]
     },
     {
       "id": "communication",
-      "title": "Communication",
+      "title": "Kommunikáció",
       "body": [
-        "**Hivatalos kommunikáció és e-mail**",
-        "Minden hivatalos megkeresés – legyen az különleges kérés, csoportos ajánlat vagy vízumhoz szükséges igazolás – a %URL:mailto:hostelpositano@gmail.com|hostelpositano@gmail.com% dedikált postaládán keresztül érkezzen. Naponta 08:00 és 22:00 között válaszolunk az e-mailekre.",
-        "**E-mail-cím megadása**",
-        "A foglaláskor kötelező érvényes e-mail-címet megadni, mert ezen keresztül küldjük a megerősítést, hogy nálunk foglal. Ha tíz percen belül nem kap visszaigazolást, ellenőrizze a spam mappát, és jelöljön minket megbízható feladóként. Egy alkalmazás elérhetőségét is elküldjük, amely segít az utazás megtervezésében, a helyszíni időbeosztásban, ételek és italok rendelésében stb. Ez az alkalmazás sokat segít abban, hogy a legtöbbet hozza ki positanói napjaiból."
+        "**Hivatalos Kommunikáció és E-mail**",
+        "Bármilyen hivatalos levelezés esetén - akár különleges kérés, csoportos érdeklődés vagy vízummegerősítő levél - írj dedikált postaládánkba a %URL:mailto:hostelpositano@gmail.com|hostelpositano@gmail.com% címen. Naponta 08:00 és 22:00 között válaszolunk az e-mailekre.",
+        "**E-mail Címed Megadása**",
+        "Érvényes e-mail cím kötelező a foglalás időpontjában, mert így küldjük a megerősítést, hogy foglaltál nálunk tartózkodni a Hostel Brikette-ben. Ha nem kapsz e-mailt tíz percen belül a foglalás után, kérjük, ellenőrizd a spam mappádat, és jelölj minket biztonságos feladóként. Egy alkalmazáshoz való hozzáférést is küldünk, amelyet használhatsz utazásod megtervezésére, az időre, amíg a hostelben vagy, ételek és italok rendeléséhez stb. Ez az alkalmazás nagyon hasznos, és biztosítja, hogy a legtöbbet hozd ki időd a Hostel Brikette-ben, Positanóban és az Amalfi-part mentén."
       ]
     },
     {
       "id": "checkIn",
-      "title": "Checking In",
+      "title": "Bejelentkezés",
       "body": [
         "**Bejelentkezés**",
-        "A bejelentkezés naponta 15:00 és 22:00 között zajlik. Ha előbb érkezik Positanóba, csomagjait 10:30-tól ingyen megőrizzük, így rögtön elindulhat a Spiaggia Grande felé, a Sentiero degli Dei túraösvényre, vagy bekaphat valamit. Kérjük, készítse elő útlevelét vagy személyijét a gyors regisztráció érdekében.",
-        "**Személyazonosság igazolásának követelményei**",
-        "Az olasz jogszabályok előírják, hogy minden vendéget regisztrálnunk kell a helyi hatóságoknál. Elfogadható okmány az útlevél (javasolt), az EU-s személyi igazolvány, érvényes jogosítvány vagy a katonai igazolvány. Fénymásolatokat nem fogadunk el. Az igazolvány hiánya visszautasított bejelentkezést eredményezhet visszatérítés nélkül.",
-        "**Szobabeosztás**",
-        "Check-in során az Ön foglalásának megfelelő ágyat vagy privát szobát jelölünk ki, figyelembe véve a csoport méretét is. A takarítók 10:30 és 15:00 között készítik elő a szobákat, ezért a korábbi bejutás nem mindig garantálható; a terasz azonban nyitva áll, ha felfrissülne az érkezés után.",
-        "**Belépőkártya**",
-        "Érkezéskor RFID belépőkártyát adunk 10 euró letét ellenében. A kártya 24 órában biztosít hozzáférést a kijelölt szobához. Elvesztése esetén 10 € pótdíjat számítunk fel, ezért vigyázzon rá. Kijelentkezéskor kérjük, adja vissza, hogy visszatéríthessük a letétet.",
-        "**Külön irányelvek kiskorúaknak**",
-        "Az olasz jog szerint a 18 év alattiaknak közjegyző által hitelesített szülői hozzájárulásra van szükségük, ha törvényes képviselő nélkül utaznak. Kiskorúak csak privát szobában tartózkodhatnak, és nem oszthatnak hálótermet idegen felnőttekkel."
+        "A bejelentkezés naponta 15:00 és 22:00 között zajlik. Ha a szoba ideje előtt érsz Positanóba, ingyen tároljuk csomagjaidat (naponta 10:30-tól tárolhatunk csomagokat), így egyenesen mehetsz a Spiaggia Grande-re, a Sentiero degli Dei túraútvonalra, falatozni stb. Kérjük, tartsd készenlétben útleveledet vagy személyi igazolványodat a gyors regisztrációhoz.",
+        "**Személyazonosság Igazolási Követelmények**",
+        "Az olasz törvény megköveteli tőlünk, hogy minden vendéget regisztráljunk a helyi hatóságoknál. Az elfogadható személyazonosítási formák közé tartozik az útlevél (ajánlott), EU nemzeti személyi igazolvány, érvényes vezetői engedély vagy katonai igazolvány. A fénymásolatokat nem fogadjuk el. Az igazolvány bemutatásának elmulasztása visszautasított bejelentkezést eredményezhet visszatérítés nélkül.",
+        "**Szobabeosztások**",
+        "A bejelentkezés során egy ágyat vagy privát szobát osztunk ki neked, amely a legjobban megfelel foglalási típusodnak és csoportméretednek. A takarítás 10:30 és 15:00 között készíti elő a szobákat, így a korábbi hozzáférés nem mindig garantálható; azonban teraszunk elérhető, ha frissülni szeretnél közvetlenül érkezés után.",
+        "**Kulcskártya Hozzáférés**",
+        "RFID kulcskártyákat adunk ki a bejelentkezéskor, 10 eurós letét ellenében. A kulcskártya 24 órás hozzáférést biztosít a specifikus szobádhoz. Az elveszett kártyákért €10 pótdíjat számítunk fel, ezért kérjük, őrizd meg a tiédet biztonságosan. Ne felejtsd el visszaadni kulcskártyádat kijelentkezéskor, hogy visszatéríthessük letétedet.",
+        "**Különleges Irányelvek Kiskorúak Számára**",
+        "Az olasz törvény szerint minden 18 év alatti személynek be kell mutatnia egy közjegyző által hitelesített szülői beleegyező nyomtatványt, ha törvényes gyám nélkül utazik. A kiskorúak csak privát szobákban tartózkodhatnak, és nem oszthatnak meg vegyes hálótermeket nem rokon felnőttekkel."
       ]
     },
     {
       "id": "duringStay",
-      "title": "During Your Stay",
+      "title": "Tartózkodásod Alatt",
       "body": [
-        "**Ágynemű és felszereltség**",
-        "Minden vendég frissen mosott pamut ágyneműt, kényelmes párnát és fürdőtörölközőt kap. Környezetvédelmi okokból a negyedik éjszaka után cserélünk ágyneműt tartós tartózkodás esetén. További törölközők kis díj ellenében kérhetők a recepción.",
-        "**Szobafelminősítések**",
-        "Alkalmanként meglepjük vendégeinket ingyenes szobafelminősítéssel, de ezt nem tudjuk garantálni, és nincs hűségprogram sem, amely növelné az esélyt. Fizetős upgrade előfordulhat, de a nyári csúcsszezonban és más forgalmas időszakokban gyakran nem megoldható. Azt javasoljuk, rögtön a kívánt szobatípust foglalja le.",
-        "**Ingyenes hostelszolgáltatások**",
-        "Ha közvetlenül a Hostel Brikette-nél foglal, költségkímélő extrákat biztosítunk: minőségi reggelit és esti italokat. Minden vendégünk számára ingyenes a Wi-Fi az egész épületben, használhatják a közös hűtőt, és igénybe vehetik a csomagmegőrzést check-in előtt és check-out után. Ezek a szolgáltatások ingyenesek, de feltételekhez kötöttek.",
-        "**Időszakos látogatók**",
-        "Tisztában vagyunk vele, hogy a máshol megszálló barátok és útitársak szeretnének meglátogatni. Ideiglenes vendégek a lobbyban és a teraszon tartózkodhatnak 10:30 és 20:00 között. Minden látogatónak érvényes igazolvánnyal kell bejelentkeznie a recepción. Fenntartjuk a jogot, hogy bármilyen okból elutasítsuk a látogatókat, például a vendégek biztonságának garantálása érdekében. Éjszakai tartózkodás foglalás nélkül nem megengedett.",
-        "**Ágyválasztás a hálóteremben**",
-        "A hálótermi ágyakat érkezési sorrendben lehet kiválasztani, így a korán érkezők dönthetnek, felül vagy alul szeretnének aludni. Ha mozgásában korlátozott, és alsó fekhelyet igényel, kérjük, vegye figyelembe, hogy ezt nem tudjuk garantálni.",
-        "**Hibabejelentés**",
-        "Az Ön kényelme és biztonsága a legfontosabb számunkra. Ha bármilyen hibát észlel – legyen az pislákoló olvasólámpa vagy csöpögő zuhany – azonnal jelezze a recepción. Vagy azonnal javítjuk, vagy azonos értékű másik ágyba vagy szobába költöztetjük."
+        "**Ágynemű és Kényelmi Szolgáltatások**",
+        "Minden vendég frissen mosott pamut lepedőket, kényelmes párnát és fürdőtörölközőt kap. Ökológiai okokból hosszabb tartózkodások esetén minden negyedik éjszaka cseréljük az ágyneműt. További törölközők kis díj ellenében elérhetők - csak kérdezz a recepción.",
+        "**Szoba Felminősítések**",
+        "Alkalmanként meglepjük a szerencsés vendégeket ingyenes felminősítéssel, de ezt nem garantálhatjuk, és nincs jutalom programunk sem, amely elősegítené a felminősítési esélyeket. Bár a fizetett felminősítés lehetséges lehet, a csúcs nyári hónapokban és esetleg más forgalmas időkben nem biztos, hogy lehetséges. Azt javasoljuk, foglald le a szobát, amit szeretnél, hogy biztosítsd, megkapod amit keresel.",
+        "**Ingyenes Hostel Szolgáltatások**",
+        "Ha közvetlenül a Hostel Brikette-tel foglalsz, ingyenes előnyöket biztosíthatunk költségvetésed nyújtására: minőségi reggelit és esti italokat. Minden vendég részesülhet ingyenes Wi-Fi-ben az ingatlanon, közös hűtő használatában snackek tárolására, és csomagtárolásban bejelentkezés előtt vagy kijelentkezés után. Ezek a szolgáltatások ingyenesek és az általános szerződési feltételek hatálya alá tartoznak.",
+        "**Ideiglenes Látogatók**",
+        "Megértjük, hogy máshol szálló barátok és utitársak esetleg szeretnének meglátogatni. Az ideiglenes vendégek látogathatnak a lobbyt és a teraszt 10:30 és 20:00 között. Minden ideiglenes látogatónak be kell jelentkeznie a recepción érvényes személyi igazolvánnyal. Bármilyen okból elutasíthatjuk az ideiglenes látogatók fogadását, beleértve a vendégek biztonsága és védelme érdekében. Az éjszakai tartózkodások foglalás nélkül nem megengedettek.",
+        "**Hálótermi Ágyválasztás**",
+        "A hálótermi ágyak első jött, első választott elven működnek, lehetővé téve a korai érkezőknek, hogy felső vagy alsó ágyakat válasszanak. Ha mobilitási problémáid vannak és alsó ágyra van szükséged, kérjük, vedd figyelembe, hogy nem tudjuk garantálni, hogy kapsz egyet.",
+        "**Problémák Jelentése**",
+        "Kényelmed és biztonságod a legfontosabb prioritásaink. Ha bármilyen hibát találsz - a pislákoló olvasólámpától a csöpögő zuhanyzóig - azonnal értesítsd a recepciót. Vagy megjavítjuk a problémát helyben, vagy áthelyezünk egy másik azonos értékű ágyba vagy szobába."
       ]
     },
     {
       "id": "checkOut",
-      "title": "Checking Out",
+      "title": "Kijelentkezés",
       "body": [
         "**Kijelentkezés**",
-        "A kijelentkezés ideje 10:30, hogy takarítócsapatunk felkészíthesse a szobákat az új vendégek számára. Indulás előtt húzza le az ágyneműt, adja le a textíliákat és a belépőkártyát, valamint gyűjtse össze a közösségi terekben vagy a csomagszobában hagyott holmiját. A csomagmegőrzés kijelentkezés után 15:30-ig díjmentes."
+        "A kijelentkezési idő 10:30, ezzel elegendő időt adva takarítócsapatunknak a szobák előkészítésére a beérkező utazók számára. Távozás előtt vesd le ágyadat, add vissza ágyneműedet és kulcskártyádat, és vedd fel holmidat a közös területekről vagy a csomagszobából. A kijelentkezés utáni csomagtárolás ingyenes 15:30-ig."
       ]
     }
   ]

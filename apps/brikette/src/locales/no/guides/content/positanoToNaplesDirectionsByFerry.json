@@ -1,88 +1,126 @@
 {
   "seo": {
     "title": "Positano til Napoli med ferge | Hostel Brikette",
-    "description": "Tydelige, utskrivbare trinn fra Hostel Brikette til havnen i Positano og videre til Napoli med ferge, inkludert billettkjøp og ankomsttips."
+    "description": "Ferge fra Positano til Napoli: gå ned til havnen, billetter (€18-25), påstigning og ankomst til Napoli havn med forbindelser til Napoli Centrale. Sesong april–oktober."
   },
+  "lastUpdated": "2025-01-15",
   "intro": {
-    "title": "Positano til Napoli – reiserute med ferge",
-    "body": "Klare trinn for å gå fra Hostel Brikette til havnen i Positano, kjøpe fergebilletter og fortsette til Napoli, inkludert sesongnotater og ankomstveiledning for Napoli Centrale."
+    "title": "Positano til Napoli — veibeskrivelse med ferge",
+    "body": "Reis fra Positano til sentrale Napoli helt til sjøs. Denne ruten starter med en tur ned fra overnattingsstedet ditt til Positanos fergebrygge ved Spiaggia Grande, deretter en naturskjønn 70–90 minutters fergereise til Napoli, og en siste kort overføring fra havnen til Napoli Centrale stasjon. Best for: reisende som vil unngå den svingete kystvegen og nyte sjøutsikt. Ikke ideell for: vinterbesøk (begrenset service november–mars), noen som ikke liker å gå ned bratte trapper (200+ trinn til bryggen), eller de med veldig stram tidsplan (fergeavbestillinger skjer ofte). Total reisetid er vanligvis 2–3,5 timer dør til dør, inkludert turen til havnen og havne-til-stasjon-overføringen i Napoli. Forvent å betale €18-25 for fergen pluss €1-2 for trikk eller €10-15 for taxi i Napoli. Denne guiden dekker turen fra øvre landsby til Positanos havn, kjøp av fergebilletter, påstigning, overfarten, og ankomst i Napoli med videre forbindelser."
   },
-  "sections": [
-    {
-      "id": "journeyOverview",
-      "title": "Reiseoversikt"
-    },
-    {
-      "id": "photoGuide",
-      "title": "Fotoguide (referanse)"
-    },
-    {
-      "id": "walkToPort",
-      "title": "Gå til havnen i Positano"
-    },
-    {
-      "id": "tickets",
-      "title": "Kjøp billetter og gå om bord"
-    },
-    {
-      "id": "arrival",
-      "title": "Ved ankomst i Napoli"
-    }
-  ],
   "galleries": [
     {
       "items": [
         {
           "src": "/img/directions/positano-capri-ferry-img01.png",
+          "alt": "Bilde av rutesteg 1",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img02.jpg",
+          "alt": "Bilde av rutesteg 2",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img03.jpg",
+          "alt": "Bilde av rutesteg 3",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img04.png",
+          "alt": "Bilde av rutesteg 4",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img05.jpg",
+          "alt": "Bilde av rutesteg 5",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img06.jpg",
+          "alt": "Bilde av rutesteg 6",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img07.jpg",
+          "alt": "Bilde av rutesteg 7",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img08.jpg",
+          "alt": "Bilde av rutesteg 8",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img09.jpg",
+          "alt": "Bilde av rutesteg 9",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img10.jpg",
+          "alt": "Bilde av rutesteg 10",
           "aspectRatio": "4/3",
           "preset": "gallery"
         }
       ]
     }
-  ]
+  ],
+  "sections": [
+    {
+      "id": "journeyOverview",
+      "title": "Reiseoversikt",
+      "body": "Fergeruten fra Positano til Napoli går sesongmessig, med hyppigst service fra april til oktober. I høysesongen om sommeren (juni–september) finner du vanligvis 3–6 avganger per dag, mens skuldersesongen (april, mai, oktober) vanligvis tilbyr 1–3 daglige seilinger. Vinterservice (november–mars) er ekstremt begrenset eller fraværende.\n\n**Typisk tidslinje:**\n- Gå fra øvre landsby (Chiesa Nuova/Montepertuso) ned til havnen: 20–30 minutter\n- Gå fra sentrale Positano til havnen: 10–15 minutter\n- Ankomst til havn og kjøp billetter: 15–20 minutter før avgang\n- Fergeoverføring: 70–90 minutter (hydrofoiler er raskere, tradisjonelle ferger langsommere)\n- Gå i land i Napoli og overføring til Napoli Centrale: 15–25 minutter med trikk, 10–15 minutter med taxi\n- Total dør-til-dør fra øvre landsby: 2,5–3,5 timer\n- Total fra sentrale Positano: 2–3 timer\n\n**Hvem denne ruten passer for:** Reisende som drar fra Positano og vil ha en naturskjønn, direkte rute til Napoli uten å håndtere overfylte busser. Ideell hvis du liker å være på vannet og er komfortabel med den bratte nedoverbakke-turen til havnen (mye enklere enn å klatre opp!).\n\n**Hvem bør vurdere alternativer:** Alle som reiser om vinteren, de som er ukomfortable med trapper (selv nedover kan 200+ trinn være utfordrende med bagasje), reisende med veldig stram tidsplan (fergeforsinkelser og kanselleringer er vanlige), eller noen som er utsatt for sjøsyke. %HOWTO:positano-sorrento-bus|Bussen via Sorrento% går året rundt og koster mindre.\n\n**Vær og kanselleringer:** Fergetjenester er væravhengige. Selv om sommeren kan grov sjø eller sterk vind føre til siste-minutt-kanselleringer, vanligvis kunngjort om morgenen på avgangsdagen. Sjekk alltid med fergeoperatøren før du går ned til havnen. Hvis fergene er kansellert, må du gå tilbake opp og ta bussruten i stedet. Fra vår erfaring er kanselleringer mest vanlige sent på høsten (oktober–november) og tidlig vår (mars–april) når plutselige værskifter er hyppige. Hvis værvarselet viser vindhastigheter over 25–30 knop eller betydelige bølgehøyder, forvent høy sannsynlighet for kansellering. Ring fergeselskapet eller sjekk nettstedet kvelden før og igjen om morgenen på avgangsdagen."
+    },
+    {
+      "id": "photoGuide",
+      "title": "Fotoguide (referanse)",
+      "body": "Galleriet nedenfor viser turen fra øvre landsby ned til Positanos havn. Ruten følger Via Cristoforo Colombo (hovedkystvegen) nedover, deretter går ned den lange trappen til Spiaggia Grande-stranden og fergebryggen. Se etter skilting som peker mot \"Spiaggia\" eller \"Marina\" mens du går ned. Trappene er bratte men velholdte, med rekkverk. På en varm dag kan turen ned fortsatt være slitsom med bagasje, så gå i ditt eget tempo og bruk rekkverkene."
+    },
+    {
+      "id": "walkToPort",
+      "title": "Gå til Positanos havn",
+      "body": "Positanos fergebrygge ligger nederst i landsbyen ved Spiaggia Grande (hovedstranden). For å komme dit kreves det å gå ned 200+ bratte trinn fra hovedkystvegen.\n\n**Fra øvre landsby (Chiesa Nuova eller Montepertuso):**\n\nHvis du bor i øvre landsby, må du først nå hovedkystvegen (Via Cristoforo Colombo) og busstoppene. Derfra har du to alternativer:\n\n1. **Gå ned (gratis, 20–30 minutter totalt):** Følg Via Cristoforo Colombo nedover mot sentrum av Positano. Mens du går ned, passerer du butikker, restauranter og hoteller. Se etter skilt som peker mot \"Spiaggia\" eller \"Marina Grande.\" Til slutt vil du nå en stor trappegang (med en keramisk kuppel på toppen) som går ned mot stranden. Dette er hovedtilgangen til havnen. Trappene er bratte og smale på steder, med ca. 200–250 trinn totalt. Ta deg tid, bruk rekkverkene, og stopp for å hvile etter behov. Nederst vil du nå strandpromenaden og fergebryggen er rett frem.\n\n2. **Ta lokal buss delvis ned (€1,30, sparer ~10 minutter):** Ta en SITA-buss som går ned mot \"Positano centro\" eller \"Spiaggia\" og gå av ved et av de nedre stoppene nær kirken (Chiesa di Santa Maria Assunta). Derfra går du ned de resterende trappene til stranden.\n\n**Fra sentrale Positano:**\n\nHvis du bor i sentrale Positano nær Via Cristoforo Colombo, gå nedover mot stranden, følg skilt for \"Spiaggia\" eller \"Marina.\" Turen tar 10–15 minutter og innebærer å gå ned hovedtrappen (200+ trinn) for å nå strandnivået og fergebryggen.\n\n**Ankomst til havnen:**\n\nNår du når strandpromenaden, er fergebryggen helt til høyre (øst) ende av Spiaggia Grande. Se etter den lille bryggestrukturen og billettkioskene. Ankom minst 15–20 minutter før avgangen din for å kjøpe eller bytte billetter og stå i kø for påstigning. Om sommeren kan bryggeområdet være overfylt med dagsturer og strandgjester, så sett av ekstra tid til å navigere gjennom folkemengdene."
+    },
+    {
+      "id": "tickets",
+      "title": "Kjøp billetter og gå ombord",
+      "body": "Flere selskaper opererer ferger og hydrofoiler mellom Positano og Napoli. Billetter er generelt ikke utvekslbare mellom operatører.\n\n**Hovedoperatører:**\n- **Alilauro** (hydrofoiler og ferger) — hyppigst service\n- **NLG (Navigazione Libera del Golfo)** — tradisjonelle ferger, ofte billigere\n- **Positano Jet** — små hydrofoiler, begrenset ruteplan\n\n**Billettpriser:** €18-25 per person enveis, avhengig av fartøytype og sesong. Større bagasje kan medføre et lite tillegg (€2-5 per bag).\n\n**Hvor du kjøper billetter:**\n\n1. **Ved havnen på dagen** — Små billettkiosker ligger nær bryggen. Dette er det mest fleksible alternativet (du kan sjekke værforholdene først). Ankom 20–30 minutter tidlig da populære avganger kan bli utsolgt om sommeren.\n\n2. **På nett på forhånd** — De fleste operatører selger billetter på sine nettsider. Du vil motta en kupong som må byttes mot et boardingkort ved havnekiosken (legg til 10–15 minutter for dette). Forhåndsbooking anbefales for juli–august.\n\n**Påstigning:**\n- Vent i køen nær gangveien. Personalet vil sjekke billetter og veilede deg til bagasjeoppbevaring.\n- På hydrofoiler er sitteplasser vanligvis tildelt. På større ferger er det først-til-mølla.\n- Gangveien kan være smal og bevege seg med dønningene — vær forsiktig.\n- Fergen vil sannsynligvis stoppe ved %HOWTO:amalfi-positano-ferry|Amalfi% og %HOWTO:sorrento-positano-ferry|Sorrento% før den når Napoli. Ikke gå i land for tidlig — vent på Napoli-kunngjøringen.\n\n**Under overfarten:**\n- Turen tar 70–90 minutter avhengig av fartøytype og antall stopp.\n- Overfarten kan være humpete om våren og høsten. Hvis du er utsatt for sjøsyke, sitt ute, fokuser på horisonten, og vurder å ta medikamenter før ombordstigning.\n- Fasilitetene er grunnleggende: små toaletter, en snackbar eller salgsautomat på større fartøyer."
+    },
+    {
+      "id": "arrival",
+      "title": "Ved ankomst i Napoli",
+      "body": "Ferger fra Positano legger til ved en av Napolis vannkanterminaler, vanligvis **Molo Beverello** eller **Calata Porta di Massa**, begge ligger nær Piazza Municipio. Herfra må du overføre til Napoli Centrale stasjon (hvis du fortsetter med tog) eller overnattingsstedet ditt i sentrale Napoli.\n\n**Ilandstigningsprosess:**\n- Vent på at mannskapet sikrer gangveien og gir signalet om å gå av.\n- Hent bagasjen din fra oppbevaringsområdet.\n- Følg folkemengden av bryggen og gjennom terminalområdet.\n\n**Overføring til Napoli Centrale (sentralstasjon):**\n\n**Alternativ 1: Trikk 1 (billigst, €1,10)**\nFra havneområdet, gå mot hovedveien og se etter Trikk 1-stoppet (overhead elektriske ledninger og trikkelinjer). Gå ombord på Trikk 1 mot \"Piazza Garibaldi\" eller \"Napoli Centrale.\" Turen tar ca. 15–20 minutter. Valider billetten din i den gule maskinen ombord. Gå av ved Garibaldi-stoppet, som er rett utenfor Napoli Centrale stasjon.\n\n**Alternativ 2: Taxi (raskere, €10-15)**\nTaxier står i kø nær havneutgangene. Fortell sjåføren \"Napoli Centrale\" eller \"Stazione Centrale.\" Turen tar 10–15 minutter avhengig av trafikk. Bekreft at sjåføren starter taksametre.\n\n**Alternativ 3: Gå (gratis, 25–30 minutter)**\nHvis du reiser lett og vil se byen, kan du gå fra havnen til Napoli Centrale. Gå nordøst langs vannkanten, deretter innover mot Piazza Garibaldi. Dette anbefales bare hvis du er komfortabel med å navigere Napoli og ikke har tungt bagasje.\n\n**Fortsette til flyplassen eller andre destinasjoner:**\n- **Til Napoli flyplass:** Fra Napoli Centrale, ta Alibus-skyttelen (€5, 20–30 minutter). Se %HOWTO:naples-airport-positano-bus|Napoli flyplass til Positano bussguide% for detaljer (reverser retningene).\n- **Til Sorrento, Pompeii eller Herculaneum:** Fra Napoli Centrale, ta Circumvesuviana-toget (kjøp billetter ved Circumvesuviana-stasjonen på lavere nivå, ikke hovedTrenitalia-stasjonen).\n- **Til Roma eller andre byer:** Bruk hovedTrenitalia eller Italo høyhastighetstoget fra Napoli Centrale.\n\n**Hvis du blir i Napoli:**\nHavneområdet er nær mange sentrale Napoli-hoteller og attraksjoner. Trikk, metro og busser kobler havnen til de fleste nabolag. Spør overnattingsstedet ditt om spesifikke veibeskrivelser fra \"Molo Beverello\" eller fergeterminalen."
+    }
+  ],
+  "faqs": [
+    {
+      "question": "Hvor mye koster fergen fra Positano til Napoli?",
+      "answer": "Billetter koster €18-25 per person enveis, avhengig av operatør og fartøytype. Hydrofoiler er raskere men litt dyrere enn tradisjonelle ferger. Større bagasje kan medføre et €2-5 tillegg per bag."
+    },
+    {
+      "question": "Kan jeg ta fergen om vinteren?",
+      "answer": "Fergeservice mellom Positano og Napoli er ekstremt begrenset eller fraværende fra november til mars. Selv når tilgjengelig kanselleres vinterferger ofte på grunn av grov sjø. For vinterreiser, bruk buss- og togruten via Sorrento i stedet."
+    },
+    {
+      "question": "Må jeg bestille fergebilletter på forhånd?",
+      "answer": "Forhåndsbooking anbefales for juli og august, spesielt i helgene. For andre måneder kan du vanligvis kjøpe billetter ved havnen på reisedagen. Ankom 20–30 minutter tidlig for å gi tid til å kjøpe billetter og gå ombord."
+    },
+    {
+      "question": "Er det vanskelig å gå ned til havnen med bagasje?",
+      "answer": "Turen innebærer å gå ned 200+ bratte trinn fra hovedveien til stranden. Nedover er mye enklere enn å klatre opp, men det kan fortsatt være utfordrende med tungt bagasje. Bruk rekkverkene, ta deg tid, og vurder å pakke lett. Det er ingen bærere eller alternative tilgangsruter for nedturen."
+    }
+  ],
+  "callouts": {
+    "tip": "Trenger du andre ruter eller reserveløsninger i tilfelle grov sjø? Sjekk %HOWTO:how-to-get-here|Slik kommer du hit-oversikten%.",
+    "warning": "Ferger kanselleres ofte ved dårlig vær, spesielt oktober–april. Ha alltid en reserveplan klar. %HOWTO:positano-naples-center-bus-train|Buss- og togruten% er ditt mest pålitelige alternativ."
+  }
 }

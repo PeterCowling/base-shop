@@ -89,12 +89,12 @@
     "s6": {
       "title": "6. Hủy/đổi/No Show/rời sớm",
       "body": [
-        "6.1 Yêu cầu bằng văn bản qua email hoặc OTA.",
+        "6.1 Cách yêu cầu đổi hoặc hủy — Mọi yêu cầu hủy hoặc đổi đều phải gửi bằng văn bản đến hostelpositano@gmail.com hoặc qua hệ thống tin nhắn OTA (nếu đặt qua OTA). Chúng tôi khuyến nghị bạn dùng cùng kênh đã dùng để đặt.",
         "6.2 Thời hạn tính theo giờ địa phương, lùi từ 15:00 ngày đến.",
-        "6.3 Quy tắc hủy theo Loại giá và Phụ lục A.",
-        "6.4 Đổi/ gia hạn có thể xem như đặt mới.",
+        "6.3 Quy tắc và phí hủy — Phí hủy (nếu có), điều kiện hoàn tiền (nếu có), và thời hạn tùy thuộc vào Loại giá và kênh đặt, được nêu rõ khi bạn đặt, trong Đặt chỗ đã xác nhận của bạn và trong Phụ lục A (Bảng giá và phí).",
+        "6.4 Đổi và gia hạn — Yêu cầu đổi có thể được xử lý như hủy đặt chỗ ban đầu và tạo Đặt chỗ mới, tùy vào khả năng và Loại giá. Gia hạn tùy vào chỗ trống và được coi như giai đoạn đặt mới (có thể có Loại giá khác). Chúng tôi sẽ xác nhận những thay đổi được chấp thuận bằng văn bản. Cho đến khi xác nhận, Đặt chỗ ban đầu vẫn có hiệu lực.",
         "6.5 No Show tính phí theo Loại giá.",
-        "6.6 Rời sớm không tự động hoàn tiền.",
+        "6.6 Rời sớm và đêm chưa sử dụng — Nếu bạn rời đi sớm sau khi nhận phòng, điều này không tự động tạo ra quyền được hoàn tiền. Bất kỳ khoản hoàn tiền, tín dụng, hoặc miễn trừ (nếu có) đều được điều chỉnh bởi Loại giá, việc chúng tôi có xác nhận thay đổi/hủy bằng văn bản hay không, và các yêu cầu bắt buộc theo luật hiện hành.",
         "6.7 Vi phạm có thể bị chấm dứt, tính phí, dùng cọc hoặc trừ thẻ; không coi là No Show."
       ]
     },
@@ -102,7 +102,7 @@
       "title": "7. Yêu cầu nhận phòng",
       "body": [
         "7.1 Nhận phòng 15:00–22:00; đến muộn phải báo trước.",
-        "7.2 Xuất trình giấy tờ gốc hợp lệ; không có có thể bị từ chối nhận phòng.",
+        "7.2 Giấy tờ tùy thân — Mỗi Khách phải xuất trình giấy tờ tùy thân hợp lệ gốc khi nhận phòng theo yêu cầu đăng ký và an ninh. Giấy tờ được chấp nhận (danh sách ví dụ): hộ chiếu, chứng minh thư quốc gia, giấy phép lái xe, thẻ quân đội (chỉ tài liệu gốc). Các phiên bản địa phương nên bao gồm bất kỳ trường dữ liệu nào được yêu cầu tại địa phương. Nếu Khách không thể cung cấp giấy tờ hợp lệ trước 22:00 vào ngày đến, chúng tôi có thể từ chối nhận phòng và áp dụng quy tắc No Show/Hủy muộn cho Loại giá.",
         "7.3 Thanh toán số dư trước khi hoàn tất nhận phòng.",
         "7.4 Người đặt phải đủ 18 tuổi; người chưa đủ tuổi có thể bị giới hạn."
       ]
@@ -171,9 +171,10 @@
     "s17": {
       "title": "Phụ lục A — Bảng giá và phí",
       "body": [
+        "Phụ lục này phải phù hợp với những gì được hiển thị khi đặt phòng.",
         "A1. Không hoàn tiền: thanh toán 100%, không hoàn tiền.",
         "A2. Hoàn tiền: hủy miễn phí đến 72 giờ trước 15:00; phí hủy muộn/No Show theo quy tắc.",
-        "A3. Phí quản lý hủy: €5/đặt chỗ."
+        "A3. Phí quản lý hủy — €5 mỗi đặt phòng, hiển thị khi đặt phòng và được nhắc lại trong email xác nhận của bạn."
       ]
     }
   }

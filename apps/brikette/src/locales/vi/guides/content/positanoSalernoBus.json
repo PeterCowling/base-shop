@@ -3,10 +3,6 @@
     "title": "Từ Positano đến Salerno bằng xe buýt – Từng bước",
     "description": "Chỉ dẫn xe buýt từ Hostel Brikette tới Salerno qua Amalfi: nơi lên xe, mua vé, đọc bảng giờ và chuyển tuyến tại Amalfi."
   },
-  "intro": {},
-  "callouts": {
-    "tip": "Cần phương án khác? Mở %HOWTO:how-to-get-here|Tổng quan Cách đến đây% để xem phà, taxi và các hành trình kết hợp."
-  },
   "sections": [
     {
       "id": "journey",
@@ -51,5 +47,8 @@
         "**Kết hợp hàng và cột:** Chọn điểm dừng khởi hành và đến của bạn, sau đó kiểm tra các cột để xem xe buýt có sẵn khi nào và chúng sẽ đến đích vào lúc nào. Ví dụ, để xem giờ khởi hành từ Sorrento, hãy xem hàng Sorrento. Để xem giờ đến Positano (Chiesa Nuova / Bar Internazionale), hãy xem hàng Positano (Chiesa Nuova)."
       ]
     }
-  ]
+  ],
+  "callouts": {
+    "tip": "Cần phương án khác? Mở %HOWTO:how-to-get-here|Tổng quan Cách đến đây% để xem phà, taxi và các hành trình kết hợp."
+  }
 }

@@ -1,58 +1,66 @@
 {
   "seo": {
-    "title": "Hướng dẫn sự cố & hư hại",
-    "description": "Cách báo cáo sự cố phòng, phản hồi của chúng tôi với vấn đề nghiêm trọng, chính sách đặt cọc thiệt hại, trách nhiệm khách và thông tin phòng chống rệp giường."
+    "title": "Hướng dẫn về khiếm khuyết và hư hỏng cho Positano Hostel",
+    "description": "Hiểu cách báo cáo khiếm khuyết phòng, phản hồi của chúng tôi đối với các vấn đề nghiêm trọng, chính sách tiền đặt cọc thiệt hại, trách nhiệm của khách và thông tin thiết yếu về phòng ngừa rệp giường tại hostel độc quyền của Positano."
   },
-  "linkLabel": "Hướng dẫn sự cố & hư hại",
+  "linkLabel": "Hướng dẫn về khiếm khuyết và hư hỏng cho Positano Hostel",
   "sections": [
     {
       "id": "reportingDefects",
-      "title": "Báo cáo sự cố",
+      "title": "Báo cáo khiếm khuyết",
       "body": [
-        "Nếu bạn phát hiện vấn đề hoặc hư hỏng trong phòng, hãy báo ngay cho chúng tôi. Thông tin kịp thời giúp đội ngũ xử lý và khắc phục nhanh chóng."
+        "Nếu bạn phát hiện bất kỳ vấn đề hoặc khiếm khuyết nào trong phòng của mình, vui lòng thông báo cho chúng tôi ngay lập tức. Thông báo nhanh chóng của bạn giúp chúng tôi nhanh chóng giải quyết và khắc phục sự cố.",
+        "Cách nhanh nhất để báo cáo là trực tiếp tại quầy lễ tân. Khi có thể, hãy bao gồm: điều gì không ổn, khi nào bạn nhận thấy và một bức ảnh nhanh hoặc video ngắn."
       ]
     },
     {
       "id": "assessingDefects",
-      "title": "Đánh giá sự cố",
+      "title": "Đánh giá khiếm khuyết",
       "body": [
-        "Khi nhận được thông báo, chúng tôi sẽ đánh giá mức độ nghiêm trọng và ưu tiên phản hồi dựa trên mức ảnh hưởng tới trải nghiệm lưu trú của bạn."
+        "Khi bạn báo cáo khiếm khuyết, chúng tôi sẽ nhanh chóng đánh giá vấn đề và ưu tiên phản hồi dựa trên mức độ ảnh hưởng đáng kể đến sự thoải mái và kỳ nghỉ của bạn."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/2/27/ISO_7010_W008.svg",
+          "alt": "Biển cảnh báo chung ISO 7010 W008 (tam giác màu vàng có dấu chấm than)",
+          "caption": "Chúng tôi ưu tiên an toàn trước tiên, sau đó là bất cứ điều gì ảnh hưởng đến giấc ngủ và sự thoải mái."
+        }
       ]
     },
     {
       "id": "responseToSeriousDefects",
-      "title": "Xử lý sự cố nghiêm trọng",
+      "title": "Phản hồi đối với khiếm khuyết nghiêm trọng",
       "body": [
-        "Nếu gặp sự cố nghiêm trọng không thể sửa ngay, chúng tôi sẽ bố trí phòng thay thế. Nếu phòng mới có giá thấp hơn phòng bạn đã đặt, phần chênh lệch sẽ được hoàn lại. Nếu bạn không chấp nhận phương án thay thế, bạn có thể yêu cầu hoàn tiền theo số đêm chưa sử dụng."
+        "Nếu có khiếm khuyết nghiêm trọng không thể sửa chữa ngay lập tức, chúng tôi sẽ cung cấp chỗ ở thay thế. Nếu phương án thay thế rẻ hơn phòng bạn đã đặt, chúng tôi sẽ hoàn lại chênh lệch giá. Nếu bạn quyết định không chấp nhận phương án thay thế của chúng tôi, bạn có thể yêu cầu hoàn lại tiền theo tỷ lệ cho các đêm còn lại của kỳ nghỉ."
       ]
     },
     {
       "id": "unreportedDefects",
-      "title": "Sự cố chưa báo cáo",
+      "title": "Khiếm khuyết chưa được báo cáo",
       "body": [
-        "Nếu chúng tôi phát hiện vấn đề trong phòng mà bạn không báo trong thời gian hợp lý, thiệt hại phát sinh sẽ được đánh giá và chính sách bồi thường có thể được áp dụng."
+        "Nếu chúng tôi phát hiện vấn đề trong phòng của bạn mà bạn chưa báo cáo trong khung thời gian hợp lý, chúng tôi sẽ đánh giá mọi thiệt hại phát sinh và có thể áp dụng chính sách thiệt hại của chúng tôi."
       ]
     },
     {
       "id": "damagesPolicy",
       "title": "Chính sách thiệt hại",
       "body": [
-        "Để bảo vệ cả hai bên, chúng tôi có thể tạm giữ thẻ tín dụng hoặc yêu cầu đặt cọc tiền mặt khi nhận phòng nhằm bù đắp rủi ro hư hại, mất mát. Nếu bạn không thể cung cấp đặt cọc hoặc cho phép tạm giữ, đặt phòng có thể bị hủy. Khoản đặt cọc sẽ được hoàn lại đầy đủ khi trả phòng, trừ chi phí sửa chữa, thay thế, nhân công hoặc hành chính phát sinh. Nếu chi phí vượt quá số tiền đặt cọc, bạn sẽ cần thanh toán phần chênh. Mức tính công sửa chữa/dọn dẹp theo giờ: Giám đốc (€50/giờ), Quản lý (€35/giờ) và Nhân viên (€25/giờ)."
+        "Để đảm bảo an toàn cho bạn và chúng tôi, chúng tôi có thể ủy quyền trước thẻ tín dụng của bạn hoặc yêu cầu tiền đặt cọc bằng tiền mặt khi nhận phòng để trang trải thiệt hại hoặc mất mát tiềm ẩn. Nếu bạn không thể cung cấp tiền đặt cọc hoặc ủy quyền trước, đặt phòng của bạn có thể bị hủy. Tiền đặt cọc được hoàn lại đầy đủ khi trả phòng, trừ các khoản phí cho bất kỳ thiệt hại, mất mát, nhân công hoặc chi phí hành chính phát sinh. Nếu các khoản phí này vượt quá tiền đặt cọc của bạn, bạn sẽ chịu trách nhiệm về chi phí bổ sung. Mức giá nhân công cho việc sửa chữa hoặc dọn dẹp được tính theo giờ: Giám đốc (50€/giờ), Quản lý (35€/giờ) và Nhân viên (25€/giờ)."
       ]
     },
     {
       "id": "bedBugsPolicy",
-      "title": "Chính sách rệp giường",
+      "title": "Chính sách về rệp giường",
       "body": [
-        "Chúng tôi luôn chủ động kiểm soát và xử lý nhanh mọi tình huống liên quan đến rệp giường. Nếu phát hiện rệp trong thời gian bạn lưu trú, bạn có thể phải chịu các chi phí liên quan như doanh thu phòng bị mất, vệ sinh và kiểm soát côn trùng. Vui lòng báo ngay cho nhân viên khi thấy dấu hiệu nghi ngờ."
+        "Chúng tôi chủ động quản lý và nhanh chóng giải quyết mọi vấn đề về rệp giường. Tuy nhiên, nếu rệp giường được tìm thấy trong phòng của bạn trong kỳ nghỉ, bạn có thể phải chịu trách nhiệm về các chi phí liên quan, chẳng hạn như mất doanh thu đặt phòng, chi phí làm sạch và kiểm soát dịch hại. Vui lòng báo cáo ngay lập tức mọi dấu hiệu rệp giường cho nhân viên của chúng tôi."
       ]
     },
     {
       "id": "bedBugsPrevention",
       "title": "Phòng ngừa rệp giường",
       "body": [
-        "Để phòng rệp giường, vui lòng:",
-        "* Thông báo cho chúng tôi khi nhận phòng nếu bạn từng lưu trú ở nơi có rệp.\n* Khử trùng hành lý và đồ dùng cá nhân thật kỹ.\n* Kiểm tra cẩn thận vali và quần áo trước khi mang vào phòng."
+        "Để giúp ngăn ngừa vấn đề rệp giường, vui lòng:",
+        "* Thông báo cho chúng tôi khi nhận phòng nếu gần đây bạn đã ở nơi có vấn đề rệp giường đã biết.\n* Khử trùng kỹ lưỡng đồ đạc của bạn.\n* Kiểm tra cẩn thận hành lý và quần áo của bạn để tìm rệp giường trước khi vào phòng."
       ]
     }
   ]

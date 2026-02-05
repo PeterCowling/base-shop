@@ -27,7 +27,16 @@
       "points": [
         "Mua vé trực tuyến trước mùa cao điểm hoặc tại quầy của hãng ngay bến tàu.",
         "Đến trước giờ khởi hành 15–20 phút để đổi phiếu (voucher) nếu cần và xếp hàng lên tàu.",
-        "Giữ sẵn vé hoặc mã QR để nhân viên kiểm tra."
+        "Giữ sẵn vé hoặc mã QR để nhân viên kiểm tra.",
+        "Nếu bạn mang theo hành lý lớn, hãy hỏi nhân viên về quy định hành lý và nơi cất giữ túi xách trên tàu."
+      ]
+    },
+    "gettingToPier": {
+      "title": "Từ Hostel Brikette đến bến tàu",
+      "intro": "Nếu xuất phát từ hostel, hãy dùng <dockWalk>hướng dẫn từng bước đến bến phà</dockWalk> để tới Spiaggia Grande một cách chắc chắn.",
+      "points": [
+        "Dành thêm thời gian cho cầu thang, thời tiết nóng và dòng người đi bộ chậm trong thị trấn.",
+        "Mang theo nước và để đồ cần thiết (hộ chiếu/ví/điện thoại) trong túi dễ lấy để kiểm tra khi lên tàu."
       ]
     },
     "positanoPier": {
@@ -44,6 +53,15 @@
         "Tàu cập bến các cầu cảng ven biển Amalfi gần Piazza Flavio Gioia.",
         "Khu trung tâm lịch sử và đường dạo biển nằm ngay cạnh cảng.",
         "Muốn đi tiếp bằng xe buýt (ví dụ Ravello hoặc Sorrento), theo biển chỉ tới điểm dừng SITA gần bờ biển."
+      ]
+    },
+    "planB": {
+      "title": "Nếu phà bị hủy (phương án B hiệu quả)",
+      "intro": "Ngày gió lớn biển động có thể khiến tàu ngừng chạy. Đừng hoảng — chuyển sang <bus>xe buýt Positano → Amalfi</bus> và xem <cancellations>hướng dẫn phà bị hủy</cancellations> để biết giờ giấc và cách xử lý.",
+      "points": [
+        "Nếu bạn đã ở bãi biển, đi bộ trở lại đường chính và bắt xe buýt hoặc taxi tiếp theo.",
+        "Dành thêm thời gian dự phòng: xe buýt có thể đến đầy vào tháng cao điểm và chậm trễ là chuyện bình thường.",
+        "Nếu đi muộn, hãy xác nhận sớm chuyến cuối khả thi (phà hoặc xe buýt) để không bị mắc kẹt."
       ]
     }
   },

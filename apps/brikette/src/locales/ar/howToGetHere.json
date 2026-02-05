@@ -94,23 +94,57 @@
         "description": "وصلت بالفعل إلى بوسيتانو، لكنك لست متأكدًا من كيفية الوصول إلى النزل؟ اطّلع على هذه الأدلة:",
         "image": {
           "src": "/img/positano-panorama.avif",
-          "alt": "إطلالة بانورامية على منازل بوسيتانو المبنية على الجرف"
+          "alt": "إطلالة بانورامية على منازل بوسيتانو المبنية على الجرف",
+          "caption": "بوسيتانو شديدة الانحدار - خطط للسلالم، خاصة مع الأمتعة."
         },
         "links": [
           {
             "label": "من كييزا نوفا/بار إنترناسيونالي إلى Hostel Brikette",
             "href": "chiesa-nuova-bar-internazionale-to-hostel-brikette",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "٥-١٠ دقائق",
+              "cost": "مجاني",
+              "walking": "~١٤٠ متر + ~٣٠ درجة",
+              "luggageFriendly": 2,
+              "seasonality": "على مدار العام"
+            }
           },
           {
             "label": "من رصيف العبّارات إلى Hostel Brikette",
             "href": "ferry-dock-to-hostel-brikette-with-luggage",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "20-45 دقيقة (حسب الحمّالين/حافلة Interno)",
+              "cost": "€2-€6 للشخص (+ حمّال اختياري)",
+              "walking": "سلالم الميناء؛ الحمّالون يخففون الحمل",
+              "luggageFriendly": 1,
+              "seasonality": "على مدار العام"
+            }
+          },
+          {
+            "label": "من Hostel Brikette إلى رصيف العبّارات",
+            "href": "hostel-brikette-to-ferry-dock-with-luggage",
+            "internal": true,
+            "facts": {
+              "duration": "20–30 دقيقة (أكثر مع الأمتعة)",
+              "cost": "مجاناً",
+              "walking": "سلالم + عبور طرق",
+              "luggageFriendly": 1,
+              "seasonality": "على مدار السنة"
+            }
           },
           {
             "label": "من Hostel Brikette إلى كييزا نوفا/بار إنترناسيونالي",
             "href": "hostel-brikette-to-chiesa-nuova-bar-internazionale",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "20-30 دقيقة (أطول مع الأمتعة)",
+              "cost": "مجاني",
+              "walking": "سلالم + معابر طرق",
+              "luggageFriendly": 1,
+              "seasonality": "على مدار العام"
+            }
           }
         ]
       },
@@ -118,28 +152,57 @@
         "name": "أمالفي",
         "image": {
           "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
-          "alt": "موقف حافلات سيتا سود في أمالفي لخطوط الساحل"
+          "alt": "موقف حافلات سيتا سود في أمالفي لخطوط الساحل",
+          "caption": "ابحث عن حافلات SITA في محطة حافلات أمالفي."
         },
         "links": [
           {
             "label": "من أمالفي إلى بوسيتانو بالحافلة",
             "href": "amalfi-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "45-90 دقيقة (حسب الزحام)",
+              "cost": "€2-€4 للشخص",
+              "walking": "سلالم قصيرة في النهاية (~30 درجة)",
+              "luggageFriendly": 2,
+              "seasonality": "على مدار العام"
+            }
           },
           {
             "label": "من بوسيتانو إلى أمالفي بالحافلة",
             "href": "positano-amalfi-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "45-90 دقيقة (حسب الزحام)",
+              "cost": "€2-€4 للشخص",
+              "walking": "سلالم قصيرة في البداية/النهاية (~30 درجة)",
+              "luggageFriendly": 2,
+              "seasonality": "على مدار العام"
+            }
           },
           {
             "label": "من أمالفي إلى بوسيتانو بالعبّارة",
             "href": "amalfi-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "25-45 دقيقة (إبحار) + نقل في الميناء",
+              "cost": "€10-€20 للشخص",
+              "walking": "سلالم من/إلى الميناء",
+              "luggageFriendly": 1,
+              "seasonality": "موسمي (أبريل-أكتوبر)"
+            }
           },
           {
             "label": "من بوسيتانو إلى أمالفي بالعبّارة",
             "href": "positano-amalfi-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "25-45 دقيقة (إبحار) + نقل في الميناء",
+              "cost": "€10-€20 للشخص",
+              "walking": "سلالم من/إلى الميناء",
+              "luggageFriendly": 1,
+              "seasonality": "موسمي (أبريل-أكتوبر)"
+            }
           }
         ]
       },
@@ -147,18 +210,33 @@
         "name": "كابري",
         "image": {
           "src": "/img/directions/positano-capri-ferry-img09.jpg",
-          "alt": "عبّارة ترسو في مارينا غرانده في جزيرة كابري"
+          "alt": "عبّارة ترسو في مارينا غرانده في جزيرة كابري",
+          "caption": "عبّارات كابري تغادر من مارينا غرانده."
         },
         "links": [
           {
             "label": "من كابري إلى بوسيتانو بالعبّارة",
             "href": "capri-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "30-60 دقيقة (إبحار) + نقل في الميناء",
+              "cost": "€20-€35 للشخص",
+              "walking": "الوصول إلى الميناء؛ سلالم محتملة في بوسيتانو",
+              "luggageFriendly": 1,
+              "seasonality": "موسمي (أبريل-أكتوبر)"
+            }
           },
           {
             "label": "من بوسيتانو إلى كابري بالعبّارة",
             "href": "positano-capri-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "30-60 دقيقة (إبحار) + نقل في الميناء",
+              "cost": "€20-€35 للشخص",
+              "walking": "الوصول إلى الميناء؛ سلالم محتملة في بوسيتانو",
+              "luggageFriendly": 1,
+              "seasonality": "موسمي (أبريل-أكتوبر)"
+            }
           }
         ]
       },
@@ -166,33 +244,69 @@
         "name": "مركز نابولي",
         "image": {
           "src": "/img/tabacchi.webp",
-          "alt": "متجر تبغ يطل على الشارع في وسط نابولي"
+          "alt": "متجر تبغ يطل على الشارع في وسط نابولي",
+          "caption": "اشتر تذاكر الحافلة من محلات tabacchi/أكشاك الصحف قبل الصعود."
         },
         "links": [
           {
             "label": "من مركز نابولي إلى بوسيتانو بالقطار ثم الحافلة",
             "href": "naples-center-train-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2-3.5 ساعة (بما في ذلك التنقلات)",
+              "cost": "€15-€25 للشخص",
+              "walking": "قليل؛ تغيير في سورينتو",
+              "luggageFriendly": 2,
+              "seasonality": "على مدار العام"
+            }
           },
           {
             "label": "من بوسيتانو إلى مركز نابولي بالحافلة ثم القطار",
             "href": "positano-naples-center-bus-train",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2-3.5 ساعة (بما في ذلك التنقلات)",
+              "cost": "€15-€25 للشخص",
+              "walking": "سلالم قصيرة في البداية/النهاية (~30 درجة)",
+              "luggageFriendly": 2,
+              "seasonality": "على مدار العام"
+            }
           },
           {
             "label": "من مركز نابولي إلى بوسيتانو بالعبّارة",
             "href": "naples-center-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "3-4.5 ساعة (بما في ذلك نقل الميناء)",
+              "cost": "€25-€45 للشخص",
+              "walking": "نقل إلى الميناء + سلالم في بوسيتانو",
+              "luggageFriendly": 1,
+              "seasonality": "موسمي (أبريل-أكتوبر)"
+            }
           },
           {
             "label": "من بوسيتانو إلى مركز نابولي بالعبّارة",
             "href": "positano-naples-center-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "3-4.5 ساعة (بما في ذلك نقل الميناء)",
+              "cost": "€25-€45 للشخص",
+              "walking": "سلالم في بوسيتانو + نقل من الميناء",
+              "luggageFriendly": 1,
+              "seasonality": "موسمي (أبريل-أكتوبر)"
+            }
           },
           {
             "label": "من بوسيتانو إلى نابولي بالعبّارة",
             "href": "positano-to-naples-directions-by-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "3-4.5 ساعة (بما في ذلك نقل الميناء)",
+              "cost": "€25-€45 للشخص",
+              "walking": "سلالم في بوسيتانو + نقل من الميناء",
+              "luggageFriendly": 1,
+              "seasonality": "موسمي (أبريل-أكتوبر)"
+            }
           }
         ]
       },
@@ -200,18 +314,33 @@
         "name": "مطار نابولي",
         "image": {
           "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
-          "alt": "منطقة صعود حافلات كوريري خارج مطار نابولي الدولي"
+          "alt": "منطقة صعود حافلات كوريري خارج مطار نابولي الدولي",
+          "caption": "محطة قطار سورينتو، حيث ستبدل الحافلة"
         },
         "links": [
           {
             "label": "من بوسيتانو إلى مطار نابولي بالحافلة",
             "href": "positano-naples-airport-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2-3.5 ساعة (بما في ذلك التغيير في سورينتو)",
+              "cost": "€15-€25 للشخص",
+              "walking": "سلالم قصيرة في البداية/النهاية (~30 درجة)",
+              "luggageFriendly": 2,
+              "seasonality": "على مدار العام"
+            }
           },
           {
             "label": "من مطار نابولي إلى بوسيتانو بالحافلة",
             "href": "naples-airport-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2-3.5 ساعة (بما في ذلك التغيير في سورينتو)",
+              "cost": "€15-€25 للشخص",
+              "walking": "سلالم قصيرة في النهاية (~30 درجة)",
+              "luggageFriendly": 2,
+              "seasonality": "على مدار العام"
+            }
           }
         ]
       },
@@ -219,28 +348,57 @@
         "name": "ساليرنو",
         "image": {
           "src": "/img/hostel-coastal-horizon.webp",
-          "alt": "إطلالة على ساحل أمالفي باتجاه ساليرنو"
+          "alt": "إطلالة على ساحل أمالفي باتجاه ساليرنو",
+          "caption": "تربط ساليرنو بالقطار + الحافلة أو بالعبّارات الموسمية."
         },
         "links": [
           {
             "label": "من ساليرنو إلى بوسيتانو بالحافلة",
             "href": "salerno-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2.5-4 ساعات (عبر أمالفي)",
+              "cost": "€6-€12 للشخص",
+              "walking": "قليل؛ تغيير الحافلات في أمالفي",
+              "luggageFriendly": 2,
+              "seasonality": "على مدار العام"
+            }
           },
           {
             "label": "من بوسيتانو إلى ساليرنو بالحافلة",
             "href": "positano-salerno-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2.5-4 ساعات (عبر أمالفي)",
+              "cost": "€6-€12 للشخص",
+              "walking": "سلالم قصيرة في البداية/النهاية (~30 درجة)",
+              "luggageFriendly": 2,
+              "seasonality": "على مدار العام"
+            }
           },
           {
             "label": "من ساليرنو إلى بوسيتانو بالعبّارة",
             "href": "salerno-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1-2 ساعة (إبحار) + نقل في الميناء",
+              "cost": "€15-€30 للشخص",
+              "walking": "سلالم الميناء؛ يُنصح بالحمّالين",
+              "luggageFriendly": 1,
+              "seasonality": "موسمي (أبريل-أكتوبر)"
+            }
           },
           {
             "label": "من بوسيتانو إلى ساليرنو بالعبّارة",
             "href": "positano-salerno-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1-2 ساعة (إبحار) + نقل في الميناء",
+              "cost": "€15-€30 للشخص",
+              "walking": "سلالم الميناء؛ يُنصح بالحمّالين",
+              "luggageFriendly": 1,
+              "seasonality": "موسمي (أبريل-أكتوبر)"
+            }
           }
         ]
       },
@@ -248,23 +406,45 @@
         "name": "رافيلو",
         "image": {
           "src": "/img/hostel-communal-terrace-lush-view.webp",
-          "alt": "حدائق على حافة الجرف تطل على الساحل بالقرب من رافيلو"
+          "alt": "حدائق على حافة الجرف تطل على الساحل بالقرب من رافيلو",
+          "caption": "يمكن الوصول إلى رافيلو عبر أمالفي بالحافلة."
         },
         "links": [
           {
             "label": "من رافيلو إلى بوسيتانو بالحافلة",
             "href": "ravello-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1.5-2.5 ساعة (عبر أمالفي)",
+              "cost": "€4-€8 للشخص",
+              "walking": "قليل؛ تغيير في أمالفي",
+              "luggageFriendly": 2,
+              "seasonality": "على مدار العام"
+            }
           },
           {
             "label": "من بوسيتانو إلى رافيلو بالحافلة",
             "href": "positano-ravello-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1.5-2.5 ساعة (عبر أمالفي)",
+              "cost": "€4-€8 للشخص",
+              "walking": "سلالم قصيرة في البداية/النهاية (~30 درجة)",
+              "luggageFriendly": 2,
+              "seasonality": "على مدار العام"
+            }
           },
           {
             "label": "من بوسيتانو إلى رافيلو بالعبّارة ثم الحافلة",
             "href": "positano-ravello-ferry-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2-3 ساعات (عبّارة + حافلة)",
+              "cost": "€15-€30 للشخص",
+              "walking": "سلالم الميناء + توصيل حافلة",
+              "luggageFriendly": 1,
+              "seasonality": "موسمي (أبريل-أكتوبر)"
+            }
           }
         ]
       }
@@ -444,22 +624,50 @@
       {
         "label": "من سورينتو بالحافلة",
         "href": "sorrento-positano-bus",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "45-75 دقيقة",
+          "cost": "€2-€4 للشخص",
+          "walking": "سلالم قصيرة في النهاية (~30 درجة)",
+          "luggageFriendly": 2,
+          "seasonality": "على مدار العام"
+        }
       },
       {
         "label": "إلى سورينتو بالحافلة",
         "href": "positano-sorrento-bus",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "45-75 دقيقة",
+          "cost": "€2-€4 للشخص",
+          "walking": "سلالم قصيرة في البداية/النهاية (~30 درجة)",
+          "luggageFriendly": 2,
+          "seasonality": "على مدار العام"
+        }
       },
       {
         "label": "من سورينتو بالعبّارة",
         "href": "sorrento-positano-ferry",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "30-45 دقيقة (إبحار) + سلالم الميناء",
+          "cost": "€15-€25 للشخص",
+          "walking": "سلالم الميناء؛ يُنصح بالحمّالين",
+          "luggageFriendly": 1,
+          "seasonality": "موسمي (أبريل-أكتوبر)"
+        }
       },
       {
         "label": "إلى سورينتو بالعبّارة",
         "href": "positano-sorrento-ferry",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "30-45 دقيقة (إبحار) + سلالم الميناء",
+          "cost": "€15-€25 للشخص",
+          "walking": "سلالم الميناء؛ يُنصح بالحمّالين",
+          "luggageFriendly": 1,
+          "seasonality": "موسمي (أبريل-أكتوبر)"
+        }
       }
     ]
   },

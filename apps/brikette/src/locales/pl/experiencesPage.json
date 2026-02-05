@@ -7,15 +7,6 @@
     "eyebrow": "Doświadczenia",
     "title": "Doświadczenia w Hostelu Brikette",
     "description": "Wypij spritza na naszym tarasie, wybierz się na wędrówki z epickimi widokami i otrzymuj natychmiastowe wskazówki od concierge’a cyfrowego.",
-    "supporting": "Wszystko jest dostępne dla zameldowanych gości; daj nam znać, jeśli podróżujesz z przyjaciółmi zatrzymującymi się gdzie indziej.",
-    "primaryCta": "Zarezerwuj pobyt",
-    "secondaryCta": "Otwórz kartę baru",
-    "tertiaryCta": "Napisz do concierge’a cyfrowego",
-    "primaryCtaAria": "Zarezerwuj pobyt w Hostelu Brikette",
-    "secondaryCtaAria": "Zobacz kartę baru Hostelu Brikette",
-    "tertiaryCtaAria": "Wyślij wiadomość do concierge’a cyfrowego Hostelu Brikette",
-    "breakfastCta": "Zobacz menu śniadaniowe",
-    "breakfastCtaAria": "Zobacz menu śniadaniowe",
     "scrollNudge": "Dowiedz się więcej"
   },
   "sections": {
@@ -104,9 +95,6 @@
       }
     },
     "directionLinks": {
-      "walkFromHostel": "Pieszo z hostelu",
-      "busFromHostel": "Autobusem",
-      "returnWalk": "Powrotna trasa",
       "capriDayTrip": {
         "positanoCapriFerry": "Prom Positano → Capri",
         "capriPositanoFerry": "Prom Capri → Positano"
@@ -141,52 +129,27 @@
       "beaches": {
         "title": "Plaże i pływanie",
         "description": "Miejsca do pływania, przewodniki po klubach plażowych i trasy na brzeg.",
-        "imageAlt": "Skalista zatoka z turkusową wodą wzdłuż Wybrzeża Amalfitańskiego",
-        "guides": {
-          "heading": "Przewodniki po plażach",
-          "description": "Wybierz odpowiedni odcinek plaży i zaplanuj swój dzień."
-        },
-        "directions": {
-          "heading": "Dojazd na plażę",
-          "description": "Instrukcje krok po kroku z Hostelu Brikette na brzeg."
-        }
+        "imageAlt": "Skalista zatoka z turkusową wodą wzdłuż Wybrzeża Amalfitańskiego"
       },
       "boat": {
         "title": "Rejsy i promy",
         "description": "Wycieczki łodzią, trasy promowe i pomysły na dzień na morzu.",
-        "imageAlt": "Zachód słońca nad morzem widziany z Positano",
-        "guides": {
-          "heading": "Przewodniki po rejsach",
-          "description": "Wycieczki, wynajem i rozkłady promów."
-        }
+        "imageAlt": "Zachód słońca nad morzem widziany z Positano"
       },
       "cuisine": {
         "title": "Kuchnia i lokalne specjały",
         "description": "Miejsca do jedzenia, targi i doświadczenia kulinarne.",
-        "imageAlt": "Tradycyjny włoski posiłek nad morzem",
-        "guides": {
-          "heading": "Przewodniki kulinarne",
-          "description": "Najlepsze lokalne jedzenie i specjały."
-        }
+        "imageAlt": "Tradycyjny włoski posiłek nad morzem"
       },
       "day-trip": {
         "title": "Wycieczki jednodniowe",
         "description": "Jednodniowe wypady z Positano — Capri, Ravello, Pompeje i więcej.",
-        "imageAlt": "Panoramiczny widok na Wybrzeże Amalfitańskie z balkonu w Ravello",
-        "guides": {
-          "heading": "Przewodniki po wycieczkach",
-          "description": "Wyprawy warte jednego dnia."
-        }
+        "imageAlt": "Panoramiczny widok na Wybrzeże Amalfitańskie z balkonu w Ravello"
       },
       "hiking": {
         "title": "Wędrówki i szlaki",
         "description": "Trasy piesze od łatwych spacerów po całodzienne trekingi.",
         "imageAlt": "Turyści na Szlaku Bogów z widokami na wybrzeże"
-      },
-      "itinerary": {
-        "title": "Plany podróży",
-        "description": "Wielodniowe plany na różne długości wyjazdów.",
-        "imageAlt": "Malowniczy widok na Wybrzeże Amalfitańskie z góry"
       },
       "more": {
         "title": "Więcej przewodników",

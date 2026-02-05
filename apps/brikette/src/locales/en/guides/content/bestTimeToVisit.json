@@ -1,22 +1,32 @@
 {
   "seo": {
-    "title": "Best time to visit Positano",
-    "description": "Month by month: weather, crowds and ferries."
+    "title": "Best Time to Visit Positano | Weather & Crowds Guide",
+    "description": "When should you visit Positano? Compare weather, crowds, prices, and ferry service month-by-month to find the best time for your trip."
   },
   "linkLabel": "Best time to visit Positano",
   "intro": [
-    "Plan your visit with realistic expectations around weather, crowds, and ferry availability.",
-    "Use the seasonal matrix and month-by-month notes to decide when Positano matches your priorities."
+    "The best time to visit Positano depends on what matters most to you: weather, crowds, prices, or ferry availability. The town's appeal changes with the seasons.",
+    "Peak summer (June–August) offers guaranteed sun and full ferry schedules, but comes with intense heat, packed streets, and high prices. Shoulder seasons (April–May and September–October) balance good weather with fewer crowds and better value. Winter (November–March) is quiet and cheap, but many services close and ferries stop running.",
+    "This guide breaks down each month so you can choose the right time for your priorities. Use the seasonal matrix and month-by-month notes to plan your visit with realistic expectations."
   ],
+  "lastUpdated": "2026-02-04",
   "tocTitle": "On this page",
   "toc": [
+    {
+      "href": "#quickAnswer",
+      "label": "Quick answer"
+    },
     {
       "href": "#matrix",
       "label": "Weather/Crowds/Prices matrix"
     },
     {
       "href": "#months",
-      "label": "Month-by-month notes"
+      "label": "Month-by-month breakdown"
+    },
+    {
+      "href": "#considerations",
+      "label": "What to consider"
     },
     {
       "href": "#faqs",
@@ -25,23 +35,62 @@
   ],
   "sections": [
     {
+      "id": "quickAnswer",
+      "title": "Quick answer: best times by priority",
+      "body": [
+        "If you want the best overall balance of weather, crowds, and value: visit in May or September. These months offer warm temperatures, calm seas, frequent ferries, and lower prices than peak summer.",
+        "If you want guaranteed hot weather and swimming: visit June through early September. Expect crowds, high prices, and the need to book transport and accommodation well ahead.",
+        "If you want to avoid crowds and save money: visit April or October. Weather is less predictable (cooler, occasional rain), but you'll have more space and better deals. Ferries run but with fewer departures.",
+        "If you want rock-bottom prices and solitude: visit November through March. Many hotels, restaurants, and attractions close. Ferries don't run, so you'll rely on buses. Weather can be rainy and cool, but Positano is peaceful and authentic."
+      ],
+      "images": [
+        {
+          "src": "/img/hostel-coastal-horizon.webp",
+          "alt": "Coastal horizon view over the sea near Positano.",
+          "caption": "Clear summer days bring calm seas and peak crowds."
+        }
+      ]
+    },
+    {
       "id": "matrix",
       "title": "Weather / crowds / prices matrix",
       "body": [
-        "Peak (Jun–Aug) = hot, crowded, and highest prices. Shoulder (Apr–May, Sep–Oct) = milder weather and better value. Winter (Nov–Mar) = quiet with reduced services."
+        "Peak season (June–August): Hot weather (25–32°C / 77–90°F), intense sun, calm seas perfect for swimming. Streets, beaches, and ferries are crowded. Accommodation prices are highest. Book everything ahead — ferries, beach clubs, restaurants.",
+        "Shoulder season (April–May, September–October): Mild to warm weather (18–26°C / 64–79°F). April and October can have rain. Crowds are lighter, prices drop by 20–40%, and you can often book transport and dining on short notice. Ferries run but with fewer daily departures than summer.",
+        "Low season (November–March): Cool and often rainy (10–16°C / 50–61°F). Many hotels, restaurants, and tour operators close. No ferry service — buses are your only public transport option. Prices are lowest, and the town feels like a local village. Best for travelers who want quiet and don't mind limited services."
+      ],
+      "images": [
+        {
+          "src": "/img/positano-panorama.avif",
+          "alt": "Panoramic view of Positano stacked on the cliffs above the sea.",
+          "caption": "Positano in clear weather — a quick visual for peak-season conditions."
+        }
       ]
     },
     {
       "id": "months",
-      "title": "Month-by-month notes",
+      "title": "Month-by-month breakdown",
       "body": [
-        "April: ferries start; mild temperatures and lighter crowds.",
-        "May: excellent weather; more departures; weekends busier.",
-        "June–August: peak season; heat and queues — pre-book transport and activities.",
-        "September: warm sea and a touch calmer than August.",
-        "October: shoulder season; ferries wind down toward the end of the month.",
-        "November–March: quiet low season with reduced services; buses become the backbone.",
-        "Ferry frequency increases through spring, peaks in summer, and winds down late October."
+        "**April:** Ferry season starts (usually mid-month). Mild temperatures (16–20°C / 61–68°F) and lighter crowds. Some hotels and restaurants are still closed early in the month. Occasional rain, but often sunny. Good for hiking %LINK:pathOfTheGods|the Path of the Gods% without heat.",
+        "**May:** Excellent weather (20–24°C / 68–75°F), warm enough for swimming by late May. Ferry departures increase. Weekends get busier as Italian and European visitors arrive. Prices are moderate. One of the best months for overall experience.",
+        "**June:** Peak season begins. Hot (24–28°C / 75–82°F), sunny, and crowded. Ferries run frequently. Prices rise. Book accommodation, transport, and activities ahead. Still less intense than July–August.",
+        "**July:** Hottest and most crowded month. Temperatures can hit 30–32°C (86–90°F). Streets, beaches, and ferries are packed. Highest prices of the year. Essential to pre-book everything. If you don't handle heat and crowds well, avoid July.",
+        "**August:** Similar to July but even busier during mid-August (Ferragosto, Italian national holiday). Many Italians take vacation, so everything is at maximum capacity. Sea is warmest. Expect queues, fully booked services, and premium prices.",
+        "**September:** Warm sea (still 24–26°C / 75–79°F) and slightly calmer than August. Weather remains hot early in the month, then cools to comfortable levels. Crowds thin after mid-September. Excellent month for swimming and sightseeing without peak-season intensity.",
+        "**October:** Shoulder season. Mild weather (18–22°C / 64–72°F) but more variable — sunny days mixed with rain. Ferries wind down toward the end of the month (service usually ends late October). Fewer tourists, lower prices. Good for budget travelers who don't mind cooler, less predictable weather.",
+        "**November–March:** Quiet low season. Cool (10–16°C / 50–61°F) and often rainy. Many hotels, restaurants, and attractions close. No ferry service — buses run year-round but can be slow and infrequent. Positano feels like a real village, not a tourist town. Best for travelers seeking solitude, local life, and rock-bottom prices. Not ideal if you want beach time or nightlife."
+      ]
+    },
+    {
+      "id": "considerations",
+      "title": "What to consider when choosing",
+      "body": [
+        "**Ferry availability:** Ferries run from April to late October. If you want the scenic ferry experience (Positano to Amalfi, Capri, etc.), avoid November–March. For ferry schedules and routes, see %LINK:ferrySchedules|our ferry schedules guide%.",
+        "**Swimming and beaches:** Sea is warm enough for comfortable swimming from late May through September. Peak warmth is July–August. If swimming is your priority, visit June–September. For beach access and options, see %LINK:positanoBeaches|our Positano beaches guide%.",
+        "**Crowds and booking:** July–August require advance booking for hotels, ferries, beach clubs, and popular restaurants. If you prefer spontaneity and hate crowds, visit April–May or September–October.",
+        "**Budget:** Prices peak in July–August. Shoulder months (April–May, September–October) offer 20–40% savings on accommodation. Winter (November–March) has the cheapest prices but limited services.",
+        "**Weather predictability:** June–August offer the most reliable sun. April, May, and October have good weather most days but occasional rain. November–March can be wet and cloudy.",
+        "**Transport options:** In summer, ferries are frequent and reliable. In low season (November–March), you'll rely entirely on %HOWTO:positano-amalfi-bus|buses%, which are slower and less frequent. Check %HOWTO:how-to-get-here|our transport guides% for seasonal differences."
       ]
     }
   ],
@@ -73,9 +122,27 @@
   ],
   "faqs": [
     {
-      "q": "When is the sea warmest?",
+      "q": "When is the sea warmest for swimming?",
       "a": [
-        "Late June to early September typically offers the warmest water for swimming."
+        "Late June to early September typically offers the warmest water for swimming, with sea temperatures around 24–26°C (75–79°F). July and August are peak warmth."
+      ]
+    },
+    {
+      "q": "What's the best month to avoid crowds?",
+      "a": [
+        "April and October have the lightest crowds while still offering decent weather and some ferry service. November–March are quietest but many services close and ferries don't run."
+      ]
+    },
+    {
+      "q": "Can I visit Positano in winter?",
+      "a": [
+        "Yes, but expect limited services. Many hotels, restaurants, and tour operators close from November to March. No ferries run, so you'll rely on buses. Weather is cool and often rainy. Best for travelers seeking peace and low prices, not beach activities."
+      ]
+    },
+    {
+      "q": "Do I need to book accommodation ahead in shoulder season?",
+      "a": [
+        "In April, May, September, and October, you can often find accommodation on short notice, but booking 2–4 weeks ahead is safer, especially for weekends and popular hotels. Peak season (June–August) requires months of advance booking."
       ]
     }
   ]

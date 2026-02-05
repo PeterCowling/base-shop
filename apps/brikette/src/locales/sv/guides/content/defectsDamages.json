@@ -1,57 +1,66 @@
 {
   "seo": {
-    "title": "Fel och skador – guide",
-    "description": "Hur du rapporterar fel i rummet, vår respons vid allvarliga problem, regler för skadedeposition, gästens ansvar och viktig info om förebyggande av vägglöss."
+    "title": "Guide för defekter och skador för Positano Hostel",
+    "description": "Förstå hur du rapporterar rumsdefekter, vår respons på allvarliga problem, policyer för skadedeposition, gästers ansvar och viktig information om förebyggande av vägglöss på Positanos exklusiva hostel."
   },
-  "linkLabel": "Fel och skador – guide",
+  "linkLabel": "Guide för defekter och skador för Positano Hostel",
   "sections": [
     {
       "id": "reportingDefects",
-      "title": "Rapportera fel",
+      "title": "Rapportera defekter",
       "body": [
-        "Om du märker något problem eller fel i ditt rum, vänligen informera oss omedelbart. Din snabb anmälan hjälper oss att snabbt åtgärda och lösa problemet."
+        "Om du märker något problem eller defekt i ditt rum, vänligen informera oss omedelbart. Din snabba anmälan hjälper oss att snabbt åtgärda och lösa problemet.",
+        "Det snabbaste sättet att rapportera är personligen i receptionen. När det är möjligt, inkludera: vad som är fel, när du märkte det, och ett snabbt foto eller kort video."
       ]
     },
     {
       "id": "assessingDefects",
-      "title": "Bedöma fel",
+      "title": "Bedömning av defekter",
       "body": [
-        "När du har rapporterat en defekt bedömer vi problemet snabbt och prioriterar vårt svar baserat på hur viktigt det påverkar din komfort och vistelse."
+        "När du rapporterar en defekt kommer vi att snabbt bedöma problemet och prioritera vår respons baserat på hur mycket det påverkar din komfort och vistelse."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/2/27/ISO_7010_W008.svg",
+          "alt": "ISO 7010 W008 allmän varningsskylt (gul triangel med utropstecken)",
+          "caption": "Vi prioriterar säkerhet först, sedan allt som påverkar sömn och komfort."
+        }
       ]
     },
     {
       "id": "responseToSeriousDefects",
-      "title": "Åtgärd vid allvarliga fel",
+      "title": "Respons på allvarliga defekter",
       "body": [
-        "Om det finns en allvarlig defekt som inte omedelbart kan repareras, erbjuder vi alternativ boende. Om alternativet är billigare än ditt bokade rum, återbetalar vi prisskillnaden. Om du väljer att inte acceptera vårt alternativ, kan du begära en pro-rata återbetalning för de återstående nätterna av din vistelse."
+        "Om det finns en allvarlig defekt som inte kan repareras omedelbart, kommer vi att tillhandahålla alternativt boende. Om alternativet är billigare än ditt bokade rum, återbetalar vi dig prisskillnaden. Om du bestämmer dig för att inte acceptera vårt alternativ kan du begära en proportionell återbetalning för de återstående nätterna av din vistelse."
       ]
     },
     {
       "id": "unreportedDefects",
-      "title": "Ej rapporterade fel",
+      "title": "Orapporterade defekter",
       "body": [
-        "Om vi upptäcker ett problem i ditt rum som du inte har rapporterat inom en rimlig tidsram, kommer vi att utvärdera eventuella resulterande skador, och vår skadepolicy kan tillämpas."
+        "Om vi upptäcker ett problem i ditt rum som du inte har rapporterat inom en rimlig tidsram, kommer vi att utvärdera eventuella skador, och vår skadepolicy kan tillämpas."
       ]
     },
     {
       "id": "damagesPolicy",
-      "title": "Policy för skador",
+      "title": "Skadepolicy",
       "body": [
-        "För din säkerhet och vår, kan vi förauktorisera ditt kreditkort eller begära en kontant insättning vid incheckning för att täcka eventuella skador eller förluster. Om du inte kan tillhandahålla en insättning eller förauktorisering, kan din bokning annulleras. Insättningar är fullt återbetalningsbara vid kassan, minus avgifter för eventuella skador, förluster, arbetskraft, eller administrativa kostnader. Om dessa avgifter överstiger din insättning, kommer du att vara ansvarig för de extra kostnaderna. Arbetsavgifter för reparationer eller sanering faktureras varje timme: Direktör (50/timme), Chef (35/timme), och Personal (25/timme)."
+        "För din och vår säkerhet kan vi förauktorisera ditt kreditkort eller begära en kontantdeposition vid incheckning för att täcka potentiella skador eller förluster. Om du inte kan tillhandahålla en deposition eller förauktorisation kan din bokning avbokas. Depositioner är fullt återbetalningsbara vid utcheckning, minus avgifter för eventuella skador, förluster, arbetskraft eller administrativa kostnader. Om dessa avgifter överstiger din deposition är du ansvarig för de extra kostnaderna. Arbetskostnader för reparationer eller städning faktureras per timme: Direktör (50 €/timme), Chef (35 €/timme) och Personal (25 €/timme)."
       ]
     },
     {
       "id": "bedBugsPolicy",
       "title": "Policy för vägglöss",
       "body": [
-        "Vi hanterar proaktivt och snabbt eventuella problem med sänglöss. Men om du hittar vägglöss i ditt rum under din vistelse, kan du hållas ansvarig för tillhörande kostnader, såsom förlorade bokningsintäkter, rengöringskostnader och skadedjurskontroll. Rapportera omedelbart alla sänglössskyltar till vår personal."
+        "Vi hanterar proaktivt och tar snabbt itu med alla problem med vägglöss. Men om vägglöss hittas i ditt rum under din vistelse kan du hållas ansvarig för associerade kostnader, såsom förlorad bokningsintäkt, städkostnader och skadedjursbekämpning. Vänligen rapportera omedelbart alla tecken på vägglöss till vår personal."
       ]
     },
     {
       "id": "bedBugsPrevention",
-      "title": "Förebygga vägglöss",
+      "title": "Förebyggande av vägglöss",
       "body": [
-        "För att förhindra problem med sänglöss, vänligen: * Informera oss vid incheckningen om du nyligen har bott någonstans med kända problem med sänglöss. * Desinfektera noggrant dina tillhörigheter. * Kontrollera noggrant ditt bagage och dina kläder för sänglöss innan du går in i ditt rum."
+        "För att hjälpa till att förhindra problem med vägglöss, vänligen:",
+        "* Informera oss vid incheckning om du nyligen har bott någonstans med kända problem med vägglöss.\n* Desinficera noggrant dina tillhörigheter.\n* Inspektera noggrant ditt bagage och kläder för vägglöss innan du går in i ditt rum."
       ]
     }
   ]

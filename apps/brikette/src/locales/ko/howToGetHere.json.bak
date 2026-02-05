@@ -1,0 +1,920 @@
+{
+  "meta": {
+    "title": "Hostel Brikette - 이동 안내 목록",
+    "description": "아말피, 카프리, 나폴리, 살레르노, 라벨로, 로마, 소렌토에서 Hostel Brikette까지 이동하는 실용 안내와 각 교통수단의 장단점을 담았습니다."
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette",
+    "title": "이동 경로 안내",
+    "description": "이 가이드를 활용해 아말피 해안의 목적지와 호스텔 브리케테 사이를 오가세요.",
+    "heroAlt": "부겐빌레아가 둘러싼 계단을 따라 Hostel Brikette 입구로 올라가는 모습",
+    "heroAltFallback": "부겐빌레아로 둘러싸인 돌계단",
+    "transportLabel": "지원 교통편",
+    "stats": {
+      "routes": "문앞까지 안내 루트",
+      "destinations": "연결 지역 수",
+      "transport": "교통수단 종류",
+      "experienceRoutes": "체험 루트"
+    }
+  },
+  "routePicker": {
+    "title": "도착에 가장 좋은 경로 찾기",
+    "subtitle": "간단한 두 가지 질문에 답하면 최적의 선택을 보여드리고 강조합니다.",
+    "placeLabel": "어디에서 오시나요?",
+    "placePlaceholder": "출발지를 선택하세요",
+    "arrivalLabel": "언제 도착하시나요?",
+    "arrival": {
+      "daytime": "낮",
+      "evening": "저녁",
+      "lateNight": "심야"
+    },
+    "preferencesLabel": "선호",
+    "preferences": {
+      "none": "선호 없음",
+      "fastest": "가장 빠름",
+      "cheapest": "가장 저렴함",
+      "leastWalking": "걷기 최소",
+      "luggageFriendly": "짐에 가장 편함"
+    },
+    "cta": "최적 경로 보기",
+    "urlHint": "필터가 URL에 반영되어 링크를 공유할 수 있습니다.",
+    "lateNightHint": "심야 도착은 택시나 셔틀이 가장 쉽습니다. 버스/페리가 끝났다면 아래 연락처 옵션을 이용하세요."
+  },
+  "routeCard": {
+    "factsLabel": "경로 정보",
+    "duration": "소요 시간",
+    "cost": "비용",
+    "walking": "도보",
+    "luggage": "짐",
+    "seasonality": "계절",
+    "seasonalityValues": {
+      "seasonal": "계절 운행",
+      "yearRound": "연중"
+    },
+    "cta": "단계별 보기",
+    "direction": {
+      "to": "호스텔로",
+      "from": "호스텔에서"
+    }
+  },
+  "preview": {
+    "notPublished": "미리보기 전용 - 이 페이지는 게시되지 않았습니다."
+  },
+  "jumpTo": {
+    "label": "이동",
+    "arrival": "도착 도움",
+    "rome": "로마",
+    "experiences": "체험"
+  },
+  "intro": {
+    "taxi": "택시를 부르려면 WhatsApp으로 <Strong>{{contact}}</Strong> 번호에 영어 또는 이탈리아어로 연락하세요.",
+    "shuttle": "셔틀을 원하신다면 Sea Horse Car Service의 합승 서비스를 이용하세요. <Link>공식 셔틀 페이지</Link>에서 좌석을 예약할 수 있습니다.",
+    "taxiContact": "+39 379 125 6222",
+    "taxiEyebrow": "택시로 Hostel Brikette",
+    "shuttleEyebrow": "셔틀로 Hostel Brikette",
+    "whatsappTemplate": "안녕하세요! Hostel Brikette에 숙박합니다. 포지타노행/포지타노발 택시를 예약하고 싶습니다. 도착 시간은: ____",
+    "emailSubject": "도착 도움",
+    "emailBody": "Hostel Brikette 팀께 — 오늘 도착 예정이며 가장 좋은 이동 방법을 선택하는 데 도움이 필요합니다. 예상 도착 시간은: ____",
+    "whatsappCta": "WhatsApp 택시",
+    "callCta": "전화하기",
+    "taxiBestFor": "추천: 늦은 도착 · 무거운 짐 · 가장 빠른 옵션",
+    "shuttleCta": "셔틀 예약",
+    "shuttleBestFor": "추천: 공항 도착 · 공유 이동 · 사전 계획",
+    "helpEyebrow": "도움이 필요하신가요?",
+    "helpCopy": "늦게 도착하거나 지연이 있나요? 체크인 일정을 잡고 대체 경로를 안내할 수 있도록 메시지 주세요.",
+    "emailCta": "리셉션에 이메일",
+    "helpBestFor": "추천: 지연 · 페리 취소 · 늦은 체크인"
+  },
+  "destinations": {
+    "filterLabel": "지역",
+    "filterAll": "모든 지역",
+    "sections": [
+      {
+        "name": "포지타노 시내",
+        "description": "이미 포지타노에 도착했지만 호스텔로 가는 방법이 고민되나요? 아래 가이드를 확인해 보세요:",
+        "image": {
+          "src": "/img/positano-panorama.avif",
+          "alt": "절벽을 따라 자리한 포지타노 주택의 파노라마 전경",
+          "caption": "포지타노는 가파릅니다 — 특히 짐이 있을 때 계단을 예상하세요."
+        },
+        "links": [
+          {
+            "label": "키에사 누오바/Bar Internazionale → Hostel Brikette",
+            "href": "chiesa-nuova-bar-internazionale-to-hostel-brikette",
+            "internal": true,
+            "facts": {
+              "duration": "5–10 min",
+              "cost": "Free",
+              "walking": "~140 m + ~30 steps",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
+          },
+          {
+            "label": "포지타노 페리 선착장 → Hostel Brikette",
+            "href": "ferry-dock-to-hostel-brikette-with-luggage",
+            "internal": true,
+            "facts": {
+              "duration": "20–45 min (depends on porters/Interno bus)",
+              "cost": "€2–€6 pp (+ optional porter)",
+              "walking": "Port stairs; porters reduce carrying",
+              "luggageFriendly": 1,
+              "seasonality": "Year-round"
+            }
+          },
+          {
+            "label": "Hostel Brikette → 키에사 누오바/Bar Internazionale",
+            "href": "hostel-brikette-to-chiesa-nuova-bar-internazionale",
+            "internal": true,
+            "facts": {
+              "duration": "20–30 min (more with luggage)",
+              "cost": "Free",
+              "walking": "Stairs + road crossings",
+              "luggageFriendly": 1,
+              "seasonality": "Year-round"
+            }
+          }
+        ]
+      },
+      {
+        "name": "아말피",
+        "image": {
+          "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
+          "alt": "해안 노선을 운행하는 SITA Sud 버스 정류장",
+          "caption": "Look for the SITA buses at Amalfi’s bus station."
+        },
+        "links": [
+          {
+            "label": "아말피 → 포지타노 (버스)",
+            "href": "amalfi-positano-bus",
+            "internal": true,
+            "facts": {
+              "duration": "45–90 min (traffic dependent)",
+              "cost": "€2–€4 pp",
+              "walking": "Short stairs at the end (~30 steps)",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
+          },
+          {
+            "label": "포지타노 → 아말피 (버스)",
+            "href": "positano-amalfi-bus",
+            "internal": true,
+            "facts": {
+              "duration": "45–90 min (traffic dependent)",
+              "cost": "€2–€4 pp",
+              "walking": "Short stairs at the start/end (~30 steps)",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
+          },
+          {
+            "label": "아말피 → 포지타노 (페리)",
+            "href": "amalfi-positano-ferry",
+            "internal": true,
+            "facts": {
+              "duration": "25–45 min (sailing) + port transfer",
+              "cost": "€10–€20 pp",
+              "walking": "Stairs to/from the port",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
+          },
+          {
+            "label": "포지타노 → 아말피 (페리)",
+            "href": "positano-amalfi-ferry",
+            "internal": true,
+            "facts": {
+              "duration": "25–45 min (sailing) + port transfer",
+              "cost": "€10–€20 pp",
+              "walking": "Stairs to/from the port",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
+          }
+        ]
+      },
+      {
+        "name": "카프리",
+        "image": {
+          "src": "/img/directions/positano-capri-ferry-img09.jpg",
+          "alt": "카프리 마리나 그란데에 접안하는 페리",
+          "caption": "Capri ferries depart from Marina Grande."
+        },
+        "links": [
+          {
+            "label": "카프리 → 포지타노 (페리)",
+            "href": "capri-positano-ferry",
+            "internal": true,
+            "facts": {
+              "duration": "30–60 min (sailing) + port transfer",
+              "cost": "€20–€35 pp",
+              "walking": "Port access; stairs likely in Positano",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
+          },
+          {
+            "label": "포지타노 → 카프리 (페리)",
+            "href": "positano-capri-ferry",
+            "internal": true,
+            "facts": {
+              "duration": "30–60 min (sailing) + port transfer",
+              "cost": "€20–€35 pp",
+              "walking": "Port access; stairs likely in Positano",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
+          }
+        ]
+      },
+      {
+        "name": "나폴리 시내",
+        "image": {
+          "src": "/img/tabacchi.webp",
+          "alt": "나폴리 시내 거리의 타바키 상점 외관",
+          "caption": "Buy bus tickets in tabacchi/newsstands before boarding."
+        },
+        "links": [
+          {
+            "label": "나폴리 시내 → 포지타노 (기차 + 버스)",
+            "href": "naples-center-train-bus",
+            "internal": true,
+            "facts": {
+              "duration": "2–3.5 h (incl. transfers)",
+              "cost": "€15–€25 pp",
+              "walking": "Low; change in Sorrento",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
+          },
+          {
+            "label": "포지타노 → 나폴리 시내 (버스 후 기차)",
+            "href": "positano-naples-center-bus-train",
+            "internal": true,
+            "facts": {
+              "duration": "2–3.5 h (incl. transfers)",
+              "cost": "€15–€25 pp",
+              "walking": "Short stairs at the start/end (~30 steps)",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
+          },
+          {
+            "label": "나폴리 시내 → 포지타노 (페리)",
+            "href": "naples-center-positano-ferry",
+            "internal": true,
+            "facts": {
+              "duration": "3–4.5 h (incl. port transfer)",
+              "cost": "€25–€45 pp",
+              "walking": "Transfer to port + stairs in Positano",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
+          },
+          {
+            "label": "포지타노 → 나폴리 시내 (페리)",
+            "href": "positano-naples-center-ferry",
+            "internal": true,
+            "facts": {
+              "duration": "3–4.5 h (incl. port transfer)",
+              "cost": "€25–€45 pp",
+              "walking": "Stairs in Positano + transfer from port",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
+          },
+          {
+            "label": "포지타노 → 나폴리 (페리 상세 안내)",
+            "href": "positano-to-naples-directions-by-ferry",
+            "internal": true,
+            "facts": {
+              "duration": "3–4.5 h (incl. port transfer)",
+              "cost": "€25–€45 pp",
+              "walking": "Stairs in Positano + transfer from port",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
+          }
+        ]
+      },
+      {
+        "name": "나폴리 공항",
+        "image": {
+          "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
+          "alt": "나폴리 국제공항 외부 Curreri 셔틀 승차 구역",
+          "caption": "Sorrento train station, where you will change bus"
+        },
+        "links": [
+          {
+            "label": "포지타노 → 나폴리 공항 (버스)",
+            "href": "positano-naples-airport-bus",
+            "internal": true,
+            "facts": {
+              "duration": "2–3.5 h (incl. change in Sorrento)",
+              "cost": "€15–€25 pp",
+              "walking": "Short stairs at the start/end (~30 steps)",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
+          },
+          {
+            "label": "나폴리 공항 → 포지타노 (버스)",
+            "href": "naples-airport-positano-bus",
+            "internal": true,
+            "facts": {
+              "duration": "2–3.5 h (incl. change in Sorrento)",
+              "cost": "€15–€25 pp",
+              "walking": "Short stairs at the end (~30 steps)",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
+          }
+        ]
+      },
+      {
+        "name": "살레르노",
+        "image": {
+          "src": "/img/hostel-coastal-horizon.webp",
+          "alt": "살레르노 방향으로 펼쳐진 아말피 해안 전망",
+          "caption": "Salerno connects by train + bus, or by seasonal ferries."
+        },
+        "links": [
+          {
+            "label": "살레르노 → 포지타노 (버스)",
+            "href": "salerno-positano-bus",
+            "internal": true,
+            "facts": {
+              "duration": "2.5–4 h (via Amalfi)",
+              "cost": "€6–€12 pp",
+              "walking": "Low; change buses in Amalfi",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
+          },
+          {
+            "label": "포지타노 → 살레르노 (버스)",
+            "href": "positano-salerno-bus",
+            "internal": true,
+            "facts": {
+              "duration": "2.5–4 h (via Amalfi)",
+              "cost": "€6–€12 pp",
+              "walking": "Short stairs at the start/end (~30 steps)",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
+          },
+          {
+            "label": "살레르노 → 포지타노 (페리)",
+            "href": "salerno-positano-ferry",
+            "internal": true,
+            "facts": {
+              "duration": "1–2 h (sailing) + port transfer",
+              "cost": "€15–€30 pp",
+              "walking": "Port stairs; porters recommended",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
+          },
+          {
+            "label": "포지타노 → 살레르노 (페리)",
+            "href": "positano-salerno-ferry",
+            "internal": true,
+            "facts": {
+              "duration": "1–2 h (sailing) + port transfer",
+              "cost": "€15–€30 pp",
+              "walking": "Port stairs; porters recommended",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
+          }
+        ]
+      },
+      {
+        "name": "라벨로",
+        "image": {
+          "src": "/img/hostel-communal-terrace-lush-view.webp",
+          "alt": "라벨로 인근 해안선을 내려다보는 절벽 정원",
+          "caption": "Ravello is reached via Amalfi by bus."
+        },
+        "links": [
+          {
+            "label": "라벨로 → 포지타노 (버스)",
+            "href": "ravello-positano-bus",
+            "internal": true,
+            "facts": {
+              "duration": "1.5–2.5 h (via Amalfi)",
+              "cost": "€4–€8 pp",
+              "walking": "Low; change in Amalfi",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
+          },
+          {
+            "label": "포지타노 → 라벨로 (버스)",
+            "href": "positano-ravello-bus",
+            "internal": true,
+            "facts": {
+              "duration": "1.5–2.5 h (via Amalfi)",
+              "cost": "€4–€8 pp",
+              "walking": "Short stairs at the start/end (~30 steps)",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
+          },
+          {
+            "label": "포지타노 → 라벨로 (페리 후 버스)",
+            "href": "positano-ravello-ferry-bus",
+            "internal": true,
+            "facts": {
+              "duration": "2–3 h (ferry + bus)",
+              "cost": "€15–€30 pp",
+              "walking": "Port stairs + bus connection",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "rome": {
+    "image": {
+      "src": "/img/directions/rome-forum.jpg",
+      "alt": "카피톨리노 박물관에서 바라본 로마 포럼",
+      "caption": "로마 포럼과 카피톨리노 박물관"
+    },
+    "title": "로마",
+    "description": "작성된 안내에 따라 나폴리 또는 살레르노로 이동한 뒤, 두 도시 중 한 곳에서 기차를 이용하세요.",
+    "table": {
+      "headers": {
+        "route": "경로",
+        "toRome": "로마로 갈 때",
+        "toHostel": "호스텔로 올 때"
+      },
+      "options": [
+        {
+          "route": {
+            "label": "나폴리 시내 ↔ 포지타노 (버스/기차)",
+            "href": "positano-naples-center-bus-train",
+            "internal": true
+          },
+          "toRome": {
+            "heading": "로마로 갈 때",
+            "points": [
+              "+ 호스텔에서 포지타노 버스 정류장까지 몇 걸음이면 닿습니다.",
+              "+ 버스가 소렌토 기차역 바로 앞에 내려줍니다.",
+              "+ 버스와 기차 요금이 모두 저렴합니다.",
+              "+ 나폴리 기차역까지 바로 도착합니다.",
+              "- 버스에서 기차로 환승해야 합니다.",
+              "- 버스와 기차가 대체로 붐빕니다.",
+              "- 이동 시간이 몇 시간 정도 걸립니다."
+            ]
+          },
+          "toHostel": {
+            "heading": "호스텔로 올 때",
+            "points": [
+              "+ 나폴리에서 기차 환승이 비교적 수월합니다.",
+              "+ 기차가 소렌토 버스 정류장 바로 앞에 도착합니다.",
+              "+ 버스와 기차 요금이 모두 저렴합니다.",
+              "+ 포지타노 버스 정류장이 호스텔에서 가까워 도착 후 이동이 편합니다.",
+              "- 소렌토에서 기차에서 버스로 갈아타야 합니다.",
+              "- 버스와 기차가 대체로 붐빕니다.",
+              "- 이동 시간이 몇 시간 정도 걸립니다."
+            ]
+          }
+        },
+        {
+          "route": {
+            "label": "살레르노 ↔ 포지타노 (버스)",
+            "href": "salerno-positano-bus",
+            "internal": true
+          },
+          "toRome": {
+            "heading": "로마로 갈 때",
+            "points": [
+              "+ 포지타노 버스 정류장이 호스텔에서 도보로 금방입니다.",
+              "+ 버스가 살레르노 기차역 앞에 내려줍니다.",
+              "+ 버스 요금이 매우 저렴합니다.",
+              "- 아말피에서 버스를 갈아타야 합니다.",
+              "- 버스가 대체로 붐빕니다."
+            ]
+          },
+          "toHostel": {
+            "heading": "호스텔로 올 때",
+            "points": [
+              "+ 포지타노 버스 정류장이 호스텔에서 도보로 금방입니다.",
+              "+ 버스가 살레르노 기차역에서 바로 승객을 태웁니다.",
+              "+ 버스 요금이 매우 저렴합니다.",
+              "- 아말피에서 버스를 갈아타야 합니다.",
+              "- 버스가 대체로 붐빕니다."
+            ]
+          }
+        },
+        {
+          "route": {
+            "label": "살레르노 ↔ 포지타노 (페리)",
+            "href": "salerno-positano-ferry",
+            "internal": true
+          },
+          "note": {
+            "parts": [
+              {
+                "type": "text",
+                "value": "살레르노 항구와 기차역 사이를 "
+              },
+              {
+                "type": "link",
+                "label": "도보로 이동해야 합니다",
+                "href": "https://www.google.com/maps/dir/Travelmar+-+Traghetti+Salerno,+Piazza+della+Concordia,+Salerno,+SA/Salerno+Train+Station,+Via+Zara,+Salerno,+SA/@40.6735022,14.7687986,18z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133bc2396c885437:0xe1ccfe3b3efd24a5!2m2!1d14.7675186!2d40.6717407!1m5!1m1!1s0x133bc3b98e72261f:0x6251217dd6a0c63d!2m2!1d14.772223!2d40.6752304!3e2",
+                "external": true
+              },
+              {
+                "type": "text",
+                "value": "."
+              }
+            ]
+          },
+          "toRome": {
+            "heading": "로마로 갈 때",
+            "points": [
+              "+ 짐을 포터에게 맡기면 훨씬 편하게 이동할 수 있습니다.",
+              "+ 페리 이동 자체가 쾌적하고 수월합니다.",
+              "+ 살레르노 기차역에서 항구까지 도보 이동이 짧고 단순합니다.",
+              "- 페리 요금이 버스보다 비쌉니다.",
+              "- 포지타노 항구에서 호스텔까지 이동이 꽤 힘들어, 포지타노 내부 버스와 포터의 도움을 받아도 SITA 버스로 오는 편이 더 쉽습니다."
+            ]
+          },
+          "toHostel": {
+            "heading": "호스텔로 올 때",
+            "points": [
+              "+ 짐을 포터에게 맡기면 훨씬 편하게 이동할 수 있습니다.",
+              "+ 페리 이동 자체가 쾌적하고 수월합니다.",
+              "+ 살레르노 기차역에서 항구까지 도보 이동이 짧고 단순합니다.",
+              "- 페리 요금이 버스보다 비쌉니다.",
+              "- 포지타노 항구에서 호스텔까지 이동이 꽤 힘들어, 포지타노 내부 버스와 포터의 도움을 받아도 SITA 버스로 오는 편이 더 쉽습니다."
+            ]
+          }
+        },
+        {
+          "route": {
+            "label": "나폴리 ↔ 포지타노 (페리)",
+            "href": "positano-naples-center-ferry",
+            "internal": true
+          },
+          "note": {
+            "parts": [
+              {
+                "type": "link",
+                "label": "트램",
+                "href": "https://www.google.com/maps/dir/40.8408941,14.2611372/Napoli+Centrale,+P.za+Giuseppe+Garibaldi,+80142+Napoli+NA/@40.8375677,14.2464964,14z/data=!4m10!4m9!1m0!1m5!1m1!1s0x133b081659811bf3:0x26f7eaf2d2c03d87!2m2!1d14.2723487!2d40.8529222!3e3!5i4",
+                "external": true
+              },
+              {
+                "type": "text",
+                "value": "을 이용해 항구와 기차역 사이를 이동하세요."
+              }
+            ]
+          },
+          "toRome": {
+            "heading": "로마로 갈 때",
+            "points": [
+              "+ 짐을 포터에게 맡기면 훨씬 편하게 이동할 수 있습니다.",
+              "+ 페리 이동 자체가 쾌적하고 수월합니다.",
+              "- 나폴리 항구와 도심 분위기가 모든 사람에게 편안하게 느껴지지는 않을 수 있습니다.",
+              "- 페리 운항 빈도가 다른 교통수단보다 적습니다.",
+              "- 페리 요금이 기차나 버스보다 비쌉니다."
+            ]
+          },
+          "toHostel": {
+            "heading": "호스텔로 올 때",
+            "points": [
+              "+ 짐을 포터에게 맡기면 훨씬 편하게 이동할 수 있습니다.",
+              "+ 페리 이동 자체가 쾌적하고 수월합니다.",
+              "- 나폴리 항구와 도심 분위기가 모든 사람에게 편안하게 느껴지지는 않을 수 있습니다.",
+              "- 페리 운항 빈도가 다른 교통수단보다 적습니다.",
+              "- 페리 요금이 기차나 버스보다 비쌉니다.",
+              "- 포지타노 항구에서 호스텔까지 이동이 꽤 힘들어, 포지타노 내부 버스와 포터의 도움을 받아도 SITA 버스로 오는 편이 더 쉽습니다."
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "sorrento": {
+    "title": "소렌토",
+    "image": {
+      "src": "/img/directions/sorrento-piazza-tasso.jpg",
+      "alt": "피아차 타소에서 바라본 소렌토 풍경",
+      "caption": "피아차 타소에서 본 소렌토"
+    },
+    "links": [
+      {
+        "label": "소렌토 → 포지타노 (버스)",
+        "href": "sorrento-positano-bus",
+        "internal": true,
+        "facts": {
+          "duration": "45–75 min",
+          "cost": "€2–€4 pp",
+          "walking": "Short stairs at the end (~30 steps)",
+          "luggageFriendly": 2,
+          "seasonality": "Year-round"
+        }
+      },
+      {
+        "label": "포지타노 → 소렌토 (버스)",
+        "href": "positano-sorrento-bus",
+        "internal": true,
+        "facts": {
+          "duration": "45–75 min",
+          "cost": "€2–€4 pp",
+          "walking": "Short stairs at the start/end (~30 steps)",
+          "luggageFriendly": 2,
+          "seasonality": "Year-round"
+        }
+      },
+      {
+        "label": "소렌토 → 포지타노 (페리)",
+        "href": "sorrento-positano-ferry",
+        "internal": true,
+        "facts": {
+          "duration": "30–45 min (sailing) + port stairs",
+          "cost": "€15–€25 pp",
+          "walking": "Port stairs; porters recommended",
+          "luggageFriendly": 1,
+          "seasonality": "Seasonal (Apr–Oct)"
+        }
+      },
+      {
+        "label": "포지타노 → 소렌토 (페리)",
+        "href": "positano-sorrento-ferry",
+        "internal": true,
+        "facts": {
+          "duration": "30–45 min (sailing) + port stairs",
+          "cost": "€15–€25 pp",
+          "walking": "Port stairs; porters recommended",
+          "luggageFriendly": 1,
+          "seasonality": "Seasonal (Apr–Oct)"
+        }
+      }
+    ]
+  },
+  "filters": {
+    "title": "경로 필터",
+    "resultsCount": "결과: {{count}}개 경로",
+    "editLabel": "필터 편집",
+    "shareHint": "필터가 URL에 반영되어 쉽게 공유할 수 있습니다.",
+    "transportLabel": "교통수단",
+    "transportAll": "전체",
+    "transportModes": {
+      "bus": "버스",
+      "ferry": "페리",
+      "train": "기차",
+      "car": "차/택시",
+      "walk": "도보"
+    },
+    "directionLabel": "방향",
+    "directionAll": "전체",
+    "directionTo": "포지타노 행",
+    "directionFrom": "포지타노 출발",
+    "helper": "필터를 활용해 여정에 맞는 경로만 골라보세요.",
+    "activeLabel": "사용 중인 필터",
+    "clearLabel": "필터 초기화",
+    "noResults": "해당 조건에 맞는 경로가 없습니다."
+  },
+  "romePlanner": {
+    "title": "로마 ↔ 포지타노 이동 방법",
+    "subtitle": "방향을 선택하고 선호 조건을 고르면 경로를 추천해 드립니다.",
+    "directionPrompt": "방향을 선택하세요",
+    "tabs": {
+      "from": "로마 → 호스텔",
+      "to": "호스텔 → 로마"
+    },
+    "reco": {
+      "title": "선택하신 조건에 가장 맞는 경로",
+      "why": "이 경로를 추천하는 이유"
+    },
+    "otherMatches": "다른 추천 경로",
+    "disclaimer": "최신 시간표와 좌석은 운항사에서 항상 확인하세요. 혼잡도와 소요 시간은 시즌에 따라 달라집니다.",
+    "pref": {
+      "prompt": "선호 조건이 있나요?",
+      "cheapest": {
+        "label": "가장 저렴",
+        "description": "편안함보다 비용을 우선합니다."
+      },
+      "scenic": {
+        "label": "경치 우선",
+        "description": "바다 전망(페리)을 우선합니다."
+      },
+      "heavyPrefix": "짐이",
+      "heavy_luggage": {
+        "label": "무거워요",
+        "description": "짐을 들고 오르막과 계단을 최소화합니다."
+      }
+    },
+    "route": {
+      "naples": {
+        "busTrain": {
+          "title": "나폴리 경유 — 버스 + 기차",
+          "summary": {
+            "from": "소렌토행 버스 → 나폴리행 기차 → 로마행 기차.",
+            "to": "나폴리행 기차 → 소렌토행 기차 → 포지타노행 버스."
+          },
+          "steps": {
+            "from": {
+              "1": "포지타노 → 소렌토 버스(소렌토 기차역 하차).",
+              "2": "소렌토 → 나폴리 지역 열차(나폴리 기차역 도착).",
+              "3": "나폴리 → 로마 기차."
+            },
+            "to": {
+              "1": "로마 → 나폴리 기차(나폴리 기차역 도착).",
+              "2": "나폴리 → 소렌토 지역 열차(소렌토 버스터미널 도착).",
+              "3": "소렌토 → 포지타노 버스(호스텔 인근 정류장 하차)."
+            }
+          }
+        },
+        "ferry": {
+          "title": "나폴리 경유 — 페리",
+          "summary": {
+            "from": "포지타노 항구 → 나폴리행 페리 → 트램으로 역 이동 → 로마행 기차.",
+            "to": "나폴리행 기차 → 트램으로 항구 이동 → 포지타노행 페리."
+          },
+          "steps": {
+            "from": {
+              "1": "포지타노 → 항구(포터가 짐을 도와줍니다).",
+              "2": "포지타노 → 나폴리 페리.",
+              "3": "나폴리 항구 → 기차역 트램.",
+              "4": "나폴리 → 로마 기차."
+            },
+            "to": {
+              "1": "로마 → 나폴리 기차(나폴리 역 도착).",
+              "2": "나폴리 역 → 항구 트램.",
+              "3": "나폴리 → 포지타노 페리.",
+              "4": "포지타노 항구 → 호스텔(힘든 구간이므로 포터/Interno 버스를 활용하세요)."
+            }
+          }
+        }
+      },
+      "salerno": {
+        "bus": {
+          "title": "살레르노 경유 — 버스(살레르노 왕복)",
+          "summary": {
+            "from": "포지타노 → 아말피 버스(환승) → 살레르노 → 로마행 기차.",
+            "to": "살레르노행 기차 → 아말피행 버스(환승) → 포지타노."
+          },
+          "steps": {
+            "from": {
+              "1": "포지타노 → 아말피 버스(아말피에서 환승).",
+              "2": "아말피 → 살레르노 버스(살레르노 기차역 하차).",
+              "3": "살레르노 → 로마 기차."
+            },
+            "to": {
+              "1": "로마 → 살레르노 기차(살레르노 기차역 도착).",
+              "2": "살레르노 → 아말피 버스(아말피에서 환승).",
+              "3": "아말피 → 포지타노 버스(호스텔까지 짧은 도보)."
+            }
+          }
+        },
+        "ferry": {
+          "title": "살레르노 경유 — 페리",
+          "summary": {
+            "from": "포지타노 항구 → 살레르노행 페리 → 역까지 짧은 도보 → 로마행 기차.",
+            "to": "살레르노행 기차 → 항구까지 짧은 도보 → 포지타노행 페리."
+          },
+          "steps": {
+            "from": {
+              "1": "포지타노 → 항구(포터가 짐을 도와줍니다).",
+              "2": "포지타노 → 살레르노 페리.",
+              "3": "살레르노 항구 → 기차역 도보 이동.",
+              "4": "살레르노 → 로마 기차."
+            },
+            "to": {
+              "1": "로마 → 살레르노 기차(살레르노 역 도착).",
+              "2": "살레르노 항구까지 도보 이동.",
+              "3": "살레르노 → 포지타노 페리.",
+              "4": "포지타노 항구 → 호스텔(힘든 구간이므로 포터/Interno 버스를 활용하세요)."
+            }
+          }
+        }
+      }
+    },
+    "note": {
+      "salerno": {
+        "walkPortStation": "살레르노 항구와 기차역 사이는 도보로 짧고 간단합니다."
+      },
+      "naples": {
+        "tramPortStation": "나폴리 항구와 기차역 사이는 트램을 이용하세요."
+      }
+    },
+    "pro": {
+      "posBusNearHostel": "포지타노 버스 정류장이 호스텔과 가깝습니다.",
+      "busDropsSorrentoStation": "버스가 소렌토 기차역 바로 앞에 내려줍니다.",
+      "cheapBusTrain": "버스와 기차 모두 요금이 저렴합니다.",
+      "arriveNaplesStation": "나폴리 기차역에 바로 도착합니다.",
+      "easySwapNaples": "나폴리에서 환승이 비교적 쉽습니다.",
+      "trainDropsSorrentoBusStation": "기차가 소렌토 버스터미널 바로 앞에 내려줍니다.",
+      "salerno": {
+        "busStopNearHostel": "포지타노 버스 정류장이 호스텔에서 가까운 거리에 있습니다."
+      },
+      "busCollectsSalernoStation": "버스가 살레르노 기차역 바로 앞에서 탑승합니다.",
+      "busDropsSalernoStation": "버스가 살레르노 기차역 바로 앞에 내려줍니다.",
+      "busCheap": "버스 요금이 저렴합니다.",
+      "portersHelp": "짐을 포터에게 맡기면 이동이 더 편하고 수월합니다.",
+      "ferryEnjoyableEasy": "페리 이동 자체가 편안하고 즐겁습니다.",
+      "shortWalkSalernoStationPort": "살레르노 기차역에서 항구까지의 도보가 짧고 간단합니다."
+    },
+    "con": {
+      "changeBusToTrain": "버스에서 기차로 환승해야 합니다.",
+      "crowdedBusTrain": "버스와 기차가 대체로 혼잡합니다.",
+      "fewHours": "몇 시간이 소요됩니다.",
+      "changeTrainToBusSorrento": "소렌토에서 기차에서 버스로 갈아타야 합니다.",
+      "busUsuallyCrowded": "버스가 보통 혼잡합니다.",
+      "ferryCostHigherBus": "페리 비용이 버스보다 높습니다.",
+      "hostelEasierBySita": "페리보다 SITA 버스로 도착하는 편이 더 쉽습니다(항구에서 오르는 길이 힘듭니다 — 포지타노 내부 버스/포터를 이용해도).",
+      "naplesPortComfort": "나폴리 항구와 도시는 일부 여행자에게 불편하게 느껴질 수 있습니다.",
+      "ferriesLessFrequent": "페리는 다른 교통수단보다 운항 빈도가 낮습니다.",
+      "ferryCostHigherTrainBus": "페리 비용이 기차나 버스보다 높습니다.",
+      "changeBusesAmalfi": "아말피에서 버스를 갈아타야 합니다."
+    },
+    "tag": {
+      "cheap": "예산",
+      "directish": "단순",
+      "scenic": "경치",
+      "transfer": "환승",
+      "bus": "버스",
+      "train": "기차",
+      "ferry": "페리"
+    },
+    "reasons": {
+      "cheapest": {
+        "busTrain": "가장 저렴 → 버스/기차 옵션이 매우 저렴합니다.",
+        "ferry": "가장 저렴 → 페리는 버스/기차보다 비용이 높습니다."
+      },
+      "fewest_changes": {
+        "busTrain": "환승 최소 → 버스+기차는 교통수단을 한 번 바꿔야 합니다.",
+        "bus": "환승 최소 → 버스는 아말피에서 갈아타야 합니다."
+      },
+      "scenic": {
+        "ferry": "경치 우선 → 페리 여정이 편하고 즐겁습니다."
+      },
+      "heavy_luggage": {
+        "ferryFromRome": "무거운 짐 → 항구에서 올라오는 페리 경로가 더 힘듭니다.",
+        "busStopClose": "무거운 짐 → 포지타노 버스 정류장이 호스텔과 가깝습니다."
+      }
+    },
+    "ui": {
+      "showDetails": "자세히 보기",
+      "hideDetails": "접기",
+      "steps": "단계",
+      "notes": "메모",
+      "pros": "장점",
+      "cons": "단점"
+    }
+  },
+  "experienceGuides": {
+    "eyebrow": "체험 플래너",
+    "title": "이동 안내가 포함된 체험 루트",
+    "description": "이 체험들은 트레일 하이라이트와 Hostel Brikette를 오갈 때 필요한 환승 정보를 함께 제공합니다. 일정과 교통 계획을 한 가이드에서 보고 싶을 때 열어보세요.",
+    "items": [
+      {
+        "guideKey": "pathOfTheGodsFerry",
+        "label": "아말피 경유 신들의 길 (페리 + 하이킹)",
+        "summary": "포지타노에서 아말피로 페리를 타고 보메라노까지 올라간 뒤, 포지타노로 돌아오는 클래식 횡단 루트를 단계별로 안내합니다.",
+        "transportModes": [
+          "ferry",
+          "bus",
+          "walk"
+        ]
+      },
+      {
+        "guideKey": "pathOfTheGodsBus",
+        "label": "아말피 경유 신들의 길 (버스 + 하이킹)",
+        "summary": "포지타노에서 SITA Sud 버스로 아말피를 거쳐 보메라노로 이동한 뒤 노첼레까지 하이킹하고, 안내된 교통편으로 호스텔에 돌아옵니다.",
+        "transportModes": [
+          "bus",
+          "walk"
+        ]
+      },
+      {
+        "guideKey": "pathOfTheGodsNocelle",
+        "label": "노첼레 셔틀 경유 신들의 길",
+        "summary": "Montepertuso–Nocelle 셔틀로 짧은 왕복 하이킹을 즐기고, 가이드 안내에 따라 도보 또는 버스로 Hostel Brikette에 돌아오세요.",
+        "transportModes": [
+          "bus",
+          "walk"
+        ]
+      }
+    ]
+  },
+  "breadcrumbs": {
+    "itemTitleFallback": "오시는 길"
+  },
+  "galleries": {
+    "defaultAlt": "오시는 길 사진"
+  },
+  "lightbox": {
+    "titleFallback": "이미지",
+    "openAria": "이미지 열기",
+    "openAriaWithCaption": "이미지 열기: {{caption}}"
+  }
+}

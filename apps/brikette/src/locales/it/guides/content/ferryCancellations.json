@@ -1,72 +1,72 @@
 {
   "seo": {
-    "title": "Cancellazioni di traghetti e mare mosso",
-    "description": "Come monitorare avvisi meteo, cosa aspettarsi in caso di sospensioni e piani alternativi via terra."
+    "title": "Cancellazioni dei traghetti e mare mosso",
+    "description": "Cosa fare quando i traghetti vengono cancellati a causa del tempo, alternative e come controllare lo stato."
   },
-  "linkLabel": "Cancellazioni di traghetti e mare mosso",
+  "linkLabel": "Cancellazioni dei traghetti e mare mosso",
   "intro": [
-    "Il mare mosso puo sospendere i traghetti da e per Positano con poco preavviso.",
-    "Tieni pronto un piano via terra e monitora gli avvisi live per non perdere le coincidenze."
+    "Il mare mosso può sospendere i traghetti da e per Positano con poco preavviso.",
+    "Tieni pronta un'alternativa via terra e monitora gli avvisi in tempo reale così da poter ancora fare la tua connessione."
   ],
   "sections": [
     {
       "id": "monitoring",
-      "title": "Monitora gli aggiornamenti in tempo reale",
+      "title": "Monitorare gli aggiornamenti in tempo reale",
       "body": [
-        "Controlla siti e app degli operatori (Travelmar, NLG, Alilauro) e i tabelloni del porto ogni 30 minuti nelle giornate ventose.",
-        "Attiva avvisi SMS/email o segui canali Telegram/social locali cosi le cancellazioni ti raggiungono anche lontano dal molo."
+        "Controlla i siti e le app degli operatori (Travelmar, NLG, Alilauro) più i tabelloni informativi del porto ogni 30 minuti nei giorni ventosi.",
+        "Attiva gli avvisi SMS/email o segui i canali Telegram/social locali così che le cancellazioni ti raggiungano anche se ti allontani dal molo."
       ]
     },
     {
       "id": "plan-b",
-      "title": "Passa ai percorsi via terra",
+      "title": "Passare a percorsi via terra",
       "body": [
-        "Se le corse si fermano, passa a bus e treni: SITA per Sorrento e Circumvesuviana per Napoli/Pompei, oppure bus via Amalfi e regionale da Salerno.",
-        "Lascia almeno 60 minuti di margine per le ultime partenze della giornata e convalida i biglietti prima di salire."
+        "Se le traversate si fermano, passa a autobus e treni: SITA per Sorrento poi Circumvesuviana per Napoli/Pompei, oppure autobus via Amalfi e treno regionale da Salerno.",
+        "Prevedi almeno 60 minuti di margine per le ultime partenze della giornata e convalida i biglietti prima di salire."
       ]
     },
     {
       "id": "refunds",
       "title": "Rimborsi e voucher",
       "body": [
-        "Conserva ricevute e screenshot dell'avviso di cancellazione per rimborsi, riprenotazioni o crediti.",
-        "Comunica allo sportello se preferisci la prossima corsa disponibile o un voucher di stagione prima di allontanarti."
+        "Conserva le ricevute e fai uno screenshot dell'avviso di cancellazione così l'operatore può elaborare rimborsi, prenotazioni o crediti.",
+        "Informa il personale se preferisci la prossima traversata disponibile o un voucher stagionale prima di lasciare il banco."
       ]
     },
     {
       "id": "overnight",
-      "title": "Gestire i pernottamenti forzati",
+      "title": "Gestione dei ritardi notturni",
       "body": [
-        "Avvisa subito il tuo alloggio o il tour operator: spesso possono spostare check-in o partenze se informati in anticipo.",
-        "Chiedi al punto informazioni del porto di taxi condivisi, navette sostitutive o deposito bagagli se devi aspettare il mattino dopo."
+        "Informa il tuo alloggio o il tour host non appena vengono annunciati i ritardi; molti adegueranno il check-in o la partenza se avvisati in anticipo.",
+        "Chiedi al punto info del porto di taxi condivisi, navette sostitutive o deposito bagagli se devi aspettare fino al mattino seguente."
       ]
     }
   ],
   "tips": [
-    "Controlla le previsioni marine: venti sopra 20 nodi o onde oltre 1,5 m spesso causano cancellazioni.",
-    "Un'assicurazione di viaggio che copre ritardi meteo aiuta a recuperare notti extra o trasferimenti sostitutivi.",
-    "Le corse del mattino sono le piu affidabili; evita di contare sull'ultima corsa se e previsto maltempo."
+    "Controlla le previsioni marine—venti superiori a 20 nodi o mare ondoso oltre 1,5 metri (circa 5 piedi) spesso causano cancellazioni.",
+    "L'assicurazione di viaggio che copre i ritardi meteorologici aiuta a recuperare notti d'albergo extra o trasferimenti sostitutivi.",
+    "Le traversate mattutine sono le più affidabili; evita di fare affidamento sull'ultima barca della giornata quando sono previste tempeste."
   ],
   "faqs": [
     {
-      "q": "Come so quando riprendono le corse?",
+      "q": "Come faccio a sapere quando le traversate riprendono?",
       "a": [
-        "Aggiorna il sito o i social dell'operatore e ascolta gli annunci al porto: le decisioni arrivano di solito entro 30 minuti dall'orario previsto.",
-        "Il personale alle biglietterie puo confermare se la prossima corsa e attiva prima che tu lasci il porto."
+        "Aggiorna il sito web dell'operatore o i feed social e ascolta gli annunci tramite altoparlante al molo—le decisioni vengono solitamente pubblicate entro 30 minuti dalla partenza programmata.",
+        "Il personale della biglietteria può anche confermare se la prossima barca è in funzione prima che tu lasci il porto."
       ]
     },
     {
       "q": "Cosa succede al mio biglietto?",
       "a": [
-        "Mostra ricevuta o QR code per chiedere rimborso, voucher o riprenotazione sulla prossima corsa.",
-        "Se hai prenotato tramite agenzia online, invia lo screenshot della cancellazione entro 24 ore per avviare il rimborso."
+        "Mostra la tua ricevuta o codice QR per richiedere un rimborso, voucher o prenotazione sulla prossima traversata.",
+        "Se hai prenotato tramite un'agenzia online, invia loro lo screenshot della cancellazione via email entro 24 ore per avviare il processo di rimborso."
       ]
     },
     {
       "q": "Ci sono traghetti garantiti con mare mosso?",
       "a": [
-        "No: quando la Guardia Costiera chiude il porto, tutte le partenze si fermano. Tieni pronto un percorso via terra.",
-        "Alcuni charter privati possono navigare con mare moderato ma sono costosi e dipendono dalla discrezione del comandante; valuta comfort e prezzo."
+        "No—quando la Guardia Costiera chiude il porto tutte le partenze si fermano. Tieni pronta una rotta via terra.",
+        "Alcuni charter privati potrebbero navigare con mare moderato ma sono costosi e dipendono dalla discrezione del capitano; valuta attentamente comfort e costo."
       ]
     }
   ]

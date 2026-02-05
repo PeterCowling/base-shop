@@ -264,9 +264,9 @@
   "cancel": "Annulla",
   "moreAboutThisRoom": "Scopri di più su questa camera",
   "loadingPrice": "Loading price…",
-  "landingImageAlt": "Landing image of {{room}}",
+  "landingImageAlt": "Immagine principale di {{room}}",
   "priceNotes": {
-    "dorm": "Per night, per guest. One guest in one bunk bed."
+    "dorm": "Per notte, per ospite. Un ospite in un letto a castello."
   },
   "facts": {
     "type": {

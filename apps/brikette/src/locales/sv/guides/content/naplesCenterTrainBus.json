@@ -48,28 +48,28 @@
   ],
   "faqs": [
     {
-      "q": "How much does it cost to get from Naples center to Positano by train and bus?",
-      "a": "The total cost is around €7.20: €4.60 for the Circumvesuviana train from Naples to Sorrento, plus €2.60 for the SITA bus from Sorrento to Positano (2026 prices). This is the cheapest public transport option."
+      "q": "Hur mycket kostar det att ta sig från Neapel centrum till Positano med tåg och buss?",
+      "a": "Den totala kostnaden är cirka 7,20 €: 4,60 € för Circumvesuviana-tåget från Neapel till Sorrento, plus 2,60 € för SITA-bussen från Sorrento till Positano (priser 2026). Detta är det billigaste alternativet för kollektivtrafik."
     },
     {
-      "q": "How long does the journey take from Naples to Positano?",
-      "a": "Total journey time is 2.5-3 hours: 70 minutes on the train, 50 minutes on the bus, plus 20-40 minutes waiting for connections in Sorrento. Allow 3-3.5 hours total to account for potential delays."
+      "q": "Hur lång tid tar resan från Neapel till Positano?",
+      "a": "Total restid är 2,5–3 timmar: 70 minuter på tåget, 50 minuter på bussen, plus 20–40 minuter väntan på anslutningar i Sorrento. Räkna med totalt 3–3,5 timmar för att ta höjd för eventuella förseningar."
     },
     {
-      "q": "Can I buy tickets on the train or bus?",
-      "a": "You can buy train tickets at Napoli Garibaldi station from ticket machines or the ticket office, but you must validate before boarding. SITA bus tickets cannot be purchased on board — you must buy them from a bar, tabacchi, or newsstand near Sorrento station before getting on the bus."
+      "q": "Kan jag köpa biljetter på tåget eller bussen?",
+      "a": "Du kan köpa tågbiljetter på Napoli Garibaldi-stationen från biljettautomater eller biljettluckan, men du måste stämpla innan du går ombord. SITA-bussbiljetter kan inte köpas ombord — du måste köpa dem i en bar, tabacchi eller kiosk i närheten av Sorrento-stationen innan du går på bussen."
     },
     {
-      "q": "Is this route suitable for travelers with heavy luggage?",
-      "a": "Yes, but it can be challenging during peak times. Both the train and bus have limited luggage space, so board early if you have large bags. The walk from Chiesa Nuova bus stop to the hostel is flat and under 2 minutes, so luggage is manageable once you arrive. If you prefer, consider using our porter services or a private transfer."
+      "q": "Är denna rutt lämplig för resenärer med tungt bagage?",
+      "a": "Ja, men det kan vara utmanande under högtrafik. Både tåget och bussen har begränsat bagageutrymme, så gå ombord tidigt om du har stora väskor. Promenaden från Chiesa Nuova-busshållplatsen till vandrarhemmet är platt och tar under 2 minuter, så bagaget är hanterbart när du väl anlänt. Om du föredrar det, överväg att använda våra bärartjänster eller en privat transfer."
     },
     {
-      "q": "What time is the last bus from Sorrento to Positano?",
-      "a": "The last bus varies by season. In summer (July-August), the last bus is usually around 9-10pm. In winter (November-March), it can be as early as 7-8pm. Always check the current timetable at sitasudtrasporti.it before traveling, especially on Sundays and holidays when services are reduced."
+      "q": "Vilken tid går sista bussen från Sorrento till Positano?",
+      "a": "Sista bussen varierar beroende på säsong. På sommaren (juli–augusti) går sista bussen vanligtvis runt 21–22. På vintern (november–mars) kan det vara så tidigt som 19–20. Kontrollera alltid den aktuella tidtabellen på sitasudtrasporti.it innan du reser, särskilt på söndagar och helgdagar när trafiken är reducerad."
     },
     {
-      "q": "Is there a direct train or bus from Naples to Positano?",
-      "a": "No direct train exists — you must change at Sorrento. The Curreri bus offers a direct connection from Naples to Positano, but schedules are limited (usually 2-3 services per day). The train-bus combination runs more frequently and is cheaper."
+      "q": "Finns det ett direkttåg eller buss från Neapel till Positano?",
+      "a": "Det finns inget direkttåg — du måste byta i Sorrento. Curreri-bussen erbjuder en direktförbindelse från Neapel till Positano, men tidtabellerna är begränsade (vanligtvis 2–3 avgångar per dag). Tåg-busskombinationen går oftare och är billigare."
     },
     {
       "q": "Hur läser jag SITA busstidtabellen?",

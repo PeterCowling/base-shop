@@ -1,55 +1,116 @@
 {
   "seo": {
     "title": "Limoncello & Local Cuisine on the Amalfi Coast",
-    "description": "What to try in Positano: limoncello, seafood staples, lemon desserts, and ordering etiquette."
+    "description": "Budget guide to Positano's limoncello, local cuisine, and lemon treats. Where to taste free samples, cheapest authentic bottles, and affordable local eateries."
   },
   "linkLabel": "Taste Positano: Limoncello, Lemons & Local Flavors",
   "intro": [
-    "Lemons and limoncello define Amalfi flavours — from tasting flights to sweet finales.",
-    "Here’s where to sip, what to buy, and how to cook with them back home."
+    "Limoncello and lemon-everything define the Amalfi Coast — but you don't need a big budget to taste the best.",
+    "Here's where to sample for free, which bottles deliver the most bang for your euro, and how to eat like a local without tourist-trap prices."
   ],
   "tocTitle": "On this page",
   "sections": [
     {
-      "id": "tasting",
-      "title": "Tasting",
+      "id": "free-tasting",
+      "title": "Free tastings & where to sample",
       "body": [
-        "Visit small botteghe for artisan limoncello and ask for a sample to compare styles.",
-        "Pair tastings with lemon gelato, sorbet, or pastries to gauge sweetness and balance."
+        "Most small limoncello shops and botteghe in Positano offer free samples — it's standard practice, not a tourist perk. Walk into any artisan producer and ask politely; they'll usually pour 2-3 styles so you can compare.",
+        "The best tasting spots are on Via dei Mulini and the streets behind Chiesa Nuova — away from the waterfront tourist traps. Look for family-run shops with plain signage and locals browsing; they're less pushy and the limoncello is often stronger and less sugary.",
+        "Pair your tasting with free lemon candy samples (most shops offer these) or grab a €1.50 lemon granita from a gelateria to cleanse your palate between pours.",
+        "%IMAGE:limoncello-tasting-shop.jpg|Local limoncello shop offering free tasting samples in Positano%",
+        "Pro tip from the hostel: the shops on Via Cristoforo Colombo (the road that winds up from Chiesa Nuova) often have fewer tourists and more generous pours. We've seen locals bring their own bottles back for refills at wholesale prices — a sign you've found the real deal."
       ]
     },
     {
-      "id": "purchase",
-      "title": "Buying & shipping",
+      "id": "buying-smart",
+      "title": "Buying bottles: what to look for & what to skip",
       "body": [
-        "Check airline liquid limits; pack bottles securely in checked luggage.",
-        "Look for IGP Costa d’Amalfi labels and recyclable packaging from local producers."
+        "Real limoncello should list Sorrento IGP lemons (or Costa d'Amalfi IGP) on the label and have at least 28-30% alcohol content. If it's bright neon yellow or suspiciously cheap (under €8 for 500ml), it's likely artificial flavoring and sugar syrup.",
+        "Best value: 500ml bottles from local producers cost €10-15 in Positano, €8-12 in Praiano or Amalfi town. Don't pay more than €15 unless it's a premium artisan blend with unusual citrus (bergamot, cedro).",
+        "Airport and train station shops charge 30-50% more for the same bottles. If you're flying out of Naples, buy in Positano and pack carefully in checked luggage (wrap in clothes + plastic bag).",
+        "Airline liquid limits: 100ml max in carry-on. Standard bottles are 500ml or 750ml, so checked baggage is your only option. We've never had a bottle break when wrapped properly in the center of a backpack.",
+        "%IMAGE:limoncello-bottles-local.jpg|Authentic limoncello bottles from local Amalfi Coast producers%"
       ]
     },
     {
-      "id": "cooking",
-      "title": "Cooking with lemons",
+      "id": "budget-eats",
+      "title": "Cheap local eats: lemon dishes worth trying",
       "body": [
-        "Use zest and juice in salads, seafood pasta, and desserts for brightness.",
-        "Store lemons in a cool, dark spot and repurpose peels for syrups or marinades."
+        "Skip the €25 tourist menus on the main beach. Instead, head to Da Vincenzo (Via Pasitea 172) for €8-12 pasta dishes with lemon — their spaghetti al limone is simple, bright, and uses local lemons. Cash only, no reservations, locals queue at 7pm.",
+        "For dessert, delizia al limone (lemon sponge cake soaked in limoncello cream) runs €4-6 at most pasticcerie. Our favorite: Pasticceria La Zagara (Via dei Mulini) — €5 for a generous slice, outdoor seating, free water refills.",
+        "Budget breakfast: grab a sfogliatella (€2-3) and espresso (€1.20) at any bar, then buy a kilo of fresh lemons from a greengrocer (€2-4) to snack on or make fresh lemonade back at the hostel.",
+        "The %LINK:chiesaNuovaArrivals|hostel% terrace is perfect for assembling your own lemon-forward meals: buy fresh mozzarella (€3-4), tomatoes (€2/kg), basil, and lemons from the Chiesa Nuova market (Thursday mornings), then drizzle with local olive oil. Total cost: €10-12 for two people.",
+        "%IMAGE:spaghetti-al-limone.jpg|Fresh spaghetti al limone with Amalfi lemons at local restaurant%"
+      ]
+    },
+    {
+      "id": "cooking-tips",
+      "title": "Cooking with Amalfi lemons",
+      "body": [
+        "Amalfi lemons (sfusato amalfitano) have thick, fragrant peels and less acidity than supermarket lemons — use them for zest-forward dishes where the peel shines.",
+        "Classic uses: grate zest into pasta water for spaghetti al limone, muddle peel with sugar for homemade limoncello, or candy thick strips for dessert garnish.",
+        "Storage: keep lemons in a cool, dark spot (not the fridge) for up to 2 weeks. If you buy a big bag at the market, juice half and freeze the juice in ice cube trays for later use.",
+        "Leftover peels: simmer with water and sugar to make lemon syrup for cocktails, or dry them and add to tea. Zero waste, maximum flavor.",
+        "%IMAGE:amalfi-lemons-cooking.jpg|Fresh Amalfi Coast lemons (sfusato amalfitano) for cooking%"
+      ]
+    },
+    {
+      "id": "ordering-etiquette",
+      "title": "Ordering etiquette & avoiding tourist traps",
+      "body": [
+        "If a restaurant has a menu in 6 languages and photos of every dish, it's a tourist trap. Look for handwritten menus in Italian with 8-12 items max — that's where locals eat.",
+        "Limoncello is traditionally served ice-cold after a meal as a digestif, not before or during. If a place pushes limoncello cocktails before dinner, they're targeting tourists.",
+        "Coperto (cover charge) is standard in Italy: €1.50-3 per person for bread and table service. If it's over €3, you're overpaying. Check the menu for 'coperto' pricing before sitting down.",
+        "Water: 'Acqua naturale' is still water, 'frizzante' is sparkling. Tap water is safe but rarely served in restaurants — order a €2-3 bottle and refill from the hostel fountain for free before heading out.",
+        "%IMAGE:local-italian-restaurant.jpg|Authentic local restaurant with handwritten Italian menu%",
+        "Tipping culture: service charge (servizio) is sometimes included in the bill. If not, leaving €1-2 or rounding up the bill is polite but not mandatory. Italians don't tip 15-20% like in the US — save your euros for more limoncello."
+      ]
+    },
+    {
+      "id": "market-shopping",
+      "title": "Market shopping & bringing lemons home",
+      "body": [
+        "%LINK:chiesaNuovaArrivals|Chiesa Nuova market% (Thursday 8am-1pm) sells fresh produce, including massive Amalfi lemons for €2-4/kg. Compare this to €1-2 per lemon in tourist souvenir shops.",
+        "If you want to bring lemons home: pick firm, unblemished fruit and pack in the center of your bag wrapped in paper towels. They'll last 5-7 days if kept cool. EU customs allows up to 2kg of fresh fruit; check your country's rules if flying outside the EU.",
+        "For limoncello ingredients, buy pure alcohol (alcool puro, 95%) at a pharmacy or large supermarket in Salerno or Naples — it's €8-12 for 1L, versus €15-20 in Positano's small shops.",
+        "%IMAGE:chiesa-nuova-market-lemons.jpg|Fresh Amalfi lemons at Chiesa Nuova Thursday market%"
       ]
     }
   ],
   "tips": [
-    "Support small producers — flavours are often more intense than tourist-trap brands.",
-    "Skip overpriced souvenir shops near the main beach; head a street or two back for better value."
+    "Free samples are standard — don't feel pressured to buy after tasting. Polite 'grazie, ci penso' (thanks, I'll think about it) works fine.",
+    "Buy limoncello and lemons in Amalfi town or Praiano for 20-30% less than Positano prices.",
+    "Skip the ceramic lemon-shaped bottles (€20-30) — they're breakable, heavy, and the limoncello inside is mediocre. Get a plain glass bottle and spend the savings on better quality liquid.",
+    "Most restaurants in Positano serve complimentary limoncello after dinner if you order a full meal. If they don't offer, ask — 'Limoncello offerto?' — and they'll usually bring a small glass.",
+    "The %LINK:cheapEats|hostel's kitchen% is great for assembling cheap lemon-forward meals. Buy ingredients at the Thursday market or the Conad in Chiesa Nuova and save 50-70% versus restaurant meals."
   ],
   "faqs": [
     {
       "q": "Can I carry limoncello in hand luggage?",
       "a": [
-        "Not over 100 ml — pack standard bottles in checked bags with padding."
+        "No, not in bottles over 100ml. Standard limoncello bottles are 500-750ml, so you must pack them in checked luggage.",
+        "Wrap bottles in clothes or bubble wrap, seal in a plastic bag in case of leaks, and pack in the center of your bag away from hard objects. We've flown with 4-5 bottles this way without issues."
       ]
     },
     {
-      "q": "Are there alcohol-free alternatives?",
+      "q": "What's a fair price for limoncello in Positano?",
       "a": [
-        "Try fresh lemonade, granita, or lemon syrups if you prefer to skip alcohol."
+        "€10-15 for a 500ml bottle from a local producer is standard. Anything over €18 is overpriced unless it's a specialty blend.",
+        "Cheaper in Amalfi town (€8-12) or Praiano. Avoid airport shops — they charge €20-25 for the same bottles."
+      ]
+    },
+    {
+      "q": "Are there alcohol-free lemon treats?",
+      "a": [
+        "Yes! Try lemon granita (€2-3), fresh lemonade (€3-4), or lemon sorbet (€2.50-4). These are everywhere and just as refreshing as limoncello.",
+        "For cooking, lemon-infused olive oil and lemon marmalade make great gifts and have no alcohol content."
+      ]
+    },
+    {
+      "q": "Where's the best value for lemon-flavored meals?",
+      "a": [
+        "Da Vincenzo (Via Pasitea 172) for €8-12 pasta dishes. Pasticceria La Zagara (Via dei Mulini) for €5 delizia al limone dessert.",
+        "Or self-cater: buy lemons, mozzarella, tomatoes, and olive oil at Chiesa Nuova market and assemble meals at the hostel for €5-6 per person."
       ]
     }
   ]

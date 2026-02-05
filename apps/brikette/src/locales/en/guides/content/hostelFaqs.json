@@ -13,6 +13,13 @@
       "title": "Facilities & Amenities",
       "body": [
         "Hostel Brikette offers air-conditioned rooms and dorms, free Wi-Fi, a large terrace with sea views, an on-site bar serving breakfast and evening meals, and luggage storage. Each dorm bed has an individual locker (bring your own padlock or purchase one at reception)."
+      ],
+      "images": [
+        {
+          "src": "/img/hostel-communal-terrace-lush-view.webp",
+          "alt": "Terrace at Hostel Brikette overlooking Positano.",
+          "caption": "The communal terrace is where most guests meet, eat, and plan day trips."
+        }
       ]
     },
     {

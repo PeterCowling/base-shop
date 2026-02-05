@@ -166,12 +166,13 @@
     },
     {
       "id": "logistics",
-      "title": "Hogyan juss el a strandra és vissza",
+      "title": "Eljutás a strandokra és visszafelé",
       "body": [
-        "A hosteltől a leggyorsabb megoldás többnyire: lesétálsz a Spiaggia Grandéra (vagy busszal mész le), majd eldöntöd, hogy továbbmész‑e a sétányon Fornillo felé, shuttle hajóra szállsz, vagy maradsz a főstrandon.",
-        "Ha olyan beach club napot csinálsz, ami hajótranszfert is ad (Arienzo vagy Laurito), gyakran a legegyszerűbb a Spiaggia Grandéról indulni: korán sorba tudsz állni, és megúszod a lépcsőket.",
-        "2026 nyarán számolj a hőséggel a mászásoknál: indulás előtt tölts vizet, és ha fáradt vagy, használd a belső buszt a teljes lépcsőzés helyett.",
-        "Egynapos kiruccanásoknál (Praiano, Amalfi, Sorrento) még indulás előtt nézd meg az utolsó visszaút lehetőségét. A komp a legjobb, amikor jár, de a busz a B‑terv. Durva tenger vagy komp‑törlés esetén adj extra időt, és maradj rugalmas. Vigyél snackeket az útra."
+        "Minden strandnak más-más megközelítési lehetőségei vannak, ezért nézd meg a konkrét útmutatót, mielőtt elindulsz. Itt vannak a gyorslinkek a leghasznosabb útmutatókhoz:",
+        "Positano strandok: %LINK:positanoMainBeachWalkDown|Gyalog a Spiaggia Grandéra% • %LINK:positanoMainBeachBusDown|Busszal a Spiaggia Grandéra% • %LINK:hostelBriketteToFornilloBeach|Gyalog a Fornillóra% • %LINK:hostelBriketteToArienzoBus|Busszal Arienzóra% • %LINK:lauritoBeachBusDown|Busszal Lauritóra%",
+        "Visszaúti útvonalak: %LINK:positanoMainBeachWalkBack|Gyalog vissza a Spiaggia Grandéról% • %LINK:positanoMainBeachBusBack|Busszal vissza a Spiaggia Grandéról% • %LINK:fornilloBeachToBrikette|Gyalog vissza Fornillóról% • %LINK:arienzoBeachBusBack|Busszal vissza Arienzóról% • %LINK:lauritoBeachBusBack|Busszal vissza Lauritóról%",
+        "Kiránduló-strandok: %LINK:hostelBriketteToFiordoDiFuroreBus|Fiordo di Furore% • %LINK:gavitellaBeachGuide|Gavitella (Praiano)% • %LINK:marinaDiPraiaBeaches|Marina di Praia% • %LINK:reginaGiovannaBath|Regina Giovanna (Sorrento)%",
+        "Általános tippek: 2026 nyarán számolj a hőséggel a mászásoknál—indulás előtt tölts vizet, és ha fáradt vagy, használd a belső buszt. Egynapos kiruccanásoknál még indulás előtt nézd meg az utolsó visszaút lehetőségét (komp vagy busz), és vigyél snackeket az útra. Durva tenger vagy komp‑törlés esetén adj extra időt, és maradj rugalmas."
       ],
       "images": [
         {

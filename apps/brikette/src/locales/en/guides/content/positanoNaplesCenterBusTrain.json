@@ -1,44 +1,141 @@
 {
+  "lastUpdated": "2026-02-04",
   "seo": {
     "title": "Positano to Naples Center by Bus then Train | Hostel Brikette",
-    "description": "Door-to-door instructions from Hostel Brikette to Napoli Piazza Garibaldi via the SITA bus to Sorrento and the Circumvesuviana train, including ticket validation, timetable tips, and arrival notes."
+    "description": "Complete guide from Hostel Brikette to Naples Garibaldi via SITA bus and Circumvesuviana train. Tickets, times, costs, and platform tips."
   },
   "intro": {
     "title": "Positano to Naples Center – Bus then Train",
-    "body": "Use this guide when travelling from Hostel Brikette to Napoli Piazza Garibaldi. You’ll take the SITA Sud bus to Sorrento, then switch to the Circumvesuviana train to reach the city centre. We cover ticket validation, how to read the SITA timetable, and what to expect at each connection."
+    "body": "This guide covers the door-to-door journey from Hostel Brikette to Napoli Piazza Garibaldi using public transport. You'll take the SITA Sud bus from Chiesa Nuova to Sorrento (approx. €2.50, 50 minutes), then switch to the Circumvesuviana train to Naples city center (approx. €4.00, 65 minutes). Total journey time is around 2–2.5 hours, and the combined cost is roughly €6.50.\n\nThis is the most economical route to Naples when ferries aren't running (October to March) or when you want to avoid taxi fares. The main gotchas: buy SITA tickets before boarding (not available on the bus), arrive early in summer to secure a seat, and validate your train ticket before boarding to avoid fines. If you're carrying large luggage, consider a private transfer instead—the bus and train can be crowded and have limited luggage space. Contact hostel reception for assistance arranging transfers."
   },
   "callouts": {
-    "cta": "Need every transport option? Open the %HOWTO:how-to-get-here|How to Get Here overview% for ferry, taxi, and mixed itineraries."
+    "cta": "Need every transport option? Open the %HOWTO:how-to-get-here|How to Get Here overview% for ferry, taxi, and mixed itineraries.",
+    "tip": "Travelling during winter or shoulder season? Check the %GUIDES:travelHelp|transport disruption alerts% before you depart—strikes and schedule changes are more common November through March."
   },
   "sections": [
     {
       "id": "overview",
-      "body": "Allow a little over two hours door-to-door in high season. SITA buses depart frequently from Positano (Chiesa Nuova) to Sorrento. The Circumvesuviana train from Sorrento runs roughly every 20–30 minutes and terminates at Napoli Garibaldi."
+      "title": "Journey overview",
+      "body": "Allow 2 to 2.5 hours door-to-door in normal conditions. SITA buses depart frequently from Positano (Chiesa Nuova) to Sorrento—usually every 30–60 minutes depending on season. The Circumvesuviana train from Sorrento to Napoli Garibaldi runs approximately every 20–30 minutes throughout the day.\n\nIn summer (June–September), add buffer time: buses fill quickly, and you may need to wait for the next departure if you can't board. In winter, check timetables in advance as SITA reduces frequency and the Circumvesuviana occasionally experiences delays or cancellations due to maintenance or strikes.",
+      "images": [
+        {
+          "src": "/img/directions/sorrento-train-station.jpg",
+          "alt": "Sorrento train station entrance near the platforms.",
+          "caption": "You'll change from the SITA bus to the Circumvesuviana at Sorrento's station."
+        }
+      ]
+    },
+    {
+      "id": "costs",
+      "title": "What it costs",
+      "body": "**SITA bus (Positano → Sorrento):** Approximately €2.50 per person (prices change annually; verify at point of purchase).\n\n**Circumvesuviana train (Sorrento → Napoli Garibaldi):** Approximately €4.00 per person.\n\n**Total cost:** Roughly €6.50 per person, one way.\n\nBoth legs accept cash and card at ticket counters, though smaller tobacco shops and newsstands for SITA tickets may be cash-only. Have €10–€20 in small bills if you're buying from a bar or newsstand. The Circumvesuviana ticket machines and counters at Sorrento accept major credit/debit cards."
     },
     {
       "id": "tickets",
-      "body": "Purchase SITA bus tickets from newsstands or tobacco shops before you board. Present the ticket to the driver as you enter; they will stamp or tear it to validate your ride. Keep the ticket until you disembark in case an inspector checks fares en route."
+      "title": "Buying and validating SITA tickets",
+      "body": "SITA bus tickets must be purchased before boarding—the driver cannot sell you a ticket. Purchase from:\n\n- Bar Internazionale (at the bus stop)\n- Tobacco shops (tabacchi) along Via G. Marconi\n- Newsstands in Positano town center\n\nPresent the ticket to the driver as you board; they will stamp or tear it to validate your ride. Keep the validated ticket until you disembark in case an inspector checks fares en route. Failure to validate or riding without a ticket incurs an on-the-spot fine (typically €50+).",
+      "images": [
+        {
+          "src": "/img/directions/sita-ticket-validation.jpg",
+          "alt": "SITA bus driver validating a ticket at the entrance.",
+          "caption": "Hand your ticket to the driver as you board—they'll stamp or tear it to validate."
+        }
+      ]
     },
     {
       "id": "timetable",
-      "body": "The official timetable lists stops as rows and journeys as lettered columns. Match the Sorrento row with the letter for your travel day to find departure times, then check the Positano (Chiesa Nuova) row in the same column for the arrival time back in town."
+      "title": "Reading the SITA timetable",
+      "body": "The official SITA timetable lists stops as rows and journeys as lettered columns. To find your departure:\n\n1. Choose your day of travel (weekday vs. Sunday/holiday)—each day type has different letter codes (e.g., columns F and G for weekdays, G and H for Sundays).\n2. Locate the Sorrento row to see when the bus leaves Sorrento.\n3. Find the Positano (Chiesa Nuova) row in the same column to see what time it passes your stop.\n\nThe timetable is posted at the bus stop and available online at %URL:https://www.sitasudtrasporti.it|the SITA Sud website%. In practice, buses can run 5–10 minutes late, especially in summer traffic, so arrive a few minutes before the scheduled time.",
+      "images": [
+        {
+          "src": "/img/directions/sita-timetable-example.jpg",
+          "alt": "Close-up of SITA timetable showing rows and lettered columns.",
+          "caption": "Match the stop row with the day column to find your departure time."
+        }
+      ]
     },
     {
-      "id": "positanoStop"
+      "id": "positanoStop",
+      "title": "Positano (Chiesa Nuova) bus stop",
+      "body": "The closest SITA stop to Hostel Brikette is **Positano (Chiesa Nuova)** on Via G. Marconi, about 140 meters (460 feet) from the hostel entrance. You'll wait outside Bar Internazionale.\n\n**What to expect:**\n- In summer (July–August), arrive 10–15 minutes early to secure a seat. Buses can fill to standing-room-only, and drivers may refuse boarding if the bus is at capacity.\n- In shoulder season (May–June, September–October), arrive 5 minutes early—buses are less crowded but still busy.\n- In winter (November–March), arrive on time or a few minutes early; buses rarely fill completely.\n\nThere is no formal queue system; passengers board first-come, first-served. Stand near the curb so the driver can see you clearly.",
+      "images": [
+        {
+          "src": "/img/directions/chiesa-nuova-bus-stop.jpg",
+          "alt": "SITA bus stop sign outside Bar Internazionale in Chiesa Nuova.",
+          "caption": "The bus stop is directly outside Bar Internazionale—watch for the SITA sign."
+        }
+      ]
     },
     {
-      "id": "walk"
+      "id": "walk",
+      "title": "Walk from the hostel to the stop",
+      "body": "Exit Hostel Brikette, walk down the steps to Via G. Marconi, and turn left. Continue along the main road for approximately 100 meters (330 feet). Bar Internazionale will be on your left; the SITA stop is right outside.\n\nThe walk takes 2–3 minutes at a normal pace. For detailed step-by-step walking directions with photos, see our %HOWTO:chiesaNuovaDepartures|Hostel Brikette to Chiesa Nuova guide%. There are no stairs or difficult terrain once you reach the main road, but the initial steps from the hostel may be challenging if you have heavy luggage or mobility concerns. If you're travelling with large bags or have difficulty with stairs, consider asking the hostel reception to arrange a luggage transfer or taxi."
     },
     {
-      "id": "wait"
+      "id": "wait",
+      "title": "Buy your ticket and wait for boarding",
+      "body": "Buy a SITA bus ticket to Sorrento from Bar Internazionale or a nearby newsstand before queuing. Specify \"Sorrento\" when purchasing—the ticket price is the same regardless of where you board between Positano and Sorrento.\n\nOnce you have your ticket, stand outside Bar Internazionale and watch for the bus. Double-check the destination display on the front of the bus—it should read **Sorrento**. In rare cases, buses may terminate early or take alternate routes; if unsure, ask the driver \"Sorrento?\" before boarding."
+    },
+    {
+      "id": "busRide",
+      "title": "On the bus to Sorrento",
+      "body": "The bus journey from Positano to Sorrento takes approximately 50 minutes via the SS163 coastal road (Strada Statale 163 Amalfitana). The route is scenic but winding, with frequent tight turns and cliffside views. For a comprehensive guide to this SITA bus route with schedule tips and stop-by-stop details, see our %HOWTO:positanoSorrentoBus|Positano to Sorrento bus guide%.\n\n**Tips for the ride:**\n- If you're prone to motion sickness, sit near the front of the bus and look toward the horizon, not at your phone.\n- Luggage space is limited—smaller bags can go on your lap or between your feet; larger bags may need to stand in the aisle (which can block movement when the bus is crowded).\n- There is no onboard toilet or WiFi.\n- The bus makes multiple stops between Positano and Sorrento; stay seated until you reach the final stop (Sorrento Circumvesuviana).\n\nIn summer, the bus may be standing-room-only and uncomfortably warm. If you're traveling in July or August, aim for earlier morning departures (before 10:00) to avoid peak heat and crowds.",
+      "images": [
+        {
+          "src": "/img/directions/sita-bus-interior.jpg",
+          "alt": "Interior of a SITA bus with passengers seated.",
+          "caption": "SITA buses are comfortable but can be crowded in summer—arrive early for a seat."
+        }
+      ]
     },
     {
       "id": "sorrento",
-      "body": "The SITA bus drops you beside Sorrento’s combined train and bus terminal. Climb the stairs to the main concourse, buy your Circumvesuviana ticket to Napoli Garibaldi (cash or card), and locate the correct platform before the train arrives."
+      "title": "At Sorrento train station",
+      "body": "The SITA bus drops you beside Sorrento's combined train and bus terminal (Circumvesuviana station). Climb the stairs to the main concourse, then purchase your Circumvesuviana ticket to **Napoli Garibaldi**.\n\n**Ticket purchase:**\n- Ticket machines are located in the main concourse (cash and card accepted).\n- Human-staffed ticket counters are to the left as you enter the concourse (card accepted; queues can be long in summer).\n- Cost: approximately €4.00 per person.\n\n**Before boarding:**\n- Validate your ticket in the yellow or green validation machines near the platforms before you board the train. Failure to validate results in an on-the-spot fine if inspectors check tickets.\n- Check the departure board to confirm the platform number for the next Napoli Garibaldi train. The Circumvesuviana runs on dedicated tracks, so you won't confuse it with mainline Trenitalia services.\n\n**Finding the platform:**\n- Follow signs for \"Circumvesuviana\" or \"Napoli\" (both lead to the same platforms).\n- Platforms are accessed via stairs or a short ramp—no elevators are available, so plan ahead if you have heavy luggage or mobility concerns.",
+      "images": [
+        {
+          "src": "/img/directions/sorrento-station-ticket-machines.jpg",
+          "alt": "Circumvesuviana ticket machines at Sorrento station.",
+          "caption": "Buy your Naples ticket from the machines or counter before heading to the platform."
+        },
+        {
+          "src": "/img/directions/sorrento-station-validation-machine.jpg",
+          "alt": "Yellow ticket validation machine at Sorrento station.",
+          "caption": "Validate your ticket in the yellow machine before boarding—inspectors do check."
+        }
+      ]
+    },
+    {
+      "id": "trainRide",
+      "title": "On the Circumvesuviana to Naples",
+      "body": "The Circumvesuviana train from Sorrento to Napoli Garibaldi takes approximately 65 minutes. The train makes multiple stops (including Pompeii Scavi for Pompeii ruins, Ercolano Scavi for Herculaneum, and several Naples suburbs) before terminating at Napoli Garibaldi.\n\n**What to expect:**\n- Seating is first-come, first-served. In summer and on weekends, trains can be crowded, especially after Pompeii Scavi. If you board at Sorrento (the starting point), you'll usually find a seat.\n- The train is older rolling stock—no WiFi, no onboard toilets, and limited air conditioning. In summer, open windows provide ventilation.\n- Luggage racks are available near the doors, but space is limited. Keep valuables with you at all times.\n- Pickpockets occasionally target tourists on crowded trains. Keep bags zipped and in sight, especially near Naples.\n\n**Announcements:**\n- Station names are announced in Italian only, but each stop has clear signage visible from the platform. Count stops if you're unsure (Napoli Garibaldi is the final stop, so you can't miss it).",
+      "images": [
+        {
+          "src": "/img/directions/circumvesuviana-interior.jpg",
+          "alt": "Interior of a Circumvesuviana train with passengers.",
+          "caption": "The Circumvesuviana is basic but reliable—sit near your luggage and stay alert."
+        }
+      ]
     },
     {
       "id": "naples",
-      "body": "Stay on the Circumvesuviana until it terminates at Napoli Garibaldi. From there, follow the signs up to the main concourse to transfer to long-distance trains, the metro, or airport buses. Piazza Garibaldi is directly outside the station entrance."
+      "title": "Arriving in Naples",
+      "body": "Stay on the Circumvesuviana until it terminates at **Napoli Garibaldi** (also called Napoli Porta Nolana on some maps, though the official stop name is Garibaldi). From there, follow the signs up to the main concourse to transfer to:\n\n- Long-distance Trenitalia trains (Frecciarossa, Intercity, regional services)\n- Naples Metro Line 1 (to city center, Vomero, airport via Garibaldi metro station)\n- Naples Metro Line 2 (Garibaldi is also a mainline rail stop)\n- Alibus airport shuttle (departs from Piazza Garibaldi outside the station)\n- Local buses and taxis (outside the main entrance)\n\n**Exiting the station:**\n- Follow signs for \"Uscita\" (exit) or \"Stazione Centrale\" (main station) to reach the main concourse.\n- Piazza Garibaldi is directly outside the main entrance—a large, busy square with taxi ranks, bus stops, and metro access.\n\n**Orientation:**\n- Naples Centrale (the main Trenitalia station) and Napoli Garibaldi (the Circumvesuviana terminus) are in the same building complex, connected by the main concourse. You won't need to exit and re-enter to transfer between services.\n\n**Safety and awareness:**\n- Piazza Garibaldi is a busy transport hub and can feel chaotic, especially at night. Keep bags secure, stay aware of your surroundings, and move confidently to your next connection.\n- Official taxis are white with a \"Taxi\" sign on the roof and a meter inside. Avoid unlicensed drivers who approach you offering rides."
+    },
+    {
+      "id": "luggage",
+      "title": "Luggage and accessibility",
+      "body": "This route is manageable with a small backpack or carry-on suitcase, but can be challenging with large or heavy luggage:\n\n**SITA bus:**\n- No dedicated luggage hold; bags must stay with you or in the aisle.\n- Large bags may block movement when the bus is crowded.\n- If you have a full-size suitcase (23kg check-in bag or larger), consider a private transfer instead (contact hostel reception).\n\n**Circumvesuviana train:**\n- Small luggage racks near doors; space is limited and claimed quickly.\n- No elevators at Sorrento station—you'll need to carry bags up/down stairs to reach the platform.\n- No elevators at some intermediate stops; Napoli Garibaldi has escalators and elevators to the main concourse.\n\n**Accessibility:**\n- Neither the SITA bus nor the Circumvesuviana train is wheelchair accessible in the traditional sense (no ramps, no designated wheelchair spaces).\n- If you use a wheelchair or have significant mobility limitations, a private accessible transfer is strongly recommended. Contact the hostel reception for assistance arranging this."
+    },
+    {
+      "id": "seasonal",
+      "title": "Seasonal and timing considerations",
+      "body": "**Summer (June–September):**\n- SITA buses run more frequently but fill quickly. Arrive 10–15 minutes early.\n- Circumvesuviana trains are crowded, especially midday and weekends.\n- Heat can be uncomfortable—both bus and train have limited air conditioning.\n\n**Shoulder season (April–May, October):**\n- Moderate crowds; arrive 5–10 minutes early for the bus.\n- Pleasant temperatures make the journey more comfortable.\n\n**Winter (November–March):**\n- SITA reduces frequency; check timetables in advance.\n- Circumvesuviana schedules may change due to maintenance or strikes—verify departure times the day before travel.\n- Fewer tourists mean easier boarding and more space, but services can be less reliable.\n\n**Strikes and disruptions:**\n- Public transport strikes (sciopero) are announced at least 48 hours in advance. Check %GUIDES:travelHelp|our transport alerts page% or ask hostel reception for the latest updates.\n- During strikes, SITA and Circumvesuviana may run reduced services or cancel entirely. Plan alternative transport (taxi, private transfer, or ferry if available) if a strike is scheduled on your travel day."
+    },
+    {
+      "id": "alternatives",
+      "title": "Alternative routes to Naples",
+      "body": "This bus-and-train route is the most economical public transport option, but not always the most convenient. Consider these alternatives:\n\n**Ferry (seasonal, April–October):**\n- %HOWTO:positanoNaplesCenterFerry|Positano to Naples by ferry% is faster (70 minutes direct), more scenic, and more comfortable, but costs €20–€25 per person.\n- Ferries run April to October only, typically 1–2 departures per day.\n- No luggage restrictions; easier for travelers with large bags.\n\n**Private transfer or taxi:**\n- Private transfer to Naples or Naples Airport costs €100–€140 for up to 4 passengers (contact hostel reception for booking).\n- Door-to-door service; no connections, no waiting.\n- Best option for groups of 3–4, travelers with large luggage, or those with mobility concerns.\n\n**Bus to Salerno, then train to Naples:**\n- %HOWTO:positanoSalernoBus|SITA bus to Salerno% (€3.00, 90 minutes) followed by a Trenitalia regional or high-speed train to Naples (€4–€15, 30–50 minutes).\n- Longer overall journey time, but Salerno trains are more comfortable and frequent than the Circumvesuviana.\n\n**Exploring nearby towns:**\n- If you're planning day trips from Positano, check our %HOWTO:positanoAmalfiBus|Positano to Amalfi bus guide% or %HOWTO:positanoRavelloBus|Positano to Ravello bus guide% for other coastal destinations."
     }
   ],
   "faqs": [
@@ -47,7 +144,31 @@
       "a": [
         "**Reading the Rows:** The rows in the first column represent different bus stops along the route.",
         "**Reading the Columns:** The timetable assigns an alphabetical letter to each scheduled journey, which are listed as headers in each column. If you are traveling Monday through Saturday, look for columns 'F' and 'G'. If you are traveling on Sunday or a holiday, look for columns 'G' and 'H'.",
-        "**Combining Rows and Columns:** Choose your departure and arrival bus stops, then check the columns to see when buses are available and what time they will arrive at your destination. For example, to see the departure time from Sorrento, look at the Sorrento row. To see the arrival time in Positano (Chiesa Nuova / Bar Internazionale), look at the Positano (Chiesa Nuova) row."
+        "**Combining Rows and Columns:** Choose your departure and arrival bus stops, then check the columns to see when buses are available and what time they will arrive at your destination. For example, to see the departure time from Sorrento, look at the Sorrento row. To see the arrival time in Positano (Chiesa Nuova / Bar Internazionale), look at the Positano (Chiesa Nuova) row in the same column."
+      ]
+    },
+    {
+      "q": "Can I buy SITA bus tickets on board?",
+      "a": [
+        "No. SITA bus drivers cannot sell tickets—you must purchase before boarding from Bar Internazionale (at the bus stop), a tobacco shop (tabacchi), or a newsstand. Riding without a validated ticket results in an on-the-spot fine of €50 or more."
+      ]
+    },
+    {
+      "q": "Do I need to reserve seats on the SITA bus or Circumvesuviana train?",
+      "a": [
+        "No. Both the SITA bus and Circumvesuviana train operate on a first-come, first-served basis with no reservations. Arrive early in summer (July–August) to secure a seat, as buses and trains can fill to standing-room-only during peak season."
+      ]
+    },
+    {
+      "q": "Is this route suitable for travelers with large luggage?",
+      "a": [
+        "It's manageable with a small backpack or carry-on, but challenging with full-size suitcases. The SITA bus has no luggage hold, and Sorrento station has no elevators to the train platform. If you're traveling with large or heavy bags, consider a private transfer instead—contact Hostel Brikette reception for assistance."
+      ]
+    },
+    {
+      "q": "What should I do if there's a public transport strike on my travel day?",
+      "a": [
+        "Strikes (sciopero) are announced at least 48 hours in advance. Check the %GUIDES:travelHelp|transport alerts page% or ask hostel reception for updates. During strikes, SITA and Circumvesuviana may run reduced services or cancel entirely. Book a private transfer or taxi as a backup—if ferries are running (April–October), the %HOWTO:positanoNaplesCenterFerry|Positano-Naples ferry% is a reliable alternative."
       ]
     }
   ]

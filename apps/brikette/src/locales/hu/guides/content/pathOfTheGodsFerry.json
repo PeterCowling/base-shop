@@ -52,6 +52,13 @@
         "Keresd a SITA buszt „Agerola/Bomerano” felirattal. Érvényesítsd a jegyet felszálláskor, és ülj minél előrébb, hogy kevesebb kanyar jusson.",
         "Kb. 45 perc után szállj le a Bomerano megállónál a Ristorante Jerla mellett. Menj át az úton, és kövesd a mellékutcát lefelé a piazzáig.",
         "Fordulj balra a téren, majd kövesd a „Sentiero degli Dei” táblákat a tanösvény információs táblájáig."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/12-nav.jpg",
+          "alt": "Side street from Bomerano bus stop descending toward the piazza",
+          "caption": "2. Menj át az úton a buszmegállótól és kövesd ezt a mellékutcát lefelé a piazzáig"
+        }
       ]
     },
     {
@@ -61,6 +68,28 @@
         "Az ösvény kb. 6 kilométeren hullámzik. Kőlépcsőkre, keskeny párkányokra és lélegzetelállító kilátókra számíts a part fölött.",
         "Tarts pihenőt a kijelölt kilátóknál, és mindent vigyél magaddal vissza. Tiszteld a helyi gazdákat, maradj a kijelölt ösvényen.",
         "Amikor a földút átmegy a nocellei beton sétányba, megérkeztél a célba."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/13-nav.jpg",
+          "alt": "Town square (piazza) in Bomerano with left-hand route markers",
+          "caption": "3. Fordulj balra a piazzán és kövesd a 'Sentiero degli Dei' táblákat"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/14-nav.jpg",
+          "alt": "Wooden steps ascending along the hiking trail ridge",
+          "caption": "4. A piazzán át haladva keresd az információs táblát és fordulj balra; itt kezdődik az ösvény. Kövesd az utat egy falépcső szakaszig."
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/15-nav.jpg",
+          "alt": "Concrete paved walkway marking entry into Nocelle village",
+          "caption": "Amikor a földút átmegy ebbe a beton sétányba, elérted Nocellét"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/16-nav.jpg",
+          "alt": "Nocelle village navigation map showing route to bus stop and staircase warning",
+          "caption": "Nocelle térkép — a falun át haladva mindenképp fordulj jobbra az elágazásnál, hogy a buszmegállóhoz juss; kerüld el a Positanóba vezető 1700 lépcsőt bármi áron!"
+        }
       ]
     },
     {
@@ -70,6 +99,23 @@
         "Kövesd a burkolt utat a faluba, és az első elágazásnál tarts jobbra, hogy elkerüld a Positanóba vezető 1700 lépcsőt.",
         "Sétálj kb. 175 métert a buszmegállóig a kis parkoló mellett. A templom melletti kioszk szezonban hideg italokat árul.",
         "Érkezz legalább 10 perccel korábban; ha a parkoló megtelik, a busz néha a megálló előtti részen áll meg."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/17-nav.jpg",
+          "alt": "Directional signpost in Nocelle showing the stairs-to-Positano option to avoid",
+          "caption": "KRITIKUS: NE kövesd a 'Positano' felé mutató lépcsős táblát — inkább fordulj itt jobbra"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/18-nav.jpg",
+          "alt": "Stone steps ascending through Nocelle streets toward the bus stop",
+          "caption": "Mássz fel ezeken a lépcsőkön kb. 175 métert, hogy elérj a parkolónál lévő buszmegállót"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/19-nav.jpg",
+          "alt": "Bus stop arrival point in Nocelle",
+          "caption": "Elérted a buszmegállót."
+        }
       ]
     },
     {

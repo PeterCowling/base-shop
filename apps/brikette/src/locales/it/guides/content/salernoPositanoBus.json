@@ -3,10 +3,6 @@
     "title": "Guida autobus Salerno → Positano – Ostelli, fermate e consigli sull'orario",
     "description": "Indicazioni passo dopo passo per viaggiare da Salerno a Positano con l'autobus SITA Sud via Amalfi. Scopri dove acquistare i biglietti, come leggere l'orario e qual è la fermata migliore per l'Hostel Brikette."
   },
-  "intro": {},
-  "callouts": {
-    "tip": "Ti servono tutte le opzioni di trasporto? Apri la %HOWTO:how-to-get-here|panoramica di Come arrivare% per traghetti, taxi e itinerari combinati."
-  },
   "faqs": [
     {
       "q": "Come si legge l'orario degli autobus SITA?",
@@ -16,5 +12,8 @@
         "**Combinare righe e colonne:** Scegli le fermate di partenza e arrivo, quindi controlla le colonne per vedere quando gli autobus sono disponibili e a che ora arrivano a destinazione. Ad esempio, per vedere l'ora di partenza da Sorrento, guarda la riga Sorrento. Per l'ora di arrivo a Positano (Chiesa Nuova / Bar Internazionale), consulta la riga Positano (Chiesa Nuova)."
       ]
     }
-  ]
+  ],
+  "callouts": {
+    "tip": "Ti servono tutte le opzioni di trasporto? Apri la %HOWTO:how-to-get-here|panoramica di Come arrivare% per traghetti, taxi e itinerari combinati."
+  }
 }

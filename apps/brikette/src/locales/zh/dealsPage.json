@@ -79,9 +79,18 @@
   "perksGuarantee": "只要在我们官网直接预订，这些专属礼遇会自动生效。",
   "perksIntroLink": "查看所有福利",
   "perksList": [
-    "使用优惠码最高可享 25 % 折扣",
-    "免费早餐",
-    "免费晚间饮品"
+    {
+      "title": "使用优惠码最高可享 25 % 折扣",
+      "subtitle": "自动应用"
+    },
+    {
+      "title": "免费早餐",
+      "subtitle": "每日包含"
+    },
+    {
+      "title": "免费晚间饮品",
+      "subtitle": "精选酒水"
+    }
   ],
   "expired": {
     "message": "该优惠已结束。"

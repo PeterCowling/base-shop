@@ -1,52 +1,53 @@
 {
   "seo": {
     "title": "Xe buýt quay lại Hostel Brikette từ Bãi biển Arienzo",
-    "description": "Climb from the shoreline to the road, ride three kilometres to Chiesa Nuova, and finish with a short walk back to Hostel Brikette."
+    "description": "Đi bộ lên từ bãi biển ra đường, bắt xe buýt về hướng Positano, xuống xe tại Bar Internazionale/Chiesa Nuova, sau đó làm theo hướng dẫn ngắn để quay lại Hostel Brikette."
   },
-  "linkLabel": "Bus back from Arienzo Beach",
+  "linkLabel": "Xe buýt quay lại Hostel Brikette từ Bãi biển Arienzo",
   "intro": [
-    "Skip the full stair climb by catching the Amalfi Coast bus from Arienzo back toward Positano.",
-    "Buy your return ticket in town before heading to the beach — there is no vendor at Arienzo, so plan ahead or use the shuttle boat back to Spiaggia Grande."
+    "Quét để chia sẻ",
+    "Mẹo: Lịch trình xe buýt. Lưu ý rằng lịch trình bao gồm thời gian Positano, nhưng không bao gồm thời gian Arienzo. Trạm xe buýt Arienzo nằm cách Sponda khoảng 2–5 phút.",
+    "Quan trọng! Nếu bạn không có vé xe buýt cho chuyến về, bạn có thể đi bộ trở lại Sponda và bắt xe buýt từ đó, hoặc đi thuyền đưa đón trở lại bãi biển chính ở Positano. Hãy nhớ rằng, không có người bán vé gần Bãi biển Arienzo, vì vậy quan trọng là phải lập kế hoạch trước và mua vé trước cho chuyến về.",
+    "Mẹo: Xem %LINK:arienzoBeachClub|Hướng dẫn Bãi biển Arienzo% của chúng tôi",
+    "Mẹo: Xem %LINK:positanoBeaches|Tổng quan Bãi biển% của chúng tôi"
   ],
   "sections": [
     {
       "id": "walk-to-stop",
-      "title": "Walk up to the bus stop",
+      "title": "Đi bộ lên trạm xe buýt",
       "body": [
-        "Climb the stairs from the beach to the road and cross carefully to the inland side.",
-        "Look for the blue-and-white SITA sign on the metal pole opposite the entrance path and wait on the lay-by."
+        "Để bắt xe buýt trở lại hostel, hãy đi bộ lên cầu thang từ bãi biển ra đường và tìm trạm xe buýt ở phía đối diện của đường. Biển báo trạm xe buýt có màu xanh và trắng, được gắn trên cột kim loại (xem hình ảnh để tham khảo). Đợi tại trạm xe buýt để xe buýt đến."
       ]
     },
     {
       "id": "ride-the-bus",
-      "title": "Ride the Amalfi Coast bus",
+      "title": "Đi xe buýt",
       "body": [
-        "Flag the coach as it approaches and have your validated ticket ready.",
-        "Expect the journey to cover about 3 kilometres (1.9 miles) with a few intermediate stops before Positano."
+        "Số lần xe buýt sẽ dừng trước khi bạn cần xuống xe sẽ khác nhau. Khoảng cách bạn cần di chuyển là khoảng 3 km / 1,9 dặm."
       ]
     },
     {
       "id": "get-off-bus",
-      "title": "Get off at Bar Internazionale / Chiesa Nuova",
+      "title": "Xuống xe buýt",
       "body": [
-        "Listen for the announcement or watch for the Bar Internazionale tabacchi — the stop sits opposite the hostel.",
-        "Press the stop button early so the driver knows to drop you at Chiesa Nuova."
+        "Bạn sẽ xuống tại trạm xe buýt Bar Internazionale/Chiesa Nuova."
       ]
     },
     {
       "id": "walk-to-hostel",
-      "title": "Walk back to Hostel Brikette",
+      "title": "Đi bộ đến hostel",
       "body": [
-        "Continue in the direction the bus was heading for just over 100 metres (330 feet).",
-        "Take the staircase on your right back up to Hostel Brikette's main entrance."
+        "Chỉ đường:",
+        "* Tiếp tục theo hướng mà xe buýt bạn vừa xuống đang đi thêm hơn 100 m / 330 feet.",
+        "* Đi lên cầu thang đến cửa chính của hostel."
       ]
     }
   ],
-  "tipsTitle": "Bus tips",
+  "tipsTitle": "Mẹo về xe buýt",
   "tips": [
-    "Danh sách thời gian biểu được in chỉ có các điểm dừng ở Positano; mong đợi Arienzo khoảng 2–5 phút trước Positano Sponda trên đường trở về.",
-    "There is no ticket vendor at Arienzo. Buy your return ticket in town, or be ready to walk to Positano Sponda or take the water shuttle back to Spiaggia Grande.",
-    "Read our %LINK:arienzoBeachClub|Arienzo Beach guide% for facilities, shuttles, and planning tips.",
-    "Browse the %LINK:positanoBeaches|Positano beaches overview% to compare other coves and plan future visits."
+    "Lịch trình in chỉ liệt kê các trạm Positano; dự kiến Arienzo khoảng 2–5 phút trước Positano Sponda trên đường về.",
+    "Không có người bán vé gần Bãi biển Arienzo. Mua vé về của bạn ở thị trấn trước, hoặc đi bộ đến Sponda để lên xe ở đó, hoặc đi thuyền đưa đón trở lại bãi biển chính ở Positano.",
+    "Đọc %LINK:arienzoBeachClub|Hướng dẫn Bãi biển Arienzo% của chúng tôi để biết các tiện nghi, dịch vụ đưa đón và mẹo lập kế hoạch.",
+    "Duyệt qua %LINK:positanoBeaches|Tổng quan Bãi biển% để so sánh các vịnh khác và lập kế hoạch cho các chuyến thăm trong tương lai."
   ]
 }

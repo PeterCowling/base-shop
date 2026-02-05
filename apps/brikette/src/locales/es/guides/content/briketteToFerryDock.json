@@ -1,82 +1,104 @@
 {
   "seo": {
-    "title": "Hostel Brikette → muelle de ferris, con equipaje",
-    "description": "Ruta paso a paso desde el hostel hasta el muelle de ferris de Positano usando el autobús Interno y porteadores."
+    "title": "Hostel Brikette → muelle de ferry de Positano (puerto)",
+    "description": "Ruta a pie paso a paso al puerto de Positano con puntos de referencia en el mapa, consejos para billetes y orientación para el embarque."
   },
-  "linkLabel": "Hostel Brikette → muelle del ferry, con equipaje",
+  "linkLabel": "Hostel Brikette → muelle de ferry (puerto)",
   "intro": [
-    "¿Saliendo del Hostel Brikette con equipaje? Viaja cuesta abajo en el autobús Interno Positano y deja que los mozos del muelle muevan bolsas pesadas para llegar al ferry sin tener que luchar con las escaleras de Positano."
+    "¿Te diriges al puerto de Positano para tomar un ferry? Esta es la caminata más fácil que hemos encontrado desde Hostel Brikette hasta Spiaggia Grande, con un mapa rápido y puntos de referencia fotográficos para los puntos 1-5.",
+    "Permite 20-30 minutos a pie (más con equipaje), y ten en cuenta que Google Maps a veces sugiere desvíos más largos hasta la playa; sigue la ruta de abajo en su lugar."
   ],
   "beforeList": [
-    "Consulte el horario actual de Interno Positano: aquí están los [horarios y tarifas más recientes](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
-    "Recoja los boletos de Interno Positano en el tabacchi al lado de Chiesa Nuova antes de abordar (o pregunte en recepción para confirmar las existencias).",
-    "Solicite ayuda de portero si tiene maletas voluminosas; la recepción puede llamar con anticipación o consultar la %LINK:porterServices|guía de porteros% para obtener números y precios."
+    "Verifica los horarios y precios de los ferries en las cabinas de los operadores en el puerto (muestran la próxima salida en el letrero).",
+    "Deja un margen si llevas equipaje: hay escaleras en esta ruta y el puerto se llena en horas pico.",
+    "Intenta llegar temprano para que puedas comprar billetes, encontrar el muelle correcto y estar listo cuando comience el embarque."
   ],
   "sections": [
     {
-      "id": "hostel-to-stop",
-      "title": "Entrada del albergue a la parada Chiesa Nuova.",
+      "id": "getting-to-the-port",
+      "title": "Llegar al puerto",
       "body": [
-        "Haga el check-out, luego siga la escalera principal hasta Viale Pasitea y gire a la izquierda (cuesta abajo). Camine un poco más de 100 metros (330 pies) hasta el tabacchi/quiosco que utilizó al llegar.",
-        "La parada de autobús Interno Positano está justo al lado del tabacchi. Tenga los boletos listos; Si necesitas más, cómpralos adentro antes de que llegue el autobús."
+        "Comienza en el albergue y dirígete hacia Spiaggia Grande (la playa principal de Positano).",
+        "El puerto está ubicado en el lado derecho de la playa.",
+        "Permite 20-30 minutos para la caminata desde el albergue hasta el puerto.",
+        "Google Maps puede no siempre proporcionar la ruta más directa a la playa; usa el mapa y las indicaciones paso a paso a continuación.",
+        "[Ve aquí si prefieres las indicaciones del mapa](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2)."
       ]
     },
     {
-      "id": "bus-to-mulini",
-      "title": "Viaja en el autobús Interno Positano hasta Piazza dei Mulini",
+      "id": "walking-route",
+      "title": "Caminar desde Hostel Brikette hasta el puerto (puntos 1-5)",
       "body": [
-        "Suba al autobús Interno Positano; en el cartel de destino se lee \"interno positano\". Mantenga el equipaje en su regazo o en el área central para que los pasillos permanezcan despejados.",
-        "Continúe unos 10 minutos hasta la parada Piazza dei Mulini (la última parada importante antes de la zona peatonal). Informe al conductor que se dirige a la playa si no está seguro."
+        "Referencia del mapa (Albergue → Puerto):",
+        "[[figure:map]]",
+        "Comienza saliendo del albergue por la puerta principal.",
+        "Baja los escalones hasta la carretera.",
+        "Gira a la izquierda y camina poco más de 100 metros (330 pies) hasta llegar al punto 1 en el mapa.",
+        "En el punto 1, toma el giro a la derecha.",
+        "[[figure:point-1]]",
+        "Tan pronto como gires a la derecha en el punto 1, verás el tabacchi a la derecha.",
+        "[[figure:tabacchi]]",
+        "Sigue la carretera cuesta abajo.",
+        "En la primera curva en zigzag, habrás llegado al punto 2 en el mapa.",
+        "En el punto 2, sal de la carretera y camina recto hacia adelante, tomando las escaleras.",
+        "[[figure:point-2]]",
+        "Cuando llegues al final de las escaleras, habrás llegado al punto 3 en el mapa.",
+        "Cruza la carretera y toma el camino recto hacia adelante.",
+        "Sigue las escaleras hacia abajo hasta llegar al siguiente nivel.",
+        "[[figure:point-3]]",
+        "Cuando llegues al final de las escaleras, llegarás a la carretera.",
+        "Cruza la carretera y gira a la izquierda, caminando 10 metros (30 pies) hasta llegar al punto 4 en el mapa.",
+        "En el punto 4, gira a la derecha y toma las escaleras que salen de la carretera y bajan.",
+        "[[figure:point-4]]",
+        "Sigue las escaleras hacia abajo hasta llegar al fondo. En la parte inferior de las escaleras, gira a la derecha.",
+        "Esto te llevará al punto 5 en el mapa.",
+        "Continúa bajo el arco a la derecha.",
+        "[[figure:point-5]]",
+        "Después de 50 metros (160 pies), llegarás al puerto."
       ]
     },
     {
-      "id": "mulini-to-dock",
-      "title": "Piazza dei Mulini hasta el muelle del ferry",
+      "id": "buying-tickets",
+      "title": "Comprar billetes de ferry",
       "body": [
-        "Bájese del autobús, reúnase con los botones si los ha reservado con antelación y camine directamente hacia el carril peatonal que conduce a Spiaggia Grande.",
-        "Siga el paseo cuesta abajo durante unos 7 minutos; utilice [estas indicaciones](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2) para permanecer en las secciones de rampa más suaves.",
-        "En el muelle del ferry, regístrese con su operador. Los porteadores entregan el equipaje por separado; lleve consigo pasaportes, medicamentos y objetos de valor."
+        "En el puerto de Positano puedes tomar ferries a lugares como Amalfi, Capri y más allá. Cada operador de ferry tiene una cabina, y el letrero en la cabina muestra información sobre el próximo ferry que operará.",
+        "[[figure:tickets]]"
+      ]
+    },
+    {
+      "id": "boarding",
+      "title": "Embarcar en un ferry",
+      "body": [
+        "Una vez que tengas tu billete, camina hasta el final del puerto y espera a que el ferry comience el embarque.",
+        "[[figure:port]]"
       ]
     }
   ],
   "stepsList": [
-    "Compre billetes de autobús Interno Positano en el tabacchi Chiesa Nuova y confirme la disponibilidad del maletero.",
-    "Camine 100 m cuesta abajo desde el albergue hasta la parada de autobús Chiesa Nuova y espere en la orilla del mar en Viale Pasitea.",
-    "Tome el autobús Interno Positano hasta Piazza dei Mulini (última parada importante antes de la playa).",
-    "Conozca a los porteadores y siga el paseo hasta el muelle del ferry mientras mueven bolsas pesadas."
+    "Sal del albergue y gira a la izquierda por la carretera hasta el punto 1 en el mapa, luego gira a la derecha.",
+    "Sigue la ruta hacia abajo a través de los puntos 2-5 (escaleras y cruces) hasta llegar al puerto.",
+    "Compra billetes en las cabinas de los operadores y verifica el letrero para la próxima salida.",
+    "Camina hasta el final del puerto y espera el embarque."
   ],
-  "kneesList": [
-    "El autobús Interno Positano sustituye cientos de escalones empinados por una caminata corta y nivelada.",
-    "Los porteadores pueden llevar las maletas en carritos separados, por lo que solo tendrás que llevar una mochila en el paseo marítimo."
-  ],
-  "kneesDockPrefix": "¿Necesitas la versión cuesta arriba cuando regreses? Lea nuestro",
-  "kneesDockLinkLabel": "guía de llegada a Chiesa Nuova",
-  "kneesPorterPrefix": "¿Quieres consejos sobre precios y reservas de porteros? Compruebe el",
-  "kneesPorterLinkLabel": "guía del servicio de porteros",
+  "kneesList": [],
   "faqs": [
     {
-      "q": "¿Dónde puedo comprar entradas para Interno Positano cerca del albergue?",
+      "q": "¿Cuánto tiempo se tarda en caminar desde Hostel Brikette hasta el puerto?",
       "a": [
-        "El tabacchi/quiosco al lado de la parada Chiesa Nuova mantiene los billetes en stock y la recepción puede confirmar la disponibilidad el mismo día. Los conductores no venden billetes a bordo."
+        "Planifica 20-30 minutos a pie. Añade tiempo extra si llevas equipaje o quieres parar a comprar billetes antes del embarque."
       ]
     },
     {
-      "q": "¿Con cuánta antelación debo solicitar los porteadores?",
+      "q": "¿Dónde compro billetes de ferry en Positano?",
       "a": [
-        "En verano, llama entre 30 y 45 minutos antes de salir para que puedan recibirte en la Piazza dei Mulini. Durante los meses más tranquilos, 15 minutos suelen ser suficientes: la recepción puede llamar en su nombre."
-      ]
-    },
-    {
-      "q": "¿Qué pasa si el autobús Interno no funciona cuando salgo?",
-      "a": [
-        "Si los servicios se detienen tarde en la noche, pida a los maleteros que lleven el equipaje hasta el final y camine usted mismo por el paseo marítimo, o use un autobús SITA hacia Sponda (pasa más tarde) y continúe cuesta abajo a pie."
+        "En el puerto verás cabinas para cada operador de ferry. El letrero en la cabina muestra información sobre el próximo ferry que operará."
       ]
     }
   ],
   "howtoSteps": [
-    "Confirmar billetes y porteadores en Chiesa Nuova",
-    "Camine cuesta abajo desde el albergue hasta la parada de autobús Chiesa Nuova.",
-    "Viaja en el autobús Interno Positano hasta Piazza dei Mulini",
-    "Conoce a los porteadores y camina por el paseo marítimo hasta el muelle del ferry."
+    "Sigue la ruta del mapa desde el albergue hasta el puerto",
+    "Usa los puntos de referencia fotográficos en los puntos 1-5 para mantenerte en el camino",
+    "Compra billetes en las cabinas de los operadores y confirma la próxima salida",
+    "Espera en el muelle y embarca cuando te llamen"
   ]
 }

@@ -1,88 +1,126 @@
 {
   "seo": {
     "title": "波西塔诺至那不勒斯渡轮路线 | Hostel Brikette",
-    "description": "从 Hostel Brikette 前往波西塔诺港口并乘船到那不勒斯的清晰可打印步骤，涵盖购票与抵达提示。"
+    "description": "渡轮从波西塔诺到那不勒斯：下行至港口、购票（€18-25）、登船和抵达那不勒斯港口并连接至Napoli Centrale。季节性运营4-10月。"
   },
+  "lastUpdated": "2025-01-15",
   "intro": {
     "title": "波西塔诺前往那不勒斯 — 渡轮路线",
-    "body": "逐步讲解如何从 Hostel Brikette 步行至波西塔诺港口、购买渡轮车票并继续前往那不勒斯，包括季节性注意事项及抵达那不勒斯中央车站的建议。"
+    "body": "从波西塔诺完全通过海路前往那不勒斯市中心。此路线始于从您的住宿处步行下至Spiaggia Grande的波西塔诺渡轮码头，然后乘坐70-90分钟风景秀丽的渡轮前往那不勒斯，最后从港口短暂换乘至Napoli Centrale站。适合：希望避开蜿蜒海岸公路并欣赏海景的旅行者。不适合：冬季访问（11月至3月服务有限）、不适应下陡峭楼梯的人（200+阶梯至码头）或时间表非常紧的人（渡轮取消经常发生）。总行程时间通常为门到门2-3.5小时，包括步行至港口以及那不勒斯的港口到车站换乘。预计渡轮花费€18-25，加上那不勒斯的电车€1-2或出租车€10-15。本指南涵盖从上村步行至波西塔诺港口、购买渡轮票、登船、航程和抵达那不勒斯的后续连接。"
   },
-  "sections": [
-    {
-      "id": "journeyOverview",
-      "title": "行程概览"
-    },
-    {
-      "id": "photoGuide",
-      "title": "图解参考"
-    },
-    {
-      "id": "walkToPort",
-      "title": "步行前往波西塔诺港口"
-    },
-    {
-      "id": "tickets",
-      "title": "购票并登船"
-    },
-    {
-      "id": "arrival",
-      "title": "抵达那不勒斯"
-    }
-  ],
   "galleries": [
     {
       "items": [
         {
           "src": "/img/directions/positano-capri-ferry-img01.png",
+          "alt": "路线步骤图片 1",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img02.jpg",
+          "alt": "路线步骤图片 2",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img03.jpg",
+          "alt": "路线步骤图片 3",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img04.png",
+          "alt": "路线步骤图片 4",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img05.jpg",
+          "alt": "路线步骤图片 5",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img06.jpg",
+          "alt": "路线步骤图片 6",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img07.jpg",
+          "alt": "路线步骤图片 7",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img08.jpg",
+          "alt": "路线步骤图片 8",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img09.jpg",
+          "alt": "路线步骤图片 9",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img10.jpg",
+          "alt": "路线步骤图片 10",
           "aspectRatio": "4/3",
           "preset": "gallery"
         }
       ]
     }
-  ]
+  ],
+  "sections": [
+    {
+      "id": "journeyOverview",
+      "title": "行程概览",
+      "body": "波西塔诺至那不勒斯渡轮线路按季节运营，最频繁的服务在4月至10月间运行。在夏季高峰月份（6-9月），您通常会发现每天有3-6个航班，而在淡季（4、5、10月）通常提供1-3个每日航班。冬季服务（11月至3月）极其有限或不存在。\n\n**典型时间线：**\n- 从上村（Chiesa Nuova/Montepertuso）步行至港口：20-30分钟\n- 从波西塔诺中心步行至港口：10-15分钟\n- 抵达港口并购票：出发前15-20分钟\n- 渡轮航程：70-90分钟（水翼船更快，传统渡轮较慢）\n- 在那不勒斯下船并换乘至Napoli Centrale：电车15-25分钟，出租车10-15分钟\n- 从上村总门到门时间：2.5-3.5小时\n- 从波西塔诺中心总时间：2-3小时\n\n**此路线适合谁：**离开波西塔诺的旅行者，希望有一条风景秀丽的直达路线前往那不勒斯，而不必应对拥挤的巴士。如果您喜欢在水上并对下坡步行至港口感到舒适（比爬上来容易得多！），这是理想选择。\n\n**谁应考虑替代方案：**冬季旅行的人、对楼梯不舒适的人（即使下行，携带行李的200+阶梯也可能具有挑战性）、时间表非常紧的旅行者（渡轮延误和取消很常见）或容易晕船的人。%HOWTO:positano-sorrento-bus|经索伦托的巴士%全年运行且费用更低。\n\n**天气和取消：**渡轮服务取决于天气。即使在夏季，海况恶劣或强风也可能导致最后一刻取消，通常在出发当天早晨宣布。在步行至港口前务必与您的渡轮运营商核实。如果渡轮取消，您需要步行回到上面并改乘巴士线路。根据我们的经验，取消在深秋（10-11月）和早春（3-4月）最常见，此时突然的天气变化频繁。如果预报显示风速超过25-30节或显著的波高，预计取消的可能性很高。在出发前一晚和当天早晨致电渡轮公司或查看其网站。"
+    },
+    {
+      "id": "photoGuide",
+      "title": "图解参考",
+      "body": "下面的图库显示从上村步行至波西塔诺港口。路线沿着Via Cristoforo Colombo（主海岸公路）下行，然后下长楼梯到Spiaggia Grande海滩和渡轮码头。在下行时寻找指向\"Spiaggia\"或\"Marina\"的标识。楼梯陡峭但维护良好，有扶手。在炎热的日子里，携带行李下行仍可能很累，因此请慢慢走并使用扶手。"
+    },
+    {
+      "id": "walkToPort",
+      "title": "步行前往波西塔诺港口",
+      "body": "波西塔诺的渡轮码头位于Spiaggia Grande（主海滩）的村庄底部。到达那里需要从主海岸公路下行200+陡峭台阶。\n\n**从上村（Chiesa Nuova或Montepertuso）：**\n\n如果您住在上村，您首先需要到达主海岸公路（Via Cristoforo Colombo）和巴士站。从那里，您有两个选择：\n\n1. **步行下行（免费，总共20-30分钟）：**沿着Via Cristoforo Colombo下行前往波西塔诺中心。下行时，您会经过商店、餐厅和酒店。寻找指向\"Spiaggia\"或\"Marina Grande\"的标识。最终，您将到达一个大楼梯（顶部有陶瓷圆顶）下降至海滩。这是前往港口的主要通道。楼梯陡峭，在某些地方狭窄，总共约200-250个台阶。慢慢来，使用扶手，需要时停下休息。在底部，您将到达海滩长廊，渡轮码头就在前方。\n\n2. **乘坐当地巴士部分下行（€1.30，节省约10分钟）：**乘坐任何SITA巴士前往\"Positano centro\"或\"Spiaggia\"，并在靠近教堂（Chiesa di Santa Maria Assunta）的较低站点之一下车。从那里，下行剩余的楼梯到达海滩。\n\n**从波西塔诺中心：**\n\n如果您住在Via Cristoforo Colombo附近的波西塔诺中心，请朝海滩下行，遵循\"Spiaggia\"或\"Marina\"的标识。步行需10-15分钟，包括下行主楼梯（200+阶梯）以到达海滩层面和渡轮码头。\n\n**抵达港口：**\n\n一旦到达海滩长廊，渡轮码头位于Spiaggia Grande的最右侧（东侧）。寻找小码头结构和售票亭。在出发前至少15-20分钟到达，以购买或兑换车票并排队登船。在夏季，码头区域可能挤满了一日游客和海滩游客，因此请预留额外时间穿过人群。"
+    },
+    {
+      "id": "tickets",
+      "title": "购票并登船",
+      "body": "几家公司在波西塔诺和那不勒斯之间运营渡轮和水翼船。车票通常不可在运营商之间互换。\n\n**主要运营商：**\n- **Alilauro**（水翼船和渡轮）——最频繁的服务\n- **NLG (Navigazione Libera del Golfo)**——传统渡轮，通常更便宜\n- **Positano Jet**——小型水翼船，时间表有限\n\n**票价：**单程每人€18-25，具体取决于船只类型和季节。较大的行李可能产生小额附加费（每件€2-5）。\n\n**购票地点：**\n\n1. **当天在港口**——小售票亭位于码头附近。这是最灵活的选项（您可以先检查天气状况）。提前20-30分钟到达，因为热门航班在夏季可能售罄。\n\n2. **在线提前预订**——大多数运营商在其网站上销售车票。您将收到必须在港口售票亭兑换登船证的凭证（为此增加10-15分钟）。建议7-8月提前预订。\n\n**登船：**\n- 在舷梯附近的队列中等待。工作人员将检查车票并指引您前往行李存储处。\n- 在水翼船上，座位通常是分配的。在大型渡轮上，是先到先得。\n- 舷梯可能狭窄并随着波浪移动——小心脚下。\n- 渡轮可能会在到达那不勒斯之前在%HOWTO:amalfi-positano-ferry|阿马尔菲%和%HOWTO:sorrento-positano-ferry|索伦托%停靠。不要过早下船——等待那不勒斯公告。\n\n**航程中：**\n- 行程需70-90分钟，具体取决于船只类型和停靠次数。\n- 航程在春秋季可能颠簸。如果您容易晕船，请坐在室外，专注于地平线，并考虑在登船前服药。\n- 设施基本：小型洗手间、较大船只上有小吃吧或自动售货机。"
+    },
+    {
+      "id": "arrival",
+      "title": "抵达那不勒斯",
+      "body": "从波西塔诺来的渡轮停靠在那不勒斯的海滨码头之一，通常是**Molo Beverello**或**Calata Porta di Massa**，两者都位于Piazza Municipio附近。从这里，您需要换乘至Napoli Centrale站（如果继续乘火车）或您在那不勒斯市中心的住宿。\n\n**下船：**\n- 等待船员固定舷梯并发出离开信号。\n- 从存储区取回您的行李。\n- 跟随人群离开码头并穿过码头区域。\n\n**换乘至Napoli Centrale（中央车站）：**\n\n**选项1：1号电车（最便宜，€1.10）**\n从港口区域，朝主路走并寻找1号电车站（架空电线和电车轨道）。登上任何前往\"Piazza Garibaldi\"或\"Napoli Centrale\"的1号电车。行程约15-20分钟。在车上的黄色机器中验证您的车票。在Garibaldi站下车，就在Napoli Centrale站外。\n\n**选项2：出租车（更快，€10-15）**\n出租车在港口出口附近排队。告诉司机\"Napoli Centrale\"或\"Stazione Centrale\"。行程需10-15分钟，取决于交通状况。确认司机启动了计价器。\n\n**选项3：步行（免费，25-30分钟）**\n如果您轻装并想看看城市，可以从港口步行至Napoli Centrale。沿着海滨向东北走，然后向内陆前往Piazza Garibaldi。仅在您对在那不勒斯导航感到舒适且没有重行李时才推荐。\n\n**继续前往机场或其他目的地：**\n- **前往那不勒斯机场：**从Napoli Centrale乘坐Alibus接驳巴士（€5，20-30分钟）。参见%HOWTO:naples-airport-positano-bus|那不勒斯机场至波西塔诺巴士指南%了解详情（反向方向）。\n- **前往索伦托、庞贝或赫库兰尼姆：**从Napoli Centrale乘坐Circumvesuviana火车（在较低的Circumvesuviana站购票，而不是主Trenitalia站）。\n- **前往罗马或其他城市：**从Napoli Centrale使用主要的Trenitalia或Italo高速列车。\n\n**如果您留在那不勒斯：**\n港口区域靠近许多那不勒斯市中心的酒店和景点。电车、地铁和巴士将港口连接到大多数社区。向您的住宿询问从\"Molo Beverello\"或渡轮码头的具体方向。"
+    }
+  ],
+  "faqs": [
+    {
+      "question": "波西塔诺到那不勒斯渡轮多少钱？",
+      "answer": "单程每人€18-25，具体取决于运营商和船只类型。水翼船更快但略贵于传统渡轮。较大的行李可能会产生每件€2-5的附加费。"
+    },
+    {
+      "question": "我可以在冬季乘坐渡轮吗？",
+      "answer": "波西塔诺和那不勒斯之间的渡轮服务从11月到3月极其有限或不存在。即使有服务，冬季渡轮也经常因海况恶劣而取消。冬季旅行请使用经索伦托的巴士和火车线路。"
+    },
+    {
+      "question": "我需要提前预订渡轮票吗？",
+      "answer": "建议7月和8月提前预订，尤其是周末。其他月份，您通常可以在旅行当天在港口购买车票。提前20-30分钟到达，以便有时间购票和登船。"
+    },
+    {
+      "question": "携带行李步行下至港口困难吗？",
+      "answer": "步行涉及从主路下行200+陡峭台阶到海滩。下行比爬上来容易得多，但携带重行李仍可能具有挑战性。使用扶手，慢慢来，并考虑轻装。下行没有搬运工或替代通道。"
+    }
+  ],
+  "callouts": {
+    "tip": "需要其他路线或海况恶劣时的备选方案？查看%HOWTO:how-to-get-here|如何到达总览%。",
+    "warning": "渡轮在恶劣天气下经常取消，尤其是10月至4月。务必准备好备选计划。%HOWTO:positano-naples-center-bus-train|巴士和火车线路%是您最可靠的替代方案。"
+  }
 }

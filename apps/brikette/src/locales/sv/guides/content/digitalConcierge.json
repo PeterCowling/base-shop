@@ -1,23 +1,32 @@
 {
   "seo": {
-    "title": "Digital concierge (tips + bokningar)",
-    "description": "Digital concierge på Hostel Brikette: snabba tips, transport och bokningshjälp—när planerna ändras."
+    "title": "Digital concierge (rekommendationer + bokningar)",
+    "description": "Använd Hostel Brikettes digitala concierge för snabba lokala rekommendationer, transportuppdateringar och hjälp att boka upplevelser - särskilt när planerna ändras."
   },
   "linkLabel": "Digital concierge",
   "lastUpdated": "2026-02-02T00:00:00.000Z",
   "intro": [
-    "För en plan som funkar idag: skriv tidsfönster, budget, prioritet och deadline."
+    "Detta är för planer som fungerar idag - inte generiska listor.",
+    "Skicka ditt tidsfönster, budget och prioritet. Sätt din deadline på första raden."
   ],
   "sections": [
     {
-      "id": "templates",
-      "title": "Mall",
+      "id": "how-to-access",
+      "title": "Hur du får tillgång",
       "body": [
-        "“6 timmar, ingen bil, (A) bada + (B) solnedgång, budget 40€ per person. Enklaste plan och plan B om färjor ställs in?”",
-        "%LINK:positanoBudget|Positano på budget% + %LINK:terraceSunsets|terrass‑solnedgång%.",
-        "%LINK:ferryCancellations|färjeinställningar + väder%."
+        "Fråga receptionen om senaste kontakt/QR och bästa kanalen (vanligtvis WhatsApp).",
+        "Inkludera: datum, startpunkt, tidsfönster, budget och #1 prioritet."
+      ]
+    },
+    {
+      "id": "templates",
+      "title": "Kopiera/klistra in mall",
+      "body": [
+        "\"Vi har 6 timmar, ingen bil, vi vill ha (A) ett dopp + (B) solnedgång, budget €40 per person. Vad är den enklaste planen och plan B om färjorna ställs in?\"",
+        "Budget baslinje: %LINK:positanoBudget|Positano på budget% + %LINK:terraceSunsets|Terrass solnedgång%.",
+        "Om transport är känsligt: %LINK:ferryCancellations|färjeinställningar + väder%."
       ]
     }
   ],
-  "fallback": "Digital concierge: snabba tips, transport och bokningar."
+  "fallback": "Digital concierge: snabba rekommendationer, transportuppdateringar och bokningshjälp."
 }

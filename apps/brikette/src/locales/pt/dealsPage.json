@@ -79,9 +79,18 @@
   "perksGuarantee": "Cada reserva feita diretamente no nosso site ativa automaticamente estes benefícios exclusivos.",
   "perksIntroLink": "Ver todas as vantagens",
   "perksList": [
-    "Até 25 % de desconto sobre o preço normal ao aplicar o cupão",
-    "Pequeno-almoço gratuito",
-    "Bebida de cortesia à noite"
+    {
+      "title": "Até 25 % de desconto sobre o preço normal ao aplicar o cupão",
+      "subtitle": "Aplicado automaticamente"
+    },
+    {
+      "title": "Pequeno-almoço gratuito",
+      "subtitle": "Incluído diariamente"
+    },
+    {
+      "title": "Bebida de cortesia à noite",
+      "subtitle": "Seleção da casa"
+    }
   ],
   "expired": {
     "message": "Esta oferta terminou."

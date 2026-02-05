@@ -7,15 +7,6 @@
     "eyebrow": "Élmények",
     "title": "Naplementék, ráérős reggelek és helyi tudás",
     "description": "Egészítse ki tartózkodását teraszbárral, szervezett túrákkal és egy digitális concierge-zsel, amely már érkezés előtt képben tartja.",
-    "supporting": "Minden élmény a regisztrált vendégek előtt nyitva áll; írjon nekünk, ha máshol megszálló barátokkal érkezik.",
-    "primaryCta": "Foglalja le tartózkodását",
-    "secondaryCta": "Nézze meg az itallapot",
-    "tertiaryCta": "Üzenjen a digitális concierge-nek",
-    "primaryCtaAria": "Foglalja le tartózkodását a Hostel Brikette-ben",
-    "secondaryCtaAria": "Tekintse meg a Hostel Brikette bárjának kínálatát",
-    "tertiaryCtaAria": "Küldjön üzenetet a Hostel Brikette digitális concierge-ének",
-    "breakfastCta": "Nézze meg a reggelimenüt",
-    "breakfastCtaAria": "Nézze meg a reggelimenüt",
     "scrollNudge": "Böngésszen élménytípus szerint lent"
   },
   "sections": {
@@ -159,11 +150,6 @@
         "title": "Étel és ital",
         "description": "Hol ehetsz jól anélkül, hogy túlfizetnél.",
         "imageAlt": "Friss olasz ételek egy helyi trattoriában"
-      },
-      "itinerary": {
-        "title": "Útitervek",
-        "description": "Többnapos tervek különböző utazási hosszakhoz.",
-        "imageAlt": "Festői kilátás az Amalfi-partra felülről"
       },
       "more": {
         "title": "További kalauzok",

@@ -25,29 +25,37 @@
       ]
     },
     {
+      "id": "group-tours",
+      "title": "Gruppeturer og delte båter",
+      "body": [
+        "Se vår %LINK:boatTours|guide til båtturer i Positano% hvis du heller vil hoppe mellom strender på en delt båt i stedet for ferjer.",
+        "Operatører drar fra Positanos hovedkai; kom 15 minutter tidlig og bekreft Laurito- eller Arienzo-badetopp ved booking."
+      ]
+    },
+    {
       "id": "evening",
       "title": "Kveld: Solnedgangsbad",
       "body": [
-        "Avslutt på Laurito eller Arienzo for gyllent lys; begge vender mot vest og har færre folk etter kl. 17.",
+        "Avslutt på Laurito eller Arienzo for gyllent lys; begge vender mot vest og har færre folk etter kl. 17:00.",
         "Ta siste ferje eller bestill taxi tilbake for å slippe oppoverbakker i mørket."
       ]
     }
   ],
   "tips": [
     "Ha med et hurtigtørkende håndkle og skift slik at du holder deg komfortabel på ferjene.",
-    "Pakk snacks og minst én liter vann – strandkioskene kan gå tomme på travle dager."
+    "Pakk snacks og minst 1 L / 34 oz vann—strandkioskene kan gå tomme på travle dager."
   ],
   "faqs": [
     {
       "q": "Må jeg forhåndsbestille solsenger?",
       "a": [
-        "Ja, i juli–august. Kontakt strandklubbene via WhatsApp dagen før for å sikre plass på første rad."
+        "Ja i juli–august. Kontakt strandklubbene via WhatsApp dagen før for å sikre plass på første rad."
       ]
     },
     {
       "q": "Kan jeg ta med egen mat?",
       "a": [
-        "De fleste gratisområder tillater piknik. Strandklubber godtar som regel små snacks, men vil ofte at du kjøper drikke i baren."
+        "De fleste gratisområder tillater piknik. Strandklubber godtar som regel små snacks, men vil gjerne at du kjøper drikke i baren."
       ]
     }
   ]

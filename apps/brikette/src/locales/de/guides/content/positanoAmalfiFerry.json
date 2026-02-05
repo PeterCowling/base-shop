@@ -1,49 +1,244 @@
 {
   "seo": {
     "title": "Positano nach Amalfi mit der Fähre | Hostel Brikette",
-    "description": "Schritt-für-Schritt von Positano nach Amalfi per Fähre: Tickets, Einstieg an der Spiaggia Grande, Fahrpläne und Hinweise zur Ankunft."
+    "description": "Schritt-für-Schritt Fährfahrt von Positano nach Amalfi: wo du an der Spiaggia Grande einsteigst, Tickets, Live-Fahrpläne und ein einfacher Plan B, falls das Meer die Boote ausfallen lässt."
   },
   "intro": {
     "title": "Positano nach Amalfi – Fähre",
-    "body": "Folge diesen Schritten für die Fährfahrt von Positano nach Amalfi. Du findest Tipps zu Tickets, zum Einstieg in Positano, zu Erwartungen bei der Ankunft sowie Links zu aktuellen Fahrplänen."
+    "body": "Die Fähre von Positano nach Amalfi ist eine der landschaftlich schönsten Möglichkeiten, entlang der Küste zu reisen. Du wirst atemberaubende Ausblicke auf pastellfarbene Dörfer, dramatische Klippen und türkisfarbenes Wasser sehen. Dieser vollständige Leitfaden deckt alles ab, was du brauchst: Tickets und Preise, Einstieg an der Spiaggia Grande, Ankunft in Amalfi, saisonale Fahrpläne und was zu tun ist, wenn Boote wegen des Wetters ausfallen."
   },
+  "callouts": {
+    "tip": "Brauchst du andere Transportmöglichkeiten? Öffne die %HOWTO:how-to-get-here|Anreise-Übersicht% für Busse, gemischte Routen und Flughafentransfers."
+  },
+  "lastUpdated": "2026-02-04",
   "sections": [
     {
       "id": "overview",
       "title": "Reiseüberblick",
+      "body": "Die Fährfahrt von Positano nach Amalfi dauert etwa 25-40 Minuten, je nach Betreiber und Anzahl der Haltestellen. Die meisten Verbindungen verkehren von April bis Oktober, mit mehr Abfahrten während der Hochsommermonate (Juni bis September). Rechne mit €10-€18 pro Person für eine Einzelfahrkarte, wobei die Preise je nach Betreiber und Tageszeit variieren.",
       "list": [
-        "Saisonale Fähren verbinden Positano und Amalfi mit eindrucksvollen Küstenblicken.",
-        "Angebot und Zeiten variieren je nach Saison und Wetter – prüfe immer den aktuellen Fahrplan.",
-        "Plane in den Hauptmonaten zusätzliche Zeit für Warteschlangen am Pier ein."
+        "Fähren sind saisonabhängig (normalerweise April-Oktober) und wetterabhängig – raue See kann den Service mit wenig Vorlaufzeit ausfallen lassen.",
+        "Fahrtzeit: 25-40 Minuten je nach Haltestellen (einige Fähren halten unterwegs in Praiano oder anderen Dörfern).",
+        "Kosten: €10-€18 einfache Fahrt pro Erwachsenem; Kinder erhalten oft Ermäßigungen.",
+        "In der Hochsaison (Juli-August) können Verbindungen ausverkauft sein und es bilden sich Schlangen an der Spiaggia Grande – komme 30+ Minuten früher.",
+        "Wenn die See rau ist und Boote nicht mehr fahren, ist der %HOWTO:positano-amalfi-bus|Positano → Amalfi Bus% deine zuverlässige Alternative."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/07-positano-umbrellas.webp",
+          "alt": "Blick auf Positanos Hauptfähranlegestelle an der Spiaggia Grande mit angelegten Booten und bunten Gebäuden am Hang"
+        }
+      ]
+    },
+    {
+      "id": "whyFerry",
+      "title": "Warum die Fähre nehmen?",
+      "body": "Die Fähre hat Vorteile gegenüber dem Bus, aber sie ist nicht immer die beste Wahl für jeden Reisenden. Hier ist, worüber du nachdenken solltest:",
+      "list": [
+        "Landschaftliche Route: Du siehst die Amalfiküste vom Wasser aus, einschließlich versteckter Buchten, Felsformationen und Dörfer an Klippen, die du von der Straße aus nicht sehen kannst.",
+        "Verkehr umgehen: Die Küstenstraße (SS163) ist im Sommer sehr verstopft. Fähren vermeiden alle Straßenverzögerungen.",
+        "Schneller in der Hochsaison: Wenn Busse durch den Verkehr kriechen, kann die Fähre viel schneller sein.",
+        "Frische Luft und Komfort: Offener Deckbereich, Meeresbrise und keine kurvenreichen Bergstraßen (gut, wenn dir in Bussen übel wird).",
+        "Wetterabhängig: Im Gegensatz zu Bussen fallen Fähren aus, wenn die See rau ist – normalerweise bei Herbst- und Winterstürmen und manchmal bei Sommergewittern.",
+        "Höhere Kosten: Fährtickets sind normalerweise 2-3x teurer als Busfahrpreise."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/03-ferry-ride.webp",
+          "alt": "Malerischer Blick auf die Amalfiküste von einer Fähre aus mit Dörfern auf Klippen und türkisfarbenem Wasser"
+        }
       ]
     },
     {
       "id": "tickets",
       "title": "Tickets und Fahrpläne",
-      "body": "Prüfe aktuelle Zeiten und Preise auf %URL:https://travelmar.it/en|Travelmar% und %URL:https://www.positano.com/en/ferry-schedule|Positano.com – Fährpläne%.",
+      "body": "Zwei Hauptbetreiber fahren die Positano-Amalfi-Route: Travelmar und Alilauro. Die Fahrpläne ändern sich je nach Saison und der Service wird im Sommer viel häufiger. Überprüfe immer die Live-Fahrpläne am Tag zuvor (oder am Morgen) deiner Reise, da Wetterausfälle häufig sind. Prüfe die neuesten Zeiten und Preise auf %URL:https://travelmar.it/en|Travelmar% und %URL:https://www.positano.com/en/ferry-schedule|Positano.com – Fährpläne%. Für einen schnellen Überblick über Betreiber, Saisons und häufige Probleme siehe %LINK:ferrySchedules|unseren Fährfahrplan-Leitfaden%.",
       "list": [
-        "Kaufe in der Hochsaison Tickets vorab online oder an den Schaltern der Betreiber am Pier.",
-        "Sei 15–20 Minuten vor Abfahrt da, um Gutscheine einzulösen und dich anzustellen.",
-        "Halte dein Ticket oder den QR-Code für Kontrollen durch das Personal bereit."
+        "Buche im Voraus online während der Hochsaison (Juni-September), besonders für Nachmittagsfahrten, wenn Tagesausflügler von Amalfi zurückkehren.",
+        "Tickets werden an Uferstände in Positano verkauft (Bar- und Kartenzahlung akzeptiert) oder online über die Websites der Betreiber.",
+        "Komme 20-30 Minuten vor Abfahrt, um bei Bedarf Gutscheine umzutauschen, den Einstiegsbereich deines Betreibers zu finden und dich anzustellen.",
+        "Speichere einen Screenshot deines QR-Codes oder deiner Bestätigungs-E-Mail – Mobilfunksignal kann in Strandnähe und am Pier schwach sein.",
+        "Überprüfe, bei welchem Betreiber du gebucht hast: Travelmar und Alilauro haben unterschiedliche Einstiegsbereiche und akzeptieren nicht die Tickets des jeweils anderen.",
+        "Wenn du große Taschen hast (Koffer, große Rucksäcke), frage das Personal nach Gepäckregeln und wo du Taschen an Bord aufbewahren kannst. Die meisten Fähren haben begrenzten Gepäckraum."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/07-positano-umbrellas.webp",
+          "alt": "Fährticketschalter am Spiaggia Grande Strand in Positano mit sichtbaren Fahrplantafeln"
+        }
+      ]
+    },
+    {
+      "id": "scheduleDetails",
+      "title": "Fahrplanmuster (was zu erwarten ist)",
+      "body": "Zu wissen, wie Fährfahrpläne an der Küste funktionieren, hilft dir, deinen Tagesausflug oder die Rückkehr besser zu planen.",
+      "list": [
+        "Hochsaison (Juli-August): 10-15 tägliche Fahrten vom frühen Morgen (~9:00) bis zum frühen Abend (~18:00).",
+        "Nebensaison (April-Juni, September-Oktober): 5-8 tägliche Fahrten, mit weniger Nachmittagsoptionen.",
+        "Erste Fahrten: Normalerweise 8:30-9:30 Uhr, perfekt für Tagesausflüge nach Amalfi (früh ankommen, Menschenmassen vermeiden).",
+        "Letzte Fahrten: Normalerweise 17:00-18:30 Uhr im Sommer (aber prüfe täglich – das ändert sich und Verbindungen können ausverkauft oder ausfall).",
+        "Mittagspausen: Einige Betreiber pausieren zwischen 12:00-14:00 Uhr in der Nebensaison. Gehe nicht davon aus, dass jede Stunde ein Boot fährt.",
+        "Rückkehr-Timing: Wenn du einen Tagesausflug nach Amalfi planst, bestätige deine Rückfahrtzeit, bevor du Positano verlässt – gehe nicht davon aus 'es wird später ein Boot geben.'"
+      ]
+    },
+    {
+      "id": "gettingToPier",
+      "title": "Zum Anleger vom Hostel Brikette kommen",
+      "body": "Vom Hostel gehst du hinunter nach Positano Stadt und dann zum Spiaggia Grande Strand, wo die Fähren ablegen. Der Weg hat steile Treppen und schmale Pfade, also plane extra Zeit ein. Nutze %LINK:briketteToFerryDock|unseren Schritt-für-Schritt-Weg zum Fähranleger%, um die Spiaggia Grande leicht zu erreichen. Der Weg dauert 15-25 Minuten, je nach deinem Tempo und Menschenmassen.",
+      "list": [
+        "Plane Pufferzeit für Treppen (etwa 400+ Stufen), Hitze und langsamen Fußgängerverkehr in der Stadt ein – besonders im Juli-August, wenn die Straßen überfüllt sind.",
+        "Starte 45+ Minuten vor Abfahrt deiner Fähre, um Zeit zum Gehen, Finden des richtigen Betreiberstandes und Anstellen zu haben.",
+        "Bringe Wasser mit und bewahre wichtige Dinge (Reisepass, Geldbörse, Telefon) in einer leicht erreichbaren Tasche für Einstiegskontrollen auf.",
+        "Trage bequeme Schuhe mit gutem Halt – Stufen können rutschig sein, besonders am frühen Morgen, wenn schattige Bereiche noch feucht sein können.",
+        "Wenn du Gepäck hast, überlege, ein Taxi vom Hostel zum Strand zu nehmen (etwa €10-€15), um das Tragen von Taschen über steile Treppen zu überspringen."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/10-positano-street.webp",
+          "alt": "Stufen, die durch Positanos Stadtzentrum hinunter zum Spiaggia Grande Strand führen"
+        }
       ]
     },
     {
       "id": "positanoPier",
-      "title": "Einstieg in Positano",
+      "title": "Wo in Positano einsteigen",
+      "body": "Alle Fähren legen vom Hauptanleger Positanos am Spiaggia Grande Strand ab. Der Anleger befindet sich am östlichen Ende des Strandes, leicht zu erkennen, wenn du dich der Uferpromenade näherst. Mehrere Betreiber teilen sich denselben allgemeinen Einstiegsbereich, also achte auf Schilder und Personalanweisungen.",
       "list": [
-        "Die Abfahrten erfolgen vom Hauptpier Positanos an der Spiaggia Grande.",
-        "Entlang der Uferpromenade findest du die Schalter der Betreiber; Anzeigen zeigen die nächste Abfahrt je Gesellschaft.",
-        "Prüfe auf deinem Ticket den richtigen Anleger – das Personal hilft dir bei Unsicherheit."
+        "Betreiberstände säumen die Uferpromenade nahe dem Anleger. Tafeln zeigen die nächsten Fahrten für Travelmar, Alilauro und andere Unternehmen.",
+        "Überprüfe den Betreiber und das Ziel auf deinem Ticket, bevor du dich anstellst. Personal an Ständen kann helfen, wenn du unsicher bist.",
+        "Einstieg öffnet normalerweise 10-15 Minuten vor Abfahrt. Personal ruft Passagiere vor und prüft Tickets beim Einsteigen.",
+        "Wenn du früh ankommst und noch keine Schlange da ist, warte in der Nähe des Betreiberstandes, anstatt am Strand herumzulaufen – Einstieg kann plötzlich beginnen.",
+        "Toiletten sind an der Spiaggia Grande (kleine Gebühr), falls du sie vor dem Einsteigen brauchst. Fähren haben begrenzte oder keine Toiletten auf kurzen Strecken."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/06-positano-panorama.webp",
+          "alt": "Passagiere steigen an der Hauptanlegestelle am Spiaggia Grande Strand in Positano auf eine Fähre"
+        }
+      ]
+    },
+    {
+      "id": "onBoard",
+      "title": "An Bord der Fähre",
+      "body": "Die meisten Fähren auf dieser Route sind kleine bis mittelgroße Boote mit offenem Deckbereich und überdachten Sitzplätzen. Die Fahrt ist malerisch und normalerweise ruhig, aber sei auf etwas Bewegung vorbereitet, wenn die See unruhig ist.",
+      "list": [
+        "Besorge dir einen Sitzplatz auf dem Oberdeck oder an den Seitengeländern für die beste Aussicht – diese füllen sich schnell, also steige schnell ein, wenn du gerufen wirst.",
+        "Die linke Seite (Backbord) hat bessere Aussichten auf die Küste, wenn du von Positano nach Amalfi fährst.",
+        "Einige Fähren halten unterwegs in Praiano oder anderen Dörfern. Höre auf Durchsagen und überprüfe dein Ticket, wenn du unsicher bist, ob deine Verbindung direkt oder mit mehreren Haltestellen ist.",
+        "Sonne kann im Sommer auf dem Deck stark sein – bringe Sonnencreme, einen Hut und Sonnenbrille mit.",
+        "Wenn du leicht seekrank wirst, sitze in der Mitte des Bootes, wo die Bewegung geringer ist, und halte deine Augen am Horizont.",
+        "Snacks und Getränke werden nicht immer an Bord verkauft – bringe Wasser und Snacks mit, wenn du sie brauchst (besonders für Kinder).",
+        "Halte dein Ticket bereit, bis du aussteigst – einige Betreiber prüfen Tickets bei Ankunft."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/05-li-galli.webp",
+          "alt": "Passagiere auf dem offenen Deck einer Fähre, die entlang der Amalfiküste mit Küstenansichten fährt"
+        }
       ]
     },
     {
       "id": "amalfiArrival",
       "title": "Ankunft in Amalfi",
+      "body": "Fähren kommen an Amalfis Uferpromenaden-Anlegern nahe der Piazza Flavio Gioia an, im Herzen der Stadt. Aussteigen ist schnell und einfach, und du bist nur wenige Schritte von Amalfis Hauptsehenswürdigkeiten entfernt.",
       "list": [
-        "Die Boote legen an den Uferstegen von Amalfi nahe der Piazza Flavio Gioia an.",
-        "Das historische Zentrum und die Promenade schließen direkt an den Hafen an.",
-        "Für Weiterfahrten (z. B. nach Ravello oder Sorrent) folge der Beschilderung zur SITA-Haltestelle am Wasser."
+        "Das historische Zentrum liegt direkt neben dem Hafen – es ist ein 2-minütiger Spaziergang zum Duomo und zum Hauptplatz.",
+        "Wenn du einen Bus weiterfahren möchtest (wie nach Ravello, Salerno oder zurück nach Positano), ist die SITA-Bushaltestelle nahe der Uferpromenade. Folge den Schildern oder frage Einheimische, um die richtige Schlange zu finden – mehrere Linien fahren von nahegelegenen Haltestellen ab.",
+        "Toiletten, Cafés und Geldautomaten sind alle innerhalb von 5 Minuten Gehweg vom Anleger.",
+        "Wenn du planst, später mit der Fähre nach Positano zurückzukehren, merke dir, wo der Abfahrtsanleger ist (derselbe Bereich, wo du angekommen bist) und prüfe Rückfahrpläne an Betreiberständen, bevor du die Uferpromenade verlässt.",
+        "Amalfis Uferpromenade wird im Sommer überfüllt – halte Wertsachen sicher und achte auf Taschendiebe in belebten Bereichen.",
+        "Für einen vollständigen Leitfaden zur Erkundung von Amalfi Stadt siehe %LINK:dayTripsAmalfi|unseren Tagesausflüge-von-Positano-Leitfaden%."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/01-amalfi-dock.webp",
+          "alt": "Fähre kommt am Uferanleger von Amalfi an mit der Stadt und dem Duomo sichtbar im Hintergrund"
+        }
       ]
+    },
+    {
+      "id": "planB",
+      "title": "Wenn die Fähre ausfällt (Backup-Plan, der funktioniert)",
+      "body": "Fährausfälle passieren oft, wenn die See rau ist, besonders während Herbst- und Winterstürmen und manchmal im Sommer während Gewittern. Keine Sorge – der %HOWTO:positano-amalfi-bus|Positano → Amalfi Bus% fährt das ganze Jahr und ist deine zuverlässige Alternative. Lies %LINK:ferryCancellations|unseren Fährausfall-Leitfaden% für Timing, Tipps und wie du den Status prüfst, bevor du das Hostel verlässt.",
+      "list": [
+        "Wenn du bereits am Strand bist, wenn Ausfälle angekündigt werden, gehe zurück zur Hauptstraße (Via Pasitea oder SS163) und nimm den nächsten SITA-Bus oder ein Sammeltaxi.",
+        "Bustickets können in Tabacchi-Geschäften in der Stadt oder beim Fahrer gekauft werden (nur Bargeld, kleine Scheine funktionieren am besten).",
+        "Plane Pufferzeit ein: Busse können in Spitzenmonaten (besonders Juli-August) voll ankommen, und Verspätungen von 15-30 Minuten sind normal.",
+        "Wenn du spät am Tag reist, prüfe die letzte mögliche Abfahrt (Fähre oder Bus) früh, damit du nicht in Amalfi festsitzt, nachdem der öffentliche Verkehr endet.",
+        "In der Nebensaison (November-März) ist der Fährbetrieb sehr eingeschränkt oder fährt gar nicht – plane mit dem Bus."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/09-amalfi-coast.webp",
+          "alt": "Raue Seeverhältnisse am Positano-Strand zeigen, warum Fähren bei schlechtem Wetter ausfallen"
+        }
+      ]
+    },
+    {
+      "id": "tips",
+      "title": "Tipps vom Hostel",
+      "body": "Unsere Gäste reisen diese Strecke ständig, und wir haben praktische Ratschläge aus ihren Erfahrungen und den eigenen Reisen unseres Personals entlang der Küste gesammelt.",
+      "list": [
+        "Buche Morgenfähren, wenn du kannst: ruhigere See, kleinere Menschenmassen, und du hast den vollen Tag in Amalfi.",
+        "Nachmittags-Rückfahrfähren (besonders 16:00-18:00) sind im Sommer schnell ausverkauft – buche Rückfahrtickets im Voraus oder sofort, wenn du in Amalfi ankommst.",
+        "Wenn du nur ein paar Stunden in Amalfi bist, konzentriere dich auf den Duomo und einen Spaziergang entlang der Uferpromenade. Andere Sehenswürdigkeiten (Papiermuseum, Valle delle Ferriere Wanderung) brauchen mehr Zeit.",
+        "Mische Fähre und Bus für Abwechslung: nimm die Fähre nach Amalfi (malerisch), erkunde die Stadt, und kehre dann mit dem Bus zurück (schneller, günstiger, und du siehst Straßenansichten).",
+        "Prüfe das Wetter vor der Buchung: wenn starke Winde oder Stürme erwartet werden, gehe davon aus, dass Fähren ausfallen und plane, stattdessen den Bus zu nehmen.",
+        "Wir haben gesehen, wie Gäste Rückfahrfähren verpassen, weil sie nicht merken, wie überfüllt Amalfi im Sommer wird. Stelle einen Telefonalarm 30 Minuten vor deiner Abfahrt und gehe früh zurück zum Anleger."
+      ]
+    },
+    {
+      "id": "practical",
+      "title": "Praktische Details",
+      "body": "Ein paar weitere Dinge, die du wissen solltest, bevor du gehst.",
+      "list": [
+        "Zahlung: Die meisten Betreiber akzeptieren Kreditkarten an Ständen und online. Bargeld ist für kleine Einkäufe am Strand noch nützlich.",
+        "Sprache: Personal an Betreiberständen spricht normalerweise Englisch, Italienisch und oft Spanisch oder Deutsch. Zeige auf dein Ticket, wenn du unsicher bist.",
+        "Haustiere: Kleine Haustiere in Transportboxen sind normalerweise erlaubt, aber prüfe Betreiberrichtlinien, wenn du mit Tieren reist.",
+        "Gruppenreise: Wenn ihr eine Gruppe von 6+ Personen seid, erwäge, alle Tickets zusammen online zu buchen, um Plätze auf derselben Abfahrt zu garantieren.",
+        "Fotografie: Bringe deine Kamera oder dein Telefon mit – die Küstenansichten von der Fähre sind atemberaubend und du wirst Fotos haben wollen.",
+        "Seekrankheitsmittel: Wenn du anfällig für Reisekrankheit bist, nimm Medikamente 30-60 Minuten vor dem Einsteigen. Ingwerbonbons können auch helfen.",
+        "Sicherheit: Schwimmwesten sind an Bord und die Crew erklärt Sicherheitsverfahren. Achte auf Durchsagen im Notfall.",
+        "Trinkgeld: Nicht erwartet, aber geschätzt, wenn die Crew mit Gepäck hilft oder zusätzliche Unterstützung bietet."
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Andere Wege von Positano nach Amalfi zu reisen",
+      "body": "Die Fähre ist beliebt, aber nicht deine einzige Option. Hier ist ein schneller Vergleich mit anderen Transportmethoden.",
+      "list": [
+        "SITA-Bus: Günstiger (€2-€3), fährt ganzjährig, kann aber im Verkehr langsam und im Sommer überfüllt sein. Siehe %HOWTO:positano-amalfi-bus|unseren Bus-Leitfaden%.",
+        "Privattaxi oder Autoservice: Schnell, bequem, Tür-zu-Tür-Service. Kostet etwa €40-€60 je nach Zeit und Anbieter. Gut für Gruppen oder wenn du viel Gepäck hast.",
+        "Roller oder Motorrad mieten: Nur für selbstbewusste Fahrer. Die SS163-Küstenstraße ist schmal, kurvenreich und stark befahren. Parken in Amalfi ist begrenzt und oft teuer.",
+        "Private Bootstour: Teurer (€100+ pro Person), beinhaltet aber Stopps an versteckten Stränden und Schwimmen. Buche über lokale Betreiber oder deine Unterkunft.",
+        "Wandern: Der Götterweg verbindet die Positano-Gegend mit Gebieten nahe Amalfi, aber es ist eine ernsthafte Wanderung (3-4 Stunden) und führt nicht direkt nach Amalfi Stadt. Siehe %LINK:pathOfTheGods|unseren Götterweg-Leitfaden%, wenn du interessiert bist."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Kann ich Fährtickets am Tag kaufen?",
+      "a": "Ja, Tickets werden an Uferständen in Positano verkauft, aber in der Hochsaison (Juli-August) sind beliebte Zeiten ausverkauft. Buche online im Voraus für Seelenfrieden, besonders für Nachmittagsfahrten."
+    },
+    {
+      "q": "Was passiert, wenn meine Fähre ausfällt und ich ein vorausbezahltes Ticket habe?",
+      "a": "Die meisten Betreiber bieten Rückerstattungen oder Umbuchungen für Wetterausfälle. Überprüfe die Stornierungsbedingungen des Betreibers beim Buchen und behalte dein Ticket oder deine Bestätigungs-E-Mail. Wenn Fähren ausfallen, wechsle zum Bus – er fährt das ganze Jahr und wird nicht von Seeverhältnissen beeinflusst."
+    },
+    {
+      "q": "Ist die Fähre gut für kleine Kinder oder ältere Passagiere?",
+      "a": "Ja, aber denke über Mobilität und Komfort nach: Einsteigen bedeutet, in ein Boot zu treten (manchmal mit einer kleinen Rampe), und die See kann unruhig sein. Schwimmwesten sind verfügbar. Wenn Mobilität ein Problem ist oder das Wetter unsicher aussieht, kann der Bus eine bessere Wahl sein."
+    },
+    {
+      "q": "Kann ich einen Kinderwagen oder Rollstuhl auf die Fähre nehmen?",
+      "a": "Die meisten Fähren können Kinderwagen und Rollstühle aufnehmen, aber der Platz ist begrenzt und die Einstiegshilfe kann minimal sein. Kontaktiere den Betreiber im Voraus, um Zugang zu bestätigen und um Hilfe zu bitten. Der Bus kann für einige Reisende einfacher sein."
+    },
+    {
+      "q": "Wie früh sollte ich am Anleger ankommen?",
+      "a": "Komme mindestens 20-30 Minuten vor Abfahrt in der Nebensaison und 30-45 Minuten in der Hochsaison (Juli-August). Dies gibt dir Zeit, den richtigen Stand zu finden, bei Bedarf Gutscheine umzutauschen und dich stressfrei anzustellen."
+    },
+    {
+      "q": "Fahren Fähren im Winter?",
+      "a": "Der Fährbetrieb ist sehr eingeschränkt oder wird von November bis März komplett eingestellt. Überprüfe immer die Websites der Betreiber vor der Planung von Winterreisen. Der Bus ist deine beste Option in den Wintermonaten."
     }
   ]
 }

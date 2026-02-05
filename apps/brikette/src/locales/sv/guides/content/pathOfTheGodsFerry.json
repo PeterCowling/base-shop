@@ -25,6 +25,48 @@
         "Gå ut från vandrarhemmet, sväng vänster och promenera cirka 100 meter till Bar Internazionale. Köp SITA-biljetter i tabacchin innan du fortsätter nerför backen.",
         "Följ genvägstrapporna mot Spiaggia Grande. Promenaden tar runt 20–30 minuter; lägg på extra tid under hektiska dagar.",
         "Väl nere vid stranden svänger du höger till den lilla hamnen där färjebolagen har sina biljettluckor."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/01-nav.jpg",
+          "alt": "Route map from Hostel Brikette to Positano port with numbered waypoints (1-5)",
+          "caption": "Översiktskarta som visar promenadvägen från vandrarhem till hamn med viktiga referenspunkter"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/02-nav.jpg",
+          "alt": "Street corner intersection marking Point 1 on the route",
+          "caption": "Punkt 1: Sväng höger vid hörnet, så ser du tabacchin."
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/03-nav.jpg",
+          "alt": "Tabacchi shop storefront where SITA bus tickets can be purchased",
+          "caption": "Tabacchi på Bar Internazionale — vi rekommenderar att du köper SITA-bussbiljetter här för resan från Amalfi till Bomerano (Agerola), och om du vill ta bussen i slutet av vandringen från Nocelle till Positano, köp även den innan du ger dig av till hamnen."
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/04-nav.jpg",
+          "alt": "Switchback bend in the road at Point 2 where you leave the main road",
+          "caption": "Punkt 2: Serpentinkurva — sväng höger från vägen här och ta genvägen via trapporna"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/05-nav.jpg",
+          "alt": "Stone stairs descending downhill at Point 3",
+          "caption": "Punkt 3: Gå rakt över vägen, gå fram till och gå sedan ner för trapporna mot Spiaggia Grande"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/06-nav.jpg",
+          "alt": "Road junction at Point 4 showing the crossing point",
+          "caption": "Punkt 4: Korsa vägen och gå sedan ner för trapporna"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/07-nav.jpg",
+          "alt": "Final stairway section leading down at Point 5",
+          "caption": "Punkt 5: Gå genom detta område och under valvbågen"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/08-nav.jpg",
+          "alt": "Archway entrance marking the arrival at Positano port",
+          "caption": "När du har gått genom valvbågen, fortsätt en kort sträcka till hamnen, färjebiljettluckorna ligger framför"
+        }
       ]
     },
     {
@@ -34,6 +76,18 @@
         "Kontrollera tavlorna utanför Lucibello och Travelmar för nästa avgång. På morgonen går båtarna oftast var 30–60:e minut under säsong.",
         "Köp en enkelbiljett till Amalfi och ha den redo när du går ombord – bolagen ropar upp passagerare några minuter innan avgång.",
         "Köerna växer snabbt, så var på plats minst 15 minuter före din valda avgång för att få plats på däck."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/09-nav.jpg",
+          "alt": "Lucibello and Travelmar ferry ticket booths at Positano port",
+          "caption": "Kontrollera tidtabellerna, köp en enkelbiljett till Amalfi och gå ombord på din färja när den kommer."
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/10-nav.jpg",
+          "alt": "Port waiting area with ferry passengers",
+          "caption": "Efter att ha gått av i Amalfi, gå rakt fram till bussterminalen till vänster om piazzan"
+        }
       ]
     },
     {
@@ -43,15 +97,29 @@
         "Överfarten tar cirka 25 minuter. Stå på styrbordssidan för utsikt tillbaka mot Positano och Praiano.",
         "När du lägger till, gå av direkt och fortsätt rakt fram till bussterminalen som ligger till vänster om hamnpiazzan.",
         "Har du tid innan bussen kan du kika på Amalfis katedralstorg eller ta en espresso – håll bara koll på hållplatsen för bussen mot Agerola."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/11-nav.jpg",
+          "alt": "Gångväg från Amalfi färjebrygga till SITA busstation",
+          "caption": "1. Bomerano-hållplats — gå av här när du ser Jerla-restaurangens skylt, korsa sedan vägen"
+        }
       ]
     },
     {
       "id": "bus-to-bomerano",
       "title": "Ta bussen till Bomerano",
       "body": [
-        "Håll utkik efter SITA-bussen märkt “Agerola/Bomerano”. Stämpla biljetten när du går ombord och sätt dig långt fram för färre kurvor.",
+        "Håll utkik efter SITA-bussen märkt \"Agerola/Bomerano\". Stämpla biljetten när du går ombord och sätt dig långt fram för färre kurvor.",
         "Efter cirka 45 minuter kliver du av vid hållplatsen i Bomerano, bredvid Ristorante Jerla. Korsa vägen och följ sidogatan ner till piazzan.",
-        "Fortsätt åt vänster över torget och följ skyltarna mot “Sentiero degli Dei” till anslagstavlan vid ledens start."
+        "Fortsätt åt vänster över torget och följ skyltarna mot \"Sentiero degli Dei\" till anslagstavlan vid ledens start."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/12-nav.jpg",
+          "alt": "Side street from Bomerano bus stop descending toward the piazza",
+          "caption": "2. Korsa vägen från busshållplatsen och följ denna sidogata ner till piazzan"
+        }
       ]
     },
     {
@@ -61,6 +129,28 @@
         "Leden böljar i ungefär sex kilometer. Förbered dig på stensteg, smala avsatser och spektakulära utsiktsbalkonger över kusten.",
         "Pausa vid markerade utsiktsplatser och ta med allt skräp hem. Visa hänsyn till lokala bönder och håll dig till den markerade stigen.",
         "När grusleden möter den betongbelagda gångvägen in till Nocelle är du framme."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/13-nav.jpg",
+          "alt": "Town square (piazza) in Bomerano with left-hand route markers",
+          "caption": "3. Fortsätt åt vänster över piazzan och följ skyltarna mot 'Sentiero degli Dei'"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/14-nav.jpg",
+          "alt": "Wooden steps ascending along the hiking trail ridge",
+          "caption": "4. När du har kommit över piazzan, leta efter anslagstavlan och en vänstersvän, här börjar leden. Följ stigen till ett avsnitt med trätrappor."
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/15-nav.jpg",
+          "alt": "Concrete paved walkway marking entry into Nocelle village",
+          "caption": "När grusleden möter denna betongbelagda gångväg har du nått Nocelle"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/16-nav.jpg",
+          "alt": "Nocelle village navigation map showing route to bus stop and staircase warning",
+          "caption": "Karta över Nocelle — när du går genom byn, se till att svänga höger i korsningen för att nå busshållplatsen; undvik för all del trappan med 1 700 steg till Positano!"
+        }
       ]
     },
     {
@@ -70,6 +160,23 @@
         "Följ den belagda gångvägen in i byn och håll höger i första korsningen så slipper du den 1 700 steg långa trappan ner mot Positano.",
         "Gå cirka 175 meter till busshållplatsen vid den lilla parkeringsplatsen. Kiosken vid kyrkan säljer kalla drycker i säsong.",
         "Var på plats minst tio minuter i förväg; bussarna stannar ibland strax före hållplatsen när parkeringen är full."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/17-nav.jpg",
+          "alt": "Directional signpost in Nocelle showing the stairs-to-Positano option to avoid",
+          "caption": "KRITISKT: Följ INTE skyltarna till 'Positano' ner för trappan — sväng höger här istället"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/18-nav.jpg",
+          "alt": "Stone steps ascending through Nocelle streets toward the bus stop",
+          "caption": "Gå upp för dessa trappor cirka 175 meter för att nå busshållplatsen vid parkeringsplatsen"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/19-nav.jpg",
+          "alt": "Bus stop arrival point in Nocelle",
+          "caption": "Du har nått busshållplatsen."
+        }
       ]
     },
     {
@@ -152,13 +259,13 @@
     {
       "q": "Hur mycket tid behövs i Amalfi?",
       "a": [
-        "Planera för en buffert på 20–30 minuter när du byter från färja till buss mot Agerola. Ta gärna en snabb kaffe, men håll busshållplatserna inom synhåll så att du inte missar påstigningen."
+        "Kontrollera tidtabellerna för att se hur färjans ankomst och bussens avgång stämmer överens."
       ]
     },
     {
       "q": "Vad händer om färjan ställs in?",
       "a": [
-        "Kolla läget i hamnen. Om båtarna ställs in, byt till bussrutten via Amalfi – du når samma led när du kommer till Bomerano."
+        "Kolla läget i hamnen. Om båtarna ställs in, byt till %LINK:pathOfTheGodsBus|Sentiero degli Dei via Amalfi-buss% – du följer samma led när du väl har nått Bomerano."
       ]
     }
   ],

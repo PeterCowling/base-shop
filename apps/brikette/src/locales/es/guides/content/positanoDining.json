@@ -1,21 +1,22 @@
 {
   "seo": {
-    "title": "Guía para comer en Positano: cenas emblemáticas y restaurantes cercanos",
-    "description": "Selección cuidada de lugares para comer en la Costa Amalfitana: cruceros al atardecer, granjas restaurante y mesas a minutos de Hostel Brikette."
+    "title": "Restaurantes de Positano: cenas emblemáticas y guía de restaurantes cercanos",
+    "description": "Selección curada de restaurantes en la Costa Amalfitana: cenas en barco al atardecer, banquetes campesinos y restaurantes a minutos del Hostel Brikette."
   },
-  "linkLabel": "Guía gastronómica de Positano",
+  "linkLabel": "Los mejores restaurantes de Positano cerca del Hostel Brikette",
   "intro": [
-    "Nuestro equipo reunió los restaurantes favoritos para distintos presupuestos, empezando por los que quedan más cerca de Hostel Brikette.",
-    "Usa esta guía para planear caprichos al atardecer, banquetes de kilómetro cero y bocados rápidos cuando quieras buena comida sin largas subidas."
+    "Los restaurantes de Positano van desde pizzas para llevar de 7 € hasta menús degustación de más de 100 €. Esta guía se centra en lugares para comer a distancia caminable o a un corto viaje en autobús SITA desde el Hostel Brikette en Chiesa Nuova, con costos claros, necesidades de reserva y cómo llegar.",
+    "La mayoría de los lugares cercanos son planos o cuesta abajo en Via Marconi, pero los restaurantes junto al mar requieren escaleras empinadas en el regreso. Presupuesta 35–60 € para cenas sentado, o 7–12 € para comida casual para llevar. Reserva mesas en terraza al menos un día antes en verano.",
+    "Para experiencias emblemáticas, el banquete campesino de La Tagliata cuesta 65 € con transporte incluido, y la cena en barco al atardecer de La Gavitella cuesta alrededor de 139 €. Ambas necesitan reserva anticipada y se llenan rápido en julio-agosto."
   ],
   "toc": [
     {
       "href": "#signature-experiences",
-      "label": "Experiencias gastronómicas imperdibles"
+      "label": "Experiencias gastronómicas emblemáticas"
     },
     {
       "href": "#near-hostel",
-      "label": "Restaurantes cerca de Hostel Brikette"
+      "label": "Restaurantes cerca del Hostel Brikette"
     },
     {
       "href": "#destination-dinners",
@@ -25,70 +26,141 @@
   "sections": [
     {
       "id": "signature-experiences",
-      "title": "Experiencias gastronómicas imperdibles",
+      "title": "Experiencias gastronómicas emblemáticas",
       "body": [
-        "El crucero al atardecer de La Gavitella combina el paseo en barco desde Spiaggia Grande con un menú degustación de mariscos en su terraza de Praiano. El paquete cuesta unos 139 € por persona e incluye el regreso: llega con tiempo para embarcar y disfrutar la hora dorada.",
-        "La Tagliata está 3 km cuesta arriba en Montepertuso. Sube en el autobús SITA hacia Nocelle y bájate justo después del pueblo o reserva la lanzadera del restaurante. Prepárate para un generoso banquete campesino de 65 € con antipasti, pasta casera, parrilla, postre y vino de la casa sin límite."
+        "**El crucero al atardecer de La Gavitella** combina un paseo en barco desde la playa principal de Positano (Spiaggia Grande) con un menú degustación de mariscos en su terraza de Praiano. El paquete completo cuesta alrededor de 139 € por persona e incluye el cruce en barco de ida y vuelta. Embarca 15 minutos antes en la playa — el personal te registrará antes de la salida. El viaje dura aproximadamente 20 minutos en cada dirección, y comerás mientras el sol se pone sobre la costa.",
+        "**La Tagliata** está 3 km cuesta arriba en el pueblo de Montepertuso. Puedes tomar el autobús SITA hacia Nocelle y bajarte justo después del cartel del pueblo, luego caminar cinco minutos por un camino señalizado. O pide al restaurante que envíe su lanzadera gratuita — indícales tu hora de recogida en el Hostel Brikette al reservar. La comida es un generoso banquete campesino de 65 €: antipasti, pasta casera, carnes a la parrilla, ensalada, postre y vino de la casa sin límite. Espera más de 2 horas de platos servidos al estilo familiar en mesas largas con vistas amplias.",
+        "Ambos restaurantes se reservan completamente en temporada alta (julio-agosto), así que reserva al menos 2-3 días antes. Menciona que te hospedas en Hostel Brikette para que las lanzaderas sepan exactamente dónde recogerte. Lleva una capa ligera para el regreso en barco o la brisa nocturna en Montepertuso."
       ]
     },
     {
       "id": "near-hostel",
-      "title": "Restaurantes cerca de Hostel Brikette",
+      "title": "Restaurantes cerca del Hostel Brikette",
       "body": [
-        "C'era Una Volta está casi frente al hostal en Via Marconi, ideal para pizzas para llevar de 7–12 € o una comida tranquila sentado.",
-        "Il Grottino Azzurro queda a 160 m por la misma calle, todo llano y a dos minutos, con platos campanos clásicos alrededor de 35 €.",
-        "Da Gabrisa (a 260 m, 52 m cuesta abajo) y Next2 (270 m, 75 m cuesta abajo) elevan la cena con terrazas panorámicas y menús fijos cerca de 60 €.",
-        "Da Costantino recompensa una breve subida de 300 m con ventanales y raciones abundantes desde unos 30 €, mientras que Luna en Villa Magia está a siete minutos, 450 m cuesta abajo, para un menú degustación de ocasión especial alrededor de 100 €."
+        "Chiesa Nuova (donde se encuentra el Hostel Brikette) ofrece varias opciones gastronómicas a 5 minutos a pie, la mayoría planas o suavemente cuesta abajo en Via Marconi.",
+        "**C'era Una Volta** está casi frente a la entrada del hostal. Es el lugar preferido para pizzas para llevar (7–12 €) o comidas sentado con bases napolitanas clásicas y coberturas frescas. No se necesita reserva para llevar; llega antes de las 8 pm para evitar colas.",
+        "**Il Grottino Azzurro** está a 160 m en la misma calle (2 minutos planos). Sirven clásicos campanos — piensa en paccheri al ragu, pescado fresco, postres de limón — por alrededor de 35 € por persona. La terraza atrapa el sol de la tarde, y normalmente puedes entrar sin reserva al almuerzo. La cena se reserva en verano, así que llama antes o pregunta al conserje del hostal.",
+        "**Da Gabrisa** (a 260 m, 52 m cuesta abajo) y **Next2** (a 270 m, 75 m cuesta abajo) ofrecen vistas en terraza y menús degustación de múltiples platos alrededor de 60 €. Son buenas opciones de lujo cuando quieres algo especial sin caminar lejos. Ambos aceptan reservas por teléfono o el servicio de conserjería del hostal — reserva un día antes para asientos en terraza.",
+        "**Da Costantino** recompensa una corta caminata cuesta arriba de 300 m (unos 5 minutos) con vistas por la ventana y porciones abundantes desde aproximadamente 30 €. Es un lugar familiar con generosos platos de pasta y carnes a la parrilla. Las entradas sin reserva suelen funcionar al almuerzo; la cena está más concurrida.",
+        "**Luna at Villa Magia** está a 7 minutos caminando cuesta abajo (450 m, 90 m de pérdida de elevación) para un menú degustación de ocasión especial alrededor de 100 €. El entorno es elegante con jardines en terrazas, y la cocina se centra en interpretaciones modernas de ingredientes amalfitanos. Espera una comida de más de 2 horas. Reserva con mucha antelación, y recuerda la subida de regreso — usa zapatos cómodos o arregla un %LINK:porterServices|porteador% para que te lleve de vuelta si es necesario."
       ]
     },
     {
       "id": "destination-dinners",
       "title": "Cenas que valen el viaje más allá de Chiesa Nuova",
       "body": [
-        "Buca di Bacco está en la playa principal, a 1 km (167 m cuesta abajo), con servicio impecable y cena junto al mar por 50 €; planifica el regreso cuesta arriba o contrata un porteador si te excedes.",
-        "Il Ritrovo en Montepertuso y La Taverna del Leone cerca de Laurito requieren tomar el autobús SITA (2,3 km y 4 km desde el hostal), pero recompensan el trayecto con menús de 45–55 € y vistas amplias.",
-        "Los menús estándar de La Tagliata y La Gavitella rondan los 50 € si omites los paquetes premium: siguen siendo excelentes para compartir platos, disfrutar de productos de sus huertos y panorámicas de la costa."
+        "**Buca di Bacco** está en la playa principal de Positano (1 km desde el hostal, 167 m cuesta abajo). Es un restaurante de playa pulido con manteles, servicio atento y menús centrados en mariscos alrededor de 50 € por persona. La caminata hacia abajo toma 15-20 minutos por escaleras y senderos peatonales. El regreso es empinado — presupuesta 25-30 minutos cuesta arriba, o reserva un %LINK:porterServices|porteador% si has bebido vino. Reservas esenciales en verano.",
+        "**Il Ritrovo** en Montepertuso y **La Taverna del Leone** cerca de Laurito requieren un viaje en autobús SITA (2,3 km y 4 km desde el hostal respectivamente). Ambos sirven menús degustación de 45–55 € con amplias vistas costeras. Toma el autobús desde Chiesa Nuova hacia Nocelle (para Il Ritrovo) o hacia Praiano (para La Taverna). Verifica el último autobús de regreso antes de sentarte — los servicios disminuyen después de las 10 pm en temporada baja.",
+        "También puedes pedir menús estándar en La Tagliata y La Gavitella sin los paquetes premium. Espera pagar alrededor de 50 € por persona por platos para compartir, productos de sus propios huertos y asientos en terraza panorámica. Todavía excelente valor, solo sin el traslado en barco o lanzadera incluido.",
+        "Para más ideas gastronómicas económicas en Positano, consulta nuestra %LINK:cheapEats|guía de comida barata%. Si planeas un día completo alrededor de las playas de Positano, revisa %LINK:positanoBeaches|dónde nadar y tomar el sol%."
+      ]
+    },
+    {
+      "id": "practical-tips",
+      "title": "Consejos prácticos para cenar fuera",
+      "body": [
+        "**Reservar con anticipación:** Reserva mesas en terraza al menos 1-2 días antes en temporada alta (junio-septiembre). Los lugares sin reserva se agotan rápido después de las 7 pm. Usa el conserje del Hostel Brikette o llama directamente — menciona que estás en el hostal para que las lanzaderas y porteadores conozcan el punto exacto de recogida.",
+        "**Transporte:** Los boletos de autobús SITA cuestan 1,30–2,50 € según la distancia. Cómpralos en estancos (tabacchi) o a bordo con pago sin contacto. Los autobuses circulan cada 30-60 minutos; revisa el %LINK:sitaTickets|horario% y deja un margen de 20 minutos en temporada alta cuando se llenan.",
+        "**Escaleras y terreno:** La mayoría de los restaurantes cerca del hostal son planos o suavemente cuesta abajo. Los lugares junto al mar como Buca di Bacco involucran escaleras empinadas en el regreso — usa calzado seguro y ve a tu ritmo. Si te has excedido, los servicios de porteadores cuestan 30–50 € para la subida de regreso a Chiesa Nuova.",
+        "**Pago:** La mayoría de los lugares aceptan tarjetas, pero las trattorias más pequeñas prefieren efectivo. Los cajeros automáticos están disponibles en el centro de Positano (cerca de la playa principal). La propina no es obligatoria pero 5-10% se aprecia para un servicio excelente.",
+        "**Contingencias climáticas:** El mar agitado ocasionalmente cancela traslados en barco nocturnos a Praiano y Laurito. Mantén el horario del autobús SITA como respaldo. En invierno (noviembre-marzo), algunos restaurantes cierran u operan horarios reducidos — llama antes para confirmar."
       ]
     }
   ],
-  "typicalCostsTitle": "Gasto habitual por persona",
+  "typicalCostsTitle": "Gasto típico por persona",
   "typicalCosts": [
-    "Crucero al atardecer y cena en La Gavitella: unos 139 € con traslado en barco y banquete marino.",
-    "Banquete campesino en La Tagliata: alrededor de 65 € con antipasti, pasta, parrilla, postre y vino de la casa.",
-    "Trattorias del barrio: pizzas para llevar de 7–12 € en C'era Una Volta; platos cercanos a 35 € en Il Grottino Azzurro; menús degustación de 60 € en Da Gabrisa o Next2.",
-    "Cenas de destino: 30 € en Da Costantino, 45 € en La Taverna del Leone, 50 € en Buca di Bacco o en los menús estándar de La Tagliata/La Gavitella y más de 100 € en Luna de Villa Magia."
+    "Crucero al atardecer y cena en La Gavitella: alrededor de 139 € con traslado en barco y banquete de mariscos de múltiples platos.",
+    "Banquete campesino en La Tagliata: 65 € incluyendo antipasti, pasta, carnes a la parrilla, postre y vino de la casa ilimitado.",
+    "Trattorias del barrio: pizza para llevar 7–12 € en C'era Una Volta; comidas sentado 30–35 € en Il Grottino Azzurro o Da Costantino; menús degustación 60 € en Da Gabrisa o Next2.",
+    "Cenas de destino: 45–55 € en Il Ritrovo o La Taverna del Leone; 50 € en Buca di Bacco o menús estándar de La Tagliata/La Gavitella; 100+ € en Luna at Villa Magia."
   ],
   "tips": [
-    "Reserva las mesas de terraza al menos con un día de antelación; menciona que estás en Hostel Brikette para que las lanzaderas sepan dónde recogerte.",
-    "Lleva efectivo o tarjetas contactless para los billetes SITA hacia Montepertuso, Nocelle, Laurito o Praiano y deja un margen de 20 minutos en temporada alta.",
-    "Para los traslados en barco de La Gavitella, lleva una capa ligera para el regreso y confirma la última lanzadera antes de sentarte."
+    "Reserva mesas en terraza 1-2 días antes en verano — menciona Hostel Brikette para coordinación de lanzadera/porteador.",
+    "Compra boletos de autobús SITA (1,30–2,50 €) en estancos o a bordo; deja un margen de 20 minutos cuando los autobuses están ocupados.",
+    "Lleva una capa ligera para traslados en barco y brisas nocturnas en pueblos de montaña.",
+    "Usa calzado seguro para escaleras empinadas en el regreso de restaurantes junto al mar — o presupuesta 30–50 € para servicio de porteador.",
+    "Verifica horarios de apertura de restaurantes en invierno (noviembre-marzo) ya que algunos cierran o reducen el servicio."
   ],
   "warnings": [
-    "Prepárate para escaleras empinadas al volver de las cenas junto al mar; usa calzado seguro y sube a tu ritmo.",
-    "Los paquetes al atardecer y los asientos de las lanzaderas se agotan; reserva en la web del restaurante o con el concierge antes del mediodía, sobre todo en julio y agosto.",
-    "El mar agitado a veces suspende los barcos nocturnos hacia Praiano y Laurito, así que conserva el horario del autobús SITA como respaldo."
+    "Las escaleras empinadas en el regreso de cenas junto al mar (Buca di Bacco, área de playa principal) pueden tomar 25-30 minutos cuesta arriba — ve a tu ritmo y considera servicios de porteadores si es necesario.",
+    "Los paquetes de crucero al atardecer y lanzaderas de restaurantes se agotan rápido en julio-agosto — reserva a través de sitios web de restaurantes o el conserje del Hostel Brikette antes del mediodía.",
+    "El mar agitado ocasionalmente pausa barcos nocturnos a Praiano y Laurito — mantén el horario del autobús SITA como ruta de respaldo.",
+    "Las mesas sin reserva desaparecen después de las 7 pm en temporada alta — reserva antes o come temprano para evitar decepciones."
   ],
   "faqs": [
     {
-      "q": "¿Debo reservar con antelación el crucero al atardecer de La Gavitella?",
+      "q": "¿Necesito reservar el crucero al atardecer de La Gavitella con anticipación?",
       "a": [
-        "Sí: reserva con el restaurante o con el concierge de Hostel Brikette y pide el paquete de crucero al atardecer (unos 139 €).",
-        "Llega 15 minutos antes a Spiaggia Grande para que la tripulación pueda embarcar con calma antes de zarpar."
+        "Sí — reserva a través del sitio web del restaurante o vía el conserje del Hostel Brikette y solicita el paquete de crucero al atardecer (alrededor de 139 €).",
+        "Llega 15 minutos antes a Spiaggia Grande (la playa principal de Positano) para que el equipo pueda registrar a todos antes de la salida. El barco parte puntualmente a la hora programada."
       ]
     },
     {
       "q": "¿Cómo llego a La Tagliata sin coche?",
       "a": [
-        "Toma el autobús SITA hacia Nocelle y baja justo después de Montepertuso, luego sigue el camino señalizado durante cinco minutos a pie.",
-        "También puedes confirmar la lanzadera gratuita al reservar; indícales tu hora de recogida en el hostal para que puedan planificar la ruta."
+        "Opción 1: Toma el autobús SITA hacia Nocelle desde Chiesa Nuova (1,30–2,50 €). Bájate justo después del cartel del pueblo Montepertuso y sigue el camino señalizado durante 5 minutos a pie.",
+        "Opción 2: Pide a La Tagliata que envíe su lanzadera gratuita al reservar. Indícales tu hora de recogida en Hostel Brikette para que puedan planificar la ruta. La lanzadera te ahorra el boleto de autobús y te deja justo en la puerta del restaurante."
       ]
     },
     {
-      "q": "¿Hay lugares económicos cerca de Hostel Brikette?",
+      "q": "¿Hay lugares asequibles cerca del Hostel Brikette?",
       "a": [
-        "C'era Una Volta está enfrente con pizzas de unos 7–12 € y servicio rápido para llevar.",
-        "Il Grottino Azzurro, Da Gabrisa y Next2 quedan a menos de cinco minutos a pie, con menús de 35 a 60 € y mesas con vista al mar."
+        "Sí — C'era Una Volta está al otro lado de la calle con pizzas para llevar desde 7–12 € y servicio rápido.",
+        "Il Grottino Azzurro (2 minutos planos en Via Marconi) sirve comidas sentado por alrededor de 35 €. Da Costantino (5 minutos cuesta arriba) ofrece porciones abundantes desde 30 €.",
+        "Para más ideas económicas en Positano, consulta nuestra guía de comida barata."
+      ]
+    },
+    {
+      "q": "¿Qué pasa si se cancela el barco del atardecer por mar agitado?",
+      "a": [
+        "La Gavitella normalmente ofrecerá reprogramar o dar un reembolso. Si aún quieres ir, toma el autobús SITA hacia Praiano (20-30 minutos desde Chiesa Nuova) y camina al restaurante.",
+        "Revisa el pronóstico del tiempo y las condiciones del mar con anticipación — el restaurante te llamará si necesitan cancelar el barco."
+      ]
+    },
+    {
+      "q": "¿Puedo entrar sin reserva para cenar?",
+      "a": [
+        "Al almuerzo, las entradas sin reserva suelen funcionar en la mayoría de los lugares. Para la cena en temporada alta (junio-septiembre), las mesas se reservan rápido después de las 7 pm — reserva 1-2 días antes para asientos en terraza.",
+        "C'era Una Volta (pizza para llevar) no necesita reservas, pero llega antes de las 8 pm para evitar colas."
       ]
     }
-  ]
+  ],
+  "images": [
+    {
+      "src": "/img/guides/positano-dining/01-la-tagliata-terrace.jpg",
+      "alt": "Terraza en la cima de La Tagliata con mesas largas y vistas costeras en Montepertuso",
+      "caption": "La terraza campesina de La Tagliata sirve banquetes al estilo familiar con vistas a la Costa Amalfitana"
+    },
+    {
+      "src": "/img/guides/positano-dining/02-chiesa-nuova-restaurants.jpg",
+      "alt": "Terraza de restaurante en Via Marconi cerca del Hostel Brikette en Chiesa Nuova",
+      "caption": "Los restaurantes a lo largo de Via Marconi en Chiesa Nuova ofrecen acceso plano y fácil desde el hostal"
+    },
+    {
+      "src": "/img/guides/positano-dining/03-sunset-boat-dining.jpg",
+      "alt": "Crucero en barco al atardecer a lo largo de la Costa Amalfitana acercándose a Praiano",
+      "caption": "El crucero al atardecer de La Gavitella combina traslado en barco con menú degustación de mariscos"
+    },
+    {
+      "src": "/img/guides/positano-dining/04-positano-beachfront-dining.jpg",
+      "alt": "Mesas de restaurante frente a la playa en Spiaggia Grande en Positano",
+      "caption": "Cenar junto al mar en la playa principal de Positano requiere escaleras empinadas en el viaje de regreso"
+    },
+    {
+      "src": "/img/guides/positano-dining/05-trattoria-interior.jpg",
+      "alt": "Interior de trattoria tradicional con manteles a cuadros y platos locales",
+      "caption": "Las trattorias del barrio sirven platos campanos clásicos a minutos del hostal"
+    },
+    {
+      "src": "/img/guides/positano-dining/06-terrace-view-dinner.jpg",
+      "alt": "Mesa de cena en terraza con vista al mar y limoneros al atardecer",
+      "caption": "Reserva mesas en terraza 1-2 días antes en verano para las mejores vistas"
+    },
+    {
+      "src": "/img/guides/positano-dining/07-pizza-takeaway.jpg",
+      "alt": "Pizza napolitana fresca lista para llevar",
+      "caption": "Pizzas para llevar de C'era Una Volta cuestan 7–12 € con servicio rápido"
+    }
+  ],
+  "lastUpdated": "2026-02-04"
 }

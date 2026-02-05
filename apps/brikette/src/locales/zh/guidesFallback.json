@@ -464,14 +464,14 @@
     ],
     "sections": [
       {
-        "title": "Why this route works",
+        "title": "为什么选择这条路线",
         "body": [
           "从旅舍入口到车站沿着主路步行约120米（400英尺）。",
           "前往阿马尔菲时，车站在Bar Internazionale对面。请站在临海的一侧排队。前往索伦托时，则在酒吧门口等候。"
         ]
       },
       {
-        "title": "Tickets and timing",
+        "title": "车票与时间安排",
         "body": [
           "请在烟草店或酒吧内购买SITA车票。不要试图在没有车票的情况下上车，因为车上无法购票。上车时向司机出示车票。如果你要赶当天第一班车，请提前一天买好车票，并到前台办理退房安排。",
           "夏季的巴士经常客满。请特别在最繁忙的时段提前规划。"
@@ -480,29 +480,29 @@
     ],
     "beforeList": [],
     "stepsList": [
-      "Exit Hostel Brikette, take the short staircase to Viale Pasitea, and turn left.",
+      "离开 Hostel Brikette，走短阶梯到达 Viale Pasitea 后左转。",
       "沿着主路的人行道步行约120米（400英尺），即可到达Bar Internazionale。"
     ],
     "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sHostel+Brikette!4m1!2sBar+Internazionale",
     "kneesList": [],
-    "kneesDockPrefix": "Starting with luggage at the ferry dock? Use our",
-    "kneesDockLinkLabel": "Ferry dock luggage route",
-    "kneesPorterPrefix": "Need porter pricing or booking help? Check the",
-    "kneesPorterLinkLabel": "porter service guide",
+    "kneesDockPrefix": "从渡轮码头携带行李出发？请使用我们的",
+    "kneesDockLinkLabel": "渡轮码头行李路线",
+    "kneesPorterPrefix": "需要搬运工价格或预订帮助？查看",
+    "kneesPorterLinkLabel": "搬运服务指南",
     "faqs": [
       {
-        "q": "Do buses stop right outside the hostel?",
-        "a": "They stop at Bar Internazionale—about 120 metres (400 feet) downhill from the entrance."
+        "q": "巴士会在旅舍门口停靠吗？",
+        "a": "它们在 Bar Internazionale 停靠——距离旅舍入口约 120 米（400 英尺）的下坡位置。"
       },
       {
-        "q": "Can I buy tickets at the last minute?",
-        "a": "Yes, the tabacchi next to the stop sells SITA tickets, but expect queues at peak times."
+        "q": "可以临时购票吗？",
+        "a": "可以，车站旁的烟草店出售 SITA 车票，但旺季请做好排队准备。"
       }
     ],
     "howtoSteps": [
-      "Leave Hostel Brikette and follow Viale Pasitea downhill",
-      "Join the queue at Bar Internazionale and validate on boarding"
+      "离开 Hostel Brikette，沿 Viale Pasitea 向下走",
+      "在 Bar Internazionale 排队，上车时打票"
     ],
-    "faqsTitle": "FAQs"
+    "faqsTitle": "常见问题"
   }
 }

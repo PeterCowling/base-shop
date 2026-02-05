@@ -79,9 +79,18 @@
   "perksGuarantee": "Varje direktbokning via vår webbplats låser automatiskt upp dessa exklusiva förmåner.",
   "perksIntroLink": "Se alla förmåner",
   "perksList": [
-    "Upp till 25 % rabatt på ordinarie pris när kupongen används",
-    "Kostnadsfri frukost",
-    "Kostnadsfri kvällsdrink"
+    {
+      "title": "Upp till 25 % rabatt på ordinarie pris när kupongen används",
+      "subtitle": "Tillämpas automatiskt"
+    },
+    {
+      "title": "Kostnadsfri frukost",
+      "subtitle": "Ingår dagligen"
+    },
+    {
+      "title": "Kostnadsfri kvällsdrink",
+      "subtitle": "Husval"
+    }
   ],
   "expired": {
     "message": "Det här erbjudandet har avslutats."

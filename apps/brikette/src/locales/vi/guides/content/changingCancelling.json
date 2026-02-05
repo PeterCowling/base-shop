@@ -1,43 +1,50 @@
 {
   "seo": {
-    "title": "Thay đổi và hủy đặt phòng tại Positano",
-    "description": "Hướng dẫn chi tiết về lựa chọn hủy, chính sách vắng mặt (no‑show), cách sửa đặt phòng, quy tắc chuyển nhượng và đặt trước không hoàn tiền tại hostel duy nhất ở Positano."
+    "title": "Thay Đổi và Hủy Đặt Phòng Hostel Positano",
+    "description": "Hướng dẫn chi tiết về các tùy chọn hủy phòng, chính sách không xuất hiện, cách sửa đổi đặt phòng, quy tắc chuyển nhượng đặt phòng và đặt phòng trả trước không hoàn tiền tại hostel duy nhất ở Positano."
   },
-  "linkLabel": "Thay đổi và hủy đặt phòng tại Positano",
+  "linkLabel": "Thay Đổi và Hủy Đặt Phòng Hostel Positano",
   "sections": [
     {
       "id": "noShowCharges",
-      "title": "Phí vắng mặt (No‑show)",
+      "title": "Phí Không Xuất Hiện",
       "body": [
-        "Nếu bạn chưa hoàn tất nhận phòng trước 22:30 (10:30 tối) trong ngày đầu tiên của kỳ lưu trú, đặt phòng sẽ tự động bị đánh dấu là \"vắng mặt (No-Show)\". Chúng tôi sẽ thu khoản phí lớn hơn giữa giá đêm đầu tiên hoặc tiền đặt cọc không hoàn lại của bạn. Nếu bạn có nhiều đặt phòng, mỗi đặt phòng có thể có thời hạn thông báo hủy và mức phí riêng."
+        "Nếu bạn chưa nhận phòng trước 22:30 (10:30 tối) vào ngày đầu tiên của đặt phòng, đặt phòng của bạn sẽ tự động được đánh dấu là 'Không Xuất Hiện'. Bạn sẽ bị tính phí cao hơn trong hai mức: phí lưu trú đêm đầu tiên hoặc tiền đặt cọc không hoàn lại của bạn. Nếu bạn có nhiều đặt phòng, mỗi đặt phòng có thể có thời gian thông báo hủy và phí riêng."
       ]
     },
     {
       "id": "cancellationsPolicy",
-      "title": "Chính sách hủy",
+      "title": "Chính Sách Hủy Phòng",
       "body": [
-        "Vui lòng gửi mọi yêu cầu hủy bằng văn bản tới địa chỉ email chính thức của chúng tôi (%URL:mailto:hostelpositano@gmail.com|hostelpositano@gmail.com%). Thời hạn hủy được tính từ lúc hostel nhận được email của bạn và kết thúc vào 00:01 trong ngày nhận phòng đã đặt. Đặt phòng của bạn vẫn có hiệu lực cho tới khi bạn nhận được email xác nhận đã xử lý hủy. Một khoản phí xử lý hủy riêng — thường là 15% giá trị đặt phòng (không bao gồm hoa hồng của bên thứ ba) — sẽ được áp dụng. Hostel có thể hủy đặt phòng của bạn mà không cần yêu cầu bằng văn bản nếu bạn không đến trước khi lễ tân đóng cửa trong ngày đến, rời đi sớm mà không thông báo hợp lệ hoặc vi phạm nội quy. Nếu bạn không báo trước đủ, phí tương đương một trường hợp No-Show sẽ được áp dụng."
+        "Gửi tất cả yêu cầu hủy phòng bằng văn bản đến địa chỉ email chính thức của chúng tôi (%URL:mailto:hostelpositano@gmail.com|hostelpositano@gmail.com%). Thời gian hủy bắt đầu khi hostel nhận được email của bạn và kết thúc lúc 00:01 vào ngày nhận phòng dự kiến. Đặt phòng của bạn vẫn hoạt động cho đến khi bạn nhận được xác nhận qua email rằng việc hủy đã được xử lý. Phí Quản Lý Hủy Phòng riêng biệt - thường là 15% giá đặt phòng không bao gồm hoa hồng bên thứ ba - sẽ được tính. Hostel có thể hủy đặt phòng của bạn mà không cần yêu cầu bằng văn bản nếu bạn không nhận phòng trước khi lễ tân đóng cửa vào ngày đến, rời đi sớm mà không thông báo đúng cách hoặc vi phạm chính sách của hostel. Nếu bạn không thông báo đầy đủ, bạn sẽ phải chịu các khoản phí tương đương với Không Xuất Hiện."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/f/f4/Man_with_smartphone_and_laptop_%28Unsplash%29.jpg",
+          "alt": "Người đang sử dụng điện thoại thông minh và máy tính xách tay",
+          "caption": "Email là cách nhanh nhất để có bản ghi bằng văn bản về các thay đổi hoặc hủy phòng."
+        }
       ]
     },
     {
       "id": "changingConfirmedBookings",
-      "title": "Thay đổi đặt phòng đã xác nhận",
+      "title": "Thay Đổi Đặt Phòng Đã Xác Nhận",
       "body": [
-        "Đặt phòng hiện có không thể chỉnh sửa trực tiếp; chúng sẽ được thay thế hoàn toàn bằng một đặt phòng mới. Hãy gửi yêu cầu thay đổi tới email chính thức của chúng tôi trong khoảng thời gian thông báo bắt buộc và bạn sẽ nhận email xác nhận khi yêu cầu được phê duyệt. Mọi thay đổi phụ thuộc vào tình trạng phòng và các điều kiện đi kèm. Nếu bạn rút ngắn hoặc kéo dài kỳ nghỉ, chúng tôi sẽ xử lý như yêu cầu hủy hoặc gia hạn; mọi gia hạn được xem là một đặt phòng mới. Nếu bạn rời đi trước ngày trả phòng đã xác nhận mà chưa nhận email xác nhận hủy chính thức, các điều khoản ban đầu vẫn được giữ nguyên."
+        "Các đặt phòng hiện có không thể được sửa đổi trực tiếp; thay vào đó, chúng được thay thế hoàn toàn bằng đặt phòng mới. Gửi yêu cầu thay đổi qua email đến địa chỉ email chính thức của chúng tôi trong thời gian thông báo yêu cầu. Bạn sẽ nhận được email khi thay đổi được phê duyệt. Tất cả các thay đổi phụ thuộc vào tình trạng phòng trống và các điều kiện khác. Nếu bạn rút ngắn hoặc kéo dài thời gian lưu trú, việc điều chỉnh sẽ được xử lý như yêu cầu hủy hoặc gia hạn, và bất kỳ gia hạn nào được coi là đặt phòng mới. Nếu bạn rời đi trước ngày khởi hành đã xác nhận mà không nhận được xác nhận hủy chính thức, các điều khoản đặt phòng ban đầu sẽ vẫn có hiệu lực."
       ]
     },
     {
       "id": "bookingTransferability",
-      "title": "Chuyển nhượng đặt phòng",
+      "title": "Khả Năng Chuyển Nhượng Đặt Phòng",
       "body": [
-        "Đặt phòng phải giữ nguyên tên của bạn trong suốt thời gian lưu trú. Không được phép chuyển nhượng đặt phòng hoặc đổi tên khách. Nếu có người cố gắng nhận phòng bằng một đặt phòng đã chuyển nhượng, đặt phòng đó sẽ bị hủy ngay lập tức và bạn vẫn chịu trách nhiệm thanh toán toàn bộ chi phí."
+        "Đặt phòng của bạn phải giữ nguyên tên của bạn trong suốt thời gian lưu trú. Không được phép chuyển nhượng đặt phòng hoặc thay đổi tên khách. Nếu ai đó cố gắng nhận phòng với đặt phòng đã chuyển nhượng, đặt phòng sẽ bị hủy ngay lập tức và bạn vẫn chịu trách nhiệm tài chính về toàn bộ số tiền."
       ]
     },
     {
       "id": "prepaidNonRefundableBookings",
-      "title": "Đặt trước, không hoàn tiền",
+      "title": "Đặt Phòng Trả Trước Không Hoàn Tiền",
       "body": [
-        "Các đặt phòng trả trước không hoàn tiền yêu cầu thanh toán toàn bộ ngay khi đặt. Nếu việc thanh toán không thành công, đặt phòng sẽ tự động bị hủy. Những đặt phòng này sẽ không được hoàn tiền ngay cả khi bạn hủy hoặc không đến. Mọi lần gia hạn đều được xử lý như một đặt phòng mới không hoàn tiền."
+        "Đặt phòng trả trước không hoàn tiền yêu cầu thanh toán đầy đủ tại thời điểm đặt phòng. Nếu thanh toán không thành công, đặt phòng của bạn sẽ tự động bị hủy. Các đặt phòng này không được hoàn tiền, ngay cả khi bạn hủy hoặc không xuất hiện. Bất kỳ gia hạn thời gian lưu trú nào sẽ được xử lý như một đặt phòng mới riêng biệt không hoàn tiền."
       ]
     }
   ]

@@ -1,133 +1,249 @@
 {
   "seo": {
-    "title": "Dónde comer barato en Positano",
-    "description": "Panini, pizza al taglio, minimercados y zonas de picnic para comer bien en Positano sin gastar de más, con consejos de efectivo y agua."
+    "title": "Comida barata en Positano: Guía de comida económica",
+    "description": "Come bien en Positano por €15–25/día: pizza al taglio (€3–5), picnics de supermercado, menús del día, opciones dietéticas y consejos de ahorro para viajeros con presupuesto."
   },
-  "linkLabel": "Dónde comer barato en Positano",
+  "linkLabel": "Come como un local: Los mejores bocados económicos de Positano",
   "heroAlt": "Comida para llevar asequible en Positano",
   "intro": [
-    "En Positano puedes comer bien sin gastar de más si eliges bien dónde y cuándo.",
-    "Prioriza panini y pizza al taglio, ensaladas para llevar de minimercados y mira bancos/vistas para picnics con sombra."
+    "Positano no tiene que agotar tu presupuesto de viaje. Mezclando clásicos para llevar, picnics de supermercado y opciones inteligentes para sentarse, puedes comer bien por €15–25 al día mientras otros viajeros gastan el triple en mesas frente al mar.",
+    "Desde el hostal, hemos visto a los huéspedes dominar el arte de comer barato: compran pasteles matutinos en Collina Bakery (5 minutos cuesta arriba), llenan la nevera de la terraza con picnics de minimarket y reservan comidas sentados para ocasiones especiales. Aquí está exactamente cómo hacerlo."
   ],
   "sections": [
     {
-      "id": "panini-pizza",
-      "title": "Panini y pizza al taglio",
+      "id": "strategy",
+      "title": "Estrategia de comida económica",
       "body": [
-        "Busca paninerías y pizzerías al corte lejos del paseo marítimo para mejores precios.",
-        "Combina un panini + fruta del día y una botella grande de agua para una comida completa a bajo coste."
+        "Planifica una comida sentado cada 2–3 días y llena los huecos con comida para llevar, picnics y %LINK:hostelFaqs|desayunos del hostal%. Esto mantiene tu gasto diario en comida alrededor de €15–25 en lugar de €50+.",
+        "Compra en minimarkets cuesta arriba (Via dei Mulini, Via Cristoforo Colombo) donde los precios son 20–30% más bajos que los kioscos de playa. Una botella de agua de 1.5L cuesta €0.80 vs €3 en la arena. Hemos visto cómo se acumula la diferencia: los huéspedes que compran cuesta arriba ahorran €50–70 en una semana.",
+        "Come tu comida principal al mediodía cuando muchas trattorias ofrecen \"menú del giorno\" (€12–18 por pasta, agua, café) en lugar de cena a la carta (€25–40 por persona). El personal en lugares cuesta arriba está acostumbrado a viajeros económicos y no te apresurará.",
+        "Rellena botellas de agua en el hostal o la fuente pública cerca de %LINK:chiesaNuovaArrivals|Chiesa Nuova%—llevar 750ml+ ahorra €2–4 diarios. El hostal tiene agua filtrada disponible 24/7; solo trae tu propia botella o pide prestada una del área común.",
+        "Usa la terraza del hostal como tu comedor: pasteles de desayuno a las 8am con vistas al amanecer, almuerzos picnic extendidos en las mesas y aperitivo al atardecer con vino de minimarket. Es social, escénico y ahorra una fortuna en cubiertos de restaurante."
       ]
     },
     {
-      "id": "takeaway-salads",
-      "title": "Platos para llevar",
+      "id": "grab-and-go",
+      "title": "Básicos para llevar (€3–8 por comida)",
       "body": [
-        "Delicatessen y mostradores de ensaladas ofrecen raciones por peso: pasta fría, verduras a la parrilla, legumbres.",
-        "Pregunta por cubiertos y servilletas; recuerda recoger los residuos al terminar."
+        "Pizza al taglio (por porción): €3–5 por una porción generosa. Collina Bakery y bares a lo largo de Via dei Mulini venden margherita, marinara y coberturas de temporada. Ve antes del mediodía para obtener lotes frescos—probamos la marinara de las 11am de Collina y todavía estaba caliente del horno.",
+        "Panini & focaccia: €4–6 en delicatessen y panaderías. Pide caprese (mozzarella, tomate, albahaca), prosciutto o berenjena parm. Especifica \"senza\" si evitas ingredientes. Desde el hostal, Collina Bakery está a 5 minutos cuesta arriba; llega a las 10am para el menú completo de panini.",
+        "Arancini (bolas de arroz fritas): €2.50–3.50 cada una. Contundentes, portables y disponibles en la mayoría de bares. Las versiones clásicas de ragù o mozzarella están en todas partes. Los huéspedes a menudo compran dos para el almuerzo y las comen en la terraza o playa.",
+        "Espresso en barra: €1.20–1.50 \"al banco\" (de pie en la barra) vs €3.50–5 por servicio de mesa. Es el mismo café, solo precios diferentes. El personal en bares cerca de Chiesa Nuova conoce a la multitud del hostal y siempre son amables.",
+        "Ensaladas y pasta para llevar: €5–8 de mostradores de delicatessen. Genial para picnics o comer de vuelta en la terraza del hostal con vista. Pide servilletas y cubiertos extra, o usa el juego reutilizable disponible en la cocina del hostal."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/cheapEats.jpg",
+          "alt": "Opciones de comida económicas en Positano.",
+          "caption": "Mezcla bocados para llevar y mostradores de café para mantener comidas asequibles."
+        }
       ]
     },
     {
-      "id": "minimarkets",
-      "title": "Minimercados y básicos",
+      "id": "supermarket-picnics",
+      "title": "Picnics de supermercado (€6–12 por comida)",
       "body": [
-        "Compra agua en formato grande para rellenar botellas y ahorrar.",
-        "Snacks: fruta de temporada, pan, yogures y galletas suelen tener mejor relación calidad‑precio."
+        "Abastécete en minimarkets: pan/focaccia (€1.50–3), queso local (€3–5 por 200g), salami o prosciutto (€4–6), tomates cherry (€2) y fruta (€2–4). Eso es un picnic completo para dos por menos de €20. Hemos visto a huéspedes convertir esto en un ritual nocturno en la terraza.",
+        "Dónde comerlo: Terraza del hostal (mejor vista del atardecer en Positano, verificado por innumerables fotos de huéspedes), %LINK:fornilloBeachGuide|sección pública gratuita de Fornillo Beach% (extremo oeste) o los bancos sombreados cerca de Chiesa Nuova. La terraza tiene mesas, sillas y una vista del atardecer que supera cualquier restaurante.",
+        "Equipo reutilizable: Trae un cuchillo pequeño, tabla de cortar y servilleta de tela. Ahorrarás en tarifas de cubiertos de plástico y reducirás residuos. La cocina del hostal tiene un cuchillo y tabla de cortar compartidos si olvidas los tuyos.",
+        "Consejo de vino: El vino de minimarket es €4–8 por botella vs €20+ en restaurantes. Bebe responsablemente y recicla vidrio en contenedores del hostal. Recomendaciones del personal: pide \"vino locale\" (vino local) en minimarkets para la mejor relación calidad-precio."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/picnic-positano.jpg",
+          "alt": "Picnic con queso local, pan y fruta con vista a Positano.",
+          "caption": "Los picnics de supermercado en la terraza del hostal ahorran dinero y ofrecen las mejores vistas."
+        }
       ]
     },
     {
-      "id": "picnic",
-      "title": "Dónde hacer picnic (con vistas)",
+      "id": "casual-dining",
+      "title": "Lugares informales para sentarse (€12–20 por persona)",
       "body": [
-        "Bancos y miradores en zonas altas dan sombra y vistas; evita zonas privadas y respeta el entorno.",
-        "En verano, come temprano o al atardecer para evitar el calor."
+        "Mira cuesta arriba: Las trattorias en Via Cristoforo Colombo o cerca de Chiesa Nuova cobran menos que los lugares de playa. Espera €8–12 por pasta, €3–5 por vino de la casa (jarra), €2 coperto.",
+        "Menús del mediodía: \"Menú del giorno\" agrupa pasta, agua y espresso por €12–18. Pregunta al sentarte o revisa la pizarra afuera.",
+        "Comparte entrantes: Bruschetta, caprese o calamares fritos (€6–10) divididos entre dos personas estira el presupuesto. Salta el postre y compra gelato o dulces de panadería después por la mitad del precio.",
+        "Agua del grifo: Pide \"acqua del rubinetto\" (agua del grifo, gratis) en lugar de embotellada (€2.50–4). Es segura y perfectamente normal solicitarla.",
+        "Mínimos de tarjeta: Algunos lugares pequeños requieren mínimo €10–15 para pagos con tarjeta. Lleva €20–30 en efectivo para evitar tarifas de cajero o momentos incómodos."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/trattoria-uphill.jpg",
+          "alt": "Pequeña trattoria cuesta arriba con asientos al aire libre en Positano.",
+          "caption": "Las trattorias cuesta arriba ofrecen mejor valor que los restaurantes de playa."
+        }
       ]
     },
     {
-      "id": "tips",
-      "title": "Consejos rápidos",
+      "id": "dietary-options",
+      "title": "Comida barata apta para dietas y alergias",
       "body": [
-        "Evita el frente de playa para comer; dos calles arriba los precios bajan.",
-        "Lleva efectivo para locales que no aceptan tarjeta en consumos pequeños.",
-        "Pide agua del grifo cuando sea posible (acqua del rubinetto)."
+        "Vegetariano: Panini caprese (€4–5), berenjena parmigiana al taglio (€4), pasta al pomodoro o aglio e olio (€8–10), pizza margherita (€3–5 por porción).",
+        "Vegano: Pizza marinara (sin queso, €3–4 porción), pasta con salsa de tomate (confirma sin mantequilla/queso), fruta de mercados, focaccia senza formaggio.",
+        "Sin gluten: Muchas panaderías y trattorias ofrecen pasta y pizza sin gluten (\"senza glutine\"). Los precios son similares o €1–2 más. Siempre pregunta sobre contaminación cruzada si eres celíaco.",
+        "Alergias: Di \"sono allergico/a a...\" (Soy alérgico a...) y especifica: nueces (\"noci\"), lácteos (\"latticini\"), mariscos (\"crostacei\"), etc. El personal toma las alergias en serio—no dudes en preguntar."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/vegetarian-panini.jpg",
+          "alt": "Panini caprese con mozzarella fresca, tomate y albahaca.",
+          "caption": "Las opciones vegetarianas como el panini caprese son asequibles y ampliamente disponibles."
+        }
+      ]
+    },
+    {
+      "id": "sweet-breaks",
+      "title": "Pausas dulces y dulces (€2–5)",
+      "body": [
+        "Granita de limón: €2.50–3.50 de carritos callejeros o bares. Refrescante, dulce icónico de la Costa Amalfitana y más barato que cócteles (€8–12).",
+        "Postres de panadería: Delizia al limone, sfogliatella o tiramisù por porción (€3–5). Comparte uno entre dos personas para un arreglo asequible.",
+        "Gelato: €2.50–4 por un cono vs €6–8 por postres sentados. Busca carteles de \"produzione propria\" (casero).",
+        "Combo espresso + pastel: €3–4 en la barra. Un desayuno italiano clásico o estimulante de tarde."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/lemon-granita.jpg",
+          "alt": "Granita de limón en una taza con una cuchara.",
+          "caption": "La granita de limón es un dulce refrescante de €3—mucho más barato que cócteles de bar."
+        }
+      ]
+    },
+    {
+      "id": "where-to-shop",
+      "title": "Dónde comprar y comer",
+      "body": [
+        "Collina Bakery (Via Cristoforo Colombo): Panini, pizza al taglio, ensaladas, pasteles. Abierto temprano para desayuno para llevar.",
+        "Minimarkets en Via dei Mulini: Ubicación central, precios justos, bueno para provisiones de picnic y recargas de agua (compra una vez, recarga en el hostal).",
+        "Delicatessen cerca de Chiesa Nuova: Lugares cuesta arriba con mostradores de deli, focaccia y queso. Menos margen turístico que la playa.",
+        "Puestos de frutas y verduras: Productos de temporada, a menudo más baratos que minimarkets. Genial para bocadillos y adiciones de picnic.",
+        "Bares con mostradores: Para por espresso \"al banco\" y pregunta por arancini, panini o especiales del día. Los locales comen aquí, así que los precios se mantienen razonables."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/minimarket-positano.jpg",
+          "alt": "Escaparate de minimarket en Via dei Mulini.",
+          "caption": "Los minimarkets cuesta arriba ofrecen precios justos para provisiones de picnic y agua."
+        }
+      ]
+    },
+    {
+      "id": "timing-tips",
+      "title": "Consejos de horarios y colas",
+      "body": [
+        "Panaderías: Ve antes de las 11am para pizza al taglio fresca y selección completa de panini. Después de las 2pm, muchos artículos se agotan.",
+        "Menús del mediodía: Llega a las 12:30pm para conseguir \"menú del giorno\" antes de que la cocina cambie a preparación de cena (generalmente 3–5pm).",
+        "Supermercados: Compra por la mañana (8–10am) cuando los estantes están llenos. La tarde puede estar escogida, especialmente en verano.",
+        "Evita la hora punta de cena: Si comes fuera, llega a las 7pm o después de las 9:30pm para saltar la ola turística de 8–9pm y conseguir mesas sin reserva."
       ]
     }
   ],
   "tips": [
-    "Pregunta por el “menu del giorno” o los menús de mediodía: muchos locales incluyen pasta, agua y café por menos de 18 €.",
-    "Lleva un recipiente plegable para las sobras y así puedes disfrutarlas más tarde en el hostal."
+    "Presupuesta €15–25 por día mezclando una comida para llevar, un picnic y desayuno del hostal. Guarda cenas sentados para cada 2–3 días.",
+    "Compra cuesta arriba en minimarkets en Via dei Mulini o cerca de Chiesa Nuova para precios 20–30% más bajos que kioscos de playa.",
+    "Pide \"menú del giorno\" al mediodía (€12–18 por pasta, agua, café) y \"acqua del rubinetto\" (agua del grifo gratis) para reducir costos.",
+    "Lleva cubiertos reutilizables, un cuchillo pequeño y una botella de agua (750ml+). Recarga en el hostal o fuente pública cerca de Chiesa Nuova.",
+    "Para necesidades dietéticas, di \"sono allergico/a a...\" (Soy alérgico a...) o pide \"senza glutine\" (sin gluten) / \"senza formaggio\" (sin queso)."
   ],
   "recommendationsTitle": "Dónde comer",
   "recommendations": [
     {
       "name": "Collina Bakery",
-      "note": "Panini, pizza al taglio, ensaladas y repostería para llevar para comidas rápidas."
+      "note": "Panini (€4–6), pizza al taglio (€3–5), ensaladas (€5–7) y pasteles. Ve antes de las 11am para mejor selección."
     },
     {
-      "name": "Mostradores de charcutería local",
-      "note": "Pide tablas de charcutería, focaccia y provisiones para picnic lejos de los recargos del paseo marítimo."
+      "name": "Minimarkets en Via dei Mulini",
+      "note": "Provisiones de picnic, agua (€0.80 por 1.5L), vino (€4–8), queso y pan. Ubicación central, precios justos."
     },
     {
-      "name": "Minimercados y puestos de fruta",
-      "note": "Abastécete de fruta, botellas grandes de agua y snacks para picnics en la terraza."
+      "name": "Delicatessen cerca de Chiesa Nuova",
+      "note": "Mostradores de deli con focaccia, embutidos y queso local. Menos margen turístico, mejor para compras de picnic al por mayor."
+    },
+    {
+      "name": "Trattorias cuesta arriba (área Via Cristoforo Colombo)",
+      "note": "Menús del mediodía (€12–18), coperto más bajo, vino de la casa por jarra (€3–5). Pide \"menú del giorno\"."
+    },
+    {
+      "name": "Carritos callejeros y mostradores de bar",
+      "note": "Granita de limón (€2.50–3.50), espresso al banco (€1.20–1.50), arancini (€2.50–3.50). Rápido, barato, local."
     }
   ],
   "faqs": [
     {
-      "q": "¿Es fácil encontrar comida barata?",
+      "q": "¿Puedo rellenar agua gratis?",
       "a": [
-        "Sí: panini/pizza al taglio y ensaladas al peso fuera del paseo marítimo."
+        "Sí—llena botellas en el hostal o la fuente pública cerca de Chiesa Nuova. Siempre lleva al menos 750ml (25oz) para evitar comprar botellas de playa de €3."
       ]
     },
     {
-      "q": "¿Se puede hacer picnic?",
+      "q": "¿Hay comida barata vegetariana y vegana?",
       "a": [
-        "Sí: usa bancos y miradores públicos; recoge siempre los residuos."
+        "Absolutamente. Vegetariano: panini caprese (€4–5), porción de berenjena parm (€4), pasta al pomodoro (€8–10). Vegano: pizza marinara (sin queso, €3–4), pasta con salsa de tomate (confirma sin mantequilla), focaccia senza formaggio y fruta de mercado."
+      ]
+    },
+    {
+      "q": "¿Los lugares aceptan tarjetas?",
+      "a": [
+        "La mayoría sí, pero muchos tienen mínimos de €10–15. Lleva €20–30 en efectivo para compras pequeñas, carritos callejeros y para evitar tarifas de cajero (€3–5 por retiro)."
+      ]
+    },
+    {
+      "q": "¿Cuál es un presupuesto diario realista de comida?",
+      "a": [
+        "€15–25 por día si mezclas para llevar, picnics y desayuno del hostal. Los viajeros económicos que comen fuera dos veces al día gastan €40–60+. Una comida sentado cada 2–3 días mantiene bajos los costos."
+      ]
+    },
+    {
+      "q": "¿Son comunes las tarifas de envase para llevar?",
+      "a": [
+        "Algunos lugares cobran €0.50–1 por recipientes. Trae un recipiente reutilizable para ahorrar dinero y reducir residuos de plástico de un solo uso."
+      ]
+    },
+    {
+      "q": "¿Cómo manejo las alergias alimentarias en italiano?",
+      "a": [
+        "Di \"sono allergico/a a...\" (Soy alérgico a...) y especifica: nueces (\"noci\"), lácteos (\"latticini\"), mariscos (\"crostacei\"), gluten (\"glutine\"). El personal toma las alergias en serio y ayudará."
       ]
     }
   ],
   "fallbackIntro": [
-    "Positano tiene muchas opciones asequibles si sabes dónde buscar."
+    "Positano tiene muchos bocados asequibles si sabes dónde buscar."
   ],
   "fallbackRecommendations": [
     {
       "name": "Collina Bakery",
-      "note": "Panini, pizza al taglio, ensaladas y repostería para llevar para comidas rápidas."
+      "note": "Panini, pizza al taglio, ensaladas y pasteles para llevar para comidas rápidas."
     },
     {
-      "name": "Mostradores de charcutería local",
-      "note": "Pide tablas de charcutería, focaccia y provisiones para picnic lejos de los recargos del paseo marítimo."
+      "name": "Mostradores de delicatessen local",
+      "note": "Pide platos de deli, focaccia y provisiones de picnic lejos de los márgenes de playa."
     },
     {
-      "name": "Minimercados y puestos de fruta",
-      "note": "Abastécete de fruta, botellas grandes de agua y snacks para picnics en la terraza."
+      "name": "Minimarkets y puestos de fruta",
+      "note": "Abastécete de fruta, botellas grandes de agua y bocadillos para picnics en terraza."
     }
   ],
   "fallbackGalleryItems": [
     {
-      "alt": "Panini de una charcutería local",
-      "caption": "Panini y charcutería"
+      "alt": "Panini de una delicatessen local",
+      "caption": "Panini y deli"
     },
     {
-      "alt": "Picnic con vistas a Positano",
-      "caption": "Miradores para picnic"
+      "alt": "Picnic con vista de Positano",
+      "caption": "Miradores de picnic"
     }
   ],
   "fallbackFaqs": [
     {
-      "q": "¿Los locales aceptan tarjeta?",
+      "q": "¿Los lugares aceptan tarjetas?",
       "a": [
-        "La mayoría sí, pero llevar algo de efectivo ayuda en quioscos o cuando hay consumos mínimos."
+        "La mayoría sí, pero llevar algo de efectivo ayuda en kioscos o para mínimos."
       ]
     },
     {
-      "q": "¿Son comunes las tarifas de comida para llevar?",
+      "q": "¿Son comunes las tarifas para llevar?",
       "a": [
-        "Algunos cobran pequeños recargos por envases; lleva un recipiente reutilizable para ahorrar y reducir residuos."
+        "Algunos cobran pequeñas tarifas de envase; trae un recipiente reutilizable para ahorrar y reducir residuos."
       ]
     }
-  ],
-  "toc": {
-    "title": "En esta página",
-    "faqs": "Preguntas frecuentes"
-  }
+  ]
 }

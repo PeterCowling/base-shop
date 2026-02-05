@@ -1,9 +1,14 @@
 {
+  "lastUpdated": "2026-02-04T00:00:00.000Z",
   "seo": {
     "title": "Reisehjelp | Brikette Hostel Positano",
     "description": "En to-minutters oppsummering av hvordan du kommer hit og hvilke utflukter gjestene våre gjør, med lenker til de fullstendige transport- og opplevelsesguidene."
   },
   "linkLabel": "Reisehjelp | Brikette Hostel Positano",
+  "intro": [
+    "Reisehjelp Positano: de fleste rutene går via Sorrento. I Positano ankommer du vanligvis ved Chiesa Nuova (buss) eller Spiaggia Grande (ferge).",
+    "Bruk denne siden til å velge riktig guide. Ruteguidene våre dekker billetter, stopp, bagasje og alternativruter. Opplevelseguidene våre dekker dør-til-dør-dagsutflukter."
+  ],
   "sections": [
     {
       "id": "overview",
@@ -17,6 +22,21 @@
       "title": "Raske veibeskrivelser til populære utflukter",
       "body": [
         "Når du har kommet på plass, gir samlingen Opplevelser veibeskrivelser dør til dør til gjestenes favorittutflukter – Capri-ferger, innganger til Gudestien, busser til Amalfi og Ravello, tog til Pompeii og Vesuv og mer. Les guidene for første avganger, billettips og hva du bør pakke."
+      ]
+    }
+  ],
+  "faqsTitle": "Reisehjelp ofte stilte spørsmål",
+  "faqs": [
+    {
+      "q": "Hvor bør jeg sikte på å ankomme i Positano?",
+      "a": [
+        "Hvis du kommer med SITA-buss, sikt mot Chiesa Nuova-stoppet (ved Bar Internazionale). Det er det nærmeste og mest praktiske stoppet for Hostel Brikette. Hvis du kommer med ferge, ankommer du ved Spiaggia Grande (hovedstranden/brygga) og går deretter oppover til hostellet."
+      ]
+    },
+    {
+      "q": "Må jeg bestille transport på forhånd?",
+      "a": [
+        "I høysesongen (spesielt i helgene) hjelper det å planlegge tidligere avganger og være ved brygga/busstoppet tidlig. Ferger kan bli utsolgt på populære tider, og busskøene kan bli lange. Hvis du foretrekker fleksibilitet, hold en alternativrute i tankene fra %HOWTO:how-to-get-here|Finn veien-oversikten%."
       ]
     }
   ]

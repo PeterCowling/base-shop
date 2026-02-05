@@ -10,6 +10,13 @@
       "title": "Caring for Your Belongings",
       "body": [
         "Each guest is responsible for their personal belongings throughout their stay. Lockers and safe boxes are provided where available; using them is simple but does not shift liability to the hostel, so we recommend keeping your travel-insurance up to date. For everyone’s peace of mind, keep room doors shut and secure the locker provided—items. Items left behind for more than 30 days will be donated, recycled, or disposed of."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/2/21/Euro_banknotes_in_wallet.jpg",
+          "alt": "Euro banknotes in a wallet.",
+          "caption": "Keep your keycard and valuables secure, especially in shared spaces."
+        }
       ]
     },
     {
@@ -17,6 +24,13 @@
       "title": "Security Wristbands",
       "body": [
         "To help staff quickly recognise registered guests, everyone receives a security wristband at check-in. Please wear it while on hostel premises; our team may also ask to see photo ID. If your band is lost or damaged, let reception know—there is a small replacement fee. Guests who are not wearing a wristband or who decline to show ID may be asked to leave, and refunds may not be possible."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/f/ff/Wristbandtypes.jpg",
+          "alt": "Several types of wristbands.",
+          "caption": "Wristbands help staff quickly recognise registered guests in shared areas."
+        }
       ]
     },
     {

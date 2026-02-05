@@ -1,53 +1,61 @@
 {
   "seo": {
-    "title": "Beach-Hopping an der Amalfiküste",
-    "description": "Welche Strände sich an einem Tag kombinieren lassen, Zugangstipps und Kosten."
+    "title": "Strand-Hopping an der Amalfiküste",
+    "description": "Welche Strände an einem Tag kombinieren, Zugangs-Tipps und Kosten."
   },
-  "linkLabel": "Beach-Hopping an der Amalfiküste",
+  "linkLabel": "Strand-Hopping an der Amalfiküste",
   "intro": [
-    "Plane einen Beach-Hopping-Tag mit Fähren, Klippenblicken und entspannter Zeit im Sand."
+    "Plane einen Strand-Hopping-Tag, der Fährfahrten, Ausblicke von Klippen und Entspannung am Strand ausbalanciert."
   ],
   "sections": [
     {
       "id": "morning",
       "title": "Morgen: Positano nach Fornillo",
       "body": [
-        "Starte früh an der Spiaggia Grande für einen kurzen Sprung ins Wasser und geh bis 09:30 den Küstenpfad nach Fornillo für ruhigeres Meer.",
-        "Reserviere Liegen im Voraus, wenn du Schatten möchtest; sonst pack einen leichten Sonnenschirm ein."
+        "Starte früh am Spiaggia Grande für ein schnelles Bad, und gehe dann den Küstenweg zu Fornillo bis 09:30 Uhr für ruhigeres Wasser.",
+        "Reserviere Sonnenliegen im Voraus, wenn du Schatten möchtest; ansonsten packe einen leichten Sonnenschirm ein."
       ]
     },
     {
       "id": "midday",
       "title": "Mittag: Amalfi oder Atrani",
       "body": [
-        "Nimm am späten Vormittag die Fähre nach Amalfi und iss am Pier, bevor du am Stadtstrand oder in Atranis kleiner Bucht schwimmst.",
-        "Lager dein Gepäck im Depot von Amalfi, damit du die Stadt freihändig erkunden kannst."
+        "Nimm eine späte Morgenfähre nach Amalfi und esse zu Mittag am Pier, bevor du am Stadtstrand oder in Atranis Taschenbucht schwimmst.",
+        "Lagere Taschen in Amalfis Depot, damit du freihändig erkunden kannst."
+      ]
+    },
+    {
+      "id": "group-tours",
+      "title": "Gruppentouren & geteilte Boote",
+      "body": [
+        "Siehe unseren %LINK:boatTours|Bootstouren in Positano-Leitfaden%, wenn du lieber zwischen Stränden auf einem geteilten Boot statt mit Fähren hüpfen möchtest.",
+        "Betreiber fahren vom Hauptpier in Positano ab; komme 15 Minuten früher und bestätige Laurito- oder Arienzo-Badestopps bei der Buchung."
       ]
     },
     {
       "id": "evening",
-      "title": "Abend: Sunset-Schwimmen",
+      "title": "Abend: Sonnenuntergangs-Schwimmen",
       "body": [
-        "Beende den Tag in Laurito oder Arienzo für Golden-Hour-Blicke; beide liegen westlich und sind nach 17:00 ruhiger.",
-        "Nimm die letzte Fähre oder reserviere ein Taxi zurück, um Aufstiege im Dunkeln zu vermeiden."
+        "Beende bei Laurito oder Arienzo für Ausblicke zur goldenen Stunde; beide sind nach Westen ausgerichtet für warmes Licht und weniger Menschenmassen nach 17:00 Uhr.",
+        "Nimm die letzte Fähre oder buche eine Rückfahrt mit dem Taxi, um Bergaufwanderungen im Dunkeln zu vermeiden."
       ]
     }
   ],
   "tips": [
-    "Nimm ein schnelltrocknendes Handtuch und Wechselkleidung mit, damit du dich auf den Fähren wohlfühlst.",
-    "Pack Snacks und mindestens 1 Liter Wasser ein – Strandkioske sind an vollen Tagen schnell ausverkauft."
+    "Trage ein schnelltrocknendes Handtuch und Wechselkleidung, damit du auf Fähren bequem bleibst.",
+    "Packe Snacks und mindestens 1 L / 34 oz Wasser ein — Strandkioske können an geschäftigen Tagen knapp werden."
   ],
   "faqs": [
     {
-      "q": "Muss ich Liegen vorab reservieren?",
+      "q": "Muss ich Sonnenliegen vorbuchen?",
       "a": [
-        "Ja, im Juli und August. Kontaktiere die Beachclubs am Vortag per WhatsApp, um vordere Reihen zu sichern."
+        "Ja im Juli–August. Kontaktiere Strandclubs per WhatsApp am Vortag, um vordere Reihen zu sichern."
       ]
     },
     {
-      "q": "Darf ich eigenes Essen mitbringen?",
+      "q": "Kann ich mein eigenes Essen mitbringen?",
       "a": [
-        "In den freien Bereichen sind Picknicks meist erlaubt. Beachclubs gestatten kleine Snacks, bevorzugen aber, dass du Getränke an ihrer Bar kaufst."
+        "Die meisten freien Bereiche erlauben Picknicks. Strandclubs erlauben in der Regel kleine Snacks, bevorzugen aber, dass du Getränke an ihrer Bar kaufst."
       ]
     }
   ]

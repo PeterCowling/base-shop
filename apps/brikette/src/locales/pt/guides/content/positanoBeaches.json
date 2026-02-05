@@ -166,12 +166,13 @@
     },
     {
       "id": "logistics",
-      "title": "Ir e voltar da praia",
+      "title": "Como chegar e voltar das praias",
       "body": [
-        "A partir do hostel, a abordagem mais rápida costuma ser: descer até Spiaggia Grande (a pé ou de autocarro) e depois decidir se continuas pela marginal até Fornillo, apanhas um shuttle boat, ou ficas na praia principal.",
-        "Se vais fazer um dia de beach club com transfer de barco (Arienzo ou Laurito), muitas vezes é mais fácil começar em Spiaggia Grande para chegares cedo à fila e evitares escadas.",
-        "No verão de 2026, conta com calor nas subidas: enche água antes de voltares a subir e, se estiveres cansado, usa o autocarro interno em vez de subir tudo a pé.",
-        "Para dias fora (Praiano, Amalfi, Sorrento), confirma a última opção de regresso antes de te comprometeres. As ferries são a melhor viagem quando estão a funcionar, mas os autocarros são o plano B. Se o mar estiver agitado ou houver cancelamentos, dá margem extra e mantém o plano flexível. Leva snacks para a viagem."
+        "Cada praia tem opções de acesso diferentes, por isso consulta o guia específico antes de saíres. Aqui tens links rápidos para os guias de direções mais úteis:",
+        "Praias de Positano: %LINK:positanoMainBeachWalkDown|Caminhar para Spiaggia Grande% • %LINK:positanoMainBeachBusDown|Autocarro para Spiaggia Grande% • %LINK:hostelBriketteToFornilloBeach|Caminhar para Fornillo% • %LINK:hostelBriketteToArienzoBus|Autocarro para Arienzo% • %LINK:lauritoBeachBusDown|Autocarro para Laurito%",
+        "Rotas de regresso: %LINK:positanoMainBeachWalkBack|Caminhar de volta de Spiaggia Grande% • %LINK:positanoMainBeachBusBack|Autocarro de volta de Spiaggia Grande% • %LINK:fornilloBeachToBrikette|Caminhar de volta de Fornillo% • %LINK:arienzoBeachBusBack|Autocarro de volta de Arienzo% • %LINK:lauritoBeachBusBack|Autocarro de volta de Laurito%",
+        "Praias para excursões de um dia: %LINK:hostelBriketteToFiordoDiFuroreBus|Fiordo di Furore% • %LINK:gavitellaBeachGuide|Gavitella (Praiano)% • %LINK:marinaDiPraiaBeaches|Marina di Praia% • %LINK:reginaGiovannaBath|Regina Giovanna (Sorrento)%",
+        "Dicas gerais: No verão de 2026, planeia para o calor nas subidas—enche a garrafa de água antes de voltares e usa o autocarro interno se estiveres cansado. Para excursões de um dia, verifica a última opção de regresso (ferry ou autocarro) antes de te comprometeres e leva snacks para a viagem. Se o mar estiver agitado ou os ferries forem cancelados, planeia tempo extra e mantém o teu horário flexível."
       ],
       "images": [
         {

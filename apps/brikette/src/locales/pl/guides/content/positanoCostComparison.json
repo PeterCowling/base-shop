@@ -66,19 +66,19 @@
         "label": "FAQs"
       }
     ],
-    "faqLabel": "FAQs",
+    "faqLabel": "Najczęściej zadawane pytania",
     "sections": {
       "overview": {
-        "heading": "Overview",
+        "heading": "Przegląd",
         "body": "Noclegi bywają droższe, ale transport i jedzenie utrzymasz w ryzach, wybierając przemyślane opcje."
       },
       "when": {
-        "heading": "When it’s good value",
+        "heading": "Kiedy warto",
         "body": "Sezon wakacyjny, dni powszednie i dłuższe pobyty w pobliżu Chiesa Nuova zmniejszają koszty i wysiłek."
       }
     },
     "faq": {
-      "summary": "Is Positano more expensive than Amalfi?",
+      "summary": "Czy Positano jest droższe niż Amalfi?",
       "answer": "Często w przypadku pobytów nad morzem; wartość poprawia się w głębi lądu lub w pobliżu przystanków autobusowych."
     }
   }

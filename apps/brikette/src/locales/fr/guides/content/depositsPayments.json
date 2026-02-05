@@ -1,124 +1,145 @@
 {
   "seo": {
-    "title": "Guide des Dépôts et Paiements – Auberge Brikette, Positano",
-    "description": "Guide complet sur les dépôts, moyens de paiement, confirmations, modifications, annulations et blocages de sécurité lors de votre réservation."
+    "title": "Guide des Acomptes et Paiements pour Positano Hostel",
+    "description": "Votre guide complet sur les acomptes, les méthodes de paiement, les confirmations de réservation, les modifications, les annulations et les cautions de sécurité lors de la réservation de votre séjour au Positano Hostel."
   },
-  "linkLabel": "Guide des Dépôts et Paiements – Auberge Brikette, Positano",
+  "linkLabel": "Guide des Acomptes et Paiements pour Positano Hostel",
   "sections": [
     {
       "id": "submittingBookingRequest",
-      "title": "Comment Soumettre votre Demande",
+      "title": "Comment Soumettre votre Demande de Réservation",
       "body": [
-        "Envoyez votre demande via une OTA autorisée ou sur notre site ; les chats ou passages spontanés ne suffisent pas. En cliquant sur « Réserver », vous confirmez l’exactitude des données et acceptez nos CGV."
+        "Envoyez-nous votre demande de réservation via une Agence de Voyages en Ligne (OTA) autorisée ou directement sur notre site Web - les discussions ou les visites sans rendez-vous ne comptent pas à elles seules. En cliquant sur 'Réserver', vous confirmez que tous les noms, dates et durée du séjour sont corrects et que vous acceptez nos Conditions Générales."
       ]
     },
     {
       "id": "processingBookingRequest",
-      "title": "Traitement de votre Demande",
+      "title": "Comment Nous Traitons votre Demande",
       "body": [
-        "Nous traitons votre demande dès réception du dépôt, de la pré-autorisation ou du paiement requis. La réservation doit porter le nom du titulaire de la carte. Si différent, envoyez-nous une autorisation écrite avant le traitement."
+        "Nous commençons à traiter votre demande dès que nous recevons avec succès tout acompte requis, préautorisation ou paiement en utilisant l'une de nos méthodes de paiement acceptées. Assurez-vous que la réservation affiche le nom du titulaire de la carte de crédit qui paiera. Si le nom du payeur est différent, envoyez-nous par e-mail une brève autorisation du titulaire de la carte avant que nous traitions votre demande."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Payment_terminal_at_the_Berlin_immigration_office.jpg/960px-Payment_terminal_at_the_Berlin_immigration_office.jpg",
+          "alt": "Clavier et écran de terminal de paiement par carte.",
+          "caption": "Nous pouvons prendre un acompte, effectuer un paiement ou placer une préautorisation pour sécuriser votre réservation - Photo : Wikimedia Commons (CC0)."
+        }
       ]
     },
     {
       "id": "decliningBookingRequest",
-      "title": "Quand Nous Pouvons Refuser",
+      "title": "Quand Nous Pouvons Refuser une Demande",
       "body": [
-        "Nous pouvons refuser une demande (paiement échoué, info manquante, violation de nos CGV)."
+        "Nous refusons rarement une réservation, mais nous nous réservons le droit de le faire à notre discrétion - par exemple, si le paiement échoue, si des informations requises manquent ou si la demande enfreint nos Conditions Générales."
       ]
     },
     {
       "id": "requestSizeLimit",
-      "title": "Limite par Demande",
+      "title": "Limites de Taille pour Une Demande",
       "body": [
-        "Une demande couvre jusqu’à 7 nuits consécutives et 5 personnes. Pour plus, faites plusieurs demandes."
+        "Une demande de réservation peut couvrir jusqu'à sept (7) nuits consécutives et un maximum de cinq (5) clients. Besoin d'un séjour plus long ou d'un groupe plus grand ? Divisez-le simplement en demandes séparées."
       ]
     },
     {
       "id": "counterOffer",
-      "title": "Si votre Chambre n’est pas Disponible",
+      "title": "Que se Passe-t-il si votre Chambre n'est pas Disponible",
       "body": [
-        "Si la chambre voulue est prise, nous envoyons une contre-proposition. Acceptez-la et réglez pour finaliser."
+        "Si votre chambre préférée est déjà prise, nous vous enverrons une contre-offre par e-mail avec l'alternative la plus proche. Acceptez l'offre et effectuez le paiement ou la préautorisation pour verrouiller votre séjour."
       ]
     },
     {
       "id": "prepaidNonRefundableBookingsPolicy",
-      "title": "Tarifs Prépayés Non Remboursables",
+      "title": "Réservations Prépayées Non Remboursables",
       "body": [
-        "Le tarif prépayé est moins cher mais exige 100 % immédiat. Trois tentatives carte ; si échec, demande annulée. Ni remboursement ni modification."
+        "Choisir un tarif prépayé non remboursable vous fait économiser de l'argent mais nécessite un paiement intégral à l'avance. Nous essaierons votre carte jusqu'à trois fois. Si toutes les tentatives échouent, nous annulerons la demande. Ces réservations ne peuvent être ni remboursées ni modifiées."
       ]
     },
     {
       "id": "confirmationEmail",
-      "title": "E-mail de Confirmation",
+      "title": "Votre E-mail de Confirmation",
       "body": [
-        "Après paiement, vous recevez un e-mail de confirmation (référence, dates, durée, extras). Vérifiez-le et signalez tout problème."
+        "Une fois votre paiement traité, nous enverrons un e-mail de confirmation à l'adresse que vous nous avez fournie. Il indique votre référence de réservation, date d'arrivée, durée du séjour et tous les extras. Lisez-le attentivement et dites-nous immédiatement si quelque chose semble incorrect."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Email_on_Phone_Flat_Icon.svg/960px-Email_on_Phone_Flat_Icon.svg.png",
+          "alt": "Icône d'e-mail sur un écran de téléphone.",
+          "caption": "Votre e-mail de confirmation est le meilleur endroit pour vérifier les dates, noms et détails de paiement - Photo : Wikimedia Commons (CC BY-SA 4.0)."
+        }
       ]
     },
     {
       "id": "numberOfGuestsIncluded",
-      "title": "Invités Inclus",
+      "title": "Qui Est Inclus dans votre Réservation",
       "body": [
-        "Votre réservation inclut automatiquement :",
-        "* 1 personne par lit simple\n* 2 personnes par lit double\n* Capacité annoncée d’un appartement",
-        "Au-delà, nous ne pouvons accueillir d’invités supplémentaires."
+        "Votre réservation couvre automatiquement ce qui suit :",
+        "* 1 client par lit simple\n* Jusqu'à 2 clients par lit double\n* Jusqu'à la capacité annoncée de tout appartement que vous réservez",
+        "Pour des raisons de sécurité et de confort, nous ne pouvons pas accueillir de clients supplémentaires au-delà de la limite de la chambre."
       ]
     },
     {
       "id": "scopeOfFacilitiesIncluded",
-      "title": "Prestations Incluses",
+      "title": "Ce Qui Est Inclus dans votre Séjour",
       "body": [
-        "Chaque invité reçoit :",
-        "* Linge propre et carte clé\n* Douches communes\n* Eau chaude (env. 07 h–10 h 30 et 17 h–22 h 30)\n* Espaces communs",
-        "Petit-déjeuner, Wi-Fi, consigne, etc. sont gratuits selon règles simples."
+        "Chaque client reçoit :",
+        "* Linge frais et carte-clé\n* Utilisation des douches communes\n* Eau chaude pendant les heures prévues (environ 07h00-10h30 et 17h00-22h30)\n* Accès à nos espaces communs",
+        "Les autres avantages (petit-déjeuner, Wi-Fi, consigne à bagages, etc.) sont gratuits et suivent leurs propres règles simples."
       ]
     },
     {
       "id": "financialObligation",
-      "title": "Responsabilité Financière",
+      "title": "Votre Responsabilité Financière",
       "body": [
-        "Le titulaire de la carte indiqué est responsable de tous frais : chambre, dommages, nettoyage, amendes. Les soldes impayés seront débités."
+        "Le titulaire de la carte de crédit indiqué sur votre réservation est responsable de tous les frais - frais de chambre, dommages, frais de nettoyage, amendes ou pénalités pour violation des règles de la maison. Les montants impayés peuvent être facturés directement sur la carte enregistrée."
       ]
     },
     {
       "id": "roomAllocation",
-      "title": "Attribution des Lits et Chambres",
+      "title": "Comment les Lits et Chambres Sont Attribués",
       "body": [
-        "Nous garantissons la catégorie réservée. En dortoir, vous avez un lit dans cette catégorie, sans garantie que le groupe partage la même chambre. Les lits sont attribués à l’arrivée par ordre d’enregistrement."
+        "Nous vous garantissons le type de lit et la catégorie de chambre que vous avez réservés. Les réservations de dortoir garantissent un lit dans la catégorie choisie, mais nous ne pouvons pas promettre que les groupes partageront la même chambre. Les lits dans les dortoirs sont choisis selon le principe du premier arrivé, premier servi lors de l'enregistrement."
       ]
     },
     {
       "id": "allocatingUpgrades",
-      "title": "Surclassements",
+      "title": "Surclassements de Chambre",
       "body": [
-        "Nous proposons parfois un surclassement gratuit ou payant. Si le surclassement gratuit devient impossible, nous vous remettons dans la catégorie initiale."
+        "Parfois, nous vous surclassons dans une meilleure chambre gratuitement, ou vous pouvez payer pour surclasser lors de la réservation. Si le surclassement gratuit devient plus tard impraticable, nous pouvons vous remettre dans la catégorie que vous avez initialement payée."
       ]
     },
     {
       "id": "thirdPartyPayments",
-      "title": "Paiements via Tiers",
+      "title": "Paiement via des Sites Tiers",
       "body": [
-        "Via une OTA, vous payez sur leur plateforme ; nous ne voyons pas vos données carte. Vérifiez toujours la réussite du paiement et la réception de la confirmation."
+        "Lorsque vous réservez via une OTA, vous paierez via leur système selon leurs conditions. Nous ne voyons jamais les détails de votre carte de l'OTA et ne sommes pas responsables des problèmes sur leur plateforme. Vérifiez toujours que votre paiement est passé et que vous avez reçu une confirmation."
       ]
     },
     {
       "id": "bookingRequestDeposits",
-      "title": "Dépôts de Réservation",
+      "title": "Acomptes de Réservation",
       "body": [
-        "Certains tarifs nécessitent un dépôt. Les tarifs prépayés exigent 100 % d’avance, non remboursable. Échec du dépôt = demande annulée."
+        "Certains tarifs nécessitent un acompte pour retenir la chambre. Les tarifs prépayés nécessitent 100 % à l'avance. Les acomptes ne sont pas remboursables. Si nous ne pouvons pas prendre l'acompte, la demande de réservation est automatiquement annulée."
       ]
     },
     {
       "id": "bookingRequestPreauthorisations",
-      "title": "Pré-autorisations Carte",
+      "title": "Préautorisations de Carte",
       "body": [
-        "Pour les tarifs flexibles, nous pouvons pré-autoriser la première nuit ou la totalité. Échec = refus de la demande."
+        "Pour les tarifs flexibles, nous pouvons préautoriser votre carte pour la première nuit ou le séjour complet afin de garantir votre réservation. Si la préautorisation échoue, nous refuserons la demande."
       ]
     },
     {
       "id": "safeguardingProcess",
-      "title": "Blocage de Sécurité",
+      "title": "Notre Caution de Sécurité",
       "body": [
-        "Au check-in, nous pouvons bloquer l’équivalent d’une nuit par invité. Sinon, acceptez espèce ou carte d’un compagnon ; sans garantie, la réservation est annulée."
+        "Lors de l'enregistrement, nous pouvons placer une caution de sécurité équivalente à une nuit par client pour couvrir d'éventuelles amendes, frais, prolongations ou dommages. Si une retenue de carte n'est pas possible, vous pouvez laisser le même montant en espèces ou utiliser la carte d'un autre client. Si aucune option ne fonctionne, nous devons malheureusement annuler votre réservation."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Euro_coins_in_hand.jpg/960px-Euro_coins_in_hand.jpg",
+          "alt": "Une main tenant plusieurs pièces d'euro.",
+          "caption": "Si une retenue de carte n'est pas possible lors de l'enregistrement, nous pouvons demander un dépôt en espèces équivalent - Photo : Wikimedia Commons (CC BY-SA 4.0)."
+        }
       ]
     }
   ]

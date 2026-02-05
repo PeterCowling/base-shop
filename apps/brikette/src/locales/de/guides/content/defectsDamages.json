@@ -1,58 +1,66 @@
 {
   "seo": {
-    "title": "Leitfaden zu Mängeln und Schäden für das Hostel Brikette, Positano",
-    "description": "Erfahren Sie, wie Sie Zimmermängel melden, wie wir auf schwerwiegende Probleme reagieren, welche Kautions- und Haftungsregeln gelten und wie wir Bettwanzen im exklusiven Hostel von Positano vorbeugen."
+    "title": "Leitfaden für Mängel und Schäden für Positano Hostel",
+    "description": "Verstehen Sie, wie Sie Zimmermängel melden, unsere Reaktion auf schwerwiegende Probleme, Richtlinien für Schadenskautionen, Gästehaftung und wichtige Informationen zur Bettwanzenprävention im exklusiven Hostel von Positano."
   },
-  "linkLabel": "Leitfaden zu Mängeln und Schäden für das Hostel Brikette, Positano",
+  "linkLabel": "Leitfaden für Mängel und Schäden für Positano Hostel",
   "sections": [
     {
       "id": "reportingDefects",
       "title": "Mängel melden",
       "body": [
-        "Bitte informieren Sie uns umgehend, wenn Sie einen Mangel feststellen. Eine schnelle Meldung hilft uns, das Problem rasch zu beheben."
+        "Wenn Sie ein Problem oder einen Mangel in Ihrem Zimmer bemerken, informieren Sie uns bitte sofort. Ihre prompte Benachrichtigung hilft uns, das Problem schnell anzugehen und zu lösen.",
+        "Der schnellste Weg zur Meldung ist persönlich an der Rezeption. Geben Sie wenn möglich an: Was ist das Problem, wann haben Sie es bemerkt, und ein schnelles Foto oder kurzes Video."
       ]
     },
     {
       "id": "assessingDefects",
-      "title": "Mängel bewerten",
+      "title": "Bewertung von Mängeln",
       "body": [
-        "Nach Ihrer Meldung prüfen wir den Mangel sofort und priorisieren unsere Reaktion je nach Auswirkung auf Ihren Komfort und Aufenthalt."
+        "Sobald Sie einen Mangel melden, werden wir das Problem umgehend bewerten und unsere Reaktion danach priorisieren, wie stark es Ihren Komfort und Aufenthalt beeinträchtigt."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/2/27/ISO_7010_W008.svg",
+          "alt": "ISO 7010 W008 allgemeines Warnzeichen (gelbes Dreieck mit Ausrufezeichen)",
+          "caption": "Wir priorisieren zuerst die Sicherheit, dann alles, was Schlaf und Komfort beeinträchtigt."
+        }
       ]
     },
     {
       "id": "responseToSeriousDefects",
       "title": "Reaktion auf schwerwiegende Mängel",
       "body": [
-        "Kann ein gravierender Mangel nicht sofort behoben werden, bieten wir eine alternative Unterkunft an. Ist diese günstiger, erstatten wir die Differenz. Lehnen Sie das Angebot ab, können Sie eine anteilige Rückerstattung für verbleibende Nächte verlangen."
+        "Wenn es einen schwerwiegenden Mangel gibt, der nicht sofort behoben werden kann, werden wir eine alternative Unterkunft bereitstellen. Wenn die Alternative günstiger ist als Ihr gebuchtes Zimmer, erstatten wir Ihnen die Preisdifferenz. Wenn Sie sich entscheiden, unsere Alternative nicht anzunehmen, können Sie eine anteilige Rückerstattung für die verbleibenden Nächte Ihres Aufenthalts beantragen."
       ]
     },
     {
       "id": "unreportedDefects",
       "title": "Nicht gemeldete Mängel",
       "body": [
-        "Stellen wir einen nicht gemeldeten Mangel fest, prüfen wir etwaige Folgeschäden; unsere Schadensrichtlinie kann angewendet werden."
+        "Wenn wir ein Problem in Ihrem Zimmer entdecken, das Sie nicht innerhalb einer angemessenen Frist gemeldet haben, werden wir etwaige daraus resultierende Schäden bewerten, und unsere Schadensrichtlinie kann angewendet werden."
       ]
     },
     {
       "id": "damagesPolicy",
       "title": "Schadensrichtlinie",
       "body": [
-        "Zu Ihrer und unserer Sicherheit können wir bei Check-in Ihre Kreditkarte vorautorisieren oder eine Barkaution verlangen. Ohne Kaution kann die Buchung storniert werden. Die Kaution wird beim Check-out abzüglich aller Schäden, Verluste, Arbeits- oder Verwaltungskosten zurückerstattet. Übersteigt der Schaden die Kaution, tragen Sie die Differenz. Arbeitskosten pro Stunde: Direktor (50 €), Manager (35 €), Mitarbeiter (25 €)."
+        "Zu Ihrer und unserer Sicherheit können wir beim Check-in Ihre Kreditkarte vorautorisieren oder eine Barkaution verlangen, um potenzielle Schäden oder Verluste abzudecken. Wenn Sie keine Kaution oder Vorautorisierung bereitstellen können, kann Ihre Reservierung storniert werden. Kautionen sind beim Check-out vollständig rückerstattbar, abzüglich Gebühren für entstandene Schäden, Verluste, Arbeitskosten oder Verwaltungskosten. Wenn diese Gebühren Ihre Kaution übersteigen, sind Sie für die zusätzlichen Kosten verantwortlich. Arbeitskosten für Reparaturen oder Reinigung werden stundenweise abgerechnet: Direktor (50 €/Stunde), Manager (35 €/Stunde) und Personal (25 €/Stunde)."
       ]
     },
     {
       "id": "bedBugsPolicy",
       "title": "Bettwanzen-Richtlinie",
       "body": [
-        "Wir beugen Bettwanzen aktiv vor und handeln sofort bei Befall. Werden während Ihres Aufenthalts Bettwanzen gefunden, können Kosten für Umsatzausfall, Reinigung und Schädlingsbekämpfung berechnet werden. Melden Sie Hinweise bitte sofort dem Personal."
+        "Wir managen proaktiv und gehen umgehend auf alle Bettwanzenprobleme ein. Wenn jedoch während Ihres Aufenthalts Bettwanzen in Ihrem Zimmer gefunden werden, können Sie für damit verbundene Kosten wie entgangene Buchungseinnahmen, Reinigungskosten und Schädlingsbekämpfung verantwortlich gemacht werden. Bitte melden Sie unserem Personal sofort alle Anzeichen von Bettwanzen."
       ]
     },
     {
       "id": "bedBugsPrevention",
-      "title": "Bettwanzen vorbeugen",
+      "title": "Bettwanzen-Prävention",
       "body": [
-        "So beugen Sie Bettwanzen vor:",
-        "* Teilen Sie uns beim Check-in mit, falls Sie kürzlich an einem befallenen Ort übernachtet haben.\n* Desinfizieren Sie Ihr Gepäck gründlich.\n* Kontrollieren Sie Koffer und Kleidung vor Betreten des Zimmers auf Bettwanzen."
+        "Um Bettwanzenprobleme zu vermeiden, bitten wir Sie:",
+        "* Informieren Sie uns beim Check-in, wenn Sie kürzlich irgendwo mit bekannten Bettwanzenproblemen übernachtet haben.\n* Desinfizieren Sie Ihre Sachen gründlich.\n* Inspizieren Sie Ihr Gepäck und Ihre Kleidung sorgfältig auf Bettwanzen, bevor Sie Ihr Zimmer betreten."
       ]
     }
   ]

@@ -3,51 +3,51 @@
     "title": "Båtturer i Positano",
     "description": "Privata och gemensamma båtturer: vad du kan förvänta dig, prisnivåer och bokningstips i säsong."
   },
-  "linkLabel": "Båtturer i Positano",
+  "linkLabel": "Båtturer: Från solnedgångskryssningar till privata charter",
   "intro": [
-    "Båtturer låter dig följa Amalfikustens klippor utan att brottas med trafiken; boka i förväg under högsäsong och ha en väderplan i reserv."
+    "Båtturer låter dig följa Amalfikustens klippor utan att brottas med vägtrafiken; boka i förväg under högsäsong och ha en väderplan i reserv."
   ],
   "sections": [
     {
       "id": "group-tours",
-      "title": "Grupp- och delade turer",
+      "title": "Gruppturer och delade båtar",
       "body": [
-        "Delade kryssningar på tre timmar avgår från Positano på förmiddagen och inkluderar badstopp; räkna med 85–120 € per person i juli–augusti.",
-        "Ta med badskor och en lätt tröja — vinden är svalare ute på havet än på terrasserna."
+        "Tre timmars delade kryssningar avgår från Positano på förmiddagen och inkluderar simstop; räkna med €85–€120 per person i juli–augusti.",
+        "Ta med badskor och ett lätt lager — vinden är svalare ute till havs än på terrasserna."
       ]
     },
     {
       "id": "private-charters",
       "title": "Privata charter",
       "body": [
-        "Skeppare tar 550–850 € för en halvdag med gozzo (upp till 6 personer) plus bränsle; bekräfta om prosecco eller handdukar ingår.",
-        "Förhandla starttid kring soluppgång eller sen eftermiddag om du vill ha mjukare ljus och färre svallvågor från färjor."
+        "Skeppare tar ut €550–€850 för en halvdag med gozzo-charter (upp till 6 personer) plus bränsle; bekräfta vad som ingår som prosecco eller handdukar.",
+        "Förhandla om starttider kring soluppgång eller sen eftermiddag om du vill ha mjukare ljus och färre svallvågor från färjor."
       ]
     },
     {
       "id": "weather-backup",
-      "title": "Väder & reservplaner",
+      "title": "Väder och reservplaner",
       "body": [
-        "Operatörer ställer in när vinden överstiger styrka 4; ha en buss- eller strandplan redo så dagen förblir avkopplad.",
-        "Havet kan vara krabbigt även på sommaren — packa åksjuke-armband om du är känslig."
+        "Operatörer ställer in när vindarna överstiger styrka 4; ha en buss- eller strandplan redo så att dagen förblir avslappnad.",
+        "Haven kan vara krabbiga även på sommaren — packa åksjukeband om du är känslig."
       ]
     }
   ],
   "tips": [
-    "Kom 20 minuter innan avgång för att betala klart och byta till de däcksskor som erbjuds.",
-    "Ta med en vattentät påse för telefoner och en flaska på 1 liter vatten; skugga ombord är begränsad."
+    "Kom 20 minuter före avgång för att reglera saldot och ta på de medföljande däcksskorna.",
+    "Ta med en vattentät påse för telefoner och en 1-liters (34 oz) vattenflaska; skuggan är begränsad ombord."
   ],
   "faqs": [
     {
       "q": "Behöver jag boka i förväg?",
       "a": [
-        "Ja under maj–september — båtarna blir ofta fullbokade flera dagar i förväg, särskilt solnedgångsturer."
+        "Ja i maj–september — båtar säljer ofta slut några dagar i förväg, särskilt solnedgångsplatser."
       ]
     },
     {
       "q": "Ingår handdukar?",
       "a": [
-        "Gruppresor brukar erbjuda en per person; privata skeppare varierar, så ta med en snabbtorkande handduk för säkerhets skull."
+        "Gruppturer brukar tillhandahålla en per person; privata skeppare varierar, så ta med en snabbtorkande handduk för säkerhets skull."
       ]
     }
   ],

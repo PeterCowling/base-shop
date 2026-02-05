@@ -1,72 +1,72 @@
 {
   "seo": {
     "title": "Annulations de ferries et mer agitée",
-    "description": "Que faire en cas d'annulation pour météo, alternatives disponibles et comment suivre l'état des traversées."
+    "description": "Que faire lorsque les ferries sont annulés en raison de la météo, alternatives et comment vérifier l'état."
   },
   "linkLabel": "Annulations de ferries et mer agitée",
   "intro": [
-    "Une mer agitée peut suspendre les ferries de/vers Positano sans préavis.",
-    "Gardez un plan terrestre prêt et surveillez les alertes en direct pour ne pas manquer votre correspondance."
+    "La mer agitée peut suspendre les ferries vers et depuis Positano avec peu de préavis.",
+    "Gardez une alternative terrestre prête et surveillez les alertes en direct pour pouvoir encore faire votre correspondance."
   ],
   "sections": [
     {
       "id": "monitoring",
-      "title": "Suivre les mises à jour",
+      "title": "Surveiller les mises à jour en direct",
       "body": [
-        "Consultez toutes les 30 minutes les sites/apps des opérateurs (Travelmar, NLG, Alilauro) ainsi que les panneaux du port les jours venteux.",
-        "Activez les alertes SMS/e-mail ou suivez les canaux Telegram/réseaux locaux afin de recevoir les annulations même si vous vous éloignez du quai."
+        "Consultez les sites et applications des opérateurs (Travelmar, NLG, Alilauro) ainsi que les tableaux d'affichage du port toutes les 30 minutes les jours venteux.",
+        "Activez les alertes SMS/e-mail ou suivez les chaînes Telegram/réseaux sociaux locaux pour que les annulations vous parviennent même si vous vous éloignez de la jetée."
       ]
     },
     {
       "id": "plan-b",
-      "title": "Basculer sur la route",
+      "title": "Passer aux routes terrestres",
       "body": [
-        "Si les traversées s'arrêtent, passez aux bus et trains : bus SITA vers Sorrente puis Circumvesuviana pour Naples/Pompéi, ou bus via Amalfi et train régional depuis Salerne.",
-        "Gardez au moins 60 minutes de marge sur les derniers départs et validez vos billets avant de monter."
+        "Si les traversées s'arrêtent, passez aux bus et trains : SITA vers Sorrente puis Circumvesuviana pour Naples/Pompéi, ou bus via Amalfi et train régional depuis Salerne.",
+        "Prévoyez au moins 60 minutes de marge pour les derniers départs de la journée et validez les billets avant l'embarquement."
       ]
     },
     {
       "id": "refunds",
-      "title": "Remboursements & avoirs",
+      "title": "Remboursements et bons",
       "body": [
-        "Gardez vos reçus et capturez l'avis d'annulation pour que l'opérateur traite remboursement, report ou avoir.",
-        "Indiquez au guichet si vous préférez la prochaine traversée disponible ou un bon saisonnier avant de quitter le comptoir."
+        "Conservez les reçus et capturez l'avis d'annulation pour que l'opérateur puisse traiter les remboursements, les réservations ou les crédits.",
+        "Indiquez au personnel si vous préférez la prochaine traversée disponible ou un bon de saison avant de quitter le comptoir."
       ]
     },
     {
       "id": "overnight",
-      "title": "Gérer un report au lendemain",
+      "title": "Gérer les retards nocturnes",
       "body": [
-        "Prévenez votre hébergement ou votre prestataire dès l'annonce du retard ; beaucoup adaptent check-in ou départ s'ils sont informés à l'avance.",
-        "Demandez au point info du port les taxis partagés, navettes de remplacement ou consignes si vous devez patienter jusqu'au lendemain matin."
+        "Prévenez votre hébergement ou votre guide de tour dès l'annonce des retards ; beaucoup ajusteront l'enregistrement ou le départ s'ils sont prévenus à l'avance.",
+        "Demandez au point d'information du port pour les taxis partagés, les navettes de remplacement ou le stockage des bagages si vous devez attendre le lendemain matin."
       ]
     }
   ],
   "tips": [
-    "Consultez la météo marine : vents > 20 nœuds ou houle > 1,5 m provoquent souvent des annulations.",
-    "Une assurance voyage couvrant les retards météo aide à rembourser nuit d'hôtel ou transfert de remplacement.",
-    "Les départs matinaux sont les plus fiables ; évitez de dépendre du dernier bateau si une tempête est annoncée."
+    "Vérifiez les prévisions maritimes—des vents supérieurs à 20 nœuds ou une houle supérieure à 1,5 mètre (environ 5 pieds) déclenchent souvent des annulations.",
+    "L'assurance voyage qui couvre les retards météo aide à récupérer les nuits d'hôtel supplémentaires ou les transferts de remplacement.",
+    "Les traversées matinales sont les plus fiables ; évitez de compter sur le dernier bateau de la journée lorsque des tempêtes sont prévues."
   ],
   "faqs": [
     {
       "q": "Comment savoir quand les traversées reprennent ?",
       "a": [
-        "Actualisez le site ou les réseaux de l'opérateur et écoutez les annonces au haut-parleur — les décisions tombent généralement dans les 30 minutes avant l'heure prévue.",
-        "Le personnel du guichet peut aussi confirmer si le prochain bateau est maintenu avant que vous quittiez le port."
+        "Actualisez le site Web de l'opérateur ou les fils des réseaux sociaux et écoutez les annonces par haut-parleur à la jetée—les décisions sont généralement publiées dans les 30 minutes suivant le départ prévu.",
+        "Le personnel du guichet peut également confirmer si le prochain bateau fonctionne avant de quitter le port."
       ]
     },
     {
-      "q": "Que devient mon billet ?",
+      "q": "Qu'advient-il de mon billet ?",
       "a": [
-        "Présentez votre reçu ou QR code pour demander remboursement, avoir ou report sur la prochaine traversée.",
-        "Si vous avez réservé via une agence en ligne, envoyez-leur la capture de l'annulation sous 24 h pour lancer le remboursement."
+        "Montrez votre reçu ou code QR pour demander un remboursement, un bon ou une réservation pour la prochaine traversée.",
+        "Si vous avez réservé via une agence en ligne, envoyez-leur la capture d'écran de l'annulation par e-mail dans les 24 heures pour lancer le processus de remboursement."
       ]
     },
     {
-      "q": "Certains ferries naviguent-ils malgré la houle ?",
+      "q": "Y a-t-il des ferries garantis par mauvais temps ?",
       "a": [
-        "Non — quand la Capitainerie ferme le port, tout départ est stoppé. Anticipez un itinéraire terrestre.",
-        "Quelques charters privés sortent par mer modérée mais restent coûteux et à la discrétion du capitaine ; pesez confort et budget."
+        "Non—lorsque la garde côtière ferme le port, tous les départs s'arrêtent. Ayez une route terrestre prête.",
+        "Quelques charters privés peuvent naviguer par mer modérée mais ils sont coûteux et dépendent de la discrétion du capitaine ; pesez soigneusement le confort et le coût."
       ]
     }
   ]

@@ -1,47 +1,162 @@
 {
   "seo": {
-    "title": "Capri tiết kiệm",
-    "description": "Đến Capri không tốn kém: phà sớm, đi bộ vòng quanh và chọn điểm ăn uống phải chăng."
+    "title": "Capri Tiết Kiệm: Điểm Ngắm Cảnh Miễn Phí và Ăn Uống Rẻ",
+    "description": "Tiết kiệm tiền ở Capri: mẹo phà giá rẻ, điểm ngắm cảnh miễn phí, địa điểm ăn uống rẻ, bãi biển công cộng và những gì nên bỏ qua. Hướng dẫn hoàn chỉnh cho dân phượt từ Positano."
   },
-  "linkLabel": "Capri tiết kiệm",
+  "linkLabel": "Capri Không Tốn Nhiều Tiền",
   "intro": [
-    "Đi Capri trong ngày vẫn tiết kiệm nếu bạn lên kế hoạch phà, viewpoint và bữa ăn từ trước."
+    "**Tránh bẫy du lịch và khám phá Capri với giá phải chăng.** Bạn cần: chọn giờ phà thông minh (€20-25 khứ hồi từ Positano), điểm ngắm cảnh miễn phí sánh ngang với điểm trả phí, và đồ ăn rẻ gần các bến cảng. Bỏ qua Hang Xanh—đắt và thường đóng cửa. Hướng dẫn này cho bạn cách đi Capri với tổng chi phí €40-50 từ Hostel Brikette.",
+    "**Tốt nhất cho:** Dân phượt có ngân sách muốn có cảnh đẹp chụp Instagram mà không cần giá xa xỉ. **Thời gian cần:** Cả ngày (7h-18h).",
+    "**Chi phí:** Phà €20-25 khứ hồi, cáp treo €12 khứ hồi (tùy chọn), đồ ăn €10-15, xe buýt €2-4. Tổng: €40-50. **Cần biết:** Đặt phà sáng sớm vào mùa hè; mang nước và đồ ăn nhẹ; những chuyến đi bộ miễn phí hay hơn hầu hết điểm tham quan trả phí."
   ],
   "sections": [
     {
-      "id": "ferries",
-      "title": "Phà & thời gian",
+      "id": "ferry-strategy",
+      "title": "Chi phí và đặt phà",
       "body": [
-        "Đặt phà sớm vào mùa cao điểm và quay về giữa buổi chiều để tránh đám đông chuyến cuối."
+        "**Từ Positano đến Capri: €20-25 khứ hồi.** Đặt trực tiếp tại %LINK:briketteToFerryDock|bến phà% (đi bộ 5 phút từ Brikette) hoặc online qua Travelmar/NLG. Đừng đặt gói tour—họ thêm €10-15 vô ích.",
+        "**Chọn giờ thông minh tiết kiệm tiền:** Đi phà 8:15 hoặc 9 giờ sáng (€11-13 một chiều). Về khoảng 17h-18h để tránh hỗn loạn chuyến cuối. Tháng 7-8, đặt trước 2-3 ngày online để khóa giá rẻ hơn. Ngoài mùa (thg 10-5), đến lúc 8h sáng và mua tại bến—thường có chỗ và tiết kiệm phí đặt chỗ.",
+        "**Từ Salerno (nếu đến bằng tàu):** Phà Salerno-Capri giá €18-22 khứ hồi và mất 1 giờ. Bạn sẽ đến Marina Grande giống như phà từ Positano. Xem %LINK:salernoPositanoBus|phương tiện từ Salerno% nếu kết hợp với chặng Positano.",
+        "**Tại Marina Grande:** Bạn sẽ neo tại cảng chính. Đi 50m sang phải đến cáp treo (€2 mỗi chiều) lên thị trấn Capri, hoặc đi xe buýt đến Anacapri (€2). Đừng đi taxi—họ tính €15-20 cho chuyến đi 5 phút."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-on-a-budget/01-positano-ferry-dock-capri.jpg",
+          "alt": "Bảng khởi hành bến phà Positano hiển thị tuyến và giờ đến Capri"
+        },
+        {
+          "src": "/img/guides/capri-on-a-budget/02-capri-marina-grande-funicular.jpg",
+          "alt": "Lối vào nhà ga cáp treo Marina Grande với quầy vé"
+        }
       ]
     },
     {
-      "id": "free-views",
-      "title": "Viewpoint ít tốn kém",
+      "id": "free-viewpoints",
+      "title": "Điểm ngắm cảnh miễn phí và rẻ",
       "body": [
-        "Bản dịch đang được chuẩn bị."
+        "**Anacapri là nơi phép màu ngân sách xảy ra.** Bỏ qua piazzetta đông đúc của thị trấn Capri (cà phê đắt) và đi thẳng đến Anacapri bằng xe buýt (€2 từ Marina Grande, 15 phút).",
+        "**Cáp treo Monte Solaro (€12 khứ hồi):** Đáng giá. 12 phút lên đỉnh 589m với tầm nhìn 360° ra Vịnh Naples, Bờ biển Amalfi và đá Faraglioni. Mở 9:30-17h (ngắn hơn vào mùa đông). Đây là một xa xỉ duy nhất của bạn—tầm nhìn không gì sánh bằng và rẻ hơn nhiều so với Hang Xanh.",
+        "**Vườn Villa San Michele (€10 vào cửa, hoặc miễn phí từ bên ngoài):** Sân thượng có tầm nhìn rộng. Nếu ngân sách hạn hẹp, đi bộ đến điểm ngắm cảnh công cộng ngay sau lối vào villa—cùng cảnh, không tốn tiền. Chúng tôi đã đi qua lúc hoàng hôn và điểm ngắm miễn phí gần như tốt ngang.",
+        "**Đi bộ đến hải đăng Punta Carena:** Từ Anacapri, đi bộ 30 phút xuống dốc (hoặc xe buýt €2) đến Punta Carena. Điểm ngắm hải đăng miễn phí, chỗ bơi trên đá và ít khách du lịch hơn nhiều. Mang đồ ăn nhẹ và nước—nơi này xa xôi. Đi bộ trở lại lên dốc mất 45 phút.",
+        "**Via Krupp & Giardini di Augusto (€2 vào cửa):** Ở thị trấn Capri, những khu vườn này nhìn ra đá Faraglioni. Chính Via Krupp (con đường ngoằn ngoèo xuống) thường đóng cửa, nhưng vườn rẻ và cảnh là cảnh bạn thấy trong ảnh. Đáng €2 nếu bạn có."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-on-a-budget/03-anacapri-monte-solaro-chairlift.jpg",
+          "alt": "Cáp treo Monte Solaro lên trên mái nhà Anacapri với tầm nhìn ra biển"
+        },
+        {
+          "src": "/img/guides/capri-on-a-budget/04-punta-carena-lighthouse-view.jpg",
+          "alt": "Hải đăng Punta Carena với bờ biển đá và nước xanh"
+        }
       ]
     },
     {
-      "id": "beaches",
-      "title": "Bãi biển",
+      "id": "beaches-swimming",
+      "title": "Bãi biển và chỗ bơi",
       "body": [
-        "Có khu vực công cộng; mang khăn và nước để khỏi thuê dịch vụ."
+        "**Bãi biển công cộng Marina Piccola (miễn phí):** Từ thị trấn Capri, đi bộ 20 phút xuống dốc (hoặc xe buýt €2). Có một khu công cộng nhỏ giữa các lido trả phí. Mang khăn, nước và đồ ăn nhẹ của bạn. Lối vào đá nhưng nước trong. Đông vào 11h—đến sớm.",
+        "**Đá Punta Carena (miễn phí):** Chỗ bơi miễn phí tốt nhất. Đá phẳng để phơi nắng, thang xuống nước sâu. Người địa phương bơi ở đây. Không có tiện nghi—mang mọi thứ. Có quán bar nhỏ 100m lên đường nếu cần đồ uống.",
+        "**Bỏ qua các lido:** Lido (câu lạc bộ bãi biển tư nhân) tính €15-30 cho một ghế tắm nắng. Không đáng với ngân sách hạn chế. Khăn trên đá công cộng = miễn phí."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-on-a-budget/05-marina-piccola-public-beach.jpg",
+          "alt": "Khu bãi biển công cộng Marina Piccola với đá Faraglioni ở phía sau"
+        },
+        {
+          "src": "/img/guides/capri-on-a-budget/08-punta-carena-swimming-rocks.jpg",
+          "alt": "Khu bơi trên đá Punta Carena với thang và nước xanh trong"
+        }
       ]
     },
     {
-      "id": "food",
-      "title": "Ăn uống tiết kiệm",
+      "id": "cheap-food",
+      "title": "Nơi ăn rẻ",
       "body": [
-        "Mua panini hoặc pizza al taglio gần bến, tránh bữa trưa ngồi tại những tuyến phố đông nhất."
+        "**Capri và Anacapri đắt đỏ. Lập kế hoạch trước.** Bữa trưa ngồi tại quảng trường chính Capri tốn €20-30 mỗi người. Đây là cách ăn với €10-15 tổng cộng:",
+        "**Mang đồ ăn nhẹ từ Positano:** Chúng tôi luôn bảo khách mua panini, trái cây và nước từ Positano trước khi đi phà. Giá Positano cao, nhưng Capri còn tệ hơn. Chai nước €3-4 ở Capri so với €1-2 ở Positano.",
+        "**Pizza al taglio gần Marina Grande:** Có 2-3 quán pizza mang đi trong vòng 100m từ bến phà. €3-5 cho miếng lớn. Không tuyệt vời, nhưng nhanh và rẻ. Ăn tại ghế dài bên cảng.",
+        "**Phố nhỏ Anacapri:** Đi 2-3 dãy nhà ra khỏi quảng trường chính Anacapri và bạn sẽ tìm thấy quán bánh mì nhỏ và cửa hàng focaccia. €5-8 cho focaccia nhân và đồ uống. Chúng tôi đã ăn tại \"Bar Gabbiano\" (gần trạm xe buýt)—tốt và bằng nửa giá quảng trường.",
+        "**Bỏ qua chanh:** Capri nổi tiếng với chanh, nhưng limoncello và granita chanh có giá du lịch. Để dành cho Positano nơi rẻ hơn và thường tự làm."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-on-a-budget/06-anacapri-cheap-sandwich-bar.jpg",
+          "alt": "Quán bánh mì nhỏ ở phố nhỏ Anacapri với bảng giá"
+        }
+      ]
+    },
+    {
+      "id": "what-to-skip",
+      "title": "Những gì nên bỏ qua (tiết kiệm tiền)",
+      "body": [
+        "**Hang Xanh (€18 tổng):** €14 chuyến thuyền + €4 vào cửa thuyền chèo. Thường đóng do sóng hoặc gió. Khi mở, bạn có 5 phút bên trong hang có nước xanh. Thật sự? Các điểm ngắm cảnh miễn phí cho giá trị tốt hơn. Chúng tôi có khách bỏ qua và tiêu €18 đó cho cáp treo + bữa trưa ngon—họ vui hơn.",
+        "**Taxi:** Taxi Capri là lừa đảo khách du lịch. €15-20 cho chuyến đi 5 phút mà xe buýt tốn €2. Luôn đi xe buýt.",
+        "**Nhà hàng tại Piazzetta Umberto I (quảng trường thị trấn Capri):** Cà phê €6-8. Bữa trưa €25+. Bạn trả tiền cho cảnh khách du lịch khác. Đi 3 dãy nhà và giá giảm một nửa.",
+        "**Mua sắm hàng hiệu:** Capri có Gucci, Prada, v.v. Trừ khi bạn chỉ ngắm cửa sổ, đây không phải điểm dừng ngân sách."
+      ]
+    },
+    {
+      "id": "budget-itinerary",
+      "title": "Mẫu ngày €45 từ Brikette",
+      "body": [
+        "Đây là điều chúng tôi khuyên khách muốn trải nghiệm Capri đầy đủ dưới €50:",
+        "**8:15:** Phà từ Positano (€22 khứ hồi, đặt online trước 2 ngày).",
+        "**9:30:** Đến Marina Grande. Mua miếng pizza rẻ (€4). Xe buýt đến Anacapri (€2).",
+        "**10:30:** Cáp treo Monte Solaro (€12 khứ hồi). Dành 30-45 phút ở đỉnh.",
+        "**12:30:** Đi bộ đến hải đăng Punta Carena (miễn phí). Bơi ngoài đá. Ăn bữa trưa đóng gói.",
+        "**15h:** Xe buýt về Anacapri (€2). Đi bộ xuống thị trấn Capri (30 phút xuống dốc, miễn phí).",
+        "**16h:** Giardini di Augusto (€2). Đi nhanh, chụp ảnh Faraglioni.",
+        "**17h:** Cáp treo xuống Marina Grande (€2). Phà về Positano (bao gồm trong vé khứ hồi).",
+        "**Tổng: €46.** Bạn đã thấy cảnh đẹp nhất, bơi trong nước trong và tránh bẫy du lịch."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-on-a-budget/07-faraglioni-rocks-sunset-view.jpg",
+          "alt": "Đá Faraglioni lúc hoàng hôn nhìn từ Giardini di Augusto"
+        }
+      ]
+    },
+    {
+      "id": "practical-tips",
+      "title": "Mẹo thực tế từ hostel",
+      "body": [
+        "**Mang ba lô với:** Nước (1L mỗi người—đổ ở máy nước công cộng tại Anacapri), đồ ăn nhẹ, kem chống nắng, mũ, đồ bơi, khăn, sạc điện thoại. Capri có ít bóng mát và mọi thứ đắt.",
+        "**Thời tiết phà:** Phà hủy khi biển động (đặc biệt thg 11-3). Kiểm tra dự báo sáng hoặc hỏi tại bến Positano. Nếu không chắc, có kế hoạch dự phòng—xem %LINK:dayTripsAmalfi|lựa chọn chuyến đi ngày khác% của chúng tôi.",
+        "**Đông đúc:** Tháng 7-8, Capri có 15.000+ khách du lịch trong ngày. Đi sớm (phà đầu tiên) và đến Anacapri trước—hầu hết khách ở lại thị trấn Capri đến 11h, vì vậy bạn có Anacapri cho riêng mình.",
+        "**Hành lý:** Đừng mang hành lý. Không có nơi gửi tại Marina Grande. Nếu rời Brikette cùng ngày, nhờ chúng tôi giữ túi—chúng tôi giữ cho đến khi bạn trở lại.",
+        "**Đi bộ:** Capri có đồi và cầu thang. Đi giày tốt. Dép xỏ ngón ổn cho phà nhưng không phải để đi bộ."
+      ]
+    },
+    {
+      "id": "links",
+      "title": "Hướng dẫn liên quan",
+      "body": [
+        "**Cách đến đó:** %LINK:capriPositanoFerry|Hướng phà Positano đến Capri% (giờ, vị trí bến, vé).",
+        "**Nếu có ngân sách nhiều hơn:** Xem %LINK:capriDayTrip|hướng dẫn chuyến đi ngày Capri đầy đủ% của chúng tôi với nhiều tùy chọn hơn.",
+        "**Chuyến đi ngày ngân sách khác:** %LINK:dayTripsAmalfi|Chuyến đi ngày Bờ biển Amalfi% (Pompeii, Amalfi, Ravello).",
+        "**Tiết kiệm phương tiện:** %LINK:transportMoneySaving|Hướng dẫn tiết kiệm tiền phương tiện% (thẻ, mẹo, giờ thấp điểm)."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "Blue Grotto có đáng đi khi hạn chế ngân sách?",
+      "q": "Tôi có thể đi Capri dưới €50 từ Positano không?",
       "a": [
-        "Đây là trải nghiệm giá cao và phụ thuộc thời tiết; cáp treo Anacapri là lựa chọn nổi bật rẻ hơn."
+        "Có. Phà €22 khứ hồi, cáp treo €12, xe buýt €4-6, đồ ăn €10 (nếu mang đồ ăn nhẹ). Tổng €48. Bỏ qua Hang Xanh và lido, và bạn sẽ trong ngân sách."
+      ]
+    },
+    {
+      "q": "Hang Xanh có đáng với ngân sách hạn chế không?",
+      "a": [
+        "Không thực sự. €18 tổng (€14 thuyền + €4 vào cửa thuyền chèo), thường đóng, và bạn có 5 phút bên trong. Tiêu €18 đó cho cáp treo Monte Solaro và bữa trưa ngon—giá trị tốt hơn nhiều theo kinh nghiệm của chúng tôi."
+      ]
+    },
+    {
+      "q": "Cách rẻ nhất đến Capri từ Brikette là gì?",
+      "a": [
+        "Đi bộ xuống bến phà Positano (5 phút từ Brikette) và đi phà sáng (€22 khứ hồi nếu đặt online 2-3 ngày trước, hoặc €25 nếu mua tại bến). Ngoài mùa, bạn thường có thể mua vé tại chỗ với €20."
       ]
     }
   ]

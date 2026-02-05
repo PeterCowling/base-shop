@@ -3,10 +3,6 @@
     "title": "Salerno to Positano Bus Guide – Hostels, Stops, and Timetable Tips",
     "description": "Step-by-step directions for travelling from Salerno to Positano by SITA Sud bus via Amalfi. Learn where to buy tickets, how to read the timetable, and the best stop for Hostel Brikette."
   },
-  "intro": {},
-  "callouts": {
-    "tip": "Need every transport option? Open the %HOWTO:how-to-get-here|How to Get Here overview% for ferry, taxi, and mixed itineraries."
-  },
   "faqs": [
     {
       "q": "How do I read the SITA bus timetable?",
@@ -16,5 +12,8 @@
         "**Combining Rows and Columns:** Choose your departure and arrival bus stops, then check the columns to see when buses are available and what time they will arrive at your destination. For example, to see the departure time from Sorrento, look at the Sorrento row. To see the arrival time in Positano (Chiesa Nuova / Bar Internazionale), look at the Positano (Chiesa Nuova) row."
       ]
     }
-  ]
+  ],
+  "callouts": {
+    "tip": "Need every transport option? Open the %HOWTO:how-to-get-here|How to Get Here overview% for ferry, taxi, and mixed itineraries."
+  }
 }

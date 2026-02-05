@@ -1,11 +1,11 @@
 {
-  "title": "出行前请再次核对交通资讯",
+  "title": "所有交通信息均出于善意提供。尤其在你有后续换乘或其他时间敏感的安排时，请务必查看官方时刻表与运行公告。下方提供相关运营方时刻表链接。",
   "items": {
-    "buses": "巴士：请于 <sitaLink>sitasudtrasporti.it</sitaLink> 查看 SITA Sud 官方时刻表。",
-    "ferries": "渡轮：各运营商会公布季节性航线与时间（受天气影响）。参考 <travelmarLink>Travelmar</travelmarLink>、<nlgLink>NLG</nlgLink> 等官方资讯。",
-    "airlink": "飞抵萨莱诺 Costa d’Amalfi 机场（QSR）？可搭乘 Airlink 接驳车至萨莱诺——详见 <airportLink>aeroportodisalerno.it</airportLink> 与 <airlinkLink>FS Busitalia Airlink</airlinkLink>。",
-    "driving": "自驾：SS163 在 4–10 月实施单双号管制并设有限行区（ZTL）；停车费用依季节与地点不同，请确认官方公告。",
-    "premium": "高端或季节性服务：Uber Boat 与直升机包机仅在夏季有限运营，请提前确认是否提供。"
+    "buses": "巴士：<sitaLink>阿马尔菲海岸</sitaLink>以及 <curreriLink>那不勒斯机场 ⇄ 索伦托</curreriLink>。",
+    "trains": "火车：<eavLink>Circumvesuviana</eavLink>（Naples ⇄ Sorrento），<trenitaliaLink>Trenitalia</trenitaliaLink>（干线列车）。",
+    "ferries": "渡轮：运营方包括 <travelmarLink>Travelmar</travelmarLink>、<nlgLink>NLG</nlgLink>、<positanoJetLink>Positano Jet</positanoJetLink>、<alicostLink>Alicost</alicostLink>。",
+    "airlink": "萨莱诺 Costa d’Amalfi 机场（QSR），<airlinkLink>前往萨莱诺的 Airlink 接驳车</airlinkLink>。",
+    "driving": "自驾：SS163 在 4–10 月实施单双号管制并设有限行区（ZTL）；停车费用依季节与地点不同，请确认官方公告。"
   },
   "srLabel": "交通提醒"
 }

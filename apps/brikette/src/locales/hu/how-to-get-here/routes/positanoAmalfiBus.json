@@ -24,6 +24,7 @@
     },
     "timetable": {
       "title": "A SITA menetrend olvasása",
+      "link": "A legfrissebb menetrendet a <link>Positano.com</link> oldalon találja.",
       "body": "A hivatalos menetrendben a megállók sorokban, az indulások betűkkel jelölt oszlopokban szerepelnek. Az utazás napján keresse meg ugyanabban a betűjelű oszlopban a Positano és Amalfi sorokat.",
       "list": [
         "Az első oszlop sorai a teljes útvonal megállóit sorolják fel.",
@@ -31,7 +32,6 @@
         "Hétfőtől szombatig utazik? Az „F” és „G” oszlopot használja.",
         "Vasárnap vagy ünnepnap indul? A „G” és „H” oszlopban keresse a járatokat."
       ],
-      "link": "A legfrissebb menetrendet a <link>Positano.com</link> oldalon találja.",
       "linkHref": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result"
     },
     "positanoStop": {

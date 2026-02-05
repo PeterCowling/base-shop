@@ -1,22 +1,125 @@
 {
+  "lastUpdated": "2026-02-04T00:00:00.000Z",
   "seo": {
     "title": "Reisehilfe | Brikette Hostel Positano",
     "description": "Kurzer Überblick darüber, wie du uns erreichst und wohin Gäste weiterfahren – mit Links zu unseren ausführlichen Transport- und Ausflugsguides."
   },
   "linkLabel": "Reisehilfe | Brikette Hostel Positano",
+  "intro": [
+    "Reisehilfe Positano: Die meisten Routen führen über Sorrento. In Positano kommst du normalerweise bei Chiesa Nuova (Bus) oder Spiaggia Grande (Fähre) an.",
+    "Nutze diese Seite, um den richtigen Guide auszuwählen. Unsere Routen-Guides behandeln Tickets, Haltestellen, Gepäck und Ausweichrouten. Unsere Erlebnis-Guides behandeln Tagesausflüge von Tür zu Tür."
+  ],
   "sections": [
     {
-      "id": "overview",
-      "title": "Reisehilfe auf einen Blick",
+      "id": "quick-start",
+      "title": "Schnellstart (lies das zuerst)",
       "body": [
-        "Starte mit unseren Schritt-für-Schritt-Anreise-Guides für Züge, Fähren, Privattransfers und Tipps bei Verspätungen. Diese Seite fasst nur die Essentials zusammen: Plane rund 2 Stunden von Neapel nach Positano ein, kaufe SITA-Tickets bevor du einsteigst und schreib uns, wenn du dich verspätest, damit wir deinen Check-in koordinieren können."
+        "**Standard-Anreiseplan:** Komme nach Sorrento, dann nimm den SITA-Bus nach Positano. Plane ~2 bis 3,5 Stunden ab Neapel ein (Zeiten ändern sich je nach Saison).",
+        "**Kaufe Bustickets vor dem Einsteigen:** SITA-Busse verkaufen nicht zuverlässig Tickets im Bus. Kaufe in Sorrento an einem Tabacchi/einer Bar, bevor du dich anstellst.",
+        "**Speichere das Wichtigste:** Mache Screenshots von Fahrplänen und deinen Tickets. Schreibe die Hosteladresse auf. Das Signal kann an der Küstenstraße abbrechen.",
+        "**Anreise mit der Fähre:** Du landest bei Spiaggia Grande. Der letzte Schritt ist der Aufstieg mit deinem Gepäck. Wenn du den einfachsten Anreisetag möchtest, nutze %LINK:porterServices|Gepäckträger-Services%.",
+        "**Verspätung:** Schreib uns eine Nachricht, sobald du deine ETA kennst, damit wir deinen Check-in planen können: %LINK:checkinCheckout|Check-in & Check-out%."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.webp",
+          "alt": "Lokale Bushaltestelle in Positano"
+        },
+        {
+          "src": "/img/directions/ferry-dock-interno-yellow.webp",
+          "alt": "Interno Positano Lokalbus am Fähranleger"
+        }
       ]
     },
     {
-      "id": "excursions",
-      "title": "Schnelle Wegbeschreibungen für beliebte Ausflüge",
+      "id": "travel-checklist",
+      "title": "Vor der Reise (einfache Checkliste)",
       "body": [
-        "Sobald du angekommen bist, liefert dir die Erlebnis-Sammlung Wegbeschreibungen von der Hostel-Tür zu den beliebtesten Tagesausflügen unserer Gäste – Capri-Fähren, Einstiege zum Sentiero degli Dei, Busse nach Amalfi und Ravello, Züge nach Pompeji und zum Vesuv und vieles mehr. Wirf einen Blick in die Guides für erste Abfahrtszeiten, Ticket-Tipps und Packempfehlungen."
+        "- Lade dein Handy oder nimm eine Powerbank mit.",
+        "- Nimm Wasser und einen kleinen Snack mit.",
+        "- Trage etwas Bargeld für kleine Läden und Ticketschalter bei dir.",
+        "- Bewahre dein Ticket in einer leicht erreichbaren Tasche zur Kontrolle auf.",
+        "- Trage gute Schuhe. Es gibt viele Treppen.",
+        "- Wenn du große Taschen hast, plane für Stufen ein. Gepäckträger helfen.",
+        "- Nimm eine leichte Jacke mit. Die Nächte können am Meer kühl werden.",
+        "- Speichere einen Kartenlink ab. Das hilft, wenn du spät ankommst.",
+        "- Wenn dir beim Busfahren übel wird, sitze vorne im Bus und schaue aus dem Fenster."
+      ]
+    },
+    {
+      "id": "how-to-get-here",
+      "title": "Wie du hierher kommst (was die Routen-Guides abdecken)",
+      "body": [
+        "Beginne mit der %HOWTO:how-to-get-here|Anreise-Seite%, wenn du zwischen Bus, Fähre oder einer Kombination wählst.",
+        "Jeder Routen-Guide ist Schritt für Schritt. Er behandelt:",
+        "- wo du Tickets kaufst (und was du screenshotten solltest)",
+        "- welche Haltestelle du in Positano nutzt (oft Chiesa Nuova, am nächsten zum Hostel)",
+        "- Gepäcktipps für volle Busse und Fähren",
+        "- Saisonhinweise (Sommerlinien vs. Winterservice)",
+        "- eine Ausweichroute für raue See oder verpasste Verbindungen.",
+        "",
+        "**Meist genutzte Anreiserouten:**",
+        "- %HOWTO:naples-airport-positano-bus|Neapel Flughafen → Positano (Bus via Sorrento)% — Curreri-Shuttle nach Sorrento, dann SITA nach Positano.",
+        "- %HOWTO:naples-center-train-bus|Neapel Zentrum → Positano (Zug + Bus)% — Zug nach Sorrento, dann SITA nach Positano.",
+        "- %HOWTO:naples-center-positano-ferry|Neapel Zentrum → Positano (Fähre)% — super wenn sie fährt; halte eine Meereswetter-Reserve bereit.",
+        "- %HOWTO:salerno-positano-ferry|Salerno → Positano (Fähre)% — gute Option in der Saison.",
+        "- %HOWTO:sorrento-positano-bus|Sorrento → Positano (Bus)% — die Schlüsselverbindung für viele Pläne.",
+        "",
+        "**Positano verlassen nach deinem Aufenthalt:**",
+        "- %HOWTO:positano-naples-airport-bus|Positano → Neapel Flughafen (öffentliche Verkehrsmittel)% — plane extra Puffer für Verbindungen ein.",
+        "- %HOWTO:positano-naples-center-bus-train|Positano → Neapel Zentrum (Bus + Zug)% — üblich wenn Fähren nicht fahren.",
+        "- %HOWTO:positano-naples-center-ferry|Positano → Neapel Zentrum (Fähre)% — am schnellsten bei ruhiger See."
+      ]
+    },
+    {
+      "id": "last-10-minutes",
+      "title": "Deine letzten 10 Minuten: Fähranleger oder Bushaltestelle → Hostel",
+      "body": [
+        "**Anreise mit dem Bus:** Die meisten Busse halten bei Chiesa Nuova (nahe Bar Internazionale). Von dort ist es ein kurzer Fußweg zum Hostel. Nutze: %LINK:chiesaNuovaArrivals|Chiesa Nuova → Hostel Brikette (Ankünfte)% und %LINK:chiesaNuovaDepartures|Hostel Brikette → Chiesa Nuova (Abreisen)%.",
+        "",
+        "**Anreise mit der Fähre:** Folge der gepäckfreundlichen Route vom Anleger. Wenn du nicht leicht reist, lies das vor dem Aufstieg: %LINK:ferryDockToBrikette|Fähranleger → Hostel Brikette (mit Gepäck)%.",
+        "",
+        "**Reisen mit schwerem Gepäck:** Positano ist Treppen und steile Gassen. Wenn du den einfachsten Anreisetag möchtest, kombiniere die Wegbeschreibungen oben mit %LINK:porterServices|Gepäckträger-Services%."
+      ]
+    },
+    {
+      "id": "delays-cancellations",
+      "title": "Wenn etwas schiefgeht (Verspätungen, raue See, verpasste Verbindungen)",
+      "body": [
+        "**Fähren-Ausfälle:** Bei rauer See können Fähren mit kurzer Ankündigung ausfallen. Kenne deine Ausweichroute im Voraus. Beginne hier: %LINK:ferryCancellations|Fähren-Ausfälle & Wetter% und die %HOWTO:how-to-get-here|Anreise-Übersicht%.",
+        "",
+        "**Verbindung in Sorrento verpasst:** Du kannst (1) auf den nächsten SITA-Bus warten, (2) zu einer Fähre wechseln wenn sie fährt, oder (3) ein Taxi teilen wenn ihr eine Gruppe seid. Die Routen-Guides oben zeigen die üblichen Wartepunkte und Zeitpuffer.",
+        "",
+        "**Verspätet am Hostel ankommen:** Schreib uns eine Nachricht, sobald du deine ETA kennst, damit wir deinen Check-in planen können: %LINK:checkinCheckout|Check-in & Check-out%."
+      ]
+    },
+    {
+      "id": "popular-excursions",
+      "title": "Beliebte Tagesausflüge (Tür-zu-Tür-Wegbeschreibungen)",
+      "body": [
+        "Diese Erlebnis-Guides konzentrieren sich auf die Grundlagen: erste Abfahrten, welcher Pier/welche Haltestelle zu nutzen ist, was du einpacken solltest und häufige Fehler bei der Rückfahrt.",
+        "",
+        "- %LINK:capriDayTrip|Tagesausflug nach Capri von Positano% — Reiseplan + Links zu Hin-/Rückfahrt-Fährenwegbeschreibungen.",
+        "- %LINK:pathOfTheGods|Sentiero degli Dei (Pfad der Götter)% — wähle deinen besten Ansatz (Bus, Fähre + Bus oder die Nocelle-Option).",
+        "- %LINK:positanoPompeii|Positano → Pompeji Tagesausflug% — Bus nach Sorrento + Regionalbahn, mit Timing- und Crowd-Tipps.",
+        "- %LINK:dayTripsAmalfi|Beste Tagesausflüge von Positano% — schneller Auswahlhelfer für Capri, Pompeji, Amalfi/Ravello und Sorrento.",
+        "",
+        "Für Ort-zu-Ort-Fahrten helfen diese Transportguides: %HOWTO:positano-amalfi-ferry|Positano → Amalfi (Fähre)%, %HOWTO:positano-amalfi-bus|Positano → Amalfi (Bus)%, %HOWTO:positano-ravello-ferry-bus|Positano → Ravello (Fähre + Bus)%."
+      ]
+    }
+  ],
+  "faqsTitle": "Häufig gestellte Fragen zur Reisehilfe",
+  "faqs": [
+    {
+      "q": "Wo sollte ich in Positano ankommen?",
+      "a": [
+        "Wenn du mit dem SITA-Bus kommst, ziele auf die Haltestelle Chiesa Nuova (nahe Bar Internazionale). Es ist die nächste, bequemste Haltestelle zum Hostel Brikette. Wenn du mit der Fähre kommst, kommst du bei Spiaggia Grande (Hauptstrand/Anleger) an und gehst dann bergauf zum Hostel."
+      ]
+    },
+    {
+      "q": "Muss ich Transport im Voraus buchen?",
+      "a": [
+        "In der Hauptsaison (besonders an Wochenenden) hilft es, frühere Abfahrten zu planen und früh am Pier/der Bushaltestelle zu sein. Fähren können zu beliebten Zeiten ausverkauft sein und Busschlangen können lang werden. Wenn du Flexibilität bevorzugst, behalte eine Ausweichroute aus der %HOWTO:how-to-get-here|Anreise-Übersicht% im Kopf."
       ]
     }
   ]

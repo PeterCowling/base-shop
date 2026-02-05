@@ -1,92 +1,143 @@
 {
   "seo": {
-    "title": "Requisitos de Edad y Accesibilidad - Guía del Hostel Brikette, Positano",
-    "description": "Descubre las restricciones de edad, detalles de accesibilidad, políticas de autosuficiencia, normas para menores, servicios, consejos de transporte, reglas de la casa y prácticas de sostenibilidad en el único albergue de Positano."
+    "title": "Requisitos de Edad y Accesibilidad en Hostel Brikette (Positano)",
+    "description": "Comprenda nuestro acceso por escaleras, expectativas de equipaje y autosuficiencia, política de menores, orientación sobre animales de servicio y consejos prácticos de llegada (ferry y autobús) antes de reservar."
   },
-  "linkLabel": "Requisitos de Edad y Accesibilidad - Guía del Hostel Brikette, Positano",
+  "linkLabel": "Requisitos de Edad y Accesibilidad",
   "sections": [
+    {
+      "id": "quickChecklist",
+      "title": "Antes de Reservar (Lista de Verificación Rápida)",
+      "body": [
+        "Queremos que su llegada sea fluida: Positano es hermoso, pero no es \"plano y fácil\". Esto es lo que más importa:",
+        "* **Las escaleras son inevitables:** la recepción se alcanza a través de ≈30 escalones de piedra al aire libre, y la mayoría de los dormitorios están 1-2 pisos adicionales arriba.\n* **Sin ascensor / sin acceso sin escalones:** nuestro edificio histórico no fue construido para rampas o ascensores.\n* **Planifique su equipaje:** no tenemos servicio de conserjería/botones: traiga lo que pueda cargar, o contrate un portero.\n* **Las reglas para menores son estrictas:** menores de 17 años solo habitación privada; los de 17 años requieren un adulto supervisor + documentación.\n* **Si no está seguro, envíenos un correo electrónico antes de reservar:** describiremos el diseño y las rutas típicas de caminata en detalle."
+      ]
+    },
     {
       "id": "accessibilityRequirements",
       "title": "Requisitos de Accesibilidad",
       "body": [
-        "Situado en los empinados acantilados de postal por los que Positano es mundialmente famosa, el Hostel Brikette ocupa una residencia del siglo XIX cuidadosamente acondicionada que nunca fue diseñada con ascensores ni rampas modernos. Para llegar a la recepción hay que subir aproximadamente 30 escalones de piedra al aire libre desde el callejón peatonal más cercano, y la mayoría de los dormitorios están uno o dos pisos internos más arriba. Al ser un albergue, no contamos con servicio de conserjería, por lo que deberá planificar llevar su equipaje usted mismo."
+        "Hostel Brikette está en un edificio histórico de Positano construido en la ladera. Eso es parte del encanto, y también la consideración clave de accesibilidad: **no hay ascensor ni ruta sin escalones**.",
+        "**Qué esperar en el hostel:**\n* ≈30 escalones de piedra al aire libre desde el carril peatonal más cercano hasta la recepción.\n* La mayoría de los dormitorios están **uno o dos pisos internos adicionales** por encima de la recepción.",
+        "Positano también es empinado. Muchas rutas hacia/desde la playa y el puerto incluyen escaleras y superficies irregulares.",
+        "Si las escaleras, el equilibrio o cargar equipaje podrían ser desafiantes, envíenos un correo electrónico antes de reservar. Explicaremos el diseño y le ayudaremos a tomar una decisión informada."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/hostel-brikette-entrance-steps.webp",
+          "alt": "Las escaleras hasta la entrada de Hostel Brikette, justo al lado de la carretera principal en Positano.",
+          "caption": "Espere escalones al aire libre para llegar a la recepción: no hay ascensor ni acceso sin escalones."
+        }
       ]
     },
     {
       "id": "arrivalByFerry",
       "title": "Llegada en Ferry",
       "body": [
-        "El puerto está a cierta distancia del albergue. Aunque puede ser agradable llegar en ferry, deberá planificar cómo llegar hasta el hostel. No recomendamos hacerlo a pie con equipaje voluminoso, especialmente en verano. Recomendamos utilizar los servicios de porteadores registrados de Positano, que llevarán sus cosas directamente al albergue, así como el servicio de autobús local. Puede obtener indicaciones, junto con muchos otros consejos útiles, a través de nuestra aplicación, a la que tendrá acceso cuando reserve."
+        "Llegar en ferry es pintoresco, pero el puerto está muy por debajo del hostel y las rutas hacia arriba incluyen secciones empinadas y escaleras.",
+        "**Con equipaje, no recomendamos caminar** desde el puerto hasta el hostel, especialmente en el calor del verano.",
+        "Un plan confiable es:\n* Contrate un portero registrado en el puerto para entregar el equipaje directamente al hostel.\n* Tome el autobús local Interno desde el centro (área de Piazza dei Mulini), luego camine el tramo final corto.",
+        "Para direcciones paso a paso, consulte %LINK:arrivingByFerry|Guía Puerto de Positano → Hostel%."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-positano-spiaggia-view.jpg",
+          "alt": "Muelle de ferry de Positano a nivel de playa con botes en la bahía.",
+          "caption": "El puerto está a nivel de playa: planifique ayuda con el equipaje (portero) más un viaje en autobús cuesta arriba."
+        }
       ]
     },
     {
       "id": "arrivalByBus",
       "title": "Llegada en Autobús",
       "body": [
-        "La parada de autobús más cercana está a 100 m/300 ft. El trayecto entre nosotros y la parada es llano, por lo que solo debe planificar llevar su equipaje desde la calle hasta su habitación."
+        "La parada de autobús más cercana está a unos **100 m / 330 pies**. La ruta entre la parada y el hostel es corta y mayormente plana.",
+        "Desde la calle, aún necesitará manejar escaleras:\n* escaleras hasta la recepción\n* pisos internos adicionales a la mayoría de las habitaciones"
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.webp",
+          "alt": "Señalización de la parada de autobús de Positano al borde de la carretera.",
+          "caption": "Desde la parada, es un paseo corto, luego escaleras hasta la recepción."
+        }
       ]
     },
     {
       "id": "generalArrivalTips",
       "title": "Consejos Generales de Llegada",
       "body": [
-        "Por las razones expuestas, aconsejamos viajar ligero, utilizar mochilas en lugar de maletas con ruedas y llevar calzado adecuado con suela antideslizante."
+        "Unas pocas opciones pequeñas hacen una gran diferencia en Positano:",
+        "* Empaque ligero donde sea posible.\n* Prefiera una mochila sobre una maleta grande con ruedas.\n* Use zapatos con buen agarre (los escalones de piedra pueden ser resbaladizos).\n* Si llega en ferry con equipaje, planifique una combinación de portero + autobús con anticipación."
       ]
     },
     {
       "id": "reducedMobility",
-      "title": "Orientación para Movilidad Reducida",
+      "title": "Orientación sobre Movilidad Reducida",
       "body": [
-        "Si tiene movilidad reducida, discapacidad visual o depende de dispositivos de asistencia, envíenos un correo electrónico con antelación para que podamos describirle la distribución en detalle y ayudarle a evaluar si la zona y el edificio del albergue satisfacen sus necesidades personales."
+        "Si tiene movilidad reducida, discapacidad visual, dolor crónico, problemas de equilibrio o depende de dispositivos de asistencia, envíenos un correo electrónico antes de reservar.",
+        "Podemos describir el diseño (escaleras, rutas típicas de caminata, opciones de ubicación de habitaciones) para que pueda evaluar si nuestra ubicación e instalaciones satisfacen sus necesidades."
       ]
     },
     {
       "id": "serviceAnimals",
       "title": "Animales de Servicio",
       "body": [
-        "Tenga en cuenta que solo podemos alojar animales de servicio certificados en habitaciones privadas y previa coordinación, según la normativa nacional."
+        "Podemos alojar **animales de servicio certificados** en **solo habitaciones privadas**, sujeto a arreglo previo y regulaciones aplicables.",
+        "Contáctenos con anticipación para que podamos confirmar los requisitos de documentación y la mejor opción de habitación."
       ]
     },
     {
       "id": "assistedSleeping",
-      "title": "Dispositivos de Sueño Asistido",
+      "title": "Dispositivos de Asistencia para Dormir",
       "body": [
-        "Para preservar un ambiente tranquilo en los espacios compartidos, los dispositivos que generan sonidos continuos o intermitentes —tales como máquinas CPAP, generadores de ruido blanco, altavoces de meditación o relojes parlantes— solo pueden usarse cuando se haya reservado una habitación privada."
+        "Para preservar una atmósfera tranquila en los dormitorios compartidos, los dispositivos que crean sonido continuo o intermitente (por ejemplo, máquinas CPAP, generadores de ruido blanco, altavoces de meditación o relojes parlantes) solo pueden usarse **con una reserva de habitación privada**."
       ]
     },
     {
       "id": "selfSufficiencyPolicy",
       "title": "Política de Autosuficiencia",
       "body": [
-        "En consonancia con el espíritu independiente de los mochileros, operamos en régimen de autoservicio y autoabastecimiento. Nuestro pequeño equipo estará encantado de ayudar, pero no somos médicos, farmacéuticos, enfermeros ni cuidadores profesionales y, por ley, no podemos almacenar ni administrar medicamentos recetados. Todos los huéspedes deben ser capaces de llevar su propio equipaje, subir las escaleras mencionadas, hacer el check-in y check-out por sí mismos, mantener su higiene personal e interactuar en los espacios sociales sin intervención del personal."
+        "Hostel Brikette es un hostel estilo mochilero: amigable y solidario, pero **no es una instalación de cuidado**.",
+        "Nuestro equipo puede ayudar con información y consejos prácticos, pero no podemos proporcionar servicios médicos o de cuidado, y no podemos almacenar o administrar medicamentos recetados.",
+        "**Para quedarse con nosotros, los huéspedes deben poder:**\n* cargar su propio equipaje (o contratar un portero)\n* subir las escaleras descritas anteriormente\n* registrarse/salir de forma independiente\n* manejar la higiene personal de forma independiente\n* usar espacios compartidos sin requerir supervisión del personal"
       ]
     },
     {
       "id": "essentialMedicine",
-      "title": "Medicamentos Esenciales",
+      "title": "Medicina Esencial",
       "body": [
-        "Si viaja con medicación esencial que requiera refrigeración, podemos guardarla por usted; envíenos un correo antes de su llegada para reservar espacio. La farmacia más cercana está a 450 m en Viale Pasitea y la clínica médica pública más próxima se encuentra en Praiano, a 3 km en autobús. En caso de emergencia sanitaria, el personal contactará de inmediato con los servicios de emergencia italianos (marque 118), pero no puede proporcionar asistencia médica profesional in situ. Si durante su estancia queda claro que no cumple estos estándares mínimos de autosuficiencia, la dirección se reserva el derecho de cancelar su reserva de acuerdo con el artículo 1382 del Código Civil italiano. Las noches no utilizadas se reembolsarán menos la primera noche y las comisiones de procesamiento de tarjeta."
+        "Si viaja con medicamentos esenciales que requieren refrigeración, generalmente podemos almacenarlos para usted; envíenos un correo electrónico antes de la llegada para reservar espacio.",
+        "Opciones cercanas:\n* Farmacia: ~450 m en Viale Pasitea.\n* Clínica médica pública: Praiano (~3 km en autobús).",
+        "En caso de emergencia, el personal contactará a los servicios de emergencia italianos (112 / 118). No podemos proporcionar asistencia médica profesional en el sitio.",
+        "Si, durante su estadía, queda claro que no puede cumplir con los requisitos mínimos de autosuficiencia anteriores, es posible que no podamos alojarlo de manera segura. Para los términos relacionados, consulte %LINK:changingCancelling|Cambios y Cancelaciones% y %LINK:rules|Reglas de la Casa%."
       ]
     },
     {
       "id": "minorsPolicy",
-      "title": "Política para Menores",
+      "title": "Política de Menores",
       "body": [
-        "Las normativas de hospitalidad italianas son particularmente claras en lo que respecta a la protección de los jóvenes viajeros, y las apoyamos plenamente. Los niños de 16 años o menos solo pueden alojarse en habitaciones privadas, acompañados por un padre o tutor legal de al menos 18 años que duerma en la misma habitación durante toda la estancia. Los grupos escolares, deportivos o scouts menores de 18 años deben reservar la propiedad completa o disponer de ocupación exclusiva de las habitaciones, y deben presentar una declaración de responsabilidad firmada en papel membretado oficial de la institución organizadora al menos siete días antes de la llegada. Los huéspedes de 17 años pueden reservar dormitorios mixtos o de un solo género, siempre que un adulto supervisor de 18+ se aloje en la misma habitación y entregue, a la llegada, un consentimiento notarial de los padres o prueba documentada de tutela. En ningún caso se podrá dejar a los menores sin supervisión en las áreas comunes. El incumplimiento de las normas anteriores resultará en la cancelación inmediata sin reembolso y, cuando corresponda, se notificará a las autoridades locales según exige la ley de seguridad pública italiana (Texto Único de Seguridad Pública, artículo 109)."
+        "Las reglas de hospitalidad italianas sobre menores son estrictas, y las seguimos. Esto protege a los viajeros jóvenes y mantiene el hostel en cumplimiento; lea atentamente antes de reservar.",
+        "**Edades 16 y menores:**\n* Solo habitaciones privadas.\n* Deben estar acompañados por un padre/tutor legal de 18+.\n* El tutor debe permanecer en la misma habitación durante toda la estadía.",
+        "**Edad 17:** las camas de dormitorio pueden ser posibles solo con un adulto supervisor (18+) en el mismo dormitorio y documentación apropiada de consentimiento/tutela a la llegada (envíenos un correo electrónico con anticipación para que podamos confirmar lo que se necesita para su situación).",
+        "**Grupos (escuela/deportes/scouts) menores de 18:** deben organizar ocupación exclusiva y proporcionar documentación de responsabilidad escrita de la institución organizadora al menos 7 días antes de la llegada.",
+        "Los menores no pueden quedarse sin supervisión en áreas comunes. Si los requisitos no se cumplen al registrarse, podemos estar legalmente obligados a rechazar la estadía."
       ]
     },
     {
       "id": "locationOverview",
-      "title": "Vista General de la Ubicación",
+      "title": "Descripción General de la Ubicación",
       "body": [
-        "Nos encontramos a solo 100 m/300 ft de la parada de autobús de línea principal y de la parada de autobús local más cercana. También hay supermercados, un cajero automático, restaurantes y una pequeña tienda de electrónica muy cerca del albergue. Nuestra ubicación es excelente para excursiones de un día y comodidades locales. El centro turístico de Positano, las playas y el puerto de ferris se encuentran más lejos; puede llegar a esta zona utilizando el autobús local."
+        "Estamos cerca de comodidades locales:\n* carretera principal y paradas de autobús (~100 m / 330 pies)\n* tiendas de comestibles, cajero automático, restaurantes y pequeños artículos esenciales cercanos",
+        "El área de la playa de Positano y el puerto de ferry están más abajo de la colina; el autobús local es la forma más fácil de ir y venir."
       ]
     },
     {
       "id": "transportationGuide",
       "title": "Guía de Transporte",
       "body": [
-        "Para llegar a Positano y al Hostel Brikette desde el Aeropuerto Internacional de Nápoles (Capodichino) puede tomar el autobús lanzadera Curreri Viaggi hasta la estación Circumvesuviana de Sorrento y luego el autobús SITA Sud hacia Amalfi, bajándose en la parada «Positano Chiesa Nuova». Proporcionamos guías muy detalladas para llegar al albergue, que le ayudarán a planificar su viaje. Recomendamos leerlas, ya que pueden ahorrarle tiempo y esfuerzo. Los ferris estacionales le dejarán en el puerto de Positano, pero tenga en cuenta que deberá planificar cuidadosamente cómo llegar desde el puerto hasta el hostel. Llegar en coche es posible pero no recomendable: el estacionamiento en el centro histórico es muy limitado y cuesta a partir de 45 € por día. Si realmente desea conducir, reserve con antelación una plaza en Garage Mandara y planifique descargar el equipaje en el albergue antes de ir a aparcar."
+        "Para la planificación de rutas paso a paso, use estas guías como punto de partida:",
+        "Rutas comunes:\n* Desde el Aeropuerto de Nápoles: %LINK:naplesAirportPositanoBus|Aeropuerto de Nápoles → Positano%.\n* Desde el centro de Nápoles: %LINK:naplesCenterTrainBus|Centro de Nápoles → Positano%.\n* En ferry (de temporada): %LINK:arrivingByFerry|Puerto de Positano → Hostel%.",
+        "Llegar en automóvil es posible pero no recomendado en temporada alta debido al estacionamiento limitado y costoso. Si conduce, planifique el estacionamiento con anticipación y mantenga el equipaje lo más ligero posible."
       ]
     }
   ]

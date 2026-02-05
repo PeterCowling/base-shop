@@ -1,44 +1,141 @@
 {
+  "lastUpdated": "2026-02-04",
   "seo": {
     "title": "Positano til Napoli centrum med bus og tog | Hostel Brikette",
-    "description": "Dør-til-dør-vejledning fra Hostel Brikette til Napoli Piazza Garibaldi via SITA-bussen til Sorrento og Circumvesuviana-toget, inklusive billetvalidering, tidstabeller og ankomsttips."
+    "description": "Komplet guide fra Hostel Brikette til Napoli Garibaldi via SITA-bus og Circumvesuviana-tog. Billetter, tider, omkostninger og perrontinformationer."
   },
   "intro": {
-    "title": "Positano til Napoli centrum – bus og derefter tog",
-    "body": "Brug denne guide, når du rejser fra Hostel Brikette til Napoli Piazza Garibaldi. Du tager SITA Sud-bussen til Sorrento og skifter derefter til Circumvesuviana-toget for at nå centrum. Vi dækker billetvalidering, hvordan du læser SITA-tidstabellen, og hvad du kan forvente ved hver forbindelse."
+    "title": "Positano til Napoli centrum – Bus og derefter tog",
+    "body": "Denne guide dækker rejsen fra dør til dør fra Hostel Brikette til Napoli Piazza Garibaldi med offentlig transport. Du tager SITA Sud-bussen fra Chiesa Nuova til Sorrento (ca. €2,50, 50 minutter), og skifter derefter til Circumvesuviana-toget til Napoli centrum (ca. €4,00, 65 minutter). Den samlede rejsetid er omkring 2-2,5 timer, og den samlede pris er cirka €6,50.\n\nDette er den mest økonomiske rute til Napoli, når færgerne ikke sejler (oktober til marts), eller når du vil undgå taxapriser. De største udfordringer: køb SITA-billetter før ombordstigning (ikke tilgængelige i bussen), ankom tidligt om sommeren for at sikre en plads, og valider din togbillet før ombordstigning for at undgå bøder. Hvis du har stor bagage, skal du overveje en privat transport i stedet – bussen og toget kan være overfyldte og har begrænset bagageplads. Kontakt receptionens personale for assistance med at arrangere transport."
   },
   "callouts": {
-    "cta": "Skal du se alle transportmuligheder? Åbn %HOWTO:how-to-get-here|Oversigt over Sådan kommer du hertil% for færge-, taxa- og kombinerede rejser."
+    "cta": "Har du brug for alle transportmuligheder? Åbn %HOWTO:how-to-get-here|Sådan kommer du hertil-oversigten% for færge, taxi og kombinerede rejseruter.",
+    "tip": "Rejser du i løbet af vinteren eller lavæsonen? Tjek %GUIDES:travelHelp|advarsler om transportforstyrrelser% før du rejser – strejker og planændringer er mere almindelige fra november til marts."
   },
   "sections": [
     {
       "id": "overview",
-      "body": "Sæt godt to timer af dør til dør i højsæsonen. SITA-busserne kører ofte fra Positano (Chiesa Nuova) til Sorrento. Circumvesuviana-toget fra Sorrento afgår cirka hver 20.–30. minut og ender på Napoli Garibaldi."
+      "title": "Rejseoversigt",
+      "body": "Afsæt 2 til 2,5 timer fra dør til dør under normale forhold. SITA-busserne kører ofte fra Positano (Chiesa Nuova) til Sorrento – normalt hver 30-60 minutter afhængigt af sæsonen. Circumvesuviana-toget fra Sorrento til Napoli Garibaldi kører cirka hver 20-30 minutter hele dagen.\n\nOm sommeren (juni-september) skal du tilføje ekstra tid: busserne fyldes hurtigt, og du skal måske vente på næste afgang, hvis du ikke kan komme ombord. Om vinteren skal du tjekke køreplaner på forhånd, da SITA reducerer frekvensen, og Circumvesuviana lejlighedsvis oplever forsinkelser eller aflysninger på grund af vedligeholdelse eller strejker.",
+      "images": [
+        {
+          "src": "/img/directions/sorrento-train-station.jpg",
+          "alt": "Sorrento togstation indgang nær perronerne.",
+          "caption": "Du skifter fra SITA-bussen til Circumvesuviana på Sorrentos station."
+        }
+      ]
+    },
+    {
+      "id": "costs",
+      "title": "Hvad det koster",
+      "body": "**SITA-bus (Positano → Sorrento):** Cirka €2,50 pr. person (priserne ændres årligt; bekræft ved køb).\n\n**Circumvesuviana-tog (Sorrento → Napoli Garibaldi):** Cirka €4,00 pr. person.\n\n**Samlet pris:** Cirka €6,50 pr. person, én vej.\n\nBegge dele accepterer kontanter og kort ved billetkontorerne, selvom mindre tobaksforretninger og kiosker til SITA-billetter kan være kun kontanter. Hav €10-€20 i små sedler, hvis du køber fra en bar eller kiosk. Circumvesuviana-billetautomaterne og kontorerne i Sorrento accepterer større kredit-/debetkort."
     },
     {
       "id": "tickets",
-      "body": "Køb SITA-busbilletter i kiosker eller tobaksforretninger, før du går ombord. Vis billetten til chaufføren, når du stiger på; de stempler eller river den for at validere rejsen. Gem billetten, indtil du stiger af, i tilfælde af billetkontrol undervejs."
+      "title": "Køb og validering af SITA-billetter",
+      "body": "SITA-busbilletter skal købes før ombordstigning – chaufføren kan ikke sælge dig en billet. Køb fra:\n\n- Bar Internazionale (ved busstoppestedet)\n- Tobaksforretninger (tabacchi) langs Via G. Marconi\n- Kiosker i Positanos bymidte\n\nForevis billetten til chaufføren, når du går ombord; de stempler eller river den for at validere din tur. Behold den validerede billet, indtil du stiger af, i tilfælde af at en kontrollør tjekker billetter undervejs. Manglende validering eller kørsel uden billet medfører en bøde på stedet (typisk €50+).",
+      "images": [
+        {
+          "src": "/img/directions/sita-ticket-validation.jpg",
+          "alt": "SITA-buschauffør validerer en billet ved indgangen.",
+          "caption": "Giv din billet til chaufføren, når du går ombord – de stempler eller river den for at validere."
+        }
+      ]
     },
     {
       "id": "timetable",
-      "body": "Den officielle tidstabel viser stoppesteder som rækker og afgange som bogstavkolonner. Find rækken for Sorrento og match den med bogstavet for din rejsedag for at se afgangstiderne. Se derefter på Positano (Chiesa Nuova)-rækken i samme kolonne for ankomsttidspunktet tilbage i byen."
+      "title": "Læsning af SITA-køreplanen",
+      "body": "Den officielle SITA-køreplan viser stoppesteder som rækker og afgange som bogstavkolonner. For at finde din afgang:\n\n1. Vælg din rejsedag (hverdag vs. søndag/helligdag) – hver dagtype har forskellige bogstavkoder (f.eks. kolonnerne F og G for hverdage, G og H for søndage).\n2. Find Sorrento-rækken for at se, hvornår bussen afgår fra Sorrento.\n3. Find Positano (Chiesa Nuova)-rækken i samme kolonne for at se, hvornår den passerer dit stoppested.\n\nKøreplanen er opslået ved busstoppestedet og tilgængelig online på %URL:https://www.sitasudtrasporti.it|SITA Sud-hjemmesiden%. I praksis kan busserne være 5-10 minutter forsinket, især i sommertrafik, så ankom et par minutter før det planlagte tidspunkt.",
+      "images": [
+        {
+          "src": "/img/directions/sita-timetable-example.jpg",
+          "alt": "Nærbillede af SITA-køreplan, der viser rækker og bogstavkolonner.",
+          "caption": "Match stoppestedsrækken med dagkolonnen for at finde din afgangstid."
+        }
+      ]
     },
     {
-      "id": "positanoStop"
+      "id": "positanoStop",
+      "title": "Positano (Chiesa Nuova) busstoppested",
+      "body": "Det nærmeste SITA-stoppested til Hostel Brikette er **Positano (Chiesa Nuova)** på Via G. Marconi, omkring 140 meter (460 fod) fra hostelindgangen. Du venter uden for Bar Internazionale.\n\n**Hvad du kan forvente:**\n- Om sommeren (juli-august) skal du ankomme 10-15 minutter før for at sikre en plads. Busserne kan fyldes op til stående plads kun, og chauffører kan nægte ombordstigning, hvis bussen er fuld.\n- I lavæsonen (maj-juni, september-oktober) skal du ankomme 5 minutter før – busserne er mindre fyldte, men stadig travle.\n- Om vinteren (november-marts) skal du ankomme til tiden eller et par minutter før; busserne fyldes sjældent helt.\n\nDer er intet formelt køsystem; passagerer går ombord efter først-til-mølle-princippet. Stå tæt på kantstenen, så chaufføren tydeligt kan se dig.",
+      "images": [
+        {
+          "src": "/img/directions/chiesa-nuova-bus-stop.jpg",
+          "alt": "SITA-busstoppested skilt uden for Bar Internazionale i Chiesa Nuova.",
+          "caption": "Busstoppestedet er lige uden for Bar Internazionale – hold øje med SITA-skiltet."
+        }
+      ]
     },
     {
-      "id": "walk"
+      "id": "walk",
+      "title": "Gå fra hostellet til stoppestedet",
+      "body": "Gå ud fra Hostel Brikette, gå ned ad trapperne til Via G. Marconi og drej til venstre. Fortsæt langs hovedvejen i cirka 100 meter (330 fod). Bar Internazionale vil være til venstre; SITA-stoppestedet er lige uden for.\n\nGåturen tager 2-3 minutter i normalt tempo. For detaljerede trin-for-trin gåanvisninger med fotos, se vores %HOWTO:chiesaNuovaDepartures|Hostel Brikette til Chiesa Nuova-guide%. Der er ingen trapper eller vanskeligt terræn, når du når hovedvejen, men de indledende trin fra hostellet kan være udfordrende, hvis du har tung bagage eller mobilitetsproblemer. Hvis du rejser med store tasker eller har problemer med trapper, skal du overveje at bede hostelreceptionen om at arrangere en bagagetransport eller taxi."
     },
     {
-      "id": "wait"
+      "id": "wait",
+      "title": "Køb din billet og vent på ombordstigning",
+      "body": "Køb en SITA-busbillet til Sorrento fra Bar Internazionale eller en kiosk i nærheden, før du står i kø. Angiv \"Sorrento\" ved køb – billetprisen er den samme uanset hvor du går ombord mellem Positano og Sorrento.\n\nNår du har din billet, skal du stå uden for Bar Internazionale og se efter bussen. Dobbelttjek destinationsdisplayet foran på bussen – det skal læse **Sorrento**. I sjældne tilfælde kan busser slutte tidligt eller tage alternative ruter; hvis du er usikker, skal du spørge chaufføren \"Sorrento?\" før du går ombord."
+    },
+    {
+      "id": "busRide",
+      "title": "På bussen til Sorrento",
+      "body": "Busrejsen fra Positano til Sorrento tager cirka 50 minutter via SS163-kystvejen (Strada Statale 163 Amalfitana). Ruten er malerisk, men snoet, med hyppige skarpe sving og udsigter over klippen. For en omfattende guide til denne SITA-busrute med tipps til køreplan og stop-for-stop-detaljer, se vores %HOWTO:positanoSorrentoBus|Positano til Sorrento busguide%.\n\n**Tips til turen:**\n- Hvis du er tilbøjelig til transportsyge, skal du sidde nær bussens forende og se mod horisonten, ikke på din telefon.\n- Bagageplads er begrænset – mindre tasker kan ligge på dit skød eller mellem dine fødder; større tasker skal muligvis stå i gangen (hvilket kan blokere bevægelse, når bussen er fyldt).\n- Der er intet toilet eller WiFi ombord.\n- Bussen stopper flere gange mellem Positano og Sorrento; bliv siddende, indtil du når det sidste stop (Sorrento Circumvesuviana).\n\nOm sommeren kan bussen være overfyldt kun med ståpladser og ubehageligt varm. Hvis du rejser i juli eller august, skal du sigte efter tidligere morgenafgange (før kl. 10:00) for at undgå spidsvarme og trængsel.",
+      "images": [
+        {
+          "src": "/img/directions/sita-bus-interior.jpg",
+          "alt": "Interiør af en SITA-bus med passagerer, der sidder.",
+          "caption": "SITA-busserne er komfortable, men kan være overfyldte om sommeren – ankom tidligt for at få en plads."
+        }
+      ]
     },
     {
       "id": "sorrento",
-      "body": "SITA-bussen sætter dig af ved Sorrentos kombinerede tog- og busstation. Gå op ad trappen til hovedhallen, køb din Circumvesuviana-billet til Napoli Garibaldi (kontant eller kort), og find det rigtige spor, før toget ankommer."
+      "title": "På Sorrento togstation",
+      "body": "SITA-bussen sætter dig af ved Sorrentos kombinerede tog- og busterminal (Circumvesuviana-station). Gå op ad trapperne til hovedhallen, og køb derefter din Circumvesuviana-billet til **Napoli Garibaldi**.\n\n**Billetkøb:**\n- Billetautomater er placeret i hovedhallen (kontanter og kort accepteres).\n- Bemandede billetkontorer er til venstre, når du går ind i hallen (kort accepteres; køer kan være lange om sommeren).\n- Pris: cirka €4,00 pr. person.\n\n**Før ombordstigning:**\n- Valider din billet i de gule eller grønne valideringsmaskiner nær perronerne, før du går ombord på toget. Manglende validering resulterer i en bøde på stedet, hvis kontrollører tjekker billetter.\n- Tjek afgangstavlen for at bekræfte perron-nummeret for det næste Napoli Garibaldi-tog. Circumvesuviana kører på dedikerede spor, så du vil ikke forveksle det med Trenitalia-hovedlinje-tjenester.\n\n**Sådan finder du perronen:**\n- Følg skiltene til \"Circumvesuviana\" eller \"Napoli\" (begge fører til de samme perroner).\n- Perroner er tilgængelige via trapper eller en kort rampe – ingen elevatorer er tilgængelige, så planlæg på forhånd, hvis du har tung bagage eller mobilitetsproblemer.",
+      "images": [
+        {
+          "src": "/img/directions/sorrento-station-ticket-machines.jpg",
+          "alt": "Circumvesuviana-billetautomater på Sorrento station.",
+          "caption": "Køb din Napoli-billet fra maskinerne eller kontoret, før du går til perronen."
+        },
+        {
+          "src": "/img/directions/sorrento-station-validation-machine.jpg",
+          "alt": "Gul billetvalideringsmaskine på Sorrento station.",
+          "caption": "Valider din billet i den gule maskine før ombordstigning – kontrollører tjekker."
+        }
+      ]
+    },
+    {
+      "id": "trainRide",
+      "title": "På Circumvesuviana til Napoli",
+      "body": "Circumvesuviana-toget fra Sorrento til Napoli Garibaldi tager cirka 65 minutter. Toget stopper flere gange (inklusive Pompeii Scavi for Pompeji-ruinerne, Ercolano Scavi for Herculaneum og flere Napoli-forstæder), før det ender på Napoli Garibaldi.\n\n**Hvad du kan forvente:**\n- Siddepladserne er først-til-mølle. Om sommeren og i weekender kan togene være overfyldte, især efter Pompeii Scavi. Hvis du går ombord i Sorrento (startpunktet), vil du normalt finde en plads.\n- Toget er ældre rullende materiel – ingen WiFi, ingen toiletter ombord og begrænset aircondition. Om sommeren giver åbne vinduer ventilation.\n- Bagagehylder er tilgængelige nær dørene, men pladsen er begrænset. Hold værdier hos dig til enhver tid.\n- Lommetyve retter sig lejlighedsvis mod turister på overfyldte tog. Hold tasker lynlåste og i sigte, især nær Napoli.\n\n**Annonceringer:**\n- Stationsnavne annonceres kun på italiensk, men hvert stop har tydelig skiltning, der er synlig fra perronen. Tæl stop, hvis du er usikker (Napoli Garibaldi er det sidste stop, så du kan ikke gå glip af det).",
+      "images": [
+        {
+          "src": "/img/directions/circumvesuviana-interior.jpg",
+          "alt": "Interiør af et Circumvesuviana-tog med passagerer.",
+          "caption": "Circumvesuviana er grundlæggende, men pålidelig – sid nær din bagage og vær opmærksom."
+        }
+      ]
     },
     {
       "id": "naples",
-      "body": "Bliv på Circumvesuviana, indtil den ender på Napoli Garibaldi. Følg derefter skiltene op til hovedhallen for at skifte til fjerntog, metro eller lufthavnsbusser. Piazza Garibaldi ligger lige uden for stationsindgangen."
+      "title": "Ankomst i Napoli",
+      "body": "Bliv på Circumvesuviana, indtil det slutter på **Napoli Garibaldi** (også kaldet Napoli Porta Nolana på nogle kort, selvom det officielle stopnavn er Garibaldi). Følg derfra skiltene op til hovedhallen for at skifte til:\n\n- Langdistance Trenitalia-tog (Frecciarossa, Intercity, regionale tjenester)\n- Napoli Metro Linje 1 (til bycentrum, Vomero, lufthavn via Garibaldi metrostation)\n- Napoli Metro Linje 2 (Garibaldi er også et hovedlinje jernbanestop)\n- Alibus lufthavnsbus (afgår fra Piazza Garibaldi uden for stationen)\n- Lokale busser og taxaer (uden for hovedindgangen)\n\n**Sådan forlader du stationen:**\n- Følg skiltene til \"Uscita\" (udgang) eller \"Stazione Centrale\" (hovedstation) for at nå hovedhallen.\n- Piazza Garibaldi er lige uden for hovedindgangen – en stor, travl plads med taxaholdepladser, busstoppesteder og metroadgang.\n\n**Orientering:**\n- Napoli Centrale (Trenitalia hovedstation) og Napoli Garibaldi (Circumvesuviana-endestationen) er i samme bygningskompleks, forbundet med hovedhallen. Du behøver ikke gå ud og ind igen for at skifte mellem tjenester.\n\n**Sikkerhed og opmærksomhed:**\n- Piazza Garibaldi er en travl transportknudepunkt og kan føles kaotisk, især om natten. Hold tasker sikre, vær opmærksom på dine omgivelser og bevæg dig selvsikkert til din næste forbindelse.\n- Officielle taxaer er hvide med et \"Taxi\"-skilt på taget og en tæller indeni. Undgå ulicenserede chauffører, der nærmer sig dig og tilbyder ture."
+    },
+    {
+      "id": "luggage",
+      "title": "Bagage og tilgængelighed",
+      "body": "Denne rute er håndterbar med en lille rygsæk eller håndbagagetaske, men kan være udfordrende med stor eller tung bagage:\n\n**SITA-bus:**\n- Intet dedikeret bagagerum; tasker skal blive hos dig eller i gangen.\n- Store tasker kan blokere bevægelse, når bussen er overfyldt.\n- Hvis du har en fuldstørrelse kuffert (23 kg indcheckningstaske eller større), skal du overveje en privat transport i stedet (kontakt hostelreception).\n\n**Circumvesuviana-tog:**\n- Små bagagehylder nær dørene; pladsen er begrænset og kræves hurtigt.\n- Ingen elevatorer på Sorrento station – du skal bære tasker op/ned ad trapper for at nå perronen.\n- Ingen elevatorer ved nogle mellemstationer; Napoli Garibaldi har rulletrapper og elevatorer til hovedhallen.\n\n**Tilgængelighed:**\n- Hverken SITA-bussen eller Circumvesuviana-toget er kørestolstilgængelig i traditionel forstand (ingen ramper, ingen dedikerede kørestolspladser).\n- Hvis du bruger kørestol eller har betydelige mobilitetsbegrænsninger, anbefales en privat tilgængelig transport kraftigt. Kontakt hostelreceptionen for assistance med at arrangere dette."
+    },
+    {
+      "id": "seasonal",
+      "title": "Sæsonmæssige og timingmæssige overvejelser",
+      "body": "**Sommer (juni-september):**\n- SITA-busserne kører oftere, men fyldes hurtigt. Ankom 10-15 minutter før.\n- Circumvesuviana-togene er overfyldte, især midt på dagen og i weekender.\n- Varme kan være ubehageligt – både bus og tog har begrænset aircondition.\n\n**Lavæson (april-maj, oktober):**\n- Moderate mængder; ankom 5-10 minutter før bussen.\n- Behagelige temperaturer gør rejsen mere behagelig.\n\n**Vinter (november-marts):**\n- SITA reducerer frekvensen; tjek køreplaner på forhånd.\n- Circumvesuviana-køreplaner kan ændre sig på grund af vedligeholdelse eller strejker – bekræft afgangstider dagen før rejsen.\n- Færre turister betyder lettere ombordstigning og mere plads, men tjenester kan være mindre pålidelige.\n\n**Strejker og forstyrrelser:**\n- Offentlige transportstrejker (sciopero) annonceres mindst 48 timer i forvejen. Tjek %GUIDES:travelHelp|vores transportadvarselside% eller spørg hostelreceptionen for de seneste opdateringer.\n- Under strejker kan SITA og Circumvesuviana køre reducerede tjenester eller aflyse helt. Planlæg alternativ transport (taxi, privat transport eller færge, hvis tilgængelig), hvis en strejke er planlagt på din rejsedag."
+    },
+    {
+      "id": "alternatives",
+      "title": "Alternative ruter til Napoli",
+      "body": "Denne bus- og togrute er den mest økonomiske offentlige transportmulighed, men ikke altid den mest bekvemme. Overvej disse alternativer:\n\n**Færge (sæsonbestemt, april-oktober):**\n- %HOWTO:positanoNaplesCenterFerry|Positano til Napoli med færge% er hurtigere (70 minutter direkte), mere malerisk og mere behagelig, men koster €20-€25 pr. person.\n- Færger sejler kun april til oktober, typisk 1-2 afgange om dagen.\n- Ingen bagagebegrænsninger; lettere for rejsende med store tasker.\n\n**Privat transport eller taxi:**\n- Privat transport til Napoli eller Napoli Lufthavn koster €100-€140 for op til 4 passagerer (kontakt hostelreception for booking).\n- Dør-til-dør-service; ingen forbindelser, ingen ventetid.\n- Bedste mulighed for grupper på 3-4, rejsende med stor bagage eller dem med mobilitetsproblemer.\n\n**Bus til Salerno, derefter tog til Napoli:**\n- %HOWTO:positanoSalernoBus|SITA-bus til Salerno% (€3,00, 90 minutter) efterfulgt af et Trenitalia regionalt eller højhastighedstog til Napoli (€4-€15, 30-50 minutter).\n- Længere samlet rejsetid, men Salerno-togene er mere komfortable og hyppigere end Circumvesuviana.\n\n**Udforskning af nærliggende byer:**\n- Hvis du planlægger dagsture fra Positano, skal du tjekke vores %HOWTO:positanoAmalfiBus|Positano til Amalfi busguide% eller %HOWTO:positanoRavelloBus|Positano til Ravello busguide% for andre kystdestinationer."
     }
   ],
   "faqs": [
@@ -47,7 +144,31 @@
       "a": [
         "**Læsning af rækkerne:** Rækkerne i den første kolonne repræsenterer forskellige busstoppesteder langs ruten.",
         "**Læsning af kolonnerne:** Køreplanen tildeler et alfabetisk bogstav til hver planlagt rejse, som er angivet som overskrifter i hver kolonne. Hvis du rejser mandag til lørdag, skal du kigge efter kolonnerne 'F' og 'G'. Hvis du rejser på en søndag eller helligdag, skal du kigge efter kolonnerne 'G' og 'H'.",
-        "**Kombination af rækker og kolonner:** Vælg dine afgangs- og ankomststoppesteder, og tjek derefter kolonnerne for at se, hvornår busserne er tilgængelige, og hvornår de ankommer til din destination. For eksempel, for at se afgangstiden fra Sorrento, se på Sorrento-rækken. For at se ankomsttiden i Positano (Chiesa Nuova / Bar Internazionale), se på Positano (Chiesa Nuova)-rækken."
+        "**Kombination af rækker og kolonner:** Vælg dine afgangs- og ankomststoppesteder, og tjek derefter kolonnerne for at se, hvornår busserne er tilgængelige, og hvornår de ankommer til din destination. For eksempel, for at se afgangstiden fra Sorrento, se på Sorrento-rækken. For at se ankomsttiden i Positano (Chiesa Nuova / Bar Internazionale), se på Positano (Chiesa Nuova)-rækken i samme kolonne."
+      ]
+    },
+    {
+      "q": "Kan jeg købe SITA busbilletter ombord?",
+      "a": [
+        "Nej. SITA buschauffører kan ikke sælge billetter – du skal købe før ombordstigning fra Bar Internazionale (ved busstoppestedet), en tobaksforretning (tabacchi) eller en kiosk. Kørsel uden en valideret billet resulterer i en bøde på stedet på €50 eller mere."
+      ]
+    },
+    {
+      "q": "Skal jeg reservere pladser på SITA-bussen eller Circumvesuviana-toget?",
+      "a": [
+        "Nej. Både SITA-bussen og Circumvesuviana-toget kører efter først-til-mølle-princippet uden reservationer. Ankom tidligt om sommeren (juli-august) for at sikre en plads, da busser og tog kan fyldes op til stående plads kun i højæsonen."
+      ]
+    },
+    {
+      "q": "Er denne rute egnet til rejsende med stor bagage?",
+      "a": [
+        "Det er håndterbart med en lille rygsæk eller håndbagagetaske, men udfordrende med fuldstørrelse kufferter. SITA-bussen har intet bagagerum, og Sorrento station har ingen elevatorer til togperronen. Hvis du rejser med store eller tunge tasker, skal du overveje en privat transport i stedet – kontakt Hostel Brikette reception for assistance."
+      ]
+    },
+    {
+      "q": "Hvad skal jeg gøre, hvis der er en offentlig transportstrejke på min rejsedag?",
+      "a": [
+        "Strejker (sciopero) annonceres mindst 48 timer i forvejen. Tjek %GUIDES:travelHelp|transportadvarselssiden% eller spørg hostelreceptionen for opdateringer. Under strejker kan SITA og Circumvesuviana køre reducerede tjenester eller aflyse helt. Book en privat transport eller taxi som backup – hvis færger sejler (april-oktober), er %HOWTO:positanoNaplesCenterFerry|Positano-Napoli-færgen% et pålideligt alternativ."
       ]
     }
   ]

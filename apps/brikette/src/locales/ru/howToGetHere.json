@@ -14,7 +14,7 @@
       "routes": "Маршруты от двери до двери",
       "destinations": "Охваченные зоны",
       "transport": "Виды транспорта",
-      "experienceRoutes": "Experience routes"
+      "experienceRoutes": "Маршруты впечатлений"
     }
   },
   "routePicker": {
@@ -58,7 +58,7 @@
     }
   },
   "preview": {
-    "notPublished": "Preview only – this page is not published"
+    "notPublished": "Только предварительный просмотр — эта страница не опубликована"
   },
   "jumpTo": {
     "label": "Перейти к",
@@ -70,8 +70,8 @@
     "taxi": "Чтобы заказать такси, напишите в WhatsApp на номер <Strong>{{contact}}</Strong> на английском или итальянском языке.",
     "shuttle": "Нужен шаттл? Sea Horse Car Service организует совместные трансферы. Забронируйте место на их <Link>официальной странице шаттла</Link>.",
     "taxiContact": "+39 379 125 6222",
-    "taxiEyebrow": "Hostel Brikette by Taxi",
-    "shuttleEyebrow": "Hostel Brikette by Shuttle",
+    "taxiEyebrow": "Hostel Brikette на такси",
+    "shuttleEyebrow": "Hostel Brikette на шаттле",
     "whatsappTemplate": "Здравствуйте! Я остановился в Hostel Brikette. Хотел(а) бы заказать такси в/из Позитано. Мое время прибытия: ____",
     "emailSubject": "Помощь по прибытии",
     "emailBody": "Здравствуйте, команда Hostel Brikette — я приезжаю сегодня и мне нужна помощь, чтобы выбрать лучший способ добраться. Мое ориентировочное время прибытия: ____",
@@ -94,23 +94,57 @@
         "description": "Уже приехали в Позитано, но не знаете, как добраться до хостела? Ознакомьтесь с этими путеводителями:",
         "image": {
           "src": "/img/positano-panorama.avif",
-          "alt": "Панорамный вид на дома Позитано на склоне утёса"
+          "alt": "Панорамный вид на дома Позитано на склоне утёса",
+          "caption": "Позитано находится на склоне — учитывайте лестницы, особенно с багажом."
         },
         "links": [
           {
             "label": "Кьеза-Нуова/Bar Internazionale → Hostel Brikette",
             "href": "chiesa-nuova-bar-internazionale-to-hostel-brikette",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "5–10 мин",
+              "cost": "Бесплатно",
+              "walking": "~140 м + ~30 ступеней",
+              "luggageFriendly": 2,
+              "seasonality": "Круглый год"
+            }
           },
           {
             "label": "Паромный причал → Hostel Brikette",
             "href": "ferry-dock-to-hostel-brikette-with-luggage",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "20–45 мин (зависит от носильщиков/внутреннего автобуса)",
+              "cost": "€2–€6 на человека (+ носильщик по желанию)",
+              "walking": "Портовые лестницы; носильщики облегчат переноску",
+              "luggageFriendly": 1,
+              "seasonality": "Круглый год"
+            }
+          },
+          {
+            "label": "Из Hostel Brikette к причалу паромов",
+            "href": "hostel-brikette-to-ferry-dock-with-luggage",
+            "internal": true,
+            "facts": {
+              "duration": "20–30 мин (больше с багажом)",
+              "cost": "Бесплатно",
+              "walking": "Лестницы + переходы дорог",
+              "luggageFriendly": 1,
+              "seasonality": "Круглый год"
+            }
           },
           {
             "label": "Hostel Brikette → Кьеза-Нуова/Bar Internazionale",
             "href": "hostel-brikette-to-chiesa-nuova-bar-internazionale",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "20–30 мин (дольше с багажом)",
+              "cost": "Бесплатно",
+              "walking": "Лестницы + переходы через дорогу",
+              "luggageFriendly": 1,
+              "seasonality": "Круглый год"
+            }
           }
         ]
       },
@@ -118,28 +152,57 @@
         "name": "Амальфи",
         "image": {
           "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
-          "alt": "Остановка SITA Sud в Амальфи для прибрежных маршрутов"
+          "alt": "Остановка SITA Sud в Амальфи для прибрежных маршрутов",
+          "caption": "Ищите автобусы SITA на автобусной станции Амальфи."
         },
         "links": [
           {
             "label": "Амальфи — Позитано на автобусе",
             "href": "amalfi-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "45–90 мин (зависит от траффика)",
+              "cost": "€2–€4 на человека",
+              "walking": "Короткая лестница в конце (~30 ступеней)",
+              "luggageFriendly": 2,
+              "seasonality": "Круглый год"
+            }
           },
           {
             "label": "Позитано — Амальфи на автобусе",
             "href": "positano-amalfi-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "45–90 мин (зависит от траффика)",
+              "cost": "€2–€4 на человека",
+              "walking": "Короткая лестница в начале/конце (~30 ступеней)",
+              "luggageFriendly": 2,
+              "seasonality": "Круглый год"
+            }
           },
           {
             "label": "Амальфи — Позитано на пароме",
             "href": "amalfi-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "25–45 мин (плавание) + портовая пересадка",
+              "cost": "€10–€20 на человека",
+              "walking": "Лестницы до/от порта",
+              "luggageFriendly": 1,
+              "seasonality": "Сезонно (апр–окт)"
+            }
           },
           {
             "label": "Позитано — Амальфи на пароме",
             "href": "positano-amalfi-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "25–45 мин (плавание) + портовая пересадка",
+              "cost": "€10–€20 на человека",
+              "walking": "Лестницы до/от порта",
+              "luggageFriendly": 1,
+              "seasonality": "Сезонно (апр–окт)"
+            }
           }
         ]
       },
@@ -147,18 +210,33 @@
         "name": "Капри",
         "image": {
           "src": "/img/directions/positano-capri-ferry-img09.jpg",
-          "alt": "Паром швартуется у Marina Grande на Капри"
+          "alt": "Паром швартуется у Marina Grande на Капри",
+          "caption": "Паромы на Капри отправляются от Марина Гранде."
         },
         "links": [
           {
             "label": "Капри — Позитано на пароме",
             "href": "capri-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "30–60 мин (плавание) + портовая пересадка",
+              "cost": "€20–€35 на человека",
+              "walking": "Доступ к порту; лестницы в Позитано",
+              "luggageFriendly": 1,
+              "seasonality": "Сезонно (апр–окт)"
+            }
           },
           {
             "label": "Позитано — Капри на пароме",
             "href": "positano-capri-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "30–60 мин (плавание) + портовая пересадка",
+              "cost": "€20–€35 на человека",
+              "walking": "Доступ к порту; лестницы в Позитано",
+              "luggageFriendly": 1,
+              "seasonality": "Сезонно (апр–окт)"
+            }
           }
         ]
       },
@@ -166,33 +244,69 @@
         "name": "Центр Неаполя",
         "image": {
           "src": "/img/tabacchi.webp",
-          "alt": "Фасад табачной лавки в центре Неаполя"
+          "alt": "Фасад табачной лавки в центре Неаполя",
+          "caption": "Покупайте автобусные билеты в табакко/киосках перед посадкой."
         },
         "links": [
           {
             "label": "Центр Неаполя — Позитано поездом и автобусом",
             "href": "naples-center-train-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2–3,5 ч (вкл. пересадки)",
+              "cost": "€15–€25 на человека",
+              "walking": "Немного; пересадка в Сорренто",
+              "luggageFriendly": 2,
+              "seasonality": "Круглый год"
+            }
           },
           {
             "label": "Позитано — центр Неаполя автобусом и поездом",
             "href": "positano-naples-center-bus-train",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2–3,5 ч (вкл. пересадки)",
+              "cost": "€15–€25 на человека",
+              "walking": "Короткая лестница в начале/конце (~30 ступеней)",
+              "luggageFriendly": 2,
+              "seasonality": "Круглый год"
+            }
           },
           {
             "label": "Центр Неаполя — Позитано на пароме",
             "href": "naples-center-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "3–4,5 ч (вкл. портовую пересадку)",
+              "cost": "€25–€45 на человека",
+              "walking": "Переезд к порту + лестницы в Позитано",
+              "luggageFriendly": 1,
+              "seasonality": "Сезонно (апр–окт)"
+            }
           },
           {
             "label": "Позитано — центр Неаполя на пароме",
             "href": "positano-naples-center-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "3–4,5 ч (вкл. портовую пересадку)",
+              "cost": "€25–€45 на человека",
+              "walking": "Лестницы в Позитано + переезд от порта",
+              "luggageFriendly": 1,
+              "seasonality": "Сезонно (апр–окт)"
+            }
           },
           {
             "label": "Позитано — Неаполь на пароме",
             "href": "positano-to-naples-directions-by-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "3–4,5 ч (вкл. портовую пересадку)",
+              "cost": "€25–€45 на человека",
+              "walking": "Лестницы в Позитано + переезд от порта",
+              "luggageFriendly": 1,
+              "seasonality": "Сезонно (апр–окт)"
+            }
           }
         ]
       },
@@ -200,18 +314,33 @@
         "name": "Аэропорт Неаполя",
         "image": {
           "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
-          "alt": "Зона посадки на шаттл Curreri у аэропорта Неаполя"
+          "alt": "Зона посадки на шаттл Curreri у аэропорта Неаполя",
+          "caption": "Железнодорожная станция Сорренто, где вы пересядете на автобус"
         },
         "links": [
           {
             "label": "Позитано — аэропорт Неаполя на автобусе",
             "href": "positano-naples-airport-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2–3,5 ч (вкл. пересадку в Сорренто)",
+              "cost": "€15–€25 на человека",
+              "walking": "Короткая лестница в начале/конце (~30 ступеней)",
+              "luggageFriendly": 2,
+              "seasonality": "Круглый год"
+            }
           },
           {
             "label": "Аэропорт Неаполя — Позитано на автобусе",
             "href": "naples-airport-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2–3,5 ч (вкл. пересадку в Сорренто)",
+              "cost": "€15–€25 на человека",
+              "walking": "Короткая лестница в конце (~30 ступеней)",
+              "luggageFriendly": 2,
+              "seasonality": "Круглый год"
+            }
           }
         ]
       },
@@ -219,28 +348,57 @@
         "name": "Салерно",
         "image": {
           "src": "/img/hostel-coastal-horizon.webp",
-          "alt": "View across the Amalfi Coast towards Salerno"
+          "alt": "Вид на побережье Амальфи в сторону Салерно",
+          "caption": "Салерно соединяется поездом + автобусом, или сезонными паромами."
         },
         "links": [
           {
             "label": "Салерно — Позитано на автобусе",
             "href": "salerno-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2,5–4 ч (через Амальфи)",
+              "cost": "€6–€12 на человека",
+              "walking": "Немного; пересадка в Амальфи",
+              "luggageFriendly": 2,
+              "seasonality": "Круглый год"
+            }
           },
           {
             "label": "Позитано — Салерно на автобусе",
             "href": "positano-salerno-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2,5–4 ч (через Амальфи)",
+              "cost": "€6–€12 на человека",
+              "walking": "Короткая лестница в начале/конце (~30 ступеней)",
+              "luggageFriendly": 2,
+              "seasonality": "Круглый год"
+            }
           },
           {
-            "label": "Salerno to Positano by Ferry",
+            "label": "Салерно — Позитано на пароме",
             "href": "salerno-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1–2 ч (плавание) + портовая пересадка",
+              "cost": "€15–€30 на человека",
+              "walking": "Портовые лестницы; рекомендуются носильщики",
+              "luggageFriendly": 1,
+              "seasonality": "Сезонно (апр–окт)"
+            }
           },
           {
             "label": "Позитано — Салерно на пароме",
             "href": "positano-salerno-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1–2 ч (плавание) + портовая пересадка",
+              "cost": "€15–€30 на человека",
+              "walking": "Портовые лестницы; рекомендуются носильщики",
+              "luggageFriendly": 1,
+              "seasonality": "Сезонно (апр–окт)"
+            }
           }
         ]
       },
@@ -248,23 +406,45 @@
         "name": "Равелло",
         "image": {
           "src": "/img/hostel-communal-terrace-lush-view.webp",
-          "alt": "Сады на утёсе с видом на побережье возле Равелло"
+          "alt": "Сады на утёсе с видом на побережье возле Равелло",
+          "caption": "В Равелло можно добраться через Амальфи на автобусе."
         },
         "links": [
           {
             "label": "Равелло — Позитано на автобусе",
             "href": "ravello-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1,5–2,5 ч (через Амальфи)",
+              "cost": "€4–€8 на человека",
+              "walking": "Немного; пересадка в Амальфи",
+              "luggageFriendly": 2,
+              "seasonality": "Круглый год"
+            }
           },
           {
             "label": "Позитано — Равелло на автобусе",
             "href": "positano-ravello-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1,5–2,5 ч (через Амальфи)",
+              "cost": "€4–€8 на человека",
+              "walking": "Короткая лестница в начале/конце (~30 ступеней)",
+              "luggageFriendly": 2,
+              "seasonality": "Круглый год"
+            }
           },
           {
             "label": "Позитано — Равелло на пароме и автобусе",
             "href": "positano-ravello-ferry-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2–3 ч (паром + автобус)",
+              "cost": "€15–€30 на человека",
+              "walking": "Портовые лестницы + автобусное сообщение",
+              "luggageFriendly": 1,
+              "seasonality": "Сезонно (апр–окт)"
+            }
           }
         ]
       }
@@ -444,22 +624,50 @@
       {
         "label": "Из Сорренто на автобусе",
         "href": "sorrento-positano-bus",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "45–75 мин",
+          "cost": "€2–€4 на человека",
+          "walking": "Короткая лестница в конце (~30 ступеней)",
+          "luggageFriendly": 2,
+          "seasonality": "Круглый год"
+        }
       },
       {
         "label": "В Сорренто на автобусе",
         "href": "positano-sorrento-bus",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "45–75 мин",
+          "cost": "€2–€4 на человека",
+          "walking": "Короткая лестница в начале/конце (~30 ступеней)",
+          "luggageFriendly": 2,
+          "seasonality": "Круглый год"
+        }
       },
       {
         "label": "Из Сорренто на пароме",
         "href": "sorrento-positano-ferry",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "30–45 мин (плавание) + портовые лестницы",
+          "cost": "€15–€25 на человека",
+          "walking": "Портовые лестницы; рекомендуются носильщики",
+          "luggageFriendly": 1,
+          "seasonality": "Сезонно (апр–окт)"
+        }
       },
       {
         "label": "В Сорренто на пароме",
         "href": "positano-sorrento-ferry",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "30–45 мин (плавание) + портовые лестницы",
+          "cost": "€15–€25 на человека",
+          "walking": "Портовые лестницы; рекомендуются носильщики",
+          "luggageFriendly": 1,
+          "seasonality": "Сезонно (апр–окт)"
+        }
       }
     ]
   },
@@ -487,116 +695,116 @@
     "noResults": "Маршрутов с такими фильтрами нет."
   },
   "romePlanner": {
-    "title": "Rome ↔ Positano: How to Travel",
-    "subtitle": "Pick a direction, set your preferences, and we’ll suggest a route.",
-    "directionPrompt": "Pick a direction",
+    "title": "Рим ↔ Позитано: Как добраться",
+    "subtitle": "Выберите направление, укажите предпочтения, и мы предложим маршрут.",
+    "directionPrompt": "Выберите направление",
     "tabs": {
-      "from": "From Rome → Hostel",
-      "to": "From Hostel → Rome"
+      "from": "Из Рима → в хостел",
+      "to": "Из хостела → в Рим"
     },
     "reco": {
-      "title": "Best match for your picks",
-      "why": "Why this route?"
+      "title": "Лучший вариант по вашим параметрам",
+      "why": "Почему этот маршрут?"
     },
-    "otherMatches": "Other matches for your pick",
-    "disclaimer": "Always check operators for latest schedules and availability. Crowding and journey times vary by season.",
+    "otherMatches": "Другие варианты по вашему выбору",
+    "disclaimer": "Всегда проверяйте у операторов актуальные расписания и наличие мест. Загруженность и время в пути зависят от сезона.",
     "pref": {
-      "prompt": "Any preference?",
+      "prompt": "Есть предпочтения?",
       "cheapest": {
-        "label": "Cheapest",
-        "description": "Prioritize lower cost over comfort."
+        "label": "Самый дешевый",
+        "description": "Ставьте цену выше комфорта."
       },
       "scenic": {
-        "label": "Scenic",
-        "description": "Prioritize sea views (ferries)."
+        "label": "С живописными видами",
+        "description": "Ставьте морские виды на первое место (паромы)."
       },
-      "heavyPrefix": "I have",
+      "heavyPrefix": "У меня",
       "heavy_luggage": {
-        "label": "Heavy luggage",
-        "description": "Minimize uphill walks and stairs with bags."
+        "label": "Тяжелый багаж",
+        "description": "Свести к минимуму подъемы и лестницы с багажом."
       }
     },
     "route": {
       "naples": {
         "busTrain": {
-          "title": "Via Naples — Bus + Train",
+          "title": "Через Неаполь — автобус + поезд",
           "summary": {
-            "from": "Bus to Sorrento → train to Naples → train to Rome.",
-            "to": "Train to Naples → train to Sorrento → bus to Positano."
+            "from": "Автобус до Сорренто → поезд до Неаполя → поезд до Рима.",
+            "to": "Поезд до Неаполя → поезд до Сорренто → автобус до Позитано."
           },
           "steps": {
             "from": {
-              "1": "Bus Positano → Sorrento (drops at Sorrento train station).",
-              "2": "Local train Sorrento → Naples (arrive at Naples train station).",
+              "1": "Автобус Позитано → Сорренто (высадка у ж/д станции Сорренто).",
+              "2": "Местный поезд Сорренто → Неаполь (прибытие на ж/д вокзал Неаполя).",
               "3": "Train Naples → Rome."
             },
             "to": {
-              "1": "Train Rome → Naples (arrive at Naples train station).",
-              "2": "Local train Naples → Sorrento (arrive at Sorrento bus station).",
-              "3": "Bus Sorrento → Positano (stop close to the hostel)."
+              "1": "Поезд Рим → Неаполь (прибытие на ж/д вокзал Неаполя).",
+              "2": "Местный поезд Неаполь → Сорренто (прибытие на автостанцию Сорренто).",
+              "3": "Автобус Сорренто → Позитано (остановка рядом с хостелом)."
             }
           }
         },
         "ferry": {
-          "title": "Via Naples — Ferry",
+          "title": "Через Неаполь — паром",
           "summary": {
-            "from": "Positano port → ferry to Naples → tram to station → train to Rome.",
-            "to": "Train to Naples → tram to port → ferry to Positano."
+            "from": "Порт Позитано → паром до Неаполя → трамвай до вокзала → поезд до Рима.",
+            "to": "Поезд до Неаполя → трамвай до порта → паром до Позитано."
           },
           "steps": {
             "from": {
-              "1": "Positano → port (porters can help with bags).",
+              "1": "Позитано → порт (носильщики могут помочь с багажом).",
               "2": "Ferry Positano → Naples.",
               "3": "Tram Naples port → train station.",
               "4": "Train Naples → Rome."
             },
             "to": {
-              "1": "Train Rome → Naples (arrive at Naples station).",
+              "1": "Поезд Рим → Неаполь (прибытие на вокзал Неаполя).",
               "2": "Tram Naples station → port.",
               "3": "Ferry Naples → Positano.",
-              "4": "From Positano port → hostel (journey can be laborious; porters/Interno Bus can help)."
+              "4": "Из порта Позитано → хостел (путь может быть утомительным; помогут носильщики/автобус Interno Bus)."
             }
           }
         }
       },
       "salerno": {
         "bus": {
-          "title": "Via Salerno — Bus (to/from Salerno)",
+          "title": "Через Салерно — автобус (в/из Салерно)",
           "summary": {
-            "from": "Bus Positano → Amalfi (change) → Salerno → train to Rome.",
-            "to": "Train to Salerno → bus to Amalfi (change) → Positano."
+            "from": "Автобус Позитано → Амальфи (пересадка) → Салерно → поезд до Рима.",
+            "to": "Поезд до Салерно → автобус до Амальфи (пересадка) → Позитано."
           },
           "steps": {
             "from": {
-              "1": "Bus Positano → Amalfi (change buses in Amalfi).",
-              "2": "Bus Amalfi → Salerno (drops at Salerno train station).",
+              "1": "Автобус Позитано → Амальфи (пересадка в Амальфи).",
+              "2": "Автобус Амальфи → Салерно (высадка у ж/д вокзала Салерно).",
               "3": "Train Salerno → Rome."
             },
             "to": {
-              "1": "Train Rome → Salerno (arrive at Salerno train station).",
-              "2": "Bus Salerno → Amalfi (change buses in Amalfi).",
-              "3": "Bus Amalfi → Positano (short walk to hostel)."
+              "1": "Поезд Рим → Салерно (прибытие на ж/д вокзал Салерно).",
+              "2": "Автобус Салерно → Амальфи (пересадка в Амальфи).",
+              "3": "Автобус Амальфи → Позитано (короткая прогулка до хостела)."
             }
           }
         },
         "ferry": {
-          "title": "Via Salerno — Ferry",
+          "title": "Через Салерно — паром",
           "summary": {
-            "from": "Positano port → ferry to Salerno → short walk to station → train to Rome.",
-            "to": "Train to Salerno → short walk to port → ferry to Positano."
+            "from": "Порт Позитано → паром до Салерно → короткая прогулка до вокзала → поезд до Рима.",
+            "to": "Поезд до Салерно → короткая прогулка до порта → паром до Позитано."
           },
           "steps": {
             "from": {
-              "1": "Positano → port (porters can help with bags).",
+              "1": "Позитано → порт (носильщики могут помочь с багажом).",
               "2": "Ferry Positano → Salerno.",
               "3": "Walk Salerno port → train station.",
               "4": "Train Salerno → Rome."
             },
             "to": {
-              "1": "Train Rome → Salerno (arrive at Salerno station).",
+              "1": "Поезд Рим → Салерно (прибытие на вокзал Салерно).",
               "2": "Walk to Salerno port.",
               "3": "Ferry Salerno → Positano.",
-              "4": "From Positano port → hostel (journey can be laborious; porters/Interno Bus can help)."
+              "4": "Из порта Позитано → хостел (путь может быть утомительным; помогут носильщики/автобус Interno Bus)."
             }
           }
         }
@@ -604,86 +812,86 @@
     },
     "note": {
       "salerno": {
-        "walkPortStation": "Walk between Salerno’s port and train station (short, straightforward)."
+        "walkPortStation": "Пройдите между портом Салерно и ж/д вокзалом (коротко и прямо)."
       },
       "naples": {
-        "tramPortStation": "Take the tram between Naples port and the train station."
+        "tramPortStation": "Сядьте на трамвай между портом Неаполя и ж/д вокзалом."
       }
     },
     "pro": {
-      "posBusNearHostel": "Positano bus stop close to the hostel.",
-      "busDropsSorrentoStation": "Bus drops you right at the train station in Sorrento.",
-      "cheapBusTrain": "Bus and train are both very cheap.",
-      "arriveNaplesStation": "You arrive right at the train station in Naples.",
-      "easySwapNaples": "Swapping trains in Naples is relatively easy.",
-      "trainDropsSorrentoBusStation": "Train drops you right at the bus station in Sorrento.",
+      "posBusNearHostel": "Остановка автобуса в Позитано находится рядом с хостелом.",
+      "busDropsSorrentoStation": "Автобус высаживает прямо у ж/д станции Сорренто.",
+      "cheapBusTrain": "Автобус и поезд очень недорогие.",
+      "arriveNaplesStation": "Вы прибываете прямо на ж/д вокзал Неаполя.",
+      "easySwapNaples": "Пересаживаться на поезда в Неаполе относительно просто.",
+      "trainDropsSorrentoBusStation": "Поезд высаживает прямо на автостанции Сорренто.",
       "salerno": {
-        "busStopNearHostel": "The Positano bus stop is just a short walk from the hostel."
+        "busStopNearHostel": "Остановка автобуса в Позитано всего в нескольких минутах от хостела."
       },
-      "busCollectsSalernoStation": "Bus collects you right at the train station in Salerno.",
-      "busDropsSalernoStation": "Bus drops you right at the train station in Salerno.",
+      "busCollectsSalernoStation": "Автобус отправляется прямо от ж/д вокзала Салерно.",
+      "busDropsSalernoStation": "Автобус высаживает прямо у ж/д вокзала Салерно.",
       "busCheap": "Bus is very cheap.",
-      "portersHelp": "Giving your bags to the porters allows you to travel more comfortably and easily.",
-      "ferryEnjoyableEasy": "The ferry journey itself is enjoyable and easy.",
-      "shortWalkSalernoStationPort": "The walk from Salerno’s Train Station to the port is short and straightforward."
+      "portersHelp": "Передать багаж носильщикам — значит ехать комфортнее и легче.",
+      "ferryEnjoyableEasy": "Поездка на пароме сама по себе приятная и простая.",
+      "shortWalkSalernoStationPort": "Путь от ж/д вокзала Салерно до порта короткий и прямой."
     },
     "con": {
-      "changeBusToTrain": "Have to change from bus to train.",
-      "crowdedBusTrain": "Bus and train are both usually crowded.",
+      "changeBusToTrain": "Нужно пересесть с автобуса на поезд.",
+      "crowdedBusTrain": "Автобус и поезд обычно переполнены.",
       "fewHours": "Takes a few hours.",
-      "changeTrainToBusSorrento": "Have to change from train to bus in Sorrento.",
+      "changeTrainToBusSorrento": "Нужно пересесть с поезда на автобус в Сорренто.",
       "busUsuallyCrowded": "Bus is usually crowded.",
-      "ferryCostHigherBus": "The cost of taking the ferry is higher than the cost of taking the bus.",
-      "hostelEasierBySita": "Arriving at the hostel via SITA bus is easier than arriving by ferry (the journey from the port is quite laborious — even with Positano’s Interno Bus and porters).",
-      "naplesPortComfort": "The port and city of Naples may not be suitable for everyone, as some people may not feel comfortable there.",
-      "ferriesLessFrequent": "Ferries do not run as frequently as other transportation options.",
-      "ferryCostHigherTrainBus": "The cost of taking the ferry is higher than the cost of taking the train or bus.",
-      "changeBusesAmalfi": "Have to change buses in Amalfi."
+      "ferryCostHigherBus": "Паром дороже автобуса.",
+      "hostelEasierBySita": "Доехать до хостела на автобусе SITA проще, чем на пароме (путь от порта довольно утомительный — даже с Interno Bus и носильщиками).",
+      "naplesPortComfort": "Порт и город Неаполь могут подойти не всем: некоторым там может быть некомфортно.",
+      "ferriesLessFrequent": "Паромы ходят реже, чем другие варианты транспорта.",
+      "ferryCostHigherTrainBus": "Паром дороже поезда или автобуса.",
+      "changeBusesAmalfi": "Нужно пересесть на автобус в Амальфи."
     },
     "tag": {
-      "cheap": "Budget",
-      "directish": "Simple",
-      "scenic": "Scenic",
-      "transfer": "Transfer",
-      "bus": "Bus",
-      "train": "Train",
-      "ferry": "Ferry"
+      "cheap": "Бюджет",
+      "directish": "Просто",
+      "scenic": "Живописно",
+      "transfer": "Пересадка",
+      "bus": "Автобус",
+      "train": "Поезд",
+      "ferry": "Паром"
     },
     "reasons": {
       "cheapest": {
-        "busTrain": "Cheapest → bus/train options are very cheap.",
-        "ferry": "Cheapest → ferry costs higher than bus/train."
+        "busTrain": "Самый дешевый → автобус/поезд стоят очень недорого.",
+        "ferry": "Самый дешевый → паром дороже автобуса/поезда."
       },
       "fewest_changes": {
-        "busTrain": "Fewest changes → bus + train requires a mode change.",
-        "bus": "Fewest changes → bus route changes in Amalfi."
+        "busTrain": "Меньше пересадок → автобус + поезд требуют смены вида транспорта.",
+        "bus": "Меньше пересадок → пересадка на автобус в Амальфи."
       },
       "scenic": {
-        "ferry": "Scenic → ferry journey is enjoyable and easy."
+        "ferry": "Живописно → поездка на пароме приятная и простая."
       },
       "heavy_luggage": {
-        "ferryFromRome": "Heavy luggage → arriving via ferry from the port is more laborious.",
-        "busStopClose": "Heavy luggage → Positano bus stop is close to the hostel."
+        "ferryFromRome": "Тяжелый багаж → прибытие на пароме из порта более утомительно.",
+        "busStopClose": "Тяжелый багаж → остановка автобуса в Позитано рядом с хостелом."
       }
     },
     "ui": {
-      "showDetails": "Show details",
-      "hideDetails": "Hide details",
-      "steps": "Steps",
-      "notes": "Notes",
-      "pros": "Pros",
-      "cons": "Cons"
+      "showDetails": "Показать детали",
+      "hideDetails": "Скрыть детали",
+      "steps": "Шаги",
+      "notes": "Примечания",
+      "pros": "Плюсы",
+      "cons": "Минусы"
     }
   },
   "experienceGuides": {
-    "eyebrow": "Experience planners",
-    "title": "Experience routes with built-in directions",
-    "description": "These experiences combine the on-trail highlights with the exact transfers you need to leave and return to Hostel Brikette. Open one when you want the itinerary and the transport plan in the same guide.",
+    "eyebrow": "Планировщики впечатлений",
+    "title": "Маршруты впечатлений со встроенными инструкциями",
+    "description": "Эти впечатления объединяют ключевые места маршрута с точными пересадками, чтобы вы могли уйти и вернуться в Hostel Brikette. Откройте любой, когда нужен и маршрут, и план транспорта в одном гиде.",
     "items": [
       {
         "guideKey": "pathOfTheGodsFerry",
-        "label": "Path of the Gods via Amalfi (ferry + hike)",
-        "summary": "Sail from Positano to Amalfi, ride up to Bomerano, and follow our step-by-step return directions for the classic traverse back toward Positano.",
+        "label": "Путь богов через Амальфи (паром + пеший маршрут)",
+        "summary": "Отплывите из Позитано в Амальфи, поднимитесь в Бомерано и следуйте нашим пошаговым инструкциям для классического перехода обратно к Позитано.",
         "transportModes": [
           "ferry",
           "bus",
@@ -692,8 +900,8 @@
       },
       {
         "guideKey": "pathOfTheGodsBus",
-        "label": "Path of the Gods via Amalfi (bus + hike)",
-        "summary": "Take the SITA Sud bus from Positano through Amalfi to Bomerano, hike across to Nocelle, and use the built-in transport section to reach the hostel afterward.",
+        "label": "Путь богов через Амальфи (автобус + пеший маршрут)",
+        "summary": "Сядьте на автобус SITA Sud из Позитано через Амальфи до Бомерано, пройдите до Ночелле и используйте встроенные инструкции по транспорту, чтобы добраться обратно в хостел.",
         "transportModes": [
           "bus",
           "walk"
@@ -701,8 +909,8 @@
       },
       {
         "guideKey": "pathOfTheGodsNocelle",
-        "label": "Path of the Gods via Nocelle shuttle",
-        "summary": "Ride the Montepertuso–Nocelle shuttle for a shorter out-and-back hike and rely on the guide’s directions to walk or bus back down to Hostel Brikette.",
+        "label": "Путь богов через шаттл Ночелле",
+        "summary": "Садитесь на шаттл Монтецупертузо–Ночелле для более короткой прогулки туда‑обратно и используйте инструкции гида, чтобы дойти пешком или доехать на автобусе обратно в Hostel Brikette.",
         "transportModes": [
           "bus",
           "walk"
@@ -711,10 +919,10 @@
     ]
   },
   "breadcrumbs": {
-    "itemTitleFallback": "Directions"
+    "itemTitleFallback": "Как добраться"
   },
   "galleries": {
-    "defaultAlt": "Directions photo"
+    "defaultAlt": "Фото маршрута"
   },
   "lightbox": {
     "titleFallback": "Изображение",

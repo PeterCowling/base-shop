@@ -14,16 +14,46 @@
     "title": "Strandvergleich an der Amalfiküste"
   },
   "toc": [
-    { "href": "#overview", "label": "Auswahl" },
-    { "href": "#beach-day-checklist", "label": "Strandtag-Checkliste" },
-    { "href": "#positano-beaches", "label": "Positano-Strände" },
-    { "href": "#praiano-beaches", "label": "Praiano-Strände" },
-    { "href": "#furore-beaches", "label": "Furore" },
-    { "href": "#sorrento-beaches", "label": "Sorrent" },
-    { "href": "#amalfi-beaches", "label": "Amalfi" },
-    { "href": "#logistics", "label": "Logistik" },
-    { "href": "#comparison-table", "label": "Vergleichstabelle" },
-    { "href": "#faqs", "label": "FAQs" }
+    {
+      "href": "#overview",
+      "label": "Auswahl"
+    },
+    {
+      "href": "#beach-day-checklist",
+      "label": "Strandtag-Checkliste"
+    },
+    {
+      "href": "#positano-beaches",
+      "label": "Positano-Strände"
+    },
+    {
+      "href": "#praiano-beaches",
+      "label": "Praiano-Strände"
+    },
+    {
+      "href": "#furore-beaches",
+      "label": "Furore"
+    },
+    {
+      "href": "#sorrento-beaches",
+      "label": "Sorrent"
+    },
+    {
+      "href": "#amalfi-beaches",
+      "label": "Amalfi"
+    },
+    {
+      "href": "#logistics",
+      "label": "Logistik"
+    },
+    {
+      "href": "#comparison-table",
+      "label": "Vergleichstabelle"
+    },
+    {
+      "href": "#faqs",
+      "label": "FAQs"
+    }
   ],
   "sections": [
     {
@@ -136,12 +166,13 @@
     },
     {
       "id": "logistics",
-      "title": "Hin und zurück zum Strand",
+      "title": "An- und Abreise zu den Stränden",
       "body": [
-        "Vom Hostel ist der schnellste Ansatz meist: runter zur Spiaggia Grande laufen (oder mit dem Bus runter), dann entscheiden: an der Promenade weiter nach Fornillo, aufs Shuttleboot, oder am Hauptstrand bleiben.",
-        "Wenn du einen Beach-Club-Tag mit Bootstransfer machst (Arienzo oder Laurito), ist es oft am einfachsten, bei Spiaggia Grande zu starten: früh anstellen und die Treppen vermeiden.",
-        "Im Sommer 2026: plane Hitze für die Anstiege ein. Füll Wasser auf, bevor du wieder hochgehst, und wenn du müde bist, nimm lieber den internen Bus statt jede Stufe zu laufen.",
-        "Für Tagestrips (Praiano, Amalfi, Sorrent) check vorab die letzte Rückfahrt. Fähren sind die schönste Option, wenn sie fahren, Busse sind der Plan B. Wenn das Meer rau ist oder Fähren ausfallen, plane extra Zeit und bleib flexibel. Nimm Snacks für die Fahrt mit."
+        "Jeder Strand hat unterschiedliche Zugangsoptionen. Schau dir den entsprechenden Guide an, bevor du losgehst. Hier sind schnelle Links zu den nützlichsten Wegbeschreibungen:",
+        "Positano-Strände: %LINK:positanoMainBeachWalkDown|Zu Fuß nach Spiaggia Grande% • %LINK:positanoMainBeachBusDown|Bus nach Spiaggia Grande% • %LINK:hostelBriketteToFornilloBeach|Zu Fuß nach Fornillo% • %LINK:hostelBriketteToArienzoBus|Bus nach Arienzo% • %LINK:lauritoBeachBusDown|Bus nach Laurito%",
+        "Rückwege: %LINK:positanoMainBeachWalkBack|Zu Fuß zurück von Spiaggia Grande% • %LINK:positanoMainBeachBusBack|Bus zurück von Spiaggia Grande% • %LINK:fornilloBeachToBrikette|Zu Fuß zurück von Fornillo% • %LINK:arienzoBeachBusBack|Bus zurück von Arienzo% • %LINK:lauritoBeachBusBack|Bus zurück von Laurito%",
+        "Tagesausflug-Strände: %LINK:hostelBriketteToFiordoDiFuroreBus|Fiordo di Furore% • %LINK:gavitellaBeachGuide|Gavitella (Praiano)% • %LINK:marinaDiPraiaBeaches|Marina di Praia% • %LINK:reginaGiovannaBath|Regina Giovanna (Sorrento)%",
+        "Allgemeine Tipps: Plane im Sommer 2026 für die Hitze bei den Aufstiegen – fülle Wasser nach, bevor du zurückgehst, und nutze den Interno-Bus, wenn du müde bist. Für Tagesausflüge überprüfe die letzte Rückkehroption (Fähre oder Bus), bevor du dich festlegst, und pack Snacks für die Fahrt ein. Wenn die See rau ist oder Fähren ausfallen, plane zusätzliche Zeit ein und bleibe flexibel."
       ],
       "images": [
         {
@@ -160,15 +191,42 @@
     }
   ],
   "itemList": [
-    { "name": "Fornillo", "note": "Lokaler Favorit mit 15-€-Liegen und zwei freien Bereichen." },
-    { "name": "Spiaggia Grande", "note": "Hauptstrand mit ikonischer Aussicht, teuren Clubs und zentralem freien Abschnitt." },
-    { "name": "Arienzo", "note": "Sonnige Terrassen-Bucht: 300 Stufen oder Club-Wassertaxi." },
-    { "name": "Laurito", "note": "Kleine Bucht mit Shuttlebooten von Da Adolfo und Villa Tre Ville." },
-    { "name": "Gavitella", "note": "Praiano-Plattformen perfekt für Sunset-Aperitivo (club-only)." },
-    { "name": "Marina di Praia", "note": "Fischerdorf-Bucht mit kleinem freien Abschnitt und Lidos." },
-    { "name": "Fiordo di Furore", "note": "Dramatische Bucht unter der Brücke: kostenlos, aber wenig Platz." },
-    { "name": "Regina Giovanna Bath", "note": "Versteckter Swim-Spot bei Sorrent – kostenlos, aber bring alles mit." },
-    { "name": "Amalfi Marina Grande", "note": "Reihe klassischer Amalfi-Lidos gegenüber dem Dom." }
+    {
+      "name": "Fornillo",
+      "note": "Lokaler Favorit mit 15-€-Liegen und zwei freien Bereichen."
+    },
+    {
+      "name": "Spiaggia Grande",
+      "note": "Hauptstrand mit ikonischer Aussicht, teuren Clubs und zentralem freien Abschnitt."
+    },
+    {
+      "name": "Arienzo",
+      "note": "Sonnige Terrassen-Bucht: 300 Stufen oder Club-Wassertaxi."
+    },
+    {
+      "name": "Laurito",
+      "note": "Kleine Bucht mit Shuttlebooten von Da Adolfo und Villa Tre Ville."
+    },
+    {
+      "name": "Gavitella",
+      "note": "Praiano-Plattformen perfekt für Sunset-Aperitivo (club-only)."
+    },
+    {
+      "name": "Marina di Praia",
+      "note": "Fischerdorf-Bucht mit kleinem freien Abschnitt und Lidos."
+    },
+    {
+      "name": "Fiordo di Furore",
+      "note": "Dramatische Bucht unter der Brücke: kostenlos, aber wenig Platz."
+    },
+    {
+      "name": "Regina Giovanna Bath",
+      "note": "Versteckter Swim-Spot bei Sorrent – kostenlos, aber bring alles mit."
+    },
+    {
+      "name": "Amalfi Marina Grande",
+      "note": "Reihe klassischer Amalfi-Lidos gegenüber dem Dom."
+    }
   ],
   "faqs": [
     {

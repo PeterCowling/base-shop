@@ -1,47 +1,162 @@
 {
   "seo": {
-    "title": "Capri på budget",
-    "description": "Sätt att uppleva Capri utan att spräcka budgeten: transporter, sevärdheter och mat."
+    "title": "Capri på Budget: Gratis Vyer och Guide till Billig Mat",
+    "description": "Spara pengar på Capri: budgetvänliga färjetips, gratis utsiktspunkter, billiga matställen, offentliga stränder och vad du bör skippa. Komplett backpackerguide från Positano."
   },
-  "linkLabel": "Capri på budget",
+  "linkLabel": "Capri Utan att Spräcka Budgeten",
   "intro": [
-    "En dagstur till Capri kan hållas prisvärd om du planerar färjor, utsikter och måltider i förväg."
+    "**Undvik turistfällorna och se Capri till överkomligt pris.** Du behöver: smart färjetiming (€20-25 tur och retur från Positano), gratis utsiktspunkter som konkurrerar med de betalda, och billig mat nära marinorna. Hoppa över Blå grottan—den är dyr och ofta stängd. Den här guiden visar hur du gör Capri för €40-50 totalt från Hostel Brikette.",
+    "**Bäst för:** Budgetbackpackers som vill ha Instagram-värdiga vyer utan lyxprislappar. **Tid som behövs:** Hel dag (7:00-18:00).",
+    "**Kostnader:** Färja €20-25 tur och retur, linbana €12 tur och retur (valfritt), mat €10-15, buss €2-4. Totalt: €40-50. **Vad du bör veta:** Boka morgonfärjor tidigt på sommaren; ta med vatten och snacks; de gratis promenaderna slår de flesta betalattraktioner."
   ],
   "sections": [
     {
-      "id": "ferries",
-      "title": "Färjor & timing",
+      "id": "ferry-strategy",
+      "title": "Färjekostnader och bokning",
       "body": [
-        "Boka tidiga färjor under högsäsong och sikta på retur på eftermiddagen för att undvika trängseln till sista avgången."
+        "**Från Positano till Capri: €20-25 tur och retur.** Boka direkt vid %LINK:briketteToFerryDock|färjekajen% (5 minuters promenad från Brikette) eller online via Travelmar/NLG. Boka inte turpaket—de lägger till €10-15 för ingenting.",
+        "**Smart timing sparar pengar:** Ta färjan 8:15 eller 9:00 ut (€11-13 enkel resa). Återvänd runt 17:00-18:00 för att undvika kaoset på sista avgången. I juli-augusti, boka 2-3 dagar i förväg online för att låsa det billigare priset. Lågsäsong (okt-maj), dyk upp kl 8:00 och köp vid kajen—du får vanligtvis plats och sparar bokningsavgiften.",
+        "**Från Salerno (om du anländer med tåg):** Salerno-Capri-färjor kostar €18-22 tur och retur och tar 1 timme. Du anländer till Marina Grande samma som Positano-färjan. Kolla %LINK:salernoPositanoBus|Salerno-transport% om du kombinerar detta med en Positano-etapp.",
+        "**Vid Marina Grande:** Du lägger till vid huvudhamnen. Gå 50m höger till bergbanan (€2 varje väg) upp till Capri stad, eller ta bussen till Anacapri (€2). Ta inte taxi—de tar €15-20 för en 5-minuters resa."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-on-a-budget/01-positano-ferry-dock-capri.jpg",
+          "alt": "Positano färjekaj avgångstavla som visar Capri-rutter och tider"
+        },
+        {
+          "src": "/img/guides/capri-on-a-budget/02-capri-marina-grande-funicular.jpg",
+          "alt": "Marina Grande bergbanestation entré med biljettlucka"
+        }
       ]
     },
     {
-      "id": "free-views",
-      "title": "Gratis utsikter",
+      "id": "free-viewpoints",
+      "title": "Gratis och billiga utsiktspunkter",
       "body": [
-        "Giardini di Augusto (liten avgift), utsiktspunkter i Anacapri och vyer vid Marina Piccola ger stora scenerier för liten kostnad."
+        "**Anacapri är där budgetmagin händer.** Hoppa över den trånga Capri stads piazzetta (överprisat kaffe) och åk direkt till Anacapri med buss (€2 från Marina Grande, 15 min).",
+        "**Monte Solaro linbana (€12 tur och retur):** Värt det. 12 minuters åktur till 589m toppmötet med 360° vyer över Neapelbukten, Amalfikusten och Faraglioni-klipporna. Öppet 9:30-17:00 (kortare på vintern). Detta är din enda lyxsatsning—vyerna är oslagbara och det är mycket billigare än Blå grottan.",
+        "**Villa San Michele trädgårdar (€10 entré, eller gratis utifrån):** Terrassen har svepande vyer. Om budgeten är tajt, gå till den offentliga utsiktsplatsen strax förbi villaingången—samma vy, noll kostnad. Vi har gått förbi vid solnedgång och den kostnadsfria utsiktspunkten är nästan lika bra.",
+        "**Punta Carena fyrvandring:** Från Anacapri, gå 30 minuter nerför (eller buss €2) till Punta Carena. Gratis fyrutsiktspunkt, steniga simställen och mycket färre turister. Ta med snacks och vatten—det är avlägset. Gå tillbaka uppför tar 45 min.",
+        "**Via Krupp & Giardini di Augusto (€2 entré):** I Capri stad blickar dessa trädgårdar ut över Faraglioni-klipporna. Själva Via Krupp (slingrande vägen ner) är ofta stängd, men trädgårdarna är billiga och vyn är den du ser på foton. Värt €2 om du har det."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-on-a-budget/03-anacapri-monte-solaro-chairlift.jpg",
+          "alt": "Monte Solaro linbana som stiger över Anacapri-tak med havsutsikt"
+        },
+        {
+          "src": "/img/guides/capri-on-a-budget/04-punta-carena-lighthouse-view.jpg",
+          "alt": "Punta Carena fyr med stenig kustlinje och blått vatten"
+        }
       ]
     },
     {
-      "id": "beaches",
-      "title": "Strandval",
+      "id": "beaches-swimming",
+      "title": "Strand- och simställen",
       "body": [
-        "Det finns allmänna strandområden; ta med egen handduk och vatten så slipper du hyra."
+        "**Marina Piccola offentlig strand (gratis):** Från Capri stad, gå 20 min nerför (eller buss €2). Det finns ett litet offentligt avsnitt mellan de betalda lidona. Ta med din handduk, vatten och snacks. Stenig ingång men klart vatten. Blir trångt vid 11:00—kom tidigt.",
+        "**Punta Carena klippor (gratis):** Bästa kostnadsfria simstället. Platta klippor för solbad, stege ner i djupt vatten. Lokalbefolkningen simmar här. Inga faciliteter—ta med allt. Det finns en liten bar 100m upp på vägen om du behöver drinkar.",
+        "**Skippa lidona:** Lidona (privata strandklubbar) tar €15-30 för en solstol. Inte värt det på budget. Handduk på offentliga klippor = gratis."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-on-a-budget/05-marina-piccola-public-beach.jpg",
+          "alt": "Marina Piccola offentlig strandområde med Faraglioni-klippor i bakgrunden"
+        },
+        {
+          "src": "/img/guides/capri-on-a-budget/08-punta-carena-swimming-rocks.jpg",
+          "alt": "Punta Carena stenigt simområde med stege och klart blått vatten"
+        }
       ]
     },
     {
-      "id": "food",
-      "title": "Billig mat",
+      "id": "cheap-food",
+      "title": "Var man äter billigt",
       "body": [
-        "Plocka panini eller pizza al taglio nära marinan och undvik sittande luncher på de mest trafikerade gatorna."
+        "**Capri och Anacapri är dyra. Planera i förväg.** En sittande lunch på Capris huvudtorg kostar €20-30 per person. Här är hur du äter för €10-15 totalt:",
+        "**Ta med snacks från Positano:** Vi säger alltid till gäster att ta panini, frukt och vatten från Positano före färjan. Positano-priser är höga, men Capri är värre. En flaska vatten är €3-4 på Capri vs €1-2 i Positano.",
+        "**Pizza al taglio nära Marina Grande:** Det finns 2-3 take-away pizzaställen inom 100m från färjekajen. €3-5 för en stor bit. Inte fantastiskt, men det är snabbt och billigt. Ät vid bänkarna vid hamnen.",
+        "**Anacapri sidogator:** Gå 2-3 kvarter från Anacapris huvudtorg och du hittar små smörgåsbarer och focaccia-butiker. €5-8 för en fylld focaccia och en drink. Vi har ätit på \"Bar Gabbiano\" (nära busshållplatsen)—anständigt och halva priset på torget.",
+        "**Hoppa över citronerna:** Capri är känt för citroner, men limoncello och citrongranita har turistpriser. Spara det för Positano där det är billigare och ofta hemgjort."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-on-a-budget/06-anacapri-cheap-sandwich-bar.jpg",
+          "alt": "Liten smörgåsbutik på Anacapri sidogata med pristavla"
+        }
+      ]
+    },
+    {
+      "id": "what-to-skip",
+      "title": "Vad du ska skippa (spara dina pengar)",
+      "body": [
+        "**Blå grottan (€18 totalt):** €14 båtresa + €4 roddingång. Ofta stängd på grund av vågor eller vind. När den är öppen får du 5 minuter inne i en grotta med blått vatten. Ärligt talat? De kostnadsfria utsiktspunkterna ger bättre valuta. Vi har haft gäster som skippa den och spenderade de €18 på linbanan + en bra lunch istället—de var gladare.",
+        "**Taxibilar:** Capri-taxibilar är en bluff för turister. €15-20 för en 5-minuters resa som kostar €2 med buss. Ta alltid bussen.",
+        "**Restauranger på Piazzetta Umberto I (Capri stads torg):** Kaffe är €6-8. Lunch är €25+. Du betalar för utsikten av andra turister. Gå 3 kvarter bort och priserna halveras.",
+        "**Designshopping:** Capri har Gucci, Prada, etc. Om du inte bara tittar i skyltfönster, är detta inte ett budgetstopp."
+      ]
+    },
+    {
+      "id": "budget-itinerary",
+      "title": "Exempel på €45-dag från Brikette",
+      "body": [
+        "Det här är vad vi rekommenderar till gäster som vill ha den fullständiga Capri-upplevelsen för under €50:",
+        "**8:15:** Färja från Positano (€22 tur och retur, bokad online 2 dagar i förväg).",
+        "**9:30:** Anländer Marina Grande. Ta billig pizzabit (€4). Buss till Anacapri (€2).",
+        "**10:30:** Monte Solaro linbana (€12 tur och retur). Tillbringa 30-45 min på toppen.",
+        "**12:30:** Gå till Punta Carena fyr (gratis). Simma från klipporna. Ät förpackad lunch.",
+        "**15:00:** Buss tillbaka till Anacapri (€2). Gå ner till Capri stad (30 min nerför, gratis).",
+        "**16:00:** Giardini di Augusto (€2). Snabb promenad, foton av Faraglioni.",
+        "**17:00:** Bergbana ner till Marina Grande (€2). Färja tillbaka till Positano (täckt av tur- och returbiljett).",
+        "**Totalt: €46.** Du har sett de bästa vyerna, simmat i klart vatten och undvikit turistfällorna."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-on-a-budget/07-faraglioni-rocks-sunset-view.jpg",
+          "alt": "Faraglioni-klippor vid gyllene timmen sett från Giardini di Augusto"
+        }
+      ]
+    },
+    {
+      "id": "practical-tips",
+      "title": "Praktiska tips från hostellet",
+      "body": [
+        "**Ta med ryggsäck med:** Vatten (1L per person—fyll på vid offentliga fontäner i Anacapri), snacks, solskydd, hatt, baddräkt, handduk, mobilladdare. Capri har begränsad skugga och allt är överprisat.",
+        "**Färjeväder:** Färjor ställs in vid grov sjö (särskilt nov-mars). Kolla morgonprognosen eller fråga vid Positano-kajen. Om det är osäkert, ha en reservplan—se våra %LINK:dayTripsAmalfi|dagstursalternativ%.",
+        "**Folkmängder:** Juli-augusti får Capri 15 000+ dagsutflyktsbesökare. Åk tidigt (första färjan) och ta Anacapri först—de flesta turister stannar i Capri stad till 11:00, så du får Anacapri för dig själv.",
+        "**Bagage:** Ta inte med bagage. Det finns ingen förvaring vid Marina Grande. Om du lämnar Brikette samma dag, be oss hålla dina väskor—vi behåller dem tills du kommer tillbaka.",
+        "**Promenader:** Capri har kullar och trappor. Ha bra skor. Flip-flops är okej för färjan men inte för att gå runt."
+      ]
+    },
+    {
+      "id": "links",
+      "title": "Relaterade guider",
+      "body": [
+        "**Hur du tar dig dit:** %LINK:capriPositanoFerry|Positano till Capri färjeriktningar% (tider, kajplats, biljetter).",
+        "**Om du har mer budget:** Se vår %LINK:capriDayTrip|fullständiga Capri dagstursguide% med fler alternativ.",
+        "**Andra budgetdagsturer:** %LINK:dayTripsAmalfi|Amalfikustens dagsturer% (Pompeji, Amalfi, Ravello).",
+        "**Spara på transport:** %LINK:transportMoneySaving|Transportbesparingsguide% (pass, knep, lågtrafik)."
       ]
     }
   ],
   "faqs": [
     {
+      "q": "Kan jag göra Capri för under €50 från Positano?",
+      "a": [
+        "Ja. Färja €22 tur och retur, linbana €12, buss €4-6, mat €10 (om du tar med snacks). Totalt €48. Hoppa över Blå grottan och lidona, så håller du budgeten."
+      ]
+    },
+    {
       "q": "Är Blå grottan värd det på en budget?",
       "a": [
-        "Det är ett dyrt tillval och väderberoende; linbanan i Anacapri är ett billigare höjdpunkt."
+        "Inte riktigt. €18 totalt (€14 båt + €4 roddingång), ofta stängd, och du får 5 minuter inne. Spendera de €18 på Monte Solaro linbana och en bra lunch istället—mycket bättre valuta enligt vår erfarenhet."
+      ]
+    },
+    {
+      "q": "Vad är det billigaste sättet att ta sig till Capri från Brikette?",
+      "a": [
+        "Gå ner till Positano färjekaj (5 min från Brikette) och ta morgonfärjan (€22 tur och retur om bokad online 2-3 dagar i förväg, eller €25 om köpt vid kajen). Lågsäsong kan du ofta få walk-up-biljetter för €20."
       ]
     }
   ]

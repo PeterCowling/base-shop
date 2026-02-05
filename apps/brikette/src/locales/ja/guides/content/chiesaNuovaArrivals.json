@@ -1,261 +1,259 @@
 {
   "seo": {
-    "title": "Chiesa Nuova / Bar Internazionale停留所 → Hostel Brikette",
-    "description": "ポジターノにバスで到着？Chiesa Nuova / Bar Internazionaleで下車（Hostel Brikette最寄り）。運転手に合図し、停留所を確認し、2–5分歩いて受付へ。"
+    "title": "キエーザ・ヌオーヴァ / バール・インテルナツィオナーレバス停 → ホステル・ブリケット",
+    "description": "ポジターノにバスで到着？キエーザ・ヌオーヴァ / バール・インテルナツィオナーレ（ホステル・ブリケットに最も近い）で降りてください。運転手に合図し、停留所を見つけ、受付まで2〜5分歩きます。"
   },
-  "linkLabel": "Chiesa Nuova / Bar Internazionale → Hostel Brikette（到着）",
+  "linkLabel": "キエーザ・ヌオーヴァ / バール・インテルナツィオナーレからホステル・ブリケット（到着）",
   "lastUpdated": "2026-02-02",
-  "intro": "2026年にSITAバスで到着しますか？**Chiesa Nuova / Bar Internazionaleの停留所**がHostel Briketteに最も近く、徒歩距離が短く階段も最小です。このガイドは停留所そのものについて：見分け方、バスを確実に停める方法、最後の120–140mを受付まで歩く方法を説明します。\n\nこれはバス旅全体のガイドではなく、最後の重要な区間のための案内です。何を見ればよいか、いつ停止ボタンを押すか、長い階段を避けて荷物と一緒に到着する方法がわかります。最後のFAQに荷物預かり、チェックイン時間、遅い到着についても記載しています。",
+  "intro": "2026年にSITAバスで到着しますか？**キエーザ・ヌオーヴァ / バール・インテルナツィオナーレバス停**はホステル・ブリケットに最も近い停留所で、最短の徒歩距離と最も少ない階段です。このガイドは停留所自体について：見つけ方、バスが確実に停車するようにする方法、受付までの最後の120〜140メートルの歩き方。\n\nバス全体の旅のガイドではありません — 到着の最後の重要な部分です：停留所がどのように見えるか、ボタンをいつ押すか、長い階段ルートを使わずに荷物をホステルに運ぶ方法。最後のFAQに到着の必需品（荷物預かり、チェックイン時間、深夜到着オプション）もあります。",
   "image": {
-    "alt": "Viale PasiteaにあるSITA Chiesa Nuova / Bar Internazionale停留所",
-    "caption": "時刻表では“Positano (Chiesa Nuova)”と表記されることがあり、Viale PasiteaのBar Internazionale前にあります。"
+    "alt": "Positano’s Chiesa Nuova / Bar Internazionale SITA bus stop on Viale Pasitea",
+    "caption": "This stop is called “Positano (Chiesa Nuova)” on timetables and sits outside Bar Internazionale on Viale Pasitea."
   },
   "toc": {
-    "onThisPage": "このページの内容",
+    "onThisPage": "このページについて",
     "before": "出発前に",
-    "steps": "ステップごと",
+    "steps": "ステップバイステップ",
     "knees": "脚と荷物",
-    "faqs": "FAQ"
+    "faqs": "よくある質問"
   },
   "sections": [
     {
       "id": "why-this-stop",
-      "title": "Chiesa Nuova / Bar Internazionaleが最適な到着停留所の理由",
+      "title": "Why Chiesa Nuova / Bar Internazionale is the best arrival stop",
       "body": [
-        "ポジターノには複数の停留所があります。Hostelへの到着に最も便利なのは**Chiesa Nuova / Bar Internazionale**です。Hostel Briketteに最も近く、“Positano Centro”や“Spiaggia Grande / Positano Spiaggia”で降りると必要になる長い階段を避けられます。",
-        "ここからはほぼ平坦な短い徒歩（約120–140m）と入口の短い階段のみ。**荷物がある人**、**疲れている人**、**初めての到着**に最適です。",
-        "全体の到着計画は%LINK:howToGetToPositano|ポジターノへの行き方%を参照し、最後の停留所と徒歩2–5分はこのページを使ってください。"
+        "Positano has multiple bus stops. The one that makes hostel arrivals easiest is **Chiesa Nuova / Bar Internazionale** — it’s the closest stop to Hostel Brikette and avoids walking much further from the Positano Sponda bus stop, or long stair climbs you’ll face if you somehow end up at the “Positano Centro” bus stop.",
+        "From this stop it’s a short, mostly flat walk (about 120–140 metres) plus the hostel entrance steps. That’s why we recommend it for **luggage**, **tired legs**, and **first‑time arrivals**.",
+        "If you’re planning your broader arrival, see our %LINK:howToGetToPositano|How to get to Positano% guide, then use this page for the final stop and the last 2–5 minutes on foot."
       ],
       "images": [
         {
           "src": "/img/directions/positano-bus-stop.webp",
-          "alt": "Positano Chiesa Nuova / Bar InternazionaleのSITA停留所サイン",
-          "caption": "Bar Internazionale前のSITAサインを探してください。"
+          "alt": "SITA bus stop sign for Positano Chiesa Nuova / Bar Internazionale",
+          "caption": "Look for the SITA stop marker outside Bar Internazionale."
         },
         {
           "src": "/img/directions/chiesa-nuova-arrivals/positano-chiesa-nuova-church.jpg",
-          "alt": "Chiesa Nuova / Bar Internazionale付近のポジターノ（Santa Maria delle Grazie）",
+          "alt": "Positano hillside view near Chiesa Nuova / Bar Internazionale (Santa Maria delle Grazie)",
           "caption": "Photo: Lorenzo Saprio (CC BY-SA 4.0) via Wikimedia Commons."
         }
       ]
     },
     {
       "id": "fast-facts",
-      "title": "早見ポイント（2026年シーズン）",
+      "title": "Fast facts (2026 season)",
       "body": [
-        "**徒歩時間:** 停留所から受付まで2–5分（荷物と交通状況による）。",
-        "**距離:** Viale Pasitea沿いに約120–140m、その後短い階段。",
-        "**停留所タイプ:** リクエスト停留所 — 乗車時に伝え、早めにボタンを押す。",
-        "**降車準備:** 特に混雑時は1–2分前に立ってドア付近へ。",
-        "**おすすめ:** 初回到着、重い荷物、階段を減らしたい人。",
-        "**チケット:** 運転手から購入不可 — 事前購入（%LINK:sitaTickets|SITAチケット%参照）。",
-        "**混雑時間帯:** 夏の遅い午前と遅い午後。満車なら次便へ。",
-        "**不安なとき:** 運転手や乗客に確認 — Hostel客の定番停留所です。",
-        "**まずフェリーで到着する場合:** %LINK:ferryDockToBrikette|桟橋 → Hostel Brikette%で、ビーチ階段の荷物運びを回避できます。"
+        "**Walk time:** 2–5 minutes from the stop to reception, depending on luggage and traffic.",
+        "**Distance:** ~120–140 metres along Viale Pasitea, then a short staircase up to the hostel entrance.",
+        "**Stop type:** Request stop — tell the driver and press the stop button early.",
+        "**When to prepare to exit:** Stand and move toward the door 1–2 minutes before Chiesa Nuova, especially if the bus is busy.",
+        "**Best for:** First‑time arrivals, heavy bags, and anyone who wants the least stairs.",
+        "**Tickets:** You can’t buy SITA tickets from the driver — get them in advance (see %LINK:sitaTickets|SITA ticket basics%).",
+        "**Peak crowd times:** Late morning and late afternoon can be busy in summer; if a bus is full, wait for the next one rather than trying to squeeze on with bags.",
+        "**If you’re unsure on board:** Ask the driver or a nearby passenger — this is a common stop for hostel guests and day‑trippers.",
+        "**If you’re arriving by ferry first:** Use the %LINK:ferryDockToBrikette|ferry dock → Hostel Brikette% guide to reach this stop without hauling bags up the beach stairs."
       ],
       "images": [
         {
           "src": "/img/directions/ferry-dock-interno-yellow.webp",
-          "alt": "ポジターノの路線で走る小型ローカルバス",
-          "caption": "ローカルバスは小さく満車になりがち。停留所前にドア付近へ。"
+          "alt": "A small local bus used on the Positano route",
+          "caption": "Local buses are compact and often crowded — position yourself near the door before your stop."
         }
       ]
     },
     {
       "id": "get-off-here",
-      "title": "正しい停留所で降りる方法（車内で見るポイント）",
+      "title": "How to get off at the right stop (what to look for on the bus)",
       "body": [
-        "多くの路線で**“Chiesa Nuova”**と案内されます。時刻表では**“Positano (Chiesa Nuova)”**の表記もあります。現地では停留所がbar/tabacchi前にあるため**Chiesa Nuova / Bar Internazionale**と呼ばれます。",
-        "**乗車時に運転手へ:** “Chiesa Nuova, per favore”。最も確実に停留所を逃さない方法です。",
-        "**早めに停止ボタンを押す。** Bar Internazionaleが見えたら（多くは右側のカーブ付近）ボタンを押し、停車の準備を。",
-        "**立っている場合は合図:** 目を合わせて手を挙げる — リクエスト停留所です。",
-        "荷物がある場合は1分前にドアへ。停車時間は短いことがあります。",
-        "不安なら1–2停留所前に “Prossima Chiesa Nuova?” と確認。運転手は慣れています。",
-        "満車の時は直前まで待たず、早めにドア付近に移動しましょう。"
+        "On many routes, the driver (or an onboard display) announces the stop as **“Chiesa Nuova”**. On timetables it can also appear as **“Positano (Chiesa Nuova)”**. Locally, you’ll also hear people say **Chiesa Nuova / Bar Internazionale** because the stop is directly outside that cafe/tabacchi.",
+        "**Tell the driver when you board:** “Chiesa Nuova, per favore.” This is the simplest way to avoid missing the stop, especially if the bus is crowded or you’re arriving late in the day.",
+        "**Press the stop button early.** When you see Bar Internazionale approaching (often on your right as the bus heads through this bend), press the stop button so the driver has time to pull in.",
+        "**Signal the driver if you’re standing:** When the bus approaches, make eye contact and raise your hand so the driver knows you want to get off. This matters because Chiesa Nuova is a request stop.",
+        "If you’re standing with bags, start moving toward the door a minute before the stop — the bus may stop briefly and then continue quickly.",
+        "If you’re nervous about missing it, ask the driver one or two stops before: “Prossima Chiesa Nuova?” (Is Chiesa Nuova next?). Drivers are used to this question from visitors."
       ],
       "images": [
         {
           "src": "/img/directions/chiesa-nuova-arrivals/amalfi-coast-sita-bus.jpg",
-          "alt": "アマルフィ海岸道路を走るSITA Sudバス",
+          "alt": "A SITA Sud bus on the Amalfi Coast road",
           "caption": "Photo: Robot8A (CC BY-SA 4.0) via Wikimedia Commons."
         },
         {
           "src": "/img/directions/ferry-dock-interno-red.webp",
-          "alt": "アマルフィ海岸の小型ローカルバス",
-          "caption": "停留所前に出口へ。バスは短時間で発車します。"
+          "alt": "A compact local bus on the Amalfi Coast",
+          "caption": "Move toward the exit before the bus stops — drivers often pull in briefly."
         }
       ]
     },
     {
       "id": "what-youll-see",
-      "title": "到着時に見えるもの（どこで降りるかの目印）",
+      "title": "What it looks like when you arrive (so you know where to get off)",
       "body": [
-        "停留所は**Viale Pasitea**沿いの**Bar Internazionale**前。bar/tabacchiの外観、小さな待ち列、青白いSITAサインが目印です。",
-        "バスは歩道に直接降ろします。高いホームはなく、道路レベルに降りてすぐバスは発車します。",
-        "不安なら乗客や運転手に “Chiesa Nuova?” と確認してください。",
-        "降車後、主道路が両方向に見えます。Hostelは同じ道沿いに数分 — **長い階段なし**。",
-        "混雑時は同じ歩道に次のバスの列ができる場合があります。内側に寄って通行を妨げないように。",
-        "Bar Internazionaleを基準点にするとわかりやすいです。そこからHostelのサインまで数分です。"
+        "The stop is **roadside on Viale Pasitea**, outside **Bar Internazionale**. Look for the bar/tabacchi frontage, a small cluster of people waiting on the pavement, and the blue‑white SITA stop sign.",
+        "The bus drops you directly onto the pavement. There is no raised platform — you step down to street level and the bus pulls out quickly.",
+        "If you’re unsure, ask another passenger or say “Chiesa Nuova?” to the driver — locals know this stop and it’s a common request for hostel guests.",
+        "Once you step off, you’ll see the main road continuing in both directions. The hostel is a short walk along the same road — you do **not** need to climb long staircases from this stop.",
+        "At busy times, you may see a small line of people waiting for the next bus on the same pavement. Stay to the inside edge so you’re not blocking traffic."
       ],
       "images": [
         {
           "src": "/img/directions/positano-bus-stop.png",
-          "alt": "ポジターノのBar Internazionale前の停留所サイン",
-          "caption": "停留所は主道路のBar Internazionale前にあります。"
+          "alt": "Roadside bus stop marker outside Bar Internazionale in Positano",
+          "caption": "The stop sits right outside Bar Internazionale on the main road."
         }
       ]
     },
     {
       "id": "walk-to-hostel",
-      "title": "Chiesa Nuova / Bar InternazionaleからHostel Briketteまで歩く（2–5分）",
+      "title": "Walk from Chiesa Nuova / Bar Internazionale to Hostel Brikette (2–5 minutes)",
       "body": [
-        "Bar Internazionale前で降り、**Viale Pasitea**（ポジターノの主道路）に向きを合わせます。",
-        "歩道を約120–140m歩きます。主道路沿いなので荷物は体の近くに持ち、内側を歩いてください。",
-        "**Hostel Brikette**のサインと受付へ上がる短い階段を探します。",
-        "porterサービス利用の場合、停留所で合流か入口直送かを確認してください。",
-        "大きなスーツケースならゆっくり階段を上り、必要なら踊り場で休憩を。",
-        "正確なルートはこの%URL:https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!5e0!3m2!1sen!2sit!4v1700000000000|地図%を参照。"
+        "Step off at street level outside Bar Internazionale and orient yourself on **Viale Pasitea** (the main road through Positano).",
+        "Walk along the paved sidewalk for roughly 120–140 metres. You’ll be walking along the main road — keep bags close and stay on the inside edge of the pavement when traffic is tight.",
+        "Look for the **Hostel Brikette** sign and the short staircase up to reception. Go up the steps to reach the front door.",
+        "If you’re using a porter, confirm whether they’ll meet you at the stop or bring bags directly to the hostel entrance so you can walk hands‑free.",
+        "If you’re carrying a large suitcase, take your time on the steps and pause at the landing if needed — it’s a short climb but it’s the only stairs on this route.",
+        "If you need a map view, use the %URL:https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!5e0!3m2!1sen!2sit!4v1700000000000|map% for the exact bend and staircase."
       ],
       "images": [
         {
           "src": "/img/directions/hostel-brikette-entrance-steps.webp",
-          "alt": "Hostel Briketteの入口階段とサイン",
-          "caption": "入口は主道路から短い階段を上がったところです。"
+          "alt": "Hostel Brikette entrance steps and sign",
+          "caption": "The entrance is up a short staircase from the main road."
         }
       ]
     },
     {
       "id": "tickets-and-basics",
-      "title": "チケット・荷物・基本情報（要点）",
+      "title": "Tickets, bags, and ride basics (quick notes)",
       "body": [
-        "SITAチケットは運転手から購入できません。tabacchi/キオスクで事前購入（Bar Internazionaleが案内可）し、乗車時に提示/打刻します。%LINK:sitaTickets|SITAチケットと打刻%参照。",
-        "車内に打刻機がある場合は乗車時に打刻。わからなければ運転手に見せましょう。",
-        "チケットは小さな紙片です。すぐ出せる場所に置き、濡らしたり折り曲げたりしないように。",
-        "夏やフェリー到着後は混雑しやすいです。満車なら次便へ（通常はすぐ来ますが繁忙期は待つことも）。",
-        "素早く乗れるようチケットを用意。グループなら一緒に乗車を。",
-        "大きな荷物がある場合は%LINK:porterServices|porterサービス%を検討。",
-        "交通パスや予算、季節のコツは%LINK:publicTransportAmalfi|アマルフィ海岸の公共交通%と%LINK:transportBudget|交通予算%を参照。"
+        "You cannot buy SITA tickets from the driver. Buy tickets in advance at a tabacchi/newsstand (Bar Internazionale can help), then validate or show the ticket when you board. For the full guide, see %LINK:sitaTickets|SITA tickets and validation%.",
+        "If there’s a validator machine inside the bus, scan your ticket as you step on. If you’re unsure, hold the ticket up and show it to the driver — they’ll indicate what to do.",
+        "Tickets are small paper slips — keep them somewhere easy to reach and avoid folding or wetting them before you board.",
+        "Buses can be crowded in summer and after ferry arrivals. If the bus is full, the driver may not take additional passengers — the next bus is usually not far behind, but in peak season it can still feel slow. Plan for flexibility.",
+        "Keep your ticket accessible so you can show it quickly when boarding. If you’re traveling as a group, have everyone ready to board together to avoid delaying the bus.",
+        "If you’re arriving with large luggage, consider a %LINK:porterServices|porter service% to move bags from the stop to the hostel while you walk up.",
+        "For broader public transport tips (passes, budget planning, and seasonality), see %LINK:publicTransportAmalfi|public transport on the Amalfi Coast% and %LINK:transportBudget|transport budget tips%."
       ],
       "images": [
         {
           "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
-          "alt": "ポジターノの海岸道路沿いのバス停エリア",
-          "caption": "SITA停留所は小さな路肩が多いです。荷物を近くに。"
+          "alt": "Bus stop area on the coastal road in Positano",
+          "caption": "Most SITA stops are simple roadside pull‑ins with a small sign — keep bags close and be ready to board."
         }
       ]
     },
     {
       "id": "ferry-first",
-      "title": "まずフェリーで到着する場合、この停留所はこう使う",
+      "title": "Arriving by ferry first? Here’s how this stop fits in",
       "body": [
-        "ビーチの桟橋から来る場合、荷物に優しいルートは通常：桟橋 → porter → Interno Positanoバス → **Chiesa Nuova / Bar Internazionale** → 短い徒歩。",
-        "このルートは%LINK:ferryDockToBrikette|桟橋 → Hostel Brikette（荷物あり）%で詳しく説明しています。繁忙期の定番です。",
-        "すでにビーチにいて最も楽な上りを選びたいなら、バスでChiesa Nuovaまで行き、このガイドに従ってください。",
-        "porterなしでも軽い荷物なら可能ですが、桟橋から停留所までの上りは一定 — 多くの人は最後の階段に備えて体力を温存します。"
+        "If your journey starts at the beach‑level ferry dock, your easiest luggage‑friendly route is usually: ferry dock → porter service → Interno Positano bus → **Chiesa Nuova / Bar Internazionale** → short walk to the hostel.",
+        "We walk that route step‑by‑step in %LINK:ferryDockToBrikette|ferry dock → Hostel Brikette (with luggage)% — it’s the most common arrival path for guests in peak season.",
+        "Already at the beach and want the simplest climb? Use the bus to reach Chiesa Nuova, then follow the short walk described in this guide.",
+        "Skipping the porter service is possible with light bags, but the walk from the beach to this stop includes a steady uphill stretch — most guests prefer to save energy for the final steps to the hostel."
       ],
       "images": [
         {
           "src": "/img/directions/ferry-dock-positano-spiaggia-view.jpg",
-          "alt": "ポジターノのフェリー桟橋とビーチプロムナード",
-          "caption": "フェリーはビーチレベルに到着。バスで上りが楽になります。"
+          "alt": "Positano ferry dock and beach promenade with boats in the bay",
+          "caption": "Ferry arrivals happen at beach level — the bus makes the uphill leg easier."
         },
         {
           "src": "/img/directions/ferry-dock-promenade-to-mulini.jpg",
-          "alt": "フェリー桟橋からPiazza dei Muliniへ向かうプロムナード",
-          "caption": "桟橋からはPiazza dei Mulini方向へ歩いてバスに乗ります。"
+          "alt": "Positano beachfront promenade leading toward Piazza dei Mulini",
+          "caption": "From the dock, most arrivals walk toward Piazza dei Mulini before catching the bus up."
         }
       ]
     },
     {
       "id": "night-arrivals",
-      "title": "夜遅くの到着や長旅のあと",
+      "title": "Arriving at night or after a long travel day",
       "body": [
-        "夜は道が暗く、交通も動いているため迷いやすいです。停留所はBar Internazionale前の同じポケット — ここを目印に。",
-        "荷物がある場合はゆっくり歩き、歩道の内側を歩きましょう。距離は短いですが歩道が狭いです。",
-        "雨や風があるときは、バスが完全に止まるまでバールの軒下で待ち、慎重に降りてください。"
+        "Evening arrivals can feel more disorienting because the road is darker and traffic is still active. The stop is still the same roadside pull‑in outside Bar Internazionale, so use the bar as your anchor point.",
+        "If you’re carrying luggage, move slowly along the pavement and keep to the inside edge. The walk is short, but being calm and deliberate is better than trying to rush on a narrow sidewalk after a long travel day.",
+        "If it’s raining or windy, wait under the bar awning until the bus is fully stopped, then step down carefully — the pavement can feel slick with travel shoes and heavy bags."
       ]
     },
     {
       "id": "waiting-early",
-      "title": "早く着いたときや休憩したいとき",
+      "title": "If you arrive early or need a breather",
       "body": [
-        "Bar Internazionaleは停留所のすぐ横で、早めの到着や休憩に最適です。ここで正しい停留所かも確認できます。",
-        "荷物は手元に置き、歩道を塞がないように。バスやスクーターが近くを通ります。",
-        "疲れているときや時差があるときは、歩き出す前に地図を確認してHostelのサインを見逃さないように。",
-        "助けが必要ならHostelに連絡するか、%LINK:checkinCheckout|チェックイン/チェックアウトガイド%を確認してください。"
+        "Bar Internazionale is right at the stop and is the most convenient place to wait if you arrive early or need a quick coffee and shade. It’s also a good place to check that you’re at the correct stop.",
+        "If you arrive with luggage, keep it with you and avoid blocking the pavement — buses and scooters pass close to the curb.",
+        "If you’re tired or jet‑lagged, take a moment to check the map before walking so you don’t overshoot the hostel sign.",
+        "If you need help, you can message the hostel or check the %LINK:checkinCheckout|check-in & checkout guide% for current reception hours and arrival options."
       ]
     },
     {
       "id": "accessibility-safety",
-      "title": "アクセス性と道路安全",
+      "title": "Accessibility and street‑safety tips",
       "body": [
-        "Chiesa Nuova / Bar Internazionaleは階段を最小限にできるため、多くの到着におすすめです。階段は入口の短い部分だけ。",
-        "Viale Pasiteaは混雑することがあり、歩道が狭い区間もあります。荷物を内側に寄せ、必要なら一列で歩き、車道側で立ち止まらないように。",
-        "重い荷物、ベビーカー、移動が大変な方は%LINK:porterServices|porterサービス%を検討してください。",
-        "休憩が必要なら、バールのくぼみに入るか停留所の少し先で立ち止まり、通行の邪魔にならないように。"
+        "The Chiesa Nuova / Bar Internazionale stop minimizes stairs, which is why we recommend it for most arrivals. The only steps on this route are the short staircase up to the hostel entrance.",
+        "Viale Pasitea can be busy and the sidewalk narrows in places. Keep luggage on the inside edge, walk single‑file if needed, and avoid stopping on the road side of the pavement.",
+        "If you’re traveling with heavy bags, a stroller, or limited mobility, consider a %LINK:porterServices|porter service% so you can focus on the short walk without lifting luggage.",
+        "If you need to pause, step into the recessed doorway near the bar or wait just beyond the stop so you’re out of the traffic flow."
       ]
     },
     {
       "id": "wrong-stop",
-      "title": "間違った停留所で降りた場合",
+      "title": "If you got off at the wrong Positano stop",
       "body": [
-        "誤って**Positano Centro**や**Spiaggia Grande / Positano Spiaggia**で降りると、かなり急な上りと多くの階段が待っています。",
-        "最も簡単な方法は、ローカルバスまたはタクシーで**Chiesa Nuova / Bar Internazionale**まで行き、このガイドの短い徒歩を行うことです。",
-        "場所が不明なら地図を開き、Bar Internazionaleを目指してください — これが目印です。",
-        "重い荷物がある場合はカフェで休むか、地元の人に “Bar Internazionale?” と尋ねると通じます。"
+        "If you accidentally get off at **Positano Centro** or **Spiaggia Grande / Positano Spiaggia**, expect a much steeper climb with significantly more stairs to reach the hostel.",
+        "The simplest fix is to take a local bus or taxi up to **Chiesa Nuova / Bar Internazionale**, then follow the short walk in this guide.",
+        "If you’re unsure where you are, open the map and aim for Bar Internazionale — it’s the landmark for this stop.",
+        "If you’re carrying heavy bags and already feel stuck, consider pausing at a café or asking a local to point you toward the Bar Internazionale stop — it’s a very common reference point in Positano."
       ]
     }
   ],
   "beforeList": [
-    "乗車時に運転手へ “Chiesa Nuova, per favore” と伝え、早めに停止ボタンを押す。",
-    "チケットは事前に購入/打刻（%LINK:sitaTickets|SITAチケット%参照）。",
-    "地図確認や連絡のため、スマホを充電しておく。"
+    "Tell the driver “Chiesa Nuova, per favore” when you board and press the stop button early.",
+    "Buy or validate your ticket before boarding (see %LINK:sitaTickets|SITA tickets%).",
+    "Keep your phone charged so you can check the map or message the hostel if needed."
   ],
   "stepsList": [
-    "Chiesa Nuova / Bar Internazionaleで下車（bar/tabacchi前の路上停留所）。",
-    "Viale Pasiteaの歩道を約120–140m歩く。",
-    "Hostel Briketteのサインを見つけ、短い階段で受付へ。"
+    "Get off at Chiesa Nuova / Bar Internazionale (roadside stop outside the bar/tabacchi).",
+    "Walk along Viale Pasitea for about 120–140 metres on the pavement.",
+    "Look for the Hostel Brikette sign and take the short staircase up to reception."
   ],
   "stepsMapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!5e0!3m2!1sen!2sit!4v1700000000000",
   "kneesList": [
-    "このルートは長い階段を避けます — ほぼ歩道と短い入口階段のみ。",
-    "重い荷物がある場合は、Chiesa Nuova / Bar Internazionaleでの受け渡しに%LINK:porterServices|porterサービス%を検討。",
-    "荷物の全体プランが必要なら%LINK:luggageStorage|荷物預かり%と%LINK:ferryDockToBrikette|桟橋到着ガイド%を参照。"
+    "The route avoids long staircases — it’s mostly pavement plus the short entrance staircase.",
+    "If you’re carrying heavy bags, consider a %LINK:porterServices|porter service% pickup/drop‑off at Chiesa Nuova / Bar Internazionale.",
+    "Need a full luggage plan? See %LINK:luggageStorage|luggage storage options% and our %LINK:ferryDockToBrikette|ferry arrival route%."
   ],
-  "kneesDockPrefix": "まずフェリーで到着？",
-  "kneesDockLinkLabel": "桟橋 → Hostel（荷物あり）",
-  "kneesPorterPrefix": "荷物の手伝いが必要？",
-  "kneesPorterLinkLabel": "porterガイド",
+  "kneesDockPrefix": "Arriving via ferry first?",
+  "kneesDockLinkLabel": "Dock → Hostel luggage route",
+  "kneesPorterPrefix": "Need a hand with heavy bags?",
+  "kneesPorterLinkLabel": "Porter service guide",
   "faqs": [
     {
-      "q": "正しい停留所かどうかはどう確認できますか？",
-      "a": "Viale Pasiteaの**Bar Internazionale**前の路上停留所です。案内/時刻表では**“Positano (Chiesa Nuova)”**と表記されることが多く、地元ではChiesa Nuova / Bar Internazionaleと呼ばれます。"
+      "q": "How do I know I’m at the right stop?",
+      "a": "You’re looking for the roadside stop outside **Bar Internazionale** on Viale Pasitea. On bus announcements/timetables it’s typically called **“Positano (Chiesa Nuova)”** — locals also refer to it as Chiesa Nuova / Bar Internazionale."
     },
     {
-      "q": "バスを停めるためにボタンを押す必要がありますか？",
-      "a": "はい — リクエスト停留所です。乗車時に“Chiesa Nuova, per favore”と言い、Bar Internazionaleが見えたら停止ボタンを押してください。"
+      "q": "Do I need to press a button for the bus to stop?",
+      "a": "Yes — treat it as a request stop. Tell the driver “Chiesa Nuova, per favore” when you board, and press the stop button when you see Bar Internazionale approaching so the driver has time to pull in."
     },
     {
-      "q": "徒歩でどのくらいかかりますか？",
-      "a": "荷物と交通状況によりますが約2–5分、距離は120–140mです。"
+      "q": "How long does the walk take?",
+      "a": "About 2–5 minutes, depending on luggage and traffic, for roughly 120–140 metres."
     },
     {
-      "q": "チェックイン前に荷物を預けられますか？",
-      "a": "通常は可能です。荷物預かりは10:30から利用できます（空き状況による）。10:30前に到着した場合はBar Internazionaleで待つ必要があるかもしれません。詳細は%LINK:luggageStorage|荷物預かりガイド%へ。"
+      "q": "Can I store my luggage before check-in?",
+      "a": "Usually yes — luggage storage is available from 10:30 for guests checking in (subject to space). If you arrive before 10:30, you may need to wait at Bar Internazionale and come up when we open. Full details are in the %LINK:luggageStorage|luggage storage guide%."
     },
     {
-      "q": "チェックイン時間と必要なものは？",
-      "a": "通常のチェックインは15:00–22:30。原本の身分証（パスポート/ID）が必要です。チェックイン時にキー+リネン用の€10現金デポジットが必要（返却時に現金で返金）。詳細：%LINK:checkinCheckout|チェックイン/チェックアウトガイド%。"
+      "q": "What are the check-in times, and what do I need to check in?",
+      "a": "Regular check‑in is from 15:00 to 22:30. Bring your original ID (passport/ID card). At check‑in you’ll need a €10 cash deposit for your keycard + linen set (refunded in cash when you return both at checkout). Full details: %LINK:checkinCheckout|check-in & checkout guide%."
     },
     {
-      "q": "受付終了後に到着した場合は？",
-      "a": "受付は22:30に終了します。遅れる場合は事前に連絡してください — 日によってはセルフチェックインが可能です。"
+      "q": "What if I arrive after reception closes?",
+      "a": "Reception closes at 22:30. If you’ll arrive later, message us before you travel — depending on the day we may be able to offer a self‑service late check‑in."
     }
   ],
   "howtoSteps": [
-    "Positano Chiesa Nuova / Bar Internazionaleで下車（Hostel最寄り）",
-    "運転手に“Chiesa Nuova, per favore”と伝え、停止ボタンを早めに押す",
-    "Viale Pasiteaを120–140m歩き、階段で受付へ",
-    "不安ならBar Internazionaleで尋ねるか、地図でHostelのサインを確認"
+    "Get off at Positano Chiesa Nuova / Bar Internazionale (closest stop to the hostel)",
+    "Tell the driver “Chiesa Nuova, per favore” and press the stop button early",
+    "Walk 120–140 metres along Viale Pasitea and take the entrance steps to reception",
+    "If you’re unsure, ask at Bar Internazionale or check the map for the hostel sign"
   ]
 }

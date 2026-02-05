@@ -1,55 +1,116 @@
 {
   "seo": {
-    "title": "Limoncello és helyi ízek az Amalfi-parton",
-    "description": "Mit kóstolj: citromos desszertek, tenger gyümölcsei, DOC borok és hol találod meg."
+    "title": "Limoncello és helyi konyha az Amalfi-parton",
+    "description": "Költségvetés-barát útmutató Positano limoncellójához, helyi konyhájához és citromos finomságaihoz. Hol kóstolhatsz ingyen, legolcsóbb autentikus üvegek és megfizethető helyi éttermek."
   },
-  "linkLabel": "Limoncello és helyi ízek",
+  "linkLabel": "Positano ízei: Limoncello, citrom és helyi ízek",
   "intro": [
-    "A citrom és a limoncello határozza meg az amalfi ízeket – a kóstoló soroktól az édes finálékig.",
-    "Íme, hol kóstolj, mit vásárolj, és hogyan főzz velük otthon."
+    "A limoncello és minden citromos dolog meghatározza az Amalfi-partot — de nincs szükség nagy költségvetésre a legjobb megkóstolásához.",
+    "Itt megtudhatod, hol kóstolhatsz ingyen, mely üvegek adják a legtöbbet az euródért, és hogyan ehetsz helyiként turistacsapda árak nélkül."
   ],
   "tocTitle": "Ezen az oldalon",
   "sections": [
     {
-      "id": "tasting",
-      "title": "Kóstolás",
+      "id": "free-tasting",
+      "title": "Ingyenes kóstolók és hol kóstolhatsz",
       "body": [
-        "Látogass el kis bottegékbe, ahol kézműves limoncellót kínálnak, és kérj mintát, hogy összehasonlíthasd a stílusokat.",
-        "Párosítsd a kóstolót citromfagyival, szorbéval vagy péksütivel, így jobban érzed az édességet és az egyensúlyt."
+        "A legtöbb kis limoncello bolt és bottega Positanóban ingyenes mintákat kínál — ez standard gyakorlat, nem turista kedvezmény. Lépj be bármely kézműves termelőhöz és kérdezd meg udvariasan; általában 2-3 stílust töltenek, hogy összehasonlíthasd őket.",
+        "A legjobb kóstoló helyek a Via dei Mulini-n és a Chiesa Nuova mögötti utcákban vannak — távol a tengerparti turistacsapdáktól. Keress egyszerű cégtáblával rendelkező családi boltokat, ahol helyiek böngésznek; kevésbé tolakodóak, és a limoncello gyakran erősebb és kevésbé édes.",
+        "Párosítsd a kóstolót ingyenes citromos cukorka mintákkal (a legtöbb bolt kínál ilyeneket) vagy végy egy €1,50-es citrom granitát egy gelaterián, hogy megtisztítsd az ínyedet az italok között.",
+        "%IMAGE:limoncello-tasting-shop.jpg|Local limoncello shop offering free tasting samples in Positano%",
+        "A hostel tanácsa: a Via Cristoforo Colombo-n (az út, ami felkanyarodik Chiesa Nuovától) lévő boltokban gyakran kevesebb turista van és nagylelkűbb adagokat kapni. Láttunk helyieket, akik visszahozták a saját üvegeiket nagykereskedelmi áron való utántöltésre — jel arra, hogy megtaláltad az igazi helyet."
       ]
     },
     {
-      "id": "purchase",
-      "title": "Vásárlás és szállítás",
+      "id": "buying-smart",
+      "title": "Üvegek vásárlása: mit keress és mit kerülj",
       "body": [
-        "Ellenőrizd a légitársaság folyadéklimitjét; a palackokat biztosan csomagold feladott poggyászba.",
-        "Keresd az IGP Costa d’Amalfi címkéket és a helyi termelők újrahasznosítható csomagolását."
+        "Az igazi limoncellónak Sorrento IGP citromokat (vagy Costa d'Amalfi IGP) kell felsorolnia a címkén, és legalább 28-30% alkoholtartalommal kell rendelkeznie. Ha élénk neon sárga vagy gyanúsan olcsó (€8 alatt 500ml-re), valószínűleg műaroma és cukorszirup.",
+        "Legjobb ár-érték arány: a helyi termelőktől származó 500ml-es üvegek Positanóban €10-15-be, Praianóban vagy Amalfi városában €8-12-be kerülnek. Ne fizess €15-nél többet, hacsak nem prémium kézműves keverékről van szó szokatlan citrusfélékkel (bergamott, cedro).",
+        "A repülőtéri és vasútállomási boltok 30-50%-kal többet számítanak fel ugyanazokért az üvegekért. Ha Nápolyból repülsz, vásárolj Positanóban és csomagold be gondosan a feladott poggyászba (tekerj ruhákba + műanyag zacskó).",
+        "Légitársasági folyadékkorlátok: maximum 100ml kézipoggyászban. A standard üvegek 500ml vagy 750ml méretűek, így a feladott poggyász az egyetlen lehetőséged. Soha nem tört el üveg, amikor megfelelően becsomagoltuk egy hátizsák közepébe.",
+        "%IMAGE:limoncello-bottles-local.jpg|Authentic limoncello bottles from local Amalfi Coast producers%"
       ]
     },
     {
-      "id": "cooking",
-      "title": "Főzés citrommal",
+      "id": "budget-eats",
+      "title": "Olcsó helyi ételek: megkóstolandó citromos ételek",
       "body": [
-        "Használd a héjat és a levet salátákhoz, tengeri herkentyűs tésztákhoz és desszertekhez, hogy frissítő legyen.",
-        "A citromokat hűvös, sötét helyen tárold, a héjakat pedig szirupokhoz vagy páchoz is felhasználhatod."
+        "Hagyd ki a €25-ös turista menüket a fő strandon. Ehelyett menj el a Da Vincenzóhoz (Via Pasitea 172) €8-12-es citromos tészta ételekért — a spaghetti al limone egyszerű, friss és helyi citromokat használ. Csak készpénz, nincs foglalás, a helyiek este 7-kor sorakoznak.",
+        "Desszertnek a delizia al limone (limoncello krémbe áztatott citromos piskóta) a legtöbb pasticceria-ban €4-6-ba kerül. A kedvencünk: Pasticceria La Zagara (Via dei Mulini) — €5 egy nagylelkű szeletért, kültéri ülőhelyek, ingyenes vízutántöltés.",
+        "Költségvetés reggeli: végy egy sfogliatellát (€2-3) és egy espressót (€1,20) bármely bárban, majd vegyél egy kiló friss citromot egy zöldségesnél (€2-4) nassolásra vagy hogy friss limonádét készíts a hostelben.",
+        "A %LINK:chiesaNuovaArrivals|hostel% terasza tökéletes saját citromos ételek összeállításához: vegyél friss mozzarellát (€3-4), paradicsomot (€2/kg), bazsalikomot és citromot a Chiesa Nuova piacon (csütörtök reggel), majd öntsd meg helyi olívaolajjal. Teljes költség: €10-12 két személyre.",
+        "%IMAGE:spaghetti-al-limone.jpg|Fresh spaghetti al limone with Amalfi lemons at local restaurant%"
+      ]
+    },
+    {
+      "id": "cooking-tips",
+      "title": "Főzés Amalfi citromokkal",
+      "body": [
+        "Az Amalfi citromok (sfusato amalfitano) vastag, illatos héjjal rendelkeznek és kevesebb savat tartalmaznak, mint a szupermarket citromok — használd őket olyan ételekhez, ahol a héj ragyog.",
+        "Klasszikus felhasználás: reszeld a héjat a tésztavízbe spaghetti al limone-hoz, zúzd össze a héjat cukorral házi limoncellóhoz, vagy kandírozz vastag csíkokat desszert díszítéshez.",
+        "Tárolás: tartsd a citromokat hűvös, sötét helyen (nem a hűtőben) akár 2 hétig. Ha nagy zsákot vásárolsz a piacon, facsard ki a felét és fagyaszd le a levet jégkockatartóban későbbi használatra.",
+        "Megmaradt héjak: főzd fel vízzel és cukorral, hogy citromszörpöt készíts koktélokhoz, vagy szárítsd meg és add hozzá a teához. Nulla hulladék, maximum íz.",
+        "%IMAGE:amalfi-lemons-cooking.jpg|Fresh Amalfi Coast lemons (sfusato amalfitano) for cooking%"
+      ]
+    },
+    {
+      "id": "ordering-etiquette",
+      "title": "Rendelési etikett és turistacsapdák elkerülése",
+      "body": [
+        "Ha egy étteremnek 6 nyelven van menüje és minden ételről fotó, az turistacsapda. Keress kézzel írt menüket olaszul, maximum 8-12 tétellel — ott esznek a helyiek.",
+        "A limoncellót hagyományosan jeges hidegen szolgálják fel étkezés után, mint emésztést segítő italt, nem előtte vagy közben. Ha egy hely limoncello koktélokat erőltet vacsora előtt, turistákat céloznak meg.",
+        "A coperto (terítési díj) standard Olaszországban: €1,50-3 személyenként kenyérért és asztali kiszolgálásért. Ha €3 fölött van, túl sokat fizetsz. Ellenőrizd a 'coperto' árát a menün, mielőtt leülsz.",
+        "Víz: az 'acqua naturale' szénsavmentes víz, a 'frizzante' szénsavas. A csapvíz biztonságos, de ritkán szolgálják fel éttermekben — rendelj egy €2-3-as üveget és töltsd fel ingyen a hostel kútjából, mielőtt kimennél.",
+        "%IMAGE:local-italian-restaurant.jpg|Authentic local restaurant with handwritten Italian menu%",
+        "Borravalózási kultúra: a szervízdíj (servizio) néha benne van a számlában. Ha nincs, €1-2 hagyása vagy a számla felkerekítése udvarias, de nem kötelező. Az olaszok nem adnak 15-20% borravalót, mint az USA-ban — spórolj meg eurókat több limoncellóra."
+      ]
+    },
+    {
+      "id": "market-shopping",
+      "title": "Piaci vásárlás és citromok hazavitele",
+      "body": [
+        "A %LINK:chiesaNuovaArrivals|Chiesa Nuova piac% (csütörtök 8:00-13:00) friss termékeket árul, beleértve hatalmas Amalfi citromokat €2-4/kg-ért. Hasonlítsd össze az €1-2-vel citromonként a turista szuvenírboltokban.",
+        "Ha citromokat akarsz hazavinni: válassz kemény, hibátlan gyümölcsöket és csomagold be papírtörlőbe csomagolva a táskád közepébe. 5-7 napig eltartanak, ha hűvösen tárolod. Az EU vámhatóság legfeljebb 2 kg friss gyümölcsöt engedélyez; ellenőrizd országod szabályait, ha az EU-n kívülre repülsz.",
+        "Limoncello alapanyagokhoz vásárolj tiszta alkoholt (alcool puro, 95%) egy gyógyszertárban vagy nagy szupermarketben Salernóban vagy Nápolyban — €8-12 1L-re, szemben a €15-20-szal Positano kis boltjaiban.",
+        "%IMAGE:chiesa-nuova-market-lemons.jpg|Fresh Amalfi lemons at Chiesa Nuova Thursday market%"
       ]
     }
   ],
   "tips": [
-    "Támogasd a kis termelőket – az ízek gyakran intenzívebbek, mint a turistacsapdákban árult márkák.",
-    "Kerüld a fő strand melletti túlárazott szuvenírboltokat; nézz be egy-két utcával beljebb a jobb árakért."
+    "Az ingyenes minták standardok — ne érezd magad kényszerítve vásárlásra kóstolás után. Az udvarias 'grazie, ci penso' (köszönöm, meggondolom) jól működik.",
+    "Vásárolj limoncellót és citromot Amalfi városában vagy Praianóban 20-30%-kal olcsóbban, mint Positano árai.",
+    "Hagyd ki a kerámia citrom alakú üvegeket (€20-30) — törékenyek, nehezek, és a limoncello bennük középszerű. Végy egy egyszerű üvegpalackot és költsd a megtakarítást jobb minőségű folyadékra.",
+    "Positano legtöbb étterme ingyenes limoncellót szolgál fel vacsora után, ha teljes étkezést rendelsz. Ha nem kínálják, kérdezd meg — 'Limoncello offerto?' — és általában hoznak egy kis poharat.",
+    "A %LINK:cheapEats|hostel konyhája% nagyszerű olcsó citromos ételek összeállításához. Vegyél alapanyagokat a csütörtöki piacon vagy a Chiesa Nuova-i Conad-ban és spórolj 50-70%-ot az éttermi ételekhez képest."
   ],
   "faqs": [
     {
-      "q": "Felvihetek limoncellót a kézipoggyászban?",
+      "q": "Vihetek limoncellót kézipoggyászban?",
       "a": [
-        "100 ml fölött nem – a normál palackokat bélelt feladott bőröndben vidd."
+        "Nem, 100ml feletti üvegekben nem. A standard limoncello üvegek 500-750ml méretűek, ezért feladott poggyászban kell csomagolnod őket.",
+        "Csomagold be az üvegeket ruhákba vagy buborékfóliába, zárd le műanyag zacskóba szivárgás esetére, és csomagold a táskád közepébe, távol a kemény tárgyaktól. 4-5 üveggel így repültünk probléma nélkül."
       ]
     },
     {
-      "q": "Van alkoholmentes alternatíva?",
+      "q": "Mi a tisztességes ár a limoncellóért Positanóban?",
       "a": [
-        "Próbáld ki a friss limonádét, a granitát vagy citromszirupokat, ha kerülnéd az alkoholt."
+        "€10-15 egy 500ml-es üvegért helyi termelőtől standard. Bármi €18 felett túlárazott, hacsak nem speciális keverékről van szó.",
+        "Olcsóbb Amalfi városában (€8-12) vagy Praianóban. Kerüld a repülőtéri boltokat — €20-25-öt számítanak fel ugyanazokért az üvegekért."
+      ]
+    },
+    {
+      "q": "Vannak alkoholmentes citromos finomságok?",
+      "a": [
+        "Igen! Próbáld ki a citrom granitát (€2-3), friss limonádét (€3-4) vagy citrom sorbetet (€2,50-4). Ezek mindenhol megvannak és ugyanolyan frissítőek, mint a limoncello.",
+        "Főzéshez a citrommal ízesített olívaolaj és citromlekvár nagyszerű ajándékok és nincs bennük alkohol."
+      ]
+    },
+    {
+      "q": "Hol a legjobb ár-érték arány citromos ételekért?",
+      "a": [
+        "Da Vincenzo (Via Pasitea 172) €8-12-es tészta ételekért. Pasticceria La Zagara (Via dei Mulini) €5-ös delizia al limone desszertért.",
+        "Vagy önellátás: vásárolj citromot, mozzarellát, paradicsomot és olívaolajat a Chiesa Nuova piacon és állíts össze ételeket a hostelben €5-6-ért személyenként."
       ]
     }
   ]

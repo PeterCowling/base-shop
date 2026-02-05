@@ -1,23 +1,32 @@
 {
   "seo": {
-    "title": "Cyfrowy concierge (polecenia + rezerwacje)",
-    "description": "Cyfrowy concierge Hostel Brikette: szybkie porady, transport i pomoc w rezerwacjach—gdy plany się zmieniają."
+    "title": "Cyfrowy concierge (rekomendacje + rezerwacje)",
+    "description": "Skorzystaj z cyfrowego concierge Hostel Brikette, aby uzyskać szybkie lokalne rekomendacje, aktualizacje transportu i pomoc w rezerwacji doświadczeń - szczególnie gdy plany się zmieniają."
   },
   "linkLabel": "Cyfrowy concierge",
   "lastUpdated": "2026-02-02T00:00:00.000Z",
   "intro": [
-    "Gdy potrzebujesz planu na dziś: podaj czas, budżet i priorytet (deadline w 1. linijce)."
+    "To jest dla planów, które działają dzisiaj - nie ogólnych list.",
+    "Wyślij swój przedział czasowy, budżet i priorytet. Umieść termin w pierwszej linii."
   ],
   "sections": [
     {
-      "id": "templates",
-      "title": "Szablon",
+      "id": "how-to-access",
+      "title": "Jak uzyskać dostęp",
       "body": [
-        "“6 godzin, bez auta, (A) kąpiel + (B) zachód, budżet 40€ na osobę. Najprostszy plan i plan B, jeśli odwołają promy?”",
-        "%LINK:positanoBudget|Positano na budżecie% + %LINK:terraceSunsets|zachód na tarasie%.",
-        "%LINK:ferryCancellations|odwołania promów + pogoda%."
+        "Zapytaj w recepcji o najnowszy kontakt/QR i najlepszy kanał (zazwyczaj WhatsApp).",
+        "Dołącz: daty, punkt startowy, przedział czasowy, budżet i priorytet #1."
+      ]
+    },
+    {
+      "id": "templates",
+      "title": "Szablon kopiuj/wklej",
+      "body": [
+        "\"Mamy 6 godzin, bez samochodu, chcemy (A) pływać + (B) zachód słońca, budżet €40 na osobę. Jaki jest najprostszy plan i plan B, jeśli promy zostaną odwołane?\"",
+        "Podstawa budżetowa: %LINK:positanoBudget|Positano na budżecie% + %LINK:terraceSunsets|Zachód słońca z tarasu%.",
+        "Jeśli transport jest wrażliwy: %LINK:ferryCancellations|odwołania promów + pogoda%."
       ]
     }
   ],
-  "fallback": "Cyfrowy concierge: szybkie porady, transport i rezerwacje."
+  "fallback": "Cyfrowy concierge: szybkie rekomendacje, aktualizacje transportu i pomoc w rezerwacji."
 }

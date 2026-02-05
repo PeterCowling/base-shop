@@ -1,11 +1,11 @@
 {
-  "title": "Verifica siempre los detalles del transporte",
+  "title": "Todos los detalles de transporte se proporcionan de buena fe. Revisa siempre los horarios oficiales y los avisos de servicio, especialmente si tienes conexiones posteriores u otros compromisos con hora fija. Abajo encontrarás enlaces a los horarios de los proveedores relevantes.",
   "items": {
-    "buses": "Autobuses: consulta los horarios oficiales de SITA Sud — <sitaLink>sitasudtrasporti.it</sitaLink>.",
-    "ferries": "Ferris: los operadores publican rutas y horarios estacionales (dependen del clima). Mira <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink>.",
-    "airlink": "¿Vuelas al aeropuerto Salerno Costa d’Amalfi (QSR)? Usa el shuttle Airlink a Salerno — <airportLink>aeroportodisalerno.it</airportLink> y <airlinkLink>FS Busitalia Airlink</airlinkLink>.",
-    "driving": "Conducción: la SS163 puede tener restricción de matrículas alternas (abr–oct) y ZTL; las tarifas de aparcamiento varían por temporada y ubicación. Revisa los avisos oficiales.",
-    "premium": "Servicios premium/estacionales: Uber Boat y los charters en helicóptero operan horarios limitados en verano; confirma disponibilidad vigente."
+    "buses": "Autobuses: <sitaLink>Costa Amalfitana</sitaLink> y <curreriLink>Aeropuerto de Nápoles ⇄ Sorrento</curreriLink>.",
+    "trains": "Trenes: <eavLink>Circumvesuviana</eavLink> (Naples ⇄ Sorrento), <trenitaliaLink>Trenitalia</trenitaliaLink> (trenes de larga distancia).",
+    "ferries": "Ferris: Proveedores incluyen <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink>, <positanoJetLink>Positano Jet</positanoJetLink>, <alicostLink>Alicost</alicostLink>.",
+    "airlink": "Aeropuerto Salerno Costa d’Amalfi (QSR), <airlinkLink>shuttle Airlink a Salerno</airlinkLink>.",
+    "driving": "Conducción: la SS163 puede tener restricción de matrículas alternas (abr–oct) y ZTL; las tarifas de aparcamiento varían por temporada y ubicación. Revisa los avisos oficiales."
   },
   "srLabel": "Aviso de transporte"
 }

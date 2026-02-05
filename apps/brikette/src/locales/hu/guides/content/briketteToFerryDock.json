@@ -1,82 +1,104 @@
 {
   "seo": {
-    "title": "Hostel Brikette → kompkikötő, csomaggal",
-    "description": "Lépésről lépésre útvonal a hosteltől Positano kompkikötőjéig az Interno busszal és hordárok segítségével."
+    "title": "Hostel Brikette → Positano kompkikötő (kikötő)",
+    "description": "Lépésről lépésre gyalogos útvonal Positano kikötőjéhez térképes tereptárgyakkal, jegyvásárlási tippekkel és beszállási útmutatóval."
   },
-  "linkLabel": "Hostel Brikette → kompkikötő, csomaggal",
+  "linkLabel": "Hostel Brikette → kompkikötő (kikötő)",
   "intro": [
-    "Csomaggal indulsz a Hostel Brikette-ből? Ülj fel a Positano Interno buszára, és bízd a nehéz bőröndöket a kikötői hordárokra, hogy a lépcsők helyett könnyedén érd el a kompot."
+    "Positano kikötőjébe tartasz kompra? Ez a legkönnyebb séta, amit találtunk a Hostel Brikette-től a Spiaggia Grande-ig — gyors térképpel és fotós tereptárgyakkal az 1-5 pontokhoz.",
+    "Számolj 20-30 perccel gyalog (többel poggyásszal), és vedd figyelembe, hogy a Google Maps néha hosszabb kerülőutakat javasol a strandhoz — ehelyett kövesd az alábbi útvonalat."
   ],
   "beforeList": [
-    "Ellenőrizd az aktuális Interno Positano menetrendet — itt találod a [legfrissebb időpontokat és árakat](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
-    "Szerezz be Interno Positano jegyeket a Chiesa Nuova melletti trafikban, mielőtt felszállsz (vagy kérd meg a recepciót, hogy erősítse meg a készletet).",
-    "Szervezz hordársegítséget, ha nagy csomagjaid vannak — a recepció tud telefonálni, vagy nézd meg a %LINK:porterServices|hordárszolgálat útmutatót% a számokért és árakért."
+    "Ellenőrizd a komp időpontokat és árakat az üzemeltető standoknál a kikötőben (a táblán jelzik a következő indulást).",
+    "Hagyj időt, ha poggyászod van — vannak lépcsők ezen az útvonalon, és a kikötő zsúfolt lesz csúcsidőben.",
+    "Célozd meg a korai érkezést, hogy jegyet tudj vásárolni, megtaláld a megfelelő mólót, és készen állj, amikor kezdődik a beszállás."
   ],
   "sections": [
     {
-      "id": "hostel-to-stop",
-      "title": "A hostel bejáratától a Chiesa Nuova megállóig",
+      "id": "getting-to-the-port",
+      "title": "A kikötőhöz jutás",
       "body": [
-        "Jelentkezz ki, majd kövesd a fő lépcsőt lefelé a Viale Pasiteára, és fordulj balra (lejtő irányába). Sétálj nagyjából 100 métert a trafikos-újságosig, ahol érkezéskor is megálltál.",
-        "Az Interno Positano buszmegálló közvetlenül a trafiktól jobbra található. Legyen kéznél a jegyed; ha még venned kell, intézd bent, mielőtt a busz megérkezik."
+        "Kezdd a szállónál és menj a Spiaggia Grande (Positano fő strandja) felé.",
+        "A kikötő a strand jobb oldalán található.",
+        "Számolj 20-30 perccel a sétához a szállótól a kikötőig.",
+        "Lehet, hogy a Google Maps nem mindig adja meg a legközvetlenebb útvonalat a strandhoz — használd az alábbi térképet és lépésről lépésre szóló útmutatást.",
+        "[Nézd meg itt, ha térképes útmutatást részesítesz előnyben](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2)."
       ]
     },
     {
-      "id": "bus-to-mulini",
-      "title": "Utazás az Interno Positano busszal a Piazza dei Muliniig",
+      "id": "walking-route",
+      "title": "Séta a Hostel Brikette-től a kikötőig (1-5 pontok)",
       "body": [
-        "Szállj fel az Interno Positano buszra — a kijelzőn \"interno positano\" feliratot látsz. A csomagokat tartsd az öledben vagy a középső részen, hogy a folyosó szabad maradjon.",
-        "Körülbelül 10 percig maradj a buszon a Piazza dei Mulini megállóig (ez az utolsó nagy megálló a gyalogos zóna előtt). Ha bizonytalan vagy, szólj a sofőrnek, hogy a strandra mész."
+        "Térképreferencia (Szálló → Kikötő):",
+        "[[figure:map]]",
+        "Kezdd úgy, hogy elhagyod a szállót a főbejáraton keresztül.",
+        "Menj le a lépcsőn az útra.",
+        "Fordulj balra és sétálj kicsit több mint 100 métert (330 lábat), amíg eléred az 1-es pontot a térképen.",
+        "Az 1-es pontnál fordulj jobbra.",
+        "[[figure:point-1]]",
+        "Amint jobbra fordulsz az 1-es pontnál, látni fogod a tabacchit a jobb oldalon.",
+        "[[figure:tabacchi]]",
+        "Kövesd lefelé az utat.",
+        "Az első kanyarulatnál elérted a 2-es pontot a térképen.",
+        "A 2-es pontnál hagyd el az utat és menj egyenesen előre, a lépcsőt használva.",
+        "[[figure:point-2]]",
+        "Amikor eléred a lépcső végét, elérted a 3-as pontot a térképen.",
+        "Kelj át az úton és vedd az egyenes előre vezető ösvényt.",
+        "Kövesd lefelé a lépcsőt, amíg eléred a következő szintet.",
+        "[[figure:point-3]]",
+        "Amikor eléred a lépcső végét, megérkezel az úthoz.",
+        "Kelj át az úton és fordulj balra, sétálj 10 métert (30 lábat), amíg eléred a 4-es pontot a térképen.",
+        "A 4-es pontnál fordulj jobbra és vedd a lépcsőt, amely elhagyja az utat és lefelé vezet.",
+        "[[figure:point-4]]",
+        "Kövesd lefelé a lépcsőt, amíg eléred az aljat. A lépcső alján fordulj jobbra.",
+        "Ez elvisz az 5-ös ponthoz a térképen.",
+        "Folytasd a jobb oldali boltív alatt.",
+        "[[figure:point-5]]",
+        "50 méter (160 láb) után eléred a kikötőt."
       ]
     },
     {
-      "id": "mulini-to-dock",
-      "title": "Piazza dei Mulinitól a kompkikötőig",
+      "id": "buying-tickets",
+      "title": "Kompjegyek vásárlása",
       "body": [
-        "Szállj le a buszról, találkozz a hordárokkal, ha előre foglaltad őket, és indulj egyenesen a gyalogos sétányon a Spiaggia Grande felé.",
-        "Kövesd a promenádot lejtőn lefelé körülbelül 7 percig — használd [ezeket az útvonalterveket](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2), hogy a legsimább rámpákon maradj.",
-        "A mólónál jelentkezz be a szolgáltatódnál. A hordárok külön hozzák a csomagokat; az útlevél, gyógyszer és értékek legyenek nálad."
+        "A Positano kikötőben olyan helyekre indulhatsz komppal, mint Amalfi, Capri és még tovább. Minden kompüzemeltetőnek van standja, és a standon lévő tábla információt jelenít meg a következő kompról, amit üzemeltetnek.",
+        "[[figure:tickets]]"
+      ]
+    },
+    {
+      "id": "boarding",
+      "title": "Beszállás egy kompra",
+      "body": [
+        "Miután megvan a jegyed, sétálj a kikötő végéig és várd meg, hogy a komp megkezdje a beszállást.",
+        "[[figure:port]]"
       ]
     }
   ],
   "stepsList": [
-    "Vásárolj Interno Positano buszjegyet a Chiesa Nuova trafikban, és egyeztesd a hordárokat.",
-    "Sétálj 100 métert lefelé a hosteltől a Chiesa Nuova buszmegállóig, és várj a Viale Pasitea tenger felőli oldalán.",
-    "Utazz az Interno Positano busszal a Piazza dei Muliniig (az utolsó megálló a strand előtt).",
-    "Találkozz a hordárokkal, és sétálj végig a promenádon, amíg ők leviszik a nehéz csomagokat."
+    "Hagyd el a szállót és fordulj balra az úton az 1-es pontig a térképen, majd fordulj jobbra.",
+    "Kövesd lefelé az útvonalat a 2-5 pontokon keresztül (lépcsők és átkelők), amíg eléred a kikötőt.",
+    "Vásárolj jegyet az üzemeltető standoknál és ellenőrizd a táblát a következő indulásért.",
+    "Sétálj a kikötő végéig és várd meg a beszállást."
   ],
-  "kneesList": [
-    "Az Interno Positano busz kiváltja a meredek lépcsők százait egy rövid, szintben haladó sétára.",
-    "A hordárok külön kocsikon viszik a bőröndöket, így neked csak egy hátizsákot kell kezelned a promenádon."
-  ],
-  "kneesDockPrefix": "Visszafelé, amikor megérkezel? Olvasd el a",
-  "kneesDockLinkLabel": "Chiesa Nuova érkezési útmutatót",
-  "kneesPorterPrefix": "Árakra és foglalási tippekre kíváncsi? Nézd meg a",
-  "kneesPorterLinkLabel": "hordárszolgálat útmutatót",
+  "kneesList": [],
   "faqs": [
     {
-      "q": "Hol vehetek Interno Positano jegyet a hostel közelében?",
+      "q": "Mennyi ideig tart gyalog eljutni a Hostel Brikette-től a kikötőig?",
       "a": [
-        "A Chiesa Nuova megálló melletti trafik/újságos általában tart jegyeket, és a recepció meg tudja erősíteni a napi készletet. A sofőrök a buszon nem árulnak jegyet."
+        "Tervezz 20-30 percet gyalog. Adj hozzá extra időt, ha poggyászod van, vagy ha meg akarsz állni jegyet vásárolni a beszállás előtt."
       ]
     },
     {
-      "q": "Mennyivel előre kérjem a hordárokat?",
+      "q": "Hol vásároljak kompjegyeket Positanóban?",
       "a": [
-        "Nyáron 30–45 perccel indulás előtt telefonálj, hogy a Piazza dei Mulininál találkozhassatok. Csendesebb hónapokban 15 perc is elég — a recepció szívesen telefonál helyetted."
-      ]
-    },
-    {
-      "q": "Mi van, ha nem jár az Interno busz, amikor indulok?",
-      "a": [
-        "Ha késő este szünetel a szolgáltatás, kérd meg a hordárokat, hogy egészen a mólóig vigyék a csomagokat, te pedig sétálj le a promenádon, vagy használj SITA buszt a Sponda megállóig (az később is jár), és onnan gyalogolj lefelé."
+        "A kikötőben standokat fogsz látni minden kompüzemeltető számára. A standon lévő tábla információt jelenít meg a következő kompról, amit üzemeltetnek."
       ]
     }
   ],
   "howtoSteps": [
-    "Jegyek és hordárok egyeztetése a Chiesa Nuovánál",
-    "Séta lefelé a hosteltől a Chiesa Nuova buszmegállóig",
-    "Utazás az Interno Positano busszal a Piazza dei Muliniig",
-    "Találkozó a hordárokkal és séta a promenádon a kompkikötőig"
+    "Kövesd a térképes útvonalat a szállótól lefelé a kikötőig",
+    "Használj fotós tereptárgyakat az 1-5 pontoknál, hogy a nyomon maradj",
+    "Vásárolj jegyet az üzemeltető standoknál és erősítsd meg a következő indulást",
+    "Várj a mólónál és szállj fel, amikor hívnak"
   ]
 }

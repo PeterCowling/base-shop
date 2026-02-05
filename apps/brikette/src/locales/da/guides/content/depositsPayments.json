@@ -1,124 +1,145 @@
 {
   "seo": {
-    "title": "Guide: deposita og betalinger",
-    "description": "Din guide til deposita, betalingsmetoder, bookingbekræftelser, ændringer, aflysninger og sikkerhedshold ved booking."
+    "title": "Guide til Depositum og Betalinger for Positano Hostel",
+    "description": "Din guide til depositum, betalingsmetoder, bookingbekræftelser, ændringer, annulleringer og sikkerhedsdepositum ved reservation af dit ophold på Positano Hostel."
   },
-  "linkLabel": "Guide: deposita og betalinger",
+  "linkLabel": "Guide til Depositum og Betalinger for Positano Hostel",
   "sections": [
     {
       "id": "submittingBookingRequest",
-      "title": "Sådan indsender du bookinganmodning",
+      "title": "Sådan Indsender du din Bookingforespørgsel",
       "body": [
-        "Send din bookinganmodning via en autoriseret Online Travel Agent (OTA) eller direkte på vores website – chats eller spontane besøg tæller ikke i sig selv. Når du klikker på ‘Book’, bekræfter du, at alle navne, datoer og opholdslængder er korrekte, og at du accepterer vores vilkår og betingelser."
+        "Send os din bookingforespørgsel gennem en autoriseret online rejsebureau (OTA) eller direkte på vores hjemmeside - chats eller walk-ins alene tæller ikke. Ved at klikke på 'Book' bekræfter du, at alle navne, datoer og opholdsvarighed er korrekte, og at du accepterer vores vilkår og betingelser."
       ]
     },
     {
       "id": "processingBookingRequest",
-      "title": "Sådan behandler vi din anmodning",
+      "title": "Sådan Behandler vi din Forespørgsel",
       "body": [
-        "Vi går i gang med din anmodning, så snart vi har modtaget et påkrævet depositum, en forhåndsgodkendelse eller en betaling via en af vores accepterede betalingsmetoder. Sørg for, at bookingen står i navnet på den kortholder, der betaler. Hvis en anden betaler, skal vi have en kort skriftlig tilladelse fra kortholderen pr. e-mail, før vi kan fortsætte."
+        "Vi begynder at behandle din forespørgsel, så snart vi har modtaget ethvert påkrævet depositum, forhåndsgodkendelse eller betaling ved hjælp af en af vores accepterede betalingsmetoder. Sørg for, at bookingen viser navnet på kreditkortholderen, der skal betale. Hvis betalerens navn er anderledes, skal du sende os en kort godkendelse fra kortholderen, før vi behandler din forespørgsel."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Payment_terminal_at_the_Berlin_immigration_office.jpg/960px-Payment_terminal_at_the_Berlin_immigration_office.jpg",
+          "alt": "Betalingsterminal tastatur og skærm.",
+          "caption": "Vi kan tage et depositum, gennemføre en betaling eller placere en forhåndsgodkendelse for at sikre din booking - Foto: Wikimedia Commons (CC0)."
+        }
       ]
     },
     {
       "id": "decliningBookingRequest",
-      "title": "Hvornår vi kan afslå en anmodning",
+      "title": "Hvornår vi kan Afvise en Forespørgsel",
       "body": [
-        "Vi afslår sjældent en booking, men vi forbeholder os retten til at gøre det, hvis betalingen fejler, oplysninger mangler, eller anmodningen strider mod vores vilkår og betingelser."
+        "Vi afviser sjældent en booking, men vi forbeholder os retten til at gøre det efter eget skøn - for eksempel hvis betalingen mislykkes, påkrævet information mangler, eller forespørgslen overtræder vores vilkår og betingelser."
       ]
     },
     {
       "id": "requestSizeLimit",
-      "title": "Grænser for én anmodning",
+      "title": "Størrelsesgrænser for én Forespørgsel",
       "body": [
-        "Én bookinganmodning kan dække op til syv (7) sammenhængende nætter og maksimalt fem (5) gæster. Har du brug for et længere ophold eller en større gruppe, deler du blot planerne op i flere anmodninger."
+        "Én bookingforespørgsel kan dække op til syv (7) på hinanden følgende nætter og maksimalt fem (5) gæster. Har du brug for et længere ophold eller en større gruppe? Del det simpelthen op i separate forespørgsler."
       ]
     },
     {
       "id": "counterOffer",
-      "title": "Hvis dit ønskede værelse ikke er ledigt",
+      "title": "Hvad Sker der, hvis dit Værelse ikke er Tilgængeligt",
       "body": [
-        "Hvis dit ønskede værelse allerede er optaget, sender vi dig et modbud med det nærmeste alternativ. Accepter tilbuddet og gennemfør betalingen eller forhåndsgodkendelsen for at sikre opholdet."
+        "Hvis dit foretrukne værelse allerede er optaget, sender vi dig et modtilbud med det nærmeste alternativ. Accepter tilbuddet og gennemfør betalingen eller forhåndsgodkendelsen for at låse dit ophold."
       ]
     },
     {
       "id": "prepaidNonRefundableBookingsPolicy",
-      "title": "Forudbetalte, ikke‑refunderbare bookinger",
+      "title": "Forudbetalte Ikke-Refunderbare Bookinger",
       "body": [
-        "Vælger du en forudbetalt, ikke-refunderbar pris, sparer du penge, men hele beløbet skal betales på forhånd. Vi forsøger at trække beløbet på dit kort op til tre gange. Lykkes det ikke, annullerer vi anmodningen. Disse bookinger kan ikke refunderes eller ændres."
+        "At vælge en forudbetalt ikke-refunderbar pris sparer dig penge, men kræver fuld betaling på forhånd. Vi vil prøve dit kort op til tre gange. Hvis alle forsøg mislykkes, annullerer vi forespørgslen. Disse bookinger kan ikke refunderes eller ændres."
       ]
     },
     {
       "id": "confirmationEmail",
-      "title": "Bekræftelses‑mail",
+      "title": "Din Bekræftelses-e-mail",
       "body": [
-        "Når betalingen er gennemført, sender vi en bekræftelsesmail til den adresse, du har angivet. Mailen indeholder dit bookingnummer, ankomstdato, opholdslængde og eventuelle tilvalg. Læs den grundigt og kontakt os straks, hvis noget ser forkert ud."
+        "Når din betaling er gennemført, sender vi en bekræftelses-e-mail til den adresse, du gav os. Den viser din bookingreference, ankomstdato, opholdsvarighed og eventuelle tilvalg. Læs den omhyggeligt og fortæl os straks, hvis noget ser forkert ud."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Email_on_Phone_Flat_Icon.svg/960px-Email_on_Phone_Flat_Icon.svg.png",
+          "alt": "E-mail-ikon på en telefonskærm.",
+          "caption": "Din bekræftelses-e-mail er det bedste sted at dobbelttjekke datoer, navne og betalingsoplysninger - Foto: Wikimedia Commons (CC BY-SA 4.0)."
+        }
       ]
     },
     {
       "id": "numberOfGuestsIncluded",
-      "title": "Hvem der er inkluderet i bookingen",
+      "title": "Hvem er Inkluderet i din Booking",
       "body": [
-        "Din booking omfatter automatisk:",
-        "* 1 gæst pr. enkeltseng\n* Op til 2 gæster pr. dobbeltseng\n* Op til den annoncerede kapacitet for enhver lejlighed, du booker",
-        "Af hensyn til sikkerhed og komfort kan vi ikke indkvartere ekstra gæster ud over værelsets grænse."
+        "Din booking dækker automatisk følgende:",
+        "* 1 gæst pr. enkeltseng\n* Op til 2 gæster pr. dobbeltseng\n* Op til den annoncerede kapacitet af enhver lejlighed, du booker",
+        "Af hensyn til sikkerhed og komfort kan vi ikke rumme ekstra gæster over værelsets grænse."
       ]
     },
     {
       "id": "scopeOfFacilitiesIncluded",
-      "title": "Hvad der er inkluderet i dit ophold",
+      "title": "Hvad er Inkluderet i dit Ophold",
       "body": [
-        "Hver gæst får:",
-        "* Rent sengetøj og et nøglekort\n* Adgang til de delte brusebade\n* Varmt vand i de planlagte tidsrum (ca. 07.00–10.30 og 17.00–22.30)\n* Adgang til vores fællesområder",
-        "Andre fordele (morgenmad, Wi-Fi, bagageopbevaring osv.) er gratis og følger deres egne simple regler."
+        "Hver gæst modtager:",
+        "* Rent sengetøj og et nøglekort\n* Brug af de fælles brusere\n* Varmt vand i planlagte timer (ca. 07:00-10:30 og 17:00-22:30)\n* Adgang til vores fællesområder",
+        "Andre fordele (morgenmad, Wi-Fi, bagageopbevaring osv.) er gratis og følger deres egne enkle regler."
       ]
     },
     {
       "id": "financialObligation",
-      "title": "Dit økonomiske ansvar",
+      "title": "Dit Økonomiske Ansvar",
       "body": [
-        "Den kortholder, der står på din booking, hæfter for alle omkostninger – værelsespriser, skader, rengøringsgebyrer, bøder eller sanktioner for brud på husreglerne. Ubetalte beløb kan blive opkrævet direkte på kortet."
+        "Kreditkortholderen, der er nævnt på din booking, er ansvarlig for alle gebyrer - værelsespriser, skader, rengøringsgebyrer, bøder eller sanktioner for overtrædelse af husregler. Ubetalte beløb kan blive opkrævet direkte på det kort, vi har registreret."
       ]
     },
     {
       "id": "roomAllocation",
-      "title": "Tildeling af senge og værelser",
+      "title": "Hvordan Senge og Værelser Tildeles",
       "body": [
-        "Vi garanterer den sengetype og værelsekategori, du har booket. I sovesale er din plads reserveret i den valgte kategori, men vi kan ikke love, at en gruppe får samme værelse. Senge i sovesale fordeles efter først-til-mølle-princippet ved indtjekning."
+        "Vi garanterer dig den sengetype og værelseskategori, du bookede. Sovesalsbookinger sikrer en seng i den valgte kategori, men vi kan ikke love, at grupper deler det samme værelse. Senge i sovesale vælges efter først-til-mølle-princippet, når du checker ind."
       ]
     },
     {
       "id": "allocatingUpgrades",
-      "title": "Værelses‑opgraderinger",
+      "title": "Værelsesopgraderinger",
       "body": [
-        "Nogle gange opgraderer vi dig gratis til et bedre værelse, eller du kan betale for en opgradering ved booking. Hvis en gratis opgradering senere ikke længere er mulig, kan vi flytte dig tilbage til den kategori, du oprindeligt har betalt for."
+        "Nogle gange opgraderer vi dig til et bedre værelse gratis, eller du kan betale for at opgradere, når du booker. Hvis den gratis opgradering senere bliver upraktisk, kan vi flytte dig tilbage til den kategori, du oprindeligt betalte for."
       ]
     },
     {
       "id": "thirdPartyPayments",
-      "title": "Betaling via tredjepart",
+      "title": "Betaling gennem Tredjeparts Hjemmesider",
       "body": [
-        "Booker du via en OTA, betaler du gennem deres system og efter deres vilkår. Vi modtager ikke dine kortoplysninger fra OTA'en og hæfter ikke for problemer på deres platform. Tjek altid, at betalingen er gennemført, og at du har modtaget en bekræftelse."
+        "Når du booker gennem en OTA, betaler du gennem deres system under deres vilkår. Vi ser aldrig dine kortoplysninger fra OTA'en og er ikke ansvarlige for problemer på deres platform. Tjek altid, at din betaling er gennemført, og at du har modtaget en bekræftelse."
       ]
     },
     {
       "id": "bookingRequestDeposits",
-      "title": "Booking‑deposita",
+      "title": "Bookingdepositum",
       "body": [
-        "Visse priser kræver et depositum for at reservere værelset. Forudbetalte priser kræver 100 % betaling med det samme. Deposita er ikke-refunderbare. Hvis vi ikke kan opkræve depositummet, annulleres bookinganmodningen automatisk."
+        "Nogle priser kræver et depositum for at holde værelset. Forudbetalte priser kræver 100% på forhånd. Depositum er ikke-refunderbart. Hvis vi ikke kan tage depositummet, annulleres bookingforespørgslen automatisk."
       ]
     },
     {
       "id": "bookingRequestPreauthorisations",
-      "title": "Kort‑forhåndsgodkendelser",
+      "title": "Kortforhåndsgodkendelser",
       "body": [
-        "For fleksible priser kan vi forhåndsgodkende dit kort for den første nat eller hele opholdet for at sikre bookingen. Hvis forhåndsgodkendelsen mislykkes, må vi afslå anmodningen."
+        "For fleksible priser kan vi forhåndsgodkende dit kort for den første nat eller hele opholdet for at garantere din booking. Hvis forhåndsgodkendelsen mislykkes, afviser vi forespørgslen."
       ]
     },
     {
       "id": "safeguardingProcess",
-      "title": "Sikkerhedshold",
+      "title": "Vores Sikkerhedsdepositum",
       "body": [
-        "Ved indtjekning kan vi lægge et sikkerhedshold svarende til én nat pr. gæst for at dække eventuelle bøder, gebyrer, forlængelser eller skader. Hvis et kort-hold ikke er muligt, kan du i stedet lægge samme beløb kontant eller bruge en medrejsendes kort. Hvis ingen af delene kan lade sig gøre, er vi nødt til at annullere bookingen."
+        "Når du checker ind, kan vi placere et sikkerhedsdepositum svarende til én nat pr. gæst for at dække eventuelle bøder, gebyrer, forlængelser eller skader. Hvis en kortblokering ikke er mulig, kan du efterlade det samme beløb i kontanter eller bruge en anden gæsts kort. Hvis ingen af mulighederne virker, må vi desværre annullere din booking."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Euro_coins_in_hand.jpg/960px-Euro_coins_in_hand.jpg",
+          "alt": "En hånd, der holder flere euromønter.",
+          "caption": "Hvis en kortblokering ikke er mulig ved indtjekning, kan vi bede om et tilsvarende kontantdepositum - Foto: Wikimedia Commons (CC BY-SA 4.0)."
+        }
       ]
     }
   ]

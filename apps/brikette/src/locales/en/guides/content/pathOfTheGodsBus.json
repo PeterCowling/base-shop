@@ -51,9 +51,14 @@
       ],
       "images": [
         {
-          "src": "/img/guides/path-of-the-gods-bus/02-nav.jpg",
-          "alt": "Bomerano bus stop with Ristorante Jerla signpost",
-          "caption": "Bomerano stop — look for Jerla restaurant, then cross the road and head to the piazza"
+          "src": "/img/guides/path-of-the-gods-ferry/11-nav.jpg",
+          "alt": "Walking route from Amalfi ferry dock to SITA bus terminal",
+          "caption": "1. Bomerano stop — disembark here when you see the Jerla restaurant sign, then cross the road"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/12-nav.jpg",
+          "alt": "Bomerano bus stop location with Ristorante Jerla signpost marker",
+          "caption": "2. Cross the road from the bus stop and follow this side street downhill to the piazza"
         }
       ]
     },
@@ -66,24 +71,24 @@
       ],
       "images": [
         {
-          "src": "/img/guides/path-of-the-gods-bus/03-nav.jpg",
-          "alt": "Side street with Path of the Gods notice board in Bomerano",
-          "caption": "Path of the Gods notice board — marks the start of the trail after crossing the piazza"
+          "src": "/img/guides/path-of-the-gods-ferry/13-nav.jpg",
+          "alt": "Side street from Bomerano bus stop descending toward the piazza",
+          "caption": "3. Continue left across the piazza following signs for 'Sentiero degli Dei'"
         },
         {
-          "src": "/img/guides/path-of-the-gods-bus/04-nav.jpg",
-          "alt": "Piazza in Bomerano showing left-side route through town",
-          "caption": "Navigate left across the town square toward the trailhead"
+          "src": "/img/guides/path-of-the-gods-ferry/14-nav.jpg",
+          "alt": "Town square (piazza) in Bomerano with left-hand route markers",
+          "caption": "4. Once through the piazza, look for the notice board and a turn to the left, this is where the trail begins. Follow the path to a section with wooden steps."
         },
         {
-          "src": "/img/guides/path-of-the-gods-bus/05-nav.jpg",
-          "alt": "Footpath descending with wooden steps section on the trail",
-          "caption": "Trail section — expect descents followed by wooden step climbs along the ridge"
+          "src": "/img/guides/path-of-the-gods-ferry/15-nav.jpg",
+          "alt": "Wooden steps ascending along the hiking trail ridge",
+          "caption": "When the dirt trail meets this concrete walkway, you've reached Nocelle"
         },
         {
-          "src": "/img/guides/path-of-the-gods-bus/06-nav.jpg",
-          "alt": "Concrete walkway marking transition from trail into Nocelle village",
-          "caption": "Concrete walkway signals the end of the trail and the beginning of Nocelle"
+          "src": "/img/guides/path-of-the-gods-ferry/16-nav.jpg",
+          "alt": "Concrete paved walkway marking entry into Nocelle village",
+          "caption": "Nocelle map — as you walk through the village be sure to turn right at the junction to reach the bus stop; avoid the 1,700-step staircase to Positano at all costs!"
         }
       ]
     },
@@ -96,19 +101,19 @@
       ],
       "images": [
         {
-          "src": "/img/guides/path-of-the-gods-bus/07-nav.jpg",
-          "alt": "Nocelle navigation map showing route to bus stop with warning about stairs",
-          "caption": "Nocelle route map — keep right to reach the bus stop and avoid the 1,700-step staircase"
+          "src": "/img/guides/path-of-the-gods-ferry/17-nav.jpg",
+          "alt": "Nocelle village navigation map showing route to bus stop and staircase warning",
+          "caption": "CRITICAL: Do NOT follow the signs to 'Positano' down the stairs — turn right here instead"
         },
         {
-          "src": "/img/guides/path-of-the-gods-bus/08-nav.jpg",
-          "alt": "Directional signpost in Nocelle showing stairs to Positano to avoid",
-          "caption": "Critical junction — do NOT take the stairs to Positano unless you want a grueling descent"
+          "src": "/img/guides/path-of-the-gods-ferry/18-nav.jpg",
+          "alt": "Directional signpost in Nocelle showing the stairs-to-Positano option to avoid",
+          "caption": "Climb these steps for roughly 175 meters to reach the bus stop at the car park"
         },
         {
-          "src": "/img/guides/path-of-the-gods-bus/09-nav.jpg",
-          "alt": "Final walkway and stairs leading to Nocelle bus stop",
-          "caption": "Final 175 meters to the bus stop — arrive early as buses may park before the shelter"
+          "src": "/img/guides/path-of-the-gods-ferry/19-nav.jpg",
+          "alt": "Stone steps ascending through Nocelle streets toward the bus stop",
+          "caption": "You have reached the bus stop."
         }
       ]
     },

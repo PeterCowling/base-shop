@@ -27,20 +27,11 @@
     "activeLabel": "Aktivt tilbud",
     "activeTitle": "Spar {{percent}}",
     "activeDatesLabel": "Opholdsperiode:",
-    "activeSubtitle": "Trækkes automatisk ved betaling. Kun direkte bookinger.",
-    "activeDescription": "Book direkte for at låse rabatten op – den trækkes automatisk ved betaling.",
-    "upcomingLabel": "Kommende tilbud",
-    "upcomingTitle": "Spar {{percent}} fra {{startDate}}",
-    "upcomingDescription": "Dette tilbud starter snart. Notér datoen og book direkte for at sikre rabatten.",
-    "expiredLabel": "Udløbet tilbud",
-    "expiredTitle": "Tilbuddet er afsluttet",
-    "expiredDescription": "Dette tilbud er ikke længere tilgængeligt. Se vores aktuelle tilbud nedenfor."
+    "activeSubtitle": "Trækkes automatisk ved betaling. Kun direkte bookinger."
   },
   "emptyState": {
     "title": "Ingen aktive tilbud",
     "subtitle": "Book direkte for den bedste pris og fordele.",
-    "description": "Vi har ingen aktive tilbud lige nu, men kom tilbage snart eller book direkte for vores faste 10 % direkte-booking-rabat.",
-    "cta": "Se alle værelser",
     "secondaryCta": "Se fordelene ved direkte booking"
   },
   "status": {
@@ -88,9 +79,18 @@
   "perksGuarantee": "Hver direkte booking på vores hjemmeside låser automatisk disse eksklusive fordele op.",
   "perksIntroLink": "Se alle fordele",
   "perksList": [
-    "Op til 25 % rabat på normalprisen, når kuponen anvendes",
-    "Gratis morgenmad",
-    "Gratis aften-drik"
+    {
+      "title": "Op til 25 % rabat på normalprisen, når kuponen anvendes",
+      "subtitle": "Anvendes automatisk"
+    },
+    {
+      "title": "Gratis morgenmad",
+      "subtitle": "Inkluderet dagligt"
+    },
+    {
+      "title": "Gratis aften-drik",
+      "subtitle": "Husets udvalg"
+    }
   ],
   "expired": {
     "message": "Dette tilbud er udløbet."

@@ -60,7 +60,7 @@
     }
   ],
   "fallback": {
-    "tocTitle": "On this page",
+    "tocTitle": "Na tej stronie",
     "intro": [],
     "toc": [
       {
@@ -114,7 +114,7 @@
         ]
       }
     ],
-    "faqsTitle": "FAQs",
+    "faqsTitle": "Najczęściej zadawane pytania",
     "faqs": [
       {
         "q": "Czy coś jest otwarte zimą?",

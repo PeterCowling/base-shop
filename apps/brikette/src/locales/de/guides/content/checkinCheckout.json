@@ -1,106 +1,159 @@
 {
   "seo": {
-    "title": "Kompletter Check-in- & Check-out-Leitfaden für Hostel Brikette Positano",
-    "description": "Schritt-für-Schritt-Anleitung zu Ankunftszeiten, Ausweisdokumenten, Gepäckaufbewahrung, Pfand und Check-out-Unterstützung im Hostel Brikette in Positano."
+    "title": "Hostel Brikette Check-in und Check-out Guide (Positano)",
+    "description": "Schritt-für-Schritt-Anleitung zu Ankunftszeiten, Ausweispflicht, Gepäckaufbewahrung, Kautionen und Checkout-Hilfe im Hostel Brikette in Positano."
   },
-  "linkLabel": "Kompletter Check-in- & Check-out-Leitfaden für Hostel Brikette Positano",
+  "linkLabel": "Hostel Brikette Check-in und Check-out Guide",
   "sections": [
     {
       "id": "checkInRequest",
-      "title": "Check-in-Anmeldung",
+      "title": "Check-in-Anfrage",
       "body": [
-        "Bitte wenden Sie sich bei Ihrer Ankunft an die Rezeption, um den Check-in zu starten und Ihr Zimmer zugewiesen zu bekommen."
+        "Wenn du ankommst, gehe bitte zur Rezeption, um den Check-in zu starten und deine Zimmerzuweisung zu erhalten.",
+        "Wenn du mit der Fähre ankommst, folge %LINK:ferryDockToBrikette|unserer Route vom Fähranleger zum Hostel%. Wenn du mit dem Bus ankommst, nutze %LINK:chiesaNuovaArrivals|die Ankunfts-Anleitung Chiesa Nuova%, um den Eingang zu erreichen."
+      ],
+      "images": [
+        {
+          "src": "/img/checkin-desk.avif",
+          "alt": "Rezeptionstresen für den Check-in im Hostel.",
+          "caption": "An der Rezeption beginnt der Check-in im Hostel Brikette."
+        }
       ]
     },
     {
       "id": "earlyArrival",
       "title": "Frühe Ankunft",
       "body": [
-        "Wenn Sie vor 10:30 Uhr am Anreisetag eintreffen, beachten Sie bitte, dass der Zutritt zur Unterkunft noch nicht möglich ist."
+        "Wenn du vor 10:30 AM an deinem Buchungstag ankommst, kannst du das Hostel noch nicht betreten.",
+        "Nutze die Zeit für Frühstück, einen kurzen Spaziergang oder um den Tag zu planen, bis das Check-in-Fenster öffnet."
       ]
     },
     {
       "id": "middayArrival",
-      "title": "Ankunft zur Mittagszeit",
+      "title": "Ankunft am Mittag",
       "body": [
-        "Treffen Sie zwischen 10:30 Uhr und 15:00 Uhr ein, können Sie nach Zustimmung als „Tagesgast“ eingelassen werden. Auf Anfrage lagern wir Ihr Gepäck ein, sofern Platz vorhanden ist. Die Gepäckaufbewahrung ist eine separate Leistung mit eigenen Bedingungen."
+        "Wenn du zwischen 10:30 AM und 3:00 PM ankommst, kann dir als Temporärer Gast nach Freigabe der Zutritt erlaubt werden. In dieser Zeit kannst du Gepäckaufbewahrung anfragen, sofern Platz verfügbar ist. Bitte beachte, dass die Gepäckaufbewahrung getrennt von deiner Zimmerbuchung ist und eigene Bedingungen hat.",
+        "Wenn du eine garantierte Option brauchst, sieh dir %LINK:luggageStorage|unseren Gepäckaufbewahrungs-Guide% vor der Ankunft an."
       ]
     },
     {
       "id": "checkInWindow",
-      "title": "Check-in-Zeitfenster",
+      "title": "Check-in-Zeitraum",
       "body": [
-        "Der reguläre Check-in ist täglich von 15:00 Uhr bis 22:30 Uhr möglich. In diesem Zeitraum gilt unser Standard-Check-in-Verfahren."
+        "Du kannst täglich von 3:00 PM bis 10:30 PM einchecken. In dieser Zeit durchläufst du unseren Standard-Check-in."
       ]
     },
     {
       "id": "lateArrival",
       "title": "Späte Ankunft",
       "body": [
-        "Planen Sie nach Schließung der Rezeption um 22:30 Uhr anzureisen, können wir je nach Verfügbarkeit einen Self-Service-Late-Check-in anbieten. Wir senden die Anweisungen an die bei der Buchung hinterlegte Kontaktadresse. Bitte stellen Sie sicher, dass Ihr Gerät geladen ist und Ihre Kontaktdaten korrekt sind; für Probleme durch falsche Angaben oder technische Ausfälle können wir keine Verantwortung übernehmen."
+        "Wenn du planst, nach Schließung der Rezeption um 10:30 PM anzukommen, bieten wir möglicherweise einen Self-Service-Spät-Check-in an, je nach Verfügbarkeit. Wir senden Anweisungen an die Kontaktdaten aus deiner Buchung. Stelle sicher, dass dein Gerät geladen ist und deine Angaben korrekt sind, da wir nicht für Probleme durch falsche Informationen oder technische Ausfälle verantwortlich sein können.",
+        "Wenn du spät ankommst, teile uns deine ETA im Voraus mit, damit wir bestätigen können, ob der Spät-Check-in verfügbar ist."
       ]
     },
     {
       "id": "necessityOfProcess",
-      "title": "Erforderlichkeit des vollständigen Check-ins",
+      "title": "Notwendigkeit des vollständigen Check-in-Prozesses",
       "body": [
-        "Der Zutritt zum Hostel ist nur nach vollständigem Abschluss des Check-ins möglich. Andernfalls wird Ihre Buchung storniert und als No-Show verbucht."
+        "Du musst den vollständigen Check-in-Prozess abschließen, um das Hostel zu betreten. Wenn du den Check-in nicht abschließen kannst, wird deine Reservierung storniert und als No Show behandelt."
       ]
     },
     {
       "id": "proofOfIdentity",
       "title": "Identitätsnachweis",
       "body": [
-        "Beim Check-in ist ein gültiges Originaldokument (Reisepass, Personalausweis, Führerschein oder Militär­ausweis) vorzulegen. Liegt bis 22:30 Uhr am Anreisetag kein gültiger Ausweis vor, wird die Reservierung als No-Show storniert."
+        "Du musst bei der Ankunft einen gültigen Originalausweis (Pass, Personalausweis, Führerschein oder Militärausweis) vorlegen. Wenn du bis 10:30 PM am geplanten Check-in-Tag keinen gültigen Ausweis vorlegst, wird deine Reservierung als No Show storniert."
       ]
     },
     {
       "id": "paymentBalance",
-      "title": "Offener Zahlungsbetrag",
+      "title": "Restbetrag",
       "body": [
-        "Offene Beträge müssen vor Abschluss des Check-ins vollständig mit einer akzeptierten Zahlungsart beglichen werden. Andernfalls wird die Reservierung storniert und als No-Show markiert."
+        "Du musst ausstehende Beträge vollständig mit einer akzeptierten Zahlungsmethode begleichen, bevor du den Check-in abschließt. Wenn du nicht vollständig zahlen kannst, wird deine Reservierung storniert und als No Show markiert."
       ]
     },
     {
       "id": "keycardLinenDeposit",
-      "title": "Pfand für Schlüsselkarte & Bettwäsche",
+      "title": "Kaution für Schlüsselkarte und Bettwäsche",
       "body": [
-        "Beim Check-in ist ein Pfand von 10 € in bar für Schlüsselkarte und Bettwäsche zu hinterlegen. Bei ordnungsgemäßer Rückgabe beider Artikel erhalten Sie den Betrag beim Check-out in bar zurück. Kartenzahlungen sind für dieses Pfand nicht möglich."
+        "Beim Check-in benötigst du eine Barkaution von 10 € für deine Schlüsselkarte und dein Bettwäsche-Set. Diese Kaution wird beim Check-out vollständig in bar zurückerstattet, sobald du beide Teile zurückgibst. Kredit- oder Debitkarten werden für diese Kaution nicht akzeptiert."
+      ],
+      "images": [
+        {
+          "src": "https://www.retrotouch.co.uk/user/products/large/Boutique%20hotel%20range/Card%20Key/Key%20card%20white.jpg",
+          "alt": "Weiße Hotel-Schlüsselkarte.",
+          "caption": "Nimm deine Schlüsselkarte mit; gib sie beim Check-out zurück, um die 10-€-Kaution in bar zu erhalten — Foto: RetroTouch (retrotouch.co.uk). Skaliert/zugeschnitten."
+        }
       ]
     },
     {
       "id": "checkoutWindow",
-      "title": "Check-out-Zeitfenster",
+      "title": "Check-out-Zeitraum",
       "body": [
-        "Der Check-out erfolgt von 7:30 Uhr bis 10:30 Uhr. Nach dem Check-out dürfen Sie Ihr Zimmer nicht erneut betreten oder persönliche Gegenstände darin zurücklassen."
+        "Check-out ist von 7:30 AM bis 10:30 AM. Nach dem Check-out kannst du dein Zimmer nicht mehr betreten oder persönliche Gegenstände zurücklassen."
       ]
     },
     {
       "id": "earlyCheckout",
       "title": "Früher Check-out",
       "body": [
-        "Müssen Sie vor 7:30 Uhr abreisen, vereinbaren Sie bitte am Vorabend einen frühen Check-out an der Rezeption, um Ihr Pfand in bar zurückzuerhalten. Bei Rückgabe der Schlüsselkarte ohne Bestätigung durch das Personal verfällt das Pfand."
+        "Wenn du vor 7:30 AM abreisen musst, vereinbare den frühen Check-out am Vorabend an der Rezeption, um die Kaution in bar zurückzubekommen. Wenn du die Schlüsselkarte ohne Bestätigung des Personals zurücklässt, verfällt die Kaution."
       ]
     },
     {
       "id": "lateCheckout",
       "title": "Später Check-out",
       "body": [
-        "Ein später Check-out ist leider nicht möglich. Der Check-out muss bis 10:30 Uhr abgeschlossen sein."
+        "Wir bieten keinen späten Check-out an. Der Check-out muss bis 10:30 AM abgeschlossen sein."
       ]
     },
     {
       "id": "failureToCheckout",
-      "title": "Versäumter Check-out",
+      "title": "Kein Check-out",
       "body": [
-        "Wenn Sie das Zimmer nicht fristgerecht räumen, können wir Ihre Gegenstände ohne Haftung entfernen lassen. Diese können kostenpflichtig bei einem lokalen Gepäckservice eingelagert werden. Jeglicher unerlaubte Zutritt danach gilt als Sicherheitsverstoß."
+        "Das Hostel ist sehr oft ausgebucht, daher müssen Zimmer zügig geräumt werden, damit das Housekeeping sie für ankommende Gäste vorbereiten kann.",
+        "Wenn du nicht ausgecheckt hast und deine Sachen nach der Check-out-Zeit noch im Zimmer sind, müssen wir eventuell handeln, um das Zimmer freizumachen. Wir versuchen dich zuerst zu kontaktieren, aber wir können deine Sachen entfernen und sie bei einem lokalen Trägerservice lagern. Alle Lager- und Handlingkosten werden dir berechnet."
       ]
     },
     {
       "id": "postCheckout",
       "title": "Nach dem Check-out",
       "body": [
-        "Nach dem Check-out endet Ihre Reservierung offiziell. Sie dürfen sich jedoch bis 15:30 Uhr als Tagesgast auf dem Gelände aufhalten. Gepäckaufbewahrung ist auf Anfrage und nach Verfügbarkeit unter separaten Bedingungen möglich."
+        "Nach dem Check-out endet deine Reservierung offiziell. Du darfst als Temporärer Gast bis 3:30 PM auf dem Hostelgelände bleiben, mit Zugang nur zu den Gemeinschaftsbereichen (kein Zimmerzugang). Gepäckaufbewahrung kann je nach Verfügbarkeit angefragt werden, und es gelten separate Bedingungen.",
+        "Wenn du nach dem Check-out schweres Gepäck bewegst, nutze %LINK:porterServices|Trägerservices% oder sieh dir %LINK:luggageStorage|unseren Gepäckaufbewahrungs-Guide% an, um die Stadt ohne Gepäck zu erkunden."
+      ]
+    }
+  ],
+  "lastUpdated": "2026-02-04T00:00:00.000Z",
+  "intro": [
+    "Dieser Guide erklärt den Check-in und Check-out im Hostel Brikette, damit du Ankunftszeiten, Dokumente und Zahlungen im Voraus planen kannst.",
+    "Die meisten Gäste checken zwischen 3:00 PM und 10:30 PM ein, aber frühe Ankünfte können je nach Platz als Temporäre Gäste Zugang und Gepäckaufbewahrung erhalten.",
+    "Vor der Ankunft bereite einen gültigen Ausweis vor, begleiche offene Beträge und denke an die 10-€-Barkaution für Schlüsselkarte und Bettwäsche. Check-out ist von 7:30–10:30 AM."
+  ],
+  "tipsTitle": "Kurztipps",
+  "tips": [
+    "Halte Ausweis und Zahlungsmethode bereit, bevor du zur Rezeption gehst, um den Check-in zu beschleunigen.",
+    "Wenn du früh ankommst, speichere %LINK:luggageStorage|den Gepäckaufbewahrungs-Guide%, damit du den Tag ohne Gepäck planen kannst.",
+    "Wenn du mit schwerem Gepäck vom Anleger kommst, können %LINK:porterServices|Trägerservices% deine Taschen transportieren, während du gehst."
+  ],
+  "faqsTitle": "Check-in & Check-out FAQs",
+  "faqs": [
+    {
+      "q": "Kann ich vor 3:00 PM einchecken?",
+      "a": [
+        "Der frühzeitige Zugang ist begrenzt und abhängig von der Verfügbarkeit. Du kannst Temporärer-Gast-Zugang und Gepäckaufbewahrung anfragen, aber der vollständige Check-in beginnt erst um 3:00 PM."
+      ]
+    },
+    {
+      "q": "Was passiert, wenn ich meinen Ausweis vergesse?",
+      "a": [
+        "Wir benötigen einen gültigen Originalausweis, um den Check-in abzuschließen. Ohne ihn kann deine Reservierung als No Show storniert werden."
+      ]
+    },
+    {
+      "q": "Kann ich nach dem Check-out Gepäck aufbewahren?",
+      "a": [
+        "In der Regel können wir Taschen für eine begrenzte Zeit je nach Platz aufbewahren. Sieh dir %LINK:luggageStorage|unseren Gepäckaufbewahrungs-Guide% für Details und Alternativen an."
       ]
     }
   ]

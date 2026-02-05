@@ -1,9 +1,14 @@
 {
+  "lastUpdated": "2026-02-04T00:00:00.000Z",
   "seo": {
     "title": "Resehjälp | Hostel Brikette Positano",
     "description": "Tvåminutersöversikt över hur du tar dig hit och vilka utflykter gästerna oftast gör, med länkar till våra fullständiga transport- och upplevelseguider."
   },
   "linkLabel": "Resehjälp | Hostel Brikette Positano",
+  "intro": [
+    "Resehjälp Positano: de flesta resvägar går via Sorrento. I Positano anländer du vanligtvis till Chiesa Nuova (buss) eller Spiaggia Grande (färja).",
+    "Använd den här sidan för att välja rätt guide. Våra ruttguider täcker biljetter, hållplatser, bagage och alternativa rutter. Våra Upplevelserguider täcker hela dagsturer från dörr till dörr."
+  ],
   "sections": [
     {
       "id": "overview",
@@ -17,6 +22,21 @@
       "title": "Snabb vägledning till populära utflykter",
       "body": [
         "När du är på plats ger samlingen Upplevelser vägledning från dörr till dörr för gästernas favoritutflykter – Capri-färjor, lederna till Gudarnas stig, bussar mot Amalfi och Ravello, tåg till Pompeji och Vesuvius och mer. Läs guiderna för att se första avgångar, biljettips och vad du bör packa."
+      ]
+    }
+  ],
+  "faqsTitle": "Vanliga frågor om resehjälp",
+  "faqs": [
+    {
+      "q": "Var bör jag sikta på att anlända i Positano?",
+      "a": [
+        "Om du kommer med SITA-buss, sikta på hållplatsen Chiesa Nuova (nära Bar Internazionale). Det är den närmaste och mest bekväma hållplatsen för Hostel Brikette. Om du kommer med färja anländer du till Spiaggia Grande (huvudstranden/kajen) och går sedan uppför till hostellet."
+      ]
+    },
+    {
+      "q": "Behöver jag boka transport i förväg?",
+      "a": [
+        "Under högsäsong (särskilt helger) hjälper det att planera tidigare avgångar och vara vid kajen/busshållplatsen tidigt. Färjor kan bli fullbokade vid populära tider, och bussköerna kan bli långa. Om du föredrar flexibilitet, håll en alternativ rutt i minnet från %HOWTO:how-to-get-here|Hitta hit-översikten%."
       ]
     }
   ]

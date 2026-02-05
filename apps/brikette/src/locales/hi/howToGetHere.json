@@ -6,8 +6,8 @@
   "header": {
     "eyebrow": "Hostel Brikette",
     "title": "यात्रा दिशानिर्देशों की सूची",
-    "description": "अमाल्फी तट पर अपने गंतव्य और होस्टल ब्रिकेट तक आने-जाने के लिए इस गाइड का उपयोग करें।",
-    "heroAlt": "Hostel Brikette के प्रवेश द्वार की ओर जाती बूगनवेलिया से घिरी पत्थरों की सीढ़ियाँ",
+    "description": "अमाल्फी तट पर अपने गंतव्य और हॉस्टल ब्रिकेट तक आने-जाने के लिए इस गाइड का उपयोग करें।",
+    "heroAlt": "हॉस्टल ब्रिकेट के प्रवेश द्वार की ओर जाती बूगनवेलिया से घिरी पत्थरों की सीढ़ियाँ",
     "heroAltFallback": "बूगनवेलिया से घिरी पत्थरों की सीढ़ियाँ",
     "transportLabel": "परिवहन कवरेज",
     "stats": {
@@ -70,11 +70,11 @@
     "taxi": "टैक्सी मंगाने के लिए आप व्हाट्सऐप पर अंग्रेज़ी या इतालवी में इस नंबर से संपर्क कर सकते हैं: <Strong>{{contact}}</Strong>।",
     "shuttle": "शटल पसंद करते हैं? Sea Horse Car Service साझा ट्रांसफ़र चलाती है। उनकी <Link>आधिकारिक शटल पेज</Link> पर सीट आरक्षित करें।",
     "taxiContact": "+39 379 125 6222",
-    "taxiEyebrow": "टैक्सी से Hostel Brikette",
-    "shuttleEyebrow": "शटल से Hostel Brikette",
-    "whatsappTemplate": "नमस्ते! मैं Hostel Brikette में ठहर रहा/रही हूँ। मैं पोसितानो के लिए/से टैक्सी बुक करना चाहता/चाहती हूँ। मेरा आगमन समय है: ____",
+    "taxiEyebrow": "टैक्सी से हॉस्टल ब्रिकेट",
+    "shuttleEyebrow": "शटल से हॉस्टल ब्रिकेट",
+    "whatsappTemplate": "नमस्ते! मैं हॉस्टल ब्रिकेट में ठहर रहा/रही हूँ। मैं पोसितानो के लिए/से टैक्सी बुक करना चाहता/चाहती हूँ। मेरा आगमन समय है: ____",
     "emailSubject": "आगमन सहायता",
-    "emailBody": "नमस्ते Hostel Brikette टीम — मैं आज पहुंच रहा/रही हूँ और वहां पहुंचने के सर्वोत्तम तरीके के लिए मदद चाहिए। मेरा अनुमानित आगमन समय है: ____",
+    "emailBody": "नमस्ते हॉस्टल ब्रिकेट टीम — मैं आज पहुंच रहा/रही हूँ और वहां पहुंचने के सर्वोत्तम तरीके के लिए मदद चाहिए। मेरा अनुमानित आगमन समय है: ____",
     "whatsappCta": "WhatsApp टैक्सी",
     "callCta": "कॉल करें",
     "taxiBestFor": "सबसे उपयुक्त: देर से आगमन · भारी सामान · सबसे तेज विकल्प",
@@ -90,27 +90,61 @@
     "filterAll": "सभी स्थान",
     "sections": [
       {
-        "name": "पोज़ितानो के भीतर",
-        "description": "पोज़ितानो पहुँच चुके हैं, लेकिन हॉस्टल तक कैसे जाएँ यह समझ नहीं आ रहा? इन गाइड्स को देखें:",
+        "name": "पोसितानो के भीतर",
+        "description": "पोसितानो पहुँच चुके हैं, लेकिन हॉस्टल तक कैसे जाएँ यह समझ नहीं आ रहा? इन गाइड्स को देखें:",
         "image": {
           "src": "/img/positano-panorama.avif",
-          "alt": "पोसितानो की चट्टान पर बने घरों का पैनोरमिक दृश्य"
+          "alt": "पोसितानो की चट्टान पर बने घरों का पैनोरमिक दृश्य",
+          "caption": "पोसितानो खड़ी है — सीढ़ियों की योजना बनाएं, विशेष रूप से सामान के साथ।"
         },
         "links": [
           {
-            "label": "कीएसा नुओवा/Bar Internazionale से Hostel Brikette",
+            "label": "किएसा नुओवा/Bar Internazionale से हॉस्टल ब्रिकेट",
             "href": "chiesa-nuova-bar-internazionale-to-hostel-brikette",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "५-१० मिनट",
+              "cost": "मुफ़्त",
+              "walking": "~१४० मीटर + ~३० सीढ़ियाँ",
+              "luggageFriendly": 2,
+              "seasonality": "साल भर"
+            }
           },
           {
-            "label": "फेरी डॉक से Hostel Brikette",
+            "label": "फेरी डॉक से हॉस्टल ब्रिकेट",
             "href": "ferry-dock-to-hostel-brikette-with-luggage",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "20-45 मिनट (पोर्टर/Interno बस पर निर्भर)",
+              "cost": "€2-€6 प्रति व्यक्ति (+ वैकल्पिक पोर्टर)",
+              "walking": "बंदरगाह सीढ़ियाँ; पोर्टर सामान ले जाना कम करते हैं",
+              "luggageFriendly": 1,
+              "seasonality": "साल भर"
+            }
           },
           {
-            "label": "Hostel Brikette से कीएसा नुओवा/Bar Internazionale",
+            "label": "हॉस्टल ब्रिकेट से किएसा नुओवा/Bar Internazionale",
             "href": "hostel-brikette-to-chiesa-nuova-bar-internazionale",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "20-30 मिनट (सामान के साथ अधिक)",
+              "cost": "मुफ़्त",
+              "walking": "सीढ़ियाँ + सड़क क्रॉसिंग",
+              "luggageFriendly": 1,
+              "seasonality": "साल भर"
+            }
+          },
+          {
+            "label": "हॉस्टल ब्रिकेट से फेरी डॉक तक",
+            "href": "hostel-brikette-to-chiesa-nuova-bar-internazionale",
+            "internal": true,
+            "facts": {
+              "duration": "5-10 मिनट",
+              "cost": "मुफ़्त",
+              "walking": "~140 मी + ~30 सीढ़ियाँ (नीचे)",
+              "luggageFriendly": 2,
+              "seasonality": "साल भर"
+            }
           }
         ]
       },
@@ -118,47 +152,91 @@
         "name": "अमाल्फी",
         "image": {
           "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
-          "alt": "तटीय मार्गों के लिए अमाल्फी का SITA Sud बस स्टॉप"
+          "alt": "तटीय मार्गों के लिए अमाल्फी का SITA Sud बस स्टॉप",
+          "caption": "अमाल्फी बस स्टेशन पर SITA बसों को देखें।"
         },
         "links": [
           {
             "label": "अमाल्फी से पोसितानो बस द्वारा",
             "href": "amalfi-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "45-90 मिनट (ट्रैफ़िक पर निर्भर)",
+              "cost": "€2-€4 प्रति व्यक्ति",
+              "walking": "अंत में छोटी सीढ़ियाँ (~30 सीढ़ियाँ)",
+              "luggageFriendly": 2,
+              "seasonality": "साल भर"
+            }
           },
           {
             "label": "पोसितानो से अमाल्फी बस द्वारा",
             "href": "positano-amalfi-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "45-90 मिनट (ट्रैफ़िक पर निर्भर)",
+              "cost": "€2-€4 प्रति व्यक्ति",
+              "walking": "शुरुआत/अंत में छोटी सीढ़ियाँ (~30 सीढ़ियाँ)",
+              "luggageFriendly": 2,
+              "seasonality": "साल भर"
+            }
           },
           {
             "label": "अमाल्फी से पोसितानो फेरी द्वारा",
             "href": "amalfi-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "25-45 मिनट (नौकायन) + बंदरगाह स्थानांतरण",
+              "cost": "€10-€20 प्रति व्यक्ति",
+              "walking": "बंदरगाह से/तक सीढ़ियाँ",
+              "luggageFriendly": 1,
+              "seasonality": "मौसमी (अप्रैल-अक्टूबर)"
+            }
           },
           {
             "label": "पोसितानो से अमाल्फी फेरी द्वारा",
             "href": "positano-amalfi-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "25-45 मिनट (नौकायन) + बंदरगाह स्थानांतरण",
+              "cost": "€10-€20 प्रति व्यक्ति",
+              "walking": "बंदरगाह से/तक सीढ़ियाँ",
+              "luggageFriendly": 1,
+              "seasonality": "मौसमी (अप्रैल-अक्टूबर)"
+            }
           }
         ]
       },
       {
-        "name": "कैप्रि",
+        "name": "कैप्री",
         "image": {
           "src": "/img/directions/positano-capri-ferry-img09.jpg",
-          "alt": "कैप्रि के मरीना ग्रांडे पर लगती हुई फेरी"
+          "alt": "कैप्री के मरीना ग्रांडे पर लगती हुई फेरी",
+          "caption": "कैप्री फेरी मरीना ग्रांडे से प्रस्थान करती हैं।"
         },
         "links": [
           {
             "label": "कैप्रि से पोसितानो फेरी द्वारा",
             "href": "capri-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "30-60 मिनट (नौकायन) + बंदरगाह स्थानांतरण",
+              "cost": "€20-€35 प्रति व्यक्ति",
+              "walking": "बंदरगाह तक पहुँच; पोज़ितानो में सीढ़ियों की संभावना",
+              "luggageFriendly": 1,
+              "seasonality": "मौसमी (अप्रैल-अक्टूबर)"
+            }
           },
           {
             "label": "पोसितानो से कैप्रि फेरी द्वारा",
             "href": "positano-capri-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "30-60 मिनट (नौकायन) + बंदरगाह स्थानांतरण",
+              "cost": "€20-€35 प्रति व्यक्ति",
+              "walking": "बंदरगाह तक पहुँच; पोज़ितानो में सीढ़ियों की संभावना",
+              "luggageFriendly": 1,
+              "seasonality": "मौसमी (अप्रैल-अक्टूबर)"
+            }
           }
         ]
       },
@@ -166,33 +244,69 @@
         "name": "नेपल्स सेंटर",
         "image": {
           "src": "/img/tabacchi.webp",
-          "alt": "नेपल्स के केंद्र में सड़क किनारे तंबाकी की दुकान"
+          "alt": "नेपल्स के केंद्र में सड़क किनारे तंबाकी की दुकान",
+          "caption": "बोर्डिंग से पहले टैबैची/न्यूज़स्टैंड में बस टिकट खरीदें।"
         },
         "links": [
           {
             "label": "नेपल्स सेंटर से पोसितानो ट्रेन और बस द्वारा",
             "href": "naples-center-train-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2-3.5 घंटे (स्थानांतरण सहित)",
+              "cost": "€15-€25 प्रति व्यक्ति",
+              "walking": "कम; सोरेंटो में बदलाव",
+              "luggageFriendly": 2,
+              "seasonality": "साल भर"
+            }
           },
           {
             "label": "पोसितानो से नेपल्स सेंटर बस फिर ट्रेन द्वारा",
             "href": "positano-naples-center-bus-train",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2-3.5 घंटे (स्थानांतरण सहित)",
+              "cost": "€15-€25 प्रति व्यक्ति",
+              "walking": "शुरुआत/अंत में छोटी सीढ़ियाँ (~30 सीढ़ियाँ)",
+              "luggageFriendly": 2,
+              "seasonality": "साल भर"
+            }
           },
           {
             "label": "नेपल्स सेंटर से पोसितानो फेरी द्वारा",
             "href": "naples-center-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "3-4.5 घंटे (बंदरगाह स्थानांतरण सहित)",
+              "cost": "€25-€45 प्रति व्यक्ति",
+              "walking": "बंदरगाह तक स्थानांतरण + पोज़ितानो में सीढ़ियाँ",
+              "luggageFriendly": 1,
+              "seasonality": "मौसमी (अप्रैल-अक्टूबर)"
+            }
           },
           {
             "label": "पोसितानो से नेपल्स सेंटर फेरी द्वारा",
             "href": "positano-naples-center-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "3-4.5 घंटे (बंदरगाह स्थानांतरण सहित)",
+              "cost": "€25-€45 प्रति व्यक्ति",
+              "walking": "पोज़ितानो में सीढ़ियाँ + बंदरगाह से स्थानांतरण",
+              "luggageFriendly": 1,
+              "seasonality": "मौसमी (अप्रैल-अक्टूबर)"
+            }
           },
           {
             "label": "पोसितानो से नेपल्स के लिए दिशा-निर्देश (फेरी)",
             "href": "positano-to-naples-directions-by-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "3-4.5 घंटे (बंदरगाह स्थानांतरण सहित)",
+              "cost": "€25-€45 प्रति व्यक्ति",
+              "walking": "पोज़ितानो में सीढ़ियाँ + बंदरगाह से स्थानांतरण",
+              "luggageFriendly": 1,
+              "seasonality": "मौसमी (अप्रैल-अक्टूबर)"
+            }
           }
         ]
       },
@@ -200,18 +314,33 @@
         "name": "नेपल्स हवाई अड्डा",
         "image": {
           "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
-          "alt": "नेपल्स अंतरराष्ट्रीय हवाई अड्डे के बाहर Curreri शटल लोडिंग क्षेत्र"
+          "alt": "नेपल्स अंतरराष्ट्रीय हवाई अड्डे के बाहर Curreri शटल लोडिंग क्षेत्र",
+          "caption": "सोरेंटो रेलवे स्टेशन, जहां आप बस बदलेंगे"
         },
         "links": [
           {
             "label": "पोसितानो से नेपल्स हवाई अड्डा बस द्वारा",
             "href": "positano-naples-airport-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2-3.5 घंटे (सोरेंटो में बदलाव सहित)",
+              "cost": "€15-€25 प्रति व्यक्ति",
+              "walking": "शुरुआत/अंत में छोटी सीढ़ियाँ (~30 सीढ़ियाँ)",
+              "luggageFriendly": 2,
+              "seasonality": "साल भर"
+            }
           },
           {
             "label": "नेपल्स हवाई अड्डे से पोसितानो बस द्वारा",
             "href": "naples-airport-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2-3.5 घंटे (सोरेंटो में बदलाव सहित)",
+              "cost": "€15-€25 प्रति व्यक्ति",
+              "walking": "अंत में छोटी सीढ़ियाँ (~30 सीढ़ियाँ)",
+              "luggageFriendly": 2,
+              "seasonality": "साल भर"
+            }
           }
         ]
       },
@@ -219,28 +348,57 @@
         "name": "सालर्नो",
         "image": {
           "src": "/img/hostel-coastal-horizon.webp",
-          "alt": "अमाल्फी तट से सालर्नो की ओर दिखाई देता दृश्य"
+          "alt": "अमाल्फी तट से सालर्नो की ओर दिखाई देता दृश्य",
+          "caption": "सालर्नो ट्रेन + बस, या मौसमी फेरी से जुड़ता है।"
         },
         "links": [
           {
             "label": "सालर्नो से पोसितानो बस द्वारा",
             "href": "salerno-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2.5-4 घंटे (अमाल्फी के माध्यम से)",
+              "cost": "€6-€12 प्रति व्यक्ति",
+              "walking": "कम; अमाल्फी में बस बदलें",
+              "luggageFriendly": 2,
+              "seasonality": "साल भर"
+            }
           },
           {
             "label": "पोसितानो से सालर्नो बस द्वारा",
             "href": "positano-salerno-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2.5-4 घंटे (अमाल्फी के माध्यम से)",
+              "cost": "€6-€12 प्रति व्यक्ति",
+              "walking": "शुरुआत/अंत में छोटी सीढ़ियाँ (~30 सीढ़ियाँ)",
+              "luggageFriendly": 2,
+              "seasonality": "साल भर"
+            }
           },
           {
-            "label": "सालेर्नो से Positano (फेरी)",
+            "label": "सालर्नो से पोसितानो (फेरी)",
             "href": "salerno-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1-2 घंटे (नौकायन) + बंदरगाह स्थानांतरण",
+              "cost": "€15-€30 प्रति व्यक्ति",
+              "walking": "बंदरगाह सीढ़ियाँ; पोर्टर अनुशंसित",
+              "luggageFriendly": 1,
+              "seasonality": "मौसमी (अप्रैल-अक्टूबर)"
+            }
           },
           {
             "label": "पोसितानो से सालर्नो फेरी द्वारा",
             "href": "positano-salerno-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1-2 घंटे (नौकायन) + बंदरगाह स्थानांतरण",
+              "cost": "€15-€30 प्रति व्यक्ति",
+              "walking": "बंदरगाह सीढ़ियाँ; पोर्टर अनुशंसित",
+              "luggageFriendly": 1,
+              "seasonality": "मौसमी (अप्रैल-अक्टूबर)"
+            }
           }
         ]
       },
@@ -248,23 +406,45 @@
         "name": "रवेल्लो",
         "image": {
           "src": "/img/hostel-communal-terrace-lush-view.webp",
-          "alt": "रवेल्लो के पास तट को निहारते चट्टानी उद्यान"
+          "alt": "रवेल्लो के पास तट को निहारते चट्टानी उद्यान",
+          "caption": "रवेल्लो अमाल्फी होकर बस से पहुंचा जाता है।"
         },
         "links": [
           {
             "label": "रवेल्लो से पोसितानो बस द्वारा",
             "href": "ravello-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1.5-2.5 घंटे (अमाल्फी के माध्यम से)",
+              "cost": "€4-€8 प्रति व्यक्ति",
+              "walking": "कम; अमाल्फी में बदलाव",
+              "luggageFriendly": 2,
+              "seasonality": "साल भर"
+            }
           },
           {
             "label": "पोसितानो से रवेल्लो बस द्वारा",
             "href": "positano-ravello-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1.5-2.5 घंटे (अमाल्फी के माध्यम से)",
+              "cost": "€4-€8 प्रति व्यक्ति",
+              "walking": "शुरुआत/अंत में छोटी सीढ़ियाँ (~30 सीढ़ियाँ)",
+              "luggageFriendly": 2,
+              "seasonality": "साल भर"
+            }
           },
           {
             "label": "पोसितानो से रवेल्लो फेरी फिर बस द्वारा",
             "href": "positano-ravello-ferry-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2-3 घंटे (फेरी + बस)",
+              "cost": "€15-€30 प्रति व्यक्ति",
+              "walking": "बंदरगाह सीढ़ियाँ + बस कनेक्शन",
+              "luggageFriendly": 1,
+              "seasonality": "मौसमी (अप्रैल-अक्टूबर)"
+            }
           }
         ]
       }
@@ -444,22 +624,50 @@
       {
         "label": "सोरेंटो से बस द्वारा",
         "href": "sorrento-positano-bus",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "45-75 मिनट",
+          "cost": "€2-€4 प्रति व्यक्ति",
+          "walking": "अंत में छोटी सीढ़ियाँ (~30 सीढ़ियाँ)",
+          "luggageFriendly": 2,
+          "seasonality": "साल भर"
+        }
       },
       {
         "label": "सोरेंटो की ओर बस द्वारा",
         "href": "positano-sorrento-bus",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "45-75 मिनट",
+          "cost": "€2-€4 प्रति व्यक्ति",
+          "walking": "शुरुआत/अंत में छोटी सीढ़ियाँ (~30 सीढ़ियाँ)",
+          "luggageFriendly": 2,
+          "seasonality": "साल भर"
+        }
       },
       {
         "label": "सोरेंटो से फेरी द्वारा",
         "href": "sorrento-positano-ferry",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "30-45 मिनट (नौकायन) + बंदरगाह सीढ़ियाँ",
+          "cost": "€15-€25 प्रति व्यक्ति",
+          "walking": "बंदरगाह सीढ़ियाँ; पोर्टर अनुशंसित",
+          "luggageFriendly": 1,
+          "seasonality": "मौसमी (अप्रैल-अक्टूबर)"
+        }
       },
       {
         "label": "सोरेंटो की ओर फेरी द्वारा",
         "href": "positano-sorrento-ferry",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "30-45 मिनट (नौकायन) + बंदरगाह सीढ़ियाँ",
+          "cost": "€15-€25 प्रति व्यक्ति",
+          "walking": "बंदरगाह सीढ़ियाँ; पोर्टर अनुशंसित",
+          "luggageFriendly": 1,
+          "seasonality": "मौसमी (अप्रैल-अक्टूबर)"
+        }
       }
     ]
   },
@@ -521,40 +729,40 @@
         "busTrain": {
           "title": "नेपल्स के रास्ते — बस + ट्रेन",
           "summary": {
-            "from": "Sorrento तक बस → Naples तक ट्रेन → Rome तक ट्रेन।",
-            "to": "Naples तक ट्रेन → Sorrento तक ट्रेन → Positano तक बस।"
+            "from": "सोरेंटो तक बस → नेपल्स तक ट्रेन → रोम तक ट्रेन।",
+            "to": "नेपल्स तक ट्रेन → सोरेंटो तक ट्रेन → पोसितानो तक बस।"
           },
           "steps": {
             "from": {
-              "1": "बस Positano → Sorrento (Sorrento ट्रेन स्टेशन पर उतरें)।",
-              "2": "लोकल ट्रेन Sorrento → Naples (Naples ट्रेन स्टेशन पर पहुँचें)।",
-              "3": "ट्रेन Naples → Rome।"
+              "1": "बस पोसितानो → सोरेंटो (सोरेंटो ट्रेन स्टेशन पर उतरें)।",
+              "2": "लोकल ट्रेन सोरेंटो → नेपल्स (नेपल्स ट्रेन स्टेशन पर पहुँचें)।",
+              "3": "ट्रेन नेपल्स → रोम।"
             },
             "to": {
-              "1": "ट्रेन Rome → Naples (Naples ट्रेन स्टेशन पर पहुँचें)।",
-              "2": "लोकल ट्रेन Naples → Sorrento (Sorrento बस स्टेशन पर पहुँचें)।",
-              "3": "बस Sorrento → Positano (होस्टल के पास स्टॉप)।"
+              "1": "ट्रेन रोम → नेपल्स (नेपल्स ट्रेन स्टेशन पर पहुँचें)।",
+              "2": "लोकल ट्रेन नेपल्स → सोरेंटो (सोरेंटो बस स्टेशन पर पहुँचें)।",
+              "3": "बस सोरेंटो → पोसितानो (होस्टल के पास स्टॉप)।"
             }
           }
         },
         "ferry": {
           "title": "नेपल्स के रास्ते — फेरी",
           "summary": {
-            "from": "Positano पोर्ट → Naples तक फेरी → स्टेशन तक ट्राम → Rome तक ट्रेन।",
-            "to": "Naples तक ट्रेन → पोर्ट तक ट्राम → Positano तक फेरी।"
+            "from": "पोसितानो पोर्ट → नेपल्स तक फेरी → स्टेशन तक ट्राम → रोम तक ट्रेन।",
+            "to": "नेपल्स तक ट्रेन → पोर्ट तक ट्राम → पोसितानो तक फेरी।"
           },
           "steps": {
             "from": {
-              "1": "Positano → पोर्ट (पोर्टर बैग में मदद कर सकते हैं)।",
-              "2": "फेरी Positano → Naples।",
-              "3": "ट्राम Naples पोर्ट → ट्रेन स्टेशन।",
-              "4": "ट्रेन Naples → Rome।"
+              "1": "पोसितानो → पोर्ट (पोर्टर बैग में मदद कर सकते हैं)।",
+              "2": "फेरी पोसितानो → नेपल्स।",
+              "3": "ट्राम नेपल्स पोर्ट → ट्रेन स्टेशन।",
+              "4": "ट्रेन नेपल्स → रोम।"
             },
             "to": {
-              "1": "ट्रेन Rome → Naples (Naples स्टेशन पर पहुँचें)।",
-              "2": "ट्राम Naples स्टेशन → पोर्ट।",
-              "3": "फेरी Naples → Positano।",
-              "4": "Positano पोर्ट → होस्टल (रास्ता कठिन हो सकता है; पोर्टर/Interno Bus मदद कर सकते हैं)।"
+              "1": "ट्रेन रोम → नेपल्स (नेपल्स स्टेशन पर पहुँचें)।",
+              "2": "ट्राम नेपल्स स्टेशन → पोर्ट।",
+              "3": "फेरी नेपल्स → पोसितानो।",
+              "4": "पोसितानो पोर्ट → होस्टल (रास्ता कठिन हो सकता है; पोर्टर/Interno Bus मदद कर सकते हैं)।"
             }
           }
         }
@@ -563,40 +771,40 @@
         "bus": {
           "title": "सालेर्नो के रास्ते — बस (सालेर्नो से/तक)",
           "summary": {
-            "from": "बस Positano → Amalfi (बदलाव) → Salerno → Rome तक ट्रेन।",
-            "to": "ट्रेन Salerno → बस Amalfi (बदलाव) → Positano।"
+            "from": "बस पोसितानो → अमाल्फी (बदलाव) → सालर्नो → रोम तक ट्रेन।",
+            "to": "ट्रेन सालर्नो → बस अमाल्फी (बदलाव) → पोसितानो।"
           },
           "steps": {
             "from": {
-              "1": "बस Positano → Amalfi (Amalfi में बस बदलें)।",
-              "2": "बस Amalfi → Salerno (Salerno ट्रेन स्टेशन पर उतरें)।",
-              "3": "ट्रेन Salerno → Rome।"
+              "1": "बस पोसितानो → अमाल्फी (अमाल्फी में बस बदलें)।",
+              "2": "बस अमाल्फी → सालर्नो (सालर्नो ट्रेन स्टेशन पर उतरें)।",
+              "3": "ट्रेन सालर्नो → रोम।"
             },
             "to": {
-              "1": "ट्रेन Rome → Salerno (Salerno ट्रेन स्टेशन पर पहुँचें)।",
-              "2": "बस Salerno → Amalfi (Amalfi में बस बदलें)।",
-              "3": "बस Amalfi → Positano (होस्टल तक थोड़ी पैदल दूरी)।"
+              "1": "ट्रेन रोम → सालर्नो (सालर्नो ट्रेन स्टेशन पर पहुँचें)।",
+              "2": "बस सालर्नो → अमाल्फी (अमाल्फी में बस बदलें)।",
+              "3": "बस अमाल्फी → पोसितानो (होस्टल तक थोड़ी पैदल दूरी)।"
             }
           }
         },
         "ferry": {
           "title": "सालेर्नो के रास्ते — फेरी",
           "summary": {
-            "from": "Positano पोर्ट → Salerno तक फेरी → स्टेशन तक थोड़ी पैदल दूरी → Rome तक ट्रेन।",
-            "to": "ट्रेन Salerno → पोर्ट तक थोड़ी पैदल दूरी → Positano तक फेरी।"
+            "from": "पोसितानो पोर्ट → सालर्नो तक फेरी → स्टेशन तक थोड़ी पैदल दूरी → रोम तक ट्रेन।",
+            "to": "ट्रेन सालर्नो → पोर्ट तक थोड़ी पैदल दूरी → पोसितानो तक फेरी।"
           },
           "steps": {
             "from": {
-              "1": "Positano → पोर्ट (पोर्टर बैग में मदद कर सकते हैं)।",
-              "2": "फेरी Positano → Salerno।",
-              "3": "पैदल Salerno पोर्ट → ट्रेन स्टेशन।",
-              "4": "ट्रेन Salerno → Rome।"
+              "1": "पोसितानो → पोर्ट (पोर्टर बैग में मदद कर सकते हैं)।",
+              "2": "फेरी पोसितानो → सालर्नो।",
+              "3": "पैदल सालर्नो पोर्ट → ट्रेन स्टेशन।",
+              "4": "ट्रेन सालर्नो → रोम।"
             },
             "to": {
-              "1": "ट्रेन Rome → Salerno (Salerno स्टेशन पर पहुँचें)।",
-              "2": "पैदल Salerno पोर्ट तक जाएँ।",
-              "3": "फेरी Salerno → Positano।",
-              "4": "Positano पोर्ट → होस्टल (रास्ता कठिन हो सकता है; पोर्टर/Interno Bus मदद कर सकते हैं)।"
+              "1": "ट्रेन रोम → सालर्नो (सालर्नो स्टेशन पर पहुँचें)।",
+              "2": "पैदल सालर्नो पोर्ट तक जाएँ।",
+              "3": "फेरी सालर्नो → पोसितानो।",
+              "4": "पोसितानो पोर्ट → होस्टल (रास्ता कठिन हो सकता है; पोर्टर/Interno Bus मदद कर सकते हैं)।"
             }
           }
         }
@@ -604,41 +812,41 @@
     },
     "note": {
       "salerno": {
-        "walkPortStation": "Salerno पोर्ट और ट्रेन स्टेशन के बीच पैदल जाएँ (छोटी और आसान दूरी)।"
+        "walkPortStation": "सालर्नो पोर्ट और ट्रेन स्टेशन के बीच पैदल जाएँ (छोटी और आसान दूरी)।"
       },
       "naples": {
-        "tramPortStation": "Naples पोर्ट और ट्रेन स्टेशन के बीच ट्राम लें।"
+        "tramPortStation": "नेपल्स पोर्ट और ट्रेन स्टेशन के बीच ट्राम लें।"
       }
     },
     "pro": {
-      "posBusNearHostel": "Positano बस स्टॉप होस्टल के पास है।",
-      "busDropsSorrentoStation": "बस आपको सीधे Sorrento ट्रेन स्टेशन पर छोड़ती है।",
+      "posBusNearHostel": "पोसितानो बस स्टॉप होस्टल के पास है।",
+      "busDropsSorrentoStation": "बस आपको सीधे सोरेंटो ट्रेन स्टेशन पर छोड़ती है।",
       "cheapBusTrain": "बस और ट्रेन दोनों बहुत सस्ती हैं।",
-      "arriveNaplesStation": "आप सीधे Naples ट्रेन स्टेशन पर पहुँचते हैं।",
-      "easySwapNaples": "Naples में ट्रेन बदलना तुलनात्मक रूप से आसान है।",
-      "trainDropsSorrentoBusStation": "ट्रेन आपको सीधे Sorrento बस स्टेशन पर छोड़ती है।",
+      "arriveNaplesStation": "आप सीधे नेपल्स ट्रेन स्टेशन पर पहुँचते हैं।",
+      "easySwapNaples": "नेपल्स में ट्रेन बदलना तुलनात्मक रूप से आसान है।",
+      "trainDropsSorrentoBusStation": "ट्रेन आपको सीधे सोरेंटो बस स्टेशन पर छोड़ती है।",
       "salerno": {
-        "busStopNearHostel": "Positano बस स्टॉप होस्टल से थोड़ी पैदल दूरी पर है।"
+        "busStopNearHostel": "पोसितानो बस स्टॉप होस्टल से थोड़ी पैदल दूरी पर है।"
       },
-      "busCollectsSalernoStation": "बस आपको सीधे Salerno ट्रेन स्टेशन से लेती है।",
-      "busDropsSalernoStation": "बस आपको सीधे Salerno ट्रेन स्टेशन पर छोड़ती है।",
+      "busCollectsSalernoStation": "बस आपको सीधे सालर्नो ट्रेन स्टेशन से लेती है।",
+      "busDropsSalernoStation": "बस आपको सीधे सालर्नो ट्रेन स्टेशन पर छोड़ती है।",
       "busCheap": "बस बहुत सस्ती है।",
       "portersHelp": "पोर्टर को बैग देने से यात्रा अधिक आरामदायक और आसान हो जाती है।",
       "ferryEnjoyableEasy": "फेरी यात्रा खुद में आसान और आनंददायक है।",
-      "shortWalkSalernoStationPort": "Salerno ट्रेन स्टेशन से पोर्ट तक पैदल दूरी छोटी और सरल है।"
+      "shortWalkSalernoStationPort": "सालर्नो ट्रेन स्टेशन से पोर्ट तक पैदल दूरी छोटी और सरल है।"
     },
     "con": {
       "changeBusToTrain": "बस से ट्रेन बदलनी पड़ती है।",
       "crowdedBusTrain": "बस और ट्रेन दोनों अक्सर भीड़भाड़ वाली होती हैं।",
       "fewHours": "कुछ घंटे लगते हैं।",
-      "changeTrainToBusSorrento": "Sorrento में ट्रेन से बस बदलनी पड़ती है।",
+      "changeTrainToBusSorrento": "सोरेंटो में ट्रेन से बस बदलनी पड़ती है।",
       "busUsuallyCrowded": "बस आमतौर पर भीड़भाड़ वाली होती है।",
       "ferryCostHigherBus": "फेरी की लागत बस से अधिक होती है।",
-      "hostelEasierBySita": "SITA बस से होस्टल पहुँचना फेरी से आसान है (पोर्ट से यात्रा काफी मेहनत वाली है — Positano के Interno Bus और पोर्टर के साथ भी)।",
-      "naplesPortComfort": "Naples का पोर्ट और शहर हर किसी के लिए आरामदायक नहीं हो सकता, कुछ लोग वहाँ सहज महसूस नहीं करते।",
+      "hostelEasierBySita": "SITA बस से होस्टल पहुँचना फेरी से आसान है (पोर्ट से यात्रा काफी मेहनत वाली है — पोसितानो के Interno Bus और पोर्टर के साथ भी)।",
+      "naplesPortComfort": "नेपल्स का पोर्ट और शहर हर किसी के लिए आरामदायक नहीं हो सकता, कुछ लोग वहाँ सहज महसूस नहीं करते।",
       "ferriesLessFrequent": "फेरी अन्य परिवहन विकल्पों जितनी बार नहीं चलतीं।",
       "ferryCostHigherTrainBus": "फेरी की लागत ट्रेन या बस से अधिक होती है।",
-      "changeBusesAmalfi": "Amalfi में बस बदलनी पड़ती है।"
+      "changeBusesAmalfi": "अमाल्फी में बस बदलनी पड़ती है।"
     },
     "tag": {
       "cheap": "बजट",
@@ -663,7 +871,7 @@
       },
       "heavy_luggage": {
         "ferryFromRome": "भारी सामान → पोर्ट से फेरी से पहुँचना अधिक कठिन है।",
-        "busStopClose": "भारी सामान → Positano बस स्टॉप होस्टल के पास है।"
+        "busStopClose": "भारी सामान → पोसितानो बस स्टॉप होस्टल के पास है।"
       }
     },
     "ui": {
@@ -683,7 +891,7 @@
       {
         "guideKey": "pathOfTheGodsFerry",
         "label": "अमाल्फ़ी के रास्ते पाथ ऑफ द गॉड्स (फेरी + हाइक)",
-        "summary": "Positano से Amalfi तक फेरी लें, Bomerano तक ऊपर जाएँ, और Positano लौटने के लिए हमारे चरण-दर-चरण निर्देशों का पालन करें।",
+        "summary": "पोसितानो से अमाल्फी तक फेरी लें, Bomerano तक ऊपर जाएँ, और पोसितानो लौटने के लिए हमारे चरण-दर-चरण निर्देशों का पालन करें।",
         "transportModes": [
           "फेरी",
           "बस",
@@ -693,7 +901,7 @@
       {
         "guideKey": "pathOfTheGodsBus",
         "label": "अमाल्फ़ी के रास्ते पाथ ऑफ द गॉड्स (बस + हाइक)",
-        "summary": "Positano से SITA Sud बस लेकर Amalfi होते हुए Bomerano जाएँ, Nocelle तक हाइक करें, और फिर होस्टल पहुँचने के लिए ट्रांसपोर्ट सेक्शन का उपयोग करें।",
+        "summary": "पोसितानो से SITA Sud बस लेकर अमाल्फी होते हुए Bomerano जाएँ, Nocelle तक हाइक करें, और फिर होस्टल पहुँचने के लिए ट्रांसपोर्ट सेक्शन का उपयोग करें।",
         "transportModes": [
           "बस",
           "पैदल"
@@ -702,7 +910,7 @@
       {
         "guideKey": "pathOfTheGodsNocelle",
         "label": "Nocelle शटल से पाथ ऑफ द गॉड्स",
-        "summary": "छोटी राउंड-ट्रिप हाइक के लिए Montepertuso–Nocelle शटल लें और Hostel Brikette तक वापस उतरने के लिए गाइड की दिशाओं का पालन करें।",
+        "summary": "छोटी राउंड-ट्रिप हाइक के लिए Montepertuso–Nocelle शटल लें और हॉस्टल ब्रिकेट तक वापस उतरने के लिए गाइड की दिशाओं का पालन करें।",
         "transportModes": [
           "बस",
           "पैदल"

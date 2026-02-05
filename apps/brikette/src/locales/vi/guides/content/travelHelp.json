@@ -1,15 +1,20 @@
 {
+  "lastUpdated": "2026-02-04T00:00:00.000Z",
   "seo": {
     "title": "Hỗ trợ hành trình | Hostel Brikette Positano",
     "description": "Bản tóm tắt trong hai phút về cách đến với chúng tôi và những chuyến đi được khách yêu thích, kèm liên kết tới các hướng dẫn chi tiết về di chuyển và trải nghiệm."
   },
   "linkLabel": "Hỗ trợ hành trình | Hostel Brikette Positano",
+  "intro": [
+    "Hỗ trợ hành trình Positano: hầu hết các tuyến đường đều đi qua Sorrento. Tại Positano, bạn thường đến Chiesa Nuova (xe buýt) hoặc Spiaggia Grande (phà).",
+    "Sử dụng trang này để chọn hướng dẫn phù hợp. Hướng dẫn tuyến đường của chúng tôi bao gồm vé, điểm dừng, hành lý và tuyến đường dự phòng. Hướng dẫn Trải nghiệm của chúng tôi bao gồm các chuyến đi trong ngày từ cửa đến cửa."
+  ],
   "sections": [
     {
       "id": "overview",
       "title": "Hỗ trợ hành trình trong nháy mắt",
       "body": [
-        "Để xem hướng dẫn từng bước, hãy bắt đầu với chuỗi bài “Đến đây như thế nào” của chúng tôi — bao gồm tàu hỏa, phà, xe riêng và cách xử lý nếu bị trễ. Trang này chỉ nhắc những điều cốt lõi: dự trù khoảng 2 giờ từ Napoli tới Positano, mua vé SITA trước khi lên xe và nhắn cho chúng tôi nếu bạn đến muộn để chúng tôi sắp xếp nhận phòng."
+        "Để xem hướng dẫn từng bước, hãy bắt đầu với chuỗi bài \"Đến đây như thế nào\" của chúng tôi — bao gồm tàu hỏa, phà, xe riêng và cách xử lý nếu bị trễ. Trang này chỉ nhắc những điều cốt lõi: dự trù khoảng 2 giờ từ Napoli tới Positano, mua vé SITA trước khi lên xe và nhắn cho chúng tôi nếu bạn đến muộn để chúng tôi sắp xếp nhận phòng."
       ]
     },
     {
@@ -17,6 +22,21 @@
       "title": "Chỉ đường nhanh tới các chuyến đi phổ biến",
       "body": [
         "Khi đã ổn định, bộ sưu tập Trải nghiệm sẽ hướng dẫn chi tiết từ cửa hostel tới những chuyến đi trong ngày được yêu thích nhất: phà đi Capri, lối vào đường mòn Con Đường Của Các Vị Thần, xe buýt đến Amalfi và Ravello, tàu tới Pompeii và Vesuvius, v.v. Hãy đọc các bài viết đó để biết giờ khởi hành đầu tiên, mẹo mua vé và những gì nên mang theo."
+      ]
+    }
+  ],
+  "faqsTitle": "Câu hỏi thường gặp về hỗ trợ hành trình",
+  "faqs": [
+    {
+      "q": "Tôi nên đến điểm nào ở Positano?",
+      "a": [
+        "Nếu bạn đi xe buýt SITA, hãy nhắm đến điểm dừng Chiesa Nuova (gần Bar Internazionale). Đây là điểm dừng gần nhất và thuận tiện nhất cho Hostel Brikette. Nếu bạn đi phà, bạn đến Spiaggia Grande (bãi biển/bến tàu chính) rồi đi lên dốc đến hostel."
+      ]
+    },
+    {
+      "q": "Tôi có cần đặt phương tiện trước không?",
+      "a": [
+        "Trong mùa cao điểm (đặc biệt là cuối tuần), nên lên kế hoạch khởi hành sớm và đến bến tàu/trạm xe buýt sớm. Phà có thể hết chỗ vào những giờ phổ biến, và hàng chờ xe buýt có thể dài. Nếu bạn muốn linh hoạt, hãy ghi nhớ một tuyến đường dự phòng từ %HOWTO:how-to-get-here|Tổng quan Đến đây như thế nào%."
       ]
     }
   ]

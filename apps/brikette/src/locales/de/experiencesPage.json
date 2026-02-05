@@ -7,15 +7,6 @@
     "eyebrow": "Erlebnisse",
     "title": "Sonnenuntergänge, entspannte Morgen und lokales Know-how",
     "description": "Kombiniere deinen Aufenthalt mit Drinks auf der Terrasse, kuratierten Wanderungen und einem digitalen Concierge, der dich schon vor der Anreise auf dem Laufenden hält.",
-    "supporting": "Alles steht registrierten Gästen offen; schreib uns, wenn du mit Freund:innen reist, die anderswo wohnen.",
-    "primaryCta": "Aufenthalt buchen",
-    "secondaryCta": "Bar-Menü öffnen",
-    "breakfastCta": "Frühstücksmenü ansehen",
-    "tertiaryCta": "Digitalen Concierge anschreiben",
-    "primaryCtaAria": "Buche deinen Aufenthalt im Hostel Brikette",
-    "secondaryCtaAria": "Bar-Menü des Hostel Brikette anzeigen",
-    "breakfastCtaAria": "Frühstücksmenü ansehen",
-    "tertiaryCtaAria": "Sende eine Nachricht an den digitalen Concierge des Hostel Brikette",
     "scrollNudge": "Entdecke Erlebnisse nach Kategorie"
   },
   "sections": {
@@ -159,11 +150,6 @@
         "title": "Essen & Trinken",
         "description": "Wo du gut isst, ohne zu viel zu zahlen.",
         "imageAlt": "Frische italienische Gerichte in einer lokalen Trattoria"
-      },
-      "itinerary": {
-        "title": "Reiserouten",
-        "description": "Mehrtägige Pläne für verschiedene Reisedauern.",
-        "imageAlt": "Panoramablick auf die Amalfiküste von oben"
       },
       "more": {
         "title": "Weitere Guides",

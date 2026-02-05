@@ -3,10 +3,6 @@
     "title": "Positanóból Salernóba busszal – Lépésről lépésre",
     "description": "Ajtótól ajtóig tartó buszos útmutató a Hostel Brikette-től Salernóba Amalfín keresztül: hol szállj fel, hol vásárolj jegyet, hogyan olvasd a menetrendet és miként válts buszt Amalfiban."
   },
-  "intro": {},
-  "callouts": {
-    "tip": "Más közlekedési lehetőséget keresel? Nyisd meg a %HOWTO:how-to-get-here|Hogyan juthatsz el hozzánk áttekintést% kompokhoz, taxikhoz és kombinált útvonalakhoz."
-  },
   "sections": [
     {
       "id": "journey",
@@ -51,5 +47,8 @@
         "**Sorok és oszlopok kombinálása:** Válassza ki az indulási és érkezési megállókat, majd ellenőrizze az oszlopokban, hogy mikor közlekednek a buszok, és mikor érkeznek meg a célállomásra. Például a sorrentói indulási időt a Sorrento sorban találja. A positanói (Chiesa Nuova / Bar Internazionale) érkezési időt a Positano (Chiesa Nuova) sorban láthatja."
       ]
     }
-  ]
+  ],
+  "callouts": {
+    "tip": "Más közlekedési lehetőséget keresel? Nyisd meg a %HOWTO:how-to-get-here|Hogyan juthatsz el hozzánk áttekintést% kompokhoz, taxikhoz és kombinált útvonalakhoz."
+  }
 }

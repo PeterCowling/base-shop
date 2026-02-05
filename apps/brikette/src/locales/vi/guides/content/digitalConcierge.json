@@ -1,24 +1,32 @@
 {
   "seo": {
-    "title": "Concierge kỹ thuật số (gợi ý + đặt chỗ)",
-    "description": "Concierge kỹ thuật số của Hostel Brikette: gợi ý nhanh, cập nhật giao thông và hỗ trợ đặt trải nghiệm—khi kế hoạch thay đổi."
+    "title": "Lễ tân kỹ thuật số (đề xuất + đặt chỗ)",
+    "description": "Sử dụng lễ tân kỹ thuật số của Hostel Brikette để nhận đề xuất địa phương nhanh chóng, cập nhật giao thông và hỗ trợ đặt trải nghiệm - đặc biệt khi kế hoạch thay đổi."
   },
-  "linkLabel": "Concierge kỹ thuật số",
+  "linkLabel": "Lễ tân kỹ thuật số",
   "lastUpdated": "2026-02-02T00:00:00.000Z",
   "intro": [
-    "Dành cho lúc bạn cần một kế hoạch “dùng được hôm nay”.",
-    "Gửi khung giờ, ngân sách và ưu tiên—ghi deadline ở dòng đầu."
+    "Đây là cho các kế hoạch hoạt động hôm nay - không phải danh sách chung chung.",
+    "Gửi khung thời gian, ngân sách và ưu tiên của bạn. Đặt thời hạn ở dòng đầu tiên."
   ],
   "sections": [
     {
-      "id": "templates",
-      "title": "Mẫu copy/paste",
+      "id": "how-to-access",
+      "title": "Cách truy cập",
       "body": [
-        "“Bọn mình có 6 tiếng, không có xe, (A) tắm biển + (B) hoàng hôn, 40€ mỗi người. Kế hoạch dễ nhất và plan B nếu phà bị huỷ?”",
-        "%LINK:positanoBudget|Positano tiết kiệm% + %LINK:terraceSunsets|hoàng hôn sân thượng%.",
-        "%LINK:ferryCancellations|huỷ phà + thời tiết%."
+        "Hỏi lễ tân về liên hệ/QR mới nhất và kênh tốt nhất (thường là WhatsApp).",
+        "Bao gồm: ngày tháng, điểm xuất phát, khung thời gian, ngân sách và ưu tiên #1."
+      ]
+    },
+    {
+      "id": "templates",
+      "title": "Mẫu sao chép/dán",
+      "body": [
+        "\"Chúng tôi có 6 giờ, không có xe, chúng tôi muốn (A) bơi + (B) hoàng hôn, ngân sách €40 mỗi người. Kế hoạch đơn giản nhất và kế hoạch B là gì nếu phà bị hủy?\"",
+        "Ngân sách cơ bản: %LINK:positanoBudget|Positano tiết kiệm% + %LINK:terraceSunsets|Hoàng hôn sân thượng%.",
+        "Nếu giao thông nhạy cảm: %LINK:ferryCancellations|hủy phà + thời tiết%."
       ]
     }
   ],
-  "fallback": "Concierge kỹ thuật số: gợi ý nhanh, cập nhật giao thông và hỗ trợ đặt chỗ."
+  "fallback": "Lễ tân kỹ thuật số: đề xuất nhanh, cập nhật giao thông và hỗ trợ đặt chỗ."
 }

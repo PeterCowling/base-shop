@@ -1,129 +1,208 @@
 {
   "seo": {
-    "title": "Laurito Beach guide",
-    "description": "Choose between Da Adolfo and Tre Ville, learn how the shuttle boats work, and plan a stress-free beach day in Laurito."
+    "title": "Пляж Лаурито, Позитано: Да Адольфо, Тре Вилле и советы",
+    "description": "Путеводитель по пляжу Лаурито для гостей хостела: Да Адольфо vs Villa Tre Ville, бронирование, лодки-шаттлы, резервный маршрут на автобусе + лестница, стоимость и что взять."
   },
-  "linkLabel": "Laurito Beach guide",
+  "linkLabel": "Пляж Лаурито: скрытая жемчужина под скалами",
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
   "intro": [
-    "Laurito is a pocket-sized cove tucked between Positano and Praiano. Two beach clubs — Da Adolfo and Villa Tre Ville — dominate the shoreline, leaving just a sliver of public sand. The reward is west-facing sunshine, iconic lunch spots, and a quieter atmosphere than Spiaggia Grande.",
-    "Use this guide to decide which club suits your style, understand how the water taxis operate, and map out the bus-and-stairs route back to Hostel Brikette."
+    "Лаурито — это миниатюрная бухта между Позитано и Прайано. Два пляжных клуба — Да Адольфо и Villa Tre Ville — занимают береговую линию, оставляя лишь узкую полоску общественного пляжа. Награда — солнце, обращённое на запад, культовые места для обеда и более спокойная атмосфера, чем на Спьяджа Гранде.",
+    "Для гостей хостела Лаурито — это пляжный день «побалуйте себя»: вы можете поплавать в спокойной бухте, насладиться долгим обедом и всё ещё вернуться в город к напиткам на закате — если вы спланируете возвращение.",
+    "Используйте это руководство, чтобы выбрать между Да Адольфо и Villa Tre Ville, понять, как работают лодки-шаттлы, и создать надёжный резервный план с %LINK:lauritoBeachBusDown|автобусным маршрутом% и %LINK:lauritoBeachBusBack|путеводителем по возвращению%."
   ],
   "toc": [
     {
+      "href": "#quick-plan",
+      "label": "Быстрый план (из хостела)"
+    },
+    {
       "href": "#why-go",
-      "label": "Why visit Laurito"
+      "label": "Зачем посещать Лаурито"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Как добраться (лодка vs автобус)"
     },
     {
       "href": "#layout",
-      "label": "Layout & services"
+      "label": "Планировка и услуги"
     },
     {
       "href": "#tre-ville",
-      "label": "Villa Tre Ville beach club"
+      "label": "Пляжный клуб Villa Tre Ville"
     },
     {
       "href": "#da-adolfo",
-      "label": "Da Adolfo beach club"
+      "label": "Пляжный клуб Да Адольфо"
     },
     {
-      "href": "#logistics",
-      "label": "Logistics & getting back"
+      "href": "#returns",
+      "label": "Время и возвращение"
+    },
+    {
+      "href": "#pack",
+      "label": "Что взять с собой"
+    },
+    {
+      "href": "#image-credits",
+      "label": "Авторские права на изображения"
     }
   ],
   "sections": [
     {
-      "id": "why-go",
-      "title": "Why Laurito is worth the effort",
+      "id": "quick-plan",
+      "title": "Быстрый план из Hostel Brikette (резюме за 2 минуты)",
       "body": [
-        "Laurito sits just outside Positano’s centre, so crowds thin out compared with Spiaggia Grande. Sun hits the deck until early evening, the water stays calm for swimming, and the cliff backdrop makes for classic Amalfi Coast photos.",
-        "You will need either a confirmed reservation or patience for the tiny free strip, but once you are settled it is one of the most relaxed spots within a short ride of Hostel Brikette."
+        "Если вы хотите простой вариант: выберите один «основной маршрут» и один «резервный маршрут» перед тем, как покинуть хостел. Лаурито небольшой, и день будет отличным, когда вы приедете расслабленным — а не когда вы импровизируете у пирса без сигнала.",
+        "Совет персонала: в пиковые месяцы две вещи, которые срывают планы — это (1) переполненные лодки и (2) неспокойное море, которое приостанавливает шаттлы. Если вы подготовитесь к этим двум факторам, остальное будет легко."
+      ],
+      "list": [
+        "Выберите настроение: Да Адольфо для классического дня с обедом и шезлонгами, или Villa Tre Ville для премиум-терассы и более спокойного сервиса. Если вы хотите просто бухту, приезжайте рано на крошечную общественную полосу и возьмите свою тень.",
+        "Основной маршрут (самый удобный): лодка-шаттл от Спьяджа Гранде. Уточните, где стоять в очереди, и спросите о последнем рейсе по прибытии.",
+        "Резервный маршрут (самый надёжный): %LINK:lauritoBeachBusDown|автобус до Лаурито% + лестница; затем %LINK:lauritoBeachBusBack|автобус обратно% позже.",
+        "Установите время «идти/не идти»: если у вас нет бронирования, выход пораньше увеличивает ваши шансы. Если уже поздно утро и вы видите очереди на лодку, рассмотрите альтернативу, например %LINK:positanoBeaches|другой пляж Позитано%, вместо того чтобы настаивать на Лаурито.",
+        "Возьмите основное: водные ботинки, наличные/карту, солнцезащитный крем и лёгкую одежду для обратной поездки на лодке (бриз усиливается во второй половине дня)."
+      ]
+    },
+    {
+      "id": "why-go",
+      "title": "Почему Лаурито стоит усилий",
+      "body": [
+        "Лаурито находится сразу за центром Позитано, поэтому толпы редеют по сравнению со Спьяджа Гранде. Солнце освещает бухту до раннего вечера, вода обычно спокойная для плавания, а скалы обрамляют залив для классических фотографий побережья Амальфи.",
+        "Это также одно из самых простых мест, чтобы превратить пляжный день в запоминающийся день «долгого обеда». Оба клуба управляют настоящими кухнями (не только закусками), поэтому вы можете плавать, есть и отдыхать, не возвращаясь в город.",
+        "Компромисс — доступ: большая часть береговой линии контролируется клубами, а общественная полоса действительно маленькая. Если вы приедете без плана, Лаурито может показаться тупиком. Если вы приедете с бронированием или чётким резервным планом, это одна из самых расслабленных полудневных поездок из Hostel Brikette.",
+        "Если Лаурито кажется слишком тесным в этот день (очереди, переполненные лодки или вы хотите больше свободного пространства), сравните с альтернативами в нашем %LINK:positanoBeaches|обзоре пляжей Позитано%."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/02-beach-overview.jpg",
+          "alt": "Бухта пляжа Лаурито со скалами на фоне и пляжными клубами вдоль береговой линии",
+          "caption": "Планировка пляжа Лаурито: 1. Бесплатная зона 2. Пляжный клуб TreVilla 3. Да Адольфо",
+          "width": 403,
+          "height": 500
+        }
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "Как добраться: лодка-шаттл vs автобус + лестница",
+      "body": [
+        "Есть два реалистичных способа добраться до Лаурито: на лодке-шаттле от Спьяджа Гранде (самый удобный) или на автобусе SITA с последующим спуском по лестнице (самый надёжный, когда море неспокойное или лодки переполнены).",
+        "Маршрут на лодке (лучше всего при наличии бронирования): отправляйтесь на Спьяджа Гранде и найдите небольшой пирс/место посадки, используемое пляжными шаттлами. Очереди могут быстро образовываться, особенно в спокойные солнечные дни. Если вы не уверены, спросите у пирса и покажите название клуба, в который вы направляетесь, чтобы сесть на правильную лодку.",
+        "Маршрут на автобусе (лучший резервный вариант): следуйте нашему %LINK:lauritoBeachBusDown|пошаговому путеводителю по автобусу%, чтобы добраться до остановки Лаурито, а затем спуститесь по обозначенной лестнице. Это медленнее, чем на лодке, но это план, который всё ещё работает, когда водные такси приостановлены.",
+        "План возвращения: даже если вы прибыли на лодке, сохраните %LINK:lauritoBeachBusBack|путеводитель по возвращению на автобусе% на телефоне. Это самый простой «план Б», если вы пропустите последний шаттл или море станет неспокойным.",
+        "Расписание меняется. Для актуального расписания SITA проконсультируйтесь с %URL:https://www.positano.com/en/bus-schedule|расписанием автобусов Positano.com%, прежде чем планировать позднее возвращение."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/06-amalfi-coast-sita-bus.jpg",
+          "alt": "Синий автобус SITA едет по дороге побережья Амальфи над морем",
+          "caption": "Ваш надёжный резервный вариант, когда лодки останавливаются: автобус SITA по прибрежной дороге",
+          "width": 1920,
+          "height": 1080
+        }
       ]
     },
     {
       "id": "layout",
-      "title": "Layout and who runs what",
+      "title": "Планировка и кто чем управляет",
       "body": [
-        "The cove splits into three zones. A narrow public area sits on the far right for those who bring their own towels. Villa Tre Ville’s club occupies the central decks with terracotta loungers, while Da Adolfo operates the left-hand side with wooden beds and the restaurant terrace.",
-        "All guests arrive by boat or via the steep stairway from the SITA bus stop. Expect to queue at peak times because both clubs control access to most of the shoreline."
+        "Бухта делится на три зоны. Узкая общественная зона находится справа для тех, кто приносит свои полотенца. Клуб Villa Tre Ville занимает центральные террасы с терракотовыми шезлонгами, в то время как Да Адольфо управляет левой стороной с деревянными лежаками и террасой ресторана.",
+        "Все гости прибывают на лодке или по крутой лестнице от автобусной остановки SITA. Ожидайте очередей в пиковое время, потому что оба клуба контролируют доступ к большей части береговой линии.",
+        "Практическая заметка: если вы нацелены на общественную полосу, приезжайте рано, возьмите свою воду и тень и будьте готовы к гальке/каменным плитам, а не к мягкому песку. Если вы бронируете клуб, уточните, включены ли полотенца и нужны ли наличные для дополнительных услуг."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/01-beach-layout-map.jpg",
+          "alt": "Диаграмма планировки пляжа Лаурито, показывающая три зоны: свободная секция, Villa Tre Ville и Да Адольфо",
+          "caption": "Планировка Лаурито: узкая общественная полоса (крайняя правая), центральные террасы Villa Tre Ville и терраса Да Адольфо (слева)",
+          "width": 1500,
+          "height": 1000
+        }
       ]
     },
     {
       "id": "tre-ville",
-      "title": "Villa Tre Ville beach club",
+      "title": "Пляжный клуб Villa Tre Ville",
       "body": [
-        "Villa Tre Ville hosts a boutique club with limited loungers, attentive service, and pricing to match. Expect premium day beds, à la carte dining, and prosecco served to your chair.",
-        "Reservations run through the hotel concierge. Seats can exceed €200 for two in high season, but include towels, showers, and return boat service to Spiaggia Grande.",
-        "Late afternoon is particularly scenic; staff often arrange sunset spritz tastings before the final shuttle back to Positano."
+        "Villa Tre Ville управляет бутик-клубом с ограниченным количеством шезлонгов, внимательным обслуживанием и соответствующими ценами. Ожидайте премиальные лежаки, меню à la carte и просекко, поданное к вашему креслу.",
+        "Бронирование осуществляется через консьержа отеля. Цены меняются в зависимости от сезона и ряда, но это «премиум» вариант в Лаурито: планируйте более высокий минимальный расход и меньше возможностей для спонтанного посещения.",
+        "Что делает его стоящим: меньше хаоса, лучшее расстояние между шезлонгами и более спокойная атмосфера, если вы хотите читать, вздремнуть или справиться с похмельем в покое. Если вы путешествуете парой или небольшой группой и хотите предсказуемый день, это обычно более гладкий выбор.",
+        "Вторая половина дня особенно живописна. Спросите у персонала о времени последней лодки обратно при регистрации и не предполагайте, что она будет работать допоздна только потому, что солнце ещё светит."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg",
+          "alt": "Пляжный клуб Villa Tre Ville с терракотовыми шезлонгами и премиальным обслуживанием",
+          "caption": "Villa Tre Ville — бутик-пляжный клуб с премиальными лежаками и обслуживанием в стиле консьержа",
+          "width": 1280,
+          "height": 1600
+        }
       ]
     },
     {
       "id": "da-adolfo",
-      "title": "Da Adolfo beach club",
+      "title": "Пляжный клуб Да Адольфо",
       "body": [
-        "Da Adolfo is famous for its grilled mozzarella on lemon leaves and relaxed, bohemian vibe. Booking is notoriously difficult — they reply slowly, and day-of slots go to returning guests first.",
-        "If you cannot secure a reservation, arrive early at Spiaggia Grande and ask to join the Da Adolfo water taxi as a standby guest. Once at the dock, staff will add you to their waitlist for any no-shows.",
-        "Lounger packages hover around €50–€70 for two people including the shuttle. Lunch mains run €18–€26 and the kitchen stays open through late afternoon."
+        "Да Адольфо известен своей моцареллой гриль на лимонных листьях и расслабленной, богемной атмосферой. Бронирование печально известно сложностью — они медленно отвечают, а места на день сначала идут постоянным клиентам.",
+        "Если вы не можете обеспечить бронирование, вы можете попробовать режим ожидания: приезжайте рано на Спьяджа Гранде, попросите присоединиться к водному такси Да Адольфо и будьте вежливы со списком ожидания. Чем раньше вы начнёте, тем больше вероятность, что откроется место.",
+        "Ожидайте атмосферу «сначала обед» здесь: люди приезжают за едой и атмосферой так же, как и за плаванием. Если у вас есть бронирование, планируйте устроиться и остаться на время, а не пытаться втиснуть это в спешное утро.",
+        "Цены варьируются в зависимости от сезона и доступности. В качестве ориентира, пакеты шезлонгов часто находятся в диапазоне €50–€70 на двоих, включая шаттл, с основными блюдами на обед обычно в диапазоне €18–€30. Относитесь к ним как к оценкам и уточняйте по прибытии."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg",
+          "alt": "Пирс и терраса ресторана пляжного клуба Да Адольфо с богемной атмосферой",
+          "caption": "Да Адольфо — известен расслабленной атмосферой обеда и доступом на водном такси со Спьяджа Гранде",
+          "width": 512,
+          "height": 215
+        }
       ]
     },
     {
-      "id": "logistics",
-      "title": "Logistics, tickets, and getting back",
+      "id": "returns",
+      "title": "Время, условия моря и возвращение в хостел",
       "body": [
-        "Water taxis for both clubs depart from the small pier on Spiaggia Grande. Boats typically run every 30 minutes from 09:30 until early afternoon, then resume returns around 15:00. Keep an eye on the chalkboard at the dock for changes when seas are rough.",
-        "Prefer public transport? Follow our %LINK:lauritoBeachBusDown|bus guide% for the outbound journey and %LINK:lauritoBeachBusBack|return guide% for the climb back. Buy your bus tickets before leaving town — there is nowhere to purchase them at Laurito.",
-        "On the way home, the coastal bus towards Sorrento or Positano stops beside the staircase entrance. Services thin out after 19:00, so confirm the last departure or budget for a taxi arranged via the hostel."
-      ]
-    }
-  ],
-  "essentialsTitle": "What to expect",
-  "essentials": [
-    "Reservations are essential for both clubs in summer; walk-ins only succeed before 10:00.",
-    "Tiny public section fills quickly — arrive with your own umbrella and mat if you plan to use it.",
-    "Return boats leave mid-afternoon; have the bus backup ready for evening plans."
-  ],
-  "typicalCostsTitle": "Typical costs",
-  "typicalCosts": [
-    "Da Adolfo lounger set for two: €50–€70 including shuttle boat.",
-    "Villa Tre Ville premium deck for two: €180–€220 with towels and concierge service.",
-    "Lunch mains at either club: €18–€30, cocktails €12–€15, bottled water €3–€4."
-  ],
-  "tipsTitle": "Quick tips",
-  "tips": [
-    "Screenshot confirmation emails — mobile signal fades near the dock.",
-    "Pack reef-safe sunscreen and water shoes; the shoreline mixes pebbles and rock slabs.",
-    "Review our %LINK:positanoBeaches|Positano beaches overview% to compare Laurito with other coves."
-  ],
-  "warningsTitle": "Good to know",
-  "warnings": [
-    "Rough seas pause shuttle boats; staff will text updates but the bus may be your only route back.",
-    "No ATMs or shops at the cove — bring cash or cards for meals and extras.",
-    "The stairway is steep with uneven steps; plan breaks and wear grippy footwear."
-  ],
-  "faqsTitle": "Laurito Beach FAQs",
-  "faqs": [
-    {
-      "q": "Do I need a reservation?",
-      "a": [
-        "Yes. Both clubs prioritise guests with confirmed bookings. Da Adolfo accepts standby visitors on a waitlist, but only after pre-booked guests are seated."
+        "Большая часть стресса в Лаурито происходит в конце дня, а не в начале. Решите свой маршрут возвращения рано, затем подтвердите время «последней лодки», как только прибудете (оно может меняться в зависимости от условий моря и сезона).",
+        "Водные такси для клубов отправляются со Спьяджа Гранде. Если море станет неспокойным, шаттлы могут приостановиться. Когда это происходит, ваш лучший ход — переключиться на план автобуса и лестницы, а не ждать бесконечно у пирса.",
+        "Предпочитаете общественный транспорт с самого начала? Следуйте нашему %LINK:lauritoBeachBusDown|путеводителю по автобусу% для поездки туда и %LINK:lauritoBeachBusBack|путеводителю по возвращению% для подъёма обратно. Купите билеты на автобус перед тем, как покинуть город — в Лаурито негде их купить.",
+        "Если вы возвращаетесь после долгого обеда, оставьте буферное время. Автобусы могут быть переполненными и медленными, и легче поймать более ранний автобус, чем спасти пропущенный последний. Если вы окажетесь на улице после темноты, такси возможны, но дороги — спросите у хостела лучший вариант на этот день."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/05-positano-view.jpg",
+          "alt": "Вид на Позитано и море с лодками у берега",
+          "caption": "Спьяджа Гранде — главная точка отправления многих пляжных шаттлов и лодок",
+          "width": 1280,
+          "height": 1707
+        }
       ]
     },
     {
-      "q": "Can I use the public section?",
-      "a": [
-        "You can, but space is extremely limited. Bring everything you need, including shade and water, and arrive before 09:30 to claim a spot."
+      "id": "pack",
+      "title": "Что взять с собой (контрольный список для гостей хостела)",
+      "body": [
+        "Лаурито — это день «маленькой бухты», что означает, что вы должны предполагать ограниченные удобства за пределами клубов. Даже если у вас есть бронирование, умная упаковка делает день более гладким.",
+        "Возьмите: водные ботинки (галька/каменные плиты), солнцезащитный крем, безопасный для рифов, лёгкую одежду для обратной поездки на лодке и небольшое количество наличных/карту для дополнительных услуг. Если вы планируете попробовать общественную полосу, добавьте своё полотенце/коврик и тень.",
+        "Сигнал телефона может быть ненадёжным у пирса. Сделайте скриншот любого подтверждения бронирования и сохраните %LINK:lauritoBeachBusBack|шаги возвращения на автобусе% как резервный вариант."
       ]
     },
     {
-      "q": "How late do the boats run?",
-      "a": [
-        "Most return shuttles finish by 18:00 in summer, earlier in shoulder season. Always confirm the last departure on arrival and have the bus timetable saved as a backup."
+      "id": "image-credits",
+      "title": "Авторские права на изображения",
+      "body": [
+        "Некоторые фотографии в этом руководстве используются по лицензиям Creative Commons:"
+      ],
+      "list": [
+        "Береговая линия Позитано — Фото: %URL:https://commons.wikimedia.org/wiki/File:Positano_sea.jpg|Alexis Lours% (%URL:https://creativecommons.org/licenses/by/4.0/|CC BY 4.0%).",
+        "Автобус SITA — Фото: %URL:https://commons.wikimedia.org/wiki/File:Amalfi_Drive_Sita_Bus.jpeg|Robot8A% (%URL:https://creativecommons.org/licenses/by-sa/4.0/|CC BY-SA 4.0%)."
       ]
     }
   ],
   "images": {
     "whyGo": {
       "alt": "Бухта Лаурито с бирюзовой водой и шезлонгами",
-      "caption": "Спокойная вода и скальный фон делают Лаурито идеальным для фото.",
+      "caption": "Планировка пляжа Лаурито: 1. Бесплатная зона 2. TreVilla Beach Club 3. Da Adolfo",
       "width": 403,
       "height": 500,
       "src": "/img/guides/laurito-beach/02-beach-overview.jpg"
@@ -152,13 +231,61 @@
     "positanoView": {
       "src": "/img/guides/laurito-beach/05-positano-view.jpg",
       "alt": "Вид на Позитано и море с лодками у берега",
-      "caption": "Спьяджа Гранде — главная точка отправления многих шаттлов и лодок."
+      "caption": "Спьяджа Гранде — главная точка отправления многих шаттлов и лодок.",
+      "width": 1280,
+      "height": 1707
     },
     "sitaBus": {
       "src": "/img/guides/laurito-beach/06-amalfi-coast-sita-bus.jpg",
       "alt": "Синий автобус SITA едет по дороге Амальфитанского побережья над морем",
-      "caption": "Прибрежный автобус SITA — полезный запасной вариант, когда лодки не ходят."
+      "caption": "Прибрежный автобус SITA — полезный запасной вариант, когда лодки не ходят.",
+      "width": 1920,
+      "height": 1080
     }
   },
-  "lastUpdated": "2026-01-29T00:00:00.000Z"
+  "essentialsTitle": "Что ожидать",
+  "essentials": [
+    "Бронирование обязательно для обоих клубов летом; спонтанные посещения успешны только до 10:00.",
+    "Крошечная общественная секция быстро заполняется — приезжайте со своим зонтом и ковриком, если планируете её использовать.",
+    "Обратные лодки отправляются в середине дня; имейте резервный автобус готовым для вечерних планов."
+  ],
+  "typicalCostsTitle": "Типичные расходы",
+  "typicalCosts": [
+    "Набор шезлонгов Да Адольфо на двоих: €50–€70, включая лодку-шаттл.",
+    "Премиум-терраса Villa Tre Ville на двоих: €180–€220 с полотенцами и обслуживанием консьержа.",
+    "Основные блюда на обед в любом клубе: €18–€30, коктейли €12–€15, бутилированная вода €3–€4."
+  ],
+  "tipsTitle": "Быстрые советы",
+  "tips": [
+    "Сделайте скриншот подтверждающих электронных писем — мобильный сигнал слабеет у пирса.",
+    "Возьмите солнцезащитный крем, безопасный для рифов, и водные ботинки; береговая линия смешивает гальку и каменные плиты.",
+    "Просмотрите наш %LINK:positanoBeaches|обзор пляжей Позитано%, чтобы сравнить Лаурито с другими бухтами."
+  ],
+  "warningsTitle": "Хорошо знать",
+  "warnings": [
+    "Неспокойное море приостанавливает лодки-шаттлы; персонал отправит обновления по СМС, но автобус может быть вашим единственным путём обратно.",
+    "Нет банкоматов или магазинов в бухте — возьмите наличные или карты для еды и дополнительных услуг.",
+    "Лестница крутая с неровными ступенями; планируйте перерывы и носите обувь с хорошим сцеплением."
+  ],
+  "faqsTitle": "Часто задаваемые вопросы о пляже Лаурито",
+  "faqs": [
+    {
+      "q": "Нужно ли бронирование?",
+      "a": [
+        "Да. Оба клуба отдают приоритет гостям с подтверждёнными бронированиями. Да Адольфо принимает посетителей в режиме ожидания в списке ожидания, но только после того, как забронированные гости будут рассажены."
+      ]
+    },
+    {
+      "q": "Могу ли я использовать общественную секцию?",
+      "a": [
+        "Можете, но места крайне ограничены. Возьмите всё необходимое, включая тень и воду, и приезжайте до 09:30, чтобы занять место."
+      ]
+    },
+    {
+      "q": "До какого времени ходят лодки?",
+      "a": [
+        "Большинство обратных шаттлов заканчивают работу к 18:00 летом, раньше в межсезонье. Всегда подтверждайте последний отправление по прибытии и имейте расписание автобусов сохранённым как резервный вариант."
+      ]
+    }
+  ]
 }

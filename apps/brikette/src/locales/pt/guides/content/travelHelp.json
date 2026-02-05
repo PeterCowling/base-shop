@@ -1,9 +1,14 @@
 {
+  "lastUpdated": "2026-02-04T00:00:00.000Z",
   "seo": {
     "title": "Ajuda de viagem | Brikette Hostel Positano",
     "description": "Resumo de dois minutos sobre como chegar ao hostel e quais passeios os hóspedes costumam fazer, com links para os nossos guias completos de transporte e excursões."
   },
   "linkLabel": "Ajuda de viagem | Brikette Hostel Positano",
+  "intro": [
+    "Ajuda de viagem Positano: a maioria dos percursos passa por Sorrento. Em Positano, normalmente chega a Chiesa Nuova (autocarro) ou Spiaggia Grande (ferry).",
+    "Use esta página para escolher o guia certo. Os nossos guias de rotas cobrem bilhetes, paragens, bagagens e rotas alternativas. Os nossos guias de Experiências cobrem passeios de um dia porta a porta."
+  ],
   "sections": [
     {
       "id": "overview",
@@ -17,6 +22,21 @@
       "title": "Como chegar rapidamente aos passeios mais populares",
       "body": [
         "Depois de instalado, a coleção Experiências oferece instruções porta a porta para os passeios favoritos dos nossos hóspedes — ferries para Capri, acessos ao Trilho dos Deuses, autocarros para Amalfi e Ravello, comboios para Pompeia e Vesúvio e muito mais. Consulte esses guias para conhecer os primeiros horários, dicas de bilhetes e o que levar."
+      ]
+    }
+  ],
+  "faqsTitle": "Perguntas frequentes sobre ajuda de viagem",
+  "faqs": [
+    {
+      "q": "Onde devo chegar em Positano?",
+      "a": [
+        "Se vier de autocarro SITA, dirija-se à paragem Chiesa Nuova (perto do Bar Internazionale). É a paragem mais próxima e conveniente para o Hostel Brikette. Se vier de ferry, chega a Spiaggia Grande (a praia/cais principal) e depois sobe até ao hostel."
+      ]
+    },
+    {
+      "q": "Preciso de reservar o transporte com antecedência?",
+      "a": [
+        "Na época alta (especialmente aos fins de semana), ajuda planear partidas mais cedo e estar no cais/paragem do autocarro com antecedência. Os ferries podem esgotar nas horas mais procuradas, e as filas dos autocarros podem ser longas. Se preferir flexibilidade, tenha em mente um percurso alternativo a partir da %HOWTO:how-to-get-here|Visão geral de Como chegar%."
       ]
     }
   ]

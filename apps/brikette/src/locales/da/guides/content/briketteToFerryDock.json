@@ -1,82 +1,104 @@
 {
   "seo": {
-    "title": "Hostel Brikette → færgehavnen, med bagage",
-    "description": "Trin-for-trin-rute fra hostellet til Positanos færgehavn med Interno-bussen og bagagebærere."
+    "title": "Hostel Brikette → Positano færgehavn (port)",
+    "description": "Trin-for-trin gangvejledning til Positanos havn med kortlandmærker, billetanbefalinger og ombordstigningstips."
   },
-  "linkLabel": "Hostel Brikette → færgehavn med bagage",
+  "linkLabel": "Hostel Brikette → færgehavn (port)",
   "intro": [
-    "Skal du fra Hostel Brikette med bagage? Tag Interno Positano-bussen nedad og lad havnens portører flytte de tunge tasker, så du når færgen uden at kæmpe med Positanos trapper."
+    "Skal du til Positanos havn for at tage en færge? Dette er den nemmeste gåtur, vi har fundet fra Hostel Brikette til Spiaggia Grande - med et hurtigt kort og fotolandmærker for punkterne 1-5.",
+    "Tillad 20-30 minutter til fods (mere med bagage), og bemærk at Google Maps nogle gange foreslår længere omveje til stranden - følg ruten nedenfor i stedet."
   ],
   "beforeList": [
-    "Tjek den aktuelle Interno Positano-køreplan — her er [seneste tider og priser](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
-    "Køb Interno Positano-billetter i tabacchi ved siden af Chiesa Nuova før du stiger på (eller bed receptionen bekræfte lager).",
-    "Arrangér portørhjælp ved store kufferter — receptionen kan ringe på forhånd, eller se %LINK:porterServices|portørguiden% for numre og priser."
+    "Tjek færgetider og priser ved operatørboderne ved havnen (de viser næste afgang på skiltet).",
+    "Giv dig tid, hvis du har bagage - der er trapper på denne rute, og havnen bliver travl i myldretiden.",
+    "Sigt efter at ankomme tidligt, så du kan købe billetter, finde den rigtige kaj og være klar, når ombordstigning begynder."
   ],
   "sections": [
     {
-      "id": "hostel-to-stop",
-      "title": "Fra hostel-indgang til Chiesa Nuova-stoppet",
+      "id": "getting-to-the-port",
+      "title": "At komme til havnen",
       "body": [
-        "Tjek ud, gå ned ad hovedtrappen til Viale Pasitea og drej til venstre (ned ad bakke). Gå lidt over 100 meter til tabacchi/kiosken du brugte ved ankomst.",
-        "Interno Positano-stoppet ligger lige ved siden af tabacchi. Hav billetter klar; køb flere indeni før bussen kommer hvis du mangler."
+        "Begynd ved værtsstedet og gå mod Spiaggia Grande (Positanos hovedstrand).",
+        "Havnen ligger på højre side af stranden.",
+        "Tillad 20-30 minutter til gåturen fra værtsstedet til havnen.",
+        "Google Maps giver måske ikke altid den mest direkte rute til stranden - brug kortet og trin-for-trin vejledningen nedenfor.",
+        "[Se her, hvis du foretrækker kortvejledning](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2)."
       ]
     },
     {
-      "id": "bus-to-mulini",
-      "title": "Tag Interno Positano-bussen til Piazza dei Mulini",
+      "id": "walking-route",
+      "title": "Gå fra Hostel Brikette til havnen (punkter 1-5)",
       "body": [
-        "Stig på Interno Positano-bussen — destinationsskiltet viser \"interno positano\". Opbevar bagage på skødet eller i midterområdet så gangen er fri.",
-        "Bliv siddende i ca. 10 minutter til stoppet Piazza dei Mulini (sidste store stop før gågaden). Fortæl chaufføren du skal til stranden hvis du er i tvivl."
+        "Kortreference (Værtssted → Havn):",
+        "[[figure:map]]",
+        "Begynd med at forlade værtsstedet via hoveddøren.",
+        "Gå ned ad trapperne til vejen.",
+        "Drej til venstre og gå lidt over 100 meter (330 fod), indtil du når punkt 1 på kortet.",
+        "Ved punkt 1 skal du tage svinget til højre.",
+        "[[figure:point-1]]",
+        "Så snart du drejer til højre ved punkt 1, vil du se tabacchi på højre side.",
+        "[[figure:tabacchi]]",
+        "Følg vejen ned ad bakke.",
+        "Ved det første sving har du nået punkt 2 på kortet.",
+        "Ved punkt 2 skal du forlade vejen og gå lige frem og tage trapperne.",
+        "[[figure:point-2]]",
+        "Når du når enden af trapperne, er du nået til punkt 3 på kortet.",
+        "Kryds vejen og tag stien lige frem.",
+        "Følg trapperne ned, indtil du når det næste niveau.",
+        "[[figure:point-3]]",
+        "Når du når enden af trapperne, ankommer du til vejen.",
+        "Kryds over vejen og drej til venstre og gå 10 meter (30 fod), indtil du når punkt 4 på kortet.",
+        "Ved punkt 4 skal du dreje til højre og tage trapperne, der fører væk fra vejen og ned ad bakke.",
+        "[[figure:point-4]]",
+        "Følg trapperne ned, indtil du når bunden. I bunden af trapperne skal du dreje til højre.",
+        "Dette bringer dig til punkt 5 på kortet.",
+        "Fortsæt under buegangen til højre.",
+        "[[figure:point-5]]",
+        "Efter 50 meter (160 fod) når du havnen."
       ]
     },
     {
-      "id": "mulini-to-dock",
-      "title": "Fra Piazza dei Mulini til færgehavnen",
+      "id": "buying-tickets",
+      "title": "Køb af færgebilletter",
       "body": [
-        "Stig af bussen, mød portørerne hvis du har forudbestilt, og gå lige ud i gågaden mod Spiaggia Grande.",
-        "Følg promenaden ned ad bakke i ca. 7 minutter — brug [denne rute](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2) for at holde dig på de glatte ramper.",
-        "Ved færgehavnen, check ind hos operatøren. Portører leverer bagage separat; behold pas, medicin og værdier hos dig."
+        "Ved Positano-havnen kan du tage færger til steder som Amalfi, Capri og videre. Hver færgeoperatør har en bod, og skiltet på boden viser information om den næste færge, de vil køre.",
+        "[[figure:tickets]]"
+      ]
+    },
+    {
+      "id": "boarding",
+      "title": "Ombordstigning på en færge",
+      "body": [
+        "Når du har din billet, skal du gå til enden af havnen og vente på, at færgen begynder ombordstigning.",
+        "[[figure:port]]"
       ]
     }
   ],
   "stepsList": [
-    "Køb Interno Positano-billetter i tabacchi ved Chiesa Nuova og bekræft portørtilgængelighed.",
-    "Gå 100 m ned ad bakke fra hostellet til Chiesa Nuova-stoppet og vent på havsiden af Viale Pasitea.",
-    "Tag Interno Positano-bussen til Piazza dei Mulini (sidste store stop før stranden).",
-    "Mød portørerne og følg promenaden til færgehavnen mens de bærer de tunge tasker."
+    "Forlad værtsstedet og drej til venstre ad vejen indtil punkt 1 på kortet, drej derefter til højre.",
+    "Følg ruten ned via punkterne 2-5 (trapper og overgange), indtil du når havnen.",
+    "Køb billetter ved operatørboderne og tjek skiltet for næste sejlads.",
+    "Gå til enden af havnen og vent på ombordstigning."
   ],
-  "kneesList": [
-    "Interno Positano-bussen erstatter hundreder af stejle trin med en kort, plan gåtur.",
-    "Portører kan tage kufferter på vogne, så du kun bærer en lille taske på promenaden."
-  ],
-  "kneesDockPrefix": "Skal du opad med bagage senere? Læs vores",
-  "kneesDockLinkLabel": "Chiesa Nuova ankomstguide",
-  "kneesPorterPrefix": "Vil du have portørpriser og bookingtips? Se",
-  "kneesPorterLinkLabel": "portørguiden",
+  "kneesList": [],
   "faqs": [
     {
-      "q": "Hvor kan jeg købe Interno Positano-billetter tæt på hostellet?",
+      "q": "Hvor lang tid tager det at gå fra Hostel Brikette til havnen?",
       "a": [
-        "Tabacchi/kiosken ved siden af Chiesa Nuova-stoppet har typisk billetter; receptionen kan bekræfte dagsbeholdning. Chauffører sælger ikke billetter ombord."
+        "Planlæg 20-30 minutter til fods. Tilføj ekstra tid, hvis du har bagage, eller hvis du vil stoppe for at købe billetter før ombordstigning."
       ]
     },
     {
-      "q": "Hvor lang tid før skal jeg bestille portører?",
+      "q": "Hvor køber jeg færgebilletter i Positano?",
       "a": [
-        "Om sommeren: ring 30–45 minutter før afgang, så de møder dig ved Piazza dei Mulini. I roligere måneder er 15 minutter ofte nok — receptionen kan ringe for dig."
-      ]
-    },
-    {
-      "q": "Hvad hvis Interno-bussen ikke kører, når jeg skal afsted?",
-      "a": [
-        "Hvis driften stopper sent, så bed portører bære bagagen hele vejen ned og gå selv promenaden, eller brug en SITA-bus mod Sponda (kører længere) og fortsæt til fods ned ad bakken."
+        "Ved havnen vil du se boder for hver færgeoperatør. Skiltet på boden viser information om den næste færge, de vil køre."
       ]
     }
   ],
   "howtoSteps": [
-    "Bekræft billetter og portører ved Chiesa Nuova",
-    "Gå ned ad bakke fra hostellet til Chiesa Nuova-busstoppet",
-    "Tag Interno Positano-bussen til Piazza dei Mulini",
-    "Mød portører og gå promenaden til færgehavnen"
+    "Følg kortruten fra værtsstedet ned til havnen",
+    "Brug fotolandmærker ved punkterne 1-5 for at holde dig på sporet",
+    "Køb billetter ved operatørboderne og bekræft næste sejlads",
+    "Vent ved kajen og gå om bord, når der kaldes"
   ]
 }

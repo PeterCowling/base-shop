@@ -94,23 +94,57 @@
         "description": "이미 포지타노에 도착했지만 호스텔로 가는 방법이 고민되나요? 아래 가이드를 확인해 보세요:",
         "image": {
           "src": "/img/positano-panorama.avif",
-          "alt": "절벽을 따라 자리한 포지타노 주택의 파노라마 전경"
+          "alt": "절벽을 따라 자리한 포지타노 주택의 파노라마 전경",
+          "caption": "포지타노는 가파릅니다 — 특히 짐이 있을 때 계단을 예상하세요."
         },
         "links": [
           {
             "label": "키에사 누오바/Bar Internazionale → Hostel Brikette",
             "href": "chiesa-nuova-bar-internazionale-to-hostel-brikette",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "5~10분",
+              "cost": "무료",
+              "walking": "약 140미터 + 약 30계단",
+              "luggageFriendly": 2,
+              "seasonality": "연중"
+            }
           },
           {
             "label": "포지타노 페리 선착장 → Hostel Brikette",
             "href": "ferry-dock-to-hostel-brikette-with-luggage",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "20~45분 (짐꾼/Interno 버스에 따라)",
+              "cost": "€2~€6 1인당 (+ 선택적 짐꾼)",
+              "walking": "항구 계단; 짐꾼이 운반 감소",
+              "luggageFriendly": 1,
+              "seasonality": "연중"
+            }
+          },
+          {
+            "label": "Hostel Brikette에서 페리 부두까지",
+            "href": "hostel-brikette-to-ferry-dock-with-luggage",
+            "internal": true,
+            "facts": {
+              "duration": "20~30분 (짐이 있으면 더 걸림)",
+              "cost": "무료",
+              "walking": "계단 + 도로 횡단",
+              "luggageFriendly": 1,
+              "seasonality": "연중 이용 가능"
+            }
           },
           {
             "label": "Hostel Brikette → 키에사 누오바/Bar Internazionale",
             "href": "hostel-brikette-to-chiesa-nuova-bar-internazionale",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "20~30분 (짐이 있으면 더 오래)",
+              "cost": "무료",
+              "walking": "계단 + 도로 횡단",
+              "luggageFriendly": 1,
+              "seasonality": "연중"
+            }
           }
         ]
       },
@@ -118,28 +152,57 @@
         "name": "아말피",
         "image": {
           "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
-          "alt": "해안 노선을 운행하는 SITA Sud 버스 정류장"
+          "alt": "해안 노선을 운행하는 SITA Sud 버스 정류장",
+          "caption": "아말피 버스터미널에서 SITA 버스를 찾으세요."
         },
         "links": [
           {
             "label": "아말피 → 포지타노 (버스)",
             "href": "amalfi-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "45~90분 (교통 상황에 따라)",
+              "cost": "€2~€4 1인당",
+              "walking": "끝에 짧은 계단 (약 30계단)",
+              "luggageFriendly": 2,
+              "seasonality": "연중"
+            }
           },
           {
             "label": "포지타노 → 아말피 (버스)",
             "href": "positano-amalfi-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "45~90분 (교통 상황에 따라)",
+              "cost": "€2~€4 1인당",
+              "walking": "시작/끝에 짧은 계단 (약 30계단)",
+              "luggageFriendly": 2,
+              "seasonality": "연중"
+            }
           },
           {
             "label": "아말피 → 포지타노 (페리)",
             "href": "amalfi-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "25~45분 (항해) + 항구 환승",
+              "cost": "€10~€20 1인당",
+              "walking": "항구로/에서 계단",
+              "luggageFriendly": 1,
+              "seasonality": "계절 운행 (4월~10월)"
+            }
           },
           {
             "label": "포지타노 → 아말피 (페리)",
             "href": "positano-amalfi-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "25~45분 (항해) + 항구 환승",
+              "cost": "€10~€20 1인당",
+              "walking": "항구로/에서 계단",
+              "luggageFriendly": 1,
+              "seasonality": "계절 운행 (4월~10월)"
+            }
           }
         ]
       },
@@ -147,18 +210,33 @@
         "name": "카프리",
         "image": {
           "src": "/img/directions/positano-capri-ferry-img09.jpg",
-          "alt": "카프리 마리나 그란데에 접안하는 페리"
+          "alt": "카프리 마리나 그란데에 접안하는 페리",
+          "caption": "카프리 페리는 마리나 그란데에서 출발합니다."
         },
         "links": [
           {
             "label": "카프리 → 포지타노 (페리)",
             "href": "capri-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "30~60분 (항해) + 항구 환승",
+              "cost": "€20~€35 1인당",
+              "walking": "항구 접근; 포지타노에서 계단 가능성",
+              "luggageFriendly": 1,
+              "seasonality": "계절 운행 (4월~10월)"
+            }
           },
           {
             "label": "포지타노 → 카프리 (페리)",
             "href": "positano-capri-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "30~60분 (항해) + 항구 환승",
+              "cost": "€20~€35 1인당",
+              "walking": "항구 접근; 포지타노에서 계단 가능성",
+              "luggageFriendly": 1,
+              "seasonality": "계절 운행 (4월~10월)"
+            }
           }
         ]
       },
@@ -166,33 +244,69 @@
         "name": "나폴리 시내",
         "image": {
           "src": "/img/tabacchi.webp",
-          "alt": "나폴리 시내 거리의 타바키 상점 외관"
+          "alt": "나폴리 시내 거리의 타바키 상점 외관",
+          "caption": "탑승 전에 타바키나 매점에서 버스 티켓을 구입하세요."
         },
         "links": [
           {
             "label": "나폴리 시내 → 포지타노 (기차 + 버스)",
             "href": "naples-center-train-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2~3.5시간 (환승 포함)",
+              "cost": "€15~€25 1인당",
+              "walking": "낮음; 소렌토에서 환승",
+              "luggageFriendly": 2,
+              "seasonality": "연중"
+            }
           },
           {
             "label": "포지타노 → 나폴리 시내 (버스 후 기차)",
             "href": "positano-naples-center-bus-train",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2~3.5시간 (환승 포함)",
+              "cost": "€15~€25 1인당",
+              "walking": "시작/끝에 짧은 계단 (약 30계단)",
+              "luggageFriendly": 2,
+              "seasonality": "연중"
+            }
           },
           {
             "label": "나폴리 시내 → 포지타노 (페리)",
             "href": "naples-center-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "3~4.5시간 (항구 환승 포함)",
+              "cost": "€25~€45 1인당",
+              "walking": "항구로 환승 + 포지타노에서 계단",
+              "luggageFriendly": 1,
+              "seasonality": "계절 운행 (4월~10월)"
+            }
           },
           {
             "label": "포지타노 → 나폴리 시내 (페리)",
             "href": "positano-naples-center-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "3~4.5시간 (항구 환승 포함)",
+              "cost": "€25~€45 1인당",
+              "walking": "포지타노에서 계단 + 항구에서 환승",
+              "luggageFriendly": 1,
+              "seasonality": "계절 운행 (4월~10월)"
+            }
           },
           {
             "label": "포지타노 → 나폴리 (페리 상세 안내)",
             "href": "positano-to-naples-directions-by-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "3~4.5시간 (항구 환승 포함)",
+              "cost": "€25~€45 1인당",
+              "walking": "포지타노에서 계단 + 항구에서 환승",
+              "luggageFriendly": 1,
+              "seasonality": "계절 운행 (4월~10월)"
+            }
           }
         ]
       },
@@ -200,18 +314,33 @@
         "name": "나폴리 공항",
         "image": {
           "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
-          "alt": "나폴리 국제공항 외부 Curreri 셔틀 승차 구역"
+          "alt": "나폴리 국제공항 외부 Curreri 셔틀 승차 구역",
+          "caption": "버스를 갈아탈 소렌토 기차역"
         },
         "links": [
           {
             "label": "포지타노 → 나폴리 공항 (버스)",
             "href": "positano-naples-airport-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2~3.5시간 (소렌토에서 환승 포함)",
+              "cost": "€15~€25 1인당",
+              "walking": "시작/끝에 짧은 계단 (약 30계단)",
+              "luggageFriendly": 2,
+              "seasonality": "연중"
+            }
           },
           {
             "label": "나폴리 공항 → 포지타노 (버스)",
             "href": "naples-airport-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2~3.5시간 (소렌토에서 환승 포함)",
+              "cost": "€15~€25 1인당",
+              "walking": "끝에 짧은 계단 (약 30계단)",
+              "luggageFriendly": 2,
+              "seasonality": "연중"
+            }
           }
         ]
       },
@@ -219,28 +348,57 @@
         "name": "살레르노",
         "image": {
           "src": "/img/hostel-coastal-horizon.webp",
-          "alt": "살레르노 방향으로 펼쳐진 아말피 해안 전망"
+          "alt": "살레르노 방향으로 펼쳐진 아말피 해안 전망",
+          "caption": "살레르노는 열차+버스 또는 계절 페리로 연결됩니다."
         },
         "links": [
           {
             "label": "살레르노 → 포지타노 (버스)",
             "href": "salerno-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2.5~4시간 (아말피 경유)",
+              "cost": "€6~€12 1인당",
+              "walking": "낮음; 아말피에서 버스 환승",
+              "luggageFriendly": 2,
+              "seasonality": "연중"
+            }
           },
           {
             "label": "포지타노 → 살레르노 (버스)",
             "href": "positano-salerno-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2.5~4시간 (아말피 경유)",
+              "cost": "€6~€12 1인당",
+              "walking": "시작/끝에 짧은 계단 (약 30계단)",
+              "luggageFriendly": 2,
+              "seasonality": "연중"
+            }
           },
           {
             "label": "살레르노 → 포지타노 (페리)",
             "href": "salerno-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1~2시간 (항해) + 항구 환승",
+              "cost": "€15~€30 1인당",
+              "walking": "항구 계단; 짐꾼 권장",
+              "luggageFriendly": 1,
+              "seasonality": "계절 운행 (4월~10월)"
+            }
           },
           {
             "label": "포지타노 → 살레르노 (페리)",
             "href": "positano-salerno-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1~2시간 (항해) + 항구 환승",
+              "cost": "€15~€30 1인당",
+              "walking": "항구 계단; 짐꾼 권장",
+              "luggageFriendly": 1,
+              "seasonality": "계절 운행 (4월~10월)"
+            }
           }
         ]
       },
@@ -248,23 +406,45 @@
         "name": "라벨로",
         "image": {
           "src": "/img/hostel-communal-terrace-lush-view.webp",
-          "alt": "라벨로 인근 해안선을 내려다보는 절벽 정원"
+          "alt": "라벨로 인근 해안선을 내려다보는 절벽 정원",
+          "caption": "라벨로는 아말피 경유 버스로 갈 수 있습니다."
         },
         "links": [
           {
             "label": "라벨로 → 포지타노 (버스)",
             "href": "ravello-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1.5~2.5시간 (아말피 경유)",
+              "cost": "€4~€8 1인당",
+              "walking": "낮음; 아말피에서 환승",
+              "luggageFriendly": 2,
+              "seasonality": "연중"
+            }
           },
           {
             "label": "포지타노 → 라벨로 (버스)",
             "href": "positano-ravello-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1.5~2.5시간 (아말피 경유)",
+              "cost": "€4~€8 1인당",
+              "walking": "시작/끝에 짧은 계단 (약 30계단)",
+              "luggageFriendly": 2,
+              "seasonality": "연중"
+            }
           },
           {
             "label": "포지타노 → 라벨로 (페리 후 버스)",
             "href": "positano-ravello-ferry-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2~3시간 (페리 + 버스)",
+              "cost": "€15~€30 1인당",
+              "walking": "항구 계단 + 버스 연결",
+              "luggageFriendly": 1,
+              "seasonality": "계절 운행 (4월~10월)"
+            }
           }
         ]
       }
@@ -444,22 +624,50 @@
       {
         "label": "소렌토 → 포지타노 (버스)",
         "href": "sorrento-positano-bus",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "45~75분",
+          "cost": "€2~€4 1인당",
+          "walking": "끝에 짧은 계단 (약 30계단)",
+          "luggageFriendly": 2,
+          "seasonality": "연중"
+        }
       },
       {
         "label": "포지타노 → 소렌토 (버스)",
         "href": "positano-sorrento-bus",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "45~75분",
+          "cost": "€2~€4 1인당",
+          "walking": "시작/끝에 짧은 계단 (약 30계단)",
+          "luggageFriendly": 2,
+          "seasonality": "연중"
+        }
       },
       {
         "label": "소렌토 → 포지타노 (페리)",
         "href": "sorrento-positano-ferry",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "30~45분 (항해) + 항구 계단",
+          "cost": "€15~€25 1인당",
+          "walking": "항구 계단; 짐꾼 권장",
+          "luggageFriendly": 1,
+          "seasonality": "계절 운행 (4월~10월)"
+        }
       },
       {
         "label": "포지타노 → 소렌토 (페리)",
         "href": "positano-sorrento-ferry",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "30~45분 (항해) + 항구 계단",
+          "cost": "€15~€25 1인당",
+          "walking": "항구 계단; 짐꾼 권장",
+          "luggageFriendly": 1,
+          "seasonality": "계절 운행 (4월~10월)"
+        }
       }
     ]
   },

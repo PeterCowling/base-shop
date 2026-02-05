@@ -35,12 +35,20 @@ const getWebpackContext = (): WebpackContext | null => {
 };
 
 const getWebpackContextFn = (): WebpackContext | undefined =>
-  getWebpackContextFromMeta("./", true, /\.json$/) as WebpackContext | undefined;
+  // Only include top-level locale JSON (./<lang>/<ns>.json) to avoid bundling
+  // nested content trees (e.g. guides/content/*) into the always-on layout chunk.
+  getWebpackContextFromMeta("./", true, /^\.\/[a-z]{2}\/[^/]+\.json$/) as WebpackContext | undefined;
 
 export const loadLocaleResource = async (
   lang: string,
   ns: string,
 ): Promise<unknown | undefined> => {
+  // Core loader is intentionally top-level only.
+  // Nested JSON (guides/**, how-to-get-here/routes/**, etc.) must use
+  // route-specific loaders so it doesn't end up in the global layout chunk.
+  if (ns.includes("/")) {
+    return undefined;
+  }
   const key = `./${lang}/${ns}.json`;
   const context = getWebpackContext();
 
@@ -54,7 +62,7 @@ export const loadLocaleResource = async (
 
   try {
     const mod = await import(
-      /* webpackInclude: /\.json$/ */
+      /* webpackInclude: /(^|\/)[a-z]{2}\/[^/]+\.json$/ */
       `./${lang}/${ns}.json`
     );
     return unwrapDefault(mod);

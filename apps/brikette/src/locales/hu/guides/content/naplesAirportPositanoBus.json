@@ -1,95 +1,151 @@
 {
+  "lastUpdated": "2026-01-31",
   "seo": {
-    "title": "Nápoly repülőtér → Positano busszal | Hostel Brikette",
-    "description": "Nápoly repülőteréről Positanóba Curreri busszal Sorrentóig, majd SITA busszal tovább. Jegytippek, megállók, SITA menetrend és séta a Hostel Brikette-ig."
+    "title": "Nápoly repülőtér-Positano busz útmutató | Brikette 2026",
+    "description": "Nápoly repülőtér-Positano busz útmutató: Curreri Sorrentóig (€10), majd SITA busz (€2,60). Összesen 2,5 óra. Jegyek, megállók, menetrend tippek. Frissítve 2026."
   },
-  "intro": {
-    "title": "Nápoly repülőtér → Positano — busz",
-    "body": "Ez a lépésről lépésre útmutató végigvezeti a Curreri busszal Sorrentóig, majd a SITA busszal Positanóig. Tartalmazza, hol vegyen jegyet, hol kell átszállni, hogyan olvassa a SITA menetrendet, és hogyan érje el a Hostel Brikette-t a legközelebbi megállótól."
-  },
+  "intro": "A Nápoly repülőtértől Positanóig vezető buszút két szakaszból áll: vegye a Curreri Viaggi buszt a repülőtérről Sorrentóba (75 perc, €10), majd szálljon át a SITA buszra Sorrentóból Positanóba (50 perc, €2,60).\n\nAz összes utazási idő körülbelül 2,5 óra plusz a csatlakozási várakozási idő. Ez az útmutató tartalmazza a 2026-os jegyárakat, hol vásároljon jegyeket, hogyan olvassa el a SITA menetrendet, és lépésről lépésre útmutatást a Chiesa Nuova buszmegállótól a Hostel Brikette-ig.\n\nHa %LINK:naplesCenterTrainBus|Nápoly városközpontjából érkezik a repülőtér helyett%, nézze meg a vonat-busz útmutatónkat ahhoz az úthoz.",
   "callouts": {
-    "tip": "Need other routes? Explore the full %HOWTO:how-to-get-here|How to Get Here overview% for %LINK:arrivingByFerry|ferry arrival%, %LINK:porterServices|porter services%, and %LINK:travelHelp|private transfers%."
+    "tip": "További útvonalakra van szüksége? Fedezze fel a teljes %HOWTO:how-to-get-here|Hogyan juthat el ide áttekintést% a %LINK:arrivingByFerry|komppal való érkezés%, %LINK:porterServices|hordár szolgáltatások% és %LINK:travelHelp|privát transzferek% érdekében."
   },
   "sections": [
     {
       "id": "overview",
-      "title": "Utazás áttekintése",
-      "body": "Utazzon a Curreri Viaggi busszal közvetlenül a nápolyi repülőtérről Sorrentóba, majd szálljon át a SITA buszra Amalfi felé (szálljon le Positanónál – Chiesa Nuova). Főszezonban hagyjon extra időt a sorokra és a zsúfolt járatokra."
+      "title": "Útvonal áttekintése és költségek",
+      "body": "Ez a két szakaszos utazás a legközvetlenebb tömegközlekedési lehetőség a nápolyi repülőtérről Positanóba. Az összes költség körülbelül €12,60 (Curreri €10 + SITA €2,60), szemben a privát transzfer €100-140-ével.\n\nA Curreri Viaggi busz a nápolyi repülőtér 1-es terminál érkezési szintjéről indul, és egész évben naponta többször közlekedik. A szolgáltatások körülbelül 90 percenként közlekednek csúcsszezonban (április-október) és 2-3 óránként télen (november-március).\n\nSorrentóból a Positanóba tartó SITA buszok körülbelül 40-60 percenként közlekednek nyáron (április-október) és 60-90 percenként télen (november-március). Utazás előtt ellenőrizze az aktuális menetrendet a sitasudtrasporti.it oldalon, mivel a szolgáltatások szezonálisan változnak.\n\nSzámoljon 3-3,5 óra teljes idővel, beleértve a sorrentói átszállási időt. Ez az útvonal nem közlekedik a 3-as terminálról (magánrepülés) — először az 1-es terminálhoz kell átszállnia.",
+      "images": [
+        {
+          "src": "/img/guides/naples-airport-positano-bus/naples-airport-terminal-1.jpg",
+          "alt": "Nápolyi repülőtér 1-es terminál érkezési szintje a Curreri buszmegálló jelzésével"
+        }
+      ]
     },
     {
       "id": "airport",
-      "title": "Nápoly repülőtér",
-      "list": [
-        "Hagyja el az érkezési csarnokot, és kövesse a buszmegállókat jelző táblákat a kijáratnál.",
-        "Vásároljon Curreri Viaggi jegyet Sorrentóba (online vagy a megállónál).",
-        "Várakozzon a megállóban a következő Sorrentóba tartó buszra, majd szálljon fel."
+      "title": "Nápolyi repülőtér: a Curreri busz megtalálása",
+      "body": "Lépjen ki az érkezési csarnokból az 1-es terminálnál, és forduljon jobbra. A Curreri Viaggi buszmegálló a terminál épületen kívül található, körülbelül 50 méterre a főbejárattól. Keressen kék-fehér Curreri jelzést és egy kis jegypénztárt.\n\nJegyeket vásárolhat online a curreriviaggi.it oldalon vagy a jegypénztárnál a buszmegállónál. A pénztár 30 perccel az első indulás előtt nyit. A jegyek €10 személyenként, egy útra (2026-os szezon). Fizetési módok: készpénz és kártya elfogadott a pénztárnál; kártya vagy PayPal szükséges az online foglaláshoz.\n\nA buszok világosan jelöltek 'Sorrento' felirattal elöl. Szálljon fel, amikor a sofőr kinyitja az ajtókat (általában 10-15 perccel az indulás előtt). A poggyász külön tárolóban van az alsóban, külön díj nélkül — a sofőr kinyitja önnek.\n\nAz utazási idő 75 perc. A busz az A3 autópályát követi, majd az SS145 parti utat Sorrentóba. A helyek érkezési sorrendben vannak kiosztva. A buszok megtelhetnek nyár közepén (július-augusztus), ezért foglaljon online 1-2 nappal korábban, ha hétvégén utazik.\n\nNincs WC a fedélzeten, ezért használja a repülőtéri létesítményeket beszállás előtt. A busz nem áll meg a repülőtér és Sorrento között.",
+      "images": [
+        {
+          "src": "/img/guides/naples-airport-positano-bus/curreri-bus-exterior.jpg",
+          "alt": "Curreri Viaggi busz a nápolyi repülőtér megállójánál a poggyásztartót mutatva"
+        },
+        {
+          "src": "/img/guides/naples-airport-positano-bus/curreri-ticket-booth.jpg",
+          "alt": "Curreri jegypénztár a nápolyi repülőtér 1-es terminálján"
+        }
       ]
     },
     {
       "id": "sorrento",
-      "title": "Szorrento buszállomás",
-      "list": [
-        "Szálljon le Szorrento fő buszállomásán (ugyanott van a vasútállomás).",
-        "A buszállomásról szálljon fel az Amalfi felé tartó SITA buszra (Positano ezen az útvonalon van).",
-        "Ha szükséges, vásároljon SITA jegyet egy közeli bárban vagy újságosnál.",
-        "Felszálláskor a sofőr lepecsételi vagy letépi a jegyet — őrizze meg az egész útra."
+      "title": "Sorrento: átszállás a SITA buszra",
+      "body": "A Curreri busz Sorrento fő buszpályaudvarán áll meg (Circumvesuviana vasútállomás épülete). Szálljon le a buszról és vegye át csomagjait az alsó tárolóból.\n\nMielőtt felszállna a SITA buszra, meg kell vásárolnia a jegyét — a SITA buszok nem árulnak jegyeket a fedélzeten. Keressen egy közeli bárt, tabacchit (dohányboltot) vagy újságárusítót, amely a SITA logót mutatja. A jegyiroda gyakran a Bar Circolo vagy a Bar Fauno helyiségében található, mindkettő 100 méteren belül van a buszpályaudvar kijáratától.\n\nKérjen 'un biglietto per Positano'-t (jegyet Positanóba). A költség €2,60 (2026). Az EAV Campania alkalmazást is használhatja digitális jegyek vásárlásához, de tapasztalataink szerint a fizikai jegy megbízhatóbb.\n\nAmint megvan a jegye, menjen a SITA buszmegállóhoz (keressen kék-fehér SITA táblát). A Positanóba tartó buszok 'Amalfi via Positano' vagy egyszerűen 'Amalfi' felirattal vannak jelölve.\n\nA buszok körülbelül 40-60 percenként indulnak főszezonban (április-október) és 60-90 percenként alacsony szezonban (november-március). A nyári csúcsszezon szolgáltatások (július-augusztus) 30 percenként is közlekedhetnek.\n\nAz utazás Positanóba 45-50 percig tart. Javasoljuk, hogy üljön a busz jobb oldalára a lenyűgöző parti kilátásért. Az út keskeny és kanyargós — ez a világ egyik legszebb buszútja.\n\nA menetrend olvasásához és a megálló kiválasztásához részletes segítségért nézze meg %LINK:chiesaNuovaDepartures|Chiesa Nuova indulások útmutatónkat%.",
+      "images": [
+        {
+          "src": "/img/guides/naples-airport-positano-bus/sorrento-bus-station.jpg",
+          "alt": "Sorrentói buszpályaudvar a SITA indulási területtel"
+        },
+        {
+          "src": "/img/guides/naples-airport-positano-bus/sita-ticket-bar.jpg",
+          "alt": "Bar Circolo SITA jegyértékesítő pont a sorrentói buszpályaudvar közelében"
+        }
       ]
     },
     {
       "id": "timetable",
-      "title": "SITA menetrend — hogyan olvassa"
+      "title": "A SITA menetrend olvasása",
+      "body": "A SITA menetrendek zavaróak lehetnek, mert az útvonal mentén minden megállót felsorolnak. Íme, hogyan olvassa el őket hostelünk vendégeink segítésével szerzett tapasztalatai alapján:\n\n(1) Keresse meg a felül 'Sorrento' feliratú oszlopot — ez az indulási pontja.\n\n(2) Görgessen le, hogy megtalálja a 'Positano (Chiesa Nuova)' vagy egyszerűen 'Positano' feliratot a bal oszlopban.\n\n(3) A felsorolt idők azt mutatják, amikor a busz eléri Positanót, nem amikor Sorrentóból indul. Vonjon ki 45-50 percet a Sorrentóból való indulás becslésére.\n\n(4) A 'Festivi' jelöléssel ellátott szolgáltatások csak vasárnap és ünnepnapokon közlekednek. A 'Feriali' jelöléssel ellátott szolgáltatások hétfőtől szombatig közlekednek.\n\n(5) Egyes buszok kihagynak bizonyos megállókat — ha kötőjelet lát idő helyett, az a busz nem áll meg ott.\n\nMindig ellenőrizze az aktuális menetrendet a sitasudtrasporti.it oldalon vagy kérdezze meg a jegypénztárnál. Töltsön le egy fényképet az aktuális menetrendről a telefonjára utazás előtt arra az esetre, ha az internetelérés korlátozott lenne a part mentén."
     },
     {
       "id": "positanoStop",
-      "title": "Positano (Chiesa Nuova) buszmegálló",
-      "list": [
-        "A legközelebbi SITA megálló a Positano (Chiesa Nuova) a Via G. Marconin.",
-        "Körülbelül 140 méterre (490 lábra) található a hostel bejáratától.",
-        "A megálló a Bar Internazionale kávézó/bár előtt van."
+      "title": "Leszállás Positanónál (Chiesa Nuova)",
+      "body": "A busz több megállót tesz Positanóban. A Hostel Brikette-hez legközelebbi megálló a 'Positano (Chiesa Nuova)' — körülbelül 140 méterre (460 lábra) a bejárati ajtónktól.\n\nEzt a megállót 'Chiesa Nuova'-ként hirdetik, és a Bar Internazionale, egy kávézó előtt található a fő parti úton (Via Pasitea). Mondja a sofőrnek 'Chiesa Nuova, per favore'-t felszálláskor, hogy tudja, hol száll le.\n\nNyomja meg a stopgombot, amikor a jobb oldalon látja a Bar Internazionale-t. A busz közvetlenül előtte áll meg. Ez egy útmenti megálló, lépcső nélkül — utcaszinten száll le, így könnyű poggyásszal.\n\nNe szálljon le a 'Positano Centro' vagy 'Positano Spiaggia' megállóknál (a fő városi megállók), kivéve, ha először fel akarja fedezni a városközpontot. Ezek a megállók meredek mászást igényelnek a hostel eléréséhez.\n\nTovábbi részletekért a megállóról induló buszokról, beleértve a Sorrentóba visszatérő és Amalfiba továbbhaladó szolgáltatásokat, nézze meg %LINK:chiesaNuovaDepartures|Chiesa Nuova indulások útmutatónkat%.",
+      "images": [
+        {
+          "src": "/img/guides/chiesa-nuova-departures/chiesa-nuova-bus-stop.jpg",
+          "alt": "Chiesa Nuova buszmegálló a Bar Internazionale előtt Positanóban"
+        }
       ]
     },
     {
       "id": "walk",
-      "title": "Séta a megállótól a hostelhez",
-      "body": "Tipp: ahogy közelít a hostelhez, figyelje a táblánkat a második emeleti terasznál. Haladjon el mellette, kövesse az útkanyart, majd keresse a lépcsőt, amely az út jobb oldaláról vezet fel a főbejárathoz.",
-      "list": [
-        "Sétáljon valamivel több mint 100 métert / 330 lábat a Via G. Marconin.",
-        "Forduljon jobbra, és kövesse a lépcsőt fel a hostel főbejáratáig."
+      "title": "Séta a Chiesa Nuova megállótól a hosteléig",
+      "body": "Miután leszállt a buszról Chiesa Nuovánál, jobbra látja a Bar Internazionale-t. Nézzen felfelé (el a tengertől) és menjen 50 métert a Via Pasitea mentén.\n\nLátni fog egy kis gyalogos ösvényt a bal oldalon 'Via Trara Genoino' felirattal. Forduljon itt balra és menjen 90 métert ezen a csendes sikátoron. A Hostel Brikette a bal oldalon van a 23-as számnál, táblánkkal jelölve.\n\nTeljes gyaloglási idő 2 perc alatt van. Az ösvény sík és burkolt — nincs lépcső.\n\nHa sötétedés után érkezik, a sikátor megvilágított, de hozzon telefonos elemlámpát a nagyobb láthatóság érdekében. Nézze meg %LINK:chiesaNuovaArrivals|Chiesa Nuova érkezések útmutatónkat% az útvonal fényképeiért és részletes útmutatásért.",
+      "images": [
+        {
+          "src": "/img/guides/naples-airport-positano-bus/via-trara-genoino.jpg",
+          "alt": "Via Trara Genoino gyalogos ösvény a Hostel Brikette bejáratához vezet"
+        },
+        {
+          "src": "/img/guides/naples-airport-positano-bus/hostel-brikette-entrance.jpg",
+          "alt": "Hostel Brikette főbejárata a Via Trara Genoino 23-ban, Positano"
+        }
+      ]
+    },
+    {
+      "id": "luggage",
+      "title": "Poggyász és kényelmi tippek",
+      "body": "A Curreri busz külön poggyásztárolóval rendelkezik az alsóban. A sofőr minden megállónál be- és kirakja a táskákat. Maximális poggyászmennyiség: 1 nagy táska (legfeljebb 20 kg) plusz 1 kis táska személyenként, külön díj nélkül.\n\nA SITA busznak korlátozott poggyásztere van a busz hátuljában, amely gyorsan megtelik csúcsszezonban. Ha nagy hátizsákja vagy bőröndje van, szálljon fel korán, hogy biztosítson helyet. Zsúfolt időszakokban a nagy bőröndöket a folyosón kell elhelyezni.\n\nTartsa értékeit magánál — zsúfolt buszokon zsebmetszés előfordulhat, különösen a turisták magas szezonjában. A Curreri busz alapvető létesítményekkel rendelkezik (nincs WC, légkondicionálás az újabb buszokon). A SITA busznak nincs WC-je, ezért használja a sorrentói buszpályaudvar létesítményeit beszállás előtt.\n\nHozzon vizet, különösen nyáron. A parti út forró lehet, és a SITA buszon esetleg nincs légkondicionálás a régebbi járműveken.\n\nHa nehéz táskái vannak és el akarja kerülni a gondokat, fontolja meg %LINK:porterServices|hordár szolgáltatásaink% használatát poggyászszállításhoz a kompkikötőtől, vagy nézze meg %LINK:travelHelp|utazási segítség oldalunkat% privát transzfer lehetőségekért.",
+      "images": [
+        {
+          "src": "/img/guides/naples-airport-positano-bus/sita-bus-luggage.jpg",
+          "alt": "SITA busz poggyásztárolója hátizsákokat és bőröndöket mutatva"
+        }
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Minta utazási idők",
+      "body": "Íme egy realisztikus menetrend a teljes utazáshoz a nápolyi repülőtértől a Hostel Brikette-ig:\n\n**Reggeli indulás (ajánlott):**\n- 09:00 - Curreri busz indul a nápolyi repülőtérről\n- 10:15 - Érkezés Sorrentóba, SITA jegy vásárlása (15 perc)\n- 10:30 - Felszállás a SITA buszra Positanóba\n- 11:20 - Érkezés Chiesa Nuova megállóba, séta a hosteléig (5 perc)\n- 11:25 - Bejelentkezés a Hostel Brikette-nél\n\nTeljes idő: 2 óra 25 perc (plusz bármilyen várakozási idő, ha lemarad egy csatlakozásról).\n\n**Délutáni indulás:**\n- 14:00 - Curreri busz indul a nápolyi repülőtérről\n- 15:15 - Érkezés Sorrentóba\n- 15:30 - Felszállás a SITA buszra (ha éppen akkor indul egy)\n- 16:20 - Érkezés a hostelhöz\n\nMegjegyzés: A nyári menetrendek (június-szeptember) gyakoribb szolgáltatásokat kínálnak. A téli menetrendek (november-március) hosszabb időközökkel rendelkeznek a buszok között, ezért várjon potenciális 60-90 perces várakozási időre Sorrentóban."
+    },
+    {
+      "id": "alternatives",
+      "title": "Alternatív útvonalak és tartalék tervek",
+      "body": "Ha a Curreri busz teljesen foglalt vagy törölték, több tartalék lehetősége van:\n\n(1) Vegye az Alibus shuttlet a nápolyi repülőtérről a Napoli Centrale vasútállomásra (€5, 20 perc), majd kövesse %LINK:naplesCenterTrainBus|Nápoly központ vonat-busz útmutatónkat% onnan.\n\n(2) Vegyen kompot a nápolyi kikötőből Positanóba (csak április-október, €20-25, 90 perc) — nézze meg %LINK:arrivingByFerry|komppal való érkezés útmutatónkat%.\n\n(3) A privát transzferek €100-140-be kerülnek, de ajtótól ajtóig szolgáltatást nyújtanak várakozási idő nélkül.\n\n(4) Ha lemarad az utolsó SITA buszról Sorrentóból (általában 20-21 óra körül a szezontól függően), vehet taxit Positanóba (€80-100, 30 perc).\n\nMindig ellenőrizze az utolsó busz indulási időt, mielőtt elhagyná a nápolyi repülőteret. Vasárnap és ünnepnapokon a szolgáltatások csökkentettek — tervezzen extra időt és ellenőrizze a menetrendeket előre."
+    },
+    {
+      "id": "whatToExpect",
+      "title": "Mire számítson az utazás során",
+      "body": "A Curreri busz egy szabványos busz dönthető ülésekkel és poggyásztárolóval. Alapvető kényelemre számítson — nincs WC, de légkondicionálás az újabb járműveken. Az utazás közvetlen az autópályán hegyi kilátással.\n\nA SITA buszozás látványos, de idegtépő, ha nincs hozzászokva a keskeny parti utakhoz. A sofőrök tapasztaltak és naponta többször megteszik ezt az utat, de az úton szűk kanyarok és meredek esések vannak minimális korlátokkal. Üljön a jobb oldalra a legjobb parti kilátásért (és kevesebb kitettségért a sziklaél felé, ha a magasság idegesíti).\n\nMindkét szolgáltatás egész évben közlekedik, de a téli menetrendek (november-március) jelentősen csökkentettek. A nyári menetrendek (április-október) gyakoribbak és megbízhatóbbak, bár a buszok állóhelyek csak lehetnek délelőtt közepére csúcsszezonban (július-augusztus). Ha nyár közepén utazik, célozza meg a korai reggeli indulásokat az állóhely elkerülésére.\n\nA hostelből azt tapasztaltuk, hogy a legtöbb vendég egyszerűnek találja az utazást, ha megértik a lépéseket. A fő zavar általában a SITA jegy vásárlása Sorrentóban — ne feledje, nem vásárolhat a fedélzeten.",
+      "images": [
+        {
+          "src": "/img/guides/naples-airport-positano-bus/coastal-road-view.jpg",
+          "alt": "Amalfi-part útjának látványos kilátása a SITA busz ablakából Sorrento és Positano között"
+        }
       ]
     }
   ],
   "faqs": [
     {
-      "q": "How much does it cost to get from Naples Airport to Positano by bus?",
-      "a": "Total cost is approximately €12.60: €10 for the Curreri bus from Naples Airport to Sorrento, plus €2.60 for the SITA bus from Sorrento to Positano (2026 prices). This is the cheapest public transport option."
+      "q": "Mennyibe kerül a nápolyi repülőtérről Positanóba busszal jutni?",
+      "a": "Az összes költség körülbelül €12,60: €10 a Curreri buszért a nápolyi repülőtérről Sorrentóba, plusz €2,60 a SITA buszért Sorrentóból Positanóba (2026-os árak). Ez a legolcsóbb tömegközlekedési lehetőség."
     },
     {
-      "q": "How long does the journey take from Naples Airport to Positano?",
-      "a": "Total journey time is 2.5-3 hours: 75 minutes on the Curreri bus, 50 minutes on the SITA bus, plus 20-40 minutes waiting for connections in Sorrento. Budget 3-3.5 hours total to account for possible delays."
+      "q": "Mennyi ideig tart az utazás a nápolyi repülőtérről Positanóba?",
+      "a": "A teljes utazási idő 2,5-3 óra: 75 perc a Curreri buszon, 50 perc a SITA buszon, plusz 20-40 perc várakozás a csatlakozásokra Sorrentóban. Számoljon 3-3,5 órával összesen a lehetséges késések figyelembevételéhez."
     },
     {
-      "q": "Can I buy bus tickets on board?",
-      "a": "You can buy Curreri tickets at Naples Airport (booth or online). SITA bus tickets cannot be purchased on board — you must buy them from a bar, tabacchi, or newsstand near Sorrento bus station before boarding."
+      "q": "Vásárolhatok buszjegyeket a fedélzeten?",
+      "a": "Curreri jegyeket vásárolhat a nápolyi repülőtéren (pénztárnál vagy online). SITA buszjegyeket nem lehet a fedélzeten vásárolni — egy bárban, tabacchiban vagy újságosnál kell megvennie őket a sorrentói buszpályaudvar közelében beszállás előtt."
     },
     {
-      "q": "Is this route suitable for travelers with heavy luggage?",
-      "a": "Yes, but it can be challenging during peak times. The Curreri bus has dedicated luggage storage. The SITA bus has limited luggage space, so board early if you have large bags. The walk from Chiesa Nuova bus stop to the hostel is flat and under 2 minutes, so luggage is manageable upon arrival. If you prefer, consider using our porter services or a private transfer."
+      "q": "Ez az útvonal alkalmas nehéz poggyásszal utazók számára?",
+      "a": "Igen, de csúcsidőben kihívást jelenthet. A Curreri busz dedikált poggyásztárolóval rendelkezik. A SITA busznak korlátozott poggyásztere van, ezért szálljon fel korán, ha nagy táskái vannak. A Chiesa Nuova buszmegállótól a hosteléig vezető séta sík és 2 perc alatt van, így a poggyász kezelhető érkezéskor. Ha inkább úgy szeretné, fontolja meg hordár szolgáltatásaink vagy privát transzfer használatát."
     },
     {
-      "q": "What time does the last bus from Sorrento to Positano leave?",
-      "a": "The last bus varies by season. In summer (July-August), the last bus is usually around 9-10pm. In winter (November-March), it can be as early as 7-8pm. Always check the current schedule at sitasudtrasporti.it before travel, especially on Sundays and holidays when services are reduced."
+      "q": "Mikor indul az utolsó busz Sorrentóból Positanóba?",
+      "a": "Az utolsó busz szezontól függően változik. Nyáron (július-augusztus) az utolsó busz általában 21-22 óra körül van. Télen (november-március) már 19-20 órakor lehet. Mindig ellenőrizze az aktuális menetrendet a sitasudtrasporti.it oldalon utazás előtt, különösen vasárnap és ünnepnapokon, amikor a szolgáltatások csökkentettek."
     },
     {
-      "q": "What if I miss the Curreri bus or it's fully booked?",
-      "a": "Take the Alibus to Naples Centrale (€5, 20 min), then the Circumvesuviana train to Sorrento (€4.60, 70 min), then SITA bus to Positano (€2.60, 50 min). Total cost: €12.20, similar to the Curreri route but with an extra transfer. See our Naples center train-bus guide for details."
+      "q": "Mi van, ha lemaradok a Curreri buszról vagy teljesen foglalt?",
+      "a": "Vegye az Alibust a Naples Centrale-ra (€5, 20 perc), majd a Circumvesuviana vonatot Sorrentóba (€4,60, 70 perc), majd SITA buszt Positanóba (€2,60, 50 perc). Teljes költség: €12,20, hasonló a Curreri útvonalhoz, de egy extra átszállással. Részletekért nézze meg Nápoly központ vonat-busz útmutatónkat."
     },
     {
-      "q": "Are there toilets on the buses?",
-      "a": "No. Neither the Curreri bus nor the SITA bus has toilet facilities. Use the toilets at Naples Airport before boarding the Curreri bus, and use the facilities at Sorrento bus station (there's a small cafe with toilets) before boarding the SITA bus."
+      "q": "Vannak WC-k a buszokon?",
+      "a": "Nem. Sem a Curreri busznak, sem a SITA busznak nincs WC létesítménye. Használja a nápolyi repülőtér WC-it a Curreri buszra való felszállás előtt, és használja a sorrentói buszpályaudvar létesítményeit (van egy kis kávézó WC-vel) a SITA buszra való felszállás előtt."
     },
     {
-      "q": "Can I store luggage in Positano if I arrive before check-in time?",
-      "a": "Yes. Several %LINK:luggageStorage|luggage storage locations% near Spiaggia Grande beach charge €5-€8 per bag per day. Useful if you arrive before the hostel's 3pm check-in time."
+      "q": "Tárolhatok poggyászt Positanóban, ha a bejelentkezési idő előtt érkezem?",
+      "a": "Igen. Több %LINK:luggageStorage|poggyásztároló helyszín% a Spiaggia Grande strand közelében €5-€8-ot számít fel táskánként naponta. Hasznos, ha a hostel délután 3 órás bejelentkezési ideje előtt érkezik."
     },
     {
       "q": "Hogyan olvassam a SITA busz menetrendet?",
@@ -99,6 +155,5 @@
         "**Sorok és oszlopok kombinálása:** Válassza ki az indulási és érkezési buszmegállókat, majd ellenőrizze az oszlopokat, hogy lássa, mikor vannak buszok és mikor érkeznek meg a célállomására. Például a Sorrentóból való indulási idő megtekintéséhez nézze meg a Sorrento sort. A Positanóba (Chiesa Nuova / Bar Internazionale) való érkezési idő megtekintéséhez nézze meg a Positano (Chiesa Nuova) sort."
       ]
     }
-  ],
-  "lastUpdated": "2026-01-31"
+  ]
 }

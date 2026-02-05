@@ -1,55 +1,116 @@
 {
   "seo": {
     "title": "Limoncello e gastronomia local na Costa Amalfitana",
-    "description": "História, degustações e onde provar pratos clássicos com limão sem gastar além da conta."
+    "description": "Guia económico de limoncello, gastronomia local e doces de limão em Positano. Onde provar amostras gratuitas, garrafas autênticas mais baratas e restaurantes locais acessíveis."
   },
-  "linkLabel": "Limoncello e gastronomia local",
+  "linkLabel": "Saboreie Positano: Limoncello, limões e sabores locais",
   "intro": [
-    "Limões e limoncello definem os sabores da Costa Amalfitana — das provas aos finais doces.",
-    "Aqui encontra onde provar, o que comprar e como cozinhar com eles em casa."
+    "O limoncello e tudo feito com limão definem a Costa Amalfitana — mas não precisa de um grande orçamento para provar o melhor.",
+    "Aqui encontra onde provar gratuitamente, que garrafas oferecem mais valor pelo euro e como comer como um local sem preços de armadilha para turistas."
   ],
   "tocTitle": "Nesta página",
   "sections": [
     {
-      "id": "tasting",
-      "title": "Provas",
+      "id": "free-tasting",
+      "title": "Provas gratuitas e onde experimentar",
       "body": [
-        "Visite pequenas botteghe para limoncello artesanal e peça uma amostra para comparar estilos.",
-        "Combine provas com gelado, sorvete ou pastelaria de limão para avaliar doçura e equilíbrio."
+        "A maioria das pequenas lojas de limoncello e botteghe em Positano oferece amostras gratuitas — é prática padrão, não um benefício turístico. Entre numa loja de produtor artesanal e pergunte educadamente; geralmente servem 2-3 estilos para poder comparar.",
+        "Os melhores locais para provas ficam na Via dei Mulini e nas ruas atrás da Chiesa Nuova — longe das armadilhas turísticas à beira-mar. Procure lojas familiares com placas simples e locais a fazer compras; são menos insistentes e o limoncello é frequentemente mais forte e menos açucarado.",
+        "Combine a prova com amostras gratuitas de rebuçados de limão (a maioria das lojas oferece) ou compre uma granita de limão por €1,50 numa gelataria para limpar o palato entre doses.",
+        "%IMAGE:limoncello-tasting-shop.jpg|Local limoncello shop offering free tasting samples in Positano%",
+        "Dica do hostel: as lojas na Via Cristoforo Colombo (a estrada que sobe da Chiesa Nuova) têm frequentemente menos turistas e doses mais generosas. Já vimos locais trazerem as suas próprias garrafas de volta para recargas a preços por grosso — um sinal de que encontrou o verdadeiro negócio."
       ]
     },
     {
-      "id": "purchase",
-      "title": "Compra e envio",
+      "id": "buying-smart",
+      "title": "Comprar garrafas: o que procurar e o que evitar",
       "body": [
-        "Verifique limites de líquidos das companhias aéreas; embale as garrafas bem protegidas na bagagem de porão.",
-        "Procure rótulos IGP Costa d’Amalfi e embalagens recicláveis de produtores locais."
+        "O verdadeiro limoncello deve listar limões Sorrento IGP (ou Costa d'Amalfi IGP) no rótulo e ter pelo menos 28-30% de teor alcoólico. Se for amarelo néon brilhante ou suspeitamente barato (menos de €8 por 500ml), provavelmente é aromatizante artificial e xarope de açúcar.",
+        "Melhor valor: garrafas de 500ml de produtores locais custam €10-15 em Positano, €8-12 em Praiano ou Amalfi. Não pague mais de €15 a menos que seja uma mistura artesanal premium com citrinos incomuns (bergamota, cedro).",
+        "As lojas de aeroportos e estações de comboios cobram 30-50% mais pelas mesmas garrafas. Se voar de Nápoles, compre em Positano e embale cuidadosamente na bagagem de porão (embrulhe em roupa + saco plástico).",
+        "Limites de líquidos das companhias aéreas: máximo 100ml em bagagem de mão. As garrafas padrão são 500ml ou 750ml, portanto a bagagem de porão é a sua única opção. Nunca tivemos uma garrafa partida quando embrulhada adequadamente no centro de uma mochila.",
+        "%IMAGE:limoncello-bottles-local.jpg|Authentic limoncello bottles from local Amalfi Coast producers%"
       ]
     },
     {
-      "id": "cooking",
-      "title": "Cozinhar com limões",
+      "id": "budget-eats",
+      "title": "Comida local barata: pratos de limão que vale a pena experimentar",
       "body": [
-        "Use raspa e sumo em saladas, massas de marisco e sobremesas para realçar frescura.",
-        "Guarde os limões em local fresco e escuro e reutilize as cascas para xaropes ou marinadas."
+        "Ignore os menus turísticos de €25 na praia principal. Em vez disso, vá ao Da Vincenzo (Via Pasitea 172) para pratos de massa com limão por €8-12 — o seu spaghetti al limone é simples, fresco e usa limões locais. Só dinheiro, sem reservas, os locais fazem fila às 19h.",
+        "Para sobremesa, a delizia al limone (bolo esponja de limão embebido em creme de limoncello) custa €4-6 na maioria das pasticcerie. A nossa favorita: Pasticceria La Zagara (Via dei Mulini) — €5 por uma fatia generosa, lugares ao ar livre, recargas gratuitas de água.",
+        "Pequeno-almoço económico: compre uma sfogliatella (€2-3) e espresso (€1,20) num bar, depois compre um quilo de limões frescos num quitandeiro (€2-4) para lanchar ou fazer limonada fresca de volta ao hostel.",
+        "O terraço do %LINK:chiesaNuovaArrivals|hostel% é perfeito para montar as suas próprias refeições com limão: compre mozzarella fresca (€3-4), tomates (€2/kg), manjericão e limões no mercado da Chiesa Nuova (quinta-feiras de manhã), depois regue com azeite local. Custo total: €10-12 para duas pessoas.",
+        "%IMAGE:spaghetti-al-limone.jpg|Fresh spaghetti al limone with Amalfi lemons at local restaurant%"
+      ]
+    },
+    {
+      "id": "cooking-tips",
+      "title": "Cozinhar com limões de Amalfi",
+      "body": [
+        "Os limões de Amalfi (sfusato amalfitano) têm cascas grossas e aromáticas e menos acidez que os limões de supermercado — use-os para pratos focados em raspa onde a casca brilha.",
+        "Usos clássicos: rale a casca na água da massa para spaghetti al limone, esmague a casca com açúcar para limoncello caseiro, ou cristalize tiras grossas para decoração de sobremesa.",
+        "Armazenamento: mantenha os limões num local fresco e escuro (não no frigorífico) até 2 semanas. Se comprar um saco grande no mercado, esprema metade e congele o sumo em formas de gelo para uso posterior.",
+        "Cascas sobrantes: ferva com água e açúcar para fazer xarope de limão para cocktails, ou seque-as e adicione ao chá. Zero desperdício, sabor máximo.",
+        "%IMAGE:amalfi-lemons-cooking.jpg|Fresh Amalfi Coast lemons (sfusato amalfitano) for cooking%"
+      ]
+    },
+    {
+      "id": "ordering-etiquette",
+      "title": "Etiqueta ao encomendar e evitar armadilhas turísticas",
+      "body": [
+        "Se um restaurante tem um menu em 6 idiomas e fotos de cada prato, é uma armadilha turística. Procure menus manuscritos em italiano com no máximo 8-12 itens — é onde os locais comem.",
+        "O limoncello é tradicionalmente servido bem frio após uma refeição como digestivo, não antes ou durante. Se um lugar empurra cocktails de limoncello antes do jantar, estão a mirar turistas.",
+        "O coperto (taxa de cobertura) é padrão em Itália: €1,50-3 por pessoa por pão e serviço de mesa. Se for mais de €3, está a pagar demais. Verifique o menu para o preço do 'coperto' antes de se sentar.",
+        "Água: 'Acqua naturale' é água sem gás, 'frizzante' é com gás. A água da torneira é segura mas raramente servida em restaurantes — encomende uma garrafa de €2-3 e recarregue da fonte do hostel gratuitamente antes de sair.",
+        "%IMAGE:local-italian-restaurant.jpg|Authentic local restaurant with handwritten Italian menu%",
+        "Cultura de gorjetas: a taxa de serviço (servizio) às vezes está incluída na conta. Se não, deixar €1-2 ou arredondar a conta é educado mas não obrigatório. Os italianos não dão gorjetas de 15-20% como nos EUA — poupe os seus euros para mais limoncello."
+      ]
+    },
+    {
+      "id": "market-shopping",
+      "title": "Compras no mercado e trazer limões para casa",
+      "body": [
+        "O mercado da %LINK:chiesaNuovaArrivals|Chiesa Nuova% (quintas-feiras 8h-13h) vende produtos frescos, incluindo limões enormes de Amalfi por €2-4/kg. Compare isto com €1-2 por limão em lojas de souvenirs turísticos.",
+        "Se quiser trazer limões para casa: escolha fruta firme e sem manchas e embale no centro da sua mala embrulhada em toalhas de papel. Duram 5-7 dias se mantidos frescos. A alfândega da UE permite até 2kg de fruta fresca; verifique as regras do seu país se voar para fora da UE.",
+        "Para ingredientes de limoncello, compre álcool puro (alcool puro, 95%) numa farmácia ou grande supermercado em Salerno ou Nápoles — custa €8-12 por 1L, versus €15-20 nas pequenas lojas de Positano.",
+        "%IMAGE:chiesa-nuova-market-lemons.jpg|Fresh Amalfi lemons at Chiesa Nuova Thursday market%"
       ]
     }
   ],
   "tips": [
-    "Apoie produtores pequenos — os sabores são geralmente mais intensos que nas lojas turísticas.",
-    "Evite lojas caras junto à praia principal; duas ruas acima encontra preços melhores."
+    "Amostras gratuitas são padrão — não se sinta pressionado a comprar após provar. Um educado 'grazie, ci penso' (obrigado, vou pensar) funciona bem.",
+    "Compre limoncello e limões em Amalfi ou Praiano por 20-30% menos que os preços de Positano.",
+    "Ignore as garrafas de cerâmica em forma de limão (€20-30) — são frágeis, pesadas e o limoncello lá dentro é medíocre. Compre uma garrafa de vidro simples e gaste a poupança em líquido de melhor qualidade.",
+    "A maioria dos restaurantes em Positano serve limoncello cortesia após o jantar se encomendar uma refeição completa. Se não oferecerem, pergunte — 'Limoncello offerto?' — e geralmente trazem um pequeno copo.",
+    "A cozinha do %LINK:cheapEats|hostel% é ótima para montar refeições baratas com limão. Compre ingredientes no mercado de quinta-feira ou no Conad na Chiesa Nuova e poupe 50-70% versus refeições em restaurantes."
   ],
   "faqs": [
     {
       "q": "Posso levar limoncello na bagagem de mão?",
       "a": [
-        "Não acima de 100 ml — coloque garrafas normais na bagagem de porão com proteção."
+        "Não, não em garrafas acima de 100ml. As garrafas padrão de limoncello são 500-750ml, por isso deve embalá-las na bagagem de porão.",
+        "Embrulhe as garrafas em roupa ou plástico bolha, sele num saco plástico em caso de fugas e embale no centro da sua mala longe de objetos duros. Já voámos com 4-5 garrafas desta forma sem problemas."
       ]
     },
     {
-      "q": "Há alternativas sem álcool?",
+      "q": "Qual é um preço justo para limoncello em Positano?",
       "a": [
-        "Experimente limonada fresca, granita ou xaropes de limão se preferir evitar álcool."
+        "€10-15 por uma garrafa de 500ml de um produtor local é padrão. Qualquer coisa acima de €18 é caro demais a menos que seja uma mistura especial.",
+        "Mais barato em Amalfi (€8-12) ou Praiano. Evite lojas de aeroporto — cobram €20-25 pelas mesmas garrafas."
+      ]
+    },
+    {
+      "q": "Há doces de limão sem álcool?",
+      "a": [
+        "Sim! Experimente granita de limão (€2-3), limonada fresca (€3-4) ou sorvete de limão (€2,50-4). Estes estão em todo o lado e são tão refrescantes como o limoncello.",
+        "Para cozinhar, azeite infundido com limão e marmelada de limão são ótimos presentes e não têm teor alcoólico."
+      ]
+    },
+    {
+      "q": "Onde está o melhor valor para refeições com sabor a limão?",
+      "a": [
+        "Da Vincenzo (Via Pasitea 172) para pratos de massa por €8-12. Pasticceria La Zagara (Via dei Mulini) para sobremesa delizia al limone por €5.",
+        "Ou auto-catering: compre limões, mozzarella, tomates e azeite no mercado da Chiesa Nuova e monte refeições no hostel por €5-6 por pessoa."
       ]
     }
   ]

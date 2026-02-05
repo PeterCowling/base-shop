@@ -1,55 +1,53 @@
 {
   "seo": {
-    "title": "Artesanía y compras en Positano",
-    "description": "Sandalias, cerámica e ilustraciones: dónde encontrar calidad y cómo enviar tus compras."
+    "title": "Arte y artesanos de Positano (compras)",
+    "description": "Sandalias, cerámica, grabados — dónde encontrar calidad y cómo enviar."
   },
-  "linkLabel": "Artesanía y compras en Positano",
+  "linkLabel": "Arte y artesanos de Positano (compras)",
   "intro": [
-    "Positano mantiene talleres familiares de sandalias, cerámica y arte ligero; compra con intención y viaja sin sobresaltos.",
-    "Recorrer las calles altas al final del día te permite conversar con artesanos y personalizar tus piezas."
+    "Compra artesanía de Positano sin pagar de más: sandalias, cerámica, grabados y cómo enviar tus compras a casa."
   ],
   "sections": [
     {
       "id": "sandals",
       "title": "Sandalias a medida",
       "body": [
-        "Las botteghe miden tu pie y montan el par en 30–60 minutos; pregunta por el origen del cuero y revisa costuras y suelas antideslizantes.",
-        "Solicita recibo con contacto y prueba los zapatos unos minutos dentro de la tienda para asegurar comodidad antes de pagar."
+        "Observa cómo los zapateros fabrican sandalias de cuero en 30 minutos; los pares hechos a medida empiezan en unos 80 €.",
+        "Lleva el contorno de tu pie o dibújalo para pedidos posteriores — muchos artesanos envían a todo el mundo una vez tienen tus medidas."
       ]
     },
     {
       "id": "ceramics",
-      "title": "Cerámica y decoración",
+      "title": "Cerámica y arte",
       "body": [
-        "Las piezas auténticas llevan firma bajo el esmalte y peso consistente; desconfía de souvenirs demasiado ligeros o sin sello Vietri.",
-        "Si envías a casa, pide embalaje doble con burbujas y caja rígida, haz fotos del paquete y contrata envío con seguimiento e incluso seguro."
+        "Explora estudios familiares de cerámica con azulejos y vajilla pintados a mano. Pregunta por esmaltes sin plomo si piensas servir comida.",
+        "Artistas locales venden grabados y acuarelas en Via Cristoforo Colombo — el embalaje en tubo protege las piezas durante el viaje."
       ]
     },
     {
-      "id": "prints",
-      "title": "Arte, textiles y recuerdos",
+      "id": "shipping",
+      "title": "Pago y envíos",
       "body": [
-        "Ilustraciones, pósters y pañuelos se venden en tiradas cortas; solicita certificado o tarjeta del artista y pregunta por derechos de reproducción si quieres compartir las imágenes.",
-        "Transporta las compras en tubo rígido o envuélvelas entre prendas suaves; evita humedad y arena para conservar colores."
+        "La mayoría de tiendas aceptan tarjetas pero ofrecen descuentos en efectivo. Ten el DNI a mano para el papeleo de devolución de impuestos en compras superiores a 154,94 €.",
+        "Envía piezas frágiles por mensajería asegurada (DHL/UPS) y pide doble caja; las tarifas empiezan en unos 40 € según el peso."
       ]
     }
   ],
   "tips": [
-    "Compara precios entre talleres: en calles paralelas a Via dei Mulini suele haber mejor relación calidad-precio.",
-    "Prefiere pagos trazables (tarjeta o transferencia) para tener comprobante en caso de envíos dañados."
+    "Fotografía recibos y detalles del artesano para recordar qué estudio hizo cada pieza.",
+    "Empaca plástico de burbujas si vas a llevar cerámica en el equipaje — los hosteles suelen tener material de relleno sobrante de envíos."
   ],
   "faqs": [
     {
-      "q": "¿Envían al extranjero?",
+      "q": "¿Pueden los artesanos personalizar artículos?",
       "a": [
-        "La mayoría trabaja con mensajerías; pide presupuesto por escrito con seguro y plazo estimado, o usa un servicio con seguimiento si gestionas el envío por tu cuenta."
+        "Sí. Muchos graban iniciales en sandalias o personalizan colores de cerámica con unos días de aviso."
       ]
     },
     {
-      "q": "¿Se puede negociar el precio?",
+      "q": "¿Cómo solicito una devolución de IVA?",
       "a": [
-        "Sí, con tacto, sobre todo en compras múltiples; evita regateos agresivos en negocios familiares.",
-        "Recuerda que las personalizaciones y grabados suelen estar incluidos en el precio original."
+        "Solicita un formulario tax-free en la compra, haz que lo sellen en el aeropuerto o puerto de ferry y envíalo en tres meses para recibir el reembolso."
       ]
     }
   ]

@@ -166,12 +166,13 @@
     },
     {
       "id": "logistics",
-      "title": "Aller et retour : comment s’organiser",
+      "title": "Comment accéder aux plages et en revenir",
       "body": [
-        "Depuis l’auberge, l’approche la plus rapide est souvent : descendre vers Spiaggia Grande (à pied ou en bus), puis décider si tu continues le long de la promenade vers Fornillo, si tu prends une navette bateau, ou si tu restes sur la plage principale.",
-        "Si tu fais une journée en beach club avec transfert bateau (Arienzo ou Laurito), le plus simple est souvent de partir de Spiaggia Grande : tu peux faire la queue tôt et éviter les escaliers.",
-        "Été 2026 : prévois la chaleur dans les montées. Remplis ta gourde avant de remonter, et si tu es fatigué, prends le bus interne au lieu de faire chaque marche.",
-        "Pour les excursions (Praiano, Amalfi, Sorrento), vérifie la dernière option de retour avant de te décider. Les ferries sont le trajet le plus agréable quand ils circulent, mais les bus servent de plan B. Si la mer est agitée ou si les ferries sont annulés, ajoute du temps et reste flexible. Prends des snacks pour le trajet."
+        "Chaque plage a des options d'accès différentes, alors consulte le guide spécifique avant de partir. Voici des liens rapides vers les guides d'itinéraires les plus utiles :",
+        "Plages de Positano : %LINK:positanoMainBeachWalkDown|À pied vers Spiaggia Grande% • %LINK:positanoMainBeachBusDown|Bus vers Spiaggia Grande% • %LINK:hostelBriketteToFornilloBeach|À pied vers Fornillo% • %LINK:hostelBriketteToArienzoBus|Bus vers Arienzo% • %LINK:lauritoBeachBusDown|Bus vers Laurito%",
+        "Itinéraires retour : %LINK:positanoMainBeachWalkBack|À pied depuis Spiaggia Grande% • %LINK:positanoMainBeachBusBack|Bus depuis Spiaggia Grande% • %LINK:fornilloBeachToBrikette|À pied depuis Fornillo% • %LINK:arienzoBeachBusBack|Bus depuis Arienzo% • %LINK:lauritoBeachBusBack|Bus depuis Laurito%",
+        "Plages d'excursion : %LINK:hostelBriketteToFiordoDiFuroreBus|Fiordo di Furore% • %LINK:gavitellaBeachGuide|Gavitella (Praiano)% • %LINK:marinaDiPraiaBeaches|Marina di Praia% • %LINK:reginaGiovannaBath|Regina Giovanna (Sorrento)%",
+        "Conseils généraux : En été 2026, prévois la chaleur dans les montées — remplis ta gourde avant de remonter, et utilise le bus interne si tu es fatigué. Pour les excursions, vérifie la dernière option de retour (ferry ou bus) avant de te décider, et prends des snacks pour le trajet. Si la mer est agitée ou si les ferries sont annulés, ajoute du temps et reste flexible."
       ],
       "images": [
         {

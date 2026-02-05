@@ -1,32 +1,32 @@
 {
   "seo": {
-    "title": "Digitaler Concierge (Tipps + Buchungen)",
-    "description": "Digitaler Concierge von Hostel Brikette: schnelle Tipps, Transport-Updates und Buchungshilfe—wenn sich Pläne ändern."
+    "title": "Digitaler Concierge (Empfehlungen + Buchungen)",
+    "description": "Nutzen Sie den digitalen Concierge vom Hostel Brikette für schnelle lokale Empfehlungen, Transportupdates und Hilfe bei der Buchung von Erlebnissen – besonders wenn sich Pläne ändern."
   },
   "linkLabel": "Digitaler Concierge",
   "lastUpdated": "2026-02-02T00:00:00.000Z",
   "intro": [
-    "Für Pläne, die heute funktionieren.",
-    "Zeitfenster, Budget und Priorität reichen—Deadline in die erste Zeile."
+    "Dies ist für Pläne, die heute funktionieren – keine generischen Listen.",
+    "Senden Sie Ihr Zeitfenster, Budget und Priorität. Setzen Sie Ihre Deadline in die erste Zeile."
   ],
   "sections": [
     {
       "id": "how-to-access",
-      "title": "Zugang",
+      "title": "So greifen Sie darauf zu",
       "body": [
-        "An der Rezeption nach Kontakt/QR und Kanal fragen (oft WhatsApp).",
-        "Erste Nachricht: Datum, Startort, Zeitfenster, Budget, Priorität."
+        "Fragen Sie an der Rezeption nach dem neuesten Kontakt/QR und dem besten Kanal (normalerweise WhatsApp).",
+        "Angeben: Termine, Ausgangspunkt, Zeitfenster, Budget und #1 Priorität."
       ]
     },
     {
       "id": "templates",
-      "title": "Vorlage",
+      "title": "Kopieren/Einfügen-Vorlage",
       "body": [
-        "„6 Stunden, kein Auto, (A) baden + (B) Sunset, Budget 40€ pro Person. Einfachster Plan und Plan B bei Fähr‑Ausfällen?“",
-        "%LINK:positanoBudget|Positano mit kleinem Budget% + %LINK:terraceSunsets|Terrassen‑Sonnenuntergang%.",
-        "%LINK:ferryCancellations|Fähr‑Ausfälle + Wetter%."
+        "\"Wir haben 6 Stunden, kein Auto, wir möchten (A) schwimmen + (B) Sonnenuntergang, Budget €40 pro Person. Was ist der einfachste Plan und Plan B, falls die Fähren ausfallen?\"",
+        "Budget-Grundlage: %LINK:positanoBudget|Positano mit kleinem Budget% + %LINK:terraceSunsets|Terrassen-Sonnenuntergang%.",
+        "Wenn Transport kritisch ist: %LINK:ferryCancellations|Fährausfälle + Wetter%."
       ]
     }
   ],
-  "fallback": "Digitaler Concierge: schnelle Tipps, Transport und Buchungshilfe."
+  "fallback": "Digitaler Concierge: schnelle Empfehlungen, Transportupdates und Buchungshilfe."
 }

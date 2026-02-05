@@ -79,9 +79,18 @@
   "perksGuarantee": "Każda rezerwacja dokonana bezpośrednio na naszej stronie automatycznie odblokowuje te ekskluzywne korzyści.",
   "perksIntroLink": "Zobacz wszystkie korzyści",
   "perksList": [
-    "Do 25% taniej od ceny regularnej po zastosowaniu kuponu",
-    "Bezpłatne śniadanie",
-    "Bezpłatny napój wieczorny"
+    {
+      "title": "Do 25% taniej od ceny regularnej po zastosowaniu kuponu",
+      "subtitle": "Stosowane automatycznie"
+    },
+    {
+      "title": "Bezpłatne śniadanie",
+      "subtitle": "Wliczone codziennie"
+    },
+    {
+      "title": "Bezpłatny napój wieczorny",
+      "subtitle": "Wybór domu"
+    }
   ],
   "expired": {
     "message": "Ta oferta dobiegła końca."

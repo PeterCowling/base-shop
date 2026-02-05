@@ -1,76 +1,138 @@
 {
   "seo": {
-    "title": "Hostel Brikette sunrise hike",
-    "description": "Ruta antes del amanecer desde el Hostel Brikette hasta un tranquilo mirador en lo alto de un acantilado con vistas despejadas del amanecer sobre Positano."
+    "title": "Caminata del amanecer desde Hostel Brikette (Positano)",
+    "description": "Una caminata corta antes del amanecer desde Hostel Brikette a un mirador tranquilo sobre Positano, con fotos de navegación en el orden correcto."
   },
-  "linkLabel": "Hostel Brikette sunrise hike",
+  "linkLabel": "Caminata del amanecer: Observa el alba sobre Positano",
+  "lastUpdated": "2026-02-04",
   "intro": [
-    "Head out before dawn to catch the first light over the Amalfi Coast from a quiet vantage point above Positano.",
-    "This walk starts at Hostel Brikette and takes around 25 minutes including the stair climb to the viewpoint."
+    "Si quieres el amanecer más sencillo, puedes ver el alba desde la terraza común del hostel mientras el sol sale por la izquierda (cuando miras hacia el mar).",
+    "Si quieres un panorama más amplio y un momento más tranquilo sobre la ciudad, sigue esta caminata corta hacia las colinas hasta un mirador en el acantilado sobre Positano."
   ],
   "sections": [
     {
-      "id": "overview",
-      "title": "What is the sunrise hike?",
+      "id": "what-is",
+      "title": "¿Qué es la caminata del amanecer?",
       "body": [
-        "If you prefer to stay put, you can watch the sunrise from the hostel terrace as it rises to the left of the building.",
-        "For a wider panorama, follow this short hike to a nearby cliff where you can watch the sun clear the horizon and light up the town below."
+        "Esta es una caminata corta de ida y vuelta antes del amanecer desde Hostel Brikette hasta un pequeño mirador sobre Positano.",
+        "Si quieres una opción de montaña más larga, %LINK:santaMariaDelCastelloHike|Santa Maria del Castello% es una gran alternativa, pero la ruta de abajo es la forma más rápida de obtener una vista dramática del amanecer sin comprometerte con una caminata de día completo."
       ]
     },
     {
-      "id": "reach-stairs",
-      "title": "Reach the stairway trailhead",
+      "id": "before-you-go",
+      "title": "Antes de ir (estará oscuro)",
       "body": [
-        "Exit the hostel through the main door and walk down to Via Pasitea.",
-        "Turn right towards Sorrento and follow the road for roughly 350 metres.",
-        "Look for a flight of stairs on your left heading uphill — the first section is paved and has a handrail."
+        "Lleva una linterna de teléfono o frontal, y mantén tus manos libres (especialmente en las escaleras).",
+        "Usa zapatos con agarre: la primera parte está pavimentada, pero el sendero del bosque puede estar suelto o húmedo.",
+        "Comienza lo suficientemente temprano para llegar 10-15 minutos antes del amanecer para que puedas acomodarte, encontrar tu lugar y disfrutar de la primera luz."
       ]
     },
     {
-      "id": "climb-to-viewpoint",
-      "title": "Climb to the viewpoint",
+      "id": "step-1",
+      "title": "Paso 1: Camina desde el hostel hasta la escalera (≈350 m)",
       "body": [
-        "Take the stairs all the way up until you reach a small house at the top of the initial climb.",
-        "At the house, turn left to join the woodland trail.",
-        "When the path forks, take the right-hand branch and continue climbing through the trees.",
-        "As the path opens up and you can see the sea directly ahead, bear left.",
-        "Continue around the rocks to reach the exposed vantage point with sweeping sunrise views."
+        "Sal del hostel por la puerta principal y baja hasta la carretera.",
+        "Gira hacia Sorrento y camina unos **350 metros** por la carretera principal hasta que llegues a una escalera que sube desde la carretera."
       ]
     },
     {
-      "id": "enjoy-sunrise",
-      "title": "Enjoy the sunrise safely",
+      "id": "step-2",
+      "title": "Paso 2: Sube hasta la casa, luego gira a la izquierda",
       "body": [
-        "The final rocks can be slick with morning dew; move carefully and avoid standing on loose edges.",
-        "From the main ledge you can watch the sun crest the horizon, or scramble a little higher for photos once there is enough light."
+        "Sube la escalera hasta arriba hasta llegar a la vieja casa blanca que se muestra abajo.",
+        "En la casa, **gira a la izquierda** para unirte al sendero del bosque."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/02-house.jpg",
+          "alt": "Casa blanca antigua junto a la escalera en la ruta de caminata del amanecer sobre Positano",
+          "caption": "Este edificio marca el final de la subida de la escalera; gira a la izquierda aquí para entrar al sendero del bosque.",
+          "width": 876,
+          "height": 530
+        }
+      ]
+    },
+    {
+      "id": "step-3",
+      "title": "Paso 3: Sigue el sendero del bosque hasta el mirador",
+      "body": [
+        "Sigue el sendero del bosque mientras sube suavemente alejándose de la casa.",
+        "Cuando el sendero se bifurque, toma la rama **derecha**.",
+        "Eventualmente llegarás a un punto donde los árboles se abren y puedes ver el mar directamente frente a ti. Desde allí, dirígete hacia tu **izquierda**.",
+        "Ese camino izquierdo te lleva al mirador. Puedes trepar con cuidado sobre las rocas para obtener una posición más alta, o quedarte en el lugar principal para una vista estable."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/03-viewpoint.jpg",
+          "alt": "Vista de mapa aéreo que muestra los giros finales en la ruta de caminata del amanecer hacia el mirador sobre Positano",
+          "caption": "Usa esta vista aérea para confirmar el último giro a la izquierda hacia el mirador después de que el sendero se abra al mar.",
+          "width": 677,
+          "height": 600
+        }
+      ]
+    },
+    {
+      "id": "share",
+      "title": "Comparte esta guía (QR)",
+      "body": [
+        "Si sales con amigos, puedes usar este código QR para compartir rápidamente la guía en otro teléfono."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/01-qr.png",
+          "alt": "Código QR que enlaza a la guía de caminata del amanecer de Hostel Brikette",
+          "width": 450,
+          "height": 450
+        }
       ]
     }
   ],
-  "tips": [
-    "Allow around 25 minutes from the hostel to the viewpoint and aim to arrive 10 minutes before the posted sunrise time.",
-    "Bring a headlamp or phone torch — the stair sections are dark before dawn.",
-    "Wear shoes with good grip and pack a layer; sea breezes make early mornings feel cooler."
+  "essentialsTitle": "Lo esencial",
+  "essentials": [
+    "Linterna frontal o luz de teléfono (más una batería cargada).",
+    "Zapatos con agarre y una capa ligera: puede sentirse fresco y ventoso antes del amanecer.",
+    "Agua y un pequeño refrigerio si planeas sentarte y ver el amanecer."
   ],
+  "tipsTitle": "Temporización inteligente",
+  "tips": [
+    "Haz una verificación rápida del pronóstico: el viento y las nubes bajas pueden ocultar el amanecer incluso en días despejados.",
+    "Si no estás seguro en un cruce en la oscuridad, detente y confirma tu orientación en lugar de adivinar."
+  ],
+  "warningsTitle": "Notas de seguridad",
+  "warnings": [
+    "Ve despacio en las escaleras y mantén tus manos libres: es fácil dar un paso en falso con poca luz.",
+    "Si el sendero se siente resbaladizo después de la lluvia, considera ver desde la terraza del hostel en su lugar."
+  ],
+  "steps": [
+    {
+      "name": "Camina hasta la escalera",
+      "text": "Desde el hostel, camina ~350 m hacia Sorrento por la carretera principal hasta que veas la escalera que sube la colina."
+    },
+    {
+      "name": "Sube hasta la casa",
+      "text": "Sigue las escaleras hasta la vieja casa blanca, luego gira a la izquierda hacia el sendero del bosque."
+    },
+    {
+      "name": "Toma la rama derecha",
+      "text": "Cuando el sendero del bosque se bifurque, mantente a la derecha y continúa hasta que puedas ver el mar."
+    },
+    {
+      "name": "Gira a la izquierda hacia el mirador",
+      "text": "Después de que el sendero se abra al mar, dirígete a la izquierda para llegar al mirador (trepa con cuidado si quieres una posición más alta)."
+    }
+  ],
+  "faqsTitle": "Preguntas frecuentes",
   "faqs": [
     {
-      "q": "Can I just watch the sunrise from the hostel?",
+      "q": "¿Puedo simplemente ver el amanecer desde el hostel?",
       "a": [
-        "Yes. The terrace faces east and you can see the sun rise to the left of the building without leaving the property.",
-        "The hike is for guests who want a wider panorama or photos without foreground buildings."
+        "Sí: la terraza del hostel es la opción más simple y el sol sale a la izquierda del edificio cuando miras hacia el mar."
       ]
     },
     {
-      "q": "Is the trail marked or difficult to follow?",
+      "q": "¿Cuánto tiempo toma la caminata?",
       "a": [
-        "The route follows local stairs and an informal woodland trail. There are no signposts, so bring a phone with offline maps or follow these instructions closely.",
-        "In the dark, walk slowly and use a torch to pick out uneven steps and tree roots."
-      ]
-    },
-    {
-      "q": "What should I bring?",
-      "a": [
-        "Wear trainers or hiking shoes with grip, carry water, and pack a light layer for the breeze.",
-        "If you plan to stay for sunrise photos, consider a tripod or phone stand."
+        "Es una ruta corta, pero el tiempo depende de tu ritmo y de cuánto tiempo pases en el mirador. Deja suficiente tiempo para llegar 10-15 minutos antes del amanecer."
       ]
     }
   ]

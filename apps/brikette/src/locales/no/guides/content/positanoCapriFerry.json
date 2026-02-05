@@ -1,61 +1,201 @@
 {
   "seo": {
     "title": "Positano til Capri med ferge | Hostel Brikette",
-    "description": "Trinn for trinn fra Hostel Brikette til Positanos havn, billetter, ombordstigningstips og fergen til Capri."
+    "description": "Gå fra Hostel Brikette til Positano havn, kjøp fergebilletter og seil til Capri. Trinn-for-trinn instruksjoner med timing, kostnader og ombordstigningstips."
   },
-  "intro": {
-    "title": "Positano til Capri – ferge",
-    "body": "Følg disse trinnene for å gå fra Hostel Brikette til Positanos havn, kjøpe fergebilletter og gå om bord til Capri. Inkluderer praktiske tids- og operatørtips."
-  },
-  "galleries": [
+  "lastUpdated": "2025-02-04",
+  "intro": [
+    "Denne guiden viser deg hvordan du går fra Hostel Brikette til Positanos havn (15–20 minutter nedoverbakke, hovedsakelig trapper), kjøper fergebilletter og går om bord på fergen til Capri.",
+    "**Reisetid:** 30–60 minutter med ferge, avhengig av operatør og fartøy. Gang til havn: 15–20 minutter.",
+    "**Kostnad:** Fergebilletter koster vanligvis €18–€25 enkeltveis (varierer etter operatør og sesong). Sjekk gjeldende priser ved bestilling.",
+    "**Bestilling:** Anbefales å bestille minst 24 timer i forveien i høysesongen (mai–september). I lavsesongen er billetter samme dag vanligvis tilgjengelige.",
+    "**Værvarsling:** Ferger kan avlyses i grov sjø med kort varsel. Hvis du har videre reise samme dag, bygg inn en 3-timers buffer eller sjekk %LINK:positanoCapriFerry|alternativ bussrute via Sorrento%."
+  ],
+  "sections": [
     {
-      "items": [
+      "id": "journey-overview",
+      "title": "Fergerute og operatører",
+      "body": [
+        "Ferger mellom Positano og Capri går oftest fra vår til tidlig høst (april–oktober) og kan være redusert eller avlyst om vinteren eller i grov sjø. Flere operatører betjener denne ruten.",
+        "Sammenlign ruter og bestill billetter:",
+        "• [Capri.net – Capri ↔ Positano](https://www.capri.net/en/t/capri/positano)",
+        "• [Positano.com (samlet ruteplan)](https://www.positano.com/en/ferry-schedule)"
+      ]
+    },
+    {
+      "id": "walk-to-port",
+      "title": "Gå fra Hostel Brikette til Positano havn",
+      "body": "Turen tar 15–20 minutter og er nesten helt nedoverbakke på trapper. Følg disse trinnene:",
+      "list": [
+        "Gå ut av hostellet via hoveddøren.",
+        "Gå ned trappene til veien, sving til venstre og gå litt over 100 m (≈330 fot).",
+        "Ved første kryss (punkt 1), sving til høyre ved Tabacchien (første bygning til høyre).",
+        "Fortsett nedoverbakke; ved første svingning (punkt 2), forlat veien og ta trappene rett frem.",
+        "Ved bunnen av trappene, nå veien (punkt 3); kryss og fortsett rett på neste trapper.",
+        "Når de trappene slutter ved veien, kryss over, sving til venstre, gå ~10 m (≈30 fot) til punkt 4.",
+        "Sving til høyre av veien og følg trappene nedoverbakke.",
+        "Ved bunnen, sving til høyre for å nå punkt 5, fortsett deretter under buen til høyre.",
+        "Havnen (Spiaggia Grande brygge) er omtrent 50 m (≈160 fot) fremme på høyre side av stranden."
+      ],
+      "images": [
         {
           "src": "/img/directions/positano-capri-ferry-img02.jpg",
-          "aspectRatio": "4/3",
-          "preset": "gallery"
-        },
-        {
-          "src": "/img/directions/positano-capri-ferry-img03.jpg",
-          "aspectRatio": "4/3",
-          "preset": "gallery"
-        },
-        {
-          "src": "/img/directions/positano-capri-ferry-img04.png",
-          "aspectRatio": "4/3",
-          "preset": "gallery"
-        },
-        {
-          "src": "/img/directions/positano-capri-ferry-img05.jpg",
-          "aspectRatio": "4/3",
-          "preset": "gallery"
+          "alt": "Kartoversikt over gangveien fra Hostel Brikette til Positanos havn",
+          "caption": "Kartoversikt: Hostel til Positanos havn",
+          "aspectRatio": "4/3"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img06.jpg",
-          "aspectRatio": "4/3",
-          "preset": "gallery"
+          "alt": "Punkt 1: kryss ved Tabacchien på Via G. Marconi nær Hostel Brikette",
+          "caption": "Punkt 1: Tabacchi-krysset (sving til høyre)",
+          "aspectRatio": "4/3"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img07.jpg",
-          "aspectRatio": "4/3",
-          "preset": "gallery"
+          "alt": "Punkt 2: første svingningssving hvor du forlater veien for å ta trappene",
+          "caption": "Punkt 2: forlat vei, ta trapper",
+          "aspectRatio": "4/3"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img08.jpg",
-          "aspectRatio": "4/3",
-          "preset": "gallery"
+          "alt": "Punkt 3: slutten av trappene ved veien før kryssing",
+          "caption": "Punkt 3: trapper slutter ved vei",
+          "aspectRatio": "4/3"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img09.jpg",
-          "aspectRatio": "4/3",
-          "preset": "gallery"
+          "alt": "Punkt 4: kryss veien, sving til venstre kort, ta deretter trappene",
+          "caption": "Punkt 4: kryss vei, sving venstre, trapper",
+          "aspectRatio": "4/3"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img10.jpg",
-          "aspectRatio": "4/3",
-          "preset": "gallery"
+          "alt": "Punkt 5: buepassasje som leder mot stranden og havnen",
+          "caption": "Punkt 5: bue til havnen",
+          "aspectRatio": "4/3"
         }
       ]
+    },
+    {
+      "id": "tickets-and-boarding",
+      "title": "Kjøp fergebilletter og gå om bord",
+      "body": "Ved Positano havn har hver fergeoperatør sin egen billettluke ved siden av bryggen.",
+      "list": [
+        "Skiltet ved siden av hver luke viser neste avgangstid for den operatøren.",
+        "Kjøp billetter direkte fra operatørens luke (kontanter eller kort aksepteres).",
+        "Ankom 20–30 minutter før avgang for å veksle eventuelle forhåndsbestilte kuponger og stå i kø for ombordstigning.",
+        "Etter å ha kjøpt billetten, gå til enden av bryggen og vent til ombordstigning begynner (personalet kunngjør når det skal om bord)."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-capri-ferry-img03.jpg",
+          "alt": "Foto av tilnærmingen til Positanos Spiaggia Grande og turisthavnen",
+          "caption": "Tilnærming til Spiaggia Grande (turisthavn)",
+          "aspectRatio": "4/3"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img04.png",
+          "alt": "Detaljkart som fremhever høyre side av Spiaggia Grande hvor havnen ligger",
+          "caption": "Detaljkart: havnens plassering på Spiaggia Grande",
+          "aspectRatio": "4/3"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img05.jpg",
+          "alt": "Fergeoperatørers billettluker ved Positano havn med skilting for neste avganger",
+          "caption": "Fergeoperatørers billettluker",
+          "aspectRatio": "4/3"
+        }
+      ]
+    },
+    {
+      "id": "timing-and-weather",
+      "title": "Beste reistider og værhensyn",
+      "body": [
+        "Fergeruter varierer betydelig etter sesong. April til oktober tilbyr den hyppigste tjenesten, med timelige avganger i høysommermånedene (juni–september). Tidlige morgenfergene (rundt 09:00–10:00) er populære blant dagsturer, mens avganger midt på ettermiddagen (14:00–16:00) pleier å være roligere.",
+        "**Værpåvirkning:** Positano–Capri-ruten krysser åpent hav og kan være grov når vinden tar til. Høst- og vinterseilaser (oktober–mars) påvirkes mest. Fra hostellet har vi sett avlysninger skje med så lite som 90 minutters varsel når forholdene forverres.",
+        "**Sjøforhold:** Hvis du er utsatt for sjøsyke, ta medisin 30–60 minutter før ombordstigning. Overfarten er vanligvis rolig om morgenen og kvelden; middagshavet kan være mer urolig, spesielt om sommeren når ettermiddagens termiske vinder utvikles.",
+        "**Planleggingstips:** Hvis du besøker Capri som en dagstur fra Positano og har en stram tidsplan (fly, videre tog osv.), bestill en morgenferge ut og sikt på å returnere innen 16:00–17:00. Dette gir deg buffertid hvis de siste fergene avlyses."
+      ]
+    },
+    {
+      "id": "what-to-expect-onboard",
+      "title": "Hva du kan forvente på fergen",
+      "body": [
+        "De fleste ferger på denne ruten er raske passasjerbåter (ikke store bilferger). Sitteplasser er vanligvis først-til-mølla; ankom tidlig for vindusseter eller dekket områder hvis været ser usikkert ut.",
+        "Reisen tar 30–60 minutter avhengig av operatøren og fartøyet. Raskere hydrofoiler fullfører turen på rundt 30–40 minutter, mens standardferger kan ta nærmere en time og gjøre flere stopp.",
+        "**Ombordsfasiliteter:** Mindre fartøyer har begrensede fasiliteter — vanligvis et toalett og en liten forfriskningstisk. Større ferger kan ha innendørs sitteplasser, men de fleste passasjerene foretrekker utendørs dekk for utsikt over Amalfikysten og Li Galli-øyene.",
+        "**Utsikt:** På klare dager ser du hele Positano-kystlinjen, Praianos fjord og de dramatiske klippene som nærmer seg Capri. Sitt på høyre side (styrbord) når du forlater Positano for den beste kystutsikten."
+      ]
+    },
+    {
+      "id": "arrival-capri",
+      "title": "Ved ankomst Capri",
+      "body": [
+        "Gå i land ved Capris turisthavn (Marina Grande). Havnen er et kompakt område med fergeluker, taxiholdeplasser og funikulærstasjonen alle innen 100 meter fra hverandre.",
+        "**Komme opp til Capri by:** De fleste besøkende tar funikulæren (€2 enkeltveis, går hver 15. minutt) for å nå Capris hovedtorg (Piazzetta). I høysesongen (juni–september) kan funikulærkøene være 30–45 minutter lange mellom 10:00–14:00. Alternativt tar taxier rundt €15–20 for samme reise og busser går regelmessig for €2.",
+        "**Returbilletter:** Hvis du gjør en dagstur, kjøp returfergebilletten din like etter ankomst til Capri (enten ved havnen eller på nettet). Populære returtider (16:00–18:00) selges raskt ut om sommeren, og du vil ikke bli sittende fast på jakt etter tilgjengelighet i siste liten.",
+        "**Bagasje:** Hvis du har vesker, har Marina Grande havn betalte bagasjetjenester (rundt €5–8 per gjenstand). Dette er nyttig hvis du utforsker Capri by før en kveldsfeger tilbake til Positano."
+      ]
+    },
+    {
+      "id": "return-journey",
+      "title": "Tilbake til Positano fra Capri",
+      "body": [
+        "For retur, sjekk fergeruter ved Marina Grande havn eller spør personale ved billettluken din. Seine ettermiddagsferger (16:00–18:00) er de travleste; hvis mulig, ta en tidligere eller senere seiling for å unngå folkemengder.",
+        "**Væradvarsler:** Før du drar tilbake, sjekk værmelding og eventuelle avlysningsvarslinger ved havnen. Hvis ettermiddagshavet ser grovt ut, vurder å returnere på en tidligere ferge eller forlenge besøket med en dag (det er budsjettgjestehus nær Marina Grande).",
+        "**Alternativ rute:** Hvis ferger til Positano er fullt bestilt eller avlyst, kan du ta en ferge til Sorrento og deretter ta en %LINK:sorrentoPositanoBus|SITA-buss til Positano% (total reise: rundt 90–120 minutter). Dette er mer tidkrevende, men en pålitelig backup.",
+        "**Gå tilbake til hostellet:** Etter landing i Positano er gangveien tilbake til Hostel Brikette bratt (15–20 minutter, alle oppoverbakketrapper). Hvis du er sliten eller bærer handleposer, vurder å ta en taxi fra havnen (rundt €10–15). Se vår %LINK:ferryDockToBrikette|Fergebrygge til Hostel Brikette%-guide for oppoverbakke gangrute."
+      ]
+    },
+    {
+      "id": "practical-tips",
+      "title": "Praktiske tips for fergereisen",
+      "body": [
+        "**Solbeskyttelse:** Fergedekket blir veldig varmt om sommeren (juni–august). Ta med solkrem, hatt og vann. Dekkede sitteplasser er begrenset, så hvis du brenner lett, gå om bord tidlig for å kreve en skyggeplass.",
+        "**Hva å ta med:** Hold telefonen ladet for bilder (kystutsikten er spektakulær). Ta med en lett jakke selv om sommeren — havbrisen kan være kjølig, spesielt på raskere båter. Hvis du er utsatt for sjøsyke, ta med medisin og unngå å sitte helt bakerst på båten hvor bevegelsen er sterkest.",
+        "**Kontanter og kort:** De fleste fergeoperatører godtar kortbetalinger ved billettlukene, men det er lurt å ha €50–100 i kontanter som backup. Capri er dyrere enn Positano; forvent å betale €8–12 for en enkel lunsj og €4–6 for en kaffe i Piazzettaen.",
+        "**Fotografering:** For de beste bildene, sitt på høyre side (styrbord) når du forlater Positano og venstre side (babord) når du returnerer. Det tidlige morgenlyset og sen ettermiddagslyset er best for kystbilder.",
+        "**Hold deg informert:** Sjekk Positano havns oppslagstavle (ved siden av billettlukene) for sanntidsværoppdateringer og avlysninger. I usikkert vær legger personalet ut oppdateringer rundt 08:00–09:00 og igjen rundt 13:00–14:00."
+      ]
+    },
+    {
+      "id": "luggage-tip",
+      "title": "Tilbake med bagasje",
+      "body": "Hvis du ankommer Positano fra Capri med tunge vesker, se %LINK:ferryDockToBrikette|Fergebrygge → Hostel Brikette, med bagasje%-guiden for beste gangrute tilbake oppoverbakke (den er forskjellig fra nedoverbakkeruten vist her)."
     }
-  ]
+  ],
+  "faqs": [
+    {
+      "question": "Kan jeg kjøpe fergebilletter samme dag?",
+      "answer": [
+        "Ja, men tilgjengelighet avhenger av sesongen. I høysesongen (mai–september) selges ferger ofte ut, spesielt avganger midt på morgenen (09:00–11:00). Fra hostellet anbefaler vi å bestille minst 24 timer i forveien hvis du reiser om sommeren.",
+        "I lavsesongen (oktober–april) er billetter samme dag vanligvis tilgjengelige ved havnlukene. Tjenestene kan imidlertid reduseres til 2–3 avganger per dag, og avlysninger er mer vanlige i grovt vær."
+      ]
+    },
+    {
+      "question": "Hva skjer hvis fergen avlyses?",
+      "answer": [
+        "Ferger kan avlyses i grov sjø, noen ganger med bare 1–2 timers varsel. Vi har sett dette skje oftest om høsten og vinteren når ettermiddagsvinderen styrkes.",
+        "Hvis fergen din avlyses:",
+        "• Sjekk med billettlukepersonale for neste tilgjengelige seiling (ofte 2–3 timer senere, hvis forholdene bedrer seg).",
+        "• Vurder %LINK:sorrentoPositanoBus|buss til Sorrento% og deretter ferge til Capri (lengre rute men busser går i all slags vær).",
+        "• Hvis du har videre forbindelser, bygg inn en 3-timers buffer eller planlegg en backup-rute på forhånd."
+      ]
+    },
+    {
+      "question": "Er turen til havnen vanskelig?",
+      "answer": "Turen fra hostellet til Positano havn er 15–20 minutter nedoverbakke, hovedsakelig på trapper. Det er greit å gå ned, men returturen oppoverbakke er bratt og kan være slitsom, spesielt i sommervarmen. Hvis du returnerer med handleposer eller bagasje, foreslår vi å ta taxi fra havnen tilbake til hostellet (rundt €10–15, eller be hostellet om å ordne henting)."
+    },
+    {
+      "question": "Hvor mye tid bør jeg tilbringe på Capri?",
+      "answer": [
+        "For en dagstur, sikt på 5–7 timer på øya. Dette gir deg tid til å ta funikulæren opp til Capri by, utforske Piazzettaen, gå til Augustus-hagene og spise lunsj — med buffertid for køer og fergeforsinkelser.",
+        "Populær dagstur-rute: Forlat Positano rundt 09:30–10:00, utforsk Capri 11:00–16:00, returferge rundt 17:00–18:00. Dette unngår de verste folkemengdene og gir deg fleksibilitet hvis returferger forsinkes.",
+        "Hvis du vil besøke Den Blå Grotten, Anacapri eller Villa Jovis, vurder å bli over natten på Capri (budsjetthoteller nær Marina Grande starter rundt €80–100 i lavsesongen)."
+      ]
+    }
+  ],
+  "callouts": {
+    "tip": "Trenger du backup-alternativer hvis havet er grovt? Sjekk %LINK:travelHelp|reisehjelp-guiden% for alternative ruter via Sorrento."
+  }
 }

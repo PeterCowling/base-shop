@@ -1,33 +1,33 @@
 {
   "seo": {
-    "title": "Podróżowanie w parze i noclegi w hostelach",
-    "description": "Jak sprawić, by hostel był wygodny dla par: wybór łóżek, plan dnia i niezbędne akcesoria."
+    "title": "Podróżowanie jako para w hostelach",
+    "description": "Wskazówki dotyczące dormitoriów lub pokoi prywatnych, znajdowania ciszy i ustalania oczekiwań."
   },
-  "linkLabel": "Podróżowanie w parze i noclegi w hostelach",
+  "linkLabel": "Podróżowanie jako para w hostelach",
   "intro": [
-    "Hostele działają dla par, gdy wybierzecie właściwy typ pokoju, pakujecie się lekko i ustalicie wspólne oczekiwania."
+    "Hostele działają dla par, gdy wybierasz odpowiedni typ pokoju, pakujesz lekko i ustalacie oczekiwania razem."
   ],
   "sections": [
     {
       "id": "room-types",
-      "title": "Room types",
+      "title": "Typy pokoi",
       "body": [
-        "Zarezerwuj prywatny pokój dla intymności; jeśli budżet jest napięty, dzielcie łóżka w tym samym dormitorium i trzymajcie bagaż lekki ze względu na schody."
+        "Zarezerwuj prywatny pokój dla prywatności; jeśli ograniczasz budżet, podzielcie się łóżkami w tym samym dormitorium i utrzymujcie bagaż lekki ze względu na schody."
       ]
     },
     {
       "id": "quiet",
-      "title": "Finding quiet",
+      "title": "Znajdowanie ciszy",
       "body": [
-        "Noś zatyczki do uszu i maskę na oczy, wybieraj pokoje z dala od baru lub przestrzeni wspólnych i planuj spokojniejsze zwiedzanie wczesnymi porankami."
+        "Zabierz zatyczki do uszu i maskę na oczy, wybieraj pokoje z dala od baru lub przestrzeni wspólnych i wykorzystuj wczesne ranki na spokojniejsze zwiedzanie."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "Is a hostel suitable for couples?",
+      "q": "Czy hostel jest odpowiedni dla par?",
       "a": [
-        "Tak — zyskujecie towarzyską energię i dobrą relację jakości do ceny; prywatne pokoje łączą komfort z opłacalnością."
+        "Tak — otrzymujesz energię społeczną i dobrą wartość; prywatne pokoje równoważą komfort i koszt."
       ]
     }
   ]

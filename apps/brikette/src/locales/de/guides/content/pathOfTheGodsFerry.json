@@ -52,6 +52,13 @@
         "Halte Ausschau nach dem SITA-Bus mit der Aufschrift \"Agerola/Bomerano\". Entwerte dein Ticket beim Einsteigen und setz dich möglichst weit nach vorne, dort gibt es weniger Serpentinen.",
         "Nach rund 45 Minuten steigst du an der Haltestelle Bomerano neben dem Ristorante Jerla aus. Überquere die Straße und folge der Seitenstraße hinunter zur Piazza.",
         "Geh links über den Platz und folge den Schildern \"Sentiero degli Dei\" bis zur Infotafel am Einstieg."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/12-nav.jpg",
+          "alt": "Side street from Bomerano bus stop descending toward the piazza",
+          "caption": "2. Überquere die Straße von der Bushaltestelle und folge dieser Seitenstraße hinunter zur Piazza"
+        }
       ]
     },
     {
@@ -61,6 +68,28 @@
         "Der Weg verläuft rund 6 Kilometer mit Auf und Ab. Dich erwarten Steintritte, schmale Pfade und spektakuläre Balkone über der Küste.",
         "Leg Pausen an markierten Aussichtspunkten ein und nimm deinen Müll wieder mit. Respektiere die Felder der Einheimischen und bleib auf dem ausgeschilderten Pfad.",
         "Sobald der Schotterweg in den betonierten Spazierweg nach Nocelle übergeht, hast du das Ziel erreicht."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/13-nav.jpg",
+          "alt": "Town square (piazza) in Bomerano with left-hand route markers",
+          "caption": "3. Geh links über die Piazza und folge den Schildern 'Sentiero degli Dei'"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/14-nav.jpg",
+          "alt": "Wooden steps ascending along the hiking trail ridge",
+          "caption": "4. Nach der Piazza such die Infotafel und biege links ab – hier beginnt der Weg. Folge dem Pfad bis zu einem Abschnitt mit Holzstufen."
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/15-nav.jpg",
+          "alt": "Concrete paved walkway marking entry into Nocelle village",
+          "caption": "Wenn der Schotterweg in diesen betonierten Spazierweg übergeht, hast du Nocelle erreicht"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/16-nav.jpg",
+          "alt": "Nocelle village navigation map showing route to bus stop and staircase warning",
+          "caption": "Nocelle-Karte — geh durchs Dorf und biege an der Gabelung rechts ab zur Bushaltestelle; vermeide die 1.700-Stufen-Treppe nach Positano um jeden Preis!"
+        }
       ]
     },
     {
@@ -70,6 +99,23 @@
         "Folge dem gepflasterten Weg ins Dorf, bleib an der ersten Gabelung rechts, um die 1.700 Stufen nach Positano zu vermeiden.",
         "Geh etwa 175 Meter weiter bis zur Bushaltestelle am kleinen Parkplatz. Der Kiosk an der Kirche verkauft in der Saison kalte Getränke.",
         "Sei mindestens 10 Minuten vorher da; wenn viel los ist, hält der Bus manchmal ein Stück vor der Wartehalle."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/17-nav.jpg",
+          "alt": "Directional signpost in Nocelle showing the stairs-to-Positano option to avoid",
+          "caption": "KRITISCH: Folge NICHT den Schildern nach 'Positano' die Treppen hinab — biege hier stattdessen rechts ab"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/18-nav.jpg",
+          "alt": "Stone steps ascending through Nocelle streets toward the bus stop",
+          "caption": "Steig diese Stufen etwa 175 Meter hinauf zur Bushaltestelle am Parkplatz"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/19-nav.jpg",
+          "alt": "Bus stop arrival point in Nocelle",
+          "caption": "Du hast die Bushaltestelle erreicht."
+        }
       ]
     },
     {

@@ -28,6 +28,6 @@
     "twitterHandle": "@brikette"
   },
   "internalErrors": {
-    "assistanceSlugMissing": "ARTICLE_SLUGS must define at least one assistance slug"
+    "assistanceSlugMissing": "Az ARTICLE_SLUGS-nak legalább egy assistance slug-ot kell definiálnia"
   }
 }

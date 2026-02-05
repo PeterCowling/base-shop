@@ -84,7 +84,7 @@
       }
     ],
     "classics": {
-      "heading": "The classics (timing matters)",
+      "heading": "Klasyczne miejsca (czas ma znaczenie)",
       "items": [
         {
           "title": "Spiaggia Grande",
@@ -101,7 +101,7 @@
       ]
     },
     "alternatives": {
-      "heading": "Underrated alternatives",
+      "heading": "Niedoceniane alternatywy",
       "items": [
         {
           "title": "Chiesa Nuova terraces",
@@ -122,14 +122,14 @@
       ]
     },
     "sunset": {
-      "heading": "Sunset choices",
+      "heading": "Miejsca na zachód słońca",
       "paragraphs": [
         "By uniknąć tłumów podczas złotej godziny, wybierz górne zjazdy z Via Pasitea lub tarasy przy Chiesa Nuova.",
         "Jeśli wolisz sylwetki na plaży, przyjedź do Fornillo 30–45 minut przed zachodem słońca."
       ]
     },
     "etiquette": {
-      "heading": "Etiquette & local tips",
+      "heading": "Etykieta i lokalne wskazówki",
       "items": [
         "Nie blokuj wąskich schodów ani dróg; oddaj strzał i odsuń się.",
         "Uszanuj prywatną własność i nie wspinaj się na murki lub dachy.",
@@ -137,7 +137,7 @@
       ]
     },
     "faqs": {
-      "heading": "FAQs",
+      "heading": "Najczęściej zadawane pytania",
       "items": [
         {
           "summary": "What’s the best time for photos?",
@@ -146,13 +146,13 @@
       ]
     },
     "drone": {
-      "summary": "Do I need a drone permit?",
+      "summary": "Czy potrzebuję pozwolenia na drona?",
       "body": "Włochy mają surowe zasady dotyczące dronów i wiele stref zakazu lotów. Sprawdź wskazówki ENAC i lokalne regulacje; unikaj lotów nad tłumami."
     },
     "galleryAlt": [
       "Positano from above",
       "Coastal panorama"
     ],
-    "galleryFallbackAlt": "Scenic view of Positano coastline"
+    "galleryFallbackAlt": "Malowniczy widok na wybrzeże Positano"
   }
 }

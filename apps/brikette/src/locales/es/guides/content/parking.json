@@ -3,6 +3,7 @@
     "title": "Dónde aparcar en Positano y cuánto cuesta",
     "description": "Listado de parkings en Positano, tarifas aproximadas, plazas cubiertas y alternativas para reducir escaleras y sorpresas en temporada alta."
   },
+  "lastUpdated": "2026-02-04T00:00:00.000Z",
   "linkLabel": "Dónde aparcar en Positano",
   "intro": [
     "Aparcar en Positano es limitado y caro; en temporada alta los garajes privados son la norma.",
@@ -34,10 +35,12 @@
       ]
     }
   ],
+  "tipsTitle": "Quick tips",
   "tips": [
     "Revisa las ZTL y las restricciones de matrículas antes de conducir por la SS163; las multas llegan por correo meses después.",
     "Prepara una mochila con lo esencial antes de entregar las llaves: algunos garajes estacionan los coches muy juntos hasta el check-out."
   ],
+  "faqsTitle": "Preguntas frecuentes",
   "faqs": [
     {
       "q": "¿Existe aparcamiento gratuito?",
@@ -58,6 +61,5 @@
       ]
     }
   ],
-  "tocTitle": "En esta página",
-  "faqsTitle": "Preguntas frecuentes"
+  "tocTitle": "En esta página"
 }

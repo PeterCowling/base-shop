@@ -1,104 +1,159 @@
 {
+  "lastUpdated": "2026-01-31",
   "seo": {
-    "title": "Aéroport de Naples vers Positano en bus | Hostel Brikette",
-    "description": "De l'aéroport de Naples à Positano via le bus Curreri jusqu'à Sorrente puis le bus SITA. Billets, arrêts, conseils d'horaires SITA et itinéraire à pied vers Hostel Brikette."
+    "title": "Guide Bus Aéroport de Naples à Positano | Brikette 2026",
+    "description": "Guide bus aéroport de Naples à Positano : Curreri vers Sorrente (10€), puis bus SITA (2,60€). Total 2h30. Billets, arrêts, conseils horaires. Mis à jour 2026."
   },
-  "intro": {
-    "title": "Aéroport de Naples vers Positano — Bus",
-    "body": "Ce guide pas à pas vous mène de l'aéroport de Naples à Positano en utilisant le bus Curreri jusqu'à Sorrente, puis le bus SITA jusqu'à Positano. Il couvre les billets, le lieu de correspondance, la lecture de l'horaire SITA et la façon de rejoindre Hostel Brikette depuis l'arrêt le plus proche."
-  },
+  "intro": "Le trajet en bus de l'aéroport de Naples à Positano se déroule en deux étapes : prenez le bus Curreri Viaggi de l'aéroport à Sorrente (75 minutes, 10€), puis prenez le bus SITA de Sorrente à Positano (50 minutes, 2,60€).\n\nLe temps total de trajet est d'environ 2h30 plus le temps d'attente pour la correspondance. Ce guide couvre les prix des billets 2026, où acheter les billets, comment lire l'horaire SITA, et les directions étape par étape de l'arrêt de bus Chiesa Nuova à l'Hostel Brikette.\n\nSi vous arrivez depuis %LINK:naplesCenterTrainBus|le centre-ville de Naples au lieu de l'aéroport%, consultez notre guide train-bus pour cet itinéraire.",
   "callouts": {
-    "tip": "Need other routes? Explore the full %HOWTO:how-to-get-here|How to Get Here overview% for %LINK:arrivingByFerry|ferry arrival%, %LINK:porterServices|porter services%, and %LINK:travelHelp|private transfers%."
+    "tip": "Besoin d'autres itinéraires ? Explorez le %HOWTO:how-to-get-here|guide complet Comment venir% pour %LINK:arrivingByFerry|l'arrivée en ferry%, %LINK:porterServices|les services de porteurs% et %LINK:travelHelp|les transferts privés%."
   },
   "sections": [
     {
-      "id": "airport",
-      "title": "Aéroport de Naples",
-      "list": [
-        "Sortez de la zone des arrivées et suivez les panneaux vers les quais de bus extérieurs.",
-        "Achetez un billet Curreri Viaggi pour Sorrente (en ligne ou à l'arrêt).",
-        "Attendez au quai le prochain bus pour Sorrente et montez lorsqu'il arrive."
+      "id": "overview",
+      "title": "Aperçu de l'itinéraire et coûts",
+      "body": "Ce trajet en deux étapes est l'option de transport public la plus directe de l'aéroport de Naples à Positano. Le coût total est d'environ 12,60€ (Curreri 10€ + SITA 2,60€) comparé à 100-140€ pour un transfert privé.\n\nLe bus Curreri Viaggi part du niveau des arrivées du Terminal 1 de l'aéroport de Naples et circule plusieurs fois par jour toute l'année. Les services fonctionnent environ toutes les 90 minutes en haute saison (avril-octobre) et toutes les 2-3 heures en hiver (novembre-mars).\n\nDepuis Sorrente, les bus SITA vers Positano circulent environ toutes les 40-60 minutes en été (avril-octobre) et toutes les 60-90 minutes en hiver (novembre-mars). Vérifiez les horaires actuels sur sitasudtrasporti.it avant de voyager car les services changent selon les saisons.\n\nPrévoyez 3-3h30 au total incluant le temps de transfert à Sorrente. Cet itinéraire ne dessert pas le Terminal 3 (aviation privée) — vous devez d'abord vous rendre au Terminal 1.",
+      "images": [
+        {
+          "src": "/img/guides/naples-airport-positano-bus/naples-airport-terminal-1.jpg",
+          "alt": "Niveau des arrivées du Terminal 1 de l'aéroport de Naples montrant la signalétique de l'arrêt de bus Curreri"
+        }
       ]
     },
     {
-      "id": "overview",
-      "title": "Aperçu du trajet",
-      "body": "Prenez le bus Curreri Viaggi directement depuis l'aéroport de Naples jusqu'à Sorrente, puis changez pour le bus SITA en direction d'Amalfi (descendez à Positano – Chiesa Nuova). Prévoyez du temps supplémentaire en haute saison à cause des files d'attente et de l'affluence sur les lignes populaires."
-    },
-    {
-      "id": "positanoStop",
-      "title": "Arrêt de bus Positano (Chiesa Nuova)",
-      "list": [
-        "L'arrêt SITA le plus proche est Positano (Chiesa Nuova) sur la Via G. Marconi.",
-        "Il se situe à environ 140 mètres (490 pieds) de l'entrée de l'auberge.",
-        "L'arrêt se trouve devant le café/bar Bar Internazionale."
+      "id": "airport",
+      "title": "Aéroport de Naples : trouver le bus Curreri",
+      "body": "Sortez du hall des arrivées au Terminal 1 et tournez à droite. L'arrêt de bus Curreri Viaggi est situé à l'extérieur du bâtiment du terminal, à environ 50 mètres de la sortie principale. Cherchez la signalétique bleue et blanche Curreri et un petit guichet.\n\nVous pouvez acheter des billets en ligne sur curreriviaggi.it ou au guichet à l'arrêt de bus. Le guichet ouvre 30 minutes avant le premier départ. Les billets coûtent 10€ par personne aller simple (saison 2026). Moyens de paiement : espèces et carte acceptées au guichet ; carte ou PayPal requis pour la réservation en ligne.\n\nLes bus sont clairement marqués 'Sorrento' à l'avant. Montez lorsque le chauffeur ouvre les portes (généralement 10-15 minutes avant le départ). Les bagages vont dans le compartiment de rangement de la soute sans frais supplémentaires — le chauffeur l'ouvrira pour vous.\n\nLe temps de trajet est de 75 minutes. Le bus suit l'autoroute A3 puis la route côtière SS145 vers Sorrente. Les places sont attribuées selon l'ordre d'arrivée. Les bus peuvent être complets en plein été (juillet-août), donc réservez en ligne 1-2 jours à l'avance si vous voyagez le week-end.\n\nIl n'y a pas de toilettes à bord, donc utilisez les installations de l'aéroport avant d'embarquer. Le bus ne fait aucun arrêt entre l'aéroport et Sorrente.",
+      "images": [
+        {
+          "src": "/img/guides/naples-airport-positano-bus/curreri-bus-exterior.jpg",
+          "alt": "Bus Curreri Viaggi à l'arrêt de l'aéroport de Naples montrant le compartiment à bagages"
+        },
+        {
+          "src": "/img/guides/naples-airport-positano-bus/curreri-ticket-booth.jpg",
+          "alt": "Guichet Curreri au Terminal 1 de l'aéroport de Naples"
+        }
       ]
     },
     {
       "id": "sorrento",
-      "title": "Gare routière de Sorrente",
-      "list": [
-        "Descendez à la gare routière principale de Sorrente (au même endroit que la gare ferroviaire).",
-        "Depuis la gare routière, prenez le bus SITA en direction d'Amalfi (Positano se trouve sur cet itinéraire).",
-        "Si nécessaire, achetez un billet SITA dans un bar ou kiosque à proximité.",
-        "À l'embarquement, le conducteur oblitérera ou déchirera partiellement votre billet : conservez-le pendant tout le trajet."
+      "title": "Sorrente : changement pour le bus SITA",
+      "body": "Le bus Curreri s'arrête à la gare routière principale de Sorrente (bâtiment de la gare Circumvesuviana). Descendez du bus et récupérez vos bagages dans la soute.\n\nAvant de monter dans le bus SITA, vous devez acheter votre billet — les bus SITA ne vendent pas de billets à bord. Cherchez un bar, un tabacchi (bureau de tabac) ou un kiosque à journaux à proximité affichant le logo SITA. Le guichet se trouve souvent au Bar Circolo ou au Bar Fauno, tous deux à moins de 100 mètres de la sortie de la gare routière.\n\nDemandez 'un biglietto per Positano' (un billet pour Positano). Le coût est de 2,60€ (2026). Vous pouvez également utiliser l'application EAV Campania pour acheter des billets numériques, mais d'après notre expérience, le billet physique est plus fiable.\n\nUne fois que vous avez votre billet, marchez jusqu'à l'arrêt de bus SITA (cherchez le panneau bleu et blanc SITA). Les bus vers Positano sont marqués 'Amalfi via Positano' ou simplement 'Amalfi'.\n\nLes bus partent environ toutes les 40-60 minutes en haute saison (avril-octobre) et toutes les 60-90 minutes en basse saison (novembre-mars). Les services d'été en pleine saison (juillet-août) peuvent circuler toutes les 30 minutes.\n\nLe trajet jusqu'à Positano prend 45-50 minutes. Nous recommandons de vous asseoir du côté droit du bus pour des vues côtières spectaculaires. La route est étroite et sinueuse — c'est l'un des trajets en bus les plus pittoresques au monde.\n\nPour une aide détaillée sur la lecture de l'horaire et le choix de votre arrêt, consultez notre %LINK:chiesaNuovaDepartures|guide des départs de Chiesa Nuova%.",
+      "images": [
+        {
+          "src": "/img/guides/naples-airport-positano-bus/sorrento-bus-station.jpg",
+          "alt": "Gare routière de Sorrente montrant la zone de départ SITA"
+        },
+        {
+          "src": "/img/guides/naples-airport-positano-bus/sita-ticket-bar.jpg",
+          "alt": "Point de vente de billets SITA au Bar Circolo près de la gare routière de Sorrente"
+        }
       ]
     },
     {
       "id": "timetable",
-      "title": "Horaire SITA — comment le lire"
+      "title": "Lecture de l'horaire SITA",
+      "body": "Les horaires SITA peuvent être déroutants car ils listent tous les arrêts le long de l'itinéraire. Voici comment les lire selon l'expérience de notre auberge à aider les voyageurs :\n\n(1) Trouvez la colonne intitulée 'Sorrento' en haut — c'est votre point de départ.\n\n(2) Descendez pour trouver 'Positano (Chiesa Nuova)' ou simplement 'Positano' dans la colonne de gauche.\n\n(3) Les heures indiquées sont celles où le bus atteint Positano, pas quand il part de Sorrente. Soustrayez 45-50 minutes pour estimer le départ de Sorrente.\n\n(4) Les services marqués 'Festivi' circulent les dimanches et jours fériés uniquement. Les services marqués 'Feriali' circulent du lundi au samedi.\n\n(5) Certains bus sautent certains arrêts — si vous voyez un tiret au lieu d'une heure, ce bus ne s'y arrête pas.\n\nVérifiez toujours l'horaire actuel sur sitasudtrasporti.it ou demandez au guichet. Téléchargez une photo de l'horaire actuel sur votre téléphone avant de voyager au cas où l'accès internet serait limité le long de la côte."
+    },
+    {
+      "id": "positanoStop",
+      "title": "Descente à Positano (Chiesa Nuova)",
+      "body": "Le bus fera plusieurs arrêts à Positano. L'arrêt le plus proche de l'Hostel Brikette est 'Positano (Chiesa Nuova)' — à environ 140 mètres (460 pieds) de notre porte d'entrée.\n\nCet arrêt est annoncé comme 'Chiesa Nuova' et est situé devant le Bar Internazionale, un café sur la route côtière principale (Via Pasitea). Dites au chauffeur 'Chiesa Nuova, per favore' en montant pour qu'il sache où vous descendez.\n\nAppuyez sur le bouton d'arrêt lorsque vous voyez le Bar Internazionale sur votre droite. Le bus s'arrêtera directement devant. C'est un arrêt en bord de route sans escaliers — vous descendez au niveau de la rue, ce qui est facile avec des bagages.\n\nNe descendez pas à 'Positano Centro' ou 'Positano Spiaggia' (les arrêts principaux de la ville) sauf si vous voulez d'abord explorer le centre-ville. Ces arrêts nécessitent une montée raide pour atteindre l'auberge.\n\nPour plus de détails sur les bus depuis cet arrêt, y compris les services de retour vers Sorrente et vers Amalfi, consultez notre %LINK:chiesaNuovaDepartures|guide des départs de Chiesa Nuova%.",
+      "images": [
+        {
+          "src": "/img/guides/chiesa-nuova-departures/chiesa-nuova-bus-stop.jpg",
+          "alt": "Arrêt de bus Chiesa Nuova devant le Bar Internazionale à Positano"
+        }
+      ]
     },
     {
       "id": "walk",
-      "title": "Marche de l'arrêt jusqu'à l'auberge",
-      "body": "Astuce : en approchant de l'auberge, vous verrez notre enseigne au niveau de la terrasse du deuxième étage. Dépassez le panneau, suivez la courbe puis repérez les marches qui montent sur la droite de la route pour atteindre l'entrée principale.",
-      "list": [
-        "Parcourez un peu plus de 100 mètres / 330 pieds le long de la Via G. Marconi.",
-        "Tournez à droite et suivez les marches jusqu'à la porte principale de l'auberge."
+      "title": "Marche de l'arrêt Chiesa Nuova à l'auberge",
+      "body": "Après être descendu du bus à Chiesa Nuova, vous verrez le Bar Internazionale sur votre droite. Faites face à la montée (loin de la mer) et marchez 50 mètres le long de la Via Pasitea.\n\nVous verrez un petit chemin piétonnier sur votre gauche marqué 'Via Trara Genoino'. Tournez à gauche ici et marchez 90 mètres le long de cette ruelle tranquille. L'Hostel Brikette est sur votre gauche au numéro 23, marqué de notre enseigne.\n\nTemps de marche total : moins de 2 minutes. Le chemin est plat et pavé — pas d'escaliers.\n\nSi vous arrivez après la tombée de la nuit, la ruelle est éclairée, mais apportez une lampe de téléphone pour plus de visibilité. Consultez notre %LINK:chiesaNuovaArrivals|guide des arrivées de Chiesa Nuova% pour des photos de l'itinéraire et des directions détaillées.",
+      "images": [
+        {
+          "src": "/img/guides/naples-airport-positano-bus/via-trara-genoino.jpg",
+          "alt": "Chemin piétonnier Via Trara Genoino menant à l'entrée de l'Hostel Brikette"
+        },
+        {
+          "src": "/img/guides/naples-airport-positano-bus/hostel-brikette-entrance.jpg",
+          "alt": "Entrée principale de l'Hostel Brikette au Via Trara Genoino 23, Positano"
+        }
+      ]
+    },
+    {
+      "id": "luggage",
+      "title": "Conseils bagages et confort",
+      "body": "Le bus Curreri dispose d'un espace de rangement dédié pour les bagages dans la soute. Le chauffeur charge et décharge les sacs à chaque arrêt. Franchise de bagages maximale : 1 grand sac (jusqu'à 20 kg) plus 1 petit sac par personne sans frais supplémentaires.\n\nLe bus SITA a un espace limité pour les bagages à l'arrière du bus, qui se remplit rapidement en haute saison. Si vous avez un grand sac à dos ou une valise, montez tôt pour sécuriser de l'espace. Les grandes valises peuvent devoir être placées dans l'allée pendant les périodes d'affluence.\n\nGardez vos objets de valeur avec vous — les pickpockets peuvent sévir dans les bus bondés, surtout pendant la haute saison touristique. Le bus Curreri dispose d'équipements basiques (pas de toilettes, climatisation sur les autocars plus récents). Le bus SITA n'a pas de toilettes, donc utilisez les installations à la gare routière de Sorrente avant de monter.\n\nApportez de l'eau, surtout en été. La route côtière peut être chaude et le bus SITA peut ne pas avoir de climatisation sur les véhicules plus anciens.\n\nSi vous avez des sacs lourds et souhaitez éviter les tracas, envisagez d'utiliser nos %LINK:porterServices|services de porteurs% pour le transport des bagages depuis l'embarcadère du ferry, ou consultez %LINK:travelHelp|notre page d'aide au voyage% pour les options de transfert privé.",
+      "images": [
+        {
+          "src": "/img/guides/naples-airport-positano-bus/sita-bus-luggage.jpg",
+          "alt": "Zone de rangement des bagages du bus SITA montrant des sacs à dos et des valises"
+        }
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Exemples de temps de trajet",
+      "body": "Voici un horaire réaliste pour le trajet complet de l'aéroport de Naples à l'Hostel Brikette :\n\n**Départ matinal (recommandé) :**\n- 09h00 - Départ du bus Curreri de l'aéroport de Naples\n- 10h15 - Arrivée à Sorrente, achat du billet SITA (15 min)\n- 10h30 - Embarquement dans le bus SITA vers Positano\n- 11h20 - Arrivée à l'arrêt Chiesa Nuova, marche vers l'auberge (5 min)\n- 11h25 - Enregistrement à l'Hostel Brikette\n\nTemps total : 2 heures 25 minutes (plus tout temps d'attente si vous ratez une correspondance).\n\n**Départ après-midi :**\n- 14h00 - Départ du bus Curreri de l'aéroport de Naples\n- 15h15 - Arrivée à Sorrente\n- 15h30 - Embarquement dans le bus SITA (si un part à cette heure)\n- 16h20 - Arrivée à l'auberge\n\nNote : Les horaires d'été (juin-septembre) offrent des services plus fréquents. Les horaires d'hiver (novembre-mars) ont des intervalles plus longs entre les bus, donc attendez-vous à des temps d'attente potentiels de 60-90 minutes à Sorrente."
+    },
+    {
+      "id": "alternatives",
+      "title": "Itinéraires alternatifs et plans de secours",
+      "body": "Si le bus Curreri est complet ou annulé, vous avez plusieurs options de secours :\n\n(1) Prenez la navette Alibus de l'aéroport de Naples à la gare Napoli Centrale (5€, 20 minutes), puis suivez notre %LINK:naplesCenterTrainBus|guide train-bus du centre de Naples% à partir de là.\n\n(2) Prenez un ferry du port de Naples à Positano (avril-octobre uniquement, 20-25€, 90 minutes) — consultez notre %LINK:arrivingByFerry|guide d'arrivée en ferry%.\n\n(3) Les transferts privés coûtent 100-140€ mais offrent un service de porte à porte sans temps d'attente.\n\n(4) Si vous ratez le dernier bus SITA de Sorrente (généralement vers 20h-21h selon la saison), vous pouvez prendre un taxi vers Positano (80-100€, 30 minutes).\n\nVérifiez toujours l'heure du dernier départ de bus avant de quitter l'aéroport de Naples. Les dimanches et jours fériés, les services sont réduits — prévoyez du temps supplémentaire et vérifiez les horaires à l'avance."
+    },
+    {
+      "id": "whatToExpect",
+      "title": "À quoi s'attendre pendant le trajet",
+      "body": "Le bus Curreri est un autocar standard avec sièges inclinables et rangement pour bagages. Attendez-vous à un confort basique — pas de toilettes, mais climatisation sur les véhicules plus récents. Le trajet est direct le long de l'autoroute avec des vues sur les montagnes.\n\nLe trajet en bus SITA est spectaculaire mais angoissant si vous n'êtes pas habitué aux routes côtières étroites. Les chauffeurs sont expérimentés et font ce trajet plusieurs fois par jour, mais la route comporte des virages serrés et des pentes raides avec des barrières minimales. Asseyez-vous du côté droit pour les meilleures vues côtières (et moins d'exposition au bord de la falaise si les hauteurs vous rendent nerveux).\n\nLes deux services circulent toute l'année, mais les horaires d'hiver (novembre-mars) sont considérablement réduits. Les horaires d'été (avril-octobre) sont fréquents et fiables, bien que les bus puissent être debout uniquement vers la mi-matinée en pleine saison (juillet-août). Si vous voyagez en plein été, visez les départs tôt le matin pour éviter de voyager debout.\n\nDepuis l'auberge, nous avons constaté que la plupart des voyageurs trouvent le trajet simple une fois qu'ils comprennent les étapes. La principale confusion est généralement l'achat du billet SITA à Sorrente — rappelez-vous, vous ne pouvez pas acheter à bord.",
+      "images": [
+        {
+          "src": "/img/guides/naples-airport-positano-bus/coastal-road-view.jpg",
+          "alt": "Vue panoramique de la route de la côte amalfitaine depuis la fenêtre du bus SITA entre Sorrente et Positano"
+        }
       ]
     }
   ],
   "faqs": [
     {
-      "q": "How much does it cost to get from Naples Airport to Positano by bus?",
-      "a": "Total cost is approximately €12.60: €10 for the Curreri bus from Naples Airport to Sorrento, plus €2.60 for the SITA bus from Sorrento to Positano (2026 prices). This is the cheapest public transport option."
+      "q": "Combien coûte le trajet de l'aéroport de Naples à Positano en bus ?",
+      "a": "Le coût total est d'environ 12,60€ : 10€ pour le bus Curreri de l'aéroport de Naples à Sorrente, plus 2,60€ pour le bus SITA de Sorrente à Positano (prix 2026). C'est l'option de transport public la moins chère."
     },
     {
-      "q": "How long does the journey take from Naples Airport to Positano?",
-      "a": "Total journey time is 2.5-3 hours: 75 minutes on the Curreri bus, 50 minutes on the SITA bus, plus 20-40 minutes waiting for connections in Sorrento. Budget 3-3.5 hours total to account for possible delays."
+      "q": "Combien de temps dure le trajet de l'aéroport de Naples à Positano ?",
+      "a": "Le temps total de trajet est de 2h30-3h : 75 minutes dans le bus Curreri, 50 minutes dans le bus SITA, plus 20-40 minutes d'attente pour les correspondances à Sorrente. Prévoyez 3-3h30 au total pour tenir compte des retards possibles."
     },
     {
-      "q": "Can I buy bus tickets on board?",
-      "a": "You can buy Curreri tickets at Naples Airport (booth or online). SITA bus tickets cannot be purchased on board — you must buy them from a bar, tabacchi, or newsstand near Sorrento bus station before boarding."
+      "q": "Puis-je acheter des billets de bus à bord ?",
+      "a": "Vous pouvez acheter des billets Curreri à l'aéroport de Naples (guichet ou en ligne). Les billets de bus SITA ne peuvent pas être achetés à bord — vous devez les acheter dans un bar, un tabacchi ou un kiosque à journaux près de la gare routière de Sorrente avant de monter."
     },
     {
-      "q": "Is this route suitable for travelers with heavy luggage?",
-      "a": "Yes, but it can be challenging during peak times. The Curreri bus has dedicated luggage storage. The SITA bus has limited luggage space, so board early if you have large bags. The walk from Chiesa Nuova bus stop to the hostel is flat and under 2 minutes, so luggage is manageable upon arrival. If you prefer, consider using our porter services or a private transfer."
+      "q": "Cet itinéraire convient-il aux voyageurs avec des bagages lourds ?",
+      "a": "Oui, mais cela peut être difficile pendant les heures de pointe. Le bus Curreri dispose d'un rangement dédié pour les bagages. Le bus SITA a un espace limité pour les bagages, donc montez tôt si vous avez de gros sacs. La marche de l'arrêt de bus Chiesa Nuova à l'auberge est plate et prend moins de 2 minutes, donc les bagages sont gérables à l'arrivée. Si vous préférez, envisagez d'utiliser nos services de porteurs ou un transfert privé."
     },
     {
-      "q": "What time does the last bus from Sorrento to Positano leave?",
-      "a": "The last bus varies by season. In summer (July-August), the last bus is usually around 9-10pm. In winter (November-March), it can be as early as 7-8pm. Always check the current schedule at sitasudtrasporti.it before travel, especially on Sundays and holidays when services are reduced."
+      "q": "À quelle heure part le dernier bus de Sorrente à Positano ?",
+      "a": "Le dernier bus varie selon la saison. En été (juillet-août), le dernier bus part généralement vers 21h-22h. En hiver (novembre-mars), il peut partir dès 19h-20h. Vérifiez toujours l'horaire actuel sur sitasudtrasporti.it avant de voyager, surtout les dimanches et jours fériés lorsque les services sont réduits."
     },
     {
-      "q": "What if I miss the Curreri bus or it's fully booked?",
-      "a": "Take the Alibus to Naples Centrale (€5, 20 min), then the Circumvesuviana train to Sorrento (€4.60, 70 min), then SITA bus to Positano (€2.60, 50 min). Total cost: €12.20, similar to the Curreri route but with an extra transfer. See our Naples center train-bus guide for details."
+      "q": "Que faire si je rate le bus Curreri ou s'il est complet ?",
+      "a": "Prenez l'Alibus jusqu'à Naples Centrale (5€, 20 min), puis le train Circumvesuviana jusqu'à Sorrente (4,60€, 70 min), puis le bus SITA jusqu'à Positano (2,60€, 50 min). Coût total : 12,20€, similaire à l'itinéraire Curreri mais avec un transfert supplémentaire. Consultez notre guide train-bus du centre de Naples pour plus de détails."
     },
     {
-      "q": "Are there toilets on the buses?",
-      "a": "No. Neither the Curreri bus nor the SITA bus has toilet facilities. Use the toilets at Naples Airport before boarding the Curreri bus, and use the facilities at Sorrento bus station (there's a small cafe with toilets) before boarding the SITA bus."
+      "q": "Y a-t-il des toilettes dans les bus ?",
+      "a": "Non. Ni le bus Curreri ni le bus SITA n'ont de toilettes. Utilisez les toilettes de l'aéroport de Naples avant de monter dans le bus Curreri, et utilisez les installations à la gare routière de Sorrente (il y a un petit café avec des toilettes) avant de monter dans le bus SITA."
     },
     {
-      "q": "Can I store luggage in Positano if I arrive before check-in time?",
-      "a": "Yes. Several %LINK:luggageStorage|luggage storage locations% near Spiaggia Grande beach charge €5-€8 per bag per day. Useful if you arrive before the hostel's 3pm check-in time."
+      "q": "Puis-je stocker des bagages à Positano si j'arrive avant l'heure d'enregistrement ?",
+      "a": "Oui. Plusieurs %LINK:luggageStorage|points de consigne à bagages% près de la plage Spiaggia Grande facturent 5-8€ par sac et par jour. Utile si vous arrivez avant l'heure d'enregistrement de 15h de l'auberge."
     },
     {
       "q": "Comment lire l'horaire des bus SITA ?",
       "a": [
         "**Lecture des lignes :** Les lignes de la première colonne représentent différents arrêts de bus le long de l'itinéraire.",
-        "**Lecture des colonnes :** L'horaire attribue une lettre alphabétique à chaque trajet prévu, qui sont répertoriés en tant qu'en-têtes dans chaque colonne. Si vous voyagez du lundi au samedi, recherchez les colonnes 'F' et 'G'. Si vous voyagez le dimanche ou un jour férié, recherchez les colonnes 'G' et 'H'.",
-        "**Combinaison des lignes et des colonnes :** Choisissez vos arrêts de départ et d'arrivée, puis vérifiez les colonnes pour voir quand les bus sont disponibles et à quelle heure ils arriveront à votre destination. Par exemple, pour voir l'heure de départ de Sorrente, regardez la ligne Sorrente. Pour voir l'heure d'arrivée à Positano (Chiesa Nuova / Bar Internazionale), regardez la ligne Positano (Chiesa Nuova)."
+        "**Lecture des colonnes :** L'horaire attribue une lettre alphabétique à chaque trajet prévu, qui sont répertoriés comme en-têtes dans chaque colonne. Si vous voyagez du lundi au samedi, recherchez les colonnes 'F' et 'G'. Si vous voyagez le dimanche ou un jour férié, recherchez les colonnes 'G' et 'H'.",
+        "**Combinaison des lignes et des colonnes :** Choisissez vos arrêts de départ et d'arrivée, puis vérifiez les colonnes pour voir quand les bus sont disponibles et à quelle heure ils arriveront à votre destination. Par exemple, pour voir l'heure de départ de Sorrente, regardez la ligne Sorrento. Pour voir l'heure d'arrivée à Positano (Chiesa Nuova / Bar Internazionale), regardez la ligne Positano (Chiesa Nuova)."
       ]
     }
-  ],
-  "lastUpdated": "2026-01-31"
+  ]
 }

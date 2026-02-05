@@ -79,9 +79,18 @@
   "perksGuarantee": "Jede Direktbuchung über unsere Website schaltet diese exklusiven Vorteile automatisch frei.",
   "perksIntroLink": "Alle Vorteile ansehen",
   "perksList": [
-    "Bis zu 25 % Rabatt auf den regulären Preis (automatisch angewendet)",
-    "Kostenloses Frühstück",
-    "Kostenloses Abendgetränk"
+    {
+      "title": "Bis zu 25 % Rabatt auf den regulären Preis (automatisch angewendet)",
+      "subtitle": "Automatisch angewendet"
+    },
+    {
+      "title": "Kostenloses Frühstück",
+      "subtitle": "Täglich inklusive"
+    },
+    {
+      "title": "Kostenloses Abendgetränk",
+      "subtitle": "Hausauswahl"
+    }
   ],
   "expired": {
     "message": "Dieses Angebot ist abgelaufen."

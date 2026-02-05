@@ -12,51 +12,61 @@
       "items": [
         {
           "src": "/img/directions/positano-capri-ferry-img01.png",
+          "alt": "Imagem da etapa da rota 1",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img02.jpg",
+          "alt": "Imagem da etapa da rota 2",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img03.jpg",
+          "alt": "Imagem da etapa da rota 3",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img04.png",
+          "alt": "Imagem da etapa da rota 4",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img05.jpg",
+          "alt": "Imagem da etapa da rota 5",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img06.jpg",
+          "alt": "Imagem da etapa da rota 6",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img07.jpg",
+          "alt": "Imagem da etapa da rota 7",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img08.jpg",
+          "alt": "Imagem da etapa da rota 8",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img09.jpg",
+          "alt": "Imagem da etapa da rota 9",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img10.jpg",
+          "alt": "Imagem da etapa da rota 10",
           "aspectRatio": "4/3",
           "preset": "gallery"
         }

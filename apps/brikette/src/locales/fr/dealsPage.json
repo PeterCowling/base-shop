@@ -79,9 +79,18 @@
   "perksGuarantee": "Chaque réservation effectuée directement sur notre site active automatiquement ces avantages exclusifs.",
   "perksIntroLink": "Voir tous les avantages",
   "perksList": [
-    "Jusqu'à 25 % de remise sur le tarif standard lors de l'application du coupon",
-    "Petit-déjeuner offert",
-    "Boisson offerte en soirée"
+    {
+      "title": "Jusqu'à 25 % de remise sur le tarif standard lors de l'application du coupon",
+      "subtitle": "Appliqué automatiquement"
+    },
+    {
+      "title": "Petit-déjeuner offert",
+      "subtitle": "Inclus quotidiennement"
+    },
+    {
+      "title": "Boisson offerte en soirée",
+      "subtitle": "Sélection maison"
+    }
   ],
   "expired": {
     "message": "Cette offre est terminée."

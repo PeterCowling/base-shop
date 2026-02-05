@@ -1,55 +1,116 @@
 {
   "seo": {
-    "title": "Limoncello e cucina locale",
-    "description": "Storia del limoncello, piatti tipici al limone e dove assaggiare menu a chilometro zero."
+    "title": "Limoncello e cucina locale sulla Costiera Amalfitana",
+    "description": "Guida economica al limoncello, alla cucina locale e alle specialità al limone di Positano. Dove degustare gratuitamente, bottiglie autentiche più economiche e ristoranti locali convenienti."
   },
-  "linkLabel": "Limoncello e cucina locale",
+  "linkLabel": "I sapori di Positano: Limoncello, limoni e gusto locale",
   "intro": [
-    "Limoni e limoncello definiscono i sapori della Costiera — dalle degustazioni alle note dolci finali.",
-    "Ecco dove assaggiare, cosa acquistare e come usarli in cucina a casa."
+    "Il limoncello e tutto ciò che è a base di limone definiscono la Costiera Amalfitana — ma non serve un grande budget per assaggiare il meglio.",
+    "Ecco dove degustare gratis, quali bottiglie offrono il miglior rapporto qualità-prezzo e come mangiare come un locale senza prezzi da trappola per turisti."
   ],
   "tocTitle": "In questa pagina",
   "sections": [
     {
-      "id": "tasting",
-      "title": "Degustazione",
+      "id": "free-tasting",
+      "title": "Degustazioni gratuite e dove assaggiare",
       "body": [
-        "Visita piccole botteghe per limoncello artigianale e chiedi un assaggio per confrontare gli stili.",
-        "Abbina la degustazione a gelato, sorbetto o dolci al limone per valutare dolcezza ed equilibrio."
+        "La maggior parte delle piccole botteghe di limoncello a Positano offre assaggi gratuiti — è pratica standard, non un vantaggio turistico. Entra in qualsiasi produttore artigianale e chiedi gentilmente; di solito versano 2-3 stili così puoi confrontare.",
+        "I posti migliori per degustare si trovano in Via dei Mulini e nelle strade dietro Chiesa Nuova — lontano dalle trappole per turisti sul lungomare. Cerca botteghe a conduzione familiare con insegne semplici e locali che fanno acquisti; sono meno invadenti e il limoncello è spesso più forte e meno zuccherato.",
+        "Accompagna la degustazione con assaggi gratuiti di caramelle al limone (la maggior parte dei negozi le offre) o prendi una granita al limone da €1,50 in una gelateria per pulire il palato tra un assaggio e l'altro.",
+        "%IMAGE:limoncello-tasting-shop.jpg|Local limoncello shop offering free tasting samples in Positano%",
+        "Consiglio dall'ostello: le botteghe su Via Cristoforo Colombo (la strada che sale da Chiesa Nuova) hanno spesso meno turisti e porzioni più generose. Abbiamo visto locali portare le proprie bottiglie per riempimenti a prezzi all'ingrosso — segno che hai trovato il posto giusto."
       ]
     },
     {
-      "id": "purchase",
-      "title": "Acquisto e spedizione",
+      "id": "buying-smart",
+      "title": "Acquistare bottiglie: cosa cercare e cosa evitare",
       "body": [
-        "Controlla i limiti di liquidi delle compagnie aeree; imballa le bottiglie nel bagaglio da stiva.",
-        "Cerca etichette IGP Costa d'Amalfi e confezioni riciclabili da produttori locali."
+        "Un vero limoncello deve indicare limoni Sorrento IGP (o Costa d'Amalfi IGP) sull'etichetta e avere almeno il 28-30% di gradazione alcolica. Se è di un giallo neon brillante o sospettosamente economico (meno di €8 per 500ml), probabilmente è aromatizzante artificiale e sciroppo di zucchero.",
+        "Miglior rapporto qualità-prezzo: bottiglie da 500ml di produttori locali costano €10-15 a Positano, €8-12 a Praiano o Amalfi. Non pagare più di €15 a meno che non si tratti di una miscela artigianale premium con agrumi insoliti (bergamotto, cedro).",
+        "I negozi aeroportuali e delle stazioni ferroviarie applicano il 30-50% in più per le stesse bottiglie. Se parti da Napoli in aereo, compra a Positano e imballa con cura nel bagaglio registrato (avvolgi in vestiti + sacchetto di plastica).",
+        "Limiti di liquidi in aereo: massimo 100ml nel bagaglio a mano. Le bottiglie standard sono da 500ml o 750ml, quindi il bagaglio registrato è l'unica opzione. Non abbiamo mai avuto una bottiglia rotta quando avvolta correttamente al centro di uno zaino.",
+        "%IMAGE:limoncello-bottles-local.jpg|Authentic limoncello bottles from local Amalfi Coast producers%"
       ]
     },
     {
-      "id": "cooking",
-      "title": "Cucinare con i limoni",
+      "id": "budget-eats",
+      "title": "Cibo locale economico: piatti al limone da provare",
       "body": [
-        "Usa scorza e succo in insalate, pasta di mare e dessert per dare freschezza.",
-        "Conserva i limoni in un luogo fresco e buio e riutilizza le bucce per sciroppi o marinature."
+        "Salta i menu turistici da €25 sulla spiaggia principale. Vai invece da Da Vincenzo (Via Pasitea 172) per piatti di pasta al limone da €8-12 — i loro spaghetti al limone sono semplici, freschi e usano limoni locali. Solo contanti, senza prenotazioni, i locali fanno la fila alle 19:00.",
+        "Per dessert, la delizia al limone (pan di Spagna al limone imbevuto di crema al limoncello) costa €4-6 nella maggior parte delle pasticcerie. La nostra preferita: Pasticceria La Zagara (Via dei Mulini) — €5 per una fetta generosa, posti a sedere all'aperto, ricariche d'acqua gratuite.",
+        "Colazione economica: prendi una sfogliatella (€2-3) e un espresso (€1,20) in qualsiasi bar, poi compra un chilo di limoni freschi da un fruttivendolo (€2-4) da sgranocchiare o per fare limonata fresca all'ostello.",
+        "La terrazza dell'%LINK:chiesaNuovaArrivals|ostello% è perfetta per assemblare i propri pasti a base di limone: compra mozzarella fresca (€3-4), pomodori (€2/kg), basilico e limoni al mercato di Chiesa Nuova (giovedì mattina), poi condisci con olio d'oliva locale. Costo totale: €10-12 per due persone.",
+        "%IMAGE:spaghetti-al-limone.jpg|Fresh spaghetti al limone with Amalfi lemons at local restaurant%"
+      ]
+    },
+    {
+      "id": "cooking-tips",
+      "title": "Cucinare con i limoni di Amalfi",
+      "body": [
+        "I limoni di Amalfi (sfusato amalfitano) hanno bucce spesse e profumate e meno acidità dei limoni da supermercato — usali per piatti dove la scorza brilla.",
+        "Usi classici: grattugia la scorza nell'acqua di cottura della pasta per gli spaghetti al limone, schiaccia la buccia con lo zucchero per il limoncello fatto in casa, o candisci strisce spesse per guarnire i dolci.",
+        "Conservazione: tieni i limoni in un luogo fresco e buio (non in frigo) fino a 2 settimane. Se compri un grande sacchetto al mercato, spremi metà e congela il succo in vaschette per il ghiaccio per un uso successivo.",
+        "Bucce avanzate: fai sobbollire con acqua e zucchero per fare sciroppo al limone per cocktail, o asciugale e aggiungile al tè. Zero sprechi, massimo sapore.",
+        "%IMAGE:amalfi-lemons-cooking.jpg|Fresh Amalfi Coast lemons (sfusato amalfitano) for cooking%"
+      ]
+    },
+    {
+      "id": "ordering-etiquette",
+      "title": "Etichetta nell'ordinare ed evitare trappole per turisti",
+      "body": [
+        "Se un ristorante ha un menu in 6 lingue e foto di ogni piatto, è una trappola per turisti. Cerca menu scritti a mano in italiano con massimo 8-12 piatti — è lì che mangiano i locali.",
+        "Il limoncello viene tradizionalmente servito ghiacciato dopo un pasto come digestivo, non prima o durante. Se un posto spinge cocktail al limoncello prima di cena, stanno prendendo di mira i turisti.",
+        "Il coperto è standard in Italia: €1,50-3 a persona per pane e servizio al tavolo. Se supera i €3, stai pagando troppo. Controlla il prezzo del 'coperto' sul menu prima di sederti.",
+        "Acqua: 'acqua naturale' è acqua liscia, 'frizzante' è frizzante. L'acqua del rubinetto è sicura ma raramente servita nei ristoranti — ordina una bottiglia da €2-3 e riempi gratuitamente dalla fontana dell'ostello prima di uscire.",
+        "%IMAGE:local-italian-restaurant.jpg|Authentic local restaurant with handwritten Italian menu%",
+        "Cultura della mancia: il servizio è talvolta incluso nel conto. Se non lo è, lasciare €1-2 o arrotondare il conto è educato ma non obbligatorio. Gli italiani non danno mance del 15-20% come negli USA — risparmia i tuoi euro per più limoncello."
+      ]
+    },
+    {
+      "id": "market-shopping",
+      "title": "Spesa al mercato e portare limoni a casa",
+      "body": [
+        "Il %LINK:chiesaNuovaArrivals|mercato di Chiesa Nuova% (giovedì 8:00-13:00) vende prodotti freschi, inclusi enormi limoni di Amalfi a €2-4/kg. Confronta con €1-2 per limone nei negozi di souvenir turistici.",
+        "Se vuoi portare limoni a casa: scegli frutti sodi e senza difetti e impacchetta nel centro della borsa avvolti in carta assorbente. Dureranno 5-7 giorni se tenuti al fresco. Le dogane UE consentono fino a 2kg di frutta fresca; controlla le regole del tuo paese se voli fuori dall'UE.",
+        "Per ingredienti per limoncello, compra alcol puro (alcool puro, 95%) in una farmacia o grande supermercato a Salerno o Napoli — costa €8-12 per 1L, contro €15-20 nei piccoli negozi di Positano.",
+        "%IMAGE:chiesa-nuova-market-lemons.jpg|Fresh Amalfi lemons at Chiesa Nuova Thursday market%"
       ]
     }
   ],
   "tips": [
-    "Sostieni i piccoli produttori: i sapori sono spesso piu intensi dei marchi turistici.",
-    "Evita i souvenir costosi vicino alla spiaggia principale: fai una o due strade interne per prezzi migliori."
+    "Gli assaggi gratuiti sono standard — non sentirti obbligato a comprare dopo aver assaggiato. Un educato 'grazie, ci penso' funziona benissimo.",
+    "Compra limoncello e limoni ad Amalfi o Praiano per il 20-30% in meno rispetto ai prezzi di Positano.",
+    "Salta le bottiglie di ceramica a forma di limone (€20-30) — sono fragili, pesanti e il limoncello dentro è mediocre. Prendi una bottiglia di vetro normale e spendi i risparmi per un liquido di migliore qualità.",
+    "La maggior parte dei ristoranti a Positano serve limoncello gratuito dopo cena se ordini un pasto completo. Se non lo offrono, chiedi — 'Limoncello offerto?' — e di solito portano un bicchierino.",
+    "La %LINK:cheapEats|cucina dell'ostello% è ottima per assemblare pasti economici a base di limone. Compra ingredienti al mercato del giovedì o al Conad di Chiesa Nuova e risparmia il 50-70% rispetto ai pasti al ristorante."
   ],
   "faqs": [
     {
-      "q": "Posso portare il limoncello nel bagaglio a mano?",
+      "q": "Posso portare limoncello nel bagaglio a mano?",
       "a": [
-        "Non sopra i 100 ml: metti le bottiglie standard nel bagaglio da stiva con imbottitura."
+        "No, non in bottiglie oltre 100ml. Le bottiglie standard di limoncello sono da 500-750ml, quindi devi imballarle nel bagaglio registrato.",
+        "Avvolgi le bottiglie in vestiti o pluriball, sigillale in un sacchetto di plastica in caso di perdite e impacchetta al centro della borsa lontano da oggetti duri. Abbiamo volato con 4-5 bottiglie in questo modo senza problemi."
       ]
     },
     {
-      "q": "Esistono alternative analcoliche?",
+      "q": "Qual è un prezzo giusto per il limoncello a Positano?",
       "a": [
-        "Prova limonata fresca, granita o sciroppi al limone se preferisci evitare l'alcol."
+        "€10-15 per una bottiglia da 500ml da un produttore locale è standard. Qualsiasi cosa oltre €18 è troppo cara a meno che non sia una miscela speciale.",
+        "Più economico ad Amalfi (€8-12) o Praiano. Evita i negozi aeroportuali — fanno pagare €20-25 per le stesse bottiglie."
+      ]
+    },
+    {
+      "q": "Ci sono specialità al limone senza alcol?",
+      "a": [
+        "Sì! Prova la granita al limone (€2-3), limonata fresca (€3-4) o sorbetto al limone (€2,50-4). Sono ovunque e altrettanto rinfrescanti del limoncello.",
+        "Per cucinare, l'olio d'oliva aromatizzato al limone e la marmellata di limoni sono ottimi regali e non contengono alcol."
+      ]
+    },
+    {
+      "q": "Dove trovo il miglior rapporto qualità-prezzo per pasti al limone?",
+      "a": [
+        "Da Vincenzo (Via Pasitea 172) per piatti di pasta da €8-12. Pasticceria La Zagara (Via dei Mulini) per delizia al limone da €5.",
+        "Oppure cucina da solo: compra limoni, mozzarella, pomodori e olio d'oliva al mercato di Chiesa Nuova e assembla pasti all'ostello per €5-6 a persona."
       ]
     }
   ]

@@ -5,20 +5,28 @@
   },
   "linkLabel": "Defects and Damages Guide for Positano Hostel",
   "sections": [
-    {
-      "id": "reportingDefects",
-      "title": "Reporting Defects",
-      "body": [
-        "If you notice any issue or defect in your room, please inform us immediately. Your prompt notification helps us quickly address and resolve the problem."
-      ]
-    },
-    {
-      "id": "assessingDefects",
-      "title": "Assessing Defects",
-      "body": [
-        "Once you report a defect, we'll assess the issue promptly and prioritize our response based on how significantly it impacts your comfort and stay."
-      ]
-    },
+	    {
+	      "id": "reportingDefects",
+	      "title": "Reporting Defects",
+	      "body": [
+	        "If you notice any issue or defect in your room, please inform us immediately. Your prompt notification helps us quickly address and resolve the problem.",
+	        "The fastest way to report is in person at reception. When possible, include: what’s wrong, when you noticed it, and a quick photo or short video."
+	      ]
+	    },
+	    {
+	      "id": "assessingDefects",
+	      "title": "Assessing Defects",
+	      "body": [
+	        "Once you report a defect, we'll assess the issue promptly and prioritize our response based on how significantly it impacts your comfort and stay."
+	      ],
+	      "images": [
+	        {
+	          "src": "https://upload.wikimedia.org/wikipedia/commons/2/27/ISO_7010_W008.svg",
+	          "alt": "ISO 7010 W008 general warning sign (yellow triangle with an exclamation mark)",
+	          "caption": "We prioritise safety first, then anything that affects sleep and comfort."
+	        }
+	      ]
+	    },
     {
       "id": "responseToSeriousDefects",
       "title": "Response to Serious Defects",

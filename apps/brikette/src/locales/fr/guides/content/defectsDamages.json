@@ -1,58 +1,66 @@
 {
   "seo": {
-    "title": "Guide des Défauts et Dégâts – Auberge Brikette, Positano",
-    "description": "Découvrez comment signaler un défaut, notre réaction aux problèmes graves, la politique de dépôt de garantie, la responsabilité des hôtes et la prévention des punaises de lit dans l’unique auberge de Positano."
+    "title": "Guide des défauts et dommages pour l'auberge de Positano",
+    "description": "Comprenez comment signaler les défauts de chambre, notre réponse aux problèmes graves, les politiques de dépôt de garantie, la responsabilité des clients et les informations essentielles sur la prévention des punaises de lit dans l'auberge exclusive de Positano."
   },
-  "linkLabel": "Guide des Défauts et Dégâts – Auberge Brikette, Positano",
+  "linkLabel": "Guide des défauts et dommages pour l'auberge de Positano",
   "sections": [
     {
       "id": "reportingDefects",
-      "title": "Signaler un Défaut",
+      "title": "Signalement des défauts",
       "body": [
-        "Si vous constatez un défaut dans votre chambre, prévenez-nous immédiatement afin que nous puissions intervenir rapidement."
+        "Si vous remarquez un problème ou un défaut dans votre chambre, veuillez nous en informer immédiatement. Votre notification rapide nous aide à résoudre rapidement le problème.",
+        "Le moyen le plus rapide de signaler est en personne à la réception. Si possible, incluez : quel est le problème, quand vous l'avez remarqué, et une photo rapide ou une courte vidéo."
       ]
     },
     {
       "id": "assessingDefects",
-      "title": "Évaluation des Défauts",
+      "title": "Évaluation des défauts",
       "body": [
-        "Après votre signalement, nous évaluons le problème et priorisons notre action selon son impact sur votre confort."
+        "Une fois que vous signalez un défaut, nous évaluerons rapidement le problème et prioriserons notre réponse en fonction de son impact significatif sur votre confort et votre séjour."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/2/27/ISO_7010_W008.svg",
+          "alt": "Panneau d'avertissement général ISO 7010 W008 (triangle jaune avec point d'exclamation)",
+          "caption": "Nous priorisons d'abord la sécurité, puis tout ce qui affecte le sommeil et le confort."
+        }
       ]
     },
     {
       "id": "responseToSeriousDefects",
-      "title": "Réponse aux Défauts Graves",
+      "title": "Réponse aux défauts graves",
       "body": [
-        "Si un défaut majeur ne peut pas être réparé sur-le-champ, nous proposerons un hébergement alternatif. S’il est moins cher que votre chambre, la différence vous sera remboursée. Si vous refusez, vous pouvez demander un remboursement au prorata des nuits restantes."
+        "S'il y a un défaut grave qui ne peut pas être réparé immédiatement, nous fournirons un hébergement alternatif. Si l'alternative est moins chère que votre chambre réservée, nous vous rembourserons la différence de prix. Si vous décidez de ne pas accepter notre alternative, vous pouvez demander un remboursement au prorata pour les nuits restantes de votre séjour."
       ]
     },
     {
       "id": "unreportedDefects",
-      "title": "Défauts Non Signalés",
+      "title": "Défauts non signalés",
       "body": [
-        "Si nous découvrons un défaut non signalé dans un délai raisonnable, nous évaluerons les dommages et pourrons appliquer la politique de dégâts."
+        "Si nous découvrons un problème dans votre chambre que vous n'avez pas signalé dans un délai raisonnable, nous évaluerons les dommages résultants, et notre politique de dommages pourra être appliquée."
       ]
     },
     {
       "id": "damagesPolicy",
-      "title": "Politique de Dégâts",
+      "title": "Politique de dommages",
       "body": [
-        "Pour votre sécurité et la nôtre, nous pouvons pré-autoriser votre carte ou demander un dépôt en espèces à l’arrivée. Sans dépôt, la réservation peut être annulée. Le dépôt est restitué au départ, déduction faite des coûts de dégâts, pertes, main-d’œuvre ou frais administratifs. Si ces coûts dépassent le dépôt, la différence reste à votre charge. Taux horaires : Directeur (50 €), Manager (35 €), Employé (25 €)."
+        "Pour votre sécurité et la nôtre, nous pouvons pré-autoriser votre carte de crédit ou demander un dépôt en espèces à l'enregistrement pour couvrir les dommages ou pertes potentiels. Si vous ne pouvez pas fournir de dépôt ou de pré-autorisation, votre réservation peut être annulée. Les dépôts sont entièrement remboursables au départ, moins les frais pour tout dommage, perte, main-d'œuvre ou frais administratifs encourus. Si ces frais dépassent votre dépôt, vous serez responsable des coûts supplémentaires. Les tarifs de main-d'œuvre pour les réparations ou le nettoyage sont facturés à l'heure : Directeur (50 €/heure), Manager (35 €/heure) et Personnel (25 €/heure)."
       ]
     },
     {
       "id": "bedBugsPolicy",
-      "title": "Politique sur les Punaises de Lit",
+      "title": "Politique des punaises de lit",
       "body": [
-        "Nous gérons activement tout problème de punaises de lit. Si des punaises sont détectées dans votre chambre, vous pourrez être tenu responsable des coûts liés (perte de revenus, nettoyage, traitement). Signalez tout signe immédiatement."
+        "Nous gérons de manière proactive et traitons rapidement tout problème de punaises de lit. Cependant, si des punaises de lit sont trouvées dans votre chambre pendant votre séjour, vous pouvez être tenu responsable des coûts associés, tels que la perte de revenus de réservation, les frais de nettoyage et la lutte antiparasitaire. Veuillez signaler immédiatement tout signe de punaises de lit à notre personnel."
       ]
     },
     {
       "id": "bedBugsPrevention",
-      "title": "Prévention des Punaises de Lit",
+      "title": "Prévention des punaises de lit",
       "body": [
-        "Pour aider à prévenir les punaises :",
-        "* Signalez au check-in tout séjour récent dans un lieu infesté.\n* Désinfectez soigneusement vos affaires.\n* Inspectez bagages et vêtements avant d’entrer dans la chambre."
+        "Pour aider à prévenir les problèmes de punaises de lit, veuillez :",
+        "* Nous informer à l'enregistrement si vous avez récemment séjourné quelque part avec des problèmes connus de punaises de lit.\n* Désinfecter soigneusement vos affaires.\n* Inspecter attentivement vos bagages et vêtements pour les punaises de lit avant d'entrer dans votre chambre."
       ]
     }
   ]

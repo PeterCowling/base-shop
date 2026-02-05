@@ -166,12 +166,13 @@
     },
     {
       "id": "logistics",
-      "title": "ビーチへの行き方・帰り方",
+      "title": "ビーチへの行き方と帰り方",
       "body": [
-        "ホステルからの最短パターンはだいたいこうです：スピアッジャ・グランデまで下る（徒歩かバス）→ その後、プロムナードでフォルニッロ方面へ歩く／シャトルボートに乗る／メインに残る、を決める。",
-        "ボート移動込みのビーチクラブ（アリエンツォ／ラウリート）に行くなら、スピアッジャ・グランデから始めるのが楽なことが多いです。早めに並べて、階段を避けられます。",
-        "2026年の夏は登りの暑さ対策を：戻る前に水を補給し、疲れたら全段歩かず内部バスを使いましょう。",
-        "日帰り（プライアーノ、アマルフィ、ソレント）は、決める前に最終の帰り便を確認。フェリーは動いていれば一番快適ですが、バスがバックアップです。海が荒れて欠航する場合もあるので、時間に余裕を持ち、予定は柔軟に。移動用に軽食も。"
+        "各ビーチでアクセス方法が異なるので、出発前に各ガイドを確認してください。最も役立つルートガイドへのクイックリンク：",
+        "ポジターノのビーチ：%LINK:positanoMainBeachWalkDown|スピアッジャ・グランデまで徒歩% • %LINK:positanoMainBeachBusDown|スピアッジャ・グランデまでバス% • %LINK:hostelBriketteToFornilloBeach|フォルニッロまで徒歩% • %LINK:hostelBriketteToArienzoBus|アリエンツォまでバス% • %LINK:lauritoBeachBusDown|ラウリートまでバス%",
+        "帰りルート：%LINK:positanoMainBeachWalkBack|スピアッジャ・グランデから徒歩で戻る% • %LINK:positanoMainBeachBusBack|スピアッジャ・グランデからバスで戻る% • %LINK:fornilloBeachToBrikette|フォルニッロから徒歩で戻る% • %LINK:arienzoBeachBusBack|アリエンツォからバスで戻る% • %LINK:lauritoBeachBusBack|ラウリートからバスで戻る%",
+        "日帰り向けビーチ：%LINK:hostelBriketteToFiordoDiFuroreBus|フィヨルド・ディ・フローレ% • %LINK:gavitellaBeachGuide|ガヴィテッラ（プライアーノ）% • %LINK:marinaDiPraiaBeaches|マリーナ・ディ・プライア% • %LINK:reginaGiovannaBath|レジーナ・ジョヴァンナ（ソレント）%",
+        "一般的なTIPS：2026年の夏、登りの暑さ対策を—戻る前に水を補給し、疲れたら内部バスを使いましょう。日帰りは、決める前に最終の帰り便（フェリーかバス）を確認し、移動用に軽食を持参。海が荒れてフェリーが欠航した場合は、時間に余裕を持ち、予定は柔軟に。"
       ],
       "images": [
         {

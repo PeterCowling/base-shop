@@ -1,118 +1,248 @@
 {
   "seo": {
-    "title": "Billig mad i Positano",
-    "description": "Hvor du spiser godt uden at sprænge budgettet — fra pizza slices til lokale deli’er."
+    "title": "Billig mad i Positano: Budget madguide",
+    "description": "Spis godt i Positano for €15–25/dag: pizza al taglio (€3–5), supermarkedspicnic, frokosttilbud, kost muligheder og penge-besparende tips til budget rejsende."
   },
-  "linkLabel": "Billig mad i Positano",
-  "heroAlt": "Billig takeaway-mad i Positano",
+  "linkLabel": "Spis som en lokal: Positanos bedste budget bites",
+  "heroAlt": "Billig takeaway mad i Positano",
   "intro": [
-    "Spis godt i Positano uden at overskride budgettet ved at kombinere takeaway-klassikere, deli-picnic og lokale bagerier."
+    "Positano behøver ikke dræne dit rejsebudget. Ved at blande takeaway klassikere, supermarkedspicnic og smarte valg til at sidde ned, kan du spise godt for €15–25 om dagen, mens andre rejsende bruger tre gange så meget på borde ved vandkanten.",
+    "Fra hostellet har vi set gæster mestre kunsten at spise billigt: de henter morgenbagværk fra Collina Bakery (5 minutter op ad bakke), fylder terrassekøleskabet med minimarkedspicnic og gemmer måltider til særlige lejligheder. Her er præcis hvordan man gør det."
   ],
   "sections": [
     {
-      "id": "grab-and-go",
-      "title": "Hurtige klassikere",
+      "id": "strategy",
+      "title": "Budget spisestrategi",
       "body": [
-        "Snup pizza al taglio, panini eller arancini fra barerne på Via dei Mulini før frokost for at slå køen.",
-        "Bestil espresso ved disken (\"al banco\") for den lokale €1,20-pris i stedet for bordservering."
+        "Planlæg ét måltid hvor du sidder ned hver 2–3. dag og udfyld hullerne med takeaway, picnic og %LINK:hostelFaqs|hostel morgenmad%. Dette holder dit daglige mad forbrug omkring €15–25 i stedet for €50+.",
+        "Shop i minimarkeder op ad bakke (Via dei Mulini, Via Cristoforo Colombo) hvor priserne er 20–30% lavere end strandkiosker. En 1,5L vandflaske koster €0,80 vs €3 på sandet. Vi har set forskellen lægge sig sammen: gæster der shopper op ad bakke sparer €50–70 over en uge.",
+        "Spis dit hovedmåltid til frokost når mange trattorier tilbyder \"menu del giorno\" (€12–18 for pasta, vand, kaffe) i stedet for middag à la carte (€25–40 pr. person). Personale på steder op ad bakke er vant til budgetrejsende og vil ikke skynde dig.",
+        "Genopfyld vandflasker på hostellet eller ved det offentlige springvand nær %LINK:chiesaNuovaArrivals|Chiesa Nuova%—at bære 750ml+ sparer €2–4 dagligt. Hostellet har filtreret vand tilgængeligt 24/7; bare medbring din egen flaske eller lån en fra fællesområdet.",
+        "Brug hostel terrassen som dit spiselokale: morgenmadsbagværk kl. 8 med solopgangsudsigt, frokostpicnic spredt ud på bordene og solnedgangs aperitivo med minimarkedvin. Det er socialt, smukt og sparer en formue på restaurant covers."
+      ]
+    },
+    {
+      "id": "grab-and-go",
+      "title": "Hurtige klassikere (€3–8 pr. måltid)",
+      "body": [
+        "Pizza al taglio (pr. skive): €3–5 for en generøs portion. Collina Bakery og barer langs Via dei Mulini sælger margherita, marinara og sæsonbestemte toppings. Gå før middag for at få friske portioner—vi prøvede 11-marinara fra Collina og den var stadig ovnvarm.",
+        "Panini & focaccia: €4–6 hos delikatessebutikker og bagerier. Spørg efter caprese (mozzarella, tomat, basilikum), prosciutto eller aubergine parm. Angiv \"senza\" hvis du undgår ingredienser. Fra hostellet er Collina Bakery en 5 minutters gåtur op ad bakke; kom der senest kl. 10 for den fulde panini menu.",
+        "Arancini (friterede risboller): €2,50–3,50 hver. Mættende, bærbare og tilgængelige hos de fleste barer. Klassiske ragù- eller mozzarellaversioner er overalt. Gæster henter ofte to til frokost og spiser dem på terrassen eller stranden.",
+        "Espresso ved disken: €1,20–1,50 \"al banco\" (stående ved baren) vs €3,50–5 for bordservice. Det er den samme kaffe, bare forskellig prissætning. Personale ved barer nær Chiesa Nuova kender hostelfolket og er altid venlige.",
+        "Takeaway salater & pasta: €5–8 fra delikatessetiske. Godt til picnic eller at spise tilbage på hostel terrassen med udsigt. Spørg efter ekstra servietter og bestik, eller brug det genanvendelige sæt tilgængeligt i hostelkøkkenet."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/cheapEats.jpg",
+          "alt": "Budgetvenlige mad muligheder i Positano.",
+          "caption": "Bland takeaway bites og café diskere for at holde måltider overkommelige."
+        }
+      ]
+    },
+    {
+      "id": "supermarket-picnics",
+      "title": "Supermarkedspicnic (€6–12 pr. måltid)",
+      "body": [
+        "Fyld op i minimarkeder: brød/focaccia (€1,50–3), lokal ost (€3–5 pr. 200g), salami eller prosciutto (€4–6), cherrytomater (€2) og frugt (€2–4). Det er en fuld picnic for to under €20. Vi har set gæster gøre dette til en natlig ritual på terrassen.",
+        "Hvor man spiser det: Hostel terrasse (bedste solnedgangsudsigt i Positano, verificeret af utallige gæstfotos), %LINK:fornilloBeachGuide|Fornillo Beach's gratis offentlige sektion% (vestlige ende) eller de skyggefulde bænke nær Chiesa Nuova. Terrassen har borde, stole og en solnedgangsudsigt der slår enhver restaurant.",
+        "Genanvendeligt udstyr: Medbring en lille kniv, skærebræt og stofserviet. Du sparer på plastikbestikgebyrer og reducerer affald. Hostelkøkkenet har en delt kniv og skærebræt hvis du glemmer dit.",
+        "Vin tip: Minimarked vin er €4–8 pr. flaske vs €20+ i restauranter. Drik ansvarligt og genbrug glas ved hostel affaldsspande. Personaleanbefalinger: spørg efter \"vino locale\" (lokal vin) i minimarkeder for det bedste kvalitet-til-pris forhold."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/picnic-positano.jpg",
+          "alt": "Picnic spredning med lokal ost, brød og frugt med udsigt over Positano.",
+          "caption": "Supermarkedspicnic på hostel terrassen sparer penge og tilbyder de bedste udsigter."
+        }
       ]
     },
     {
       "id": "casual-dining",
-      "title": "Uformelle spisesteder",
+      "title": "Afslappede spisesteder (€12–20 pr. person)",
       "body": [
-        "Vælg trattoriaer oppe i byen, hvor coperto er lavt, og husets vin serveres på karaffel.",
-        "Del forretter, spring desserten over, og bed om postevand (\"acqua del rubinetto\") for at holde regningen nede."
+        "Se op ad bakke: Trattorier på Via Cristoforo Colombo eller nær Chiesa Nuova tager mindre end strandsteder. Forvent €8–12 for pasta, €3–5 for husets vin (karaffel), €2 coperto.",
+        "Frokosttilbud: \"Menu del giorno\" bundter pasta, vand og espresso for €12–18. Spørg når du sætter dig ned eller tjek tavlen udenfor.",
+        "Del forretter: Bruschetta, caprese eller friteret blæksprutte (€6–10) delt mellem to personer strækker budgettet. Spring desserten over og hent gelato eller bagværk senere for halv pris.",
+        "Postevand: Spørg efter \"acqua del rubinetto\" (postevand, gratis) i stedet for flaskevand (€2,50–4). Det er sikkert og helt normalt at anmode om.",
+        "Kort minimumskrav: Nogle små steder kræver €10–15 minimum for kortbetalinger. Bær €20–30 kontanter for at undgå hæveautomatgebyrer eller akavet øjeblikke."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/trattoria-uphill.jpg",
+          "alt": "Lille trattoria op ad bakke med udendørs siddepladser i Positano.",
+          "caption": "Trattorier op ad bakke tilbyder bedre værdi end strandrestauranter."
+        }
       ]
     },
     {
-      "id": "picnics",
-      "title": "Picnic med udsigt",
+      "id": "dietary-options",
+      "title": "Kost- & allergivenlige billige bites",
       "body": [
-        "Køb ost, focaccia og frugt i minimarkedet og picnic på hostellets terrasse eller på Fornillos offentlige område.",
-        "Medbring genanvendeligt bestik og servietter for at undgå engangsaffald og ekstra køb."
+        "Vegetar: Caprese panini (€4–5), aubergine parmigiana al taglio (€4), pasta al pomodoro eller aglio e olio (€8–10), margherita pizza (€3–5 pr. skive).",
+        "Vegansk: Marinara pizza (ingen ost, €3–4 skive), pasta med tomatsauce (bekræft ingen smør/ost), frugt fra markeder, focaccia senza formaggio.",
+        "Glutenfri: Mange bagerier og trattorier tilbyder glutenfri pasta og pizza (\"senza glutine\"). Priserne er ens eller €1–2 mere. Spørg altid om krydskontaminering hvis du er cøliaker.",
+        "Allergier: Sig \"sono allergico/a a...\" (Jeg er allergisk over for...) og angiv nødder (\"noci\"), mejeriprodukter (\"latticini\"), skaldyr (\"crostacei\"), osv. Personale tager allergier alvorligt—tøv ikke med at spørge."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/vegetarian-panini.jpg",
+          "alt": "Caprese panini med frisk mozzarella, tomat og basilikum.",
+          "caption": "Vegetariske muligheder som caprese panini er overkommelige og bredt tilgængelige."
+        }
       ]
     },
     {
       "id": "sweet-breaks",
-      "title": "Søde pauser",
+      "title": "Søde pauser & godbidder (€2–5)",
       "body": [
-        "Prøv lemon granita fra gadeboderne til ca. €3 i stedet for dyre barcocktails.",
-        "Del et stykke delizia al limone eller tiramisù fra bageren for et billigt dessertfix."
+        "Citron granita: €2,50–3,50 fra gadetrucks eller barer. Forfriskende, ikonisk Amalfikysten godbid og billigere end cocktails (€8–12).",
+        "Bager desserter: Delizia al limone, sfogliatella eller tiramisù pr. skive (€3–5). Del en mellem to personer for et overkommeligt fix.",
+        "Gelato: €2,50–4 for en cone vs €6–8 for desserter hvor du sidder ned. Led efter \"produzione propria\" (hjemmelavet) skilte.",
+        "Espresso + bagværk combo: €3–4 ved disken. En klassisk italiensk morgenmad eller eftermiddags pick-me-up."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/lemon-granita.jpg",
+          "alt": "Citron granita i en kop med en ske.",
+          "caption": "Citron granita er en forfriskende €3 godbid—meget billigere end bar cocktails."
+        }
+      ]
+    },
+    {
+      "id": "where-to-shop",
+      "title": "Hvor man shopper & spiser",
+      "body": [
+        "Collina Bakery (Via Cristoforo Colombo): Panini, pizza al taglio, salater, bagværk. Åbent tidligt for morgenmad til at tage med.",
+        "Minimarkeder på Via dei Mulini: Central placering, rimelige priser, godt til picnicforsyninger og vandgenopfyldninger (køb én gang, genopfyld på hostellet).",
+        "Delikatessebutikker nær Chiesa Nuova: Steder op ad bakke med delikatessetiske, focaccia og ost. Mindre turistpåslag end ved stranden.",
+        "Frugt & grønt boder: Sæsonbestemte produkter, ofte billigere end minimarkeder. Godt til snacks og picnictilføjelser.",
+        "Barer med diskere: Stop for espresso \"al banco\" og spørg om arancini, panini eller dagens tilbud. Lokale spiser her, så priserne forbliver rimelige."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/minimarket-positano.jpg",
+          "alt": "Minimarked butiksfacade på Via dei Mulini.",
+          "caption": "Minimarkeder op ad bakke tilbyder rimelige priser for picnicforsyninger og vand."
+        }
+      ]
+    },
+    {
+      "id": "timing-tips",
+      "title": "Timing & kø-slaende tips",
+      "body": [
+        "Bagerier: Gå før kl. 11 for frisk pizza al taglio og fuldt panini udvalg. Efter kl. 14 er mange varer udsolgt.",
+        "Frokosttilbud: Ankom senest kl. 12:30 for at snappe \"menu del giorno\" før køkkenet skifter til middagsforberedelse (normalt kl. 15–17).",
+        "Supermarkeder: Shop om morgenen (kl. 8–10) når hylder er fyldt op. Sen eftermiddag kan være plukket over, især om sommeren.",
+        "Undgå middagsrush: Hvis du spiser ude, ankom senest kl. 19 eller efter kl. 21:30 for at springe kl. 20–21 turistbølgen over og få borde uden booking."
       ]
     }
   ],
   "tips": [
-    "Spørg efter \"menu del giorno\" eller frokosttilbud — mange steder kombinerer pasta, vand og kaffe for under €18.",
-    "Medbring en sammenklappelig beholder til rester, så du kan hygge videre på hostellet senere."
+    "Budget €15–25 pr. dag ved at blande ét takeaway måltid, én picnic og hostel morgenmad. Gem måltider hvor du sidder ned til hver 2–3. dag.",
+    "Shop op ad bakke i minimarkeder på Via dei Mulini eller nær Chiesa Nuova for 20–30% lavere priser end strandkiosker.",
+    "Spørg efter \"menu del giorno\" til frokost (€12–18 for pasta, vand, kaffe) og \"acqua del rubinetto\" (gratis postevand) for at sænke omkostninger.",
+    "Bær genanvendeligt bestik, en lille kniv og en vandflaske (750ml+). Genopfyld på hostellet eller offentligt springvand nær Chiesa Nuova.",
+    "For kostbehov, sig \"sono allergico/a a...\" (Jeg er allergisk over for...) eller spørg efter \"senza glutine\" (glutenfri) / \"senza formaggio\" (ingen ost)."
   ],
-  "recommendationsTitle": "Hvor kan du spise",
+  "recommendationsTitle": "Hvor man spiser",
   "recommendations": [
     {
       "name": "Collina Bakery",
-      "note": "Panini, pizza al taglio, salater og takeaway-kager til hurtige måltider."
+      "note": "Panini (€4–6), pizza al taglio (€3–5), salater (€5–7) og bagværk. Gå før kl. 11 for bedste udvalg."
     },
     {
-      "name": "Lokale delikatessediske",
-      "note": "Bestil antipasti, focaccia og picnicforsyninger væk fra vandkanten, hvor priserne er lavere."
+      "name": "Minimarkeder på Via dei Mulini",
+      "note": "Picnicforsyninger, vand (€0,80 for 1,5L), vin (€4–8), ost og brød. Central placering, rimelige priser."
     },
     {
-      "name": "Minimarkeder og frugtstande",
-      "note": "Fyld op med frugt, store vandflasker og snacks til terrasseture."
+      "name": "Delikatessebutikker nær Chiesa Nuova",
+      "note": "Delikatessetiske med focaccia, påskæret og lokal ost. Mindre turistpåslag, bedre til bulk picnic køb."
+    },
+    {
+      "name": "Trattorier op ad bakke (Via Cristoforo Colombo område)",
+      "note": "Frokosttilbud (€12–18), lavere coperto, husets vin pr. karaffel (€3–5). Spørg efter \"menu del giorno.\""
+    },
+    {
+      "name": "Gadetrucks & bar diskere",
+      "note": "Citron granita (€2,50–3,50), espresso al banco (€1,20–1,50), arancini (€2,50–3,50). Hurtigt, billigt, lokalt."
     }
   ],
   "faqs": [
     {
-      "q": "Kan jeg fylde vand gratis?",
+      "q": "Kan jeg genopfylde vand gratis?",
       "a": [
-        "Ja — fyld flasker på hostellet eller ved offentlige fontæner som den ved Chiesa Nuova; hav altid mindst 750 ml med."
+        "Ja—fyld flasker på hostellet eller ved det offentlige springvand nær Chiesa Nuova. Bær altid mindst 750ml (25oz) for at undgå at købe €3 strandflasker."
       ]
     },
     {
-      "q": "Findes der vegetariske budgetvalg?",
+      "q": "Er der vegetar & veganske billige bites?",
       "a": [
-        "Helt sikkert — bestil caprese-panini, aubergine parmigiana i skiver eller pasta al pomodoro på de uformelle trattoriaer."
+        "Absolut. Vegetar: caprese panini (€4–5), aubergine parm skive (€4), pasta al pomodoro (€8–10). Vegansk: marinara pizza (ingen ost, €3–4), pasta med tomatsauce (bekræft ingen smør), focaccia senza formaggio og markedsfrugt."
+      ]
+    },
+    {
+      "q": "Accepterer steder kort?",
+      "a": [
+        "De fleste gør, men mange har €10–15 minimumskrav. Bær €20–30 kontanter til små køb, gadetrucks og for at undgå hæveautomatgebyrer (€3–5 pr. hævning)."
+      ]
+    },
+    {
+      "q": "Hvad er et realistisk dagligt mad budget?",
+      "a": [
+        "€15–25 pr. dag hvis du blander takeaway, picnic og hostel morgenmad. Budgetrejsende der spiser ude to gange dagligt bruger €40–60+. Ét måltid hvor du sidder ned hver 2–3. dag holder omkostningerne lave."
+      ]
+    },
+    {
+      "q": "Er takeaway emballagegebyrer almindelige?",
+      "a": [
+        "Nogle steder opkræver €0,50–1 for beholdere. Medbring en genanvendelig beholder for at spare penge og reducere engangsplastikaffald."
+      ]
+    },
+    {
+      "q": "Hvordan håndterer jeg madallergier på italiensk?",
+      "a": [
+        "Sig \"sono allergico/a a...\" (Jeg er allergisk over for...) og angiv: nødder (\"noci\"), mejeriprodukter (\"latticini\"), skaldyr (\"crostacei\"), gluten (\"glutine\"). Personale tager allergier alvorligt og vil hjælpe."
       ]
     }
   ],
   "fallbackIntro": [
-    "Positano har masser af budgetvenlige bidder, når du ved hvor du skal kigge."
+    "Positano har masser af overkommelige bites hvis du ved hvor du skal kigge."
   ],
   "fallbackRecommendations": [
     {
       "name": "Collina Bakery",
-      "note": "Panini, pizza al taglio, salater og takeaway-kager."
+      "note": "Panini, pizza al taglio, salater og takeaway bagværk til hurtige måltider."
     },
     {
-      "name": "Lokale delikatessediske",
-      "note": "Antipasti, focaccia og picnicforsyninger væk fra strandpriserne."
+      "name": "Lokale delikatessetiske",
+      "note": "Bestil deliplaider, focaccia og picnicforsyninger væk fra vandkantspåslag."
     },
     {
-      "name": "Minimarkeder og frugtstande",
-      "note": "Frugt, store vandflasker og snacks til terrasser."
+      "name": "Minimarkeder & frugtboder",
+      "note": "Fyld op med frugt, store vandflasker og snacks til terrasse picnic."
     }
   ],
   "fallbackGalleryItems": [
     {
-      "alt": "Panini fra en lokal deli",
-      "caption": "Panini og deli"
+      "alt": "Panini fra en lokal delikatessebutik",
+      "caption": "Panini & deli"
     },
     {
-      "alt": "Picnic med udsigt over Positano",
-      "caption": "Picnic-udsigt"
+      "alt": "Picnic med Positano udsigt",
+      "caption": "Picnic udsigter"
     }
   ],
   "fallbackFaqs": [
     {
-      "q": "Tager steder imod kort?",
+      "q": "Accepterer steder kort?",
       "a": [
-        "De fleste gør, men hav små kontanter til kiosker eller minimumsbeløb."
+        "De fleste gør, men at bære små kontanter hjælper ved kiosker eller til minimumskrav."
       ]
     },
     {
-      "q": "Er takeaway-gebyrer almindelige?",
+      "q": "Er takeaway gebyrer almindelige?",
       "a": [
-        "Nogle opkræver små emballagegebyrer; medbring en genbrugelig beholder for at spare og mindske spild."
+        "Nogle opkræver små emballagegebyrer; medbring en genanvendelig beholder for at spare og reducere affald."
       ]
     }
   ]

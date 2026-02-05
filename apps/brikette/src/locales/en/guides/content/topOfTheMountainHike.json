@@ -4,8 +4,10 @@
     "description": "Reach Monte Sant'Angelo, the Amalfi Coast's highest point, with these directions, prep tips, and warnings."
   },
   "linkLabel": "Monte Comune: Hike to Positano's Highest Viewpoint",
+  "lastUpdated": "2026-02-04",
   "intro": [
-    "This itinerary starts from Hostel Brikette, guides you up to Santa Maria del Castello, and explains the final push to the summit so you know exactly what to expect before committing."
+    "This itinerary starts from Hostel Brikette, guides you up to Santa Maria del Castello, and explains the final push to the summit so you know exactly what to expect before committing.",
+    "When you reach Santa Maria del Castello, you have completed just over a third of the total elevation gain — it’s the natural checkpoint to rest, refill if you can, and decide whether everyone feels strong enough to continue."
   ],
   "sections": [
     {
@@ -13,6 +15,13 @@
       "title": "What is the Hike to the Top of the Mountain?",
       "body": [
         "A bona fide hike to the highest point on the Amalfi Coast, offering breathtaking views that will take your breath away."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/top-of-the-mountain-hike/01-view-capri.jpg",
+          "alt": "View from high on the Monte Comune trail looking across the peninsula toward Capri",
+          "caption": "Looking across the peninsula to Capri."
+        }
       ]
     },
     {
@@ -29,8 +38,9 @@
       "title": "Why should you avoid this hike?",
       "body": [
         "If you are not an experienced mountain hiker or otherwise very fit, you may find this hike to be extremely strenuous.",
-        "If you have a fear of heights, the exposed sections and steep drops will be very challenging.",
-        "If you are starting late in the day during peak summer heat, consider turning back—carrying extra water significantly adds to the strain."
+        "If you are uncomfortable with heights, the exposed sections and steep drops can feel intense — even for people who usually aren’t bothered by heights.",
+        "During the summer months we do not recommend this hike. Heat makes the climb much harder, and the amount of water you need to carry adds to the physical challenge.",
+        "While the views do keep improving as you climb, many hikers are already satisfied by the views at lower elevations — there is no shame in turning back early."
       ]
     },
     {
@@ -39,6 +49,20 @@
       "body": [
         "Follow the %LINK:santaMariaDelCastelloHike|Santa Maria del Castello hike guide% directions until you arrive in the village; that climb covers just over one third of the total elevation for the day.",
         "Take a breather in the square, refill water if the bar is open, and check that everyone in your group still feels strong before committing to the exposed upper trail."
+      ]
+    },
+    {
+      "id": "santa-maria-photo-guide",
+      "title": "Santa Maria → summit (photo guide)",
+      "body": [
+        "Use this photo to orient yourself before leaving Santa Maria — the upper route is long, markers are sparse, and it’s much easier if your group agrees on the key turns at the start."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/top-of-the-mountain-hike/02-santa-maria-to-summit.jpg",
+          "alt": "Directional photo for the Santa Maria del Castello to summit section of the Top of the Mountain hike",
+          "caption": "Santa Maria del Castello → summit: confirm the first turns before you leave the village."
+        }
       ]
     },
     {

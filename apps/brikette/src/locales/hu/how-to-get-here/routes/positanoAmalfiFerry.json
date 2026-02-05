@@ -27,7 +27,16 @@
       "points": [
         "Főszezonban érdemes előre online jegyet venni, vagy a móló melletti pultoknál megvásárolni.",
         "Indulás előtt 15–20 perccel érkezzen, hogy beválthassa a vouchert és sorba állhasson a beszálláshoz.",
-        "Tartsa kéznél a jegyet vagy QR-kódot az ellenőrzéshez."
+        "Készítsen képernyőképet a QR-kódjáról — a jel a tengerparton és a mólónál ingadozhat.",
+        "Ha nagy poggyásszal utazik, kérdezze meg a személyzetet a poggyászszabályokról és arról, hová teheti a táskákat a fedélzeten."
+      ]
+    },
+    "gettingToPier": {
+      "title": "Út a mólóhoz a Hostel Brikette-ből",
+      "intro": "Ha a hostelből indul, használja <dockWalk>lépésről lépésre bemutatott útmutatónkat a kompkikötőhöz</dockWalk>, hogy gond nélkül elérje a Spiaggia Grandét.",
+      "points": [
+        "Hagyjon időt a lépcsőkre, a melegre és a városban lassan haladó gyalogos forgalomra.",
+        "Vigyen vizet, és tartsa az alapvető dolgokat (útlevél/pénztárca/telefon) könnyen elérhető zsebben a beszálláskori ellenőrzésekhez."
       ]
     },
     "positanoPier": {
@@ -44,6 +53,15 @@
         "A hajók Amalfi vízparti mólóinál érkeznek, a Piazza Flavio Gioia közelében.",
         "A történelmi városrész és a sétány közvetlenül a kikötő mellett található.",
         "Továbbindulna busszal (például Ravellóba vagy Sorrentóba)? Kövesse a SITA-megállóhoz vezető táblákat a vízpart mellett."
+      ]
+    },
+    "planB": {
+      "title": "Ha a kompjárat törlésre kerül (működő B-terv)",
+      "intro": "Szeles napokon a tenger miatt leállhatnak a hajók. Ne essen pánikba — váltson át a <bus>Positano → Amalfi buszra</bus>, és nézze át <cancellations>komptörlési útmutatónkat</cancellations> az időpontokért és a hibaelhárításért.",
+      "points": [
+        "Ha már a tengerparton van, menjen vissza a főútra, és vegyen egy buszt vagy taxit.",
+        "Számoljon tartalékidővel: csúcshónapokban a buszok tele érkezhetnek, és a késések normálisak.",
+        "Ha késő este utazik, ellenőrizze időben az utolsó járatot (komp vagy busz), hogy ne ragadjon ott."
       ]
     }
   },

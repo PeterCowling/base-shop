@@ -1,72 +1,72 @@
 {
   "seo": {
-    "title": "Odwołane promy i wzburzone morze",
-    "description": "Co robić, gdy promy nie płyną z powodu pogody, alternatywy i jak sprawdzać status kursów."
+    "title": "Odwołania promów i wzburzone morze",
+    "description": "Co zrobić, gdy promy są odwoływane z powodu pogody, alternatywy i jak sprawdzić status."
   },
-  "linkLabel": "Odwołane promy i wzburzone morze",
+  "linkLabel": "Odwołania promów i wzburzone morze",
   "intro": [
     "Wzburzone morze może zawiesić promy do i z Positano z niewielkim wyprzedzeniem.",
-    "Przygotuj kopię zapasową naziemną i monitoruj alerty na żywo, aby dalej dotrzeć do celu."
+    "Przygotuj zapasową trasę lądową i monitoruj alerty na żywo, aby nadal zdążyć na połączenie."
   ],
   "sections": [
     {
       "id": "monitoring",
       "title": "Monitoruj aktualizacje na żywo",
       "body": [
-        "Sprawdzaj strony i aplikacje operatorów (Travelmar, NLG, Alilauro) oraz tablice informacyjne w porcie co 30 minut podczas wiatru.",
-        "Włącz alerty SMS/e-mail lub obserwuj lokalne kanały Telegram/media społecznościowe, by informacje o odwołaniach docierały nawet wtedy, gdy odejdziesz od brzegu."
+        "Sprawdzaj strony i aplikacje operatorów (Travelmar, NLG, Alilauro) oraz tablice informacyjne w porcie co 30 minut w wietrzne dni.",
+        "Włącz alerty SMS/e-mail lub śledź lokalne kanały Telegram/społecznościowe, aby odwołania dotarły do Ciebie, nawet jeśli odejdziesz od molo."
       ]
     },
     {
       "id": "plan-b",
-      "title": "Przesiądź się na ląd",
+      "title": "Przejdź na trasy lądowe",
       "body": [
-        "Gdy kursy przestają kursować, przesiądź się na autobusy i pociągi: SITA do Sorrento, potem Circumvesuviana do Neapolu/Pompejów, albo autobus przez Amalfi i regionalny pociąg z Salerno.",
-        "Zaplanuj co najmniej 60 minut zapasu przy ostatnich odjazdach dnia i potwierdź bilety przed wejściem na pokład."
+        "Jeśli rejsy przestaną kursować, przejdź na autobusy i pociągi: SITA do Sorrento, następnie Circumvesuviana do Neapolu/Pompei lub autobus przez Amalfi i pociąg regionalny z Salerno.",
+        "Zarezerwuj co najmniej 60 minut bufora na ostatnie odjazdy dnia i zwaliduj bilety przed wejściem na pokład."
       ]
     },
     {
       "id": "refunds",
       "title": "Zwroty i vouchery",
       "body": [
-        "Zachowaj paragony i zrzut ekranu z powiadomieniem o odwołaniu, aby operator mógł przeprocesować zwrot, zmianę rezerwacji lub kredyty.",
-        "Zanim opuścisz stanowisko, daj znać personelowi, czy wolisz najbliższy dostępny rejs czy voucher sezonowy."
+        "Zachowaj paragony i zrób zrzut ekranu powiadomienia o odwołaniu, aby operator mógł przetworzyć zwroty, zmianę rezerwacji lub kredyty.",
+        "Poinformuj personel, czy wolisz następny dostępny rejs, czy voucher sezonowy, zanim opuścisz ladę."
       ]
     },
     {
       "id": "overnight",
-      "title": "Jak radzić sobie z nocnymi opóźnieniami",
+      "title": "Zarządzanie opóźnieniami nocnymi",
       "body": [
-        "Powiadom miejsce noclegowe lub organizatora wycieczki zaraz po ogłoszeniu opóźnienia; wielu dostosuje check-in lub wyjazd, gdy zostanie wcześniej poinformowane.",
-        "Zapytaj punkt informacyjny w porcie o wspólne taksówki, autobusy zastępcze lub przechowalnię bagażu, jeśli musisz poczekać do następnego ranka."
+        "Powiadom swoje zakwaterowanie lub organizatora wycieczki, gdy tylko ogłoszono opóźnienia; wielu dostosuje zameldowanie lub wyjazd, jeśli zostanie ostrzeżonych z wyprzedzeniem.",
+        "Zapytaj w punkcie informacyjnym portu o wspólne taksówki, zastępcze busy lub przechowalnię bagażu, jeśli musisz czekać do następnego ranka."
       ]
     }
   ],
   "tips": [
-    "Sprawdź prognozę morską — wiatry powyżej 20 węzłów lub fala powyżej 1,5 m często przerywają rejsy.",
-    "Ubezpieczenie podróży obejmujące opóźnienia pogodowe pomaga zwrócić dodatkowe noclegi lub transfery zastępcze.",
+    "Sprawdź prognozę morską—wiatry powyżej 20 węzłów lub fale powyżej 1,5 metra (około 5 stóp) często powodują odwołania.",
+    "Ubezpieczenie podróżne pokrywające opóźnienia pogodowe pomaga odzyskać koszty dodatkowych nocy hotelowych lub zastępczych transferów.",
     "Poranne rejsy są najbardziej niezawodne; unikaj polegania na ostatnim statku dnia, gdy prognozowane są burze."
   ],
   "faqs": [
     {
-      "q": "How do I know when sailings resume?",
+      "q": "Skąd mam wiedzieć, kiedy rejsy zostaną wznowione?",
       "a": [
-        "Odśwież stronę operatora lub kanały społecznościowe i słuchaj zapowiedzi głośnikowych w porcie — decyzje pojawiają się zwykle w ciągu 30 minut od planowanego odjazdu.",
-        "Personel kasy może też potwierdzić, czy następny statek kursuje, zanim opuścisz port."
+        "Odśwież stronę internetową operatora lub kanały społecznościowe i słuchaj ogłoszeń głośnikowych na molo—decyzje są zwykle publikowane w ciągu 30 minut od zaplanowanego odjazdu.",
+        "Personel kasy biletowej może również potwierdzić, czy następny statek kursuje, zanim opuścisz port."
       ]
     },
     {
-      "q": "Co się dzieje z moim biletem?",
+      "q": "Co się stanie z moim biletem?",
       "a": [
-        "Pokaż paragon lub kod QR, by poprosić o zwrot, voucher lub zmianę na kolejny rejs.",
-        "Jeśli rezerwowałeś przez agencję online, podeślij jej zrzut ekranu odwołania w ciągu 24 godzin, by rozpoczęła proces zwrotu."
+        "Pokaż paragon lub kod QR, aby poprosić o zwrot, voucher lub zmianę rezerwacji na następny rejs.",
+        "Jeśli rezerwowałeś przez agencję internetową, wyślij im zrzut ekranu odwołania e-mailem w ciągu 24 godzin, aby rozpocząć proces zwrotu."
       ]
     },
     {
-      "q": "Czy któryś z promów kursuje w trudnych warunkach?",
+      "q": "Czy są jakieś promy gwarantowane w trudnych warunkach pogodowych?",
       "a": [
-        "Nie — gdy Straż Przybrzeżna zamyka port, wszystkie odjazdy przestają kursować. Miej gotową alternatywę lądową.",
-        "Kilka prywatnych czarterów może płynąć przy umiarkowanych falach, ale są drogie i zależą od decyzji kapitana; przemyśl komfort i koszty."
+        "Nie—gdy straż przybrzeżna zamyka port, wszystkie odjazdy są wstrzymane. Przygotuj trasę lądową.",
+        "Kilka prywatnych czarterów może pływać w umiarkowanym morzu, ale są drogie i zależą od uznania kapitana; dokładnie rozważ komfort i koszt."
       ]
     }
   ]

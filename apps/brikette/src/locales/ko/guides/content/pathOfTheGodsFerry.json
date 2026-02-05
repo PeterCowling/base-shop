@@ -25,6 +25,48 @@
         "호스텔을 나와 왼쪽으로 100m 정도 걸으면 바르 인테르나치오날레가 나옵니다. 계속 내려가기 전에 타바키 카운터에서 SITA 버스표를 구입하세요.",
         "스피아자 그란데로 내려가는 지름길 계단을 이용하세요. 도보 20~30분 정도 걸리며, 붐비는 날에는 더 여유를 두는 것이 좋습니다.",
         "해변에 도착하면 오른쪽으로 꺾어 페리 회사 티켓 부스가 모여 있는 작은 항구로 이동합니다."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/01-nav.jpg",
+          "alt": "Route map from Hostel Brikette to Positano port with numbered waypoints (1-5)",
+          "caption": "호스텔에서 항구까지의 도보 경로와 주요 참조 지점을 보여주는 개요 지도"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/02-nav.jpg",
+          "alt": "Street corner intersection marking Point 1 on the route",
+          "caption": "포인트 1: 모퉁이 교차로에서 우회전하면 타바키가 보입니다."
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/03-nav.jpg",
+          "alt": "Tabacchi shop storefront where SITA bus tickets can be purchased",
+          "caption": "바르 인테르나치오날레의 타바키 — 아말피에서 보메라노(아제롤라)까지 가는 SITA 버스표를 여기서 구입할 것을 권장합니다. 하이킹 후 노첼레에서 포지타노로 가는 버스를 탈 예정이라면 그것도 항구로 가기 전에 여기서 미리 구입하세요."
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/04-nav.jpg",
+          "alt": "Switchback bend in the road at Point 2 where you leave the main road",
+          "caption": "포인트 2: 헤어핀 커브 — 여기서 도로를 벗어나 오른쪽으로 꺾어 지름길 계단을 이용합니다"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/05-nav.jpg",
+          "alt": "Stone stairs descending downhill at Point 3",
+          "caption": "포인트 3: 도로를 직진으로 횡단한 후, 스피아자 그란데 방향으로 계단을 내려갑니다"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/06-nav.jpg",
+          "alt": "Road junction at Point 4 showing the crossing point",
+          "caption": "포인트 4: 도로를 건너고 계단을 내려갑니다"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/07-nav.jpg",
+          "alt": "Final stairway section leading down at Point 5",
+          "caption": "포인트 5: 이 구역을 통과하여 아치 아래로 진입합니다"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/08-nav.jpg",
+          "alt": "Archway entrance marking the arrival at Positano port",
+          "caption": "아치를 통과한 후 짧은 거리를 더 가면 항구가 나오며, 페리 티켓 부스는 앞쪽에 있습니다"
+        }
       ]
     },
     {
@@ -34,6 +76,18 @@
         "루치벨로와 트래블마르 사무소 앞 게시판에서 다음 출항 시간을 확인하세요. 성수기 오전에는 보통 30~60분 간격으로 운항합니다.",
         "아말피행 편도 티켓을 구입하고 탑승 시 바로 제시할 수 있도록 보관하세요. 승선은 출발 몇 분 전에 호명합니다.",
         "줄이 빨리 생기므로 원하는 페리 출항 최소 15분 전에는 대기해 선상 좌석을 확보하세요."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/09-nav.jpg",
+          "alt": "Lucibello and Travelmar ferry ticket booths at Positano port",
+          "caption": "시간표를 확인하고, 아말피행 편도 티켓을 구입한 뒤, 페리가 도착하면 탑승합니다."
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/10-nav.jpg",
+          "alt": "Port waiting area with ferry passengers",
+          "caption": "아말피에서 하선한 후, 정면으로 직진하여 광장 왼쪽에 있는 버스 터미널로 이동합니다"
+        }
       ]
     },
     {
@@ -43,15 +97,29 @@
         "항해 시간은 약 25분입니다. 우현(오른쪽)에 서면 포지타노와 프라이아노 전경을 되돌아볼 수 있습니다.",
         "입항 후 바로 하선해 항구 광장 왼쪽에 있는 버스 터미널로 곧장 이동하세요.",
         "버스까지 여유가 있다면 두오모 광장을 둘러보거나 에스프레소를 즐겨보세요. 단, 아제롤라행 승강장을 수시로 확인해야 합니다."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/11-nav.jpg",
+          "alt": "Walking route from Amalfi ferry dock to SITA bus terminal",
+          "caption": "1. 보메라노 정류장 — 예를라 레스토랑 간판이 보이면 하차한 후 도로를 건넙니다"
+        }
       ]
     },
     {
       "id": "bus-to-bomerano",
       "title": "보메라노행 버스 타기",
       "body": [
-        "‘Agerola/Bomerano’라고 표시된 SITA 버스를 찾으세요. 탑승과 동시에 승차권을 검표하고, 커브가 덜한 앞쪽 좌석에 앉으면 편합니다.",
+        "'Agerola/Bomerano'라고 표시된 SITA 버스를 찾으세요. 탑승과 동시에 승차권을 검표하고, 커브가 덜한 앞쪽 좌석에 앉으면 편합니다.",
         "약 45분 후 리스토란테 예를라 옆 보메라노 정류장에서 하차합니다. 길을 건너 옆 골목을 따라 내려가면 마을 광장에 도착합니다.",
-        "광장을 가로질러 왼쪽으로 이동한 뒤 ‘Sentiero degli Dei’ 표지판을 따라가면 트레일 입구 안내판이 나옵니다."
+        "광장을 가로질러 왼쪽으로 이동한 뒤 'Sentiero degli Dei' 표지판을 따라가면 트레일 입구 안내판이 나옵니다."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/12-nav.jpg",
+          "alt": "Side street from Bomerano bus stop descending toward the piazza",
+          "caption": "2. 버스 정류장에서 도로를 건너 이 옆 골목을 따라 광장으로 내려갑니다"
+        }
       ]
     },
     {
@@ -61,6 +129,28 @@
         "트레일은 약 6km 동안 오르내리며 이어집니다. 돌계단과 좁은 길, 해안을 내려다보는 장엄한 전망대를 만나게 됩니다.",
         "표지된 전망대에서 휴식을 취하고, 쓰레기는 모두 되가져가세요. 현지 농가를 존중하며 표시된 길을 따라 걷는 것이 중요합니다.",
         "흙길이 노첼레 마을의 콘크리트 보행로와 만나는 지점이 도착지입니다."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/13-nav.jpg",
+          "alt": "Town square (piazza) in Bomerano with left-hand route markers",
+          "caption": "3. 광장을 가로질러 왼쪽으로 이동하며 'Sentiero degli Dei' 표지판을 따라갑니다"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/14-nav.jpg",
+          "alt": "Wooden steps ascending along the hiking trail ridge",
+          "caption": "4. 광장을 통과한 후 안내판과 왼쪽 방향 표시를 찾습니다. 여기가 트레일 시작점입니다. 나무 계단이 있는 구간까지 길을 따라가세요."
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/15-nav.jpg",
+          "alt": "Concrete paved walkway marking entry into Nocelle village",
+          "caption": "흙길이 이 콘크리트 보행로와 만나면 노첼레에 도착한 것입니다"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/16-nav.jpg",
+          "alt": "Nocelle village navigation map showing route to bus stop and staircase warning",
+          "caption": "노첼레 지도 — 마을을 통과할 때 갈림길에서 오른쪽으로 가야 버스 정류장에 도착합니다. 포지타노로 가는 1,700개의 계단은 절대 피하세요!"
+        }
       ]
     },
     {
@@ -70,6 +160,23 @@
         "포장된 길을 따라 마을 안쪽으로 들어가되, 첫 갈림길에서 오른쪽으로 가면 포지타노로 내려가는 1,700개의 계단을 피할 수 있습니다.",
         "약 175m 정도 걸으면 작은 주차장 옆 버스 정류장이 나옵니다. 성수기에는 교회 옆 키오스크에서 시원한 음료를 판매합니다.",
         "주차장이 붐비면 정류장 직전에 정차하는 경우가 있으니 최소 10분 전에 도착해 기다리세요."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/17-nav.jpg",
+          "alt": "Directional signpost in Nocelle showing the stairs-to-Positano option to avoid",
+          "caption": "중요: 계단으로 내려가는 'Positano' 표지판을 따라가지 마세요 — 대신 여기서 오른쪽으로 돌아가세요"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/18-nav.jpg",
+          "alt": "Stone steps ascending through Nocelle streets toward the bus stop",
+          "caption": "주차장의 버스 정류장까지 이 계단을 약 175m 올라가세요"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/19-nav.jpg",
+          "alt": "Bus stop arrival point in Nocelle",
+          "caption": "버스 정류장에 도착했습니다."
+        }
       ]
     },
     {

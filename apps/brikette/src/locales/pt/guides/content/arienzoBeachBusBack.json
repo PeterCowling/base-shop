@@ -1,52 +1,53 @@
 {
   "seo": {
-    "title": "Ônibus de volta ao Hostel Brikette saindo da praia de Arienzo",
-    "description": "Climb from the shoreline to the road, ride three kilometres to Chiesa Nuova, and finish with a short walk back to Hostel Brikette."
+    "title": "Ônibus de volta ao Hostel Brikette da praia de Arienzo",
+    "description": "Suba da praia para a estrada, pegue o ônibus de volta em direção a Positano, desça no Bar Internazionale/Chiesa Nuova e siga as instruções curtas de volta ao Hostel Brikette."
   },
-  "linkLabel": "Bus back from Arienzo Beach",
+  "linkLabel": "Ônibus de volta ao Hostel Brikette da praia de Arienzo",
   "intro": [
-    "Skip the full stair climb by catching the Amalfi Coast bus from Arienzo back toward Positano.",
-    "Buy your return ticket in town before heading to the beach — there is no vendor at Arienzo, so plan ahead or use the shuttle boat back to Spiaggia Grande."
+    "Digitalize para compartilhar",
+    "Dica: Horário do ônibus. Observe que o horário inclui os horários de Positano, mas não os de Arienzo. O ponto de ônibus de Arienzo fica localizado cerca de 2–5 minutos antes de Sponda.",
+    "Importante! Se você não tiver um bilhete de ônibus para sua viagem de volta, pode voltar caminhando até Sponda e pegar o ônibus de lá, ou pegar o barco shuttle de volta à praia principal em Positano. Lembre-se, não há vendedores de bilhetes perto da praia de Arienzo, portanto é importante planejar com antecedência e comprar seus bilhetes com antecedência para a viagem de volta.",
+    "Dica: Veja nosso %LINK:arienzoBeachClub|Guia da praia de Arienzo%",
+    "Dica: Veja nossa %LINK:positanoBeaches|Visão geral das praias%"
   ],
   "sections": [
     {
       "id": "walk-to-stop",
-      "title": "Walk up to the bus stop",
+      "title": "Suba até o ponto de ônibus",
       "body": [
-        "Climb the stairs from the beach to the road and cross carefully to the inland side.",
-        "Look for the blue-and-white SITA sign on the metal pole opposite the entrance path and wait on the lay-by."
+        "Para pegar o ônibus de volta ao albergue, suba as escadas da praia até a estrada e procure o ponto de ônibus no lado oposto da estrada. A placa do ponto de ônibus é azul e branca, montada em um poste metálico (veja a imagem para referência). Espere no ponto de ônibus pela chegada do ônibus."
       ]
     },
     {
       "id": "ride-the-bus",
-      "title": "Ride the Amalfi Coast bus",
+      "title": "Pegue o ônibus",
       "body": [
-        "Flag the coach as it approaches and have your validated ticket ready.",
-        "Expect the journey to cover about 3 kilometres (1.9 miles) with a few intermediate stops before Positano."
+        "O número de vezes que o ônibus parará antes de você precisar descer variará. A distância que você precisa percorrer é de cerca de 3 km / 1,9 milhas."
       ]
     },
     {
       "id": "get-off-bus",
-      "title": "Get off at Bar Internazionale / Chiesa Nuova",
+      "title": "Desça do ônibus",
       "body": [
-        "Listen for the announcement or watch for the Bar Internazionale tabacchi — the stop sits opposite the hostel.",
-        "Press the stop button early so the driver knows to drop you at Chiesa Nuova."
+        "Você descerá no ponto de ônibus Bar Internazionale/Chiesa Nuova."
       ]
     },
     {
       "id": "walk-to-hostel",
-      "title": "Walk back to Hostel Brikette",
+      "title": "Caminhe até o albergue",
       "body": [
-        "Continue in the direction the bus was heading for just over 100 metres (330 feet).",
-        "Take the staircase on your right back up to Hostel Brikette's main entrance."
+        "Direções:",
+        "* Continue na direção em que o ônibus que você acabou de descer segue por pouco mais de 100 m / 330 pés.",
+        "* Suba as escadas até a porta principal do albergue."
       ]
     }
   ],
-  "tipsTitle": "Bus tips",
+  "tipsTitle": "Dicas de ônibus",
   "tips": [
     "Os horários impressos listam apenas as paradas de Positano; espere Arienzo cerca de 2–5 minutos antes de Positano Sponda no caminho de volta.",
-    "There is no ticket vendor at Arienzo. Buy your return ticket in town, or be ready to walk to Positano Sponda or take the water shuttle back to Spiaggia Grande.",
-    "Read our %LINK:arienzoBeachClub|Arienzo Beach guide% for facilities, shuttles, and planning tips.",
-    "Browse the %LINK:positanoBeaches|Positano beaches overview% to compare other coves and plan future visits."
+    "Não há vendedor de bilhetes perto da praia de Arienzo. Compre seu bilhete de volta na cidade com antecedência, ou caminhe até Sponda para embarcar lá, ou pegue o barco shuttle de volta à praia principal em Positano.",
+    "Leia nosso %LINK:arienzoBeachClub|Guia da praia de Arienzo% para instalações, shuttles e dicas de planejamento.",
+    "Navegue pela %LINK:positanoBeaches|Visão geral das praias% para comparar outras enseadas e planejar visitas futuras."
   ]
 }

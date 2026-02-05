@@ -1,11 +1,11 @@
 {
-  "title": "Sempre verifique as informações de transporte",
+  "title": "Todas as informações de transporte são fornecidas de boa-fé. Confirma sempre os horários oficiais e os avisos de serviço, especialmente se tens ligações/continuações ou outros compromissos com hora marcada. Em baixo encontras links para os horários dos operadores relevantes.",
   "items": {
-    "buses": "Ônibus: consulte os horários oficiais da SITA Sud — <sitaLink>sitasudtrasporti.it</sitaLink>.",
-    "ferries": "Ferries: as operadoras publicam rotas e horários sazonais (dependem do clima). Veja <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink>.",
-    "airlink": "Chegando pelo aeroporto Salerno Costa d’Amalfi (QSR)? Use o shuttle Airlink até Salerno — <airportLink>aeroportodisalerno.it</airportLink> e <airlinkLink>FS Busitalia Airlink</airlinkLink>.",
-    "driving": "Carro: fique atento às restrições de placas alternadas na SS163 (abr–out) e às ZTL; o custo de estacionamento varia por temporada e localização. Consulte os avisos oficiais.",
-    "premium": "Premium ou sazonal: Uber Boat e helicópteros operam com horários limitados no verão — confirme a disponibilidade atual."
+    "buses": "Ônibus: <sitaLink>Costa Amalfitana</sitaLink> e <curreriLink>Aeroporto de Nápoles ⇄ Sorrento</curreriLink>.",
+    "trains": "Trens: <eavLink>Circumvesuviana</eavLink> (Naples ⇄ Sorrento), <trenitaliaLink>Trenitalia</trenitaliaLink> (trens de linha principal).",
+    "ferries": "Ferries: Operadoras incluem <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink>, <positanoJetLink>Positano Jet</positanoJetLink>, <alicostLink>Alicost</alicostLink>.",
+    "airlink": "Aeroporto Salerno Costa d’Amalfi (QSR), <airlinkLink>shuttle Airlink para Salerno</airlinkLink>.",
+    "driving": "Carro: fique atento às restrições de placas alternadas na SS163 (abr–out) e às ZTL; o custo de estacionamento varia por temporada e localização. Consulte os avisos oficiais."
   },
   "srLabel": "Aviso de transporte"
 }

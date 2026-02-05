@@ -1,54 +1,172 @@
 {
   "seo": {
-    "title": "Hva du bør pakke til Amalfikysten",
-    "description": "Sesongbasert pakkeliste for Positano og Amalfikysten: fottøy, lag på lag, solbeskyttelse og ekstrautstyr."
+    "title": "Hva du bør pakke til Amalfikysten | Sesongbasert pakkeguide",
+    "description": "Komplett pakkeliste for Positano og Amalfikysten. Sesongbasert klær, fottøy til trapper, teknisk utstyr, kostnader og hva du kan kjøpe lokalt."
   },
+  "lastUpdated": "2025-02-04",
   "linkLabel": "Hva du bør pakke til Amalfikysten",
   "intro": [
-    "Sjekkliste for sesongbasert pakking for Positano: trapper og sol definerer smarte valg."
+    "Amalfikystens dramatiske trapper, sesongbasert vær og middelhavssolen former hva du bør pakke. Denne guiden dekker det viktigste for Positano og omkringliggende byer, med sesongvariasjoner og praktiske kostnader for å kjøpe varer lokalt.",
+    "**Viktige pakkeprinsipper:** Prioriter komfortable tursko (trapper er overalt), solbeskyttelse hele året, og lag for temperaturendringer mellom kyst- og åsområder.",
+    "**Bagasjetips:** Ryggsekker og mykesidede bagger håndterer trapper bedre enn trillekofferter. Hvis du bor på Hostel Brikette eller andre skråninger, vil du klatre over 100 trinn med bagasjen din. Se vår %LINK:checkinCheckout|innsjekking og ankomstguide% for mer informasjon om å komme til hostellet med bagasje."
   ],
   "sections": [
     {
+      "id": "seasonal-packing",
+      "title": "Sesongbasert pakking: hva som endrer seg etter sesong",
+      "body": [
+        "Amalfikysten har fire distinkte sesonger. Her er hva du bør justere for hver:",
+        "**Vår (mars–mai):** Pakk lag — morgenene kan være kjølige (12–15°C / 54–59°F), ettermiddagene varme (18–22°C / 64–72°F). Ta med en lett regnjakke; aprilregn er vanlig. Solkrem er essensielt selv om våren.",
+        "**Sommer (juni–september):** Varmt og tørt (25–32°C / 77–90°F). Lett, pustende klær er kritisk. Pakk hatt, solbriller og høy-SPF solkrem. Kveldene forblir varme, men ta med ett lett lag for klimaanlegg på restauranter. Dette er høysesong — forvent folkemengder og høyere priser.",
+        "**Høst (oktober–november):** Ligner våren, men våtere. Pakk vanntette sko og en kompakt paraply. Havet er badebart gjennom oktober. Temperaturer varierer 15–23°C / 59–73°F.",
+        "**Vinter (desember–februar):** Mildt men regnfullt (8–15°C / 46–59°F). Du trenger en skikkelig regnjakke, varme lag og lukkede sko med godt grep for våte trapper. Mange strandklubber stenger, men fotturer er utmerkede om vinteren."
+      ]
+    },
+    {
       "id": "footwear",
-      "title": "Fottøy",
+      "title": "Fottøy (viktigste kategori)",
       "body": [
-        "Gripende sko for trapper og fotturer; sandaler med slitebane for strender.",
-        "Unngå glatte såler - baner kan være bratte og polerte."
+        "Trapper definerer Amalfikysten. Fra hostellet til stranden, fra bussholdeplasser til restauranter, forvent 50–200 trinn per reise. Dine skovalg betyr mer her enn nesten hvor som helst.",
+        "**Essensielt: Tursko med grep** — Joggesko eller turstøvler med godt mønster for trapper og kyststier. Unngå glatte dressko eller motesko med flate såler — polerte steintrapper er glatte, spesielt når de er våte.",
+        "**Strandfottøy** — Vannsko eller solide sandaler med remmer (ikke flip-flops). Strender her er ofte steinete, og noen krever å gå på steiner for å komme i vannet. Sjekk vår %LINK:positanoBeaches|Positano-strandguide% for detaljer om hver strands terreng.",
+        "**Kveldssko (valgfritt)** — Hvis du vil kle deg opp til middag, ta med ett par smartere sko, men sørg for at de fortsatt har grep for å gå hjem på trapper.",
+        "**Hva du skal hoppe over:** Hæler (farlig på trapper), rene flip-flops (ubehagelige for lange turer), helt nye sko (slå dem inn før ankomst)."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/what-to-pack/landscape-architecture-aesthetic.jpeg",
+          "alt": "Steintrapper som klatrer gjennom en smal gammelbysgrendssmal med planter og butikkskilt",
+          "caption": "Trapper er hovedterrengfunksjonen i Positano — pakk sko du stoler på",
+          "width": 735,
+          "height": 1105
+        }
       ]
     },
     {
-      "id": "layers",
-      "title": "Lag og sol",
+      "id": "clothing",
+      "title": "Klesvesentligheter",
       "body": [
-        "Lette lag for kvelder; lue og SPF for middagstur.",
-        "En lett regnjakke i skuldersesongen."
+        "**Lagstrategi:** Kysten kan være 5°C varmere enn Positanos øvre by. Pakk klær du kan legge til eller fjerne enkelt.",
+        "**Badedrakt:** Ta med minst 2 badedrakter slik at den ene kan tørke mens du bruker den andre. Strandsesong går fra april–oktober.",
+        "**Overbelegg:** En lett kjole eller skjorte for å dekke badedrakt når du går til/fra stranden. Restauranter og butikker foretrekker at du ikke bare er i badedrakt.",
+        "**Kveldstøy:** Smart-casual er standarden. Lette lange bukser eller kjole til middag. Italienere pleier å kle seg godt selv tilfeldig.",
+        "**Solbeskyttelsesklær:** Langermede UV-skjorter, bredbremmede hatter og solbriller. Middelhavssolen er intens, spesielt på båter og strender.",
+        "**Regnklær:** En pakkbar regnjakke fungerer for alle sesonger. Hopp over paraplyer om sommeren med mindre du besøker i skuldersesong (april, oktober–november)."
       ]
     },
     {
-      "id": "bags",
-      "title": "Bager og bagasje",
+      "id": "bags-and-luggage",
+      "title": "Vesker og bagasje",
       "body": [
-        "Ryggsekker slår store kofferter for trapper; holde verdisaker i nærheten.",
-        "Ta med en påfyllbar flaske; markeder selger store flasker for påfyll."
+        "**Beste bagasje:** Ryggsekker eller myke duffelbagger. Hvis du må ta med en trillekoffert, velg en med gode hjul — du vil bære den opp trapper ofte.",
+        "**Dagveske:** En liten ryggsekk eller crossbody-veske for daglige utflukter. Hold den under 15L for enkel manøvrering på overfylte busser og båter.",
+        "**Strandveske:** Ta med en lett tote eller meshbag for strandutstyr. Du kan kjøpe billige strandvesker lokalt (€5–10) hvis du glemmer.",
+        "**Anti-tyveri-hensyn:** Lommetyverier er sjeldne i Positano, men mer vanlig i Napoli og på overfylte ferger. Hold verdisaker i en veske du kan holde foran deg."
+      ]
+    },
+    {
+      "id": "sun-protection",
+      "title": "Solbeskyttelse og helse",
+      "body": [
+        "**Solkrem:** Pakk SPF 50+ for ansikt og kropp. Lokal solkrem koster €15–25 for en 200ml flaske (vs €8–12 hjemme). Revesikker solkrem er verdsatt hvis du svømmer nær marine områder.",
+        "**Etter-sol-pleie:** Aloe vera gel eller fuktighetskrem. Solen her er sterkere enn i Nord-Europa eller Nord-Amerika.",
+        "**Insektmiddel:** Mygg er til stede april–oktober, spesielt nær vann. Ta med en liten flaske eller kjøp lokalt (€8–12).",
+        "**Grunnleggende førstehjelp:** Plaster for blemmer (trapper forårsaker dem), smertestillende, eventuelle reseptbelagte medisiner. Apotek er godt utstyrt, men å finne ditt eksakte medisinmerke kan være vanskelig.",
+        "**Reisesyke:** Hvis du er utsatt for sjøsyke, ta med medisin før du tar ferger. Hav kan være urolig, spesielt på Capri-rutene."
+      ]
+    },
+    {
+      "id": "tech-and-adapters",
+      "title": "Teknologi, adaptere og elektronikk",
+      "body": [
+        "**Strømadapter:** Italia bruker Type L-plugger (3-pinners) og Type C (2-pinners europeiske). Spenning er 230V. Ta med en universaladapter eller kjøp en lokalt (€5–10 hos tabacchi).",
+        "**Telefon og ladere:** Ta med telefonladeren din og en bærbar strømbank. Mobildekning er generelt god, men batteriet tømmes raskere når du bruker GPS konstant til navigasjon.",
+        "**Kamera:** Amalfikysten er utrolig fotogenisk. Ta med et kamera eller sørg for at telefonens lagring er tilstrekkelig. Et vanntett etui er nyttig for båtturer.",
+        "**E-leser eller nettbrett:** For strandlesing. Lokale bokhandlere har begrenset engelske utvalg.",
+        "**Hodetelefoner:** Nyttig for fergereiser og bussturer."
+      ]
+    },
+    {
+      "id": "toiletries-and-personal",
+      "title": "Toalettsaker og personlige gjenstander",
+      "body": [
+        "**Hva du skal pakke:** Grunnleggende toalettsaker (sjampo, såpe, tannkrem, etc.) i reisestørrelser. Hosteller og budsjetthoteller gir kanskje ikke disse.",
+        "**Hva du kan kjøpe:** Supermarkeder og apotek har alle store toalettsakmerker. Prisene er 10–30% høyere enn i Nord-Europa, men sammenlignbare med andre italienske turistområder.",
+        "**Vask:** De fleste hosteller har vaskefasiliteter (€3–5 per vask). Pakk nok klær for 3–4 dager, og planlegg deretter å vaske.",
+        "**Menstruasjonsprodukter:** Tilgjengelig hos supermarkeder og apotek. Tamponger og bind koster €3–6 per pakke."
+      ]
+    },
+    {
+      "id": "money-and-documents",
+      "title": "Penger, kort og dokumenter",
+      "body": [
+        "**Kontanter:** Bær €50–100 i små sedler (€5, €10, €20). Mange små bedrifter, strandklubber og busser er kun kontanter. Minibanker er tilgjengelige, men tar €3–5 per uttak.",
+        "**Kort:** Større kredittkort (Visa, Mastercard) fungerer de fleste steder. Amex er mindre vanlig. Varsle banken din før du reiser for å unngå kortblokkeringer.",
+        "**Dokumenter:** Pass (eller EU ID-kort), reiseforsikringsbevis, eventuelle medisinske kort og hostell-/hotellbekreftelser. Last ned offline-kopier til telefonen din.",
+        "**Sikkerhetskopier:** Skann passet ditt og oppbevar en digital kopi separat fra originalen."
+      ]
+    },
+    {
+      "id": "optional-extras",
+      "title": "Valgfrie ekstrautstyr og fine-å-ha",
+      "body": [
+        "**Gjenbrukbar vannflaske:** Springvann er trygt å drikke. Påfyll ved fontener (mange byer har offentlige fontener) eller kjøp store flasker hos supermarkeder (€0.30–0.50 per liter) for å fylle på.",
+        "**Tørrveske:** Nyttig for å beskytte elektronikk og verdisaker på båtturer eller på stranden.",
+        "**Kompakt håndkle:** Strandklubber leier ut håndklær (€3–5), men et mikrofiber reisehåndkle sparer penger og tørker raskt.",
+        "**Snorkelutstyr:** Hvis du liker å snorkle. Utleie er tilgjengelig (€10–15/dag), men kvaliteten varierer.",
+        "**Bærbar høyttaler:** For stranddager (hold volumet respektfullt).",
+        "**Italiensk frasebok eller språkapp:** Grunnleggende italiensk hjelper. Mange lokale snakker engelsk, men innsats blir verdsatt."
+      ]
+    },
+    {
+      "id": "what-to-leave-home",
+      "title": "Hva du IKKE skal pakke",
+      "body": [
+        "**Hopp over disse elementene:**",
+        "• Tunge hardskallkofferter (trapper gjør dem elendige)",
+        "• Mer enn 2 par sko (de tar opp for mye plass)",
+        "• Føner (de fleste overnattingssteder gir dem, og spenningsforskjeller kan være et problem)",
+        "• Fullstørrelse toalettsaker (kjøp lokalt eller ta med reisestørrelser)",
+        "• Formelt tøy med mindre du har spesifikke middagsplaner",
+        "• Overdreven elektronikk (hold det enkelt)",
+        "• Vinterfrakker med mindre du besøker desember–februar"
       ]
     }
   ],
   "tips": [
-    "Hopp over tunge kofferter med hardt skall hvis oppholdet innebærer lange trapper.",
-    "Ha med små eurosedler for parasoller, busser og rask snacks."
+    "Hopp over tunge hardskallkofferter hvis oppholdet ditt involverer trappeklatring — ryggsekker eller myke duffelbagger er mye enklere.",
+    "Bær små eurosedler (€5, €10) for strandparaplyer, busser og raske snacks. Mange små forhandlere aksepterer ikke kort.",
+    "Kjøp solkrem og insektmiddel før ankomst for å spare penger — lokale priser er 50% høyere enn hjemme.",
+    "Slå inn turskoene dine før turen. Blemmer fra nye sko + trapper = elendighet.",
+    "Pakk et lite førstehjelpsett med blemmerplaster, smertestillende og eventuelle reseptbelagte medisiner. Apotek er hjelpsomme, men har kanskje ikke ditt eksakte merke."
   ],
   "faqs": [
     {
-      "q": "Kan jeg kjøpe alt lokalt?",
-      "a": [
-        "Ja, men høysesongprisene hopper – pakk det viktigste for å unngå påslag."
+      "question": "Kan jeg kjøpe alt jeg trenger lokalt?",
+      "answer": [
+        "Ja, men prisene er betydelig høyere i høysesongen (juni–september). Supermarkeder og apotek har de fleste essensielle ting, men forvent å betale 20–50% mer enn hjemme for solkrem, toalettsaker og strandutstyr.",
+        "Budsjetttips: Pakk essensielle ting som solkrem, insektmiddel og eventuelle spesifikke medisiner hjemmefra for å unngå påslag."
       ]
     },
     {
-      "q": "Må jeg ta med en badekåpe?",
-      "a": [
-        "De fleste overnattingssteder leverer håndklær; pakk en lett deksel bare hvis du foretrekker en til stranden."
+      "question": "Må jeg ta med strandhåndklær?",
+      "answer": "De fleste overnattingssteder gir badehåndklær, men ikke strandhåndklær. Strandklubber leier ut håndklær for €3–5, eller du kan pakke et lett mikrofiber reisehåndkle. Hosteller har noen ganger strandhåndklær tilgjengelig mot et lite depositum."
+    },
+    {
+      "question": "Hva er den beste bagasjen for Positano?",
+      "answer": "En ryggsekk eller mykesidet duffelbag er ideell. Hvis du bor på skråningslokasjoner som Hostel Brikette, vil du klatre over 100 trinn med bagasjen din. Trillekofferter er vanskelige på trapper og brostein. Pakk lett — sikt etter håndbagage størrelse hvis mulig."
+    },
+    {
+      "question": "Bør jeg pakke en paraply?",
+      "answer": [
+        "Om sommeren (juni–september): Nei, regn er sjeldent. Pakk en lett regnjakke for kveldsbris på båter.",
+        "Om våren/høsten (april–mai, oktober–november): Ja, ta med en kompakt paraply. April og november er de våteste månedene.",
+        "Om vinteren (desember–februar): Definitivt ta med en paraply og vanntett jakke. Vinteren er regntiden."
       ]
+    },
+    {
+      "question": "Trenger jeg turstøvler for Gudenes sti?",
+      "answer": "Skikkelige turstøvler med ankelstøtte anbefales for %LINK:pathOfTheGods|Gudenes sti% og andre kyststier. Løpesko eller turstøvler fungerer godt. Vanlige joggesko er grensetilfelle — de vil fungere hvis du er erfaren, men ankelstøtte hjelper på steinete seksjoner."
     }
   ]
 }

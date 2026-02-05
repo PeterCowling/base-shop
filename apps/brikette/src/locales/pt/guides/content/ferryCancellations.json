@@ -1,72 +1,72 @@
 {
   "seo": {
-    "title": "Cancelamentos de ferry e mar agitado",
-    "description": "O que fazer quando os ferries são cancelados pelo clima, alternativas terrestres e como acompanhar avisos em tempo real."
+    "title": "Cancelamentos de balsas e mar agitado",
+    "description": "O que fazer quando as balsas são canceladas devido ao clima, alternativas e como verificar o status."
   },
-  "linkLabel": "Cancelamentos de ferry e mar agitado",
+  "linkLabel": "Cancelamentos de balsas e mar agitado",
   "intro": [
-    "Mares agitados podem suspender os ferries de/para Positano quase sem aviso.",
-    "Tenha um plano terrestre pronto e acompanhe alertas ao vivo para não perder a conexão."
+    "O mar agitado pode suspender as balsas de e para Positano com pouco aviso prévio.",
+    "Mantenha um backup terrestre pronto e monitore alertas ao vivo para ainda conseguir fazer sua conexão."
   ],
   "sections": [
     {
       "id": "monitoring",
-      "title": "Acompanhe atualizações em tempo real",
+      "title": "Monitorar atualizações ao vivo",
       "body": [
-        "Verifique sites e apps das operadoras (Travelmar, NLG, Alilauro) e os painéis do píer a cada 30 minutos em dias de vento.",
-        "Ative alertas por SMS/e-mail ou siga canais locais (Telegram/redes sociais) para ser avisado mesmo longe do cais."
+        "Verifique os sites e aplicativos dos operadores (Travelmar, NLG, Alilauro) mais os painéis de informação do porto a cada 30 minutos em dias ventosos.",
+        "Ative alertas por SMS/e-mail ou siga canais locais do Telegram/redes sociais para que os cancelamentos cheguem até você mesmo se você se afastar do cais."
       ]
     },
     {
       "id": "plan-b",
-      "title": "Mude para rotas terrestres",
+      "title": "Mudar para rotas terrestres",
       "body": [
-        "Se as saídas pararem, troque para ônibus e trens: SITA até Sorrento e Circumvesuviana para Nápoles/Pompéia, ou ônibus via Amalfi e trem regional em Salerno.",
-        "Reserve pelo menos 60 minutos de folga para as últimas partidas do dia e valide os bilhetes antes de embarcar."
+        "Se as navegações pararem, mude para ônibus e trens: SITA até Sorrento e depois Circumvesuviana para Nápoles/Pompeia, ou ônibus via Amalfi e trem regional de Salerno.",
+        "Reserve pelo menos 60 minutos de margem para as últimas partidas do dia e valide os bilhetes antes de embarcar."
       ]
     },
     {
       "id": "refunds",
       "title": "Reembolsos e vouchers",
       "body": [
-        "Guarde recibos e capture o aviso de cancelamento para que a operadora processe reembolso, remarcação ou crédito.",
-        "Informe se prefere a próxima saída disponível ou um voucher de temporada antes de sair do guichê."
+        "Guarde recibos e faça uma captura de tela do aviso de cancelamento para que o operador possa processar reembolsos, remarcação ou créditos.",
+        "Informe a equipe se você prefere a próxima navegação disponível ou um voucher de temporada antes de deixar o balcão."
       ]
     },
     {
       "id": "overnight",
-      "title": "Se o atraso virar pernoite",
+      "title": "Gerenciando atrasos noturnos",
       "body": [
-        "Avise a hospedagem ou o operador do passeio assim que o atraso for anunciado; muitos ajustam check-in ou saída com antecedência.",
-        "Pergunte no ponto de informação do porto sobre táxis compartilhados, shuttles alternativos ou guarda-volumes se precisar esperar até o dia seguinte."
+        "Avise sua acomodação ou anfitrião do passeio assim que os atrasos forem anunciados; muitos ajustarão o check-in ou a partida se avisados com antecedência.",
+        "Pergunte no ponto de informação do porto sobre táxis compartilhados, transportes substitutos ou armazenamento de bagagem se você precisar esperar até a manhã seguinte."
       ]
     }
   ],
   "tips": [
-    "Confira a previsão marítima — ventos acima de 20 nós ou ondulação superior a 1,5 metro costumam gerar cancelamentos.",
-    "Seguro-viagem que cobre atrasos por clima ajuda a recuperar diárias extras ou transfers substitutos.",
-    "As saídas da manhã são mais confiáveis; evite depender do último barco quando há alerta de tempestade."
+    "Verifique a previsão marítima—ventos acima de 20 nós ou ondulação acima de 1,5 metros (cerca de 5 pés) frequentemente causam cancelamentos.",
+    "Seguro viagem que cobre atrasos climáticos ajuda a recuperar noites extras de hotel ou transferências de substituição.",
+    "Navegações matinais são as mais confiáveis; evite depender do último barco do dia quando tempestades estão previstas."
   ],
   "faqs": [
     {
-      "q": "Como saber quando as viagens retomam?",
+      "q": "Como sei quando as navegações são retomadas?",
       "a": [
-        "Atualize o site ou as redes da operadora e ouça os avisos de alto-falante no píer — as decisões saem cerca de 30 minutos antes do horário previsto.",
-        "A equipe do guichê também confirma se o próximo barco zarpa antes de você deixar o porto."
+        "Atualize o site do operador ou feeds sociais e ouça anúncios de alto-falante no cais—decisões são geralmente publicadas dentro de 30 minutos da partida programada.",
+        "A equipe da bilheteria também pode confirmar se o próximo barco está operando antes de você deixar o porto."
       ]
     },
     {
-      "q": "O que acontece com o meu bilhete?",
+      "q": "O que acontece com meu bilhete?",
       "a": [
-        "Mostre o recibo ou QR code para solicitar reembolso, voucher ou remarcação na próxima saída.",
-        "Se comprou por agência online, envie o print do cancelamento em até 24 horas para iniciar o processo."
+        "Mostre seu recibo ou código QR para solicitar reembolso, voucher ou remarcação na próxima navegação.",
+        "Se você reservou via agência online, envie a eles a captura de tela do cancelamento por e-mail dentro de 24 horas para iniciar o processo de reembolso."
       ]
     },
     {
-      "q": "Algum ferry opera mesmo com mar bravo?",
+      "q": "Existem balsas garantidas em tempo ruim?",
       "a": [
-        "Não — quando a Capitania fecha o porto todas as partidas param. Tenha uma rota terrestre preparada.",
-        "Alguns charters privados podem sair em mar moderado, mas custam caro e dependem do capitão; avalie conforto e orçamento com cuidado."
+        "Não—quando a Guarda Costeira fecha o porto, todas as partidas param. Tenha uma rota terrestre pronta.",
+        "Alguns charters privados podem navegar em mar moderado, mas são caros e dependem da discrição do capitão; considere cuidadosamente conforto e custo."
       ]
     }
   ]

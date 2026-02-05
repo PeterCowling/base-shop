@@ -1,82 +1,104 @@
 {
   "seo": {
-    "title": "Hostel Brikette → bến phà, mang hành lý",
-    "description": "Lộ trình từng bước từ hostel tới bến phà Positano bằng xe buýt Interno và dịch vụ khuân vác."
+    "title": "Hostel Brikette → bến phà Positano (cảng)",
+    "description": "Tuyến đường đi bộ từng bước đến cảng Positano với các mốc bản đồ, mẹo mua vé và hướng dẫn lên tàu."
   },
-  "linkLabel": "Hostel Brikette → bến phà, mang hành lý",
+  "linkLabel": "Hostel Brikette → bến phà (cảng)",
   "intro": [
-    "Rời Hostel Brikette với nhiều hành lý? Hãy đi xe buýt Interno Positano xuống dốc và nhờ đội khuân vác tại bến chuyển các vali nặng để bạn ra phà mà không phải vật lộn với cầu thang Positano."
+    "Đang đến cảng Positano để đi phà? Đây là tuyến đường đi bộ dễ nhất mà chúng tôi tìm thấy từ Hostel Brikette đến Spiaggia Grande — với bản đồ nhanh và các mốc ảnh cho các điểm 1-5.",
+    "Dành 20-30 phút đi bộ (nhiều hơn nếu có hành lý), và lưu ý rằng Google Maps đôi khi gợi ý các tuyến đường dài hơn đến bãi biển — hãy làm theo tuyến đường bên dưới thay vào đó."
   ],
   "beforeList": [
-    "Kiểm tra lịch xe buýt Interno Positano hiện tại — đây là [lịch trình và giá vé mới nhất](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
-    "Mua vé Interno Positano tại quầy tabacchi cạnh Chiesa Nuova trước khi lên xe (hoặc nhờ lễ tân xác nhận còn vé).",
-    "Sắp xếp dịch vụ khuân vác nếu bạn có hành lý cồng kềnh — lễ tân có thể gọi trước, hoặc xem %LINK:porterServices|hướng dẫn dịch vụ khuân vác% để biết số điện thoại và giá cả."
+    "Kiểm tra thời gian và giá phà tại các quầy điều hành ở cảng (họ liệt kê chuyến khởi hành tiếp theo trên biển báo).",
+    "Để lại thời gian dự phòng nếu bạn có hành lý — có cầu thang trên tuyến đường này và cảng trở nên đông đúc vào giờ cao điểm.",
+    "Hãy cố gắng đến sớm để bạn có thể mua vé, tìm bến đúng và sẵn sàng khi bắt đầu lên tàu."
   ],
   "sections": [
     {
-      "id": "hostel-to-stop",
-      "title": "Từ cổng hostel đến điểm dừng Chiesa Nuova",
+      "id": "getting-to-the-port",
+      "title": "Đến cảng",
       "body": [
-        "Làm thủ tục trả phòng, sau đó đi xuống cầu thang chính tới Viale Pasitea và rẽ trái (xuống dốc). Đi bộ hơn 100 mét để tới quầy tabacchi/quầy báo mà bạn đã dùng khi đến nơi.",
-        "Điểm dừng xe buýt Interno Positano nằm ngay cạnh quầy tabacchi. Hãy chuẩn bị sẵn vé; nếu cần mua thêm, hãy vào trong mua trước khi xe đến."
+        "Bắt đầu từ nhà trọ và đi về phía Spiaggia Grande (bãi biển chính của Positano).",
+        "Cảng nằm ở phía bên phải của bãi biển.",
+        "Dành 20-30 phút cho việc đi bộ từ nhà trọ đến cảng.",
+        "Google Maps có thể không luôn cung cấp tuyến đường trực tiếp nhất đến bãi biển — sử dụng bản đồ và hướng dẫn từng bước bên dưới.",
+        "[Xem tại đây nếu bạn thích hướng dẫn bản đồ](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2)."
       ]
     },
     {
-      "id": "bus-to-mulini",
-      "title": "Đi xe buýt Interno Positano tới Piazza dei Mulini",
+      "id": "walking-route",
+      "title": "Đi bộ từ Hostel Brikette đến cảng (điểm 1-5)",
       "body": [
-        "Lên xe buýt Interno Positano — bảng điểm đến sẽ ghi \"interno positano\". Giữ hành lý trên đùi hoặc ở khu vực giữa để lối đi thông thoáng.",
-        "Ngồi khoảng 10 phút đến điểm Piazza dei Mulini (điểm dừng lớn cuối cùng trước khu đi bộ). Nếu không chắc, hãy báo với tài xế rằng bạn đang đi ra bãi biển."
+        "Tham chiếu bản đồ (Nhà trọ → Cảng):",
+        "[[figure:map]]",
+        "Bắt đầu bằng cách rời khỏi nhà trọ qua cửa chính.",
+        "Đi xuống bậc thang đến đường.",
+        "Rẽ trái và đi hơn 100 mét (330 feet) cho đến khi bạn đến điểm 1 trên bản đồ.",
+        "Tại điểm 1, rẽ phải.",
+        "[[figure:point-1]]",
+        "Ngay khi bạn rẽ phải tại điểm 1, bạn sẽ thấy tabacchi ở bên phải.",
+        "[[figure:tabacchi]]",
+        "Đi theo đường xuống dốc.",
+        "Tại khúc cua ngoằn ngoèo đầu tiên, bạn sẽ đến điểm 2 trên bản đồ.",
+        "Tại điểm 2, rời đường và đi thẳng về phía trước, đi xuống cầu thang.",
+        "[[figure:point-2]]",
+        "Khi bạn đến cuối cầu thang, bạn đã đến điểm 3 trên bản đồ.",
+        "Băng qua đường và đi theo con đường thẳng về phía trước.",
+        "Đi theo cầu thang xuống cho đến khi bạn đến tầng tiếp theo.",
+        "[[figure:point-3]]",
+        "Khi bạn đến cuối cầu thang, bạn sẽ đến đường.",
+        "Băng qua đường và rẽ trái, đi 10 mét (30 feet) cho đến khi bạn đến điểm 4 trên bản đồ.",
+        "Tại điểm 4, rẽ phải và đi xuống cầu thang rời đường và xuống dốc.",
+        "[[figure:point-4]]",
+        "Đi theo cầu thang xuống cho đến khi bạn đến đáy. Ở đáy cầu thang, rẽ phải.",
+        "Điều này sẽ đưa bạn đến điểm 5 trên bản đồ.",
+        "Tiếp tục đi dưới vòm bên phải.",
+        "[[figure:point-5]]",
+        "Sau 50 mét (160 feet), bạn sẽ đến cảng."
       ]
     },
     {
-      "id": "mulini-to-dock",
-      "title": "Từ Piazza dei Mulini đến bến phà",
+      "id": "buying-tickets",
+      "title": "Mua vé phà",
       "body": [
-        "Xuống xe, gặp đội khuân vác nếu bạn đã đặt trước và đi thẳng vào lối đi dành cho người đi bộ dẫn tới Spiaggia Grande.",
-        "Đi dọc lối ven biển khoảng 7 phút — dùng [lộ trình này](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2) để đi trên những đoạn dốc thoải nhất.",
-        "Tại cầu tàu, làm thủ tục với hãng phà của bạn. Đội khuân vác sẽ chuyển hành lý riêng; hãy giữ hộ chiếu, thuốc men và đồ giá trị bên người."
+        "Tại cảng Positano, bạn có thể bắt phà đến những nơi như Amalfi, Capri và xa hơn. Mỗi nhà điều hành phà có một quầy, và biển báo trên quầy hiển thị thông tin về chuyến phà tiếp theo họ sẽ chạy.",
+        "[[figure:tickets]]"
+      ]
+    },
+    {
+      "id": "boarding",
+      "title": "Lên tàu phà",
+      "body": [
+        "Khi bạn có vé, hãy đi đến cuối cảng và đợi phà bắt đầu lên tàu.",
+        "[[figure:port]]"
       ]
     }
   ],
   "stepsList": [
-    "Mua vé xe buýt Interno Positano tại quầy tabacchi Chiesa Nuova và xác nhận dịch vụ khuân vác.",
-    "Đi bộ 100 m xuống dốc từ hostel tới điểm dừng Chiesa Nuova và chờ ở phía hướng biển của Viale Pasitea.",
-    "Đi xe buýt Interno Positano đến Piazza dei Mulini (điểm dừng lớn cuối cùng trước bãi biển).",
-    "Gặp đội khuân vác và đi dọc lối ven biển tới bến phà trong khi họ chuyển hành lý nặng."
+    "Rời nhà trọ và rẽ trái dọc theo đường đến điểm 1 trên bản đồ, sau đó rẽ phải.",
+    "Đi theo tuyến đường xuống qua các điểm 2-5 (cầu thang và các chỗ băng qua) cho đến khi bạn đến cảng.",
+    "Mua vé tại các quầy điều hành và kiểm tra biển báo cho chuyến đi tiếp theo.",
+    "Đi đến cuối cảng và đợi lên tàu."
   ],
-  "kneesList": [
-    "Đi xe buýt Interno Positano giúp bạn tránh hàng trăm bậc dốc bằng một quãng đi bộ ngắn, bằng phẳng.",
-    "Đội khuân vác có thể chở vali trên xe đẩy riêng nên bạn chỉ cần mang balô nhỏ trên lối đi ven biển."
-  ],
-  "kneesDockPrefix": "Cần lộ trình leo ngược khi quay về? Xem",
-  "kneesDockLinkLabel": "hướng dẫn đến Chiesa Nuova",
-  "kneesPorterPrefix": "Muốn biết giá và cách đặt dịch vụ khuân vác? Xem",
-  "kneesPorterLinkLabel": "hướng dẫn dịch vụ khuân vác",
+  "kneesList": [],
   "faqs": [
     {
-      "q": "Tôi có thể mua vé Interno Positano ở đâu gần hostel?",
+      "q": "Mất bao lâu để đi bộ từ Hostel Brikette đến cảng?",
       "a": [
-        "Quầy tabacchi/quầy báo cạnh điểm dừng Chiesa Nuova luôn có sẵn vé và lễ tân có thể xác nhận còn vé trong ngày. Tài xế không bán vé trên xe."
+        "Dự kiến 20-30 phút đi bộ. Thêm thời gian nếu bạn có hành lý hoặc muốn dừng lại để mua vé trước khi lên tàu."
       ]
     },
     {
-      "q": "Tôi nên đặt đội khuân vác trước bao lâu?",
+      "q": "Tôi mua vé phà ở đâu ở Positano?",
       "a": [
-        "Vào mùa hè hãy gọi trước 30–45 phút trước giờ bạn muốn rời đi để họ gặp bạn tại Piazza dei Mulini. Mùa vắng khách, 15 phút thường là đủ — lễ tân có thể gọi giúp bạn."
-      ]
-    },
-    {
-      "q": "Nếu xe buýt Interno không chạy khi tôi đi thì sao?",
-      "a": [
-        "Nếu dịch vụ tạm dừng vào đêm muộn, hãy nhờ đội khuân vác mang hành lý xuống tận nơi và bạn tự đi bộ dọc lối ven biển, hoặc đi xe buýt SITA về hướng Sponda (chạy muộn hơn) rồi tiếp tục đi bộ xuống dốc."
+        "Tại cảng, bạn sẽ thấy các quầy cho mỗi nhà điều hành phà. Biển báo trên quầy hiển thị thông tin về chuyến phà tiếp theo họ sẽ chạy."
       ]
     }
   ],
   "howtoSteps": [
-    "Xác nhận vé và dịch vụ khuân vác tại Chiesa Nuova",
-    "Đi bộ xuống dốc từ hostel đến điểm dừng Chiesa Nuova",
-    "Đi xe buýt Interno Positano tới Piazza dei Mulini",
-    "Gặp đội khuân vác và đi bộ tới cầu phà"
+    "Đi theo tuyến đường bản đồ từ nhà trọ xuống cảng",
+    "Sử dụng các mốc ảnh tại điểm 1-5 để giữ đúng hướng",
+    "Mua vé tại các quầy điều hành và xác nhận chuyến đi tiếp theo",
+    "Đợi tại bến và lên tàu khi được gọi"
   ]
 }

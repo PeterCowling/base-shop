@@ -43,15 +43,29 @@
         "Chuyến đi mất khoảng 25 phút. Đứng phía mạn phải để ngắm Positano và Praiano lùi lại phía sau.",
         "Khi tàu cập bến, xuống nhanh và đi thẳng tới bến xe buýt nằm bên trái quảng trường cảng.",
         "Nếu còn thời gian trước chuyến xe, hãy dạo một vòng quảng trường nhà thờ hoặc uống espresso — nhưng nhớ quan sát bến xe Agerola."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/11-nav.jpg",
+          "alt": "Bomerano bus stop location with Ristorante Jerla signpost marker",
+          "caption": "1. Điểm Bomerano — xuống tại đây khi thấy biển Ristorante Jerla, sau đó băng qua đường"
+        }
       ]
     },
     {
       "id": "bus-to-bomerano",
       "title": "Bắt xe buýt tới Bomerano",
       "body": [
-        "Tìm xe buýt SITA ghi “Agerola/Bomerano”. Xác nhận vé khi lên và ngồi phía trước để ít bị say cua.",
+        "Tìm xe buýt SITA ghi \"Agerola/Bomerano\". Xác nhận vé khi lên và ngồi phía trước để ít bị say cua.",
         "Sau khoảng 45 phút, xuống tại điểm Bomerano cạnh Ristorante Jerla. Băng qua đường và men theo con dốc nhỏ xuống quảng trường.",
-        "Rẽ trái băng qua quảng trường, rồi theo biển chỉ “Sentiero degli Dei” tới bảng thông tin đường mòn."
+        "Rẽ trái băng qua quảng trường, rồi theo biển chỉ \"Sentiero degli Dei\" tới bảng thông tin đường mòn."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/12-nav.jpg",
+          "alt": "Side street from Bomerano bus stop descending toward the piazza",
+          "caption": "2. Băng qua đường từ điểm xe buýt và đi theo con phố nhỏ này xuống quảng trường"
+        }
       ]
     },
     {
@@ -61,6 +75,28 @@
         "Đường mòn lên xuống khoảng 6 km. Chuẩn bị bước trên bậc đá, lối hẹp và những ban công ngoạn mục nhìn xuống bờ biển.",
         "Nghỉ tại các điểm ngắm cảnh được đánh dấu và mang rác về. Tôn trọng nông dân địa phương và đi đúng lối có biển báo.",
         "Khi đường đất gặp lối bê tông dẫn vào Nocelle, bạn đã hoàn thành hành trình."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/13-nav.jpg",
+          "alt": "Town square (piazza) in Bomerano with left-hand route markers",
+          "caption": "3. Tiếp tục rẽ trái băng qua quảng trường theo biển chỉ 'Sentiero degli Dei'"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/14-nav.jpg",
+          "alt": "Wooden steps ascending along the hiking trail ridge",
+          "caption": "4. Khi qua quảng trường, tìm bảng thông tin và rẽ trái, đây là điểm khởi đầu đường mòn. Đi theo lối cho đến khu vực có bậc gỗ."
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/15-nav.jpg",
+          "alt": "Concrete paved walkway marking entry into Nocelle village",
+          "caption": "Khi đường đất gặp lối bê tông này, bạn đã tới Nocelle"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/16-nav.jpg",
+          "alt": "Nocelle village navigation map showing route to bus stop and staircase warning",
+          "caption": "Bản đồ Nocelle — khi đi qua làng, nhớ rẽ phải tại ngã rẽ để tới điểm xe buýt; tránh xa cầu thang 1.700 bậc xuống Positano bằng mọi giá!"
+        }
       ]
     },
     {
@@ -70,6 +106,23 @@
         "Đi theo lối bê tông vào thị trấn, giữ bên phải tại ngã rẽ đầu tiên để tránh cầu thang 1.700 bậc xuống Positano.",
         "Đi khoảng 175 mét tới điểm dừng xe buýt gần bãi đỗ nhỏ. Ki-ốt cạnh nhà thờ bán đồ uống mát vào mùa cao điểm.",
         "Có mặt trước ít nhất 10 phút; khi bãi đỗ chật, xe buýt đôi khi dừng trước nhà chờ một chút."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/17-nav.jpg",
+          "alt": "Directional signpost in Nocelle showing the stairs-to-Positano option to avoid",
+          "caption": "QUAN TRỌNG: ĐỪNG đi theo biển chỉ 'Positano' xuống cầu thang — hãy rẽ phải tại đây"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/18-nav.jpg",
+          "alt": "Stone steps ascending through Nocelle streets toward the bus stop",
+          "caption": "Leo những bậc thang này khoảng 175 mét để tới điểm xe buýt gần bãi đỗ"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/19-nav.jpg",
+          "alt": "Bus stop arrival point in Nocelle",
+          "caption": "Bạn đã tới điểm xe buýt."
+        }
       ]
     },
     {

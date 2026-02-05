@@ -1,118 +1,248 @@
 {
   "seo": {
-    "title": "Ăn rẻ ở Positano",
-    "description": "Quán ăn giá phải chăng, món nên thử và mẹo đặt chỗ."
+    "title": "Ăn rẻ ở Positano: Hướng dẫn ẩm thực tiết kiệm",
+    "description": "Ăn ngon ở Positano với €15–25/ngày: pizza al taglio (€3–5), picnic siêu thị, khuyến mãi bữa trưa, lựa chọn theo chế độ ăn và mẹo tiết kiệm cho khách du lịch tiết kiệm."
   },
-  "linkLabel": "Ăn rẻ ở Positano",
-  "heroAlt": "Bản dịch đang được chuẩn bị.",
+  "linkLabel": "Ăn như người địa phương: Món ngon giá rẻ nhất Positano",
+  "heroAlt": "Đồ ăn mang đi giá phải chăng ở Positano",
   "intro": [
-    "Ăn ngon ở Positano mà không vượt ngân sách bằng cách kết hợp món mang đi, picnic từ quầy deli và tiệm bánh địa phương."
+    "Positano không nhất thiết phải làm cạn kiệt ngân sách du lịch của bạn. Bằng cách kết hợp món mang đi cổ điển, picnic siêu thị và lựa chọn nhà hàng thông minh, bạn có thể ăn ngon với €15–25 mỗi ngày trong khi những du khách khác chi gấp ba lần đó cho bàn ven nước.",
+    "Từ hostel, chúng tôi đã chứng kiến khách làm chủ nghệ thuật ăn rẻ: họ mua bánh ngọt buổi sáng từ Collina Bakery (5 phút đi lên dốc), chất đầy tủ lạnh sân thượng với picnic từ minimarket, và để dành bữa ăn ngồi cho dịp đặc biệt. Đây là cách chính xác để làm điều đó."
   ],
   "sections": [
     {
-      "id": "grab-and-go",
-      "title": "Món mang đi nhanh",
+      "id": "strategy",
+      "title": "Chiến lược ăn uống tiết kiệm",
       "body": [
-        "Bản dịch đang được chuẩn bị.",
-        "Uống espresso tại quầy (\"al banco\") để được giá địa phương khoảng 1,20 € thay vì ngồi bàn."
+        "Lên kế hoạch một bữa ăn ngồi mỗi 2–3 ngày và lấp đầy khoảng trống bằng đồ mang đi, picnic và %LINK:hostelFaqs|hostel breakfasts%. Điều này giữ chi tiêu thức ăn hàng ngày của bạn khoảng €15–25 thay vì €50+.",
+        "Mua sắm tại minimarket lên dốc (Via dei Mulini, Via Cristoforo Colombo) nơi giá thấp hơn 20–30% so với kiosk bãi biển. Một chai nước 1,5L có giá €0,80 so với €3 trên cát. Chúng tôi đã thấy sự khác biệt cộng dồn: khách mua sắm lên dốc tiết kiệm €50–70 trong một tuần.",
+        "Ăn bữa chính vào bữa trưa khi nhiều trattoria cung cấp \"menu del giorno\" (€12–18 cho pasta, nước, cà phê) thay vì bữa tối à la carte (€25–40 mỗi người). Nhân viên tại các điểm lên dốc quen với khách du lịch tiết kiệm và sẽ không thúc giục bạn.",
+        "Đổ đầy chai nước tại hostel hoặc vòi nước công cộng gần %LINK:chiesaNuovaArrivals|Chiesa Nuova% — mang theo 750ml+ tiết kiệm €2–4 mỗi ngày. Hostel có nước lọc sẵn 24/7; chỉ cần mang chai của bạn hoặc mượn một cái từ khu vực chung.",
+        "Sử dụng sân thượng hostel làm phòng ăn của bạn: bánh ngọt bữa sáng lúc 8 giờ sáng với tầm nhìn bình minh, picnic trưa trải ra trên bàn, và aperitivo hoàng hôn với rượu minimarket. Nó xã hội, đẹp như tranh và tiết kiệm khối tài sản trên phí phục vụ nhà hàng."
+      ]
+    },
+    {
+      "id": "grab-and-go",
+      "title": "Món cơ bản mang đi (€3–8 mỗi bữa)",
+      "body": [
+        "Pizza al taglio (theo miếng): €3–5 cho một phần hào phóng. Collina Bakery và các quán bar dọc Via dei Mulini bán margherita, marinara và topping theo mùa. Đến trước trưa để lấy mẻ tươi — chúng tôi đã thử marinara 11 giờ sáng từ Collina và nó vẫn còn ấm lò.",
+        "Panini & focaccia: €4–6 tại quầy deli và tiệm bánh. Yêu cầu caprese (mozzarella, cà chua, húng quế), prosciutto hoặc cà tím parm. Chỉ định \"senza\" nếu bạn tránh thành phần. Từ hostel, Collina Bakery cách 5 phút đi lên dốc; đến đó trước 10 giờ sáng cho menu panini đầy đủ.",
+        "Arancini (bánh gạo chiên): €2,50–3,50 mỗi cái. Đầy, cầm tay, và có sẵn tại hầu hết các quán bar. Phiên bản ragù hoặc mozzarella cổ điển có khắp nơi. Khách thường lấy hai cái cho bữa trưa và ăn chúng trên sân thượng hoặc bãi biển.",
+        "Espresso quầy: €1,20–1,50 \"al banco\" (đứng tại quầy bar) so với €3,50–5 cho dịch vụ bàn. Đó là cùng một cà phê, chỉ khác giá. Nhân viên tại các quán bar gần Chiesa Nuova biết đám đông hostel và luôn thân thiện.",
+        "Salad & pasta mang đi: €5–8 từ quầy deli. Tuyệt vời cho picnic hoặc ăn lại trên sân thượng hostel với tầm nhìn. Yêu cầu thêm khăn ăn và dao nĩa, hoặc sử dụng bộ tái sử dụng có sẵn trong bếp hostel."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/cheapEats.jpg",
+          "alt": "Lựa chọn thức ăn thân thiện với ngân sách ở Positano.",
+          "caption": "Kết hợp món mang đi và quầy cà phê để giữ bữa ăn giá cả phải chăng."
+        }
+      ]
+    },
+    {
+      "id": "supermarket-picnics",
+      "title": "Picnic siêu thị (€6–12 mỗi bữa)",
+      "body": [
+        "Mua sắm tại minimarket: bánh mì/focaccia (€1,50–3), phô mai địa phương (€3–5 mỗi 200g), salami hoặc prosciutto (€4–6), cà chua bi (€2) và trái cây (€2–4). Đó là một picnic đầy đủ cho hai người dưới €20. Chúng tôi đã thấy khách biến điều này thành nghi lễ hàng đêm trên sân thượng.",
+        "Ăn ở đâu: Sân thượng hostel (tầm nhìn hoàng hôn tốt nhất ở Positano, xác nhận bởi vô số ảnh khách), %LINK:fornilloBeachGuide|Fornillo Beach's free public section% (đầu phía tây) hoặc ghế có bóng mát gần Chiesa Nuova. Sân thượng có bàn, ghế và tầm nhìn hoàng hôn đánh bại mọi nhà hàng.",
+        "Đồ dùng tái sử dụng: Mang theo một con dao nhỏ, thớt và khăn ăn vải. Bạn sẽ tiết kiệm phí dao nĩa nhựa và giảm lãng phí. Bếp hostel có dao và thớt chung nếu bạn quên của mình.",
+        "Mẹo rượu: Rượu minimarket là €4–8 mỗi chai so với €20+ ở nhà hàng. Uống có trách nhiệm và tái chế thủy tinh tại thùng hostel. Khuyến nghị nhân viên: yêu cầu \"vino locale\" (rượu địa phương) tại minimarket cho tỷ lệ chất lượng trên giá tốt nhất."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/picnic-positano.jpg",
+          "alt": "Bày trí picnic với phô mai địa phương, bánh mì và trái cây nhìn ra Positano.",
+          "caption": "Picnic siêu thị trên sân thượng hostel tiết kiệm tiền và mang lại tầm nhìn tốt nhất."
+        }
       ]
     },
     {
       "id": "casual-dining",
-      "title": "Quán ngồi giản dị",
+      "title": "Điểm ăn ngồi bình dân (€12–20 mỗi người)",
       "body": [
-        "Chọn trattoria trên cao so với bãi biển, nơi phí phục vụ nhẹ và rượu nhà bán theo carafe.",
-        "Chia sẻ món khai vị, bỏ qua tráng miệng và xin nước máy (\"acqua del rubinetto\") để giữ hoá đơn gọn."
+        "Tìm lên dốc: Trattoria trên Via Cristoforo Colombo hoặc gần Chiesa Nuova tính phí ít hơn các nơi ven bãi biển. Kỳ vọng €8–12 cho pasta, €3–5 cho rượu nhà (bình), €2 coperto.",
+        "Khuyến mãi bữa trưa: \"Menu del giorno\" gộp pasta, nước và espresso với €12–18. Hỏi khi bạn ngồi xuống hoặc kiểm tra bảng phấn bên ngoài.",
+        "Chia món khai vị: Bruschetta, caprese hoặc mực chiên (€6–10) chia cho hai người kéo dài ngân sách. Bỏ qua món tráng miệng và lấy gelato hoặc bánh từ tiệm sau với một nửa giá.",
+        "Nước máy: Yêu cầu \"acqua del rubinetto\" (nước máy, miễn phí) thay vì nước chai (€2,50–4). Nó an toàn và hoàn toàn bình thường để yêu cầu.",
+        "Mức tối thiểu thẻ: Một số điểm nhỏ yêu cầu tối thiểu €10–15 cho thanh toán thẻ. Mang theo €20–30 tiền mặt để tránh phí ATM hoặc khoảnh khắc khó xử."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/trattoria-uphill.jpg",
+          "alt": "Trattoria nhỏ lên dốc với chỗ ngồi ngoài trời ở Positano.",
+          "caption": "Trattoria lên dốc cung cấp giá trị tốt hơn nhà hàng ven bãi biển."
+        }
       ]
     },
     {
-      "id": "picnics",
-      "title": "Picnic ngắm cảnh",
+      "id": "dietary-options",
+      "title": "Đồ ăn rẻ theo chế độ ăn & dị ứng",
       "body": [
-        "Mua phô mai, focaccia và trái cây từ minimarket rồi picnic trên sân thượng hostel hoặc khu công cộng của Fornillo.",
-        "Mang bộ dao nĩa và khăn tái sử dụng để tránh đồ dùng một lần và chi phí phát sinh."
+        "Chay: Panini caprese (€4–5), cà tím parmigiana al taglio (€4), pasta al pomodoro hoặc aglio e olio (€8–10), pizza margherita (€3–5 mỗi miếng).",
+        "Thuần chay: Pizza marinara (không có phô mai, €3–4 miếng), pasta với sốt cà chua (xác nhận không có bơ/phô mai), trái cây từ chợ, focaccia senza formaggio.",
+        "Không gluten: Nhiều tiệm bánh và trattoria cung cấp pasta và pizza không gluten (\"senza glutine\"). Giá tương tự hoặc thêm €1–2. Luôn hỏi về nhiễm chéo nếu bạn bị bệnh celiac.",
+        "Dị ứng: Nói \"sono allergico/a a...\" (tôi dị ứng với...) và chỉ định: hạt (\"noci\"), sữa (\"latticini\"), động vật có vỏ (\"crostacei\"), v.v. Nhân viên coi trọng dị ứng — đừng ngần ngại hỏi."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/vegetarian-panini.jpg",
+          "alt": "Panini caprese với mozzarella tươi, cà chua và húng quế.",
+          "caption": "Lựa chọn chay như panini caprese giá cả phải chăng và phổ biến rộng rãi."
+        }
       ]
     },
     {
       "id": "sweet-breaks",
-      "title": "Đồ ngọt & món giải khát",
+      "title": "Giải lao ngọt & món ăn nhẹ (€2–5)",
       "body": [
-        "Thử granita chanh từ xe đẩy với giá khoảng 3 € thay vì cocktail đắt tiền ở quầy bar.",
-        "Chia nhau một miếng delizia al limone hoặc tiramisù từ tiệm bánh để thoả cơn thèm đồ ngọt giá phải chăng."
+        "Granita chanh: €2,50–3,50 từ xe đẩy đường phố hoặc quán bar. Giải khát, món đặc trưng Bờ biển Amalfi mang tính biểu tượng, và rẻ hơn cocktail (€8–12).",
+        "Món tráng miệng tiệm bánh: Delizia al limone, sfogliatella hoặc tiramisù theo miếng (€3–5). Chia một cho hai người cho một liều giá cả phải chăng.",
+        "Gelato: €2,50–4 cho một ống so với €6–8 cho món tráng miệng ngồi. Tìm biển hiệu \"produzione propria\" (tự làm).",
+        "Combo espresso + bánh ngọt: €3–4 tại quầy. Bữa sáng cổ điển của Ý hoặc món nâng cao buổi chiều."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/lemon-granita.jpg",
+          "alt": "Granita chanh trong cốc với thìa.",
+          "caption": "Granita chanh là món giải khát €3 — rẻ hơn nhiều so với cocktail quầy bar."
+        }
+      ]
+    },
+    {
+      "id": "where-to-shop",
+      "title": "Mua sắm & ăn ở đâu",
+      "body": [
+        "Collina Bakery (Via Cristoforo Colombo): Panini, pizza al taglio, salad, bánh ngọt. Mở cửa sớm cho bữa sáng mang đi.",
+        "Minimarket trên Via dei Mulini: Vị trí trung tâm, giá công bằng, tốt cho vật dụng picnic và đổ nước (mua một lần, đổ lại tại hostel).",
+        "Deli gần Chiesa Nuova: Điểm lên dốc với quầy deli, focaccia và phô mai. Ít đánh giá du lịch hơn so với ven bãi biển.",
+        "Sạp trái cây & rau: Sản phẩm theo mùa, thường rẻ hơn minimarket. Tuyệt vời cho đồ ăn nhẹ và phần bổ sung picnic.",
+        "Quán bar có quầy: Dừng lại để uống espresso \"al banco\" và hỏi về arancini, panini hoặc món đặc biệt hàng ngày. Người địa phương ăn ở đây, vì vậy giá vẫn hợp lý."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/minimarket-positano.jpg",
+          "alt": "Mặt tiền minimarket trên Via dei Mulini.",
+          "caption": "Minimarket lên dốc cung cấp giá công bằng cho vật dụng picnic và nước."
+        }
+      ]
+    },
+    {
+      "id": "timing-tips",
+      "title": "Mẹo thời gian & tránh xếp hàng",
+      "body": [
+        "Tiệm bánh: Đến trước 11 giờ sáng cho pizza al taglio tươi và lựa chọn panini đầy đủ. Sau 2 giờ chiều, nhiều món bán hết.",
+        "Khuyến mãi bữa trưa: Đến trước 12:30 để chộp \"menu del giorno\" trước khi bếp chuyển sang chuẩn bị bữa tối (thường 3–5 giờ chiều).",
+        "Siêu thị: Mua sắm vào buổi sáng (8–10 giờ sáng) khi kệ được chất đầy. Chiều muộn có thể bị lấy hết, đặc biệt là vào mùa hè.",
+        "Tránh giờ cao điểm bữa tối: Nếu bạn ăn ngoài, đến trước 7 giờ tối hoặc sau 9:30 tối để bỏ qua làn sóng du khách 8–9 giờ tối và lấy bàn mà không cần đặt."
       ]
     }
   ],
   "tips": [
-    "Bản dịch đang được chuẩn bị.",
-    "Mang hộp gấp để đựng đồ ăn thừa và ăn tiếp tại hostel."
+    "Lập ngân sách €15–25 mỗi ngày bằng cách kết hợp một bữa ăn mang đi, một picnic và bữa sáng hostel. Để dành bữa tối ngồi cho mỗi 2–3 ngày.",
+    "Mua sắm lên dốc tại minimarket trên Via dei Mulini hoặc gần Chiesa Nuova với giá thấp hơn 20–30% so với kiosk ven bãi biển.",
+    "Yêu cầu \"menu del giorno\" vào bữa trưa (€12–18 cho pasta, nước, cà phê) và \"acqua del rubinetto\" (nước máy miễn phí) để cắt giảm chi phí.",
+    "Mang theo dao nĩa tái sử dụng, một con dao nhỏ và một chai nước (750ml+). Đổ lại tại hostel hoặc vòi nước công cộng gần Chiesa Nuova.",
+    "Đối với nhu cầu ăn kiêng, nói \"sono allergico/a a...\" (tôi dị ứng với...) hoặc yêu cầu \"senza glutine\" (không gluten) / \"senza formaggio\" (không phô mai)."
   ],
   "recommendationsTitle": "Ăn ở đâu",
   "recommendations": [
     {
       "name": "Collina Bakery",
-      "note": "Bản dịch đang được chuẩn bị."
+      "note": "Panini (€4–6), pizza al taglio (€3–5), salad (€5–7) và bánh ngọt. Đến trước 11 giờ sáng cho lựa chọn tốt nhất."
     },
     {
-      "name": "Quầy deli địa phương",
-      "note": "Đặt đĩa đồ nguội, focaccia và đồ picnic tránh mức giá đội ở bờ biển."
+      "name": "Minimarket trên Via dei Mulini",
+      "note": "Vật dụng picnic, nước (€0,80 cho 1,5L), rượu (€4–8), phô mai và bánh mì. Vị trí trung tâm, giá công bằng."
     },
     {
-      "name": "Minimarket & sạp trái cây",
-      "note": "Mua trái cây, nước chai lớn và snack cho picnic sân thượng."
+      "name": "Deli gần Chiesa Nuova",
+      "note": "Quầy deli với focaccia, thịt nguội và phô mai địa phương. Ít đánh giá du lịch hơn, tốt hơn cho mua picnic số lượng lớn."
+    },
+    {
+      "name": "Trattoria lên dốc (khu vực Via Cristoforo Colombo)",
+      "note": "Khuyến mãi bữa trưa (€12–18), coperto thấp hơn, rượu nhà theo bình (€3–5). Yêu cầu \"menu del giorno.\""
+    },
+    {
+      "name": "Xe đẩy đường phố & quầy bar",
+      "note": "Granita chanh (€2,50–3,50), espresso al banco (€1,20–1,50), arancini (€2,50–3,50). Nhanh, rẻ, địa phương."
     }
   ],
   "faqs": [
     {
-      "q": "Có refill nước miễn phí không?",
+      "q": "Tôi có thể đổ nước miễn phí không?",
       "a": [
-        "Có — đổ bình ở hostel hoặc vòi công cộng như gần Chiesa Nuova; luôn mang ít nhất 750 ml."
+        "Có — đổ chai tại hostel hoặc vòi nước công cộng gần Chiesa Nuova. Luôn mang ít nhất 750ml (25oz) để tránh mua chai €3 ven bãi biển."
       ]
     },
     {
-      "q": "Có món chay giá rẻ không?",
+      "q": "Có đồ ăn rẻ chay & thuần chay không?",
       "a": [
-        "Có — panini caprese, cà tím nướng phô mai bán theo miếng hoặc pasta al pomodoro tại trattoria bình dân."
+        "Hoàn toàn. Chay: panini caprese (€4–5), miếng cà tím parm (€4), pasta al pomodoro (€8–10). Thuần chay: pizza marinara (không có phô mai, €3–4), pasta với sốt cà chua (xác nhận không có bơ), focaccia senza formaggio và trái cây chợ."
+      ]
+    },
+    {
+      "q": "Các nơi có chấp nhận thẻ không?",
+      "a": [
+        "Hầu hết có, nhưng nhiều nơi có mức tối thiểu €10–15. Mang €20–30 tiền mặt cho mua sắm nhỏ, xe đẩy đường phố và để tránh phí ATM (€3–5 mỗi lần rút)."
+      ]
+    },
+    {
+      "q": "Ngân sách thức ăn hàng ngày thực tế là bao nhiêu?",
+      "a": [
+        "€15–25 mỗi ngày nếu bạn kết hợp mang đi, picnic và bữa sáng hostel. Khách du lịch tiết kiệm ăn ngoài hai lần mỗi ngày chi €40–60+. Một bữa ăn ngồi mỗi 2–3 ngày giữ chi phí thấp."
+      ]
+    },
+    {
+      "q": "Phí đóng gói mang đi có phổ biến không?",
+      "a": [
+        "Một số nơi tính €0,50–1 cho hộp. Mang theo hộp tái sử dụng để tiết kiệm tiền và giảm lãng phí nhựa một lần."
+      ]
+    },
+    {
+      "q": "Làm thế nào để xử lý dị ứng thức ăn bằng tiếng Ý?",
+      "a": [
+        "Nói \"sono allergico/a a...\" (tôi dị ứng với...) và chỉ định: hạt (\"noci\"), sữa (\"latticini\"), động vật có vỏ (\"crostacei\"), gluten (\"glutine\"). Nhân viên coi trọng dị ứng và sẽ giúp đỡ."
       ]
     }
   ],
   "fallbackIntro": [
-    "Positano có nhiều món ngon giá phải chăng nếu bạn biết tìm ở đâu."
+    "Positano có nhiều món ngon giá cả phải chăng nếu bạn biết tìm ở đâu."
   ],
   "fallbackRecommendations": [
     {
       "name": "Collina Bakery",
-      "note": "Bản dịch đang được chuẩn bị."
+      "note": "Panini, pizza al taglio, salad và bánh ngọt mang đi cho bữa ăn nhanh."
     },
     {
-      "name": "Bản dịch đang được chuẩn bị.",
-      "note": "Gọi đĩa đồ nguội, focaccia và đồ picnic xa khu bờ biển để tránh bị đội giá."
+      "name": "Quầy deli địa phương",
+      "note": "Đặt đĩa deli, focaccia và vật dụng picnic xa đánh giá bờ nước."
     },
     {
       "name": "Minimarket & sạp trái cây",
-      "note": "Mua trái cây, nước chai lớn và snack để picnic trên sân thượng."
+      "note": "Mua sắm trái cây, chai nước lớn và đồ ăn nhẹ cho picnic sân thượng."
     }
   ],
   "fallbackGalleryItems": [
     {
-      "alt": "Bản dịch đang được chuẩn bị.",
+      "alt": "Panini từ deli địa phương",
       "caption": "Panini & deli"
     },
     {
-      "alt": "Picnic nhìn ra Positano",
-      "caption": "Picnic với view đẹp"
+      "alt": "Picnic với tầm nhìn Positano",
+      "caption": "Điểm picnic"
     }
   ],
   "fallbackFaqs": [
     {
-      "q": "Các quầy có nhận thẻ không?",
+      "q": "Các nơi có chấp nhận thẻ không?",
       "a": [
-        "Hầu hết có, nhưng nên mang tiền lẻ cho xe đẩy hoặc nơi yêu cầu mức chi tối thiểu."
+        "Hầu hết có, nhưng mang tiền mặt nhỏ giúp tại kiosk hoặc cho mức tối thiểu."
       ]
     },
     {
-      "q": "Có phụ phí đồ mang đi không?",
+      "q": "Phí mang đi có phổ biến không?",
       "a": [
-        "Một số nơi thu phí đóng gói nhỏ; mang hộp riêng để tiết kiệm và giảm rác."
+        "Một số tính phí đóng gói nhỏ; mang hộp tái sử dụng để tiết kiệm và giảm lãng phí."
       ]
     }
   ]

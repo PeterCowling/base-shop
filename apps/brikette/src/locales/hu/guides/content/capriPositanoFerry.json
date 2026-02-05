@@ -1,104 +1,177 @@
 {
   "seo": {
     "title": "Capriból Positanóba kompon | Hostel Brikette",
-    "description": "Hogyan utazzon Capriból Positanóba kompon: jegyvásárlási tippek, üzemeltetők, érkezési tanácsok és a legkönnyebb út a hostelhez."
+    "description": "Teljes útmutató a hostel vendégeinek: Capri-Positano kompjegyek, menetrendek, üzemeltetők, érkezési tippek és a legkönnyebb útvonal a Hostel Brikette-hez csomaggal."
   },
+  "lastUpdated": "2026-01-31",
   "intro": {
     "title": "Capriból Positanóba – komp",
-    "body": "Használja ezt az útmutatót, hogy teljes egészében tengeren utazzon Capriból Positanóba. Segít kiválasztani a megfelelő szolgáltatót, megmutatja a jegyvásárlást a kikötőben, és tanácsot ad, hogyan legyen a lehető legsimább a séta (vagy busz) a Hostel Brikette felé érkezéskor."
+    "body": "Ez az útmutató mindent leír, amit tudnia kell a Capriból Positanóba komppal történő utazásról, kifejezetten hátizsákos hostel vendégek számára írva. A hostelből több száz vendégnek segítettünk megtervezni ezt az útvonalat – íme, hogyan navigáljon a komp üzemeltetők között, vásároljon jegyeket a Marina Grande kikötőben, érkezzen gördülékenyen a Positanói Spiaggia Grande mólóhoz, és találja meg az utat a Hostel Brikette-hez anélkül, hogy eltévedne a lépcsőkön."
   },
   "callouts": {
-    "tip": "Más útvonalakat vagy rossz idő esetére tartalékot keres? Nyissa meg a %URL:https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26|Hogyan juthat el hozzánk áttekintést%."
+    "tip": "A viharos tenger kevés előzetes figyelmeztetéssel lemondhatja a kompokat. Ha ugyanazon a napon tovább utazást foglal, építsen be 3 órás tartalékot, vagy nézze meg a %LINK:positanoCapriFerry|Sorrentón keresztüli alternatív buszútvonalat%."
   },
   "sections": [
     {
       "id": "overview",
       "title": "Utazás áttekintése",
-      "body": "Capri és Positano között tavasszal és nyáron járnak a leggyakrabban a kompok. Viharos tengernél, főleg a nap vége felé törölhetik a járatokat. Az út rendszerint 30–60 percig tart a hajó és az üzemeltető függvényében."
+      "body": "A Capriból Positanóba tartó komp az egyik legjobb tengeri útvonal az Amalfi-parton. Sok társaság üzemeltet gyors hidrosiklókat és hajókat egész nap a csúcsidőszakban áprilistól októberig. Télen a szolgáltatás korlátozott. Az út a hajótól és az időjárástól függően 20-40 percig tart. A hostelből azt mondjuk a vendégeknek, hogy ez az útvonal tökéletes egy napos capri kiránduláshoz. Gyorsabb és szórakoztatóbb, mint a Sorrentón keresztüli busz. Nagyszerű kilátást kap a partra, és közvetlenül a strandon érkezik meg Positanóban.",
+      "list": [
+        "Szezon: Napi hajók áprilistól októberig, télen kevesebb járat",
+        "Első komp: Körülbelül 09:45-kor a capri Marina Grande kikötőből",
+        "Utolsó komp: Körülbelül 19:00 (az idők a társaság és a szezon szerint változnak)",
+        "Utazási idő: 20-40 perc a vízen",
+        "Ár: €22-€35 személyenként 2026-ra",
+        "Időjárás: A hajók viharos tengeren lemondódnak, ezért indulás előtt ellenőrizze",
+        "Legjobb ülőhelyek: A hajó jobb oldala a positanói kilátásokért, ahogy megérkezik",
+        "Tipp: A reggeli hajók (14:00 előtt) ritkábban mondódnak le, mint a délutániak"
+      ]
+    },
+    {
+      "id": "operators",
+      "title": "Komptársaságok és jegyek",
+      "body": "Hat társaság üzemeltet hajókat Capriból Positanóba: NLG, Positano Jet, Alicost, Alilauro Gruson, Capitan Morgan és Grassi Junior. Mindegyik jó. Az NLG és a Positano Jet rendelkezik a legtöbb napi járattal. A jegye bármely társaságnál működik ugyanazon az útvonalon. Egyszerűen vásároljon attól, akinek a következő hajója van.",
+      "list": [
+        "Vásároljon jegyeket a Marina Grande kikötőben Caprin. Minden társaságnak van egy standja a dokkok közelében.",
+        "Érkezzen 20-30 perccel korábban, hogy csatlakozzon a beszállási sorhoz.",
+        "Ha online vásárolt, először váltsa be a voucherét a jegypénztárnál.",
+        "Csúcsszezon (július-augusztus): Foglalja le előre online a reggeli járatokat. Gyorsan elkelnek.",
+        "A jegyek csak gyalogosoknak szólnak. A kompok nem visznek autókat vagy kerékpárokat.",
+        "Nyáron vásároljon jegyeket 1-2 nappal előre, hogy megkapja a kívánt időpontot."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-positano-ferry/05-capri-harbour.webp",
+          "alt": "Marina Grande komphikötő Caprin hajókkal és jegypénztárakkal",
+          "caption": "A Marina Grande kikötő Caprin, ahonnan a Positanóba tartó kompok indulnak. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Habour_of_Capri.JPG|JonathanHeu% (%URL:https://creativecommons.org/licenses/by-sa/3.0|CC BY-SA 3.0%)."
+        }
+      ]
     },
     {
       "id": "capriPort",
-      "title": "A capri kikötőben",
-      "body": "Hasonlítsa össze a kompmenetrendeket és foglaljon: <capriLink>Capri.net – Capri ↔ Positano</capriLink> · <positanoLink>Positano.com (összesített menetrend)</positanoLink>.",
+      "title": "A Marina Grande kikötőben Caprin",
+      "body": "Minden Positanóba tartó hajó a Marina Grande-ból indul. Ez Capri fő kikötője a tengerszinten. Ha Capri városban (a Piazzetta) tartózkodik, vegye a siklót lefelé. 15 percenként közlekedik, és 5 percig tart. 20 perc alatt gyalog is lejöhet, de nagyon meredek. A kikötőben számos jegypénztár, kávézó és mosdó található. A hostelből tudjuk, hogy a kikötő nagyon zsúfolt 11:00 és 17:00 között. Érkezzen korán a kompjához, ha délután utazik.",
       "list": [
-        "Ellenőrizze az időpontokat és árakat, majd keresse meg a választott indulást üzemeltető társaságot.",
-        "Menjen Capri turista kikötőjébe. Jegyet a szolgáltató saját pénztárában vásároljon.",
-        "Érkezzen 20–30 perccel korábban, hogy beválthassa a vouchereket és sorba állhasson a beszálláshoz."
+        "Vegye a siklót Capri városából €2,30-ért. Vagy sétáljon le 20 perc alatt (meredek ösvény).",
+        "A jegypénztárak a vízpart mentén sorakoznak. Keresse társasága táblájá.",
+        "Ha online vásárolt, váltsa be a voucherét a megfelelő pénztárnál.",
+        "Ellenőrizze jegyét a mólószámra. Általában világosan fel van írva.",
+        "Szálljon fel 10-15 perccel korábban. Az ülőhelyek先来先 szolgál alapon osztódnak.",
+        "Olaszországon belüli hajókhoz nem szükséges útlevél.",
+        "A kikötőben poggyászmegőrző található, ha először csomagok nélkül szeretné felfedezni Caprit."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-positano-ferry/01-marina-grande-capri.webp",
+          "alt": "Marina Grande kikötő Caprin kompokkal és jegypénztárakkal a vízpart mentén",
+          "caption": "A Marina Grande Capri fő kikötője - innen indulnak az összes Positanóba tartó komp. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Marina_Grande_(Capri).jpg|Yair Haklai% (%URL:https://creativecommons.org/licenses/by-sa/4.0|CC BY-SA 4.0%)."
+        }
       ]
     },
     {
       "id": "arrival",
-      "title": "Érkezés Positanóba",
+      "title": "Érkezés a positanói kompmólóhoz",
+      "body": "A kompja a Spiaggia Grande mólónál köt ki, közvetlenül Positano fő strandján. A móló kicsi – csak egyetlen faszerkezetű sétány – ezért várja meg, amíg mindenki lemegy, mielőtt csomagjával mozogna. A fényes mellényű hordárok minden kompot várnak, és felajánlják, hogy a csomagokat szállodákig viszik €15-€25-ért a távolságtól függően. A Hostel Brikette esetében a hordárok elvihetik Önt Chiesa Nuová-ba (a felső buszmegálló), de ez sok pénz erre a rövid sétára. A legtöbb hostel vendég kihagyja ezt, és inkább az Interno buszt használja.",
       "list": [
-        "Szálljon le a Positano Spiaggia Grande mólón.",
-        "A hordárok fogadják a kompokat; fontolja meg, hogy rájuk bízza a csomagokat, és előre egyeztessen díjat.",
-        "Készüljön lépcsőzésre a partról felfelé; a helyi Interno busz segít csökkenteni a hostelhez vezető lépcsőket."
+        "Lépjen ki a mólóról a Via del Brigantino-ra (a strand út)",
+        "A mosdók és kávézók a strand mentén vannak a bal oldalon",
+        "Az %LINK:ferryDockToBrikette|Interno buszmegálló% 3 perc séta hegynek felfelé a mólótól",
+        "Ha inkább gyalog megy végig: 25 perc hegynek felfelé a hostelez lépcsőkkel. Könnyű könnyű hátizsákkal, nehéz nagy bőrönddel."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-positano-ferry/02-positano-from-sea.webp",
+          "alt": "Positano partszakaszának kilátása a Capriból érkező kompról",
+          "caption": "Positanóhoz közeledve komppal Capriból - a színes falu leomlik a tengerhez. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Positano_Sea.JPG|JeCCo% (%URL:https://creativecommons.org/licenses/by/4.0|CC BY 4.0%)."
+        },
+        {
+          "src": "/img/guides/capri-positano-ferry/04-view-positano.webp",
+          "alt": "Positano panoráma kilátása a vízről, Spiaggia Grande strandot és mólót mutatva",
+          "caption": "Positano Spiaggia Grande strandja, ahol a Capriból érkező kompok kikötnek. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:View_of_Positano.jpg|Alexis Lours% (%URL:https://creativecommons.org/licenses/by/4.0|CC BY 4.0%)."
+        }
       ]
     },
     {
       "id": "bus",
-      "title": "Kikötőtől a hostelhez Interno busszal",
-      "body": "A mólótól a Hostel Brikette-ig vezető, csomagbarát útvonalért nézze meg: <link>Komp móló → Hostel Brikette</link>.",
+      "title": "Kikötőtől a hosteléig Interno busszal",
+      "body": "A narancssárga Interno busz a legegyszerűbb módja annak, hogy csomaggal feljusson a Hostel Brikette-hez. 20-30 percenként végigkörözik Positanón. A viteldíj €1,30 (a pontos aprópénz jó, de a sofőröknek általában van aprójuk kis címletekhez). A mólótól rövid séta a legközelebbi megállóhoz a Piazza dei Mulini-n. Szálljon fel a hegynek felfelé menő buszra (irány: Chiesa Nuova), és utazzon körülbelül 8 percig. A hostel 2 perc sétára van a Chiesa Nuova Tabacchi megállótól.",
       "list": [
-        "Az Interno Positano busz nagyjából 30 percenként közlekedik reggeltől éjfélig.",
-        "Keresse a busz elején az „Interno Positano” feliratú elektronikus kijelzőt.",
-        "A kikötőtől sétáljon a Piazza dei Mulini térre, és szálljon fel a Chiesa Nuova felé tartó hegynek felfelé induló járatra."
+        "Sétáljon hegynek felfelé a kompmólótól a Piazza dei Mulini-ig (3 perc, enyhe lejtő)",
+        "Várjon a piazza hegynek felfelé menő oldalán. A busz elején 'Chiesa Nuova' felirat lesz.",
+        "Vásároljon jegyeket a tabacchi-nál (dohánybolt) a piazzán, vagy fizesse meg a sofőrnek (€1,30)",
+        "Mondja a sofőrnek 'Chiesa Nuova Tabacchi'-t, ha nem biztos benne, hol szálljon le",
+        "Teljes útvonalútmutató: %LINK:ferryDockToBrikette|Kompmólótól a Hostel Brikette-ig csomaggal%"
       ]
     },
     {
       "id": "finalWalk",
-      "title": "Az utolsó séta a legközelebbi megállótól",
+      "title": "Chiesa Nuova Tabacchi-tól a Hostel Brikette-ig",
+      "body": "A buszmegállótól a hosteléig tartó séta könnyű, és körülbelül 2 percet vesz igénybe. A megállótól látni fogja a Tabacchi boltot (dohánybolt) a sarkon. Ez a jelzőpont. A hostel éppen feljebb van az úton a Via G. Marconi-n, lépcsőkkel a bejárathoz vezetve.",
       "list": [
-        "Szálljon le a Tabacchi melletti megállónál, a Chiesa Nuova közelében.",
-        "Forduljon jobbra a főút felé, majd balra a Via G. Marconi irányába.",
-        "Sétáljon valamivel több mint 100 métert (≈330 láb) – a hostel a jobb oldalon lesz.",
-        "Forduljon jobbra, és kövesse a lépcsőket a Hostel Brikette főbejáratáig."
+        "Szálljon le a buszról a Chiesa Nuova Tabacchi megállónál",
+        "Nézzen a Tabacchi bolt felé, majd forduljon jobbra a főútra (Via G. Marconi)",
+        "Sétáljon 100 métert (körülbelül 1 perc). Néhány boltot és kávézót fog elhaladni.",
+        "Keresse a Hostel Brikette tábláját a jobb oldalon",
+        "Másszon fel a lépcsőkön, hogy elérje a főbejáratot és a recepciót"
       ]
     },
     {
       "id": "cancelled",
-      "title": "Ha törlik a kompokat",
-      "body": "Ha az időjárás vagy a tengeri viszonyok miatt törlik a járatokat, váltson a Sorrentón keresztül haladó vonat- és buszútvonalra. Hosszabb, de a legtöbb helyzetben közlekedik. Használja ezt a tartalékútvonalat: <link>Nápoly belváros → Positano vonattal, majd busszal</link>."
-    }
-  ],
-  "galleries": [
+      "title": "Ha a kompokat lemondják",
+      "body": "A komp lemondások gyakrabban előfordulnak, mint gondolná, különösen délután, amikor a szél felerősödik. Az üzemeltetők általában 30-60 perccel az indulás előtt bejelentik a lemondásokat, de néha csak a mólónál tudja meg. Ha a kompját lemondják, két lehetősége van: várjon a következő hajóra (ha aznap még közlekedik valamelyik) vagy vegye a hosszabb szárazföldi útvonalat Sorrentón keresztül. A szárazföldi útvonal Capriból Sorrentóba tartó kompot használ (ezek durvább körülmények között is közlekednek), majd a SITA buszt a parti út mentén.",
+      "list": [
+        "Ellenőrizze az összes üzemeltetőt a Marina Grande-ban. Néha az egyik társaság még közlekedik, amikor mások lemondanak.",
+        "Alternatíva: Vegye a Capri-Sorrento kompot (30 perc), majd a SITA buszt Positanóba (50 perc)",
+        "Teljes szárazföldi útvonal idő: Körülbelül 2,5 óra várakozásokkal együtt",
+        "Sorrento komp info: %LINK:positanoCapriFerry|Komp menetrendek%",
+        "A hostelből: Azt javasoljuk, hogy legkésőbb 17:00-kor foglalja le a Capriból való visszautazását, hogy elkerülje az esti lemondásokat"
+      ]
+    },
     {
-      "items": [
-        {
-          "src": "/img/directions/capri-positano-interno-yellow.jpg",
-          "aspectRatio": "4/3",
-          "preset": "gallery"
-        },
-        {
-          "src": "/img/directions/capri-positano-interno-red.jpg",
-          "aspectRatio": "4/3",
-          "preset": "gallery"
-        },
-        {
-          "src": "/img/directions/capri-positano-tabacchi.png",
-          "aspectRatio": "4/3",
-          "preset": "gallery"
-        }
+      "id": "tips",
+      "title": "Hostel vendég tippek",
+      "body": "Több száz vendég visszajelzése alapján, akik ezt az utat Capriból visszavitték Positanóba, íme, mi működik a legjobban:",
+      "list": [
+        "Foglaljon reggeli indulást Capriból 14:00 előtt. Délután a tenger durvább lesz, és a kompok gyakrabban mondódnak le.",
+        "Hozzon könnyű kabátot. A hidrosiklók erős légkondicionálással rendelkeznek, és hidegnek érzi magát egy forró capri nap után.",
+        "Üljön a hajó jobb oldalára a Positano színes házainak legjobb kilátásaiért, ahogy megérkezik.",
+        "Ha könnyen tengerbeteg lesz, vegye be a gyógyszert 30 perccel a beszállás előtt. Az átkelés hullámzó lehet.",
+        "Tartsa meg a kompjegyét, amíg teljesen el nem hagyja a mólót. A személyzet néha újra ellenőrzi a jegyeket Positanóban.",
+        "Ne aggódjon az utolsó komp lemaradása miatt. A Sorrentón keresztüli szárazföldi útvonal késő estig közlekedik."
+      ]
+    },
+    {
+      "id": "dayTrip",
+      "title": "Kombináció egy napos capri kirándulással",
+      "body": "A legtöbb hostel vendég Caprit napos kirándulásként látogatja meg, és késő délután térnek vissza komppal. Ez egy nagyszerű terv, de némi időzítési stratégiát igényel a tömeg és a lemondások elkerülése érdekében. Induljon korán Positanóból (körülbelül 09:00) a reggeli komppal Capri felé, töltsön 5-6 órát a sziget felfedezésével, majd fogjon egy visszakomp körülbelül 15:00-16:00 körül. Ez időt ad arra, hogy lássa a fő látványosságokat – Anacapri, Villa San Michele, Monte Solaro libegő és a Piazzetta Capri városban – sietés nélkül.",
+      "list": [
+        "Reggeli komp Positanóból Capri felé: Általában 09:00-10:00 között indul",
+        "Caprin: Vegye a buszt a Marina Grande kikötőből Anacapri-be (15 perc utazás)",
+        "Látogasson el: Villa San Michele (€10 belépő), Monte Solaro libegő (€10 egyirányú, €14 oda-vissza)",
+        "Ebéd Anacapri-ben vagy Capri városban (költségvetés €15-€25 személyenként)",
+        "Fedezzen fel: Jardins d'Auguste, Via Krupp kilátópont, vásárlás Capri városban",
+        "Térjen vissza a Marina Grande-ba 15:30-ra a 16:00-as kompjához Positanóba",
+        "Teljes napos kirándulás költsége: €50-€70 személyenként a kompokkal, busszal, libegővel és ebéddel együtt",
+        "Kapcsolódó: %LINK:capriDayTrip|Teljes Capri napos kirándulás útmutató Positanóból%"
       ]
     }
   ],
   "faqs": [
     {
-      "question": "How much does the Capri to Positano ferry cost?",
-      "answer": "Ferry tickets cost between €22-€35 per person for a one-way trip in 2026. Prices vary slightly by operator and season – expect to pay closer to €30-€35 during July and August peak season. There are no advance purchase discounts, but booking online guarantees you a spot on busy days."
+      "question": "Mennyibe kerül a Capriból Positanóba tartó komp?",
+      "answer": "A kompjegyek €22-€35 között kerülnek személyenként egy egyirányú útra 2026-ban. Az árak az üzemeltető és a szezon szerint kissé változnak – számítson arra, hogy €30-€35 körül fizet a júliusi-augusztusi csúcsidőszakban. Nincsenek előzetes vásárlási kedvezmények, de az online foglalás garantálja a helyet zsúfolt napokon."
     },
     {
-      "question": "Can I bring luggage on the Capri-Positano ferry?",
-      "answer": "Yes, you can bring luggage at no extra charge. Backpacks, suitcases, and large bags are all allowed. Store them in the designated luggage area near the entrance or under your seat. Most ferries have limited overhead storage, so keep valuables with you. From the hostel's experience, a full backpack fits comfortably under the seats on all operators."
+      "question": "Vihetek csomagot a Capri-Positano kompra?",
+      "answer": "Igen, extra díj nélkül vihet csomagot. Hátizsákok, bőröndök és nagy táskák mind megengedettek. Tárolja őket a kijelölt csomagtárolóban a bejárat közelében vagy az ülése alatt. A legtöbb kompnak korlátozott felső tárolója van, ezért tartsa értékeit magánál. A hostel tapasztalata szerint egy teli hátizsák kényelmesen elfér minden üzemeltető ülései alatt."
     },
     {
-      "question": "What happens if my ferry from Capri is cancelled?",
-      "answer": "Ferry cancellations are common in afternoon rough weather. If cancelled, check with all operators at Marina Grande – sometimes one still runs. Otherwise, take the Capri-Sorrento ferry (runs in rougher conditions) then the SITA bus from Sorrento to Positano. Total journey: about 2.5 hours. Your ticket can usually be refunded or used on the next available sailing."
+      "question": "Mi történik, ha a Capriból induló kompom lemondódik?",
+      "answer": "A komp lemondások gyakoriak délutáni viharos időben. Ha lemondják, ellenőrizze az összes üzemeltetőt a Marina Grande-ban – néha az egyik még közlekedik. Egyébként vegye a Capri-Sorrento kompot (durvább körülmények között is közlekedik), majd a SITA buszt Sorrentóból Positanóba. Teljes út: körülbelül 2,5 óra. A jegye általában visszatéríthető vagy a következő elérhető járaton használható."
     },
     {
-      "question": "Do I need to book the Capri to Positano ferry in advance?",
-      "answer": "It depends on the season. In July and August, morning and early afternoon departures sell out quickly – book online 1-2 days ahead. In shoulder season (April-June, September-October), you can usually buy tickets at the port 30 minutes before departure. From the hostel, we have seen guests miss their preferred crossing in peak season, so advance booking is worth it if you have a tight schedule."
+      "question": "Előre kell-e foglalnom a Capri-Positano kompot?",
+      "answer": "A szezontól függ. Júliusban és augusztusban a reggeli és kora délutáni indulások gyorsan elkelnek – foglaljon online 1-2 nappal előre. A vállszezonban (április-június, szeptember-október) általában vehet jegyeket a kikötőben 30 perccel az indulás előtt. A hostelből láttuk, hogy a vendégek lemaradtak a preferált átkelésről a csúcsidőszakban, ezért az előzetes foglalás megéri, ha szoros az időbeosztása."
     }
-  ],
-  "lastUpdated": "2026-01-31"
+  ]
 }

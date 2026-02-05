@@ -1,28 +1,32 @@
 {
   "seo": {
-    "title": "Dagstur till Capri från Positano",
-    "description": "Så planerar du en dagstur till Capri: färjor, tidsplan och områden att besöka."
+    "title": "Capri dagstur från Positano: Budgetguide och färjetips",
+    "description": "Planera din budgetvänliga Capri dagstur från Positano. Färjetider, gratis utsiktspunkter, billig mat och en realistisk resplan från hostel-personalen."
   },
-  "linkLabel": "Dagstur till Capri från Positano",
+  "linkLabel": "Capri dagstur: Ö-flykt från Positano",
   "intro": [
-    "Capri på en dag från Positano: starta tidigt, packa lätt och följ en loop som balanserar Anacapri-vyer med en smidig hemresa."
+    "Du kan se Capris höjdpunkter på en dag från Positano utan att spräcka din budget. Ta en tidig färja (omkring €20–25 per sträcka), besök de gratis utsiktspunkterna, köp billig gatumat och var tillbaka för solnedgångsdrinkar på hostellet. De flesta gästerna gör denna resa mitt i veckan för att undvika helgernas kryssningsfartygs-trängsel—det är en av de bästa %LINK:dayTripsAmalfi|dagsturerna från Amalfikusten%—här är rutten som fungerar."
   ],
   "toc": [
     {
       "href": "#morning",
-      "label": "Förmiddag — ankomst & Anacapri"
+      "label": "Morgon — ankomst och Anacapri"
     },
     {
       "href": "#midday",
-      "label": "Mitt på dagen — Marina Piccola-slinga"
+      "label": "Middag — Marina Piccola loop"
     },
     {
       "href": "#afternoon",
-      "label": "Eftermiddag — Capri stad & retur"
+      "label": "Eftermiddag — Capri stad och retur"
     },
     {
-      "href": "#gallery",
-      "label": "Fotogalleri"
+      "href": "#budget",
+      "label": "Budgetuppdelning"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Ta sig till och från Capri"
     },
     {
       "href": "#faqs",
@@ -32,82 +36,152 @@
   "sections": [
     {
       "id": "morning",
-      "title": "Förmiddag — ankomst & Anacapri",
+      "title": "Morning — arrival & Anacapri",
       "body": [
-        "Ta första färjan så du kommer före kryssningsgästerna, ta sedan bussen upp till Anacapri och åk linbanan till Monte Solaro om du gillar höjd.",
-        "Ät en enkel frukost på Piazza Vittoria och köp returbiljetten direkt för att säkra hemresan."
+        "Why start early? The first ferry from Positano (usually around 08:20–09:00, check %HOWTO:positano-capri-ferry|current Positano→Capri ferry times%) gets you to Capri before the cruise ship crowds flood the island around 10:30. You'll have clearer photos, shorter bus queues, and cooler temps for walking. During peak season, ferry schedules can change, so always check the %LINK:ferrySchedules|latest ferry schedules% the day before you go.",
+        "From the pier to Anacapri: Exit Marina Grande and turn right to the bus stop (look for Anacapri signs). The bus is about €2 each way—buy tickets at the kiosk near the funicular or on board with exact change. The ride up takes 15–20 minutes with hairpin bends and sea views.",
+        "Monte Solaro chairlift: If you're okay with heights, the chairlift (€12–14 one-way, €16–18 return) takes you 589m above sea level. The ride is slow and exposed—you're dangling in an open seat—but the 360° panorama at the top is free to enjoy. Skip it if you're afraid of heights or short on cash; the views from Piazza Vittoria are still great.",
+        "Breakfast in Anacapri: Grab a cornetto and espresso (€3–4 total) at a bar on Piazza Vittoria. Don't sit down for a long breakfast—you'll want that time for exploring. Save your appetite for a cheap picnic lunch later.",
+        "Buy your return ferry ticket now: As soon as you arrive, go to the ferry office at Marina Grande and book your return (usually 16:30–18:00 departures work well). In July/August, boats can sell out by midday, and you don't want to be stranded or forced onto an expensive private transfer."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-day-trip/capri-ferry-positano-marina.jpg",
+          "alt": "Passengers boarding early morning ferry from Positano to Capri at Marina Grande pier"
+        },
+        {
+          "src": "/img/guides/capri-day-trip/anacapri-piazza-vittoria.jpg",
+          "alt": "Anacapri Piazza Vittoria with local cafes and bus stop signage for budget travelers"
+        },
+        {
+          "src": "/img/guides/capri-day-trip/monte-solaro-chairlift-view.jpg",
+          "alt": "Open chairlift ascending Monte Solaro mountain with panoramic Capri coastline view"
+        }
       ]
     },
     {
       "id": "midday",
-      "title": "Mitt på dagen — Marina Piccola-slinga",
+      "title": "Midday — Marina Piccola loop",
       "body": [
-        "Gå eller ta bussen ner mot Marina Piccola för bad eller fotostopp; ta med revsäker solkräm och minst 1 liter vatten per person.",
-        "Köp panini eller salladslådor från en deli i stället för långa luncher så att du hinner tillbaka upp utan stress."
+        "Marina Piccola beach route: From Anacapri, you can walk or bus down towards Marina Piccola (the southern beach). The walk is about 30–40 minutes downhill—nice views, but remember you'll need to climb back up or catch a bus (€2). Most budget travelers skip the paid beach clubs (€15–25 for a sunbed) and just swim from the free rocky areas.",
+        "What to bring: At least 1 liter of water per person (refill at public fountains if you spot them), reef-safe sunscreen, and a small towel. Capri has very few free toilets—some cafes charge €1–2, so plan ahead or buy a drink to use their facilities.",
+        "Cheap lunch options: Skip the sit-down restaurants (€15–30 per person). Instead, grab a panino or focaccia (€4–6) from a deli or supermarket. There's a small Conad supermarket in Anacapri where you can stock up on snacks, fruit, and water for half the price of tourist kiosks.",
+        "The Blue Grotto debate: Tickets are €14–18 per person, but you'll wait 60–90 minutes in peak season, and it only takes 5 minutes inside the cave. We've had guests who loved it and guests who felt it was a tourist trap. If it's your dream, go early (before 10:00) or skip Anacapri entirely and focus on the grotto. Don't try to fit both in one day—you'll be rushing.",
+        "For swimmers: The water is crystal clear but cold (18–22°C even in summer). If you're used to warm tropical water, bring a rash guard or wetsuit top. The rocks can be slippery and sharp—water shoes help."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-day-trip/marina-piccola-free-beach.jpg",
+          "alt": "Marina Piccola free rocky beach area on Capri with swimmers and Faraglioni rocks in background"
+        },
+        {
+          "src": "/img/guides/capri-day-trip/budget-picnic-lunch.jpg",
+          "alt": "Backpacker enjoying budget picnic lunch with panini and water bottle on Capri cliff viewpoint"
+        }
       ]
     },
     {
       "id": "afternoon",
-      "title": "Eftermiddag — Capri stad & retur",
+      "title": "Afternoon — Capri town & return",
       "body": [
-        "Ta bergbanan till Capri stad för Via Camerelle, Giardini di Augusto och en sista gelato eller espresso.",
-        "Var vid Marina Grande minst 30 minuter innan avgång ifall det är kö till bergbanan eller bagageinlämningen."
+        "Head to Capri town: From Marina Piccola or Anacapri, take the bus back to Marina Grande, then ride the funicular up to Capri town (Piazzetta). The funicular is €2 each way and runs every 15 minutes. It's a steep, 2-minute ride with views over the port.",
+        "What to see in Capri town: Walk through the famous Piazzetta (the tiny main square—overpriced cafes, but free to people-watch). Then head to Via Camerelle for window shopping (mostly luxury brands). If you have 20 minutes, walk to Giardini di Augusto (€1–2 entry)—great lookout over the Faraglioni rocks.",
+        "Via Krupp note: The scenic footpath from the gardens down to Marina Piccola (Via Krupp) is often closed due to rockfall. Check locally before planning to walk it. If it's open, it's a beautiful 10-minute descent, but you'll need to climb back up or take a boat.",
+        "Gelato and espresso: Budget for €3–5 for a cone or cup—Capri prices are inflated, but it's a nice way to cool down before your ferry. Avoid the Piazzetta cafes (€8 for an espresso). Walk one street back for normal prices.",
+        "Getting back to Marina Grande: Leave Capri town at least 45 minutes before your ferry departure. The funicular gets packed after 16:00 when day-trippers are all heading back. If you miss your scheduled ferry, you might get standby on the next one (€20–30), but it's stressful—don't risk it.",
+        "What we tell hostel guests: Most people feel rushed trying to do Anacapri, Marina Piccola, the Blue Grotto, and Capri town in one day. Pick two or three highlights, move at a relaxed pace, and save energy for swimming back in Positano when you get back. You're on holiday—don't sprint."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-day-trip/capri-town-funicular.jpg",
+          "alt": "Funicular railway connecting Marina Grande to Capri town center Piazzetta"
+        },
+        {
+          "src": "/img/guides/capri-day-trip/giardini-augusto-viewpoint.jpg",
+          "alt": "Giardini di Augusto gardens overlooking Faraglioni rocks and Via Krupp footpath on Capri"
+        }
+      ]
+    },
+    {
+      "id": "budget",
+      "title": "Budget breakdown: what Capri actually costs",
+      "body": [
+        "Here's what hostel guests typically spend for a day trip to Capri from Positano:",
+        "Ferry: €20–25 each way (€40–50 total return). Book direct at the pier or online—prices are usually the same, but online guarantees your seat in peak season.",
+        "Local transport on Capri: €6–10 total (funicular + buses around the island). Buy single tickets as you go—there's no day pass for tourists.",
+        "Chairlift (optional): €16–18 return to Monte Solaro. Worth it if you love views and heights. Skip it if you're on a tight budget—the free views from Piazza Vittoria are still stunning.",
+        "Blue Grotto (optional): €14–18 entry. Factor in 60–90 minutes of waiting in peak season. Many budget travelers skip it.",
+        "What we tell hostel guests: Most people feel rushed trying to do Anacapri, Marina Piccola, the Blue Grotto, and Capri town in one day. Pick two or three highlights, move at a relaxed pace, and save energy for swimming back in Positano when you get back. You're on holiday—don't sprint.",
+        "Total realistic budget: €70–90 per person for a basic day (ferry, transport, cheap lunch). Add €30–50 if you do the chairlift and Blue Grotto.",
+        "Insider tip from staff: Fill your water bottle at the hostel before you leave. Capri charges €3–4 for a 500ml bottle at tourist kiosks. We've seen guests save €10–15 just by bringing their own water and snacks."
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "Getting to and from Capri",
+      "body": [
+        "Use the %HOWTO:positano-capri-ferry|Positano → Capri ferry guide% for the outbound crossing and the %HOWTO:capri-positano-ferry|Capri → Positano ferry guide% on your return."
       ]
     }
   ],
-  "galleryTitle": "Fotogalleri",
-  "gallery": {
-    "items": {
-      "monteSolaro": {
-        "alt": "Utsikt från Monte Solaro, Capri",
-        "caption": "Vy från Monte Solaro"
-      },
-      "gardensOfAugustus": {
-        "alt": "Giardini di Augusto, Capri",
-        "caption": "Giardini di Augusto"
-      }
-    }
-  },
   "faqsTitle": "Vanliga frågor",
   "howTo": {
     "steps": [
       {
-        "name": "Kolla säsongsfärjor",
-        "text": "Bekräfta morgonavgångar och sista returer till Positano."
+        "name": "Check seasonal ferries",
+        "text": "Confirm morning departures and last returns to Positano."
       },
       {
-        "name": "Var i god tid vid kajen",
-        "text": "Ställ dig i kö 20–30 minuter före avgång under högsäsong."
+        "name": "Arrive early at the pier",
+        "text": "Queue 20–30 minutes before departure in peak season."
       },
       {
-        "name": "Planera rutten på Capri",
-        "text": "Prioritera Anacapri eller Marina Grande + utsiktspunkter beroende på tid."
+        "name": "Plan your route on Capri",
+        "text": "Prioritise Anacapri or Marina Grande + viewpoints depending on time."
       }
     ]
   },
   "tipsTitle": "Tips för dagen",
   "tips": [
-    "Köp tur- och returbiljetter samtidigt så du kan justera rutten utan att jaga platser senare.",
-    "Ta en liten dagryggsäck med vatten, solskydd och kontanter — bankomaterna på Capri kan ta slut under intensiva veckor.",
-    "Ladda ner offlinekartor för Capri och busstidtabeller; täckningen försvinner vid Anacapri och kön till Blå grottan."
+    "Buy outbound and return ferry tickets together so you can adjust your route without scrambling for seats later in the day.",
+    "Carry a small daypack with water, sunscreen, and cash — ATMs on Capri can run dry during peak weeks.",
+    "Download offline maps for Capri and bus timetables; signal drops around Anacapri and the Blue Grotto queue."
   ],
-  "warningsTitle": "Viktigt att veta",
+  "warningsTitle": "Viktiga varningar",
   "warnings": [
-    "Köerna till linbanan och bergbanan ökar efter 15.00; missar du ditt tidsfönster riskerar du att få stå på väntlista till färjan.",
-    "Grov sjö kan ställa in sena avgångar utan förvarning — kolla morgonrapporter och ha en Sorrento-anslutning som backup.",
-    "Blå grottan stänger ofta vid vind eller svall; operatörer kan ändå sälja biljetter, så bekräfta att den är öppen innan du ställer dig i kö."
+    "Chairlift and funicular queues surge after 15:00; miss your slot and you risk a standby ferry return.",
+    "Rough seas can cancel late sailings without notice — check morning bulletins and have a Sorrento connection as backup.",
+    "Blue Grotto closures are common in wind or swell; operators may still sell tickets, so confirm it is operating before you join the line."
   ],
   "faqs": [
     {
-      "q": "Kan jag hinna med Blå grottan?",
+      "q": "Can I include the Blue Grotto?",
       "a": [
-        "Endast om det är prio — räkna med skyttelbåt och 60–90 minuters väntan, vilket tränger undan resten av schemat."
+        "Only if it's your top priority. Expect a shuttle boat ride and 60–90 minutes of waiting (longer in July/August), which squeezes the rest of your itinerary. The cave visit itself is about 5 minutes. Many budget travelers skip it and spend that time exploring free viewpoints and swimming instead."
       ]
     },
     {
-      "q": "Behöver jag förköpa biljetter?",
+      "q": "Do I need to prebook ferry tickets?",
       "a": [
-        "Första färjan räcker oftast, men boka returen om du reser i högsäsong. Attraktioner som Monte Solaro-linbanan säljer biljetter på plats."
+        "In high season (July–August), yes—morning ferries from Positano can sell out by the day before. In shoulder season (April–June, September–October), you can usually buy tickets on the day at the pier, but booking online the night before gives you peace of mind. Always book your return ferry as soon as you arrive on Capri to lock in your departure time."
+      ]
+    },
+    {
+      "q": "Is Capri worth it on a backpacker budget?",
+      "a": [
+        "Yes, if you're realistic about costs. The ferry is the big expense (€40–50 return), but once you're there, you can keep it cheap: free beaches, free viewpoints, picnic lunch from a supermarket, and public transport. Skip the Blue Grotto and chairlift if you're tight on cash. Many hostel guests say it's their favorite day trip from Positano because the island is so different from the mainland—just don't expect bargains on food and drink."
+      ]
+    },
+    {
+      "q": "What if the ferry is cancelled?",
+      "a": [
+        "Rough seas can cancel sailings, especially in shoulder season and winter. Check the weather forecast and morning bulletins at the pier. If your return ferry is cancelled, you'll need to either wait for the next available boat (usually the next day) or take a ferry to Sorrento and then a bus/train back to Positano. We recommend having €50–80 extra as a backup in case you get stranded—it's rare, but it happens."
+      ]
+    },
+    {
+      "q": "Can I do Capri and Pompeii in one day?",
+      "a": [
+        "No, don't try. Each deserves a full day. Capri requires early morning ferry + full day on the island. %LINK:positanoPompeii|Pompeii from Positano% is a separate full-day trip via train/bus. Trying to combine them means you'll spend most of the day on transport and see very little of either. We've had guests attempt it and regret it—pick one per day."
       ]
     }
   ]

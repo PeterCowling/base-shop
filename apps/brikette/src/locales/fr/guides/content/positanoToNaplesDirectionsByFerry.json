@@ -1,88 +1,126 @@
 {
   "seo": {
     "title": "Positano → Naples en ferry | Hostel Brikette",
-    "description": "Itinéraire clair et imprimable depuis l'Hostel Brikette jusqu'au port de Positano puis vers Naples en ferry, avec conseils billets et arrivée."
+    "description": "Ferry de Positano à Naples : marche jusqu'au port, billets (€18-25), embarquement et arrivée au port de Naples avec correspondances vers Napoli Centrale. Saisonnier avril-octobre."
   },
+  "lastUpdated": "2025-01-15",
   "intro": {
-    "title": "Positano → Naples – Trajet en ferry",
-    "body": "Étapes détaillées pour descendre de l'Hostel Brikette au port de Positano, acheter vos billets de ferry et poursuivre vers Naples, avec des remarques saisonnières et des conseils d'arrivée pour Napoli Centrale."
+    "title": "Positano → Naples – Itinéraire en ferry",
+    "body": "Voyagez de Positano au centre de Naples entièrement par la mer. Cet itinéraire commence par une marche de votre hébergement jusqu'au quai de ferry de Positano à Spiaggia Grande, puis une traversée panoramique de 70-90 minutes vers Naples, et un court transfert final du port à la gare Napoli Centrale. Idéal pour : les voyageurs qui souhaitent éviter la route côtière sinueuse et profiter des vues sur la mer. Pas idéal pour : les visites hivernales (service limité novembre-mars), toute personne mal à l'aise avec les escaliers descendants (plus de 200 marches jusqu'au quai), ou ceux ayant des horaires très serrés (les annulations de ferry arrivent fréquemment). Le temps de trajet total est généralement de 2 à 3,5 heures porte à porte, incluant la marche jusqu'au port et le transfert port-gare à Naples. Comptez €18-25 pour le ferry plus €1-2 pour le tram ou €10-15 pour un taxi à Naples. Ce guide couvre la marche du village supérieur au port de Positano, l'achat de billets de ferry, l'embarquement, la traversée et l'arrivée à Naples avec les correspondances suivantes."
   },
-  "sections": [
-    {
-      "id": "arrival",
-      "title": "À l'arrivée à Naples"
-    },
-    {
-      "id": "journeyOverview",
-      "title": "Aperçu du trajet"
-    },
-    {
-      "id": "photoGuide",
-      "title": "Guide photo (référence)"
-    },
-    {
-      "id": "tickets",
-      "title": "Acheter ses billets et embarquer"
-    },
-    {
-      "id": "walkToPort",
-      "title": "Descendre jusqu'au port de Positano"
-    }
-  ],
   "galleries": [
     {
       "items": [
         {
           "src": "/img/directions/positano-capri-ferry-img01.png",
+          "alt": "Image de l’étape de l’itinéraire 1",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img02.jpg",
+          "alt": "Image de l’étape de l’itinéraire 2",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img03.jpg",
+          "alt": "Image de l’étape de l’itinéraire 3",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img04.png",
+          "alt": "Image de l’étape de l’itinéraire 4",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img05.jpg",
+          "alt": "Image de l’étape de l’itinéraire 5",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img06.jpg",
+          "alt": "Image de l’étape de l’itinéraire 6",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img07.jpg",
+          "alt": "Image de l’étape de l’itinéraire 7",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img08.jpg",
+          "alt": "Image de l’étape de l’itinéraire 8",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img09.jpg",
+          "alt": "Image de l’étape de l’itinéraire 9",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img10.jpg",
+          "alt": "Image de l’étape de l’itinéraire 10",
           "aspectRatio": "4/3",
           "preset": "gallery"
         }
       ]
     }
-  ]
+  ],
+  "sections": [
+    {
+      "id": "journeyOverview",
+      "title": "Aperçu du trajet",
+      "body": "La ligne de ferry Positano-Naples fonctionne de façon saisonnière, avec le service le plus fréquent d'avril à octobre. Pendant les mois d'été de pointe (juin-septembre), vous trouverez généralement 3 à 6 départs par jour, tandis que la mi-saison (avril, mai, octobre) offre habituellement 1 à 3 traversées quotidiennes. Le service hivernal (novembre-mars) est extrêmement limité ou inexistant.\n\n**Chronologie type :**\n- Marche du village supérieur (Chiesa Nuova/Montepertuso) jusqu'au port : 20-30 minutes\n- Marche du centre de Positano jusqu'au port : 10-15 minutes\n- Arrivée au port et achat des billets : 15-20 minutes avant le départ\n- Traversée en ferry : 70-90 minutes (les hydroptères sont plus rapides, les ferries traditionnels plus lents)\n- Débarquement à Naples et transfert vers Napoli Centrale : 15-25 minutes en tramway, 10-15 minutes en taxi\n- Total porte à porte depuis le village supérieur : 2,5-3,5 heures\n- Total depuis le centre de Positano : 2-3 heures\n\n**Pour qui cet itinéraire convient :** Voyageurs quittant Positano qui souhaitent un itinéraire panoramique et direct vers Naples sans gérer les bus bondés. Idéal si vous aimez être sur l'eau et êtes à l'aise avec la marche en descente raide jusqu'au port (beaucoup plus facile que de monter !).\n\n**Qui devrait envisager des alternatives :** Toute personne voyageant en hiver, celles mal à l'aise avec les escaliers (même en descendant, plus de 200 marches peuvent être difficiles avec des bagages), les voyageurs avec un horaire très serré (les retards et annulations de ferry sont courants), ou toute personne sujette au mal de mer. Le %HOWTO:positano-sorrento-bus|bus via Sorrente% fonctionne toute l'année et coûte moins cher.\n\n**Météo et annulations :** Les services de ferry dépendent des conditions météorologiques. Même en été, une mer agitée ou des vents forts peuvent entraîner des annulations de dernière minute, généralement annoncées le matin du départ. Vérifiez toujours auprès de votre compagnie de ferry avant de descendre au port. Si les ferries sont annulés, vous devrez remonter et prendre l'itinéraire en bus à la place. D'après notre expérience, les annulations sont plus fréquentes fin automne (octobre-novembre) et début printemps (mars-avril) lorsque les changements météo soudains sont fréquents. Si les prévisions montrent des vitesses de vent supérieures à 25-30 nœuds ou des hauteurs de vagues significatives, attendez-vous à une forte probabilité d'annulation. Appelez la compagnie de ferry ou consultez leur site web la veille au soir et à nouveau le matin de votre départ."
+    },
+    {
+      "id": "photoGuide",
+      "title": "Guide photo (référence)",
+      "body": "La galerie ci-dessous montre la marche du village supérieur jusqu'au port de Positano. L'itinéraire suit la Via Cristoforo Colombo (la route côtière principale) en descente, puis descend la longue volée d'escaliers jusqu'à la plage Spiaggia Grande et au quai de ferry. Cherchez la signalisation pointant vers \"Spiaggia\" ou \"Marina\" pendant votre descente. Les escaliers sont raides mais bien entretenus, avec des mains courantes. Par une journée chaude, la marche en descente peut encore être fatigante avec des bagages, alors prenez votre temps et utilisez les mains courantes."
+    },
+    {
+      "id": "walkToPort",
+      "title": "Marche jusqu'au port de Positano",
+      "body": "Le quai de ferry de Positano est situé en bas du village sur Spiaggia Grande (la plage principale). S'y rendre nécessite de descendre plus de 200 marches raides depuis la route côtière principale.\n\n**Depuis le village supérieur (Chiesa Nuova ou Montepertuso) :**\n\nSi vous séjournez dans le village supérieur, vous devrez d'abord atteindre la route côtière principale (Via Cristoforo Colombo) et les arrêts de bus. De là, vous avez deux options :\n\n1. **Marcher en descente (gratuit, 20-30 minutes au total) :** Suivez la Via Cristoforo Colombo en descente vers le centre de Positano. En descendant, vous passerez devant des boutiques, restaurants et hôtels. Cherchez les panneaux pointant vers \"Spiaggia\" ou \"Marina Grande.\" Finalement, vous atteindrez un grand escalier (avec un dôme en céramique au sommet) descendant vers la plage. C'est l'accès principal au port. Les escaliers sont raides et étroits par endroits, avec environ 200-250 marches au total. Prenez votre temps, utilisez les mains courantes et arrêtez-vous pour vous reposer si nécessaire. En bas, vous atteindrez la promenade de la plage et le quai de ferry est droit devant.\n\n2. **Prendre un bus local partiellement (€1,30, économise ~10 minutes) :** Prenez n'importe quel bus SITA descendant vers \"Positano centro\" ou \"Spiaggia\" et descendez à l'un des arrêts inférieurs près de l'église (Chiesa di Santa Maria Assunta). De là, descendez les escaliers restants jusqu'à la plage.\n\n**Depuis le centre de Positano :**\n\nSi vous séjournez dans le centre de Positano près de la Via Cristoforo Colombo, dirigez-vous en descente vers la plage, suivant les panneaux pour \"Spiaggia\" ou \"Marina.\" La marche prend 10-15 minutes et implique de descendre l'escalier principal (plus de 200 marches) pour atteindre le niveau de la plage et le quai de ferry.\n\n**En arrivant au port :**\n\nUne fois que vous atteignez la promenade de la plage, le quai de ferry est à l'extrémité droite (est) de Spiaggia Grande. Cherchez la petite structure du quai et les kiosques de billets. Arrivez au moins 15-20 minutes avant votre départ pour acheter ou échanger des billets et faire la queue pour l'embarquement. En été, la zone du quai peut être bondée de vacanciers et de personnes se rendant à la plage, alors prévoyez du temps supplémentaire pour naviguer dans les foules."
+    },
+    {
+      "id": "tickets",
+      "title": "Acheter des billets et embarquer",
+      "body": "Plusieurs compagnies opèrent des ferries et hydroptères entre Positano et Naples. Les billets ne sont généralement pas interchangeables entre opérateurs.\n\n**Principaux opérateurs :**\n- **Alilauro** (hydroptères et ferries) — service le plus fréquent\n- **NLG (Navigazione Libera del Golfo)** — ferries traditionnels, souvent moins chers\n- **Positano Jet** — petits hydroptères, horaire limité\n\n**Prix des billets :** €18-25 par personne aller simple, selon le type de navire et la saison. Les bagages plus volumineux peuvent entraîner un petit supplément (€2-5 par sac).\n\n**Où acheter des billets :**\n\n1. **Au port le jour même** — De petits kiosques de billets sont situés près du quai. C'est l'option la plus flexible (vous pouvez vérifier les conditions météo d'abord). Arrivez 20-30 minutes en avance car les départs populaires peuvent être complets en été.\n\n2. **En ligne à l'avance** — La plupart des opérateurs vendent des billets sur leurs sites web. Vous recevrez un bon qui doit être échangé contre une carte d'embarquement au kiosque du port (ajoutez 10-15 minutes pour cela). La réservation à l'avance est recommandée pour juillet-août.\n\n**Embarquement :**\n- Attendez dans la file près de la passerelle. Le personnel vérifiera les billets et vous dirigera vers le stockage des bagages.\n- Sur les hydroptères, les places sont généralement assignées. Sur les ferries plus grands, c'est premier arrivé, premier servi.\n- La passerelle peut être étroite et bouge avec la houle — faites attention.\n- Le ferry fera probablement des arrêts à %HOWTO:amalfi-positano-ferry|Amalfi% et %HOWTO:sorrento-positano-ferry|Sorrente% avant d'atteindre Naples. Ne débarquez pas trop tôt — attendez l'annonce pour Naples.\n\n**Pendant la traversée :**\n- Le trajet dure 70-90 minutes selon le type de navire et le nombre d'arrêts.\n- La traversée peut être agitée au printemps et en automne. Si vous êtes sujet au mal de mer, asseyez-vous à l'extérieur, concentrez-vous sur l'horizon et envisagez de prendre un médicament avant l'embarquement.\n- Les installations sont basiques : petites toilettes, un snack-bar ou distributeur automatique sur les navires plus grands."
+    },
+    {
+      "id": "arrival",
+      "title": "À l'arrivée à Naples",
+      "body": "Les ferries de Positano accostent à l'un des terminaux du front de mer de Naples, généralement **Molo Beverello** ou **Calata Porta di Massa**, tous deux situés près de la Piazza Municipio. De là, vous devez vous transférer vers la gare Napoli Centrale (si vous continuez en train) ou vers votre hébergement au centre de Naples.\n\n**Débarquement :**\n- Attendez que l'équipage sécurise la passerelle et donne le signal de sortie.\n- Récupérez vos bagages de la zone de stockage.\n- Suivez la foule hors du quai et à travers la zone du terminal.\n\n**Transfert vers Napoli Centrale (gare centrale) :**\n\n**Option 1 : Tramway 1 (le moins cher, €1,10)**\nDepuis la zone du port, marchez vers la route principale et cherchez l'arrêt du Tramway 1 (lignes électriques aériennes et rails de tramway). Montez dans n'importe quel Tramway 1 en direction de \"Piazza Garibaldi\" ou \"Napoli Centrale.\" Le trajet dure environ 15-20 minutes. Validez votre billet dans la machine jaune à bord. Descendez à l'arrêt Garibaldi, qui est juste devant la gare Napoli Centrale.\n\n**Option 2 : Taxi (plus rapide, €10-15)**\nLes taxis font la queue près des sorties du port. Dites au chauffeur \"Napoli Centrale\" ou \"Stazione Centrale.\" Le trajet dure 10-15 minutes selon le trafic. Confirmez que le chauffeur démarre le compteur.\n\n**Option 3 : Marcher (gratuit, 25-30 minutes)**\nSi vous voyagez léger et voulez voir la ville, vous pouvez marcher du port à Napoli Centrale. Dirigez-vous vers le nord-est le long du front de mer, puis vers l'intérieur vers la Piazza Garibaldi. Ceci n'est recommandé que si vous êtes à l'aise pour naviguer à Naples et n'avez pas de bagages lourds.\n\n**Continuer vers l'aéroport ou d'autres destinations :**\n- **Vers l'aéroport de Naples :** De Napoli Centrale, prenez la navette Alibus (€5, 20-30 minutes). Consultez le %HOWTO:naples-airport-positano-bus|guide bus de l'aéroport de Naples à Positano% pour les détails (inversez les directions).\n- **Vers Sorrente, Pompéi ou Herculanum :** De Napoli Centrale, prenez le train Circumvesuviana (achetez les billets à la station Circumvesuviana au niveau inférieur, pas à la station principale Trenitalia).\n- **Vers Rome ou d'autres villes :** Utilisez les trains à grande vitesse Trenitalia ou Italo depuis Napoli Centrale.\n\n**Si vous restez à Naples :**\nLa zone du port est près de nombreux hôtels et attractions du centre de Naples. Le tramway, le métro et les bus relient le port à la plupart des quartiers. Demandez des directions spécifiques à votre hébergement depuis \"Molo Beverello\" ou le terminal de ferry."
+    }
+  ],
+  "faqs": [
+    {
+      "question": "Combien coûte le ferry Positano-Naples ?",
+      "answer": "Les billets coûtent €18-25 par personne aller simple, selon l'opérateur et le type de navire. Les hydroptères sont plus rapides mais légèrement plus chers que les ferries traditionnels. Les bagages plus volumineux peuvent entraîner un supplément de €2-5 par sac."
+    },
+    {
+      "question": "Puis-je prendre le ferry en hiver ?",
+      "answer": "Le service de ferry entre Positano et Naples est extrêmement limité ou inexistant de novembre à mars. Même lorsqu'il est disponible, les ferries hivernaux sont fréquemment annulés en raison de mer agitée. Pour les voyages hivernaux, utilisez plutôt l'itinéraire bus et train via Sorrente."
+    },
+    {
+      "question": "Dois-je réserver les billets de ferry à l'avance ?",
+      "answer": "La réservation à l'avance est recommandée pour juillet et août, surtout les week-ends. Pour les autres mois, vous pouvez généralement acheter des billets au port le jour du voyage. Arrivez 20-30 minutes en avance pour avoir le temps d'acheter les billets et d'embarquer."
+    },
+    {
+      "question": "Est-il difficile de descendre jusqu'au port avec des bagages ?",
+      "answer": "La marche implique de descendre plus de 200 marches raides de la route principale à la plage. Descendre est beaucoup plus facile que monter, mais cela peut encore être difficile avec des bagages lourds. Utilisez les mains courantes, prenez votre temps et envisagez de voyager léger. Il n'y a pas de porteurs ni d'itinéraires d'accès alternatifs pour la descente."
+    }
+  ],
+  "callouts": {
+    "tip": "Besoin d'autres itinéraires ou de solutions de secours en cas de mer agitée ? Consultez la %HOWTO:how-to-get-here|présentation Comment s'y rendre%.",
+    "warning": "Les ferries sont fréquemment annulés en cas de mer agitée, surtout octobre-avril. Ayez toujours un plan de secours prêt. L'%HOWTO:positano-naples-center-bus-train|itinéraire bus et train% est votre alternative la plus fiable."
+  }
 }

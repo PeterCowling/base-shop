@@ -1,82 +1,55 @@
 {
   "seo": {
     "title": "Tours en barco en Positano",
-    "description": "Excursiones privadas y grupales: qué esperar, rangos de precios y consejos de reserva en temporada."
+    "description": "Tours privados y grupales en barco: qué esperar, rangos de precios y consejos de reserva en temporada."
   },
-  "linkLabel": "Tours en barco en Positano",
+  "linkLabel": "Tours en Barco: Cruceros al Atardecer hasta Charters Privados",
   "intro": [
-    "Navegar es la forma más memorable de ver los acantilados de Positano; elige entre salidas compartidas asequibles o charters privados totalmente a medida.",
-    "Reserva con antelación en verano y confirma siempre si incluyen combustible, paradas de baño y bebidas."
+    "Los tours en barco te permiten recorrer los acantilados de la Costa Amalfitana sin enfrentarte al tráfico de la carretera; reserva con antelación en los meses pico y ten un plan alternativo para el clima."
   ],
   "sections": [
     {
-      "id": "group",
-      "title": "Tours en grupo",
+      "id": "group-tours",
+      "title": "Tours grupales y barcos compartidos",
       "body": [
-        "Barcos de 10–12 personas que siguen rutas fijas hacia Li Galli o Amalfi.",
-        "Incluyen paradas para nadar, bebidas básicas y guía a bordo; perfectos si buscas precio cerrado."
+        "Los cruceros compartidos de 3 horas salen de Positano a media mañana e incluyen paradas para nadar; espera €85–€120 por persona en julio–agosto.",
+        "Lleva zapatos de baño y una capa ligera: la brisa es más fresca en el mar que en las terrazas."
       ]
     },
     {
-      "id": "private",
+      "id": "private-charters",
       "title": "Charters privados",
       "body": [
-        "Ideales para grupos pequeños; puedes personalizar horario, puntos de baño y duración.",
-        "Pregunta por embarcaciones con ducha de agua dulce, toldo amplio y equipo de snorkel."
+        "Los patrones cobran €550–€850 por charters de medio día en gozzo (hasta 6 personas) más combustible; confirma inclusiones como prosecco o toallas.",
+        "Negocia horarios de salida al amanecer o al final de la tarde si quieres luz más suave y menos estelas de los ferris."
       ]
     },
     {
-      "id": "booking",
-      "title": "Reservas, depósitos y clima",
+      "id": "weather-backup",
+      "title": "Clima y planes alternativos",
       "body": [
-        "Pide confirmación escrita de lo que incluye el precio (combustible, aperitivos, toallas).",
-        "La mayoría solicita depósito del 30 %; revisa la política de cancelación por mal tiempo.",
-        "Si el mar está agitado, pregunta por alternativa en barco más grande o cambio a otro día."
+        "Los operadores cancelan cuando los vientos superan Fuerza 4; ten un plan de autobús o playa listo para que el día siga siendo relajado.",
+        "El mar puede estar agitado incluso en verano: empaca bandas anti-mareo si eres propenso."
       ]
     }
   ],
   "tips": [
-    "Lleva chaqueta ligera incluso en verano: al atardecer refresca sobre el agua.",
-    "Protector solar reef-safe y botella reutilizable: algunas compañías permiten rellenar a bordo.",
-    "Pregunta si puedes dejar equipaje en el hostel durante el tour para ir más ligero."
+    "Llega 20 minutos antes de la salida para liquidar el saldo y ponerte los zapatos de cubierta proporcionados.",
+    "Lleva una bolsa impermeable para teléfonos y una botella de agua de 1 L (34 oz); la sombra es limitada a bordo."
   ],
   "faqs": [
     {
-      "q": "¿Necesito experiencia previa para alquilar un bote sin patrón?",
+      "q": "¿Necesito reservar con antelación?",
       "a": [
-        "Sí, se requiere licencia náutica italiana o internacional; para la mayoría es mejor contratar patrón."
+        "Sí, en mayo–septiembre: los barcos suelen agotarse unos días antes, especialmente los horarios de atardecer."
       ]
     },
     {
-      "q": "¿Qué pasa si el tour se cancela por mal tiempo?",
+      "q": "¿Están incluidas las toallas?",
       "a": [
-        "Las empresas ofrecen reprogramación o reembolso; confirma si retienen comisión de gestión."
-      ]
-    },
-    {
-      "q": "¿Puedo llevar comida o bebidas a bordo?",
-      "a": [
-        "En tours privados suele estar permitido; pregunta por copas y nevera. En tours grupales, consulta antes para respetar las normas del operador."
+        "Los tours grupales suelen proporcionar una por persona; los patrones privados varían, así que empaca una toalla de secado rápido por seguridad."
       ]
     }
   ],
-  "galleryHeading": "Galería de fotos",
-  "toc": [
-    {
-      "href": "#group",
-      "label": "Tours en grupo"
-    },
-    {
-      "href": "#private",
-      "label": "Charters privados"
-    },
-    {
-      "href": "#booking",
-      "label": "Reservas y extras"
-    },
-    {
-      "href": "#faqs",
-      "label": "Preguntas frecuentes"
-    }
-  ]
+  "galleryHeading": "Galería de fotos"
 }

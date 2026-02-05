@@ -1,54 +1,172 @@
 {
   "seo": {
-    "title": "Bản dịch đang được chuẩn bị.",
-    "description": "Danh sách đồ theo mùa cho Positano và Amalfi Coast: giày dép, lớp áo, chống nắng và đồ bổ sung."
+    "title": "Cần chuẩn bị gì cho Bờ biển Amalfi | Hướng dẫn xếp hành lý theo mùa",
+    "description": "Danh sách đồ đầy đủ cho Positano và Bờ biển Amalfi. Quần áo theo mùa, giày dép đi cầu thang, thiết bị công nghệ, chi phí và những gì mua tại chỗ."
   },
-  "linkLabel": "What to pack for the Amalfi Coast",
+  "lastUpdated": "2025-02-04",
+  "linkLabel": "Cần chuẩn bị gì cho Bờ biển Amalfi",
   "intro": [
-    "Bản dịch đang được chuẩn bị."
+    "Cầu thang dốc đứng của Bờ biển Amalfi, thời tiết theo mùa và ánh nắng Địa Trung Hải định hình những gì bạn nên mang theo. Hướng dẫn này bao gồm các vật dụng cần thiết cho Positano và các thị trấn xung quanh, với sự thay đổi theo mùa và chi phí thực tế để mua đồ tại địa phương.",
+    "**Nguyên tắc xếp hành lý chính:** Ưu tiên giày đi bộ thoải mái (cầu thang ở khắp nơi), bảo vệ chống nắng quanh năm và quần áo nhiều lớp cho sự thay đổi nhiệt độ giữa các khu vực ven biển và sườn đồi.",
+    "**Mẹo về hành lý:** Ba lô và túi vải mềm xử lý cầu thang tốt hơn vali kéo. Nếu ở Hostel Brikette hoặc các địa điểm khác trên sườn đồi, bạn sẽ leo hơn 100 bậc thang với hành lý. Xem %LINK:checkinCheckout|hướng dẫn nhận phòng và đến nơi% để biết thêm chi tiết về cách đến nhà trọ với túi xách."
   ],
   "sections": [
     {
+      "id": "seasonal-packing",
+      "title": "Xếp hành lý theo mùa: những gì thay đổi theo mùa",
+      "body": [
+        "Bờ biển Amalfi có bốn mùa rõ rệt. Đây là những gì cần điều chỉnh cho từng mùa:",
+        "**Mùa xuân (tháng 3–5):** Mang quần áo nhiều lớp — buổi sáng có thể mát (12–15°C), buổi chiều ấm (18–22°C). Mang áo khoác mưa nhẹ; mưa tháng 4 là phổ biến. Kem chống nắng là cần thiết ngay cả vào mùa xuân.",
+        "**Mùa hè (tháng 6–9):** Nóng và khô (25–32°C). Quần áo nhẹ, thoáng khí là quan trọng. Mang mũ, kính râm và kem chống nắng SPF cao. Buổi tối vẫn ấm, nhưng mang một lớp nhẹ cho nhà hàng có điều hòa. Đây là mùa cao điểm — mong đợi đám đông và giá cao hơn.",
+        "**Mùa thu (tháng 10–11):** Tương tự mùa xuân nhưng ẩm ướt hơn. Mang giày không thấm nước và ô nhỏ gọn. Đại dương vẫn có thể bơi đến tháng 10. Nhiệt độ dao động 15–23°C.",
+        "**Mùa đông (tháng 12–2):** Ôn hòa nhưng mưa (8–15°C). Bạn sẽ cần áo khoác mưa thích hợp, quần áo ấm và giày kín ngón có độ bám tốt cho cầu thang ướt. Nhiều câu lạc bộ bãi biển đóng cửa, nhưng đi bộ đường dài vào mùa đông rất tuyệt vời."
+      ]
+    },
+    {
       "id": "footwear",
-      "title": "Footwear",
+      "title": "Giày dép (danh mục quan trọng nhất)",
       "body": [
-        "Bản dịch đang được chuẩn bị.",
-        "Bản dịch đang được chuẩn bị."
+        "Cầu thang định nghĩa Bờ biển Amalfi. Từ nhà trọ đến bãi biển, từ trạm xe buýt đến nhà hàng, mong đợi 50–200 bậc mỗi chuyến đi. Lựa chọn giày của bạn quan trọng hơn ở đây hơn hầu hết bất kỳ nơi nào khác.",
+        "**Cần thiết: Giày đi bộ có độ bám** — Giày thể thao hoặc giày đi bộ đường dài với đế tốt cho cầu thang và đường mòn ven biển. Tránh giày đế mịn hoặc giày thể thao thời trang có đế phẳng — bậc đá đánh bóng trơn trượt, đặc biệt khi ướt.",
+        "**Giày dép bãi biển** — Giày lội nước hoặc dép chắc chắn có dây (không phải dép xỏ ngón). Bãi biển ở đây thường có sỏi, và một số yêu cầu đi trên đá để vào nước. Xem %LINK:positanoBeaches|hướng dẫn bãi biển Positano% để biết chi tiết về địa hình của từng bãi biển.",
+        "**Giày buổi tối (tùy chọn)** — Nếu bạn muốn ăn mặc lịch sự cho bữa tối, mang một đôi giày đẹp hơn, nhưng đảm bảo chúng vẫn có độ bám để đi bộ về nhà trên cầu thang.",
+        "**Nên bỏ qua:** Giày cao gót (nguy hiểm trên cầu thang), dép xỏ ngón thuần túy (không thoải mái cho đi bộ dài), giày hoàn toàn mới (làm quen trước khi đến)."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/what-to-pack/landscape-architecture-aesthetic.jpeg",
+          "alt": "Bậc thang đá leo qua con hẻm hẹp của thành phố cổ với cây cối và bảng hiệu cửa hàng",
+          "caption": "Cầu thang là đặc điểm địa hình chính ở Positano — mang giày bạn tin tưởng",
+          "width": 735,
+          "height": 1105
+        }
       ]
     },
     {
-      "id": "layers",
-      "title": "Layers & sun",
+      "id": "clothing",
+      "title": "Quần áo cần thiết",
       "body": [
-        "Bản dịch đang được chuẩn bị.",
-        "Bản dịch đang được chuẩn bị."
+        "**Chiến lược nhiều lớp:** Bờ biển có thể ấm hơn 5°C so với khu vực trên cao của thành phố Positano. Mang quần áo bạn có thể thêm hoặc bớt dễ dàng.",
+        "**Đồ bơi:** Mang ít nhất 2 bộ đồ bơi để một bộ có thể khô trong khi bạn mặc bộ kia. Mùa bãi biển từ tháng 4 đến tháng 10.",
+        "**Áo khoác ngoài:** Một chiếc váy nhẹ hoặc áo sơ mi để che đồ bơi khi đi bộ đến/từ bãi biển. Nhà hàng và cửa hàng thích bạn không chỉ mặc đồ bơi.",
+        "**Trang phục buổi tối:** Phong cách thông minh-thoải mái là tiêu chuẩn. Quần dài nhẹ hoặc váy cho bữa tối. Người Ý có xu hướng ăn mặc đẹp ngay cả khi bình thường.",
+        "**Quần áo bảo vệ chống nắng:** Áo dài tay chống UV, mũ vành rộng và kính râm. Ánh nắng Địa Trung Hải rất mạnh, đặc biệt trên thuyền và bãi biển.",
+        "**Đồ mưa:** Áo khoác mưa có thể gập lại hoạt động cho tất cả các mùa. Bỏ qua ô vào mùa hè trừ khi bạn đến thăm vào mùa vai (tháng 4, tháng 10–11)."
       ]
     },
     {
-      "id": "bags",
-      "title": "Bags & luggage",
+      "id": "bags-and-luggage",
+      "title": "Túi xách và hành lý",
       "body": [
-        "Bản dịch đang được chuẩn bị.",
-        "Bản dịch đang được chuẩn bị."
+        "**Hành lý tốt nhất:** Ba lô hoặc túi duffel mềm. Nếu bạn phải mang vali kéo, chọn loại có bánh xe tốt — bạn sẽ phải mang nó lên cầu thang thường xuyên.",
+        "**Túi ban ngày:** Ba lô nhỏ hoặc túi đeo chéo cho các chuyến đi hàng ngày. Giữ dưới 15L để dễ di chuyển trên xe buýt và thuyền đông đúc.",
+        "**Túi bãi biển:** Mang túi tote nhẹ hoặc túi lưới cho thiết bị bãi biển. Bạn có thể mua túi bãi biển rẻ tại địa phương (€5–10) nếu quên.",
+        "**Cân nhắc chống trộm:** Móc túi hiếm ở Positano nhưng phổ biến hơn ở Naples và trên phà đông đúc. Giữ đồ có giá trị trong túi bạn có thể giữ ở phía trước."
+      ]
+    },
+    {
+      "id": "sun-protection",
+      "title": "Bảo vệ chống nắng và sức khỏe",
+      "body": [
+        "**Kem chống nắng:** Mang SPF 50+ cho mặt và cơ thể. Kem chống nắng địa phương có giá €15–25 cho chai 200ml (so với €8–12 ở nhà). Kem chống nắng an toàn cho rạn san hô được đánh giá cao nếu bạn bơi gần các khu vực biển.",
+        "**Chăm sóc sau nắng:** Gel nha đam hoặc kem dưỡng ẩm. Ánh nắng ở đây mạnh hơn Bắc Âu hoặc Bắc Mỹ.",
+        "**Thuốc chống côn trùng:** Muỗi có mặt từ tháng 4 đến tháng 10, đặc biệt gần nước. Mang chai nhỏ hoặc mua tại địa phương (€8–12).",
+        "**Sơ cứu cơ bản:** Băng dính cho vết phồng rộp (cầu thang gây ra chúng), thuốc giảm đau, bất kỳ loại thuốc theo toa nào. Nhà thuốc được trang bị đầy đủ nhưng việc tìm thương hiệu thuốc chính xác của bạn có thể khó khăn.",
+        "**Say tàu xe:** Nếu bạn dễ bị say sóng, mang thuốc trước khi đi phà. Biển có thể động, đặc biệt trên các tuyến Capri."
+      ]
+    },
+    {
+      "id": "tech-and-adapters",
+      "title": "Công nghệ, bộ chuyển đổi và điện tử",
+      "body": [
+        "**Bộ chuyển đổi điện:** Ý sử dụng phích cắm Loại L (3 chân) và Loại C (2 chân châu Âu). Điện áp là 230V. Mang bộ chuyển đổi đa năng hoặc mua tại địa phương (€5–10 tại tabacchi).",
+        "**Điện thoại và bộ sạc:** Mang bộ sạc điện thoại và pin dự phòng di động. Dịch vụ di động thường tốt, nhưng pin cạn nhanh hơn khi sử dụng GPS liên tục để điều hướng.",
+        "**Máy ảnh:** Bờ biển Amalfi cực kỳ đẹp trên ảnh. Mang máy ảnh hoặc đảm bảo bộ nhớ điện thoại của bạn đủ. Hộp chống nước hữu ích cho chuyến đi thuyền.",
+        "**Máy đọc sách điện tử hoặc máy tính bảng:** Để đọc sách trên bãi biển. Hiệu sách địa phương có tuyển chọn tiếng Anh hạn chế.",
+        "**Tai nghe:** Hữu ích cho chuyến đi phà và xe buýt."
+      ]
+    },
+    {
+      "id": "toiletries-and-personal",
+      "title": "Đồ vệ sinh cá nhân và vật dụng cá nhân",
+      "body": [
+        "**Cần mang:** Đồ vệ sinh cá nhân cơ bản (dầu gội, xà phòng, kem đánh răng, v.v.) ở kích thước du lịch. Nhà trọ và khách sạn giá rẻ có thể không cung cấp.",
+        "**Có thể mua:** Siêu thị và nhà thuốc dự trữ tất cả các thương hiệu đồ vệ sinh cá nhân lớn. Giá cao hơn 10–30% so với Bắc Âu nhưng tương đương với các khu du lịch Ý khác.",
+        "**Giặt là:** Hầu hết nhà trọ có thiết bị giặt là (€3–5 mỗi lần giặt). Mang đủ quần áo cho 3–4 ngày, sau đó lên kế hoạch giặt.",
+        "**Sản phẩm kinh nguyệt:** Có sẵn tại siêu thị và nhà thuốc. Băng vệ sinh và tampon có giá €3–6 mỗi gói."
+      ]
+    },
+    {
+      "id": "money-and-documents",
+      "title": "Tiền, thẻ và tài liệu",
+      "body": [
+        "**Tiền mặt:** Mang €50–100 bằng tiền lẻ (€5, €10, €20). Nhiều doanh nghiệp nhỏ, câu lạc bộ bãi biển và xe buýt chỉ nhận tiền mặt. ATM có sẵn nhưng tính phí €3–5 mỗi lần rút.",
+        "**Thẻ:** Thẻ tín dụng chính (Visa, Mastercard) hoạt động ở hầu hết các nơi. Amex ít phổ biến hơn. Thông báo cho ngân hàng trước khi đi du lịch để tránh chặn thẻ.",
+        "**Tài liệu:** Hộ chiếu (hoặc thẻ ID EU), bằng chứng bảo hiểm du lịch, bất kỳ thẻ y tế nào và email xác nhận nhà trọ/khách sạn. Tải xuống bản sao ngoại tuyến vào điện thoại của bạn.",
+        "**Bản sao dự phòng:** Quét hộ chiếu của bạn và giữ bản sao kỹ thuật số riêng biệt với bản gốc."
+      ]
+    },
+    {
+      "id": "optional-extras",
+      "title": "Đồ tùy chọn thêm và tiện lợi",
+      "body": [
+        "**Chai nước tái sử dụng:** Nước máy an toàn để uống. Đổ đầy tại đài phun nước (nhiều thị trấn có đài phun nước công cộng) hoặc mua chai lớn tại siêu thị (€0,30–0,50 mỗi lít) để đổ đầy.",
+        "**Túi khô:** Hữu ích để bảo vệ thiết bị điện tử và đồ có giá trị trong chuyến đi thuyền hoặc tại bãi biển.",
+        "**Khăn nhỏ gọn:** Câu lạc bộ bãi biển cho thuê khăn (€3–5), nhưng khăn du lịch microfiber tiết kiệm tiền và khô nhanh.",
+        "**Thiết bị lặn:** Nếu bạn thích lặn với ống thở. Cho thuê có sẵn (€10–15/ngày) nhưng chất lượng khác nhau.",
+        "**Loa di động:** Cho những ngày bãi biển (giữ âm lượng tôn trọng).",
+        "**Sách cụm từ tiếng Ý hoặc ứng dụng ngôn ngữ:** Tiếng Ý cơ bản giúp ích. Nhiều người địa phương nói tiếng Anh, nhưng nỗ lực được đánh giá cao."
+      ]
+    },
+    {
+      "id": "what-to-leave-home",
+      "title": "KHÔNG nên mang gì",
+      "body": [
+        "**Bỏ qua những mục này:**",
+        "• Vali vỏ cứng nặng (cầu thang làm chúng khổ sở)",
+        "• Hơn 2 đôi giày (chúng chiếm quá nhiều không gian)",
+        "• Máy sấy tóc (hầu hết chỗ ở cung cấp, và sự khác biệt về điện áp có thể là vấn đề)",
+        "• Đồ vệ sinh cá nhân cỡ đầy (mua tại địa phương hoặc mang cỡ du lịch)",
+        "• Trang phục chính thức trừ khi bạn có kế hoạch bữa tối cụ thể",
+        "• Thiết bị điện tử quá mức (giữ đơn giản)",
+        "• Áo khoác mùa đông trừ khi đến thăm tháng 12–2"
       ]
     }
   ],
   "tips": [
-    "Bản dịch đang được chuẩn bị.",
-    "Bản dịch đang được chuẩn bị."
+    "Bỏ qua vali vỏ cứng nặng nếu chỗ ở của bạn liên quan đến leo cầu thang — ba lô hoặc túi duffel mềm dễ dàng hơn nhiều.",
+    "Mang tiền lẻ euro (€5, €10) cho ô bãi biển, xe buýt và đồ ăn nhanh. Nhiều người bán nhỏ không chấp nhận thẻ.",
+    "Mua kem chống nắng và thuốc chống côn trùng trước khi đến để tiết kiệm tiền — giá địa phương cao hơn 50% so với ở nhà.",
+    "Làm quen giày đi bộ trước chuyến đi. Vết phồng rộp từ giày mới + cầu thang = khổ sở.",
+    "Mang bộ sơ cứu nhỏ với băng dán vết phồng rộp, thuốc giảm đau và bất kỳ loại thuốc theo toa nào. Nhà thuốc hữu ích nhưng có thể không có thương hiệu chính xác của bạn."
   ],
   "faqs": [
     {
-      "q": "Bản dịch đang được chuẩn bị.",
-      "a": [
-        "Bản dịch đang được chuẩn bị."
+      "question": "Tôi có thể mua mọi thứ cần thiết tại địa phương không?",
+      "answer": [
+        "Có, nhưng giá cao hơn đáng kể trong mùa cao điểm (tháng 6–9). Siêu thị và nhà thuốc dự trữ hầu hết các vật dụng cần thiết, nhưng mong đợi trả nhiều hơn 20–50% so với ở nhà cho kem chống nắng, đồ vệ sinh cá nhân và thiết bị bãi biển.",
+        "Mẹo tiết kiệm: Mang các vật dụng cần thiết như kem chống nắng, thuốc chống côn trùng và bất kỳ loại thuốc cụ thể nào từ nhà để tránh giá tăng thêm."
       ]
     },
     {
-      "q": "Bản dịch đang được chuẩn bị.",
-      "a": [
-        "Bản dịch đang được chuẩn bị."
+      "question": "Tôi có cần mang khăn bãi biển không?",
+      "answer": "Hầu hết chỗ ở cung cấp khăn tắm nhưng không phải khăn bãi biển. Câu lạc bộ bãi biển cho thuê khăn với giá €3–5, hoặc bạn có thể mang khăn du lịch microfiber nhẹ. Nhà trọ đôi khi có khăn bãi biển với tiền đặt cọc nhỏ."
+    },
+    {
+      "question": "Hành lý tốt nhất cho Positano là gì?",
+      "answer": "Ba lô hoặc túi duffel mềm là lý tưởng. Nếu ở các địa điểm trên sườn đồi như Hostel Brikette, bạn sẽ leo hơn 100 bậc thang với hành lý. Vali kéo khó khăn trên cầu thang và đường lát đá. Mang ít đồ — hướng tới kích thước hành lý xách tay nếu có thể."
+    },
+    {
+      "question": "Tôi có nên mang ô không?",
+      "answer": [
+        "Vào mùa hè (tháng 6–9): Không, mưa hiếm. Mang áo khoác mưa nhẹ cho gió buổi tối trên thuyền.",
+        "Vào mùa xuân/thu (tháng 4–5, tháng 10–11): Có, mang ô nhỏ gọn. Tháng 4 và tháng 11 là những tháng ẩm ướt nhất.",
+        "Vào mùa đông (tháng 12–2): Chắc chắn mang ô và áo khoác không thấm nước. Mùa đông là mùa mưa."
       ]
+    },
+    {
+      "question": "Tôi có cần giày đi bộ đường dài cho Con đường của các vị thần không?",
+      "answer": "Giày đi bộ đường dài thích hợp với hỗ trợ mắt cá chân được khuyến nghị cho %LINK:pathOfTheGods|Con đường của các vị thần% và các đường mòn ven biển khác. Giày chạy địa hình hoặc giày đi bộ đường dài hoạt động tốt. Giày thể thao thông thường ở giới hạn — chúng sẽ hoạt động nếu bạn có kinh nghiệm, nhưng hỗ trợ mắt cá chân giúp ích trên các phần đá."
     }
   ]
 }

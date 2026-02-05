@@ -1,9 +1,10 @@
 {
   "seo": {
     "title": "Positano til Pompeji Dagstur: Transport & Rejseguide",
-    "description": "Komplet guide til besøg i Pompeji fra Positano. Bus- og toganvisninger, hvad man skal se, tidspunktstips og praktiske råd til vandrerhjemsgæster der planlægger en dagstur.",
-    "lastUpdated": "2026-01-31"
+    "description": "Komplet guide til besøg i Pompeji fra Positano. Bus- og toganvisninger, hvad man skal se, tidspunktstips og praktiske råd til vandrerhjemsgæster der planlægger en dagstur."
   },
+  "linkLabel": "Positano til Pompeji Dagstur: Transport & Rejseguide",
+  "lastUpdated": "2026-02-04",
   "linkLabel": "Positano til Pompeji Dagstur: Transport & Rejseguide",
   "intro": [
     "At besøge Pompeji fra Positano er en overbevisende dagstur. Den gamle by begravet af Vesuv i 79 e.Kr. tilbyder en dramatisk kontrast til kystens afslapning—vidtstrakte ruiner, bevarede gader, freskodekorerede huse og håndgribelig romersk historie. Rejsen fra Positano til Pompeji tager ca. 2 timer hver vej med bus og tog. Planlæg en hel dag (afgang kl. 08:00, hjemkomst kl. 18:00–19:00). Denne guide dækker transport, timing, hvad man skal se og praktiske tips til vandrerhjemsgæster der tager turen.",
@@ -14,7 +15,7 @@
       "id": "why-visit-pompeii",
       "title": "Hvorfor besøge Pompeji fra Positano?",
       "body": [
-        "%IMAGE:pompeii-ruins-overview.jpg|Aerial view of Pompeii archaeological site with Mount Vesuvius%",
+        "%IMAGE:pompeii-ruins-overview.jpg|Luftfoto af Pompeji arkæologiske område med Vesuv%",
         "Pompeji er et af verdens mest betydningsfulde arkæologiske steder. Da Vesuv brød ud den 24. august 79 e.Kr., begravede den Pompeji under 4–6 meter vulkansk aske og bimssten. Byen forblev frosset i tid i næsten 1.700 år indtil udgravningerne begyndte i det 18. århundrede. Det der gør Pompeji ekstraordinært er ikke kun dets alder, men dets fuldstændighed—hele gader, huse, butikker, templer, teatre og badehuse bevaret med fresker, mosaikker, graffiti og endda menneskelige rester støbt i gips. Hvis du er interesseret i andre %LINK:historyPositano|historiske steder på Amalfikysten%, tilbyder Pompeji et dramatisk supplement til Positanos middelalderlige og romerske arv.",
         "For rejsende der bor på %LINK:onlyHostel|Hostel Brikette%, tilbyder Pompeji en stærk historisk modvægt til Amalfikystens naturskønhed. Du kan vandre på gader hvor romerne gik for 2.000 år siden, se hvordan de levede, handlede, tilbad og underholdt sig selv. Omfanget er ydmygende—Pompeji var en blomstrende by med 11.000–20.000 mennesker da udbruddet ramte. I dag kan du gå gennem deres hjem, læse deres væggraffiti og stå i deres amfiteater.",
         "Turen fra Positano til Pompeji tilbyder også praktisk variation. Hvis du har været på stranden i flere dage ved %LINK:positanoMainBeach|Spiaggia Grande% eller udforsket %LINK:pathOfTheGods|kystens vandrestier%, bryder en kulturel udflugt rytmen. Pompeji fungerer godt på overskyede dage når strande er mindre tiltalende. Og i modsætning til %LINK:avoidCrowdsPositano|Positanos tætte turistmængder%, spreder Pompejis vidtstrakte område besøgende—du vil ofte have hele gader for dig selv, især hvis du ankommer tidligt eller besøger uden for sæsonen."
@@ -24,7 +25,7 @@
       "id": "getting-there",
       "title": "Hvordan kommer man fra Positano til Pompeji",
       "body": [
-        "%IMAGE:sita-bus-sorrento.jpg|SITA bus at Sorrento station connecting to Circumvesuviana%",
+        "%IMAGE:sita-bus-sorrento.jpg|SITA bus ved Sorrento station med forbindelse til Circumvesuviana%",
         "Rejsen fra Positano til Pompeji kræver to etaper: SITA bus fra Positano til Sorrento, derefter Circumvesuviana-tog fra Sorrento til Pompeji. Den samlede rejsetid er ca. 1,5–2 timer hver vej, afhængigt af bus- og togventetider. Her er trin-for-trin processen:",
         "**Trin 1: Bus fra Positano til Sorrento (50–60 minutter).** Tag SITA-bussen fra Chiesa Nuova (nær vandrerhjemmet) eller hovedbusstoppestedet i Positano (Spiaggia Grande). Busser kører hver 20–40 minut afhængigt af sæson. Køb billetter på tabacchi-butikker før ombordstigning eller brug SITA-appen. Billetter koster ~€2,50–€3,00. Busturen langs %LINK:chiesaNuovaArrivals|Amalfivejens% byder på fantastiske udsigter, men kan være fyldt—sigt efter at stige på tidligt ved Chiesa Nuova for at sikre en plads. For detaljerede tidstabeller og tips, se %LINK:sorrentoPositanoBus|Positano til Sorrento med bus%.",
         "**Trin 2: Tog fra Sorrento til Pompeji Scavi (30–35 minutter).** I Sorrento stopper bussen ved Piazza Tasso (hovedpladsen). Derfra går du 5 minutter til Circumvesuviana-togstationen (følg skilte eller spørg lokale). Køb en billet til \"Pompei Scavi – Villa dei Misteri\" ved billetskranken eller automaterne. Billetter koster ~€3,00–€4,00. Circumvesuviana er et lokalt pendlertog—basalt, ofte fyldt, ingen aircondition. Tog kører hver 20–30 minut. Turen tager ca. 30 minutter. Stå af ved \"Pompei Scavi\"-station (IKKE \"Pompeii\"-station, som er længere fra ruinerne).",
@@ -36,7 +37,7 @@
       "id": "timing-and-planning",
       "title": "Hvornår man skal besøge og hvor lang tid man skal bruge",
       "body": [
-        "%IMAGE:pompeii-summer-crowds.jpg|Tourists exploring Pompeii ruins on summer day%",
+        "%IMAGE:pompeii-summer-crowds.jpg|Turister udforsker Pompeji ruiner på sommerdag%",
         "**Bedste tidspunkt på dagen:** Ankom til Pompeji kl. 09:00–10:00 for at slå topmængderne og middagsheden. Stedet åbner kl. 09:00 (tjek officielle åbningstider sæsonmæssigt). Morgentemperaturer er køligere, lyset er blødere til fotos, og turistgrupper ankommer senere (11:00–12:00). Hvis du ankommer kl. 09:30, får du 1–2 timer med relativt tomme ruiner før mængderne opbygges.",
         "**Hvor lang tid man skal bruge:** Planlæg minimum 3–4 timer for at se de store højdepunkter uden at stresse. Seriøse arkæologientusiaster kan bruge 6–8 timer på at udforske hvert hjørne, men de fleste vandrerhjemsgæster finder 3–4 timer tilstrækkeligt til at værdsætte stedets omfang og se nøgleområder. Hvis du har begrænset tid, dækker 2 timer det absolutte essentielle (forum, amfiteater, et par huse), men du vil gå glip af meget.",
         "**Bedste sæson:** April–juni og september–oktober tilbyder den bedste balance—behagelige temperaturer, håndterbare mængder og fuld stedadgang. Juli–august bringer ekstrem varme (35–40°C), intens sol, minimal skygge og turistmængder i højsæsonen. November–marts er roligere men risikerer regn og kortere dagslystimer. Hvis du besøger om sommeren, tag dobbelt så meget vand som du tror du har brug for, bær en bredskyggeret hat og tag hyppige pauser i skyggede områder.",
@@ -47,21 +48,21 @@
       "id": "what-to-see",
       "title": "Hvad man skal se i Pompeji: højdepunktstur",
       "body": [
-        "%IMAGE:pompeii-forum-columns.jpg|Ancient Roman forum at Pompeii with preserved columns%",
+        "%IMAGE:pompeii-forum-columns.jpg|Antikt romersk forum ved Pompeji med bevarede søjler%",
         "Pompejis 66 hektar indeholder hundredvis af bygninger. At se alt er umuligt på ét besøg. Fokuser på de store højdepunkter for en givende selvguided tur. Tag det gratis stedkort ved indgangen (essentielt til navigation) og følg denne foreslåede rute:",
         "**1. Forum (Foro).** Forummet var Pompejis politiske, religiøse og kommercielle centrum. Det er en stor rektangulær plads omgivet af templer, administrative bygninger og markedshaller. Jupitertemplet forankrer den nordlige ende, med Vesuv truende bag det—en kraftfuld visuel påmindelse om hvad der ødelagde byen. Forummet giver kontekst til alt andet du vil se. Brug 20–30 minutter her.",
-        "%IMAGE:pompeii-basilica-interior.jpg|Interior of ancient basilica at Pompeii with columns%",
+        "%IMAGE:pompeii-basilica-interior.jpg|Interiør af antik basilika ved Pompeji med søjler%",
         "**2. Basilikaen.** Ved siden af forummet var basilikaen Pompejis retsbygning og forretningscenter. Det massive interiør (65m x 28m) husede engang juridiske procedurer og kommercielle forhandlinger. Omfanget af søjlerne og arkitekturen demonstrerer romersk ingeniørkunst. Brug 10 minutter.",
         "**3. Faunens Hus (Casa del Fauno).** Et af Pompejis største og mest overdådige private hjem, der dækker en hel byblok. Berømt for bronze-faunstatuen i atriet (originalen er på Napoli Arkæologiske Museum, men en kopi står in situ) og Alexander-mosaikken (også flyttet til Napoli). Huset demonstrerer hvordan Pompejis velhavende elite levede—flere gårdspladser, spisestuer, tjenerkvarterer, udsøgte mosaikker. Brug 15–20 minutter.",
-        "%IMAGE:house-vettii-frescoes.jpg|Colorful preserved frescoes in House of the Vettii%",
+        "%IMAGE:house-vettii-frescoes.jpg|Farverige bevarede fresker i Vettiernes Hus%",
         "**4. Vettiernes Hus (Casa dei Vettii).** Et andet velhavende hus, berømt for dets bemærkelsesværdigt bevarede fresker. Spisestuen (triclinium) fremviser mytologiske scener i levende røde, blå og guld. Haven er rekonstrueret baseret på gamle planterester. Dette hus viser bedst Pompejis kunst og farver. Brug 15 minutter.",
         "**5. Stabianske Bade (Terme Stabiane).** Pompejis ældste og bedst bevarede offentlige bade. Du kan se caldarium (varmt rum), tepidarium (lunkent rum), frigidarium (koldt rum) og apodyterium (omklædningsrum). Ingeniørkunsten er synlig—opvarmede gulve, VVS, endda gammel graffiti på væggene. Dette giver indsigt i romersk dagligdag og sociale skikke. Brug 15 minutter.",
         "**6. Lupanar (Bordel).** En lille toetagers bygning med stensenge og erotiske fresker. Lupanaret er et af Pompejis mest besøgte (og fotograferede) steder. Det giver ærlige beviser for Pompejis kommercielle sexindustri. De øverste soveværelser og eksplicitte kunst chokerer nogle besøgende men tilbyder unuanceret historisk sandhed. Brug 5–10 minutter (ofte fyldt).",
-        "%IMAGE:pompeii-amphitheater.jpg|Ancient amphitheater at Pompeii with Mount Vesuvius backdrop%",
+        "%IMAGE:pompeii-amphitheater.jpg|Antikt amfiteater ved Pompeji med Vesuv i baggrunden%",
         "**7. Amfiteatret (Anfiteatro).** Pompejis amfiteater havde plads til 20.000 tilskuere til gladiatorkampe og offentlige forestillinger. Bygget omkring 70 f.Kr. er det et af de ældste overlevende romerske amfiteatre. Du kan gå på arenagulvet og klatre op ad sæderækker for udsigt over ruinerne og Vesuv. Omfanget er imponerende—forestil dig brølet fra 20.000 romere der heppede på blodsport. Brug 20 minutter.",
-        "%IMAGE:pompeii-plaster-casts.jpg|Plaster casts of Pompeii victims at Garden of the Fugitives%",
+        "%IMAGE:pompeii-plaster-casts.jpg|Gipsafstøbninger af Pompeji-ofre ved De Flygtende Have%",
         "**8. De Flygtende Have (Orto dei Fugitivi).** En vingård hvor 13 Pompeji-beboere døde mens de forsøgte at flygte fra udbruddet. Deres kroppe blev bevaret i aske; arkæologer fyldte hulrummene med gips for at skabe hjemsøgende afstøbninger. At se gipsafstøbningerne—voksne, børn, forvrængede i deres sidste øjeblikke—gør Pompejis tragedie håndgribelig. Dette er følelsesmæssigt tungt men historisk vigtigt. Brug 10 minutter.",
-        "%IMAGE:via-abbondanza-street.jpg|Ancient Roman street Via dell'Abbondanza with shops%",
+        "%IMAGE:via-abbondanza-street.jpg|Antik romersk gade Via dell'Abbondanza med butikker%",
         "**9. Via dell'Abbondanza.** Pompejis hovedgade, kantet med butikker, tavernor og huse. At gå på denne gade føles som at træde ind i en romersk by—du kan se skranker hvor købmænd solgte mad og vin, graffiti på vægge (valgslogan, kærlighedsbreve, fornærmelser), trædesten til at krydse mudrede gader. Det er her Pompeji føles mest levende. Brug 20–30 minutter på at vandre.",
         "Denne rute dækker de essentielle højdepunkter på 3–3,5 timer i afslappet tempo. Hvis du har mere tid, udforsk teaterdistriktet, flere huse (Den Tragiske Digters Hus, Menanders Hus) og sidegader. Hvis du har mindre tid, prioriter forummet, et velhavende hus (Vettii eller Faun), badene og amfiteatret."
       ]
@@ -70,7 +71,7 @@
       "id": "practical-tips",
       "title": "Praktiske tips til dit besøg",
       "body": [
-        "%IMAGE:pompeii-map-tourists.jpg|Tourists consulting site map at Pompeii entrance%",
+        "%IMAGE:pompeii-map-tourists.jpg|Turister konsulterer stedkort ved Pompeji indgang%",
         "**Tag det gratis kort ved indgangen.** Informationsdisken inden i Porta Marina Superiore uddeler gratis trykte kort. Tag et. Pompeji er enormt og forvirrende uden et kort. Kortet markerer større steder, toiletter, udgange og skyggede områder. Stol ikke på telefonnavigation—mobildækning er ujævn, og at vandre målløst spilder tid.",
         "**Medbring rigeligt vand.** Pompeji er udsat—minimal skygge, reflekterende stenoverflader der forstærker varmen. Om sommeren kan temperaturer på stedet ramme 40°C. Medbring mindst 1,5 liter vand per person. Fontæner inden i stedet tilbyder drikkevand til påfyldning. Dehydrering er en reel risiko—mange besøgende undervurderer dette. Fra vandrerhjemmet har vi set gæster vende tilbage fra Pompeji med solstik og dehydreringshovedpine fordi de kun medbragte én lille flaske. Personalet anbefaler at fylde to 750ml flasker før du tager afsted og genopfylde ved Pompejis fontæner gennem dagen.",
         "**Bær behagelige, robuste sko.** Pompejis gader er brolagt med store, ujævne sten. Sandaler eller klipklapper fører til forstuvede ankler og ømme fødder. Bær lukkede gåsko med god støtte. Du vil gå 5–8 km (3–5 miles) mens du udforsker stedet.",
@@ -86,7 +87,7 @@
       "id": "herculaneum-alternative",
       "title": "Herculaneum som alternativ eller tilføjelse",
       "body": [
-        "%IMAGE:herculaneum-villa-fresco.jpg|Well-preserved frescoes at Herculaneum archaeological site%",
+        "%IMAGE:herculaneum-villa-fresco.jpg|Velbevarede fresker ved Herculaneum arkæologiske område%",
         "Herculaneum (Ercolano) er en mindre romersk by også ødelagt af Vesuv i 79 e.Kr. Den ligger tættere på Napoli end Pompeji (ca. 40 minutter med Circumvesuviana fra Sorrento). Mange arkæologer og historikere anser Herculaneum som overlegen i forhold til Pompeji hvad angår bevaringskvalitet. Herculaneum blev begravet under dybere vulkansk materiale (op til 20 meter vs Pompejis 6 meter), hvilket skabte en lufttæt forsegling. Dette bevarede organiske materialer—træ, stof, mad—der gik i opløsning ved Pompeji. Fresker og mosaikker ved Herculaneum bevarer mere farve. Bygninger har intakte øverste etager og tage.",
         "**Herculaneum vs Pompeji: hvilket sted skal man besøge?** Hvis du kun har tid til ét, vælger de fleste førstegangsbesøgende Pompeji for dets omfang og berømmelse. Pompeji leverer \"wow\"-faktoren af en hel by frosset i tid. Herculaneum er mindre (4,5 hektar vs Pompejis 66), mindre overvældende og mere intimt. Du kan se hele stedet på 1,5–2 timer vs Pompejis 3–4. Herculaneum er bedre til at værdsætte romersk kunst, arkitektur og dagligdagsdetaljer. Pompeji er bedre til at forstå byplanlægning og opleve omfanget af en romersk by.",
         "**Kan man besøge begge på én dag fra Positano?** Teknisk set ja, men det er udmattende. Begge steder på én dag kræver at forlade Positano kl. 07:30, besøge Herculaneum først (09:00–11:00), derefter Pompeji (12:00–15:00), hjemkomst kl. 18:00–19:00. Du vil bruge 5–6 timer på transport og 4–5 timer ved stederne. De fleste vandrerhjemsgæster finder dette for stresset. Hvis du vil begge, overvej at overnatte i Napoli eller Sorrento for at sprede besøgene over to dage."
@@ -96,7 +97,7 @@
       "id": "returning-to-positano",
       "title": "Hjemrejse til Positano",
       "body": [
-        "%IMAGE:circumvesuviana-train.jpg|Circumvesuviana train returning from Pompeii to Sorrento%",
+        "%IMAGE:circumvesuviana-train.jpg|Circumvesuviana-tog på vej tilbage fra Pompeji til Sorrento%",
         "Vend morgenruten om: gå tilbage til Pompei Scavi togstation, tag Circumvesuviana til Sorrento, derefter %LINK:sorrentoPositanoBus|SITA bus tilbage til Positano%. Eftermiddagsbusser fra Sorrento til Positano (15:00–18:00) kan være meget fyldte—sommerturister og pendlere på vej hjem. Forvent at stå i en del af eller hele rejsen hvis du stiger på i Sorrento. Alternativt, tag bussen lidt senere (efter 18:30) når mængderne tynder ud, selvom dette betyder ankomst til Positano omkring 19:30–20:00.",
         "Hvis busser er umuligt fulde, kører taxaer og private chauffører fra Sorrento til Positano (€60–€80 for op til 4 passagerer). Dette er dyrt men sparer 45–60 minutter og garanterer en plads. Nogle vandrerhjemsgæster deler en taxa efter lange, varme dage ved Pompeji. Spørg %LINK:onlyHostel|vandrerhjemspersonalet% om chaufføranbefalinger hvis du vil have denne mulighed. Når du er tilbage i Positano, tager mange gæster aftensmad på lokale restauranter eller køber dagligvarer til at lave mad i %LINK:onlyHostel|vandrerhjemskökkenet% og dele Pompeji-historier med medrejsende."
       ]

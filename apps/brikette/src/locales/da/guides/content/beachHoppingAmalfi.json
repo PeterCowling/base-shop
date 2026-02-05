@@ -1,53 +1,61 @@
 {
   "seo": {
     "title": "Strandhopping på Amalfikysten",
-    "description": "Hvilke strande du kan kombinere på én dag, adgangstips og omkostninger."
+    "description": "Hvilke strande du skal kombinere på en dag, adgangstips og omkostninger."
   },
   "linkLabel": "Strandhopping på Amalfikysten",
   "intro": [
-    "Planlæg en strandhop-dag, der balancerer færger, klippeudsigt og afslapning i sandet."
+    "Planlæg en strandhopping-dag, der balancerer færgeture, klippe-udsigter og afslapning på sandet."
   ],
   "sections": [
     {
       "id": "morning",
       "title": "Morgen: Positano til Fornillo",
       "body": [
-        "Start tidligt på Spiaggia Grande for en hurtig dukkert, og gå derefter kyststien til Fornillo inden kl. 09.30 for roligere vand.",
-        "Bestil solsenge på forhånd hvis du vil have skygge; ellers medbring en let parasol."
+        "Start tidligt på Spiaggia Grande for et hurtigt bad, og gå derefter ad kystvejen til Fornillo senest kl. 09:30 for roligere vand.",
+        "Reservér solsenge på forhånd, hvis du vil have skygge; ellers pak en let parasol."
       ]
     },
     {
       "id": "midday",
       "title": "Middag: Amalfi eller Atrani",
       "body": [
-        "Tag en formiddagsfærge til Amalfi og spis frokost på molen før du bader ved bystranden eller Atrani’s lille bugt.",
-        "Aflever tasker i Amalfis opbevaring, så du kan udforske hænderne fri."
+        "Tag en sen morgen-færge til Amalfi og spis frokost på havnen, før du svømmer ved byens strand eller Atranis lomme-bugt.",
+        "Opbevar tasker i Amalfis depot, så du kan udforske uden hænder."
+      ]
+    },
+    {
+      "id": "group-tours",
+      "title": "Gruppeture & delte både",
+      "body": [
+        "Se vores %LINK:boatTours|Bådture i Positano-guide% hvis du hellere vil hoppe mellem strande på en delt båd i stedet for færger.",
+        "Operatører afgår fra Positanos hovedmole; ankom 15 minutter før og bekræft Laurito- eller Arienzo-badestop ved booking."
       ]
     },
     {
       "id": "evening",
       "title": "Aften: Solnedgangsbad",
       "body": [
-        "Slut af ved Laurito eller Arienzo for gyldent lys; begge vender mod vest og er roligere efter kl. 17.",
-        "Tag den sidste færge eller bestil retur-taxi for at undgå opadgående natvandringer."
+        "Afslut ved Laurito eller Arienzo for udsigter i den gyldne time; begge vender mod vest for varmt lys og færre mennesker efter kl. 17:00.",
+        "Tag den sidste færge eller book en returkørsel for at undgå bakke-vandringer i mørket."
       ]
     }
   ],
   "tips": [
-    "Medbring hurtigtørrende håndklæde og tørt skiftetøj, så du har det behageligt på færgerne.",
-    "Pak snacks og mindst 1 liter vand — strandkioskerne kan løbe tør på travle dage."
+    "Medbring et hurtigtørrende håndklæde og ekstra tøj, så du holder dig komfortabel på færgerne.",
+    "Pak snacks og mindst 1 L / 34 oz vand — strandkiosker kan løbe tør på travle dage."
   ],
   "faqs": [
     {
       "q": "Skal jeg forudbestille solsenge?",
       "a": [
-        "Ja i juli–august. Kontakt strandklubberne via WhatsApp dagen før for at sikre forreste rækker."
+        "Ja i juli–august. Kontakt strandklubber via WhatsApp dagen før for at sikre forreste rækker."
       ]
     },
     {
-      "q": "Må jeg medbringe egen mad?",
+      "q": "Kan jeg medbringe min egen mad?",
       "a": [
-        "De fleste gratis områder tillader picnics. Strandklubber accepterer typisk små snacks, men vil gerne sælge drikkevarer fra egen bar."
+        "De fleste gratis sektioner tillader picnics. Strandklubber tillader typisk små snacks, men foretrækker, at du køber drikkevarer fra deres bar."
       ]
     }
   ]

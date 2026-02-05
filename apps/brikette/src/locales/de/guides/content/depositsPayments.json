@@ -1,124 +1,145 @@
 {
   "seo": {
-    "title": "Leitfaden zu Kautionen und Zahlungen – Hostel Brikette, Positano",
-    "description": "Ihr Nachschlagewerk zu Kautionen, Zahlungsarten, Buchungsbestätigungen, Änderungen, Stornierungen und Sicherheits­hinterlegungen bei einer Reservierung im Hostel Brikette."
+    "title": "Anzahlungs- und Zahlungsleitfaden für Positano Hostel",
+    "description": "Ihr umfassender Leitfaden zu Anzahlungen, Zahlungsmethoden, Buchungsbestätigungen, Änderungen, Stornierungen und Sicherheitseinbehalten bei der Reservierung Ihres Aufenthalts im Positano Hostel."
   },
-  "linkLabel": "Leitfaden zu Kautionen und Zahlungen – Hostel Brikette, Positano",
+  "linkLabel": "Anzahlungs- und Zahlungsleitfaden für Positano Hostel",
   "sections": [
     {
       "id": "submittingBookingRequest",
-      "title": "So stellen Sie Ihre Buchungsanfrage",
+      "title": "So Reichen Sie Ihre Buchungsanfrage Ein",
       "body": [
-        "Senden Sie Ihre Anfrage über eine autorisierte OTA oder direkt über unsere Website – reine Chats oder Walk-ins gelten nicht. Mit Klick auf „Buchen“ bestätigen Sie, dass alle Namen, Daten und Aufenthalts­dauer korrekt sind und dass Sie unsere AGB akzeptieren."
+        "Senden Sie uns Ihre Buchungsanfrage über ein autorisiertes Online-Reisebüro (OTA) oder direkt auf unserer Website - Chats oder persönliche Besuche allein zählen nicht. Mit einem Klick auf 'Buchen' bestätigen Sie, dass alle Namen, Daten und die Aufenthaltsdauer korrekt sind und dass Sie unsere Allgemeinen Geschäftsbedingungen akzeptieren."
       ]
     },
     {
       "id": "processingBookingRequest",
-      "title": "So verarbeiten wir Ihre Anfrage",
+      "title": "Wie Wir Ihre Anfrage Bearbeiten",
       "body": [
-        "Wir beginnen mit der Bearbeitung, sobald eine erforderliche Kaution, Vorautorisierung oder Zahlung über eine akzeptierte Methode eingegangen ist. Die Buchung muss auf den Namen des Karten­inhabers lauten. Ist der Zahler ein anderer, schicken Sie uns vorab eine kurze Autorisierung des Karten­inhabers."
+        "Wir beginnen mit der Bearbeitung Ihrer Anfrage, sobald wir eine erforderliche Anzahlung, Vorautorisierung oder Zahlung mit einer unserer akzeptierten Zahlungsmethoden erfolgreich erhalten haben. Stellen Sie sicher, dass die Buchung den Namen des Kreditkarteninhabers anzeigt, der zahlen wird. Wenn der Name des Zahlers abweicht, senden Sie uns vor der Bearbeitung eine kurze Autorisierung des Karteninhabers per E-Mail."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Payment_terminal_at_the_Berlin_immigration_office.jpg/960px-Payment_terminal_at_the_Berlin_immigration_office.jpg",
+          "alt": "Kartenzahlungsterminal mit Tastatur und Bildschirm.",
+          "caption": "Wir können eine Anzahlung nehmen, eine Zahlung durchführen oder eine Vorautorisierung platzieren, um Ihre Buchung zu sichern - Foto: Wikimedia Commons (CC0)."
+        }
       ]
     },
     {
       "id": "decliningBookingRequest",
-      "title": "Wann wir eine Anfrage ablehnen",
+      "title": "Wann Wir eine Anfrage Ablehnen Können",
       "body": [
-        "Ablehnungen sind selten, bleiben aber unser Recht, z. B. bei Zahlungs­fehlern, fehlenden Angaben oder Verstößen gegen unsere AGB."
+        "Wir lehnen selten eine Buchung ab, behalten uns aber das Recht vor, dies nach eigenem Ermessen zu tun - zum Beispiel, wenn die Zahlung fehlschlägt, erforderliche Informationen fehlen oder die Anfrage gegen unsere Allgemeinen Geschäftsbedingungen verstößt."
       ]
     },
     {
       "id": "requestSizeLimit",
-      "title": "Größen­beschränkung pro Anfrage",
+      "title": "Größenbeschränkungen für Eine Anfrage",
       "body": [
-        "Eine Anfrage darf bis zu 7 aufeinander­folgende Nächte und maximal 5 Gäste umfassen. Für längere Aufenthalte oder größere Gruppen senden Sie einfach mehrere Anfragen."
+        "Eine Buchungsanfrage kann bis zu sieben (7) aufeinanderfolgende Nächte und maximal fünf (5) Gäste abdecken. Benötigen Sie einen längeren Aufenthalt oder eine größere Gruppe? Teilen Sie es einfach in separate Anfragen auf."
       ]
     },
     {
       "id": "counterOffer",
-      "title": "Falls Ihr Zimmer nicht verfügbar ist",
+      "title": "Was Passiert, Wenn Ihr Zimmer Nicht Verfügbar Ist",
       "body": [
-        "Ist Ihr Wunsch­zimmer belegt, erhalten Sie per Mail ein Gegen­angebot. Akzeptieren Sie und leisten Sie Zahlung oder Vor­autorisierung, um Ihre Reservierung zu sichern."
+        "Wenn Ihr bevorzugtes Zimmer bereits belegt ist, senden wir Ihnen ein Gegenangebot mit der nächstbesten Alternative per E-Mail. Akzeptieren Sie das Angebot und schließen Sie die Zahlung oder Vorautorisierung ab, um Ihren Aufenthalt zu sichern."
       ]
     },
     {
       "id": "prepaidNonRefundableBookingsPolicy",
-      "title": "Vorausbezahlte, nicht erstattbare Tarife",
+      "title": "Vorausbezahlte Nicht-Erstattungsfähige Buchungen",
       "body": [
-        "Vorausbezahlte, nicht erstattbare Tarife sind günstiger, erfordern aber sofort 100 % Zahlung. Wir versuchen die Karte bis zu dreimal; schlägt dies fehl, wird die Anfrage storniert. Keine Rückerstattung oder Änderung möglich."
+        "Die Wahl eines vorausbezahlten nicht-erstattungsfähigen Tarifs spart Ihnen Geld, erfordert aber die vollständige Zahlung im Voraus. Wir werden Ihre Karte bis zu dreimal versuchen. Wenn alle Versuche fehlschlagen, stornieren wir die Anfrage. Diese Buchungen können nicht erstattet oder geändert werden."
       ]
     },
     {
       "id": "confirmationEmail",
       "title": "Ihre Bestätigungs-E-Mail",
       "body": [
-        "Nach erfolgreicher Zahlung senden wir eine Bestätigungs­mail mit Referenz, Anreise­datum, Aufenthalts­dauer und Extras. Prüfen Sie sie und melden Sie Unstimmigkeiten sofort."
+        "Sobald Ihre Zahlung abgewickelt ist, senden wir eine Bestätigungs-E-Mail an die von Ihnen angegebene Adresse. Sie enthält Ihre Buchungsreferenz, Anreisedatum, Aufenthaltsdauer und eventuelle Extras. Lesen Sie sie sorgfältig durch und teilen Sie uns sofort mit, wenn etwas falsch aussieht."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Email_on_Phone_Flat_Icon.svg/960px-Email_on_Phone_Flat_Icon.svg.png",
+          "alt": "E-Mail-Symbol auf einem Telefonbildschirm.",
+          "caption": "Ihre Bestätigungs-E-Mail ist der beste Ort, um Daten, Namen und Zahlungsdetails zu überprüfen - Foto: Wikimedia Commons (CC BY-SA 4.0)."
+        }
       ]
     },
     {
       "id": "numberOfGuestsIncluded",
-      "title": "Wer in der Buchung enthalten ist",
+      "title": "Wer Ist in Ihrer Buchung Enthalten",
       "body": [
-        "Ihre Buchung deckt automatisch ab:",
-        "* 1 Gast pro Einzelbett\n* bis zu 2 Gäste pro Doppelbett\n* bis zur beworbenen Kapazität einer gebuchten Wohnung",
-        "Zusätzliche Gäste über das Limit hinaus sind aus Sicherheits­gründen nicht möglich."
+        "Ihre Buchung deckt automatisch Folgendes ab:",
+        "* 1 Gast pro Einzelbett\n* Bis zu 2 Gäste pro Doppelbett\n* Bis zur beworbenen Kapazität jeder von Ihnen gebuchten Wohnung",
+        "Aus Sicherheits- und Komfortgründen können wir keine zusätzlichen Gäste über die Zimmergrenze hinaus unterbringen."
       ]
     },
     {
       "id": "scopeOfFacilitiesIncluded",
-      "title": "Leistungen Ihres Aufenthalts",
+      "title": "Was Ist in Ihrem Aufenthalt Enthalten",
       "body": [
-        "Alle Gäste erhalten:",
-        "* Frische Bettwäsche und Keycard\n* Nutzung der Gemeinschafts­duschen\n* Warmwasser zu den geplanten Zeiten (ca. 07:00–10:30 & 17:00–22:30)\n* Zugang zu Gemeinschafts­bereichen",
-        "Frühstück, WLAN, Gepäck­aufbewahrung u. a. sind kostenfrei, unterliegen aber eigenen einfachen Regeln."
+        "Jeder Gast erhält:",
+        "* Frische Bettwäsche und eine Schlüsselkarte\n* Nutzung der Gemeinschaftsduschen\n* Warmwasser während der geplanten Zeiten (ca. 07:00-10:30 und 17:00-22:30)\n* Zugang zu unseren Gemeinschaftsbereichen",
+        "Andere Vorteile (Frühstück, WLAN, Gepäckaufbewahrung usw.) sind kostenlos und folgen ihren eigenen einfachen Regeln."
       ]
     },
     {
       "id": "financialObligation",
-      "title": "Ihre finanzielle Verantwortung",
+      "title": "Ihre Finanzielle Verantwortung",
       "body": [
-        "Der in der Buchung genannte Karten­inhaber haftet für alle Kosten – Zimmer, Schäden, Reinigungs­gebühren, Hausregel-Strafen. Offene Beträge können direkt auf die Karte gebucht werden."
+        "Der auf Ihrer Buchung genannte Kreditkarteninhaber haftet für alle Gebühren - Zimmerpreise, Schäden, Reinigungsgebühren, Bußgelder oder Strafen für Verstöße gegen die Hausregeln. Unbezahlte Beträge können direkt von der hinterlegten Karte abgebucht werden."
       ]
     },
     {
       "id": "roomAllocation",
-      "title": "Zuweisung von Betten und Zimmern",
+      "title": "Wie Betten und Zimmer Zugewiesen Werden",
       "body": [
-        "Sie erhalten die gebuchte Bett- bzw. Zimmer­kategorie. In Schlafsälen sichern Sie sich ein Bett dieser Kategorie; wir können jedoch nicht garantieren, dass Gruppen im selben Zimmer untergebracht werden. Betten werden beim Check-in nach Eintreffen vergeben."
+        "Wir garantieren Ihnen den Betttyp und die Zimmerkategorie, die Sie gebucht haben. Schlafsaalbuchungen sichern ein Bett in der gewählten Kategorie, aber wir können nicht versprechen, dass Gruppen dasselbe Zimmer teilen. Betten in Schlafsälen werden nach dem Prinzip 'Wer zuerst kommt, mahlt zuerst' beim Check-in vergeben."
       ]
     },
     {
       "id": "allocatingUpgrades",
       "title": "Zimmer-Upgrades",
       "body": [
-        "Gelegentlich erhalten Sie kostenfreie Upgrades oder können kosten­pflichtig upgraden. Wird ein gratis Upgrade später unpraktisch, ziehen wir Sie in die ursprünglich gebuchte Kategorie zurück."
+        "Manchmal bieten wir Ihnen kostenlos ein besseres Zimmer an, oder Sie können bei der Buchung für ein Upgrade bezahlen. Wenn das kostenlose Upgrade später unpraktisch wird, können wir Sie in die ursprünglich bezahlte Kategorie zurückverlegen."
       ]
     },
     {
       "id": "thirdPartyPayments",
-      "title": "Zahlung über Drittanbieter",
+      "title": "Zahlung über Drittanbieter-Websites",
       "body": [
-        "Bei Buchungen über OTAs zahlen Sie nach deren Bedingungen; wir erhalten keine Karten­daten und haften nicht für Plattform-Probleme. Prüfen Sie stets, ob Zahlung und Bestätigung erfolgt sind."
+        "Wenn Sie über eine OTA buchen, zahlen Sie über deren System unter deren Bedingungen. Wir sehen niemals Ihre Kartendaten von der OTA und haften nicht für Probleme auf deren Plattform. Überprüfen Sie immer, ob Ihre Zahlung durchgegangen ist und Sie eine Bestätigung erhalten haben."
       ]
     },
     {
       "id": "bookingRequestDeposits",
-      "title": "Buchungskautionen",
+      "title": "Buchungsanzahlungen",
       "body": [
-        "Für einige Tarife ist eine Kaution nötig. Vorausbezahlte Tarife erfordern 100 % sofort. Kautionen sind nicht erstattbar; gelingt die Abbuchung nicht, wird die Anfrage automatisch annulliert."
+        "Einige Tarife erfordern eine Anzahlung, um das Zimmer zu halten. Vorausbezahlte Tarife erfordern 100% im Voraus. Anzahlungen sind nicht erstattungsfähig. Wenn wir die Anzahlung nicht erhalten können, wird die Buchungsanfrage automatisch storniert."
       ]
     },
     {
       "id": "bookingRequestPreauthorisations",
-      "title": "Karten­vor­autorisierungen",
+      "title": "Karten-Vorautorisierungen",
       "body": [
-        "Bei flexiblen Tarifen können wir Ihre Karte für die erste Nacht oder den gesamten Aufenthalt vor­autorisieren. Scheitert dies, lehnen wir die Anfrage ab."
+        "Für flexible Tarife können wir Ihre Karte für die erste Nacht oder den gesamten Aufenthalt vorautorisieren, um Ihre Buchung zu garantieren. Wenn die Vorautorisierung fehlschlägt, lehnen wir die Anfrage ab."
       ]
     },
     {
       "id": "safeguardingProcess",
-      "title": "Unsere Sicherheits­hinterlegung",
+      "title": "Unser Sicherheitseinbehalt",
       "body": [
-        "Beim Check-in können wir eine Sicherheits­hinterlegung in Höhe einer Nacht pro Gast blocken. Ist dies nicht möglich, akzeptieren wir dieselbe Summe in bar oder die Karte eines Mitreisenden. Andernfalls müssen wir die Buchung leider stornieren."
+        "Beim Check-in können wir einen Sicherheitseinbehalt in Höhe einer Nacht pro Gast platzieren, um mögliche Bußgelder, Gebühren, Verlängerungen oder Schäden abzudecken. Wenn ein Karteneinbehalt nicht möglich ist, können Sie denselben Betrag in bar hinterlegen oder die Karte eines anderen Gastes verwenden. Wenn keine Option funktioniert, müssen wir Ihre Buchung leider stornieren."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Euro_coins_in_hand.jpg/960px-Euro_coins_in_hand.jpg",
+          "alt": "Eine Hand hält mehrere Euro-Münzen.",
+          "caption": "Wenn beim Check-in kein Karteneinbehalt möglich ist, können wir eine gleichwertige Barkaution verlangen - Foto: Wikimedia Commons (CC BY-SA 4.0)."
+        }
       ]
     }
   ]

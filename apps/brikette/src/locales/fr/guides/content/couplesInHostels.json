@@ -1,25 +1,25 @@
 {
   "seo": {
-    "title": "Voyager en couple en auberge",
-    "description": "Choisir lit ou chambre privée, astuces confort, gestion du bruit et activités à partager."
+    "title": "Voyager en couple dans les auberges",
+    "description": "Conseils pour les dortoirs ou chambres privées, trouver le calme et établir les attentes."
   },
-  "linkLabel": "Voyager en couple en auberge",
+  "linkLabel": "Voyager en couple dans les auberges",
   "intro": [
-    "L'auberge convient aux couples si vous choisissez la bonne chambre, voyagez léger et alignez vos attentes."
+    "Les auberges fonctionnent pour les couples quand vous choisissez le bon type de chambre, voyagez léger et établissez les attentes ensemble."
   ],
   "sections": [
     {
       "id": "room-types",
-      "title": "Type de chambre",
+      "title": "Types de chambres",
       "body": [
-        "Réservez une chambre privée pour l'intimité ; si le budget est serré, partagez un dortoir et limitez les bagages pour gérer les escaliers."
+        "Réservez une chambre privée pour l'intimité ; si vous limitez le budget, partagez des lits superposés dans le même dortoir et gardez les bagages légers pour les escaliers."
       ]
     },
     {
       "id": "quiet",
-      "title": "Chercher le calme",
+      "title": "Trouver le calme",
       "body": [
-        "Prenez bouchons d'oreilles et masque, privilégiez les chambres éloignées du bar/espace commun et profitez des matinées pour visiter au calme."
+        "Emportez des bouchons d'oreilles et un masque pour les yeux, choisissez des chambres loin du bar ou des espaces communs, et utilisez les petits matins pour des visites plus calmes."
       ]
     }
   ],
@@ -27,7 +27,7 @@
     {
       "q": "Une auberge convient-elle aux couples ?",
       "a": [
-        "Oui — on profite de l'ambiance sociale et d'un bon rapport qualité-prix ; les chambres privées offrent un bon compromis confort/coût."
+        "Oui — vous obtenez une énergie sociale et un bon rapport qualité-prix ; les chambres privées équilibrent confort et coût."
       ]
     }
   ]

@@ -1,53 +1,53 @@
 {
   "seo": {
     "title": "Bådture i Positano",
-    "description": "Private, delte og solnedgangsture — hvad de koster, og hvordan du vælger den rette."
+    "description": "Private og gruppe bådture: hvad du kan forvente, prisintervaller og bookingtips i sæsonen."
   },
-  "linkLabel": "Bådture i Positano",
+  "linkLabel": "Bådture: Solnedgangskrydstogt til Private Chartere",
   "intro": [
-    "Bådture lader dig følge Amalfikystens klipper uden bilkøer; book i god tid i højsæsonen og hav en vejrplan B klar."
+    "Bådture lader dig følge Amalfikystens klipper uden at kæmpe med trafikken på vejen; book forud i topmånederne og hav en vejr-backup klar."
   ],
   "sections": [
     {
       "id": "group-tours",
       "title": "Gruppeture og delte både",
       "body": [
-        "3-timers delte cruises afgår fra Positano om formiddagen og inkluderer badestop; regn med €85–€120 pr. person i juli–august.",
-        "Medbring badesko og et let lag — brisen på havet er køligere end på terrasserne."
+        "3-timers delte krydstogt afgår fra Positano midt på formiddagen og inkluderer badestop; forvent €85–€120 pr. person i juli–august.",
+        "Medbring badesko og et let lag — brisen er køligere ude på havet end på terrasserne."
       ]
     },
     {
       "id": "private-charters",
       "title": "Private chartere",
       "body": [
-        "Skippere tager €550–€850 for halvdagsture i gozzo (op til 6 personer) plus brændstof; bekræft hvad der er inkluderet, fx prosecco eller håndklæder.",
-        "Forhandl starttid ved solopgang eller sen eftermiddag, hvis du vil have blødere lys og færre færgevåger."
+        "Skippere oplyser €550–€850 for halvdags gozzo-chartere (op til 6 personer) plus brændstof; bekræft inklusioner som prosecco eller håndklæder.",
+        "Forhandl starttider omkring solopgang eller sen eftermiddag, hvis du vil have blødere lys og færre bølger fra færgerne."
       ]
     },
     {
       "id": "weather-backup",
-      "title": "Vejr og plan B",
+      "title": "Vejr og backup-planer",
       "body": [
-        "Operatører aflyser, når vinden når styrke 4 og opefter; hav en bus- eller strandplan klar, så dagen stadig bliver afslappet.",
-        "Søen kan være urolig selv om sommeren — pak søsygearmbånd, hvis du er følsom."
+        "Operatører aflyser, når vinden overstiger styrke 4; hav en bus- eller strandplan klar, så dagen forbliver afslappet.",
+        "Havet kan være uroligt selv om sommeren — pak søsygebånd, hvis du er tilbøjelig til det."
       ]
     }
   ],
   "tips": [
-    "Mød op 20 minutter før afgang for at afregne og få de udleverede dæk-sko på.",
-    "Medbring en vandtæt pose (drybag) til telefoner og en 1 L vandflaske; skygge ombord er begrænset."
+    "Ankom 20 minutter før afgang for at afregne restbeløbet og tage de medfølgende dækssko på.",
+    "Medbring en drybag til telefoner og en 1 L (34 oz) vandflaske; skygge er begrænset ombord."
   ],
   "faqs": [
     {
       "q": "Skal jeg forudbestille?",
       "a": [
-        "Ja i maj–september — bådene bliver ofte udsolgt flere dage i forvejen, især solnedgangstider."
+        "Ja i maj–september — både bliver ofte udsolgt få dage i forvejen, især solnedgangspladser."
       ]
     },
     {
-      "q": "Får vi håndklæder?",
+      "q": "Er håndklæder inkluderet?",
       "a": [
-        "Gruppeture giver normalt ét pr. person; private skippere varierer, så medbring et hurtigtørrende håndklæde for en sikkerheds skyld."
+        "Gruppeture leverer normalt ét pr. person; private skippere varierer, så pak et hurtigtørrende håndklæde for en sikkerheds skyld."
       ]
     }
   ],

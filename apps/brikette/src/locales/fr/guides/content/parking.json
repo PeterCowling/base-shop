@@ -1,4 +1,9 @@
 {
+  "seo": {
+    "title": "Se garer à Positano : parkings, règles de stationnement et alternatives",
+    "description": "Où se garer à Positano, combien coûtent les parkings, quand le stationnement en voirie est réaliste et des options plus futées sans voiture."
+  },
+  "lastUpdated": "2026-02-04T00:00:00.000Z",
   "linkLabel": "Stationnement à Positano : où et combien",
   "intro": [
     "Le stationnement est rare et coûteux à Positano ; réservez un garage à l’avance et considérez que la voiture restera garée pendant tout le séjour."
@@ -29,10 +34,12 @@
       ]
     }
   ],
+  "tipsTitle": "Quick tips",
   "tips": [
     "Vérifiez les ZTL/alternances de plaques avant d’emprunter la SS163 ; les amendes arrivent à l’international plusieurs mois après.",
     "Préparez un sac de jour avec l’essentiel avant de remettre les clés — les garages rangent parfois les voitures pare-chocs contre pare-chocs jusqu’au départ."
   ],
+  "faqsTitle": "FAQ",
   "faqs": [
     {
       "q": "Puis-je me garer seulement quelques heures ?",
@@ -47,10 +54,5 @@
       ]
     }
   ],
-  "tocTitle": "Sur cette page",
-  "faqsTitle": "FAQ",
-  "seo": {
-    "title": "Se garer à Positano : parkings, règles de stationnement et alternatives",
-    "description": "Où se garer à Positano, combien coûtent les parkings, quand le stationnement en voirie est réaliste et des options plus futées sans voiture."
-  }
+  "tocTitle": "Sur cette page"
 }

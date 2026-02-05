@@ -79,9 +79,18 @@
   "perksGuarantee": "Ogni prenotazione effettuata direttamente sul nostro sito sblocca automaticamente questi vantaggi esclusivi.",
   "perksIntroLink": "Vedi tutti i vantaggi",
   "perksList": [
-    "Fino al 25 % di sconto sul prezzo normale con l'applicazione del coupon",
-    "Colazione inclusa",
-    "Drink serale in omaggio"
+    {
+      "title": "Fino al 25 % di sconto sul prezzo normale con l'applicazione del coupon",
+      "subtitle": "Applicato automaticamente"
+    },
+    {
+      "title": "Colazione inclusa",
+      "subtitle": "Incluso giornalmente"
+    },
+    {
+      "title": "Drink serale in omaggio",
+      "subtitle": "Selezione della casa"
+    }
   ],
   "expired": {
     "message": "Questa offerta è terminata."

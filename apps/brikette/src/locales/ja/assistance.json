@@ -6,6 +6,16 @@
   },
   "quickLinks": [
     {
+      "label": "ホステルFAQ",
+      "description": "ポジターノのHostel Briketteでの滞在に関するよくある質問への回答をすぐに確認できます。",
+      "slug": "hostelFaqs"
+    },
+    {
+      "label": "ハウスルール",
+      "description": "外部からのアルコール持ち込み禁止ポリシーや注意義務ガイドラインを含む、当館の基本ルールをお読みください。",
+      "slug": "rules"
+    },
+    {
       "label": "予約の変更・キャンセル",
       "description": "予定が変わったときに追加料金を避けるための期限とヒントをご確認ください。",
       "slug": "changingCancelling"
@@ -17,8 +27,8 @@
     },
     {
       "label": "ポジターノへの行き方",
-      "description": "フェリー・バス・タクシーを比較できるステップバイステップの交通ガイドです。",
-      "slug": "travelHelp"
+      "description": "フェリー、バス、タクシーを比較できるステップバイステップの交通ガイドです。",
+      "href": "how-to-get-here"
     }
   ],
   "contactCta": {

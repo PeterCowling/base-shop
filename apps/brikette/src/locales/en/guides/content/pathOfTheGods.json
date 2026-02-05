@@ -14,8 +14,14 @@
       "title": "Highlights at a glance",
       "body": [
         "Panoramic balconies float above Positano, Praiano, and Capri, so even short sections reward you with dramatic photo stops.",
-        "The gradients are steady rather than technical; confident walkers can tackle the path with good footwear and plenty of water.",
-        "Public transport keeps costs low compared with private drivers or guided excursions, letting you splurge on post-hike treats instead."
+        "The gradients are steady rather than technical; confident walkers can tackle the path with good footwear and plenty of water."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/pathOfTheGods.jpg",
+          "alt": "The Path of the Gods trail with sweeping Amalfi Coast views.",
+          "caption": "Sentiero degli Dei rewards you with cliff-top views even on shorter sections."
+        }
       ]
     },
     {

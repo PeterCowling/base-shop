@@ -3,10 +3,10 @@
     "relatedGuides": "Kapcsolódó útmutatók",
     "indexTitle": "Positano utazási útmutatók",
     "popularGuides": "Népszerű útmutatók",
+    "viewAll": "Összes útmutató",
     "helpfulGuides": "Hasznos útmutatók",
     "alsoSee": "Lásd még",
-    "sectionFallback": "Section {{position}}",
-    "viewAll": "Összes útmutató"
+    "sectionFallback": "Section {{position}}"
   },
   "meta": {
     "index": {
@@ -82,56 +82,156 @@
         "description": "Ötletek Amalfiba, Ravellóba, Caprira és Pompeiibe időzítési és közlekedési tippekkel."
       }
     },
-    "publicTransportAmalfi": {
-      "linkLabel": "Az Amalfi-part tömegközlekedési útmutatója",
-      "seo": {
-        "title": "Az Amalfi-part tömegközlekedési útmutatója",
-        "description": "Hogyan használd a buszokat és kompokat az Amalfi-parton bérletekkel, menetrendekkel és útvonalakkal."
-      }
-    },
-    "travelTipsFirstTime": {
-      "linkLabel": "Positano tippek első látogatóknak",
-      "seo": {
-        "title": "Positano tippek első látogatóknak",
-        "description": "Érkezés, csomag, fizetés és kapcsolódás — gyakorlati tanácsok első utadhoz."
-      }
-    },
-    "whatToPack": {
-      "linkLabel": "Mit vigyél az Amalfi-partra",
-      "seo": {
-        "title": "Mit vigyél az Amalfi-partra",
-        "description": "Szezonális csomagolási lista Positanóhoz és az Amalfi-parthoz."
-      }
-    },
     "positanoBeaches": {
-      "linkLabel": "Positano strandjai: Homok, nap és titkos öblök"
+      "linkLabel": "Positano strandjai: Homok, nap és titkos öblök",
+      "seo": {
+        "title": "Positano strandjai: Napsütés és titkos öblök",
+        "description": "Fedezd fel Positano legjobb strandjait az ikonikus Spiaggia Grandétól a rejtett öblökig és exkluzív strandklubokig."
+      }
     },
     "arienzoBeachClub": {
-      "linkLabel": "Arienzo strand: Positano butik strandklubbja"
+      "linkLabel": "Arienzo strand: Positano butik strandklubbja",
+      "seo": {
+        "title": "Arienzo strand: Positano butik strandklubbja",
+        "description": "Útmutató az Arienzo Beach Clubhoz lépcsőkkel, napágyakkal, étteremmel és útbaigazítással a Hostel Brikette-től."
+      }
     },
     "fornilloBeachGuide": {
-      "linkLabel": "Fornillo strand: Positano csendesebb alternatívája"
+      "linkLabel": "Fornillo strand: Positano csendesebb alternatívája",
+      "seo": {
+        "title": "Fornillo strand: Positano csendesebb alternatívája",
+        "description": "Békés Fornillo strand ingyenes homokkal, helyi éttermekkel és könnyű gyalogos megközelítéssel Positano központjából."
+      }
     },
     "lauritoBeachGuide": {
-      "linkLabel": "Laurito strand: Rejtett gyöngyszem a sziklák alatt"
+      "linkLabel": "Laurito strand: Rejtett gyöngyszem a sziklák alatt",
+      "seo": {
+        "title": "Laurito strand: Rejtett gyöngyszem a sziklák alatt",
+        "description": "Távoli Laurito strand több mint 450 lépcsővel, helyi tenger gyümölcseivel és türkiz vízzel távol a tömegektől."
+      }
     },
     "gavitellaBeachGuide": {
-      "linkLabel": "Gavitella strand: Praiano naplementés fürdőhelye"
+      "linkLabel": "Gavitella strand: Praiano naplementés fürdőhelye",
+      "seo": {
+        "title": "Gavitella strand: Praiano naplementés úszóhelye",
+        "description": "Praiano helyi strandja naplementés kilátással, nyugodt vízzel és könnyű buszos megközelítéssel Positanóból."
+      }
     },
     "marinaDiPraiaBeaches": {
-      "linkLabel": "Marina di Praia: Drámai öböl a sziklák között"
+      "linkLabel": "Marina di Praia: Drámai öböl a sziklák között",
+      "seo": {
+        "title": "Marina di Praia: Látványos öböl a sziklák között",
+        "description": "Festői Marina di Praia normann toronnyal, vízparti éttermekkel és kristálytiszta úszóöböllel."
+      }
     },
     "fiordoDiFuroreBeachGuide": {
-      "linkLabel": "Fiordo di Furore: A fjord strand a híd alatt"
+      "linkLabel": "Fiordo di Furore: A fjord strand a híd alatt",
+      "seo": {
+        "title": "Fiordo di Furore: A fjord strand a híd alatt",
+        "description": "Instagram-híres Furore Fjord smaragd vízzel, sziklaugrással és látványos hídkilátással busszal Positanóból."
+      }
     },
     "reginaGiovannaBath": {
-      "linkLabel": "Regina Giovanna: Római romok és természetes medence"
+      "linkLabel": "Regina Giovanna: Római romok és természetes medence",
+      "seo": {
+        "title": "Regina Giovanna: Római romok és természetes medence",
+        "description": "Történelmi természetes medence Sorrentóban római villa romjaival, tengerparti sétával és úszással tiszta vizekben."
+      }
     },
     "positanoMainBeach": {
-      "linkLabel": "Spiaggia Grande: Positano ikonikus főstrandja"
+      "linkLabel": "Spiaggia Grande: Positano ikonikus főstrandja",
+      "seo": {
+        "title": "Spiaggia Grande: Positano ikonikus főstrandja",
+        "description": "Teljes útmutató Positano főstrandjához napágy árakkal, ingyenes területekkel, éttermekkel és odajutási információkkal."
+      }
+    },
+    "positanoMainBeachWalkDown": {
+      "linkLabel": "Séta le Positano főstrandjára",
+      "seo": {
+        "title": "Séta a Hostel Brikette-től Positano fő strandjára",
+        "description": "Gyalogos útvonal a Hostel Brikette-től a Spiaggia Grandéig tereptárgyakkal és időbecslésekkel."
+      }
+    },
+    "positanoMainBeachBusDown": {
+      "linkLabel": "Busz le Positano főstrandjára",
+      "seo": {
+        "title": "Busz a Hostel Brikette-től Positano fő strandjára",
+        "description": "Vedd a SITA buszt Chiesa Nuova-ból le Positano strandjához megállóhelyekkel és menetrenddel."
+      }
+    },
+    "positanoMainBeachWalkBack": {
+      "linkLabel": "Séta vissza Positano főstrandjáról",
+      "seo": {
+        "title": "Sétáljon vissza a Hostel Brikette-hez Spiaggia Grande városából",
+        "description": "Felfelé vezető séta Positano főstrandjáról vissza a Hostel Brikette-hez lépésről lépésre útvonalvezetéssel."
+      }
+    },
+    "positanoMainBeachBusBack": {
+      "linkLabel": "Busz vissza Spiaggia Grandéból a Hostel Brikette-be",
+      "seo": {
+        "title": "Busz vissza a Hostel Brikette-be Positano fő strandjáról",
+        "description": "Kapd el a SITA buszt Positano strandjától fel Chiesa Nuová-ig felszállási pontokkal és menetrenddel."
+      }
+    },
+    "hostelBriketteToFornilloBeach": {
+      "linkLabel": "Hostel Brikette → Fornillo strand gyalogos útmutató",
+      "seo": {
+        "title": "Hostel Brikette → Fornillo Beach gyalogos útvonal"
+      }
+    },
+    "fornilloBeachToBrikette": {
+      "linkLabel": "Fornillo strand → Hostel Brikette visszaút",
+      "seo": {
+        "title": "Visszaút: Fornillo Beach → Hostel Brikette"
+      }
+    },
+    "hostelBriketteToFiordoDiFuroreBus": {
+      "linkLabel": "Hostel Brikette → Fiordo di Furore busszal",
+      "seo": {
+        "title": "Hostel Brikette → Fiordo di Furore busszal"
+      }
+    },
+    "fiordoDiFuroreBusReturn": {
+      "linkLabel": "Fiordo di Furore strand → Hostel Brikette busszal",
+      "seo": {
+        "title": "Fiordo di Furore strand → Hostel Brikette busszal"
+      }
+    },
+    "lauritoBeachBusDown": {
+      "linkLabel": "Busz Laurito Beachre",
+      "seo": {
+        "title": "Busz a Hostel Brikette-től Laurito Beachre"
+      }
+    },
+    "lauritoBeachBusBack": {
+      "linkLabel": "Busz vissza Laurito Beachről",
+      "seo": {
+        "title": "Busszal vissza a Hostel Brikette-be a Laurito Beachről"
+      }
+    },
+    "hostelBriketteToArienzoBus": {
+      "linkLabel": "Busz Arienzo Beachre",
+      "seo": {
+        "title": "Busz Arienzo Beachre a Hostel Brikette-től"
+      }
+    },
+    "arienzoBeachBusBack": {
+      "linkLabel": "Busz vissza a Hostel Brikette-be az Arienzo Beachről",
+      "seo": {
+        "title": "Busz vissza a Hostel Brikette-be az Arienzo Beachről"
+      }
+    },
+    "hostelBriketteToReginaGiovannaBath": {
+      "linkLabel": "Hostel Brikette → Regina Giovanna fürdő",
+      "seo": {
+        "title": "Hogyan juthatsz el a Hostel Brikette-től a Regina Giovanna fürdőhöz"
+      }
     },
     "sunriseHike": {
       "linkLabel": "Napfelkelte túra: Nézd a hajnalt Positano felett"
+    },
+    "santaMariaDelCastelloHike": {
+      "linkLabel": "Santa Maria del Castello: Hegyifalu túra"
     },
     "topOfTheMountainHike": {
       "linkLabel": "Monte Comune: Túra Positano legmagasabb kilátópontjához"
@@ -184,49 +284,67 @@
     "freeThingsPositano": {
       "linkLabel": "Ingyenes tevékenységek Positanóban: Költségbarát szórakozás"
     },
-    "santaMariaDelCastelloHike": {
-      "linkLabel": "Santa Maria del Castello: Mountain Village Hike"
+    "publicTransportAmalfi": {
+      "linkLabel": "Az Amalfi-part tömegközlekedési útmutatója",
+      "seo": {
+        "title": "Az Amalfi-part tömegközlekedési útmutatója",
+        "description": "Hogyan használd a buszokat és kompokat az Amalfi-parton bérletekkel, menetrendekkel és útvonalakkal."
+      }
+    },
+    "travelTipsFirstTime": {
+      "linkLabel": "Positano tippek első látogatóknak",
+      "seo": {
+        "title": "Positano tippek első látogatóknak",
+        "description": "Érkezés, csomag, fizetés és kapcsolódás — gyakorlati tanácsok első utadhoz."
+      }
+    },
+    "whatToPack": {
+      "linkLabel": "Mit vigyél az Amalfi-partra",
+      "seo": {
+        "title": "Mit vigyél az Amalfi-partra",
+        "description": "Szezonális csomagolási lista Positanóhoz és az Amalfi-parthoz."
+      }
     }
   },
   "dev": {
     "statusPill": {
-      "title": "Guide status: {{status}} (click to toggle)"
+      "title": "Útmutató állapota: {{status}} (kattintson a váltáshoz)"
     },
     "editorialPanel": {
-      "title": "Editorial workflow",
+      "title": "Szerkesztői munkafolyamat",
       "status": {
-        "draft": "Draft",
-        "review": "In review",
-        "live": "Live"
+        "draft": "Piszkozat",
+        "review": "Felülvizsgálat alatt",
+        "live": "Élő"
       },
       "workflow": {
-        "draftPreview": "Draft preview",
-        "published": "Published",
-        "pending": "Pending publication",
-        "allComplete": "All checklist items complete",
-        "outstanding_one": "{{count}} outstanding item",
-        "outstanding_other": "{{count}} outstanding items"
+        "draftPreview": "Piszkozat előnézet",
+        "published": "Publikált",
+        "pending": "Publikálásra vár",
+        "allComplete": "Minden ellenőrző elem kész",
+        "outstanding_one": "{{count}} függőben lévő elem",
+        "outstanding_other": "{{count}} függőben lévő elem"
       },
       "draftPath": {
-        "label": "Draft path",
-        "dashboardCta": "Open draft dashboard"
+        "label": "Piszkozat útvonala",
+        "dashboardCta": "Piszkozat irányítópult megnyitása"
       },
       "publish": {
-        "heading": "Publish to",
-        "primary": "Primary"
+        "heading": "Publikálás ide",
+        "primary": "Elsődleges"
       },
       "checklist": {
-        "heading": "Completion checklist",
+        "heading": "Teljesítési ellenőrző lista",
         "status": {
-          "missing": "Missing",
-          "inProgress": "In progress",
-          "complete": "Complete"
+          "missing": "Hiányzik",
+          "inProgress": "Folyamatban",
+          "complete": "Kész"
         }
       },
       "areaLabels": {
-        "howToGetHere": "How to get here",
-        "help": "Help centre",
-        "experience": "Experiences"
+        "howToGetHere": "Hogyan jutni ide",
+        "help": "Segítség központ",
+        "experience": "Élmények"
       }
     }
   }

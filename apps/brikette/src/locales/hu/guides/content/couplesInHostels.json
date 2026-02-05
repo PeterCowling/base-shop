@@ -1,33 +1,33 @@
 {
   "seo": {
-    "title": "Páros utazás hostelben",
-    "description": "Tippek hálótermekhez vagy priváthoz, csendes idősávok és elvárások egyeztetése."
+    "title": "Párokként utazni hostelekben",
+    "description": "Tippek hálótermekhez vagy privát szobákhoz, nyugalom megtalálása és elvárások meghatározása."
   },
-  "linkLabel": "Páros utazás hostelben",
+  "linkLabel": "Párokként utazni hostelekben",
   "intro": [
-    "A hostelek jól működhetnek párok számára, ha okosan választjátok ki a szobatípust, könnyű csomaggal utaztok, és közösen egyeztettek a közös szabályokról."
+    "A hostelek működnek párok számára, ha a megfelelő szobatípust választod, könnyedén csomagolsz, és együtt határozod meg az elvárásokat."
   ],
   "sections": [
     {
       "id": "room-types",
       "title": "Szobatípusok",
       "body": [
-        "Foglaljatok privát szobát az intimitás érdekében; ha szűkebb a költségvetés, osszátok meg ugyanazon hálótermek emeletes ágyait, és tartsátok könnyűnek a csomagokat a lépcsők miatt."
+        "Foglalj privát szobát a magánéletért; ha szűkös a költségvetés, osszatok meg ágyakat ugyanabban a hálóteremben, és tartsátok könnyűnek a csomagot a lépcsők miatt."
       ]
     },
     {
       "id": "quiet",
-      "title": "Nyugalom keresése",
+      "title": "Nyugalom megtalálása",
       "body": [
-        "Vigyél magaddal füldugót és szemmaszkot, válassz szobát távol a bár- vagy közösségi terektől, és a nyugodtabb városnézéshez használd a kora reggelt."
+        "Vigyél fülzárót és szemmaszkot, válassz szobát távol a bártól vagy közös terektől, és használd a korai reggeli órákat nyugodtabb városnézéshez."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "Alkalmas egy hostel pároknak?",
+      "q": "Alkalmas-e a hostel párok számára?",
       "a": [
-        "Igen — élvezhetitek a közösségi hangulatot és a jó ár-érték arányt, a privát szoba pedig kényelmes kompromisszum a kényelem és költség között."
+        "Igen — szociális energiát és jó értéket kapsz; a privát szobák egyensúlyt teremtenek a kényelem és a költség között."
       ]
     }
   ]

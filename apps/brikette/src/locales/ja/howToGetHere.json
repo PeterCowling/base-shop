@@ -94,23 +94,57 @@
         "description": "すでにポジターノに到着したけれど、ホステルへの行き方がわからない？ こちらのガイドをチェックしてください:",
         "image": {
           "src": "/img/positano-panorama.avif",
-          "alt": "崖沿いに建つポジターノの家々のパノラマビュー"
+          "alt": "崖沿いに建つポジターノの家々のパノラマビュー",
+          "caption": "ポジターノは急斜面です — 荷物がある場合は特に階段を想定してください。"
         },
         "links": [
           {
             "label": "キエーザ・ヌオーヴァ／Bar Internazionale からHostel Briketteへ",
             "href": "chiesa-nuova-bar-internazionale-to-hostel-brikette",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "5～10分",
+              "cost": "無料",
+              "walking": "約140メートル+約30段の階段",
+              "luggageFriendly": 2,
+              "seasonality": "通年"
+            }
           },
           {
             "label": "フェリー乗り場からHostel Brikette",
             "href": "ferry-dock-to-hostel-brikette-with-luggage",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "20～45分（ポーター/インテルノバス次第）",
+              "cost": "€2～€6/人（+ ポーター任意）",
+              "walking": "港の階段；ポーターで荷物運び軽減",
+              "luggageFriendly": 1,
+              "seasonality": "通年"
+            }
+          },
+          {
+            "label": "Hostel Brikette からフェリー乗り場へ",
+            "href": "hostel-brikette-to-ferry-dock-with-luggage",
+            "internal": true,
+            "facts": {
+              "duration": "20～30分（荷物があるともっとかかる）",
+              "cost": "無料",
+              "walking": "階段 + 道路横断",
+              "luggageFriendly": 1,
+              "seasonality": "通年"
+            }
           },
           {
             "label": "Hostel Brikette からキエーザ・ヌオーヴァ／Bar Internazionaleへ",
             "href": "hostel-brikette-to-chiesa-nuova-bar-internazionale",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "20～30分（荷物があると長め）",
+              "cost": "無料",
+              "walking": "階段 + 道路横断",
+              "luggageFriendly": 1,
+              "seasonality": "通年"
+            }
           }
         ]
       },
@@ -118,28 +152,57 @@
         "name": "アマルフィ",
         "image": {
           "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
-          "alt": "海岸線ルートのアマルフィにあるSITA Sudバス停"
+          "alt": "海岸線ルートのアマルフィにあるSITA Sudバス停",
+          "caption": "アマルフィのバスターミナルでSITAバスを探してください。"
         },
         "links": [
           {
             "label": "アマルフィ → ポジターノ（バス）",
             "href": "amalfi-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "45～90分（交通状況次第）",
+              "cost": "€2～€4/人",
+              "walking": "最後に短い階段（約30段）",
+              "luggageFriendly": 2,
+              "seasonality": "通年"
+            }
           },
           {
             "label": "ポジターノ → アマルフィ（バス）",
             "href": "positano-amalfi-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "45～90分（交通状況次第）",
+              "cost": "€2～€4/人",
+              "walking": "最初/最後に短い階段（約30段）",
+              "luggageFriendly": 2,
+              "seasonality": "通年"
+            }
           },
           {
             "label": "アマルフィ → ポジターノ（フェリー）",
             "href": "amalfi-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "25～45分（航海）+ 港での乗換",
+              "cost": "€10～€20/人",
+              "walking": "港へ/からの階段",
+              "luggageFriendly": 1,
+              "seasonality": "季節運行（4～10月）"
+            }
           },
           {
             "label": "ポジターノ → アマルフィ（フェリー）",
             "href": "positano-amalfi-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "25～45分（航海）+ 港での乗換",
+              "cost": "€10～€20/人",
+              "walking": "港へ/からの階段",
+              "luggageFriendly": 1,
+              "seasonality": "季節運行（4～10月）"
+            }
           }
         ]
       },
@@ -147,18 +210,33 @@
         "name": "カプリ",
         "image": {
           "src": "/img/directions/positano-capri-ferry-img09.jpg",
-          "alt": "カプリのマリーナ・グランデに接岸するフェリー"
+          "alt": "カプリのマリーナ・グランデに接岸するフェリー",
+          "caption": "カプリ行きフェリーはマリーナ・グランデから出港します。"
         },
         "links": [
           {
             "label": "カプリ → ポジターノ（フェリー）",
             "href": "capri-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "30～60分（航海）+ 港での乗換",
+              "cost": "€20～€35/人",
+              "walking": "港へアクセス；ポジターノで階段の可能性",
+              "luggageFriendly": 1,
+              "seasonality": "季節運行（4～10月）"
+            }
           },
           {
             "label": "ポジターノ → カプリ（フェリー）",
             "href": "positano-capri-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "30～60分（航海）+ 港での乗換",
+              "cost": "€20～€35/人",
+              "walking": "港へアクセス；ポジターノで階段の可能性",
+              "luggageFriendly": 1,
+              "seasonality": "季節運行（4～10月）"
+            }
           }
         ]
       },
@@ -166,33 +244,69 @@
         "name": "ナポリ中心部",
         "image": {
           "src": "/img/tabacchi.webp",
-          "alt": "ナポリ中心部の路面タバッキ店"
+          "alt": "ナポリ中心部の路面タバッキ店",
+          "caption": "乗車前にタバッキ店やキオスクでバスチケットを購入してください。"
         },
         "links": [
           {
             "label": "ナポリ中心部 → ポジターノ（電車＋バス）",
             "href": "naples-center-train-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2～3.5時間（乗換含む）",
+              "cost": "€15～€25/人",
+              "walking": "少ない；ソレントで乗換",
+              "luggageFriendly": 2,
+              "seasonality": "通年"
+            }
           },
           {
             "label": "ポジターノ → ナポリ中心部（バス＋電車）",
             "href": "positano-naples-center-bus-train",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2～3.5時間（乗換含む）",
+              "cost": "€15～€25/人",
+              "walking": "最初/最後に短い階段（約30段）",
+              "luggageFriendly": 2,
+              "seasonality": "通年"
+            }
           },
           {
             "label": "ナポリ中心部 → ポジターノ（フェリー）",
             "href": "naples-center-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "3～4.5時間（港での乗換含む）",
+              "cost": "€25～€45/人",
+              "walking": "港へ乗換 + ポジターノで階段",
+              "luggageFriendly": 1,
+              "seasonality": "季節運行（4～10月）"
+            }
           },
           {
             "label": "ポジターノ → ナポリ中心部（フェリー）",
             "href": "positano-naples-center-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "3～4.5時間（港での乗換含む）",
+              "cost": "€25～€45/人",
+              "walking": "ポジターノで階段 + 港から乗換",
+              "luggageFriendly": 1,
+              "seasonality": "季節運行（4～10月）"
+            }
           },
           {
             "label": "ポジターノ → ナポリ（フェリー）の案内",
             "href": "positano-to-naples-directions-by-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "3～4.5時間（港での乗換含む）",
+              "cost": "€25～€45/人",
+              "walking": "ポジターノで階段 + 港から乗換",
+              "luggageFriendly": 1,
+              "seasonality": "季節運行（4～10月）"
+            }
           }
         ]
       },
@@ -200,18 +314,33 @@
         "name": "ナポリ空港",
         "image": {
           "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
-          "alt": "ナポリ国際空港外のCurreriシャトル乗り場"
+          "alt": "ナポリ国際空港外のCurreriシャトル乗り場",
+          "caption": "バスを乗り換えるソレント駅"
         },
         "links": [
           {
             "label": "ポジターノ → ナポリ空港（バス）",
             "href": "positano-naples-airport-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2～3.5時間（ソレントでの乗換含む）",
+              "cost": "€15～€25/人",
+              "walking": "最初/最後に短い階段（約30段）",
+              "luggageFriendly": 2,
+              "seasonality": "通年"
+            }
           },
           {
             "label": "ナポリ空港 → ポジターノ（バス）",
             "href": "naples-airport-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2～3.5時間（ソレントでの乗換含む）",
+              "cost": "€15～€25/人",
+              "walking": "最後に短い階段（約30段）",
+              "luggageFriendly": 2,
+              "seasonality": "通年"
+            }
           }
         ]
       },
@@ -219,28 +348,57 @@
         "name": "サレルノ",
         "image": {
           "src": "/img/hostel-coastal-horizon.webp",
-          "alt": "サレルノ方面のアマルフィ海岸を望む景色"
+          "alt": "サレルノ方面のアマルフィ海岸を望む景色",
+          "caption": "サレルノは列車＋バス、または季節運行のフェリーで接続されています。"
         },
         "links": [
           {
             "label": "サレルノ → ポジターノ（バス）",
             "href": "salerno-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2.5～4時間（アマルフィ経由）",
+              "cost": "€6～€12/人",
+              "walking": "少ない；アマルフィでバス乗換",
+              "luggageFriendly": 2,
+              "seasonality": "通年"
+            }
           },
           {
             "label": "ポジターノ → サレルノ（バス）",
             "href": "positano-salerno-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2.5～4時間（アマルフィ経由）",
+              "cost": "€6～€12/人",
+              "walking": "最初/最後に短い階段（約30段）",
+              "luggageFriendly": 2,
+              "seasonality": "通年"
+            }
           },
           {
             "label": "サレルノ → ポジターノ（フェリー）",
             "href": "salerno-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1～2時間（航海）+ 港での乗換",
+              "cost": "€15～€30/人",
+              "walking": "港の階段；ポーター推奨",
+              "luggageFriendly": 1,
+              "seasonality": "季節運行（4～10月）"
+            }
           },
           {
             "label": "ポジターノ → サレルノ（フェリー）",
             "href": "positano-salerno-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1～2時間（航海）+ 港での乗換",
+              "cost": "€15～€30/人",
+              "walking": "港の階段；ポーター推奨",
+              "luggageFriendly": 1,
+              "seasonality": "季節運行（4～10月）"
+            }
           }
         ]
       },
@@ -248,23 +406,45 @@
         "name": "ラヴェッロ",
         "image": {
           "src": "/img/hostel-communal-terrace-lush-view.webp",
-          "alt": "ラヴェッロ近郊の海岸を見渡す崖上の庭園"
+          "alt": "ラヴェッロ近郊の海岸を見渡す崖上の庭園",
+          "caption": "ラヴェッロはアマルフィ経由でバスでアクセスできます。"
         },
         "links": [
           {
             "label": "ラヴェッロ → ポジターノ（バス）",
             "href": "ravello-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1.5～2.5時間（アマルフィ経由）",
+              "cost": "€4～€8/人",
+              "walking": "少ない；アマルフィで乗換",
+              "luggageFriendly": 2,
+              "seasonality": "通年"
+            }
           },
           {
             "label": "ポジターノ → ラヴェッロ（バス）",
             "href": "positano-ravello-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1.5～2.5時間（アマルフィ経由）",
+              "cost": "€4～€8/人",
+              "walking": "最初/最後に短い階段（約30段）",
+              "luggageFriendly": 2,
+              "seasonality": "通年"
+            }
           },
           {
             "label": "ポジターノ → ラヴェッロ（フェリー＋バス）",
             "href": "positano-ravello-ferry-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2～3時間（フェリー + バス）",
+              "cost": "€15～€30/人",
+              "walking": "港の階段 + バス接続",
+              "luggageFriendly": 1,
+              "seasonality": "季節運行（4～10月）"
+            }
           }
         ]
       }
@@ -362,7 +542,7 @@
               },
               {
                 "type": "link",
-                "label": "徒歩で移動",
+                "label": "サレルノの港と駅の間を徒歩で移動",
                 "href": "https://www.google.com/maps/dir/Travelmar+-+Traghetti+Salerno,+Piazza+della+Concordia,+Salerno,+SA/Salerno+Train+Station,+Via+Zara,+Salerno,+SA/@40.6735022,14.7687986,18z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133bc2396c885437:0xe1ccfe3b3efd24a5!2m2!1d14.7675186!2d40.6717407!1m5!1m1!1s0x133bc3b98e72261f:0x6251217dd6a0c63d!2m2!1d14.772223!2d40.6752304!3e2",
                 "external": true
               },
@@ -449,22 +629,50 @@
       {
         "label": "ソレント発（バス）",
         "href": "sorrento-positano-bus",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "45～75分",
+          "cost": "€2～€4/人",
+          "walking": "最後に短い階段（約30段）",
+          "luggageFriendly": 2,
+          "seasonality": "通年"
+        }
       },
       {
         "label": "ポジターノ発（バス）",
         "href": "positano-sorrento-bus",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "45～75分",
+          "cost": "€2～€4/人",
+          "walking": "最初/最後に短い階段（約30段）",
+          "luggageFriendly": 2,
+          "seasonality": "通年"
+        }
       },
       {
         "label": "ソレント発（フェリー）",
         "href": "sorrento-positano-ferry",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "30～45分（航海）+ 港の階段",
+          "cost": "€15～€25/人",
+          "walking": "港の階段；ポーター推奨",
+          "luggageFriendly": 1,
+          "seasonality": "季節運行（4～10月）"
+        }
       },
       {
         "label": "ポジターノ発（フェリー）",
         "href": "positano-sorrento-ferry",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "30～45分（航海）+ 港の階段",
+          "cost": "€15～€25/人",
+          "walking": "港の階段；ポーター推奨",
+          "luggageFriendly": 1,
+          "seasonality": "季節運行（4～10月）"
+        }
       }
     ]
   },

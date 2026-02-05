@@ -7,15 +7,6 @@
     "eyebrow": "体験",
     "title": "Hostel Briketteの体験",
     "description": "夕暮れのテラスバーでスプリッツを味わい、スタッフ厳選のハイキングに出かけ、デジタルコンシェルジュで当日の計画を整えましょう。",
-    "supporting": "登録ゲストならすべての体験をご利用いただけます。同じ旅の友人が別の宿に泊まっていても、お気軽にメッセージでご相談ください。",
-    "primaryCta": "宿泊を予約する",
-    "secondaryCta": "バーメニューを見る",
-    "tertiaryCta": "デジタルコンシェルジュに相談する",
-    "primaryCtaAria": "Hostel Briketteの宿泊を予約する",
-    "secondaryCtaAria": "Hostel Briketteのバーメニューを見る",
-    "tertiaryCtaAria": "Hostel Briketteのデジタルコンシェルジュにメッセージを送る",
-    "breakfastCta": "朝食メニューを見る",
-    "breakfastCtaAria": "朝食メニューを見る",
     "scrollNudge": "下から体験タイプを選ぶ"
   },
   "sections": {
@@ -159,11 +150,6 @@
         "title": "グルメ",
         "description": "お手頃価格でおいしい店を見つけよう。",
         "imageAlt": "地元トラットリアの新鮮なイタリア料理"
-      },
-      "itinerary": {
-        "title": "モデルコース",
-        "description": "旅行日数に合わせたプラン例。",
-        "imageAlt": "上空から見たアマルフィ海岸の絶景"
       },
       "more": {
         "title": "その他のガイド",

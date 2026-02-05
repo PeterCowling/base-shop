@@ -7,15 +7,6 @@
     "eyebrow": "Esperienze",
     "title": "Tramonti, mattine lente e consigli da chi vive qui",
     "description": "Abbina il tuo soggiorno a drink in terrazza, escursioni curate e a un concierge digitale che ti aggiorna prima ancora di arrivare.",
-    "supporting": "Tutte le attività sono aperte agli ospiti registrati; se viaggi con amici esterni scrivici e verifichiamo la disponibilità.",
-    "primaryCta": "Prenota il tuo soggiorno",
-    "secondaryCta": "Apri il menu del bar",
-    "tertiaryCta": "Scrivi al concierge digitale",
-    "primaryCtaAria": "Prenota il tuo soggiorno all'Hostel Brikette",
-    "secondaryCtaAria": "Visualizza il menu del bar dell'Hostel Brikette",
-    "tertiaryCtaAria": "Invia un messaggio al concierge digitale dell'Hostel Brikette",
-    "breakfastCta": "Vedi il menu della colazione",
-    "breakfastCtaAria": "Vedi il menu della colazione",
     "scrollNudge": "Scopri le esperienze per categoria"
   },
   "sections": {
@@ -117,11 +108,6 @@
         "title": "Gastronomia",
         "description": "Dove mangiare bene senza spendere troppo.",
         "imageAlt": "Piatti italiani freschi in una trattoria locale"
-      },
-      "itinerary": {
-        "title": "Itinerari",
-        "description": "Piani su più giorni in base alla durata del soggiorno.",
-        "imageAlt": "Vista panoramica della Costiera Amalfitana dalle alture"
       },
       "more": {
         "title": "Altre guide",

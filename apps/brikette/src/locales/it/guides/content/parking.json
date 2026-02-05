@@ -1,4 +1,9 @@
 {
+  "seo": {
+    "title": "Parcheggiare a Positano: garage, regole stradali e alternative",
+    "description": "Dove parcheggiare a Positano, quanto costano i garage, quando i posti in strada sono realistici e opzioni piu intelligenti senza auto."
+  },
+  "lastUpdated": "2026-02-04T00:00:00.000Z",
   "linkLabel": "Parcheggiare a Positano: dove e quanto costa",
   "intro": [
     "Il parcheggio a Positano e scarso e costoso; prenota un garage in anticipo e considera l'auto come depositata per il soggiorno."
@@ -29,10 +34,12 @@
       ]
     }
   ],
+  "tipsTitle": "Quick tips",
   "tips": [
     "Controlla i divieti ZTL/numero di targa alternato prima di guidare sulla SS163; le multe arrivano mesi dopo anche all'estero.",
     "Prepara una borsa giornaliera con l'essenziale prima di consegnare le chiavi: il garage potrebbe parcheggiare le auto paraurti contro paraurti fino al ritiro."
   ],
+  "faqsTitle": "Domande frequenti",
   "faqs": [
     {
       "q": "Posso parcheggiare per poche ore?",
@@ -47,10 +54,5 @@
       ]
     }
   ],
-  "tocTitle": "In questa pagina",
-  "faqsTitle": "Domande frequenti",
-  "seo": {
-    "title": "Parcheggiare a Positano: garage, regole stradali e alternative",
-    "description": "Dove parcheggiare a Positano, quanto costano i garage, quando i posti in strada sono realistici e opzioni piu intelligenti senza auto."
-  }
+  "tocTitle": "In questa pagina"
 }

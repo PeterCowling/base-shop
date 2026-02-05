@@ -33,6 +33,15 @@
         "Your reservation is considered confirmed the instant you receive our automated confirmation email. This document details your booking reference, arrival date, number of nights, bed type (mixed dorm, female-only dorm, or private room), and total cost. Keep this email handy - you'll need to show it at check-in if your surname doesn't match the booking name.",
         "**Online Travel Agencies**",
         "While booking directly guarantees the best price and flexibility, we proudly partner with Hostelworld, Booking.com, and other OTAs so you can read thousands of verified traveller reviews before deciding to stay at Hostel Brikette - the top-rated, only hostel on Italy's legendary Amalfi Coast."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Iphone_calendar_screen.jpg/1280px-Iphone_calendar_screen.jpg",
+          "alt": "iPhone calendar screen with dates and events visible",
+          "caption": "Save your confirmation so you can find it quickly on arrival day.",
+          "width": 1280,
+          "height": 960
+        }
       ]
     },
     {

@@ -1,55 +1,116 @@
 {
   "seo": {
-    "title": "Limoncello & ẩm thực địa phương",
-    "description": "Nguồn gốc, cách thưởng thức và tour nếm thử quanh Positano."
+    "title": "Limoncello & Ẩm Thực Địa Phương trên Bờ Biển Amalfi",
+    "description": "Hướng dẫn tiết kiệm về limoncello, ẩm thực địa phương và món chanh của Positano. Nơi nếm mẫu miễn phí, chai xác thực rẻ nhất và nhà hàng địa phương giá cả phải chăng."
   },
-  "linkLabel": "Limoncello & ẩm thực địa phương",
+  "linkLabel": "Nếm Thử Positano: Limoncello, Chanh & Hương Vị Địa Phương",
   "intro": [
-    "Bản dịch đang được chuẩn bị.",
-    "Bản dịch đang được chuẩn bị."
+    "Limoncello và mọi thứ liên quan đến chanh định nghĩa Bờ Biển Amalfi — nhưng bạn không cần ngân sách lớn để nếm thử những điều tuyệt nhất.",
+    "Đây là nơi bạn có thể nếm miễn phí, chai nào mang lại giá trị tốt nhất cho đồng euro của bạn, và cách ăn uống như người địa phương mà không có giá bẫy khách du lịch."
   ],
-  "tocTitle": "On this page",
+  "tocTitle": "Trong trang này",
   "sections": [
     {
-      "id": "tasting",
-      "title": "Tasting",
+      "id": "free-tasting",
+      "title": "Nếm thử miễn phí & nơi để thử",
       "body": [
-        "Bản dịch đang được chuẩn bị.",
-        "Bản dịch đang được chuẩn bị."
+        "Hầu hết các cửa hàng limoncello nhỏ và botteghe ở Positano đều cung cấp mẫu miễn phí — đó là thực hành tiêu chuẩn, không phải lợi ích du lịch. Bước vào bất kỳ nhà sản xuất thủ công nào và hỏi lịch sự; họ thường rót 2-3 loại để bạn có thể so sánh.",
+        "Những địa điểm nếm thử tốt nhất là trên Via dei Mulini và các đường phố phía sau Chiesa Nuova — cách xa bẫy khách du lịch ven bờ. Tìm kiếm các cửa hàng gia đình với biển hiệu đơn giản và người địa phương duyệt; họ ít gây phiền toái hơn và limoncello thường mạnh hơn và ít đường hơn.",
+        "Ghép nối việc nếm của bạn với kẹo chanh miễn phí (hầu hết các cửa hàng đề xuất những thứ này) hoặc lấy một €1,50 granita chanh từ một gelateria để làm sạch vị giác giữa các ngụm.",
+        "%IMAGE:limoncello-tasting-shop.jpg|Local limoncello shop offering free tasting samples in Positano%",
+        "Mẹo chuyên nghiệp từ nhà trọ: các cửa hàng trên Via Cristoforo Colombo (con đường uốn khúc lên từ Chiesa Nuova) thường có ít khách du lịch hơn và rót hào phóng hơn. Chúng tôi đã thấy người địa phương mang chai của họ trở lại để nạp lại ở giá bán buôn — dấu hiệu bạn đã tìm thấy đúng chỗ."
       ]
     },
     {
-      "id": "purchase",
-      "title": "Buying & shipping",
+      "id": "buying-smart",
+      "title": "Mua chai: điều cần tìm kiếm & điều cần tránh",
       "body": [
-        "Bản dịch đang được chuẩn bị.",
-        "Bản dịch đang được chuẩn bị."
+        "Limoncello thực sự nên liệt kê chanh Sorrento IGP (hoặc Costa d'Amalfi IGP) trên nhãn và có ít nhất 28-30% nồng độ cồn. Nếu nó sáng màu vàng neon hoặc nghi ngờ rẻ (dưới €8 cho 500ml), có lẽ đó là hương liệu nhân tạo và xi-rô đường.",
+        "Giá trị tốt nhất: chai 500ml từ nhà sản xuất địa phương có giá €10-15 ở Positano, €8-12 ở Praiano hoặc thị trấn Amalfi. Đừng trả quá €15 trừ khi đó là hỗn hợp thủ công cao cấp với cam quýt bất thường (bergamot, cedro).",
+        "Các cửa hàng sân bay và ga tàu tính phí cao hơn 30-50% cho cùng một chai. Nếu bạn bay ra khỏi Naples, hãy mua ở Positano và đóng gói cẩn thận trong hành lý ký gửi (bọc trong quần áo + túi nhựa).",
+        "Giới hạn chất lỏng hãng hàng không: tối đa 100ml trong hành lý xách tay. Chai tiêu chuẩn là 500ml hoặc 750ml, vì vậy hành lý ký gửi là lựa chọn duy nhất của bạn. Chúng tôi chưa bao giờ có chai bị vỡ khi được đóng gói đúng cách ở giữa ba lô.",
+        "%IMAGE:limoncello-bottles-local.jpg|Authentic limoncello bottles from local Amalfi Coast producers%"
       ]
     },
     {
-      "id": "cooking",
-      "title": "Cooking with lemons",
+      "id": "budget-eats",
+      "title": "Ẩm thực địa phương giá rẻ: món chanh đáng thử",
       "body": [
-        "Bản dịch đang được chuẩn bị.",
-        "Bản dịch đang được chuẩn bị."
+        "Bỏ qua menu du lịch €25 trên bãi biển chính. Thay vào đó hãy đến Da Vincenzo (Via Pasitea 172) để có món mì ống chanh €8-12 — spaghetti al limone của họ đơn giản, tươi và sử dụng chanh địa phương. Chỉ tiền mặt, không đặt chỗ, người địa phương xếp hàng lúc 19:00.",
+        "Đối với món tráng miệng, delizia al limone (bánh bông lan chanh ngâm kem limoncello) có giá €4-6 tại hầu hết các pasticcerien. Yêu thích của chúng tôi: Pasticceria La Zagara (Via dei Mulini) — €5 cho một miếng hào phóng, chỗ ngồi ngoài trời, đổ nước miễn phí.",
+        "Bữa sáng tiết kiệm: lấy một sfogliatella (€2-3) và espresso (€1,20) tại một quầy bar, sau đó mua một kg chanh tươi từ người bán rau (€2-4) để ăn vặt hoặc làm nước chanh tươi ở nhà trọ.",
+        "Sân thượng %LINK:chiesaNuovaArrivals|nhà trọ% hoàn hảo để lắp ráp bữa ăn chanh của riêng bạn: mua mozzarella tươi (€3-4), cà chua (€2/kg), húng quế và chanh tại chợ Chiesa Nuova (sáng thứ Năm), sau đó rưới dầu ô liu địa phương. Tổng chi phí: €10-12 cho hai người.",
+        "%IMAGE:spaghetti-al-limone.jpg|Fresh spaghetti al limone with Amalfi lemons at local restaurant%"
+      ]
+    },
+    {
+      "id": "cooking-tips",
+      "title": "Nấu ăn với chanh Amalfi",
+      "body": [
+        "Chanh Amalfi (sfusato amalfitano) có vỏ dày, thơm và ít chua hơn chanh siêu thị — sử dụng chúng cho các món ăn nơi vỏ tỏa sáng.",
+        "Sử dụng cổ điển: nạo vỏ xuống nước mì ống cho spaghetti al limone, nghiền vỏ với đường cho limoncello tự làm, hoặc kẹo các dải dày để trang trí món tráng miệng.",
+        "Bảo quản: giữ chanh ở nơi mát, tối (không phải trong tủ lạnh) tối đa 2 tuần. Nếu bạn mua một túi lớn tại chợ, vắt một nửa và đông nước chanh trong khay đá để sử dụng sau.",
+        "Vỏ dư thừa: đun sôi với nước và đường để làm xi-rô chanh cho cocktail, hoặc làm khô chúng và thêm vào trà. Không lãng phí, hương vị tối đa.",
+        "%IMAGE:amalfi-lemons-cooking.jpg|Fresh Amalfi Coast lemons (sfusato amalfitano) for cooking%"
+      ]
+    },
+    {
+      "id": "ordering-etiquette",
+      "title": "Phép lịch sự đặt hàng & tránh bẫy khách du lịch",
+      "body": [
+        "Nếu một nhà hàng có menu bằng 6 ngôn ngữ và hình ảnh của mọi món ăn, đó là bẫy khách du lịch. Tìm kiếm menu viết tay bằng tiếng Ý với tối đa 8-12 món — đó là nơi người địa phương ăn.",
+        "Limoncello được phục vụ truyền thống lạnh băng sau bữa ăn như một digestif, không phải trước hoặc trong. Nếu một nơi đẩy cocktail limoncello trước bữa tối, họ đang nhắm vào khách du lịch.",
+        "Coperto (phí đậy nắp) là tiêu chuẩn ở Ý: €1,50-3 mỗi người cho bánh mì và dịch vụ bàn. Nếu nó trên €3, bạn đang trả quá nhiều. Kiểm tra giá 'coperto' của menu trước khi ngồi.",
+        "Nước: 'Acqua naturale' là nước tĩnh, 'frizzante' là có ga. Nước máy an toàn nhưng hiếm khi được phục vụ tại nhà hàng — đặt một chai €2-3 và đổ lại miễn phí từ đài phun nước nhà trọ trước khi ra ngoài.",
+        "%IMAGE:local-italian-restaurant.jpg|Authentic local restaurant with handwritten Italian menu%",
+        "Văn hóa tiền bo: phí dịch vụ (servizio) đôi khi được bao gồm trong hóa đơn. Nếu không, lịch sự nhưng không bắt buộc để lại €1-2 hoặc làm tròn hóa đơn. Người Ý không đưa tiền bo 15-20% như ở Mỹ — tiết kiệm euro của bạn cho nhiều limoncello hơn."
+      ]
+    },
+    {
+      "id": "market-shopping",
+      "title": "Mua sắm chợ & mang chanh về nhà",
+      "body": [
+        "Chợ %LINK:chiesaNuovaArrivals|Chiesa Nuova% (thứ Năm 08:00-13:00) bán sản phẩm tươi, bao gồm chanh Amalfi khổng lồ với giá €2-4/kg. So sánh với €1-2 mỗi chanh tại các cửa hàng lưu niệm du lịch.",
+        "Nếu bạn muốn mang chanh về nhà: chọn trái cây chắc, không tì vết và đóng gói ở giữa túi của bạn bọc trong khăn giấy. Chúng sẽ kéo dài 5-7 ngày nếu được giữ mát. Hải quan EU cho phép tối đa 2kg trái cây tươi; kiểm tra quy tắc của quốc gia bạn nếu bay ra ngoài EU.",
+        "Đối với nguyên liệu limoncello, mua rượu tinh khiết (alcool puro, 95%) tại nhà thuốc hoặc siêu thị lớn ở Salerno hoặc Naples — nó là €8-12 cho 1L so với €15-20 ở các cửa hàng nhỏ của Positano.",
+        "%IMAGE:chiesa-nuova-market-lemons.jpg|Fresh Amalfi lemons at Chiesa Nuova Thursday market%"
       ]
     }
   ],
   "tips": [
-    "Bản dịch đang được chuẩn bị.",
-    "Bản dịch đang được chuẩn bị."
+    "Mẫu miễn phí là tiêu chuẩn — đừng cảm thấy bị ép buộc phải mua sau khi nếm. Lịch sự 'grazie, ci penso' (cảm ơn, tôi sẽ suy nghĩ về nó) hoạt động tốt.",
+    "Mua limoncello và chanh ở thị trấn Amalfi hoặc Praiano giảm 20-30% so với giá Positano.",
+    "Bỏ qua chai hình chanh gốm (€20-30) — chúng dễ vỡ, nặng và limoncello bên trong là tầm thường. Lấy một chai thủy tinh đơn giản và chi tiêu tiết kiệm cho chất lỏng chất lượng tốt hơn.",
+    "Hầu hết các nhà hàng ở Positano phục vụ limoncello miễn phí sau bữa tối nếu bạn đặt bữa ăn đầy đủ. Nếu họ không cung cấp, hãy hỏi — 'Limoncello offerto?' — và họ thường sẽ mang một ly nhỏ.",
+    "Nhà bếp %LINK:cheapEats|nhà trọ% tuyệt vời để lắp ráp bữa ăn chanh giá rẻ. Mua nguyên liệu tại chợ thứ Năm hoặc Conad ở Chiesa Nuova và tiết kiệm 50-70% so với bữa ăn nhà hàng."
   ],
   "faqs": [
     {
-      "q": "Bản dịch đang được chuẩn bị.",
+      "q": "Tôi có thể mang limoncello trong hành lý xách tay không?",
       "a": [
-        "Bản dịch đang được chuẩn bị."
+        "Không, không trong chai trên 100ml. Chai limoncello tiêu chuẩn là 500-750ml, vì vậy bạn phải đóng gói chúng trong hành lý ký gửi.",
+        "Bọc chai trong quần áo hoặc bọt khí, niêm phong trong túi nhựa trong trường hợp rò rỉ, và đóng gói ở giữa túi của bạn cách xa các đồ vật cứng. Chúng tôi đã bay với 4-5 chai theo cách này mà không có vấn đề."
       ]
     },
     {
-      "q": "Bản dịch đang được chuẩn bị.",
+      "q": "Giá hợp lý cho limoncello ở Positano là gì?",
       "a": [
-        "Bản dịch đang được chuẩn bị."
+        "€10-15 cho chai 500ml từ nhà sản xuất địa phương là tiêu chuẩn. Bất cứ thứ gì trên €18 là quá đắt trừ khi đó là hỗn hợp đặc biệt.",
+        "Rẻ hơn ở thị trấn Amalfi (€8-12) hoặc Praiano. Tránh cửa hàng sân bay — họ tính phí €20-25 cho cùng một chai."
+      ]
+    },
+    {
+      "q": "Có món chanh không cồn không?",
+      "a": [
+        "Có! Thử granita chanh (€2-3), nước chanh tươi (€3-4), hoặc sorbet chanh (€2,50-4). Những thứ này ở khắp mọi nơi và mát mẻ như limoncello.",
+        "Để nấu ăn, dầu ô liu ngâm chanh và mứt chanh là quà tặng tuyệt vời và không có hàm lượng cồn."
+      ]
+    },
+    {
+      "q": "Nơi nào có giá trị tốt nhất cho bữa ăn hương vị chanh?",
+      "a": [
+        "Da Vincenzo (Via Pasitea 172) cho món mì ống €8-12. Pasticceria La Zagara (Via dei Mulini) cho món tráng miệng delizia al limone €5.",
+        "Hoặc tự nấu: mua chanh, mozzarella, cà chua và dầu ô liu tại chợ Chiesa Nuova và lắp ráp bữa ăn tại nhà trọ với giá €5-6 mỗi người."
       ]
     }
   ]

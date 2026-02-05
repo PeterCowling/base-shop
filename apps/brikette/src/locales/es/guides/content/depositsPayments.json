@@ -1,125 +1,147 @@
 {
   "seo": {
-    "title": "Guía de Depósitos y Pagos – Hostel Brikette, Positano",
-    "description": "Guía sobre depósitos, métodos de pago, confirmaciones, cambios, cancelaciones y bloqueos de seguridad al reservar en el Hostel Brikette."
+    "title": "Guía de Depósitos y Pagos para Positano Hostel",
+    "description": "Tu guía completa sobre depósitos, métodos de pago, confirmaciones de reserva, cambios, cancelaciones y retenciones de seguridad al reservar tu estancia en Positano Hostel."
   },
-  "linkLabel": "Guía de Depósitos y Pagos – Hostel Brikette, Positano",
+  "linkLabel": "Guía de Depósitos y Pagos para Positano Hostel",
   "sections": [
     {
       "id": "submittingBookingRequest",
-      "title": "Cómo Enviar tu Solicitud",
+      "title": "Cómo Enviar tu Solicitud de Reserva",
       "body": [
-        "Envía tu solicitud a través de una OTA autorizada o en nuestra web; chats o visitas sin reserva no cuentan. Al hacer clic en «Reservar» confirmas que los datos son correctos y aceptas nuestros T&C."
+        "Envíanos tu solicitud de reserva a través de una Agencia de Viajes en Línea (OTA) autorizada o directamente en nuestro sitio web; los chats o visitas sin cita previa no cuentan por sí solos. Al hacer clic en 'Reservar', confirmas que todos los nombres, fechas y duración de la estancia son correctos y que aceptas nuestros Términos y Condiciones."
       ]
     },
     {
       "id": "processingBookingRequest",
       "title": "Cómo Procesamos tu Solicitud",
       "body": [
-        "Procesamos tu solicitud cuando recibimos la fianza, pre-autorización o pago correspondiente. La reserva debe mostrar el nombre del titular de la tarjeta. Si es distinto, envíanos una autorización breve antes de procesar."
+        "Comenzamos a procesar tu solicitud tan pronto como recibamos con éxito cualquier depósito requerido, preautorización o pago utilizando uno de nuestros métodos de pago aceptados. Asegúrate de que la reserva muestre el nombre del titular de la tarjeta de crédito que pagará. Si el nombre del pagador es diferente, envíanos por correo electrónico una autorización breve del titular de la tarjeta antes de que procesemos tu solicitud."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Payment_terminal_at_the_Berlin_immigration_office.jpg/960px-Payment_terminal_at_the_Berlin_immigration_office.jpg",
+          "alt": "Teclado y pantalla de terminal de pago con tarjeta.",
+          "caption": "Podemos tomar un depósito, realizar un pago o colocar una preautorización para asegurar tu reserva - Foto: Wikimedia Commons (CC0)."
+        }
       ]
     },
     {
       "id": "decliningBookingRequest",
-      "title": "Cuándo Podemos Rechazarla",
+      "title": "Cuándo Podemos Rechazar una Solicitud",
       "body": [
-        "Rara vez rechazamos reservas, pero podemos hacerlo si falla el pago, falta información o se infringen los T&C."
+        "Rara vez rechazamos una reserva, pero nos reservamos el derecho de hacerlo a nuestra discreción; por ejemplo, si falla el pago, falta información requerida o la solicitud infringe nuestros Términos y Condiciones."
       ]
     },
     {
       "id": "requestSizeLimit",
-      "title": "Límite por Solicitud",
+      "title": "Límites de Tamaño para Una Solicitud",
       "body": [
-        "Una solicitud cubre hasta 7 noches seguidas y 5 huéspedes. Para más noches o personas, divide en varias solicitudes."
+        "Una solicitud de reserva puede cubrir hasta siete (7) noches consecutivas y un máximo de cinco (5) huéspedes. ¿Necesitas una estadía más larga o un grupo más grande? Simplemente divídela en solicitudes separadas."
       ]
     },
     {
       "id": "counterOffer",
-      "title": "Si tu Habitación No Está Disponible",
+      "title": "Qué Sucede si tu Habitación no Está Disponible",
       "body": [
-        "Si tu habitación está ocupada, te enviaremos una contraoferta con la alternativa más cercana. Acéptala y paga o autoriza para asegurarla."
+        "Si tu habitación preferida ya está ocupada, te enviaremos un contraoferta por correo electrónico con la alternativa más cercana. Acepta la oferta y completa el pago o la preautorización para asegurar tu estadía."
       ]
     },
     {
       "id": "prepaidNonRefundableBookingsPolicy",
-      "title": "Reservas Prepago No Reembolsables",
+      "title": "Reservas Prepagadas No Reembolsables",
       "body": [
-        "Las tarifas prepago ahorran dinero pero exigen pago total inmediato. Intentaremos tu tarjeta tres veces; si falla, se cancela la solicitud. No hay reembolsos ni cambios."
+        "Elegir una tarifa prepagada no reembolsable te ahorra dinero pero requiere el pago completo por adelantado. Intentaremos con tu tarjeta hasta tres veces. Si todos los intentos fallan, cancelaremos la solicitud. Estas reservas no pueden ser reembolsadas ni modificadas."
       ]
     },
     {
       "id": "confirmationEmail",
-      "title": "Tu Correo de Confirmación",
+      "title": "Tu Correo Electrónico de Confirmación",
       "body": [
-        "Tras aprobar el pago recibirás un correo con referencia, fecha de llegada, duración y extras. Revísalo y comunícanos errores de inmediato."
+        "Una vez que se procese tu pago, enviaremos un correo electrónico de confirmación a la dirección que nos proporcionaste. Enumera tu referencia de reserva, fecha de llegada, duración de la estadía y cualquier extra. Léelo cuidadosamente y dinos inmediatamente si algo se ve incorrecto."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Email_on_Phone_Flat_Icon.svg/960px-Email_on_Phone_Flat_Icon.svg.png",
+          "alt": "Icono de correo electrónico en una pantalla de teléfono.",
+          "caption": "Tu correo electrónico de confirmación es el mejor lugar para verificar fechas, nombres y detalles de pago - Foto: Wikimedia Commons (CC BY-SA 4.0)."
+        }
       ]
     },
     {
       "id": "numberOfGuestsIncluded",
-      "title": "Quiénes Están Incluidos",
+      "title": "Quién Está Incluido en tu Reserva",
       "body": [
-        "Tu reserva cubre automáticamente:",
-        "* 1 huésped por cama individual\n* Hasta 2 por cama doble\n* Hasta la capacidad publicada de un apartamento",
-        "No podemos alojar personas extra sobre el límite."
+        "Tu reserva cubre automáticamente lo siguiente:",
+        "* 1 huésped por cama individual\n* Hasta 2 huéspedes por cama doble\n* Hasta la capacidad anunciada de cualquier apartamento que reserves",
+        "Por seguridad y comodidad no podemos alojar huéspedes adicionales por encima del límite de la habitación."
       ]
     },
     {
       "id": "scopeOfFacilitiesIncluded",
-      "title": "Qué Incluye tu Estancia",
+      "title": "Qué Está Incluido en tu Estadía",
       "body": [
         "Cada huésped recibe:",
-        "* Ropa de cama limpia y tarjeta llave\n* Duchas compartidas\n* Agua caliente en horario (07:00-10:30 y 17:00-22:30 aprox.)\n* Áreas comunes",
-        "Otros servicios (desayuno, wifi, consigna) son gratis con reglas simples."
+        "* Ropa de cama fresca y una tarjeta llave\n* Uso de las duchas compartidas\n* Agua caliente durante las horas programadas (aproximadamente 07:00-10:30 y 17:00-22:30)\n* Acceso a nuestras áreas comunes",
+        "Otros beneficios (desayuno, Wi-Fi, almacenamiento de equipaje, etc.) son de cortesía y siguen sus propias reglas simples."
       ]
     },
     {
       "id": "financialObligation",
       "title": "Tu Responsabilidad Financiera",
       "body": [
-        "El titular de la tarjeta en la reserva responde de todos los cargos: habitación, daños, limpieza o multas. Cargos pendientes se harán a la tarjeta registrada."
+        "El titular de la tarjeta de crédito indicado en tu reserva es responsable de todos los cargos: tarifas de habitación, daños, tarifas de limpieza, multas o sanciones por violar las reglas de la casa. Los montos impagos pueden cargarse directamente a la tarjeta registrada."
       ]
     },
     {
       "id": "roomAllocation",
-      "title": "Asignación de Camas y Habitaciones",
+      "title": "Cómo se Asignan las Camas y Habitaciones",
       "body": [
-        "Garantizamos la categoría reservada. En dormitorios aseguras una cama, pero no que el grupo comparta cuarto. Camas se eligen por orden de llegada."
+        "Te garantizamos el tipo de cama y categoría de habitación que reservaste. Las reservas de dormitorio aseguran una cama en la categoría elegida, pero no podemos prometer que los grupos compartan la misma habitación. Las camas en dormitorios se eligen por orden de llegada cuando haces el check-in."
       ]
     },
     {
       "id": "allocatingUpgrades",
       "title": "Mejoras de Habitación",
       "body": [
-        "A veces ofrecemos upgrades gratis o de pago. Si luego resulta impráctico, te devolveremos a la categoría pagada."
+        "A veces te mejoramos a una habitación mejor sin cargo, o puedes pagar para mejorar cuando reserves. Si la mejora gratuita luego se vuelve impráctica, podemos devolverte a la categoría que originalmente pagaste."
       ]
     },
     {
       "id": "thirdPartyPayments",
-      "title": "Pagos vía Terceros",
+      "title": "Pago a través de Sitios de Terceros",
       "body": [
-        "Si reservas por OTA, pagas en su sistema según sus normas. No vemos tus datos y no respondemos de sus fallos. Verifica tu pago y confirmación."
+        "Cuando reserves a través de una OTA, pagarás a través de su sistema bajo sus términos. Nunca vemos los detalles de tu tarjeta de la OTA y no somos responsables de problemas en su plataforma. Siempre verifica que tu pago se haya procesado y que hayas recibido una confirmación."
       ]
     },
     {
       "id": "bookingRequestDeposits",
       "title": "Depósitos de Reserva",
       "body": [
-        "Algunas tarifas exigen depósito. Las prepago exigen 100 % adelantado. Depósitos no reembolsables; si no se cobra, se cancela."
+        "Algunas tarifas necesitan un depósito para retener la habitación. Las tarifas prepagadas requieren el 100% por adelantado. Los depósitos no son reembolsables. Si no podemos tomar el depósito, la solicitud de reserva se cancela automáticamente."
       ]
     },
     {
       "id": "bookingRequestPreauthorisations",
-      "title": "Pre-autorizaciones",
+      "title": "Preautorizaciones de Tarjeta",
       "body": [
-        "En tarifas flexibles podemos pre-autorizar la primera noche o toda la estancia. Si falla, rechazamos la solicitud."
+        "Para tarifas flexibles podemos preautorizar tu tarjeta por la primera noche o la estadía completa para garantizar tu reserva. Si falla la preautorización, rechazaremos la solicitud."
       ]
     },
     {
       "id": "safeguardingProcess",
-      "title": "Bloqueo de Seguridad",
+      "title": "Nuestra Retención de Seguridad",
       "body": [
-        "Al llegar podemos bloquear una noche por huésped como garantía. Si no es posible, acepta efectivo o la tarjeta de otro huésped; de lo contrario, se cancela la reserva."
+        "Cuando hagas el check-in, podemos colocar una retención de seguridad equivalente a una noche por huésped para cubrir posibles multas, tarifas, extensiones o daños. Si no es posible una retención de tarjeta, puedes dejar la misma cantidad en efectivo o usar la tarjeta de otro huésped. Si ninguna opción funciona, lamentablemente debemos cancelar tu reserva."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Euro_coins_in_hand.jpg/960px-Euro_coins_in_hand.jpg",
+          "alt": "Una mano sosteniendo varias monedas de euro.",
+          "caption": "Si no es posible una retención de tarjeta en el check-in, podemos solicitar un depósito en efectivo equivalente - Foto: Wikimedia Commons (CC BY-SA 4.0)."
+        }
       ]
     }
   ]
 }
+

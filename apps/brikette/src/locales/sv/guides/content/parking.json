@@ -1,4 +1,9 @@
 {
+  "seo": {
+    "title": "Parkering i Positano: garage, regler på gatan och alternativ",
+    "description": "Var man parkerar i Positano, vad garage kostar, när gatuparkering är realistisk och smartare bilfria alternativ."
+  },
+  "lastUpdated": "2026-02-04T00:00:00.000Z",
   "linkLabel": "Parkering i Positano: var och vad det kostar",
   "intro": [
     "Parkering är sällsynt och dyr i Positano – boka garage tidigt och räkna med att bilen står avställd under hela vistelsen."
@@ -29,10 +34,12 @@
       ]
     }
   ],
+  "tipsTitle": "Quick tips",
   "tips": [
     "Kontrollera ZTL- och varannan-skyltar innan du kör SS163; böter kan skickas internationellt flera månader senare.",
     "Packa en dagsväska med det viktigaste innan du lämnar över nycklarna – bilen kan stå tätt parkerad tills du checkar ut."
   ],
+  "faqsTitle": "Vanliga frågor",
   "faqs": [
     {
       "q": "Kan jag parkera bara några timmar?",
@@ -47,10 +54,5 @@
       ]
     }
   ],
-  "tocTitle": "På denna sida",
-  "faqsTitle": "Vanliga frågor",
-  "seo": {
-    "title": "Parkering i Positano: garage, regler på gatan och alternativ",
-    "description": "Var man parkerar i Positano, vad garage kostar, när gatuparkering är realistisk och smartare bilfria alternativ."
-  }
+  "tocTitle": "På denna sida"
 }

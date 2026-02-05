@@ -1,125 +1,25 @@
 {
   "seo": {
-    "title": "Depozyty i płatności – przewodnik",
-    "description": "Twój przewodnik po depozytach, metodach płatności, potwierdzeniach rezerwacji, zmianach, anulacjach i blokadach zabezpieczających podczas rezerwacji pobytu."
+    "title": "Przewodnik po Depozytach i Płatnościach dla Positano Hostel",
+    "description": "Twój przewodnik po depozytach, metodach płatności, potwierdzeniach rezerwacji, zmianach, anulowaniach i zabezpieczeniach przy rezerwacji pobytu w Positano Hostel."
   },
-  "linkLabel": "Depozyty i płatności – przewodnik",
+  "linkLabel": "Przewodnik po Depozytach i Płatnościach dla Positano Hostel",
   "sections": [
-    {
-      "id": "submittingBookingRequest",
-      "title": "Jak złożyć prośbę o rezerwację",
-      "body": [
-        "Wyślij nam swoją prośbę o rezerwację za pośrednictwem autoryzowanego internetowego biura podróży (OTA) lub bezpośrednio na naszej stronie internetowej-samych czatów lub samych spacerów nie liczą.Klikając „książkę”, potwierdzasz, że wszystkie nazwy, daty i długość pozostania są prawidłowe i że akceptujesz nasze warunki."
-      ]
-    },
-    {
-      "id": "processingBookingRequest",
-      "title": "Jak przetwarzamy Twoją prośbę",
-      "body": [
-        "Rozpoczynamy przetwarzanie Twojego żądania, gdy tylko pomyślnie otrzymamy wymaganą depozyt, wstępną autoryzację lub płatność przy użyciu jednej z naszych zaakceptowanych metod płatności.Upewnij się, że rezerwacja pokazuje nazwę posiadacza kart kredytowych, który zapłaci.Jeśli nazwisko płatnika jest inne, napisz do nas krótką autoryzację od posiadacza karty przed przetworzeniem Twojego żądania."
-      ]
-    },
-    {
-      "id": "decliningBookingRequest",
-      "title": "Kiedy możemy odmówić",
-      "body": [
-        "Rzadko odrzucamy rezerwację, ale zastrzegamy sobie prawo do tego według naszego uznania - na przykład, jeśli płatność się nie powiedzie, brakuje wymaganych informacji lub żądanie narusza nasze warunki."
-      ]
-    },
-    {
-      "id": "requestSizeLimit",
-      "title": "Limity dla jednego zgłoszenia",
-      "body": [
-        "Jedno prośba o rezerwację może ukryć do siedmiu (7) kolejnych nocy i maksymalnie pięciu (5) gości.Potrzebujesz dłuższego pobytu lub większej grupy?Po prostu podziel go na osobne żądania."
-      ]
-    },
-    {
-      "id": "counterOffer",
-      "title": "Gdy Twój pokój jest niedostępny",
-      "body": [
-        "Jeśli Twój preferowany pokój jest już zabrany, wyślemy Ci e-mailem z najbliższą alternatywą.Zaakceptuj ofertę i wypełnij płatność lub autoryzację, aby zablokować swój pobyt."
-      ]
-    },
-    {
-      "id": "prepaidNonRefundableBookingsPolicy",
-      "title": "Rezerwacje przedpłacone, bezzwrotne",
-      "body": [
-        "Wybierając ofertę bezzwrotną z przedpłatą, oszczędzasz pieniądze, ale wymagasz pełnej płatności z góry.Wypróbujemy Twoją kartę maksymalnie trzy razy.Jeśli wszystkie próby się nie powiodą, anulujemy żądanie.Rezerwacje te nie podlegają zwrotowi ani modyfikacji."
-      ]
-    },
-    {
-      "id": "confirmationEmail",
-      "title": "E‑mail potwierdzający",
-      "body": [
-        "Po zaksięgowaniu płatności wyślemy wiadomość e-mail z potwierdzeniem na podany przez Ciebie adres.Zawiera numer rezerwacji, datę przyjazdu, długość pobytu i wszelkie dodatki.Przeczytaj uważnie i natychmiast powiedz nam, jeśli coś wygląda nieprawidłowo."
-      ]
-    },
-    {
-      "id": "numberOfGuestsIncluded",
-      "title": "Kogo obejmuje rezerwacja",
-      "body": [
-        "Twoja rezerwacja automatycznie obejmuje następujące czynności:",
-        "* 1 gość na pojedyncze łóżko\n* Do 2 gości na podwójne łóżko\n* Do reklamowanej pojemności każdego mieszkania, które rezerwujesz",
-        "Dla bezpieczeństwa i komfortu nie możemy pomieścić dodatkowych gości powyżej limitu pokoju."
-      ]
-    },
-    {
-      "id": "scopeOfFacilitiesIncluded",
-      "title": "Co obejmuje pobyt",
-      "body": [
-        "Każdy gość otrzymuje:",
-        "* Świeże pościel i karta na klucz\n* Korzystanie z udostępnianych pryszniców\n* Gorąca woda podczas planowanych godzin (około 07: 00-10: 30 i 17: 00-22: 30)\n* Dostęp do naszych obszarów wspólnych",
-        "Inne korzyści (śniadanie, Wi-Fi, przechowywanie bagażu itp.) Są bezpłatne i przestrzegają własnych prostych zasad."
-      ]
-    },
-    {
-      "id": "financialObligation",
-      "title": "Twoja odpowiedzialność finansowa",
-      "body": [
-        "Posiadacz kart kredytowych wymieniony na rezerwacji ponosi odpowiedzialność za wszystkie opłaty-opłaty za pokój, odszkodowanie, opłaty czyszczące, grzywny lub kary za złamanie zasad domu.Nieopłacone kwoty mogą być naliczane bezpośrednio do karty w pliku."
-      ]
-    },
-    {
-      "id": "roomAllocation",
-      "title": "Przydział łóżek i pokoi",
-      "body": [
-        "Gwarantujemy, że zarezerwowałeś typ łóżka i kategorię pokoju.Rezerwacje w akademiku zabezpieczają łóżko w wybranej kategorii, ale nie możemy obiecać, że grupy będą dzielić ten sam pokój.Łóżka w akademikach są wybierane po raz pierwszy, po raz pierwszy obsługiwane podczas odprawy."
-      ]
-    },
-    {
-      "id": "allocatingUpgrades",
-      "title": "Ulepszenia pokoju",
-      "body": [
-        "Czasami zaktualizujemy Cię do lepszego pokoju bezpłatnie lub możesz zapłacić za aktualizację podczas rezerwacji.Jeśli bezpłatne uaktualnienie staje się niepraktyczne, możemy wrócić do kategorii, za którą pierwotnie zapłaciłeś."
-      ]
-    },
-    {
-      "id": "thirdPartyPayments",
-      "title": "Płatności przez serwisy zewnętrzne",
-      "body": [
-        "Dokonując rezerwacji za pośrednictwem OTA, zapłacisz za pośrednictwem ich systemu zgodnie z ich warunkami.Nigdy nie widzimy danych Twojej karty z OTA i nie ponosimy odpowiedzialności za problemy na ich platformie.Zawsze sprawdzaj, czy płatność została zrealizowana i czy otrzymałeś potwierdzenie."
-      ]
-    },
-    {
-      "id": "bookingRequestDeposits",
-      "title": "Depozyty rezerwacyjne",
-      "body": [
-        "Niektóre stawki wymagają depozytu, aby utrzymać pokój.Stawki wstępne wymagają 100% z góry.Depozyty nie podlegają zwrotowi.Jeśli nie możemy przyjąć depozytu, żądanie rezerwacji jest automatycznie anulowane."
-      ]
-    },
-    {
-      "id": "bookingRequestPreauthorisations",
-      "title": "Preautoryzacje karty",
-      "body": [
-        "Aby uzyskać elastyczne stawki, możemy przedstawiać twoją kartę na pierwszą noc lub pełny pobyt, aby zagwarantować rezerwację.Jeśli wstępna autoryzacja się nie powiedzie, odrzucimy żądanie."
-      ]
-    },
-    {
-      "id": "safeguardingProcess",
-      "title": "Blokada zabezpieczająca",
-      "body": [
-        "Po zameldowaniu możemy umieścić ochronę równą jednej nocy na gościa, aby pokryć możliwe grzywny, opłaty, rozszerzenia lub szkody.Jeśli trzymanie karty nie jest możliwe, możesz zostawić tę samą kwotę w gotówce lub skorzystać z karty innego gościa.Jeśli żadna opcja nie działa, niestety musimy anulować Twoją rezerwację."
-      ]
-    }
+    {"id": "submittingBookingRequest", "title": "Jak Przesłać Prośbę o Rezerwację", "body": ["Wyślij nam prośbę o rezerwację przez autoryzowanego biura podróży online (OTA) lub bezpośrednio na naszej stronie internetowej - same czaty lub wizyty bez rezerwacji się nie liczą. Klikając 'Zarezerwuj', potwierdzasz, że wszystkie nazw iska, daty i długość pobytu są poprawne oraz że akceptujesz nasze Warunki."]},
+    {"id": "processingBookingRequest", "title": "Jak Przetwarzamy Twoje Żądanie", "body": ["Zaczynamy przetwarzać Twoje żądanie, gdy tylko pomyślnie otrzymamy wymagany depozyt, preautoryzację lub płatność przy użyciu jednej z naszych akceptowanych metod płatności. Upewnij się, że rezerwacja pokazuje nazwisko posiadacza karty kredytowej, który będzie płacił. Jeśli nazwisko płatnika jest inne, wyślij nam e-mailem krótką autoryzację od posiadacza karty, zanim przetworzymy Twoje żądanie."], "images": [{"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Payment_terminal_at_the_Berlin_immigration_office.jpg/960px-Payment_terminal_at_the_Berlin_immigration_office.jpg", "alt": "Klawiatura i ekran terminala płatniczego.", "caption": "Możemy pobrać depozyt, przeprowadzić płatność lub umieścić preautoryzację, aby zabezpieczyć Twoją rezerwację - Zdjęcie: Wikimedia Commons (CC0)."}]},
+    {"id": "decliningBookingRequest", "title": "Kiedy Możemy Odrzucić Żądanie", "body": ["Rzadko odrzucamy rezerwację, ale zastrzegamy sobie prawo do zrobienia tego według własnego uznania - na przykład, jeśli płatność się nie powiedzie, brakuje wymaganych informacji lub żądanie narusza nasze Warunki."]},
+    {"id": "requestSizeLimit", "title": "Limity Rozmiaru dla Jednego Żądania", "body": ["Jedno żądanie rezerwacji może obejmować do siedmiu (7) kolejnych nocy i maksymalnie pięciu (5) gości. Potrzebujesz dłuższego pobytu lub większej grupy? Po prostu podziel to na osobne żądania."]},
+    {"id": "counterOffer", "title": "Co Się Dzieje, Jeśli Twój Pokój Nie Jest Dostępny", "body": ["Jeśli Twój preferowany pokój jest już zajęty, wyślemy Ci e-mailem kontrofertę z najbliższą alternatywą. Zaakceptuj ofertę i ukończ płatność lub preautoryzację, aby zablokować swój pobyt."]},
+    {"id": "prepaidNonRefundableBookingsPolicy", "title": "Rezerwacje Przedpłacone Bezzwrotne", "body": ["Wybór stawki przedpłaconej bezzwrotnej oszczędza Ci pieniędzy, ale wymaga pełnej płatności z góry. Spróbujemy Twojej karty do trzech razy. Jeśli wszystkie próby się nie powiodą, anulujemy żądanie. Tych rezerwacji nie można zwrócić ani zmodyfikować."]},
+    {"id": "confirmationEmail", "title": "Twój E-mail Potwierdzający", "body": ["Po zrealizowaniu płatności wyślemy e-mail potwierdzający na podany przez Ciebie adres. Zawiera on numer rezerwacji, datę przyjazdu, długość pobytu i wszelkie dodatki. Przeczytaj go uważnie i powiadom nas natychmiast, jeśli coś wygląda nieprawidłowo."], "images": [{"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Email_on_Phone_Flat_Icon.svg/960px-Email_on_Phone_Flat_Icon.svg.png", "alt": "Ikona e-maila na ekranie telefonu.", "caption": "Twój e-mail potwierdzający to najlepsze miejsce do sprawdzenia dat, nazwisk i szczegółów płatności - Zdjęcie: Wikimedia Commons (CC BY-SA 4.0)."}]},
+    {"id": "numberOfGuestsIncluded", "title": "Kto Jest Uwzględniony w Twojej Rezerwacji", "body": ["Twoja rezerwacja automatycznie obejmuje:", "* 1 gość na jedno łóżko\n* Do 2 gości na łóżko podwójne\n* Do reklamowanej pojemności każdego apartamentu, który zarezerwujesz", "Ze względów bezpieczeństwa i komfortu nie możemy pomieścić dodatkowych gości powyżej limitu pokoju."]},
+    {"id": "scopeOfFacilitiesIncluded", "title": "Co Jest Wliczone w Twój Pobyt", "body": ["Każdy gość otrzymuje:", "* Świeżą pościel i kartę-klucz\n* Korzystanie ze wspólnych pryszniców\n* Ciepłą wodę w zaplanowanych godzinach (ok. 07:00-10:30 i 17:00-22:30)\n* Dostęp do naszych obszarów wspólnych", "Inne udogodnienia (śniadanie, Wi-Fi, przechowalnia bagażu itp.) są bezpłatne i przestrzegają własnych prostych zasad."]},
+    {"id": "financialObligation", "title": "Twoja Odpowiedzialność Finansowa", "body": ["Posiadacz karty kredytowej wymieniony w Twojej rezerwacji jest odpowiedzialny za wszystkie opłaty - opłaty za pokój, szkody, opłaty za sprzątanie, grzywny lub kary za łamanie zasad domowych. Niezapłacone kwoty mogą zostać pobrane bezpośrednio z karty w aktach."]},
+    {"id": "roomAllocation", "title": "Jak Przydzielane Są Łóżka i Pokoje", "body": ["Gwarantujemy Ci typ łóżka i kategorię pokoju, którą zarezerwowałeś. Rezerwacje w dormitorium zabezpieczają łóżko w wybranej kategorii, ale nie możemy obiecać, że grupy będą dzielić ten sam pokój. Łóżka w dormitoriach są wybierane według zasady 'kto pierwszy, ten lepszy' podczas meldowania."]},
+    {"id": "allocatingUpgrades", "title": "Ulepszenia Pokoju", "body": ["Czasami ulepszamy Cię do lepszego pokoju bezpłatnie lub możesz zapłacić za ulepszenie podczas rezerwacji. Jeśli darmowe ulepszenie później stanie się niepraktyczne, możemy przenieść Cię z powrotem do kategorii, za którą pierwotnie zapłaciłeś."]},
+    {"id": "thirdPartyPayments", "title": "Płatność Przez Strony Trzecie", "body": ["Kiedy rezerwujesz przez OTA, płacisz przez ich system zgodnie z ich warunkami. Nigdy nie widzimy szczegółów Twojej karty od OTA i nie ponosimy odpowiedzialności za problemy na ich platformie. Zawsze sprawdzaj, czy Twoja płatność przeszła i czy otrzymałeś potwierdzenie."]},
+    {"id": "bookingRequestDeposits", "title": "Depozyty Rezerwacyjne", "body": ["Niektóre stawki wymagają depozytu, aby zatrzymać pokój. Stawki przedpłacone wymagają 100% z góry. Depozyty nie podlegają zwrotowi. Jeśli nie możemy pobrać depozytu, żądanie rezerwacji jest automatycznie anulowane."]},
+    {"id": "bookingRequestPreauthorisations", "title": "Preautoryzacje Karty", "body": ["W przypadku elastycznych stawek możemy preautoryzować Twoją kartę na pierwszą noc lub cały pobyt, aby zagwarantować rezerwację. Jeśli preautoryzacja się nie powiedzie, odrzucimy żądanie."]},
+    {"id": "safeguardingProcess", "title": "Nasza Blokada Zabezpieczająca", "body": ["Podczas meldowania możemy umieścić blokadę zabezpieczającą równą jednej nocy na gościa, aby pokryć ewentualne grzywny, opłaty, przedłużenia lub szkody. Jeśli blokada karty nie jest możliwa, możesz zostawić tę samą kwotę gotówką lub użyć karty innego gościa. Jeśli żadna opcja nie zadziała, niestety musimy anulować Twoją rezerwację."], "images": [{"src": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Euro_coins_in_hand.jpg/960px-Euro_coins_in_hand.jpg", "alt": "Ręka trzymająca kilka monet euro.", "caption": "Jeśli blokada karty nie jest możliwa podczas meldowania, możemy poprosić o równoważny depozyt gotówkowy - Zdjęcie: Wikimedia Commons (CC BY-SA 4.0)."}]}
   ]
 }

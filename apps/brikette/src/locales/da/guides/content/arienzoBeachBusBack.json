@@ -1,52 +1,53 @@
 {
   "seo": {
     "title": "Bus tilbage til Hostel Brikette fra Arienzo Beach",
-    "description": "Gå op fra stranden til vejen, kør ca. 3 km til Chiesa Nuova og afslut med en kort gåtur til Hostel Brikette."
+    "description": "Gå op fra stranden til vejen, tag bussen tilbage mod Positano, stå af ved Bar Internazionale/Chiesa Nuova, og følg derefter den korte vejbeskrivelse tilbage til Hostel Brikette."
   },
-  "linkLabel": "Bus tilbage fra Arienzo Beach",
+  "linkLabel": "Bus tilbage til Hostel Brikette fra Arienzo Beach",
   "intro": [
-    "Spring hele trappeklatringen over ved at tage Amalfikyst-bussen fra Arienzo tilbage mod Positano.",
-    "Køb returbilletten i byen før du går ned til stranden — der er ingen billetstander ved Arienzo, så planlæg på forhånd eller brug shuttle-båden tilbage til Spiaggia Grande."
+    "Scan for at dele",
+    "Tip: Busplan. Bemærk at køreplanen inkluderer Positano-tider, men ikke Arienzo-tider. Arienzo busstoppested er placeret cirka 2-5 minutter før Sponda.",
+    "Vigtigt! Hvis du ikke har en busbillet til din returrejse, kan du enten gå tilbage til Sponda og tage bussen derfra, eller tage vandshuttlen tilbage til hovedstranden i Positano. Husk, der er ingen billetforhandlere i nærheden af Arienzo Beach, så det er vigtigt at planlægge på forhånd og købe dine billetter på forhånd til returrejsen.",
+    "Tip: Se vores %LINK:arienzoBeachClub|Arienzo Beach-guide%",
+    "Tip: Se vores %LINK:positanoBeaches|Oversigt over strande%"
   ],
   "sections": [
     {
       "id": "walk-to-stop",
-      "title": "Gå op til busstoppet",
+      "title": "Gå op til busstoppestedet",
       "body": [
-        "Gå op ad trapperne fra stranden til vejen og kryds forsigtigt til indersiden.",
-        "Find det blå-hvide SITA-skilt på metalpælen overfor indgangsstien og vent i vigesporet."
+        "For at tage bussen tilbage til hostellet skal du gå op ad trappen fra stranden til vejen og lede efter busstoppestedet på den modsatte side af vejen. Busstoppeskiltet er blåt og hvidt, monteret på en metalpæl (se billedet som reference). Vent ved busstoppestedet på at bussen ankommer."
       ]
     },
     {
       "id": "ride-the-bus",
-      "title": "Tag Amalfikyst-bussen",
+      "title": "Tag bussen",
       "body": [
-        "Ræk hånden ud til bussen når den nærmer sig og hav din stemplede billet klar.",
-        "Turen er ca. 3 km med få mellemliggende stop før Positano."
+        "Antallet af gange bussen vil stoppe, før du skal stå af, vil variere. Distancen du skal rejse er omkring 3 km / 1,9 miles."
       ]
     },
     {
       "id": "get-off-bus",
-      "title": "Stå af ved Bar Internazionale / Chiesa Nuova",
+      "title": "Stå af bussen",
       "body": [
-        "Lyt efter stopannoncen eller kig efter Bar Internazionale tabacchi — stoppet ligger overfor hostellet.",
-        "Tryk stopknappen i god tid så chaufføren sætter dig af ved Chiesa Nuova."
+        "Du vil stå af ved Bar Internazionale/Chiesa Nuova busstoppested."
       ]
     },
     {
       "id": "walk-to-hostel",
-      "title": "Gå tilbage til Hostel Brikette",
+      "title": "Gå til hostellet",
       "body": [
-        "Fortsæt i bussens retning i lidt over 100 meter.",
-        "Tag trappen til højre op til Hostel Brikettes hovedindgang."
+        "Vejbeskrivelse:",
+        "* Fortsæt i den retning bussen du lige stod af tager i lidt over 100m / 330 fod.",
+        "* Tag trappen op til hostellets hoveddør."
       ]
     }
   ],
-  "tipsTitle": "Busråd",
+  "tipsTitle": "Bustips",
   "tips": [
-    "Trykte køreplaner viser kun Positano-stop; forvent Arienzo ca. 2–5 minutter før Positano Sponda på vejen tilbage.",
-    "Der er ingen billetstand ved Arienzo. Køb returbillet i byen, eller vær klar til at gå til Positano Sponda eller tage shuttle-båden tilbage til Spiaggia Grande.",
+    "Trykte køreplaner viser kun Positano-stop; forvent Arienzo omkring 2-5 minutter før Positano Sponda på vejen tilbage.",
+    "Der er ingen billetforhandlere i nærheden af Arienzo Beach. Køb din returbillet i byen på forhånd, eller gå til Sponda for at stige på derfra, eller tag vandshuttlen tilbage til hovedstranden i Positano.",
     "Læs vores %LINK:arienzoBeachClub|Arienzo Beach-guide% for faciliteter, shuttles og planlægningstips.",
-    "Se %LINK:positanoBeaches|oversigten over Positanos strande% for at sammenligne andre bugter og planlægge kommende besøg."
+    "Gennemse %LINK:positanoBeaches|Oversigten over strande% for at sammenligne andre bugter og planlægge fremtidige besøg."
   ]
 }

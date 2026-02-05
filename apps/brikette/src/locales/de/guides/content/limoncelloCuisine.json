@@ -1,55 +1,116 @@
 {
   "seo": {
-    "title": "Limoncello & lokale Küche an der Amalfiküste",
-    "description": "Was du in Positano probieren solltest: Limoncello, Klassiker mit Meeresfrüchten, Zitronendesserts und Bestell-Etikette."
+    "title": "Limoncello & Lokale Küche an der Amalfiküste",
+    "description": "Budget-Guide zu Positanos Limoncello, lokaler Küche und Zitronen-Leckereien. Wo man kostenlose Proben probiert, günstigste authentische Flaschen und erschwingliche lokale Restaurants."
   },
-  "linkLabel": "Limoncello & lokale Küche",
+  "linkLabel": "Schmecke Positano: Limoncello, Zitronen & Lokale Aromen",
   "intro": [
-    "Limoncello gehört zur Amalfiküste wie Zitronenhaine und Meerblick – hier erfährst du, wo du verkostest, was du kaufen solltest und wie du mit Amalfi-Zitronen kochst.",
-    "Achte auf handwerkliche Produktion, Herkunft und Transporttipps, damit der Geschmack auch zu Hause überzeugt."
+    "Limoncello und Zitronen-alles definieren die Amalfiküste — aber du brauchst kein großes Budget, um das Beste zu probieren.",
+    "Hier erfährst du, wo du kostenlos probieren kannst, welche Flaschen das meiste für dein Geld bieten und wie man wie ein Einheimischer isst ohne Touristenfallen-Preise."
   ],
   "tocTitle": "Auf dieser Seite",
   "sections": [
     {
-      "id": "tasting",
-      "title": "Verkostungen",
+      "id": "free-tasting",
+      "title": "Kostenlose Verkostungen & wo man probiert",
       "body": [
-        "Verkostungen in kleinen Manufakturen wie „Sapori di Positano“ oder „Lemon Shop“ bieten Limoncello, Crema di Limone und Mandarinetto – immer gut gekühlt serviert.",
-        "Frag nach der Mazerationszeit und ob frische Amalfi-Zitronen (g.g.A.) verwendet werden – ein Qualitätsindikator."
+        "Die meisten kleinen Limoncello-Läden und Botteghe in Positano bieten kostenlose Proben an — es ist gängige Praxis, kein Touristenvorteil. Geh in jeden handwerklichen Produzenten und frage höflich; sie schenken normalerweise 2-3 Sorten ein, damit du vergleichen kannst.",
+        "Die besten Verkostungsorte sind Via dei Mulini und die Straßen hinter Chiesa Nuova — abseits der Touristenfallen an der Uferpromenade. Suche nach familiengeführten Läden mit schlichten Schildern und stöbernden Einheimischen; sie sind weniger aufdringlich und der Limoncello ist oft stärker und weniger zuckrig.",
+        "Kombiniere deine Verkostung mit kostenlosen Zitronenbonbons (die meisten Läden bieten diese an) oder nimm eine €1,50 Zitronen-Granita aus einer Gelateria, um deinen Gaumen zwischen den Schlucken zu reinigen.",
+        "%IMAGE:limoncello-tasting-shop.jpg|Local limoncello shop offering free tasting samples in Positano%",
+        "Pro-Tipp vom Hostel: Die Läden auf der Via Cristoforo Colombo (die Straße, die von Chiesa Nuova hochführt) haben oft weniger Touristen und großzügigere Portionen. Wir haben gesehen, wie Einheimische ihre eigenen Flaschen zum Nachfüllen zu Großhandelspreisen zurückbringen — ein Zeichen, dass du das Richtige gefunden hast."
       ]
     },
     {
-      "id": "purchase",
-      "title": "Kauf & Versand",
+      "id": "buying-smart",
+      "title": "Flaschen kaufen: worauf man achten & was man vermeiden sollte",
       "body": [
-        "500-ml-Flaschen reisen sicher im Aufgabegepäck, eingewickelt in Kleidung oder spezielle Flaschenhüllen.",
-        "Für Versand nutzen Shops zertifizierte Verpackungen und Zollpapiere; Kosten innerhalb Europas ca. 25–40 €."
+        "Echter Limoncello sollte Sorrento IGP-Zitronen (oder Costa d'Amalfi IGP) auf dem Etikett auflisten und mindestens 28-30% Alkoholgehalt haben. Wenn er leuchtend neongelb oder verdächtig billig ist (unter €8 für 500ml), sind es wahrscheinlich künstliche Aromastoffe und Zuckersirup.",
+        "Bester Wert: 500ml-Flaschen von lokalen Produzenten kosten €10-15 in Positano, €8-12 in Praiano oder Amalfi-Stadt. Zahle nicht mehr als €15, es sei denn, es ist eine Premium-Handwerks-Mischung mit ungewöhnlichen Zitrusfrüchten (Bergamotte, Zedrat).",
+        "Flughafen- und Bahnhofsläden verlangen 30-50% mehr für die gleichen Flaschen. Wenn du von Neapel abfliegst, kaufe in Positano und packe sorgfältig ins aufgegebene Gepäck (in Kleidung wickeln + Plastiktüte).",
+        "Fluglinien-Flüssigkeitsgrenzen: maximal 100ml im Handgepäck. Standardflaschen sind 500ml oder 750ml, also ist aufgegebenes Gepäck deine einzige Option. Wir haben noch nie eine Flasche zerbrochen, wenn sie richtig in der Mitte eines Rucksacks gepackt war.",
+        "%IMAGE:limoncello-bottles-local.jpg|Authentic limoncello bottles from local Amalfi Coast producers%"
       ]
     },
     {
-      "id": "cooking",
-      "title": "Kochen mit Zitronen",
+      "id": "budget-eats",
+      "title": "Günstige lokale Küche: Zitronengerichte, die es wert sind",
       "body": [
-        "Amalfi-Zitronen veredeln Risotto al limone, Insalata di limoni (mit roter Zwiebel & Minze) oder Limoncello-Tiramisu.",
-        "Schale fein abziehen (weiße Schicht vermeiden) und sofort verwenden; Rest-Sirup eignet sich für Spritz oder Dessertsoßen."
+        "Überspringe die €25-Touristenmenüs am Hauptstrand. Geh stattdessen zu Da Vincenzo (Via Pasitea 172) für €8-12 Pasta-Gerichte mit Zitrone — ihre Spaghetti al Limone sind einfach, frisch und verwenden lokale Zitronen. Nur Bargeld, keine Reservierungen, Einheimische stehen um 19 Uhr Schlange.",
+        "Zum Nachtisch kostet Delizia al Limone (Zitronen-Biskuitkuchen getränkt in Limoncello-Creme) €4-6 in den meisten Pasticcerien. Unser Favorit: Pasticceria La Zagara (Via dei Mulini) — €5 für ein großzügiges Stück, Außensitzplätze, kostenlose Wassernachfüllungen.",
+        "Budget-Frühstück: nimm eine Sfogliatella (€2-3) und Espresso (€1,20) in einer Bar, kaufe dann ein Kilo frische Zitronen von einem Gemüsehändler (€2-4) zum Naschen oder um frische Limonade im Hostel zu machen.",
+        "Die Terrasse des %LINK:chiesaNuovaArrivals|Hostels% ist perfekt, um eigene Zitronen-Mahlzeiten zusammenzustellen: kaufe frische Mozzarella (€3-4), Tomaten (€2/kg), Basilikum und Zitronen auf dem Chiesa Nuova-Markt (Donnerstagmorgen), dann beträufle mit lokalem Olivenöl. Gesamtkosten: €10-12 für zwei Personen.",
+        "%IMAGE:spaghetti-al-limone.jpg|Fresh spaghetti al limone with Amalfi lemons at local restaurant%"
+      ]
+    },
+    {
+      "id": "cooking-tips",
+      "title": "Kochen mit Amalfi-Zitronen",
+      "body": [
+        "Amalfi-Zitronen (Sfusato Amalfitano) haben dicke, duftende Schalen und weniger Säure als Supermarkt-Zitronen — verwende sie für Gerichte, bei denen die Schale glänzt.",
+        "Klassische Verwendungen: reibe Schale ins Nudelwasser für Spaghetti al Limone, zerstoße Schale mit Zucker für hausgemachten Limoncello oder kandiere dicke Streifen für Dessert-Garnitur.",
+        "Lagerung: halte Zitronen an einem kühlen, dunklen Ort (nicht im Kühlschrank) bis zu 2 Wochen. Wenn du eine große Tüte auf dem Markt kaufst, presse die Hälfte aus und friere den Saft in Eiswürfelbehältern für späteren Gebrauch ein.",
+        "Übrige Schalen: köchle mit Wasser und Zucker, um Zitronensirup für Cocktails zu machen, oder trockne sie und füge sie zu Tee hinzu. Null Verschwendung, maximaler Geschmack.",
+        "%IMAGE:amalfi-lemons-cooking.jpg|Fresh Amalfi Coast lemons (sfusato amalfitano) for cooking%"
+      ]
+    },
+    {
+      "id": "ordering-etiquette",
+      "title": "Bestelletikette & Touristenfallen vermeiden",
+      "body": [
+        "Wenn ein Restaurant eine Speisekarte in 6 Sprachen und Fotos von jedem Gericht hat, ist es eine Touristenfalle. Suche nach handgeschriebenen Speisekarten auf Italienisch mit maximal 8-12 Gerichten — dort essen die Einheimischen.",
+        "Limoncello wird traditionell eiskalt nach einer Mahlzeit als Digestif serviert, nicht vorher oder währenddessen. Wenn ein Ort Limoncello-Cocktails vor dem Abendessen pusht, zielen sie auf Touristen ab.",
+        "Coperto (Gedeck) ist in Italien standard: €1,50-3 pro Person für Brot und Tischservice. Wenn es über €3 liegt, zahlst du zu viel. Prüfe die 'Coperto'-Preise auf der Speisekarte, bevor du dich hinsetzt.",
+        "Wasser: 'Acqua naturale' ist stilles Wasser, 'frizzante' ist sprudelnd. Leitungswasser ist sicher, wird aber selten in Restaurants serviert — bestelle eine €2-3 Flasche und fülle kostenlos am Hostelbrunnen nach, bevor du ausgehst.",
+        "%IMAGE:local-italian-restaurant.jpg|Authentic local restaurant with handwritten Italian menu%",
+        "Trinkgeldkultur: Servicegebühr (Servizio) ist manchmal in der Rechnung enthalten. Wenn nicht, ist es höflich aber nicht verpflichtend, €1-2 zu hinterlassen oder die Rechnung aufzurunden. Italiener geben kein 15-20% Trinkgeld wie in den USA — spare deine Euros für mehr Limoncello."
+      ]
+    },
+    {
+      "id": "market-shopping",
+      "title": "Markteinkauf & Zitronen nach Hause bringen",
+      "body": [
+        "Der %LINK:chiesaNuovaArrivals|Chiesa Nuova-Markt% (donnerstags 8:00-13:00) verkauft frische Produkte, einschließlich riesiger Amalfi-Zitronen für €2-4/kg. Vergleiche mit €1-2 pro Zitrone in Touristen-Souvenirläden.",
+        "Wenn du Zitronen nach Hause bringen möchtest: wähle feste, makellose Früchte und packe sie in die Mitte deiner Tasche, eingewickelt in Papiertücher. Sie halten 5-7 Tage, wenn sie kühl aufbewahrt werden. EU-Zoll erlaubt bis zu 2kg frisches Obst; prüfe die Regeln deines Landes, wenn du außerhalb der EU fliegst.",
+        "Für Limoncello-Zutaten kaufe reinen Alkohol (Alcool Puro, 95%) in einer Apotheke oder großem Supermarkt in Salerno oder Neapel — es sind €8-12 für 1L gegenüber €15-20 in Positanos kleinen Läden.",
+        "%IMAGE:chiesa-nuova-market-lemons.jpg|Fresh Amalfi lemons at Chiesa Nuova Thursday market%"
       ]
     }
   ],
   "tips": [
-    "Achte auf die Kennzeichnung „Limone Costa d’Amalfi g.g.A.“ – sie garantiert Herkunft und Qualität.",
-    "Serviere Limoncello eisgekühlt aus dem Gefrierfach; so bleibt die Textur seidiger."
+    "Kostenlose Proben sind Standard — fühle dich nicht zum Kauf gezwungen nach dem Probieren. Höfliches 'grazie, ci penso' (danke, ich denke darüber nach) funktioniert gut.",
+    "Kaufe Limoncello und Zitronen in Amalfi-Stadt oder Praiano für 20-30% weniger als Positano-Preise.",
+    "Überspringe die keramischen zitronenförmigen Flaschen (€20-30) — sie sind zerbrechlich, schwer und der Limoncello darin ist mittelmäßig. Nimm eine einfache Glasflasche und gib die Ersparnisse für bessere Qualitätsflüssigkeit aus.",
+    "Die meisten Restaurants in Positano servieren kostenlosen Limoncello nach dem Abendessen, wenn du eine volle Mahlzeit bestellst. Wenn sie nicht anbieten, frage — 'Limoncello offerto?' — und sie bringen normalerweise ein kleines Glas.",
+    "Die %LINK:cheapEats|Hostelküche% ist großartig, um günstige Zitronen-Mahlzeiten zusammenzustellen. Kaufe Zutaten auf dem Donnerstagmarkt oder bei Conad in Chiesa Nuova und spare 50-70% gegenüber Restaurantmahlzeiten."
   ],
   "faqs": [
     {
-      "q": "Darf Limoncello ins Handgepäck?",
+      "q": "Kann ich Limoncello im Handgepäck mitnehmen?",
       "a": [
-        "Nur bis 100 ml – größere Flaschen gehören ins Aufgabegepäck, gut gepolstert."
+        "Nein, nicht in Flaschen über 100ml. Standard-Limoncello-Flaschen sind 500-750ml, daher musst du sie im aufgegebenen Gepäck packen.",
+        "Wickle Flaschen in Kleidung oder Luftpolsterfolie, versiegle in einer Plastiktüte für den Fall von Lecks und packe in die Mitte deiner Tasche weg von harten Gegenständen. Wir sind so mit 4-5 Flaschen geflogen ohne Probleme."
       ]
     },
     {
-      "q": "Gibt es alkoholfreie Alternativen?",
+      "q": "Was ist ein fairer Preis für Limoncello in Positano?",
       "a": [
-        "Ja, probiere Limonata, alkoholfreien Zitronen-Sirup oder Crema di Limone ohne Alkohol – viele Shops kennzeichnen entsprechende Produkte."
+        "€10-15 für eine 500ml-Flasche von einem lokalen Produzenten ist standard. Alles über €18 ist überteuert, es sei denn, es ist eine Spezialmischung.",
+        "Günstiger in Amalfi-Stadt (€8-12) oder Praiano. Vermeide Flughafenläden — sie verlangen €20-25 für die gleichen Flaschen."
+      ]
+    },
+    {
+      "q": "Gibt es alkoholfreie Zitronen-Leckereien?",
+      "a": [
+        "Ja! Probiere Zitronen-Granita (€2-3), frische Limonade (€3-4) oder Zitronen-Sorbet (€2,50-4). Diese sind überall und genauso erfrischend wie Limoncello.",
+        "Zum Kochen sind zitronen-infundiertes Olivenöl und Zitronenmarmelade großartige Geschenke und haben keinen Alkoholgehalt."
+      ]
+    },
+    {
+      "q": "Wo ist das beste Preis-Leistungs-Verhältnis für Zitronen-Mahlzeiten?",
+      "a": [
+        "Da Vincenzo (Via Pasitea 172) für €8-12 Pasta-Gerichte. Pasticceria La Zagara (Via dei Mulini) für €5 Delizia al Limone Dessert.",
+        "Oder selbst kochen: kaufe Zitronen, Mozzarella, Tomaten und Olivenöl auf dem Chiesa Nuova-Markt und stelle Mahlzeiten im Hostel für €5-6 pro Person zusammen."
       ]
     }
   ]

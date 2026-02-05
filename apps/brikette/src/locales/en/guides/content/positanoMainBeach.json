@@ -34,7 +34,7 @@
       ],
       "images": [
         {
-          "src": "/img/guides/topics/positanoMainBeach.jpg",
+          "src": "/img/guides/positano-main-beach-bus-back/interno-positano-bus.jpg",
           "alt": "Spiaggia Grande (Positano main beach) seen from above with the village rising behind the shoreline",
           "caption": "Spiaggia Grande from above — great views, a pebbly shore, and a busy promenade at the back of the beach."
         },
@@ -44,7 +44,7 @@
           "caption": "Piazza dei Mulini bus stop area — useful to locate before you settle in for a long beach day."
         },
         {
-          "src": "/img/guides/positano-main-beach-bus-back/interno-positano-bus.jpg",
+          "src": "/img/guides/topics/positanoMainBeach.jpg",
           "alt": "Orange Interno Positano bus used by hostel guests to ride between Chiesa Nuova and the center",
           "caption": "The orange Interno bus — the easiest way to save your legs after a day on the pebbles."
         }
@@ -90,12 +90,12 @@
       ],
       "images": [
         {
-          "src": "/img/guides/positano-main-beach/01-beach-layout-map.jpg",
+          "src": "/img/guides/positano-main-beach/02-beach-providers-overview.jpg",
           "alt": "Beach layout map showing the free section, residents' section, L'Incanto, and La Scogliera at Spiaggia Grande",
           "caption": "Spiaggia Grande layout: free zone (#1), residents' strip (#2), L'Incanto (#3), and La Scogliera deck (#4)"
         },
         {
-          "src": "/img/guides/positano-main-beach/02-beach-providers-overview.jpg",
+          "src": "/img/guides/positano-main-beach/01-beach-layout-map.jpg",
           "alt": "Overview of the four beach providers on Spiaggia Grande showing their locations along the shoreline",
           "caption": "Beach providers overview — the four zones on Spiaggia Grande from public area to premium decks"
         }

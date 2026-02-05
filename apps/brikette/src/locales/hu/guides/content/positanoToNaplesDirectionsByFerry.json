@@ -1,88 +1,126 @@
 {
   "seo": {
-    "title": "Positano – Nápoly útmutató kompon | Hostel Brikette",
-    "description": "Átlátható, nyomtatható lépések a Hostel Brikette-től a positanói kikötőig, majd tovább Nápolyba kompon, jegy- és érkezési tippekkel."
+    "title": "Positano → Nápoly komppal | Hostel Brikette",
+    "description": "Komp Positanóból Nápolyba: séta a kikötőhöz, jegyek (€18-25), beszállás és érkezés a nápolyi kikötőhöz Napoli Centrale-hoz vezető csatlakozásokkal. Szezonális április-október."
   },
+  "lastUpdated": "2025-01-15",
   "intro": {
-    "title": "Positano → Nápoly – útmutató kompon",
-    "body": "Lépésről lépésre mutatjuk, hogyan sétáljon le a Hostel Brikette-től a positanói kikötőbe, hol vegyen kompjegyet, és hogyan utazzon tovább Nápolyba – szezonális megjegyzésekkel és tanácsokkal a Napoli Centrale állomáshoz."
+    "title": "Positano → Nápoly – Útmutató kompon",
+    "body": "Utazz Positanóból Nápoly központjába teljes egészében tengeren. Ez az útvonal a szállásodtól a positanói kompmólóig Spiaggia Grandén való sétával kezdődik, majd egy festői 70-90 perces kompátkeléssel Nápolyba, és egy végső rövid átszállással a kikötőből a Napoli Centrale állomáshoz. Legjobb: olyan utazók számára, akik el akarják kerülni a kanyargós tengerparti utat és élvezni szeretnék a tengeri kilátást. Nem ideális: téli látogatásokhoz (korlátozott szolgáltatás november-március), bármely, aki kényelmetlenül érzi magát lefelé menő lépcsőkön (200+ lépcső a mólóig), vagy nagyon szoros menetrenddel rendelkezőknek (komplemondások gyakran előfordulnak). A teljes utazási idő jellemzően 2-3,5 óra ajtótól ajtóig, beleértve a kikötőig való sétát és a kikötő-állomás átszállást Nápolyban. Számíts €18-25-re a kompért, plusz €1-2 a villamos vagy €10-15 a taxi Nápolyban. Ez az útmutató lefedi a sétát a felső faluból a positanói kikötőbe, kompjegyek vásárlását, beszállást, az átkelést és az érkezést Nápolyban további csatlakozásokkal."
   },
-  "sections": [
-    {
-      "id": "journeyOverview",
-      "title": "Utazás áttekintése"
-    },
-    {
-      "id": "photoGuide",
-      "title": "Fotós útmutató (referencia)"
-    },
-    {
-      "id": "walkToPort",
-      "title": "Séta a positanói kikötőhöz"
-    },
-    {
-      "id": "tickets",
-      "title": "Jegyvásárlás és beszállás"
-    },
-    {
-      "id": "arrival",
-      "title": "Érkezés Nápolyba"
-    }
-  ],
   "galleries": [
     {
       "items": [
         {
           "src": "/img/directions/positano-capri-ferry-img01.png",
+          "alt": "Útvonal lépés képe 1",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img02.jpg",
+          "alt": "Útvonal lépés képe 2",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img03.jpg",
+          "alt": "Útvonal lépés képe 3",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img04.png",
+          "alt": "Útvonal lépés képe 4",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img05.jpg",
+          "alt": "Útvonal lépés képe 5",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img06.jpg",
+          "alt": "Útvonal lépés képe 6",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img07.jpg",
+          "alt": "Útvonal lépés képe 7",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img08.jpg",
+          "alt": "Útvonal lépés képe 8",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img09.jpg",
+          "alt": "Útvonal lépés képe 9",
           "aspectRatio": "4/3",
           "preset": "gallery"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img10.jpg",
+          "alt": "Útvonal lépés képe 10",
           "aspectRatio": "4/3",
           "preset": "gallery"
         }
       ]
     }
-  ]
+  ],
+  "sections": [
+    {
+      "id": "journeyOverview",
+      "title": "Utazás áttekintése",
+      "body": "A Positano-Nápoly kompjárat szezonálisan működik, a leggyakoribb szolgáltatás áprilistól októberig tart. A nyári csúcsidőszakban (június-szeptember) jellemzően napi 3-6 induló járatot találsz, míg a köztes szezonban (április, május, október) általában napi 1-3 átkelés van. A téli szolgáltatás (november-március) rendkívül korlátozott vagy nem létező.\n\n**Jellemző menetrend:**\n- Séta a felső faluból (Chiesa Nuova/Montepertuso) a kikötőig: 20-30 perc\n- Séta központi Positanóból a kikötőig: 10-15 perc\n- Érkezés a kikötőbe és jegyvásárlás: 15-20 perccel az indulás előtt\n- Kompátkelés: 70-90 perc (a hidroszárnyasok gyorsabbak, a hagyományos kompok lassabbak)\n- Kiszállás Nápolyban és átszállás Napoli Centrale-hoz: 15-25 perc villamossal, 10-15 perc taxival\n- Teljes ajtótól ajtóig a felső faluból: 2,5-3,5 óra\n- Teljes központi Positanóból: 2-3 óra\n\n**Kinek jó ez az útvonal:** Positanót elhagyó utazók számára, akik egy festői, közvetlen útvonalat szeretnének Nápolyba anélkül, hogy zsúfolt buszokkal kellene foglalkozniuk. Ideális, ha szeretsz a vízen lenni és kényelmes vagy a meredek lefelé sétával a kikötőhöz (sokkal könnyebb, mint felfelé!).\n\n**Kinek kellene alternatívákat fontolóra vennie:** Bárki, aki télen utazik, akik kényelmetlenül érzik magukat lépcsőkön (még lefelé is, 200+ lépcső kihívást jelenthet csomaggal), nagyon szoros menetrendű utazók (kompkésések és lemondások gyakoriak), vagy bárki, aki hajlamos a tengeribetegségre. A %HOWTO:positano-sorrento-bus|Szorrentón át vezető busz% egész évben közlekedik és kevesebbe kerül.\n\n**Időjárás és lemondások:** A kompszolgáltatások időjárásfüggők. Még nyáron is, a viharos tenger vagy erős szél utolsó pillanatos lemondásokhoz vezethet, amelyeket általában az indulás reggelén jelentenek be. Mindig ellenőrizz a kompüzemeltetődnél, mielőtt lesétálnál a kikötőbe. Ha a kompokat törlik, vissza kell sétálnod és helyette a buszútvonalat venned. Tapasztalataink szerint a lemondások a leggyakoribbak késő ősszel (október-november) és kora tavasszal (március-április), amikor hirtelen időjárásváltozások gyakoriak. Ha az előrejelzés 25-30 csomó feletti szélsebességet vagy jelentős hullámmagasságot mutat, számíts a lemondás nagy valószínűségére. Hívd fel a komptársaságot vagy nézd meg a weboldalukat előző este és újra az indulás reggelén."
+    },
+    {
+      "id": "photoGuide",
+      "title": "Fotós útmutató (referencia)",
+      "body": "Az alábbi galéria a felső faluból a positanói kikötőig vezető sétát mutatja. Az útvonal a Via Cristoforo Colombót (a fő tengerparti utat) követi lefelé, majd leszáll a hosszú lépcsősoron a Spiaggia Grande strandhoz és a kompmólóhoz. Keress táblákat, amelyek a \"Spiaggia\" vagy \"Marina\" felé mutatnak, ahogy ereszkedsz. A lépcsők meredekek, de jól karbantartottak, korlátokkal. Egy meleg napon a séta lefelé csomaggal még mindig fárasztó lehet, ezért haladj a saját tempódban és használd a korlátokat."
+    },
+    {
+      "id": "walkToPort",
+      "title": "Séta a positanói kikötőhöz",
+      "body": "Positano kompmólója a falu alján található a Spiaggia Grandén (a fő strand). Az odajutás 200+ meredek lépcső leereszkedését igényli a fő tengerparti útról.\n\n**A felső faluból (Chiesa Nuova vagy Montepertuso):**\n\nHa a felső faluban laksz, először el kell érned a fő tengerparti utat (Via Cristoforo Colombo) és a buszmegállókat. Onnan két lehetőséged van:\n\n1. **Sétálj le (ingyenes, összesen 20-30 perc):** Kövesd a Via Cristoforo Colombót lefelé Positano központja felé. Ahogy ereszkedsz, elhaladasz boltok, éttermek és hotelek mellett. Keress táblákat, amelyek a \"Spiaggia\" vagy \"Marina Grande\" felé mutatnak. Végül elérsz egy nagy lépcsősorhoz (egy kerámia kupolával a tetején), amely leereszkedik a strand felé. Ez a kikötőhöz vezető fő hozzáférés. A lépcsők meredekek és szűkek helyenként, összesen körülbelül 200-250 lépcső. Haladj a saját tempódban, használd a korlátokat és pihenj meg szükség esetén. Lent eléred a strand sétányt és a kompmóló egyenesen előtted van.\n\n2. **Fogj helyi buszt részben (€1,30, megtakarít ~10 percet):** Fogd bármelyik, \"Positano centro\" vagy \"Spiaggia\" felé tartó SITA buszt és szállj le az alsóbb megállók egyikénél a templom közelében (Chiesa di Santa Maria Assunta). Onnan ereszkedj le a maradék lépcsőkön a strandig.\n\n**Központi Positanóból:**\n\nHa a Via Cristoforo Colombo közelében laksz központi Positanóban, menj lefelé a strand felé, kövess táblákat a \"Spiaggia\" vagy \"Marina\" felé. A séta 10-15 percet vesz igénybe és magában foglalja a fő lépcsősor (200+ lépcső) leereszkedését a strand szintjének és a kompmólónak az eléréséhez.\n\n**Megérkezés a kikötőbe:**\n\nMiután eléred a strand sétányt, a kompmóló a Spiaggia Grande távoli jobb (keleti) végében van. Keress a kis móló szerkezetet és jegypénztárakat. Érkezz legalább 15-20 perccel az indulásod előtt, hogy jegyeket vásárolhass vagy beválthass és sorba állhass a beszálláshoz. Nyáron a móló környéke tele lehet kirándulókkal és strandolókkal, ezért tervezz extra időt a tömegben való navigálásra."
+    },
+    {
+      "id": "tickets",
+      "title": "Jegyvásárlás és beszállás",
+      "body": "Több társaság üzemeltet kompokat és hidroszárnyasokat Positano és Nápoly között. A jegyek általában nem cserélhetők az üzemeltetők között.\n\n**Fő üzemeltetők:**\n- **Alilauro** (hidroszárnyasok és kompok) — leggyakoribb szolgáltatás\n- **NLG (Navigazione Libera del Golfo)** — hagyományos kompok, gyakran olcsóbbak\n- **Positano Jet** — kis hidroszárnyasok, korlátozott menetrend\n\n**Jegyárak:** €18-25 személyenként egy útra, a hajótípustól és az évszaktól függően. A nagyobb poggyász kis felárat vonhat maga után (€2-5 táskánként).\n\n**Hol vásárolj jegyeket:**\n\n1. **A kikötőben a nap folyamán** — Kis jegypénztárak találhatók a móló közelében. Ez a legrugalmasabb lehetőség (először ellenőrizheted az időjárási viszonyokat). Érkezz 20-30 perccel korábban, mivel a népszerű indulások megtelhetnek nyáron.\n\n2. **Online előre** — A legtöbb üzemeltető jegyeket árul a weboldalain. Kapsz egy utalványt, amelyet be kell váltani beszállókártyára a kikötői pultnál (adj hozzá 10-15 percet ehhez). Az előzetes foglalás ajánlott július-augusztusra.\n\n**Beszállás:**\n- Várj a sorban a palló közelében. A személyzet ellenőrzi a jegyeket és a poggyásztároláshoz irányít.\n- A hidroszárnyasokon az ülőhelyek általában ki vannak jelölve. A nagyobb kompokon az \"aki előbb jön, előbb kiszolgálják\" elv érvényes.\n- A palló keskeny lehet és mozog a hullámzással — figyelj a lépéseidre.\n- A komp valószínűleg megáll %HOWTO:amalfi-positano-ferry|Amalfinál% és %HOWTO:sorrento-positano-ferry|Szorrentónál%, mielőtt eléri Nápolyt. Ne szállj le túl korán — várj a nápolyi hirdetményre.\n\n**Az átkelés során:**\n- Az út 70-90 percet vesz igénybe a hajó típusától és a megállók számától függően.\n- Az átkelés hullámzó lehet tavasszal és ősszel. Ha hajlamos vagy a tengeribetegségre, ülj kint, koncentrálj a horizontra és fontold meg a gyógyszer szedését beszállás előtt.\n- A létesítmények alapvetőek: kis mosdók, snackbár vagy automaták a nagyobb hajókon."
+    },
+    {
+      "id": "arrival",
+      "title": "Érkezés Nápolyba",
+      "body": "A Positanóból érkező kompok Nápoly vízparti termináljai egyikénél kötnek ki, jellemzően a **Molo Beverello**-nál vagy a **Calata Porta di Massa**-nál, mindkettő a Piazza Municipio közelében található. Onnan át kell szállnod a Napoli Centrale állomáshoz (ha vonattal folytatod) vagy a nápolyi központi szállásodhoz.\n\n**Kiszállás:**\n- Várj, amíg a legénység rögzíti a pallót és jelzést ad a kiszállásra.\n- Vedd fel a csomagodat a tárolási területről.\n- Kövesd a tömeget le a mólóról és át a terminál területen.\n\n**Átszállás a Napoli Centrale-hoz (központi állomás):**\n\n**1. lehetőség: 1-es villamos (legolcsóbb, €1,10)**\nA kikötő területről sétálj a főút felé és keresd az 1-es villamos megállót (felső elektromos vezetékek és villamossínek). Szállj fel bármelyik, \"Piazza Garibaldi\" vagy \"Napoli Centrale\" felé tartó 1-es villamosra. Az út körülbelül 15-20 percet vesz igénybe. Érvényesítsd a jegyedet a fedélzeten lévő sárga gépen. Szállj le a Garibaldi megállónál, amely közvetlenül a Napoli Centrale állomás előtt van.\n\n**2. lehetőség: Taxi (gyorsabb, €10-15)**\nA taxik sorban állnak a kikötő kijáratai közelében. Mondd a sofőrnek \"Napoli Centrale\"-t vagy \"Stazione Centrale\"-t. Az út 10-15 percet vesz igénybe a forgalomtól függően. Erősítsd meg, hogy a sofőr elindítja az órát.\n\n**3. lehetőség: Gyalogosan (ingyenes, 25-30 perc)**\nHa könnyű csomaggal utazol és látni szeretnéd a várost, gyalogosan mehetsz a kikötőből a Napoli Centrale-ig. Menj északkelet felé a vízpart mentén, majd beljebb a Piazza Garibaldi felé. Ez csak akkor ajánlott, ha kényelmes vagy Nápoly navigálásában és nincs nehéz csomagod.\n\n**Folytatás a repülőtérre vagy más úticélokra:**\n- **Nápoly repülőtérre:** A Napoli Centrale-tól fogd az Alibus shuttle-t (€5, 20-30 perc). Nézd meg a %HOWTO:naples-airport-positano-bus|Nápoly repülőtérről Positanóba buszútmutatót% a részletekért (fordítsd meg az irányokat).\n- **Szorrentóba, Pompeibe vagy Herculaneumba:** A Napoli Centrale-tól fogd a Circumvesuviana vonatot (vásárolj jegyeket az alsó szintű Circumvesuviana állomáson, ne a fő Trenitalia állomáson).\n- **Rómába vagy más városokba:** Használd a Trenitalia vagy Italo nagysebességű vonatokat a Napoli Centrale-ról.\n\n**Ha Nápolyban maradsz:**\nA kikötő környéke sok központi nápolyi hotel és látványosság közelében van. A villamos, metró és buszok összekötik a kikötőt a legtöbb negyeddel. Kérdezz konkrét irányokat a szállásodhoz a \"Molo Beverello\"-tól vagy a komptermináltól."
+    }
+  ],
+  "faqs": [
+    {
+      "question": "Mennyibe kerül a Positanóból Nápolyba komp?",
+      "answer": "A jegyek €18-25-be kerülnek személyenként egy útra, az üzemeltetőtől és a hajótípustól függően. A hidroszárnyasok gyorsabbak, de valamivel drágábbak, mint a hagyományos kompok. A nagyobb poggyász €2-5 felárat vonhat maga után táskánként."
+    },
+    {
+      "question": "Vehetek kompot télen?",
+      "answer": "A kompszolgáltatás Positano és Nápoly között rendkívül korlátozott vagy nem létező novembertől márciusig. Még amikor elérhető, a téli kompokat gyakran törlik a viharos tenger miatt. Téli utazáshoz használd helyette a busz és vonat útvonalat Szorrentón keresztül."
+    },
+    {
+      "question": "Előre kell foglalnom a kompjegyeket?",
+      "answer": "Az előzetes foglalás ajánlott júliusra és augusztusra, különösen hétvégékre. Más hónapokra általában vásárolhatsz jegyeket a kikötőben az utazás napján. Érkezz 20-30 perccel korábban, hogy legyen idő jegyeket vásárolni és beszállni."
+    },
+    {
+      "question": "Nehéz-e lesétálni a kikötőhöz csomaggal?",
+      "answer": "A séta több mint 200 meredek lépcső leereszkedését foglalja magában a főútról a strandig. A lefelé menés sokkal könnyebb, mint a felfelé, de nehéz csomaggal még mindig kihívást jelenthet. Használd a korlátokat, haladj a saját tempódban és fontold meg a könnyű utazást. Nincsenek hordárok vagy alternatív hozzáférési útvonalak a leereszkedéshez."
+    }
+  ],
+  "callouts": {
+    "tip": "Más útvonalakra vagy tartalékra van szükséged viharos tenger esetére? Nézd meg a %HOWTO:how-to-get-here|Hogyan juthatsz el hozzánk áttekintést%.",
+    "warning": "A kompokat gyakran törlik rossz időjárásban, különösen október-április között. Mindig legyen készen egy tartalék terv. A %HOWTO:positano-naples-center-bus-train|busz és vonat útvonal% a legmegbízhatóbb alternatívád."
+  }
 }

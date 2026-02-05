@@ -6,19 +6,29 @@
   },
   "quickLinks": [
     {
-      "label": "Modifier ou annuler votre réservation",
-      "description": "Consultez les délais minimaux et comment éviter des frais supplémentaires si vous devez ajuster votre séjour.",
+      "label": "FAQ de l'auberge",
+      "description": "Réponses rapides aux questions fréquentes sur le séjour à l'Hostel Brikette de Positano.",
+      "slug": "hostelFaqs"
+    },
+    {
+      "label": "Règlement intérieur",
+      "description": "Consultez nos règles principales, dont notre politique d'interdiction d'alcool extérieur et nos consignes de sécurité.",
+      "slug": "rules"
+    },
+    {
+      "label": "Modifier ou annuler une réservation",
+      "description": "Consultez les délais et conseils pour éviter des frais supplémentaires en cas de changement de plan.",
       "slug": "changingCancelling"
     },
     {
-      "label": "Guide d’arrivée et de départ",
-      "description": "Suivez notre guide étape par étape pour l’arrivée et le départ à l’Hostel Brikette de Positano.",
+      "label": "Guide d'arrivée et de départ",
+      "description": "Suivez notre guide étape par étape pour l'arrivée et le départ à l'Hostel Brikette de Positano.",
       "slug": "checkinCheckout"
     },
     {
-      "label": "Rejoindre Positano facilement",
-      "description": "Choisissez le ferry, le bus ou le taxi idéal et suivez nos instructions étape par étape depuis Naples ou Sorrente.",
-      "slug": "travelHelp"
+      "label": "Rejoindre Positano",
+      "description": "Comparez les ferries, bus et taxis grâce à notre guide de transport étape par étape.",
+      "href": "how-to-get-here"
     }
   ],
   "contactCta": {

@@ -1,76 +1,138 @@
 {
   "seo": {
-    "title": "Hostel Brikette sunrise hike",
-    "description": "ホステル ブリケットから、遮るもののないポジターノの日の出の景色を望む静かな崖上の展望台までの夜明け前のルート。"
+    "title": "ホステル・ブリケットからの日の出ハイキング(ポジターノ)",
+    "description": "ホステル・ブリケットからポジターノの上の静かな展望台への短い夜明け前のハイキング、正しい順序のナビゲーション写真付き。"
   },
-  "linkLabel": "Hostel Brikette sunrise hike",
+  "linkLabel": "日の出ハイキング:ポジターノの上で夜明けを見る",
+  "lastUpdated": "2026-02-04",
   "intro": [
-    "Head out before dawn to catch the first light over the Amalfi Coast from a quiet vantage point above Positano.",
-    "This walk starts at Hostel Brikette and takes around 25 minutes including the stair climb to the viewpoint."
+    "最も簡単な日の出をご希望の場合は、ホステルの共用テラスから夜明けを見ることができます。太陽は左側から昇ります(海を見ているとき)。",
+    "より広いパノラマと街の上のより静かな瞬間をご希望の場合は、この短いハイキングに従って丘の中のポジターノの上の崖の展望台に行ってください。"
   ],
   "sections": [
     {
-      "id": "overview",
-      "title": "What is the sunrise hike?",
+      "id": "what-is",
+      "title": "日の出ハイキングとは?",
       "body": [
-        "If you prefer to stay put, you can watch the sunrise from the hostel terrace as it rises to the left of the building.",
-        "For a wider panorama, follow this short hike to a nearby cliff where you can watch the sun clear the horizon and light up the town below."
+        "これはホステル・ブリケットからポジターノの上の小さな展望台への夜明け前の短い往復ハイキングです。",
+        "より長い山のオプションをご希望の場合、%LINK:santaMariaDelCastelloHike|サンタ・マリア・デル・カステッロ%は素晴らしい代替案ですが、以下のルートは一日中のハイキングにコミットすることなく劇的な日の出の景色を得る最も速い方法です。"
       ]
     },
     {
-      "id": "reach-stairs",
-      "title": "Reach the stairway trailhead",
+      "id": "before-you-go",
+      "title": "出発前に(暗くなります)",
       "body": [
-        "Exit the hostel through the main door and walk down to Via Pasitea.",
-        "Turn right towards Sorrento and follow the road for roughly 350 metres.",
-        "Look for a flight of stairs on your left heading uphill — the first section is paved and has a handrail."
+        "携帯電話のライトまたはヘッドランプを持参し、手を自由に保ってください(特に階段で)。",
+        "グリップのある靴を履いてください - 最初の部分は舗装されていますが、森林トレイルは緩いまたは湿っている可能性があります。",
+        "日の出の10〜15分前に到着するのに十分早く出発して、落ち着いて場所を見つけ、最初の光を楽しむことができるようにしてください。"
       ]
     },
     {
-      "id": "climb-to-viewpoint",
-      "title": "Climb to the viewpoint",
+      "id": "step-1",
+      "title": "ステップ1:ホステルから階段まで歩く(≈350 m)",
       "body": [
-        "Take the stairs all the way up until you reach a small house at the top of the initial climb.",
-        "At the house, turn left to join the woodland trail.",
-        "When the path forks, take the right-hand branch and continue climbing through the trees.",
-        "As the path opens up and you can see the sea directly ahead, bear left.",
-        "Continue around the rocks to reach the exposed vantage point with sweeping sunrise views."
+        "正面玄関からホステルを出て、道路まで歩いて下りてください。",
+        "ソレントに向かって曲がり、道路から登る階段に到達するまで主要道路に沿って約**350メートル**歩いてください。"
       ]
     },
     {
-      "id": "enjoy-sunrise",
-      "title": "Enjoy the sunrise safely",
+      "id": "step-2",
+      "title": "ステップ2:家まで登り、左に曲がる",
       "body": [
-        "The final rocks can be slick with morning dew; move carefully and avoid standing on loose edges.",
-        "From the main ledge you can watch the sun crest the horizon, or scramble a little higher for photos once there is enough light."
+        "以下に示されている古い白い家に到達するまで階段を登ってください。",
+        "家で、森林トレイルに参加するために**左に曲がって**ください。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/02-house.jpg",
+          "alt": "ポジターノの上の日の出ハイキングルートの階段の横にある古い白い家",
+          "caption": "この建物は階段登りの終わりを示しています;森林トレイルに入るためにここで左に曲がってください。",
+          "width": 876,
+          "height": 530
+        }
+      ]
+    },
+    {
+      "id": "step-3",
+      "title": "ステップ3:展望台への森林トレイルに従う",
+      "body": [
+        "家から緩やかに登る森林トレイルに従ってください。",
+        "トレイルが分岐するときは、**右**の枝を取ってください。",
+        "最終的に木が開いて目の前にまっすぐ海が見える地点に到達します。そこから**左**に進んでください。",
+        "その左の道はあなたを展望台に連れて行きます。より高い場所のために慎重に岩に登ることができます、または安定した景色のためにメインスポットにとどまることができます。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/03-viewpoint.jpg",
+          "alt": "ポジターノの上の展望台への日の出ハイキングルートの最後の曲がり角を示すオーバーヘッドマップビュー",
+          "caption": "トレイルが海に開いた後、展望台への最後の左折を確認するためにこのオーバーヘッドビューを使用してください。",
+          "width": 677,
+          "height": 600
+        }
+      ]
+    },
+    {
+      "id": "share",
+      "title": "このガイドを共有する(QR)",
+      "body": [
+        "友達と出かける場合は、このQRコードを使用して別の電話でガイドをすばやく共有できます。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/01-qr.png",
+          "alt": "ホステル・ブリケット日の出ハイキングガイドにリンクするQRコード",
+          "width": 450,
+          "height": 450
+        }
       ]
     }
   ],
-  "tips": [
-    "Allow around 25 minutes from the hostel to the viewpoint and aim to arrive 10 minutes before the posted sunrise time.",
-    "Bring a headlamp or phone torch — the stair sections are dark before dawn.",
-    "Wear shoes with good grip and pack a layer; sea breezes make early mornings feel cooler."
+  "essentialsTitle": "必需品",
+  "essentials": [
+    "ヘッドランプまたは携帯電話のライト(充電されたバッテリーも)。",
+    "グリップのある靴と軽い層 - 夜明け前は涼しくて風が強く感じることがあります。",
+    "座って日の出を見る予定がある場合は、水と小さなスナック。"
   ],
+  "tipsTitle": "スマートなタイミング",
+  "tips": [
+    "簡単な予報チェックを行ってください:風と低い雲は、晴れた日でも日の出を隠すことができます。",
+    "暗闇の中で交差点に不確かな場合は、推測するのではなく、一時停止して方向を確認してください。"
+  ],
+  "warningsTitle": "安全上の注意",
+  "warnings": [
+    "階段でゆっくり進み、手を自由に保ってください - 低い光の中で足を踏み外すのは簡単です。",
+    "雨の後にトレイルが滑りやすく感じる場合は、代わりにホステルのテラスから見ることを検討してください。"
+  ],
+  "steps": [
+    {
+      "name": "階段まで歩く",
+      "text": "ホステルから、主要道路でソレントに向かって〜350 m歩き、登る階段を見つけてください。"
+    },
+    {
+      "name": "家まで登る",
+      "text": "古い白い家まで階段に従い、次に森林トレイルに左に曲がってください。"
+    },
+    {
+      "name": "右の枝を取る",
+      "text": "森林トレイルが分岐するときは、右を保ち、海が見えるまで続けてください。"
+    },
+    {
+      "name": "展望台に左に曲がる",
+      "text": "トレイルが海に開いた後、展望台に到達するために左に向かってください(より高い場所が必要な場合は慎重に登ってください)。"
+    }
+  ],
+  "faqsTitle": "よくある質問",
   "faqs": [
     {
-      "q": "Can I just watch the sunrise from the hostel?",
+      "q": "ホステルから日の出を見ることはできますか?",
       "a": [
-        "Yes. The terrace faces east and you can see the sun rise to the left of the building without leaving the property.",
-        "The hike is for guests who want a wider panorama or photos without foreground buildings."
+        "はい - ホステルのテラスが最も簡単なオプションで、海を向いているときに太陽は建物の左側から昇ります。"
       ]
     },
     {
-      "q": "Is the trail marked or difficult to follow?",
+      "q": "ハイキングにはどのくらい時間がかかりますか?",
       "a": [
-        "The route follows local stairs and an informal woodland trail. There are no signposts, so bring a phone with offline maps or follow these instructions closely.",
-        "In the dark, walk slowly and use a torch to pick out uneven steps and tree roots."
-      ]
-    },
-    {
-      "q": "What should I bring?",
-      "a": [
-        "Wear trainers or hiking shoes with grip, carry water, and pack a light layer for the breeze.",
-        "If you plan to stay for sunrise photos, consider a tripod or phone stand."
+        "短いルートですが、タイミングはあなたのペースと展望台で過ごす時間によって異なります。日の出の10〜15分前に到着するのに十分な時間を残してください。"
       ]
     }
   ]

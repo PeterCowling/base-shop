@@ -1,61 +1,250 @@
 {
   "seo": {
-    "title": "Dagsture fra Positano",
-    "description": "De bedste udflugter til Capri, Pompeji, Ravello og flere — med transportvalg."
+    "title": "Dagsture fra Positano: Capri, Pompeji, Ravello, Amalfi",
+    "description": "Budgetvenlige dagsture fra Positano—Capri, Pompeji, Amalfi, Ravello og Sorrento med færge- og bustiminger, omkostninger og backpackertips."
   },
-  "linkLabel": "Endagsture fra Positano",
+  "linkLabel": "Bedste dagsture: Capri, Amalfi, Pompeji og mere",
   "intro": [
-    "Brug Positano som base for dagsture med færge og bus — start tidligt, forudbestil nøglebilletter og hav altid en vejrplan B."
+    "Positano fungerer fantastisk som dagstursbase—færger og busser forbinder dig med Capri, Pompeji, Amalfi, Ravello og Sorrento inden for 30-90 minutter. De fleste ture koster €15-35 for transport plus stedadgang, og du undgår at slæbe bagage eller skifte vandrehjem.",
+    "Start tidligt for at komme foran krydstogtsfolkemængderne, forudbestil billetter til Pompeji og populære færger, og hav altid en vejrbackup-plan (færger aflyses ved uroligt hav). Pak snacks, vand, solcreme og en let regnjakke—caféer nær turistattraktioner tager premium priser."
   ],
   "sections": [
     {
-      "id": "capri",
-      "title": "Capri-højdepunkter",
+      "id": "quick-comparison",
+      "title": "Hurtig dagsturssammenligning",
       "body": [
-        "Book første færge ud, kør stolen til Monte Solaro og gå i Giardini di Augusto før krydstogtsgæsterne kommer.",
-        "Tag en sen eftermiddagsfærge retur og gem et buskøreplan-screenshot i tilfælde af uroligt hav."
+        "Capri: Dyreste (€20 færge hver vej, ~€35-40 i alt med funicular/stolelift), mest maleriske, kræver en hel dag. Bedst til: ikoniske udsigter, fotos, vandring til Arco Naturale eller Villa Jovis. %LINK:capriDayTrip|Fuld Capri-dagsturguide%",
+        "Pompeji: Bedste værdi (€9 bus til Sorrento, €2,50 tog, €18 adgang = ~€32 i alt), historierig, 3-4 timer på stedet. Bedst til: arkæologientusiaster, tidlige startere, der vil have eftermiddagen tilbage i Positano. %LINK:positanoPompeii|Positano til Pompeji-retninger%",
+        "Amalfi + Ravello: Nem kombination (€8 færge eller €4 bus til Amalfi, €2,50 bus op til Ravello), mad og haver. Bedst til: kortere halv-dagsture, solnedgangsudsigt fra Villa Cimbrone. %LINK:positanoAmalfi|Positano til Amalfi-transport%",
+        "Sorrento: Afslappet atmosfære (€12 færge eller €4 bus), citronlunde, limoncello, skaldyr, Villa Comunale-udsigtspunkt. Bedst til: markedsindkøb, smagninger, sent morgenafreiser. %LINK:naplesPositano|Napoli-Positano-forbindelser via Sorrento%",
+        "Herculaneum: Mindre end Pompeji (€9 bus til Sorrento, €2,50 tog, €13 adgang = ~€27 i alt), bedre bevarede mosaikker, 2-3 timer på stedet. Bedst til: at se ruiner uden Pompejis folkemængder."
+      ]
+    },
+    {
+      "id": "capri",
+      "title": "Capri: Heldagsø-flugt",
+      "body": [
+        "Hvorfor tage afsted: Ikoniske klippeudsigter, Faraglioni-klippestakke, Blå Grotte (vejrafhængig), boutiqueindkøb i Capri by, vandrestier og bakke-haver. Capri er den mest fotogene dagstur, men også den dyreste—forvent at bruge €50-70 i alt inkl. transport, funicular/stolelift og en beskeden frokost.",
+        "Bedst til: Klarvejrsdage, når du vil have dramatiske kystlandskaber og ikke har noget imod turistmængder. Fotografer bør sigte efter morgen- eller sen eftermiddagslys.",
+        "Sådan kommer du derhen: Tag den første færge fra Positano (normalt 08:15-09:00, €20 hver vej, 40 minutter, %LINK:ferryCancellations|tjek færgestatus% ved Positano-færgekaj eller online). Book en dag eller to i forvejen om sommeren—morgensejladser er udsolgt. Returfærger kører indtil 18:00-19:00 afhængigt af sæson. %LINK:briketteToFerryDock|Gang fra vandrerhjem til færgekaj% tager 10-15 minutter.",
+        "Pengebesparende træk: Spring Blå Grotte over (€18 adgang plus €15-20 for robåd, ofte lukket pga. bølger)—udsigten fra land er fantastisk og gratis. Tag en pakket frokost fra Positanos supermarkeder (undgå overprisede øcaféer). Gå mellem Capri by og Anacapri i stedet for at tage bussen (stejl, men sparer €4 returtur).",
+        "Foreslået rejseplan: Ankom tidligt, tag funicular op til Capri by (€2 hver vej, inkluderet i nogle færgepakker), gå til Giardini di Augusto (€1 adgang) for Faraglioni-udsigt før kl. 10:00, når turgrupper ankommer. Bus eller gang til Anacapri (€2 bus hver vej), tag Monte Solaro-stolelift (€13 returtur, åbner 09:30) for 360° panorama. Udforsk Villa San Michele eller vandre til Arco Naturale (gratis, 20 minutter fra Capri by), fang derefter 17:00-18:00-færgen tilbage. Vejrbackup: Hvis færger aflyses, udforsk Sorrento eller tag bussen til Amalfi i stedet.",
+        "Lokale tips fra vandrerhjem: Pak en badedragt—der er klippebadesteder nær Faraglioni og Marina Piccola, hvis du har ekstra tid. Undgå spidsommerweekender (juli-august lørdage), når dagsudfletsgæster tredobles. Tjek %LINK:ferryCancellations|færgetidstabeller% aftenen før og tag skærmbillede—mobilsignal er ujævnt på Capri-klipper."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/dayTripsAmalfi.jpg",
+          "alt": "Kystlinje og både til dagsture fra Positano.",
+          "caption": "Start tidligt og hav en vejrbackup til populære dagsture."
+        },
+        {
+          "src": "/img/guides/topics/capriFaraglioni.jpg",
+          "alt": "Faraglioni-klippestakke ud for Capris kyst.",
+          "caption": "De ikoniske Faraglioni-klipper—Capris mest fotograferede udsigt."
+        },
+        {
+          "src": "/img/guides/topics/capriMonteSolaro.jpg",
+          "alt": "Monte Solaro-stolelift med panoramaudsigt over Capri og kysten.",
+          "caption": "Monte Solaro-stolelift—360°-udsigter værd €13."
+        }
       ]
     },
     {
       "id": "pompeii",
-      "title": "Pompeji eller Herculaneum",
+      "title": "Pompeji eller Herculaneum: Gamle ruiner",
       "body": [
-        "Tag den tidlige bus til Sorrento og hop på Circumvesuviana; køb skip-the-line-billetter online for at spare tid.",
-        "Medbring vand og solhat — der er næsten ingen skygge, og besøget varer nemt 3–4 timer."
+        "Hvorfor tage afsted: Gå gennem 2.000 år gamle gader, hjem, bagerier og badehuse, frosset af Vesuvs udbrud i 79 e.Kr. Pompeji er stor og overfyldt; Herculaneum er mindre, bedre bevaret og roligere. Begge er verdensklasse-arkæologisteder og nemme for budgettet.",
+        "Bedst til: Historieelskere, tidlige opstartere (steder åbner kl. 09:00, ankom da for at komme foran turbusser), enhver, der vil have en halv dagstur med eftermiddagen tilbage i Positano.",
+        "Sådan kommer du derhen: Tag %LINK:sitaTickets|SITA-bussen% fra Positano til Sorrento (€4, 50 minutter, afgår fra %LINK:chiesaNuovaDepartures|Chiesa Nuova% eller Positano Sponda-stoppested afhængigt af din placering). Fra Sorrento, stigning på Circumvesuviana-toget mod Napoli og stå af ved Pompei Scavi-Villa dei Misteri (€2,50, 35 minutter, tog hver 30. minut) eller Ercolano Scavi til Herculaneum (€2,50, 20 minutter). Gå 5-10 minutter fra hver station til stedindgangen.",
+        "Omkostninger: Pompeji-adgang €18 (book online for at springe billetkøer over), Herculaneum €13, plus ~€13 returtransport fra Positano. I alt: €31-32 for Pompeji, €26-27 for Herculaneum.",
+        "Pengebesparende træk: Køb Pompeji-billetter online mindst en dag i forvejen (www.ticketone.it eller officiel Pompeji-side) for at undgå 30-60 minutters kø i højsæson. Tag dit eget vand (1,5 l pr. person) og snacks—der er én café inde i Pompeji, der tager €5 for en panini. Bær hat og solcreme—udgravninger har nul skygge, og sommertemperaturer rammer 35°C. Hvis du er under 25 og EU-bosiddende, tjek for ungdomsrabatter.",
+        "Foreslået rejseplan (Pompeji): Tag 07:30- eller 08:00-bussen fra Positano, ankom til Pompeji kl. 09:30, brug 3-4 timer på at gå Forum, Stabian Baths, House of the Faun, Villa of the Mysteries og Amphitheatre. Gå tilbage til Sorrento omkring 13:30, tag frokost dér eller vend tilbage til Positano kl. 15:00. Du kan også bestige Vesuvius (€10 adgang, 20 minutter fra Pompeji med Vesuvio Express-bus €10 returtur), hvis du har energi—udsigter er spektakulære, men tilføjer 2-3 timer til din dag.",
+        "Foreslået rejseplan (Herculaneum): Mindre sted betyder 2-3 timer er nok. Ankom kl. 10:00, udforsk de perfekt bevarede mosaikker, træudstyr og to-etages huse, vend derefter tilbage til Positano ved tidlig eftermiddag. Par med et Sorrento-stop på vej tilbage til frokost og citronlundevandringer.",
+        "Lokale tips fra vandrerhjem: Circumvesuviana-tog er basale (ingen AC, graffiti, lommetyve i overfyldte vogne)—opbevar værdigenstande i en frontlomme eller dagrygsæk på dit bryst. Download offline kort til Pompeji (det er kæmpe og forvirrende). Hvis det er en brændende dag (35°C+), gør Herculaneums overdækkede gangbroer det mere tåleligt."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/pompeiiForum.jpg",
+          "alt": "Gamle Forum-ruiner på Pompeji-arkæologiske sted.",
+          "caption": "Ankom tidligt for at udforske Pompeji før turgrupper og varme."
+        },
+        {
+          "src": "/img/guides/topics/vesuviusFromPompeii.jpg",
+          "alt": "Vesuv set fra Pompeji-udgravninger.",
+          "caption": "Vesuv troner over ruinerne—du kan bestige det efter Pompeji."
+        }
       ]
     },
     {
       "id": "amalfi-ravello",
-      "title": "Amalfi & Ravello-kombi",
+      "title": "Amalfi & Ravello-kombi: Kystkultur",
       "body": [
-        "Sejl til Amalfi, udforsk domkirken, og tag derefter bus 5110 op til Ravello for Villa Cimbrone og frokost med udsigt.",
-        "Bliv til eftermiddagslyset og fang en aftenfærge eller bus tilbage — køerne aftager efter kl. 18."
+        "Hvorfor tage afsted: Amalfis dramatiske Duomo, seaside-caféer og papirmuseum; Ravellos bakke-haver (Villa Cimbrone og Villa Rufolo), klassiske musiksteder og solnedgangspanoramaer over kysten. Let at parre begge på én dag, og 5110-bustur op til Ravello er en hvid-knoglet hårnålsoplevelse.",
+        "Bedst til: Kortere ture (halv dag eller heldag), haveglade, solnedgangsjægere, enhver, der vil have en blanding af seaside- og bjerglandsby-stemninger uden Capris prismærke.",
+        "Sådan kommer du derhen: Færge fra Positano til Amalfi (€8, 20-30 minutter, flere afgange 08:00-18:00, mere hyppige april-oktober) eller %LINK:sitaTickets|SITA-bus% (€4, 40 minutter, langsommere men billigere). Fra Amalfi-havn eller busstoppested, gå til hovedpladsen og tag SITA 5110-bussen op til Ravello (€2,50, 25 minutter, hårnålebøjninger, afgår hver time). Vend tilbage via bus til Amalfi og derefter færge eller bus tilbage til Positano. %LINK:positanoAmalfi|Fuld transportguide%",
+        "Omkostninger: €8-16 returtransport (færge er hurtigere, bus er billigere), plus €10 adgang til Villa Cimbrone eller €7 til Villa Rufolo. I alt: €18-26 afhængigt af valg.",
+        "Pengebesparende træk: Spring villaerne over, hvis du er på et stramt budget—Ravellos offentlige terrasser (Piazza Duomo, belvedere nær hovedkirken) har gratis omfattende udsigter. Pak en picnic-frokost fra Positano og spis i Ravellos haver eller på en bænk med udsigt over klipperne. Tag bussen begge veje for at spare €8 vs returfærge—bare budget ekstra tid til snoede veje og potentielle køer.",
+        "Foreslået rejseplan: Tag 09:00-10:00-færgen eller bussen til Amalfi, udforsk Duomo (gratis adgang til hovedskibet, €3 til Cloister of Paradise), vandre gennem gamle by-gader, fang derefter 12:00- eller 13:00-bussen op til Ravello. Besøg Villa Cimbrone (Terrace of Infinity er højdepunktet—ankom midt på eftermiddagen for blødere lys), vandre gennem Ravellos Piazza Duomo og fang 17:00-18:00-bussen tilbage til Amalfi. Tag en tusmørkes færge tilbage til Positano (køer skrumper efter 18:00) eller sidste bus omkring 19:30-20:00.",
+        "Vejrbackup: Hvis færger aflyses, tag bussen—den kører i næsten alle forhold. Hvis du kun har 2-3 timer, besøg Amalfi solo og spring Ravello over (eller omvendt det og gå direkte til Ravello for solnedgangsudsigter).",
+        "Lokale tips fra vandrerhjem: Ravello er vært for sommer klassiske musikkoncerter (Ravello Festival, juni-september) i Villa Rufolos haver—tjek tidsplanen, hvis du vil blive sent. 5110-bussen bliver pakket om sommeren; kø tidligt eller stå tæt på fronten af linjen. Hvis du er tilbøjelig til køresyge, sid tæt på fronten og hold øjnene på horisonten."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/ravelloTerrace.jpg",
+          "alt": "Terrace of Infinity ved Villa Cimbrone i Ravello med udsigt over Amalfikysten.",
+          "caption": "Villa Cimbrones Terrace of Infinity—værd €10-adgangen."
+        },
+        {
+          "src": "/img/guides/topics/amalfiDuomo.jpg",
+          "alt": "Amalfi-katedrals facade med stor trappe.",
+          "caption": "Amalfis dramatiske Duomo dominerer bypladsen."
+        }
       ]
     },
     {
       "id": "sorrento",
-      "title": "Sorrento & madfokus",
+      "title": "Sorrento: Mad, markeder & citronlunde",
       "body": [
-        "Tag formiddagsfærgen til Sorrento for markedstur, limoncello-smagning og solnedgang på Villa Comunale-terrassen.",
-        "Rejs retur med sen bus til Positano, hvis sidste færge er udsolgt; turen tager cirka 50 minutter."
+        "Hvorfor tage afsted: Sorrento er den mest afslappede dagstur—mindre turistpres end Capri, mindre ruineret end Pompeji og fuld af citronlunde, limoncello-butikker, friske skaldyr, håndværkermarkeder og en luftig klippepromerade (Villa Comunale) med solnedgangsudsigt over Napoli-bugten.",
+        "Bedst til: Madglade, markedskøbere, enhver, der vil have en sen morgenafreise (du behøver ikke skynde dig), rejsende, der parrer Sorrento med Pompeji eller bruger det som transportknudepunkt.",
+        "Sådan kommer du derhen: Færge fra Positano (€12, 30 minutter, flere afgange 08:00-18:00) eller %LINK:sitaTickets|SITA-bus% (€4, 50 minutter, afgår fra %LINK:chiesaNuovaDepartures|Chiesa Nuova% eller Positano Sponda). Færge er hurtigere og mere malerisk; bus er billigere og kører selv når havet er uroligt. %LINK:naplesPositano|Napoli-Positano-ruteguide% dækker Sorrento-forbindelser.",
+        "Omkostninger: €8-24 returtransport afhængigt af færge vs bus, plus mad/drikkevareomkostninger (budget €10-20 til frokost, €5-10 til limoncello-smagning). I alt: €20-40 afhængigt af hvor meget du spiser/drikker.",
+        "Pengebesparende træk: Spring overprisede limoncello-butikker på hovedpladsen over—gå 10 minutter til lokale alimentari (købmandsbutikker) for €8-10 flasker vs €15-20 turistpriser. Spis på familiedrevne trattorie på sidegader (Via Fuoro, Via Tasso-sidegader) i stedet for marina-front-restauranter—samme mad, halv pris. Villa Comunale-terrassen og Marina Grande-stranden er gratis og perfekte til picnic.",
+        "Foreslået rejseplan: Tag 10:00-11:00-færgen eller bussen, ankom til Sorrento kl. 11:30, udforsk morgenmarkedet (hvis det er torsdag), vandre citronlunde nær bycentrum (nogle tilbyder gratis smagninger), besøg Sedil Dominova (gratis historisk bygning med freskomalet loft), spis frokost på en sidegade-trattoria, gå derefter til Villa Comunale for klippeudsigter og fotos. Fang 16:00-17:00-færgen eller 18:00-bussen tilbage til Positano. Hvis du parrer dette med Pompeji, besøg ruinerne først (tidlig morgen) og ankom til Sorrento omkring 13:00-14:00 til sen frokost og solnedgang.",
+        "Vejrbackup: Sorrento er tilgængeligt med bus, selv hvis færger aflyses—det er den mest pålidelige dagstur til urolige vejrdage.",
+        "Lokale tips fra vandrerhjem: Marina Grande (Sorrentos lille fiskestrand) er 10 minutters gang ned ad stejle trin fra byen—værd det for farverige både, færre turister og anstændig skaldyrsfrokost. Hvis du køber limoncello eller keramik, spørg vandrerhjem efter anbefalinger om ikke-turistiske butikker. Sorrentos gelato (I Giardini di Cataldo, Davide Gelato) er noget af det bedste på kysten—budget €3-4 for en kegle."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/sorrentoLemonGrove.jpg",
+          "alt": "Citronlund i Sorrento med terrassehaver.",
+          "caption": "Sorrentos berømte citronlunde tilbyder gratis smagninger."
+        },
+        {
+          "src": "/img/guides/topics/sorrentoVillaComunale.jpg",
+          "alt": "Villa Comunale-klippeterrasse i Sorrento med udsigt over Napoli-bugten.",
+          "caption": "Villa Comunale-terrasse—gratis solnedgangsudsigter over bugten."
+        }
+      ]
+    },
+    {
+      "id": "planning-tips",
+      "title": "Generel planlægning & pengebesparende tips",
+      "body": [
+        "Start tidligt: Første afgange (08:00-09:00) giver dig stederne før turgrupper og krydstogtspassagerer ankommer. Capri, Pompeji og Ravello er mærkbart roligere før kl. 11:00.",
+        "Forudbestil, når det er nødvendigt: Pompeji-billetter, populære morgenfærger til Capri (især juli-august-weekender) og enhver villa-adgang i Ravello kan sælge ud eller have lange køer. Book 1-2 dage i forvejen. %LINK:transportMoneySaving|Transport-pengebesparende tips%",
+        "Vejrbackup-planer: %LINK:ferryCancellations|Færgeaflysninger% er almindelige i forår/efterår-storme. Hav altid et busalternativ klar, eller skift kystture (Capri, Amalfi via færge) til indlandsture (Pompeji, Sorrento via bus), hvis havet er uroligt. Tjek færgestatus aftenen før og morgenen for din tur—spørg på vandrerhjem eller tjek online tidstabeller.",
+        "Pak smart: Vand (1 l+ pr. person), snacks (turist-site-caféer er dyre), solcreme, hat, let regnjakke (sommerbyger rammer hurtigt) og en lille dagrygsæk. Bær komfortable gåsko—Pompeji og Capri involverer 2-4 timers gang på ujævn sten.",
+        "Offline kort og køreplaner: Download Google Maps offline-områder til Pompeji, Capri, Amalfi og Sorrento. Skærmbillede af bus- og færgetidstabeller—mobilsignal er svagt på Circumvesuviana-tog, Capri-klipper og bjergveje til Ravello.",
+        "Mad- og drikkeomkostninger: Budget €10-15 til frokost, hvis du spiser på lokale steder, €5-7 til kaffe/gelato-pause og bær dit eget vand. Undgå marina-front og hovedplads-restauranter, medmindre du forkæler dig—gå 5-10 minutter indland for 30-50% billigere måltider.",
+        "Par ture smart: Amalfi + Ravello (nem kombi, samme retning). Sorrento + Pompeji eller Herculaneum (på samme toglinje). Capri er bedst solo—det er en hel dag og kan ikke skyndes. Undgå at parre Capri med noget andet, medmindre du kun gør en hurtig ø-loop.",
+        "Student- og ungdomsrabatter: Hvis du er under 25 og EU-bosiddende, tag ID til nedsat adgang til Pompeji, Herculaneum og nogle villaer. Ikke-EU-studerende med ISIC-kort kan få rabatter på Pompeji—spørg ved billetskranken.",
+        "Returtransport-timing: Tjek sidste færge/bus-tider, før du forlader Positano. Færger stopper omkring 18:00-19:00 (tidligere off-season), busser kører senere, men er langsommere. At gå glip af sidste færge betyder en 50-90 minutters bustur tilbage—ikke en katastrofe, men skærer i din aften."
+      ]
+    },
+    {
+      "id": "budget-breakdown",
+      "title": "Dagstursbudget-opdeling",
+      "body": [
+        "Her er, hvad du kan forvente for omkostninger, inklusive transport, adgangsgebyrer, mad og valgfrie ekstra. Alle priser er pr. person og baseret på 2025-satser (kan variere lidt efter sæson).",
+        "Capri hel dag: Færge returtur €40, funicular til Capri by €4, Monte Solaro-stolelift €13, Giardini di Augusto-adgang €1, frokost €10-15 (pakket) eller €20-30 (café), gelato/drink €5-7. I alt: €53-70 budget, €73-100, hvis du spiser ude og tilføjer ekstra som Blå Grotte (€33-38). Måder at spare: Gå i stedet for funicular (stejl men gratis), spring Blå Grotte over, pak frokost.",
+        "Pompeji: Bus til Sorrento €9, Circumvesuviana-tog €5 returtur, Pompeji-adgang €18, vand/snacks hjemmefra €0, frokost i Sorrento €10-12. I alt: €42-44. Tilføj Vesuvius (€20 for bus + adgang), hvis du har tid. Måder at spare: Book Pompeji-billetter online for at springe kø over, tag al mad/vand fra Positano (spar €10-15 vs site-café).",
+        "Amalfi + Ravello: Færge eller bus returtur €8-16, bus Amalfi-Ravello-Amalfi €5, Villa Cimbrone-adgang €10 (eller spring over for gratis udsigter), frokost/gelato €8-12. I alt: €21-43 afhængigt af transport- og villa-valg. Måder at spare: Tag bus begge veje (€8 vs €16-færge), spring villaer over og nyd gratis terrasser, picnic-frokost fra Positano.",
+        "Sorrento: Færge eller bus returtur €8-24, frokost på trattoria €10-15, limoncello-smagning €5-8, gelato €3-4, alle attraktioner gratis (Villa Comunale, Marina Grande, markeder, citronlunde). I alt: €26-51 afhængigt af transport. Måder at spare: Tag bus (€8 vs €24-færge), køb limoncello i købmand (€8-10 vs €15-20 turistbutikker), picnic ved Villa Comunale.",
+        "Herculaneum: Bus til Sorrento €9, Circumvesuviana €5 returtur, adgang €13, frokost/snacks €8-10. I alt: €35-37. Måder at spare: Par med Sorrento-stop på vej tilbage for dobbelt-destination værdi, pak snacks, ankom tidligt før varme.",
+        "Generelle pengebesparende strategier: Tag altid bussen over færge, hvis budgettet er stramt (sparer €8-16 pr. tur). Forudlad på snacks/vand fra Positano-supermarkeder (sparer €10-20 pr. dag vs turist-caféer). Brug student/ungdomsrabatter, hvor det er berettiget (Pompeji, Herculaneum, nogle villaer). Spørg vandrerhjem om insider-tips om gratis udsigtspunkter, ikke-turistiske frokostpladser og nuværende transportaftaler. Skærmbillede af tidstabeller og brug offline kort for at undgå roaming-dataafgifter."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/budgetDayTrips.jpg",
+          "alt": "Budgetrejseplanlægning med mønter og færgebilletter.",
+          "caption": "De fleste dagsture koster €20-45 i alt, hvis du budgetterer smart."
+        }
+      ]
+    },
+    {
+      "id": "transport-logistics",
+      "title": "Transportlogistik & insider-tips",
+      "body": [
+        "Busser (SITA): Køb billetter ombord (kontant) eller i tabacchi-butikker før boarding. Hav små sedler klar—chauffører kan nogle gange ikke bryde €20+ sedler. Køer dannes tidligt i Chiesa Nuova til populære ruter som Positano-Sorrento (07:30-09:00) og Amalfi-Ravello (10:00-12:00). Stå tæt på fronten af køen eller risk at stå i 40-90 minutter på snoede veje. %LINK:sitaTickets|Fuld SITA-busbilletguide%",
+        "Færger: Køb billetter ved kaj-booth (Positano-færgeterminal) samme dag eller 1-2 dage i forvejen for garanterede pladser på populære morgensejladser (Capri 08:15-09:00). Tjek vejr aftenen før—uroligt hav (Forza 4-5+) aflyser færger. Hvis aflyst, pivot til busadgang-destinationer. %LINK:ferryCancellations|Færgeaflyningsguide%",
+        "Tog (Circumvesuviana): Basale regionaltog uden AC, graffiti og lejlighedsvise lommetyve. Opbevar værdigenstande i frontlommer eller en bryst-dagrygsæk. Valider billetter i gule maskiner på perroner før boarding (€50 bøde, hvis fanget uden validering). Tog Sorrento-Pompeji-Ercolano-Napoli kører hver 30. minut, første afgang ~06:00, sidste ~22:30. Køb billetter ved stationsskranker eller tabacchi nær stationer (ikke ombord).",
+        "Gå fra vandrerhjem til transportknudepunkter: %LINK:chiesaNuovaDepartures|Chiesa Nuova-busstop% er ~5 minutter op ad bakke fra Hostel Brikette (hoved-SITA-stop til Sorrento, Amalfi, Ravello-ruter). %LINK:briketteToFerryDock|Færgekaj% er 10-15 minutter ned ad bakke via trin (brug bærere, hvis du har bagage). Spørg vandrerhjem personale aftenen før om nuværende køer/forsinkelser på din planlagte rute.",
+        "Spidsbelastet vs off-peak timing: Juli-august weekender er værst for køer og folkemængder—alt tager 30-50% længere. April-juni og september-oktober er ideelle (godt vejr, færre turister, lavere priser). November-marts ser reducerede færgetidsplaner og nogle steder (Capri-stolelift, villaer) lukker eller har begrænsede åbningstider—tjek i forvejen. Skuldersæson (april-maj, september-oktober) tilbyder den bedste balance mellem vejr, folkemængder og omkostninger.",
+        "Bagageopbevaring: Hostel Brikette tilbyder gratis bagageopbevaring på check-in/check-out-dage. Pompeji, Sorrento og Amalfi har betalt opbevaring nær stationer/færgeterminaler (€5-8 pr. taske). Slæb ikke kufferter på dagsture—opbevar dem på vandrerhjem eller en stationslocker.",
+        "Mobilapps og offline værktøjer: Download Google Maps offline-områder til Pompeji, Capri, Amalfi, Sorrento, før du rejser. Skærmbillede af færgetidstabeller (Positano-kaj poster dem, eller tjek online). Brug Trenitalia-app til Circumvesuviana-realtidsforsinkelser (tog kører sent nogle gange). Tjek vejr-apps aftenen før—pludselige storme aflyser færger og gør Pompeji elendig.",
+        "Spørge på vandrerhjem: Reception kender nuværende forhold (færgeaflysninger, busforsinkelser, Pompeji-køer, vejrkvababbelser). Spørg efter: anbefalet dagstur til morgendagens vejr, nuværende transporthikke, ikke-turistiske frokostpladser, bedste tid til kø til busser. De ser 100+ rejsende pr. uge og har realtidsintel."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/sitaBusPositano.jpg",
+          "alt": "SITA-bus ved Chiesa Nuova-stop i Positano.",
+          "caption": "SITA-busser forbinder Positano til alle dagsturs-destinationer."
+        }
+      ]
+    },
+    {
+      "id": "which-trip-when",
+      "title": "Hvilken tur til hvilken dag?",
+      "body": [
+        "Godt vejr, klar himmel: Capri (færgeudsigter og klippepanoramaer er hovedattraktionen) eller Amalfi + Ravello via færge (kystsejlads er halvdelen af oplevelsen).",
+        "Uroligt hav eller regnprognose: Pompeji eller Herculaneum (overdækkede gangbroer, ingen færge nødvendig), Sorrento via bus eller Ravello via bus fra Amalfi (busser kører i næsten alle vejrforhold).",
+        "Begrænset tid (halv dag): Amalfi solo (morgen), Ravello solo (eftermiddag/solnedgang) eller Sorrento (sen morgenstart). Alle er 3-4 timer returtur fra Positano.",
+        "Budgetprioritet: Pompeji eller Herculaneum (bedste værdi, €31-32 i alt), Amalfi via bus (€8 returtur, hvis du springer villaer over) eller Sorrento via bus med picnic-frokost (€15-20 i alt).",
+        "Fotograferingsfokus: Capri (Faraglioni, Monte Solaro, Arco Naturale), Ravellos Terrace of Infinity eller Positanos egne strande/udsigtspunkter ved solopgang/solnedgang.",
+        "Førstegangsprioriteter: Capri (ikonisk), Pompeji (verdensberømt) og Amalfi + Ravello (klassisk kystkombi). Sorrento og Herculaneum er fremragende, men mindre must-see, medmindre du har ekstra dage."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/positanoFerryDock.jpg",
+          "alt": "Positano-færgekaj med både, der afgår til dagsture.",
+          "caption": "Start dagsture tidligt fra Positano-færgekaj—10-15 minutter fra vandrerhjem."
+        }
       ]
     }
   ],
   "tips": [
-    "Hent offlinekort og køreplaner; mobildata kan forsvinde i togtunneller og på Capris klipper.",
-    "Pak en let regnjakke — sommerbyger kommer hurtigt, og færger pauser ved lyn."
+    "Forudlad offline kort og tidstabeller—mobildata dykker inden i Circumvesuviana-togtunneller, på Capri-klipper og på bjergveje til Ravello.",
+    "Pak en letvægts regnjakke—sommerbyger ruller ind hurtigt, og færger pauser under lyn.",
+    "Tag dit eget vand og snacks—caféer nær turiststeder tager €5+ for en sandwich og €3-4 for flaskevand.",
+    "Tjek færgetidstabeller aftenen før og tag skærmbillede—nogle ruter reducerer frekvens off-season eller aflyses i uroligt vejr.",
+    "Spørg på vandrerhjem om nuværende transportopdateringer, insider-tips om hvilke ture at prioritere og anbefalinger til ikke-turistiske frokostpladser."
   ],
   "faqs": [
     {
       "q": "Hvilken dagstur kræver tidligst start?",
       "a": [
-        "Capri og Pompeji; de bliver hurtigt overfyldte og kræver mere transporttid."
+        "Capri og Pompeji gavner mest fra første afgange—begge bliver overfyldte ved midmorgen og involverer mere rejsetid. Sigt efter at forlade Positano kl. 08:00-08:30 for disse. Amalfi, Ravello og Sorrento er mere fleksible og fungerer godt med 10:00-11:00-afgange."
       ]
     },
     {
-      "q": "Kan jeg nå to byer på én dag?",
+      "q": "Kan jeg passe to byer ind i én dag?",
       "a": [
-        "Ja — kombiner Amalfi med Ravello eller Sorrento med Pompeji. Undgå at koble Capri med noget andet; giv øen en hel dag."
+        "Ja—Amalfi og Ravello par perfekt (samme retning, 25-minutters bus mellem dem). Sorrento og Pompeji eller Herculaneum fungerer også godt (samme toglinje). Undgå at stable Capri med noget andet—giv det en hel dag. Hvis du forsøger at presse to ikke-relaterede destinationer (f.eks. Capri + Pompeji), bruger du hele dagen i transit og går glip af de bedste dele af begge."
+      ]
+    },
+    {
+      "q": "Hvad hvis færger aflyses på grund af vejr?",
+      "a": [
+        "Tag SITA-bussen i stedet—den kører i næsten alle forhold. Skift Capri (kun færgeadgang) til en busadgang-tur som Pompeji, Sorrento eller Amalfi/Ravello. Tjek færgestatus aftenen før og morgenen for din tur ved at spørge på vandrerhjem eller tjekke online tidstabeller. Hav altid en backup-plan."
+      ]
+    },
+    {
+      "q": "Hvilken dagstur er billigst?",
+      "a": [
+        "Pompeji eller Herculaneum er den bedste værdi (€26-32 i alt inkl. transport og adgang). Amalfi via bus (€8 returtur, hvis du springer villa-adgang over) og Sorrento via bus med en picnic-frokost (€15-20 i alt) er også budget-venlige. Capri er den dyreste (€50-70+ inkl. færge, funicular/stolelift og mad)."
+      ]
+    },
+    {
+      "q": "Skal jeg booke transport- eller sted-billetter på forhånd?",
+      "a": [
+        "Forudbestil Pompeji-billetter online for at springe køer over (30-60 minutter i højsæson). Book Capri-færger 1-2 dage i forvejen i juli-august—morgensejladser sælger ud. Busbilletter til SITA-ruter (Positano-Sorrento, Amalfi-Ravello) købes ombord eller i tabacchi-butikker og behøver ikke forudbestilling. Færgebilletter til Amalfi eller Sorrento kan normalt købes samme dag ved kajen, men tjek tilgængelighed, hvis det er en sommerweekend."
+      ]
+    },
+    {
+      "q": "Kan jeg opbevare bagage et sted, hvis jeg tager en dagstur før/efter check-in eller check-out?",
+      "a": [
+        "Ja—Hostel Brikette tilbyder gratis bagageopbevaring for gæster på ankomst/afrejsedage. Hvis du checker ud og tager en dagstur, før du forlader kysten, opbevar dine tasker på vandrerhjem og afhent dem, når du vender tilbage. Pompeji, Sorrento og Amalfi har også betalte bagageopbevaringstjenester (€5-8 pr. taske pr. dag) nær tog/færgeterminaler, hvis nødvendigt."
       ]
     }
   ]

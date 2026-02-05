@@ -1,72 +1,72 @@
 {
   "seo": {
-    "title": "Huỷ phà và khi biển động",
-    "description": "Làm gì khi phà huỷ vì thời tiết, phương án thay thế và cách kiểm tra trạng thái."
+    "title": "Hủy phà và biển động",
+    "description": "Phải làm gì khi phà bị hủy do thời tiết, các phương án thay thế và cách kiểm tra trạng thái."
   },
-  "linkLabel": "Huỷ phà và khi biển động",
+  "linkLabel": "Hủy phà và biển động",
   "intro": [
-    "Biển động có thể khiến phà đi/đến Positano bị hủy đột ngột.",
-    "Luôn chuẩn bị phương án di chuyển đường bộ và theo dõi thông báo trực tiếp để kịp chuyến tiếp theo."
+    "Biển động có thể tạm ngưng các chuyến phà đến và đi từ Positano với ít thông báo trước.",
+    "Giữ sẵn phương án dự phòng bằng đường bộ và theo dõi cảnh báo trực tiếp để vẫn kịp kết nối của bạn."
   ],
   "sections": [
     {
       "id": "monitoring",
       "title": "Theo dõi cập nhật trực tiếp",
       "body": [
-        "Xem website và ứng dụng của hãng (Travelmar, NLG, Alilauro) cùng bảng điện tử tại bến mỗi 30 phút khi trời gió.",
-        "Bật thông báo SMS/email hoặc theo dõi kênh Telegram/mạng xã hội địa phương để nhận tin hủy dù bạn rời bến."
+        "Kiểm tra các trang web và ứng dụng của nhà điều hành (Travelmar, NLG, Alilauro) cộng với bảng thông tin cảng mỗi 30 phút vào những ngày có gió.",
+        "Bật cảnh báo SMS/email hoặc theo dõi các kênh Telegram/mạng xã hội địa phương để thông báo hủy chuyến đến với bạn ngay cả khi bạn rời khỏi bến tàu."
       ]
     },
     {
       "id": "plan-b",
       "title": "Chuyển sang đường bộ",
       "body": [
-        "Bản dịch đang được chuẩn bị.",
-        "Chừa ít nhất 60 phút dự phòng cho chuyến cuối ngày và nhớ kích hoạt vé trước khi lên xe."
+        "Nếu các chuyến đi bằng đường biển dừng lại, chuyển sang xe buýt và tàu hỏa: SITA đến Sorrento rồi Circumvesuviana đến Naples/Pompeii, hoặc xe buýt qua Amalfi và tàu vùng từ Salerno.",
+        "Dự phòng ít nhất 60 phút cho các chuyến khởi hành cuối cùng trong ngày và xác thực vé trước khi lên tàu."
       ]
     },
     {
       "id": "refunds",
-      "title": "Hoàn tiền & phiếu tín dụng",
+      "title": "Hoàn tiền & phiếu giảm giá",
       "body": [
-        "Giữ hóa đơn và chụp màn hình thông báo hủy để hãng xử lý hoàn tiền, đổi chuyến hoặc cấp voucher.",
-        "Trao đổi với nhân viên trước khi rời quầy xem bạn muốn chuyến kế tiếp hay nhận phiếu sử dụng mùa sau."
+        "Giữ biên lai và chụp màn hình thông báo hủy để nhà điều hành có thể xử lý hoàn tiền, đặt lại hoặc tín dụng.",
+        "Cho nhân viên biết bạn thích chuyến đi tiếp theo có sẵn hay phiếu mùa trước khi rời quầy."
       ]
     },
     {
       "id": "overnight",
-      "title": "Xử lý khi phải qua đêm",
+      "title": "Quản lý chậm trễ qua đêm",
       "body": [
-        "Báo cho nơi lưu trú hoặc đơn vị tour ngay khi có thông báo trễ; nhiều nơi sẽ dời giờ nhận phòng hoặc khởi hành nếu biết trước.",
-        "Hỏi quầy thông tin bến về taxi ghép, xe thay thế hoặc gửi hành lý nếu bạn phải chờ tới sáng hôm sau."
+        "Thông báo cho chỗ ở hoặc hướng dẫn viên tour của bạn ngay khi chậm trễ được thông báo; nhiều người sẽ điều chỉnh thời gian nhận phòng hoặc khởi hành nếu được cảnh báo trước.",
+        "Hỏi điểm thông tin cảng về taxi chung, xe đưa đón thay thế hoặc lưu trữ hành lý nếu bạn cần đợi đến sáng hôm sau."
       ]
     }
   ],
   "tips": [
-    "Theo dõi dự báo hàng hải — gió trên 20 hải lý/giờ hoặc sóng vượt 1,5 mét thường khiến phà bị hủy.",
-    "Bảo hiểm du lịch có điều khoản chậm do thời tiết giúp bạn nhận lại chi phí khách sạn hoặc xe thay thế.",
-    "Chuyến buổi sáng đáng tin cậy nhất; đừng trông chờ vào chuyến cuối ngày khi dự báo có bão."
+    "Kiểm tra dự báo biển—gió trên 20 hải lý hoặc sóng trên 1,5 mét (khoảng 5 feet) thường kích hoạt hủy chuyến.",
+    "Bảo hiểm du lịch bao gồm chậm trễ thời tiết giúp thu hồi các đêm khách sạn thêm hoặc chuyển giao thay thế.",
+    "Các chuyến sáng đáng tin cậy nhất; tránh dựa vào chuyến tàu cuối cùng trong ngày khi dự báo bão."
   ],
   "faqs": [
     {
-      "q": "Làm sao biết khi phà chạy lại?",
+      "q": "Làm thế nào để biết khi nào các chuyến đi được nối lại?",
       "a": [
-        "Tải lại website hoặc kênh mạng xã hội của hãng và nghe loa tại bến — quyết định thường được thông báo trong vòng 30 phút so với giờ khởi hành dự kiến.",
-        "Nhân viên quầy vé cũng có thể xác nhận chuyến kế tiếp trước khi bạn rời bến."
+        "Làm mới trang web hoặc nguồn cấp dữ liệu xã hội của nhà điều hành và lắng nghe thông báo loa phóthanh tại bến tàu—quyết định thường được đăng trong vòng 30 phút sau giờ khởi hành dự kiến.",
+        "Nhân viên quầy vé cũng có thể xác nhận xem tàu tiếp theo có chạy không trước khi bạn rời cảng."
       ]
     },
     {
-      "q": "Vé của tôi được xử lý thế nào?",
+      "q": "Vé của tôi sẽ như thế nào?",
       "a": [
-        "Xuất trình hóa đơn hoặc mã QR để xin hoàn tiền, đổi sang voucher hoặc chuyển sang chuyến tiếp theo.",
-        "Nếu đặt qua đại lý trực tuyến, hãy gửi email kèm ảnh chụp thông báo hủy trong 24 giờ để họ bắt đầu hoàn tiền."
+        "Hiển thị biên lai hoặc mã QR của bạn để yêu cầu hoàn tiền, phiếu giảm giá hoặc đặt lại chuyến đi tiếp theo.",
+        "Nếu bạn đặt qua đại lý trực tuyến, gửi email cho họ ảnh chụp màn hình hủy trong vòng 24 giờ để bắt đầu quy trình hoàn tiền."
       ]
     },
     {
-      "q": "Có phà nào đảm bảo chạy khi biển động không?",
+      "q": "Có phà nào được đảm bảo trong thời tiết xấu không?",
       "a": [
-        "Không — khi lực lượng tuần duyên đóng cảng, mọi chuyến đều dừng. Hãy chuẩn bị sẵn tuyến đường bộ.",
-        "Một vài chuyến charter tư nhân có thể chạy khi sóng vừa phải nhưng chi phí cao và tùy vào quyết định của thuyền trưởng; cân nhắc kỹ giữa sự thoải mái và giá tiền."
+        "Không—khi Cảnh sát biển đóng cảng, tất cả các chuyến khởi hành đều dừng lại. Giữ sẵn tuyến đường bộ.",
+        "Một số thuê riêng có thể đi trong biển vừa phải nhưng chúng đắt và phụ thuộc vào quyết định của thuyền trưởng; cân nhắc kỹ sự thoải mái và chi phí."
       ]
     }
   ]

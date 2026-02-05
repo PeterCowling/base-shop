@@ -24,12 +24,12 @@
     },
     "timetable": {
       "title": "Cómo leer el horario de SITA",
-      "body": "El horario oficial muestra las paradas en filas y los recorridos en columnas identificadas con letras. Busca las filas de Positano y Amalfi dentro de la misma columna con letra para tu día de viaje.",
+      "body": "El horario oficial lista las paradas en filas y los viajes en columnas con letras. Busca las filas de Positano y Amalfi dentro de la misma columna con letra según tu día de viaje.",
       "list": [
-        "Las filas de la primera columna enumeran cada parada de la ruta.",
-        "Las columnas corresponden a los trayectos programados identificados con letras.",
+        "Las filas de la primera columna listan cada parada de la ruta.",
+        "Las columnas corresponden a viajes programados etiquetados con letras.",
         "¿Viajas de lunes a sábado? Usa las columnas 'F' y 'G'.",
-        "¿Viajas en domingo o festivo? Usa las columnas 'G' y 'H'."
+        "¿Viajas en domingo o día festivo? Usa las columnas 'G' y 'H'."
       ],
       "link": "Consulta el horario más reciente en <link>Positano.com</link>.",
       "linkHref": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result"

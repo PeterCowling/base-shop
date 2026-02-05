@@ -1,74 +1,140 @@
 {
   "seo": {
     "title": "Path of the Gods via Nocelle shuttle",
-    "description": "Catch the Montepertuso–Nocelle bus for an out-and-back hike on the Sentiero degli Dei, with timings, tips, and return options."
+    "description": "Take the Montepertuso–Nocelle shuttle for a simple out-and-back hike on the Sentiero degli Dei, with step-by-step orientation photos and timing ideas."
   },
   "linkLabel": "Path of the Gods: Short Hike from Nocelle",
   "intro": [
-    "Short on time or want to skip multiple transfers? Ride the Montepertuso–Nocelle bus from Hostel Brikette, hike the most panoramic section of the Path of the Gods out-and-back, then return the same way.",
-    "This option avoids the ferry and Amalfi connection, making it ideal for calmer days or travellers who prefer a lighter itinerary."
+    "This guide is one of three routes we have produced for the Path of the Gods. The other two are %LINK:pathOfTheGodsFerry|Path of the Gods via Amalfi (ferry)% and %LINK:pathOfTheGodsBus|Path of the Gods via Amalfi (bus)%. If you are not sure which one to do, start with our %LINK:pathOfTheGods|overview%.",
+    "The Nocelle route is the simplest logistics: catch the Montepertuso–Nocelle bus, walk out on the Sentiero degli Dei toward Colle Serra, then retrace your steps back to Nocelle and ride the same bus down."
   ],
   "sections": [
     {
       "id": "prep",
-      "title": "Get ready at the hostel",
+      "title": "Scan, prep, and buy tickets",
       "body": [
-        "Buy two bus tickets per person at Bar Internazionale: Positano → Nocelle and Nocelle → Positano. Staff can advise on the cheapest combination.",
-        "Check the latest Montepertuso/Nocelle timetable so you know the last return before sunset.",
-        "Pack water, snacks, and layers. The kiosk in Nocelle offers drinks in season, but there are no shops along the trail itself."
+        "Buy two bus tickets per person at Bar Internazionale: Positano → Nocelle and Nocelle → Positano. If you are unsure which ticket type to get, ask reception or the staff at the bar.",
+        "Bus times are subject to seasonal changes, so confirm the Montepertuso/Nocelle timetable before you leave. A guide to bus times and a map can be found in reception.",
+        "Plan to set off in the morning to avoid the hottest part of the day and ensure you have plenty of time to complete the hike."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-nocelle/01-nav.png",
+          "alt": "QR code that links to the Path of the Gods via Nocelle guide",
+          "caption": "Scan to share"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-nocelle/02-nav.png",
+          "alt": "Reception guide showing a simple map and bus timing notes for the Montepertuso–Nocelle shuttle",
+          "caption": "Bus times + map — ask reception if you want help choosing a departure"
+        }
       ]
     },
     {
       "id": "bus-to-nocelle",
       "title": "Ride the bus up to Nocelle",
       "body": [
-        "Wait outside Bar Internazionale. Buses display “Montepertuso - Nocelle” on the front.",
-        "The ride climbs through Montepertuso before terminating at the small car park in Nocelle. Stay on until the bus turns around to head downhill again—that is your stop.",
-        "Validate your ticket when boarding and keep it handy for the return."
+        "Head to Bar Internazionale to buy your tickets, then wait outside for the bus. You can also catch it from Chiesa Nuova (the stop beside the church).",
+        "The bus will say “Montepertuso - Nocelle”. Validate your ticket when you board.",
+        "Stay on until the final stop in Nocelle. The bus terminates at a small car park, then turns around to head downhill again."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-nocelle/03-nav.jpg",
+          "alt": "Bus stop location outside Bar Internazionale in Positano",
+          "caption": "1. Bus stop outside Bar Internazionale (you can also board at Chiesa Nuova)"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-nocelle/04-nav.png",
+          "alt": "Nocelle bus turning point at the small car park (final stop)",
+          "caption": "2. Get off at the final stop in Nocelle (the small car park where the bus turns around)"
+        }
       ]
     },
     {
       "id": "walk-through-town",
-      "title": "Walk through Nocelle to the trail",
+      "title": "Walk through Nocelle to the trail entrance",
       "body": [
-        "From the car park, follow the pedestrian stairs down to the main walkway and turn left.",
-        "Walk about 175 metres, staying right at the key junction to avoid the staircase descending to Positano.",
-        "Continue straight until you reach the Sentiero degli Dei signs and the stone path heading out of town."
+        "From the car park, walk down the stairs to reach the main walkway.",
+        "At the bottom, turn left and walk through the village toward the Sentiero degli Dei signs.",
+        "At the key junction, ignore the signs pointing down to Positano (stairs). Stay on the main route for the trail."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-nocelle/05-nav.jpg",
+          "alt": "Stairway leading down from the Nocelle car park bus stop to the village walkway",
+          "caption": "3. Walk down these stairs from the car park"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-nocelle/06-nav.jpg",
+          "alt": "Main pedestrian walkway in Nocelle where you should turn left",
+          "caption": "4. At the bottom, turn left and follow the main walkway through Nocelle"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-nocelle/07-nav.png",
+          "alt": "Directional signpost warning about the stairs down to Positano",
+          "caption": "5. Ignore the signs down to Positano (stairs) and continue toward Sentiero degli Dei"
+        }
       ]
     },
     {
       "id": "hike",
       "title": "Hike as far as you like",
       "body": [
-        "Head toward Colle Serra for the best viewpoints. The full round-trip to Bomerano is about 11.6 km, but you can turn around at any time.",
-        "Follow the red-and-white CAI markers, step carefully on exposed ledges, and pause for photos at panoramic balconies.",
-        "When you are ready, retrace your steps back to Nocelle."
+        "Once you reach the trail entrance, follow the Sentiero degli Dei markers toward Colle Serra for the best viewpoints.",
+        "You can turn around whenever you like. If you continue all the way to Bomerano, expect a longer day; most people prefer this route as a simple out-and-back from Nocelle.",
+        "There are no facilities along the trail, so bring plenty of water. If you want a budget-friendly lunch, consider picking up a panini from the mini-market before you start."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-nocelle/08-nav.png",
+          "alt": "Trail entrance notice board and sign for Sentiero degli Dei (Path of the Gods)",
+          "caption": "6. Follow the Sentiero degli Dei signs from the trail entrance notice board"
+        }
       ]
     },
     {
       "id": "return",
       "title": "Return to Positano",
       "body": [
-        "Walk back through Nocelle the same way, turning right at the key junction to reach the bus stop.",
-        "Use your return ticket for the bus down to Bar Internazionale or Chiesa Nuova. If buses are full, you can walk the paved road (about 4 km) but allow 45–60 minutes.",
-        "Avoid the stairway shortcut unless you intentionally want a long, knee-testing descent that finishes on the opposite side of town."
+        "Retrace your steps back to Nocelle the same way you came. At the key junction, keep to the main route back toward the car park and bus stop.",
+        "Use your return ticket for the bus down to Bar Internazionale or Chiesa Nuova. If the bus is full, you can walk the paved road (about 4 km) but allow 45–60 minutes.",
+        "Avoid the stairs down to Positano unless you intentionally want a long, knee-testing descent that ends far from the hostel."
       ]
     },
     {
       "id": "journey-planner",
-      "title": "Sample schedule",
+      "title": "Sample timings (indicative)",
       "body": [
-        "06:30 bus → 06:50 arrive Nocelle → 3-hour hike → 09:50 return bus → 10:10 arrive Positano (3h40 door to door).",
-        "08:30 departure → 08:50 arrive Nocelle → 3h20 hike → 11:50 return bus → 12:10 arrive Positano (4h total).",
-        "10:30 departure → 10:50 arrive Nocelle → 3-hour hike → 13:50 return bus → 14:10 arrive Positano (3h40 total)."
+        "1. 06:30 → 06:50 (hike 3 hrs) → 09:50 → 10:10 (total 3 hrs 40 mins)",
+        "2. 06:50 → 07:10 (hike 3 hrs 40 mins) → 10:50 → 11:10 (total 4 hrs 20 mins)",
+        "3. 07:20 → 07:50 (hike 3 hrs) → 10:50 → 11:10 (total 3 hrs 50 mins)",
+        "4. 08:10 → 08:30 (hike 3 hrs 20 mins) → 11:50 → 12:10 (total 4 hrs)",
+        "5. 09:30 → 09:50 (hike 3 hrs) → 12:50 → 13:10 (total 3 hrs 40 mins)",
+        "6. 10:30 → 10:50 (hike 3 hrs) → 13:50 → 14:10 (total 3 hrs 40 mins)",
+        "7. 11:30 → 11:50 (hike 3 hrs) → 14:50 → 15:10 (total 3 hrs 40 mins)",
+        "8. 12:30 → 12:50 (hike 3 hrs) → 15:50 → 16:10 (total 3 hrs 40 mins)",
+        "9. 13:30 → 13:50 (hike 3 hrs) → 16:50 → 17:10 (total 3 hrs 40 mins)",
+        "10. 13:55 → 14:15 (hike 3 hrs 35 mins) → 17:50 → 18:10 (total 4 hrs 15 mins)",
+        "11. 14:30 → 14:50 (hike 3 hrs) → 17:50 → 18:10 (total 3 hrs 40 mins)",
+        "12. 14:55 → 15:15 (hike 3 hrs 5 mins) → 18:20 → 18:50 (total 3 hrs 55 mins)",
+        "13. 15:30 → 15:50 (hike 3 hrs) → 18:50 → 19:10 (total 3 hrs 40 mins)",
+        "14. 16:30 → 16:50 (hike 3 hrs) → 19:50 → 20:10 (total 3 hrs 40 mins)",
+        "15. 17:30 → 17:50 (hike 3 hrs) → 20:50 → 21:10 (total 3 hrs 40 mins)",
+        "16. 18:00 → 18:20 (hike 3 hrs 30 mins) → 21:50 → 22:10 (total 4 hrs 10 mins)",
+        "17. 18:30 → 18:50 (hike 3 hrs) → 21:50 → 22:10 (total 3 hrs 40 mins)",
+        "18. 19:30 → 19:50 (hike 3 hrs) → 22:50 → 23:10 (total 3 hrs 40 mins)",
+        "19. 20:30 → 20:50 (hike 3 hrs) → 23:50 → 00:10 (total 3 hrs 40 mins)",
+        "These timings are indicative only: everyone walks at different speeds, and bus timetables vary by season."
       ]
     }
   ],
   "essentialsTitle": "Essentials",
   "essentials": [
-    "Two SITA tickets per person (uphill and downhill) plus a spare.",
-    "Water, snacks, sunscreen, and a hat for the exposed ridge.",
-    "Comfortable shoes with grip and optional trekking poles for uneven steps."
+    "Two bus tickets per person (uphill and downhill) plus a spare.",
+    "Plenty of water — there are no facilities along the trail.",
+    "Snacks or a packed lunch, sunscreen, and a hat for the exposed ridge.",
+    "Comfortable shoes with grip for uneven steps."
   ],
   "typicalCostsTitle": "Typical costs",
   "typicalCosts": [
@@ -78,14 +144,14 @@
   ],
   "tipsTitle": "Route tips",
   "tips": [
-    "Aim for early morning departures to enjoy cooler temperatures and quieter paths.",
-    "Bring a light jacket—the ridge can be breezy even when Positano feels hot.",
-    "Save a celebratory treat at the kiosk near the church for your return."
+    "Set off in the morning for cooler temperatures and more buffer time for the return bus.",
+    "Do not forget to bring plenty of water — there are no facilities along the trail.",
+    "For a budget-friendly lunch, pick up a panini from a mini-market before you start hiking."
   ],
   "warningsTitle": "Watch-outs",
   "warnings": [
     "Ignore the sign pointing down the stairs to Positano unless you want a strenuous descent that ends far from the hostel.",
-    "Buses run less frequently in the afternoon—set an alarm for the last return you can comfortably make.",
+    "Buses run less frequently in the afternoon — set an alarm for the last return you can comfortably make.",
     "The trail is exposed; avoid hiking in the hottest part of the day during July and August."
   ],
   "steps": [

@@ -1,53 +1,174 @@
 {
+  "lastUpdated": "2026-02-04",
   "seo": {
     "title": "Da Positano al centro di Napoli in autobus e poi treno | Hostel Brikette",
-    "description": "Indicazioni porta a porta dall'Hostel Brikette a Napoli Piazza Garibaldi con l'autobus SITA per Sorrento e il treno Circumvesuviana, inclusi convalida dei biglietti, consigli sull'orario e note all'arrivo."
+    "description": "Guida completa dall'Hostel Brikette a Napoli Garibaldi via autobus SITA e treno Circumvesuviana. Biglietti, orari, costi e consigli per la piattaforma."
   },
   "intro": {
-    "title": "Positano verso Napoli centro – Autobus e poi treno",
-    "body": "Usa questa guida per viaggiare dall'Hostel Brikette a Napoli Piazza Garibaldi. Prenderai l'autobus SITA Sud per Sorrento e poi il treno Circumvesuviana per raggiungere il centro città. Ti spieghiamo come convalidare i biglietti, leggere l'orario SITA e cosa aspettarti a ogni coincidenza."
+    "title": "Da Positano al centro di Napoli – Autobus e poi treno",
+    "body": "Questa guida copre il viaggio porta a porta dall'Hostel Brikette a Napoli Piazza Garibaldi utilizzando i trasporti pubblici. Prenderai l'autobus SITA Sud da Chiesa Nuova a Sorrento (circa €2,50, 50 minuti), poi cambierai con il treno Circumvesuviana verso il centro di Napoli (circa €4,00, 65 minuti). Il tempo di viaggio totale è di circa 2-2,5 ore e il costo combinato è di circa €6,50.\n\nQuesta è la rotta più economica per Napoli quando i traghetti non sono in funzione (ottobre-marzo) o quando vuoi evitare le tariffe dei taxi. Le principali insidie: acquista i biglietti SITA prima di salire (non disponibili sull'autobus), arriva presto in estate per assicurarti un posto, e convalida il biglietto del treno prima di salire per evitare multe. Se trasporti bagagli voluminosi, considera un trasferimento privato - l'autobus e il treno possono essere affollati e hanno spazio limitato per i bagagli. Contatta la reception dell'ostello per assistenza nell'organizzazione dei trasferimenti."
   },
   "callouts": {
-    "cta": "Ti servono tutte le opzioni di trasporto? Apri la %HOWTO:how-to-get-here|panoramica di Come arrivare% per traghetti, taxi e itinerari combinati."
+    "cta": "Serve ogni opzione di trasporto? Apri la %HOWTO:how-to-get-here|panoramica Come arrivare% per traghetti, taxi e itinerari combinati.",
+    "tip": "Viaggi in inverno o bassa stagione? Controlla gli %GUIDES:travelHelp|avvisi di interruzione del trasporto% prima di partire - scioperi e cambiamenti di orario sono più comuni da novembre a marzo."
   },
   "sections": [
     {
       "id": "overview",
-      "body": "In alta stagione prevedi poco più di due ore porta a porta. Gli autobus SITA partono spesso da Positano (Chiesa Nuova) verso Sorrento. Il treno Circumvesuviana da Sorrento parte ogni 20-30 minuti circa e termina a Napoli Garibaldi."
+      "title": "Panoramica del viaggio",
+      "body": "Prevedi da 2 a 2,5 ore porta a porta in condizioni normali. Gli autobus SITA partono frequentemente da Positano (Chiesa Nuova) verso Sorrento - di solito ogni 30-60 minuti a seconda della stagione. Il treno Circumvesuviana da Sorrento a Napoli Garibaldi funziona circa ogni 20-30 minuti durante il giorno.\n\nIn estate (giugno-settembre), aggiungi tempo cuscinetto: gli autobus si riempiono rapidamente e potresti dover aspettare la partenza successiva se non puoi salire. In inverno, controlla gli orari in anticipo poiché SITA riduce la frequenza e la Circumvesuviana occasionalmente subisce ritardi o cancellazioni a causa di manutenzione o scioperi.",
+      "images": [
+        {
+          "src": "/img/directions/sorrento-train-station.jpg",
+          "alt": "Ingresso della stazione ferroviaria di Sorrento vicino ai binari.",
+          "caption": "Cambierai dall'autobus SITA alla Circumvesuviana alla stazione di Sorrento."
+        }
+      ]
+    },
+    {
+      "id": "costs",
+      "title": "Costi",
+      "body": "**Autobus SITA (Positano → Sorrento):** Circa €2,50 a persona (i prezzi cambiano annualmente; verifica al punto di acquisto).\n\n**Treno Circumvesuviana (Sorrento → Napoli Garibaldi):** Circa €4,00 a persona.\n\n**Costo totale:** Circa €6,50 a persona, solo andata.\n\nEntrambe le tratte accettano contanti e carta agli sportelli, anche se i tabacchini e le edicole più piccoli per i biglietti SITA potrebbero accettare solo contanti. Porta €10-€20 in banconote piccole se acquisti da un bar o un'edicola. Le biglietterie automatiche e gli sportelli Circumvesuviana a Sorrento accettano le principali carte di credito/debito."
     },
     {
       "id": "tickets",
-      "body": "Compra i biglietti dell'autobus SITA in edicola o in tabaccheria prima di salire. Mostra il biglietto all'autista quando entri: lo timbrerà o lo strapperà per convalidare la corsa. Conserva il biglietto fino alla discesa nel caso un controllore verifichi i titoli di viaggio durante il tragitto."
+      "title": "Acquisto e convalida dei biglietti SITA",
+      "body": "I biglietti dell'autobus SITA devono essere acquistati prima di salire - l'autista non può venderti un biglietto. Acquista da:\n\n- Bar Internazionale (alla fermata dell'autobus)\n- Tabaccherie (tabacchi) lungo Via G. Marconi\n- Edicole nel centro di Positano\n\nPresenta il biglietto all'autista quando sali; lo timbrerà o lo strapperà per convalidare la corsa. Conserva il biglietto convalidato fino a quando scendi nel caso un controllore verifichi le tariffe lungo il percorso. La mancata convalida o il viaggio senza biglietto comporta una multa immediata (tipicamente €50+).",
+      "images": [
+        {
+          "src": "/img/directions/sita-ticket-validation.jpg",
+          "alt": "Autista dell'autobus SITA che convalida un biglietto all'ingresso.",
+          "caption": "Consegna il biglietto all'autista quando sali - lo timbrerà o strapperà per convalidarlo."
+        }
+      ]
     },
     {
       "id": "timetable",
-      "body": "L'orario ufficiale elenca le fermate nelle righe e le corse in colonne contrassegnate da lettere. Abbina la riga di Sorrento alla lettera del tuo giorno di viaggio per trovare le partenze, quindi controlla la riga Positano (Chiesa Nuova) nella stessa colonna per l'orario di arrivo in paese."
+      "title": "Leggere l'orario SITA",
+      "body": "L'orario ufficiale SITA elenca le fermate come righe e i viaggi come colonne con lettere. Per trovare la tua partenza:\n\n1. Scegli il giorno del viaggio (giorno feriale vs. domenica/festivo) - ogni tipo di giorno ha codici lettera diversi (ad es., colonne F e G per i giorni feriali, G e H per le domeniche).\n2. Individua la riga Sorrento per vedere quando l'autobus parte da Sorrento.\n3. Trova la riga Positano (Chiesa Nuova) nella stessa colonna per vedere a che ora passa alla tua fermata.\n\nL'orario è affisso alla fermata dell'autobus e disponibile online sul %URL:https://www.sitasudtrasporti.it|sito web di SITA Sud%. In pratica, gli autobus possono fare 5-10 minuti di ritardo, specialmente nel traffico estivo, quindi arriva qualche minuto prima dell'orario previsto.",
+      "images": [
+        {
+          "src": "/img/directions/sita-timetable-example.jpg",
+          "alt": "Primo piano dell'orario SITA che mostra righe e colonne con lettere.",
+          "caption": "Abbina la riga della fermata con la colonna del giorno per trovare l'orario di partenza."
+        }
+      ]
     },
     {
-      "id": "positanoStop"
+      "id": "positanoStop",
+      "title": "Fermata dell'autobus Positano (Chiesa Nuova)",
+      "body": "La fermata SITA più vicina all'Hostel Brikette è **Positano (Chiesa Nuova)** su Via G. Marconi, a circa 140 metri (460 piedi) dall'ingresso dell'ostello. Aspetterai fuori dal Bar Internazionale.\n\n**Cosa aspettarsi:**\n- In estate (luglio-agosto), arriva 10-15 minuti prima per assicurarti un posto. Gli autobus possono riempirsi fino a essere solo in piedi e gli autisti potrebbero rifiutare l'imbarco se l'autobus è al massimo della capacità.\n- In mezza stagione (maggio-giugno, settembre-ottobre), arriva 5 minuti prima - gli autobus sono meno affollati ma ancora occupati.\n- In inverno (novembre-marzo), arriva in orario o qualche minuto prima; gli autobus si riempiono raramente completamente.\n\nNon c'è un sistema di coda formale; i passeggeri salgono in ordine di arrivo. Stai vicino al marciapiede in modo che l'autista possa vederti chiaramente.",
+      "images": [
+        {
+          "src": "/img/directions/chiesa-nuova-bus-stop.jpg",
+          "alt": "Cartello della fermata dell'autobus SITA fuori dal Bar Internazionale a Chiesa Nuova.",
+          "caption": "La fermata dell'autobus è direttamente fuori dal Bar Internazionale - cerca il cartello SITA."
+        }
+      ]
     },
     {
-      "id": "walk"
+      "id": "walk",
+      "title": "Camminata dall'ostello alla fermata",
+      "body": "Esci dall'Hostel Brikette, scendi le scale fino a Via G. Marconi e gira a sinistra. Continua lungo la strada principale per circa 100 metri (330 piedi). Il Bar Internazionale sarà sulla tua sinistra; la fermata SITA è proprio fuori.\n\nLa camminata richiede 2-3 minuti a passo normale. Per istruzioni dettagliate passo dopo passo con foto, vedi la nostra %HOWTO:chiesaNuovaDepartures|guida dall'Hostel Brikette a Chiesa Nuova%. Non ci sono scale o terreno difficile una volta raggiunta la strada principale, ma le scale iniziali dall'ostello possono essere impegnative se hai bagagli pesanti o problemi di mobilità. Se viaggi con borse grandi o hai difficoltà con le scale, considera di chiedere alla reception dell'ostello di organizzare un trasferimento bagagli o un taxi."
     },
     {
-      "id": "wait"
+      "id": "wait",
+      "title": "Acquista il biglietto e attendi l'imbarco",
+      "body": "Acquista un biglietto dell'autobus SITA per Sorrento dal Bar Internazionale o da un'edicola vicina prima di fare la coda. Specifica \"Sorrento\" al momento dell'acquisto - il prezzo del biglietto è lo stesso indipendentemente da dove sali tra Positano e Sorrento.\n\nUna volta che hai il biglietto, mettiti fuori dal Bar Internazionale e osserva l'autobus. Controlla il display della destinazione sulla parte anteriore dell'autobus - dovrebbe leggere **Sorrento**. In rari casi, gli autobus potrebbero terminare presto o prendere percorsi alternativi; se non sei sicuro, chiedi all'autista \"Sorrento?\" prima di salire."
+    },
+    {
+      "id": "busRide",
+      "title": "Sull'autobus per Sorrento",
+      "body": "Il viaggio in autobus da Positano a Sorrento richiede circa 50 minuti tramite la strada costiera SS163 (Strada Statale 163 Amalfitana). Il percorso è panoramico ma tortuoso, con frequenti curve strette e viste sulle scogliere. Per una guida completa a questa linea di autobus SITA con consigli sugli orari e dettagli fermata per fermata, vedi la nostra %HOWTO:positanoSorrentoBus|guida dell'autobus Positano-Sorrento%.\n\n**Consigli per il viaggio:**\n- Se sei soggetto al mal d'auto, siediti vicino alla parte anteriore dell'autobus e guarda verso l'orizzonte, non il telefono.\n- Lo spazio per i bagagli è limitato - le borse più piccole possono andare in grembo o tra i piedi; le borse più grandi potrebbero dover stare nel corridoio (che può bloccare il movimento quando l'autobus è affollato).\n- Non ci sono toilette a bordo né WiFi.\n- L'autobus fa diverse fermate tra Positano e Sorrento; resta seduto fino a raggiungere la fermata finale (Sorrento Circumvesuviana).\n\nIn estate, l'autobus può essere solo in piedi e scomodamente caldo. Se viaggi a luglio o agosto, punta alle partenze mattutine precedenti (prima delle 10:00) per evitare il caldo e la folla di punta.",
+      "images": [
+        {
+          "src": "/img/directions/sita-bus-interior.jpg",
+          "alt": "Interno di un autobus SITA con passeggeri seduti.",
+          "caption": "Gli autobus SITA sono confortevoli ma possono essere affollati in estate - arriva presto per un posto."
+        }
+      ]
     },
     {
       "id": "sorrento",
-      "body": "L'autobus SITA ti lascia accanto al terminal combinato di treni e autobus di Sorrento. Sali le scale verso l'atrio principale, acquista il biglietto della Circumvesuviana per Napoli Garibaldi (contanti o carta) e individua il binario corretto prima dell'arrivo del treno."
+      "title": "Alla stazione ferroviaria di Sorrento",
+      "body": "L'autobus SITA ti lascia vicino al terminal combinato treni e autobus di Sorrento (stazione Circumvesuviana). Sali le scale fino all'atrio principale, poi acquista il biglietto Circumvesuviana per **Napoli Garibaldi**.\n\n**Acquisto biglietto:**\n- Le biglietterie automatiche si trovano nell'atrio principale (contanti e carta accettati).\n- Gli sportelli con personale sono a sinistra quando entri nell'atrio (carta accettata; le code possono essere lunghe in estate).\n- Costo: circa €4,00 a persona.\n\n**Prima di salire:**\n- Convalida il biglietto nelle macchine di convalida gialle o verdi vicino ai binari prima di salire sul treno. La mancata convalida comporta una multa immediata se i controllori verificano i biglietti.\n- Controlla il tabellone delle partenze per confermare il numero del binario per il prossimo treno per Napoli Garibaldi. La Circumvesuviana opera su binari dedicati, quindi non la confonderai con i servizi Trenitalia della linea principale.\n\n**Trovare il binario:**\n- Segui i segnali per \"Circumvesuviana\" o \"Napoli\" (entrambi portano agli stessi binari).\n- I binari sono accessibili tramite scale o una breve rampa - non sono disponibili ascensori, quindi pianifica in anticipo se hai bagagli pesanti o problemi di mobilità.",
+      "images": [
+        {
+          "src": "/img/directions/sorrento-station-ticket-machines.jpg",
+          "alt": "Biglietterie automatiche Circumvesuviana alla stazione di Sorrento.",
+          "caption": "Acquista il biglietto per Napoli dalle macchine o dallo sportello prima di andare al binario."
+        },
+        {
+          "src": "/img/directions/sorrento-station-validation-machine.jpg",
+          "alt": "Macchina di convalida biglietti gialla alla stazione di Sorrento.",
+          "caption": "Convalida il biglietto nella macchina gialla prima di salire - i controllori controllano."
+        }
+      ]
+    },
+    {
+      "id": "trainRide",
+      "title": "Sulla Circumvesuviana per Napoli",
+      "body": "Il treno Circumvesuviana da Sorrento a Napoli Garibaldi richiede circa 65 minuti. Il treno fa diverse fermate (inclusa Pompei Scavi per le rovine di Pompei, Ercolano Scavi per Ercolano e diversi sobborghi napoletani) prima di terminare a Napoli Garibaldi.\n\n**Cosa aspettarsi:**\n- I posti a sedere sono in ordine di arrivo. In estate e nei fine settimana, i treni possono essere affollati, specialmente dopo Pompei Scavi. Se sali a Sorrento (il punto di partenza), di solito troverai un posto.\n- Il treno è un materiale rotabile più vecchio - niente WiFi, niente toilette a bordo e aria condizionata limitata. In estate, i finestrini aperti forniscono ventilazione.\n- Sono disponibili portabagagli vicino alle porte, ma lo spazio è limitato. Tieni gli oggetti di valore sempre con te.\n- I borseggiatori occasionalmente prendono di mira i turisti sui treni affollati. Tieni le borse chiuse con cerniera e in vista, specialmente vicino a Napoli.\n\n**Annunci:**\n- I nomi delle stazioni sono annunciati solo in italiano, ma ogni fermata ha una segnaletica chiara visibile dal binario. Conta le fermate se non sei sicuro (Napoli Garibaldi è la fermata finale, quindi non puoi perderla).",
+      "images": [
+        {
+          "src": "/img/directions/circumvesuviana-interior.jpg",
+          "alt": "Interno di un treno Circumvesuviana con passeggeri.",
+          "caption": "La Circumvesuviana è basilare ma affidabile - siediti vicino ai tuoi bagagli e rimani vigile."
+        }
+      ]
     },
     {
       "id": "naples",
-      "body": "Rimani a bordo della Circumvesuviana fino al capolinea di Napoli Garibaldi. Da lì segui le indicazioni per salire all'atrio principale e collegarti a treni a lunga percorrenza, metro o autobus per l'aeroporto. Piazza Garibaldi si trova proprio fuori dall'ingresso della stazione."
+      "title": "Arrivo a Napoli",
+      "body": "Resta sulla Circumvesuviana fino a quando termina a **Napoli Garibaldi** (chiamata anche Napoli Porta Nolana su alcune mappe, anche se il nome ufficiale della fermata è Garibaldi). Da lì, segui i segnali fino all'atrio principale per collegarti a:\n\n- Treni Trenitalia a lunga percorrenza (Frecciarossa, Intercity, servizi regionali)\n- Metro di Napoli Linea 1 (verso il centro città, Vomero, aeroporto tramite la stazione metro Garibaldi)\n- Metro di Napoli Linea 2 (Garibaldi è anche una fermata ferroviaria della linea principale)\n- Navetta aeroportuale Alibus (parte da Piazza Garibaldi fuori dalla stazione)\n- Autobus locali e taxi (fuori dall'ingresso principale)\n\n**Uscire dalla stazione:**\n- Segui i segnali per \"Uscita\" (uscita) o \"Stazione Centrale\" (stazione principale) per raggiungere l'atrio principale.\n- Piazza Garibaldi è direttamente fuori dall'ingresso principale - una grande piazza trafficata con postazioni taxi, fermate degli autobus e accesso alla metro.\n\n**Orientamento:**\n- Napoli Centrale (la stazione principale Trenitalia) e Napoli Garibaldi (il capolinea Circumvesuviana) sono nello stesso complesso di edifici, collegati dall'atrio principale. Non dovrai uscire e rientrare per trasferire tra i servizi.\n\n**Sicurezza e consapevolezza:**\n- Piazza Garibaldi è un trafficato hub di trasporto e può sembrare caotica, specialmente di notte. Tieni le borse al sicuro, rimani consapevole dell'ambiente circostante e muoviti con sicurezza verso la tua prossima connessione.\n- I taxi ufficiali sono bianchi con un cartello \"Taxi\" sul tetto e un tassametro all'interno. Evita gli autisti senza licenza che ti avvicinano offrendo corse."
+    },
+    {
+      "id": "luggage",
+      "title": "Bagagli e accessibilità",
+      "body": "Questo percorso è gestibile con uno zaino piccolo o un bagaglio a mano, ma può essere impegnativo con bagagli grandi o pesanti:\n\n**Autobus SITA:**\n- Nessuna stiva bagagli dedicata; le borse devono rimanere con te o nel corridoio.\n- Le borse grandi potrebbero bloccare il movimento quando l'autobus è affollato.\n- Se hai una valigia di dimensioni standard (bagaglio da 23 kg o più grande), considera invece un trasferimento privato (contatta la reception dell'ostello).\n\n**Treno Circumvesuviana:**\n- Piccoli portabagagli vicino alle porte; lo spazio è limitato e viene richiesto rapidamente.\n- Nessun ascensore alla stazione di Sorrento - dovrai portare le borse su/giù per le scale per raggiungere il binario.\n- Nessun ascensore in alcune fermate intermedie; Napoli Garibaldi ha scale mobili e ascensori per l'atrio principale.\n\n**Accessibilità:**\n- Né l'autobus SITA né il treno Circumvesuviana sono accessibili in sedia a rotelle nel senso tradizionale (nessuna rampa, nessuno spazio dedicato per sedie a rotelle).\n- Se usi una sedia a rotelle o hai limitazioni significative di mobilità, è fortemente raccomandato un trasferimento privato accessibile. Contatta la reception dell'ostello per assistenza nell'organizzazione."
+    },
+    {
+      "id": "seasonal",
+      "title": "Considerazioni stagionali e di tempistica",
+      "body": "**Estate (giugno-settembre):**\n- Gli autobus SITA funzionano più frequentemente ma si riempiono rapidamente. Arriva 10-15 minuti prima.\n- I treni Circumvesuviana sono affollati, specialmente a metà giornata e nei fine settimana.\n- Il caldo può essere scomodo - sia l'autobus che il treno hanno aria condizionata limitata.\n\n**Mezza stagione (aprile-maggio, ottobre):**\n- Folle moderate; arriva 5-10 minuti prima per l'autobus.\n- Le temperature piacevoli rendono il viaggio più confortevole.\n\n**Inverno (novembre-marzo):**\n- SITA riduce la frequenza; controlla gli orari in anticipo.\n- Gli orari Circumvesuviana possono cambiare a causa di manutenzione o scioperi - verifica gli orari di partenza il giorno prima del viaggio.\n- Meno turisti significano imbarco più facile e più spazio, ma i servizi possono essere meno affidabili.\n\n**Scioperi e interruzioni:**\n- Gli scioperi dei trasporti pubblici (sciopero) sono annunciati almeno 48 ore in anticipo. Controlla la %GUIDES:travelHelp|nostra pagina degli avvisi di trasporto% o chiedi alla reception dell'ostello per gli ultimi aggiornamenti.\n- Durante gli scioperi, SITA e Circumvesuviana potrebbero funzionare con servizi ridotti o cancellare completamente. Pianifica un trasporto alternativo (taxi, trasferimento privato o traghetto se disponibile) se è programmato uno sciopero nel giorno del viaggio."
+    },
+    {
+      "id": "alternatives",
+      "title": "Percorsi alternativi per Napoli",
+      "body": "Questo percorso in autobus e treno è l'opzione di trasporto pubblico più economica, ma non sempre la più conveniente. Considera queste alternative:\n\n**Traghetto (stagionale, aprile-ottobre):**\n- %HOWTO:positanoNaplesCenterFerry|Positano-Napoli in traghetto% è più veloce (70 minuti diretti), più panoramico e più confortevole, ma costa €20-€25 a persona.\n- I traghetti funzionano solo da aprile a ottobre, tipicamente 1-2 partenze al giorno.\n- Nessuna restrizione sui bagagli; più facile per i viaggiatori con borse grandi.\n\n**Trasferimento privato o taxi:**\n- Il trasferimento privato a Napoli o all'aeroporto di Napoli costa €100-€140 per un massimo di 4 passeggeri (contatta la reception dell'ostello per la prenotazione).\n- Servizio porta a porta; nessuna connessione, nessuna attesa.\n- Opzione migliore per gruppi di 3-4, viaggiatori con bagagli grandi o persone con problemi di mobilità.\n\n**Autobus per Salerno, poi treno per Napoli:**\n- %HOWTO:positanoSalernoBus|Autobus SITA per Salerno% (€3,00, 90 minuti) seguito da un treno regionale o ad alta velocità Trenitalia per Napoli (€4-€15, 30-50 minuti).\n- Tempo di viaggio complessivo più lungo, ma i treni di Salerno sono più confortevoli e frequenti della Circumvesuviana.\n\n**Esplorare le città vicine:**\n- Se stai pianificando gite di un giorno da Positano, controlla la nostra %HOWTO:positanoAmalfiBus|guida dell'autobus Positano-Amalfi% o la %HOWTO:positanoRavelloBus|guida dell'autobus Positano-Ravello% per altre destinazioni costiere."
     }
   ],
   "faqs": [
     {
-      "q": "Come si legge l'orario degli autobus SITA?",
+      "q": "Come leggo l'orario dell'autobus SITA?",
       "a": [
-        "**Lettura delle righe:** Le righe nella prima colonna rappresentano diverse fermate dell'autobus lungo il percorso.",
-        "**Lettura delle colonne:** L'orario assegna una lettera alfabetica a ciascun viaggio programmato, che sono elencate come intestazioni in ogni colonna. Se viaggi dal lunedì al sabato, cerca le colonne 'F' e 'G'. Se viaggi di domenica o in un giorno festivo, cerca le colonne 'G' e 'H'.",
-        "**Combinazione di righe e colonne:** Scegli le tue fermate di partenza e arrivo, quindi controlla le colonne per vedere quando sono disponibili gli autobus e a che ora arriveranno a destinazione. Ad esempio, per vedere l'orario di partenza da Sorrento, guarda la riga Sorrento. Per vedere l'orario di arrivo a Positano (Chiesa Nuova / Bar Internazionale), guarda la riga Positano (Chiesa Nuova)."
+        "**Leggere le righe:** Le righe nella prima colonna rappresentano diverse fermate dell'autobus lungo il percorso.",
+        "**Leggere le colonne:** L'orario assegna una lettera alfabetica a ciascun viaggio programmato, che sono elencate come intestazioni in ogni colonna. Se viaggi da lunedì a sabato, cerca le colonne 'F' e 'G'. Se viaggi di domenica o in un giorno festivo, cerca le colonne 'G' e 'H'.",
+        "**Combinare righe e colonne:** Scegli le fermate di partenza e arrivo, quindi controlla le colonne per vedere quando sono disponibili gli autobus e a che ora arriveranno alla tua destinazione. Ad esempio, per vedere l'orario di partenza da Sorrento, guarda la riga Sorrento. Per vedere l'orario di arrivo a Positano (Chiesa Nuova / Bar Internazionale), guarda la riga Positano (Chiesa Nuova) nella stessa colonna."
+      ]
+    },
+    {
+      "q": "Posso acquistare biglietti dell'autobus SITA a bordo?",
+      "a": [
+        "No. Gli autisti dell'autobus SITA non possono vendere biglietti - devi acquistare prima di salire dal Bar Internazionale (alla fermata dell'autobus), da una tabaccheria (tabacchi) o da un'edicola. Viaggiare senza biglietto convalidato comporta una multa immediata di €50 o più."
+      ]
+    },
+    {
+      "q": "Devo prenotare posti sull'autobus SITA o sul treno Circumvesuviana?",
+      "a": [
+        "No. Sia l'autobus SITA che il treno Circumvesuviana operano in ordine di arrivo senza prenotazioni. Arriva presto in estate (luglio-agosto) per assicurarti un posto, poiché gli autobus e i treni possono riempirsi fino a essere solo in piedi durante l'alta stagione."
+      ]
+    },
+    {
+      "q": "Questo percorso è adatto per viaggiatori con bagagli voluminosi?",
+      "a": [
+        "È gestibile con uno zaino piccolo o un bagaglio a mano, ma impegnativo con valigie di dimensioni standard. L'autobus SITA non ha stiva bagagli e la stazione di Sorrento non ha ascensori per il binario del treno. Se viaggi con borse grandi o pesanti, considera invece un trasferimento privato - contatta la reception dell'Hostel Brikette per assistenza."
+      ]
+    },
+    {
+      "q": "Cosa devo fare se c'è uno sciopero dei trasporti pubblici nel giorno del viaggio?",
+      "a": [
+        "Gli scioperi (sciopero) sono annunciati almeno 48 ore in anticipo. Controlla la %GUIDES:travelHelp|pagina degli avvisi di trasporto% o chiedi alla reception dell'ostello per aggiornamenti. Durante gli scioperi, SITA e Circumvesuviana potrebbero funzionare con servizi ridotti o cancellare completamente. Prenota un trasferimento privato o un taxi come backup - se i traghetti sono in funzione (aprile-ottobre), il %HOWTO:positanoNaplesCenterFerry|traghetto Positano-Napoli% è un'alternativa affidabile."
       ]
     }
   ]

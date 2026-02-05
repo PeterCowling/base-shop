@@ -299,8 +299,8 @@
   "cancel": "キャンセル",
   "moreAboutThisRoom": "この部屋の詳細",
   "loadingPrice": "Loading price…",
-  "landingImageAlt": "Landing image of {{room}}",
+  "landingImageAlt": "{{room}}のメイン画像",
   "priceNotes": {
-    "dorm": "Per night, per guest. One guest in one bunk bed."
+    "dorm": "1泊1名様。1つの二段ベッドに1名様。"
   }
 }

@@ -166,12 +166,13 @@
     },
     {
       "id": "logistics",
-      "title": "Getting to and from the beach",
+      "title": "Getting to and from the beaches",
       "body": [
-        "From the hostel, the fastest approach is usually: walk down to Spiaggia Grande (or bus down), then decide whether to continue along the promenade to Fornillo, hop on a shuttle boat, or stick with the main beach.",
-        "If you're doing a beach club day that includes boat transfer (Arienzo or Laurito), it's often easiest to start from Spiaggia Grande so you can line up early and avoid the stairs.",
-        "In summer 2026, plan for heat on the climbs: refill water before you head back up, and if you're tired, use the internal bus instead of walking every step.",
-        "For day trips (Praiano, Amalfi, Sorrento), check the last return option before you commit. Ferries are the nicest ride when they're running, but buses are the backup. If the sea is rough or ferries are cancelled, plan extra time and keep your schedule flexible. Pack snacks for the ride."
+        "Each beach has different access options, so check the specific guide before you head out. Here are quick links to the most useful direction guides:",
+        "Positano beaches: %LINK:positanoMainBeachWalkDown|Walk to Spiaggia Grande% • %LINK:positanoMainBeachBusDown|Bus to Spiaggia Grande% • %LINK:hostelBriketteToFornilloBeach|Walk to Fornillo% • %LINK:hostelBriketteToArienzoBus|Bus to Arienzo% • %LINK:lauritoBeachBusDown|Bus to Laurito%",
+        "Return routes: %LINK:positanoMainBeachWalkBack|Walk back from Spiaggia Grande% • %LINK:positanoMainBeachBusBack|Bus back from Spiaggia Grande% • %LINK:fornilloBeachToBrikette|Walk back from Fornillo% • %LINK:arienzoBeachBusBack|Bus back from Arienzo% • %LINK:lauritoBeachBusBack|Bus back from Laurito%",
+        "Day-trip beaches: %LINK:hostelBriketteToFiordoDiFuroreBus|Fiordo di Furore% • %LINK:gavitellaBeachGuide|Gavitella (Praiano)% • %LINK:marinaDiPraiaBeaches|Marina di Praia% • %LINK:reginaGiovannaBath|Regina Giovanna (Sorrento)%",
+        "General tips: In summer 2026, plan for heat on the climbs—refill water before you head back up, and use the internal bus if you're tired. For day trips, check the last return option (ferry or bus) before you commit, and pack snacks for the ride. If the sea is rough or ferries are cancelled, plan extra time and keep your schedule flexible."
       ],
       "images": [
         {

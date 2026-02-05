@@ -1,18 +1,18 @@
 {
   "seo": {
-    "title": "Beach‑Hopping on the Amalfi Coast",
-    "description": "Quais praias combinar em um dia, dicas de acesso e custos."
+    "title": "Saltar entre praias na Costa Amalfitana",
+    "description": "Quais praias combinar num dia, dicas de acesso e custos."
   },
-  "linkLabel": "Roteiro de praias na Costa Amalfitana",
+  "linkLabel": "Saltar entre praias na Costa Amalfitana",
   "intro": [
-    "Planeie um dia de praia a saltar entre enseadas, equilibrando viagens de ferry, vistas nas falésias e tempo para descansar na areia."
+    "Planeie um dia de salto entre praias que equilibre viagens de ferry, vistas nas falésias e tempo para descansar na areia."
   ],
   "sections": [
     {
       "id": "morning",
       "title": "Manhã: Positano a Fornillo",
       "body": [
-        "Comece cedo na Spiaggia Grande para um mergulho rápido e siga o caminho costeiro até Fornillo por volta das 09:30 para encontrar o mar mais calmo.",
+        "Comece cedo na Spiaggia Grande para um mergulho rápido e siga o caminho costeiro até Fornillo até às 09:30 para encontrar o mar mais calmo.",
         "Reserve espreguiçadeiras com antecedência se quiser sombra; caso contrário, leve um guarda-sol leve."
       ]
     },
@@ -25,23 +25,31 @@
       ]
     },
     {
-      "id": "evening",
-      "title": "Fim de tarde: banho ao pôr do sol",
+      "id": "group-tours",
+      "title": "Passeios em grupo e barcos partilhados",
       "body": [
-        "Termine em Laurito ou Arienzo para vistas douradas; ambas voltadas a oeste, com luz quente e menos gente depois das 17:00.",
+        "Veja o nosso %LINK:boatTours|guia de passeios de barco em Positano% se preferir saltar entre praias num barco partilhado em vez de ferries.",
+        "Os operadores partem do cais principal de Positano; chegue 15 minutos mais cedo e confirme paragens de natação em Laurito ou Arienzo ao reservar."
+      ]
+    },
+    {
+      "id": "evening",
+      "title": "Fim de tarde: Banho ao pôr do sol",
+      "body": [
+        "Termine em Laurito ou Arienzo para vistas douradas; ambas viradas a oeste, com luz quente e menos gente depois das 17:00.",
         "Apanhe o último ferry ou reserve um táxi de regresso para evitar subidas no escuro."
       ]
     }
   ],
   "tips": [
     "Leve uma toalha de secagem rápida e muda de roupa para permanecer confortável nos ferries.",
-    "Prepare snacks e pelo menos 1 L de água — os quiosques de praia podem esgotar nos dias mais concorridos."
+    "Prepare snacks e pelo menos 1 L / 34 oz de água—os quiosques de praia podem esgotar nos dias mais concorridos."
   ],
   "faqs": [
     {
       "q": "Preciso reservar espreguiçadeiras?",
       "a": [
-        "Sim, em julho e agosto. Contacte os beach clubs por WhatsApp no dia anterior para garantir as primeiras filas."
+        "Sim em julho e agosto. Contacte os beach clubs por WhatsApp no dia anterior para garantir as primeiras filas."
       ]
     },
     {

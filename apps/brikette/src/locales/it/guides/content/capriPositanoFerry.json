@@ -1,104 +1,177 @@
 {
   "seo": {
     "title": "Capri-Positano in traghetto | Hostel Brikette",
-    "description": "Come viaggiare da Capri a Positano in traghetto, con consigli su biglietti, operatori, suggerimenti per l'arrivo e il modo più semplice per salire all'ostello."
+    "description": "Guida completa per gli ospiti dell'ostello: biglietti traghetto Capri-Positano, orari, operatori, consigli per l'arrivo e il percorso più semplice per raggiungere Hostel Brikette con i bagagli."
   },
+  "lastUpdated": "2026-01-31",
   "intro": {
     "title": "Capri → Positano – Traghetto",
-    "body": "Usa questa guida per viaggiare da Capri a Positano completamente via mare. Troverai come scegliere l'operatore giusto, acquistare i biglietti al porto e cosa fare all'arrivo per salire a Hostel Brikette a piedi (o in autobus) senza intoppi."
+    "body": "Questa guida copre tutto ciò che devi sapere sul viaggio da Capri a Positano in traghetto, scritta appositamente per gli ospiti dell'ostello con zaini. Dall'ostello, abbiamo aiutato centinaia di ospiti a pianificare questo percorso – ecco come orientarsi tra gli operatori di traghetti, acquistare i biglietti al porto di Marina Grande, arrivare senza problemi al molo di Spiaggia Grande a Positano e raggiungere Hostel Brikette senza perdersi sulle scale."
   },
   "callouts": {
-    "tip": "Ti servono altre opzioni di percorso o piani di riserva quando il mare è mosso? Apri la %URL:https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26|panoramica Come arrivare%."
+    "tip": "Il mare mosso può cancellare i traghetti con poco preavviso. Se prenoti un viaggio successivo lo stesso giorno, prevedi un margine di 3 ore o controlla il %LINK:positanoCapriFerry|percorso alternativo in autobus via Sorrento%."
   },
   "sections": [
     {
       "id": "overview",
       "title": "Panoramica del viaggio",
-      "body": "I traghetti tra Capri e Positano sono più frequenti in primavera e in estate. I servizi possono essere cancellati con mare mosso, soprattutto nel tardo pomeriggio. Il tempo di percorrenza totale è di solito 30–60 minuti a seconda dell'imbarcazione e dell'operatore."
+      "body": "Il traghetto da Capri a Positano è una delle migliori rotte marittime della Costiera Amalfitana. Molte compagnie gestiscono aliscafi e barche veloci tutto il giorno durante l'alta stagione da aprile a ottobre. In inverno, il servizio è limitato. Il viaggio dura 20-40 minuti a seconda della barca e del meteo. Dall'ostello, diciamo agli ospiti che questo percorso è perfetto per una gita di un giorno a Capri. È più veloce e divertente dell'autobus via Sorrento. Si ottengono splendide viste della costa e si arriva direttamente sulla spiaggia di Positano.",
+      "list": [
+        "Stagione: Barche giornaliere da aprile a ottobre, meno corse in inverno",
+        "Primo traghetto: Circa alle 09:45 dal porto di Marina Grande a Capri",
+        "Ultimo traghetto: Circa alle 19:00 (gli orari cambiano per compagnia e stagione)",
+        "Tempo di viaggio: 20-40 minuti sull'acqua",
+        "Prezzo: €22-€35 a persona per il 2026",
+        "Meteo: Le barche vengono cancellate con mare mosso, quindi controlla prima di partire",
+        "Posti migliori: Lato destro della barca per le viste di Positano all'arrivo",
+        "Suggerimento: Le barche mattutine (prima delle 14:00) vengono cancellate meno spesso di quelle pomeridiane"
+      ]
+    },
+    {
+      "id": "operators",
+      "title": "Compagnie di traghetti e biglietti",
+      "body": "Sei compagnie gestiscono barche da Capri a Positano: NLG, Positano Jet, Alicost, Alilauro Gruson, Capitan Morgan e Grassi Junior. Sono tutte buone. NLG e Positano Jet hanno il maggior numero di corse giornaliere. Il tuo biglietto funziona con qualsiasi compagnia per lo stesso percorso. Acquista semplicemente da chi ha la prossima barca.",
+      "list": [
+        "Acquista i biglietti al porto di Marina Grande a Capri. Ogni compagnia ha una biglietteria vicino ai moli.",
+        "Arriva 20-30 minuti prima per unirti alla fila per l'imbarco.",
+        "Se hai acquistato online, scambia prima il tuo voucher alla biglietteria.",
+        "Alta stagione (luglio-agosto): Prenota in anticipo online le corse mattutine. Si esauriscono velocemente.",
+        "I biglietti sono solo per passeggeri a piedi. I traghetti non prendono auto o biciclette.",
+        "In estate, acquista i biglietti 1-2 giorni prima per ottenere l'orario preferito."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-positano-ferry/05-capri-harbour.webp",
+          "alt": "Porto dei traghetti Marina Grande a Capri con barche e biglietterie",
+          "caption": "Il porto di Marina Grande a Capri da dove partono i traghetti per Positano. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Habour_of_Capri.JPG|JonathanHeu% (%URL:https://creativecommons.org/licenses/by-sa/3.0|CC BY-SA 3.0%)."
+        }
+      ]
     },
     {
       "id": "capriPort",
-      "title": "Al porto di Capri",
-      "body": "Confronta orari e prenota: <capriLink>Capri.net – Capri ↔ Positano</capriLink> · <positanoLink>Positano.com (orari aggregati)</positanoLink>.",
+      "title": "Al porto di Marina Grande a Capri",
+      "body": "Tutte le barche per Positano partono da Marina Grande. Questo è il porto principale di Capri a livello del mare. Se sei nella città di Capri (la Piazzetta), prendi la funicolare per scendere. Funziona ogni 15 minuti e impiega 5 minuti. Puoi anche scendere a piedi in 20 minuti, ma è molto ripido. Il porto ha molte biglietterie, caffè e servizi igienici. Dall'ostello, sappiamo che il porto diventa molto affollato dalle 11:00 alle 17:00. Arriva presto al tuo traghetto se viaggi nel pomeriggio.",
       "list": [
-        "Controlla orari e prezzi, quindi individua l'operatore della tua corsa.",
-        "Raggiungi il porto turistico di Capri. Acquista i biglietti presso la biglietteria dell'operatore.",
-        "Arriva con 20–30 minuti di anticipo per cambiare eventuali voucher e metterti in fila per l'imbarco."
+        "Prendi la funicolare dalla città di Capri per €2,30. Oppure scendi a piedi in 20 minuti (percorso ripido).",
+        "Le biglietterie si allineano sul lungomare. Cerca l'insegna della tua compagnia.",
+        "Se hai acquistato online, scambia il tuo voucher alla biglietteria giusta.",
+        "Controlla il tuo biglietto per il numero del molo. Di solito è scritto chiaramente.",
+        "Imbarcati 10-15 minuti prima. I posti sono assegnati in base all'ordine di arrivo.",
+        "Non serve passaporto per le barche in Italia.",
+        "Il porto ha un deposito bagagli se vuoi prima esplorare Capri senza borse."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-positano-ferry/01-marina-grande-capri.webp",
+          "alt": "Porto di Marina Grande a Capri con traghetti e biglietterie lungo il lungomare",
+          "caption": "Marina Grande è il porto principale di Capri - da qui partono tutti i traghetti per Positano. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Marina_Grande_(Capri).jpg|Yair Haklai% (%URL:https://creativecommons.org/licenses/by-sa/4.0|CC BY-SA 4.0%)."
+        }
       ]
     },
     {
       "id": "arrival",
-      "title": "Arrivo a Positano",
+      "title": "Arrivo al molo dei traghetti di Positano",
+      "body": "Il tuo traghetto attracca al molo di Spiaggia Grande, proprio sulla spiaggia principale di Positano. Il molo è piccolo – solo una singola passerella di legno – quindi aspetta che tutti scendano prima di muoverti con i tuoi bagagli. I facchini con giubbotti luminosi incontrano ogni traghetto e si offriranno di portare i bagagli fino agli hotel per €15-€25 in base alla distanza. Per Hostel Brikette, i facchini possono portarti a Chiesa Nuova (la fermata dell'autobus superiore) ma costa molto per questa breve passeggiata. La maggior parte degli ospiti dell'ostello salta questo e usa invece l'autobus Interno.",
       "list": [
-        "Sbarca al molo di Positano Spiaggia Grande.",
-        "I facchini attendono i traghetti in arrivo; valuta di usarli per i bagagli e concorda il prezzo prima.",
-        "Dalla spiaggia ci sono scale in salita; l'autobus Interno aiuta a ridurre i gradini fino all'ostello."
+        "Esci dal molo su Via del Brigantino (la strada della spiaggia)",
+        "I servizi igienici e i caffè sono lungo la spiaggia sulla tua sinistra",
+        "La %LINK:ferryDockToBrikette|fermata dell'autobus Interno% è a 3 minuti di cammino in salita dal molo",
+        "Se preferisci camminare tutto il tragitto: Sono 25 minuti in salita fino all'ostello con scale. Facile con uno zaino leggero, difficile con una valigia grande."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-positano-ferry/02-positano-from-sea.webp",
+          "alt": "Vista della costa di Positano dal traghetto in arrivo da Capri",
+          "caption": "Avvicinandosi a Positano in traghetto da Capri - il villaggio colorato scende a cascata verso il mare. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Positano_Sea.JPG|JeCCo% (%URL:https://creativecommons.org/licenses/by/4.0|CC BY 4.0%)."
+        },
+        {
+          "src": "/img/guides/capri-positano-ferry/04-view-positano.webp",
+          "alt": "Vista panoramica di Positano dall'acqua mostrando la spiaggia di Spiaggia Grande e il molo",
+          "caption": "La spiaggia di Spiaggia Grande di Positano dove attraccano i traghetti da Capri. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:View_of_Positano.jpg|Alexis Lours% (%URL:https://creativecommons.org/licenses/by/4.0|CC BY 4.0%)."
+        }
       ]
     },
     {
       "id": "bus",
       "title": "Dal porto all'ostello con l'autobus Interno",
-      "body": "Per un percorso dettagliato e adatto ai bagagli dal molo a Hostel Brikette, consulta: <link>Molo del traghetto → Hostel Brikette</link>.",
+      "body": "L'autobus arancione Interno è il modo più semplice per salire a Hostel Brikette con i bagagli. Fa un giro attraverso Positano ogni 20-30 minuti. La tariffa è di €1,30 (il resto esatto va bene, ma gli autisti di solito hanno il resto per banconote piccole). Dal molo, è una breve passeggiata fino alla fermata più vicina a Piazza dei Mulini. Sali sull'autobus che va in salita (direzione: Chiesa Nuova) e viaggia per circa 8 minuti. L'ostello è a 2 minuti a piedi dalla fermata Chiesa Nuova Tabacchi.",
       "list": [
-        "L'autobus Interno Positano passa circa ogni 30 minuti dalla mattina fino a mezzanotte.",
-        "Cerca il display elettronico ‘Interno Positano’ sul fronte dell'autobus.",
-        "Dal porto raggiungi Piazza dei Mulini e prendi l'autobus in salita verso Chiesa Nuova."
+        "Cammina in salita dal molo del traghetto a Piazza dei Mulini (3 minuti, leggera pendenza)",
+        "Aspetta sul lato in salita della piazza. L'autobus avrà scritto 'Chiesa Nuova' davanti.",
+        "Acquista i biglietti dal tabacchi (negozio di tabacchi) della piazza, o paga l'autista (€1,30)",
+        "Dì all'autista 'Chiesa Nuova Tabacchi' se non sei sicuro dove scendere",
+        "Guida completa del percorso: %LINK:ferryDockToBrikette|Molo del traghetto a Hostel Brikette con bagagli%"
       ]
     },
     {
       "id": "finalWalk",
-      "title": "Ultimo tratto a piedi dalla fermata più vicina",
+      "title": "Da Chiesa Nuova Tabacchi a Hostel Brikette",
+      "body": "La passeggiata dalla fermata dell'autobus all'ostello è facile e richiede circa 2 minuti. Dalla fermata, vedrai il negozio Tabacchi (negozio di tabacchi) all'angolo. Questo è il tuo punto di riferimento. L'ostello è appena sopra sulla strada su Via G. Marconi, con scale che portano all'ingresso.",
       "list": [
-        "Scendi alla fermata accanto al tabacchi vicino a Chiesa Nuova.",
-        "Gira a destra verso la strada principale, poi a sinistra lungo Via G. Marconi.",
-        "Percorri poco più di 100 m (≈330 piedi); l'ostello è sulla tua destra.",
-        "Gira a destra e segui le scale fino all'ingresso principale di Hostel Brikette."
+        "Scendi dall'autobus alla fermata Chiesa Nuova Tabacchi",
+        "Di fronte al negozio Tabacchi, gira a destra sulla strada principale (Via G. Marconi)",
+        "Cammina per 100 metri (circa 1 minuto). Passerai alcuni negozi e caffè.",
+        "Cerca l'insegna di Hostel Brikette sulla tua destra",
+        "Sali le scale per raggiungere l'ingresso principale e la reception"
       ]
     },
     {
       "id": "cancelled",
       "title": "Se i traghetti vengono cancellati",
-      "body": "Se vengono annullati per condizioni meteo o del mare, passa al percorso treno + autobus via Sorrento. È più lungo ma funziona quasi sempre. Usa questo piano B: <link>Centro di Napoli → Positano in treno e poi autobus</link>."
-    }
-  ],
-  "galleries": [
+      "body": "Le cancellazioni dei traghetti avvengono più spesso di quanto si possa pensare, specialmente nel pomeriggio quando il vento si alza. Gli operatori di solito annunciano le cancellazioni 30-60 minuti prima della partenza, ma a volte lo scopri solo al molo. Se il tuo traghetto viene cancellato, hai due opzioni: aspettare la prossima barca (se ce n'è ancora una in programma quel giorno) o prendere il percorso terrestre più lungo via Sorrento. Il percorso terrestre utilizza un traghetto da Capri a Sorrento (questi funzionano in condizioni più difficili) seguito dall'autobus SITA lungo la strada costiera.",
+      "list": [
+        "Controlla con tutti gli operatori a Marina Grande. A volte una compagnia funziona ancora quando altre cancellano.",
+        "Alternativa: Prendi il traghetto Capri-Sorrento (30 min), poi l'autobus SITA per Positano (50 min)",
+        "Tempo totale del percorso terrestre: Circa 2,5 ore incluse le attese",
+        "Info traghetto Sorrento: %LINK:positanoCapriFerry|Orari dei traghetti%",
+        "Dall'ostello: Consigliamo di prenotare il ritorno da Capri non oltre le 17:00 per evitare cancellazioni serali"
+      ]
+    },
     {
-      "items": [
-        {
-          "src": "/img/directions/capri-positano-interno-yellow.jpg",
-          "aspectRatio": "4/3",
-          "preset": "gallery"
-        },
-        {
-          "src": "/img/directions/capri-positano-interno-red.jpg",
-          "aspectRatio": "4/3",
-          "preset": "gallery"
-        },
-        {
-          "src": "/img/directions/capri-positano-tabacchi.png",
-          "aspectRatio": "4/3",
-          "preset": "gallery"
-        }
+      "id": "tips",
+      "title": "Consigli per gli ospiti dell'ostello",
+      "body": "Basato sul feedback di centinaia di ospiti che hanno fatto questo viaggio da Capri a Positano, ecco cosa funziona meglio:",
+      "list": [
+        "Prenota una partenza mattutina da Capri prima delle 14:00. Il mare pomeridiano diventa più mosso e i traghetti vengono cancellati più spesso.",
+        "Porta una giacca leggera. Gli aliscafi hanno un forte condizionamento e ti sembrano freddi dopo una giornata calda a Capri.",
+        "Siediti sul lato destro della barca per le migliori viste delle case colorate di Positano all'arrivo.",
+        "Se soffri facilmente di mal di mare, prendi il farmaco 30 minuti prima dell'imbarco. La traversata può essere agitata.",
+        "Tieni il tuo biglietto del traghetto finché non esci completamente dal molo. Il personale a volte controlla di nuovo i biglietti a Positano.",
+        "Non preoccuparti di perdere l'ultimo traghetto. Il percorso terrestre via Sorrento funziona fino a tarda sera."
+      ]
+    },
+    {
+      "id": "dayTrip",
+      "title": "Combinazione con una gita di un giorno a Capri",
+      "body": "La maggior parte degli ospiti dell'ostello visita Capri come gita di un giorno e torna in traghetto nel tardo pomeriggio. Questo è un ottimo piano, ma richiede una strategia di tempistica per evitare la folla e le cancellazioni. Parti presto da Positano (verso le 09:00) sul traghetto mattutino per Capri, trascorri 5-6 ore esplorando l'isola, poi prendi un traghetto di ritorno verso le 15:00-16:00. Questo ti dà il tempo di vedere i siti principali – Anacapri, Villa San Michele, seggiovia Monte Solaro e la Piazzetta nella città di Capri – senza fretta.",
+      "list": [
+        "Traghetto mattutino da Positano a Capri: Di solito parte alle 09:00-10:00",
+        "A Capri: Prendi l'autobus dal porto di Marina Grande fino ad Anacapri (15 min di viaggio)",
+        "Visita: Villa San Michele (€10 ingresso), seggiovia Monte Solaro (€10 andata, €14 andata e ritorno)",
+        "Pranzo ad Anacapri o nella città di Capri (budget €15-€25 a persona)",
+        "Esplora: Giardini di Augusto, punto panoramico Via Krupp, shopping nella città di Capri",
+        "Torna a Marina Grande entro le 15:30 per il tuo traghetto delle 16:00 verso Positano",
+        "Costo totale gita giornaliera: €50-€70 a persona inclusi traghetti, autobus, seggiovia e pranzo",
+        "Correlato: %LINK:capriDayTrip|Guida completa gita di un giorno a Capri da Positano%"
       ]
     }
   ],
   "faqs": [
     {
-      "question": "How much does the Capri to Positano ferry cost?",
-      "answer": "Ferry tickets cost between €22-€35 per person for a one-way trip in 2026. Prices vary slightly by operator and season – expect to pay closer to €30-€35 during July and August peak season. There are no advance purchase discounts, but booking online guarantees you a spot on busy days."
+      "question": "Quanto costa il traghetto da Capri a Positano?",
+      "answer": "I biglietti del traghetto costano tra €22-€35 a persona per una corsa di sola andata nel 2026. I prezzi variano leggermente per operatore e stagione – aspettati di pagare più vicino a €30-€35 durante l'alta stagione di luglio-agosto. Non ci sono sconti per acquisto anticipato, ma prenotare online garantisce un posto nei giorni affollati."
     },
     {
-      "question": "Can I bring luggage on the Capri-Positano ferry?",
-      "answer": "Yes, you can bring luggage at no extra charge. Backpacks, suitcases, and large bags are all allowed. Store them in the designated luggage area near the entrance or under your seat. Most ferries have limited overhead storage, so keep valuables with you. From the hostel's experience, a full backpack fits comfortably under the seats on all operators."
+      "question": "Posso portare bagagli sul traghetto Capri-Positano?",
+      "answer": "Sì, puoi portare bagagli senza costi extra. Zaini, valigie e borse grandi sono tutti consentiti. Riponili nell'area bagagli designata vicino all'ingresso o sotto il tuo sedile. La maggior parte dei traghetti ha uno spazio di stivaggio sopra limitato, quindi tieni gli oggetti di valore con te. Dall'esperienza dell'ostello, uno zaino pieno si adatta comodamente sotto i sedili di tutti gli operatori."
     },
     {
-      "question": "What happens if my ferry from Capri is cancelled?",
-      "answer": "Ferry cancellations are common in afternoon rough weather. If cancelled, check with all operators at Marina Grande – sometimes one still runs. Otherwise, take the Capri-Sorrento ferry (runs in rougher conditions) then the SITA bus from Sorrento to Positano. Total journey: about 2.5 hours. Your ticket can usually be refunded or used on the next available sailing."
+      "question": "Cosa succede se il mio traghetto da Capri viene cancellato?",
+      "answer": "Le cancellazioni dei traghetti sono comuni nel pomeriggio con maltempo. Se cancellato, controlla con tutti gli operatori a Marina Grande – a volte uno funziona ancora. Altrimenti, prendi il traghetto Capri-Sorrento (funziona in condizioni più difficili) poi l'autobus SITA da Sorrento a Positano. Viaggio totale: circa 2,5 ore. Il tuo biglietto può di solito essere rimborsato o utilizzato sulla prossima traversata disponibile."
     },
     {
-      "question": "Do I need to book the Capri to Positano ferry in advance?",
-      "answer": "It depends on the season. In July and August, morning and early afternoon departures sell out quickly – book online 1-2 days ahead. In shoulder season (April-June, September-October), you can usually buy tickets at the port 30 minutes before departure. From the hostel, we have seen guests miss their preferred crossing in peak season, so advance booking is worth it if you have a tight schedule."
+      "question": "Devo prenotare in anticipo il traghetto Capri-Positano?",
+      "answer": "Dipende dalla stagione. A luglio e agosto, le partenze mattutine e del primo pomeriggio si esauriscono rapidamente – prenota online 1-2 giorni prima. Nella stagione intermedia (aprile-giugno, settembre-ottobre), puoi di solito acquistare i biglietti al porto 30 minuti prima della partenza. Dall'ostello, abbiamo visto ospiti perdere la loro traversata preferita in alta stagione, quindi la prenotazione anticipata vale la pena se hai un programma serrato."
     }
-  ],
-  "lastUpdated": "2026-01-31"
+  ]
 }

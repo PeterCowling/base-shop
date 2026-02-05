@@ -17,6 +17,13 @@
       "title": "How We Process Your Request",
       "body": [
         "We start processing your request as soon as we successfully receive any required deposit, pre-authorisation, or payment using one of our accepted payment methods. Make sure the booking shows the name of the credit-card holder who will pay. If the payer's name is different, email us a short authorisation from the cardholder before we process your request."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Payment_terminal_at_the_Berlin_immigration_office.jpg/960px-Payment_terminal_at_the_Berlin_immigration_office.jpg",
+          "alt": "Card payment terminal keypad and screen.",
+          "caption": "We may take a deposit, run a payment, or place a pre-authorisation to secure your booking — Photo: Wikimedia Commons (CC0)."
+        }
       ]
     },
     {
@@ -52,6 +59,13 @@
       "title": "Your Confirmation Email",
       "body": [
         "Once your payment clears, we'll send a confirmation email to the address you gave us. It lists your booking reference, arrival date, length of stay, and any extras. Read it carefully and tell us immediately if anything looks wrong."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Email_on_Phone_Flat_Icon.svg/960px-Email_on_Phone_Flat_Icon.svg.png",
+          "alt": "Email icon on a phone screen.",
+          "caption": "Your confirmation email is the best place to double-check dates, names, and payment details — Photo: Wikimedia Commons (CC BY-SA 4.0)."
+        }
       ]
     },
     {
@@ -119,6 +133,13 @@
       "title": "Our Safeguarding Hold",
       "body": [
         "When you check in, we may place a security hold equal to one night per guest to cover possible fines, fees, extensions, or damages. If a card hold isn't possible, you can leave the same amount in cash or use another guest's card. If neither option works, we unfortunately have to cancel your booking."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Euro_coins_in_hand.jpg/960px-Euro_coins_in_hand.jpg",
+          "alt": "A hand holding several euro coins.",
+          "caption": "If a card hold isn’t possible at check-in, we may ask for an equivalent cash deposit — Photo: Wikimedia Commons (CC BY-SA 4.0)."
+        }
       ]
     }
   ]

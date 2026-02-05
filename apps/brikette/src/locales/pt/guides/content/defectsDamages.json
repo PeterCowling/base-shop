@@ -1,58 +1,66 @@
 {
   "seo": {
-    "title": "Guia de Defeitos e Danos do Hostel Brikette, Positano",
-    "description": "Saiba como relatar defeitos no quarto, nossa resposta a problemas graves, política de caução, responsabilidade do hóspede e prevenção de percevejos no único hostel de Positano."
+    "title": "Guia de defeitos e danos para o Hostel de Positano",
+    "description": "Compreenda como reportar defeitos do quarto, nossa resposta a problemas graves, políticas de depósito de danos, responsabilidade dos hóspedes e informações essenciais sobre prevenção de percevejos no hostel exclusivo de Positano."
   },
-  "linkLabel": "Guia de Defeitos e Danos do Hostel Brikette, Positano",
+  "linkLabel": "Guia de defeitos e danos para o Hostel de Positano",
   "sections": [
     {
       "id": "reportingDefects",
-      "title": "Relatar Defeitos",
+      "title": "Relatando defeitos",
       "body": [
-        "Se notar qualquer defeito no quarto, informe-nos imediatamente. O aviso rápido nos ajuda a resolver o problema prontamente."
+        "Se você notar qualquer problema ou defeito no seu quarto, informe-nos imediatamente. Sua notificação rápida nos ajuda a abordar e resolver o problema rapidamente.",
+        "A maneira mais rápida de relatar é pessoalmente na recepção. Quando possível, inclua: o que está errado, quando você notou e uma foto rápida ou vídeo curto."
       ]
     },
     {
       "id": "assessingDefects",
-      "title": "Avaliar Defeitos",
+      "title": "Avaliando defeitos",
       "body": [
-        "Após o relato, avaliaremos o defeito e priorizaremos a resposta conforme o impacto em seu conforto e estadia."
+        "Assim que você relatar um defeito, avaliaremos prontamente o problema e priorizaremos nossa resposta com base em quanto afeta significativamente seu conforto e estadia."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/2/27/ISO_7010_W008.svg",
+          "alt": "Sinal de aviso geral ISO 7010 W008 (triângulo amarelo com ponto de exclamação)",
+          "caption": "Priorizamos primeiro a segurança, depois qualquer coisa que afete o sono e o conforto."
+        }
       ]
     },
     {
       "id": "responseToSeriousDefects",
-      "title": "Resposta a Defeitos Graves",
+      "title": "Resposta a defeitos graves",
       "body": [
-        "Se houver um defeito grave que não possa ser reparado de imediato, forneceremos acomodação alternativa. Se o novo quarto for mais barato, devolveremos a diferença. Caso recuse a alternativa, poderá solicitar reembolso proporcional das noites restantes."
+        "Se houver um defeito grave que não possa ser reparado imediatamente, forneceremos acomodação alternativa. Se a alternativa for mais barata que o quarto reservado, reembolsaremos a diferença de preço. Se você decidir não aceitar nossa alternativa, pode solicitar um reembolso proporcional pelas noites restantes de sua estadia."
       ]
     },
     {
       "id": "unreportedDefects",
-      "title": "Defeitos Não Relatados",
+      "title": "Defeitos não relatados",
       "body": [
-        "Se encontrarmos um defeito não relatado em tempo razoável, avaliaremos danos e poderemos aplicar a política de danos."
+        "Se descobrirmos um problema em seu quarto que você não relatou dentro de um prazo razoável, avaliaremos quaisquer danos resultantes e nossa política de danos pode ser aplicada."
       ]
     },
     {
       "id": "damagesPolicy",
-      "title": "Política de Danos",
+      "title": "Política de danos",
       "body": [
-        "Para segurança, podemos pré-autorizar seu cartão ou solicitar caução em dinheiro no check-in. Sem caução, a reserva pode ser cancelada. A caução é reembolsada no check-out, descontando custos de danos, perdas, mão-de-obra ou taxas administrativas. Se exceder, cobramos a diferença. Tarifas de mão-de-obra: Diretor €50/h, Gerente €35/h, Funcionário €25/h."
+        "Para sua segurança e a nossa, podemos pré-autorizar seu cartão de crédito ou solicitar um depósito em dinheiro no check-in para cobrir possíveis danos ou perdas. Se você não puder fornecer um depósito ou pré-autorização, sua reserva pode ser cancelada. Os depósitos são totalmente reembolsáveis no check-out, menos cobranças por quaisquer danos, perdas, mão de obra ou despesas administrativas incorridas. Se essas cobranças excederem seu depósito, você será responsável pelos custos adicionais. As taxas de mão de obra para reparos ou limpeza são cobradas por hora: Diretor (€50/hora), Gerente (€35/hora) e Equipe (€25/hora)."
       ]
     },
     {
       "id": "bedBugsPolicy",
-      "title": "Política de Percevejos",
+      "title": "Política de percevejos",
       "body": [
-        "Gerenciamos percevejos de forma proativa. Se forem encontrados no seu quarto, custos de perda de receita, limpeza e dedetização podem ser cobrados. Informe sinais imediatamente."
+        "Gerenciamos proativamente e abordamos prontamente quaisquer problemas de percevejos. No entanto, se percevejos forem encontrados em seu quarto durante sua estadia, você pode ser responsabilizado pelos custos associados, como receita de reserva perdida, despesas de limpeza e controle de pragas. Por favor, relate imediatamente qualquer sinal de percevejos à nossa equipe."
       ]
     },
     {
       "id": "bedBugsPrevention",
-      "title": "Prevenção de Percevejos",
+      "title": "Prevenção de percevejos",
       "body": [
-        "Para ajudar a prevenir percevejos:",
-        "* Avise no check-in se esteve recentemente em local infestado.\n* Desinfete totalmente seus pertences.\n* Verifique bagagem e roupas antes de entrar no quarto."
+        "Para ajudar a prevenir problemas de percevejos, por favor:",
+        "* Informe-nos no check-in se você ficou recentemente em algum lugar com problemas conhecidos de percevejos.\n* Desinfete completamente seus pertences.\n* Inspecione cuidadosamente sua bagagem e roupas em busca de percevejos antes de entrar no seu quarto."
       ]
     }
   ]

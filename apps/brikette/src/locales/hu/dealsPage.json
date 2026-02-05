@@ -81,15 +81,15 @@
   "perksList": [
     {
       "title": "Akár 25% kedvezmény",
-      "subtitle": "Automatikusan érvényes"
+      "subtitle": "Automatikusan alkalmazva"
     },
     {
       "title": "Ingyenes reggeli",
-      "subtitle": "Naponta"
+      "subtitle": "Naponta tartalmazza"
     },
     {
       "title": "Ingyenes esti ital",
-      "subtitle": "Házi kínálatból"
+      "subtitle": "Házi választék"
     }
   ],
   "expired": {

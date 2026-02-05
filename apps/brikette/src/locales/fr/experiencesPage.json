@@ -7,15 +7,6 @@
     "eyebrow": "Expériences",
     "title": "Couchers de soleil, matins doux et bons plans locaux",
     "description": "Associez votre séjour à des boissons en terrasse, des randonnées sélectionnées et une conciergerie numérique qui vous informe même avant votre arrivée.",
-    "supporting": "Toutes les activités sont ouvertes aux clients enregistrés ; écrivez‑nous si vous voyagez avec des amis logés ailleurs.",
-    "primaryCta": "Réserver votre séjour",
-    "secondaryCta": "Ouvrir la carte du bar",
-    "tertiaryCta": "Contacter la conciergerie numérique",
-    "primaryCtaAria": "Réserver votre séjour à l'Hostel Brikette",
-    "secondaryCtaAria": "Voir la carte du bar de l'Hostel Brikette",
-    "tertiaryCtaAria": "Envoyer un message à la conciergerie numérique de l'Hostel Brikette",
-    "breakfastCta": "Voir le menu du petit-déjeuner",
-    "breakfastCtaAria": "Voir le menu du petit-déjeuner",
     "scrollNudge": "Découvrez les expériences par catégorie"
   },
   "sections": {
@@ -159,11 +150,6 @@
         "title": "Gastronomie",
         "description": "Où bien manger sans trop dépenser.",
         "imageAlt": "Plats italiens frais dans une trattoria locale"
-      },
-      "itinerary": {
-        "title": "Itinéraires",
-        "description": "Plans sur plusieurs jours selon la durée de votre séjour.",
-        "imageAlt": "Vue panoramique sur la côte Amalfitaine depuis les hauteurs"
       },
       "more": {
         "title": "Autres guides",

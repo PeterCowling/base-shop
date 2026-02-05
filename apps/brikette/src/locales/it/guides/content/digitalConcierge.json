@@ -1,32 +1,32 @@
 {
   "seo": {
     "title": "Concierge digitale (consigli + prenotazioni)",
-    "description": "Concierge digitale di Hostel Brikette: consigli rapidi, trasporti e aiuto prenotazioni—quando i piani cambiano."
+    "description": "Usa il concierge digitale di Hostel Brikette per consigli locali veloci, aggiornamenti sui trasporti e aiuto per prenotare esperienze, specialmente quando i piani cambiano."
   },
   "linkLabel": "Concierge digitale",
   "lastUpdated": "2026-02-02T00:00:00.000Z",
   "intro": [
-    "Per un piano che funzioni oggi.",
-    "Scrivi finestra di tempo, budget e priorità; metti la deadline nella prima riga."
+    "Questo è per piani che funzionano oggi, non liste generiche.",
+    "Invia la tua finestra temporale, budget e priorità. Metti la tua scadenza sulla prima riga."
   ],
   "sections": [
     {
       "id": "how-to-access",
-      "title": "Accesso",
+      "title": "Come accedervi",
       "body": [
-        "Chiedi in reception contatto/QR e canale (spesso WhatsApp).",
-        "Primo messaggio: date, partenza, finestra di tempo, budget, priorità."
+        "Chiedi alla reception l'ultimo contatto/QR e il miglior canale (di solito WhatsApp).",
+        "Includi: date, punto di partenza, finestra temporale, budget e priorità #1."
       ]
     },
     {
       "id": "templates",
-      "title": "Template",
+      "title": "Template copia/incolla",
       "body": [
-        "“6 ore, niente auto, (A) bagno + (B) tramonto, budget 40€ a persona. Piano più semplice e piano B se cancellano i traghetti?”",
-        "%LINK:positanoBudget|Positano con budget% + %LINK:terraceSunsets|tramonto in terrazza%.",
-        "%LINK:ferryCancellations|cancellazioni traghetti + meteo%."
+        "\"Abbiamo 6 ore, nessuna auto, vogliamo (A) nuotare + (B) tramonto, budget €40 a persona. Qual è il piano più semplice e il piano B se i traghetti vengono cancellati?\"",
+        "Base di budget: %LINK:positanoBudget|Positano con budget% + %LINK:terraceSunsets|Tramonto dalla terrazza%.",
+        "Se il trasporto è sensibile: %LINK:ferryCancellations|cancellazioni traghetti + meteo%."
       ]
     }
   ],
-  "fallback": "Concierge digitale: consigli rapidi, trasporti e aiuto con prenotazioni."
+  "fallback": "Concierge digitale: consigli veloci, aggiornamenti trasporti e aiuto prenotazioni."
 }

@@ -1,52 +1,53 @@
 {
   "seo": {
-    "title": "アリエンツォ ビーチからホステル ブリケットに戻るバス",
-    "description": "Climb from the shoreline to the road, ride three kilometres to Chiesa Nuova, and finish with a short walk back to Hostel Brikette."
+    "title": "アリエンツォビーチからホステル・ブリケットへのバス",
+    "description": "ビーチから道路まで歩き、ポジターノ方面のバスに乗り、バール・インテルナツィオナーレ/キエーザ・ヌオーヴァで下車し、ホステル・ブリケットまでの短い道順に従ってください。"
   },
-  "linkLabel": "Bus back from Arienzo Beach",
+  "linkLabel": "アリエンツォビーチからホステル・ブリケットへのバス",
   "intro": [
-    "Skip the full stair climb by catching the Amalfi Coast bus from Arienzo back toward Positano.",
-    "Buy your return ticket in town before heading to the beach — there is no vendor at Arienzo, so plan ahead or use the shuttle boat back to Spiaggia Grande."
+    "スキャンして共有",
+    "ヒント: バスの時刻表。時刻表にはポジターノの時刻が含まれていますが、アリエンツォの時刻は含まれていません。アリエンツォのバス停はスポンダの約2〜5分前にあります。",
+    "重要! 帰りのバスチケットをお持ちでない場合は、スポンダまで歩いてそこからバスに乗るか、ポジターノのメインビーチへの水上シャトルを利用することができます。アリエンツォビーチ付近にはチケット販売者がいないため、事前に計画を立てて帰りのチケットを購入することが重要です。",
+    "ヒント: %LINK:arienzoBeachClub|アリエンツォビーチガイド%をご覧ください",
+    "ヒント: %LINK:positanoBeaches|ビーチ概要%をご覧ください"
   ],
   "sections": [
     {
       "id": "walk-to-stop",
-      "title": "Walk up to the bus stop",
+      "title": "バス停まで歩く",
       "body": [
-        "Climb the stairs from the beach to the road and cross carefully to the inland side.",
-        "Look for the blue-and-white SITA sign on the metal pole opposite the entrance path and wait on the lay-by."
+        "ホステルに戻るバスに乗るには、ビーチから階段を上って道路に出て、道路の反対側にあるバス停を探します。バス停の標識は青と白で、金属製のポールに取り付けられています（画像を参照）。バス停でバスが到着するのを待ちます。"
       ]
     },
     {
       "id": "ride-the-bus",
-      "title": "Ride the Amalfi Coast bus",
+      "title": "バスに乗る",
       "body": [
-        "Flag the coach as it approaches and have your validated ticket ready.",
-        "Expect the journey to cover about 3 kilometres (1.9 miles) with a few intermediate stops before Positano."
+        "降りる前にバスが停車する回数は異なります。移動する距離は約3km / 1.9マイルです。"
       ]
     },
     {
       "id": "get-off-bus",
-      "title": "Get off at Bar Internazionale / Chiesa Nuova",
+      "title": "バスを降りる",
       "body": [
-        "Listen for the announcement or watch for the Bar Internazionale tabacchi — the stop sits opposite the hostel.",
-        "Press the stop button early so the driver knows to drop you at Chiesa Nuova."
+        "バール・インテルナツィオナーレ/キエーザ・ヌオーヴァのバス停で降ります。"
       ]
     },
     {
       "id": "walk-to-hostel",
-      "title": "Walk back to Hostel Brikette",
+      "title": "ホステルまで歩く",
       "body": [
-        "Continue in the direction the bus was heading for just over 100 metres (330 feet).",
-        "Take the staircase on your right back up to Hostel Brikette's main entrance."
+        "道順:",
+        "* バスが進んでいた方向に100m / 330フィート少し進みます。",
+        "* 階段を上ってホステルの正面玄関に向かいます。"
       ]
     }
   ],
-  "tipsTitle": "Bus tips",
+  "tipsTitle": "バスのヒント",
   "tips": [
-    "印刷された時刻表にはポジターノの停車駅のみが記載されています。帰りのポジターノ・スポンダの2～5分前にアリエンソが到着する予定です。",
-    "There is no ticket vendor at Arienzo. Buy your return ticket in town, or be ready to walk to Positano Sponda or take the water shuttle back to Spiaggia Grande.",
-    "Read our %LINK:arienzoBeachClub|Arienzo Beach guide% for facilities, shuttles, and planning tips.",
-    "Browse the %LINK:positanoBeaches|Positano beaches overview% to compare other coves and plan future visits."
+    "印刷された時刻表にはポジターノの停留所のみが記載されています。帰りはポジターノ・スポンダの約2〜5分前にアリエンツォに到着することを予想してください。",
+    "アリエンツォビーチ付近にはチケット販売者がいません。町で帰りのチケットを事前に購入するか、スポンダまで歩いてそこから乗車するか、ポジターノのメインビーチへの水上シャトルを利用してください。",
+    "施設、シャトル、計画のヒントについては、%LINK:arienzoBeachClub|アリエンツォビーチガイド%をお読みください。",
+    "他の入り江を比較して今後の訪問を計画するには、%LINK:positanoBeaches|ビーチ概要%をご覧ください。"
   ]
 }

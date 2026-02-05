@@ -7,15 +7,6 @@
     "eyebrow": "Upplevelser",
     "title": "Upplevelser på Hostel Brikette",
     "description": "Njut av en spritz på terrassen, följ våra favoritvandringar och få direkt tips via vår digitala concierge.",
-    "supporting": "Allt är öppet för registrerade gäster; skriv till oss om du reser med vänner som bor någon annanstans.",
-    "primaryCta": "Boka din vistelse",
-    "secondaryCta": "Öppna barmenyn",
-    "tertiaryCta": "Skicka ett meddelande till den digitala conciergetjänsten",
-    "primaryCtaAria": "Boka din vistelse på Hostel Brikette",
-    "secondaryCtaAria": "Visa Hostel Brikettes barmeny",
-    "tertiaryCtaAria": "Skicka ett meddelande till Hostel Brikettes digitala conciergetjänst",
-    "breakfastCta": "Se frukostmenyn",
-    "breakfastCtaAria": "Se frukostmenyn",
     "scrollNudge": "Läs mer"
   },
   "sections": {
@@ -104,9 +95,6 @@
       }
     },
     "directionLinks": {
-      "walkFromHostel": "Promenad från hostelet",
-      "busFromHostel": "Med buss",
-      "returnWalk": "Tillbakaväg",
       "capriDayTrip": {
         "positanoCapriFerry": "Färja Positano → Capri",
         "capriPositanoFerry": "Färja Capri → Positano"
@@ -141,52 +129,27 @@
       "beaches": {
         "title": "Stränder och bad",
         "description": "Badplatser, strandklubbguider och vägbeskrivningar till stranden.",
-        "imageAlt": "Klippvik med turkost vatten längs Amalfikusten",
-        "guides": {
-          "heading": "Strandguider",
-          "description": "Välj rätt strandavsnitt och planera din dag."
-        },
-        "directions": {
-          "heading": "Vägbeskrivning till stranden",
-          "description": "Steg-för-steg-vägbeskrivning från Hostel Brikette ner till stranden."
-        }
+        "imageAlt": "Klippvik med turkost vatten längs Amalfikusten"
       },
       "boat": {
         "title": "Båtresor och färjor",
         "description": "Båtturer, färjerutter och idéer för en dag på havet.",
-        "imageAlt": "Solnedgång över havet sedd från Positano",
-        "guides": {
-          "heading": "Båtguider",
-          "description": "Turer, hyra och färjetidtabeller."
-        }
+        "imageAlt": "Solnedgång över havet sedd från Positano"
       },
       "cuisine": {
         "title": "Mat och lokala specialiteter",
         "description": "Restauranger, marknader och kulinariska upplevelser.",
-        "imageAlt": "Traditionell italiensk måltid vid havet",
-        "guides": {
-          "heading": "Matguider",
-          "description": "Den bästa lokala maten och specialiteterna."
-        }
+        "imageAlt": "Traditionell italiensk måltid vid havet"
       },
       "day-trip": {
         "title": "Dagsutflykter",
         "description": "Endagsutflykter från Positano — Capri, Ravello, Pompeji och mer.",
-        "imageAlt": "Panoramautsikt över Amalfikusten från balkong i Ravello",
-        "guides": {
-          "heading": "Utflyktsguider",
-          "description": "Utflykter värda en dag."
-        }
+        "imageAlt": "Panoramautsikt över Amalfikusten från balkong i Ravello"
       },
       "hiking": {
         "title": "Vandringar och leder",
         "description": "Vandringsrutter från enkla promenader till heldagsturer.",
         "imageAlt": "Vandrare på Gudarnas stig med kustutsikt"
-      },
-      "itinerary": {
-        "title": "Resplaner",
-        "description": "Flerdagarsplaner för olika reslängder.",
-        "imageAlt": "Pittoresk utsikt över Amalfikusten från höjden"
       },
       "more": {
         "title": "Fler guider",

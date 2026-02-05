@@ -79,9 +79,18 @@
   "perksGuarantee": "Mỗi đặt phòng trực tiếp trên trang web của chúng tôi sẽ tự động kích hoạt những quyền lợi độc quyền này.",
   "perksIntroLink": "Xem tất cả quyền lợi",
   "perksList": [
-    "Giảm tới 25% so với giá thông thường khi áp dụng mã giảm giá",
-    "Bữa sáng miễn phí",
-    "Đồ uống buổi tối miễn phí"
+    {
+      "title": "Giảm tới 25% so với giá thông thường khi áp dụng mã giảm giá",
+      "subtitle": "Tự động áp dụng"
+    },
+    {
+      "title": "Bữa sáng miễn phí",
+      "subtitle": "Bao gồm hàng ngày"
+    },
+    {
+      "title": "Đồ uống buổi tối miễn phí",
+      "subtitle": "Lựa chọn của nhà"
+    }
   ],
   "expired": {
     "message": "Ưu đãi này đã kết thúc."
@@ -99,7 +108,7 @@
     "bookingWindow": "Áp dụng cho đặt phòng thực hiện từ {{from}} đến {{to}}.",
     "minAdvance": "Đặt trước ít nhất {{days}} ngày.",
     "minAdvancePrefix": "Đặt trước ít nhất",
-    "minAdvanceSuffix": "",
+    "minAdvanceSuffix": "in advance.",
     "los": "Tối thiểu {{min}} đêm, tối đa {{max}} đêm.",
     "directOnly": "Chỉ áp dụng cho đặt trực tiếp (website).",
     "nonRefundable": "Chỉ áp dụng cho giá không hoàn tiền.",

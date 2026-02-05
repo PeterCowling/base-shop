@@ -4,17 +4,17 @@
     "description": "Các chỉ dẫn thực tế để đến Hostel Brikette từ Amalfi, Capri, Naples, Salerno, Ravello, Rome và Sorrento, kèm ưu nhược điểm của từng phương tiện."
   },
   "header": {
-    "eyebrow": "Hostel Brikette",
+    "eyebrow": "Nhà nghỉ Brikette",
     "title": "Danh sách hướng dẫn di chuyển",
     "description": "Sử dụng hướng dẫn này để đi và về giữa điểm đến của bạn trên Bờ biển Amalfi và Hostel Brikette.",
-    "heroAlt": "Stone steps framed by bougainvillea leading to Hostel Brikette's entrance",
+    "heroAlt": "Bậc đá được bao quanh bởi hoa giấy dẫn tới lối vào Hostel Brikette",
     "heroAltFallback": "Bậc đá được bao phủ bởi hoa giấy",
-    "transportLabel": "Transport coverage",
+    "transportLabel": "Phạm vi giao thông",
     "stats": {
-      "routes": "Door-to-door routes",
-      "destinations": "Local areas covered",
-      "transport": "Transport types",
-      "experienceRoutes": "Experience routes"
+      "routes": "Tuyến đường từ điểm đến điểm",
+      "destinations": "Khu vực địa phương được bao phủ",
+      "transport": "Loại phương tiện",
+      "experienceRoutes": "Tuyến trải nghiệm"
     }
   },
   "routePicker": {
@@ -58,7 +58,7 @@
     }
   },
   "preview": {
-    "notPublished": "Preview only – this page is not published"
+    "notPublished": "Chỉ xem trước – trang này chưa được xuất bản"
   },
   "jumpTo": {
     "label": "Đi tới",
@@ -68,10 +68,10 @@
   },
   "intro": {
     "taxi": "Để gọi taxi, bạn có thể dùng WhatsApp liên hệ số sau bằng tiếng Anh hoặc tiếng Ý: <Strong>{{contact}}</Strong>.",
-    "shuttle": "Prefer a shuttle? Sea Horse Car Service runs shared transfers. Reserve a seat via their <Link>official shuttle page</Link>.",
+    "shuttle": "Thích dùng shuttle? Sea Horse Car Service cung cấp dịch vụ xe chung. Đặt chỗ qua <Link>trang shuttle chính thức</Link> của họ.",
     "taxiContact": "+39 379 125 6222",
-    "taxiEyebrow": "Hostel Brikette by Taxi",
-    "shuttleEyebrow": "Hostel Brikette by Shuttle",
+    "taxiEyebrow": "Nhà nghỉ Brikette bằng taxi",
+    "shuttleEyebrow": "Nhà nghỉ Brikette bằng xe đưa đón",
     "whatsappTemplate": "Xin chào! Tôi đang ở Hostel Brikette. Tôi muốn đặt taxi đi/đến Positano. Giờ đến của tôi là: ____",
     "emailSubject": "Hỗ trợ khi đến",
     "emailBody": "Xin chào đội ngũ Hostel Brikette — tôi đến hôm nay và cần hỗ trợ để chọn cách đi tốt nhất. Giờ đến dự kiến của tôi là: ____",
@@ -86,31 +86,65 @@
     "helpBestFor": "Phù hợp nhất: trễ giờ · hủy phà · check-in muộn"
   },
   "destinations": {
-    "filterLabel": "Place",
-    "filterAll": "All places",
+    "filterLabel": "Địa điểm",
+    "filterAll": "Tất cả địa điểm",
     "sections": [
       {
         "name": "Trong Positano",
         "description": "Bạn đã đến Positano nhưng chưa biết cách tới hostel? Hãy xem những hướng dẫn này:",
         "image": {
           "src": "/img/positano-panorama.avif",
-          "alt": "Toàn cảnh những ngôi nhà bám vách đá ở Positano"
+          "alt": "Toàn cảnh những ngôi nhà bám vách đá ở Positano",
+          "caption": "Positano có nhiều dốc — lưu ý cầu thang, đặc biệt khi mang hành lý."
         },
         "links": [
           {
             "label": "Chiesa Nuova/Bar Internazionale đến Hostel Brikette",
             "href": "chiesa-nuova-bar-internazionale-to-hostel-brikette",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "5–10 phút",
+              "cost": "Miễn phí",
+              "walking": "~140 m + ~30 bậc",
+              "luggageFriendly": 2,
+              "seasonality": "Quanh năm"
+            }
           },
           {
             "label": "Bến phà đến Hostel Brikette",
             "href": "ferry-dock-to-hostel-brikette-with-luggage",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "20–45 phút (tùy đội khuân vác/xe buýt Interno)",
+              "cost": "€2–€6/người (+ khuân vác tùy chọn)",
+              "walking": "Cầu thang cảng; khuân vác giúp giảm xách",
+              "luggageFriendly": 1,
+              "seasonality": "Quanh năm"
+            }
+          },
+          {
+            "label": "Hostel Brikette đến bến phà",
+            "href": "hostel-brikette-to-ferry-dock-with-luggage",
+            "internal": true,
+            "facts": {
+              "duration": "20–30 phút (lâu hơn với hành lý)",
+              "cost": "Miễn phí",
+              "walking": "Cầu thang + sang đường",
+              "luggageFriendly": 1,
+              "seasonality": "Quanh năm"
+            }
           },
           {
             "label": "Hostel Brikette đến Chiesa Nuova/Bar Internazionale",
             "href": "hostel-brikette-to-chiesa-nuova-bar-internazionale",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "20–30 phút (lâu hơn nếu có hành lý)",
+              "cost": "Miễn phí",
+              "walking": "Cầu thang + băng qua đường",
+              "luggageFriendly": 1,
+              "seasonality": "Quanh năm"
+            }
           }
         ]
       },
@@ -118,28 +152,57 @@
         "name": "Amalfi",
         "image": {
           "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
-          "alt": "SITA Sud bus stop in Amalfi for coastal routes"
+          "alt": "Điểm dừng xe buýt SITA Sud ở Amalfi cho các tuyến ven biển",
+          "caption": "Tìm xe buýt SITA tại bến xe buýt ở Amalfi."
         },
         "links": [
           {
             "label": "Từ Amalfi đến Positano bằng xe buýt",
             "href": "amalfi-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "45–90 phút (tùy giao thông)",
+              "cost": "€2–€4/người",
+              "walking": "Cầu thang ngắn ở cuối (~30 bậc)",
+              "luggageFriendly": 2,
+              "seasonality": "Quanh năm"
+            }
           },
           {
             "label": "Từ Positano đến Amalfi bằng xe buýt",
             "href": "positano-amalfi-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "45–90 phút (tùy giao thông)",
+              "cost": "€2–€4/người",
+              "walking": "Cầu thang ngắn ở đầu/cuối (~30 bậc)",
+              "luggageFriendly": 2,
+              "seasonality": "Quanh năm"
+            }
           },
           {
-            "label": "Amalfi to Positano by Ferry",
+            "label": "Amalfi đến Positano bằng phà",
             "href": "amalfi-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "Hành trình 25–45 phút + di chuyển cảng",
+              "cost": "€10–€20/người",
+              "walking": "Cầu thang tới/từ cảng",
+              "luggageFriendly": 1,
+              "seasonality": "Theo mùa (Tháng 4–10)"
+            }
           },
           {
-            "label": "Positano to Amalfi by Ferry",
+            "label": "Positano đến Amalfi bằng phà",
             "href": "positano-amalfi-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "Hành trình 25–45 phút + di chuyển cảng",
+              "cost": "€10–€20/người",
+              "walking": "Cầu thang tới/từ cảng",
+              "luggageFriendly": 1,
+              "seasonality": "Theo mùa (Tháng 4–10)"
+            }
           }
         ]
       },
@@ -147,18 +210,33 @@
         "name": "Capri",
         "image": {
           "src": "/img/directions/positano-capri-ferry-img09.jpg",
-          "alt": "Ferry docking along Capri's Marina Grande"
+          "alt": "Phà cập bến tại Marina Grande của Capri",
+          "caption": "Phà đến Capri khởi hành từ Marina Grande."
         },
         "links": [
           {
             "label": "Từ Capri đến Positano bằng phà",
             "href": "capri-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "Hành trình 30–60 phút + di chuyển cảng",
+              "cost": "€20–€35/người",
+              "walking": "Đi vào cảng; có thể có cầu thang ở Positano",
+              "luggageFriendly": 1,
+              "seasonality": "Theo mùa (Tháng 4–10)"
+            }
           },
           {
             "label": "Từ Positano đến Capri bằng phà",
             "href": "positano-capri-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "Hành trình 30–60 phút + di chuyển cảng",
+              "cost": "€20–€35/người",
+              "walking": "Đi vào cảng; có thể có cầu thang ở Positano",
+              "luggageFriendly": 1,
+              "seasonality": "Theo mùa (Tháng 4–10)"
+            }
           }
         ]
       },
@@ -166,33 +244,69 @@
         "name": "Trung tâm Naples",
         "image": {
           "src": "/img/tabacchi.webp",
-          "alt": "Streetfront tabacchi shop in central Naples"
+          "alt": "Cửa hàng tabacchi ở trung tâm Naples",
+          "caption": "Mua vé xe buýt tại tabacchi/quầy báo trước khi lên xe."
         },
         "links": [
           {
             "label": "Từ trung tâm Naples đến Positano bằng tàu và xe buýt",
             "href": "naples-center-train-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2–3,5 giờ (bao gồm chuyển tiếp)",
+              "cost": "€15–€25/người",
+              "walking": "Ít; chuyển tiếp ở Sorrento",
+              "luggageFriendly": 2,
+              "seasonality": "Quanh năm"
+            }
           },
           {
             "label": "Từ Positano đến trung tâm Naples bằng xe buýt rồi tàu",
             "href": "positano-naples-center-bus-train",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2–3,5 giờ (bao gồm chuyển tiếp)",
+              "cost": "€15–€25/người",
+              "walking": "Cầu thang ngắn ở đầu/cuối (~30 bậc)",
+              "luggageFriendly": 2,
+              "seasonality": "Quanh năm"
+            }
           },
           {
-            "label": "Naples Center to Positano by Ferry",
+            "label": "Trung tâm Naples đến Positano bằng phà",
             "href": "naples-center-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "3–4,5 giờ (bao gồm di chuyển cảng)",
+              "cost": "€25–€45/người",
+              "walking": "Di chuyển tới cảng + cầu thang ở Positano",
+              "luggageFriendly": 1,
+              "seasonality": "Theo mùa (Tháng 4–10)"
+            }
           },
           {
-            "label": "Positano to Naples Center by Ferry",
+            "label": "Positano đến trung tâm Naples bằng phà",
             "href": "positano-naples-center-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "3–4,5 giờ (bao gồm di chuyển cảng)",
+              "cost": "€25–€45/người",
+              "walking": "Cầu thang ở Positano + di chuyển từ cảng",
+              "luggageFriendly": 1,
+              "seasonality": "Theo mùa (Tháng 4–10)"
+            }
           },
           {
-            "label": "Positano to Naples Directions by Ferry",
+            "label": "Hướng dẫn Positano đến Naples bằng phà",
             "href": "positano-to-naples-directions-by-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "3–4,5 giờ (bao gồm di chuyển cảng)",
+              "cost": "€25–€45/người",
+              "walking": "Cầu thang ở Positano + di chuyển từ cảng",
+              "luggageFriendly": 1,
+              "seasonality": "Theo mùa (Tháng 4–10)"
+            }
           }
         ]
       },
@@ -200,18 +314,33 @@
         "name": "Sân bay Naples",
         "image": {
           "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
-          "alt": "Curreri shuttle loading area outside Naples International Airport"
+          "alt": "Khu vực đón xe shuttle Curreri bên ngoài sân bay quốc tế Naples",
+          "caption": "Ga tàu Sorrento, nơi bạn sẽ đổi xe buýt"
         },
         "links": [
           {
             "label": "Từ Positano đến sân bay Naples bằng xe buýt",
             "href": "positano-naples-airport-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2–3,5 giờ (bao gồm đổi xe ở Sorrento)",
+              "cost": "€15–€25/người",
+              "walking": "Cầu thang ngắn ở đầu/cuối (~30 bậc)",
+              "luggageFriendly": 2,
+              "seasonality": "Quanh năm"
+            }
           },
           {
             "label": "Từ sân bay Naples đến Positano bằng xe buýt",
             "href": "naples-airport-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2–3,5 giờ (bao gồm đổi xe ở Sorrento)",
+              "cost": "€15–€25/người",
+              "walking": "Cầu thang ngắn ở cuối (~30 bậc)",
+              "luggageFriendly": 2,
+              "seasonality": "Quanh năm"
+            }
           }
         ]
       },
@@ -219,28 +348,57 @@
         "name": "Salerno",
         "image": {
           "src": "/img/hostel-coastal-horizon.webp",
-          "alt": "View across the Amalfi Coast towards Salerno"
+          "alt": "Tầm nhìn bao quát Bờ biển Amalfi về phía Salerno",
+          "caption": "Salerno kết nối bằng tàu + xe buýt, hoặc phà theo mùa."
         },
         "links": [
           {
             "label": "Từ Salerno đến Positano bằng xe buýt",
             "href": "salerno-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2,5–4 giờ (qua Amalfi)",
+              "cost": "€6–€12/người",
+              "walking": "Ít; đổi xe ở Amalfi",
+              "luggageFriendly": 2,
+              "seasonality": "Quanh năm"
+            }
           },
           {
             "label": "Từ Positano đến Salerno bằng xe buýt",
             "href": "positano-salerno-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2,5–4 giờ (qua Amalfi)",
+              "cost": "€6–€12/người",
+              "walking": "Cầu thang ngắn ở đầu/cuối (~30 bậc)",
+              "luggageFriendly": 2,
+              "seasonality": "Quanh năm"
+            }
           },
           {
-            "label": "Salerno to Positano by Ferry",
+            "label": "Salerno đến Positano bằng phà",
             "href": "salerno-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "Hành trình 1–2 giờ + di chuyển cảng",
+              "cost": "€15–€30/người",
+              "walking": "Cầu thang cảng; nên dùng khuân vác",
+              "luggageFriendly": 1,
+              "seasonality": "Theo mùa (Tháng 4–10)"
+            }
           },
           {
-            "label": "Positano to Salerno by Ferry",
+            "label": "Positano đến Salerno bằng phà",
             "href": "positano-salerno-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "Hành trình 1–2 giờ + di chuyển cảng",
+              "cost": "€15–€30/người",
+              "walking": "Cầu thang cảng; nên dùng khuân vác",
+              "luggageFriendly": 1,
+              "seasonality": "Theo mùa (Tháng 4–10)"
+            }
           }
         ]
       },
@@ -248,23 +406,45 @@
         "name": "Ravello",
         "image": {
           "src": "/img/hostel-communal-terrace-lush-view.webp",
-          "alt": "Clifftop gardens overlooking the coastline near Ravello"
+          "alt": "Vườn trên vách đá nhìn ra bờ biển gần Ravello",
+          "caption": "Ravello đến được qua Amalfi bằng xe buýt."
         },
         "links": [
           {
-            "label": "Ravello to Positano by Bus",
+            "label": "Ravello đến Positano bằng xe buýt",
             "href": "ravello-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1,5–2,5 giờ (qua Amalfi)",
+              "cost": "€4–€8/người",
+              "walking": "Ít; chuyển tiếp ở Amalfi",
+              "luggageFriendly": 2,
+              "seasonality": "Quanh năm"
+            }
           },
           {
-            "label": "Positano to Ravello by Bus",
+            "label": "Positano đến Ravello bằng xe buýt",
             "href": "positano-ravello-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1,5–2,5 giờ (qua Amalfi)",
+              "cost": "€4–€8/người",
+              "walking": "Cầu thang ngắn ở đầu/cuối (~30 bậc)",
+              "luggageFriendly": 2,
+              "seasonality": "Quanh năm"
+            }
           },
           {
-            "label": "Positano to Ravello by Ferry then Bus",
+            "label": "Positano đến Ravello bằng phà rồi xe buýt",
             "href": "positano-ravello-ferry-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2–3 giờ (phà + xe buýt)",
+              "cost": "€15–€30/người",
+              "walking": "Cầu thang cảng + kết nối xe buýt",
+              "luggageFriendly": 1,
+              "seasonality": "Theo mùa (Tháng 4–10)"
+            }
           }
         ]
       }
@@ -449,159 +629,187 @@
       {
         "label": "Từ Sorrento đến Positano bằng xe buýt",
         "href": "sorrento-positano-bus",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "45–75 phút",
+          "cost": "€2–€4/người",
+          "walking": "Cầu thang ngắn ở cuối (~30 bậc)",
+          "luggageFriendly": 2,
+          "seasonality": "Quanh năm"
+        }
       },
       {
         "label": "Từ Positano đến Sorrento bằng xe buýt",
         "href": "positano-sorrento-bus",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "45–75 phút",
+          "cost": "€2–€4/người",
+          "walking": "Cầu thang ngắn ở đầu/cuối (~30 bậc)",
+          "luggageFriendly": 2,
+          "seasonality": "Quanh năm"
+        }
       },
       {
         "label": "Từ Sorrento đến Positano bằng phà",
         "href": "sorrento-positano-ferry",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "Hành trình 30–45 phút + cầu thang cảng",
+          "cost": "€15–€25/người",
+          "walking": "Cầu thang cảng; nên dùng khuân vác",
+          "luggageFriendly": 1,
+          "seasonality": "Theo mùa (Tháng 4–10)"
+        }
       },
       {
         "label": "Từ Positano đến Sorrento bằng phà",
         "href": "positano-sorrento-ferry",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "Hành trình 30–45 phút + cầu thang cảng",
+          "cost": "€15–€25/người",
+          "walking": "Cầu thang cảng; nên dùng khuân vác",
+          "luggageFriendly": 1,
+          "seasonality": "Theo mùa (Tháng 4–10)"
+        }
       }
     ]
   },
   "filters": {
-    "title": "Filter routes",
+    "title": "Lọc tuyến đường",
     "resultsCount": "Kết quả: {{count}} tuyến",
     "editLabel": "Chỉnh sửa bộ lọc",
     "shareHint": "Bộ lọc được phản ánh trong URL để dễ chia sẻ.",
-    "transportLabel": "Transport type",
-    "transportAll": "All",
+    "transportLabel": "Loại phương tiện",
+    "transportAll": "Tất cả",
     "transportModes": {
-      "bus": "Bus",
-      "ferry": "Ferry",
-      "train": "Train",
-      "car": "Car / Taxi",
-      "walk": "Walk"
+      "bus": "Xe buýt",
+      "ferry": "Phà",
+      "train": "Tàu",
+      "car": "Ô tô / Taxi",
+      "walk": "Đi bộ"
     },
-    "directionLabel": "Direction",
-    "directionAll": "All",
-    "directionTo": "To Positano",
-    "directionFrom": "From Positano",
-    "helper": "Use these filters to tailor the itineraries to your journey.",
-    "activeLabel": "Active filters",
-    "clearLabel": "Clear filters",
-    "noResults": "No routes match these filters."
+    "directionLabel": "Hướng",
+    "directionAll": "Tất cả",
+    "directionTo": "Tới Positano",
+    "directionFrom": "Từ Positano",
+    "helper": "Dùng bộ lọc này để điều chỉnh hành trình theo chuyến đi của bạn.",
+    "activeLabel": "Bộ lọc đang dùng",
+    "clearLabel": "Xóa bộ lọc",
+    "noResults": "Không có tuyến nào khớp với bộ lọc này."
   },
   "romePlanner": {
-    "title": "Rome ↔ Positano: How to Travel",
-    "subtitle": "Pick a direction, set your preferences, and we’ll suggest a route.",
-    "directionPrompt": "Pick a direction",
+    "title": "Rome ↔ Positano: Cách di chuyển",
+    "subtitle": "Chọn hướng, đặt ưu tiên, chúng tôi sẽ gợi ý tuyến đường.",
+    "directionPrompt": "Chọn hướng",
     "tabs": {
-      "from": "From Rome → Hostel",
-      "to": "From Hostel → Rome"
+      "from": "Từ Rome → Hostel",
+      "to": "Từ Hostel → Rome"
     },
     "reco": {
-      "title": "Best match for your picks",
-      "why": "Why this route?"
+      "title": "Phù hợp nhất với lựa chọn của bạn",
+      "why": "Tại sao chọn tuyến này?"
     },
-    "otherMatches": "Other matches for your pick",
-    "disclaimer": "Always check operators for latest schedules and availability. Crowding and journey times vary by season.",
+    "otherMatches": "Các lựa chọn khác phù hợp",
+    "disclaimer": "Luôn kiểm tra với nhà vận hành về lịch trình và chỗ trống mới nhất. Mức độ đông đúc và thời gian di chuyển thay đổi theo mùa.",
     "pref": {
-      "prompt": "Any preference?",
+      "prompt": "Có ưu tiên gì không?",
       "cheapest": {
-        "label": "Cheapest",
-        "description": "Prioritize lower cost over comfort."
+        "label": "Rẻ nhất",
+        "description": "Ưu tiên chi phí thấp hơn tiện nghi."
       },
       "scenic": {
-        "label": "Scenic",
-        "description": "Prioritize sea views (ferries)."
+        "label": "Phong cảnh",
+        "description": "Ưu tiên tầm nhìn ra biển (phà)."
       },
-      "heavyPrefix": "I have",
+      "heavyPrefix": "Tôi có",
       "heavy_luggage": {
-        "label": "Heavy luggage",
-        "description": "Minimize uphill walks and stairs with bags."
+        "label": "Hành lý nặng",
+        "description": "Giảm thiểu đi bộ lên dốc và cầu thang khi mang hành lý."
       }
     },
     "route": {
       "naples": {
         "busTrain": {
-          "title": "Via Naples — Bus + Train",
+          "title": "Qua Naples — Xe buýt + Tàu",
           "summary": {
-            "from": "Bus to Sorrento → train to Naples → train to Rome.",
-            "to": "Train to Naples → train to Sorrento → bus to Positano."
+            "from": "Xe buýt tới Sorrento → tàu tới Naples → tàu tới Rome.",
+            "to": "Tàu tới Naples → tàu tới Sorrento → xe buýt tới Positano."
           },
           "steps": {
             "from": {
-              "1": "Bus Positano → Sorrento (drops at Sorrento train station).",
-              "2": "Local train Sorrento → Naples (arrive at Naples train station).",
-              "3": "Train Naples → Rome."
+              "1": "Xe buýt Positano → Sorrento (dừng tại ga tàu Sorrento).",
+              "2": "Tàu địa phương Sorrento → Naples (đến ga tàu Naples).",
+              "3": "Tàu Naples → Rome."
             },
             "to": {
-              "1": "Train Rome → Naples (arrive at Naples train station).",
-              "2": "Local train Naples → Sorrento (arrive at Sorrento bus station).",
-              "3": "Bus Sorrento → Positano (stop close to the hostel)."
+              "1": "Tàu Rome → Naples (đến ga tàu Naples).",
+              "2": "Tàu địa phương Naples → Sorrento (đến bến xe buýt Sorrento).",
+              "3": "Xe buýt Sorrento → Positano (dừng gần hostel)."
             }
           }
         },
         "ferry": {
-          "title": "Via Naples — Ferry",
+          "title": "Qua Naples — Phà",
           "summary": {
-            "from": "Positano port → ferry to Naples → tram to station → train to Rome.",
-            "to": "Train to Naples → tram to port → ferry to Positano."
+            "from": "Cảng Positano → phà tới Naples → tàu điện tới ga → tàu tới Rome.",
+            "to": "Tàu tới Naples → tàu điện tới cảng → phà tới Positano."
           },
           "steps": {
             "from": {
-              "1": "Positano → port (porters can help with bags).",
-              "2": "Ferry Positano → Naples.",
-              "3": "Tram Naples port → train station.",
-              "4": "Train Naples → Rome."
+              "1": "Positano → cảng (khuân vác có thể giúp với hành lý).",
+              "2": "Phà Positano → Naples.",
+              "3": "Tàu điện cảng Naples → ga tàu.",
+              "4": "Tàu Naples → Rome."
             },
             "to": {
-              "1": "Train Rome → Naples (arrive at Naples station).",
-              "2": "Tram Naples station → port.",
-              "3": "Ferry Naples → Positano.",
-              "4": "From Positano port → hostel (journey can be laborious; porters/Interno Bus can help)."
+              "1": "Tàu Rome → Naples (đến ga Naples).",
+              "2": "Tàu điện ga Naples → cảng.",
+              "3": "Phà Naples → Positano.",
+              "4": "Từ cảng Positano → hostel (chặng này có thể vất vả; khuân vác/xe buýt Interno có thể giúp)."
             }
           }
         }
       },
       "salerno": {
         "bus": {
-          "title": "Via Salerno — Bus (to/from Salerno)",
+          "title": "Qua Salerno — Xe buýt (tới/từ Salerno)",
           "summary": {
-            "from": "Bus Positano → Amalfi (change) → Salerno → train to Rome.",
-            "to": "Train to Salerno → bus to Amalfi (change) → Positano."
+            "from": "Xe buýt Positano → Amalfi (đổi xe) → Salerno → tàu tới Rome.",
+            "to": "Tàu tới Salerno → xe buýt tới Amalfi (đổi xe) → Positano."
           },
           "steps": {
             "from": {
-              "1": "Bus Positano → Amalfi (change buses in Amalfi).",
-              "2": "Bus Amalfi → Salerno (drops at Salerno train station).",
-              "3": "Train Salerno → Rome."
+              "1": "Xe buýt Positano → Amalfi (đổi xe ở Amalfi).",
+              "2": "Xe buýt Amalfi → Salerno (dừng tại ga tàu Salerno).",
+              "3": "Tàu Salerno → Rome."
             },
             "to": {
-              "1": "Train Rome → Salerno (arrive at Salerno train station).",
-              "2": "Bus Salerno → Amalfi (change buses in Amalfi).",
-              "3": "Bus Amalfi → Positano (short walk to hostel)."
+              "1": "Tàu Rome → Salerno (đến ga tàu Salerno).",
+              "2": "Xe buýt Salerno → Amalfi (đổi xe ở Amalfi).",
+              "3": "Xe buýt Amalfi → Positano (đi bộ ngắn tới hostel)."
             }
           }
         },
         "ferry": {
-          "title": "Via Salerno — Ferry",
+          "title": "Qua Salerno — Phà",
           "summary": {
-            "from": "Positano port → ferry to Salerno → short walk to station → train to Rome.",
-            "to": "Train to Salerno → short walk to port → ferry to Positano."
+            "from": "Cảng Positano → phà tới Salerno → đi bộ ngắn tới ga → tàu tới Rome.",
+            "to": "Tàu tới Salerno → đi bộ ngắn tới cảng → phà tới Positano."
           },
           "steps": {
             "from": {
-              "1": "Positano → port (porters can help with bags).",
-              "2": "Ferry Positano → Salerno.",
-              "3": "Walk Salerno port → train station.",
-              "4": "Train Salerno → Rome."
+              "1": "Positano → cảng (khuân vác có thể giúp với hành lý).",
+              "2": "Phà Positano → Salerno.",
+              "3": "Đi bộ từ cảng Salerno → ga tàu.",
+              "4": "Tàu Salerno → Rome."
             },
             "to": {
-              "1": "Train Rome → Salerno (arrive at Salerno station).",
-              "2": "Walk to Salerno port.",
-              "3": "Ferry Salerno → Positano.",
-              "4": "From Positano port → hostel (journey can be laborious; porters/Interno Bus can help)."
+              "1": "Tàu Rome → Salerno (đến ga Salerno).",
+              "2": "Đi bộ tới cảng Salerno.",
+              "3": "Phà Salerno → Positano.",
+              "4": "Từ cảng Positano → hostel (chặng này có thể vất vả; khuân vác/xe buýt Interno có thể giúp)."
             }
           }
         }
@@ -609,86 +817,86 @@
     },
     "note": {
       "salerno": {
-        "walkPortStation": "Walk between Salerno’s port and train station (short, straightforward)."
+        "walkPortStation": "Đi bộ giữa cảng Salerno và ga tàu (ngắn, đơn giản)."
       },
       "naples": {
-        "tramPortStation": "Take the tram between Naples port and the train station."
+        "tramPortStation": "Đi tàu điện giữa cảng Naples và ga tàu."
       }
     },
     "pro": {
-      "posBusNearHostel": "Positano bus stop close to the hostel.",
-      "busDropsSorrentoStation": "Bus drops you right at the train station in Sorrento.",
-      "cheapBusTrain": "Bus and train are both very cheap.",
-      "arriveNaplesStation": "You arrive right at the train station in Naples.",
-      "easySwapNaples": "Swapping trains in Naples is relatively easy.",
-      "trainDropsSorrentoBusStation": "Train drops you right at the bus station in Sorrento.",
+      "posBusNearHostel": "Điểm dừng xe buýt Positano gần hostel.",
+      "busDropsSorrentoStation": "Xe buýt dừng ngay tại ga tàu Sorrento.",
+      "cheapBusTrain": "Xe buýt và tàu đều rất rẻ.",
+      "arriveNaplesStation": "Bạn đến ngay ga tàu Naples.",
+      "easySwapNaples": "Chuyển tàu ở Naples tương đối dễ.",
+      "trainDropsSorrentoBusStation": "Tàu dừng ngay tại bến xe buýt Sorrento.",
       "salerno": {
-        "busStopNearHostel": "The Positano bus stop is just a short walk from the hostel."
+        "busStopNearHostel": "Điểm dừng xe buýt Positano chỉ cách hostel một đoạn ngắn."
       },
-      "busCollectsSalernoStation": "Bus collects you right at the train station in Salerno.",
-      "busDropsSalernoStation": "Bus drops you right at the train station in Salerno.",
-      "busCheap": "Bus is very cheap.",
-      "portersHelp": "Giving your bags to the porters allows you to travel more comfortably and easily.",
-      "ferryEnjoyableEasy": "The ferry journey itself is enjoyable and easy.",
-      "shortWalkSalernoStationPort": "The walk from Salerno’s Train Station to the port is short and straightforward."
+      "busCollectsSalernoStation": "Xe buýt đón ngay tại ga tàu Salerno.",
+      "busDropsSalernoStation": "Xe buýt dừng ngay tại ga tàu Salerno.",
+      "busCheap": "Xe buýt rất rẻ.",
+      "portersHelp": "Gửi hành lý cho đội khuân vác giúp bạn di chuyển thoải mái và dễ dàng hơn.",
+      "ferryEnjoyableEasy": "Chuyến phà rất dễ chịu và thoải mái.",
+      "shortWalkSalernoStationPort": "Quãng đi bộ từ ga tàu Salerno tới cảng ngắn và đơn giản."
     },
     "con": {
-      "changeBusToTrain": "Have to change from bus to train.",
-      "crowdedBusTrain": "Bus and train are both usually crowded.",
-      "fewHours": "Takes a few hours.",
-      "changeTrainToBusSorrento": "Have to change from train to bus in Sorrento.",
-      "busUsuallyCrowded": "Bus is usually crowded.",
-      "ferryCostHigherBus": "The cost of taking the ferry is higher than the cost of taking the bus.",
-      "hostelEasierBySita": "Arriving at the hostel via SITA bus is easier than arriving by ferry (the journey from the port is quite laborious — even with Positano’s Interno Bus and porters).",
-      "naplesPortComfort": "The port and city of Naples may not be suitable for everyone, as some people may not feel comfortable there.",
-      "ferriesLessFrequent": "Ferries do not run as frequently as other transportation options.",
-      "ferryCostHigherTrainBus": "The cost of taking the ferry is higher than the cost of taking the train or bus.",
-      "changeBusesAmalfi": "Have to change buses in Amalfi."
+      "changeBusToTrain": "Phải chuyển từ xe buýt sang tàu.",
+      "crowdedBusTrain": "Xe buýt và tàu thường đều đông.",
+      "fewHours": "Mất vài giờ.",
+      "changeTrainToBusSorrento": "Phải chuyển từ tàu sang xe buýt ở Sorrento.",
+      "busUsuallyCrowded": "Xe buýt thường đông.",
+      "ferryCostHigherBus": "Chi phí đi phà cao hơn đi xe buýt.",
+      "hostelEasierBySita": "Đến hostel bằng xe buýt SITA dễ hơn đi phà (chặng từ cảng khá vất vả — kể cả khi có xe buýt Interno Positano và đội khuân vác).",
+      "naplesPortComfort": "Cảng và thành phố Naples có thể không phù hợp với mọi người, vì một số người có thể cảm thấy không thoải mái ở đó.",
+      "ferriesLessFrequent": "Phà không chạy thường xuyên bằng các phương tiện khác.",
+      "ferryCostHigherTrainBus": "Chi phí đi phà cao hơn đi tàu hoặc xe buýt.",
+      "changeBusesAmalfi": "Phải đổi xe buýt ở Amalfi."
     },
     "tag": {
-      "cheap": "Budget",
-      "directish": "Simple",
-      "scenic": "Scenic",
-      "transfer": "Transfer",
-      "bus": "Bus",
-      "train": "Train",
-      "ferry": "Ferry"
+      "cheap": "Tiết kiệm",
+      "directish": "Đơn giản",
+      "scenic": "Phong cảnh",
+      "transfer": "Chuyển tiếp",
+      "bus": "Xe buýt",
+      "train": "Tàu",
+      "ferry": "Phà"
     },
     "reasons": {
       "cheapest": {
-        "busTrain": "Cheapest → bus/train options are very cheap.",
-        "ferry": "Cheapest → ferry costs higher than bus/train."
+        "busTrain": "Rẻ nhất → xe buýt/tàu rất rẻ.",
+        "ferry": "Rẻ nhất → phà đắt hơn xe buýt/tàu."
       },
       "fewest_changes": {
-        "busTrain": "Fewest changes → bus + train requires a mode change.",
-        "bus": "Fewest changes → bus route changes in Amalfi."
+        "busTrain": "Ít chuyển tiếp nhất → xe buýt + tàu cần đổi phương tiện.",
+        "bus": "Ít chuyển tiếp nhất → tuyến xe buýt đổi xe ở Amalfi."
       },
       "scenic": {
-        "ferry": "Scenic → ferry journey is enjoyable and easy."
+        "ferry": "Phong cảnh → chuyến phà dễ chịu và thoải mái."
       },
       "heavy_luggage": {
-        "ferryFromRome": "Heavy luggage → arriving via ferry from the port is more laborious.",
-        "busStopClose": "Heavy luggage → Positano bus stop is close to the hostel."
+        "ferryFromRome": "Hành lý nặng → đến bằng phà từ cảng vất vả hơn.",
+        "busStopClose": "Hành lý nặng → điểm dừng xe buýt Positano gần hostel."
       }
     },
     "ui": {
-      "showDetails": "Show details",
-      "hideDetails": "Hide details",
-      "steps": "Steps",
-      "notes": "Notes",
-      "pros": "Pros",
-      "cons": "Cons"
+      "showDetails": "Hiện chi tiết",
+      "hideDetails": "Ẩn chi tiết",
+      "steps": "Các bước",
+      "notes": "Ghi chú",
+      "pros": "Ưu điểm",
+      "cons": "Nhược điểm"
     }
   },
   "experienceGuides": {
-    "eyebrow": "Experience planners",
-    "title": "Experience routes with built-in directions",
-    "description": "These experiences combine the on-trail highlights with the exact transfers you need to leave and return to Hostel Brikette. Open one when you want the itinerary and the transport plan in the same guide.",
+    "eyebrow": "Lập kế hoạch trải nghiệm",
+    "title": "Tuyến trải nghiệm với chỉ dẫn tích hợp",
+    "description": "Các trải nghiệm này kết hợp điểm nhấn trên đường đi với thông tin chuyển tiếp chính xác bạn cần để rời và quay về Hostel Brikette. Mở một hướng dẫn khi bạn muốn có cả hành trình và kế hoạch di chuyển trong cùng một tài liệu.",
     "items": [
       {
         "guideKey": "pathOfTheGodsFerry",
-        "label": "Path of the Gods via Amalfi (ferry + hike)",
-        "summary": "Sail from Positano to Amalfi, ride up to Bomerano, and follow our step-by-step return directions for the classic traverse back toward Positano.",
+        "label": "Con đường của các vị thần qua Amalfi (phà + đi bộ)",
+        "summary": "Đi phà từ Positano tới Amalfi, lên Bomerano, và làm theo hướng dẫn quay về từng bước cho hành trình cổ điển trở về Positano.",
         "transportModes": [
           "ferry",
           "bus",
@@ -697,8 +905,8 @@
       },
       {
         "guideKey": "pathOfTheGodsBus",
-        "label": "Path of the Gods via Amalfi (bus + hike)",
-        "summary": "Take the SITA Sud bus from Positano through Amalfi to Bomerano, hike across to Nocelle, and use the built-in transport section to reach the hostel afterward.",
+        "label": "Con đường của các vị thần qua Amalfi (xe buýt + đi bộ)",
+        "summary": "Đi xe buýt SITA Sud từ Positano qua Amalfi tới Bomerano, đi bộ qua Nocelle, và dùng phần di chuyển tích hợp để về hostel sau đó.",
         "transportModes": [
           "bus",
           "walk"
@@ -706,8 +914,8 @@
       },
       {
         "guideKey": "pathOfTheGodsNocelle",
-        "label": "Path of the Gods via Nocelle shuttle",
-        "summary": "Ride the Montepertuso–Nocelle shuttle for a shorter out-and-back hike and rely on the guide’s directions to walk or bus back down to Hostel Brikette.",
+        "label": "Con đường của các vị thần qua xe đưa đón Nocelle",
+        "summary": "Đi xe đưa đón Montepertuso–Nocelle để có chuyến đi bộ ngắn hơn và dựa vào hướng dẫn để đi bộ hoặc xe buýt về Hostel Brikette.",
         "transportModes": [
           "bus",
           "walk"
@@ -716,9 +924,9 @@
     ]
   },
   "breadcrumbs": {
-    "itemTitleFallback": "Directions"
+    "itemTitleFallback": "Hướng dẫn"
   },
   "galleries": {
-    "defaultAlt": "Directions photo"
+    "defaultAlt": "Hình ảnh hướng dẫn"
   }
 }

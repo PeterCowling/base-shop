@@ -1,61 +1,250 @@
 {
   "seo": {
-    "title": "Egynapos kirándulások Positanóból",
-    "description": "Capri, Pompeii, Ravello és Amalfi egynapos programjai: komp és busz menetrendek, időzítések, jegytippek."
+    "title": "Egynapos kirándulások Positanóból: Capri, Pompeii, Ravello, Amalfi",
+    "description": "Költséghatékony egynapos kirándulások Positanóból—Capri, Pompeii, Amalfi, Ravello és Sorrento komp- és buszmenetrendekkel, árakkal és hátizsákos tippekkel."
   },
   "linkLabel": "Legjobb egynapos utak: Capri, Amalfi, Pompeii & társai",
   "intro": [
-    "Használd Positanót bázisként egynapos kirándulásokhoz kompokkal és busszal – indulj korán, foglalj jegyet előre, és mindig legyen B-terved az időjárásra."
+    "Positano kiválóan működik egynapos kirándulások kiindulópontjaként—kompok és buszok 30-90 percen belül összekötnek Caprival, Pompeiivel, Amalfival, Ravellóval és Sorrentóval. A legtöbb kirándulás közlekedésre és belépőkre 15-35 eurót költsz, és elkerülheted a csomagolást vagy szálláscserét.",
+    "Indulj korán, hogy megelőzd a tengerjáró turistákat, foglald le előre a Pompeii jegyeket és a népszerű kompokat, és mindig legyen tartalék terved rossz időre (kompok durva tengeren lemondódnak). Csomagolj nassolnivalót, vizet, naptejt és könnyű esőkabátot—a turista látványosságok körüli kávézók prémium árakat számolnak fel."
   ],
   "sections": [
     {
-      "id": "capri",
-      "title": "Capri főbb látnivalói",
+      "id": "quick-comparison",
+      "title": "Gyors összehasonlítás az egynapos utakról",
       "body": [
-        "Foglalj helyet az első kompra, menj fel a Monte Solaróra a libegővel, és sétálj a Giardini di Augusto-ban, mielőtt a hajókirándulók megérkeznének.",
-        "Térj vissza délután, és mentsd el a buszmenetrendet képernyőmentésként arra az esetre, ha rossz lenne az idő."
+        "Capri: Legdrágább (20 € komp egy irányba, ~35-40 € összesen siklóval/libegővel), legszebb kilátás, egész napra van szükség. Legjobb: ikonikus kilátások, fotók, túrázás az Arco Naturale-hoz vagy Villa Jovishoz. %LINK:capriDayTrip|Teljes Capri egynapos útmutató%",
+        "Pompeii: Legjobb ár-érték arány (9 € busz Sorrentóig, 2,50 € vonat, 18 € belépő = ~32 € összesen), történelem-gazdag, 3-4 óra a helyszínen. Legjobb: régészet kedvelőknek, korai indulóknak, akik délutánra vissza akarnak érni Positanóba. %LINK:positanoPompeii|Positano-Pompeii útvonal%",
+        "Amalfi + Ravello: Könnyű kombináció (8 € komp vagy 4 € busz Amalfiig, 2,50 € busz fel Ravellóba), étel és kertek. Legjobb: rövidebb félnapos kirándulásokhoz, naplementés kilátásokhoz a Villa Cimbrone-ról. %LINK:positanoAmalfi|Positano-Amalfi közlekedés%",
+        "Sorrento: Pihentető hangulat (12 € komp vagy 4 € busz), citromligetek, limoncello, tenger gyümölcsei, Villa Comunale kilátópont. Legjobb: piaci vásárláshoz, ételkóstolókhoz, délelőtti indulásokhoz. %LINK:naplesPositano|Nápoly-Positano összeköttetés Sorrentón keresztül%",
+        "Herculaneum: Kisebb, mint Pompeii (9 € busz Sorrentóig, 2,50 € vonat, 13 € belépő = ~27 € összesen), jobban megőrzött mozaikok, 2-3 óra a helyszínen. Legjobb: romok megtekintéséhez Pompeii tömegei nélkül."
+      ]
+    },
+    {
+      "id": "capri",
+      "title": "Capri: Egész napos szigeti kirándulás",
+      "body": [
+        "Miért menj: Ikonikus sziklaszéli kilátások, Faraglioni sziklatornyok, Kék Barlang (időjárás függvényében), butikboltok Capri városban, túraútvonalak és domboldalon lévő kertek. Capri a legfényképezhetőbb kirándulás, de egyben a legdrágább is—számíts 50-70 eurós összköltségre a közlekedéssel, siklóval/libegővel és szerény ebéddel.",
+        "Legjobb: Tiszta időjárású napokra, amikor drámai tengerparti tájakat szeretnél és nem zavar a turistatömeg. Fotósoknak reggeli vagy késő délutáni fényt érdemes megcélozni.",
+        "Odajutás: Vedd az első kompot Positanóból (általában 08:15-09:00, 20 € egy irányba, 40 perc, %LINK:ferryCancellations|ellenőrizd a komp státuszát% a Positano komp dokknál vagy online). Foglalj egy-két nappal előre nyáron—a reggeli járatok megtelnek. Visszajáró kompok 18:00-19:00-ig közlekednek évszaktól függően. %LINK:briketteToFerryDock|Séta a szállásról a komp dokkhoz% 10-15 percet vesz igénybe.",
+        "Pénzmegtakarítási ötletek: Hagyd ki a Kék Barlangot (18 € belépő plusz 15-20 € a csónakért, gyakran zárva van a hullámok miatt)—a kilátás a szárazföldről lenyűgöző és ingyenes. Hozz csomagolt ebédet Positano szupermarketjeiből (kerüld a túlárazott szigeti kávézókat). Gyalogolj Capri város és Anacapri között a busz helyett (meredek, de 4 eurót spórolsz oda-vissza).",
+        "Javasolt program: Érkezz korán, vedd a siklót fel Capri városba (2 € egy irányba, egyes komp csomagokban benne van), sétálj a Giardini di Augustóba (1 € belépő) a Faraglioni kilátásokért 10:00 előtt, amikor a turistacsoportok megérkeznek. Busszal vagy gyalog Anacapribe (2 € busz egy irányba), libegőzz fel a Monte Solaróra (13 € oda-vissza, 09:30-kor nyit) 360°-os panorámákért. Fedezd fel a Villa San Michelét vagy túrázz az Arco Naturale-hoz (ingyenes, 20 perc Capri várostól), majd kapd el a 17:00-18:00-as kompot vissza. Időjárás tartalék: Ha kompok lemondódnak, fedezd fel Sorrentót vagy vedd a buszt Amalfibe.",
+        "Helyi tippek a szállásról: Csomagolj fürdőruhát—vannak sziklás úszóhelyek a Faraglioni és Marina Piccola közelében, ha van extra időd. Kerüld a nyári csúcs hétvégéket (július-augusztusi szombatokat), amikor megháromszorozódik a napi turisták száma. Ellenőrizd a %LINK:ferryCancellations|komp menetrendeket% az előző este és készíts képernyőmentést róluk—a mobiljelzés foltos a Capri sziklákon."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/dayTripsAmalfi.jpg",
+          "alt": "Tengerpart és hajók egynapos kirándulásokhoz Positanóból.",
+          "caption": "Indulj korán és tartsd a tartalék időjárás tervet népszerű egynapos utakhoz."
+        },
+        {
+          "src": "/img/guides/topics/capriFaraglioni.jpg",
+          "alt": "Faraglioni sziklatornyok Capri partjainál.",
+          "caption": "Az ikonikus Faraglioni sziklák—Capri legfotózottabb kilátása."
+        },
+        {
+          "src": "/img/guides/topics/capriMonteSolaro.jpg",
+          "alt": "Monte Solaro libegő panorámás kilátással Capri és a part felett.",
+          "caption": "Monte Solaro libegő—360°-os kilátások megérik a 13 eurót."
+        }
       ]
     },
     {
       "id": "pompeii",
-      "title": "Pompeii vagy Herculaneum",
+      "title": "Pompeii vagy Herculaneum: Ókori romok",
       "body": [
-        "Vegyél korai buszt Sorrentóba, majd csatlakozz a Circumvesuviana vasúthoz; vásárolj online sorban állás nélküli jegyet az időmegtakarításért.",
-        "Vigyél vizet és sapkát – kevés az árnyék, és a látogatások könnyen 3–4 órásak."
+        "Miért menj: Sétálj végig 2000 éves utcákon, házakban, pékségekben és fürdőkben, amelyeket a Vezúv i.sz. 79-es kitörése fagyasztott meg. Pompeii hatalmas és zsúfolt; Herculaneum kisebb, jobban megőrzött és csendesebb. Mindkettő világszínvonalú régészeti helyszín és könnyen fér a költségvetésbe.",
+        "Legjobb: Történelemkedvelőknek, korai kelőknek (helyszínek 09:00-kor nyitnak, érkezz akkor, hogy megelőzd a turistabuszokat), bárkinek, aki félnapos kirándulást szeretne délutánra vissza Positanóba.",
+        "Odajutás: Vedd a %LINK:sitaTickets|SITA buszt% Positanóból Sorrentóig (4 €, 50 perc, indul a %LINK:chiesaNuovaDepartures|Chiesa Nuova%-ról vagy a Positano Sponda megállóból a helyzetedtől függően). Sorrentóból szállj fel a Circumvesuviana vonatra Nápoly irányába és szállj le Pompei Scavi-Villa dei Misteri állomásnál (2,50 €, 35 perc, vonatok 30 percenként) vagy Ercolano Scavi Herculaneumhoz (2,50 €, 20 perc). Sétálj 5-10 percet mindegyik állomástól a helyszín bejáratáig.",
+        "Költségek: Pompeii belépő 18 € (foglald online, hogy átugord a jegysorok), Herculaneum 13 €, plusz ~13 € oda-vissza közlekedés Positanóból. Összesen: 31-32 € Pompeiire, 26-27 € Herculaneumra.",
+        "Pénzmegtakarítási ötletek: Vegyél Pompeii jegyeket online legalább egy nappal előre (www.ticketone.it vagy hivatalos Pompeii oldal), hogy elkerüld a 30-60 perces sort csúcsidőben. Hozz saját vizet (1,5 l személyenként) és nassolnivalót—egy kávézó van Pompeiiben, amely 5 eurót kér egy paniniért. Viselj kalapot és naptejt—ásatásokban nulla árnyék van és a nyári hőmérséklet eléri a 35°C-ot. Ha 25 év alatti vagy és EU lakos, nézz utána ifjúsági kedvezményeknek.",
+        "Javasolt program (Pompeii): Kapd el a 07:30-as vagy 08:00-ás buszt Positanóból, érkezz Pompeiibe 09:30-ig, tölts 3-4 órát sétálva a Fórumon, Stabian Fürdőkben, a Faun Házában, a Misztériumok Villájában és az Amfiteátrumban. Menj vissza Sorrentóba 13:30 körül, ebédelj ott vagy térj vissza Positanóba 15:00-ig. Felmászhatsz a Vezúvra is (10 € belépő, 20 perc Pompeiitől Vesuvio Express busszal 10 € oda-vissza), ha van energiád—a kilátások látványosak, de 2-3 órát adnak a napodhoz.",
+        "Javasolt program (Herculaneum): Kisebb helyszín, ami azt jelenti, hogy 2-3 óra elég. Érkezz 10:00-ig, fedezd fel a tökéletesen megőrzött mozaikokat, fa rögzítéseket és kétszintes házakat, majd térj vissza Positanóba kora délután. Párosítsd egy Sorrento megállóval visszafelé ebédre és citromliget sétákra.",
+        "Helyi tippek a szállásról: A Circumvesuviana vonatok alapvetőek (nincs klíma, graffiti, zsebtolvajok zsúfolt kocsikban)—tárold az értékeidet elülső zsebben vagy hátizsákban a mellkasodnál. Töltsd le az offline térképeket Pompeiire (hatalmas és zavaros). Ha perzselő nap van (35°C+), Herculaneum fedett sétányai elviselhetőbbé teszik."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/pompeiiForum.jpg",
+          "alt": "Antik Fórum romok a Pompeii régészeti helyszínen.",
+          "caption": "Érkezz korán, hogy felfedezd Pompeiit a turistacsoportok és hőség előtt."
+        },
+        {
+          "src": "/img/guides/topics/vesuviusFromPompeii.jpg",
+          "alt": "Vezúv kilátása Pompeii ásatásokból.",
+          "caption": "Vezúv tornyosul a romok felett—felmászhatsz rá Pompeii után."
+        }
       ]
     },
     {
       "id": "amalfi-ravello",
-      "title": "Amalfi & Ravello kombináció",
+      "title": "Amalfi & Ravello kombináció: Tengerparti kultúra",
       "body": [
-        "Komppal juss Amalfiig, nézd meg a Dómot, majd szállj fel a 5110-es buszra Ravello felé, hogy a Villa Cimbrone és egy panorámás ebéd is beleférjen.",
-        "Maradj késő délutáni fényben, majd vegyél egy esti kompot vagy buszt vissza – 18:00 után a sorok már rövidebbek."
+        "Miért menj: Amalfi drámai Duomója, tengerparti kávézók és papírmúzeum; Ravello domboldalon lévő kertjei (Villa Cimbrone és Villa Rufolo), klasszikus zenei helyszínek és naplementés panorámák a part felett. Könnyen párosítható mindkettő egy napon, és az 5110-es busz útja fel Ravellóba egy fehér kesztyűs hajtűkanyaros élmény.",
+        "Legjobb: Rövidebb utakhoz (félnapos vagy egész napos), kert szerelmeseinek, naplemente vadászoknak, bárkinek, aki tengerpart és hegyi falu keverékét akarja Capri árcímkéje nélkül.",
+        "Odajutás: Komp Positanóból Amalfiba (8 €, 20-30 perc, több indulás 08:00-18:00, gyakoribb április-október) vagy %LINK:sitaTickets|SITA busz% (4 €, 40 perc, lassabb, de olcsóbb). Az Amalfi kikötőtől vagy buszmegállótól sétálj a főtérre és kapd el a SITA 5110 buszt fel Ravellóba (2,50 €, 25 perc, hajtűkanyarok, óránként indul). Térj vissza busszal Amalfiba, majd komp vagy busz vissza Positanóba. %LINK:positanoAmalfi|Teljes közlekedési útmutató%",
+        "Költségek: 8-16 € oda-vissza közlekedés (komp gyorsabb, busz olcsóbb), plusz 10 € belépő a Villa Cimbrone-ba vagy 7 € Villa Rufolóhoz. Összesen: 18-26 € a választásoktól függően.",
+        "Pénzmegtakarítási ötletek: Hagyd ki a villákat, ha szoros a költségvetésed—Ravello nyilvános teraszai (Piazza Duomo, belvedere a fő templom közelében) ingyenes széles kilátásokkal rendelkeznek. Csomagolj piknik ebédet Positanóból és egyél Ravello kertjeiben vagy egy padon a sziklák felett. Vedd a buszt mindkét irányba, hogy 8 eurót spórolj vs oda-vissza komp—csak számolj plusz idővel kanyargó utakra és esetleges sorokra.",
+        "Javasolt program: Vedd a 09:00-10:00-ás kompot vagy buszt Amalfiba, fedezd fel a Duomót (ingyenes belépés a fő hajóba, 3 € a Paradicsomi Kolostorhoz), bolyongj az óváros sikátoraiban, majd kapd el a 12:00 vagy 13:00-ás buszt fel Ravellóba. Látogasd meg a Villa Cimbronét (a Végtelenség Terasz a csúcspont—érkezz délután középen lágyabb fényért), sétálj Ravello Piazza Duomóján át, és kapd el a 17:00-18:00-ás buszt vissza Amalfiba. Vegyél egy alkony kompot vissza Positanóba (sorok zsugorodnak 18:00 után) vagy az utolsó buszt 19:30-20:00 körül.",
+        "Időjárás tartalék: Ha kompok lemondódnak, vedd a buszt—szinte minden körülmény között közlekedik. Ha csak 2-3 órád van, látogasd meg Amalfit egyedül és hagyd ki Ravellót (vagy fordítsd meg és menj egyenesen Ravellóba naplementés kilátásokért).",
+        "Helyi tippek a szállásról: Ravello nyári klasszikus zenei koncerteket rendez (Ravello Fesztivál, június-szeptember) a Villa Rufolo kertjeiben—nézd meg a programot, ha későig akarsz maradni. Az 5110-es busz zsúfolt nyáron; sorban állj korán vagy állj a sor elején. Ha mozgásbeteg vagy, ülj elöl és tartsd a szemed a horizonton."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/ravelloTerrace.jpg",
+          "alt": "Végtelenség Terasz a Villa Cimbrone-nál Ravellóban az Amalfi-part felett.",
+          "caption": "Villa Cimbrone Végtelenség Terasz—megéri a 10 eurós belépőt."
+        },
+        {
+          "src": "/img/guides/topics/amalfiDuomo.jpg",
+          "alt": "Amalfi Katedrális homlokzat nagy lépcsővel.",
+          "caption": "Amalfi drámai Duomója dominálja a város terét."
+        }
       ]
     },
     {
       "id": "sorrento",
-      "title": "Sorrento és gasztronómia",
+      "title": "Sorrento: Étel, piacok & citromligetek",
       "body": [
-        "Szállj fel egy délelőtti komphajóra Sorrentóba egy piacjárásra, limoncello kóstolókra és a Villa Comunale teraszán naplementére.",
-        "Ha az utolsó komp betelik, térj vissza késő esti busszal Positanóba; az út kb. 50 perc."
+        "Miért menj: Sorrento a legpihentebb egynapos út—kevesebb turista nyomás, mint Capriban, kevésbé romosított, mint Pompeii, és tele citromlígetekkel, limoncello boltokkal, friss tenger gyümölcseivel, kézműves piacokkal és szellős sziklatetői sétánnyal (Villa Comunale) naplementés kilátásokkal a Nápolyi-öböl felett.",
+        "Legjobb: Ínyenceknek, piaci vásárlóknak, bárkinek, aki késői délelőtti indulást szeretne (nem kell rohanod), utazóknak, akik Sorrentót Pompeiivel párosítják vagy közlekedési csomópontként használják.",
+        "Odajutás: Komp Positanóból (12 €, 30 perc, több indulás 08:00-18:00) vagy %LINK:sitaTickets|SITA busz% (4 €, 50 perc, indul a %LINK:chiesaNuovaDepartures|Chiesa Nuova%-ról vagy Positano Spondából). A komp gyorsabb és látványosabb; a busz olcsóbb és közlekedik, még akkor is, ha durva a tenger. %LINK:naplesPositano|Nápoly-Positano útvonal útmutató% lefedi a Sorrento összeköttetéseket.",
+        "Költségek: 8-24 € oda-vissza közlekedés komp vs busz függvényében, plusz étel/ital költségek (számolj 10-20 eurót ebédre, 5-10 eurót limoncello kóstolóra). Összesen: 20-40 € attól függően, mennyit eszel/iszol.",
+        "Pénzmegtakarítási ötletek: Hagyd ki a túlárazott limoncello boltokat a főtéren—sétálj 10 percet helyi alimentarikba (élelmiszerboltok) 8-10 eurós palackokért vs 15-20 eurós turista árak. Egyél családi vezetésű trattoriákban mellékutcákban (Via Fuoro, Via Tasso mellék sikátorok) a kikötő-front éttermek helyett—ugyanaz az étel, fele áron. A Villa Comunale terasz és Marina Grande strand ingyenes és tökéletesek piknikekhez.",
+        "Javasolt program: Vedd a 10:00-11:00-ás kompot vagy buszt, érkezz Sorrentóba 11:30-ig, fedezd fel a délelőtti piacot (ha csütörtök van), bolyongj citromlígetekben a városközpont közelében (néhány ingyenes kóstolókat kínál), látogasd meg a Sedil Dominovát (ingyenes történelmi épület freskózott mennyezetekkel), ebédelj egy mellékutcai trattoriában, majd sétálj a Villa Comunale-hoz sziklatetői kilátásokért és fotókért. Kapd el a 16:00-17:00-ás kompot vagy 18:00-ás buszt vissza Positanóba. Ha ezt Pompeiivel párosítod, látogasd meg a romokat először (kora reggel) és érkezz Sorrentóba 13:00-14:00 körül késői ebédre és naplementére.",
+        "Időjárás tartalék: Sorrento elérhető busszal, még akkor is, ha kompok lemondódnak—ez a legmegbízhatóbb egynapos út durva-időjárású napokra.",
+        "Helyi tippek a szállásról: Marina Grande (Sorrento kis halászstrandja) 10 perces séta meredek lépcsőkön le a várostól—megéri a színes csónakokért, kevesebb turistáért és tisztességes tenger gyümölcseivel ebédért. Ha limonhellót vagy kerámiát vásárolsz, kérdezd meg a szállást nem-turisztikus boltokról ajánlásokért. Sorrento fagyija (I Giardini di Cataldo, Davide Gelato) a part legjobbjainak egyike—számolj 3-4 eurót egy tölcsérre."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/sorrentoLemonGrove.jpg",
+          "alt": "Citromliget Sorrentóban teraszos kertekkel.",
+          "caption": "Sorrento híres citromlígetei ingyenes kóstolókat kínálnak."
+        },
+        {
+          "src": "/img/guides/topics/sorrentoVillaComunale.jpg",
+          "alt": "Villa Comunale sziklatetői terasz Sorrentóban Nápolyi-öböl kilátással.",
+          "caption": "Villa Comunale terasz—ingyenes naplementés kilátások az öböl felett."
+        }
+      ]
+    },
+    {
+      "id": "planning-tips",
+      "title": "Általános tervezési és pénzmegtakarítási tippek",
+      "body": [
+        "Indulj korán: Az első indulások (08:00-09:00) megadják a helyszíneket, mielőtt a turistacsoportok és tengerjáró utasok megérkeznek. Capri, Pompeii és Ravello észrevehetően csendesebbek 11:00 előtt.",
+        "Foglalj előre, ha kell: Pompeii jegyek, népszerű reggeli kompok Capriba (különösen július-augusztusi hétvégék) és bármilyen villa belépők Ravellóban megtelhetnek vagy hosszú sorok lehetnek. Foglalj 1-2 nappal előre. %LINK:transportMoneySaving|Közlekedési pénzmegtakarítási tippek%",
+        "Időjárás tartalék tervek: %LINK:ferryCancellations|Komp lemondások% gyakoriak tavaszi/őszi viharokban. Mindig legyen készen egy busz alternatíva, vagy cserélj tengerparti utakat (Capri, Amalfi kompon keresztül) belföldi utakra (Pompeii, Sorrento buszon keresztül), ha durva a tenger. Ellenőrizd a komp státuszát az előző este és a kirándulás reggelén—kérdezd meg a szállást vagy nézd meg az online menetrendeket.",
+        "Csomagolj okosan: Víz (1l+ személyenként), nassolnivaló (turista-helyszín kávézók drágák), naptej, kalap, könnyű esőkabát (nyári viharok gyorsan csapnak le), és egy kis hátizsák. Viselj kényelmes sétáló cipőt—Pompeii és Capri 2-4 órás gyaloglást jelentenek egyenetlen kövön.",
+        "Offline térképek és menetrendek: Töltsd le a Google Maps offline területeket Pompeiire, Caprire, Amálfira és Sorrentóra. Készíts képernyőmentést a busz és komp menetrendekről—mobiljelzés gyenge a Circumvesuviana vonatokon, Capri sziklákon és hegyi utakon Ravellóba.",
+        "Étel és ital költségek: Számolj 10-15 eurót ebédre, ha helyi helyeken eszel, 5-7 eurót egy kávé/fagyi szünetre, és hordj saját vizet. Kerüld a kikötő-front és főtér éttermeket, hacsak nem kényezted magad—sétálj 5-10 percet beljebb 30-50%-kal olcsóbb ételekért.",
+        "Párosítsd okosan az utakat: Amalfi + Ravello (könnyű kombináció, ugyanaz az irány). Sorrento + Pompeii vagy Herculaneum (ugyanazon a vonatvonalon). Capri legjobb egyedül—egész napos és nem lehet rohanva. Kerüld Capri párosítását bármi mással, hacsak nem csinálsz csak egy gyors szigeti kört.",
+        "Diák és ifjúsági kedvezmények: Ha 25 év alatti vagy és EU lakos, hozd az azonosítódat kedvezményes belépőért Pompeiibe, Herculaneumba és néhány villába. Nem-EU diákok ISIC kártyákkal kaphatnak kedvezményt Pompeiiben—kérdezd a jegypultnál.",
+        "Visszautazás időzítése: Ellenőrizd az utolsó komp/busz időket, mielőtt elhagyod Positanót. Kompok 18:00-19:00 körül állnak le (korábban szezonon kívül), buszok később közlekednek, de lassabbak. Az utolsó komp elszalasztása 50-90 perces busz utazást jelent vissza—nem katasztrófa, de levág az estédből."
+      ]
+    },
+    {
+      "id": "budget-breakdown",
+      "title": "Egynapos utazás költségvetés lebontása",
+      "body": [
+        "Íme, mit várj el a költségekért, beleértve a közlekedést, belépődíjakat, ételt és opcionális extrát. Minden ár személyenként és 2025-ös tarifák alapján (kissé változhat évszak szerint).",
+        "Capri egész nap: Komp oda-vissza 40 €, sikló Capri városba 4 €, Monte Solaro libegő 13 €, Giardini di Augusto belépő 1 €, ebéd 10-15 € (csomagolt) vagy 20-30 € (kávézó), fagyi/ital 5-7 €. Összesen: 53-70 € költségvetés, 73-100 €, ha kiétkezzel és hozzáadsz extrakat, mint a Kék Barlang (33-38 €). Spórolási módok: Gyalogolj a sikló helyett (meredek, de ingyenes), hagyd ki a Kék Barlangot, csomagolj ebédet.",
+        "Pompeii: Busz Sorrentóig 9 €, Circumvesuviana vonat 5 € oda-vissza, Pompeii belépő 18 €, víz/nassolnivaló otthonról 0 €, ebéd Sorrentóban 10-12 €. Összesen: 42-44 €. Add hozzá Vezúvot (20 € buszra + belépő), ha van időd. Spórolási módok: Foglalj Pompeii jegyeket online, hogy átugord a sort, hozz minden ételt/vizet Positanóból (spórolj 10-15 eurót vs helyszín kávézó).",
+        "Amalfi + Ravello: Komp vagy busz oda-vissza 8-16 €, busz Amalfi-Ravello-Amalfi 5 €, Villa Cimbrone belépő 10 € (vagy hagyd ki ingyenes kilátásokért), ebéd/fagyi 8-12 €. Összesen: 21-43 € közlekedéstől és villa választásoktól függően. Spórolási módok: Vedd a buszt mindkét irányba (8 € vs 16 € komp), hagyd ki a villákat és élvezd az ingyenes teraszokat, piknik ebéd Positanóból.",
+        "Sorrento: Komp vagy busz oda-vissza 8-24 €, ebéd trattoriában 10-15 €, limoncello kóstoló 5-8 €, fagyi 3-4 €, minden látnivaló ingyenes (Villa Comunale, Marina Grande, piacok, citromligetek). Összesen: 26-51 € közlekedéstől függően. Spórolási módok: Vedd a buszt (8 € vs 24 € komp), vegyél limoncellót élelmiszerboltban (8-10 € vs 15-20 € turista boltok), piknikezz a Villa Comunale-nál.",
+        "Herculaneum: Busz Sorrentóig 9 €, Circumvesuviana 5 € oda-vissza, belépő 13 €, ebéd/nassolnivaló 8-10 €. Összesen: 35-37 €. Spórolási módok: Párosítsd Sorrento megállóval visszafelé kettős-célpont értékért, csomagolj nassolnivalót, érkezz korán a hőség előtt.",
+        "Általános pénzmegtakarítási stratégiák: Mindig vedd a buszt a komp helyett, ha szoros a költségvetés (spórolsz 8-16 eurót utazásonként). Töltőd fel nassolnivalóval/vízzel Positano szupermarketjeiből (spórolsz 10-20 eurót naponta vs turista kávézók). Használj diák/ifjúsági kedvezményeket, ahol jogosult vagy (Pompeii, Herculaneum, néhány villa). Kérdezd meg a szállást bennfentes tippekért ingyenes kilátópontokról, nem-turisztikus ebédhelyek és jelenlegi közlekedési ajánlatokról. Készíts képernyőmentést menetrendekről és használj offline térképeket a barangolási adat díjak elkerülésére."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/budgetDayTrips.jpg",
+          "alt": "Költségvetés utazás tervezés érmékkel és komp jegyekkel.",
+          "caption": "A legtöbb egynapos út 20-45 eurót költsz összesen, ha okosan költekezőszol."
+        }
+      ]
+    },
+    {
+      "id": "transport-logistics",
+      "title": "Közlekedési logisztika & bennfentes tippek",
+      "body": [
+        "Buszok (SITA): Vegyél jegyeket a fedélzeten (készpénz) vagy tabacchi boltokban felszállás előtt. Legyen kicsi pénzed készen—sofőrök néha nem tudnak 20+ eurós bankjegyeket felváltani. Sorok képződnek korán Chiesa Nuova-ban népszerű útvonalakon, mint Positano-Sorrento (07:30-09:00) és Amalfi-Ravello (10:00-12:00). Állj a sor elején vagy kockáztasd az állást 40-90 percig kanyargó utakon. %LINK:sitaTickets|Teljes SITA busz jegyezési útmutató%",
+        "Kompok: Vegyél jegyeket a dokk standnál (Positano komp terminál) ugyanazon a napon vagy 1-2 nappal előre garantált ülésekért népszerű reggeli járatokon (Capri 08:15-09:00). Ellenőrizd az időjárást az előző este—durva tenger (Forza 4-5+) kompokat mond le. Ha lemondódik, fordulj busz-elérhető célpontokhoz. %LINK:ferryCancellations|Komp lemondás útmutató%",
+        "Vonatok (Circumvesuviana): Alapvető regionális vonatok klíma nélkül, graffitival és alkalmi zsebtolvajokkal. Tartsd az értékeidet elülső zsebekben vagy mellkas hátizsákban. Érvényesítsd a jegyeket sárga gépekben a peronon felszállás előtt (50 € bírság, ha elkapnak érvényesítés nélkül). Vonatok Sorrento-Pompeii-Ercolano-Nápoly 30 percenként közlekednek, első indulás ~06:00, utolsó ~22:30. Vegyél jegyeket állomási pultokban vagy tabaccikban állomások közelében (nem a fedélzeten).",
+        "Gyaloglás a szállásról közlekedési csomópontokhoz: %LINK:chiesaNuovaDepartures|Chiesa Nuova buszmegálló% ~5 perc felfelé Hostel Brikette-től (fő SITA megálló Sorrento, Amalfi, Ravello útvonalakhoz). %LINK:briketteToFerryDock|Komp dokk% 10-15 perc lefelé lépcsőkön (használj hordárokat, ha csomagjaid vannak). Kérdezd meg a szállás személyzetét az előző este a jelenlegi sorokról/késésekről a tervezett útvonaladra.",
+        "Csúcs vs csúcson kívüli időzítés: Július-augusztusi hétvégék a legrosszabbak a sorokhoz és tömegekhez—minden 30-50%-kal tovább tart. Április-június és szeptember-október ideális (jó időjárás, kevesebb turista, alacsonyabb árak). November-március csökkentett komp menetrendeket lát és néhány helyszín (Capri libegő, villák) zárva vagy korlátozott órákkal—ellenőrizd előre. Váll szezon (április-május, szeptember-október) kínálja az időjárás, tömegek és költség legjobb egyensúlyát.",
+        "Poggyász tárolás: Hostel Brikette ingyenes poggyász tárolást kínál bejelentkezés/kijelentkezés napokon. Pompeii, Sorrento és Amalfi fizetős tárolással rendelkeznek állomások/komp terminálok közelében (5-8 € táskánként). Ne cipelj bőröndöket egynapos utakon—tárold őket a szálláson vagy egy állomási szekrényben.",
+        "Mobil appok és offline eszközök: Töltsd le a Google Maps offline területeket Pompeiire, Caprire, Amalfira, Sorrentóra, mielőtt elindulsz. Készíts képernyőmentést komp menetrendekről (Positano dokk posztolja őket, vagy nézd meg online). Használd a Trenitalia appot a Circumvesuviana valós idejű késésekre (vonatok néha későn közlekednek). Ellenőrizd az időjárás appokat az előző este—hirtelen viharok kompokat mondanak le és Pompeiit nyomorultá teszik.",
+        "Kérdezés a szálláson: A recepció ismeri a jelenlegi körülményeket (komp lemondások, busz késések, Pompeii sorok, időjárás furcsaságok). Kérdezd: ajánlott egynapos út holnapi időjárásra, jelenlegi közlekedési csapások, nem-turisztikus ebédhelyek, legjobb idő sorban állásra buszoknál. Hetente 100+ utazót látnak és valós idejű intel-lel rendelkeznek."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/sitaBusPositano.jpg",
+          "alt": "SITA busz Chiesa Nuova megállóban Positanóban.",
+          "caption": "SITA buszok összekötik Positanót minden egynapos út célpontjával."
+        }
+      ]
+    },
+    {
+      "id": "which-trip-when",
+      "title": "Melyik kirándulás melyik napra?",
+      "body": [
+        "Jó időjárás, tiszta égbolt: Capri (komp kilátások és sziklatetői panorámák a fő vonzerő) vagy Amalfi + Ravello kompon keresztül (tengerparti vitorlázás a fél élmény).",
+        "Durva tenger vagy eső előrejelzés: Pompeii vagy Herculaneum (fedett sétányok, nincs szükség kompra), Sorrento buszon keresztül, vagy Ravello buszon keresztül Amalfiból (buszok szinte minden időjárásban közlekednek).",
+        "Korlátozott idő (félnap): Amalfi egyedül (reggel), Ravello egyedül (délután/naplemente), vagy Sorrento (késői délelőtti indulás). Mindegyik 3-4 óra oda-vissza Positanóból.",
+        "Költségvetés prioritás: Pompeii vagy Herculaneum (legjobb érték, 31-32 € összesen), Amalfi busszal (8 € oda-vissza, ha kihagyod a villákat), vagy Sorrento busszal piknik ebéddel (15-20 € összesen).",
+        "Fotózás fókusz: Capri (Faraglioni, Monte Solaro, Arco Naturale), Ravello Végtelenség Terasz, vagy Positano saját strandjai/kilátópontok napfelkeltekor/naplementekor.",
+        "Első alkalommal prioritások: Capri (ikonikus), Pompeii (világhírű), és Amalfi + Ravello (klasszikus tengerparti kombináció). Sorrento és Herculaneum kiválóak, de kevésbé kötelezők, hacsak nincs extra napod."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/positanoFerryDock.jpg",
+          "alt": "Positano komp dokk hajókkal induló egynapos utakra.",
+          "caption": "Indítsd az egynapos utakat korán Positano komp dokkból—10-15 perc a szállástól."
+        }
       ]
     }
   ],
   "tips": [
-    "Ments offline térképeket és menetrendeket, mert a vonatok alagutakban és Capri szikláival közel rosszabb a térerő.",
-    "Vigyél könnyű esőkabátot – nyáron gyorsan jönnek a viharok, és ilyenkor a kompok leállhatnak."
+    "Töltsd fel offline térképeket és menetrendeket—mobil adat merül a Circumvesuviana vonat alagutakban, Capri sziklákon és hegyi utakon Ravellóba.",
+    "Csomagolj könnyű esőkabátot—nyári viharok gyorsan begördülnek és kompok szünetelnek villámlásnál.",
+    "Hozz saját vizet és nassolnivalót—kávézók turista helyszínek közelében 5+ eurót számolnak fel egy szendvicsért és 3-4 eurót palackozott vízért.",
+    "Ellenőrizd a komp menetrendeket az előző este és készíts képernyőmentést róluk—néhány útvonal csökkenti a gyakoriságot szezonon kívül vagy lemondódik durva időjárásban.",
+    "Kérdezd meg a szálláson a jelenlegi közlekedési frissítésekért, bennfentes tippekért arról, melyik kirándulásokat rangsorold, és ajánlásokat nem-turisztikus ebédhelyekre."
   ],
   "faqs": [
     {
-      "q": "Melyik kirándulás igényel korai indulást?",
+      "q": "Melyik egynapos út igényel a legkorábbi indulást?",
       "a": [
-        "Capri és Pompeii indul egyedül a leghamarabb; délre már tele van a helyszín és több az utazási idő."
+        "Capri és Pompeii profitálnak legtöbbet az első indulásoktól—mindkettő zsúfolt lesz délelőtt közepére és több utazási időt jelentenek. Célozz meg elhagyni Positanót 08:00-08:30-ig ezekhez. Amalfi, Ravello és Sorrento rugalmasabbak és jól működnek 10:00-11:00-ás indulásokkal."
       ]
     },
     {
-      "q": "Két várost lehet ugyanazon a napon meglátogatni?",
+      "q": "Befér két város egy napba?",
       "a": [
-        "Igen – párold össze Amalfit Ravellóval vagy Sorrentót Pompeiivel. Caprit ne told ugyanarra a napra más célponttal, inkább külön napot szánj rá."
+        "Igen—Amalfi és Ravello tökéletesen párosodik (ugyanaz az irány, 25 perces busz köztük). Sorrento és Pompeii vagy Herculaneum szintén jól működik (ugyanaz a vonatvonal). Kerüld Capri halmozását bármi mással—adj neki egy teljes napot. Ha megpróbálsz két nem kapcsolódó célpontot bezsúfolni (pl. Capri + Pompeii), egész nap tranzitban leszel és kihagyod mindkettő legjobb részeit."
+      ]
+    },
+    {
+      "q": "Mi van, ha kompok lemondódnak időjárás miatt?",
+      "a": [
+        "Vedd a SITA buszt helyette—szinte minden körülmény között közlekedik. Cseréld Caprit (csak komp hozzáférés) egy busz-elérhető útra, mint Pompeii, Sorrento vagy Amalfi/Ravello. Ellenőrizd a komp státuszát az előző este és a kirándulás reggelén, kérdezd meg a szálláson vagy nézd meg az online menetrendeket. Mindig legyen tartalék terved."
+      ]
+    },
+    {
+      "q": "Melyik egynapos út a legolcsóbb?",
+      "a": [
+        "Pompeii vagy Herculaneum a legjobb érték (26-32 € összesen közlekedéssel és belépővel). Amalfi busszal (8 € oda-vissza, ha kihagyod a villa belépőket) és Sorrento busszal piknik ebéddel (15-20 € összesen) szintén költségvetés-barátok. Capri a legdrágább (50-70+ € beleértve a kompot, siklót/libegőt és ételt)."
+      ]
+    },
+    {
+      "q": "Foglalnom kell közlekedést vagy helyszín jegyeket előre?",
+      "a": [
+        "Foglalj Pompeii jegyeket online a sorok átugráséhoz (30-60 perc csúcsidőben). Foglalj Capri kompokat 1-2 nappal előre július-augusztusban—reggeli járatok megtelnek. Busz jegyek SITA útvonalakra (Positano-Sorrento, Amalfi-Ravello) fedélzeten vagy tabacchi boltokban vásárolhatók és nem kell előzetes foglalás. Komp jegyek Amálfiba vagy Sorrentóba általában ugyanazon a napon a dokknál vásárolhatók, de ellenőrizd a rendelkezésre állást, ha nyári hétvége van."
+      ]
+    },
+    {
+      "q": "Tárolhatok poggyászt bárhol, ha egynapos utat csinálok bejelentkezés/kijelentkezés előtt vagy után?",
+      "a": [
+        "Igen—Hostel Brikette ingyenes poggyász tárolást kínál vendégeknek érkezési/indulási napokon. Ha kijelentkezel és egynapos utat csinálsz, mielőtt elhagynád a partot, tárold a táskáidat a szálláson és vedd fel őket, amikor visszatérsz. Pompeii, Sorrento és Amalfi szintén fizetős poggyász tárolási szolgáltatásokkal rendelkeznek (5-8 € táskánként naponta) vonat/komp terminálok közelében, ha kell."
       ]
     }
   ]

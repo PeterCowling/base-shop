@@ -24,6 +24,7 @@
     },
     "timetable": {
       "title": "SITA 시간표 읽기",
+      "link": "최신 시간표는 <link>Positano.com</link>에서 확인하세요.",
       "body": "공식 시간표는 행에 정류장을, 열에 문자가 붙은 운행을 표시합니다. 여행하는 날짜에 맞춰 같은 열에서 포지타노 행과 아말피 행을 짝지어 시간을 확인하세요.",
       "list": [
         "첫 번째 열의 행에는 노선의 각 정류장이 나열됩니다.",
@@ -31,7 +32,6 @@
         "월요일부터 토요일에 이동한다면 'F'와 'G' 열을 확인하세요.",
         "일요일이나 공휴일에 이동한다면 'G'와 'H' 열을 사용하세요."
       ],
-      "link": "최신 시간표는 <link>Positano.com</link>에서 확인하세요.",
       "linkHref": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result"
     },
     "positanoStop": {

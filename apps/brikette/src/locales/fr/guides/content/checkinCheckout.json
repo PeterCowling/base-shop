@@ -1,106 +1,159 @@
 {
   "seo": {
-    "title": "Guide complet d’enregistrement et de départ de l’Hostel Brikette à Positano",
-    "description": "Instructions étape par étape sur les horaires d’arrivée, les pièces d’identité requises, la consigne des bagages, les dépôts de garantie et l’assistance au check-out à l’Hostel Brikette de Positano."
+    "title": "Guide du check-in et du check-out à Hostel Brikette (Positano)",
+    "description": "Instructions pas à pas sur les horaires d'arrivée, les exigences d'identification, la consigne à bagages, les dépôts et l'assistance au check-out à Hostel Brikette à Positano."
   },
-  "linkLabel": "Guide complet d’enregistrement et de départ de l’Hostel Brikette à Positano",
+  "linkLabel": "Guide du check-in et du check-out à Hostel Brikette",
   "sections": [
     {
       "id": "checkInRequest",
       "title": "Demande de check-in",
       "body": [
-        "À votre arrivée, veuillez vous présenter à la réception pour commencer votre check-in et recevoir l’attribution de votre chambre."
+        "À votre arrivée, veuillez vous rendre à la réception pour commencer le check-in et recevoir l'attribution de votre chambre.",
+        "Si vous arrivez en ferry, suivez %LINK:ferryDockToBrikette|notre itinéraire du quai au hostel%. Si vous arrivez en bus, utilisez %LINK:chiesaNuovaArrivals|le guide d'arrivée à Chiesa Nuova% pour rejoindre l'entrée."
+      ],
+      "images": [
+        {
+          "src": "/img/checkin-desk.avif",
+          "alt": "Comptoir de réception pour le check-in du hostel.",
+          "caption": "Le check-in commence à la réception du Hostel Brikette."
+        }
       ]
     },
     {
       "id": "earlyArrival",
-      "title": "Arrivée anticipée",
+      "title": "Arrivée tôt",
       "body": [
-        "Si vous arrivez avant 10 h 30 le jour de votre réservation, l’accès à l’auberge n’est pas encore possible."
+        "Si vous arrivez avant 10:30 AM le jour de votre réservation, vous ne pourrez pas encore entrer dans le hostel.",
+        "Profitez de ce temps pour prendre un petit-déjeuner, faire une courte promenade ou planifier la journée en attendant le créneau de check-in."
       ]
     },
     {
       "id": "middayArrival",
-      "title": "Arrivée à midi",
+      "title": "Arrivée en milieu de journée",
       "body": [
-        "Si vous arrivez entre 10 h 30 et 15 h 00, vous pourrez être admis·e comme Visiteur·rice de jour, sous réserve d’accord. Vous pouvez demander la consigne des bagages, sous réserve de disponibilité. Ce service est indépendant de la réservation de votre chambre et possède ses propres conditions."
+        "Si vous arrivez entre 10:30 AM et 3:00 PM, l'entrée peut être autorisée en tant qu'Hôte Temporaire, sous réserve d'approbation. Pendant ce temps, vous pouvez demander une consigne à bagages, sous réserve de disponibilité. Veuillez noter que la consigne à bagages est distincte de votre réservation et possède ses propres conditions.",
+        "Si vous avez besoin d'une option garantie, consultez %LINK:luggageStorage|notre guide de consigne à bagages% avant l'arrivée."
       ]
     },
     {
       "id": "checkInWindow",
-      "title": "Plage horaire de check-in",
+      "title": "Créneau de check-in",
       "body": [
-        "Le check-in est ouvert chaque jour de 15 h 00 à 22 h 30. Durant ce créneau, la procédure standard s’applique."
+        "Vous pouvez effectuer le check-in de 3:00 PM à 10:30 PM chaque jour. Pendant ce créneau, vous suivrez notre procédure standard de check-in."
       ]
     },
     {
       "id": "lateArrival",
       "title": "Arrivée tardive",
       "body": [
-        "Si vous prévoyez d’arriver après la fermeture de la réception à 22 h 30, nous pourrons proposer, sous réserve de disponibilité, une option d’auto-check-in tardif. Les instructions seront envoyées aux coordonnées fournies lors de la réservation. Veillez à ce que votre appareil soit chargé et vos informations exactes ; nous ne pourrons être tenus responsables des problèmes dus à des données erronées ou à des défaillances techniques."
+        "Si vous prévoyez d'arriver après la fermeture de la réception à 10:30 PM, nous pouvons proposer un check-in tardif en libre-service, sous réserve de disponibilité. Nous enverrons les instructions aux coordonnées fournies lors de la réservation. Assurez-vous que votre appareil est chargé et que vos informations sont correctes, car nous ne pouvons pas être responsables des problèmes causés par des informations incorrectes ou des pannes techniques.",
+        "Si vous pensez arriver tard, communiquez votre heure d'arrivée estimée à l'avance afin que nous puissions confirmer la disponibilité du check-in tardif."
       ]
     },
     {
       "id": "necessityOfProcess",
-      "title": "Nécessité du processus complet",
+      "title": "Nécessité du processus complet de check-in",
       "body": [
-        "Vous devez terminer l’intégralité du check-in pour accéder à l’auberge. Dans le cas contraire, la réservation sera annulée et considérée comme « No-Show »."
+        "Vous devez compléter le processus complet de check-in pour entrer dans le hostel. Si vous ne pouvez pas terminer le check-in, votre réservation sera annulée et traitée comme un No Show."
       ]
     },
     {
       "id": "proofOfIdentity",
-      "title": "Justificatif d’identité",
+      "title": "Justificatif d'identité",
       "body": [
-        "Vous devez présenter une pièce d’identité originale et valide (passeport, CNI, permis de conduire ou carte militaire) à votre arrivée. Si aucune pièce n’est présentée avant 22 h 30 le jour prévu, la réservation sera annulée comme « No-Show »."
+        "Vous devez présenter une pièce d'identité originale et valide (passeport, carte d'identité nationale, permis de conduire ou ID militaire) à l'arrivée. Si vous ne fournissez pas un ID valide avant 10:30 PM le jour prévu de check-in, votre réservation sera annulée comme No Show."
       ]
     },
     {
       "id": "paymentBalance",
-      "title": "Solde à payer",
+      "title": "Solde restant",
       "body": [
-        "Tout solde dû doit être réglé intégralement à l’aide d’un moyen de paiement accepté avant la fin du check-in. À défaut, la réservation sera annulée et notée « No-Show »."
+        "Vous devez régler tout solde restant avec un moyen de paiement accepté avant de terminer le check-in. Si vous ne pouvez pas payer la totalité, votre réservation sera annulée et marquée No Show."
       ]
     },
     {
       "id": "keycardLinenDeposit",
-      "title": "Dépôt carte-clé & linge",
+      "title": "Dépôt pour la carte et le linge",
       "body": [
-        "Un dépôt de 10 € en espèces est requis pour la carte-clé et le linge lors du check-in. Il sera remboursé en espèces au check-out, après restitution des deux articles. Les cartes bancaires ne sont pas acceptées pour ce dépôt."
+        "Au check-in, vous devez fournir un dépôt en espèces de 10 € pour la carte et le linge. Ce dépôt est entièrement remboursé en espèces au check-out une fois les deux éléments rendus. Les cartes de crédit ou de débit ne sont pas acceptées pour ce dépôt."
+      ],
+      "images": [
+        {
+          "src": "https://www.retrotouch.co.uk/user/products/large/Boutique%20hotel%20range/Card%20Key/Key%20card%20white.jpg",
+          "alt": "Carte d'hôtel blanche.",
+          "caption": "Gardez votre carte avec vous ; rendez-la au check-out pour récupérer votre dépôt de 10 € en espèces — Photo : RetroTouch (retrotouch.co.uk). Redimensionnée/recadrée."
+        }
       ]
     },
     {
       "id": "checkoutWindow",
-      "title": "Plage horaire de check-out",
+      "title": "Créneau de check-out",
       "body": [
-        "Le check-out s’effectue de 7 h 30 à 10 h 30. Après le check-out, vous ne pourrez plus entrer dans la chambre ni y laisser d’effets personnels."
+        "Le check-out a lieu de 7:30 AM à 10:30 AM. Après le check-out, vous ne pouvez pas retourner dans votre chambre ni laisser d'effets personnels."
       ]
     },
     {
       "id": "earlyCheckout",
       "title": "Check-out anticipé",
       "body": [
-        "Si vous devez partir avant 7 h 30, organisez un check-out anticipé à la réception la veille afin de récupérer votre dépôt en espèces. Déposer la carte-clé sans confirmation entraînera la perte du dépôt."
+        "Si vous devez partir avant 7:30 AM, organisez un check-out anticipé à la réception la veille au soir pour récupérer votre dépôt en espèces. Laisser votre carte sans confirmation du personnel entraîne la perte du dépôt."
       ]
     },
     {
       "id": "lateCheckout",
       "title": "Check-out tardif",
       "body": [
-        "Le check-out tardif n’est pas proposé. Il doit être terminé avant 10 h 30."
+        "Nous ne proposons pas de check-out tardif. Le check-out doit être terminé avant 10:30 AM."
       ]
     },
     {
       "id": "failureToCheckout",
       "title": "Absence de check-out",
       "body": [
-        "Si vous ne libérez pas la chambre à l’heure prévue, nous pourrons retirer vos effets personnels sans responsabilité. Ils pourront être stockés chez un service de portage local à vos frais. Toute intrusion ultérieure sera considérée comme une violation de sécurité."
+        "Le hostel est très souvent complet, les chambres doivent donc être libérées rapidement pour que le ménage prépare l'arrivée des clients.",
+        "Si vous n'avez pas fait le check-out et que vos affaires sont encore dans la chambre après l'heure de check-out, nous pouvons être amenés à libérer la chambre. Nous ferons de notre mieux pour vous contacter d'abord, mais nous pouvons retirer vos affaires et les placer en stockage avec un service local de porteurs. Tous les frais de stockage et de manutention vous seront facturés."
       ]
     },
     {
       "id": "postCheckout",
       "title": "Après le check-out",
       "body": [
-        "Après le check-out, votre réservation prend fin. Vous pouvez rester dans l’auberge en tant que Visiteur·rice de jour jusqu’à 15 h 30. Une consigne des bagages est possible sous réserve de disponibilité et de conditions distinctes."
+        "Après le check-out, votre réservation se termine officiellement. Vous pouvez rester dans le hostel en tant qu'Hôte Temporaire jusqu'à 3:30 PM, avec accès uniquement aux espaces communs (pas d'accès aux chambres). La consigne à bagages peut être demandée sous réserve de disponibilité, avec des conditions séparées.",
+        "Si vous déplacez des bagages lourds après le check-out, envisagez %LINK:porterServices|les services de porteurs% ou consultez %LINK:luggageStorage|notre guide de consigne à bagages% pour explorer la ville les mains libres."
+      ]
+    }
+  ],
+  "lastUpdated": "2026-02-04T00:00:00.000Z",
+  "intro": [
+    "Ce guide explique les étapes de check-in et de check-out à Hostel Brikette afin de planifier à l'avance vos horaires d'arrivée, documents et paiements.",
+    "La plupart des clients font le check-in entre 3:00 PM et 10:30 PM, mais les arrivées tôt peuvent bénéficier d'un accès temporaire et d'une consigne à bagages selon la disponibilité.",
+    "Avant l'arrivée, préparez une pièce d'identité valide, réglez tout solde restant et pensez au dépôt en espèces de 10 € pour la carte et le linge. Le check-out est de 7:30–10:30 AM."
+  ],
+  "tipsTitle": "Conseils rapides",
+  "tips": [
+    "Gardez votre ID et votre moyen de paiement à portée de main avant d'arriver à la réception pour accélérer le check-in.",
+    "Si vous arrivez tôt, sauvegardez %LINK:luggageStorage|le guide de consigne à bagages% pour planifier votre journée sans valises.",
+    "Si vous voyagez avec des bagages lourds depuis le quai, %LINK:porterServices|les services de porteurs% peuvent transporter vos sacs pendant que vous marchez."
+  ],
+  "faqsTitle": "FAQs check-in & check-out",
+  "faqs": [
+    {
+      "q": "Puis-je faire le check-in avant 3:00 PM ?",
+      "a": [
+        "L'accès anticipé est limité et dépend de la disponibilité. Vous pouvez demander un accès en tant qu'Hôte Temporaire et la consigne à bagages, mais le check-in complet commence à 3:00 PM."
+      ]
+    },
+    {
+      "q": "Que se passe-t-il si j'oublie mon ID ?",
+      "a": [
+        "Nous avons besoin d'un ID original valide pour terminer le check-in. Sans lui, votre réservation peut être annulée comme No Show."
+      ]
+    },
+    {
+      "q": "Puis-je laisser mes bagages après le check-out ?",
+      "a": [
+        "Nous pouvons généralement garder les bagages pour une durée limitée selon la place. Consultez %LINK:luggageStorage|notre guide de consigne à bagages% pour les détails et alternatives."
       ]
     }
   ]

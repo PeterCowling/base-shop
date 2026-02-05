@@ -1,43 +1,50 @@
 {
   "seo": {
-    "title": "Zmiany i anulacje rezerwacji w hostelu w Positano",
-    "description": "Szczegółowe wskazówki dotyczące opcji anulacji, zasad no‑show, modyfikacji rezerwacji, przenoszenia rezerwacji oraz rezerwacji przedpłaconych bezzwrotnych w jedynym hostelu w Positano."
+    "title": "Zmiana i Anulowanie Rezerwacji w Hostelu w Positano",
+    "description": "Szczegółowe wskazówki dotyczące opcji anulowania, zasad niestawiennictwa, sposobu modyfikacji rezerwacji, zasad przenoszenia rezerwacji oraz przedpłaconych, bezzwrotnych rezerwacji w jedynym hostelu w Positano."
   },
-  "linkLabel": "Zmiany i anulacje rezerwacji w hostelu w Positano",
+  "linkLabel": "Zmiana i Anulowanie Rezerwacji w Hostelu w Positano",
   "sections": [
     {
       "id": "noShowCharges",
-      "title": "Opłaty za no‑show",
+      "title": "Opłaty za Niestawiennictwo",
       "body": [
-        "Jeśli nie zameldowałeś się do 22:30 (22:30) pierwszego dnia rezerwacji, Twoja rezerwacja zostanie automatycznie oznaczona jako „brak”.Zostaniesz obciążony wyższym z pierwszego nocnego pobytu lub niekreśliowego depozytu.Jeśli posiadasz wiele rezerwacji, każdy może przeprowadzić własny okres wypowiedzenia i opłat."
+        "Jeśli nie zameldowałeś się do godziny 22:30 pierwszego dnia rezerwacji, Twoja rezerwacja zostanie automatycznie oznaczona jako 'Niestawiennictwo'. Zostanie Ci naliczona wyższa kwota: pierwszej nocy pobytu lub Twojej bezzwrotnej kaucji. Jeśli masz wiele rezerwacji, każda może mieć własny okres wypowiedzenia anulowania i opłaty."
       ]
     },
     {
       "id": "cancellationsPolicy",
-      "title": "Polityka anulacji",
+      "title": "Zasady Anulowania",
       "body": [
-        "Wyślij wszystkie prośby o anulowanie na piśmie na nasz oficjalny adres e -mail (%URL:mailto:hostelpositano@gmail.com|hostelpositano@gmail.com%).Okres anulowania rozpoczyna się, gdy hostel otrzymuje Twój e-mail i kończy się na 00:01 w zaplanowanym terminie zameldowania.Twoja rezerwacja pozostaje aktywna, dopóki nie otrzymasz potwierdzenia e -maila, że ​​anulowanie zostało przetworzone.Oddzielna opłata administracyjna anulowania-zwykle 15% ceny rezerwacji z wyłączeniem prowizji innych firm-zostanie obciążona.Hostel może anulować rezerwację bez pisemnego żądania, jeśli nie zameldujesz się przed zakończeniem przyjęcia w dniu przyjazdu, odejść wcześnie bez odpowiedniego powiadomienia lub naruszać zasady hostelu.Jeśli nie dostaniesz wystarczającego powiadomienia, poniesiesz opłaty równoważne brakowi show."
+        "Wszystkie wnioski o anulowanie przesyłaj pisemnie na nasz oficjalny adres e-mail (%URL:mailto:hostelpositano@gmail.com|hostelpositano@gmail.com%). Okres anulowania rozpoczyna się, gdy hostel otrzyma Twój e-mail i kończy się o godzinie 00:01 w dniu planowanego zameldowania. Twoja rezerwacja pozostaje aktywna do momentu otrzymania potwierdzenia e-mailem, że anulowanie zostało przetworzone. Zostanie naliczona oddzielna opłata administracyjna za anulowanie – zazwyczaj 15% ceny rezerwacji z wyłączeniem prowizji stron trzecich. Hostel może anulować Twoją rezerwację bez pisemnej prośby, jeśli nie zameldowałeś się przed zamknięciem recepcji w dniu przyjazdu, wyjedziesz wcześniej bez odpowiedniego powiadomienia lub naruszysz zasady hostelu. Jeśli nie zapewnisz wystarczającego wypowiedzenia, poniesiesz opłaty równoważne Niestawiennistu."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/f/f4/Man_with_smartphone_and_laptop_%28Unsplash%29.jpg",
+          "alt": "Osoba używająca smartfona i laptopa",
+          "caption": "E-mail to najszybszy sposób na uzyskanie pisemnego zapisu zmian lub anulowań."
+        }
       ]
     },
     {
       "id": "changingConfirmedBookings",
-      "title": "Zmiana potwierdzonych rezerwacji",
+      "title": "Zmiana Potwierdzonych Rezerwacji",
       "body": [
-        "Istniejących rezerwacji nie można bezpośrednio modyfikować;Zamiast tego są one całkowicie zastąpione nowymi rezerwacjami.Wyślij prośbę o zmianę na nasz oficjalny adres e -mail w wymaganym okresie zawiadomienia.Po zatwierdzeniu zmiany otrzymasz wiadomość e -mail.Wszystkie zmiany podlegają dostępności pokoju i innymi warunkami.Jeśli skrócisz lub przedłużysz swój pobyt, regulacja zostanie obsługiwana jako żądanie anulowania lub przedłużenia, a każde rozszerzenie jest traktowane jako nowa rezerwacja.Jeśli odejdziesz przed potwierdzoną datą wyjazdu bez otrzymania oficjalnego potwierdzenia anulowania, oryginalne warunki rezerwacji będą obowiązywać."
+        "Istniejące rezerwacje nie mogą być bezpośrednio modyfikowane; zamiast tego są całkowicie zastępowane nowymi rezerwacjami. Wyślij prośbę o zmianę e-mailem na nasz oficjalny adres w wymaganym okresie wypowiedzenia. Otrzymasz e-mail po zatwierdzeniu zmiany. Wszystkie zmiany podlegają dostępności pokoi i innym warunkom. Jeśli skrócisz lub przedłużysz pobyt, dostosowanie będzie traktowane jako prośba o anulowanie lub przedłużenie, a każde przedłużenie jest traktowane jako nowa rezerwacja. Jeśli wyjedziesz przed potwierdzonym terminem wyjazdu bez otrzymania oficjalnego potwierdzenia anulowania, pierwotne warunki rezerwacji pozostaną w mocy."
       ]
     },
     {
       "id": "bookingTransferability",
-      "title": "Przenoszenie rezerwacji",
+      "title": "Przenoszalność Rezerwacji",
       "body": [
-        "Twoja rezerwacja musi być pod Twoim imieniem na cały pobyt.Przeniesienie rezerwacji lub zmiana nazwy gościa jest niedozwolone.Jeśli ktoś spróbuje zameldować się w ramach przeniesionej rezerwacji, rezerwacja zostanie natychmiast anulowana, a będziesz odpowiedzialny finansowo za pełną kwotę."
+        "Twoja rezerwacja musi pozostać na Twoje nazwisko przez cały pobyt. Przenoszenie rezerwacji lub zmiana nazwiska gościa nie jest dozwolona. Jeśli ktoś spróbuje zameldować się na podstawie przeniesionej rezerwacji, rezerwacja zostanie natychmiast anulowana, a Ty pozostaniesz finansowo odpowiedzialny za pełną kwotę."
       ]
     },
     {
       "id": "prepaidNonRefundableBookings",
-      "title": "Rezerwacje przedpłacone, bezzwrotne",
+      "title": "Przedpłacone, Bezzwrotne Rezerwacje",
       "body": [
-        "Wstępnie opłacane, niezmienne zastrzeżenia wymagają pełnej płatności w momencie rezerwacji.Jeśli płatność nie przejdzie, rezerwacja zostanie anulowana automatycznie.Te rezerwacje nie podlegają zwrotowi, nawet jeśli anulujesz lub nie pojawiasz się.Wszelkie rozszerzenie pobytu zostanie przetworzone jako oddzielna, nowa rezerwacja niezrównana."
+        "Przedpłacone, bezzwrotne rezerwacje wymagają pełnej płatności w momencie rezerwacji. Jeśli płatność nie przejdzie, Twoja rezerwacja zostanie automatycznie anulowana. Te rezerwacje nie podlegają zwrotowi, nawet jeśli anulujesz lub się nie stawisz. Każde przedłużenie pobytu będzie przetwarzane jako oddzielna, nowa bezzwrotna rezerwacja."
       ]
     }
   ]

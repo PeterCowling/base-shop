@@ -166,12 +166,13 @@
     },
     {
       "id": "logistics",
-      "title": "怎么去海滩、怎么回来",
+      "title": "前往和离开海滩的方式",
       "body": [
-        "从青旅出发，最快的思路通常是：先走到（或坐车下到）Spiaggia Grande，然后再决定是沿海边步道继续去Fornillo、上接驳船，还是就待在主海滩。",
-        "如果你要去带船接驳的海滩俱乐部（Arienzo或Laurito），通常从Spiaggia Grande出发最省事：可以早点排队，也能少爬台阶。",
-        "2026年夏天要考虑上坡的炎热：回去前先把水装满；如果累了，用内部小巴代替一路爬完台阶。",
-        "做一日游（Praiano、Amalfi、Sorrento）前，先确认最后一班返程。渡轮在正常运行时最舒服，但公交是备选。如果海况不好导致渡轮取消，要预留更多时间并保持行程弹性。路上带点零食。"
+        "每个海滩都有不同的交通选择，因此在出发前请查看具体指南。以下是最有用的方向指南的快速链接：",
+        "波西塔诺海滩：%LINK:positanoMainBeachWalkDown|步行至大海滩% • %LINK:positanoMainBeachBusDown|乘巴士至大海滩% • %LINK:hostelBriketteToFornilloBeach|步行至福尔尼洛% • %LINK:hostelBriketteToArienzoBus|乘巴士至阿里恩佐% • %LINK:lauritoBeachBusDown|乘巴士至劳里托%",
+        "返回路线：%LINK:positanoMainBeachWalkBack|从大海滩步行返回% • %LINK:positanoMainBeachBusBack|从大海滩乘巴士返回% • %LINK:fornilloBeachToBrikette|从福尔尼洛步行返回% • %LINK:arienzoBeachBusBack|从阿里恩佐乘巴士返回% • %LINK:lauritoBeachBusBack|从劳里托乘巴士返回%",
+        "一日游海滩：%LINK:hostelBriketteToFiordoDiFuroreBus|富罗雷峡湾% • %LINK:gavitellaBeachGuide|加维泰拉（普莱亚诺）% • %LINK:marinaDiPraiaBeaches|普拉亚海滨% • %LINK:reginaGiovannaBath|雷吉纳乔万娜（索伦托）%",
+        "一般提示：在2026年夏季，为爬山的炎热做好准备——在返回前装满水，如果累了就使用内部巴士。对于一日游，在承诺之前检查最后返回选项（渡轮或巴士），并为旅程准备零食。如果海况恶劣或渡轮取消，请规划额外时间并保持日程灵活。"
       ],
       "images": [
         {

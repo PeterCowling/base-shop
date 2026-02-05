@@ -166,12 +166,13 @@
     },
     {
       "id": "logistics",
-      "title": "해변 오가는 법",
+      "title": "해변 오가는 방법",
       "body": [
-        "호스텔에서 가장 빠른 흐름은 보통 이렇습니다: Spiaggia Grande까지 내려가거나(도보/버스) → 그다음 Fornillo로 산책로를 따라 갈지, 셔틀보트를 탈지, 메인 해변에 남을지 결정하기.",
-        "보트 이동이 포함된 비치클럽(Arienzo 또는 Laurito)을 가는 날은 Spiaggia Grande에서 시작하는 게 편한 경우가 많아요. 일찍 줄을 설 수 있고 계단을 피할 수 있습니다.",
-        "2026년 여름엔 오르막 더위를 고려하세요. 올라가기 전 물을 채우고, 힘들면 모든 계단을 걷기보다 내부 버스를 이용하세요.",
-        "당일치기(Praiano, Amalfi, Sorrento)는 결정하기 전에 마지막 귀가 옵션을 확인하세요. 페리는 운항할 때 가장 편하지만, 버스가 백업입니다. 바다가 거칠어 페리가 취소되면 시간을 더 잡고 일정은 유연하게. 이동 중 먹을 간식도 챙기세요."
+        "각 해변은 접근 옵션이 다르니 출발 전에 해당 가이드를 확인하세요. 가장 유용한 방향 가이드로 가는 빠른 링크들:",
+        "포지타노 해변: %LINK:positanoMainBeachWalkDown|Spiaggia Grande로 도보% • %LINK:positanoMainBeachBusDown|Spiaggia Grande로 버스% • %LINK:hostelBriketteToFornilloBeach|Fornillo로 도보% • %LINK:hostelBriketteToArienzoBus|Arienzo로 버스% • %LINK:lauritoBeachBusDown|Laurito로 버스%",
+        "돌아오는 경로: %LINK:positanoMainBeachWalkBack|Spiaggia Grande에서 도보로 돌아오기% • %LINK:positanoMainBeachBusBack|Spiaggia Grande에서 버스로 돌아오기% • %LINK:fornilloBeachToBrikette|Fornillo에서 도보로 돌아오기% • %LINK:arienzoBeachBusBack|Arienzo에서 버스로 돌아오기% • %LINK:lauritoBeachBusBack|Laurito에서 버스로 돌아오기%",
+        "당일치기 해변: %LINK:hostelBriketteToFiordoDiFuroreBus|Fiordo di Furore% • %LINK:gavitellaBeachGuide|Gavitella (Praiano)% • %LINK:marinaDiPraiaBeaches|Marina di Praia% • %LINK:reginaGiovannaBath|Regina Giovanna (Sorrento)%",
+        "일반 팁: 2026년 여름엔 오르막 더위를 고려—올라가기 전 물을 채우고, 힘들면 내부 버스를 이용하세요. 당일치기는 결정하기 전에 마지막 귀가 옵션(페리/버스)을 확인하고, 이동 중 간식도 챙기세요. 바다가 거칠거나 페리가 취소되면 시간을 더 잡고 일정은 유연하게 유지하세요."
       ],
       "images": [
         {

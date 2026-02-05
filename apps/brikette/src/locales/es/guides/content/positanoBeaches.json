@@ -14,16 +14,46 @@
     "title": "Comparativa de playas en la Costa Amalfitana"
   },
   "toc": [
-    { "href": "#overview", "label": "Cómo elegir" },
-    { "href": "#beach-day-checklist", "label": "Checklist para la playa" },
-    { "href": "#positano-beaches", "label": "Playas de Positano" },
-    { "href": "#praiano-beaches", "label": "Playas de Praiano" },
-    { "href": "#furore-beaches", "label": "Furore" },
-    { "href": "#sorrento-beaches", "label": "Sorrento" },
-    { "href": "#amalfi-beaches", "label": "Amalfi" },
-    { "href": "#logistics", "label": "Logística" },
-    { "href": "#comparison-table", "label": "Tabla comparativa" },
-    { "href": "#faqs", "label": "Preguntas frecuentes" }
+    {
+      "href": "#overview",
+      "label": "Cómo elegir"
+    },
+    {
+      "href": "#beach-day-checklist",
+      "label": "Checklist para la playa"
+    },
+    {
+      "href": "#positano-beaches",
+      "label": "Playas de Positano"
+    },
+    {
+      "href": "#praiano-beaches",
+      "label": "Playas de Praiano"
+    },
+    {
+      "href": "#furore-beaches",
+      "label": "Furore"
+    },
+    {
+      "href": "#sorrento-beaches",
+      "label": "Sorrento"
+    },
+    {
+      "href": "#amalfi-beaches",
+      "label": "Amalfi"
+    },
+    {
+      "href": "#logistics",
+      "label": "Logística"
+    },
+    {
+      "href": "#comparison-table",
+      "label": "Tabla comparativa"
+    },
+    {
+      "href": "#faqs",
+      "label": "Preguntas frecuentes"
+    }
   ],
   "sections": [
     {
@@ -136,12 +166,13 @@
     },
     {
       "id": "logistics",
-      "title": "Cómo ir y volver de la playa",
+      "title": "Cómo llegar y regresar de las playas",
       "body": [
-        "Desde el hostel, la forma más rápida suele ser: bajar a Spiaggia Grande (a pie o en bus), y decidir si seguir por el paseo hasta Fornillo, coger un barco lanzadera o quedarse en la playa principal.",
-        "Si haces un día de beach club con traslado en barco (Arienzo o Laurito), suele ser más fácil empezar en Spiaggia Grande para hacer cola temprano y evitar tantas escaleras.",
-        "Verano 2026: cuenta con calor en las subidas. Rellena agua antes de volver arriba y, si estás cansado, usa el bus interno en lugar de subir todo andando.",
-        "Para excursiones (Praiano, Amalfi, Sorrento), comprueba la última opción de regreso antes de comprometerte. Los ferries son la mejor opción cuando funcionan, pero el bus es el plan B. Si el mar está movido o cancelan ferries, calcula más tiempo y mantén el plan flexible. Lleva snacks para el trayecto."
+        "Cada playa tiene diferentes opciones de acceso, así que consulta la guía específica antes de salir. Aquí tienes enlaces rápidos a las guías de direcciones más útiles:",
+        "Playas de Positano: %LINK:positanoMainBeachWalkDown|Caminar a Spiaggia Grande% • %LINK:positanoMainBeachBusDown|Bus a Spiaggia Grande% • %LINK:hostelBriketteToFornilloBeach|Caminar a Fornillo% • %LINK:hostelBriketteToArienzoBus|Bus a Arienzo% • %LINK:lauritoBeachBusDown|Bus a Laurito%",
+        "Rutas de regreso: %LINK:positanoMainBeachWalkBack|Caminar de regreso desde Spiaggia Grande% • %LINK:positanoMainBeachBusBack|Bus de regreso desde Spiaggia Grande% • %LINK:fornilloBeachToBrikette|Caminar de regreso desde Fornillo% • %LINK:arienzoBeachBusBack|Bus de regreso desde Arienzo% • %LINK:lauritoBeachBusBack|Bus de regreso desde Laurito%",
+        "Playas para excursiones de un día: %LINK:hostelBriketteToFiordoDiFuroreBus|Fiordo di Furore% • %LINK:gavitellaBeachGuide|Gavitella (Praiano)% • %LINK:marinaDiPraiaBeaches|Marina di Praia% • %LINK:reginaGiovannaBath|Regina Giovanna (Sorrento)%",
+        "Consejos generales: En verano de 2026, planifica para el calor en las subidas: rellena agua antes de regresar y usa el autobús interno si estás cansado. Para excursiones de un día, verifica la última opción de regreso (ferry o autobús) antes de comprometerte y lleva snacks para el viaje. Si el mar está agitado o los ferries están cancelados, planifica tiempo extra y mantén tu horario flexible."
       ],
       "images": [
         {
@@ -160,15 +191,42 @@
     }
   ],
   "itemList": [
-    { "name": "Fornillo", "note": "Favorita local con tumbonas desde 15 € y dos zonas libres." },
-    { "name": "Spiaggia Grande", "note": "Playa principal con vistas icónicas, clubs caros y zona libre central." },
-    { "name": "Arienzo", "note": "Terrazas soleadas: 300 escalones o taxi acuático del club." },
-    { "name": "Laurito", "note": "Cala pequeña con barcos lanzadera de Da Adolfo y Villa Tre Ville." },
-    { "name": "Gavitella", "note": "Plataforma en Praiano perfecta para el aperitivo al atardecer (solo club)." },
-    { "name": "Marina di Praia", "note": "Cala de pescadores con pequeño tramo libre y lidos." },
-    { "name": "Fiordo di Furore", "note": "Cala espectacular bajo el puente: gratis pero con poco espacio." },
-    { "name": "Regina Giovanna Bath", "note": "Baño escondido en Sorrento: gratis, pero trae suministros." },
-    { "name": "Amalfi Marina Grande", "note": "Fila de lidos clásicos frente al Duomo." }
+    {
+      "name": "Fornillo",
+      "note": "Favorita local con tumbonas desde 15 € y dos zonas libres."
+    },
+    {
+      "name": "Spiaggia Grande",
+      "note": "Playa principal con vistas icónicas, clubs caros y zona libre central."
+    },
+    {
+      "name": "Arienzo",
+      "note": "Terrazas soleadas: 300 escalones o taxi acuático del club."
+    },
+    {
+      "name": "Laurito",
+      "note": "Cala pequeña con barcos lanzadera de Da Adolfo y Villa Tre Ville."
+    },
+    {
+      "name": "Gavitella",
+      "note": "Plataforma en Praiano perfecta para el aperitivo al atardecer (solo club)."
+    },
+    {
+      "name": "Marina di Praia",
+      "note": "Cala de pescadores con pequeño tramo libre y lidos."
+    },
+    {
+      "name": "Fiordo di Furore",
+      "note": "Cala espectacular bajo el puente: gratis pero con poco espacio."
+    },
+    {
+      "name": "Regina Giovanna Bath",
+      "note": "Baño escondido en Sorrento: gratis, pero trae suministros."
+    },
+    {
+      "name": "Amalfi Marina Grande",
+      "note": "Fila de lidos clásicos frente al Duomo."
+    }
   ],
   "faqs": [
     {

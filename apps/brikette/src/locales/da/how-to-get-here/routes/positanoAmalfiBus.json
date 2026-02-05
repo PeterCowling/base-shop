@@ -24,12 +24,12 @@
     },
     "timetable": {
       "title": "Sådan læser du SITA-køreplanen",
-      "body": "Den officielle køreplan viser stoppene som rækker og afgangene som bogstavkolonner. Find rækkerne for Positano og Amalfi i den samme bogstavkolonne for din rejsedag.",
+      "body": "Den officielle køreplan viser stoppesteder som rækker og afgange som kolonner med bogstaver. Find Positano og Amalfi i samme bogstavkolonne for din rejsedag.",
       "list": [
-        "Rækkerne i den første kolonne viser hvert stop på ruten.",
-        "Kolonnerne svarer til planlagte afgange markeret med bogstaver.",
-        "Rejser du mandag til lørdag? Brug kolonnerne ‘F’ og ‘G’.",
-        "Rejser du søndag eller på en helligdag? Brug kolonnerne ‘G’ og ‘H’."
+        "Rækkerne i første kolonne viser hvert stoppested langs ruten.",
+        "Kolonnerne svarer til planlagte afgange mærket med bogstaver.",
+        "Rejser du mandag til lørdag? Brug kolonnerne 'F' og 'G'.",
+        "Rejser du søndag eller på en helligdag? Brug kolonnerne 'G' og 'H'."
       ],
       "link": "Se den seneste køreplan på <link>Positano.com</link>.",
       "linkHref": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result"

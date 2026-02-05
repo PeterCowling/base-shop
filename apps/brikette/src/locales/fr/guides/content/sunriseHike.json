@@ -1,76 +1,138 @@
 {
   "seo": {
-    "title": "Hostel Brikette sunrise hike",
-    "description": "Itinéraire avant l'aube depuis l'auberge Brikette jusqu'à un point de vue calme au sommet d'une falaise avec une vue imprenable sur le lever du soleil sur Positano."
+    "title": "Randonnée au lever du soleil depuis Hostel Brikette (Positano)",
+    "description": "Une courte randonnée avant l'aube depuis Hostel Brikette jusqu'à un point de vue tranquille au-dessus de Positano, avec des photos de navigation dans le bon ordre."
   },
-  "linkLabel": "Hostel Brikette sunrise hike",
+  "linkLabel": "Randonnée au lever du soleil : Admirez l'aube sur Positano",
+  "lastUpdated": "2026-02-04",
   "intro": [
-    "Head out before dawn to catch the first light over the Amalfi Coast from a quiet vantage point above Positano.",
-    "This walk starts at Hostel Brikette and takes around 25 minutes including the stair climb to the viewpoint."
+    "Si vous souhaitez le lever de soleil le plus simple, vous pouvez observer l'aube depuis la terrasse commune de l'auberge, le soleil se levant à gauche (lorsque vous regardez vers la mer).",
+    "Si vous souhaitez un panorama plus large et un moment plus calme au-dessus de la ville, suivez cette courte randonnée dans les collines jusqu'à un point de vue sur une falaise au-dessus de Positano."
   ],
   "sections": [
     {
-      "id": "overview",
-      "title": "What is the sunrise hike?",
+      "id": "what-is",
+      "title": "Qu'est-ce que la randonnée au lever du soleil ?",
       "body": [
-        "If you prefer to stay put, you can watch the sunrise from the hostel terrace as it rises to the left of the building.",
-        "For a wider panorama, follow this short hike to a nearby cliff where you can watch the sun clear the horizon and light up the town below."
+        "Il s'agit d'une courte randonnée aller-retour avant l'aube depuis Hostel Brikette jusqu'à un petit point de vue au-dessus de Positano.",
+        "Si vous souhaitez une option de montagne plus longue, %LINK:santaMariaDelCastelloHike|Santa Maria del Castello% est une excellente alternative, mais l'itinéraire ci-dessous est le moyen le plus rapide d'obtenir une vue spectaculaire sur le lever du soleil sans s'engager dans une randonnée d'une journée complète."
       ]
     },
     {
-      "id": "reach-stairs",
-      "title": "Reach the stairway trailhead",
+      "id": "before-you-go",
+      "title": "Avant de partir (il fera noir)",
       "body": [
-        "Exit the hostel through the main door and walk down to Via Pasitea.",
-        "Turn right towards Sorrento and follow the road for roughly 350 metres.",
-        "Look for a flight of stairs on your left heading uphill — the first section is paved and has a handrail."
+        "Apportez une lampe de téléphone ou une lampe frontale, et gardez vos mains libres (surtout dans les escaliers).",
+        "Portez des chaussures avec adhérence — la première partie est pavée, mais le sentier forestier peut être meuble ou humide.",
+        "Partez suffisamment tôt pour arriver 10 à 15 minutes avant le lever du soleil afin de pouvoir vous installer, trouver votre place et profiter de la première lumière."
       ]
     },
     {
-      "id": "climb-to-viewpoint",
-      "title": "Climb to the viewpoint",
+      "id": "step-1",
+      "title": "Étape 1 : Marchez de l'auberge jusqu'à l'escalier (≈350 m)",
       "body": [
-        "Take the stairs all the way up until you reach a small house at the top of the initial climb.",
-        "At the house, turn left to join the woodland trail.",
-        "When the path forks, take the right-hand branch and continue climbing through the trees.",
-        "As the path opens up and you can see the sea directly ahead, bear left.",
-        "Continue around the rocks to reach the exposed vantage point with sweeping sunrise views."
+        "Sortez de l'auberge par la porte principale et descendez jusqu'à la route.",
+        "Tournez vers Sorrento et marchez environ **350 mètres** le long de la route principale jusqu'à ce que vous atteigniez un escalier qui monte depuis la route."
       ]
     },
     {
-      "id": "enjoy-sunrise",
-      "title": "Enjoy the sunrise safely",
+      "id": "step-2",
+      "title": "Étape 2 : Montez jusqu'à la maison, puis tournez à gauche",
       "body": [
-        "The final rocks can be slick with morning dew; move carefully and avoid standing on loose edges.",
-        "From the main ledge you can watch the sun crest the horizon, or scramble a little higher for photos once there is enough light."
+        "Montez l'escalier jusqu'en haut jusqu'à atteindre la vieille maison blanche illustrée ci-dessous.",
+        "À la maison, **tournez à gauche** pour rejoindre le sentier forestier."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/02-house.jpg",
+          "alt": "Vieille maison blanche à côté de l'escalier sur l'itinéraire de randonnée au lever du soleil au-dessus de Positano",
+          "caption": "Ce bâtiment marque la fin de la montée de l'escalier ; tournez à gauche ici pour entrer dans le sentier forestier.",
+          "width": 876,
+          "height": 530
+        }
+      ]
+    },
+    {
+      "id": "step-3",
+      "title": "Étape 3 : Suivez le sentier forestier jusqu'au point de vue",
+      "body": [
+        "Suivez le sentier forestier qui monte doucement en s'éloignant de la maison.",
+        "Lorsque le sentier bifurque, prenez la branche de **droite**.",
+        "Vous atteindrez finalement un point où les arbres s'ouvrent et vous pouvez voir la mer droit devant vous. De là, dirigez-vous vers votre **gauche**.",
+        "Ce chemin de gauche vous amène au point de vue. Vous pouvez grimper prudemment sur les rochers pour obtenir un perchoir plus haut, ou rester à l'endroit principal pour une vue stable."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/03-viewpoint.jpg",
+          "alt": "Vue de carte aérienne montrant les derniers virages sur l'itinéraire de randonnée au lever du soleil vers le point de vue au-dessus de Positano",
+          "caption": "Utilisez cette vue aérienne pour confirmer le dernier virage à gauche vers le point de vue après que le sentier s'ouvre sur la mer.",
+          "width": 677,
+          "height": 600
+        }
+      ]
+    },
+    {
+      "id": "share",
+      "title": "Partagez ce guide (QR)",
+      "body": [
+        "Si vous partez avec des amis, vous pouvez utiliser ce code QR pour partager rapidement le guide sur un autre téléphone."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/01-qr.png",
+          "alt": "Code QR liant au guide de randonnée au lever du soleil de Hostel Brikette",
+          "width": 450,
+          "height": 450
+        }
       ]
     }
   ],
-  "tips": [
-    "Allow around 25 minutes from the hostel to the viewpoint and aim to arrive 10 minutes before the posted sunrise time.",
-    "Bring a headlamp or phone torch — the stair sections are dark before dawn.",
-    "Wear shoes with good grip and pack a layer; sea breezes make early mornings feel cooler."
+  "essentialsTitle": "L'essentiel",
+  "essentials": [
+    "Lampe frontale ou lampe de téléphone (plus une batterie chargée).",
+    "Chaussures avec adhérence et une couche légère — il peut faire frais et venteux avant l'aube.",
+    "Eau et une petite collation si vous prévoyez de vous asseoir et de regarder le lever du soleil."
   ],
+  "tipsTitle": "Timing intelligent",
+  "tips": [
+    "Faites une vérification rapide des prévisions : le vent et les nuages bas peuvent cacher le lever du soleil même lors de journées par ailleurs claires.",
+    "Si vous n'êtes pas sûr d'un carrefour dans l'obscurité, arrêtez-vous et confirmez votre orientation plutôt que de deviner."
+  ],
+  "warningsTitle": "Notes de sécurité",
+  "warnings": [
+    "Allez lentement dans les escaliers et gardez vos mains libres — il est facile de faire un faux pas en faible lumière.",
+    "Si le sentier semble glissant après la pluie, envisagez de regarder depuis la terrasse de l'auberge à la place."
+  ],
+  "steps": [
+    {
+      "name": "Marchez jusqu'à l'escalier",
+      "text": "De l'auberge, marchez ~350 m vers Sorrento sur la route principale jusqu'à ce que vous repériez l'escalier qui monte."
+    },
+    {
+      "name": "Montez jusqu'à la maison",
+      "text": "Suivez les escaliers jusqu'à la vieille maison blanche, puis tournez à gauche sur le sentier forestier."
+    },
+    {
+      "name": "Prenez la branche de droite",
+      "text": "Lorsque le sentier forestier bifurque, restez à droite et continuez jusqu'à ce que vous puissiez voir la mer."
+    },
+    {
+      "name": "Tournez à gauche vers le point de vue",
+      "text": "Après que le sentier s'ouvre sur la mer, dirigez-vous à gauche pour atteindre le point de vue (grimpez prudemment si vous voulez un perchoir plus haut)."
+    }
+  ],
+  "faqsTitle": "FAQ",
   "faqs": [
     {
-      "q": "Can I just watch the sunrise from the hostel?",
+      "q": "Puis-je simplement regarder le lever du soleil depuis l'auberge ?",
       "a": [
-        "Yes. The terrace faces east and you can see the sun rise to the left of the building without leaving the property.",
-        "The hike is for guests who want a wider panorama or photos without foreground buildings."
+        "Oui — la terrasse de l'auberge est l'option la plus simple et le soleil se lève à gauche du bâtiment lorsque vous faites face à la mer."
       ]
     },
     {
-      "q": "Is the trail marked or difficult to follow?",
+      "q": "Combien de temps dure la randonnée ?",
       "a": [
-        "The route follows local stairs and an informal woodland trail. There are no signposts, so bring a phone with offline maps or follow these instructions closely.",
-        "In the dark, walk slowly and use a torch to pick out uneven steps and tree roots."
-      ]
-    },
-    {
-      "q": "What should I bring?",
-      "a": [
-        "Wear trainers or hiking shoes with grip, carry water, and pack a light layer for the breeze.",
-        "If you plan to stay for sunrise photos, consider a tripod or phone stand."
+        "C'est un itinéraire court, mais le timing dépend de votre rythme et du temps que vous passez au point de vue. Prévoyez suffisamment de temps pour arriver 10 à 15 minutes avant le lever du soleil."
       ]
     }
   ]

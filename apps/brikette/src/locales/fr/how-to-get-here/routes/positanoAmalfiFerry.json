@@ -1,54 +1,72 @@
 {
-  "externalLinks": {
-    "positano": "https://www.positano.com/en/ferry-schedule",
-    "travelmar": "https://www.travelmar.it/en/home"
+  "meta": {
+    "title": "Positano vers Amalfi en ferry | Hostel Brikette",
+    "description": "Trajet détaillé en ferry de Positano à Amalfi : billets, embarquement à Spiaggia Grande, horaires et arrivée."
   },
   "hero": {
-    "description": "Suivez ces étapes pour voyager de Positano à Amalfi en ferry. Vous trouverez des conseils sur les billets, le point d'embarquement à Positano, ce qui vous attend à l'arrivée et des liens vers les horaires en direct.",
     "eyebrow": "Guide de voyage Hostel Brikette",
-    "title": "Positano vers Amalfi — ferry"
+    "title": "Positano vers Amalfi — ferry",
+    "description": "Suivez ces étapes pour voyager de Positano à Amalfi en ferry. Vous trouverez des conseils sur les billets, le point d'embarquement à Positano, ce qui vous attend à l'arrivée et des liens vers les horaires en direct."
   },
-  "meta": {
-    "description": "Trajet détaillé en ferry de Positano à Amalfi : billets, embarquement à Spiaggia Grande, horaires et arrivée.",
-    "title": "Positano vers Amalfi en ferry | Hostel Brikette"
+  "tip": {
+    "label": "Astuce",
+    "copy": "Besoin d'autres options de transport ? Ouvrez la page <link>Comment venir</link> pour les bus, itinéraires combinés et transferts depuis l'aéroport."
   },
   "sections": {
-    "amalfiArrival": {
-      "points": [
-        "Les bateaux accostent aux quais du front de mer d'Amalfi près de la Piazza Flavio Gioia.",
-        "Le centre historique et la promenade se trouvent juste à côté du port.",
-        "Pour les bus en correspondance (par exemple vers Ravello ou Sorrente), suivez les panneaux vers l'arrêt SITA près du front de mer."
-      ],
-      "title": "Arrivée à Amalfi"
-    },
     "overview": {
+      "title": "Vue d'ensemble du trajet",
       "points": [
         "Des ferries saisonniers relient Positano et Amalfi avec une vue panoramique sur la côte.",
         "Les services varient selon la saison et la météo ; vérifiez toujours l'horaire le jour du départ.",
         "Prévoyez du temps supplémentaire en haute saison pour les files d'attente sur la jetée."
-      ],
-      "title": "Vue d'ensemble du trajet"
-    },
-    "positanoPier": {
-      "points": [
-        "Les départs se font depuis la jetée principale de Positano sur la Spiaggia Grande.",
-        "Les guichets des opérateurs bordent le front de mer ; la signalisation affiche le prochain départ pour chaque compagnie.",
-        "Vérifiez le bon quai sur votre billet ; le personnel peut vous orienter en cas de doute."
-      ],
-      "title": "Où embarquer à Positano"
+      ]
     },
     "tickets": {
+      "title": "Billets et horaires",
       "intro": "Consultez les derniers horaires et tarifs sur <travelmar>Travelmar</travelmar> et <positano>Positano.com — Horaires des ferries</positano>.",
       "points": [
         "Achetez vos billets en ligne à l'avance en haute saison ou directement aux guichets des opérateurs sur le quai.",
         "Arrivez 15 à 20 minutes avant le départ pour échanger vos bons et faire la queue pour l'embarquement.",
-        "Gardez votre billet ou code QR à portée de main pour les contrôles du personnel."
-      ],
-      "title": "Billets et horaires"
+        "Faites une capture d'écran de votre code QR — le signal peut être instable sur la plage et sur la jetée.",
+        "Si vous voyagez avec des bagages volumineux, demandez au personnel les règles concernant les bagages et où ranger vos sacs à bord."
+      ]
+    },
+    "gettingToPier": {
+      "title": "Se rendre à la jetée depuis l'Hostel Brikette",
+      "intro": "Si vous partez de l'auberge, utilisez <dockWalk>notre guide pas à pas vers l'embarcadère</dockWalk> pour atteindre Spiaggia Grande sans hésitation.",
+      "points": [
+        "Prévoyez du temps supplémentaire pour les escaliers, la chaleur et la circulation piétonne lente en ville.",
+        "Emportez de l'eau et gardez vos essentiels (passeport/portefeuille/téléphone) dans une poche facilement accessible pour les contrôles à l'embarquement."
+      ]
+    },
+    "positanoPier": {
+      "title": "Où embarquer à Positano",
+      "points": [
+        "Les départs se font depuis la jetée principale de Positano sur la Spiaggia Grande.",
+        "Les guichets des opérateurs bordent le front de mer ; la signalisation affiche le prochain départ pour chaque compagnie.",
+        "Vérifiez le bon quai sur votre billet ; le personnel peut vous orienter en cas de doute."
+      ]
+    },
+    "amalfiArrival": {
+      "title": "Arrivée à Amalfi",
+      "points": [
+        "Les bateaux accostent aux quais du front de mer d'Amalfi près de la Piazza Flavio Gioia.",
+        "Le centre historique et la promenade se trouvent juste à côté du port.",
+        "Pour les bus en correspondance (par exemple vers Ravello ou Sorrente), suivez les panneaux vers l'arrêt SITA près du front de mer."
+      ]
+    },
+    "planB": {
+      "title": "Si le ferry est annulé (Plan B qui fonctionne)",
+      "intro": "Les jours de vent, la mer peut arrêter les bateaux. Pas de panique — basculez sur le <bus>bus Positano → Amalfi</bus>, et consultez <cancellations>notre guide des annulations de ferry</cancellations> pour les horaires et le dépannage.",
+      "points": [
+        "Si vous êtes déjà à la plage, remontez vers la route principale et prenez le prochain bus ou taxi disponible.",
+        "Prévoyez du temps de réserve : les bus peuvent arriver complets en haute saison et les retards sont normaux.",
+        "Si vous voyagez tard, confirmez tôt le dernier départ viable (ferry ou bus) pour ne pas vous retrouver bloqué."
+      ]
     }
   },
-  "tip": {
-    "copy": "Besoin d'autres options de transport ? Ouvrez la page <link>Comment venir</link> pour les bus, itinéraires combinés et transferts depuis l'aéroport.",
-    "label": "Astuce"
+  "externalLinks": {
+    "travelmar": "https://www.travelmar.it/en/home",
+    "positano": "https://www.positano.com/en/ferry-schedule"
   }
 }

@@ -1,58 +1,66 @@
 {
   "seo": {
-    "title": "Usterki i szkody – przewodnik",
-    "description": "Jak zgłaszać usterki w pokoju, nasza reakcja na poważne problemy, polityka kaucji za szkody, odpowiedzialność gościa oraz informacje o zapobieganiu pluskwom."
+    "title": "Przewodnik po wadach i uszkodzeniach dla Hostelu Positano",
+    "description": "Dowiedz się, jak zgłaszać wady pokoju, jak reagujemy na poważne problemy, zasady depozytu za szkody, odpowiedzialność gości oraz istotne informacje dotyczące zapobiegania pluskwom w ekskluzywnym hostelu Positano."
   },
-  "linkLabel": "Usterki i szkody – przewodnik",
+  "linkLabel": "Przewodnik po wadach i uszkodzeniach dla Hostelu Positano",
   "sections": [
     {
       "id": "reportingDefects",
-      "title": "Zgłaszanie usterek",
+      "title": "Zgłaszanie wad",
       "body": [
-        "Jeśli zauważysz jakikolwiek problem lub usterkę w pokoju, zgłoś nam to natychmiast. Szybka informacja pozwala nam szybko zareagować i usunąć niedogodność."
+        "Jeśli zauważysz jakikolwiek problem lub wadę w swoim pokoju, natychmiast nas o tym poinformuj. Twoje szybkie zgłoszenie pomaga nam szybko rozwiązać problem.",
+        "Najszybszym sposobem zgłoszenia jest osobiście w recepcji. Jeśli to możliwe, podaj: co jest nie tak, kiedy to zauważyłeś oraz szybkie zdjęcie lub krótki film."
       ]
     },
     {
       "id": "assessingDefects",
-      "title": "Ocena usterek",
+      "title": "Ocena wad",
       "body": [
-        "Po otrzymaniu zgłoszenia szybko ocenimy sytuację i nadamy jej priorytet w zależności od wpływu na Twój komfort i pobyt."
+        "Po zgłoszeniu wady szybko ocenimy problem i nadamy priorytet naszej reakcji w oparciu o to, jak znacząco wpływa to na Twój komfort i pobyt."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/2/27/ISO_7010_W008.svg",
+          "alt": "Ogólny znak ostrzegawczy ISO 7010 W008 (żółty trójkąt ze znakiem wykrzyknika)",
+          "caption": "Priorytetem jest bezpieczeństwo, a następnie wszystko, co wpływa na sen i komfort."
+        }
       ]
     },
     {
       "id": "responseToSeriousDefects",
-      "title": "Reakcja na poważne usterki",
+      "title": "Reakcja na poważne wady",
       "body": [
-        "Gdy naprawa poważnej usterki nie jest możliwa od razu, zapewnimy Ci alternatywne zakwaterowanie. Jeśli będzie tańsze od zarezerwowanego pokoju, zwrócimy różnicę w cenie. Jeśli nie przyjmiesz alternatywy, możesz poprosić o proporcjonalny zwrot za niewykorzystane noce."
+        "Jeśli występuje poważna wada, której nie można natychmiast naprawić, zapewnimy alternatywne zakwaterowanie. Jeśli alternatywa jest tańsza niż Twój zarezerwowany pokój, zwrócimy różnicę w cenie. Jeśli zdecydujesz się nie przyjąć naszej alternatywy, możesz poprosić o proporcjonalny zwrot kosztów za pozostałe noce Twojego pobytu."
       ]
     },
     {
       "id": "unreportedDefects",
-      "title": "Usterki niezgłoszone",
+      "title": "Nie zgłoszone wady",
       "body": [
-        "Jeśli odkryjemy problem w Twoim pokoju, którego nie zgłosiłeś/aś w rozsądnym czasie, ocenimy ewentualne szkody i możemy zastosować naszą politykę odszkodowań."
+        "Jeśli odkryjemy problem w Twoim pokoju, którego nie zgłosiłeś w rozsądnym czasie, ocenimy wszelkie wynikające z tego szkody, a nasza polityka dotycząca szkód może zostać zastosowana."
       ]
     },
     {
       "id": "damagesPolicy",
-      "title": "Polityka szkód",
+      "title": "Polityka dotycząca szkód",
       "body": [
-        "Dla bezpieczeństwa Twojego i naszego możemy wstępnie autoryzować kartę płatniczą lub poprosić o depozyt gotówkowy przy zameldowaniu na pokrycie ewentualnych szkód. Brak depozytu lub autoryzacji może skutkować anulowaniem rezerwacji. Depozyt zwracamy w całości przy wymeldowaniu, pomniejszając go o koszty napraw, strat, pracy czy administracji. Jeśli koszty przekroczą wysokość depozytu, różnicę trzeba będzie dopłacić. Stawki roboczogodziny za naprawy lub sprzątanie to: Dyrektor 50 € / godz., Manager 35 € / godz., Pracownik 25 € / godz."
+        "Dla Twojego i naszego bezpieczeństwa możemy wstępnie autoryzować Twoją kartę kredytową lub poprosić o depozyt gotówkowy podczas zameldowania, aby pokryć potencjalne szkody lub straty. Jeśli nie możesz zapewnić depozytu lub wstępnej autoryzacji, Twoja rezerwacja może zostać anulowana. Depozyty są w pełni zwracane przy wymeldowaniu, pomniejszone o opłaty za wszelkie szkody, straty, robociznę lub koszty administracyjne. Jeśli te opłaty przekraczają Twój depozyt, będziesz odpowiedzialny za dodatkowe koszty. Stawki za robociznę związaną z naprawami lub sprzątaniem są rozliczane godzinowo: Dyrektor (50 €/godzina), Kierownik (35 €/godzina) i Personel (25 €/godzina)."
       ]
     },
     {
       "id": "bedBugsPolicy",
-      "title": "Polityka dot. pluskiew",
+      "title": "Polityka dotycząca pluskiew",
       "body": [
-        "Regularnie monitorujemy i szybko reagujemy na zgłoszenia o pluskwach. Jeśli w trakcie Twojego pobytu zostaną wykryte w pokoju, możesz ponieść koszty związane m.in. z utratą przychodów z rezerwacji, sprzątaniem i dezynsekcją. Zgłaszaj natychmiast każdy podejrzany ślad obsłudze."
+        "Proaktywnie zarządzamy i szybko reagujemy na wszelkie problemy z pluskwami. Jeśli jednak pluskwy zostaną znalezione w Twoim pokoju podczas Twojego pobytu, możesz zostać pociągnięty do odpowiedzialności za powiązane koszty, takie jak utracone przychody z rezerwacji, koszty sprzątania i zwalczania szkodników. Prosimy o natychmiastowe zgłaszanie personelowi wszelkich oznak pluskiew."
       ]
     },
     {
       "id": "bedBugsPrevention",
       "title": "Zapobieganie pluskwom",
       "body": [
-        "Aby zapobiegać pluskwom:",
-        "* Poinformuj nas przy zameldowaniu, jeśli ostatnio nocowałeś/aś w miejscu z potwierdzonym problemem pluskiew.\n* Dokładnie zdezynfekuj swoje rzeczy.\n* Sprawdź bagaż i odzież przed wejściem do pokoju."
+        "Aby pomóc w zapobieganiu problemom z pluskwami, prosimy:",
+        "* Poinformuj nas podczas meldowania, jeśli niedawno przebywałeś w miejscu ze znanymi problemami z pluskwami.\n* Dokładnie zdezynfekuj swoje rzeczy.\n* Dokładnie sprawdź swój bagaż i ubrania pod kątem pluskiew przed wejściem do pokoju."
       ]
     }
   ]

@@ -276,9 +276,6 @@
       "femaleRoom": "महिला कमरा"
     },
     "bathroom": {
-      "ensuite": "इन-सुइट बाथरूम",
-      "private": "निजी बाथरूम",
-      "sharedFemale": "साझा महिला बाथरूम",
       "bathroomEnsuite": "इन-सुइट बाथरूम",
       "bathroomPrivate": "निजी बाथरूम",
       "bathroomSharedFemale": "साझा महिला बाथरूम"
@@ -287,12 +284,7 @@
   },
   "detailsLine": {
     "beds": {
-      "doubleBed": "डबल बेड",
       "doubleBedForTwo": "दो अतिथियों के लिए डबल बेड",
-      "singleBed_one": "{{count}} सिंगल बेड",
-      "singleBed_other": "{{count}} सिंगल बेड",
-      "bunkBed_one": "{{count}} बंक बेड",
-      "bunkBed_other": "{{count}} बंक बेड",
       "oneDormBedTwoGuests": "एक बंक बेड — दो अतिथि",
       "threeSingleBedsThreeGuests": "तीन सिंगल बेड — तीन अतिथि",
       "threeDormBedsSixGuests": "तीन बंक बेड — छह अतिथि",
@@ -300,7 +292,6 @@
       "fourDormBedsEightGuests": "चार बंक बेड — आठ अतिथि"
     },
     "views": {
-      "seaView": "समुद्री दृश्य",
       "seaViewTerrace": "समुद्री दृश्य टेरेस",
       "seaViewExtraLargeTerrace": "बड़े आकार की समुद्री दृश्य टेरेस",
       "gardenView": "बगीचे का दृश्य",

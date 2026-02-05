@@ -1,58 +1,66 @@
 {
   "seo": {
-    "title": "Hibák és károk – útmutató",
-    "description": "Hogyan jelentsd a szobahibákat, reagálásunk a súlyos problémákra, kauciós szabályok, vendégfelelősség és fontos tudnivalók az ágyi poloska megelőzéséről."
+    "title": "Hibák és károk útmutató a Positano Hostelhez",
+    "description": "Ismerje meg, hogyan jelentse a szobai hibákat, hogyan reagálunk a súlyos problémákra, a károkozási letét szabályzatait, a vendégek felelősségét, valamint a poloska-megelőzéssel kapcsolatos alapvető információkat Positano exkluzív hostelében."
   },
-  "linkLabel": "Hibák és károk – útmutató",
+  "linkLabel": "Hibák és károk útmutató a Positano Hostelhez",
   "sections": [
     {
       "id": "reportingDefects",
-      "title": "Hibák bejelentése",
+      "title": "Hibák jelentése",
       "body": [
-        "Ha bármilyen hibát vagy rendellenességet észlel a szobában, azonnal jelezze nekünk. A gyors visszajelzés segít, hogy a problémát mielőbb kezelni és megoldani tudjuk."
+        "Ha bármilyen problémát vagy hibát észlel a szobájában, kérjük, azonnal értesítsen minket. Az azonnali értesítés segít nekünk gyorsan kezelni és megoldani a problémát.",
+        "A leggyorsabb jelentési mód személyesen a recepción. Ha lehetséges, adja meg: mi a probléma, mikor vette észre, és egy gyors fotót vagy rövid videót."
       ]
     },
     {
       "id": "assessingDefects",
       "title": "Hibák értékelése",
       "body": [
-        "Amint bejelent egy hibát, azonnal felmérjük, és annak alapján priorizáljuk a beavatkozást, hogy mennyire befolyásolja a kényelmét és a tartózkodását."
+        "Miután bejelent egy hibát, gyorsan értékeljük a problémát, és prioritást adunk a válaszunknak aszerint, hogy mennyire befolyásolja jelentősen a kényelmét és tartózkodását."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/2/27/ISO_7010_W008.svg",
+          "alt": "ISO 7010 W008 általános figyelmeztető jel (sárga háromszög felkiáltójellel)",
+          "caption": "Először a biztonságot helyezzük előtérbe, majd mindent, ami az alvást és a kényelmet érinti."
+        }
       ]
     },
     {
       "id": "responseToSeriousDefects",
-      "title": "Intézkedés súlyos hibáknál",
+      "title": "Válasz a súlyos hibákra",
       "body": [
-        "Ha olyan komoly hibáról van szó, amelyet nem tudunk azonnal kijavítani, alternatív szállást biztosítunk. Ha az alternatíva olcsóbb a lefoglalt szobájánál, visszatérítjük a különbözetet. Ha nem fogadja el az alternatívát, kérheti a fennmaradó éjszakák arányos visszatérítését."
+        "Ha olyan súlyos hiba van, amelyet nem lehet azonnal megjavítani, alternatív szállást biztosítunk. Ha az alternatíva olcsóbb, mint a lefoglalt szobája, visszatérítjük az árkülönbözetet. Ha úgy dönt, hogy nem fogadja el az alternatívánkat, arányos visszatérítést kérhet a tartózkodása hátralévő éjszakáira."
       ]
     },
     {
       "id": "unreportedDefects",
-      "title": "Be nem jelentett hibák",
+      "title": "Nem jelentett hibák",
       "body": [
-        "Ha a szobában olyan problémát találunk, amelyet ésszerű időn belül nem jelentett, felmérjük az ebből eredő károkat, és alkalmazhatjuk a károkozási szabályzatot."
+        "Ha olyan problémát fedezünk fel a szobájában, amelyet nem jelentett ésszerű időkereten belül, értékeljük az ebből eredő károkat, és alkalmazhatjuk a károkozási szabályzatunkat."
       ]
     },
     {
       "id": "damagesPolicy",
       "title": "Károkozási szabályzat",
       "body": [
-        "Az Ön és a mi biztonságunk érdekében a check-in során előengedélyezhetjük a bankkártyáját, vagy készpénz letétet kérhetünk az esetleges károk fedezésére. Amennyiben nem tud letétet vagy előengedélyt biztosítani, foglalását törölhetjük. A letéteket a kijelentkezéskor teljes mértékben visszatérítjük, levonva az esetlegesen felmerülő károk, veszteségek, munka- vagy adminisztrációs költségek összegét. Ha ezek meghaladják a letétet, a különbözetet Önnek kell megtérítenie. A javítási vagy takarítási munkadíj óradíjas elszámolású: igazgató (50 €/óra), menedzser (35 €/óra), személyzet (25 €/óra)."
+        "Az Ön és a mi biztonságunk érdekében előzetesen engedélyezhetjük a hitelkártyáját, vagy készpénz letétet kérhetünk a bejelentkezéskor a lehetséges károk vagy veszteségek fedezésére. Ha nem tud letétet vagy előzetes engedélyt biztosítani, foglalása törölhető. A letétek teljes mértékben visszatéríthetők a kijelentkezéskor, levonva a felmerült károkért, veszteségekért, munkadíjért vagy adminisztratív költségekért járó díjakat. Ha ezek a díjak meghaladják a letétjét, Ön felelős a többletköltségekért. A javítási vagy takarítási munkadíjak óránként kerülnek számlázásra: Igazgató (50 €/óra), Menedzser (35 €/óra) és Személyzet (25 €/óra)."
       ]
     },
     {
       "id": "bedBugsPolicy",
-      "title": "Ágyi poloska szabályzat",
+      "title": "Poloska szabályzat",
       "body": [
-        "Az ágyi poloskával kapcsolatos eseteket proaktívan kezeljük és azonnal intézkedünk. Ha a tartózkodása alatt ágyi poloskát találunk a szobájában, felelősségre vonhatjuk a kapcsolódó költségekért, például a kieső foglalási bevételért, a takarításért vagy a rovarirtásért. Kérjük, azonnal jelezze a személyzetnek, ha ágyi poloska jelenlétének jelét tapasztalja."
+        "Proaktívan kezeljük és azonnal foglalkozunk minden poloskaproblémával. Azonban ha poloskákat találnak a szobájában a tartózkodása alatt, felelősségre vonhatók a kapcsolódó költségekért, mint például az elveszett foglalási bevétel, a takarítási költségek és a kártevőirtás. Kérjük, azonnal jelentse személyzetünknek a poloska jeleit."
       ]
     },
     {
       "id": "bedBugsPrevention",
-      "title": "Ágyi poloska megelőzése",
+      "title": "Poloska megelőzés",
       "body": [
-        "Az ágyi poloska megelőzése érdekében kérjük, tegye a következőket:",
-        "* Jelezze check-inkor, ha nemrég olyan helyen szállt meg, ahol ágyi poloska-problémát tapasztaltak.\n* Fertőtlenítse alaposan a holmiját.\n* Gondosan ellenőrizze a bőröndjét és ruháit ágyi poloska jelenléte szempontjából, mielőtt belépne a szobába."
+        "A poloskaproblémák megelőzése érdekében kérjük:",
+        "* Tájékoztasson minket a bejelentkezéskor, ha nemrég olyan helyen szállt meg, ahol ismert poloskaproblémák vannak.\n* Alaposan fertőtlenítse a holmiját.\n* Gondosan vizsgálja meg a csomagját és a ruháját poloskák után, mielőtt belép a szobájába."
       ]
     }
   ]

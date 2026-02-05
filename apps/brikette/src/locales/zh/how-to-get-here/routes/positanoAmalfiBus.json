@@ -24,6 +24,7 @@
     },
     "timetable": {
       "title": "阅读 SITA 时刻表",
+      "link": "请在<link>Positano.com</link> 查询最新班次。",
       "body": "官方时刻表以行显示站点、以字母列表示班次。根据出行日期，在同一列中对应波西塔诺与阿马尔菲的时间。",
       "list": [
         "第一列的行列出了线路沿途的所有站点。",
@@ -31,7 +32,6 @@
         "周一至周六出行请查看 F、G 列。",
         "周日或公共假期出行请查看 G、H 列。"
       ],
-      "link": "请在<link>Positano.com</link> 查询最新班次。",
       "linkHref": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result"
     },
     "positanoStop": {

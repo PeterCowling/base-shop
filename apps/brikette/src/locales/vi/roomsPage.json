@@ -301,6 +301,6 @@
   "loadingPrice": "Đang tải giá…",
   "landingImageAlt": "Ảnh trang đích của {{room}}",
   "priceNotes": {
-    "dorm": "Per night, per guest. One guest in one bunk bed."
+    "dorm": "Mỗi đêm, mỗi khách. Một khách trên một giường tầng."
   }
 }

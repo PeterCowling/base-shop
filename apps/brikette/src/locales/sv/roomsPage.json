@@ -266,10 +266,9 @@
   "loadingPrice": "Laddar pris...",
   "landingImageAlt": "Landningsbild av {{room}}",
   "priceNotes": {
-    "dorm": "Per night, per guest. One guest in one bunk bed."
+    "dorm": "Per natt, per gäst. En gäst i en våningssäng."
   },
   "facts": {
-    "floor": "Våning",
     "type": {
       "privateRoom": "Privat rum",
       "mixedDorm": "Blandad sovsal",
@@ -281,13 +280,9 @@
       "bathroomPrivate": "Privat badrum",
       "bathroomSharedFemale": "Delat badrum"
     },
-    "sleeps": "Sover {{count}}",
-    "view": "Utsikt",
-    "capacity": "Kapacitet"
+    "sleeps": "Sover {{count}}"
   },
   "detailsLine": {
-    "floor": "Våning {{floor}}",
-    "capacity": "Upp till {{count}} gäster",
     "beds": {
       "doubleBedForTwo": "1 dubbelsäng",
       "threeSingleBedsThreeGuests": "3 enkelsängar",
@@ -305,8 +300,6 @@
     }
   },
   "priceUnits": {
-    "perNight": "/natt",
-    "perGuest": "/gäst",
     "perRoom": "rum",
     "perBed": "bädd"
   }

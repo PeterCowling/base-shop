@@ -27,7 +27,16 @@
       "points": [
         "In alta stagione acquista i biglietti online in anticipo o alle biglietterie degli operatori sul molo.",
         "Presentati 15-20 minuti prima della partenza per cambiare eventuali voucher e metterti in fila per l'imbarco.",
-        "Tieni il biglietto o il codice QR a portata di mano per i controlli del personale."
+        "Fai uno screenshot del tuo codice QR — il segnale può essere debole sulla spiaggia e sul molo.",
+        "Se viaggi con bagagli ingombranti, chiedi al personale informazioni sulle regole per i bagagli e dove riporre le borse a bordo."
+      ]
+    },
+    "gettingToPier": {
+      "title": "Dall'ostello al molo",
+      "intro": "Se parti dall'ostello, usa <dockWalk>la nostra guida passo dopo passo fino al molo dei traghetti</dockWalk> per raggiungere Spiaggia Grande senza errori.",
+      "points": [
+        "Prevedi tempo extra per le scale, il caldo e il traffico pedonale lento in città.",
+        "Porta acqua e tieni gli oggetti essenziali (passaporto/portafoglio/telefono) in una tasca facilmente accessibile per i controlli di imbarco."
       ]
     },
     "positanoPier": {
@@ -44,6 +53,15 @@
         "Le imbarcazioni attraccano ai moli sul lungomare di Amalfi vicino a Piazza Flavio Gioia.",
         "Il centro storico e il lungomare sono proprio accanto al porto.",
         "Per proseguire in autobus (ad esempio verso Ravello o Sorrento) segui le indicazioni per la fermata SITA vicino al lungomare."
+      ]
+    },
+    "planB": {
+      "title": "Se il traghetto viene cancellato (un piano B che funziona)",
+      "intro": "Nei giorni ventosi il mare può fermare le barche. Niente panico — passa all'<bus>autobus Positano → Amalfi</bus> e dai un'occhiata alla <cancellations>nostra guida alle cancellazioni dei traghetti</cancellations> per orari e soluzioni.",
+      "points": [
+        "Se sei già in spiaggia, risali fino alla strada principale e prendi il prossimo autobus o taxi disponibile.",
+        "Prevedi tempo di riserva: nei mesi di punta gli autobus possono arrivare pieni e i ritardi sono normali.",
+        "Se viaggi a tarda ora, conferma in anticipo l'ultima partenza disponibile (traghetto o autobus) per non rimanere bloccato."
       ]
     }
   },

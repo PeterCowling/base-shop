@@ -1,4 +1,9 @@
 {
+  "seo": {
+    "title": "Parkowanie w Positano: garaże, zasady na ulicy i alternatywy",
+    "description": "Gdzie parkować w Positano, ile kosztują garaże, kiedy miejsca na ulicy są realne i mądrzejsze opcje bez auta."
+  },
+  "lastUpdated": "2026-02-04T00:00:00.000Z",
   "linkLabel": "Parkowanie w Positano: gdzie i za ile",
   "intro": [
     "Parkingi w Positano są rzadkie i drogie; zarezerwuj garaż wcześniej i potraktuj auto jako przechowywane podczas pobytu."
@@ -29,10 +34,12 @@
       ]
     }
   ],
+  "tipsTitle": "Szybkie wskazówki",
   "tips": [
     "Sprawdź powiadomienia ZTL/naprzemiennych numerów na SS163 przed jazdą; mandaty przychodzą pocztą międzynarodową nawet miesiące później.",
     "Spakuj plecak z podstawowymi rzeczami zanim oddasz klucze — garaż może trzymać auta zderzak przy zderzaku do czasu wymeldowania."
   ],
+  "faqsTitle": "FAQs",
   "faqs": [
     {
       "q": "Czy mogę zaparkować tylko na kilka godzin?",
@@ -47,10 +54,5 @@
       ]
     }
   ],
-  "tocTitle": "On this page",
-  "faqsTitle": "FAQs",
-  "seo": {
-    "title": "Parkowanie w Positano: garaże, zasady na ulicy i alternatywy",
-    "description": "Gdzie parkować w Positano, ile kosztują garaże, kiedy miejsca na ulicy są realne i mądrzejsze opcje bez auta."
-  }
+  "tocTitle": "On this page"
 }

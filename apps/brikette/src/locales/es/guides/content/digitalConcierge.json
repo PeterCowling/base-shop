@@ -1,198 +1,32 @@
 {
   "seo": {
-    "title": "Concierge digital (recomendaciones + reservas)",
-    "description": "Usa el concierge digital de Hostel Brikette para recomendaciones locales rápidas, avisos de transporte y ayuda reservando experiencias—especialmente cuando cambian los planes."
+    "title": "Conserje digital (recomendaciones + reservas)",
+    "description": "Usa el conserje digital de Hostel Brikette para recomendaciones locales rápidas, actualizaciones de transporte y ayuda para reservar experiencias, especialmente cuando los planes cambian."
   },
-  "linkLabel": "Concierge digital",
+  "linkLabel": "Conserje digital",
   "lastUpdated": "2026-02-02T00:00:00.000Z",
   "intro": [
-    "Este concierge digital es para esos momentos en los que quieres un plan que funcione hoy—not un “top 10” genérico. El tiempo, la fiabilidad del ferri, las multitudes y las últimas salidas cambian la mejor respuesta.",
-    "Si envías el contexto correcto (ventana de tiempo, presupuesto, nivel de energía y lo que más te importa), recibirás una ruta práctica o una shortlist que puedes seguir de verdad.",
-    "Si solo haces una cosa: pon tu deadline en la primera línea. Un mensaje que empieza con “Tenemos que estar en Nápoles a las 16:00” recibe una respuesta muy distinta que “¿Ideas?”.",
-    "Esta guía muestra qué pedir, cómo pedirlo y cómo evitar errores comunes que convierten un día simple en un día de taxi caro.",
-    "Si no estás seguro de qué es realista, dilo. “Estamos cansados y queremos la versión más fácil” es una gran restricción."
+    "Esto es para planes que funcionan hoy, no listas genéricas.",
+    "Envía tu ventana de tiempo, presupuesto y prioridad. Pon tu plazo en la primera línea."
   ],
   "sections": [
     {
       "id": "how-to-access",
       "title": "Cómo acceder",
       "body": [
-        "Pregunta en recepción por el contacto/QR actualizado y el mejor canal para respuestas rápidas (WhatsApp suele ser lo más simple).",
-        "Cuando escribas, incluye: tus fechas, desde dónde sales, tu ventana de tiempo, tu presupuesto y tu prioridad (vistas, baño, comida, senderismo).",
-        "Si tienes una conexión (tren/vuelo), incluye la hora exacta y estación/aeropuerto. En la costa, el timing lo cambia todo."
-      ],
-      "images": [
-        {
-          "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
-          "alt": "Positano y su costa, donde el timing y la ruta importan"
-        }
-      ]
-    },
-    {
-      "id": "best-for",
-      "title": "Para qué va mejor",
-      "body": [
-        "Triage de transporte: ferris, buses, huelgas, últimas salidas y rutas de respaldo realistas cuando el mar se pone feo.",
-        "Shortlists según tu estilo: beach clubs vs playas libres, miradores fáciles vs rutas largas y opciones de cena que encajan con tu presupuesto.",
-        "Ayuda reservando cuando hay poca disponibilidad (tours en barco, cooking classes, taxis y traslados).",
-        "Reality check. A veces el mejor consejo es: “Ese plan va demasiado justo—esta es la versión que no te estresa”."
-      ],
-      "images": [
-        {
-          "src": "/img/guides/topics/boatTours.jpg",
-          "alt": "Tours en barco en Positano, una experiencia que suele necesitar ayuda con reservas en temporada alta"
-        }
-      ]
-    },
-    {
-      "id": "ask-better",
-      "title": "Pregunta mejor (para una mejor respuesta)",
-      "body": [
-        "En vez de “¿Qué hacemos hoy?”, manda un mensaje con restricciones y prioridades.",
-        "Buen ejemplo: “Tenemos 6 horas, sin coche, queremos (A) bañarnos + (B) atardecer, presupuesto 40 € por persona. ¿Cuál es el plan más simple y el plan B si cancelan ferris?”",
-        "Si vas con presupuesto, dilo. %LINK:positanoBudget|Positano con presupuesto% es la mentalidad base sobre la que podemos construir.",
-        "Si viajas en grupo, di cuántos sois y si alguien tiene limitaciones de movilidad. Las escaleras de Positano cambian lo que es realista."
-      ],
-      "images": [
-        {
-          "src": "/img/guides/topics/terraceSunsets.webp",
-          "alt": "Un plan de atardecer fácil desde terraza, útil para itinerarios con presupuesto"
-        }
+        "Pregunta en recepción por el último contacto/QR y el mejor canal (normalmente WhatsApp).",
+        "Incluye: fechas, punto de partida, ventana de tiempo, presupuesto y prioridad #1."
       ]
     },
     {
       "id": "templates",
-      "title": "Plantillas copiar/pegar (respuestas rápidas)",
+      "title": "Plantilla copiar/pegar",
       "body": [
-        "Plantilla 1 (plan de día): “Estamos en Positano hoy de 10:00 a 18:00. Sin coche. Queremos (A) baño y (B) un mirador. Presupuesto €X cada uno. ¿Cuál es el plan más fácil + la mejor hora para empezar?”",
-        "Plantilla 2 (atardecer): “Queremos un plan de atardecer que no sea una cena completa cara. ¿Qué es lo mejor hoy y a qué hora deberíamos llegar?” (%LINK:terraceSunsets|Atardeceres en terraza% suele ser la respuesta más fácil.)",
-        "Plantilla 3 (comida): “Queremos cenar bien pero sin lujo. ¿Opciones realistas cerca de nosotros?” (%LINK:positanoDining|guía de restaurantes% y %LINK:cheapEats|comer barato% cubren lo básico.)",
-        "Plantilla 4 (fotos): “Queremos 2–3 mejores spots de foto con poca gente. ¿Amanecer o tarde?” (%LINK:instagramSpots|spots de foto% es un buen inicio.)",
-        "Plantilla 5 (senderismo): “Queremos la ruta panorámica más fácil mañana y no estamos seguros de forma/caldo. ¿Cuál es el plan más seguro?” (%LINK:pathOfTheGods|Sendero de los Dioses% tiene mucha recompensa, pero el ritmo importa.)"
-      ],
-      "images": [
-        {
-          "src": "/img/guides/topics/instagramSpots.jpg",
-          "alt": "Un mirador clásico de Positano, a menudo pedido vía concierge digital"
-        }
-      ]
-    },
-    {
-      "id": "help-us-help-you",
-      "title": "Ayúdanos a ayudarte (detalles que cambian la respuesta)",
-      "body": [
-        "Dos personas pueden hacer “la misma” pregunta y necesitar consejos totalmente distintos. Estos detalles importan:",
-        "- Desde dónde sales (Positano, Amalfi, Sorrento, Nápoles).",
-        "- Tu ventana de tiempo (y si tienes una hora límite).",
-        "- Tu presupuesto y si quieres evitar taxis.",
-        "- Tu energía (día cansado de viaje vs día de ruta).",
-        "Recepción recomienda mandar un solo mensaje con todo este contexto en vez de un ida y vuelta largo. Es más rápido y produce un plan mejor.",
-        "Si llevas equipaje o hay limitaciones de movilidad, dilo explícitamente. Esa sola frase puede evitar una ruta que en el mapa parece corta pero en escaleras es brutal."
-      ],
-      "images": [
-        {
-          "src": "/img/guides/topics/sunsetViewpoints.jpg",
-          "alt": "Un plan de miradores que funciona mejor cuando timing y restricciones están claros"
-        }
-      ]
-    },
-    {
-      "id": "transport-triage",
-      "title": "Triage de transporte (cuando cambian los planes)",
-      "body": [
-        "Si oyes hablar de cancelaciones, no esperes a estar en el muelle. Pregunta pronto: “¿Funcionan los ferris hoy? ¿Cuál es el mejor plan B por carretera a Sorrento / Nápoles / Salerno?”",
-        "Regla: nunca dependas de la última conexión del día para algo importante. Multitudes + tiempo + tráfico se pueden alinear en tu contra.",
-        "Antes de escribir, echa un vistazo a %LINK:ferryCancellations|cancelaciones de ferri y mar agitado% para entender las decisiones clave."
-      ],
-      "images": [
-        {
-          "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
-          "alt": "Barcos en la bahía de Positano en un día variable, cuando tener un plan B importa"
-        }
-      ]
-    },
-    {
-      "id": "common-mistakes",
-      "title": "Errores comunes (y la solución simple)",
-      "body": [
-        "Error: escribir demasiado tarde. Solución: pregunta por la mañana si el día depende de ferris, rutas largas o una conexión.",
-        "Error: preguntar sin restricciones. Solución: manda tu ventana de tiempo, presupuesto y una prioridad en el primer mensaje.",
-        "Error: intentar hacerlo todo. Solución: elige una actividad “ancla” (playa, ruta, barco, cena) y construye un plan simple alrededor.",
-        "Error: depender de las últimas salidas. Solución: elige una conexión más temprana o define un plan B terrestre antes de salir.",
-        "Error: llevar bolsas pesadas todo el día. Solución: usa consigna y lleva lo esencial contigo. %LINK:luggageStorage|consigna de equipaje% es un buen punto de partida si tienes huecos entre check‑out y viaje.",
-        "Error: convertir cada pregunta en un chat interminable. Solución: manda un mensaje claro con todos los detalles clave (tiempo, ubicación, presupuesto, prioridades). Es más rápido y accionable.",
-        "Error: asumir que el horario de hoy es el de ayer. Solución: trata transporte y condiciones del mar como información sensible al tiempo."
-      ],
-      "images": [
-        {
-          "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
-          "alt": "Un día concurrido en Positano, donde un plan simple evita estrés y gasto extra"
-        }
-      ]
-    },
-    {
-      "id": "booking-help",
-      "title": "Ayuda para reservar (qué incluir)",
-      "body": [
-        "Para experiencias (tours en barco, cooking classes), incluye fecha, ventana de hora preferida y si eres flexible. La flexibilidad aumenta opciones.",
-        "Para taxis/traslados, incluye punto de recogida, número de maletas y restricciones (madrugada, noche).",
-        "Si llevas equipaje pesado y llegas en ferri, pregunta por opciones de porteadores antes de llegar. %LINK:porterServices|porteadores en Positano% explica qué acordar por adelantado."
-      ],
-      "images": [
-        {
-          "src": "/img/guides/positano-beaches/positano-main-beach.webp",
-          "alt": "Zonas de llegada en Positano, donde timing y logística importan para reservas y traslados"
-        }
-      ]
-    },
-    {
-      "id": "limits",
-      "title": "Lo que no puede hacer",
-      "body": [
-        "No puede evitar cancelaciones del operador ni garantizar plazas en el último ferri/bus: cuando la Guardia Costera cierra el puerto, todos pasan a rutas terrestres.",
-        "No puede “guardar” mesas sin confirmación del local: para sitios populares, cuanto antes mejor.",
-        "No puede cambiar la realidad de las escaleras. Si estás agotado o con maleta pesada, el “mejor” plan suele ser el más simple."
-      ],
-      "images": [
-        {
-          "src": "/img/guides/topics/positanoDining.jpg",
-          "alt": "Restaurantes en Positano, donde reservas y timing importan en temporada alta"
-        }
+        "\"Tenemos 6 horas, sin coche, queremos (A) nadar + (B) puesta de sol, presupuesto €40 por persona. ¿Cuál es el plan más simple y el plan B si cancelan los ferrys?\"",
+        "Línea base de presupuesto: %LINK:positanoBudget|Positano con presupuesto% + %LINK:terraceSunsets|Puesta de sol desde terraza%.",
+        "Si el transporte es sensible: %LINK:ferryCancellations|cancelaciones de ferry + clima%."
       ]
     }
   ],
-  "tips": [
-    "Pon tu deadline en la primera línea del mensaje (hora de tren/vuelo, último bus, etc.).",
-    "Si quieres un plan con presupuesto, dilo: cambia recomendaciones al instante. %LINK:positanoBudget|Positano con presupuesto% es una buena base.",
-    "Si eres sensible al tiempo (ferris, rutas), pregunta temprano: esperar a última hora es cuando desaparecen opciones.",
-    "Manda un mensaje con todos los detalles clave en vez de diez mensajes pequeños. Ahorra tiempo y reduce confusión.",
-    "Si viajas con equipaje, dilo. Cambia lo que “fácil” significa en Positano."
-  ],
-  "faqs": [
-    {
-      "q": "¿Es solo para huéspedes del hostel?",
-      "a": [
-        "Pregunta en recepción qué está disponible para ti: algunas ayudas son solo para huéspedes, pero consejos de transporte y tips prácticos suelen ser fáciles de compartir."
-      ]
-    },
-    {
-      "q": "¿Cuánto tardáis en responder?",
-      "a": [
-        "Depende del pico del día. Si es urgente, pon “urgente” + tu deadline y ubicación para que el equipo pueda priorizar."
-      ]
-    },
-    {
-      "q": "¿Qué debo incluir en el primer mensaje?",
-      "a": [
-        "Fechas, desde dónde sales, ventana de tiempo, presupuesto y prioridad (vistas, baño, ruta, comida). Si tienes tren/vuelo, incluye la hora exacta."
-      ]
-    },
-    {
-      "q": "¿El concierge puede garantizar plazas de ferri o reservas?",
-      "a": [
-        "No. Puede ayudarte a elegir el mejor plan y el mejor plan B, pero no puede evitar cancelaciones ni garantizar disponibilidad de última hora."
-      ]
-    }
-  ],
-  "fallback": "Usa el concierge digital para recomendaciones locales rápidas, avisos de transporte y ayuda reservando experiencias—especialmente cuando el tiempo cambia los planes."
+  "fallback": "Conserje digital: recomendaciones rápidas, actualizaciones de transporte y ayuda con reservas."
 }

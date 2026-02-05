@@ -47,28 +47,28 @@
   ],
   "faqs": [
     {
-      "q": "How much does it cost to get from Naples center to Positano by train and bus?",
-      "a": "The total cost is around €7.20: €4.60 for the Circumvesuviana train from Naples to Sorrento, plus €2.60 for the SITA bus from Sorrento to Positano (2026 prices). This is the cheapest public transport option."
+      "q": "Mennyibe kerül Nápoly központjából Positanóba vonattal és busszal eljutni?",
+      "a": "A teljes költség körülbelül 7,20 €: 4,60 € a Circumvesuviana vonatért Nápolyból Szorrentóig, plusz 2,60 € a SITA buszért Szorrentóból Positanóba (2026-os árak). Ez a legolcsóbb tömegközlekedési lehetőség."
     },
     {
-      "q": "How long does the journey take from Naples to Positano?",
-      "a": "Total journey time is 2.5-3 hours: 70 minutes on the train, 50 minutes on the bus, plus 20-40 minutes waiting for connections in Sorrento. Allow 3-3.5 hours total to account for potential delays."
+      "q": "Mennyi idő alatt lehet Nápolyból Positanóba eljutni?",
+      "a": "A teljes utazási idő 2,5–3 óra: 70 perc a vonaton, 50 perc a buszon, plusz 20–40 perc várakozás az átszállásra Szorrentóban. Számolj összesen 3–3,5 órával, hogy figyelembe vedd az esetleges késéseket."
     },
     {
-      "q": "Can I buy tickets on the train or bus?",
-      "a": "You can buy train tickets at Napoli Garibaldi station from ticket machines or the ticket office, but you must validate before boarding. SITA bus tickets cannot be purchased on board — you must buy them from a bar, tabacchi, or newsstand near Sorrento station before getting on the bus."
+      "q": "Tudok jegyet venni a vonaton vagy a buszon?",
+      "a": "A vonatjegyeket a Napoli Garibaldi állomáson vásárolhatod meg jegyautomatából vagy a pénztárban, de felszállás előtt le kell bélyegezned. A SITA-buszjegyeket nem lehet a buszon megvenni — meg kell venned egy bárban, trafikban vagy újságosnál a szorrentói állomás közelében, mielőtt felszállsz a buszra."
     },
     {
-      "q": "Is this route suitable for travelers with heavy luggage?",
-      "a": "Yes, but it can be challenging during peak times. Both the train and bus have limited luggage space, so board early if you have large bags. The walk from Chiesa Nuova bus stop to the hostel is flat and under 2 minutes, so luggage is manageable once you arrive. If you prefer, consider using our porter services or a private transfer."
+      "q": "Ez az útvonal alkalmas-e sok csomaggal utazóknak?",
+      "a": "Igen, de csúcsidőben nehéz lehet. Mind a vonaton, mind a buszon korlátozott a csomagtartó hely, ezért korán szállj fel, ha nagy táskákkal utazol. A Chiesa Nuova buszmegállótól a hostelig vezető séta sík terepen zajlik és 2 percnél rövidebb, így a csomag kezelése az érkezés után már egyszerűbb. Ha szeretnéd, fontold meg poggyászhordó szolgáltatásunk vagy privát transzfer igénybevételét."
     },
     {
-      "q": "What time is the last bus from Sorrento to Positano?",
-      "a": "The last bus varies by season. In summer (July-August), the last bus is usually around 9-10pm. In winter (November-March), it can be as early as 7-8pm. Always check the current timetable at sitasudtrasporti.it before traveling, especially on Sundays and holidays when services are reduced."
+      "q": "Mikor indul az utolsó busz Szorrentóból Positanóba?",
+      "a": "Az utolsó busz időpontja évszaktól függően változik. Nyáron (július–augusztus) az utolsó busz általában 21–22 óra körül indul. Télen (november–március) akár már 19–20 órakor is lehet. Mindig ellenőrizd az aktuális menetrendet a sitasudtrasporti.it oldalon utazás előtt, különösen vasárnap és ünnepnapokon, amikor a járatok ritkábbak."
     },
     {
-      "q": "Is there a direct train or bus from Naples to Positano?",
-      "a": "No direct train exists — you must change at Sorrento. The Curreri bus offers a direct connection from Naples to Positano, but schedules are limited (usually 2-3 services per day). The train-bus combination runs more frequently and is cheaper."
+      "q": "Van közvetlen vonat vagy busz Nápolyból Positanóba?",
+      "a": "Nem létezik közvetlen vonat — Szorrentóban át kell szállnod. A Curreri busz közvetlen kapcsolatot kínál Nápolyból Positanóba, de a menetrend korlátozott (általában napi 2–3 járat). A vonat-busz kombináció gyakrabban közlekedik és olcsóbb."
     },
     {
       "q": "Hogyan olvassam a SITA busz menetrendet?",

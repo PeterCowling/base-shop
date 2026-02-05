@@ -166,12 +166,13 @@
     },
     {
       "id": "logistics",
-      "title": "Å komme seg til og fra stranden",
+      "title": "Reise til og fra strendene",
       "body": [
-        "Fra hostelet er den raskeste tilnærmingen ofte: gå ned til Spiaggia Grande (eller ta bussen), og bestem deretter om du vil fortsette langs promenaden til Fornillo, hoppe på en shuttle-båt, eller bli på hovedstranden.",
-        "Hvis du har en beach club-dag med båttransfer (Arienzo eller Laurito), er det ofte lettest å starte ved Spiaggia Grande slik at du kan stille deg i kø tidlig og slippe trapper.",
-        "Sommeren 2026: planlegg for varme i bakkene. Fyll vann før du går opp igjen, og hvis du er sliten, bruk den interne bussen i stedet for å gå hvert eneste trinn.",
-        "For dagsturer (Praiano, Amalfi, Sorrento), sjekk siste returmulighet før du bestemmer deg. Ferger er den beste turen når de går, men busser er backup. Hvis sjøen er røff eller ferger blir kansellert, legg inn ekstra tid og hold planen fleksibel. Ta med snacks til turen."
+        "Hver strand har ulike tilgangsmuligheter, så sjekk den spesifikke guiden før du drar. Her er raske lenker til de mest nyttige retningsguideene:",
+        "Positano-strander: %LINK:positanoMainBeachWalkDown|Gå til Spiaggia Grande% • %LINK:positanoMainBeachBusDown|Buss til Spiaggia Grande% • %LINK:hostelBriketteToFornilloBeach|Gå til Fornillo% • %LINK:hostelBriketteToArienzoBus|Buss til Arienzo% • %LINK:lauritoBeachBusDown|Buss til Laurito%",
+        "Returruter: %LINK:positanoMainBeachWalkBack|Gå tilbake fra Spiaggia Grande% • %LINK:positanoMainBeachBusBack|Buss tilbake fra Spiaggia Grande% • %LINK:fornilloBeachToBrikette|Gå tilbake fra Fornillo% • %LINK:arienzoBeachBusBack|Buss tilbake fra Arienzo% • %LINK:lauritoBeachBusBack|Buss tilbake fra Laurito%",
+        "Dagsturstrander: %LINK:hostelBriketteToFiordoDiFuroreBus|Fiordo di Furore% • %LINK:gavitellaBeachGuide|Gavitella (Praiano)% • %LINK:marinaDiPraiaBeaches|Marina di Praia% • %LINK:reginaGiovannaBath|Regina Giovanna (Sorrento)%",
+        "Generelle tips: Sommeren 2026, planlegg for varme i bakkene—fyll vann før du går opp igjen, og bruk den interne bussen hvis du er sliten. For dagsture: sjekk siste mulighet for å komme tilbake (ferge eller buss) før du bestemmer deg, og ta med snacks til turen. Hvis havet er urolig eller ferger avlyses, gi ekstra tid og hold planen fleksibel."
       ],
       "images": [
         {

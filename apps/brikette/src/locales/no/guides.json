@@ -3,10 +3,10 @@
     "relatedGuides": "Relaterte guider",
     "indexTitle": "Reiseguider for Positano",
     "popularGuides": "Populære guider",
+    "viewAll": "Se alle guider",
     "helpfulGuides": "Nyttige guider",
     "alsoSee": "Se også",
-    "sectionFallback": "Seksjon {{position}}",
-    "viewAll": "Se alle guider"
+    "sectionFallback": "Seksjon {{position}}"
   },
   "meta": {
     "index": {
@@ -82,53 +82,150 @@
         "description": "Ideer for Amalfi, Ravello, Capri og Pompeii med tids- og transporttips."
       }
     },
-    "publicTransportAmalfi": {
-      "linkLabel": "Offentlig transport på Amalfikysten",
-      "seo": {
-        "title": "Offentlig transport på Amalfikysten",
-        "description": "Slik bruker du busser og ferger på Amalfikysten, med pass, timing og ruter."
-      }
-    },
-    "travelTipsFirstTime": {
-      "linkLabel": "Positano-tips for førstegangsreisende",
-      "seo": {
-        "title": "Positano-tips for førstegangsreisende",
-        "description": "Ankomst, bagasje, betaling og dekning — praktiske råd for første tur."
-      }
-    },
-    "whatToPack": {
-      "linkLabel": "Hva du bør pakke for Amalfikysten",
-      "seo": {
-        "title": "Hva du bør pakke for Amalfikysten",
-        "description": "Sesongbasert pakkeliste for Positano og Amalfikysten."
-      }
-    },
     "positanoBeaches": {
-      "linkLabel": "Positanos strender: Sol og hemmelige bukter"
+      "linkLabel": "Positanos strender: Sol og hemmelige bukter",
+      "seo": {
+        "title": "Positanos strender: Sol og hemmelige bukter",
+        "description": "Oppdag Positanos beste strender fra den ikoniske Spiaggia Grande til skjulte bukter og eksklusive strandklubber."
+      }
     },
     "arienzoBeachClub": {
-      "linkLabel": "Arienzo strand: Positanos eksklusive strandklubb"
+      "linkLabel": "Arienzo strand: Positanos eksklusive strandklubb",
+      "seo": {
+        "title": "Arienzo strand: Positanos boutique strandklubb",
+        "description": "Guide til Arienzo Beach Club med trapper, solsenger, restaurant og veibeskrivelse fra Hostel Brikette."
+      }
     },
     "fornilloBeachGuide": {
-      "linkLabel": "Fornillo strand: Positanos roligere alternativ"
+      "linkLabel": "Fornillo strand: Positanos roligere alternativ",
+      "seo": {
+        "title": "Fornillo strand: Positanos roligere alternativ",
+        "description": "Rolig Fornillo strand med gratis sand, lokale restauranter og enkel gangavstand fra sentrale Positano."
+      }
     },
     "lauritoBeachGuide": {
-      "linkLabel": "Laurito strand: Skjult perle under klippene"
+      "linkLabel": "Laurito strand: Skjult perle under klippene",
+      "seo": {
+        "title": "Laurito strand: Skjult perle under klippene",
+        "description": "Avsidesliggende Laurito strand med 450+ trapper, lokale sjømatretter og turkis vann vekk fra folkemengdene."
+      }
     },
     "gavitellaBeachGuide": {
-      "linkLabel": "Gavitella strand: Praianos solnedgangsbadeplass"
+      "linkLabel": "Gavitella strand: Praianos solnedgangsbadeplass",
+      "seo": {
+        "title": "Gavitella strand: Praianos solnedgangsbadested",
+        "description": "Praianos lokale strand med solnedgangsutsikt, rolig vann og enkel busstilgang fra Positano."
+      }
     },
     "marinaDiPraiaBeaches": {
-      "linkLabel": "Marina di Praia: Dramatisk bukt mellom klippene"
+      "linkLabel": "Marina di Praia: Dramatisk bukt mellom klippene",
+      "seo": {
+        "title": "Marina di Praia: Dramatisk bukt mellom klippene",
+        "description": "Naturskjønne Marina di Praia med normannertårn, restauranter ved vannet og krystallklar badebukt."
+      }
     },
     "fiordoDiFuroreBeachGuide": {
-      "linkLabel": "Fiordo di Furore: Fjordstranden under broen"
+      "linkLabel": "Fiordo di Furore: Fjordstranden under broen",
+      "seo": {
+        "title": "Fiordo di Furore: Fjordstranden under broen",
+        "description": "Instagram-kjente Furore-fjorden med smaragdgrønt vann, klippedykking og dramatiske broutsikter med buss fra Positano."
+      }
     },
     "reginaGiovannaBath": {
-      "linkLabel": "Regina Giovanna: Romerske ruiner møter naturlig basseng"
+      "linkLabel": "Regina Giovanna: Romerske ruiner møter naturlig basseng",
+      "seo": {
+        "title": "Regina Giovanna: Romerske ruiner møter naturlig basseng",
+        "description": "Historisk naturlig basseng i Sorrento med romerske villaruiner, kystpromenade og svømming i klart vann."
+      }
     },
     "positanoMainBeach": {
-      "linkLabel": "Spiaggia Grande: Positanos ikoniske hovedstrand"
+      "linkLabel": "Spiaggia Grande: Positanos ikoniske hovedstrand",
+      "seo": {
+        "title": "Spiaggia Grande: Positanos ikoniske hovedstrand",
+        "description": "Komplett guide til Positanos hovedstrand med solsengpriser, gratis områder, restauranter og hvordan komme dit."
+      }
+    },
+    "positanoMainBeachWalkDown": {
+      "linkLabel": "Gå ned til Positanos hovedstrand",
+      "seo": {
+        "title": "Gå fra Hostel Brikette til Positanos hovedstrand",
+        "description": "Gangveiledning fra Hostel Brikette ned til Spiaggia Grande med landemerker og tidsestimater."
+      }
+    },
+    "positanoMainBeachBusDown": {
+      "linkLabel": "Buss ned til Positanos hovedstrand",
+      "seo": {
+        "title": "Buss fra Hostel Brikette til Positanos hovedstrand",
+        "description": "Ta SITA-bussen fra Chiesa Nuova ned til Positano-stranden med stoppesteder og tidspunkter."
+      }
+    },
+    "positanoMainBeachWalkBack": {
+      "linkLabel": "Gå tilbake fra Positanos hovedstrand",
+      "seo": {
+        "title": "Gå tilbake til Hostel Brikette fra Spiaggia Grande",
+        "description": "Oppoverbakke fra Positanos hovedstrand tilbake til Hostel Brikette med trinn-for-trinn ruteveiledning."
+      }
+    },
+    "positanoMainBeachBusBack": {
+      "linkLabel": "Buss tilbake til Hostel Brikette fra Spiaggia Grande",
+      "seo": {
+        "title": "Buss tilbake til Hostel Brikette fra Positanos hovedstrand",
+        "description": "Ta SITA-bussen fra Positano strand opp til Chiesa Nuova med hentesteder og rutetider."
+      }
+    },
+    "hostelBriketteToFornilloBeach": {
+      "linkLabel": "Hostel Brikette → Fornillo strand gangveiledning",
+      "seo": {
+        "title": "Hostel Brikette → Fornillo Beach gangrute"
+      }
+    },
+    "fornilloBeachToBrikette": {
+      "linkLabel": "Fornillo strand → Hostel Brikette returrute",
+      "seo": {
+        "title": "Fornillo Beach → Hostel Brikette returrute"
+      }
+    },
+    "hostelBriketteToFiordoDiFuroreBus": {
+      "linkLabel": "Hvordan komme til Fiordo di Furore strand med buss",
+      "seo": {
+        "title": "Hvordan komme til Fiordo di Furore strand med buss"
+      }
+    },
+    "fiordoDiFuroreBusReturn": {
+      "linkLabel": "Fiordo di Furore strand → Hostel Brikette med buss",
+      "seo": {
+        "title": "Fiordo di Furore strand → Hostel Brikette med buss"
+      }
+    },
+    "lauritoBeachBusDown": {
+      "linkLabel": "Hvordan komme til Laurito strand med buss",
+      "seo": {
+        "title": "Hvordan komme til Laurito strand med buss"
+      }
+    },
+    "lauritoBeachBusBack": {
+      "linkLabel": "Buss tilbake til Hostel Brikette fra Laurito strand",
+      "seo": {
+        "title": "Buss tilbake til Hostel Brikette fra Laurito strand"
+      }
+    },
+    "hostelBriketteToArienzoBus": {
+      "linkLabel": "Hvordan komme til Arienzo strand med buss",
+      "seo": {
+        "title": "Hvordan komme til Arienzo strand med buss"
+      }
+    },
+    "arienzoBeachBusBack": {
+      "linkLabel": "Buss tilbake til Hostel Brikette fra Arienzo strand",
+      "seo": {
+        "title": "Buss tilbake til Hostel Brikette fra Arienzo strand"
+      }
+    },
+    "hostelBriketteToReginaGiovannaBath": {
+      "linkLabel": "Hvordan komme til Regina Giovanna Bath strand",
+      "seo": {
+        "title": "Hvordan komme til Regina Giovanna Bath strand"
+      }
     },
     "sunriseHike": {
       "linkLabel": "Soloppgangstur: Se daggry over Positano"
@@ -186,6 +283,27 @@
     },
     "freeThingsPositano": {
       "linkLabel": "Gratis ting i Positano: Budsjettvennlig moro"
+    },
+    "publicTransportAmalfi": {
+      "linkLabel": "Offentlig transport på Amalfikysten",
+      "seo": {
+        "title": "Offentlig transport på Amalfikysten",
+        "description": "Slik bruker du busser og ferger på Amalfikysten, med pass, timing og ruter."
+      }
+    },
+    "travelTipsFirstTime": {
+      "linkLabel": "Positano-tips for førstegangsreisende",
+      "seo": {
+        "title": "Positano-tips for førstegangsreisende",
+        "description": "Ankomst, bagasje, betaling og dekning — praktiske råd for første tur."
+      }
+    },
+    "whatToPack": {
+      "linkLabel": "Hva du bør pakke for Amalfikysten",
+      "seo": {
+        "title": "Hva du bør pakke for Amalfikysten",
+        "description": "Sesongbasert pakkeliste for Positano og Amalfikysten."
+      }
     }
   },
   "dev": {

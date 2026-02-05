@@ -79,9 +79,18 @@
   "perksGuarantee": "Cada reserva realizada directamente en nuestro sitio web activa automáticamente estas ventajas exclusivas.",
   "perksIntroLink": "Ver todas las ventajas",
   "perksList": [
-    "Hasta un 25 % de descuento sobre el precio habitual al aplicar el cupón",
-    "Desayuno gratuito",
-    "Bebida de cortesía por la tarde"
+    {
+      "title": "Hasta un 25 % de descuento sobre el precio habitual al aplicar el cupón",
+      "subtitle": "Aplicado automáticamente"
+    },
+    {
+      "title": "Desayuno gratuito",
+      "subtitle": "Incluido diariamente"
+    },
+    {
+      "title": "Bebida de cortesía por la tarde",
+      "subtitle": "Selección de la casa"
+    }
   ],
   "expired": {
     "message": "Esta oferta ha finalizado."

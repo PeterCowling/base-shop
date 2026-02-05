@@ -7,15 +7,6 @@
     "eyebrow": "Experiencias",
     "title": "Atardeceres, mañanas tranquilas y consejos locales",
     "description": "Combina tu estancia con bebidas en la terraza, excursiones curadas y una conserjería digital que te mantiene informado incluso antes de llegar.",
-    "supporting": "Todo está disponible para huéspedes registrados; escríbenos si viajas con amistades que se alojan en otro sitio.",
-    "primaryCta": "Reserva tu estancia",
-    "secondaryCta": "Abrir la carta del bar",
-    "tertiaryCta": "Escribir a la conserjería digital",
-    "primaryCtaAria": "Reserva tu estancia en Hostel Brikette",
-    "secondaryCtaAria": "Ver la carta del bar de Hostel Brikette",
-    "tertiaryCtaAria": "Enviar un mensaje a la conserjería digital de Hostel Brikette",
-    "breakfastCta": "Ver el menú de desayuno",
-    "breakfastCtaAria": "Ver el menú de desayuno",
     "scrollNudge": "Explora por tipo de experiencia abajo"
   },
   "sections": {
@@ -159,11 +150,6 @@
         "title": "Gastronomía",
         "description": "Dónde comer bien sin gastar de más.",
         "imageAlt": "Platos italianos frescos en una trattoria local"
-      },
-      "itinerary": {
-        "title": "Itinerarios",
-        "description": "Planes de varios días según la duración de tu viaje.",
-        "imageAlt": "Vista panorámica de la Costa Amalfitana desde arriba"
       },
       "more": {
         "title": "Más guías",

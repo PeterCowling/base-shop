@@ -20,7 +20,7 @@
   "sections": [
     {
       "id": "why-route",
-      "title": "Por qué importa la parada de autobús Chiesa Nuova / Bar Internazionale",
+      "title": "Por qué usar la parada de autobús Chiesa Nuova / Bar Internazionale",
       "body": [
         "La parada **Chiesa Nuova / Bar Internazionale** es la parada SITA más cercana a Hostel Brikette y suele ser la forma más fácil de subir al autobús sin afrontar las largas escaleras de Positano. Si exploras la costa por el día, conectas con el tren en Sorrento o empiezas un viaje más largo vía Salerno, esta es la parada “base” del hostel.",
         "También es una de las paradas más fáciles de usar bien porque las colas son simples: **hacia Amalfi/Salerno (este)** es en el lado con vistas al mar (opuesto a Bar Internazionale) y **hacia Sorrento/Nápoles (oeste)** es en el lado de la montaña (justo fuera del bar).",
@@ -164,7 +164,7 @@
         {
           "src": "/img/checkin-desk.avif",
           "alt": "Mostrador de recepción de Hostel Brikette",
-          "caption": "Recepción puede guardar el equipaje si quieres explorar antes de coger el autobús."
+          "caption": "Recepción puede guardar el equipaje si quieres relajarte antes de coger el autobús."
         }
       ]
     }

@@ -1,61 +1,201 @@
 {
   "seo": {
     "title": "Positano nach Capri mit der Fähre | Hostel Brikette",
-    "description": "Schritt für Schritt vom Hostel Brikette zum Hafen von Positano, Tickets, Boarding-Tipps und die Fähre nach Capri."
+    "description": "Gehe vom Hostel Brikette zum Hafen von Positano, kaufe Fährtickets und fahre nach Capri. Schritt-für-Schritt-Anleitung mit Zeiten, Kosten und Boarding-Tipps."
   },
-  "intro": {
-    "title": "Positano nach Capri – Fähre",
-    "body": "Folge diesen Schritten, um vom Hostel Brikette zum Hafen von Positano zu laufen, deine Fährtickets zu kaufen und nach Capri einzuschiffen. Enthält praktische Zeit- und Anbieterhinweise."
-  },
-  "galleries": [
+  "lastUpdated": "2025-02-04",
+  "intro": [
+    "Dieser Leitfaden zeigt dir, wie du vom Hostel Brikette zum Hafen von Positano läufst (15–20 Minuten bergab, meist Treppen), Fährtickets kaufst und auf die Fähre nach Capri gehst.",
+    "**Reisezeit:** 30–60 Minuten mit der Fähre, je nach Betreiber und Schiff. Fußweg zum Hafen: 15–20 Minuten.",
+    "**Kosten:** Fährtickets kosten üblicherweise €18–€25 einfache Fahrt (variiert je nach Betreiber und Saison). Überprüfe aktuelle Preise bei der Buchung.",
+    "**Buchung:** Empfohlen wird eine Buchung mindestens 24 Stunden im Voraus während der Hochsaison (Mai–September). In der Nebensaison sind Tickets am selben Tag normalerweise verfügbar.",
+    "**Wetterwarnung:** Fähren können bei rauer See mit kurzer Vorankündigung storniert werden. Wenn du am selben Tag Anschlussverbindungen hast, plane einen 3-Stunden-Puffer ein oder prüfe die %LINK:positanoCapriFerry|alternative Busroute über Sorrent%."
+  ],
+  "sections": [
     {
-      "items": [
+      "id": "journey-overview",
+      "title": "Fährfahrplan & Betreiber",
+      "body": [
+        "Fähren zwischen Positano und Capri verkehren am häufigsten vom Frühjahr bis zum Frühherbst (April–Oktober) und können im Winter oder bei rauer See reduziert oder gestrichen werden. Mehrere Betreiber bedienen diese Route.",
+        "Fahrpläne vergleichen und Tickets buchen:",
+        "• [Capri.net – Capri ↔ Positano](https://www.capri.net/en/t/capri/positano)",
+        "• [Positano.com (zusammengefasster Fahrplan)](https://www.positano.com/en/ferry-schedule)"
+      ]
+    },
+    {
+      "id": "walk-to-port",
+      "title": "Fußweg vom Hostel Brikette zum Hafen von Positano",
+      "body": "Der Fußweg dauert 15–20 Minuten und verläuft fast vollständig bergab über Treppen. Folge diesen Schritten:",
+      "list": [
+        "Verlasse das Hostel durch die Haupttür.",
+        "Gehe die Treppe zur Straße hinunter, biege links ab und laufe etwas über 100 m (≈330 ft).",
+        "Bei der ersten Kreuzung (Punkt 1) biege rechts bei der Tabacchi ab (erstes Gebäude rechts).",
+        "Gehe weiter bergab; beim ersten Wendepunkt (Punkt 2) verlasse die Straße und nimm die Treppe geradeaus.",
+        "Am unteren Ende der Treppe erreichst du die Straße (Punkt 3); überquere sie und gehe geradeaus zur nächsten Treppe.",
+        "Wenn diese Treppe an der Straße endet, überquere sie, biege links ab und laufe ~10 m (≈30 ft) zu Punkt 4.",
+        "Biege rechts von der Straße ab und folge der Treppe bergab.",
+        "Unten angekommen biege rechts ab, um Punkt 5 zu erreichen, dann weiter durch den Bogen rechts.",
+        "Der Hafen (Spiaggia Grande Pier) liegt etwa 50 m (≈160 ft) voraus auf der rechten Seite des Strandes."
+      ],
+      "images": [
         {
           "src": "/img/directions/positano-capri-ferry-img02.jpg",
-          "aspectRatio": "4/3",
-          "preset": "gallery"
-        },
-        {
-          "src": "/img/directions/positano-capri-ferry-img03.jpg",
-          "aspectRatio": "4/3",
-          "preset": "gallery"
-        },
-        {
-          "src": "/img/directions/positano-capri-ferry-img04.png",
-          "aspectRatio": "4/3",
-          "preset": "gallery"
-        },
-        {
-          "src": "/img/directions/positano-capri-ferry-img05.jpg",
-          "aspectRatio": "4/3",
-          "preset": "gallery"
+          "alt": "Kartenübersicht der Gehroute vom Hostel Brikette zum Hafen von Positano",
+          "caption": "Kartenübersicht: Hostel zum Hafen von Positano",
+          "aspectRatio": "4/3"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img06.jpg",
-          "aspectRatio": "4/3",
-          "preset": "gallery"
+          "alt": "Punkt 1: Kreuzung bei der Tabacchi an der Via G. Marconi nahe Hostel Brikette",
+          "caption": "Punkt 1: Tabacchi-Kreuzung (rechts abbiegen)",
+          "aspectRatio": "4/3"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img07.jpg",
-          "aspectRatio": "4/3",
-          "preset": "gallery"
+          "alt": "Punkt 2: erster Wendepunkt, wo du die Straße verlässt und die Treppe nimmst",
+          "caption": "Punkt 2: Straße verlassen, Treppe nehmen",
+          "aspectRatio": "4/3"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img08.jpg",
-          "aspectRatio": "4/3",
-          "preset": "gallery"
+          "alt": "Punkt 3: Ende der Treppe an der Straße vor der Überquerung",
+          "caption": "Punkt 3: Treppe endet an der Straße",
+          "aspectRatio": "4/3"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img09.jpg",
-          "aspectRatio": "4/3",
-          "preset": "gallery"
+          "alt": "Punkt 4: Straße überqueren, kurz links abbiegen, dann Treppe nehmen",
+          "caption": "Punkt 4: Straße überqueren, links, Treppe",
+          "aspectRatio": "4/3"
         },
         {
           "src": "/img/directions/positano-capri-ferry-img10.jpg",
-          "aspectRatio": "4/3",
-          "preset": "gallery"
+          "alt": "Punkt 5: Bogendurchgang, der zum Strand und Hafen führt",
+          "caption": "Punkt 5: Bogen zum Hafen",
+          "aspectRatio": "4/3"
         }
       ]
+    },
+    {
+      "id": "tickets-and-boarding",
+      "title": "Fährtickets kaufen und einsteigen",
+      "body": "Am Hafen von Positano hat jeder Fährbetreiber einen eigenen Ticketschalter neben dem Pier.",
+      "list": [
+        "Das Schild neben jedem Schalter zeigt die nächste Abfahrtszeit für diesen Betreiber.",
+        "Kaufe Tickets direkt am Schalter des Betreibers (Bargeld oder Karte akzeptiert).",
+        "Komme 20–30 Minuten vor Abfahrt an, um eventuell vorgebuchte Voucher einzutauschen und dich für das Boarding anzustellen.",
+        "Nach dem Ticketkauf gehe zum Ende des Piers und warte auf das Boarding (Personal wird ansagen, wann du einsteigen kannst)."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-capri-ferry-img03.jpg",
+          "alt": "Foto der Zufahrt zur Spiaggia Grande von Positano und dem Touristenhafen",
+          "caption": "Zufahrt zur Spiaggia Grande (Touristenhafen)",
+          "aspectRatio": "4/3"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img04.png",
+          "alt": "Detailkarte, die die rechte Seite der Spiaggia Grande hervorhebt, wo der Hafen liegt",
+          "caption": "Detailkarte: Hafenlage an der Spiaggia Grande",
+          "aspectRatio": "4/3"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img05.jpg",
+          "alt": "Ticketschalter der Fährbetreiber am Hafen von Positano mit Schildern für nächste Abfahrten",
+          "caption": "Ticketschalter der Fährbetreiber",
+          "aspectRatio": "4/3"
+        }
+      ]
+    },
+    {
+      "id": "timing-and-weather",
+      "title": "Beste Reisezeiten & Wettereinflüsse",
+      "body": [
+        "Fährfahrpläne variieren erheblich nach Saison. April bis Oktober bietet den häufigsten Service, mit stündlichen Abfahrten während der Hochsommermonate (Juni–September). Frühe Morgenfähren (um 09:00–10:00) sind bei Tagesausflüglern beliebt, während Nachmittagsabfahrten (14:00–16:00) tendenziell ruhiger sind.",
+        "**Wettereinfluss:** Die Route Positano–Capri überquert offenes Wasser und kann rau sein, wenn der Wind auffrischt. Herbst- und Winterfahrten (Oktober–März) sind am stärksten betroffen. Vom Hostel aus haben wir Stornierungen mit nur 90 Minuten Vorlauf erlebt, wenn sich die Bedingungen verschlechtern.",
+        "**Seebedingungen:** Wenn du anfällig für Seekrankheit bist, nimm 30–60 Minuten vor dem Boarding Medikamente ein. Die Überfahrt ist morgens und abends meist ruhig; mittags kann das Meer unruhiger sein, besonders im Sommer, wenn sich nachmittags thermische Winde entwickeln.",
+        "**Planungstipp:** Wenn du Capri als Tagesausflug von Positano besuchst und einen engen Zeitplan hast (Flüge, Anschlusszüge usw.), buche eine Morgenfähre hin und plane die Rückkehr bis 16:00–17:00. Das gibt dir Pufferzeit, falls die letzten Fähren gestrichen werden."
+      ]
+    },
+    {
+      "id": "what-to-expect-onboard",
+      "title": "Was dich an Bord der Fähre erwartet",
+      "body": [
+        "Die meisten Fähren auf dieser Route sind schnelle Passagierboote (keine großen Autofähren). Sitzplätze werden üblicherweise nach dem Prinzip \\\"Wer zuerst kommt, mahlt zuerst\\\" vergeben; komm früh für Fensterplätze oder überdachte Bereiche, wenn das Wetter unsicher aussieht.",
+        "Die Fahrt dauert 30–60 Minuten je nach Betreiber und Schiff. Schnellere Tragflächenboote schaffen die Strecke in etwa 30–40 Minuten, während Standardfähren näher an einer Stunde liegen können und zusätzliche Zwischenstopps einlegen.",
+        "**Einrichtungen an Bord:** Kleinere Schiffe haben begrenzte Einrichtungen — normalerweise eine Toilette und einen kleinen Erfrischungstresen. Größere Fähren können Innenplätze haben, aber die meisten Passagiere bevorzugen das Außendeck für die Aussicht auf die Amalfiküste und die Li Galli-Inseln.",
+        "**Ausblicke:** An klaren Tagen siehst du die gesamte Positano-Küstenlinie, Praianos Fjord und die dramatischen Klippen bei der Annäherung an Capri. Sitze auf der rechten Seite (Steuerbord) bei der Abfahrt von Positano für die beste Küstenaussicht."
+      ]
+    },
+    {
+      "id": "arrival-capri",
+      "title": "Bei der Ankunft auf Capri",
+      "body": [
+        "Gehe am Touristenhafen von Capri (Marina Grande) von Bord. Der Hafen ist ein kompakter Bereich mit Fährschaltern, Taxiständen und der Standseilbahnstation, alle innerhalb von 100 Metern voneinander.",
+        "**Hinauf zur Stadt Capri:** Die meisten Besucher nehmen die Standseilbahn (€2 einfache Fahrt, fährt alle 15 Minuten), um Capris Hauptplatz (Piazzetta) zu erreichen. In der Hochsaison (Juni–September) können Standseilbahnschlangen zwischen 10:00–14:00 30–45 Minuten lang sein. Alternativ verlangen Taxis etwa €15–20 für dieselbe Fahrt und Busse verkehren regelmäßig für €2.",
+        "**Rückfahrtickets:** Wenn du einen Tagesausflug machst, kaufe dein Rückfährticket kurz nach der Ankunft auf Capri (entweder am Hafen oder online). Beliebte Rückfahrzeiten (16:00–18:00) sind im Sommer schnell ausverkauft, und du möchtest nicht auf Last-Minute-Verfügbarkeit angewiesen sein.",
+        "**Gepäck:** Wenn du Taschen hast, bietet der Hafen Marina Grande kostenpflichtige Gepäckaufbewahrung (ca. €5–8 pro Stück). Das ist nützlich, wenn du die Stadt Capri erkundest, bevor du abends mit der Fähre nach Positano zurückkehrst."
+      ]
+    },
+    {
+      "id": "return-journey",
+      "title": "Rückkehr nach Positano von Capri",
+      "body": [
+        "Für deine Rückfahrt überprüfe die Fährfahrpläne am Hafen Marina Grande oder frage das Personal an deinem Ticketschalter. Spätnachmittagsfähren (16:00–18:00) sind am vollsten; wenn möglich, nimm eine frühere oder spätere Fahrt, um Menschenmengen zu vermeiden.",
+        "**Wetterwarnungen:** Bevor du zurückfährst, überprüfe die Wettervorhersage und eventuelle Stornierungsmitteilungen am Hafen. Wenn das Nachmittagsmeer rau aussieht, erwäge eine frühere Rückfahrt oder verlängere deinen Besuch um einen Tag (es gibt Budget-Gästehäuser nahe Marina Grande).",
+        "**Alternative Route:** Wenn Fähren nach Positano ausgebucht oder gestrichen sind, kannst du eine Fähre nach Sorrent nehmen und dann einen %LINK:sorrentoPositanoBus|SITA-Bus nach Positano% nehmen (Gesamtfahrt: etwa 90–120 Minuten). Das dauert länger, ist aber eine zuverlässige Ausweichmöglichkeit.",
+        "**Fußweg zurück zum Hostel:** Nach der Ankunft in Positano ist der Fußweg zurück zum Hostel Brikette steil (15–20 Minuten, komplett bergauf über Treppen). Wenn du müde bist oder Einkaufstaschen trägst, erwäge ein Taxi vom Hafen (etwa €10–15). Siehe unseren %LINK:ferryDockToBrikette|Fähranlegestelle zum Hostel Brikette% Leitfaden für die Bergauf-Gehroute."
+      ]
+    },
+    {
+      "id": "practical-tips",
+      "title": "Praktische Tipps für die Fährfahrt",
+      "body": [
+        "**Sonnenschutz:** Das Fährdeck wird im Sommer (Juni–August) sehr heiß. Bringe Sonnencreme, einen Hut und Wasser mit. Überdachte Sitzplätze sind begrenzt, also wenn du leicht verbrennst, gehe früh an Bord, um dir einen schattigen Platz zu sichern.",
+        "**Was mitbringen:** Halte dein Handy für Fotos geladen (die Küstenausblicke sind spektakulär). Bringe eine leichte Jacke mit, auch im Sommer — Meeresbrisen können kühl sein, besonders auf schnelleren Booten. Wenn du anfällig für Seekrankheit bist, bringe Medikamente mit und vermeide es, ganz hinten im Boot zu sitzen, wo die Bewegung am stärksten ist.",
+        "**Bargeld und Karten:** Die meisten Fährbetreiber akzeptieren Kartenzahlung an den Ticketschaltern, aber es ist klug, €50–100 in bar als Backup dabei zu haben. Capri ist teurer als Positano; erwarte €8–12 für ein einfaches Mittagessen und €4–6 für einen Kaffee auf der Piazzetta zu zahlen.",
+        "**Fotografie:** Für die besten Fotos sitze auf der rechten Seite (Steuerbord) bei der Abfahrt von Positano und auf der linken Seite (Backbord) bei der Rückkehr. Das frühe Morgen- und späte Nachmittagslicht ist am besten für Küstenaufnahmen.",
+        "**Bleib informiert:** Überprüfe das Informationsbrett am Hafen von Positano (neben den Ticketschaltern) für Echtzeit-Wetterupdates und Stornierungen. Bei unsicherem Wetter postet das Personal Updates um 08:00–09:00 und wieder um 13:00–14:00."
+      ]
+    },
+    {
+      "id": "luggage-tip",
+      "title": "Rückkehr mit Gepäck",
+      "body": "Wenn du von Capri mit schweren Taschen in Positano ankommst, siehe den %LINK:ferryDockToBrikette|Fähranlegestelle → Hostel Brikette, mit Gepäck% Leitfaden für die beste Bergauf-Gehroute (sie unterscheidet sich von der hier gezeigten Bergab-Route)."
     }
-  ]
+  ],
+  "faqs": [
+    {
+      "question": "Kann ich Fährtickets am selben Tag kaufen?",
+      "answer": [
+        "Ja, aber die Verfügbarkeit hängt von der Saison ab. In der Hochsaison (Mai–September) sind Fähren oft ausverkauft, besonders Vormittagsabfahrten (09:00–11:00). Vom Hostel aus empfehlen wir eine Buchung mindestens 24 Stunden im Voraus, wenn du im Sommer reist.",
+        "In der Nebensaison (Oktober–April) sind Tickets am selben Tag normalerweise an den Hafenschaltern verfügbar. Allerdings können die Verbindungen auf 2–3 Fahrten pro Tag reduziert sein, und Stornierungen sind bei rauem Wetter häufiger."
+      ]
+    },
+    {
+      "question": "Was passiert, wenn die Fähre gestrichen wird?",
+      "answer": [
+        "Fähren können bei rauer See gestrichen werden, manchmal mit nur 1–2 Stunden Vorlauf. Wir haben dies am häufigsten im Herbst und Winter erlebt, wenn Nachmittagswinde stärker werden.",
+        "Wenn deine Fähre gestrichen wird:",
+        "• Frage das Personal am Ticketschalter nach der nächsten verfügbaren Fahrt (oft 2–3 Stunden später, wenn sich die Bedingungen bessern).",
+        "• Erwäge den %LINK:sorrentoPositanoBus|Bus nach Sorrent% und dann die Fähre nach Capri (längere Route, aber Busse fahren bei jedem Wetter).",
+        "• Wenn du Anschlussverbindungen hast, plane einen 3-Stunden-Puffer ein oder plane im Voraus eine Ausweichroute."
+      ]
+    },
+    {
+      "question": "Ist der Fußweg zum Hafen schwierig?",
+      "answer": "Der Fußweg vom Hostel zum Hafen von Positano ist 15–20 Minuten bergab, meist über Treppen. Bergab ist es unkompliziert, aber die Rückkehr bergauf ist steil und kann ermüdend sein, besonders bei Sommerhitze. Wenn du mit Einkaufstaschen oder Gepäck zurückkehrst, empfehlen wir ein Taxi vom Hafen zurück zum Hostel (etwa €10–15, oder bitte das Hostel, die Abholung zu arrangieren)."
+    },
+    {
+      "question": "Wie viel Zeit sollte ich auf Capri verbringen?",
+      "answer": [
+        "Für einen Tagesausflug plane 5–7 Stunden auf der Insel ein. Das gibt dir Zeit, mit der Standseilbahn zur Stadt Capri hochzufahren, die Piazzetta zu erkunden, zu den Gärten des Augustus zu laufen und zu Mittag zu essen — mit Pufferzeit für Warteschlangen und Fährverzögerungen.",
+        "Beliebte Tagesausflug-Route: Abfahrt von Positano gegen 09:30–10:00, Capri erkunden 11:00–16:00, Rückfähre gegen 17:00–18:00. Das vermeidet die größten Menschenmengen und gibt dir Flexibilität, falls Rückfähren verspätet sind.",
+        "Wenn du die Blaue Grotte, Anacapri oder Villa Jovis besuchen möchtest, erwäge eine Übernachtung auf Capri (Budget-Hotels nahe Marina Grande beginnen bei etwa €80–100 in der Nebensaison)."
+      ]
+    }
+  ],
+  "callouts": {
+    "tip": "Brauchst du Ausweichmöglichkeiten bei rauer See? Siehe den %LINK:travelHelp|Reisehilfe-Leitfaden% für alternative Routen über Sorrent."
+  }
 }

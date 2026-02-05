@@ -166,12 +166,13 @@
     },
     {
       "id": "logistics",
-      "title": "Andata e ritorno dalla spiaggia",
+      "title": "Come raggiungere le spiagge e tornare",
       "body": [
-        "Dall’ostello, l’approccio più rapido di solito è: scendere fino a Spiaggia Grande (a piedi o in autobus), poi decidere se proseguire sul lungomare verso Fornillo, prendere una navetta in barca o restare sulla spiaggia principale.",
-        "Se fai una giornata in stabilimento con transfer in barca (Arienzo o Laurito), spesso conviene partire da Spiaggia Grande: ti metti in fila presto ed eviti molte scale.",
-        "Estate 2026: considera il caldo nelle risalite. Riempi l’acqua prima di risalire e, se sei stanco, usa l’autobus interno invece di fare ogni gradino.",
-        "Per le gite in giornata (Praiano, Amalfi, Sorrento), controlla l’ultima opzione di rientro prima di impegnarti. I traghetti sono il modo più piacevole quando operano, ma l’autobus è il piano B. Se il mare è mosso o i traghetti vengono cancellati, calcola più tempo e mantieni il programma flessibile. Porta snack per il viaggio."
+        "Ogni spiaggia ha opzioni di accesso diverse, quindi consulta la guida specifica prima di partire. Ecco i link rapidi alle guide più utili:",
+        "Spiagge di Positano: %LINK:positanoMainBeachWalkDown|A piedi verso Spiaggia Grande% • %LINK:positanoMainBeachBusDown|Autobus verso Spiaggia Grande% • %LINK:hostelBriketteToFornilloBeach|A piedi verso Fornillo% • %LINK:hostelBriketteToArienzoBus|Autobus verso Arienzo% • %LINK:lauritoBeachBusDown|Autobus verso Laurito%",
+        "Percorsi di ritorno: %LINK:positanoMainBeachWalkBack|A piedi da Spiaggia Grande% • %LINK:positanoMainBeachBusBack|Autobus da Spiaggia Grande% • %LINK:fornilloBeachToBrikette|A piedi da Fornillo% • %LINK:arienzoBeachBusBack|Autobus da Arienzo% • %LINK:lauritoBeachBusBack|Autobus da Laurito%",
+        "Spiagge per gite: %LINK:hostelBriketteToFiordoDiFuroreBus|Fiordo di Furore% • %LINK:gavitellaBeachGuide|Gavitella (Praiano)% • %LINK:marinaDiPraiaBeaches|Marina di Praia% • %LINK:reginaGiovannaBath|Regina Giovanna (Sorrento)%",
+        "Consigli generali: Estate 2026, considera il caldo nelle risalite—riempi l'acqua prima di risalire e usa l'autobus interno se sei stanco. Per le gite, controlla l'ultima opzione di rientro (traghetto o autobus) prima di impegnarti, e porta snack per il viaggio. Se il mare è mosso o i traghetti vengono cancellati, calcola più tempo e mantieni il programma flessibile."
       ],
       "images": [
         {

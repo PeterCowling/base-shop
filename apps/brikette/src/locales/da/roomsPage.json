@@ -269,7 +269,6 @@
     "dorm": "Per nat, pr. gæst. Én gæst i én køjeseng."
   },
   "facts": {
-    "floor": "Etage",
     "type": {
       "privateRoom": "Privat værelse",
       "mixedDorm": "Blandet sovesal",
@@ -281,13 +280,9 @@
       "bathroomPrivate": "Privat badeværelse",
       "bathroomSharedFemale": "Delt badeværelse"
     },
-    "sleeps": "Sover {{count}}",
-    "view": "Udsigt",
-    "capacity": "Kapacitet"
+    "sleeps": "Sover {{count}}"
   },
   "detailsLine": {
-    "floor": "Etage {{floor}}",
-    "capacity": "Op til {{count}} gæster",
     "beds": {
       "doubleBedForTwo": "1 dobbeltseng",
       "threeSingleBedsThreeGuests": "3 enkeltsenge",
@@ -305,8 +300,6 @@
     }
   },
   "priceUnits": {
-    "perNight": "/nat",
-    "perGuest": "/gæst",
     "perRoom": "værelse",
     "perBed": "seng"
   }

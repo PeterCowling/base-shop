@@ -166,12 +166,13 @@
     },
     {
       "id": "logistics",
-      "title": "Jak dotrzeć na plażę i wrócić",
+      "title": "Dojazd na plaże i powrót",
       "body": [
-        "Z hostelu najszybszy schemat to zwykle: zejść do Spiaggia Grande (pieszo lub busem), a potem zdecydować, czy iść promenadą do Fornillo, wskoczyć na łódź‑shuttle, czy zostać na głównej plaży.",
-        "Jeśli planujesz dzień w beach clubie z transferem łodzią (Arienzo lub Laurito), często najłatwiej wystartować ze Spiaggia Grande: ustawisz się wcześniej w kolejce i unikniesz schodów.",
-        "Latem 2026 zaplanuj upał na podejściach: uzupełnij wodę zanim ruszysz w górę, a gdy jesteś zmęczony, skorzystaj z wewnętrznego busa zamiast iść każdy stopień.",
-        "Na jednodniówki (Praiano, Amalfi, Sorrento) sprawdź ostatni powrót zanim się zdecydujesz. Promy są najprzyjemniejsze, gdy pływają, ale autobusy to plan B. Jeśli morze jest wzburzone lub promy odwołane, dolicz czas i trzymaj plan elastyczny. Spakuj przekąski na drogę."
+        "Każda plaża ma inne opcje dojazdu, więc sprawdź odpowiedni przewodnik przed wyjazdem. Oto szybkie linki do najprzydatniejszych przewodników tras:",
+        "Plaże w Positano: %LINK:positanoMainBeachWalkDown|Pieszo do Spiaggia Grande% • %LINK:positanoMainBeachBusDown|Busem do Spiaggia Grande% • %LINK:hostelBriketteToFornilloBeach|Pieszo do Fornillo% • %LINK:hostelBriketteToArienzoBus|Busem do Arienzo% • %LINK:lauritoBeachBusDown|Busem do Laurito%",
+        "Trasy powrotne: %LINK:positanoMainBeachWalkBack|Pieszo ze Spiaggia Grande% • %LINK:positanoMainBeachBusBack|Busem ze Spiaggia Grande% • %LINK:fornilloBeachToBrikette|Pieszo z Fornillo% • %LINK:arienzoBeachBusBack|Busem z Arienzo% • %LINK:lauritoBeachBusBack|Busem z Laurito%",
+        "Plaże na wycieczki: %LINK:hostelBriketteToFiordoDiFuroreBus|Fiordo di Furore% • %LINK:gavitellaBeachGuide|Gavitella (Praiano)% • %LINK:marinaDiPraiaBeaches|Marina di Praia% • %LINK:reginaGiovannaBath|Regina Giovanna (Sorrento)%",
+        "Ogólne wskazówki: Latem 2026 zaplanuj upał na podejściach—uzupełnij wodę zanim ruszysz w górę, a gdy jesteś zmęczony, skorzystaj z wewnętrznego busa. Na wycieczki sprawdź ostatnią opcję powrotu (prom lub bus) zanim się zdecydujesz, i weź przekąski na drogę. Jeśli morze jest wzburzone lub promy są odwołane, zaplanuj więcej czasu i zostaw plan elastycznym."
       ],
       "images": [
         {

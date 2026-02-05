@@ -7,15 +7,6 @@
     "eyebrow": "체험",
     "title": "Hostel Brikette 체험",
     "description": "테라스 바에서 스프리츠를 즐기고, 장엄한 전망을 따라 하이킹을 떠나고, 디지털 컨시어지로 즉시 팁을 받아보세요.",
-    "supporting": "등록된 투숙객이라면 모두 이용 가능합니다. 다른 숙소에 묵는 친구와 함께라면 먼저 메시지를 보내주세요.",
-    "primaryCta": "숙소 예약하기",
-    "secondaryCta": "바 메뉴 열기",
-    "tertiaryCta": "디지털 컨시어지에게 메시지 보내기",
-    "primaryCtaAria": "Hostel Brikette 숙박 예약하기",
-    "secondaryCtaAria": "Hostel Brikette 바 메뉴 보기",
-    "tertiaryCtaAria": "Hostel Brikette 디지털 컨시어지에게 메시지를 보내세요",
-    "breakfastCta": "아침 식사 메뉴 보기",
-    "breakfastCtaAria": "아침 식사 메뉴 보기",
     "scrollNudge": "아래에서 체험 유형별로 탐색하세요"
   },
   "sections": {
@@ -138,15 +129,7 @@
       "beaches": {
         "title": "해변",
         "description": "맞는 해변을 골라 하루 일정을 계획하세요.",
-        "imageAlt": "포지타노 해변의 다채로운 파라솔이 해안선을 따라 늘어선 풍경",
-        "guides": {
-          "heading": "해변 가이드",
-          "description": "맞는 해변을 골라 하루 일정을 계획하세요."
-        },
-        "directions": {
-          "heading": "해변 길 안내",
-          "description": "Hostel Brikette에서 해변까지 단계별로 안내합니다."
-        }
+        "imageAlt": "포지타노 해변의 다채로운 파라솔이 해안선을 따라 늘어선 풍경"
       },
       "hiking": {
         "title": "하이킹 & 트레일",
@@ -167,11 +150,6 @@
         "title": "음식 & 음료",
         "description": "가격 부담 없이 맛있게 먹을 수 있는 곳.",
         "imageAlt": "현지 트라토리아의 신선한 이탈리아 요리"
-      },
-      "itinerary": {
-        "title": "일정표",
-        "description": "여행 기간에 맞춘 여러 날 계획.",
-        "imageAlt": "위에서 내려다본 아말피 해안의 절경"
       },
       "more": {
         "title": "추가 가이드",

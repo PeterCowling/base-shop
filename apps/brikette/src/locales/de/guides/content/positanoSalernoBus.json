@@ -3,10 +3,6 @@
     "title": "Positano nach Salerno mit dem Bus – Schritt für Schritt",
     "description": "Tür-zu-Tür-Anleitung vom Hostel Brikette nach Salerno über Amalfi: Wo du einsteigst, Tickets kaufst, Fahrpläne liest und in Amalfi umsteigst."
   },
-  "intro": {},
-  "callouts": {
-    "tip": "Du brauchst andere Transportoptionen? Öffne die %HOWTO:how-to-get-here|Übersicht „So kommst du zu uns“% für Fähren, Taxis und kombinierte Routen."
-  },
   "sections": [
     {
       "id": "journey",
@@ -51,5 +47,8 @@
         "**Zeilen und Spalten kombinieren:** Wählen Sie Ihre Abfahrts- und Zielhaltestelle und prüfen Sie dann in den Spalten, wann Busse verfügbar sind und wann sie an Ihrem Ziel ankommen. Um etwa die Abfahrtszeit in Sorrent zu sehen, schauen Sie in die Sorrent-Zeile. Für die Ankunftszeit in Positano (Chiesa Nuova / Bar Internazionale) nutzen Sie die Zeile Positano (Chiesa Nuova)."
       ]
     }
-  ]
+  ],
+  "callouts": {
+    "tip": "Du brauchst andere Transportoptionen? Öffne die %HOWTO:how-to-get-here|Übersicht „So kommst du zu uns“% für Fähren, Taxis und kombinierte Routen."
+  }
 }

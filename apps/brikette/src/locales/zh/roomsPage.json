@@ -286,8 +286,8 @@
   "checkRatesNonRefundable": "不可退款价格",
   "checkRatesFlexible": "灵活价格",
   "ctaSuffix": {
-    "nonRefundable": "Non‑Refundable",
-    "flexible": "Flexible"
+    "nonRefundable": "不可退款",
+    "flexible": "灵活"
   },
   "details": "详细信息",
   "ratesFrom": "最低 €{{price}}",
@@ -301,6 +301,6 @@
   "loadingPrice": "正在加载价格…",
   "landingImageAlt": "{{room}} 的展示图片",
   "priceNotes": {
-    "dorm": "Per night, per guest. One guest in one bunk bed."
+    "dorm": "每晚每位客人。一个床位一位住客。"
   }
 }

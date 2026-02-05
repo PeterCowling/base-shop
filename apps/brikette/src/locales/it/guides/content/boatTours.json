@@ -1,53 +1,53 @@
 {
   "seo": {
     "title": "Tour in barca a Positano",
-    "description": "Opzioni private e di gruppo, prezzi medi, cosa include ogni tour e come prepararsi in caso di mare mosso."
+    "description": "Tour in barca privati e di gruppo: cosa aspettarsi, fasce di prezzo e consigli per la prenotazione in stagione."
   },
-  "linkLabel": "Tour in barca a Positano",
+  "linkLabel": "Tour in barca: dalle crociere al tramonto ai charter privati",
   "intro": [
-    "I tour in barca ti fanno vivere le scogliere senza traffico su strada; prenota in alta stagione e tieni un piano meteo di riserva."
+    "I tour in barca ti permettono di tracciare le scogliere della Costiera Amalfitana senza lottare con il traffico stradale; prenota in anticipo nei mesi di punta e tieni un piano di riserva meteo."
   ],
   "sections": [
     {
       "id": "group-tours",
       "title": "Tour di gruppo e barche condivise",
       "body": [
-        "Crociere condivise di 3 ore partono a meta mattina e includono soste bagno; prevedi 85-120 EUR a persona in luglio-agosto.",
-        "Porta scarpe da scoglio e uno strato leggero: la brezza in mare e piu fresca che sulle terrazze."
+        "Le crociere condivise di 3 ore partono da Positano a metà mattina e includono soste per nuotare; prevedi €85–€120 a persona in luglio-agosto.",
+        "Porta scarpe da scoglio e uno strato leggero—la brezza è più fresca al largo che sulle terrazze."
       ]
     },
     {
       "id": "private-charters",
-      "title": "Noleggi privati",
+      "title": "Charter privati",
       "body": [
-        "Gli skipper quotano €550–€850 per il noleggio di gozzi di mezza giornata (fino a 6 persone) più carburante; confermare inclusioni come prosecco o asciugamani.",
-        "Negozia gli orari all'alba o nel tardo pomeriggio se vuoi luce piu morbida e meno scia dei traghetti."
+        "Gli skipper quotano €550–€850 per noleggi di gozzo di mezza giornata (fino a 6 persone) più carburante; conferma le inclusioni come prosecco o asciugamani.",
+        "Negozia orari di partenza intorno all'alba o tardo pomeriggio se vuoi una luce più delicata e meno scia dai traghetti."
       ]
     },
     {
       "id": "weather-backup",
       "title": "Meteo e piani di riserva",
       "body": [
-        "Gli operatori cancellano con venti oltre forza 4; tieni pronto un piano bus o spiaggia per restare rilassato.",
-        "I mari possono essere mossi anche in estate: se sei incline, porta con te un cinturino anti-chinetosi."
+        "Gli operatori cancellano quando i venti superano Forza 4; tieni pronto un piano bus o spiaggia così la giornata resta rilassata.",
+        "I mari possono essere mossi anche in estate—porta braccialetti anti-nausea se sei incline."
       ]
     }
   ],
   "tips": [
-    "Arriva 20 minuti prima per saldare il pagamento e indossare le scarpe da barca fornite.",
-    "Porta una dry bag per il telefono e una bottiglia da 1 L: l'ombra a bordo e limitata."
+    "Arriva 20 minuti prima della partenza per saldare il saldo e infilare le scarpe da ponte fornite.",
+    "Porta una borsa impermeabile per i telefoni e una bottiglia d'acqua da 1 L (34 oz); l'ombra è limitata a bordo."
   ],
   "faqs": [
     {
-      "q": "Do I need to pre-book?",
+      "q": "Devo prenotare in anticipo?",
       "a": [
-        "Si tra maggio e settembre: le barche spesso si esauriscono con qualche giorno di anticipo, soprattutto al tramonto."
+        "Sì da maggio a settembre—le barche spesso si esauriscono con qualche giorno di anticipo, specialmente gli slot al tramonto."
       ]
     },
     {
-      "q": "Are towels included?",
+      "q": "Gli asciugamani sono inclusi?",
       "a": [
-        "I tour di gruppo solitamente ne prevedono uno per persona; gli skipper privati ​​variano, quindi porta con te un asciugamano ad asciugatura rapida per sicurezza."
+        "I tour di gruppo solitamente ne forniscono uno a persona; gli skipper privati variano, quindi porta un asciugamano ad asciugatura rapida per sicurezza."
       ]
     }
   ],

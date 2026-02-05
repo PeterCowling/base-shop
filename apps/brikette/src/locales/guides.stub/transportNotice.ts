@@ -12,10 +12,9 @@ export const transportNotice = {
     buses: "Use SITA buses (validate tickets).",
     ferries: "Ferries are seasonal; check operators.",
     airlink: "Airport buses connect in season.",
-    driving: "Driving is challenging; parking limited.",
+    driving: "Driving: Read our how to get here by car guide, featuring congestion charging and parking.",
     premium: "Private transfers are most convenient but costly.",
   },
 } as const;
 
 /* eslint-enable ds/no-hardcoded-copy -- TECH-000 */
-

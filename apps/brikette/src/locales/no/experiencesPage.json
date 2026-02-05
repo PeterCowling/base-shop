@@ -7,15 +7,6 @@
     "eyebrow": "Opplevelser",
     "title": "Solnedganger, rolige morgener og lokal innsikt",
     "description": "Kombiner oppholdet med terrassedrinker, kuraterte fotturer og en digital concierge som holder deg oppdatert allerede før du ankommer.",
-    "supporting": "Alt er tilgjengelig for registrerte gjester; send oss en melding hvis du reiser med venner som bor et annet sted.",
-    "primaryCta": "Bestill oppholdet",
-    "secondaryCta": "Åpne barmenyen",
-    "tertiaryCta": "Send melding til conciergen",
-    "primaryCtaAria": "Bestill oppholdet ditt på Hostel Brikette",
-    "secondaryCtaAria": "Se barmenyen til Hostel Brikette",
-    "tertiaryCtaAria": "Send en melding til Hostel Brikettes digitale concierge",
-    "breakfastCta": "Se frokostmenyen",
-    "breakfastCtaAria": "Se frokostmenyen",
     "scrollNudge": "Les mer"
   },
   "sections": {
@@ -104,10 +95,6 @@
       }
     },
     "directionLinks": {
-      "walking": "Til fots",
-      "bus": "Med buss",
-      "ferry": "Med ferge",
-      "combo": "Kombinert",
       "capriDayTrip": {
         "positanoCapriFerry": "Positano → Capri ferge",
         "capriPositanoFerry": "Capri → Positano ferge"
@@ -142,15 +129,7 @@
       "beaches": {
         "title": "Strandguider",
         "description": "Velg riktig strandstrekning og planlegg dagen.",
-        "imageAlt": "Bilde av strand på Amalfikysten",
-        "guides": {
-          "heading": "Strandguider",
-          "description": "Velg riktig strandstrekning og planlegg dagen."
-        },
-        "directions": {
-          "heading": "Strandveibeskrivelser",
-          "description": "Steg-for-steg-veibeskrivelse fra Hostel Brikette ned til stranden."
-        }
+        "imageAlt": "Bilde av strand på Amalfikysten"
       },
       "boat": {
         "title": "Båtturer",
@@ -171,11 +150,6 @@
         "title": "Fotturer",
         "description": "Sentiero degli Dei, kystløyper og strandstier.",
         "imageAlt": "Fotgjenger på Path of the Gods med kystpanorama"
-      },
-      "itinerary": {
-        "title": "Reiseruter",
-        "description": "Ferdige planer for én til fem dager på Amalfikysten.",
-        "imageAlt": "Panoramautsikt over Positano"
       },
       "more": {
         "title": "Flere guider",

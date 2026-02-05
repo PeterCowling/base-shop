@@ -1,9 +1,14 @@
 {
+  "lastUpdated": "2026-02-04T00:00:00.000Z",
   "seo": {
     "title": "Pomoc w podróży | Hostel Brikette Positano",
     "description": "Dwuminutowe podsumowanie, jak do nas dotrzeć i dokąd goście zwykle jadą dalej, z linkami do pełnych przewodników transportowych i wycieczek."
   },
   "linkLabel": "Pomoc w podróży | Hostel Brikette Positano",
+  "intro": [
+    "Pomoc w podróży do Positano: większość tras prowadzi przez Sorrento. W Positano zwykle przybywasz na przystanek Chiesa Nuova (autobus) lub Spiaggia Grande (prom).",
+    "Użyj tej strony, aby wybrać odpowiedni przewodnik. Nasze przewodniki po trasach obejmują bilety, przystanki, bagaż i trasy alternatywne. Nasze przewodniki Doświadczenia obejmują jednodniowe wycieczki od drzwi do drzwi."
+  ],
   "sections": [
     {
       "id": "overview",
@@ -17,6 +22,21 @@
       "title": "Szybkie wskazówki do popularnych wycieczek",
       "body": [
         "Gdy już się rozgościsz, kolekcja „Doświadczenia” prowadzi krok po kroku do najczęściej wybieranych wycieczek jednodniowych — promów na Capri, wejść na Szlak Bogów, autobusów do Amalfi i Ravello, pociągów do Pompejów i Wezuwiusza i wielu innych. Zajrzyj tam, aby sprawdzić pierwsze odjazdy, wskazówki biletowe i listę rzeczy do spakowania."
+      ]
+    }
+  ],
+  "faqsTitle": "Najczęściej zadawane pytania o podróż",
+  "faqs": [
+    {
+      "q": "Do którego miejsca w Positano powinienem dojechać?",
+      "a": [
+        "Jeśli przyjeżdżasz autobusem SITA, celuj w przystanek Chiesa Nuova (przy Bar Internazionale). To najbliższy i najwygodniejszy przystanek do Hostelu Brikette. Jeśli przypływasz promem, przybijasz do Spiaggia Grande (główna plaża/molo), a następnie idziesz pod górę do hostelu."
+      ]
+    },
+    {
+      "q": "Czy muszę rezerwować transport z wyprzedzeniem?",
+      "a": [
+        "W szczycie sezonu (zwłaszcza w weekendy) warto zaplanować wcześniejsze odjazdy i być na molo/przystanku wcześnie. Promy mogą się wyprzedać w popularnych godzinach, a kolejki do autobusów mogą być długie. Jeśli wolisz elastyczność, miej w pamięci trasę alternatywną z %HOWTO:how-to-get-here|Przeglądu jak dotrzeć%."
       ]
     }
   ]

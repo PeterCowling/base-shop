@@ -1,23 +1,32 @@
 {
   "seo": {
-    "title": "数字礼宾（推荐 + 预订协助）",
-    "description": "Hostel Brikette 数字礼宾：快速建议、交通更新与预订协助—计划变化时更好用。"
+    "title": "数字礼宾服务（推荐 + 预订）",
+    "description": "使用Hostel Brikette的数字礼宾服务获取快速本地推荐、交通更新和体验预订帮助 - 特别是当计划改变时。"
   },
-  "linkLabel": "数字礼宾",
+  "linkLabel": "数字礼宾服务",
   "lastUpdated": "2026-02-02T00:00:00.000Z",
   "intro": [
-    "想要“今天就能执行”的计划：写清时间窗口、预算、优先目标和截止时间。"
+    "这是为今天有效的计划准备的 - 不是通用列表。",
+    "发送您的时间窗口、预算和优先事项。将截止日期放在第一行。"
   ],
   "sections": [
     {
-      "id": "templates",
-      "title": "模板",
+      "id": "how-to-access",
+      "title": "如何访问",
       "body": [
-        "“我们有6小时，没有车，(A) 下海 + (B) 看日落，预算每人40欧。最省心方案是什么？如果渡轮取消，Plan B 是什么？”",
-        "%LINK:positanoBudget|预算版波西塔诺% + %LINK:terraceSunsets|露台日落%。",
-        "%LINK:ferryCancellations|渡轮取消 + 天气%。"
+        "向前台询问最新的联系方式/二维码和最佳渠道（通常是WhatsApp）。",
+        "包括：日期、起点、时间窗口、预算和首要优先事项。"
+      ]
+    },
+    {
+      "id": "templates",
+      "title": "复制/粘贴模板",
+      "body": [
+        "\"我们有6小时，没有车，我们想要（A）游泳 +（B）日落，预算每人€40。最简单的计划是什么？如果渡轮取消，备用计划B是什么？\"",
+        "预算基准：%LINK:positanoBudget|波西塔诺预算游% + %LINK:terraceSunsets|露台日落%。",
+        "如果交通敏感：%LINK:ferryCancellations|渡轮取消 + 天气%。"
       ]
     }
   ],
-  "fallback": "数字礼宾：快速建议、交通更新与预订协助。"
+  "fallback": "数字礼宾服务：快速推荐、交通更新和预订帮助。"
 }

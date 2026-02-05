@@ -8,7 +8,7 @@ import { GENERATED_GUIDE_SLUGS } from "../data/generate-guide-slugs";
 
 import type { GuidesNamespace } from "./guides.types";
 import { isRecord } from "./guides.util";
-import { loadLocaleResource } from "./locale-loader";
+import { loadGuidesLocaleResource } from "./locale-loader.guides";
 
 // All guide keys from the generated manifest - used to load content files
 const CONTENT_KEYS = Object.keys(GENERATED_GUIDE_SLUGS);
@@ -51,14 +51,14 @@ const mergeRecords = (
 export async function loadGuidesNamespaceFromImports(
   lang: string,
 ): Promise<GuidesNamespace | undefined> {
-  const legacyRaw = await loadLocaleResource(lang, "guides");
+  const legacyRaw = await loadGuidesLocaleResource(lang, "guides");
   const legacy = toRecord(legacyRaw);
 
   const globals: Record<string, unknown> = {};
   let hasGlobals = false;
 
   for (const { key, ns } of GLOBAL_IMPORTS) {
-    const data = await loadLocaleResource(lang, ns);
+    const data = await loadGuidesLocaleResource(lang, ns);
     if (typeof data !== "undefined") {
       globals[key] = data;
       hasGlobals = true;
@@ -67,7 +67,7 @@ export async function loadGuidesNamespaceFromImports(
 
   const metaEntries: Record<string, unknown> = {};
   for (const { key, ns } of META_IMPORTS) {
-    const data = await loadLocaleResource(lang, ns);
+    const data = await loadGuidesLocaleResource(lang, ns);
     if (typeof data !== "undefined") {
       metaEntries[key] = data;
       hasGlobals = true;
@@ -93,7 +93,7 @@ export async function loadGuidesNamespaceFromImports(
   const contentEntries: Record<string, unknown> = {};
   await Promise.all(
     CONTENT_KEYS.map(async (key) => {
-      const data = await loadLocaleResource(lang, `guides/content/${key}`);
+      const data = await loadGuidesLocaleResource(lang, `guides/content/${key}`);
       if (typeof data !== "undefined" && data !== null) {
         contentEntries[key] = data;
       }

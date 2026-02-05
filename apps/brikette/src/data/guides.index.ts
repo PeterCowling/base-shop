@@ -163,7 +163,6 @@ const GUIDES_INDEX_BASE: GuideIndexEntry[] = [
   { key: "safetyAmalfi", tags: ["safety", "positano", "amalfi", "general-tourists", "solo-travel"] },
   { key: "italianPhrasesCampania", tags: ["language", "campania", "positano", "travel-tips"] },
   { key: "ecoFriendlyAmalfi", tags: ["sustainability", "amalfi", "positano", "hiking", "travel-tips"] },
-  { key: "drivingAmalfi", tags: ["transport", "car", "amalfi", "positano", "couples", "families"] },
 
   // --- How-to-get-here transport routes ---
   // Tags are derived from the canonical routeGuides.ts mapping (single source of truth).

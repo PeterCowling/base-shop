@@ -88,7 +88,7 @@ export function computeManualStructuredFallback({
           {intro.length > 0 ? (
             <div className="space-y-4">
               {intro.map((paragraph, idx) => (
-                <p key={idx}>{renderGuideLinkTokens(paragraph, lang, `intro-${idx}`)}</p>
+                <p key={idx}>{renderGuideLinkTokens(paragraph, lang, `intro-${idx}`, undefined)}</p>
               ))}
             </div>
           ) : null}
@@ -100,7 +100,7 @@ export function computeManualStructuredFallback({
               className="scroll-mt-28 space-y-4"
             >
               {section.title ? <h2 className="text-xl font-semibold">{section.title}</h2> : null}
-              {renderBodyBlocks(section.body, lang, `section-${section.id}`)}
+              {renderBodyBlocks(section.body, lang, `section-${section.id}`, undefined)}
             </section>
           ))}
         </>

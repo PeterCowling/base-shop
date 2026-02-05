@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { ZoomIn } from "lucide-react";
+import { ZoomIn } from "@/icons";
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@acme/design-system/primitives";
 

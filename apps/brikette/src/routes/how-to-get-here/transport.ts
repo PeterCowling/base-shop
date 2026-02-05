@@ -1,4 +1,4 @@
-import { Bus, Car, Footprints, Ship, TrainFront } from "lucide-react";
+import { Bus, Car, Footprints, Ship, TrainFront } from "@/icons";
 
 import type {
   AugmentedDestinationLink,

@@ -116,10 +116,10 @@ export function renderAliasFaqsOnly(params: {
 	                role="button"
 	                className="px-4 py-3 text-lg font-semibold leading-snug text-brand-heading sm:text-xl"
 	              >
-	                {renderGuideLinkTokens(faq.q, lang, `alias-faq-q-${index}`)}
+	                {renderGuideLinkTokens(faq.q, lang, `alias-faq-q-${index}`, guideKey)}
 	              </summary>
 	              <div className="space-y-3 px-4 pb-4 pt-1 text-base leading-relaxed text-brand-text/90 sm:text-lg">
-	                {renderBodyBlocks(faq.a, lang, `alias-faq-${index}`)}
+	                {renderBodyBlocks(faq.a, lang, `alias-faq-${index}`, guideKey)}
 	              </div>
 	            </details>
 	          ))}

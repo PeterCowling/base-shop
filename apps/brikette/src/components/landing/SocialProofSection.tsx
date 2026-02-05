@@ -1,7 +1,7 @@
 // src/components/landing/SocialProofSection.tsx
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
-import { Star } from "lucide-react";
+import { Star } from "@/icons";
 
 import { Section } from "@acme/design-system/atoms";
 

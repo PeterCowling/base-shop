@@ -5,7 +5,7 @@
 import { Fragment, memo, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown } from "@/icons";
 
 import { Button } from "@acme/design-system/primitives";
 import { Section } from "@acme/design-system/atoms";

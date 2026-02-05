@@ -13,6 +13,14 @@ const MUSTACHE_TOKEN_PATTERN = /\{\{guide:([^|}]+)\|([^}]+)\}\}/gi;
 const ESCAPABLE = new Set(["\\", "`", "*", "~", "[", "]", "_", "#", "+", ">", ".", "-"]);
 const BULLET_LINE = /^\s*\*\s+/u;
 
+/**
+ * Convert camelCase to kebab-case for guide folder names.
+ * Example: positanoPompeii → positano-pompeii
+ */
+function toKebabCase(str: string): string {
+  return str.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
+}
+
 type TokenParseResult =
   | {
       kind: "link";
@@ -24,6 +32,12 @@ type TokenParseResult =
       kind: "externalLink";
       href: string;
       label: string;
+      endIndex: number;
+    }
+  | {
+      kind: "image";
+      src: string;
+      alt: string;
       endIndex: number;
     }
   | {
@@ -73,7 +87,13 @@ function isEscaped(text: string, index: number): boolean {
   return typeof current === "string" && ESCAPABLE.has(current);
 }
 
-function tryParsePercentToken(text: string, startIndex: number, lang: AppLanguage, howToBase: string): TokenParseResult | null {
+function tryParsePercentToken(
+  text: string,
+  startIndex: number,
+  lang: AppLanguage,
+  howToBase: string,
+  guideKey?: string,
+): TokenParseResult | null {
   if (text[startIndex] !== "%") return null;
   // %TYPE:key|label%
   let i = startIndex + 1;
@@ -130,6 +150,17 @@ function tryParsePercentToken(text: string, startIndex: number, lang: AppLanguag
     return { kind: "text", text: label, endIndex };
   }
 
+  if (tokenType === "IMAGE") {
+    // Image token: %IMAGE:filename.jpg|alt text% or %IMAGE:/full/path.jpg|alt%
+    // If key starts with '/', treat it as a full path; otherwise construct from guideKey
+    let src = key.trim();
+    if (!src.startsWith("/") && guideKey) {
+      const folderName = toKebabCase(guideKey);
+      src = `/img/guides/${folderName}/${src}`;
+    }
+    return { kind: "image", src, alt: label, endIndex };
+  }
+
   // Unknown token types: fall back to the label.
   return { kind: "text", text: label, endIndex };
 }
@@ -182,7 +213,7 @@ function tryParseMustacheToken(text: string, startIndex: number, lang: AppLangua
   return { kind: "link", href, label, endIndex };
 }
 
-function renderInline(text: string, lang: AppLanguage, keyBase: string): ReactNode[] {
+function renderInline(text: string, lang: AppLanguage, keyBase: string, guideKey?: string): ReactNode[] {
   const howToBase = getSlug("howToGetHere", lang);
   let linkIndex = 0;
   let elementIndex = 0;
@@ -253,12 +284,23 @@ function renderInline(text: string, lang: AppLanguage, keyBase: string): ReactNo
       }
 
       if (ch === "%") {
-        const parsed = tryParsePercentToken(text, i, lang, howToBase);
+        const parsed = tryParsePercentToken(text, i, lang, howToBase, guideKey);
         if (parsed) {
           if (parsed.kind === "link") {
             appendLinkLocal(parsed.href, parsed.label);
           } else if (parsed.kind === "externalLink") {
             appendLinkLocal(parsed.href, parsed.label, true);
+          } else if (parsed.kind === "image") {
+            flushLocal();
+            out.push(
+              <img
+                key={`${keyBase}-img-${linkIndex++}`}
+                src={parsed.src}
+                alt={parsed.alt}
+                className="my-6 rounded-lg"
+                loading="lazy"
+              />,
+            );
           } else if (parsed.kind === "text") {
             localBuffer += parsed.text;
           }
@@ -341,9 +383,14 @@ function renderInline(text: string, lang: AppLanguage, keyBase: string): ReactNo
   return merged.length > 0 ? merged : (text ? [text] : []);
 }
 
-export function renderGuideLinkTokens(value: string | null | undefined, lang: AppLanguage, keyBase: string): ReactNode[] {
+export function renderGuideLinkTokens(
+  value: string | null | undefined,
+  lang: AppLanguage,
+  keyBase: string,
+  guideKey?: string,
+): ReactNode[] {
   const text = typeof value === "string" ? value : "";
-  return renderInline(text, lang, keyBase);
+  return renderInline(text, lang, keyBase, guideKey);
 }
 
 export function stripGuideLinkTokens(value: string | null | undefined): string {
@@ -357,7 +404,12 @@ export function stripGuideLinkTokens(value: string | null | undefined): string {
     .replace(MUSTACHE_TOKEN_PATTERN, "$2");
 }
 
-export function renderBodyBlocks(blocks: readonly string[] | null | undefined, lang: AppLanguage, keyBase: string): ReactNode[] {
+export function renderBodyBlocks(
+  blocks: readonly string[] | null | undefined,
+  lang: AppLanguage,
+  keyBase: string,
+  guideKey?: string,
+): ReactNode[] {
   const items = Array.isArray(blocks) ? blocks : [];
   const out: ReactNode[] = [];
 
@@ -365,7 +417,7 @@ export function renderBodyBlocks(blocks: readonly string[] | null | undefined, l
     <ul key={listKey}>
       {listItems.map((item, index) => (
         <li key={`${listKey}-li-${index}`}>
-          {renderGuideLinkTokens(item, lang, `${listKey}-li-${index}`)}
+          {renderGuideLinkTokens(item, lang, `${listKey}-li-${index}`, guideKey)}
         </li>
       ))}
     </ul>
@@ -410,7 +462,7 @@ export function renderBodyBlocks(blocks: readonly string[] | null | undefined, l
 
     out.push(
       <p key={`${keyBase}-p-${i}`}>
-        {renderGuideLinkTokens(block, lang, `${keyBase}-p-${i}`)}
+        {renderGuideLinkTokens(block, lang, `${keyBase}-p-${i}`, guideKey)}
       </p>,
     );
     i += 1;

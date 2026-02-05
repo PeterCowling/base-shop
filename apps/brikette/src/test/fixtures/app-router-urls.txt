@@ -676,7 +676,6 @@
 /en/help/checkin-checkout
 /en/help/defects-damages
 /en/help/deposits-payments
-/en/help/driving-the-amalfi-coast-tips
 /en/help/eco-friendly-travel-amalfi-coast
 /en/help/ferry-schedules
 /en/help/free-low-cost-things-to-do-positano
@@ -697,7 +696,6 @@
 /en/help/porter-service-positano
 /en/help/positano-cost-breakdown
 /en/help/positano-cost-vs-other-beach-destinations
-/en/help/positano-parking
 /en/help/rules
 /en/help/salerno-amalfi-coast-gateway
 /en/help/scooter-rental-positano-guide

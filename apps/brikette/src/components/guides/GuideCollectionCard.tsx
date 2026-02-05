@@ -1,14 +1,16 @@
 // src/components/guides/GuideCollectionCard.tsx
 import Link from "next/link";
 import clsx from "clsx";
+import { useMemo } from "react";
 
 import { CfImage } from "@acme/ui/atoms/CfImage";
 
 import { GUIDE_DIRECTION_LINKS } from "@/data/guideDirectionLinks";
 import type { GuideMeta } from "@/data/guides.index";
 import type { AppLanguage } from "@/i18n.config";
-import { guideHref } from "@/routes.guides-helpers";
+import { guideHref, type GuideKey } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
+import { getGuideLinkLabels } from "@/guides/slugs/labels";
 
 // Card with optional thumbnail - overflow hidden for image
 const CARD_CLASSES = [
@@ -145,11 +147,36 @@ export const GuideCollectionCard = ({
   const howToBase = `/${lang}/${getSlug("howToGetHere", lang)}`;
   const directionLinks = GUIDE_DIRECTION_LINKS[guide.key];
 
+  const resolvedDirectionLinks = useMemo(() => {
+    if (!directionLinks?.length) return [];
+
+    const guideLinkLabels = getGuideLinkLabels(lang);
+
+    return directionLinks.map((link) => {
+      const resolvedLabel = link.label ?? guideLinkLabels[link.labelKey] ?? link.labelKey;
+      const linkType = link.type ?? 'guide';
+
+      let href: string;
+      if (linkType === 'howToGetHere') {
+        href = `${howToBase}/${link.slug}`;
+      } else {
+        // Link to guide page using guide key
+        href = guideHref(lang, link.labelKey as GuideKey);
+      }
+
+      return {
+        ...link,
+        label: resolvedLabel,
+        href,
+      };
+    });
+  }, [directionLinks, lang, howToBase, guide.key]);
+
   return (
     <article className={clsx(CARD_CLASSES)}>
       {/* Thumbnail image */}
       {thumbnailSrc ? (
-        <Link href={href} prefetch={true} className={clsx(THUMBNAIL_CLASSES)}>
+        <Link href={href} prefetch={false} className={clsx(THUMBNAIL_CLASSES)}>
           <CfImage
             src={thumbnailSrc}
             preset="thumb"
@@ -166,7 +193,7 @@ export const GuideCollectionCard = ({
         <div>
           <h3 className="text-base font-semibold text-brand-heading dark:text-brand-heading">
             {ctaLabel ? (
-              <Link href={href} prefetch={true} className="hover:underline">
+              <Link href={href} prefetch={false} className="hover:underline">
                 {label}
               </Link>
             ) : (
@@ -174,15 +201,20 @@ export const GuideCollectionCard = ({
             )}
           </h3>
           {summary ? <p className={clsx(SUMMARY_CLASSES)}>{summary}</p> : null}
-          {directionLinks?.length && directionsLabel ? (
+          {ctaLabel ? (
+            <Link href={href} prefetch={false} className={clsx(CTA_BUTTON_CLASSES)}>
+              {ctaLabel}
+            </Link>
+          ) : null}
+          {resolvedDirectionLinks?.length && directionsLabel ? (
             <div className={clsx(DIRECTION_WRAPPER_CLASSES)}>
               <p className={clsx(DIRECTION_LABEL_CLASSES)}>{directionsLabel}</p>
               <div className="flex flex-wrap gap-2">
-                {directionLinks.map((link) => (
+                {resolvedDirectionLinks.map((link) => (
                   <Link
-                    key={`${guide.key}-${link.slug}`}
-                    href={`${howToBase}/${link.slug}`}
-                    prefetch={true}
+                    key={`${guide.key}-${link.labelKey}`}
+                    href={link.href}
+                    prefetch={false}
                     className={clsx(DIRECTION_PILL_CLASSES)}
                   >
                     {link.label}
@@ -192,11 +224,6 @@ export const GuideCollectionCard = ({
             </div>
           ) : null}
         </div>
-        {ctaLabel ? (
-          <Link href={href} prefetch={true} className={clsx(CTA_BUTTON_CLASSES)}>
-            {ctaLabel}
-          </Link>
-        ) : null}
       </div>
     </article>
   );

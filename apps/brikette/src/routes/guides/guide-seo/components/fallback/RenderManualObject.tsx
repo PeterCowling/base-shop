@@ -194,7 +194,7 @@ export default function RenderManualObject({
       <>
 	        {introEff.length > 0 ? (
 	          <div className="space-y-4">
-	            {renderBodyBlocks(introEff, lang, `manual-intro-${guideKey}`)}
+	            {renderBodyBlocks(introEff, lang, `manual-intro-${guideKey}`, guideKey)}
 	          </div>
 	        ) : null}
         {tocItems.length > 0 && showTocWhenUnlocalized ? (
@@ -228,7 +228,7 @@ export default function RenderManualObject({
 	        {sectionsEff.map((s) => (
 	          <section key={s.id} id={s.id} className="scroll-mt-28 space-y-4">
 	            {s.title ? <h2 className="text-xl font-semibold">{s.title}</h2> : null}
-	            {renderBodyBlocks(s.body, lang, `manual-section-${s.id}`)}
+	            {renderBodyBlocks(s.body, lang, `manual-section-${s.id}`, guideKey)}
 	          </section>
 	        ))}
         {faqLabel || faqSummary || faqAnswerArr.length > 0 ? (
@@ -237,9 +237,9 @@ export default function RenderManualObject({
 	            <div className="space-y-3">
 	              <details>
 	                <summary role="button" className="font-medium">
-	                  {faqSummary ? renderGuideLinkTokens(faqSummary, lang, `manual-faq-summary-${guideKey}`) : ""}
+	                  {faqSummary ? renderGuideLinkTokens(faqSummary, lang, `manual-faq-summary-${guideKey}`, guideKey) : ""}
 	                </summary>
-	                {renderBodyBlocks(faqAnswerArr, lang, `manual-faq-${guideKey}`)}
+	                {renderBodyBlocks(faqAnswerArr, lang, `manual-faq-${guideKey}`, guideKey)}
 	              </details>
 	            </div>
 	          </section>

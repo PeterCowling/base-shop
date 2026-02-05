@@ -2,7 +2,7 @@
 import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { usePathname } from "next/navigation";
-import { Facebook, Instagram } from "lucide-react";
+import { Facebook, Instagram } from "@/icons";
 
 import { Section } from "@acme/design-system/atoms";
 

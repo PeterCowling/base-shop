@@ -434,7 +434,7 @@ export default function RenderFallbackStructured({
       {fallback.intro.length > 0 ? (
         <div className="space-y-4">
           {fallback.intro.map((paragraph, index) => (
-            <p key={index}>{renderGuideLinkTokens(paragraph, context.lang, `intro-${index}`)}</p>
+            <p key={index}>{renderGuideLinkTokens(paragraph, context.lang, `intro-${index}`, guideKey)}</p>
           ))}
         </div>
       ) : null}
@@ -453,7 +453,7 @@ export default function RenderFallbackStructured({
 	              {section.title ? (
 	                <h2 className="text-xl font-semibold">{section.title}</h2>
 	              ) : null}
-	              {renderBodyBlocks(section.body, context.lang, `section-${section.id}`)}
+	              {renderBodyBlocks(section.body, context.lang, `section-${section.id}`, guideKey)}
 	            </section>
 	          ))
 	        : null}
@@ -465,7 +465,7 @@ export default function RenderFallbackStructured({
               <details key={i}>
                 <summary role="button" className="font-medium">{f.question}</summary>
                 {f.answer.map((ans, j) => (
-                  <p key={j}>{renderGuideLinkTokens(ans, context.lang, `faq-${i}-${j}`)}</p>
+                  <p key={j}>{renderGuideLinkTokens(ans, context.lang, `faq-${i}-${j}`, guideKey)}</p>
                 ))}
               </details>
             ))}

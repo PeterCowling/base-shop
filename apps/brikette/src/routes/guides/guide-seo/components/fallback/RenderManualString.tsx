@@ -47,7 +47,7 @@ export default function RenderManualString({ translations, hookI18n, guideKey, l
       return (
         <>
           <div className="space-y-4">
-            {renderBodyBlocks([fb], lang, `manual-string-${guideKey}`)}
+            {renderBodyBlocks([fb], lang, `manual-string-${guideKey}`, guideKey)}
           </div>
         </>
       );

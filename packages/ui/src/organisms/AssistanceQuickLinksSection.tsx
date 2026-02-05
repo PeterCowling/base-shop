@@ -1,6 +1,7 @@
 // packages/ui/src/organisms/AssistanceQuickLinksSection.tsx
 import type { ReactNode } from "react";
 import { Fragment, memo } from "react";
+import Image from "next/image";
 import clsx from "clsx";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 
@@ -12,6 +13,10 @@ export type AssistanceQuickLinkItem = {
   href: string;
   label: string;
   description: string;
+  image?: {
+    src: string;
+    alt?: string;
+  };
 };
 
 export type AssistanceQuickLinksCta = {
@@ -120,6 +125,7 @@ function AssistanceQuickLinksSection({
                   className: clsx(
                     "group",
                     "block",
+                    "h-full",
                     "rounded-2xl",
                     "border",
                     "border-brand-outline/30",
@@ -138,12 +144,70 @@ function AssistanceQuickLinksSection({
                   ),
                   children: (
                     <>
-                      <h3 className={clsx("text-lg", "font-semibold", "text-brand-heading", "dark:text-brand-text")}>
-                        {item.label}
-                      </h3>
-                      <p className={clsx("mt-2", "text-sm", "text-brand-text/80", "dark:text-brand-text/80")}>
-                        {item.description}
-                      </p>
+                      <div className={clsx("flex", "flex-col", "h-full")}>
+                        <div className={clsx("grid", "grid-cols-[4.5rem_1fr]", "gap-4", "items-start")}>
+                          {item.image?.src ? (
+                            <Image
+                              src={item.image.src}
+                              alt={item.image.alt ?? item.label}
+                              width={64}
+                              height={64}
+                              className={clsx(
+                                "h-16",
+                                "w-16",
+                                "rounded-xl",
+                                "object-cover",
+                                "border",
+                                "border-brand-outline/20",
+                                "bg-brand-surface/40",
+                                "dark:border-brand-outline/30",
+                                "dark:bg-brand-surface/50",
+                              )}
+                            />
+                          ) : (
+                            <div
+                              aria-hidden
+                              className={clsx(
+                                "h-16",
+                                "w-16",
+                                "rounded-xl",
+                                "border",
+                                "border-brand-outline/20",
+                                "bg-gradient-to-br",
+                                "from-brand-primary/10",
+                                "via-brand-outline/10",
+                                "to-brand-surface/30",
+                                "dark:border-brand-outline/30",
+                                "dark:from-brand-secondary/10",
+                                "dark:via-brand-outline/10",
+                                "dark:to-brand-surface/40",
+                              )}
+                            />
+                          )}
+                          <div className={clsx("flex", "flex-col")}>
+                            <h3
+                              className={clsx("text-lg", "font-semibold", "text-brand-heading", "dark:text-brand-text")}
+                            >
+                              {item.label}
+                            </h3>
+                            <p
+                              className={clsx(
+                                "mt-2",
+                                "text-sm",
+                                "text-brand-text/80",
+                                "dark:text-brand-text/80",
+                                "overflow-hidden",
+                                "[display:-webkit-box]",
+                                "[-webkit-box-orient:vertical]",
+                                "[-webkit-line-clamp:3]",
+                                // visually normalise card heights
+                                "min-h-[3.75rem]",
+                              )}
+                            >
+                              {item.description}
+                            </p>
+                          </div>
+                        </div>
                       <span
                         className={clsx(
                           "mt-4",
@@ -161,48 +225,56 @@ function AssistanceQuickLinksSection({
                         {readMoreLabel}
                         <ArrowRight aria-hidden className="size-4" strokeWidth={2} />
                       </span>
+                      </div>
                     </>
                   ),
                 })}
               </Fragment>
             );
           })}
-        </Grid>
 
-        {contactCta
-          ? ctaRenderer({
-              href: contactCta.href,
-              ariaLabel: contactCta.label,
-              className: clsx(
-                "inline-flex",
-                "min-h-11",
-                "min-w-11",
-                "items-center",
-                "gap-2",
-                "rounded-full",
-                "bg-brand-primary",
-                "px-5",
-                "py-2",
-                "text-sm",
-                "font-semibold",
-                "text-brand-bg",
-                "shadow-sm",
-                "transition",
-                "hover:bg-brand-primary/90",
-                "focus-visible:outline-none",
-                "focus-visible:ring-2",
-                "focus-visible:ring-brand-secondary",
-                "dark:bg-brand-secondary",
-                "dark:hover:bg-brand-secondary/90",
-              ),
-              children: (
-                <>
-                  {contactCta.label}
-                  <ArrowUpRight aria-hidden className="size-4" strokeWidth={2} />
-                </>
-              ),
-            })
-          : null}
+          {contactCta ? (
+            <Fragment>
+              {ctaRenderer({
+                href: contactCta.href,
+                ariaLabel: contactCta.label,
+                className: clsx(
+                  "group",
+                  "flex",
+                  "min-h-[6.5rem]",
+                  "items-center",
+                  "justify-center",
+                  "gap-3",
+                  "rounded-2xl",
+                  "bg-brand-primary",
+                  "px-6",
+                  "py-6",
+                  "text-base",
+                  "font-semibold",
+                  "text-brand-bg",
+                  "shadow-sm",
+                  "transition",
+                  "hover:bg-brand-primary/90",
+                  "focus-visible:outline-none",
+                  "focus-visible:ring-2",
+                  "focus-visible:ring-brand-secondary",
+                  "dark:bg-brand-secondary",
+                  "dark:hover:bg-brand-secondary/90",
+                ),
+                children: (
+                  <>
+                    <span className="text-lg">{contactCta.label}</span>
+                    <ArrowUpRight
+                      aria-hidden
+                      className={clsx("size-5", "transition-transform", "group-hover:-translate-y-0.5", "group-hover:translate-x-0.5")}
+                      strokeWidth={2}
+                    />
+                  </>
+                ),
+              })}
+            </Fragment>
+          ) : null}
+        </Grid>
       </div>
     </Section>
   );

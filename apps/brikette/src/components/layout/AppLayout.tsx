@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useLayoutEffect } from "react";
+import React, { memo, useEffect } from "react";
 
 import { NotificationBanner } from "@acme/ui/molecules";
 import { Header } from "@acme/ui/organisms/Header";
@@ -6,20 +6,20 @@ import { Header } from "@acme/ui/organisms/Header";
 import { InlineBoundary } from "@/components/common/InlineBoundary";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { Footer } from "@/components/footer/Footer";
-import { IS_DEV } from "@/config/env";
 import { HelpDrawerProvider } from "@/context/HelpDrawerContext";
 import { ModalProvider } from "@/context/ModalContext";
 import { BannerProvider } from "@/context/NotificationBannerContext";
 import { RatesProvider } from "@/context/RatesContext";
+import { useI18nPreloading } from "@/hooks/useI18nPreloading";
 import { useProtectBrandName } from "@/hooks/useProtectBrandName";
 import { useWebVitals } from "@/hooks/useWebVitals";
-import i18n from "@/i18n";
-import { type AppLanguage,i18nConfig } from "@/i18n.config";
-import { APP_I18N_NAMESPACES } from "@/i18n.namespaces";
+import { type AppLanguage } from "@/i18n.config";
+import { CORE_LAYOUT_I18N_NAMESPACES } from "@/i18n.namespaces";
 import { ThemeProvider } from "@/providers/ThemeProvider";
-import { isTestEnvironment } from "@/utils/env-helpers";
-import { preloadI18nNamespaces } from "@/utils/loadI18nNs";
-import prefetchInteractiveBundles from "@/utils/prefetchInteractive";
+import { getPathname, isTestEnvironment } from "@/utils/env-helpers";
+import prefetchInteractiveBundles, {
+  shouldPrefetchInteractiveBundlesOnIdle,
+} from "@/utils/prefetchInteractive";
 
 type AppLayoutProps = {
   lang: AppLanguage;
@@ -30,63 +30,13 @@ function AppLayout({ lang, children }: AppLayoutProps): React.JSX.Element {
   useWebVitals();
   useProtectBrandName();
 
-  useLayoutEffect(() => {
-    if (i18n.language !== lang) {
-      void i18n.changeLanguage(lang).catch((error) => {
-        if (IS_DEV) {
-          console.error(error);
-        }
-      });
-    }
-  }, [lang]);
+  useI18nPreloading({ lang, namespaces: CORE_LAYOUT_I18N_NAMESPACES });
 
   useEffect(() => {
-    const namespaces = APP_I18N_NAMESPACES;
-
-    const loadFor = async (next: string | undefined) => {
-      const normalized = (() => {
-        const raw = next?.toLowerCase();
-        if (!raw) return undefined;
-        const base = raw.split("-")[0];
-        if (!base) return undefined;
-        return (i18nConfig.supportedLngs as readonly string[]).includes(base)
-          ? (base as AppLanguage)
-          : undefined;
-      })();
-
-      const targetLang = normalized ?? lang;
-
-      try {
-        await preloadI18nNamespaces(targetLang, namespaces, { optional: true });
-        if (typeof i18n.emit === "function") {
-          i18n.emit("loaded", { [targetLang]: namespaces });
-        }
-      } catch (error) {
-        if (IS_DEV) {
-          console.error(error);
-        }
-      }
-    };
-
-    void loadFor(lang);
-
-    if (i18n.language && i18n.language !== lang) {
-      void loadFor(i18n.language);
+    const pathname = getPathname();
+    if (shouldPrefetchInteractiveBundlesOnIdle(pathname)) {
+      void prefetchInteractiveBundles();
     }
-
-    const handler = (next: string) => {
-      void loadFor(next);
-    };
-
-    i18n.on("languageChanged", handler);
-
-    return () => {
-      i18n.off("languageChanged", handler);
-    };
-  }, [lang]);
-
-  useEffect(() => {
-    void prefetchInteractiveBundles();
   }, []);
 
   const isTest = isTestEnvironment();

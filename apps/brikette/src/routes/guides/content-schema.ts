@@ -56,15 +56,38 @@ const guideSectionSchema = z.object({
   images: z.array(guideSectionImageSchema).optional(),
 });
 
-const guideFaqSchema = z.object({
-  q: z.string().trim().min(1, "faq.q (question) is required"),
-  a: z.union([
-    z.string().trim().min(1),
-    z.array(z.string().trim().min(1)),
-  ], {
-    errorMap: () => ({ message: "faq.a (answer) is required" }),
-  }),
+const guideGalleryItemSchema = z.object({
+  src: z.string().trim().min(1, "gallery.items[].src is required"),
+  alt: z.string().trim().min(1, "gallery.items[].alt is required"),
+  caption: z.string().trim().min(1).optional(),
+  aspectRatio: z.string().trim().min(1).optional(),
+  preset: z.string().trim().min(1).optional(),
+  width: z.number().int().positive().optional(),
+  height: z.number().int().positive().optional(),
 });
+
+const guideGallerySchema = z.object({
+  heading: z.string().trim().min(1).optional(),
+  items: z.array(guideGalleryItemSchema).min(1, "gallery.items must not be empty"),
+});
+
+const guideFaqAnswerSchema = z.union([
+  z.string().trim().min(1),
+  z.array(z.string().trim().min(1)),
+], {
+  errorMap: () => ({ message: "faq.a (answer) is required" }),
+});
+
+const guideFaqSchema = z.union([
+  z.object({
+    q: z.string().trim().min(1, "faq.q (question) is required"),
+    a: guideFaqAnswerSchema,
+  }),
+  z.object({
+    question: z.string().trim().min(1, "faq.question is required"),
+    answer: guideFaqAnswerSchema,
+  }),
+]);
 
 const guideCalloutsSchema = z.record(
   z.string().trim().min(1, "callout values must be non-empty strings")
@@ -74,8 +97,11 @@ export const guideContentSchema = z
   .object({
     seo: guideSeoSchema,
     linkLabel: z.string().trim().min(1).optional(),
-    lastUpdated: z.string().datetime().optional(), // ISO 8601 date string, auto-updated on save
+    lastUpdated: z
+      .union([z.string().datetime(), z.string().date()])
+      .optional(), // ISO 8601 date or datetime, auto-updated on save
     intro: guideIntroSchema.optional(),
+    galleries: z.array(guideGallerySchema).optional(),
     sections: z.array(guideSectionSchema).optional(),
     faqs: z.array(guideFaqSchema).optional(),
     callouts: guideCalloutsSchema.optional(),

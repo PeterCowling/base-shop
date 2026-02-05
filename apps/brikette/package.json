@@ -22,6 +22,7 @@
     "report-coverage": "pnpm exec tsx ./scripts/report-guide-coverage.ts",
     "check-i18n-coverage": "pnpm exec tsx ./scripts/check-i18n-coverage.ts",
     "translate-guides": "pnpm exec tsx ./scripts/translate-guides.ts",
+    "perf:check-layout-chunk": "node ./scripts/perf/check-layout-chunk.mjs",
     "test:content-readiness": "pnpm exec jest --testPathPattern 'test/content-readiness/' --maxWorkers=2"
   },
   "dependencies": {

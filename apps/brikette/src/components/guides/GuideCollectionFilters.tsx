@@ -163,7 +163,7 @@ export const GuideCollectionFilters = ({
       );
     }
     return (
-      <Link href={href} prefetch={true} scroll={false} className={className} aria-current={ariaCurrent} aria-label={ariaLabel}>
+      <Link href={href} prefetch={false} scroll={false} className={className} aria-current={ariaCurrent} aria-label={ariaLabel}>
         {children}
       </Link>
     );

@@ -57,6 +57,7 @@ beforeEach(async () => {
   delete globalThis.__xaAccessStore;
   delete globalThis.__xaAccessStoreMode;
   await cleanupStoreFile();
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- Test cleanup with constant path
   await fs.writeFile(
     STORE_PATH,
     JSON.stringify({ invites: [], requests: [] }, null, 2),

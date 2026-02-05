@@ -58,7 +58,6 @@ describe("guide namespace migration", () => {
       "bestTimeToVisit",
       "howToGetToPositano",
       "safetyAmalfi",
-      "drivingAmalfi",
       "publicTransportAmalfi",
       "sitaTickets",
       "reachBudget",

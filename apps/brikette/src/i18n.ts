@@ -12,8 +12,6 @@ import resourcesToBackend from "i18next-resources-to-backend";
 import { i18nConfig } from "./i18n.config";
 import EN_FOOTER from "./locales/en/footer.json";
 import EN_TRANSLATION from "./locales/en/translation.json";
-import { getGuidesBundle } from "./locales/guides";
-import { loadGuidesNamespaceFromImports } from "./locales/guides.imports";
 import { loadLocaleResource } from "./locales/locale-loader";
 import { asResourceKey } from "./utils/i18n-types";
 // (blog namespace removed)
@@ -102,29 +100,12 @@ i18n.use(
     // Prefer the Node FS loader for the guides namespace when running under Node
     // (tests/scripts). This avoids a race where the runtime module discovery
     // hasn’t warmed yet and getGuidesBundle() returns a stub.
-    if (ns === "guides" && canUseNodeFs) {
-      try {
-        const { loadGuidesNamespaceFromFs } = await import("@/locales/_guides/node-loader");
-        const fromFs = loadGuidesNamespaceFromFs(lng);
-        if (fromFs) {
-          cb(null, asResourceKey(fromFs));
-          return;
-        }
-      } catch {
-        // Fall back to other strategies below
-      }
-    }
-
     if (ns === "guides") {
-      const bundle = getGuidesBundle(lng);
-      if (bundle) {
-        cb(null, asResourceKey(bundle));
-        return;
-      }
       try {
-        const imported = await loadGuidesNamespaceFromImports(lng);
-        if (imported) {
-          cb(null, asResourceKey(imported));
+        const { loadGuidesNamespace } = await import("./locales/guides.backend");
+        const bundle = await loadGuidesNamespace(lng, { canUseNodeFs });
+        if (bundle) {
+          cb(null, asResourceKey(bundle));
           return;
         }
       } catch {
@@ -146,15 +127,6 @@ i18n.use(
     // 2) Plain Node fallback via fs (prioritised under Node/vitest)
     if (canUseNodeFs) {
       try {
-        if (ns === "guides") {
-          // Secondary attempt; usually short‑circuited by the early Node branch.
-          const { loadGuidesNamespaceFromFs } = await import("@/locales/_guides/node-loader");
-          const bundle = loadGuidesNamespaceFromFs(lng);
-          if (bundle) {
-            cb(null, asResourceKey(bundle));
-            return;
-          }
-        }
         const mod = await import("module");
         const { createRequire } = mod as unknown as typeof import("module");
         const req = createRequire(import.meta.url);

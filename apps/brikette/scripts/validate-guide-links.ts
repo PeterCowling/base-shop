@@ -31,6 +31,11 @@ async function loadGuideKeys(): Promise<Set<string>> {
 }
 
 async function loadHowToSlugs(): Promise<Set<string>> {
+  // Special-case: the how-to-get-here index page is a reserved slug used by
+  // %HOWTO:how-to-get-here|Label% tokens throughout the content.
+  // It is not a route definition key in routes.json.
+  const HOW_TO_GET_HERE_INDEX_SLUG = "how-to-get-here";
+
   // Read route definitions from JSON
   const routesPath = path.join(APP_ROOT, "src", "data", "how-to-get-here", "routes.json");
   const routesContent = await readFile(routesPath, "utf8");
@@ -57,7 +62,7 @@ async function loadHowToSlugs(): Promise<Set<string>> {
     }
   }
 
-  return new Set([...routeSlugs, ...guideSlugs]);
+  return new Set([HOW_TO_GET_HERE_INDEX_SLUG, ...routeSlugs, ...guideSlugs]);
 }
 
 const __filename = fileURLToPath(import.meta.url);

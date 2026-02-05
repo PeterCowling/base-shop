@@ -5,8 +5,7 @@ import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import { loadLocaleResource } from "@/locales/locale-loader";
 import { IS_DEV } from "@/config/env";
 
-import { getGuidesBundle, type GuidesNamespace } from "../locales/guides";
-import { loadGuidesNamespaceFromImports } from "../locales/guides.imports";
+import type { GuidesNamespace } from "../locales/guides.types";
 
 const nodeCache = new Set<string>();
 // Cross-runtime guard to avoid duplicate adds even when SSR detection falls back
@@ -257,23 +256,16 @@ export async function preloadNamespacesWithFallback(
 }
 
 async function loadGuidesNamespace(lang: string): Promise<GuidesNamespace | undefined> {
-  const bundle = getGuidesBundle(lang);
-  if (bundle) return bundle;
-
   const hasNode =
     typeof process !== "undefined" &&
     Boolean((process as unknown as { versions?: { node?: unknown } }).versions?.node);
-  if (isServerRuntime() || hasNode) {
-    try {
-      const { loadGuidesNamespaceFromFs } = await import("@/locales/_guides/node-loader");
-      return loadGuidesNamespaceFromFs(lang) ?? undefined;
-    } catch {
-      // fall through to return undefined
-    }
+
+  try {
+    const { loadGuidesNamespace } = await import("@/locales/guides.backend");
+    return (
+      (await loadGuidesNamespace(lang, { canUseNodeFs: isServerRuntime() || hasNode })) ?? undefined
+    );
+  } catch {
+    return undefined;
   }
-
-  const imported = await loadGuidesNamespaceFromImports(lang);
-  if (imported) return imported;
-
-  return undefined;
 }

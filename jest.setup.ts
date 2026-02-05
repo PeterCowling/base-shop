@@ -321,7 +321,7 @@ const IGNORED_ERROR_PATTERNS: ConsolePattern[] = [
 const IGNORED_WARN_PATTERNS: ConsolePattern[] = [
   "⚠️ Invalid payments environment variables",
   // Content readiness audit warnings (expected in content quality tests)
-  /\[WARN\] Found \d+ English strings copied into non-en guide locales/,
+  /ALLOW_EN_FALLBACKS=1 set; found \d+ English strings/,
   /\[WARN\] i18n parity\/quality issues found/,
   /\[WARN\] Guide content parity\/quality issues found/,
   /\[guide-manifest-overrides\] Malformed JSON, using empty defaults/,

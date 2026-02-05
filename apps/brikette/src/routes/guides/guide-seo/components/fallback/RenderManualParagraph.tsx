@@ -32,7 +32,7 @@ export default function RenderManualParagraph({ translations, hookI18n, guideKey
     if (local) {
       return (
         <div className="space-y-4">
-          {renderBodyBlocks([local], lang, `manual-paragraph-${guideKey}`)}
+          {renderBodyBlocks([local], lang, `manual-paragraph-${guideKey}`, guideKey)}
         </div>
       );
     }
@@ -50,7 +50,7 @@ export default function RenderManualParagraph({ translations, hookI18n, guideKey
     if (en) {
       return (
         <div className="space-y-4">
-          {renderBodyBlocks([en], lang, `manual-paragraph-${guideKey}`)}
+          {renderBodyBlocks([en], lang, `manual-paragraph-${guideKey}`, guideKey)}
         </div>
       );
     }

@@ -1,7 +1,7 @@
 // src/components/landing/LocationMiniBlock.tsx
 import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { MapPin } from "lucide-react";
+import { MapPin } from "@/icons";
 
 import { Section } from "@acme/design-system/atoms";
 

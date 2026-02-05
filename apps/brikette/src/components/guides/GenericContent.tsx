@@ -83,7 +83,7 @@ export default function GenericContent({
   const normalizedFaqsHeadingLabel = faqsHeadingLabel.toLowerCase();
 
   const renderTokens = (value: string, key: string): ReactNode => {
-    const nodes = renderGuideLinkTokens(value, lang, key);
+    const nodes = renderGuideLinkTokens(value, lang, key, guideKey);
     if (nodes.length === 1) {
       return nodes[0];
     }
@@ -277,7 +277,7 @@ export default function GenericContent({
                 <div>{sectionTopExtras[section.id]}</div>
               ) : null}
               {Array.isArray(section.body)
-                ? renderBodyBlocks(section.body, lang, `${guideKey}-section-${section.id}`)
+                ? renderBodyBlocks(section.body, lang, `${guideKey}-section-${section.id}`, guideKey)
                 : null}
               {section.images?.length ? (
                 <ImageGallery items={section.images} className="my-0" />

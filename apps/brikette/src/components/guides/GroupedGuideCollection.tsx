@@ -275,9 +275,10 @@ function GroupedGuideCollection({
   const contentTopicConfigs = getFilteredTopicConfigsForSection(groupedContentGuides);
   const directionsTopicConfigs = getFilteredTopicConfigsForSection(groupedDirectionsGuides);
 
-  // Show both sections (no filter needed)
+  // Hide directions section for beaches (links are shown on content cards instead)
+  const isBeachesTopic = normalizedTopicParam === 'beaches';
   const showContentSection = true;
-  const showDirectionsSection = true;
+  const showDirectionsSection = !isBeachesTopic;
 
   return (
     <div id="guides" className="space-y-8">

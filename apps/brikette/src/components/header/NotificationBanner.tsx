@@ -6,7 +6,7 @@ import type { KeyboardEvent } from "react";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
-import { X } from "lucide-react";
+import { X } from "@/icons";
 
 import { useSetBannerRef } from "@/context/NotificationBannerContext";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";

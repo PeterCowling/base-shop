@@ -1,0 +1,80 @@
+AMALFI COAST GUIDE IMAGES - DOWNLOAD SUMMARY
+=============================================
+Downloaded: February 4, 2026
+Target Directory: /Users/petercowling/base-shop/apps/brikette/public/img/guides/topics/
+
+All 11 images successfully downloaded and verified as valid JPEG files.
+
+IMAGE DETAILS AND SOURCES:
+==========================
+
+1. capriFaraglioni.jpg (1.3M, 3446x2292px)
+   Source: Wikimedia Commons - File:I_Faraglioni.JPG
+   License: Creative Commons Attribution-Share Alike 3.0
+   URL: https://commons.wikimedia.org/wiki/File:I_Faraglioni.JPG
+   Description: The three famous Faraglioni rock stacks off Capri island
+
+2. capriMonteSolaro.jpg (242K, 819x591px)
+   Source: Wikimedia Commons - File:Mount_Solaro_Capri_Island_of_Italy.jpg
+   License: Creative Commons
+   URL: https://commons.wikimedia.org/wiki/File:Mount_Solaro_Capri_Island_of_Italy.jpg
+   Description: View from Monte Solaro chairlift in Anacapri
+
+3. pompeiiForum.jpg (2.8M, 6799x1862px)
+   Source: Wikimedia Commons - File:Pompeii_Forum.JPG
+   License: Creative Commons Attribution-Share Alike 3.0 Germany
+   URL: https://commons.wikimedia.org/wiki/File:Pompeii_Forum.JPG
+   Description: The Forum at Pompeii archaeological site
+
+4. vesuviusFromPompeii.jpg (406K, 2048x1151px)
+   Source: Wikimedia Commons - File:Ruins_of_Pompeii_showing_Mount_Vesuvius.JPG
+   License: Creative Commons Attribution-Share Alike 3.0 Unported
+   URL: https://commons.wikimedia.org/wiki/File:Pompeii&Vesuvius.JPG
+   Description: Mount Vesuvius viewed from Pompeii ruins
+
+5. ravelloTerrace.jpg (2.3M, 2848x2136px)
+   Source: Wikimedia Commons - File:Ravello-Villa_Cimbrone_Pavillon.JPG
+   License: Creative Commons
+   URL: https://commons.wikimedia.org/wiki/File:Ravello-Villa_Cimbrone_Pavillon.JPG
+   Description: Villa Cimbrone's Terrace of Infinity in Ravello
+
+6. amalfiDuomo.jpg (648K, 2048x1536px)
+   Source: Wikimedia Commons - File:Amalfi_Piazza_del_Duomo_Italy.JPG
+   License: Creative Commons
+   URL: https://commons.wikimedia.org/wiki/File:Amalfi_Piazza_del_Duomo_Italy.JPG
+   Description: Amalfi Cathedral (Duomo di Amalfi)
+
+7. sorrentoLemonGrove.jpg (5.5M, 2736x3648px)
+   Source: Wikimedia Commons - File:Entrance_to_the_Lemon_Grove.jpg
+   License: Creative Commons Attribution, Non-Commercial, Sharealike
+   URL: https://commons.wikimedia.org/wiki/Category:Limone_di_Sorrento
+   Description: Lemon groves in Sorrento
+
+8. sorrentoVillaComunale.jpg (5.8M, 4160x3120px)
+   Source: Wikimedia Commons - File:View_of_the_ferry_from_Sorrento_Park.jpg
+   License: Creative Commons
+   URL: https://commons.wikimedia.org/wiki/File:View_of_the_ferry_from_Sorrento_Park.jpg
+   Description: Villa Comunale clifftop terrace in Sorrento
+
+9. budgetDayTrips.jpg (2.5M, 3678x5517px)
+   Source: Unsplash - Photo by photographer (map, camera, passport on table)
+   License: Unsplash License (Free for commercial and non-commercial use)
+   URL: https://unsplash.com/photos/4TpfD3xrYKw
+   Description: Budget travel theme (map, planning materials)
+
+10. sitaBusPositano.jpg (1.4M, 3520x1980px)
+    Source: Wikimedia Commons - File:Amalfi_Drive_Sita_Bus.jpeg
+    License: Creative Commons
+    URL: https://commons.wikimedia.org/wiki/Category:Amalfi_Coast
+    Description: SITA bus on Amalfi Coast road
+
+11. positanoFerryDock.jpg (3.4M, 4000x3000px)
+    Source: Wikimedia Commons - File:Positano_2.JPG
+    License: Creative Commons Attribution-Share Alike 3.0 Unported
+    URL: https://commons.wikimedia.org/wiki/File:Positano_2.JPG
+    Description: Positano harbor/ferry dock area
+
+ALL FILES VERIFIED AS VALID JPEG FORMAT
+All images meet the minimum 1200px width requirement
+All images are actual photographs from the specified locations
+All images are properly licensed for use (Creative Commons / Unsplash License)

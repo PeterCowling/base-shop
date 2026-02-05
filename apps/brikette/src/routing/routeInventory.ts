@@ -10,7 +10,7 @@ import { HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS } from "@/data/how-to-get-here/routeGu
 import roomsData from "@/data/roomsData";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
-import { guidePath, guideSlug } from "@/routes.guides-helpers";
+import { guidePath } from "@/routes.guides-helpers";
 import type { SlugKey } from "@/types/slugs";
 import { getSlug } from "@/utils/slug";
 
@@ -82,17 +82,10 @@ export function listAppRouterUrls(): string[] {
     // NOTE: How-to-get-here routes are now enumerated via GUIDES_INDEX (TASK-04/TASK-05).
     // They have section="help" but baseKey="howToGetHere", so guidePath() produces
     // the correct URL format: /{lang}/how-to-get-here/{slug}
-
-    // Dynamic: Assistance guides (converted from legacy articles)
-    const assistanceSlug = getSlug("assistance", lang);
-    const publishedAssistanceGuides = ASSISTANCE_GUIDES.filter((g) => g.status === "published");
-    for (const guide of publishedAssistanceGuides) {
-      const slug = guideSlug(lang, guide.key);
-      urls.push(`/${lang}/${assistanceSlug}/${slug}`);
-    }
   }
 
-  return urls;
+  // Keep ordering stable while guaranteeing uniqueness (coverage tests depend on this).
+  return Array.from(new Set(urls));
 }
 
 /**

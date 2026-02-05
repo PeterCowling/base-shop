@@ -45,12 +45,12 @@ export const GUIDE_BASE_KEY_OVERRIDES: Partial<Record<
   salernoPositanoFerry: "howToGetHere",
   sorrentoPositanoBus: "howToGetHere",
   sorrentoPositanoFerry: "howToGetHere",
+  parking: "howToGetHere",
   // --- End how-to-get-here transport routes ---
   // General planning/help belong under Assistance
   onlyHostel: "assistance",
   porterServices: "assistance",
   luggageStorage: "assistance",
-  parking: "assistance",
   whatToPack: "assistance",
   simsAtms: "assistance",
   workCafes: "assistance",
@@ -76,7 +76,6 @@ export const GUIDE_BASE_KEY_OVERRIDES: Partial<Record<
   safetyAmalfi: "assistance",
   italianPhrasesCampania: "assistance",
   ecoFriendlyAmalfi: "assistance",
-  drivingAmalfi: "assistance",
   laundryPositano: "assistance",
   publicTransportAmalfi: "assistance",
   salernoVsNaples: "assistance",

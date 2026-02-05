@@ -23,6 +23,32 @@ function normalize(value: string): string {
   return value.replace(/\s+/gu, " ").trim();
 }
 
+const EN_STOPWORDS = new Set([
+  "the",
+  "and",
+  "or",
+  "to",
+  "from",
+  "with",
+  "without",
+  "for",
+  "of",
+  "in",
+  "on",
+  "at",
+  "your",
+  "you",
+  "we",
+  "our",
+  "this",
+  "that",
+  "is",
+  "are",
+  "be",
+  "a",
+  "an",
+] as const);
+
 function isMostlyAsciiLetters(value: string): boolean {
   const asciiLetters = (value.match(/[A-Za-z]/gu) ?? []).length;
   const nonAscii = (value.match(/[^\x00-\x7f]/gu) ?? []).length;
@@ -39,6 +65,50 @@ function isUrlLike(value: string): boolean {
   );
 }
 
+function tokenizeAsciiWords(value: string): string[] {
+  return value.match(/\b[A-Za-z][A-Za-z'’.-]*\b/gu) ?? [];
+}
+
+function isLikelyProperNounLabel(value: string): boolean {
+  const normalized = value.trim();
+  if (normalized.length < 30) return false;
+
+  const words = tokenizeAsciiWords(normalized);
+  if (words.length < 4) return false;
+
+  let stopwords = 0;
+  let capitalLike = 0;
+  let lowercase = 0;
+
+  for (const word of words) {
+    const lower = word.toLowerCase();
+    if (EN_STOPWORDS.has(lower as (typeof EN_STOPWORDS extends Set<infer T> ? T : never))) {
+      stopwords += 1;
+    }
+
+    if (/^[A-Z]/u.test(word) || /^[A-Z0-9]{2,}$/u.test(word)) {
+      capitalLike += 1;
+    }
+
+    if (/^[a-z]/u.test(word)) {
+      lowercase += 1;
+    }
+  }
+
+  if (stopwords > 0) return false;
+
+  const capitalRatio = capitalLike / words.length;
+  const hasListSeparators = /[,/→•|]/u.test(normalized);
+
+  // Exclude place-name lists / labels like:
+  // "Positano, Praiano, Amalfi, Ravello" or "Amalfi → Positano / Capri"
+  if (hasListSeparators && capitalRatio >= 0.75 && lowercase <= 1) {
+    return true;
+  }
+
+  return false;
+}
+
 function loadGuideStrings(dir: string, minLength: number): Record<string, StringMap> {
   const result: Record<string, StringMap> = {};
   const files = fs.readdirSync(dir).filter((file) => file.endsWith(".json"));
@@ -49,6 +119,7 @@ function loadGuideStrings(dir: string, minLength: number): Record<string, String
     walkJsonStrings(json, ({ path: jsonPath, value }) => {
       const normalized = normalize(value);
       if (isUrlLike(normalized)) return;
+      if (isLikelyProperNounLabel(normalized)) return;
       if (normalized.length >= minLength && isMostlyAsciiLetters(normalized)) {
         map[jsonPath] = normalized;
       }

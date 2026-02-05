@@ -126,6 +126,32 @@ describe("guideContentSchema", () => {
       }
     });
 
+    it("accepts content with galleries and alt text", () => {
+      const validContent = {
+        seo: {
+          title: "Test Guide",
+          description: "A test guide description",
+        },
+        galleries: [
+          {
+            heading: "Gallery heading",
+            items: [
+              {
+                src: "/img/guides/test.jpg",
+                alt: "Test gallery image alt",
+                caption: "Optional caption",
+                aspectRatio: "4/3",
+                preset: "gallery",
+              },
+            ],
+          },
+        ],
+      };
+
+      const result = guideContentSchema.safeParse(validContent);
+      expect(result.success).toBe(true);
+    });
+
     it("accepts content with optional faqs array", () => {
       const validContent = {
         seo: {
@@ -322,6 +348,28 @@ describe("guideContentSchema", () => {
               {
                 // missing src + alt
                 caption: "Caption only",
+              },
+            ],
+          },
+        ],
+      };
+
+      const result = guideContentSchema.safeParse(invalidContent);
+      expect(result.success).toBe(false);
+    });
+
+    it("rejects gallery items missing alt text", () => {
+      const invalidContent = {
+        seo: {
+          title: "Title",
+          description: "Description",
+        },
+        galleries: [
+          {
+            items: [
+              {
+                src: "/img/guides/test.jpg",
+                // missing alt
               },
             ],
           },

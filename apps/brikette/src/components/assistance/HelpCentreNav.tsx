@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
-import { Bus, CalendarDays, Clock, CreditCard, FileText, IdCard, Info, MapPin, Scale, ShieldCheck, Undo2, Wrench } from "lucide-react";
+import { Bus, CalendarDays, Clock, CreditCard, FileText, IdCard, Info, MapPin, Scale, ShieldCheck, Undo2, Wrench } from "@/icons";
 
 import HelpCentreNavUI, { type AssistanceNavItem } from "@acme/ui/organisms/HelpCentreNav";
 
@@ -132,7 +132,7 @@ function HelpCentreNav({ currentKey, className = "lg:w-80", lang: explicitLang }
       return (
         <Link
           href={item.href}
-          prefetch={true}
+          prefetch={false}
           className={linkClasses(highlighted || isActive)}
           aria-current={isActive ? "page" : undefined}
         >

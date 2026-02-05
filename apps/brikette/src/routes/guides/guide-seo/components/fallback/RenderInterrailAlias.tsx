@@ -95,7 +95,7 @@ export default function RenderInterrailAlias({
         {aliasIntro.length > 0 ? (
           <div className="space-y-4">
             {aliasIntro.map((p, idx) => (
-              <p key={idx}>{renderGuideLinkTokens(p, lang, `alias-intro-${idx}`)}</p>
+              <p key={idx}>{renderGuideLinkTokens(p, lang, `alias-intro-${idx}`, guideKey)}</p>
             ))}
           </div>
         ) : null}
@@ -109,7 +109,7 @@ export default function RenderInterrailAlias({
         {aliasSections.map((s) => (
           <section key={s.id} id={s.id} className="scroll-mt-28 space-y-4">
             {s.title ? <h2 className="text-xl font-semibold">{s.title}</h2> : null}
-            {renderBodyBlocks(s.body, lang, `alias-section-${s.id}`)}
+            {renderBodyBlocks(s.body, lang, `alias-section-${s.id}`, guideKey)}
           </section>
         ))}
         {aliasFaqsArr.length > 0 ? (
@@ -125,7 +125,7 @@ export default function RenderInterrailAlias({
               {aliasFaqsArr.map((f, i) => (
                 <details key={i}>
                   <summary role="button" className="font-medium">{f.q}</summary>
-                  {renderBodyBlocks(f.a, lang, `alias-faq-${i}`)}
+                  {renderBodyBlocks(f.a, lang, `alias-faq-${i}`, guideKey)}
                 </details>
               ))}
             </div>

@@ -2,6 +2,12 @@
 
 ## Required Images
 
+### Scan-to-share QR
+- **Filename**: `scan-to-share.png`
+- **Description**: QR code used on printed versions of the hike guide to quickly open/share the page
+- **Source**: Published Google Doc (embedded QR image)
+- **Usage**: Displayed in-page under a "Scan to share" section (optional utility; included to match the original guide content)
+
 ### Hero Image
 - **Filename**: `smaria-to-positano.jpg`
 - **Description**: View looking down onto Positano from Santa Maria del Castello trail

@@ -44,6 +44,17 @@ afterEach(() => {
 });
 
 describe("prefetchInteractiveBundles", () => {
+  const setConnection = (value: unknown) => {
+    try {
+      Object.defineProperty(window.navigator, "connection", {
+        configurable: true,
+        value,
+      });
+    } catch {
+      // ignore when navigator.connection is not configurable in this environment
+    }
+  };
+
   it("noops when running without a window", async () => {
     const originalWindow = globalThis.window;
     const globalWithWindow = globalThis as typeof globalThis & { window?: typeof window };
@@ -59,6 +70,7 @@ describe("prefetchInteractiveBundles", () => {
   });
 
   it("uses requestIdleCallback when available", async () => {
+    setConnection(undefined);
     const ric = jest.fn((cb: () => void) => cb());
     Object.defineProperty(window, "requestIdleCallback", { writable: true, value: ric });
     const setTimeoutSpy = jest.spyOn(window, "setTimeout");
@@ -73,6 +85,7 @@ describe("prefetchInteractiveBundles", () => {
   });
 
   it("falls back to setTimeout when requestIdleCallback is missing", async () => {
+    setConnection(undefined);
     Object.defineProperty(window, "requestIdleCallback", { writable: true, value: undefined });
     const setTimeoutSpy = jest.spyOn(window, "setTimeout").mockImplementation((cb: () => void) => {
       cb();
@@ -86,5 +99,61 @@ describe("prefetchInteractiveBundles", () => {
     await Promise.resolve();
 
     expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 2000);
+  });
+
+  it("does not prefetch when Save-Data is enabled", async () => {
+    setConnection({ saveData: true, effectiveType: "4g" });
+    const ric = jest.fn((cb: () => void) => cb());
+    Object.defineProperty(window, "requestIdleCallback", { writable: true, value: ric });
+    const setTimeoutSpy = jest.spyOn(window, "setTimeout");
+
+    const mod = await import("@/utils/prefetchInteractive");
+    await mod.default();
+    await Promise.resolve();
+
+    expect(ric).not.toHaveBeenCalled();
+    expect(setTimeoutSpy).not.toHaveBeenCalled();
+    expect(importSpy).not.toHaveBeenCalled();
+  });
+
+  it("does not prefetch on slow connections (2g)", async () => {
+    setConnection({ saveData: false, effectiveType: "2g" });
+    const ric = jest.fn((cb: () => void) => cb());
+    Object.defineProperty(window, "requestIdleCallback", { writable: true, value: ric });
+
+    const mod = await import("@/utils/prefetchInteractive");
+    await mod.default();
+    await Promise.resolve();
+
+    expect(ric).not.toHaveBeenCalled();
+    expect(importSpy).not.toHaveBeenCalled();
+  });
+
+  it("prefetchInteractiveBundlesNow imports immediately", async () => {
+    setConnection(undefined);
+    const ric = jest.fn();
+    Object.defineProperty(window, "requestIdleCallback", { writable: true, value: ric });
+    const setTimeoutSpy = jest.spyOn(window, "setTimeout");
+
+    const mod = await import("@/utils/prefetchInteractive");
+    await mod.prefetchInteractiveBundlesNow();
+    await Promise.resolve();
+
+    expect(ric).not.toHaveBeenCalled();
+    expect(setTimeoutSpy).not.toHaveBeenCalled();
+    expect(importSpy).toHaveBeenCalled();
+  });
+
+  it("shouldPrefetchInteractiveBundlesOnIdle matches rooms/book routes across locales", async () => {
+    const mod = await import("@/utils/prefetchInteractive");
+
+    expect(mod.shouldPrefetchInteractiveBundlesOnIdle("/en/rooms")).toBe(true);
+    expect(mod.shouldPrefetchInteractiveBundlesOnIdle("/de/zimmer")).toBe(true);
+    expect(mod.shouldPrefetchInteractiveBundlesOnIdle("/en/book")).toBe(true);
+    expect(mod.shouldPrefetchInteractiveBundlesOnIdle("/pl/rezerwuj")).toBe(true);
+
+    expect(mod.shouldPrefetchInteractiveBundlesOnIdle("/en/experiences")).toBe(false);
+    expect(mod.shouldPrefetchInteractiveBundlesOnIdle("/en")).toBe(false);
+    expect(mod.shouldPrefetchInteractiveBundlesOnIdle("/")).toBe(false);
   });
 });

@@ -24,4 +24,5 @@ export interface ContactCta {
 
 export interface AssistanceQuickLinksProps {
   lang?: string;
+  className?: string;
 }

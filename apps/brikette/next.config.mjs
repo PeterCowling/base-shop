@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -21,6 +22,58 @@ const setEnv = (key, value) => {
   if (typeof value === "string" && value.length > 0) {
     publicEnv[key] = value;
   }
+};
+
+const parseCloudflareHeadersFile = (contents) => {
+  const rules = [];
+  let currentPath = undefined;
+  let currentHeaders = {};
+
+  const flush = () => {
+    if (!currentPath) return;
+    if (typeof currentHeaders["Cache-Control"] !== "string") return;
+    rules.push({
+      path: currentPath,
+      cacheControl: currentHeaders["Cache-Control"],
+    });
+  };
+
+  for (const rawLine of contents.split(/\r?\n/)) {
+    const line = rawLine.trimEnd();
+    if (line.length === 0) continue;
+    if (line.startsWith("#")) continue;
+
+    if (line.startsWith("/")) {
+      flush();
+      currentPath = line;
+      currentHeaders = {};
+      continue;
+    }
+
+    const headerMatch = line.match(/^\s*([^:]+):\s*(.+)$/);
+    if (!headerMatch) continue;
+    const [, key, value] = headerMatch;
+    currentHeaders[key] = value;
+  }
+
+  flush();
+  return rules;
+};
+
+const cloudflarePathToNextSource = (cfPath) => {
+  if (cfPath === "/*/draft*") return "/:lang/draft/:path*";
+
+  if (cfPath.endsWith("/*")) {
+    return `${cfPath.slice(0, -2)}/:path*`;
+  }
+
+  if (cfPath.endsWith("*")) {
+    const base = cfPath.slice(0, -1);
+    if (base.endsWith("/")) return `${base}:path*`;
+    return `${base}/:path*`;
+  }
+
+  return cfPath;
 };
 
 setEnv("NEXT_PUBLIC_BASE_URL", readEnv("NEXT_PUBLIC_BASE_URL", "PUBLIC_BASE_URL"));
@@ -54,6 +107,16 @@ const nextConfig = {
   serverExternalPackages: (sharedConfig.serverExternalPackages ?? []).filter(
     (name) => name !== "react-i18next",
   ),
+  async headers() {
+    const headersPath = path.join(__dirname, "public", "_headers");
+    if (!fs.existsSync(headersPath)) return [];
+
+    const rules = parseCloudflareHeadersFile(fs.readFileSync(headersPath, "utf8"));
+    return rules.map((rule) => ({
+      source: cloudflarePathToNextSource(rule.path),
+      headers: [{ key: "Cache-Control", value: rule.cacheControl }],
+    }));
+  },
   env: {
     ...(sharedConfig.env ?? {}),
     ...publicEnv,

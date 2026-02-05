@@ -54,7 +54,7 @@ export function applyCalloutBlock(acc: BlockAccumulator, options: CalloutBlockOp
 
     // Render body with link token support
     const keyBase = `content.${context.guideKey}.callouts`;
-    const bodyContent = renderGuideLinkTokens(bodyText, context.lang, keyBase);
+    const bodyContent = renderGuideLinkTokens(bodyText, context.lang, keyBase, context.guideKey);
 
     return (
       <aside className={styles.container}>

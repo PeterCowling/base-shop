@@ -299,7 +299,7 @@ function AlsoHelpful({
                 <li key={`${key}-${index}`} className="h-full">
                   <AlsoHelpfulCard
                     href={guideHref(lang, key)}
-                    prefetch={true}
+                    prefetch={false}
                     ariaLabel={ariaLabel}
                     title={label}
                     ctaText={ctaText}
@@ -324,7 +324,7 @@ function AlsoHelpful({
                 <li key="rooms" className="h-full">
                   <AlsoHelpfulCard
                     href={`/${lang}/${getSlug("rooms", lang)}`}
-                    prefetch={true}
+                    prefetch={false}
                     ariaLabel={roomsAriaLabel}
                     title={roomsLabel}
                     ctaText={roomsCtaText}

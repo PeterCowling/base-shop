@@ -1,7 +1,7 @@
 import { Trans } from "react-i18next";
 import clsx from "clsx";
 import type { TFunction } from "i18next";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle } from "@/icons";
 
 import { CONTACT_EMAIL } from "@/config/hotel";
 

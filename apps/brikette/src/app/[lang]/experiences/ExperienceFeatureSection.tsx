@@ -1,6 +1,6 @@
 "use client";
 
-import { Check } from "lucide-react";
+import { Check } from "@/icons";
 
 import { CfImage } from "@acme/ui/atoms/CfImage";
 

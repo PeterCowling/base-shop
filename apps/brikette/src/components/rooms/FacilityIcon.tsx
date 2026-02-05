@@ -11,7 +11,7 @@ import {
   type LucideIcon,
   Sun,
   Users,
-} from "lucide-react";
+} from "@/icons";
 
 import type { FacilityKey } from "@/lib/facilities";
 

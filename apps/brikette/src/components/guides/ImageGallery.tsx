@@ -3,6 +3,9 @@ import { memo } from "react";
 
 import { CfResponsiveImage } from "@acme/ui/atoms/CfResponsiveImage";
 
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import { renderGuideLinkTokens } from "@/routes/guides/utils/linkTokens";
+
 const TEST_IDS = {
   root: "image-gallery",
 } as const;
@@ -19,13 +22,14 @@ type Props = { items: ImageGalleryItem[]; className?: string };
 
 function ImageGallery({ items, className = "" }: Props): JSX.Element | null {
   if (!items?.length) return null;
+  const lang = useCurrentLanguage();
   return (
     <div
       data-cy={TEST_IDS.root}
       data-testid={TEST_IDS.root}
       className={`not-prose my-8 grid items-start gap-4 sm:grid-cols-2 ${className}`}
     >
-      {items.map(({ src, alt, width = 1200, height = 800, caption }) => {
+      {items.map(({ src, alt, width = 1200, height = 800, caption }, index) => {
         const aspect = width > 0 && height > 0 ? `${width}/${height}` : undefined;
         const key = caption?.length
           ? `${src}::${caption}`
@@ -46,7 +50,7 @@ function ImageGallery({ items, className = "" }: Props): JSX.Element | null {
             />
             {caption ? (
               <figcaption className="px-4 py-3 text-sm leading-snug text-slate-700 dark:text-slate-300">
-                {caption}
+                {renderGuideLinkTokens(caption, lang, `image-gallery-${index}`, undefined)}
               </figcaption>
             ) : null}
           </figure>

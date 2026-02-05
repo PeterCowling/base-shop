@@ -1,0 +1,645 @@
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/img/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/data/rates.json
+  Cache-Control: public, max-age=0, s-maxage=300, stale-while-revalidate=86400
+
+/api/*
+  Cache-Control: no-store
+
+/en/book
+  Cache-Control: no-store
+/es/reservar
+  Cache-Control: no-store
+/de/buchen
+  Cache-Control: no-store
+/fr/reserver
+  Cache-Control: no-store
+/it/prenota
+  Cache-Control: no-store
+/ja/yoyaku
+  Cache-Control: no-store
+/ko/yeyak
+  Cache-Control: no-store
+/pt/reservar
+  Cache-Control: no-store
+/ru/bronirovanie
+  Cache-Control: no-store
+/zh/yuding
+  Cache-Control: no-store
+/ar/hajz
+  Cache-Control: no-store
+/hi/book
+  Cache-Control: no-store
+/vi/dat-phong
+  Cache-Control: no-store
+/pl/rezerwuj
+  Cache-Control: no-store
+/sv/boka
+  Cache-Control: no-store
+/no/bestill
+  Cache-Control: no-store
+/da/book
+  Cache-Control: no-store
+/hu/foglalas
+  Cache-Control: no-store
+
+/*/draft*
+  Cache-Control: no-store
+
+/en
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/en/rooms*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/en/deals*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/en/careers*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/en/about*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/en/help*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/en/experiences*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/en/how-to-get-here*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/en/apartment*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/en/guides*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/en/terms*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/en/house-rules*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/en/privacy-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/en/cookie-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/en/breakfast-menu*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/en/bar-menu*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+
+/es
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/es/habitaciones*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/es/ofertas*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/es/empleos*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/es/sobre-nosotros*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/es/ayuda*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/es/experiencias*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/es/como-llegar*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/es/apartamentos*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/es/guias*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/es/terminos-condiciones*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/es/normas-de-la-casa*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/es/privacy-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/es/cookie-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/es/menu-desayuno*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/es/carta-bebidas*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+
+/de
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/de/zimmer*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/de/angebote*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/de/karriere*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/de/ueber-uns*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/de/hilfe*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/de/erlebnisse*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/de/anfahrt*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/de/wohnungen*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/de/reisefuehrer*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/de/bedingungen*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/de/hausordnung*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/de/privacy-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/de/cookie-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/de/fruehstuecksmenue*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/de/bar-speisekarte*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+
+/fr
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/fr/chambres*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/fr/offres*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/fr/carrieres*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/fr/a-propos*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/fr/aide*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/fr/experiences*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/fr/comment-venir*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/fr/appartements*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/fr/guides*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/fr/conditions-generales*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/fr/reglement-interieur*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/fr/privacy-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/fr/cookie-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/fr/menu-petit-dejeuner*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/fr/carte-boissons*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+
+/it
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/it/camere*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/it/offerte*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/it/carriere*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/it/chi-siamo*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/it/assistenza*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/it/esperienze*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/it/come-arrivare*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/it/appartamenti*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/it/guide*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/it/termini-condizioni*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/it/regole-della-casa*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/it/privacy-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/it/cookie-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/it/menu-colazione*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/it/menu-bevande*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+
+/ja
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ja/heya*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ja/otoku*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ja/kyaria*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ja/annai*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ja/sapoto*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ja/taiken*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ja/akusesu*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ja/apaato*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ja/gaido*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ja/riyokiyaku*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ja/house-rules*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ja/privacy-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ja/cookie-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ja/choshoku-menu*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ja/ba-menyu*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+
+/ko
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ko/bang*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ko/teukga*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ko/chaeyong*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ko/sogae*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ko/jiwon*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ko/cheheom*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ko/osineun-gil*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ko/apateu*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ko/gaideu*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ko/yagwan*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ko/house-rules*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ko/privacy-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ko/cookie-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ko/achim-menu*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ko/jujeom-menyu*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+
+/pt
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pt/quartos*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pt/ofertas*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pt/carreiras*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pt/sobre-nos*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pt/ajuda*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pt/experiencias*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pt/como-chegar*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pt/apartamentos*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pt/guias*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pt/termos-condicoes*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pt/regras-da-casa*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pt/privacy-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pt/cookie-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pt/menu-cafe-da-manha*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pt/cardapio-bar*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+
+/ru
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ru/komnaty*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ru/skidki*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ru/karera*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ru/o-nas*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ru/pomoshch*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ru/vpechatleniya*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ru/kak-dobratsya*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ru/kvartiry*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ru/gidy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ru/pravila-usloviya*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ru/pravila-prozhivaniya*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ru/privacy-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ru/cookie-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ru/menyu-zavtrak*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ru/menu-bara*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+
+/zh
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/zh/fangjian*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/zh/tejia*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/zh/zhaopin*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/zh/guanyu*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/zh/bangzhu*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/zh/tiyan*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/zh/ruhe-daoda*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/zh/gongyu*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/zh/zhinan*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/zh/tiaokuan*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/zh/jiagui*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/zh/privacy-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/zh/cookie-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/zh/zaocan-caidan*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/zh/jiuba-caidan*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+
+/ar
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ar/ghuraf*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ar/urood*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ar/wazayif*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ar/man-nahnu*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ar/musaada*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ar/tajarib*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ar/kayfa-tasil*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ar/shuqaq*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ar/dalail*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ar/shorout*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ar/qawaid-albayt*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ar/privacy-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ar/cookie-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ar/qaimat-futur*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/ar/qaimat-bar*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+
+/hi
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hi/kamare*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hi/prastav*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hi/naukri*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hi/hamare-bare-mein*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hi/sahayata*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hi/anubhav*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hi/kaise-pahunchen*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hi/awas*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hi/margdarshika*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hi/niyam-sharten*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hi/ghar-ke-niyam*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hi/privacy-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hi/cookie-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hi/nashta-menu*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hi/peene-ka-menu*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+
+/vi
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/vi/phong*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/vi/uu-dai*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/vi/tuyen-dung*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/vi/ve-chung-toi*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/vi/tro-giup*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/vi/trai-nghiem*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/vi/cach-den-day*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/vi/can-ho*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/vi/huong-dan*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/vi/dieu-khoan*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/vi/noi-quy-nha*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/vi/privacy-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/vi/cookie-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/vi/thuc-don-bua-sang*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/vi/thuc-don-quay-bar*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+
+/pl
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pl/pokoje*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pl/promocje*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pl/praca*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pl/o-nas*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pl/pomoc*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pl/doswiadczenia*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pl/jak-dojechac*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pl/apartamenty*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pl/przewodniki*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pl/regulamin*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pl/zasady-domu*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pl/privacy-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pl/cookie-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pl/menu-sniadaniowe*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/pl/menu-barowe*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+
+/sv
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/sv/rum*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/sv/erbjudanden*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/sv/karriar*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/sv/om-oss*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/sv/hjalp*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/sv/upplevelser*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/sv/hitta-hit*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/sv/lagenheter*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/sv/guider*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/sv/villkor*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/sv/husregler*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/sv/privacy-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/sv/cookie-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/sv/frukostmeny*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/sv/barmeny*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+
+/no
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/no/rom*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/no/tilbud*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/no/karriere*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/no/om-oss*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/no/hjelp*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/no/opplevelser*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/no/finn-veien*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/no/leiligheter*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/no/guider*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/no/vilkar*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/no/husregler*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/no/privacy-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/no/cookie-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/no/frokostmeny*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/no/barmeny*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+
+/da
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/da/vaerelser*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/da/tilbud*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/da/karriere*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/da/om-os*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/da/hjaelp*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/da/oplevelser*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/da/find-vej*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/da/lejligheder*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/da/guider*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/da/vilkar*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/da/husregler*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/da/privacy-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/da/cookie-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/da/morgenmadsmenu*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/da/barmenu*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+
+/hu
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hu/szobak*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hu/akciok*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hu/karrier*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hu/rolunk*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hu/segitseg*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hu/elmenyek*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hu/hogyan-jutsz-ide*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hu/apartmanok*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hu/utmutatok*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hu/feltetelek*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hu/hazi-szabalyok*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hu/privacy-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hu/cookie-policy*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hu/reggeli-etlap*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+/hu/bar-etlap*
+  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400

@@ -124,7 +124,7 @@ export function CardActionsPanel(props: { card: Card; userCanEdit: boolean; curr
             type="button"
             onClick={() => mutateCard("/api/cards/claim", "Failed to claim card")}
             disabled={isUpdatingCard}
-            className="w-full px-3 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full px-3 py-3 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isUpdatingCard ? "Claiming..." : "Claim Card"}
           </button>
@@ -135,7 +135,7 @@ export function CardActionsPanel(props: { card: Card; userCanEdit: boolean; curr
             type="button"
             onClick={() => mutateCard("/api/cards/accept", "Failed to accept card")}
             disabled={isUpdatingCard}
-            className="w-full px-3 py-2 text-sm font-medium text-white bg-green-600 border border-green-600 rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full px-3 py-3 text-sm font-medium text-white bg-green-600 border border-green-600 rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isUpdatingCard ? "Accepting..." : "Accept & Start"}
           </button>
@@ -146,7 +146,7 @@ export function CardActionsPanel(props: { card: Card; userCanEdit: boolean; curr
             type="button"
             onClick={() => mutateCard("/api/cards/complete", "Failed to mark card complete")}
             disabled={isUpdatingCard}
-            className="w-full px-3 py-2 text-sm font-medium text-white bg-purple-600 border border-purple-600 rounded-md hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full px-3 py-3 text-sm font-medium text-white bg-purple-600 border border-purple-600 rounded-md hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isUpdatingCard ? "Completing..." : "Mark Complete"}
           </button>
@@ -194,7 +194,7 @@ export function CardActionsPanel(props: { card: Card; userCanEdit: boolean; curr
 
         <button
           type="button"
-          className="w-full px-3 py-2 text-sm font-medium text-gray-700 bg-gray-50 border border-gray-300 rounded-md hover:bg-gray-100"
+          className="w-full px-3 py-3 text-sm font-medium text-gray-700 bg-gray-50 border border-gray-300 rounded-md hover:bg-gray-100"
           disabled
         >
           Add Comment (Coming Soon)

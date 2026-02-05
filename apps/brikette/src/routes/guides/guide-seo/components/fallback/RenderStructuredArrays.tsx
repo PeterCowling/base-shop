@@ -157,7 +157,7 @@ export default function RenderStructuredArrays({
         {showIntro ? (
           <div className="space-y-4">
             {intro.map((p, idx) => (
-              <p key={idx}>{renderGuideLinkTokens(p, lang, `intro-${idx}`)}</p>
+              <p key={idx}>{renderGuideLinkTokens(p, lang, `intro-${idx}`, guideKey)}</p>
             ))}
           </div>
         ) : null}
@@ -175,7 +175,7 @@ export default function RenderStructuredArrays({
               finalSections.map((s, index) => (
                 <section key={`${s.id}-${index}`} id={s.id} className="scroll-mt-28 space-y-4">
                   {s.title ? <h2 className="text-xl font-semibold">{s.title}</h2> : null}
-                  {renderBodyBlocks(s.body, lang, `section-${s.id}`)}
+                  {renderBodyBlocks(s.body, lang, `section-${s.id}`, guideKey)}
                 </section>
               )),
             )
@@ -196,7 +196,7 @@ export default function RenderStructuredArrays({
               {faqsCombined.map((f, i) => (
                 <details key={i}>
                   <summary role="button" className="font-medium">{f.q}</summary>
-                  {renderBodyBlocks(f.a, lang, `faq-${i}`)}
+                  {renderBodyBlocks(f.a, lang, `faq-${i}`, guideKey)}
                 </details>
               ))}
             </div>

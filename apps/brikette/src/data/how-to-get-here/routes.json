@@ -315,28 +315,50 @@
         }
       ]
     },
-    "positano-amalfi-ferry": {
-      "contentKey": "positanoAmalfiFerry",
-      "linkBindings": [
-        {
-          "key": "tip.copy",
-          "linkObject": { "type": "howToOverview" }
-        },
-        {
-          "key": "sections.tickets.intro",
-          "placeholders": {
-            "travelmar": {
-              "type": "external",
-              "href": "https://travelmar.it/en"
-            },
-            "positano": {
-              "type": "external",
-              "href": "https://www.positano.com/en/ferry-schedule"
-            }
-          }
-        }
-      ]
-    },
+	    "positano-amalfi-ferry": {
+	      "contentKey": "positanoAmalfiFerry",
+	      "linkBindings": [
+	        {
+	          "key": "tip.copy",
+	          "placeholders": {
+	            "link": { "type": "howToOverview" }
+	          }
+	        },
+	        {
+	          "key": "sections.tickets.intro",
+	          "placeholders": {
+	            "travelmar": {
+	              "type": "external",
+	              "href": "https://travelmar.it/en"
+	            },
+	            "positano": {
+	              "type": "external",
+	              "href": "https://www.positano.com/en/ferry-schedule"
+	            },
+	            "ferrySchedules": {
+	              "type": "guide",
+	              "guideKey": "ferrySchedules"
+	            }
+	          }
+	        },
+	        {
+	          "key": "sections.gettingToPier.intro",
+	          "placeholders": {
+	            "dockWalk": {
+	              "type": "guide",
+	              "guideKey": "briketteToFerryDock"
+	            }
+	          }
+	        },
+	        {
+	          "key": "sections.planB.intro",
+	          "placeholders": {
+	            "bus": { "type": "directions", "slug": "positano-amalfi-bus" },
+	            "cancellations": { "type": "guide", "guideKey": "ferryCancellations" }
+	          }
+	        }
+	      ]
+	    },
     "positano-capri-ferry": {
       "contentKey": "positanoCapriFerry",
       "galleries": [

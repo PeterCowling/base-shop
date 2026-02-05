@@ -1,7 +1,7 @@
 import { memo } from "react";
 import clsx from "clsx";
 import type { TFunction } from "i18next";
-import { ZoomIn } from "lucide-react";
+import { ZoomIn } from "@/icons";
 
 import {
   Dialog,

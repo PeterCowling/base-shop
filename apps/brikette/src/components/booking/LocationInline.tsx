@@ -2,7 +2,7 @@
 import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import type { FallbackLng, FallbackLngObjList } from "i18next";
-import { Bus, MapPin } from "lucide-react";
+import { Bus, MapPin } from "@/icons";
 
 import { Button } from "@acme/design-system/primitives";
 

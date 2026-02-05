@@ -49,7 +49,7 @@ export const GUIDE_COMPONENT_OVERRIDES: Partial<Record<GuideKey, string>> = {
   workAndTravelPositano: "routes/guides/work-and-travel-remote-work-positano.tsx",
   reachBudget: "routes/guides/how-to-reach-positano-on-a-budget.tsx",
   positanoBudget: "routes/guides/positano-on-a-budget.tsx",
-  parking: "routes/guides/positano-parking.tsx",
+  parking: "routes/guides/arriving-by-car.tsx",
   luggageStorage: "routes/guides/luggage-storage-positano.tsx",
   positanoCostComparison: "routes/guides/positano-cost-vs-other-beach-destinations.tsx",
   workExchangeItaly: "routes/guides/work-exchange-in-italian-hostels.tsx",

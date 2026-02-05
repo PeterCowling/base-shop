@@ -1122,6 +1122,12 @@
     "domain": "Brikette"
   },
   {
+    "path": "docs/plans/brikette-live-delivery-speed-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Brikette"
+  },
+  {
     "path": "docs/plans/brikette-staging-launch-fact-find.md",
     "type": "Fact-Find",
     "status": "Needs-input",

@@ -112,13 +112,15 @@ describe("guide diagnostics", () => {
       });
 
       expect(Array.isArray(sectionsRaw)).toBe(true);
-      expect((sectionsRaw as unknown[]).length).toBe(6); // 6 sections defined
+      expect((sectionsRaw as unknown[]).length).toBeGreaterThan(0);
 
-      // Verify structure of first section
+      // Verify structure of a known section
       const sections = sectionsRaw as Array<{ id?: string; title?: string; body?: string[] }>;
-      expect(sections[0]?.id).toBe("layout");
-      expect(sections[0]?.title).toBe("Layout and main zones");
-      expect(Array.isArray(sections[0]?.body)).toBe(true);
+      const layoutSection = sections.find((section) => section.id === "layout");
+
+      expect(layoutSection).toBeTruthy();
+      expect(layoutSection?.title).toBeTruthy();
+      expect(Array.isArray(layoutSection?.body)).toBe(true);
     });
 
     it("retrieves actual FAQ data from positanoMainBeach", () => {

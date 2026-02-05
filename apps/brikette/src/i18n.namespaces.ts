@@ -54,3 +54,18 @@ export const APP_I18N_NAMESPACES = [
 ] as const;
 
 export type AppI18nNamespace = (typeof APP_I18N_NAMESPACES)[number];
+
+/**
+ * Minimal set of namespaces that must be available for the always-on layout
+ * shell to render without visible i18n-key flicker.
+ *
+ * Route/page components should load their own namespaces via `usePagePreload`.
+ */
+export const CORE_LAYOUT_I18N_NAMESPACES = [
+  "header",
+  "footer",
+  "_tokens",
+  "notificationBanner",
+] as const;
+
+export type CoreLayoutI18nNamespace = (typeof CORE_LAYOUT_I18N_NAMESPACES)[number];

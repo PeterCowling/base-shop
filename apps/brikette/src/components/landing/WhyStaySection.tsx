@@ -1,7 +1,7 @@
 // src/components/landing/WhyStaySection.tsx
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
-import { Compass, Sparkles, Users } from "lucide-react";
+import { Compass, Sparkles, Users } from "@/icons";
 
 import { Section } from "@acme/design-system/atoms";
 

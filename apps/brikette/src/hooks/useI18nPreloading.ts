@@ -6,7 +6,7 @@ import { useEffect, useLayoutEffect } from "react";
 import { IS_DEV } from "@/config/env";
 import i18n from "@/i18n";
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
-import { APP_I18N_NAMESPACES } from "@/i18n.namespaces";
+import { CORE_LAYOUT_I18N_NAMESPACES } from "@/i18n.namespaces";
 import { preloadI18nNamespaces } from "@/utils/loadI18nNs";
 
 type NormalizeLang = (raw: string | undefined) => AppLanguage | undefined;
@@ -26,7 +26,7 @@ type UseI18nPreloadingOptions = {
   lang: AppLanguage;
   /** Custom language normalizer (defaults to extracting base language from locale string) */
   normalizeLang?: NormalizeLang;
-  /** Namespaces to preload (defaults to APP_I18N_NAMESPACES) */
+  /** Namespaces to preload (defaults to CORE_LAYOUT_I18N_NAMESPACES) */
   namespaces?: readonly string[];
 };
 
@@ -44,7 +44,7 @@ type UseI18nPreloadingOptions = {
 export function useI18nPreloading({
   lang,
   normalizeLang = defaultNormalize,
-  namespaces = APP_I18N_NAMESPACES,
+  namespaces = CORE_LAYOUT_I18N_NAMESPACES,
 }: UseI18nPreloadingOptions): void {
   // Sync i18n language with route-derived language
   useLayoutEffect(() => {

@@ -10,6 +10,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ModalContext, type ModalContextValue, type ModalProviderProps, type ModalType } from "./context";
 import { ensureDocument } from "./environment";
 import { GlobalModals } from "./global-modals";
+import { prefetchInteractiveBundlesNow } from "@/utils/prefetchInteractive";
 
 ensureDocument();
 
@@ -38,6 +39,9 @@ export function ModalProvider({ children }: ModalProviderProps): JSX.Element {
   const lastFocusedRef = useRef<HTMLElement | null>(null);
 
   const openModal = useCallback((type: Exclude<ModalType, null>, data: unknown = null): void => {
+    if (type !== "language") {
+      void prefetchInteractiveBundlesNow();
+    }
     const targetDocument = getDocument();
     const activeElement = targetDocument?.activeElement;
     if (activeElement instanceof HTMLElement) {

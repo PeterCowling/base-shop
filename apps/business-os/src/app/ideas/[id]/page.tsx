@@ -24,7 +24,7 @@ interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-/* eslint-disable ds/no-hardcoded-copy, ds/no-unsafe-viewport-units, ds/enforce-layout-primitives, ds/container-widths-only-at, complexity -- BOS-12: Phase 0 scaffold UI */
+/* eslint-disable ds/no-hardcoded-copy, ds/no-unsafe-viewport-units, ds/enforce-layout-primitives, ds/container-widths-only-at -- BOS-12: Phase 0 scaffold UI */
 // BOS-D1-05 Phase 2: Using D1 repositories (Edge runtime)
 export default async function IdeaPage({ params }: PageProps) {
   const { id } = await params;

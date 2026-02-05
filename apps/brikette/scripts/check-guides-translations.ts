@@ -15,13 +15,7 @@ const STRING_KEYS = [
   "components.planChoice.options.ferry",
   "components.planChoice.options.trainBus",
   "components.planChoice.options.transfer",
-  "transportNotice.title",
-  "transportNotice.items.buses",
-  "transportNotice.items.ferries",
-  "transportNotice.items.airlink",
-  "transportNotice.items.driving",
-  "transportNotice.items.premium",
-  "transportNotice.srLabel",
+  // transportNotice deprecated - removed 2026-02-05
 ] as const;
 
 const LIST_KEYS = [

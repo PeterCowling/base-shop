@@ -364,7 +364,14 @@ const manifestSeed: GuideManifestEntry[] = [
     },
     checklist: [
       { id: "translations", status: "complete" },
-      { id: "content", status: "complete" },
+      {
+        id: "content",
+        status: "complete",
+        note: "EN copy refreshed 2026-02-04; link tokens validated; brikette typecheck passed",
+      },
+      { id: "jsonLd", status: "complete" },
+      { id: "faqs", status: "missing" },
+      { id: "seoAudit", status: "inProgress" },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -423,6 +430,7 @@ const manifestSeed: GuideManifestEntry[] = [
     draftPathSegment: "assistance/checkin-checkout",
     areas: ["help"],
     primaryArea: "help",
+    focusKeyword: "hostel brikette check-in and checkout",
     structuredData: ["Article", "BreadcrumbList"],
     relatedGuides: ["rules", "security", "ageAccessibility"],
     blocks: [
@@ -568,6 +576,7 @@ const manifestSeed: GuideManifestEntry[] = [
     areas: ["help"],
     primaryArea: "help",
     structuredData: ["Article", "BreadcrumbList"],
+    focusKeyword: "travel help Positano",
     relatedGuides: ["arrivingByFerry", "naplesAirportBus", "ferryDockToBrikette"],
     blocks: [
       {
@@ -686,7 +695,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       showTransportNotice: false,
     },
     checklist: [
@@ -722,7 +731,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferManualWhenUnlocalized: true,
     },
   }),
@@ -752,7 +761,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -798,7 +807,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferGenericWhenFallback: true,
     },
     checklist: [
@@ -905,7 +914,23 @@ const manifestSeed: GuideManifestEntry[] = [
     primaryArea: "help",
     structuredData: ["Article"],
     relatedGuides: ["groceriesPharmacies", "whatToPack", "naplesPositano"],
-    blocks: [],
+    blocks: [
+      {
+        type: "hero",
+        options: {
+          image: "/img/tabacchi.webp",
+          alt: "A tabacchi shop sign in Positano",
+        },
+      },
+      {
+        type: "genericContent",
+        options: { contentKey: "simsAtms", showToc: true },
+      },
+      {
+        type: "faq",
+        options: { fallbackKey: "simsAtms", alwaysProvideFallback: true },
+      },
+    ],
     options: {
       showTagChips: true,
     },
@@ -942,7 +967,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
     checklist: [
       { id: "translations", status: "inProgress", note: "Localize free-activity highlights per locale." },
@@ -977,7 +1002,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferManualWhenUnlocalized: true,
       suppressUnlocalizedFallback: true,
     },
@@ -1011,7 +1036,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
     checklist: [
       { id: "translations", status: "inProgress", note: "Localize fitness and trail guidance per locale." },
@@ -1050,7 +1075,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
     checklist: [
       { id: "translations", status: "inProgress", note: "Localize transport guidance across locales." },
@@ -1085,7 +1110,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -1114,7 +1139,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       suppressUnlocalizedFallback: true,
       preferGenericWhenFallback: true,
     },
@@ -1151,7 +1176,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       suppressUnlocalizedFallback: true,
     },
     checklist: [
@@ -1183,7 +1208,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       renderGenericWhenEmpty: true,
     },
   }),
@@ -1213,7 +1238,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferManualWhenUnlocalized: true,
     },
     checklist: [
@@ -1246,7 +1271,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferManualWhenUnlocalized: true,
     },
   }),
@@ -1278,7 +1303,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -1307,7 +1332,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       renderGenericWhenEmpty: true,
       suppressFaqWhenUnlocalized: true,
       fallbackToEnTocTitle: false,
@@ -1339,7 +1364,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       renderGenericWhenEmpty: false,
     },
   }),
@@ -1370,7 +1395,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferGenericWhenFallback: true,
       ogType: "article",
     },
@@ -1401,7 +1426,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -1430,7 +1455,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -1547,7 +1572,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -1577,7 +1602,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -1606,7 +1631,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferGenericWhenFallback: true,
     },
   }),
@@ -1670,7 +1695,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -1700,7 +1725,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -1729,7 +1754,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       showTransportNotice: false,
       showTocWhenUnlocalized: false,
     },
@@ -1746,6 +1771,7 @@ const manifestSeed: GuideManifestEntry[] = [
     areas: ["experience"],
     primaryArea: "experience",
     structuredData: ["Article", "FAQPage"],
+    focusKeyword: "positano restaurants",
     relatedGuides: ["cheapEats", "cuisineAmalfiGuide", "freeThingsPositano"],
     blocks: [
       {
@@ -1763,7 +1789,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       renderGenericWhenEmpty: true,
       preferGenericWhenFallback: true,
     },
@@ -1794,7 +1820,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -1824,7 +1850,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -1883,7 +1909,7 @@ const manifestSeed: GuideManifestEntry[] = [
     options: {
       showTagChips: true,
       showTransportNotice: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -1912,7 +1938,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -1941,7 +1967,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       showTransportNotice: true,
       suppressUnlocalizedFallback: true,
       preferManualWhenUnlocalized: true,
@@ -1973,7 +1999,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -2002,7 +2028,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -2031,7 +2057,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -2060,7 +2086,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferManualWhenUnlocalized: true,
       suppressUnlocalizedFallback: true,
     },
@@ -2091,7 +2117,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       showRelatedWhenLocalized: false,
     },
   }),
@@ -2103,6 +2129,7 @@ const manifestSeed: GuideManifestEntry[] = [
     draftPathSegment: "guides/best-time-to-visit-positano",
     areas: ["help"],
     primaryArea: "help",
+    focusKeyword: "best time to visit Positano",
     structuredData: ["Article", "FAQPage"],
     relatedGuides: ["positanoTravelGuide", "transportBudget", "ecoFriendlyAmalfi"],
     blocks: [
@@ -2121,19 +2148,20 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "parking",
-    slug: "positano-parking",
+    slug: "arriving-by-car",
     contentKey: "parking",
     status: "draft",
-    draftPathSegment: "guides/positano-parking",
-    areas: ["help"],
-    primaryArea: "help",
+    draftPathSegment: "guides/arriving-by-car",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
     structuredData: ["Article", "FAQPage"],
-    relatedGuides: ["drivingAmalfi", "transportBudget", "publicTransportAmalfi"],
+    focusKeyword: "arriving by car Positano",
+    relatedGuides: ["transportBudget", "publicTransportAmalfi", "scooterRentalPositano"],
     blocks: [
       {
         type: "genericContent",
@@ -2145,13 +2173,13 @@ const manifestSeed: GuideManifestEntry[] = [
       },
       {
         type: "relatedGuides",
-        options: { guides: ["drivingAmalfi", "transportBudget", "publicTransportAmalfi"] },
+        options: { guides: ["transportBudget", "publicTransportAmalfi", "scooterRentalPositano"] },
       },
     ],
     options: {
       showTagChips: true,
       showTransportNotice: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -2188,7 +2216,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -2217,7 +2245,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -2246,7 +2274,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -2271,7 +2299,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -2304,7 +2332,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferGenericWhenFallback: true,
       renderGenericWhenEmpty: true,
     },
@@ -2335,7 +2363,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferManualWhenUnlocalized: true,
     },
   }),
@@ -2365,7 +2393,37 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
+    },
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "sorrentoGuide",
+    slug: "sorrento-gateway-guide",
+    contentKey: "sorrentoGuide",
+    status: "draft",
+    draftPathSegment: "guides/sorrento-gateway-guide",
+    areas: ["help"],
+    primaryArea: "help",
+    structuredData: ["Article"],
+    relatedGuides: ["sorrentoPositanoBus", "sorrentoPositanoFerry", "ferrySchedules"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "sorrentoGuide", showToc: true },
+      },
+      {
+        type: "faq",
+        options: { fallbackKey: "sorrentoGuide", alwaysProvideFallback: true },
+      },
+      {
+        type: "relatedGuides",
+        options: { guides: ["sorrentoPositanoBus", "sorrentoPositanoFerry", "ferrySchedules"] },
+      },
+    ],
+    options: {
+      showTagChips: true,
+      showPlanChoice: false,
+      showTocWhenUnlocalized: true,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -2394,7 +2452,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       showTocWhenUnlocalized: true,
     },
   }),
@@ -2432,7 +2490,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -2469,7 +2527,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -2506,7 +2564,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -2543,36 +2601,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
-    },
-  }),
-  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
-    key: "drivingAmalfi",
-    slug: "driving-the-amalfi-coast-tips",
-    contentKey: "drivingAmalfi",
-    status: "draft",
-    draftPathSegment: "guides/driving-the-amalfi-coast-tips",
-    areas: ["help"],
-    primaryArea: "help",
-    structuredData: ["Article"],
-    relatedGuides: ["transportBudget", "publicTransportAmalfi", "salernoPositano"],
-    blocks: [
-      {
-        type: "genericContent",
-        options: { contentKey: "drivingAmalfi", showToc: true },
-      },
-      {
-        type: "faq",
-        options: { fallbackKey: "drivingAmalfi", alwaysProvideFallback: true },
-      },
-      {
-        type: "alsoHelpful",
-        options: { tags: ["transport", "car", "positano", "planning"], includeRooms: true },
-      },
-    ],
-    options: {
-      showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -2584,7 +2613,7 @@ const manifestSeed: GuideManifestEntry[] = [
     areas: ["help"],
     primaryArea: "help",
     structuredData: ["Article", "FAQPage", "BreadcrumbList"],
-    relatedGuides: ["drivingAmalfi", "publicTransportAmalfi", "transportBudget"],
+    relatedGuides: ["parking", "publicTransportAmalfi", "transportBudget"],
     blocks: [
       {
         type: "genericContent",
@@ -2596,7 +2625,7 @@ const manifestSeed: GuideManifestEntry[] = [
       },
       {
         type: "relatedGuides",
-        options: { guides: ["drivingAmalfi", "publicTransportAmalfi", "transportBudget"] },
+        options: { guides: ["parking", "publicTransportAmalfi", "transportBudget"] },
       },
     ],
     options: {
@@ -2632,7 +2661,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferManualWhenUnlocalized: true,
     },
   }),
@@ -2658,7 +2687,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       showTocWhenUnlocalized: false,
       showTransportNotice: false,
     },
@@ -2685,7 +2714,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       renderGenericWhenEmpty: true,
       suppressUnlocalizedFallback: true,
     },
@@ -2712,7 +2741,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferGenericWhenFallback: true,
     },
   }),
@@ -2739,7 +2768,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferManualWhenUnlocalized: true,
     },
   }),
@@ -2769,7 +2798,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -2790,7 +2819,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferManualWhenUnlocalized: true,
     },
   }),
@@ -2816,7 +2845,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       renderGenericWhenEmpty: false,
     },
   }),
@@ -2847,7 +2876,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -2876,7 +2905,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -2905,7 +2934,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -2935,7 +2964,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -2964,7 +2993,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -2993,7 +3022,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -3022,7 +3051,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -3051,7 +3080,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferGenericWhenFallback: true,
     },
   }),
@@ -3082,7 +3111,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       renderGenericWhenEmpty: true,
       showTocWhenUnlocalized: false,
       preferGenericWhenFallback: true,
@@ -3114,7 +3143,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferGenericWhenFallback: true,
     },
   }),
@@ -3144,7 +3173,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferGenericWhenFallback: true,
     },
   }),
@@ -3182,7 +3211,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferGenericWhenFallback: true,
     },
   }),
@@ -3213,7 +3242,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferGenericWhenFallback: true,
     },
   }),
@@ -3243,7 +3272,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferManualWhenUnlocalized: true,
     },
   }),
@@ -3273,7 +3302,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferGenericWhenFallback: true,
       showRelatedWhenLocalized: false,
       showTocWhenUnlocalized: true,
@@ -3305,7 +3334,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferGenericWhenFallback: true,
     },
   }),
@@ -3343,7 +3372,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -3402,7 +3431,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -3431,7 +3460,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -3468,7 +3497,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -3505,7 +3534,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -3542,7 +3571,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -3571,7 +3600,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -3600,7 +3629,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       suppressUnlocalizedFallback: true,
     },
   }),
@@ -3630,7 +3659,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferGenericWhenFallback: true,
     },
   }),
@@ -3660,7 +3689,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferManualWhenUnlocalized: true,
       suppressUnlocalizedFallback: true,
     },

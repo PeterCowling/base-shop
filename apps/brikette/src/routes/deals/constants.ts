@@ -1,4 +1,4 @@
-import { Coffee, Percent, Wine } from "lucide-react";
+import { Coffee, Percent, Wine } from "@/icons";
 
 import enTokens from "@/locales/en/_tokens.json";
 import enDealsFallback from "@/locales/en/dealsPage.json";

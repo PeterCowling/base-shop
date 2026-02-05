@@ -39,7 +39,6 @@ export const STRUCTURED_TOC_OVERRIDES: Partial<
   chiesaNuovaArrivals: { suppressTemplateToc: true },
   chiesaNuovaDepartures: { suppressTemplateToc: true },
   workCafes: { suppressTemplateTocWhenSectionsEmpty: true },
-  sorrentoGuide: { suppressTemplateTocWhenGatewayContentKey: "sorrentoGatewayGuide" },
   positanoTravelGuide: {
     suppressTemplateTocWhenUnlocalized: true,
     suppressMinimalLocalizedContent: true,

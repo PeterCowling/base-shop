@@ -3,7 +3,7 @@
 // src/components/careers/CareersSection.tsx
 import { memo, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { CheckCircle, XCircle } from "lucide-react";
+import { CheckCircle, XCircle } from "@/icons";
 
 import { Button } from "@acme/design-system/primitives";
 import { Section as LayoutSection } from "@acme/design-system/atoms";

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { ZoomIn } from "lucide-react";
+import { ZoomIn } from "@/icons";
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@acme/design-system/primitives";
 import { CfImage } from "@acme/ui/atoms/CfImage";
@@ -8,6 +8,7 @@ import { findPlaceholderBinding, type RouteDefinition } from "@/lib/how-to-get-h
 import type { RouteContent } from "@/lib/how-to-get-here/schema";
 
 import { getValueAtPath, isPlainObject } from "./content-utils";
+import { renderCallout } from "./callouts";
 import { isLinkedCopy, renderLink, renderLinkedCopy, renderRichText, resolveLinkTarget } from "./linking";
 import type { RenderContext } from "./types";
 
@@ -58,6 +59,14 @@ export function renderSection(
   for (const [key, value] of Object.entries(data)) {
     if (key === "title" || key === "heading" || key === "name") continue;
     const currentPath = `${path}.${key}`;
+
+    if (key === "aside" || key === "tip" || key === "cta") {
+      const calloutNode = renderCallout(currentPath, value, ctx);
+      if (calloutNode) {
+        paragraphs.push(calloutNode);
+        continue;
+      }
+    }
 
     if (Array.isArray(value)) {
       const items: ReactNode[] = [];

@@ -1,14 +1,14 @@
 // src/app/[lang]/assistance/[article]/page.tsx
 // Assistance article page - renders guides from the assistance area
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 
 import { getTranslations, toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
 import { GUIDES_INDEX } from "@/data/guides.index";
 import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
-import { guideNamespace, guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
+import { guideNamespace, guidePath, guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
 import { OG_IMAGE } from "@/utils/headConstants";
 
 import GuideContent from "../../experiences/[slug]/GuideContent";
@@ -88,9 +88,8 @@ export default async function AssistanceArticlePage({ params }: Props) {
   const guideKey = resolveGuideKeyFromSlug(article, validLang);
   const guideBase = guideKey ? guideNamespace(validLang, guideKey) : null;
 
-  if (!guideKey || guideBase?.baseKey !== "assistance") {
-    notFound();
-  }
+  if (!guideKey || !guideBase) notFound();
+  if (guideBase.baseKey !== "assistance") permanentRedirect(guidePath(validLang, guideKey));
 
   return <GuideContent lang={validLang} guideKey={guideKey} />;
 }

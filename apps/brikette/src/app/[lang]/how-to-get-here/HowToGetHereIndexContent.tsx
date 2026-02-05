@@ -27,6 +27,7 @@ import type { RoutePickerSelection } from "@/routes/how-to-get-here/components/R
 import { pickBestLink } from "@/routes/how-to-get-here/pickBestLink";
 import { useDestinationFilters } from "@/routes/how-to-get-here/useDestinationFilters";
 import { useHowToGetHereContent } from "@/routes/how-to-get-here/useHowToGetHereContent";
+import { guideHref } from "@/routes.guides-helpers";
 import { resolveLabel, useEnglishFallback } from "@/utils/translation-fallback";
 
 // Lazy load DestinationSections to prevent bundling destinations data into guide pages
@@ -278,7 +279,7 @@ function HowToGetHereIndexContent({ lang }: Props) {
       </Section>
 
       {/* Before You Travel */}
-      <BeforeYouTravel t={t} />
+      <BeforeYouTravel t={t} parkingHref={guideHref(lang, "parking")} />
 
       {/* Experience Guides */}
       <Section id={EXPERIENCE_SECTION_ID} padding="default">

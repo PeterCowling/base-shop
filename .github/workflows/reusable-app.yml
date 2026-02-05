@@ -175,3 +175,12 @@ jobs:
           EXTRA_ROUTES: "/api/health"
           MAX_RETRIES: "10"
           RETRY_DELAY: "6"
+
+      - name: Post-Deploy Cache Headers Check (Brikette)
+        if: success() && inputs.app-filter == '@apps/brikette' && inputs.project-name != ''
+        run: |
+          chmod +x scripts/post-deploy-brikette-cache-check.sh
+          ./scripts/post-deploy-brikette-cache-check.sh ${{ inputs.project-name }} ${{ inputs.healthcheck-args }}
+        shell: bash
+        env:
+          BASE_URL: ${{ inputs.healthcheck-base-url }}

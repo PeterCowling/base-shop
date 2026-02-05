@@ -113,17 +113,24 @@ Read audit output. Check:
 
 ### 2) Spawn parallel translation subagents (required in Claude)
 
-Use the Task tool to spawn multiple parallel subagents for concurrent locale translation. **Never translate sequentially in Claude.**  
+Use the Task tool to spawn multiple parallel subagents for concurrent locale translation. **Never translate sequentially in Claude.**
 In Codex, proceed sequentially across locales.
 
-**Recommended parallelization strategy (Claude):**
-- Spawn 4-6 subagents in a single Task tool call (one message with multiple tool uses)
-- Each subagent handles 3-4 locales
-- Example grouping:
-  - Agent 1: ar, da, de, es
-  - Agent 2: fr, hi, hu, it
-  - Agent 3: ja, ko, no, pl
-  - Agent 4: pt, ru, sv, vi, zh
+**Recommended parallelization strategy (proven for 17 locales):**
+
+**Optimal grouping for balanced workload:**
+- Agent 1: ar, da, de, es (4 locales - Western European + Arabic)
+- Agent 2: fr, hi, hu, it (4 locales - Romance + South Asian + Eastern European)
+- Agent 3: ja, ko, no, pl, pt (5 locales - East Asian + Nordic + Slavic + Iberian)
+- Agent 4: ru, sv, vi, zh (4 locales - Slavic + Nordic + Southeast Asian + East Asian)
+
+**Timing expectations:**
+- Each agent: ~30-40 minutes for comprehensive guides (3000+ words)
+- Total wall time: ~40 minutes with 4 parallel agents
+- Sequential alternative: ~2+ hours
+
+**Launch pattern:**
+Single message with 4 Task tool calls for maximum parallelization.
 
 ### 3) Per-locale translation workflow (each subagent executes)
 
@@ -157,12 +164,36 @@ Compare locale's structure and coverage vs EN:
 - Redo localization safely
 - If still not possible promptly, stop and ask user what they want to do
 
-### 4) Completion report
+### 4) Post-translation validation (mandatory before completion report)
 
-After all translations complete, report:
+After all parallel translation agents complete, run automated validation:
+
+```bash
+for locale in ar da de es fr hi hu it ja ko no pl pt ru sv vi zh; do
+  file="src/locales/$locale/guides/content/{guideKey}.json"
+  lines=$(wc -l < "$file" 2>/dev/null || echo "0")
+  sections=$(node -e "try { const c=JSON.parse(require('fs').readFileSync('$file','utf8')); console.log(c.sections?.length || 0); } catch(e) { console.log('0'); }" 2>&1)
+  echo "$locale: $lines lines, $sections sections"
+done
+```
+
+**Validation criteria per locale:**
+- Line count within ±5 of EN source
+- Section count exactly matches EN
+- File parses as valid JSON
+
+**If any locale fails validation:**
+- DO NOT report completion
+- Spawn additional agent to complete failed locales
+- Re-run validation before final report
+
+### 5) Completion report
+
+After all translations complete and validation passes, report:
 
 **Validation status:**
 - EN audit result (pass/fail with details)
+- Validation command output showing all 17 locales passed
 
 **Translation progress:**
 - Locales updated (count + list)
@@ -175,6 +206,7 @@ After all translations complete, report:
   - every write was validated immediately
   - any corruption was handled only by replacement with known-good content
   - all 17 non-EN locales were successfully updated (parallel subagents in Claude; sequential in Codex)
+  - all 17 locales validated at expected line count and section count
   - no translation work was deferred or suggested for external handling
 
 ---

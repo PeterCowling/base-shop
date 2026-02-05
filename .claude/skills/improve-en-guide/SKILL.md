@@ -110,6 +110,24 @@ Baseline validation:
 
 ---
 
+## JSON Editing Safety Protocol (Mandatory for Large Content Updates)
+
+When expanding guide content significantly (adding 500+ words or 3+ new sections):
+
+**REQUIRED: Use scripted JSON editing, not direct Edit tool**
+1. Create a temporary Python or Node.js script in `apps/brikette/scripts/temp-*.py` or `scripts/temp-*.js`
+2. Load JSON with `JSON.parse()` or `json.load()`
+3. Modify only string values programmatically
+4. Write with `JSON.stringify(obj, null, 2) + '\n'` or `json.dump()`
+5. Validate immediately after write
+6. Delete temp script after completion
+
+**Why:** The Edit tool with complex multi-line strings containing quotes, apostrophes, and special characters frequently causes JSON parse errors. Structured editing via scripts eliminates this failure mode.
+
+**Exception:** Small edits (single field, <100 chars) can use Edit tool directly.
+
+---
+
 ## Validation & Replacement Protocol (applies to every write)
 
 ### A. Snapshot before every edit (mandatory)

@@ -6,6 +6,8 @@
   "main": "./dist/index.js",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
       "default": "./dist/index.js"
     },
     "./tailwind.config.mjs": "./tailwind.config.mjs"

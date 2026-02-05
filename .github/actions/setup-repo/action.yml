@@ -35,6 +35,8 @@ runs:
         echo "TURBO_TEAM=${{ inputs.turbo-team }}" >> $GITHUB_ENV
         echo "Turbo remote cache enabled for team: ${{ inputs.turbo-team }}"
 
-    - name: Build eslint plugin
-      run: pnpm --filter @acme/eslint-plugin-ds build
+    - name: Build critical packages
+      run: |
+        pnpm --filter @acme/tailwind-config build
+        pnpm --filter @acme/eslint-plugin-ds build
       shell: bash

@@ -1,259 +1,259 @@
 {
   "seo": {
     "title": "Chiesa Nuova / Bar Internazionale buszmegálló → Hostel Brikette",
-    "description": "Busszal érkezel Positanóba? Szállj le a Chiesa Nuova / Bar Internazionale megállónál (legközelebb a Hostel Brikette-hez). Jelezz a sofőrnek, ismerd fel a megállót, sétálj 2–5 percet a recepcióig."
+    "description": "Busszal érkezik Positanóba? Szálljon le a Chiesa Nuova / Bar Internazionale megállónál (a legközelebb a Hostel Brikette-hez). Jelezze a sofőrnek, ismerje fel a megállót, gyalogoljon 2-5 percet a recepcióig."
   },
-  "linkLabel": "Chiesa Nuova / Bar Internazionale a Hostel Brikette-ig (érkezés)",
+  "linkLabel": "Chiesa Nuova / Bar Internazionale a Hostel Brikette-hez (Érkezés)",
   "lastUpdated": "2026-02-02",
-  "intro": "SITA busszal érkezel 2026-ban? A **Chiesa Nuova / Bar Internazionale buszmegálló** a legközelebbi megálló a Hostel Brikette-hez, a legrövidebb sétával és a legkevesebb lépcsővel. Ez az útmutató magáról a megállóról szól: hogyan ismerd fel, hogyan győződj meg róla, hogy a busz tényleg megáll, és hogyan sétálj az utolsó 120–140 métert a recepcióig.\n\nNem az egész buszútról szól — hanem az érkezés utolsó, kritikus részéről: tudni, hogy néz ki a megálló, mikor nyomd meg a gombot, és hogyan vidd fel a csomagjaidat a hostelbe anélkül, hogy a hosszú lépcsős útvonalakat választanád. Az érkezés lényeges tudnivalóit (poggyászmegőrzés, bejelentkezési idők és késői érkezési lehetőségek) a végén található GYIK részben találod.",
+  "intro": "2026-ban SITA busszal érkezik? A **Chiesa Nuova / Bar Internazionale buszmegálló** a legközelebbi megálló a Hostel Brikette-hez, a legrövidebb sétával és a legkevesebb lépcsővel. Ez az útmutató magáról a megállóról szól: hogyan ismerje fel, hogyan győződjön meg arról, hogy a busz ténylegesen megáll, és hogyan tegye meg az utolsó 120-140 métert a recepcióig.\n\nEz nem útmutató a teljes buszúthoz — ez az érkezés utolsó, kritikus része: tudni, hogy néz ki a megálló, mikor nyomja meg a gombot, és hogyan vigye el csomagjait a szállásra anélkül, hogy hosszú lépcsős útvonalakat választana. Az érkezési alapokat (poggyász tárolás, bejelentkezési ablak és késői érkezési lehetőségek) a végén található GYIK-ben is megtalálja.",
   "image": {
-    "alt": "Positano’s Chiesa Nuova / Bar Internazionale SITA bus stop on Viale Pasitea",
-    "caption": "This stop is called “Positano (Chiesa Nuova)” on timetables and sits outside Bar Internazionale on Viale Pasitea."
+    "alt": "Positano Chiesa Nuova / Bar Internazionale SITA buszmegállója a Viale Pasitea mellett",
+    "caption": "Ezt a megállót \"Positano (Chiesa Nuova)\"-nak nevezik a menetrendeken, és a Viale Pasitea-n lévő Bar Internazionale előtt található."
   },
   "toc": {
     "onThisPage": "Ezen az oldalon",
-    "before": "Indulás előtt",
+    "before": "Mielőtt elindul",
     "steps": "Lépésről lépésre",
-    "knees": "Lábak és poggyász",
-    "faqs": "Gyakran ismételt kérdések"
+    "knees": "Poggyász és utazás",
+    "faqs": "GYIK"
   },
   "sections": [
     {
       "id": "why-this-stop",
-      "title": "Why Chiesa Nuova / Bar Internazionale is the best arrival stop",
+      "title": "Miért a Chiesa Nuova / Bar Internazionale a legjobb érkezési megálló",
       "body": [
-        "Positano has multiple bus stops. The one that makes hostel arrivals easiest is **Chiesa Nuova / Bar Internazionale** — it’s the closest stop to Hostel Brikette and avoids walking much further from the Positano Sponda bus stop, or long stair climbs you’ll face if you somehow end up at the “Positano Centro” bus stop.",
-        "From this stop it’s a short, mostly flat walk (about 120–140 metres) plus the hostel entrance steps. That’s why we recommend it for **luggage**, **tired legs**, and **first‑time arrivals**.",
-        "If you’re planning your broader arrival, see our %LINK:howToGetToPositano|How to get to Positano% guide, then use this page for the final stop and the last 2–5 minutes on foot."
+        "Positanónak több buszmegállója van. Az, amely a legkönnyebbé teszi a szállás megközelítését, a **Chiesa Nuova / Bar Internazionale** — ez a legközelebbi megálló a Hostel Brikette-hez, és elkerüli a Positano Sponda buszmegállótól való sokkal távolabb sétálást, vagy azokat a hosszú lépcsőmászásokat, amelyekkel szembesülne, ha valahogy a \"Positano Centro\" buszmegállónál találná magát.",
+        "Erről a megállóról rövid, többnyire sík séta (körülbelül 120-140 méter), valamint a szállás bejárati lépcsője. Ezért ajánljuk **poggyásszal**, **fáradt lábakkal** és **első alkalommal érkezőknek**.",
+        "Ha szélesebb érkezését tervezi, nézze meg a %LINK:howToGetToPositano|Hogyan juthat el Positanóba% útmutatónkat, majd használja ezt az oldalt az utolsó megállóhoz és az utolsó 2-5 perces gyalogláshoz."
       ],
       "images": [
         {
           "src": "/img/directions/positano-bus-stop.webp",
-          "alt": "SITA bus stop sign for Positano Chiesa Nuova / Bar Internazionale",
-          "caption": "Look for the SITA stop marker outside Bar Internazionale."
+          "alt": "SITA buszmegálló tábla a Positano Chiesa Nuova / Bar Internazionale számára",
+          "caption": "Keresse a SITA megálló jelzőt a Bar Internazionale előtt."
         },
         {
           "src": "/img/directions/chiesa-nuova-arrivals/positano-chiesa-nuova-church.jpg",
-          "alt": "Positano hillside view near Chiesa Nuova / Bar Internazionale (Santa Maria delle Grazie)",
-          "caption": "Photo: Lorenzo Saprio (CC BY-SA 4.0) via Wikimedia Commons."
+          "alt": "Positano domboldali kilátás a Chiesa Nuova / Bar Internazionale (Santa Maria delle Grazie) közelében",
+          "caption": "Fotó: Lorenzo Saprio (CC BY-SA 4.0) a Wikimedia Commons-on keresztül."
         }
       ]
     },
     {
       "id": "fast-facts",
-      "title": "Fast facts (2026 season)",
+      "title": "Gyors tények (2026-os szezon)",
       "body": [
-        "**Walk time:** 2–5 minutes from the stop to reception, depending on luggage and traffic.",
-        "**Distance:** ~120–140 metres along Viale Pasitea, then a short staircase up to the hostel entrance.",
-        "**Stop type:** Request stop — tell the driver and press the stop button early.",
-        "**When to prepare to exit:** Stand and move toward the door 1–2 minutes before Chiesa Nuova, especially if the bus is busy.",
-        "**Best for:** First‑time arrivals, heavy bags, and anyone who wants the least stairs.",
-        "**Tickets:** You can’t buy SITA tickets from the driver — get them in advance (see %LINK:sitaTickets|SITA ticket basics%).",
-        "**Peak crowd times:** Late morning and late afternoon can be busy in summer; if a bus is full, wait for the next one rather than trying to squeeze on with bags.",
-        "**If you’re unsure on board:** Ask the driver or a nearby passenger — this is a common stop for hostel guests and day‑trippers.",
-        "**If you’re arriving by ferry first:** Use the %LINK:ferryDockToBrikette|ferry dock → Hostel Brikette% guide to reach this stop without hauling bags up the beach stairs."
+        "**Séta ideje:** 2-5 perc a megállótól a recepcióig, a poggyásztól és a forgalomtól függően.",
+        "**Távolság:** ~120-140 méter a Viale Pasitea mentén, majd egy rövid lépcső a szállás bejáratához.",
+        "**Megálló típusa:** Kérésre megálló — mondja meg a sofőrnek, és nyomja meg a megálló gombot korán.",
+        "**Mikor készüljön a kiszállásra:** Álljon fel és menjen az ajtó felé 1-2 perccel a Chiesa Nuova előtt, különösen ha a busz zsúfolt.",
+        "**A legjobb:** Első alkalommal érkezőknek, nehéz táskáknak és bárkinek, aki a legkevesebb lépcsőt szeretné.",
+        "**Jegyek:** Nem vásárolhat SITA jegyeket a sofőrtől — szerezze be előre (lásd: %LINK:sitaTickets|SITA jegy alapok%).",
+        "**Csúcs forgalmi idők:** Késő délelőtt és késő délután nyáron zsúfolt lehet; ha a busz tele van, várja meg a következőt, ahelyett hogy megpróbálna felnyomulni táskákkal.",
+        "**Ha bizonytalan a fedélzeten:** Kérdezze meg a sofőrt vagy egy közeli utast — ez gyakori megálló a szállás vendégei és a kirándulók számára.",
+        "**Ha először kompon érkezik:** Használja a %LINK:ferryDockToBrikette|kompkikötő → Hostel Brikette% útmutatót, hogy elérje ezt a megállót anélkül, hogy a táskákat a strand lépcsőkön cipelné."
       ],
       "images": [
         {
           "src": "/img/directions/ferry-dock-interno-yellow.webp",
-          "alt": "A small local bus used on the Positano route",
-          "caption": "Local buses are compact and often crowded — position yourself near the door before your stop."
+          "alt": "Egy kis helyi busz, amelyet a Positano útvonalon használnak",
+          "caption": "A helyi buszok kompaktak és gyakran zsúfoltak — álljon az ajtó közelébe a megálló előtt."
         }
       ]
     },
     {
       "id": "get-off-here",
-      "title": "How to get off at the right stop (what to look for on the bus)",
+      "title": "Hogyan szálljon le a megfelelő megállónál (mit keressen a buszon)",
       "body": [
-        "On many routes, the driver (or an onboard display) announces the stop as **“Chiesa Nuova”**. On timetables it can also appear as **“Positano (Chiesa Nuova)”**. Locally, you’ll also hear people say **Chiesa Nuova / Bar Internazionale** because the stop is directly outside that cafe/tabacchi.",
-        "**Tell the driver when you board:** “Chiesa Nuova, per favore.” This is the simplest way to avoid missing the stop, especially if the bus is crowded or you’re arriving late in the day.",
-        "**Press the stop button early.** When you see Bar Internazionale approaching (often on your right as the bus heads through this bend), press the stop button so the driver has time to pull in.",
-        "**Signal the driver if you’re standing:** When the bus approaches, make eye contact and raise your hand so the driver knows you want to get off. This matters because Chiesa Nuova is a request stop.",
-        "If you’re standing with bags, start moving toward the door a minute before the stop — the bus may stop briefly and then continue quickly.",
-        "If you’re nervous about missing it, ask the driver one or two stops before: “Prossima Chiesa Nuova?” (Is Chiesa Nuova next?). Drivers are used to this question from visitors."
+        "Sok útvonalon a sofőr (vagy egy fedélzeti kijelző) **\"Chiesa Nuova\"**-ként hirdeti meg a megállót. A menetrendeken **\"Positano (Chiesa Nuova)\"**-ként is megjelenhet. Helyben azt is hallhatja, hogy az emberek **Chiesa Nuova / Bar Internazionale**-t mondanak, mert a megálló közvetlenül az a kávézó/trafikbolt előtt van.",
+        "**Mondja meg a sofőrnek, amikor felszáll:** \"Chiesa Nuova, per favore.\" Ez a legegyszerűbb módja annak, hogy elkerülje a megálló elmulasztását, különösen, ha a busz zsúfolt, vagy késő este érkezik.",
+        "**Nyomja meg a megálló gombot korán.** Amikor látja, hogy közeledik a Bar Internazionale (gyakran a jobb oldalon, amikor a busz ezen a kanyaron halad át), nyomja meg a megálló gombot, hogy a sofőrnek legyen ideje beállni.",
+        "**Jelezze a sofőrnek, ha áll:** Amikor a busz közeledik, nézzen szemkontaktust és emelje fel a kezét, hogy a sofőr tudja, hogy le akar szállni. Ez azért fontos, mert a Chiesa Nuova kérésre megálló.",
+        "Ha táskákkal áll, kezdjen el az ajtó felé menni egy perccel a megálló előtt — a busz röviden megállhat, majd gyorsan folytatja útját.",
+        "Ha ideges attól, hogy lemarad róla, kérdezze meg a sofőrt egy vagy két megállóval korábban: \"Prossima Chiesa Nuova?\" (Következik a Chiesa Nuova?). A sofőrök hozzászoktak ehhez a kérdéshez a látogatóktól."
       ],
       "images": [
         {
           "src": "/img/directions/chiesa-nuova-arrivals/amalfi-coast-sita-bus.jpg",
-          "alt": "A SITA Sud bus on the Amalfi Coast road",
-          "caption": "Photo: Robot8A (CC BY-SA 4.0) via Wikimedia Commons."
+          "alt": "Egy SITA Sud busz az Amalfi-parti úton",
+          "caption": "Fotó: Robot8A (CC BY-SA 4.0) a Wikimedia Commons-on keresztül."
         },
         {
           "src": "/img/directions/ferry-dock-interno-red.webp",
-          "alt": "A compact local bus on the Amalfi Coast",
-          "caption": "Move toward the exit before the bus stops — drivers often pull in briefly."
+          "alt": "Egy kompakt helyi busz az Amalfi-parton",
+          "caption": "Menjen a kijárat felé, mielőtt a busz megáll — a sofőrök gyakran röviden állnak meg."
         }
       ]
     },
     {
       "id": "what-youll-see",
-      "title": "What it looks like when you arrive (so you know where to get off)",
+      "title": "Milyen, amikor megérkezik (hogy tudja, hol szálljon le)",
       "body": [
-        "The stop is **roadside on Viale Pasitea**, outside **Bar Internazionale**. Look for the bar/tabacchi frontage, a small cluster of people waiting on the pavement, and the blue‑white SITA stop sign.",
-        "The bus drops you directly onto the pavement. There is no raised platform — you step down to street level and the bus pulls out quickly.",
-        "If you’re unsure, ask another passenger or say “Chiesa Nuova?” to the driver — locals know this stop and it’s a common request for hostel guests.",
-        "Once you step off, you’ll see the main road continuing in both directions. The hostel is a short walk along the same road — you do **not** need to climb long staircases from this stop.",
-        "At busy times, you may see a small line of people waiting for the next bus on the same pavement. Stay to the inside edge so you’re not blocking traffic."
+        "A megálló **az útszélen van a Viale Pasitea mellett**, a **Bar Internazionale** előtt. Keresse a bár/trafikbolt homlokzatát, egy kis csoportot várakozó emberekkel a járdán, és a kék-fehér SITA megálló táblát.",
+        "A busz közvetlenül a járdára teszi le. Nincs emelt platform — az utca szintjére lép le, és a busz gyorsan kihúz.",
+        "Ha bizonytalan, kérdezzen meg egy másik utast vagy mondja a sofőrnek: \"Chiesa Nuova?\" — a helyiek ismerik ezt a megállót, és gyakori kérés a szállás vendégeitől.",
+        "Miután leszállt, látni fogja, hogy a főút mindkét irányban folytatódik. A szállás rövid séta ugyanazon az úton — **nem** kell hosszú lépcsőket másznia erről a megállóról.",
+        "Forgalmas időkben láthat egy kis sort várakozó emberekkel a következő buszra ugyanazon a járdán. Maradjon a belső szélen, hogy ne akadályozza a forgalmat."
       ],
       "images": [
         {
           "src": "/img/directions/positano-bus-stop.png",
-          "alt": "Roadside bus stop marker outside Bar Internazionale in Positano",
-          "caption": "The stop sits right outside Bar Internazionale on the main road."
+          "alt": "Útszéli buszmegálló jelző a Bar Internazionale előtt Positanóban",
+          "caption": "A megálló közvetlenül a Bar Internazionale előtt van a főúton."
         }
       ]
     },
     {
       "id": "walk-to-hostel",
-      "title": "Walk from Chiesa Nuova / Bar Internazionale to Hostel Brikette (2–5 minutes)",
+      "title": "Séta a Chiesa Nuova / Bar Internazionale-tól a Hostel Brikette-ig (2-5 perc)",
       "body": [
-        "Step off at street level outside Bar Internazionale and orient yourself on **Viale Pasitea** (the main road through Positano).",
-        "Walk along the paved sidewalk for roughly 120–140 metres. You’ll be walking along the main road — keep bags close and stay on the inside edge of the pavement when traffic is tight.",
-        "Look for the **Hostel Brikette** sign and the short staircase up to reception. Go up the steps to reach the front door.",
-        "If you’re using a porter, confirm whether they’ll meet you at the stop or bring bags directly to the hostel entrance so you can walk hands‑free.",
-        "If you’re carrying a large suitcase, take your time on the steps and pause at the landing if needed — it’s a short climb but it’s the only stairs on this route.",
-        "If you need a map view, use the %URL:https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!5e0!3m2!1sen!2sit!4v1700000000000|map% for the exact bend and staircase."
+        "Szálljon le az utca szintjén a Bar Internazionale előtt, és tájékozódjon a **Viale Pasitea-n** (a Positanón áthaladó főút).",
+        "Sétáljon a burkolt járdán körülbelül 120-140 métert. A főút mentén fog sétálni — tartsa közel a táskákat, és maradjon a járda belső szélén, amikor a forgalom szűk.",
+        "Keresse a **Hostel Brikette** táblát és a rövid lépcsőt a recepcióhoz. Menjen fel a lépcsőkön, hogy elérje a bejárati ajtót.",
+        "Ha hordárt használ, erősítse meg, hogy találkoznak-e Önnel a megállónál, vagy közvetlenül a szállás bejáratához hozzák a táskákat, hogy szabadkézzel sétálhasson.",
+        "Ha nagy bőröndöt hord, szánjon időt a lépcsőkre, és szükség esetén álljon meg a lépcsőfordulónál — ez egy rövid emelkedő, de ez az egyetlen lépcső ezen az útvonalon.",
+        "Ha térképnézetre van szüksége, használja a %URL:https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!5e0!3m2!1sen!2sit!4v1700000000000|térképet% a pontos kanyarhoz és lépcsőhöz."
       ],
       "images": [
         {
           "src": "/img/directions/hostel-brikette-entrance-steps.webp",
-          "alt": "Hostel Brikette entrance steps and sign",
-          "caption": "The entrance is up a short staircase from the main road."
+          "alt": "Hostel Brikette bejárati lépcsők és tábla",
+          "caption": "A bejárat egy rövid lépcsőn van a főúttól."
         }
       ]
     },
     {
       "id": "tickets-and-basics",
-      "title": "Tickets, bags, and ride basics (quick notes)",
+      "title": "Jegyek, táskák és utazási alapok (gyors megjegyzések)",
       "body": [
-        "You cannot buy SITA tickets from the driver. Buy tickets in advance at a tabacchi/newsstand (Bar Internazionale can help), then validate or show the ticket when you board. For the full guide, see %LINK:sitaTickets|SITA tickets and validation%.",
-        "If there’s a validator machine inside the bus, scan your ticket as you step on. If you’re unsure, hold the ticket up and show it to the driver — they’ll indicate what to do.",
-        "Tickets are small paper slips — keep them somewhere easy to reach and avoid folding or wetting them before you board.",
-        "Buses can be crowded in summer and after ferry arrivals. If the bus is full, the driver may not take additional passengers — the next bus is usually not far behind, but in peak season it can still feel slow. Plan for flexibility.",
-        "Keep your ticket accessible so you can show it quickly when boarding. If you’re traveling as a group, have everyone ready to board together to avoid delaying the bus.",
-        "If you’re arriving with large luggage, consider a %LINK:porterServices|porter service% to move bags from the stop to the hostel while you walk up.",
-        "For broader public transport tips (passes, budget planning, and seasonality), see %LINK:publicTransportAmalfi|public transport on the Amalfi Coast% and %LINK:transportBudget|transport budget tips%."
+        "Nem vásárolhat SITA jegyeket a sofőrtől. Vásároljon jegyeket előre egy trafikban/újságárusnál (a Bar Internazionale segíthet), majd érvényesítse vagy mutassa meg a jegyet, amikor felszáll. A teljes útmutatóért lásd: %LINK:sitaTickets|SITA jegyek és érvényesítés%.",
+        "Ha a buszon belül van érvényesítő gép, olvassa be a jegyét, amikor felszáll. Ha bizonytalan, tartsa fel a jegyet és mutassa meg a sofőrnek — ők jelzik, mit tegyen.",
+        "A jegyek kis papírcédulák — tartsa őket könnyen elérhető helyen, és kerülje el az összehajtást vagy benedvesítést, mielőtt felszáll.",
+        "A buszok nyáron és a kompérkezések után zsúfoltak lehetnek. Ha a busz tele van, a sofőr nem vehet fel további utasokat — a következő busz általában nincs messze, de csúcsidőszakban még mindig lassúnak tűnhet. Tervezzen rugalmasságot.",
+        "Tartsa jegyét elérhetően, hogy gyorsan megmutathassa felszálláskor. Ha csoportosan utazik, készítse elő mindenkit, hogy együtt szálljanak fel, hogy ne késleltessék a buszt.",
+        "Ha nagy poggyásszal érkezik, fontolja meg a %LINK:porterServices|hordár szolgáltatást%, hogy a táskákat a megállótól a szállásig szállítsák, miközben Ön sétál.",
+        "A tágabb tömegközlekedési tippekért (bérletek, költségvetés-tervezés és szezonalitás) lásd: %LINK:publicTransportAmalfi|tömegközlekedés az Amalfi-parton% és %LINK:transportBudget|közlekedési költségvetési tippek%."
       ],
       "images": [
         {
           "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
-          "alt": "Bus stop area on the coastal road in Positano",
-          "caption": "Most SITA stops are simple roadside pull‑ins with a small sign — keep bags close and be ready to board."
+          "alt": "Buszmegálló terület a tengerparti úton Positanóban",
+          "caption": "A legtöbb SITA megálló egyszerű útszéli beállás egy kis táblával — tartsa közel a táskákat és legyen készen a felszállásra."
         }
       ]
     },
     {
       "id": "ferry-first",
-      "title": "Arriving by ferry first? Here’s how this stop fits in",
+      "title": "Először kompon érkezik? Itt illik be ez a megálló",
       "body": [
-        "If your journey starts at the beach‑level ferry dock, your easiest luggage‑friendly route is usually: ferry dock → porter service → Interno Positano bus → **Chiesa Nuova / Bar Internazionale** → short walk to the hostel.",
-        "We walk that route step‑by‑step in %LINK:ferryDockToBrikette|ferry dock → Hostel Brikette (with luggage)% — it’s the most common arrival path for guests in peak season.",
-        "Already at the beach and want the simplest climb? Use the bus to reach Chiesa Nuova, then follow the short walk described in this guide.",
-        "Skipping the porter service is possible with light bags, but the walk from the beach to this stop includes a steady uphill stretch — most guests prefer to save energy for the final steps to the hostel."
+        "Ha az útja a strand szintjén lévő kompkikötőnél kezdődik, a legegyszerűbb poggyász-barát útvonal általában: kompkikötő → hordár szolgáltatás → Interno Positano busz → **Chiesa Nuova / Bar Internazionale** → rövid séta a szálláshoz.",
+        "Ezt az útvonalat lépésről lépésre végigjárjuk a %LINK:ferryDockToBrikette|kompkikötő → Hostel Brikette (poggyásszal)% útmutatóban — ez a leggyakoribb érkezési útvonal a vendégek számára a csúcsidőszakban.",
+        "Már a strandon van és a legegyszerűbb emelkedést akarja? Használja a buszt a Chiesa Nuova eléréséhez, majd kövesse az ebben az útmutatóban leírt rövid sétát.",
+        "A hordár szolgáltatás kihagyása könnyű táskákkal lehetséges, de a strand és ez a megálló közötti séta folyamatos emelkedőt tartalmaz — a legtöbb vendég inkább energiát takarít meg a szállásig vezető utolsó lépcsőkhöz."
       ],
       "images": [
         {
           "src": "/img/directions/ferry-dock-positano-spiaggia-view.jpg",
-          "alt": "Positano ferry dock and beach promenade with boats in the bay",
-          "caption": "Ferry arrivals happen at beach level — the bus makes the uphill leg easier."
+          "alt": "Positano kompkikötő és strand sétány csónakokkal az öbölben",
+          "caption": "A kompérkezések strand szinten történnek — a busz megkönnyíti a felfelé vezető szakaszt."
         },
         {
           "src": "/img/directions/ferry-dock-promenade-to-mulini.jpg",
-          "alt": "Positano beachfront promenade leading toward Piazza dei Mulini",
-          "caption": "From the dock, most arrivals walk toward Piazza dei Mulini before catching the bus up."
+          "alt": "Positano tengerparti sétány a Piazza dei Mulini felé vezetve",
+          "caption": "A kikötőtől a legtöbb érkezés a Piazza dei Mulini felé sétál, mielőtt fogná a buszt."
         }
       ]
     },
     {
       "id": "night-arrivals",
-      "title": "Arriving at night or after a long travel day",
+      "title": "Éjszaka vagy hosszú utazási nap után érkezik",
       "body": [
-        "Evening arrivals can feel more disorienting because the road is darker and traffic is still active. The stop is still the same roadside pull‑in outside Bar Internazionale, so use the bar as your anchor point.",
-        "If you’re carrying luggage, move slowly along the pavement and keep to the inside edge. The walk is short, but being calm and deliberate is better than trying to rush on a narrow sidewalk after a long travel day.",
-        "If it’s raining or windy, wait under the bar awning until the bus is fully stopped, then step down carefully — the pavement can feel slick with travel shoes and heavy bags."
+        "Az esti érkezések zavaróbbnak tűnhetnek, mert az út sötétebb, és a forgalom még mindig aktív. A megálló még mindig ugyanaz az útszéli beállás a Bar Internazionale előtt, tehát használja a bárt horgonypontként.",
+        "Ha poggyászt hord, lassan mozogjon a járdán, és maradjon a belső szélen. A séta rövid, de nyugodtnak és szándékosnak lenni jobb, mint megpróbálni sietni egy keskeny járdán egy hosszú utazási nap után.",
+        "Ha esik vagy szeles van, várjon a bár előtető alatt, amíg a busz teljesen meg nem áll, majd lépjen le óvatosan — a járda csúszósnak érezheti magát utazó cipőkkel és nehéz táskákkal."
       ]
     },
     {
       "id": "waiting-early",
-      "title": "If you arrive early or need a breather",
+      "title": "Ha korán érkezik vagy szüksége van egy lélegzetvételre",
       "body": [
-        "Bar Internazionale is right at the stop and is the most convenient place to wait if you arrive early or need a quick coffee and shade. It’s also a good place to check that you’re at the correct stop.",
-        "If you arrive with luggage, keep it with you and avoid blocking the pavement — buses and scooters pass close to the curb.",
-        "If you’re tired or jet‑lagged, take a moment to check the map before walking so you don’t overshoot the hostel sign.",
-        "If you need help, you can message the hostel or check the %LINK:checkinCheckout|check-in & checkout guide% for current reception hours and arrival options."
+        "A Bar Internazionale közvetlenül a megállónál van, és a legkényelmesebb hely a várakozásra, ha korán érkezik vagy gyors kávéra és árnyékra van szüksége. Ez is jó hely annak ellenőrzésére, hogy a megfelelő megállónál van-e.",
+        "Ha poggyásszal érkezik, tartsa magánál, és kerülje el a járda blokkolását — a buszok és robogók közel haladnak el a szegélyhez.",
+        "Ha fáradt vagy időeltolódásos, szánjon egy pillanatot a térkép ellenőrzésére séta előtt, hogy ne menjen túl a szállás táblán.",
+        "Ha segítségre van szüksége, üzenhet a szállásnak, vagy nézze meg a %LINK:checkinCheckout|bejelentkezés és kijelentkezés útmutatót% a jelenlegi recepciós órákért és érkezési lehetőségekért."
       ]
     },
     {
       "id": "accessibility-safety",
-      "title": "Accessibility and street‑safety tips",
+      "title": "Akadálymentesség és utcabiztonság tippek",
       "body": [
-        "The Chiesa Nuova / Bar Internazionale stop minimizes stairs, which is why we recommend it for most arrivals. The only steps on this route are the short staircase up to the hostel entrance.",
-        "Viale Pasitea can be busy and the sidewalk narrows in places. Keep luggage on the inside edge, walk single‑file if needed, and avoid stopping on the road side of the pavement.",
-        "If you’re traveling with heavy bags, a stroller, or limited mobility, consider a %LINK:porterServices|porter service% so you can focus on the short walk without lifting luggage.",
-        "If you need to pause, step into the recessed doorway near the bar or wait just beyond the stop so you’re out of the traffic flow."
+        "A Chiesa Nuova / Bar Internazionale megálló minimalizálja a lépcsőket, ezért ajánljuk a legtöbb érkezéshez. Az egyetlen lépcső ezen az útvonalon a rövid lépcső a szállás bejáratához.",
+        "A Viale Pasitea forgalmas lehet, és a járda helyenként beszűkül. Tartsa a poggyászt a belső szélen, sétáljon egysorban, ha szükséges, és kerülje el a járda út felőli oldalán való megállást.",
+        "Ha nehéz táskákkal, babakocsival vagy korlátozott mozgással utazik, fontolja meg a %LINK:porterServices|hordár szolgáltatást%, hogy a rövid sétára koncentrálhasson poggyász emelése nélkül.",
+        "Ha meg kell állnia, lépjen be a bár melletti bemélyedő ajtónyílásba, vagy várjon közvetlenül a megálló után, hogy kikerüljön a forgalmi áramlásból."
       ]
     },
     {
       "id": "wrong-stop",
-      "title": "If you got off at the wrong Positano stop",
+      "title": "Ha rossz positanói megállónál szállt le",
       "body": [
-        "If you accidentally get off at **Positano Centro** or **Spiaggia Grande / Positano Spiaggia**, expect a much steeper climb with significantly more stairs to reach the hostel.",
-        "The simplest fix is to take a local bus or taxi up to **Chiesa Nuova / Bar Internazionale**, then follow the short walk in this guide.",
-        "If you’re unsure where you are, open the map and aim for Bar Internazionale — it’s the landmark for this stop.",
-        "If you’re carrying heavy bags and already feel stuck, consider pausing at a café or asking a local to point you toward the Bar Internazionale stop — it’s a very common reference point in Positano."
+        "Ha véletlenül leszáll a **Positano Centro** vagy **Spiaggia Grande / Positano Spiaggia** megállónál, sokkal meredekebb emelkedővel és jelentősen több lépcsővel számoljon a szállás eléréséhez.",
+        "A legegyszerűbb javítás egy helyi busszal vagy taxival a **Chiesa Nuova / Bar Internazionale**-hoz jutni, majd követni az ebben az útmutatóban leírt rövid sétát.",
+        "Ha bizonytalan, hogy hol van, nyissa meg a térképet és célozza meg a Bar Internazionale-t — ez a tereptárgy ehhez a megállóhoz.",
+        "Ha nehéz táskákat hord, és már elakadtnak érzi magát, fontolja meg egy kávézóban való megállást vagy kérjen meg egy helyit, hogy mutasson a Bar Internazionale megálló felé — ez egy nagyon gyakori viszonyítási pont Positanóban."
       ]
     }
   ],
   "beforeList": [
-    "Tell the driver “Chiesa Nuova, per favore” when you board and press the stop button early.",
-    "Buy or validate your ticket before boarding (see %LINK:sitaTickets|SITA tickets%).",
-    "Keep your phone charged so you can check the map or message the hostel if needed."
+    "Mondja meg a sofőrnek \"Chiesa Nuova, per favore\"-t, amikor felszáll, és nyomja meg korán a megálló gombot.",
+    "Vásárolja meg vagy érvényesítse jegyét felszállás előtt (lásd: %LINK:sitaTickets|SITA jegyek%).",
+    "Tartsa feltöltve a telefonját, hogy szükség esetén ellenőrizhesse a térképet vagy üzenhet a szállásnak."
   ],
   "stepsList": [
-    "Get off at Chiesa Nuova / Bar Internazionale (roadside stop outside the bar/tabacchi).",
-    "Walk along Viale Pasitea for about 120–140 metres on the pavement.",
-    "Look for the Hostel Brikette sign and take the short staircase up to reception."
+    "Szálljon le a Chiesa Nuova / Bar Internazionale-nál (útszéli megálló a bár/trafikbolt előtt).",
+    "Sétáljon a Viale Pasitea mentén körülbelül 120-140 métert a járdán.",
+    "Keresse a Hostel Brikette táblát és menjen fel a rövid lépcsőn a recepcióhoz."
   ],
   "stepsMapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!5e0!3m2!1sen!2sit!4v1700000000000",
   "kneesList": [
-    "The route avoids long staircases — it’s mostly pavement plus the short entrance staircase.",
-    "If you’re carrying heavy bags, consider a %LINK:porterServices|porter service% pickup/drop‑off at Chiesa Nuova / Bar Internazionale.",
-    "Need a full luggage plan? See %LINK:luggageStorage|luggage storage options% and our %LINK:ferryDockToBrikette|ferry arrival route%."
+    "Az útvonal elkerüli a hosszú lépcsőket — többnyire járda, plusz a rövid bejárati lépcső.",
+    "Ha nehéz táskákat hord, fontolja meg a %LINK:porterServices|hordár szolgáltatás% átvételét/leadását a Chiesa Nuova / Bar Internazionale-nál.",
+    "Teljes poggyász tervre van szüksége? Lásd: %LINK:luggageStorage|poggyász tárolási lehetőségek% és %LINK:ferryDockToBrikette|kompérkezési útvonal%."
   ],
-  "kneesDockPrefix": "Arriving via ferry first?",
-  "kneesDockLinkLabel": "Dock → Hostel luggage route",
-  "kneesPorterPrefix": "Need a hand with heavy bags?",
-  "kneesPorterLinkLabel": "Porter service guide",
+  "kneesDockPrefix": "Először kompon érkezik?",
+  "kneesDockLinkLabel": "Kikötő → Szállás poggyász útvonal",
+  "kneesPorterPrefix": "Segítségre van szüksége nehéz táskákkal?",
+  "kneesPorterLinkLabel": "Hordár szolgáltatás útmutató",
   "faqs": [
     {
-      "q": "How do I know I’m at the right stop?",
-      "a": "You’re looking for the roadside stop outside **Bar Internazionale** on Viale Pasitea. On bus announcements/timetables it’s typically called **“Positano (Chiesa Nuova)”** — locals also refer to it as Chiesa Nuova / Bar Internazionale."
+      "q": "Honnan tudom, hogy a megfelelő megállónál vagyok?",
+      "a": "Az útszéli megállót keresi a **Bar Internazionale** előtt a Viale Pasitea mellett. A busz bejelentéseken/menetrendeken általában **\"Positano (Chiesa Nuova)\"**-nak hívják — a helyiek Chiesa Nuova / Bar Internazionale-ként is utalnak rá."
     },
     {
-      "q": "Do I need to press a button for the bus to stop?",
-      "a": "Yes — treat it as a request stop. Tell the driver “Chiesa Nuova, per favore” when you board, and press the stop button when you see Bar Internazionale approaching so the driver has time to pull in."
+      "q": "Meg kell nyomnom egy gombot, hogy a busz megálljon?",
+      "a": "Igen — kezelje kérésre megállóként. Mondja meg a sofőrnek \"Chiesa Nuova, per favore\"-t, amikor felszáll, és nyomja meg a megálló gombot, amikor látja közeledni a Bar Internazionale-t, hogy a sofőrnek legyen ideje beállni."
     },
     {
-      "q": "How long does the walk take?",
-      "a": "About 2–5 minutes, depending on luggage and traffic, for roughly 120–140 metres."
+      "q": "Mennyi ideig tart a séta?",
+      "a": "Körülbelül 2-5 perc, a poggyásztól és a forgalomtól függően, körülbelül 120-140 méterre."
     },
     {
-      "q": "Can I store my luggage before check-in?",
-      "a": "Usually yes — luggage storage is available from 10:30 for guests checking in (subject to space). If you arrive before 10:30, you may need to wait at Bar Internazionale and come up when we open. Full details are in the %LINK:luggageStorage|luggage storage guide%."
+      "q": "Tárolhatom a poggyászomat bejelentkezés előtt?",
+      "a": "Általában igen — a poggyász tárolás 10:30-tól elérhető a bejelentkező vendégek számára (helytől függően). Ha 10:30 előtt érkezik, lehet, hogy várnia kell a Bar Internazionale-nál, és akkor jöjjön fel, amikor kinyitunk. Teljes részletek a %LINK:luggageStorage|poggyász tárolás útmutatóban%."
     },
     {
-      "q": "What are the check-in times, and what do I need to check in?",
-      "a": "Regular check‑in is from 15:00 to 22:30. Bring your original ID (passport/ID card). At check‑in you’ll need a €10 cash deposit for your keycard + linen set (refunded in cash when you return both at checkout). Full details: %LINK:checkinCheckout|check-in & checkout guide%."
+      "q": "Mik a bejelentkezési idők, és mire van szükségem a bejelentkezéshez?",
+      "a": "A rendes bejelentkezés 15:00-tól 22:30-ig tart. Hozza magával eredeti azonosítóját (útlevél/személyi igazolvány). A bejelentkezéskor 10 € készpénz letétre lesz szüksége a kulcskártyájához + ágynemű készlethez (készpénzben visszatérítve, amikor mindkettőt visszaadja a kijelentkezéskor). Teljes részletek: %LINK:checkinCheckout|bejelentkezés és kijelentkezés útmutató%."
     },
     {
-      "q": "What if I arrive after reception closes?",
-      "a": "Reception closes at 22:30. If you’ll arrive later, message us before you travel — depending on the day we may be able to offer a self‑service late check‑in."
+      "q": "Mi van, ha a recepció bezárása után érkezem?",
+      "a": "A recepció 22:30-kor bezár. Ha később érkezik, üzenjen nekünk utazása előtt — a naptól függően esetleg tudunk önkiszolgáló késői bejelentkezést kínálni."
     }
   ],
   "howtoSteps": [
-    "Get off at Positano Chiesa Nuova / Bar Internazionale (closest stop to the hostel)",
-    "Tell the driver “Chiesa Nuova, per favore” and press the stop button early",
-    "Walk 120–140 metres along Viale Pasitea and take the entrance steps to reception",
-    "If you’re unsure, ask at Bar Internazionale or check the map for the hostel sign"
+    "Szálljon le a Positano Chiesa Nuova / Bar Internazionale-nál (a legközelebbi megálló a szálláshoz)",
+    "Mondja meg a sofőrnek \"Chiesa Nuova, per favore\"-t és nyomja meg korán a megálló gombot",
+    "Sétáljon 120-140 métert a Viale Pasitea mentén, és menjen fel a bejárati lépcsőkön a recepcióhoz",
+    "Ha bizonytalan, kérdezzen a Bar Internazionale-nál vagy ellenőrizze a térképen a szállás táblát"
   ]
 }

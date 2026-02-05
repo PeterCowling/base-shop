@@ -2,7 +2,7 @@
 Type: Plan
 Status: Superseded
 Domain: Brikette Guides
-Relates-to charter: Content unification
+Relates-to charter: none
 Last-reviewed: 2026-02-04
 Superseded-by: docs/plans/guides-publication-readiness-plan.md
 ---

@@ -45,6 +45,7 @@ docs/api/
 # ---------------------------
 .DS_Store
 .eslintcache
+.eslint-report.json
 .cache/
 /tmp/
 .worktrees/

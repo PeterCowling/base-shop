@@ -2,7 +2,7 @@
 Type: Plan
 Status: Historical
 Domain: UI / i18n / Testing
-Relates-to charter: Translation DX
+Relates-to charter: none
 Created: 2026-01-27
 Last-reviewed: 2026-01-27
 Last-updated: 2026-01-27

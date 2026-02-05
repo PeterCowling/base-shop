@@ -2,7 +2,7 @@
 Type: Plan
 Status: Active
 Domain: Guides / Content / SEO
-Relates-to charter: Content unification
+Relates-to charter: none
 Created: 2026-01-29
 Last-reviewed: 2026-01-29
 Last-updated: 2026-01-29

@@ -1,4 +1,4 @@
-import { onRequest, setup, createRequest, validate } from './onRequestTestUtils';
+import { createRequest, onRequest, setup, validate } from './onRequestTestUtils';
 
 describe('onRequest validation errors', () => {
   let warnSpy: jest.SpyInstance;

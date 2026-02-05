@@ -2,7 +2,7 @@
 Type: Plan
 Status: Historical
 Domain: Testing
-Relates-to charter: CI performance
+Relates-to charter: none
 Created: 2026-01-27
 Last-reviewed: 2026-01-27
 Last-updated: 2026-01-27

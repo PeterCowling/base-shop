@@ -2,7 +2,7 @@
 Type: Plan
 Status: Active
 Domain: CMS
-Relates-to charter: Guides authoring
+Relates-to charter: none
 Created: 2026-01-26
 Last-reviewed: 2026-01-26
 Last-updated: 2026-01-26

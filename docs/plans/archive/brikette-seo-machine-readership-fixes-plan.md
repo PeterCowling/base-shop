@@ -5,7 +5,7 @@ Domain: SEO
 Created: 2026-01-28
 Last-reviewed: 2026-01-28
 Last-updated: 2026-01-28 (post-TASK-SEO-1 completion)
-Relates-to charter: SEO + machine-readership correctness
+Relates-to charter: none
 ---
 
 # Brikette SEO + Machine-Readership Fixes

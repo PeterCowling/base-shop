@@ -24,7 +24,7 @@
   "scripts": {
     "build": "tsc -b",
     "dev": "tsc -b --watch",
-    "clean": "rimraf dist *.tsbuildinfo"
+    "clean": "rimraf dist *.tsbuildinfo",
+    "lint": "eslint ."
   }
 }
-

@@ -1,14 +1,16 @@
 /* istanbul ignore file */
+import jwt from 'jsonwebtoken';
+import { vol } from 'memfs';
+import path from 'path';
+
+import { validateShopName } from '@acme/lib';
+import { logger } from '@acme/lib/logger';
+
+import { onRequest } from '../[shopId]';
+
 jest.mock('fs', () => require('memfs').fs);
 jest.mock('jsonwebtoken', () => ({ verify: jest.fn() }));
 jest.mock('@acme/lib', () => ({ validateShopName: jest.fn((s: string) => s) }));
-
-import path from 'path';
-import { vol } from 'memfs';
-import jwt from 'jsonwebtoken';
-import { validateShopName } from '@acme/lib';
-import { onRequest } from '../[shopId]';
-import { logger } from '@acme/lib/logger';
 
 export const verify = jwt.verify as jest.Mock;
 export const validate = validateShopName as jest.Mock;

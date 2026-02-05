@@ -2,7 +2,7 @@
 Type: Plan
 Status: Historical
 Domain: CMS
-Relates-to charter: Content unification
+Relates-to charter: none
 Created: 2026-01-26
 Last-reviewed: 2026-01-26
 Last-updated: 2026-01-26

@@ -2,7 +2,7 @@
 Type: Plan
 Status: Active
 Domain: Brikette Guides
-Relates-to charter: Content unification
+Relates-to charter: none
 Created: 2026-02-04
 Last-reviewed: 2026-02-04
 Last-updated: 2026-02-04

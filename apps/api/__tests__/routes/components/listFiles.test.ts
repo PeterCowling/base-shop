@@ -1,8 +1,9 @@
-jest.mock('fs', () => require('memfs').fs);
-
 import { vol } from 'memfs';
 import path from 'path';
+
 import { listFiles } from '../../../src/routes/components/[shopId]';
+
+jest.mock('fs', () => require('memfs').fs);
 
 describe('listFiles', () => {
   beforeEach(() => {

@@ -1,5 +1,6 @@
-import { verify, setup, createWarnSpy, createContext, createToken } from './testHelpers';
 import * as route from '../[shopId]';
+
+import { createContext, createToken,createWarnSpy, setup, verify } from './testHelpers';
 
 const { onRequest } = route;
 

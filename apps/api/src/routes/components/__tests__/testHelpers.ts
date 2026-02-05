@@ -1,11 +1,12 @@
+import jwt from 'jsonwebtoken';
+import { vol } from 'memfs';
+
+import { validateShopName } from '@acme/lib';
+import { logger } from '@acme/lib/logger';
+
 jest.mock('fs', () => require('memfs').fs);
 jest.mock('jsonwebtoken', () => ({ verify: jest.fn() }));
 jest.mock('@acme/lib', () => ({ validateShopName: jest.fn((s: string) => s) }));
-
-import jwt from 'jsonwebtoken';
-import { vol } from 'memfs';
-import { validateShopName } from '@acme/lib';
-import { logger } from '@acme/lib/logger';
 
 export const verify = jwt.verify as jest.Mock;
 export const validate = validateShopName as jest.Mock;

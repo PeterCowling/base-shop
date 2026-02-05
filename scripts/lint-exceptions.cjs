@@ -2,8 +2,7 @@
 /*
   Lint exceptions validator
 
-  - Reads .eslint-report.json (generated via `pnpm run lint:json`)
-  - Scans reported files for eslint-disable comments
+  - Scans repo files for eslint-disable comments
   - Extracts ticket IDs from justification (after `--`)
   - Validates presence and TTL against exceptions.json registry
 
@@ -24,8 +23,14 @@ const { spawnSync } = require("child_process");
 const { minimatch } = require("minimatch");
 
 const ROOT = process.cwd();
-const REPORT_PATH = path.join(ROOT, ".eslint-report.json");
 const REGISTRY_PATH = path.join(ROOT, "exceptions.json");
+const ESLINT_IGNORE_PATTERNS = require("../tools/eslint-ignore-patterns.cjs");
+const SCAN_DIRS = ["apps", "packages", "src"];
+const SCAN_EXT_RE = /\.(?:ts|tsx|js|jsx)$/;
+
+const ESLINT_IGNORE_MATCHERS = ESLINT_IGNORE_PATTERNS.map((pat) =>
+  pat.endsWith("/") ? `${pat}**` : pat
+);
 
 function readJson(p) {
   try {
@@ -35,18 +40,65 @@ function readJson(p) {
   }
 }
 
-function listFilesFromReport(report) {
-  if (!Array.isArray(report)) return [];
-  const s = new Set();
-  for (const entry of report) {
-    if (entry && typeof entry.filePath === "string") s.add(entry.filePath);
+function normalizePath(p) {
+  return p.split(path.sep).join("/");
+}
+
+function isIgnored(relPath) {
+  const p = normalizePath(relPath);
+  return ESLINT_IGNORE_MATCHERS.some((pat) => minimatch(p, pat, { dot: true }));
+}
+
+function parseFileList(output) {
+  return (output ?? "")
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+}
+
+function listCandidateFiles() {
+  // Fast path: use git grep to list files that *mention* eslint-disable.
+  const args = ["grep", "-l", "eslint-disable", "--", ...SCAN_DIRS];
+  const result = spawnSync("git", args, { cwd: ROOT, encoding: "utf8" });
+
+  // git grep exits with 1 when no matches are found.
+  const raw =
+    result.status === 0 ? result.stdout : result.status === 1 ? "" : null;
+
+  if (raw === null) {
+    // Fallback: list tracked files and scan in-process.
+    const ls = spawnSync("git", ["ls-files", ...SCAN_DIRS], {
+      cwd: ROOT,
+      encoding: "utf8",
+    });
+    if (ls.status !== 0) {
+      throw new Error(
+        `[lint-exceptions] Failed to list files via git (exit ${ls.status}).`
+      );
+    }
+    return parseFileList(ls.stdout)
+      .filter((p) => SCAN_EXT_RE.test(p))
+      .filter((p) => !isIgnored(p))
+      .filter((p) => {
+        try {
+          return fs.readFileSync(path.join(ROOT, p), "utf8").includes(
+            "eslint-disable"
+          );
+        } catch {
+          return false;
+        }
+      });
   }
-  return Array.from(s);
+
+  return parseFileList(raw)
+    .filter((p) => SCAN_EXT_RE.test(p))
+    .filter((p) => !isIgnored(p));
 }
 
 const DISABLE_RE = /^(?:[ \t]*\/\/\s*eslint-disable(?:-(?:next-)?-line)?[^\n]*|\/\*\s*eslint-disable(?:-(?:next-)?-line)?[^*]*\*\/)$/gm;
 const TICKET_RE = /--\s*([^\n*]*)/; // capture justification part after `--`
-const DEFAULT_TICKET = /[A-Z]{2,}-\d+/;
+// Allow ticket IDs with optional sub-prefixes, e.g. `BOS-UX-12`, `UI-LINT-05`.
+const DEFAULT_TICKET = /[A-Z]{2,}(?:-[A-Z0-9]{2,})*-\d+/;
 
 function findDisableComments(content) {
   const out = [];
@@ -81,37 +133,13 @@ function isExpired(dateStr) {
   return d.getTime() < t.getTime();
 }
 
-function ensureReport() {
-  if (fs.existsSync(REPORT_PATH)) {
-    return true;
-  }
-  console.log(`[lint-exceptions] ${REPORT_PATH} missing; generating via pnpm run lint:json`);
-  const result = spawnSync("pnpm", ["run", "lint:json"], {
-    cwd: ROOT,
-    stdio: "inherit",
-    env: process.env,
-  });
-  if (result.error) {
-    console.error(`[lint-exceptions] Failed to run lint:json: ${result.error.message}`);
-    return false;
-  }
-  return result.status === 0 && fs.existsSync(REPORT_PATH);
-}
-
 function main() {
-  if (!ensureReport()) {
-    process.exit(2);
-  }
-  const report = readJson(REPORT_PATH);
-  if (!report) {
-    console.error(`[lint-exceptions] Missing ${REPORT_PATH} after generation.`);
-    process.exit(2);
-  }
   const registry = readJson(REGISTRY_PATH) || { tickets: {} };
-  const files = listFilesFromReport(report);
+  const files = listCandidateFiles();
   let failures = 0;
 
-  for (const file of files) {
+  for (const rel of files) {
+    const file = path.join(ROOT, rel);
     let content;
     try {
       content = fs.readFileSync(file, "utf8");
@@ -128,22 +156,27 @@ function main() {
       const rec = registry.tickets?.[parsed.ticket];
       if (!rec) {
         console.error(
-          `[lint-exceptions] ${file}:${c.line} uses ${parsed.ticket} but it is not registered in exceptions.json`,
+          `[lint-exceptions] ${rel}:${c.line} uses ${parsed.ticket} but it is not registered in exceptions.json`,
         );
         failures++;
         continue;
       }
       if (rec.expires && isExpired(rec.expires)) {
         console.error(
-          `[lint-exceptions] ${file}:${c.line} ticket ${parsed.ticket} expired on ${rec.expires}`,
+          `[lint-exceptions] ${rel}:${c.line} ticket ${parsed.ticket} expired on ${rec.expires}`,
         );
         failures++;
       }
       if (Array.isArray(rec.allow) && rec.allow.length > 0) {
-        const ok = rec.allow.some((pat) => minimatch(file, path.join(ROOT, pat)) || minimatch(file, pat));
+        const ok = rec.allow.some(
+          (pat) =>
+            minimatch(rel, pat, { dot: true }) ||
+            minimatch(file, path.join(ROOT, pat), { dot: true }) ||
+            minimatch(file, pat, { dot: true })
+        );
         if (!ok) {
           console.error(
-            `[lint-exceptions] ${file}:${c.line} ticket ${parsed.ticket} not allowed for this path (allowed: ${rec.allow.join(", ")})`,
+            `[lint-exceptions] ${rel}:${c.line} ticket ${parsed.ticket} not allowed for this path (allowed: ${rec.allow.join(", ")})`,
           );
           failures++;
         }

@@ -1,259 +1,259 @@
 {
   "seo": {
-    "title": "किएसा नुओवा / बार इंटरनाज़ियोनाले बस स्टॉप → होस्टल ब्रिकेट",
-    "description": "पोसितानो बस से आ रहे हैं? किएसा नुओवा / बार इंटरनाज़ियोनाले (होस्टल ब्रिकेट के सबसे करीब) पर उतरें। ड्राइवर को संकेत दें, स्टॉप पहचानें, रिसेप्शन तक 2-5 मिनट पैदल चलें।"
+    "title": "Chiesa Nuova / Bar Internazionale बस स्टॉप → Hostel Brikette",
+    "description": "पोसितानो में बस से आ रहे हैं? Chiesa Nuova / Bar Internazionale पर उतरें (Hostel Brikette के सबसे करीब)। ड्राइवर को बताएं, स्टॉप पहचानें, रिसेप्शन तक 2-5 मिनट चलें।"
   },
-  "linkLabel": "किएसा नुओवा / बार इंटरनाज़ियोनाले से होस्टल ब्रिकेट (आगमन)",
+  "linkLabel": "Chiesa Nuova / Bar Internazionale से Hostel Brikette (आगमन)",
   "lastUpdated": "2026-02-02",
-  "intro": "2026 में SITA बस से आ रहे हैं? **किएसा नुओवा / बार इंटरनाज़ियोनाले बस स्टॉप** होस्टल ब्रिकेट के सबसे करीब का स्टॉप है, जिसमें सबसे छोटी पैदल दूरी और सबसे कम सीढ़ियां हैं। यह गाइड स्टॉप के बारे में है: इसे कैसे पहचानें, यह सुनिश्चित करें कि बस वास्तव में रुकती है, और रिसेप्शन तक के अंतिम 120-140 मीटर कैसे चलें।\n\nयह पूरी बस यात्रा की गाइड नहीं है — यह आगमन का अंतिम, महत्वपूर्ण हिस्सा है: स्टॉप कैसा दिखता है, बटन कब दबाना है, और लंबे सीढ़ी मार्गों को लिए बिना अपने बैग होस्टल तक कैसे ले जाएं। आपको अंत में FAQ में आगमन आवश्यकताएं (लगेज स्टोरेज, चेक-इन समय, और देर से आगमन विकल्प) भी मिलेंगे।",
+  "intro": "2026 में SITA बस से आ रहे हैं? **Chiesa Nuova / Bar Internazionale बस स्टॉप** Hostel Brikette के सबसे करीब का स्टॉप है, जिसमें सबसे छोटी पैदल दूरी और सबसे कम सीढ़ियां हैं। यह गाइड स्वयं स्टॉप के बारे में है: इसे कैसे पहचानें, यह सुनिश्चित करें कि बस वास्तव में रुकती है, और रिसेप्शन तक आखिरी 120-140 मीटर कैसे चलें।\n\nयह पूरी बस यात्रा के लिए एक गाइड नहीं है - यह आगमन का अंतिम, महत्वपूर्ण हिस्सा है: यह जानना कि स्टॉप कैसा दिखता है, बटन कब दबाना है, और लंबे सीढ़ी मार्गों को लिए बिना अपने बैग को होस्टल तक कैसे ले जाना है। अंत में FAQ में आगमन की आवश्यक जानकारी (सामान भंडारण, चेक-इन समय और देर से आगमन के विकल्प) भी मिलेंगे।",
   "image": {
-    "alt": "Positano’s Chiesa Nuova / Bar Internazionale SITA bus stop on Viale Pasitea",
-    "caption": "This stop is called “Positano (Chiesa Nuova)” on timetables and sits outside Bar Internazionale on Viale Pasitea."
+    "alt": "Viale Pasitea पर पोसितानो का Chiesa Nuova / Bar Internazionale SITA बस स्टॉप",
+    "caption": "इस स्टॉप को समय सारणी पर \"Positano (Chiesa Nuova)\" कहा जाता है और यह Viale Pasitea पर Bar Internazionale के बाहर स्थित है।"
   },
   "toc": {
     "onThisPage": "इस पृष्ठ पर",
-    "before": "निकलने से पहले",
+    "before": "बाहर निकलने से पहले",
     "steps": "चरण-दर-चरण",
-    "knees": "पैर और सामान",
+    "knees": "सामान और यात्रा",
     "faqs": "अक्सर पूछे जाने वाले प्रश्न"
   },
   "sections": [
     {
       "id": "why-this-stop",
-      "title": "Why Chiesa Nuova / Bar Internazionale is the best arrival stop",
+      "title": "Chiesa Nuova / Bar Internazionale सबसे अच्छा आगमन स्टॉप क्यों है",
       "body": [
-        "Positano has multiple bus stops. The one that makes hostel arrivals easiest is **Chiesa Nuova / Bar Internazionale** — it’s the closest stop to Hostel Brikette and avoids walking much further from the Positano Sponda bus stop, or long stair climbs you’ll face if you somehow end up at the “Positano Centro” bus stop.",
-        "From this stop it’s a short, mostly flat walk (about 120–140 metres) plus the hostel entrance steps. That’s why we recommend it for **luggage**, **tired legs**, and **first‑time arrivals**.",
-        "If you’re planning your broader arrival, see our %LINK:howToGetToPositano|How to get to Positano% guide, then use this page for the final stop and the last 2–5 minutes on foot."
+        "पोसितानो में कई बस स्टॉप हैं। जो होस्टल आगमन को सबसे आसान बनाता है वह है **Chiesa Nuova / Bar Internazionale** — यह Hostel Brikette के सबसे करीब का स्टॉप है और Positano Sponda बस स्टॉप से बहुत आगे चलने से बचाता है, या लंबी सीढ़ियों की चढ़ाई से जो आपको \"Positano Centro\" बस स्टॉप पर पहुंचने पर सामना करनी होगी।",
+        "इस स्टॉप से यह एक छोटी, मुख्यतः समतल पैदल दूरी (लगभग 120-140 मीटर) है और होस्टल के प्रवेश द्वार की सीढ़ियां हैं। इसीलिए हम इसे **सामान**, **थके पैरों** और **पहली बार आने वालों** के लिए सुझाते हैं।",
+        "यदि आप अपने व्यापक आगमन की योजना बना रहे हैं, तो हमारी %LINK:howToGetToPositano|पोसितानो कैसे पहुंचें% गाइड देखें, फिर अंतिम स्टॉप और आखिरी 2-5 मिनट पैदल के लिए इस पृष्ठ का उपयोग करें।"
       ],
       "images": [
         {
           "src": "/img/directions/positano-bus-stop.webp",
-          "alt": "SITA bus stop sign for Positano Chiesa Nuova / Bar Internazionale",
-          "caption": "Look for the SITA stop marker outside Bar Internazionale."
+          "alt": "Positano Chiesa Nuova / Bar Internazionale के लिए SITA बस स्टॉप साइन",
+          "caption": "Bar Internazionale के बाहर SITA स्टॉप मार्कर देखें।"
         },
         {
           "src": "/img/directions/chiesa-nuova-arrivals/positano-chiesa-nuova-church.jpg",
-          "alt": "Positano hillside view near Chiesa Nuova / Bar Internazionale (Santa Maria delle Grazie)",
-          "caption": "Photo: Lorenzo Saprio (CC BY-SA 4.0) via Wikimedia Commons."
+          "alt": "Chiesa Nuova / Bar Internazionale (Santa Maria delle Grazie) के पास पोसितानो की पहाड़ी का दृश्य",
+          "caption": "फोटो: Lorenzo Saprio (CC BY-SA 4.0) Wikimedia Commons के माध्यम से।"
         }
       ]
     },
     {
       "id": "fast-facts",
-      "title": "Fast facts (2026 season)",
+      "title": "त्वरित तथ्य (2026 सीज़न)",
       "body": [
-        "**Walk time:** 2–5 minutes from the stop to reception, depending on luggage and traffic.",
-        "**Distance:** ~120–140 metres along Viale Pasitea, then a short staircase up to the hostel entrance.",
-        "**Stop type:** Request stop — tell the driver and press the stop button early.",
-        "**When to prepare to exit:** Stand and move toward the door 1–2 minutes before Chiesa Nuova, especially if the bus is busy.",
-        "**Best for:** First‑time arrivals, heavy bags, and anyone who wants the least stairs.",
-        "**Tickets:** You can’t buy SITA tickets from the driver — get them in advance (see %LINK:sitaTickets|SITA ticket basics%).",
-        "**Peak crowd times:** Late morning and late afternoon can be busy in summer; if a bus is full, wait for the next one rather than trying to squeeze on with bags.",
-        "**If you’re unsure on board:** Ask the driver or a nearby passenger — this is a common stop for hostel guests and day‑trippers.",
-        "**If you’re arriving by ferry first:** Use the %LINK:ferryDockToBrikette|ferry dock → Hostel Brikette% guide to reach this stop without hauling bags up the beach stairs."
+        "**चलने का समय:** स्टॉप से रिसेप्शन तक 2-5 मिनट, सामान और यातायात के आधार पर।",
+        "**दूरी:** Viale Pasitea के साथ ~120-140 मीटर, फिर होस्टल के प्रवेश द्वार तक एक छोटी सीढ़ी।",
+        "**स्टॉप का प्रकार:** अनुरोध पर रुकने वाला स्टॉप — ड्राइवर को बताएं और जल्दी स्टॉप बटन दबाएं।",
+        "**बाहर निकलने की तैयारी कब करें:** Chiesa Nuova से 1-2 मिनट पहले खड़े हो जाएं और दरवाजे की ओर बढ़ें, खासकर अगर बस व्यस्त है।",
+        "**इसके लिए सबसे अच्छा:** पहली बार आने वाले, भारी बैग, और कोई भी जो सबसे कम सीढ़ियां चाहता है।",
+        "**टिकट:** आप ड्राइवर से SITA टिकट नहीं खरीद सकते — उन्हें पहले से प्राप्त करें (%LINK:sitaTickets|SITA टिकट की मूल बातें% देखें)।",
+        "**पीक भीड़ का समय:** गर्मियों में सुबह देर और दोपहर देर व्यस्त हो सकते हैं; यदि बस भरी है, तो अगली का इंतजार करें बजाय बैग के साथ धक्का मुक्की करने के।",
+        "**यदि आप बोर्ड पर अनिश्चित हैं:** ड्राइवर या पास के यात्री से पूछें — यह होस्टल मेहमानों और दिन-यात्रियों के लिए एक आम स्टॉप है।",
+        "**यदि आप पहले फेरी से आ रहे हैं:** बीच की सीढ़ियों से बैग घसीटे बिना इस स्टॉप तक पहुंचने के लिए %LINK:ferryDockToBrikette|फेरी डॉक → Hostel Brikette% गाइड का उपयोग करें।"
       ],
       "images": [
         {
           "src": "/img/directions/ferry-dock-interno-yellow.webp",
-          "alt": "A small local bus used on the Positano route",
-          "caption": "Local buses are compact and often crowded — position yourself near the door before your stop."
+          "alt": "पोसितानो मार्ग पर उपयोग की जाने वाली एक छोटी स्थानीय बस",
+          "caption": "स्थानीय बसें कॉम्पैक्ट और अक्सर भीड़ भरी होती हैं — अपने स्टॉप से पहले दरवाजे के पास खड़े हो जाएं।"
         }
       ]
     },
     {
       "id": "get-off-here",
-      "title": "How to get off at the right stop (what to look for on the bus)",
+      "title": "सही स्टॉप पर कैसे उतरें (बस में क्या देखना है)",
       "body": [
-        "On many routes, the driver (or an onboard display) announces the stop as **“Chiesa Nuova”**. On timetables it can also appear as **“Positano (Chiesa Nuova)”**. Locally, you’ll also hear people say **Chiesa Nuova / Bar Internazionale** because the stop is directly outside that cafe/tabacchi.",
-        "**Tell the driver when you board:** “Chiesa Nuova, per favore.” This is the simplest way to avoid missing the stop, especially if the bus is crowded or you’re arriving late in the day.",
-        "**Press the stop button early.** When you see Bar Internazionale approaching (often on your right as the bus heads through this bend), press the stop button so the driver has time to pull in.",
-        "**Signal the driver if you’re standing:** When the bus approaches, make eye contact and raise your hand so the driver knows you want to get off. This matters because Chiesa Nuova is a request stop.",
-        "If you’re standing with bags, start moving toward the door a minute before the stop — the bus may stop briefly and then continue quickly.",
-        "If you’re nervous about missing it, ask the driver one or two stops before: “Prossima Chiesa Nuova?” (Is Chiesa Nuova next?). Drivers are used to this question from visitors."
+        "कई मार्गों पर, ड्राइवर (या ऑनबोर्ड डिस्प्ले) स्टॉप को **\"Chiesa Nuova\"** के रूप में घोषित करता है। समय सारणी पर यह **\"Positano (Chiesa Nuova)\"** के रूप में भी दिखाई दे सकता है। स्थानीय रूप से, आप लोगों को **Chiesa Nuova / Bar Internazionale** भी कहते सुनेंगे क्योंकि स्टॉप सीधे उस कैफे/तंबाकू की दुकान के बाहर है।",
+        "**जब आप बोर्ड करें तो ड्राइवर को बताएं:** \"Chiesa Nuova, per favore.\" यह स्टॉप से चूकने से बचने का सबसे सरल तरीका है, खासकर अगर बस भीड़ भरी है या आप दिन में देर से आ रहे हैं।",
+        "**जल्दी स्टॉप बटन दबाएं।** जब आप Bar Internazionale को आते हुए देखें (अक्सर आपके दाईं ओर जैसे बस इस मोड़ से गुजरती है), स्टॉप बटन दबाएं ताकि ड्राइवर के पास रुकने का समय हो।",
+        "**यदि आप खड़े हैं तो ड्राइवर को संकेत दें:** जब बस आती है, तो आंखों से संपर्क करें और अपना हाथ उठाएं ताकि ड्राइवर को पता चले कि आप उतरना चाहते हैं। यह महत्वपूर्ण है क्योंकि Chiesa Nuova एक अनुरोध स्टॉप है।",
+        "यदि आप बैग के साथ खड़े हैं, तो स्टॉप से एक मिनट पहले दरवाजे की ओर बढ़ना शुरू करें — बस संक्षेप में रुक सकती है और फिर जल्दी से जारी रख सकती है।",
+        "यदि आप इसे याद करने को लेकर घबराए हुए हैं, तो एक या दो स्टॉप पहले ड्राइवर से पूछें: \"Prossima Chiesa Nuova?\" (क्या Chiesa Nuova अगला है?)। ड्राइवर आगंतुकों के इस सवाल के आदी हैं।"
       ],
       "images": [
         {
           "src": "/img/directions/chiesa-nuova-arrivals/amalfi-coast-sita-bus.jpg",
-          "alt": "A SITA Sud bus on the Amalfi Coast road",
-          "caption": "Photo: Robot8A (CC BY-SA 4.0) via Wikimedia Commons."
+          "alt": "अमाल्फी कोस्ट रोड पर एक SITA Sud बस",
+          "caption": "फोटो: Robot8A (CC BY-SA 4.0) Wikimedia Commons के माध्यम से।"
         },
         {
           "src": "/img/directions/ferry-dock-interno-red.webp",
-          "alt": "A compact local bus on the Amalfi Coast",
-          "caption": "Move toward the exit before the bus stops — drivers often pull in briefly."
+          "alt": "अमाल्फी कोस्ट पर एक कॉम्पैक्ट स्थानीय बस",
+          "caption": "बस रुकने से पहले बाहर निकलने की ओर बढ़ें — ड्राइवर अक्सर संक्षेप में रुकते हैं।"
         }
       ]
     },
     {
       "id": "what-youll-see",
-      "title": "What it looks like when you arrive (so you know where to get off)",
+      "title": "जब आप पहुंचते हैं तो यह कैसा दिखता है (ताकि आप जान सकें कि कहां उतरना है)",
       "body": [
-        "The stop is **roadside on Viale Pasitea**, outside **Bar Internazionale**. Look for the bar/tabacchi frontage, a small cluster of people waiting on the pavement, and the blue‑white SITA stop sign.",
-        "The bus drops you directly onto the pavement. There is no raised platform — you step down to street level and the bus pulls out quickly.",
-        "If you’re unsure, ask another passenger or say “Chiesa Nuova?” to the driver — locals know this stop and it’s a common request for hostel guests.",
-        "Once you step off, you’ll see the main road continuing in both directions. The hostel is a short walk along the same road — you do **not** need to climb long staircases from this stop.",
-        "At busy times, you may see a small line of people waiting for the next bus on the same pavement. Stay to the inside edge so you’re not blocking traffic."
+        "स्टॉप **Viale Pasitea पर सड़क किनारे** है, **Bar Internazionale** के बाहर। बार/तंबाकू की दुकान का अग्रभाग, फुटपाथ पर इंतजार कर रहे लोगों का एक छोटा समूह, और नीले-सफेद SITA स्टॉप साइन को देखें।",
+        "बस आपको सीधे फुटपाथ पर उतारती है। कोई उठा हुआ प्लेटफॉर्म नहीं है — आप सड़क के स्तर पर उतरते हैं और बस जल्दी से निकल जाती है।",
+        "यदि आप अनिश्चित हैं, तो किसी अन्य यात्री से पूछें या ड्राइवर से \"Chiesa Nuova?\" कहें — स्थानीय लोग इस स्टॉप को जानते हैं और यह होस्टल मेहमानों के लिए एक आम अनुरोध है।",
+        "एक बार जब आप उतर जाते हैं, तो आप मुख्य सड़क को दोनों दिशाओं में जारी देखेंगे। होस्टल एक ही सड़क के साथ एक छोटी पैदल दूरी पर है — आपको इस स्टॉप से लंबी सीढ़ियां चढ़ने की **ज़रूरत नहीं** है।",
+        "व्यस्त समय में, आप उसी फुटपाथ पर अगली बस की प्रतीक्षा कर रहे लोगों की एक छोटी लाइन देख सकते हैं। अंदर के किनारे पर रहें ताकि आप यातायात को अवरुद्ध न करें।"
       ],
       "images": [
         {
           "src": "/img/directions/positano-bus-stop.png",
-          "alt": "Roadside bus stop marker outside Bar Internazionale in Positano",
-          "caption": "The stop sits right outside Bar Internazionale on the main road."
+          "alt": "पोसितानो में Bar Internazionale के बाहर सड़क किनारे बस स्टॉप मार्कर",
+          "caption": "स्टॉप मुख्य सड़क पर Bar Internazionale के ठीक बाहर स्थित है।"
         }
       ]
     },
     {
       "id": "walk-to-hostel",
-      "title": "Walk from Chiesa Nuova / Bar Internazionale to Hostel Brikette (2–5 minutes)",
+      "title": "Chiesa Nuova / Bar Internazionale से Hostel Brikette तक चलना (2-5 मिनट)",
       "body": [
-        "Step off at street level outside Bar Internazionale and orient yourself on **Viale Pasitea** (the main road through Positano).",
-        "Walk along the paved sidewalk for roughly 120–140 metres. You’ll be walking along the main road — keep bags close and stay on the inside edge of the pavement when traffic is tight.",
-        "Look for the **Hostel Brikette** sign and the short staircase up to reception. Go up the steps to reach the front door.",
-        "If you’re using a porter, confirm whether they’ll meet you at the stop or bring bags directly to the hostel entrance so you can walk hands‑free.",
-        "If you’re carrying a large suitcase, take your time on the steps and pause at the landing if needed — it’s a short climb but it’s the only stairs on this route.",
-        "If you need a map view, use the %URL:https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!5e0!3m2!1sen!2sit!4v1700000000000|map% for the exact bend and staircase."
+        "Bar Internazionale के बाहर सड़क के स्तर पर उतरें और **Viale Pasitea** (पोसितानो के माध्यम से मुख्य सड़क) पर अपने आप को उन्मुख करें।",
+        "लगभग 120-140 मीटर के लिए पक्के फुटपाथ के साथ चलें। आप मुख्य सड़क के साथ चल रहे होंगे — बैग को करीब रखें और जब यातायात तंग हो तो फुटपाथ के अंदर के किनारे पर रहें।",
+        "**Hostel Brikette** साइन और रिसेप्शन तक की छोटी सीढ़ी को देखें। सामने के दरवाजे तक पहुंचने के लिए सीढ़ियां चढ़ें।",
+        "यदि आप एक पोर्टर का उपयोग कर रहे हैं, तो पुष्टि करें कि क्या वे स्टॉप पर आपसे मिलेंगे या बैग सीधे होस्टल के प्रवेश द्वार पर लाएंगे ताकि आप खाली हाथ चल सकें।",
+        "यदि आप एक बड़ा सूटकेस ले जा रहे हैं, तो सीढ़ियों पर अपना समय लें और यदि आवश्यक हो तो लैंडिंग पर रुकें — यह एक छोटी चढ़ाई है लेकिन यह इस मार्ग पर एकमात्र सीढ़ियां हैं।",
+        "यदि आपको मानचित्र दृश्य की आवश्यकता है, तो सटीक मोड़ और सीढ़ी के लिए %URL:https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!5e0!3m2!1sen!2sit!4v1700000000000|मानचित्र% का उपयोग करें।"
       ],
       "images": [
         {
           "src": "/img/directions/hostel-brikette-entrance-steps.webp",
-          "alt": "Hostel Brikette entrance steps and sign",
-          "caption": "The entrance is up a short staircase from the main road."
+          "alt": "Hostel Brikette के प्रवेश सीढ़ियां और साइन",
+          "caption": "प्रवेश द्वार मुख्य सड़क से एक छोटी सीढ़ी के ऊपर है।"
         }
       ]
     },
     {
       "id": "tickets-and-basics",
-      "title": "Tickets, bags, and ride basics (quick notes)",
+      "title": "टिकट, बैग और सवारी की मूल बातें (त्वरित नोट्स)",
       "body": [
-        "You cannot buy SITA tickets from the driver. Buy tickets in advance at a tabacchi/newsstand (Bar Internazionale can help), then validate or show the ticket when you board. For the full guide, see %LINK:sitaTickets|SITA tickets and validation%.",
-        "If there’s a validator machine inside the bus, scan your ticket as you step on. If you’re unsure, hold the ticket up and show it to the driver — they’ll indicate what to do.",
-        "Tickets are small paper slips — keep them somewhere easy to reach and avoid folding or wetting them before you board.",
-        "Buses can be crowded in summer and after ferry arrivals. If the bus is full, the driver may not take additional passengers — the next bus is usually not far behind, but in peak season it can still feel slow. Plan for flexibility.",
-        "Keep your ticket accessible so you can show it quickly when boarding. If you’re traveling as a group, have everyone ready to board together to avoid delaying the bus.",
-        "If you’re arriving with large luggage, consider a %LINK:porterServices|porter service% to move bags from the stop to the hostel while you walk up.",
-        "For broader public transport tips (passes, budget planning, and seasonality), see %LINK:publicTransportAmalfi|public transport on the Amalfi Coast% and %LINK:transportBudget|transport budget tips%."
+        "आप ड्राइवर से SITA टिकट नहीं खरीद सकते। एक तंबाकू की दुकान/अखबार की दुकान (Bar Internazionale मदद कर सकता है) पर टिकट पहले से खरीदें, फिर जब आप बोर्ड करें तो टिकट को मान्य करें या दिखाएं। पूरी गाइड के लिए, %LINK:sitaTickets|SITA टिकट और सत्यापन% देखें।",
+        "यदि बस के अंदर एक सत्यापनकर्ता मशीन है, तो जैसे ही आप कदम रखें अपना टिकट स्कैन करें। यदि आप अनिश्चित हैं, तो टिकट को पकड़ें और ड्राइवर को दिखाएं — वे बताएंगे कि क्या करना है।",
+        "टिकट छोटे कागज के पर्चे होते हैं — उन्हें कहीं आसानी से पहुंच योग्य रखें और बोर्ड करने से पहले उन्हें मोड़ने या गीला करने से बचें।",
+        "गर्मियों में और फेरी आगमन के बाद बसें भीड़ भरी हो सकती हैं। यदि बस भरी है, तो ड्राइवर अतिरिक्त यात्रियों को नहीं ले सकता है — अगली बस आमतौर पर बहुत पीछे नहीं होती है, लेकिन चरम सीजन में यह अभी भी धीमी लग सकती है। लचीलेपन की योजना बनाएं।",
+        "अपना टिकट सुलभ रखें ताकि आप बोर्डिंग के समय इसे जल्दी से दिखा सकें। यदि आप एक समूह के रूप में यात्रा कर रहे हैं, तो सभी को एक साथ बोर्ड करने के लिए तैयार रखें ताकि बस में देरी न हो।",
+        "यदि आप बड़े सामान के साथ आ रहे हैं, तो स्टॉप से होस्टल तक बैग ले जाने के लिए %LINK:porterServices|पोर्टर सेवा% पर विचार करें जबकि आप चलते हैं।",
+        "व्यापक सार्वजनिक परिवहन युक्तियों (पास, बजट योजना और मौसमी) के लिए, %LINK:publicTransportAmalfi|अमाल्फी कोस्ट पर सार्वजनिक परिवहन% और %LINK:transportBudget|परिवहन बजट युक्तियां% देखें।"
       ],
       "images": [
         {
           "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
-          "alt": "Bus stop area on the coastal road in Positano",
-          "caption": "Most SITA stops are simple roadside pull‑ins with a small sign — keep bags close and be ready to board."
+          "alt": "पोसितानो में तटीय सड़क पर बस स्टॉप क्षेत्र",
+          "caption": "अधिकांश SITA स्टॉप एक छोटे साइन के साथ सरल सड़क किनारे पुल-इन होते हैं — बैग को करीब रखें और बोर्ड करने के लिए तैयार रहें।"
         }
       ]
     },
     {
       "id": "ferry-first",
-      "title": "Arriving by ferry first? Here’s how this stop fits in",
+      "title": "पहले फेरी से आ रहे हैं? यह स्टॉप कैसे फिट बैठता है",
       "body": [
-        "If your journey starts at the beach‑level ferry dock, your easiest luggage‑friendly route is usually: ferry dock → porter service → Interno Positano bus → **Chiesa Nuova / Bar Internazionale** → short walk to the hostel.",
-        "We walk that route step‑by‑step in %LINK:ferryDockToBrikette|ferry dock → Hostel Brikette (with luggage)% — it’s the most common arrival path for guests in peak season.",
-        "Already at the beach and want the simplest climb? Use the bus to reach Chiesa Nuova, then follow the short walk described in this guide.",
-        "Skipping the porter service is possible with light bags, but the walk from the beach to this stop includes a steady uphill stretch — most guests prefer to save energy for the final steps to the hostel."
+        "यदि आपकी यात्रा बीच-स्तर के फेरी डॉक से शुरू होती है, तो आपका सबसे आसान सामान-अनुकूल मार्ग आमतौर पर है: फेरी डॉक → पोर्टर सेवा → Interno Positano बस → **Chiesa Nuova / Bar Internazionale** → होस्टल तक छोटी पैदल दूरी।",
+        "हम उस मार्ग को %LINK:ferryDockToBrikette|फेरी डॉक → Hostel Brikette (सामान के साथ)% में चरण-दर-चरण चलते हैं — यह चरम सीजन में मेहमानों के लिए सबसे आम आगमन पथ है।",
+        "पहले से ही बीच पर हैं और सबसे सरल चढ़ाई चाहते हैं? Chiesa Nuova तक पहुंचने के लिए बस का उपयोग करें, फिर इस गाइड में वर्णित छोटी पैदल दूरी का पालन करें।",
+        "पोर्टर सेवा को छोड़ना हल्के बैग के साथ संभव है, लेकिन बीच से इस स्टॉप तक की पैदल दूरी में एक स्थिर चढ़ाई शामिल है — अधिकांश मेहमान होस्टल तक के अंतिम कदमों के लिए ऊर्जा बचाना पसंद करते हैं।"
       ],
       "images": [
         {
           "src": "/img/directions/ferry-dock-positano-spiaggia-view.jpg",
-          "alt": "Positano ferry dock and beach promenade with boats in the bay",
-          "caption": "Ferry arrivals happen at beach level — the bus makes the uphill leg easier."
+          "alt": "खाड़ी में नावों के साथ पोसितानो फेरी डॉक और बीच प्रोमेनेड",
+          "caption": "फेरी आगमन बीच स्तर पर होते हैं — बस ऊपर की ओर पैर को आसान बनाती है।"
         },
         {
           "src": "/img/directions/ferry-dock-promenade-to-mulini.jpg",
-          "alt": "Positano beachfront promenade leading toward Piazza dei Mulini",
-          "caption": "From the dock, most arrivals walk toward Piazza dei Mulini before catching the bus up."
+          "alt": "Piazza dei Mulini की ओर जाने वाला पोसितानो बीचफ्रंट प्रोमेनेड",
+          "caption": "डॉक से, अधिकांश आगमन बस पकड़ने से पहले Piazza dei Mulini की ओर चलते हैं।"
         }
       ]
     },
     {
       "id": "night-arrivals",
-      "title": "Arriving at night or after a long travel day",
+      "title": "रात को या लंबे यात्रा दिवस के बाद आना",
       "body": [
-        "Evening arrivals can feel more disorienting because the road is darker and traffic is still active. The stop is still the same roadside pull‑in outside Bar Internazionale, so use the bar as your anchor point.",
-        "If you’re carrying luggage, move slowly along the pavement and keep to the inside edge. The walk is short, but being calm and deliberate is better than trying to rush on a narrow sidewalk after a long travel day.",
-        "If it’s raining or windy, wait under the bar awning until the bus is fully stopped, then step down carefully — the pavement can feel slick with travel shoes and heavy bags."
+        "शाम के आगमन अधिक भ्रमित करने वाले लग सकते हैं क्योंकि सड़क अंधेरी होती है और यातायात अभी भी सक्रिय होता है। स्टॉप अभी भी Bar Internazionale के बाहर एक ही सड़क किनारे पुल-इन है, इसलिए बार को अपने एंकर पॉइंट के रूप में उपयोग करें।",
+        "यदि आप सामान ले जा रहे हैं, तो फुटपाथ के साथ धीरे-धीरे चलें और अंदर के किनारे पर रहें। पैदल दूरी छोटी है, लेकिन लंबे यात्रा दिवस के बाद एक संकीर्ण फुटपाथ पर जल्दबाजी करने की कोशिश करने की तुलना में शांत और जानबूझकर होना बेहतर है।",
+        "यदि बारिश हो रही है या हवा चल रही है, तो बार की चंदवा के नीचे तब तक प्रतीक्षा करें जब तक कि बस पूरी तरह से रुक न जाए, फिर सावधानी से उतरें — यात्रा के जूते और भारी बैग के साथ फुटपाथ फिसलन भरा लग सकता है।"
       ]
     },
     {
       "id": "waiting-early",
-      "title": "If you arrive early or need a breather",
+      "title": "यदि आप जल्दी पहुंचते हैं या एक ब्रेक की आवश्यकता है",
       "body": [
-        "Bar Internazionale is right at the stop and is the most convenient place to wait if you arrive early or need a quick coffee and shade. It’s also a good place to check that you’re at the correct stop.",
-        "If you arrive with luggage, keep it with you and avoid blocking the pavement — buses and scooters pass close to the curb.",
-        "If you’re tired or jet‑lagged, take a moment to check the map before walking so you don’t overshoot the hostel sign.",
-        "If you need help, you can message the hostel or check the %LINK:checkinCheckout|check-in & checkout guide% for current reception hours and arrival options."
+        "Bar Internazionale स्टॉप पर ही है और यदि आप जल्दी पहुंचते हैं या त्वरित कॉफी और छाया की आवश्यकता है तो प्रतीक्षा करने के लिए सबसे सुविधाजनक स्थान है। यह भी जांचने के लिए एक अच्छी जगह है कि आप सही स्टॉप पर हैं।",
+        "यदि आप सामान के साथ पहुंचते हैं, तो इसे अपने साथ रखें और फुटपाथ को अवरुद्ध करने से बचें — बसें और स्कूटर कर्ब के करीब से गुजरते हैं।",
+        "यदि आप थके हुए या जेट-लैग्ड हैं, तो चलने से पहले मानचित्र की जांच करने के लिए एक पल लें ताकि आप होस्टल साइन को पार न करें।",
+        "यदि आपको मदद की आवश्यकता है, तो आप होस्टल को संदेश भेज सकते हैं या वर्तमान रिसेप्शन घंटों और आगमन विकल्पों के लिए %LINK:checkinCheckout|चेक-इन और चेकआउट गाइड% की जांच कर सकते हैं।"
       ]
     },
     {
       "id": "accessibility-safety",
-      "title": "Accessibility and street‑safety tips",
+      "title": "पहुंच और सड़क-सुरक्षा युक्तियाँ",
       "body": [
-        "The Chiesa Nuova / Bar Internazionale stop minimizes stairs, which is why we recommend it for most arrivals. The only steps on this route are the short staircase up to the hostel entrance.",
-        "Viale Pasitea can be busy and the sidewalk narrows in places. Keep luggage on the inside edge, walk single‑file if needed, and avoid stopping on the road side of the pavement.",
-        "If you’re traveling with heavy bags, a stroller, or limited mobility, consider a %LINK:porterServices|porter service% so you can focus on the short walk without lifting luggage.",
-        "If you need to pause, step into the recessed doorway near the bar or wait just beyond the stop so you’re out of the traffic flow."
+        "Chiesa Nuova / Bar Internazionale स्टॉप सीढ़ियों को कम से कम करता है, यही कारण है कि हम इसे अधिकांश आगमन के लिए सुझाते हैं। इस मार्ग पर एकमात्र सीढ़ियां होस्टल के प्रवेश द्वार तक की छोटी सीढ़ियां हैं।",
+        "Viale Pasitea व्यस्त हो सकता है और फुटपाथ जगहों पर संकरा हो जाता है। सामान को अंदर के किनारे पर रखें, यदि आवश्यक हो तो एकल-फाइल में चलें, और फुटपाथ के सड़क की तरफ रुकने से बचें।",
+        "यदि आप भारी बैग, एक घुमक्कड़, या सीमित गतिशीलता के साथ यात्रा कर रहे हैं, तो %LINK:porterServices|पोर्टर सेवा% पर विचार करें ताकि आप सामान उठाए बिना छोटी पैदल दूरी पर ध्यान केंद्रित कर सकें।",
+        "यदि आपको रुकने की आवश्यकता है, तो बार के पास के अंदर दरवाजे में प्रवेश करें या स्टॉप से थोड़ा आगे प्रतीक्षा करें ताकि आप यातायात प्रवाह से बाहर हों।"
       ]
     },
     {
       "id": "wrong-stop",
-      "title": "If you got off at the wrong Positano stop",
+      "title": "यदि आप गलत पोसितानो स्टॉप पर उतर गए",
       "body": [
-        "If you accidentally get off at **Positano Centro** or **Spiaggia Grande / Positano Spiaggia**, expect a much steeper climb with significantly more stairs to reach the hostel.",
-        "The simplest fix is to take a local bus or taxi up to **Chiesa Nuova / Bar Internazionale**, then follow the short walk in this guide.",
-        "If you’re unsure where you are, open the map and aim for Bar Internazionale — it’s the landmark for this stop.",
-        "If you’re carrying heavy bags and already feel stuck, consider pausing at a café or asking a local to point you toward the Bar Internazionale stop — it’s a very common reference point in Positano."
+        "यदि आप गलती से **Positano Centro** या **Spiaggia Grande / Positano Spiaggia** पर उतर गए, तो होस्टल तक पहुंचने के लिए बहुत अधिक खड़ी चढ़ाई और महत्वपूर्ण रूप से अधिक सीढ़ियों की उम्मीद करें।",
+        "सबसे सरल समाधान है **Chiesa Nuova / Bar Internazionale** तक एक स्थानीय बस या टैक्सी लेना, फिर इस गाइड में छोटी पैदल दूरी का पालन करें।",
+        "यदि आप अनिश्चित हैं कि आप कहां हैं, तो मानचित्र खोलें और Bar Internazionale को लक्ष्य बनाएं — यह इस स्टॉप के लिए मील का पत्थर है।",
+        "यदि आप भारी बैग ले जा रहे हैं और पहले से ही फंसे हुए महसूस करते हैं, तो एक कैफे में रुकने या किसी स्थानीय से Bar Internazionale स्टॉप की ओर आपको इंगित करने के लिए कहने पर विचार करें — यह पोसितानो में एक बहुत ही सामान्य संदर्भ बिंदु है।"
       ]
     }
   ],
   "beforeList": [
-    "Tell the driver “Chiesa Nuova, per favore” when you board and press the stop button early.",
-    "Buy or validate your ticket before boarding (see %LINK:sitaTickets|SITA tickets%).",
-    "Keep your phone charged so you can check the map or message the hostel if needed."
+    "जब आप बोर्ड करें तो ड्राइवर को \"Chiesa Nuova, per favore\" बताएं और जल्दी स्टॉप बटन दबाएं।",
+    "बोर्डिंग से पहले अपना टिकट खरीदें या मान्य करें (%LINK:sitaTickets|SITA टिकट% देखें)।",
+    "अपना फोन चार्ज रखें ताकि आप यदि आवश्यक हो तो मानचित्र की जांच कर सकें या होस्टल को संदेश भेज सकें।"
   ],
   "stepsList": [
-    "Get off at Chiesa Nuova / Bar Internazionale (roadside stop outside the bar/tabacchi).",
-    "Walk along Viale Pasitea for about 120–140 metres on the pavement.",
-    "Look for the Hostel Brikette sign and take the short staircase up to reception."
+    "Chiesa Nuova / Bar Internazionale पर उतरें (बार/तंबाकू की दुकान के बाहर सड़क किनारे स्टॉप)।",
+    "फुटपाथ पर लगभग 120-140 मीटर के लिए Viale Pasitea के साथ चलें।",
+    "Hostel Brikette साइन को देखें और रिसेप्शन तक छोटी सीढ़ी लें।"
   ],
   "stepsMapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!5e0!3m2!1sen!2sit!4v1700000000000",
   "kneesList": [
-    "The route avoids long staircases — it’s mostly pavement plus the short entrance staircase.",
-    "If you’re carrying heavy bags, consider a %LINK:porterServices|porter service% pickup/drop‑off at Chiesa Nuova / Bar Internazionale.",
-    "Need a full luggage plan? See %LINK:luggageStorage|luggage storage options% and our %LINK:ferryDockToBrikette|ferry arrival route%."
+    "मार्ग लंबी सीढ़ियों से बचता है — यह मुख्य रूप से फुटपाथ है और छोटी प्रवेश सीढ़ियां हैं।",
+    "यदि आप भारी बैग ले जा रहे हैं, तो Chiesa Nuova / Bar Internazionale पर पिकअप/ड्रॉप-ऑफ के लिए %LINK:porterServices|पोर्टर सेवा% पर विचार करें।",
+    "एक पूर्ण सामान योजना की आवश्यकता है? %LINK:luggageStorage|सामान भंडारण विकल्प% और हमारे %LINK:ferryDockToBrikette|फेरी आगमन मार्ग% देखें।"
   ],
-  "kneesDockPrefix": "Arriving via ferry first?",
-  "kneesDockLinkLabel": "Dock → Hostel luggage route",
-  "kneesPorterPrefix": "Need a hand with heavy bags?",
-  "kneesPorterLinkLabel": "Porter service guide",
+  "kneesDockPrefix": "पहले फेरी के माध्यम से आ रहे हैं?",
+  "kneesDockLinkLabel": "डॉक → होस्टल सामान मार्ग",
+  "kneesPorterPrefix": "भारी बैग के साथ मदद चाहिए?",
+  "kneesPorterLinkLabel": "पोर्टर सेवा गाइड",
   "faqs": [
     {
-      "q": "How do I know I’m at the right stop?",
-      "a": "You’re looking for the roadside stop outside **Bar Internazionale** on Viale Pasitea. On bus announcements/timetables it’s typically called **“Positano (Chiesa Nuova)”** — locals also refer to it as Chiesa Nuova / Bar Internazionale."
+      "q": "मुझे कैसे पता चलेगा कि मैं सही स्टॉप पर हूं?",
+      "a": "आप Viale Pasitea पर **Bar Internazionale** के बाहर सड़क किनारे स्टॉप की तलाश कर रहे हैं। बस घोषणाओं/समय सारणी पर इसे आमतौर पर **\"Positano (Chiesa Nuova)\"** कहा जाता है — स्थानीय लोग इसे Chiesa Nuova / Bar Internazionale के रूप में भी संदर्भित करते हैं।"
     },
     {
-      "q": "Do I need to press a button for the bus to stop?",
-      "a": "Yes — treat it as a request stop. Tell the driver “Chiesa Nuova, per favore” when you board, and press the stop button when you see Bar Internazionale approaching so the driver has time to pull in."
+      "q": "क्या मुझे बस रुकने के लिए एक बटन दबाना होगा?",
+      "a": "हां — इसे एक अनुरोध स्टॉप के रूप में मानें। जब आप बोर्ड करें तो ड्राइवर को \"Chiesa Nuova, per favore\" बताएं, और जब आप Bar Internazionale को आते हुए देखें तो स्टॉप बटन दबाएं ताकि ड्राइवर के पास रुकने का समय हो।"
     },
     {
-      "q": "How long does the walk take?",
-      "a": "About 2–5 minutes, depending on luggage and traffic, for roughly 120–140 metres."
+      "q": "चलने में कितना समय लगता है?",
+      "a": "लगभग 2-5 मिनट, सामान और यातायात के आधार पर, लगभग 120-140 मीटर के लिए।"
     },
     {
-      "q": "Can I store my luggage before check-in?",
-      "a": "Usually yes — luggage storage is available from 10:30 for guests checking in (subject to space). If you arrive before 10:30, you may need to wait at Bar Internazionale and come up when we open. Full details are in the %LINK:luggageStorage|luggage storage guide%."
+      "q": "क्या मैं चेक-इन से पहले अपना सामान स्टोर कर सकता हूं?",
+      "a": "आमतौर पर हां — सामान भंडारण 10:30 से चेक-इन करने वाले मेहमानों के लिए उपलब्ध है (स्थान के अधीन)। यदि आप 10:30 से पहले पहुंचते हैं, तो आपको Bar Internazionale में प्रतीक्षा करनी होगी और जब हम खोलते हैं तो ऊपर आना होगा। पूरी जानकारी %LINK:luggageStorage|सामान भंडारण गाइड% में है।"
     },
     {
-      "q": "What are the check-in times, and what do I need to check in?",
-      "a": "Regular check‑in is from 15:00 to 22:30. Bring your original ID (passport/ID card). At check‑in you’ll need a €10 cash deposit for your keycard + linen set (refunded in cash when you return both at checkout). Full details: %LINK:checkinCheckout|check-in & checkout guide%."
+      "q": "चेक-इन का समय क्या है, और चेक-इन के लिए मुझे क्या चाहिए?",
+      "a": "नियमित चेक-इन 15:00 से 22:30 तक है। अपनी मूल आईडी (पासपोर्ट/आईडी कार्ड) लाएं। चेक-इन के समय आपको अपने कीकार्ड + लिनन सेट के लिए €10 नकद जमा की आवश्यकता होगी (चेकआउट के समय दोनों वापस करने पर नकद में वापस)। पूरी जानकारी: %LINK:checkinCheckout|चेक-इन और चेकआउट गाइड%।"
     },
     {
-      "q": "What if I arrive after reception closes?",
-      "a": "Reception closes at 22:30. If you’ll arrive later, message us before you travel — depending on the day we may be able to offer a self‑service late check‑in."
+      "q": "यदि मैं रिसेप्शन बंद होने के बाद पहुंचता हूं तो क्या होगा?",
+      "a": "रिसेप्शन 22:30 पर बंद हो जाता है। यदि आप बाद में पहुंचेंगे, तो यात्रा करने से पहले हमें संदेश भेजें — दिन के आधार पर हम एक स्व-सेवा देर से चेक-इन की पेशकश करने में सक्षम हो सकते हैं।"
     }
   ],
   "howtoSteps": [
-    "Get off at Positano Chiesa Nuova / Bar Internazionale (closest stop to the hostel)",
-    "Tell the driver “Chiesa Nuova, per favore” and press the stop button early",
-    "Walk 120–140 metres along Viale Pasitea and take the entrance steps to reception",
-    "If you’re unsure, ask at Bar Internazionale or check the map for the hostel sign"
+    "Positano Chiesa Nuova / Bar Internazionale पर उतरें (होस्टल के सबसे करीब स्टॉप)",
+    "ड्राइवर को \"Chiesa Nuova, per favore\" बताएं और जल्दी स्टॉप बटन दबाएं",
+    "Viale Pasitea के साथ 120-140 मीटर चलें और रिसेप्शन के लिए प्रवेश सीढ़ियां लें",
+    "यदि आप अनिश्चित हैं, तो Bar Internazionale पर पूछें या होस्टल साइन के लिए मानचित्र की जांच करें"
   ]
 }

@@ -1,4 +1,4 @@
-import { onRequest, setup, createRequest, verify } from './onRequestTestUtils';
+import { createRequest, onRequest, setup, verify } from './onRequestTestUtils';
 
 describe('onRequest authorization failures', () => {
   let warnSpy: jest.SpyInstance;

@@ -71,7 +71,7 @@ Following these steps keeps linting consistent across the monorepo.
   - Example: `// eslint-disable-next-line no-console -- ABC-123 explain why`
   - TTL metadata is optional and supported (e.g., `ttl=2099-12-31`).
 - Rule: `ds/require-disable-justification`
-  - Default regex: `[A-Z]{2,}-\d+` (configurable per scope).
+  - Default regex: `[A-Z]{2,}(?:-[A-Z0-9]{2,})*-\d+` (supports prefixes like `BOS-UX-12`; configurable per scope).
   - Severity: error in CMS/UI and app shells; warn elsewhere.
 
 ### i18n exemptions
@@ -89,10 +89,10 @@ Following these steps keeps linting consistent across the monorepo.
     - `tickets[<ID>].expires`: ISO date for expiry (optional).
     - `tickets[<ID>].allow`: optional path globs where the ticket is allowed.
     - `tickets[<ID>].notes`: free-form context.
-- Generation + validation:
-  - Generate report: `pnpm run lint:json` (writes `.eslint-report.json`).
-  - Validate: `pnpm run lint:exceptions`.
-  - CI runs both; build fails on missing/expired/unscoped exceptions.
+- Validation:
+  - Run: `pnpm run lint:exceptions`.
+  - CI runs this; build fails on missing/expired/unscoped exceptions.
+  - Optional (debugging): `pnpm run lint:json` generates a full ESLint JSON report (slow).
 
 ## Rule Catalog (selected)
 

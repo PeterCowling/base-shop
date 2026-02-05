@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "test": "jest --ci --runInBand --detectOpenHandles --passWithNoTests --config ./jest.config.cjs",
-    "coverage": "jest --ci --runInBand --detectOpenHandles --passWithNoTests --config ./jest.config.cjs --coverage"
+    "coverage": "jest --ci --runInBand --detectOpenHandles --passWithNoTests --config ./jest.config.cjs --coverage",
+    "lint": "eslint ."
   },
   "devDependencies": {
     "supertest": "^6.3.3"

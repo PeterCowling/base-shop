@@ -1,11 +1,12 @@
 import { jest } from "@jest/globals";
+
 import type { OnRequestPost } from "./publish-upgrade.test-helpers";
 import {
   defaultShopId,
+  jwt,
   loadOnRequestPost,
   logger,
   resetTestState,
-  jwt,
 } from "./publish-upgrade.test-helpers";
 
 let onRequestPost: OnRequestPost;

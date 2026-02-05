@@ -1,13 +1,15 @@
 import type { PaymentRegistry } from "@acme/types";
 
+jest.mock("../paypalClient", () => ({
+  processPaypalPayment: jest.fn(),
+}));
+
+// eslint-disable-next-line import/first -- Must come after jest.mock for proper hoisting
 import plugin from "../index";
+// eslint-disable-next-line import/first -- Must come after jest.mock for proper hoisting
 import { processPaypalPayment } from "../paypalClient";
 
-const mockProcessPaypalPayment = jest.fn();
-
-jest.mock("../paypalClient", () => ({
-  processPaypalPayment: mockProcessPaypalPayment,
-}));
+const mockProcessPaypalPayment = processPaypalPayment as jest.Mock;
 
 describe("paypal plugin", () => {
   it("parses valid custom config", () => {

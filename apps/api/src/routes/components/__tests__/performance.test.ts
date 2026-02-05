@@ -1,13 +1,15 @@
+import jwt from "jsonwebtoken";
+import { vol } from "memfs";
+import path from "path";
+import { performance } from "perf_hooks";
+
+import { validateShopName } from "@acme/lib";
+
+import { diffDirectories, onRequest } from "../[shopId]";
+
 jest.mock('fs', () => require('memfs').fs);
 jest.mock('jsonwebtoken', () => ({ verify: jest.fn() }));
 jest.mock('@acme/lib', () => ({ validateShopName: jest.fn((s: string) => s) }));
-
-import path from "path";
-import { vol } from "memfs";
-import jwt from "jsonwebtoken";
-import { validateShopName } from "@acme/lib";
-import { diffDirectories, onRequest } from "../[shopId]";
-import { performance } from "perf_hooks";
 
 // Opt-in flag so performance-sensitive benchmarks are not enforced on every CI
 // run. Set PERF_BENCHMARKS=1 to enable these assertions locally or in a

@@ -1,6 +1,8 @@
 import path from 'path';
-import { verify, setup, createWarnSpy, createContext, vol } from './testHelpers';
+
 import * as route from '../[shopId]';
+
+import { createContext, createWarnSpy, setup, verify, vol } from './testHelpers';
 
 const { onRequest } = route;
 

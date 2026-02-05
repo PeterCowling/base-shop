@@ -23,6 +23,7 @@ try {
 }
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
+import eslintIgnorePatterns from "./tools/eslint-ignore-patterns.cjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -39,54 +40,7 @@ const offAllDsRules = Object.fromEntries(
 export default [
   /* ▸ Global setup */
   {
-    ignores: [
-      "node_modules/",
-      "dist-types/",
-      "**/dist/**",
-      "**/*.tsbuildinfo",
-      "packages/auth/dist/",
-      "packages/configurator/bin/**",
-      "**/.next/**",
-      "**/.vercel/**",
-      "**/.wrangler/**",
-      "**/storybook-static/**",
-      "apps/skylar/out/**",
-      "apps/*/out/**",
-      "packages/cypress-image-snapshot/**",
-      "**/build/**",
-      "**/coverage/**",
-      "**/*.d.ts.map",
-      "**/*.json",
-      "**/index.js",
-      "packages/ui/src/**/*.js",
-      "packages/ui/src/**/*.d.ts",
-      "packages/ui/src/**/*.d.ts.map",
-      // Ignore compiled JS files in package src directories (TypeScript emits these)
-      "packages/*/src/**/*.js",
-      "packages/*/src/**/*.d.ts",
-      // Ignore ts-jest cache/build artifacts
-      "**/.ts-jest/**",
-      "apps/*/src/**/*.js",
-      "apps/*/src/**/*.d.ts",
-      "apps/*/src/**/*.js.map",
-      "packages/config/test/**",
-      "**/__mocks__/**",
-      "**/jest.setup*.{ts,tsx}",
-      "**/jest.config.*",
-      "**/postcss.config.*",
-      "packages/config/jest.preset.cjs",
-      "apps/api/jest.config.cjs",
-      "apps/api/postcss.config.cjs",
-      // Prime app: exempt while in early development
-      "apps/prime/**",
-      // Brikette: exempt temporarily (tsconfig extends chain resolution issue with import resolver)
-      "apps/brikette/**",
-      // Cypress files: exempt from main linting (type-aware rules crash during init without project)
-      "apps/cms/cypress/**",
-      "apps/cms/cypress.config.mjs",
-      // Vendor WASM transcoder files
-      "**/public/ktx2/basis_transcoder.js",
-    ],
+    ignores: eslintIgnorePatterns,
   },
   /* ▸ Baseline DX plugins (no new rules except Tailwind contradicting classes) */
   // Baseline DX plugins are provided by Next/other configs; avoid redefining to prevent Flat config conflicts.
@@ -305,7 +259,10 @@ export default [
       // Baseline raw Tailwind palette usage repo-wide; stricter enforcement in CMS
       "ds/no-raw-tailwind-color": "warn",
       // Governance: require ticketed eslint-disable justifications (baseline warn; overridden later per scope)
-      "ds/require-disable-justification": "warn",
+      "ds/require-disable-justification": [
+        "warn",
+        { ticketPattern: "[A-Z]{2,}(?:-[A-Z0-9]{2,})*-\\d+" },
+      ],
     },
   },
 

@@ -93,22 +93,6 @@ jobs:
         with:
           turbo-token: ${{ secrets.TURBO_TOKEN }}
           turbo-team: ${{ vars.TURBO_TEAM }}
-      - name: Restore ESLint report cache
-        uses: actions/cache@v4
-        with:
-          path: .eslint-report.json
-          key: eslint-report-${{ github.sha }}
-          restore-keys: |
-            eslint-report-${{ github.ref_name }}-
-            eslint-report-
-      - name: Restore ESLint cache
-        uses: actions/cache@v4
-        with:
-          path: .eslintcache
-          key: eslint-cache-${{ github.sha }}
-          restore-keys: |
-            eslint-cache-${{ github.ref_name }}-
-            eslint-cache-
       - name: Restore Tailwind color report cache
         uses: actions/cache@v4
         with:
@@ -119,8 +103,6 @@ jobs:
             tailwind-color-report-
       - name: Lint (standard)
         run: pnpm lint
-      - name: Lint (JSON report)
-        run: pnpm run lint:json || true
       - name: Lint (raw Tailwind color baseline)
         run: pnpm run lint:no-raw-tailwind-color:check
         timeout-minutes: 5

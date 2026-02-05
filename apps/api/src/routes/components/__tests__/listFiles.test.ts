@@ -1,9 +1,10 @@
-jest.mock('fs', () => require('memfs').fs);
-
 import fs from 'fs';
-import path from 'path';
 import { vol } from 'memfs';
+import path from 'path';
+
 import { listFiles } from '../[shopId]';
+
+jest.mock('fs', () => require('memfs').fs);
 
 describe('listFiles', () => {
   beforeEach(() => {

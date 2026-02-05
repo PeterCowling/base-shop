@@ -1,8 +1,9 @@
-jest.mock('fs', () => require('memfs').fs);
-
-import path from 'path';
 import { vol } from 'memfs';
+import path from 'path';
+
 import { diffDirectories } from '../[shopId]';
+
+jest.mock('fs', () => require('memfs').fs);
 
 describe('diffDirectories', () => {
   beforeEach(() => {

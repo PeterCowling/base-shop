@@ -1,5 +1,6 @@
-import { run } from "../publish-upgrade";
 import { spawn } from "child_process";
+
+import { run } from "../publish-upgrade";
 
 jest.mock("child_process", () => ({ spawn: jest.fn() }));
 

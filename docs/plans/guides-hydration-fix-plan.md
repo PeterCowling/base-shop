@@ -2,7 +2,7 @@
 Type: Plan
 Status: Active
 Domain: UI
-Relates-to charter: Guides SEO
+Relates-to charter: none
 Created: 2026-01-28
 Last-reviewed: 2026-01-29
 Last-updated: 2026-01-29

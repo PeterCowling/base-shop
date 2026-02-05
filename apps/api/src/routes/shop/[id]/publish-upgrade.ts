@@ -1,13 +1,14 @@
-import { readFileSync, writeFileSync } from "fs";
-import path from "path";
 import { spawn } from "child_process";
+import { readFileSync, writeFileSync } from "fs";
 import jwt from "jsonwebtoken";
-import { logger } from "@acme/lib/logger";
+import path from "path";
+
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 import {
   type RequestContext,
   withRequestContext,
 } from "@acme/lib/context";
-import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+import { logger } from "@acme/lib/logger";
 import { incrementOperationalError } from "@acme/platform-core/shops/health";
 
 const SERVICE_NAME = "api";

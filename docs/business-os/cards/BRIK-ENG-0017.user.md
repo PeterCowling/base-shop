@@ -11,6 +11,8 @@ Tags:
   - prime
 Created: '2026-01-17'
 Updated: '2026-01-17'
+Status: Active
+Last-updated: 2026-02-05
 ---
 # Prime Guest Portal - Gap Review and Bridge Plan
 

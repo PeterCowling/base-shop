@@ -11,6 +11,7 @@ Tags: [email, automation, AI, customer-service]
 Created: 2026-02-01
 Updated: 2026-02-02
 Last-Progress: 2026-02-02
+Last-updated: 2026-02-05
 ---
 
 ## Card: BRIK-ENG-0020

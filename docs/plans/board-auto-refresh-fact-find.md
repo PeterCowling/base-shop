@@ -1,7 +1,7 @@
 ---
 Type: Fact-Find
 Outcome: Planning
-Status: Ready-for-planning
+Status: Draft
 Domain: Platform
 Created: 2026-01-30
 Last-updated: 2026-01-31

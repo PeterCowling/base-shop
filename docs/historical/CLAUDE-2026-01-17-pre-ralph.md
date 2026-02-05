@@ -200,7 +200,7 @@ Related-PR: #123 (if applicable)
 ```markdown
 ---
 Type: Plan
-Status: Completed
+Status: Historical
 Domain: CMS
 Created: 2026-01-10
 Created-by: Peter Cowling

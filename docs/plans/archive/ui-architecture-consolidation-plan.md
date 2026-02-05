@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Complete
+Status: Historical
 Domain: Platform/UI
 Last-reviewed: 2026-01-22
 Completed: 2026-01-22

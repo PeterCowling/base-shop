@@ -79,7 +79,7 @@ A repo-native Kanban system that coordinates human and AI agent work through git
 Type: Idea
 ID: BRIK-OPP-0003
 Business: BRIK
-Status: raw
+Status: Draft
 Created-Date: 2026-01-29
 Tags: ["mobile", "ux"]
 ---

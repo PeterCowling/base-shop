@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Complete
+Status: Historical
 Domain: CMS
 Relates-to charter: Content unification
 Created: 2026-01-27

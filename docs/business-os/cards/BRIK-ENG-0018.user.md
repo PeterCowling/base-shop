@@ -11,6 +11,8 @@ Tags:
   - reception
 Created: '2026-01-18'
 Updated: '2026-01-18'
+Status: Active
+Last-updated: 2026-02-05
 ---
 # Dashboard Upgrade Aggregator
 

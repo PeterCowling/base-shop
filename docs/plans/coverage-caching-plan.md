@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Complete
+Status: Historical
 Domain: Testing
 Relates-to charter: CI performance
 Created: 2026-01-27

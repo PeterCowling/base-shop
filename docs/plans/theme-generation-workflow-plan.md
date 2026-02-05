@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Complete
+Status: Historical
 Domain: Theming
 Last-reviewed: 2026-01-18
 Relates-to charter: docs/theming-charter.md

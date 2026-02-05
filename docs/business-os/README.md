@@ -1,3 +1,8 @@
+---
+Type: Reference
+Status: Reference
+Last-updated: 2026-02-05
+---
 # Business OS (Read-Only Mirror)
 
 Business OS uses D1 as the canonical store for cards, ideas, and stage docs. This directory is an exported markdown mirror used for review and audit via PRs.

@@ -2,9 +2,11 @@
 Type: Idea
 ID: BRIK-OPP-0002
 Business: BRIK
-Status: raw
+Status: Draft
+Owner: Unassigned
 Created-Date: 2026-01-28
 Tags: [hostel, content, faq]
+Last-updated: 2026-02-05
 ---
 
 # Hostel booking FAQs content

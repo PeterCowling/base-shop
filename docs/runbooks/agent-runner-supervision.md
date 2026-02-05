@@ -1,3 +1,8 @@
+---
+Type: Runbook
+Status: Reference
+Last-updated: 2026-02-05
+---
 # Agent Runner Daemon Supervision Strategy
 
 **Version:** 1.0

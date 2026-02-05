@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Complete
+Status: Historical
 Domain: Agents / Business OS
 Created: 2026-02-01
 Last-updated: 2026-02-02
@@ -638,7 +638,7 @@ Since skills are markdown instruction files (not executable code), testing is ma
 ---
 Type: Fact-Find
 Outcome: Planning
-Status: Ready-for-planning
+Status: Draft
 Domain: <CMS | Platform | UI | API | Data | Infra | etc.>
 Created: YYYY-MM-DD
 Last-updated: YYYY-MM-DD

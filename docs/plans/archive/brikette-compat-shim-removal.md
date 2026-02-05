@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Complete
+Status: Historical
 Domain: Apps/Brikette
 Last-reviewed: 2026-01-21
 Completed: 2026-01-21

@@ -1,3 +1,8 @@
+---
+Type: Issue
+Status: Reference
+Last-updated: 2026-02-05
+---
 # SEO Audit Scores Fix - Summary
 
 **Date**: 2026-01-30

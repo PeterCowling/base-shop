@@ -1,6 +1,6 @@
 ---
 Type: Redirect
-Status: Archived
+Status: Historical
 Domain: Recovery
 Last-reviewed: 2026-01-31
 Relates-to charter: none

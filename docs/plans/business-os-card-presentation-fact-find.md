@@ -1,3 +1,8 @@
+---
+Type: Fact-find
+Status: Reference
+Last-updated: 2026-02-05
+---
 # Business OS Board UX Overhaul — Planning Fact-Find Brief (Revised)
 
 **Type:** Planning Fact-Find Brief (Outcome A)

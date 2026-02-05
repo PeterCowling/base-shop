@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Complete
+Status: Historical
 Domain: Platform
 Last-reviewed: 2026-01-19
 Relates-to charter: docs/runtime/runtime-charter.md

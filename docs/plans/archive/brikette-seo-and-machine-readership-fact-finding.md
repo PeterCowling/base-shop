@@ -1,7 +1,7 @@
 ---
 Type: Fact-Find
 Outcome: Planning
-Status: Planning-Complete
+Status: Proposed
 Domain: SEO
 Created: 2026-01-28
 Last-updated: 2026-01-28

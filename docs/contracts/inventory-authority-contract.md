@@ -1,3 +1,13 @@
+---
+Type: Contract
+Status: Reference
+Domain: Commerce
+Last-updated: 2026-02-05
+Primary code entrypoints:
+  - packages/commerce-core/src/inventory/validate.ts
+  - apps/cms/src/app/api/inventory/validate/route.ts
+  - packages/cover-me-pretty/src/app/api/inventory/validate/route.ts
+---
 # Inventory Authority — Validate Contract
 
 This document defines the shared request/response contract for **inventory validation** across:

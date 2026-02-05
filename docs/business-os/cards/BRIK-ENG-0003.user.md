@@ -11,6 +11,8 @@ Tags:
   - i18n/cms
 Created: 2026-01-20T00:00:00.000Z
 Updated: 2026-01-20T00:00:00.000Z
+Status: Active
+Last-updated: 2026-02-05
 ---
 # Content Translation Pipeline Plan
 

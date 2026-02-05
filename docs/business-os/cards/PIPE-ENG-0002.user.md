@@ -11,6 +11,8 @@ Tags:
   - 'platform,-commerce'
 Created: 2025-12-26T00:00:00.000Z
 Updated: 2026-01-17T00:00:00.000Z
+Status: Active
+Last-updated: 2026-02-05
 ---
 # Edge Commerce Standardization Implementation
 

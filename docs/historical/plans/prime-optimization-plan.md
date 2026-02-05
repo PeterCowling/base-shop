@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Complete
+Status: Historical
 Domain: Performance
 Last-reviewed: 2026-01-23
 Relates-to charter: none

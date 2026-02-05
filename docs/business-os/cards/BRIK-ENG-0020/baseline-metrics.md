@@ -1,3 +1,8 @@
+---
+Type: Reference
+Status: Reference
+Last-updated: 2026-02-05
+---
 # Email Autodraft Baseline Metrics
 
 **Card:** BRIK-ENG-0020

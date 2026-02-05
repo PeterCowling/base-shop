@@ -1,7 +1,7 @@
 ---
 Type: Fact-Find
 Outcome: Planning
-Status: Ready-for-planning
+Status: Draft
 Domain: UI / i18n
 Created: 2026-01-27
 Last-updated: 2026-01-27

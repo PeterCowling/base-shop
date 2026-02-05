@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Complete
+Status: Historical
 Domain: UI
 Relates-to charter: Brikette UX
 Created: 2026-01-26

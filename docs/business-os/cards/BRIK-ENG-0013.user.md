@@ -11,6 +11,8 @@ Tags:
   - ui-/-i18n-/-testing
 Created: 2026-01-27T00:00:00.000Z
 Updated: 2026-01-27T00:00:00.000Z
+Status: Active
+Last-updated: 2026-02-05
 ---
 # i18n Missing Key Detection Plan
 

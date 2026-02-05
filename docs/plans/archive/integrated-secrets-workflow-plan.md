@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Complete
+Status: Historical
 Domain: Repo
 Last-reviewed: 2026-01-18
 Relates-to charter: none

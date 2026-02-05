@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Archived
+Status: Historical
 Domain: Platform/Lib
 Last-reviewed: 2026-01-21
 Relates-to charter: docs/architecture.md

@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: In-progress
+Status: Active
 Domain: SEO
 Created: 2026-01-28
 Last-reviewed: 2026-01-28

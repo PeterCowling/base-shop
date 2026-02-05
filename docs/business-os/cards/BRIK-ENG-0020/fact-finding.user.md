@@ -4,6 +4,8 @@ Card-ID: BRIK-ENG-0020
 Stage: Fact-finding
 Created: 2026-02-01
 Owner: Pete
+Status: Active
+Last-updated: 2026-02-05
 ---
 
 # Fact-Finding: Email Autodraft Response System

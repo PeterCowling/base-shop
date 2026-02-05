@@ -1,3 +1,8 @@
+---
+Type: Issue
+Status: Reference
+Last-updated: 2026-02-05
+---
 # Manual Testing Guide: SEO Audit Scores Fix
 
 ## Quick Verification

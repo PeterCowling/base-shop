@@ -1,7 +1,7 @@
 ---
 Type: Fact-Find
 Outcome: Planning
-Status: Ready-for-planning
+Status: Draft
 Domain: Agents / Business OS
 Created: 2026-02-01
 Last-updated: 2026-02-01

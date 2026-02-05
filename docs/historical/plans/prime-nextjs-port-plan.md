@@ -1,5 +1,5 @@
 Type: Plan
-Status: Complete
+Status: Historical
 Domain: CI-Deploy
 Last-reviewed: 2026-01-23
 Relates-to charter: docs/architecture.md

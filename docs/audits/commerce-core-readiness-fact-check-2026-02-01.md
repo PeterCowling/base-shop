@@ -1,3 +1,9 @@
+---
+Type: Audit
+Status: Historical
+Last-updated: 2026-02-01
+---
+
 # Fact-Check Audit: commerce-core-readiness-fact-find.md
 
 **Audit Date:** 2026-02-01

@@ -11,6 +11,8 @@ Tags:
   - design-system
 Created: 2026-01-22T00:00:00.000Z
 Updated: 2026-01-22T00:00:00.000Z
+Status: Active
+Last-updated: 2026-02-05
 ---
 # Design System Plan
 

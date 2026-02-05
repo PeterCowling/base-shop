@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Complete
+Status: Historical
 Domain: Reception
 Created: 2026-01-23
 Last-reviewed: 2026-01-23

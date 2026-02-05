@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Complete
+Status: Historical
 Domain: Prime
 Last-reviewed: 2026-01-13
 Relates-to charter: none

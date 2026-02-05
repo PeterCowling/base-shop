@@ -1,3 +1,8 @@
+---
+Type: Runbook
+Status: Reference
+Last-updated: 2026-02-05
+---
 # Remote Access via Free Tunnel
 
 **Purpose:** Access Business OS from external devices (iPad, phone, remote machine) without deploying to production.

@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Complete
+Status: Historical
 Domain: UI / i18n / Testing
 Relates-to charter: Translation DX
 Created: 2026-01-27

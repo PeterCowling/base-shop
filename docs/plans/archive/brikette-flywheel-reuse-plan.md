@@ -1,5 +1,5 @@
 Type: Plan
-Status: Completed
+Status: Historical
 Domain: Brikette
 Last-reviewed: 2026-01-25
 Last-updated: 2026-01-25

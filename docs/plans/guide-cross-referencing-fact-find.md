@@ -1,7 +1,7 @@
 ---
 Type: Fact-Find
 Outcome: Planning
-Status: Ready-for-planning
+Status: Draft
 Domain: Guides / Content / SEO
 Created: 2026-01-29
 Last-updated: 2026-01-29

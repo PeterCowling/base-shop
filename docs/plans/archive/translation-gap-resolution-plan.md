@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Complete
+Status: Historical
 Domain: i18n
 Created: 2026-01-26
 Last-updated: 2026-01-26

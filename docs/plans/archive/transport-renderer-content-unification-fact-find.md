@@ -1,6 +1,6 @@
 ---
 Type: Fact-Find Brief
-Status: Complete
+Status: Historical
 Domain: CMS / UI
 Relates-to: transport-renderer-content-unification-plan.md
 Created: 2026-01-27

@@ -1,7 +1,7 @@
 ---
 Type: Fact-Find
 Outcome: Planning
-Status: Needs-input
+Status: Draft
 Domain: Deploy
 Created: 2026-02-01
 Last-updated: 2026-02-01

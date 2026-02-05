@@ -6,7 +6,7 @@ Repo-Root: /Users/petercowling/base-shop
 Audit-Date: 2026-02-01
 Auditor: Agent
 Method: grep/rg + file reads (nl/sed) + git (status/show/ls-tree)
-Status: Complete (focused)
+Status: Historical
 ---
 
 # Fact-Check Audit: Multi-Writer Git Locking Plan

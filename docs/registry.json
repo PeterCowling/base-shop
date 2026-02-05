@@ -12,15 +12,21 @@
     "domain": "Repo / Agents"
   },
   {
+    "path": "docs/audits/commerce-core-readiness-fact-check-2026-02-01.md",
+    "type": "Audit",
+    "status": "Historical",
+    "domain": null
+  },
+  {
     "path": "docs/audits/design-system-audit-2026-01.md",
     "type": "Audit",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Design System"
   },
   {
     "path": "docs/audits/fact-check-multi-writer-git-locking-plan-2026-02-01.md",
     "type": "Fact-Check Audit",
-    "status": "Complete (focused)",
+    "status": "Historical",
     "domain": null
   },
   {
@@ -50,31 +56,31 @@
   {
     "path": "docs/audits/test-quality/auth-audit.md",
     "type": "Audit-Report",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Testing"
   },
   {
     "path": "docs/audits/test-quality/config-audit.md",
     "type": "Audit-Report",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Testing"
   },
   {
     "path": "docs/audits/test-quality/platform-core-audit.md",
     "type": "Audit-Report",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Testing"
   },
   {
     "path": "docs/audits/test-quality/stripe-audit.md",
     "type": "Audit-Report",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Testing"
   },
   {
     "path": "docs/audits/test-quality/ui-audit.md",
     "type": "Audit-Report",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Testing"
   },
   {
@@ -88,6 +94,12 @@
     "type": "Briefing",
     "status": "Active",
     "domain": "Git/GitHub"
+  },
+  {
+    "path": "docs/business-os/README.md",
+    "type": "Reference",
+    "status": "Reference",
+    "domain": null
   },
   {
     "path": "docs/business-os/agent-workflows.md",
@@ -104,115 +116,115 @@
   {
     "path": "docs/business-os/cards/BOS-ENG-0001.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/BRIK-ENG-0001.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/BRIK-ENG-0002.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/BRIK-ENG-0003.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/BRIK-ENG-0004.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/BRIK-ENG-0005.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/BRIK-ENG-0006.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/BRIK-ENG-0007.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/BRIK-ENG-0008.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/BRIK-ENG-0009.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/BRIK-ENG-0010.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/BRIK-ENG-0011.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/BRIK-ENG-0012.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/BRIK-ENG-0013.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/BRIK-ENG-0014.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/BRIK-ENG-0015.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/BRIK-ENG-0016.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/BRIK-ENG-0017.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/BRIK-ENG-0018.user.md",
     "type": "Card",
-    "status": "Draft",
+    "status": "Active",
     "domain": null
   },
   {
@@ -234,9 +246,21 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/cards/BRIK-ENG-0020/baseline-metrics.md",
+    "type": "Reference",
+    "status": "Reference",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/cards/BRIK-ENG-0020/build.user.md",
+    "type": "Stage-Doc",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/cards/BRIK-ENG-0020/fact-finding.user.md",
     "type": "Stage-Doc",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
@@ -248,145 +272,145 @@
   {
     "path": "docs/business-os/cards/PIPE-ENG-0001.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/PIPE-ENG-0002.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/PIPE-ENG-0003.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/PIPE-ENG-0004.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/PIPE-ENG-0005.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/PLAT-ENG-0001.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/PLAT-ENG-0002.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/PLAT-ENG-0003.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/PLAT-ENG-0004.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/PLAT-ENG-0005.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/PLAT-ENG-0006.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/PLAT-ENG-0007.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/PLAT-ENG-0008.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/PLAT-ENG-0009.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/PLAT-ENG-0010.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/PLAT-ENG-0011.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/PLAT-ENG-0012.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/PLAT-ENG-0013.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/PLAT-ENG-0014.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/PLAT-ENG-0015.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/PLAT-ENG-0016.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/PLAT-ENG-0017.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/PLAT-ENG-0018.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/cards/PLAT-ENG-0019.user.md",
     "type": "Card",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
@@ -398,7 +422,7 @@
   {
     "path": "docs/business-os/cards/PLAT-OPP-0001/fact-find.user.md",
     "type": "Stage",
-    "status": null,
+    "status": "Active",
     "domain": null
   },
   {
@@ -410,31 +434,31 @@
   {
     "path": "docs/business-os/ideas/inbox/BRIK-OPP-0002.user.md",
     "type": "Idea",
-    "status": "raw",
+    "status": "Draft",
     "domain": null
   },
   {
     "path": "docs/business-os/ideas/inbox/SCAN-BRIK-001.user.md",
     "type": "Idea",
-    "status": "raw",
+    "status": "Draft",
     "domain": null
   },
   {
     "path": "docs/business-os/ideas/inbox/SCAN-PLAT-001.user.md",
     "type": "Idea",
-    "status": "raw",
+    "status": "Draft",
     "domain": null
   },
   {
     "path": "docs/business-os/ideas/worked/BRIK-OPP-0003.agent.md",
     "type": "Idea",
-    "status": "Worked",
+    "status": "Historical",
     "domain": null
   },
   {
     "path": "docs/business-os/ideas/worked/BRIK-OPP-0003.user.md",
     "type": "Idea",
-    "status": "Worked",
+    "status": "Historical",
     "domain": null
   },
   {
@@ -612,6 +636,12 @@
     "domain": "Commerce"
   },
   {
+    "path": "docs/contracts/inventory-authority-contract.md",
+    "type": "Contract",
+    "status": "Reference",
+    "domain": "Commerce"
+  },
+  {
     "path": "docs/guides/brikette-email-workflow.md",
     "type": "User-Guide",
     "status": "Active",
@@ -698,19 +728,19 @@
   {
     "path": "docs/historical/plans/prime-improvement-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Prime"
   },
   {
     "path": "docs/historical/plans/prime-nextjs-port-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "CI-Deploy"
   },
   {
     "path": "docs/historical/plans/prime-optimization-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Performance"
   },
   {
@@ -728,7 +758,7 @@
   {
     "path": "docs/historical/plans/reception-improvement-plan-v2.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Reception"
   },
   {
@@ -740,7 +770,7 @@
   {
     "path": "docs/historical/plans/reception-stock-cash-control-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Reception"
   },
   {
@@ -840,6 +870,24 @@
     "domain": "Inventory"
   },
   {
+    "path": "docs/issues/SUMMARY-seo-audit-fix.md",
+    "type": "Issue",
+    "status": "Reference",
+    "domain": null
+  },
+  {
+    "path": "docs/issues/seo-audit-scores-manual-test.md",
+    "type": "Issue",
+    "status": "Reference",
+    "domain": null
+  },
+  {
+    "path": "docs/issues/seo-audit-scores-not-displaying.md",
+    "type": "Issue",
+    "status": "Reference",
+    "domain": null
+  },
+  {
     "path": "docs/migrations/sections.md",
     "type": "Guide",
     "status": "Reference",
@@ -864,9 +912,15 @@
     "domain": "DevEx/Tooling"
   },
   {
+    "path": "docs/plans/agent-git-instructions-update-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Draft",
+    "domain": "Repo"
+  },
+  {
     "path": "docs/plans/agent-git-instructions-update-plan.md",
     "type": "Plan",
-    "status": "Active",
+    "status": "Draft",
     "domain": "Repo"
   },
   {
@@ -878,61 +932,61 @@
   {
     "path": "docs/plans/archive/article-helpers-to-guide-helpers-migration-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "CMS"
   },
   {
     "path": "docs/plans/archive/brikette-compat-shim-removal.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Apps/Brikette"
   },
   {
     "path": "docs/plans/archive/brikette-flywheel-reuse-plan.md",
     "type": "Plan",
-    "status": "Completed",
+    "status": "Historical",
     "domain": "Brikette"
   },
   {
     "path": "docs/plans/archive/brikette-guides-delegacy-plan.md",
     "type": "Plan",
-    "status": "Completed",
+    "status": "Historical",
     "domain": "Brikette"
   },
   {
     "path": "docs/plans/archive/brikette-htgh-content-fix-plan.md",
     "type": "Plan",
-    "status": "Archived",
+    "status": "Historical",
     "domain": "Apps/Brikette"
   },
   {
     "path": "docs/plans/archive/brikette-improvement-plan.md",
     "type": "Plan",
-    "status": "Archived",
+    "status": "Historical",
     "domain": "Brikette"
   },
   {
     "path": "docs/plans/archive/brikette-seo-and-machine-readership-fact-finding.md",
     "type": "Fact-Find",
-    "status": "Planning-Complete",
+    "status": "Proposed",
     "domain": "SEO"
   },
   {
     "path": "docs/plans/archive/brikette-seo-machine-readership-fixes-COMPLETED.md",
     "type": "Plan Completion Summary",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "SEO"
   },
   {
     "path": "docs/plans/archive/brikette-seo-machine-readership-fixes-plan.md",
     "type": "Plan",
-    "status": "In-progress",
+    "status": "Active",
     "domain": "SEO"
   },
   {
     "path": "docs/plans/archive/brikette-ui-simplification-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "UI"
   },
   {
@@ -944,7 +998,7 @@
   {
     "path": "docs/plans/archive/business-os-kanban-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Business OS"
   },
   {
@@ -962,91 +1016,91 @@
   {
     "path": "docs/plans/archive/guide-system-improvements-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "CMS / UI / Platform"
   },
   {
     "path": "docs/plans/archive/guide-system-unification-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "CMS / UI"
   },
   {
     "path": "docs/plans/archive/how-to-get-here-ux-improvement-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "UI"
   },
   {
     "path": "docs/plans/archive/integrated-secrets-workflow-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Repo"
   },
   {
     "path": "docs/plans/archive/launch-readiness-hardening-plan.md",
     "type": "Plan",
-    "status": "Completed",
+    "status": "Historical",
     "domain": "Repo"
   },
   {
     "path": "docs/plans/archive/launch-shop-pipeline-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Repo"
   },
   {
     "path": "docs/plans/archive/lib-consolidation-plan.md",
     "type": "Plan",
-    "status": "Archived",
+    "status": "Historical",
     "domain": "Platform/Infra"
   },
   {
     "path": "docs/plans/archive/lib-primitives-enhancement-plan.md",
     "type": "Plan",
-    "status": "Archived",
+    "status": "Historical",
     "domain": "Platform/Lib"
   },
   {
     "path": "docs/plans/archive/lint-warnings-mission-control-brikette-scripts-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Platform"
   },
   {
     "path": "docs/plans/archive/math-utilities-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Platform"
   },
   {
     "path": "docs/plans/archive/nextjs-15-3-6-upgrade-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Platform"
   },
   {
     "path": "docs/plans/archive/post-deploy-health-checks-mandatory-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Repo"
   },
   {
     "path": "docs/plans/archive/reception-functionality-improvements-plan.md",
     "type": "Plan",
-    "status": "Archived",
+    "status": "Historical",
     "domain": "Reception"
   },
   {
     "path": "docs/plans/archive/reception-login-ui-improvement-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Reception"
   },
   {
     "path": "docs/plans/archive/reception-nextjs-migration-plan.md",
     "type": "Plan",
-    "status": "Archived",
+    "status": "Historical",
     "domain": "Reception"
   },
   {
@@ -1058,37 +1112,37 @@
   {
     "path": "docs/plans/archive/translation-gap-resolution-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "i18n"
   },
   {
     "path": "docs/plans/archive/transport-renderer-content-unification-fact-find.md",
     "type": "Fact-Find Brief",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "CMS / UI"
   },
   {
     "path": "docs/plans/archive/transport-renderer-content-unification-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "CMS / UI"
   },
   {
     "path": "docs/plans/archive/ui-architecture-consolidation-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Platform/UI"
   },
   {
     "path": "docs/plans/archive/ui-package-split-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Platform/UI"
   },
   {
     "path": "docs/plans/board-auto-refresh-fact-find.md",
     "type": "Fact-Find",
-    "status": "Ready-for-planning",
+    "status": "Draft",
     "domain": "Platform"
   },
   {
@@ -1130,13 +1184,13 @@
   {
     "path": "docs/plans/brikette-staging-launch-fact-find.md",
     "type": "Fact-Find",
-    "status": "Needs-input",
+    "status": "Draft",
     "domain": "CI-Deploy"
   },
   {
     "path": "docs/plans/brikette-staging-to-live-launch-fact-find.md",
     "type": "Fact-Find",
-    "status": "Needs-input",
+    "status": "Draft",
     "domain": "Deploy"
   },
   {
@@ -1152,16 +1206,46 @@
     "domain": null
   },
   {
+    "path": "docs/plans/business-os-card-presentation-fact-find.md",
+    "type": "Fact-find",
+    "status": "Reference",
+    "domain": null
+  },
+  {
     "path": "docs/plans/business-os-phase-2-plan.md",
     "type": "Plan",
     "status": "Draft",
     "domain": "Business OS"
   },
   {
+    "path": "docs/plans/business-os-skill-integration-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Draft",
+    "domain": "Agents / Business OS"
+  },
+  {
+    "path": "docs/plans/business-os-skill-integration-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Agents / Business OS"
+  },
+  {
     "path": "docs/plans/business-os-strategic-review.md",
     "type": "Strategic Review",
     "status": "Draft",
     "domain": "Business OS"
+  },
+  {
+    "path": "docs/plans/business-os-unified-writes-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Draft",
+    "domain": "Platform / Business OS"
+  },
+  {
+    "path": "docs/plans/business-os-unified-writes-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Platform / Business OS"
   },
   {
     "path": "docs/plans/catalog-stock-media-upload-facility-plan.md",
@@ -1184,13 +1268,19 @@
   {
     "path": "docs/plans/cochlearfit-terms-i18n-plan.md",
     "type": "Plan",
-    "status": "Completed",
+    "status": "Historical",
     "domain": "Apps"
   },
   {
     "path": "docs/plans/commerce-core-readiness-fact-find.md",
     "type": "Fact-Find",
-    "status": "Ready-for-planning",
+    "status": "Draft",
+    "domain": "Platform / Commerce"
+  },
+  {
+    "path": "docs/plans/commerce-core-readiness-plan.md",
+    "type": "Plan",
+    "status": "Active",
     "domain": "Platform / Commerce"
   },
   {
@@ -1202,19 +1292,19 @@
   {
     "path": "docs/plans/cover-me-pretty-lint-enablement-plan.md",
     "type": "Plan",
-    "status": "In Progress",
+    "status": "Active",
     "domain": "Repo"
   },
   {
     "path": "docs/plans/coverage-caching-fact-find.md",
     "type": "Fact-Find",
-    "status": "Ready-for-planning",
+    "status": "Draft",
     "domain": "Testing"
   },
   {
     "path": "docs/plans/coverage-caching-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Testing"
   },
   {
@@ -1226,7 +1316,7 @@
   {
     "path": "docs/plans/database-backed-business-os-fact-find.md",
     "type": "Fact-Find",
-    "status": "Superseded (Implementation Complete)",
+    "status": "Superseded",
     "domain": "Platform"
   },
   {
@@ -1254,10 +1344,52 @@
     "domain": "Platform, Commerce"
   },
   {
-    "path": "docs/plans/email-autodraft-response-system-plan.md",
+    "path": "docs/plans/email-autodraft-consolidation-baseline.md",
+    "type": "Baseline-Report",
+    "status": "Historical",
+    "domain": "Automation"
+  },
+  {
+    "path": "docs/plans/email-autodraft-consolidation-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Historical",
+    "domain": "Automation"
+  },
+  {
+    "path": "docs/plans/email-autodraft-consolidation-plan.md",
     "type": "Plan",
     "status": "Active",
     "domain": "Automation"
+  },
+  {
+    "path": "docs/plans/email-autodraft-consolidation-security.md",
+    "type": "Report",
+    "status": "Historical",
+    "domain": "Automation"
+  },
+  {
+    "path": "docs/plans/email-autodraft-consolidation-test-results.md",
+    "type": "Report",
+    "status": "Active",
+    "domain": "Automation"
+  },
+  {
+    "path": "docs/plans/email-autodraft-response-system-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Draft",
+    "domain": "Automation"
+  },
+  {
+    "path": "docs/plans/email-autodraft-response-system-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Automation"
+  },
+  {
+    "path": "docs/plans/email-autodraft-workflow-design.md",
+    "type": "Design-Doc",
+    "status": "Active",
+    "domain": "Business-Ops"
   },
   {
     "path": "docs/plans/experiences-page-refactor-plan.md",
@@ -1270,6 +1402,12 @@
     "type": "Plan",
     "status": "Active",
     "domain": "UI / i18n / Content"
+  },
+  {
+    "path": "docs/plans/github-update-strategy-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Draft",
+    "domain": "Infra"
   },
   {
     "path": "docs/plans/guide-area-editor-plan.md",
@@ -1286,7 +1424,7 @@
   {
     "path": "docs/plans/guide-cross-referencing-fact-find.md",
     "type": "Fact-Find",
-    "status": "Ready-for-planning",
+    "status": "Draft",
     "domain": "Guides / Content / SEO"
   },
   {
@@ -1298,7 +1436,7 @@
   {
     "path": "docs/plans/guide-system-improvements-fact-find.md",
     "type": "Fact-Find",
-    "status": "Ready-for-planning",
+    "status": "Draft",
     "domain": "CMS / UI / Platform"
   },
   {
@@ -1328,7 +1466,7 @@
   {
     "path": "docs/plans/guides-hydration-fix-fact-find.md",
     "type": "Fact-Find",
-    "status": "Ready-for-planning",
+    "status": "Draft",
     "domain": "UI"
   },
   {
@@ -1340,8 +1478,14 @@
   {
     "path": "docs/plans/guides-inline-images-fact-find.md",
     "type": "Fact-Find",
-    "status": "Completed",
+    "status": "Historical",
     "domain": "UI"
+  },
+  {
+    "path": "docs/plans/guides-publication-readiness-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Brikette Guides"
   },
   {
     "path": "docs/plans/handbag-configurator-implementation-plan.md",
@@ -1352,37 +1496,43 @@
   {
     "path": "docs/plans/handbag-configurator-lint-enablement-plan.md",
     "type": "Runbook",
-    "status": "In progress",
+    "status": "Active",
     "domain": "Repo"
   },
   {
     "path": "docs/plans/help-articles-to-guides-conversion-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "CMS"
   },
   {
     "path": "docs/plans/how-to-get-here-guides-migration-fact-find.md",
     "type": "Fact-Find",
-    "status": "Ready-for-planning",
+    "status": "Draft",
     "domain": "CMS"
   },
   {
     "path": "docs/plans/how-to-get-here-guides-migration-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "CMS"
+  },
+  {
+    "path": "docs/plans/how-to-get-here-guides-publication-plan.md",
+    "type": "Plan",
+    "status": "Superseded",
+    "domain": "Brikette Guides"
   },
   {
     "path": "docs/plans/i18n-missing-key-detection-fact-find.md",
     "type": "Fact-Find",
-    "status": "Ready-for-planning",
+    "status": "Draft",
     "domain": "UI / i18n"
   },
   {
     "path": "docs/plans/i18n-missing-key-detection-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "UI / i18n / Testing"
   },
   {
@@ -1400,7 +1550,7 @@
   {
     "path": "docs/plans/linting-enhancement-plan.md",
     "type": "Plan",
-    "status": "Implemented",
+    "status": "Historical",
     "domain": "Repo"
   },
   {
@@ -1428,9 +1578,15 @@
     "domain": "Platform"
   },
   {
+    "path": "docs/plans/plans-to-cards-migration-analysis.md",
+    "type": "Analysis",
+    "status": "Reference",
+    "domain": null
+  },
+  {
     "path": "docs/plans/postbuild-tsx-esm-fix-fact-find.md",
     "type": "Fact-Find",
-    "status": "Ready-for-planning",
+    "status": "Draft",
     "domain": "Build"
   },
   {
@@ -1454,7 +1610,7 @@
   {
     "path": "docs/plans/remove-gallery-feature-fact-find.md",
     "type": "Fact-Find",
-    "status": "Ready-for-planning",
+    "status": "Draft",
     "domain": "CMS"
   },
   {
@@ -1484,7 +1640,7 @@
   {
     "path": "docs/plans/test-quality-audit-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Testing"
   },
   {
@@ -1496,31 +1652,31 @@
   {
     "path": "docs/plans/test-typechecking-plan.md",
     "type": "Plan",
-    "status": "In Progress",
+    "status": "Active",
     "domain": "Testing"
   },
   {
     "path": "docs/plans/theme-generation-workflow-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Theming"
   },
   {
     "path": "docs/plans/ui-lint-remediation-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Platform"
   },
   {
     "path": "docs/plans/work-idea-inline-edit-fact-find.md",
     "type": "Fact-Find",
-    "status": "Ready-for-planning",
+    "status": "Draft",
     "domain": "UI"
   },
   {
     "path": "docs/plans/work-idea-inline-edit-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "UI"
   },
   {
@@ -1538,8 +1694,14 @@
   {
     "path": "docs/plans/xa-publish-privacy-fact-find.md",
     "type": "Fact-Find",
-    "status": "Needs-input",
-    "domain": "Commerce"
+    "status": "Historical",
+    "domain": "Commerce / Deploy"
+  },
+  {
+    "path": "docs/plans/xa-publish-privacy-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Commerce / Deploy"
   },
   {
     "path": "docs/product-pipeline/3pl-shipping-approach-decision-v0.md",
@@ -1560,9 +1722,21 @@
     "domain": "Commerce / Sourcing / Market Intelligence / Capital Analytics / Ops Enablement"
   },
   {
+    "path": "docs/runbooks/agent-runner-supervision.md",
+    "type": "Runbook",
+    "status": "Reference",
+    "domain": null
+  },
+  {
     "path": "docs/runbooks/launch-shop-runbook.md",
     "type": "Runbook",
     "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/runbooks/tunnel-setup.md",
+    "type": "Runbook",
+    "status": "Reference",
     "domain": null
   },
   {

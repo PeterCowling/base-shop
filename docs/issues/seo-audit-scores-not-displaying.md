@@ -1,3 +1,8 @@
+---
+Type: Issue
+Status: Reference
+Last-updated: 2026-02-05
+---
 # Issue: SEO Audit Scores Not Displaying in Guidelines Element
 
 **Date**: 2026-01-30

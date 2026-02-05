@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Completed
+Status: Historical
 Domain: Repo
 Last-reviewed: 2026-01-18
 Relates-to charter: docs/runtime/runtime-charter.md

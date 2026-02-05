@@ -1,3 +1,8 @@
+---
+Type: Analysis
+Status: Reference
+Last-updated: 2026-02-05
+---
 # Plans → Cards Migration Feasibility Analysis
 
 **Date:** 2026-01-31

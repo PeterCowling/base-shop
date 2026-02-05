@@ -10,6 +10,7 @@ Business: BRIK
 Tags: [guides, content, hiking]
 Created: 2026-01-28
 Updated: 2026-01-28
+Last-updated: 2026-02-05
 ---
 
 # Add Santa Maria del Castello hike guide

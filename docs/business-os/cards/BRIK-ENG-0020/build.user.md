@@ -6,6 +6,8 @@ Created: 2026-02-02
 Owner: Pete
 Updated: 2026-02-02
 Plan-Link: docs/plans/email-autodraft-consolidation-plan.md
+Status: Active
+Last-updated: 2026-02-05
 ---
 
 # Build: Email Autodraft Response System

@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Archived
+Status: Historical
 Domain: Platform/Infra
 Last-reviewed: 2026-01-21
 Relates-to charter: none

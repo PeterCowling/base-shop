@@ -18,6 +18,7 @@ Architecture-Decision: Claude Code + MCP Tools (Pattern B)
 Workflow-Design: docs/plans/email-autodraft-workflow-design.md
 Consolidation-Plan: docs/plans/email-autodraft-consolidation-plan.md
 Consolidation-Fact-Find: docs/plans/email-autodraft-consolidation-fact-find.md
+Last-updated: 2026-02-05
 ---
 
 # Email Autodraft Response System

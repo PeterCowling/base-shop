@@ -3,10 +3,11 @@ Type: Idea
 ID: BRIK-OPP-0003
 Business: BRIK
 Owner: Pete
-Status: Worked
+Status: Historical
 Card-ID: BRIK-ENG-0020
 Created-Date: 2026-02-01
 Last-Updated: 2026-02-01
+Last-updated: 2026-02-05
 ---
 
 ## Idea: Email Autodraft Response System for Customer Inquiries

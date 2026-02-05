@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Completed
+Status: Historical
 Domain: Apps
 Last-reviewed: 2026-01-24
 Relates-to charter: docs/i18n/i18n-charter.md

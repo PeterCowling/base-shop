@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Archived
+Status: Historical
 Domain: Apps/Brikette
 Last-reviewed: 2026-01-23
 Relates-to charter: docs/i18n/i18n-charter.md

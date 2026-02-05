@@ -2,10 +2,12 @@
 Type: Idea
 ID: SCAN-BRIK-001
 Business: BRIK
-Status: raw
+Status: Draft
+Owner: Unassigned
 Created-Date: 2026-01-28
 Tags: [scan-generated, review-needed, guides]
 Source: Repository scan
+Last-updated: 2026-02-05
 ---
 
 # Review BRIK-OPP-0001: Santa Maria guide may be complete

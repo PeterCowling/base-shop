@@ -1,7 +1,7 @@
 ---
 Type: Fact-Find
 Outcome: Planning
-Status: Complete
+Status: Historical
 Domain: Commerce / Deploy
 Created: 2026-02-03
 Last-updated: 2026-02-03

@@ -1,6 +1,6 @@
 ---
 Type: Audit-Report
-Status: Complete
+Status: Historical
 Domain: Testing
 Package: "@acme/platform-core"
 Created: 2026-01-18

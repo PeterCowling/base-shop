@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: In Progress
+Status: Active
 Domain: Testing
 Created: 2026-01-18
 Created-by: Claude Opus 4.5

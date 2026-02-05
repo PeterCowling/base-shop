@@ -8,7 +8,7 @@
   "workflowRunUrl": "https://github.com/org/repo/actions/runs/12345",
   "steps": [],
   "smokeChecks": [],
-  "startedAt": "2026-01-28T18:31:07.201Z",
-  "completedAt": "2026-01-28T18:31:07.201Z",
+  "startedAt": "2026-02-05T15:45:07.008Z",
+  "completedAt": "2026-02-05T15:45:07.008Z",
   "totalDurationMs": 0
 }

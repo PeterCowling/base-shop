@@ -2,10 +2,12 @@
 Type: Idea
 ID: SCAN-PLAT-001
 Business: PLAT
-Status: raw
+Status: Draft
+Owner: Unassigned
 Created-Date: 2026-01-28
 Tags: [scan-generated, review-needed, phase-0]
 Source: Repository scan
+Last-updated: 2026-02-05
 ---
 
 # Update PLAT-OPP-0001: Business OS Phase 0 complete

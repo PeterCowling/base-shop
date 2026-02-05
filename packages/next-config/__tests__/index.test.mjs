@@ -40,10 +40,6 @@ test('next-config', async (t) => {
   await t.test('transpilePackages includes required packages', async () => {
     const { baseConfig } = await freshImport();
     assert.deepEqual(baseConfig.transpilePackages, [
-      '@acme/config',
-      '@acme/ui',
-      '@acme/platform-core',
-      '@acme/i18n',
       '@acme/template-app',
       '@acme/lib',
     ]);

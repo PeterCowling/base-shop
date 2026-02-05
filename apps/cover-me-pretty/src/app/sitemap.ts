@@ -1,11 +1,11 @@
 import type { MetadataRoute } from "next";
-import { nowIso } from "@date-utils";
 
 import { loadCoreEnv } from "@acme/config/env/core";
+import { nowIso } from "@acme/date-utils";
 import { listPosts } from "@acme/platform-core/repositories/blog.server";
 import { readRepo as readProducts } from "@acme/platform-core/repositories/products.server";
 import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
-import { type BlogPost,getConfig as getSanityConfig } from "@acme/sanity";
+import { type BlogPost, getConfig as getSanityConfig } from "@acme/sanity";
 import type { ProductPublication } from "@acme/types";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

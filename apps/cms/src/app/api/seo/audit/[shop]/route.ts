@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { nowIso } from "@date-utils";
+import { nowIso } from "@acme/date-utils";
 import type { RunnerResult } from "lighthouse";
 import type { Result as AuditResult } from "lighthouse/types/lhr/audit-result.js";
 import isURL from "validator/lib/isURL";

@@ -1,7 +1,7 @@
 import { coreEnv } from "@acme/config/env/core";
 import { sendCampaignEmail } from "@acme/email";
 import { runSeoAudit } from "@acme/lib/seoAudit";
-import { nowIso } from "@date-utils";
+import { nowIso } from "@acme/date-utils";
 import { trackEvent } from "@acme/platform-core/analytics";
 import { DATA_ROOT } from "@acme/platform-core/dataRoot";
 import { promises as fs } from "node:fs";

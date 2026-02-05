@@ -1,6 +1,6 @@
 // Types-compat declarations for miscellaneous modules used in platform-machine
 
-declare module "@date-utils" {
+declare module "@acme/date-utils" {
   export function parseDate(date: string | Date): Date;
   export function formatDate(date: Date, format?: string): string;
   export function addDays(date: Date, days: number): Date;
@@ -25,8 +25,4 @@ declare module "@date-utils" {
   export const DAY_MS: number;
   export const HOUR_MS: number;
   export const MINUTE_MS: number;
-}
-
-declare module "@acme/date-utils" {
-  export * from "@date-utils";
 }

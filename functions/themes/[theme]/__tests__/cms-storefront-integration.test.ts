@@ -1,5 +1,5 @@
 import { jest } from "@jest/globals";
-import { nowIso } from "@date-utils";
+import { nowIso } from "@acme/date-utils";
 
 import type { Page } from "@acme/types";
 import { createPreviewToken } from "@acme/platform-core/previewTokens";

@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { nowIso } from "@date-utils";
+import { nowIso } from "@acme/date-utils";
 
 import { env } from "@acme/config";
 

@@ -8,7 +8,7 @@
     "start": "next start -p 3020",
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --passWithNoTests",
+    "test": "pnpm exec jest --ci --runInBand --passWithNoTests",
     "test:rules": "pnpm dlx firebase-tools@13.35.1 emulators:exec --only database --project reception-rules-test --config ../../firebase.json \"MSW_DISABLE=1 pnpm exec jest --ci --runInBand --detectOpenHandles --passWithNoTests -- src/rules/__tests__/databaseRules.test.ts\""
   },
   "dependencies": {

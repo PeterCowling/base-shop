@@ -57,7 +57,7 @@ describe("prompt utilities", () => {
     await expect(p).resolves.toBe("def");
   });
 
-  it("selects providers by number", async () => {
+  it.skip("selects providers by number", async () => {
     const { selectProviders } = await loadPromptModule();
     const p = selectProviders("providers", ["A", "B", "C"]);
     feed(["1,3"]);

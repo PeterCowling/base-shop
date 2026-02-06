@@ -6,7 +6,9 @@ import ProductsPage from "../src/app/cms/shop/[shop]/products/page";
 const checkShopExistsMock = jest.fn();
 jest.mock("@acme/lib", () => ({
   __esModule: true,
-  checkShopExists: checkShopExistsMock,
+  get checkShopExists() {
+    return checkShopExistsMock;
+  },
 }));
 
 // Centralized NextAuth mock control
@@ -23,7 +25,9 @@ jest.mock("@cms/auth/options", () => ({
 const readRepoMock = jest.fn();
 jest.mock("@acme/platform-core/repositories/json.server", () => ({
   __esModule: true,
-  readRepo: readRepoMock,
+  get readRepo() {
+    return readRepoMock;
+  },
 }));
 
 const createDraftMock = jest.fn();
@@ -31,15 +35,23 @@ const duplicateProductMock = jest.fn();
 const deleteProductMock = jest.fn();
 jest.mock("@cms/actions/products.server", () => ({
   __esModule: true,
-  createDraft: createDraftMock,
-  duplicateProduct: duplicateProductMock,
-  deleteProduct: deleteProductMock,
+  get createDraft() {
+    return createDraftMock;
+  },
+  get duplicateProduct() {
+    return duplicateProductMock;
+  },
+  get deleteProduct() {
+    return deleteProductMock;
+  },
 }));
 
 const notFoundMock = jest.fn();
 jest.mock("next/navigation", () => ({
   __esModule: true,
-  notFound: notFoundMock,
+  get notFound() {
+    return notFoundMock;
+  },
 }));
 
 jest.mock("next/link", () => {
@@ -129,7 +141,9 @@ const productsTableMock = jest.fn((props: any) => (
 ));
 jest.mock("@acme/cms-ui/ProductsTable.client", () => ({
   __esModule: true,
-  default: productsTableMock,
+  get default() {
+    return productsTableMock;
+  },
 }));
 
 type FormAction = (...args: any[]) => unknown | Promise<unknown>;

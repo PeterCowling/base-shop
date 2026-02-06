@@ -212,6 +212,14 @@
         "packages/page-builder-core/src/*",
         "packages/page-builder-core/dist/*"
       ],
+      "@acme/cms-ui": [
+        "packages/cms-ui/src/index.ts",
+        "packages/cms-ui/dist/index.d.ts"
+      ],
+      "@acme/cms-ui/*": [
+        "packages/cms-ui/src/*",
+        "packages/cms-ui/dist/*"
+      ],
       "@acme/templates": [
         "packages/templates/src/index.ts",
         "packages/templates/dist/index.d.ts"

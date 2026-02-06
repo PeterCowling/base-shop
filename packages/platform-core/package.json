@@ -229,6 +229,7 @@
   "dependencies": {
     "@acme/config": "workspace:^",
     "@acme/date-utils": "workspace:^",
+    "@acme/email": "workspace:^",
     "@acme/i18n": "workspace:^",
     "@acme/page-builder-core": "workspace:^",
     "@acme/plugin-sanity": "workspace:^",

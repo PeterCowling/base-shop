@@ -26,6 +26,11 @@
 **/.next/
 
 # ---------------------------
+# OpenNext (Cloudflare Workers) build output
+# ---------------------------
+**/.open-next/
+
+# ---------------------------
 # Production / build artefacts
 # ---------------------------
 /build

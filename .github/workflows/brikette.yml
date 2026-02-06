@@ -31,7 +31,7 @@ on:
   workflow_dispatch:
     inputs:
       publish_to_production:
-        description: "Publish to production (Cloudflare Pages production branch / custom domain)"
+        description: "Publish to production (Cloudflare Workers custom domain)"
         required: false
         type: boolean
         default: false
@@ -46,20 +46,18 @@ jobs:
     uses: ./.github/workflows/reusable-app.yml
     with:
       app-filter: "@apps/brikette"
-      # Build deps with turbo, then run next-on-pages which handles next build + CF conversion
+      # Build deps with turbo, then run opennextjs-cloudflare which handles next build + CF Workers conversion
       build-cmd: >
         pnpm exec turbo run build --filter=@apps/brikette^... &&
         cd apps/brikette &&
-        NODE_OPTIONS="--max-old-space-size=8192" pnpm exec next-on-pages --disable-worker-minification
-      artifact-path: "apps/brikette/.vercel/output/static"
+        pnpm exec opennextjs-cloudflare build
+      artifact-path: "apps/brikette/.open-next"
       deploy-cmd: >
         cd apps/brikette &&
-        pnpm exec wrangler pages deploy .vercel/output/static
-        --project-name ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette' }}
-        --branch staging
-      project-name: ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette' }}
+        pnpm exec wrangler deploy
+      project-name: "brikette-staging"
       environment-name: "staging"
-      environment-url: ${{ format('https://staging.{0}.pages.dev', vars.BRIKETTE_PAGES_PROJECT || 'brikette') }}
+      environment-url: "https://brikette-staging.hostel-positano-workers.workers.dev"
       healthcheck-args: "--staging"
     secrets: inherit
 
@@ -72,14 +70,12 @@ jobs:
       build-cmd: >
         pnpm exec turbo run build --filter=@apps/brikette^... &&
         cd apps/brikette &&
-        NODE_OPTIONS="--max-old-space-size=8192" pnpm exec next-on-pages --disable-worker-minification
-      artifact-path: "apps/brikette/.vercel/output/static"
+        pnpm exec opennextjs-cloudflare build
+      artifact-path: "apps/brikette/.open-next"
       deploy-cmd: >
         cd apps/brikette &&
-        pnpm exec wrangler pages deploy .vercel/output/static
-        --project-name ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette' }}
-        --branch main
-      project-name: ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette' }}
+        pnpm exec wrangler deploy
+      project-name: "brikette-production"
       environment-name: "production"
       environment-url: "https://www.hostel-positano.com"
       healthcheck-base-url: "https://www.hostel-positano.com"

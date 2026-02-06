@@ -55,6 +55,7 @@
     "zod": "^3.25.73"
   },
   "devDependencies": {
+    "@opennextjs/cloudflare": "^1.16.3",
     "@types/js-yaml": "^4.0.9",
     "js-yaml": "^4.1.1"
   }

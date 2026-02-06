@@ -1,5 +1,9 @@
-# Brikette Cloudflare Pages deployment config
-# Minimal config for wrangler pages deploy (no Workers/DOs needed)
-name = "brikette"
-pages_build_output_dir = ".vercel/output/static"
+# Brikette Cloudflare Workers deployment config (via @opennextjs/cloudflare)
+name = "brikette-staging"
+main = ".open-next/worker.js"
 compatibility_date = "2025-06-20"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"

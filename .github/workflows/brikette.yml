@@ -50,7 +50,7 @@ jobs:
       build-cmd: >
         pnpm exec turbo run build --filter=@apps/brikette^... &&
         cd apps/brikette &&
-        NODE_OPTIONS="--max-old-space-size=8192" pnpm exec next-on-pages
+        NODE_OPTIONS="--max-old-space-size=8192" pnpm exec next-on-pages --disable-worker-minification
       artifact-path: "apps/brikette/.vercel/output/static"
       deploy-cmd: >
         cd apps/brikette &&
@@ -72,7 +72,7 @@ jobs:
       build-cmd: >
         pnpm exec turbo run build --filter=@apps/brikette^... &&
         cd apps/brikette &&
-        NODE_OPTIONS="--max-old-space-size=8192" pnpm exec next-on-pages
+        NODE_OPTIONS="--max-old-space-size=8192" pnpm exec next-on-pages --disable-worker-minification
       artifact-path: "apps/brikette/.vercel/output/static"
       deploy-cmd: >
         cd apps/brikette &&

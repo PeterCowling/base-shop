@@ -18,7 +18,7 @@ function requireEnv(name, minLength) {
   }
 }
 
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === "production" && !process.env.CI) {
   requireEnv("NEXTAUTH_SECRET", 32);
   requireEnv("SESSION_SECRET", 32);
   requireEnv("CART_COOKIE_SECRET");

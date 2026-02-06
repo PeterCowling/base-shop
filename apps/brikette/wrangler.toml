@@ -1,0 +1,5 @@
+# Brikette Cloudflare Pages deployment config
+# Minimal config for wrangler pages deploy (no Workers/DOs needed)
+name = "brikette"
+pages_build_output_dir = ".vercel/output/static"
+compatibility_date = "2025-06-20"

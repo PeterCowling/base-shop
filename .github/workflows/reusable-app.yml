@@ -183,7 +183,7 @@ jobs:
           RETRY_DELAY: "6"
 
       - name: Post-Deploy Cache Headers Check (Brikette)
-        if: success() && inputs.app-filter == '@apps/brikette' && inputs.project-name != ''
+        if: success() && inputs.app-filter == '@apps/brikette' && inputs.project-name != '' && inputs.environment-name == 'production'
         run: |
           chmod +x scripts/post-deploy-brikette-cache-check.sh
           ./scripts/post-deploy-brikette-cache-check.sh ${{ inputs.project-name }} ${{ inputs.healthcheck-args }}

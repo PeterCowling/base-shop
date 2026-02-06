@@ -107,9 +107,6 @@ export default function buildCfImageUrl(
   /* Dev‑server passthrough ─────────────────────────────────────────────── */
   if (getIsDev()) return pathOrUrl;
 
-  /* Static export passthrough – no Image Resizing on Pages free tier ──── */
-  if (process.env.NEXT_PUBLIC_OUTPUT_EXPORT === "1") return pathOrUrl;
-
   /* 1. Serialise transform options ─────────────────────────────────────── */
   const optionString = toOptionsString({ ...opts });
 

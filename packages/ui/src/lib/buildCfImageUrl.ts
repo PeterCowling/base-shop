@@ -88,6 +88,9 @@ export function buildCfImageUrl(
 ): string {
   if (isDevMode()) return pathOrUrl;
 
+  /* Static export – no Image Resizing on Cloudflare Pages free tier */
+  if (process.env.NEXT_PUBLIC_OUTPUT_EXPORT === "1") return pathOrUrl;
+
   const params = toOptionsString({ ...opts });
   const isRemote = /^https?:\/\//i.test(pathOrUrl);
   const srcPath = isRemote ? pathOrUrl : pathOrUrl.replace(/^\/+/, "");

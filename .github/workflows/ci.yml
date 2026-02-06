@@ -81,6 +81,10 @@ jobs:
         with:
           files: ./coverage/lcov.info
       - name: Build
+        env:
+          NEXTAUTH_SECRET: build-nextauth-secret-32-chars-long-string!
+          SESSION_SECRET: build-session-secret-32-chars-long-string!
+          CART_COOKIE_SECRET: build-cart-cookie-secret
         run: pnpm build
       - name: E2E (dashboard subset)
         if: steps.changes.outputs.dashboard == 'true'

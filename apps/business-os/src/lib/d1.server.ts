@@ -3,7 +3,7 @@
  *
  * Server-only helper to access Cloudflare D1 database.
  *
- * Uses Cloudflare Pages context to access D1 bindings in Edge runtime.
+ * Uses @opennextjs/cloudflare context to access D1 bindings in Edge runtime.
  * For local development, use wrangler with D1 bindings configured.
  *
  * @packageDocumentation
@@ -11,15 +11,14 @@
 
 import "server-only";
 
-import { getRequestContext } from "@cloudflare/next-on-pages";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 import type { D1Database } from "@acme/platform-core/d1";
 
-/**
- * Cloudflare environment with Business OS D1 binding
- */
-interface BusinessOsEnv {
-  BUSINESS_OS_DB: D1Database;
+declare global {
+  interface CloudflareEnv {
+    BUSINESS_OS_DB?: D1Database;
+  }
 }
 
 /**
@@ -44,15 +43,7 @@ interface BusinessOsEnv {
  * ```
  */
 export function getDb(): D1Database {
-  const ctx = getRequestContext();
-
-  if (!ctx) {
-    const noContextError =
-      "Cloudflare request context not available. Ensure this code runs in Edge runtime (export const runtime = 'edge') and is called during an active request."; // i18n-exempt -- BOS-04 developer-only runtime guard [ttl=2026-03-31]
-    throw new Error(noContextError);
-  }
-
-  const env = ctx.env as BusinessOsEnv;
+  const { env } = getCloudflareContext();
 
   if (!env.BUSINESS_OS_DB) {
     const missingBindingError =
@@ -70,10 +61,7 @@ export function getDb(): D1Database {
  */
 export function hasDb(): boolean {
   try {
-    const ctx = getRequestContext();
-    if (!ctx) return false;
-
-    const env = ctx.env as BusinessOsEnv;
+    const { env } = getCloudflareContext();
     return !!env.BUSINESS_OS_DB;
   } catch {
     return false;

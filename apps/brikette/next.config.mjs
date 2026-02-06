@@ -108,7 +108,7 @@ const nextConfig = {
     (name) => name !== "react-i18next",
   ),
   async headers() {
-    const headersPath = path.join(__dirname, "public", "_headers");
+    const headersPath = path.join(__dirname, "config", "_headers");
     if (!fs.existsSync(headersPath)) return [];
 
     const rules = parseCloudflareHeadersFile(fs.readFileSync(headersPath, "utf8"));

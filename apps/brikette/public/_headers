@@ -1,54 +1,9 @@
-/*
-  Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
+# Minimal static asset headers for Cloudflare Workers Static Assets.
+# Dynamic route headers are handled by the Next.js server (headers() in next.config.mjs).
+# Full rules: config/_headers
 
 /_next/static/*
   Cache-Control: public, max-age=31536000, immutable
 
 /img/*
   Cache-Control: public, max-age=31536000, immutable
-
-/data/rates.json
-  Cache-Control: public, max-age=0, s-maxage=300, stale-while-revalidate=86400
-
-/api/*
-  Cache-Control: no-store
-
-/en/book
-  Cache-Control: no-store
-/es/reservar
-  Cache-Control: no-store
-/de/buchen
-  Cache-Control: no-store
-/fr/reserver
-  Cache-Control: no-store
-/it/prenota
-  Cache-Control: no-store
-/ja/yoyaku
-  Cache-Control: no-store
-/ko/yeyak
-  Cache-Control: no-store
-/pt/reservar
-  Cache-Control: no-store
-/ru/bronirovanie
-  Cache-Control: no-store
-/zh/yuding
-  Cache-Control: no-store
-/ar/hajz
-  Cache-Control: no-store
-/hi/book
-  Cache-Control: no-store
-/vi/dat-phong
-  Cache-Control: no-store
-/pl/rezerwuj
-  Cache-Control: no-store
-/sv/boka
-  Cache-Control: no-store
-/no/bestill
-  Cache-Control: no-store
-/da/book
-  Cache-Control: no-store
-/hu/foglalas
-  Cache-Control: no-store
-
-/*/draft*
-  Cache-Control: no-store

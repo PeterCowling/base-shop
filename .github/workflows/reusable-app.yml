@@ -111,6 +111,7 @@ jobs:
         with:
           name: build-artifact-${{ inputs.project-name }}
           path: ${{ inputs.artifact-path }}
+          include-hidden-files: true
           retention-days: 1
 
   deploy:

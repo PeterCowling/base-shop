@@ -165,7 +165,6 @@
     "@acme/plugin-sanity": "workspace:^",
     "@acme/stripe": "workspace:^",
     "@babel/runtime": "^7.27.6",
-    "@cloudflare/next-on-pages": "^1.13.12",
     "@dnd-kit/accessibility": "^3.1.1",
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",

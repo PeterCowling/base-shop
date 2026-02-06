@@ -2,8 +2,11 @@
  * Tests for TASK-04: Add explicit transport drop-in block for Chiesa Nuova
  *
  * Verifies that the transportDropIn block renders the Chiesa Nuova component.
+ *
+ * @skip Transport drop-in feature has been dropped.
  */
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { render, screen } from "@testing-library/react";
 import type { ReactNode } from "react";
 
@@ -23,7 +26,7 @@ jest.mock("@/routes/how-to-get-here/chiesaNuovaArrivals/DropIn", () => ({
   ),
 }));
 
-describe("transportDropIn block handler (TASK-04)", () => {
+describe.skip("transportDropIn block handler (TASK-04)", () => {
   let mockContext: GuideSeoTemplateContext;
   let mockManifest: GuideManifestEntry;
 

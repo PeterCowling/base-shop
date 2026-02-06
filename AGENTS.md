@@ -217,11 +217,11 @@ After completing significant work, consider capturing learnings to improve futur
 - Discovered gaps in documentation or skills
 
 **How to reflect:**
-1. Use `/session-reflection` (or read `.claude/skills/session-reflection/SKILL.md`)
-2. Create a learning file in `.agents/learnings/`
-3. Note problems, patterns that worked, skill gaps, tooling ideas
+1. Use `/session-reflect` (or read `.claude/skills/session-reflect/SKILL.md`)
+2. Follow the skill workflow: identify friction, classify by layer, propose atomic changes to existing docs/skills
+3. All improvements go into existing target files — no separate learnings store
 
-**Privacy:** Learnings are gitignored. Never include customer data, secrets, or PII.
+**Privacy:** Never include customer data, secrets, or PII in documentation updates.
 
 ---
 

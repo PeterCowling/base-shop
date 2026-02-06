@@ -32,7 +32,7 @@ The canonical source of truth for all deny/ask/allow decisions is **`docs/git-sa
 
 ## Active tasks (next to execute)
 
-All tasks are pending. Execute in dependency order: SAFE-01 → SAFE-02 → SAFE-03 (these can overlap), then SAFE-04..SAFE-07 in parallel, then SAFE-08, then SAFE-09.
+All tasks complete. See Build Completion section below.
 
 ## Goals
 

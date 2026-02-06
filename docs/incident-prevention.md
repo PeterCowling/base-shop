@@ -15,10 +15,13 @@ Domain: Operations
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│  Layer 4: Claude Code Hooks (.claude/settings.json)             │
-│  └─ PreToolUse hooks ACTIVE - blocks destructive commands       │
-│     automatically before AI can execute them                     │
-│     SessionStart hook injects git guard onto PATH                │
+│  Layer 4: Claude Code Hooks (.claude/settings.json) - ACTIVE    │
+│  └─ PreToolUse hook fires for every Bash tool call              │
+│     SessionStart hook prepends agent git guard to PATH           │
+│     permissions.deny blocks destructive commands                 │
+│     permissions.ask gates bypass mechanisms                      │
+│     permissions.allow provides safe baseline                     │
+│     Git guard is now always active for Claude Code sessions     │
 │     (.claude/hooks/pre-tool-use-git-safety.sh)                   │
 ├─────────────────────────────────────────────────────────────────┤
 │  Layer 3: GitHub Branch Protection (server-side)                │
@@ -45,7 +48,8 @@ These commands are blocked by one or more protection layers:
 | `git clean -fd` | Permanently deletes untracked files |
 | `git checkout -- .` / `git restore .` | Discards all local modifications |
 | `git restore -- <pathspec...>` / `git checkout -- <pathspec...>` | Bulk discards local modifications (multiple paths, directories, or globs) |
-| `git stash drop/clear/pop/apply` | Loses stashed work or can cause conflicts (list/show/push allowed) |
+| `git stash drop/clear` | Permanently loses stashed work |
+| `git stash pop/apply` | Can cause merge conflicts (use list/show/push instead) |
 | `git push --force` / `-f` | Overwrites remote history |
 | `git rebase -i` | Can rewrite/lose history |
 | `--no-verify` | Bypasses safety hooks - hard-blocked by git guard |

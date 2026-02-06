@@ -36,8 +36,8 @@ These commands can permanently destroy work:
 | `git checkout --theirs .` | 🔴 HIGH | Overwrites files during conflict resolution (can destroy local changes) |
 | `git stash drop` | 🟠 MEDIUM | Permanently loses stashed changes (blocked by git guard) |
 | `git stash clear` | 🟠 MEDIUM | Loses all stashes (blocked by git guard) |
-| `git stash pop` | 🟠 MEDIUM | Can cause merge conflicts (blocked by git guard; use `git stash list/show/push` instead) |
-| `git stash apply` | 🟠 MEDIUM | Can cause merge conflicts (blocked by git guard; use `git stash list/show/push` instead) |
+| `git stash pop` | 🟠 MEDIUM | Can cause merge conflicts (blocked by git guard; `list/show/push` allowed) |
+| `git stash apply` | 🟠 MEDIUM | Can cause merge conflicts (blocked by git guard; `list/show/push` allowed) |
 | `git push --force` | 🔴 HIGH | Overwrites remote history (affects team) |
 | `git push -f` | 🔴 HIGH | Same as above (shorthand) |
 | `git push --force-with-lease` | 🔴 HIGH | Safer force-push variant, but still rewrites remote history |
@@ -428,11 +428,14 @@ The test harness ensures:
 
 Add to the maintenance checklist:
 
-- [ ] Review forbidden patterns quarterly
-- [ ] Audit exceptions list for unused entries
-- [ ] Test hooks after major git or Node.js updates
-- [ ] Update documentation when modifying hooks
-- [ ] Run test harness to verify enforcement points match Command Policy Matrix
+1. Review forbidden patterns quarterly
+2. Audit exceptions list for unused entries
+3. Test hooks after major git or Node.js updates
+4. Update documentation when modifying hooks
+5. Run test harness to verify enforcement points match Command Policy Matrix
+6. Run the drift-detection test: `pnpm exec jest scripts/__tests__/git-safety-policy.test.ts`
+
+**Note:** The test harness at `scripts/__tests__/git-safety-policy.test.ts` validates both the PreToolUse hook and git guard against the Command Policy Matrix. If patterns diverge, tests fail.
 
 ---
 

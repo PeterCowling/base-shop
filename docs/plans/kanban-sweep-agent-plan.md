@@ -4,10 +4,12 @@ Status: Active
 Domain: Platform
 Created: 2026-02-06
 Last-updated: 2026-02-07
+Last-reviewed: 2026-02-06
 Feature-Slug: kanban-sweep-agent
 Overall-confidence: 88%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Business-Unit: PLAT
+Relates-to charter: none
 ---
 
 # Kanban Sweep Agent Plan
@@ -94,6 +96,10 @@ The feature is built in 5 ordered tasks: two prerequisite API endpoints, the swe
 4. **Directory + prototype** — Create `docs/business-os/sweeps/` with `.gitkeep`, then manually invoke the skill to validate output quality.
 
 No alternatives considered — the approach was fully resolved during the fact-find critique walkthrough.
+
+## Active tasks
+
+- TASK-05: Run prototype sweep and validate output (Pending, depends on TASK-03, TASK-04)
 
 ## Task Summary
 

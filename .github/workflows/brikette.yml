@@ -53,10 +53,10 @@ jobs:
         pnpm exec next-on-pages
       artifact-path: "apps/brikette/.vercel/output/static"
       deploy-cmd: >
-        pnpm exec wrangler pages deploy apps/brikette/.vercel/output/static
+        cd apps/brikette &&
+        pnpm exec wrangler pages deploy .vercel/output/static
         --project-name ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette' }}
         --branch staging
-        --config apps/brikette/wrangler.toml
       project-name: ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette' }}
       environment-name: "staging"
       environment-url: ${{ format('https://staging.{0}.pages.dev', vars.BRIKETTE_PAGES_PROJECT || 'brikette') }}
@@ -75,10 +75,10 @@ jobs:
         pnpm exec next-on-pages
       artifact-path: "apps/brikette/.vercel/output/static"
       deploy-cmd: >
-        pnpm exec wrangler pages deploy apps/brikette/.vercel/output/static
+        cd apps/brikette &&
+        pnpm exec wrangler pages deploy .vercel/output/static
         --project-name ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette' }}
         --branch main
-        --config apps/brikette/wrangler.toml
       project-name: ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette' }}
       environment-name: "production"
       environment-url: "https://www.hostel-positano.com"

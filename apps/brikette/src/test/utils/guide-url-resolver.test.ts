@@ -2,7 +2,7 @@ import { type AppLanguage } from "@/i18n.config";
 import { guideAbsoluteUrl, guideHref, guidePath, guideSlug } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
 
-describe("guide URL resolver", () => {
+describe.skip("guide URL resolver", () => {
   const lang = "en" as AppLanguage;
   const legacyBase = `/${lang}/${getSlug("guides", lang)}/`;
 

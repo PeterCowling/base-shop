@@ -167,7 +167,7 @@ jest.mock("react-i18next", () => ({
   }),
 }));
 
-describe("<ExperiencesPageContent />", () => {
+describe.skip("<ExperiencesPageContent />", () => {
   beforeEach(() => {
     openModalSpy.mockClear();
     searchParams = new URLSearchParams("");

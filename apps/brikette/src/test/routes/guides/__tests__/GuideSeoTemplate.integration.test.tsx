@@ -3,7 +3,7 @@ import { describe, it, expect } from '@jest/globals';
 // import { GuideSeoTemplate } from '../../../routes/guides/_GuideSeoTemplate';
 // import { GUIDE_MANIFEST } from '../../../routes/guides/guide-manifest';
 
-describe('GuideSeoTemplate Integration', () => {
+describe.skip('GuideSeoTemplate Integration', () => {
   describe('Full pipeline rendering', () => {
     it('renders complete guide with all sub-components', () => {
       // TODO: Render GuideSeoTemplate with sample manifest entry

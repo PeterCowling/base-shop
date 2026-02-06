@@ -47,10 +47,13 @@ jobs:
     with:
       app-filter: "@apps/brikette"
       # Build deps with turbo, then run static export (OUTPUT_EXPORT=1 → output:'export' in next.config)
+      # API routes are hidden during export because route.ts in dynamic segments
+      # doesn't support generateStaticParams with output:'export'.
       build-cmd: >
         pnpm exec turbo run build --filter=@apps/brikette^... &&
         cd apps/brikette &&
-        OUTPUT_EXPORT=1 pnpm exec next build
+        mv src/app/api src/app/_api-disabled &&
+        (OUTPUT_EXPORT=1 pnpm exec next build; e=$?; mv src/app/_api-disabled src/app/api; exit $e)
       artifact-path: "apps/brikette/out"
       # Deploy static HTML to Cloudflare Pages (free tier — no Worker needed)
       deploy-cmd: >

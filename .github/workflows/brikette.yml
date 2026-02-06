@@ -52,12 +52,15 @@ jobs:
         cd apps/brikette &&
         pnpm exec opennextjs-cloudflare build
       artifact-path: "apps/brikette/.open-next"
+      # Deploy static assets to Cloudflare Pages (free tier — no Worker size limits)
       deploy-cmd: >
         cd apps/brikette &&
-        pnpm exec wrangler deploy
-      project-name: "brikette-staging"
+        pnpm exec wrangler pages deploy .open-next/assets
+        --project-name ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette-website' }}
+        --branch staging
+      project-name: ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette-website' }}
       environment-name: "staging"
-      environment-url: "https://brikette-staging.hostel-positano-workers.workers.dev"
+      environment-url: ${{ format('https://staging.{0}.pages.dev', vars.BRIKETTE_PAGES_PROJECT || 'brikette-website') }}
       healthcheck-args: "--staging"
     secrets: inherit
 

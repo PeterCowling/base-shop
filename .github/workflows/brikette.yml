@@ -46,16 +46,16 @@ jobs:
     uses: ./.github/workflows/reusable-app.yml
     with:
       app-filter: "@apps/brikette"
-      # Build deps with turbo, then run opennextjs-cloudflare which handles next build + CF Workers conversion
+      # Build deps with turbo, then run static export (OUTPUT_EXPORT=1 → output:'export' in next.config)
       build-cmd: >
         pnpm exec turbo run build --filter=@apps/brikette^... &&
         cd apps/brikette &&
-        pnpm exec opennextjs-cloudflare build
-      artifact-path: "apps/brikette/.open-next"
-      # Deploy static assets to Cloudflare Pages (free tier — no Worker size limits)
+        OUTPUT_EXPORT=1 pnpm exec next build
+      artifact-path: "apps/brikette/out"
+      # Deploy static HTML to Cloudflare Pages (free tier — no Worker needed)
       deploy-cmd: >
         cd apps/brikette &&
-        pnpm exec wrangler pages deploy .open-next/assets
+        pnpm exec wrangler pages deploy out
         --project-name ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette-website' }}
         --branch staging
       project-name: ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette-website' }}

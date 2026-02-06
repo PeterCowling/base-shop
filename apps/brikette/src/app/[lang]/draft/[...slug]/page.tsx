@@ -6,7 +6,12 @@ import { loadGuideManifestOverridesFromFs } from "@/routes/guides/guide-manifest
 
 import GuideContent from "../../experiences/[slug]/GuideContent";
 
-export const dynamic = "force-dynamic";
+export const dynamic = process.env.OUTPUT_EXPORT ? "force-static" : "force-dynamic";
+
+// Static export: no draft pages (they require the Worker for SSR)
+export function generateStaticParams() {
+  return [];
+}
 
 type Props = {
   params: Promise<{ lang: string; slug: string[] }>;

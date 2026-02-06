@@ -12,7 +12,12 @@ import { isPreviewAllowed } from "@/routes/guides/guide-seo/utils/preview";
 
 import GuideEditorWrapper from "./GuideEditorWrapper";
 
-export const dynamic = "force-dynamic";
+export const dynamic = process.env.OUTPUT_EXPORT ? "force-static" : "force-dynamic";
+
+// Static export: no draft edit pages (they require the Worker for SSR)
+export function generateStaticParams() {
+  return [];
+}
 
 type Props = {
   params: Promise<{ lang: string; guideKey: string }>;

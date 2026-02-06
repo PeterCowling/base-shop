@@ -9,6 +9,14 @@ import { getGuideManifestEntry } from "@/routes/guides/guide-manifest";
 import { auditGuideSeo, saveAuditResults } from "@/lib/seo-audit";
 
 export const runtime = "nodejs";
+export const dynamic: "force-static" | undefined = process.env.OUTPUT_EXPORT
+  ? "force-static"
+  : undefined;
+
+// Static export: no API responses (they require the Worker)
+export function generateStaticParams() {
+  return [];
+}
 
 const PREVIEW_HEADER = "x-preview-token";
 

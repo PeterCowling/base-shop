@@ -8,6 +8,9 @@ import { listGuideManifestEntries } from "@/routes/guides/guide-manifest";
 import { analyzeTranslationCoverage } from "@/routes/guides/guide-diagnostics";
 
 export const runtime = "nodejs";
+export const dynamic: "force-static" | undefined = process.env.OUTPUT_EXPORT
+  ? "force-static"
+  : undefined;
 
 const PREVIEW_HEADER = "x-preview-token";
 

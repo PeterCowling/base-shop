@@ -4,6 +4,10 @@ import type { GuideManifestEntry } from "@/routes/guides/guide-manifest";
 import { readFile } from "fs/promises";
 import { join } from "path";
 
+export const dynamic: "force-static" | undefined = process.env.OUTPUT_EXPORT
+  ? "force-static"
+  : undefined;
+
 /**
  * API endpoint for guide coverage reporting
  *

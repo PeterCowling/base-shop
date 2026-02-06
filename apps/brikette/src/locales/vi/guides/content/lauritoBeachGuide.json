@@ -1,167 +1,278 @@
 {
   "seo": {
-    "title": "Laurito Beach guide",
-    "description": "Choose between Da Adolfo and Tre Ville, learn how the shuttle boats work, and plan a stress-free beach day in Laurito."
+    "title": "Bãi biển Laurito, Positano: Da Adolfo, Tre Ville & Mẹo",
+    "description": "Hướng dẫn bãi biển Laurito cho khách nhà trọ: Da Adolfo vs Villa Tre Ville, đặt chỗ, thuyền đưa đón, xe buýt + cầu thang, chi phí và đồ cần mang."
   },
+  "linkLabel": "Bãi biển Laurito: Viên ngọc ẩn dưới vách đá",
   "lastUpdated": "2026-01-29T00:00:00.000Z",
-  "linkLabel": "Laurito Beach guide",
   "intro": [
-    "Laurito is a pocket-sized cove tucked between Positano and Praiano. Two beach clubs — Da Adolfo and Villa Tre Ville — dominate the shoreline, leaving just a sliver of public sand. The reward is west-facing sunshine, iconic lunch spots, and a quieter atmosphere than Spiaggia Grande.",
-    "Use this guide to decide which club suits your style, understand how the water taxis operate, and map out the bus-and-stairs route back to Hostel Brikette."
+    "Laurito là một vịnh nhỏ nằm giữa Positano và Praiano. Hai câu lạc bộ bãi biển — Da Adolfo và Villa Tre Ville — chiếm phần lớn bờ biển, chỉ để lại một dải cát công cộng nhỏ. Phần thưởng là ánh nắng hướng tây, các địa điểm ăn trưa mang tính biểu tượng và bầu không khí yên tĩnh hơn Spiaggia Grande.",
+    "Đối với khách nhà trọ, Laurito là ngày biển \"tự thưởng cho bản thân\": bạn có thể bơi trong vịnh yên tĩnh, tận hưởng bữa trưa dài và vẫn quay về thị trấn kịp uống đồ uống ngắm hoàng hôn — miễn là bạn lên kế hoạch cho chuyến về.",
+    "Sử dụng hướng dẫn này để chọn giữa Da Adolfo và Villa Tre Ville, hiểu cách hoạt động của thuyền đưa đón và xây dựng kế hoạch dự phòng đáng tin cậy với %LINK:lauritoBeachBusDown|tuyến xe buýt đi xuống% và %LINK:lauritoBeachBusBack|hướng dẫn trở về%."
   ],
   "toc": [
     {
+      "href": "#quick-plan",
+      "label": "Kế hoạch nhanh (từ nhà trọ)"
+    },
+    {
       "href": "#why-go",
-      "label": "Why visit Laurito"
+      "label": "Tại sao nên đến Laurito"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Cách đến đó (thuyền vs xe buýt)"
     },
     {
       "href": "#layout",
-      "label": "Layout & services"
+      "label": "Bố cục & dịch vụ"
     },
     {
       "href": "#tre-ville",
-      "label": "Villa Tre Ville beach club"
+      "label": "Câu lạc bộ bãi biển Villa Tre Ville"
     },
     {
       "href": "#da-adolfo",
-      "label": "Da Adolfo beach club"
+      "label": "Câu lạc bộ bãi biển Da Adolfo"
     },
     {
-      "href": "#logistics",
-      "label": "Logistics & getting back"
+      "href": "#returns",
+      "label": "Thời gian & quay về"
+    },
+    {
+      "href": "#pack",
+      "label": "Đồ cần mang"
+    },
+    {
+      "href": "#image-credits",
+      "label": "Nguồn hình ảnh"
     }
   ],
   "sections": [
     {
-      "id": "why-go",
-      "title": "Why Laurito is worth the effort",
+      "id": "quick-plan",
+      "title": "Kế hoạch nhanh từ Hostel Brikette (tóm tắt 2 phút)",
       "body": [
-        "Laurito sits just outside Positano’s centre, so crowds thin out compared with Spiaggia Grande. Sun hits the deck until early evening, the water stays calm for swimming, and the cliff backdrop makes for classic Amalfi Coast photos.",
-        "You will need either a confirmed reservation or patience for the tiny free strip, but once you are settled it is one of the most relaxed spots within a short ride of Hostel Brikette."
+        "Nếu bạn muốn phiên bản đơn giản: chọn một \"tuyến đường chính\" và một \"tuyến đường dự phòng\" trước khi rời nhà trọ. Laurito nhỏ, và ngày sẽ tuyệt vời khi bạn đến nơi thư giãn — chứ không phải khi bạn ứng biến tại bến tàu mà không có tín hiệu.",
+        "Mẹo từ nhân viên: trong những tháng cao điểm, hai điều làm hỏng kế hoạch là (1) thuyền đầy và (2) biển động làm tạm dừng dịch vụ đưa đón. Nếu bạn lên kế hoạch cho hai điều này, phần còn lại sẽ dễ dàng."
+      ],
+      "list": [
+        "Chọn phong cách của bạn: Da Adolfo cho một ngày ăn trưa và nằm dài cổ điển, hoặc Villa Tre Ville cho bãi cao cấp và dịch vụ yên tĩnh hơn. Nếu bạn chỉ muốn vịnh, hãy nhắm đến dải công cộng nhỏ sớm và mang theo bóng râm của riêng bạn.",
+        "Tuyến đường chính (thuận tiện nhất): thuyền đưa đón từ Spiaggia Grande. Xác nhận nơi xếp hàng và hỏi về chuyến cuối cùng khi bạn đến.",
+        "Tuyến đường dự phòng (đáng tin cậy nhất): %LINK:lauritoBeachBusDown|xe buýt xuống Laurito% + cầu thang; sau đó %LINK:lauritoBeachBusBack|xe buýt trở lại% vào cuối ngày.",
+        "Đặt thời gian \"đi/không đi\" của bạn: nếu bạn không có đặt chỗ, khởi hành sớm sẽ tăng cơ hội. Nếu đã gần trưa và bạn thấy hàng thuyền dài, hãy xem xét một lựa chọn thay thế như %LINK:positanoBeaches|bãi biển Positano khác% thay vì ép buộc Laurito.",
+        "Đóng gói những thứ cơ bản: giày đi nước, tiền mặt/thẻ, kem chống nắng và một lớp nhẹ cho chuyến thuyền về (gió mạnh vào cuối chiều)."
+      ]
+    },
+    {
+      "id": "why-go",
+      "title": "Tại sao Laurito đáng công sức",
+      "body": [
+        "Laurito nằm ngay bên ngoài trung tâm Positano, nên đám đông thưa thớt hơn so với Spiaggia Grande. Ánh nắng chiếu vào vịnh đến tận đầu tối, nước thường êm đềm để bơi, và các vách đá đóng khung vịnh cho những bức ảnh bờ biển Amalfi cổ điển.",
+        "Đây cũng là một trong những nơi dễ dàng nhất để biến ngày biển thành ngày \"bữa trưa dài\" đáng nhớ. Cả hai câu lạc bộ đều có nhà bếp thực sự (không chỉ đồ ăn nhẹ), vì vậy bạn có thể bơi, ăn và thư giãn mà không cần quay lại thị trấn.",
+        "Sự đánh đổi là quyền truy cập: phần lớn bờ biển được kiểm soát bởi các câu lạc bộ, và dải công cộng thực sự nhỏ. Nếu bạn xuất hiện mà không có kế hoạch, Laurito có thể cảm thấy như một ngõ cụt. Nếu bạn xuất hiện với đặt chỗ hoặc tuyến đường dự phòng rõ ràng, đây là một trong những chuyến đi nửa ngày thư giãn nhất từ Hostel Brikette.",
+        "Nếu Laurito trông quá chật vào ngày đó (hàng đợi, thuyền đầy hoặc bạn muốn nhiều không gian tự do hơn), hãy so sánh nó với các lựa chọn thay thế trong %LINK:positanoBeaches|tổng quan bãi biển Positano% của chúng tôi."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/02-beach-overview.jpg",
+          "alt": "Vịnh bãi biển Laurito với nền vách đá và các câu lạc bộ bãi biển dọc bờ",
+          "caption": "Bố cục bãi biển Laurito: 1. Khu vực miễn phí 2. Câu lạc bộ bãi biển TreVilla 3. Da Adolfo",
+          "width": 403,
+          "height": 500
+        }
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "Đến đó: thuyền đưa đón vs xe buýt + cầu thang",
+      "body": [
+        "Có hai cách thực tế để đến Laurito: bằng thuyền đưa đón từ Spiaggia Grande (thuận tiện nhất) hoặc bằng xe buýt SITA theo sau là cầu thang (đáng tin cậy nhất khi biển động hoặc thuyền đầy).",
+        "Tuyến thuyền (tốt nhất khi bạn có đặt chỗ): đi đến Spiaggia Grande và tìm bến tàu nhỏ/điểm lên tàu được sử dụng bởi các chuyến đưa đón bãi biển. Hàng có thể dài nhanh chóng, đặc biệt vào những ngày êm đềm, nắng đẹp. Nếu bạn không chắc chắn, hãy hỏi tại bến tàu và cho xem tên câu lạc bộ bạn muốn đến để lên đúng thuyền.",
+        "Tuyến xe buýt (dự phòng tốt nhất): làm theo %LINK:lauritoBeachBusDown|hướng dẫn xe buýt từng bước của chúng tôi% để đến trạm Laurito và sau đó đi xuống cầu thang có biển chỉ dẫn. Điều này chậm hơn thuyền, nhưng đó cũng là kế hoạch vẫn hoạt động khi taxi nước tạm dừng.",
+        "Kế hoạch trở về: ngay cả khi bạn đến bằng thuyền, hãy lưu %LINK:lauritoBeachBusBack|hướng dẫn trở về bằng xe buýt% trên điện thoại. Đây là \"kế hoạch B\" đơn giản nhất nếu bạn bỏ lỡ chuyến cuối cùng hoặc biển động lên.",
+        "Lịch trình thay đổi. Để biết lịch trình SITA mới nhất, hãy tham khảo %URL:https://www.positano.com/en/bus-schedule|lịch trình xe buýt của Positano.com% trước khi bạn cam kết một chuyến về muộn."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/06-amalfi-coast-sita-bus.jpg",
+          "alt": "Xe buýt SITA màu xanh chạy dọc con đường bờ biển Amalfi phía trên biển",
+          "caption": "Dự phòng đáng tin cậy của bạn khi thuyền tạm dừng: xe buýt SITA dọc con đường ven biển",
+          "width": 1920,
+          "height": 1080
+        }
       ]
     },
     {
       "id": "layout",
-      "title": "Layout and who runs what",
+      "title": "Bố cục và ai điều hành gì",
       "body": [
-        "The cove splits into three zones. A narrow public area sits on the far right for those who bring their own towels. Villa Tre Ville’s club occupies the central decks with terracotta loungers, while Da Adolfo operates the left-hand side with wooden beds and the restaurant terrace.",
-        "All guests arrive by boat or via the steep stairway from the SITA bus stop. Expect to queue at peak times because both clubs control access to most of the shoreline."
+        "Vịnh chia thành ba khu vực. Một khu vực công cộng hẹp nằm bên phải xa nhất dành cho những người mang khăn của riêng họ. Câu lạc bộ của Villa Tre Ville chiếm các bãi trung tâm với ghế nằm terracotta, trong khi Da Adolfo hoạt động phía bên trái với giường gỗ và sân hiên nhà hàng.",
+        "Tất cả khách đến bằng thuyền hoặc qua cầu thang dốc từ trạm xe buýt SITA. Dự kiến phải xếp hàng vào giờ cao điểm vì cả hai câu lạc bộ kiểm soát quyền truy cập vào phần lớn bờ biển.",
+        "Lưu ý thực tế: nếu bạn nhắm đến dải công cộng, hãy đến sớm, đóng gói nước và bóng râm của riêng bạn, và chuẩn bị cho sỏi/tấm đá thay vì cát mềm. Nếu bạn đặt câu lạc bộ, hãy xác nhận xem khăn có được bao gồm không và bạn có cần tiền mặt cho các dịch vụ bổ sung không."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/01-beach-layout-map.jpg",
+          "alt": "Sơ đồ bố cục bãi biển Laurito cho thấy ba khu vực: khu vực miễn phí, Villa Tre Ville và Da Adolfo",
+          "caption": "Bố cục Laurito: dải công cộng hẹp (xa bên phải), các bãi trung tâm Villa Tre Ville và sân hiên Da Adolfo (bên trái)",
+          "width": 1500,
+          "height": 1000
+        }
       ]
     },
     {
       "id": "tre-ville",
-      "title": "Villa Tre Ville beach club",
+      "title": "Câu lạc bộ bãi biển Villa Tre Ville",
       "body": [
-        "Villa Tre Ville hosts a boutique club with limited loungers, attentive service, and pricing to match. Expect premium day beds, à la carte dining, and prosecco served to your chair.",
-        "Reservations run through the hotel concierge. Seats can exceed €200 for two in high season, but include towels, showers, and return boat service to Spiaggia Grande.",
-        "Late afternoon is particularly scenic; staff often arrange sunset spritz tastings before the final shuttle back to Positano."
+        "Villa Tre Ville có một câu lạc bộ boutique với ghế nằm hạn chế, dịch vụ chu đáo và giá cả phù hợp. Mong đợi giường ngày cao cấp, ăn uống theo thực đơn và prosecco phục vụ đến ghế của bạn.",
+        "Đặt chỗ thông qua lễ tân khách sạn. Giá thay đổi theo mùa và hàng, nhưng đây là tùy chọn \"cao cấp\" ở Laurito: lên kế hoạch cho mức chi tiêu tối thiểu cao hơn và ít khả năng walk-in vào phút cuối hơn.",
+        "Điều khiến nó đáng giá: ít hỗn loạn hơn, khoảng cách tốt hơn giữa các ghế nằm và bầu không khí yên tĩnh hơn nếu bạn muốn đọc sách, ngủ hoặc vượt qua cơn say rượu trong yên bình. Nếu bạn đi du lịch với cặp đôi hoặc nhóm nhỏ và muốn một ngày có thể dự đoán được, đây thường là lựa chọn mượt mà hơn.",
+        "Cuối chiều đặc biệt đẹp. Hỏi nhân viên về thời gian thuyền trở về cuối cùng khi bạn đăng ký, và đừng giả định nó sẽ chạy muộn chỉ vì mặt trời vẫn chưa lặn."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg",
+          "alt": "Câu lạc bộ bãi biển Villa Tre Ville với ghế nằm terracotta và dịch vụ cao cấp",
+          "caption": "Villa Tre Ville — câu lạc bộ bãi biển boutique với giường ngày cao cấp và dịch vụ kiểu lễ tân",
+          "width": 1280,
+          "height": 1600
+        }
       ]
     },
     {
       "id": "da-adolfo",
-      "title": "Da Adolfo beach club",
+      "title": "Câu lạc bộ bãi biển Da Adolfo",
       "body": [
-        "Da Adolfo is famous for its grilled mozzarella on lemon leaves and relaxed, bohemian vibe. Booking is notoriously difficult — they reply slowly, and day-of slots go to returning guests first.",
-        "If you cannot secure a reservation, arrive early at Spiaggia Grande and ask to join the Da Adolfo water taxi as a standby guest. Once at the dock, staff will add you to their waitlist for any no-shows.",
-        "Lounger packages hover around €50–€70 for two people including the shuttle. Lunch mains run €18–€26 and the kitchen stays open through late afternoon."
+        "Da Adolfo nổi tiếng với mozzarella nướng trên lá chanh và bầu không khí bohemian thư giãn. Đặt chỗ nổi tiếng khó khăn — họ trả lời chậm, và các chỗ trong ngày được dành cho khách quay lại trước.",
+        "Nếu bạn không thể đảm bảo đặt chỗ, bạn có thể thử standby: đến Spiaggia Grande sớm, yêu cầu tham gia taxi nước Da Adolfo và lịch sự về danh sách chờ. Bạn bắt đầu càng sớm, càng có khả năng có người không xuất hiện.",
+        "Mong đợi bầu không khí \"bữa trưa trước\" ở đây: mọi người đến vì thức ăn và bầu không khí nhiều như để bơi. Nếu bạn có đặt chỗ, hãy lên kế hoạch để ổn định và ở lại một lúc thay vì cố gắng nhét nó vào một buổi sáng vội vã.",
+        "Giá thay đổi theo mùa và tình trạng sẵn có. Như một quy tắc chung, gói ghế nằm thường nằm trong khoảng €50–€70 cho hai người bao gồm dịch vụ đưa đón, với các món chính bữa trưa thường trong khoảng €18–€30. Coi những con số này là ước tính và xác nhận khi đến."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg",
+          "alt": "Bến tàu câu lạc bộ bãi biển Da Adolfo và sân hiên nhà hàng với bầu không khí bohemian",
+          "caption": "Da Adolfo — nổi tiếng với bầu không khí bữa trưa thư giãn và quyền truy cập taxi nước từ Spiaggia Grande",
+          "width": 512,
+          "height": 215
+        }
       ]
     },
     {
-      "id": "logistics",
-      "title": "Logistics, tickets, and getting back",
+      "id": "returns",
+      "title": "Thời gian, điều kiện biển và quay về nhà trọ",
       "body": [
-        "Water taxis for both clubs depart from the small pier on Spiaggia Grande. Boats typically run every 30 minutes from 09:30 until early afternoon, then resume returns around 15:00. Keep an eye on the chalkboard at the dock for changes when seas are rough.",
-        "Prefer public transport? Follow our %LINK:lauritoBeachBusDown|bus guide% for the outbound journey and %LINK:lauritoBeachBusBack|return guide% for the climb back. Buy your bus tickets before leaving town — there is nowhere to purchase them at Laurito.",
-        "On the way home, the coastal bus towards Sorrento or Positano stops beside the staircase entrance. Services thin out after 19:00, so confirm the last departure or budget for a taxi arranged via the hostel."
+        "Hầu hết căng thẳng Laurito xảy ra vào cuối ngày, không phải lúc bắt đầu. Quyết định tuyến đường trở về của bạn sớm, sau đó xác nhận thời gian \"thuyền cuối cùng\" ngay khi bạn đến (nó có thể thay đổi theo điều kiện biển và mùa).",
+        "Taxi nước cho các câu lạc bộ khởi hành từ Spiaggia Grande. Nếu biển trở nên động, dịch vụ đưa đón có thể tạm dừng. Khi điều đó xảy ra, động thái tốt nhất của bạn là chuyển sang kế hoạch xe buýt-và-cầu thang thay vì chờ đợi vô thời hạn tại bến tàu.",
+        "Thích phương tiện công cộng từ đầu? Làm theo %LINK:lauritoBeachBusDown|hướng dẫn xe buýt của chúng tôi% cho hành trình đi và %LINK:lauritoBeachBusBack|hướng dẫn trở về% cho việc leo trở lại. Mua vé xe buýt trước khi rời thị trấn — không có nơi nào mua chúng tại Laurito.",
+        "Nếu bạn trở về sau bữa trưa dài, hãy dành thời gian đệm. Xe buýt có thể đông và chậm, và dễ dàng bắt xe buýt sớm hơn là cứu một chuyến cuối cùng đã bỏ lỡ. Nếu bạn kết thúc ngoài sau khi trời tối, taxi có thể nhưng đắt — hỏi nhà trọ về lựa chọn tốt nhất vào ngày đó."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/05-positano-view.jpg",
+          "alt": "Tầm nhìn qua Positano và biển với thuyền gần bờ",
+          "caption": "Spiaggia Grande là điểm khởi hành chính cho nhiều dịch vụ đưa đón bãi biển và thuyền",
+          "width": 1280,
+          "height": 1707
+        }
+      ]
+    },
+    {
+      "id": "pack",
+      "title": "Đồ cần mang (danh sách kiểm tra thân thiện với nhà trọ)",
+      "body": [
+        "Laurito là ngày \"vịnh nhỏ\", có nghĩa là bạn nên giả định cơ sở vật chất hạn chế bên ngoài các câu lạc bộ. Ngay cả khi bạn có đặt chỗ, đóng gói thông minh làm cho ngày mượt mà hơn.",
+        "Mang: giày đi nước (sỏi/tấm đá), kem chống nắng an toàn cho rạn san hô, một lớp nhẹ cho chuyến thuyền về và một số tiền mặt/thẻ nhỏ cho các dịch vụ bổ sung. Nếu bạn dự định thử dải công cộng, hãy thêm khăn/thảm và bóng râm của riêng bạn.",
+        "Tín hiệu điện thoại có thể không đáng tin cậy tại bến tàu. Chụp màn hình bất kỳ xác nhận đặt chỗ nào và lưu %LINK:lauritoBeachBusBack|các bước trở về bằng xe buýt% như một dự phòng."
+      ]
+    },
+    {
+      "id": "image-credits",
+      "title": "Nguồn hình ảnh",
+      "body": [
+        "Một số hình ảnh trong hướng dẫn này được sử dụng theo giấy phép Creative Commons:"
+      ],
+      "list": [
+        "Bờ biển Positano — Nguồn ảnh: %URL:https://commons.wikimedia.org/wiki/File:Positano_sea.jpg|Alexis Lours% (%URL:https://creativecommons.org/licenses/by/4.0/|CC BY 4.0%).",
+        "Xe buýt SITA — Nguồn ảnh: %URL:https://commons.wikimedia.org/wiki/File:Amalfi_Drive_Sita_Bus.jpeg|Robot8A% (%URL:https://creativecommons.org/licenses/by-sa/4.0/|CC BY-SA 4.0%)."
       ]
     }
   ],
   "images": {
     "whyGo": {
       "src": "/img/guides/laurito-beach/02-beach-overview.jpg",
-      "alt": "Vịnh Laurito với các câu lạc bộ bãi biển dọc bờ",
-      "caption": "Vịnh được vách đá bao quanh của Laurito yên tĩnh hơn bãi biển chính",
-      "width": 403,
-      "height": 500
+      "alt": "Vịnh bãi biển Laurito với các câu lạc bộ bãi biển dọc bờ",
+      "caption": "Vịnh được vách đá chắn của Laurito yên tĩnh và êm đềm hơn bãi biển chính."
     },
     "layout": {
       "src": "/img/guides/laurito-beach/01-beach-layout-map.jpg",
-      "alt": "Các sân thượng và bờ biển Laurito",
-      "caption": "Vịnh chia thành ba khu: dải miễn phí, sân thượng Villa Tre Ville và bục Da Adolfo",
-      "width": 1500,
-      "height": 1000
+      "alt": "Bố cục bãi và đường bờ biển tại Laurito",
+      "caption": "Ba khu vực chia sẻ vịnh: dải công cộng, các bãi Villa Tre Ville và sân hiên Da Adolfo."
     },
     "treVille": {
       "src": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg",
-      "alt": "Bục của câu lạc bộ boutique Villa Tre Ville",
-      "caption": "Villa Tre Ville cung cấp ghế tắm nắng hạng sang và dịch vụ concierge",
-      "width": 1280,
-      "height": 1600
+      "alt": "Ghế nằm câu lạc bộ bãi biển Villa Tre Ville và tầm nhìn ra biển",
+      "caption": "Villa Tre Ville tập trung vào ghế nằm cao cấp và dịch vụ kiểu lễ tân."
     },
     "daAdolfo": {
       "src": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg",
-      "alt": "Bàn gỗ trước nhà hàng Da Adolfo",
-      "caption": "Da Adolfo nổi tiếng với mozzarella nướng trên lá chanh và không khí bohemian",
-      "width": 512,
-      "height": 215
+      "alt": "Bến tàu câu lạc bộ bãi biển Da Adolfo và khu vực ngồi",
+      "caption": "Thuyền đưa đón của Da Adolfo thả khách bên cạnh sân hiên nhà hàng."
     },
     "positanoView": {
       "src": "/img/guides/laurito-beach/05-positano-view.jpg",
-      "alt": "View over Positano and the sea with boats near the shore",
-      "caption": "Spiaggia Grande is the main launch point for many beach shuttles and boats.",
-      "width": 1280,
-      "height": 1707
+      "alt": "Tầm nhìn qua Positano và biển với thuyền gần bờ",
+      "caption": "Spiaggia Grande là điểm khởi hành chính cho nhiều dịch vụ đưa đón bãi biển và thuyền."
     },
     "sitaBus": {
       "src": "/img/guides/laurito-beach/06-amalfi-coast-sita-bus.jpg",
-      "alt": "Blue SITA bus driving along the Amalfi Coast road above the sea",
-      "caption": "The coastal SITA bus is a useful backup when boats are paused.",
-      "width": 1920,
-      "height": 1080
+      "alt": "Xe buýt SITA màu xanh chạy dọc con đường bờ biển Amalfi phía trên biển",
+      "caption": "Xe buýt SITA ven biển là dự phòng hữu ích khi thuyền tạm dừng."
     }
   },
-  "essentialsTitle": "What to expect",
+  "essentialsTitle": "Những gì cần mong đợi",
   "essentials": [
-    "Reservations are essential for both clubs in summer; walk-ins only succeed before 10:00.",
-    "Tiny public section fills quickly — arrive with your own umbrella and mat if you plan to use it.",
-    "Return boats leave mid-afternoon; have the bus backup ready for evening plans."
+    "Đặt chỗ là cần thiết cho cả hai câu lạc bộ vào mùa hè; walk-in chỉ thành công trước 10:00.",
+    "Khu vực công cộng nhỏ đầy nhanh chóng — đến với ô và thảm của riêng bạn nếu bạn dự định sử dụng nó.",
+    "Thuyền trở về khởi hành giữa chiều; chuẩn bị dự phòng xe buýt cho kế hoạch buổi tối."
   ],
-  "typicalCostsTitle": "Typical costs",
+  "typicalCostsTitle": "Chi phí điển hình",
   "typicalCosts": [
-    "Da Adolfo lounger set for two: €50–€70 including shuttle boat.",
-    "Villa Tre Ville premium deck for two: €180–€220 with towels and concierge service.",
-    "Lunch mains at either club: €18–€30, cocktails €12–€15, bottled water €3–€4."
+    "Bộ ghế nằm Da Adolfo cho hai người: €50–€70 bao gồm thuyền đưa đón.",
+    "Bãi cao cấp Villa Tre Ville cho hai người: €180–€220 với khăn và dịch vụ lễ tân.",
+    "Món chính bữa trưa tại bất kỳ câu lạc bộ nào: €18–€30, cocktail €12–€15, nước đóng chai €3–€4."
   ],
-  "tipsTitle": "Quick tips",
+  "tipsTitle": "Mẹo nhanh",
   "tips": [
-    "Screenshot confirmation emails — mobile signal fades near the dock.",
-    "Pack reef-safe sunscreen and water shoes; the shoreline mixes pebbles and rock slabs.",
-    "Review our %LINK:positanoBeaches|Positano beaches overview% to compare Laurito with other coves."
+    "Chụp màn hình email xác nhận — tín hiệu di động mờ dần gần bến tàu.",
+    "Đóng gói kem chống nắng an toàn cho rạn san hô và giày đi nước; bờ biển trộn sỏi và tấm đá.",
+    "Xem lại %LINK:positanoBeaches|tổng quan bãi biển Positano% của chúng tôi để so sánh Laurito với các vịnh khác."
   ],
-  "warningsTitle": "Good to know",
+  "warningsTitle": "Tốt để biết",
   "warnings": [
-    "Rough seas pause shuttle boats; staff will text updates but the bus may be your only route back.",
-    "No ATMs or shops at the cove — bring cash or cards for meals and extras.",
-    "The stairway is steep with uneven steps; plan breaks and wear grippy footwear."
+    "Biển động tạm dừng thuyền đưa đón; nhân viên sẽ gửi cập nhật nhưng xe buýt có thể là tuyến đường duy nhất của bạn trở về.",
+    "Không có ATM hoặc cửa hàng tại vịnh — mang tiền mặt hoặc thẻ cho bữa ăn và các dịch vụ bổ sung.",
+    "Cầu thang dốc với các bước không đều; lên kế hoạch nghỉ và đi giày có độ bám tốt."
   ],
-  "faqsTitle": "Laurito Beach FAQs",
+  "faqsTitle": "Câu hỏi thường gặp về bãi biển Laurito",
   "faqs": [
     {
-      "q": "Do I need a reservation?",
+      "q": "Tôi có cần đặt chỗ không?",
       "a": [
-        "Yes. Both clubs prioritise guests with confirmed bookings. Da Adolfo accepts standby visitors on a waitlist, but only after pre-booked guests are seated."
+        "Có. Cả hai câu lạc bộ ưu tiên khách có đặt chỗ xác nhận. Da Adolfo chấp nhận khách standby trên danh sách chờ, nhưng chỉ sau khi khách đặt trước đã được xếp chỗ."
       ]
     },
     {
-      "q": "Can I use the public section?",
+      "q": "Tôi có thể sử dụng khu vực công cộng không?",
       "a": [
-        "You can, but space is extremely limited. Bring everything you need, including shade and water, and arrive before 09:30 to claim a spot."
+        "Bạn có thể, nhưng không gian cực kỳ hạn chế. Mang theo mọi thứ bạn cần, bao gồm bóng râm và nước, và đến trước 09:30 để giành chỗ."
       ]
     },
     {
-      "q": "How late do the boats run?",
+      "q": "Thuyền chạy muộn đến mấy giờ?",
       "a": [
-        "Most return shuttles finish by 18:00 in summer, earlier in shoulder season. Always confirm the last departure on arrival and have the bus timetable saved as a backup."
+        "Hầu hết các chuyến đưa đón trở về kết thúc vào lúc 18:00 vào mùa hè, sớm hơn vào mùa vai. Luôn xác nhận chuyến cuối cùng khi đến và lưu lịch trình xe buýt như một dự phòng."
       ]
     }
   ]

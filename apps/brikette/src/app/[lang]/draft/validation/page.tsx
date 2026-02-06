@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   robots: "noindex,nofollow",
 };
 
-export const dynamic = "force-dynamic";
+export const dynamic = process.env.OUTPUT_EXPORT ? "force-static" : "force-dynamic";
 
 export default function ValidationPage() {
   return <ValidationDashboard />;

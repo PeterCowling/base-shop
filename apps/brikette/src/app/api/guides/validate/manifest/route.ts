@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { listGuideManifestEntries } from "@/routes/guides/guide-manifest";
 import type { GuideManifestEntry } from "@/routes/guides/guide-manifest";
 
+export const dynamic: "force-static" | undefined = process.env.OUTPUT_EXPORT
+  ? "force-static"
+  : undefined;
+
 /**
  * API endpoint for guide manifest validation
  *

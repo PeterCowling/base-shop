@@ -48,8 +48,9 @@ jobs:
       app-filter: "@apps/brikette"
       build-cmd: pnpm --filter @apps/brikette... build
       deploy-cmd: >
+        pnpm --filter @apps/brikette... build &&
         cd apps/brikette &&
-        pnpm exec next-on-pages &&
+        pnpm exec next-on-pages --skip-build &&
         pnpm exec wrangler pages deploy .vercel/output/static --project-name ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette' }} --branch staging
       project-name: ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette' }}
       environment-name: "staging"
@@ -65,8 +66,9 @@ jobs:
       app-filter: "@apps/brikette"
       build-cmd: pnpm --filter @apps/brikette... build
       deploy-cmd: >
+        pnpm --filter @apps/brikette... build &&
         cd apps/brikette &&
-        pnpm exec next-on-pages &&
+        pnpm exec next-on-pages --skip-build &&
         pnpm exec wrangler pages deploy .vercel/output/static --project-name ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette' }} --branch main
       project-name: ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette' }}
       environment-name: "production"

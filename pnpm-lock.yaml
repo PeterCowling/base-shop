@@ -2086,9 +2086,6 @@ importers:
       '@acme/date-utils':
         specifier: workspace:^
         version: link:../date-utils
-      '@acme/email':
-        specifier: workspace:^
-        version: link:../email
       '@acme/i18n':
         specifier: workspace:^
         version: link:../i18n

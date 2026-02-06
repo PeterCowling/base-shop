@@ -49,7 +49,8 @@ jobs:
       build-cmd: pnpm --filter @apps/brikette... build
       deploy-cmd: >
         cd apps/brikette &&
-        pnpm exec next-on-pages deploy --project-name ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette' }} --branch staging
+        pnpm exec next-on-pages &&
+        pnpm exec wrangler pages deploy .vercel/output/static --project-name ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette' }} --branch staging
       project-name: ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette' }}
       environment-name: "staging"
       environment-url: ${{ format('https://staging.{0}.pages.dev', vars.BRIKETTE_PAGES_PROJECT || 'brikette') }}
@@ -65,7 +66,8 @@ jobs:
       build-cmd: pnpm --filter @apps/brikette... build
       deploy-cmd: >
         cd apps/brikette &&
-        pnpm exec next-on-pages deploy --project-name ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette' }} --branch main
+        pnpm exec next-on-pages &&
+        pnpm exec wrangler pages deploy .vercel/output/static --project-name ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette' }} --branch main
       project-name: ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette' }}
       environment-name: "production"
       # Set this once the custom domain is attached to the Pages project.

@@ -11,17 +11,100 @@
   ],
   "sections": [
     {
-      "id": "overview",
-      "title": "Aiuto viaggio in breve",
+      "id": "quick-start",
+      "title": "Inizio rapido (leggi prima questo)",
       "body": [
-        "Inizia dalle nostre guide Come arrivare passo dopo passo per treni, traghetti, transfer privati e cosa fare se ci sono ritardi. Qui trovi solo i punti chiave: considera circa 2 ore da Napoli a Positano, acquista i biglietti SITA prima di salire e scrivici se stai arrivando tardi così organizziamo il check-in."
+        "**Piano di arrivo predefinito:** Raggiungi Sorrento, poi prendi l'autobus SITA per Positano. Prevedi ~2-3,5 ore da Napoli (i tempi cambiano in base alla stagione).",
+        "**Acquista i biglietti dell'autobus prima di salire:** Gli autobus SITA non vendono biglietti a bordo in modo affidabile. A Sorrento, acquista in un tabacchi/bar prima di metterti in coda.",
+        "**Salva le informazioni di base:** fai screenshot degli orari e dei tuoi biglietti. Scrivi l'indirizzo dell'ostello. Il segnale può cadere sulla strada costiera.",
+        "**Arrivo in traghetto:** sbarchi a Spiaggia Grande. L'ultimo passaggio è salire con i tuoi bagagli. Se vuoi la giornata di arrivo più semplice, usa i %LINK:porterServices|servizi di facchino%.",
+        "**In ritardo:** scrivici non appena conosci il tuo orario di arrivo previsto così possiamo pianificare il check-in: %LINK:checkinCheckout|Check-in e check-out%."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.webp",
+          "alt": "Area della fermata dell'autobus locale a Positano"
+        },
+        {
+          "src": "/img/directions/ferry-dock-interno-yellow.webp",
+          "alt": "Autobus locale Interno Positano al molo dei traghetti"
+        }
       ]
     },
     {
-      "id": "excursions",
-      "title": "Indicazioni rapide per le escursioni più richieste",
+      "id": "travel-checklist",
+      "title": "Prima di viaggiare (semplice lista di controllo)",
       "body": [
-        "Una volta sistemato, la raccolta Esperienze offre istruzioni porta a porta per le gite più amate dagli ospiti: traghetti per Capri, accessi al Sentiero degli Dei, bus per Amalfi e Ravello, treni per Pompei e Vesuvio e altro ancora. Scorri quelle guide per orari di prima partenza, consigli sui biglietti e cosa mettere in valigia."
+        "- Ricarica il telefono o porta un power bank.",
+        "- Tieni con te acqua e uno snack leggero.",
+        "- Porta del contante per piccoli negozi e biglietterie.",
+        "- Tieni il biglietto in una tasca facile per i controlli.",
+        "- Indossa scarpe comode. Ci sono molte scale.",
+        "- Se hai borse grandi, prevedi le scale. I facchini aiutano.",
+        "- Porta una giacca leggera. Le notti possono essere fresche vicino al mare.",
+        "- Salva un link alla mappa. Aiuta quando arrivi tardi.",
+        "- Se soffri il mal d'auto, siediti vicino alla parte anteriore dell'autobus e guarda fuori dal finestrino."
+      ]
+    },
+    {
+      "id": "how-to-get-here",
+      "title": "Come arrivare qui (cosa coprono le guide sui percorsi)",
+      "body": [
+        "Inizia con la %HOWTO:how-to-get-here|pagina Come arrivare% se stai scegliendo tra autobus, traghetto o un mix.",
+        "Ogni guida sui percorsi è passo dopo passo. Copre:",
+        "- dove acquistare i biglietti (e cosa screenshottare)",
+        "- quale fermata usare a Positano (spesso Chiesa Nuova, la più vicina all'ostello)",
+        "- consigli sui bagagli per autobus e traghetti affollati",
+        "- note stagionali (linee estive vs servizio invernale)",
+        "- un percorso alternativo per mare mosso o collegamenti persi.",
+        "",
+        "**Percorsi di arrivo più utilizzati:**",
+        "- %HOWTO:naples-airport-positano-bus|Aeroporto di Napoli → Positano (autobus via Sorrento)% — Navetta Curreri per Sorrento, poi SITA per Positano.",
+        "- %HOWTO:naples-center-train-bus|Centro di Napoli → Positano (treno + autobus)% — treno per Sorrento, poi SITA per Positano.",
+        "- %HOWTO:naples-center-positano-ferry|Centro di Napoli → Positano (traghetto)% — ottimo quando funziona; tieni un backup meteo-mare.",
+        "- %HOWTO:salerno-positano-ferry|Salerno → Positano (traghetto)% — una buona opzione in stagione.",
+        "- %HOWTO:sorrento-positano-bus|Sorrento → Positano (autobus)% — il collegamento chiave per molti piani.",
+        "",
+        "**Lasciare Positano dopo il soggiorno:**",
+        "- %HOWTO:positano-naples-airport-bus|Positano → Aeroporto di Napoli (trasporto pubblico)% — prevedi un buffer extra per i collegamenti.",
+        "- %HOWTO:positano-naples-center-bus-train|Positano → Centro di Napoli (autobus + treno)% — comune quando i traghetti non funzionano.",
+        "- %HOWTO:positano-naples-center-ferry|Positano → Centro di Napoli (traghetto)% — più veloce quando il mare è calmo."
+      ]
+    },
+    {
+      "id": "last-10-minutes",
+      "title": "I tuoi ultimi 10 minuti: molo traghetti o fermata autobus → l'ostello",
+      "body": [
+        "**Arrivo in autobus:** la maggior parte degli autobus si ferma a Chiesa Nuova (vicino al Bar Internazionale). Da lì è una breve passeggiata all'ostello. Usa: %LINK:chiesaNuovaArrivals|Chiesa Nuova → Hostel Brikette (arrivi)% e %LINK:chiesaNuovaDepartures|Hostel Brikette → Chiesa Nuova (partenze)%.",
+        "",
+        "**Arrivo in traghetto:** segui il percorso adatto ai bagagli dal molo. Se non viaggi leggero, leggi questo prima di iniziare a salire: %LINK:ferryDockToBrikette|Molo traghetti → Hostel Brikette (con bagagli)%.",
+        "",
+        "**Viaggiare con borse pesanti:** Positano è scale e vicoli ripidi. Se vuoi la giornata di arrivo più semplice, combina le indicazioni molo/autobus sopra con i %LINK:porterServices|servizi di facchino%."
+      ]
+    },
+    {
+      "id": "delays-cancellations",
+      "title": "Se qualcosa va storto (ritardi, mare mosso, collegamenti persi)",
+      "body": [
+        "**Cancellazioni traghetti:** se il mare è mosso, i traghetti possono fermarsi con poco preavviso. Conosci il tuo percorso alternativo in anticipo. Inizia qui: %LINK:ferryCancellations|Cancellazioni traghetti e meteo% e la %HOWTO:how-to-get-here|panoramica Come arrivare%.",
+        "",
+        "**Perso una coincidenza a Sorrento:** puoi (1) aspettare il prossimo autobus SITA, (2) passare a un traghetto se è in funzione, o (3) dividere un taxi se sei in gruppo. Le guide sui percorsi sopra mostrano i punti di coda comuni e i buffer temporali.",
+        "",
+        "**Arrivo in ritardo all'ostello:** scrivici non appena conosci il tuo orario di arrivo previsto così possiamo pianificare il tuo check-in: %LINK:checkinCheckout|Check-in e check-out%."
+      ]
+    },
+    {
+      "id": "popular-excursions",
+      "title": "Gite giornaliere popolari (indicazioni porta a porta)",
+      "body": [
+        "Queste guide Esperienze si concentrano sulle basi: prime partenze, quale molo/fermata usare, cosa portare ed errori comuni nel viaggio di ritorno.",
+        "",
+        "- %LINK:capriDayTrip|Gita giornaliera a Capri da Positano% — itinerario + link alle indicazioni del traghetto andata/ritorno.",
+        "- %LINK:pathOfTheGods|Sentiero degli Dei% — scegli il tuo approccio migliore (autobus, traghetto + autobus, o l'opzione Nocelle).",
+        "- %LINK:positanoPompeii|Gita giornaliera Positano → Pompei% — autobus per Sorrento + treno locale, con consigli su orari e folle.",
+        "- %LINK:dayTripsAmalfi|Migliori gite giornaliere da Positano% — una scelta rapida per Capri, Pompei, Amalfi/Ravello e Sorrento.",
+        "",
+        "Per spostamenti tra città, queste guide sui trasporti aiutano: %HOWTO:positano-amalfi-ferry|Positano → Amalfi (traghetto)%, %HOWTO:positano-amalfi-bus|Positano → Amalfi (autobus)%, %HOWTO:positano-ravello-ferry-bus|Positano → Ravello (traghetto + autobus)%."
       ]
     }
   ],

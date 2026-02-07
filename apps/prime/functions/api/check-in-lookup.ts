@@ -12,6 +12,7 @@ import { FirebaseRest, jsonResponse, errorResponse } from '../lib/firebase-rest'
 interface Env {
   CF_FIREBASE_DATABASE_URL: string;
   CF_FIREBASE_API_KEY?: string;
+  RATE_LIMIT?: KVNamespace;
 }
 
 interface CheckInCodeRecord {
@@ -34,16 +35,84 @@ interface OccupantData {
 interface PreArrivalData {
   etaWindow?: string | null;
   etaMethod?: string | null;
+  cashReadyCityTax?: boolean;
+  cashReadyDeposit?: boolean;
+  routeSaved?: string | null;
+  arrivalMethodPreference?: string | null;
+  arrivalConfidence?: string | null;
+  checklistProgress?: {
+    routePlanned?: boolean;
+    etaConfirmed?: boolean;
+    cashPrepared?: boolean;
+    rulesReviewed?: boolean;
+    locationSaved?: boolean;
+  };
 }
 
 const KEYCARD_DEPOSIT = 10; // EUR
+const MAX_LOOKUPS_PER_HOUR = 120;
+const RATE_LIMIT_TTL_SECONDS = 60 * 60;
+const READINESS_WEIGHTS = {
+  routePlanned: 25,
+  etaConfirmed: 20,
+  cashPrepared: 25,
+  rulesReviewed: 15,
+  locationSaved: 15,
+} as const;
 
 function formatGuestName(firstName: string, lastName: string): string {
   if (!lastName) return firstName;
   return `${firstName} ${lastName.charAt(0).toUpperCase()}.`;
 }
 
+function coerceBoolean(value: unknown): boolean {
+  return value === true;
+}
+
+function buildReadinessSignals(preArrival: PreArrivalData | null) {
+  const checklist = preArrival?.checklistProgress ?? {};
+
+  const etaConfirmed = coerceBoolean(checklist.etaConfirmed) || Boolean(preArrival?.etaWindow);
+  const cashPrepared = coerceBoolean(checklist.cashPrepared) || (
+    coerceBoolean(preArrival?.cashReadyCityTax) && coerceBoolean(preArrival?.cashReadyDeposit)
+  );
+  const routePlanned = coerceBoolean(checklist.routePlanned) || Boolean(preArrival?.routeSaved);
+  const rulesReviewed = coerceBoolean(checklist.rulesReviewed);
+  const locationSaved = coerceBoolean(checklist.locationSaved);
+
+  const readinessScore = (
+    (routePlanned ? READINESS_WEIGHTS.routePlanned : 0) +
+    (etaConfirmed ? READINESS_WEIGHTS.etaConfirmed : 0) +
+    (cashPrepared ? READINESS_WEIGHTS.cashPrepared : 0) +
+    (rulesReviewed ? READINESS_WEIGHTS.rulesReviewed : 0) +
+    (locationSaved ? READINESS_WEIGHTS.locationSaved : 0)
+  );
+
+  return {
+    etaConfirmed,
+    cashPrepared,
+    routePlanned,
+    rulesReviewed,
+    locationSaved,
+    readinessScore,
+  };
+}
+
 export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
+  const clientIP = request.headers.get('CF-Connecting-IP') || 'unknown';
+  const rateLimitKey = `check-in-lookup:${clientIP}`;
+
+  if (env.RATE_LIMIT) {
+    const attempts = await env.RATE_LIMIT.get(rateLimitKey);
+    if (attempts && parseInt(attempts, 10) >= MAX_LOOKUPS_PER_HOUR) {
+      return errorResponse('Too many lookup attempts. Please try again later.', 429);
+    }
+    const nextAttemptCount = (parseInt(attempts || '0', 10) + 1).toString();
+    await env.RATE_LIMIT.put(rateLimitKey, nextAttemptCount, {
+      expirationTtl: RATE_LIMIT_TTL_SECONDS,
+    });
+  }
+
   const url = new URL(request.url);
   const code = url.searchParams.get('code');
 
@@ -86,8 +155,9 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
 
         if (!occupant) continue;
 
-        // Fetch pre-arrival data for ETA
+        // Fetch pre-arrival data for ETA + readiness context
         const preArrival = await firebase.get<PreArrivalData>(`preArrival/${uuid}`);
+        const readiness = buildReadinessSignals(preArrival);
 
         return jsonResponse({
           guestName: formatGuestName(
@@ -102,6 +172,11 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
           depositDue: KEYCARD_DEPOSIT,
           etaWindow: preArrival?.etaWindow ?? null,
           etaMethod: preArrival?.etaMethod ?? null,
+          readiness,
+          personalization: {
+            arrivalMethodPreference: preArrival?.arrivalMethodPreference ?? null,
+            arrivalConfidence: preArrival?.arrivalConfidence ?? null,
+          },
         });
       }
     }

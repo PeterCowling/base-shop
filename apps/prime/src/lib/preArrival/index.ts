@@ -42,3 +42,25 @@ export {
   stopRateLimitCleanup,
   type RateLimitResult,
 } from './rateLimiter';
+
+// Keycard status derivation
+export {
+  deriveGuestKeycardStatus,
+  type GuestKeycardStatus,
+  type GuestKeycardStatusState,
+} from './keycardStatus';
+
+// Personalization helpers
+export {
+  sortRoutesForPersonalization,
+  getDefaultEtaWindow,
+  getEtaWindowOptions,
+} from './personalization';
+
+// Completion feedback helpers
+export {
+  LAST_COMPLETED_CHECKLIST_ITEM_STORAGE_KEY,
+  readLastCompletedChecklistItem,
+  writeLastCompletedChecklistItem,
+  getChecklistItemLabel,
+} from './completionFeedback';

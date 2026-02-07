@@ -3,3 +3,4 @@
  */
 
 export { ArrivalHome } from './ArrivalHome';
+export { KeycardStatus } from './KeycardStatus';

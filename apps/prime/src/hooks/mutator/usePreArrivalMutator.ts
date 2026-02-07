@@ -17,6 +17,7 @@ import logger from '@/utils/logger';
 import { useCallback, useState } from 'react';
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type {
+  ArrivalConfidence,
   ChecklistProgress,
   EtaMethod,
   PreArrivalData,
@@ -48,6 +49,11 @@ export interface UsePreArrivalMutatorReturn {
   setCashReadyDeposit: (ready: boolean) => Promise<void>;
   /** Save a route slug */
   saveRoute: (routeSlug: string | null) => Promise<void>;
+  /** Save onboarding personalization context */
+  setPersonalization: (
+    method: EtaMethod | null,
+    confidence: ArrivalConfidence | null,
+  ) => Promise<void>;
   /** Loading state */
   isLoading: boolean;
   /** Error state */
@@ -236,6 +242,22 @@ export function usePreArrivalMutator(): UsePreArrivalMutatorReturn {
     [updatePreArrivalData, updateChecklistItem],
   );
 
+  /**
+   * Persist onboarding personalization preferences.
+   */
+  const setPersonalization = useCallback(
+    async (
+      method: EtaMethod | null,
+      confidence: ArrivalConfidence | null,
+    ): Promise<void> => {
+      await updatePreArrivalData({
+        arrivalMethodPreference: method,
+        arrivalConfidence: confidence,
+      });
+    },
+    [updatePreArrivalData],
+  );
+
   return {
     updateChecklistItem,
     updateChecklistItems,
@@ -243,6 +265,7 @@ export function usePreArrivalMutator(): UsePreArrivalMutatorReturn {
     setCashReadyCityTax,
     setCashReadyDeposit,
     saveRoute,
+    setPersonalization,
     isLoading,
     isError,
     isSuccess,

@@ -22,6 +22,11 @@ jest.mock('../../../lib/auth/guestSessionGuard', () => ({
   buildGuestHomeUrl: jest.fn(),
 }));
 
+jest.mock('../../../components/portal/GuidedOnboardingFlow', () => ({
+  __esModule: true,
+  default: () => <div>guided-onboarding-flow</div>,
+}));
+
 describe('GuestPortalPage', () => {
   const mockedReadGuestSession = readGuestSession as jest.MockedFunction<typeof readGuestSession>;
   const mockedClearGuestSession = clearGuestSession as jest.MockedFunction<typeof clearGuestSession>;
@@ -30,10 +35,11 @@ describe('GuestPortalPage', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    localStorage.clear();
     mockedBuildGuestHomeUrl.mockReturnValue('/?uuid=occ_1234567890123');
   });
 
-  it('TC-01: valid token redirects to guarded home', async () => {
+  it('TC-01: valid token with completed guided onboarding redirects to guarded home', async () => {
     mockedReadGuestSession.mockReturnValue({
       token: 'valid-token',
       bookingId: 'BOOK123',
@@ -42,6 +48,7 @@ describe('GuestPortalPage', () => {
       verifiedAt: '2026-02-07T00:00:00.000Z',
     });
     mockedValidateGuestToken.mockResolvedValue('valid');
+    localStorage.setItem('prime_guided_onboarding_complete:BOOK123', '1');
 
     render(<GuestPortalPage />);
 

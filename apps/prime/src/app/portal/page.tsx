@@ -3,37 +3,67 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import GuidedOnboardingFlow from '../../components/portal/GuidedOnboardingFlow';
 import {
   buildGuestHomeUrl,
   clearGuestSession,
+  type GuestSessionSnapshot,
   readGuestSession,
   validateGuestToken,
 } from '../../lib/auth/guestSessionGuard';
 
+const GUIDED_ONBOARDING_STORAGE_PREFIX = 'prime_guided_onboarding_complete';
+
+function getGuidedOnboardingStorageKey(session: GuestSessionSnapshot): string {
+  if (session.bookingId) {
+    return `${GUIDED_ONBOARDING_STORAGE_PREFIX}:${session.bookingId}`;
+  }
+
+  return GUIDED_ONBOARDING_STORAGE_PREFIX;
+}
+
+function hasCompletedGuidedOnboarding(session: GuestSessionSnapshot): boolean {
+  const key = getGuidedOnboardingStorageKey(session);
+  return localStorage.getItem(key) === '1';
+}
+
+function markGuidedOnboardingComplete(session: GuestSessionSnapshot): void {
+  const key = getGuidedOnboardingStorageKey(session);
+  localStorage.setItem(key, '1');
+}
+
 export default function GuestPortalPage() {
   const router = useRouter();
-  const [status, setStatus] = useState<'loading' | 'unavailable'>('loading');
+  const [status, setStatus] = useState<'loading' | 'unavailable' | 'guided'>('loading');
+  const [session, setSession] = useState<GuestSessionSnapshot | null>(null);
 
   useEffect(() => {
     let isMounted = true;
 
     async function validateSession() {
-      const session = readGuestSession();
+      const currentSession = readGuestSession();
+      const forcePersonalizationEdit = new URLSearchParams(window.location.search).get('edit') === 'personalization';
 
-      if (!session.token) {
+      if (!currentSession.token) {
         if (isMounted) {
           setStatus('unavailable');
         }
         return;
       }
 
-      const result = await validateGuestToken(session.token);
+      const result = await validateGuestToken(currentSession.token);
       if (!isMounted) {
         return;
       }
 
       if (result === 'valid' || result === 'network_error') {
-        router.replace(buildGuestHomeUrl(session));
+        if (!forcePersonalizationEdit && hasCompletedGuidedOnboarding(currentSession)) {
+          router.replace(buildGuestHomeUrl(currentSession));
+          return;
+        }
+
+        setSession(currentSession);
+        setStatus('guided');
         return;
       }
 
@@ -75,5 +105,17 @@ export default function GuestPortalPage() {
     );
   }
 
-  return null;
+  if (!session) {
+    return null;
+  }
+
+  return (
+    <GuidedOnboardingFlow
+      guestFirstName={session.firstName}
+      onComplete={() => {
+        markGuidedOnboardingComplete(session);
+        router.replace(buildGuestHomeUrl(session));
+      }}
+    />
+  );
 }

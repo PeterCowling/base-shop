@@ -6,10 +6,12 @@
  */
 
 import { CalendarDays, MapPin, Sparkles } from 'lucide-react';
+import Link from 'next/link';
 import { FC, memo, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   computeReadinessScore,
+  getChecklistItemLabel,
   getCompletedCount,
   getReadinessLevel,
   getTotalChecklistItems,
@@ -38,6 +40,8 @@ interface ReadinessDashboardProps {
   };
   /** Handler for checklist item clicks */
   onChecklistItemClick: (item: keyof ChecklistProgress) => void;
+  /** Most recent completed checklist item for celebration feedback */
+  recentlyCompletedItem?: keyof ChecklistProgress | null;
   /** Optional class name */
   className?: string;
 }
@@ -83,6 +87,7 @@ export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
     firstName,
     cashAmounts,
     onChecklistItemClick,
+    recentlyCompletedItem,
     className = '',
   }) {
     const { t } = useTranslation('PreArrival');
@@ -135,6 +140,19 @@ export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
               ? t('header.arrivalDaySubtitle')
               : t('header.subtitle')}
           </p>
+          <p className="mt-2 text-sm text-slate-600">
+            {isArrivalDay
+              ? 'Final checks now mean faster reception handoff.'
+              : 'Complete these steps now to speed up check-in on arrival day.'}
+          </p>
+          <div className="mt-3">
+            <Link
+              href="/portal?edit=personalization"
+              className="inline-flex rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50"
+            >
+              Edit preferences
+            </Link>
+          </div>
         </div>
 
         {/* Check-in info card */}
@@ -169,13 +187,38 @@ export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
           <p className="mt-4 text-center text-sm text-gray-600">
             {completedCount} {t('readiness.of')} {totalItems} {t('readiness.itemsComplete')}
           </p>
+          <div className="mt-4 w-full">
+            <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-sky-500 to-emerald-500 transition-all duration-300"
+                style={{ width: `${score}%` }}
+              />
+            </div>
+            <div className="mt-1 flex justify-between text-[11px] text-slate-500">
+              <span>Start</span>
+              <span>Ready</span>
+            </div>
+          </div>
+          {score >= 80 && (
+            <p className="mt-3 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+              You are ready for arrival
+            </p>
+          )}
         </div>
+
+        {recentlyCompletedItem && (
+          <div className="flex animate-pulse items-center gap-2 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
+            <Sparkles className="h-4 w-4" />
+            Nice progress: {getChecklistItemLabel(recentlyCompletedItem)} completed.
+          </div>
+        )}
 
         {/* Next action card */}
         <NextActionCard
           checklist={checklistProgress}
           onAction={handleItemClick}
           cashAmounts={cashAmounts}
+          recentlyCompletedItem={recentlyCompletedItem}
         />
 
         {/* Checklist */}

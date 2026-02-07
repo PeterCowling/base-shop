@@ -19,6 +19,8 @@ import { FC, memo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CheckInQR } from '../check-in/CheckInQR';
 import type { PreArrivalData, ChecklistProgress } from '../../types/preArrival';
+import type { GuestKeycardStatus } from '../../lib/preArrival/keycardStatus';
+import KeycardStatus from './KeycardStatus';
 
 interface ArrivalHomeProps {
   /** Guest's first name */
@@ -38,6 +40,8 @@ interface ArrivalHomeProps {
   nights: number;
   /** Handler for checklist item clicks */
   onChecklistItemClick: (item: keyof ChecklistProgress) => void;
+  /** Guest keycard status */
+  keycardStatus: GuestKeycardStatus;
   /** Optional class name */
   className?: string;
 }
@@ -55,6 +59,7 @@ export const ArrivalHome: FC<ArrivalHomeProps> = memo(function ArrivalHome({
   cashAmounts,
   nights,
   onChecklistItemClick,
+  keycardStatus,
   className = '',
 }) {
   const { t } = useTranslation('PreArrival');
@@ -154,6 +159,8 @@ export const ArrivalHome: FC<ArrivalHomeProps> = memo(function ArrivalHome({
           <p className="text-sm text-blue-600">{t('arrival.idNote')}</p>
         </div>
       </div>
+
+      <KeycardStatus status={keycardStatus} />
 
       {/* Location quick access */}
       <button

@@ -4,389 +4,275 @@ Outcome: Planning
 Status: Ready-for-planning
 Domain: CI/Infrastructure
 Created: 2026-02-06
-Last-updated: 2026-02-06
+Last-updated: 2026-02-07
 Feature-Slug: faster-staging-ci
 Related-Plan: docs/plans/faster-staging-ci-plan.md
 Business-Unit: PLAT
 Card-ID:
 ---
 
-# Faster Staging Deploys: Tailored CI & Local Pre-flight Validation — Fact-Find Brief
+# Faster Staging CI Fact-Find Brief
 
 ## Scope
-
 ### Summary
-
-Reduce the number of CI cycles needed to get an app to staging by (a) making CI pipelines change-aware so deploy-only changes skip irrelevant validation, and (b) catching platform-specific deployment failures locally before pushing. Catalysed by the 82-run brikette staging deployment.
+Reduce staging feedback time without weakening quality or safety controls. The target is faster iteration for deploy/config-only changes (especially Brikette staging) while preserving merge gate behavior, commit/push guardrails, and nightly quality signals.
 
 ### Goals
-
-- Reduce CI cycles for deploy config changes by 80% (82 → <15 for a comparable task)
-- Reduce wall-clock time per CI run by 50% for deploy-only changes
-- Catch >90% of static export incompatibilities locally before pushing
-- Catch platform constraint violations locally (Cloudflare free tier limits, missing features)
-- No regression in quality gates — code changes still get full lint/typecheck/test
+- Cut median `Deploy Brikette` runtime on `staging` deploy loops from ~12.0 minutes to <=6.0 minutes for deploy-only changes.
+- Reduce repeat push cycles caused by static-export/deploy config failures by adding local pre-flight validation.
+- Preserve existing effective controls: pre-commit checks, writer lock enforcement, pre-push safety, and merge gate.
+- Make the workflow explicit enough that agents follow it directly instead of attempting workarounds.
 
 ### Non-goals
-
-- Rewriting the entire CI architecture (incremental improvements to existing workflows)
-- Parallelizing tests across packages (separate plan: `docs/plans/ci-test-parallelization-plan.md`)
-- Changing how production deploys work (focus is staging iteration speed)
-- Replacing Turborepo or GitHub Actions
+- Disabling global quality checks (`Core Platform CI`, merge gate, or hook safety checks).
+- Replacing GitHub Actions/Turborepo architecture.
+- Reworking production deployment flow.
+- Solving every unrelated CI failure in this same implementation pass.
 
 ### Constraints & Assumptions
-
 - Constraints:
-  - Must not weaken quality gates for code changes — lint/typecheck/test must still run for source changes
-  - Must work with the existing reusable-app.yml pattern (used by 7+ app workflows)
-  - Must be backward-compatible — apps that don't opt in should behave exactly as before
-  - `dorny/paths-filter@v3` is already a trusted dependency (used in 4 workflows)
+  - Source changes must continue to run lint/typecheck/tests before merge.
+  - Direct pushes to `staging`/`main` and non-fast-forward pushes remain blocked (`scripts/git-hooks/pre-push-safety.sh`).
+  - Commit/push operations continue requiring lock ownership (`scripts/git-hooks/require-writer-lock.sh`).
+  - Any "skip validation" logic must fail open (if classification is uncertain, run full validation).
 - Assumptions:
-  - Next.js route tree is deterministic from filesystem structure (no runtime route generation)
-  - Static export constraints are enumerable and stable across Next.js 15 minor versions
-  - GitHub Actions conditional steps (`if:`) are sufficient granularity (no need for separate jobs)
+  - Deploy-only changes can be classified from paths with acceptable false-negative risk when implemented as fail-open.
+  - Most recent Brikette reruns are from build/deploy config errors rather than business logic defects.
+  - Overnight Package Quality Matrix remains a longitudinal quality signal, not a merge gate prerequisite.
 
 ## Repo Audit (Current State)
-
 ### Entry Points
-
-- `.github/workflows/reusable-app.yml` — Central reusable pipeline (lint → typecheck → test → build → deploy), used by all app workflows
-- `.github/workflows/brikette.yml` — Brikette-specific caller workflow (staging: static export, production: Worker)
-- `.github/workflows/merge-gate.yml` — Central merge gate with `dorny/paths-filter` for 11 change-set categories
-- `.github/workflows/ci.yml` — Core platform CI (lint, typecheck, test, storybook-visual, build, e2e, release)
-- `scripts/validate-deploy-env.sh` — Pre-deploy environment validation (278 lines)
-- `scripts/post-deploy-health-check.sh` — Post-deploy HTTP verification (120 lines)
-- `packages/next-config/index.mjs` — Shared Next.js base config (reads `OUTPUT_EXPORT` env var)
+- `.github/workflows/reusable-app.yml` — reusable deploy pipeline used by app deploy workflows.
+- `.github/workflows/brikette.yml` — Brikette deploy caller (staging + production modes).
+- `.github/workflows/merge-gate.yml` — merge orchestration that waits on required workflows by change set.
+- `.github/workflows/ci.yml` — Core Platform CI (lint, typecheck, tests, build, e2e gating).
+- `.github/workflows/test.yml` — Package Quality Matrix (push to `main`, manual, and nightly schedule).
+- `.github/workflows/auto-pr.yml` — automation for `dev` -> `staging` pipeline PR creation.
+- `scripts/git-hooks/pre-commit.sh` — local commit gate chain.
+- `scripts/git-hooks/pre-push-safety.sh` — blocks direct pushes to protected branches and history rewrites.
+- `scripts/git-hooks/require-writer-lock.sh` — enforces single-writer lock ownership for write operations.
+- `scripts/validate-changes.sh` — broader local validation gate script (typecheck/lint/targeted tests).
 
 ### Key Modules / Files
-
-| File | Lines | Role |
-|------|-------|------|
-| `.github/workflows/reusable-app.yml` | 193 | Reusable pipeline template — the primary modification target |
-| `.github/workflows/brikette.yml` | 94 | Brikette caller — static export build with route hiding workaround |
-| `.github/workflows/merge-gate.yml` | 353 | Merge gate — already uses `dorny/paths-filter` for 11 filters |
-| `.github/workflows/ci.yml` | ~250 | Core CI — separate from reusable-app, has its own change detection |
-| `scripts/validate-deploy-env.sh` | 278 | Secret validation gate (currently `continue-on-error: true`) |
-| `scripts/post-deploy-health-check.sh` | 120 | Post-deploy HTTP check with retries |
-| `scripts/post-deploy-brikette-cache-check.sh` | 187 | Brikette production-only cache header validation |
-| `scripts/validate-deploy-health-checks.sh` | 82 | CI enforcement: ensure all deploy workflows have health checks |
-| `packages/next-config/index.mjs` | 90 | Shared config with `OUTPUT_EXPORT` → `output: 'export'` logic |
-| `scripts/validate-changes.sh` | 287 | Pre-commit local validation (lint, typecheck, targeted tests) |
-| `scripts/src/launch-shop/preflight.ts` | 257 | Launch-shop pre-flight (runtime, git, config, secrets, compliance) |
-| `docs/brikette-deploy-decisions.md` | 207 | Documents static export gotchas and deploy strategy |
+- `.github/workflows/reusable-app.yml` — currently always runs `Lint` + `Typecheck`; skips `Test` only on `staging` (`if: github.ref != refs/heads/staging`), then always builds.
+- `.github/workflows/reusable-app.yml` — `Validate deploy environment` is still `continue-on-error: true` (temporary unblock).
+- `.github/workflows/brikette.yml` — static-export workaround temporarily renames incompatible routes during staging build.
+- `.github/workflows/merge-gate.yml` — uses `dorny/paths-filter@v3` and waits on selected workflows; currently commonly fails at `Wait for required workflows` due upstream CI failures.
+- `.github/workflows/test.yml` — nightly `0 3 * * *` matrix run on `main` with recurring failures in the same workspace subset.
+- `scripts/git-hooks/pre-commit.sh` — chains env-file guard, writer-lock check, partial-staging guard, lint-staged, staged typecheck, staged package lint, agent-context validation.
+- `scripts/git-hooks/typecheck-staged.sh` — package-scoped typecheck for staged workspaces (fallback full typecheck only for root TS changes).
+- `scripts/git-hooks/lint-staged-packages.sh` — package-scoped lint for staged workspaces.
+- `package.json` (`simple-git-hooks.pre-push`) — runs writer-lock + pre-push safety + full `pnpm typecheck && pnpm lint`.
 
 ### Patterns & Conventions Observed
-
-- **Reusable workflow pattern**: All app deploys call `reusable-app.yml` with app-specific inputs. Modifications to this file affect all apps simultaneously — evidence: `brikette.yml:46`, `skylar.yml`, `prime.yml`, `product-pipeline.yml` all reference it.
-- **`dorny/paths-filter@v3` for change detection**: Already used in `merge-gate.yml` (11 filters), `ci.yml` (E2E change detection), and `ci-lighthouse.yml`. Well-understood pattern.
-- **Concurrency groups with cancel-in-progress**: All app workflows use `cancel-in-progress: true`, so pushing a fix cancels the previous failing run — evidence: `brikette.yml:40-41`.
-- **Route hiding for static export**: Brikette hides `api/`, `draft/`, and `[...slug]` during build with `mv` commands — evidence: `brikette.yml:54-61`.
-- **Artifact upload/download between jobs**: Build artifacts passed via `actions/upload-artifact@v4` with 1-day retention — evidence: `reusable-app.yml:108-115`.
-- **Separate `validate-and-build` and `deploy` jobs**: Deploy job is a separate runner that downloads artifacts — cannot share filesystem state.
-- **TEMP workarounds in place**: Tests skipped on staging branch (`reusable-app.yml:82`), `validate-deploy-env.sh` continues on error (`reusable-app.yml:156`).
+- Reusable deploy pipeline pattern: app workflows call `.github/workflows/reusable-app.yml` (central blast radius).
+- Change-set filtering already exists at trigger level (`paths` in app workflows, `dorny/paths-filter` in merge gate/core CI), but not yet at step-level inside `reusable-app.yml`.
+- Safety-over-speed guardrails are layered: local hooks, writer lock, protected-branch commit block, protected-branch push block, non-fast-forward push block.
+- `cancel-in-progress: true` is common in CI workflows to reduce stale run waste.
+- Nightly quality matrix is broad by design and currently unstable; it acts as ongoing signal, not a merge gate.
 
 ### Data & Contracts
-
 - Types/schemas:
-  - No formal "pipeline profile" type exists. Each app workflow hardcodes its build strategy.
-  - `packages/next-config/index.mjs` — `OUTPUT_EXPORT` env var toggles `output: 'export'` and `images.unoptimized`.
+  - `reusable-app.yml` `workflow_call` contract defines deploy input surface (`app-filter`, `build-cmd`, `artifact-path`, `deploy-cmd`, environment metadata, healthcheck inputs).
+  - No explicit typed contract yet for "change classification" (code vs deploy-only).
 - Persistence:
-  - Turbo remote cache (configured via `TURBO_TOKEN`/`TURBO_TEAM` in `setup-repo` action)
-  - GitHub Actions artifact store (1-day retention for build artifacts)
+  - Turbo remote cache via `setup-repo` action.
+  - GitHub Actions artifacts for build outputs/coverage.
 - API/event contracts:
-  - `reusable-app.yml` inputs: `app-filter`, `build-cmd`, `artifact-path`, `deploy-cmd`, `project-name`, `environment-name`, `environment-url`, `healthcheck-args`, `healthcheck-base-url`
-  - `reusable-app.yml` secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `TURBO_TOKEN`, `SOPS_AGE_KEY`
+  - Brikette deploy triggers on path-scoped `push` (`main`, `staging`) and `pull_request`.
+  - Merge Gate computes required workflows from file changes and polls workflow run status for the commit SHA.
+  - Package Quality Matrix runs on `main` push and nightly schedule.
+  - Local hooks enforce lock + validation before commit/push.
 
 ### Dependency & Impact Map
-
 - Upstream dependencies:
-  - `dorny/paths-filter@v3` — third-party action for change classification
-  - `actions/checkout@v4`, `actions/upload-artifact@v4`, `actions/download-artifact@v4` — GitHub first-party
-  - `.github/actions/setup-repo` — custom composite action (pnpm, Node, Turbo cache)
-  - `.github/actions/decrypt-secrets` — custom composite action (SOPS/Age)
-- Downstream dependents (workflows that call `reusable-app.yml`):
-  - `brikette.yml` (staging + production)
-  - `skylar.yml` (staging + production)
-  - `prime.yml` (staging + production)
-  - `product-pipeline.yml` (staging + production)
-  - Any future app workflows
+  - `dorny/paths-filter@v3`
+  - `actions/checkout@v4`, `actions/upload-artifact@v4`, `actions/download-artifact@v4`
+  - `actions/github-script@v7`
+  - internal composite actions: `setup-repo`, `decrypt-secrets`
+- Downstream dependents:
+  - Deploy workflows calling `reusable-app.yml`: Brikette, Prime, Product Pipeline, Skylar, and other app deploy callers.
+  - Merge Gate policy uses outcomes from Core CI and app deploy workflows.
+  - Local developer/agent workflow depends on pre-commit and pre-push hooks in `package.json`.
 - Likely blast radius:
-  - **Modifying `reusable-app.yml`** affects all 4+ app workflows. Must be backward-compatible.
-  - **Adding a new input** to `reusable-app.yml` is safe (callers that don't pass it get the default).
-  - **Local pre-flight script** is additive — no blast radius on CI.
-  - **merge-gate.yml** already handles change detection; no modification needed for Phase 1.
+  - `reusable-app.yml` step-level gating changes affect all app deploy workflows.
+  - Hook changes affect every contributor/agent push path.
+  - Merge Gate requirement changes affect repository-wide mergeability.
 
 ### Test Landscape
 
 #### Test Infrastructure
-
-- **Frameworks:** Jest (primary), Node test runner (`@acme/next-config`), Cypress (E2E), Playwright (Storybook visual)
-- **Commands:** `pnpm test` (all), `pnpm test:affected` (Turbo-filtered), `pnpm test:changed` (hash-based)
-- **CI integration:** `pnpm test:affected` in `ci.yml` (20 min timeout); `pnpm --filter {app} test` in `reusable-app.yml`; CMS uses 4 Jest shards
-- **Coverage:** Codecov upload from `ci.yml`; tiered thresholds (CRITICAL 90%, STANDARD 80%, MINIMAL 0%)
+- **Frameworks:** GitHub Actions runs (integration-level behavior), shell hook scripts, Jest/Node tests for selected helper scripts.
+- **Commands:** local hook chain (`pre-commit`, `pre-push`), workflow jobs, `scripts/validate-changes.sh`.
+- **CI integration:** Merge Gate waits on required workflows; Core Platform CI and app deploy workflows are the active gate checks.
+- **Coverage tools:** Codecov used in Core CI for unit test coverage; no coverage framework for workflow/hook behavior.
 
 #### Existing Test Coverage
-
 | Area | Test Type | Files | Coverage Notes |
 |------|-----------|-------|----------------|
-| `packages/next-config` | unit | `__tests__/index.test.mjs` | Tests `OUTPUT_EXPORT` → `output: 'export'` toggle |
-| `scripts/launch-shop/preflight` | unit | `scripts/__tests__/launch-shop/preflight.test.ts` | Tests runtime, git, config, secrets validation |
-| `scripts/validate-deploy-env.sh` | none | — | Shell script, no tests |
-| `scripts/post-deploy-health-check.sh` | none | — | Shell script, no tests |
-| CI workflows (`.github/workflows/*.yml`) | none | — | No workflow-level tests (standard for GHA) |
+| Deploy workflows | live workflow runs | `.github/workflows/reusable-app.yml`, `.github/workflows/brikette.yml` | Validated by Actions outcomes; no unit harness for workflow logic |
+| Merge orchestration | live workflow runs | `.github/workflows/merge-gate.yml` | Behavior validated by polling real runs |
+| Local hook chain | runtime hook execution | `scripts/git-hooks/*.sh` | No dedicated automated tests for hook decisions/messages |
+| Deploy pre-flight pattern reference | unit | `scripts/__tests__/launch-shop/preflight.test.ts` | Existing pre-flight architecture is test-backed and reusable as pattern |
+| Validation gate script | runtime script execution | `scripts/validate-changes.sh` | No dedicated script-level automated tests |
 
 #### Test Patterns & Conventions
-
-- Unit tests: Jest with shared preset (`packages/config/jest.preset.cjs`), hybrid ESM/CJS support
-- Pre-commit validation: `scripts/validate-changes.sh` — runs lint, typecheck, targeted tests for changed files
-- No existing test framework for CI workflow logic or deploy scripts
+- CI/workflow behavior is primarily validated in real Actions runs (not mocked).
+- Local hooks favor staged-scope checks at pre-commit, then broader full checks pre-push.
+- Build/deploy regressions are currently discovered late (during CI runs), not preflighted locally.
 
 #### Coverage Gaps (Planning Inputs)
-
-- **No tests for static export compatibility** — the constraints that caused 5+ CI failures are not validated anywhere
-- **No tests for deploy scripts** — `validate-deploy-env.sh`, `post-deploy-health-check.sh` are untested shell scripts
-- **No local simulation of CI pipeline steps** — can't reproduce "will this build succeed in CI?" locally
+- **Untested paths:**
+  - Step-level "deploy-only" classifier logic does not exist yet; no tests for it.
+  - Hook chain behavior (especially bypass/env flags and edge cases) lacks automated regression tests.
+  - No automated assertion that merge-gate required-workflow mapping remains in sync with workflow triggers.
+- **Extinct tests:**
+  - None identified for this scope.
 
 #### Testability Assessment
-
-- **Easy to test:** Route tree scanning (filesystem-based, deterministic), config export validation (AST parsing), platform constraint checks (rule-based)
-- **Hard to test:** GitHub Actions conditional logic (requires act or real workflow runs), Cloudflare deploy behavior (requires real infrastructure)
-- **Test seams needed:** A `preflight-deploy` script can be unit-tested with fixture directories representing valid/invalid route trees
+- **Easy to test:**
+  - Path classification logic (pure function/fixture based).
+  - Local deploy pre-flight checks (filesystem + config fixtures).
+- **Hard to test:**
+  - Full merge-gate behavior across asynchronous workflow states.
+  - End-to-end behavior of GitHub permissions constraints in `Auto PR` (depends on repository settings).
+- **Test seams needed:**
+  - Extract classifier logic into a script/module with fixture tests.
+  - Add deterministic fixtures for deploy-only vs code-change path sets.
 
 #### Recommended Test Approach
-
-- **Unit tests for:** Route tree scanner (fixture-based), config export linter (AST fixtures), platform constraint checker (rule list)
-- **Integration tests for:** Full pre-flight script running against real app directories
-- **No E2E needed:** CI workflow changes are verified by running the workflows themselves
-- **Regression tests:** Encode the 5 brikette failures as test cases for the pre-flight script
+- **Unit tests for:** path-classification logic and local pre-flight checks.
+- **Integration tests for:** hook-chain decision points (lock ownership, staged-scope package detection) in a temporary git fixture repo.
+- **E2E tests for:** none; use draft PR workflow runs for CI behavior verification.
+- **Contract tests for:** expected mapping between change categories and required validation steps (fail-open behavior).
+- **Note:** This should be planned explicitly in `/plan-feature` so speed gains do not regress safety guarantees.
 
 ### Recent Git History (Targeted)
+- CI/deploy hardening and Brikette staging fixes are concentrated in recent commits touching reusable deploy workflows and Brikette workflow.
+- Hook scoping work has already landed (`pre-commit` staged package lint/typecheck), while pre-push remains full-repo validation.
+- Current fact-find document itself has not been kept aligned with latest run telemetry and needs this refresh (this update).
 
-- `.github/workflows/brikette.yml` — 17 failed + 3 successful runs in last session (2026-02-06); all failures were static export or deploy config issues
-- `.github/workflows/reusable-app.yml` — Added staging test skip (`if: github.ref != 'refs/heads/staging'`), `continue-on-error: true` on validate-deploy-env.sh
-- `docs/brikette-deploy-decisions.md` — Recently rewritten to document static export gotchas and deploy strategy
+### Measured GitHub Actions Baseline (captured 2026-02-07)
 
-## Measured CI Performance Data
+#### Deploy Brikette (`gh run list --workflow "Deploy Brikette" --limit 120`)
+- Sample: 93 runs (2026-01-16 to 2026-02-07).
+- Completed outcomes: 3 success (3.3%), 66 failure (73.3%), 21 cancelled (23.3%), 3 in progress.
+- Duration (completed): p50 5.5m, p90 20.4m, avg 7.9m.
+- `staging` branch subset: 37 runs, 3 success / 26 failure / 8 cancelled, p50 12.0m, p90 18.9m, avg 11.2m.
+- Successful staging runs (IDs `21762631207`, `21761875065`, `21761417017`): total ~11.6-11.8m; `Validate & build` ~8.9-9.2m; `Deploy` ~2.4-2.7m.
+- Recent staging failure hotspots (latest 20 staging runs):
+  - Failing jobs: `Deploy` (10), `Validate & build` (7).
+  - Failing steps: `Build` (7), `Deploy` (4), `Post-Deploy Health Check` (4), cache header check (1), artifact download (1).
 
-### Brikette Deploy Workflow
+#### Merge Gate (`gh run list --workflow "Merge Gate" --limit 80`)
+- Sample: 40 runs (2026-02-01 to 2026-02-07).
+- Outcomes: 0 success, 38 failure, 2 cancelled.
+- Duration: p50 2.3m, p90 6.7m.
+- Latest 20 failures: dominant failing step is `Gate :: Wait for required workflows` (15/20).
+- Example run `21777909794`: gate watched `Core Platform CI` + `Deploy Brikette`; failed when Core CI concluded failure.
 
-| Metric | Value | Notes |
-|--------|-------|-------|
-| Successful run duration | ~11-12 min | Consistent across 3 recent successful runs |
-| Validate & build job | ~8-9 min | Lint + typecheck + build (tests skipped on staging) |
-| Deploy job | ~2-3 min | Download artifact + deploy + health check |
-| Recent failure rate | 85% (17/20) | During deploy config migration work |
-| Avg failures before success | ~17 | Each requiring a fix-push-wait cycle |
+#### Core Platform CI (`gh run list --workflow "Core Platform CI" --limit 120`)
+- Sample: 120 runs (2026-02-02 to 2026-02-07).
+- Outcomes: 0 success, 65 failure, 55 cancelled.
+- Duration: p50 12.1m, p90 20.4m, avg 12.9m.
+- Latest 20 failed runs hotspots:
+  - Failing jobs: `Unit tests` (12), `Lint` (12), `Build` (4), `Typecheck` (4), `Business OS Mirror Guard` (2).
+  - Failing steps include `Docs lint`, `Plans lint`, template lint, unit tests, build, typecheck.
 
-### Core Platform CI
+#### Auto PR (dev -> staging) (`gh run list --workflow 224568433 --limit 120`)
+- Sample: 81 runs (2026-01-17 to 2026-02-07).
+- Outcomes: 7 success, 74 failure.
+- Duration: p50 0.1m, p90 0.2m (fast fail).
+- Latest failure (`21777909299`) error: `GitHub Actions is not permitted to create or approve pull requests` (403).
 
-| Metric | Value | Notes |
-|--------|-------|-------|
-| Lint job | ~7-8 min | Slowest single job (standard lint 4.5min + Tailwind 1.7min) |
-| Typecheck | ~5-6 min | Second slowest |
-| Unit tests | ~2 min | Fast (uses `test:affected`) |
-| Setup/install | ~35-45s | Per job (repeated across parallel jobs) |
-| Full pipeline | ~15-20 min | When all jobs run |
+#### Package Quality Matrix (`gh run list --workflow "Package Quality Matrix"`)
+- All events sample: 120 runs (2025-11-29 to 2026-02-07) -> 20 success, 90 failure, 9 cancelled, 1 in progress.
+- Scheduled-only sample: 69 runs (2025-12-01 to 2026-02-07) -> 1 success, 68 failure.
+- 2026 scheduled subset (2026-01-01 to 2026-02-07): 38 runs -> 0 success, 38 failure; duration p50 3.8m, p90 4.7m.
+- Latest 10 scheduled runs show the same 9 failing workspace jobs each run:
+  - `apps/product-pipeline`, `apps/brikette`, `apps/cochlearfit`, `apps/api`, `apps/prime`, `apps/storybook`, `packages/design-tokens`, `packages/configurator`, `packages/template-app`.
+  - Recurring failing steps include `Build workspace (scoped)`, `apps/api coverage`, `apps/prime lint`, `packages/configurator test with coverage`.
 
-### Time Breakdown for Deploy-Only Changes (Current)
-
-For a change that only touches `brikette.yml` or `wrangler.toml`:
-
-| Step | Time | Necessary? |
-|------|------|-----------|
-| Checkout + setup | ~1 min | Yes |
-| Lint (app + deps) | ~3-4 min | **No** — no code changed |
-| Typecheck (app + deps) | ~4-5 min | **No** — no code changed |
-| Test (app) | ~1-2 min | **No** — no code changed (currently skipped on staging anyway) |
-| Build | ~3-4 min | Yes — need to verify build succeeds |
-| Deploy | ~2-3 min | Yes |
-| **Total** | ~11-12 min | **~5-6 min could be saved** |
-
-## Existing Change Detection Mechanisms
-
-### Already Implemented
-
-1. **GitHub native `paths` filters** — Used in `brikette.yml` (lines 8-30) to trigger only when relevant paths change. Good for "should this workflow run at all?" but not for "which steps should run?"
-2. **`dorny/paths-filter@v3`** — Used in `merge-gate.yml` (11 filters), `ci.yml` (E2E detection), `ci-lighthouse.yml`. Trusted, well-understood. Runs as a step and produces boolean outputs.
-3. **Turborepo `--affected`** — Used for test runs (`pnpm test:affected`). Determines affected packages from git changes + dependency graph. Works at package level, not file level.
-4. **Turborepo `--filter`** — Used for scoped builds and lints (`--filter=@apps/brikette^...`). Builds only the dependency tree, not unrelated packages.
-5. **Concurrency groups** — All workflows use `cancel-in-progress: true`, so new pushes cancel stale runs.
-
-### Gap: No Step-Level Change Awareness in Reusable Pipeline
-
-`reusable-app.yml` always runs: Lint → Typecheck → Test → Build → Deploy (in that order). There is **no mechanism to skip Lint/Typecheck/Test when only deploy config changed**. The `paths` filters on caller workflows determine whether the workflow runs at all, but once it's running, all steps execute.
-
-This is the key gap. The idea's Phase 1 ("classify changes" step) directly addresses it.
-
-## Analysis: Feasibility of Proposed Phases
-
-### Phase 1: Change-Set Aware CI (reusable-app.yml)
-
-**Approach:** Add `dorny/paths-filter` as a step in `reusable-app.yml` (or have callers pass a `skip-validation` input) to classify changes and conditionally skip lint/typecheck/test.
-
-**Option A: Caller passes `skip-validation` boolean input**
-- Simplest. Each caller workflow decides whether validation is needed based on its own `paths` config.
-- Pro: No change to reusable-app.yml's internal logic beyond an `if:` condition.
-- Con: Callers must maintain the classification logic. Doesn't help if a PR has mixed changes.
-
-**Option B: `dorny/paths-filter` inside reusable-app.yml**
-- More powerful. The reusable workflow itself detects what changed and skips irrelevant steps.
-- Pro: Centralised logic, works for mixed changesets.
-- Con: The reusable workflow needs to know each app's "code paths" vs "config paths" — could require a new input like `code-paths` (glob list).
-- **Problem:** `dorny/paths-filter` requires the checkout step and works on the PR/push diff. It's already available in the reusable workflow since we checkout with `fetch-depth: 0`.
-
-**Option C: New input `change-category` (enum: code | config | deploy-only | mixed)**
-- Caller workflow classifies the change and passes it as an input.
-- Pro: Explicit, testable, no additional action needed in reusable workflow.
-- Con: GitHub Actions doesn't support running `dorny/paths-filter` in a caller and passing results as inputs to a reusable workflow in the same job — they're in separate runners. Would need a separate classify job.
-
-**Recommendation: Option B** — Add `dorny/paths-filter` inside `reusable-app.yml` as the first step. Define two categories:
-- `code_changed`: matches `apps/**/*.{ts,tsx,js,jsx,mjs,css}`, `packages/**/*.{ts,tsx,js,jsx,mjs,css}`, `*.config.*`, `tsconfig*`
-- `deploy_config_only`: matches `.github/workflows/**`, `**/wrangler.toml`, `**/public/_redirects`, `scripts/validate-deploy*`, `scripts/post-deploy*`
-
-If `code_changed` is false, skip lint/typecheck/test. Build always runs (needed to verify the build config).
-
-**Estimated savings:** ~5-6 minutes per deploy-only change (skip lint + typecheck + test).
-
-**Risk:** False negatives — if the classification misses a path that matters, a code change could skip validation. Mitigation: default to running all steps (fail-open). Only skip when explicitly confident no code changed.
-
-### Phase 2: Local Pre-flight Script
-
-**Approach:** `scripts/preflight-deploy.sh <app> <target>` (or TypeScript equivalent) that validates:
-
-1. **Route tree compatibility** (static export constraints):
-   - Scan `apps/{app}/src/app/` for catch-all routes (`[...slug]`), route handlers (`route.ts`) in dynamic segments, and pages with conditional config exports
-   - Flag any route not listed in the build command's "hide" list
-   - **Feasibility: High** — filesystem scan + simple grep/AST check
-
-2. **Config export validation**:
-   - Parse `.tsx`/`.ts` files that export `dynamic`, `revalidate`, etc.
-   - Flag conditional expressions (ternaries, if/else) — Next.js static analysis rejects these
-   - **Feasibility: High** — AST parsing with `ts-morph` or even regex for simple cases
-
-3. **Platform constraint check**:
-   - Given target = "cloudflare-pages-free": flag Image Resizing URLs (`/cdn-cgi/image/`), middleware usage, Worker-only APIs
-   - **Feasibility: Medium** — need a rule list per platform, maintained manually
-
-4. **Deploy config linter**:
-   - Validate that the build command hides all routes that need hiding
-   - Cross-reference route tree with the `mv` commands in the workflow YAML
-   - **Feasibility: Medium** — requires parsing the workflow YAML to extract `mv` commands
-
-**Existing asset to build on:** `scripts/src/launch-shop/preflight.ts` (257 lines) already validates runtime, git state, config schema, themes, secrets, and compliance. Same pattern — a pre-flight checklist. The new script can follow the same structure.
-
-**Implementation language:** TypeScript (consistent with `preflight.ts`, can use `ts-morph` for AST parsing).
-
-### Phase 3: Build Caching
-
-**Current state:** Turbo remote cache is configured (`setup-repo` action sets `TURBO_TOKEN`/`TURBO_TEAM`). Turbo caches build outputs (`dist/`, `.next/`, `*.tsbuildinfo`). However:
-- The Brikette build uses a custom build command with `mv` workarounds, which may defeat Turbo caching
-- GitHub Actions artifact store has 1-day retention (not a cache, just job-to-job transfer)
-- No Next.js `.next/cache` persistence between CI runs
-
-**Opportunity:**
-- Add GitHub Actions cache for `.next/cache` directory to speed up Next.js incremental builds
-- Ensure Turbo remote cache is actually being used (check hit rates)
-- **Needs measurement first** — this is Phase 3 for a reason
-
-### Phase 4: App Pipeline Profiles
-
-**Current state:** Each app workflow hardcodes its build strategy. `reusable-app.yml` is generic (takes `build-cmd`, `deploy-cmd` as strings).
-
-**Opportunity:** Define pipeline profiles (e.g., `static-export`, `worker`, `full-ssr`) that encode:
-- Which validation steps to run
-- Build command template
-- Deploy command template
-- Post-deploy checks to run
-
-**Assessment:** This is premature optimisation. The current system with explicit inputs works well for 4-5 apps. Profiles add abstraction without clear benefit until there are 10+ apps. **Defer.**
+## External Research (If needed)
+- None required. Repository audit and first-party GitHub Actions telemetry were sufficient.
 
 ## Questions
-
 ### Resolved
+- Q: Do we already have scoped local checks before commit?
+  - A: Yes. Pre-commit already scopes typecheck/lint to staged workspaces and enforces lock + staged-file safety.
+  - Evidence: `scripts/git-hooks/pre-commit.sh`, `scripts/git-hooks/typecheck-staged.sh`, `scripts/git-hooks/lint-staged-packages.sh`.
 
-- Q: Can `dorny/paths-filter` work inside a reusable `workflow_call` workflow?
-  - A: Yes. It runs as a step that reads the git diff. The reusable workflow has `fetch-depth: 0` checkout, which is required. It works on both push and PR events.
-  - Evidence: Already used inside `merge-gate.yml` which handles both push and PR events. `reusable-app.yml` has identical checkout config.
+- Q: Do local push guardrails already prevent destructive GitHub actions?
+  - A: Yes. Direct pushes to protected branches and non-fast-forward pushes are blocked locally.
+  - Evidence: `scripts/git-hooks/pre-push-safety.sh`.
 
-- Q: Can we add a new input to `reusable-app.yml` without breaking existing callers?
-  - A: Yes. All inputs have `required: false` with defaults. New inputs with defaults are backward-compatible.
-  - Evidence: `reusable-app.yml:14-47` — all optional inputs have defaults.
+- Q: Is deploy workflow step-level validation currently change-aware?
+  - A: No. In reusable app pipeline, lint/typecheck always run; tests are only conditionally skipped on `staging`.
+  - Evidence: `.github/workflows/reusable-app.yml`.
 
-- Q: How many routes need hiding for brikette static export?
-  - A: 3 routes: `src/app/api` (route handlers), `src/app/[lang]/draft` (preview-only), `src/app/[lang]/guides/[...slug]` (catch-all).
-  - Evidence: `brikette.yml:54-56`. Route tree scan confirms these are the only problematic patterns.
-
-- Q: Is there existing tooling for route tree scanning?
-  - A: No dedicated tool. But `scripts/src/launch-shop/preflight.ts` provides the pattern (checklist of file-system-based validations). The route tree is entirely filesystem-derived (Next.js App Router convention).
-  - Evidence: `apps/brikette/src/app/` directory structure; `Glob` results show all pages.
-
-- Q: What's the actual time saved by skipping validation for deploy-only changes?
-  - A: ~5-6 minutes. Lint takes ~3-4 min, typecheck takes ~4-5 min for brikette (including dependency builds). Tests are already skipped on staging. Build + deploy takes ~5-6 min and must always run.
-  - Evidence: CI run data from `gh run list` and job step durations.
-
-- Q: Are there static export tests in `packages/next-config`?
-  - A: Yes, basic test that `OUTPUT_EXPORT=1` sets `output: 'export'` in config. But no test for route compatibility constraints.
-  - Evidence: `packages/next-config/__tests__/index.test.mjs:48-54`.
+- Q: Is overnight quality CI currently healthy?
+  - A: No. Scheduled Package Quality Matrix has failed every 2026 run sampled (38/38).
+  - Evidence: workflow run telemetry and repeated failing workspace set.
 
 ### Open (User Input Needed)
+- Q: Should `Core Platform CI` remain a required merge-gate dependency for deploy-only Brikette config changes?
+  - Why it matters: This is a major contributor to staging cycle time even when app code is unchanged.
+  - Decision impacted: Whether planning includes merge-gate requirement refinement vs only reusable deploy step refinement.
+  - Default assumption + risk: Keep current requirement initially (safer), then refine with explicit path-based contract. Risk is slower iteration until refined.
 
-- Q: Should the pre-flight script be invoked automatically as a pre-push hook, or only manually / by the deploy skill?
-  - Why it matters: Auto-invocation catches errors early but adds latency to every push. Manual invocation requires developer discipline.
-  - Decision impacted: Phase 2 integration strategy.
-  - Default assumption: Start manual (invoked by `/deploy-brikette` skill and available as `pnpm preflight-deploy brikette staging`). Add as optional pre-push hook later if adoption is good. Risk: Low — manual is safer; can always tighten later.
+- Q: Should pre-push remain full `pnpm typecheck && pnpm lint`, or move to staged-scope parity with pre-commit?
+  - Why it matters: Full pre-push improves safety but adds latency and duplicate work vs CI.
+  - Decision impacted: Whether speed plan includes local developer/agent loop optimization.
+  - Default assumption + risk: Keep full pre-push for now; optimize only with evidence-backed false-negative analysis. Risk is continued local latency.
 
-- Q: Should Phase 1 (change-aware CI) be implemented for all apps via `reusable-app.yml`, or just for brikette first?
-  - Why it matters: Doing all apps is more work upfront but prevents per-app drift. Doing brikette first is faster but means the reusable workflow has brikette-specific logic.
-  - Decision impacted: Whether to modify `reusable-app.yml` or create `brikette-ci.yml` with inline logic.
-  - Default assumption: Implement in `reusable-app.yml` for all apps — the change detection logic is generic (code vs config paths). Brikette-specific aspects (route hiding, static export) stay in `brikette.yml`. Risk: Low — the reusable workflow already handles app-specific logic via inputs.
+- Q: Should recurring overnight matrix failures be treated as blocking for this initiative or tracked as a parallel reliability stream?
+  - Why it matters: They distort merge-gate/CI signals and may mask true speed improvements.
+  - Decision impacted: Sequencing and acceptance criteria for faster-staging-ci.
+  - Default assumption + risk: Parallel stream with explicit visibility in plan; do not block staging-speed implementation on full matrix repair. Risk is ongoing background red signal.
 
 ## Confidence Inputs (for /plan-feature)
+- **Implementation:** 84%
+  - Why: Existing infra already includes path filters, staged-scope hooks, and reusable workflow pattern; adding step-level classifier + local preflight is straightforward.
+  - To >=90: implement classifier with fixture tests and validate on one draft PR containing both deploy-only and code changes.
 
-- **Implementation:** 85%
-  - `dorny/paths-filter` is well-understood (used in 4 workflows already). Adding it to `reusable-app.yml` is a known pattern. Route tree scanning is straightforward filesystem work. TypeScript pre-flight script follows existing patterns (`preflight.ts`).
-  - What would raise to 90%: Prototype the `dorny/paths-filter` step in `reusable-app.yml` and verify it correctly classifies a deploy-only change vs a code change in a test PR.
+- **Approach:** 79%
+  - Why: Direction is clear (change-aware deploy validation + local preflight), but merge-gate dependency policy and pre-push scope policy require explicit decision.
+  - To >=80: decide merge-gate treatment for deploy-only changes.
+  - To >=90: decide both open policy questions and run a measured trial comparing before/after cycle time across at least 10 staging runs.
 
-- **Approach:** 80%
-  - Option B (paths-filter inside reusable-app.yml) is the right approach — centralised, backward-compatible, proven pattern. Phase ordering (CI first, local pre-flight second) makes sense — CI changes have immediate impact, pre-flight is additive.
-  - What would raise to 90%: Confirm that `dorny/paths-filter` inside a reusable `workflow_call` correctly reads the caller's trigger diff (not the reusable workflow's file changes). A quick test PR would confirm this.
+- **Impact:** 88%
+  - Why: Blast radius is well-known (`reusable-app.yml`, hooks, merge gate), and telemetry identifies bottlenecks precisely.
+  - To >=90: define explicit rollback toggles and acceptance metrics in the implementation plan.
 
-- **Impact:** 90%
-  - Blast radius is well-understood. `reusable-app.yml` modifications affect 4+ app workflows, but the change is additive (new input + conditional `if:`). Default behavior is unchanged. Pre-flight script is purely additive. No risk to existing quality gates for code changes.
-  - What would raise to 95%: Measure Turbo remote cache hit rates to confirm Phase 3 (build caching) value before committing to it.
-
-- **Testability:** 75%
-  - Route tree scanner and config export linter are highly testable (fixture-based). CI workflow changes are harder to test (require real workflow runs or `act`). Pre-flight script can be integration-tested against real app directories.
-  - What would raise to 85%: Create fixture directories for valid/invalid route trees and use them as test cases for the pre-flight script.
+- **Testability:** 74%
+  - Why: Local classifier/preflight are testable, but workflow orchestration is primarily validated via live Actions runs.
+  - To >=80: add fixture tests for classifier and preflight checks.
+  - To >=90: add automated regression harness for hook-chain behavior and a CI metrics check script to detect regressions in skip decisions.
 
 ## Planning Constraints & Notes
-
 - Must-follow patterns:
-  - Reusable workflow pattern — all changes to the pipeline go through `reusable-app.yml`, not per-app workflows
-  - `dorny/paths-filter@v3` — use the same action version already in use across the repo
-  - Fail-open for change classification — if classification is uncertain, run all validation steps (never skip when unsure)
-  - TypeScript for new scripts — consistent with `preflight.ts` and existing tooling
+  - Keep all safety guardrails (writer lock, protected-branch commit/push blocks, non-fast-forward block).
+  - Use fail-open gating logic for any step-skipping behavior.
+  - Prefer central reusable workflow updates over app-specific drift.
 - Rollout/rollback expectations:
-  - Phase 1 can be rolled back by removing the `if:` conditions on lint/typecheck/test steps (one commit)
-  - Phase 2 is purely additive (new script) — rollback is "don't run it"
-  - Test Phase 1 on brikette first (most frequent deploys), then verify other apps still work
+  - Rollout in phases: metrics baseline -> classifier behind explicit conditions -> local preflight -> gate refinements.
+  - Rollback is straightforward: remove/disable classifier conditions in `reusable-app.yml` and keep full validation path.
 - Observability expectations:
-  - CI step annotations showing "Skipped lint/typecheck/test: deploy-only change detected" when steps are skipped
-  - Pre-flight script should output a clear pass/fail summary with specific issues listed
+  - CI should explicitly log why steps were skipped or executed.
+  - Plan should include baseline vs post-change metrics tracking (p50/p90 run durations, rerun count to success).
 
 ## Suggested Task Seeds (Non-binding)
-
-1. **Add `dorny/paths-filter` step to `reusable-app.yml`** — Classify changes as code vs deploy-config. Output `code_changed` boolean.
-2. **Gate lint/typecheck/test steps on `code_changed`** — Add `if: steps.filter.outputs.code_changed == 'true'` to validation steps. Build always runs.
-3. **Add new input `skip-validation`** — Optional override for callers to force-skip validation (useful for `workflow_dispatch` deploy-only runs).
-4. **Create `scripts/preflight-deploy.ts`** — Route tree scanner + config export linter + platform constraint checker. Start with brikette's known failure patterns as test cases.
-5. **Add route tree fixture tests** — Encode the 5 brikette static export failures as fixture-based test cases for the pre-flight script.
-6. **Integrate pre-flight into `/deploy-brikette` skill** — Run pre-flight before triggering CI.
-7. **Remove TEMP workarounds** — Re-enable tests on staging branch, fix `validate-deploy-env.sh` (separate tasks, but enabled by faster CI).
-8. **Measure Turbo remote cache effectiveness** — Audit cache hit rates to determine Phase 3 value (blocking for Phase 3 go/no-go).
+- Build a small metrics script to snapshot workflow latency/failure baselines (same queries used in this fact-find).
+- Add deploy change classification to `.github/workflows/reusable-app.yml` and gate lint/typecheck/test with fail-open defaults.
+- Add a local `preflight-deploy` script for Brikette static-export and deploy-config checks.
+- Add unit tests for classifier and preflight logic using path/fixture matrices.
+- Add explicit CI log annotations for skip decisions to improve agent/operator clarity.
+- Decide whether merge-gate required workflows should be refined for deploy-only changes.
+- Create a parallel reliability mini-plan for recurring overnight Package Quality Matrix failures.
 
 ## Planning Readiness
-
 - Status: **Ready-for-planning**
-- Blocking items: None — open questions have safe defaults.
-- Recommended next step: Proceed to `/plan-feature faster-staging-ci`
+- Blocking items (if any):
+  - None for starting planning; open questions are policy choices with safe defaults.
+- Recommended next step:
+  - Proceed to `/plan-feature faster-staging-ci` and include explicit policy decisions for merge-gate dependency scope, pre-push scope, and overnight-matrix handling.

@@ -87,7 +87,7 @@ jest.mock("react-i18next", () => ({
 jest.mock("@/context/modal/constants", () => ({
   CORE_LAYOUT_NAMESPACES: ["header", "footer"],
   i18nConfig: {
-    supportedLngs: ["en", "it", "de"],
+    supportedLngs: ["en", "it", "de", "fr"],
     fallbackLng: "en",
   },
 }));
@@ -95,7 +95,7 @@ jest.mock("@/context/modal/constants", () => ({
 jest.mock("@/context/modal/global-modals/../constants", () => ({
   CORE_LAYOUT_NAMESPACES: ["header", "footer"],
   i18nConfig: {
-    supportedLngs: ["en", "it", "de"],
+    supportedLngs: ["en", "it", "de", "fr"],
     fallbackLng: "en",
   },
 }));
@@ -107,11 +107,11 @@ jest.mock("@/utils/loadI18nNs", () => ({
 jest.mock("@/utils/translate-path", () => ({
   translatePath: (slugKey: string, lang: string) => {
     const map: Record<string, Record<string, string>> = {
-      assistance: { en: "help", it: "assistenza", de: "hilfe" },
-      experiences: { en: "experiences", it: "esperienze", de: "erlebnisse" },
-      guides: { en: "guides", it: "guide", de: "reisefuehrer" },
-      howToGetHere: { en: "how-to-get-here", it: "come-arrivare", de: "anfahrt" },
-      guidesTags: { en: "tags", it: "etichette", de: "schlagwoerter" },
+      assistance: { en: "help", it: "assistenza", de: "hilfe", fr: "aide" },
+      experiences: { en: "experiences", it: "esperienze", de: "erlebnisse", fr: "experiences" },
+      guides: { en: "guides", it: "guide", de: "reisefuehrer", fr: "guides" },
+      howToGetHere: { en: "how-to-get-here", it: "come-arrivare", de: "anfahrt", fr: "comment-venir" },
+      guidesTags: { en: "tags", it: "etichette", de: "schlagwoerter", fr: "etiquettes" },
     };
     return map[slugKey]?.[lang] ?? `${slugKey}-${lang}`;
   },
@@ -167,6 +167,21 @@ describe("LanguageGlobalModal routing", () => {
 
     await waitFor(() => {
       expect(replaceMock).toHaveBeenCalledWith("/it/esperienze/etichette/beaches");
+    });
+  });
+
+  it("translates how-to-get-here index routes", async () => {
+    pathname = "/en/how-to-get-here";
+    searchParams = new URLSearchParams("");
+    window.history.replaceState({}, "", pathname);
+
+    const user = userEvent.setup();
+    renderWithProviders(<LanguageGlobalModal />);
+
+    await user.click(screen.getByRole("button", { name: "select-fr" }));
+
+    await waitFor(() => {
+      expect(replaceMock).toHaveBeenCalledWith("/fr/comment-venir");
     });
   });
 });

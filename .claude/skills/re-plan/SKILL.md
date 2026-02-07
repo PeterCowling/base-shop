@@ -12,6 +12,42 @@ Resolve low-confidence tasks in an existing plan. Investigate, remove uncertaint
 - **Confidence ≥90 is a motivation, not a quota.** Increasing confidence should come from reducing uncertainty (evidence, tests, spikes), not from deleting planned work.
 - If work is valuable but not yet high-confidence, preserve it as **deferred/Phase 3** and add **"What would make this ≥90%"** notes.
 
+## Scientific Confidence Protocol (Mandatory)
+
+Treat re-planning as hypothesis testing, not narrative scoring.
+
+### Core rule
+
+**Confidence may only increase when uncertainty is reduced by evidence.**
+
+If uncertainty remains, do one of:
+- keep confidence where it is (or lower it), or
+- add explicit precursor work (INVESTIGATE/SPIKE) and make downstream tasks depend on it.
+
+### Evidence ladder (use to justify confidence changes)
+
+| Evidence class | Typical source | Allowed confidence uplift |
+|----------------|----------------|---------------------------|
+| **E0: Assumption** | Opinion, intuition, "seems easy" | **0%** |
+| **E1: Static code/doc audit** | `rg`, file reads, call-site mapping | **small uplift only** (typically +0 to +5) |
+| **E2: Executable verification** | existing tests run, script outputs, runtime probes | **moderate uplift** (typically +5 to +15) |
+| **E3: Precursor spike/prototype result** | dedicated spike task with measurable outcome | **major uplift** (typically +10 to +25) |
+
+### Promotion gate (hard rule)
+
+A task should not be promoted from **<80%** to **≥80%** unless at least one is true:
+1. The blocking unknowns are closed with **E2+** evidence, or
+2. A precursor task is inserted with explicit exit criteria, and downstream implementation remains below 80% until that precursor is completed.
+
+### Precursor task pattern
+
+When evidence is insufficient, add a precursor task before the blocked task:
+- **Type:** `INVESTIGATE` (or narrow `IMPLEMENT` spike when code execution is required)
+- **Purpose:** resolve exactly one uncertainty class (Implementation/Approach/Impact)
+- **Outputs:** concrete artifact (`decision memo`, `call-site map`, `test/probe output`, `prototype result`)
+- **Exit criteria:** binary pass/fail statement tied to evidence
+- **Dependency:** blocked task depends on precursor task ID
+
 ## TDD Compliance Requirement
 
 **Every IMPLEMENT task must have an enumerated test contract before it can be marked Ready.**
@@ -105,6 +141,15 @@ For each low-confidence task, identify which dimension(s) caused the min-score:
 
 Record the diagnosis per task explicitly in the plan update.
 
+### 2b) Define falsifiable checks (before scoring)
+
+For each target task, define:
+- **Uncertainty statement:** what is unknown right now?
+- **Falsifiable check:** what observation would prove/disprove the current approach?
+- **Evidence target class:** E1, E2, or E3 (from the evidence ladder)
+
+If you cannot define a falsifiable check, confidence must not increase.
+
 ### 3) Perform targeted investigation (evidence-driven)
 
 #### A) Close Implementation gaps
@@ -114,6 +159,7 @@ Record the diagnosis per task explicitly in the plan update.
 - Identify the exact integration seam (function/class/module boundaries).
 - Confirm required types/contracts and where they are validated.
 - Identify the correct test layer(s) that can prove correctness.
+- Run at least one executable check where possible (existing targeted test, probe, or script) for high-impact claims.
 
 **Evidence to capture:**
 - file paths (and key symbol names)
@@ -131,6 +177,7 @@ Record the diagnosis per task explicitly in the plan update.
   - operational risk and observability
 - Decide on a chosen approach based on evidence.
 - If the decision is genuinely a product preference, escalate to the user with a precise choice and recommendation.
+- If no approach can be selected confidently, create a precursor INVESTIGATE/SPIKE task instead of forcing a score increase.
 
 **Deliverable:**
 - A short "Decision" paragraph added to the plan (and a Decision Log entry).
@@ -150,6 +197,7 @@ Record the diagnosis per task explicitly in the plan update.
   - Were not updated when functional code last changed
 - Identify rollout/rollback requirements:
   - feature flags, backward compatibility, migration sequencing
+- Add quantitative blast-radius notes where possible (number of files, call-sites, tests likely affected).
 
 **Evidence to capture:**
 - callers / references (file paths)
@@ -225,6 +273,7 @@ Update `docs/plans/<feature-slug>-plan.md` as follows:
 - Preserve the same TASK-ID (do not renumber).
 - Add a **Re-plan Update** block containing:
   - Previous confidence → new confidence
+  - Evidence class used for uplift (E1/E2/E3)
   - What was investigated (repo areas, tests, docs)
   - Decisions made (and why)
   - Updated dependencies/order (if changed)
@@ -234,6 +283,10 @@ Update `docs/plans/<feature-slug>-plan.md` as follows:
 - Split into:
   - an INVESTIGATE task (to remove remaining unknowns), and
   - one or more IMPLEMENT tasks that become ≥80% once the investigation is done.
+
+**If confidence remains <80% after investigation:**
+- Add explicit precursor task(s) and set dependency ordering so numerical task execution cannot skip them.
+- Add a short **"Precursor evidence needed"** note in the task body.
 
 **Also update:**
 - `Last-updated` in frontmatter
@@ -252,6 +305,9 @@ Before marking any task as Ready or finalizing confidence scores, verify:
 - [ ] **Internal consistency:** Confidence in task body matches confidence in summary table
 - [ ] **No assumptions:** If you haven't verified in code, it's an "Unknown" not a confident claim
 - [ ] **Test impact quantified:** If tests will break, list how many and which files
+- [ ] **Evidence class stated:** Any confidence uplift cites E1/E2/E3 and corresponding artifact(s)
+- [ ] **No narrative promotion:** Task is not promoted to ≥80 solely from E1 static audit when key unknowns remain
+- [ ] **Precursor enforcement:** Remaining unknowns are converted into explicit precursor tasks with dependencies
 
 **If any checklist item fails, do NOT finalize the confidence score. Investigate or mark as Unknown.**
 
@@ -285,7 +341,18 @@ Identify any tasks whose confidence should change due to:
 
 Update those tasks' confidence (and notes) if materially affected.
 
-If the plan ordering changes, update dependencies explicitly.
+### 6a) Sequence the plan (automatic)
+
+After updating tasks and re-assessing knock-on effects, run `/sequence-plan` on the plan. This:
+
+- Re-sorts tasks into correct implementation order (accounting for new/changed dependencies)
+- Renumbers tasks sequentially (preserving domain prefix)
+- Updates all `Depends on` and `Blocks` fields with new IDs
+- Regenerates the **Parallelism Guide** to reflect the current dependency graph
+
+**Skip conditions:** Only skip if re-plan touched a single task with no dependency changes.
+
+**Note:** `/sequence-plan` does not change task scope, confidence, or acceptance — it only reorders, renumbers, and maps dependencies. All substantive changes were made in steps 1–6.
 
 ### 7) Decision point and handoff
 
@@ -293,13 +360,13 @@ End by classifying the plan state:
 
 - **Ready to build:** all IMPLEMENT tasks are ≥80% confidence **AND** have complete test contracts (TC-XX)
 - **TDD incomplete:** confidence ≥80% but some tasks missing test contracts — add test contracts before proceeding
-- **Partially ready:** some tasks are 60–79% with explicit verification steps; none below 60%
+- **Partially ready:** some tasks are 60–79% with explicit precursor tasks/verification steps; none below 60%
 - **Blocked:** any IMPLEMENT task is <60% or requires user input to proceed safely
 
 **TDD gate is mandatory.** A task with 90% confidence but no test contract is NOT ready for build.
 
 Provide the recommended next action:
-- `/build-feature` if ready (confidence ≥80% AND test contracts complete)
+- `/build-feature` if ready (confidence ≥80% AND test contracts complete) — tasks are already sequenced with parallelism guide
 - `/re-plan` again if remaining blocked tasks exist or test contracts are missing
 - Ask user questions if genuinely required
 
@@ -311,6 +378,7 @@ Add this block inside the task section:
 #### Re-plan Update (YYYY-MM-DD)
 - **Previous confidence:** 55%
 - **Updated confidence:** 84%
+  - **Evidence class:** E2 (executable verification)
   - Implementation: 84% — <why + evidence>
   - Approach: 88% — <why + evidence>
   - Impact: 84% — <why + evidence>
@@ -325,6 +393,8 @@ Add this block inside the task section:
   - Acceptance: <updated bullets if changed>
   - Test plan: <updated bullets if changed>
   - Rollout/rollback: <updated notes if changed>
+- **Precursor evidence needed (if still <80):**
+  - <TASK-ID or verification step that must complete before confidence can be promoted>
 ```
 
 Also add a short entry to the plan's **Decision Log** whenever an approach decision is made or reversed.
@@ -340,17 +410,20 @@ Also add a short entry to the plan's **Decision Log** whenever an approach decis
 - [ ] User questions are only asked when genuinely unavoidable and are decision-framed.
 - [ ] **TDD compliance:** Every IMPLEMENT task has a complete test contract with TC-XX enumeration.
 - [ ] **Test contract validation:** All items in 5b) checklist pass for every IMPLEMENT task.
+- [ ] **Scientific uplift compliance:** each confidence increase is tied to E1/E2/E3 evidence and uncertainty reduction.
+- [ ] **Precursor compliance:** unresolved unknowns are represented as explicit precursor tasks, not hidden in optimism.
+- [ ] **Sequencing applied:** `/sequence-plan` has been run — tasks reordered, renumbered, `Blocks` fields updated, Parallelism Guide regenerated.
 
 ## Completion Messages
 
 **All ≥80% with complete test contracts:**
-> "Re-plan complete. Updated `docs/plans/<feature-slug>-plan.md`. All implementation tasks are ≥80% confidence with complete test contracts. Proceed to `/build-feature`."
+> "Re-plan complete. Updated `docs/plans/<feature-slug>-plan.md`. All implementation tasks are ≥80% confidence with complete test contracts. Tasks re-sequenced into N execution waves (max parallelism: P). Proceed to `/build-feature`."
 
 **Confidence ≥80% but missing test contracts:**
-> "Re-plan complete. Updated plan. Tasks <IDs> are ≥80% confidence but missing test contracts (TC-XX). Run `/re-plan` again to add test contracts before proceeding to build."
+> "Re-plan complete. Updated plan. Tasks <IDs> are ≥80% confidence but missing test contracts (TC-XX). Tasks re-sequenced. Run `/re-plan` again to add test contracts before proceeding to build."
 
 **Some caution tasks (60–79%) but none <60%:**
-> "Re-plan complete. Updated plan. Tasks <IDs> remain 60–79% with explicit verification steps; recommend building ≥80% tasks first and reassessing."
+> "Re-plan complete. Updated plan. Tasks <IDs> remain 60–79% with explicit precursor/verification steps. Tasks re-sequenced. Recommend completing precursor tasks before promoting confidence."
 
 **Blocked / needs user input:**
-> "Re-plan complete but still blocked on <IDs> (<%>) due to <dimension>. I need the following decisions from you: <questions>."
+> "Re-plan complete but still blocked on <IDs> (<%>) due to <dimension>. Tasks re-sequenced where possible. I need the following decisions from you: <questions>."

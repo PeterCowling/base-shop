@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ArrivalHome from '../arrival/ArrivalHome';
 import KeycardStatus from '../arrival/KeycardStatus';
 import ReadinessDashboard from '../pre-arrival/ReadinessDashboard';
+import { recordActivationFunnelEvent } from '../../lib/analytics/activationFunnel';
 import { useUnifiedBookingData } from '../../hooks/dataOrchestrator/useUnifiedBookingData';
 import { useCheckInCode } from '../../hooks/useCheckInCode';
 import { usePreArrivalState } from '../../hooks/usePreArrivalState';
@@ -21,6 +22,7 @@ export default function GuardedHomeExperience() {
   const { occupantData, isLoading, error, isCheckedIn } = useUnifiedBookingData();
   const [recentlyCompletedItem, setRecentlyCompletedItem] = useState<keyof ChecklistProgress | null>(null);
   const celebrationTimeoutRef = useRef<number | null>(null);
+  const trackedArrivalModeRef = useRef(false);
 
   const checkInDate = occupantData?.checkInDate;
   const checkOutDate = occupantData?.checkOutDate;
@@ -97,6 +99,25 @@ export default function GuardedHomeExperience() {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (arrivalState !== 'arrival-day' || trackedArrivalModeRef.current) {
+      return;
+    }
+
+    trackedArrivalModeRef.current = true;
+    recordActivationFunnelEvent({
+      type: 'arrival_mode_entered',
+      sessionKey:
+        localStorage.getItem('prime_guest_uuid') ||
+        occupantData?.reservationCode ||
+        'unknown-session',
+      route: '/',
+      context: {
+        checkInCodeAvailable: Boolean(checkInCode),
+      },
+    });
+  }, [arrivalState, checkInCode, occupantData?.reservationCode]);
 
   if (isLoading) {
     return (

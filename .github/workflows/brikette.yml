@@ -67,6 +67,8 @@ jobs:
         pnpm exec wrangler pages deploy out
         --project-name ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette-website' }}
         --branch staging
+      # Run Brikette Jest validation in three shards via reusable workflow.
+      test-shard-count: 3
       project-name: ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette-website' }}
       environment-name: "staging"
       environment-url: ${{ format('https://staging.{0}.pages.dev', vars.BRIKETTE_PAGES_PROJECT || 'brikette-website') }}

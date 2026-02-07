@@ -2,7 +2,18 @@
    Reception app global styles powered by Tailwind */
 @config "../../../../tailwind.config.mjs";
 
+@import "@themes/base/tokens.css";
 @import "tailwindcss";
+
+:root {
+  /* Bridge legacy reception semantics to shared hospitality tokens */
+  --reception-signal-ready-bg: hsl(var(--hospitality-ready));
+  --reception-signal-ready-fg: hsl(var(--hospitality-ready-fg));
+  --reception-signal-warning-bg: hsl(var(--hospitality-warning));
+  --reception-signal-warning-fg: hsl(var(--hospitality-warning-fg));
+  --reception-signal-info-bg: hsl(var(--hospitality-info));
+  --reception-signal-info-fg: hsl(var(--hospitality-info-fg));
+}
 
 /* -------- CSS reset (minimal) ------------------------------------ */
 *,

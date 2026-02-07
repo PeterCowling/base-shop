@@ -5,22 +5,22 @@
  * Displays readiness score, checklist progress, and next action card.
  */
 
-import { CalendarDays, MapPin, Sparkles } from 'lucide-react';
+import { CalendarDays, MapPin, MessageCircle, Sparkles } from 'lucide-react';
+import { ReadinessSignalCard, UtilityActionStrip } from '@acme/ui';
 import Link from 'next/link';
 import { FC, memo, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { recordActivationFunnelEvent } from '../../lib/analytics/activationFunnel';
 import {
   computeReadinessScore,
   getChecklistItemLabel,
   getCompletedCount,
-  getReadinessLevel,
   getTotalChecklistItems,
 } from '../../lib/preArrival';
 import type { ChecklistProgress, PreArrivalData } from '../../types/preArrival';
 import type { GuestArrivalState } from '../../types/preArrival';
 import ChecklistItem from './ChecklistItem';
 import NextActionCard from './NextActionCard';
-import ReadinessScore from './ReadinessScore';
 
 interface ReadinessDashboardProps {
   /** Pre-arrival data */
@@ -78,6 +78,18 @@ function getDaysUntilCheckIn(dateStr: string): number {
   }
 }
 
+function getFunnelSessionKey(): string {
+  if (typeof window === 'undefined') {
+    return 'unknown-session';
+  }
+
+  return (
+    localStorage.getItem('prime_guest_uuid') ||
+    localStorage.getItem('prime_guest_booking_id') ||
+    'unknown-session'
+  );
+}
+
 export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
   function ReadinessDashboard({
     preArrivalData,
@@ -98,7 +110,6 @@ export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
       () => computeReadinessScore(checklistProgress),
       [checklistProgress],
     );
-    const level = useMemo(() => getReadinessLevel(score), [score]);
     const completedCount = useMemo(
       () => getCompletedCount(checklistProgress),
       [checklistProgress],
@@ -118,6 +129,66 @@ export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
         onChecklistItemClick(item);
       },
       [onChecklistItemClick],
+    );
+
+    const utilityActions = useMemo(
+      () => [
+        {
+          id: 'maps',
+          label: 'Maps',
+          icon: MapPin,
+          onSelect: () => {
+            recordActivationFunnelEvent({
+              type: 'utility_action_used',
+              sessionKey: getFunnelSessionKey(),
+              route: '/',
+              stepId: 'maps',
+              context: {
+                surface: isArrivalDay ? 'arrival-day' : 'pre-arrival',
+              },
+            });
+            handleItemClick('locationSaved');
+          },
+          variant: 'primary' as const,
+        },
+        {
+          id: 'eta',
+          label: 'Share ETA',
+          icon: CalendarDays,
+          onSelect: () => {
+            recordActivationFunnelEvent({
+              type: 'utility_action_used',
+              sessionKey: getFunnelSessionKey(),
+              route: '/',
+              stepId: 'eta',
+              context: {
+                surface: isArrivalDay ? 'arrival-day' : 'pre-arrival',
+              },
+            });
+            handleItemClick('etaConfirmed');
+          },
+        },
+        {
+          id: 'support',
+          label: 'Support',
+          icon: MessageCircle,
+          onSelect: () => {
+            recordActivationFunnelEvent({
+              type: 'utility_action_used',
+              sessionKey: getFunnelSessionKey(),
+              route: '/',
+              stepId: 'support',
+              context: {
+                surface: isArrivalDay ? 'arrival-day' : 'pre-arrival',
+              },
+            });
+            if (typeof window !== 'undefined') {
+              window.open('mailto:hostelbrikette@gmail.com', '_self');
+            }
+          },
+        },
+      ],
+      [handleItemClick, isArrivalDay],
     );
 
     return (
@@ -182,29 +253,13 @@ export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
         </div>
 
         {/* Readiness score */}
-        <div className="flex flex-col items-center rounded-xl bg-white p-6 shadow-sm">
-          <ReadinessScore score={score} level={level} />
-          <p className="mt-4 text-center text-sm text-gray-600">
-            {completedCount} {t('readiness.of')} {totalItems} {t('readiness.itemsComplete')}
-          </p>
-          <div className="mt-4 w-full">
-            <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
-              <div
-                className="h-full rounded-full bg-gradient-to-r from-sky-500 to-emerald-500 transition-all duration-300"
-                style={{ width: `${score}%` }}
-              />
-            </div>
-            <div className="mt-1 flex justify-between text-[11px] text-slate-500">
-              <span>Start</span>
-              <span>Ready</span>
-            </div>
-          </div>
-          {score >= 80 && (
-            <p className="mt-3 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
-              You are ready for arrival
-            </p>
-          )}
-        </div>
+        <ReadinessSignalCard
+          score={score}
+          completedCount={completedCount}
+          totalCount={totalItems}
+        />
+
+        <UtilityActionStrip actions={utilityActions} />
 
         {recentlyCompletedItem && (
           <div className="flex animate-pulse items-center gap-2 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">

@@ -1,32 +1,7 @@
 /* Base design-system tokens (colour, spacing, typography, z-index) */
 @import '@themes/base/tokens.css';
+@import '@themes/prime/tokens.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Prime brand overrides — layer on top of base tokens */
-:root {
-  --color-primary: 192 80% 42%;
-  --color-primary-fg: 0 0% 100%;
-  --color-primary-soft: 192 70% 95%;
-  --color-primary-hover: 192 80% 36%;
-  --color-primary-active: 192 80% 32%;
-  --color-accent: 32 90% 55%;
-  --color-accent-fg: 0 0% 100%;
-  --color-accent-soft: 32 90% 95%;
-  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-}
-
-.theme-dark {
-  --color-primary: 192 75% 55%;
-  --color-primary-fg: 0 0% 100%;
-  --color-primary-soft: 192 70% 18%;
-  --color-primary-hover: 192 75% 62%;
-  --color-primary-active: 192 75% 68%;
-  --color-accent: 32 85% 60%;
-  --color-accent-fg: 0 0% 10%;
-  --color-accent-soft: 32 70% 20%;
-}

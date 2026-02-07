@@ -45,6 +45,12 @@ on:
         required: false
         type: string
         default: ""
+      # Number of test shards for Brikette CI path. Values other than 3
+      # currently fall back to the default single test job.
+      test-shard-count:
+        required: false
+        type: number
+        default: 1
 
     secrets:
       CLOUDFLARE_API_TOKEN:
@@ -63,10 +69,13 @@ on:
         required: false
 
 jobs:
-  validate-and-build:
-    name: Validate & build
+  validate:
+    name: Validate
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    outputs:
+      run_validation: ${{ steps.classify.outputs.run_validation }}
+      run_sharded_tests: ${{ steps.test-strategy.outputs.run_sharded_tests }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -166,6 +175,22 @@ jobs:
             echo "::notice title=Validation gating::Running full validation. reason=${{ steps.classify.outputs.reason }} uncertain=${{ steps.classify.outputs.uncertain }} changed_files=${{ steps.classify.outputs.changed_file_count }}"
           fi
 
+      - name: Determine test strategy
+        id: test-strategy
+        shell: bash
+        env:
+          APP_FILTER: ${{ inputs.app-filter }}
+          TEST_SHARD_COUNT: ${{ inputs.test-shard-count }}
+        run: |
+          set -euo pipefail
+          if [[ "$APP_FILTER" == "@apps/brikette" && "$TEST_SHARD_COUNT" -eq 3 ]]; then
+            echo "run_sharded_tests=true" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Test strategy::Using Brikette sharded test mode (3 shards)."
+          else
+            echo "run_sharded_tests=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Test strategy::Using single test job."
+          fi
+
       - name: Lint
         if: ${{ steps.classify.outputs.run_validation == 'true' }}
         run: pnpm --filter ${{ inputs.app-filter }}... lint
@@ -176,9 +201,9 @@ jobs:
         run: pnpm exec turbo run typecheck --filter=${{ inputs.app-filter }}...
         shell: bash
 
-      - name: Test
-        if: ${{ steps.classify.outputs.run_validation == 'true' }}
-        run: pnpm --filter ${{ inputs.app-filter }} test
+      - name: Firebase cost-safety gate (Prime)
+        if: ${{ steps.classify.outputs.run_validation == 'true' && inputs.app-filter == '@apps/prime' }}
+        run: pnpm --filter @apps/prime test:firebase-cost-gate
         shell: bash
 
       - name: Validate guide manifest (warn-only)
@@ -199,6 +224,72 @@ jobs:
         shell: bash
         continue-on-error: true
 
+  test:
+    name: Test
+    if: ${{ needs.validate.outputs.run_validation == 'true' && needs.validate.outputs.run_sharded_tests != 'true' }}
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+      - name: Run tests
+        run: pnpm --filter ${{ inputs.app-filter }} test
+        shell: bash
+
+  test-sharded:
+    name: Test (shard ${{ matrix.shard }}/3)
+    if: ${{ needs.validate.outputs.run_validation == 'true' && needs.validate.outputs.run_sharded_tests == 'true' }}
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+      - name: Restore Jest/ts-jest caches (Brikette shards)
+        uses: actions/cache@v4
+        with:
+          path: |
+            .ts-jest
+            node_modules/.cache/jest
+            apps/brikette/node_modules/.cache/jest
+          key: brikette-jest-cache-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ matrix.shard }}
+          restore-keys: |
+            brikette-jest-cache-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
+      - name: Run Brikette test shard (${{ matrix.shard }}/3)
+        run: |
+          pnpm --filter @apps/brikette exec jest --ci --runInBand --passWithNoTests \
+            --shard=${{ matrix.shard }}/3
+        shell: bash
+
+  build:
+    name: Build
+    needs: [validate, test, test-sharded]
+    if: ${{ needs.validate.result == 'success' && (needs.test.result == 'success' || needs.test.result == 'skipped') && (needs.test-sharded.result == 'success' || needs.test-sharded.result == 'skipped') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
       - name: Build
         run: ${{ inputs.build-cmd }}
         shell: bash
@@ -216,7 +307,7 @@ jobs:
     name: Deploy
     # Only deploy if a deploy command is provided AND we are on main or staging
     if: ${{ inputs.deploy-cmd != '' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging') }}
-    needs: validate-and-build
+    needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment:

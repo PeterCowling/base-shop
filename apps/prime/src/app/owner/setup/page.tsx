@@ -1,5 +1,6 @@
 import { Settings } from 'lucide-react';
 import Link from 'next/link';
+import ActivationFunnelSummary from '../../../components/owner/ActivationFunnelSummary';
 
 export default function OwnerSetupPage() {
   return (
@@ -16,7 +17,10 @@ export default function OwnerSetupPage() {
         </div>
 
         <div className="rounded-xl bg-white p-6 shadow-sm">
-          <p className="text-gray-600">Owner setup coming soon.</p>
+          <p className="mb-4 text-gray-600">
+            Owner setup now includes live activation analytics from guest flows.
+          </p>
+          <ActivationFunnelSummary />
           <Link
             href="/"
             className="mt-4 inline-block text-blue-600 hover:underline"

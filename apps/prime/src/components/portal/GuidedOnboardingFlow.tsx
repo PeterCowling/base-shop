@@ -1,8 +1,12 @@
 'use client';
 
-import { CheckCircle2, ChevronRight, ShieldCheck, Sparkles } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
+import { StepFlowShell } from '@acme/design-system/primitives';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import ExperimentGate from '@acme/ui/components/ab/ExperimentGate';
 import { ROUTES_TO_POSITANO } from '../../data/routes';
+import { recordActivationFunnelEvent } from '../../lib/analytics/activationFunnel';
+import { assignActivationVariants } from '../../lib/experiments/activationExperiments';
 import {
   getChecklistItemLabel,
   getDefaultEtaWindow,
@@ -34,6 +38,18 @@ function normalizeMethod(method: string | null): EtaMethod | null {
   }
 
   return null;
+}
+
+function getFunnelSessionKey(): string {
+  if (typeof window === 'undefined') {
+    return 'unknown-session';
+  }
+
+  return (
+    localStorage.getItem('prime_guest_uuid') ||
+    localStorage.getItem('prime_guest_booking_id') ||
+    'unknown-session'
+  );
 }
 
 function normalizeConfidence(confidence: string | null): ArrivalConfidence | null {
@@ -120,11 +136,16 @@ export default function GuidedOnboardingFlow({
     return sortRoutesForPersonalization(ROUTES_TO_POSITANO, arrivalMethodPreference).slice(0, 3);
   }, [arrivalMethodPreference]);
 
+  const sessionKey = useMemo(() => getFunnelSessionKey(), []);
+  const experimentVariants = useMemo(
+    () => assignActivationVariants(sessionKey),
+    [sessionKey],
+  );
+  const showConfidenceBeforeMethod = experimentVariants.onboardingStepOrder === 'eta-first';
+
   const etaWindowOptions = useMemo(() => {
     return getEtaWindowOptions(arrivalConfidence);
   }, [arrivalConfidence]);
-
-  const stepProgressPercent = Math.round((step / 3) * 100);
 
   function showCelebration(message: string) {
     if (celebrationTimeoutRef.current) {
@@ -148,6 +169,16 @@ export default function GuidedOnboardingFlow({
         setLastCompletedItem('routePlanned');
         writeLastCompletedChecklistItem('routePlanned');
       }
+      recordActivationFunnelEvent({
+        type: 'guided_step_complete',
+        sessionKey,
+        route: '/portal',
+        stepId: 'step-1',
+        variant: experimentVariants.onboardingCtaCopy,
+        context: {
+          stepOrder: experimentVariants.onboardingStepOrder,
+        },
+      });
 
       showCelebration('Great start. Your arrival path is now personalized.');
       setStep(2);
@@ -163,6 +194,16 @@ export default function GuidedOnboardingFlow({
       await setEta(etaWindow, etaMethod, '');
       setLastCompletedItem('etaConfirmed');
       writeLastCompletedChecklistItem('etaConfirmed');
+      recordActivationFunnelEvent({
+        type: 'guided_step_complete',
+        sessionKey,
+        route: '/portal',
+        stepId: 'step-2',
+        variant: experimentVariants.onboardingCtaCopy,
+        context: {
+          stepOrder: experimentVariants.onboardingStepOrder,
+        },
+      });
       showCelebration('ETA shared. Reception can now prepare your arrival.');
       setStep(3);
     } finally {
@@ -191,6 +232,16 @@ export default function GuidedOnboardingFlow({
         setLastCompletedItem('locationSaved');
         writeLastCompletedChecklistItem('locationSaved');
       }
+      recordActivationFunnelEvent({
+        type: 'guided_step_complete',
+        sessionKey,
+        route: '/portal',
+        stepId: 'step-3',
+        variant: experimentVariants.onboardingCtaCopy,
+        context: {
+          stepOrder: experimentVariants.onboardingStepOrder,
+        },
+      });
 
       showCelebration('Nice work. Your arrival checklist is moving forward.');
       onComplete();
@@ -210,91 +261,130 @@ export default function GuidedOnboardingFlow({
   return (
     <main className="min-h-screen bg-gray-50 px-4 py-6">
       <div className="mx-auto max-w-md space-y-5 rounded-2xl bg-white p-5 shadow-sm">
-        <header className="space-y-3">
-          <div className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
-            <Sparkles className="h-3.5 w-3.5" />
-            Step {step} of 3
-          </div>
-          <h1 className="text-2xl font-bold text-gray-900">
-            {guestFirstName ? `Welcome ${guestFirstName}, let’s get you arrival-ready` : 'Let’s get you arrival-ready'}
-          </h1>
-          <p className="text-sm text-gray-600">
-            Finish these quick steps to reduce reception wait time and avoid arrival surprises.
-          </p>
-          <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
-            <div
-              className="h-full rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-300"
-              style={{ width: `${stepProgressPercent}%` }}
-            />
-          </div>
-          <div className="rounded-lg bg-slate-50 p-3 text-xs text-slate-600">
-            <div className="mb-1 flex items-center gap-1.5 font-semibold text-slate-700">
-              <ShieldCheck className="h-3.5 w-3.5" />
-              Privacy reassurance
-            </div>
-            We only use this information for your current stay and reception operations.
-          </div>
-        </header>
-
-        {celebration && (
-          <div className="flex animate-pulse items-center gap-2 rounded-lg bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-700">
-            <CheckCircle2 className="h-4 w-4" />
-            {celebration}
-          </div>
-        )}
+        <StepFlowShell
+          currentStep={step}
+          totalSteps={3}
+          title={guestFirstName ? `Welcome ${guestFirstName}, let’s get you arrival-ready` : 'Let’s get you arrival-ready'}
+          description={(
+            <ExperimentGate
+              flag="prime-onboarding-cta-copy"
+              enabled={experimentVariants.onboardingCtaCopy === 'value-led'}
+              fallback="Finish these quick steps to reduce reception wait time and avoid arrival surprises."
+            >
+              Unlock faster check-in and sharper local recommendations by completing these steps now.
+            </ExperimentGate>
+          )}
+          trustCue={{
+            title: 'Privacy reassurance',
+            description: 'We only use this information for your current stay and reception operations.',
+          }}
+          milestoneMessage={celebration}
+        >
 
         {step === 1 && (
           <section className="space-y-4">
             <h2 className="text-lg font-semibold text-gray-900">Choose your arrival style</h2>
             <p className="text-sm text-gray-600">This lets us recommend the best route and defaults for you.</p>
 
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-gray-800">How are you most likely arriving?</p>
-              <div className="grid grid-cols-2 gap-2">
-                {(['ferry', 'bus', 'train', 'taxi'] as const).map((method) => (
-                  <button
-                    key={method}
-                    type="button"
-                    onClick={() => setArrivalMethodPreference(method)}
-                    className={`rounded-lg border px-3 py-2 text-sm font-medium ${
-                      arrivalMethodPreference === method
-                        ? 'border-blue-500 bg-blue-50 text-blue-700'
-                        : 'border-slate-200 text-slate-700'
-                    }`}
-                  >
-                    {method}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-gray-800">How confident do you feel about getting here?</p>
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  onClick={() => setArrivalConfidence('confident')}
-                  className={`rounded-lg border px-3 py-2 text-sm font-medium ${
-                    arrivalConfidence === 'confident'
-                      ? 'border-blue-500 bg-blue-50 text-blue-700'
-                      : 'border-slate-200 text-slate-700'
-                  }`}
-                >
-                  Confident
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setArrivalConfidence('need-guidance')}
-                  className={`rounded-lg border px-3 py-2 text-sm font-medium ${
-                    arrivalConfidence === 'need-guidance'
-                      ? 'border-blue-500 bg-blue-50 text-blue-700'
-                      : 'border-slate-200 text-slate-700'
-                  }`}
-                >
-                  Need guidance
-                </button>
-              </div>
-            </div>
+            {showConfidenceBeforeMethod ? (
+              <>
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-gray-800">How confident do you feel about getting here?</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setArrivalConfidence('confident')}
+                      className={`rounded-lg border px-3 py-2 text-sm font-medium ${
+                        arrivalConfidence === 'confident'
+                          ? 'border-blue-500 bg-blue-50 text-blue-700'
+                          : 'border-slate-200 text-slate-700'
+                      }`}
+                    >
+                      Confident
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setArrivalConfidence('need-guidance')}
+                      className={`rounded-lg border px-3 py-2 text-sm font-medium ${
+                        arrivalConfidence === 'need-guidance'
+                          ? 'border-blue-500 bg-blue-50 text-blue-700'
+                          : 'border-slate-200 text-slate-700'
+                      }`}
+                    >
+                      Need guidance
+                    </button>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-gray-800">How are you most likely arriving?</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {(['ferry', 'bus', 'train', 'taxi'] as const).map((method) => (
+                      <button
+                        key={method}
+                        type="button"
+                        onClick={() => setArrivalMethodPreference(method)}
+                        className={`rounded-lg border px-3 py-2 text-sm font-medium ${
+                          arrivalMethodPreference === method
+                            ? 'border-blue-500 bg-blue-50 text-blue-700'
+                            : 'border-slate-200 text-slate-700'
+                        }`}
+                      >
+                        {method}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-gray-800">How are you most likely arriving?</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {(['ferry', 'bus', 'train', 'taxi'] as const).map((method) => (
+                      <button
+                        key={method}
+                        type="button"
+                        onClick={() => setArrivalMethodPreference(method)}
+                        className={`rounded-lg border px-3 py-2 text-sm font-medium ${
+                          arrivalMethodPreference === method
+                            ? 'border-blue-500 bg-blue-50 text-blue-700'
+                            : 'border-slate-200 text-slate-700'
+                        }`}
+                      >
+                        {method}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-gray-800">How confident do you feel about getting here?</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setArrivalConfidence('confident')}
+                      className={`rounded-lg border px-3 py-2 text-sm font-medium ${
+                        arrivalConfidence === 'confident'
+                          ? 'border-blue-500 bg-blue-50 text-blue-700'
+                          : 'border-slate-200 text-slate-700'
+                      }`}
+                    >
+                      Confident
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setArrivalConfidence('need-guidance')}
+                      className={`rounded-lg border px-3 py-2 text-sm font-medium ${
+                        arrivalConfidence === 'need-guidance'
+                          ? 'border-blue-500 bg-blue-50 text-blue-700'
+                          : 'border-slate-200 text-slate-700'
+                      }`}
+                    >
+                      Need guidance
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
 
             <div className="space-y-2">
               <p className="text-sm font-medium text-gray-800">Recommended routes</p>
@@ -453,6 +543,7 @@ export default function GuidedOnboardingFlow({
             </div>
           </section>
         )}
+        </StepFlowShell>
       </div>
     </main>
   );

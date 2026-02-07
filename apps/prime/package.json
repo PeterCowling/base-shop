@@ -8,7 +8,8 @@
     "start": "next start -p 3015",
     "lint": "echo 'Prime lint skipped — exempt in eslint-ignore-patterns.cjs (early development)'",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "jest --config jest.config.cjs --passWithNoTests"
+    "test": "jest --config jest.config.cjs --passWithNoTests",
+    "test:firebase-cost-gate": "jest --config jest.config.cjs --runInBand --testPathPattern=\"firebase-query-budget|firebaseMetrics.budget|listener-leak|Subscription.leak|budget-regression-gate\""
   },
   "dependencies": {
     "@acme/date-utils": "workspace:*",

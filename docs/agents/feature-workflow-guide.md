@@ -22,16 +22,18 @@ This is the **entrypoint** for feature work in Base-Shop. It is intentionally sh
 Read only the skill you need for the current phase:
 
 - **Fact-find:** `.claude/skills/fact-find/SKILL.md`
-- **Plan:** `.claude/skills/plan-feature/SKILL.md`
+- **Plan:** `.claude/skills/plan-feature/SKILL.md` (auto-runs `/sequence-plan` at the end)
+- **Sequence:** `.claude/skills/sequence-plan/SKILL.md` (also runnable standalone)
 - **Build:** `.claude/skills/build-feature/SKILL.md`
-- **Re-plan:** `.claude/skills/re-plan/SKILL.md`
+- **Re-plan:** `.claude/skills/re-plan/SKILL.md` (auto-runs `/sequence-plan` at the end)
 
 ## Phase Selection (Decision Tree)
 
-- **You don’t understand current behavior or blast radius yet** → Fact-find
-- **You need tasks + acceptance criteria + confidence** → Plan-feature
+- **You don't understand current behavior or blast radius yet** → Fact-find
+- **You need tasks + acceptance criteria + confidence** → Plan-feature (includes sequencing)
 - **You have an approved plan + an eligible task** → Build-feature
-- **Task is <80% confidence, blocked, or scope changes during build** → Re-plan
+- **Task is <80% confidence, blocked, or scope changes during build** → Re-plan (includes sequencing)
+- **You need to reorder an existing plan or check parallelism opportunities** → Sequence-plan (standalone)
 
 ## Confidence Index (CI)
 
@@ -43,6 +45,18 @@ In plan docs, **CI** means **Confidence Index** (plan confidence), not CI/CD.
 - **CI <60:** do not build; re-plan first
 
 **Build gate:** only **IMPLEMENT** tasks that are **≥80%** confidence and unblocked proceed to build.
+
+## Scientific Re-Plan Rules
+
+When running `/re-plan`, confidence increases must be evidence-led:
+
+- Do not raise CI from narrative reasoning alone.
+- Use an evidence ladder:
+  - **E1:** static repo audit (small uplift only)
+  - **E2:** executable verification (tests/probes/scripts)
+  - **E3:** precursor spike/prototype outcome
+- If uncertainty remains after audit, add explicit **precursor INVESTIGATE/SPIKE tasks** and make blocked tasks depend on them.
+- Avoid promoting tasks from **<80% to ≥80%** unless key unknowns are closed with E2+ evidence.
 
 ## Quality Gates (Non-negotiable)
 

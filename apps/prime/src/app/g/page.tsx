@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useMemo, useState } from 'react';
+import { recordActivationFunnelEvent } from '../../lib/analytics/activationFunnel';
 
 type Status = 'loading' | 'ready' | 'error' | 'verified';
 
@@ -97,6 +98,14 @@ function GuestEntryContent() {
         localStorage.setItem('prime_guest_first_name', data.guestFirstName);
       }
       localStorage.setItem('prime_guest_verified_at', new Date().toISOString());
+      recordActivationFunnelEvent({
+        type: 'verify_success',
+        sessionKey: data.guestUuid ?? data.bookingId,
+        route: '/g',
+        context: {
+          hasGuestUuid: Boolean(data.guestUuid),
+        },
+      });
 
       setGuestFirstName(data.guestFirstName || '');
       setStatus('verified');

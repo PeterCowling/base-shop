@@ -59,6 +59,17 @@ export const tokens = {
   "--color-info": { light: "210 90% 96%", dark: "210 90% 35%" },
   "--color-info-fg": { light: "210 90% 35%", dark: "210 90% 96%" },
   "--color-info-soft": { light: "210 90% 95%", dark: "210 70% 20%" },
+  // Hospitality semantic aliases (guest readiness + staff signals)
+  "--hospitality-ready": { light: "142 76% 97%", dark: "142 72% 27%" },
+  "--hospitality-ready-fg": { light: "142 72% 30%", dark: "142 70% 94%" },
+  "--hospitality-warning": { light: "40 90% 96%", dark: "35 90% 30%" },
+  "--hospitality-warning-fg": { light: "25 85% 31%", dark: "40 90% 96%" },
+  "--hospitality-info": { light: "210 90% 96%", dark: "210 90% 35%" },
+  "--hospitality-info-fg": { light: "210 90% 35%", dark: "210 90% 96%" },
+  "--hospitality-progress-start": { light: "196 90% 48%", dark: "196 82% 62%" },
+  "--hospitality-progress-end": { light: "158 70% 43%", dark: "158 62% 56%" },
+  "--hospitality-motion-celebration-ms": { light: "280ms" },
+  "--hospitality-motion-gentle-ms": { light: "180ms" },
   "--color-muted": { light: "0 0% 88%", dark: "0 0% 32%" },
   // Accessible link color (AA on light surfaces)
   "--color-link": { light: "220 75% 40%", dark: "220 80% 70%" },

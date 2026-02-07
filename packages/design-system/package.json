@@ -89,6 +89,7 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.540.0",
     "react-datepicker": "^9.1.0",
+    "react-hook-form": "^7.62.0",
     "tailwind-merge": "^2.5.5"
   },
   "peerDependencies": {
@@ -110,6 +111,7 @@
   "devDependencies": {
     "@types/node": "^22",
     "jest-axe": "^10.0.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "zod": "^4.3.6"
   }
 }

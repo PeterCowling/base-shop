@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: Platform
 Created: 2026-02-07
 Last-updated: 2026-02-07
@@ -84,10 +84,10 @@ Tasks are ordered to build incrementally: validation script first (foundational 
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on |
 |---|---|---|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Create reusable validation script | 92% | S | Pending | - |
-| TASK-02 | IMPLEMENT | Rewrite skill workflow with structure-first pattern and Phase 1 gate | 90% | M | Pending | TASK-01 |
-| TASK-03 | IMPLEMENT | Add Phase 2 translation gate and completion reporting | 90% | S | Pending | TASK-02 |
-| TASK-04 | IMPLEMENT | Update MEMORY.md with translation workflow | 95% | S | Pending | - |
+| TASK-01 | IMPLEMENT | Create reusable validation script | 90% | S | Complete (2026-02-07) | - |
+| TASK-02 | IMPLEMENT | Rewrite skill workflow with structure-first pattern and Phase 1 gate | 90% | M | Complete (2026-02-07) | TASK-01 |
+| TASK-03 | IMPLEMENT | Add Phase 2 translation gate and completion reporting | 90% | S | Complete (2026-02-07) | TASK-02 |
+| TASK-04 | IMPLEMENT | Update MEMORY.md with translation workflow | 95% | S | Complete (2026-02-07) | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 > Overall-confidence: (92×1 + 90×2 + 90×1 + 95×1) / (1+2+1+1) = 457/5 = 91%
@@ -134,6 +134,24 @@ Tasks are ordered to build incrementally: validation script first (foundational 
 - **Notes / references:**
   - Pattern: `apps/brikette/scripts/validate-json.ts` (exit code pattern)
   - Fact-find validation contract: Phase 1 and Phase 2 gates
+
+#### Build Completion (2026-02-07)
+- **Status:** Complete
+- **Commits:** c95d1b438d
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-04, TC-05
+  - Red-green cycles: 3 (token anchor comparison needed fix; EN-intentional empty strings needed fix)
+  - Initial test run: FAIL (expected — two edge cases in validation logic)
+  - Post-implementation: PASS (all 17 locales pass Phase 1 and Phase 2 on travelHelp)
+- **Confidence reassessment:**
+  - Original: 92%
+  - Post-test: 90%
+  - Delta reason: Two edge cases found (token anchors are translated; EN has intentional empty strings). Both fixed. -2% for slightly more complexity than expected.
+- **Validation:**
+  - Ran: `bash scripts/validate-guide-structure.sh travelHelp` — PASS (17/17)
+  - Ran: `bash scripts/validate-guide-structure.sh --phase2 travelHelp` — PASS (17/17)
+  - Ran: `bash scripts/validate-guide-structure.sh fornilloBeachGuide` — FAIL (expected, 15 locales have structural issues — validates the script catches real problems)
+- **Implementation notes:** Token comparison changed from full token string to target-only (before `|`), because LINK/HOWTO anchors are legitimately translated. Empty string check now only flags locale empties when corresponding EN string is non-empty.
 
 ---
 
@@ -189,6 +207,21 @@ Tasks are ordered to build incrementally: validation script first (foundational 
   - Fact-find merge policy section
   - Pattern: `apps/brikette/scripts/fix-batch-1-2-structures.py` (structural repair template)
 
+#### Build Completion (2026-02-07)
+- **Status:** Complete
+- **Commits:** e7e1192a21
+- **TDD cycle:**
+  - Test cases executed: TC-06, TC-07, TC-08, TC-09, TC-10, TC-11
+  - Red-green cycles: 1
+  - Manual review verification: all sections present with correct content
+- **Confidence reassessment:**
+  - Original: 90%
+  - Post-test: 90%
+  - Delta reason: Tests validated assumptions — no surprises
+- **Validation:**
+  - Pre-commit hooks: typecheck PASS, lint PASS, agent-context validation PASS
+- **Implementation notes:** Workflow section rewritten from L95-309 (was L95-211). Core Commitments, Localization Rules, Error Handling, Practical Implementation Note all preserved unchanged.
+
 ---
 
 ### TASK-03: Add Phase 2 translation gate and completion reporting
@@ -233,6 +266,21 @@ Tasks are ordered to build incrementally: validation script first (foundational 
 - **Notes / references:**
   - Fact-find: Persistence verification section, Acceptance Criteria section
 
+#### Build Completion (2026-02-07)
+- **Status:** Complete
+- **Commits:** e7e1192a21 (same commit as TASK-02 — same file)
+- **TDD cycle:**
+  - Test cases executed: TC-12, TC-13, TC-14, TC-15
+  - Red-green cycles: 1
+  - Manual review verification: Gate 2, failure handling, completion report, Quality Gates all correct
+- **Confidence reassessment:**
+  - Original: 90%
+  - Post-test: 90%
+  - Delta reason: Tests validated assumptions
+- **Validation:**
+  - Pre-commit hooks: typecheck PASS, lint PASS
+- **Implementation notes:** Quality Gates section rewritten from 7 items to 14 items organized by Gate 1/Gate 2/Completion.
+
 ---
 
 ### TASK-04: Update MEMORY.md with translation workflow
@@ -269,6 +317,21 @@ Tasks are ordered to build incrementally: validation script first (foundational 
 - **Documentation impact:** None (MEMORY.md IS the documentation)
 - **Notes / references:**
   - Fact-find: Evidence Summary, Workflow v2 Runbook
+
+#### Build Completion (2026-02-07)
+- **Status:** Complete
+- **Commits:** c95d1b438d (MEMORY.md not tracked in git — update applied directly)
+- **TDD cycle:**
+  - Test cases executed: TC-16, TC-17, TC-18
+  - Red-green cycles: 1
+  - TC-16: "## Translation Workflow (Brikette Guides)" header exists — PASS
+  - TC-17: References Phase 1/Phase 2/Gate terminology — PASS
+  - TC-18: Total line count = 45, under 200 limit — PASS
+- **Confidence reassessment:**
+  - Original: 95%
+  - Post-test: 95%
+  - Delta reason: Tests validated assumptions
+- **Implementation notes:** Added 11-line section with workflow pattern summary, validation command references, merge policy summary, and evidence.
 
 ## Risks & Mitigations
 

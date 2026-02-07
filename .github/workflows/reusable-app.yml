@@ -110,19 +110,38 @@ jobs:
             fi
             changed_file_count="$(wc -l < "$changed_paths_file" | tr -d ' ')"
 
-            classification_json="$(
-              pnpm --filter scripts run classify-deploy-change -- --paths-file "$changed_paths_file"
-            )"
             classification_file="$RUNNER_TEMP/deploy-change-classification.json"
-            printf '%s\n' "$classification_json" > "$classification_file"
+            classification_stderr_file="$RUNNER_TEMP/classify-deploy-change.stderr"
+            if classification_json="$(
+              node --import tsx scripts/src/ci/classify-deploy-change.ts \
+                --paths-file "$changed_paths_file" \
+                2> "$classification_stderr_file"
+            )"; then
+              printf '%s\n' "$classification_json" > "$classification_file"
 
-            is_deploy_only="$(jq -r '.isDeployOnly' "$classification_file")"
-            uncertain="$(jq -r '.uncertain' "$classification_file")"
-            reason="$(jq -r '.reason' "$classification_file")"
-
-            if [[ "$is_deploy_only" == "true" && "$uncertain" == "false" ]]; then
-              run_validation="false"
+              if is_deploy_only="$(jq -er '.isDeployOnly' "$classification_file")" \
+                && uncertain="$(jq -er '.uncertain' "$classification_file")" \
+                && reason="$(jq -er '.reason' "$classification_file")"; then
+                if [[ "$is_deploy_only" == "true" && "$uncertain" == "false" ]]; then
+                  run_validation="false"
+                else
+                  run_validation="true"
+                fi
+              else
+                echo "::warning title=Validation gating::Classifier output parse failed; running full validation."
+                is_deploy_only="false"
+                uncertain="true"
+                reason="classifier_parse_failed"
+                run_validation="true"
+              fi
             else
+              echo "::warning title=Validation gating::Classifier command failed; running full validation."
+              if [[ -s "$classification_stderr_file" ]]; then
+                sed 's/^/classifier stderr: /' "$classification_stderr_file"
+              fi
+              is_deploy_only="false"
+              uncertain="true"
+              reason="classifier_command_failed"
               run_validation="true"
             fi
           fi

@@ -4,6 +4,7 @@ export * from "./button";
 export * from "./card";
 export * from "./checkbox";
 export * from "./Cluster";
+export * from "./combobox";
 export * from "./Cover";
 export * from "./dialog";
 export * from "./drawer";

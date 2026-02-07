@@ -53,12 +53,28 @@ Reduce staging feedback time without weakening quality or safety controls. Focus
 
 ### Commands Used
 ```bash
-gh run list --workflow "Deploy Brikette" --limit 200 --json ...
-gh run list --workflow "Merge Gate" --limit 120 --json ...
-gh run list --workflow "Core Platform CI" --limit 200 --json ...
-gh run list --workflow "Package Quality Matrix" --limit 160 --json ...
-gh run list --workflow 224568433 --limit 140 --json ...  # Auto PR (dev -> staging)
+# Multi-workflow baseline snapshot (fast)
+pnpm --filter scripts run collect-workflow-metrics -- \
+  --workflow "Deploy Brikette" \
+  --workflow "Merge Gate" \
+  --workflow "Core Platform CI" \
+  --workflow "Package Quality Matrix" \
+  --workflow "224568433" \
+  --limit 200 \
+  --from "2026-01-16T00:00:00Z" \
+  --to "2026-02-07T23:59:59Z"
+
+# Targeted job-duration breakdown (slower; one workflow at a time)
+pnpm --filter scripts run collect-workflow-metrics -- \
+  --workflow "Deploy Brikette" \
+  --limit 40 \
+  --branch staging \
+  --event push \
+  --include-jobs \
+  --from "2026-02-01T00:00:00Z" \
+  --to "2026-02-07T23:59:59Z"
 ```
+For one-off raw checks, `gh run list` remains available, but baseline/post-change reporting should use the script above for consistent segmentation metadata.
 
 ### Inclusion / Exclusion Rules
 - Outcome counts include all listed runs (`success`, `failure`, `cancelled`, `null` in-progress).

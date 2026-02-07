@@ -60,4 +60,18 @@ describe("resolveGuideCardImage", () => {
 
     expect(result).toEqual({ src: "https://example.com/hero.jpg", alt: undefined });
   });
+
+  it("falls back to generated EN content image when guides namespace omits sections", () => {
+    getGuideManifestEntryMock.mockReturnValue({
+      contentKey: "travelHelp",
+      blocks: [],
+    } as never);
+
+    const result = resolveGuideCardImage("travelHelp", "en", createTranslator(), createTranslator());
+
+    expect(result).toEqual({
+      src: "/img/directions/positano-bus-stop.webp",
+      alt: "Local bus stop area in Positano",
+    });
+  });
 });

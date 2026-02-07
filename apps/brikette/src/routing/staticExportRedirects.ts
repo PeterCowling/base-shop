@@ -7,10 +7,10 @@ import { INTERNAL_SEGMENT_BY_KEY, STATIC_EXPORT_SECTION_KEYS } from "./sectionSe
 export type StaticRedirectRule = {
   from: string;
   to: string;
-  status: 301;
+  status: 200 | 301;
 };
 
-const PERMANENT_REDIRECT = 301 as const;
+const LOCALIZED_ALIAS_REWRITE = 200 as const;
 
 function withTrailingSlash(path: string): string {
   return path.endsWith("/") ? path : `${path}/`;
@@ -22,7 +22,7 @@ function addRule(
   from: string,
   to: string,
 ): void {
-  const rule: StaticRedirectRule = { from, to, status: PERMANENT_REDIRECT };
+  const rule: StaticRedirectRule = { from, to, status: LOCALIZED_ALIAS_REWRITE };
   const key = formatRedirectRule(rule);
   if (seen.has(key)) return;
   seen.add(key);

@@ -9,31 +9,10 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 import { type AppLanguage,i18nConfig } from "./i18n.config";
+import { INTERNAL_SEGMENT_BY_KEY, TOP_LEVEL_SEGMENT_KEYS } from "./routing/sectionSegments";
 import { SLUGS } from "./slug-map";
 
 type SlugKey = keyof typeof SLUGS;
-
-// Canonical (internal) segment names as used by `src/app/[lang]/...` folders.
-// NOTE: This does not have to match the English slug (e.g. assistance => /help).
-const INTERNAL_SEGMENT_BY_KEY: Record<SlugKey, string> = {
-  rooms: "rooms",
-  deals: "deals",
-  careers: "careers",
-  about: "about",
-  assistance: "assistance",
-  experiences: "experiences",
-  howToGetHere: "how-to-get-here",
-  apartment: "apartment",
-  book: "book",
-  guides: "guides",
-  guidesTags: "tags",
-  terms: "terms",
-  houseRules: "house-rules",
-  privacyPolicy: "privacy-policy",
-  cookiePolicy: "cookie-policy",
-  breakfastMenu: "breakfast-menu",
-  barMenu: "bar-menu",
-};
 
 const SUPPORTED_LANGS = new Set(
   (i18nConfig.supportedLngs as readonly string[]).map((l) => l.toLowerCase()),
@@ -56,26 +35,7 @@ for (const key of Object.keys(SLUGS) as SlugKey[]) {
 function resolveTopLevelKey(lang: AppLanguage, segment: string): SlugKey | null {
   const normalized = segment.toLowerCase();
   // Only check keys that represent the first path segment after /:lang.
-  const candidates: SlugKey[] = [
-    "rooms",
-    "deals",
-    "careers",
-    "about",
-    "assistance",
-    "experiences",
-    "howToGetHere",
-    "apartment",
-    "book",
-    "guides",
-    "terms",
-    "houseRules",
-    "privacyPolicy",
-    "cookiePolicy",
-    "breakfastMenu",
-    "barMenu",
-  ];
-
-  for (const key of candidates) {
+  for (const key of TOP_LEVEL_SEGMENT_KEYS) {
     const expected = SLUGS[key][lang];
     if (expected.toLowerCase() === normalized) return key;
   }
@@ -161,4 +121,3 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: ["/:lang([a-z]{2})/:path*"],
 };
-

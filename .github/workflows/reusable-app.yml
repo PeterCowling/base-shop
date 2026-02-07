@@ -55,6 +55,12 @@ on:
         required: false
       SOPS_AGE_KEY:
         required: false
+      NEXTAUTH_SECRET:
+        required: false
+      SESSION_SECRET:
+        required: false
+      CART_COOKIE_SECRET:
+        required: false
 
 jobs:
   validate-and-build:

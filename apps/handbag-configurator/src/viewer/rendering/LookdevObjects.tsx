@@ -1,5 +1,6 @@
 "use client";
 
+/* eslint-disable ds/no-raw-color -- HAND-0008 [ttl=2026-12-31]: Three.js material colors for lookdev reference objects */
 export function LookdevObjects() {
   return (
     <group position={[0, -0.4, 0]}>

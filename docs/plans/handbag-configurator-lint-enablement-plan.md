@@ -1,6 +1,6 @@
 ---
 Type: Runbook
-Status: Active
+Status: Archive
 Domain: Repo
 Last-reviewed: 2026-01-24
 Relates-to charter: docs/plans/handbag-configurator-implementation-plan.md
@@ -48,8 +48,9 @@ Relates-to charter: docs/plans/handbag-configurator-implementation-plan.md
 - Reintroduced `ds/no-hardcoded-copy` for the viewer/hotspot surfaces by translating the remaining UI strings (badges, buttons, hotspot panel copy) through new `handbagConfigurator.*` keys, adding i18n exemptions for palette/debug data, and confirming the targeted lint gate still passes before tightening the scoped override.
 
 ## Next steps
-- Phase 3 should tackle the remaining DS rule set (`ds/no-raw-font`, `ds/no-raw-typography`, `ds/no-arbitrary-tailwind`, etc.) by progressively re-enabling them and validating each subset on `src/app` + `src/ui`.
-- Track any residual viewer/api hotspots that still live under the global disable block and document what needs to be addressed before unlocking those directories.
+- All phases complete. DS rules are enforced across all directories.
+- Viewer/API scoped overrides removed. Remaining exemptions are file-level `eslint-disable` with ticket references (HAND-0008 for Three.js colors, HAND-0009 for overlay positioning, HAND-0010 for API error messages).
+- Global `ds/no-raw-color: "off"` removed. Only non-DS relaxations remain in the global block (complexity, max-lines, security, TS strictness).
 
 ## Phase 3: Token/typography/palette rules
 

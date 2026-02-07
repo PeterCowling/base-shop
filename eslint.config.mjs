@@ -2194,7 +2194,6 @@ export default [
       "security/detect-non-literal-fs-filename": "off",
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-unused-vars": "off",
-      "ds/no-raw-color": "off",
     },
   },
   {
@@ -2202,7 +2201,6 @@ export default [
       "apps/handbag-configurator/src/app/**/*.{ts,tsx}",
       "apps/handbag-configurator/src/ui/**/*.{ts,tsx}",
     ],
-    ignores: ["apps/handbag-configurator/src/app/api/**"],
     rules: {
       "ds/no-hardcoded-copy": [
         "error",
@@ -2240,17 +2238,6 @@ export default [
           ],
         },
       ],
-      "ds/no-raw-color": "off",
-      "ds/no-raw-font": "off",
-      "ds/absolute-parent-guard": "off",
-      "ds/enforce-layout-primitives": "off",
-      "ds/no-nonlayered-zindex": "off",
-    },
-  },
-  {
-    files: ["apps/handbag-configurator/src/app/api/**/*.{ts,tsx}"],
-    rules: {
-      "ds/no-hardcoded-copy": "off",
     },
   },
 ];

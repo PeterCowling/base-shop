@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- HAND-0010 [ttl=2026-12-31]: API route error messages, not user-facing copy */
 import { existsSync } from "node:fs";
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";

@@ -12,7 +12,6 @@ jest.mock('@acme/lib/context', () => ({
 }));
 
 // Import onRequest AFTER mocks are registered so the module loads with mocked dependencies.
-// eslint-disable-next-line @typescript-eslint/no-require-imports
 const { onRequest } = require('../[shopId]') as typeof import('../[shopId]');
 
 export const verify = jwt.verify as jest.Mock;

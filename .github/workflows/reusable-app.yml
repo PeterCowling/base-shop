@@ -181,6 +181,11 @@ jobs:
         run: pnpm --filter ${{ inputs.app-filter }} test
         shell: bash
 
+      - name: Firebase cost-safety gate (Prime)
+        if: ${{ steps.classify.outputs.run_validation == 'true' && inputs.app-filter == '@apps/prime' }}
+        run: pnpm --filter @apps/prime test:firebase-cost-gate
+        shell: bash
+
       - name: Validate guide manifest (warn-only)
         if: ${{ inputs.app-filter == '@apps/brikette' }}
         run: |

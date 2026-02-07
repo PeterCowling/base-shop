@@ -3,6 +3,7 @@
 import { ArrowLeft, Search } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
+import { recordActivationFunnelEvent } from '../../lib/analytics/activationFunnel';
 
 export default function FindMyStayPage() {
   const [surname, setSurname] = useState('');
@@ -39,6 +40,11 @@ export default function FindMyStayPage() {
         return;
       }
 
+      recordActivationFunnelEvent({
+        type: 'lookup_success',
+        sessionKey: bookingRef.trim().toUpperCase(),
+        route: '/find-my-stay',
+      });
       window.location.assign(data.redirectUrl);
     } catch (err) {
       setError('Connection error. Please try again.');

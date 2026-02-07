@@ -14,6 +14,7 @@ import { useEffect, useState, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import StaffReadinessBadges from '../../components/check-in/StaffReadinessBadges';
 import { usePinAuth } from '../../contexts/messaging/PinAuthProvider';
+import { recordActivationFunnelEvent } from '../../lib/analytics/activationFunnel';
 import { extractCodeFromPathname, formatEtaWindow, isStaffRole } from '../../lib/checkin/helpers';
 import type { StaffCheckInView } from '../../types/checkInCode';
 
@@ -74,6 +75,11 @@ function StaffLookupContent() {
 
       const data = await response.json();
       setGuestData(data);
+      recordActivationFunnelEvent({
+        type: 'staff_lookup_used',
+        sessionKey: code.trim().toUpperCase(),
+        route: '/staff-lookup',
+      });
     } catch (err) {
       console.error('Error fetching guest data:', err);
       setError('lookupFailed');

@@ -159,6 +159,21 @@ Use `pnpm preflight:brikette-deploy -- --json` for machine-readable output.
 
 ---
 
+## Prime Firebase Cost-Safety Gate
+
+When changing Prime guest data-loading, listener, or Firebase wrapper code, run the cost-safety suite before pushing:
+
+```bash
+pnpm --filter @apps/prime test:firebase-cost-gate
+```
+
+This suite enforces:
+- query-budget contracts for guest-critical flows
+- listener lifecycle leak checks
+- regression-gate behavior against checked-in baseline budgets
+
+---
+
 ## Test Scope Decision Tree
 
 | Scenario | Command |

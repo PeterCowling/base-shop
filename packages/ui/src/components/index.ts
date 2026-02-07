@@ -3,6 +3,7 @@ export * from "./cms";
 export { default as ComponentPreview } from "./ComponentPreview";
 export { default as DeviceSelector } from "./DeviceSelector";
 export { default as DynamicRenderer } from "./DynamicRenderer";
+export * from "./hospitality";
 export {
   AccordionMolecule,
   Breadcrumbs,

@@ -77,6 +77,14 @@
   --rgb-brand-outline: 27 27 27;
   --rgb-brand-muted: 100 100 100;
   --rgb-brand-paragraph: 60 60 60;
+
+  /* Shared hospitality semantics */
+  --hospitality-ready: var(--color-success);
+  --hospitality-ready-fg: var(--color-success-fg);
+  --hospitality-warning: var(--color-warning);
+  --hospitality-warning-fg: var(--color-warning-fg);
+  --hospitality-info: var(--color-info);
+  --hospitality-info-fg: var(--color-info-fg);
 }
 
 .dark {
@@ -124,6 +132,14 @@
   --rgb-brand-outline: 31 31 31;
   --rgb-brand-muted: 180 180 180;
   --rgb-brand-paragraph: 210 210 210;
+
+  /* Shared hospitality semantics */
+  --hospitality-ready: var(--color-success);
+  --hospitality-ready-fg: var(--color-success-fg);
+  --hospitality-warning: var(--color-warning);
+  --hospitality-warning-fg: var(--color-warning-fg);
+  --hospitality-info: var(--color-info);
+  --hospitality-info-fg: var(--color-info-fg);
 }
 
 /* 2 ▪ Base layer

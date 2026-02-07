@@ -10,13 +10,17 @@ import {
   Banknote,
   CheckCircle2,
   CreditCard,
+  CalendarDays,
   MapPin,
+  MessageCircle,
   Sparkles,
   Clock,
   ChevronRight,
 } from 'lucide-react';
+import { ArrivalCodePanel, UtilityActionStrip } from '@acme/ui';
 import { FC, memo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import { recordActivationFunnelEvent } from '../../lib/analytics/activationFunnel';
 import { CheckInQR } from '../check-in/CheckInQR';
 import type { PreArrivalData, ChecklistProgress } from '../../types/preArrival';
 import type { GuestKeycardStatus } from '../../lib/preArrival/keycardStatus';
@@ -41,9 +45,28 @@ interface ArrivalHomeProps {
   /** Handler for checklist item clicks */
   onChecklistItemClick: (item: keyof ChecklistProgress) => void;
   /** Guest keycard status */
-  keycardStatus: GuestKeycardStatus;
+  keycardStatus?: GuestKeycardStatus;
   /** Optional class name */
   className?: string;
+}
+
+const DEFAULT_KEYCARD_STATUS: GuestKeycardStatus = {
+  state: 'pending-issue',
+  hasLostCardNotice: false,
+  latestTransactionType: null,
+  latestTransactionAt: null,
+};
+
+function getFunnelSessionKey(): string {
+  if (typeof window === 'undefined') {
+    return 'unknown-session';
+  }
+
+  return (
+    localStorage.getItem('prime_guest_uuid') ||
+    localStorage.getItem('prime_guest_booking_id') ||
+    'unknown-session'
+  );
 }
 
 /**
@@ -59,7 +82,7 @@ export const ArrivalHome: FC<ArrivalHomeProps> = memo(function ArrivalHome({
   cashAmounts,
   nights,
   onChecklistItemClick,
-  keycardStatus,
+  keycardStatus = DEFAULT_KEYCARD_STATUS,
   className = '',
 }) {
   const { t } = useTranslation('PreArrival');
@@ -74,6 +97,57 @@ export const ArrivalHome: FC<ArrivalHomeProps> = memo(function ArrivalHome({
   const handleLocationClick = useCallback(() => {
     onChecklistItemClick('locationSaved');
   }, [onChecklistItemClick]);
+
+  const utilityActions = [
+    {
+      id: 'maps',
+      label: 'Maps',
+      icon: MapPin,
+      onSelect: () => {
+        recordActivationFunnelEvent({
+          type: 'utility_action_used',
+          sessionKey: getFunnelSessionKey(),
+          route: '/',
+          stepId: 'maps',
+          context: { surface: 'arrival-day' },
+        });
+        handleLocationClick();
+      },
+      variant: 'primary' as const,
+    },
+    {
+      id: 'cash',
+      label: 'Cash',
+      icon: CalendarDays,
+      onSelect: () => {
+        recordActivationFunnelEvent({
+          type: 'utility_action_used',
+          sessionKey: getFunnelSessionKey(),
+          route: '/',
+          stepId: 'cash',
+          context: { surface: 'arrival-day' },
+        });
+        handleCashClick();
+      },
+    },
+    {
+      id: 'support',
+      label: 'Support',
+      icon: MessageCircle,
+      onSelect: () => {
+        recordActivationFunnelEvent({
+          type: 'utility_action_used',
+          sessionKey: getFunnelSessionKey(),
+          route: '/',
+          stepId: 'support',
+          context: { surface: 'arrival-day' },
+        });
+        if (typeof window !== 'undefined') {
+          window.open('mailto:hostelbrikette@gmail.com', '_self');
+        }
+      },
+    },
+  ];
 
   return (
     <div className={`space-y-6 ${className}`}>
@@ -90,24 +164,16 @@ export const ArrivalHome: FC<ArrivalHomeProps> = memo(function ArrivalHome({
       </div>
 
       {/* Check-in QR section */}
-      <div className="rounded-2xl bg-gradient-to-b from-blue-50 to-indigo-50 p-6">
-        <h2 className="mb-4 text-center text-sm font-semibold uppercase tracking-wide text-gray-500">
-          {t('arrival.showAtReception')}
-        </h2>
+      <ArrivalCodePanel
+        title={t('arrival.showAtReception')}
+        isLoading={isCodeLoading}
+        code={checkInCode}
+        loadingLabel={t('arrival.generatingCode')}
+        unavailableLabel={t('arrival.codeUnavailable')}
+        renderCode={(code) => <CheckInQR code={code} />}
+      />
 
-        {isCodeLoading ? (
-          <div className="flex flex-col items-center py-8">
-            <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
-            <p className="mt-4 text-sm text-gray-500">{t('arrival.generatingCode')}</p>
-          </div>
-        ) : checkInCode ? (
-          <CheckInQR code={checkInCode} />
-        ) : (
-          <div className="py-8 text-center text-gray-500">
-            <p>{t('arrival.codeUnavailable')}</p>
-          </div>
-        )}
-      </div>
+      <UtilityActionStrip actions={utilityActions} />
 
       {/* Cash reminder - prominent if not ready */}
       <button

@@ -11,6 +11,20 @@
   ],
   "sections": [
     {
+      "id": "scan-to-share",
+      "title": "Scan to share",
+      "body": [
+        "Want to open this guide on another phone or share it with a hiking buddy? Scan the QR code below."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/santa-maria-castello/scan-to-share.png",
+          "alt": "QR code to open and share the Santa Maria del Castello hike guide.",
+          "caption": "Scan to open/share this guide."
+        }
+      ]
+    },
+    {
       "id": "what-is-santa-maria",
       "title": "Cos'è Santa Maria del Castello?",
       "body": [
@@ -54,60 +68,56 @@
   ],
   "steps": [
     {
-      "name": "Esci dall'ostello e gira a destra",
-      "text": "Dall'ingresso dell'ostello, gira a destra e sali i gradini accanto all'edificio."
+      "name": "Turn right and take the steps",
+      "text": "From the hostel, turn right and take the steps that lead up the side of the building."
     },
     {
-      "name": "Continua sul sentiero",
-      "text": "In cima ai gradini iniziali, continua a seguire il sentiero verso l'alto."
+      "name": "Continue on the footpath",
+      "text": "At the top of the steps, continue on the footpath."
     },
     {
-      "name": "Scegli a sinistra al bivio",
-      "text": "Quando arrivi a un bivio, scegli l'opzione in salita a sinistra per continuare a salire."
+      "name": "Turn left at the junction",
+      "text": "At the junction, choose the left option to go uphill (not right/downhill)."
     },
     {
-      "name": "Segui i gradini fino alla strada",
-      "text": "Continua a seguire i gradini fino a raggiungere un punto con scale che scendono verso una strada."
+      "name": "Turn right up more stairs",
+      "text": "Follow the steps until you reach a point where you can either turn right up more stairs that lead to a road, or continue left on the path. Choose to turn right and go up the stairs."
     },
     {
-      "name": "Attraversa la strada",
-      "text": "Attraversa la strada e individua le scale che corrono lungo le case sul lato opposto."
+      "name": "Cross the road to the next stairs",
+      "text": "At the top of the stairs, look across the road for a set of stairs leading alongside some houses. Cross the road and take those stairs."
     },
     {
-      "name": "Sali le scale dietro le case",
-      "text": "Segui queste scale mentre serpeggiano dietro le case, portandoti al sentiero di montagna."
+      "name": "Follow stairs behind the houses",
+      "text": "Follow the stairs behind the houses until they lead you to a mountain trail."
     },
     {
-      "name": "Continua sul sentiero di montagna",
-      "text": "Segui il sentiero di montagna mentre sale verso il borgo. Il percorso diventa più panoramico qui."
+      "name": "Continue on the mountain trail",
+      "text": "Continue on the mountain trail, which will take you to the village."
     },
     {
-      "name": "Scegli in salita ai bivi",
-      "text": "A due bivi del sentiero lungo il percorso, scegli i sentieri in salita per continuare verso il borgo."
+      "name": "Take the uphill splits",
+      "text": "In two places the mountain trail splits in two directions. Choose the path that goes uphill."
     },
     {
-      "name": "Raggiungi il bivio del borgo",
-      "text": "Arriverai a un bivio dove il sentiero si livella. Questo segna il tuo arrivo a Santa Maria del Castello."
+      "name": "Reach the crossroads",
+      "text": "You have reached the top when the mountain trail levels out and you reach a crossroads."
     },
     {
-      "name": "Gira a destra verso il punto panoramico (facoltativo)",
-      "text": "Per raggiungere il punto panoramico, gira a destra al bivio."
+      "name": "Turn right at the crossroads",
+      "text": "For the lookout point, turn right at the crossroads. Please note that cars do travel on this road."
     },
     {
-      "name": "Prendi la strada in salita fino al bivio",
-      "text": "Segui la strada in salita fino a raggiungere un bivio."
+      "name": "Take the road uphill",
+      "text": "Take the road uphill until you reach a junction."
     },
     {
-      "name": "Gira a destra al bivio",
-      "text": "Al bivio, gira a destra e segui la strada mentre curva a destra."
+      "name": "Turn right at the junction",
+      "text": "At the junction, turn right and follow the road around to the right."
     },
     {
-      "name": "Procedi fino alla sezione erbosa",
-      "text": "Continua fino a raggiungere una sezione erbosa fuori dalla strada principale."
-    },
-    {
-      "name": "Accedi ai punti panoramici",
-      "text": "I punti panoramici sono accessibili da quest'area erbosa. Usa estrema cautela – ci sono dislivelli improvvisi di diverse centinaia di metri."
+      "name": "Head to the grassy section and viewpoints",
+      "text": "When you see a grassy section off the road, go there and proceed to the vantage points. Use extreme caution—there are sudden drop-offs of several hundred meters."
     }
   ],
   "warningsTitle": "Avvisi di sicurezza",

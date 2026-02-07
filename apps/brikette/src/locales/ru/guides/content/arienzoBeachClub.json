@@ -3,6 +3,7 @@
     "title": "Путеводитель по пляжному клубу Arienzo",
     "description": "Забронируйте шезлонги, выберите между спуском по 300 ступеням или шаттл-лодкой и заранее продумайте питание и транспорт для посещения Arienzo Beach Club."
   },
+  "lastUpdated": "2026-01-30T00:00:00.000Z",
   "linkLabel": "Путеводитель по пляжному клубу Arienzo",
   "intro": [
     "Arienzo находится чуть восточнее Позитано: здесь долго держится послеобеденное солнце, бирюзовая вода и впечатляющая лестница, спускающаяся с Амальфитанского шоссе. Это самый оживлённый лидо в шаговой доступности от Hostel Brikette, поэтому из-за лестницы и системы бронирований лучше продумать план заранее.",
@@ -37,6 +38,29 @@
       "body": [
         "Arienzo — ближайший полноценный пляжный клуб за пределами многолюдного Spiaggia Grande. Террасы на склоне скал ловят солнце до раннего вечера, вода остаётся прозрачной для купания, а бар поддерживает атмосферу праздника, не превращаясь в ночную вечеринку.",
         "Вы можете разделить компанию между пакетами с шезлонгами и обедом или забронировать платформу в первом ряду для особенного дня. Немного планирования — и вы избежите очередей и вернётесь в хостел ещё до вечерних напитков на террасе."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/02-arienzo-cliffs.webp",
+          "alt": "View over Arienzo bay with pebble beach under steep cliffs near Positano",
+          "caption": "Arienzo sits under the coastal road east of Positano. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:84017_Arienzo_SA,_Italy_-_panoramio_(1).jpg|Luigi Biondi% (%URL:https://creativecommons.org/licenses/by/3.0/|CC BY 3.0%)."
+        }
+      ]
+    },
+    {
+      "id": "when-to-go",
+      "title": "Best time to go (and when to skip it)",
+      "body": [
+        "Arienzo gets long afternoon sun, so it’s perfect if you want a slow start and still have light late. If you’re choosing between “morning sunbed marathon” and “easy golden hour”, Arienzo is the golden‑hour pick.",
+        "Avoid very windy days with rough seas. Shuttle boats can pause and swimming gets choppy. If it looks wild, swap to a more sheltered plan (or do a town day and save Arienzo for a calm afternoon).",
+        "In high season, weekends sell out first. Book ahead and choose a vibe that matches your energy: early for more swim time, late for sunset feels."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/05-amalfi-coast-positano.webp",
+          "alt": "View along the Amalfi Coast near Positano with cliffs and sea in afternoon light",
+          "caption": "Afternoon light is the reason to choose this side of Positano. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Amalfi_Coast_(Positano).jpg|Ron Clausen% (%URL:https://creativecommons.org/licenses/by-sa/2.0/|CC BY-SA 2.0%)."
+        }
       ]
     },
     {
@@ -46,6 +70,27 @@
         "Самый простой вариант — шаттл-лодка Arienzo Beach Club, отходящая от Spiaggia Grande. Лодки курсируют примерно каждые 30 минут с 09:30, последний рейс в сторону клуба обычно отправляется около 13:30. В подтверждении бронирования есть QR-код — покажите его на причале и держите расписание обратных рейсов под рукой.",
         "Если хотите обойтись без лодки, можно пройти пешком. Сядьте на автобус SITA в сторону Амальфи (остановка Sponda находится в 10 минутах спуска от хостела) и выйдите на обозначенной остановке Arienzo. Далее спускайтесь по 300 ступеням через лимонные террасы к входу в клуб.",
         "Приезжать на машине или скутере не рекомендуют: парковка крайне ограничена, а дорожная полиция штрафует транспорт, который мешает на поворотах."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/04-positano-beach.webp",
+          "alt": "Spiaggia Grande in Positano with colourful umbrellas and boats in the bay",
+          "caption": "Spiaggia Grande is often the shuttle boat’s starting point. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Positano_Beach_(42919362342).jpg|Chris% (%URL:https://creativecommons.org/licenses/by/2.0/|CC BY 2.0%)."
+        }
+      ]
+    },
+    {
+      "id": "stairs",
+      "title": "Stairs & accessibility (what 300 steps feels like)",
+      "body": [
+        "The stairs are real. They’re steep, uneven in places, and feel worse on the way up because you’re wet and salty. If you hate stairs or you’re carrying heavy, choose the boat and pack light.",
+        "Wear shoes with grip (trainers or sturdy sandals) and carry weight in a backpack. Take breaks on the landings — everyone does.",
+        "If someone has knee pain or an injury, make Arienzo a “boat‑only” day. Otherwise the steps can ruin your evening."
+      ],
+      "list": [
+        "Down: fine if you go slow and use the shade.",
+        "Up: allow 15–25 minutes depending on heat and fitness.",
+        "Late: feels harder — agree your return plan early."
       ]
     },
     {
@@ -55,6 +100,18 @@
         "Главная площадка принадлежит Arienzo Beach Club: оранжевые шезлонги, сервис с полотенцами, пресноводные души и оживлённый бар. Небольшая бесплатная полоска находится справа у причала, но места там исчезают после 10:30, и вам всё равно придётся нести снаряжение по лестнице.",
         "Солнце освещает первые два ряда примерно до 17:30 летом, пока скалы не дают тень. Попросите сотрудников поправить зонты по мере смены света, особенно если рассчитываете провести весь день, загорая.",
         "Пресноводные души, шкафчики и кабинки для переодевания входят в дневные пакеты. Wi‑Fi нестабилен, поэтому заранее скачайте плейлисты или расписание паромов."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/01-beach-layout.webp",
+          "alt": "Layout diagram of Arienzo Beach Club with main deck and small free area near the boat landing",
+          "caption": "Layout: main deck (orange loungers, bar, and showers) + a small free area by the boat landing."
+        },
+        {
+          "src": "/img/guides/arienzo-beach/03-positano-umbrellas.webp",
+          "alt": "Rows of beach umbrellas on a pebble beach in Positano",
+          "caption": "Expect lido style: umbrellas, loungers, and table service. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Beach_Umbrellas_in_Positano_(41158690680).jpg|Chris% (%URL:https://creativecommons.org/licenses/by/2.0/|CC BY 2.0%)."
+        }
       ]
     },
     {
@@ -64,6 +121,37 @@
         "Стандартные шезлонги на день стоят около 70 € на двоих и включают зонт, полотенца, два приветственных напитка и шаттл-лодку. Платформы первого ряда и престижные кабаны обходятся в 120–200 € в зависимости от месяца.",
         "Обед подают с 12:30: паста с морепродуктами, салаты и горячие блюда на гриле. Рассчитывайте на 18–28 € за блюдо; чтобы избежать наплыва около 14:00, бронируйте столик при регистрации.",
         "Бронирование осуществляется напрямую через сайт Arienzo или по их номеру в WhatsApp. Платёжные данные закрепляют вашу бронь; отмена менее чем за 48 часов обычно влечёт штраф, поэтому сначала уточните прогноз погоды и планы по паромам."
+      ]
+    },
+    {
+      "id": "what-to-pack",
+      "title": "What to pack (so the stairs don’t punish you)",
+      "body": [
+        "Treat it like a mini hike to a beach club. The less you carry, the better the day feels — especially on the way back up.",
+        "If you’re taking the boat you can bring a bit more. If you’re taking the stairs, stick to essentials and avoid heavy or fragile stuff."
+      ],
+      "list": [
+        "Water shoes or grippy sandals (pebbles + wet steps).",
+        "Small dry bag / zip pouch (phone, cash, tickets).",
+        "Refillable bottle (the climb dehydrates).",
+        "Reef‑safe sunscreen + sunglasses (strong glare).",
+        "A light layer for the ride back (breeze after swimming)."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/06-positano-umbrellas-panorama.webp",
+          "alt": "Panoramic view of Positano’s umbrellas and the town climbing the cliffs",
+          "caption": "Pack light and plan your exit so you can enjoy the view without stress. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Positano_Beach_Umbrellas_-_panoramio.jpg|Mauro% (%URL:https://creativecommons.org/licenses/by-sa/3.0/|CC BY-SA 3.0%)."
+        }
+      ]
+    },
+    {
+      "id": "sea-conditions",
+      "title": "If the boat cancels (a Plan B that works)",
+      "body": [
+        "On windy days, rough seas can pause the shuttle boats. Don’t panic — switch to land logistics.",
+        "If you’re already at Arienzo, the safe option is to walk up to the road and take the next bus or a taxi. Build in buffer, especially later when buses may pass by full.",
+        "If you haven’t left yet and the sea looks rough, choose a beach with easier logistics (see %LINK:positanoBeaches|our beach overview%) or a “no boat needed” option like %LINK:fornilloBeachGuide|Fornillo Beach%."
       ]
     },
     {
@@ -121,6 +209,5 @@
       ]
     }
   ],
-  "galleryHeading": "Фото Arienzo Beach",
-  "lastUpdated": "2026-01-30T00:00:00.000Z"
+  "galleryHeading": "Arienzo photo highlights"
 }

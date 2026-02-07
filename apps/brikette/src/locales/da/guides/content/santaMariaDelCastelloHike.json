@@ -11,6 +11,20 @@
   ],
   "sections": [
     {
+      "id": "scan-to-share",
+      "title": "Scan to share",
+      "body": [
+        "Want to open this guide on another phone or share it with a hiking buddy? Scan the QR code below."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/santa-maria-castello/scan-to-share.png",
+          "alt": "QR code to open and share the Santa Maria del Castello hike guide.",
+          "caption": "Scan to open/share this guide."
+        }
+      ]
+    },
+    {
       "id": "what-is-santa-maria",
       "title": "Hvad er Santa Maria del Castello?",
       "body": [
@@ -54,60 +68,56 @@
   ],
   "steps": [
     {
-      "name": "Forlad herberget og drej til højre",
-      "text": "Fra herbergets indgang, drej til højre og gå op ad trapperne ved siden af bygningen."
+      "name": "Turn right and take the steps",
+      "text": "From the hostel, turn right and take the steps that lead up the side of the building."
     },
     {
-      "name": "Fortsæt på gangstien",
-      "text": "Øverst på de første trin, fortsæt med at følge gangstien opad."
+      "name": "Continue on the footpath",
+      "text": "At the top of the steps, continue on the footpath."
     },
     {
-      "name": "Vælg venstre ved krydset",
-      "text": "Når du når et kryds, vælg venstre opad mulighed for at fortsætte opstigningen."
+      "name": "Turn left at the junction",
+      "text": "At the junction, choose the left option to go uphill (not right/downhill)."
     },
     {
-      "name": "Følg trinene til vejen",
-      "text": "Fortsæt med at følge trinene, indtil du når et punkt med trapper, der fører ned til en vej."
+      "name": "Turn right up more stairs",
+      "text": "Follow the steps until you reach a point where you can either turn right up more stairs that lead to a road, or continue left on the path. Choose to turn right and go up the stairs."
     },
     {
-      "name": "Kryds vejen",
-      "text": "Kryds vejen og find trapperne, der løber langs husene på den modsatte side."
+      "name": "Cross the road to the next stairs",
+      "text": "At the top of the stairs, look across the road for a set of stairs leading alongside some houses. Cross the road and take those stairs."
     },
     {
-      "name": "Gå op ad trapperne bag husene",
-      "text": "Følg disse trapper, mens de slynger sig bag husene og leder dig til bjergstien."
+      "name": "Follow stairs behind the houses",
+      "text": "Follow the stairs behind the houses until they lead you to a mountain trail."
     },
     {
-      "name": "Fortsæt på bjergstien",
-      "text": "Følg bjergstien, mens den klatrer mod landsbyen. Vejen bliver mere naturskøn her."
+      "name": "Continue on the mountain trail",
+      "text": "Continue on the mountain trail, which will take you to the village."
     },
     {
-      "name": "Vælg opad ved stiforgreninger",
-      "text": "Ved to stiforgreninger langs vejen, vælg opadbakkerne for at fortsætte mod landsbyen."
+      "name": "Take the uphill splits",
+      "text": "In two places the mountain trail splits in two directions. Choose the path that goes uphill."
     },
     {
-      "name": "Nå landsbykrydset",
-      "text": "Du vil nå et kryds, hvor stien flades ud. Dette markerer din ankomst til Santa Maria del Castello."
+      "name": "Reach the crossroads",
+      "text": "You have reached the top when the mountain trail levels out and you reach a crossroads."
     },
     {
-      "name": "Drej til højre mod udsigts punktet (valgfrit)",
-      "text": "For at nå udsigts punktet, drej til højre ved krydset."
+      "name": "Turn right at the crossroads",
+      "text": "For the lookout point, turn right at the crossroads. Please note that cars do travel on this road."
     },
     {
-      "name": "Tag vejen opad til krydset",
-      "text": "Følg vejen opad, indtil du når et kryds."
+      "name": "Take the road uphill",
+      "text": "Take the road uphill until you reach a junction."
     },
     {
-      "name": "Drej til højre ved krydset",
-      "text": "Ved krydset, drej til højre og følg vejen, når den drejer til højre."
+      "name": "Turn right at the junction",
+      "text": "At the junction, turn right and follow the road around to the right."
     },
     {
-      "name": "Fortsæt til græsafsnittet",
-      "text": "Fortsæt, indtil du når et græsafsnit uden for hovedvejen."
-    },
-    {
-      "name": "Få adgang til udsigts punkterne",
-      "text": "Udsigts punkterne er tilgængelige fra dette græsområde. Vær ekstremt forsigtig – der er pludselige fald på flere hundrede meter."
+      "name": "Head to the grassy section and viewpoints",
+      "text": "When you see a grassy section off the road, go there and proceed to the vantage points. Use extreme caution—there are sudden drop-offs of several hundred meters."
     }
   ],
   "warningsTitle": "Sikkerhedsadvarsler",

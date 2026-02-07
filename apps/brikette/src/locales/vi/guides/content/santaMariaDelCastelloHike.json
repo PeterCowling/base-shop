@@ -11,6 +11,20 @@
   ],
   "sections": [
     {
+      "id": "scan-to-share",
+      "title": "Scan to share",
+      "body": [
+        "Want to open this guide on another phone or share it with a hiking buddy? Scan the QR code below."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/santa-maria-castello/scan-to-share.png",
+          "alt": "QR code to open and share the Santa Maria del Castello hike guide.",
+          "caption": "Scan to open/share this guide."
+        }
+      ]
+    },
+    {
       "id": "what-is-santa-maria",
       "title": "Santa Maria del Castello là gì?",
       "body": [
@@ -54,60 +68,56 @@
   ],
   "steps": [
     {
-      "name": "Rời khỏi nhà trọ và rẽ phải",
-      "text": "Từ lối vào nhà trọ, rẽ phải và leo lên các bậc thang bên cạnh tòa nhà."
+      "name": "Turn right and take the steps",
+      "text": "From the hostel, turn right and take the steps that lead up the side of the building."
     },
     {
-      "name": "Tiếp tục trên đường đi bộ",
-      "text": "Ở đỉnh các bậc thang đầu tiên, tiếp tục đi theo đường đi bộ lên trên."
+      "name": "Continue on the footpath",
+      "text": "At the top of the steps, continue on the footpath."
     },
     {
-      "name": "Chọn bên trái tại ngã tư",
-      "text": "Khi bạn đến một ngã tư, chọn tùy chọn lên dốc bên trái để tiếp tục leo lên."
+      "name": "Turn left at the junction",
+      "text": "At the junction, choose the left option to go uphill (not right/downhill)."
     },
     {
-      "name": "Đi theo các bậc thang đến đường",
-      "text": "Tiếp tục đi theo các bậc thang cho đến khi bạn đến một điểm có cầu thang dẫn xuống đường."
+      "name": "Turn right up more stairs",
+      "text": "Follow the steps until you reach a point where you can either turn right up more stairs that lead to a road, or continue left on the path. Choose to turn right and go up the stairs."
     },
     {
-      "name": "Băng qua đường",
-      "text": "Băng qua đường và xác định vị trí các cầu thang chạy dọc theo những ngôi nhà ở phía đối diện."
+      "name": "Cross the road to the next stairs",
+      "text": "At the top of the stairs, look across the road for a set of stairs leading alongside some houses. Cross the road and take those stairs."
     },
     {
-      "name": "Leo lên các cầu thang sau những ngôi nhà",
-      "text": "Đi theo những cầu thang này khi chúng uốn khúc phía sau những ngôi nhà, dẫn bạn lên con đường núi."
+      "name": "Follow stairs behind the houses",
+      "text": "Follow the stairs behind the houses until they lead you to a mountain trail."
     },
     {
-      "name": "Tiếp tục trên con đường núi",
-      "text": "Đi theo con đường núi khi nó leo lên hướng ngôi làng. Con đường trở nên đẹp hơn ở đây."
+      "name": "Continue on the mountain trail",
+      "text": "Continue on the mountain trail, which will take you to the village."
     },
     {
-      "name": "Chọn lên dốc tại các điểm chia đường",
-      "text": "Tại hai điểm chia đường mòn dọc đường, chọn các con đường lên dốc để tiếp tục hướng đến ngôi làng."
+      "name": "Take the uphill splits",
+      "text": "In two places the mountain trail splits in two directions. Choose the path that goes uphill."
     },
     {
-      "name": "Đến ngã tư làng",
-      "text": "Bạn sẽ đến một ngã tư nơi đường mòn trở nên bằng phẳng. Điều này đánh dấu sự xuất hiện của bạn tại Santa Maria del Castello."
+      "name": "Reach the crossroads",
+      "text": "You have reached the top when the mountain trail levels out and you reach a crossroads."
     },
     {
-      "name": "Rẽ phải hướng đến điểm ngắm cảnh (tùy chọn)",
-      "text": "Để đến điểm ngắm cảnh, rẽ phải tại ngã tư."
+      "name": "Turn right at the crossroads",
+      "text": "For the lookout point, turn right at the crossroads. Please note that cars do travel on this road."
     },
     {
-      "name": "Đi theo đường lên dốc đến ngã tư",
-      "text": "Đi theo đường lên dốc cho đến khi bạn đến một ngã tư."
+      "name": "Take the road uphill",
+      "text": "Take the road uphill until you reach a junction."
     },
     {
-      "name": "Rẽ phải tại ngã tư",
-      "text": "Tại ngã tư, rẽ phải và đi theo đường khi nó uốn cong sang phải."
+      "name": "Turn right at the junction",
+      "text": "At the junction, turn right and follow the road around to the right."
     },
     {
-      "name": "Tiếp tục đến phần có cỏ",
-      "text": "Tiếp tục cho đến khi bạn đến một phần có cỏ ngoài đường chính."
-    },
-    {
-      "name": "Tiếp cận các điểm ngắm cảnh",
-      "text": "Các điểm ngắm cảnh có thể tiếp cận từ khu vực có cỏ này. Hãy cực kỳ cẩn thận—có những vực thẳm đột ngột vài trăm mét."
+      "name": "Head to the grassy section and viewpoints",
+      "text": "When you see a grassy section off the road, go there and proceed to the vantage points. Use extreme caution—there are sudden drop-offs of several hundred meters."
     }
   ],
   "warningsTitle": "Cảnh báo an toàn",

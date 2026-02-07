@@ -11,6 +11,20 @@
   ],
   "sections": [
     {
+      "id": "scan-to-share",
+      "title": "Scan to share",
+      "body": [
+        "Want to open this guide on another phone or share it with a hiking buddy? Scan the QR code below."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/santa-maria-castello/scan-to-share.png",
+          "alt": "QR code to open and share the Santa Maria del Castello hike guide.",
+          "caption": "Scan to open/share this guide."
+        }
+      ]
+    },
+    {
       "id": "what-is-santa-maria",
       "title": "Was ist Santa Maria del Castello?",
       "body": [
@@ -54,60 +68,56 @@
   ],
   "steps": [
     {
-      "name": "Verlassen Sie das Hostel und biegen Sie rechts ab",
-      "text": "Vom Hostel-Eingang biegen Sie rechts ab und steigen die Stufen neben dem Gebäude hinauf."
+      "name": "Turn right and take the steps",
+      "text": "From the hostel, turn right and take the steps that lead up the side of the building."
     },
     {
-      "name": "Folgen Sie dem Fußweg",
-      "text": "Oben auf den ersten Stufen folgen Sie dem Fußweg weiter nach oben."
+      "name": "Continue on the footpath",
+      "text": "At the top of the steps, continue on the footpath."
     },
     {
-      "name": "Wählen Sie links an der Kreuzung",
-      "text": "Wenn Sie zu einer Kreuzung kommen, wählen Sie die linke Bergan-Option, um weiter aufzusteigen."
+      "name": "Turn left at the junction",
+      "text": "At the junction, choose the left option to go uphill (not right/downhill)."
     },
     {
-      "name": "Folgen Sie den Stufen zur Straße",
-      "text": "Folgen Sie den Stufen weiter, bis Sie zu einem Punkt mit Treppen kommen, die zu einer Straße hinunterführen."
+      "name": "Turn right up more stairs",
+      "text": "Follow the steps until you reach a point where you can either turn right up more stairs that lead to a road, or continue left on the path. Choose to turn right and go up the stairs."
     },
     {
-      "name": "Überqueren Sie die Straße",
-      "text": "Überqueren Sie die Straße und lokalisieren Sie die Treppen, die an den Häusern auf der gegenüberliegenden Seite entlanglaufen."
+      "name": "Cross the road to the next stairs",
+      "text": "At the top of the stairs, look across the road for a set of stairs leading alongside some houses. Cross the road and take those stairs."
     },
     {
-      "name": "Steigen Sie die Treppen hinter den Häusern hinauf",
-      "text": "Folgen Sie diesen Treppen, während sie sich hinter den Häusern winden und Sie zum Bergpfad führen."
+      "name": "Follow stairs behind the houses",
+      "text": "Follow the stairs behind the houses until they lead you to a mountain trail."
     },
     {
-      "name": "Folgen Sie dem Bergpfad",
-      "text": "Folgen Sie dem Bergpfad, während er zum Dorf hinaufklettert. Der Weg wird hier malerischer."
+      "name": "Continue on the mountain trail",
+      "text": "Continue on the mountain trail, which will take you to the village."
     },
     {
-      "name": "Wählen Sie bergauf an Weggabelungen",
-      "text": "An zwei Weggabelungen unterwegs wählen Sie die Bergauf-Pfade, um weiter zum Dorf zu gelangen."
+      "name": "Take the uphill splits",
+      "text": "In two places the mountain trail splits in two directions. Choose the path that goes uphill."
     },
     {
-      "name": "Erreichen Sie die Dorfkreuzung",
-      "text": "Sie erreichen eine Kreuzung, wo der Weg eben wird. Dies markiert Ihre Ankunft in Santa Maria del Castello."
+      "name": "Reach the crossroads",
+      "text": "You have reached the top when the mountain trail levels out and you reach a crossroads."
     },
     {
-      "name": "Biegen Sie rechts zum Aussichtspunkt ab (optional)",
-      "text": "Um zum Aussichtspunkt zu gelangen, biegen Sie an der Kreuzung rechts ab."
+      "name": "Turn right at the crossroads",
+      "text": "For the lookout point, turn right at the crossroads. Please note that cars do travel on this road."
     },
     {
-      "name": "Nehmen Sie die Straße bergauf zur Kreuzung",
-      "text": "Folgen Sie der Straße bergauf, bis Sie zu einer Kreuzung kommen."
+      "name": "Take the road uphill",
+      "text": "Take the road uphill until you reach a junction."
     },
     {
-      "name": "Biegen Sie an der Kreuzung rechts ab",
-      "text": "An der Kreuzung biegen Sie rechts ab und folgen der Straße, während sie sich nach rechts krümmt."
+      "name": "Turn right at the junction",
+      "text": "At the junction, turn right and follow the road around to the right."
     },
     {
-      "name": "Fahren Sie zum Grasabschnitt fort",
-      "text": "Fahren Sie fort, bis Sie zu einem Grasabschnitt abseits der Hauptstraße kommen."
-    },
-    {
-      "name": "Zugang zu den Aussichtspunkten",
-      "text": "Die Aussichtspunkte sind von diesem Grasbereich aus zugänglich. Seien Sie äußerst vorsichtig – es gibt plötzliche Abfälle von mehreren hundert Metern."
+      "name": "Head to the grassy section and viewpoints",
+      "text": "When you see a grassy section off the road, go there and proceed to the vantage points. Use extreme caution—there are sudden drop-offs of several hundred meters."
     }
   ],
   "warningsTitle": "Sicherheitswarnungen",

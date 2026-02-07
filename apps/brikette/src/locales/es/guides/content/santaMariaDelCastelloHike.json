@@ -11,6 +11,20 @@
   ],
   "sections": [
     {
+      "id": "scan-to-share",
+      "title": "Scan to share",
+      "body": [
+        "Want to open this guide on another phone or share it with a hiking buddy? Scan the QR code below."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/santa-maria-castello/scan-to-share.png",
+          "alt": "QR code to open and share the Santa Maria del Castello hike guide.",
+          "caption": "Scan to open/share this guide."
+        }
+      ]
+    },
+    {
       "id": "what-is-santa-maria",
       "title": "¿Qué es Santa Maria del Castello?",
       "body": [
@@ -54,60 +68,56 @@
   ],
   "steps": [
     {
-      "name": "Sal del hostel y gira a la derecha",
-      "text": "Desde la entrada del hostel, gira a la derecha y sube los escalones al lado del edificio."
+      "name": "Turn right and take the steps",
+      "text": "From the hostel, turn right and take the steps that lead up the side of the building."
     },
     {
-      "name": "Continúa por el sendero",
-      "text": "En la parte superior de los escalones iniciales, continúa siguiendo el sendero hacia arriba."
+      "name": "Continue on the footpath",
+      "text": "At the top of the steps, continue on the footpath."
     },
     {
-      "name": "Elige la izquierda en el cruce",
-      "text": "Cuando llegues a un cruce, elige la opción de subida a la izquierda para continuar ascendiendo."
+      "name": "Turn left at the junction",
+      "text": "At the junction, choose the left option to go uphill (not right/downhill)."
     },
     {
-      "name": "Sigue los escalones hasta la carretera",
-      "text": "Sigue los escalones hasta que llegues a un punto con escaleras que bajan a una carretera."
+      "name": "Turn right up more stairs",
+      "text": "Follow the steps until you reach a point where you can either turn right up more stairs that lead to a road, or continue left on the path. Choose to turn right and go up the stairs."
     },
     {
-      "name": "Cruza la carretera",
-      "text": "Cruza la carretera y localiza las escaleras que corren junto a las casas en el lado opuesto."
+      "name": "Cross the road to the next stairs",
+      "text": "At the top of the stairs, look across the road for a set of stairs leading alongside some houses. Cross the road and take those stairs."
     },
     {
-      "name": "Sube las escaleras detrás de las casas",
-      "text": "Sigue estas escaleras mientras serpentean detrás de las casas, llevándote hasta el sendero de montaña."
+      "name": "Follow stairs behind the houses",
+      "text": "Follow the stairs behind the houses until they lead you to a mountain trail."
     },
     {
-      "name": "Continúa por el sendero de montaña",
-      "text": "Sigue el sendero de montaña mientras sube hacia el pueblo. El camino se vuelve más pintoresco aquí."
+      "name": "Continue on the mountain trail",
+      "text": "Continue on the mountain trail, which will take you to the village."
     },
     {
-      "name": "Elige subida en las bifurcaciones",
-      "text": "En dos bifurcaciones del sendero a lo largo del camino, elige los caminos de subida para continuar hacia el pueblo."
+      "name": "Take the uphill splits",
+      "text": "In two places the mountain trail splits in two directions. Choose the path that goes uphill."
     },
     {
-      "name": "Llega al cruce del pueblo",
-      "text": "Llegarás a un cruce donde el sendero se nivela. Esto marca tu llegada a Santa Maria del Castello."
+      "name": "Reach the crossroads",
+      "text": "You have reached the top when the mountain trail levels out and you reach a crossroads."
     },
     {
-      "name": "Gira a la derecha hacia el mirador (opcional)",
-      "text": "Para llegar al mirador, gira a la derecha en el cruce."
+      "name": "Turn right at the crossroads",
+      "text": "For the lookout point, turn right at the crossroads. Please note that cars do travel on this road."
     },
     {
-      "name": "Toma la carretera cuesta arriba hasta el cruce",
-      "text": "Sigue la carretera cuesta arriba hasta que llegues a un cruce."
+      "name": "Take the road uphill",
+      "text": "Take the road uphill until you reach a junction."
     },
     {
-      "name": "Gira a la derecha en el cruce",
-      "text": "En el cruce, gira a la derecha y sigue la carretera mientras se curva hacia la derecha."
+      "name": "Turn right at the junction",
+      "text": "At the junction, turn right and follow the road around to the right."
     },
     {
-      "name": "Continúa hasta la sección de hierba",
-      "text": "Continúa hasta que llegues a una sección de hierba fuera de la carretera principal."
-    },
-    {
-      "name": "Accede a los miradores",
-      "text": "Los miradores son accesibles desde esta área de hierba. Ten mucho cuidado: hay caídas repentinas de varios cientos de metros."
+      "name": "Head to the grassy section and viewpoints",
+      "text": "When you see a grassy section off the road, go there and proceed to the vantage points. Use extreme caution—there are sudden drop-offs of several hundred meters."
     }
   ],
   "warningsTitle": "Advertencias de seguridad",

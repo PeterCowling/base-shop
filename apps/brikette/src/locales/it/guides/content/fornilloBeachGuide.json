@@ -1,20 +1,9 @@
 {
-  "essentialsTitle": "Cosa aspettarsi",
-  "essentials": [
-    "15-20 minuti a piedi dall'ostello tramite la nostra scorciatoia o la passeggiata dalla Spiaggia Grande.",
-    "Quattro stabilimenti (Pupetto, Da Ferdinando, Grassi, La Marinella) più due zone libere alle estremità.",
-    "Lettini più economici e atmosfera più rilassata rispetto alla Spiaggia Grande."
-  ],
-  "typicalCostsTitle": "Costi tipici",
-  "typicalCosts": [
-    "Lettino + ombrellone da Pupetto o Da Ferdinando: 20-30 € a persona.",
-    "Pranzo nei ristoranti sulla spiaggia: 15-25 € a portata.",
-    "Biglietto bus interno per la risalita: 1,50 € (acquista al tabacchi)."
-  ],
   "seo": {
     "title": "Fornillo Beach guide",
     "description": "Mappa del layout, sezioni gratuite e consigli sui beach club per Pupetto, Da Ferdinando, Grassi e La Marinella, oltre a scorciatoie da e per l'ostello."
   },
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
   "linkLabel": "Guida Spiaggia di Fornillo: locali e posti liberi",
   "intro": [
     "La spiaggia di Fornillo è una caletta rilassante a pochi passi dall'ostello. I beach club mantengono i prezzi più bassi rispetto alla Spiaggia Grande, le zone pubbliche sono generose e l'atmosfera rimane discreta anche nelle settimane di punta.",
@@ -57,6 +46,23 @@
       "body": [
         "Due sentieri principali alimentano Fornillo. La scorciatoia da %LINK:hostelBriketteToFornilloBeach|Ostello Brikette% arriva sul lato sinistro della spiaggia (guardando il mare); il lungomare della Spiaggia Grande arriva sulla destra.",
         "Gli stabilimenti balneari si susseguono in sequenza dall'accesso dell'ostello verso il percorso principale della spiaggia: Pupetto, Da Ferdinando, Fratelli Grassi e La Marinella. Due zone pubbliche delimitano i lidi: un ampio tratto libero accanto a Pupetto e una baia più piccola oltre La Marinella."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/fornilloBeachGuide.webp",
+          "alt": "View of Fornillo Beach cove in Positano with the shoreline and cliffs",
+          "caption": "Fornillo Beach in Positano: a calmer alternative to the main beach, with free areas and several beach clubs"
+        },
+        {
+          "src": "/img/guides/fornillo-beach/02-main-free-section.jpg",
+          "alt": "Fornillo beach layout map showing paths from hostel and Spiaggia Grande, plus beach club locations",
+          "caption": "Fornillo layout: Path A from Hostel Brikette, Path B from Spiaggia Grande, with beach clubs numbered in sequence"
+        },
+        {
+          "src": "/img/guides/positano-beaches/positano-main-beach.webp",
+          "alt": "Positano main beach (Spiaggia Grande) with umbrellas and the town rising behind it",
+          "caption": "Spiaggia Grande: start here to walk the promenade to Fornillo, or return here to catch the internal bus uphill"
+        }
       ]
     },
     {
@@ -65,6 +71,13 @@
       "body": [
         "La sezione gratuita più grande si trova direttamente di fronte alla scorciatoia dall'ostello. Arrivare prima delle 10:30 per rivendicare un posto vicino alla linea di galleggiamento; i ciottoli si scaldano rapidamente, quindi porta con te un tappetino o un asciugamano spesso.",
         "Pupetto e Da Ferdinando vendono entrambi bevande da asporto e panini: perfetti se vuoi mangiare senza noleggiare un lettino. Tieni d'occhio la marea nei mesi intermedi; le tempeste autunnali possono restringere la costa per un giorno o due."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/01-beach-layout-map.jpg",
+          "alt": "Main free section at Fornillo beach with pebbles and waterfront access",
+          "caption": "The largest free area at Fornillo — arrive before 10:30 to secure waterfront space"
+        }
       ]
     },
     {
@@ -73,6 +86,13 @@
       "body": [
         "Pupetto ancora il lato sinistro di Fornillo con file di lettini arancioni, docce e un ristorante a servizio completo. Prenota tramite WhatsApp o telefonicamente in estate se desideri posti in prima fila; gli walk-in normalmente vanno bene prima delle 09:30.",
         "Gli ospiti che utilizzano l'area gratuita possono comunque ordinare da asporto al bar, e i bagni del Pupetto sono aperti ai clienti paganti, utili se decidi di effettuare l'upgrade nel corso della giornata."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/03-pupetto-beach-club.jpg",
+          "alt": "Pupetto Beach Club with orange loungers and restaurant on Fornillo beach",
+          "caption": "Pupetto Beach Club — orange loungers, full-service restaurant, and showers on the left side of Fornillo"
+        }
       ]
     },
     {
@@ -81,6 +101,13 @@
       "body": [
         "Da Ferdinando mantiene un'atmosfera rilassata da bar sulla spiaggia con lettini blu, noleggio di paddleboard e un popolare menu per il pranzo (pensa al pescato del giorno alla griglia, insalate e pasta). Aspettatevi prezzi un po' più alti rispetto a Pupetto ma comunque ragionevoli per Positano.",
         "I taxi d'acqua per Laurito e Arienzo passano dal molo di Da Ferdinando, utili se hai intenzione di fare un salto in spiaggia dopo una nuotata mattutina."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/04-da-ferdinando.jpg",
+          "alt": "Da Ferdinando beach bar with blue loungers and jetty at Fornillo",
+          "caption": "Da Ferdinando — beach-bar vibe with blue loungers, paddleboard rentals, and water taxi access"
+        }
       ]
     },
     {
@@ -89,6 +116,13 @@
       "body": [
         "Grassi è compatto con file ordinate di lettini rossi e un bar ombreggiato per cocktail e granite. Il team offre borse stagne per oggetti di valore se noleggi kayak per esplorare le grotte vicine.",
         "Poiché lo spazio è limitato, le prenotazioni anticipate aiutano nei fine settimana. Le visite walk-in sono generalmente possibili infrasettimanali dopo le 11:00 una volta stabilite le prenotazioni anticipate."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/05-fratelli-grassi.jpg",
+          "alt": "Fratelli Grassi Beach Bar with red loungers and shaded bar area at Fornillo",
+          "caption": "Fratelli Grassi — compact setup with red loungers, shaded cocktail bar, and kayak rentals"
+        }
       ]
     },
     {
@@ -97,6 +131,13 @@
       "body": [
         "La Marinella si trova più vicina alla passerella della Spiaggia Grande e prende il sole di mezzogiorno. Aspettatevi un servizio attento, piatti per il pranzo e la possibilità di prenotare lettini sul ponte superiore con ombra extra.",
         "Nella bassa stagione La Marinella a volte trasferisce alcune sedie nella vicina baia. Il personale dovrebbe lasciare spazio per l'area pubblica, ma essere preparato a un ingombro più ridotto in caso di mare mosso."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/06-la-marinella.jpg",
+          "alt": "La Marinella beach club with loungers and restaurant near Spiaggia Grande walkway",
+          "caption": "La Marinella — attentive service, upper-deck loungers, and closest to the Spiaggia Grande walkway"
+        }
       ]
     },
     {
@@ -105,8 +146,49 @@
       "body": [
         "Oltre La Marinella, una piccola insenatura offre un'area pubblica più tranquilla con un ripiano di ciottoli e acque calme. Porta una crema solare adatta alla barriera corallina e scarpe da acqua: l'ingresso è roccioso e i ricci di mare possono raggrupparsi vicino ai bordi.",
         "La Marinella sistema qui occasionalmente dei lettini liberi nelle giornate tempestose. La zona rimane ufficialmente libera, quindi sentiti a tuo agio nell'utilizzare lo spazio se arrivi per primo; lascia semplicemente spazio per restituire sedie o kayak."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/07-secret-free-section.jpg",
+          "alt": "Hidden free cove beyond La Marinella with rocky entry and calm water",
+          "caption": "The 'secret' free section — a quieter cove beyond La Marinella with rocky entry and sea urchin areas"
+        }
+      ]
+    },
+    {
+      "id": "hostel-day-plan",
+      "title": "A hostel-friendly Fornillo day plan",
+      "body": [
+        "If you want an easy beach day that still leaves energy for the evening, this simple plan works well for most guests.",
+        "1) Leave after breakfast and take the %LINK:hostelBriketteToFornilloBeach|shortcut down to Fornillo%. Aim to arrive before 10:30 if you want a good free spot.",
+        "2) Swim first. The water is usually calmest earlier in the day, and the sun feels less intense. Then decide: stay free, or upgrade to a lido for shade.",
+        "3) Lunch: keep it simple. Grab takeaway from a beach bar, or split a plate if you are on a budget. Drink water throughout the day — the heat plus steps is a real combo.",
+        "4) Leave before you are exhausted. Walk the promenade back toward Spiaggia Grande, then use the internal bus uphill. Follow the %LINK:fornilloBeachToBrikette|return route% so you do not end up doing the steepest staircase by accident.",
+        "5) Back at the hostel: shower, rehydrate, and you are ready for aperitivo. If you want a second beach day with a different vibe, compare options in our %LINK:positanoBeaches|Positano beaches overview%."
+      ]
+    },
+    {
+      "id": "what-to-bring",
+      "title": "What to bring (so you do not overpack)",
+      "body": [
+        "A light pack is the secret to enjoying the walk back up later. Most guests are happiest with a small day bag and a few essentials.",
+        "Bring: water shoes, sunscreen, a hat, a thick towel (or mat), and a refillable bottle. Add a light shirt for the walk back in the afternoon sun.",
+        "Skip: passports and big cash. Keep valuables locked up at the hostel. If you are paying for a lido, card machines sometimes struggle, so carry a little cash as backup.",
+        "If you want shade in the free section, you can bring a small foldable umbrella, but it can be awkward in wind. In peak summer, the simplest “shade plan” is to rent a parasol for a few hours."
       ]
     }
+  ],
+  "essentialsTitle": "Cosa aspettarsi",
+  "essentials": [
+    "15-20 minuti a piedi dall'ostello tramite la nostra scorciatoia o la passeggiata dalla Spiaggia Grande.",
+    "Quattro stabilimenti (Pupetto, Da Ferdinando, Grassi, La Marinella) più due zone libere alle estremità.",
+    "Lettini più economici e atmosfera più rilassata rispetto alla Spiaggia Grande."
+  ],
+  "typicalCostsTitle": "Costi tipici",
+  "typicalCosts": [
+    "Lettino + ombrellone da Pupetto o Da Ferdinando: 20-30 € a persona.",
+    "Pranzo nei ristoranti sulla spiaggia: 15-25 € a portata.",
+    "Biglietto bus interno per la risalita: 1,50 € (acquista al tabacchi)."
   ],
   "tipsTitle": "Suggerimenti rapidi",
   "tips": [
@@ -140,6 +222,5 @@
         "Le strutture appartengono ad ogni stabilimento balneare. Chiedi al bar prima di usarli se ti trovi in ​​una zona pubblica: molti consentono visite veloci pagando un piccolo supplemento o quando acquisti cibo o bevande."
       ]
     }
-  ],
-  "lastUpdated": "2026-01-29T00:00:00.000Z"
+  ]
 }

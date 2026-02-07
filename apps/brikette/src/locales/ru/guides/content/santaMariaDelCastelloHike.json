@@ -11,6 +11,20 @@
   ],
   "sections": [
     {
+      "id": "scan-to-share",
+      "title": "Scan to share",
+      "body": [
+        "Want to open this guide on another phone or share it with a hiking buddy? Scan the QR code below."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/santa-maria-castello/scan-to-share.png",
+          "alt": "QR code to open and share the Santa Maria del Castello hike guide.",
+          "caption": "Scan to open/share this guide."
+        }
+      ]
+    },
+    {
       "id": "what-is-santa-maria",
       "title": "Что такое Санта-Мария-дель-Кастелло?",
       "body": [
@@ -54,60 +68,56 @@
   ],
   "steps": [
     {
-      "name": "Выйдите из хостела и поверните направо",
-      "text": "От входа в хостел поверните направо и поднимитесь по ступенькам рядом со зданием."
+      "name": "Turn right and take the steps",
+      "text": "From the hostel, turn right and take the steps that lead up the side of the building."
     },
     {
-      "name": "Продолжайте по пешеходной дорожке",
-      "text": "Наверху первых ступеней продолжайте следовать по пешеходной дорожке вверх."
+      "name": "Continue on the footpath",
+      "text": "At the top of the steps, continue on the footpath."
     },
     {
-      "name": "Выберите левый путь на перекрестке",
-      "text": "Когда вы дойдете до перекрестка, выберите левый вариант подъема, чтобы продолжить восхождение."
+      "name": "Turn left at the junction",
+      "text": "At the junction, choose the left option to go uphill (not right/downhill)."
     },
     {
-      "name": "Следуйте по ступенькам к дороге",
-      "text": "Продолжайте следовать по ступенькам, пока не дойдете до точки с лестницей, ведущей к дороге."
+      "name": "Turn right up more stairs",
+      "text": "Follow the steps until you reach a point where you can either turn right up more stairs that lead to a road, or continue left on the path. Choose to turn right and go up the stairs."
     },
     {
-      "name": "Пересеките дорогу",
-      "text": "Пересеките дорогу и найдите лестницу, идущую вдоль домов на противоположной стороне."
+      "name": "Cross the road to the next stairs",
+      "text": "At the top of the stairs, look across the road for a set of stairs leading alongside some houses. Cross the road and take those stairs."
     },
     {
-      "name": "Поднимитесь по лестнице за домами",
-      "text": "Следуйте по этой лестнице, которая петляет за домами, ведя вас к горной тропе."
+      "name": "Follow stairs behind the houses",
+      "text": "Follow the stairs behind the houses until they lead you to a mountain trail."
     },
     {
-      "name": "Продолжайте по горной тропе",
-      "text": "Следуйте по горной тропе, пока она поднимается к деревне. Здесь дорога становится более живописной."
+      "name": "Continue on the mountain trail",
+      "text": "Continue on the mountain trail, which will take you to the village."
     },
     {
-      "name": "Выбирайте подъем на развилках",
-      "text": "На двух развилках тропы по пути выбирайте пути подъема, чтобы продолжить движение к деревне."
+      "name": "Take the uphill splits",
+      "text": "In two places the mountain trail splits in two directions. Choose the path that goes uphill."
     },
     {
-      "name": "Достигните перекрестка у деревни",
-      "text": "Вы достигнете перекрестка, где тропа выравнивается. Это отмечает ваше прибытие в Санта-Мария-дель-Кастелло."
+      "name": "Reach the crossroads",
+      "text": "You have reached the top when the mountain trail levels out and you reach a crossroads."
     },
     {
-      "name": "Поверните направо к смотровой площадке (по желанию)",
-      "text": "Чтобы добраться до смотровой площадки, поверните направо на перекрестке."
+      "name": "Turn right at the crossroads",
+      "text": "For the lookout point, turn right at the crossroads. Please note that cars do travel on this road."
     },
     {
-      "name": "Идите по дороге вверх до перекрестка",
-      "text": "Следуйте по дороге вверх, пока не дойдете до перекрестка."
+      "name": "Take the road uphill",
+      "text": "Take the road uphill until you reach a junction."
     },
     {
-      "name": "Поверните направо на перекрестке",
-      "text": "На перекрестке поверните направо и следуйте по дороге, пока она поворачивает направо."
+      "name": "Turn right at the junction",
+      "text": "At the junction, turn right and follow the road around to the right."
     },
     {
-      "name": "Продолжайте до травянистой секции",
-      "text": "Продолжайте, пока не дойдете до травянистой секции вне основной дороги."
-    },
-    {
-      "name": "Получите доступ к точкам обзора",
-      "text": "Точки обзора доступны из этой травянистой области. Будьте крайне осторожны — есть внезапные обрывы на несколько сотен метров."
+      "name": "Head to the grassy section and viewpoints",
+      "text": "When you see a grassy section off the road, go there and proceed to the vantage points. Use extreme caution—there are sudden drop-offs of several hundred meters."
     }
   ],
   "warningsTitle": "Предупреждения о безопасности",

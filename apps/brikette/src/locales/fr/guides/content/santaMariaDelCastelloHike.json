@@ -11,6 +11,20 @@
   ],
   "sections": [
     {
+      "id": "scan-to-share",
+      "title": "Scan to share",
+      "body": [
+        "Want to open this guide on another phone or share it with a hiking buddy? Scan the QR code below."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/santa-maria-castello/scan-to-share.png",
+          "alt": "QR code to open and share the Santa Maria del Castello hike guide.",
+          "caption": "Scan to open/share this guide."
+        }
+      ]
+    },
+    {
       "id": "what-is-santa-maria",
       "title": "Qu'est-ce que Santa Maria del Castello ?",
       "body": [
@@ -54,60 +68,56 @@
   ],
   "steps": [
     {
-      "name": "Sortez de l'auberge et tournez à droite",
-      "text": "Depuis l'entrée de l'auberge, tournez à droite et montez les marches à côté du bâtiment."
+      "name": "Turn right and take the steps",
+      "text": "From the hostel, turn right and take the steps that lead up the side of the building."
     },
     {
-      "name": "Continuez sur le sentier",
-      "text": "En haut des marches initiales, continuez à suivre le sentier vers le haut."
+      "name": "Continue on the footpath",
+      "text": "At the top of the steps, continue on the footpath."
     },
     {
-      "name": "Choisissez la gauche au carrefour",
-      "text": "Lorsque vous arrivez à un carrefour, choisissez l'option de montée à gauche pour continuer à monter."
+      "name": "Turn left at the junction",
+      "text": "At the junction, choose the left option to go uphill (not right/downhill)."
     },
     {
-      "name": "Suivez les marches jusqu'à la route",
-      "text": "Continuez à suivre les marches jusqu'à ce que vous atteigniez un point avec des escaliers menant à une route."
+      "name": "Turn right up more stairs",
+      "text": "Follow the steps until you reach a point where you can either turn right up more stairs that lead to a road, or continue left on the path. Choose to turn right and go up the stairs."
     },
     {
-      "name": "Traversez la route",
-      "text": "Traversez la route et localisez les escaliers qui longent les maisons du côté opposé."
+      "name": "Cross the road to the next stairs",
+      "text": "At the top of the stairs, look across the road for a set of stairs leading alongside some houses. Cross the road and take those stairs."
     },
     {
-      "name": "Montez les escaliers derrière les maisons",
-      "text": "Suivez ces escaliers qui serpentent derrière les maisons, vous menant au sentier de montagne."
+      "name": "Follow stairs behind the houses",
+      "text": "Follow the stairs behind the houses until they lead you to a mountain trail."
     },
     {
-      "name": "Continuez sur le sentier de montagne",
-      "text": "Suivez le sentier de montagne pendant qu'il grimpe vers le village. Le chemin devient plus pittoresque ici."
+      "name": "Continue on the mountain trail",
+      "text": "Continue on the mountain trail, which will take you to the village."
     },
     {
-      "name": "Choisissez la montée aux bifurcations",
-      "text": "À deux bifurcations du sentier en cours de route, choisissez les chemins de montée pour continuer vers le village."
+      "name": "Take the uphill splits",
+      "text": "In two places the mountain trail splits in two directions. Choose the path that goes uphill."
     },
     {
-      "name": "Arrivez au carrefour du village",
-      "text": "Vous arriverez à un carrefour où le sentier se nivelle. Cela marque votre arrivée à Santa Maria del Castello."
+      "name": "Reach the crossroads",
+      "text": "You have reached the top when the mountain trail levels out and you reach a crossroads."
     },
     {
-      "name": "Tournez à droite vers le point de vue (facultatif)",
-      "text": "Pour atteindre le point de vue, tournez à droite au carrefour."
+      "name": "Turn right at the crossroads",
+      "text": "For the lookout point, turn right at the crossroads. Please note that cars do travel on this road."
     },
     {
-      "name": "Prenez la route en montée jusqu'au carrefour",
-      "text": "Suivez la route en montée jusqu'à ce que vous atteigniez un carrefour."
+      "name": "Take the road uphill",
+      "text": "Take the road uphill until you reach a junction."
     },
     {
-      "name": "Tournez à droite au carrefour",
-      "text": "Au carrefour, tournez à droite et suivez la route alors qu'elle se courbe vers la droite."
+      "name": "Turn right at the junction",
+      "text": "At the junction, turn right and follow the road around to the right."
     },
     {
-      "name": "Continuez jusqu'à la section herbeuse",
-      "text": "Continuez jusqu'à ce que vous atteigniez une section herbeuse en dehors de la route principale."
-    },
-    {
-      "name": "Accédez aux points de vue",
-      "text": "Les points de vue sont accessibles depuis cette zone herbeuse. Soyez extrêmement prudent – il y a des chutes soudaines de plusieurs centaines de mètres."
+      "name": "Head to the grassy section and viewpoints",
+      "text": "When you see a grassy section off the road, go there and proceed to the vantage points. Use extreme caution—there are sudden drop-offs of several hundred meters."
     }
   ],
   "warningsTitle": "Avertissements de sécurité",

@@ -281,6 +281,7 @@ jobs:
     needs: [validate, test, test-sharded]
     if: >-
       ${{
+        always() &&
         needs.validate.result == 'success' &&
         !contains(fromJSON('["failure","cancelled"]'), needs.test.result) &&
         !contains(fromJSON('["failure","cancelled"]'), needs['test-sharded'].result)

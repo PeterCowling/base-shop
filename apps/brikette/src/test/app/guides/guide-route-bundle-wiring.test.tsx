@@ -3,6 +3,7 @@ import type { ReactElement } from "react";
 const mockGuideNamespace = jest.fn();
 const mockGuidePath = jest.fn();
 const mockResolveGuideKeyFromSlug = jest.fn();
+const mockIsGuidePublished = jest.fn();
 const mockLoadGuideI18nBundle = jest.fn();
 const mockLoadGuideManifestOverridesFromFs = jest.fn();
 const mockListGuideManifestEntries = jest.fn();
@@ -48,6 +49,7 @@ jest.mock("@/lib/how-to-get-here/definitions", () => ({
 
 jest.mock("@/data/guides.index", () => ({
   GUIDES_INDEX: [],
+  isGuidePublished: (...args: unknown[]) => mockIsGuidePublished(...args),
 }));
 
 jest.mock("@acme/ui/lib/buildCfImageUrl", () => ({
@@ -81,10 +83,12 @@ describe("guide route bundle wiring", () => {
     mockGuideNamespace.mockReset();
     mockGuidePath.mockReset();
     mockResolveGuideKeyFromSlug.mockReset();
+    mockIsGuidePublished.mockReset();
     mockLoadGuideI18nBundle.mockReset();
     mockLoadGuideManifestOverridesFromFs.mockReset();
     mockListGuideManifestEntries.mockReset();
     mockResolveDraftPathSegment.mockReset();
+    mockIsGuidePublished.mockReturnValue(true);
 
     mockLoadGuideI18nBundle.mockResolvedValue({
       serverGuides: { content: { travelHelp: { intro: ["Localized"] } } },

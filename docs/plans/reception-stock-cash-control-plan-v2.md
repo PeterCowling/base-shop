@@ -2,7 +2,7 @@
 Type: Plan
 Status: Active
 Domain: Reception
-Last-reviewed: 2026-01-23
+Last-reviewed: 2026-02-07
 Relates-to charter: none
 Predecessor: docs/historical/plans/reception-stock-cash-control-plan.md
 ---
@@ -23,32 +23,32 @@ enforcement, reauth coverage, server-side rules, and ingredient audit trail.
 - Safe management (deposit, withdrawal, exchange, bank, reconcile, reset)
 - Variance calculations (cash, keycard, safe) with mismatch detection
 - End-of-day report aggregation and CSV export
-- Role checks exist for stock/management (`Permissions.*`), but cash/safe still uses name-based gating
-- Reauth in place: password reauth for bank deposits and large stock adjustments; PIN confirmation for safe deposit/withdrawal, petty cash, and shift close
+- Role checks exist for stock/management/cash/safe (`Permissions.*` via `canAccess`)
+- Reauth in place: password reauth for bank deposits, large stock adjustments, safe deposit/withdrawal, petty cash, shift close, safe reset, safe reconcile, tender removal (policy-gated), void, and correction flows
 - Recipes stored in `inventory/recipes` keyed by inventory item ID; bar sales post ledger `sale` entries; stock dashboard warns on missing mappings
 
 ### Critical gaps
-| Area | Issue | Severity |
-|------|-------|----------|
-| Cash | Shift ledger + shiftId tagging not implemented (`tillShifts` unused; `shiftId` never set) | Critical |
-| Access | Name-based gating in cash/safe flows (`ActionButtons`, `SafeManagement`, `StepProgress`) | High |
-| Auth | PIN "reauth" uses client-side env mapping (`getUserByPin`) | High |
-| Cash | SafeResetForm / SafeReconcileForm lack password reauth | High |
-| Cash | Tender removal policy flag (`pinRequiredAboveLimit`) computed but not enforced | Medium |
-| Cash | No variance sign-off workflow | High |
-| Infra | No Firebase security rules for reception | Critical |
-| Infra | Settings writes (cash drawer limit, safe keycards) not protected server-side | High |
-| Cash | `/api/pms-postings` and `/api/terminal-batches` not implemented | Medium |
-| Reporting | Transaction table shows `type` under the "METHOD" column | Low |
+| Area | Issue | Severity | Status |
+|------|-------|----------|--------|
+| Cash | Shift ledger + shiftId tagging not implemented | Critical | **Resolved** (REC-V2-12) |
+| Access | Name-based gating in cash/safe flows | High | **Resolved** — `ActionButtons`, `SafeManagement`, `StepProgress` now use `canAccess` + `Permissions` |
+| Auth | PIN "reauth" uses client-side env mapping (`getUserByPin`) | High | Open (REC-V2-14) |
+| Cash | SafeResetForm / SafeReconcileForm lack password reauth | High | **Resolved** — both use `PasswordReauthInline` |
+| Cash | Tender removal policy flag (`pinRequiredAboveLimit`) computed but not enforced | Medium | **Resolved** (REC-V2-04) — `pinRequiredForTenderRemoval` gates `PasswordReauthInline` |
+| Cash | No variance sign-off workflow | High | **Resolved** (REC-V2-05) |
+| Infra | Firebase security rules need emulator tests + CI validation | Critical | Partial — `database.rules.json` exists (117 KB) but emulator tests + CI check not yet added (REC-V2-02) |
+| Infra | Settings writes (cash drawer limit, safe keycards) not protected server-side | High | Open (covered by REC-V2-02 rules) |
+| Cash | `/api/pms-postings` and `/api/terminal-batches` not implemented | Medium | Open (REC-V2-08) |
+| Reporting | Transaction table shows `type` under the "METHOD" column | Low | **Resolved** — `method` and `type` now have separate columns |
 
-### Repo audit notes (file-backed)
-- `apps/reception/src/hooks/mutations/useAllTransactionsMutations.ts` uses `update` without guarding against overwrites.
-- `apps/reception/src/hooks/client/till/useTillShifts.ts` derives shifts from `cashCounts` only; `tillShifts` is never written and `utils/shiftId.ts` is never set.
-- `apps/reception/src/components/till/ActionButtons.tsx`, `apps/reception/src/components/safe/SafeManagement.tsx`, and `apps/reception/src/components/till/StepProgress.tsx` gate by hard-coded names.
-- `apps/reception/src/utils/getUserByPin.ts` reads `NEXT_PUBLIC_USERS_JSON` (client-side PINs).
-- `apps/reception/src/components/till/TenderRemovalModal.tsx` always requires PIN and ignores `pinRequiredForTenderRemoval`.
-- `apps/reception/src/hooks/data/inventory/useIngredients.ts` uses direct `set()`; `useConfirmOrder.ts` decrements ingredients by product name while `inventory/recipes` exists but is unused.
-- `apps/reception/src/components/till/TransactionTable.tsx` maps `type` into the "METHOD" column.
+### Repo audit notes (file-backed, updated 2026-02-07)
+- ~~`useAllTransactionsMutations.ts` uses `update` without guarding against overwrites.~~ **Resolved**: now blocks overwrites except for void fields (REC-V2-01).
+- ~~`useTillShifts.ts` derives shifts from `cashCounts` only; `tillShifts` is never written and `utils/shiftId.ts` is never set.~~ **Resolved**: `tillShifts` records written on open/close, `shiftId` generated and propagated (REC-V2-12).
+- ~~`ActionButtons.tsx`, `SafeManagement.tsx`, and `StepProgress.tsx` gate by hard-coded names.~~ **Resolved**: all three use `canAccess` + `Permissions.*` role checks.
+- `apps/reception/src/utils/getUserByPin.ts` reads `NEXT_PUBLIC_USERS_JSON` (client-side PINs). **Still open** (REC-V2-14).
+- ~~`TenderRemovalModal.tsx` always requires PIN and ignores `pinRequiredForTenderRemoval`.~~ **Resolved**: conditionally renders `PasswordReauthInline` based on `pinRequiredForTenderRemoval` flag (REC-V2-04).
+- ~~`useIngredients.ts` uses direct `set()`; `useConfirmOrder.ts` decrements ingredients by product name.~~ **Resolved**: `useIngredients` uses `addLedgerEntry`; `useConfirmOrder` looks up recipes by inventory item ID (REC-V2-06, REC-V2-07).
+- ~~`TransactionTable.tsx` maps `type` into the "METHOD" column.~~ **Resolved**: `method` and `type` are separate correctly-labelled columns.
 
 ### Decisions (locked 2026-01-23)
 - Reauth model: password reauth everywhere for high-risk actions (no server-verified PIN infra).
@@ -106,9 +106,9 @@ enforcement, reauth coverage, server-side rules, and ingredient audit trail.
     - New ledger entries include a `shiftId` and remain backwards-compatible with legacy data.
     - Tests cover shiftId tagging and shift history updates.
 
-- [ ] REC-V2-02: Firebase security rules for reception
+- [ ] REC-V2-02: Firebase security rules — emulator tests + CI validation
   - Scope:
-    - Create `apps/reception/database.rules.json` with rules for:
+    - `apps/reception/database.rules.json` exists (117 KB, covers append-only patterns, role-based access, indexes). Remaining work:
       - `allFinancialTransactions`, `financialsRoom/transactions`: append-only; allow void fields only.
       - `cashCounts`, `safeCounts`, `creditSlips`, `tillEvents`, `cashDiscrepancies`,
         `keycardDiscrepancies`, `keycardTransfers`: append-only.
@@ -124,7 +124,7 @@ enforcement, reauth coverage, server-side rules, and ingredient audit trail.
 
 ### High — Access control & reauth hardening
 
-- [ ] REC-V2-03: Add password reauth to SafeResetForm and SafeReconcileForm
+- [x] REC-V2-03: Add password reauth to SafeResetForm and SafeReconcileForm
   - Scope:
     - Add `PasswordReauthInline` or `PasswordReauthModal` to SafeResetForm and SafeReconcileForm.
     - Remove PIN-only confirmation for these actions.
@@ -133,6 +133,8 @@ enforcement, reauth coverage, server-side rules, and ingredient audit trail.
   - Definition of done:
     - Safe reset and reconcile require password re-entry before execution.
     - Tests mock reauth and verify gating.
+  - Notes:
+    - Both `SafeResetForm` and `SafeReconcileForm` now use `PasswordReauthInline`.
 
 - [x] REC-V2-04: Add reauth to TenderRemovalModal (and enforce policy flags)
   - Scope:
@@ -144,7 +146,7 @@ enforcement, reauth coverage, server-side rules, and ingredient audit trail.
     - Tender removals require reauth according to policy and are audit-logged.
     - Test verifies reauth blocks submission until authenticated.
 
-- [ ] REC-V2-13: Replace name-based gating with role checks (cash/safe scope)
+- [x] REC-V2-13: Replace name-based gating with role checks (cash/safe scope)
   - Scope:
     - Replace hard-coded user checks in cash/safe flows with `canAccess` + `Permissions`.
     - Update `Permissions` to include manager/admin roles where appropriate.
@@ -153,6 +155,8 @@ enforcement, reauth coverage, server-side rules, and ingredient audit trail.
   - Definition of done:
     - Cash/safe actions are role-gated; name checks removed.
     - Tests cover privileged vs non-privileged access.
+  - Notes:
+    - `ActionButtons`, `SafeManagement`, and `StepProgress` now use `canAccess` with `Permissions.TILL_ACCESS` / `Permissions.MANAGEMENT_ACCESS`.
 
 - [ ] REC-V2-14: Replace client-side PIN confirmation with secure reauth
   - Scope:
@@ -175,7 +179,7 @@ enforcement, reauth coverage, server-side rules, and ingredient audit trail.
       - Require a free-text note explaining the discrepancy.
       - Record `signedOffBy`, `signedOffAt`, `varianceNote` on the shift record (`tillShifts`).
     - Surface unacknowledged variances in the end-of-day report.
-  - Dependencies: REC-V2-12, REC-V2-13, REC-V2-14.
+  - Dependencies: REC-V2-12 ✅, REC-V2-13 ✅, REC-V2-14.
   - Definition of done:
     - Shift close is blocked if variance > threshold and no sign-off exists.
     - Sign-off metadata is persisted and visible in reports.
@@ -221,13 +225,14 @@ enforcement, reauth coverage, server-side rules, and ingredient audit trail.
 
 - [ ] REC-V2-15: Reporting accuracy + audit search
   - Scope:
-    - Fix TransactionTable method/type column mapping and display void/correction status.
+    - ~~Fix TransactionTable method/type column mapping~~ — **Done**: `method` and `type` are now separate columns.
+    - Display void/correction status in transaction views.
     - Update end-of-day reports, dashboards, and analytics to exclude voided transactions by default
       and show sign-offs/corrections where relevant.
     - Implement `/audit` search view to filter by booking, user, shiftId, reason, and show void/correction history.
-    - Progress: `/audit` now includes a corrections audit log tab with before/after details.
+    - Progress: `/audit` now includes a corrections audit log tab (`FinancialTransactionAuditSearch`) with before/after details.
     - Progress: End-of-day packet includes a corrections summary (count + net impact).
-    - Progress: Reception dashboard metrics exclude voided transactions.
+    - Progress: Reception dashboard metrics exclude voided transactions (via `isVoidedTransaction` filter).
   - Dependencies: REC-V2-01, REC-V2-11, REC-V2-12.
   - Definition of done:
     - Reporting matches source-of-truth transactions and surfaces void/correction/audit data.
@@ -277,12 +282,12 @@ enforcement, reauth coverage, server-side rules, and ingredient audit trail.
 ## Implementation order
 
 ```
-Phase 1 (Critical):  REC-V2-12 -> REC-V2-01 -> REC-V2-11 -> REC-V2-02
-Phase 2 (High):      REC-V2-13, REC-V2-03, REC-V2-04, REC-V2-14 (parallel)
-Phase 3 (High):      REC-V2-05
-Phase 4 (High):      REC-V2-06 -> REC-V2-07
-Phase 5 (Medium):    REC-V2-15, REC-V2-08 (parallel)
-Phase 6 (Low):       REC-V2-09, REC-V2-10 (parallel)
+Phase 1 (Critical):  REC-V2-12 ✅ -> REC-V2-01 ✅ -> REC-V2-11 ✅ -> REC-V2-02 (partial — rules file exists, needs emulator tests + CI)
+Phase 2 (High):      REC-V2-13 ✅, REC-V2-03 ✅, REC-V2-04 ✅, REC-V2-14 (open)
+Phase 3 (High):      REC-V2-05 ✅
+Phase 4 (High):      REC-V2-06 ✅ -> REC-V2-07 ✅
+Phase 5 (Medium):    REC-V2-15 (partial — several progress items done), REC-V2-08 (open)
+Phase 6 (Low):       REC-V2-09 (open), REC-V2-10 (open)
 ```
 
 ## Constraints

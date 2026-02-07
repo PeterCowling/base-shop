@@ -43,8 +43,6 @@ module.exports = [
   "packages/config/jest.preset.cjs",
   "apps/api/jest.config.cjs",
   "apps/api/postcss.config.cjs",
-  // Brikette: exempt temporarily (tsconfig extends chain resolution issue with import resolver)
-  "apps/brikette/**",
   // Cypress files: exempt from main linting (type-aware rules crash during init without project)
   "apps/cms/cypress/**",
   "apps/cms/cypress.config.mjs",

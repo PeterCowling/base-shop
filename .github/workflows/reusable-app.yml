@@ -76,15 +76,87 @@ jobs:
           turbo-token: ${{ secrets.TURBO_TOKEN }}
           turbo-team: ${{ vars.TURBO_TEAM }}
 
+      - name: Classify deploy-only change set
+        id: classify
+        shell: bash
+        env:
+          APP_FILTER: ${{ inputs.app-filter }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha || '' }}
+          EVENT_BEFORE: ${{ github.event.before || '' }}
+        run: |
+          set -euo pipefail
+
+          run_validation="true"
+          is_deploy_only="false"
+          uncertain="true"
+          reason="non_brikette_caller"
+          changed_file_count="0"
+
+          if [[ "$APP_FILTER" == "@apps/brikette" ]]; then
+            base_sha=""
+            if [[ -n "$PR_BASE_SHA" ]]; then
+              base_sha="$PR_BASE_SHA"
+            elif [[ -n "$EVENT_BEFORE" && "$EVENT_BEFORE" != "0000000000000000000000000000000000000000" ]]; then
+              base_sha="$EVENT_BEFORE"
+            elif git rev-parse HEAD^ >/dev/null 2>&1; then
+              base_sha="$(git rev-parse HEAD^)"
+            fi
+
+            changed_paths_file="$RUNNER_TEMP/changed-paths.txt"
+            if [[ -n "$base_sha" ]]; then
+              git diff --name-only "$base_sha" "${GITHUB_SHA}" > "$changed_paths_file"
+            else
+              : > "$changed_paths_file"
+            fi
+            changed_file_count="$(wc -l < "$changed_paths_file" | tr -d ' ')"
+
+            classification_json="$(
+              pnpm --filter scripts run classify-deploy-change -- --paths-file "$changed_paths_file"
+            )"
+            classification_file="$RUNNER_TEMP/deploy-change-classification.json"
+            printf '%s\n' "$classification_json" > "$classification_file"
+
+            is_deploy_only="$(jq -r '.isDeployOnly' "$classification_file")"
+            uncertain="$(jq -r '.uncertain' "$classification_file")"
+            reason="$(jq -r '.reason' "$classification_file")"
+
+            if [[ "$is_deploy_only" == "true" && "$uncertain" == "false" ]]; then
+              run_validation="false"
+            else
+              run_validation="true"
+            fi
+          fi
+
+          {
+            echo "run_validation=$run_validation"
+            echo "is_deploy_only=$is_deploy_only"
+            echo "uncertain=$uncertain"
+            echo "reason=$reason"
+            echo "changed_file_count=$changed_file_count"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Validation gating decision
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${{ steps.classify.outputs.run_validation }}" == "false" ]]; then
+            echo "::notice title=Validation gating::Skipping Lint/Typecheck/Test (deploy-only, confident). reason=${{ steps.classify.outputs.reason }} changed_files=${{ steps.classify.outputs.changed_file_count }}"
+          else
+            echo "::notice title=Validation gating::Running full validation. reason=${{ steps.classify.outputs.reason }} uncertain=${{ steps.classify.outputs.uncertain }} changed_files=${{ steps.classify.outputs.changed_file_count }}"
+          fi
+
       - name: Lint
+        if: ${{ steps.classify.outputs.run_validation == 'true' }}
         run: pnpm --filter ${{ inputs.app-filter }}... lint
         shell: bash
 
       - name: Typecheck
+        if: ${{ steps.classify.outputs.run_validation == 'true' }}
         run: pnpm exec turbo run typecheck --filter=${{ inputs.app-filter }}...
         shell: bash
 
       - name: Test
+        if: ${{ steps.classify.outputs.run_validation == 'true' }}
         run: pnpm --filter ${{ inputs.app-filter }} test
         shell: bash
 

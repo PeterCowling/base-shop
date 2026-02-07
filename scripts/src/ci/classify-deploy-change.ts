@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+
 import {
   DEPLOY_ONLY_EXACT_PATHS,
   DEPLOY_ONLY_PATH_PREFIXES,
@@ -114,9 +116,25 @@ function parseArgs(argv: string[]): string[] {
       continue;
     }
 
+    if (arg === "--paths-file") {
+      const next = argv[index + 1];
+      if (!next || next.startsWith("--")) {
+        throw new Error("Missing value for --paths-file");
+      }
+
+      const filePaths = readFileSync(next, "utf8")
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter(Boolean);
+      paths.push(...filePaths);
+      index += 1;
+      continue;
+    }
+
     if (arg === "--help" || arg === "-h") {
       console.log(`Usage:
   pnpm --filter scripts run classify-deploy-change -- --path <path> [--path <path>]
+  pnpm --filter scripts run classify-deploy-change -- --paths-file <file>
   pnpm --filter scripts run classify-deploy-change -- <path> [<path>]
 `);
       process.exit(0);

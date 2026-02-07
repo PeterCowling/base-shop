@@ -59,6 +59,11 @@ Reduce staging feedback time without weakening quality or safety controls. Focus
 - Runtime (non-deploy-only) paths include broad code prefixes (`apps/`, `packages/`, `scripts/src/`, `src/`, `test/`, `data/`) after deploy-only allowlist checks.
 - Unknown paths outside both sets are classified as `uncertain=true`, forcing full validation.
 
+### Operator Log Interpretation
+- `run_validation=false` + `reason=deploy_only_paths` means `Lint/Typecheck/Test` were intentionally skipped for a confident deploy-only Brikette change.
+- `run_validation=true` + `reason=runtime_path_detected` means runtime-affecting files were detected; full validation path ran.
+- `run_validation=true` + `reason=unknown_path_detected` (or `empty_path_set`) means classifier confidence was insufficient; conservative full validation path ran.
+
 ## Telemetry Methodology
 ### Capture Window
 - Captured on: `2026-02-07` (UTC).

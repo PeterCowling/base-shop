@@ -75,7 +75,7 @@ Introduce a deterministic deploy-only classifier as a reusable script module, te
 |---|---|---|---:|---:|---|---|
 | TASK-01 | IMPLEMENT | Add CI telemetry snapshot script for repeatable baseline/post-change measurement (absorbs CI-PAR-01/02 from retired parallelization plan) | 90% | M | Completed | - |
 | TASK-02 | IMPLEMENT | Implement deploy-only classifier module + fixture tests | 86% | M | Completed | TASK-01 |
-| TASK-03 | IMPLEMENT | Integrate classifier into reusable app workflow with conservative defaults and explicit logs | 82% | M | Pending | TASK-02 |
+| TASK-03 | IMPLEMENT | Integrate classifier into reusable app workflow with conservative defaults and explicit logs | 82% | M | Completed (local) | TASK-02 |
 | TASK-04 | IMPLEMENT | Add Brikette local deploy preflight command + tests and agent-facing usage docs | 84% | M | Pending | TASK-02 |
 | TASK-05 | DECISION | Define merge-gate requirement contract for deploy-only changes | 80% | S | Pending | TASK-03 |
 | TASK-06 | IMPLEMENT | Fix Auto PR 403 by adding job-level permissions | 90% | S | Pending | - |
@@ -220,6 +220,21 @@ Introduce a deterministic deploy-only classifier as a reusable script module, te
 - **Notes / references:**
   - Existing central blast-radius pattern already established in `.github/workflows/reusable-app.yml`.
   - actionlint bumped to v1.7.10 in `merge-gate.yml` (7c81a4f556), resolving false positive on `include-hidden-files`. TC-05 can use this version.
+- **Build completion (2026-02-07):**
+  - Added conservative gating logic in `.github/workflows/reusable-app.yml`:
+    - classifier step computes `run_validation`, `is_deploy_only`, `uncertain`, `reason`, `changed_file_count`
+    - explicit log/notice step explains whether validation ran or skipped
+    - `Lint`, `Typecheck`, and `Test` now run only when `run_validation == true`
+  - Extended classifier CLI in `scripts/src/ci/classify-deploy-change.ts` with `--paths-file` support for workflow integration.
+  - Confidence reassessment: **82% (holds)**. Scope stayed inside planned files; conservative default behavior preserved.
+  - Validation run:
+    - `pnpm --filter scripts test -- scripts/__tests__/ci/classify-deploy-change.test.ts` (pass, 5/5)
+    - `pnpm --filter scripts test -- scripts/__tests__/ci` (pass, 10/10)
+    - `pnpm --filter scripts exec tsc -p tsconfig.json --noEmit` (pass)
+    - `pnpm exec eslint scripts/src/ci/classify-deploy-change.ts scripts/src/ci/classifier-fixtures.ts scripts/__tests__/ci/classify-deploy-change.test.ts` (pass)
+    - `actionlint .github/workflows/reusable-app.yml .github/workflows/prime.yml` (pass)
+  - Remaining verification:
+    - Live draft PR/workflow runs for TC-01..TC-04 should be captured after push (runtime behavior validation in Actions environment).
 
 ### TASK-04: Add Brikette local deploy preflight command + tests and agent-facing usage docs
 - **Type:** IMPLEMENT
@@ -437,4 +452,5 @@ Introduce a deterministic deploy-only classifier as a reusable script module, te
 - 2026-02-07 (re-plan): Absorbed `ci-test-parallelization-plan.md` into TASK-01. Test perf baseline, parallelization alternatives, and decision criteria preserved. Original plan retired.
 - 2026-02-07 (build): Completed TASK-01 with checked-in telemetry collector script/tests and fact-find command migration to scripted collection.
 - 2026-02-07 (build): Completed TASK-02 with conservative deploy-only classifier module, fixture rules, and TC-01..TC-05 unit coverage.
+- 2026-02-07 (build): Completed local TASK-03 workflow integration with conservative gating/logging and actionlint validation; live Actions behavior capture remains queued for post-push verification.
 - 2026-02-07 (external): Commit `7c81a4f556` fixed 5 actionlint errors across 3 workflows. Relevant to this plan: (a) TASK-07 — 3 auth secrets now declared in `reusable-app.yml` workflow_call.secrets block (provisioning still needed); (b) TASK-03 — actionlint v1.7.10 now pinned in `merge-gate.yml` (resolves false positive on `include-hidden-files`).

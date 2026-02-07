@@ -76,7 +76,7 @@ Introduce a deterministic deploy-only classifier as a reusable script module, te
 | TASK-01 | IMPLEMENT | Add CI telemetry snapshot script for repeatable baseline/post-change measurement (absorbs CI-PAR-01/02 from retired parallelization plan) | 90% | M | Completed | - |
 | TASK-02 | IMPLEMENT | Implement deploy-only classifier module + fixture tests | 86% | M | Completed | TASK-01 |
 | TASK-03 | IMPLEMENT | Integrate classifier into reusable app workflow with conservative defaults and explicit logs | 82% | M | Completed (local) | TASK-02 |
-| TASK-04 | IMPLEMENT | Add Brikette local deploy preflight command + tests and agent-facing usage docs | 84% | M | Pending | TASK-02 |
+| TASK-04 | IMPLEMENT | Add Brikette local deploy preflight command + tests and agent-facing usage docs | 84% | M | Completed | TASK-02 |
 | TASK-05 | DECISION | Define merge-gate requirement contract for deploy-only changes | 80% | S | Pending | TASK-03 |
 | TASK-06 | IMPLEMENT | Fix Auto PR 403 by adding job-level permissions | 90% | S | Pending | - |
 | TASK-07 | IMPLEMENT | Provision secrets and remove `continue-on-error` on deploy env validation | 82% | S | Pending | TASK-04 |
@@ -273,6 +273,20 @@ Introduce a deterministic deploy-only classifier as a reusable script module, te
   - Update `docs/testing-policy.md` or workflow guide section with targeted preflight command usage.
 - **Notes / references:**
   - Pattern reference: `scripts/src/launch-shop/preflight.ts` and `scripts/__tests__/launch-shop/preflight.test.ts`.
+- **Build completion (2026-02-07):**
+  - Delivered new preflight module and fixture tests:
+    - `scripts/src/brikette/preflight-deploy.ts`
+    - `scripts/__tests__/brikette/preflight-deploy.test.ts`
+  - Added root command entrypoint: `pnpm preflight:brikette-deploy` in `package.json`.
+  - Updated operator guidance in `docs/testing-policy.md` with usage and JSON mode.
+  - Confidence reassessment: **84% (holds)**. Checks map directly to known failure signatures and conservative non-zero failure behavior.
+  - Validation run:
+    - `pnpm --filter scripts test -- scripts/__tests__/brikette/preflight-deploy.test.ts` (pass, 4/4)
+    - `pnpm --filter scripts test -- scripts/__tests__/ci scripts/__tests__/brikette/preflight-deploy.test.ts` (pass, 14/14)
+    - `pnpm --filter scripts exec tsc -p tsconfig.json --noEmit` (pass)
+    - `pnpm exec eslint scripts/src/brikette/preflight-deploy.ts scripts/__tests__/brikette/preflight-deploy.test.ts` (pass)
+    - `pnpm preflight:brikette-deploy` (pass)
+    - `pnpm preflight:brikette-deploy -- --json` (pass)
 
 ### TASK-05: Define merge-gate requirement contract for deploy-only changes
 - **Type:** DECISION
@@ -435,7 +449,7 @@ Introduce a deterministic deploy-only classifier as a reusable script module, te
 ## Acceptance Criteria (overall)
 - [x] Deploy-only classifier exists, is tested, and defaults safely on uncertainty.
 - [ ] Reusable app workflow can skip only intended validation steps with clear logs.
-- [ ] Local preflight exists and catches known Brikette deploy/static-export failure signatures.
+- [x] Local preflight exists and catches known Brikette deploy/static-export failure signatures.
 - [x] Baseline/post-change telemetry can be reproduced from a checked-in script.
 - [ ] Merge-gate and Auto PR policy dependencies are explicitly decided or tracked with owners.
 
@@ -453,4 +467,5 @@ Introduce a deterministic deploy-only classifier as a reusable script module, te
 - 2026-02-07 (build): Completed TASK-01 with checked-in telemetry collector script/tests and fact-find command migration to scripted collection.
 - 2026-02-07 (build): Completed TASK-02 with conservative deploy-only classifier module, fixture rules, and TC-01..TC-05 unit coverage.
 - 2026-02-07 (build): Completed local TASK-03 workflow integration with conservative gating/logging and actionlint validation; live Actions behavior capture remains queued for post-push verification.
+- 2026-02-07 (build): Completed TASK-04 Brikette deploy preflight command with fixture-based checks and operator docs update.
 - 2026-02-07 (external): Commit `7c81a4f556` fixed 5 actionlint errors across 3 workflows. Relevant to this plan: (a) TASK-07 — 3 auth secrets now declared in `reusable-app.yml` workflow_call.secrets block (provisioning still needed); (b) TASK-03 — actionlint v1.7.10 now pinned in `merge-gate.yml` (resolves false positive on `include-hidden-files`).

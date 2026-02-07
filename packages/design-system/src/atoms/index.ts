@@ -59,6 +59,8 @@ export { ARViewer } from "./ARViewer";
 export { Avatar } from "./Avatar";
 export { Chip } from "./Chip";
 export { ColorSwatch } from "./ColorSwatch";
+export { ConfirmDialog } from "./ConfirmDialog";
+export { EmptyState } from "./EmptyState";
 export { FileSelector } from "./FileSelector";
 export { FormField } from "./FormField";
 export { Icon } from "./Icon";

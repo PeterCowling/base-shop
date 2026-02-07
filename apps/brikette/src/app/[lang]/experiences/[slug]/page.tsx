@@ -3,6 +3,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { loadGuideI18nBundle } from "@/app/_lib/guide-i18n-bundle";
 import { getTranslations,toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
@@ -10,7 +11,6 @@ import { GUIDES_INDEX } from "@/data/guides.index";
 import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 import { guideNamespace,guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
 import { loadGuideManifestOverridesFromFs } from "@/routes/guides/guide-manifest-overrides.node";
-import { extractGuideBundle } from "@/utils/extractGuideBundle";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { getSlug } from "@/utils/slug";
 
@@ -110,13 +110,7 @@ export default async function GuidePage({ params }: Props) {
   // Load manifest overrides (includes audit results)
   const serverOverrides = loadGuideManifestOverridesFromFs();
 
-  // Load translations in render path (cheap if already loaded by generateMetadata)
-  await getTranslations(validLang, ["guides"]);
-
-  // Extract slim bundle for client hydration
-  const serverGuides = extractGuideBundle(validLang, guideKey);
-  const serverGuidesEn =
-    validLang !== "en" ? extractGuideBundle("en", guideKey) : undefined;
+  const { serverGuides, serverGuidesEn } = await loadGuideI18nBundle(validLang, guideKey);
 
   return (
     <GuideContent

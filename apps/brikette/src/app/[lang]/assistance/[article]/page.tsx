@@ -3,6 +3,7 @@
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 
+import { loadGuideI18nBundle } from "@/app/_lib/guide-i18n-bundle";
 import { getTranslations, toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
@@ -91,5 +92,14 @@ export default async function AssistanceArticlePage({ params }: Props) {
   if (!guideKey || !guideBase) notFound();
   if (guideBase.baseKey !== "assistance") permanentRedirect(guidePath(validLang, guideKey));
 
-  return <GuideContent lang={validLang} guideKey={guideKey} />;
+  const { serverGuides, serverGuidesEn } = await loadGuideI18nBundle(validLang, guideKey);
+
+  return (
+    <GuideContent
+      lang={validLang}
+      guideKey={guideKey}
+      serverGuides={serverGuides}
+      serverGuidesEn={serverGuidesEn}
+    />
+  );
 }

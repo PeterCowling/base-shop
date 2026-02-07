@@ -92,122 +92,221 @@ All 17 non-EN locales must be updated:
 
 ---
 
-## Workflow
+## Workflow (Structure-First, Translate-Second)
 
-### 1) Validate EN is audit-clean (mandatory unless --skip-validation)
+**Critical pattern:** Never let agents perform structural repair and translation simultaneously. Structure is fixed by script (Phase 1), then agents translate text only (Phase 2). This prevents agents from creating condensed summaries instead of faithful translations.
+
+**Evidence:** Batch 1-2 (agent-only) = 0% success; Batch 3 (structure-first) = 100% success.
+
+### Phase 0: Preparation
+
+**A. Validate EN is audit-clean (mandatory unless --skip-validation)**
 
 Run:
 ```bash
 pnpm --filter brikette tsx scripts/audit-guide-seo.ts {guideKey}
 ```
 
-Read audit output. Check:
-- score >= 9.0
-- zero critical issues
-- zero improvements
+Check: score >= 9.0, zero critical issues, zero improvements.
 
 **If EN audit fails:**
-- Report the specific issues found
-- STOP with message: "EN content has unresolved audit issues. Run improve-en-guide first to fix EN content, then re-run improve-translate-guide."
-- Do NOT proceed with translation
+- STOP with message: "EN content has unresolved audit issues. Run improve-en-guide first."
+- Do NOT proceed.
 
-### 2) Spawn parallel translation subagents (required in Claude)
+**B. List expected locale file paths**
 
-Use the Task tool to spawn multiple parallel subagents for concurrent locale translation. **Never translate sequentially in Claude.**
-In Codex, proceed sequentially across locales.
+For each guideKey, confirm paths exist or will be created:
+```
+apps/brikette/src/locales/{locale}/guides/content/{guideKey}.json
+```
+for all 17 locales: ar, da, de, es, fr, hi, hu, it, ja, ko, no, pl, pt, ru, sv, vi, zh
 
-**Recommended parallelization strategy (proven for 17 locales):**
+**C. Confirm Python runtime available** (required for structural repair)
 
-**Optimal grouping for balanced workload:**
-- Agent 1: ar, da, de, es (4 locales - Western European + Arabic)
-- Agent 2: fr, hi, hu, it (4 locales - Romance + South Asian + Eastern European)
-- Agent 3: ja, ko, no, pl, pt (5 locales - East Asian + Nordic + Slavic + Iberian)
-- Agent 4: ru, sv, vi, zh (4 locales - Slavic + Nordic + Southeast Asian + East Asian)
+### Phase 1: Structural Repair (Script, Not Agents)
 
-**Timing expectations:**
-- Each agent: ~30-40 minutes for comprehensive guides (3000+ words)
-- Total wall time: ~40 minutes with 4 parallel agents
-- Sequential alternative: ~2+ hours
+Restore EN structure in all locale files before any translation work. This guarantees correct section counts, IDs, and array shapes.
 
-**Launch pattern:**
-Single message with 4 Task tool calls for maximum parallelization.
+**Run a Python structural repair script** for each target guideKey. The script:
+1. Deep-copies EN structure
+2. Preserves existing locale translations by section ID match
+3. Writes fixed locale file
 
-### 3) Per-locale translation workflow (each subagent executes)
+**Structural repair template:**
+```python
+import json
+from pathlib import Path
 
-For each assigned locale:
+LOCALES = ['ar','da','de','es','fr','hi','hu','it','ja','ko','no','pl','pt','ru','sv','vi','zh']
 
-**A. Parse existing locale file (baseline validate)**
-- If parse fails: restore known-good content immediately; if not possible promptly, stop and ask user.
+def fix_guide(guide_key):
+    en_path = Path(f"src/locales/en/guides/content/{guide_key}.json")
+    en_data = json.loads(en_path.read_text())
 
-**B. Drift check (required)**
-Compare locale's structure and coverage vs EN:
-- missing/extra sections
-- ordering differences
-- FAQ mismatches
-- stale content elsewhere
+    for locale in LOCALES:
+        locale_path = Path(f"src/locales/{locale}/guides/content/{guide_key}.json")
+        if not locale_path.exists():
+            # New locale file: use EN wholesale (will be translated in Phase 2)
+            locale_path.write_text(json.dumps(en_data, ensure_ascii=False, indent=2) + "\n")
+            continue
 
-**C. Update locale comprehensively to match EN meaning and structure**
-- Preserve tokens exactly
-- Keep link targets unchanged (translate anchor only)
-- Match section order and counts
-- Match intro paragraph count
-- Match FAQ count and ordering
-- Match gallery structure
+        locale_data = json.loads(locale_path.read_text())
+        fixed = json.loads(json.dumps(en_data))  # deep copy EN structure
 
-**D. Write locale file and validate immediately**
+        # Preserve locale translations (merge policy)
+        for field in ["seo", "linkLabel", "intro", "lastUpdated"]:
+            if field in locale_data:
+                fixed[field] = locale_data[field]
+
+        # Match sections by ID, preserve locale text
+        if "sections" in locale_data:
+            by_id = {s.get("id"): s for s in locale_data["sections"]}
+            for i, section in enumerate(fixed.get("sections", [])):
+                if section["id"] in by_id:
+                    src = by_id[section["id"]]
+                    for key in ["title", "body", "list", "images"]:
+                        if key in src:
+                            fixed["sections"][i][key] = src[key]
+
+        # Preserve other translated fields
+        for field in ["toc","images","essentialsTitle","essentials","typicalCostsTitle",
+                       "typicalCosts","tipsTitle","tips","warningsTitle","warnings",
+                       "faqsTitle","faqs","fallback"]:
+            if field in locale_data:
+                fixed[field] = locale_data[field]
+
+        locale_path.write_text(json.dumps(fixed, ensure_ascii=False, indent=2) + "\n")
+```
+
+**Merge policy:**
+- **Preserve locale text for:** seo.title, seo.description, linkLabel, intro[], each section's title, body[], images[].alt, images[].caption, FAQ answers, tips[]
+- **Force EN structure for:** section ordering, section IDs, required keys, array shapes (number of sections, number of FAQs)
+- **ID matching:** Match sections by `id` field. If locale section has ID not in EN, discard it. If EN section has no locale match, keep EN text (translated in Phase 2).
+- **Fallback:** If locale has no `sections` array, use EN content wholesale — fully translated in Phase 2.
+- **Safety:** Never silently delete locale-only top-level keys. Log a warning if locale has keys not in EN.
+
+### Gate 1: Structural Validation (Mandatory — Do NOT Skip)
+
+After structural repair, validate all 17 locales pass structural checks:
+
+```bash
+cd apps/brikette && bash scripts/validate-guide-structure.sh {guideKey}
+```
+
+**Gate 1 checks:**
+- File parses as valid JSON
+- `sections.length` exactly matches EN
+- All section IDs match EN (same IDs, same order)
+- Required top-level keys present (seo, linkLabel, intro, sections)
+- `faqs.length`, `tips.length` match EN (if present in EN)
+
+**If Gate 1 fails:**
+- **Do NOT proceed to Phase 2.**
+- Fix failing locales (re-run structural repair with corrections).
+- Re-run Gate 1 until all 17 locales pass.
+
+### Phase 2: Translation (Agents — Translation Only)
+
+Spawn parallel agents for translation-only work. **Agents MUST NOT make structural edits — only translate text within the existing structure.**
+
+**Recommended parallelization (proven for 17 locales):**
+- Agent 1: ar, da, de, es (4 locales)
+- Agent 2: fr, hi, hu, it (4 locales)
+- Agent 3: ja, ko, no, pl, pt (5 locales)
+- Agent 4: ru, sv, vi, zh (4 locales)
+
+**Launch pattern:** Single message with 4 Task tool calls.
+
+**Timing:** ~40 minutes with 4 parallel agents.
+
+**Per-locale translation workflow (each subagent executes):**
+
+**A. Read existing locale file** (structure already correct from Phase 1)
+
+**B. Translate text fields only:**
+- Translate: seo.title, seo.description, linkLabel, intro[], section titles, section body[], FAQ questions/answers, tips[], image alt/caption
+- Preserve tokens exactly: `%LINK:target|anchor%` → translate anchor only, `%IMAGE:path%` unchanged
+- Keep link targets unchanged
+- Do NOT add, remove, or reorder sections, FAQs, tips, or body elements
+
+**C. Write locale file and validate immediately:**
 - JSON parse check
-- Token preservation check
-- Structure parity vs EN
+- Token target preservation (targets before `|` must match EN)
+- Structure parity vs EN (section count, IDs, body array lengths)
 
-**E. If validation fails**
-- Restore snapshot immediately
-- Redo localization safely
-- If still not possible promptly, stop and ask user what they want to do
+**D. If validation fails:**
+- Restore from git or pre-edit snapshot immediately
+- Redo translation safely
+- If still failing, stop and ask user
 
-### 4) Post-translation validation (mandatory before completion report)
+### Gate 2: Translation Validation (Mandatory — Do NOT Skip)
 
-After all parallel translation agents complete, run automated validation:
+After all translation agents complete, run both validations:
 
+**A. Structural + translation validation:**
+```bash
+cd apps/brikette && bash scripts/validate-guide-structure.sh --phase2 {guideKey}
+```
+
+**Gate 2 checks (in addition to Gate 1 structural checks):**
+- Per-section `body` array length equals EN body array length (anti-condensation)
+- All token targets preserved (LINK, HOWTO, URL, IMAGE targets match EN)
+- No empty strings in translated fields where EN is non-empty
+
+**B. Full i18n parity audit (strict mode):**
+```bash
+cd apps/brikette && CONTENT_READINESS_MODE=fail pnpm test i18n-parity-quality-audit
+```
+
+**If Gate 2 fails:**
+- DO NOT report completion
+- Identify failing locales and failure type:
+  - **Structural regression** (wrong section count/IDs) → re-run Phase 1 structural repair, then re-translate
+  - **Bad translation** (empty strings, missing tokens, condensed body) → re-translate specific locale
+- Re-run Gate 2 until all locales pass
+
+### Phase 3: Completion Report (Mandatory)
+
+After all gates pass, compile the completion report with persistence evidence.
+
+**Required evidence (all 4 items mandatory):**
+
+**1. Validation output:**
+- Gate 1 result (all locales pass structural checks)
+- Gate 2 result (all locales pass translation + parity audit)
+- Section counts per locale
+
+**2. Persistence verification:**
+```bash
+git diff --stat
+```
+Must show changed files for all target locales (non-zero diff per locale).
+
+**3. Existence checks:**
+Confirm all expected locale files exist:
 ```bash
 for locale in ar da de es fr hi hu it ja ko no pl pt ru sv vi zh; do
   file="src/locales/$locale/guides/content/{guideKey}.json"
-  lines=$(wc -l < "$file" 2>/dev/null || echo "0")
-  sections=$(node -e "try { const c=JSON.parse(require('fs').readFileSync('$file','utf8')); console.log(c.sections?.length || 0); } catch(e) { console.log('0'); }" 2>&1)
-  echo "$locale: $lines lines, $sections sections"
+  [ -f "$file" ] && echo "OK $locale" || echo "MISSING $locale"
 done
 ```
 
-**Validation criteria per locale:**
-- Line count within ±5 of EN source
-- Section count exactly matches EN
-- File parses as valid JSON
+**4. Failure list:**
+- List any locales that failed during the process and remediation steps taken
+- Or "None — all locales passed on first attempt"
 
-**If any locale fails validation:**
-- DO NOT report completion
-- Spawn additional agent to complete failed locales
-- Re-run validation before final report
-
-### 5) Completion report
-
-After all translations complete and validation passes, report:
-
-**Validation status:**
-- EN audit result (pass/fail with details)
-- Validation command output showing all 17 locales passed
-
-**Translation progress:**
+**Translation summary:**
 - Locales updated (count + list)
-- Any locale-specific issues encountered
 - Parallel translation efficiency (number of subagents spawned) — Claude only
+- Any locale-specific issues encountered
 
-**Per guide:**
-- Confirmation that:
-  - EN was validated before translation
-  - every write was validated immediately
-  - any corruption was handled only by replacement with known-good content
-  - all 17 non-EN locales were successfully updated (parallel subagents in Claude; sequential in Codex)
-  - all 17 locales validated at expected line count and section count
-  - no translation work was deferred or suggested for external handling
+**Per guide confirmation:**
+- EN was validated before translation (Phase 0)
+- Structural repair applied and validated (Phase 1 + Gate 1)
+- Translation-only agents used (Phase 2)
+- All validation gates passed (Gate 1 + Gate 2)
+- Persistence verified (`git diff --stat` + existence checks)
+- No translation work was deferred or suggested for external handling
 
 ---
 
@@ -238,16 +337,25 @@ After all translations complete and validation passes, report:
 
 ## Quality Gates (must pass before "complete")
 
-**Per locale:**
-1. Locale JSON valid
-2. Tokens preserved correctly
-3. Structure parity vs EN
-4. Drift addressed (not just "changed EN strings")
+**Gate 1 (structural — after Phase 1):**
+1. All locale files parse as valid JSON
+2. Section count exactly matches EN
+3. Section IDs match EN (same IDs, same order)
+4. Required top-level keys present (seo, linkLabel, intro, sections)
+5. FAQs/tips lengths match EN (if present)
 
-**Overall:**
-5. All 17 locales successfully updated
-6. No unresolved corruption remains anywhere in the touched files
-7. Any skipped locale is explicitly documented and user-approved
+**Gate 2 (translation — after Phase 2):**
+6. Per-section body array lengths match EN (anti-condensation)
+7. Token targets preserved (LINK, HOWTO, URL, IMAGE targets match EN)
+8. No empty strings in translated fields where EN is non-empty
+9. Passes `CONTENT_READINESS_MODE=fail` i18n-parity-quality-audit
+
+**Completion (Phase 3):**
+10. All 17 locales pass both Gate 1 and Gate 2
+11. `git diff --stat` shows changed files for all target locales
+12. All expected locale file paths exist
+13. Completion report includes all 4 required evidence items
+14. No translation work was deferred or suggested for external handling
 
 ---
 

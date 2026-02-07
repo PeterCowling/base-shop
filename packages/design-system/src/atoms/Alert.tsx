@@ -49,34 +49,45 @@ const TOKEN_BG: Record<AlertVariant, string> = {
   danger: "--color-danger",
 };
 
-export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
-  ({ className, variant = "info", tone = "soft", heading, title, locale = "en", children, ...props }, ref) => {
-    const t = useTranslations() as unknown as (key: string, params?: Record<string, unknown>) => string;
-    // Support both `heading` and legacy `title`. `heading` takes precedence.
-    const titleSource: TranslatableText | string | undefined = heading ?? title;
-    const resolvedTitle = titleSource ? resolveText(titleSource as TranslatableText, locale, t) : undefined;
-    const bgClass = tone === "solid" ? SOLID_BG[variant] : SOFT_BG[variant];
-    const fgClass = tone === "solid" ? FG[variant] : "text-fg";
-    return (
-      <div
-        ref={ref}
-        data-token={TOKEN_BG[variant]}
-        role="status"
-        className={cn(
-          "rounded-md border border-border-2 p-3", // i18n-exempt -- DEV-000 CSS utility class names
-          bgClass,
-          fgClass,
-          className,
-        )}
-        {...props}
-      >
-        {resolvedTitle && <div className="font-medium">{resolvedTitle}</div>}
-        {children && <div className={cn("text-sm", heading ? "pt-1" : undefined)}>{children}</div>}
-      </div>
-    );
+export const Alert = (
+  {
+    ref,
+    className,
+    variant = "info",
+    tone = "soft",
+    heading,
+    title,
+    locale = "en",
+    children,
+    ...props
+  }: AlertProps & {
+    ref?: React.Ref<HTMLDivElement>;
   }
-);
+) => {
+  const t = useTranslations() as unknown as (key: string, params?: Record<string, unknown>) => string;
+  // Support both `heading` and legacy `title`. `heading` takes precedence.
+  const titleSource: TranslatableText | string | undefined = heading ?? title;
+  const resolvedTitle = titleSource ? resolveText(titleSource as TranslatableText, locale, t) : undefined;
+  const bgClass = tone === "solid" ? SOLID_BG[variant] : SOFT_BG[variant];
+  const fgClass = tone === "solid" ? FG[variant] : "text-fg";
+  return (
+    <div
+      ref={ref}
+      data-token={TOKEN_BG[variant]}
+      role="status"
+      className={cn(
+        "rounded-md border border-border-2 p-3", // i18n-exempt -- DEV-000 CSS utility class names
+        bgClass,
+        fgClass,
+        className,
+      )}
+      {...props}
+    >
+      {resolvedTitle && <div className="font-medium">{resolvedTitle}</div>}
+      {children && <div className={cn("text-sm", heading ? "pt-1" : undefined)}>{children}</div>}
+    </div>
+  );
+};
 
-Alert.displayName = "Alert";
 
 export default Alert;

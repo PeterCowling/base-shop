@@ -30,26 +30,33 @@ export interface DatePickerProps {
   filterDate?: (date: Date) => boolean;
 }
 
-export const DatePicker = React.forwardRef<ReactDatePicker, DatePickerProps>(
-  ({ className, wrapperClassName, invalid, ...props }, ref) => {
-    return (
-      <ReactDatePicker
-        ref={ref}
-        className={cn(
-          "w-full rounded-md border border-border-2 bg-input px-3 py-2",
-          "text-sm text-foreground placeholder:text-muted-foreground",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-          "disabled:cursor-not-allowed disabled:opacity-50",
-          invalid && "border-danger",
-          className,
-        )}
-        wrapperClassName={cn("w-full", wrapperClassName)}
-        popperClassName="ds-datepicker-popper"
-        calendarClassName="ds-datepicker-calendar"
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- DS-1234: react-datepicker uses a complex discriminated union; our interface provides consumer type safety
-        {...(props as any)}
-      />
-    );
-  },
-);
-DatePicker.displayName = "DatePicker";
+export const DatePicker = (
+  {
+    ref,
+    className,
+    wrapperClassName,
+    invalid,
+    ...props
+  }: DatePickerProps & {
+    ref?: React.Ref<ReactDatePicker>;
+  }
+) => {
+  return (
+    <ReactDatePicker
+      ref={ref}
+      className={cn(
+        "w-full rounded-md border border-border-2 bg-input px-3 py-2",
+        "text-sm text-foreground placeholder:text-muted-foreground",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "disabled:cursor-not-allowed disabled:opacity-50",
+        invalid && "border-danger",
+        className,
+      )}
+      wrapperClassName={cn("w-full", wrapperClassName)}
+      popperClassName="ds-datepicker-popper"
+      calendarClassName="ds-datepicker-calendar"
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- DS-1234: react-datepicker uses a complex discriminated union; our interface provides consumer type safety
+      {...(props as any)}
+    />
+  );
+};

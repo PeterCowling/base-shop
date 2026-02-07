@@ -9,18 +9,22 @@ export interface PaginationDotProps
   size?: string;
 }
 
-export const PaginationDot = React.forwardRef<
-  HTMLButtonElement,
-  PaginationDotProps
->(({ active = false, size = "2", className, ...props }, ref) => (
-  <button
-    ref={ref}
-    className={cn(
-      `h-${size} w-${size} rounded-full`,
-      active ? "bg-primary" : "bg-muted",
-      className
-    )}
-    {...props}
-  />
-));
-PaginationDot.displayName = "PaginationDot";
+export const PaginationDot = (
+  {
+    ref,
+    active = false,
+    size = "2",
+    className,
+    ...props
+  }: PaginationDotProps & {
+    ref?: React.Ref<HTMLButtonElement>;
+  }
+) => (<button
+  ref={ref}
+  className={cn(
+    `h-${size} w-${size} rounded-full`,
+    active ? "bg-primary" : "bg-muted",
+    className
+  )}
+  {...props}
+/>);

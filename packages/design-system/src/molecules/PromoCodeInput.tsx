@@ -13,10 +13,17 @@ export interface PromoCodeInputProps
   loading?: boolean;
 }
 
-export const PromoCodeInput = React.forwardRef<
-  HTMLFormElement,
-  PromoCodeInputProps
->(({ onApply, loading = false, className, ...props }, ref) => {
+export const PromoCodeInput = (
+  {
+    ref,
+    onApply,
+    loading = false,
+    className,
+    ...props
+  }: PromoCodeInputProps & {
+    ref?: React.Ref<HTMLFormElement>;
+  }
+) => {
   const t = useTranslations();
   const [code, setCode] = React.useState("");
 
@@ -52,5 +59,4 @@ export const PromoCodeInput = React.forwardRef<
       </Button>
     </form>
   );
-});
-PromoCodeInput.displayName = "PromoCodeInput";
+};

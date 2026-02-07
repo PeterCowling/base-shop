@@ -26,69 +26,68 @@ const WRAPPER_CLASSES = "flex flex-col gap-1"; // i18n-exempt -- TECH-000 [ttl=2
 const ERROR_TEXT_CLASSES = "text-sm text-danger"; // i18n-exempt -- TECH-000 [ttl=2026-01-31] CSS classes
 const DANGER_TOKEN = "--color-danger"; // i18n-exempt -- TECH-000 [ttl=2026-01-31] design token
 
-export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
-  (
-    {
-      label,
-      htmlFor,
-      error,
-      required = false,
-      width,
-      height,
-      padding,
-      margin,
-      className,
-      children,
-      style: inlineStyle,
-      ...props
-    },
-    ref
-  ) => {
-    const { classes, style } = boxProps({ width, height, padding, margin });
-    const mergedStyle = {
-      ...style,
-      ...(inlineStyle ?? {}),
-    };
-    const errorChildren = React.Children.toArray(error ?? null).filter(
-      (child) => child !== "",
-    );
-    const hasError = errorChildren.length > 0;
-    const isTextOnly =
-      hasError &&
-      errorChildren.every(
-        (child) => typeof child === "string" || typeof child === "number",
-      );
-    const ErrorContainer = isTextOnly ? "p" : "div";
-
-    return (
-      <div
-        ref={ref}
-        className={cn(WRAPPER_CLASSES, classes, className)}
-         
-        style={mergedStyle}
-        {...props}
-      >
-        <label htmlFor={htmlFor} className="text-sm font-medium">
-          {label}
-          {required && (
-            <span
-              aria-hidden="true"
-              className="text-danger"
-              data-token={DANGER_TOKEN}
-            >
-              {/* i18n-exempt -- TECH-000 [ttl=2026-01-31] required field asterisk */}
-              *
-            </span>
-          )}
-        </label>
-        {children}
-        {hasError && (
-          <ErrorContainer className={ERROR_TEXT_CLASSES} data-token={DANGER_TOKEN}>
-            {error}
-          </ErrorContainer>
-        )}
-      </div>
-    );
+export const FormField = (
+  {
+    ref,
+    label,
+    htmlFor,
+    error,
+    required = false,
+    width,
+    height,
+    padding,
+    margin,
+    className,
+    children,
+    style: inlineStyle,
+    ...props
+  }: FormFieldProps & {
+    ref?: React.Ref<HTMLDivElement>;
   }
-);
-FormField.displayName = "FormField";
+) => {
+  const { classes, style } = boxProps({ width, height, padding, margin });
+  const mergedStyle = {
+    ...style,
+    ...(inlineStyle ?? {}),
+  };
+  const errorChildren = React.Children.toArray(error ?? null).filter(
+    (child) => child !== "",
+  );
+  const hasError = errorChildren.length > 0;
+  const isTextOnly =
+    hasError &&
+    errorChildren.every(
+      (child) => typeof child === "string" || typeof child === "number",
+    );
+  const ErrorContainer = isTextOnly ? "p" : "div";
+
+  return (
+    <div
+      ref={ref}
+      className={cn(WRAPPER_CLASSES, classes, className)}
+       
+      style={mergedStyle}
+      {...props}
+    >
+      <label htmlFor={htmlFor} className="text-sm font-medium">
+        {label}
+        {required && (
+          <span
+            aria-hidden="true"
+            className="text-danger"
+            data-token={DANGER_TOKEN}
+          >
+            {/* i18n-exempt -- TECH-000 [ttl=2026-01-31] required field asterisk */}
+            *
+          </span>
+        )}
+      </label>
+      {children}
+      {hasError && (
+        <ErrorContainer className={ERROR_TEXT_CLASSES} data-token={DANGER_TOKEN}>
+          {error}
+        </ErrorContainer>
+      )}
+    </div>
+  );
+};

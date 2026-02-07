@@ -40,8 +40,9 @@ const sizeClasses: Record<IconButtonSize, string> = {
   md: "h-10 w-10 text-lg shrink-0", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — utility classes, not user copy
 };
 
-export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
-  ({
+export const IconButton = (
+  {
+    ref,
     className,
     variant = "ghost",
     size = "sm",
@@ -50,37 +51,38 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
     "aria-label": ariaLabel,
     "aria-labelledby": ariaLabelledby,
     ...props
-  }, ref) => {
-    const hasTextChild = React.Children.toArray(children).some(
-      (child) => typeof child === "string" && child.trim().length > 0,
-    );
-    const missingAccessibleName = !ariaLabel && !ariaLabelledby && !hasTextChild;
+  }: IconButtonProps & {
+    ref?: React.Ref<HTMLButtonElement>;
+  }
+) => {
+  const hasTextChild = React.Children.toArray(children).some(
+    (child) => typeof child === "string" && child.trim().length > 0,
+  );
+  const missingAccessibleName = !ariaLabel && !ariaLabelledby && !hasTextChild;
 
-    React.useEffect(() => {
-      if (process.env.NODE_ENV !== "production" && missingAccessibleName) {
-        console.warn(
-          "IconButton: provide aria-label or aria-labelledby for accessible naming.", // i18n-exempt -- UI-2611 developer-facing console hint only
-        );
-      }
-    }, [missingAccessibleName]);
+  React.useEffect(() => {
+    if (process.env.NODE_ENV !== "production" && missingAccessibleName) {
+      console.warn(
+        "IconButton: provide aria-label or aria-labelledby for accessible naming.", // i18n-exempt -- UI-2611 developer-facing console hint only
+      );
+    }
+  }, [missingAccessibleName]);
 
-    return (
-      <button
-        ref={ref}
-        type={type}
-        data-token={tokenByVariant[variant]}
-        className={cn(baseClasses, variantClasses[variant], sizeClasses[size], className)}
-        data-size={size}
-        aria-label={ariaLabel}
-        aria-labelledby={ariaLabelledby}
-        {...props}
-      >
-        {children}
-      </button>
-    );
-  },
-);
+  return (
+    <button
+      ref={ref}
+      type={type}
+      data-token={tokenByVariant[variant]}
+      className={cn(baseClasses, variantClasses[variant], sizeClasses[size], className)}
+      data-size={size}
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabelledby}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+};
 
-IconButton.displayName = "IconButton";
 
 export default IconButton;

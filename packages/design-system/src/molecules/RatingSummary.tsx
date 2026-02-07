@@ -14,10 +14,17 @@ export interface RatingSummaryProps
 /**
  * Display average rating and optional review count.
  */
-export const RatingSummary = React.forwardRef<
-  HTMLDivElement,
-  RatingSummaryProps
->(({ rating, count, className, ...props }, ref) => {
+export const RatingSummary = (
+  {
+    ref,
+    rating,
+    count,
+    className,
+    ...props
+  }: RatingSummaryProps & {
+    ref?: React.Ref<HTMLDivElement>;
+  }
+) => {
   const t = useTranslations();
   const rounded = rating.toFixed(1);
   return (
@@ -44,5 +51,4 @@ export const RatingSummary = React.forwardRef<
       </span>
     </div>
   );
-});
-RatingSummary.displayName = "RatingSummary";
+};

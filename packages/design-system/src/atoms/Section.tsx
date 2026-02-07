@@ -2,7 +2,6 @@
 import {
   type ComponentPropsWithoutRef,
   type ElementType,
-  forwardRef,
   type ReactElement,
   type Ref,
 } from "react";
@@ -33,29 +32,28 @@ type SectionComponent = <T extends ElementType = "section">(
   props: SectionProps<T> & { ref?: Ref<HTMLElement> }
 ) => ReactElement;
 
-const Section = forwardRef(
-  <T extends ElementType = "section">(
-    {
-      as,
-      padding = "default",
-      width = "constrained",
-      className,
-      ...rest
-    }: SectionProps<T>,
-    ref: Ref<HTMLElement>
-  ) => {
-    const Component = (as ?? "section") as ElementType;
-    return (
-      <Component
-        ref={ref as never}
-        className={clsx(WIDTH_MAP[width], PADDING_MAP[padding], className)}
-        {...rest}
-      />
-    );
+const Section = (<T extends ElementType = "section">(
+  {
+    ref,
+    as,
+    padding = "default",
+    width = "constrained",
+    className,
+    ...rest
+  }: SectionProps<T> & {
+    ref?: Ref<HTMLElement>;
   }
-) as SectionComponent & { displayName?: string };
+) => {
+  const Component = (as ?? "section") as ElementType;
+  return (
+    <Component
+      ref={ref as never}
+      className={clsx(WIDTH_MAP[width], PADDING_MAP[padding], className)}
+      {...rest}
+    />
+  );
+}) as SectionComponent;
 
-Section.displayName = "Section";
 
 export { Section };
 export type { SectionProps };

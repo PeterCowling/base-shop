@@ -19,10 +19,18 @@ export interface DrawerContentProps
   width?: string | number;
 }
 
-export const DrawerContent = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Content>,
-  DrawerContentProps
->(({ className, side = "right", width, style, ...props }, ref) => {
+export const DrawerContent = (
+  {
+    ref,
+    className,
+    side = "right",
+    width,
+    style,
+    ...props
+  }: DrawerContentProps & {
+    ref?: React.Ref<React.ElementRef<typeof DialogPrimitive.Content>>;
+  }
+) => {
   const widthClass = typeof width === "string" ? width : undefined;
   const inlineStyle =
     typeof width === "number" ? ({ width, maxWidth: "100%" } as React.CSSProperties) : ({} as React.CSSProperties);
@@ -43,5 +51,4 @@ export const DrawerContent = React.forwardRef<
       {...props}
     />
   );
-});
-DrawerContent.displayName = DialogPrimitive.Content.displayName;
+};

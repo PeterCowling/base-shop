@@ -8,6 +8,8 @@ describe("buildLocalizedStaticAliasPairs", () => {
 
     expect(pairs).toEqual(
       expect.arrayContaining([
+        { sourceBasePath: "/fr/chambres", targetBasePath: "/fr/rooms" },
+        { sourceBasePath: "/fr/a-propos", targetBasePath: "/fr/about" },
         { sourceBasePath: "/fr/aide", targetBasePath: "/fr/assistance" },
         {
           sourceBasePath: "/es/experiencias",
@@ -40,17 +42,5 @@ describe("buildLocalizedStaticAliasPairs", () => {
       pairs.map((pair) => `${pair.sourceBasePath}->${pair.targetBasePath}`)
     );
     expect(uniqueKeys.size).toBe(pairs.length);
-  });
-
-  it("only includes guide-related section aliases", () => {
-    const pairs = buildLocalizedStaticAliasPairs();
-    expect(pairs).not.toEqual(
-      expect.arrayContaining([
-        {
-          sourceBasePath: "/fr/a-propos",
-          targetBasePath: "/fr/about",
-        },
-      ])
-    );
   });
 });

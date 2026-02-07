@@ -38,7 +38,7 @@ function MobileNav({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 0
     const base = raw.split("-")[0] as AppLanguage | undefined;
     return base && i18nConfig.supportedLngs.includes(base) ? base : undefined;
   }, [i18nLanguage]);
-  const lang = normalizedI18nLang ?? explicitLang ?? fallbackLang;
+  const lang = explicitLang ?? normalizedI18nLang ?? fallbackLang;
   const { t, ready } = useTranslation("header", { lng: lang });
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
   const { openModal } = useModal();

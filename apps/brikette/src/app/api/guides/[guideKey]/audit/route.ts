@@ -1,12 +1,12 @@
-/* eslint-disable ds/no-hardcoded-copy -- GUIDES-2470 API responses are developer-facing */
+ 
 import { NextResponse } from "next/server";
 
-import type { AppLanguage } from "@/i18n.config";
 import { PREVIEW_TOKEN } from "@/config/env";
 import type { GuideKey } from "@/guides/slugs/keys";
+import type { AppLanguage } from "@/i18n.config";
+import { auditGuideSeo, saveAuditResults } from "@/lib/seo-audit";
 import { isGuideAuthoringEnabled } from "@/routes/guides/guide-authoring/gate";
 import { getGuideManifestEntry } from "@/routes/guides/guide-manifest";
-import { auditGuideSeo, saveAuditResults } from "@/lib/seo-audit";
 
 export const runtime = "nodejs";
 export const dynamic: "force-static" | undefined = process.env.OUTPUT_EXPORT

@@ -16,8 +16,8 @@
 
 import type { ReactElement } from "react";
 import { act } from "react";
-import { renderToString } from "react-dom/server";
 import { hydrateRoot } from "react-dom/client";
+import { renderToString } from "react-dom/server";
 
 export interface HydrationTestResult {
   /** Server-rendered HTML string */

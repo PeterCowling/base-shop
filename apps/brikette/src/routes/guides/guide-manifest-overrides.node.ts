@@ -190,7 +190,7 @@ export function getMergedGuideManifestEntryFromFs(
   cwd = process.cwd(),
 ) {
   // Import dynamically to avoid circular dependency issues
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
+   
   const { getGuideManifestEntryWithOverrides } = require("./guide-manifest") as typeof import("./guide-manifest");
   const overrides = loadGuideManifestOverridesFromFs(cwd);
   return getGuideManifestEntryWithOverrides(guideKey, overrides);
@@ -201,7 +201,7 @@ export function getMergedGuideManifestEntryFromFs(
  * Server-side only: reads overrides from filesystem.
  */
 export function listMergedGuideManifestEntriesFromFs(cwd = process.cwd()) {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
+   
   const { listGuideManifestEntriesWithOverrides } = require("./guide-manifest") as typeof import("./guide-manifest");
   const overrides = loadGuideManifestOverridesFromFs(cwd);
   return listGuideManifestEntriesWithOverrides(overrides);

@@ -3,7 +3,7 @@
 // Single-purpose stub: Ferry schedules
 // -----------------------------------------------------------------------------
 
-/* eslint-disable ds/no-hardcoded-copy -- TECH-000 */
+ 
 
 export const ferrySchedules = {
   linkLabel: "Ferry schedules",
@@ -13,5 +13,5 @@ export const ferrySchedules = {
   },
 } as const;
 
-/* eslint-enable ds/no-hardcoded-copy -- TECH-000 */
+ 
 

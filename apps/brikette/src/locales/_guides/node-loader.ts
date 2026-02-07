@@ -152,6 +152,101 @@ export function loadGuidesNamespaceFromFs(locale: string, cwd = process.cwd()): 
   return readSplitNamespace(baseDir) ?? readLegacyNamespace(baseDir);
 }
 
+function writeGlobalFiles(
+  resolveScopedPath: (...segments: string[]) => string,
+  data: GuidesNamespace,
+): { seenFiles: Set<string>; seenDirs: Map<string, Set<string>> } {
+  const seenFiles = new Set<string>();
+  const seenDirs = new Map<string, Set<string>>();
+
+  for (const [key, value] of Object.entries(data)) {
+    if (key === "content") continue;
+
+    if (key === "meta" && isPlainObject(value)) {
+      const dirPath = resolveScopedPath("guides", key);
+      fs.mkdirSync(dirPath, { recursive: true });
+      const childKeys = new Set<string>();
+
+      for (const [childKey, childValue] of Object.entries(value)) {
+        const childPath = resolveScopedPath("guides", key, `${childKey}.json`);
+        writeJson(childPath, childValue ?? {});
+        childKeys.add(childKey);
+      }
+
+      seenDirs.set(key, childKeys);
+      continue;
+    }
+
+    const filePath = resolveScopedPath("guides", `${key}.json`);
+    writeJson(filePath, value ?? {});
+    seenFiles.add(key);
+  }
+
+  return { seenFiles, seenDirs };
+}
+
+function cleanStrayGlobalFiles(
+  resolveScopedPath: (...segments: string[]) => string,
+  splitDir: string,
+  seenFiles: Set<string>,
+  seenDirs: Map<string, Set<string>>,
+): void {
+  for (const entry of fs.readdirSync(splitDir)) {
+    if (entry === "content") continue;
+
+    const entryPath = resolveScopedPath("guides", entry);
+
+    if (entry.endsWith(".json")) {
+      const key = entry.replace(/\.json$/u, "");
+      if (!seenFiles.has(key)) {
+        fs.rmSync(entryPath);
+      }
+      continue;
+    }
+
+    if (isDirectory(entryPath)) {
+      const allowedChildren = seenDirs.get(entry);
+      if (!allowedChildren) {
+        fs.rmSync(entryPath, { recursive: true, force: true });
+        continue;
+      }
+
+      for (const child of fs.readdirSync(entryPath)) {
+        const childPath = resolveScopedPath("guides", entry, child);
+        if (!child.endsWith(".json")) continue;
+        const childKey = child.replace(/\.json$/u, "");
+        if (!allowedChildren.has(childKey)) {
+          fs.rmSync(childPath);
+        }
+      }
+    }
+  }
+}
+
+function writeContentFiles(
+  resolveScopedPath: (...segments: string[]) => string,
+  content: Record<string, unknown>,
+  contentDir: string,
+): void {
+  const seenSlugs = new Set<string>();
+
+  for (const [slug, value] of Object.entries(content)) {
+    const filePath = resolveScopedPath("guides", "content", `${slug}.json`);
+    writeJson(filePath, value ?? {});
+    seenSlugs.add(slug);
+  }
+
+  if (isDirectory(contentDir)) {
+    for (const entry of fs.readdirSync(contentDir)) {
+      if (!entry.endsWith(".json")) continue;
+      const slug = entry.replace(/\.json$/u, "");
+      if (!seenSlugs.has(slug)) {
+        fs.rmSync(resolveScopedPath("guides", "content", entry));
+      }
+    }
+  }
+}
+
 export function writeGuidesNamespaceToFs(
   locale: string,
   data: GuidesNamespace,
@@ -170,76 +265,9 @@ export function writeGuidesNamespaceToFs(
     const contentDir = resolveScopedPath("guides", "content");
     fs.mkdirSync(contentDir, { recursive: true });
 
-    const seenFiles = new Set<string>();
-    const seenDirs = new Map<string, Set<string>>();
-
-    // Write global files
-    for (const [key, value] of Object.entries(data)) {
-      if (key === "content") continue;
-      if (key === "meta" && isPlainObject(value)) {
-        const dirPath = resolveScopedPath("guides", key);
-        fs.mkdirSync(dirPath, { recursive: true });
-        const childKeys = new Set<string>();
-        for (const [childKey, childValue] of Object.entries(value)) {
-          const childPath = resolveScopedPath("guides", key, `${childKey}.json`);
-          writeJson(childPath, childValue ?? {});
-          childKeys.add(childKey);
-        }
-        seenDirs.set(key, childKeys);
-        continue;
-      }
-
-      const filePath = resolveScopedPath("guides", `${key}.json`);
-      writeJson(filePath, value ?? {});
-      seenFiles.add(key);
-    }
-
-    // Remove stray global files that no longer exist in data
-    for (const entry of fs.readdirSync(splitDir)) {
-      if (entry === "content") continue;
-      const entryPath = resolveScopedPath("guides", entry);
-      if (entry.endsWith(".json")) {
-        const key = entry.replace(/\.json$/u, "");
-        if (!seenFiles.has(key)) {
-          fs.rmSync(entryPath);
-        }
-        continue;
-      }
-
-      if (isDirectory(entryPath)) {
-        const allowedChildren = seenDirs.get(entry);
-        if (!allowedChildren) {
-          fs.rmSync(entryPath, { recursive: true, force: true });
-          continue;
-        }
-
-        for (const child of fs.readdirSync(entryPath)) {
-          const childPath = resolveScopedPath("guides", entry, child);
-          if (!child.endsWith(".json")) continue;
-          const childKey = child.replace(/\.json$/u, "");
-          if (!allowedChildren.has(childKey)) {
-            fs.rmSync(childPath);
-          }
-        }
-      }
-    }
-
-    const seenSlugs = new Set<string>();
-    for (const [slug, value] of Object.entries(content)) {
-      const filePath = resolveScopedPath("guides", "content", `${slug}.json`);
-      writeJson(filePath, value ?? {});
-      seenSlugs.add(slug);
-    }
-
-    if (isDirectory(contentDir)) {
-      for (const entry of fs.readdirSync(contentDir)) {
-        if (!entry.endsWith(".json")) continue;
-        const slug = entry.replace(/\.json$/u, "");
-        if (!seenSlugs.has(slug)) {
-          fs.rmSync(resolveScopedPath("guides", "content", entry));
-        }
-      }
-    }
+    const { seenFiles, seenDirs } = writeGlobalFiles(resolveScopedPath, data);
+    cleanStrayGlobalFiles(resolveScopedPath, splitDir, seenFiles, seenDirs);
+    writeContentFiles(resolveScopedPath, content, contentDir);
 
     return;
   }

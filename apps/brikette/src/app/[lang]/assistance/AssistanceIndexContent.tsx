@@ -9,8 +9,8 @@ import clsx from "clsx";
 import type { TFunction } from "i18next";
 
 import { Button } from "@acme/design-system/primitives";
-import { AssistanceQuickLinksSection as AssistanceQuickLinksSectionUi } from "@acme/ui/organisms/AssistanceQuickLinksSection";
 import type { AssistanceQuickLinkRenderProps } from "@acme/ui/organisms/AssistanceQuickLinksSection";
+import { AssistanceQuickLinksSection as AssistanceQuickLinksSectionUi } from "@acme/ui/organisms/AssistanceQuickLinksSection";
 
 import AssistanceQuickLinksSection from "@/components/assistance/quick-links-section";
 import FaqStructuredData from "@/components/seo/FaqStructuredData";
@@ -18,10 +18,10 @@ import { isGuidePublished } from "@/data/guides.index";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
+import { resolveGuideCardImage } from "@/lib/guides/guideCardImage";
 import { guideHref, type GuideKey } from "@/routes.guides-helpers";
 import { getGuideManifestEntry } from "@/routes/guides/guide-manifest";
 import { getGuideLinkLabel } from "@/utils/translationFallbacks";
-import { resolveGuideCardImage } from "@/lib/guides/guideCardImage";
 
 type Props = {
   lang: AppLanguage;

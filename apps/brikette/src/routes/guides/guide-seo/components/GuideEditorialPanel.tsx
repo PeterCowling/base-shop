@@ -17,6 +17,7 @@ import type {
   GuideManifestEntry,
 } from "../../guide-manifest";
 import { CHECKLIST_LABELS, GUIDE_AREA_VALUES, GUIDE_STATUS_VALUES } from "../../guide-manifest";
+
 import DiagnosticDetails from "./DiagnosticDetails";
 import SeoAuditBadge from "./SeoAuditBadge";
 import { useTranslationCoverage } from "./useTranslationCoverage";
@@ -636,7 +637,7 @@ export default function GuideEditorialPanel({
                       disabled={isSelected && !canDeselect}
                       className={clsx(
                         AREA_PILL_BASE_CLASSES,
-                        "cursor-pointer transition-all",
+                        "cursor-pointer transition-colors transition-opacity",
                         isSelected
                           ? [
                               "border-brand-primary/60",

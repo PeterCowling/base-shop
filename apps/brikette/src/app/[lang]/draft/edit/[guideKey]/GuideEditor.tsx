@@ -200,6 +200,7 @@ export default function GuideEditor({
               value={selectedLocale}
               onChange={(e) => setSelectedLocale(e.target.value as AppLanguage)}
               disabled={loadState !== "idle"}
+              // eslint-disable-next-line ds/no-arbitrary-tailwind -- TASK-DS-26: Custom select dropdown arrow requires inline SVG and positioning
               className="appearance-none rounded-md border border-brand-outline/40 bg-brand-surface px-3 py-2 pr-8 text-sm text-brand-heading bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%3E%3Cpath%20fill%3D%22%23666%22%20d%3D%22M6%208L2%204h8z%22%2F%3E%3C%2Fsvg%3E')] bg-[right_0.5rem_center] bg-no-repeat"
             >
               {availableLocales.map((locale) => (

@@ -2,9 +2,9 @@ import "@testing-library/jest-dom";
 
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { renderWithProviders } from "@tests/renderers";
 
 import { LanguageGlobalModal } from "@/context/modal/global-modals/LanguageModal";
-import { renderWithProviders } from "@tests/renderers";
 
 const closeModalMock = jest.fn();
 const replaceMock = jest.fn();

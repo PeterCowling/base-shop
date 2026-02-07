@@ -5,9 +5,10 @@
  */
 // src/routes/guides/blocks/composeBlocks.ts
 
-import type { GuideManifestEntry } from "../guide-manifest";
 import type { GuideKey } from "@/routes.guides-helpers";
 import { relatedGuidesByTags } from "@/utils/related";
+
+import type { GuideManifestEntry } from "../guide-manifest";
 
 import {
   applyAlsoHelpfulBlock,

@@ -2,11 +2,11 @@
 import { NextResponse } from "next/server";
 
 import { PREVIEW_TOKEN } from "@/config/env";
-import type { GuidesNamespace } from "@/locales/guides";
-import { loadGuidesNamespaceFromFs, writeGuidesNamespaceToFs } from "@/locales/_guides/node-loader";
 import { i18nConfig } from "@/i18n.config";
-import { isGuideAuthoringEnabled } from "@/routes/guides/guide-authoring/gate";
+import { loadGuidesNamespaceFromFs, writeGuidesNamespaceToFs } from "@/locales/_guides/node-loader";
+import type { GuidesNamespace } from "@/locales/guides";
 import { guideContentSchema } from "@/routes/guides/content-schema";
+import { isGuideAuthoringEnabled } from "@/routes/guides/guide-authoring/gate";
 import { listGuideManifestEntries } from "@/routes/guides/guide-manifest";
 
 export const runtime = "nodejs";

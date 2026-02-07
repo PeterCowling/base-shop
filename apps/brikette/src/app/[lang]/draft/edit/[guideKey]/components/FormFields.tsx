@@ -1,6 +1,6 @@
 "use client";
 
-/* eslint-disable ds/no-hardcoded-copy -- GUIDES-2470 editor UI is developer-facing */
+ 
 import clsx from "clsx";
 
 import { Inline, Stack } from "@/components/ui/flex";

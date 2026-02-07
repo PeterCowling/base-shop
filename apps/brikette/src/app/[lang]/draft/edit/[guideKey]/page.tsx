@@ -1,4 +1,4 @@
-/* eslint-disable ds/no-hardcoded-copy -- GUIDES-2470 authoring page labels are developer-facing */
+ 
 import { notFound } from "next/navigation";
 
 import { Section } from "@acme/design-system/atoms";

@@ -184,9 +184,9 @@ export function ValidationDashboard() {
                           <code className="bg-white px-2 py-1 rounded text-xs">
                             {v.guideKey}
                           </code>
-                          <span className="text-gray-700 ml-2">{v.violation}</span>
+                          <span className="text-gray-700 ms-2">{v.violation}</span>
                           {v.suggestion && (
-                            <span className="text-blue-600 ml-2 italic">
+                            <span className="text-blue-600 ms-2 italic">
                               (Did you mean: {v.suggestion}?)
                             </span>
                           )}
@@ -268,7 +268,7 @@ export function ValidationDashboard() {
                   >
                     <div>
                       <code className="text-sm font-mono">{item.key}</code>
-                      <span className="text-xs text-gray-500 ml-2">({item.status})</span>
+                      <span className="text-xs text-gray-500 ms-2">({item.status})</span>
                     </div>
                     <div className="text-sm">
                       <span className="text-red-600 font-medium">{item.count}</span>
@@ -333,7 +333,7 @@ export function ValidationDashboard() {
                     <code className="font-mono text-xs text-gray-700">{item.from}</code>
                     <span className="mx-2 text-gray-400">→</span>
                     <code className="font-mono text-xs text-gray-700">{item.to}</code>
-                    <span className="ml-auto text-xs text-gray-500 italic">
+                    <span className="ms-auto text-xs text-gray-500 italic">
                       (missing: {item.to} → {item.from})
                     </span>
                   </div>

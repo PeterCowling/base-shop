@@ -2,22 +2,22 @@
 import { NextResponse } from "next/server";
 
 import { PREVIEW_TOKEN } from "@/config/env";
+import type { GuideKey } from "@/guides/slugs/keys";
 import { isGuideAuthoringEnabled } from "@/routes/guides/guide-authoring/gate";
 import {
   getGuideManifestEntry,
   getGuideManifestEntryWithOverrides,
-  listGuideManifestEntries,
-  resolveDraftPathSegment,
   type GuideArea,
   type GuideStatus,
+  listGuideManifestEntries,
+  resolveDraftPathSegment,
 } from "@/routes/guides/guide-manifest";
+import { safeParseManifestOverride } from "@/routes/guides/guide-manifest-overrides";
 import {
   getGuideManifestOverrideFromFs,
-  setGuideManifestOverrideToFs,
   loadGuideManifestOverridesFromFs,
+  setGuideManifestOverrideToFs,
 } from "@/routes/guides/guide-manifest-overrides.node";
-import { safeParseManifestOverride } from "@/routes/guides/guide-manifest-overrides";
-import type { GuideKey } from "@/guides/slugs/keys";
 
 export const runtime = "nodejs";
 export const dynamic: "force-static" | undefined = process.env.OUTPUT_EXPORT

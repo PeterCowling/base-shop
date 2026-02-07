@@ -20,7 +20,10 @@ export function ExperiencesHero({
       {/* Main hero: stacked on mobile with 12px gap, split (image left, text right) on sm+ */}
       <div className="grid grid-cols-1 gap-3 rounded-3xl border border-brand-outline/30 bg-brand-surface shadow-xl dark:border-brand-outline/50 dark:bg-brand-bg sm:grid-cols-2 sm:gap-0">
         {/* Image section - banner on mobile, left column on sm+ */}
-        <div className="aspect-[16/9] overflow-hidden rounded-t-3xl sm:aspect-auto sm:min-h-[320px] sm:rounded-l-3xl sm:rounded-tr-none">
+        <div
+          // eslint-disable-next-line ds/no-arbitrary-tailwind -- TASK-DS-26: 16/9 aspect ratio and 320px min height are specific design requirements
+          className="aspect-[16/9] overflow-hidden rounded-t-3xl sm:aspect-auto sm:min-h-[320px] sm:rounded-l-3xl sm:rounded-tr-none"
+        >
           <CfImage
             src="/img/hostel-communal-terrace-lush-view.webp"
             preset="hero"
@@ -36,7 +39,10 @@ export function ExperiencesHero({
         {/* Content section - right column on sm+, isolated from image */}
         <div className="relative z-10 bg-brand-surface p-6 dark:bg-brand-bg sm:flex sm:flex-col sm:justify-center sm:p-8">
           {eyebrow ? (
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-muted dark:text-brand-muted">
+            <p
+              // eslint-disable-next-line ds/no-arbitrary-tailwind -- TASK-DS-26: Wide letter-spacing (0.25em) is a design requirement for eyebrow text
+              className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-muted dark:text-brand-muted"
+            >
               {eyebrow}
             </p>
           ) : null}

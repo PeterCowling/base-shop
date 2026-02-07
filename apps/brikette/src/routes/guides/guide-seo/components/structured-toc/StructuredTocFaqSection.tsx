@@ -70,7 +70,10 @@ export function FaqSectionBlock({
     return (
       <section id="faqs" className="space-y-3">
         {faqsHeading.trim().length > 0 ? (
-          <h2 className="mt-[30px] text-pretty text-2xl font-semibold tracking-tight text-brand-heading">
+          <h2
+            // eslint-disable-next-line ds/no-arbitrary-tailwind -- TASK-DS-26: 30px spacing ensures proper visual separation from content above
+            className="mt-[30px] text-pretty text-2xl font-semibold tracking-tight text-brand-heading"
+          >
             {faqsHeading}
           </h2>
         ) : null}

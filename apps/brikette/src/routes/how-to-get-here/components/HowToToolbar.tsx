@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import clsx from "clsx";
 import type { TFunction } from "i18next";
+
 import { ChevronDown } from "@/icons";
 
 import { anchorLinkClass, getFilterButtonClass } from "../styles";

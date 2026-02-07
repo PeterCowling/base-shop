@@ -1,16 +1,16 @@
 // src/components/guides/GuideCollectionCard.tsx
+import { useMemo } from "react";
 import Link from "next/link";
 import clsx from "clsx";
-import { useMemo } from "react";
 
 import { CfImage } from "@acme/ui/atoms/CfImage";
 
 import { GUIDE_DIRECTION_LINKS } from "@/data/guideDirectionLinks";
 import type { GuideMeta } from "@/data/guides.index";
+import { getGuideLinkLabels } from "@/guides/slugs/labels";
 import type { AppLanguage } from "@/i18n.config";
 import { guideHref, type GuideKey } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
-import { getGuideLinkLabels } from "@/guides/slugs/labels";
 
 // Card with optional thumbnail - overflow hidden for image
 const CARD_CLASSES = [

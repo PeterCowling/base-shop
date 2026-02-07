@@ -9,9 +9,9 @@ import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { debugGuide } from "@/utils/debug";
 import { isGuideContentFallback } from "@/utils/guideContentFallbackRegistry";
 
-import { DEFAULT_OG_IMAGE } from "./guide-seo/constants";
-import type { GuideManifestEntry, StructuredDataDeclaration } from "./guide-manifest";
 import { buildBlockTemplate } from "./blocks";
+import type { GuideManifestEntry, StructuredDataDeclaration } from "./guide-manifest";
+import { DEFAULT_OG_IMAGE } from "./guide-seo/constants";
 import { GuideSeoTemplateBody } from "./guide-seo/template/GuideSeoTemplateBody";
 import { resolveShouldRenderGenericContent } from "./guide-seo/template/resolveShouldRenderGenericContent";
 import { resetAdditionalScriptsCache,useAdditionalScripts } from "./guide-seo/template/useAdditionalScripts";

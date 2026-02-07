@@ -3,7 +3,7 @@
 // Single-purpose stub: Eco‑friendly Amalfi travel
 // -----------------------------------------------------------------------------
 
-/* eslint-disable ds/no-hardcoded-copy -- TECH-000 */
+ 
 
 export const ecoFriendlyAmalfi = {
   seo: {
@@ -28,5 +28,5 @@ export const ecoFriendlyAmalfi = {
   ],
 } as const;
 
-/* eslint-enable ds/no-hardcoded-copy -- TECH-000 */
+ 
 

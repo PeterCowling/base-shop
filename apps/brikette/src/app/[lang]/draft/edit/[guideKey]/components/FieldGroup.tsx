@@ -1,6 +1,6 @@
 "use client";
 
-/* eslint-disable ds/no-hardcoded-copy -- GUIDES-2470 editor UI is developer-facing */
+ 
 import type { ReactNode } from "react";
 
 import { Stack } from "@/components/ui/flex";

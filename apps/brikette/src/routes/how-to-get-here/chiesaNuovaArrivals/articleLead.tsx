@@ -1,8 +1,9 @@
 import type { HTMLAttributeReferrerPolicy } from "react";
 import Link from "next/link";
 
-import TableOfContents from "@/components/guides/TableOfContents";
 import { CfImage } from "@acme/ui/atoms/CfImage";
+
+import TableOfContents from "@/components/guides/TableOfContents";
 import { guideHref } from "@/routes.guides-helpers";
 import type { GuideSeoTemplateContext } from "@/routes/guides/_GuideSeoTemplate";
 

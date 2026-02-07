@@ -7,10 +7,11 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { prefetchInteractiveBundlesNow } from "@/utils/prefetchInteractive";
+
 import { ModalContext, type ModalContextValue, type ModalProviderProps, type ModalType } from "./context";
 import { ensureDocument } from "./environment";
 import { GlobalModals } from "./global-modals";
-import { prefetchInteractiveBundlesNow } from "@/utils/prefetchInteractive";
 
 ensureDocument();
 

@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+
 import type { AppLanguage } from "@/i18n.config";
 
 // Dynamically import GuideEditor to avoid SSR hydration issues with TipTap

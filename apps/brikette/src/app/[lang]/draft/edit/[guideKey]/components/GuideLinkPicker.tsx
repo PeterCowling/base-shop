@@ -82,7 +82,7 @@ export function GuideLinkPicker({ isOpen, onClose, onSelect }: Props) {
                   onSelect(guide.key, guide.label || guide.key);
                   onClose();
                 }}
-                className="w-full px-3 py-2 text-left text-sm text-brand-text hover:bg-brand-surface"
+                className="w-full px-3 py-2 text-start text-sm text-brand-text hover:bg-brand-surface"
               >
                 <div className="font-medium text-brand-heading">{guide.label || guide.key}</div>
                 <div className="text-xs text-brand-text/50">{guide.key}</div>

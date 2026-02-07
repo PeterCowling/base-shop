@@ -9,8 +9,8 @@ import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { DEALS } from "@/routes/deals/deals";
 import { getDealStatus } from "@/routes/deals/status";
-import { getSlug } from "@/utils/slug";
 import { serializeJsonLdValue } from "@/utils/seo/jsonld";
+import { getSlug } from "@/utils/slug";
 
 function DealsStructuredData(): JSX.Element | null {
   const lang = useCurrentLanguage();

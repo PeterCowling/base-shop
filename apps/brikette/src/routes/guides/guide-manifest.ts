@@ -5,6 +5,7 @@ import { z } from "zod";
 
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
+
 import type { GuideKey } from "../../guides/slugs/keys";
 import { GUIDE_KEYS, GUIDE_KEYS_WITH_OVERRIDES } from "../../guides/slugs/keys";
 import { GUIDE_SLUGS } from "../../guides/slugs/slugs";
@@ -14,7 +15,7 @@ import {
   GUIDE_BLOCK_DECLARATION_SCHEMA,
   type GuideBlockDeclaration,
 } from "./blocks/types";
-import { analyzeGuideCompleteness, analyzeTranslationCoverage, analyzeDateValidation } from "./guide-diagnostics";
+import { analyzeDateValidation,analyzeGuideCompleteness, analyzeTranslationCoverage } from "./guide-diagnostics";
 import type { GuideChecklistDiagnostics } from "./guide-diagnostics.types";
 import type { ManifestOverrides } from "./guide-manifest-overrides";
 

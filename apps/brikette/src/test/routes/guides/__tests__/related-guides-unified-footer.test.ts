@@ -1,5 +1,6 @@
-import type { GuideManifestEntry } from "@/routes/guides/guide-manifest";
 import { composeBlocks } from "@/routes/guides/blocks/composeBlocks";
+import type { GuideManifestEntry } from "@/routes/guides/guide-manifest";
+import { relatedGuidesByTags } from "@/utils/related";
 
 jest.mock("@/utils/related", () => {
   const actual = jest.requireActual<typeof import("@/utils/related")>("@/utils/related");
@@ -9,8 +10,6 @@ jest.mock("@/utils/related", () => {
     relatedGuidesByTags: jest.fn(actual.relatedGuidesByTags),
   };
 });
-
-import { relatedGuidesByTags } from "@/utils/related";
 
 const unique = <T,>(values: readonly T[]): T[] => Array.from(new Set(values));
 

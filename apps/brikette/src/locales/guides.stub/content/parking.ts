@@ -3,7 +3,7 @@
 // Single-purpose stub: Parking in Positano
 // -----------------------------------------------------------------------------
 
-/* eslint-disable ds/no-hardcoded-copy -- TECH-000: Test-only stub copy for Vitest fallback; not shipped UI. [ttl=2026-12-31] */
+ 
 
 export const parking = {
   seo: {
@@ -25,5 +25,5 @@ export const parking = {
   faqsTitle: "FAQs",
 } as const;
 
-/* eslint-enable ds/no-hardcoded-copy -- TECH-000 */
+ 
 

@@ -1,7 +1,7 @@
 import type { TFunction } from "i18next";
 
-import type { AppLanguage } from "@/i18n.config";
 import type { GuideKey } from "@/guides/slugs";
+import type { AppLanguage } from "@/i18n.config";
 import { getGuideManifestEntry } from "@/routes/guides/guide-manifest";
 
 export type GuideCardImage = {

@@ -1,5 +1,5 @@
-import type { TFunction } from "i18next";
 import { useEffect } from "react";
+import type { TFunction } from "i18next";
 
 import ArticleStructuredData from "@/components/seo/ArticleStructuredData";
 import type { BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";

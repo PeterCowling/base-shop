@@ -1,4 +1,5 @@
 // src/routes/guides/guide-seo/components/DiagnosticDetails.tsx
+/* eslint-disable ds/no-arbitrary-tailwind -- TASK-DS-26: This file uses text-[10px] and text-[11px] for micro-text in diagnostic UI, which is smaller than Tailwind's text-xs (12px) and a specific design requirement */
 "use client";
 
 import { memo, useCallback, useMemo, useState } from "react";
@@ -7,8 +8,8 @@ import clsx from "clsx";
 import { Inline, Stack } from "@/components/ui/flex";
 import { PREVIEW_TOKEN } from "@/config/env";
 
-import type { ChecklistItemId, GuideManifestEntry } from "../../guide-manifest";
 import type { GuideChecklistDiagnostics, TranslationCoverageLocale } from "../../guide-diagnostics.types";
+import type { ChecklistItemId, GuideManifestEntry } from "../../guide-manifest";
 
 const DETAIL_CONTAINER_CLASSES = [
   "rounded-lg",

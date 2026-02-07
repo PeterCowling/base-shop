@@ -3,12 +3,13 @@
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 
+import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
+
 import { loadGuideI18nBundle } from "@/app/_lib/guide-i18n-bundle";
 import { getTranslations, toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
 import { GUIDES_INDEX, isGuidePublished } from "@/data/guides.index";
-import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 import { guideNamespace, guidePath, guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
 import { OG_IMAGE } from "@/utils/headConstants";
 

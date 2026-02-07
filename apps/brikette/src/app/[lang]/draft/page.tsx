@@ -5,16 +5,16 @@ import type { Metadata } from "next";
 import { toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
+import type { AppLanguage } from "@/i18n.config";
 import {
   buildGuideChecklist,
+  type GuideManifestEntry,
   listGuideManifestEntries,
   resolveDraftPathSegment,
-  type GuideManifestEntry,
 } from "@/routes/guides/guide-manifest";
-import { loadGuideManifestOverridesFromFs } from "@/routes/guides/guide-manifest-overrides.node";
 import type { ManifestOverrides } from "@/routes/guides/guide-manifest-overrides";
+import { loadGuideManifestOverridesFromFs } from "@/routes/guides/guide-manifest-overrides.node";
 import type { GuideSeoTemplateProps } from "@/routes/guides/guide-seo/types";
-import type { AppLanguage } from "@/i18n.config";
 
 import DraftDashboardContent, { type DraftGuideSummary } from "./DraftDashboardContent";
 

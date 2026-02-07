@@ -157,5 +157,8 @@
   "language": {
     "title": "Chọn ngôn ngữ",
     "close": "Đóng"
+  },
+  "loader": {
+    "ariaLabel": "Loading"
   }
 }

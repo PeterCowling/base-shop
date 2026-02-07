@@ -1,5 +1,7 @@
 import fs from "fs/promises";
 
+import { auditGuideSeo } from "@/lib/seo-audit";
+
 jest.mock("fs/promises", () => ({
   __esModule: true,
   default: {
@@ -30,8 +32,6 @@ jest.mock("@/routes/guides/guide-manifest", () => {
     getGuideManifestEntry: (key: string) => (known.has(key) ? makeEntry(key) : undefined),
   };
 });
-
-import { auditGuideSeo } from "@/lib/seo-audit";
 
 const mockReadFile = fs.readFile as unknown as jest.MockedFunction<typeof fs.readFile>;
 

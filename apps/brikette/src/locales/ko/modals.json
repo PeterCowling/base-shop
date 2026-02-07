@@ -157,5 +157,8 @@
   "language": {
     "title": "언어 선택",
     "close": "닫기"
+  },
+  "loader": {
+    "ariaLabel": "Loading"
   }
 }

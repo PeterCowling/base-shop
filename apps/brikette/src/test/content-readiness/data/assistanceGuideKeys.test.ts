@@ -1,7 +1,6 @@
-import { GUIDE_KEYS } from "@/guides/slugs";
-
-import { ASSISTANCE_GUIDE_KEYS, isAssistanceGuideKey } from "@/data/assistanceGuideKeys";
 import { ASSISTANCE_TAGS } from "@/data/assistance.tags";
+import { ASSISTANCE_GUIDE_KEYS, isAssistanceGuideKey } from "@/data/assistanceGuideKeys";
+import { GUIDE_KEYS } from "@/guides/slugs";
 
 describe("assistanceGuideKeys", () => {
   describe("ASSISTANCE_GUIDE_KEYS", () => {

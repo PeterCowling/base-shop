@@ -125,7 +125,7 @@ export default function RawJsonTab({ content, setContent, onDirtyChange }: RawJs
         value={draft}
         onChange={(e) => handleDraftChange(e.target.value)}
         rows={26}
-        className="w-full rounded-md border border-brand-outline/40 bg-brand-bg px-3 py-2 font-mono text-xs text-brand-heading focus:border-brand-primary focus:outline-none focus:ring-1 focus:ring-brand-primary/50"
+        className="w-full rounded-md border border-brand-outline/40 bg-brand-bg px-3 py-2 font-mono text-xs text-brand-heading focus:border-brand-primary focus:outline-none focus-visible:ring-1 focus-visible:ring-brand-primary/50"
       />
     </Stack>
   );

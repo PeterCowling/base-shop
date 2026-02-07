@@ -13,15 +13,15 @@ import { Cluster, Inline, Stack } from "@/components/ui/flex";
 import { PREVIEW_TOKEN } from "@/config/env";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
+import { guideSlug } from "@/routes.guides-helpers";
 import { isGuideAuthoringEnabled } from "@/routes/guides/guide-authoring/gate";
 import { buildGuideEditUrl } from "@/routes/guides/guide-authoring/urls";
-import { guideSlug } from "@/routes.guides-helpers";
 import {
-  type ChecklistSnapshotItem,
   type ChecklistSnapshot,
+  type ChecklistSnapshotItem,
+  GUIDE_STATUS_VALUES,
   guideAreaToSlugKey,
   type GuideManifestEntry,
-  GUIDE_STATUS_VALUES,
 } from "@/routes/guides/guide-manifest";
 import type { GuideSeoTemplateProps } from "@/routes/guides/guide-seo/types";
 import { getSlug } from "@/utils/slug";

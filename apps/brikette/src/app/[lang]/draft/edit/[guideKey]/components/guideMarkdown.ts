@@ -1,10 +1,10 @@
-import MarkdownIt from "markdown-it";
-import type { Node as PMNode, Schema } from "@tiptap/pm/model";
 import {
+  defaultMarkdownSerializer,
   MarkdownParser,
   MarkdownSerializer,
-  defaultMarkdownSerializer,
 } from "@tiptap/pm/markdown";
+import type { Node as PMNode, Schema } from "@tiptap/pm/model";
+import MarkdownIt from "markdown-it";
 
 export type GuideMarkdownCodec = {
   parse: (markdown: string) => PMNode;

@@ -157,5 +157,8 @@
   "language": {
     "title": "Nyelv kiválasztása",
     "close": "Bezárás"
+  },
+  "loader": {
+    "ariaLabel": "Loading"
   }
 }

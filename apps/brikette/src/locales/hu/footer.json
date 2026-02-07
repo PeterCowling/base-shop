@@ -29,5 +29,6 @@
   "houseRules": "Házirend",
   "cancellationPolicy": "Lemondási feltételek",
   "privacy": "Adatvédelmi irányelvek",
-  "cookies": "Cookie-szabályzat"
+  "cookies": "Cookie-szabályzat",
+  "navAriaLabel": "Footer navigation"
 }

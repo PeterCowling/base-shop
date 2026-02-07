@@ -3,6 +3,9 @@ import "@testing-library/jest-dom";
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
 
+import AppLayout from "@/components/layout/AppLayout";
+import { APP_I18N_NAMESPACES, CORE_LAYOUT_I18N_NAMESPACES } from "@/i18n.namespaces";
+
 const preloadI18nNamespacesMock = jest.fn<Promise<void>, [string, readonly string[], { optional: boolean }]>(
   () => Promise.resolve(),
 );
@@ -38,9 +41,6 @@ jest.mock("@/hooks/useWebVitals", () => ({
 jest.mock("@/hooks/useProtectBrandName", () => ({
   useProtectBrandName: () => undefined,
 }));
-
-import AppLayout from "@/components/layout/AppLayout";
-import { APP_I18N_NAMESPACES, CORE_LAYOUT_I18N_NAMESPACES } from "@/i18n.namespaces";
 
 describe("<AppLayout /> i18n preload", () => {
   beforeEach(() => {

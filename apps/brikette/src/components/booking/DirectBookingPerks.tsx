@@ -3,8 +3,8 @@ import React, { memo, useId } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import clsx from "clsx";
-import { Coffee, Percent, Wine } from "@/icons";
 
+import { Coffee, Percent, Wine } from "@/icons";
 import enTokens from "@/locales/en/_tokens.json";
 import enDealsPage from "@/locales/en/dealsPage.json";
 import { toAppLanguage } from "@/utils/lang";

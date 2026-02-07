@@ -4,14 +4,14 @@
  * Verifies that callout blocks render with correct styling and content.
  */
 
-import { render, screen } from "@testing-library/react";
 import type { ReactNode } from "react";
+import { render, screen } from "@testing-library/react";
 
-import type { GuideSeoTemplateContext } from "@/routes/guides/guide-seo/types";
-import { applyCalloutBlock } from "@/routes/guides/blocks/handlers/calloutBlock";
 import { BlockAccumulator } from "@/routes/guides/blocks/handlers/BlockAccumulator";
-import type { GuideManifestEntry } from "@/routes/guides/guide-manifest";
+import { applyCalloutBlock } from "@/routes/guides/blocks/handlers/calloutBlock";
 import type { CalloutBlockOptions } from "@/routes/guides/blocks/types";
+import type { GuideManifestEntry } from "@/routes/guides/guide-manifest";
+import type { GuideSeoTemplateContext } from "@/routes/guides/guide-seo/types";
 
 // Mock translate function
 const mockTranslateGuides = jest.fn((key: string) => {

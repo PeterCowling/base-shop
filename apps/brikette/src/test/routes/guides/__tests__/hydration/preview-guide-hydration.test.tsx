@@ -9,8 +9,8 @@
 
 import React from "react";
 
-import { expectNoHydrationErrors, renderWithHydration } from "@/test/helpers/hydrationTestUtils";
 import PreviewBanner from "@/routes/guides/guide-seo/components/PreviewBanner";
+import { expectNoHydrationErrors, renderWithHydration } from "@/test/helpers/hydrationTestUtils";
 
 // Mock PREVIEW_TOKEN for test environment
 jest.mock("@/config/env", () => ({

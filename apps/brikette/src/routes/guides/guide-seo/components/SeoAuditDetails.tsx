@@ -80,13 +80,13 @@ function AnalysisSection({
     <div className="space-y-2">
       <h4 className={clsx("text-sm font-semibold", typeClass)}>
         {emoji} {title}
-        {hasImpact && <span className="text-xs font-normal text-brand-text/60 ml-2">(sorted by impact)</span>}
+        {hasImpact && <span className="text-xs font-normal text-brand-text/60 ms-2">(sorted by impact)</span>}
       </h4>
       <Stack className="gap-1.5">
         {items.map((item, index) => {
           if (typeof item === "string") {
             return (
-              <li key={index} className="text-sm text-brand-text/80 list-disc ml-4">
+              <li key={index} className="text-sm text-brand-text/80 list-disc ms-4">
                 {item}
               </li>
             );
@@ -130,7 +130,7 @@ export default function SeoAuditDetails({
       <button
         type="button"
         onClick={() => setIsExpanded(!isExpanded)}
-        className="flex w-full items-center justify-between text-left hover:opacity-70 transition-opacity"
+        className="flex w-full items-center justify-between text-start hover:opacity-70 transition-opacity"
       >
         <span className="text-sm font-semibold text-brand-heading">
           SEO Audit Details

@@ -3,7 +3,7 @@
 // Labels used by the test-only guides stub.
 // -----------------------------------------------------------------------------
 
-/* eslint-disable ds/no-hardcoded-copy -- TECH-000: Test-only stub copy for Vitest fallback; not shipped UI. [ttl=2026-12-31] */
+ 
 
 export const labels = {
   relatedGuides: "Related guides",
@@ -23,5 +23,5 @@ export const labels = {
   onThisPage: "On this page",
 } as const;
 
-/* eslint-enable ds/no-hardcoded-copy -- TECH-000 */
+ 
 

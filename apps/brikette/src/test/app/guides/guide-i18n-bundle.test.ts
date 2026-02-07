@@ -1,3 +1,5 @@
+import { loadGuideI18nBundle } from "@/app/_lib/guide-i18n-bundle";
+
 const mockGetTranslations = jest.fn();
 const mockExtractGuideBundle = jest.fn();
 
@@ -8,8 +10,6 @@ jest.mock("@/app/_lib/i18n-server", () => ({
 jest.mock("@/utils/extractGuideBundle", () => ({
   extractGuideBundle: (...args: unknown[]) => mockExtractGuideBundle(...args),
 }));
-
-import { loadGuideI18nBundle } from "@/app/_lib/guide-i18n-bundle";
 
 describe("loadGuideI18nBundle", () => {
   beforeEach(() => {

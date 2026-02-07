@@ -3,7 +3,7 @@ import "@testing-library/jest-dom";
 
 import { ASSISTANCE_GUIDE_KEYS } from "@/data/assistanceGuideKeys";
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
-import { type GuideKey,guideHref,guideNamespace,guideSlug } from "@/routes.guides-helpers";
+import { guideHref,type GuideKey,guideNamespace,guideSlug } from "@/routes.guides-helpers";
 import { SLUGS } from "@/slug-map";
 import { buildBreadcrumb, buildLinks, buildMeta } from "@/utils/seo";
 import { getSlug } from "@/utils/slug";

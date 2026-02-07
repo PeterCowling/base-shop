@@ -4,15 +4,15 @@
  * Verifies that the transportDropIn block renders the Chiesa Nuova component.
  */
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { render, screen } from "@testing-library/react";
+ 
 import type { ReactNode } from "react";
+import { render, screen } from "@testing-library/react";
 
-import type { GuideSeoTemplateContext } from "@/routes/guides/guide-seo/types";
-import { applyTransportDropInBlock } from "@/routes/guides/blocks/handlers/transportDropInBlock";
 import { BlockAccumulator } from "@/routes/guides/blocks/handlers/BlockAccumulator";
-import type { GuideManifestEntry } from "@/routes/guides/guide-manifest";
+import { applyTransportDropInBlock } from "@/routes/guides/blocks/handlers/transportDropInBlock";
 import type { TransportDropInBlockOptions } from "@/routes/guides/blocks/types";
+import type { GuideManifestEntry } from "@/routes/guides/guide-manifest";
+import type { GuideSeoTemplateContext } from "@/routes/guides/guide-seo/types";
 
 // Mock the Chiesa Nuova component
 jest.mock("@/routes/how-to-get-here/chiesaNuovaArrivals/DropIn", () => ({

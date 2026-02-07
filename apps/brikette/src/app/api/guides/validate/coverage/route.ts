@@ -1,8 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
-import { listGuideManifestEntries } from "@/routes/guides/guide-manifest";
-import type { GuideManifestEntry } from "@/routes/guides/guide-manifest";
+import { type NextRequest, NextResponse } from "next/server";
 import { readFile } from "fs/promises";
 import { join } from "path";
+
+import type { GuideManifestEntry } from "@/routes/guides/guide-manifest";
+import { listGuideManifestEntries } from "@/routes/guides/guide-manifest";
 
 export const dynamic: "force-static" | undefined = process.env.OUTPUT_EXPORT
   ? "force-static"

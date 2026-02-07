@@ -1,8 +1,8 @@
 // src/routes/guides/guide-seo/components/useTranslationCoverage.ts
 import { useEffect, useMemo, useState } from "react";
 
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
 import i18n from "@/i18n";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import type { GuideKey } from "@/routes.guides-helpers";
 
 import { analyzeTranslationCoverage } from "../../guide-diagnostics";

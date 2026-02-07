@@ -1,4 +1,4 @@
-/* eslint-disable ds/no-hardcoded-copy -- GUIDES-2470 editor types are developer-facing */
+ 
 import type { GuideContentInput } from "@/routes/guides/content-schema";
 
 export type EditorTab = "overview" | "sections" | "faqs" | "validation" | "raw";

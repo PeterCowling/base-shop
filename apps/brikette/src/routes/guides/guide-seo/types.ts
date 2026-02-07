@@ -1,6 +1,8 @@
 import type { ComponentProps, ReactNode } from "react";
 import type { TFunction } from "i18next";
 
+import type { BuildCfImageOptions } from "@acme/ui/lib/buildCfImageUrl";
+
 import type { GenericContentTranslator } from "@/components/guides/GenericContent";
 import type RelatedGuides from "@/components/guides/RelatedGuides";
 import type { RelatedItem } from "@/components/guides/RelatedGuides";
@@ -8,8 +10,8 @@ import type { BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
 import type GuideFaqJsonLd from "@/components/seo/GuideFaqJsonLd";
 import type { GuideSection } from "@/data/guides.index";
 import type { AppLanguage } from "@/i18n.config";
-import type { BuildCfImageOptions } from "@acme/ui/lib/buildCfImageUrl";
 import type { GuideKey } from "@/routes.guides-helpers";
+
 import type { ManifestOverrides } from "../guide-manifest-overrides";
 
 export type GuideSeoGenericContentOptions = Record<string, unknown> & {

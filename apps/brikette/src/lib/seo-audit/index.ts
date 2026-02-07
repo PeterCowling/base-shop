@@ -16,8 +16,8 @@
 import fs from "fs/promises";
 import path from "path";
 
-import type { AppLanguage } from "@/i18n.config";
 import type { GuideKey } from "@/guides/slugs/keys";
+import type { AppLanguage } from "@/i18n.config";
 import {
   getGuideManifestEntry,
   type GuideManifestEntry,
@@ -947,52 +947,21 @@ function getStructuredDataType(declaration: StructuredDataDeclaration): string {
 }
 
 // ============================================================================
-// MAIN AUDIT FUNCTION
+// METRICS EXTRACTION
 // ============================================================================
 
-export async function auditGuideSeo(
+function extractAuditMetrics(
+  content: GuideContent,
+  manifest: GuideManifestEntry,
   guideKey: GuideKey,
-  locale: AppLanguage = "en",
-): Promise<SeoAuditResult> {
-  // 1. Validate guide exists
-  const manifest = getGuideManifestEntry(guideKey);
-  if (!manifest) {
-    throw new Error(`Guide not found: ${guideKey}`);
-  }
-
-  // 2. Load guide content
-  const cwd = process.cwd();
-  const inAppDir = cwd.endsWith("/apps/brikette") || cwd.endsWith("\\apps\\brikette");
-  const baseDir = inAppDir ? cwd : path.join(cwd, "apps/brikette");
-
-  const contentPath = path.join(baseDir, "src/locales", locale, "guides/content", `${guideKey}.json`);
-
-  let content: GuideContent;
-  try {
-    const raw = await fs.readFile(contentPath, "utf-8");
-    content = JSON.parse(raw) as GuideContent;
-  } catch (err) {
-    if ((err as NodeJS.ErrnoException).code === "ENOENT") {
-      throw new Error(
-        `Content file not found: ${contentPath}\nEnsure the guide has content for locale "${locale}".`,
-      );
-    }
-    throw new Error(`Failed to parse content file: ${(err as Error).message}`);
-  }
-
-  // 3. Determine template type
-  const wordCount = countWords(content);
-  const template = determineTemplate(manifest, wordCount);
-  const thresholds = TEMPLATE_THRESHOLDS[template];
-
-  // Template-scoped checks
-  const timeSensitive = manifest.timeSensitive ?? (template === "localGuide" || template === "pillar");
-
-  const shouldCheckLocalSpecifics = template === "localGuide" || template === "pillar";
-  const shouldCheckFirstHand = template === "experience" || template === "localGuide" || template === "pillar";
-  const shouldCheckEarlyAnswer = template !== "experience"; // experiences can be more narrative
-
-  // 4. Extract comprehensive metrics
+  wordCount: number,
+  template: GuideTemplate,
+  locale: AppLanguage,
+  shouldCheckLocalSpecifics: boolean,
+  shouldCheckFirstHand: boolean,
+  shouldCheckEarlyAnswer: boolean,
+  timeSensitive: boolean,
+) {
   const focusKeyword = getFocusKeyword(manifest);
 
   const internalLinks = extractInternalLinks(content);
@@ -1092,254 +1061,329 @@ export async function auditGuideSeo(
     hasYearReferences: timeSensitive && checkYearReferences(content) ? 1 : 0,
   };
 
-  // 5. Scoring rubric
-  let score = 10.0;
-  const issues: Array<{ issue: string; impact: number }> = []; // blockers
-  const improvements: Array<{ issue: string; impact: number }> = [];
-  const strengths: string[] = [];
+  return {
+    metrics,
+    linkValidation,
+    imageAltCoverage,
+    imageSizes,
+    placeholderIssues,
+    spellingErrors,
+    keywordInTitle,
+    focusKeyword,
+  };
+}
 
-  // === BLOCKERS: link integrity ===
+// ============================================================================
+// SCORING HELPER FUNCTIONS
+// ============================================================================
+
+type ScoringContext = {
+  score: number;
+  issues: Array<{ issue: string; impact: number }>;
+  improvements: Array<{ issue: string; impact: number }>;
+  strengths: string[];
+};
+
+function scoreLinkIntegrity(
+  context: ScoringContext,
+  linkValidation: ReturnType<typeof validateInternalLinks>,
+): void {
   if (linkValidation.invalidOccurrences > 0) {
     const impact = 1.0;
-    score -= impact;
-    issues.push({
+    context.score -= impact;
+    context.issues.push({
       issue: `Invalid internal links: ${linkValidation.invalidOccurrences} occurrence(s) pointing to unknown guide keys (${linkValidation.invalidTargets.join(", ")})`,
       impact,
     });
   } else {
-    strengths.push("All internal links resolve to valid guide keys");
+    context.strengths.push("All internal links resolve to valid guide keys");
   }
+}
 
-  // === META TAGS ===
+function scoreMetaTags(
+  context: ScoringContext,
+  content: GuideContent,
+  metrics: Record<string, number | undefined>,
+): void {
   if (!content.seo?.title) {
     const impact = 1.0;
-    score -= impact;
-    issues.push({ issue: "Missing meta title", impact });
+    context.score -= impact;
+    context.issues.push({ issue: "Missing meta title", impact });
   } else {
     const len = metrics.metaTitleLength ?? 0;
     if (len < 35) {
       const impact = 0.4;
-      score -= impact;
-      improvements.push({ issue: `Meta title too short (${len} chars, target 35-65)`, impact });
+      context.score -= impact;
+      context.improvements.push({ issue: `Meta title too short (${len} chars, target 35-65)`, impact });
     } else if (len > 65) {
       const impact = 0.4;
-      score -= impact;
-      improvements.push({ issue: `Meta title too long (${len} chars, target 35-65)`, impact });
+      context.score -= impact;
+      context.improvements.push({ issue: `Meta title too long (${len} chars, target 35-65)`, impact });
     } else {
-      strengths.push(`Good meta title length (${len} chars)`);
+      context.strengths.push(`Good meta title length (${len} chars)`);
     }
   }
 
-  // Meta description: keep as a blocker if you want strict gating; if not, downgrade to improvement.
   if (!content.seo?.description) {
     const impact = 0.8;
-    score -= impact;
-    issues.push({ issue: "Missing meta description", impact });
+    context.score -= impact;
+    context.issues.push({ issue: "Missing meta description", impact });
   } else {
     const len = metrics.metaDescriptionLength ?? 0;
     if (len < 120) {
       const impact = 0.3;
-      score -= impact;
-      improvements.push({ issue: `Meta description short (${len} chars, target ~120-170)`, impact });
+      context.score -= impact;
+      context.improvements.push({ issue: `Meta description short (${len} chars, target ~120-170)`, impact });
     } else if (len > 170) {
       const impact = 0.3;
-      score -= impact;
-      improvements.push({ issue: `Meta description long (${len} chars, target ~120-170)`, impact });
+      context.score -= impact;
+      context.improvements.push({ issue: `Meta description long (${len} chars, target ~120-170)`, impact });
     } else {
-      strengths.push(`Good meta description length (${len} chars)`);
+      context.strengths.push(`Good meta description length (${len} chars)`);
     }
   }
+}
 
-  // === PLACEHOLDERS (Blockers) ===
-  if (placeholderIssues.length > 0) {
-    const hasLoremIpsum = placeholderIssues.some((p) => p.type === "lorem");
-    if (hasLoremIpsum) {
-      const impact = 1.0;
-      score -= impact;
-      issues.push({ issue: "Lorem ipsum placeholder text found - replace with real content", impact });
-    }
-
-    const tbdCount = placeholderIssues.filter((p) => p.type === "tbd").length;
-    if (tbdCount > 0) {
-      const impact = Math.min(tbdCount * 0.5, 1.0);
-      score -= impact;
-      issues.push({
-        issue: `${tbdCount} TBD/TODO marker${tbdCount > 1 ? "s" : ""} found - complete all sections before publishing`,
-        impact,
-      });
-    }
-
-    const emptyCount = placeholderIssues.filter((p) => p.type === "empty").length;
-    if (emptyCount > 0) {
-      const impact = Math.min(emptyCount * 0.3, 0.6);
-      score -= impact;
-      improvements.push({
-        issue: `${emptyCount} empty section${emptyCount > 1 ? "s" : ""} - add content or remove`,
-        impact,
-      });
-    }
-
-    const comingSoonCount = placeholderIssues.filter((p) => p.type === "comingSoon").length;
-    if (comingSoonCount > 0) {
-      const impact = 0.3;
-      score -= impact;
-      improvements.push({ issue: '"Coming soon" placeholder found - complete content before publishing', impact });
-    }
-  } else {
-    strengths.push("All content is finalized (no placeholders)");
+function scorePlaceholders(
+  context: ScoringContext,
+  placeholderIssues: ReturnType<typeof detectPlaceholders>,
+): void {
+  if (placeholderIssues.length === 0) {
+    context.strengths.push("All content is finalized (no placeholders)");
+    return;
   }
 
-  // === WORD COUNT (Template-specific) ===
+  const hasLoremIpsum = placeholderIssues.some((p) => p.type === "lorem");
+  if (hasLoremIpsum) {
+    const impact = 1.0;
+    context.score -= impact;
+    context.issues.push({ issue: "Lorem ipsum placeholder text found - replace with real content", impact });
+  }
+
+  const tbdCount = placeholderIssues.filter((p) => p.type === "tbd").length;
+  if (tbdCount > 0) {
+    const impact = Math.min(tbdCount * 0.5, 1.0);
+    context.score -= impact;
+    context.issues.push({
+      issue: `${tbdCount} TBD/TODO marker${tbdCount > 1 ? "s" : ""} found - complete all sections before publishing`,
+      impact,
+    });
+  }
+
+  const emptyCount = placeholderIssues.filter((p) => p.type === "empty").length;
+  if (emptyCount > 0) {
+    const impact = Math.min(emptyCount * 0.3, 0.6);
+    context.score -= impact;
+    context.improvements.push({
+      issue: `${emptyCount} empty section${emptyCount > 1 ? "s" : ""} - add content or remove`,
+      impact,
+    });
+  }
+
+  const comingSoonCount = placeholderIssues.filter((p) => p.type === "comingSoon").length;
+  if (comingSoonCount > 0) {
+    const impact = 0.3;
+    context.score -= impact;
+    context.improvements.push({ issue: '"Coming soon" placeholder found - complete content before publishing', impact });
+  }
+}
+
+function scoreWordCount(
+  context: ScoringContext,
+  wordCount: number,
+  template: GuideTemplate,
+  thresholds: typeof TEMPLATE_THRESHOLDS[GuideTemplate],
+): void {
   if (wordCount < thresholds.wordCount.min) {
     const impact = 1.0;
-    score -= impact;
-    issues.push({
+    context.score -= impact;
+    context.issues.push({
       issue: `Content too short (${wordCount} words, ${template} template needs ${thresholds.wordCount.min}+)`,
       impact,
     });
   } else if (wordCount < thresholds.wordCount.low) {
     const impact = 0.4;
-    score -= impact;
-    improvements.push({
+    context.score -= impact;
+    context.improvements.push({
       issue: `Content below optimal (${wordCount} words, target ${thresholds.wordCount.low}+ for ${template})`,
       impact,
     });
   } else if (thresholds.wordCount.high && wordCount > thresholds.wordCount.high) {
     const impact = 0.2;
-    score -= impact;
-    improvements.push({
+    context.score -= impact;
+    context.improvements.push({
       issue: `Content verbose (${wordCount} words, ${template} usually works best under ${thresholds.wordCount.high})`,
       impact,
     });
   } else {
-    strengths.push(`${template === "help" ? "Concise" : "Comprehensive"} content at ${wordCount} words`);
+    context.strengths.push(`${template === "help" ? "Concise" : "Comprehensive"} content at ${wordCount} words`);
   }
+}
 
-  // === IMAGES (Template-specific) ===
+function scoreImages(
+  context: ScoringContext,
+  metrics: Record<string, number | undefined>,
+  template: GuideTemplate,
+  thresholds: typeof TEMPLATE_THRESHOLDS[GuideTemplate],
+): void {
   if ((metrics.imageCount ?? 0) < thresholds.images.min) {
     const impact = template === "help" ? 0.3 : 0.5;
-    score -= impact;
-    improvements.push({
+    context.score -= impact;
+    context.improvements.push({
       issue: `Too few images (${metrics.imageCount}, ${template} template suggests ${thresholds.images.min}+)`,
       impact,
     });
   } else if ((metrics.imageCount ?? 0) < thresholds.images.low) {
     const impact = 0.2;
-    score -= impact;
-    improvements.push({
+    context.score -= impact;
+    context.improvements.push({
       issue: `Add ${thresholds.images.low - (metrics.imageCount ?? 0)} more images (currently ${metrics.imageCount}, target ${thresholds.images.low}+ for ${template})`,
       impact,
     });
   } else {
-    strengths.push(`Good visual content with ${metrics.imageCount} images`);
+    context.strengths.push(`Good visual content with ${metrics.imageCount} images`);
   }
+}
 
-  // === INTERNAL LINKS (Template-specific) ===
+function scoreInternalLinks(
+  context: ScoringContext,
+  metrics: Record<string, number | undefined>,
+  template: GuideTemplate,
+  thresholds: typeof TEMPLATE_THRESHOLDS[GuideTemplate],
+): void {
   if ((metrics.internalLinkCount ?? 0) < thresholds.links.min) {
     const impact = 0.4;
-    score -= impact;
-    improvements.push({
+    context.score -= impact;
+    context.improvements.push({
       issue: `Too few internal links (${metrics.internalLinkCount}, ${template} needs ${thresholds.links.min}+)`,
       impact,
     });
   } else {
-    strengths.push(`Strong internal linking with ${metrics.internalLinkCount} links`);
+    context.strengths.push(`Strong internal linking with ${metrics.internalLinkCount} links`);
   }
+}
 
-  // === FAQs (Softened; template-specific) ===
+function scoreFAQs(
+  context: ScoringContext,
+  metrics: Record<string, number | undefined>,
+  template: GuideTemplate,
+  thresholds: typeof TEMPLATE_THRESHOLDS[GuideTemplate],
+): void {
   if ((metrics.faqCount ?? 0) < thresholds.faqs.min) {
     const impact = 0.2;
-    score -= impact;
-    improvements.push({
+    context.score -= impact;
+    context.improvements.push({
       issue: `Add FAQs if users commonly ask follow-ups (currently ${metrics.faqCount}, suggested ${thresholds.faqs.min}+)`,
       impact,
     });
   } else if ((metrics.faqCount ?? 0) < thresholds.faqs.low) {
     const impact = 0.15;
-    score -= impact;
-    improvements.push({
+    context.score -= impact;
+    context.improvements.push({
       issue: `Consider adding ${thresholds.faqs.low - (metrics.faqCount ?? 0)} more FAQ(s) (currently ${metrics.faqCount}, target ${thresholds.faqs.low}+ for ${template})`,
       impact,
     });
   } else if ((metrics.faqCount ?? 0) > 0) {
-    strengths.push(`FAQ section present with ${metrics.faqCount} questions`);
+    context.strengths.push(`FAQ section present with ${metrics.faqCount} questions`);
   }
+}
 
-  // === HEADING STRUCTURE ===
+function scoreHeadingStructure(
+  context: ScoringContext,
+  metrics: Record<string, number | undefined>,
+  wordCount: number,
+): void {
   if ((metrics.headingCount ?? 0) === 0) {
     const impact = 0.5;
-    score -= impact;
-    improvements.push({ issue: "No section headings found (add H2 sections for skimmability)", impact });
+    context.score -= impact;
+    context.improvements.push({ issue: "No section headings found (add H2 sections for skimmability)", impact });
   } else if ((metrics.headingCount ?? 0) < 3 && wordCount > 1000) {
     const impact = 0.3;
-    score -= impact;
-    improvements.push({
+    context.score -= impact;
+    context.improvements.push({
       issue: `Add more headings (${metrics.headingCount} found, suggest 5+ for ${wordCount} words)`,
       impact,
     });
   } else {
-    strengths.push(`Well-structured with ${metrics.headingCount} section headings`);
-  }
-
-  // === CONTENT COMPLETENESS ===
-  if (shouldCheckEarlyAnswer && !(metrics.hasEarlyAnswer === 1) && wordCount > 300) {
-    const impact = 0.4;
-    score -= impact;
-    improvements.push({ issue: "No clear actionable info in first ~200 words (tighten the lead)", impact });
-  } else if (shouldCheckEarlyAnswer && metrics.hasEarlyAnswer === 1) {
-    strengths.push("Lead contains actionable info early");
+    context.strengths.push(`Well-structured with ${metrics.headingCount} section headings`);
   }
 
   if ((metrics.h2Count ?? 0) === 0 && wordCount > 500) {
     const impact = 0.4;
-    score -= impact;
-    improvements.push({ issue: "No H2 headings (content needs section breaks)", impact });
+    context.score -= impact;
+    context.improvements.push({ issue: "No H2 headings (content needs section breaks)", impact });
   }
+}
 
-  // === SPELLING & GRAMMAR (en-only) ===
-  if (locale === "en") {
-    if (spellingErrors.errorRate > 1.0) {
-      const impact = 0.5;
-      score -= impact;
-      improvements.push({
-        issue: `High typo rate (${spellingErrors.totalErrors} issue(s), ${spellingErrors.errorRate.toFixed(2)} per 400 words)`,
-        impact,
-      });
-    } else if (spellingErrors.totalErrors === 0) {
-      strengths.push("No common misspellings detected");
-    }
+function scoreContentCompleteness(
+  context: ScoringContext,
+  metrics: Record<string, number | undefined>,
+  shouldCheckEarlyAnswer: boolean,
+  wordCount: number,
+): void {
+  if (shouldCheckEarlyAnswer && !(metrics.hasEarlyAnswer === 1) && wordCount > 300) {
+    const impact = 0.4;
+    context.score -= impact;
+    context.improvements.push({ issue: "No clear actionable info in first ~200 words (tighten the lead)", impact });
+  } else if (shouldCheckEarlyAnswer && metrics.hasEarlyAnswer === 1) {
+    context.strengths.push("Lead contains actionable info early");
   }
+}
 
-  // === IMAGE QUALITY & ACCESSIBILITY ===
+function scoreSpellingGrammar(
+  context: ScoringContext,
+  spellingErrors: ReturnType<typeof checkSpellingGrammar>,
+  locale: AppLanguage,
+): void {
+  if (locale !== "en") return;
+
+  if (spellingErrors.errorRate > 1.0) {
+    const impact = 0.5;
+    context.score -= impact;
+    context.improvements.push({
+      issue: `High typo rate (${spellingErrors.totalErrors} issue(s), ${spellingErrors.errorRate.toFixed(2)} per 400 words)`,
+      impact,
+    });
+  } else if (spellingErrors.totalErrors === 0) {
+    context.strengths.push("No common misspellings detected");
+  }
+}
+
+function scoreImageQuality(
+  context: ScoringContext,
+  imageAltCoverage: ReturnType<typeof checkImageAltText>,
+  imageSizes: ReturnType<typeof checkImageSizes>,
+  metrics: Record<string, number | undefined>,
+): void {
   if (imageAltCoverage.coverage < 50) {
     const impact = 1.0;
-    score -= impact;
-    issues.push({
+    context.score -= impact;
+    context.issues.push({
       issue: `Critical: Only ${imageAltCoverage.coverage.toFixed(0)}% of images have alt text`,
       impact,
     });
   } else if (imageAltCoverage.coverage < 100) {
     const impact = 0.3;
-    score -= impact;
-    improvements.push({
+    context.score -= impact;
+    context.improvements.push({
       issue: `${imageAltCoverage.coverage.toFixed(0)}% alt text coverage (target 100%)`,
       impact,
     });
   } else {
-    strengths.push("All images have alt attributes");
+    context.strengths.push("All images have alt attributes");
   }
 
   if (imageSizes.oversize > 0) {
     const impact = 0.7;
-    score -= impact;
-    issues.push({
+    context.score -= impact;
+    context.issues.push({
       issue: `${imageSizes.oversize} image${imageSizes.oversize > 1 ? "s" : ""} over 500KB (optimize before publishing)`,
       impact,
     });
   } else if (imageSizes.moderate > 2) {
     const impact = 0.25;
-    score -= impact;
-    improvements.push({
+    context.score -= impact;
+    context.improvements.push({
       issue: `${imageSizes.moderate} images over 250KB (optimize for better performance)`,
       impact,
     });
@@ -1347,8 +1391,8 @@ export async function auditGuideSeo(
 
   if ((metrics.featuredImageWidth ?? 0) > 0 && (metrics.featuredImageWidth ?? 0) < 1200) {
     const impact = 0.2;
-    score -= impact;
-    improvements.push({
+    context.score -= impact;
+    context.improvements.push({
       issue: `Featured image small (${metrics.featuredImageWidth}px, recommend ≥1200px for social sharing)`,
       impact,
     });
@@ -1356,60 +1400,70 @@ export async function auditGuideSeo(
 
   if ((metrics.usesModernFormats ?? 1) === 0 && imageAltCoverage.total > 0) {
     const impact = 0.1;
-    score -= impact;
-    improvements.push({ issue: "Consider using modern image formats (WebP/AVIF)", impact });
+    context.score -= impact;
+    context.improvements.push({ issue: "Consider using modern image formats (WebP/AVIF)", impact });
   }
+}
 
-  // === CONTENT STRATEGY (Template-scoped) ===
+function scoreContentStrategy(
+  context: ScoringContext,
+  metrics: Record<string, number | undefined>,
+  shouldCheckLocalSpecifics: boolean,
+  shouldCheckFirstHand: boolean,
+): void {
   if (shouldCheckLocalSpecifics) {
     const localEntityCount = metrics.localEntityCount ?? 0;
     if (localEntityCount < 3) {
       const impact = 0.4;
-      score -= impact;
-      improvements.push({
+      context.score -= impact;
+      context.improvements.push({
         issue: `Add local specificity (${localEntityCount} entities found, target 5+)`,
         impact,
       });
     } else if (localEntityCount >= 5) {
-      strengths.push(`Good local specificity (${localEntityCount} entities detected)`);
+      context.strengths.push(`Good local specificity (${localEntityCount} entities detected)`);
     }
 
     const facts = metrics.concreteFactsDensity ?? 0;
     if (facts < 5) {
       const impact = 0.4;
-      score -= impact;
-      improvements.push({
+      context.score -= impact;
+      context.improvements.push({
         issue: `Add concrete facts (${facts} per 500 words, target 8+)`,
         impact,
       });
     } else if (facts >= 8) {
-      strengths.push(`Good density of concrete details (${facts} facts per 500 words)`);
+      context.strengths.push(`Good density of concrete details (${facts} facts per 500 words)`);
     }
   }
 
   if (shouldCheckFirstHand && (metrics.hasFirstHandDetails ?? 0) === 0) {
     const impact = 0.25;
-    score -= impact;
-    improvements.push({
+    context.score -= impact;
+    context.improvements.push({
       issue: 'Add first-hand details (staff tips, "from the hostel", "we tried")',
       impact,
     });
   } else if (shouldCheckFirstHand && (metrics.hasFirstHandDetails ?? 0) === 1) {
-    strengths.push("Includes first-hand / on-the-ground details");
+    context.strengths.push("Includes first-hand / on-the-ground details");
   }
+}
 
-  // === READABILITY ===
+function scoreReadability(
+  context: ScoringContext,
+  metrics: Record<string, number | undefined>,
+): void {
   if ((metrics.avgParagraphLength ?? 0) > 150) {
     const impact = 0.4;
-    score -= impact;
-    improvements.push({
+    context.score -= impact;
+    context.improvements.push({
       issue: `Paragraphs long (avg ${metrics.avgParagraphLength} words, target ≤120)`,
       impact,
     });
   } else if ((metrics.avgParagraphLength ?? 0) > 120) {
     const impact = 0.2;
-    score -= impact;
-    improvements.push({
+    context.score -= impact;
+    context.improvements.push({
       issue: `Break up paragraphs (avg ${metrics.avgParagraphLength} words, optimal ≤90-120)`,
       impact,
     });
@@ -1417,15 +1471,15 @@ export async function auditGuideSeo(
 
   if ((metrics.avgSentenceLength ?? 0) > 30) {
     const impact = 0.4;
-    score -= impact;
-    improvements.push({
+    context.score -= impact;
+    context.improvements.push({
       issue: `Sentences complex (avg ${metrics.avgSentenceLength} words, target ≤25)`,
       impact,
     });
   } else if ((metrics.avgSentenceLength ?? 0) > 25) {
     const impact = 0.2;
-    score -= impact;
-    improvements.push({
+    context.score -= impact;
+    context.improvements.push({
       issue: `Simplify sentences (avg ${metrics.avgSentenceLength} words, optimal ≤20-25)`,
       impact,
     });
@@ -1434,123 +1488,238 @@ export async function auditGuideSeo(
   if (typeof metrics.readingGradeLevel === "number") {
     if (metrics.readingGradeLevel > 12) {
       const impact = 0.4;
-      score -= impact;
-      improvements.push({
+      context.score -= impact;
+      context.improvements.push({
         issue: `Reading level high (grade ${metrics.readingGradeLevel}, target ~7-10)`,
         impact,
       });
     } else if (metrics.readingGradeLevel > 10) {
       const impact = 0.2;
-      score -= impact;
-      improvements.push({
+      context.score -= impact;
+      context.improvements.push({
         issue: `Simplify language (grade ${metrics.readingGradeLevel}, optimal ~7-10)`,
         impact,
       });
     }
   }
+}
 
-  // === KEYWORD OPTIMIZATION (focusKeyword-scoped) ===
+function scoreKeywordOptimization(
+  context: ScoringContext,
+  focusKeyword: string | null | undefined,
+  keywordInTitle: { present: boolean; nearFront: boolean },
+  metrics: Record<string, number | undefined>,
+): void {
   if (!focusKeyword) {
     const impact = 0.1;
-    score -= impact;
-    improvements.push({
+    context.score -= impact;
+    context.improvements.push({
       issue: "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
       impact,
     });
-  } else {
-    if (!keywordInTitle.present || !keywordInTitle.nearFront) {
-      const impact = 0.3;
-      score -= impact;
-      improvements.push({ issue: `Focus keyword should appear near front of title ("${focusKeyword}")`, impact });
-    }
-
-    if (!(metrics.focusKeywordEarly === 1)) {
-      const impact = 0.3;
-      score -= impact;
-      improvements.push({ issue: `Include focus keyword in first ~150 words ("${focusKeyword}")`, impact });
-    }
-
-    const stuffing = metrics.keywordStuffingRate ?? 0;
-    if (stuffing > 3) {
-      const impact = 0.5;
-      score -= impact;
-      improvements.push({
-        issue: `Possible keyword stuffing (${stuffing}% repetition of "${focusKeyword}", target ≤2%)`,
-        impact,
-      });
-    } else if (stuffing > 2) {
-      const impact = 0.25;
-      score -= impact;
-      improvements.push({
-        issue: `Reduce keyword repetition (${stuffing}% repetition, optimal ≤2%)`,
-        impact,
-      });
-    } else {
-      strengths.push("No obvious keyword stuffing");
-    }
+    return;
   }
 
-  // === LINK QUALITY ===
+  if (!keywordInTitle.present || !keywordInTitle.nearFront) {
+    const impact = 0.3;
+    context.score -= impact;
+    context.improvements.push({ issue: `Focus keyword should appear near front of title ("${focusKeyword}")`, impact });
+  }
+
+  if (!(metrics.focusKeywordEarly === 1)) {
+    const impact = 0.3;
+    context.score -= impact;
+    context.improvements.push({ issue: `Include focus keyword in first ~150 words ("${focusKeyword}")`, impact });
+  }
+
+  const stuffing = metrics.keywordStuffingRate ?? 0;
+  if (stuffing > 3) {
+    const impact = 0.5;
+    context.score -= impact;
+    context.improvements.push({
+      issue: `Possible keyword stuffing (${stuffing}% repetition of "${focusKeyword}", target ≤2%)`,
+      impact,
+    });
+  } else if (stuffing > 2) {
+    const impact = 0.25;
+    context.score -= impact;
+    context.improvements.push({
+      issue: `Reduce keyword repetition (${stuffing}% repetition, optimal ≤2%)`,
+      impact,
+    });
+  } else {
+    context.strengths.push("No obvious keyword stuffing");
+  }
+}
+
+function scoreLinkQuality(
+  context: ScoringContext,
+  metrics: Record<string, number | undefined>,
+): void {
   if ((metrics.genericAnchorCount ?? 0) > 3) {
     const impact = 0.3;
-    score -= impact;
-    improvements.push({
+    context.score -= impact;
+    context.improvements.push({
       issue: `${metrics.genericAnchorCount} generic link labels ("click here"/"here") - use descriptive anchors`,
       impact,
     });
   } else if ((metrics.genericAnchorCount ?? 0) > 0) {
     const impact = 0.15;
-    score -= impact;
-    improvements.push({
+    context.score -= impact;
+    context.improvements.push({
       issue: `Replace ${metrics.genericAnchorCount} generic link label(s) with descriptive anchors`,
       impact,
     });
   }
+}
 
-  // === FRESHNESS (Template-scoped / timeSensitive) ===
+function scoreFreshness(
+  context: ScoringContext,
+  content: GuideContent,
+  timeSensitive: boolean,
+): void {
   if (timeSensitive) {
     if (!content.lastUpdated) {
       const impact = 0.25;
-      score -= impact;
-      improvements.push({ issue: "Add lastUpdated date (time-sensitive guide)", impact });
+      context.score -= impact;
+      context.improvements.push({ issue: "Add lastUpdated date (time-sensitive guide)", impact });
     }
     if (!checkYearReferences(content)) {
       const impact = 0.15;
-      score -= impact;
-      improvements.push({ issue: "Include year/season references (time-sensitive guide)", impact });
+      context.score -= impact;
+      context.improvements.push({ issue: "Include year/season references (time-sensitive guide)", impact });
     }
   } else {
-    // Non-time-sensitive: lastUpdated is optional (small nudge only)
     if (!content.lastUpdated) {
       const impact = 0.05;
-      score -= impact;
-      improvements.push({ issue: "Optional: add lastUpdated date", impact });
+      context.score -= impact;
+      context.improvements.push({ issue: "Optional: add lastUpdated date", impact });
     }
   }
+}
 
-  // === STRUCTURED DATA (presence only) ===
+function scoreStructuredData(
+  context: ScoringContext,
+  metrics: Record<string, number | undefined>,
+): void {
   if (!(metrics.hasArticleSchema === 1 || metrics.hasBreadcrumbs === 1)) {
     const impact = 0.15;
-    score -= impact;
-    improvements.push({ issue: "Consider adding BreadcrumbList and/or Article schema in manifest", impact });
+    context.score -= impact;
+    context.improvements.push({ issue: "Consider adding BreadcrumbList and/or Article schema in manifest", impact });
   } else {
-    strengths.push("Structured data declared in manifest");
+    context.strengths.push("Structured data declared in manifest");
+  }
+}
+
+// ============================================================================
+// MAIN AUDIT FUNCTION
+// ============================================================================
+
+export async function auditGuideSeo(
+  guideKey: GuideKey,
+  locale: AppLanguage = "en",
+): Promise<SeoAuditResult> {
+  // 1. Validate guide exists
+  const manifest = getGuideManifestEntry(guideKey);
+  if (!manifest) {
+    throw new Error(`Guide not found: ${guideKey}`);
   }
 
+  // 2. Load guide content
+  const cwd = process.cwd();
+  const inAppDir = cwd.endsWith("/apps/brikette") || cwd.endsWith("\\apps\\brikette");
+  const baseDir = inAppDir ? cwd : path.join(cwd, "apps/brikette");
+
+  const contentPath = path.join(baseDir, "src/locales", locale, "guides/content", `${guideKey}.json`);
+
+  let content: GuideContent;
+  try {
+    const raw = await fs.readFile(contentPath, "utf-8");
+    content = JSON.parse(raw) as GuideContent;
+  } catch (err) {
+    if ((err as NodeJS.ErrnoException).code === "ENOENT") {
+      throw new Error(
+        `Content file not found: ${contentPath}\nEnsure the guide has content for locale "${locale}".`,
+      );
+    }
+    throw new Error(`Failed to parse content file: ${(err as Error).message}`);
+  }
+
+  // 3. Determine template type
+  const wordCount = countWords(content);
+  const template = determineTemplate(manifest, wordCount);
+  const thresholds = TEMPLATE_THRESHOLDS[template];
+
+  // Template-scoped checks
+  const timeSensitive = manifest.timeSensitive ?? (template === "localGuide" || template === "pillar");
+
+  const shouldCheckLocalSpecifics = template === "localGuide" || template === "pillar";
+  const shouldCheckFirstHand = template === "experience" || template === "localGuide" || template === "pillar";
+  const shouldCheckEarlyAnswer = template !== "experience"; // experiences can be more narrative
+
+  // 4. Extract comprehensive metrics
+  const {
+    metrics,
+    linkValidation,
+    imageAltCoverage,
+    imageSizes,
+    placeholderIssues,
+    spellingErrors,
+    keywordInTitle,
+    focusKeyword,
+  } = extractAuditMetrics(
+    content,
+    manifest,
+    guideKey,
+    wordCount,
+    template,
+    locale,
+    shouldCheckLocalSpecifics,
+    shouldCheckFirstHand,
+    shouldCheckEarlyAnswer,
+    timeSensitive,
+  );
+
+  // 5. Scoring rubric - using extracted helper functions
+  const context: ScoringContext = {
+    score: 10.0,
+    issues: [],
+    improvements: [],
+    strengths: [],
+  };
+
+  scoreLinkIntegrity(context, linkValidation);
+  scoreMetaTags(context, content, metrics);
+  scorePlaceholders(context, placeholderIssues);
+  scoreWordCount(context, wordCount, template, thresholds);
+  scoreImages(context, metrics, template, thresholds);
+  scoreInternalLinks(context, metrics, template, thresholds);
+  scoreFAQs(context, metrics, template, thresholds);
+  scoreHeadingStructure(context, metrics, wordCount);
+  scoreContentCompleteness(context, metrics, shouldCheckEarlyAnswer, wordCount);
+  scoreSpellingGrammar(context, spellingErrors, locale);
+  scoreImageQuality(context, imageAltCoverage, imageSizes, metrics);
+  scoreContentStrategy(context, metrics, shouldCheckLocalSpecifics, shouldCheckFirstHand);
+  scoreReadability(context, metrics);
+  scoreKeywordOptimization(context, focusKeyword, keywordInTitle, metrics);
+  scoreLinkQuality(context, metrics);
+  scoreFreshness(context, content, timeSensitive);
+  scoreStructuredData(context, metrics);
+
   // Sort by impact
-  issues.sort((a, b) => b.impact - a.impact);
-  improvements.sort((a, b) => b.impact - a.impact);
+  context.issues.sort((a, b) => b.impact - a.impact);
+  context.improvements.sort((a, b) => b.impact - a.impact);
 
   // Round score
-  score = Math.max(0, Math.min(10, Math.round(score * 10) / 10));
+  const score = Math.max(0, Math.min(10, Math.round(context.score * 10) / 10));
 
   return {
     timestamp: new Date().toISOString(),
     score,
     analysis: {
-      strengths,
-      criticalIssues: issues,
-      improvements,
+      strengths: context.strengths,
+      criticalIssues: context.issues,
+      improvements: context.improvements,
     },
     metrics,
     version: "3.1.0",

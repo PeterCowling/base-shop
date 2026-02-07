@@ -11,6 +11,7 @@ import { Section } from "@acme/design-system/atoms";
 import { isGuidePublished } from "@/data/guides.index";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
+import { guideHref } from "@/routes.guides-helpers";
 import { BeforeYouTravel } from "@/routes/how-to-get-here/components/BeforeYouTravel";
 import { ExperienceGuidesSection } from "@/routes/how-to-get-here/components/ExperienceGuidesSection";
 import { FiltersDialog } from "@/routes/how-to-get-here/components/FiltersDialog";
@@ -28,7 +29,6 @@ import type { RoutePickerSelection } from "@/routes/how-to-get-here/components/R
 import { pickBestLink } from "@/routes/how-to-get-here/pickBestLink";
 import { useDestinationFilters } from "@/routes/how-to-get-here/useDestinationFilters";
 import { useHowToGetHereContent } from "@/routes/how-to-get-here/useHowToGetHereContent";
-import { guideHref } from "@/routes.guides-helpers";
 import { resolveLabel, useEnglishFallback } from "@/utils/translation-fallback";
 
 // Lazy load DestinationSections to prevent bundling destinations data into guide pages

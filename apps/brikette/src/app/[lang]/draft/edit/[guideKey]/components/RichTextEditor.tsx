@@ -1,18 +1,18 @@
 "use client";
 
-/* eslint-disable ds/no-hardcoded-copy -- GUIDES-2470 editor UI is developer-facing */
+ 
 import { Component, type ReactNode, useEffect, useMemo, useRef, useState } from "react";
-import clsx from "clsx";
+import { getSchema } from "@tiptap/core";
+import Placeholder from "@tiptap/extension-placeholder";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Placeholder from "@tiptap/extension-placeholder";
-import { getSchema } from "@tiptap/core";
+import clsx from "clsx";
 
 import type { GuideKey } from "@/routes.guides-helpers";
 import { sanitizeLinkLabel } from "@/routes/guides/utils/linkTokens";
 
-import { GuideLinkPicker } from "./GuideLinkPicker";
 import { TextArea } from "./FormFields";
+import { GuideLinkPicker } from "./GuideLinkPicker";
 import {
   createGuideMarkdownCodec,
   guideMarkdownToStringArray,

@@ -2,10 +2,10 @@ import "@testing-library/jest-dom";
 
 import React from "react";
 import { screen, within } from "@testing-library/react";
+import { renderWithProviders } from "@tests/renderers";
 
 import AssistanceIndexContent from "@/app/[lang]/assistance/AssistanceIndexContent";
 import type { GuideKey } from "@/guides/slugs";
-import { renderWithProviders } from "@tests/renderers";
 
 jest.mock("@/hooks/useCurrentLanguage", () => ({
   useCurrentLanguage: () => undefined,

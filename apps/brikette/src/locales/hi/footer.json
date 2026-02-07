@@ -29,5 +29,6 @@
   "houseRules": "घर के नियम",
   "cancellationPolicy": "रद्द करने की नीति",
   "privacy": "गोपनीयता नीति",
-  "cookies": "कुकी नीति"
+  "cookies": "कुकी नीति",
+  "navAriaLabel": "Footer navigation"
 }

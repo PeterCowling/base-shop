@@ -157,5 +157,8 @@
   "language": {
     "title": "Selecionar idioma",
     "close": "Fechar"
+  },
+  "loader": {
+    "ariaLabel": "Loading"
   }
 }

@@ -18,8 +18,8 @@ import type { LocalizedRoom } from "@/rooms/types";
 import { getRoomsCatalog, resolveFallbackLanguage } from "@/utils/roomsCatalog";
 import { buildOffer } from "@/utils/schema/builders";
 import { WEBSITE_ID } from "@/utils/schema/types";
-import { getSlug } from "@/utils/slug";
 import { serializeJsonLdValue } from "@/utils/seo/jsonld";
+import { getSlug } from "@/utils/slug";
 
 /** Constant slug used to build the @id for every offer. */
 const OFFER_PREFIX = `${BASE_URL}#offer-`;

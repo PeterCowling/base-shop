@@ -3,7 +3,6 @@ import type { GuideKey } from "@/routes.guides-helpers";
 import getGuideResource from "@/routes/guides/utils/getGuideResource";
 import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
 
-import { isPlaceholderString } from "./guide-seo/content-detection";
 import {
   type DateValidationResult,
   type GuideDiagnosticResult,
@@ -11,6 +10,7 @@ import {
   type SeoFieldStatus,
   type TranslationCoverageResult,
 } from "./guide-diagnostics.types";
+import { isPlaceholderString } from "./guide-seo/content-detection";
 
 type FaqEntry = { q?: unknown; question?: unknown; a?: unknown; answer?: unknown };
 

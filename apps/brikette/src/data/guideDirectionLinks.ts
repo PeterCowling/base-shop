@@ -1,7 +1,7 @@
 // src/data/guideDirectionLinks.ts
 // Maps guide keys to their associated direction/travel links
 
-import { guideSlug, type GuideKey } from "@/routes.guides-helpers";
+import { type GuideKey,guideSlug } from "@/routes.guides-helpers";
 
 export interface DirectionLink {
   slug: string;

@@ -18,8 +18,6 @@ import { BUSINESSES } from "@/lib/business-catalog";
 import { getDb } from "@/lib/d1.server";
 import { computeEntitySha } from "@/lib/entity-sha";
 
-export const runtime = "edge";
-
 const CreateAgentIdeaSchema = z.object({
   business: z.string().min(1),
   content: z.string().min(1),

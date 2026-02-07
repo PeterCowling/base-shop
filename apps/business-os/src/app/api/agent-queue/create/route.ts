@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-export const runtime = "edge";
-
 const CreateQueueItemSchema = z.object({
   action: z.enum(["work-idea", "break-into-tasks", "draft-plan", "custom"]),
   target: z.string().min(1),

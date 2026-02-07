@@ -10,8 +10,6 @@ import { requireAgentAuth } from "@/lib/auth/middleware";
 import { BUSINESSES } from "@/lib/business-catalog";
 import { getDb } from "@/lib/d1.server";
 
-export const runtime = "edge";
-
 const AllocateIdSchema = z.object({
   business: z.string().min(1),
   type: z.enum(["card", "idea"]),

@@ -15,10 +15,9 @@ import { ConvertToCardButton } from "./ConvertToCardButton";
 import { WorkIdeaButton } from "./WorkIdeaButton";
 
 // BOS-D1-05 Phase 2: Edge runtime with D1 repositories
-export const runtime = "edge";
 
 // BOS-D1-05: Cache idea detail pages (1 minute acceptable for detail views)
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ id: string }>;

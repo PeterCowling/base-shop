@@ -1,3 +1,4 @@
+
 /**
  * Logout API Route
  * MVP-B1: Invite-only auth system
@@ -7,8 +8,6 @@
  */
 
 import { NextResponse } from "next/server";
-
-export const runtime = "edge";
 
 export async function POST(request: Request) {
   try {

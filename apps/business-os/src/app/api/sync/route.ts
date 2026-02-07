@@ -1,7 +1,4 @@
 import { NextResponse } from "next/server";
-
-export const runtime = "edge";
-
 /**
  * POST /api/sync
  * Hosted (D1) path: no git sync is required/possible.
@@ -16,4 +13,3 @@ export async function POST() {
     { status: 200 }
   );
 }
-

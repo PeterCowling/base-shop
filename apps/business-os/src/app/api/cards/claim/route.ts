@@ -12,8 +12,6 @@ import { getCurrentUserServer } from "@/lib/current-user.server-only";
 import { getDb } from "@/lib/d1.server";
 import { computeEntitySha } from "@/lib/entity-sha";
 
-export const runtime = "edge";
-
 const ClaimCardSchema = z.object({
   cardId: z.string().min(1),
 });
@@ -105,4 +103,3 @@ export async function POST(request: Request) {
     );
   }
 }
-

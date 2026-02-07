@@ -43,8 +43,6 @@ module.exports = [
   "packages/config/jest.preset.cjs",
   "apps/api/jest.config.cjs",
   "apps/api/postcss.config.cjs",
-  // Prime app: exempt while in early development (362 pre-existing DS rule violations)
-  "apps/prime/**",
   // Brikette: exempt temporarily (tsconfig extends chain resolution issue with import resolver)
   "apps/brikette/**",
   // Cypress files: exempt from main linting (type-aware rules crash during init without project)
@@ -53,4 +51,3 @@ module.exports = [
   // Vendor WASM transcoder files
   "**/public/ktx2/basis_transcoder.js",
 ];
-

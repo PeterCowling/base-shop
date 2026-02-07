@@ -196,6 +196,33 @@ jobs:
         run: pnpm --filter ${{ inputs.app-filter }}... lint
         shell: bash
 
+      - name: Prime changed-file lint gate
+        if: ${{ steps.classify.outputs.run_validation == 'true' && inputs.app-filter == '@apps/prime' }}
+        shell: bash
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha || '' }}
+          EVENT_BEFORE: ${{ github.event.before || '' }}
+        run: |
+          set -euo pipefail
+          base_sha=""
+          if [[ -n "$PR_BASE_SHA" ]]; then
+            base_sha="$PR_BASE_SHA"
+          elif [[ -n "$EVENT_BEFORE" && "$EVENT_BEFORE" != "0000000000000000000000000000000000000000" ]]; then
+            base_sha="$EVENT_BEFORE"
+          elif git rev-parse HEAD^ >/dev/null 2>&1; then
+            base_sha="$(git rev-parse HEAD^)"
+          fi
+
+          changed_paths_file="$RUNNER_TEMP/prime-changed-paths.txt"
+          if [[ -n "$base_sha" ]]; then
+            git diff --name-only --diff-filter=ACMRTUXB "$base_sha" "${GITHUB_SHA}" > "$changed_paths_file"
+          else
+            : > "$changed_paths_file"
+          fi
+
+          pnpm exec tsx scripts/src/ci/prime-lint-changed-files.ts --paths-file "$changed_paths_file" --format outputs
+          pnpm exec tsx scripts/src/ci/prime-lint-changed-files.ts --paths-file "$changed_paths_file" --run-eslint --format outputs
+
       - name: Typecheck
         if: ${{ steps.classify.outputs.run_validation == 'true' }}
         run: pnpm exec turbo run typecheck --filter=${{ inputs.app-filter }}...
@@ -204,6 +231,11 @@ jobs:
       - name: Firebase cost-safety gate (Prime)
         if: ${{ steps.classify.outputs.run_validation == 'true' && inputs.app-filter == '@apps/prime' }}
         run: pnpm --filter @apps/prime test:firebase-cost-gate
+        shell: bash
+
+      - name: Prime critical E2E gate (release branches)
+        if: ${{ steps.classify.outputs.run_validation == 'true' && inputs.app-filter == '@apps/prime' && (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/main') }}
+        run: pnpm --filter @apps/prime test:e2e:critical
         shell: bash
 
       - name: Validate guide manifest (warn-only)

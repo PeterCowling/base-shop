@@ -184,4 +184,34 @@ describe("LanguageGlobalModal routing", () => {
       expect(replaceMock).toHaveBeenCalledWith("/fr/comment-venir");
     });
   });
+
+  it("translates assistance index routes", async () => {
+    pathname = "/en/assistance";
+    searchParams = new URLSearchParams("");
+    window.history.replaceState({}, "", pathname);
+
+    const user = userEvent.setup();
+    renderWithProviders(<LanguageGlobalModal />);
+
+    await user.click(screen.getByRole("button", { name: "select-fr" }));
+
+    await waitFor(() => {
+      expect(replaceMock).toHaveBeenCalledWith("/fr/aide");
+    });
+  });
+
+  it("translates experiences index routes", async () => {
+    pathname = "/en/experiences";
+    searchParams = new URLSearchParams("");
+    window.history.replaceState({}, "", pathname);
+
+    const user = userEvent.setup();
+    renderWithProviders(<LanguageGlobalModal />);
+
+    await user.click(screen.getByRole("button", { name: "select-it" }));
+
+    await waitFor(() => {
+      expect(replaceMock).toHaveBeenCalledWith("/it/esperienze");
+    });
+  });
 });

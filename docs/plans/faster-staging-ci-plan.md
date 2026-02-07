@@ -78,7 +78,7 @@ Introduce a deterministic deploy-only classifier as a reusable script module, te
 | TASK-03 | IMPLEMENT | Integrate classifier into reusable app workflow with conservative defaults and explicit logs | 82% | M | Completed (local) | TASK-02 |
 | TASK-04 | IMPLEMENT | Add Brikette local deploy preflight command + tests and agent-facing usage docs | 84% | M | Completed | TASK-02 |
 | TASK-05 | DECISION | Define merge-gate requirement contract for deploy-only changes | 80% | S | Pending | TASK-03 |
-| TASK-06 | IMPLEMENT | Fix Auto PR 403 by adding job-level permissions | 90% | S | Pending | - |
+| TASK-06 | IMPLEMENT | Fix Auto PR 403 by adding job-level permissions | 90% | S | Completed (local) | - |
 | TASK-07 | IMPLEMENT | Provision secrets and remove `continue-on-error` on deploy env validation | 82% | S | Pending | TASK-04 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
@@ -374,6 +374,16 @@ Introduce a deterministic deploy-only classifier as a reusable script module, te
 - **Notes / references:**
   - Failure evidence: run `21778494952` with `403 GitHub Actions is not permitted to create or approve pull requests`.
   - Fix pattern: same as `bos-export.yml` job-level permissions.
+- **Build completion (2026-02-07):**
+  - Added job-level permissions block to `.github/workflows/auto-pr.yml` `ensure-pr` job:
+    - `contents: write`
+    - `pull-requests: write`
+    - `issues: write`
+  - Confidence reassessment: **90% (holds)**. Implementation matched re-plan root cause and remained least-privileged.
+  - Validation run:
+    - `actionlint .github/workflows/auto-pr.yml` (pass)
+  - Remaining verification:
+    - Live `auto-pr.yml` run success (TC-01/TC-02) to be confirmed after push.
 
 ### TASK-07: Provision secrets and remove `continue-on-error` on deploy env validation
 - **Type:** IMPLEMENT
@@ -468,4 +478,5 @@ Introduce a deterministic deploy-only classifier as a reusable script module, te
 - 2026-02-07 (build): Completed TASK-02 with conservative deploy-only classifier module, fixture rules, and TC-01..TC-05 unit coverage.
 - 2026-02-07 (build): Completed local TASK-03 workflow integration with conservative gating/logging and actionlint validation; live Actions behavior capture remains queued for post-push verification.
 - 2026-02-07 (build): Completed TASK-04 Brikette deploy preflight command with fixture-based checks and operator docs update.
+- 2026-02-07 (build): Completed local TASK-06 by adding job-level permissions to `auto-pr.yml`; live success verification queued for post-push run.
 - 2026-02-07 (external): Commit `7c81a4f556` fixed 5 actionlint errors across 3 workflows. Relevant to this plan: (a) TASK-07 — 3 auth secrets now declared in `reusable-app.yml` workflow_call.secrets block (provisioning still needed); (b) TASK-03 — actionlint v1.7.10 now pinned in `merge-gate.yml` (resolves false positive on `include-hidden-files`).

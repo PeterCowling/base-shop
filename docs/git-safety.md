@@ -96,10 +96,11 @@ scripts/agents/integrator-shell.sh -- codex
 scripts/agents/integrator-shell.sh
 ```
 
-If the lock is held, wait:
+If the lock is held, recover safely, then wait:
 
 ```bash
 scripts/git/writer-lock.sh status
+scripts/git/writer-lock.sh clean-stale   # only if holder PID is dead on this host
 scripts/git/writer-lock.sh acquire --wait
 ```
 
@@ -313,10 +314,15 @@ git push --no-verify
 # Or: skip simple-git-hooks specifically
 SKIP_SIMPLE_GIT_HOOKS=1 git push origin HEAD
 
-# Or: skip only the writer-lock check
-SKIP_WRITER_LOCK=1 git commit -m "Emergency fix"
-
 # Never bypass in order to rewrite history or push to protected branches.
+```
+
+For writer-lock issues, fix lock state instead of bypassing:
+
+```bash
+scripts/git/writer-lock.sh status
+scripts/git/writer-lock.sh clean-stale   # only if holder PID is dead on this host
+scripts/git/writer-lock.sh acquire --wait
 ```
 
 **Document why hooks were bypassed and follow up to fix the root cause.**

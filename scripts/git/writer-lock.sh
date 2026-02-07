@@ -4,8 +4,9 @@ set -euo pipefail
 usage() {
   cat <<'EOF'
 Usage:
-  scripts/git/writer-lock.sh status
+  scripts/git/writer-lock.sh status [--print-token]
   scripts/git/writer-lock.sh acquire [--wait] [--timeout <sec>] [--poll <sec>] [--force]
+  scripts/git/writer-lock.sh clean-stale
   scripts/git/writer-lock.sh release [--force]
 
 This is a single-writer lock for Base-Shop.
@@ -42,6 +43,7 @@ poll_sec="2"
 timeout_sec="0"
 wait="0"
 force="0"
+print_token="0"
 
 parse_common_flags() {
   while [[ $# -gt 0 ]]; do
@@ -60,6 +62,26 @@ parse_common_flags() {
         ;;
       --force)
         force="1"
+        shift
+        ;;
+      -h|--help)
+        usage
+        exit 0
+        ;;
+      *)
+        echo "ERROR: unknown option: $1" >&2
+        usage >&2
+        exit 2
+        ;;
+    esac
+  done
+}
+
+parse_status_flags() {
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --print-token)
+        print_token="1"
         shift
         ;;
       -h|--help)
@@ -95,6 +117,7 @@ is_pid_alive() {
 }
 
 print_status() {
+  local reveal_token="${1:-0}"
   if [[ ! -d "$lock_dir" ]]; then
     echo "unlocked"
     return 0
@@ -119,7 +142,11 @@ print_status() {
     echo "  note:       ${note}"
   fi
   if [[ -n "$token" ]]; then
-    echo "  token:      ${token}"
+    if [[ "$reveal_token" == "1" ]]; then
+      echo "  token:      ${token}"
+    else
+      echo "  token:      <redacted> (use --print-token to reveal)"
+    fi
   fi
 }
 
@@ -177,9 +204,48 @@ break_stale_lock_if_safe() {
   return 1
 }
 
+clean_stale_lock() {
+  if [[ ! -d "$lock_dir" ]]; then
+    echo "unlocked"
+    return 0
+  fi
+
+  local lock_host lock_pid lock_user
+  lock_host="$(read_meta_value "host" || true)"
+  lock_pid="$(read_meta_value "pid" || true)"
+  lock_user="$(read_meta_value "user" || true)"
+  local current_host
+  current_host="$(hostname -s 2>/dev/null || hostname)"
+
+  if [[ "$lock_host" != "$current_host" ]]; then
+    echo "ERROR: writer lock is owned by ${lock_user}@${lock_host}; refusing stale cleanup across hosts." >&2
+    print_status >&2
+    return 1
+  fi
+
+  if [[ -z "$lock_pid" || ! "$lock_pid" =~ ^[0-9]+$ ]]; then
+    echo "ERROR: writer lock PID is missing or invalid; refusing stale cleanup." >&2
+    print_status >&2
+    return 1
+  fi
+
+  if is_pid_alive "$lock_pid"; then
+    echo "ERROR: writer lock is held by a live process (pid ${lock_pid}); stale cleanup refused." >&2
+    print_status >&2
+    return 1
+  fi
+
+  rm -f "$lock_meta" || true
+  rmdir "$lock_dir" 2>/dev/null || true
+  echo "cleaned stale writer lock (dead pid ${lock_pid} on ${lock_host})" >&2
+  echo "unlocked"
+  return 0
+}
+
 case "$cmd" in
   status)
-    print_status
+    parse_status_flags "$@"
+    print_status "$print_token"
     ;;
 
   acquire)
@@ -217,6 +283,23 @@ case "$cmd" in
       print_status >&2
       sleep "$poll_sec"
     done
+    ;;
+
+  clean-stale)
+    if [[ $# -gt 0 ]]; then
+      case "$1" in
+        -h|--help)
+          usage
+          exit 0
+          ;;
+        *)
+          echo "ERROR: unknown option: $1" >&2
+          usage >&2
+          exit 2
+          ;;
+      esac
+    fi
+    clean_stale_lock
     ;;
 
   release)

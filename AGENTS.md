@@ -68,6 +68,11 @@ Only run full-repo `pnpm typecheck` / `pnpm lint` when:
     - `scripts/agents/integrator-shell.sh -- <command> [args...]`
   - Check status: `scripts/git/writer-lock.sh status` (token is redacted by default)
   - Show full token (human only): `scripts/git/writer-lock.sh status --print-token`
+  - If lock handling blocks your git write:
+    - `scripts/git/writer-lock.sh status`
+    - `scripts/git/writer-lock.sh clean-stale` (only if holder PID is dead on this host)
+    - `scripts/git/writer-lock.sh acquire --wait`
+  - Agents must not use `SKIP_WRITER_LOCK=1`; fix lock state instead
 - **Branch flow:** `dev` → `staging` → `main`
   - Commit locally on `dev`
   - Ship `dev` to staging (PR + auto-merge): `scripts/git/ship-to-staging.sh`

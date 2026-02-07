@@ -70,6 +70,11 @@ for ((i=1; i<=$#; i++)); do
 done
 
 # Block SKIP_* environment variable bypass attempts
+if [[ "${SKIP_WRITER_LOCK:-}" == "1" || "${SKIP_SIMPLE_GIT_HOOKS:-}" == "1" ]]; then
+  deny "SKIP_* environment variables bypass safety hooks." "$@"
+fi
+
+# Block SKIP_* bypass attempts passed as literal arguments
 for arg in "$@"; do
   if [[ "$arg" =~ ^SKIP_(WRITER_LOCK|SIMPLE_GIT_HOOKS) ]]; then
     deny "SKIP_* environment variables bypass safety hooks." "$@"

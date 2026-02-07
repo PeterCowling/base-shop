@@ -11,9 +11,9 @@
  * Adding a test case here that fails means an enforcement script needs updating.
  */
 import { spawnSync } from "child_process";
-import * as path from "path";
 import * as fs from "fs";
 import * as os from "os";
+import * as path from "path";
 
 const REPO_ROOT = path.resolve(__dirname, "../..");
 const GIT_GUARD = path.join(REPO_ROOT, "scripts/agent-bin/git");
@@ -32,6 +32,8 @@ interface PolicyTestCase {
   skipGuard?: boolean;
   /** Skip hook test for this case */
   skipHook?: boolean;
+  /** Environment overrides for git guard invocation only */
+  guardEnv?: NodeJS.ProcessEnv;
 }
 
 // ==========================================================================
@@ -267,6 +269,24 @@ const POLICY_TABLE: PolicyTestCase[] = [
     expectedDecision: "deny",
     description: "config core.hooksPath (guard)",
     skipHook: true, // duplicate of TC-18
+  },
+  {
+    id: "TC-68",
+    command: "SKIP_WRITER_LOCK=1 git status",
+    args: ["status"],
+    expectedDecision: "deny",
+    description: "SKIP_WRITER_LOCK env var (guard)",
+    skipHook: true, // hook coverage is via command-string parsing in pre-tool-use tests
+    guardEnv: { SKIP_WRITER_LOCK: "1" },
+  },
+  {
+    id: "TC-69",
+    command: "SKIP_SIMPLE_GIT_HOOKS=1 git status",
+    args: ["status"],
+    expectedDecision: "deny",
+    description: "SKIP_SIMPLE_GIT_HOOKS env var (guard)",
+    skipHook: true, // hook coverage is via command-string parsing in pre-tool-use tests
+    guardEnv: { SKIP_SIMPLE_GIT_HOOKS: "1" },
   },
   {
     id: "TC-EXTRA-01",
@@ -518,6 +538,7 @@ function invokeHook(
 
 function invokeGuard(
   args: string[],
+  guardEnv: NodeJS.ProcessEnv = {},
 ): { status: number | null; stderr: string } {
   // Put mock git on PATH AFTER the guard dir, so the guard finds our mock
   const guardDir = path.dirname(GIT_GUARD);
@@ -527,6 +548,7 @@ function invokeGuard(
     timeout: 5000,
     env: {
       ...process.env,
+      ...guardEnv,
       PATH: pathWithMock,
     },
   });
@@ -606,7 +628,7 @@ describe("Git Safety Policy — Git guard (deny)", () => {
   test.each(guardDenyCases)(
     "[$id] blocks: $description",
     (tc: PolicyTestCase) => {
-      const result = invokeGuard(tc.args);
+      const result = invokeGuard(tc.args, tc.guardEnv);
       expect(result.status).not.toBe(0);
       expect(result.stderr).toContain("BLOCKED");
     },

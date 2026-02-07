@@ -60,12 +60,15 @@
     "src/**/*.d.ts",
     "src/**/*.json",
     "src/**/*",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "src/test/helpers/**/*",
+    "src/test/content-readiness/helpers/**/*"
   ],
   "exclude": [
     ".next/types/server.d.ts",
     "**/__tests__/**",
     "**/*.spec.*",
-    "**/*.test.*"
+    "**/*.test.*",
+    "scripts/**"
   ]
 }

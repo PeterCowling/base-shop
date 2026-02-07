@@ -66,3 +66,12 @@ export const STATIC_EXPORT_SECTION_KEYS: readonly SlugKey[] = [
   "book",
   "apartment",
 ];
+
+/**
+ * Localized section aliases that must exist for static guide navigation.
+ * These are the sections that host guide entry points or guide taxonomies.
+ */
+export const STATIC_EXPORT_GUIDE_ALIAS_SECTION_KEYS: readonly SlugKey[] = [
+  "assistance",
+  "experiences",
+];

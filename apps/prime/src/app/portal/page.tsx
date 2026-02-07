@@ -1,35 +1,54 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import {
+  buildGuestHomeUrl,
+  clearGuestSession,
+  readGuestSession,
+  validateGuestToken,
+} from '../../lib/auth/guestSessionGuard';
 
 export default function GuestPortalPage() {
-  const [hasSession, setHasSession] = useState<boolean | null>(null);
-  const [firstName, setFirstName] = useState('');
+  const router = useRouter();
+  const [status, setStatus] = useState<'loading' | 'unavailable'>('loading');
 
   useEffect(() => {
-    const token = localStorage.getItem('prime_guest_token');
-    const storedFirstName = localStorage.getItem('prime_guest_first_name');
+    let isMounted = true;
 
-    if (!token) {
-      setHasSession(false);
-      return;
+    async function validateSession() {
+      const session = readGuestSession();
+
+      if (!session.token) {
+        if (isMounted) {
+          setStatus('unavailable');
+        }
+        return;
+      }
+
+      const result = await validateGuestToken(session.token);
+      if (!isMounted) {
+        return;
+      }
+
+      if (result === 'valid' || result === 'network_error') {
+        router.replace(buildGuestHomeUrl(session));
+        return;
+      }
+
+      clearGuestSession();
+      router.replace('/find-my-stay');
     }
 
-    setHasSession(true);
-    setFirstName(storedFirstName || '');
-  }, []);
+    void validateSession();
 
-  function handleSignOut() {
-    localStorage.removeItem('prime_guest_token');
-    localStorage.removeItem('prime_guest_booking_id');
-    localStorage.removeItem('prime_guest_uuid');
-    localStorage.removeItem('prime_guest_first_name');
-    localStorage.removeItem('prime_guest_verified_at');
-    setHasSession(false);
-  }
+    return () => {
+      isMounted = false;
+    };
+  }, [router]);
 
-  if (hasSession === null) {
+  if (status === 'loading') {
     return (
       <main className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
@@ -37,7 +56,7 @@ export default function GuestPortalPage() {
     );
   }
 
-  if (!hasSession) {
+  if (status === 'unavailable') {
     return (
       <main className="min-h-screen bg-gray-50 p-4">
         <div className="mx-auto max-w-md rounded-xl bg-white p-6 text-center shadow-sm">
@@ -56,23 +75,5 @@ export default function GuestPortalPage() {
     );
   }
 
-  return (
-    <main className="min-h-screen bg-gray-50 p-4">
-      <div className="mx-auto max-w-md rounded-xl bg-white p-6 text-center shadow-sm">
-        <h1 className="mb-2 text-2xl font-bold text-gray-900">
-          {firstName ? `Hi ${firstName}` : 'Welcome back'}
-        </h1>
-        <p className="mb-6 text-gray-600">
-          Your readiness dashboard will appear here next.
-        </p>
-        <button
-          type="button"
-          onClick={handleSignOut}
-          className="rounded-lg border border-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-100"
-        >
-          Clear session
-        </button>
-      </div>
-    </main>
-  );
+  return null;
 }

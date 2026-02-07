@@ -1,6 +1,61 @@
+'use client';
+
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import GuardedHomeExperience from '../components/homepage/GuardedHomeExperience';
+import { clearGuestSession, readGuestSession, validateGuestToken } from '../lib/auth/guestSessionGuard';
+
+type RootMode = 'checking' | 'guest' | 'public';
 
 export default function HomePage() {
+  const [mode, setMode] = useState<RootMode>('checking');
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function resolveMode() {
+      const session = readGuestSession();
+
+      if (!session.token) {
+        if (isMounted) {
+          setMode('public');
+        }
+        return;
+      }
+
+      const result = await validateGuestToken(session.token);
+      if (!isMounted) {
+        return;
+      }
+
+      if (result === 'valid' || result === 'network_error') {
+        setMode('guest');
+        return;
+      }
+
+      clearGuestSession();
+      setMode('public');
+    }
+
+    void resolveMode();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  if (mode === 'checking') {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
+      </main>
+    );
+  }
+
+  if (mode === 'guest') {
+    return <GuardedHomeExperience />;
+  }
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gray-50 p-4">
       <div className="mx-auto max-w-md text-center">

@@ -6,6 +6,10 @@ import fs from "node:fs";
 import path from "node:path";
 
 import { listAppRouterUrls } from "../src/routing/routeInventory";
+import {
+  buildLocalizedStaticRedirectRules,
+  formatRedirectRule,
+} from "../src/routing/staticExportRedirects";
 
 // Script runs from apps/brikette directory
 const rootDir = process.cwd();
@@ -54,7 +58,22 @@ async function main() {
     console.error("\nERROR: _redirects missing /directions/:slug rule");
     process.exit(1);
   }
-  console.log("Cloudflare _redirects: verified\n");
+
+  const expectedLocalizedRules = buildLocalizedStaticRedirectRules().map(formatRedirectRule);
+  const missingLocalizedRules = expectedLocalizedRules.filter(
+    (rule) => !redirectsContent.includes(rule),
+  );
+  if (missingLocalizedRules.length > 0) {
+    console.error(
+      `\nERROR: _redirects missing ${missingLocalizedRules.length} localized static-export rules`,
+    );
+    missingLocalizedRules.slice(0, 20).forEach((rule) => console.error(`  ${rule}`));
+    process.exit(1);
+  }
+
+  console.log(
+    `Cloudflare _redirects: verified (${expectedLocalizedRules.length} localized rules)\n`,
+  );
 
   // Find missing URLs
   const missing: string[] = [];

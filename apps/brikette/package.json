@@ -11,6 +11,7 @@
     "pretypecheck": "pnpm --filter @acme/telemetry build && pnpm --filter @acme/guides-core build && pnpm --filter @acme/platform-core build",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "pnpm exec jest --ci --runInBand --passWithNoTests",
+    "generate:static-redirects": "pnpm exec tsx --tsconfig tsconfig.scripts.json scripts/generate-static-export-redirects.ts",
     "generate:url-fixtures": "cd /tmp && npx tsx $OLDPWD/scripts/generate-url-fixtures.ts",
     "gen:translation-stub": "cd /tmp && npx tsx $OLDPWD/scripts/generate-translation-stub.ts",
     "create-guide": "pnpm exec tsx ./scripts/create-guide.ts",

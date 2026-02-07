@@ -11,27 +11,8 @@ import roomsData from "@/data/roomsData";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
 import { guidePath } from "@/routes.guides-helpers";
-import type { SlugKey } from "@/types/slugs";
+import { STATIC_EXPORT_SECTION_KEYS } from "@/routing/sectionSegments";
 import { getSlug } from "@/utils/slug";
-
-/** Static sections with localized slugs (routes without additional dynamic segments) */
-const STATIC_SECTIONS: SlugKey[] = [
-  "about",
-  "rooms",
-  "deals",
-  "careers",
-  "breakfastMenu",
-  "barMenu",
-  "terms",
-  "houseRules",
-  "privacyPolicy",
-  "cookiePolicy",
-  "assistance",
-  "experiences",
-  "howToGetHere",
-  "book",
-  "apartment",
-];
 
 /**
  * Lists all valid App Router URLs for the brikette app.
@@ -47,7 +28,7 @@ export function listAppRouterUrls(): string[] {
     urls.push(`/${lang}`);
 
     // Static sections (with localized slugs)
-    for (const key of STATIC_SECTIONS) {
+    for (const key of STATIC_EXPORT_SECTION_KEYS) {
       urls.push(`/${lang}/${getSlug(key, lang)}`);
     }
 
@@ -97,7 +78,7 @@ export function getUrlCounts(): Record<string, number> {
 
   return {
     home: langCount,
-    staticSections: langCount * STATIC_SECTIONS.length,
+    staticSections: langCount * STATIC_EXPORT_SECTION_KEYS.length,
     draft: langCount,
     rooms: langCount * roomsData.length,
     // NOTE: guides count now includes how-to-get-here routes (via GUIDES_INDEX)

@@ -137,6 +137,7 @@
     "secrets:status": "scripts/secrets.sh status",
     "secrets:bootstrap": "scripts/secrets.sh bootstrap",
     "validate:deploy-env": "scripts/validate-deploy-env.sh",
+    "preflight:brikette-deploy": "node --import tsx scripts/src/brikette/preflight-deploy.ts",
     "validate:manifest": "node scripts/validate-agent-manifest.js",
     "launch-smoke": "tsx scripts/src/launch-shop/cli/smoke.ts",
     "launch-shop": "tsx scripts/src/launch-shop.ts",

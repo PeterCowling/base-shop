@@ -18,6 +18,10 @@ concurrency:
 jobs:
   ensure-pr:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
     steps:
       - name: Guard (work/** or dev only)
         if: ${{ !startsWith(github.ref, 'refs/heads/work/') && github.ref != 'refs/heads/dev' }}

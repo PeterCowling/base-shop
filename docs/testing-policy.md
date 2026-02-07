@@ -1,7 +1,7 @@
 Type: Policy
 Status: Active
 Domain: Repo
-Last-reviewed: 2026-01-17
+Last-reviewed: 2026-02-07
 Created: 2026-01-17
 Created-by: Claude Opus 4.5 (extracted from AGENTS.md)
 
@@ -139,6 +139,23 @@ pnpm --filter <package> test -- <specific-file> --detectOpenHandles
 - Workspace CI (`.github/workflows/test.yml`) runs `e2e` only when a workspace defines it (`--if-present`) and is scheduled/manual, not a merge gate.
 
 See `docs/plans/e2e-ownership-consolidation-plan.md` for the full ownership policy.
+
+---
+
+## Brikette Deploy Preflight
+
+When a change affects Brikette deploy/static-export surfaces, run this local preflight before pushing:
+
+```bash
+pnpm preflight:brikette-deploy
+```
+
+This checks:
+- required static-export routes include `generateStaticParams()`
+- `robots.txt` route exports `GET()`
+- required `apps/brikette/wrangler.toml` fields are present
+
+Use `pnpm preflight:brikette-deploy -- --json` for machine-readable output.
 
 ---
 

@@ -149,6 +149,7 @@ Implement Brikette CI sharding as the primary performance lever, then validate g
 
 #### Build Completion (2026-02-07)
 - **Status:** Complete
+- **Commit:** `9380974106`
 - **Implementation notes:** split reusable workflow into `validate`, `test`, `test-sharded`, and `build` jobs; kept non-Brikette callers on single test path and added Brikette shard routing via `test-shard-count`.
 - **Confidence reassessment:** 84% -> 86% (task structure held up under lint validation; no hidden coupling found).
 - **Validation:**
@@ -198,6 +199,7 @@ Implement Brikette CI sharding as the primary performance lever, then validate g
 
 #### Build Completion (2026-02-07)
 - **Status:** Complete
+- **Commit:** `9380974106`
 - **Implementation notes:** configured Brikette staging caller to pass `test-shard-count: 3` to reusable workflow.
 - **Confidence reassessment:** 88% -> 90% (change stayed fully isolated to Brikette caller inputs).
 - **Validation:**
@@ -248,6 +250,7 @@ Implement Brikette CI sharding as the primary performance lever, then validate g
 
 #### Build Completion (2026-02-07)
 - **Status:** Complete
+- **Commit:** `9380974106`
 - **Implementation notes:** added shard-specific cache restore for `.ts-jest` and Jest cache directories in Brikette sharded test jobs.
 - **Confidence reassessment:** 82% -> 84% (implementation matched CMS cache pattern and passed workflow lint checks).
 - **Validation:**
@@ -296,6 +299,7 @@ Implement Brikette CI sharding as the primary performance lever, then validate g
 
 #### Build Completion (2026-02-07)
 - **Status:** Complete
+- **Commit:** `9380974106`
 - **Implementation notes:** added an explicit telemetry gate section to fact-find with executable commands, target thresholds, and a current baseline snapshot; updated testing policy with Brikette shard/cache behavior.
 - **Confidence reassessment:** 90% -> 90% (tooling was already in place; implementation formalized enforcement and reporting paths).
 - **Validation:**

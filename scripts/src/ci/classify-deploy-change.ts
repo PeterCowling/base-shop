@@ -19,6 +19,8 @@ export type DeployChangeClassification = {
   unknownPaths: string[];
 };
 
+type CliFormat = "json" | "outputs";
+
 function normalizePath(rawPath: string): string {
   return rawPath.trim().replace(/\\/g, "/").replace(/^\.\//, "");
 }
@@ -99,8 +101,14 @@ export function classifyDeployChange(paths: readonly string[]): DeployChangeClas
   };
 }
 
-function parseArgs(argv: string[]): string[] {
+type ParsedArgs = {
+  paths: string[];
+  format: CliFormat;
+};
+
+function parseArgs(argv: string[]): ParsedArgs {
   const paths: string[] = [];
+  let format: CliFormat = "json";
 
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
@@ -135,19 +143,44 @@ function parseArgs(argv: string[]): string[] {
       console.log(`Usage:
   pnpm --filter scripts run classify-deploy-change -- --path <path> [--path <path>]
   pnpm --filter scripts run classify-deploy-change -- --paths-file <file>
+  pnpm --filter scripts run classify-deploy-change -- --paths-file <file> --format outputs
   pnpm --filter scripts run classify-deploy-change -- <path> [<path>]
 `);
       process.exit(0);
     }
 
+    if (arg === "--format") {
+      const next = argv[index + 1];
+      if (!next || next.startsWith("--")) {
+        throw new Error("Missing value for --format");
+      }
+      if (next !== "json" && next !== "outputs") {
+        throw new Error(`Invalid --format value: ${next}`);
+      }
+      format = next;
+      index += 1;
+      continue;
+    }
+
     paths.push(arg);
   }
 
-  return paths;
+  return { paths, format };
 }
 
 function main(): void {
-  const classification = classifyDeployChange(parseArgs(process.argv.slice(2)));
+  const args = parseArgs(process.argv.slice(2));
+  const classification = classifyDeployChange(args.paths);
+  const runValidation = !(classification.isDeployOnly && !classification.uncertain);
+
+  if (args.format === "outputs") {
+    console.log(`run_validation=${runValidation}`);
+    console.log(`is_deploy_only=${classification.isDeployOnly}`);
+    console.log(`uncertain=${classification.uncertain}`);
+    console.log(`reason=${classification.reason}`);
+    return;
+  }
+
   console.log(JSON.stringify(classification, null, 2));
 }
 

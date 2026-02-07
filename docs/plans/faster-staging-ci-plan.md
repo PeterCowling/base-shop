@@ -75,7 +75,7 @@ Introduce a deterministic deploy-only classifier as a reusable script module, te
 |---|---|---|---:|---:|---|---|
 | TASK-01 | IMPLEMENT | Add CI telemetry snapshot script for repeatable baseline/post-change measurement (absorbs CI-PAR-01/02 from retired parallelization plan) | 90% | M | Completed | - |
 | TASK-02 | IMPLEMENT | Implement deploy-only classifier module + fixture tests | 86% | M | Completed | TASK-01 |
-| TASK-03 | IMPLEMENT | Integrate classifier into reusable app workflow with conservative defaults and explicit logs | 82% | M | Completed (local) | TASK-02 |
+| TASK-03 | IMPLEMENT | Integrate classifier into reusable app workflow with conservative defaults and explicit logs | 82% | M | Completed | TASK-02 |
 | TASK-04 | IMPLEMENT | Add Brikette local deploy preflight command + tests and agent-facing usage docs | 84% | M | Completed | TASK-02 |
 | TASK-05 | DECISION | Define merge-gate requirement contract for deploy-only changes | 80% | S | Completed | TASK-03 |
 | TASK-06 | IMPLEMENT | Fix Auto PR 403 by adding job-level permissions | 90% | S | Completed | - |
@@ -233,8 +233,11 @@ Introduce a deterministic deploy-only classifier as a reusable script module, te
     - `pnpm --filter scripts exec tsc -p tsconfig.json --noEmit` (pass)
     - `pnpm exec eslint scripts/src/ci/classify-deploy-change.ts scripts/src/ci/classifier-fixtures.ts scripts/__tests__/ci/classify-deploy-change.test.ts` (pass)
     - `actionlint .github/workflows/reusable-app.yml .github/workflows/prime.yml` (pass)
-  - Remaining verification:
-    - Live draft PR/workflow runs for TC-01..TC-04 should be captured after push (runtime behavior validation in Actions environment).
+    - `gh run view 21780130713` (workflow_dispatch on `ci/probe-gating-skip-eef1`) confirms deploy-only skip path: `Validation gating decision` notice `Skipping Lint/Typecheck/Test (deploy-only, confident). reason=deploy_only_paths changed_files=1`; steps `Lint`, `Typecheck`, `Test` all `skipped`.
+  - Follow-up hardening (same task scope):
+    - commit `6002d094d3`: made classifier command/parsing fail-safe (fallback to full validation on command/parse issues).
+    - commit `e52cf7211e`: fixed boolean parse handling edge case in workflow shell logic.
+    - commit `eef1d674f7`: replaced brittle JSON parsing with classifier `--format outputs` contract (`key=value`) to stabilize workflow behavior.
 
 ### TASK-04: Add Brikette local deploy preflight command + tests and agent-facing usage docs
 - **Type:** IMPLEMENT
@@ -477,7 +480,7 @@ Introduce a deterministic deploy-only classifier as a reusable script module, te
 
 ## Acceptance Criteria (overall)
 - [x] Deploy-only classifier exists, is tested, and defaults safely on uncertainty.
-- [ ] Reusable app workflow can skip only intended validation steps with clear logs.
+- [x] Reusable app workflow can skip only intended validation steps with clear logs.
 - [x] Local preflight exists and catches known Brikette deploy/static-export failure signatures.
 - [x] Baseline/post-change telemetry can be reproduced from a checked-in script.
 - [x] Merge-gate and Auto PR policy dependencies are explicitly decided or tracked with owners.
@@ -500,3 +503,4 @@ Introduce a deterministic deploy-only classifier as a reusable script module, te
 - 2026-02-07 (build): Completed TASK-06 by combining `auto-pr.yml` job-level permissions with repo workflow-permissions update (`can_approve_pull_request_reviews=true`); verified successful `auto-pr.yml` run `21779702245`.
 - 2026-02-07 (build): Completed local TASK-07 by provisioning missing auth secrets and removing deploy-env soft-fail/placeholder behavior in `reusable-app.yml`.
 - 2026-02-07 (external): Commit `7c81a4f556` fixed 5 actionlint errors across 3 workflows. Relevant to this plan: (a) TASK-07 — 3 auth secrets now declared in `reusable-app.yml` workflow_call.secrets block (provisioning still needed); (b) TASK-03 — actionlint v1.7.10 now pinned in `merge-gate.yml` (resolves false positive on `include-hidden-files`).
+- 2026-02-07 (build): TASK-03 live verification captured in workflow run `21780130713` (`ci/probe-gating-skip-eef1`): gating notice shows deploy-only skip with `reason=deploy_only_paths`, and validation steps were skipped as designed.

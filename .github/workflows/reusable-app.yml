@@ -110,29 +110,31 @@ jobs:
             fi
             changed_file_count="$(wc -l < "$changed_paths_file" | tr -d ' ')"
 
-            classification_file="$RUNNER_TEMP/deploy-change-classification.json"
             classification_stderr_file="$RUNNER_TEMP/classify-deploy-change.stderr"
-            if classification_json="$(
+            if classification_output="$(
               node --import tsx scripts/src/ci/classify-deploy-change.ts \
                 --paths-file "$changed_paths_file" \
+                --format outputs \
                 2> "$classification_stderr_file"
             )"; then
-              printf '%s\n' "$classification_json" > "$classification_file"
+              while IFS='=' read -r key value; do
+                case "$key" in
+                  run_validation) run_validation="$value" ;;
+                  is_deploy_only) is_deploy_only="$value" ;;
+                  uncertain) uncertain="$value" ;;
+                  reason) reason="$value" ;;
+                esac
+              done <<< "$classification_output"
 
-              if is_deploy_only="$(jq -er '.isDeployOnly' "$classification_file")" \
-                && uncertain="$(jq -er '.uncertain' "$classification_file")" \
-                && reason="$(jq -er '.reason' "$classification_file")"; then
-                if [[ "$is_deploy_only" == "true" && "$uncertain" == "false" ]]; then
-                  run_validation="false"
-                else
-                  run_validation="true"
-                fi
-              else
+              if [[ "$run_validation" != "true" && "$run_validation" != "false" ]] \
+                || [[ "$is_deploy_only" != "true" && "$is_deploy_only" != "false" ]] \
+                || [[ "$uncertain" != "true" && "$uncertain" != "false" ]] \
+                || [[ -z "$reason" ]]; then
                 echo "::warning title=Validation gating::Classifier output parse failed; running full validation."
+                run_validation="true"
                 is_deploy_only="false"
                 uncertain="true"
                 reason="classifier_parse_failed"
-                run_validation="true"
               fi
             else
               echo "::warning title=Validation gating::Classifier command failed; running full validation."
@@ -245,6 +247,12 @@ jobs:
 
       # ADMIN-05: Validate environment before deploy
       - name: Validate deploy environment
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+          CART_COOKIE_SECRET: ${{ secrets.CART_COOKIE_SECRET }}
         run: |
           chmod +x scripts/validate-deploy-env.sh
           ./scripts/validate-deploy-env.sh

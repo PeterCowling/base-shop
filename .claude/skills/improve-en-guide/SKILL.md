@@ -24,7 +24,7 @@ After each file write, validate JSON parseability and token integrity before doi
 
 If validation fails, the only allowed fix is replacement with known-good content.
 
-- Restore the file from a known-good snapshot taken immediately before the edit, or from `git restore / git checkout -- <path>`.
+- Restore the file from a known-good snapshot taken immediately before the edit.
 - Then re-apply the intended change safely (prefer structured JSON editing).
 - No other fix is valid. No "surgery" on corrupted text, no partial patching.
 
@@ -156,9 +156,9 @@ If broken/missing/unexpected changes, restore snapshot immediately.
 
 ### C. Only permitted remedy for failed validation
 
-1. Replace corrupted content with the known-good snapshot (or git restore).
+1. Replace corrupted content with the known-good snapshot.
 2. Re-apply the intended change using structured JSON editing.
-3. If repeated failure and you cannot produce a clean write promptly, stop and ask user what to do.
+3. If repeated failure (or no known-good snapshot) and you cannot produce a clean write promptly, stop and ask user what to do.
 
 ---
 
@@ -300,9 +300,9 @@ Or use `improve-guide` (the orchestrator) to run both sequentially in one comman
 ## Error Handling (Replacement-Only)
 
 **JSON corruption detected**
-- Restore file from known-good snapshot (or git restore) immediately.
+- Restore file from known-good snapshot immediately.
 - Re-apply intended change safely via structured JSON editing.
-- If cannot restore promptly, stop and ask user what they want to do.
+- If no snapshot exists or you cannot restore promptly, stop and ask user what they want to do.
 
 **Audit script fails**
 - Validate guide-manifest-overrides.json and the target EN guide JSON parse cleanly; restore if corrupted.

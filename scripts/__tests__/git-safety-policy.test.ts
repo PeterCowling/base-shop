@@ -289,6 +289,22 @@ const POLICY_TABLE: PolicyTestCase[] = [
     guardEnv: { SKIP_SIMPLE_GIT_HOOKS: "1" },
   },
   {
+    id: "TC-70",
+    command: "git restore -- file-a.txt file-b.txt",
+    args: ["restore", "--", "file-a.txt", "file-b.txt"],
+    expectedDecision: "deny",
+    description: "restore multi-path pathspec (guard)",
+    skipHook: true, // hook currently denies broad patterns; guard blocks explicit multi-paths
+  },
+  {
+    id: "TC-71",
+    command: "git checkout -- file-a.txt file-b.txt",
+    args: ["checkout", "--", "file-a.txt", "file-b.txt"],
+    expectedDecision: "deny",
+    description: "checkout multi-path pathspec (guard)",
+    skipHook: true, // hook currently denies broad patterns; guard blocks explicit multi-paths
+  },
+  {
     id: "TC-EXTRA-01",
     command: "git clean -ffdx",
     args: ["clean", "-ffdx"],
@@ -508,6 +524,20 @@ const POLICY_TABLE: PolicyTestCase[] = [
     args: ["restore", "--staged", "file.txt"],
     expectedDecision: "allow",
     description: "restore --staged (unstage)",
+  },
+  {
+    id: "TC-EXTRA-13",
+    command: "git restore -- file.txt",
+    args: ["restore", "--", "file.txt"],
+    expectedDecision: "allow",
+    description: "restore single-file pathspec",
+  },
+  {
+    id: "TC-EXTRA-14",
+    command: "git checkout -- file.txt",
+    args: ["checkout", "--", "file.txt"],
+    expectedDecision: "allow",
+    description: "checkout single-file pathspec",
   },
 ];
 

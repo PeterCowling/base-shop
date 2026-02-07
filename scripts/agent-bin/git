@@ -152,62 +152,113 @@ case "$subcommand" in
     done
     ;;
   checkout|restore)
-    # Block repo-wide discards and force flags
-    # Allow: single file restores
-    # Block: '.', ':/...', directory paths, globs, --force, --worktree (on restore)
+    # Block repo-wide/bulk worktree discards and force flags.
+    # Allow: single-file worktree restores and index-only restore (--staged).
+    # Block: '.', ':/...', directory paths, globs, --force, and multi-path worktree discards.
 
-    # Check for force flags
+    has_staged="0"
+    has_worktree="0"
+
+    # Check force flags and restore mode flags.
     for arg in "$@"; do
       case "$arg" in
         -f|--force)
           deny "checkout/restore with --force discards local changes destructively." "$@"
           ;;
       esac
+
+      if [[ "$subcommand" == "restore" ]]; then
+        case "$arg" in
+          --staged)
+            has_staged="1"
+            ;;
+          --worktree)
+            has_worktree="1"
+            deny "restore --worktree can discard working tree changes." "$@"
+            ;;
+        esac
+      fi
     done
 
-    # For restore, block --worktree
-    if [[ "$subcommand" == "restore" ]]; then
+    affects_worktree="1"
+    if [[ "$subcommand" == "restore" && "$has_staged" == "1" && "$has_worktree" == "0" ]]; then
+      affects_worktree="0"
+    fi
+
+    pathspecs=()
+
+    if [[ "$subcommand" == "checkout" ]]; then
+      # checkout pathspec mode is only unambiguous after '--'.
+      saw_separator="0"
       for arg in "$@"; do
-        if [[ "$arg" == "--worktree" ]]; then
-          deny "restore --worktree can discard working tree changes." "$@"
+        if [[ "$arg" == "--" ]]; then
+          saw_separator="1"
+          continue
         fi
+        if [[ "$saw_separator" == "1" ]]; then
+          pathspecs+=("$arg")
+        fi
+      done
+    else
+      # restore accepts pathspecs with or without '--'; parse both forms.
+      saw_separator="0"
+      skip_next="0"
+      for ((i=2; i<=$#; i++)); do
+        arg="${!i}"
+
+        if [[ "$skip_next" == "1" ]]; then
+          skip_next="0"
+          continue
+        fi
+
+        if [[ "$arg" == "--" ]]; then
+          saw_separator="1"
+          continue
+        fi
+
+        if [[ "$saw_separator" == "1" ]]; then
+          pathspecs+=("$arg")
+          continue
+        fi
+
+        case "$arg" in
+          --source|--pathspec-from-file|-s|--conflict)
+            skip_next="1"
+            ;;
+          --source=*|--pathspec-from-file=*|--conflict=*)
+            ;;
+          --pathspec-file-nul|--staged|--worktree|--ignore-unmerged|--overlay|--ignore-skip-worktree-bits|--recurse-submodules|--progress|--quiet|--ours|--theirs|--merge|--patch)
+            ;;
+          -*)
+            ;;
+          *)
+            pathspecs+=("$arg")
+            ;;
+        esac
       done
     fi
 
-    # Block dangerous path patterns
-    saw_separator="0"
-    for arg in "$@"; do
-      # Detect -- separator
-      if [[ "$arg" == "--" ]]; then
-        saw_separator="1"
-        continue
+    if [[ "$affects_worktree" == "1" ]]; then
+      if [[ "${#pathspecs[@]}" -gt 1 ]]; then
+        deny "bulk checkout/restore pathspecs can discard multiple files." "$@"
       fi
 
-      # Block repo-wide patterns
-      case "$arg" in
-        "."|":/"|":/."|":/*")
-          deny "repo-wide checkout/restore discards changes." "$@"
-          ;;
-      esac
-
-      # Block directory paths (ending in /)
-      if [[ "$arg" =~ /$ ]]; then
-        deny "directory checkout/restore (${arg}) can discard multiple files." "$@"
-      fi
-
-      # After --, block . or * or directory patterns
-      if [[ "$saw_separator" == "1" ]]; then
-        case "$arg" in
-          "."|"*"|"*."|"*/*")
-            deny "bulk checkout/restore pattern after -- (${arg}) can discard multiple files." "$@"
+      for pathspec in "${pathspecs[@]}"; do
+        case "$pathspec" in
+          "."|":/"|":/."|":/*")
+            deny "repo-wide checkout/restore discards changes." "$@"
             ;;
         esac
-        # Block paths ending in /
-        if [[ "$arg" =~ /$ ]]; then
-          deny "directory path after -- (${arg}) can discard multiple files." "$@"
+
+        if [[ "$pathspec" =~ /$ ]]; then
+          deny "directory checkout/restore (${pathspec}) can discard multiple files." "$@"
         fi
-      fi
-    done
+
+        if [[ "$pathspec" == *"*"* || "$pathspec" == *"?"* || "$pathspec" == *"["* || "$pathspec" == *":(glob)"* ]]; then
+          deny "glob checkout/restore pattern (${pathspec}) can discard multiple files." "$@"
+        fi
+      done
+    fi
     ;;
   switch)
     # Block destructive switch operations

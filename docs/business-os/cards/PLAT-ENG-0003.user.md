@@ -39,4 +39,4 @@ The current agent runbook emphasizes frequent commits, push frequency, and avoid
 - Related references: `docs/git-safety.md`, `docs/incident-prevention.md`, `docs/contributing.md`, `docs/deployment-workflow.md`, and `docs/ci-and-deploy-roadmap.md`.
 
 
-[... see full plan in docs/plans/agent-git-instructions-update-plan.md]
+[... see full plan in docs/plans/archive/agent-git-instructions-update-plan.md]

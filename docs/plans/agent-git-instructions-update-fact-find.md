@@ -6,7 +6,7 @@ Domain: Repo
 Created: 2026-02-02
 Last-updated: 2026-02-02
 Feature-Slug: agent-git-instructions-update
-Related-Plan: docs/plans/agent-git-instructions-update-plan.md
+Related-Plan: docs/plans/archive/agent-git-instructions-update-plan.md
 ---
 
 # Agent Git Instruction Updates — Fact-Find Brief (Bulk Discard Prevention)

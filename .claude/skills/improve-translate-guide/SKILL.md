@@ -362,9 +362,9 @@ done
 ## Error Handling (Replacement-Only)
 
 **JSON corruption detected**
-- Restore file from known-good snapshot (or git restore) immediately.
+- Restore file from known-good snapshot immediately.
 - Re-apply intended change safely via structured JSON editing.
-- If cannot restore promptly, stop and ask user what they want to do.
+- If no snapshot exists or you cannot restore promptly, stop and ask user what they want to do.
 
 **EN audit validation fails**
 - Report specific issues

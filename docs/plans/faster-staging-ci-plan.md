@@ -79,7 +79,7 @@ Introduce a deterministic deploy-only classifier as a reusable script module, te
 | TASK-04 | IMPLEMENT | Add Brikette local deploy preflight command + tests and agent-facing usage docs | 84% | M | Completed | TASK-02 |
 | TASK-05 | DECISION | Define merge-gate requirement contract for deploy-only changes | 80% | S | Pending | TASK-03 |
 | TASK-06 | IMPLEMENT | Fix Auto PR 403 by adding job-level permissions | 90% | S | Completed (local) | - |
-| TASK-07 | IMPLEMENT | Provision secrets and remove `continue-on-error` on deploy env validation | 82% | S | Pending | TASK-04 |
+| TASK-07 | IMPLEMENT | Provision secrets and remove `continue-on-error` on deploy env validation | 82% | S | Completed (local) | TASK-04 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -423,18 +423,34 @@ Introduce a deterministic deploy-only classifier as a reusable script module, te
   - Next staging deploy run passes validation step (no soft-fail).
 - **Test contract:**
   - **TC-01:** Staging deploy with provisioned secrets → validation step passes (exit 0), deploy proceeds.
-  - **TC-02:** Validation script dry-run locally with all required env vars set → exit 0.
-  - **TC-03:** Validation script dry-run with one required secret missing → exit non-zero with diagnostic.
-  - **Test type:** workflow integration (live CI run) + local dry-run
-  - **Test location:** GitHub Actions run logs for `reusable-app.yml`; local: `DRY_RUN=1 ./scripts/validate-deploy-env.sh`
-  - **Run:** Push staging deploy change and verify validation step in workflow logs; locally: `DRY_RUN=1 NEXTAUTH_SECRET=x SESSION_SECRET=x CART_COOKIE_SECRET=x CLOUDFLARE_ACCOUNT_ID=x CLOUDFLARE_API_TOKEN=x ./scripts/validate-deploy-env.sh`
+  - **TC-02:** Local validation with required env vars set → exit 0.
+  - **TC-03:** Local validation with one required secret missing → exit non-zero with diagnostic.
+  - **Test type:** workflow integration (live CI run) + local script validation
+  - **Test location:** GitHub Actions run logs for `reusable-app.yml`; local: `scripts/validate-deploy-env.sh`
+  - **Run:** Push staging deploy change and verify validation step in workflow logs; locally: run `scripts/validate-deploy-env.sh` with controlled env values.
 - **Rollout / rollback:**
   - Rollout: provision secrets → verify dry-run → remove `continue-on-error` → verify live run.
   - Rollback: re-add `continue-on-error: true` to `reusable-app.yml` (1-line revert).
 - **Notes / references:**
   - Temporary exception added in commit `c66d3cc235` (2026-02-06).
   - Related: `docs/plans/archive/integrated-secrets-workflow-plan.md` for long-term SOPS strategy.
-  - **Partial pre-work done (7c81a4f556):** `NEXTAUTH_SECRET`, `SESSION_SECRET`, `CART_COOKIE_SECRET` are now *declared* as optional secrets in `reusable-app.yml`'s `workflow_call.secrets` block (lines 58-63, all `required: false`). All 6 caller workflows (brikette, xa, prime, business-os-deploy, product-pipeline, skylar — 7 total `secrets: inherit` instances including brikette's 2 jobs) use `secrets: inherit` so no caller changes were needed. Remaining work: provision the actual secret values in GitHub and remove `continue-on-error`.
+  - `NEXTAUTH_SECRET`, `SESSION_SECRET`, `CART_COOKIE_SECRET` are declared in `reusable-app.yml` `workflow_call.secrets` and inherited by all caller workflows via `secrets: inherit`.
+- **Build completion (2026-02-07):**
+  - Provisioned GitHub repository secrets:
+    - `NEXTAUTH_SECRET`
+    - `SESSION_SECRET`
+    - `CART_COOKIE_SECRET`
+  - Updated `.github/workflows/reusable-app.yml`:
+    - removed `continue-on-error: true` from `Validate deploy environment`
+    - removed placeholder fallbacks from deploy env secret mappings
+  - Confidence reassessment: **82% (holds)**. Secrets are now present and workflow behavior is aligned with other hard-fail validation workflows.
+  - Validation run:
+    - `actionlint .github/workflows/reusable-app.yml` (pass)
+    - `DRY_RUN=1 ... sh ./scripts/validate-deploy-env.sh` with required envs (pass)
+    - `... sh ./scripts/validate-deploy-env.sh` with `CART_COOKIE_SECRET` omitted (exit 1, expected)
+    - `... sh ./scripts/validate-deploy-env.sh` with required envs present (pass)
+  - Remaining verification:
+    - Confirm next staging deploy run passes `Validate deploy environment` without soft-fail behavior.
 
 ## Risks & Mitigations
 - Classifier false positives skip needed validation.
@@ -479,4 +495,5 @@ Introduce a deterministic deploy-only classifier as a reusable script module, te
 - 2026-02-07 (build): Completed local TASK-03 workflow integration with conservative gating/logging and actionlint validation; live Actions behavior capture remains queued for post-push verification.
 - 2026-02-07 (build): Completed TASK-04 Brikette deploy preflight command with fixture-based checks and operator docs update.
 - 2026-02-07 (build): Completed local TASK-06 by adding job-level permissions to `auto-pr.yml`; live success verification queued for post-push run.
+- 2026-02-07 (build): Completed local TASK-07 by provisioning missing auth secrets and removing deploy-env soft-fail/placeholder behavior in `reusable-app.yml`.
 - 2026-02-07 (external): Commit `7c81a4f556` fixed 5 actionlint errors across 3 workflows. Relevant to this plan: (a) TASK-07 — 3 auth secrets now declared in `reusable-app.yml` workflow_call.secrets block (provisioning still needed); (b) TASK-03 — actionlint v1.7.10 now pinned in `merge-gate.yml` (resolves false positive on `include-hidden-files`).

@@ -4,7 +4,7 @@
  * Every token has a `light` value and may provide a `dark` variant.
  */
 
-import { EXTENDED_TOKENS } from './tokens.extensions';
+import { EXTENDED_TOKENS } from './tokens.extensions.js';
 
 export interface Token {
   /** CSS colour / length / font list used in light mode */

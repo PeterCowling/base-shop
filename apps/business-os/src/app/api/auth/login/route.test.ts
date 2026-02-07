@@ -72,6 +72,6 @@ describe("/api/auth/login", () => {
     // Check for Set-Cookie header
     const setCookie = response.headers.get("set-cookie");
     expect(setCookie).toBeDefined();
-    expect(setCookie).toContain("business_os_session");
+    expect(setCookie).toContain("current_user_id=");
   });
 });

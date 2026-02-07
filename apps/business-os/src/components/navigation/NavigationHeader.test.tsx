@@ -7,6 +7,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
+import type { User } from "@/lib/current-user";
 import type { Business } from "@/lib/types";
 
 import { NavigationHeader } from "./NavigationHeader";
@@ -37,10 +38,21 @@ const mockBusinesses: Business[] = [
   },
 ];
 
+const mockCurrentUser: User = {
+  id: "pete",
+  name: "Pete",
+  email: "pete@business-os.local",
+  role: "admin",
+};
+
 describe("NavigationHeader", () => {
   it("renders all navigation links", () => {
     render(
-      <NavigationHeader businesses={mockBusinesses} currentBusiness="BRIK" />
+      <NavigationHeader
+        businesses={mockBusinesses}
+        currentBusiness="BRIK"
+        currentUser={mockCurrentUser}
+      />
     );
 
     expect(screen.getByRole("link", { name: /home/i })).toBeInTheDocument();
@@ -51,7 +63,11 @@ describe("NavigationHeader", () => {
 
   it("highlights current route", () => {
     render(
-      <NavigationHeader businesses={mockBusinesses} currentBusiness="BRIK" />
+      <NavigationHeader
+        businesses={mockBusinesses}
+        currentBusiness="BRIK"
+        currentUser={mockCurrentUser}
+      />
     );
 
     const boardsLink = screen.getByRole("link", { name: /boards/i });
@@ -60,7 +76,11 @@ describe("NavigationHeader", () => {
 
   it("renders business selector", () => {
     render(
-      <NavigationHeader businesses={mockBusinesses} currentBusiness="BRIK" />
+      <NavigationHeader
+        businesses={mockBusinesses}
+        currentBusiness="BRIK"
+        currentUser={mockCurrentUser}
+      />
     );
 
     // BusinessSelector should show current business name
@@ -69,7 +89,11 @@ describe("NavigationHeader", () => {
 
   it("renders capture button", () => {
     render(
-      <NavigationHeader businesses={mockBusinesses} currentBusiness="BRIK" />
+      <NavigationHeader
+        businesses={mockBusinesses}
+        currentBusiness="BRIK"
+        currentUser={mockCurrentUser}
+      />
     );
 
     const captureButton = screen.getByRole("button", { name: /capture/i });
@@ -79,7 +103,11 @@ describe("NavigationHeader", () => {
   it("opens modal when capture button clicked", async () => {
     const user = userEvent.setup();
     render(
-      <NavigationHeader businesses={mockBusinesses} currentBusiness="BRIK" />
+      <NavigationHeader
+        businesses={mockBusinesses}
+        currentBusiness="BRIK"
+        currentUser={mockCurrentUser}
+      />
     );
 
     const captureButton = screen.getByRole("button", { name: /capture/i });
@@ -92,7 +120,11 @@ describe("NavigationHeader", () => {
 
   it("shows capture button on desktop only", () => {
     render(
-      <NavigationHeader businesses={mockBusinesses} currentBusiness="BRIK" />
+      <NavigationHeader
+        businesses={mockBusinesses}
+        currentBusiness="BRIK"
+        currentUser={mockCurrentUser}
+      />
     );
 
     const captureButton = screen.getByRole("button", { name: /capture/i });

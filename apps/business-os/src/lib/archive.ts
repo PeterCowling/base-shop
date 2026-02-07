@@ -137,7 +137,9 @@ export async function archiveItem(
           commitHash = commitResult.commit;
         } catch (gitError) {
           // Git operations failed - file operations still succeeded
-          console.warn("Git operations failed during archive:", gitError);
+          if (process.env.NODE_ENV !== "test") {
+            console.warn("Git operations failed during archive:", gitError);
+          }
         }
 
         return {

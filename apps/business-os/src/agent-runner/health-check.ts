@@ -185,13 +185,15 @@ export class HealthCheck {
       const content = JSON.stringify(dataWithReason, null, 2);
 
       // Write atomically (temp file + rename)
-      // Use process-specific temp file to avoid conflicts
-      const tempFile = `${this.healthFile}.tmp.${process.pid}`;
+      // Use a unique temp file per write to avoid cross-write races.
+      const tempFile = `${this.healthFile}.tmp.${process.pid}.${Date.now()}.${Math.random().toString(16).slice(2)}`;
       await fs.writeFile(tempFile, content, "utf-8");
       await fs.rename(tempFile, this.healthFile);
     } catch (error) {
       // Suppress write errors (don't crash daemon on health check failure)
-      console.error("Failed to write health file:", error);
+      if (process.env.NODE_ENV !== "test") {
+        console.error("Failed to write health file:", error);
+      }
     }
   }
 }

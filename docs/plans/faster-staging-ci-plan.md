@@ -74,7 +74,7 @@ Introduce a deterministic deploy-only classifier as a reusable script module, te
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on |
 |---|---|---|---:|---:|---|---|
 | TASK-01 | IMPLEMENT | Add CI telemetry snapshot script for repeatable baseline/post-change measurement (absorbs CI-PAR-01/02 from retired parallelization plan) | 90% | M | Completed | - |
-| TASK-02 | IMPLEMENT | Implement deploy-only classifier module + fixture tests | 86% | M | Pending | TASK-01 |
+| TASK-02 | IMPLEMENT | Implement deploy-only classifier module + fixture tests | 86% | M | Completed | TASK-01 |
 | TASK-03 | IMPLEMENT | Integrate classifier into reusable app workflow with conservative defaults and explicit logs | 82% | M | Pending | TASK-02 |
 | TASK-04 | IMPLEMENT | Add Brikette local deploy preflight command + tests and agent-facing usage docs | 84% | M | Pending | TASK-02 |
 | TASK-05 | DECISION | Define merge-gate requirement contract for deploy-only changes | 80% | S | Pending | TASK-03 |
@@ -169,6 +169,18 @@ Introduce a deterministic deploy-only classifier as a reusable script module, te
   - Add classifier rule list to plan/fact-find and operator notes.
 - **Notes / references:**
   - Conservative default requirement from fact-find: uncertain => run full validation path.
+- **Build completion (2026-02-07):**
+  - Delivered classifier module and fixtures:
+    - `scripts/src/ci/classify-deploy-change.ts`
+    - `scripts/src/ci/classifier-fixtures.ts`
+  - Added task test coverage in `scripts/__tests__/ci/classify-deploy-change.test.ts` for TC-01 through TC-05.
+  - Added script entrypoint: `pnpm --filter scripts run classify-deploy-change -- ...`.
+  - Confidence reassessment: **86% (holds)**. Test outcomes aligned with planned assumptions; one implementation cycle.
+  - Validation run:
+    - `pnpm --filter scripts test -- scripts/__tests__/ci/classify-deploy-change.test.ts` (pass, 5/5)
+    - `pnpm --filter scripts test -- scripts/__tests__/ci` (pass, 10/10)
+    - `pnpm --filter scripts exec tsc -p tsconfig.json --noEmit` (pass)
+    - `pnpm exec eslint scripts/src/ci/classify-deploy-change.ts scripts/src/ci/classifier-fixtures.ts scripts/__tests__/ci/classify-deploy-change.test.ts` (pass)
 
 ### TASK-03: Integrate classifier into reusable app workflow with conservative defaults and explicit logs
 - **Type:** IMPLEMENT
@@ -406,7 +418,7 @@ Introduce a deterministic deploy-only classifier as a reusable script module, te
   - Weekly check on misclassification incidents and rerun-to-green counts.
 
 ## Acceptance Criteria (overall)
-- [ ] Deploy-only classifier exists, is tested, and defaults safely on uncertainty.
+- [x] Deploy-only classifier exists, is tested, and defaults safely on uncertainty.
 - [ ] Reusable app workflow can skip only intended validation steps with clear logs.
 - [ ] Local preflight exists and catches known Brikette deploy/static-export failure signatures.
 - [x] Baseline/post-change telemetry can be reproduced from a checked-in script.
@@ -424,4 +436,5 @@ Introduce a deterministic deploy-only classifier as a reusable script module, te
 - 2026-02-07 (re-plan): Merge-gate investigation confirmed staging has no branch protection; speed gain from TASK-05 only applies to PRs to main. Confirmed Option A (keep Core Platform CI required) with revisit checkpoint after classifier evidence.
 - 2026-02-07 (re-plan): Absorbed `ci-test-parallelization-plan.md` into TASK-01. Test perf baseline, parallelization alternatives, and decision criteria preserved. Original plan retired.
 - 2026-02-07 (build): Completed TASK-01 with checked-in telemetry collector script/tests and fact-find command migration to scripted collection.
+- 2026-02-07 (build): Completed TASK-02 with conservative deploy-only classifier module, fixture rules, and TC-01..TC-05 unit coverage.
 - 2026-02-07 (external): Commit `7c81a4f556` fixed 5 actionlint errors across 3 workflows. Relevant to this plan: (a) TASK-07 — 3 auth secrets now declared in `reusable-app.yml` workflow_call.secrets block (provisioning still needed); (b) TASK-03 — actionlint v1.7.10 now pinned in `merge-gate.yml` (resolves false positive on `include-hidden-files`).

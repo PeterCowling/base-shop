@@ -46,6 +46,19 @@ Reduce staging feedback time without weakening quality or safety controls. Focus
   - Time-to-green: elapsed wall time across retries/cancels until success.
 - Conservative default for skip logic: if classification is uncertain, execute full validation path (no skipping).
 
+## Deploy-only Classifier Rules (v0)
+- Canonical rules are implemented in:
+  - `scripts/src/ci/classify-deploy-change.ts`
+  - `scripts/src/ci/classifier-fixtures.ts`
+- Deploy-only (confident) paths include:
+  - `.github/workflows/brikette.yml`
+  - `.github/workflows/reusable-app.yml`
+  - `apps/brikette/wrangler.toml`
+  - `apps/brikette/next.config.{js,mjs,ts}`
+  - deploy validation/health scripts in `scripts/`
+- Runtime (non-deploy-only) paths include broad code prefixes (`apps/`, `packages/`, `scripts/src/`, `src/`, `test/`, `data/`) after deploy-only allowlist checks.
+- Unknown paths outside both sets are classified as `uncertain=true`, forcing full validation.
+
 ## Telemetry Methodology
 ### Capture Window
 - Captured on: `2026-02-07` (UTC).

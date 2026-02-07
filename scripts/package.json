@@ -2,6 +2,7 @@
   "name": "scripts",
   "private": true,
   "scripts": {
+    "classify-deploy-change": "node --import tsx src/ci/classify-deploy-change.ts",
     "collect-workflow-metrics": "node --import tsx src/ci/collect-workflow-metrics.ts",
     "test": "cross-env JEST_FORCE_CJS=1 jest --config ../jest.config.cjs"
   }

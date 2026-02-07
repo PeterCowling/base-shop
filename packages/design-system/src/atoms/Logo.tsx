@@ -70,53 +70,52 @@ export interface LogoProps
   srcSet?: string;
 }
 
-export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
-  (
-    {
-      className,
-      src,
-      sources,
-      alt,
-      fallbackText,
-      width: defaultWidth = 32,
-      height: defaultHeight = 32,
-      sizes,
-      srcSet: providedSrcSet,
-      ...props
-    },
+export const Logo = (
+  {
     ref,
-  ) => {
-    const viewport = useViewport();
-    const responsive = sources?.[viewport];
-    const imageSrc = responsive?.src ?? src;
-    const imageWidth = responsive?.width ?? defaultWidth;
-    const imageHeight = responsive?.height ?? defaultHeight;
+    className,
+    src,
+    sources,
+    alt,
+    fallbackText,
+    width: defaultWidth = 32,
+    height: defaultHeight = 32,
+    sizes,
+    srcSet: providedSrcSet,
+    ...props
+  }: LogoProps & {
+    ref?: React.Ref<HTMLImageElement>;
+  }
+) => {
+  const viewport = useViewport();
+  const responsive = sources?.[viewport];
+  const imageSrc = responsive?.src ?? src;
+  const imageWidth = responsive?.width ?? defaultWidth;
+  const imageHeight = responsive?.height ?? defaultHeight;
 
-    const altText = alt ?? fallbackText;
+  const altText = alt ?? fallbackText;
 
-    if (!imageSrc) {
-      return <span className={cn("font-bold", className)}>{fallbackText}</span>;
-    }
+  if (!imageSrc) {
+    return <span className={cn("font-bold", className)}>{fallbackText}</span>;
+  }
 
-    const computedSrcSet = computeSrcSet({
-      src,
-      sources,
-      defaultWidth: defaultWidth,
-      providedSrcSet,
-    });
+  const computedSrcSet = computeSrcSet({
+    src,
+    sources,
+    defaultWidth: defaultWidth,
+    providedSrcSet,
+  });
 
-    const imageProps: LogoImageProps = {
-      ...props,
-      src: imageSrc,
-      className: cn(className),
-      role: props.role ?? "img",
-      ...(typeof imageWidth === "number" ? { width: imageWidth } : {}),
-      ...(typeof imageHeight === "number" ? { height: imageHeight } : {}),
-      ...(sizes !== undefined ? { sizes } : {}),
-      ...(computedSrcSet ? { srcSet: computedSrcSet } : {}),
-    };
+  const imageProps: LogoImageProps = {
+    ...props,
+    src: imageSrc,
+    className: cn(className),
+    role: props.role ?? "img",
+    ...(typeof imageWidth === "number" ? { width: imageWidth } : {}),
+    ...(typeof imageHeight === "number" ? { height: imageHeight } : {}),
+    ...(sizes !== undefined ? { sizes } : {}),
+    ...(computedSrcSet ? { srcSet: computedSrcSet } : {}),
+  };
 
-    return <Image ref={ref} alt={altText} {...imageProps} />;
-  },
-);
-Logo.displayName = "Logo";
+  return <Image ref={ref} alt={altText} {...imageProps} />;
+};

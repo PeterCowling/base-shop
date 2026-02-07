@@ -1,6 +1,6 @@
 import "../../../../../../test/resetNextMocks";
 
-import { configure,render, screen } from "@testing-library/react";
+import { configure, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import { Popover, PopoverContent, PopoverTrigger } from "../Popover";
@@ -26,7 +26,7 @@ describe("Popover", () => {
   });
 
   it("uses default sideOffset and align props", () => {
-    const element = (PopoverContent as any).render({}, null);
+    const element = (PopoverContent as unknown as (props: Record<string, unknown>) => { props: Record<string, unknown> })({});
     expect(element.props.sideOffset).toBe(4);
     expect(element.props.align).toBe("center");
   });

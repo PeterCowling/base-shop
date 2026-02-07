@@ -1,7 +1,7 @@
 /* i18n-exempt file -- UI-000: Non-user-facing literals (class names, aria roles, HTML attributes, key names). Visible copy comes from props or i18n keys. */
 "use client";
 
-import { useEffect, useId, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 
 import { useTranslations } from "@acme/i18n";
@@ -39,43 +39,25 @@ export function SearchBar({
 }: SearchBarProps) {
   const t = useTranslations() as unknown as (key: string, params?: Record<string, unknown>) => string;
   const [query, setQuery] = useState(initialQuery);
-  const [matches, setMatches] = useState<string[]>([]);
   const [isSelecting, setIsSelecting] = useState(false);
   const [focused, setFocused] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const inputId = useId();
 
-  useEffect(() => {
-    setQuery(initialQuery);
-  }, [initialQuery]);
-
-  useEffect(() => {
-    if (isSelecting || !focused) {
-      setMatches((prev) => (prev.length ? [] : prev));
-      setHighlightedIndex((prev) => (prev !== -1 ? -1 : prev));
-      return;
+  const matches = useMemo(() => {
+    if (isSelecting || !focused || !query) {
+      return [] as string[];
     }
-    if (!query) {
-      setMatches((prev) => (prev.length ? [] : prev));
-      setHighlightedIndex((prev) => (prev !== -1 ? -1 : prev));
-      return;
-    }
-    const q = query.toLowerCase();
-    const nextMatches = suggestions
-      .filter((s) => s.toLowerCase().includes(q))
+    const normalizedQuery = query.toLowerCase();
+    return suggestions
+      .filter((suggestion) => suggestion.toLowerCase().includes(normalizedQuery))
       .slice(0, 5);
-    setMatches((prev) =>
-      prev.length === nextMatches.length && prev.every((v, i) => v === nextMatches[i])
-        ? prev
-        : nextMatches
-    );
-    setHighlightedIndex((prev) => (prev !== -1 ? -1 : prev));
-  }, [query, suggestions, isSelecting, focused]);
+  }, [focused, isSelecting, query, suggestions]);
 
   const handleSelect = (value: string) => {
     setIsSelecting(true);
     setQuery(value);
-    setMatches([]);
+    setHighlightedIndex(-1);
     onSelect?.(value);
   };
 
@@ -89,7 +71,11 @@ export function SearchBar({
         type="search"
         aria-label={label}
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={(e) => {
+          setIsSelecting(false);
+          setQuery(e.target.value);
+          setHighlightedIndex(-1);
+        }}
         onKeyDown={(e) => {
           if (e.key === "ArrowDown") {
             e.preventDefault();
@@ -108,7 +94,7 @@ export function SearchBar({
               e.preventDefault();
               handleSelect(matches[highlightedIndex]);
             } else {
-              setMatches([]);
+              setHighlightedIndex(-1);
               onSearch?.(query);
             }
           }
@@ -116,6 +102,7 @@ export function SearchBar({
         onFocus={() => setFocused(true)}
         onBlur={() => {
           setFocused(false);
+          setHighlightedIndex(-1);
           if (isSelecting) {
             setIsSelecting(false);
             return;

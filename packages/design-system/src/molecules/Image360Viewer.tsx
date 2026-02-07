@@ -20,10 +20,17 @@ export interface Image360ViewerProps
 /* ------------------------------------------------------------------ *
  *  Component
  * ------------------------------------------------------------------ */
-export const Image360Viewer = React.forwardRef<
-  HTMLDivElement,
-  Image360ViewerProps
->(({ frames, alt, className, ...props }, ref) => {
+export const Image360Viewer = (
+  {
+    ref,
+    frames,
+    alt,
+    className,
+    ...props
+  }: Image360ViewerProps & {
+    ref?: React.Ref<HTMLDivElement>;
+  }
+) => {
   const [index, setIndex] = React.useState(0);
   const startX = React.useRef<number | null>(null);
 
@@ -70,6 +77,5 @@ export const Image360Viewer = React.forwardRef<
       />
     </div>
   );
-});
+};
 
-Image360Viewer.displayName = "Image360Viewer";

@@ -90,69 +90,77 @@ const themes: { value: ThemeOption; label: string; icon: typeof SunIcon }[] = [
  * }
  * ```
  */
-export const ThemeToggle = React.forwardRef<HTMLDivElement, ThemeToggleProps>(
-  ({ theme, onThemeChange, className, size = "sm", showLabels = false }, ref) => {
-    const sizeClasses = {
-      // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-      sm: "h-8 text-sm",
-      md: "h-10 text-base",
-    };
-
-    const iconSizeClasses = {
-      // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-      sm: "h-4 w-4",
-      md: "h-5 w-5",
-    };
-
-    const buttonPaddingClasses = {
-      // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-      sm: showLabels ? "px-2.5 gap-1.5" : "px-2",
-      md: showLabels ? "px-3 gap-2" : "px-2.5",
-    };
-
-    return (
-      <div
-        ref={ref}
-        role="radiogroup"
-        aria-label="Theme selection"
-        className={cn(
-          // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-          "inline-flex items-center rounded-lg border border-border bg-muted/50 p-0.5",
-          sizeClasses[size],
-          className
-        )}
-      >
-        {themes.map(({ value, label, icon: Icon }) => {
-          const isActive = theme === value;
-          return (
-            <button
-              key={value}
-              type="button"
-              role="radio"
-              aria-checked={isActive}
-              aria-label={label}
-              onClick={() => onThemeChange(value)}
-              className={cn(
-                // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-                "inline-flex h-full items-center justify-center rounded-md transition-colors transition-shadow motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
-                buttonPaddingClasses[size],
-                isActive
-                  ? // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-                    "bg-bg text-fg shadow-sm"
-                  : // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-                    "text-fg-muted hover:text-fg hover:bg-bg/50"
-              )}
-            >
-              <Icon className={iconSizeClasses[size]} />
-              {showLabels && <span>{label}</span>}
-            </button>
-          );
-        })}
-      </div>
-    );
+export const ThemeToggle = (
+  {
+    ref,
+    theme,
+    onThemeChange,
+    className,
+    size = "sm",
+    showLabels = false
+  }: ThemeToggleProps & {
+    ref?: React.Ref<HTMLDivElement>;
   }
-);
+) => {
+  const sizeClasses = {
+    // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
+    sm: "h-8 text-sm",
+    md: "h-10 text-base",
+  };
 
-ThemeToggle.displayName = "ThemeToggle";
+  const iconSizeClasses = {
+    // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
+    sm: "h-4 w-4",
+    md: "h-5 w-5",
+  };
+
+  const buttonPaddingClasses = {
+    // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
+    sm: showLabels ? "px-2.5 gap-1.5" : "px-2",
+    md: showLabels ? "px-3 gap-2" : "px-2.5",
+  };
+
+  return (
+    <div
+      ref={ref}
+      role="radiogroup"
+      aria-label="Theme selection"
+      className={cn(
+        // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
+        "inline-flex items-center rounded-lg border border-border bg-muted/50 p-0.5",
+        sizeClasses[size],
+        className
+      )}
+    >
+      {themes.map(({ value, label, icon: Icon }) => {
+        const isActive = theme === value;
+        return (
+          <button
+            key={value}
+            type="button"
+            role="radio"
+            aria-checked={isActive}
+            aria-label={label}
+            onClick={() => onThemeChange(value)}
+            className={cn(
+              // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
+              "inline-flex h-full items-center justify-center rounded-md transition-colors transition-shadow motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
+              buttonPaddingClasses[size],
+              isActive
+                ? // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
+                  "bg-bg text-fg shadow-sm"
+                : // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
+                  "text-fg-muted hover:text-fg hover:bg-bg/50"
+            )}
+          >
+            <Icon className={iconSizeClasses[size]} />
+            {showLabels && <span>{label}</span>}
+          </button>
+        );
+      })}
+    </div>
+  );
+};
+
 
 export default ThemeToggle;

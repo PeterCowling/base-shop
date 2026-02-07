@@ -249,84 +249,83 @@ function renderContent({
 /* -------------------------------------------------------------------------- */
 /*  Component                                                                 */
 /* -------------------------------------------------------------------------- */
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    {
-      className,
-      variant = "default",
-      color,
-      tone,
-      children,
-      leadingIcon,
-      trailingIcon,
-      iconSize = "md",
-      iconOnly = false,
-      size = "md",
-      disabled,
-      "aria-busy": ariaBusy,
-      asChild = false,
-      ...props
-    },
+export const Button = (
+  {
     ref,
-  ) => {
-    // Render polymorphically: either a real button or our Slot wrapper
-    const Comp: React.ElementType = asChild ? Slot : "button";
+    className,
+    variant = "default",
+    color,
+    tone,
+    children,
+    leadingIcon,
+    trailingIcon,
+    iconSize = "md",
+    iconOnly = false,
+    size = "md",
+    disabled,
+    "aria-busy": ariaBusy,
+    asChild = false,
+    ...props
+  }: ButtonProps & {
+    ref?: React.Ref<HTMLButtonElement>;
+  }
+) => {
+  // Render polymorphically: either a real button or our Slot wrapper
+  const Comp: React.ElementType = asChild ? Slot : "button";
 
-    const { color: effColor, tone: effTone } = resolveEffectiveColorTone({
-      variant,
-      color,
-      tone,
-    });
+  const { color: effColor, tone: effTone } = resolveEffectiveColorTone({
+    variant,
+    color,
+    tone,
+  });
 
-    const isLoading = coerceAriaBusy(ariaBusy);
-    const isDisabled = computeIsDisabled(disabled, isLoading);
-    const computedClasses = buildButtonClassName({
-      size,
-      tone: effTone,
-      color: effColor,
-      variant,
-      iconOnly,
-      isLoading,
-      className,
-    });
+  const isLoading = coerceAriaBusy(ariaBusy);
+  const isDisabled = computeIsDisabled(disabled, isLoading);
+  const computedClasses = buildButtonClassName({
+    size,
+    tone: effTone,
+    color: effColor,
+    variant,
+    iconOnly,
+    isLoading,
+    className,
+  });
 
-    // When using asChild, Slot must receive exactly one valid element child.
-    if (asChild) {
-      return (
-        <Comp
-          ref={ref}
-          data-token={DATA_TOKEN_BY_COLOR[effColor]}
-          className={computedClasses}
-          aria-busy={isLoading || undefined}
-          // Do not forward `disabled` to non-button elements
-          {...props}
-        >
-          {children as React.ReactElement}
-        </Comp>
-      );
-    }
-
-    const spinner = renderSpinner({ isLoading, iconSize });
-    const leading = isLoading ? null : renderIcon({ icon: leadingIcon, className: "me-2", iconSize });
-    const trailing = isLoading ? null : renderIcon({ icon: trailingIcon, className: "ms-2", iconSize });
-    const content = renderContent({ iconOnly, children });
-
-    // Default: render a real button with internal layout helpers
+  // When using asChild, Slot must receive exactly one valid element child.
+  if (asChild) {
     return (
       <Comp
         ref={ref}
         data-token={DATA_TOKEN_BY_COLOR[effColor]}
         className={computedClasses}
         aria-busy={isLoading || undefined}
-        disabled={isDisabled}
+        // Do not forward `disabled` to non-button elements
         {...props}
       >
-        {spinner}
-        {leading}
-        {content}
-        {trailing}
+        {children as React.ReactElement}
       </Comp>
     );
-  },
-);
-Button.displayName = "Button";
+  }
+
+  const spinner = renderSpinner({ isLoading, iconSize });
+  const leading = isLoading ? null : renderIcon({ icon: leadingIcon, className: "me-2", iconSize });
+  const trailing = isLoading ? null : renderIcon({ icon: trailingIcon, className: "ms-2", iconSize });
+  const content = renderContent({ iconOnly, children });
+
+  // Default: render a real button with internal layout helpers
+  return (
+    <Comp
+      ref={ref}
+      data-token={DATA_TOKEN_BY_COLOR[effColor]}
+      className={computedClasses}
+      aria-busy={isLoading || undefined}
+      disabled={isDisabled}
+      {...props}
+    >
+      {spinner}
+      {leading}
+      {content}
+      {trailing}
+    </Comp>
+  );
+};

@@ -2,7 +2,10 @@
 
 import dynamic from 'next/dynamic';
 
-const HomePage = dynamic(() => import('../../components/homepage/HomePage'), { ssr: false });
+const GuardedHomeExperience = dynamic(
+  () => import('../../components/homepage/GuardedHomeExperience'),
+  { ssr: false },
+);
 
 /**
  * Guarded Home Page
@@ -12,5 +15,5 @@ const HomePage = dynamic(() => import('../../components/homepage/HomePage'), { s
  * personalized based on guest intent.
  */
 export default function GuardedHomePage() {
-  return <HomePage />;
+  return <GuardedHomeExperience />;
 }

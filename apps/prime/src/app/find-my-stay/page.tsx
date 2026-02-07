@@ -34,8 +34,12 @@ export default function FindMyStayPage() {
       }
 
       const data = await response.json();
-      // Redirect to check-in page with the code
-      window.location.href = `/staff-lookup?code=${data.checkInCode}`;
+      if (!data.redirectUrl || typeof data.redirectUrl !== 'string') {
+        setError('We found your booking, but could not open your guest link. Please try again.');
+        return;
+      }
+
+      window.location.assign(data.redirectUrl);
     } catch (err) {
       setError('Connection error. Please try again.');
     } finally {

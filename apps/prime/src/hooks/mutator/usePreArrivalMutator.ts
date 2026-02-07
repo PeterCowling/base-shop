@@ -115,20 +115,6 @@ export function usePreArrivalMutator(): UsePreArrivalMutatorReturn {
   );
 
   /**
-   * Update a single checklist item.
-   */
-  const updateChecklistItem = useCallback(
-    async (item: keyof ChecklistProgress, completed: boolean): Promise<void> => {
-      await updatePreArrivalData({
-        checklistProgress: {
-          [item]: completed,
-        } as Partial<ChecklistProgress>,
-      } as Partial<PreArrivalData>);
-    },
-    [updatePreArrivalData],
-  );
-
-  /**
    * Update multiple checklist items at once.
    */
   const updateChecklistItems = useCallback(
@@ -171,6 +157,18 @@ export function usePreArrivalMutator(): UsePreArrivalMutatorReturn {
       }
     },
     [uuid, database, queryClient],
+  );
+
+  /**
+   * Update a single checklist item.
+   */
+  const updateChecklistItem = useCallback(
+    async (item: keyof ChecklistProgress, completed: boolean): Promise<void> => {
+      await updateChecklistItems({
+        [item]: completed,
+      });
+    },
+    [updateChecklistItems],
   );
 
   /**

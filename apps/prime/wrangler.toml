@@ -1,0 +1,16 @@
+name = "prime"
+pages_build_output_dir = "out"
+compatibility_date = "2025-06-20"
+compatibility_flags = ["nodejs_compat"]
+
+[[kv_namespaces]]
+binding = "RATE_LIMIT"
+id = "00000000000000000000000000000000"
+preview_id = "00000000000000000000000000000000"
+
+[vars]
+# Set real values in Cloudflare Pages env configuration.
+CF_FIREBASE_DATABASE_URL = "https://example.firebaseio.com"
+
+# Set as a Cloudflare secret, not in source control:
+# wrangler secret put CF_FIREBASE_API_KEY

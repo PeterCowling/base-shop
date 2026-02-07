@@ -1,12 +1,14 @@
 # Writer Lock Stale Locks from Subagents - Fact Find
 
-**Status:** Updated (partially resolved)
+**Status:** Completed and archived
 **Date:** 2026-02-07
 **Context:** Subagents spawned during parallel translation batches created stale writer locks after process termination.
 
 ---
 
 ## Executive Summary
+
+This thread is complete and now archived under `docs/plans/archive/`.
 
 Stale writer locks were real and operationally painful. The biggest failure mode was not only stale lock creation, but ambiguous recovery guidance that pushed operators toward bypass behavior.
 

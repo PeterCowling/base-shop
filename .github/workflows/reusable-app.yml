@@ -247,6 +247,12 @@ jobs:
 
       # ADMIN-05: Validate environment before deploy
       - name: Validate deploy environment
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+          CART_COOKIE_SECRET: ${{ secrets.CART_COOKIE_SECRET }}
         run: |
           chmod +x scripts/validate-deploy-env.sh
           ./scripts/validate-deploy-env.sh

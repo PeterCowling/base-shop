@@ -1,4 +1,5 @@
 name: Reusable App Pipeline
+# Probe note: branch-only no-op edit for classifier skip-path verification.
 
 on:
   workflow_call:

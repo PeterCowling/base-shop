@@ -110,33 +110,31 @@ jobs:
             fi
             changed_file_count="$(wc -l < "$changed_paths_file" | tr -d ' ')"
 
-            classification_file="$RUNNER_TEMP/deploy-change-classification.json"
             classification_stderr_file="$RUNNER_TEMP/classify-deploy-change.stderr"
-            if classification_json="$(
+            if classification_output="$(
               node --import tsx scripts/src/ci/classify-deploy-change.ts \
                 --paths-file "$changed_paths_file" \
+                --format outputs \
                 2> "$classification_stderr_file"
             )"; then
-              printf '%s\n' "$classification_json" > "$classification_file"
+              while IFS='=' read -r key value; do
+                case "$key" in
+                  run_validation) run_validation="$value" ;;
+                  is_deploy_only) is_deploy_only="$value" ;;
+                  uncertain) uncertain="$value" ;;
+                  reason) reason="$value" ;;
+                esac
+              done <<< "$classification_output"
 
-              is_deploy_only="$(jq -r '.isDeployOnly // empty' "$classification_file")"
-              uncertain="$(jq -r '.uncertain // empty' "$classification_file")"
-              reason="$(jq -r '.reason // empty' "$classification_file")"
-
-              if [[ ("$is_deploy_only" == "true" || "$is_deploy_only" == "false") \
-                && ("$uncertain" == "true" || "$uncertain" == "false") \
-                && -n "$reason" ]]; then
-                if [[ "$is_deploy_only" == "true" && "$uncertain" == "false" ]]; then
-                  run_validation="false"
-                else
-                  run_validation="true"
-                fi
-              else
+              if [[ "$run_validation" != "true" && "$run_validation" != "false" ]] \
+                || [[ "$is_deploy_only" != "true" && "$is_deploy_only" != "false" ]] \
+                || [[ "$uncertain" != "true" && "$uncertain" != "false" ]] \
+                || [[ -z "$reason" ]]; then
                 echo "::warning title=Validation gating::Classifier output parse failed; running full validation."
+                run_validation="true"
                 is_deploy_only="false"
                 uncertain="true"
                 reason="classifier_parse_failed"
-                run_validation="true"
               fi
             else
               echo "::warning title=Validation gating::Classifier command failed; running full validation."

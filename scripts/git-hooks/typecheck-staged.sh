@@ -29,7 +29,7 @@ fi
 workspace_dirs="$(echo "$staged_files" \
   | grep -E '^(apps|packages)/' \
   | awk -F/ '{print $1"/"$2}' \
-  | sort -u)"
+  | sort -u || true)"
 
 # Check for root-level TS files that would need the root tsc -b
 root_ts_files="$(echo "$staged_files" | grep -E '^\w+\.tsx?$' || true)"

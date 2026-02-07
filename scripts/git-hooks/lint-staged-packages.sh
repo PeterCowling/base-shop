@@ -23,7 +23,7 @@ fi
 workspace_dirs="$(echo "$staged_files" \
   | grep -E '^(apps|packages)/' \
   | awk -F/ '{print $1"/"$2}' \
-  | sort -u)"
+  | sort -u || true)"
 
 if [[ -z "$workspace_dirs" ]]; then
   echo "[lint-staged-packages] No workspace packages affected; skipping."

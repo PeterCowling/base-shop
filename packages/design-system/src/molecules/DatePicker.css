@@ -276,7 +276,7 @@ h2.react-datepicker__current-month {
 }
 .react-datepicker__time-container .react-datepicker__time {
   position: relative;
-  background: white;
+  background: var(--ds-datepicker-bg);
   border-bottom-right-radius: 0.3rem;
 }
 .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box {
@@ -307,7 +307,7 @@ h2.react-datepicker__current-month {
 }
 .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item--selected {
   background-color: var(--ds-datepicker-primary);
-  color: white;
+  color: var(--ds-datepicker-primary-fg);
   font-weight: bold;
 }
 .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item--selected:hover {

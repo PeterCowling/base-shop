@@ -12,6 +12,7 @@ import { AlertCircle, ArrowLeft, Calendar, Clock, CreditCard, MapPin, Search, Us
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
+import StaffReadinessBadges from '../../components/check-in/StaffReadinessBadges';
 import { usePinAuth } from '../../contexts/messaging/PinAuthProvider';
 import { extractCodeFromPathname, formatEtaWindow, isStaffRole } from '../../lib/checkin/helpers';
 import type { StaffCheckInView } from '../../types/checkInCode';
@@ -223,6 +224,11 @@ function StaffLookupContent() {
                 </p>
               </div>
             )}
+
+            <StaffReadinessBadges
+              readiness={guestData.readiness}
+              personalization={guestData.personalization}
+            />
 
             {/* Payment amounts */}
             <div className="rounded-xl bg-green-50 p-4">

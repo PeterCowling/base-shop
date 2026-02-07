@@ -8,6 +8,7 @@ import dynamic from "next/dynamic";
 
 import { Section } from "@acme/design-system/atoms";
 
+import { isGuidePublished } from "@/data/guides.index";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { BeforeYouTravel } from "@/routes/how-to-get-here/components/BeforeYouTravel";
@@ -123,6 +124,7 @@ function HowToGetHereIndexContent({ lang }: Props) {
   const [highlightedRouteSlug, setHighlightedRouteSlug] = useState<string | null>(null);
   const [isLateNight, setIsLateNight] = useState(false);
   const stickyOffset = useHeaderStickyOffset();
+  const parkingHref = isGuidePublished("parking") ? guideHref(lang, "parking") : undefined;
 
   const handleRoutePick = useCallback((sel: RoutePickerSelection) => {
     // Track if user selected late-night arrival for taxi emphasis
@@ -279,7 +281,7 @@ function HowToGetHereIndexContent({ lang }: Props) {
       </Section>
 
       {/* Before You Travel */}
-      <BeforeYouTravel t={t} parkingHref={guideHref(lang, "parking")} />
+      <BeforeYouTravel t={t} parkingHref={parkingHref} />
 
       {/* Experience Guides */}
       <Section id={EXPERIENCE_SECTION_ID} padding="default">

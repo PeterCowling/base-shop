@@ -142,6 +142,9 @@ function GuestEntryContent() {
           <p className="mb-6 text-gray-600">
             Your portal is ready. We&apos;ll guide you through arrival prep next.
           </p>
+          <p className="mb-6 rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
+            You&apos;ll now see a short guided setup so reception can serve you faster.
+          </p>
           <Link
             href="/portal"
             className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-5 py-3 text-white hover:bg-blue-700"
@@ -160,6 +163,12 @@ function GuestEntryContent() {
           <h1 className="text-2xl font-bold text-gray-900">Confirm your stay</h1>
           <p className="mt-2 text-gray-600">
             Please enter the last name on the booking to continue.
+          </p>
+          <p className="mt-3 rounded-lg bg-blue-50 px-3 py-2 text-sm text-blue-800">
+            Why this helps: this quick check unlocks your guest tools and speeds up reception handoff.
+          </p>
+          <p className="mt-2 text-xs text-gray-500">
+            Privacy: we only use this information for your current stay.
           </p>
         </div>
 

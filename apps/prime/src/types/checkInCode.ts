@@ -46,7 +46,23 @@ export interface CheckInCodeRecord {
  * @property depositDue - Amount in EUR (typically keycard deposit)
  * @property etaWindow - Expected arrival time or null (e.g., "18:00-18:30")
  * @property etaMethod - Travel method or null (e.g., "ferry")
+ * @property readiness - Arrival-readiness flags sourced from shared preArrival data
+ * @property personalization - Guest arrival context captured during onboarding
  */
+export interface StaffReadinessSignals {
+  etaConfirmed: boolean;
+  cashPrepared: boolean;
+  routePlanned: boolean;
+  rulesReviewed: boolean;
+  locationSaved: boolean;
+  readinessScore: number;
+}
+
+export interface StaffPersonalizationSignals {
+  arrivalMethodPreference: string | null;
+  arrivalConfidence: string | null;
+}
+
 export interface StaffCheckInView {
   guestName: string;
   roomAssignment: string;
@@ -57,6 +73,8 @@ export interface StaffCheckInView {
   depositDue: number;
   etaWindow: string | null;
   etaMethod: string | null;
+  readiness: StaffReadinessSignals;
+  personalization: StaffPersonalizationSignals;
 }
 
 /**

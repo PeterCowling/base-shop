@@ -7,7 +7,7 @@ import { loadGuideI18nBundle } from "@/app/_lib/guide-i18n-bundle";
 import { getTranslations, toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
-import { GUIDES_INDEX } from "@/data/guides.index";
+import { GUIDES_INDEX, isGuidePublished } from "@/data/guides.index";
 import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 import { listHowToSlugs } from "@/lib/how-to-get-here/definitions";
 import { guideNamespace, guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
@@ -76,8 +76,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     format: "auto",
   });
 
-  const guideMeta = GUIDES_INDEX.find((g) => g.key === guideKey);
-  const isPublished = (guideMeta?.status ?? "published") === "published";
+  const isPublished = isGuidePublished(guideKey);
 
   return buildAppMetadata({
     lang: validLang,
@@ -99,6 +98,9 @@ export default async function HowToGetHerePage({ params }: Props) {
   const guideBase = guideKey ? guideNamespace(validLang, guideKey) : null;
 
   if (!guideKey || guideBase?.baseKey !== "howToGetHere") {
+    notFound();
+  }
+  if (!isGuidePublished(guideKey)) {
     notFound();
   }
 

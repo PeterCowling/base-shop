@@ -2,7 +2,7 @@
 // Assistance landing page - App Router version
 import type { Metadata } from "next";
 
-import { resolveI18nMetaForApp, toAppLanguage } from "@/app/_lib/i18n-server";
+import { getTranslations, resolveI18nMetaForApp, toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
 import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
@@ -45,5 +45,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function AssistancePage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
+  await getTranslations(validLang, ["assistanceSection", "assistance", "guides", "howToGetHere"]);
   return <AssistanceIndexContent lang={validLang} />;
 }

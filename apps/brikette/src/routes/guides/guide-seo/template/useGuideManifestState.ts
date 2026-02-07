@@ -140,7 +140,7 @@ export function useGuideManifestState(params: {
   }, [lang, manifestEntry, overrides, guideKey]);
 
   const isDraftRoute = Boolean(canonicalPathname?.includes("/draft/"));
-  const shouldShowEditorialPanel = Boolean(manifestEntry) && (isDraftRoute || resolvedStatus !== "live");
+  const shouldShowEditorialPanel = Boolean(manifestEntry) && isDraftRoute;
 
   return {
     manifestEntry,

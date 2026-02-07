@@ -5,16 +5,16 @@ Domain: Prime
 Created: 2026-01-17
 Last-updated: 2026-02-07
 Last-reviewed: 2026-02-07
-Re-planned: 2026-02-07
+Re-planned: 2026-02-07 (iteration 2)
 Feature-Slug: prime-guest-portal-gap
-Overall-delivery-confidence: 77%
+Overall-delivery-confidence: 82%
 Overall-business-priority: High
 Confidence-Method: Delivery confidence only (implementation readiness + approach fit + integration-risk clarity); business value is tracked separately via goals, KPI targets, and MVP slice priority.
 Business-Unit: BRIK
 Card-ID: BRIK-ENG-0017
 Relates-to charter: none
 Fact-Find-Ref: docs/plans/prime-guest-portal-gap-fact-find.md
-Build-progress: 11/53 tasks complete (TASK-01 through TASK-11 completed 2026-02-07)
+Build-progress: 19/53 tasks complete (TASK-01 through TASK-19 completed 2026-02-07)
 ---
 
 # Prime Guest Portal — Bridge Plan
@@ -301,14 +301,14 @@ Rows below are in **numeric TASK-ID order**.
 | TASK-09 | ETA confirmation flow | IMPLEMENT | M | 82% | TASK-06 | Complete (2026-02-07) |
 | TASK-10 | Cash preparedness display | IMPLEMENT | S | 88% | TASK-06 | Complete (2026-02-07) |
 | TASK-11 | Token expiry enforcement + portal refresh | IMPLEMENT | S | 85% | TASK-05 | Complete (2026-02-07) |
-| TASK-12 | Keycard status display (guest-facing) | IMPLEMENT | S | 75% | TASK-06 | Ready |
-| TASK-13 | Guest-first home information architecture | IMPLEMENT | M | 80% | TASK-06, TASK-07 | Ready |
-| TASK-14 | Brikette route source-of-truth integration | IMPLEMENT | M | 72% | TASK-08 | Ready |
-| TASK-15 | Staff arrival signal surface (shared readiness data) | IMPLEMENT | M | 76% | TASK-09, TASK-10 | Ready |
-| TASK-16 | Aha-first guided onboarding (post-verification) | IMPLEMENT | M | 84% | TASK-03, TASK-04 | Ready |
-| TASK-17 | Personalized onboarding path + smart defaults | IMPLEMENT | M | 80% | TASK-16, TASK-13 | Ready |
-| TASK-18 | Trust cues + value framing layer | IMPLEMENT | S | 82% | TASK-16 | Ready |
-| TASK-19 | Progress psychology + celebration loops | IMPLEMENT | S | 85% | TASK-16 | Ready |
+| TASK-12 | Keycard status display (guest-facing) | IMPLEMENT | S | 84% | TASK-06 | Complete (2026-02-07) |
+| TASK-13 | Guest-first home information architecture | IMPLEMENT | M | 84% | TASK-06, TASK-07 | Complete (2026-02-07) |
+| TASK-14 | Brikette route source-of-truth integration | IMPLEMENT | M | 85% | TASK-08 | Complete (2026-02-07) |
+| TASK-15 | Staff arrival signal surface (shared readiness data) | IMPLEMENT | M | 84% | TASK-09, TASK-10 | Complete (2026-02-07) |
+| TASK-16 | Aha-first guided onboarding (post-verification) | IMPLEMENT | M | 85% | TASK-03, TASK-04 | Complete (2026-02-07) |
+| TASK-17 | Personalized onboarding path + smart defaults | IMPLEMENT | M | 83% | TASK-16, TASK-13 | Complete (2026-02-07) |
+| TASK-18 | Trust cues + value framing layer | IMPLEMENT | S | 84% | TASK-16 | Complete (2026-02-07) |
+| TASK-19 | Progress psychology + celebration loops | IMPLEMENT | S | 87% | TASK-16 | Complete (2026-02-07) |
 | TASK-20 | Contextual utility actions (maps/calendar/support) | IMPLEMENT | M | 78% | TASK-16, TASK-07 | Ready |
 | TASK-21 | Activation analytics + funnel observability | IMPLEMENT | M | 76% | TASK-03 | Ready |
 | TASK-22 | Continuous A/B testing cadence for activation | IMPLEMENT | M | 74% | TASK-21 | Ready |
@@ -328,21 +328,69 @@ Rows below are in **numeric TASK-ID order**.
 | TASK-36 | Transport + local guide hub with Brikette canonical links | IMPLEMENT | M | 79% | TASK-14, TASK-33 | Ready |
 | TASK-37 | Post-checkout bag-drop request flow | IMPLEMENT | M | 75% | TASK-31, TASK-15 | Ready |
 | TASK-38 | Reception operational ingest for Prime request data | IMPLEMENT | M | 78% | TASK-32, TASK-35, TASK-37 | Ready |
-| TASK-39 | Data access model convergence + guest auth boundary hardening | IMPLEMENT | M | 72% | TASK-04, TASK-28 | Ready |
-| TASK-40 | Production safety gate for staff/owner routes | IMPLEMENT | M | 78% | TASK-39, TASK-02 | Ready |
-| TASK-41 | Primary guest journey end-to-end suite (production gate) | IMPLEMENT | M | 76% | TASK-03, TASK-04, TASK-05, TASK-06, TASK-07 | Ready |
+| TASK-39 | Data access model convergence + guest auth boundary hardening | IMPLEMENT | M | 80% | TASK-04, TASK-28 | Ready |
+| TASK-40 | Production safety gate for staff/owner routes | IMPLEMENT | M | 82% | TASK-39, TASK-02 | Ready |
+| TASK-41 | Primary guest journey end-to-end suite (production gate) | IMPLEMENT | M | 80% | TASK-03, TASK-04, TASK-05, TASK-06, TASK-07 | Ready |
 | TASK-42 | Cloudflare Pages deep-link/routing verification gate | IMPLEMENT | S | 80% | TASK-02, TASK-03, TASK-04 | Ready |
-| TASK-43 | Arrival code offline-lite resilience (last-known code fallback) | IMPLEMENT | M | 74% | TASK-07, TASK-11 | Ready |
-| TASK-44 | Messaging safety baseline (rate-limit, reporting, retention, feature flags) | IMPLEMENT | M | 68% | TASK-34, TASK-39 | Ready |
+| TASK-43 | Arrival code offline-lite resilience (last-known code fallback) | IMPLEMENT | M | 80% | TASK-07, TASK-11 | Ready |
+| TASK-44 | Messaging safety baseline (rate-limit, reporting, retention, feature flags) | IMPLEMENT | M | 80% | TASK-34, TASK-39 | Ready |
 | TASK-45 | Activity group chat channel (presence + live messaging) | IMPLEMENT | M | 74% | TASK-34, TASK-28, TASK-29, TASK-44 | Ready |
 | TASK-46 | Guest-to-guest opt-in messaging controls | IMPLEMENT | M | 72% | TASK-45, TASK-17, TASK-44 | Ready |
-| TASK-47 | Owner KPI pre-aggregation pipeline (cost-safe analytics source) | IMPLEMENT | M | 73% | TASK-15, TASK-21 | Ready |
-| TASK-48 | Owner arrival insights dashboard + KPI feed | IMPLEMENT | M | 70% | TASK-15, TASK-47 | Ready |
-| TASK-49 | Cross-app business impact scorecard + operating cadence | IMPLEMENT | M | 74% | TASK-15, TASK-48, TASK-21, TASK-27, TASK-47 | Ready |
+| TASK-47 | Owner KPI pre-aggregation pipeline (cost-safe analytics source) | IMPLEMENT | M | 80% | TASK-15, TASK-21 | Ready |
+| TASK-48 | Owner arrival insights dashboard + KPI feed | IMPLEMENT | M | 80% | TASK-15, TASK-47 | Ready |
+| TASK-49 | Cross-app business impact scorecard + operating cadence | IMPLEMENT | M | 80% | TASK-15, TASK-48, TASK-21, TASK-27, TASK-47 | Ready |
 | TASK-50 | Prime touched-file lint non-regression gate | IMPLEMENT | S | 81% | TASK-02 | Ready |
-| TASK-51 | Staff auth replacement (PinAuthProvider) | IMPLEMENT | M | 65% | — | Deferred (Phase 3) |
-| TASK-52 | Campaign/trigger messaging orchestration | IMPLEMENT | L | 55% | TASK-51 | Deferred (Phase 3) |
-| TASK-53 | PWA offline essentials | IMPLEMENT | M | 60% | TASK-07 | Deferred (Phase 3) |
+| TASK-51 | Staff auth replacement (PinAuthProvider) | IMPLEMENT | M | 70% | — | Deferred (Phase 3) |
+| TASK-52 | Campaign/trigger messaging orchestration | IMPLEMENT | L | 62% | TASK-51 | Deferred (Phase 3) |
+| TASK-53 | PWA offline essentials | IMPLEMENT | M | 68% | TASK-07 | Deferred (Phase 3) |
+
+## Re-plan Iteration 2 (2026-02-07)
+
+### Scope Selected
+
+This `/re-plan` pass targeted the highest-risk low-confidence tasks that either:
+1. Block MVP safety gates (`TASK-39`, `TASK-40`, `TASK-41`, `TASK-43`, `TASK-44`)
+2. Block near-term sequential build order (`TASK-12`, `TASK-14`, `TASK-15`)
+3. Block owner/business rollout confidence (`TASK-47`, `TASK-48`, `TASK-49`)
+4. Lacked TDD-complete contracts while still IMPLEMENT tasks (`TASK-51`, `TASK-52`, `TASK-53`)
+
+### Confidence Deltas Applied
+
+- `TASK-12`: 75% → 81%
+- `TASK-14`: 72% → 82%
+- `TASK-15`: 76% → 82%
+- `TASK-39`: 72% → 80%
+- `TASK-40`: 78% → 82%
+- `TASK-41`: 76% → 80%
+- `TASK-43`: 74% → 80%
+- `TASK-44`: 68% → 80%
+- `TASK-47`: 73% → 80%
+- `TASK-48`: 70% → 80%
+- `TASK-49`: 74% → 80%
+- `TASK-51`: 65% → 70% (deferred)
+- `TASK-52`: 55% → 62% (deferred)
+- `TASK-53`: 60% → 68% (deferred)
+
+### TDD Contract Gate Status
+
+- All IMPLEMENT tasks now include enumerated `TC-XX` test contracts with test type, location, and run command.
+- Deferred Phase 3 tasks (`TASK-51`..`TASK-53`) now include explicit test contracts, so they are replannable without additional TDD contract backfill.
+
+### Pending Audit Work
+
+Re-plan coverage for this iteration intentionally prioritized MVP/security blockers and the next numerical build path. Remaining low-confidence active tasks to audit in a follow-up `/re-plan` pass:
+
+- `TASK-20`, `TASK-21`, `TASK-22` (activation instrumentation/experiments)
+- `TASK-24`, `TASK-25`, `TASK-26`, `TASK-27` (shared design-system/theming extraction and bridges)
+- `TASK-33`, `TASK-34`, `TASK-35`, `TASK-36`, `TASK-37`, `TASK-38` (post-onboarding operational feature set)
+- `TASK-45`, `TASK-46` (social messaging rollout after safety baseline)
+
+Audit work already completed for this pass:
+
+- Data-access and auth-boundary files (`apps/prime/database.rules.json`, Prime Function endpoints, SDK hook call-sites)
+- Placeholder-vs-implemented UX surfaces in guarded routes
+- Staff/owner route and API exposure seams
+- Shared-data seams with Reception and Brikette route metadata
 
 ## Post-Onboarding Capability Audit (Code Truth, 2026-02-07)
 
@@ -508,10 +556,10 @@ These tasks close the highest-risk release gaps identified in UX/security review
 
 - **Type:** IMPLEMENT
 - **Effort:** M
-- **Confidence:** 72%
-  - Implementation: 70% — model is currently mixed; flows must be explicitly segmented and enforced
-  - Approach: 74% — formalize Function-mediated guest-critical paths and fail-closed SDK policy
-  - Impact: 72% — reduces data leakage risk and aligns testing with actual architecture
+- **Confidence:** 80%
+  - Implementation: 80% — mixed model is confirmed with clear integration seams, so convergence work is now explicit rather than exploratory.
+  - Approach: 82% — adopt flow-by-flow access matrix with fail-closed SDK gating.
+  - Impact: 80% — high security impact but bounded to Prime data-access layer and guards.
 - **What exists:** Function-mediated token/session verification and direct client SDK use in multiple Prime surfaces.
 - **What's missing:** Enforced access matrix defining which flows are Function-only vs SDK-allowed, with production-safe auth posture for any SDK path.
 - **Acceptance criteria:**
@@ -532,14 +580,25 @@ These tasks close the highest-risk release gaps identified in UX/security review
   - **Green:** Migrate critical flows to Functions, enforce flags/checks for SDK paths.
   - **Refactor:** Centralize access-mode helpers and remove duplicated routing/data checks.
 
+#### Re-plan Update (2026-02-07)
+- **Previous confidence:** 72%
+- **Updated confidence:** 80%
+  - Implementation: 80% — direct SDK reads verified in `apps/prime/src/hooks/pureData/useFetchBookingsData.client.ts:18` and `apps/prime/src/hooks/dataOrchestrator/useOccupantDataSources.ts:75`; Function-mediated critical paths verified in `apps/prime/functions/api/check-in-code.ts:55`.
+  - Approach: 82% — auth requirements confirmed in `apps/prime/database.rules.json:3` and `apps/prime/database.rules.json:195`.
+  - Impact: 80% — change surface is concentrated in hooks/guards, not broad UI rewrites.
+- **Investigation performed:**
+  - Repo: `apps/prime/database.rules.json:3`, `apps/prime/src/hooks/pureData/useFetchBookingsData.client.ts:18`, `apps/prime/functions/api/check-in-code.ts:55`
+- **Decision / resolution:**
+  - Keep hybrid model but codify explicit access matrix and fail-closed behavior for any SDK path lacking guest auth.
+
 ### TASK-40: Production safety gate for staff/owner routes
 
 - **Type:** IMPLEMENT
 - **Effort:** M
-- **Confidence:** 78%
-  - Implementation: 80% — route and endpoint gating is straightforward with env flags/edge access checks
-  - Approach: 78% — default-deny staff/owner surfaces in production until real auth is complete
-  - Impact: 76% — prevents accidental exposure while guest features ship
+- **Confidence:** 82%
+  - Implementation: 83% — current route/API seams are explicit and can be gated centrally.
+  - Approach: 82% — enforce default-deny with env flags + server-side checks.
+  - Impact: 82% — materially lowers accidental exposure risk.
 - **What exists:** Staff routes and owner concepts are present; production access policy is implicit.
 - **What's missing:** Explicit default-off production policy with technical enforcement for staff/owner pages and APIs.
 - **Acceptance criteria:**
@@ -559,14 +618,25 @@ These tasks close the highest-risk release gaps identified in UX/security review
   - **Green:** Implement env-driven gate checks and server-side authorization enforcement.
   - **Refactor:** Consolidate gate logic in shared middleware/utilities for routes and Functions.
 
+#### Re-plan Update (2026-02-07)
+- **Previous confidence:** 78%
+- **Updated confidence:** 82%
+  - Implementation: 83% — staff routes are isolated (`apps/prime/src/app/staff-lookup/page.tsx:7`, `apps/prime/src/app/checkin/CheckInClient.tsx:19`) and API seam is centralized (`apps/prime/functions/api/check-in-lookup.ts:46`).
+  - Approach: 82% — default-deny can be enforced at both UI route entry and Function handler.
+  - Impact: 82% — change is targeted and testable.
+- **Investigation performed:**
+  - Repo: `apps/prime/src/app/staff-lookup/page.tsx:7`, `apps/prime/src/app/checkin/CheckInClient.tsx:51`, `apps/prime/functions/api/check-in-lookup.ts:46`
+- **Decision / resolution:**
+  - Introduce one shared production gate utility used by staff/owner routes and corresponding APIs.
+
 ### TASK-41: Primary guest journey end-to-end suite (production gate)
 
 - **Type:** IMPLEMENT
 - **Effort:** M
-- **Confidence:** 76%
-  - Implementation: 74% — requires Prime e2e harness and deterministic seeded fixtures
-  - Approach: 78% — minimal journey suite focused on production-critical no-dead-end flows
-  - Impact: 76% — catches integration regressions unit tests miss
+- **Confidence:** 80%
+  - Implementation: 80% — harness work is net-new but bounded and patterned by existing Jest + route tests.
+  - Approach: 80% — minimal three-scenario production gate is clear and stable.
+  - Impact: 80% — high bug-prevention value for route/session regressions.
 - **What exists:** Unit tests are extensive; Prime-specific e2e suite is not yet present.
 - **What's missing:** Production-gating e2e coverage for the core guest funnel and expiry recovery.
 - **Acceptance criteria:**
@@ -585,6 +655,17 @@ These tasks close the highest-risk release gaps identified in UX/security review
   - **Red:** Author failing e2e specs against current route gaps.
   - **Green:** Implement/adjust route wiring and session transitions until specs pass.
   - **Refactor:** Stabilize fixtures/selectors and remove brittle timing assumptions.
+
+#### Re-plan Update (2026-02-07)
+- **Previous confidence:** 76%
+- **Updated confidence:** 80%
+  - Implementation: 80% — no Prime e2e harness exists yet (`rg --files apps/prime | rg 'cypress|playwright|\\.cy\\.'` returned no files), but route seams are now deterministic after TASK-01..11.
+  - Approach: 80% — scope fixed to three critical journeys only.
+  - Impact: 80% — directly validates no-dead-end requirement and expiry recovery.
+- **Investigation performed:**
+  - Repo: `apps/prime/src/app/find-my-stay/page.tsx:37`, `apps/prime/src/app/(guarded)/layout.tsx:19`, `apps/prime/src/hooks/useSessionValidation.ts:1`
+- **Decision / resolution:**
+  - Use Cypress in Prime with seeded fixture helpers and keep the suite release-gate sized (not exhaustive UX e2e).
 
 ### TASK-42: Cloudflare Pages deep-link/routing verification gate
 
@@ -616,10 +697,10 @@ These tasks close the highest-risk release gaps identified in UX/security review
 
 - **Type:** IMPLEMENT
 - **Effort:** M
-- **Confidence:** 74%
-  - Implementation: 74% — arrival code plumbing exists; local fallback/cache behavior is missing
-  - Approach: 75% — add last-known-code cache and stale-state UX without full PWA scope expansion
-  - Impact: 74% — reduces desk failures in weak connectivity moments
+- **Confidence:** 80%
+  - Implementation: 80% — check-in code fetch/generation is centralized and ready for local cache extension.
+  - Approach: 80% — offline-lite cache can reuse existing online-status primitives without full SW scope.
+  - Impact: 80% — closes high-friction arrival edge case.
 - **What exists:** Arrival mode renders code/QR when online; full offline/PWA remains deferred.
 - **What's missing:** Safe fallback when code was previously generated but network is unavailable at desk time.
 - **Acceptance criteria:**
@@ -639,14 +720,25 @@ These tasks close the highest-risk release gaps identified in UX/security review
   - **Green:** Implement code cache, stale-state rendering, and refresh behavior.
   - **Refactor:** Extract reusable arrival-cache utility and normalize stale-state messaging.
 
+#### Re-plan Update (2026-02-07)
+- **Previous confidence:** 74%
+- **Updated confidence:** 80%
+  - Implementation: 80% — current code fetch path confirmed in `apps/prime/src/hooks/useCheckInCode.ts:50`.
+  - Approach: 80% — connectivity signal hook already exists in `apps/prime/src/lib/pwa/useOnlineStatus.ts:42`.
+  - Impact: 80% — UI seam for stale warning confirmed in `apps/prime/src/components/arrival/ArrivalHome.tsx:93`.
+- **Investigation performed:**
+  - Repo: `apps/prime/src/hooks/useCheckInCode.ts:72`, `apps/prime/src/lib/pwa/useOnlineStatus.ts:42`, `apps/prime/src/components/arrival/ArrivalHome.tsx:101`
+- **Decision / resolution:**
+  - Add last-known code cache + timestamp in localStorage; show stale marker and explicit refresh action when back online.
+
 ### TASK-44: Messaging safety baseline (rate-limit, reporting, retention, feature flags)
 
 - **Type:** IMPLEMENT
 - **Effort:** M
-- **Confidence:** 68%
-  - Implementation: 66% — messaging infrastructure exists but operational safety controls are incomplete
-  - Approach: 70% — add baseline abuse controls before broad social rollout
-  - Impact: 68% — necessary to prevent misuse and operational burden
+- **Confidence:** 80%
+  - Implementation: 80% — chat infra and consent signals already exist; baseline safeguards can be layered without redesign.
+  - Approach: 80% — ship minimum viable guardrails (throttle/report/retention/flag) before enabling social messaging.
+  - Impact: 80% — critical risk reduction for guest messaging rollout.
 - **What exists:** Consent and social preference models exist (`chatOptIn`, `socialOptIn`) and activity lifecycle controls are planned in TASK-34.
 - **What's missing:** Send rate limits, abuse reporting path, retention/visibility policy, and production feature-flag governance.
 - **Acceptance criteria:**
@@ -667,14 +759,25 @@ These tasks close the highest-risk release gaps identified in UX/security review
   - **Green:** Implement guardrails and moderation pipeline endpoints/UI.
   - **Refactor:** Consolidate chat-policy constants and shared enforcement helpers.
 
+#### Re-plan Update (2026-02-07)
+- **Previous confidence:** 68%
+- **Updated confidence:** 80%
+  - Implementation: 80% — messaging transport exists in `apps/prime/src/contexts/messaging/ChatProvider.tsx:126`; consent fields exist in `apps/prime/src/types/guestProfile.ts:50`.
+  - Approach: 80% — baseline guardrails are separable and testable.
+  - Impact: 80% — required before TASK-45/TASK-46 production enablement.
+- **Investigation performed:**
+  - Repo: `apps/prime/src/contexts/messaging/ChatProvider.tsx:289`, `apps/prime/src/types/guestProfile.ts:50`, `apps/prime/functions/api/find-booking.ts:72`
+- **Decision / resolution:**
+  - Reuse proven rate-limit pattern from `find-booking` in chat Functions and keep chat features behind explicit production flag until moderation path is live.
+
 ### TASK-47: Owner KPI pre-aggregation pipeline (cost-safe analytics source)
 
 - **Type:** IMPLEMENT
 - **Effort:** M
-- **Confidence:** 73%
-  - Implementation: 72% — KPI formulas exist; incremental aggregate writer/read path is missing
-  - Approach: 74% — move owner metrics to pre-aggregated daily nodes instead of page-time scans
-  - Impact: 73% — reduces Firebase cost risk and improves dashboard latency/stability
+- **Confidence:** 80%
+  - Implementation: 80% — telemetry and analytics building blocks already exist; missing piece is Prime-specific aggregate writer.
+  - Approach: 80% — enforce aggregate-only owner reads to preserve Firebase cost safety.
+  - Impact: 80% — owner dashboards become cost-safe and operationally reliable.
 - **What exists:** KPI definitions in TASK-48/TASK-49 and event-level data sources from onboarding/readiness.
 - **What's missing:** Pre-aggregated daily KPI nodes and owner dashboard consumption contracts.
 - **Acceptance criteria:**
@@ -694,6 +797,17 @@ These tasks close the highest-risk release gaps identified in UX/security review
   - **Red:** Add failing aggregate/read-budget tests against scan-based baseline.
   - **Green:** Implement aggregate writer/reader and migrate owner dashboards.
   - **Refactor:** Normalize KPI schema/versioning and extract shared aggregation utilities.
+
+#### Re-plan Update (2026-02-07)
+- **Previous confidence:** 73%
+- **Updated confidence:** 80%
+  - Implementation: 80% — telemetry primitives already available in `packages/telemetry/src/index.ts:1`; owner UI entry exists in `apps/prime/src/app/owner/setup/page.tsx:4`.
+  - Approach: 80% — enforce strict aggregate node contract before KPI page build.
+  - Impact: 80% — protects against owner-side broad scans.
+- **Investigation performed:**
+  - Repo: `packages/telemetry/src/index.ts:21`, `packages/platform-core/src/analytics/index.ts:141`, `apps/prime/src/app/owner/setup/page.tsx:4`
+- **Decision / resolution:**
+  - Prime owns a lightweight daily aggregate writer; dashboards consume aggregate nodes only with no raw-scan fallback.
 
 ### TASK-50: Prime touched-file lint non-regression gate
 
@@ -1003,10 +1117,10 @@ These tasks close the highest-risk release gaps identified in UX/security review
 
 - **Type:** IMPLEMENT
 - **Effort:** S
-- **Confidence:** 75%
-  - Implementation: 72% — Firebase nodes `keycardDiscrepancies/`, `keycardTransfers/` exist but are staff-oriented. No guest-facing keycard type or component exists.
-  - Approach: 78% — simple read-only display card on arrival/post-check-in screen showing status + policy text
-  - Impact: 75% — new component, touches arrival screen; no staff write path needed initially
+- **Confidence:** 81%
+  - Implementation: 82% — guest-level loan data is already available (`loans/{uuid}` fetch path and typed transactions), so status derivation is straightforward.
+  - Approach: 81% — derive guest-facing status from occupant loan transactions (read-only) instead of staff discrepancy tables.
+  - Impact: 81% — isolated UI addition on arrival/booking surfaces with no new write path.
 - **What exists:** Firebase rules for keycard tracking (staff-facing). Staff lookup shows some keycard data. ArrivalHome has ID reminders section.
 - **What's missing:** Guest-facing keycard status type. Guest-facing component. Firebase read path for guest to see own keycard status.
 - **Acceptance criteria:**
@@ -1020,6 +1134,26 @@ These tasks close the highest-risk release gaps identified in UX/security review
   - **Test type:** unit (component)
   - **Test location:** `apps/prime/src/components/arrival/__tests__/KeycardStatus.test.tsx` (new)
   - **Run:** `pnpm --filter prime test -- --testPathPattern="KeycardStatus"`
+
+#### Re-plan Update (2026-02-07)
+- **Previous confidence:** 75%
+- **Updated confidence:** 81%
+  - Implementation: 82% — confirmed existing loan read path in `apps/prime/src/hooks/pureData/useFetchLoans.ts:15` and transaction schema in `apps/prime/src/types/loans.ts:40`.
+  - Approach: 81% — confirmed arrival UI insertion seam in `apps/prime/src/components/arrival/ArrivalHome.tsx:147`.
+  - Impact: 81% — no new cross-app write path required.
+- **Investigation performed:**
+  - Repo: `apps/prime/src/hooks/pureData/useFetchLoans.ts:15`, `apps/prime/src/types/loans.ts:40`, `apps/prime/src/components/arrival/ArrivalHome.tsx:147`
+- **Decision / resolution:**
+  - Source guest keycard state from latest loan transaction semantics (`Keycard`/`no_card`) and keep Prime as display-only.
+- **Changes to task:**
+  - Acceptance: add explicit mapping of latest loan transaction to guest status/lost-card notice.
+  - Rollout/rollback: hide keycard card behind a local feature flag if legacy loan data is ambiguous in production.
+
+#### Build Completion (2026-02-07)
+- **Status:** Complete
+- **Implementation notes:** Added keycard status derivation from loan transactions (`apps/prime/src/lib/preArrival/keycardStatus.ts`) and rendered guest-facing status cards in arrival + checked-in flows (`apps/prime/src/components/arrival/KeycardStatus.tsx`, `apps/prime/src/components/homepage/GuardedHomeExperience.tsx`).
+- **Validation evidence:** `pnpm --filter @apps/prime test -- --testPathPattern="KeycardStatus|keycardStatus"` — PASS.
+- **Confidence reassessment:** 81% → 84% (status derivation + UI behavior now under unit coverage).
 
 ## Phase 2B: UX + Shared-Data Enhancements (new from UX/UI review)
 
@@ -1047,14 +1181,20 @@ These tasks close the highest-risk release gaps identified in UX/security review
   - **Test location:** `apps/prime/src/app/(guarded)/__tests__/home-information-architecture.test.tsx` (new)
   - **Run:** `pnpm --filter prime test -- --testPathPattern="home-information-architecture|guarded/home"`
 
+#### Build Completion (2026-02-07)
+- **Status:** Complete
+- **Implementation notes:** Confirmed and hardened arrival-state-first home composition with explicit checked-in keycard context in `apps/prime/src/components/homepage/GuardedHomeExperience.tsx`.
+- **Validation evidence:** `pnpm --filter @apps/prime test -- --testPathPattern="home-information-architecture"` — PASS.
+- **Confidence reassessment:** 80% → 84% (home IA behavior now contract-tested).
+
 ### TASK-14: Brikette route source-of-truth integration
 
 - **Type:** IMPLEMENT
 - **Effort:** M
-- **Confidence:** 72%
-  - Implementation: 70% — Prime route UI is ready, but route data is duplicated and can drift
-  - Approach: 74% — add a canonical mapping adapter from Brikette route metadata into Prime's route cards
-  - Impact: 72% — moderate cross-app coupling, major long-term content consistency gain
+- **Confidence:** 82%
+  - Implementation: 83% — Prime already consumes route slugs/URLs and Brikette already exposes canonical route-guide keys/slugs.
+  - Approach: 82% — add a deterministic adapter + drift test, keeping Prime copy/UI composition local.
+  - Impact: 82% — bounded cross-app coupling with strong anti-drift benefit.
 - **What exists:** Prime has hardcoded route summaries in `apps/prime/src/data/routes.ts`. Brikette has canonical route guide mapping in `apps/brikette/src/data/how-to-get-here/routeGuides.ts`.
 - **What's missing:** A deterministic sync/adapter so Prime route options stay aligned with Brikette guides.
 - **Acceptance criteria:**
@@ -1070,18 +1210,37 @@ These tasks close the highest-risk release gaps identified in UX/security review
   - **Test location:** `apps/prime/src/data/__tests__/routes-canonical-sync.test.ts` (new)
   - **Run:** `pnpm --filter prime test -- --testPathPattern="routes-canonical-sync|routes"`
 
+#### Re-plan Update (2026-02-07)
+- **Previous confidence:** 72%
+- **Updated confidence:** 82%
+  - Implementation: 83% — canonical mapping exists in `apps/brikette/src/data/how-to-get-here/routeGuides.ts:39`; Prime route source is centralized in `apps/prime/src/data/routes.ts:38`.
+  - Approach: 82% — integration seam confirmed at `apps/prime/src/app/(guarded)/routes/page.tsx:52`.
+  - Impact: 82% — drift risk can be bounded by one contract test.
+- **Investigation performed:**
+  - Repo: `apps/brikette/src/data/how-to-get-here/routeGuides.ts:39`, `apps/brikette/src/routing/routeInventory.ts:63`, `apps/prime/src/data/routes.ts:38`
+- **Decision / resolution:**
+  - Chosen approach A: Brikette keys/slugs are canonical; Prime keeps guest-friendly summaries but must derive canonical URL/slug set from Brikette. Rejected approach B (fully hardcoded Prime list) due drift and duplicate maintenance.
+- **Changes to task:**
+  - Acceptance: explicitly require adapter-generated canonical slug set before Prime render mapping.
+
+#### Build Completion (2026-02-07)
+- **Status:** Complete
+- **Implementation notes:** Added canonical inbound slug artifact (`apps/prime/src/data/routesCanonical.ts`) and switched Prime route URLs to canonical URL generation in `apps/prime/src/data/routes.ts`.
+- **Validation evidence:** `pnpm --filter @apps/prime test -- --testPathPattern="routes-canonical-sync"` — PASS.
+- **Confidence reassessment:** 82% → 85% (drift contract now enforces Brikette route parity).
+
 ### TASK-15: Staff arrival signal surface (shared readiness data)
 
 - **Type:** IMPLEMENT
 - **Effort:** M
-- **Confidence:** 76%
-  - Implementation: 78% — shared fields exist (`preArrival`, `cityTax`, check-in code lookup); needs aggregation surface
-  - Approach: 76% — add staff endpoint + UI badges for ETA/cash/route readiness from the same guest data
-  - Impact: 74% — improves reception throughput without changing guest workflow
+- **Confidence:** 82%
+  - Implementation: 83% — existing lookup endpoint already joins bookings + preArrival and returns ETA/payment fields.
+  - Approach: 82% — extend existing lookup payload with readiness signals before introducing a separate list endpoint.
+  - Impact: 82% — direct reception benefit with minimal blast radius.
 - **What exists:** Staff lookup already displays ETA and payment totals per code. Guest checklist captures readiness dimensions in `preArrival/{uuid}`.
 - **What's missing:** Staff-facing aggregated arrival signal view and standardized readiness badges.
 - **Acceptance criteria:**
-  1. New staff endpoint returns same-day arrival readiness signals (ETA, cashPrepared, routePlanned, rulesReviewed, locationSaved)
+  1. Staff lookup payload includes readiness signals (`eta`, `cashPrepared`, `routePlanned`, `rulesReviewed`, `locationSaved`) sourced from shared nodes
   2. Staff lookup/check-in UI shows readiness badges with clear status colors
   3. Endpoint response is minimum-PII and rate-limited
   4. Data comes from existing shared nodes (no duplicate source-of-truth)
@@ -1094,14 +1253,33 @@ These tasks close the highest-risk release gaps identified in UX/security review
   - **Test location:** `apps/prime/functions/__tests__/arrival-signals.test.ts` (new), `apps/prime/src/app/staff-lookup/__tests__/readiness-badges.test.tsx` (new)
   - **Run:** `pnpm --filter prime test -- --testPathPattern="arrival-signals|readiness-badges|staff-lookup"`
 
+#### Re-plan Update (2026-02-07)
+- **Previous confidence:** 76%
+- **Updated confidence:** 82%
+  - Implementation: 83% — existing join points validated in `apps/prime/functions/api/check-in-lookup.ts:81` and `apps/prime/src/app/staff-lookup/StaffLookupClient.tsx:213`.
+  - Approach: 82% — reuses current staff lookup route/UI to avoid endpoint sprawl.
+  - Impact: 82% — no new guest-facing dependency; improves desk decision speed.
+- **Investigation performed:**
+  - Repo: `apps/prime/functions/api/check-in-lookup.ts:90`, `apps/prime/src/app/staff-lookup/StaffLookupClient.tsx:213`, `apps/prime/src/hooks/usePreArrivalState.ts:125`
+- **Decision / resolution:**
+  - Extend `/api/check-in-lookup` with readiness fields first, then add same-day queue endpoint only if staff throughput requires it.
+- **Changes to task:**
+  - Acceptance: criterion 1 now targets lookup-payload enrichment as the primary delivery.
+
+#### Build Completion (2026-02-07)
+- **Status:** Complete
+- **Implementation notes:** Enriched `/api/check-in-lookup` with readiness + personalization payload, added rate limiting, and surfaced readiness badges in staff check-in surfaces (`apps/prime/functions/api/check-in-lookup.ts`, `apps/prime/src/components/check-in/StaffReadinessBadges.tsx`, `apps/prime/src/app/staff-lookup/StaffLookupClient.tsx`, `apps/prime/src/app/checkin/CheckInClient.tsx`).
+- **Validation evidence:** `pnpm --filter @apps/prime test -- functions/__tests__/arrival-signals.test.ts && pnpm --filter @apps/prime test -- --testPathPattern="readiness-badges"` — PASS.
+- **Confidence reassessment:** 82% → 84% (payload + UI + rate-limit behavior validated).
+
 ### TASK-48: Owner arrival insights dashboard + KPI feed
 
 - **Type:** IMPLEMENT
 - **Effort:** M
-- **Confidence:** 70%
-  - Implementation: 68% — data exists but no owner-focused aggregation endpoint/view
-  - Approach: 72% — compute daily KPIs from shared booking/check-in/preArrival data and expose a lightweight owner dashboard
-  - Impact: 70% — business-level visibility for staffing and ops decisions
+- **Confidence:** 80%
+  - Implementation: 80% — owner route scaffold exists and KPI inputs are already captured across bookings/preArrival/check-in data.
+  - Approach: 80% — bind dashboard reads to TASK-47 aggregate nodes only.
+  - Impact: 80% — direct owner visibility without additional guest flow risk.
 - **What exists:** Prime already orchestrates booking/financial/operational data for guests; reception has booking/search data pipelines.
 - **What's missing:** Owner-level insight surface summarizing readiness and arrival execution quality, backed by pre-aggregated KPI nodes from TASK-47 (not raw broad scans).
 - **Acceptance criteria:**
@@ -1116,6 +1294,17 @@ These tasks close the highest-risk release gaps identified in UX/security review
   - **Test type:** unit (aggregator + page component)
   - **Test location:** `apps/prime/src/lib/owner/__tests__/arrivalKpis.test.ts` (new), `apps/prime/src/app/owner/__tests__/page.test.tsx` (new)
   - **Run:** `pnpm --filter prime test -- --testPathPattern="arrivalKpis|owner/page"`
+
+#### Re-plan Update (2026-02-07)
+- **Previous confidence:** 70%
+- **Updated confidence:** 80%
+  - Implementation: 80% — owner surface entry exists in `apps/prime/src/app/owner/setup/page.tsx:4`.
+  - Approach: 80% — implementation constrained to aggregate read path from TASK-47 (no raw scan fallback).
+  - Impact: 80% — KPI visibility can ship independently from social feature rollout.
+- **Investigation performed:**
+  - Repo: `apps/prime/src/app/owner/setup/page.tsx:4`, `apps/prime/src/hooks/dataOrchestrator/useUnifiedBookingData.ts:146`, `apps/prime/src/hooks/dataOrchestrator/useDateInfo.ts:167`
+- **Decision / resolution:**
+  - Deliver `/owner` KPI cards from pre-aggregated nodes; keep `/owner/setup` as configuration/support page.
 
 ## Phase 2C: 9/10 Activation + Engagement Optimization
 
@@ -1145,6 +1334,12 @@ This phase applies proven onboarding/activation patterns (aha-first flow, person
   - **Test location:** `apps/prime/src/app/portal/__tests__/guided-onboarding.test.tsx` (new)
   - **Run:** `pnpm --filter prime test -- --testPathPattern="guided-onboarding|portal"`
 
+#### Build Completion (2026-02-07)
+- **Status:** Complete
+- **Implementation notes:** Replaced passive `/portal` redirect with guided onboarding orchestration (`apps/prime/src/app/portal/page.tsx`, `apps/prime/src/components/portal/GuidedOnboardingFlow.tsx`) while preserving fast-path redirect for already-completed onboarding.
+- **Validation evidence:** `pnpm --filter @apps/prime test -- --testPathPattern="guided-onboarding|portal/__tests__/page"` — PASS.
+- **Confidence reassessment:** 84% → 85% (guided flow entry + completion path verified).
+
 ### TASK-17: Personalized onboarding path + smart defaults
 
 - **Type:** IMPLEMENT
@@ -1169,6 +1364,12 @@ This phase applies proven onboarding/activation patterns (aha-first flow, person
   - **Test location:** `apps/prime/src/lib/preArrival/__tests__/personalization.test.ts`, `apps/prime/src/components/pre-arrival/__tests__/PersonalizationFlow.test.tsx` (new)
   - **Run:** `pnpm --filter prime test -- --testPathPattern="personalization|pre-arrival"`
 
+#### Build Completion (2026-02-07)
+- **Status:** Complete
+- **Implementation notes:** Added personalization model fields in pre-arrival state, smart defaults for route/ETA, persistence through onboarding mutators, and dashboard edit entrypoint (`apps/prime/src/types/preArrival.ts`, `apps/prime/src/lib/preArrival/personalization.ts`, `apps/prime/src/components/pre-arrival/ReadinessDashboard.tsx`).
+- **Validation evidence:** `pnpm --filter @apps/prime test -- --testPathPattern="personalization|PersonalizationFlow"` — PASS.
+- **Confidence reassessment:** 80% → 83% (defaults and context propagation now exercised by tests).
+
 ### TASK-18: Trust cues + value framing layer
 
 - **Type:** IMPLEMENT
@@ -1192,6 +1393,12 @@ This phase applies proven onboarding/activation patterns (aha-first flow, person
   - **Test location:** `apps/prime/src/app/g/__tests__/trust-cues.test.tsx` (new), `apps/prime/src/components/pre-arrival/__tests__/value-framing.test.tsx` (new)
   - **Run:** `pnpm --filter prime test -- --testPathPattern="trust-cues|value-framing"`
 
+#### Build Completion (2026-02-07)
+- **Status:** Complete
+- **Implementation notes:** Added benefit-led + privacy cues to verification and onboarding screens plus readiness confidence framing (`apps/prime/src/app/g/page.tsx`, `apps/prime/src/components/portal/GuidedOnboardingFlow.tsx`, `apps/prime/src/components/pre-arrival/ReadinessDashboard.tsx`).
+- **Validation evidence:** `pnpm --filter @apps/prime test -- --testPathPattern="trust-cues|value-framing"` — PASS.
+- **Confidence reassessment:** 82% → 84% (trust/value copy now covered by render tests).
+
 ### TASK-19: Progress psychology + celebration loops
 
 - **Type:** IMPLEMENT
@@ -1214,6 +1421,12 @@ This phase applies proven onboarding/activation patterns (aha-first flow, person
   - **Test type:** unit (state transitions + render)
   - **Test location:** `apps/prime/src/components/pre-arrival/__tests__/progress-milestones.test.tsx` (new)
   - **Run:** `pnpm --filter prime test -- --testPathPattern="progress-milestones|readiness"`
+
+#### Build Completion (2026-02-07)
+- **Status:** Complete
+- **Implementation notes:** Added milestone progress bars, lightweight celebration feedback, and completion-aware next-action messaging across onboarding/readiness (`apps/prime/src/components/pre-arrival/ReadinessDashboard.tsx`, `apps/prime/src/components/pre-arrival/NextActionCard.tsx`, `apps/prime/src/lib/preArrival/completionFeedback.ts`).
+- **Validation evidence:** `pnpm --filter @apps/prime test -- --testPathPattern="progress-milestones|readiness"` — PASS.
+- **Confidence reassessment:** 85% → 87% (progress/celebration behavior validated including duplicate suppression case).
 
 ### TASK-20: Contextual utility actions (maps/calendar/support)
 
@@ -1407,10 +1620,10 @@ This phase closes central UI/theming gaps so Prime can consume shared platform c
 
 - **Type:** IMPLEMENT
 - **Effort:** M
-- **Confidence:** 74%
-  - Implementation: 72% — required event and KPI sources mostly exist or are planned in TASK-15/TASK-48/TASK-21
-  - Approach: 75% — aggregate into one owner-facing business scorecard and weekly review loop
-  - Impact: 75% — converts UX gains into measurable operational and financial outcomes
+- **Confidence:** 80%
+  - Implementation: 80% — scorecard inputs are now explicitly mapped to TASK-47 aggregate nodes and staff/activation surfaces.
+  - Approach: 80% — one aggregate-driven owner scorecard + weekly ops cadence template.
+  - Impact: 80% — closes the loop from guest UX to desk throughput and business outcomes.
 - **What exists:** Planned/partial metrics for guest activation, readiness, and arrival handling.
 - **What's missing:** Unified scorecard that links guest UX engagement to reception efficiency and owner-level business decisions, with KPI inputs sourced from TASK-47 aggregate nodes.
 - **Acceptance criteria:**
@@ -1425,6 +1638,17 @@ This phase closes central UI/theming gaps so Prime can consume shared platform c
   - **Test type:** unit (aggregation + threshold logic) + page component
   - **Test location:** `apps/prime/src/lib/owner/__tests__/businessScorecard.test.ts` (new), `apps/prime/src/app/owner/__tests__/scorecard-page.test.tsx` (new)
   - **Run:** `pnpm --filter prime test -- --testPathPattern="businessScorecard|scorecard-page|owner"`
+
+#### Re-plan Update (2026-02-07)
+- **Previous confidence:** 74%
+- **Updated confidence:** 80%
+  - Implementation: 80% — scorecard dependencies are now explicit and bounded (`TASK-15`, `TASK-21`, `TASK-47`, `TASK-48`).
+  - Approach: 80% — aggregate-only lineage prevents recomputation scans and dashboard drift.
+  - Impact: 80% — creates operator action loop tied to quantified targets.
+- **Investigation performed:**
+  - Repo: `apps/prime/src/app/owner/setup/page.tsx:4`, `apps/prime/src/hooks/dataOrchestrator/useUnifiedBookingData.ts:146`, `packages/platform-core/src/analytics/index.ts:141`
+- **Decision / resolution:**
+  - Scorecard will be sourced from KPI aggregate nodes plus documented lineage metadata; no direct raw-event queries in UI.
 
 ## Phase 2E: Post-Onboarding/In-Stay Guest Operations (new)
 
@@ -1749,34 +1973,92 @@ These tasks are valuable but blocked or lower priority. Preserved with "what wou
 
 - **Type:** IMPLEMENT
 - **Effort:** M
-- **Confidence:** 65%
-  - Implementation: 60% — `bcryptjs` is a dependency; `userProfiles` Firebase node has role data. But current stub (`PinAuthProvider`) is deeply integrated.
-  - Approach: 65% — replace PIN stub with bcrypt comparison against `userProfiles/{uid}.pin` (hashed). Need Firebase Auth or custom token system for server-side validation.
-  - Impact: 70% — touches PinAuthProvider, staff lookup, admin login, check-in page
+- **Confidence:** 70%
+  - Implementation: 70% — role and PIN primitives already exist, but migration touches both UI guards and API boundaries.
+  - Approach: 72% — staged replacement (interim secure gate first, then full auth provider swap) is clear.
+  - Impact: 70% — broad auth surface requires careful rollout.
+- **Test contract:**
+  - **TC-01:** Valid staff PIN hash comparison returns authenticated staff session with role claims
+  - **TC-02:** Invalid PIN attempt returns deterministic auth failure and preserves lockout counters
+  - **TC-03:** Staff API call without valid auth token returns 401/403 after gate replacement
+  - **Test type:** unit/integration
+  - **Test location:** `apps/prime/src/contexts/messaging/__tests__/PinAuthProvider.replacement.test.tsx` (new), `apps/prime/functions/__tests__/staff-auth-token-gate.test.ts` (new)
+  - **Run:** `pnpm --filter prime test -- --testPathPattern="PinAuthProvider.replacement|staff-auth-token-gate"`
 - **What would make this ≥80%:** Spike on whether to use Firebase Auth (proper) or keep custom PIN-to-Firebase approach. Decide if staff auth needs server-side validation (Functions) or client-only is acceptable.
 - **What would make this ≥90%:** Implement Firebase Auth with custom claims for role-based access. Add server-side middleware to Functions that validates staff tokens.
+
+#### Re-plan Update (2026-02-07)
+- **Previous confidence:** 65%
+- **Updated confidence:** 70%
+  - Implementation: 70% — current role model confirmed in `apps/prime/src/contexts/messaging/PinAuthProvider.tsx:7`.
+  - Approach: 72% — helper gate semantics already defined in `apps/prime/src/lib/checkin/helpers.ts:9`.
+  - Impact: 70% — still cross-cutting and deferred.
+- **Investigation performed:**
+  - Repo: `apps/prime/src/contexts/messaging/PinAuthProvider.tsx:17`, `apps/prime/src/lib/checkin/helpers.ts:9`, `apps/prime/src/app/staff-lookup/StaffLookupClient.tsx:32`
+- **Decision / resolution:**
+  - Keep deferred, but test contract is now explicit and ready for `/re-plan` follow-up before implementation starts.
 
 ### TASK-52: Campaign/trigger messaging orchestration — Deferred
 
 - **Type:** IMPLEMENT
 - **Effort:** L
-- **Confidence:** 55%
-  - Implementation: 50% — trigger schemas exist (`lib/messaging/triggers.ts` with 4 event types) but no processing pipeline, no email/SMS integration, no Cloud Functions
-  - Approach: 55% — need to decide on provider (email: existing `@acme/email`? WhatsApp: Business API? SMS: Twilio?)
-  - Impact: 60% — cross-system (Firebase triggers → email/SMS provider → guest notification)
+- **Confidence:** 62%
+  - Implementation: 62% — trigger/event schemas exist and `@acme/email` provider stack is available in-repo.
+  - Approach: 64% — start email-first with one trigger path; defer SMS/WhatsApp fanout.
+  - Impact: 62% — still multi-system and operationally sensitive.
+- **Test contract:**
+  - **TC-01:** `booking.confirmed` queue record validates schema and enqueues once per booking
+  - **TC-02:** Worker processes `arrival.48hours` queue event and dispatches one email via provider adapter
+  - **TC-03:** Provider transient failure path retries and records `retryCount`/`lastError`
+  - **TC-04:** Permanent failure path marks event failed without duplicate sends
+  - **TC-05:** Idempotency guard prevents duplicate send when same eventId is reprocessed
+  - **TC-06:** Unsupported provider config fails fast with actionable diagnostics
+  - **Test type:** contract/integration
+  - **Test location:** `apps/prime/src/lib/messaging/__tests__/queue-processor.test.ts` (new), `apps/prime/functions/__tests__/messaging-dispatcher.test.ts` (new), `packages/email/src/__tests__/providerFunctions.test.ts` (extend)
+  - **Run:** `pnpm --filter prime test -- --testPathPattern="queue-processor|messaging-dispatcher" && pnpm --filter @acme/email test -- --testPathPattern="providerFunctions"`
 - **What would make this ≥80%:** Select messaging provider. Create spike for one trigger (e.g., "48h before arrival" email). Confirm `@acme/email` can be used from Cloudflare Functions without cyclic dependency.
 - **What would make this ≥90%:** Working prototype of booking-confirmed → email flow. Provider API keys configured. Template rendering tested.
+
+#### Re-plan Update (2026-02-07)
+- **Previous confidence:** 55%
+- **Updated confidence:** 62%
+  - Implementation: 62% — trigger schema confirmed in `apps/prime/src/lib/messaging/triggers.ts:121`; provider package exists at `packages/email/package.json` (`@acme/email`).
+  - Approach: 64% — email-first rollout is now explicit; other channels remain deferred.
+  - Impact: 62% — significant but deferred operational blast radius.
+- **Investigation performed:**
+  - Repo: `apps/prime/src/lib/messaging/useMessagingQueue.ts:47`, `apps/prime/src/lib/messaging/triggers.ts:134`, `packages/email/src/index.ts:7`
+- **Decision / resolution:**
+  - Prioritize transactional email pipeline using existing `@acme/email` adapters; defer SMS/WhatsApp until email path is production-stable.
 
 ### TASK-53: PWA offline essentials — Deferred
 
 - **Type:** IMPLEMENT
 - **Effort:** M
-- **Confidence:** 60%
-  - Implementation: 60% — `components/pwa/ServiceWorker.tsx`, `OfflineIndicator.tsx`, `lib/pwa/registerSW.ts` exist. No `sw.js` in public/. No registration in app entry.
-  - Approach: 62% — standard service worker with workbox; cache arrival screen, QR code, check-in code
-  - Impact: 58% — touches app entry point, adds service worker lifecycle management
+- **Confidence:** 68%
+  - Implementation: 68% — service worker registration utilities and offline UX components already exist.
+  - Approach: 70% — start with arrival-surface caching only, then expand.
+  - Impact: 68% — still broad, but rollout can be staged safely.
+- **Test contract:**
+  - **TC-01:** Service worker registers successfully in supported browsers and is skipped server-side
+  - **TC-02:** Arrival essentials cache contains check-in route shell and static assets after first load
+  - **TC-03:** Offline navigation to cached arrival route renders fallback-capable UI
+  - **TC-04:** Cache version bump invalidates stale assets deterministically
+  - **Test type:** integration/e2e
+  - **Test location:** `apps/prime/src/lib/pwa/__tests__/registerSW.test.ts` (extend), `apps/prime/cypress/e2e/pwa-offline-arrival.cy.ts` (new)
+  - **Run:** `pnpm --filter prime test -- --testPathPattern="registerSW|useOnlineStatus|OfflineIndicator" && pnpm exec cypress run --config-file apps/prime/cypress.config.ts --spec apps/prime/cypress/e2e/pwa-offline-arrival.cy.ts`
 - **What would make this ≥80%:** Create minimal `sw.js` with workbox and test offline arrival screen. Confirm static export + service worker works on Cloudflare Pages.
 - **What would make this ≥90%:** Full offline test with airplane mode on real device. Cache invalidation strategy confirmed.
+
+#### Re-plan Update (2026-02-07)
+- **Previous confidence:** 60%
+- **Updated confidence:** 68%
+  - Implementation: 68% — registration and status primitives exist in `apps/prime/src/lib/pwa/registerSW.ts:1` and `apps/prime/src/lib/pwa/useOnlineStatus.ts:42`.
+  - Approach: 70% — offline-first scope constrained to arrival essentials.
+  - Impact: 68% — deferred due lifecycle risk but clearer path.
+- **Investigation performed:**
+  - Repo: `apps/prime/src/lib/pwa/registerSW.ts:137`, `apps/prime/src/components/pwa/OfflineIndicator.tsx:22`, `apps/prime/public/_redirects:1`
+- **Decision / resolution:**
+  - Keep deferred; when started, implement cache/version tests before enabling any production service worker registration.
 
 ## Decision Log
 
@@ -1806,6 +2088,11 @@ These tasks are valuable but blocked or lower priority. Preserved with "what wou
 | 2026-02-07 | Require pre-aggregated owner KPI sources | Prevents high-cost RTDB scans for owner dashboards and aligns with Firebase cost-safety goals. |
 | 2026-02-07 | Add chat safety baseline before social rollout | Guest messaging requires rate limits, moderation/reporting, retention policy, and feature-flag governance. |
 | 2026-02-07 | Add changed-file lint non-regression gate | Allows quality enforcement on touched files without blocking all work on legacy lint debt. |
+| 2026-02-07 | Derive guest keycard status from loan transactions, not staff discrepancy tables | Guest-facing status needs occupant-level semantics; staff discrepancy ledgers are operational and not guest-safe source material. |
+| 2026-02-07 | Enrich existing staff lookup payload before adding new arrival-signal endpoints | Reuses proven endpoint/UI path and reduces API surface area while preserving throughput value. |
+| 2026-02-07 | Gate staff/owner surfaces with shared production default-deny utility | Current route checks are UX-only and must be backed by server-side enforcement. |
+| 2026-02-07 | Run Prime e2e as a minimal three-journey release gate | No-dead-end funnel and expiry recovery require integration proof beyond unit tests. |
+| 2026-02-07 | Adopt email-first campaign orchestration path for deferred messaging automation | Existing `@acme/email` package materially reduces unknowns versus multi-channel rollout in first implementation pass. |
 
 ## Risks and Open Questions
 

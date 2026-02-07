@@ -30,6 +30,27 @@ async function pathExists(targetPath: string): Promise<boolean> {
   }
 }
 
+type PathType = "file" | "directory" | "missing";
+
+async function getPathType(targetPath: string): Promise<PathType> {
+  try {
+    const stats = await stat(targetPath);
+    if (stats.isDirectory()) return "directory";
+    if (stats.isFile()) return "file";
+    return "missing";
+  } catch (error: unknown) {
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "code" in error &&
+      error.code === "ENOENT"
+    ) {
+      return "missing";
+    }
+    throw error;
+  }
+}
+
 function parseOutDirArg(): string {
   const outDirArgPrefix = "--out-dir=";
   const outDirArg = process.argv.find((arg) => arg.startsWith(outDirArgPrefix));
@@ -46,24 +67,47 @@ async function main(): Promise<void> {
   const missingSources: string[] = [];
 
   for (const pair of aliasPairs) {
-    const sourcePath = path.join(outDir, trimLeadingSlash(pair.sourceBasePath));
-    const targetPath = path.join(outDir, trimLeadingSlash(pair.targetBasePath));
+    const sourceBasePath = path.join(
+      outDir,
+      trimLeadingSlash(pair.sourceBasePath)
+    );
+    const targetBasePath = path.join(
+      outDir,
+      trimLeadingSlash(pair.targetBasePath)
+    );
+    const sourceHtmlPath = `${sourceBasePath}.html`;
+    const targetHtmlPath = `${targetBasePath}.html`;
 
-    if (!(await pathExists(targetPath))) {
+    const targetBaseType = await getPathType(targetBasePath);
+    const targetHtmlType = await getPathType(targetHtmlPath);
+
+    if (targetBaseType === "missing" && targetHtmlType === "missing") {
       missingSources.push(
         `${pair.targetBasePath} (for ${pair.sourceBasePath})`
       );
       continue;
     }
 
-    if (await pathExists(sourcePath)) {
-      skipped += 1;
-      continue;
+    if (targetHtmlType === "file") {
+      if (await pathExists(sourceHtmlPath)) {
+        skipped += 1;
+      } else {
+        await mkdir(path.dirname(sourceHtmlPath), { recursive: true });
+        await cp(targetHtmlPath, sourceHtmlPath);
+        created += 1;
+      }
     }
 
-    await mkdir(path.dirname(sourcePath), { recursive: true });
-    await cp(targetPath, sourcePath, { recursive: true });
-    created += 1;
+    if (targetBaseType === "directory") {
+      const sourceBaseType = await getPathType(sourceBasePath);
+      if (sourceBaseType !== "missing") {
+        skipped += 1;
+      } else {
+        await mkdir(path.dirname(sourceBasePath), { recursive: true });
+        await cp(targetBasePath, sourceBasePath, { recursive: true });
+        created += 1;
+      }
+    }
   }
 
   if (missingSources.length > 0) {

@@ -6,11 +6,7 @@
  */
 
 import type { Route, RouteOrigin } from '../types/routes';
-
-/**
- * Base URL for Brikette how-to-get-here pages.
- */
-const BRIKETTE_BASE_URL = 'https://www.hostelbrikette.com';
+import { toPrimeCanonicalRouteUrl } from './routesCanonical';
 
 /**
  * Available origin locations for route selection.
@@ -69,7 +65,7 @@ export const ROUTES_TO_POSITANO: Route[] = [
     costRange: { min: 15, max: 25 },
     warnings: ['Book Curreri bus ahead in summer', 'SITA buses can be very crowded'],
     recommended: true,
-    briketteUrl: `${BRIKETTE_BASE_URL}/en/how-to-get-here/naples-airport-positano-bus`,
+    briketteUrl: toPrimeCanonicalRouteUrl('naples-airport-positano-bus'),
   },
 
   // === FROM NAPLES CENTRALE (TRAIN STATION) ===
@@ -104,7 +100,7 @@ export const ROUTES_TO_POSITANO: Route[] = [
     costRange: { min: 12, max: 20 },
     warnings: ['Watch for pickpockets on Circumvesuviana'],
     recommended: true,
-    briketteUrl: `${BRIKETTE_BASE_URL}/en/how-to-get-here/naples-center-train-bus`,
+    briketteUrl: toPrimeCanonicalRouteUrl('naples-center-train-bus'),
   },
   {
     slug: 'naples-center-positano-ferry',
@@ -129,7 +125,7 @@ export const ROUTES_TO_POSITANO: Route[] = [
     totalDurationMinutes: 85,
     costRange: { min: 25, max: 40 },
     warnings: ['Ferries may be cancelled in rough weather', 'Limited winter service'],
-    briketteUrl: `${BRIKETTE_BASE_URL}/en/how-to-get-here/naples-center-positano-ferry`,
+    briketteUrl: toPrimeCanonicalRouteUrl('naples-center-positano-ferry'),
   },
 
   // === FROM SORRENTO ===
@@ -157,7 +153,7 @@ export const ROUTES_TO_POSITANO: Route[] = [
     costRange: { min: 3, max: 5 },
     warnings: ['Very crowded in peak season', 'Sit on right side for sea views'],
     recommended: true,
-    briketteUrl: `${BRIKETTE_BASE_URL}/en/how-to-get-here/sorrento-positano-bus`,
+    briketteUrl: toPrimeCanonicalRouteUrl('sorrento-positano-bus'),
   },
   {
     slug: 'sorrento-positano-ferry',
@@ -181,7 +177,7 @@ export const ROUTES_TO_POSITANO: Route[] = [
     totalDurationMinutes: 35,
     costRange: { min: 18, max: 25 },
     warnings: ['Seasonal service (April-October)', 'Weather dependent'],
-    briketteUrl: `${BRIKETTE_BASE_URL}/en/how-to-get-here/sorrento-positano-ferry`,
+    briketteUrl: toPrimeCanonicalRouteUrl('sorrento-positano-ferry'),
   },
 
   // === FROM AMALFI ===
@@ -206,7 +202,7 @@ export const ROUTES_TO_POSITANO: Route[] = [
     ],
     totalDurationMinutes: 30,
     costRange: { min: 3, max: 5 },
-    briketteUrl: `${BRIKETTE_BASE_URL}/en/how-to-get-here/amalfi-positano-bus`,
+    briketteUrl: toPrimeCanonicalRouteUrl('amalfi-positano-bus'),
   },
   {
     slug: 'amalfi-positano-ferry',
@@ -230,7 +226,7 @@ export const ROUTES_TO_POSITANO: Route[] = [
     totalDurationMinutes: 25,
     costRange: { min: 12, max: 18 },
     warnings: ['Seasonal service'],
-    briketteUrl: `${BRIKETTE_BASE_URL}/en/how-to-get-here/amalfi-positano-ferry`,
+    briketteUrl: toPrimeCanonicalRouteUrl('amalfi-positano-ferry'),
   },
 
   // === FROM SALERNO ===
@@ -257,7 +253,7 @@ export const ROUTES_TO_POSITANO: Route[] = [
     totalDurationMinutes: 90,
     costRange: { min: 4, max: 8 },
     recommended: true,
-    briketteUrl: `${BRIKETTE_BASE_URL}/en/how-to-get-here/salerno-positano-bus`,
+    briketteUrl: toPrimeCanonicalRouteUrl('salerno-positano-bus'),
   },
   {
     slug: 'salerno-positano-ferry',
@@ -281,7 +277,7 @@ export const ROUTES_TO_POSITANO: Route[] = [
     totalDurationMinutes: 70,
     costRange: { min: 15, max: 22 },
     warnings: ['Seasonal service'],
-    briketteUrl: `${BRIKETTE_BASE_URL}/en/how-to-get-here/salerno-positano-ferry`,
+    briketteUrl: toPrimeCanonicalRouteUrl('salerno-positano-ferry'),
   },
 
   // === FROM CAPRI ===
@@ -307,7 +303,7 @@ export const ROUTES_TO_POSITANO: Route[] = [
     totalDurationMinutes: 50,
     costRange: { min: 22, max: 30 },
     warnings: ['Limited departures', 'Seasonal service'],
-    briketteUrl: `${BRIKETTE_BASE_URL}/en/how-to-get-here/capri-positano-ferry`,
+    briketteUrl: toPrimeCanonicalRouteUrl('capri-positano-ferry'),
   },
 
   // === FROM RAVELLO ===
@@ -339,7 +335,7 @@ export const ROUTES_TO_POSITANO: Route[] = [
     ],
     totalDurationMinutes: 55,
     costRange: { min: 4, max: 8 },
-    briketteUrl: `${BRIKETTE_BASE_URL}/en/how-to-get-here/ravello-positano-bus`,
+    briketteUrl: toPrimeCanonicalRouteUrl('ravello-positano-bus'),
   },
 ];
 

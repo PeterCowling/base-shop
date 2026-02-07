@@ -2,6 +2,7 @@ import { Fragment, type ReactNode } from "react";
 import Link from "next/link";
 import clsx from "clsx";
 
+import { isGuidePublished } from "@/data/guides.index";
 import type { LinkBinding, LinkTarget } from "@/lib/how-to-get-here/definitions";
 import { guideHref, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
 
@@ -28,7 +29,7 @@ export const LINK_CLASSNAME = clsx(
 export function resolveLinkTarget(
   target: LinkTarget,
   ctx: LinkContext,
-): { type: "internal"; to: string } | { type: "external"; href: string } {
+): { type: "internal"; to: string } | { type: "external"; href: string } | null {
   switch (target.type) {
     case "external":
       return { type: "external", href: target.href };
@@ -37,11 +38,17 @@ export function resolveLinkTarget(
     case "directions":
       return { type: "internal", to: `/${ctx.lang}/${ctx.howToSlug}/${target.slug}` };
     case "guide":
+      if (!isGuidePublished(target.guideKey)) {
+        return null;
+      }
       return { type: "internal", to: guideHref(ctx.lang, target.guideKey) };
     case "guidesSlug":
       {
         const key = resolveGuideKeyFromSlug(target.slug, ctx.lang);
         if (key) {
+          if (!isGuidePublished(key)) {
+            return null;
+          }
           return { type: "internal", to: guideHref(ctx.lang, key) };
         }
         return { type: "internal", to: `/${ctx.lang}/${ctx.guidesSlug}/${target.slug}` };
@@ -52,10 +59,13 @@ export function resolveLinkTarget(
 }
 
 export function renderLink(
-  target: { type: "internal"; to: string } | { type: "external"; href: string },
+  target: { type: "internal"; to: string } | { type: "external"; href: string } | null,
   children: ReactNode,
   key?: React.Key,
 ) {
+  if (!target) {
+    return <Fragment key={key}>{children}</Fragment>;
+  }
   if (target.type === "internal") {
     return (
       <Link key={key} href={target.to} prefetch={true} className={LINK_CLASSNAME}>

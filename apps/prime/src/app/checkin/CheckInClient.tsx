@@ -12,6 +12,7 @@ import { AlertCircle, ArrowLeft, Calendar, Clock, CreditCard, MapPin, User } fro
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import StaffReadinessBadges from '../../components/check-in/StaffReadinessBadges';
 import { usePinAuth } from '../../contexts/messaging/PinAuthProvider';
 import { extractCodeFromPathname, formatEtaWindow, isStaffRole } from '../../lib/checkin/helpers';
 import type { StaffCheckInView } from '../../types/checkInCode';
@@ -202,6 +203,11 @@ export default function CheckInPage() {
                 </p>
               </div>
             )}
+
+            <StaffReadinessBadges
+              readiness={guestData.readiness}
+              personalization={guestData.personalization}
+            />
 
             <div className="rounded-xl bg-green-50 p-4">
               <div className="flex items-center gap-2 text-green-600">

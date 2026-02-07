@@ -18,7 +18,7 @@ import {
 import { FC, memo, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { ChecklistProgress } from '../../types/preArrival';
-import { getNextChecklistItem } from '../../lib/preArrival';
+import { getChecklistItemLabel, getNextChecklistItem } from '../../lib/preArrival';
 
 interface NextActionCardProps {
   /** Current checklist progress */
@@ -32,6 +32,8 @@ interface NextActionCardProps {
   };
   /** Optional class name */
   className?: string;
+  /** Optional recently completed item for adaptive copy */
+  recentlyCompletedItem?: keyof ChecklistProgress | null;
 }
 
 /**
@@ -120,12 +122,16 @@ export const NextActionCard: FC<NextActionCardProps> = memo(function NextActionC
   checklist,
   onAction,
   cashAmounts,
+  recentlyCompletedItem,
   className = '',
 }) {
   const { t } = useTranslation('PreArrival');
   const nextItem = getNextChecklistItem(checklist);
   const content = getActionContent(nextItem, t, cashAmounts);
   const isComplete = !nextItem;
+  const recentCompletionPrefix = recentlyCompletedItem
+    ? `Nice work on ${getChecklistItemLabel(recentlyCompletedItem)}. `
+    : '';
 
   return (
     <div
@@ -156,6 +162,7 @@ export const NextActionCard: FC<NextActionCardProps> = memo(function NextActionC
 
         {/* Description */}
         <p className="mb-4 text-sm text-white/90">
+          {recentCompletionPrefix}
           {content.description}
         </p>
 

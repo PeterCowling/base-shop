@@ -1,5 +1,6 @@
 "use client";
 
+/* eslint-disable ds/absolute-parent-guard, ds/no-nonlayered-zindex -- HAND-0009 [ttl=2026-12-31]: hotspot overlay buttons positioned absolutely over 3D canvas with z-index layering */
 import { useEffect, useRef, useState } from "react";
 
 import { useTranslations } from "@acme/i18n";

@@ -91,7 +91,7 @@ describe("/help assistance index", () => {
     expect(quickHelpHeading.compareDocumentPosition(helpGuidesHeading) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
-  it("renders only the curated Helpful guides list", () => {
+  it("renders only published guides in the curated Helpful guides list", () => {
     renderWithProviders(<AssistanceIndexContent lang="en" />, { route: "/en/help" });
 
     const heading = screen.getByRole("heading", { name: "Helpful Guides" });
@@ -100,18 +100,24 @@ describe("/help assistance index", () => {
     const scoped = within(section as HTMLElement);
 
     const expected = [
-      "Age and accessibility",
-      "Booking basics",
-      "Defects and damages",
-      "Deposits and payment",
-      "Safety and security",
-      "Travel help",
       "SIMs, eSIMs, and ATMs",
       "What to pack",
       "Best time to visit",
     ];
     for (const label of expected) {
       expect(scoped.getByRole("link", { name: label })).toBeInTheDocument();
+    }
+
+    const hiddenDraftLabels = [
+      "Age and accessibility",
+      "Booking basics",
+      "Defects and damages",
+      "Deposits and payment",
+      "Safety and security",
+      "Travel help",
+    ];
+    for (const label of hiddenDraftLabels) {
+      expect(scoped.queryByRole("link", { name: label })).not.toBeInTheDocument();
     }
   });
 

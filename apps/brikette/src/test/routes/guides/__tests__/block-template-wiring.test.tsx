@@ -6,8 +6,7 @@
  * explicit route props > block-derived props > defaults
  */
 
-import { render, screen } from "@testing-library/react";
-import type { ReactNode } from "react";
+import { render } from "@testing-library/react";
 
 import GuideSeoTemplate from "@/routes/guides/_GuideSeoTemplate";
 import type { GuideManifestEntry } from "@/routes/guides/guide-manifest";
@@ -66,7 +65,22 @@ jest.mock("@/routes/guides/guide-seo/useHasLocalizedResources", () => ({
   useHasLocalizedResources: jest.fn(() => true),
 }));
 
-describe.skip("GuideSeoTemplate block wiring (TASK-01)", () => {
+jest.mock("react-i18next", () => ({
+  useTranslation: () => ({
+    t: (key: string, options?: { defaultValue?: string }) => options?.defaultValue ?? key,
+    i18n: { language: "en" },
+    ready: true,
+  }),
+  Trans: ({
+    defaults,
+    i18nKey,
+  }: {
+    defaults?: string;
+    i18nKey?: string;
+  }) => <>{defaults ?? i18nKey ?? null}</>,
+}));
+
+describe("GuideSeoTemplate block wiring (TASK-01)", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });

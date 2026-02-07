@@ -30,7 +30,7 @@ function formatLocaleSummary(duplicates: ReturnType<typeof findEnglishGuideDupli
     .join("\n");
 }
 
-describe.skip("guide locales should not contain raw English content", () => {
+describe("guide locales should not contain raw English content", () => {
   it("reports English guide content copied into non-en locales", () => {
     const LOCALES_ROOT = path.resolve(__dirname, "../../../locales");
     const duplicates = findEnglishGuideDuplicates({ localesDir: LOCALES_ROOT });
@@ -56,7 +56,7 @@ describe.skip("guide locales should not contain raw English content", () => {
 
     if (BYPASS || !STRICT_MODE) {
       // eslint-disable-next-line no-console
-      console.warn("[WARN] " + message);
+      console.log("[WARN] " + message);
       expect(true).toBe(true);
       return;
     }
@@ -64,4 +64,3 @@ describe.skip("guide locales should not contain raw English content", () => {
     throw new Error(message);
   });
 });
-

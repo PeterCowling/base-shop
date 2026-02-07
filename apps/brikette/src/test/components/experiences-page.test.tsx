@@ -41,6 +41,10 @@ jest.mock("@/data/guides.index", () => ({
       tags: ["beaches", "positano"],
     },
   ],
+  splitGuidesByType: (guides: unknown[]) => ({
+    contentGuides: guides,
+    directionsGuides: [],
+  }),
 }));
 
 const experiencesPageCopy = {
@@ -167,7 +171,7 @@ jest.mock("react-i18next", () => ({
   }),
 }));
 
-describe.skip("<ExperiencesPageContent />", () => {
+describe("<ExperiencesPageContent />", () => {
   beforeEach(() => {
     openModalSpy.mockClear();
     searchParams = new URLSearchParams("");
@@ -182,10 +186,10 @@ describe.skip("<ExperiencesPageContent />", () => {
       screen.getByRole("heading", { name: /sunsets, slow mornings/i })
     ).toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: /book your stay/i }));
+    await user.click(screen.getByRole("button", { name: /book now/i }));
     expect(openModalSpy).toHaveBeenCalledWith("booking");
 
-    await user.click(screen.getByRole("button", { name: /message the digital concierge/i }));
+    await user.click(screen.getByRole("button", { name: /chat with the concierge/i }));
     expect(openModalSpy).toHaveBeenCalledWith("contact");
   });
 });

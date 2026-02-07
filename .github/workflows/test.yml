@@ -52,7 +52,7 @@ jobs:
           turbo-token: ${{ secrets.TURBO_TOKEN }}
           turbo-team: ${{ vars.TURBO_TEAM }}
       - name: Build workspace (scoped)
-        run: pnpm --filter ./${{ matrix.workspace }}... build
+        run: pnpm exec turbo run build --filter=./${{ matrix.workspace }}
       - run: pnpm --filter ./${{ matrix.workspace }} lint
       - run: pnpm --filter ./${{ matrix.workspace }} typecheck
       - name: Test with coverage

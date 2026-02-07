@@ -1,8 +1,4 @@
-import * as route from '../[shopId]';
-
-import { createContext,createWarnSpy, setup, validate, verify } from './testHelpers';
-
-const { onRequest } = route;
+import { createContext,createWarnSpy, onRequest, setup, validate, verify } from './testHelpers';
 
 describe('onRequest id validation', () => {
   let warnSpy: jest.SpyInstance;

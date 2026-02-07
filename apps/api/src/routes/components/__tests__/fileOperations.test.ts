@@ -1,10 +1,6 @@
 import path from 'path';
 
-import * as route from '../[shopId]';
-
-import { createContext, createWarnSpy, setup, verify, vol } from './testHelpers';
-
-const { onRequest } = route;
+import { createContext, createWarnSpy, onRequest, setup, verify, vol } from './testHelpers';
 
 describe('onRequest file operations', () => {
   let warnSpy: jest.SpyInstance;

@@ -19,5 +19,5 @@
   },
   "include": ["index.ts", "src/**/*"],
   "exclude": ["dist", ".turbo", "node_modules"],
-  "references": [{ "path": "../types" }]
+  "references": [{ "path": "../types" }, { "path": "../themes/base" }]
 }

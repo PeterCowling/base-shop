@@ -25,6 +25,8 @@ jobs:
     timeout-minutes: 5
     outputs:
       shop: ${{ steps.filter.outputs.shop }}
+      docs: ${{ steps.filter.outputs.docs }}
+      plans: ${{ steps.filter.outputs.plans }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -42,6 +44,10 @@ jobs:
               - 'packages/config/**'
               - 'packages/i18n/**'
               - 'packages/shared-utils/**'
+            docs:
+              - 'docs/**'
+            plans:
+              - 'docs/plans/**'
 
   security-audit:
     name: Security Audit
@@ -85,6 +91,7 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    needs: [changes]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -111,8 +118,10 @@ jobs:
       - name: Lint (exceptions governance)
         run: pnpm run lint:exceptions
       - name: Docs lint
+        if: needs.changes.outputs.docs == 'true'
         run: pnpm run docs:lint
       - name: Plans lint
+        if: needs.changes.outputs.plans == 'true'
         run: pnpm run plans:lint
       - name: Template lint (email)
         run: pnpm --filter @acme/mcp-server lint:templates

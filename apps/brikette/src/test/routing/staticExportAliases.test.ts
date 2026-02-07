@@ -37,4 +37,16 @@ describe("buildLocalizedStaticAliasPairs", () => {
     );
     expect(uniqueKeys.size).toBe(pairs.length);
   });
+
+  it("only includes guide-related section aliases", () => {
+    const pairs = buildLocalizedStaticAliasPairs();
+    expect(pairs).not.toEqual(
+      expect.arrayContaining([
+        {
+          sourceBasePath: "/fr/a-propos",
+          targetBasePath: "/fr/about",
+        },
+      ])
+    );
+  });
 });

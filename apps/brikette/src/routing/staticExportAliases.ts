@@ -1,44 +1,75 @@
+import type { AppLanguage } from "@/i18n.config";
+import { i18nConfig } from "@/i18n.config";
+import { getSlug } from "@/utils/slug";
+
 import {
-  buildLocalizedStaticRedirectRules,
-  type StaticRedirectRule,
-} from "./staticExportRedirects";
+  INTERNAL_SEGMENT_BY_KEY,
+  STATIC_EXPORT_GUIDE_ALIAS_SECTION_KEYS,
+} from "./sectionSegments";
 
 export type StaticAliasPair = {
   sourceBasePath: string;
   targetBasePath: string;
 };
 
-const SOURCE_WILDCARD_SUFFIX = "/*";
-const TARGET_SPLAT_SUFFIX = "/:splat";
+function addPair(
+  pairs: StaticAliasPair[],
+  seen: Set<string>,
+  sourceBasePath: string,
+  targetBasePath: string
+): void {
+  if (sourceBasePath === targetBasePath) return;
 
-function isWildcardRule(rule: StaticRedirectRule): boolean {
-  return (
-    rule.from.endsWith(SOURCE_WILDCARD_SUFFIX) &&
-    rule.to.endsWith(TARGET_SPLAT_SUFFIX)
+  const key = `${sourceBasePath}->${targetBasePath}`;
+  if (seen.has(key)) return;
+  seen.add(key);
+  pairs.push({ sourceBasePath, targetBasePath });
+}
+
+function addGuideSectionAliasPairs(
+  lang: AppLanguage,
+  pairs: StaticAliasPair[],
+  seen: Set<string>
+): void {
+  for (const key of STATIC_EXPORT_GUIDE_ALIAS_SECTION_KEYS) {
+    const localizedSection = getSlug(key, lang);
+    const internalSection = INTERNAL_SEGMENT_BY_KEY[key];
+    addPair(
+      pairs,
+      seen,
+      `/${lang}/${localizedSection}`,
+      `/${lang}/${internalSection}`
+    );
+  }
+}
+
+function addLocalizedTagsAliasPair(
+  lang: AppLanguage,
+  pairs: StaticAliasPair[],
+  seen: Set<string>
+): void {
+  const localizedExperiences = getSlug("experiences", lang);
+  const localizedGuidesTags = getSlug("guidesTags", lang);
+  const internalExperiences = INTERNAL_SEGMENT_BY_KEY.experiences;
+  const internalGuidesTags = INTERNAL_SEGMENT_BY_KEY.guidesTags;
+
+  addPair(
+    pairs,
+    seen,
+    `/${lang}/${localizedExperiences}/${localizedGuidesTags}`,
+    `/${lang}/${internalExperiences}/${internalGuidesTags}`
   );
 }
 
-function toAliasPair(rule: StaticRedirectRule): StaticAliasPair {
-  return {
-    sourceBasePath: rule.from.slice(0, -SOURCE_WILDCARD_SUFFIX.length),
-    targetBasePath: rule.to.slice(0, -TARGET_SPLAT_SUFFIX.length),
-  };
-}
-
 export function buildLocalizedStaticAliasPairs(
-  rules: readonly StaticRedirectRule[] = buildLocalizedStaticRedirectRules()
+  languages: readonly AppLanguage[] = i18nConfig.supportedLngs as AppLanguage[]
 ): StaticAliasPair[] {
   const pairs: StaticAliasPair[] = [];
   const seen = new Set<string>();
 
-  for (const rule of rules) {
-    if (!isWildcardRule(rule)) continue;
-
-    const pair = toAliasPair(rule);
-    const key = `${pair.sourceBasePath}->${pair.targetBasePath}`;
-    if (seen.has(key)) continue;
-    seen.add(key);
-    pairs.push(pair);
+  for (const lang of languages) {
+    addGuideSectionAliasPairs(lang, pairs, seen);
+    addLocalizedTagsAliasPair(lang, pairs, seen);
   }
 
   return pairs;

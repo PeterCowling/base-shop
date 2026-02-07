@@ -1,6 +1,8 @@
 import React from "react";
 import { render } from "@testing-library/react";
+
 import { ThemeProvider } from "../ThemeContext";
+
 import { ThemeDisplay } from "./themeTestUtils";
 
 describe("ThemeContext: dark theme does not register matchMedia listener", () => {

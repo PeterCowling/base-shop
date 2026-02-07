@@ -1,8 +1,11 @@
 import "server-only";
+
 import { nowIso } from "@acme/date-utils";
+
 import { prisma } from "../db";
+
+import type { Order, OrderLineItem } from "./utils";
 import { normalize } from "./utils";
-import type { Order } from "./utils";
 
 export async function markFulfilled(
   shop: string,
@@ -52,6 +55,7 @@ export async function markReturned(
   shop: string,
   sessionId: string,
   damageFee?: number,
+  lineItems?: OrderLineItem[],
 ): Promise<Order | null> {
   try {
     const order = await prisma.rentalOrder.update({
@@ -59,7 +63,9 @@ export async function markReturned(
       data: {
         returnedAt: nowIso(),
         ...(typeof damageFee === "number" ? { damageFee } : {}),
-      },
+        ...(lineItems ? { lineItems } : {}),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- CORE-0001 [ttl=2026-12-31] Prisma client typings drift during migration window
+      } as any,
     });
     if (!order) return null;
     return normalize(order as Order);
@@ -102,4 +108,3 @@ export async function setReturnStatus(
     return null;
   }
 }
-

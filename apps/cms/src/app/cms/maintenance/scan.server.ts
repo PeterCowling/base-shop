@@ -1,9 +1,10 @@
 "use server";
 
+import { logger } from "@acme/platform-core/utils";
 import { runMaintenanceScan } from "@acme/platform-machine/maintenanceScheduler";
-import { logger } from "@platform-core/utils";
-import type { FlaggedItem } from "./types";
+
 import { MSG_ITEM_NEEDS_MAINTENANCE, MSG_ITEM_NEEDS_RETIREMENT } from "./constants";
+import type { FlaggedItem } from "./types";
 
 export async function scanForMaintenance(): Promise<FlaggedItem[]> {
   const items: FlaggedItem[] = [];

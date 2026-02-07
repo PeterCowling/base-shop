@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import type { SKU } from "@acme/types";
+
 import AddToCartButton from "@acme/platform-core/components/shop/AddToCartButton.client";
+import type { SKU } from "@acme/types";
+
 import { Price } from "../../atoms/Price";
-import { Stack, Inline } from "../../atoms/primitives";
+import { Inline,Stack } from "../../atoms/primitives";
 
 interface Props {
   denominations?: number[];

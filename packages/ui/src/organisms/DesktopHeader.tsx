@@ -1,27 +1,35 @@
 // src: packages/ui/src/organisms/DesktopHeader.tsx
-import { LanguageSwitcher } from "../molecules/LanguageSwitcher";
-import { ThemeToggle } from "../molecules/ThemeToggle";
-import { Button } from "../atoms/Button";
-import { Section } from "../atoms/Section";
-import { useModal } from "@/context/ModalContext";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { useTheme } from "@/hooks/useTheme";
 import { memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useLocation } from "react-router-dom";
-import { buildNavLinks, type TranslateFn } from "@/utils/buildNavLinks";
-import { translatePath } from "@/utils/translate-path";
-import type { AppLanguage } from "@/i18n.config";
-import { i18nConfig } from "@/i18n.config";
-import type { SlugMap } from "@/slug-map";
-import { resolveBookingCtaLabel } from "@ui/shared";
-import { Inline } from "@/components/atoms/primitives/Inline";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+import { Section } from "../atoms/Section";
+import { Inline } from "../components/atoms/primitives/Inline";
+import { Button } from "../components/atoms/shadcn";
+import { useModal } from "../context/ModalContext";
+import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
+import { useTheme } from "../hooks/useTheme";
+import type { AppLanguage } from "../i18n.config";
+import { i18nConfig } from "../i18n.config";
+import { LanguageSwitcher } from "../molecules/LanguageSwitcher";
+import { ThemeToggle } from "../molecules/ThemeToggle";
+import { resolvePrimaryCtaLabel } from "../shared";
+import type { SlugMap } from "../slug-map";
+import { buildNavLinks, type TranslateFn } from "../utils/buildNavLinks";
+import { translatePath } from "../utils/translate-path";
 
 /*  Public assets are referenced by absolute URL paths.
     “?url” lets Vite keep the file name stable in development
     while permitting hashing in production. */
 const logoIcon = "/img/hostel_brikette_icon.png"; // original raster – small icon
 const BRAND_NAME = "hostel-brikette";
+const FALLBACK_PRIMARY_CTA_LABEL =
+  /* i18n-exempt -- UI-1000 ttl=2026-12-31 fallback copy until tokens are wired. */
+  "Check availability";
+const FALLBACK_BRAND_TITLE =
+  /* i18n-exempt -- UI-1000 ttl=2026-12-31 fallback brand name. */
+  "Hostel Brikette";
 
 function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JSX.Element {
   const fallbackLang = useCurrentLanguage();
@@ -34,14 +42,12 @@ function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JS
   }, [i18n.language]);
   const lang = normalizedI18nLang ?? explicitLang ?? fallbackLang;
   useTranslation("header", { lng: lang });
-  useTranslation("_tokens", { lng: lang });
+  const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
   const headerT = useMemo(() => i18n.getFixedT(lang, "header"), [i18n, lang]);
-  const tokensT = useMemo(() => i18n.getFixedT(lang, "_tokens"), [i18n, lang]);
   const hasHeaderBundle = i18n.hasResourceBundle(lang, "header");
-  const hasTokensBundle = i18n.hasResourceBundle(lang, "_tokens");
-  const { theme } = useTheme();
   const { openModal } = useModal();
-  const location = useLocation();
+  const pathname = usePathname();
+  const { theme } = useTheme();
 
   const book = useCallback(() => openModal("booking"), [openModal]);
 
@@ -80,32 +86,12 @@ function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JS
   );
 
   const { navLinks } = buildNavLinks(lang, navTranslate);
-  const ctaClass = theme === "dark" ? "cta-dark" : "cta-light";
+  const ctaClass = "cta-dark";
   const apartmentPath = `/${translatePath("apartment", lang)}`;
-  const reserveLabel = useMemo(() => {
-    const fallbackHeaderT = i18n.getFixedT(i18nConfig.fallbackLng, "header");
-    return (
-      resolveBookingCtaLabel(tokensT, {
-        fallback: () => {
-          if (!hasTokensBundle && lang !== i18nConfig.fallbackLng) {
-            const alt = headerT("reserve") as string;
-            if (alt && alt.trim() && alt !== "reserve") {
-              return alt;
-            }
-          }
-          const direct = headerT("reserve") as string;
-          if (direct && direct.trim() && direct !== "reserve") {
-            return direct;
-          }
-          const fallback = fallbackHeaderT("reserve") as string;
-          if (fallback && fallback.trim() && fallback !== "reserve") {
-            return fallback;
-          }
-          return "Reserve Now";
-        },
-      }) ?? "Reserve Now"
-    );
-  }, [tokensT, headerT, hasTokensBundle, i18n, lang]);
+  const primaryCtaLabel = useMemo(() => {
+    if (!tokensReady) return FALLBACK_PRIMARY_CTA_LABEL;
+    return resolvePrimaryCtaLabel(tTokens, { fallback: FALLBACK_PRIMARY_CTA_LABEL }) ?? FALLBACK_PRIMARY_CTA_LABEL;
+  }, [tTokens, tokensReady]);
 
   return (
     <div className="hidden lg:block bg-header-gradient">
@@ -113,7 +99,7 @@ function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JS
         {/* Row 1 – logo • CTA • toggles */}
         <div className="header-row-1 flex items-center justify-between">
           <Link
-            to={`/${lang}`}
+            href={`/${lang}`}
             className="flex min-w-48 items-center gap-3 whitespace-nowrap transition hover:text-brand-secondary"
           >
             {/* eslint-disable-next-line @next/next/no-img-element -- UI-1000 [ttl=2026-12-31] UI package is not Next-only; icon is a local static asset */}
@@ -127,20 +113,24 @@ function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JS
               decoding="async"
             />
             <span
-              className="text-lg font-bold notranslate"
+              className="text-lg font-bold text-white notranslate"
               translate="no"
               data-brand-name={BRAND_NAME}
             >
-              {headerT("title")}
+              {(() => {
+                const title = headerT("title") as string;
+                if (title && title !== "title") return title;
+                return FALLBACK_BRAND_TITLE;
+              })()}
             </span>
           </Link>
 
           <div className="flex items-center gap-6">
             <Button
               onClick={book}
-              className={`cta ${ctaClass} rounded-md px-10 py-3 font-bold tracking-wide focus-visible:ring-2 focus-visible:ring-offset-2`}
+              className={`cta ${ctaClass} rounded-md px-6 py-2.5 text-sm font-semibold tracking-wide focus-visible:ring-2 focus-visible:ring-offset-2`}
             >
-              {reserveLabel}
+              {primaryCtaLabel}
             </Button>
 
             <ThemeToggle />
@@ -153,23 +143,22 @@ function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JS
           <Inline asChild gap={8} className="justify-end text-sm font-medium">
             <ul>
               {navLinks.map(({ key, to, label }) => {
-                const current = location.pathname === `/${lang}${to}`;
+                const current = pathname === `/${lang}${to}`;
                 const highlight = current
                   ? theme === "dark"
                     ? /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
-                      "font-semibold text-brand-primary"
+                      "font-semibold text-brand-primary underline"
                     : /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
-                      "font-semibold text-brand-secondary"
+                      "font-semibold text-brand-secondary underline"
                   : "";
 
                 return (
                   <li key={key}>
                     <Link
-                      to={`/${lang}${to}`}
+                      href={`/${lang}${to}`}
                       aria-current={current ? "page" : undefined}
                       aria-label={label}
-                      prefetch={to === apartmentPath ? "intent" : undefined}
-                      data-prefetch={to === apartmentPath ? "intent" : undefined}
+                      prefetch={to === apartmentPath ? true : undefined}
                       className={`underline-offset-4 transition hover:underline hover:decoration-brand-bougainvillea ${highlight}`}
                     >
                       {label}

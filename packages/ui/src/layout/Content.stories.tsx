@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
+
 import { Content } from "../components/organisms/Content";
 
 const meta: Meta<typeof Content> = {

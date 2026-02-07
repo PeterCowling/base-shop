@@ -1,4 +1,4 @@
-import { Tag } from "@ui/components/atoms";
+import { Tag } from "@acme/design-system/atoms";
 import { useTranslations } from "@acme/i18n";
 
 import type { TelemetrySummaryRow } from "./telemetryUtils";

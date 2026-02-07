@@ -5,7 +5,7 @@ jest.mock("@acme/lib", () => ({ validateShopName }));
 
 const readSeoAudits = jest.fn();
 const appendSeoAudit = jest.fn();
-jest.mock("@platform-core/repositories/seoAudit.server", () => ({
+jest.mock("@acme/platform-core/repositories/seoAudit.server", () => ({
   readSeoAudits,
   appendSeoAudit,
 }));

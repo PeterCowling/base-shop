@@ -1,8 +1,9 @@
 "use client";
 
-import { useDroppable } from "@dnd-kit/core";
-import type { LayerNode } from "./LayersPanel.types";
 import type { PropsWithChildren } from "react";
+import { useDroppable } from "@dnd-kit/core";
+
+import type { LayerNode } from "./LayersPanel.types";
 
 export function LayersPanelChildren({ parent, childCount, children }: PropsWithChildren<{ parent: LayerNode; childCount: number }>) {
   const { setNodeRef, isOver } = useDroppable({ id: `layer-container-${parent.id}`, data: { parentId: parent.id, index: childCount } });

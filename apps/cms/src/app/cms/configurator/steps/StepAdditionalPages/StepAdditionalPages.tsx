@@ -1,23 +1,27 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
+import { CmsInlineHelpBanner } from "@acme/cms-ui"; // UI: @acme/ui/components/cms/CmsInlineHelpBanner
+import { LOCALES, useTranslations } from "@acme/i18n";
+import { fillLocales } from "@acme/i18n/fillLocales";
+import { track } from "@acme/telemetry";
+import type { Locale, Page, PageComponent } from "@acme/types";
+import { useToast } from "@acme/ui/operations";
+
 import { Button } from "@/components/atoms/shadcn";
 import PageBuilder from "@/components/cms/PageBuilder";
-import { LOCALES, useTranslations } from "@acme/i18n";
-import { fillLocales } from "@i18n/fillLocales";
-import type { Locale, Page, PageComponent } from "@acme/types";
-import { apiRequest } from "../../lib/api";
-import { useState } from "react";
-import { Toast } from "@/components/atoms";
+
 import type { PageInfo } from "../../../wizard/schema";
 import { toPageInfo } from "../../../wizard/utils/page-utils";
+import useStepCompletion from "../../hooks/useStepCompletion";
+import { apiRequest } from "../../lib/api";
+
 import PageLayoutSelector from "./PageLayoutSelector";
 import PageMetaForm from "./PageMetaForm";
 import useNewPageState from "./useNewPageState";
 import usePagesLoader from "./usePagesLoader";
-import useStepCompletion from "../../hooks/useStepCompletion";
-import { useRouter } from "next/navigation";
-import { track } from "@acme/telemetry";
-import { CmsInlineHelpBanner } from "@ui/components/cms"; // UI: @ui/components/cms/CmsInlineHelpBanner
 
 interface Props {
   pageTemplates: Array<{ name: string; components: PageComponent[] }>;
@@ -36,10 +40,7 @@ export default function StepAdditionalPages({
 }: Props): React.JSX.Element {
   const safePages = Array.isArray(pages) ? pages : [];
   const languages = LOCALES as readonly Locale[];
-  const [toast, setToast] = useState<{ open: boolean; message: string }>({
-    open: false,
-    message: "",
-  });
+  const toast = useToast();
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const t = useTranslations();
@@ -72,7 +73,6 @@ export default function StepAdditionalPages({
     adding,
     draftId: newDraftId,
     setComponents: setNewComponents,
-    setToast,
   });
 
   return (
@@ -152,7 +152,7 @@ export default function StepAdditionalPages({
               setIsSaving(false);
               if (data) {
                 setNewDraftId(data.id);
-                setToast({ open: true, message: "Draft saved" });
+                toast.success("Draft saved");
               } else if (error) {
                 setSaveError(error);
               }
@@ -213,11 +213,6 @@ export default function StepAdditionalPages({
           Save & return
         </Button>
       </div>
-      <Toast
-        open={toast.open}
-        onClose={() => setToast((t) => ({ ...t, open: false }))}
-        message={toast.message}
-      />
     </div>
   );
 }

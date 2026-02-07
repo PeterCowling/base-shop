@@ -1,10 +1,10 @@
 "use client";
 
-import PaletteItem from "../PaletteItem";
-import { isTopLevelAllowed } from "../rules";
-import type { PaletteCategoryDefinition } from "../paletteData";
 import { Stack } from "../../../atoms/primitives";
 import type { ComponentType } from "../defaults";
+import type { PaletteCategoryDefinition } from "../paletteData";
+import PaletteItem from "../PaletteItem";
+import { isTopLevelAllowed } from "../rules";
 
 interface Props {
   categories: PaletteCategoryDefinition[];

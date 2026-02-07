@@ -1,4 +1,7 @@
 // packages/ui/src/components/cms/__tests__/ColorInput.helpers.test.ts
+import React from "react";
+import { fireEvent,render, screen } from "@testing-library/react";
+
 import {
   ColorInput,
   colorToRgb,
@@ -8,8 +11,6 @@ import {
   resolveCssVars,
   suggestContrastColor,
 } from "../ColorInput";
-import { render, screen, fireEvent } from "@testing-library/react";
-import React from "react";
 
 describe("ColorInput helpers", () => {
   test("hslToRgb parses both bare triplets and hsl() function forms", () => {
@@ -48,7 +49,7 @@ describe("ColorInput helpers", () => {
     const { container } = render(<ColorInput value="210 50% 40%" onChange={onChange} />);
     const input = container.querySelector('input[type="color"]') as HTMLInputElement;
     expect(input.value).toMatch(/^#([0-9a-f]{6})$/i);
-    // eslint-disable-next-line ds/no-raw-color -- TEST-1423: required to simulate native color input change
+     
     fireEvent.change(input, { target: { value: "#000000" } });
     expect(onChange).toHaveBeenCalled();
   });

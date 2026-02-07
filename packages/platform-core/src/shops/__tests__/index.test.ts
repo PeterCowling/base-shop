@@ -1,14 +1,14 @@
 import {
-  validateShopName,
-  getSanityConfig,
-  setSanityConfig,
-  getEditorialBlog,
-  setEditorialBlog,
   getDomain,
-  setDomain,
-  type Shop,
+  getEditorialBlog,
+  getSanityConfig,
   type SanityBlogConfig,
+  setDomain,
+  setEditorialBlog,
+  setSanityConfig,
+  type Shop,
   type ShopDomain,
+  validateShopName,
 } from "../index";
 
 describe("validateShopName", () => {

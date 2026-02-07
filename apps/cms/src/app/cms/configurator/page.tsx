@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+
 import { Loader } from "@/components/atoms";
 
 // Defer loading to the client to avoid any server-side side effects during

@@ -1,5 +1,7 @@
 import Link from "next/link";
+
 import { localizedPath } from "@/lib/routes";
+
 import type { TypoSectionProps } from "./types";
 
 export function TypoHeroSection({ lang, translator }: TypoSectionProps) {

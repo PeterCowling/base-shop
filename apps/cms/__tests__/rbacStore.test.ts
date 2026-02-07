@@ -1,8 +1,9 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { ROLE_PERMISSIONS } from "@auth/permissions";
-import { PERMISSIONS } from "@auth/types/permissions";
+
+import { ROLE_PERMISSIONS } from "@acme/auth/permissions";
+import { PERMISSIONS } from "@acme/auth/types/permissions";
 
 async function withTempDir(cb: (dir: string) => Promise<void>): Promise<void> {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), "rbac-"));

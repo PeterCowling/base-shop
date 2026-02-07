@@ -1,7 +1,9 @@
+---
 Type: Guide
 Status: Active
 Domain: Repo
-Last-reviewed: 2025-12-02
+Last-reviewed: 2026-01-16
+---
 
 # Project Setup
 
@@ -96,10 +98,10 @@ Starter pages now include Consent + Newsletter/Contact blocks automatically; kee
 To skip the theme prompts, provide overrides via flags:
 
 ```bash
-pnpm init-shop --brand "#663399" --tokens ./my-tokens.json
+pnpm quickstart-shop --brand "#663399" --tokens ./my-tokens.json
 ```
 
-`--brand` sets the primary brand color and `--tokens` merges additional token overrides from a JSON file.
+`--brand` sets the primary brand color and `--tokens` merges additional token overrides from a JSON file. Use `quickstart-shop` for these flags; `init-shop` accepts theme overrides via the config file or interactive prompts.
 
 For more extensive customization you could import design tokens from common sources like Figma or Style Dictionary, or start with theme presets tailored to a specific vertical to avoid editing each value by hand.
 
@@ -126,7 +128,7 @@ without leaving the CMS. See [Upgrade & rollback workflows](./cms.md#upgrade--ro
 
 - Toggle analytics per shop in `settings.json` → `analytics.enabled` (provider/id set when you’re ready). Consent must still be `true` for browser beacons.
 - Lead capture is gated by `leadCapture.enabled`; submissions persist to `data/shops/<id>/leads.jsonl` or forward to a configured `endpoint`.
-- The client SDK `@platform-core/analytics/client` is used by storefront beacons; no app changes needed when you flip these flags.
+- The client SDK `@acme/platform-core/analytics/client` is used by storefront beacons; no app changes needed when you flip these flags.
 
 ### Rental shops
 

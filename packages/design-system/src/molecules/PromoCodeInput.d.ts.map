@@ -1,0 +1,1 @@
+{"version":3,"file":"PromoCodeInput.d.ts","sourceRoot":"","sources":["PromoCodeInput.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,KAAK,MAAM,OAAO,CAAC;AAI/B,MAAM,WAAW,mBACf,SAAQ,KAAK,CAAC,cAAc,CAAC,eAAe,CAAC;IAC7C,OAAO,CAAC,EAAE,CAAC,IAAI,EAAE,MAAM,KAAK,IAAI,CAAC;IACjC,OAAO,CAAC,EAAE,OAAO,CAAC;CACnB;AAED,eAAO,MAAM,cAAc,6FA6BzB,CAAC"}

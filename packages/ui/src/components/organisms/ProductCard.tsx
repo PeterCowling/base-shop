@@ -1,18 +1,18 @@
 "use client"; // i18n-exempt -- DEV-000: Next.js directive, not user-facing
-import Image from "next/image";
 import * as React from "react";
-import type { SKU } from "@acme/types";
-import { useCart } from "@acme/platform-core/contexts/CartContext";
-import { boxProps } from "../../utils/style";
-import { cn } from "../../utils/style";
-import { Button } from "../atoms/shadcn";
-import { Price } from "../atoms/Price";
-import { useTranslations } from "@acme/i18n";
-import { logAnalyticsEvent } from "@platform-core/analytics/client";
+import Image from "next/image";
 
-import type { TranslatableText } from "@acme/types/i18n";
+import { useTranslations } from "@acme/i18n";
 import type { Locale } from "@acme/i18n/locales";
-import { resolveText } from "@i18n/resolveText";
+import { resolveText } from "@acme/i18n/resolveText";
+import { logAnalyticsEvent } from "@acme/platform-core/analytics/client";
+import { useCart } from "@acme/platform-core/contexts/CartContext";
+import type { SKU } from "@acme/types";
+import type { TranslatableText } from "@acme/types/i18n";
+
+import { boxProps , cn } from "../../utils/style";
+import { Price } from "../atoms/Price";
+import { Button } from "../atoms/shadcn";
 
 export interface ProductCardProps extends React.HTMLAttributes<HTMLDivElement> {
   product: SKU;

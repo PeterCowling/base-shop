@@ -6,19 +6,29 @@
   },
   "quickLinks": [
     {
+      "label": "Hostel GYIK",
+      "description": "Gyors válaszok a Hostel Brikette-ben való tartózkodással kapcsolatos gyakori kérdésekre Positanóban.",
+      "slug": "hostelFaqs"
+    },
+    {
+      "label": "Házirend",
+      "description": "Olvassa el alapvető házirendünket, beleértve a külső alkohol tilalmát és a gondoskodási irányelveket.",
+      "slug": "rules"
+    },
+    {
       "label": "Foglalás módosítása vagy lemondása",
-      "description": "Ismerje meg a határidőket és tippeket, hogy a tervek változásakor elkerülje a plusz díjakat.",
+      "description": "Tekintse meg a határidőket és tippeket a plánok változásakor felmerülő extra költségek elkerülésére.",
       "slug": "changingCancelling"
     },
     {
-      "label": "Be- és kijelentkezési útmutató",
-      "description": "Kövesse lépésről lépésre útmutatónkat a positanoi Hostel Brikette érkezési és távozási folyamataihoz.",
+      "label": "Check-in és check-out útmutató",
+      "description": "Kövesse lépésről lépésre útmutatónkat az érkezéshez és távozáshoz a Hostel Brikette-ben Positanóban.",
       "slug": "checkinCheckout"
     },
     {
       "label": "Utazás Positanóba",
-      "description": "Hasonlítsa össze a kompokat, buszokat és taxikat lépésről lépésre bemutatott közlekedési útmutatónk segítségével.",
-      "slug": "travelHelp"
+      "description": "Hasonlítsa össze a kompokat, buszokat és taxikat lépésenkénti közlekedési útmutatónkkal.",
+      "href": "how-to-get-here"
     }
   ],
   "contactCta": {

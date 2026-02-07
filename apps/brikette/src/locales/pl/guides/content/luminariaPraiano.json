@@ -1,66 +1,62 @@
 {
   "seo": {
     "title": "Luminaria di San Domenico (Praiano)",
-    "description": "Opis święta, jak dojechać, gdzie stanąć i czego spodziewać się po nocach pełnych świateł."
+    "description": "Świecący festiwal Praiano na początku sierpnia: daty, dojazd, miejsca oglądania i etykieta fotografowania."
   },
-  "linkLabel": "Luminaria di San Domenico (Praiano)",
+  "linkLabel": "Luminaria Praiano: tysiące świec w nocy",
   "intro": [
-    "Tłumaczenie w przygotowaniu."
+    "Zaplanuj odwiedziny na Luminarii di San Domenico w Praiano: świecące uliczki, pokazy sztucznych ogni i szacunek dla lokalnego klimatu."
   ],
   "sections": [
     {
       "id": "basics",
-      "title": "Festival basics",
+      "title": "Podstawy festiwalu",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Impreza trwa podczas pierwszego tygodnia sierpnia, a najwięcej świec pali się między 1 a 4 sierpnia na Piazza San Gennaro.",
+        "Przyjedź przed zachodem słońca, żeby zobaczyć, jak wolontariusze układają świece i złapać dobre miejsce do oglądania."
       ]
     },
     {
       "id": "transport",
-      "title": "Getting there & back",
+      "title": "Jak dojechać i wrócić",
       "body": [
-        "Wsiądź do autobusu SITA z Positano (20 minut) lub zarezerwuj wspólny transport; ostatnie autobusy powrotne odjeżdżają około północy, ale należy to potwierdzić w danym dniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Skorzystaj z autobusu SITA z Positano (20 minut) lub wspólnego shuttle’a; ostatnie kursy wracające są około północy, ale sprawdź rozkład w dniu wydarzenia.",
+        "Jeśli zostajesz dłużej, zarezerwuj taksówkę z wyprzedzeniem albo nocleg w Praiano, by uniknąć długiego oczekiwania po pokazie ogni."
       ]
     },
     {
       "id": "etiquette",
-      "title": "Viewing etiquette",
+      "title": "Etykieta oglądania",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Nie ruszaj świec ustawionych przez mieszkańców i nie wchodź za kordony ani nie blokuj przejść statywami.",
+        "Użyj statywu lub stabilnej powierzchni do długich ekspozycji, ale trzymaj się z daleka od wejść do kościołów i dróg ratunkowych."
       ]
     }
   ],
   "tips": [
-    "Tłumaczenie w przygotowaniu.",
-    "Tłumaczenie w przygotowaniu."
+    "Noś bidon (500 ml / 17 oz) i latarkę kieszonkową na spacer po ciemnych uliczkach Praiano.",
+    "Szanuj ciszę po pokazach — mieszkańcy sprzątają wosk jeszcze późno w nocy."
   ],
   "faqs": [
     {
-      "q": "Is the festival free?",
+      "q": "Czy festiwal jest darmowy?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Tak, oglądanie jest bezpłatne. Wsparcie lokalnych straganów, zakup przekąski lub darowizna przy kościele pomaga opłacić świece na kolejne lata."
       ]
     },
     {
-      "q": "What if it rains?",
+      "q": "Co jeśli pada deszcz?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Silny deszcz może przełożyć wystawienie świec; organizatorzy informują o tym na stronie Facebook gminy Praiano. Miej zapasowy wieczór na wizytę."
       ]
     }
   ],
   "event": {
-    "date": "1–4 August (peak nights)",
+    "date": "1–4 sierpnia (szczytowe noce)",
     "location": "Piazza San Gennaro, Praiano",
     "tips": [
-      "Tłumaczenie w przygotowaniu.",
-      "Tłumaczenie w przygotowaniu."
+      "Przybądź przed zachodem słońca, by obserwować ustawianie świec przez wolontariuszy.",
+      "Weź ze sobą latarkę lub światło telefonu na powrót po ciemnych uliczkach."
     ]
-  },
-  "gallery": {
-    "terraceAlt": "Tłumaczenie w przygotowaniu.",
-    "coastAlt": "Linia brzegowa Praiano o zmierzchu podczas Luminaria di San Domenico"
   }
 }

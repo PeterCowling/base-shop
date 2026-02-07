@@ -1,6 +1,7 @@
 import "server-only";
 
 import type { InventoryItem } from "../types/inventory";
+
 import { checkAndAlert } from "./stockAlert.server";
 
 interface HistoryEntry {

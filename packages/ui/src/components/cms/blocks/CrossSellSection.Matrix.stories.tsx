@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/CrossSellSection.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import CrossSellSection from './CrossSellSection';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './CrossSellSection.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import CrossSellSection from './CrossSellSection';
+import fixture from './CrossSellSection.fixtures.json';
 
 const meta: Meta<typeof CrossSellSection> = {
   title: 'CMS Blocks/CrossSellSection/Matrix',

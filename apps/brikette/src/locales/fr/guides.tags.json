@@ -100,7 +100,7 @@
     },
     "ferry": {
       "label": "Ferry",
-      "title": "Guides ferry"
+      "title": "Guides des ferries"
     },
     "free": {
       "label": "Gratuit",
@@ -205,7 +205,7 @@
       "title": "Salerne ↔ Positano"
     },
     "shopping": {
-      "label": "Shopping",
+      "label": "Achats",
       "title": "Shopping & artisans"
     },
     "shoulder": {
@@ -218,7 +218,7 @@
     },
     "souvenirs": {
       "label": "Souvenirs",
-      "title": "Souvenirs & shopping"
+      "title": "Souvenirs & achats"
     },
     "stairs": {
       "label": "Moins d'escaliers",

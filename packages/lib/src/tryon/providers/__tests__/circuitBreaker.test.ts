@@ -13,7 +13,7 @@ describe("circuit breaker", () => {
     await expect(breaker.exec("k", fail)).rejects.toThrow();
 
     // Wait for cool-off
-    await new Promise((r) => setTimeout(r, 60));
+    await new Promise((resolve) => setTimeout(resolve, 60));
 
     // Half-open: success should close circuit
     const ok = () => Promise.resolve(42);

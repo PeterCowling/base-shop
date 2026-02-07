@@ -1,6 +1,6 @@
-import type { PageComponent, HistoryState } from "@acme/types";
 import type { ExportedComponent as CoreExportedComponent } from "@acme/page-builder-core";
 import { exportComponents as coreExportComponents } from "@acme/page-builder-core";
+import type { HistoryState,PageComponent } from "@acme/types";
 
 export type ExportedComponent = CoreExportedComponent;
 

@@ -1,5 +1,6 @@
 import { jest } from '@jest/globals';
-import { __setShippingEnv, __resetShippingEnv } from '@acme/config/env/shipping';
+
+import { __resetShippingEnv,__setShippingEnv } from '@acme/config/env/shipping';
 
 import { getShippingRate, getTrackingStatus } from '../src/shipping/index';
 
@@ -8,7 +9,6 @@ describe('getShippingRate', () => {
 
   beforeEach(() => {
     fetchMock = jest.fn();
-    // @ts-expect-error replace global fetch
     global.fetch = fetchMock;
     __resetShippingEnv();
   });
@@ -265,7 +265,6 @@ describe('getTrackingStatus', () => {
 
   beforeEach(() => {
     fetchMock = jest.fn();
-    // @ts-expect-error replace global fetch
     global.fetch = fetchMock;
   });
 

@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "title": "Chính sách cookie | Hostel Brikette",
+    "description": "Cách Hostel Brikette sử dụng cookie và các công nghệ tương tự trên website của chúng tôi và các lựa chọn của bạn."
+  },
+  "headings": {
+    "pageTitle": "Chính sách cookie",
+    "subtitle": "Cookie, lưu trữ cục bộ và dịch vụ bên thứ ba"
+  },
+  "lastUpdated": {
+    "label": "Cập nhật lần cuối",
+    "date": "2026-01-09"
+  },
+  "toc": {
+    "title": "Trong trang này",
+    "aria": "Mục lục chính sách cookie"
+  },
+  "sections": {
+    "intro": {
+      "title": "Tổng quan",
+      "body": [
+        "Chính sách cookie này giải thích cookie là gì, liệu chúng tôi có sử dụng chúng trên website này không, và cách các dịch vụ bên thứ ba có thể sử dụng cookie khi bạn tương tác với nội dung của họ."
+      ]
+    },
+    "whatAreCookies": {
+      "title": "Cookie là gì",
+      "body": [
+        "Cookie là các tệp văn bản nhỏ mà website có thể lưu trên thiết bị của bạn để ghi nhớ thông tin giữa các lần truy cập. Các công nghệ tương tự bao gồm lưu trữ cục bộ và lưu trữ phiên trong trình duyệt của bạn."
+      ]
+    },
+    "ourUse": {
+      "title": "Cách chúng tôi sử dụng cookie trên website này",
+      "body": [
+        "Chúng tôi cố gắng giảm thiểu việc sử dụng cookie. Khi có thể, chúng tôi sử dụng bộ nhớ của trình duyệt (lưu trữ cục bộ) cho các tùy chọn đơn giản thay vì cookie.",
+        "Nếu trong tương lai chúng tôi áp dụng cookie (ví dụ cho bảo mật thiết yếu, phân tích hoặc dịch vụ nhúng), chúng tôi sẽ cập nhật chính sách này."
+      ]
+    },
+    "localStorage": {
+      "title": "Lưu trữ cục bộ (tùy chọn)",
+      "body": [
+        "Lưu trữ cục bộ cho phép website ghi nhớ một số tùy chọn trên thiết bị của bạn. Ví dụ, nó có thể được dùng để giữ lại tùy chọn giao diện giữa các trang.",
+        "Bạn có thể xóa lưu trữ cục bộ trong phần cài đặt của trình duyệt."
+      ]
+    },
+    "thirdParties": {
+      "title": "Dịch vụ bên thứ ba",
+      "body": [
+        "Một số liên kết hoặc nội dung nhúng có thể do bên thứ ba cung cấp (ví dụ: bản đồ hoặc nhà cung cấp đặt phòng). Các bên thứ ba này có thể đặt cookie hoặc sử dụng các công nghệ tương tự theo chính sách của họ.",
+        "Khi bạn theo một liên kết đến website bên thứ ba, các chính sách quyền riêng tư và cookie của họ sẽ được áp dụng."
+      ]
+    },
+    "choices": {
+      "title": "Lựa chọn của bạn",
+      "body": [
+        "Hầu hết các trình duyệt cho phép bạn chặn hoặc xóa cookie và xóa dữ liệu trang web như lưu trữ cục bộ. Chặn một số công nghệ có thể ảnh hưởng đến chức năng.",
+        "Bạn cũng có thể sử dụng chế độ duyệt riêng tư hoặc tiện ích mở rộng trình duyệt để hạn chế theo dõi."
+      ]
+    },
+    "contact": {
+      "title": "Liên hệ",
+      "body": [
+        "Nếu bạn có câu hỏi về chính sách cookie này, hãy liên hệ với chúng tôi tại {{email}}."
+      ]
+    }
+  },
+  "footer": {
+    "backToTop": "Lên đầu trang"
+  }
+}

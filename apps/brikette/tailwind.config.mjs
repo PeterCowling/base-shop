@@ -51,6 +51,8 @@ const config = {
           terracotta: "rgb(var(--rgb-brand-terra) / <alpha-value>)",
           bougainvillea: "rgb(var(--rgb-brand-bougainvillea) / <alpha-value>)",
           outline: "rgb(var(--rgb-brand-outline) / <alpha-value>)",
+          muted: "rgb(var(--rgb-brand-muted) / <alpha-value>)",
+          paragraph: "rgb(var(--rgb-brand-paragraph) / <alpha-value>)",
         },
       },
       aspectRatio: {

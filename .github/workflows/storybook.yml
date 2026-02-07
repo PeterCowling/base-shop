@@ -38,10 +38,15 @@ on:
       - 'docs/storybook.md'
       - '.github/workflows/storybook.yml'
 
+concurrency:
+  group: storybook-ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   coverage:
     name: Story coverage policy
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-repo
@@ -49,8 +54,9 @@ jobs:
         run: pnpm stories:verify || echo "Story coverage below target; treating as advisory in CI."
 
   chromatic:
-    name: Chromatic (visuals)
+    name: Chromatic visual regression
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Skip Chromatic (missing token)
         if: ${{ env.CHROMATIC_PROJECT_TOKEN == '' }}
@@ -73,22 +79,36 @@ jobs:
         run: pnpm chromatic
 
   ui-smoke:
-    name: Storybook UI smoke (tokens + RTL)
+    name: UI smoke tests (tokens + RTL)
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-repo
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: playwright-${{ runner.os }}-
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps
       - name: Run UI smoke
         run: pnpm storybook:smoke:ui
 
   runner:
-    name: Storybook Test Runner (critical set)
+    name: Storybook interaction tests
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-repo
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: playwright-${{ runner.os }}-
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps
       - name: Run Storybook test runner (ci-tagged)

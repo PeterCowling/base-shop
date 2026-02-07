@@ -1,14 +1,16 @@
 "use client";
-/* eslint-disable ds/no-hardcoded-copy -- UI-1420: className literals and prop-driven content; user-facing strings wrapped with t() */
+ 
 
-import Link from "next/link";
 import type { ReactNode } from "react";
-import { track } from "@acme/telemetry";
-import { Card, CardContent } from "../atoms/shadcn";
-import { Tag } from "../atoms";
-import { cn } from "../../utils/style";
-import { Grid as DSGrid } from "../atoms/primitives/Grid";
+import Link from "next/link";
+
 import { useTranslations } from "@acme/i18n";
+import { track } from "@acme/telemetry";
+
+import { cn } from "../../utils/style";
+import { Tag } from "../atoms";
+import { Grid as DSGrid } from "../atoms/primitives/Grid";
+import { Card, CardContent } from "../atoms/shadcn";
 
 export type ValueOrFactory<T> = T | ((shop: string) => T);
 

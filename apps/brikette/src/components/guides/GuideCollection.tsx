@@ -1,19 +1,22 @@
 // src/components/guides/GuideCollection.tsx
 import { memo, useCallback, useMemo } from "react";
-import { Link, useLocation, type To } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import type { TFunction, i18n as I18nInstance } from "i18next";
+import Link from "next/link";
+import { usePathname, useSearchParams } from "next/navigation";
 import clsx from "clsx";
+import type { i18n as I18nInstance, TFunction } from "i18next";
+
+import type { GuideMeta } from "@/data/guides.index";
+import appI18n from "@/i18n";
 
 import {
-  type GuideCollectionProps,
   type GuideCollectionCopy,
+  type GuideCollectionProps,
 } from "./GuideCollection.types";
 import { GuideCollectionFilters } from "./GuideCollectionFilters";
 import { GuideCollectionList } from "./GuideCollectionList";
 import { useGuideFilterOptions } from "./useGuideFilterOptions";
 import { useGuideSummaryResolver } from "./useGuideSummaryResolver";
-import appI18n from "@/i18n";
 
 const SECTION_CLASSES = ["mt-16", "px-3", "lg:px-10"] as const;
 
@@ -71,24 +74,35 @@ function GuideCollection({
   lang,
   guides,
   id,
+  totalCount: totalCountProp,
   filterTag,
+  filterParam,
+  filterOptions: filterOptionsProp,
+  filterPredicate,
   clearFilterHref,
+  sectionClassName,
   copy,
   showFilters = true,
 }: GuideCollectionProps): JSX.Element | null {
   const normalizedTag = filterTag?.trim().toLowerCase() ?? "";
+  const paramName = filterParam?.trim() || "tag";
 
-  const location = useLocation();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const searchString = searchParams?.toString() ?? "";
   const normalizedClearFilterHref = clearFilterHref?.trim() ?? "";
   const sanitizedClearFilterHref = normalizedClearFilterHref === "/" ? "" : normalizedClearFilterHref;
-  const normalizedPath = location.pathname === "/" ? "" : location.pathname;
+  const normalizedPath = pathname === "/" ? "" : pathname ?? "";
   const basePath = sanitizedClearFilterHref || normalizedPath;
   const makeHref = useCallback(
-    (value: string | null): To => {
-      const params = new URLSearchParams(location.search);
+    (value: string | null): string => {
+      const params = new URLSearchParams(searchString);
       if (value) {
-        params.set("tag", value);
+        params.set(paramName, value);
       } else {
+        params.delete(paramName);
+      }
+      if (paramName !== "tag") {
         params.delete("tag");
       }
       const query = params.toString();
@@ -100,7 +114,7 @@ function GuideCollection({
       }
       return `${basePath}${query ? `?${query}` : ""}`;
     },
-    [basePath, location.search],
+    [basePath, searchString, paramName],
   );
 
   const { t, i18n, ready } = useTranslation("guides", { lng: lang });
@@ -145,23 +159,26 @@ function GuideCollection({
     return (((_key: string, _options?: Record<string, unknown>) => "") as unknown) as Translator;
   }, [getFixedT, hasFixedEnglish]);
 
+  const defaultFilterPredicate = useCallback(
+    (guide: GuideMeta, value: string) =>
+      guide.tags.some((tag) => tag.toLowerCase() === value),
+    [],
+  );
+  const resolvedFilterPredicate = filterPredicate ?? defaultFilterPredicate;
   const filtered = useMemo(
-    () =>
-      normalizedTag
-        ? guides.filter((guide) =>
-            guide.tags.some((tag) => tag.toLowerCase() === normalizedTag),
-          )
-        : guides,
-    [guides, normalizedTag],
+    () => (normalizedTag ? guides.filter((guide) => resolvedFilterPredicate(guide, normalizedTag)) : guides),
+    [guides, normalizedTag, resolvedFilterPredicate],
   );
 
-  const filterOptions = useGuideFilterOptions(guides);
+  const defaultFilterOptions = useGuideFilterOptions(guides);
+  const filterOptions = filterOptionsProp ?? defaultFilterOptions;
   const resolveSummary = useGuideSummaryResolver(i18n, lang);
 
   const hasFilter = Boolean(normalizedTag);
   const hasResults = filtered.length > 0;
   const heading = resolveHeading(copy, hasFilter);
   const description = resolveDescription(copy, hasFilter);
+  const totalCount = typeof totalCountProp === "number" ? totalCountProp : guides.length;
 
   const filterHeading = copy.filterHeading ?? "";
   const filterDescription = copy.filterDescription ?? "";
@@ -178,24 +195,24 @@ function GuideCollection({
   }
 
   return (
-    <section id={id} className={clsx(SECTION_CLASSES)}>
+    <section id={id} className={clsx(SECTION_CLASSES, sectionClassName)}>
       <div className="space-y-3">
-        <h2 className="text-2xl font-semibold text-brand-heading dark:text-brand-surface">
+        <h2 className="text-2xl font-semibold text-brand-heading dark:text-brand-heading">
           {heading}
         </h2>
         {description ? (
-          <p className="text-brand-paragraph dark:text-brand-muted-dark text-pretty text-base">
+          <p className="text-brand-paragraph dark:text-brand-muted text-pretty text-base">
             {description}
           </p>
         ) : null}
         {hasFilter && !hasResults && copy.emptyMessage ? (
-          <div className="text-brand-paragraph dark:text-brand-muted-dark rounded-lg border border-brand-outline/40 bg-brand-surface/60 p-4 text-sm dark:border-brand-outline/50 dark:bg-brand-text/10">
+          <div className="text-brand-paragraph dark:text-brand-muted rounded-lg border border-brand-outline/40 bg-brand-surface/60 p-4 text-sm dark:border-brand-outline/50 dark:bg-brand-text/10">
             <p>{copy.emptyMessage}</p>
             {showEmptyStateClearLink && clearFilterHref ? (
               <p className="mt-2">
                 <Link
-                  to={clearFilterHref}
-                  preventScrollReset
+                  href={clearFilterHref}
+                  scroll={false}
                   className="font-semibold text-brand-primary underline-offset-4 hover:underline dark:text-brand-secondary"
                 >
                   {copy.clearFilterLabel}
@@ -213,7 +230,7 @@ function GuideCollection({
           label={filterLabel}
           allHref={allHref}
           clearFilterLabel={clearFilterLabel}
-          totalCount={guides.length}
+          totalCount={totalCount}
           options={filterOptions}
           activeTag={normalizedTag}
           makeHref={makeHref}

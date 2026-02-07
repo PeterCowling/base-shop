@@ -1,17 +1,19 @@
 "use client";
 
-import { ColorInput } from "../index";
-import type { TokenInfo, TokenMap } from "../../../hooks/useTokenEditor";
+import { type ReactElement } from "react";
+
+import { useTranslations } from "@acme/i18n";
+
 import { useTokenColors } from "../../../hooks/useTokenColors";
+import type { TokenInfo, TokenMap } from "../../../hooks/useTokenEditor";
 import { hexToHsl, isHex } from "../../../utils/colorUtils";
-import { ReactElement } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../../atoms/shadcn";
-import { useTranslations } from "@acme/i18n";
+import { ColorInput } from "../index";
 
 interface ColorTokenProps extends Omit<TokenInfo, "key"> {
   tokenKey: string;
@@ -89,7 +91,7 @@ export function ColorToken({
 
   // Advanced menu disabled on this screen to avoid ref thrash in nested menus
 
-  // eslint-disable-next-line ds/no-hardcoded-copy -- DX-0002: utility classes are not user copy
+   
   const overrideClasses = isOverridden ? "border-s-2 border-s-info ps-2" : "";
   // i18n-exempt: DS token reference, not user-facing copy
   const DANGER_TOKEN = "--color-danger";

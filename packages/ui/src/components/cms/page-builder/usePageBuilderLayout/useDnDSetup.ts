@@ -1,8 +1,9 @@
 // i18n-exempt -- Next.js directive literal (not user-facing copy)
 "use client";
+import type { HistoryState,PageComponent } from "@acme/types";
+
+import { CONTAINER_TYPES,defaults } from "../defaults";
 import usePageBuilderDnD from "../hooks/usePageBuilderDnD";
-import { defaults, CONTAINER_TYPES } from "../defaults";
-import type { PageComponent, HistoryState } from "@acme/types";
 import type { Action } from "../state";
 
 interface DndSetupInput {

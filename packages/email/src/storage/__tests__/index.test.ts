@@ -1,5 +1,5 @@
+import type { Campaign,CampaignStore } from "..";
 import { fsCampaignStore, getCampaignStore, setCampaignStore } from "..";
-import type { CampaignStore, Campaign } from "..";
 
 describe("campaign store selection", () => {
   afterEach(() => {

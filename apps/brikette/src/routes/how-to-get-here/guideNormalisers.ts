@@ -9,10 +9,22 @@ export type GuideNormaliserOptions = {
   trimBodyLines?: boolean;
 };
 
+type GuideFigure = { src: string; alt: string; caption?: string };
+
 export function createGuideNormalisers({ trimBodyLines = false }: GuideNormaliserOptions = {}) {
   const normaliseLines = (value: unknown): string[] => {
     const lines = ensureStringArray(value);
     return trimBodyLines ? lines.map((line) => line.trim()) : lines;
+  };
+
+  const normaliseFigure = (value: unknown): GuideFigure | null => {
+    if (!value || typeof value !== "object") return null;
+    const record = value as Record<string, unknown>;
+    const src = typeof record["src"] === "string" ? record["src"].trim() : "";
+    const alt = typeof record["alt"] === "string" ? record["alt"].trim() : "";
+    const caption = typeof record["caption"] === "string" ? record["caption"].trim() : "";
+    if (!src || !alt) return null;
+    return { src, alt, ...(caption ? { caption } : {}) } satisfies GuideFigure;
   };
 
   const normaliseSections = (value: unknown): GuideSection[] => {
@@ -50,7 +62,16 @@ export function createGuideNormalisers({ trimBodyLines = false }: GuideNormalise
 
         if (title.length === 0 && body.length === 0) return null;
 
-        return { id, title, body } satisfies GuideSection;
+        const figures: GuideFigure[] = [];
+        const figuresRaw = record["figures"];
+        if (Array.isArray(figuresRaw)) {
+          figures.push(...figuresRaw.map(normaliseFigure).filter((item): item is GuideFigure => item != null));
+        } else {
+          const single = normaliseFigure(record["figure"] ?? record["image"]);
+          if (single) figures.push(single);
+        }
+
+        return { id, title, body, ...(figures.length > 0 ? { figures } : {}) } satisfies GuideSection;
       })
       .filter((section): section is GuideSection => section != null);
   };

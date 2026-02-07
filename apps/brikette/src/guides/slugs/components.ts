@@ -3,8 +3,6 @@ import type { GuideKey } from "./keys";
 // Map specific guide keys to concrete component paths when they differ from
 // the default `routes/guides/<slug>.tsx` inference.
 export const GUIDE_COMPONENT_OVERRIDES: Partial<Record<GuideKey, string>> = {
-  backpackerItineraries: "routes/guides/positano-on-a-backpacker-budget.tsx",
-  backpackingSouthernItaly: "routes/guides/backpacking-southern-italy-itinerary.tsx",
   ravelloFestival: "routes/guides/ravello-music-festival.tsx",
   dayTripsAmalfi: "routes/guides/day-trips-from-positano.tsx",
   pathOfTheGods: "routes/guides/path-of-the-gods-from-brikette.tsx",
@@ -44,17 +42,14 @@ export const GUIDE_COMPONENT_OVERRIDES: Partial<Record<GuideKey, string>> = {
   eatingOutPositano: "routes/guides/eating-out-in-positano.tsx",
   positanoDining: "routes/guides/positano-dining-guide.tsx",
   limoncelloCuisine: "routes/guides/limoncello-and-local-cuisine.tsx",
-  itinerariesPillar: "routes/guides/amalfi-coast-itineraries-no-car.tsx",
   luminariaPraiano: "routes/guides/luminaria-di-san-domenico-praiano.tsx",
-  sevenDayNoCar: "routes/guides/7-day-amalfi-coast-itinerary-no-car.tsx",
-  weekend48Positano: "routes/guides/48-hour-positano-weekend.tsx",
   salernoGatewayGuide: "routes/guides/salerno-amalfi-coast-gateway.tsx",
   groceriesPharmacies: "routes/guides/groceries-and-pharmacies-positano.tsx",
   cheapEats: "routes/guides/cheap-eats-in-positano.tsx",
   workAndTravelPositano: "routes/guides/work-and-travel-remote-work-positano.tsx",
   reachBudget: "routes/guides/how-to-reach-positano-on-a-budget.tsx",
   positanoBudget: "routes/guides/positano-on-a-budget.tsx",
-  parking: "routes/guides/positano-parking.tsx",
+  parking: "routes/guides/arriving-by-car.tsx",
   luggageStorage: "routes/guides/luggage-storage-positano.tsx",
   positanoCostComparison: "routes/guides/positano-cost-vs-other-beach-destinations.tsx",
   workExchangeItaly: "routes/guides/work-exchange-in-italian-hostels.tsx",

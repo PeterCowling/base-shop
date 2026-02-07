@@ -1,9 +1,10 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import type { ScaffoldSpec } from "@acme/types/page/ScaffoldSpec";
+
 import { PreviewRenderer } from "@acme/page-builder-ui";
-import DeviceSelector from "@ui/components/common/DeviceSelector";
+import type { ScaffoldSpec } from "@acme/types/page/ScaffoldSpec";
+import DeviceSelector from "@acme/ui/components/common/DeviceSelector";
 
 interface Props {
   spec: ScaffoldSpec;

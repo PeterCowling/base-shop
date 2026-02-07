@@ -1,6 +1,7 @@
 import { act, renderHook } from "@testing-library/react";
-import { useDirectR2Upload } from "../useDirectR2Upload";
+
 import { resizeImageToMaxPx } from "../resize";
+import { useDirectR2Upload } from "../useDirectR2Upload";
 
 jest.mock("../resize", () => ({
   resizeImageToMaxPx: jest.fn(),
@@ -145,7 +146,7 @@ describe("useDirectR2Upload", () => {
     const [, requestInit] = fetchMock.mock.calls[0];
     expect(JSON.parse(requestInit.body as string).contentType).toBe(file.type);
     expect(result.current.progress).toBeNull();
-    expect((global.XMLHttpRequest as jest.Mock).mock.results[0].value.open).toHaveBeenCalledWith(
+    expect((global.XMLHttpRequest as unknown as jest.Mock).mock.results[0].value.open).toHaveBeenCalledWith(
       "POST",
       "https://upload",
       true,

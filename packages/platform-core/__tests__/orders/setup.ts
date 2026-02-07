@@ -1,3 +1,5 @@
+import { stripe } from "@acme/stripe";
+
 jest.mock("../../src/analytics", () => ({ trackOrder: jest.fn() }));
 jest.mock("../../src/subscriptionUsage", () => ({ incrementSubscriptionUsage: jest.fn() }));
 jest.mock("../../src/db", () => ({
@@ -19,8 +21,6 @@ jest.mock("@acme/stripe", () => ({
     checkout: { sessions: { retrieve: jest.fn() } },
   },
 }));
-
-import { stripe } from "@acme/stripe";
 
 export const { trackOrder } = jest.requireMock("../../src/analytics") as { trackOrder: jest.Mock };
 export const { incrementSubscriptionUsage } = jest.requireMock("../../src/subscriptionUsage") as { incrementSubscriptionUsage: jest.Mock };

@@ -1,22 +1,71 @@
-import { memo } from "react";
+// src/components/assistance/quick-links-section/index.tsx
 import type { JSX } from "react";
-import clsx from "clsx";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { memo, useCallback, useMemo } from "react";
+import Link from "next/link";
+import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 
-import { Grid, Section } from "./layout";
+import AssistanceQuickLinksSection from "@acme/ui/organisms/AssistanceQuickLinksSection";
+import type {
+  AssistanceQuickLinkRenderProps,
+  AssistanceQuickLinksCta,
+  AssistanceQuickLinksSectionProps,
+} from "@acme/ui/organisms/AssistanceQuickLinksSection";
+import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
+
 import { buildQuickLinksJsonLd } from "./jsonLd";
-import type { AssistanceQuickLinksProps } from "./types";
 import { useAssistanceTranslations } from "./translations";
+import type { AssistanceQuickLinksProps } from "./types";
 import { useContactCta } from "./useContactCta";
 import { useQuickLinksWithHref, useResolvedQuickLinks } from "./useQuickLinks";
+import { serializeJsonLdValue } from "@/utils/seo/jsonld";
+import type { QuickLinkWithHref } from "./types";
+import { HERO_IMAGE_SRC } from "@/routes/how-to-get-here/styles";
+import { getSlug } from "@/utils/slug";
+import type { AppLanguage } from "@/i18n.config";
+import { resolveGuideCardImage } from "@/lib/guides/guideCardImage";
 
 const jsonLdType = `application/${["ld", "json"].join("+")}`;
 const sectionId = "assistance-quick-links";
 
-function AssistanceQuickLinksSection({ lang }: AssistanceQuickLinksProps): JSX.Element | null {
+type CardImage = NonNullable<AssistanceQuickLinksSectionProps["items"][number]["image"]>;
+
+function resolveQuickLinkCardImage(
+  item: QuickLinkWithHref,
+  resolvedLang: AppLanguage,
+  tGuides: TFunction<"guides">,
+  tGuidesEn: TFunction<"guides">,
+  howToAlt: string,
+): CardImage | null {
+  const howToSlug = getSlug("howToGetHere", resolvedLang);
+  const howToPath = `/${resolvedLang}/${howToSlug}`;
+
+  if (!item.slug && item.href === howToPath) {
+    return {
+      src: buildCfImageUrl(HERO_IMAGE_SRC, { width: 160, height: 120, quality: 80, format: "auto" }),
+      alt: howToAlt || "Stone steps leading to Hostel Brikette",
+    };
+  }
+
+  if (!item.slug) return null;
+
+  const image = resolveGuideCardImage(item.slug, resolvedLang, tGuides, tGuidesEn);
+  return image ? { src: image.src, alt: image.alt ?? item.label } : null;
+}
+
+function AssistanceQuickLinksSectionWrapper({ lang, className }: AssistanceQuickLinksProps): JSX.Element | null {
   const { resolvedLang, resolveAssistanceString, tAssistance, tAssistanceEn } =
     useAssistanceTranslations(lang);
+
+  const { t: tGuides, i18n: guidesI18n } = useTranslation("guides", { lng: resolvedLang });
+  const tGuidesEn: TFunction<"guides"> = (() => {
+    const maybeFixed =
+      typeof guidesI18n?.getFixedT === "function" ? guidesI18n.getFixedT("en", "guides") : undefined;
+    return typeof maybeFixed === "function" ? (maybeFixed as TFunction<"guides">) : (tGuides as TFunction<"guides">);
+  })();
+
+  const { t: tHowTo } = useTranslation("howToGetHere", { lng: resolvedLang });
+  const howToAlt = tHowTo("header.heroAlt", { defaultValue: "Stone steps framed by bougainvillea" }) as string;
 
   const heading = resolveAssistanceString("quickLinksHeading");
   const intro = resolveAssistanceString("quickLinksIntro");
@@ -30,131 +79,52 @@ function AssistanceQuickLinksSection({ lang }: AssistanceQuickLinksProps): JSX.E
     return null;
   }
 
-  const jsonLd = buildQuickLinksJsonLd(resolvedLang, quickLinksWithHref);
+  const jsonLd = useMemo(
+    () => serializeJsonLdValue(buildQuickLinksJsonLd(resolvedLang, quickLinksWithHref)),
+    [resolvedLang, quickLinksWithHref],
+  );
+
+  const items = useMemo<AssistanceQuickLinksSectionProps["items"]>(
+    () =>
+      quickLinksWithHref.map((item) => ({
+        id: item.slug,
+        href: item.href,
+        label: item.label,
+        description: item.description,
+        image: resolveQuickLinkCardImage(item, resolvedLang, tGuides, tGuidesEn, howToAlt) ?? undefined,
+      })),
+    [howToAlt, quickLinksWithHref, resolvedLang, tGuides, tGuidesEn],
+  );
+
+  const cta = useMemo<AssistanceQuickLinksCta | null>(
+    () => (contactCta ? { href: contactCta.href, label: contactCta.label } : null),
+    [contactCta],
+  );
+
+  const renderLink = useCallback(
+    ({ href, className, children, ariaLabel, prefetch }: AssistanceQuickLinkRenderProps) => (
+      <Link href={href} prefetch={prefetch ?? true} className={className} aria-label={ariaLabel}>
+        {children}
+      </Link>
+    ),
+    [],
+  );
 
   return (
-    <Section
-      aria-labelledby={sectionId}
-      className={clsx("mt-10", "max-w-5xl")}
-      data-testid={sectionId}
-    >
-      <script type={jsonLdType} suppressHydrationWarning dangerouslySetInnerHTML={{ __html: jsonLd }} />
-
-      <div
-        className={clsx(
-          "flex",
-          "flex-col",
-          "gap-6",
-          "rounded-3xl",
-          "border",
-          "border-brand-outline/20",
-          "bg-brand-bg/70",
-          "p-6",
-          "shadow-sm",
-          "backdrop-blur",
-          "dark:border-brand-surface/10",
-          "dark:bg-brand-text/90",
-          "sm:p-8",
-        )}
-      >
-        <div className={clsx("flex", "flex-col", "gap-2")}>
-          <h2
-            id={sectionId}
-            className={clsx("text-2xl", "font-semibold", "text-brand-heading", "dark:text-brand-surface")}
-          >
-            {heading}
-          </h2>
-          <p className={clsx("text-sm", "text-brand-text/80", "dark:text-brand-surface/80")}>{intro}</p>
-        </div>
-
-        <Grid>
-          {quickLinksWithHref.map((item) => (
-            <Link
-              key={item.slug}
-              to={item.href}
-              prefetch="intent"
-              className={clsx(
-                "group",
-                "block",
-                "rounded-2xl",
-                "border",
-                "border-brand-outline/30",
-                "bg-brand-bg/5",
-                "p-5",
-                "transition",
-                "hover:border-brand-primary/60",
-                "hover:bg-brand-primary/5",
-                "focus-visible:outline-none",
-                "focus-visible:ring-2",
-                "focus-visible:ring-brand-primary",
-                "dark:border-brand-surface/20",
-                "dark:bg-brand-text/5",
-                "dark:hover:border-brand-secondary/60",
-                "dark:hover:bg-brand-secondary/5",
-              )}
-            >
-              <h3 className={clsx("text-lg", "font-semibold", "text-brand-heading", "dark:text-brand-surface")}>
-                {item.label}
-              </h3>
-              <p className={clsx("mt-2", "text-sm", "text-brand-text/80", "dark:text-brand-surface/80")}>
-                {item.description}
-              </p>
-              <span
-                className={clsx(
-                  "mt-4",
-                  "inline-flex",
-                  "items-center",
-                  "gap-1",
-                  "text-sm",
-                  "font-semibold",
-                  "text-brand-primary",
-                  "transition",
-                  "group-hover:translate-x-1",
-                  "dark:text-brand-secondary",
-                )}
-              >
-                {readMoreLabel}
-                <ArrowRight aria-hidden className="size-4" strokeWidth={2} />
-              </span>
-            </Link>
-          ))}
-        </Grid>
-
-        {contactCta ? (
-          <div className={clsx("pt-2")}>
-            <a
-              href={contactCta.href}
-              className={clsx(
-                "inline-flex",
-                "min-h-11",
-                "min-w-11",
-                "items-center",
-                "gap-2",
-                "rounded-full",
-                "bg-brand-primary",
-                "px-5",
-                "py-2",
-                "text-sm",
-                "font-semibold",
-                "text-brand-bg",
-                "shadow-sm",
-                "transition",
-                "hover:bg-brand-primary/90",
-                "focus-visible:outline-none",
-                "focus-visible:ring-2",
-                "focus-visible:ring-brand-secondary",
-                "dark:bg-brand-secondary",
-                "dark:hover:bg-brand-secondary/90",
-              )}
-            >
-              {contactCta.label}
-              <ArrowUpRight aria-hidden className="size-4" strokeWidth={2} />
-            </a>
-          </div>
-        ) : null}
-      </div>
-    </Section>
+    <AssistanceQuickLinksSection
+      heading={heading}
+      intro={intro}
+      readMoreLabel={readMoreLabel}
+      items={items}
+      contactCta={cta}
+      sectionId={sectionId}
+      className={className}
+      jsonLd={jsonLd}
+      jsonLdType={jsonLdType}
+      renderLink={renderLink}
+    />
   );
 }
 
-export default memo(AssistanceQuickLinksSection);
+export default memo(AssistanceQuickLinksSectionWrapper);
+export { useQuickHelpGuideKeys } from "./useQuickHelpGuideKeys";

@@ -1,12 +1,15 @@
+"use client";
+
 // src/components/careers/CareersHero.tsx
-import { Button } from "@acme/ui/atoms/Button";
-import { useModal } from "@/context/ModalContext";
-import { CfHeroImage } from "@/components/images/CfHeroImage";
-import { memo, useCallback, useMemo } from "react";
+import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "i18next";
 
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
+import { Button } from "@acme/design-system/primitives";
+
+import { CfHeroImage } from "@acme/ui/atoms/CfHeroImage";
+import { useModal } from "@/context/ModalContext";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import { getOptionalString } from "@/utils/translationFallbacks";
 
 const HERO_IMAGE = "/img/c2.avif";
@@ -24,7 +27,7 @@ function CareersHero({ lang }: CareersHeroProps): JSX.Element {
   const { t, i18n } = useTranslation(NAMESPACES, translationOptions);
   const { t: fallbackT } = useTranslation(NAMESPACES, { lng: FALLBACK_LANGUAGE });
 
-  const fixedEnglishT = useMemo<TFunction | null>(() => {
+  const fixedEnglishT: TFunction | null = (() => {
     if (typeof i18n.getFixedT !== "function") {
       return null;
     }
@@ -34,7 +37,7 @@ function CareersHero({ lang }: CareersHeroProps): JSX.Element {
     } catch {
       return null;
     }
-  }, [i18n]);
+  })();
 
   const resolve = useCallback(
     (key: string): string => {

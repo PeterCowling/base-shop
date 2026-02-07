@@ -1,18 +1,34 @@
-import { describe, expect, it, jest, beforeEach } from "@jest/globals";
+import { beforeAll, beforeEach, describe, expect, it, jest } from "@jest/globals";
 
-const records = new Map<string, any>();
-const store = {
-  get: jest.fn(async (state: string) => records.get(state) ?? null),
+import type { OidcConfig } from "../src/oidc/config";
+
+type OidcClientMock = {
+  authorizationUrl?: (...args: unknown[]) => string;
+  callback?: (...args: unknown[]) => Promise<unknown>;
+  endSessionUrl?: (...args: unknown[]) => string;
+};
+
+// Use globalThis to avoid Jest mock hoisting issues
+declare global {
+  var __oidcFlowTestRecords: Map<string, any> | undefined;
+  var __oidcFlowTestStore: any | undefined;
+  var __oidcFlowTestGetOidcClient: jest.Mock | undefined;
+  var __oidcFlowTestLoadOidcConfig: jest.Mock | undefined;
+}
+
+globalThis.__oidcFlowTestRecords = new Map<string, any>();
+globalThis.__oidcFlowTestStore = {
+  get: jest.fn(async (state: string) => globalThis.__oidcFlowTestRecords?.get(state) ?? null),
   set: jest.fn(async (record: any) => {
-    records.set(record.state, record);
+    globalThis.__oidcFlowTestRecords?.set(record.state, record);
   }),
   delete: jest.fn(async (state: string) => {
-    records.delete(state);
+    globalThis.__oidcFlowTestRecords?.delete(state);
   }),
 };
 
-const getOidcClient = jest.fn();
-const loadOidcConfig = jest.fn(() => ({
+globalThis.__oidcFlowTestGetOidcClient = jest.fn() as jest.Mock<Promise<OidcClientMock>, []>;
+globalThis.__oidcFlowTestLoadOidcConfig = jest.fn(() => ({
   issuer: "https://auth.example.com/realms/base-shop",
   clientId: "client-id",
   clientSecret: "client-secret",
@@ -21,7 +37,12 @@ const loadOidcConfig = jest.fn(() => ({
   postLogoutRedirectUri: "https://shop.example.com/",
   enforcePkce: true,
   scope: "openid profile email",
-}));
+})) as jest.Mock<OidcConfig, []>;
+
+const records = globalThis.__oidcFlowTestRecords;
+const store = globalThis.__oidcFlowTestStore;
+const getOidcClient = globalThis.__oidcFlowTestGetOidcClient;
+const loadOidcConfig = globalThis.__oidcFlowTestLoadOidcConfig;
 
 jest.mock("crypto", () => ({
   randomUUID: () => "flow-id",
@@ -37,18 +58,31 @@ jest.mock("openid-client", () => ({
 }));
 
 jest.mock("../src/oidc/client", () => ({
-  getOidcClient,
+  get getOidcClient() {
+    return globalThis.__oidcFlowTestGetOidcClient;
+  },
 }));
 
 jest.mock("../src/oidc/config", () => ({
-  loadOidcConfig,
+  get loadOidcConfig() {
+    return globalThis.__oidcFlowTestLoadOidcConfig;
+  },
 }));
 
 jest.mock("../src/oidc/flowStore", () => ({
-  createOidcAuthFlowStore: async () => store,
+  createOidcAuthFlowStore: async () => globalThis.__oidcFlowTestStore,
 }));
 
-import { beginOidcLogin, completeOidcLogin, buildOidcLogoutUrl } from "../src/oidc";
+let beginOidcLogin: typeof import("../src/oidc").beginOidcLogin;
+let buildOidcLogoutUrl: typeof import("../src/oidc").buildOidcLogoutUrl;
+let completeOidcLogin: typeof import("../src/oidc").completeOidcLogin;
+
+beforeAll(async () => {
+  const oidc = await import("../src/oidc");
+  beginOidcLogin = oidc.beginOidcLogin;
+  buildOidcLogoutUrl = oidc.buildOidcLogoutUrl;
+  completeOidcLogin = oidc.completeOidcLogin;
+});
 
 describe("OIDC login flow", () => {
   beforeEach(() => {

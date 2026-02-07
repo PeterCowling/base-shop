@@ -1,15 +1,16 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import PreviewClient from "./PreviewClient";
 
 // Mock the preview device hook to use local state
-jest.mock("@ui/hooks", () => ({
+jest.mock("@acme/ui/hooks", () => ({
   usePreviewDevice: (initial: string) => React.useState(initial),
 }));
 
 // Provide a small set of device presets
-jest.mock("@ui/utils/devicePresets", () => ({
+jest.mock("@acme/ui/utils/devicePresets", () => ({
   devicePresets: [
     { id: "a", label: "A", width: 100, height: 200 },
     { id: "b", label: "B", width: 300, height: 400 },
@@ -21,13 +22,13 @@ type DeviceSelectorProps = { setDeviceId: (id: string) => void };
 const DeviceSelector = ({ setDeviceId }: DeviceSelectorProps) => (
   <button data-cy="select" onClick={() => setDeviceId("b")}>select</button>
 );
-jest.mock("@ui/components/DeviceSelector", () => ({
+jest.mock("@acme/ui/components/DeviceSelector", () => ({
   __esModule: true,
   default: (props: DeviceSelectorProps) => DeviceSelector(props),
 }));
 
 // Stub DynamicRenderer so we can detect render
-jest.mock("@ui/components/DynamicRenderer", () => ({
+jest.mock("@acme/ui/components/DynamicRenderer", () => ({
   __esModule: true,
   default: (props: Record<string, unknown>) => <div data-cy="dynamic" {...props} />,
 }));

@@ -1,9 +1,10 @@
 "use client";
 
-import DOMPurify from "dompurify";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import DOMPurify from "dompurify";
 import { createFocusTrap } from "focus-trap";
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from "../../atoms";
+
+import { Dialog, DialogContent, DialogDescription,DialogTitle } from "../../atoms";
 
 interface Props {
   width?: string;

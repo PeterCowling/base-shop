@@ -2,10 +2,11 @@ import { jest } from "@jest/globals";
 
 it("exports preset and prints diagnostic message", async () => {
   jest.resetModules();
-  const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+  const logSpy = jest.spyOn(console, "info").mockImplementation(() => {});
   const { default: preset } = await import("../src/index.ts");
 
-  const bg = (preset.theme?.colors as Record<string, string>)["bg"];
+  const colors = (preset.theme as { colors?: Record<string, string> })?.colors ?? {};
+  const bg = colors["bg"];
   // Avoid literal 'hsl(var(--…))' in tests per lint rule
   expect(typeof bg).toBe("string");
   expect(bg.startsWith("hsl(")).toBe(true);

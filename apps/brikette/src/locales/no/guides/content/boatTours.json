@@ -3,7 +3,7 @@
     "title": "Båtturer i Positano",
     "description": "Private og delte båtturer: hva du kan forvente, prisrammer og bookingtips i sesong."
   },
-  "linkLabel": "Båtturer i Positano",
+  "linkLabel": "Båtturer: Solnedgangscruise til Private Chartere",
   "intro": [
     "Båtturer lar deg følge Amalfikystens klipper uten trafikkaos; bestill i god tid i høysesongen og ha en værbackup."
   ],
@@ -51,11 +51,5 @@
       ]
     }
   ],
-  "galleryHeading": "Bildegalleri",
-  "gallery": {
-    "primaryAlt": "Båt som cruiser langs Positano-kysten",
-    "primaryCaption": "Cruise langs kysten",
-    "secondaryAlt": "Badestopp ved klippene utenfor Positano",
-    "secondaryCaption": "Badestopp"
-  }
+  "galleryHeading": "Bildegalleri"
 }

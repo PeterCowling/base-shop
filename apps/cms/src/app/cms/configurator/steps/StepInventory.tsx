@@ -1,18 +1,21 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
+import { Cluster } from "@acme/design-system/primitives/Cluster";
+import { useTranslations } from "@acme/i18n";
+import { useToast } from "@acme/ui/operations";
+
+import { Switch } from "@/components/atoms";
 import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/atoms/shadcn";
-import { Switch, Toast } from "@/components/atoms";
+
 import { useConfigurator } from "../ConfiguratorContext";
 import useStepCompletion from "../hooks/useStepCompletion";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { Cluster } from "@ui/components/atoms/primitives/Cluster";
-import { useTranslations } from "@acme/i18n";
 
 export default function StepInventory({ prevStepId, nextStepId }: { prevStepId?: string; nextStepId?: string }) {
   const { state, update } = useConfigurator();
   const t = useTranslations();
-  const [toast, setToast] = useState<{ open: boolean; message: string }>({ open: false, message: "" });
+  const toast = useToast();
   const [, markComplete] = useStepCompletion("inventory");
   const router = useRouter();
 
@@ -31,7 +34,7 @@ export default function StepInventory({ prevStepId, nextStepId }: { prevStepId?:
           <div className="flex items-center gap-3">
             <Switch
               checked={tracking}
-              onChange={(e) => update("inventoryTracking", (e.target as HTMLInputElement).checked)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => update("inventoryTracking", e.target.checked)}
               aria-label={t("cms.inventory.toggleAria") as string}
             />
             <span className="text-sm text-muted-foreground">{t("cms.inventory.enableTrackingHelp")}</span>
@@ -82,7 +85,7 @@ export default function StepInventory({ prevStepId, nextStepId }: { prevStepId?:
           data-cy="save-return"
           onClick={() => {
             markComplete(true);
-            setToast({ open: true, message: String(t("cms.inventory.saved")) });
+            toast.success(String(t("cms.inventory.saved")));
             router.push("/cms/configurator");
           }}
         >
@@ -96,7 +99,6 @@ export default function StepInventory({ prevStepId, nextStepId }: { prevStepId?:
         )}
       </Cluster>
 
-      <Toast open={toast.open} onClose={() => setToast((t) => ({ ...t, open: false }))} message={toast.message} />
     </div>
   );
 }

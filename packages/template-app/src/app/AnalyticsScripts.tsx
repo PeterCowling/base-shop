@@ -1,8 +1,8 @@
+import { coreEnv } from "@acme/config/env/core";
 import {
   getShopSettings,
   readShop,
-} from "@platform-core/repositories/shops.server";
-import { coreEnv } from "@acme/config/env/core";
+} from "@acme/platform-core/repositories/shops.server";
 
 export default async function AnalyticsScripts() {
   const shop = (coreEnv.NEXT_PUBLIC_SHOP_ID as string | undefined) || "default";

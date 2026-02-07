@@ -10,12 +10,12 @@
 
 import {
   createContext,
+  type ReactNode,
   useCallback,
   useContext,
   useLayoutEffect,
   useMemo,
   useState,
-  type ReactNode,
 } from "react";
 
 function computeHeight(el: HTMLElement): number {
@@ -97,7 +97,41 @@ export const useBannerHeight = (): number => {
  */
 export const useBannerHeightOrZero = (): number => {
   const ctx = useContext(BannerContext);
-  return ctx?.height ?? 0;
+  const [fallbackHeight, setFallbackHeight] = useState(0);
+
+  useLayoutEffect(() => {
+    if (typeof window === "undefined") {
+      setFallbackHeight(0);
+      return;
+    }
+
+    if (ctx?.height) {
+      setFallbackHeight(ctx.height);
+      return;
+    }
+
+    // Fall back to querying the banner element directly if context is stale.
+    // i18n-exempt -- UI-1000 ttl=2026-12-31 CSS selector string.
+    const el = document.querySelector<HTMLElement>('[data-notification-banner="root"]');
+    if (!el) {
+      setFallbackHeight(0);
+      return;
+    }
+
+    const update = () => setFallbackHeight(computeHeight(el));
+    update();
+
+    const ro = typeof ResizeObserver === "function" ? new ResizeObserver(update) : null;
+    ro?.observe(el);
+    window.addEventListener("resize", update, { passive: true });
+
+    return () => {
+      ro?.disconnect();
+      window.removeEventListener("resize", update);
+    };
+  }, [ctx?.height]);
+
+  return ctx?.height ?? fallbackHeight;
 };
 
 export const useSetBannerRef = (): ((el: HTMLElement | null) => void) => {

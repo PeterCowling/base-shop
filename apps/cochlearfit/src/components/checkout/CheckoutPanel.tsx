@@ -1,22 +1,28 @@
 "use client";
 
 import React, { useCallback, useMemo, useState } from "react";
+
 import { useTranslations } from "@acme/i18n";
+
+import CheckoutButton from "@/components/checkout/CheckoutButton";
+import Price from "@/components/Price";
 import { useCart } from "@/contexts/cart/CartContext";
+import { useLocale } from "@/contexts/LocaleContext";
 import { getCartLineItems } from "@/lib/cart";
 import { createCheckoutSession } from "@/lib/checkout";
-import Price from "@/components/Price";
-import CheckoutButton from "@/components/checkout/CheckoutButton";
-import { useLocale } from "@/contexts/LocaleContext";
+import type { Product } from "@/types/product";
 
-const CheckoutPanel = React.memo(function CheckoutPanel() {
+const CheckoutPanel = React.memo(function CheckoutPanel({ products }: { products: Product[] }) {
   const t = useTranslations();
   const locale = useLocale();
   const { items, subtotal, currency } = useCart();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const lineItems = useMemo(() => getCartLineItems(items), [items]);
+  const lineItems = useMemo(
+    () => getCartLineItems(items, products),
+    [items, products]
+  );
   const canCheckout = items.length > 0;
 
   const payload = useMemo(

@@ -1,10 +1,11 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent,render, screen } from "@testing-library/react";
+
+import { Icon } from "../src/components/atoms/Icon";
 import { Switch } from "../src/components/atoms/Switch";
 import { Toast } from "../src/components/atoms/Toast";
-import { Icon } from "../src/components/atoms/Icon";
-import { VideoPlayer } from "../src/components/atoms/VideoPlayer";
 import { Tooltip } from "../src/components/atoms/Tooltip";
+import { VideoPlayer } from "../src/components/atoms/VideoPlayer";
 
 describe("Switch, Toast, Icon, VideoPlayer, Tooltip", () => {
   it("Switch toggles checked state and has tokens", () => {

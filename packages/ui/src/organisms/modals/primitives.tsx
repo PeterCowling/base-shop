@@ -1,10 +1,11 @@
-import clsx from "clsx";
 import {
-  forwardRef,
   type ButtonHTMLAttributes,
+  forwardRef,
   type HTMLAttributes,
   type Ref,
 } from "react";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import clsx from "clsx";
 
 /** Shared frosted-glass overlay used by the modal suite. */
 export interface ModalOverlayProps extends HTMLAttributes<HTMLDivElement> {
@@ -15,10 +16,11 @@ export interface ModalOverlayProps extends HTMLAttributes<HTMLDivElement> {
 const OVERLAY_BASE = [
   "fixed",
   "inset-0",
+  "z-modal-backdrop",
   "pointer-coarse:p-6",
-  "bg-black/60",
+  "bg-foreground/60",
   "backdrop-blur-sm",
-  "dark:bg-black/80",
+  "dark:bg-foreground/80",
 ];
 
 const OVERLAY_ANIMATION = [
@@ -34,6 +36,57 @@ export const ModalOverlay = forwardRef(function ModalOverlay(
   const classes = clsx(OVERLAY_BASE, animated && OVERLAY_ANIMATION, className);
   return <div ref={ref} className={classes} {...rest} />;
 });
+
+export interface ModalFrameProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+  overlayClassName?: string;
+  contentClassName?: string;
+  testId?: string;
+  ariaLabelledBy?: string;
+  ariaDescribedBy?: string;
+}
+
+const FRAME_BASE = [
+  "fixed",
+  "inset-0",
+  "z-modal",
+  "pointer-events-none",
+  "flex",
+  "items-center",
+  "justify-center",
+];
+
+export function ModalFrame({
+  isOpen,
+  onClose,
+  children,
+  overlayClassName,
+  contentClassName,
+  testId,
+  ariaLabelledBy,
+  ariaDescribedBy,
+}: ModalFrameProps): JSX.Element | null {
+  if (!isOpen) return null;
+
+  return (
+    <DialogPrimitive.Root open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogPrimitive.Portal>
+        <DialogPrimitive.Overlay className={clsx(OVERLAY_BASE, overlayClassName)} />
+        <DialogPrimitive.Content
+          className={clsx(FRAME_BASE, contentClassName)}
+          aria-labelledby={ariaLabelledBy}
+          aria-describedby={ariaDescribedBy}
+          data-cy={testId}
+          data-testid={testId}
+        >
+          {children}
+        </DialogPrimitive.Content>
+      </DialogPrimitive.Portal>
+    </DialogPrimitive.Root>
+  );
+}
 
 /** Shared container that centres modal panels with pointer-event guards. */
 export type ModalContainerProps = HTMLAttributes<HTMLDivElement>;

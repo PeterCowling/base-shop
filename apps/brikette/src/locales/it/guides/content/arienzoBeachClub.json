@@ -1,141 +1,235 @@
 {
   "seo": {
-    "title": "Guida all'Arienzo Beach Club",
-    "description": "Prenota i lettini, decidi tra la discesa di 300 gradini o la navetta in barca e organizza cibo e trasporti per l'Arienzo Beach Club."
+    "title": "Arienzo Beach Positano: barca shuttle, scale e beach club",
+    "description": "Arienzo Beach Positano per ospiti in ostello: prenota lettini, shuttle da Spiaggia Grande o ~300 gradini, cosa portare, budget pranzo e rientro facile."
   },
-  "linkLabel": "Guida all'Arienzo Beach Club",
+  "lastUpdated": "2026-01-30T00:00:00.000Z",
+  "linkLabel": "Arienzo Beach: il beach club boutique di Positano",
   "intro": [
-    "Arienzo si trova appena a est di Positano, con lunghe ore di sole pomeridiano, acqua turchese e una scenografica scalinata che scende dalla Strada Amalfitana. È lo stabilimento più vivace a portata di Hostel Brikette, ma tra scale e prenotazioni obbligatorie conviene avere un piano prima di partire.",
-    "Usa questa guida per assicurarti il posto, scegliere se prendere la navetta in barca o affrontare i 300 gradini e calcolare il budget per pranzo, drink e rientro."
+    "Arienzo Beach Positano è appena a est del paese, con sole fino al tardo pomeriggio, acqua limpida e una scalinata scenografica che scende dalla strada costiera. Per gli ospiti di Hostel Brikette è uno dei beach day più semplici per “coccolarsi” — ma tra gradini, barche e prenotazioni, conviene partire con un piano.",
+    "Questa guida è pensata per chi viaggia in ostello: cosa prenotare, come si sentono davvero quei ~300 gradini, come funziona la barca shuttle da Spiaggia Grande, cosa mettere nello zaino per non soffrire in salita e come rientrare senza stress."
   ],
   "toc": [
     {
       "href": "#why-go",
-      "label": "Perché scegliere Arienzo"
+      "label": "Perché Arienzo"
+    },
+    {
+      "href": "#when-to-go",
+      "label": "Quando andare"
     },
     {
       "href": "#getting-there",
       "label": "Come arrivare"
     },
     {
+      "href": "#stairs",
+      "label": "Scale e accessibilità"
+    },
+    {
       "href": "#layout",
-      "label": "Spazi e servizi"
+      "label": "Aree e servizi"
     },
     {
       "href": "#packages",
-      "label": "Pacchetti e ristorazione"
+      "label": "Pacchetti e pranzo"
+    },
+    {
+      "href": "#what-to-pack",
+      "label": "Cosa portare"
+    },
+    {
+      "href": "#sea-conditions",
+      "label": "Se la barca si ferma"
     },
     {
       "href": "#heading-back",
-      "label": "Ritorno"
+      "label": "Come tornare"
     }
   ],
   "sections": [
     {
       "id": "why-go",
-      "title": "Perché Arienzo è perfetto per gli ospiti di Hostel Brikette",
+      "title": "Perché Arienzo è perfetta per gli ospiti di Hostel Brikette",
       "body": [
-        "Arienzo è il beach club a servizio completo più vicino, lontano dalla folla di Spiaggia Grande. Le terrazze a picco sul mare ricevono sole fino al tardo pomeriggio, l'acqua resta limpida per nuotare e il bar mantiene l'atmosfera festosa senza trasformarla in vita notturna.",
-        "Puoi dividere il gruppo tra pacchetti che includono lettini e pranzo oppure prenotare una pedana in prima fila per una giornata speciale. Con un po' di organizzazione eviti le code e torni comunque in ostello in tempo per gli aperitivi al tramonto sulla terrazza."
+        "Arienzo è il beach club full‑service più vicino senza entrare nel caos di Spiaggia Grande. Le terrazze sotto la scogliera prendono sole fino a tardi, l’acqua è spesso limpida per nuotare e il bar dà atmosfera senza diventare vita notturna.",
+        "Puoi fare semplice con un pacchetto giornaliero (lettini + pranzo) oppure concederti la prima fila. Con un minimo di organizzazione eviti file, panico “abbiamo dimenticato gli asciugamani” e rientri in tempo per l’aperitivo al tramonto in ostello.",
+        "Tip della reception: pensa ad Arienzo come spiaggia da pomeriggio. Andare presto dà più ore, ma la magia è la luce lunga e la golden hour sull’acqua quando altre calette sono già in ombra."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/02-arienzo-cliffs.webp",
+          "alt": "Vista sulla baia di Arienzo con spiaggia di ciottoli sotto alte scogliere vicino a Positano",
+          "caption": "Arienzo si trova sotto la strada costiera a est di Positano. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:84017_Arienzo_SA,_Italy_-_panoramio_(1).jpg|Luigi Biondi% (%URL:https://creativecommons.org/licenses/by/3.0/|CC BY 3.0%)."
+        }
+      ]
+    },
+    {
+      "id": "when-to-go",
+      "title": "Quando andare (e quando conviene evitare)",
+      "body": [
+        "Arienzo ha sole fino al tardo pomeriggio, quindi è perfetta se vuoi partire con calma e avere luce fino a tardi. Se scegli tra “maratona lettino al mattino” e “golden hour facile”, Arienzo è la scelta golden hour.",
+        "Evita giornate molto ventose con mare mosso. Le shuttle possono fermarsi e nuotare diventa meno piacevole. Se sembra agitato, cambia piano (o fai giornata in paese e tieni Arienzo per un pomeriggio tranquillo).",
+        "In alta stagione i weekend vanno sold out per primi. Prenota in anticipo e scegli in base all’energia: presto per più bagno, tardi per vibes da tramonto."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/05-amalfi-coast-positano.webp",
+          "alt": "Vista della Costiera Amalfitana vicino a Positano con scogliere e mare in luce pomeridiana",
+          "caption": "La luce del pomeriggio è il motivo per scegliere questo lato di Positano. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Amalfi_Coast_(Positano).jpg|Ron Clausen% (%URL:https://creativecommons.org/licenses/by-sa/2.0/|CC BY-SA 2.0%)."
+        }
       ]
     },
     {
       "id": "getting-there",
-      "title": "Arrivarci: navetta in barca o 300 gradini",
+      "title": "Come arrivare: barca shuttle, bus o taxi",
       "body": [
-        "Il percorso più semplice è la navetta in barca dell'Arienzo Beach Club che parte da Spiaggia Grande. Le barche salpano circa ogni 30 minuti dalle 09:30, con l'ultima corsa in andata intorno alle 13:30. La conferma della prenotazione include un QR code: mostralo al molo e tieni a portata di mano l'orario del ritorno.",
-        "Camminare è possibile se preferisci evitare la barca. Prendi l'autobus SITA in direzione Amalfi (sali alla fermata Sponda, 10 minuti in discesa dall'ostello) e scendi alla fermata Arienzo indicata. Da lì scendi 300 gradini attraverso i terrazzamenti di limoni fino all'ingresso del club.",
-        "Arrivare in auto o scooter è sconsigliato; i posti auto sono pochissimi e la polizia municipale multa i veicoli che intralciano le curve."
+        "Il modo più facile è la barca shuttle di Arienzo Beach Club da Spiaggia Grande (la spiaggia principale di Positano). Se la prenotazione include la barca, di solito indica dove mettersi in fila e cosa mostrare al pontile. Salva gli orari di ritorno prima di entrare in acqua — evita lo stress “restiamo bloccati?”.",
+        "Preferisci via terra? Il bus SITA funziona. Da Hostel Brikette usa la fermata Sponda (circa 10 minuti in discesa) verso Amalfi. Scendi ad Arienzo e percorri la scalinata tra terrazze di limoni fino all’ingresso. Usa %LINK:hostelBriketteToArienzoBus|la nostra guida bus ostello → Arienzo% per il passo‑passo e fermate alternative.",
+        "Il taxi è l’opzione “salva gambe” se sei in ritardo o hai più di uno zainetto. Non ti porta sulla sabbia, ma vicino all’accesso alle scale senza dipendere dagli orari.",
+        "Auto o scooter raramente convengono: pochissimo parcheggio e controlli severi d’estate."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/04-positano-beach.webp",
+          "alt": "Spiaggia Grande a Positano con ombrelloni colorati e barche nella baia",
+          "caption": "Spiaggia Grande è spesso il punto di partenza della shuttle. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Positano_Beach_(42919362342).jpg|Chris% (%URL:https://creativecommons.org/licenses/by/2.0/|CC BY 2.0%)."
+        }
+      ]
+    },
+    {
+      "id": "stairs",
+      "title": "Scale e accessibilità (come sono ~300 gradini)",
+      "body": [
+        "Le scale sono vere: ripide, a tratti irregolari e più dure in salita quando sei bagnato e salato. Se odi le scale o porti peso, scegli la barca e viaggia leggero.",
+        "Indossa scarpe con grip (sneaker o sandali robusti) e metti il peso nello zaino. Fai pause sui pianerottoli — lo fanno tutti.",
+        "Se qualcuno ha problemi al ginocchio o un infortunio, fai di Arienzo una giornata “solo barca”. Altrimenti i gradini possono rovinare la serata."
+      ],
+      "list": [
+        "Discesa: ok se vai piano e sfrutti l’ombra.",
+        "Salita: conta 15–25 minuti a seconda di caldo e forma.",
+        "Tardi: pesa di più — decidi il rientro in anticipo."
       ]
     },
     {
       "id": "layout",
-      "title": "Disposizione, servizi ed esposizione al sole",
+      "title": "Aree, disposizione e servizi",
       "body": [
-        "La pedana principale è dell'Arienzo Beach Club con lettini arancioni, servizio teli, docce di acqua dolce e un bar vivace. Una piccola striscia libera si trova all'estrema destra vicino all'approdo delle barche, ma lo spazio sparisce dopo le 10:30 e devi comunque affrontare le scale con tutta l'attrezzatura.",
-        "Il sole raggiunge le prime due file fino a circa le 17:30 in estate, prima che la scogliera faccia ombra. Chiedi allo staff di orientare gli ombrelloni quando la luce cambia, soprattutto se vuoi abbronzarti tutto il giorno.",
-        "Docce di acqua dolce, armadietti e cabine spogliatoio sono inclusi nei pacchetti giornalieri. Il Wi-Fi è instabile: scarica playlist o aggiornamenti dei traghetti prima di arrivare."
+        "La piattaforma principale è di Arienzo Beach Club con lettini arancioni, servizio asciugamani, docce di acqua dolce e bar vivace. C’è una piccola striscia libera tutta a destra vicino allo sbarco, ma si riempie presto e le scale restano da gestire con tutto l’occorrente.",
+        "Il sole arriva alle prime due file fino a circa le 17:30 in estate, poi la scogliera fa ombra. Chiedi allo staff di regolare l’ombrellone quando cambia la luce.",
+        "Docce, armadietti e cabine sono spesso inclusi nei pacchetti. Il Wi‑Fi può essere instabile: scarica musica e info ferry prima di scendere."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/01-beach-layout.webp",
+          "alt": "Schema della spiaggia di Arienzo con piattaforma principale e una piccola area libera vicino allo sbarco",
+          "caption": "Disposizione: piattaforma principale (lettini arancioni, bar e docce) + piccola area libera vicino allo sbarco."
+        },
+        {
+          "src": "/img/guides/arienzo-beach/03-positano-umbrellas.webp",
+          "alt": "File di ombrelloni su una spiaggia di ciottoli a Positano",
+          "caption": "Atmosfera da lido: ombrelloni, lettini e servizio. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Beach_Umbrellas_in_Positano_(41158690680).jpg|Chris% (%URL:https://creativecommons.org/licenses/by/2.0/|CC BY 2.0%)."
+        }
       ]
     },
     {
       "id": "packages",
-      "title": "Pacchetti, ristorazione e prenotazioni",
+      "title": "Pacchetti, pranzo e prenotazioni",
       "body": [
-        "I lettini standard partono da circa 70 € per due persone e includono ombrellone, teli, due drink di benvenuto e la navetta in barca. Le pedane in prima fila e le cabanas prestige arrivano a 120–200 € a seconda del mese.",
-        "Il pranzo viene servito dalle 12:30 con pasta di mare, insalate e secondi alla griglia. Aspettati 18–28 € a piatto; prenota il tavolo al check-in per evitare la corsa delle 14:00.",
-        "Le prenotazioni si gestiscono direttamente sul sito di Arienzo o via WhatsApp. I dati di pagamento garantiscono il posto; le cancellazioni entro 48 ore comportano di solito una penale, quindi controlla prima le previsioni meteo e gli orari dei traghetti."
+        "I lettini per due spesso partono da circa 70 € e includono ombrellone, asciugamani, due drink di benvenuto e la barca. Prima fila e cabanas possono arrivare a 120–200 € in base al mese.",
+        "Il pranzo si serve da circa 12:30 (pasta ai frutti di mare, insalate, griglia). Metti in conto 18–28 € a piatto; prenota il tavolo al check‑in per evitare il picco delle 14:00.",
+        "Prenotazione via sito o WhatsApp. Le cancellazioni tardive possono essere addebitate, quindi controlla vento/mare prima di confermare.",
+        "Tip budget ostello: Arienzo può diventare caro senza accorgertene. Decidete prima: un piatto da condividere + acqua, oppure pranzo completo + cocktail. Entrambi ottimi — basta non “scivolare” dentro."
+      ]
+    },
+    {
+      "id": "what-to-pack",
+      "title": "Cosa portare (per non soffrire sulle scale)",
+      "body": [
+        "Pensala come una mini camminata verso un beach club. Meno porti, meglio ti godi la giornata — soprattutto al ritorno in salita.",
+        "Se prendi la barca puoi portare qualcosa in più. Se fai le scale, resta sull’essenziale ed evita roba pesante o fragile."
+      ],
+      "list": [
+        "Scarpette da scoglio o sandali con grip (ciottoli + gradini bagnati).",
+        "Drybag piccolo / busta zip (telefono, contanti, biglietti).",
+        "Borraccia (la salita disidrata).",
+        "Crema reef‑safe + occhiali da sole (riflesso forte).",
+        "Strato leggero per il rientro (brezza dopo il bagno)."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/06-positano-umbrellas-panorama.webp",
+          "alt": "Vista panoramica degli ombrelloni di Positano e del paese arrampicato sulle scogliere",
+          "caption": "Viaggia leggero e pianifica l’uscita per goderti la vista senza stress. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Positano_Beach_Umbrellas_-_panoramio.jpg|Mauro% (%URL:https://creativecommons.org/licenses/by-sa/3.0/|CC BY-SA 3.0%)."
+        }
+      ]
+    },
+    {
+      "id": "sea-conditions",
+      "title": "Se la barca si ferma (un piano B che funziona)",
+      "body": [
+        "Con vento e mare mosso le barche shuttle possono fermarsi. Niente panico: passa alla logistica via terra.",
+        "Se sei già ad Arienzo, la soluzione sicura è risalire alla strada e prendere il prossimo bus o un taxi. Lascia margine, soprattutto più tardi quando i bus possono passare pieni.",
+        "Se non sei ancora partito e il mare sembra brutto, scegli una spiaggia con logistica più semplice (vedi %LINK:positanoBeaches|la nostra panoramica spiagge%) o un’opzione “senza barca” come %LINK:fornilloBeachGuide|Fornillo Beach%."
       ]
     },
     {
       "id": "heading-back",
-      "title": "Rientro all'Hostel Brikette",
+      "title": "Come tornare a Hostel Brikette",
       "body": [
-        "Le barche di ritorno partono da Arienzo alla mezz'ora a partire dalle 15:00 circa; l'ultima navetta normalmente salpa alle 18:00 ma gli orari cambiano in bassa stagione—controlla la lavagna vicino alla reception.",
-        "Se sei sceso a piedi, calcola 15–20 minuti per risalire la scalinata fino alla strada. Gli autobus per Positano passano ogni 30–40 minuti nel pomeriggio; convalida il biglietto a bordo e tienine uno di scorta per i rientri tardivi.",
-        "Voglia di un bagno notturno? Organizza prima un taxi tramite la reception o il concierge digitale, perché le app di ride-hailing non funzionano in modo affidabile lungo la costa."
+        "Se sei arrivato in barca, conferma presto l’ultima corsa (chiedi allo staff o controlla la bacheca vicino alla reception). Gli orari cambiano con stagione e mare.",
+        "Se sei sceso a piedi, conta 15–25 minuti per risalire (più caldo e più stanco). I bus verso Positano spesso passano ogni 30–40 minuti, ma ritardi e bus pieni succedono — pazienza e acqua extra aiutano.",
+        "Vuoi un rientro senza sorprese? Usa %LINK:arienzoBeachBusBack|la nostra guida bus Arienzo → Positano% per non finire alla fermata sbagliata.",
+        "Se resti fino a tardi, prenota un taxi tramite reception o concierge digitale: le app tipo ride‑hailing qui non sono affidabili."
       ]
     }
   ],
   "essentialsTitle": "Cosa aspettarsi",
   "essentials": [
-    "Prenotazione obbligatoria in alta stagione: riserva online o via WhatsApp prima di lasciare l'ostello.",
-    "Scegli tra la navetta da Spiaggia Grande o la scalinata di 300 gradini dalla fermata dell'autobus SITA.",
-    "Stabilimento completo con bar, ristorante, docce e servizio teli inclusi nei pacchetti giornalieri."
+    "In alta stagione la prenotazione è quasi obbligatoria: online o via WhatsApp prima di partire.",
+    "Scegli barca shuttle da Spiaggia Grande o ~300 gradini dalla fermata SITA.",
+    "Lido full‑service con bar/ristorante, docce e servizio asciugamani nei pacchetti."
   ],
   "typicalCostsTitle": "Costi tipici",
   "typicalCosts": [
-    "Lettino per due con navetta in barca: 70–90 € a seconda della stagione.",
-    "Pedana in prima fila o cabana: 120–200 € per due ospiti.",
-    "Portate per il pranzo: 18–28 €, cocktail 12–15 €, acqua in bottiglia 3–4 €."
+    "Lettini per due + barca: 70–90 € in base alla stagione.",
+    "Prima fila / cabana: 120–200 € per due.",
+    "Piatti 18–28 €, cocktail 12–15 €, acqua 3–4 €."
   ],
   "tipsTitle": "Consigli rapidi",
   "tips": [
-    "Fai uno screenshot della conferma di prenotazione; il segnale mobile si indebolisce lungo la scalinata e al molo.",
-    "Porta una borraccia riutilizzabile: puoi ricaricarla al bar e risparmiare nelle giornate più calde.",
-    "Confronta altre opzioni sulla costa nella nostra %LINK:positanoBeaches|panoramica delle spiagge% se cerchi un'alternativa più tranquilla o gratuita."
+    "%LINK:hostelBriketteToArienzoBus|Come arrivare in bus%.",
+    "%LINK:arienzoBeachBusBack|Come tornare in bus%.",
+    "Fai screenshot della prenotazione: il segnale cala sulle scale e al pontile.",
+    "Porta una borraccia: spesso puoi riempirla al bar e risparmiare nei giorni caldi.",
+    "Confronta altre opzioni in %LINK:positanoBeaches|panoramica spiagge% se vuoi più tranquillità o gratis."
   ],
   "warningsTitle": "Da sapere",
   "warnings": [
-    "Nessun rimborso in contanti per gli arrivi in ritardo; chiama in anticipo se stai tardando così lo staff può tenerti i lettini.",
-    "La zona libera è minuscola e richiede comunque di affrontare l'intera scalinata con tutta l'attrezzatura.",
-    "Le condizioni del mare a volte sospendono la navetta; lo staff invia aggiornamenti via SMS, ma tieni pronto il piano con l'autobus."
+    "Nessun rimborso in contanti se arrivi in ritardo; avvisa se sei in ritardo così tengono i lettini.",
+    "La zona libera è minuscola e comunque fai tutta la scalinata con la tua roba.",
+    "Con onda la barca può fermarsi: lo staff manda aggiornamenti, ma tieni pronto il piano bus."
   ],
-  "faqsTitle": "Domande frequenti su Arienzo Beach Club",
+  "faqsTitle": "FAQ Arienzo Beach Club",
   "faqs": [
     {
-      "q": "Con quanto anticipo devo prenotare?",
+      "q": "Quanto prima devo prenotare?",
       "a": [
-        "Prenota almeno 3-5 giorni prima tra giugno e settembre, soprattutto per i weekend o le pedane in prima fila. Nella mezza stagione (aprile, maggio, ottobre) spesso c'è disponibilità per il giorno successivo, ma controlla comunque gli orari della navetta."
+        "Prenota 3–5 giorni prima tra giugno e settembre, soprattutto weekend o prima fila. In mezza stagione (aprile, maggio, ottobre) a volte trovi posto per il giorno dopo, ma conferma comunque gli orari della shuttle."
       ]
     },
     {
-      "q": "Posso andare senza acquistare un pacchetto?",
+      "q": "Posso andare senza pacchetto?",
       "a": [
-        "Sì, ma le opzioni sono limitate. Una piccola striscia pubblica si trova accanto al club e si riempie entro metà mattina. Senza pacchetto non hai accesso a bagni o docce e devi comunque gestire la lunga scalinata."
+        "Sì, ma le opzioni sono limitate. C’è una piccola striscia pubblica accanto al club che si riempie in fretta. Senza pacchetto non hai accesso a docce/toilette e le scale restano parte del gioco."
       ]
     },
     {
-      "q": "Cosa dovrei indossare per affrontare le scale?",
+      "q": "Cosa devo indossare per le scale?",
       "a": [
-        "Indossa sandali robusti o scarpe da ginnastica per la discesa. Porta gli oggetti più pesanti nello zaino e fermati ai pianerottoli intermedi. Durante la risalita, fai pause all'ombra e idratati prima di salire su autobus o taxi."
+        "Sandali robusti o sneaker in discesa. Metti il peso nello zaino e fai pause sui pianerottoli. In salita: riposa all’ombra e bevi prima di bus o taxi."
       ]
     }
   ],
-  "gallery": {
-    "title": "Scatti da Arienzo",
-    "items": [
-      {
-        "alt": "Terrazze dell’Arienzo Beach Club",
-        "caption": "Deck a picco con lettini arancioni"
-      },
-      {
-        "alt": "Molo della navetta di Arienzo",
-        "caption": "Imbarco dello shuttle da Spiaggia Grande"
-      },
-      {
-        "alt": "Scala che porta ad Arienzo",
-        "caption": "300 gradini tra i limoneti"
-      }
-    ]
-  }
+  "galleryHeading": "Foto highlights di Arienzo"
 }

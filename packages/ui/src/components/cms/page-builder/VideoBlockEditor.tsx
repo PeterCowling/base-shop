@@ -1,12 +1,15 @@
 "use client";
 
-import type { VideoBlockComponent } from "@acme/types";
-import { Button, Checkbox, Dialog, DialogContent, DialogTitle, DialogTrigger } from "../../atoms/shadcn";
-import { Grid } from "../../atoms/primitives";
-import { useTranslations } from "@acme/i18n";
 import { useEffect, useState } from "react";
-import useMediaLibrary from "./useMediaLibrary";
+
+import { useTranslations } from "@acme/i18n";
+import type { VideoBlockComponent } from "@acme/types";
+
+import { Grid } from "../../atoms/primitives";
+import { Button, Checkbox, Dialog, DialogContent, DialogTitle, DialogTrigger } from "../../atoms/shadcn";
+
 import type { EditorProps } from "./EditorProps";
+import useMediaLibrary from "./useMediaLibrary";
 
 type Props = EditorProps<VideoBlockComponent>;
 

@@ -1,14 +1,17 @@
-import type { Locale } from "@acme/i18n/locales";
 import * as React from "react";
-import { cn } from "../../utils/style";
-import type { LogoVariants } from "./types";
-import useViewport from "../../hooks/useViewport";
-import { LanguageSwitcher, SearchBar } from "../molecules";
-import { Logo } from "../atoms";
+
 import { useTranslations } from "@acme/i18n";
+import type { Locale } from "@acme/i18n/locales";
+
+import useViewport from "../../hooks/useViewport";
+import { cn } from "../../utils/style";
+import { Logo } from "../atoms";
+import { Cluster } from "../atoms/primitives/Cluster";
 import { Inline } from "../atoms/primitives/Inline";
 import { Stack } from "../atoms/primitives/Stack";
-import { Cluster } from "../atoms/primitives/Cluster";
+import { LanguageSwitcher, SearchBar } from "../molecules";
+
+import type { LogoVariants } from "./types";
 
 export interface NavItem {
   title: string;

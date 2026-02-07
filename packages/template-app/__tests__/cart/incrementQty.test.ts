@@ -1,4 +1,4 @@
-import { incrementQty, createCartWithItem } from "./helpers";
+import { createCartWithItem,incrementQty } from "./helpers";
 
 afterEach(() => {
   jest.resetAllMocks();

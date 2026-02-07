@@ -1,79 +1,77 @@
 {
   "seo": {
-    "title": "Bus from Hostel Brikette to Laurito Beach",
-    "description": "Walk to the Chiesa Nuova stop, ride the Amalfi Coast bus, and follow the stairs down to Laurito Beach."
+    "title": "Buss fra Hostel Brikette til Laurito-stranden",
+    "description": "Gå til Chiesa Nuova-stoppet, ta Amalfikyst-bussen og følg trappene ned til Laurito-stranden."
   },
-  "linkLabel": "Bus to Laurito Beach",
+  "linkLabel": "Buss til Laurito-stranden",
   "lead": {
-    "shareLabel": "Scan to Share",
-    "qrAlt": "QR code to share this guide",
-    "figures": [
+    "images": [
       {
         "alt": "Chiesa Nuova bussholdeplass ved siden av Bar Internazionale",
-        "caption": "Chiesa Nuova – Bar Internazionale stop"
+        "caption": "Chiesa Nuova – Bar Internazionale-stopp"
       },
       {
-        "alt": "Trapp ned til Laurito Beach (skiltet)",
-        "caption": "Signposted stairs down to Laurito"
+        "alt": "Trapp ned til Laurito-stranden (skiltet)",
+        "caption": "Skiltet trapp ned til Laurito"
       }
     ]
   },
   "intro": [
-    "Reaching Laurito Beach from Hostel Brikette is simplest on the blue SITA Amalfi Coast bus that stops at Chiesa Nuova.",
-    "Use this guide to find the stop, buy tickets, ride to Laurito, and follow the final stairs down to the water."
+    "Det enkleste er å nå Laurito-stranden fra Hostel Brikette med den blå SITA Amalfikyst-bussen som stopper ved Chiesa Nuova.",
+    "Bruk denne guiden til å finne stoppet, kjøpe billetter, reise til Laurito og følge de siste trappene ned til vannet."
   ],
   "sections": [
     {
       "id": "reach-bus-stop",
-      "title": "Go to the Chiesa Nuova bus stop",
+      "title": "Gå til Chiesa Nuova bussholdeplass",
       "body": [
-        "Exit Hostel Brikette through the main door and walk down the steps to Viale Pasitea.",
-        "Turn left toward the Chiesa Nuova neighbourhood; the bus stop sits beside Bar Internazionale about 100 metres (330 feet) away.",
-        "Spot the blue-and-white SITA sign outside the bar — this is the Amalfi Coast line toward Praiano and Amalfi."
+        "Gå ut av Hostel Brikette gjennom hoveddøren og gå ned trappene til Viale Pasitea.",
+        "Ta til venstre mot Chiesa Nuova-området; bussholdeplassen ligger ved siden av Bar Internazionale omtrent 100 meter unna.",
+        "Se etter det blå-hvite SITA-skiltet utenfor baren – dette er Amalfikyst-linjen mot Praiano og Amalfi."
       ]
     },
     {
       "id": "buy-tickets",
-      "title": "Buy Amalfi Coast bus tickets",
+      "title": "Kjøp Amalfikyst-billetter",
       "body": [
-        "Go inside Bar Internazionale (the tabacchi/newsagent) to buy tickets for the Amalfi Coast bus.",
-        "Purchase enough tickets for the outbound and return journeys; Laurito has no ticket sellers.",
-        "Keep the tickets ready but validate them only once you board."
+        "Gå inn på Bar Internazionale (tabacchi/aviskiosk) for å kjøpe billetter til Amalfikyst-bussen.",
+        "Kjøp nok billetter til tur og retur; Laurito har ingen billettselgere.",
+        "Ha billettene klare, men valider dem først når du går om bord."
       ]
     },
     {
       "id": "wait-for-bus",
-      "title": "Wait on the opposite side of the road",
+      "title": "Vent på motsatt side av veien",
       "body": [
-        "Cross to the opposite side of Viale Pasitea after buying your ticket.",
-        "Stand in the pull-in area facing Amalfi so the driver can see you and raise your hand to signal the stop.",
-        "Use the posted timetable or a quick photo of the schedule to double-check the next departures."
+        "Kryss til motsatt side av Viale Pasitea etter at du har kjøpt billett.",
+        "Stå i innsvingen vendt mot Amalfi slik at sjåføren ser deg, og løft hånden for å signalisere stopp.",
+        "Bruk den oppslåtte rutetabellen eller ta et raskt bilde av planen for å dobbeltsjekke neste avganger."
       ]
     },
     {
       "id": "ride-the-bus",
-      "title": "Ride toward Laurito",
+      "title": "Kjør mot Laurito",
       "body": [
-        "Board the blue SITA bus marked for Amalfi or Praiano when it arrives.",
-        "Stay alert as the coach makes request stops around Positano; press the button shortly before you reach Laurito.",
-        "Expect the ride to cover roughly 4.1 kilometres (2.5 miles) and around 10 minutes after the Positano Sponda stop."
+        "Gå om bord i den blå SITA-bussen merket Amalfi eller Praiano når den kommer.",
+        "Vær oppmerksom når bussen gjør holdeplass på signal rundt Positano; trykk på knappen like før du når Laurito.",
+        "Regn med en tur på rundt 4,1 kilometer og cirka 10 minutter etter Positano Sponda-stoppet."
       ]
     },
     {
       "id": "walk-down",
-      "title": "Walk down to the beach",
+      "title": "Gå ned til stranden",
       "body": [
-        "Step off at the Laurito stop beside the stairway down to the beach access road.",
-        "Walk a few metres back in the direction the bus came from and look for the signposted staircase on the seaward side.",
-        "Descend carefully — the steps are steep and can be slippery; sturdy footwear helps."
+        "Gå av ved Laurito-stoppet ved siden av trappen ned til strandtilkomstveien.",
+        "Gå noen meter tilbake i retningen bussen kom fra og se etter den skiltede trappen på sjøsiden.",
+        "Gå ned forsiktig – trinnene er bratte og kan være glatte; solid fottøy hjelper."
       ]
     }
   ],
-  "tipsTitle": "Bus tips",
+  "tipsTitle": "Busstips",
   "tips": [
-    "The printed timetable lists Positano times but not Laurito; plan on Laurito being about 10 minutes after Sponda when leaving town.",
-    "Buy your return ticket before you leave — there are no shops near the beach to sell extras.",
-    "Follow the %LINK:lauritoBeachBusBack|bus-back guide% when you are ready to return uphill.",
-    "Check our %LINK:positanoBeaches|Positano beaches overview% for details on Laurito facilities and shuttle boats."
+    "Den trykte rutetabellen viser Positano-tider, men ikke Laurito; regn med at Laurito er omtrent 10 minutter etter Sponda når du drar fra byen.",
+    "Kjøp returbilletten før du drar – det er ingen butikker nær stranden som selger ekstra billetter.",
+    "Følg %LINK:lauritoBeachBusBack|guiden for buss tilbake% når du er klar til å returnere oppover.",
+    "Se vår %LINK:positanoBeaches|oversikt over Positano-strender% for detaljer om Laurito-fasiliteter og skyttelbåter."
   ]
 }

@@ -1,11 +1,11 @@
-import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 import PostForm from "@cms/app/cms/blog/posts/PostForm.client";
+import { act,fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 jest.mock("react-dom", () => ({
   useFormState: (_action: any, init: any) => [init, jest.fn()],
 }));
 
-jest.mock("@ui", () => ({
+jest.mock("@acme/ui", () => ({
   Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
   Input: ({ label, error, ...props }: any) => (
     <div>

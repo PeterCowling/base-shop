@@ -18,11 +18,47 @@ interface Booking {
   guestName: string;
   bookingRef: string;
   checkInCode?: string;
+  guestPortalToken?: string;
+  checkOutDate?: string;
+  checkOut?: string;
+  occupants?: string[];
   [key: string]: unknown;
+}
+
+interface GuestSessionToken {
+  bookingId: string;
+  guestUuid: string | null;
+  createdAt: string;
+  expiresAt: string;
 }
 
 const MAX_ATTEMPTS = 5;
 const WINDOW_MS = 60 * 60 * 1000; // 1 hour
+const TOKEN_TTL_DAYS = 30;
+
+function generateToken(): string {
+  return crypto.randomUUID().replace(/-/g, '');
+}
+
+function computeTokenExpiry(booking: Booking, now: Date): string {
+  const checkout = booking.checkOutDate || booking.checkOut;
+  if (checkout) {
+    const checkoutDate = new Date(checkout);
+    if (!Number.isNaN(checkoutDate.getTime())) {
+      const expiresAt = new Date(checkoutDate.getTime() + 48 * 60 * 60 * 1000);
+      return expiresAt.toISOString();
+    }
+  }
+
+  const fallback = new Date(now.getTime());
+  fallback.setDate(fallback.getDate() + TOKEN_TTL_DAYS);
+  return fallback.toISOString();
+}
+
+function isTokenValid(token: GuestSessionToken | null): boolean {
+  if (!token) return false;
+  return new Date(token.expiresAt) > new Date();
+}
 
 export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
   const url = new URL(request.url);
@@ -85,6 +121,43 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
     }
 
     const [bookingId, booking] = matchingBooking;
+    const now = new Date();
+
+    // Guest portal token issuance (reuse if still valid)
+    let guestPortalToken = booking.guestPortalToken || null;
+    if (guestPortalToken) {
+      const existingToken = await firebase.get<GuestSessionToken>(
+        `guestSessionsByToken/${guestPortalToken}`
+      );
+      if (!isTokenValid(existingToken)) {
+        guestPortalToken = null;
+      }
+    }
+
+    if (!guestPortalToken) {
+      const token = generateToken();
+      const guestUuid = Array.isArray(booking.occupants) && booking.occupants.length > 0
+        ? booking.occupants[0]
+        : null;
+
+      await firebase.set(`guestSessionsByToken/${token}`, {
+        bookingId,
+        guestUuid,
+        createdAt: now.toISOString(),
+        expiresAt: computeTokenExpiry(booking, now),
+      });
+
+      if (booking.guestPortalToken && booking.guestPortalToken !== token) {
+        try {
+          await firebase.delete(`guestSessionsByToken/${booking.guestPortalToken}`);
+        } catch (error) {
+          console.warn('Failed to delete previous guest token:', error);
+        }
+      }
+
+      await firebase.update(`bookings/${bookingId}`, { guestPortalToken: token });
+      guestPortalToken = token;
+    }
 
     // Check if check-in code exists, generate if not
     let checkInCode = booking.checkInCode;
@@ -97,7 +170,6 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
         checkInCode += chars.charAt(Math.floor(Math.random() * chars.length));
       }
 
-      const now = new Date();
       const expiresAt = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
 
       await firebase.update(`bookings/${bookingId}`, { checkInCode });
@@ -112,7 +184,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
       await env.RATE_LIMIT.delete(rateLimitKey);
     }
 
-    return jsonResponse({ checkInCode, bookingId });
+    return jsonResponse({ redirectUrl: `/g/${guestPortalToken}` });
   } catch (error) {
     console.error('Error finding booking:', error);
     return errorResponse('Failed to find booking', 500);

@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/ShapeDivider.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import ShapeDivider from './ShapeDivider';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './ShapeDivider.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import ShapeDivider from './ShapeDivider';
+import fixture from './ShapeDivider.fixtures.json';
 
 const meta: Meta<typeof ShapeDivider> = {
   title: 'CMS Blocks/ShapeDivider/Matrix',

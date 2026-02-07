@@ -5,10 +5,10 @@
 import type { TFunction } from "i18next";
 
 // Core fallback + translator helpers
-export { getNamespaceTranslator, getStringWithFallback, getOptionalString } from "./translationFallbacks";
+export { getNamespaceTranslator, getOptionalString,getStringWithFallback } from "./translationFallbacks";
 
 // Array coercion helpers
-export { ensureStringArray, ensureArray } from "./i18nContent";
+export { ensureArray,ensureStringArray } from "./i18nContent";
 
 // Convenience type re-exports for consumers that need them
 export type { TFunction };

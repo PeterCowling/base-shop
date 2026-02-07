@@ -27,7 +27,16 @@
       "points": [
         "Köp biljetter online i förväg under högsäsong eller vid operatörernas biljettkiosker vid piren.",
         "Kom 15–20 minuter före avgång för att lösa in eventuella vouchers och ställa dig i kön.",
-        "Ha biljett eller QR-kod redo för personalens kontroll."
+        "Ha biljett eller QR-kod redo för personalens kontroll.",
+        "Om du reser med stort bagage, fråga personalen om bagageregler och var du kan förvara väskor ombord."
+      ]
+    },
+    "gettingToPier": {
+      "title": "Så tar du dig från Hostel Brikette till piren",
+      "intro": "Om du startar från vandrarhemmet, använd <dockWalk>vår steg-för-steg-guide till färjepiren</dockWalk> för att nå Spiaggia Grande utan att gissa.",
+      "points": [
+        "Räkna med marginal för trappor, värme och långsamt gående fotgängare i staden.",
+        "Ta med vatten och ha det viktigaste (pass/plånbok/telefon) i en lättillgänglig ficka för kontroller vid ombordstigning."
       ]
     },
     "positanoPier": {
@@ -44,6 +53,15 @@
         "Båtarna anländer till Amalfis pirer vid vattnet nära Piazza Flavio Gioia.",
         "Historiska centrum och strandpromenaden ligger precis intill hamnen.",
         "För vidare bussar (t.ex. Ravello eller Sorrento), följ skyltarna till SITA-hållplatsen nära vattnet."
+      ]
+    },
+    "planB": {
+      "title": "Om färjan ställs in (Plan B som fungerar)",
+      "intro": "Vid blåsiga dagar kan havet stoppa båtarna. Ingen panik — byt till <bus>Positano → Amalfi-bussen</bus> och kolla vår <cancellations>guide för inställda färjor</cancellations> för tider och lösningar.",
+      "points": [
+        "Om du redan är vid stranden, gå tillbaka upp till huvudvägen och ta nästa tillgängliga buss eller taxi.",
+        "Bygg in marginal: bussar kan komma fulla under högsäsong, och förseningar är vanliga.",
+        "Om du reser sent, bekräfta sista möjliga avgång tidigt (färja eller buss) så att du inte blir strandsatt."
       ]
     }
   },

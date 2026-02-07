@@ -1,4 +1,4 @@
-import { withShop, seedShop, mockShop } from "@acme/test-utils";
+import { mockShop,seedShop, withShop } from "@acme/test-utils";
 
 afterEach(() => jest.resetAllMocks());
 

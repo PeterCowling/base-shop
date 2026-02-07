@@ -1,4 +1,5 @@
 import { describe, expect, it } from "@jest/globals";
+
 import type { GeneratedMeta } from "../generateMeta";
 import { resolveOpenAIConstructor } from "../generateMeta";
 

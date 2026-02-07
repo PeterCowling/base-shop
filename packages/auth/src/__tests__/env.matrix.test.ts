@@ -1,4 +1,5 @@
-import { describe, it, expect } from "@jest/globals";
+import { describe, expect,it } from "@jest/globals";
+
 import { withEnv } from "../../../config/test/utils/withEnv";
 
 type Envs = {
@@ -8,9 +9,11 @@ type Envs = {
   cmsEnv: any;
 };
 
+type EnvOverrides = Record<string, string | undefined>;
+
 const scenarios: Array<{
   name: string;
-  env: NodeJS.ProcessEnv;
+  env: EnvOverrides;
   assert: (envs: Envs) => void;
 }> = [
   {

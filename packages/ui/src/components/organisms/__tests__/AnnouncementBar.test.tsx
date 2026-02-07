@@ -1,8 +1,10 @@
 /* i18n-exempt file -- tests use literal copy for assertions */
+import "../../../../../../test/resetNextMocks";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import AnnouncementBar from "../AnnouncementBar";
-import "../../../../../../test/resetNextMocks";
 
 describe("AnnouncementBar", () => {
   it("returns null when no text", () => {

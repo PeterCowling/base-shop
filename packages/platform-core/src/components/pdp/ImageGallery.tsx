@@ -1,8 +1,9 @@
 // src/components/pdp/ImageGallery.tsx
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
+import Image from "next/image";
+
 import type { MediaItem } from "@acme/types";
 
 export default function ImageGallery({ items }: { items: MediaItem[] }) {

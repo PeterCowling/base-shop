@@ -1,11 +1,11 @@
 {
-  "title": "Mindig ellenőrizd a közlekedési információkat",
+  "title": "Minden közlekedési információt jóhiszeműen adunk meg. Mindig ellenőrizd a hivatalos menetrendeket és szolgáltatási közleményeket, különösen ha további csatlakozásod vagy más időérzékeny programod van. Az alábbiakban megtalálod a releváns szolgáltatók menetrendjeinek linkjeit.",
   "items": {
-    "buses": "Buszok: ellenőrizd a SITA Sud hivatalos menetrendjeit — <sitaLink>sitasudtrasporti.it</sitaLink>.",
-    "ferries": "Kompok: az üzemeltetők időjárásfüggő szezonális menetrendet adnak ki. Ajánlott oldalak: <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink>.",
-    "airlink": "Salerno Costa d'Amalfi (QSR) reptérre érkezel? Használd az Airlink shuttle-t Salernóig — <airportLink>aeroportodisalerno.it</airportLink> és <airlinkLink>FS Busitalia Airlink</airlinkLink>.",
-    "driving": "Autózás: SS163 rendszám szerinti korlátozások (ápr.–okt.) és ZTL. A parkolási díjak szezononként és helyszínenként változnak – ellenőrizd a hivatalos közleményeket.",
-    "premium": "Prémium vagy szezonális: az Uber Boat és a helikopteres charter limitált nyári menetrenddel fut — mindig erősítsd meg az aktuális elérhetőséget."
+    "buses": "Buszok: <sitaLink>Amalfi-part</sitaLink> és <curreriLink>Nápoly repülőtér ⇄ Sorrento</curreriLink>.",
+    "trains": "Vonat: <eavLink>Circumvesuviana</eavLink> (Naples ⇄ Sorrento), <trenitaliaLink>Trenitalia</trenitaliaLink> (fővonali vonatok).",
+    "ferries": "Kompok: Szolgáltatók: <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink>, <positanoJetLink>Positano Jet</positanoJetLink>, <alicostLink>Alicost</alicostLink>.",
+    "airlink": "Salerno Costa d’Amalfi (QSR) repülőtér, <airlinkLink>Airlink shuttle Salernóba</airlinkLink>.",
+    "driving": "Autózás: SS163 rendszám szerinti korlátozások (ápr.–okt.) és ZTL. A parkolási díjak szezononként és helyszínenként változnak – ellenőrizd a hivatalos közleményeket."
   },
   "srLabel": "Közlekedési figyelmeztetés"
 }

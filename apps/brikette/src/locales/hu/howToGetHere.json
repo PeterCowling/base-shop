@@ -7,25 +7,83 @@
     "eyebrow": "Hostel Brikette",
     "title": "Utazási útvonalak listája",
     "description": "Használd ezt az útmutatót, hogy oda-vissza eljuss az Amalfi-parti úti célodhoz és a Hostel Brikette-hez.",
-    "heroAlt": "Stone steps framed by bougainvillea leading to Hostel Brikette's entrance",
+    "heroAlt": "Bugenvilleával szegélyezett kőlépcsők a Hostel Brikette bejáratához",
     "heroAltFallback": "Bugenvilleával szegélyezett kőlépcső",
-    "transportLabel": "Transport coverage",
+    "transportLabel": "Közlekedési lefedettség",
     "stats": {
-      "routes": "Door-to-door routes",
-      "destinations": "Local areas covered",
-      "transport": "Transport types",
-      "experienceRoutes": "Experience routes"
+      "routes": "Ajtótól ajtóig útvonalak",
+      "destinations": "Lefedett helyi területek",
+      "transport": "Közlekedési típusok",
+      "experienceRoutes": "Élmény útvonalak"
+    }
+  },
+  "routePicker": {
+    "title": "Találd meg a legjobb útvonalat az érkezésedhez",
+    "subtitle": "Válaszolj két gyors kérdésre — a legjobb találathoz ugrunk, és kiemeljük.",
+    "placeLabel": "Honnan érkezel?",
+    "placePlaceholder": "Válassz kiindulási pontot",
+    "arrivalLabel": "Mikor érkezel?",
+    "arrival": {
+      "daytime": "Nappal",
+      "evening": "Este",
+      "lateNight": "Késő éjjel"
+    },
+    "preferencesLabel": "Preferenciák",
+    "preferences": {
+      "none": "Nincs preferencia",
+      "fastest": "Leggyorsabb",
+      "cheapest": "Legolcsóbb",
+      "leastWalking": "Legkevesebb gyaloglás",
+      "luggageFriendly": "Leginkább csomagbarát"
+    },
+    "cta": "Mutasd a legjobb útvonalat",
+    "urlHint": "A szűrők frissítik az URL-t, így megoszthatod a linket.",
+    "lateNightHint": "A késő esti érkezés gyakran a legegyszerűbb taxival vagy shuttle-lel — használd az alábbi elérhetőségeket, ha a buszok/kompok már nem járnak."
+  },
+  "routeCard": {
+    "factsLabel": "Útvonal adatai",
+    "duration": "Időtartam",
+    "cost": "Költség",
+    "walking": "Gyalog",
+    "luggage": "Csomag",
+    "seasonality": "Szezon",
+    "seasonalityValues": {
+      "seasonal": "Szezonális",
+      "yearRound": "Egész évben"
+    },
+    "cta": "Lépésről lépésre",
+    "direction": {
+      "to": "A hostelhez",
+      "from": "A hosteltől"
     }
   },
   "preview": {
-    "notPublished": "Preview only – this page is not published"
+    "notPublished": "Csak előnézet – ez az oldal nincs publikálva"
+  },
+  "jumpTo": {
+    "label": "Ugrás ide",
+    "arrival": "Érkezési segítség",
+    "rome": "Róma",
+    "experiences": "Élmények"
   },
   "intro": {
     "taxi": "Taxis rendeléséhez WhatsAppon írjon az alábbi számra angolul vagy olaszul: <Strong>{{contact}}</Strong>.",
     "shuttle": "Szeretne inkább transzfert? A Sea Horse Car Service megosztott transzfereket indít; foglaljon helyet az <Link>hivatalos shuttle oldalán</Link>.",
     "taxiContact": "+39 379 125 6222",
     "taxiEyebrow": "Hostel Brikette by Taxi",
-    "shuttleEyebrow": "Hostel Brikette by Shuttle"
+    "shuttleEyebrow": "Hostel Brikette by Shuttle",
+    "whatsappTemplate": "Üdvözlöm! A Hostel Brikette-ben szállok meg. Taxit szeretnék foglalni Positanóba/Positanóból. Az érkezésem ideje: ____",
+    "emailSubject": "Segítség az érkezéshez",
+    "emailBody": "Üdvözlöm, Hostel Brikette csapat — ma érkezem, és segítségre van szükségem a legjobb út kiválasztásához. A várható érkezésem: ____",
+    "whatsappCta": "WhatsApp-taxi",
+    "callCta": "Hívás",
+    "taxiBestFor": "Legjobb: késői érkezések · nehéz csomag · leggyorsabb opció",
+    "shuttleCta": "Shuttle foglalása",
+    "shuttleBestFor": "Legjobb: repülőtéri érkezések · közös transzfer · előre tervezés",
+    "helpEyebrow": "Segítségre van szüksége?",
+    "helpCopy": "Későn érkezik vagy késések vannak? Írjon nekünk, hogy meg tudjuk tervezni a check-int és javasolhassunk egy tartalék útvonalat.",
+    "emailCta": "Írjon a recepciónak",
+    "helpBestFor": "Legjobb: késések · kompjárat‑törlések · késői check‑in"
   },
   "destinations": {
     "filterLabel": "Hely",
@@ -37,7 +95,7 @@
         "image": {
           "src": "/img/positano-panorama.avif",
           "alt": "Panorámakilátás Positano sziklára épült házaira",
-          "caption": "Positano is steep — plan for stairs, especially with luggage."
+          "caption": "Positano meredek — számítson lépcsőkre, különösen csomaggal."
         },
         "links": [
           {
@@ -45,11 +103,11 @@
             "href": "chiesa-nuova-bar-internazionale-to-hostel-brikette",
             "internal": true,
             "facts": {
-              "duration": "5–10 min",
-              "cost": "Free",
-              "walking": "~140 m + ~30 steps",
+              "duration": "5–10 perc",
+              "cost": "Ingyenes",
+              "walking": "~140 m + ~30 lépcső",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Egész évben"
             }
           },
           {
@@ -57,11 +115,11 @@
             "href": "ferry-dock-to-hostel-brikette-with-luggage",
             "internal": true,
             "facts": {
-              "duration": "20–45 min (depends on porters/Interno bus)",
-              "cost": "€2–€6 pp (+ optional porter)",
-              "walking": "Port stairs; porters reduce carrying",
+              "duration": "20–45 perc (hordároktól/Interno busztól függ)",
+              "cost": "€2–€6 főnként (+ hordár opcionális)",
+              "walking": "Kikötői lépcsők; hordárok csökkentik a cipelést",
               "luggageFriendly": 1,
-              "seasonality": "Year-round"
+              "seasonality": "Egész évben"
             }
           },
           {
@@ -69,11 +127,23 @@
             "href": "hostel-brikette-to-chiesa-nuova-bar-internazionale",
             "internal": true,
             "facts": {
-              "duration": "5–10 min",
-              "cost": "Free",
-              "walking": "~140 m + ~30 steps (down)",
+              "duration": "20–30 perc (csomaggal több)",
+              "cost": "Ingyenes",
+              "walking": "Lépcsők + útátkelések",
+              "luggageFriendly": 1,
+              "seasonality": "Egész évben"
+            }
+          },
+          {
+            "label": "Hostel Brikette a komp dokktól",
+            "href": "hostel-brikette-to-chiesa-nuova-bar-internazionale",
+            "internal": true,
+            "facts": {
+              "duration": "5–10 perc",
+              "cost": "Ingyenes",
+              "walking": "~140 m + ~30 lépcső (lefelé)",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Egész évben"
             }
           }
         ]
@@ -82,8 +152,8 @@
         "name": "Amalfi",
         "image": {
           "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
-          "alt": "SITA Sud bus stop in Amalfi for coastal routes",
-          "caption": "Look for the SITA buses at Amalfi’s bus station."
+          "alt": "SITA Sud busz megálló Amalfiban a parti útvonalakhoz",
+          "caption": "Keresse a SITA buszokat Amalfi buszpályaudvarán."
         },
         "links": [
           {
@@ -91,11 +161,11 @@
             "href": "amalfi-positano-bus",
             "internal": true,
             "facts": {
-              "duration": "45–90 min (traffic dependent)",
-              "cost": "€2–€4 pp",
-              "walking": "Short stairs at the end (~30 steps)",
+              "duration": "45–90 perc (forgalomtól függ)",
+              "cost": "€2–€4 főnként",
+              "walking": "Rövid lépcső a végén (~30 lépcső)",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Egész évben"
             }
           },
           {
@@ -103,11 +173,11 @@
             "href": "positano-amalfi-bus",
             "internal": true,
             "facts": {
-              "duration": "45–90 min (traffic dependent)",
-              "cost": "€2–€4 pp",
-              "walking": "Short stairs at the start/end (~30 steps)",
+              "duration": "45–90 perc (forgalomtól függ)",
+              "cost": "€2–€4 főnként",
+              "walking": "Rövid lépcső elején/végén (~30 lépcső)",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Egész évben"
             }
           },
           {
@@ -115,11 +185,11 @@
             "href": "amalfi-positano-ferry",
             "internal": true,
             "facts": {
-              "duration": "25–45 min (sailing) + port transfer",
-              "cost": "€10–€20 pp",
-              "walking": "Stairs to/from the port",
+              "duration": "25–45 perc (hajózás) + kikötői átszállás",
+              "cost": "€10–€20 főnként",
+              "walking": "Lépcsők a kikötőhöz/kikötőtől",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Szezonális (ápr–okt)"
             }
           },
           {
@@ -127,11 +197,11 @@
             "href": "positano-amalfi-ferry",
             "internal": true,
             "facts": {
-              "duration": "25–45 min (sailing) + port transfer",
-              "cost": "€10–€20 pp",
-              "walking": "Stairs to/from the port",
+              "duration": "25–45 perc (hajózás) + kikötői átszállás",
+              "cost": "€10–€20 főnként",
+              "walking": "Lépcsők a kikötőhöz/kikötőtől",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Szezonális (ápr–okt)"
             }
           }
         ]
@@ -140,8 +210,8 @@
         "name": "Capri",
         "image": {
           "src": "/img/directions/positano-capri-ferry-img09.jpg",
-          "alt": "Ferry docking along Capri's Marina Grande",
-          "caption": "Capri ferries depart from Marina Grande."
+          "alt": "Komp kikötése Capri Marina Grande-jánál",
+          "caption": "A Capri kompok Marina Grande-ból indulnak."
         },
         "links": [
           {
@@ -149,11 +219,11 @@
             "href": "capri-positano-ferry",
             "internal": true,
             "facts": {
-              "duration": "30–60 min (sailing) + port transfer",
-              "cost": "€20–€35 pp",
-              "walking": "Port access; stairs likely in Positano",
+              "duration": "30–60 perc (hajózás) + kikötői átszállás",
+              "cost": "€20–€35 főnként",
+              "walking": "Kikötői hozzáférés; Positanóban valószínűleg lépcsők",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Szezonális (ápr–okt)"
             }
           },
           {
@@ -161,11 +231,11 @@
             "href": "positano-capri-ferry",
             "internal": true,
             "facts": {
-              "duration": "30–60 min (sailing) + port transfer",
-              "cost": "€20–€35 pp",
-              "walking": "Port access; stairs likely in Positano",
+              "duration": "30–60 perc (hajózás) + kikötői átszállás",
+              "cost": "€20–€35 főnként",
+              "walking": "Kikötői hozzáférés; Positanóban valószínűleg lépcsők",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Szezonális (ápr–okt)"
             }
           }
         ]
@@ -174,8 +244,8 @@
         "name": "Nápoly belvárosa",
         "image": {
           "src": "/img/tabacchi.webp",
-          "alt": "Streetfront tabacchi shop in central Naples",
-          "caption": "Buy bus tickets in tabacchi/newsstands before boarding."
+          "alt": "Utcai tabacchi bolt Nápoly belvárosában",
+          "caption": "Vásároljon buszbegyot tabacchi/újságárusnál felszállás előtt."
         },
         "links": [
           {
@@ -183,11 +253,11 @@
             "href": "naples-center-train-bus",
             "internal": true,
             "facts": {
-              "duration": "2–3.5 h (incl. transfers)",
-              "cost": "€15–€25 pp",
-              "walking": "Low; change in Sorrento",
+              "duration": "2–3,5 óra (átszállásokkal)",
+              "cost": "€15–€25 főnként",
+              "walking": "Kevés; átszállás Szorrentóban",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Egész évben"
             }
           },
           {
@@ -195,11 +265,11 @@
             "href": "positano-naples-center-bus-train",
             "internal": true,
             "facts": {
-              "duration": "2–3.5 h (incl. transfers)",
-              "cost": "€15–€25 pp",
-              "walking": "Short stairs at the start/end (~30 steps)",
+              "duration": "2–3,5 óra (átszállásokkal)",
+              "cost": "€15–€25 főnként",
+              "walking": "Rövid lépcső elején/végén (~30 lépcső)",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Egész évben"
             }
           },
           {
@@ -207,11 +277,11 @@
             "href": "naples-center-positano-ferry",
             "internal": true,
             "facts": {
-              "duration": "3–4.5 h (incl. port transfer)",
-              "cost": "€25–€45 pp",
-              "walking": "Transfer to port + stairs in Positano",
+              "duration": "3–4,5 óra (kikötői átszállással)",
+              "cost": "€25–€45 főnként",
+              "walking": "Átszállás kikötőbe + lépcsők Positanóban",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Szezonális (ápr–okt)"
             }
           },
           {
@@ -219,11 +289,11 @@
             "href": "positano-naples-center-ferry",
             "internal": true,
             "facts": {
-              "duration": "3–4.5 h (incl. port transfer)",
-              "cost": "€25–€45 pp",
-              "walking": "Stairs in Positano + transfer from port",
+              "duration": "3–4,5 óra (kikötői átszállással)",
+              "cost": "€25–€45 főnként",
+              "walking": "Lépcsők Positanóban + átszállás kikötőtől",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Szezonális (ápr–okt)"
             }
           },
           {
@@ -231,11 +301,11 @@
             "href": "positano-to-naples-directions-by-ferry",
             "internal": true,
             "facts": {
-              "duration": "3–4.5 h (incl. port transfer)",
-              "cost": "€25–€45 pp",
-              "walking": "Stairs in Positano + transfer from port",
+              "duration": "3–4,5 óra (kikötői átszállással)",
+              "cost": "€25–€45 főnként",
+              "walking": "Lépcsők Positanóban + átszállás kikötőtől",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Szezonális (ápr–okt)"
             }
           }
         ]
@@ -244,8 +314,8 @@
         "name": "Nápolyi repülőtér",
         "image": {
           "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
-          "alt": "Curreri shuttle loading area outside Naples International Airport",
-          "caption": "Curreri buses pick up outside arrivals (follow bus signs)."
+          "alt": "Curreri shuttle beszállóhely a Nápolyi Nemzetközi Repülőtérnél",
+          "caption": "Sorrento vasútállomás, ahol buszra vált majd"
         },
         "links": [
           {
@@ -253,11 +323,11 @@
             "href": "positano-naples-airport-bus",
             "internal": true,
             "facts": {
-              "duration": "2–3.5 h (incl. change in Sorrento)",
-              "cost": "€15–€25 pp",
-              "walking": "Short stairs at the start/end (~30 steps)",
+              "duration": "2–3,5 óra (átszállással Szorrentóban)",
+              "cost": "€15–€25 főnként",
+              "walking": "Rövid lépcső elején/végén (~30 lépcső)",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Egész évben"
             }
           },
           {
@@ -265,11 +335,11 @@
             "href": "naples-airport-positano-bus",
             "internal": true,
             "facts": {
-              "duration": "2–3.5 h (incl. change in Sorrento)",
-              "cost": "€15–€25 pp",
-              "walking": "Short stairs at the end (~30 steps)",
+              "duration": "2–3,5 óra (átszállással Szorrentóban)",
+              "cost": "€15–€25 főnként",
+              "walking": "Rövid lépcső a végén (~30 lépcső)",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Egész évben"
             }
           }
         ]
@@ -278,8 +348,8 @@
         "name": "Salerno",
         "image": {
           "src": "/img/hostel-coastal-horizon.webp",
-          "alt": "View across the Amalfi Coast towards Salerno",
-          "caption": "Salerno connects by train + bus, or by seasonal ferries."
+          "alt": "Kilátás az Amalfi-parton Salerno felé",
+          "caption": "Salerno vonattal + busszal, vagy szezonális komppal érhető el."
         },
         "links": [
           {
@@ -287,11 +357,11 @@
             "href": "salerno-positano-bus",
             "internal": true,
             "facts": {
-              "duration": "2.5–4 h (via Amalfi)",
-              "cost": "€6–€12 pp",
-              "walking": "Low; change buses in Amalfi",
+              "duration": "2,5–4 óra (Amalfin keresztül)",
+              "cost": "€6–€12 főnként",
+              "walking": "Kevés; buszváltás Amalfiban",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Egész évben"
             }
           },
           {
@@ -299,11 +369,11 @@
             "href": "positano-salerno-bus",
             "internal": true,
             "facts": {
-              "duration": "2.5–4 h (via Amalfi)",
-              "cost": "€6–€12 pp",
-              "walking": "Short stairs at the start/end (~30 steps)",
+              "duration": "2,5–4 óra (Amalfin keresztül)",
+              "cost": "€6–€12 főnként",
+              "walking": "Rövid lépcső elején/végén (~30 lépcső)",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Egész évben"
             }
           },
           {
@@ -311,11 +381,11 @@
             "href": "salerno-positano-ferry",
             "internal": true,
             "facts": {
-              "duration": "1–2 h (sailing) + port transfer",
-              "cost": "€15–€30 pp",
-              "walking": "Port stairs; porters recommended",
+              "duration": "1–2 óra (hajózás) + kikötői átszállás",
+              "cost": "€15–€30 főnként",
+              "walking": "Kikötői lépcsők; hordárok ajánlottak",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Szezonális (ápr–okt)"
             }
           },
           {
@@ -323,11 +393,11 @@
             "href": "positano-salerno-ferry",
             "internal": true,
             "facts": {
-              "duration": "1–2 h (sailing) + port transfer",
-              "cost": "€15–€30 pp",
-              "walking": "Port stairs; porters recommended",
+              "duration": "1–2 óra (hajózás) + kikötői átszállás",
+              "cost": "€15–€30 főnként",
+              "walking": "Kikötői lépcsők; hordárok ajánlottak",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Szezonális (ápr–okt)"
             }
           }
         ]
@@ -336,8 +406,8 @@
         "name": "Ravello",
         "image": {
           "src": "/img/hostel-communal-terrace-lush-view.webp",
-          "alt": "Clifftop gardens overlooking the coastline near Ravello",
-          "caption": "Ravello is reached via Amalfi by bus."
+          "alt": "Sziklaszéli kertek kilátással a partra Ravello közelében",
+          "caption": "Ravello Amalfin át busszal érhető el."
         },
         "links": [
           {
@@ -345,11 +415,11 @@
             "href": "ravello-positano-bus",
             "internal": true,
             "facts": {
-              "duration": "1.5–2.5 h (via Amalfi)",
-              "cost": "€4–€8 pp",
-              "walking": "Low; change in Amalfi",
+              "duration": "1,5–2,5 óra (Amalfin keresztül)",
+              "cost": "€4–€8 főnként",
+              "walking": "Kevés; átszállás Amalfiban",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Egész évben"
             }
           },
           {
@@ -357,11 +427,11 @@
             "href": "positano-ravello-bus",
             "internal": true,
             "facts": {
-              "duration": "1.5–2.5 h (via Amalfi)",
-              "cost": "€4–€8 pp",
-              "walking": "Short stairs at the start/end (~30 steps)",
+              "duration": "1,5–2,5 óra (Amalfin keresztül)",
+              "cost": "€4–€8 főnként",
+              "walking": "Rövid lépcső elején/végén (~30 lépcső)",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Egész évben"
             }
           },
           {
@@ -369,11 +439,11 @@
             "href": "positano-ravello-ferry-bus",
             "internal": true,
             "facts": {
-              "duration": "2–3 h (ferry + bus)",
-              "cost": "€15–€30 pp",
-              "walking": "Port stairs + bus connection",
+              "duration": "2–3 óra (komp + busz)",
+              "cost": "€15–€30 főnként",
+              "walking": "Kikötői lépcsők + buszcsatlakozás",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Szezonális (ápr–okt)"
             }
           }
         ]
@@ -381,6 +451,11 @@
     ]
   },
   "rome": {
+    "image": {
+      "src": "/img/directions/rome-forum.jpg",
+      "alt": "A római Forum a Capitoliumi Múzeumokból nézve",
+      "caption": "Római Forum és Capitoliumi Múzeumok"
+    },
     "title": "Róma",
     "description": "Kövesse írásos útmutatónkat, hogy eljusson Nápolyba vagy Salernóba, majd onnan vonattal utazzon tovább.",
     "table": {
@@ -540,17 +615,22 @@
   },
   "sorrento": {
     "title": "Szorrento",
+    "image": {
+      "src": "/img/directions/sorrento-piazza-tasso.jpg",
+      "alt": "Kilátás Szorrentóra a Piazza Tassóról",
+      "caption": "Szorrento a Piazza Tassóról"
+    },
     "links": [
       {
         "label": "Szorrentóból busszal",
         "href": "sorrento-positano-bus",
         "internal": true,
         "facts": {
-          "duration": "45–75 min",
-          "cost": "€2–€4 pp",
-          "walking": "Short stairs at the end (~30 steps)",
+          "duration": "45–75 perc",
+          "cost": "€2–€4 főnként",
+          "walking": "Rövid lépcső a végén (~30 lépcső)",
           "luggageFriendly": 2,
-          "seasonality": "Year-round"
+          "seasonality": "Egész évben"
         }
       },
       {
@@ -558,11 +638,11 @@
         "href": "positano-sorrento-bus",
         "internal": true,
         "facts": {
-          "duration": "45–75 min",
-          "cost": "€2–€4 pp",
-          "walking": "Short stairs at the start/end (~30 steps)",
+          "duration": "45–75 perc",
+          "cost": "€2–€4 főnként",
+          "walking": "Rövid lépcső elején/végén (~30 lépcső)",
           "luggageFriendly": 2,
-          "seasonality": "Year-round"
+          "seasonality": "Egész évben"
         }
       },
       {
@@ -570,11 +650,11 @@
         "href": "sorrento-positano-ferry",
         "internal": true,
         "facts": {
-          "duration": "30–45 min (sailing) + port stairs",
-          "cost": "€15–€25 pp",
-          "walking": "Port stairs; porters recommended",
+          "duration": "30–45 perc (hajózás) + kikötői lépcsők",
+          "cost": "€15–€25 főnként",
+          "walking": "Kikötői lépcsők; hordárok ajánlottak",
           "luggageFriendly": 1,
-          "seasonality": "Seasonal (Apr–Oct)"
+          "seasonality": "Szezonális (ápr–okt)"
         }
       },
       {
@@ -582,11 +662,11 @@
         "href": "positano-sorrento-ferry",
         "internal": true,
         "facts": {
-          "duration": "30–45 min (sailing) + port stairs",
-          "cost": "€15–€25 pp",
-          "walking": "Port stairs; porters recommended",
+          "duration": "30–45 perc (hajózás) + kikötői lépcsők",
+          "cost": "€15–€25 főnként",
+          "walking": "Kikötői lépcsők; hordárok ajánlottak",
           "luggageFriendly": 1,
-          "seasonality": "Seasonal (Apr–Oct)"
+          "seasonality": "Szezonális (ápr–okt)"
         }
       }
     ]
@@ -595,6 +675,7 @@
     "title": "Útvonalak szűrése",
     "resultsCount": "Találatok: {{count}} útvonal",
     "editLabel": "Szűrők szerkesztése",
+    "shareHint": "A szűrők megjelennek az URL-ben a könnyű megosztáshoz.",
     "transportLabel": "Közlekedési mód",
     "transportAll": "Összes",
     "transportModes": {
@@ -614,116 +695,116 @@
     "noResults": "Nincs a feltételeknek megfelelő útvonal."
   },
   "romePlanner": {
-    "title": "Rome ↔ Positano: How to Travel",
-    "subtitle": "Pick a direction, set your preferences, and we’ll suggest a route.",
-    "directionPrompt": "Pick a direction",
+    "title": "Róma ↔ Positano: Hogyan utazz",
+    "subtitle": "Válassz egy irányt, állítsd be a preferenciáidat, és mi javasolunk egy útvonalat.",
+    "directionPrompt": "Válassz irányt",
     "tabs": {
-      "from": "From Rome → Hostel",
-      "to": "From Hostel → Rome"
+      "from": "Rómából → Hostel",
+      "to": "Hosteltől → Róma"
     },
     "reco": {
-      "title": "Best match for your picks",
-      "why": "Why this route?"
+      "title": "Legjobb egyezés a választásodhoz",
+      "why": "Miért ez az útvonal?"
     },
-    "otherMatches": "Other matches for your pick",
-    "disclaimer": "Always check operators for latest schedules and availability. Crowding and journey times vary by season.",
+    "otherMatches": "Más egyezések a választásodhoz",
+    "disclaimer": "Mindig ellenőrizd az üzemeltetőknél a legfrissebb menetrendeket és elérhetőséget. A zsúfoltság és utazási idők szezonálisan változnak.",
     "pref": {
-      "prompt": "Any preference?",
+      "prompt": "Van valamilyen preferenciád?",
       "cheapest": {
-        "label": "Cheapest",
-        "description": "Prioritize lower cost over comfort."
+        "label": "Legolcsóbb",
+        "description": "Alacsonyabb költséget részesíts előnyben a kényelemmel szemben."
       },
       "scenic": {
-        "label": "Scenic",
-        "description": "Prioritize sea views (ferries)."
+        "label": "Látványos",
+        "description": "Tengeri kilátás prioritása (kompok)."
       },
-      "heavyPrefix": "I have",
+      "heavyPrefix": "Van",
       "heavy_luggage": {
-        "label": "Heavy luggage",
-        "description": "Minimize uphill walks and stairs with bags."
+        "label": "Nehéz csomag",
+        "description": "Minimalizáld az emelkedőket és lépcsőket csomaggal."
       }
     },
     "route": {
       "naples": {
         "busTrain": {
-          "title": "Via Naples — Bus + Train",
+          "title": "Nápolyon keresztül — Busz + Vonat",
           "summary": {
-            "from": "Bus to Sorrento → train to Naples → train to Rome.",
-            "to": "Train to Naples → train to Sorrento → bus to Positano."
+            "from": "Busz Sorrentóba → vonat Nápolyba → vonat Rómába.",
+            "to": "Vonat Nápolyba → vonat Sorrentóba → busz Positanóba."
           },
           "steps": {
             "from": {
-              "1": "Bus Positano → Sorrento (drops at Sorrento train station).",
-              "2": "Local train Sorrento → Naples (arrive at Naples train station).",
-              "3": "Train Naples → Rome."
+              "1": "Busz Positano → Sorrento (leszállás Sorrento vasútállomásnál).",
+              "2": "Helyi vonat Sorrento → Nápoly (érkezés Nápoly vasútállomásra).",
+              "3": "Vonat Nápoly → Róma."
             },
             "to": {
-              "1": "Train Rome → Naples (arrive at Naples train station).",
-              "2": "Local train Naples → Sorrento (arrive at Sorrento bus station).",
-              "3": "Bus Sorrento → Positano (stop close to the hostel)."
+              "1": "Vonat Róma → Nápoly (érkezés Nápoly vasútállomásra).",
+              "2": "Helyi vonat Nápoly → Sorrento (érkezés Sorrento buszállomásra).",
+              "3": "Busz Sorrento → Positano (megálló közel a hostelhez)."
             }
           }
         },
         "ferry": {
-          "title": "Via Naples — Ferry",
+          "title": "Nápolyon keresztül — Komp",
           "summary": {
-            "from": "Positano port → ferry to Naples → tram to station → train to Rome.",
-            "to": "Train to Naples → tram to port → ferry to Positano."
+            "from": "Positano kikötő → komp Nápolyba → villamos állomásig → vonat Rómába.",
+            "to": "Vonat Nápolyba → villamos kikötőig → komp Positanóba."
           },
           "steps": {
             "from": {
-              "1": "Positano → port (porters can help with bags).",
-              "2": "Ferry Positano → Naples.",
-              "3": "Tram Naples port → train station.",
-              "4": "Train Naples → Rome."
+              "1": "Positano → kikötő (hordárok segíthetnek a csomaggal).",
+              "2": "Komp Positano → Nápoly.",
+              "3": "Villamos Nápoly kikötő → vasútállomás.",
+              "4": "Vonat Nápoly → Róma."
             },
             "to": {
-              "1": "Train Rome → Naples (arrive at Naples station).",
-              "2": "Tram Naples station → port.",
-              "3": "Ferry Naples → Positano.",
-              "4": "From Positano port → hostel (journey can be laborious; porters/Interno Bus can help)."
+              "1": "Vonat Róma → Nápoly (érkezés Nápoly állomásra).",
+              "2": "Villamos Nápoly állomás → kikötő.",
+              "3": "Komp Nápoly → Positano.",
+              "4": "Positano kikötőtől → hostel (az út fárasztó lehet; hordárok/Interno Busz segíthet)."
             }
           }
         }
       },
       "salerno": {
         "bus": {
-          "title": "Via Salerno — Bus (to/from Salerno)",
+          "title": "Salernón keresztül — Busz (Salernóba/Salernóból)",
           "summary": {
-            "from": "Bus Positano → Amalfi (change) → Salerno → train to Rome.",
-            "to": "Train to Salerno → bus to Amalfi (change) → Positano."
+            "from": "Busz Positano → Amalfi (átszállás) → Salerno → vonat Rómába.",
+            "to": "Vonat Salernóba → busz Amalfiba (átszállás) → Positano."
           },
           "steps": {
             "from": {
-              "1": "Bus Positano → Amalfi (change buses in Amalfi).",
-              "2": "Bus Amalfi → Salerno (drops at Salerno train station).",
-              "3": "Train Salerno → Rome."
+              "1": "Busz Positano → Amalfi (buszváltás Amalfiban).",
+              "2": "Busz Amalfi → Salerno (leszállás Salerno vasútállomásnál).",
+              "3": "Vonat Salerno → Róma."
             },
             "to": {
-              "1": "Train Rome → Salerno (arrive at Salerno train station).",
-              "2": "Bus Salerno → Amalfi (change buses in Amalfi).",
-              "3": "Bus Amalfi → Positano (short walk to hostel)."
+              "1": "Vonat Róma → Salerno (érkezés Salerno vasútállomásra).",
+              "2": "Busz Salerno → Amalfi (buszváltás Amalfiban).",
+              "3": "Busz Amalfi → Positano (rövid séta a hostelig)."
             }
           }
         },
         "ferry": {
-          "title": "Via Salerno — Ferry",
+          "title": "Salernón keresztül — Komp",
           "summary": {
-            "from": "Positano port → ferry to Salerno → short walk to station → train to Rome.",
-            "to": "Train to Salerno → short walk to port → ferry to Positano."
+            "from": "Positano kikötő → komp Salernóba → rövid séta állomásig → vonat Rómába.",
+            "to": "Vonat Salernóba → rövid séta kikötőig → komp Positanóba."
           },
           "steps": {
             "from": {
-              "1": "Positano → port (porters can help with bags).",
-              "2": "Ferry Positano → Salerno.",
-              "3": "Walk Salerno port → train station.",
-              "4": "Train Salerno → Rome."
+              "1": "Positano → kikötő (hordárok segíthetnek a csomaggal).",
+              "2": "Komp Positano → Salerno.",
+              "3": "Séta Salerno kikötő → vasútállomás.",
+              "4": "Vonat Salerno → Róma."
             },
             "to": {
-              "1": "Train Rome → Salerno (arrive at Salerno station).",
-              "2": "Walk to Salerno port.",
-              "3": "Ferry Salerno → Positano.",
-              "4": "From Positano port → hostel (journey can be laborious; porters/Interno Bus can help)."
+              "1": "Vonat Róma → Salerno (érkezés Salerno állomásra).",
+              "2": "Séta Salerno kikötőig.",
+              "3": "Komp Salerno → Positano.",
+              "4": "Positano kikötőtől → hostel (az út fárasztó lehet; hordárok/Interno Busz segíthet)."
             }
           }
         }
@@ -731,86 +812,86 @@
     },
     "note": {
       "salerno": {
-        "walkPortStation": "Walk between Salerno’s port and train station (short, straightforward)."
+        "walkPortStation": "Séta Salerno kikötője és vasútállomása között (rövid, egyszerű)."
       },
       "naples": {
-        "tramPortStation": "Take the tram between Naples port and the train station."
+        "tramPortStation": "Villamos Nápoly kikötője és vasútállomása között."
       }
     },
     "pro": {
-      "posBusNearHostel": "Positano bus stop close to the hostel.",
-      "busDropsSorrentoStation": "Bus drops you right at the train station in Sorrento.",
-      "cheapBusTrain": "Bus and train are both very cheap.",
-      "arriveNaplesStation": "You arrive right at the train station in Naples.",
-      "easySwapNaples": "Swapping trains in Naples is relatively easy.",
-      "trainDropsSorrentoBusStation": "Train drops you right at the bus station in Sorrento.",
+      "posBusNearHostel": "Positano buszmegálló közel a hostelhez.",
+      "busDropsSorrentoStation": "A busz közvetlenül Sorrento vasútállomásánál tesz le.",
+      "cheapBusTrain": "Mind a busz, mind a vonat nagyon olcsó.",
+      "arriveNaplesStation": "Közvetlenül Nápoly vasútállomására érkezel.",
+      "easySwapNaples": "Nápolyban viszonylag könnyű a vonatváltás.",
+      "trainDropsSorrentoBusStation": "A vonat közvetlenül Sorrento buszállomásánál tesz le.",
       "salerno": {
-        "busStopNearHostel": "The Positano bus stop is just a short walk from the hostel."
+        "busStopNearHostel": "A positanói buszmegálló csak rövid sétára van a hosteltől."
       },
-      "busCollectsSalernoStation": "Bus collects you right at the train station in Salerno.",
-      "busDropsSalernoStation": "Bus drops you right at the train station in Salerno.",
-      "busCheap": "Bus is very cheap.",
-      "portersHelp": "Giving your bags to the porters allows you to travel more comfortably and easily.",
-      "ferryEnjoyableEasy": "The ferry journey itself is enjoyable and easy.",
-      "shortWalkSalernoStationPort": "The walk from Salerno’s Train Station to the port is short and straightforward."
+      "busCollectsSalernoStation": "A busz közvetlenül Salerno vasútállomásánál vesz fel.",
+      "busDropsSalernoStation": "A busz közvetlenül Salerno vasútállomásánál tesz le.",
+      "busCheap": "A busz nagyon olcsó.",
+      "portersHelp": "Ha a csomagokat hordároknak adod, kényelmesebben és könnyebben utazhatsz.",
+      "ferryEnjoyableEasy": "Maga a kompút élvezetes és egyszerű.",
+      "shortWalkSalernoStationPort": "A séta Salerno vasútállomásától a kikötőig rövid és egyszerű."
     },
     "con": {
-      "changeBusToTrain": "Have to change from bus to train.",
-      "crowdedBusTrain": "Bus and train are both usually crowded.",
-      "fewHours": "Takes a few hours.",
-      "changeTrainToBusSorrento": "Have to change from train to bus in Sorrento.",
-      "busUsuallyCrowded": "Bus is usually crowded.",
-      "ferryCostHigherBus": "The cost of taking the ferry is higher than the cost of taking the bus.",
-      "hostelEasierBySita": "Arriving at the hostel via SITA bus is easier than arriving by ferry (the journey from the port is quite laborious — even with Positano’s Interno Bus and porters).",
-      "naplesPortComfort": "The port and city of Naples may not be suitable for everyone, as some people may not feel comfortable there.",
-      "ferriesLessFrequent": "Ferries do not run as frequently as other transportation options.",
-      "ferryCostHigherTrainBus": "The cost of taking the ferry is higher than the cost of taking the train or bus.",
-      "changeBusesAmalfi": "Have to change buses in Amalfi."
+      "changeBusToTrain": "Át kell szállni buszról vonatra.",
+      "crowdedBusTrain": "Mind a busz, mind a vonat általában zsúfolt.",
+      "fewHours": "Néhány óráig tart.",
+      "changeTrainToBusSorrento": "Sorrentóban át kell szállni vonatról buszra.",
+      "busUsuallyCrowded": "A busz általában zsúfolt.",
+      "ferryCostHigherBus": "A komp drágább, mint a busz.",
+      "hostelEasierBySita": "A SITA busszal könnyebb eljutni a hostelhez, mint kompon (a kikötőtől vezető út fárasztó — még a positanói Interno Busszal és hordárokkal is).",
+      "naplesPortComfort": "Nápoly kikötője és városa nem mindenkinek megfelelő, egyesek nem érzik jól magukat ott.",
+      "ferriesLessFrequent": "A kompok ritkábban járnak, mint más közlekedési lehetőségek.",
+      "ferryCostHigherTrainBus": "A komp drágább, mint a vonat vagy a busz.",
+      "changeBusesAmalfi": "Amalfiban buszt kell váltani."
     },
     "tag": {
-      "cheap": "Budget",
-      "directish": "Simple",
-      "scenic": "Scenic",
-      "transfer": "Transfer",
-      "bus": "Bus",
-      "train": "Train",
-      "ferry": "Ferry"
+      "cheap": "Költségkímélő",
+      "directish": "Egyszerű",
+      "scenic": "Látványos",
+      "transfer": "Átszállás",
+      "bus": "Busz",
+      "train": "Vonat",
+      "ferry": "Komp"
     },
     "reasons": {
       "cheapest": {
-        "busTrain": "Cheapest → bus/train options are very cheap.",
-        "ferry": "Cheapest → ferry costs higher than bus/train."
+        "busTrain": "Legolcsóbb → busz/vonat lehetőségek nagyon olcsók.",
+        "ferry": "Legolcsóbb → a komp drágább, mint busz/vonat."
       },
       "fewest_changes": {
-        "busTrain": "Fewest changes → bus + train requires a mode change.",
-        "bus": "Fewest changes → bus route changes in Amalfi."
+        "busTrain": "Legkevesebb átszállás → busz + vonat közlekedési mód váltást igényel.",
+        "bus": "Legkevesebb átszállás → a buszútvonal Amalfiban vált."
       },
       "scenic": {
-        "ferry": "Scenic → ferry journey is enjoyable and easy."
+        "ferry": "Látványos → a kompút élvezetes és egyszerű."
       },
       "heavy_luggage": {
-        "ferryFromRome": "Heavy luggage → arriving via ferry from the port is more laborious.",
-        "busStopClose": "Heavy luggage → Positano bus stop is close to the hostel."
+        "ferryFromRome": "Nehéz csomag → a kikötőtől komppal való érkezés fárasztóbb.",
+        "busStopClose": "Nehéz csomag → a positanói buszmegálló közel van a hostelhez."
       }
     },
     "ui": {
-      "showDetails": "Show details",
-      "hideDetails": "Hide details",
-      "steps": "Steps",
-      "notes": "Notes",
-      "pros": "Pros",
-      "cons": "Cons"
+      "showDetails": "Részletek megjelenítése",
+      "hideDetails": "Részletek elrejtése",
+      "steps": "Lépések",
+      "notes": "Megjegyzések",
+      "pros": "Előnyök",
+      "cons": "Hátrányok"
     }
   },
   "experienceGuides": {
-    "eyebrow": "Experience planners",
-    "title": "Experience routes with built-in directions",
-    "description": "These experiences combine the on-trail highlights with the exact transfers you need to leave and return to Hostel Brikette. Open one when you want the itinerary and the transport plan in the same guide.",
+    "eyebrow": "Élmény tervezők",
+    "title": "Élmény útvonalak beépített útmutatásokkal",
+    "description": "Ezek az élmények egyesítik az ösvény kiemelkedő pontjait a pontos átszállásokkal, amelyekre szükséged van a Hostel Brikette-ből való távozáshoz és visszatéréshez. Nyiss egyet, amikor az útvonaltervet és a közlekedési tervet egyazon útmutatóban szeretnéd látni.",
     "items": [
       {
         "guideKey": "pathOfTheGodsFerry",
-        "label": "Path of the Gods via Amalfi (ferry + hike)",
-        "summary": "Sail from Positano to Amalfi, ride up to Bomerano, and follow our step-by-step return directions for the classic traverse back toward Positano.",
+        "label": "Istenek ösvénye Amalfin át (komp + túra)",
+        "summary": "Hajózz Positanóból Amalfiba, utazz fel Bomeranóba, és kövesd lépésről lépésre a visszaúti útmutatást a klasszikus átkeléséhez vissza Positano felé.",
         "transportModes": [
           "ferry",
           "bus",
@@ -819,8 +900,8 @@
       },
       {
         "guideKey": "pathOfTheGodsBus",
-        "label": "Path of the Gods via Amalfi (bus + hike)",
-        "summary": "Take the SITA Sud bus from Positano through Amalfi to Bomerano, hike across to Nocelle, and use the built-in transport section to reach the hostel afterward.",
+        "label": "Istenek ösvénye Amalfin át (busz + túra)",
+        "summary": "Vedd a SITA Sud buszt Positanóból Amalfin át Bomeranóba, túrázz át Nocelle-be, és használd a beépített közlekedési részt, hogy elérjd a hostelt ezután.",
         "transportModes": [
           "bus",
           "walk"
@@ -828,8 +909,8 @@
       },
       {
         "guideKey": "pathOfTheGodsNocelle",
-        "label": "Path of the Gods via Nocelle shuttle",
-        "summary": "Ride the Montepertuso–Nocelle shuttle for a shorter out-and-back hike and rely on the guide’s directions to walk or bus back down to Hostel Brikette.",
+        "label": "Istenek ösvénye Nocelle shuttle-lel",
+        "summary": "Utazz a Montepertuso–Nocelle shuttle-lel egy rövidebb oda-vissza túrára, és támaszkodj az útmutató útbaigazítására, hogy gyalog vagy busszal juss vissza a Hostel Brikette-be.",
         "transportModes": [
           "bus",
           "walk"
@@ -838,14 +919,14 @@
     ]
   },
   "breadcrumbs": {
-    "itemTitleFallback": "Directions"
+    "itemTitleFallback": "Útbaigazítás"
   },
   "galleries": {
-    "defaultAlt": "Directions photo"
+    "defaultAlt": "Útbaigazítás fotó"
   },
   "lightbox": {
-    "titleFallback": "Image",
-    "openAria": "Open image",
-    "openAriaWithCaption": "Open image: {{caption}}"
+    "titleFallback": "Kép",
+    "openAria": "Kép megnyitása",
+    "openAriaWithCaption": "Kép megnyitása: {{caption}}"
   }
 }

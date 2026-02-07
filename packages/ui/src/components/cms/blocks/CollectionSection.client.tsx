@@ -1,12 +1,15 @@
 "use client";
 
 import React from "react";
-import { useTranslations } from "@acme/i18n";
 import { useRouter, useSearchParams } from "next/navigation";
+
+import { useTranslations } from "@acme/i18n";
 import type { SKU } from "@acme/types";
-import ProductFilter, { type FacetConfig } from "./ProductFilter";
+
 import { Grid as DSGrid } from "../../atoms/primitives/Grid";
 import { Sidebar } from "../../atoms/primitives/Sidebar";
+
+import ProductFilter, { type FacetConfig } from "./ProductFilter";
 
 export interface CollectionClientProps extends React.HTMLAttributes<HTMLDivElement> {
   initial: SKU[];

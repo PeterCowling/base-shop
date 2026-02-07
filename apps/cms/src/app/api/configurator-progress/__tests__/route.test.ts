@@ -147,3 +147,5 @@ describe('PATCH', () => {
     expect(body).toEqual({ error: 'oops' });
   });
 });
+
+export {};

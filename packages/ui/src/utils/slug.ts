@@ -1,6 +1,7 @@
 // src/utils/slug.ts
-import { SLUGS, type SlugMap } from "../slug-map";
 import type { AppLanguage } from "../i18n.config";
+import { type SlugMap,SLUGS } from "../slug-map";
+
 import { toAppLanguage } from "./lang";
 
 /** Type-safe slug lookup. */

@@ -2,13 +2,14 @@
 "use client";
 
 import type { PageComponent } from "@acme/types";
-import ClickActionControls from "./interactions/ClickActionControls";
+
 import AnimationControls from "./interactions/AnimationControls";
+import ChildrenControls from "./interactions/ChildrenControls";
+import ClickActionControls from "./interactions/ClickActionControls";
+import HoverEffectsControls from "./interactions/HoverEffectsControls";
 import MotionPresetControls from "./interactions/MotionPresetControls";
 import RevealControls from "./interactions/RevealControls";
 import ScrollEffectsControls from "./interactions/ScrollEffectsControls";
-import HoverEffectsControls from "./interactions/HoverEffectsControls";
-import ChildrenControls from "./interactions/ChildrenControls";
 
 interface Props {
   component: PageComponent;

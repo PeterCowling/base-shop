@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/TestimonialSlider.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import TestimonialSlider from './TestimonialSlider';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './TestimonialSlider.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import TestimonialSlider from './TestimonialSlider';
+import fixture from './TestimonialSlider.fixtures.json';
 
 const meta: Meta<typeof TestimonialSlider> = {
   title: 'CMS Blocks/TestimonialSlider/Matrix',

@@ -1,11 +1,14 @@
 // packages/ui/src/components/cms/blocks/HeaderBlock.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import HeaderBlock from './HeaderBlock';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './HeaderBlock.fixtures.json';
 import { z } from 'zod';
+
 import type { Locale } from '@acme/i18n/locales';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import HeaderBlock from './HeaderBlock';
+import fixture from './HeaderBlock.fixtures.json';
 
 const meta: Meta<typeof HeaderBlock> = {
   title: 'CMS Blocks/HeaderBlock/Matrix',

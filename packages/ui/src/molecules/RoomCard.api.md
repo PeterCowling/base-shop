@@ -10,7 +10,7 @@
 - Test coverage in `RoomCard.test.tsx` and `RoomCard.modal.test.tsx` exercises pricing states, CTA payloads, and fullscreen toggling.
 
 ### Design-system component – `packages/ui/src/molecules/RoomCard.tsx`
-- Depends only on local UI atoms (`RoomImage`) and shared utilities (`../shared/testIds`, `../types/roomCard`); no `@/...` imports remain.
+- Depends only on local UI atoms (`RoomImage`) and shared utilities (`../shared/testIds`, `../types/roomCard`); shared primitives come via the `@ui` alias.
 - Exports `ROOM_CARD_ACTION_BUTTON_CLASS` alongside the memoised component; consumes `ROOM_CARD_TEST_IDS.priceSkeleton` internally.
 - Emits a `RoomCardFullscreenRequest` payload when `onRequestFullscreen` is provided; leaves overlay rendering to the adapter/consumer.
 - Provides English fallbacks for image labels and the no-image placeholder; expects callers to pass translated labels when required.

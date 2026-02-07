@@ -1,9 +1,12 @@
 import "server-only";
+
 import { promises as fs } from "fs";
 import * as path from "path";
-import { validateShopName } from "../../shops/index";
-import { DATA_ROOT } from "../../dataRoot";
+
 import type { SectionPreset } from "@acme/types";
+
+import { DATA_ROOT } from "../../dataRoot";
+import { validateShopName } from "../../shops/index";
 
 function filePath(shop: string): string {
   shop = validateShopName(shop);

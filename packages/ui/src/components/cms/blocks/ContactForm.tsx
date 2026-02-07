@@ -1,7 +1,8 @@
 "use client";
 
-import { useTranslations } from "@acme/i18n";
 import { useState } from "react";
+
+import { useTranslations } from "@acme/i18n";
 
 export default function ContactForm({
   action = "/api/leads",

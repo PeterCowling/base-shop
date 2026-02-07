@@ -1,15 +1,15 @@
 // packages/platform-core/__tests__/products.test.ts
 
 import {
-  getProductBySlug,
-  getProductById,
-  PRODUCTS,
-  getProducts,
-  validateQuery,
-  MAX_LIMIT,
   ALLOWED_SORTS,
+  getProductById,
+  getProductBySlug,
+  getProducts,
+  MAX_LIMIT,
+  PRODUCTS,
+  validateQuery,
 } from "../src/products";
-import { PRODUCTS as BASE_PRODUCTS, getProductById as baseGetById } from "../src/products/index";
+import { getProductById as baseGetById,PRODUCTS as BASE_PRODUCTS } from "../src/products/index";
 
 jest.mock("../src/repositories/products.server", () => ({
   getProductById: jest.fn(async (_shop: string, id: string) => baseGetById(id) ?? null),
@@ -74,7 +74,6 @@ describe("validateQuery sort and filter", () => {
 
   it("defaults to safe sort and drops unknown filters", () => {
     const { sort, filter } = validateQuery({
-      // @ts-expect-error test invalid sort
       sort: "rating",
       filter: { brand: "Eco", unknown: "x" },
     });

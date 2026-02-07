@@ -1,117 +1,187 @@
 {
   "seo": {
-    "title": "Excursión de un día a Capri desde Positano",
-    "description": "Cómo planificar una excursión a Capri: ferris, tiempos y zonas imprescindibles."
+    "title": "Excursión de un día a Capri desde Positano: Guía de presupuesto y consejos de ferry",
+    "description": "Planifica tu excursión económica de un día a Capri desde Positano. Horarios de ferry, miradores gratuitos, comida barata y un itinerario realista del personal del hostel."
   },
-  "linkLabel": "Excursión de un día a Capri desde Positano",
+  "linkLabel": "Excursión de un día a Capri: Escapada a la isla desde Positano",
   "intro": [
-    "Capri es una excursión clásica desde Positano: confirma horarios y reserva hueco en los ferris de la mañana para tener más tiempo en la isla.",
-    "Llegar pronto al muelle y planificar qué zonas visitar (Anacapri, Capri pueblo o paseo costero) evita colas y traslados de último minuto."
+    "Puedes ver los aspectos más destacados de Capri en un día desde Positano sin romper tu presupuesto. Toma un ferry temprano (alrededor de €20–25 por trayecto), visita los miradores gratuitos, compra comida callejera barata y regresa para las bebidas del atardecer en el hostel. La mayoría de los huéspedes hacen este viaje a mitad de semana para evitar las multitudes de cruceros del fin de semana—es una de las mejores %LINK:dayTripsAmalfi|excursiones de un día desde la Costa Amalfitana%—aquí está la ruta que funciona."
   ],
   "toc": [
     {
-      "href": "#tickets",
-      "label": "Billetes y horarios"
+      "href": "#morning",
+      "label": "Mañana — llegada y Anacapri"
     },
     {
-      "href": "#plan",
-      "label": "Itinerario sugerido"
+      "href": "#midday",
+      "label": "Mediodía — ruta Marina Piccola"
     },
     {
-      "href": "#extras",
-      "label": "Extras opcionales"
+      "href": "#afternoon",
+      "label": "Tarde — pueblo de Capri y regreso"
+    },
+    {
+      "href": "#budget",
+      "label": "Desglose del presupuesto"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Cómo llegar a Capri y volver"
     },
     {
       "href": "#faqs",
       "label": "Preguntas frecuentes"
-    },
-    {
-      "href": "#faqs",
-      "label": "Preguntas frecuentes (completas)"
     }
   ],
   "sections": [
     {
-      "id": "tickets",
-      "title": "Billetes y horarios",
+      "id": "morning",
+      "title": "Mañana — llegada y Anacapri",
       "body": [
-        "Revisa los horarios en las webs oficiales (NLG, Positano Jet, Travelmar) y compra ida y vuelta antes del día del viaje, sobre todo en verano.",
-        "Llega al muelle 25–30 minutos antes para validar billete y entrar en la cola; lleva copia digital y en papel por si hay escaneo manual.",
-        "Si el mar está agitado, consulta avisos antes de salir: las compañías suelen publicar retrasos en redes sociales y en la taquilla."
+        "¿Por qué empezar temprano? El primer ferry desde Positano (normalmente alrededor de las 08:20–09:00, consulta los %HOWTO:positano-capri-ferry|horarios actuales del ferry Positano→Capri%) te lleva a Capri antes de que las multitudes de cruceros inunden la isla alrededor de las 10:30. Tendrás fotos más claras, colas de autobús más cortas y temperaturas más frescas para caminar. Durante la temporada alta, los horarios de ferry pueden cambiar, así que siempre consulta los %LINK:ferrySchedules|horarios de ferry más recientes% el día antes de ir.",
+        "Del muelle a Anacapri: Sal de Marina Grande y gira a la derecha hacia la parada de autobús (busca señales de Anacapri). El autobús cuesta aproximadamente €2 por trayecto—compra boletos en el quiosco cerca del funicular o a bordo con cambio exacto. El viaje hacia arriba toma 15–20 minutos con curvas cerradas y vistas al mar.",
+        "Telesilla Monte Solaro: Si no te importan las alturas, el telesilla (€12–14 ida, €16–18 ida y vuelta) te lleva 589 m sobre el nivel del mar. El viaje es lento y expuesto—cuelgas en un asiento abierto—pero el panorama de 360° en la cima es gratuito para disfrutar. Omítelo si tienes miedo a las alturas o poco dinero; las vistas desde Piazza Vittoria siguen siendo geniales.",
+        "Desayuno en Anacapri: Toma un cornetto y espresso (€3–4 en total) en un bar en Piazza Vittoria. No te sientes para un desayuno largo—querrás ese tiempo para explorar. Guarda tu apetito para un almuerzo picnic barato más tarde.",
+        "Compra tu boleto de ferry de regreso ahora: Tan pronto como llegues, ve a la oficina de ferry en Marina Grande y reserva tu regreso (normalmente las salidas de 16:30–18:00 funcionan bien). En julio/agosto, los barcos pueden agotarse al mediodía, y no querrás quedarte varado o forzado a un traslado privado costoso."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-day-trip/capri-ferry-positano-marina.jpg",
+          "alt": "Pasajeros abordando el ferry temprano en la mañana desde Positano a Capri en el muelle de Marina Grande"
+        },
+        {
+          "src": "/img/guides/capri-day-trip/anacapri-piazza-vittoria.jpg",
+          "alt": "Anacapri Piazza Vittoria con cafés locales y señalización de parada de autobús para viajeros con presupuesto"
+        },
+        {
+          "src": "/img/guides/capri-day-trip/monte-solaro-chairlift-view.jpg",
+          "alt": "Telesilla abierto ascendiendo la montaña Monte Solaro con vista panorámica de la costa de Capri"
+        }
       ]
     },
     {
-      "id": "plan",
-      "title": "Itinerario sugerido",
+      "id": "midday",
+      "title": "Mediodía — ruta Marina Piccola",
       "body": [
-        "Mañana: ferry a Capri y bus o taxi a Anacapri; sube en telesilla a Monte Solaro para vistas panorámicas.",
-        "Mediodía: explora Capri pueblo; busca almuerzo rápido en calles secundarias (Vico Botteghe / Via Le Botteghe) para evitar sobreprecios.",
-        "Tarde: Jardines de Augusto + paseo a Via Krupp si está abierta; baja al muelle con antelación para asegurar lugar en el regreso."
+        "Ruta de la playa Marina Piccola: Desde Anacapri, puedes caminar o tomar el autobús hacia Marina Piccola (la playa sur). La caminata es de aproximadamente 30–40 minutos cuesta abajo—buenas vistas, pero recuerda que necesitarás subir de nuevo o tomar un autobús (€2). La mayoría de los viajeros con presupuesto omiten los clubes de playa pagados (€15–25 por una tumbona) y simplemente nadan desde las áreas rocosas gratuitas.",
+        "Qué llevar: Al menos 1 litro de agua por persona (rellena en fuentes públicas si las ves), protector solar seguro para arrecifes y una toalla pequeña. Capri tiene muy pocos baños gratuitos—algunos cafés cobran €1–2, así que planifica con anticipación o compra una bebida para usar sus instalaciones.",
+        "Opciones de almuerzo barato: Omite los restaurantes con servicio de mesa (€15–30 por persona). En su lugar, toma un panino o focaccia (€4–6) de una tienda de delicatessen o supermercado. Hay un pequeño supermercado Conad en Anacapri donde puedes abastecerte de snacks, frutas y agua por la mitad del precio de los quioscos turísticos.",
+        "El debate de la Gruta Azul: Los boletos cuestan €14–18 por persona, pero esperarás 60–90 minutos en temporada alta, y solo dura 5 minutos dentro de la cueva. Hemos tenido huéspedes que lo amaron y huéspedes que sintieron que era una trampa turística. Si es tu sueño, ve temprano (antes de las 10:00) u omite Anacapri completamente y concéntrate en la gruta. No intentes incluir ambos en un día—estarás apurado.",
+        "Para nadadores: El agua es cristalina pero fría (18–22°C incluso en verano). Si estás acostumbrado a agua tropical cálida, trae un rash guard o parte superior de traje de neopreno. Las rocas pueden ser resbaladizas y afiladas—los zapatos de agua ayudan."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-day-trip/marina-piccola-free-beach.jpg",
+          "alt": "Área de playa rocosa gratuita de Marina Piccola en Capri con nadadores y rocas Faraglioni al fondo"
+        },
+        {
+          "src": "/img/guides/capri-day-trip/budget-picnic-lunch.jpg",
+          "alt": "Mochilero disfrutando de almuerzo picnic económico con panini y botella de agua en el mirador del acantilado de Capri"
+        }
       ]
     },
     {
-      "id": "extras",
-      "title": "Extras opcionales",
+      "id": "afternoon",
+      "title": "Tarde — pueblo de Capri y regreso",
       "body": [
-        "Gruta Azul: evalúa colas y estado del mar; conviene ir temprano y reservar media jornada si es imprescindible.",
-        "Barcos privados: negocia precio en Marina Grande o reserva con antelación; confirma duración y puntos de parada.",
-        "Teleférico desde Marina Grande: opción rápida para llegar al centro de Capri si quieres saltarte el bus."
+        "Dirígete al pueblo de Capri: Desde Marina Piccola o Anacapri, toma el autobús de regreso a Marina Grande, luego sube en el funicular al pueblo de Capri (Piazzetta). El funicular cuesta €2 por trayecto y funciona cada 15 minutos. Es un viaje empinado de 2 minutos con vistas sobre el puerto.",
+        "Qué ver en el pueblo de Capri: Camina por la famosa Piazzetta (la diminuta plaza principal—cafés caros, pero gratis para observar a la gente). Luego dirígete a Via Camerelle para mirar escaparates (principalmente marcas de lujo). Si tienes 20 minutos, camina a Giardini di Augusto (€1–2 entrada)—gran mirador sobre las rocas Faraglioni.",
+        "Nota sobre Via Krupp: El sendero panorámico desde los jardines hasta Marina Piccola (Via Krupp) a menudo está cerrado debido a caídas de rocas. Consulta localmente antes de planear caminarlo. Si está abierto, es un hermoso descenso de 10 minutos, pero necesitarás volver a subir o tomar un barco.",
+        "Gelato y espresso: Presupuesta €3–5 para un cono o taza—los precios de Capri están inflados, pero es una buena manera de refrescarse antes de tu ferry. Evita los cafés de Piazzetta (€8 por un espresso). Camina una calle hacia atrás para precios normales.",
+        "Regreso a Marina Grande: Sal del pueblo de Capri al menos 45 minutos antes de la salida de tu ferry. El funicular se llena después de las 16:00 cuando todos los excursionistas regresan. Si pierdes tu ferry programado, podrías conseguir espera en el siguiente (€20–30), pero es estresante—no te arriesgues.",
+        "Lo que les decimos a los huéspedes del hostel: La mayoría de las personas se sienten apuradas tratando de hacer Anacapri, Marina Piccola, la Gruta Azul y el pueblo de Capri en un día. Elige dos o tres puntos destacados, muévete a un ritmo relajado y ahorra energía para nadar de vuelta en Positano cuando regreses. Estás de vacaciones—no corras."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-day-trip/capri-town-funicular.jpg",
+          "alt": "Funicular que conecta Marina Grande con el centro del pueblo de Capri Piazzetta"
+        },
+        {
+          "src": "/img/guides/capri-day-trip/giardini-augusto-viewpoint.jpg",
+          "alt": "Jardines Giardini di Augusto con vista a las rocas Faraglioni y sendero Via Krupp en Capri"
+        }
+      ]
+    },
+    {
+      "id": "budget",
+      "title": "Desglose del presupuesto: lo que realmente cuesta Capri",
+      "body": [
+        "Esto es lo que los huéspedes del hostel suelen gastar en una excursión de un día a Capri desde Positano:",
+        "Ferry: €20–25 por trayecto (€40–50 total ida y vuelta). Reserva directamente en el muelle o en línea—los precios suelen ser los mismos, pero en línea garantiza tu asiento en temporada alta.",
+        "Transporte local en Capri: €6–10 total (funicular + autobuses alrededor de la isla). Compra boletos individuales sobre la marcha—no hay pase diario para turistas.",
+        "Telesilla (opcional): €16–18 ida y vuelta a Monte Solaro. Vale la pena si amas las vistas y las alturas. Omítelo si tienes un presupuesto ajustado—las vistas gratuitas desde Piazza Vittoria siguen siendo impresionantes.",
+        "Gruta Azul (opcional): €14–18 entrada. Ten en cuenta 60–90 minutos de espera en temporada alta. Muchos viajeros con presupuesto lo omiten.",
+        "Lo que les decimos a los huéspedes del hostel: La mayoría de las personas se sienten apuradas tratando de hacer Anacapri, Marina Piccola, la Gruta Azul y el pueblo de Capri en un día. Elige dos o tres puntos destacados, muévete a un ritmo relajado y ahorra energía para nadar de vuelta en Positano cuando regreses. Estás de vacaciones—no corras.",
+        "Presupuesto realista total: €70–90 por persona para un día básico (ferry, transporte, almuerzo barato). Agrega €30–50 si haces el telesilla y la Gruta Azul.",
+        "Consejo interno del personal: Llena tu botella de agua en el hostel antes de salir. Capri cobra €3–4 por una botella de 500ml en quioscos turísticos. Hemos visto a huéspedes ahorrar €10–15 simplemente trayendo su propia agua y snacks."
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "Cómo llegar a Capri y volver",
+      "body": [
+        "Usa la %HOWTO:positano-capri-ferry|guía del ferry Positano → Capri% para el cruce de ida y la %HOWTO:capri-positano-ferry|guía del ferry Capri → Positano% en tu regreso."
       ]
     }
   ],
-  "galleryTitle": "Galería de fotos de Capri",
-  "gallery": {
-    "items": {
-      "monteSolaro": {
-        "alt": "Vista desde Monte Solaro, Capri",
-        "caption": "Panorámica de Monte Solaro"
-      },
-      "gardensOfAugustus": {
-        "alt": "Jardines de Augusto, Capri",
-        "caption": "Jardines de Augusto"
-      }
-    }
-  },
   "faqsTitle": "Preguntas frecuentes",
   "howTo": {
     "steps": [
       {
-        "name": "Revisa los ferris de temporada",
-        "text": "Confirma las salidas de la mañana y los últimos regresos a Positano."
+        "name": "Consultar ferries de temporada",
+        "text": "Confirma las salidas matutinas y los últimos regresos a Positano."
       },
       {
-        "name": "Llega temprano al muelle",
+        "name": "Llegar temprano al muelle",
         "text": "Haz fila 20–30 minutos antes de la salida en temporada alta."
       },
       {
         "name": "Planifica tu ruta en Capri",
-        "text": "Prioriza Anacapri o Marina Grande y sus miradores según el tiempo disponible."
+        "text": "Prioriza Anacapri o Marina Grande + miradores dependiendo del tiempo."
       }
     ]
   },
   "tipsTitle": "Consejos del día",
   "tips": [
-    "Compra juntos los billetes de ida y vuelta del ferry para poder ajustar la ruta sin buscar asientos a última hora.",
-    "Lleva una mochila pequeña con agua, protector solar y efectivo; los cajeros de Capri pueden quedarse sin dinero en las semanas punta.",
-    "Descarga mapas sin conexión de Capri y los horarios de autobús; la señal cae en Anacapri y en la cola de la Gruta Azul."
+    "Compra boletos de ferry de ida y vuelta juntos para que puedas ajustar tu ruta sin luchar por asientos más tarde en el día.",
+    "Lleva una mochila pequeña con agua, protector solar y efectivo — los cajeros automáticos en Capri pueden quedarse sin dinero durante las semanas pico.",
+    "Descarga mapas sin conexión para Capri y horarios de autobuses; la señal cae alrededor de Anacapri y la cola de la Gruta Azul."
   ],
-  "warningsTitle": "Advertencias imprescindibles",
+  "warningsTitle": "Advertencias importantes",
   "warnings": [
-    "Las colas del telesilla y del funicular se disparan después de las 15:00; si pierdes tu turno podrías acabar esperando plaza en un ferry en lista de espera.",
-    "El mar agitado puede cancelar travesías tardías sin aviso; revisa los avisos matutinos y ten una conexión vía Sorrento como respaldo.",
-    "La Gruta Azul suele cerrar con viento u oleaje; los operadores pueden seguir vendiendo billetes, así que confirma que esté abierta antes de ponerte en la cola."
+    "Las colas del telesilla y el funicular aumentan después de las 15:00; pierde tu turno y arriesgas un regreso en ferry en espera.",
+    "El mar agitado puede cancelar navegaciones tardías sin previo aviso — consulta los boletines matutinos y ten una conexión a Sorrento como respaldo.",
+    "Los cierres de la Gruta Azul son comunes con viento o oleaje; los operadores aún pueden vender boletos, así que confirma que está operando antes de unirte a la fila."
   ],
   "faqs": [
     {
-      "q": "¿Cuánto dura la excursión?",
+      "q": "¿Puedo incluir la Gruta Azul?",
       "a": [
-        "Con ferris de primera hora y último regreso puedes pasar unas 9–10 horas en Capri, incluidos traslados y colas."
+        "Solo si es tu máxima prioridad. Espera un viaje en barco lanzadera y 60–90 minutos de espera (más en julio/agosto), lo que aprieta el resto de tu itinerario. La visita a la cueva en sí dura unos 5 minutos. Muchos viajeros con presupuesto lo omiten y pasan ese tiempo explorando miradores gratuitos y nadando en su lugar."
       ]
     },
     {
-      "q": "¿Puedo dejar equipaje en Capri?",
+      "q": "¿Necesito reservar los boletos de ferry con anticipación?",
       "a": [
-        "Sí, hay consigna cerca de Marina Grande; llega temprano porque las plazas son limitadas en verano."
+        "En temporada alta (julio–agosto), sí—los ferries matutinos desde Positano pueden agotarse el día anterior. En temporada media (abril–junio, septiembre–octubre), normalmente puedes comprar boletos el mismo día en el muelle, pero reservar en línea la noche anterior te da tranquilidad. Siempre reserva tu ferry de regreso tan pronto como llegues a Capri para asegurar tu hora de salida."
+      ]
+    },
+    {
+      "q": "¿Vale la pena Capri con presupuesto de mochilero?",
+      "a": [
+        "Sí, si eres realista sobre los costos. El ferry es el gran gasto (€40–50 ida y vuelta), pero una vez que estés allí, puedes mantenerlo barato: playas gratuitas, miradores gratuitos, almuerzo picnic del supermercado y transporte público. Omite la Gruta Azul y el telesilla si tienes poco dinero. Muchos huéspedes del hostel dicen que es su excursión de un día favorita desde Positano porque la isla es tan diferente del continente—solo no esperes gangas en comida y bebida."
+      ]
+    },
+    {
+      "q": "¿Qué pasa si se cancela el ferry?",
+      "a": [
+        "El mar agitado puede cancelar navegaciones, especialmente en temporada media e invierno. Consulta el pronóstico del tiempo y los boletines matutinos en el muelle. Si se cancela tu ferry de regreso, necesitarás esperar el próximo barco disponible (generalmente al día siguiente) o tomar un ferry a Sorrento y luego un autobús/tren de regreso a Positano. Recomendamos tener €50–80 extra como respaldo en caso de que te quedes varado—es raro, pero sucede."
+      ]
+    },
+    {
+      "q": "¿Puedo hacer Capri y Pompeya en un día?",
+      "a": [
+        "No, no lo intentes. Cada uno merece un día completo. Capri requiere ferry temprano en la mañana + día completo en la isla. %LINK:positanoPompeii|Pompeya desde Positano% es un viaje separado de día completo en tren/autobús. Intentar combinarlos significa que pasarás la mayor parte del día en transporte y verás muy poco de ambos. Hemos tenido huéspedes que lo intentaron y se arrepintieron—elige uno por día."
       ]
     }
   ]

@@ -1,4 +1,5 @@
 import type { PageComponent } from "@acme/types";
+
 import { decorateComponentForViewport } from "./decorateComponentForViewport";
 import type { EditorMap, Viewport } from "./types";
 

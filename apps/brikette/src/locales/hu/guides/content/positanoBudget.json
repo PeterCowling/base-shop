@@ -1,96 +1,86 @@
 {
   "seo": {
-    "title": "A fordítás folyamatban van.",
-    "description": "Szállás, étkezés, közlekedés spórolós tippjei és napi költségkeretek."
+    "title": "Positano takarékosan: gyakorlati útmutató",
+    "description": "Hogyan élvezd Positano legjavát pénztárcabarát módon: közlekedés, olcsó étkek, ingyenes kilátók, spórolós szállások és megtakarítási tippek."
   },
-  "linkLabel": "Positano on a Budget",
+  "linkLabel": "Positano takarékosan",
   "intro": [
-    "A fordítás folyamatban van."
+    "Nyújtsd ki az euróidat autómentes közlekedéssel, olcsó falatozókkal és ingyenes kilátópontokkal, miközben megőrzöd Positano csillogását."
   ],
   "sections": [
     {
       "id": "transport",
-      "title": "Transport on the cheap",
+      "title": "Olcsó közlekedés",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Használd az Alibust vagy Curreri shuttle-t Sorrentóig, majd a SITA buszt Positanóba; vásárolj buszjegyeket csomagban a tabacchi-nál, hogy elkerüld a felárakat.",
+        "Ha nyugodt a tenger, kombinálj egy kompszakaszt buszokkal a kényelmesebb utazáshoz — csak az adott szakaszokra foglalj helyet, hogy ne fizess túl."
       ]
     },
     {
       "id": "stay",
-      "title": "Smart stays",
+      "title": "Okos szállások",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Foglalj hostelkajákban vagy közös apartmanokban Chiesa Nuova közelében, hogy csökkentsd a cipekedést és kiküszöböld a lépcsők miatti porterdíjakat.",
+        "Hosszabb tartózkodásnál gondolj Meta vagy Praiano bázisra — 30–40 perces a bejárás, de a csúcsidőszakban sokkal olcsóbb a szoba."
       ]
     },
     {
       "id": "food",
-      "title": "Food & drink savings",
+      "title": "Étel-és italmegtakarítások",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Vásárolj paniniket, sfogliatellét és espresso-kat bárokból a helyben ejtős brunch helyett; tölts fel egy 1 literes palackot (34 oz) a hostel csapjainál indulás előtt.",
+        "Oszd meg az antipastit, kerüld a coperto díjat olcsóbb trattoriákban, és piknikezz a teraszokon deli vásárlásokkal naplementekor."
       ]
     },
     {
       "id": "experiences",
-      "title": "Low-cost experiences",
+      "title": "Olcsó élmények",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Tervezd be az ingyenes utak közül a Szlak Bogokat (busz Nocelle-be) vagy az Via Cristoforo Colombo menti naplemente sétaútvonalakat.",
+        "Költs egy kiemelkedő élményre (például közös hajótúra vagy főzőtanfolyam), a többit szenteld strandolásra és kilátókra."
       ]
     }
   ],
   "tips": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
+    "Utazz a vállszezonban (április–május, szeptember vége), így alacsonyabb árakat és üresebb kompokat találhatsz.",
+    "Kövesd nyomon a kiadásaidat jegyzetappban, a napi közös költségek felosztásával megelőzheted a félreértéseket."
   ],
   "faqs": [
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Mennyivel számoljak naponta?",
       "a": [
-        "A fordítás folyamatban van."
+        "70–90 € fedezi a dorm szobát, deli ételeket, buszjegyeket és egy fizetős programot; ha privát szobát vagy naplemente koktélt szeretnél, adj hozzá 20–30 €-t."
       ]
     },
     {
-      "q": "Is tipping expected?",
+      "q": "Várható borravaló?",
       "a": [
-        "A fordítás folyamatban van."
+        "A szolgáltatás benne van; gyűrj fel 1–2 €-t, ha tényleg kiemelkedően figyelmesek, vagy hagyj 10%-ot a magasabb kategóriás helyeken csak akkor, ha úgy érezzük megérte."
       ]
     }
   ],
-  "tocTitle": "On this page",
-  "faqsTitle": "FAQs",
-  "heroAlt": "A fordítás folyamatban van.",
+  "tocTitle": "Tartalom",
+  "faqsTitle": "GYIK",
+  "heroAlt": "Takarékos kilátás Positanóra egy teraszról",
   "costBreakdown": {
-    "title": "A fordítás folyamatban van.",
+    "title": "Napi költségmegoszlás (példa)",
     "slices": [
       {
-        "label": "Bed (dorm)",
+        "label": "Ágy (dorm)",
         "value": 45
       },
       {
-        "label": "Meals & snacks",
+        "label": "Étkezés és nassolnivaló",
         "value": 25
       },
       {
-        "label": "Transport",
+        "label": "Közlekedés",
         "value": 12
       },
       {
-        "label": "Activities & extras",
+        "label": "Programok és extra",
         "value": 18
       }
     ]
-  },
-  "gallery": [
-    {
-      "alt": "A fordítás folyamatban van.",
-      "caption": "Free viewpoints"
-    },
-    {
-      "alt": "A fordítás folyamatban van.",
-      "caption": "Picnic to save on meals"
-    }
-  ]
+  }
 }

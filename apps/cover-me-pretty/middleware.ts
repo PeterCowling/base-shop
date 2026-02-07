@@ -52,10 +52,15 @@ export function middleware(request: NextRequest) {
         } catch {}
         const csp = [
           "default-src 'self'", // i18n-exempt -- ABC-123 HTTP header policy value, not user-facing copy [ttl=2025-06-30]
+          "base-uri 'self'", // i18n-exempt
+          "object-src 'none'", // i18n-exempt
+          "form-action 'self'", // i18n-exempt
+          "frame-ancestors 'none'", // i18n-exempt
           `script-src 'self' 'sha256-${hash}' https://www.googletagmanager.com https://www.google-analytics.com ${scriptExtra.join(' ')}`,
-          `img-src 'self' data: https://www.google-analytics.com ${imgExtra.join(' ')}`,
+          `img-src 'self' data: blob: https://www.google-analytics.com ${imgExtra.join(' ')}`,
           `connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com ${connectExtra.join(' ')}`,
-          "style-src 'self' 'unsafe-inline'", // i18n-exempt -- ABC-123 HTTP header policy value, not user-facing copy [ttl=2025-06-30]
+          "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com", // i18n-exempt -- ABC-123 HTTP header policy value, not user-facing copy [ttl=2025-06-30]
+          "font-src 'self' data: https://fonts.gstatic.com", // i18n-exempt
         ].join('; ');
         res.headers.set('Content-Security-Policy', csp);
       }

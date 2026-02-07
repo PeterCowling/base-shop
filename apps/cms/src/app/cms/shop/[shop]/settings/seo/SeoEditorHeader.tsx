@@ -1,9 +1,10 @@
 "use client";
 
-import { Tooltip } from "@/components/atoms";
+import { Inline } from "@acme/design-system/primitives/Inline";
+import { Stack } from "@acme/design-system/primitives/Stack";
 import { useTranslations } from "@acme/i18n";
-import { Stack } from "@ui/components/atoms/primitives/Stack";
-import { Inline } from "@ui/components/atoms/primitives/Inline";
+
+import { Tooltip } from "@/components/atoms";
 
 interface SeoEditorHeaderProps {
   freeze: boolean;

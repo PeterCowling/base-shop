@@ -1,13 +1,16 @@
 "use client";
 
 import * as React from "react";
+
+import { getTimeRemaining,parseTargetDate } from "@acme/date-utils";
+
+import ExperimentGate from "../../ab/ExperimentGate";
 import { Grid as GridPrimitive } from "../../atoms/primitives/Grid";
 import { Stack } from "../../atoms/primitives/Stack";
+
 import { Image as DSImage } from "./atoms";
 import CountdownTimer from "./CountdownTimer";
 import type { LookbookHotspot } from "./Lookbook";
-import ExperimentGate from "../../ab/ExperimentGate";
-import { parseTargetDate, getTimeRemaining } from "@acme/date-utils";
 
 export interface CampaignHeroSectionProps extends React.HTMLAttributes<HTMLDivElement> {
   mediaType?: "image" | "video";

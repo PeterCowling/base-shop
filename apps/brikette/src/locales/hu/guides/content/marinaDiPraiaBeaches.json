@@ -1,92 +1,237 @@
 {
   "seo": {
-    "title": "A fordítás folyamatban van.",
-    "description": "Hogyan éred el a rejtett öblöket, milyen szolgáltatásokra számíts és mikor menj."
+    "title": "Marina di Praia: útmutató – SITA busz, lido és vacsora",
+    "description": "Hostel-vendégeknek szóló Marina di Praia útmutató: odajutás SITA busszal, hol érdemes letelepedni (lido vs ingyenes rész), mit pakolj, és hol vacsorázz visszaindulás előtt."
   },
-  "linkLabel": "Marina di Praia & Secluded Beaches",
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
+  "linkLabel": "Marina di Praia: drámai öböl a sziklák között",
   "intro": [
-    "Fedezd fel a Marina di Praiát és a közeli öblöket, ha változatosságra vágysz Positano fő strandja után."
-  ],
-  "sections": [
-    {
-      "id": "marina",
-      "title": "Marina di Praia alapok",
-      "body": [
-        "Sziklák közé simuló kavicsos strand napágyakkal, kajakkölcsönzővel és a sziklába épült tengeri éttermekkel.",
-        "Érkezz 10:30 előtt, ha első soros napágyat szeretnél; 16:00 után fokozatosan árnyékba borul."
-      ]
-    },
-    {
-      "id": "coves",
-      "title": "Közeli öblök",
-      "body": [
-        "Bérelj kajakot a Grotta di Suppraiano felfedezéséhez, vagy menj rövid csónaktranszferrel eldugott helyekre, mint Gavitella vagy Laurito.",
-        "Vigyél korallbarát naptejet és vízicipőt – a köves aljzat remek sznorkelezési látótávolságot ad."
-      ]
-    },
-    {
-      "id": "logistics",
-      "title": "Megközelítés",
-      "body": [
-        "Szállj fel Positanóból a SITA buszra Amalfi irányába; szólj a sofőrnek, hogy a Marina di Praia megállónál szállsz le, majd sétálj le a rámpán (kb. öt perc).",
-        "A robogókat az öböl tetején lehet leparkolni – legyen nálad apró a fizetős helyekhez."
-      ]
-    }
-  ],
-  "tips": [
-    "Foglalj ebédet az Il Piratában vagy a La Praiában, így fürdések között sziklaparti panorámával étkezhetsz.",
-    "Legyen nálad vízálló tasak az értékeknek; a strand kicsi, és rendezettebb, ha minden egyben marad."
-  ],
-  "faqs": [
-    {
-      "q": "Ingyenes a strand?",
-      "a": [
-        "Van egy szabadon használható rész, de nagyon szűk. Főszezonban számolj 20–25 euróval egy napágy-párosért és napernyőért a strandklubokban."
-      ]
-    },
-    {
-      "q": "Elsétálhatok Positanóból?",
-      "a": [
-        "Gyalog kb. 50 perc az úton, keskeny padkával. Busz vagy robogó biztonságosabb, különösen a főszezoni forgalomban."
-      ]
-    }
+    "Marina di Praia egy eldugott, kavicsos öböl Praianóban — rövid SITA buszútra a Hostel Brikette-től, és általában jóval nyugodtabb, mint Positano “nagynevű” strandjai. Halászhajók, egy őrtorony és kőből rakott sétányok adják a \\\"titkos hely” hangulatot, miközben étel és alap szolgáltatások is vannak a közelben.",
+    "Ha stresszmentes strandnapot szeretnél (úszás, snack, szunyókálás árnyékban, majd egy könnyű vacsora), ez az egyik legjobb közeli választás hostelvendégeknek.",
+    "Ebben az útmutatóban: buszos odajutás, a partszakasz felosztása (lido vs ingyenes rész), mit vigyél a kavicsokra és az árnyékhoz, illetve hogyan jutsz vissza a legegyszerűbben Positanóba naplemente után."
   ],
   "toc": [
     {
       "href": "#why-go",
-      "label": "Why go"
+      "label": "Miért érdemes menni"
     },
     {
       "href": "#getting-there",
-      "label": "Getting there"
+      "label": "Odajutás"
     },
     {
       "href": "#layout",
-      "label": "Layout & services"
+      "label": "Kialakítás és szolgáltatások"
+    },
+    {
+      "href": "#what-to-bring",
+      "label": "Mit vigyél"
+    },
+    {
+      "href": "#best-time",
+      "label": "Mikor a legjobb"
+    },
+    {
+      "href": "#nearby",
+      "label": "Nyugis úszások a közelben"
     },
     {
       "href": "#evening",
-      "label": "Stay for dinner"
+      "label": "Vacsora és hazajutás"
     }
   ],
-  "essentialsTitle": "What to expect",
+  "sections": [
+    {
+      "id": "why-go",
+      "title": "Miért jó ez az öböl hostelvendégeknek",
+      "body": [
+        "A Spiaggia Grande vagy a Fornillo helyett itt egy szűk szurdokban vagy Praiano mellett. A sziklák védik a vizet a hullámoktól, a halászhajók a kis kikötőben ringanak, és még főszezonban is nyugodtabb a hangulat.",
+        "Ez egy tökéletes “köztes” nap: kényelmesebb, mint a vad, lépcsős kis öblök, de kevésbé kaotikus, mint a nagy positánói strandok. Van zuhany és étel, mégis úgy érzed, hogy a sziklák között vagy, nem a város közepén.",
+        "Tervezd fél napra (reggeli úszás + hosszú ebéd) vagy késő délutáni lazulásra, ami vacsorával zárul a víz mellett, mielőtt visszaindulsz."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/01-marina-di-praia-overlook.webp",
+          "width": 1600,
+          "height": 1066,
+          "alt": "Kilátás a Marina di Praia öbölre csónakokkal, napernyőkkel és meredek sziklákkal Praianóban",
+          "caption": "Védett, látványos, és általában nyugodtabb, mint Positano nagy strandjai. Fotó: Falk2 (CC BY-SA 4.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "Odajutás és vissza SITA busszal",
+      "body": [
+        "A Hostel Brikette-től sétálj le a Via Pasiteán a Sponda megállóhoz, és szállj fel egy Amalfi felé tartó SITA buszra. Mondd a sofőrnek, hogy “Marina di Praia” — a megálló Praiano és Furore között van, és ha tele a busz, könnyű elnézni.",
+        "Szállj le a jelzett megállónál, majd kövesd a kőből rakott utat lefelé (kb. két perc) a vízhez. Végig burkolt, így papucsban is oké.",
+        "Visszafelé menj át az út másik oldalára, és várj a Positano felé menő buszra. Nyáron általában egész jó a gyakoriság, de késő este ritkul — nézd meg a kifüggesztett menetrendet, és ha vacsorázni maradsz, inkább a penultimate járatot célozd meg.",
+        "Vedd meg és érvényesítsd a SITA jegyet felszállás előtt. Ha kell egy gyors frissítés a jegytípusokról, hol lehet venni és mit tegyél, ha a buszok tele mennek el, nézd meg a %LINK:sitaTickets|SITA jegy útmutatót%. Ha a napot Praiano sétával is összekötöd (templomok, kilátók, parti utak), kombináld a %LINK:praianoGuide|Praiano útmutatóval%."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/06-amalfi-coast-sita-bus.jpg",
+          "width": 1200,
+          "height": 1600,
+          "alt": "Kő sétány Marina di Praia partján csónakokkal és sziklafalakkal",
+          "caption": "A kő sétány miatt az utolsó két perc le a vízhez nagyon egyszerű. Fotó: Falk2 (CC BY-SA 4.0) via Wikimedia Commons."
+        },
+        {
+          "src": "/img/guides/marina-di-praia/08-san-gennaro-church.webp",
+          "width": 1600,
+          "height": 1200,
+          "alt": "A praianói San Gennaro templom csempézett kupolával és kilátással az Amalfi-partra",
+          "caption": "Ha strandot és Praiano sétát kombinálsz, a San Gennaro templom egy könnyű plusz megálló. Fotó: Elliott Brown (CC BY 2.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "layout",
+      "title": "Partkialakítás: lido és szolgáltatások",
+      "body": [
+        "A partszakasz keskeny, kavicsos, és egy kis ingyenes részre meg a lido fő területére oszlik. Ha az ingyenes részen szeretnél a víz közelében helyet, érkezz korán — hétvégén ez telik meg először.",
+        "A fő szolgáltató a Marina di Praia Beach Club (napágyak, napernyők, zuhany, és általában valamilyen paddle/kajak). Főszezonban inkább a kényelmet fizeted meg, de megéri, ha kell WC és egy könnyű “lerakom a cuccot és pihenek” nap.",
+        "A sétányon éttermek és italos kioszkok vannak. A kártyás fizetés néha vacakol, ezért legyen nálad készpénz kisebb összegekre, és legyen B-terv, ha a buszjegyes kioszk később zárva van.",
+        "Hosteles valóság: ne hozz olyan értéket, amin stresszelnél. Ha egyedül vagy, válassz jól látható helyet (közel más csoportokhoz), a telefon legyen cipzáros zsebben, és inkább rövid úszásokra menj, ne hagyd sokáig őrizetlenül a cuccodat."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/03-marina-di-praia-from-sea.webp",
+          "width": 1600,
+          "height": 1045,
+          "alt": "Marina di Praia a tenger felől: kavicsos part és sétány a sziklák alatt",
+          "caption": "A vízről látszik, mennyire kompakt az öböl — ha ingyenes helyet szeretnél, érdemes korán jönni. Fotó: Gilbert Bochenek (CC BY-SA 3.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "what-to-bring",
+      "title": "Mit vigyél (hogy a kavics ne tegye tönkre a napot)",
+      "body": [
+        "Ez kavicsos strand, nem puha homok. Óriási a különbség: ha csak egy vékony törölközővel jössz, valószínűleg ötpercenként pakolod át magad ahelyett, hogy pihennél.",
+        "Pakolj hosteles day trip módra: legyen könnyű visszafelé cipelni, de legyen meg az a pár dolog, amitől a kavics és az árnyék kezelhető."
+      ],
+      "list": [
+        "Vízicipő: a part csúszhat, és a kavics hosszú távon fájhat.",
+        "Vastagabb matrac vagy összehajtott törölköző: kavicson gyorsan “kemény” lesz.",
+        "Könnyű réteg késő délutánra: a sziklák korán árnyékot adnak, és fürdés után hűvösebb.",
+        "Készpénz + kártya: kisebb fizetések és terminálok néha megbízhatatlanok.",
+        "Kis drybag vagy zip tasak a telefonnak, ha sokat mész ki-be a vízbe."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/05-praiano-coastline.webp",
+          "width": 1600,
+          "height": 1200,
+          "alt": "Praiano partvonala sziklákkal és mélykék tengerrel az Amalfi-parton",
+          "caption": "A sziklák gyorsan változtatják a fényt és az árnyékot — vigyél egy réteget, ha sokáig maradsz. Fotó: Barochat (CC BY-SA 3.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "best-time",
+      "title": "Mikor a legjobb (és milyen a vízérzet)",
+      "body": [
+        "Nyugis, egyszerű naphoz érkezz reggel. Jobb eséllyel találsz kényelmes helyet, kisebb a tömeg a sétányon, és könnyebb a “bázis → úszás” ritmus.",
+        "Kora/késő délután a sziklák több árnyékot adnak. Ez jó, ha túl meleged van, de szeles napokon az öböl hűvösnek érződhet — főleg egy hosszabb úszás után.",
+        "A part gyorsan mélyül: az első belépésnél menj óvatosan, és figyeld, hova teszed a táskát, ha feljebb csapnak a hullámok."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/06-praiano-view.webp",
+          "width": 1600,
+          "height": 1066,
+          "alt": "Kilátás Praiano partjára sziklákkal és domboldali házakkal",
+          "caption": "Itt a sziklák alakítják a fényt és az árnyékot — ehhez igazítsd a napot. Fotó: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "nearby",
+      "title": "Nyugis úszások a közelben (mi a reális)",
+      "body": [
+        "Az Amalfi-part híres a “titkos öblökről”, de sok privát, csak hajóval elérhető, vagy kétes sziklaösvényeken át vezet. Hostelvendégeknek a legjobb stratégia: ez legyen a kényelmes bázis, és tegyél hozzá egy rövid “wow” megállót ugyanazon a buszvonalon.",
+        "A legegyszerűbb látványos megálló a közelben a %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore%: menj korán fotózni és gyorsat úszni, majd gyere vissza ide ebédre, árnyékba és nyugisabb fürdésre.",
+        "Ha egész napos “kóstoló” programot szeretnél, tervezd meg a sorrendet (és a buszidőket) a %LINK:beachHoppingAmalfi|beach-hopping Amalfi-part útmutatóval%, hogy ne azzal menjen a délután, hogy tele buszokat nézel elrobogni."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/07-fiordo-di-furore.webp",
+          "width": 1200,
+          "height": 1600,
+          "alt": "Fiordo di Furore szurdoka türkiz vízzel és meredek sziklákkal",
+          "caption": "Fiordo di Furore a drámai “fotómegálló” a közelben — kombináld egy nyugodtabb bázis stranddal. Fotó: Luca Aless (CC BY-SA 4.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "evening",
+      "title": "Vacsora a víz mellett, majd haza stressz nélkül",
+      "body": [
+        "Ez az egyik legszebb öböl, ahol úszás után is jó kint maradni: amikor lemegy a nap, az éttermek vacsorára váltanak, és a sétány fényei visszatükröződnek a vízen. Ha konkrét asztalt szeretnél, foglalj — főleg júliusban és augusztusban.",
+        "Hogy egyszerű legyen a hazajutás, nézd meg a buszmenetrendet, amint megérkezel. Cél a penultimate járat Positano felé, hogy legyen tartalék, ha egy busz tele van.",
+        "Ha lekésed az utolsó buszt, a Praiano → Positano taxi drága lehet — ha sokáig maradsz, szervezd meg a költségmegosztást hostel-társakkal."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/04-torre-a-mare-watchtower.webp",
+          "width": 1200,
+          "height": 1600,
+          "alt": "Tengerparti őrtorony Praiano közelében a sziklák fölött",
+          "caption": "Errefelé a partot történelmi tornyok és sziklaösvények tarkítják. Fotó: Falk2 (CC BY-SA 4.0) via Wikimedia Commons."
+        }
+      ]
+    }
+  ],
+  "essentialsTitle": "Mire számíts",
   "essentials": [
-    "20 perces SITA-buszút Positanóból; kérje a Marina di Praia megállót, és sétáljon két percet lefelé.",
-    "Keskeny kavicsos strand egy fő stranddal és egy kis szabad résszel a közepén.",
-    "Éttermek és büfék sorakoznak a sétányon – ideális egy naplemente vacsorához, mielőtt hazaindulna."
+    "Rövid SITA buszút Positanóból; kérd a sofőrtől a Marina di Praia megállót, és sétálj le kb. két percet a vízhez.",
+    "Keskeny kavicsos öböl: egy fő lido és egy kis ingyenes rész; érkezz korán, ha az ingyenes sávot szeretnéd.",
+    "Helyben van étel és infrastruktúra (éttermek, italok, lido zuhany): ideális stresszmentes fél napra vagy vacsorára visszaindulás előtt."
   ],
-  "typicalCostsTitle": "Typical costs",
+  "typicalCostsTitle": "Tipikus költségek",
   "typicalCosts": [
-    "Nyugágy + esernyő a Marina di Praia Beach Clubban: 25–35 € egy napra (két személyes készletek állnak rendelkezésre).",
-    "Kajak bérlés: körülbelül 20 € óránként két fő részére.",
-    "Fővacsora a Da Armandino vagy az Il Pirata étteremben: 16–28 euró a fogástól és a tésztakülönlegességtől függően."
+    "Napágy + napernyő a Marina di Praia Beach Clubnál: €25–€35/nap (van kétfős szett is).",
+    "Kajakbérlés: kb. €20/óra két főre.",
+    "Főételek a Da Armandino vagy az Il Pirata helyeken: €16–€28 a fogástól és a tészta specialtól függően."
   ],
-  "tipsTitle": "Quick tips",
-  "warningsTitle": "Good to know",
+  "tipsTitle": "Gyors tippek",
+  "tips": [
+    "A buszjegyet azonnal érvényesítsd felszálláskor, és tarts egy tartalékot a visszaútra, ha este zárva a kioszk.",
+    "Vigyél vízicipőt — a kavics csúszhat és a part gyorsan mélyül.",
+    "Nézd meg a többi lehetőséget a %LINK:positanoBeaches|strandok áttekintésében% ha ezt az öblöt Positano-nappal kombinálnád."
+  ],
+  "warningsTitle": "Jó tudni",
   "warnings": [
-    "A hely korlátozott; a szabad terület tölti be először, és hétvégén elfogynak a strand nyugágyak.",
-    "A sziklák a délután közepére eltakarják a közvetlen napfényt – kiválóan lehűtik, de szeles napokon hűvös lehet.",
-    "A mobil vétel a szurdok belsejében süllyed; Előzetesen töltse le a buszmenetrendeket vagy a vacsorafoglalási visszaigazolásokat."
+    "Kevés a hely: az ingyenes rész telik meg először, és a lido napágyai hétvégén elfogyhatnak.",
+    "A sziklák kora délutánra blokkolják a közvetlen napot — jó hűsölni, de szeles napokon hűvös lehet.",
+    "A mobil térerő gyengülhet a szurdokban: tölts le buszmenetrendet vagy vacsorafoglalást előre."
   ],
-  "faqsTitle": "Marina di Praia FAQs"
+  "faqsTitle": "Marina di Praia GYIK",
+  "faqs": [
+    {
+      "q": "Pontosan hol szálljak fel a buszra Positanóban?",
+      "a": [
+        "A Via Pasiteán lévő Sponda megállót használd az Amalfi felé menő buszokhoz. Kb. 10 perc séta lefelé a hosteltől; főszezonban érkezz 10 perccel korábban, hogy fel tudj szállni, mielőtt megtelik."
+      ]
+    },
+    {
+      "q": "Van ingyenes rész, vagy muszáj napágyat bérelni?",
+      "a": [
+        "Van egy kisebb ingyenes sáv az öböl közepén. Vigyél matracot vagy vastag törölközőt — a kavics durva — és számíts rá, hogy a dagály miatt közelebb kell húzódni a sziklákhoz. A Marina di Praia Beach Club napágyaihoz zuhany és WC is tartozik, ha kényelmesebb felállást szeretnél."
+      ]
+    },
+    {
+      "q": "Meddig maradhatok vacsorára, és még visszaérek a Hostel Brikette-be?",
+      "a": [
+        "A Positano felé menő utolsó SITA busz hónaptól függ, de nyáron általában kb. 21:30-ig van járat. Nézd meg a menetrendet érkezéskor, és inkább a penultimate buszt célozd meg, ha az egyik tele lenne. Az utolsó busz után a Praiano → Positano taxi kb. €35–€45, szóval osszátok meg, ha tovább maradsz."
+      ]
+    },
+    {
+      "q": "Jó választás Marina di Praia, ha egyedül mennék?",
+      "a": [
+        "Igen — ez az egyik “solo-friendly” öböl, mert vannak szolgáltatások és jól belátható a sétány. Ettől függetlenül: hostel-szabályok. Csak azt vidd, amit szívesen cipelsz, a telefon legyen biztonságban, és ússz rövid szakaszokban, hogy ne hagyd sokáig őrizetlenül a táskádat."
+      ]
+    }
+  ]
 }

@@ -1,69 +1,69 @@
 {
   "seo": {
-    "title": "Bus to Arienzo Beach from Hostel Brikette",
-    "description": "Catch the Amalfi Coast bus from Chiesa Nuova, ride three kilometres south, and take the cliffside stairs down to Arienzo Beach."
+    "title": "Hostel Brikette에서 아리엔초 해변으로 가는 버스",
+    "description": "키에사 누오바에서 아말피 해안 버스를 타고 남쪽으로 3km 이동한 뒤 절벽 계단을 내려 아리엔초 해변으로 가세요."
   },
-  "linkLabel": "Bus to Arienzo Beach",
+  "linkLabel": "아리엔초 해변 버스",
   "intro": [
-    "Arienzo Beach는 Hostel Brikette에서 남쪽으로 몇 킬로미터 떨어져 있으며 아말피 해안 버스를 이용하면 가장 쉽게 갈 수 있습니다.",
+    "아리엔초 해변은 Hostel Brikette에서 남쪽으로 몇 킬로미터 떨어져 있으며 아말피 해안 버스를 이용하면 가장 쉽게 갈 수 있습니다.",
     "다음 단계에 따라 정류장을 찾고, 티켓을 구입하고, 자신 있게 타고, 모래밭까지 올바른 계단을 따라 여행을 마무리하세요."
   ],
   "sections": [
     {
       "id": "reach-bus-stop",
-      "title": "Go to the Chiesa Nuova bus stop",
+      "title": "키에사 누오바 버스 정류장으로 이동",
       "body": [
-        "Leave Hostel Brikette through the main entrance and walk down the stairs to the road.",
-        "Turn left and continue roughly 100 metres (330 feet) until you reach Bar Internazionale.",
-        "The SITA bus stop sits outside the bar in the Chiesa Nuova area, about 140 metres (490 feet) from the hostel."
+        "Hostel Brikette 정문으로 나와 계단을 내려 도로로 이동하세요.",
+        "왼쪽으로 꺾어 약 100미터(330피트) 정도 가면 Bar Internazionale가 나옵니다.",
+        "SITA 정류장은 키에사 누오바 구역의 바 바로 앞에 있으며 호스텔에서 약 140미터(490피트) 떨어져 있습니다."
       ]
     },
     {
       "id": "buy-tickets",
-      "title": "Buy bus tickets inside the bar",
+      "title": "바 안에서 버스 티켓 구매",
       "body": [
-        "Enter Bar Internazionale and purchase your tickets from the tabacchi counter.",
-        "Ask for both outbound and return tickets — staff may recommend either one combined ticket or two singles depending on the current pricing."
+        "Bar Internazionale에 들어가 타바키 카운터에서 티켓을 구매하세요.",
+        "편도와 왕복 모두 요청하세요. 요금에 따라 직원이 묶음 티켓 또는 편도 2장을 추천할 수 있습니다."
       ]
     },
     {
       "id": "wait-for-bus",
-      "title": "Wait for the Amalfi Coast bus",
+      "title": "아말피 해안 버스 대기",
       "body": [
-        "Cross the road to the marked bus stop opposite Bar Internazionale.",
-        "Stand where the driver can see you and flag the coach as it approaches from the Positano direction."
+        "Bar Internazionale 맞은편 표시된 정류장으로 도로를 건너세요.",
+        "운전기사가 볼 수 있도록 서서 포지타노 방향에서 오는 버스에 손을 들어 신호하세요."
       ]
     },
     {
       "id": "ride-to-arienzo",
-      "title": "Ride to the Arienzo stop",
+      "title": "아리엔초 정류장까지 이동",
       "body": [
-        "Stay alert during the journey — the bus will make intermediate stops based on passenger requests.",
-        "Expect the trip to cover roughly 3 kilometres (1.9 miles). Arienzo comes two to five minutes after the Positano Sponda stop.",
-        "Use mobile data or download Google Maps offline and search for \"JFGW+X6 Arienzo, Province of Salerno\" if you want live confirmation of the stop."
+        "여정 중 주의를 기울이세요. 중간 정차는 승객 요청에 따라 달라집니다.",
+        "이동 거리는 약 3km(1.9마일)이며, 아리엔초는 포지타노 스폰다 정류장 이후 2~5분 뒤에 나옵니다.",
+        "모바일 데이터가 있다면 Google Maps에서 \\\\\"JFGW+X6 Arienzo, Province of Salerno\\\\\"를 검색해 정류장을 확인하세요."
       ]
     },
     {
       "id": "walk-to-beach",
-      "title": "Walk down to the beach",
+      "title": "해변으로 내려가기",
       "body": [
-        "After stepping off the bus, walk a short distance back in the direction you arrived from.",
-        "Look for the Arienzo signpost and the staircase on the seaward side of the road, then follow the steps down to the lido entrance."
+        "버스에서 내린 뒤 도착 방향으로 잠시 되돌아가세요.",
+        "도로 바다 쪽에 있는 아리엔초 표지판과 계단을 찾아 리도 입구까지 내려가세요."
       ]
     }
   ],
-  "tipsTitle": "Bus tips",
+  "tipsTitle": "버스 팁",
   "tips": [
-    "Printed timetables list Positano stops; expect Arienzo to appear about 2–5 minutes after Positano Sponda when heading from town.",
-    "Buy return tickets before leaving the hostel — there are no shops at the beach to sell you more if you decide to stay longer.",
-    "Check our %LINK:beaches|Positano beaches overview% for Arienzo facilities, shuttle boats, and alternative ways back to town."
+    "인쇄 시간표에는 포지타노 정류장만 표시됩니다. 시내에서 출발하면 아리엔초는 포지타노 스폰다 이후 2~5분 뒤입니다.",
+    "호스텔을 나서기 전에 왕복 티켓을 구매하세요. 해변에는 추가 티켓을 살 곳이 없습니다.",
+    "%LINK:positanoBeaches|포지타노 해변 개요%에서 아리엔초 시설, 셔틀 보트, 돌아오는 대안 경로를 확인하세요."
   ],
   "afterArticle": {
-    "scanToShareHeading": "Scan to Share",
+    "scanToShareHeading": "공유용 스캔",
     "scanToShareGalleryAlt": [
-      "스캔하여 공유 – Arienzo 버스 가이드 QR 또는 카드",
-      "Bar Internazionale 지역 및 Chiesa Nuova 버스 정류장",
-      "Arienzo 정류장에 대한 버스 경로 컨텍스트의 예"
+      "스캔하여 공유 - 아리엔초 버스 가이드 QR 또는 카드",
+      "Bar Internazionale 지역 및 키에사 누오바 버스 정류장",
+      "아리엔초 정류장 버스 경로 예시"
     ]
   }
 }

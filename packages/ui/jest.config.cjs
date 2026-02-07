@@ -1,25 +1,19 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-// Package-scoped Jest config allowing local overrides to reduce flakiness
-// for targeted runs. Inherit the monorepo config and optionally relax
-// coverage thresholds via env var.
+// Package-scoped Jest config - uses CJS preset for simpler jest.doMock/require semantics.
 
 const path = require("path");
-const base = require("../../jest.config.cjs");
 
-// Clone to avoid mutating the shared object
-const config = { ...base, coverageThreshold: { ...(base.coverageThreshold || {}) } };
-
-// Force CommonJS in this package to make Jest module mocking simpler
-// for tests that rely on jest.doMock/require semantics.
-config.preset = "ts-jest";
-config.extensionsToTreatAsEsm = [];
+// Use CJS preset for this package
+const config = require("@acme/config/jest.preset.cjs")({
+  useCjs: true,
+});
 
 // Ensure ts-jest uses this package's local tsconfig, not the repo root one
-const baseTsTransform = base.transform && base.transform["^.+\\.(ts|tsx)$"];
+const baseTsTransform = config.transform && config.transform["^.+\\.(ts|tsx)$"];
 const baseTsJestOptions = Array.isArray(baseTsTransform) ? baseTsTransform[1] : {};
 
 config.transform = {
-  ...base.transform,
+  ...config.transform,
   "^.+\\.(ts|tsx)$": [
     "ts-jest",
     {
@@ -43,8 +37,18 @@ if (disableCoverageThreshold) {
 // missing browser globals used by shared test utilities (e.g. MSW v2).
 config.setupFilesAfterEnv = [
   path.join(__dirname, "jest.setup.local.ts"),
-  ...(base.setupFilesAfterEnv || []),
+  ...(config.setupFilesAfterEnv || []),
 ];
+
+// Ensure "@/..." resolves to UI sources instead of the CMS alias in base config.
+// Also map @acme/design-system to its source for Jest testing
+const designSystemRoot = path.resolve(__dirname, "../design-system/src");
+config.moduleNameMapper = {
+  ...(config.moduleNameMapper || {}),
+  "^@/(.*)$": "<rootDir>/src/$1",
+  "^@acme/design-system$": path.join(designSystemRoot, "index"),
+  "^@acme/design-system/(.*)$": path.join(designSystemRoot, "$1"),
+};
 
 // Transform additional ESM dependencies used by MSW in this package
 config.transformIgnorePatterns = [

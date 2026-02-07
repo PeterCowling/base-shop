@@ -1,15 +1,16 @@
 import {
   atomRegistry,
-  moleculeRegistry,
-  organismRegistry,
   containerRegistry,
   layoutRegistry,
+  moleculeRegistry,
+  organismRegistry,
   overlayRegistry,
 } from "../blocks";
 import type { BlockRegistryEntry } from "../blocks/types";
+
+import type { ComponentType } from "./defaults";
 import type { PaletteMeta } from "./palette.types";
 import { getPalettePreview } from "./previewImages";
-import type { ComponentType } from "./defaults";
 
 export const defaultIcon = "/window.svg";
 

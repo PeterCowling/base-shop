@@ -1,0 +1,84 @@
+{
+  "seo": {
+    "title": "Takarékos szuvenírvásárlás az Amalfi-parton",
+    "description": "Hol találsz helyi kézműveseket, milyen árakra számíts, és hogyan csomagold haza."
+  },
+  "linkLabel": "Takarékos szuvenírvásárlás az Amalfi-parton",
+  "intro": [
+    "Az Amalfi-parton a szuvenírek a kézzel festett kerámiától a kamrapolc-csemegékig terjednek, de az árak a főutcákon igen változékonyak.",
+    "Használd ezeket a tippeket, hogy a minőségi termékeket választod, megbízható boltokat találsz és olyan módon csomagolsz, hogy a hazaút során minden épségben megérkezzen."
+  ],
+  "tocTitle": "Tartalom",
+  "toc": [
+    {
+      "href": "#what-to-buy",
+      "label": "Mit érdemes venni"
+    },
+    {
+      "href": "#where-to-shop",
+      "label": "Hol vásárolj"
+    },
+    {
+      "href": "#packing",
+      "label": "Csomagolás és szállítás"
+    },
+    {
+      "href": "#faqs",
+      "label": "GYIK"
+    }
+  ],
+  "sections": [
+    {
+      "id": "what-to-buy",
+      "title": "Mit érdemes venni",
+      "body": [
+        "A kézzel festett kerámiák, limoncello, apró nyomatok és kamrapolc-csemegék, mint a colatura vagy a citromlekvár, könnyen csomagolhatók és jól megmutatják a part hangulatát.",
+        "Keress kézművest vagy szövetkezetet jelölő aláírást; kerüld a gondatlanul kivitelezett, erős vegyszerszagú tömegcikkeket."
+      ]
+    },
+    {
+      "id": "where-to-shop",
+      "title": "Hol vásárolj",
+      "body": [
+        "Tégy egy-két utcát a Via dei Mulini és a tengerpart felett, hogy összehasonlíthasd a butikokat, szövetkezeteket és műhelyeket.",
+        "A sorrentói, amalfi és akár salernói piacokon gyakran nyugodtabb árakon ugyanazokat a termékeket találod – számolj a komp- vagy buszköltséggel a döntésnél."
+      ]
+    },
+    {
+      "id": "packing",
+      "title": "Csomagolás és szállítás",
+      "body": [
+        "Lapítsd össze a kerámiákat ruhákba vagy buborékfóliába, és válaszd el a tányérokat kartondarabokkal vagy újratölthető törölközővel.",
+        "Ha Olaszországból küldöd, kérj követett szolgáltatást és őrizd meg a blokkot; élelmiszer esetén előtte nézd meg a célország vámszabályait."
+      ]
+    },
+    {
+      "id": "price-checks",
+      "title": "Árösszehasonlítás és hitelesség",
+      "body": [
+        "Keress Consorzio vagy IGP jelölést a limoncellón, és inkább kézzel írt árcédulákat válassz, mint csak „akciós” táblákat.",
+        "Ha túl olcsó az ajánlat, nézd meg a varratokat és a máz minőségét; az igazi kézműves tárgyak kis eltéréseket mutatnak, nem egyező mintákat."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Bevihetek limoncellót vagy élelmiszert a poggyászomba?",
+      "a": [
+        "A 100 ml-nél nagyobb folyadékokat feladott poggyászba kell tenni; jelentsd be az alkoholt, ha kell, és vásárlás előtt nézd meg az otthoni ország tej- vagy húsalapú termékekre vonatkozó korlátait."
+      ]
+    },
+    {
+      "q": "Elfogadják a boltok a kártyát?",
+      "a": [
+        "A legtöbb igen, de a kis műhelyek készpénzt kedvelhetnek, vagy magasabb minimális összeget kérhetnek – legyen nálad néhány apró euró."
+      ]
+    },
+    {
+      "q": "Elérhető az áfamentes vásárlás?",
+      "a": [
+        "Igen, ha egy boltban vásárolsz az áfa-küszöb felett; kérj áfamentes nyomtatványt, pecsételtesd meg induláskor, és tartsd kéznél a blokkokat."
+      ]
+    }
+  ]
+}

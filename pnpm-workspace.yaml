@@ -3,6 +3,8 @@
 packages:
   # Each top-level app or package
   - "apps/**"
+  - "!**/.open-next/**"
+  - "!**/.next/**"
   - "packages/platform-machine"
   - "packages/*"
   - "packages/plugins/*"
@@ -10,6 +12,7 @@ packages:
   - "functions"
   - "scripts"
   - "__tests__"
+  - "tools/vscode-mcp-server"
 
 onlyBuiltDependencies:
   - "@tailwindcss/oxide"

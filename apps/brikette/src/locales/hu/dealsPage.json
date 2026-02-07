@@ -11,7 +11,7 @@
     "savePercent": "Spórolj {{percent}}‑ot",
     "stayDatesLabel": "Tartózkodás dátumai:",
     "badges": {
-      "autoApplied": "Automatikus",
+      "autoApplied": "Automatikusan érvényes",
       "directOnly": "Csak közvetlen foglalás"
     },
     "cta": {
@@ -19,7 +19,7 @@
       "applyDeal": "Ajánlat alkalmazása"
     },
     "status": {
-      "upcoming": "Közelgő ajánlat · Kezdés {{startDate}}",
+      "upcoming": "Közelgő ajánlat · Indul {{startDate}}",
       "expired": "Lejárt"
     }
   },
@@ -27,12 +27,12 @@
     "activeLabel": "Aktuális ajánlat",
     "activeTitle": "Spórolj {{percent}}‑ot",
     "activeDatesLabel": "Tartózkodás dátumai:",
-    "activeSubtitle": "Automatikusan érvényes a fizetésnél. Csak közvetlen foglalás."
+    "activeSubtitle": "Automatikusan érvényesül a fizetésnél. Csak közvetlen foglalás."
   },
   "emptyState": {
-    "title": "Nincs aktuális ajánlat",
+    "title": "Jelenleg nincs aktív ajánlat",
     "subtitle": "Foglalj közvetlenül a legjobb árért és előnyökért.",
-    "secondaryCta": "Közvetlen foglalás előnyei"
+    "secondaryCta": "Közvetlen foglalási előnyök megtekintése"
   },
   "status": {
     "banner": {
@@ -80,13 +80,16 @@
   "perksIntroLink": "Az összes előny megtekintése",
   "perksList": [
     {
-      "title": "Akár 25% kedvezmény a listaárból kupon alkalmazása esetén"
+      "title": "Akár 25% kedvezmény",
+      "subtitle": "Automatikusan alkalmazva"
     },
     {
-      "title": "Ingyenes reggeli"
+      "title": "Ingyenes reggeli",
+      "subtitle": "Naponta tartalmazza"
     },
     {
-      "title": "Ingyenes esti ital"
+      "title": "Ingyenes esti ital",
+      "subtitle": "Házi választék"
     }
   ],
   "expired": {

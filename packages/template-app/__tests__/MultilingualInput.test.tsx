@@ -1,6 +1,7 @@
 /** @jest-environment jsdom */
-import { render, screen, fireEvent } from "@testing-library/react";
-import MultilingualFields from "@acme/ui/components/cms/MultilingualFields";
+import { fireEvent,render, screen } from "@testing-library/react";
+
+import MultilingualFields from "@acme/cms-ui/MultilingualFields";
 import type { Locale } from "@acme/i18n";
 
 describe("MultilingualInput", () => {

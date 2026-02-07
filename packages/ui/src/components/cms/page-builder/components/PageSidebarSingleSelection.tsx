@@ -1,19 +1,21 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { PageComponent, HistoryState } from "@acme/types";
-import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
-import type { Action } from "../state";
+
 import { useTranslations } from "@acme/i18n";
-import useGlobals from "../hooks/useGlobals";
-import useStyleClipboardActions from "../hooks/useStyleClipboardActions";
+import type { HistoryState,PageComponent } from "@acme/types";
+import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
+
 import useCenterInParent from "../hooks/useCenterInParent";
+import useGlobals from "../hooks/useGlobals";
 import useGroupingActions from "../hooks/useGroupingActions";
 import useLibraryActions from "../hooks/useLibraryActions";
-import useBlockDimensions from "../useBlockDimensions";
 import usePreviewTokens from "../hooks/usePreviewTokens";
-import { extractTextThemes, applyTextThemeToOverrides } from "../textThemes";
-import VisibilityToggles from "./VisibilityToggles";
+import useStyleClipboardActions from "../hooks/useStyleClipboardActions";
+import type { Action } from "../state";
+import { applyTextThemeToOverrides,extractTextThemes } from "../textThemes";
+import useBlockDimensions from "../useBlockDimensions";
+
 import AnimationTabContent from "./PageSidebarSingleSelection/AnimationTabContent";
 import CenterInParentActionButtons from "./PageSidebarSingleSelection/CenterInParentActionButtons";
 import CenterInParentButtons from "./PageSidebarSingleSelection/CenterInParentButtons";
@@ -29,8 +31,9 @@ import SaveToLibraryButton from "./PageSidebarSingleSelection/SaveToLibraryButto
 import SingleSelectionAlignmentControls from "./PageSidebarSingleSelection/SingleSelectionAlignmentControls";
 import StyleClipboardActions from "./PageSidebarSingleSelection/StyleClipboardActions";
 import TabSwitcher from "./PageSidebarSingleSelection/TabSwitcher";
-import UngroupButton from "./PageSidebarSingleSelection/UngroupButton";
 import type { HandleFieldInput, HandleResize, UpdateComponent, Viewport } from "./PageSidebarSingleSelection/types";
+import UngroupButton from "./PageSidebarSingleSelection/UngroupButton";
+import VisibilityToggles from "./VisibilityToggles";
 
 interface Props {
   components: PageComponent[];

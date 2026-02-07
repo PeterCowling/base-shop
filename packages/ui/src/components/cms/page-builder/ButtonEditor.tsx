@@ -1,4 +1,7 @@
+import type { FormEvent } from "react";
+
 import type { ButtonComponent } from "@acme/types";
+
 import {
   Input,
   Select,
@@ -7,9 +10,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../atoms/shadcn";
-import useComponentInputs from "./useComponentInputs";
-import type { FormEvent } from "react";
+
 import type { EditorProps } from "./EditorProps";
+import useComponentInputs from "./useComponentInputs";
 
 type Props = EditorProps<ButtonComponent>;
 

@@ -1,14 +1,17 @@
-// apps/cover-me-pretty/src/app/[lang]/shop/page.tsx
-import { PRODUCTS } from "@platform-core/products";
-import type { SKU } from "@acme/types";
 import type { Metadata } from "next";
-import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
-import { resolveLocale } from "@i18n/locales";
+import { draftMode } from "next/headers";
+
 import BlogListing, {
   type BlogPost,
-} from "@ui/components/cms/blocks/BlogListing";
+} from "@acme/cms-ui/blocks/BlogListing";
+import { resolveLocale } from "@acme/i18n/locales";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+import { listShopSkus } from "@acme/platform-core/repositories/catalogSkus.server";
 import { fetchPublishedPosts } from "@acme/sanity";
+import type { SKU } from "@acme/types";
+
 import shop from "../../../../shop.json";
+
 import ShopClient from "./ShopClient.client";
 
 export async function generateMetadata({
@@ -32,6 +35,7 @@ export default async function ShopIndexPage({
 }: {
   params: Promise<{ lang?: string }>;
 }) {
+  const { isEnabled } = await draftMode();
   let latestPost: BlogPost | undefined;
   try {
     const { lang: rawLang } = await params;
@@ -55,10 +59,19 @@ export default async function ShopIndexPage({
   } catch {
     /* ignore bad feature flags / blog fetch issues */
   }
+
+  const { lang: rawLang } = await params;
+  const lang = resolveLocale(rawLang);
+  let skus: SKU[] = [];
+  try {
+    skus = await listShopSkus(shop.id, lang, { includeDraft: isEnabled });
+  } catch {
+    skus = [];
+  }
   return (
     <>
       {latestPost && <BlogListing posts={[latestPost]} />}
-      <ShopClient skus={PRODUCTS as SKU[]} />
+      <ShopClient skus={skus} />
     </>
   );
 }

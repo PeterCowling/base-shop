@@ -1,28 +1,28 @@
 // Focus: retry logic and provider fallback including nodemailer
 
+import {
+  cleanupEnv,
+  mockHasProviderErrorFields,
+  mockResendSend,
+  mockSendgridSend,
+  mockSendMail,
+  resetMocks,
+  setupEnv,
+} from "./sendCampaignTestUtils";
+
 jest.mock("../config", () => ({
   getDefaultSender: () => "from@example.com",
 }));
 
-import {
-  resetMocks,
-  mockSendgridSend,
-  mockResendSend,
-  mockSendMail,
-  mockHasProviderErrorFields,
-  setupEnv,
-  cleanupEnv,
-} from "./sendCampaignTestUtils";
-
 describe("send core – sendCampaignEmail (retries & fallbacks)", () => {
-  let warnSpy: jest.SpyInstance;
-  let errorSpy: jest.SpyInstance;
-  let loggerModule: typeof import("@acme/shared-utils");
+  let warnSpy: jest.SpiedFunction<typeof console.warn>;
+  let errorSpy: jest.SpiedFunction<typeof console.error>;
+  let loggerModule: typeof import("@acme/lib/logger");
   let originalWarn: any;
   let originalError: any;
 
   beforeEach(async () => {
-    loggerModule = await import("@acme/shared-utils");
+    loggerModule = await import("@acme/lib/logger");
     originalWarn = loggerModule.logger.warn;
     originalError = loggerModule.logger.error;
     warnSpy = jest.fn() as unknown as jest.SpyInstance;
@@ -91,8 +91,8 @@ describe("send core – sendCampaignEmail (retries & fallbacks)", () => {
     (mockSendMail as jest.Mock).mockRejectedValue(new Error("smtp fail"));
     warnSpy = jest.fn() as unknown as jest.SpyInstance;
     errorSpy = jest.fn() as unknown as jest.SpyInstance;
-    jest.doMock("@acme/shared-utils", () => {
-      const actual = jest.requireActual("@acme/shared-utils");
+    jest.doMock("@acme/lib/logger", () => {
+      const actual = jest.requireActual("@acme/lib/logger");
       return {
         ...actual,
         logger: {

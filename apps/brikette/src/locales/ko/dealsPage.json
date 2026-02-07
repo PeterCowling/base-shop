@@ -12,26 +12,26 @@
     "stayDatesLabel": "숙박 기간:",
     "badges": {
       "autoApplied": "자동 적용",
-      "directOnly": "직접 예약만 해당"
+      "directOnly": "직접 예약 전용"
     },
     "cta": {
       "bookDirect": "직접 예약",
-      "applyDeal": "혜택 적용"
+      "applyDeal": "할인 적용"
     },
     "status": {
       "upcoming": "예정된 혜택 · {{startDate}} 시작",
-      "expired": "종료"
+      "expired": "종료됨"
     }
   },
   "hero": {
     "activeLabel": "현재 혜택",
     "activeTitle": "{{percent}} 할인",
     "activeDatesLabel": "숙박 기간:",
-    "activeSubtitle": "결제 시 자동 적용. 직접 예약만 해당됩니다."
+    "activeSubtitle": "결제 시 자동 적용. 직접 예약 전용."
   },
   "emptyState": {
-    "title": "현재 혜택 없음",
-    "subtitle": "직접 예약으로 최적의 가격과 모든 혜택을 누리세요.",
+    "title": "현재 진행 중인 혜택 없음",
+    "subtitle": "직접 예약하시면 최저가와 혜택을 받으실 수 있습니다.",
     "secondaryCta": "직접 예약 혜택 보기"
   },
   "status": {
@@ -80,13 +80,16 @@
   "perksIntroLink": "모든 혜택 보기",
   "perksList": [
     {
-      "title": "정상가 대비 최대 25 % 자동 할인"
+      "title": "정상가 대비 최대 25 % 자동 할인",
+      "subtitle": "자동 적용"
     },
     {
-      "title": "무료 조식 제공"
+      "title": "무료 조식 제공",
+      "subtitle": "매일 포함"
     },
     {
-      "title": "무료 저녁 음료 제공"
+      "title": "무료 저녁 음료 제공",
+      "subtitle": "하우스 셀렉션"
     }
   ],
   "expired": {

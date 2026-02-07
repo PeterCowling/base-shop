@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
+
 import GuidedSellingSection from "./GuidedSellingSection";
 
 const meta: Meta<typeof GuidedSellingSection> = {

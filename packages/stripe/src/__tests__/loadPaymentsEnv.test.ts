@@ -1,6 +1,7 @@
 /** @jest-environment node */
 // packages/stripe/src/__tests__/loadPaymentsEnv.test.ts
 import { describe, expect, it, jest } from "@jest/globals";
+
 import { loadPaymentsEnv, paymentsEnvSchema } from "@acme/config/env/payments";
 
 describe("loadPaymentsEnv", () => {

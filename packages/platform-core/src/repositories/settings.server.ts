@@ -1,8 +1,8 @@
 import "server-only";
 
 import { prisma } from "../db";
-import { resolveRepo } from "./repoResolver";
 
+import { resolveRepo } from "./repoResolver";
 import type {
   Settings,
   SettingsDiffEntry,
@@ -55,4 +55,4 @@ export async function diffHistory(
 }
 
 export type { Settings, SettingsDiffEntry } from "./settings.json.server";
-
+export { getDefaultShopSettings } from "./settings.json.server";

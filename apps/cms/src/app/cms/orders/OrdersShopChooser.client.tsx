@@ -1,6 +1,6 @@
 "use client";
 
-import ShopChooser from "@acme/ui/components/cms/ShopChooser";
+import ShopChooser from "@acme/cms-ui/ShopChooser";
 
 export default function OrdersShopChooser({ shops }: { shops: string[] }) {
   return (

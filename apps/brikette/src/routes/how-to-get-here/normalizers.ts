@@ -1,5 +1,5 @@
-import { TRANSPORT_LINK_KEYS, type GuideKey } from "@/routes.guides-helpers";
 import { EXPERIENCE_GUIDE_KEYS } from "@/data/guides.index";
+import { type GuideKey,TRANSPORT_LINK_KEYS } from "@/routes.guides-helpers";
 
 import type {
   DestinationLink,
@@ -112,12 +112,14 @@ export function normalizeDestinationSections(
   return sections.map((section, index) => {
     const normalizedLinks = normalizeToArray<DestinationLink>(section.links, isDestinationLink);
     const normalizedImage = isSectionImage(section.image) ? section.image : undefined;
+    const description = typeof section.description === "string" ? section.description.trim() : "";
     const baseId = slugify(section.name);
     const id = baseId || `destination-${index + 1}`;
 
     return {
       id,
       name: section.name,
+      ...(description ? { description } : {}),
       links: normalizedLinks,
       ...(normalizedImage ? { image: normalizedImage } : {}),
     } satisfies NormalizedDestinationSection;
@@ -165,9 +167,12 @@ export function normalizeSorrentoContent(
   value: SorrentoContent | Record<string, unknown> | undefined,
 ): NormalizedSorrentoContent {
   if (isRecord(value) && "title" in value) {
+    const content = value as SorrentoContent;
+    const normalizedImage = isSectionImage(content.image) ? content.image : undefined;
     return {
-      title: (value as SorrentoContent).title ?? "",
-      links: normalizeToArray<DestinationLink>((value as SorrentoContent).links, isDestinationLink),
+      title: content.title ?? "",
+      links: normalizeToArray<DestinationLink>(content.links, isDestinationLink),
+      ...(normalizedImage ? { image: normalizedImage } : {}),
     } satisfies NormalizedSorrentoContent;
   }
 

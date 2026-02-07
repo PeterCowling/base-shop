@@ -1,8 +1,10 @@
 "use client";
 
 import { useTranslations } from "@acme/i18n";
-import type { InteractionsProps } from "./types";
+
 import { Input } from "../../../../atoms/shadcn";
+
+import type { InteractionsProps } from "./types";
 
 export default function ChildrenControls({ component, handleInput }: InteractionsProps) {
   const t = useTranslations();

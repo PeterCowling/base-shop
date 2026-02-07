@@ -1,4 +1,5 @@
-import { describe, it, expect, afterEach } from "@jest/globals";
+import { afterEach,describe, expect, it } from "@jest/globals";
+
 import { withEnv } from "../../../config/test/utils/withEnv";
 
 describe("payments env", () => {
@@ -10,7 +11,7 @@ describe("payments env", () => {
     const env = await withEnv(
       { PAYMENTS_GATEWAY: "disabled" },
       async () => {
-        const mod = await import("@acme/config/src/env/payments.ts");
+        const mod = await import("@acme/config/env/payments");
         return mod.loadPaymentsEnv();
       },
     );
@@ -26,7 +27,7 @@ describe("payments env", () => {
         STRIPE_WEBHOOK_SECRET: "wh",
       },
       async () => {
-        const mod = await import("@acme/config/src/env/payments.ts");
+        const mod = await import("@acme/config/env/payments");
         return mod.loadPaymentsEnv();
       },
     );
@@ -43,7 +44,7 @@ describe("payments env", () => {
           STRIPE_WEBHOOK_SECRET: undefined,
         },
         async () => {
-          const mod = await import("@acme/config/src/env/payments.ts");
+          const mod = await import("@acme/config/env/payments");
           return mod.loadPaymentsEnv();
         },
       ),

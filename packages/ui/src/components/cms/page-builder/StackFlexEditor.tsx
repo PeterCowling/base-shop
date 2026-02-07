@@ -1,7 +1,9 @@
 "use client";
 
 import type { PageComponent } from "@acme/types";
+
 import { Checkbox, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
+
 import type { EditorProps } from "./EditorProps";
 
 type StackFlexExtra = PageComponent & {

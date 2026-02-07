@@ -1,4 +1,5 @@
 import { RuleTester } from "eslint";
+
 const rule = require("../src/rules/no-negative-margins.ts").default as typeof import("../src/rules/no-negative-margins").default;
 
 (globalThis as any).structuredClone = (globalThis as any).structuredClone || ((v: unknown) => JSON.parse(JSON.stringify(v)));

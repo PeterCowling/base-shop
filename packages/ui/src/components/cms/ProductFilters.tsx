@@ -1,9 +1,11 @@
 // packages/ui/components/cms/ProductFilters.tsx  (unchanged except export)
 "use client";
-import { Input } from "../atoms/shadcn";
-import { ChangeEvent } from "react";
-import { Inline } from "../atoms/primitives/Inline";
+import { type ChangeEvent } from "react";
+
 import { useTranslations } from "@acme/i18n";
+
+import { Inline } from "../atoms/primitives/Inline";
+import { Input } from "../atoms/shadcn";
 
 export const statuses = ["all", "active", "draft", "archived"] as const;
 

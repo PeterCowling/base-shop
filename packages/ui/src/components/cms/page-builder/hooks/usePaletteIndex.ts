@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+
 import type { PaletteMeta } from "../palette.types";
 import type { PaletteCategoryDefinition } from "../paletteData";
 

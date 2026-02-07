@@ -1,18 +1,21 @@
 "use client";
 
 import * as React from "react";
-import CheckoutForm from "../../checkout/CheckoutForm";
-import type { Locale } from "@acme/i18n/locales";
+
 import { useTranslations } from "@acme/i18n";
 
+import CheckoutForm from "../../checkout/CheckoutForm";
+
+type CheckoutLocale = "en" | "de" | "it" | "es";
+
 export interface CheckoutSectionProps extends React.HTMLAttributes<HTMLDivElement> {
-  locale?: Locale;
+  locale?: CheckoutLocale;
   taxRegion?: string;
   showWallets?: boolean;
   showBNPL?: boolean;
 }
 
-export default function CheckoutSection({ locale = "en" as Locale, taxRegion = "", showWallets = true, showBNPL = true, className, ...rest }: CheckoutSectionProps) {
+export default function CheckoutSection({ locale = "en", taxRegion = "", showWallets = true, showBNPL = true, className, ...rest }: CheckoutSectionProps) {
   const t = useTranslations();
   return (
     // i18n-exempt -- DS-1234 [ttl=2025-11-30] — layout utility string composition for container widths

@@ -1,11 +1,14 @@
 // apps/cms/src/app/cms/pages/page.tsx
 
 import Link from "next/link";
-import { listShops } from "../../../lib/listShops";
-import { Card, CardContent } from "@/components/atoms/shadcn";
-import { Tag } from "@ui/components/atoms";
-import { Grid } from "@ui/components/atoms/primitives/Grid";
+
+import { Tag } from "@acme/design-system/atoms";
+import { Grid } from "@acme/design-system/primitives/Grid";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+
+import { Card, CardContent } from "@/components/atoms/shadcn";
+
+import { listShops } from "../../../lib/listShops";
 
 export default async function PagesIndexPage() {
   const shops = await listShops();

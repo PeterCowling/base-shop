@@ -14,15 +14,15 @@ describe("createCartStore backend selection", () => {
       const memoryCtor = jest.fn().mockReturnValue(memoryInstance);
       const redisCtor = jest.fn();
 
-      jest.doMock("@platform-core/cartStore/memoryStore", () => ({
+      jest.doMock("@acme/platform-core/cartStore/memoryStore", () => ({
         MemoryCartStore: memoryCtor,
       }));
-      jest.doMock("@platform-core/cartStore/redisStore", () => ({
+      jest.doMock("@acme/platform-core/cartStore/redisStore", () => ({
         RedisCartStore: redisCtor,
       }));
       jest.doMock("@acme/config/env/core", () => ({ loadCoreEnv: () => ({}) }));
 
-      const { createCartStore } = await import("@platform-core/cartStore");
+      const { createCartStore } = await import("@acme/platform-core/cartStore");
       const store = createCartStore({ backend: "memory" });
       expect(store).toBe(memoryInstance);
       expect(redisCtor).not.toHaveBeenCalled();
@@ -38,10 +38,10 @@ describe("createCartStore backend selection", () => {
       const redisClient = {};
       const RedisClass = jest.fn().mockReturnValue(redisClient);
 
-      jest.doMock("@platform-core/cartStore/memoryStore", () => ({
+      jest.doMock("@acme/platform-core/cartStore/memoryStore", () => ({
         MemoryCartStore: memoryCtor,
       }));
-      jest.doMock("@platform-core/cartStore/redisStore", () => ({
+      jest.doMock("@acme/platform-core/cartStore/redisStore", () => ({
         RedisCartStore: redisCtor,
       }));
       jest.doMock("@acme/config/env/core", () => ({
@@ -52,7 +52,7 @@ describe("createCartStore backend selection", () => {
       }));
       jest.doMock("@upstash/redis", () => ({ Redis: RedisClass }));
 
-      const { createCartStore } = await import("@platform-core/cartStore");
+      const { createCartStore } = await import("@acme/platform-core/cartStore");
       const store = createCartStore();
       expect(RedisClass).toHaveBeenCalledTimes(1);
       expect(redisCtor).toHaveBeenCalledWith(
@@ -70,10 +70,10 @@ describe("createCartStore backend selection", () => {
       const memoryCtor = jest.fn().mockReturnValue(memoryInstance);
       const redisCtor = jest.fn();
 
-      jest.doMock("@platform-core/cartStore/memoryStore", () => ({
+      jest.doMock("@acme/platform-core/cartStore/memoryStore", () => ({
         MemoryCartStore: memoryCtor,
       }));
-      jest.doMock("@platform-core/cartStore/redisStore", () => ({
+      jest.doMock("@acme/platform-core/cartStore/redisStore", () => ({
         RedisCartStore: redisCtor,
       }));
       jest.doMock("@acme/config/env/core", () => ({
@@ -86,7 +86,7 @@ describe("createCartStore backend selection", () => {
         throw new Error("import fail");
       });
 
-      const { createCartStore } = await import("@platform-core/cartStore");
+      const { createCartStore } = await import("@acme/platform-core/cartStore");
       const store = createCartStore();
       expect(redisCtor).not.toHaveBeenCalled();
       expect(store).toBe(memoryInstance);
@@ -103,7 +103,7 @@ describe("getDefaultCartStore", () => {
   it("lazily creates and can reset the default store", async () => {
     await jest.isolateModulesAsync(async () => {
       jest.doMock("@acme/config/env/core", () => ({ loadCoreEnv: () => ({}) }));
-      const mod = await import("@platform-core/cartStore");
+      const mod = await import("@acme/platform-core/cartStore");
       const createSpy = jest
         .spyOn(mod, "createCartStore")
         .mockImplementation(() => ({} as any));

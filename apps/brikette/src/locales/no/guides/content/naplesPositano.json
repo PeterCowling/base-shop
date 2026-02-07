@@ -5,80 +5,65 @@
   },
   "linkLabel": "Napoli til Positano: slik gjør du det",
   "intro": [
-    "Naples → Positano: shuttle to Sorrento + SITA bus year‑round; summer ferries when seas are good; transfers for late arrivals."
+    "Napoli → Positano: skyttel til Sorrento + SITA-buss året rundt; sommerferger når sjøen er god; bytter ved sen ankomst."
   ],
   "toc": [
     {
       "href": "#train-bus",
-      "label": "Train + bus (year-round)"
+      "label": "Tog + buss (året rundt)"
     },
     {
       "href": "#ferry",
-      "label": "Ferry (summer)"
+      "label": "Ferge (sommer)"
     },
     {
       "href": "#transfer",
-      "label": "Late arrivals & transfers"
+      "label": "Sen ankomst og bytter"
     },
     {
       "href": "#faqs",
-      "label": "FAQs"
+      "label": "Vanlige spørsmål"
     }
   ],
   "sections": [
     {
       "id": "train-bus",
-      "title": "Train + bus (year-round)",
+      "title": "Tog + buss (året rundt)",
       "body": [
-        "From NAP arrivals, take Curreri shuttle (or Alibus + Circumvesuviana) to Sorrento, then ride the SITA bus toward Amalfi.",
-        "Buy tickets before boarding, check the day’s departure board, and get off at ‘Chiesa Nuova’ for the fewest stairs to Hostel Brikette."
+        "Fra NAP-ankomster, ta Curreri-skyttelen (eller Alibus + Circumvesuviana) til Sorrento, og ta deretter SITA-bussen mot Amalfi.",
+        "Kjøp billetter før ombordstigning, sjekk dagens avgangstavle, og gå av ved ‘Chiesa Nuova’ for færrest trapper til Hostel Brikette."
       ]
     },
     {
       "id": "ferry",
-      "title": "Ferry (summer)",
+      "title": "Ferge (sommer)",
       "body": [
-        "Alibus → Molo Beverello; take a ferry to Positano and confirm fares with the operator on the day.",
-        "Check cancellations and avoid the last boat if you have onward connections."
+        "Alibus → Molo Beverello; ta ferge til Positano og bekreft priser med operatøren samme dag.",
+        "Sjekk kanselleringer og unngå siste båt hvis du har videre forbindelser."
       ]
     },
     {
       "id": "transfer",
-      "title": "Late arrivals & transfers",
+      "title": "Sen ankomst og bytter",
       "body": [
-        "Arriving after last ferries/buses? Book a private transfer or stay overnight in Naples/Sorrento.",
-        "Confirm drop-off near your accommodation and ask about luggage handling."
+        "Ankommer du etter siste ferge/buss? Bestill privat transport eller overnatt i Napoli/Sorrento.",
+        "Bekreft avlevering nær overnattingsstedet og spør om bagasjehåndtering."
       ]
     }
   ],
-  "faqsTitle": "FAQs",
+  "faqsTitle": "Ofte stilte spørsmål",
   "faqs": [
     {
-      "q": "Where to buy SITA tickets?",
+      "q": "Hvor kjøper jeg SITA-billetter?",
       "a": [
-        "Tobacconists/kiosks near stations. Buy before boarding and validate on the bus."
+        "Tabacchi/kiosker nær stasjoner. Kjøp før ombordstigning og valider på bussen."
       ]
     },
     {
-      "q": "How many stairs to the hostel?",
+      "q": "Hvor mange trapper til vandrerhjemmet?",
       "a": [
-        "From ‘Chiesa Nuova’ stop, it’s ~80 m with no staircases."
+        "Fra ‘Chiesa Nuova’-stoppet er det ca. 80 m uten trapper."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Referansebilder",
-    "items": [
-      {
-        "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
-        "alt": "SITA-holdeplassen Chiesa Nuova / Bar Internazionale i Positano",
-        "caption": "Bar Internazionale / Chiesa Nuova-holdeplass"
-      },
-      {
-        "src": "/img/directions/naples-airport-positano-bus-hostel-entrance-steps.png",
-        "alt": "Trappene opp til hovedinngangen til Hostel Brikette",
-        "caption": "Inngangstrappen til Hostel Brikette"
-      }
-    ]
-  }
+  ]
 }

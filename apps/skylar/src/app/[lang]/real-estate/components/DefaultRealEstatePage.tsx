@@ -1,11 +1,13 @@
 /* eslint-disable ds/no-hardcoded-copy, ds/min-tap-size -- STYLING-0001 [ttl=2026-12-31] Milan real-estate CTAs and copy rely on CSS tokens; DS tap-size rule misestimates actual button size */
 
 import Image from "next/image";
+
 import PageShell from "@/components/PageShell";
-import type { Locale } from "@/lib/locales";
 import { joinClasses } from "@/lib/joinClasses";
+import type { Locale } from "@/lib/locales";
+
 import { SECTIONS } from "../constants";
-import { type TranslateFn, type TranslatedImageSource } from "../utils";
+import { type TranslatedImageSource,type TranslateFn } from "../utils";
 
 type DefaultRealEstatePageProps = {
   lang: Locale;
@@ -169,7 +171,7 @@ export default function DefaultRealEstatePage({
   }
 
   const basePanel = ["rounded-3xl", "border", "p-6", "md:p-8"];
-  const zhPanel = ["border-accent/50", "bg-zinc-900/60", "text-zinc-100"];
+  const zhPanel = ["border-accent/50", "bg-panel/60", "text-fg"];
   const enPanel = ["border-border", "bg-panel", "text-fg"];
   const ctaLinkBase = [
     "mt-6",
@@ -188,9 +190,9 @@ export default function DefaultRealEstatePage({
   ];
   const ctaZh = ["border-accent/70", "text-accent"];
   const ctaEn = ["border-border", "text-fg"];
-  const introClass = `font-body text-base leading-6 ${isZh ? "text-zinc-200" : "text-muted-foreground"}`;
+  const introClass = "font-body text-base leading-6 text-muted-foreground";
   const panelHeading = "font-display text-xl uppercase skylar-subheading-tracking";
-  const panelBody = `mt-4 font-body text-base leading-6 ${isZh ? "text-zinc-200" : "text-muted-foreground"}`;
+  const panelBody = "mt-4 font-body text-base leading-6 text-muted-foreground";
   const basePanelClasses = joinClasses(...basePanel, ...(isZh ? zhPanel : enPanel));
 
   return (
@@ -221,10 +223,7 @@ export default function DefaultRealEstatePage({
               priority
             />
             <p
-              className={joinClasses(
-                "mt-6 font-body text-base leading-6",
-                isZh ? "text-zinc-200" : "text-muted-foreground"
-              )}
+              className="mt-6 font-body text-base leading-6 text-muted-foreground"
             >
               {translator("realEstate.note")}
             </p>

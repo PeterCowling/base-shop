@@ -1,53 +1,61 @@
 {
   "seo": {
     "title": "Beach hopping sulla Costiera Amalfitana",
-    "description": "Come organizzare una giornata tra più spiagge usando traghetti, taxi boat e bus con tempi realistici."
+    "description": "Quali spiagge combinare in un giorno, consigli di accesso e costi."
   },
   "linkLabel": "Beach hopping sulla Costiera Amalfitana",
   "intro": [
-    "Traduzione in arrivo."
+    "Pianifica una giornata di beach hopping che bilanci traghetti, viste sulle scogliere e tempo di relax sulla sabbia."
   ],
   "sections": [
     {
       "id": "morning",
-      "title": "Traduzione in arrivo.",
+      "title": "Mattina: Positano a Fornillo",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Inizia presto a Spiaggia Grande per un tuffo veloce, poi percorri il sentiero costiero fino a Fornillo entro le 09:30 per acque più calme.",
+        "Prenota i lettini in anticipo se vuoi ombra; altrimenti porta un ombrellone leggero."
       ]
     },
     {
       "id": "midday",
       "title": "Mezzogiorno: Amalfi o Atrani",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Prendi un traghetto di tarda mattinata per Amalfi e pranza sul molo prima di nuotare sulla spiaggia del paese o nella piccola baia di Atrani.",
+        "Lascia le borse al deposito di Amalfi per esplorare a mani libere."
+      ]
+    },
+    {
+      "id": "group-tours",
+      "title": "Tour di gruppo e barche condivise",
+      "body": [
+        "Vedi la nostra %LINK:boatTours|guida ai tour in barca a Positano% se preferisci saltare tra le spiagge su una barca condivisa invece dei traghetti.",
+        "Gli operatori partono dal molo principale di Positano; arriva 15 minuti prima e conferma le soste nuoto a Laurito o Arienzo al momento della prenotazione."
       ]
     },
     {
       "id": "evening",
-      "title": "Sera: bagno al tramonto",
+      "title": "Sera: Bagno al tramonto",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Concludi a Laurito o Arienzo per le viste dell'ora dorata; entrambe guardano a ovest per luce calda e meno folla dopo le 17:00.",
+        "Prendi l'ultimo traghetto o prenota un taxi di ritorno per evitare salite al buio."
       ]
     }
   ],
   "tips": [
-    "Traduzione in arrivo.",
-    "Traduzione in arrivo."
+    "Porta un asciugamano ad asciugatura rapida e un cambio per stare comodo sui traghetti.",
+    "Metti snack e almeno 1 L / 34 oz di acqua—i chioschi in spiaggia possono esaurirsi nei giorni affollati."
   ],
   "faqs": [
     {
       "q": "Devo prenotare i lettini in anticipo?",
       "a": [
-        "Traduzione in arrivo."
+        "Sì a luglio–agosto. Contatta i lidi via WhatsApp il giorno prima per assicurarti le prime file."
       ]
     },
     {
       "q": "Posso portare il mio cibo?",
       "a": [
-        "Traduzione in arrivo."
+        "La maggior parte delle sezioni libere permette i picnic. I lidi in genere permettono piccoli snack ma preferiscono che tu compri le bevande al loro bar."
       ]
     }
   ]

@@ -1,7 +1,9 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
 import { useState } from "react";
-import MultilingualFields from "../src/components/cms/MultilingualFields";
+import { fireEvent, render, screen, within } from "@testing-library/react";
+
 import type { Locale } from "@acme/i18n";
+
+import MultilingualFields from "../src/components/cms/MultilingualFields";
 
 describe("MultilingualFields", () => {
   function Wrapper() {

@@ -1,12 +1,14 @@
 // i18n-exempt file -- CMS-9999 [ttl=2026-12-31]: Header cart icon/summary; detailed i18n planned with nav redesign
 "use client";
 
+import * as React from "react";
+
+import { useTranslations } from "@acme/i18n";
 import { useCart } from "@acme/platform-core/contexts/CartContext";
 import type { CartLine } from "@acme/types/Cart";
-import { useTranslations } from "@acme/i18n";
-import * as React from "react";
-import { MiniCart } from "../../organisms/MiniCart.client";
+
 import { Price } from "../../atoms/Price";
+import { MiniCart } from "../../organisms/MiniCart.client";
 
 export interface HeaderCartProps {
   /** Whether to show the textual cart label next to the icon. */

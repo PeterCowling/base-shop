@@ -5,15 +5,15 @@
   },
   "linkLabel": "Budżet w Positano: rozbicie kosztów",
   "intro": [
-    "Tłumaczenie w przygotowaniu."
+    "Zrozum, ile kosztuje Positano dziennie i gdzie możesz zaoszczędzić, nie tracąc najważniejszych atrakcji."
   ],
   "sections": [
     {
       "id": "transport",
       "title": "Transport costs",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Transfer lotniskowy do Sorrento kosztuje średnio 10–12 €; dolicz 2–3 € za autobus SITA do Positano. Promy między miasteczkami wahają się od 8 do 20 € w zależności od dystansu.",
+        "Planuj 5 € (5,50 $) dziennie na lokalne przesiadki autobusowe; taksówki zaczynają się od około 20 € za krótkie nocne przejazdy pod górę."
       ]
     },
     {
@@ -21,7 +21,7 @@
       "title": "Where your stay budget goes",
       "body": [
         "Łóżka w pokojach wieloosobowych w hostelu Brikette wahają się od 30 do 55 euro w zależności od sezonu; pokoje prywatne zaczynają się od 110 €.",
-        "Tłumaczenie w przygotowaniu."
+        "Apartamenty i butikowe hotele w mieście łatwo przekraczają 200 € za noc. Rozważ Praiano lub Sorrento jako tańsze bazy z możliwością samodzielnego przygotowywania posiłków."
       ]
     },
     {
@@ -36,33 +36,33 @@
       "id": "activities",
       "title": "Activities & extras",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
+        "Rejsy łodzią kosztują od 40 € za małe grupowe zachody słońca do 120+ € za prywatne czartery. Tańsza alternatywa: przeskocz promem do Amalfi i zwiedzaj za 9 €.",
         "Przeznacz 5–10 euro na lody, granitę lub napiwki, aby Twoje codzienne wydatki były hojne, a jednocześnie kontrolowane."
       ]
     }
   ],
   "tips": [
-    "Tłumaczenie w przygotowaniu.",
-    "Tłumaczenie w przygotowaniu."
+    "Podróżuj w kwietniu, maju, późnym wrześniu lub październiku, by trafić na ceny poza sezonem i promy ciągle kursujące.",
+    "Wypłacaj w bankomatach w Sorrento lub Neapolu, by uniknąć wysokich opłat, a potem dziel gotówkę na dzienne koperty."
   ],
   "faqs": [
     {
-      "q": "What is a realistic daily budget?",
+      "q": "Jaki jest realistyczny dzienny budżet?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Podróżnicy z plecakiem zmieszczą się w 70–90 € dziennie obejmując dorm, posiłki i jedną płatną atrakcję. Komfortowy średni segment oscyluje wokół 140 €."
       ]
     },
     {
-      "q": "Tłumaczenie w przygotowaniu.",
+      "q": "Czy mogę płacić kartą wszędzie?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Większość restauracji akceptuje karty, ale autobusy, małe delikatesy i stragany często wolą gotówkę. Miej 20 € w drobnych na dzień."
       ]
     }
   ],
   "labels": {
-    "atAGlance": "At a glance",
-    "tocTitle": "On this page",
-    "tipsTitle": "Where to save",
-    "faqsTitle": "FAQs"
+    "atAGlance": "W skrócie",
+    "tocTitle": "Na tej stronie",
+    "tipsTitle": "Gdzie zaoszczędzić",
+    "faqsTitle": "Najczęściej zadawane pytania"
   }
 }

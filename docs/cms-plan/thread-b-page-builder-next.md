@@ -380,7 +380,7 @@ Make the Page Builder block registry a single, typed contract shared by CMS and 
     - Surface actionable fix paths in Configurator, Launch panel, and launch SSE (Stage/Prod).
   - Implementation:
     - Contract and data:
-      - Add `checkLegalLinks` (step id `legal`, builder label “Legal & policies”) to `@platform-core/configurator` and `REQUIRED_CONFIG_CHECK_STEPS`.
+      - Add `checkLegalLinks` (step id `legal`, builder label “Legal & policies”) to `@acme/platform-core/configurator` and `REQUIRED_CONFIG_CHECK_STEPS`.
       - Consider a link valid when Terms + Privacy + Refund/Returns each resolve to either a published PB page with allowlisted slug/stableId (`terms`, `privacy`, `returns`/`refunds`) or an explicit URL on the shop record (reuse `returnPolicyUrl`; add `termsUrl`/`privacyUrl` if missing).
       - Validate that each legal target is reachable from at least one surface: `shop.navigation`, a footer/header legal links list, or checkout/legal PB blocks (for example `PoliciesAccordion`); fail with reason codes such as `missing-terms-link`, `missing-privacy-link`, `missing-refund-link`, `invalid-legal-url`.
       - Provide helpers to normalise/dedupe legal links, resolve PB page slugs to canonical URLs (using `ShopSettings.seo.canonicalBase`), and emit detail payloads for UI copy/telemetry.
@@ -521,7 +521,7 @@ Make the Page Builder block registry a single, typed contract shared by CMS and 
   - Status: Done — `packages/template-app/__tests__/runtime-preview-parity.test.tsx` seeds a published PB page via `scaffoldPageFromTemplate`, calls the real Cloudflare preview handler and Next.js preview page with `starterBlockRegistry`, and asserts 200/401/404 plus block render/metadata stripping.
   - Scope: Add a deterministic guardrail for the publish->preview path so a published PB page renders via the template app preview route using the same starter registry as live traffic.
   - Implementation:
-    - Seed a published page (for example `core.page.home.default` via `scaffoldPageFromTemplate`) into a temporary `DATA_ROOT` with `PAGES_BACKEND=json`, using `savePage` from `@platform-core/repositories/pages` and a preview token from `createPreviewToken`.
+    - Seed a published page (for example `core.page.home.default` via `scaffoldPageFromTemplate`) into a temporary `DATA_ROOT` with `PAGES_BACKEND=json`, using `savePage` from `@acme/platform-core/repositories/pages` and a preview token from `createPreviewToken`.
     - Call the Cloudflare handler (`packages/template-app/src/routes/preview/[pageId].ts`) with the token and render the Next.js preview page (`packages/template-app/src/app/preview/[pageId]/page.tsx`) without stubbing `DynamicRenderer`/`starterBlockRegistry`.
     - Assert: handler returns 200 for the seeded page and 401/404 for bad or missing tokens; rendered output contains a known block from the template and fails fast if any block type is absent from `coreBlockDescriptors`/`starterBlockRegistry`; editor-only metadata is stripped by `exportComponents`.
     - Keep the test self-contained (temp data root, no CMS server) and wire it into `pnpm --filter @acme/template-app test`.

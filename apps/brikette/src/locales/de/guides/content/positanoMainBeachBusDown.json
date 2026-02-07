@@ -3,7 +3,7 @@
     "title": "Bus vom Hostel Brikette zum Hauptstrand von Positano",
     "description": "So fahren Sie mit dem orangefarbenen Interno-Bus bergab zur Piazza dei Mulini und schlendern zum Spiaggia Grande."
   },
-  "linkLabel": "Bus down to Positano's main beach",
+  "linkLabel": "Bus hinunter zum Hauptstrand von Positano",
   "intro": [
     "Der orangefarbene Bus Interno Positano verbindet das Hostel Brikette mit der Piazza dei Mulini, nur einen kurzen Spaziergang von der Spiaggia Grande entfernt.",
     "Befolgen Sie diese Schritte, um Tickets an den Tabacchi zu kaufen, bergab zu fahren und die letzten Minuten zu Fuß zu bewältigen."
@@ -22,7 +22,7 @@
       "id": "ride-the-bus",
       "title": "Fahren Sie mit dem Interno Positano Bus bergab",
       "body": [
-        "Steigen Sie in den orangefarbenen Minibus mit der Aufschrift „Interno Positano“. Verschiedene Fahrzeugstile führen die Route, aber das Ziel auf dem elektronischen Schild bleibt das gleiche.",
+        "Steigen Sie in den orangefarbenen Minibus mit der Aufschrift \\\"Interno Positano“. Verschiedene Fahrzeugstile führen die Route, aber das Ziel auf dem elektronischen Schild bleibt das gleiche.",
         "Bleiben Sie stehen, während der Bus durch Positanos Hangstraßen fährt und in Richtung Stadtzentrum absteigt."
       ]
     },

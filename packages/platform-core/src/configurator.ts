@@ -12,9 +12,10 @@
 import { existsSync, readFileSync } from "fs";
 import { join } from "path";
 import { z } from "zod";
+
 import type {
-  ConfiguratorStepId,
   ConfiguratorProgress,
+  ConfiguratorStepId,
   LaunchCheckResult,
   LaunchEnv,
   LaunchStatus,
@@ -23,9 +24,14 @@ import type {
   ShopSettings,
   StepStatus as ProgressStepStatus,
 } from "@acme/types";
-import type { InventoryItem } from "./types/inventory";
-import { validateShopName } from "./shops/index";
+import {
+  OPTIONAL_CONFIG_CHECK_STEPS,
+  REQUIRED_CONFIG_CHECK_STEPS,
+} from "@acme/types/configuratorSteps";
+
 import { resolveDataRoot } from "./dataRoot";
+import { validateShopName } from "./shops/universal";
+import type { InventoryItem } from "./types/inventory";
 
 // Accept any string key/value pairs. In the full codebase envSchema would
 // include constraints for required environment variables.
@@ -690,23 +696,7 @@ export const configuratorChecks: Partial<
   "reach-social": checkReachSocial,
 };
 
-export const REQUIRED_CONFIG_CHECK_STEPS: ConfiguratorStepId[] = [
-  "shop-basics",
-  "theme",
-  "payments",
-  "shipping-tax",
-  "checkout",
-  "products-inventory",
-  "legal",
-  "navigation-home",
-];
-
-export const OPTIONAL_CONFIG_CHECK_STEPS: ConfiguratorStepId[] = [
-  "domains",
-  "reverse-logistics",
-  "advanced-seo",
-  "reach-social",
-];
+export { OPTIONAL_CONFIG_CHECK_STEPS, REQUIRED_CONFIG_CHECK_STEPS };
 
 const allConfiguratorSteps: ConfiguratorStepId[] = [
   ...REQUIRED_CONFIG_CHECK_STEPS,

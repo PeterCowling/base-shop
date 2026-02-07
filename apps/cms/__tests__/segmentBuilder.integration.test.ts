@@ -1,14 +1,16 @@
-import { jest } from "@jest/globals";
-import type { NextRequest } from "next/server";
-import path from "node:path";
 import { promises as fs } from "node:fs";
-import { DATA_ROOT } from "@platform-core/dataRoot";
+import path from "node:path";
 
-jest.doMock("@platform-core/analytics", () => ({
+import type { NextRequest } from "next/server";
+import { jest } from "@jest/globals";
+
+import { DATA_ROOT } from "@acme/platform-core/dataRoot";
+
+jest.doMock("@acme/platform-core/analytics", () => ({
   __esModule: true,
   trackEvent: jest.fn(),
 }));
-jest.doMock("@platform-core/repositories/analytics.server", () => ({
+jest.doMock("@acme/platform-core/repositories/analytics.server", () => ({
   __esModule: true,
   listEvents: jest.fn(),
 }));

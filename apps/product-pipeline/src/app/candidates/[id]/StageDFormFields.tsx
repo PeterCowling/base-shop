@@ -1,8 +1,9 @@
 "use client";
 
 import type { Dispatch, SetStateAction } from "react";
-import type { CandidateDetailStrings, StageDAssetReadiness } from "./types";
+
 import type { StageDFormState } from "./stageDForm";
+import type { CandidateDetailStrings, StageDAssetReadiness } from "./types";
 
 export type StageDReadinessOption = {
   value: StageDAssetReadiness;

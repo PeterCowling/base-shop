@@ -2,12 +2,12 @@ import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import MediaFileItem from "../MediaFileItem";
+
 import { baseImageItem as baseItem, createDeferred, makeFile, mockFetchJson, setupMedia } from "./testUtils";
 
 describe("MediaFileItem", () => {
 
   beforeEach(() => {
-    // @ts-expect-error — tests control fetch
     global.fetch = jest.fn();
   });
 
@@ -152,10 +152,10 @@ describe("MediaFileItem", () => {
 
     await user.upload(fileInput, makeFile());
 
-    await waitFor(() => expect(onReplaceError).toHaveBeenCalledWith("Failed to upload replacement"));
+    await waitFor(() => expect(onReplaceError).toHaveBeenCalledWith("nope"));
 
     expect(screen.getAllByText(/replacing media/i).length).toBeGreaterThan(0);
-    expect(screen.getByText("Failed to upload replacement")).toBeInTheDocument();
+    expect(screen.getByText("nope")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /media actions/i })).toBeDisabled();
 
     act(() => {

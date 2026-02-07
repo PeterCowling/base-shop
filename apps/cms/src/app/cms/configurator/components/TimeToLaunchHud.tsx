@@ -1,14 +1,16 @@
 "use client";
 
+import { Inline } from "@acme/design-system/primitives";
+import { useTranslations } from "@acme/i18n";
+
+import type { TimeToLaunchData } from "../hooks/dashboard/types";
+
 import {
   CardRoot,
   CardSection,
   ProgressBar,
   TagElement,
 } from "./DashboardPrimitives";
-import type { TimeToLaunchData } from "../hooks/dashboard/types";
-import { Inline } from "@ui/components/atoms/primitives";
-import { useTranslations } from "@acme/i18n";
 
 interface Props {
   data: TimeToLaunchData;

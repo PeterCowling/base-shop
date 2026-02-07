@@ -27,7 +27,16 @@
       "points": [
         "W szczycie sezonu kup bilety z wyprzedzeniem online lub w kasach przewoźników przy molo.",
         "Przyjdź 15–20 minut przed odpłynięciem, aby wymienić vouchery i ustawić się w kolejce do wejścia.",
-        "Miej bilet lub kod QR pod ręką do kontroli przez załogę."
+        "Miej bilet lub kod QR pod ręką do kontroli przez załogę.",
+        "Jeśli podróżujesz z dużym bagażem, zapytaj personel o zasady dotyczące bagażu i miejsce przechowywania bagażu na pokładzie."
+      ]
+    },
+    "gettingToPier": {
+      "title": "Dojście do molo z Hostel Brikette",
+      "intro": "Jeśli zaczynasz w hostelu, użyj <dockWalk>naszego przewodnika krok po kroku do mola promowego</dockWalk>, aby dotrzeć do Spiaggia Grande bez zgadywania.",
+      "points": [
+        "Zaplanuj dodatkowy czas na schody, upał i wolno poruszający się tłum w mieście.",
+        "Weź wodę i trzymaj niezbędne rzeczy (paszport/portfel/telefon) w łatwo dostępnej kieszeni do kontroli przy wsiadaniu."
       ]
     },
     "positanoPier": {
@@ -44,6 +53,15 @@
         "Statki cumują przy nabrzeżach w Amalfi, w pobliżu Piazza Flavio Gioia.",
         "Historyczne centrum i promenada znajdują się tuż obok portu.",
         "Jeśli jedziesz dalej (np. do Ravello lub Sorrento), kieruj się za znakami na przystanek SITA przy nabrzeżu."
+      ]
+    },
+    "planB": {
+      "title": "Jeśli prom zostanie odwołany (plan B, który działa)",
+      "intro": "W wietrzne dni morze może wstrzymać łodzie. Bez paniki — przesiądź się na <bus>autobus Positano → Amalfi</bus> i przejrzyj <cancellations>nasz przewodnik po odwołanych promach</cancellations>, aby sprawdzić harmonogram i rozwiązywanie problemów.",
+      "points": [
+        "Jeśli jesteś już na plaży, wróć do głównej drogi i weź najbliższy autobus lub taksówkę.",
+        "Zaplanuj bufor czasowy: w szczytowych miesiącach autobusy mogą przyjechać pełne, a opóźnienia są normalne.",
+        "Jeśli podróżujesz późno, potwierdź wcześnie ostatni możliwy odjazd (promem lub autobusem), żeby nie utknąć."
       ]
     }
   },

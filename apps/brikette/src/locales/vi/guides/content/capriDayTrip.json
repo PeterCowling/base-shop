@@ -1,28 +1,32 @@
 {
   "seo": {
-    "title": "Đi Capri trong ngày từ Positano",
-    "description": "Lên kế hoạch đi Capri trong ngày: phà, thời gian và những điểm nhất định phải ghé."
+    "title": "Chuyến đi một ngày đến Capri từ Positano: Hướng dẫn ngân sách và mẹo phà",
+    "description": "Lên kế hoạch cho chuyến đi một ngày thân thiện với ngân sách của bạn đến Capri từ Positano. Thời gian phà, điểm ngắm cảnh miễn phí, đồ ăn rẻ và lịch trình thực tế từ nhân viên nhà nghỉ."
   },
-  "linkLabel": "Đi Capri trong ngày từ Positano",
+  "linkLabel": "Chuyến đi một ngày đến Capri: Trốn sang đảo từ Positano",
   "intro": [
-    "Du lịch Capri trong ngày từ Positano: xuất phát sớm, mang gọn nhẹ và lên lịch vòng tròn cân bằng giữa Anacapri, cảnh đẹp và chuyến về dễ dàng."
+    "Bạn có thể xem những điểm nổi bật của Capri trong một ngày từ Positano mà không phá vỡ ngân sách. Bắt phà sớm (khoảng €20–25 mỗi chiều), ghé các điểm ngắm cảnh miễn phí, mua đồ ăn đường phố rẻ và quay lại để uống đồ uống lúc hoàng hôn tại nhà nghỉ. Hầu hết khách đi chuyến này vào giữa tuần để tránh đám đông tàu du lịch cuối tuần—đây là một trong những %LINK:dayTripsAmalfi|chuyến đi một ngày tốt nhất từ Bờ biển Amalfi%—đây là tuyến đường hiệu quả."
   ],
   "toc": [
     {
       "href": "#morning",
-      "label": "Bản dịch đang được chuẩn bị."
+      "label": "Buổi sáng — đến và Anacapri"
     },
     {
       "href": "#midday",
-      "label": "Bản dịch đang được chuẩn bị."
+      "label": "Buổi trưa — vòng Marina Piccola"
     },
     {
       "href": "#afternoon",
-      "label": "Buổi chiều — thị trấn Capri & quay về"
+      "label": "Buổi chiều — thị trấn Capri và trở về"
     },
     {
-      "href": "#gallery",
-      "label": "Bộ sưu tập ảnh"
+      "href": "#budget",
+      "label": "Chi tiết ngân sách"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Đến Capri và quay về"
     },
     {
       "href": "#faqs",
@@ -32,82 +36,152 @@
   "sections": [
     {
       "id": "morning",
-      "title": "Bản dịch đang được chuẩn bị.",
+      "title": "Buổi sáng — đến và Anacapri",
       "body": [
-        "Bắt chuyến phà đầu tiên để đến trước dòng khách tàu biển, sau đó đi xe buýt lên Anacapri và đi cáp treo Monte Solaro nếu bạn thích độ cao.",
-        "Ăn sáng nhẹ ở Piazza Vittoria và mua vé phà lượt về ngay lập tức để chốt giờ khởi hành."
+        "Tại sao phải đi sớm? Chuyến phà đầu tiên từ Positano (thường vào khoảng 08:20–09:00, kiểm tra %HOWTO:positano-capri-ferry|thời gian phà Positano→Capri hiện tại%) đưa bạn đến Capri trước khi đám đông tàu du lịch tràn vào đảo vào khoảng 10:30. Bạn sẽ có ảnh rõ hơn, hàng xe buýt ngắn hơn và nhiệt độ mát mẻ hơn để đi bộ. Trong mùa cao điểm, lịch trình phà có thể thay đổi, vì vậy hãy luôn kiểm tra %LINK:ferrySchedules|lịch trình phà mới nhất% vào ngày trước khi bạn đi.",
+        "Từ bến tàu đến Anacapri: Rời Marina Grande và rẽ phải đến trạm xe buýt (tìm biển báo Anacapri). Xe buýt có giá khoảng €2 mỗi chiều—mua vé tại quầy gần cáp treo hoặc trên xe với tiền lẻ chính xác. Hành trình lên mất 15–20 phút với những khúc cua gấp và cảnh biển.",
+        "Cáp treo Monte Solaro: Nếu bạn không sợ độ cao, cáp treo (€12–14 một chiều, €16–18 khứ hồi) đưa bạn lên 589m trên mực nước biển. Hành trình chậm và lộ thiên—bạn lơ lửng trên ghế ngồi mở—nhưng toàn cảnh 360° ở đỉnh miễn phí để thưởng thức. Bỏ qua nếu bạn sợ độ cao hoặc thiếu tiền; tầm nhìn từ Piazza Vittoria vẫn tuyệt vời.",
+        "Bữa sáng ở Anacapri: Lấy một cornetto và espresso (tổng cộng €3–4) tại quán bar trên Piazza Vittoria. Đừng ngồi ăn sáng lâu—bạn sẽ cần thời gian đó để khám phá. Để dành sự thèm ăn cho bữa trưa dã ngoại rẻ sau đó.",
+        "Mua vé phà về ngay bây giờ: Ngay khi bạn đến, hãy đến văn phòng phà tại Marina Grande và đặt vé về (thường là khởi hành 16:30–18:00 hoạt động tốt). Vào tháng 7/8, thuyền có thể bán hết vào buổi trưa và bạn không muốn bị mắc kẹt hoặc bị buộc phải dùng dịch vụ đưa đón riêng đắt tiền."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-day-trip/capri-ferry-positano-marina.jpg",
+          "alt": "Hành khách lên phà sáng sớm từ Positano đến Capri tại bến tàu Marina Grande"
+        },
+        {
+          "src": "/img/guides/capri-day-trip/anacapri-piazza-vittoria.jpg",
+          "alt": "Piazza Vittoria Anacapri với quán cà phê địa phương và biển báo trạm xe buýt cho du khách tiết kiệm"
+        },
+        {
+          "src": "/img/guides/capri-day-trip/monte-solaro-chairlift-view.jpg",
+          "alt": "Cáp treo mở lên núi Monte Solaro với tầm nhìn toàn cảnh bờ biển Capri"
+        }
       ]
     },
     {
       "id": "midday",
-      "title": "Bản dịch đang được chuẩn bị.",
+      "title": "Buổi trưa — vòng Marina Piccola",
       "body": [
-        "Đi bộ hoặc bắt xe buýt xuống Marina Piccola để tắm hoặc chụp ảnh; mang kem chống nắng thân thiện với san hô và ít nhất 1 lít nước mỗi người.",
-        "Mua panini hoặc salad đóng hộp ở tiệm deli thay vì ăn trưa lâu để có thời gian leo ngược trở lại mà không vội."
+        "Tuyến bãi biển Marina Piccola: Từ Anacapri, bạn có thể đi bộ hoặc đi xe buýt xuống Marina Piccola (bãi biển phía nam). Đi bộ khoảng 30–40 phút xuống dốc—cảnh đẹp, nhưng nhớ bạn sẽ cần leo lên hoặc bắt xe buýt (€2). Hầu hết du khách tiết kiệm bỏ qua các câu lạc bộ bãi biển có phí (€15–25 cho ghế tắm nắng) và chỉ bơi từ các khu vực đá miễn phí.",
+        "Cần mang gì: Ít nhất 1 lít nước cho mỗi người (đổ đầy tại đài phun nước công cộng nếu bạn thấy), kem chống nắng an toàn cho rạn san hô và khăn nhỏ. Capri có rất ít nhà vệ sinh miễn phí—một số quán cà phê tính phí €1–2, vì vậy hãy lên kế hoạch trước hoặc mua đồ uống để sử dụng cơ sở vật chất của họ.",
+        "Lựa chọn bữa trưa rẻ: Bỏ qua các nhà hàng ngồi xuống (€15–30 mỗi người). Thay vào đó, lấy một panino hoặc focaccia (€4–6) từ cửa hàng thực phẩm hoặc siêu thị. Có một siêu thị Conad nhỏ ở Anacapri nơi bạn có thể dự trữ đồ ăn nhẹ, trái cây và nước với giá bằng một nửa so với quầy hàng du lịch.",
+        "Tranh luận về Grotto Xanh: Vé là €14–18 mỗi người, nhưng bạn sẽ phải đợi 60–90 phút trong mùa cao điểm và chỉ mất 5 phút bên trong hang. Chúng tôi đã có khách yêu thích nó và khách cảm thấy đó là bẫy du lịch. Nếu đó là ước mơ của bạn, hãy đi sớm (trước 10:00) hoặc bỏ qua Anacapri hoàn toàn và tập trung vào hang động. Đừng cố gắng vừa cả hai trong một ngày—bạn sẽ vội vàng.",
+        "Đối với người bơi: Nước trong như pha lê nhưng lạnh (18–22°C ngay cả trong mùa hè). Nếu bạn quen với nước nhiệt đới ấm, hãy mang áo chống phát ban hoặc áo wetsuit. Đá có thể trơn và sắc—giày nước giúp ích."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-day-trip/marina-piccola-free-beach.jpg",
+          "alt": "Khu vực bãi biển đá miễn phí Marina Piccola trên Capri với người bơi và đá Faraglioni ở phía sau"
+        },
+        {
+          "src": "/img/guides/capri-day-trip/budget-picnic-lunch.jpg",
+          "alt": "Du khách ba lô thưởng thức bữa trưa dã ngoại tiết kiệm với panini và chai nước tại điểm ngắm cảnh vách đá Capri"
+        }
       ]
     },
     {
       "id": "afternoon",
-      "title": "Buổi chiều — thị trấn Capri & quay về",
+      "title": "Buổi chiều — thị trấn Capri và trở về",
       "body": [
-        "Đi tàu điện leo núi lên thị trấn Capri, dạo Via Camerelle, Giardini di Augusto và thưởng thức kem/espresso cuối ngày.",
-        "Có mặt tại Marina Grande ít nhất 30 phút trước giờ phà vì có thể phải xếp hàng tàu điện hoặc gửi hành lý."
+        "Đi đến thị trấn Capri: Từ Marina Piccola hoặc Anacapri, đi xe buýt trở lại Marina Grande, sau đó đi cáp treo lên thị trấn Capri (Piazzetta). Cáp treo là €2 mỗi chiều và chạy 15 phút một lần. Đó là một chuyến đi dốc 2 phút với tầm nhìn ra cảng.",
+        "Xem gì ở thị trấn Capri: Đi qua Piazzetta nổi tiếng (quảng trường chính nhỏ—quán cà phê quá đắt, nhưng miễn phí để ngắm người). Sau đó đi đến Via Camerelle để mua sắm cửa sổ (chủ yếu là thương hiệu xa xỉ). Nếu bạn có 20 phút, đi bộ đến Giardini di Augusto (€1–2 vào cửa)—điểm ngắm tuyệt vời qua đá Faraglioni.",
+        "Lưu ý Via Krupp: Lối đi bộ phong cảnh từ vườn xuống Marina Piccola (Via Krupp) thường đóng cửa do đá rơi. Kiểm tra địa phương trước khi lên kế hoạch đi bộ. Nếu nó mở, đó là một đoạn xuống đẹp 10 phút, nhưng bạn sẽ cần leo lên hoặc đi thuyền.",
+        "Gelato và espresso: Ngân sách cho €3–5 cho một ống hoặc cốc—giá Capri được thổi phồng, nhưng đó là một cách tuyệt vời để làm mát trước khi phà của bạn. Tránh các quán cà phê Piazzetta (€8 cho một espresso). Đi một con phố ra phía sau để có giá bình thường.",
+        "Quay lại Marina Grande: Rời thị trấn Capri ít nhất 45 phút trước khi phà của bạn khởi hành. Cáp treo trở nên đông đúc sau 16:00 khi tất cả du khách một ngày đang trở về. Nếu bạn bỏ lỡ phà đã lên lịch, bạn có thể được chờ đợi trên chuyến tiếp theo (€20–30), nhưng nó căng thẳng—đừng mạo hiểm.",
+        "Những gì chúng tôi nói với khách nhà nghỉ: Hầu hết mọi người cảm thấy vội vàng khi cố gắng làm Anacapri, Marina Piccola, Grotto Xanh và thị trấn Capri trong một ngày. Chọn hai hoặc ba điểm nổi bật, di chuyển với tốc độ thoải mái và tiết kiệm năng lượng để bơi trở lại ở Positano khi bạn quay lại. Bạn đang nghỉ mát—đừng chạy nước rút."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-day-trip/capri-town-funicular.jpg",
+          "alt": "Đường sắt cáp treo kết nối Marina Grande với trung tâm thị trấn Capri Piazzetta"
+        },
+        {
+          "src": "/img/guides/capri-day-trip/giardini-augusto-viewpoint.jpg",
+          "alt": "Vườn Giardini di Augusto nhìn ra đá Faraglioni và lối đi bộ Via Krupp trên Capri"
+        }
+      ]
+    },
+    {
+      "id": "budget",
+      "title": "Chi tiết ngân sách: Capri thực sự tốn bao nhiêu",
+      "body": [
+        "Đây là những gì khách nhà nghỉ thường chi tiêu cho một chuyến đi một ngày đến Capri từ Positano:",
+        "Phà: €20–25 mỗi chiều (tổng cộng €40–50 khứ hồi). Đặt trực tiếp tại bến tàu hoặc trực tuyến—giá thường giống nhau, nhưng trực tuyến đảm bảo chỗ của bạn trong mùa cao điểm.",
+        "Giao thông địa phương trên Capri: Tổng cộng €6–10 (cáp treo + xe buýt quanh đảo). Mua vé đơn khi đi—không có thẻ ngày cho khách du lịch.",
+        "Cáp treo (tùy chọn): €16–18 khứ hồi đến Monte Solaro. Đáng giá nếu bạn yêu cảnh và độ cao. Bỏ qua nếu bạn có ngân sách chặt chẽ—tầm nhìn miễn phí từ Piazza Vittoria vẫn tuyệt đẹp.",
+        "Grotto Xanh (tùy chọn): €14–18 vào cửa. Tính đến 60–90 phút chờ đợi trong mùa cao điểm. Nhiều du khách tiết kiệm bỏ qua nó.",
+        "Những gì chúng tôi nói với khách nhà nghỉ: Hầu hết mọi người cảm thấy vội vàng khi cố gắng làm Anacapri, Marina Piccola, Grotto Xanh và thị trấn Capri trong một ngày. Chọn hai hoặc ba điểm nổi bật, di chuyển với tốc độ thoải mái và tiết kiệm năng lượng để bơi trở lại ở Positano khi bạn quay lại. Bạn đang nghỉ mát—đừng chạy nước rút.",
+        "Tổng ngân sách thực tế: €70–90 mỗi người cho một ngày cơ bản (phà, giao thông, bữa trưa rẻ). Thêm €30–50 nếu bạn làm cáp treo và Grotto Xanh.",
+        "Mẹo từ nhân viên: Đổ đầy chai nước của bạn tại nhà nghỉ trước khi rời đi. Capri tính phí €3–4 cho chai 500ml tại quầy hàng du lịch. Chúng tôi đã thấy khách tiết kiệm €10–15 chỉ bằng cách mang nước và đồ ăn nhẹ của riêng họ."
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "Đến Capri và quay về",
+      "body": [
+        "Sử dụng %HOWTO:positano-capri-ferry|hướng dẫn phà Positano → Capri% cho chuyến đi ra và %HOWTO:capri-positano-ferry|hướng dẫn phà Capri → Positano% khi quay về."
       ]
     }
   ],
-  "galleryTitle": "Bộ sưu tập ảnh",
-  "gallery": {
-    "items": {
-      "monteSolaro": {
-        "alt": "Quang cảnh từ Monte Solaro, Capri",
-        "caption": "Toàn cảnh Monte Solaro"
-      },
-      "gardensOfAugustus": {
-        "alt": "Vườn Augustus, Capri",
-        "caption": "Giardini di Augusto"
-      }
-    }
-  },
   "faqsTitle": "Câu hỏi thường gặp",
   "howTo": {
     "steps": [
       {
-        "name": "Kiểm tra lịch phà theo mùa",
-        "text": "Xác nhận chuyến sáng và chuyến cuối quay về Positano."
+        "name": "Kiểm tra phà theo mùa",
+        "text": "Xác nhận khởi hành buổi sáng và chuyến về cuối cùng đến Positano."
       },
       {
-        "name": "Đến bến sớm",
-        "text": "Mùa cao điểm nên có mặt trước 20–30 phút."
+        "name": "Đến bến tàu sớm",
+        "text": "Xếp hàng 20–30 phút trước khi khởi hành trong mùa cao điểm."
       },
       {
-        "name": "Lên kế hoạch tuyến trên đảo",
-        "text": "Bản dịch đang được chuẩn bị."
+        "name": "Lên kế hoạch tuyến đường của bạn trên Capri",
+        "text": "Ưu tiên Anacapri hoặc Marina Grande + điểm ngắm cảnh tùy thuộc vào thời gian."
       }
     ]
   },
   "tipsTitle": "Mẹo trong ngày",
   "tips": [
-    "Mua vé phà lượt đi và về cùng lúc để chủ động điều chỉnh lịch trình mà không phải tìm chỗ trống vào phút cuối.",
-    "Mang balo nhỏ với nước, kem chống nắng và tiền mặt — ATM trên Capri có thể hết tiền vào tuần cao điểm.",
-    "Tải bản đồ ngoại tuyến và lịch xe buýt của Capri; tín hiệu yếu quanh Anacapri và khu chờ Blue Grotto."
+    "Mua vé phà đi và về cùng nhau để bạn có thể điều chỉnh tuyến đường mà không phải tranh giành chỗ ngồi sau trong ngày.",
+    "Mang theo ba lô nhỏ với nước, kem chống nắng và tiền mặt — máy ATM trên Capri có thể cạn kiệt trong những tuần cao điểm.",
+    "Tải xuống bản đồ ngoại tuyến cho Capri và lịch trình xe buýt; tín hiệu giảm xung quanh Anacapri và hàng chờ Grotto Xanh."
   ],
   "warningsTitle": "Cảnh báo cần biết",
   "warnings": [
-    "Cáp treo và tàu điện leo núi đông sau 15:00; lỡ lượt có thể phải chờ chuyến phà standby.",
-    "Biển động có thể huỷ chuyến chiều mà không báo trước — kiểm tra thông báo buổi sáng và chuẩn bị phương án qua Sorrento.",
-    "Blue Grotto thường đóng khi gió hoặc sóng; một số nhà bán vé vẫn mở nên hãy xác nhận hoạt động trước khi xếp hàng."
+    "Hàng chờ cáp treo và cáp treo tăng vọt sau 15:00; bỏ lỡ thời gian của bạn và bạn có nguy cơ trở về phà chờ đợi.",
+    "Biển động có thể hủy các chuyến đi muộn mà không thông báo — kiểm tra bản tin buổi sáng và có kết nối Sorrento làm dự phòng.",
+    "Đóng cửa Grotto Xanh phổ biến trong gió hoặc sóng; người vận hành vẫn có thể bán vé, vì vậy hãy xác nhận nó đang hoạt động trước khi bạn tham gia hàng."
   ],
   "faqs": [
     {
-      "q": "Có kịp ghé Blue Grotto không?",
+      "q": "Tôi có thể bao gồm Grotto Xanh không?",
       "a": [
-        "Chỉ nên đi nếu đó là ưu tiên; cần thuyền shuttle và chờ 60–90 phút, dễ làm chật lịch trình còn lại."
+        "Chỉ khi đó là ưu tiên hàng đầu của bạn. Mong đợi một chuyến đi thuyền đưa đón và 60–90 phút chờ đợi (dài hơn vào tháng 7/8), điều này ép chặt phần còn lại của lịch trình của bạn. Chuyến thăm hang động chỉ mất khoảng 5 phút. Nhiều du khách tiết kiệm bỏ qua nó và dành thời gian đó để khám phá các điểm ngắm cảnh miễn phí và bơi thay thế."
       ]
     },
     {
-      "q": "Có cần đặt vé trước?",
+      "q": "Tôi có cần đặt trước vé phà không?",
       "a": [
-        "Mùa cao điểm nên giữ chỗ phà buổi sáng và cân nhắc mua vé cáp treo hoặc tour thuyền online; mùa giao mùa thường có thể mua trực tiếp."
+        "Trong mùa cao điểm (tháng 7–8), có—phà buổi sáng từ Positano có thể bán hết trước một ngày. Trong mùa vai (tháng 4–6, tháng 9–10), bạn thường có thể mua vé trong ngày tại bến tàu, nhưng đặt trực tuyến vào đêm trước sẽ giúp bạn yên tâm. Luôn đặt phà về của bạn ngay khi bạn đến Capri để khóa thời gian khởi hành của bạn."
+      ]
+    },
+    {
+      "q": "Capri có đáng với ngân sách du khách ba lô không?",
+      "a": [
+        "Có, nếu bạn thực tế về chi phí. Phà là chi phí lớn (€40–50 khứ hồi), nhưng một khi bạn ở đó, bạn có thể giữ nó rẻ: bãi biển miễn phí, điểm ngắm cảnh miễn phí, bữa trưa dã ngoại từ siêu thị và giao thông công cộng. Bỏ qua Grotto Xanh và cáp treo nếu bạn thiếu tiền. Nhiều khách nhà nghỉ nói đây là chuyến đi một ngày yêu thích của họ từ Positano vì hòn đảo rất khác so với đất liền—chỉ đừng mong đợi món hời về thức ăn và đồ uống."
+      ]
+    },
+    {
+      "q": "Nếu phà bị hủy thì sao?",
+      "a": [
+        "Biển động có thể hủy các chuyến đi, đặc biệt là trong mùa vai và mùa đông. Kiểm tra dự báo thời tiết và bản tin buổi sáng tại bến tàu. Nếu phà về của bạn bị hủy, bạn sẽ cần phải đợi thuyền tiếp theo có sẵn (thường là ngày hôm sau) hoặc đi phà đến Sorrento và sau đó đi xe buýt/tàu trở lại Positano. Chúng tôi khuyên bạn nên có thêm €50–80 làm dự phòng trong trường hợp bạn bị mắc kẹt—nó hiếm, nhưng nó xảy ra."
+      ]
+    },
+    {
+      "q": "Tôi có thể làm Capri và Pompeii trong một ngày không?",
+      "a": [
+        "Không, đừng thử. Mỗi cái đều xứng đáng với một ngày đầy đủ. Capri yêu cầu phà sáng sớm + cả ngày trên đảo. %LINK:positanoPompeii|Pompeii từ Positano% là một chuyến đi cả ngày riêng biệt qua tàu/xe buýt. Cố gắng kết hợp chúng có nghĩa là bạn sẽ dành hầu hết thời gian trong ngày cho giao thông và thấy rất ít trong cả hai. Chúng tôi đã có khách cố gắng và hối hận—chọn một cái mỗi ngày."
       ]
     }
   ]

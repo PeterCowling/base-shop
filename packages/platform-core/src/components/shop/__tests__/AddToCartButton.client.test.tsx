@@ -1,5 +1,6 @@
-import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 import React from "react";
+import { act,fireEvent, render, screen, waitFor } from "@testing-library/react";
+
 import AddToCartButton from "../AddToCartButton.client";
 
 const mockDispatch = jest.fn();
@@ -39,7 +40,7 @@ describe("AddToCartButton", () => {
   it("sets adding true during dispatch and false after resolve", async () => {
     jest.useFakeTimers();
     mockDispatch.mockImplementation(
-      () => new Promise<void>((res) => setTimeout(res, 100)),
+      () => new Promise<void>((resolve) => setTimeout(resolve, 100)),
     );
     render(<AddToCartButton sku={sku} size="M" quantity={2} />);
     const button = screen.getByRole("button", { name: /add to cart/i });
@@ -68,7 +69,7 @@ describe("AddToCartButton", () => {
     jest.useFakeTimers();
     mockDispatch.mockImplementation(
       () =>
-        new Promise<void>((_, reject) =>
+        new Promise<void>((_resolve, reject) =>
           setTimeout(() => reject(new Error("Out of stock")), 100),
         ),
     );

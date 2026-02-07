@@ -1,4 +1,14 @@
+import { promises as fs } from "fs";
 import * as path from "path";
+
+import type { ReturnAuthorization } from "@acme/types";
+
+import {
+  addReturnAuthorization,
+  getReturnAuthorization,
+  readReturnAuthorizations,
+  writeReturnAuthorizations,
+} from "../src/repositories/returnAuthorization.server";
 
 const DATA_ROOT = path.join("/tmp", "ra-tests");
 
@@ -31,15 +41,6 @@ jest.mock("fs", () => ({
     mkdir: jest.fn(async () => {}),
   },
 }));
-
-import { promises as fs } from "fs";
-import {
-  readReturnAuthorizations,
-  writeReturnAuthorizations,
-  addReturnAuthorization,
-  getReturnAuthorization,
-} from "../src/repositories/returnAuthorization.server";
-import type { ReturnAuthorization } from "@acme/types";
 
 const raFile = path.join(DATA_ROOT, "return-authorizations.json");
 

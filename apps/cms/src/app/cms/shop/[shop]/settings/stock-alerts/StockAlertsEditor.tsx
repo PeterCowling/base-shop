@@ -1,17 +1,16 @@
 "use client";
 
 import {
-  useCallback,
-  useState,
   type ChangeEvent,
   type FormEvent,
+  useCallback,
+  useState,
 } from "react";
-
-import { Toast } from "@/components/atoms";
-import { Button, Card, CardContent, Input, Textarea } from "@/components/atoms/shadcn";
-import { FormField } from "@ui/components/molecules";
 import { updateStockAlert } from "@cms/actions/shops.server";
-import { useTranslations } from "@i18n/Translations";
+
+import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
+import { Button, Card, CardContent, Input, Textarea } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n/Translations";
 
 import { ErrorChips } from "../components/ErrorChips";
 import {
@@ -47,9 +46,6 @@ export default function StockAlertsEditor({ shop, initial }: Props) {
     errors,
     setErrors,
     submit,
-    toast,
-    toastClassName,
-    closeToast,
     announceError,
   } = useSettingsSaveForm<StockAlertResult>({
     action: (formData) => updateStockAlert(shop, formData),
@@ -274,13 +270,6 @@ export default function StockAlertsEditor({ shop, initial }: Props) {
           </form>
         </CardContent>
       </Card>
-      <Toast
-        open={toast.open}
-        message={toast.message}
-        onClose={closeToast}
-        className={toastClassName}
-        role="status"
-      />
     </>
   );
 }

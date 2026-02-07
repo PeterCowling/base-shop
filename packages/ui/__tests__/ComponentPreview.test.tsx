@@ -1,7 +1,9 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
-import ComponentPreview from "../src/components/ComponentPreview";
+import { fireEvent,render, screen } from "@testing-library/react";
+
 import type { UpgradeComponent } from "@acme/types";
+
+import ComponentPreview from "../src/components/ComponentPreview";
 
 describe("ComponentPreview", () => {
   afterEach(() => {
@@ -16,13 +18,14 @@ describe("ComponentPreview", () => {
     const handleClick = jest.fn();
 
     (globalThis as any).__UPGRADE_MOCKS__ = {
-      "@ui/components/MyComp": NewComp,
-      "@ui/components/MyComp.bak": OldComp,
+      "@acme/ui/components/MyComp": NewComp,
+      "@acme/ui/components/MyComp.bak": OldComp,
     };
 
     const component: UpgradeComponent = {
       componentName: "MyComp",
       file: "MyComp.tsx",
+      newChecksum: "new",
     } as UpgradeComponent;
 
     render(

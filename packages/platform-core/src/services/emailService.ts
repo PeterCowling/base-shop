@@ -34,6 +34,8 @@ export async function sendSystemEmail(data: {
   type EmailModule = {
     sendEmail(to: string, subject: string, html: string): Promise<unknown>;
   };
-  const mod = req("@acme/email") as EmailModule;
+  // Dynamic require hidden from webpack static analysis to avoid cyclic dependency
+  const pkg = ["@acme", "email"].join("/");
+  const mod = req(pkg) as EmailModule;
   return mod.sendEmail(data.to, data.subject, data.html);
 }

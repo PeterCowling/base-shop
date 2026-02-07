@@ -1,9 +1,10 @@
 import { describe, expect, it, jest } from "@jest/globals";
 import type { Mock } from "jest-mock";
+
 import { createPage } from "../create";
 
 jest.mock("../../common/auth", () => ({
-  ensureAuthorized: jest.fn().mockResolvedValue({ user: { email: "user@example.com" } }),
+  ensureAuthorized: jest.fn<Promise<{ user: { email: string } }>, []>().mockResolvedValue({ user: { email: "user@example.com" } }),
 }));
 
 jest.mock("../service", () => ({
@@ -17,8 +18,8 @@ jest.mock("@acme/date-utils", () => ({ nowIso: () => "now" }));
 jest.mock("@acme/config/env/core", () => ({ coreEnv: { NODE_ENV: "test" } }));
 
 const service = jest.requireMock("../service") as {
-  getPages: Mock;
-  savePage: Mock;
+  getPages: Mock<any, any>;
+  savePage: Mock<any, any>;
 };
 
 describe("createPage", () => {

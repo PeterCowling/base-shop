@@ -1,6 +1,7 @@
-import type { TrackProgressItem } from "./types";
-import type { ConfiguratorStep } from "../../types";
 import { getStepTrackMeta } from "../../steps";
+import type { ConfiguratorStep } from "../../types";
+
+import type { TrackProgressItem } from "./types";
 
 export function buildTrackProgress(
   steps: ConfiguratorStep[],

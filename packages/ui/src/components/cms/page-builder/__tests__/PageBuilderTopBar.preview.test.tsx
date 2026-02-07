@@ -1,8 +1,13 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import PageBuilderTopBar from "../PageBuilderTopBar";
 
+jest.mock("../NotificationsBell", () => ({
+  __esModule: true,
+  default: () => null,
+}));
 const baseHistoryProps = {
   onSave: jest.fn(),
   onPublish: jest.fn(),
@@ -88,10 +93,10 @@ describe("PageBuilderTopBar preview button", () => {
       />,
     );
 
-    expect(screen.getByText(/published/i)).toBeInTheDocument();
+    expect(screen.getByText("Unpublished changes")).toBeInTheDocument();
     expect(screen.getByText(/last published/i)).toBeInTheDocument();
     expect(screen.getByText(/last saved/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /stage preview/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /open preview/i })).toBeInTheDocument();
 
     rerender(
       <PageBuilderTopBar
@@ -125,14 +130,17 @@ describe("PageBuilderTopBar preview button", () => {
       />,
     );
     expect(screen.getByText(/draft/i)).toBeInTheDocument();
-    expect(screen.getByText(/preview unavailable/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/preview unavailable/i).length).toBeGreaterThan(0);
   });
 
   it("saves then opens preview and allows copying link", async () => {
     const user = userEvent.setup();
     const openSpy = jest.spyOn(window, "open").mockImplementation(() => null);
     const writeText = jest.fn();
-    Object.assign(navigator, { clipboard: { writeText } });
+    Object.defineProperty(navigator, "clipboard", {
+      value: { writeText },
+      configurable: true,
+    });
     const onSave = jest.fn().mockResolvedValue(undefined);
 
     render(
@@ -163,7 +171,7 @@ describe("PageBuilderTopBar preview button", () => {
       />,
     );
 
-    const previewBtn = screen.getByRole("button", { name: /preview/i });
+    const previewBtn = screen.getByRole("button", { name: /open preview/i });
     await user.click(previewBtn);
     expect(onSave).toHaveBeenCalled();
     expect(openSpy).toHaveBeenCalledWith("https://stage.example/preview/page", "_blank", "noopener,noreferrer");

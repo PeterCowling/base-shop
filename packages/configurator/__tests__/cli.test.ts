@@ -5,7 +5,7 @@ jest.mock("node:child_process", () => ({
 }));
 
 describe("configurator CLI", () => {
-  let exitSpy: jest.SpyInstance;
+  let exitSpy: jest.SpiedFunction<typeof process.exit>;
 
   beforeEach(() => {
     jest.resetModules();
@@ -86,36 +86,36 @@ describe("configurator CLI", () => {
   });
 
   it("prints usage for unknown command", async () => {
-    const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const infoSpy = jest.spyOn(console, "info").mockImplementation(() => {});
 
     await run("foo");
 
     expect(spawnSyncMock).not.toHaveBeenCalled();
-    expect(logSpy).toHaveBeenCalledWith(
+    expect(infoSpy).toHaveBeenCalledWith(
       "Usage: pnpm configurator <dev|build|deploy>"
     );
     expect(exitSpy).toHaveBeenCalledWith(1);
-    logSpy.mockRestore();
+    infoSpy.mockRestore();
   });
 
   it("prints usage when no command is provided", async () => {
-    const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const infoSpy = jest.spyOn(console, "info").mockImplementation(() => {});
 
     process.argv = ["node", "configurator"];
     await import("../src/index");
 
     expect(spawnSyncMock).not.toHaveBeenCalled();
-    expect(logSpy).toHaveBeenCalledWith(
+    expect(infoSpy).toHaveBeenCalledWith(
       "Usage: pnpm configurator <dev|build|deploy>"
     );
     expect(exitSpy).toHaveBeenCalledWith(1);
 
-    logSpy.mockRestore();
+    infoSpy.mockRestore();
   });
 
   it("exits when required env vars are missing", async () => {
     const prevNodeEnv = process.env.NODE_ENV;
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     await import("@acme/config/env");
     delete process.env.STRIPE_SECRET_KEY;
     delete process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
@@ -139,6 +139,6 @@ describe("configurator CLI", () => {
       expect.anything()
     );
     errorSpy.mockRestore();
-    process.env.NODE_ENV = prevNodeEnv;
+    (process.env as Record<string, string | undefined>).NODE_ENV = prevNodeEnv;
   });
 });

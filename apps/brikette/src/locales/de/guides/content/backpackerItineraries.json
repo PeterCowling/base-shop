@@ -1,20 +1,20 @@
 {
   "seo": {
-    "title": "Positano für Backpacker: 1–3-Tage-Routen",
-    "description": "Tagespläne, die die Highlights abdecken und trotzdem im Budget bleiben."
+    "title": "Positano für Backpacker: 1-3-Tage-Routen",
+    "description": "Einfache 1-3-Tage-Pläne mit Stränden, Aussichtspunkten und günstigen Tagesausflügen."
   },
-  "linkLabel": "Backpacker-Routen für 1–3 Tage",
+  "linkLabel": "Positano für Backpacker: 1-3-Tage-Routen",
   "intro": [
-    "Praktische Tagespläne, die die Highlights mitnehmen, ohne dein Budget zu sprengen."
+    "Wähle einen 1-, 2- oder 3-Tage-Plan, der die Kosten niedrig hält und trotzdem die wichtigsten Ausblicke, Strände und Tagestrips abdeckt."
   ],
   "toc": [
     {
       "href": "#day1",
-      "label": "Tag 1: Positano-Kern"
+      "label": "Tag 1: Positano-Essentials"
     },
     {
       "href": "#day2",
-      "label": "Tag 2: Path of the Gods + Strand"
+      "label": "Tag 2: Sentiero degli Dei + Strand"
     },
     {
       "href": "#day3",
@@ -36,68 +36,72 @@
   "sections": [
     {
       "id": "pacing",
-      "title": "Stufentage clever takten",
+      "title": "Große Aufstiege zuerst",
       "body": [
-        "Nutze den Ankunftstag zuerst für Chiesa Nuova und Fornillo; heb längere Treppenetappen (Path of the Gods, Arienzo-Stufen) für den Tag nach einer vollen Nacht Schlaf auf.",
-        "Bündele Aktivitäten nach Höhe, damit du jeweils auf einer Terrassenebene bleibst – erst die Aussichtspunkte oben, dann zum Hafen hinunter."
+        "Nutze den Ankunftstag für Spaziergänge im unteren Ort (Spiaggia Grande, Fornillo) und heb die großen Treppentage (Path of the Gods, Arienzo-Stufen) für nach einer vollen Nacht Schlaf auf.",
+        "Bündele Stopps nach Höhe, damit du auf einer Terrassenebene bleibst; erst die Aussichtspunkte oben, dann hinunter zur Marina."
       ]
     },
     {
       "id": "budget-mix",
-      "title": "Bezahlte und kostenlose Highlights ausbalancieren",
+      "title": "Ein bezahltes Highlight pro Tag",
       "body": [
-        "Plan höchstens ein kostenpflichtiges Erlebnis pro Tag (Bootstour, Limoncello-Verkostung, Capri-Fähre) und fülle den Rest mit kostenlosen Stränden und Spaziergängen.",
-        "Pack Snacks und eine wiederbefüllbare Flasche ein; Einkäufe im Minimarkt bei Chiesa Nuova sind viel günstiger als Cafés an der Promenade."
+        "Plane pro Tag ein bezahltes Erlebnis ein (Fähre nach Capri, geteilte Bootstour, Garteneintritt) und fülle den Rest mit kostenlosen Spaziergängen und Strandzeit.",
+        "Deck dich mit Snacks und Wasser in der Nähe von Chiesa Nuova ein; Cafés am Wasser schlagen am schnellsten auf den Preis."
       ]
     },
     {
       "id": "viewpoints",
-      "title": "Beste Aussichtspunkte einplanen",
+      "title": "Aussichtspunkte ohne Eintritt",
       "body": [
-        "Die Via Cristoforo Colombo bietet zum Sonnenaufgang und zur Golden Hour den klassischen Postkartenblick – ganz ohne Eintritt.",
-        "Für ruhige Fotos mach einen Abstecher zum gekachelten Hof bei Chiesa Nuova oder gegen 08:00 zum kleinen Belvedere oberhalb von Fornillo."
+        "Die Via Cristoforo Colombo liefert den klassischen Postkartenblick bei Sonnenaufgang oder Golden Hour, ohne Eintritt.",
+        "Für ruhigere Fotos: Abstecher zum gekachelten Hof bei Chiesa Nuova oder zum kleinen Belvedere oberhalb von Fornillo vor 08:30."
       ]
     },
     {
       "id": "swim-breaks",
-      "title": "Günstige Badepausen planen",
+      "title": "Günstige Badepausen",
       "body": [
-        "Der Strand Fornillo ist kostenlos und ruhiger – nimm den Küstenpfad von der Spiaggia Grande und miete nur, was du wirklich brauchst.",
-        "Für den Beach-Club-Vibe von Arienzo geh vor 10:30 die Treppen hinunter, um öffentliche Plätze zu sichern, und picknicke mit Focaccia aus dem Supermarkt."
+        "Der Strand Fornillo hat einen kostenlosen öffentlichen Abschnitt; geh über den Küstenpfad von der Spiaggia Grande und miete nur, was du brauchst.",
+        "Für den Beach-Club-Vibe von Arienzo steig vor 10:30 die Treppen hinunter, sichere dir einen öffentlichen Platz und picknicke mit Focaccia und Obst."
       ]
     },
     {
       "id": "evenings",
-      "title": "Abende ohne Mehrkosten",
+      "title": "Günstige Abende",
       "body": [
-        "Der Sonnenuntergang auf der Hostelterrasse ist gratis; misch dir deinen Spritz mit Prosecco aus dem Supermarkt und teilt Snacks im Tapas-Stil.",
-        "Schau aufs Schwarze Brett für Hostel-Socials oder geh nach 23:30 zu Music on the Rocks, wenn der Eintritt für Hostelgäste sinkt – Ausweis nicht vergessen."
+        "Sonnenuntergang auf der Hostelterrasse ist gratis; misch dir einen einfachen Spritz mit Prosecco aus dem Supermarkt und teile Snacks.",
+        "Schau aufs Schwarze Brett fürs Hostelprogramm; wenn du ausgehst, komm spät, wenn der Eintritt niedriger ist, und nimm den Ausweis mit."
       ]
     }
   ],
-  "day1Title": "1 Tag: Essentials",
+  "day1Title": "1 Tag: Positano-Essentials",
   "day1": [
-    "Morgens: Aussichtspunkte an der Spiaggia Grande → Fornillo über den Küstenpfad",
-    "Mittag: Panini/Pizza al taglio nahe Chiesa Nuova, um zu sparen",
-    "Sonnenuntergang: Terrassenblicke nahe dem Hostel"
+    "Morgens: Aussichtspunkte an der Spiaggia Grande, dann der Küstenpfad nach Fornillo zum Baden.",
+    "Mittags: Pizza al taglio oder Panini nahe Chiesa Nuova; iss auf den Terrassen.",
+    "Sonnenuntergang: Via Cristoforo Colombo oder die Hostelterrasse."
   ],
-  "day2Title": "2 Tage: Path of the Gods ergänzen",
+  "day2Title": "2 Tage: Sentiero degli Dei ergänzen",
   "day2": [
-    "Tag 1 wie oben",
-    "Tag 2: SITA nach Nocelle → Abschnitte des Sentiero degli Dei → Abkühlung am Strand"
+    "Morgens: %LINK:pathOfTheGodsNocelle|Sentiero degli Dei / Path of the Gods% (Bus nach Nocelle, Abstieg zu Fuß nach Positano).",
+    "Nachmittags: %LINK:fornilloBeachGuide|Abkühlung am Fornillo-Strand% oder spätes Mittagessen im Ort."
   ],
-  "day3Title": "3 Tage: Insel oder Amalfi-Kombi",
+  "day3Title": "3 Tage: Capri oder Amalfi + Ravello",
   "day3": [
-    "Option A: Capri-Tagesausflug (frühe Fähre) mit eigenem Spazier-Rundkurs",
-    "Option B: Amalfi + Ravello per Bus; Villa-Rufolo-Gärten, danach Gelato auf den Domstufen"
+    "Option A: %LINK:capriDayTrip|Capri-Tagesausflug% - nimm die erste Fähre, plane eine DIY-Runde und pack Snacks ein.",
+    "Option B: %LINK:positanoRavello|Amalfi + Ravello% - Bus oder Fähre nach Amalfi, dann hinauf zur Villa Rufolo oder Villa Cimbrone."
   ],
   "savingsTitle": "Spartipps",
   "savings": [
-    "Reise in der Nebensaison; nutze SITA-Busse und geh zu Fuß zwischen den Aussichtspunkten.",
-    "Übernachte im Schlafsaal, koche einfache Frühstücke und picknicke zum Sonnenuntergang an Aussichtspunkten."
+    "Reise in der Zwischensaison (April-Mai, Ende September) für niedrigere Preise und weniger Andrang.",
+    "Nutze SITA-Busse für die meisten Strecken; ergänze eine Fähre, wenn du die Aussicht willst.",
+    "Übernachte im Schlafsaal oder teile Zimmer nahe Chiesa Nuova, um Portergebühren und Treppen zu sparen.",
+    "Füll Wasserflaschen im Hostel oder an öffentlichen Brunnen auf, bevor du losziehst.",
+    "Wenn du direkt gebucht hast, nutz das kostenlose Frühstück und den Abenddrink, um eine Mahlzeit abzudecken.",
+    "Geh zwischen Aussichtspunkten zu Fuß statt Bus zu fahren; die Treppen sind kostenlos und schön."
   ],
   "foodTitle": "Günstig essen",
-  "foodText": "Panini, Pizza al taglio und Supermarktsalate findest du im oberen Ortsbereich; meide Preisaufschläge an der Promenade.",
+  "foodText": "Denk an Pizza al taglio, Panini und Deli-Salate rund um die Via dei Mulini und Chiesa Nuova. Kauf im Minimarkt fürs Picknick ein und heb Sitzmahlzeiten für einen besonderen Genuss auf.",
   "transportTitle": "Transporttipps",
   "transportCompareLabel": "Routen vergleichen:",
   "transportCompareLinks": [
@@ -117,25 +121,25 @@
     {
       "q": "Was ist der beste 1-Tages-Plan?",
       "a": [
-        "Starte an der Spiaggia Grande, geh weiter nach Fornillo, Sonnenuntergang von der Terrasse in Chiesa Nuova, Abendessen mit Hostel-Freunden."
+        "Starte an der Spiaggia Grande, geh den Küstenpfad nach Fornillo, dann Sonnenuntergang von der Via Cristoforo Colombo oder der Hostelterrasse."
       ]
     },
     {
       "q": "Wie halte ich Transportkosten niedrig?",
       "a": [
-        "Nutze SITA-Busse und nimm Stufen zu Fuß, wo es geht; Fähren sind in der Saison toll, aber teurer."
+        "Nutze SITA-Busse für die meisten Wege und ergänze eine Fähre für die Aussicht; kauf Tickets vor dem Einsteigen, um Überraschungen zu vermeiden."
       ]
     },
     {
       "q": "Was ist mit einer 2-Tages-Route?",
       "a": [
-        "Tag 1 deckt die Essentials Positanos ab; Tag 2 ergänzt die Path-of-the-Gods-Schleife über Nocelle plus Strandzeit in Arienzo oder Fornillo."
+        "Tag 1 deckt Positanos Essentials ab; Tag 2 ergänzt den Sentiero degli Dei über Nocelle plus Badepause."
       ]
     },
     {
       "q": "Welche Ergänzungen für 3 Tage?",
       "a": [
-        "Capri-Tagestrip oder die Kombi Amalfi + Ravello; plane frühe Fähren ein und bring Snacks mit, um zu sparen."
+        "Wähle eins: Capri-Tagesausflug oder Amalfi + Ravello; starte früh und bring Snacks mit, um zu sparen."
       ]
     }
   ]

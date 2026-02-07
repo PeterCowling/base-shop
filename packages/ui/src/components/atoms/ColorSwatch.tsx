@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import { cn } from "../../utils/style";
 
 export interface ColorSwatchProps
@@ -68,4 +69,4 @@ export const ColorSwatch = React.forwardRef<
     );
   },
 );
-ColorSwatch.displayName = "ColorSwatch"; // i18n-exempt -- DEV-000 component displayName, not user-facing
+ColorSwatch.displayName = "ColorSwatch";

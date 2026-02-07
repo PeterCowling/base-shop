@@ -1,8 +1,9 @@
 /* eslint-disable security/detect-non-literal-fs-filename -- PLAT-1234: Paths are derived from internal configuration */
-import { coreEnv } from "@acme/config/env/core";
-import { resolveDataRoot } from "@platform-core/dataRoot";
 import { readFile } from "fs/promises";
 import { join } from "path";
+
+import { coreEnv } from "@acme/config/env/core";
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
 
 const DATA_ROOT = resolveDataRoot();
 

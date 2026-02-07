@@ -1,7 +1,7 @@
 {
   "seo": {
     "title": "Hostel Brikette → Fiordo di Furore by bus",
-    "description": "Step-by-step directions to reach Fiordo di Furore from Hostel Brikette using the SITA bus, including where to buy tickets and how to access the beach."
+    "description": "从 Hostel Brikette 乘坐 SITA 巴士前往 Fiordo di Furore 的分步路线，包括购票地点和通往海滩的方式。"
   },
   "linkLabel": "Hostel Brikette → Fiordo di Furore by bus",
   "intro": [
@@ -45,7 +45,7 @@
       "body": [
         "Board a bus heading for Amalfi or Agerola and tell the driver you need the Fiordo di Furore stop so they know to pull over.",
         "The ride covers about 10.8 kilometres (6.7 miles); intermediate stops depend on other passengers requesting them.",
-        "If you have mobile data, track the stop by searching for \"JH73+PQ Furore, Province of Salerno\" on Google Maps."
+        "If you have mobile data, track the stop by searching for \\\\\"JH73+PQ Furore, Province of Salerno\\\\\" on Google Maps."
       ]
     },
     {
@@ -57,6 +57,18 @@
         "当您准备离开时，请使用相同的楼梯返回道路。"
       ]
     }
+  ],
+  "essentialsTitle": "行前须知",
+  "essentials": [
+    "在波西塔诺购买往返 SITA 巴士票——峡湾没有售票处。",
+    "乘坐开往阿马尔菲方向的巴士约 25 分钟，在 Fiordo di Furore 站下车。",
+    "从路边沿凿在峭壁上的台阶走几分钟可达砾石滩。"
+  ],
+  "typicalCostsTitle": "参考费用",
+  "typicalCosts": [
+    "SITA 巴士单程票：约 €2–€3（根据区域），波西塔诺上车前购买。",
+    "拱桥附近偶尔出现的小吃摊：€3–€6 不等。",
+    "从海湾返回波西塔诺的出租车：若与他人拼车约 €40–€60。"
   ],
   "tipsTitle": "Extra tips",
   "tips": [

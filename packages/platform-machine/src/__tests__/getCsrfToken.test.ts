@@ -1,4 +1,4 @@
-import { getCsrfToken } from '@acme/shared-utils/src/getCsrfToken';
+import { getCsrfToken } from '@acme/lib/security';
 
 describe('getCsrfToken on server', () => {
   it('returns header token', () => {

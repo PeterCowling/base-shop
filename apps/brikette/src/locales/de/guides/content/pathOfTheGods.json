@@ -86,29 +86,15 @@
       "a": "Feste Schuhe, Wasser, Sonnenschutz – meide die Mittagshitze im Sommer."
     }
   ],
-  "faqsTitle": "FAQ",
-  "galleryTitle": "Fotogalerie",
-  "gallery": {
-    "items": [
-      {
-        "alt": "Blick entlang des Sentiero degli Dei",
-        "caption": "Entlang des Pfads"
-      },
-      {
-        "alt": "Blick auf das Dorf Nocelle",
-        "caption": "Blick auf Nocelle"
-      }
-    ]
-  },
+  "faqsTitle": "Häufige Fragen",
   "toc": {
     "onThisPage": "Auf dieser Seite",
     "essentials": "Das Wichtigste",
     "costs": "Typische Kosten",
-    "faqs": "FAQ",
-    "gallery": "Fotogalerie",
-    "tips": "Smart timing"
+    "faqs": "Häufige Fragen",
+    "tips": "Gute Zeitwahl"
   },
-  "tipsTitle": "Smart timing",
+  "tipsTitle": "Gute Zeitwahl",
   "tips": [
     "Reisen Sie im Juli–August vor 09:00 Uhr ab oder streben Sie die goldenen Stunden im Frühling und Herbst an, um kühlere Temperaturen und weicheres Licht zu genießen.",
     "Vermeiden Sie den 1.700 Stufen langen Abstieg nach Positano, es sei denn, Ihre Knie sind frisch – der Abstieg über die Montepertuso-Treppe nach einer langen Wanderung ist brutal.",
@@ -122,13 +108,13 @@
       ]
     },
     {
-      "q": "Is the trail suitable for beginners?",
+      "q": "Ist der Weg für Anfänger geeignet?",
       "a": [
         "Ja, vorausgesetzt, Sie sind sicher auf den Beinen und können problemlos mit der Höhe umgehen. Es gibt keine technischen Anstiege, sondern nur stetige Auf- und Abstiege."
       ]
     },
     {
-      "q": "What happens if ferries are cancelled?",
+      "q": "Was passiert, wenn Fähren ausfallen?",
       "a": [
         "Steigen Sie über Amalfi in den Bus um oder fahren Sie direkt nach Nocelle. Halten Sie immer ein Ersatz-Busticket bereit, damit Sie sich an die See- und Wetterbedingungen anpassen können."
       ]

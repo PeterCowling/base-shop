@@ -2,8 +2,9 @@
 import { describe, expect, it } from "@jest/globals";
 import { z } from "zod";
 
-import { createRefinementCtx } from "./core.test-helpers.ts";
 import { depositReleaseEnvRefinement } from "../../core.ts";
+
+import { createRefinementCtx } from "./core.test-helpers.ts";
 
 describe("depositReleaseEnvRefinement direct usage", () => {
   it("rejects non-boolean *_ENABLED and non-numeric *_INTERVAL_MS values", () => {

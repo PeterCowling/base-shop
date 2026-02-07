@@ -1,8 +1,10 @@
 "use client";
 import { useState } from "react";
+
+import { useTranslations } from "@acme/i18n";
+
 import { cn } from "../../../../utils/style";
 import { Inline } from "../../../atoms/primitives";
-import { useTranslations } from "@acme/i18n";
 
 export interface TabsAccordionContainerProps {
   children?: React.ReactNode;

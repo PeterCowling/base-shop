@@ -1,11 +1,12 @@
 "use client";
 
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useReducer } from "react";
-import type { CartItem } from "@/types/cart";
+
 import { cartReducer, initialCartState } from "@/contexts/cart/cartReducer";
 import { loadCart, saveCart } from "@/contexts/cart/cartStorage";
 import { getCartTotals } from "@/lib/cart";
-import type { CurrencyCode } from "@/types/product";
+import type { CartItem } from "@/types/cart";
+import type { CurrencyCode, Product } from "@/types/product";
 
 type CartContextValue = {
   items: CartItem[];
@@ -20,10 +21,10 @@ type CartContextValue = {
 
 const CartContext = createContext<CartContextValue | null>(null);
 
-export function CartProvider({ children }: { children: React.ReactNode }) {
+export function CartProvider({ children, products }: { children: React.ReactNode; products: Product[] }) {
   const [state, dispatch] = useReducer(cartReducer, initialCartState);
 
-  const totals = useMemo(() => getCartTotals(state), [state]);
+  const totals = useMemo(() => getCartTotals(state, products), [products, state]);
 
   const addItem = useCallback((variantId: string, quantity: number) => {
     dispatch({ type: "add", payload: { variantId, quantity } });

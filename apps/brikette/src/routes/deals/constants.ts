@@ -1,19 +1,12 @@
-import { Coffee, Percent, Wine } from "lucide-react";
-import enDealsFallback from "@/locales/en/dealsPage.json";
+import { Coffee, Percent, Wine } from "@/icons";
+
 import enTokens from "@/locales/en/_tokens.json";
+import enDealsFallback from "@/locales/en/dealsPage.json";
 
 export const DEALS_NAMESPACE = "dealsPage" as const;
 export const OPTIONAL_NAMESPACES = ["modals"];
 
-export const DISCOUNT_PCT = 15;
 export const BEDS_LEFT = 6;
-export const DEAL_END = new Date("2025-10-31T23:59:59Z");
-export const DEAL_VALIDITY_START = new Date(2025, 4, 29);
-export const DEAL_VALIDITY_END = new Date(2025, 9, 31);
-export const DEAL_VALIDITY = {
-  start: DEAL_VALIDITY_START,
-  end: DEAL_VALIDITY_END,
-} as const;
 
 const FALLBACK_CTA_BUTTONS = [
   {

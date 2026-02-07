@@ -8,7 +8,7 @@ jest.mock("../../config", () => ({
   getConfig: jest.fn(),
 }));
 
-jest.mock("@platform-core/repositories/blog.server", () => ({
+jest.mock("@acme/platform-core/repositories/blog.server", () => ({
   unpublishPost: jest.fn(),
 }));
 
@@ -20,11 +20,11 @@ describe("unpublishPost", () => {
   it("calls authorization, unpublishes post, and returns message", async () => {
     const { ensureAuthorized } = await import(
       "../../../../actions/common/auth"
-    );
-    const { getConfig } = await import("../../config");
+    ) as unknown as { ensureAuthorized: jest.Mock };
+    const { getConfig } = await import("../../config") as unknown as { getConfig: jest.Mock };
     const { unpublishPost: repoUnpublishPost } = await import(
-      "@platform-core/repositories/blog.server"
-    );
+      "@acme/platform-core/repositories/blog.server"
+    ) as unknown as { unpublishPost: jest.Mock };
 
     const config = { id: "config" } as any;
     getConfig.mockResolvedValue(config);
@@ -41,11 +41,11 @@ describe("unpublishPost", () => {
   it("returns error when repository rejects", async () => {
     const { ensureAuthorized } = await import(
       "../../../../actions/common/auth"
-    );
-    const { getConfig } = await import("../../config");
+    ) as unknown as { ensureAuthorized: jest.Mock };
+    const { getConfig } = await import("../../config") as unknown as { getConfig: jest.Mock };
     const { unpublishPost: repoUnpublishPost } = await import(
-      "@platform-core/repositories/blog.server"
-    );
+      "@acme/platform-core/repositories/blog.server"
+    ) as unknown as { unpublishPost: jest.Mock };
 
     const config = { id: "config" } as any;
     getConfig.mockResolvedValue(config);

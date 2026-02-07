@@ -1,10 +1,19 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
+
 import {
+  accessibilityPageTemplates,
   checkoutPageTemplates,
+  cookiePageTemplates,
   corePageTemplates,
   homePageTemplates,
+  // Legal & Compliance templates (LAUNCH-27)
+  legalPageTemplates,
+  privacyPageTemplates,
   productPageTemplates,
+  returnsPageTemplates,
   shopPageTemplates,
+  termsPageTemplates,
+  vatPageTemplates,
 } from "@acme/templates";
 
 /**
@@ -22,16 +31,40 @@ export async function GET(req?: NextRequest) {
     return value ? value.toLowerCase() : null;
   })();
 
-  const catalog =
-    group === "home"
-      ? homePageTemplates
-      : group === "shop" || group === "plp"
-        ? shopPageTemplates
-        : group === "product" || group === "pdp"
-          ? productPageTemplates
-          : group === "checkout"
-            ? checkoutPageTemplates
-            : corePageTemplates;
+  const catalog = (() => {
+    switch (group) {
+      case "home":
+        return homePageTemplates;
+      case "shop":
+      case "plp":
+        return shopPageTemplates;
+      case "product":
+      case "pdp":
+        return productPageTemplates;
+      case "checkout":
+        return checkoutPageTemplates;
+      // Legal & Compliance groups (LAUNCH-27)
+      case "legal":
+        return legalPageTemplates;
+      case "terms":
+        return termsPageTemplates;
+      case "privacy":
+        return privacyPageTemplates;
+      case "cookie":
+      case "cookies":
+        return cookiePageTemplates;
+      case "vat":
+      case "tax":
+        return vatPageTemplates;
+      case "accessibility":
+        return accessibilityPageTemplates;
+      case "returns":
+      case "refunds":
+        return returnsPageTemplates;
+      default:
+        return corePageTemplates;
+    }
+  })();
 
   const templates = catalog.map((tpl) => ({
     id: tpl.id,

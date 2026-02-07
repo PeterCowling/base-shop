@@ -1,11 +1,14 @@
 "use client";
 
-import type { PageComponent } from "@acme/types";
-import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
-import GridAreasEditor from "./GridAreasEditor";
 import React from "react";
-import type { EditorProps } from "./EditorProps";
+
 import { useTranslations } from "@acme/i18n";
+import type { PageComponent } from "@acme/types";
+
+import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
+
+import type { EditorProps } from "./EditorProps";
+import GridAreasEditor from "./GridAreasEditor";
 
 type GridExtra = PageComponent & {
   columns?: number; columnsDesktop?: number; columnsTablet?: number; columnsMobile?: number;

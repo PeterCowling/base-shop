@@ -1,6 +1,7 @@
-import { render, screen, within, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { act } from "react";
+import { render, screen, waitFor,within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+
 import PageBuilder from "../src/components/cms/PageBuilder";
 
 let dndHandlers: any = {};
@@ -48,14 +49,14 @@ jest.mock("@dnd-kit/sortable", () => ({
   sortableKeyboardCoordinates: jest.fn(),
 }));
 
-jest.mock("@ui/components/cms/page-builder/Palette", () => ({
+jest.mock("@acme/cms-ui/page-builder/Palette", () => ({
   __esModule: true,
   default: ({ onAdd }: any) => (
     <button onClick={() => onAdd("Text")}>Add Block</button>
   ),
 }));
 
-jest.mock("@ui/hooks/useFileUpload", () => ({
+jest.mock("@acme/ui/hooks/useFileUpload", () => ({
   __esModule: true,
   default: () => ({ onDrop: jest.fn(), progress: 0, isValid: true }),
 }));
@@ -69,7 +70,7 @@ jest.mock("@acme/i18n/locales", () => ({ locales: ["en"] }));
 
 jest.mock("next/navigation", () => ({ usePathname: () => "/shop" }));
 
-jest.mock("@ui/components/cms/page-builder/CanvasItem", () => ({
+jest.mock("@acme/cms-ui/page-builder/CanvasItem", () => ({
   __esModule: true,
   default: ({ component, onRemove }: any) => {
     const overrides = component.styles ? JSON.parse(component.styles) : {};
@@ -85,7 +86,7 @@ jest.mock("@ui/components/cms/page-builder/CanvasItem", () => ({
   },
 }));
 
-jest.mock("@ui/components/cms/page-builder/Block", () => ({
+jest.mock("@acme/cms-ui/page-builder/Block", () => ({
   __esModule: true,
   default: ({ component }: any) => {
     const overrides = component.styles ? JSON.parse(component.styles) : {};
@@ -98,7 +99,7 @@ jest.mock("@ui/components/cms/page-builder/Block", () => ({
   },
 }));
 
-jest.mock("@ui/components/cms/blocks", () => ({
+jest.mock("@acme/cms-ui/blocks", () => ({
   blockRegistry: {
     Text: { component: (props: any) => <div {...props} /> },
   },
@@ -152,13 +153,13 @@ describe.skip("PageBuilder integration (legacy mocked)", () => {
     // New sidebar groups styling under "Design" instead of a separate "Style" accordion
     await user.click(screen.getByText("Design"));
     const fgInput = screen.getByLabelText("cms.style.foreground");
-    // eslint-disable-next-line ds/no-raw-color
+     
     await user.type(fgInput, "#123456");
     await act(async () => {});
-    // eslint-disable-next-line ds/no-raw-color
+     
     expect(fgInput).toHaveValue("#123456");
     const blockEl = await screen.findByTestId(`block-${firstId}`);
-    // eslint-disable-next-line ds/no-raw-color
+     
     expect(blockEl).toHaveStyle({ color: "#123456" });
 
     const undo = screen.getByRole("button", { name: "Undo" });

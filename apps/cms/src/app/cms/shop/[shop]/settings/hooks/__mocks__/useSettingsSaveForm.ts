@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState, type FormEvent } from "react";
+import { useCallback, useState, type FormEvent } from "react";
 
 import type {
   UseSettingsSaveFormOptions,
@@ -33,30 +33,16 @@ export const useSettingsSaveForm = <TResult,>(
 ) => {
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<ValidationErrors>({});
-  const [toast, setToast] = useState({
-    open: false,
-    status: "success" as ToastStatus,
-    message: "",
-  });
-
-  const announce = useCallback((status: ToastStatus, message: string) => {
-    toastLog.push({ status, message });
-    setToast({ open: true, status, message });
-  }, []);
 
   const announceSuccess = useCallback(
-    (message: string) => announce("success", message),
-    [announce],
+    (message: string) => { toastLog.push({ status: "success", message }); },
+    [],
   );
 
   const announceError = useCallback(
-    (message: string) => announce("error", message),
-    [announce],
+    (message: string) => { toastLog.push({ status: "error", message }); },
+    [],
   );
-
-  const closeToast = useCallback(() => {
-    setToast((current) => ({ ...current, open: false }));
-  }, []);
 
   const submit = useCallback(
     async (formData: FormData) => {
@@ -104,21 +90,12 @@ export const useSettingsSaveForm = <TResult,>(
     [submit],
   );
 
-  const toastClassName = useMemo(() => {
-    return toast.status === "error"
-      ? "mock-error-toast"
-      : "mock-success-toast";
-  }, [toast.status]);
-
   return {
     saving,
     errors,
     setErrors,
     submit,
     handleSubmit,
-    toast,
-    toastClassName,
-    closeToast,
     announceSuccess,
     announceError,
   };

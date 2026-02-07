@@ -1,16 +1,16 @@
-import { inventoryItemSchema } from "@platform-core/types/inventory";
+import { __setMockSession } from "next-auth";
+
+import { inventoryItemSchema } from "@acme/platform-core/types/inventory";
 
 // Polyfill setImmediate used by fast-csv in the test environment
 (global as any).setImmediate =
   (global as any).setImmediate ||
   ((fn: (...args: any[]) => void, ...args: any[]) =>
     setTimeout(fn, 0, ...args));
-
-import { __setMockSession } from "next-auth";
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 
 const write = jest.fn();
-jest.mock("@platform-core/repositories/inventory.server", () => ({
+jest.mock("@acme/platform-core/repositories/inventory.server", () => ({
   inventoryRepository: { write },
 }));
 

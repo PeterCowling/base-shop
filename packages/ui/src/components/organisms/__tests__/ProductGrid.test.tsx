@@ -1,7 +1,9 @@
 /* i18n-exempt file -- tests use literal product titles and labels */
-import { act, fireEvent, render, screen } from "@testing-library/react";
-import { ProductGrid, type Product } from "../ProductGrid";
 import "../../../../../../test/resetNextMocks";
+
+import { act, fireEvent, render, screen } from "@testing-library/react";
+
+import { type Product,ProductGrid } from "../ProductGrid";
 
 jest.mock("@acme/platform-core/contexts/CartContext", () => ({
   useCart: () => [{}, jest.fn()],

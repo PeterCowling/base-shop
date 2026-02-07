@@ -1,13 +1,13 @@
 // packages/platform-core/__tests__/layoutContext.test.tsx
 import React from "react";
+import { usePathname } from "next/navigation";
 import { fireEvent, render, screen } from "@testing-library/react";
+
 import { LayoutProvider, useLayout } from "../src/contexts/LayoutContext";
 
 jest.mock("next/navigation", () => ({
   usePathname: jest.fn(),
 }));
-
-import { usePathname } from "next/navigation";
 
 function LayoutInfo() {
   const { isMobileNavOpen, breadcrumbs, toggleNav } = useLayout();

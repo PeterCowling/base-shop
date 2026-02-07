@@ -1,4 +1,4 @@
-import { test, expect, type Page } from "@playwright/test";
+import { expect, type Page,test } from "playwright/test";
 
 // Allow heavy stories (PageBuilder) extra time to render
 test.describe.configure({ timeout: 300000 });

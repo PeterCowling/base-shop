@@ -1,7 +1,7 @@
 {
   "seo": {
     "title": "Hostel Brikette → Fiordo di Furore by bus",
-    "description": "Step-by-step directions to reach Fiordo di Furore from Hostel Brikette using the SITA bus, including where to buy tickets and how to access the beach."
+    "description": "Hướng dẫn từng bước từ Hostel Brikette đến Fiordo di Furore bằng xe buýt SITA, gồm nơi mua vé và cách xuống bãi biển."
   },
   "linkLabel": "Hostel Brikette → Fiordo di Furore by bus",
   "intro": [
@@ -45,7 +45,7 @@
       "body": [
         "Board a bus heading for Amalfi or Agerola and tell the driver you need the Fiordo di Furore stop so they know to pull over.",
         "The ride covers about 10.8 kilometres (6.7 miles); intermediate stops depend on other passengers requesting them.",
-        "If you have mobile data, track the stop by searching for \"JH73+PQ Furore, Province of Salerno\" on Google Maps."
+        "If you have mobile data, track the stop by searching for \\\\\"JH73+PQ Furore, Province of Salerno\\\\\" on Google Maps."
       ]
     },
     {
@@ -57,6 +57,18 @@
         "Sử dụng cùng một cầu thang để quay lại đường khi bạn sẵn sàng rời đi."
       ]
     }
+  ],
+  "essentialsTitle": "Điều cần biết",
+  "essentials": [
+    "Trạm xe buýt Chiesa Nuova cách hostel 2 phút đi bộ — đối diện Bar Internazionale trên Via Pasitea.",
+    "Xe buýt SITA hướng Amalfi hoặc Agerola; nhờ tài xế dừng tại \\\\\"Fiordo di Furore\\\\\".",
+    "Không có dịch vụ tại bãi biển — mua vé khứ hồi, nước và đồ ăn trước khi đi."
+  ],
+  "typicalCostsTitle": "Chi phí tham khảo",
+  "typicalCosts": [
+    "Vé xe buýt SITA (khứ hồi): ~€4–€6.",
+    "Vào cửa bãi biển: Miễn phí.",
+    "Taxi dự phòng (nếu xe buýt đầy): ~€30–€50 từ đường."
   ],
   "tipsTitle": "Extra tips",
   "tips": [
@@ -82,7 +94,7 @@
     {
       "q": "How will I recognise the right stop?",
       "a": [
-        "Sau khi xe buýt đi qua cây cầu hình vòm bắc qua vịnh hẹp, xe sẽ dừng bên cạnh rào chắn va chạm. Theo dõi khung cảnh cây cầu, lắng nghe người lái xe và sử dụng mã pin \"JH73+PQ Furore\" của Google Maps để dự phòng."
+        "Sau khi xe buýt đi qua cây cầu hình vòm bắc qua vịnh hẹp, xe sẽ dừng bên cạnh rào chắn va chạm. Theo dõi khung cảnh cây cầu, lắng nghe người lái xe và sử dụng mã pin \\\\\"JH73+PQ Furore\\\\\" của Google Maps để dự phòng."
       ]
     }
   ]

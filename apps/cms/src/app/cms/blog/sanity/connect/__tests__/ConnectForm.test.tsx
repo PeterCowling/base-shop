@@ -1,16 +1,17 @@
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { act,fireEvent, render, screen } from "@testing-library/react";
+
 import ConnectForm from "../ConnectForm.client";
 
 jest.mock("@cms/actions/deleteSanityConfig", () => ({
   deleteSanityConfig: jest.fn().mockResolvedValue({}),
 }));
 
-jest.mock("@ui", () => ({
+jest.mock("@acme/ui", () => ({
   Toast: ({ open, message }: any) => (open ? <div role="alert">{message}</div> : null),
 }));
 
 const hookMock = {
-  formActionImpl: async () => ({ message: "", error: "", errorCode: "" }),
+  formActionImpl: async (_formData: FormData) => ({ message: "", error: "", errorCode: "" }),
   formAction: undefined as undefined | ((fd: FormData) => Promise<void>),
 };
 

@@ -1,7 +1,9 @@
-import { Card, CardContent, Checkbox, Input } from "@/components/atoms/shadcn";
 import { type ChangeEvent } from "react";
-import { Grid } from "@ui/components/atoms/primitives";
+
+import { Grid } from "@acme/design-system/primitives";
 import { useTranslations } from "@acme/i18n";
+
+import { Card, CardContent, Checkbox, Input } from "@/components/atoms/shadcn";
 
 import { type CoverageDraft } from "./usePricingFormState";
 

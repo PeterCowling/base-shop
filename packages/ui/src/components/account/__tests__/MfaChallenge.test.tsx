@@ -1,7 +1,9 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import MfaChallenge from "../MfaChallenge";
+
 import { TranslationsProvider } from "@acme/i18n";
+
+import MfaChallenge from "../MfaChallenge";
 
 const messages = {
   "account.mfa.input.placeholder": "Enter MFA code",
@@ -9,7 +11,7 @@ const messages = {
   "account.mfa.error.invalid": "Invalid code",
 } as const;
 
-jest.mock("@acme/shared-utils", () => ({
+jest.mock("@acme/lib/security", () => ({
   __esModule: true,
   getCsrfToken: jest.fn(() => "csrf-token"),
 }));
@@ -21,7 +23,6 @@ describe("MfaChallenge", () => {
 
   it("successful verification clears error and invokes onSuccess", async () => {
     const onSuccess = jest.fn();
-    // @ts-expect-error — mocking global.fetch in tests
     global.fetch = jest
       .fn()
       .mockResolvedValueOnce({ json: async () => ({ verified: false }) })
@@ -46,7 +47,6 @@ describe("MfaChallenge", () => {
   });
 
   it("failed verification displays \"Invalid code\"", async () => {
-    // @ts-expect-error — mocking global.fetch in tests
     global.fetch = jest
       .fn()
       .mockResolvedValue({ json: async () => ({ verified: false }) });

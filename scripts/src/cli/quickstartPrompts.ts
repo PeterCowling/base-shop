@@ -2,17 +2,20 @@
 // Prompt helpers for quickstart-shop.
 
 import { join } from "node:path";
-import type { CreateShopOptions } from "@acme/platform-core/createShop";
+
+import { type CreateShopOptions,listThemes } from "@acme/platform-core/createShop";
 import {
   listProviders,
   type ProviderInfo,
 } from "@acme/platform-core/createShop/listProviders";
+
 import { selectOption, selectProviders } from "../utils/prompts";
 import {
   listDirNames,
-  loadTemplateDefaults,
   loadPresetDefaults,
+  loadTemplateDefaults,
 } from "../utils/templates";
+
 import type { Flags } from "./parseQuickstartArgs";
 
 export interface QuickstartPromptsResult {
@@ -31,7 +34,7 @@ export async function quickstartPrompts(
   args: Flags,
   config: Partial<CreateShopOptions>,
 ): Promise<QuickstartPromptsResult> {
-  const themes = listDirNames(join(process.cwd(), "packages", "themes"));
+  const themes = listThemes();
   let theme = args.theme ?? (config.theme as string | undefined);
   if (!theme) {
     theme = await selectOption(

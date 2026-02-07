@@ -1,20 +1,55 @@
 // packages/platform-core/src/repositories/rentalOrders.server.ts
 import "server-only";
 
-import type { RentalOrder } from "@acme/types";
 import { nowIso } from "@acme/date-utils";
+import type { RentalOrder } from "@acme/types";
+
 import { prisma } from "../db";
 
 export {
-  listOrders as readOrders,
   addOrder,
   getOrdersForCustomer,
+  listOrders as readOrders,
 } from "../orders/creation";
-export { markReturned, setReturnTracking } from "../orders/status";
 export { markRefunded } from "../orders/refunds";
 export { updateRisk } from "../orders/risk";
+export { markReturned, setReturnTracking } from "../orders/status";
 
 type Order = RentalOrder;
+
+/**
+ * Read a single order by its ID
+ */
+export async function readOrderById(
+  shop: string,
+  orderId: string,
+): Promise<Order | null> {
+  try {
+    const order = await prisma.rentalOrder.findFirst({
+      where: { shop, id: orderId },
+    });
+    return order as Order | null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Read a single order by its Stripe session ID
+ */
+export async function readOrderBySessionId(
+  shop: string,
+  sessionId: string,
+): Promise<Order | null> {
+  try {
+    const order = await prisma.rentalOrder.findFirst({
+      where: { shop, sessionId },
+    });
+    return order as Order | null;
+  } catch {
+    return null;
+  }
+}
 
 export async function updateStatus(
   shop: string,

@@ -1,15 +1,18 @@
 "use client";
 /* eslint-disable react/forbid-dom-props -- LINT-1006: PreviewPane requires inline styles for device frame and token variables */
 
-import { useMemo, type CSSProperties } from "react";
+import { type CSSProperties,useMemo } from "react";
+
 import type { Locale } from "@acme/i18n/locales";
-import type { PageComponent, HistoryState } from "@acme/types";
-import { decorateTreeForViewport } from "./state/layout/utils";
-import { devicePresets, type DevicePreset } from "../../../utils/devicePresets";
-import useViewport from "./hooks/useViewport";
+import type { HistoryState,PageComponent } from "@acme/types";
+
+import { type DevicePreset,devicePresets } from "../../../utils/devicePresets";
 import DeviceSelector from "../../common/DeviceSelector";
 import DynamicRenderer from "../../DynamicRenderer";
+
 import usePreviewTokens from "./hooks/usePreviewTokens";
+import useViewport from "./hooks/useViewport";
+import { decorateTreeForViewport } from "./state/layout/utils";
 
 interface Props {
   components: PageComponent[];

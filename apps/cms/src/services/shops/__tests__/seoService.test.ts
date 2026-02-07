@@ -1,6 +1,7 @@
-import { updateSeo } from "../seoService";
-import { authorize, fetchSettings, persistSettings } from "../helpers";
 import { revalidatePath } from "next/cache";
+
+import { authorize, fetchSettings, persistSettings } from "../helpers";
+import { updateSeo } from "../seoService";
 
 jest.mock("../helpers", () => ({
   authorize: jest.fn().mockResolvedValue(undefined),

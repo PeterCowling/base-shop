@@ -1,19 +1,23 @@
 import "server-only";
+
 import { Resend } from "resend";
+
+import { logger } from "@acme/lib/logger";
+
+import { getDefaultSender } from "../config";
 import type { CampaignOptions } from "../send";
-import { ProviderError } from "./types";
+import {
+  type CampaignStats,
+  mapResendStats,
+  type ResendStatsResponse,
+} from "../stats";
+
 import type {
   CampaignProvider,
   ResendError,
   ResendSegment,
 } from "./types";
-import {
-  mapResendStats,
-  type CampaignStats,
-  type ResendStatsResponse,
-} from "../stats";
-import { getDefaultSender } from "../config";
-import { logger } from "@acme/shared-utils";
+import { ProviderError } from "./types";
 
 const apiKey = process.env.RESEND_API_KEY;
 

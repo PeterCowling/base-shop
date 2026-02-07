@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+
 import { useTranslations } from "@acme/i18n";
 
 export interface RentalTermsSectionProps extends React.HTMLAttributes<HTMLDivElement> {

@@ -1,18 +1,26 @@
 {
   "seo": {
-    "title": "Best beaches in Positano",
-    "description": "Expanded beach overview covering Positano, Praiano, Furore, Sorrento, Amalfi, and Capri day trips."
+    "title": "Positano beaches guide: best spots, prices & free areas",
+    "description": "Compare Positano beaches (Fornillo, Spiaggia Grande, Arienzo, Laurito) plus easy day trips—prices, free areas, and hostel-friendly tips."
   },
-  "linkLabel": "Best beaches in Positano",
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
+  "linkLabel": "Positano Beaches: Sun & Secret Coves",
   "intro": [
-    "Compare Positano's beaches and nearby day-trip coves before you commit to a lounger. This overview highlights prices, free zones, and the overall vibe so you can match the spot to your budget and energy level.",
-    "Select any beach name in the table or summaries below to open our detailed guides with directions, food suggestions, and step-by-step access notes."
+    "Positano beaches can be amazing — and expensive. This guide helps you pick the right beach fast, whether you want a free towel spot, a beach club day, or an easy sunset swim.",
+    "Use the table to compare vibes, lounger prices, and where the free areas usually are. Click a beach name in the table to open the full mini-guide with directions from the hostel.",
+    "Hostel tip: the beaches are pebbly. Bring water shoes (or sturdy sandals), a thicker towel/mat, and cash as backup."
   ],
-  "galleryTitle": "Positano beach highlights",
+  "comparisonTable": {
+    "title": "Amalfi Coast beach comparison"
+  },
   "toc": [
     {
       "href": "#overview",
       "label": "How to choose"
+    },
+    {
+      "href": "#beach-day-checklist",
+      "label": "Beach day checklist"
     },
     {
       "href": "#positano-beaches",
@@ -39,6 +47,10 @@
       "label": "Logistics"
     },
     {
+      "href": "#comparison-table",
+      "label": "Comparison table"
+    },
+    {
       "href": "#faqs",
       "label": "FAQs"
     }
@@ -48,165 +60,133 @@
       "id": "overview",
       "title": "How to choose the right beach",
       "body": [
-        "Positano offers a mix of free pebbled stretches and organised lidos. Lounger prices range from €15 at smaller clubs to €400 at prestige decks like La Scogliera, so decide early whether you want full service or a free towel spot.",
-        "Our comparison table groups beaches by town. Each entry lists starting lounger costs, if a free area exists, and quick pros and cons so you can balance sun hours, crowds, and convenience."
+        "Positano has pebbly beaches with a mix of beach clubs (paid) and public areas (free). Prices can be anything from ~€15 per lounger on quieter beaches to €100+ for premium deck setups.",
+        "If you're on a hostel budget, start with Fornillo (usually cheaper and calmer). If you want the classic postcard view, go to Spiaggia Grande early. For late-day sun, Arienzo or Laurito can be great — but access is trickier.",
+        "Quick picks for 2026: cheapest chill day = Fornillo; easiest \\\\\"iconic Positano\\\\\" photo = Spiaggia Grande; best late sun = Arienzo (by boat) or Laurito; most dramatic cove day trip = Fiordo di Furore."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
+          "alt": "Wide view of Positano town and coastline from the sea",
+          "caption": "Positano coastline (expect stairs) — Photo: Alexis Lours (CC BY 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
+          "alt": "Beach umbrellas and swimmers along Positano's shoreline",
+          "caption": "Umbrellas on Positano beach (peak-day vibe) — Photo: Nan Palmero (CC BY 2.0) via Wikimedia Commons"
+        }
+      ]
+    },
+    {
+      "id": "beach-day-checklist",
+      "title": "Hostel-friendly beach day checklist",
+      "body": [
+        "A little prep saves money (and blisters). Most beaches are pebbles, shade is limited in free areas, and some kiosks still prefer cash."
+      ],
+      "list": [
+        "Water shoes or sturdy sandals (hot stones + easier entry)",
+        "Thicker towel or mat (thin towels feel rough on pebbles)",
+        "Refillable bottle + snacks (promenade prices add up)",
+        "Cash as backup (especially for small kiosks)",
+        "A small dry bag (phone + cash stay safe on boats)",
+        "Sunscreen + hat (free areas can be full sun)",
+        "A light book/cards (good for waiting out crowds)",
+        "A light layer for the walk back (evenings cool fast)"
       ]
     },
     {
       "id": "positano-beaches",
       "title": "Positano beaches at a glance",
       "body": [
-        "Fornillo stays the hostel favourite thanks to its relaxed vibe, two free sections (one tucked away), and beach clubs such as Pupetto, Grassi, Ferdinando, and La Marinella starting around €15. The climb back up is steep, so many walkers cut across to the main beach and ride the bus uphill — check the %LINK:fornilloBeachGuide|Fornillo beach guide% for operator details and free-zone maps.",
-        "Spiaggia Grande delivers the postcard view with Positano's cliffside skyline behind the umbrellas. Expect higher prices: L'Incanto starts near €25, while La Scogliera's VIP decks run €100–€400. A public strip sits in the middle, yet most guests prefer Fornillo's calmer scene — follow our %LINK:positanoMainBeachWalkDown|walking directions% or %LINK:positanoMainBeachBusDown|bus guide% to arrive quickly, then use the %LINK:positanoMainBeachBusBack|return bus tips% if you want to skip the climb back.",
-        "Arienzo combines long afternoon sun with a dramatic staircase descent. Packages with loungers, lunch, and boat transfers start near €60 and include access to the club's water taxi—ideal because independent access is challenging.",
-        "Laurito is a compact cove serviced by Da Adolfo (free loungers with a restaurant tab) and Villa Tre Ville (from €30). Sunshine lasts late into the day, but the only easy access is via their shuttle boats; the public section is tiny."
+        "Fornillo is the hostel favourite: calmer vibe, usually cheaper clubs (often ~€15+), and a bigger free area than the main beach. The walk back up is steep — many guests cut across to Spiaggia Grande and take the internal bus uphill. See the %LINK:fornilloBeachGuide|Fornillo beach guide% for the easiest route and beach layout.",
+        "Spiaggia Grande (the main beach) is the classic postcard view. It also gets crowded and pricey. If you want to do it, go early, find the public strip, and set expectations. Use our %LINK:positanoMainBeachWalkDown|walking directions% or %LINK:positanoMainBeachBusDown|bus guide% to get there fast.",
+        "Arienzo is famous for long afternoon sun. The catch: lots of stairs if you walk, and most people use the beach club shuttle boat. Packages with loungers + lunch + boat transfer can be good value. See the %LINK:arienzoBeachClub|Arienzo Beach Club guide% for timings.",
+        "Laurito is a small cove with boat-shuttle access. It can be a great late-day swim, but the public space is limited and timing matters. See the %LINK:lauritoBeachGuide|Laurito Beach guide% before you commit."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-main-beach.webp",
+          "alt": "View of Positano's main beach (Spiaggia Grande) with the cliffside town in the background",
+          "caption": "Spiaggia Grande (main beach) — Photo: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/fornillo-beach-positano.webp",
+          "alt": "Fornillo Beach in Positano with umbrellas along the shoreline",
+          "caption": "Fornillo (usually calmer + more budget-friendly) — Photo: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/arienzo-beach-positano.webp",
+          "alt": "Arienzo beach area on the Amalfi Coast near Positano",
+          "caption": "Arienzo (afternoon sun, usually by shuttle boat) — Photo: villlamania (CC BY 3.0) via Wikimedia Commons"
+        }
       ]
     },
     {
       "id": "praiano-beaches",
       "title": "Praiano day-trip options",
       "body": [
-        "Praiano's Gavitella Beach is a sunset haven with a restaurant terrace ideal for aperitivi and dinner. There is no free zone, and the midday heat reflects off the concrete platforms, so aim for late afternoon.",
-        "Marina di Praia offers a narrow pebble cove framed by fishing boats and cliffs. A modest free section remains alongside lidos—perfect if you want a change of scenery without losing services."
+        "Praiano's Gavitella is best in late afternoon for golden light and sunset vibes. Much of the area is platforms and clubs, and the free space (if available) is limited, so plan for a paid setup if you want comfort. Use the %LINK:gavitellaBeachGuide|Gavitella beach guide% for step-by-step access.",
+        "Marina di Praia is a narrow pebble cove framed by cliffs and fishing boats. It's a great change of scenery and usually feels more tucked away. See the %LINK:marinaDiPraiaBeaches|Marina di Praia guide% for transport options."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/marina-di-praia.webp",
+          "alt": "Marina di Praia cove framed by cliffs and boats",
+          "caption": "Marina di Praia (Praiano) — Photo: Falk2 (CC BY-SA 4.0) via Wikimedia Commons"
+        }
       ]
     },
     {
       "id": "furore-beaches",
       "title": "Furore's fjord-style cove",
       "body": [
-        "Fiordo di Furore is the Amalfi Coast's Instagram classic with a stone bridge overhead and cliff-jumping spots. Entry is free and costs stay low, but space is extremely limited so arrive early or visit outside peak hours."
+        "Fiordo di Furore is a tiny, dramatic cove under a bridge. It's free to enter, but space is limited, and the access route is steep (and hot in summer). Go early, pack water, and don't count on facilities."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/fiordo-di-furore-bridge.webp",
+          "alt": "Fiordo di Furore bridge above the narrow cove and water",
+          "caption": "Fiordo di Furore (dramatic cove) — Photo: DimiTalen (CC0 1.0) via Wikimedia Commons"
+        }
       ]
     },
     {
       "id": "sorrento-beaches",
       "title": "Sorrento's Regina Giovanna Bath",
       "body": [
-        "Regina Giovanna Bath (Bagni della Regina Giovanna) near Sorrento is a natural swimming hole carved into the cliff. It's free to enter, refreshingly cool, and still under the radar compared with Positano's main beaches—pack water shoes and snacks because there are no facilities."
+        "Regina Giovanna is a natural swimming spot rather than a classic beach club day. It can be a fun (free) adventure if you're up for a walk and you bring supplies. Wear shoes you can get wet and keep valuables minimal."
       ]
     },
     {
       "id": "amalfi-beaches",
       "title": "Amalfi town beach clubs",
       "body": [
-        "Amalfi's main Marina Grande beach is lined with clubs such as Stella Maris, Marina Grande Beach Club, Silver Moon, and Bagni Mar di Cobalto. Expect classic lido setups with waiter service, showers, and views of the Duomo backdrop—reserve ahead in high season to secure front-row loungers."
+        "Amalfi's Marina Grande is convenient for a half-day by the water if you're already visiting the town. Expect premium prices in peak season, and consider booking ahead for loungers."
       ]
     },
     {
       "id": "logistics",
-      "title": "Getting to and from the beach",
+      "title": "Getting to and from the beaches",
       "body": [
-        "For Fornillo and Spiaggia Grande, start from the hostel and descend via Viale Pasitea. If climbing back feels daunting, continue along the waterfront to the main beach and ride the orange internal bus up to Chiesa Nuova, a short walk from Hostel Brikette.",
-        "Arienzo and Laurito run private shuttle boats from Spiaggia Grande; confirm the last return sail before committing to a late aperitif. For Praiano, Furore, Sorrento, or Amalfi, follow the linked guides for transport directions, bus schedules, and ferry options."
-      ]
-    }
-  ],
-  "prosCons": [
-    {
-      "title": "Fornillo",
-      "guideKey": "fornilloBeachGuide",
-      "pros": [
-        "Loungers from €15",
-        "Large and secret free zones",
-        "Relaxed atmosphere"
+        "Each beach has different access options, so check the specific guide before you head out. Here are quick links to the most useful direction guides:",
+        "Positano beaches: %LINK:positanoMainBeachWalkDown|Walk to Spiaggia Grande% • %LINK:positanoMainBeachBusDown|Bus to Spiaggia Grande% • %LINK:hostelBriketteToFornilloBeach|Walk to Fornillo% • %LINK:hostelBriketteToArienzoBus|Bus to Arienzo% • %LINK:lauritoBeachBusDown|Bus to Laurito%",
+        "Return routes: %LINK:positanoMainBeachWalkBack|Walk back from Spiaggia Grande% • %LINK:positanoMainBeachBusBack|Bus back from Spiaggia Grande% • %LINK:fornilloBeachToBrikette|Walk back from Fornillo% • %LINK:arienzoBeachBusBack|Bus back from Arienzo% • %LINK:lauritoBeachBusBack|Bus back from Laurito%",
+        "Day-trip beaches: %LINK:hostelBriketteToFiordoDiFuroreBus|Fiordo di Furore% • %LINK:gavitellaBeachGuide|Gavitella (Praiano)% • %LINK:marinaDiPraiaBeaches|Marina di Praia% • %LINK:reginaGiovannaBath|Regina Giovanna (Sorrento)%",
+        "General tips: In summer 2026, plan for heat on the climbs—refill water before you head back up, and use the internal bus if you're tired. For day trips, check the last return option (ferry or bus) before you commit, and pack snacks for the ride. If the sea is rough or ferries are cancelled, plan extra time and keep your schedule flexible."
       ],
-      "cons": [
-        "Steep return walk",
-        "Limited shade without renting"
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
+          "alt": "People on the beach with boats anchored in the bay near Positano",
+          "caption": "Boats in the bay (bring a dry bag for your phone) — Photo: DimiTalen (CC0 1.0) via Wikimedia Commons"
+        }
       ]
     },
     {
-      "title": "Spiaggia Grande",
-      "guideKey": "positanoMainBeachWalkDown",
-      "pros": [
-        "Iconic Positano skyline",
-        "Central ferry connections",
-        "Public strip available"
-      ],
-      "cons": [
-        "Most expensive loungers",
-        "Very crowded midday"
-      ]
-    },
-    {
-      "title": "Arienzo",
-      "pros": [
-        "Long afternoon sun",
-        "Package deals include lunch and boat",
-        "Great viewpoints"
-      ],
-      "cons": [
-        "Hundreds of stairs",
-        "Hard to access without club shuttle"
-      ]
-    },
-    {
-      "title": "Laurito",
-      "pros": [
-        "Late-day sun",
-        "Da Adolfo iconic lunch spot",
-        "Villa Tre Ville premium service"
-      ],
-      "cons": [
-        "Tiny public section",
-        "Access relies on water taxi timing"
-      ],
-      "guideKey": "lauritoBeachGuide"
-    },
-    {
-      "title": "Gavitella (Praiano)",
-      "pros": [
-        "Sunset aperitivi",
-        "Restaurant terrace"
-      ],
-      "cons": [
-        "No free area",
-        "Concrete platforms get hot"
-      ]
-    },
-    {
-      "title": "Marina di Praia",
-      "guideKey": "marinaDiPraiaBeaches",
-      "pros": [
-        "Charming fishing cove",
-        "Free stretch alongside lidos"
-      ],
-      "cons": [
-        "Narrow beach",
-        "Limited sun earlier in the day"
-      ]
-    },
-    {
-      "title": "Fiordo di Furore",
-      "pros": [
-        "Free entry",
-        "Cliff jumping",
-        "Unique bridge backdrop"
-      ],
-      "cons": [
-        "Extremely small beach",
-        "Crowds build quickly"
-      ]
-    },
-    {
-      "title": "Regina Giovanna Bath",
-      "pros": [
-        "Free natural pool",
-        "Cool water for hot days"
-      ],
-      "cons": [
-        "No services",
-        "Rocky access path"
-      ]
-    },
-    {
-      "title": "Amalfi Marina Grande",
-      "pros": [
-        "Multiple club choices",
-        "Easy ferry and bus access"
-      ],
-      "cons": [
-        "Premium pricing",
-        "Book ahead in peak season"
+      "id": "comparison-table",
+      "title": "Beach comparison table",
+      "body": [
+        "Use this table to compare beach vibe, typical lounger pricing, and whether there’s usually a free area. Prices shift by season and by beach club, so treat these as rough ranges."
       ]
     }
   ],
@@ -248,35 +228,38 @@
       "note": "Row of classic Amalfi lidos opposite the Duomo."
     }
   ],
-  "faqsTitle": "Positano beach FAQs",
   "faqs": [
     {
-      "q": "Where can I find a free beach area in Positano?",
-      "a": [
-        "Fornillo has the largest free stretch plus a quieter hidden section past the main clubs. Spiaggia Grande also keeps a public zone between the paid decks, while Laurito offers only a tiny patch beside Da Adolfo's pontoon."
-      ]
+      "question": "Which Positano beach is best for budget travellers?",
+      "answer": "Fornillo is the most budget-friendly option with loungers starting around €15 and a larger free section than the main beach. It’s also calmer and a favourite among hostel guests."
     },
     {
-      "q": "How do I get back to Hostel Brikette after a beach day?",
-      "a": [
-        "From Fornillo, follow the coastal path to Spiaggia Grande and ride the orange internal bus up to Chiesa Nuova. It drops you within a short walk of the hostel and saves the steep climb."
-      ]
+      "question": "Are there any free beaches near Positano?",
+      "answer": "Yes. Most beaches have at least some public space (often signed as “spiaggia libera”), but where it is and how big it feels can change by season. In Positano, Fornillo is usually the easiest place to find a bigger free area."
     },
     {
-      "q": "Do I need to reserve beach clubs in advance?",
-      "a": [
-        "Book ahead for Arienzo, Laurito's Da Adolfo or Villa Tre Ville, and Spiaggia Grande's front-row spots—weekend seats go quickly. Smaller clubs at Fornillo often accept walk-ins early in the day."
-      ]
-    }
-  ],
-  "gallery": [
-    {
-      "alt": "Spiaggia Grande from above",
-      "caption": "Spiaggia Grande"
+      "question": "How do I get to Arienzo or Laurito beach?",
+      "answer": "Both beaches are easiest by shuttle boat from Spiaggia Grande. Arienzo has hundreds of stairs if you walk, and Laurito has limited land access. If you want the simple option, book a package that includes boat transfer."
     },
     {
-      "alt": "Fornillo beach path",
-      "caption": "Fornillo"
+      "question": "What time should I arrive at the beaches?",
+      "answer": "For popular spots like Fornillo and Spiaggia Grande, arrive by 9–10am to grab a good spot in the free area. Fiordo di Furore fills up quickly because it’s small, so go early or outside peak hours."
+    },
+    {
+      "question": "How much do beach loungers cost in Positano?",
+      "answer": "Prices vary by club and season. Budget clubs at Fornillo can start around €15. Mid-range options at Spiaggia Grande often start around €25. Premium decks can be much higher. Arienzo packages that include boat transfer and food can start around €60."
+    },
+    {
+      "question": "Can I take a day trip to beaches outside Positano?",
+      "answer": "Yes. Praiano (Gavitella and Marina di Praia), Fiordo di Furore, Sorrento’s Regina Giovanna swimming spot, and Amalfi are all popular day-trip options by bus or ferry. Check the linked guides for the easiest route from the hostel."
+    },
+    {
+      "question": "What should I bring to the beach?",
+      "answer": "Bring water shoes (pebbles), sunscreen, a refillable bottle, and a bit of cash. If you want the free area, bring a thicker towel/mat, snacks, and something for shade."
+    },
+    {
+      "question": "Which beach has the best sunset views?",
+      "answer": "Gavitella in Praiano is well-known for sunset aperitivi. Laurito can also get late-day sun, especially if you use the boat shuttle and time it right."
     }
   ]
 }

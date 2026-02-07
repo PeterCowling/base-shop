@@ -1,11 +1,11 @@
-/* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
+ 
 // src/components/seo/SeoHead.tsx
 // Unified head builder: title/description, OG/Twitter parity, canonical + hreflang
-import React, { Fragment, memo, useMemo } from "react";
+import React, { Fragment, memo } from "react";
+
 import type { AppLanguage } from "@/i18n.config";
-import { pageHead } from "@/utils/seo";
-import { buildLinks } from "@/utils/seo";
-import { getOrigin, getPathname } from "@/root/environment";
+import { getOrigin, getPathname } from "@/utils/env-helpers";
+import { buildLinks,pageHead  } from "@/utils/seo";
 
 type OgImage = { src: string; width?: number | string; height?: number | string; alt?: string };
 
@@ -29,12 +29,12 @@ type Props = {
 
 function SeoHead({ lang, title, description, url, image, ogType, isPublished = true, path, twitterCard }: Props): JSX.Element {
   // Resolve canonical path and origin deterministically in all environments
-  const origin = useMemo(() => getOrigin(), []);
-  const canonicalPath = useMemo(() => (path && path.startsWith("/") ? path : getPathname()), [path]);
+  const origin = getOrigin();
+  const canonicalPath = path && path.startsWith("/") ? path : getPathname();
   const resolvedUrl = url ?? `${origin}${canonicalPath}`;
 
   // Canonical + hreflang link descriptors
-  const links = useMemo(() => buildLinks({ lang, origin, path: canonicalPath }), [lang, origin, canonicalPath]);
+  const links = buildLinks({ lang, origin, path: canonicalPath });
 
   return (
     <Fragment>

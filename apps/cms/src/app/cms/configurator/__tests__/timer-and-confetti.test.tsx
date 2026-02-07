@@ -1,5 +1,8 @@
 import React from "react";
-import { render, screen, act, fireEvent } from "@testing-library/react";
+import { act, fireEvent,render, screen } from "@testing-library/react";
+
+import StepPage from "../[stepId]/step-page";
+import { LaunchPanel } from "../components/LaunchPanel";
 
 jest.mock("@acme/i18n", () => ({
   useTranslations: () => (key: string) => key,
@@ -48,9 +51,6 @@ jest.mock("../steps", () => {
     stepIndex: { dummy: 0 },
   };
 });
-
-import StepPage from "../[stepId]/step-page";
-import { LaunchPanel } from "../components/LaunchPanel";
 
 describe("timer telemetry", () => {
   beforeEach(() => {

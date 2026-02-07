@@ -1,5 +1,5 @@
-import type { CartItem } from "@/types/cart";
 import { clampQuantity, MIN_QTY } from "@/lib/quantity";
+import type { CartItem } from "@/types/cart";
 
 const STORAGE_KEY = "cochlearfit:cart";
 const STORAGE_VERSION = 1;

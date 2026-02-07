@@ -1,12 +1,15 @@
 "use client";
 
-import { Button } from "@ui/components/atoms/shadcn";
+import { CheckIcon } from "@radix-ui/react-icons";
+
+import { Cluster } from "@acme/design-system/primitives";
+import { Button } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
+
+import type { ConfiguratorStepProps } from "@/types/configurator";
+
 import { useConfigurator } from "../ConfiguratorContext";
 import useStepCompletion from "../hooks/useStepCompletion";
-import type { ConfiguratorStepProps } from "@/types/configurator";
-import { Cluster } from "@ui/components/atoms/primitives";
-import { CheckIcon } from "@radix-ui/react-icons";
-import { useTranslations } from "@acme/i18n";
 
 export default function StepShopType({ prevStepId, nextStepId }: ConfiguratorStepProps): React.JSX.Element {
   const { state, update } = useConfigurator();

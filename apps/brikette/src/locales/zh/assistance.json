@@ -6,6 +6,16 @@
   },
   "quickLinks": [
     {
+      "label": "旅舍常见问题",
+      "description": "关于在波西塔诺 Hostel Brikette 住宿的常见问题的快速解答。",
+      "slug": "hostelFaqs"
+    },
+    {
+      "label": "旅舍守则",
+      "description": "阅读我们的核心守则，包括禁止外带酒精饮料政策和注意义务准则。",
+      "slug": "rules"
+    },
+    {
       "label": "修改或取消预订",
       "description": "查看截止时间，并了解在计划变更时避免额外费用的小贴士。",
       "slug": "changingCancelling"
@@ -16,9 +26,9 @@
       "slug": "checkinCheckout"
     },
     {
-      "label": "如何前往波西塔诺",
+      "label": "前往波西塔诺",
       "description": "通过我们的分步交通指南比较渡轮、巴士和出租车。",
-      "slug": "travelHelp"
+      "href": "how-to-get-here"
     }
   ],
   "contactCta": {

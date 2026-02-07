@@ -1,20 +1,19 @@
 "use client";
 
-import { useMemo, useState, type ChangeEvent, type FormEvent } from "react";
-
-import { Toast } from "@/components/atoms";
-import { Button, Card, CardContent, Input } from "@/components/atoms/shadcn";
-import DataTable from "@ui/components/cms/DataTable";
-import { FormField } from "@ui/components/molecules";
+import { type ChangeEvent, type FormEvent, useMemo, useState } from "react";
 import { updateStockScheduler } from "@cms/actions/stockScheduler.server";
-import { useTranslations } from "@i18n/Translations";
 
+import DataTable from "@acme/cms-ui/DataTable";
+import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
+import { Button, Card, CardContent, Input } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n/Translations";
+
+import { ErrorChips } from "../components/ErrorChips";
+import { useSettingsSaveForm } from "../hooks/useSettingsSaveForm";
 import {
   mapSchedulerHistoryRows,
   schedulerHistoryColumns,
 } from "../tableMappers";
-import { ErrorChips } from "../components/ErrorChips";
-import { useSettingsSaveForm } from "../hooks/useSettingsSaveForm";
 
 interface HistoryEntry {
   timestamp: number;
@@ -40,9 +39,6 @@ export default function StockSchedulerEditor({ shop, status }: Props) {
     errors,
     setErrors,
     submit,
-    toast,
-    toastClassName,
-    closeToast,
     announceError,
     } = useSettingsSaveForm<void>({
       action: async (formData) => {
@@ -135,13 +131,6 @@ export default function StockSchedulerEditor({ shop, status }: Props) {
           </div>
         </CardContent>
       </Card>
-      <Toast
-        open={toast.open}
-        message={toast.message}
-        onClose={closeToast}
-        className={toastClassName}
-        role="status"
-      />
     </>
   );
 }

@@ -38,7 +38,7 @@ export const runtimeContractManifest = {
     apiCart: {
       path: "/api/cart",
       runtime: "nodejs",
-      uses: "@platform-core/cartApi",
+      uses: "@acme/platform-core/cartApiForShop",
     } satisfies ApiRouteDescriptor,
 
     // Checkout session route name and implementation should converge
@@ -46,19 +46,19 @@ export const runtimeContractManifest = {
     apiCheckoutSession: {
       path: "/api/checkout-session",
       runtime: "nodejs",
-      uses: "@platform-core/checkout/session",
+      uses: "@acme/platform-core/checkout/session",
     } satisfies ApiRouteDescriptor,
 
     apiStripeWebhook: {
       path: "/api/stripe-webhook",
       runtime: "nodejs",
-      uses: "@platform-core/stripe-webhook",
+      uses: "@acme/platform-core/stripe-webhook",
     } satisfies ApiRouteDescriptor,
 
     apiReturn: {
       path: "/api/return",
       runtime: "edge",
-      uses: "@platform-core/repositories/rentalOrders.server",
+      uses: "@acme/platform-core/repositories/rentalOrders.server",
     } satisfies ApiRouteDescriptor,
 
     preview: {
@@ -71,7 +71,7 @@ export const runtimeContractManifest = {
       apiPreviewTokenRoute: {
         path: "/api/preview-token",
         runtime: "nodejs",
-        uses: "@platform-core/previewTokens",
+        uses: "@acme/platform-core/previewTokens",
       },
     } satisfies PreviewContract,
   },

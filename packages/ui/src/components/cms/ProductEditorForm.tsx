@@ -1,27 +1,30 @@
 /* packages/ui/components/cms/ProductEditorForm.tsx */
 "use client";
 
-import { Input } from "../atoms/shadcn";
-import { Toast } from "../atoms";
-import type { Locale } from "@acme/i18n/locales";
+import { type FormEvent,useCallback, useEffect, useMemo, useState } from "react";
+import { usePathname } from "next/navigation";
+
 import { useTranslations } from "@acme/i18n";
+import type { Locale } from "@acme/i18n/locales";
+import { getShopFromPath } from "@acme/lib/shop";
+import { usePublishLocations } from "@acme/platform-core/hooks/usePublishLocations";
+
+import type {
+  ProductSaveResult,
+  ProductWithVariants,
+} from "../../hooks/useProductEditorFormState";
+import { useProductEditorFormState } from "../../hooks/useProductEditorFormState";
+import { useProductEditorNotifications } from "../../hooks/useProductEditorNotifications";
+import { Toast } from "../atoms";
+import { Input } from "../atoms/shadcn";
+
 import Tabs from "./blocks/Tabs";
+import LocaleContentTab from "./LocaleContentTab";
+import MediaGalleryTab from "./MediaGalleryTab";
 import PricingTab from "./PricingTab";
-import VariantsTab from "./VariantsTab";
 import PublishLocationsTab from "./PublishLocationsTab";
 import PublishShopsTab from "./PublishShopsTab";
-import MediaGalleryTab from "./MediaGalleryTab";
-import LocaleContentTab from "./LocaleContentTab";
-import { useProductEditorFormState } from "../../hooks/useProductEditorFormState";
-import type {
-  ProductWithVariants,
-  ProductSaveResult,
-} from "../../hooks/useProductEditorFormState";
-import { useProductEditorNotifications } from "../../hooks/useProductEditorNotifications";
-import { usePublishLocations } from "@acme/platform-core/hooks/usePublishLocations";
-import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
-import { usePathname } from "next/navigation";
-import { getShopFromPath } from "@acme/shared-utils";
+import VariantsTab from "./VariantsTab";
 
 /* -------------------------------------------------------------------------- */
 /*  Types                                                                     */
@@ -108,7 +111,7 @@ export default function ProductEditorForm({
   return (
     <>
       <Toast open={toast.open} message={toast.message} onClose={closeToast} />
-      {/* eslint-disable ds/no-hardcoded-copy -- ABC-123: test IDs and tokens are not UI copy */}
+      { }
       <form
         id={formId}
         data-cy="product-editor-form"
@@ -119,22 +122,22 @@ export default function ProductEditorForm({
       >
         
         <Input type="hidden" name="id" value={product.id} />
-        {/* eslint-disable ds/no-hardcoded-copy -- ABC-123: delimiter and test id are not UI copy */}
+        { }
         <Input
           type="hidden"
           name="publishShops"
           value={publishShops.join(",")}
           data-testid="publish-shops-input"
         />
-        {/* eslint-enable ds/no-hardcoded-copy */}
+        { }
 
         {hasErrors && (
-          /* eslint-disable ds/no-hardcoded-copy -- ABC-123: design token reference is not UI copy */
+           
           <div
             className="rounded-lg border border-danger/30 bg-danger/10 px-4 py-3 text-sm text-danger"
             data-token="--color-danger"
           >
-            {/* eslint-enable ds/no-hardcoded-copy */}
+            { }
             <p className="font-medium">{t("errors.foundIssues")}</p>
             <ul className="mt-2 space-y-1">
               {errorEntries.map(([field, messages]) => (

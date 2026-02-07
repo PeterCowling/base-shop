@@ -1,12 +1,12 @@
 // apps/cover-me-pretty/src/app/api/delivery/schedule/route.test.ts
-import { type NextRequest } from "next/server";
 import { ResponseCookies } from "next/dist/compiled/@edge-runtime/cookies";
+import type { NextRequest } from "next/server";
 
 const parseJsonBody = jest.fn();
 const getShopSettings = jest.fn();
 
-jest.mock("@shared-utils", () => ({ parseJsonBody }));
-jest.mock("@platform-core/repositories/settings.server", () => ({ getShopSettings }));
+jest.mock("@acme/lib/http/server", () => ({ parseJsonBody }));
+jest.mock("@acme/platform-core/repositories/settings.server", () => ({ getShopSettings }));
 
 let POST: typeof import("./route").POST;
 

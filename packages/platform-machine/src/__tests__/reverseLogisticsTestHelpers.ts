@@ -18,7 +18,7 @@ export const markRepair = jest.fn();
 export const markQa = jest.fn();
 export const markAvailable = jest.fn();
 
-jest.mock("@platform-core/repositories/rentalOrders.server", () => ({
+jest.mock("@acme/platform-core/repositories/rentalOrders.server", () => ({
   markReceived,
   markCleaning,
   markRepair,
@@ -34,12 +34,12 @@ export const reverseLogisticsEvents = {
   available: jest.fn(),
 };
 
-jest.mock("@platform-core/repositories/reverseLogisticsEvents.server", () => ({
+jest.mock("@acme/platform-core/repositories/reverseLogisticsEvents.server", () => ({
   reverseLogisticsEvents,
 }));
 
 export const logger = { error: jest.fn() };
-jest.mock("@platform-core/utils", () => ({ logger }));
+jest.mock("@acme/platform-core/utils", () => ({ logger }));
 
 export const randomUUID = jest.fn(() => "uuid");
 jest.mock("crypto", () => ({ randomUUID }));

@@ -7,15 +7,7 @@
     "eyebrow": "体验亮点",
     "title": "Hostel Brikette 体验",
     "description": "夕阳下端起一杯 Spritz，跟随我们熟悉山路的向导徒步，或使用数字礼宾即时获取路线与活动建议，让你的阿马尔菲之旅更轻松。",
-    "supporting": "所有体验均对已登记住客开放；若你与住在其他地方的朋友同行，请提前留言，我们会协助安排。",
-    "primaryCta": "预订床位",
-    "secondaryCta": "查看酒吧菜单",
-    "tertiaryCta": "联系数字礼宾",
-    "primaryCtaAria": "在 Hostel Brikette 预订你的床位",
-    "secondaryCtaAria": "查看 Hostel Brikette 的酒吧菜单",
-    "tertiaryCtaAria": "向 Hostel Brikette 数字礼宾发送消息",
-    "breakfastCta": "查看早餐菜单",
-    "breakfastCtaAria": "查看早餐菜单"
+    "scrollNudge": "按体验类型浏览"
   },
   "sections": {
     "bar": {
@@ -88,51 +80,81 @@
     "taggedDescription": "这些故事聚焦 {{tag}} 的精彩瞬间。移除筛选以浏览全部内容。",
     "empty": "我们尚未推出与 {{tag}} 相关的体验指南，尝试其他标签或取消筛选。",
     "clearFilter": "显示全部体验指南",
-    "cardCta": "探索“{{guideTitle}}”体验指南",
-    "directionsLabel": "交通指南",
+    "cardCta": "探索「{{guideTitle}}」体验指南",
+    "directionsLabel": "路线指引",
+    "sections": {
+      "content": {
+        "title": "体验指南",
+        "description": "关于海滩、徒步、一日游和活动的深度指南"
+      },
+      "directions": {
+        "title": "如何到达",
+        "description": "从/到旅舍的分步交通指引"
+      }
+    },
     "directionLinks": {
       "capriDayTrip": {
-        "positanoCapriFerry": "波西塔诺 → 卡普里渡轮",
-        "capriPositanoFerry": "卡普里 → 波西塔诺渡轮"
+        "positanoCapriFerry": "波西塔诺 → 卡普里 渡轮",
+        "capriPositanoFerry": "卡普里 → 波西塔诺 渡轮"
       },
       "positanoAmalfi": {
-        "positanoAmalfiBus": "波西塔诺 → 阿马尔菲巴士",
-        "amalfiPositanoBus": "阿马尔菲 → 波西塔诺巴士",
-        "positanoAmalfiFerry": "波西塔诺 → 阿马尔菲渡轮（季节性）",
-        "amalfiPositanoFerry": "阿马尔菲 → 波西塔诺渡轮（季节性）"
+        "positanoAmalfiBus": "波西塔诺 → 阿马尔菲 巴士",
+        "amalfiPositanoBus": "阿马尔菲 → 波西塔诺 巴士",
+        "positanoAmalfiFerry": "波西塔诺 → 阿马尔菲 渡轮（季节性）",
+        "amalfiPositanoFerry": "阿马尔菲 → 波西塔诺 渡轮（季节性）"
       },
       "positanoRavello": {
-        "positanoRavelloBus": "波西塔诺 → 拉韦洛巴士",
-        "ravelloPositanoBus": "拉韦洛 → 波西塔诺巴士",
-        "positanoRavelloFerryBus": "波西塔诺 → 拉韦洛渡轮 + 巴士"
+        "positanoRavelloBus": "波西塔诺 → 拉韦洛 巴士",
+        "ravelloPositanoBus": "拉韦洛 → 波西塔诺 巴士",
+        "positanoRavelloFerryBus": "波西塔诺 → 拉韦洛 渡轮 + 巴士"
       },
       "naplesPositano": {
-        "naplesCenterTrainBus": "那不勒斯市中心 → 波西塔诺（火车 + 巴士）",
-        "naplesCenterPositanoFerry": "那不勒斯市中心 → 波西塔诺渡轮",
-        "naplesAirportPositanoBus": "那不勒斯机场 → 波西塔诺巴士",
-        "positanoNaplesCenterBusTrain": "波西塔诺 → 那不勒斯市中心（巴士 + 火车）",
-        "positanoNaplesCenterFerry": "波西塔诺 → 那不勒斯渡轮",
-        "positanoNaplesAirportBus": "波西塔诺 → 那不勒斯机场巴士"
+        "naplesCenterTrainBus": "那不勒斯市区 → 波西塔诺（火车 + 巴士）",
+        "naplesCenterPositanoFerry": "那不勒斯市区 → 波西塔诺 渡轮",
+        "naplesAirportPositanoBus": "那不勒斯机场 → 波西塔诺 巴士",
+        "positanoNaplesCenterBusTrain": "波西塔诺 → 那不勒斯市区（巴士 + 火车）",
+        "positanoNaplesCenterFerry": "波西塔诺 → 那不勒斯 渡轮",
+        "positanoNaplesAirportBus": "波西塔诺 → 那不勒斯机场 巴士"
       },
       "salernoPositano": {
-        "salernoPositanoBus": "萨莱诺 → 波西塔诺巴士",
-        "salernoPositanoFerry": "萨莱诺 → 波西塔诺渡轮（季节性）",
-        "positanoSalernoBus": "波西塔诺 → 萨莱诺巴士",
-        "positanoSalernoFerry": "波西塔诺 → 萨莱诺渡轮（季节性）"
+        "salernoPositanoBus": "萨莱诺 → 波西塔诺 巴士",
+        "salernoPositanoFerry": "萨莱诺 → 波西塔诺 渡轮（季节性）",
+        "positanoSalernoBus": "波西塔诺 → 萨莱诺 巴士",
+        "positanoSalernoFerry": "波西塔诺 → 萨莱诺 渡轮（季节性）"
       }
     },
     "filterHeading": "筛选体验指南",
     "filterDescription": "选择标签以缩小我们重点展示的体验内容。",
     "grouped": {
       "beaches": {
-        "guides": {
-          "heading": "海滩指南",
-          "description": "选择合适的沙滩并规划你的行程。"
-        },
-        "directions": {
-          "heading": "前往海滩的路线",
-          "description": "从 Hostel Brikette 到海岸的分步路线说明。"
-        }
+        "title": "海滩",
+        "description": "选择合适的沙滩并规划你的行程。",
+        "imageAlt": "色彩缤纷的阳伞点缀着波西塔诺海滩"
+      },
+      "hiking": {
+        "title": "徒步 & 步道",
+        "description": "从轻松漫步到全天徒步的各类路线。",
+        "imageAlt": "众神之路上俯瞰海岸的徒步者"
+      },
+      "day-trip": {
+        "title": "一日游",
+        "description": "卡普里、阿马尔菲、拉韦洛——如何往返。",
+        "imageAlt": "渡轮驶向卡普里岛"
+      },
+      "boat": {
+        "title": "乘船游览",
+        "description": "私人包船、团体行程与日落巡游。",
+        "imageAlt": "阿马尔菲海岸水域上的传统船只"
+      },
+      "cuisine": {
+        "title": "美食 & 饮品",
+        "description": "物美价廉的好去处。",
+        "imageAlt": "当地小餐馆的新鲜意式料理"
+      },
+      "more": {
+        "title": "更多指南",
+        "description": "交通贴士、摄影景点与本地活动。",
+        "imageAlt": "当地巴士行驶在阿马尔菲海岸公路上"
       }
     }
   }

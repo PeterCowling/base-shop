@@ -1,4 +1,4 @@
-name: Workspace CI
+name: Package Quality Matrix
 
 on:
   push:
@@ -12,9 +12,15 @@ on:
   schedule:
     - cron: '0 3 * * *'
 
+concurrency:
+  group: package-quality-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   workspaces:
+    name: Discover packages
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
@@ -28,11 +34,13 @@ jobs:
       - id: set-matrix
         run: |
           matrix=$(pnpm list -r --depth -1 --json | node -e "const fs=require('fs');const list=JSON.parse(fs.readFileSync(0,'utf8'));const cwd=process.cwd();const arr=list.filter(p=>p.path!==cwd).map(p=>p.path.replace(cwd+'/', '')).filter(p=>p!=='apps/cms' && p!=='apps/skylar');process.stdout.write(JSON.stringify(arr));")
-          echo "matrix=$matrix" >> $GITHUB_OUTPUT
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
 
-  quality:
+  package-checks:
+    name: Check ${{ matrix.workspace }}
     needs: workspaces
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
@@ -40,21 +48,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-repo
-      - name: Build ESLint plugin
-        run: pnpm --filter @acme/eslint-plugin-ds build
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
       - name: Build workspace (scoped)
-        run: pnpm --filter ./${{ matrix.workspace }}... build
+        run: pnpm exec turbo run build --filter=./${{ matrix.workspace }}
       - run: pnpm --filter ./${{ matrix.workspace }} lint
       - run: pnpm --filter ./${{ matrix.workspace }} typecheck
       - name: Test with coverage
         if: matrix.workspace != 'packages/next-config'
-        run: pnpm --filter ./${{ matrix.workspace }} test -- --coverage --coverage-dir=coverage
+        run: pnpm exec turbo run test --filter=./${{ matrix.workspace }} -- --coverage --coverageDirectory=coverage
       - name: Test next-config (node test runner coverage)
         if: matrix.workspace == 'packages/next-config'
         run: pnpm --filter ./packages/next-config test:coverage
       - run: pnpm --filter ./${{ matrix.workspace }} coverage
         if: matrix.workspace == 'apps/api'
-      - run: pnpm --filter ./${{ matrix.workspace }} e2e
+      - name: E2E (if present)
+        run: pnpm --filter ./${{ matrix.workspace }} run e2e --if-present
       - name: Compute coverage artifact name
         id: coverage-name
         if: always()
@@ -69,3 +79,40 @@ jobs:
           name: ${{ steps.coverage-name.outputs.name }}
           path: ${{ matrix.workspace }}/coverage
           if-no-files-found: ignore
+
+  i18n-coverage:
+    name: Check i18n Coverage
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+      - name: Run i18n coverage check
+        run: pnpm --filter @apps/brikette check-i18n-coverage --json --output=i18n-coverage-report.json
+      - name: Display coverage summary
+        if: always()
+        run: |
+          if [ -f apps/brikette/i18n-coverage-report.json ]; then
+            echo "## i18n Coverage Summary"
+            TOTAL_MISSING_FILES=$(jq '.summary.totalMissingFiles' apps/brikette/i18n-coverage-report.json)
+            TOTAL_MISSING_KEYS=$(jq '.summary.totalMissingKeys' apps/brikette/i18n-coverage-report.json)
+            echo "- Missing files: $TOTAL_MISSING_FILES"
+            echo "- Missing keys: $TOTAL_MISSING_KEYS"
+
+            # Show per-locale summary
+            echo ""
+            echo "### Per-locale Breakdown"
+            jq -r '.reports[] | "- \(.locale): \(.missingFiles | length) files, \((.missingKeys | to_entries | map(.value | length) | add // 0)) keys"' apps/brikette/i18n-coverage-report.json
+          else
+            echo "Coverage report not found"
+          fi
+      - name: Upload i18n coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: i18n-coverage-report
+          path: apps/brikette/i18n-coverage-report.json
+          if-no-files-found: warn

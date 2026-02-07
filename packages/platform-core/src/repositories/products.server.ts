@@ -1,9 +1,10 @@
 import "server-only";
 
 import { prisma } from "../db";
-import { resolveRepo } from "./repoResolver";
 import type { ProductPublication } from "../products/index";
+
 import type { ProductsRepository } from "./products.types";
+import { resolveRepo } from "./repoResolver";
 
 let repoPromise: Promise<ProductsRepository> | undefined;
 

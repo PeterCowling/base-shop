@@ -1,6 +1,7 @@
 "use client";
-import ContactForm from "./ContactForm";
 import { useTranslations } from "@acme/i18n";
+
+import ContactForm from "./ContactForm";
 
 export default function ContactFormWithMap({
   mapSrc = "https://maps.google.com/maps?q=New%20York&t=&z=13&ie=UTF8&iwloc=&output=embed",

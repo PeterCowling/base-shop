@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 export declare const rentalOrderSchema: z.ZodObject<{
     id: z.ZodString;
     sessionId: z.ZodString;
@@ -38,12 +39,13 @@ export declare const rentalOrderSchema: z.ZodObject<{
     stripeBalanceTransactionId: z.ZodOptional<z.ZodString>;
     stripeCustomerId: z.ZodOptional<z.ZodString>;
 }, "strict", z.ZodTypeAny, {
-    shop: string;
     id: string;
     deposit: number;
     sessionId: string;
+    shop: string;
     startedAt: string;
     status?: "received" | "cleaning" | "repair" | "qa" | "available" | undefined;
+    currency?: string | undefined;
     expectedReturnDate?: string | undefined;
     returnDueDate?: string | undefined;
     returnedAt?: string | undefined;
@@ -63,7 +65,6 @@ export declare const rentalOrderSchema: z.ZodObject<{
     trackingNumber?: string | undefined;
     labelUrl?: string | undefined;
     returnStatus?: string | undefined;
-    currency?: string | undefined;
     subtotalAmount?: number | undefined;
     taxAmount?: number | undefined;
     shippingAmount?: number | undefined;
@@ -75,12 +76,13 @@ export declare const rentalOrderSchema: z.ZodObject<{
     stripeBalanceTransactionId?: string | undefined;
     stripeCustomerId?: string | undefined;
 }, {
-    shop: string;
     id: string;
     deposit: number;
     sessionId: string;
+    shop: string;
     startedAt: string;
     status?: "received" | "cleaning" | "repair" | "qa" | "available" | undefined;
+    currency?: string | undefined;
     expectedReturnDate?: string | undefined;
     returnDueDate?: string | undefined;
     returnedAt?: string | undefined;
@@ -100,7 +102,6 @@ export declare const rentalOrderSchema: z.ZodObject<{
     trackingNumber?: string | undefined;
     labelUrl?: string | undefined;
     returnStatus?: string | undefined;
-    currency?: string | undefined;
     subtotalAmount?: number | undefined;
     taxAmount?: number | undefined;
     shippingAmount?: number | undefined;
@@ -113,3 +114,4 @@ export declare const rentalOrderSchema: z.ZodObject<{
     stripeCustomerId?: string | undefined;
 }>;
 export type RentalOrder = z.infer<typeof rentalOrderSchema>;
+//# sourceMappingURL=RentalOrder.d.ts.map

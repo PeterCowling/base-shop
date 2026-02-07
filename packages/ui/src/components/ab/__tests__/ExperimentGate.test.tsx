@@ -1,5 +1,6 @@
 // packages/ui/src/components/ab/__tests__/ExperimentGate.test.tsx
 import { render, screen, waitFor } from "@testing-library/react";
+
 import ExperimentGate from "../ExperimentGate";
 
 describe("ExperimentGate", () => { // i18n-exempt: test titles

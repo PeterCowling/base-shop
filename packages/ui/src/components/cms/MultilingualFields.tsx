@@ -1,12 +1,14 @@
 // packages/ui/components/cms/MultilingualFields.tsx
 "use client";
 
-import { Input, Textarea } from "../atoms/shadcn";
-import { Grid, Stack } from "../atoms/primitives";
-import type { ProductPublication } from "@acme/types";
-import type { Locale } from "@acme/i18n/locales";
-import { useTranslations } from "@acme/i18n";
 import { memo } from "react";
+
+import { useTranslations } from "@acme/i18n";
+import type { Locale } from "@acme/i18n/locales";
+import type { ProductPublication } from "@acme/types";
+
+import { Grid, Stack } from "../atoms/primitives";
+import { Input, Textarea } from "../atoms/shadcn";
 
 interface Props {
   locales: readonly Locale[];

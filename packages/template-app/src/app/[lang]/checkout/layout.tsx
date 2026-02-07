@@ -1,11 +1,13 @@
 // packages/template-app/src/app/[lang]/layout.tsx
 
-import TranslationsProvider from "@i18n/Translations";
-import { Locale, resolveLocale } from "@i18n/locales";
-import Footer from "@ui/components/layout/Footer";
-import Header from "@ui/components/layout/Header";
-import type { ReactNode } from "react";
 import "../../globals.css";
+
+import type { ReactNode } from "react";
+
+import { type Locale, resolveLocale } from "@acme/i18n/locales";
+import TranslationsProvider from "@acme/i18n/Translations";
+import Footer from "@acme/ui/components/layout/Footer";
+import Header from "@acme/ui/components/layout/Header";
 
 export default async function LocaleLayout({
   children,
@@ -24,7 +26,7 @@ export default async function LocaleLayout({
   const messages = (
     await import(
       /* webpackInclude: /(en|de|it)\.json$/ */
-      `@i18n/${lang}.json`
+      `@acme/i18n/${lang}.json`
     )
   ).default;
 

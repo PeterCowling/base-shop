@@ -1,7 +1,9 @@
-import { render, screen } from "@testing-library/react";
-import { ProductCard, Price } from "../ProductCard";
-import React from "react";
 import "../../../../../../test/resetNextMocks";
+
+import React from "react";
+import { render, screen } from "@testing-library/react";
+
+import { Price,ProductCard } from "../ProductCard";
 
 // Mock AddToCartButton to avoid context dependencies
 jest.mock("../AddToCartButton.client", () => ({
@@ -13,7 +15,7 @@ jest.mock("../AddToCartButton.client", () => ({
 const formatPriceMock = jest.fn((amount: number, currency: string) => `${amount} ${currency}`);
 const useCurrencyMock = jest.fn(() => ["USD"] as const);
 
-jest.mock("@acme/shared-utils", () => ({
+jest.mock("@acme/lib/format", () => ({
   formatPrice: (amount: number, currency: string) => formatPriceMock(amount, currency),
 }));
 
@@ -46,7 +48,8 @@ describe("ProductCard media", () => {
   it("renders an Image for image media", () => {
     const sku = { ...baseSku, media: [{ type: "image", url: "/img.jpg" }] };
     render(<ProductCard sku={sku} />);
-    expect(screen.getByRole("img")).toBeInTheDocument();
+    // The next/image mock renders <input type="image"> (role="button") to avoid DS lint issues
+    expect(screen.getByRole("button", { name: baseSku.title })).toBeInTheDocument();
     expect(document.querySelector("video")).toBeNull();
   });
 

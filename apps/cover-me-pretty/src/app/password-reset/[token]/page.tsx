@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { type ReactNode,useState } from "react";
 import { useParams } from "next/navigation";
-import { useTranslations } from "@i18n/Translations";
+
+import { useTranslations } from "@acme/i18n/Translations";
 
 export default function PasswordResetPage() {
   const t = useTranslations();

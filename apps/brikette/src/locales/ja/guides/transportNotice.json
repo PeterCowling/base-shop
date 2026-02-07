@@ -1,11 +1,11 @@
 {
-  "title": "翻訳を準備中です。",
+  "title": "交通情報は善意に基づいて提供しています。乗り継ぎや時間厳守の予定がある場合は特に、必ず公式の時刻表と運行情報（お知らせ）を確認してください。下記に各事業者の時刻表リンクをまとめています。",
   "items": {
-    "buses": "翻訳を準備中です。",
-    "ferries": "翻訳を準備中です。",
-    "airlink": "翻訳を準備中です。",
-    "driving": "翻訳を準備中です。",
-    "premium": "翻訳を準備中です。"
+    "buses": "バス: <sitaLink>アマルフィ海岸</sitaLink>と <curreriLink>ナポリ空港 ⇄ ソレント</curreriLink>。",
+    "trains": "鉄道：<eavLink>Circumvesuviana</eavLink>（Naples ⇄ Sorrento）、<trenitaliaLink>Trenitalia</trenitaliaLink>（幹線列車）。",
+    "ferries": "フェリー：主な運航会社：<travelmarLink>Travelmar</travelmarLink>、<nlgLink>NLG</nlgLink>、<positanoJetLink>Positano Jet</positanoJetLink>、<alicostLink>Alicost</alicostLink>。",
+    "airlink": "サレルノ・コスタ・ダマルフィ空港（QSR）、<airlinkLink>サレルノ行きAirlinkシャトル</airlinkLink>。",
+    "driving": "車: SS163のナンバー規制（4〜10月）とZTL、駐車料金は季節/場所で変動。公式告知を確認。"
   },
-  "srLabel": "Transport notice"
+  "srLabel": "交通案内"
 }

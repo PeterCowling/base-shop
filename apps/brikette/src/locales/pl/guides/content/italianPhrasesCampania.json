@@ -1,40 +1,40 @@
 {
   "seo": {
     "title": "Włoskie zwroty dla podróżnych w Kampanii",
-    "description": "Przydatne włoskie (i odrobina dialektu) na autobusy, promy, kawiarnie i uprzejme rozmowy na wybrzeżu."
+    "description": "Przydatne włoskie (z odrobiną dialektu) zwroty na autobusy, promy, kawiarnie i uprzejme rozmowy."
   },
   "linkLabel": "Włoskie zwroty dla podróżnych w Kampanii",
   "intro": [
-    "Tłumaczenie w przygotowaniu."
+    "Przydatne włoskie (i odrobina miejscowego dialektu) zwroty na autobusy, promy, kawiarnie i uprzejme pytania w Kampanii."
   ],
   "sections": [
     {
       "id": "transport",
-      "title": "Transport basics",
+      "title": "Podstawy transportu",
       "body": [
-        "„Un biglietto per Positano, per favoure” (poproszę jeden bilet do Positano) lub „Dove si convalida?” (Gdzie mam dokonać walidacji?) obejmuje większość czatów.",
-        "Tłumaczenie w przygotowaniu."
+        "\\\\\"Un biglietto per Positano, per favore\\\\\" (poproszę bilet do Positano) lub \\\"Dove si convalida?” (Gdzie skasować?) załatwią większość rozmów przy kasie.",
+        "Miej pod ręką \\\"Scendo alla prossima” (wysiadam na następnym) i \\\"A che ora parte l'ultima corsa?” (O której odjeżdża ostatni kurs?)."
       ]
     },
     {
       "id": "cafe",
-      "title": "Cafés & dining",
+      "title": "Kawiarnie i jedzenie",
       "body": [
-        "Zamówić z opcją „Prendo un espresso al banco” lub „Possiamo avere il conto, per favoure?” and always add a grazie.",
-        "Zapytaj o rekomendacje („Cosa consiglia oggi?”) lub sprawdź potrzeby dietetyczne: „È possibile senza glutine?”."
+        "Zamów \\\"Prendo un espresso al banco” albo \\\"Possiamo avere il conto, per favore?” i zawsze dodaj gracias.",
+        "Zapytaj o rekomendacje (\\\"Cosa consiglia oggi?”) albo sprawdź potrzeby dietetyczne: \\\"È possibile senza glutine?”."
       ]
     },
     {
       "id": "emergency",
-      "title": "Emergencies & courtesy",
+      "title": "Nagłe sytuacje i grzeczności",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Lokalny kolor: „Guagliò” to przyjazne, nieformalne powitanie, podczas gdy „Statt' bbuon” to ciepłe pożegnanie, które można usłyszeć w dialekcie."
+        "\\\"Ho bisogno di aiuto” (potrzebuję pomocy) i \\\"Può chiamare un taxi?” (czy może pan/pani zadzwonić po taksówkę?) sprawdzą się w nagłych wypadkach.",
+        "Kolor lokalny: \\\"Guagliò” to przyjazne powitanie, a \\\"Statt' bbuon” to serdeczne pożegnanie, które możesz usłyszeć w dialekcie."
       ]
     }
   ],
   "tips": [
-    "Pobierz aplikację rozmówek offline, aby szybko odtwarzać dźwięk w przypadku utraty danych mobilnych.",
-    "Tłumaczenie w przygotowaniu."
+    "Pobierz offline’ową aplikację z frazeologią, by odtwarzać nagrania, gdy brak danych.",
+    "Proste \\\"Grazie mille” i \\\"Buona giornata” ocieplają każdą rozmowę, nawet w szczycie sezonu."
   ]
 }

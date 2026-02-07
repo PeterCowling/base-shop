@@ -1,9 +1,12 @@
 /* eslint-disable security/detect-non-literal-fs-filename -- ABC-123: Paths are derived from controlled DATA_ROOT + validated inputs */
 import "server-only";
 
-import { pricingSchema, type PricingMatrix } from "@acme/types";
 import { promises as fs } from "node:fs";
+
 import * as path from "path";
+
+import { type PricingMatrix,pricingSchema } from "@acme/types";
+
 import { resolveDataRoot } from "../dataRoot";
 
 function pricingPath(): string {

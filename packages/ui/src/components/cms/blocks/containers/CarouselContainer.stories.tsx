@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
+
 import CarouselContainer from './CarouselContainer';
 
 const meta: Meta<typeof CarouselContainer> = {

@@ -1,12 +1,14 @@
 // packages/ui/hooks/__tests__/useProductEditorFormState.test.tsx
 
-import type { ProductPublication } from "@acme/types";
-import type { Locale } from "@acme/i18n";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { useEffect, useMemo } from "react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
+import type { Locale } from "@acme/i18n";
+import type { ProductPublication } from "@acme/types";
+
 import {
-  useProductEditorFormState,
   type ProductSaveResult,
+  useProductEditorFormState,
 } from "../useProductEditorFormState";
 
 /* ------------------------------------------------------------------ *
@@ -21,7 +23,7 @@ jest.mock("../useFileUpload", () => ({
   }),
 }));
 
-jest.mock("@platform-core/hooks/usePublishLocations", () => ({
+jest.mock("@acme/platform-core/hooks/usePublishLocations", () => ({
   usePublishLocations: () => ({ locations: [], reload: jest.fn() }),
 }));
 

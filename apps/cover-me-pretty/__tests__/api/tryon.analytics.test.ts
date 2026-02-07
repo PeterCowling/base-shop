@@ -21,7 +21,7 @@ describe("analytics/tryon route", () => {
   it("forwards TryOnStarted", async () => {
     const body = { type: "TryOnStarted", productId: "sku-1", mode: "accessory", idempotencyKey: "8a074e68-1234-4abc-9def-aaaaaaaaaaaa" } as const;
     const req = asNextJson(body);
-    const res = await POST(req as unknown as Request);
+    const res = await POST(req);
     expect(res.status).toBe(200);
     expect(global.fetch).toHaveBeenCalledWith(
       expect.stringContaining("measurement_id=G-TEST"),
@@ -36,7 +36,7 @@ describe("analytics/tryon route", () => {
       idempotencyKey: "not-a-uuid",
     };
     const req = asNextJson(body);
-    const res = await POST(req as unknown as Request);
+    const res = await POST(req);
     expect(res.status).toBe(400);
   });
 });

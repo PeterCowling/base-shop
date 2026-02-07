@@ -1,9 +1,10 @@
 "use client";
 // apps/cover-me-pretty/src/app/account/orders/[id]/MobileReturnLink.tsx
-import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useTranslations } from "@acme/i18n";
+import Image from "next/image";
 import QRCode from "qrcode";
+
+import { useTranslations } from "@acme/i18n";
 
 export function MobileReturnLink() {
   const t = useTranslations();

@@ -1,4 +1,5 @@
 import type { Rule } from "eslint";
+
 import { extractFromJsxAttribute, parseFromExpression } from "../utils/classParser.js";
 
 const ARBITRARY_SPACING_RE = /^(?:-)?(?:(?:m|p)(?:[xytrbl])?|(?:space-[xy]))-\[(.+)\]$/;

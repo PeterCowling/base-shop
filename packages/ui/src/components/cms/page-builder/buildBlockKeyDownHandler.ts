@@ -1,4 +1,5 @@
 import type { RefObject } from "react";
+
 import type { Action } from "./state";
 
 type Args = {

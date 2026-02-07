@@ -1,20 +1,20 @@
-export {};
-
 import {
+  logger,
+  markAvailable,
+  markCleaning,
+  markQa,
+  markReceived,
+  markRepair,
   readdir,
   readFile,
-  unlink,
-  markReceived,
-  markCleaning,
-  markRepair,
-  markQa,
-  markAvailable,
-  reverseLogisticsEvents,
-  logger,
   resetReverseLogisticsMocks,
+  reverseLogisticsEvents,
+  unlink,
 } from "../src/__tests__/reverseLogisticsTestHelpers";
 
-jest.mock("@platform-core/dataRoot", () => ({ resolveDataRoot: () => "/data" }));
+export {};
+
+jest.mock("@acme/platform-core/dataRoot", () => ({ resolveDataRoot: () => "/data" }));
 
 let service: typeof import("@acme/platform-machine");
 
@@ -103,10 +103,10 @@ describe("processReverseLogisticsEventsOnce", () => {
 afterAll(() => {
   jest.resetModules();
   jest.unmock("fs/promises");
-  jest.unmock("@platform-core/repositories/rentalOrders.server");
-  jest.unmock("@platform-core/repositories/reverseLogisticsEvents.server");
-  jest.unmock("@platform-core/utils");
+  jest.unmock("@acme/platform-core/repositories/rentalOrders.server");
+  jest.unmock("@acme/platform-core/repositories/reverseLogisticsEvents.server");
+  jest.unmock("@acme/platform-core/utils");
   jest.unmock("crypto");
-  jest.unmock("@platform-core/dataRoot");
+  jest.unmock("@acme/platform-core/dataRoot");
 });
 

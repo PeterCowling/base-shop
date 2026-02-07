@@ -1,8 +1,8 @@
 /* i18n-exempt file -- PP-1100 internal pipeline API [ttl=2026-06-30] */
 // apps/product-pipeline/src/routes/api/exports/candidates.ts
 
+import { type CandidateRow, getDb, type PipelineEnv } from "../_lib/db";
 import type { PipelineEventContext } from "../_lib/types";
-import { getDb, type CandidateRow, type PipelineEnv } from "../_lib/db";
 
 function parseIntParam(
   value: string | null,
@@ -27,7 +27,12 @@ function parseIdsParam(value: string | null, max: number): string[] {
 
 function csvEscape(value: unknown): string {
   if (value === null || value === undefined) return "";
-  const str = String(value);
+  let str = String(value);
+  // Prevent formula injection by prefixing dangerous characters with single quote
+  // Excel/Google Sheets interpret =, +, -, @, \t, \r as formula starters
+  if (/^[=+\-@\t\r]/.test(str)) {
+    str = `'${str}`;
+  }
   if (/[",\n]/.test(str)) {
     return `"${str.replace(/"/g, '""')}"`;
   }

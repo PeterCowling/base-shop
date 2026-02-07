@@ -1,9 +1,10 @@
-import { describe, it, expect, afterEach, jest } from "@jest/globals";
-jest.mock("path", () => ({
-  join: jest.fn((...parts) => parts.join("/")),
-  dirname: jest.fn((p) => p.split("/").slice(0, -1).join("/")),
-}));
+import { afterEach, describe, expect, it, jest } from "@jest/globals";
 import * as path from "path";
+
+jest.mock("path", () => ({
+  join: jest.fn((...parts: string[]) => parts.join("/")),
+  dirname: jest.fn((p: string) => p.split("/").slice(0, -1).join("/")),
+}));
 
 const product = { id: "123", title: "Title", description: "Desc" };
 const writeMock = jest.fn();
@@ -22,7 +23,7 @@ describe("generateMeta", () => {
   const originalEnv = process.env.NODE_ENV;
 
   afterEach(() => {
-    process.env.NODE_ENV = originalEnv;
+    (process.env as Record<string, string | undefined>).NODE_ENV = originalEnv;
     delete (global as any).__OPENAI_IMPORT_ERROR__;
     expect(fetchMock).not.toHaveBeenCalled();
     writeMock.mockReset();
@@ -34,11 +35,11 @@ describe("generateMeta", () => {
   });
 
   it("falls back when OpenAI returns invalid JSON", async () => {
-    process.env.NODE_ENV = "production";
-    const responsesCreate = jest.fn().mockResolvedValue({
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
+    const responsesCreate = jest.fn<any, any[]>().mockResolvedValue({
       output: [{ content: [{ text: "notjson" }] }],
     });
-    const imagesGenerate = jest.fn().mockResolvedValue({
+    const imagesGenerate = jest.fn<any, any[]>().mockResolvedValue({
       data: [{ b64_json: "" }],
     });
     const OpenAI = jest.fn().mockImplementation(() => ({

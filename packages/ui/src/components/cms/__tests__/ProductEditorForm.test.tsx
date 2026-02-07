@@ -1,6 +1,7 @@
-import { render, fireEvent } from "@testing-library/react";
-import ProductEditorForm from "../ProductEditorForm";
+import { fireEvent,render } from "@testing-library/react";
+
 import { useProductEditorFormState } from "../../../hooks/useProductEditorFormState";
+import ProductEditorForm from "../ProductEditorForm";
 
 // Lightweight mocks to keep JSDOM happy and avoid act() warnings
 jest.mock("next/image", () => ({

@@ -2,30 +2,39 @@
 // apps/cover-me-pretty/src/app/api/checkout-session/route.ts
 import "@acme/zod-utils/initZod";
 
-import { CART_COOKIE, decodeCartCookie, type CartState } from "@platform-core/cartCookie";
-import { getCart } from "@platform-core/cartStore";
-import { getCustomerSession } from "@auth";
-import { getCustomerProfile } from "@platform-core/customerProfiles";
-import { getOrCreateStripeCustomerId } from "@platform-core/identity";
+import { promises as fs } from "node:fs";
+import path from "node:path";
+
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import type Stripe from "stripe";
+import { ulid } from "ulid";
+import { z } from "zod";
+
+import { getCustomerSession } from "@acme/auth";
+import { CART_COOKIE, type CartState,decodeCartCookie } from "@acme/platform-core/cartCookie";
+import { getCart } from "@acme/platform-core/cartStore";
 import {
+  CheckoutValidationError,
   createCheckoutSession,
   INSUFFICIENT_STOCK_ERROR,
-} from "@platform-core/checkout/session";
+} from "@acme/platform-core/checkout/session";
+import { getCustomerProfile } from "@acme/platform-core/customerProfiles";
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
+import { getOrCreateStripeCustomerId } from "@acme/platform-core/identity";
+import {
+  createInventoryHold,
+  InventoryHoldInsufficientError,
+} from "@acme/platform-core/inventoryHolds";
 import {
   cartToInventoryRequests,
   validateInventoryAvailability,
-} from "@platform-core/inventoryValidation";
-import { convertCurrency, getPricing } from "@platform-core/pricing";
+} from "@acme/platform-core/inventoryValidation";
+import { addOrder } from "@acme/platform-core/orders/creation";
+import { convertCurrency, getPricing } from "@acme/platform-core/pricing";
+import { billingSchema,shippingSchema } from "@acme/platform-core/schemas/address";
+
 import shop from "../../../shop.json";
-import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
-import { shippingSchema, billingSchema } from "@platform-core/schemas/address";
-import type Stripe from "stripe";
-import { addOrder } from "@platform-core/orders/creation";
-import { resolveDataRoot } from "@platform-core/dataRoot";
-import path from "node:path";
-import { promises as fs } from "node:fs";
-import { ulid } from "ulid";
 
 export const runtime = "nodejs";
 
@@ -142,34 +151,63 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     };
   }
 
-  let inventoryCheck: Awaited<
-    ReturnType<typeof validateInventoryAvailability>
-  >;
+  // Create inventory hold to reserve stock during checkout (20-minute TTL)
+  const inventoryRequests = cartToInventoryRequests(cart);
+  let inventoryReservationId: string | undefined;
   try {
-    inventoryCheck = await validateInventoryAvailability(
-      shop.id,
-      cartToInventoryRequests(cart),
-    );
+    const hold = await createInventoryHold({
+      shopId: shop.id,
+      requests: inventoryRequests,
+      ttlSeconds: 20 * 60, // 20 minutes
+    });
+    inventoryReservationId = hold.holdId;
   } catch (err) {
-    console.error("Inventory validation failed", err); // i18n-exempt -- ABC-123 developer log [ttl=2025-06-30]
-    return NextResponse.json(
-      { error: "Inventory backend unavailable" }, // i18n-exempt -- ABC-123 machine-readable API error [ttl=2025-06-30]
-      { status: 503 },
-    );
-  }
-  if (!inventoryCheck.ok) {
-    return NextResponse.json(
-      {
-        error: INSUFFICIENT_STOCK_ERROR,
-        code: "inventory_insufficient",
-        items: inventoryCheck.insufficient,
-      },
-      { status: 409 },
-    );
+    if (err instanceof InventoryHoldInsufficientError) {
+      return NextResponse.json(
+        {
+          error: INSUFFICIENT_STOCK_ERROR,
+          code: "inventory_insufficient",
+          items: err.insufficient,
+        },
+        { status: 409 },
+      );
+    }
+    console.error("Inventory hold creation failed", err); // i18n-exempt -- ABC-123 developer log [ttl=2025-06-30]
+    // Fall back to read-only validation if holds are unavailable
+    let inventoryCheck: Awaited<
+      ReturnType<typeof validateInventoryAvailability>
+    >;
+    try {
+      inventoryCheck = await validateInventoryAvailability(
+        shop.id,
+        inventoryRequests,
+      );
+    } catch (validationErr) {
+      console.error("Inventory validation failed", validationErr); // i18n-exempt -- ABC-123 developer log [ttl=2025-06-30]
+      return NextResponse.json(
+        { error: "Inventory backend unavailable" }, // i18n-exempt -- ABC-123 machine-readable API error [ttl=2025-06-30]
+        { status: 503 },
+      );
+    }
+    if (!inventoryCheck.ok) {
+      return NextResponse.json(
+        {
+          error: INSUFFICIENT_STOCK_ERROR,
+          code: "inventory_insufficient",
+          items: inventoryCheck.insufficient,
+        },
+        { status: 409 },
+      );
+    }
   }
 
   try {
     const orderId = ulid();
+    const orderLineItems = inventoryRequests.map((item) => ({
+      sku: item.sku,
+      variantAttributes: item.variantAttributes ?? {},
+      quantity: item.quantity,
+    }));
     const result = await createCheckoutSession(cart, {
       mode: "rental",
       returnDate,
@@ -189,6 +227,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       subtotalExtra,
       depositAdjustment,
       orderId,
+      inventoryReservationId,
       skipInventoryValidation: true,
     });
     const resolvedOrderId = result.orderId ?? orderId;
@@ -205,6 +244,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         currency,
         cartId: cartId ?? undefined,
         stripePaymentIntentId: result.paymentIntentId,
+        lineItems: orderLineItems,
       });
     } catch {
       // fallback to JSONL persistence
@@ -238,6 +278,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
     if (err instanceof Error && err.message === INSUFFICIENT_STOCK_ERROR) {
       return NextResponse.json({ error: INSUFFICIENT_STOCK_ERROR }, { status: 409 }); // i18n-exempt -- ABC-123 machine-readable API error, not user-facing UI [ttl=2025-06-30]
+    }
+    if (err instanceof CheckoutValidationError) {
+      return NextResponse.json(
+        { error: err.message, code: err.code, details: err.details },
+        { status: 409 },
+      );
     }
     console.error(
       "Failed to create Stripe checkout session" /* i18n-exempt -- ABC-123 developer log [ttl=2025-06-30] */,

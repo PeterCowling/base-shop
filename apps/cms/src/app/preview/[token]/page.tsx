@@ -2,11 +2,13 @@
 
 import type { ChangeEvent } from "react";
 import { useEffect, useMemo, useState } from "react";
-import DynamicRenderer from "@ui/components/DynamicRenderer";
-import type { PageComponent, HistoryState } from "@acme/page-builder-core";
-import { Button, Input } from "@/components/atoms/shadcn";
+
 import { TranslationsProvider, useTranslations } from "@acme/i18n";
-import en from "@i18n/en.json";
+import en from "@acme/i18n/en.json";
+import type { HistoryState,PageComponent } from "@acme/page-builder-core";
+import DynamicRenderer from "@acme/ui/components/DynamicRenderer";
+
+import { Button, Input } from "@/components/atoms/shadcn";
 
 interface VersionResponse {
   shop: string;

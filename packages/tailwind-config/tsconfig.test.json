@@ -3,6 +3,7 @@
   "compilerOptions": {
     "types": ["@testing-library/jest-dom", "jest", "node"],
     "noEmit": true,
+    "allowImportingTsExtensions": true,
     "module": "esnext",
     "moduleResolution": "bundler",
     "rootDir": "."

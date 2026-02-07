@@ -10,22 +10,22 @@
   "sections": [
     {
       "id": "where",
-      "title": "Where to buy",
+      "title": "Hvor du kjøper",
       "body": [
         "Kjøp på tabacchi/kiosker langs hovedveien. Fyll opp når køene er korte."
       ]
     },
     {
       "id": "validate",
-      "title": "Validation",
+      "title": "Validering",
       "body": [
-        "Validere ved ombordstigning der maskiner finnes; behold billettene til utgang."
+        "Valider ved ombordstigning der maskiner finnes; behold billettene til avstigning."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "Can I buy on board?",
+      "q": "Kan jeg kjøpe om bord?",
       "a": [
         "Generelt ikke; kjøp før ombordstigning for å unngå forsinkelser."
       ]

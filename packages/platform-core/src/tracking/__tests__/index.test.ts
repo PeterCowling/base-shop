@@ -1,17 +1,26 @@
 import { jest } from "@jest/globals";
 
-const getTrackingStatusMock = jest.fn();
-jest.mock("../../shipping", () => ({
-  getTrackingStatus: getTrackingStatusMock,
-}));
-jest.mock("../../services/emailService", () => ({
-  getEmailService: () => ({ sendEmail: jest.fn() }),
-}));
-
 import {
   getTrackingDashboard,
   notifyStatusChange,
 } from "../../internal/tracking";
+
+// Use globalThis to avoid Jest mock hoisting issues
+declare global {
+  var __trackingTestGetTrackingStatusMock: jest.Mock | undefined;
+}
+globalThis.__trackingTestGetTrackingStatusMock = jest.fn();
+
+const getTrackingStatusMock = globalThis.__trackingTestGetTrackingStatusMock!;
+
+jest.mock("../../shipping", () => ({
+  get getTrackingStatus() {
+    return globalThis.__trackingTestGetTrackingStatusMock;
+  },
+}));
+jest.mock("../../services/emailService", () => ({
+  getEmailService: () => ({ sendEmail: jest.fn() }),
+}));
 
 describe('getTrackingDashboard', () => {
   beforeEach(() => {

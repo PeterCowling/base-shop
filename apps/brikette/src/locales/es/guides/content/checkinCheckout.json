@@ -1,0 +1,160 @@
+{
+  "seo": {
+    "title": "Guía de check-in y check-out de Hostel Brikette (Positano)",
+    "description": "Instrucciones paso a paso sobre horarios de llegada, requisitos de identificación, guarda de equipaje, depósitos y ayuda para el check-out en Hostel Brikette en Positano."
+  },
+  "linkLabel": "Guía de check-in y check-out de Hostel Brikette",
+  "sections": [
+    {
+      "id": "checkInRequest",
+      "title": "Solicitud de check-in",
+      "body": [
+        "Cuando llegues, visita nuestra recepción para iniciar el proceso de check-in y recibir la asignación de tu habitación.",
+        "Si llegas en ferry, sigue %LINK:ferryDockToBrikette|nuestra ruta del muelle al hostel%. Si llegas en autobús, usa %LINK:chiesaNuovaArrivals|la guía de llegadas a Chiesa Nuova% para llegar a la entrada."
+      ],
+      "images": [
+        {
+          "src": "/img/checkin-desk.avif",
+          "alt": "Mostrador de recepción para el check-in del hostel.",
+          "caption": "Mostrador de recepción donde comienza el check-in en Hostel Brikette."
+        }
+      ]
+    },
+    {
+      "id": "earlyArrival",
+      "title": "Llegada temprana",
+      "body": [
+        "Si llegas antes de las 10:30 AM en la fecha de tu reserva, ten en cuenta que todavía no podrás entrar al hostel.",
+        "Aprovecha ese tiempo para desayunar, dar un paseo breve o planificar el día mientras esperas la ventana de check-in."
+      ]
+    },
+    {
+      "id": "middayArrival",
+      "title": "Llegada al mediodía",
+      "body": [
+        "Si llegas entre las 10:30 AM y las 3:00 PM, es posible que se te permita entrar como Huésped Temporal, sujeto a aprobación. Durante este tiempo, puedes solicitar guarda de equipaje si hay espacio disponible. Ten en cuenta que la guarda de equipaje es independiente de tu reserva y tiene sus propios términos y condiciones.",
+        "Si necesitas una opción garantizada, revisa %LINK:luggageStorage|nuestra guía de guarda de equipaje% antes de llegar."
+      ]
+    },
+    {
+      "id": "checkInWindow",
+      "title": "Horario de check-in",
+      "body": [
+        "Puedes hacer check-in de 3:00 PM a 10:30 PM todos los días. Durante este tiempo seguirás nuestro proceso estándar de check-in."
+      ]
+    },
+    {
+      "id": "lateArrival",
+      "title": "Llegada tardía",
+      "body": [
+        "Si planeas llegar después de que recepción cierre a las 10:30 PM, podemos ofrecerte una opción de check-in tardío autoservicio, sujeta a disponibilidad. Enviaremos instrucciones a los datos de contacto proporcionados durante la reserva. Asegúrate de que tu dispositivo esté cargado y tus datos sean correctos, ya que no podemos hacernos responsables de problemas causados por información incorrecta o fallos técnicos.",
+        "Si esperas llegar tarde, comparte tu hora estimada de llegada con antelación para confirmar si la opción de check-in tardío está disponible."
+      ]
+    },
+    {
+      "id": "necessityOfProcess",
+      "title": "Necesidad del proceso completo de check-in",
+      "body": [
+        "Debes completar el proceso completo de check-in para entrar al hostel. Si no puedes completar el check-in, tu reserva se cancelará y se considerará No Show."
+      ]
+    },
+    {
+      "id": "proofOfIdentity",
+      "title": "Documento de identidad",
+      "body": [
+        "Debes presentar un documento de identidad original y válido (pasaporte, DNI, licencia de conducir o identificación militar) al llegar. Si no presentas un ID válido antes de las 10:30 PM en tu día de check-in, tu reserva se cancelará como No Show."
+      ]
+    },
+    {
+      "id": "paymentBalance",
+      "title": "Saldo pendiente",
+      "body": [
+        "Debes liquidar cualquier saldo pendiente usando un método de pago aceptado antes de completar el check-in. Si no puedes pagar el total, tu reserva se cancelará y se marcará como No Show."
+      ]
+    },
+    {
+      "id": "keycardLinenDeposit",
+      "title": "Depósito de tarjeta y sábanas",
+      "body": [
+        "En el check-in, debes dejar un depósito en efectivo de €10 por tu tarjeta y juego de sábanas. Este depósito se devuelve íntegramente en efectivo al hacer el check-out cuando devuelvas ambos elementos. No se aceptan tarjetas de crédito o débito para este depósito."
+      ],
+      "images": [
+        {
+          "src": "https://www.retrotouch.co.uk/user/products/large/Boutique%20hotel%20range/Card%20Key/Key%20card%20white.jpg",
+          "alt": "Tarjeta de hotel blanca.",
+          "caption": "Lleva tu tarjeta contigo; devuélvela al hacer el check-out para recibir tu depósito de €10 en efectivo — Foto: RetroTouch (retrotouch.co.uk). Redimensionada/recortada."
+        }
+      ]
+    },
+    {
+      "id": "checkoutWindow",
+      "title": "Horario de check-out",
+      "body": [
+        "El check-out es de 7:30 AM a 10:30 AM. Después del check-out no puedes volver a entrar a tu habitación ni dejar pertenencias personales."
+      ]
+    },
+    {
+      "id": "earlyCheckout",
+      "title": "Check-out temprano",
+      "body": [
+        "Si necesitas salir antes de las 7:30 AM, organiza el check-out temprano en recepción la noche anterior para recibir el reembolso del depósito en efectivo. Dejar la tarjeta sin confirmación del personal implica la pérdida del depósito."
+      ]
+    },
+    {
+      "id": "lateCheckout",
+      "title": "Check-out tardío",
+      "body": [
+        "No ofrecemos check-out tardío. El check-out debe completarse antes de las 10:30 AM."
+      ]
+    },
+    {
+      "id": "failureToCheckout",
+      "title": "No realizar el check-out",
+      "body": [
+        "El hostel suele estar completo, por lo que las habitaciones deben desocuparse a tiempo para que el equipo de limpieza prepare las llegadas.",
+        "Si no has hecho el check-out y tus pertenencias siguen en la habitación después del horario, puede que tengamos que actuar para liberar la habitación. Haremos lo posible por contactarte primero, pero podemos retirar tus cosas y guardarlas con un servicio local de portería. Cualquier coste de almacenamiento y manipulación se cargará a tu cuenta."
+      ]
+    },
+    {
+      "id": "postCheckout",
+      "title": "Después del check-out",
+      "body": [
+        "Una vez que haces el check-out, tu reserva finaliza oficialmente. Puedes permanecer en las instalaciones del hostel como Huésped Temporal hasta las 3:30 PM, con acceso solo a áreas comunes (sin acceso a habitaciones). Se puede solicitar guarda de equipaje, sujeta a disponibilidad, y se aplican términos aparte.",
+        "Si mueves equipaje pesado después del check-out, considera %LINK:porterServices|los servicios de porteros% o revisa %LINK:luggageStorage|nuestra guía de guarda de equipaje% para explorar la ciudad sin cargas."
+      ]
+    }
+  ],
+  "lastUpdated": "2026-02-04T00:00:00.000Z",
+  "intro": [
+    "Esta guía explica los pasos de check-in y check-out en Hostel Brikette para que puedas planificar horarios de llegada, documentos y pagos con antelación.",
+    "La mayoría de los huéspedes hace check-in entre 3:00 PM y 10:30 PM, pero las llegadas tempranas pueden tener acceso temporal y guarda de equipaje según disponibilidad.",
+    "Antes de llegar, prepara un ID válido, liquida cualquier saldo pendiente y recuerda el depósito en efectivo de €10 por tu tarjeta y sábanas. El check-out es de 7:30–10:30 AM."
+  ],
+  "tipsTitle": "Consejos rápidos",
+  "tips": [
+    "Ten tu ID y método de pago a mano antes de llegar a recepción para agilizar el check-in.",
+    "Si llegas temprano, guarda %LINK:luggageStorage|la guía de guarda de equipaje% para planificar tu día sin maletas.",
+    "Si viajas con equipaje pesado desde el muelle, %LINK:porterServices|los servicios de porteros% pueden mover las maletas mientras tú caminas."
+  ],
+  "faqsTitle": "FAQs de check-in y check-out",
+  "faqs": [
+    {
+      "q": "¿Puedo hacer check-in antes de las 3:00 PM?",
+      "a": [
+        "La entrada temprana es limitada y depende de la disponibilidad. Puedes solicitar acceso como Huésped Temporal y guarda de equipaje, pero el check-in completo empieza a las 3:00 PM."
+      ]
+    },
+    {
+      "q": "¿Qué pasa si olvido mi ID?",
+      "a": [
+        "Necesitamos un ID original y válido para completar el check-in. Sin él, tu reserva puede cancelarse como No Show."
+      ]
+    },
+    {
+      "q": "¿Puedo guardar equipaje después del check-out?",
+      "a": [
+        "Normalmente podemos guardar maletas por un tiempo limitado según disponibilidad. Consulta %LINK:luggageStorage|nuestra guía de guarda de equipaje% para detalles y alternativas."
+      ]
+    }
+  ]
+}

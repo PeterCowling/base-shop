@@ -1,69 +1,259 @@
 {
   "seo": {
-    "title": "Chiesa Nuova/Bar Internazionale até o Hostel Brikette",
-    "description": "Microrota da parada Chiesa Nuova até o albergue com escadas mínimas; dicas e alternativas de bagagem."
+    "title": "Paragem de autocarro Chiesa Nuova / Bar Internazionale → Hostel Brikette",
+    "description": "Chega de autocarro a Positano? Saia em Chiesa Nuova / Bar Internazionale (mais perto do Hostel Brikette). Sinalize ao motorista, localize a paragem, caminhe 2–5 min até à receção."
   },
-  "linkLabel": "Chegadas em Chiesa Nuova/Bar Internazionale: rota até o Hostel Brikette",
-  "intro": "Chegando de ônibus? “Chiesa Nuova” ou “Bar Internazionale” é a parada mais próxima do albergue. Esta microrrota minimiza escadas para joelhos e bagagem.",
+  "linkLabel": "Chiesa Nuova / Bar Internazionale para Hostel Brikette (chegadas)",
+  "lastUpdated": "2026-02-02",
+  "intro": "Chega de autocarro SITA em 2026? A **paragem de autocarro Chiesa Nuova / Bar Internazionale** é a paragem mais próxima do Hostel Brikette, com a caminhada mais curta e menos escadas. Este guia trata da própria paragem: como reconhecê-la, como garantir que o autocarro para mesmo, e como caminhar os últimos 120–140 metros até à receção.\n\nNão é um guia de toda a viagem de autocarro — é a última parte crítica da chegada: saber como é a paragem, quando premir o botão e como levar as suas malas para o hostel sem fazer os longos percursos de escadas. Também encontrará informações essenciais sobre a chegada (armazenamento de bagagem, horários de check-in e opções de chegada tardia) nas FAQ no final.",
   "image": {
-    "alt": "Parada SITA de Chiesa Nuova em Positano em frente ao Bar Internazionale",
-    "caption": "Parada Positano (Chiesa Nuova) — espere em frente ao Bar Internazionale; no verão chegue um pouco mais cedo porque os ônibus lotam rápido."
+    "alt": "Paragem de autocarro SITA Chiesa Nuova / Bar Internazionale em Positano na Viale Pasitea",
+    "caption": "Esta paragem chama-se \"Positano (Chiesa Nuova)\" nos horários e fica em frente ao Bar Internazionale na Viale Pasitea."
   },
   "toc": {
     "onThisPage": "Nesta página",
-    "before": "Antes de sair",
+    "before": "Antes de partir",
     "steps": "Passo a passo",
     "knees": "Pernas e bagagem",
     "faqs": "Perguntas frequentes"
   },
   "sections": [
     {
-      "id": "why-stop",
-      "title": "Por que esta parada funciona",
+      "id": "why-this-stop",
+      "title": "Porque Chiesa Nuova / Bar Internazionale é a melhor paragem para chegar",
       "body": [
-        "A parada de ônibus em frente ao café/bar chamado Bar Internazionale fica a cerca de 140 metros do Hostel Brikette."
+        "Positano tem várias paragens de autocarro. A que torna as chegadas ao hostel mais fáceis é a **Chiesa Nuova / Bar Internazionale** — é a paragem mais próxima do Hostel Brikette e evita caminhar muito mais longe desde a paragem de autocarro Positano Sponda, ou longas subidas de escadas que enfrentará se acabar na paragem \"Positano Centro\".",
+        "Desta paragem é uma curta caminhada maioritariamente plana (cerca de 120–140 metros) mais as escadas de entrada do hostel. É por isso que a recomendamos para **bagagem**, **pernas cansadas** e **primeiras chegadas**.",
+        "Se está a planear a sua chegada mais ampla, consulte o nosso guia %LINK:howToGetToPositano|Como chegar a Positano%, depois use esta página para a paragem final e os últimos 2–5 minutos a pé."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.webp",
+          "alt": "Placa de paragem SITA para Positano Chiesa Nuova / Bar Internazionale",
+          "caption": "Procure o marcador de paragem SITA em frente ao Bar Internazionale."
+        },
+        {
+          "src": "/img/directions/chiesa-nuova-arrivals/positano-chiesa-nuova-church.jpg",
+          "alt": "Vista da encosta de Positano perto de Chiesa Nuova / Bar Internazionale (Santa Maria delle Grazie)",
+          "caption": "Foto: Lorenzo Saprio (CC BY-SA 4.0) via Wikimedia Commons."
+        }
       ]
     },
     {
-      "id": "bus-basics",
-      "title": "Horários e bilhetes de ônibus",
+      "id": "fast-facts",
+      "title": "Factos rápidos (época 2026)",
       "body": [
-        "Compre bilhetes da SITA no tabacchi próximo ao ponto ou valide no embarque os bilhetes comprados com antecedência; deixe um extra reservado para retornos tarde da noite.",
-        "Os ônibus noturnos ficam mais espaçados depois das 22h — verifique a tabela de horários com antecedência e planeje-se para o penúltimo serviço para evitar tarifas de táxi."
+        "**Tempo de caminhada:** 2–5 minutos da paragem até à receção, dependendo da bagagem e tráfego.",
+        "**Distância:** ~120–140 metros ao longo da Viale Pasitea, depois uma escadaria curta até à entrada do hostel.",
+        "**Tipo de paragem:** Paragem a pedido — avise o motorista e prima o botão de paragem cedo.",
+        "**Quando se preparar para sair:** Levante-se e mova-se em direção à porta 1–2 minutos antes de Chiesa Nuova, especialmente se o autocarro estiver cheio.",
+        "**Melhor para:** Primeiras chegadas, malas pesadas e qualquer pessoa que queira menos escadas.",
+        "**Bilhetes:** Não pode comprar bilhetes SITA ao motorista — compre-os antecipadamente (veja %LINK:sitaTickets|noções básicas de bilhetes SITA%).",
+        "**Horários de pico:** Final da manhã e final da tarde podem estar movimentados no verão; se um autocarro estiver cheio, espere pelo próximo em vez de tentar espremer-se com malas.",
+        "**Se não tiver certeza a bordo:** Pergunte ao motorista ou a um passageiro próximo — esta é uma paragem comum para hóspedes do hostel e excursionistas.",
+        "**Se está a chegar primeiro de ferry:** Use o guia %LINK:ferryDockToBrikette|cais de ferry → Hostel Brikette% para chegar a esta paragem sem arrastar malas pelas escadas da praia."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-interno-yellow.webp",
+          "alt": "Um pequeno autocarro local usado na rota de Positano",
+          "caption": "Os autocarros locais são compactos e frequentemente lotados — posicione-se perto da porta antes da sua paragem."
+        }
+      ]
+    },
+    {
+      "id": "get-off-here",
+      "title": "Como sair na paragem certa (o que procurar no autocarro)",
+      "body": [
+        "Em muitas rotas, o motorista (ou um ecrã a bordo) anuncia a paragem como **\"Chiesa Nuova\"**. Nos horários também pode aparecer como **\"Positano (Chiesa Nuova)\"**. Localmente, também ouvirá pessoas dizer **Chiesa Nuova / Bar Internazionale** porque a paragem fica diretamente em frente àquele café/tabacaria.",
+        "**Avise o motorista quando embarcar:** \"Chiesa Nuova, per favore.\" Esta é a maneira mais simples de evitar perder a paragem, especialmente se o autocarro estiver lotado ou estiver a chegar tarde no dia.",
+        "**Prima o botão de paragem cedo.** Quando vir o Bar Internazionale a aproximar-se (frequentemente à sua direita à medida que o autocarro atravessa esta curva), prima o botão de paragem para que o motorista tenha tempo de encostar.",
+        "**Sinalize ao motorista se estiver de pé:** Quando o autocarro se aproximar, faça contacto visual e levante a mão para que o motorista saiba que quer sair. Isto importa porque Chiesa Nuova é uma paragem a pedido.",
+        "Se estiver de pé com malas, comece a mover-se em direção à porta um minuto antes da paragem — o autocarro pode parar brevemente e depois continuar rapidamente.",
+        "Se estiver nervoso sobre perdê-la, pergunte ao motorista uma ou duas paragens antes: \"Prossima Chiesa Nuova?\" (Chiesa Nuova é a próxima?). Os motoristas estão habituados a esta pergunta de visitantes."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/chiesa-nuova-arrivals/amalfi-coast-sita-bus.jpg",
+          "alt": "Um autocarro SITA Sud na estrada da Costa Amalfitana",
+          "caption": "Foto: Robot8A (CC BY-SA 4.0) via Wikimedia Commons."
+        },
+        {
+          "src": "/img/directions/ferry-dock-interno-red.webp",
+          "alt": "Um autocarro local compacto na Costa Amalfitana",
+          "caption": "Mova-se em direção à saída antes do autocarro parar — os motoristas frequentemente encostam brevemente."
+        }
+      ]
+    },
+    {
+      "id": "what-youll-see",
+      "title": "Como é quando chegar (para que saiba onde sair)",
+      "body": [
+        "A paragem é **à beira da estrada na Viale Pasitea**, em frente ao **Bar Internazionale**. Procure a fachada do bar/tabacaria, um pequeno grupo de pessoas à espera no passeio e a placa de paragem SITA azul-branca.",
+        "O autocarro deixa-o diretamente no passeio. Não há plataforma elevada — desce até ao nível da rua e o autocarro arranca rapidamente.",
+        "Se não tiver certeza, pergunte a outro passageiro ou diga \"Chiesa Nuova?\" ao motorista — os locais conhecem esta paragem e é um pedido comum para hóspedes do hostel.",
+        "Assim que sair, verá a estrada principal a continuar em ambas as direções. O hostel fica a uma curta caminhada ao longo da mesma estrada — você **não** precisa de subir longas escadarias desta paragem.",
+        "Em horários movimentados, pode ver uma pequena fila de pessoas à espera do próximo autocarro no mesmo passeio. Fique na borda interior para não bloquear o tráfego."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.png",
+          "alt": "Marcador de paragem de autocarro à beira da estrada em frente ao Bar Internazionale em Positano",
+          "caption": "A paragem fica mesmo em frente ao Bar Internazionale na estrada principal."
+        }
+      ]
+    },
+    {
+      "id": "walk-to-hostel",
+      "title": "Caminhada de Chiesa Nuova / Bar Internazionale para o Hostel Brikette (2–5 minutos)",
+      "body": [
+        "Desça ao nível da rua em frente ao Bar Internazionale e oriente-se na **Viale Pasitea** (a estrada principal através de Positano).",
+        "Caminhe ao longo do passeio pavimentado por cerca de 120–140 metros. Estará a caminhar ao longo da estrada principal — mantenha as malas perto e fique na borda interior do passeio quando o tráfego estiver apertado.",
+        "Procure a placa do **Hostel Brikette** e a escadaria curta até à receção. Suba os degraus para chegar à porta da frente.",
+        "Se estiver a usar um carregador, confirme se ele o encontrará na paragem ou trará as malas diretamente para a entrada do hostel para que possa caminhar sem as mãos ocupadas.",
+        "Se estiver a carregar uma mala grande, leve o seu tempo nos degraus e pause no patamar se necessário — é uma subida curta mas são as únicas escadas nesta rota.",
+        "Se precisar de uma vista de mapa, use o %URL:https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!5e0!3m2!1sen!2sit!4v1700000000000|mapa% para a curva exata e escadaria."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/hostel-brikette-entrance-steps.webp",
+          "alt": "Degraus de entrada e placa do Hostel Brikette",
+          "caption": "A entrada fica no topo de uma escadaria curta desde a estrada principal."
+        }
+      ]
+    },
+    {
+      "id": "tickets-and-basics",
+      "title": "Bilhetes, malas e noções básicas de viagem (notas rápidas)",
+      "body": [
+        "Não pode comprar bilhetes SITA ao motorista. Compre bilhetes antecipadamente numa tabacaria/quiosque (o Bar Internazionale pode ajudar), depois valide ou mostre o bilhete quando embarcar. Para o guia completo, veja %LINK:sitaTickets|bilhetes SITA e validação%.",
+        "Se houver uma máquina validadora dentro do autocarro, passe o seu bilhete ao entrar. Se não tiver certeza, segure o bilhete e mostre-o ao motorista — ele indicará o que fazer.",
+        "Os bilhetes são pequenos pedaços de papel — guarde-os num lugar fácil de alcançar e evite dobrá-los ou molhá-los antes de embarcar.",
+        "Os autocarros podem estar lotados no verão e após chegadas de ferry. Se o autocarro estiver cheio, o motorista pode não aceitar passageiros adicionais — o próximo autocarro geralmente não está muito atrás, mas na época alta ainda pode parecer lento. Planeie com flexibilidade.",
+        "Mantenha o seu bilhete acessível para que possa mostrá-lo rapidamente ao embarcar. Se estiver a viajar em grupo, tenha todos prontos para embarcar juntos para evitar atrasar o autocarro.",
+        "Se estiver a chegar com bagagem grande, considere um %LINK:porterServices|serviço de carregador% para mover malas da paragem para o hostel enquanto caminha.",
+        "Para dicas mais amplas de transporte público (passes, planeamento de orçamento e sazonalidade), veja %LINK:publicTransportAmalfi|transporte público na Costa Amalfitana% e %LINK:transportBudget|dicas de orçamento de transporte%."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
+          "alt": "Área de paragem de autocarro na estrada costeira em Positano",
+          "caption": "A maioria das paragens SITA são simples entradas à beira da estrada com uma pequena placa — mantenha as malas perto e esteja pronto para embarcar."
+        }
+      ]
+    },
+    {
+      "id": "ferry-first",
+      "title": "Chegar primeiro de ferry? Eis como esta paragem se encaixa",
+      "body": [
+        "Se a sua viagem começar no cais de ferry ao nível da praia, a sua rota mais fácil e adequada para bagagem é geralmente: cais de ferry → serviço de carregador → autocarro Interno Positano → **Chiesa Nuova / Bar Internazionale** → caminhada curta até ao hostel.",
+        "Percorremos essa rota passo a passo em %LINK:ferryDockToBrikette|cais de ferry → Hostel Brikette (com bagagem)% — é o caminho de chegada mais comum para hóspedes na época alta.",
+        "Já está na praia e quer a subida mais simples? Use o autocarro para chegar a Chiesa Nuova, depois siga a curta caminhada descrita neste guia.",
+        "Saltar o serviço de carregador é possível com malas leves, mas a caminhada da praia até esta paragem inclui um trecho de subida constante — a maioria dos hóspedes prefere poupar energia para os degraus finais até ao hostel."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-positano-spiaggia-view.jpg",
+          "alt": "Cais de ferry de Positano e passeio marítimo da praia com barcos na baía",
+          "caption": "As chegadas de ferry acontecem ao nível da praia — o autocarro torna a subida mais fácil."
+        },
+        {
+          "src": "/img/directions/ferry-dock-promenade-to-mulini.jpg",
+          "alt": "Passeio marítimo de Positano em direção à Piazza dei Mulini",
+          "caption": "Do cais, a maioria das chegadas caminha em direção à Piazza dei Mulini antes de apanhar o autocarro."
+        }
+      ]
+    },
+    {
+      "id": "night-arrivals",
+      "title": "Chegar à noite ou após um longo dia de viagem",
+      "body": [
+        "As chegadas noturnas podem parecer mais desorientadoras porque a estrada está mais escura e o tráfego ainda está ativo. A paragem continua a ser a mesma entrada à beira da estrada em frente ao Bar Internazionale, por isso use o bar como ponto de referência.",
+        "Se estiver a carregar bagagem, mova-se lentamente ao longo do passeio e fique na borda interior. A caminhada é curta, mas ser calmo e deliberado é melhor do que tentar apressar-se num passeio estreito após um longo dia de viagem.",
+        "Se estiver a chover ou ventoso, espere sob o toldo do bar até que o autocarro esteja totalmente parado, depois desça cuidadosamente — o passeio pode parecer escorregadio com sapatos de viagem e malas pesadas."
+      ]
+    },
+    {
+      "id": "waiting-early",
+      "title": "Se chegar cedo ou precisar de uma pausa",
+      "body": [
+        "O Bar Internazionale fica mesmo na paragem e é o lugar mais conveniente para esperar se chegar cedo ou precisar de um café rápido e sombra. Também é um bom lugar para verificar que está na paragem correta.",
+        "Se chegar com bagagem, mantenha-a consigo e evite bloquear o passeio — autocarros e scooters passam perto do lancil.",
+        "Se estiver cansado ou com jet lag, tire um momento para verificar o mapa antes de caminhar para não ultrapassar a placa do hostel.",
+        "Se precisar de ajuda, pode enviar mensagem ao hostel ou verificar o guia %LINK:checkinCheckout|check-in e checkout% para os horários atuais da receção e opções de chegada."
+      ]
+    },
+    {
+      "id": "accessibility-safety",
+      "title": "Dicas de acessibilidade e segurança na rua",
+      "body": [
+        "A paragem Chiesa Nuova / Bar Internazionale minimiza escadas, razão pela qual a recomendamos para a maioria das chegadas. Os únicos degraus nesta rota são a escadaria curta até à entrada do hostel.",
+        "A Viale Pasitea pode estar movimentada e o passeio estreita em alguns lugares. Mantenha a bagagem na borda interior, caminhe em fila única se necessário e evite parar no lado da estrada do passeio.",
+        "Se estiver a viajar com malas pesadas, um carrinho de bebê ou mobilidade limitada, considere um %LINK:porterServices|serviço de carregador% para que possa focar-se na curta caminhada sem levantar bagagem.",
+        "Se precisar de pausar, entre na entrada recuada perto do bar ou espere logo além da paragem para estar fora do fluxo de tráfego."
+      ]
+    },
+    {
+      "id": "wrong-stop",
+      "title": "Se saiu na paragem errada de Positano",
+      "body": [
+        "Se acidentalmente sair em **Positano Centro** ou **Spiaggia Grande / Positano Spiaggia**, espere uma subida muito mais íngreme com significativamente mais escadas para chegar ao hostel.",
+        "A correção mais simples é apanhar um autocarro local ou táxi até **Chiesa Nuova / Bar Internazionale**, depois siga a curta caminhada neste guia.",
+        "Se não tiver certeza de onde está, abra o mapa e vá para o Bar Internazionale — é o ponto de referência para esta paragem.",
+        "Se estiver a carregar malas pesadas e já se sentir preso, considere pausar num café ou perguntar a um local para apontar para a paragem Bar Internazionale — é um ponto de referência muito comum em Positano."
       ]
     }
   ],
   "beforeList": [
-    "Consulte os horários da SITA com antecedência para não acabar esperando na beira da estrada pela última partida.",
-    "Valide o bilhete assim que embarcar — os fiscais multam bilhetes não validados, mesmo em trajetos curtos.",
-    "Avise o albergue se for chegar depois da meia-noite para que a equipe noturna mantenha o código da porta à mão."
+    "Avise o motorista \"Chiesa Nuova, per favore\" quando embarcar e prima o botão de paragem cedo.",
+    "Compre ou valide o seu bilhete antes de embarcar (veja %LINK:sitaTickets|bilhetes SITA%).",
+    "Mantenha o seu telemóvel carregado para que possa verificar o mapa ou enviar mensagem ao hostel se necessário."
   ],
   "stepsList": [
-    "Do ponto em frente ao Bar Internazionale, caminhe pouco mais de 100 metros (330 pés) morro acima pela Viale Pasitea — siga a rota do mapa abaixo para orientações passo a passo.",
-    "Na curva, passe pela placa do Hostel Brikette no nível do terraço e depois suba as escadas no lado direito da estrada até a porta principal."
+    "Saia em Chiesa Nuova / Bar Internazionale (paragem à beira da estrada em frente ao bar/tabacaria).",
+    "Caminhe ao longo da Viale Pasitea por cerca de 120–140 metros no passeio.",
+    "Procure a placa do Hostel Brikette e suba a escadaria curta até à receção."
   ],
-  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sBar+Internazionale!4m1!2sHostel+Brikette",
+  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!5e0!3m2!1sen!2sit!4v1700000000000",
   "kneesList": [
-    "Todo o trajeto é pavimentado, com apenas uma pequena escada na entrada.",
-    "Se as subidas incomodarem seus joelhos, faça pausas curtas — o tráfego abranda naturalmente na curva."
+    "A rota evita longas escadarias — é maioritariamente passeio mais a escadaria curta de entrada.",
+    "Se estiver a carregar malas pesadas, considere um %LINK:porterServices|serviço de carregador% para recolha/entrega em Chiesa Nuova / Bar Internazionale.",
+    "Precisa de um plano completo de bagagem? Veja %LINK:luggageStorage|opções de armazenamento de bagagem% e a nossa %LINK:ferryDockToBrikette|rota de chegada de ferry%."
   ],
-  "kneesDockPrefix": "Chegando primeiro de ferry?",
-  "kneesDockLinkLabel": "Doca → rota de bagagem do hostel",
+  "kneesDockPrefix": "Chega primeiro via ferry?",
+  "kneesDockLinkLabel": "Rota de bagagem Cais → Hostel",
   "kneesPorterPrefix": "Precisa de ajuda com malas pesadas?",
-  "kneesPorterLinkLabel": "Guia do serviço de carregador",
+  "kneesPorterLinkLabel": "Guia de serviço de carregador",
   "faqs": [
     {
-      "q": "Há calçada por todo o caminho?",
-      "a": "Sim — o percurso usa a calçada da via principal, evitando escadarias longas."
+      "q": "Como sei que estou na paragem certa?",
+      "a": "Está a procurar a paragem à beira da estrada em frente ao **Bar Internazionale** na Viale Pasitea. Nos anúncios de autocarro/horários é normalmente chamada **\"Positano (Chiesa Nuova)\"** — os locais também a chamam Chiesa Nuova / Bar Internazionale."
     },
     {
-      "q": "Tem iluminação à noite?",
-      "a": "Há iluminação pública; use a lanterna do telefone para enxergar melhor nas vielas."
+      "q": "Preciso de premir um botão para o autocarro parar?",
+      "a": "Sim — trate-a como uma paragem a pedido. Avise o motorista \"Chiesa Nuova, per favore\" quando embarcar, e prima o botão de paragem quando vir o Bar Internazionale a aproximar-se para que o motorista tenha tempo de encostar."
+    },
+    {
+      "q": "Quanto tempo demora a caminhada?",
+      "a": "Cerca de 2–5 minutos, dependendo da bagagem e tráfego, para aproximadamente 120–140 metros."
+    },
+    {
+      "q": "Posso guardar a minha bagagem antes do check-in?",
+      "a": "Geralmente sim — o armazenamento de bagagem está disponível a partir das 10:30 para hóspedes a fazer check-in (sujeito a espaço). Se chegar antes das 10:30, pode precisar de esperar no Bar Internazionale e subir quando abrirmos. Detalhes completos no %LINK:luggageStorage|guia de armazenamento de bagagem%."
+    },
+    {
+      "q": "Quais são os horários de check-in e o que preciso para fazer check-in?",
+      "a": "O check-in regular é das 15:00 às 22:30. Traga o seu ID original (passaporte/cartão de identificação). No check-in precisará de um depósito de €10 em dinheiro para o seu cartão-chave + conjunto de roupa de cama (reembolsado em dinheiro quando devolver ambos no checkout). Detalhes completos: %LINK:checkinCheckout|guia de check-in e checkout%."
+    },
+    {
+      "q": "E se chegar depois da receção fechar?",
+      "a": "A receção fecha às 22:30. Se chegar mais tarde, envie-nos mensagem antes de viajar — dependendo do dia podemos oferecer um check-in tardio de autoatendimento."
     }
   ],
   "howtoSteps": [
-    "Do ponto “Chiesa Nuova”, caminhe de 2 a 5 minutos até o albergue",
-    "Use as vielas com menos degraus; evite escadarias longas",
-    "Se estiver com malas pesadas, considere pedir que o carregador faça a coleta no ponto"
+    "Saia em Positano Chiesa Nuova / Bar Internazionale (paragem mais próxima do hostel)",
+    "Avise o motorista \"Chiesa Nuova, per favore\" e prima o botão de paragem cedo",
+    "Caminhe 120–140 metros ao longo da Viale Pasitea e suba os degraus de entrada até à receção",
+    "Se não tiver certeza, pergunte no Bar Internazionale ou verifique o mapa para a placa do hostel"
   ]
 }

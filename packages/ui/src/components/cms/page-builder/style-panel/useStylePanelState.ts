@@ -1,18 +1,21 @@
 import { useCallback, useMemo } from "react";
+
 import type { PageComponent } from "@acme/types";
 import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
+
+import usePreviewTokens from "../hooks/usePreviewTokens";
 import { defaultEffectPresets } from "../style/effectPresets";
 import { getStyleClipboard, setStyleClipboard } from "../style/styleClipboard";
 import useCustomPresets from "../style/useCustomPresets";
-import usePreviewTokens from "../hooks/usePreviewTokens";
 import {
   applyTextThemeToOverrides,
   clearTextThemeFromOverrides,
   extractTextThemes,
   getAppliedTextTheme,
 } from "../textThemes";
-import type { StylePanelProps } from "./types";
+
 import { trackEvent } from "./telemetry";
+import type { StylePanelProps } from "./types";
 
 const clipboard = { get: getStyleClipboard, set: setStyleClipboard } as const;
 

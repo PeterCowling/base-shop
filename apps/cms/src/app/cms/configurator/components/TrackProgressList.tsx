@@ -1,6 +1,7 @@
 "use client";
 
 import type { TrackProgressItem } from "../hooks/useConfiguratorDashboardState";
+
 import { CardRoot, CardSection, ProgressBar, TagElement } from "./DashboardPrimitives";
 
 interface TrackProgressListProps {

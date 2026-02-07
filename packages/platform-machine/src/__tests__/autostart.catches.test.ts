@@ -1,5 +1,4 @@
 /** @jest-environment node */
-import type { Mock } from "jest-mock";
 
 describe("autostart catch logging", () => {
   const OLD_ENV = process.env;
@@ -15,10 +14,10 @@ describe("autostart catch logging", () => {
     jest.clearAllMocks();
     jest.unmock("fs/promises");
     jest.unmock("node:fs/promises");
-    jest.unmock("@platform-core/utils");
+    jest.unmock("@acme/platform-core/utils");
   });
 
-  const flush = () => new Promise((r) => setImmediate(r));
+  const flush = () => new Promise((resolve) => setImmediate(resolve));
 
   it("logs when reverse logistics autostart fails", async () => {
     process.env.NODE_ENV = "production";
@@ -27,8 +26,8 @@ describe("autostart catch logging", () => {
     const readdir = jest.fn().mockRejectedValue(err);
     jest.doMock("fs/promises", () => ({ __esModule: true, readdir }));
 
-    const error: Mock = jest.fn();
-    jest.doMock("@platform-core/utils", () => ({
+    const error = jest.fn();
+    jest.doMock("@acme/platform-core/utils", () => ({
       __esModule: true,
       logger: { error, info: jest.fn() },
     }));
@@ -54,8 +53,8 @@ describe("autostart catch logging", () => {
       readFile,
     }));
 
-    const error: Mock = jest.fn();
-    jest.doMock("@platform-core/utils", () => ({
+    const error = jest.fn();
+    jest.doMock("@acme/platform-core/utils", () => ({
       __esModule: true,
       logger: { error, info: jest.fn() },
     }));
@@ -81,9 +80,9 @@ describe("autostart catch logging", () => {
       readFile,
     }));
 
-    const error: Mock = jest.fn();
-    const cerror: Mock = jest.fn();
-    jest.doMock("@platform-core/utils", () => ({
+    const error = jest.fn();
+    const cerror = jest.fn();
+    jest.doMock("@acme/platform-core/utils", () => ({
       __esModule: true,
       logger: { error, info: jest.fn() },
     }));

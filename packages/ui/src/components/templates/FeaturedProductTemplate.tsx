@@ -1,17 +1,19 @@
 "use client"; // i18n-exempt -- I18N-0001 [ttl=2026-01-31]: Next.js directive string
-import Image from "next/image";
 import * as React from "react";
-import { cn } from "../../utils/style";
+import Image from "next/image";
+
 import { useTranslations } from "@acme/i18n";
-import { Button } from "../atoms/shadcn";
-import { Price } from "../atoms/Price";
-import { RatingStars } from "../atoms/RatingStars";
+import type { Locale } from "@acme/i18n/locales";
+import { resolveText } from "@acme/i18n/resolveText";
 import type { SKU } from "@acme/types";
 import type { TranslatableText } from "@acme/types/i18n";
-import type { Locale } from "@acme/i18n/locales";
-import { resolveText } from "@i18n/resolveText";
-import { ProductFeatures } from "../organisms/ProductFeatures";
+
+import { cn } from "../../utils/style";
+import { Price } from "../atoms/Price";
 import { Stack } from "../atoms/primitives";
+import { RatingStars } from "../atoms/RatingStars";
+import { Button } from "../atoms/shadcn";
+import { ProductFeatures } from "../organisms/ProductFeatures";
 
 export interface FeaturedProductTemplateProps
   extends React.HTMLAttributes<HTMLDivElement> {

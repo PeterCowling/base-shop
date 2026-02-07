@@ -1,8 +1,12 @@
-import type { Role } from "@acme/types";
 import type { Session } from "next-auth";
 import type { JWT } from "next-auth/jwt";
 
-jest.mock("@acme/shared-utils", () => ({
+import { logger } from "@acme/lib/logger";
+import type { Role } from "@acme/types";
+
+import { type AuthOverrides,createAuthOptions } from "../options";
+
+jest.mock("@acme/lib/logger", () => ({
   logger: {
     debug: jest.fn(),
     info: jest.fn(),
@@ -11,16 +15,13 @@ jest.mock("@acme/shared-utils", () => ({
   },
 }));
 
-import { logger } from "@acme/shared-utils";
-import { createAuthOptions, type AuthOverrides } from "../options";
-
 type Authorize = (
   credentials?: { email: string; password: string } | null
 ) => Promise<unknown>;
 
 const getAuthorize = (overrides: AuthOverrides) => {
   const options = createAuthOptions(overrides);
-  return (options.providers[0] as any).options.authorize as Authorize;
+  return (options.providers![0] as any).options.authorize as Authorize;
 };
 
 beforeEach(() => {
@@ -48,7 +49,7 @@ describe("authorize", () => {
 
   it("allows dev fixture in development", async () => {
     const prevEnv = process.env.NODE_ENV;
-    process.env.NODE_ENV = "development";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "development";
 
     const readRbac = jest.fn().mockResolvedValue({
       users: {
@@ -68,7 +69,7 @@ describe("authorize", () => {
       role: "admin",
     });
 
-    process.env.NODE_ENV = prevEnv;
+    (process.env as Record<string, string | undefined>).NODE_ENV = prevEnv;
   });
 
   it("logs when user password is not hashed", async () => {
@@ -93,7 +94,7 @@ describe("authorize", () => {
 
   it("throws in production when password is not hashed", async () => {
     const prevEnv = process.env.NODE_ENV;
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
 
     const readRbac = jest.fn().mockResolvedValue({
       users: {
@@ -107,7 +108,7 @@ describe("authorize", () => {
       authorize({ email: "user@example.com", password: "plain" })
     ).rejects.toThrow("Invalid email or password");
 
-    process.env.NODE_ENV = prevEnv;
+    (process.env as Record<string, string | undefined>).NODE_ENV = prevEnv;
   });
 
   it("throws when user is missing", async () => {
@@ -199,8 +200,8 @@ describe("authorize", () => {
 describe("callbacks", () => {
   it("stores role in jwt and exposes it in session", async () => {
     const options = createAuthOptions();
-    const jwtCb = options.callbacks.jwt!;
-    const sessionCb = options.callbacks.session!;
+    const jwtCb = options.callbacks!.jwt!;
+    const sessionCb = options.callbacks!.session!;
 
     const token = {} as JWT & { role?: Role };
     const user = { id: "1", role: "admin" as Role };
@@ -209,13 +210,13 @@ describe("callbacks", () => {
     expect((withRole as JWT & { role?: Role }).role).toBe("admin");
 
     const session = { user: {} } as Session & { user: { role?: Role } };
-    const result = await sessionCb({ session, token: withRole });
-    expect(result.user.role).toBe("admin");
+    const result = await sessionCb({ session, token: withRole } as any);
+    expect(result.user!.role).toBe("admin");
   });
 
   it("keeps token role when user is absent", async () => {
     const options = createAuthOptions();
-    const jwtCb = options.callbacks.jwt!;
+    const jwtCb = options.callbacks!.jwt!;
 
     const token = { role: "admin" as Role } as JWT & { role?: Role };
     const result = await jwtCb({ token });
@@ -225,22 +226,22 @@ describe("callbacks", () => {
 
   it("assigns guest role in session", async () => {
     const options = createAuthOptions();
-    const sessionCb = options.callbacks.session!;
+    const sessionCb = options.callbacks!.session!;
     const session = { user: {} } as Session & { user: { role?: Role } };
 
     const result = await sessionCb({
       session,
-      token: { role: "guest" } as JWT & { role: Role },
-    });
-    expect(result.user.role).toBe("guest");
+      token: { role: "guest" } as unknown as JWT & { role: Role },
+    } as any);
+    expect(result.user!.role).toBe("guest");
   });
 
   it("leaves role undefined when token lacks it", async () => {
     const options = createAuthOptions();
-    const sessionCb = options.callbacks.session!;
+    const sessionCb = options.callbacks!.session!;
     const session = { user: {} } as Session & { user: { role?: Role } };
 
-    const result = await sessionCb({ session, token: {} as JWT });
-    expect(result.user.role).toBeUndefined();
+    const result = await sessionCb({ session, token: {} as JWT } as any);
+    expect(result.user!.role).toBeUndefined();
   });
 });

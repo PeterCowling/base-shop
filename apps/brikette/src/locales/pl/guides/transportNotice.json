@@ -1,11 +1,11 @@
 {
-  "title": "Always verify transport details",
+  "title": "Wszystkie informacje o transporcie podajemy w dobrej wierze. Zawsze sprawdzaj oficjalne rozkłady jazdy i komunikaty przewoźników, zwłaszcza jeśli masz dalsze przesiadki lub inne zobowiązania zależne od czasu. Poniżej znajdują się linki do rozkładów odpowiednich operatorów.",
   "items": {
-    "buses": "Buses: check SITA Sud official timetables — <sitaLink>sitasudtrasporti.it</sitaLink>.",
-    "ferries": "Ferries: operators publish seasonal routes and times (weather-dependent). See <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink>.",
-    "airlink": "Tłumaczenie w przygotowaniu.",
-    "driving": "Tłumaczenie w przygotowaniu.",
-    "premium": "Tłumaczenie w przygotowaniu."
+    "buses": "Autobusy: <sitaLink>Wybrzeże Amalfitańskie</sitaLink> i <curreriLink>lotnisko w Neapolu ⇄ Sorrento</curreriLink>.",
+    "trains": "Pociągi: <eavLink>Circumvesuviana</eavLink> (Naples ⇄ Sorrento), <trenitaliaLink>Trenitalia</trenitaliaLink> (pociągi dalekobieżne).",
+    "ferries": "Promy: Operatorzy to m.in. <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink>, <positanoJetLink>Positano Jet</positanoJetLink>, <alicostLink>Alicost</alicostLink>.",
+    "airlink": "Lotnisko Salerno Costa d’Amalfi (QSR), <airlinkLink>transfer Airlink do Salerno</airlinkLink>.",
+    "driving": "Samochodem: SS163 ma ograniczenia wjazdu według numerów rejestracyjnych (kwiecień–październik) oraz strefę ZTL; opłaty parkingowe zmieniają się w zależności od sezonu i lokalizacji. Sprawdź oficjalne komunikaty."
   },
-  "srLabel": "Transport notice"
+  "srLabel": "Informacja o transporcie"
 }

@@ -1,12 +1,15 @@
-import { ulid } from "ulid";
+import type { MutableRefObject } from "react";
 import type { DragEndEvent } from "@dnd-kit/core";
+import { ulid } from "ulid";
+
 import type { PageComponent } from "@acme/types";
-import type { Action } from "../../state";
+
 import type { ComponentType } from "../../defaults";
 import { canDropChild, type ParentKind } from "../../rules";
-import { findById, findParentId, getTypeOfId, resolveParentKind, hasChildren } from "./tree";
-import type { MutableRefObject } from "react";
+import type { Action } from "../../state";
+
 import { safeDispatchEvent } from "./dom";
+import { findById, findParentId, getTypeOfId, hasChildren,resolveParentKind } from "./tree";
 
 type DragFrom = "palette" | "library" | "canvas";
 

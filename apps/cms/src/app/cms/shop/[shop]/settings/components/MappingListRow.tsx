@@ -1,6 +1,6 @@
 "use client";
 
-import type { MappingRowsController } from "../useShopEditorSubmit";
+import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
 import {
   Button,
   Input,
@@ -9,8 +9,9 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@ui/components/atoms";
-import { FormField } from "@ui/components/molecules";
+} from "@acme/design-system/shadcn";
+
+import type { MappingRowsController } from "../useShopEditorSubmit";
 
 import type {
   MappingFieldName,

@@ -1,5 +1,7 @@
 import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 
+import PageBuilder from "../src/components/cms/PageBuilder";
+
 jest.mock("next/navigation", () => ({
   usePathname: () => "/shop",
 }));
@@ -16,8 +18,6 @@ jest.mock("../src/components/cms/page-builder/hooks/useAutoSave", () => ({
     return { autoSaveState: "error" };
   },
 }));
-
-import PageBuilder from "../src/components/cms/PageBuilder";
 
 describe("PageBuilder interactions", () => {
   const page = {

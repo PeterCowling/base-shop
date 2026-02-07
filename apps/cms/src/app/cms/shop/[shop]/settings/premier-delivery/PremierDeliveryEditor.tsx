@@ -1,11 +1,10 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
-
-import { Toast } from "@/components/atoms";
-import { Button, Card, CardContent, Input } from "@/components/atoms/shadcn";
-import { FormField } from "@ui/components/molecules";
 import { updatePremierDelivery } from "@cms/actions/shops.server";
+
+import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
+import { Button, Card, CardContent, Input } from "@acme/design-system/shadcn";
 
 import { ErrorChips } from "../components/ErrorChips";
 import { StringCollectionField } from "../components/StringCollectionField";
@@ -88,9 +87,6 @@ export default function PremierDeliveryEditor({ shop, initial }: Props) {
     saving,
     errors,
     handleSubmit,
-    toast,
-    toastClassName,
-    closeToast,
   } = useSettingsSaveForm<PremierDeliveryResult>({
     action: submitPremierDelivery,
     successMessage: "Premier delivery settings saved.",
@@ -237,13 +233,6 @@ export default function PremierDeliveryEditor({ shop, initial }: Props) {
               </Button>
             </div>
           </form>
-          <Toast
-            open={toast.open}
-            message={toast.message}
-            onClose={closeToast}
-            className={toastClassName}
-            role="status"
-          />
         </CardContent>
       </Card>
   );

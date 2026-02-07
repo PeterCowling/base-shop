@@ -1,3 +1,5 @@
+import { NextRequest } from "next/server";
+
 import type { LaunchCheckResult } from "@acme/types";
 
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
@@ -14,7 +16,7 @@ const mockGetLaunchStatus = jest.fn<
   [import("@acme/types").LaunchEnv, string]
 >();
 
-jest.mock("@platform-core/configurator", () => ({
+jest.mock("@acme/platform-core/configurator", () => ({
   getLaunchStatus: (...args: unknown[]) =>
     mockGetLaunchStatus(
       args[0] as import("@acme/types").LaunchEnv,
@@ -33,7 +35,7 @@ beforeEach(() => {
 });
 
 const makeRequest = () =>
-  new Request("http://test.local/cms/api/launch-status/demo", {
+  new NextRequest("http://test.local/cms/api/launch-status/demo", {
     method: "GET",
   });
 

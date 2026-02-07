@@ -1,20 +1,22 @@
 import "server-only";
 
-import { LOCALES } from "@acme/i18n";
+import { z } from "zod";
+
+import { nowIso } from "@acme/date-utils";
+import { LOCALES } from "@acme/i18n/locales";
 import {
-  shopSettingsSchema,
   type Locale,
   type ShopSettings,
+  shopSettingsSchema,
 } from "@acme/types";
-import { z } from "zod";
+
 import { validateShopName } from "../shops/index";
-import { nowIso } from "@acme/date-utils";
 import {
+  appendToShop,
   ensureShopDir,
   readFromShop,
-  writeToShop,
-  appendToShop,
   renameInShop,
+  writeToShop,
 } from "../utils/safeFs";
 
 const DEFAULT_LANGUAGES: Locale[] = [...LOCALES];
@@ -22,6 +24,41 @@ const DEFAULT_LANGUAGES: Locale[] = [...LOCALES];
 export type Settings = ShopSettings;
 
 // paths resolved via safeFs helpers
+
+export function getDefaultShopSettings(): Settings {
+  return {
+    languages: DEFAULT_LANGUAGES,
+    seo: {
+      aiCatalog: {
+        enabled: true,
+        fields: ["id", "title", "description", "price", "media"],
+        pageSize: 50,
+      },
+    },
+    analytics: undefined,
+    leadCapture: { enabled: true },
+    freezeTranslations: false,
+    currency: "EUR",
+    taxRegion: "",
+    depositService: { enabled: false, intervalMinutes: 60 },
+    reverseLogisticsService: { enabled: false, intervalMinutes: 60 },
+    returnService: { upsEnabled: false, bagEnabled: false, homePickupEnabled: false },
+    premierDelivery: undefined,
+    stockAlert: { recipients: [] },
+    luxuryFeatures: {
+      blog: false,
+      contentMerchandising: false,
+      raTicketing: false,
+      fraudReviewThreshold: 0,
+      requireStrongCustomerAuth: false,
+      strictReturnConditions: false,
+      trackingDashboard: false,
+      premierDelivery: false,
+    },
+    updatedAt: "",
+    updatedBy: "",
+  } as Settings;
+}
 
 function setPatchValue<T extends object, K extends keyof T>(
   patch: Partial<T>,
@@ -100,38 +137,7 @@ export async function getShopSettings(shop: string): Promise<Settings> {
   } catch {
     // ignore
   }
-  return {
-    languages: DEFAULT_LANGUAGES,
-    seo: {
-      aiCatalog: {
-        enabled: true,
-        fields: ["id", "title", "description", "price", "media"],
-        pageSize: 50,
-      },
-    },
-    analytics: undefined,
-    leadCapture: { enabled: true },
-    freezeTranslations: false,
-    currency: "EUR",
-    taxRegion: "",
-    depositService: { enabled: false, intervalMinutes: 60 },
-    reverseLogisticsService: { enabled: false, intervalMinutes: 60 },
-    returnService: { upsEnabled: false, bagEnabled: false, homePickupEnabled: false },
-    premierDelivery: undefined,
-    stockAlert: { recipients: [] },
-    luxuryFeatures: {
-      blog: false,
-      contentMerchandising: false,
-      raTicketing: false,
-      fraudReviewThreshold: 0,
-      requireStrongCustomerAuth: false,
-      strictReturnConditions: false,
-      trackingDashboard: false,
-      premierDelivery: false,
-    },
-    updatedAt: "",
-    updatedBy: "",
-  } as Settings;
+  return getDefaultShopSettings();
 }
 
 export async function saveShopSettings(

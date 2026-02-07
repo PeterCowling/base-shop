@@ -1,5 +1,7 @@
 "use client";
 
+import type { InventoryItem } from "@acme/platform-core/types/inventory";
+
 import {
   Button,
   Card,
@@ -10,7 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/atoms/shadcn";
-import type { InventoryItem } from "@platform-core/types/inventory";
+
 import InventoryRow from "./InventoryRow";
 
 interface InventoryTableProps {
@@ -23,6 +25,7 @@ interface InventoryTableProps {
     value: string,
   ) => void;
   onDeleteRow: (index: number) => void;
+  onShowHistory: (item: InventoryItem) => void;
 }
 
 export function InventoryTable({
@@ -31,6 +34,7 @@ export function InventoryTable({
   onDeleteAttribute,
   onUpdateItem,
   onDeleteRow,
+  onShowHistory,
 }: InventoryTableProps) {
   return (
     <Card className="border border-border/10 bg-surface-2 text-foreground">
@@ -69,6 +73,7 @@ export function InventoryTable({
                 attributes={attributes}
                 updateItem={onUpdateItem}
                 deleteRow={onDeleteRow}
+                onShowHistory={onShowHistory}
               />
             ))}
           </TableBody>

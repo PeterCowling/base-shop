@@ -1,11 +1,13 @@
-import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 import { ensureAuthorized } from "@cms/actions/common/auth";
+
+import { validateShopName } from "@acme/platform-core/shops";
+
 import {
   getLaunchGate,
   recordQaAcknowledgement,
 } from "@/lib/server/launchGate";
-import { validateShopName } from "@platform-core/shops";
 
 async function requireCsrf(req: Request): Promise<void> {
   const header = req.headers.get("x-csrf-token");

@@ -20,13 +20,27 @@ All contrast ratios were measured using the relative luminance method and meet W
 
 ## Theme generator
 
-Use the `generate-theme` helper to build a token map based on a brand color. The
-script extends the base theme tokens and prints the full map as JSON:
+Use the `generate-theme` CLI to create a complete theme package from a brand color:
 
 ```bash
-pnpm ts-node scripts/src/generate-theme.ts '#336699'
+# Generate a new theme
+pnpm generate-theme --name acme --primary '#336699'
+
+# Validate a color's accessibility without generating
+pnpm generate-theme --primary '#336699' --validate-only
+
+# Validate an existing theme for accessibility
+pnpm generate-theme --validate-theme dark
 ```
 
-During `init-shop` scaffolding you can provide a primary color when prompted.
+The CLI generates an 11-shade color palette (50-950) with WCAG 2.1 AA contrast validation and creates a complete theme package at `packages/themes/<name>/` with:
+- Token definitions (`src/tailwind-tokens.ts`)
+- CSS custom properties (`tokens.css`)
+- Automated contrast tests (`__tests__/contrast.test.ts`)
+- Documentation with palette swatches (`README.md`)
+
+See `pnpm generate-theme --help` for all options including custom accent colors, dark mode generation, and font configuration.
+
+During `init-shop` scaffolding you can provide a primary color when prompted. If you prefer flags, `quickstart-shop` supports `--brand` and `--tokens`.
 Any generated tokens are stored in `data/shops/<id>/shop.json` under
 `themeOverrides`.

@@ -1,11 +1,7 @@
 // src/performance/reportWebVitals.ts
-import { onCLS, onINP, onLCP, type Metric, type ReportOpts } from "web-vitals";
+import { type Metric, onCLS, onINP, onLCP, type ReportOpts } from "web-vitals";
 
-import { WebVitalMetric } from "@/types/performance";
 import { GA_MEASUREMENT_ID, IS_PROD } from "@/config/env";
-
-/** POST/Beacon endpoint; adjust to your edge collector / worker */
-const ENDPOINT = "/api/rum";
 
 type GTag = (...args: unknown[]) => void;
 
@@ -45,29 +41,9 @@ const sendToAnalytics = (metric: Metric, opts?: ReportOpts): void => {
   // Avoid noise in dev / test environments
   if (!IS_PROD) return;
 
-  // Cast is safe because `WebVitalMetric` structurally extends `Metric`
-  const body = JSON.stringify({ ...(metric as WebVitalMetric), ...opts });
-  const { sendBeacon } = navigator;
-
-  // Prefer GA4 when configured and loaded on the page
+  // GA-only: only emit when GA is configured and loaded on the page.
   if (GA_MEASUREMENT_ID && typeof (window as Window & { gtag?: GTag }).gtag === "function") {
     sendToGA(metric, opts);
-    return;
-  }
-
-  if (sendBeacon) {
-    // Ensure proper content-type so the collector can enforce JSON
-    const blob = new Blob([body], { type: "application/json" });
-    sendBeacon(ENDPOINT, blob);
-  } else {
-    fetch(ENDPOINT, {
-      body,
-      method: "POST",
-      keepalive: true,
-      headers: { "Content-Type": "application/json" },
-    }).catch(() => {
-      /* Swallow errors – metrics must never crash the app */
-    });
   }
 };
 

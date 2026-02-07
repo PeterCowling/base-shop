@@ -1,47 +1,162 @@
 {
   "seo": {
-    "title": "Capri avec un budget limité",
-    "description": "Astuces pour profiter de Capri sans exploser le budget : transports, visites, repas et plages."
+    "title": "Capri avec un Budget : Vues Gratuites et Bons Plans Resto",
+    "description": "Économisez de l'argent à Capri : astuces ferry économiques, points de vue gratuits, restaurants pas chers, plages publiques et ce qu'il faut éviter. Guide complet pour routards depuis Positano."
   },
-  "linkLabel": "Capri avec un budget limité",
+  "linkLabel": "Capri Sans Se Ruiner",
   "intro": [
-    "Une excursion à la journée sur Capri reste abordable si vous planifiez ferries, points de vue et repas à l’avance."
+    "**Évitez les pièges à touristes et découvrez Capri à prix abordable.** Il vous faut : un timing malin pour le ferry (€20-25 aller-retour depuis Positano), des points de vue gratuits qui rivalisent avec les payants, et des bonnes adresses près des marinas. Sautez la Grotte Bleue—c'est cher et souvent fermée. Ce guide vous montre comment faire Capri pour €40-50 au total depuis l'Hostel Brikette.",
+    "**Idéal pour :** Routards à petit budget qui veulent des vues dignes d'Instagram sans le prix du luxe. **Temps nécessaire :** Journée complète (7h-18h).",
+    "**Coûts :** Ferry €20-25 aller-retour, télésiège €12 aller-retour (optionnel), nourriture €10-15, bus €2-4. Total : €40-50. **Bon à savoir :** Réservez les ferries du matin tôt en été ; apportez eau et snacks ; les balades gratuites battent la plupart des attractions payantes."
   ],
   "sections": [
     {
-      "id": "ferries",
-      "title": "Ferries et horaires",
+      "id": "ferry-strategy",
+      "title": "Coûts et réservation du ferry",
       "body": [
-        "Réservez les premiers ferries en haute saison et prévoyez un retour en milieu d’après-midi pour éviter la foule des dernières traversées."
+        "**De Positano à Capri : €20-25 aller-retour.** Réservez directement à l'%LINK:briketteToFerryDock|embarcadère% (5 minutes à pied de Brikette) ou en ligne via Travelmar/NLG. Ne réservez pas de forfaits touristiques—ils ajoutent €10-15 pour rien.",
+        "**Un bon timing fait économiser :** Prenez le ferry de 8h15 ou 9h à l'aller (€11-13 l'aller simple). Revenez vers 17h-18h pour éviter le chaos de la dernière traversée. En juillet-août, réservez 2-3 jours à l'avance en ligne pour bloquer le tarif le moins cher. Hors saison (oct-mai), présentez-vous à 8h et achetez à l'embarcadère—vous aurez généralement de la place et économiserez les frais de réservation.",
+        "**Depuis Salerne (si vous arrivez en train) :** Les ferries Salerne-Capri coûtent €18-22 aller-retour et prennent 1 heure. Vous arriverez à Marina Grande comme avec le ferry de Positano. Consultez %LINK:salernoPositanoBus|les transports depuis Salerne% si vous combinez avec une étape à Positano.",
+        "**À Marina Grande :** Vous accosterez au port principal. Marchez 50m à droite jusqu'au funiculaire (€2 par trajet) pour monter à Capri ville, ou prenez le bus pour Anacapri (€2). Ne prenez pas de taxi—ils facturent €15-20 pour 5 minutes de trajet."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-on-a-budget/01-positano-ferry-dock-capri.jpg",
+          "alt": "Panneau d'affichage des départs à l'embarcadère de Positano montrant les horaires et routes pour Capri"
+        },
+        {
+          "src": "/img/guides/capri-on-a-budget/02-capri-marina-grande-funicular.jpg",
+          "alt": "Entrée de la station du funiculaire à Marina Grande avec guichet"
+        }
       ]
     },
     {
-      "id": "free-views",
-      "title": "Points de vue gratuits",
+      "id": "free-viewpoints",
+      "title": "Points de vue gratuits et pas chers",
       "body": [
-        "Les Giardini di Augusto (petit droit d’entrée), les belvédères d’Anacapri et les points de vue de Marina Piccola offrent des panoramas à faible coût."
+        "**Anacapri, c'est là que la magie du budget opère.** Sautez la piazzetta bondée de Capri ville (café hors de prix) et allez directement à Anacapri en bus (€2 depuis Marina Grande, 15 min).",
+        "**Télésiège du Monte Solaro (€12 aller-retour) :** Ça vaut le coup. 12 minutes de montée jusqu'au sommet à 589m avec vue à 360° sur la Baie de Naples, la Côte Amalfitaine et les rochers Faraglioni. Ouvert 9h30-17h (plus court en hiver). C'est votre seule petite folie—les vues sont imbattables et c'est bien moins cher que la Grotte Bleue.",
+        "**Jardins de la Villa San Michele (€10 l'entrée, ou gratuit depuis l'extérieur) :** La terrasse offre des vues panoramiques. Si votre budget est serré, marchez jusqu'au belvédère public juste après l'entrée de la villa—même vue, coût zéro. On y est passés au coucher du soleil et le point de vue gratuit est presque aussi bon.",
+        "**Promenade au phare de Punta Carena :** Depuis Anacapri, marchez 30 minutes en descente (ou bus €2) jusqu'à Punta Carena. Point de vue gratuit sur le phare, spots de baignade rocheux et bien moins de touristes. Apportez snacks et eau—c'est isolé. La remontée à pied prend 45 min.",
+        "**Via Krupp & Giardini di Augusto (€2 l'entrée) :** À Capri ville, ces jardins surplombent les rochers Faraglioni. La Via Krupp elle-même (le chemin en épingle) est souvent fermée, mais les jardins sont bon marché et la vue est celle qu'on voit sur les photos. Ça vaut €2 si vous les avez."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-on-a-budget/03-anacapri-monte-solaro-chairlift.jpg",
+          "alt": "Télésiège du Monte Solaro s'élevant au-dessus des toits d'Anacapri avec vue mer"
+        },
+        {
+          "src": "/img/guides/capri-on-a-budget/04-punta-carena-lighthouse-view.jpg",
+          "alt": "Phare de Punta Carena avec côte rocheuse et eau bleue"
+        }
       ]
     },
     {
-      "id": "beaches",
-      "title": "Options plage",
+      "id": "beaches-swimming",
+      "title": "Plage et spots de baignade",
       "body": [
-        "Des sections de plage publique existent ; apportez votre serviette et de l’eau pour éviter les locations."
+        "**Plage publique de Marina Piccola (gratuit) :** Depuis Capri ville, descendez à pied 20 min (ou bus €2). Il y a une petite section publique entre les lidos payants. Apportez votre serviette, eau et snacks. Entrée rocailleuse mais eau claire. Bondé dès 11h—arrivez tôt.",
+        "**Rochers de Punta Carena (gratuit) :** Meilleur spot de baignade gratuit. Rochers plats pour bronzer, échelle dans l'eau profonde. Les locaux nagent ici. Pas d'installations—apportez tout. Il y a un petit bar à 100m sur la route si besoin de boissons.",
+        "**Évitez les lidos :** Les lidos (clubs de plage privés) facturent €15-30 pour un transat. Pas la peine avec un budget serré. Serviette sur les rochers publics = gratuit."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-on-a-budget/05-marina-piccola-public-beach.jpg",
+          "alt": "Zone de plage publique de Marina Piccola avec les rochers Faraglioni en arrière-plan"
+        },
+        {
+          "src": "/img/guides/capri-on-a-budget/08-punta-carena-swimming-rocks.jpg",
+          "alt": "Zone de baignade rocheuse de Punta Carena avec échelle et eau bleue claire"
+        }
       ]
     },
     {
-      "id": "food",
-      "title": "Restauration économique",
+      "id": "cheap-food",
+      "title": "Où manger pas cher",
       "body": [
-        "Prenez un panini ou une part de pizza al taglio près du port et évitez les restaurants assis dans les ruelles les plus fréquentées."
+        "**Capri et Anacapri sont chers. Planifiez à l'avance.** Un déjeuner assis sur la place principale de Capri coûte €20-30 par personne. Voici comment manger pour €10-15 au total :",
+        "**Apportez des snacks de Positano :** On dit toujours aux invités de prendre panini, fruits et eau à Positano avant le ferry. Les prix à Positano sont élevés, mais Capri c'est pire. Une bouteille d'eau coûte €3-4 à Capri contre €1-2 à Positano.",
+        "**Pizza al taglio près de Marina Grande :** Il y a 2-3 pizzerias à emporter à 100m de l'embarcadère. €3-5 pour une grosse part. Pas incroyable, mais rapide et pas cher. Mangez sur les bancs du port.",
+        "**Rues secondaires d'Anacapri :** Marchez 2-3 blocs après la place principale d'Anacapri et vous trouverez de petits bars à sandwichs et boutiques de focaccia. €5-8 pour une focaccia garnie et une boisson. On a mangé au \\\\\"Bar Gabbiano\\\\\" (près de l'arrêt de bus)—correct et moitié prix de la place.",
+        "**Oubliez les citrons :** Capri est célèbre pour ses citrons, mais le limoncello et les granitas au citron sont à prix touristiques. Gardez ça pour Positano où c'est moins cher et souvent fait maison."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-on-a-budget/06-anacapri-cheap-sandwich-bar.jpg",
+          "alt": "Petit bar à sandwichs dans une rue secondaire d'Anacapri avec tableau des prix"
+        }
+      ]
+    },
+    {
+      "id": "what-to-skip",
+      "title": "Ce qu'il faut éviter (économisez votre argent)",
+      "body": [
+        "**Grotte Bleue (€18 au total) :** €14 bateau + €4 entrée en barque. Souvent fermée à cause des vagues ou du vent. Quand c'est ouvert, vous avez 5 minutes dans une grotte avec de l'eau bleue. Honnêtement ? Les points de vue gratuits offrent un meilleur rapport qualité-prix. On a eu des invités qui l'ont sautée et ont dépensé ces €18 dans le télésiège + un bon déjeuner—ils étaient plus contents.",
+        "**Taxis :** Les taxis à Capri sont une arnaque pour touristes. €15-20 pour 5 minutes de trajet qui coûtent €2 en bus. Prenez toujours le bus.",
+        "**Restaurants sur la Piazzetta Umberto I (place de Capri ville) :** Le café coûte €6-8. Le déjeuner est à €25+. Vous payez pour voir d'autres touristes. Marchez 3 blocs plus loin et les prix sont divisés par deux.",
+        "**Shopping de luxe :** Capri a Gucci, Prada, etc. À moins de faire du lèche-vitrine, ce n'est pas une étape budget."
+      ]
+    },
+    {
+      "id": "budget-itinerary",
+      "title": "Exemple de journée à €45 depuis Brikette",
+      "body": [
+        "Voici ce qu'on recommande aux invités qui veulent l'expérience Capri complète pour moins de €50 :",
+        "**8h15 :** Ferry depuis Positano (€22 aller-retour, réservé en ligne 2 jours avant).",
+        "**9h30 :** Arrivée Marina Grande. Prendre une part de pizza pas chère (€4). Bus pour Anacapri (€2).",
+        "**10h30 :** Télésiège Monte Solaro (€12 aller-retour). Passer 30-45 min au sommet.",
+        "**12h30 :** Marche jusqu'au phare de Punta Carena (gratuit). Baignade dans les rochers. Manger le pique-nique.",
+        "**15h :** Bus retour à Anacapri (€2). Descendre à pied vers Capri ville (30 min en descente, gratuit).",
+        "**16h :** Giardini di Augusto (€2). Petite balade, photos des Faraglioni.",
+        "**17h :** Funiculaire vers Marina Grande (€2). Ferry retour à Positano (couvert par le billet retour).",
+        "**Total : €46.** Vous avez vu les meilleures vues, nagé dans une eau claire et évité les pièges à touristes."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-on-a-budget/07-faraglioni-rocks-sunset-view.jpg",
+          "alt": "Rochers Faraglioni à l'heure dorée vus depuis les Giardini di Augusto"
+        }
+      ]
+    },
+    {
+      "id": "practical-tips",
+      "title": "Conseils pratiques de l'auberge",
+      "body": [
+        "**Apportez un sac à dos avec :** Eau (1L par personne—remplissez aux fontaines publiques à Anacapri), snacks, crème solaire, chapeau, maillot, serviette, chargeur de téléphone. Capri a peu d'ombre et tout est hors de prix.",
+        "**Météo pour le ferry :** Les ferries sont annulés en mer agitée (surtout nov-mars). Vérifiez les prévisions du matin ou demandez à l'embarcadère de Positano. Si c'est limite, ayez un plan B—voyez nos %LINK:dayTripsAmalfi|alternatives d'excursions%.",
+        "**Foule :** En juillet-août, Capri reçoit plus de 15 000 excursionnistes par jour. Partez tôt (premier ferry) et allez d'abord à Anacapri—la plupart des touristes restent à Capri ville jusqu'à 11h, donc vous aurez Anacapri pour vous.",
+        "**Bagages :** N'apportez pas de bagages. Il n'y a pas de consigne à Marina Grande. Si vous quittez Brikette le même jour, demandez-nous de garder vos sacs—on les garde jusqu'à votre retour.",
+        "**Marche :** Capri a des collines et des escaliers. Portez de bonnes chaussures. Les tongs vont pour le ferry mais pas pour se promener."
+      ]
+    },
+    {
+      "id": "links",
+      "title": "Guides connexes",
+      "body": [
+        "**S'y rendre :** %LINK:capriPositanoFerry|Directions ferry Positano-Capri% (horaires, emplacement embarcadère, billets).",
+        "**Si vous avez plus de budget :** Voir notre %LINK:capriDayTrip|guide complet excursion Capri% avec plus d'options.",
+        "**Autres excursions budget :** %LINK:dayTripsAmalfi|Excursions Côte Amalfitaine% (Pompéi, Amalfi, Ravello).",
+        "**Économiser sur les transports :** %LINK:transportMoneySaving|Guide économies transports% (pass, astuces, heures creuses)."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "La Grotte Bleue vaut-elle la peine avec un petit budget ?",
+      "q": "Peut-on faire Capri pour moins de €50 depuis Positano ?",
       "a": [
-        "C’est un supplément haut de gamme et dépendant de la météo ; le télésiège d’Anacapri est un point fort moins coûteux."
+        "Oui. Ferry €22 aller-retour, télésiège €12, bus €4-6, nourriture €10 (si vous apportez des snacks). Total €48. Sautez la Grotte Bleue et les lidos, et vous resterez dans le budget."
+      ]
+    },
+    {
+      "q": "La Grotte Bleue vaut-elle le coup avec un budget serré ?",
+      "a": [
+        "Pas vraiment. €18 au total (€14 bateau + €4 entrée en barque), souvent fermée, et vous avez 5 minutes à l'intérieur. Dépensez plutôt ces €18 dans le télésiège du Monte Solaro et un bon déjeuner—bien meilleur rapport d'après notre expérience."
+      ]
+    },
+    {
+      "q": "Quelle est la façon la moins chère d'aller à Capri depuis Brikette ?",
+      "a": [
+        "Descendez à pied à l'embarcadère de Positano (5 min depuis Brikette) et prenez le ferry du matin (€22 aller-retour si réservé en ligne 2-3 jours avant, ou €25 acheté à l'embarcadère). Hors saison, vous pouvez souvent avoir des billets sans réservation pour €20."
       ]
     }
   ]

@@ -1,5 +1,5 @@
-import path from "node:path";
 import { createRequire } from "node:module";
+import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -15,10 +15,16 @@ export const getStorybookAliases = () => ({
   "./button.css": path.resolve(__dirname, "./styles/empty.css"),
   "./page.css": path.resolve(__dirname, "./styles/empty.css"),
   "@themes-local": path.resolve(__dirname, "../../../packages/themes"),
-  "@acme/i18n": path.resolve(__dirname, "../../../packages/i18n/src"),
+  "@acme/i18n": path.resolve(__dirname, "../../../packages/i18n/src/index.ts"),
+  "@acme/i18n$": path.resolve(__dirname, "../../../packages/i18n/src/index.ts"),
+  "@acme/i18n/": path.resolve(__dirname, "../../../packages/i18n/src/"),
   "@acme/i18n/package.json": path.resolve(__dirname, "../../../packages/i18n/package.json"),
   "@acme/types": path.resolve(__dirname, "../../../packages/types/src"),
   "@acme/types/package.json": path.resolve(__dirname, "../../../packages/types/package.json"),
+  "@acme/page-builder-core": path.resolve(
+    __dirname,
+    "../../../packages/page-builder-core/src",
+  ),
   "@acme/zod-utils": path.resolve(__dirname, "../../../packages/zod-utils/src"),
   "@acme/zod-utils/package.json": path.resolve(__dirname, "../../../packages/zod-utils/package.json"),
   "@acme/design-tokens": path.resolve(__dirname, "../../../packages/design-tokens/src"),
@@ -40,8 +46,12 @@ export const getStorybookAliases = () => ({
     __dirname,
     "../../../packages/platform-core/src/products/index.ts",
   ),
+  "@acme/platform-core/products/index": path.resolve(
+    __dirname,
+    "../../../packages/platform-core/src/products/index.ts",
+  ),
   // Use Jest-style mocks for Next client modules when running in Storybook
-  "next/image": path.resolve(__dirname, "../../../__mocks__/next/image.js"),
+  "next/image": path.resolve(__dirname, "./mocks/next-image.js"),
   "next/navigation": path.resolve(__dirname, "../../../__mocks__/next/navigation.js"),
   "next/headers": path.resolve(__dirname, "../../../__mocks__/next/headers.js"),
   "next/link": path.resolve(__dirname, "../../../__mocks__/next/link.js"),
@@ -80,7 +90,7 @@ export const getStorybookAliases = () => ({
     __dirname,
     "./mocks/redirect-status-code.js",
   ),
-  "@platform-core/contexts/ThemeContext": path.resolve(
+  "@acme/platform-core/contexts/ThemeContext": path.resolve(
     __dirname,
     "./mocks/ThemeContext.tsx",
   ),

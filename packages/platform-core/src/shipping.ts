@@ -1,10 +1,3 @@
-export type Carrier = "ups" | "dhl";
-
-export interface TrackingStatus {
-  // keep this deliberately wide to satisfy all current callsites
-  [key: string]: unknown;
-}
-
 /**
  * Fetches tracking information for a shipment.
  *
@@ -20,8 +13,15 @@ export interface TrackingStatus {
  * console.log(status.status);
  * ```
  */
-import { getTrackingStatus as getUpsTrackingStatus } from "./shipping/ups";
 import { getTrackingStatus as getDhlTrackingStatus } from "./shipping/dhl";
+import { getTrackingStatus as getUpsTrackingStatus } from "./shipping/ups";
+
+export type Carrier = "ups" | "dhl";
+
+export interface TrackingStatus {
+  // keep this deliberately wide to satisfy all current callsites
+  [key: string]: unknown;
+}
 
 export async function getTrackingStatus(arg: { provider: Carrier; trackingNumber: string }): Promise<TrackingStatus> {
   const { provider, trackingNumber } = arg;

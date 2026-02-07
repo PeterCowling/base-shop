@@ -1,12 +1,12 @@
 {
   "meta": {
     "title": "Positano to Amalfi by Ferry | Hostel Brikette",
-    "description": "Step-by-step ferry trip from Positano to Amalfi: tickets, where to board at Spiaggia Grande, schedules, and what to expect on arrival."
+    "description": "Step-by-step ferry trip from Positano to Amalfi: where to board at Spiaggia Grande, tickets, live schedules, and a simple Plan B if the sea cancels the boats."
   },
   "hero": {
     "eyebrow": "Hostel Brikette Travel Guide",
     "title": "Positano to Amalfi — Ferry",
-    "description": "Follow these steps to travel from Positano to Amalfi by ferry. You’ll find tips on tickets, where to board in Positano, what to expect on arrival, and links to live schedules."
+    "description": "Take the scenic ferry from Positano to Amalfi. This guide covers tickets, boarding at Spiaggia Grande, arrival logistics in Amalfi, and what to do if boats cancel."
   },
   "tip": {
     "label": "Tip",
@@ -16,39 +16,57 @@
     "overview": {
       "title": "Journey overview",
       "points": [
-        "Seasonal ferries link Positano and Amalfi with scenic coastal views.",
-        "Services may vary by season and weather; always check the day-of schedule.",
-        "Allow extra time in peak months for queues at the pier."
+        "Ferries are seasonal (typically spring–early autumn) and weather-dependent.",
+        "In peak season, services can sell out and queues build at Spiaggia Grande — arrive early.",
+        "If the sea is rough and boats pause, switch to the bus as a Plan B."
       ]
     },
     "tickets": {
       "title": "Tickets and schedules",
-      "intro": "Check latest times and prices on <travelmar>Travelmar</travelmar> and <positano>Positano.com — Ferry schedules</positano>.",
+      "intro": "Check latest times and prices on <travelmar>Travelmar</travelmar> and <positano>Positano.com — Ferry schedules</positano>. For a quick explainer (operators, seasons, and common pitfalls), see <ferrySchedules>our ferry schedules guide</ferrySchedules>.",
       "points": [
-        "Buy tickets online in advance during high season or at operator booths by the pier.",
-        "Arrive 15–20 minutes before departure to exchange vouchers and queue for boarding.",
-        "Keep your ticket or QR code accessible for staff checks."
+        "In high season, buy online in advance (especially afternoons) or at operator booths along the waterfront.",
+        "Arrive 20–30 minutes before departure so you can queue calmly and exchange vouchers if required.",
+        "Screenshot your QR code — signal can be patchy by the beach and pier.",
+        "If you’re travelling with large luggage, ask staff about luggage rules and where to stow bags on board."
+      ]
+    },
+    "gettingToPier": {
+      "title": "Getting to the pier from Hostel Brikette",
+      "intro": "If you’re starting at the hostel, use <dockWalk>our step-by-step walk to the ferry dock</dockWalk> to reach Spiaggia Grande without guesswork.",
+      "points": [
+        "Leave buffer time for stairs, heat, and slow-moving foot traffic in town.",
+        "Carry water and keep essentials (passport/wallet/phone) in an easy-to-reach pocket for boarding checks."
       ]
     },
     "positanoPier": {
       "title": "Where to board in Positano",
       "points": [
         "Departures are from Positano’s main pier on Spiaggia Grande.",
-        "Operator booths line the waterfront; signage shows the next departure for each company.",
-        "Confirm the correct pier on your ticket; staff can direct you if unsure."
+        "Operator booths line the waterfront; boards and staff will direct you to the next departure for each company.",
+        "Double-check the operator and destination on your ticket — ask staff if you’re unsure which line to join."
       ]
     },
     "amalfiArrival": {
       "title": "Arriving in Amalfi",
       "points": [
         "Boats arrive at Amalfi’s waterfront piers near Piazza Flavio Gioia.",
-        "The historic center and promenade are directly adjacent to the port.",
-        "For onward buses (e.g., Ravello or Sorrento), follow signs to the SITA stop near the waterfront."
+        "The historic center is right next to the port — it’s an easy walk to the Duomo and main piazza.",
+        "For onward buses (e.g., Ravello or Salerno), follow signs to the SITA stop near the waterfront and confirm the queue."
+      ]
+    },
+    "planB": {
+      "title": "If the ferry cancels (Plan B that works)",
+      "intro": "On windy days, the sea can pause the boats. Don’t panic — switch to the <bus>Positano → Amalfi bus</bus>, and skim <cancellations>our ferry cancellations guide</cancellations> for timing and troubleshooting.",
+      "points": [
+        "If you’re already at the beach, walk back up to the main road and take the next available bus or taxi.",
+        "Build buffer time: buses can arrive full in peak months, and delays are normal.",
+        "If you’re travelling late, confirm the last viable departure early (ferry or bus) so you’re not stranded."
       ]
     }
   },
   "externalLinks": {
-    "travelmar": "https://www.travelmar.it/en/home",
+    "travelmar": "https://travelmar.it/en",
     "positano": "https://www.positano.com/en/ferry-schedule"
   }
 }

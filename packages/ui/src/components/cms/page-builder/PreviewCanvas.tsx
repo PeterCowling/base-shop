@@ -1,12 +1,15 @@
 "use client";
 
 import type { CSSProperties } from "react";
-import type { PageComponent, HistoryState } from "@acme/types";
-import Block from "./Block";
+
 import type { Locale } from "@acme/i18n/locales";
-import { isHiddenForViewport } from "./state/layout/utils";
-import { Stack } from "../../atoms/primitives/Stack";
+import type { HistoryState,PageComponent } from "@acme/types";
+
 import { cn } from "../../../utils/style/cn";
+import { Stack } from "../../atoms/primitives/Stack";
+
+import Block from "./Block";
+import { isHiddenForViewport } from "./state/layout/utils";
 
 export default function PreviewCanvas({
   components,

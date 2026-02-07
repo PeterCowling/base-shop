@@ -7,15 +7,7 @@
     "eyebrow": "Впечатления",
     "title": "Закаты, спокойные утра и местные советы",
     "description": "Дополните своё пребывание террасными напитками, авторскими походами и цифровым консьержем, который держит вас в курсе ещё до прибытия.",
-    "supporting": "Все активности доступны зарегистрированным гостям; напишите нам, если путешествуете с друзьями, остановившимися в другом месте.",
-    "primaryCta": "Забронировать проживание",
-    "secondaryCta": "Открыть меню бара",
-    "tertiaryCta": "Написать цифровому консьержу",
-    "primaryCtaAria": "Забронировать проживание в Hostel Brikette",
-    "secondaryCtaAria": "Посмотреть барное меню Hostel Brikette",
-    "tertiaryCtaAria": "Отправить сообщение цифровому консьержу Hostel Brikette",
-    "breakfastCta": "Посмотреть меню завтраков",
-    "breakfastCtaAria": "Посмотреть меню завтраков"
+    "scrollNudge": "Прокрутите вниз, чтобы увидеть типы впечатлений"
   },
   "sections": {
     "bar": {
@@ -89,50 +81,80 @@
     "empty": "Пока у нас нет гида по впечатлениям для {{tag}}. Попробуйте другой тег или уберите фильтр.",
     "clearFilter": "Показать все гиды по впечатлениям",
     "cardCta": "Изучите гид по впечатлениям «{{guideTitle}}»",
-    "directionsLabel": "Как добраться",
+    "filterHeading": "Фильтр гидов по впечатлениям",
+    "filterDescription": "Выберите тег, чтобы сузить подборку впечатлений.",
+    "directionsLabel": "Маршруты",
+    "sections": {
+      "content": {
+        "title": "Гиды по впечатлениям",
+        "description": "Подробные гиды о пляжах, прогулках, однодневных поездках и занятиях"
+      },
+      "directions": {
+        "title": "Как добраться",
+        "description": "Пошаговые маршруты до хостела и обратно"
+      }
+    },
     "directionLinks": {
       "capriDayTrip": {
-        "positanoCapriFerry": "Позитано → Капри на пароме",
-        "capriPositanoFerry": "Капри → Позитано на пароме"
+        "positanoCapriFerry": "Позитано → Капри паром",
+        "capriPositanoFerry": "Капри → Позитано паром"
       },
       "positanoAmalfi": {
-        "positanoAmalfiBus": "Позитано → Амальфи на автобусе",
-        "amalfiPositanoBus": "Амальфи → Позитано на автобусе",
-        "positanoAmalfiFerry": "Позитано → Амальфи на пароме (сезонный)",
-        "amalfiPositanoFerry": "Амальфи → Позитано на пароме (сезонный)"
+        "positanoAmalfiBus": "Позитано → Амальфи автобусом",
+        "amalfiPositanoBus": "Амальфи → Позитано автобусом",
+        "positanoAmalfiFerry": "Позитано → Амальфи паром (сезонный)",
+        "amalfiPositanoFerry": "Амальфи → Позитано паром (сезонный)"
       },
       "positanoRavello": {
-        "positanoRavelloBus": "Позитано → Равелло на автобусе",
-        "ravelloPositanoBus": "Равелло → Позитано на автобусе",
+        "positanoRavelloBus": "Позитано → Равелло автобус",
+        "ravelloPositanoBus": "Равелло → Позитано автобус",
         "positanoRavelloFerryBus": "Позитано → Равелло паром + автобус"
       },
       "naplesPositano": {
-        "naplesCenterTrainBus": "Центр Неаполя → Позитано (поезд + автобус)",
-        "naplesCenterPositanoFerry": "Центр Неаполя → Позитано на пароме",
-        "naplesAirportPositanoBus": "Аэропорт Неаполя → Позитано на автобусе",
-        "positanoNaplesCenterBusTrain": "Позитано → Центр Неаполя (автобус + поезд)",
-        "positanoNaplesCenterFerry": "Позитано → Неаполь на пароме",
-        "positanoNaplesAirportBus": "Позитано → Аэропорт Неаполя на автобусе"
+        "naplesCenterTrainBus": "Неаполь центр → Позитано (поезд + автобус)",
+        "naplesCenterPositanoFerry": "Неаполь центр → Позитано паром",
+        "naplesAirportPositanoBus": "Аэропорт Неаполя → Позитано автобус",
+        "positanoNaplesCenterBusTrain": "Позитано → Неаполь центр (автобус + поезд)",
+        "positanoNaplesCenterFerry": "Позитано → Неаполь паром",
+        "positanoNaplesAirportBus": "Позитано → Аэропорт Неаполя автобус"
       },
       "salernoPositano": {
-        "salernoPositanoBus": "Салерно → Позитано на автобусе",
-        "salernoPositanoFerry": "Салерно → Позитано на пароме (сезонный)",
-        "positanoSalernoBus": "Позитано → Салерно на автобусе",
-        "positanoSalernoFerry": "Позитано → Салерно на пароме (сезонный)"
+        "salernoPositanoBus": "Салерно → Позитано автобус",
+        "salernoPositanoFerry": "Салерно → Позитано паром (сезонный)",
+        "positanoSalernoBus": "Позитано → Салерно автобус",
+        "positanoSalernoFerry": "Позитано → Салерно паром (сезонный)"
       }
     },
-    "filterHeading": "Фильтр гидов по впечатлениям",
-    "filterDescription": "Выберите тег, чтобы сузить подборку впечатлений.",
     "grouped": {
       "beaches": {
-        "guides": {
-          "heading": "Гиды по пляжам",
-          "description": "Выберите подходящий пляж и спланируйте день."
-        },
-        "directions": {
-          "heading": "Как пройти к пляжу",
-          "description": "Пошаговые инструкции от Hostel Brikette до берега."
-        }
+        "title": "Пляжи",
+        "description": "Выберите подходящий пляж и спланируйте день.",
+        "imageAlt": "Пляж Позитано с разноцветными зонтиками вдоль берега"
+      },
+      "hiking": {
+        "title": "Походы и тропы",
+        "description": "Пешие маршруты от лёгких прогулок до полноценных походов.",
+        "imageAlt": "Туристы на Тропе богов с видом на побережье"
+      },
+      "day-trip": {
+        "title": "Однодневные поездки",
+        "description": "Капри, Амальфи, Равелло — как добраться и вернуться.",
+        "imageAlt": "Паром приближается к острову Капри"
+      },
+      "boat": {
+        "title": "Морские прогулки",
+        "description": "Частный чартер, групповые туры и закатные прогулки.",
+        "imageAlt": "Традиционная лодка в водах Амальфитанского побережья"
+      },
+      "cuisine": {
+        "title": "Еда и напитки",
+        "description": "Где вкусно поесть, не переплачивая.",
+        "imageAlt": "Свежие итальянские блюда в местной траттории"
+      },
+      "more": {
+        "title": "Другие гиды",
+        "description": "Советы по транспорту, места для фото и местные события.",
+        "imageAlt": "Местный автобус на извилистой дороге Амальфитанского побережья"
       }
     }
   }

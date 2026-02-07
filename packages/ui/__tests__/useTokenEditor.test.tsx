@@ -1,6 +1,7 @@
-import { renderHook, act, render } from "@testing-library/react";
 import { useState } from "react";
-import { useTokenEditor, type TokenMap } from "../src/hooks/useTokenEditor";
+import { act, render,renderHook } from "@testing-library/react";
+
+import { type TokenMap,useTokenEditor } from "../src/hooks/useTokenEditor";
 
 class MockFileReader {
   result: string | ArrayBuffer | null = null;

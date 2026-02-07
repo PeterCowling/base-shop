@@ -1,7 +1,7 @@
+import { buildApiUrl } from "@/lib/api";
 import type { CartItem } from "@/types/cart";
 import type { CheckoutSessionResponse } from "@/types/checkout";
 import type { Locale } from "@/types/locale";
-import { buildApiUrl } from "@/lib/api";
 
 export type CheckoutSessionRequest = {
   items: Array<Pick<CartItem, "variantId" | "quantity">>;

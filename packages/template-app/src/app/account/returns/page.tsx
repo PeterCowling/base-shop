@@ -1,14 +1,16 @@
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
 import {
-  getReturnLogistics,
   getReturnBagAndLabel,
-} from "@platform-core/returnLogistics";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
-import { useTranslations as getServerTranslations } from "@i18n/useTranslations.server";
+  getReturnLogistics,
+} from "@acme/platform-core/returnLogistics";
+
+import shop from "../../../../shop.json";
+import CleaningInfo from "../../../components/CleaningInfo";
+
+import ReturnForm from "./ReturnForm";
 
 const SHOP_ID = "bcd";
-import CleaningInfo from "../../../components/CleaningInfo";
-import shop from "../../../../shop.json";
-import ReturnForm from "./ReturnForm";
 
 export async function generateMetadata() {
   const tBase = await getServerTranslations("en");

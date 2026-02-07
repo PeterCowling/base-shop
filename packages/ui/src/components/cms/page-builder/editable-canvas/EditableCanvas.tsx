@@ -1,24 +1,26 @@
 "use client";
 
-import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
 import { useMemo } from "react";
+import { rectSortingStrategy,SortableContext } from "@dnd-kit/sortable";
+
 import { cn } from "../../../../utils/style";
-import useMarqueeSelect from "../useMarqueeSelect";
 import usePresence from "../collab/usePresence";
-import useSelectionPositions from "../hooks/useSelectionPositions";
+import useDimLockedSelection from "../hooks/useDimLockedSelection";
+import useGroupingActions from "../hooks/useGroupingActions";
 import useRulerProps from "../hooks/useRulerProps";
 import useSelectionGrouping from "../hooks/useSelectionGrouping";
-import useGroupingActions from "../hooks/useGroupingActions";
-import useDimLockedSelection from "../hooks/useDimLockedSelection";
+import useSelectionPositions from "../hooks/useSelectionPositions";
 import SelectionQuickActions from "../SelectionQuickActions";
-import { useCanvasRefs } from "./useCanvasRefs";
-import { useDropHighlightState } from "./useDropHighlightState";
-import { useVisibleComponents } from "./useVisibleComponents";
-import { useGroupEvents } from "./useGroupEvents";
-import Overlays from "./Overlays";
+import useMarqueeSelect from "../useMarqueeSelect";
+
 import CanvasList from "./CanvasList";
+import Overlays from "./Overlays";
 import type { PBWindow, Props } from "./types";
 import { t } from "./types";
+import { useCanvasRefs } from "./useCanvasRefs";
+import { useDropHighlightState } from "./useDropHighlightState";
+import { useGroupEvents } from "./useGroupEvents";
+import { useVisibleComponents } from "./useVisibleComponents";
 
 export default function EditableCanvas(props: Props) {
   const {

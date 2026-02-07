@@ -1,4 +1,11 @@
 // Mock builder runtime hooks that rely on browser APIs (IntersectionObserver, etc.)
+import { render, screen } from "@testing-library/react";
+
+import type { PageComponent } from "@acme/types";
+
+import { blockRegistry } from "../src/components/cms/blocks";
+import DynamicRenderer from "../src/components/DynamicRenderer";
+
 jest.mock("../src/components/cms/page-builder/scrollEffects", () => ({
   ensureScrollStyles: jest.fn(),
   ensureAnimationStyles: jest.fn(),
@@ -14,11 +21,6 @@ jest.mock("../src/components/cms/lightbox", () => ({
   ensureLightboxStyles: jest.fn(),
   initLightbox: jest.fn(),
 }));
-
-import { render, screen } from "@testing-library/react";
-import DynamicRenderer from "../src/components/DynamicRenderer";
-import { blockRegistry } from "../src/components/cms/blocks";
-import type { PageComponent } from "@acme/types";
 
 describe("DynamicRenderer", () => {
   it("warns on unknown component type", () => {
@@ -46,13 +48,13 @@ describe("DynamicRenderer", () => {
       {
         id: "1",
         type: "Text",
-        text: { en: "hello", fr: "bonjour" },
+        text: { en: "hello", de: "hallo" },
       } as any,
     ];
 
-    render(<DynamicRenderer components={components} locale="fr" />);
+    render(<DynamicRenderer components={components} locale="de" />);
 
-    expect(screen.getByText("bonjour")).toBeInTheDocument();
+    expect(screen.getByText("hallo")).toBeInTheDocument();
   });
 
   it("overrides block-provided locale", () => {
@@ -60,14 +62,14 @@ describe("DynamicRenderer", () => {
       {
         id: "1",
         type: "Text",
-        text: { en: "hello", fr: "bonjour" },
+        text: { en: "hello", de: "hallo" },
         locale: "en",
       } as any,
     ];
 
-    render(<DynamicRenderer components={components} locale="fr" />);
+    render(<DynamicRenderer components={components} locale="de" />);
 
-    expect(screen.getByText("bonjour")).toBeInTheDocument();
+    expect(screen.getByText("hallo")).toBeInTheDocument();
   });
 
   it("renders a nested Section with child blocks", () => {
@@ -98,12 +100,12 @@ describe("DynamicRenderer", () => {
 
   it("calls getRuntimeProps for components that define it", () => {
     const renderSpy = jest
-      .spyOn(blockRegistry.ProductGrid, "component")
+      .spyOn(blockRegistry.ProductGrid as any, "component")
       .mockImplementation(({ runtime }: any) => (
         <div data-testid="grid">{runtime}</div>
       ));
     const runtimeSpy = jest
-      .spyOn(blockRegistry.ProductGrid, "getRuntimeProps")
+      .spyOn(blockRegistry.ProductGrid as any, "getRuntimeProps")
       .mockReturnValue({ runtime: "value" });
 
     const components: PageComponent[] = [
@@ -125,7 +127,7 @@ describe("DynamicRenderer", () => {
 
   it("injects runtimeData into matching block types", () => {
     const spy = jest
-      .spyOn(blockRegistry.HeroBanner, "component")
+      .spyOn(blockRegistry.HeroBanner as any, "component")
       .mockImplementation(({ foo }: any) => <div>{foo}</div>);
 
     const components: PageComponent[] = [
@@ -151,7 +153,7 @@ describe("DynamicRenderer", () => {
 
   it("merges getRuntimeProps with runtimeData, preferring runtimeData", () => {
     const renderSpy = jest
-      .spyOn(blockRegistry.ProductGrid, "component")
+      .spyOn(blockRegistry.ProductGrid as any, "component")
       .mockImplementation(({ foo, bar, baz }: any) => (
         <div>
           {foo}
@@ -160,7 +162,7 @@ describe("DynamicRenderer", () => {
         </div>
       ));
     const runtimeSpy = jest
-      .spyOn(blockRegistry.ProductGrid, "getRuntimeProps")
+      .spyOn(blockRegistry.ProductGrid as any, "getRuntimeProps")
       .mockReturnValue({ foo: "fromRuntimeProps", bar: "keep" });
 
     const components: PageComponent[] = [

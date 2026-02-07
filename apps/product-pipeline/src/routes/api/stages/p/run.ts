@@ -1,11 +1,12 @@
 /* i18n-exempt file -- PP-1100 internal pipeline API [ttl=2026-06-30] */
 // apps/product-pipeline/src/routes/api/stages/p/run.ts
 
-import type { D1Database, D1PreparedStatement, PipelineEventContext } from "../../_lib/types";
 import { z } from "zod";
+
 import { buildCooldownPlan, isCooldownActive } from "@/lib/pipeline/cooldown";
 import { fingerprintLead } from "@/lib/pipeline/fingerprint";
 import { triageLead } from "@/lib/pipeline/triage";
+
 import {
   fetchCooldownsByFingerprints,
   fetchLeadsByIds,
@@ -14,6 +15,7 @@ import {
   type PipelineEnv,
 } from "../../_lib/db";
 import { errorResponse, jsonResponse } from "../../_lib/response";
+import type { D1Database, D1PreparedStatement, PipelineEventContext } from "../../_lib/types";
 
 const DEFAULT_DAILY_PROMOTION_LIMIT = 5;
 

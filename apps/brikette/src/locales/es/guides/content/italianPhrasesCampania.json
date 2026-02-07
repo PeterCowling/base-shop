@@ -13,35 +13,35 @@
       "id": "transport",
       "title": "Autobuses y ferris",
       "body": [
-        "«Dov’è la fermata?» (¿Dónde está la parada?).",
-        "«Un biglietto per Positano, per favore.» (Un billete a Positano, por favor).",
-        "«A che ora parte?» (¿A qué hora sale?)."
+        "\\\\\"Dov’è la fermata?\\\\\" (¿Dónde está la parada?).",
+        "\\\\\"Un biglietto per Positano, per favore.\\\\\" (Un billete a Positano, por favor).",
+        "\\\\\"A che ora parte?\\\\\" (¿A qué hora sale?)."
       ]
     },
     {
       "id": "cafe",
       "title": "Bares y cafés",
       "body": [
-        "«Un caffè, per favore.» (Un espresso, por favor).",
-        "«Possiamo avere il conto?» (¿Nos traes la cuenta?).",
-        "«Posso avere acqua del rubinetto?» (¿Puedo tener agua del grifo?)."
+        "\\\\\"Un caffè, per favore.\\\\\" (Un espresso, por favor).",
+        "\\\\\"Possiamo avere il conto?\\\\\" (¿Nos traes la cuenta?).",
+        "\\\\\"Posso avere acqua del rubinetto?\\\\\" (¿Puedo tener agua del grifo?)."
       ]
     },
     {
       "id": "polite",
       "title": "Cortesía y saludos",
       "body": [
-        "«Per favore», «Grazie mille» y «Scusami» te sacan de casi cualquier apuro.",
-        "En el dialecto local se escucha «Ué» como saludo informal; úsalo solo con gente que ya conozcas."
+        "\\\\\"Per favore\\\\\", \\\\\"Grazie mille\\\\\" y \\\\\"Scusami\\\\\" te sacan de casi cualquier apuro.",
+        "En el dialecto local se escucha \\\\\"Ué\\\\\" como saludo informal; úsalo solo con gente que ya conozcas."
       ]
     },
     {
       "id": "shopping",
       "title": "Mercados y compras",
       "body": [
-        "«Quanto costa?» (¿Cuánto cuesta?).",
-        "«Ne prendo due.» (Me llevo dos).",
-        "«Avete una taglia più piccola?» (¿Tenéis una talla más pequeña?)."
+        "\\\\\"Quanto costa?\\\\\" (¿Cuánto cuesta?).",
+        "\\\\\"Ne prendo due.\\\\\" (Me llevo dos).",
+        "\\\\\"Avete una taglia più piccola?\\\\\" (¿Tenéis una talla más pequeña?)."
       ]
     }
   ],
@@ -51,7 +51,7 @@
   ],
   "notesTitle": "Consejos de pronunciación",
   "notes": [
-    "La «c» seguida de «e/i» suena como «ch»; «sc» + «i» suena parecido a «sh».",
+    "La \\\\\"c\\\\\" seguida de \\\\\"e/i\\\\\" suena como \\\\\"ch\\\\\"; \\\\\"sc\\\\\" + \\\\\"i\\\\\" suena parecido a \\\\\"sh\\\\\".",
     "Habla despacio, sonríe y acompaña con gestos suaves: la gente local suele agradecer el esfuerzo."
   ],
   "faqs": [

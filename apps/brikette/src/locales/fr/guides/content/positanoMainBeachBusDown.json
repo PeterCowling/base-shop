@@ -3,7 +3,7 @@
     "title": "Bus de l'auberge Brikette à la plage principale de Positano",
     "description": "Comment prendre le bus interno orange pour descendre jusqu'à la Piazza dei Mulini et se promener jusqu'à Spiaggia Grande."
   },
-  "linkLabel": "Bus down to Positano's main beach",
+  "linkLabel": "Bus pour descendre vers la plage principale de Positano",
   "intro": [
     "Le bus orange Interno Positano relie l'auberge Brikette à la Piazza dei Mulini, à quelques pas de la Spiaggia Grande.",
     "Suivez ces étapes pour acheter des billets au tabacchi, roulez en descente et couvrez les dernières minutes à pied."
@@ -22,7 +22,7 @@
       "id": "ride-the-bus",
       "title": "Prendre le bus Interno Positano en descente",
       "body": [
-        "Montez à bord du mini-bus orange marqué « Interno Positano ». Différents styles de véhicules parcourent l'itinéraire, mais la destination sur le panneau électronique reste la même.",
+        "Montez à bord du mini-bus orange marqué \\\\\" Interno Positano \\\\\". Différents styles de véhicules parcourent l'itinéraire, mais la destination sur le panneau électronique reste la même.",
         "Restez sur place pendant que le bus circule dans les rues à flanc de colline de Positano et descend vers le centre-ville."
       ]
     },

@@ -49,9 +49,16 @@
       "id": "bus-to-bomerano",
       "title": "Wsiądź do autobusu do Bomerano",
       "body": [
-        "Wypatruj autobusu SITA z oznaczeniem „Agerola/Bomerano”. Skasuj bilet przy wejściu i usiądź bliżej przodu, aby znieść mniej zakrętów.",
+        "Wypatruj autobusu SITA z oznaczeniem \\\"Agerola/Bomerano”. Skasuj bilet przy wejściu i usiądź bliżej przodu, aby znieść mniej zakrętów.",
         "Po około 45 minutach wysiądź na przystanku Bomerano obok Ristorante Jerla. Przejdź na drugą stronę i zejdź boczną uliczką na plac.",
-        "Przejdź w lewo przez piazzę, a następnie kieruj się za znakami „Sentiero degli Dei”, aż dotrzesz do tablicy informacyjnej na początku szlaku."
+        "Przejdź w lewo przez piazzę, a następnie kieruj się za znakami \\\"Sentiero degli Dei”, aż dotrzesz do tablicy informacyjnej na początku szlaku."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/12-nav.jpg",
+          "alt": "Side street from Bomerano bus stop descending toward the piazza",
+          "caption": "2. Przejdź przez ulicę od przystanku autobusowego i podążaj tą boczną uliczką w dół na plac"
+        }
       ]
     },
     {
@@ -61,6 +68,28 @@
         "Szlak faluje na dystansie około 6 kilometrów. Czekają kamienne stopnie, wąskie półki i spektakularne balkony widokowe na wybrzeże.",
         "Rób przerwy w oznaczonych punktach widokowych i zabierz ze sobą wszystkie śmieci. Szanuj lokalnych gospodarzy i trzymaj się wytyczonej ścieżki.",
         "Gdy gruntowa ścieżka połączy się z betonową alejką prowadzącą do Nocelle, dotarłeś do mety."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/13-nav.jpg",
+          "alt": "Town square (piazza) in Bomerano with left-hand route markers",
+          "caption": "3. Przejdź w lewo przez piazzę i kieruj się za znakami 'Sentiero degli Dei'"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/14-nav.jpg",
+          "alt": "Wooden steps ascending along the hiking trail ridge",
+          "caption": "4. Po przejściu przez piazzę znajdź tablicę informacyjną i skręć w lewo; tutaj zaczyna się szlak. Podążaj ścieżką do sekcji z drewnianymi schodami."
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/15-nav.jpg",
+          "alt": "Concrete paved walkway marking entry into Nocelle village",
+          "caption": "Gdy gruntowa ścieżka połączy się z tą betonową alejką, dotarłeś do Nocelle"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/16-nav.jpg",
+          "alt": "Nocelle village navigation map showing route to bus stop and staircase warning",
+          "caption": "Mapa Nocelle — idąc przez wieś, upewnij się, że skręcasz w prawo na rozwidleniu, aby dotrzeć do przystanku autobusowego; unikaj 1700-stopniowych schodów do Positano za wszelką cenę!"
+        }
       ]
     },
     {
@@ -70,6 +99,23 @@
         "Idź utwardzoną alejką do miasteczka, trzymając się prawej strony na pierwszym rozwidleniu, aby ominąć 1700-stopniowe schody do Positano.",
         "Przejdź około 175 metrów do przystanku autobusowego przy małym parkingu. Kiosk przy kościele sprzedaje latem zimne napoje.",
         "Bądź co najmniej 10 minut wcześniej; przy zatłoczonym parkingu autobusy zatrzymują się czasem przed wiatą."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/17-nav.jpg",
+          "alt": "Directional signpost in Nocelle showing the stairs-to-Positano option to avoid",
+          "caption": "KRYTYCZNE: NIE podążaj za znakami do 'Positano' w dół schodami — zamiast tego skręć tutaj w prawo"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/18-nav.jpg",
+          "alt": "Stone steps ascending through Nocelle streets toward the bus stop",
+          "caption": "Wejdź po tych schodach przez około 175 metrów, aby dotrzeć do przystanku autobusowego przy parkingu"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/19-nav.jpg",
+          "alt": "Bus stop arrival point in Nocelle",
+          "caption": "Dotarłeś do przystanku autobusowego."
+        }
       ]
     },
     {

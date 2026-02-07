@@ -1,51 +1,54 @@
+"use client";
+
 import React from "react";
-import { Link as RouterLink } from "react-router-dom";
+import NextLink from "next/link";
 
 export type AnchorLikeProps = React.AnchorHTMLAttributes<HTMLAnchorElement> & {
   to?: string;
   href?: string;
   children?: React.ReactNode;
-  /** React Router prefetch hint for internal links */
-  prefetch?: React.ComponentProps<typeof RouterLink>["prefetch"];
+  /** Next.js prefetch hint for internal links */
+  prefetch?: boolean | null;
 };
 
 /**
  * AppLink — smart link wrapper
- * - Internal links ("/" or relative) render <Link> from react-router-dom
+ * - Internal links ("/" or relative) render <Link> from next/link
  * - External links render <a>, preserving target/rel
  */
-type RouterLinkProps = React.ComponentProps<typeof RouterLink> & {
-  prefetch?: AnchorLikeProps["prefetch"];
-};
+export const AppLink = React.forwardRef<HTMLAnchorElement, AnchorLikeProps>(
+  ({ href, to, children, prefetch, ...rest }, ref) => {
+    const resolved = (to ?? href ?? "").toString();
+    const isExternal =
+      resolved.startsWith("http:") ||
+      resolved.startsWith("https:") ||
+      resolved.startsWith("//") ||
+      resolved.startsWith("mailto:") ||
+      resolved.startsWith("tel:");
 
-export const AppLink: React.FC<AnchorLikeProps> = ({ href, to, children, prefetch, ...rest }) => {
-  const resolved = (to ?? href ?? "").toString();
-  const isExternal =
-    resolved.startsWith("http:") ||
-    resolved.startsWith("https:") ||
-    resolved.startsWith("//") ||
-    resolved.startsWith("mailto:") ||
-    resolved.startsWith("tel:");
-
-  if (!resolved) return <a {...rest}>{children}</a>;
-  if (isExternal) {
+    if (!resolved) return <a ref={ref} {...rest}>{children}</a>;
+    if (isExternal) {
+      return (
+        <a ref={ref} href={resolved} {...rest}>
+          {children}
+        </a>
+      );
+    }
     return (
-      <a href={resolved} {...rest}>
+      <NextLink
+        ref={ref}
+        href={resolved}
+        prefetch={prefetch}
+        {...rest}
+      >
         {children}
-      </a>
+      </NextLink>
     );
   }
-  return (
-    <RouterLink
-      to={resolved}
-      {...(prefetch !== undefined ? { prefetch } : {})}
-      {...(rest as Omit<RouterLinkProps, "to">)}
-    >
-      {children}
-    </RouterLink>
-  );
-};
+);
 
-export { RouterLink as Link };
+AppLink.displayName = "AppLink";
+
+export { NextLink as Link };
 
 export default AppLink;

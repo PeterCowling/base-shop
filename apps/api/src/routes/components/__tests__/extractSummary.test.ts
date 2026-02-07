@@ -1,6 +1,6 @@
-jest.mock('fs', () => require('memfs').fs);
-
 import { extractSummary } from '../[shopId]';
+
+jest.mock('fs', () => require('memfs').fs);
 
 describe('extractSummary', () => {
   it('returns empty string when changelog is empty', () => {

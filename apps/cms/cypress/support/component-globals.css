@@ -1,4 +1,4 @@
-@import url("../../../../packages/themes/base/src/tokens.css");
+@import url("@themes/base/tokens.css");
 @import url("../../src/app/cms.tokens.css");
 @import url("../../../../packages/ui/src/styles/builder.css");
 @import url("tailwindcss");

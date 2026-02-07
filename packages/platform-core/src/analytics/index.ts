@@ -1,9 +1,12 @@
+import "server-only";
+
+import { promises as fs } from "fs";
+import * as path from "path";
+
 import { loadCoreEnv } from "@acme/config/env/core";
 import { nowIso } from "@acme/date-utils";
 import type { AnalyticsEvent } from "@acme/types";
-import { promises as fs } from "fs";
-import * as path from "path";
-import "server-only";
+
 import { resolveDataRoot } from "../dataRoot";
 import { getShopSettings, readShop } from "../repositories/shops.server";
 import { validateShopName } from "../shops";
@@ -32,7 +35,7 @@ class NoopProvider implements AnalyticsProvider {
 
 class ConsoleProvider implements AnalyticsProvider {
   async track(event: AnalyticsEvent): Promise<void> {
-    console.log("analytics", event);
+    console.debug("analytics", event);
   }
 }
 

@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/AnalyticsPixelsSection.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import AnalyticsPixelsSection from './AnalyticsPixelsSection';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './AnalyticsPixelsSection.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import AnalyticsPixelsSection from './AnalyticsPixelsSection';
+import fixture from './AnalyticsPixelsSection.fixtures.json';
 
 const meta: Meta<typeof AnalyticsPixelsSection> = {
   title: 'CMS Blocks/AnalyticsPixelsSection/Matrix',

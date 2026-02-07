@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
+import { useEffect, useMemo, useState } from "react";
+
 import type { SKU } from "@acme/types";
-import { fetchCollection } from "../products/fetchCollection";
+
 import { DatasetProvider } from "../data/DataContext";
+import { fetchCollection } from "../products/fetchCollection";
 
 export type DatasetSource = "products" | "blog" | "sanity" | "manual";
 

@@ -3,13 +3,14 @@
 // Resolvers for tag metadata across locales (resource lookup + dictionary).
 // -----------------------------------------------------------------------------
 
-import i18n from "@/i18n";
-import { i18nConfig } from "@/i18n.config";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- LINT-1007 [ttl=2026-12-31] JSON import is provided by build tooling
 // @ts-ignore - resolveJsonModule handles JSON at build time
 import EN_GUIDES_TAGS from "@/data/tags/en.json";
-import type { TagDictionary, TagMeta, TagsResource } from "./types";
+import i18n from "@/i18n";
+import { i18nConfig } from "@/i18n.config";
+
 import { normalise, parseTagsResource } from "./normalizers";
+import type { TagDictionary, TagMeta, TagsResource } from "./types";
 
 const EN_TAGS_RESOURCE: TagsResource = EN_GUIDES_TAGS ?? {};
 

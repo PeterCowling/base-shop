@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+
 import { ProductListTemplate } from "../ProductListTemplate";
 
 describe("ProductListTemplate", () => {

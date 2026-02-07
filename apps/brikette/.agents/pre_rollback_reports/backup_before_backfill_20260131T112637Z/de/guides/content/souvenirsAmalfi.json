@@ -1,0 +1,84 @@
+{
+  "seo": {
+    "title": "Preisbewusste Souvenirs an der Amalfiküste",
+    "description": "Günstige, leicht packbare Souvenirs: was du kaufst, wo und wie du sicher verschickst."
+  },
+  "linkLabel": "Souvenirs günstig shoppen (Amalfiküste)",
+  "intro": [
+    "Souvenirs reichen hier von handgefertigter Keramik bis zu Vorratsleckereien, doch die Preise schwanken entlang der Hauptgassen stark.",
+    "Mit diesen Tipps fokussierst du dich auf Qualität, findest ehrliche Läden und packst alles so, dass es heil zu Hause ankommt."
+  ],
+  "tocTitle": "Auf dieser Seite",
+  "toc": [
+    {
+      "href": "#what-to-buy",
+      "label": "Was kaufen"
+    },
+    {
+      "href": "#where-to-shop",
+      "label": "Wo einkaufen"
+    },
+    {
+      "href": "#packing",
+      "label": "Packen & Versand"
+    },
+    {
+      "href": "#faqs",
+      "label": "FAQ"
+    }
+  ],
+  "sections": [
+    {
+      "id": "what-to-buy",
+      "title": "Was kaufen",
+      "body": [
+        "Handbemalte Keramik, Limoncello, kleine Drucke und Vorratsartikel wie Colatura oder Zitronenmarmelade lassen sich gut transportieren und stehen für die Küste.",
+        "Achte auf Signaturen der Kunsthandwerker oder Genossenschaftssiegel; meide Massenware ohne saubere Glasur oder mit starkem Chemiegeruch."
+      ]
+    },
+    {
+      "id": "where-to-shop",
+      "title": "Wo einkaufen",
+      "body": [
+        "Geh ein bis zwei Straßen oberhalb der Via dei Mulini und des Strands, um Boutiquen, Genossenschaften und Ateliers zu vergleichen.",
+        "Märkte in Sorrent, Amalfi und sogar Salerno bieten oft dieselben Waren zu entspannteren Preisen – rechne Fähre oder Buskosten mit ein."
+      ]
+    },
+    {
+      "id": "packing",
+      "title": "Packen & Versand",
+      "body": [
+        "Wickle Keramik in Kleidung oder Luftpolsterfolie und trenne Teller mit Karton oder wiederverwendbaren Tüchern.",
+        "Beim Versand aus Italien nach Nachverfolgung fragen und Belege aufbewahren; kläre vor dem Kauf von Lebensmitteln die Einfuhrregeln deines Ziellands."
+      ]
+    },
+    {
+      "id": "price-checks",
+      "title": "Preischecks & Echtheit",
+      "body": [
+        "Achte bei Limoncello auf Consorzio- oder IGP-Siegel und auf handgeschriebene Preisschilder statt nur auf \"Special Offer\"-Tafeln.",
+        "Wirkt ein Angebot zu günstig, prüfe Nähte und Glasur; echte Handarbeit zeigt kleine Variationen statt identischer Muster."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Kann ich Limoncello oder Lebensmittel im Gepäck mitnehmen?",
+      "a": [
+        "Flüssigkeiten über 100 ml gehören ins aufgegebene Gepäck; deklariere Alkohol, wenn nötig, und prüfe vor dem Kauf die Einfuhrlimits deines Heimatlands für Milch- oder Fleischprodukte."
+      ]
+    },
+    {
+      "q": "Akzeptieren Geschäfte Karten?",
+      "a": [
+        "Die meisten schon, aber kleine Ateliers bevorzugen oft Bargeld oder setzen höhere Mindestbeträge an – hab Euros in kleinen Scheinen dabei."
+      ]
+    },
+    {
+      "q": "Gibt es Tax-Free-Shopping?",
+      "a": [
+        "Ja, bei Einkäufen über der Mehrwertsteuer-Grenze in einem Geschäft. Fordere das Tax-Free-Formular an, lass es bei der Ausreise abstempeln und bewahre die Quittungen griffbereit auf."
+      ]
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom";
+
 import React, { act } from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent,render, screen } from "@testing-library/react";
 
 const listShops = jest.fn();
 jest.mock("../src/lib/listShops", () => ({ listShops }));
@@ -8,7 +9,7 @@ jest.mock("../src/lib/listShops", () => ({ listShops }));
 const readOrders = jest.fn();
 const markReturned = jest.fn();
 const markRefunded = jest.fn();
-jest.mock("@platform-core/orders", () => ({
+jest.mock("@acme/platform-core/orders", () => ({
   readOrders,
   markReturned,
   markRefunded,
@@ -52,7 +53,7 @@ describe("Orders pages", () => {
       },
     ]);
     const Page = (await import("../src/app/cms/orders/[shop]/page")).default;
-    render(await Page({ params: { shop: "shop-a" } }));
+    render(await Page({ params: Promise.resolve({ shop: "shop-a" }) }));
 
     expect(screen.getByText("Order: o1")).toBeInTheDocument();
     expect(screen.getByText("Return: 2024-01-01")).toBeInTheDocument();

@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/HeaderSection.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import HeaderSection from './HeaderSection';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './HeaderSection.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import HeaderSection from './HeaderSection';
+import fixture from './HeaderSection.fixtures.json';
 
 const meta: Meta<typeof HeaderSection> = {
   title: 'CMS Blocks/HeaderSection/Matrix',

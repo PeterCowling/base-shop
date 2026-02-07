@@ -19,11 +19,11 @@ jest.mock("../src/providers/resend", () => ({
   ResendProvider: jest.fn().mockImplementation(() => resend),
 }));
 
-jest.mock("@platform-core/repositories/analytics.server", () => ({
+jest.mock("@acme/platform-core/repositories/analytics.server", () => ({
   listEvents: jest.fn(),
 }));
 
-jest.mock("@platform-core/dataRoot", () => ({
+jest.mock("@acme/platform-core/dataRoot", () => ({
   DATA_ROOT: "/data",
   resolveDataRoot: () => "/data",
 }));
@@ -49,7 +49,7 @@ const {
   cacheTtl,
 } = require("../src/segments");
 
-const { listEvents } = require("@platform-core/repositories/analytics.server") as {
+const { listEvents } = require("@acme/platform-core/repositories/analytics.server") as {
   listEvents: jest.Mock;
 };
 const fs = require("fs").promises as {

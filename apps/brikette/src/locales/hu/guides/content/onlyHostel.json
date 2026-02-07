@@ -69,7 +69,7 @@
     "whatToPack",
     "workCafes"
   ],
-  "arrivalText": "Kb. 80 méterre vagyunk a „Chiesa Nuova” SITA megállótól, lépcsősor nélkül. Komppal érkezel? Gondolkodj hordáron vagy a felfelé tartó SITA buszon.",
+  "arrivalText": "Kb. 80 méterre vagyunk a \\\"Chiesa Nuova” SITA megállótól, lépcsősor nélkül. Komppal érkezel? Gondolkodj hordáron vagy a felfelé tartó SITA buszon.",
   "arrivalLinks": [
     "chiesaNuovaArrivals",
     "ferryDockToBrikette",

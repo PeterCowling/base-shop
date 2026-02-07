@@ -9,29 +9,29 @@
   "promo": "Prenota direttamente e il tuo sconto del {{percent}} % viene applicato automaticamente al checkout.",
   "dealCard": {
     "savePercent": "Risparmia {{percent}}",
-    "stayDatesLabel": "Date del soggiorno:",
+    "stayDatesLabel": "Date di soggiorno:",
     "badges": {
       "autoApplied": "Applicato automaticamente",
       "directOnly": "Solo prenotazioni dirette"
     },
     "cta": {
-      "bookDirect": "Prenota direttamente",
-      "applyDeal": "Applica offerta"
+      "bookDirect": "Prenota in diretta",
+      "applyDeal": "Applica l'offerta"
     },
     "status": {
-      "upcoming": "Prossima offerta · Inizia {{startDate}}",
+      "upcoming": "Offerta in arrivo · Inizia il {{startDate}}",
       "expired": "Scaduta"
     }
   },
   "hero": {
-    "activeLabel": "Offerta in corso",
+    "activeLabel": "Offerta attiva",
     "activeTitle": "Risparmia {{percent}}",
-    "activeDatesLabel": "Date del soggiorno:",
+    "activeDatesLabel": "Date di soggiorno:",
     "activeSubtitle": "Applicato automaticamente al checkout. Solo prenotazioni dirette."
   },
   "emptyState": {
     "title": "Nessuna offerta attiva",
-    "subtitle": "Prenota direttamente per la tariffa migliore e tutti i vantaggi.",
+    "subtitle": "Prenota direttamente per la migliore tariffa e vantaggi esclusivi.",
     "secondaryCta": "Scopri i vantaggi della prenotazione diretta"
   },
   "status": {
@@ -80,13 +80,16 @@
   "perksIntroLink": "Vedi tutti i vantaggi",
   "perksList": [
     {
-      "title": "Fino al 25 % di sconto sul prezzo normale con l'applicazione del coupon"
+      "title": "Fino al 25 % di sconto sul prezzo normale con l'applicazione del coupon",
+      "subtitle": "Applicato automaticamente"
     },
     {
-      "title": "Colazione inclusa"
+      "title": "Colazione inclusa",
+      "subtitle": "Incluso giornalmente"
     },
     {
-      "title": "Drink serale in omaggio"
+      "title": "Drink serale in omaggio",
+      "subtitle": "Selezione della casa"
     }
   ],
   "expired": {

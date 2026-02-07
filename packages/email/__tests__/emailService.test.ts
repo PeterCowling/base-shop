@@ -1,10 +1,10 @@
+import { ProviderError } from "../src/providers/types";
 import {
   deriveText,
   ensureText,
-  sendWithRetry,
   sendWithNodemailer,
+  sendWithRetry,
 } from "../src/send";
-import { ProviderError } from "../src/providers/types";
 
 describe("deriveText", () => {
   it("strips tags, decodes entities and trims", () => {

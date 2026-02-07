@@ -1,14 +1,14 @@
-import path from "path";
 import { NextRequest } from "next/server";
 import { __setMockSession } from "next-auth";
+import path from "path";
 
 const writeJsonFile = jest.fn();
 jest.mock("@/lib/server/jsonIO", () => ({ writeJsonFile }));
 
-jest.mock("@platform-core/dataRoot", () => ({ resolveDataRoot: () => "/tmp/data" }));
+jest.mock("@acme/platform-core/dataRoot", () => ({ resolveDataRoot: () => "/tmp/data" }));
 
 const parseJsonBody = jest.fn();
-jest.mock("@shared-utils", () => ({ parseJsonBody }));
+jest.mock("@acme/lib/http/server", () => ({ parseJsonBody }));
 
 let POST: typeof import("../route").POST;
 

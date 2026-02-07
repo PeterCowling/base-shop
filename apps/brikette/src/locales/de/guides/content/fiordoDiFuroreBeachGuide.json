@@ -1,71 +1,239 @@
 {
   "seo": {
-    "title": "Fiordo-di-Furore-Strandguide",
-    "description": "So erreichst du den Fiordo di Furore mit dem Bus von Positano, was du einpacken solltest und was dich in der Felsenbucht erwartet."
+    "title": "Fiordo di Furore Strand: Bus-, Treppen- und Schwimmführer",
+    "description": "Ein hostelfreundlicher Leitfaden zum Fiordo di Furore: Wie Sie den versteckten Fjordstrand mit dem SITA-Bus erreichen, wie die Treppen und Einrichtungen wirklich sind, Sicherheitstipps, Fotospots und wie Sie zurückkommen, ohne den letzten Bus zu verpassen."
   },
-  "linkLabel": "Fiordo-di-Furore-Strandguide",
+  "lastUpdated": "2026-01-29T00:00:00Z",
+  "linkLabel": "Fiordo di Furore: Der Fjordstrand unter der Brücke",
   "intro": [
-    "Der Fiordo di Furore ist die Postkarten-Schlucht der Amalfiküste – eine enge Bucht unter einer Bogenbrücke mit smaragdgrünem Wasser und steilen Felswänden. Es ist eine kleine, weitgehend naturbelassene Bucht ohne Beachclub oder Restaurant, also komm für einen Sprung ins Wasser, ein paar Fotos und dramatische Klippensprünge gut vorbereitet.",
-    "Mit diesem Guide reist du mit dem Bus an, verstehst, wie begrenzt die Infrastruktur ist, und planst deine Rückfahrt so, dass du nicht strandest, wenn der letzte SITA-Bus voll ist."
+    "Fiordo di Furore (manchmal \\\\\"Furore-Fjord\\\\\" genannt) ist einer der dramatischsten Badeplätze an der Amalfiküste: eine schmale Schlucht mit türkisfarbenem Wasser, steilen Felswänden und einer Steinbrücke hoch oben. Es sieht aus wie ein geheimer Strand, aber er ist winzig und rau - keine Beach Clubs, begrenzter Platz und steile Treppen hinunter zum Wasser.",
+    "Dieser Leitfaden ist für Hostelgäste geschrieben, die das klassische Foto und ein kurzes Bad haben möchten, ohne den Tag in eine stressige Logistikmission zu verwandeln. Wir behandeln, wie Sie die Schlucht mit dem SITA-Bus erreichen, was Sie einpacken sollten, weil es fast keine Dienstleistungen gibt, und wie Sie Ihre Rückkehr timen, damit Sie nicht am Straßenrand feststecken, während volle Busse vorbeifahren.",
+    "Tipp von unserer Rezeption: Behandeln Sie Fiordo di Furore als kurzen \\\\\"Ankerstopp\\\\\" (60-120 Minuten vor Ort) und kombinieren Sie ihn mit einer größeren, servicefreundlichen Bucht wie %LINK:marinaDiPraiaBeaches|Marina di Praia% oder einem sonnenuntergangsfokussierten Strandtag bei %LINK:gavitellaBeachGuide|Gavitella in Praiano%."
   ],
   "toc": [
     {
+      "href": "#overview",
+      "label": "Überblick"
+    },
+    {
       "href": "#getting-there",
-      "label": "Anreise"
+      "label": "Anreise (Bus)"
+    },
+    {
+      "href": "#stairs-and-access",
+      "label": "Treppen & Zugang"
+    },
+    {
+      "href": "#best-time-to-go",
+      "label": "Beste Zeit"
+    },
+    {
+      "href": "#what-to-bring",
+      "label": "Was mitnehmen"
+    },
+    {
+      "href": "#swimming-and-safety",
+      "label": "Schwimmen & Sicherheit"
+    },
+    {
+      "href": "#photo-spots",
+      "label": "Fotospots"
+    },
+    {
+      "href": "#nearby-alternatives",
+      "label": "Alternativen in der Nähe"
     },
     {
       "href": "#returning",
-      "label": "Rückweg"
-    },
-    {
-      "href": "#on-site",
-      "label": "Vor Ort"
+      "label": "Rückfahrt"
     }
   ],
   "sections": [
     {
-      "id": "getting-there",
-      "title": "SITA-Bus entspannt nutzen",
+      "id": "overview",
+      "title": "Fiordo di Furore in einer Minute",
       "body": [
-        "Vom Hostel Brikette gehst du die Via Pasitea hinunter zur Haltestelle Sponda und steigst in einen SITA-Bus Richtung Amalfi. Sag dem Fahrer, dass du beim \"Fiordo di Furore\" aussteigen möchtest – die Haltestelle liegt zwischen Praiano und Furore und wird an vollen Tagen leicht übersehen.",
-        "Nach rund 25 Minuten steigst du an der markierten Haltestelle kurz vor der Brücke aus. Folge den in den Fels geschlagenen Stufen ein paar Minuten, bis du den kleinen Kiesstrand unter dem Bogen erreichst."
+        "Der Strand selbst ist eine kleine Kiestasche am Boden einer Schlucht. Das Wasser ist normalerweise klar, die Klippen spenden der Bucht früher Schatten als erwartet, und die Atmosphäre kippt schnell von friedlich zu gepackt, sobald ein paar Busse ankommen.",
+        "Wenn Sie \\\\\"wildes\\\\\" Schwimmen lieben, werden Sie es genießen. Wenn Sie Toiletten, Sonnenschirme oder ein langes Mittagessen am Meer benötigen, nutzen Sie Fiordo di Furore als kurzen Stopp und gehen Sie dann zu einem größeren Strandtag über - sehen Sie unsere %LINK:positanoBeaches|Positano Strände Übersicht%, um die richtige Stimmung zu wählen."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/fiordo-di-furore-bridge.webp",
+          "alt": "Weite Ansicht der Fiordo di Furore Schlucht und der Brücke über der schmalen Bucht",
+          "caption": "Die fjordähnliche Schlucht ist spektakulär, aber der Platz am Wasser ist begrenzt. Foto: Ugeorge (CC BY-SA 3.0) via Wikimedia Commons."
+        }
       ]
     },
     {
-      "id": "returning",
-      "title": "Rückfahrt vor dem Baden planen",
+      "id": "getting-there",
+      "title": "Nehmen Sie den SITA-Bus selbstbewusst",
       "body": [
-        "Im Fiord gibt es weder Ticketbüro noch Automaten. Kauf dein Hin- und Rückticket in Positano (Tabacchi bei Chiesa Nuova oder der Kiosk an der Sponda-Haltestelle) und entwerte es beim Einsteigen.",
-        "Im Sommer kommen Busse aus Amalfi manchmal schon voll an. Peile eine frühere Abfahrt an, als du denkst, und sag den anderen Wartenden Bescheid, damit der Fahrer nach dir Ausschau hält. Wenn zwei Busse vorbeifahren, ohne zu halten, teile dir zur Not ein Taxi von der Straße oberhalb."
+        "Vom Hostel gehen Sie die Via Pasitea hinunter zur Haltestelle Sponda und steigen in einen SITA-Bus Richtung Amalfi. Sagen Sie dem Fahrer, dass Sie \\\\\"Fiordo di Furore\\\\\" brauchen, damit er sich erinnert anzuhalten - die Haltestelle liegt zwischen Praiano und Furore und kann leicht übersehen werden, wenn der Bus voll ist.",
+        "Die Fahrt dauert typischerweise etwa 25 Minuten, je nach Verkehr. Steigen Sie in der Nähe der Brücke auf der SS163 aus; Sie werden Beschilderung für den Fjord und eine Treppe sehen, die zum Wasser hinabführt.",
+        "Wenn Sie eine detailliertere Schritt-für-Schritt-Route möchten (einschließlich Backup-Haltestellen und was zu tun ist, wenn Busse verspätet sind), nutzen Sie %LINK:hostelBriketteToFiordoDiFuroreBus|unseren Hostel → Fiordo di Furore Busführer%."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/04-furore-fiord.webp",
+          "alt": "Fiordo di Furore Brücke und Klippen von der Küstenstraße über der Schlucht gesehen",
+          "caption": "Die Bushaltestelle befindet sich auf der Küstenstraße über der Schlucht - der Strand ist die Treppen hinunter. Foto: Falk2 (CC BY-SA 4.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "stairs-and-access",
+      "title": "Treppen, Taschen und was Barrierefreiheit hier wirklich bedeutet",
+      "body": [
+        "Erwarten Sie eine steile Treppe hinunter (und dieselbe Treppe wieder hinauf). Planen Sie für unebene Stufen, schnelle Engpässe, wenn Leute für Fotos anhalten, und einen heißen Aufstieg auf dem Rückweg.",
+        "Bringen Sie nur mit, was Sie nass wieder den Berg hinauftragen möchten. Ein kleiner Rucksack schlägt eine Tragetasche. Wenn Sie einen ganzen Strandtag mit Snacks, Wasser und Handtüchern planen, erwägen Sie, den längeren Teil Ihrer Schwimmzeit in einer Bucht mit leichterem Zugang wie %LINK:marinaDiPraiaBeaches|Marina di Praia% zu verbringen."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/07-fiordo-di-furore.webp",
+          "alt": "Fiordo di Furore Brücke vom Meer aus gesehen mit Klippen, die die schmale Bucht einrahmen",
+          "caption": "Vom Wasser aus fühlt sich die Schlucht wie ein versteckter Canyon unter der Brücke an. Foto: DimiTalen (CC0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "best-time-to-go",
+      "title": "Beste Zeit zum Gehen (und wann man es überspringen sollte)",
+      "body": [
+        "Fiordo di Furore ist früh am besten: weniger Menschen auf den Treppen, ruhigeres Wasser und eine höhere Chance, tatsächlich in der Nähe der Uferlinie stehen zu können. Wenn Sie im Hochsommer gehen, zielen Sie darauf ab, vor dem späten Vormittag anzukommen.",
+        "Überspringen Sie es an sehr windigen Tagen oder wenn das Meer von der Straße aus unruhig aussieht - die Schlucht kann Wellen kanalisieren und den Einstieg umständlich machen. Wenn die Bedingungen rau aussehen, wechseln Sie zu einer geschützteren, servicefreundlicheren Option wie Praianos %LINK:gavitellaBeachGuide|Gavitella% (besonders für Sonnenuntergang)."
+      ]
+    },
+    {
+      "id": "what-to-bring",
+      "title": "Was mitnehmen (weil es dort unten fast nichts gibt)",
+      "body": [
+        "Es gibt keine zuverlässigen Toiletten, Umkleideräume oder Beach Clubs in der Schlucht. Gelegentlich gibt es in der Hochsaison vielleicht einen kleinen Snackwagen, aber verlassen Sie sich nicht darauf.",
+        "Packen Sie, als würden Sie einen wilden Badeplatz besuchen: Wasser, Snacks, Sonnencreme, ein Handtuch und etwas zum Sitzen, wenn Sie scharfe Kieselsteine nicht mögen."
+      ],
+      "list": [
+        "Wasserschuhe: Die Kieselsteine und Felsen können nass rutschig sein.",
+        "Nachfüllbare Flasche + Snacks: Sie werden sie auf den Treppen zurück nach oben zu schätzen wissen.",
+        "Trockentasche oder Reißverschlusstasche: Hält Telefon, Bargeld und Ticket trocken.",
+        "Leichte Überwurf: Die Schlucht wird am späten Nachmittag schattig und kühler."
+      ]
+    },
+    {
+      "id": "swimming-and-safety",
+      "title": "Schwimmen & Sicherheit (einschließlich Klippenspringen-Realität)",
+      "body": [
+        "Das Wasser ist normalerweise klar, aber der Einstieg ist felsig und die Bucht kann sich eng anfühlen, sobald sie sich füllt. Schwimmen Sie mit Bewusstsein: Sie sind in einem schmalen Kanal mit Menschen, die springen, Fotos machen und auf nasse Felsen klettern.",
+        "Klippenspringen passiert hier, aber es ist kein \\\\\"Anfängersprung\\\\\". Springen Sie nur dort, wo erfahrene Einheimische es bereits tun, springen Sie niemals alleine und überprüfen Sie immer zuerst Tiefe und Unterwasserfelsen. Wenn das Meer rau ist, überspringen Sie das Springen ganz.",
+        "Wenn Sie einen ruhigeren Schwimmtag mit mehr Platz und leichteren Ausgängen möchten, ist Fiordo di Furore nicht die beste Wahl - nutzen Sie %LINK:positanoBeaches|unsere Strandübersicht%, um einen Ort zu wählen, der Ihrem Komfortniveau entspricht."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fiordo-di-furore/01-beach-and-bridge.jpg",
+          "alt": "Blick in die Fiordo di Furore Bucht mit der Brücke oben und dem schmalen Strand unten",
+          "caption": "Die Bucht ist schön, aber kompakt - achten Sie auf Schwimmer und rutschige Felsen. Foto: Luca Aless (CC BY-SA 4.0) via Wikimedia Commons."
+        }
       ]
     },
     {
       "id": "on-site",
-      "title": "Raue Natur statt Service",
+      "title": "Erwarten Sie rohe Schönheit, nicht Service",
       "body": [
-        "Am Fiordo di Furore gibt es keine Beachclubs, keine Toiletten und nur gelegentlich einen mobilen Snackwagen in der Hochsaison. Pack Wasser, Snacks und etwas Bequemes zum Sitzen ein – die Kiesel sind grob und der Platz begrenzt.",
-        "Gesprungen wird von den Felsen neben der Brücke, aber prüfe immer zuerst die Tiefe und spring nur dort, wo bereits Einheimische im Wasser sind. Nimm Rücksicht auf Schwimmer darunter und behalte die Gezeiten im Blick; am späten Nachmittag liegt die Bucht schnell im Schatten."
+        "Unten am Wasser finden Sie eine winzige Kieseluferlinie, ein paar Felsplattformen und viele Menschen, die versuchen, einen sehr kleinen Raum zu teilen. Der Hauptgrund zu kommen ist die Szenerie: die Brücke oben, die Schluchtswände und die Farbe des Wassers.",
+        "Behandeln Sie die Schlucht mit Respekt: Halten Sie die Musik leise, blockieren Sie nicht die Treppe für Fotos und nehmen Sie Ihren Müll mit nach oben. Die Klippen verstärken den Klang und der Raum wird eng geteilt.",
+        "Wenn Sie einen entspannteren \\\\\"Lido-Tag\\\\\" mit Duschen und Mittagessen suchen, zwingen Sie es hier nicht - nutzen Sie %LINK:marinaDiPraiaBeaches|Marina di Praia% oder %LINK:gavitellaBeachGuide|Gavitella% als Ihre Hauptstrandbasis und behalten Sie Fiordo di Furore als den schnellen Foto-und-Schwimmstopp."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fiordo-di-furore/01-beach-and-bridge.jpg",
+          "alt": "Fiordo di Furore Strand unter der ikonischen gewölbten Brücke mit smaragdgrünem Wasser und steilen Klippen",
+          "caption": "Die klassische Ansicht: eine schmale Bucht unter der Brücke mit fast keinem Service - kommen Sie vorbereitet."
+        },
+        {
+          "src": "/img/guides/topics/fiordoDiFuroreBeachGuide.jpg",
+          "alt": "Kieselstrand unter der Fiordo di Furore Brücke mit Klippen, die auf beiden Seiten aufragen",
+          "caption": "Der Platz ist eng unter der Brücke, besonders in Spitzenmonaten. Foto: Derbrauni (CC BY-SA 4.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "photo-spots",
+      "title": "Fotospots (ohne die Person zu sein, die die Treppe blockiert)",
+      "body": [
+        "Der berühmteste Schuss ist vom Strand aus zur Brücke hin, aber Sie können großartige Fotos machen, ohne in der Mitte der Treppe anzuhalten. Treten Sie auf breiteren Absätzen zur Seite, lassen Sie Leute passieren und machen Sie dann schnell Ihr Foto.",
+        "Für einen anderen Winkel schauen Sie zurück zu den Schluchtswänden, wo sich das Licht im Wasser reflektiert. Wenn Sie die \\\\\"Brücke von oben\\\\\"-Ansicht möchten, machen Sie sie nur von der Straße aus, wenn es sicher ist, und treten Sie niemals in den Verkehr auf der SS163."
+      ]
+    },
+    {
+      "id": "nearby-alternatives",
+      "title": "Alternativen in der Nähe, wenn Fiordo di Furore zu voll ist",
+      "body": [
+        "Wenn die Schlucht gepackt ist, wird Ihr Tag schnell besser, indem Sie zu einem Strand mit mehr Platz wechseln. Zwei einfache Wechsel von derselben Buslinie:",
+        "1) %LINK:marinaDiPraiaBeaches|Marina di Praia% - eine geschützte Bucht mit mehr Raum, Restaurants und einem weniger stressigen \\\\\"Strandtag\\\\\"-Gefühl.",
+        "2) %LINK:gavitellaBeachGuide|Gavitella (Praiano)% - eine sonnenuntergangsfreundliche Beach Club-Szene, wenn Sie einen längeren Nachmittag am Meer möchten."
+      ]
+    },
+    {
+      "id": "returning",
+      "title": "Planen Sie Ihre Rückkehr vor dem Schwimmen",
+      "body": [
+        "Es gibt keine Ticketschalter oder Automaten in der Schlucht. Kaufen Sie ein Hin- und Rückfahrtticket in Positano (Tabacchi in der Nähe von Chiesa Nuova oder dem Sponda-Zeitungsstand) und entwerten Sie es beim Einsteigen.",
+        "Im Sommer können Busse bereits voll ankommen, nachdem sie Amalfi verlassen haben. Zielen Sie auf eine frühere Abfahrt als Sie denken, dass Sie benötigen, und lassen Sie andere Reisende an der Haltestelle wissen, dass Sie warten, damit der Fahrer Ausschau hält.",
+        "Für detaillierte Timing-Tipps und Backup-Pläne (einschließlich was zu tun ist, wenn zwei Busse ohne Halt vorbeifahren), nutzen Sie %LINK:fiordoDiFuroreBusReturn|unseren Fiordo di Furore Rückfahrt-Busführer%."
       ]
     }
   ],
-  "essentialsTitle": "Das erwartet dich",
+  "essentialsTitle": "Was Sie erwartet",
   "essentials": [
-    "SITA-Haltestelle zwischen Praiano und Furore – bitte den Fahrer, den Fiord anzusagen.",
-    "Steile Treppe hinunter zu einem winzigen Kiesstrand unter der Brücke.",
-    "Keine Services vor Ort: Bring Wasser, Snacks, Sonnenschutz und Bargeld für ein Notfalltaxi mit."
+    "Ein winziger Kieselstrand am Fuß einer steilen Treppe - kein Full-Service-Strandtag.",
+    "Bushaltestelle an der Küstenstraße über der Schlucht; der Strand ist die Treppen hinunter.",
+    "Fast keine Einrichtungen: Bringen Sie Wasser, Snacks, Sonnenschutz und eine kleine Trockentasche mit."
+  ],
+  "typicalCostsTitle": "Typische Kosten",
+  "typicalCosts": [
+    "SITA-Bustickets sind günstig, aber Verfügbarkeit ist die echte Einschränkung im Sommer (Busse können voll sein).",
+    "Notfall-Taxi von der Straße oben kann teuer sein - Teilen mit anderen Gästen hilft."
   ],
   "tipsTitle": "Schnelle Tipps",
   "tips": [
-    "Schau dir unseren %LINK:positanoBeaches|Strandüberblick% an, um den Fiordo di Furore mit einem zweiten Badeplatz am selben Tag zu kombinieren.",
-    "Komm früh, wenn du Fotos ohne Menschen unter der Brücke möchtest.",
-    "Pack riff-sichere Sonnencreme und Wasserschuhe ein – die Felsen sind nass rutschig."
+    "Kommen Sie früh, wenn Sie Fotos ohne Menschenmassen unter der Brücke möchten.",
+    "Packen Sie riffsichere Sonnencreme und Wasserschuhe - die Felsen sind nass rutschig.",
+    "Kombinieren Sie diesen Stopp mit einem größeren Strandtag aus unserer %LINK:positanoBeaches|Positano Strände Übersicht%, damit Sie sich nicht den ganzen Nachmittag auf eine winzige Bucht verlassen."
   ],
   "warningsTitle": "Gut zu wissen",
   "warnings": [
-    "Kaufe Rückfahrkarten in Positano; am Fiord gibt es keine Verkaufsstelle und keine Entwerter.",
-    "Busse lassen die Haltestelle in der Hochsaison gelegentlich aus, wenn sie voll sind – plane zusätzliche Zeit für die Heimfahrt ein.",
-    "Am Strand ist es eng, und am Nachmittag wird es schnell schattig."
+    "Kaufen Sie Hin- und Rückfahrttickets in Positano; es gibt keine Möglichkeit, sie am Fjord zu kaufen oder zu entwerten.",
+    "Busse überspringen manchmal die Haltestelle, wenn sie in Spitzenmonaten voll sind - lassen Sie zusätzliche Zeit für die Heimfahrt zu.",
+    "Der Platz am Strand ist eng und Schatten kommt am Nachmittag schnell."
   ],
-  "faqsTitle": "Fiordo-di-Furore-FAQs",
-  "faqs": []
+  "faqsTitle": "Fiordo di Furore FAQs",
+  "faqs": [
+    {
+      "q": "Ist Fiordo di Furore ein Sandstrand?",
+      "a": [
+        "Nein - es sind hauptsächlich Kieselsteine und Felsen. Bringen Sie Wasserschuhe mit, wenn Sie einen bequemen Einstieg und einen leichteren Gang auf nassen Steinen möchten."
+      ]
+    },
+    {
+      "q": "Kann ich Essen, Getränke kaufen oder ein Badezimmer am Fjord benutzen?",
+      "a": [
+        "Planen Sie nicht damit. Manchmal gibt es vielleicht einen kleinen saisonalen Snackwagen, aber es gibt keine zuverlässigen Toiletten oder Beach Clubs in der Schlucht. Packen Sie Wasser und Snacks, bevor Sie gehen."
+      ]
+    },
+    {
+      "q": "Ist Klippenspringen am Fiordo di Furore sicher?",
+      "a": [
+        "Klippenspringen passiert hier, aber die Bedingungen ändern sich täglich. Springen Sie nur dort, wo erfahrene Einheimische bereits springen, springen Sie niemals alleine und überspringen Sie es komplett, wenn das Meer rau ist oder die Sicht schlecht ist."
+      ]
+    },
+    {
+      "q": "Was ist ein guter Backup, wenn es voll ist?",
+      "a": [
+        "Wechseln Sie zu einer größeren Bucht auf derselben Buslinie: %LINK:marinaDiPraiaBeaches|Marina di Praia% für einen ruhigeren, servicefreundlichen Strandtag, oder %LINK:gavitellaBeachGuide|Gavitella%, wenn Sie eine sonnenuntergangsfokussierte Club-Atmosphäre möchten."
+      ]
+    }
+  ],
+  "sectionFigure": {
+    "src": "/img/guides/fiordo-di-furore/01-beach-and-bridge.jpg",
+    "alt": "Fiordo di Furore Brücke über der Bucht",
+    "caption": "Die schmale Bucht liegt unter der gewölbten Brücke."
+  }
 }

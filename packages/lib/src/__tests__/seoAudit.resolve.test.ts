@@ -1,4 +1,5 @@
 import { describe, expect, it } from "@jest/globals";
+
 import { resolveChromeLaunch, resolveDesktopConfig, resolveLighthouse } from "../seoAudit";
 
 describe("seoAudit resolution helpers", () => {

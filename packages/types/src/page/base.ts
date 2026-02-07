@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import type { Translated } from "../Product";
+
 import type { LayoutProps } from "./layout";
 import { layoutSchema } from "./layout";
 import type { PositioningProps } from "./positioning";

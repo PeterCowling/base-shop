@@ -1,4 +1,5 @@
 import type { Locale } from "@acme/i18n/locales";
+
 import { Header, type NavSection } from "../../organisms/Header";
 import type { LogoVariants } from "../../organisms/types";
 

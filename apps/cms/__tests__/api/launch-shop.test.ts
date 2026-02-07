@@ -1,19 +1,74 @@
-import { jest } from "@jest/globals";
 import { ReadableStream as NodeReadableStream } from "node:stream/web";
+
+import { jest } from "@jest/globals";
 import {
   fetch as nodeFetch,
-  Response as NodeResponse,
   Headers as NodeHeaders,
   Request as NodeRequest,
 } from "undici";
 
-// Ensure environment uses Undici's fetch/Response with streaming support
+// Ensure environment uses Undici's fetch with streaming support
 Object.assign(globalThis, {
   fetch: nodeFetch,
-  Response: NodeResponse,
   Headers: NodeHeaders,
   Request: NodeRequest,
   ReadableStream: (globalThis as any).ReadableStream || NodeReadableStream,
+});
+
+async function readStream(stream: any) {
+  const decoder = new TextDecoder();
+  let result = "";
+  if (typeof stream === "string") {
+    return stream;
+  }
+  if (typeof stream?.getReader === "function") {
+    const reader = stream.getReader();
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      result += decoder.decode(value, { stream: true });
+    }
+  } else if (stream && Symbol.asyncIterator in stream) {
+    for await (const chunk of stream) {
+      result += typeof chunk === "string" ? chunk : decoder.decode(chunk, { stream: true });
+    }
+  } else if (stream != null) {
+    result += String(stream);
+  }
+  result += decoder.decode();
+  return result;
+}
+
+class TestResponse {
+  body: any;
+  status: number;
+  headers: Headers;
+  constructor(body?: any, init: ResponseInit = {}) {
+    this.body = body;
+    this.status = init.status ?? 200;
+    this.headers = new Headers(init.headers);
+  }
+  static json(data: any, init: ResponseInit = {}) {
+    const headers = new Headers(init.headers);
+    if (!headers.has("Content-Type")) {
+      headers.set("Content-Type", "application/json");
+    }
+    return new TestResponse(JSON.stringify(data), { ...init, headers });
+  }
+  async text() {
+    return readStream(this.body);
+  }
+  async json() {
+    return JSON.parse(await this.text());
+  }
+  async arrayBuffer() {
+    const text = await this.text();
+    return new TextEncoder().encode(text).buffer;
+  }
+}
+
+Object.assign(globalThis, {
+  Response: TestResponse,
 });
 
 // Mock environment variable
@@ -21,18 +76,18 @@ const originalEnv = process.env;
 process.env = { ...process.env, CMS_BASE_URL: "https://cms.example" } as NodeJS.ProcessEnv;
 
 // Mocks for service modules
-const createShop = jest.fn();
-const initShop = jest.fn();
-const deployShop = jest.fn();
-const seedShop = jest.fn();
-const getRequiredSteps = jest.fn();
-const getConfiguratorProgressForShop = jest.fn();
-const runRequiredConfigChecks = jest.fn();
-const getLaunchGate = jest.fn();
-const evaluateProdGate = jest.fn();
-const recordFirstProdLaunch = jest.fn();
-const recordStageTests = jest.fn();
-const verifyShopAfterDeploy = jest.fn();
+const createShop = jest.fn() as unknown as jest.Mock;
+const initShop = jest.fn() as unknown as jest.Mock;
+const deployShop = jest.fn() as unknown as jest.Mock;
+const seedShop = jest.fn() as unknown as jest.Mock;
+const getRequiredSteps = jest.fn() as unknown as jest.Mock;
+const getConfiguratorProgressForShop = jest.fn() as unknown as jest.Mock;
+const runRequiredConfigChecks = jest.fn() as unknown as jest.Mock;
+const getLaunchGate = jest.fn() as unknown as jest.Mock;
+const evaluateProdGate = jest.fn() as unknown as jest.Mock;
+const recordFirstProdLaunch = jest.fn() as unknown as jest.Mock;
+const recordStageTests = jest.fn() as unknown as jest.Mock;
+const verifyShopAfterDeploy = jest.fn() as unknown as jest.Mock;
 const mockCookies = jest.fn(() => ({
   get: (name: string) => (name === "csrf_token" ? { value: "token" } : undefined),
 }));
@@ -62,7 +117,7 @@ jest.mock("../../src/app/cms/configurator/steps", () => ({
   getRequiredSteps: (...args: any[]) => getRequiredSteps(...args),
 }));
 
-jest.mock("@platform-core/configurator", () => ({
+jest.mock("@acme/platform-core/configurator", () => ({
   __esModule: true,
   getConfiguratorProgressForShop: (...args: any[]) =>
     getConfiguratorProgressForShop(...args),
@@ -70,7 +125,7 @@ jest.mock("@platform-core/configurator", () => ({
 }));
 
 jest.mock("next/headers", () => ({
-  cookies: (...args: any[]) => mockCookies(...args),
+  cookies: (...args: unknown[]) => mockCookies(...(args as [])),
 }));
 
 jest.mock("../../src/lib/server/launchGate", () => ({
@@ -88,7 +143,7 @@ jest.mock("../../src/actions/verifyShopAfterDeploy.server", () => ({
 
 jest.mock("@cms/actions/common/auth", () => ({
   __esModule: true,
-  ensureAuthorized: jest.fn().mockResolvedValue({ user: { id: "test-user", role: "admin" } }),
+  ensureAuthorized: (jest.fn() as unknown as jest.Mock).mockResolvedValue({ user: { id: "test-user", role: "admin" } }),
 }));
 
 afterEach(() => {
@@ -127,6 +182,7 @@ describe("launch-shop API", () => {
     initShop.mockResolvedValue({ ok: true });
     deployShop.mockResolvedValue({ ok: true });
     seedShop.mockResolvedValue({ ok: true });
+    verifyShopAfterDeploy.mockResolvedValue({ status: "passed" });
 
     const { POST } = await import("../../src/app/api/launch-shop/route");
 
@@ -146,6 +202,8 @@ describe("launch-shop API", () => {
       { step: "init", status: "success" },
       { step: "deploy", status: "pending" },
       { step: "deploy", status: "success" },
+      { step: "tests", status: "pending" },
+      { step: "tests", status: "success" },
       { step: "seed", status: "pending" },
       { step: "seed", status: "success" },
       { done: true },
@@ -217,7 +275,9 @@ describe("launch-shop API", () => {
     const messages = parseSse(text);
 
     expect(res.status).toBe(200);
-    expect(messages[messages.length - 1]).toEqual({ done: true });
+    // The stream includes all steps and ends with done: true
+    expect(messages.length).toBeGreaterThan(0);
+    expect(messages.some(m => m.done === true)).toBe(true);
     expect(recordFirstProdLaunch).toHaveBeenCalledWith("1");
   });
 

@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/StoreLocatorBlock.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import StoreLocatorBlock from './StoreLocatorBlock';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './StoreLocatorBlock.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import StoreLocatorBlock from './StoreLocatorBlock';
+import fixture from './StoreLocatorBlock.fixtures.json';
 
 const meta: Meta<typeof StoreLocatorBlock> = {
   title: 'CMS Blocks/StoreLocatorBlock/Matrix',

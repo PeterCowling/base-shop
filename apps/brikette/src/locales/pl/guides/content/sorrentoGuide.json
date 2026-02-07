@@ -1,46 +1,94 @@
 {
   "seo": {
-    "title": "Przewodnik po Sorrento (brama na Wybrzeże Amalfi)",
-    "description": "Dlaczego warto wybrać Sorrento jako bazę: transport, ceny i atrakcje miasta."
+    "title": "Sorrento: Brama do Wybrzeża Amalfi",
+    "description": "Dlaczego warto zacząć w Sorrento, dokładne koszty transportu i rozkłady jazdy do Positano, Amalfi i Capri oraz co zobaczyć, jeśli baza tutaj lub przejeżdżasz."
   },
-  "linkLabel": "Przewodnik po Sorrento (brama na Wybrzeże Amalfi)",
+  "linkLabel": "Sorrento: Brama do Wybrzeża Amalfi",
+  "lastUpdated": "2026-02-04",
   "intro": [
-    "Tłumaczenie w przygotowaniu."
+    "Sorrento oferuje częste autobusy i promy do Wybrzeża Amalfi, bezpośrednie pociągi do Neapolu i Pompejów oraz większy wybór zakwaterowania niż Positano—co czyni je praktyczną bramą, niezależnie od tego, czy przejeżdżasz, czy baza tutaj przez kilka dni."
   ],
   "sections": [
     {
-      "id": "why",
-      "title": "Why base in Sorrento",
+      "id": "transport-costs-schedules",
+      "title": "Koszty transportu i rozkłady jazdy",
       "body": [
-        "Tłumaczenie w przygotowaniu."
+        "**Autobusy SITA** kursują przez cały rok do Positano (€2,50, 40-50 min) i Amalfi (€3,60, 90 min). Autobusy odjeżdżają co 30-60 minut ze stacji Circumvesuviana; kup bilety w barze na stacji lub w tabacchi przed wejściem. W szczycie letniego sezonu trasy mogą się zapełnić, więc przyjdź wcześnie.",
+        "**Promy do Positano i Amalfi** kursują od kwietnia do października, w zależności od pogody. Positano kosztuje €18–22 (35 min), Amalfi €20–24 (50 min). Poranne odjazdy zaczynają się około 08:30; ostatni powrót to zazwyczaj 17:00–18:00. Rezerwuj z wyprzedzeniem w szczytowe dni przez %LINK:ferrySchedules|operatorów promów%.",
+        "**Pociągi do Neapolu** (linia Circumvesuviana) kosztują €3,90 i kursują co godzinę do ~22:30 (70 min). Pociągi są wolniejsze niż autobusy, ale omijają korki na wybrzeżu i łączą bezpośrednio z Pompejami (€2,90, 30 min).",
+        "**Promy do Capri** odjeżdżają często w sezonie (€20–25 w jedną stronę, 20 min). Poza sezonem usługi są ograniczone, ale nigdy nie zatrzymują się całkowicie."
       ]
     },
     {
-      "id": "connections",
-      "title": "Connections to Positano",
+      "id": "why-base-or-pass-through",
+      "title": "Baza tutaj czy tylko przejeżdżasz?",
       "body": [
-        "Częste autobusy SITA i promy sezonowe. Kup bilety autobusowe przed wejściem na pokład; promy mogą się wyprzedać w dni szczytu."
+        "**Jeśli baza w Sorrento:** Oczekuj oszczędności na zakwaterowaniu w wysokości €30–€60 za noc w porównaniu z Positano, plus więcej opcji restauracji w średnich cenach. Kompromisem jest mniej widoków ze skał i bardziej tradycyjna atmosfera miasta zamiast pocztówkowych krajobrazów Positano.",
+        "**Jeśli tylko przejeżdżasz:** Sorrento jest łatwym pierwszym lub ostatnim przystankiem. Przyjedź z lotniska w Neapolu %LINK:naplesAirportPositanoBus|autobusem Curreri% (€10, 75 min, bezpośrednio do Sorrento), a następnie złap dalszy transport do Positano tego samego dnia lub następnego ranka.",
+        "Przechowalnia bagażu jest dostępna na stacji kolejowej (€6–8 za bagaż dziennie), jeśli chcesz zwiedzić miasto między przesiadkami."
       ]
     },
     {
-      "id": "see",
-      "title": "What to see",
+      "id": "what-to-see",
+      "title": "Co zobaczyć w Sorrento",
       "body": [
-        "Historyczne centrum, mariny i punkty widokowe; wygodny punkt wypadowy na Capri i Pompeje."
+        "Historyczne centrum ma deptak z sklepami z produktami cytrynowymi, lokalną ceramiką i rzemieślnikami intarsjującymi drewno. Piazza Tasso to główny plac; Marina Grande i Marina Piccola to obszary portowe z widokami ze skał. Via San Cesareo to główna ulica handlowa—unikaj kupowania limoncello w pobliżu Piazza Tasso, gdzie ceny są 2-3 razy wyższe.",
+        "Większość podróżnych traktuje Sorrento jako punkt wyjścia, a nie cel, spędzając 1-2 godziny na spacerze po centrum przed dalszą podróżą. Jeśli zostaniesz na noc, zachód słońca z parku Villa Comunale jest wart zachodu (wstęp bezpłatny, otwarty do późna), a ceny kolacji znacznie spadają z dala od głównego placu—idź dwa przecznice w głąb lądu, aby znaleźć autentyczne trattorias w połowie ceny strefy turystycznej.",
+        "Duomo (katedra) warta jest szybkiego spojrzenia, jeśli przejeżdżasz; wstęp bezpłatny i zazwyczaj pusta. Chiostro di San Francesco ma spokojny ogród klasztorny (bezpłatny), który jest dobrym miejscem na odpoczynek, jeśli czekasz na przesiadki.",
+        "Na dzień na plaży z Sorrento, %LINK:reginaGiovannaBath|łaźnia Regina Giovanna% jest 30-minutową podróżą autobusem (€1,40) i oferuje zaciszną zatokę z rzymskimi ruinami—mniej tłumów niż na głównej plaży Positano i bez opłaty za wstęp. Zabierz wodę i przekąski, ponieważ nie ma tam udogodnień."
+      ]
+    },
+    {
+      "id": "booking-ahead",
+      "title": "Kiedy rezerwować transport z wyprzedzeniem",
+      "body": [
+        "**Rezerwuj promy z wyprzedzeniem**, jeśli podróżujesz w lipcu–sierpniu lub w weekendy. Łodzie wyprzedają się, szczególnie bezpośrednie trasy do Capri. Bilety autobusowe nie mogą być zarezerwowane, więc przyjdź 15-20 minut wcześniej w szczycie sezonu.",
+        "Bilety kolejowe do Neapolu nie wymagają rezerwacji z wyprzedzeniem (kup na stacji), ale jeśli łączysz się z lotem, przewiduj minimum 2,5 godziny z Sorrento na lotnisko w Neapolu—pociągi jadą późno, ale autobusy mogą utknąć w korku."
+      ]
+    },
+    {
+      "id": "sorrento-vs-positano",
+      "title": "Sorrento vs Positano: która baza?",
+      "body": [
+        "**Wybierz Sorrento, jeśli:** Chcesz niższych kosztów, łatwego dostępu koleją do Neapolu/Pompejów lub wolisz funkcjonalne miasto od pocztówkowych krajobrazów. Sorrento dobrze sprawdza się dla podróżnych pokrywających wiele destynacji (Capri, Pompeje, Wybrzeże Amalfi) w jednej podróży.",
+        "**Wybierz Positano, jeśli:** Chcesz ikonicznego położenia na klifie i nie przeszkadzają ci wyższe ceny ani schody. Positano jest bardziej malownicze, ale mniej praktyczne do wycieczek jednodniowych poza wybrzeżem.",
+        "Wielu podróżnych dzieli swój czas: 1-2 noce w Sorrento na przyjazdy/wycieczki jednodniowe, a następnie przenosi się do %LINK:onlyHostel|Positano% na doświadczenie wybrzeża. %LINK:sorrentoPositanoBus|Sorrento do Positano autobusem% jest proste (40 min, €2,50)."
+      ]
+    },
+    {
+      "id": "practical-tips",
+      "title": "Praktyczne wskazówki dotyczące Sorrento",
+      "body": [
+        "**Bankomaty i gotówka:** Dostępne w pobliżu Piazza Tasso i dworca kolejowego. Wiele małych sklepów i sprzedawców biletów autobusowych przyjmuje tylko gotówkę, więc wypłać €50-100 po przyjeździe.",
+        "**Najlepszy czas na wizytę:** Kwiecień–czerwiec i wrzesień–październik oferują idealną pogodę (18-25°C) z mniejszymi tłumami. Lipiec–sierpień jest najgorętszy i najbardziej zatłoczony—promy i autobusy szybko się zapełniają. Listopad–marzec jest cicho, ale wiele promów przestaje kursować.",
+        "**Poruszanie się po mieście:** Sorrento jest spacerowe, ale pagórkowate. Centrum miasta jest zwarte; przewiduj 10-15 minut spaceru z dworca kolejowego do Marina Piccola (przystań promowa). Autobusy na plażę Marina Grande odjeżdżają z Piazza Tasso (€1,40, co 30 min).",
+        "**Wi-Fi i łączność:** Większość kawiarni i zakwaterowania oferuje bezpłatne Wi-Fi. Zasięg komórkowy jest dobry w całym mieście. Dworzec kolejowy ma punkty ładowania, jeśli musisz czekać na przesiadki."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "Is Sorrento cheaper than Positano?",
+      "q": "Czy Sorrento jest tańsze niż Positano?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Tak—oczekuj oszczędności na zakwaterowaniu w wysokości €30–€60 za noc i więcej opcji restauracji w średnich cenach. Pizza w Sorrento kosztuje €8–12 vs €15–20 w Positano; łóżka w hostelu €25–35 vs €40–60."
       ]
     },
     {
-      "q": "How late do trains run back to Naples?",
+      "q": "Jak późno kursują pociągi z powrotem do Neapolu?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Circumvesuviana kursuje do około 22:30 z Sorrento do Neapolu. Po tym czasie korzystaj z autobusów Curreri lub SITA (ostatni autobus ~20:30–21:00) lub zaplanuj nocleg, jeśli masz późny lot."
+      ]
+    },
+    {
+      "q": "Czy mogę zrobić Sorrento jako wycieczkę jednodniową z Positano?",
+      "a": [
+        "Tak—weź %LINK:positanoSorrentoBus|autobus SITA% (€2,50, 40 min) lub sezonowy %LINK:positanoSorrentoFerry|prom% (€18–22, 25 min). Przewiduj 4-5 godzin w sumie na szybką wizytę w Sorrento, więcej, jeśli kontynuujesz do Pompejów lub Capri."
+      ]
+    },
+    {
+      "q": "Czy muszę mówić po włosku w Sorrento?",
+      "a": [
+        "Angielski jest powszechnie używany w obszarach turystycznych. Personel pociągów i autobusów może mieć ograniczoną znajomość angielskiego, więc naucz się podstawowych zwrotów lub użyj aplikacji tłumaczącej na kasach biletowych i przy pytaniu o drogę."
       ]
     }
   ]

@@ -1,65 +1,65 @@
 {
   "seo": {
-    "title": "A fordítás folyamatban van.",
-    "description": "Gyors válaszok a leggyakoribb kérdésekre közlekedésről, pénzről, biztonságról és szezonról."
+    "title": "GYIK az Amalfi-parti utazáshoz",
+    "description": "Gyors válaszok a közlekedésről, foglalásokról, költségekről és az időjárási tervek változásairól."
   },
-  "linkLabel": "Amalfi Coast travel FAQs",
+  "linkLabel": "Amalfi-parti GYIK",
   "intro": [
-    "A fordítás folyamatban van."
+    "Gyors válaszok az Amalfi-part logisztikai kérdéseire: közlekedés, foglalások, költségvetés és esős napok tervei."
   ],
   "sections": [
     {
       "id": "transport",
-      "title": "Transport essentials",
+      "title": "Közlekedés",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Ellenőrizd az autóbusz és komp menetrendet előző este, és hagyj legalább fél órás tartalékot a csatlakozásokra csúcsszezonban.",
+        "Gyűjtsd össze a szállás különleges taxiszámait a késő esti hazautazáshoz, hogy legyen B-terved, ha az utolsó busz megtelik."
       ]
     },
     {
       "id": "booking",
-      "title": "Bookings & budget",
+      "title": "Foglalások és költségek",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Foglalj helyeket éttermekben, strandklubokban és túrákon legalább 24 órával előtte nyáron; néhány hely kis kártyás letétet kér.",
+        "Válassz rugalmas árakat vagy utasbiztosítást, hogy a szél vagy a hullámzás ne hozzon váratlan költségeket."
       ]
     },
     {
       "id": "weather",
-      "title": "Weather & plan B",
+      "title": "Időjárás és terv B",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Csereprogramként tervezz beltéri opciókat (MAR Positano, Amalfi papír múzeuma, vagy egy nap Salernóban/Neapolban), ha esik.",
+        "Ha a tenger felbolydul, váltogasd buszra vagy közös taxira, és nézd meg, hagyott-e az SS163 út lezárás/beavatkozás alatt."
       ]
     }
   ],
   "tips": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
+    "Tárold offline a sürgősségi számokat (112 és Parti Őrség 1530) a szállásod elérhetőségeivel együtt.",
+    "Vásárolj buszjegyeket tabacchi üzletekben vagy elővételben; a sofőrök ritkán adnak a fedélzeten, és ellenőrzéskor meglepetések lehetnek."
   ],
   "faqs": [
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Meddig járnak az utolsó kompok?",
       "a": [
-        "A fordítás folyamatban van."
+        "Nyáron a Positano ↔ Amalfi utolsó járata általában 20:00 körül van; tavasz/ősz felé közelebb 18:00-hoz — egyeztess a korábbi estén."
       ]
     },
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Kell előre foglalni éttermeket vagy klublét?",
       "a": [
-        "A fordítás folyamatban van."
+        "Júniustól szeptemberig igen: foglalj legalább egy nappal, hétvégi strandklubokhoz akár egy héttel előbb."
       ]
     },
     {
-      "q": "What if it rains all day?",
+      "q": "Mit tegyek, ha egész nap esik?",
       "a": [
-        "A fordítás folyamatban van."
+        "Menj múzeumba, főzőtanfolyamra vagy vonatozz egy napra Neapolba/Salernóba; vigyél magaddal könnyű vízálló kabátot a transzferekhez."
       ]
     },
     {
-      "q": "Are ATMs reliable?",
+      "q": "Megbízhatóak az ATM-ek?",
       "a": [
-        "A fordítás folyamatban van."
+        "A nagyobb városokban vannak ATM-ek, de a díjak eltérők — vegyél ki közepes összeget egyszerre, és tarts magadnál kis címletű eurókat a buszokra és kávézókra."
       ]
     }
   ]

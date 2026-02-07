@@ -1,7 +1,9 @@
-import type { PageComponent } from "@acme/types";
-import type { Action } from "../state";
 import { useCallback } from "react";
+
+import type { PageComponent } from "@acme/types";
 import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
+
+import type { Action } from "../state";
 import { getStyleClipboard, setStyleClipboard } from "../style/styleClipboard";
 
 interface Args {

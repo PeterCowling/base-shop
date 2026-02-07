@@ -1,5 +1,9 @@
-import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
+
+import { render, screen } from "@testing-library/react";
+
+import { OrderTrackingTemplate } from "../OrderTrackingTemplate";
+
 const translations: Record<string, string> = {
   "order.tracking.title": "Track your order",
   "order.reference": "Order ref",
@@ -9,8 +13,6 @@ const translations: Record<string, string> = {
 jest.mock("@acme/i18n", () => ({
   useTranslations: () => (key: string) => translations[key] ?? key,
 }));
-
-import { OrderTrackingTemplate } from "../OrderTrackingTemplate";
 
 describe("OrderTrackingTemplate", () => {
   it("renders address and forwards steps", () => {

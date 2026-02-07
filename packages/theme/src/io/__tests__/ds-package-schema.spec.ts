@@ -1,4 +1,4 @@
-/* eslint-disable ds/no-raw-color -- TEST-123: test fixtures use literal hex strings to validate schemas */
+ 
 import { externalDsSchema, parseDsPackage } from "../ds-package-schema";
 
 describe("ds-package-schema", () => {

@@ -1,9 +1,10 @@
 /* i18n-exempt file -- PP-1100 internal pipeline API [ttl=2026-06-30] */
 // apps/product-pipeline/src/routes/api/stages/s/run.ts
 
-import type { PipelineEventContext } from "../../_lib/types";
 import { z } from "zod";
+
 import { isCooldownActive } from "@/lib/pipeline/cooldown";
+
 import {
   fetchCandidateById,
   fetchLatestCooldownByFingerprint,
@@ -12,6 +13,8 @@ import {
   type PipelineEnv,
 } from "../../_lib/db";
 import { errorResponse, jsonResponse } from "../../_lib/response";
+import { checkStageTGate } from "../../_lib/stage-gating";
+import type { PipelineEventContext } from "../../_lib/types";
 
 const riskBandSchema = z.enum(["low", "medium", "high"]);
 
@@ -111,6 +114,11 @@ export const onRequestPost = async ({
   const candidate = await fetchCandidateById(db, candidateId);
   if (!candidate) {
     return errorResponse(404, "candidate_not_found", { candidateId });
+  }
+
+  const stageTGate = await checkStageTGate(db, candidateId);
+  if (stageTGate) {
+    return errorResponse(409, stageTGate.code, stageTGate.details);
   }
 
   if (candidate.fingerprint) {

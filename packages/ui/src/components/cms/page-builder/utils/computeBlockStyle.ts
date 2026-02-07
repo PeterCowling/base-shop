@@ -1,5 +1,5 @@
-import { CSS } from "@dnd-kit/utilities";
 import type { CSSProperties } from "react";
+import { CSS } from "@dnd-kit/utilities";
 
 type DockX = "left" | "right" | "center" | undefined;
 type DockY = "top" | "bottom" | "center" | undefined;

@@ -1,8 +1,8 @@
-import { memo, useMemo } from "react";
+import { memo } from "react";
 
 import type { GenericContentTranslator } from "@/components/guides/GenericContent";
-import type { AppLanguage } from "@/i18n.config";
 import appI18n from "@/i18n";
+import type { AppLanguage } from "@/i18n.config";
 import type { GuideSeoTemplateContext } from "@/routes/guides/_GuideSeoTemplate";
 import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
 
@@ -108,7 +108,7 @@ export type ChiesaNuovaArrivalDropInProps = {
 };
 
 function ChiesaNuovaArrivalDropIn({ lang }: ChiesaNuovaArrivalDropInProps): JSX.Element | null {
-  const { context, extras } = useMemo(() => buildGuideExtras(lang), [lang]);
+  const { context, extras } = buildGuideExtras(lang);
   const translateGuides = context.translateGuides;
   const fallbackGuides = appI18n.getFixedT("en", "guides") as GenericContentTranslator;
 
@@ -125,9 +125,7 @@ function ChiesaNuovaArrivalDropIn({ lang }: ChiesaNuovaArrivalDropInProps): JSX.
     fallbackDescription,
   );
 
-  const extrasWithoutToc = useMemo(() => {
-    return { ...extras, tocItems: [] } satisfies GuideExtras;
-  }, [extras]);
+  const extrasWithoutToc = { ...extras, tocItems: [] } satisfies GuideExtras;
 
   if (!heading) {
     return null;
@@ -136,9 +134,9 @@ function ChiesaNuovaArrivalDropIn({ lang }: ChiesaNuovaArrivalDropInProps): JSX.
   return (
     <section className="space-y-6 rounded-3xl border border-brand-outline/30 bg-brand-surface p-6 shadow-sm dark:border-brand-outline/20 dark:bg-brand-surface/80">
       <header className="space-y-3">
-        <h2 className="text-3xl font-semibold text-brand-heading dark:text-brand-surface">{heading}</h2>
+        <h2 className="text-3xl font-semibold text-brand-heading dark:text-brand-text">{heading}</h2>
         {description ? (
-          <p className="text-base leading-relaxed text-brand-text/80 dark:text-brand-surface/80">{description}</p>
+          <p className="text-base leading-relaxed text-brand-text/80 dark:text-brand-text/80">{description}</p>
         ) : null}
       </header>
       <div className="space-y-10">

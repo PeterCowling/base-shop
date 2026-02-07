@@ -1,6 +1,7 @@
 /** @jest-environment node */
-import { afterEach, describe, expect, it, jest } from "@jest/globals";
 import fs from "node:fs";
+
+import { afterEach, describe, expect, it, jest } from "@jest/globals";
 
 import { resetEmailEnv, withEmailEnv } from "./email.test-helpers";
 

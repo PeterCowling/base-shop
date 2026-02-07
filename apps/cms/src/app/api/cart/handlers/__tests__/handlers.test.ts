@@ -2,7 +2,7 @@ import { NextRequest } from "next/server";
 
 const mockProduct = { id: "sku1", stock: 5, sizes: [] };
 
-jest.mock("@platform-core/products", () => ({
+jest.mock("@acme/platform-core/products", () => ({
   getProductById: (id: string) => (id === "sku1" ? mockProduct : null),
   PRODUCTS: [mockProduct],
 }));
@@ -14,7 +14,7 @@ const decodeCartCookie = jest.fn((v?: string) =>
 const asSetCookieHeader = jest.fn((v: string) => `cart=${v}`);
 const CART_COOKIE = "cart";
 
-jest.mock("@platform-core/cartCookie", () => ({
+jest.mock("@acme/platform-core/cartCookie", () => ({
   encodeCartCookie,
   decodeCartCookie,
   asSetCookieHeader,

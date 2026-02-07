@@ -1,5 +1,7 @@
-import { Readable } from "stream";
 import type { IncomingMessage, ServerResponse } from "http";
+import { Readable } from "stream";
+
+import { createRequestHandler } from "./test-utils";
 
 const componentsHandlerMock = jest.fn();
 const publishUpgradeMock = jest.fn();
@@ -11,8 +13,6 @@ jest.mock("../src/routes/components/[shopId]", () => ({
 jest.mock("../src/routes/shop/[id]/publish-upgrade", () => ({
   onRequestPost: publishUpgradeMock,
 }));
-
-import { createRequestHandler } from "./test-utils";
 
 describe("createRequestHandler", () => {
   beforeEach(() => {

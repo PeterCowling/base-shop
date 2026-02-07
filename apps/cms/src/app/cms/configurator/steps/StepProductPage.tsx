@@ -1,14 +1,16 @@
 "use client";
 
-import { Button } from "@ui/components/atoms/shadcn";
-import ProductPageBuilder from "@/components/cms/ProductPageBuilder";
-import { fillLocales } from "@i18n/fillLocales";
-import { type Page, type PageComponent } from "@acme/types";
-import { useState } from "react";
-import { Toast } from "@ui/components/atoms";
-import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
+
+import { Button } from "@acme/design-system/shadcn";
+import { fillLocales } from "@acme/i18n/fillLocales";
+import { type Page, type PageComponent } from "@acme/types";
+
 import TemplateSelector from "@/app/cms/configurator/components/TemplateSelector";
+import ProductPageBuilder from "@/components/cms/ProductPageBuilder";
+
+import useStepCompletion from "../hooks/useStepCompletion";
+
 import useProductPageData from "./hooks/useProductPageData";
 
 interface Props {
@@ -42,11 +44,6 @@ export default function StepProductPage({
   shopId,
   themeStyle,
 }: Props): React.JSX.Element {
-  const [toast, setToast] = useState<{ open: boolean; message: string }>({
-    open: false,
-    message: "",
-  });
-
   const {
     saveDraft,
     publishPage,
@@ -59,7 +56,6 @@ export default function StepProductPage({
     productPageId,
     setProductPageId: (v: string) => setProductPageId(v),
     setProductComponents,
-    setToast,
   });
 
   const [, markComplete] = useStepCompletion("product-page");
@@ -121,11 +117,6 @@ export default function StepProductPage({
           Save & return
         </Button>
       </div>
-      <Toast
-        open={toast.open}
-        onClose={() => setToast((t) => ({ ...t, open: false }))}
-        message={toast.message}
-      />
     </div>
   );
 }

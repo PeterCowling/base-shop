@@ -1,10 +1,13 @@
-import type { Environment } from "@acme/types";
-import type { DeployInfo } from "./deployInfo";
-import { readDeployInfo } from "./deployInfo";
-import * as path from "node:path";
 import * as fs from "node:fs";
+import * as path from "node:path";
+
+import type { Environment } from "@acme/types";
+
 import { DATA_ROOT } from "../dataRoot";
 import { validateShopName } from "../shops";
+
+import type { DeployInfo } from "./deployInfo";
+import { readDeployInfo } from "./deployInfo";
 
 export type OperationalHealthStatus =
   | "healthy"

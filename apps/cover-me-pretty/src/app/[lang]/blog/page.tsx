@@ -1,15 +1,18 @@
-import BlogListing from "@ui/components/cms/blocks/BlogListing";
-import { notFound } from "next/navigation";
-import type { Shop } from "@acme/types";
-import shopJson from "../../../../shop.json";
 import type { Metadata } from "next";
-import { getSeo } from "../../util/seo";
-import { resolveLocale } from "@i18n/locales";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
+import { notFound } from "next/navigation";
 import type { NextSeoProps } from "next-seo";
+
+import BlogListing from "@acme/cms-ui/blocks/BlogListing";
+import { resolveLocale } from "@acme/i18n/locales";
 import { useTranslations as loadTranslations } from "@acme/i18n/useTranslations.server";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
+import type { Shop } from "@acme/types";
+
+import shopJson from "../../../../shop.json";
+import { blogItemListJsonLd,JsonLdScript } from "../../../lib/jsonld";
+import { getSeo } from "../../util/seo";
+
 import { getBlogProvider } from "./provider";
-import { JsonLdScript, blogItemListJsonLd } from "../../../lib/jsonld";
 
 type BlogShop = Pick<Shop, "id" | "luxuryFeatures" | "editorialBlog" | "name">;
 const shop: BlogShop = shopJson;

@@ -1,8 +1,10 @@
 "use client";
 
-import { useCallback, useState, type FormEvent } from "react";
-import { Cluster, Stack } from "@ui/components/atoms/primitives";
-import type { LaunchOption, LaunchesStrings } from "./types";
+import { type FormEvent,useCallback, useState } from "react";
+
+import { Cluster, Stack } from "@acme/design-system/primitives";
+
+import type { LaunchesStrings,LaunchOption } from "./types";
 
 const DEFAULT_CREATE = {
   candidateId: "",

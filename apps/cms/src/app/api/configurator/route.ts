@@ -1,9 +1,11 @@
 import "@acme/zod-utils/initZod";
-import { createNewShop } from "@cms/actions/createShop.server";
-import { shopConfigSchema, type ShopConfig } from "@acme/types";
-import { validateShopEnv } from "@platform-core/configurator";
+
 import { NextResponse } from "next/server";
+import { createNewShop } from "@cms/actions/createShop.server";
 import { z } from "zod";
+
+import { validateShopEnv } from "@acme/platform-core/configurator";
+import { type ShopConfig,shopConfigSchema } from "@acme/types";
 
 /**
  * POST /cms/api/configurator

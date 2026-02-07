@@ -2,8 +2,10 @@
 "use client";
 
 import React from "react";
-import useThemePalette from "@ui/lib/useThemePalette";
+
 import { useTranslations } from "@acme/i18n";
+
+import useThemePalette from "../../lib/useThemePalette";
 import { Grid as DSGrid } from "../atoms/primitives/Grid";
 
 type Step = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;

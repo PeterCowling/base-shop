@@ -1,6 +1,7 @@
 import "server-only";
 
 import type { SectionTemplate } from "@acme/types";
+
 import { prisma } from "../../db";
 import { resolveRepo } from "../repoResolver";
 

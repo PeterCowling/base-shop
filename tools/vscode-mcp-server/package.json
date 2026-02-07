@@ -1,0 +1,33 @@
+{
+  "name": "vscode-mcp-server",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/extension.js",
+  "types": "./dist/extension.d.ts",
+  "displayName": "Base Shop VS Code MCP Server",
+  "description": "Expose VS Code TypeScript language features over MCP (localhost only).",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "extensionKind": [
+    "workspace"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "watch": "tsc -p tsconfig.json --watch",
+    "clean": "rimraf dist *.tsbuildinfo"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.4",
+    "@types/vscode": "^1.85.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.8.3"
+  }
+}

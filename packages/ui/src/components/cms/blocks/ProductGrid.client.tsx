@@ -1,9 +1,11 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import { ProductGrid as BaseGrid } from "@acme/platform-core/components/shop/ProductGrid";
 import { PRODUCTS } from "@acme/platform-core/products/index";
 import type { SKU } from "@acme/types";
-import { useEffect, useState } from "react";
+
 import { fetchCollection } from "./products/fetchCollection";
 
 export interface ProductGridProps {

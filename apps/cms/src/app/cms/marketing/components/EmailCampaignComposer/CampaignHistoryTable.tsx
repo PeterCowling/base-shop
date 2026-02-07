@@ -7,7 +7,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@ui/components/atoms";
+} from "@acme/design-system/shadcn";
+
 import type { CampaignMetrics } from "./useEmailCampaignComposer";
 
 export interface CampaignHistoryTableProps {

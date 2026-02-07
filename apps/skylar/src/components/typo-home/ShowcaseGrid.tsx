@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { localizedPath } from "@/lib/routes";
+
 import { joinClasses } from "@/lib/joinClasses";
+import { localizedPath } from "@/lib/routes";
+
 import type { TypoSectionProps } from "./types";
 
 type ShowcaseItem = {

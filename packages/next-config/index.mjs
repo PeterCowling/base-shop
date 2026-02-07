@@ -36,16 +36,16 @@ try {
 export const baseConfig = {
   reactStrictMode: true,
 
+  // Mark react-i18next as external for server builds to avoid createContext errors
+  // during static generation. This package should only run on the client.
+  serverExternalPackages: ["react-i18next"],
+
   // 👉  Tell Next 15 to bundle local workspace packages for the client.
   //     Add every package that contains "use client" components
   //     or other code that must run in the browser.
   transpilePackages: [
-    "@acme/config",
-    "@acme/ui",
-    "@acme/platform-core",
-    "@acme/i18n",
     "@acme/template-app",
-    "@acme/shared-utils",
+    "@acme/lib",
   ],
   // (Optional) If you prefer the global switch instead, comment out the line
   // above and uncomment the one below.  Either approach fixes the issue.

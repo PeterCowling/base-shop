@@ -1,46 +1,46 @@
 {
   "seo": {
-    "title": "Lokalna etykieta: co wypada we Włoszech (przykłady z Amalfi)",
-    "description": "Najważniejsze zasady dobrego zachowania: w restauracjach, transporcie i podczas spotkań z mieszkańcami."
+    "title": "Lokalna etykieta: co robić i czego unikać (Włochy, przykłady Amalfi)",
+    "description": "Uprzejme zachowanie w restauracjach, kościołach i w wąskich uliczkach."
   },
-  "linkLabel": "Lokalna etykieta: co wypada we Włoszech (przykłady z Amalfi)",
+  "linkLabel": "Lokalna etykieta: co robić i czego unikać",
   "intro": [
-    "Praktyczna etykieta podczas spożywania posiłków, odwiedzania kościołów i dzielenia się wąskimi uliczkami wokół Positano i wybrzeża Amalfi."
+    "Praktyczna etykieta przy jedzeniu, odwiedzaniu kościołów i dzieleniu wąskich uliczek w Positano i na wybrzeżu Amalfi."
   ],
   "sections": [
     {
       "id": "dining",
-      "title": "Dining",
+      "title": "Jedzenie",
       "body": [
-        "Dokonuj rezerwacji z wyprzedzeniem w godzinach szczytu, bądź cierpliwy pomiędzy daniami, poproś o rachunek, gdy będziesz gotowy, i dawaj skromne napiwki za wyjątkową obsługę."
+        "Rezerwuj stoliki w sezonie, cierpliwie czekaj między daniami, proś o rachunek, gdy jesteś gotowy, i zostaw niewielki napiwek za wyjątkową obsługę."
       ]
     },
     {
       "id": "churches",
-      "title": "Churches & dress",
+      "title": "Kościoły i strój",
       "body": [
-        "Zakrywaj ramiona w kościołach i unikaj przechodzenia przez sklepy w strojach kąpielowych."
+        "Zakrywaj ramiona w środku świątyń i nie przechodź przez sklepy w stroju kąpielowym."
       ]
     },
     {
       "id": "lanes",
-      "title": "Shared lanes",
+      "title": "Wspólne trasy",
       "body": [
-        "Trzymaj się prawej strony wąskich schodów, przepuść innych i szybko zmieniaj się w popularnych miejscach do robienia zdjęć."
+        "Trzymaj się prawej na wąskich schodach, pozwól przejść innym i szybko zmieniaj miejsce przy popularnych punktach fotograficznych."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "Do I need to tip?",
+      "q": "Czy trzeba zostawiać napiwek?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "To kwestia dobrowolna; zostaw 1–2 € za wyjątkową obsługę lub zaokrągl rachunek. Coperto już pokrywa pieczywo i nakrycia."
       ]
     },
     {
-      "q": "What should I wear inside churches?",
+      "q": "Co ubrać do kościoła?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Zakryj ramiona i kolana, zdejmij czapkę i zachowaj cichy ton głosu. Noś lekką chustę na wierzch, jeśli masz top bez rękawów."
       ]
     }
   ]

@@ -1,14 +1,18 @@
 import "@testing-library/jest-dom";
+
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import SeoEditor from "../src/app/cms/shop/[shop]/settings/seo/SeoEditor";
 
 const setFreezeTranslationsMock = jest.fn();
 const updateSeoMock = jest.fn();
+const generateSeoMock = jest.fn();
 
 jest.mock("@cms/actions/shops.server", () => ({
   setFreezeTranslations: (...args: unknown[]) => setFreezeTranslationsMock(...args),
   updateSeo: (...args: unknown[]) => updateSeoMock(...args),
+  generateSeo: (...args: unknown[]) => generateSeoMock(...args),
 }));
 
 jest.mock(
@@ -36,20 +40,20 @@ describe("SeoEditor", () => {
     render(
       <SeoEditor
         shop="s1"
-        languages={["en", "fr"]}
+        languages={["en", "de"]}
         initialSeo={{
           en: { title: "Hello", description: "Desc EN", canonicalBase: "en.com" },
-          fr: { title: "Bonjour", description: "Desc FR", canonicalBase: "fr.com" },
+          de: { title: "Hallo", description: "Desc DE", canonicalBase: "de.com" },
         }}
       />,
     );
 
     expect(screen.getByLabelText("Title")).toHaveValue("Hello");
 
-    await user.click(screen.getByRole("tab", { name: "FR" }));
+    await user.click(screen.getByRole("tab", { name: "DE" }));
 
-    expect(screen.getByLabelText("Title")).toHaveValue("Bonjour");
-    expect(screen.getByLabelText("Description")).toHaveValue("Desc FR");
+    expect(screen.getByLabelText("Title")).toHaveValue("Hallo");
+    expect(screen.getByLabelText("Description")).toHaveValue("Desc DE");
   });
 
   it("keeps fields when switching locale with freeze enabled", async () => {
@@ -57,10 +61,10 @@ describe("SeoEditor", () => {
     render(
       <SeoEditor
         shop="s1"
-        languages={["en", "fr"]}
+        languages={["en", "de"]}
         initialSeo={{
           en: { title: "Hello", description: "Desc EN", canonicalBase: "en.com" },
-          fr: { title: "Bonjour", description: "Desc FR", canonicalBase: "fr.com" },
+          de: { title: "Hallo", description: "Desc DE", canonicalBase: "de.com" },
         }}
       />,
     );
@@ -75,26 +79,25 @@ describe("SeoEditor", () => {
     await user.clear(titleInput);
     await user.type(titleInput, "Custom");
 
-    await user.click(screen.getByRole("tab", { name: "FR" }));
+    await user.click(screen.getByRole("tab", { name: "DE" }));
 
     expect(titleInput).toHaveValue("Custom");
 
     await user.click(
       screen.getByRole("button", { name: /show advanced settings/i }),
     );
-    expect(screen.getByLabelText("Canonical Base")).toHaveValue("fr.com");
+    expect(screen.getByLabelText("Canonical Base")).toHaveValue("de.com");
   });
 
   it("generates metadata", async () => {
     const user = userEvent.setup();
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
-      ok: true,
-      json: async () => ({
+    generateSeoMock.mockResolvedValueOnce({
+      generated: {
         title: "Gen title",
         description: "Gen description",
         alt: "Gen alt",
         image: "img.png",
-      }),
+      },
     });
 
     render(
@@ -104,9 +107,9 @@ describe("SeoEditor", () => {
     await user.click(screen.getByRole("button", { name: /generate with ai/i }));
 
     await waitFor(() =>
-      expect(global.fetch).toHaveBeenCalledWith(
-        "/api/seo/generate",
-        expect.objectContaining({ method: "POST" }),
+      expect(generateSeoMock).toHaveBeenCalledWith(
+        "s1",
+        expect.any(FormData),
       ),
     );
 

@@ -3,17 +3,12 @@
 // Runtime-safe locale loader that works in Next (webpack) and Node contexts.
 // ---------------------------------------------------------------------------
 
+import { getWebpackContext as getWebpackContextFromMeta } from "../utils/webpackGlob";
+
 type WebpackContext = {
   keys(): string[];
   <T = unknown>(id: string): T;
 };
-
-type WebpackRequire = NodeRequire & {
-  context?: (path: string, recursive?: boolean, filter?: RegExp) => WebpackContext;
-};
-
-// `require` is only available in webpack or CJS runtimes.
-declare const require: WebpackRequire | undefined;
 
 const unwrapDefault = (mod: unknown): unknown => {
   if (mod && typeof mod === "object" && "default" in mod) {
@@ -27,8 +22,9 @@ let cachedContext: WebpackContext | null | undefined;
 const getWebpackContext = (): WebpackContext | null => {
   if (cachedContext !== undefined) return cachedContext;
   try {
-    if (typeof require === "function" && typeof require.context === "function") {
-      cachedContext = require.context("./", true, /\.json$/);
+    const context = getWebpackContextFn();
+    if (context) {
+      cachedContext = context;
     } else {
       cachedContext = null;
     }
@@ -38,10 +34,21 @@ const getWebpackContext = (): WebpackContext | null => {
   return cachedContext;
 };
 
+const getWebpackContextFn = (): WebpackContext | undefined =>
+  // Only include top-level locale JSON (./<lang>/<ns>.json) to avoid bundling
+  // nested content trees (e.g. guides/content/*) into the always-on layout chunk.
+  getWebpackContextFromMeta("./", true, /^\.\/[a-z]{2}\/[^/]+\.json$/) as WebpackContext | undefined;
+
 export const loadLocaleResource = async (
   lang: string,
   ns: string,
 ): Promise<unknown | undefined> => {
+  // Core loader is intentionally top-level only.
+  // Nested JSON (guides/**, how-to-get-here/routes/**, etc.) must use
+  // route-specific loaders so it doesn't end up in the global layout chunk.
+  if (ns.includes("/")) {
+    return undefined;
+  }
   const key = `./${lang}/${ns}.json`;
   const context = getWebpackContext();
 
@@ -55,7 +62,7 @@ export const loadLocaleResource = async (
 
   try {
     const mod = await import(
-      /* webpackInclude: /\.json$/ */
+      /* webpackInclude: /(^|\/)[a-z]{2}\/[^/]+\.json$/ */
       `./${lang}/${ns}.json`
     );
     return unwrapDefault(mod);

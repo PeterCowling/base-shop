@@ -1,9 +1,11 @@
-/* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
+ 
 // src/components/seo/GuidesTagsStructuredData.tsx
-import { memo, useMemo } from "react";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { buildTagDictionary, buildTagDefinedTermSets, type TagDictionary } from "@/utils/tags";
+import { memo } from "react";
+
 import { BASE_URL } from "@/config/site";
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import { buildTagDefinedTermSets, buildTagDictionary, type TagDictionary } from "@/utils/tags";
+import { serializeJsonLdValue } from "@/utils/seo/jsonld";
 
 export interface GuidesTagListItem {
   url: string;
@@ -33,7 +35,7 @@ function buildDefinedTermSetJson(
   if (sets.length === 0) return "";
   const set = sets[0];
   if (!set || !set.hasDefinedTerm.length) return "";
-  return JSON.stringify({
+  return serializeJsonLdValue({
     "@context": SCHEMA_CONTEXT,
     ...set,
   });
@@ -51,7 +53,7 @@ function buildCollectionJson(
   const baseAboutId = `${BASE_URL}#guide-tags-${lang}`;
   const aboutId = opts.tag ? `${BASE_URL}#guide-tag-${opts.tag}-${lang}` : baseAboutId;
 
-  return JSON.stringify({
+  return serializeJsonLdValue({
     "@context": SCHEMA_CONTEXT,
     "@type": "CollectionPage",
     inLanguage: lang,
@@ -83,20 +85,13 @@ function GuidesTagsStructuredData({
 }: GuidesTagsStructuredDataProps): JSX.Element | null {
   const lang = useCurrentLanguage();
 
-  const dictionary = useMemo(() => buildTagDictionary([lang]), [lang]);
-  const definedTermJson = useMemo(
-    () => buildDefinedTermSetJson(dictionary, lang, tag),
-    [dictionary, lang, tag],
-  );
+  const dictionary = buildTagDictionary([lang]);
+  const definedTermJson = buildDefinedTermSetJson(dictionary, lang, tag);
   const hasDefinedTerms = definedTermJson.length > 0;
-  const collectionJson = useMemo(
-    () =>
-      buildCollectionJson(lang, pageUrl, name, description, items, {
-        includeAbout: hasDefinedTerms,
-        ...(tag ? { tag } : {}),
-      }),
-    [lang, pageUrl, name, description, items, tag, hasDefinedTerms],
-  );
+  const collectionJson = buildCollectionJson(lang, pageUrl, name, description, items, {
+    includeAbout: hasDefinedTerms,
+    ...(tag ? { tag } : {}),
+  });
 
   if (!definedTermJson && !collectionJson) {
     return null;

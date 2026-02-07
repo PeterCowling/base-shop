@@ -1,6 +1,8 @@
 // packages/ui/src/components/account/AccountNavigation.tsx
 import Link from "next/link";
+
 import { cn } from "../../utils/style";
+
 import { ACCOUNT_NAV_TEST_ID } from "./constants";
 
 export interface AccountNavigationItem {

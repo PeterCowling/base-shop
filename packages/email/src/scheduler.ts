@@ -1,11 +1,13 @@
 import "server-only"; // i18n-exempt: module side-effect import [EMAIL-1000]
-import { listEvents } from "@platform-core/repositories/analytics.server";
-import type { AnalyticsEvent } from "@platform-core/analytics";
+
 import { validateShopName } from "@acme/lib";
+import { logger } from "@acme/lib/logger";
+import type { AnalyticsEvent } from "@acme/platform-core/analytics";
+import { listEvents } from "@acme/platform-core/repositories/analytics.server";
+
+import { syncCampaignAnalytics as fetchCampaignAnalytics } from "./analytics";
 import { getCampaignStore } from "./storage";
 import type { Campaign } from "./types";
-import { syncCampaignAnalytics as fetchCampaignAnalytics } from "./analytics";
-import { logger } from "@acme/shared-utils";
 
 export interface Clock {
   now(): Date;

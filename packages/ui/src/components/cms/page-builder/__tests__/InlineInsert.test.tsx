@@ -1,5 +1,6 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
 import React from "react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
+
 import InlineInsert from "../InlineInsert";
 
 // Lightweight mock of Popover primitives used by InlineInsert

@@ -1,25 +1,28 @@
 // packages/ui/src/components/cms/style/Tokens.tsx
 "use client";
 
-import { Input } from "../../atoms/shadcn";
 import {
-  useTokenEditor,
-  type TokenMap,
+  type ChangeEvent,
+  type ReactElement,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+
+import { useTranslations } from "@acme/i18n";
+
+import {
   type TokenInfo,
+  type TokenMap,
+  useTokenEditor,
 } from "../../../hooks/useTokenEditor";
+import { Input } from "../../atoms/shadcn";
+
 import { ColorToken } from "./ColorToken";
 import { FontToken } from "./FontToken";
 import { RangeToken } from "./RangeToken";
 import { TextToken } from "./TextToken";
-import {
-  useEffect,
-  useRef,
-  useState,
-  useMemo,
-  ReactElement,
-  type ChangeEvent,
-} from "react";
-import { useTranslations } from "@acme/i18n";
 
 interface TokensProps {
   tokens: TokenMap;
@@ -133,7 +136,7 @@ export default function Tokens({
       el.classList.add("ring-2", "ring-info");
       el.dataset.token = "--color-info";
       const input = el.querySelector<HTMLElement>(
-        // eslint-disable-next-line ds/no-hardcoded-copy -- DX-0004: CSS selector string, not user copy
+         
         "input, select, textarea, button"
       );
       input?.focus();

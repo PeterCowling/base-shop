@@ -2,10 +2,11 @@
    src/components/deals/DealsBanner.tsx
    Promotional banner shown at the top of the deals page
 --------------------------------------------------------------------------- */
-import { useSetBannerRef } from "@/context/NotificationBannerContext";
-import enDeals from "@/locales/en/dealsPage.json";
 import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
+
+import { useSetBannerRef } from "@/context/NotificationBannerContext";
+import enDeals from "@/locales/en/dealsPage.json";
 
 type TranslationParams = Record<string, string | number>;
 

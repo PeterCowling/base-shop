@@ -1,12 +1,15 @@
 "use client";
 
-import { useState, useRef, useEffect, type CSSProperties } from "react";
+import { type CSSProperties,useEffect, useRef, useState } from "react";
+
+import { type DevicePreset,devicePresets } from "@acme/ui/utils/devicePresets";
+
 import StyleEditor from "@/components/cms/StyleEditor";
-import WizardPreview from "../../../wizard/WizardPreview";
-import TokenInspector from "../../../wizard/TokenInspector";
+
 import PreviewDeviceSelector from "../../../wizard/PreviewDeviceSelector";
-import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
+import TokenInspector from "../../../wizard/TokenInspector";
 import { type TokenMap } from "../../../wizard/tokenUtils";
+import WizardPreview from "../../../wizard/WizardPreview";
 
 interface Props {
   style: CSSProperties;

@@ -1,9 +1,9 @@
+import { __resetMockSession,__setMockSession } from 'next-auth';
 import { jest } from '@jest/globals';
-import { __setMockSession, __resetMockSession } from 'next-auth';
 
-const deployShopHosting = jest.fn();
-const getDeployStatus = jest.fn();
-const updateDeployStatus = jest.fn();
+const deployShopHosting = jest.fn<Promise<{ ok: boolean }>, any[]>();
+const getDeployStatus = jest.fn<Promise<{ status: string } | undefined>, any[]>();
+const updateDeployStatus = jest.fn<Promise<void>, any[]>();
 
 jest.mock('@cms/actions/deployShop.server', () => ({
   __esModule: true,

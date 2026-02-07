@@ -1,8 +1,13 @@
-/* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
+ 
 // src/components/seo/ServiceStructuredData.tsx
-import { memo, useMemo } from "react";
+import { memo } from "react";
+import { usePathname } from "next/navigation";
+
+import { buildCanonicalUrl } from "@acme/ui/lib/seo/buildCanonicalUrl";
+
+import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { useLocation } from "react-router-dom";
+import { serializeJsonLdValue } from "@/utils/seo/jsonld";
 
 type MonetaryAmount = {
   price: string;
@@ -37,71 +42,56 @@ function ServiceStructuredData({
   url,
 }: Props): JSX.Element {
   const lang = useCurrentLanguage();
-  const { pathname } = useLocation();
+  const pathname = usePathname() ?? "";
 
-  const json = useMemo(() => {
-    const resolvedLang = inLanguage ?? lang;
-    const resolvedUrl = url ?? `https://hostel-positano.com${pathname}`;
+  const resolvedLang = inLanguage ?? lang;
+  const resolvedUrl = url ?? buildCanonicalUrl(BASE_URL, pathname);
 
-    const offerPayload = Array.isArray(offers)
-      ? offers
-          .filter(
-            (offer): offer is MonetaryAmount & { price: string } =>
-              typeof offer?.price === "string" && offer.price.trim().length > 0
-          )
-          .map((offer) => ({
-            "@type": "Offer",
-            price: offer.price,
-            ...(offer.priceCurrency ? { priceCurrency: offer.priceCurrency } : {}),
-            ...(offer.availability ? { availability: offer.availability } : {}),
-            ...(offer.description ? { description: offer.description } : {}),
-            // Best-effort UnitPriceSpecification when we can parse a numeric value
-            ...(() => {
-              if (!offer.priceCurrency) return {};
-              const num = parseFloat(offer.price.replace(/[^0-9.,]/g, "").replace(",", "."));
-              if (Number.isFinite(num)) {
-                return {
-                  priceSpecification: {
-                    "@type": "UnitPriceSpecification",
-                    price: num,
-                    priceCurrency: offer.priceCurrency!,
-                    unitCode: "NI",
-                  },
-                };
-              }
-              return {};
-            })(),
-          }))
-      : [];
+  const offerPayload = Array.isArray(offers)
+    ? offers
+        .filter(
+          (offer): offer is MonetaryAmount & { price: string } =>
+            typeof offer?.price === "string" && offer.price.trim().length > 0
+        )
+        .map((offer) => ({
+          "@type": "Offer",
+          price: offer.price,
+          ...(offer.priceCurrency ? { priceCurrency: offer.priceCurrency } : {}),
+          ...(offer.availability ? { availability: offer.availability } : {}),
+          ...(offer.description ? { description: offer.description } : {}),
+          // Best-effort UnitPriceSpecification when we can parse a numeric value
+          ...(() => {
+            if (!offer.priceCurrency) return {};
+            const num = parseFloat(offer.price.replace(/[^0-9.,]/g, "").replace(",", "."));
+            if (Number.isFinite(num)) {
+              return {
+                priceSpecification: {
+                  "@type": "UnitPriceSpecification",
+                  price: num,
+                  priceCurrency: offer.priceCurrency!,
+                  unitCode: "NI",
+                },
+              };
+            }
+            return {};
+          })(),
+        }))
+    : [];
 
-    return JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "Service",
-      inLanguage: resolvedLang,
-      url: resolvedUrl,
-      name,
-      description,
-      ...(serviceType ? { serviceType } : {}),
-      areaServed: { "@type": "Place", name: areaServed },
-      provider: { "@type": "Organization", name: providerName },
-      ...(image ? { image } : {}),
-      ...(sameAs && sameAs.length > 0 ? { sameAs } : {}),
-      ...(offerPayload.length > 0 ? { offers: offerPayload } : {}),
-    });
-  }, [
-    areaServed,
-    description,
-    image,
-    lang,
+  const json = serializeJsonLdValue({
+    "@context": "https://schema.org",
+    "@type": "Service",
+    inLanguage: resolvedLang,
+    url: resolvedUrl,
     name,
-    offers,
-    pathname,
-    providerName,
-    sameAs,
-    serviceType,
-    inLanguage,
-    url,
-  ]);
+    description,
+    ...(serviceType ? { serviceType } : {}),
+    areaServed: { "@type": "Place", name: areaServed },
+    provider: { "@type": "Organization", name: providerName },
+    ...(image ? { image } : {}),
+    ...(sameAs && sameAs.length > 0 ? { sameAs } : {}),
+    ...(offerPayload.length > 0 ? { offers: offerPayload } : {}),
+  });
 
   return (
     <script

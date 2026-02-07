@@ -1,13 +1,15 @@
 /** @jest-environment node */
 
 import { NextRequest } from "next/server";
-import type { Role } from "@auth/types/roles";
+
+import type { Role } from "@acme/auth/types/roles";
+
 import { nextHeadersMock } from "../../../../../__tests__/mocks/external";
 
 const SHOP_URL = "http://localhost/api/edit-changes?shop=test";
 
 async function createSessionCookie(role: Role): Promise<string> {
-  const { createCustomerSession, CUSTOMER_SESSION_COOKIE } = await import("@auth");
+  const { createCustomerSession, CUSTOMER_SESSION_COOKIE } = await import("@acme/auth");
   const store = { get: jest.fn(), set: jest.fn(), delete: jest.fn() };
   nextHeadersMock.cookies.mockReturnValue(store);
   await createCustomerSession({ customerId: "c1", role });
@@ -23,7 +25,7 @@ afterEach(() => {
 
 describe("GET /api/edit-changes RBAC", () => {
   it("returns 401 for roles without manage_pages", async () => {
-    jest.doMock("@platform-core/repositories/settings.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/settings.server", () => ({
       __esModule: true,
       diffHistory: jest.fn(),
     }));
@@ -37,10 +39,10 @@ describe("GET /api/edit-changes RBAC", () => {
   });
 
   it("returns 200 with components for authorized roles", async () => {
-    const { ROLE_PERMISSIONS } = await import("@auth/permissions");
+    const { ROLE_PERMISSIONS } = await import("@acme/auth/permissions");
     const original = [...(ROLE_PERMISSIONS.ShopAdmin || [])];
     ROLE_PERMISSIONS.ShopAdmin = [...original, "manage_pages"];
-    jest.doMock("@platform-core/repositories/settings.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/settings.server", () => ({
       __esModule: true,
       diffHistory: jest.fn().mockResolvedValue([
         { diff: { pages: { p1: { components: [{ name: "Hero" }, "Banner"] } } } },

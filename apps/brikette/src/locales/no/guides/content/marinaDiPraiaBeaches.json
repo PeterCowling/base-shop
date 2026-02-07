@@ -1,92 +1,237 @@
 {
   "seo": {
-    "title": "Marina di Praia og bortgjemte strender",
-    "description": "Slik kommer du til avsidesliggende viker og hva du kan forvente der."
+    "title": "Marina di Praia: strandguide med SITA-buss, lido og middag",
+    "description": "Hostelvennlig guide til Marina di Praia: slik kommer du dit med SITA-buss, hvor du bør ligge (lido vs gratisområde), hva du bør pakke og hvor du kan spise før du drar hjem."
   },
-  "linkLabel": "Marina di Praia og bortgjemte strender",
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
+  "linkLabel": "Marina di Praia: dramatisk bukt mellom klippene",
   "intro": [
-    "Explore Marina di Praia and nearby coves for a change of pace from Positano's main beach."
-  ],
-  "sections": [
-    {
-      "id": "marina",
-      "title": "Marina di Praia essentials",
-      "body": [
-        "Nestled between cliffs, this pebbly beach has sunbeds, kayak rentals, and seafood restaurants built into the rock.",
-        "Arrive before 10:30 to secure front-row loungers; afternoon shade creeps in after 16:00."
-      ]
-    },
-    {
-      "id": "coves",
-      "title": "Nearby coves",
-      "body": [
-        "Rent a kayak to explore Grotta di Suppraiano or take a short boat transfer to secluded spots like Gavitella or Laurito.",
-        "Pack reef-friendly sunscreen and water shoes—the rocky seabed offers great snorkeling visibility."
-      ]
-    },
-    {
-      "id": "logistics",
-      "title": "Getting there",
-      "body": [
-        "Catch the SITA bus from Positano toward Amalfi; ask the driver for the Marina di Praia stop and walk down the ramp (five minutes).",
-        "Scooters can park at the top of the cove—bring coins for metered spots."
-      ]
-    }
-  ],
-  "tips": [
-    "Book lunch at Il Pirata or La Praia for cliffside dining between swims.",
-    "Carry a dry bag for valuables; beach space is compact and tidier when everything stays together."
-  ],
-  "faqs": [
-    {
-      "q": "Is the beach free?",
-      "a": [
-        "There is a free section, but space is limited. Expect €20–€25 for a pair of sunbeds and an umbrella at beach clubs in peak season."
-      ]
-    },
-    {
-      "q": "Can I walk from Positano?",
-      "a": [
-        "The walk takes roughly 50 minutes along the road with narrow shoulders. A bus or scooter is safer, especially in high season traffic."
-      ]
-    }
+    "Marina di Praia er en bortgjemt rullesteinsbukt i Praiano – en kort tur med SITA-buss fra Hostel Brikette, men som regel roligere enn Positanos mest populære strender. Fiskebåter, et vakttårn og steinlagte gangveier gir den en “hemmelig” følelse, samtidig som du har mat og fasiliteter i nærheten.",
+    "Hvis du vil ha en stranddag uten stress (bad, snack, en hvil i skyggen og så en enkel middag), er dette et av de beste valgene i nærheten for hostelgjester.",
+    "Denne guiden dekker bussruta, hvordan stranden er lagt opp (lido vs gratisområde), hva du bør ta med for å være komfortabel på rullestein, og den enkleste måten å komme tilbake til Positano etter solnedgang."
   ],
   "toc": [
     {
       "href": "#why-go",
-      "label": "Why go"
+      "label": "Hvorfor dra"
     },
     {
       "href": "#getting-there",
-      "label": "Getting there"
+      "label": "Slik kommer du dit"
     },
     {
       "href": "#layout",
-      "label": "Layout & services"
+      "label": "Oppsett & fasiliteter"
+    },
+    {
+      "href": "#what-to-bring",
+      "label": "Hva du bør pakke"
+    },
+    {
+      "href": "#best-time",
+      "label": "Beste tidspunkt"
+    },
+    {
+      "href": "#nearby",
+      "label": "Rolige badestopp i nærheten"
     },
     {
       "href": "#evening",
-      "label": "Stay for dinner"
+      "label": "Middag & hjemreise"
     }
   ],
-  "essentialsTitle": "What to expect",
+  "sections": [
+    {
+      "id": "why-go",
+      "title": "Hvorfor denne bukta passer for hostelgjester",
+      "body": [
+        "I motsetning til Spiaggia Grande eller Fornillo ligger denne bukta i en smal kløft rett utenfor Praiano. Klippene skjermer vannet for dønninger, fiskebåter duver i havna, og stemningen holder seg rolig selv i høysesongen.",
+        "Dette er en perfekt “mellomting”-dag: mer komfortabel enn ville viker med masse trapper, men mindre kaotisk enn de store Positano-strendene. Du får dusjer og mat, men føler deg fortsatt mer gjemt mellom klippene enn midt i byen.",
+        "Planlegg det som en halvdag (morgendukkert + lang lunsj) eller en sen ettermiddag som avsluttes med middag ved vannet før du drar hjem."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/01-marina-di-praia-overlook.webp",
+          "width": 1600,
+          "height": 1066,
+          "alt": "Utsikt over Marina di Praia-bukta med båter, parasoller og bratte klipper i Praiano",
+          "caption": "Skjermet, dramatisk og som regel roligere enn de store strendene i Positano. Foto: Falk2 (CC BY-SA 4.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "Slik kommer du deg dit og tilbake med SITA-buss",
+      "body": [
+        "Fra Hostel Brikette går du ned Via Pasitea til holdeplassen Sponda og tar en SITA-buss mot Amalfi. Si til sjåføren at du vil til “Marina di Praia”, så de husker å stoppe – holdeplassen ligger mellom Praiano og Furore og er lett å overse når bussen er full.",
+        "Gå av ved skiltet stopp og følg steinstien nedover (ca. to minutter) til vannkanten. Det er asfaltert/steinlagt hele veien, så det er greit selv i flip-flops.",
+        "På returen krysser du veien og venter på buss tilbake mot Positano. Om sommeren går det ofte greit, men på kvelden blir det færre avganger – sjekk rutetabellen når du kommer, og sats på nest siste buss hvis du blir til middag.",
+        "Kjøp og valider SITA-billetter før du går om bord. Hvis du vil ha en oppfriskning på billettyper, hvor du kjøper dem og hva du gjør når busser kjører forbi fulle, se vår %LINK:sitaTickets|SITA-billettguide%. Skal du kombinere strand med en Praiano-runde (kirker, utsikt og kyststier), bruk også %LINK:praianoGuide|Praiano-guiden%."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/02-marina-di-praia-waterfront.webp",
+          "width": 1200,
+          "height": 1600,
+          "alt": "Steinpromenade ved Marina di Praia med båter og høye klippevegger",
+          "caption": "Steinpromenaden gjør de siste to minuttene ned til vannet enkle. Foto: Falk2 (CC BY-SA 4.0) via Wikimedia Commons."
+        },
+        {
+          "src": "/img/guides/marina-di-praia/08-san-gennaro-church.webp",
+          "width": 1600,
+          "height": 1200,
+          "alt": "San Gennaro-kirken i Praiano med flislagt kuppel og utsikt over Amalfi-kysten",
+          "caption": "Kombinerer du strand med en Praiano-tur, er San Gennaro-kirken et lett stopp. Foto: Elliott Brown (CC BY 2.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "layout",
+      "title": "Strandoppsett: lido og fasiliteter",
+      "body": [
+        "Stranden er smal, med rullestein, og delt mellom en liten offentlig stripe og lidoens hovedområde. Vil du ha gratisområdet nær vannet, kom tidlig – det fylles først i helgene.",
+        "Hovedoperatøren er Marina di Praia Beach Club (solsenger, parasoller, dusjer og ofte noe paddle/kajakk). I høysesongen betaler du mest for komfort, men det er verdt det hvis du vil ha toaletter og en enkel “legg fra deg ting og slapp av”-dag.",
+        "Langs promenaden finner du restauranter og kiosker med kalde drikker. Kortterminaler kan være ustabile, så ta med litt kontanter for småbeløp og ha en plan B hvis billettkiosken er stengt senere.",
+        "Hostel-realitet: ikke ta med verdisaker du vil stresse over. Er du alene, velg et synlig sted (nær andre grupper), hold mobilen i en glidelåslomme, og bad i korte økter i stedet for å la sekken ligge uten tilsyn lenge."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/03-marina-di-praia-from-sea.webp",
+          "width": 1600,
+          "height": 1045,
+          "alt": "Marina di Praia sett fra sjøen med rullesteinsstrand og promenade langs klippene",
+          "caption": "Fra vannet ser du hvor kompakt bukta er – kom tidlig om du vil ha gratis plass. Foto: Gilbert Bochenek (CC BY-SA 3.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "what-to-bring",
+      "title": "Hva du bør ta med (så rullestein ikke ødelegger dagen)",
+      "body": [
+        "Dette er rullestein, ikke myk sand. Forskjellen er stor: kommer du med bare et tynt håndkle, ender du fort med å flytte deg hele tiden i stedet for å slappe av.",
+        "Pakk som til en hostel-dagstur: lett nok til turen opp igjen, men med noen få ting som gjør rullestein og skygge håndterlig."
+      ],
+      "list": [
+        "Badesko: kanten kan være glatt og steinene kan gjøre vondt etter mange timer.",
+        "En tykkere matte eller brettet håndkle: rullestein kjennes fort hardt.",
+        "Et lett lag til sen ettermiddag: klippene gir tidlig skygge og det blir kjøligere etter bading.",
+        "Kontanter + kort: småbetalinger og terminaler kan være upålitelige.",
+        "En liten drybag eller zip-pose til mobilen hvis du hopper mye i og ut av vannet."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/05-praiano-coastline.webp",
+          "width": 1600,
+          "height": 1200,
+          "alt": "Kystlinjen ved Praiano med klipper og blått hav på Amalfi-kysten",
+          "caption": "Klippekyst betyr raske skygge-skifter – ta med et lag hvis du blir lenge. Foto: Barochat (CC BY-SA 3.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "best-time",
+      "title": "Beste tidspunkt (og hvordan vannet føles)",
+      "body": [
+        "For en rolig og enkel dag, kom om morgenen. Du har bedre sjanse for en komfortabel plass, mindre trengsel på promenaden og en jevnere “base først, så bad”-rytme.",
+        "Midt/sent på ettermiddagen gir klippene mer skygge. Det er bra om du er overopphetet, men det kan også gjøre bukta kjølig på vindfulle dager – spesielt etter en lang svømmetur.",
+        "Det blir fort dypt: gå rolig i første gang og følg med på hvor du legger sekken hvis bølgene slår høyere."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/06-praiano-view.webp",
+          "width": 1600,
+          "height": 1066,
+          "alt": "Utsikt langs Praiano-kysten med klipper og hus i åssiden",
+          "caption": "Her bestemmer klippene lys og skygge – planlegg etter det. Foto: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "nearby",
+      "title": "Rolige badestopp i nærheten (det realistiske)",
+      "body": [
+        "Amalfi-kysten er kjent for “hemmelige viker”, men mange er private, bare tilgjengelige med båt eller krever sketchy klippestier. For hostelgjester er den beste strategien å bruke denne bukta som komfortabel base og legge til ett kort “wow”-stopp på samme busslinje.",
+        "Det enkleste dramatiske stoppet i nærheten er %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore%: dra tidlig for bilder og et raskt bad, og kom så tilbake hit for lunsj, skygge og en mer avslappet svøm.",
+        "Hvis du vil ha en hel dag med “smaksprøver”, planlegg rekkefølge (og buss-timing) med vår %LINK:beachHoppingAmalfi|beach-hopping-guide for Amalfi-kysten% så du ikke bruker ettermiddagen på å se fulle busser kjøre forbi."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/07-fiordo-di-furore.webp",
+          "width": 1200,
+          "height": 1600,
+          "alt": "Fiordo di Furore-kløften med turkis vann og bratte klipper",
+          "caption": "Fiordo di Furore er det dramatiske “fotostoppet” i nærheten – kombiner med en roligere base-strand. Foto: Luca Aless (CC BY-SA 4.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "evening",
+      "title": "Middag ved vannet og hjem uten stress",
+      "body": [
+        "Dette er en av de fineste buktene å bli i etter bading: når sola går ned, går restaurantene over til middag og promenadelysene speiler seg i vannet. Vil du ha et bestemt bord, reserver – spesielt i juli og august.",
+        "For å holde hjemreisen enkel: sjekk busstabellen så snart du kommer. Sats på nest siste buss mot Positano, så har du buffer hvis en buss er full.",
+        "Mister du siste buss, kan taxi fra Praiano til Positano bli dyrt – blir du sent, planlegg å dele med reisekompisene fra hostellet."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/04-torre-a-mare-watchtower.webp",
+          "width": 1200,
+          "height": 1600,
+          "alt": "Kystvakttårn nær Praiano over klippene ved havet",
+          "caption": "Kysten her er full av historiske tårn og klippestier. Foto: Falk2 (CC BY-SA 4.0) via Wikimedia Commons."
+        }
+      ]
+    }
+  ],
+  "essentialsTitle": "Dette kan du forvente",
   "essentials": [
-    "20-minutters SITA busstur fra Positano; be om Marina di Praia-stoppet og gå to minutter nedoverbakke.",
-    "Smal rullesteinstrand med en hovedlido pluss en liten ledig del i midten.",
-    "Restauranter og snackskiosker langs gangveien – ideelt for en middag i solnedgangen før du drar hjem."
+    "Kort tur med SITA-buss fra Positano; be sjåføren om Marina di Praia-stoppet og gå to minutter ned til vannet.",
+    "Smal rullesteinsbukt med én hoved-lido og en liten gratisdel; kom tidlig hvis du vil ha offentlig strandstripe.",
+    "Mat og fasiliteter på stedet (restauranter, drikke, dusjer ved lidoen) – perfekt for en stressfri halvdag eller middag før du drar hjem."
   ],
-  "typicalCostsTitle": "Typical costs",
+  "typicalCostsTitle": "Typiske kostnader",
   "typicalCosts": [
-    "Solseng + paraply på Marina di Praia Beach Club: € 25–€ 35 for dagen (to-personers sett tilgjengelig).",
-    "Kajakkutleie: rundt € 20 per time for to personer.",
-    "Middag på Da Armandino eller Il Pirata: €16–28 € avhengig av fangst og pastaspesialiteter."
+    "Solseng + parasoll ved Marina di Praia Beach Club: €25–€35 per dag (to-personers sett finnes).",
+    "Kajakkleie: ca. €20 per time for to personer.",
+    "Hovedretter hos Da Armandino eller Il Pirata: €16–€28 avhengig av fisk og pasta-spesialiteter."
   ],
-  "tipsTitle": "Quick tips",
-  "warningsTitle": "Good to know",
+  "tipsTitle": "Kjappe tips",
+  "tips": [
+    "Valider bussbilletten med en gang du går om bord, og ha en ekstra til hjemturen i tilfelle kiosken er stengt på kvelden.",
+    "Ta med badesko – rullestein kan være glatt og det blir raskt dypt.",
+    "Sammenlign andre alternativer i vår %LINK:positanoBeaches|strandoversikt% hvis du vil kombinere denne bukta med en dag i Positano."
+  ],
+  "warningsTitle": "Greit å vite",
   "warnings": [
-    "Plassen er begrenset; det ledige området fylles først og lido solsenger selges ut i helgene.",
-    "Klippene blokkerer for direkte sol midt på ettermiddagen - flott for å kjøle seg ned, men det kan føles kjølig på vindfulle dager.",
-    "Mobilt mottak faller inne i juvet; last ned bussruter eller middagsbekreftelser på forhånd."
+    "Plassen er begrenset: gratisdelen fylles først og lidoens solsenger kan bli utsolgt i helgene.",
+    "Klippene blokkerer direkte sol midt på ettermiddagen – fint for å kjøle seg ned, men det kan føles kjølig på vindfulle dager.",
+    "Mobildekningen kan bli svak inne i kløften: last ned busstider eller bookingbekreftelser på forhånd."
   ],
-  "faqsTitle": "Marina di Praia FAQs"
+  "faqsTitle": "Marina di Praia FAQ",
+  "faqs": [
+    {
+      "q": "Hvor tar jeg bussen fra i Positano?",
+      "a": [
+        "Bruk Sponda-stoppet på Via Pasitea for busser mot Amalfi. Det er omtrent 10 minutter å gå nedover fra hostellet; i høysesong, kom 10 minutter tidlig så du rekker å komme på før bussen fylles."
+      ]
+    },
+    {
+      "q": "Finnes det en gratisdel, eller må jeg leie solseng?",
+      "a": [
+        "Det er en liten offentlig stripe midt i bukta. Ta med matte eller et tykt håndkle — steinene er grove — og vær klar for å flytte deg litt nærmere klippene når tidevannet endrer seg. Solsenger på Marina di Praia Beach Club inkluderer dusjer og toaletter hvis du vil ha en mer komfortabel base."
+      ]
+    },
+    {
+      "q": "Hvor sent kan jeg bli til middag og fortsatt komme tilbake til Hostel Brikette?",
+      "a": [
+        "Siste SITA-buss mot Positano varierer etter måned, men om sommeren går den vanligvis til rundt 21:30. Sjekk rutetabellen når du kommer og ta helst nest siste avgang i tilfelle en buss er full. Etter siste buss koster taxi Praiano → Positano ca. €35–€45, så del om du blir lenger."
+      ]
+    },
+    {
+      "q": "Er Marina di Praia et bra sted å dra alene?",
+      "a": [
+        "Ja — det er en av de mer “solo-vennlige” buktene fordi den har fasiliteter og en synlig promenade. Likevel: bruk hostel-sunn fornuft. Ta med bare det du orker å bære, hold mobilen trygg, og bad i korte økter så du ikke lar sekken ligge uten tilsyn lenge."
+      ]
+    }
+  ]
 }

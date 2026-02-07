@@ -1,6 +1,8 @@
-import type { PageComponent } from "@acme/types";
-import type { Action } from "../state";
 import { useCallback } from "react";
+
+import type { PageComponent } from "@acme/types";
+
+import type { Action } from "../state";
 import { groupIntoContainer, ungroupContainer } from "../state/layout/utils";
 
 interface Args {

@@ -1,25 +1,27 @@
 /* file path: src/components/assistance/HelpCentreNav.tsx */
 /* Desktop drawer – visible from ≥ lg (1024 px) */
 
-import { Bus, CalendarDays, Clock, CreditCard, FileText, IdCard, Info, MapPin, Scale, ShieldCheck, Undo2, Wrench } from "lucide-react";
-import clsx from "clsx";
-import { memo, useCallback, useMemo, type ReactNode } from "react";
+import { memo, type ReactNode, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { NavLink } from "react-router-dom";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import clsx from "clsx";
+import { Bus, CalendarDays, Clock, CreditCard, FileText, IdCard, Info, MapPin, Scale, ShieldCheck, Undo2, Wrench } from "@/icons";
 
 import HelpCentreNavUI, { type AssistanceNavItem } from "@acme/ui/organisms/HelpCentreNav";
+
+import { ASSISTANCE_GUIDE_KEYS } from "@/data/assistanceGuideKeys";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { useHelpDrawer } from "@/hooks/useHelpDrawer";
-import type { HelpArticleKey } from "@/routes.assistance-helpers";
-// Namespace import to tolerate partial mocks
-import * as assistance from "@/routes.assistance-helpers";
-import { getSlug } from "@/utils/slug";
 import type { AppLanguage } from "@/i18n.config";
+import { guideSlug, type GuideKey } from "@/routes.guides-helpers";
+import { getSlug } from "@/utils/slug";
 
 /* ── static helpers ─────────────────────────────────────────── */
 type IconComponent = typeof IdCard;
 
-const ICONS: Record<HelpArticleKey, IconComponent> = {
+// Icons for assistance guide keys (subset of GuideKey)
+const ICONS: Partial<Record<GuideKey, IconComponent>> = {
   ageAccessibility: IdCard,
   bookingBasics: CalendarDays,
   changingCancelling: Undo2,
@@ -44,7 +46,7 @@ const defaultLabel = (key: string): string =>
 // src/locales/<lang>/assistanceCommon.json and are resolved via i18n.
 
 interface Props {
-  currentKey: HelpArticleKey;
+  currentKey: GuideKey;
   className?: string;
   lang?: AppLanguage;
 }
@@ -53,15 +55,16 @@ function HelpCentreNav({ currentKey, className = "lg:w-80", lang: explicitLang }
   const { open, toggle } = useHelpDrawer();
   const fallbackLang = useCurrentLanguage();
   const lang = explicitLang ?? fallbackLang;
+  const pathname = usePathname();
   const { t, i18n } = useTranslation("assistanceCommon", { lng: lang });
 
-  const fallbackT = useMemo(() => {
+  const fallbackT = (() => {
     try {
       return i18n.getFixedT("en", "assistanceCommon");
     } catch {
       return null;
     }
-  }, [i18n]);
+  })();
 
   const translate = useCallback(
     (key: string, fallback: () => string): string => {
@@ -82,28 +85,17 @@ function HelpCentreNav({ currentKey, className = "lg:w-80", lang: explicitLang }
 
   const openLabel = translate("openSidebar", () => defaultLabel("openSidebar"));
   const closeLabel = translate("closeSidebar", () => defaultLabel("closeSidebar"));
-  const sidebarLabel = useMemo(
-    () => translate("sidebarLabel", () => defaultLabel("sidebarLabel")),
-    [translate],
-  );
+  const sidebarLabel = translate("sidebarLabel", () => defaultLabel("sidebarLabel"));
 
-  const items = useMemo(() => {
-    const root = `/${lang}/${getSlug("assistance", lang)}`;
+  const root = `/${lang}/${getSlug("assistance", lang)}`;
 
-    type AssistanceModule = typeof assistance;
-    const keys: readonly HelpArticleKey[] =
-      ((assistance as Partial<AssistanceModule>).ARTICLE_KEYS ?? []) as readonly HelpArticleKey[];
-    const toSlug = (assistance as Partial<AssistanceModule>).articleSlug;
-    const articles = keys.map((key) => ({
-      key,
-      label: translate(`nav.${key}`, () => defaultLabel(key)),
-      href: `${root}/${toSlug ? toSlug(lang, key) : String(key)}`,
-      icon: ICONS[key],
-      isActive: currentKey === key,
-    }));
-
-    return articles;
-  }, [currentKey, lang, translate]);
+  const items = ASSISTANCE_GUIDE_KEYS.map((key) => ({
+    key,
+    label: translate(`nav.${key}`, () => defaultLabel(key)),
+    href: `${root}/${guideSlug(lang, key)}`,
+    icon: ICONS[key],
+    isActive: currentKey === key,
+  }));
 
   const linkClasses = useCallback(
     (highlighted: boolean): string =>
@@ -118,7 +110,7 @@ function HelpCentreNav({ currentKey, className = "lg:w-80", lang: explicitLang }
         "pr-[40px]",
         highlighted
           ? ["font-semibold", "text-brand-primary", "dark:text-brand-secondary"]
-          : ["text-brand-text", "dark:text-brand-surface"],
+          : ["text-brand-text", "dark:text-brand-text"],
         "hover:bg-brand-surface/60",
         "dark:hover:bg-brand-text/60",
         "focus-visible:outline-none",
@@ -135,16 +127,20 @@ function HelpCentreNav({ currentKey, className = "lg:w-80", lang: explicitLang }
       highlighted: boolean;
       defaultClassName: string;
       children: ReactNode;
-    }) => (
-      <NavLink
-        to={item.href}
-        prefetch="intent"
-        className={({ isActive }) => linkClasses(highlighted || isActive)}
-      >
-        {children}
-      </NavLink>
-    ),
-    [linkClasses],
+    }) => {
+      const isActive = pathname === item.href || (pathname?.startsWith(`${item.href}/`) ?? false);
+      return (
+        <Link
+          href={item.href}
+          prefetch={false}
+          className={linkClasses(highlighted || isActive)}
+          aria-current={isActive ? "page" : undefined}
+        >
+          {children}
+        </Link>
+      );
+    },
+    [linkClasses, pathname],
   );
 
   return (
@@ -163,8 +159,7 @@ function HelpCentreNav({ currentKey, className = "lg:w-80", lang: explicitLang }
   );
 }
 
-type AssistanceModule = typeof assistance;
-export const HELP_ARTICLE_KEYS: readonly HelpArticleKey[] =
-  ((assistance as Partial<AssistanceModule>).ARTICLE_KEYS ?? []) as readonly HelpArticleKey[];
-export type { HelpArticleKey };
+// Re-export for consumers that depend on this module
+export { ASSISTANCE_GUIDE_KEYS };
+export type { GuideKey };
 export default memo(HelpCentreNav);

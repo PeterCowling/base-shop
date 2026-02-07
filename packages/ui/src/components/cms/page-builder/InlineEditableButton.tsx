@@ -1,10 +1,13 @@
 "use client";
 
-import type { Locale } from "@acme/i18n/locales";
+import type { MouseEvent } from "react";
+
 import { useTranslations } from "@acme/i18n";
+import type { Locale } from "@acme/i18n/locales";
+
 import { Button as UIButton } from "../../atoms/shadcn";
 import type { ButtonProps as UIButtonProps } from "../../atoms/shadcn/Button";
-import type { MouseEvent } from "react";
+
 import type { InlineTextApi } from "./useInlineText";
 
 type ButtonBlock = { label?: string; href?: string; variant?: string; size?: "sm" | "md" | "lg" | string };

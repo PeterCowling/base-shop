@@ -5,18 +5,18 @@ upstream behaviour with our typings so consumers can opt into shadcn defaults
 while staying inside the `@acme/ui` package.
 
 ```ts
-import { Button, Input } from "@/components/atoms/shadcn";
+import { Button, Input } from "@ui/components/atoms/shadcn";
 
 // combine with first-party atoms when needed
-import { StatCard } from "@/components/atoms";
+import { StatCard } from "@ui/components/atoms";
 ```
 
 Alias the shadcn imports when an in-house atom shares the same component name to
 keep call sites clear:
 
 ```ts
-import { Button } from "@/components/atoms";
-import { Button as ShButton } from "@/components/atoms/shadcn";
+import { Button } from "@ui/components/atoms";
+import { Button as ShButton } from "@ui/components/atoms/shadcn";
 
 function Example() {
   return (

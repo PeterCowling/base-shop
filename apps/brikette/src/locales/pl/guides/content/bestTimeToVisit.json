@@ -1,47 +1,96 @@
 {
   "seo": {
-    "title": "Najlepszy czas na wizytę w Positano",
-    "description": "Porównanie sezonów: pogoda, ceny, tłumy i wydarzenia, aby dobrać idealny termin."
+    "title": "Najlepszy czas na wizytę w Positano | Przewodnik pogoda i tłumy",
+    "description": "Kiedy odwiedzić Positano? Porównaj pogodę, tłumy, ceny i połączenia promowe miesiąc po miesiącu, aby znaleźć najlepszy czas na Twoją podróż."
   },
   "linkLabel": "Najlepszy czas na wizytę w Positano",
   "intro": [
-    "Zaplanuj wizytę z realistycznym podejściem do pogody, tłumów i dostępności promów.",
-    "Skorzystaj z tabeli sezonowej i notatek miesięcznych, aby dopasować termin w Positano do swoich priorytetów."
+    "Atrakcyjność Positano zmienia się wraz z porami roku. Najlepszy czas na odwiedziny zależy od tego, co jest dla Ciebie najważniejsze: pogoda, tłumy, ceny czy dostępność promów.",
+    "Szczyt sezonu letniego (czerwiec–sierpień) oferuje gwarantowane słońce i pełne rozkłady promów, ale wiąże się z intensywnym upałem, zatłoczonymi ulicami i wysokimi cenami. Sezony przejściowe (kwiecień–maj i wrzesień–październik) równoważą dobrą pogodę z mniejszymi tłumami i lepszą wartością. Zima (listopad–marzec) jest cicha i tania, ale wiele usług jest zamkniętych, a promy nie kursują.",
+    "Ten przewodnik rozbija każdy miesiąc, abyś mógł wybrać odpowiedni czas dla swoich priorytetów. Użyj macierzy sezonowej i miesięcznych notatek, aby zaplanować wizytę z realistycznymi oczekiwaniami."
   ],
+  "lastUpdated": "2026-02-04",
   "tocTitle": "Na tej stronie",
   "toc": [
+    {
+      "href": "#quickAnswer",
+      "label": "Szybka odpowiedź"
+    },
     {
       "href": "#matrix",
       "label": "Macierz pogoda/tłumy/ceny"
     },
     {
       "href": "#months",
-      "label": "Notatki miesiąc po miesiącu"
+      "label": "Rozpisanie miesiąc po miesiącu"
+    },
+    {
+      "href": "#considerations",
+      "label": "Co wziąć pod uwagę"
     },
     {
       "href": "#faqs",
-      "label": "FAQ"
+      "label": "Najczęściej zadawane pytania"
     }
   ],
   "sections": [
     {
-      "id": "matrix",
-      "title": "Macierz: pogoda / tłumy / ceny",
+      "id": "quickAnswer",
+      "title": "Szybka odpowiedź: najlepsze terminy według priorytetu",
       "body": [
-        "Szczyt (cze–sie) = upał, tłok i najwyższe ceny. Okres przejściowy (kwi–maj, wrz–paź) = łagodniejsza pogoda i lepsza wartość. Zima (lis–mar) = spokój i ograniczone usługi."
+        "Jeśli chcesz najlepszej ogólnej równowagi pogody, tłumów i wartości: odwiedź w maju lub wrześniu. Te miesiące oferują ciepłe temperatury, spokojne morze, częste promy i niższe ceny niż szczyt sezonu letniego.",
+        "Jeśli chcesz gwarantowanej gorącej pogody i pływania: odwiedź czerwiec do początku września. Spodziewaj się tłumów, wysokich cen i konieczności wcześniejszego rezerwowania transportu i zakwaterowania.",
+        "Jeśli chcesz uniknąć tłumów i zaoszczędzić pieniądze: odwiedź kwiecień lub październik. Pogoda jest mniej przewidywalna (chłodniej, sporadyczne opady), ale będziesz miał więcej miejsca i lepsze oferty. Promy kursują, ale z mniejszą liczbą rejsów.",
+        "Jeśli chcesz najniższych cen i samotności: odwiedź listopad do marca. Wiele hoteli, restauracji i atrakcji jest zamkniętych. Promy nie kursują, więc będziesz polegać na autobusach. Pogoda może być deszczowa i chłodna, ale Positano jest spokojne i autentyczne."
+      ],
+      "images": [
+        {
+          "src": "/img/hostel-coastal-horizon.webp",
+          "alt": "Widok na horyzont wybrzeża nad morzem w pobliżu Positano.",
+          "caption": "Pogodne letnie dni przynoszą spokojne morze i szczytowe tłumy."
+        }
+      ]
+    },
+    {
+      "id": "matrix",
+      "title": "Macierz pogoda / tłumy / ceny",
+      "body": [
+        "Szczyt sezonu (czerwiec–sierpień): Gorąca pogoda (25–32°C / 77–90°F), intensywne słońce, spokojne morze idealne do pływania. Ulice, plaże i promy są zatłoczone. Ceny zakwaterowania są najwyższe. Rezerwuj wszystko z wyprzedzeniem — promy, kluby plażowe, restauracje.",
+        "Sezon przejściowy (kwiecień–maj, wrzesień–październik): Łagodna do ciepłej pogoda (18–26°C / 64–79°F). Kwiecień i październik mogą mieć deszcz. Tłumy są mniejsze, ceny spadają o 20–40%, i często możesz zarezerwować transport i posiłki w krótkim czasie. Promy kursują, ale z mniejszą liczbą codziennych rejsów niż latem.",
+        "Niski sezon (listopad–marzec): Chłodno i często deszczowo (10–16°C / 50–61°F). Wiele hoteli, restauracji i operatorów wycieczek zamyka się. Brak połączeń promowych — autobusy są jedyną opcją transportu publicznego. Ceny są najniższe, a miasto wydaje się jak lokalna wioska. Najlepsze dla podróżnych, którzy chcą ciszy i nie mają nic przeciwko ograniczonym usługom."
+      ],
+      "images": [
+        {
+          "src": "/img/positano-panorama.avif",
+          "alt": "Panoramiczny widok Positano ułożonego na klifach nad morzem.",
+          "caption": "Positano przy dobrej pogodzie — szybka wizualizacja warunków w szczycie sezonu."
+        }
       ]
     },
     {
       "id": "months",
-      "title": "Notatki miesiąc po miesiącu",
+      "title": "Rozpisanie miesiąc po miesiącu",
       "body": [
-        "Kwiecień: start promów; łagodne temperatury i mniejsze tłumy.",
-        "Maj: świetna pogoda; więcej rejsów; weekendy bardziej oblegane.",
-        "Czerwiec–sierpień: szczyt sezonu; upał i kolejki — rezerwuj transport oraz atrakcje z wyprzedzeniem.",
-        "Wrzesień: ciepłe morze i odrobinę spokojniej niż w sierpniu.",
-        "Październik: sezon przejściowy; promy wygaszają rejsy pod koniec miesiąca.",
-        "Listopad–marzec: spokojna niska pora z ograniczonymi usługami; autobusy stają się podstawą transportu.",
-        "Częstotliwość promów rośnie wiosną, osiąga szczyt latem i maleje pod koniec października."
+        "**Kwiecień:** Rozpoczyna się sezon promowy (zazwyczaj w połowie miesiąca). Łagodne temperatury (16–20°C / 61–68°F) i mniejsze tłumy. Niektóre hotele i restauracje są nadal zamknięte na początku miesiąca. Sporadyczne opady, ale często słonecznie. Dobre do wędrówek po %LINK:pathOfTheGods|Ścieżce Bogów% bez upału.",
+        "**Maj:** Doskonała pogoda (20–24°C / 68–75°F), wystarczająco ciepła do pływania pod koniec maja. Rejsy promowe się zwiększają. Weekendy stają się bardziej zatłoczone, gdy przybywają włoscy i europejscy odwiedzający. Ceny są umiarkowane. Jeden z najlepszych miesięcy pod względem ogólnych wrażeń.",
+        "**Czerwiec:** Rozpoczyna się szczyt sezonu. Gorąco (24–28°C / 75–82°F), słonecznie i zatłoczono. Promy kursują często. Ceny rosną. Rezerwuj zakwaterowanie, transport i aktywności z wyprzedzeniem. Nadal mniej intensywnie niż lipiec–sierpień.",
+        "**Lipiec:** Najgorętszy i najbardziej zatłoczony miesiąc. Temperatury mogą osiągnąć 30–32°C (86–90°F). Ulice, plaże i promy są zapełnione. Najwyższe ceny w roku. Konieczne jest wcześniejsze rezerwowanie wszystkiego. Jeśli nie radzisz sobie dobrze z upałem i tłumami, unikaj lipca.",
+        "**Sierpień:** Podobnie jak lipiec, ale jeszcze bardziej zatłoczony w połowie sierpnia (Ferragosto, włoskie święto narodowe). Wielu Włochów bierze urlop, więc wszystko jest na maksymalnej pojemności. Morze jest najcieplejsze. Spodziewaj się kolejek, w pełni zarezerwowanych usług i cen premium.",
+        "**Wrzesień:** Ciepłe morze (wciąż 24–26°C / 75–79°F) i nieco spokojniej niż w sierpniu. Pogoda pozostaje gorąca na początku miesiąca, następnie ochładza się do komfortowych poziomów. Tłumy rzedną po połowie września. Doskonały miesiąc na pływanie i zwiedzanie bez intensywności szczytu sezonu.",
+        "**Październik:** Sezon przejściowy. Łagodna pogoda (18–22°C / 64–72°F), ale bardziej zmienna — słoneczne dni przeplatane deszczem. Promy zmniejszają się pod koniec miesiąca (usługa zwykle kończy się pod koniec października). Mniej turystów, niższe ceny. Dobre dla podróżnych z budżetem, którzy nie mają nic przeciwko chłodniejszej, mniej przewidywalnej pogodzie.",
+        "**Listopad–marzec:** Cichy niski sezon. Chłodno (10–16°C / 50–61°F) i często deszczowo. Wiele hoteli, restauracji i atrakcji zamyka się. Brak połączeń promowych — autobusy jeżdżą cały rok, ale mogą być wolne i rzadkie. Positano wydaje się jak prawdziwa wioska, a nie miasto turystyczne. Najlepsze dla podróżnych poszukujących samotności, lokalnego życia i najniższych cen. Nieidealne, jeśli chcesz czasu na plaży lub życia nocnego."
+      ]
+    },
+    {
+      "id": "considerations",
+      "title": "Co wziąć pod uwagę przy wyborze",
+      "body": [
+        "**Dostępność promów:** Promy kursują od kwietnia do końca października. Jeśli chcesz malowniczego doświadczenia promowego (Positano do Amalfi, Capri itp.), unikaj listopada–marca. Dla rozkładów i tras promowych, zobacz %LINK:ferrySchedules|nasz przewodnik rozkładów promów%.",
+        "**Pływanie i plaże:** Morze jest wystarczająco ciepłe do komfortowego pływania od końca maja do września. Szczytowe ciepło to lipiec–sierpień. Jeśli pływanie jest Twoim priorytetem, odwiedź czerwiec–wrzesień. Dla dostępu do plaży i opcji, zobacz %LINK:positanoBeaches|nasz przewodnik po plażach Positano%.",
+        "**Tłumy i rezerwacje:** Lipiec–sierpień wymagają wcześniejszej rezerwacji hoteli, promów, klubów plażowych i popularnych restauracji. Jeśli wolisz spontaniczność i nienawidzisz tłumów, odwiedź kwiecień–maj lub wrzesień–październik.",
+        "**Budżet:** Ceny osiągają szczyt w lipcu–sierpniu. Miesiące przejściowe (kwiecień–maj, wrzesień–październik) oferują oszczędności 20–40% na zakwaterowaniu. Zima (listopad–marzec) ma najniższe ceny, ale ograniczone usługi.",
+        "**Przewidywalność pogody:** Czerwiec–sierpień oferują najbardziej niezawodne słońce. Kwiecień, maj i październik mają dobrą pogodę przez większość dni, ale sporadyczne opady. Listopad–marzec może być mokry i pochmurny.",
+        "**Opcje transportu:** Latem promy są częste i niezawodne. W niskim sezonie (listopad–marzec) będziesz całkowicie polegać na %HOWTO:positano-amalfi-bus|autobusach%, które są wolniejsze i rzadsze. Sprawdź %HOWTO:how-to-get-here|nasze przewodniki transportowe% dla sezonowych różnic."
       ]
     }
   ],
@@ -52,30 +101,48 @@
     },
     {
       "name": "Maj",
-      "note": "Świetna pogoda; częste rejsy; bardziej ruchliwe weekendy."
+      "note": "Świetna pogoda; częste promy; bardziej ruchliwe weekendy."
     },
     {
       "name": "Czerwiec–sierpień",
-      "note": "Szczyt sezonu; gorąco; rezerwuj transport i atrakcje z wyprzedzeniem."
+      "note": "Szczyt sezonu; gorąco; rezerwuj transport/aktywności wcześnie."
     },
     {
       "name": "Wrzesień",
-      "note": "Ciepłe morze; trochę mniej tłumów niż w sierpniu."
+      "note": "Ciepłe morze; nieco mniej tłumów niż w sierpniu."
     },
     {
       "name": "Październik",
-      "note": "Sezon przejściowy; pod koniec miesiąca promy ograniczają rejsy."
+      "note": "Sezon przejściowy; promy zmniejszają się pod koniec miesiąca."
     },
     {
       "name": "Listopad–marzec",
-      "note": "Cicho; wiele usług ograniczonych; autobusy jako główny transport."
+      "note": "Cicho; wiele usług ograniczonych; autobusy główny transport."
     }
   ],
   "faqs": [
     {
-      "q": "Kiedy morze jest najcieplejsze?",
+      "q": "Kiedy morze jest najcieplejsze do pływania?",
       "a": [
-        "Najcieplejsza woda jest zazwyczaj od końca czerwca do początku września."
+        "Koniec czerwca do początku września zazwyczaj oferuje najcieplejszą wodę do pływania, z temperaturami morza około 24–26°C (75–79°F). Lipiec i sierpień to szczytowe ciepło."
+      ]
+    },
+    {
+      "q": "Jaki miesiąc jest najlepszy, aby uniknąć tłumów?",
+      "a": [
+        "Kwiecień i październik mają najmniejsze tłumy, jednocześnie oferując przyzwoitą pogodę i pewne połączenia promowe. Listopad–marzec jest najcichszy, ale wiele usług zamyka się, a promy nie kursują."
+      ]
+    },
+    {
+      "q": "Czy mogę odwiedzić Positano zimą?",
+      "a": [
+        "Tak, ale spodziewaj się ograniczonych usług. Wiele hoteli, restauracji i operatorów wycieczek zamyka się od listopada do marca. Promy nie kursują, więc będziesz polegać na autobusach. Pogoda jest chłodna i często deszczowa. Najlepsze dla podróżnych poszukujących spokoju i niskich cen, a nie aktywności na plaży."
+      ]
+    },
+    {
+      "q": "Czy muszę rezerwować zakwaterowanie z wyprzedzeniem w sezonie przejściowym?",
+      "a": [
+        "W kwietniu, maju, wrześniu i październiku często możesz znaleźć zakwaterowanie w krótkim czasie, ale rezerwacja 2–4 tygodnie wcześniej jest bezpieczniejsza, zwłaszcza na weekendy i popularne hotele. Szczyt sezonu (czerwiec–sierpień) wymaga miesięcy wcześniejszej rezerwacji."
       ]
     }
   ]

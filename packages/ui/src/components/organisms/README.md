@@ -15,7 +15,7 @@ import {
   FilterSidebar,
   MiniCart,
   OrderSummary,
-} from "@/components/organisms";
+} from "@ui/components/organisms";
 ```
 
 Pair them with the relevant context providers from `@acme/platform-core` (e.g.
@@ -38,7 +38,7 @@ Pair them with the relevant context providers from `@acme/platform-core` (e.g.
 <FilterSidebar width="w-72" onChange={(filters) => setFilters(filters)} />
 ``` |
 | `MiniCart` | Fly-out drawer bound to the cart context. Accepts a custom `trigger` node and optional drawer `width`. Handles quantity updates, removals and error toasts. | ```tsx
-import { Button } from "@/components/atoms/shadcn";
+import { Button } from "@ui/components/atoms/shadcn";
 
 <MiniCart trigger={<Button>Open cart</Button>} width={360} />
 ``` |

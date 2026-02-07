@@ -87,25 +87,11 @@
     }
   ],
   "faqsTitle": "Domande frequenti",
-  "galleryTitle": "Galleria fotografica",
-  "gallery": {
-    "items": [
-      {
-        "alt": "Vista lungo il Sentiero degli Dei",
-        "caption": "Lungo il sentiero"
-      },
-      {
-        "alt": "Panorama del borgo di Nocelle",
-        "caption": "Vedute di Nocelle"
-      }
-    ]
-  },
   "toc": {
     "onThisPage": "In questa pagina",
     "essentials": "Cosa portare",
     "costs": "Costi indicativi",
     "faqs": "Domande frequenti",
-    "gallery": "Galleria fotografica",
     "tips": "Smart timing"
   },
   "tipsTitle": "Smart timing",

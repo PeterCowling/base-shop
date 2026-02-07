@@ -3,7 +3,11 @@
   "compilerOptions": {
     "types": ["@testing-library/jest-dom", "jest", "node"],
     "noEmit": true,
-    "rootDir": "."
+    "rootDir": "../..",
+    "paths": {
+      "@acme/config": ["../config/dist/index.d.ts"],
+      "@acme/config/*": ["../config/dist/*"]
+    }
   },
   "include": ["src/**/*", "__tests__/**/*"]
 }

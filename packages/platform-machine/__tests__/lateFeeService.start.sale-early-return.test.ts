@@ -10,7 +10,7 @@ describe("startLateFeeService", () => {
       coreEnv: {},
       loadCoreEnv: () => ({}),
     }));
-    jest.doMock("@platform-core/dataRoot", () => ({
+    jest.doMock("@acme/platform-core/dataRoot", () => ({
       __esModule: true,
       resolveDataRoot: () => "/data",
     }));
@@ -22,7 +22,7 @@ describe("startLateFeeService", () => {
       },
     }));
     error = jest.fn();
-    jest.doMock("@platform-core/utils", () => ({
+    jest.doMock("@acme/platform-core/utils", () => ({
       __esModule: true,
       logger: { error, info: jest.fn() },
     }));
@@ -49,7 +49,7 @@ describe("startLateFeeService", () => {
         return Promise.resolve(JSON.stringify({ type: "sale" }));
       return Promise.reject(new Error("not found"));
     });
-    jest.doMock("@platform-core/dataRoot", () => ({
+    jest.doMock("@acme/platform-core/dataRoot", () => ({
       __esModule: true,
       resolveDataRoot: () => "/data",
     }));

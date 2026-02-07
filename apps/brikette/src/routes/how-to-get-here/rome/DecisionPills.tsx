@@ -1,8 +1,10 @@
-import clsx from "clsx";
 import { memo, useCallback, useId } from "react";
 import { useTranslation } from "react-i18next";
-import type { PreferenceKey } from "./types";
+import clsx from "clsx";
+
 import { Cluster, Inline } from "../ui";
+
+import type { PreferenceKey } from "./types";
 
 interface DecisionPillsProps {
   selected: ReadonlySet<PreferenceKey>;
@@ -45,10 +47,10 @@ function DecisionPillsBase({ selected, onToggle }: DecisionPillsProps) {
   return (
     <div className="mb-6 space-y-4">
       <div className="space-y-2">
-        <span
-          id={toggleLabelId}
-          className="text-sm font-medium text-brand-heading/80 dark:text-brand-surface/80"
-        >
+          <span
+            id={toggleLabelId}
+            className="text-sm font-medium text-brand-heading/80 dark:text-brand-text/80"
+          >
           {t("romePlanner.pref.prompt")}
         </span>
         <Inline
@@ -84,11 +86,11 @@ function DecisionPillsBase({ selected, onToggle }: DecisionPillsProps) {
                         "dark:bg-brand-secondary/85",
                         "dark:text-brand-text",
                       ]
-                    : [
+                      : [
                         "text-brand-text/80",
                         "hover:text-brand-heading",
-                        "dark:text-brand-surface/80",
-                        "dark:hover:text-brand-surface",
+                        "dark:text-brand-text/80",
+                        "dark:hover:text-brand-text",
                       ],
                 )}
               >
@@ -102,7 +104,7 @@ function DecisionPillsBase({ selected, onToggle }: DecisionPillsProps) {
       <Cluster as="div" className="items-center gap-3">
         <span
           id={heavyLabelId}
-          className="text-sm font-medium text-brand-heading/80 dark:text-brand-surface/80"
+          className="text-sm font-medium text-brand-heading/80 dark:text-brand-text/80"
         >
           {t("romePlanner.pref.heavyPrefix")}
         </span>
@@ -138,18 +140,18 @@ function DecisionPillsBase({ selected, onToggle }: DecisionPillsProps) {
                       "dark:bg-brand-secondary/85",
                       "dark:text-brand-text",
                     ]
-                  : [
-                      "border-brand-outline/20",
-                      "bg-brand-surface",
-                      "text-brand-heading/80",
-                      "hover:border-brand-primary/40",
-                      "hover:text-brand-heading",
-                      "dark:border-brand-outline/40",
-                      "dark:bg-brand-surface/40",
-                      "dark:text-brand-surface/80",
-                      "dark:hover:border-brand-secondary/50",
-                      "dark:hover:text-brand-surface",
-                    ],
+                      : [
+                        "border-brand-outline/20",
+                        "bg-brand-surface",
+                        "text-brand-heading/80",
+                        "hover:border-brand-primary/40",
+                        "hover:text-brand-heading",
+                        "dark:border-brand-outline/40",
+                        "dark:bg-brand-surface/40",
+                        "dark:text-brand-text/80",
+                        "dark:hover:border-brand-secondary/50",
+                        "dark:hover:text-brand-text",
+                      ],
               )}
             >
               {t(labelKey)}

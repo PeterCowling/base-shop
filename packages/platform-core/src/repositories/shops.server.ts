@@ -3,15 +3,19 @@ import "server-only";
 
 import { readFile } from "fs/promises";
 import path from "path";
+
 import type { Shop } from "@acme/types";
 import { shopSchema } from "@acme/types";
-import { defaultFilterMappings } from "../defaultFilterMappings";
-import { baseTokens, loadThemeTokens } from "../themeTokens/index";
-import { prisma } from "../db";
-import { getShopById, updateShopInRepo } from "./shop.server";
-import { listShopsInDataRoot } from "../utils/safeFs";
+
 import { resolveDataRoot } from "../dataRoot";
+import { prisma } from "../db";
+import { defaultFilterMappings } from "../defaultFilterMappings";
 import { validateShopName } from "../shops";
+import { baseTokens, loadThemeTokens } from "../themeTokens/index";
+import { listShopsInDataRoot } from "../utils/safeFs";
+
+import { getShopById, updateShopInRepo } from "./shop.server";
+
 export {
   diffHistory,
   getShopSettings,
@@ -146,6 +150,7 @@ export async function readShop(shop: string): Promise<Shop> {
       trackingDashboard: false,
       premierDelivery: false,
     },
+    tier: "basic",
   };
   return await applyThemeData(empty);
 }

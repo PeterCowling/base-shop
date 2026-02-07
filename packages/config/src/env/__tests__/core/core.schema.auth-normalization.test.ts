@@ -1,12 +1,11 @@
 /** @jest-environment node */
 import { describe, expect, it, jest } from "@jest/globals";
-import { z } from "zod";
-
-import { baseCoreEnv } from "./core.test-helpers.ts";
-
-import { coreEnvSchema } from "../../core.ts";
+import { type z } from "zod";
 
 import { authEnvSchema } from "../../auth.ts";
+import { coreEnvSchema } from "../../core.ts";
+
+import { baseCoreEnv } from "./core.test-helpers.ts";
 
 describe("AUTH_TOKEN_TTL normalization", () => {
   it.each([

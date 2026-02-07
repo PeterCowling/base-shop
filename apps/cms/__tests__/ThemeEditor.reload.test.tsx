@@ -1,19 +1,21 @@
-/* eslint-disable ds/no-raw-color -- TEST-0004: tests simulate raw hex inputs and token defaults */
+ 
 import "@testing-library/jest-dom";
+
+import { readShop } from "@acme/platform-core/repositories/shops.server";
+
 import {
   fireEvent,
+  mockUpdateShop,
   renderThemeEditor,
   screen,
   waitFor,
   within,
-  mockUpdateShop,
 } from "./ThemeEditor.test-utils";
 
 const mockReadShop = jest.fn();
-jest.mock("@platform-core/repositories/shops.server", () => ({
+jest.mock("@acme/platform-core/repositories/shops.server", () => ({
   readShop: (...args: any[]) => mockReadShop(...args),
 }));
-import { readShop } from "@platform-core/repositories/shops.server";
 
 describe("ThemeEditor reload", () => {
   it.skip("returns overrides after reloading the page", async () => {

@@ -1,15 +1,15 @@
 /** @jest-environment node */
 
 jest.mock("@acme/zod-utils/initZod", () => ({}));
-jest.mock("@auth", () => ({
+jest.mock("@acme/auth", () => ({
   __esModule: true,
   getCustomerSession: jest.fn(),
 }));
 
-import { getCustomerSession } from "@auth";
+import { getCustomerSession } from "@acme/auth";
 import { NextRequest } from "next/server";
 import { GET, PUT } from "../src/app/api/account/profile/route";
-import { updateCustomerProfile } from "@platform-core/customerProfiles";
+import { updateCustomerProfile } from "@acme/platform-core/customerProfiles";
 
 describe("/api/account/profile integration", () => {
   beforeEach(() => {

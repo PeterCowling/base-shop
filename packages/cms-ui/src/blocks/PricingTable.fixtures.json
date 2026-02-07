@@ -1,0 +1,9 @@
+{
+  "plans": [
+    { "name": "Basic", "price": 9, "features": ["One project", "Email support"] },
+    { "name": "Pro", "price": 29, "features": ["Unlimited projects", "Priority support"] }
+  ],
+  "minItems": 2,
+  "maxItems": 3
+}
+

@@ -1,5 +1,7 @@
 import * as React from "react";
+
 import type { SKU } from "@acme/types";
+
 import { ProductCarousel } from "../organisms/ProductCarousel";
 import { ProductGrid } from "../organisms/ProductGrid";
 

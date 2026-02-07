@@ -1,10 +1,10 @@
 "use client";
 
 import {
+  type PointerEvent as ReactPointerEvent,
+  useEffect,
   useRef,
   useState,
-  useEffect,
-  PointerEvent as ReactPointerEvent,
 } from "react";
 import Image from "next/image";
 

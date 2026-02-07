@@ -1,6 +1,7 @@
 import { z } from "zod";
+
+import { type SKU,skuSchema } from "../../Product";
 import { baseComponentSchema, type PageComponentBase } from "../base";
-import { skuSchema, type SKU } from "../../Product";
 
 const skuAttributeSchema = skuSchema.keyof();
 

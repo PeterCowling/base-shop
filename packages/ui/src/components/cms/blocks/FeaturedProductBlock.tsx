@@ -1,14 +1,17 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
-import type { SKU } from "@acme/types";
+import Image from "next/image";
+
+import { useTranslations } from "@acme/i18n";
 import AddToCartButton from "@acme/platform-core/components/shop/AddToCartButton.client";
 import { PRODUCTS } from "@acme/platform-core/products/index";
-import { fetchCollection } from "./products/fetchCollection";
+import type { SKU } from "@acme/types";
+
 import { Price } from "../../atoms/Price";
 import { ProductVariantSelector } from "../../organisms/ProductVariantSelector";
-import { useTranslations } from "@acme/i18n";
+
+import { fetchCollection } from "./products/fetchCollection";
 
 type FeaturedProduct = SKU & {
   badges?: { sale?: boolean; new?: boolean };

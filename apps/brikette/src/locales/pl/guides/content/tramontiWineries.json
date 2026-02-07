@@ -1,53 +1,53 @@
 {
   "seo": {
     "title": "Winnice Tramonti i wybrzeża Amalfi",
-    "description": "Rodzinne winnice, degustacje, logistyka dojazdu i wskazówki dotyczące zakupów."
+    "description": "Winnice warty odwiedzenia, informacje o dojeździe i etykieta degustacji."
   },
   "linkLabel": "Winnice Tramonti i wybrzeża Amalfi",
   "intro": [
-    "Odkryj winiarnie Tramonti na wzgórzach, aby spróbować degustacji DOC z dala od tłumów na wybrzeżu."
+    "Odkryj winnice Tramonti na zboczach wzgórz i degustacje DOC z dala od tłumów przy brzegu."
   ],
   "sections": [
     {
       "id": "why",
-      "title": "Why Tramonti",
+      "title": "Dlaczego Tramonti",
       "body": [
-        "Na wulkanicznej glebie rosną wielowiekowe winnice pergolowe, produkujące czerwone i białe wina Costa d'Amalfi DOC.",
-        "Tłumaczenie w przygotowaniu."
+        "Wieki temu sadzone pergole rosną na wulkanicznej glebie, dając czerwone i białe wina Costa d'Amalfi DOC.",
+        "Małe, rodzinne gospodarstwa takie jak Tenuta San Francesco czy Reale przyjmują niewielkie grupy na kameralne degustacje."
       ]
     },
     {
       "id": "booking",
-      "title": "Booking tastings",
+      "title": "Rezerwacja degustacji",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Zapytaj, czy transport jest wliczony w cenę – niektóre winiarnie organizują transfer w obie strony z Amalfi lub Maiori."
+        "Rezerwuj na 48 godzin przed wizytą przez e-mail lub WhatsApp; degustacje z lekkimi przekąskami kosztują 25–35 € za osobę.",
+        "Zapytaj, czy wliczono transport — niektóre winnice organizują shuttle z Amalfi lub Maiori."
       ]
     },
     {
       "id": "getting",
-      "title": "Getting there",
+      "title": "Dojazd",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Jedź samochodem albo wynajmij kierowcę na 18 km (11 mil) podjazdu z Positano; drogi są wąskie, ale utwardzone.",
+        "Opcja publiczna: autobus do Amalfi, potem lokalny autobus Tramonti. Zarezerwuj zapas na powrót, bo wieczorne kursy są ograniczone."
       ]
     }
   ],
   "tips": [
-    "Zapakuj butelkę wielokrotnego użytku – wiele winiarni oferuje wodę źródlaną, aby oczyścić podniebienie pomiędzy nalewaniami.",
-    "Tłumaczenie w przygotowaniu."
+    "Weź wielorazową butelkę — wiele winnic daje wodę z źródła do płukania podniebienia między kieliszkami.",
+    "Wyślij wino kurierem zamiast nosić butelki, jeśli lecisz z bagażem podręcznym."
   ],
   "faqs": [
     {
-      "q": "How long is a tasting?",
+      "q": "Ile trwa degustacja?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Większość wizyt to około 90 minut z trasą po winnicy, piwnicy i trzema–czterema winami do spróbowania."
       ]
     },
     {
-      "q": "Can I visit without a car?",
+      "q": "Czy mogę przyjechać bez samochodu?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Tak, ale zorganizuj transfery wcześniej. Wspólne taksówki dzielone przez cztery osoby utrzymują koszty w ryzach."
       ]
     }
   ]

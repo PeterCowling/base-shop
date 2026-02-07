@@ -1,5 +1,7 @@
 import "../../../../../../../test/resetNextMocks";
+
 import { fireEvent, render, screen } from "@testing-library/react";
+
 import ImageSourcePanel from "../ImageSourcePanel";
 
 jest.mock("@acme/i18n", () => ({

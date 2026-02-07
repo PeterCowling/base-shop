@@ -1,12 +1,15 @@
 // packages/ui/src/components/cms/blocks/PDPDetailsSection.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import PDPDetailsSection from './PDPDetailsSection';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './PDPDetailsSection.fixtures.json';
 import { z } from 'zod';
+
 import { PRODUCTS } from '@acme/platform-core/products/index';
 import type { SKU } from '@acme/types';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import PDPDetailsSection from './PDPDetailsSection';
+import fixture from './PDPDetailsSection.fixtures.json';
 
 const meta: Meta<typeof PDPDetailsSection> = {
   title: 'CMS Blocks/PDPDetailsSection/Matrix',

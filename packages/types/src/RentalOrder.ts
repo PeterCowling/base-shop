@@ -1,5 +1,28 @@
 import { z } from "zod";
 
+/**
+ * CAT-01: Line item with inventory allocation tracking.
+ * Tracks what was ordered and the before/after quantities at allocation time.
+ */
+export const orderLineItemSchema = z
+  .object({
+    /** SKU identifier */
+    sku: z.string().min(1),
+    /** Product ID (optional, resolved from inventory) */
+    productId: z.string().optional(),
+    /** Variant attributes (e.g., { size: "M", color: "red" }) */
+    variantAttributes: z.record(z.string()).default({}),
+    /** Quantity ordered */
+    quantity: z.number().int().positive(),
+    /** Quantity available before allocation (for audit trail) */
+    previousQuantity: z.number().int().nonnegative().optional(),
+    /** Quantity available after allocation (for audit trail) */
+    nextQuantity: z.number().int().nonnegative().optional(),
+  })
+  .strict();
+
+export type OrderLineItem = z.infer<typeof orderLineItemSchema>;
+
 export const rentalOrderSchema = z
   .object({
     id: z.string(),
@@ -41,6 +64,8 @@ export const rentalOrderSchema = z
     stripeChargeId: z.string().optional(),
     stripeBalanceTransactionId: z.string().optional(),
     stripeCustomerId: z.string().optional(),
+    /** CAT-01: Line items with inventory allocation tracking */
+    lineItems: z.array(orderLineItemSchema).optional(),
   })
   .strict();
 

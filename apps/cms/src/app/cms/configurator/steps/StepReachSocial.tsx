@@ -1,11 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { CheckIcon,ExternalLinkIcon } from "@radix-ui/react-icons";
+
+import { track } from "@acme/telemetry";
+
 import { Button } from "@/components/atoms/shadcn";
+
 import { useConfigurator } from "../ConfiguratorContext";
 import useStepCompletion from "../hooks/useStepCompletion";
-import { ExternalLinkIcon, CheckIcon } from "@radix-ui/react-icons";
-import { track } from "@acme/telemetry";
 
 const Divider = () => <div role="separator" className="h-px w-full bg-border" />;
 

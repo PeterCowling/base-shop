@@ -1,53 +1,61 @@
 {
   "seo": {
-    "title": "Saut de plage en plage sur la côte amalfitaine",
-    "description": "Planifier une journée sur plusieurs plages : ferries, bus, équipements et rythme conseillé."
+    "title": "Saut de plage sur la côte amalfitaine",
+    "description": "Quelles plages combiner en une journée, conseils d'accès et coûts."
   },
-  "linkLabel": "Saut de plage en plage sur la côte amalfitaine",
+  "linkLabel": "Saut de plage sur la côte amalfitaine",
   "intro": [
-    "Organisez une journée multi-plages en alternant ferries, vues sur les falaises et pauses les pieds dans le sable."
+    "Planifiez une journée de saut de plage qui équilibre les trajets en ferry, les vues sur les falaises et le temps de détente sur le sable."
   ],
   "sections": [
     {
       "id": "morning",
-      "title": "Matin : Positano vers Fornillo",
+      "title": "Matin : Positano à Fornillo",
       "body": [
-        "Commencez tôt à Spiaggia Grande pour une baignade éclair, puis longez le sentier côtier vers Fornillo avant 9 h 30 pour profiter d'une mer plus calme.",
-        "Réservez vos transats à l'avance si vous voulez de l'ombre ; sinon, emportez une ombrelle légère."
+        "Commencez tôt à Spiaggia Grande pour un plongeon rapide, puis marchez sur le sentier côtier jusqu'à Fornillo avant 09:30 pour une eau plus calme.",
+        "Réservez des transats à l'avance si vous voulez de l'ombre ; sinon, emportez un parasol léger."
       ]
     },
     {
       "id": "midday",
       "title": "Midi : Amalfi ou Atrani",
       "body": [
-        "Prenez un ferry en fin de matinée vers Amalfi et déjeunez sur le quai avant de nager sur la plage du bourg ou dans la crique d'Atrani.",
-        "Déposez vos affaires à la consigne d'Amalfi pour explorer les mains libres."
+        "Prenez un ferry en fin de matinée vers Amalfi et déjeunez sur la jetée avant de nager à la plage de la ville ou dans la petite crique d'Atrani.",
+        "Déposez vos sacs au dépôt d'Amalfi pour explorer les mains libres."
+      ]
+    },
+    {
+      "id": "group-tours",
+      "title": "Visites de groupe et bateaux partagés",
+      "body": [
+        "Consultez notre %LINK:boatTours|guide des excursions en bateau à Positano% si vous préférez sauter entre les plages sur un bateau partagé plutôt qu'en ferry.",
+        "Les opérateurs partent de la jetée principale de Positano ; arrivez 15 minutes à l'avance et confirmez les arrêts baignade à Laurito ou Arienzo lors de la réservation."
       ]
     },
     {
       "id": "evening",
-      "title": "Soir : bain au coucher du soleil",
+      "title": "Soir : Baignade au coucher du soleil",
       "body": [
-        "Terminez à Laurito ou Arienzo pour la lumière dorée ; les deux regardent vers l'ouest et sont moins fréquentés après 17 h.",
-        "Prenez le dernier ferry ou réservez un taxi retour afin d'éviter les montées dans l'obscurité."
+        "Terminez à Laurito ou Arienzo pour des vues de l'heure dorée ; les deux font face à l'ouest pour une lumière chaude et moins de foule après 17:00.",
+        "Prenez le dernier ferry ou réservez un taxi retour pour éviter les montées dans le noir."
       ]
     }
   ],
   "tips": [
-    "Glissez une serviette séchage rapide et des vêtements de rechange pour rester à l'aise sur les ferries.",
-    "Préparez des encas et au moins 1 L d'eau ; les kiosques peuvent être à court pendant les journées chargées."
+    "Emportez une serviette à séchage rapide et un change de vêtements pour rester à l'aise sur les ferries.",
+    "Emportez des snacks et au moins 1 L / 34 oz d'eau — les kiosques de plage peuvent manquer de stock les jours chargés."
   ],
   "faqs": [
     {
-      "q": "Dois-je réserver les transats à l'avance ?",
+      "q": "Dois-je réserver des transats à l'avance ?",
       "a": [
-        "Oui en juillet-août. Contactez les établissements par WhatsApp la veille pour sécuriser les premiers rangs."
+        "Oui en juillet–août. Contactez les clubs de plage via WhatsApp la veille pour sécuriser les premiers rangs."
       ]
     },
     {
       "q": "Puis-je apporter ma propre nourriture ?",
       "a": [
-        "Les zones libres autorisent les pique-niques. Les plages privées tolèrent les petits encas mais préfèrent que vous achetiez les boissons au bar."
+        "La plupart des sections gratuites autorisent les pique-niques. Les clubs de plage autorisent généralement les petits en-cas mais préfèrent que vous achetiez des boissons à leur bar."
       ]
     }
   ]

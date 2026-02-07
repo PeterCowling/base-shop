@@ -1,33 +1,33 @@
 {
   "seo": {
-    "title": "Rejse som par på hostels",
-    "description": "Tips til dorms og private værelser, ro, og forventningsafstemning."
+    "title": "At rejse som par på vandrehjem",
+    "description": "Tips til sovesale eller private værelser, at finde ro, og sætte forventninger."
   },
-  "linkLabel": "Rejse som par på hostels",
+  "linkLabel": "At rejse som par på vandrehjem",
   "intro": [
-    "Hostels fungerer fint for par, når I vælger den rigtige værelsestype, pakker let og afstemmer forventningerne sammen."
+    "Vandrehjem fungerer for par, når du vælger den rigtige værelsestype, pakker let, og sætter forventninger sammen."
   ],
   "sections": [
     {
       "id": "room-types",
       "title": "Værelsestyper",
       "body": [
-        "Book et privat værelse for ro og privatliv; hvis budgettet er stramt, så vælg køjesenge i samme sovesal og pak let, så trapperne er nemmere at klare."
+        "Book et privat værelse for privatliv; hvis du strækker budgettet, del køjer i samme sovesale og hold bagagen let til trapperne."
       ]
     },
     {
       "id": "quiet",
-      "title": "Sådan finder I ro",
+      "title": "At finde ro",
       "body": [
-        "Medbring ørepropper og sovemaske, vælg værelser væk fra baren og fællesområderne, og brug de tidlige morgener til sightseeing i roligere omgivelser."
+        "Tag ørepropper og en øjenmaske med, vælg værelser væk fra baren eller fællesområderne, og brug tidlige morgener til mere rolig sightseeing."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "Er et hostel velegnet til par?",
+      "q": "Er et vandrehjem egnet til par?",
       "a": [
-        "Ja – I får både social stemning og god valuta for pengene; private værelser giver en god balance mellem komfort og pris."
+        "Ja — du får social energi og god værdi; private værelser skaber balance mellem komfort og pris."
       ]
     }
   ]

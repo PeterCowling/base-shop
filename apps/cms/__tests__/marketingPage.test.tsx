@@ -7,7 +7,7 @@ jest.mock("../src/lib/listShops", () => ({
   listShops: (...args: unknown[]) => listShopsMock(...args),
 }));
 
-jest.mock("@platform-core/repositories/analytics.server", () => ({
+jest.mock("@acme/platform-core/repositories/analytics.server", () => ({
   listEvents: (...args: unknown[]) => listEventsMock(...args),
 }));
 

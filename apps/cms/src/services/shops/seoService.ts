@@ -1,9 +1,11 @@
 import { revalidatePath } from "next/cache";
+
+import { incrementOperationalError } from "@acme/platform-core/shops/health";
+import { recordMetric } from "@acme/platform-core/utils";
 import type { Locale, ShopSeoFields, ShopSettings } from "@acme/types";
-import { authorize, fetchSettings, persistSettings, fetchDiffHistory } from "./helpers";
-import { recordMetric } from "@platform-core/utils";
-import { incrementOperationalError } from "@platform-core/shops/health";
-import { parseSeoForm, parseGenerateSeoForm } from "./validation";
+
+import { authorize, fetchDiffHistory,fetchSettings, persistSettings } from "./helpers";
+import { parseGenerateSeoForm,parseSeoForm } from "./validation";
 
 export async function updateSeo(
   shop: string,
@@ -92,10 +94,10 @@ export async function updateSeo(
       : {}),
     ...(sd ? { structuredData: sd } : {}),
   };
-  const updated: ShopSettings = {
+  const updated = {
     ...current,
     seo,
-  };
+  } as unknown as ShopSettings;
   try {
     await persistSettings(shop, updated);
   } catch (err) {
@@ -143,7 +145,7 @@ export async function generateSeo(
   }
 
   const { id, locale, title, description } = data;
-  const { generateMeta } = await import("@acme/lib");
+  const { generateMeta } = await import("@acme/lib/server");
 
   const result = await generateMeta({ id, title, description });
   const current = await fetchSettings(shop);
@@ -155,7 +157,7 @@ export async function generateSeo(
     image: result.image,
     openGraph: { ...(seo[locale]?.openGraph ?? {}), image: result.image },
   };
-  const updated: ShopSettings = { ...current, seo };
+  const updated = { ...current, seo } as unknown as ShopSettings;
   await persistSettings(shop, updated);
 
   return { generated: result };
@@ -175,7 +177,7 @@ export async function revertSeo(shop: string, timestamp: string) {
   const idx = sorted.findIndex((e) => e.timestamp === timestamp);
   if (idx === -1) throw new Error("Version not found"); // i18n-exempt: developer exception message
   const base = await fetchSettings(shop);
-  let state: ShopSettings = { ...base };
+  let state = { ...base } as ShopSettings;
   for (let i = 0; i < idx; i++) {
     state = { ...state, ...sorted[i].diff } as ShopSettings;
   }

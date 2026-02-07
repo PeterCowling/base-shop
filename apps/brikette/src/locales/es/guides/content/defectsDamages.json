@@ -1,0 +1,67 @@
+{
+  "seo": {
+    "title": "Guía de defectos y daños para Positano Hostel",
+    "description": "Comprenda cómo informar sobre defectos de la habitación, nuestra respuesta a problemas graves, políticas de depósito por daños, responsabilidad del huésped e información esencial sobre prevención de chinches en el exclusivo hostel de Positano."
+  },
+  "linkLabel": "Guía de defectos y daños para Positano Hostel",
+  "sections": [
+    {
+      "id": "reportingDefects",
+      "title": "Informar sobre defectos",
+      "body": [
+        "Si nota algún problema o defecto en su habitación, infórmenos de inmediato. Su notificación rápida nos ayuda a abordar y resolver el problema rápidamente.",
+        "La forma más rápida de informar es en persona en la recepción. Cuando sea posible, incluya: qué está mal, cuándo lo notó y una foto rápida o un video corto."
+      ]
+    },
+    {
+      "id": "assessingDefects",
+      "title": "Evaluación de defectos",
+      "body": [
+        "Una vez que informe un defecto, evaluaremos el problema rápidamente y priorizaremos nuestra respuesta según cuánto afecte significativamente su comodidad y estadía."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/2/27/ISO_7010_W008.svg",
+          "alt": "Señal de advertencia general ISO 7010 W008 (triángulo amarillo con signo de exclamación)",
+          "caption": "Priorizamos la seguridad primero, luego cualquier cosa que afecte el sueño y la comodidad."
+        }
+      ]
+    },
+    {
+      "id": "responseToSeriousDefects",
+      "title": "Respuesta a defectos graves",
+      "body": [
+        "Si hay un defecto grave que no se puede reparar de inmediato, proporcionaremos alojamiento alternativo. Si la alternativa es más barata que su habitación reservada, le reembolsaremos la diferencia de precio. Si decide no aceptar nuestra alternativa, puede solicitar un reembolso proporcional por las noches restantes de su estadía."
+      ]
+    },
+    {
+      "id": "unreportedDefects",
+      "title": "Defectos no informados",
+      "body": [
+        "Si descubrimos un problema en su habitación que no ha informado dentro de un plazo razonable, evaluaremos los daños resultantes y se puede aplicar nuestra política de daños."
+      ]
+    },
+    {
+      "id": "damagesPolicy",
+      "title": "Política de daños",
+      "body": [
+        "Para su seguridad y la nuestra, podemos preautorizar su tarjeta de crédito o solicitar un depósito en efectivo al momento del check-in para cubrir posibles daños o pérdidas. Si no puede proporcionar un depósito o preautorización, su reserva puede ser cancelada. Los depósitos son totalmente reembolsables al hacer el check-out, menos los cargos por daños, pérdidas, mano de obra o gastos administrativos incurridos. Si estos cargos exceden su depósito, usted será responsable de los costos adicionales. Las tarifas de mano de obra para reparaciones o limpieza se facturan por hora: Director (50 €/hora), Gerente (35 €/hora) y Personal (25 €/hora)."
+      ]
+    },
+    {
+      "id": "bedBugsPolicy",
+      "title": "Política de chinches",
+      "body": [
+        "Gestionamos de manera proactiva y abordamos rápidamente cualquier problema de chinches. Sin embargo, si se encuentran chinches en su habitación durante su estadía, puede ser responsable de los costos asociados, como la pérdida de ingresos por reservas, gastos de limpieza y control de plagas. Informe de inmediato cualquier signo de chinches a nuestro personal."
+      ]
+    },
+    {
+      "id": "bedBugsPrevention",
+      "title": "Prevención de chinches",
+      "body": [
+        "Para ayudar a prevenir problemas de chinches, por favor:",
+        "* Infórmenos al hacer el check-in si recientemente se ha alojado en algún lugar con problemas conocidos de chinches.\n* Desinfecte completamente sus pertenencias.\n* Inspeccione cuidadosamente su equipaje y ropa en busca de chinches antes de ingresar a su habitación."
+      ]
+    }
+  ]
+}

@@ -1,4 +1,7 @@
 // packages/platform-core/src/plugins.ts
+import { readdir } from "fs/promises";
+import path from "path";
+
 import type {
   PaymentPayload,
   PaymentProvider,
@@ -12,12 +15,11 @@ import type {
   WidgetProps,
   WidgetRegistry,
 } from "@acme/types";
-import { readdir } from "fs/promises";
-import path from "path";
-import { PluginManager } from "./plugins/PluginManager";
-import { logger } from "./utils";
-import { resolvePluginEntry, importByType } from "./plugins/resolvers";
+
 import { resolvePluginEnvironment } from "./plugins/env";
+import { PluginManager } from "./plugins/PluginManager";
+import { importByType,resolvePluginEntry } from "./plugins/resolvers";
+import { logger } from "./utils";
 
 /* Plugin loader: loads only compiled JS from dist ------------------------------ */
 

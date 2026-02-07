@@ -17,8 +17,54 @@
       "experienceRoutes": "Experience routes"
     }
   },
+  "routePicker": {
+    "title": "Find the best route for your arrival",
+    "subtitle": "Answer two quick questions — we’ll jump you to the best match and highlight it.",
+    "placeLabel": "Where are you coming from?",
+    "placePlaceholder": "Select a starting point",
+    "arrivalLabel": "When are you arriving?",
+    "arrival": {
+      "daytime": "Daytime",
+      "evening": "Evening",
+      "lateNight": "Late-night"
+    },
+    "preferencesLabel": "Preferences",
+    "preferences": {
+      "none": "No preference",
+      "fastest": "Fastest",
+      "cheapest": "Cheapest",
+      "leastWalking": "Least walking",
+      "luggageFriendly": "Most luggage-friendly"
+    },
+    "cta": "Show my best route",
+    "urlHint": "Filters update the URL, so you can share the link.",
+    "lateNightHint": "Late-night arrivals are often easiest by taxi or shuttle — use the contact options below if buses/ferries are finished."
+  },
+  "routeCard": {
+    "factsLabel": "Route facts",
+    "duration": "Duration",
+    "cost": "Cost",
+    "walking": "Walking",
+    "luggage": "Luggage",
+    "seasonality": "Season",
+    "seasonalityValues": {
+      "seasonal": "Seasonal",
+      "yearRound": "Year-round"
+    },
+    "cta": "View step-by-step",
+    "direction": {
+      "to": "To hostel",
+      "from": "From hostel"
+    }
+  },
   "preview": {
     "notPublished": "Preview only – this page is not published"
+  },
+  "jumpTo": {
+    "label": "Jump to",
+    "arrival": "Arrival help",
+    "rome": "Rome",
+    "experiences": "Experiences"
   },
   "galleries": {
     "defaultAlt": "Directions photo"
@@ -36,7 +82,19 @@
     "shuttle": "Prefer a shuttle? Sea Horse Car Service runs shared transfers. Reserve a seat via their <Link>official shuttle page</Link>.",
     "taxiContact": "+39 379 125 6222",
     "taxiEyebrow": "Hostel Brikette by Taxi",
-    "shuttleEyebrow": "Hostel Brikette by Shuttle"
+    "shuttleEyebrow": "Hostel Brikette by Shuttle",
+    "whatsappTemplate": "Hi! I’m staying at Hostel Brikette. I’d like to book a taxi to/from Positano. My arrival time is: ____",
+    "emailSubject": "Arrival help",
+    "emailBody": "Hi Hostel Brikette team — I’m arriving today and need help choosing the best way to get there. My ETA is: ____",
+    "whatsappCta": "WhatsApp taxi",
+    "callCta": "Call",
+    "taxiBestFor": "Best for: late arrivals · heavy luggage · fastest option",
+    "shuttleCta": "Book shuttle",
+    "shuttleBestFor": "Best for: airport arrivals · shared transfer · planning ahead",
+    "helpEyebrow": "Need help?",
+    "helpCopy": "Arriving late or dealing with delays? Message us so we can plan your check-in and suggest a fallback route.",
+    "emailCta": "Email reception",
+    "helpBestFor": "Best for: delays · ferry cancellations · late check-in"
   },
   "experienceGuides": {
     "eyebrow": "Experience planners",
@@ -47,19 +105,29 @@
         "guideKey": "pathOfTheGodsFerry",
         "label": "Path of the Gods via Amalfi (ferry + hike)",
         "summary": "Sail from Positano to Amalfi, ride up to Bomerano, and follow our step-by-step return directions for the classic traverse back toward Positano.",
-        "transportModes": ["ferry", "bus", "walk"]
+        "transportModes": [
+          "ferry",
+          "bus",
+          "walk"
+        ]
       },
       {
         "guideKey": "pathOfTheGodsBus",
         "label": "Path of the Gods via Amalfi (bus + hike)",
         "summary": "Take the SITA Sud bus from Positano through Amalfi to Bomerano, hike across to Nocelle, and use the built-in transport section to reach the hostel afterward.",
-        "transportModes": ["bus", "walk"]
+        "transportModes": [
+          "bus",
+          "walk"
+        ]
       },
       {
         "guideKey": "pathOfTheGodsNocelle",
         "label": "Path of the Gods via Nocelle shuttle",
         "summary": "Ride the Montepertuso–Nocelle shuttle for a shorter out-and-back hike and rely on the guide’s directions to walk or bus back down to Hostel Brikette.",
-        "transportModes": ["bus", "walk"]
+        "transportModes": [
+          "bus",
+          "walk"
+        ]
       }
     ]
   },
@@ -77,7 +145,7 @@
         },
         "links": [
           {
-            "label": "Chiesa Nuova/Bar Internazionale to Hostel Brikette",
+            "label": "Chiesa Nuova / Bar Internazionale to Hostel Brikette",
             "href": "chiesa-nuova-bar-internazionale-to-hostel-brikette",
             "internal": true,
             "facts": {
@@ -113,7 +181,7 @@
             }
           },
           {
-            "label": "Hostel Brikette to Chiesa Nuova/Bar Internazionale",
+            "label": "Hostel Brikette to Chiesa Nuova / Bar Internazionale",
             "href": "hostel-brikette-to-chiesa-nuova-bar-internazionale",
             "internal": true,
             "facts": {
@@ -291,9 +359,9 @@
       {
         "name": "Naples Airport",
         "image": {
-          "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
-          "alt": "Curreri shuttle loading area outside Naples International Airport",
-          "caption": "Curreri buses pick up outside arrivals (follow bus signs)."
+          "src": "/img/directions/sorrento-train-station.jpg",
+          "alt": "Sorrento train station exterior",
+          "caption": "Sorrento train station, where you will change bus"
         },
         "links": [
           {
@@ -383,8 +451,8 @@
       {
         "name": "Ravello",
         "image": {
-          "src": "/img/hostel-communal-terrace-lush-view.webp",
-          "alt": "Clifftop gardens overlooking the coastline near Ravello",
+          "src": "/img/directions/ravello-coastline.jpg",
+          "alt": "Colorful villas hugging the Ravello coastline",
           "caption": "Ravello is reached via Amalfi by bus."
         },
         "links": [
@@ -429,6 +497,11 @@
     ]
   },
   "rome": {
+    "image": {
+      "src": "/img/directions/rome-forum.jpg",
+      "alt": "Roman Forum seen from the Capitoline Museums",
+      "caption": "Roman Forum and Capitoline Museums"
+    },
     "title": "Rome",
     "description": "Follow the directions provided in our written guide to reach Naples or Salerno, and then catch a train from either of those cities.",
     "table": {
@@ -588,6 +661,11 @@
   },
   "sorrento": {
     "title": "Sorrento",
+    "image": {
+      "src": "/img/directions/sorrento-piazza-tasso.jpg",
+      "alt": "View over Sorrento from Piazza Tasso",
+      "caption": "Sorrento from Piazza Tasso"
+    },
     "links": [
       {
         "label": "From Sorrento by Bus",
@@ -643,6 +721,7 @@
     "title": "Filter routes",
     "resultsCount": "Results: {{count}} routes",
     "editLabel": "Edit filters",
+    "shareHint": "Filters are reflected in the URL for easy sharing.",
     "transportLabel": "Transport type",
     "transportAll": "All",
     "transportModes": {

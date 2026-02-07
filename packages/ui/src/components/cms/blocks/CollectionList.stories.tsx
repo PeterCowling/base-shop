@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
+
 import CollectionList from "./CollectionList";
 
 const collections = [

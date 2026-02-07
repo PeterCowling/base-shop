@@ -3,9 +3,9 @@
  * Usage:
  *   CMS_BASE_URL=http://localhost:8789 k6 run media-upload.k6.js
  */
-import http from 'k6/http';
 import { check, sleep } from 'k6';
 import encoding from 'k6/encoding';
+import http from 'k6/http';
 
 export const options = {
   scenarios: {

@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@ui/components/atoms";
+import { Card, CardContent } from "@acme/design-system/shadcn";
 import type { MarketingEmailTemplateVariant } from "@acme/email-templates";
 
 export interface CampaignComposerPreviewProps {

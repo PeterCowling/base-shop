@@ -1,9 +1,10 @@
 "use client";
 
 // packages/ui/src/components/account/ProfileForm.tsx
-import { useState, type ReactNode } from "react";
-import { getCsrfToken } from "@acme/shared-utils";
+import { type ReactNode,useState } from "react";
+
 import { useTranslations } from "@acme/i18n";
+import { getCsrfToken } from "@acme/lib/security";
 
 export interface ProfileFormProps {
   /** Pre-filled name value; may be undefined if profile data is missing */

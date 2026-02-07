@@ -1,4 +1,4 @@
-/* eslint-disable ds/absolute-parent-guard, ds/min-tap-size, ds/no-hardcoded-copy -- PB-0001: builder control is compact, absolutely positioned, and editor-only */
+/* eslint-disable ds/absolute-parent-guard, ds/min-tap-size -- PB-0001: builder control is compact, absolutely positioned, and editor-only */
 "use client";
 
 type Props = {

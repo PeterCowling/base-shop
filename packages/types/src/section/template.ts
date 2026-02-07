@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { pageComponentSchema, type PageComponent } from "../page/page";
+
+import { type PageComponent,pageComponentSchema } from "../page/page";
 
 export type SectionStatus = "draft" | "published";
 

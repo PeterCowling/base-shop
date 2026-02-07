@@ -1,10 +1,13 @@
 /* i18n-exempt file -- test literals for titles, prices, and buttons */
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { ProductCard } from "../ProductCard";
-import type { SKU } from "@acme/types";
 import "@testing-library/jest-dom";
 import "../../../../../../test/resetNextMocks";
+
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+
+import type { SKU } from "@acme/types";
+
+import { ProductCard } from "../ProductCard";
 
 const dispatch = jest.fn();
 jest.mock("@acme/platform-core/contexts/CurrencyContext", () => ({

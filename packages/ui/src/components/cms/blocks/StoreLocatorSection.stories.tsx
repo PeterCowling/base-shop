@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
+
 import StoreLocatorSection from "./StoreLocatorSection";
 
 const meta: Meta<typeof StoreLocatorSection> = {

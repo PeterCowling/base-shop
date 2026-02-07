@@ -1,5 +1,5 @@
 // packages/ui/src/components/cms/page-builder/scrollEffects.ts
-/* eslint-disable ds/no-hardcoded-copy -- CMS-EFX-201 programmatic CSS values and data- attributes only; no user-facing copy [ttl=2026-12-31] */
+ 
 "use client";
 
 let stylesInjected = false;

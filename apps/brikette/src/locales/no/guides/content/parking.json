@@ -1,38 +1,104 @@
 {
+  "seo": {
+    "title": "Parkering i Positano: garasjer, regler i gaten og alternativer",
+    "description": "Hvor du parkerer i Positano, hva garasjene koster, når gateparkering er realistisk, og smartere bilfrie alternativer."
+  },
+  "lastUpdated": "2026-02-04T00:00:00.000Z",
   "linkLabel": "Parkering i Positano: hvor og hva det koster",
   "intro": [
     "Parkering er knapp og dyr i Positano; reserver garasje tidlig og la bilen stå resten av oppholdet."
   ],
   "sections": [
     {
-      "id": "garages",
-      "title": "Private garasjer i byen",
+      "id": "quick-decision",
+      "title": "Quick decision: should you bring a car?",
       "body": [
-        "Mandara, Car Park Anna og Di Gennaro tar imot reservasjoner – bestill 7–10 dager i forveien for ankomster i juli–august.",
-        "Prisene ligger rundt €35–€60 per døgn; sjekk høydebegrensning (ca. 1,9 m) og om du må legge igjen nøklene hos personalet."
+        "**Best for:** families with lots of luggage, people doing a longer Italian road trip, or travelers who plan to explore inland villages on non-peak days.",
+        "**Not great for:** short stays, day-trip style itineraries, or anyone who gets anxious on cliff roads and tight parking.",
+        "",
+        "The SS163 (Amalfi Coast road) is beautiful but demanding. It is narrow, busy, and full of blind bends. Seasonal restrictions can apply (including alternated-plate rules), and ZTL zones can trigger fines that show up months later.",
+        "",
+        "If you are already on public transport, you will usually have a smoother trip by using the %HOWTO:how-to-get-here|How to Get Here page% and arriving car-free."
+      ],
+      "images": [
+        {
+          "src": "/images/guides/amalfiPositanoBus/amalfi-coast-road.jpg",
+          "alt": "Coastal road on the Amalfi Coast with steep cliffs and tight bends"
+        },
+        {
+          "src": "/img/positano-panorama.avif",
+          "alt": "Panoramic view of Positano climbing up the hillside above the sea"
+        }
       ]
     },
     {
-      "id": "drop-off",
-      "title": "Avlessing og betaling",
+      "id": "warnings",
+      "title": "Important warnings (ZTL, SS163 restrictions, and costs)",
       "body": [
-        "Bruk korttidslommene ved Chiesa Nuova eller Sponda for å sette av bagasje før du parkerer; sett på nødblink og vær effektiv.",
-        "Ha både kort og kontanter – garasjene tar som regel kort, men foretrekker kontanter for opphold under 48 timer."
+        "**ZTL zones:** Positano and nearby towns use ZTL (restricted traffic) rules. Cameras and checks are common. If you enter a restricted area at the wrong time, you can be fined. Rental cars may also add admin fees on top.",
+        "",
+        "**SS163 alternated-plate restrictions (Apr–Oct):** some periods restrict access based on license-plate numbers. These rules can change by year and by municipality. Always check current notices if you are driving in high season.",
+        "",
+        "**Parking costs vary a lot:** in peak months, expect expensive day rates in town and limited availability. Treat a private garage reservation as “your ticket into Positano by car.” If you do not have a booking, you may spend a long time circling.",
+        "",
+        "Bottom line: driving can work, but only if you plan it like a reservation-based activity."
       ]
     },
     {
-      "id": "park-elsewhere",
-      "title": "Rimeligere parkering utenfor Positano",
+      "id": "arrival-plan",
+      "title": "Arriving in Positano: the least-stress plan",
       "body": [
-        "Overbygde parkeringshus i Meta, Piano di Sorrento eller Sorrento koster omtrent €20–€25 per dag og knytter seg til Positano med SITA-busser på under 45 minutter.",
-        "Kommer du nordfra? Sett bilen i havnegarasjene i Salerno og ta ferge over når været er rolig."
+        "1) **Unload first, then park.** If you are staying at Hostel Brikette, plan a quick luggage drop near Chiesa Nuova, then go park the car. Positano is steep — carrying heavy bags after you park is the part people regret.",
+        "",
+        "2) **Avoid yellow “police line” / no-stopping zones.** Enforcement is strict on the main road. Do not stop “for just a minute” — fines are common.",
+        "",
+        "3) **Expect stairs either way.** Even with a garage, you will still walk up and down steps. Good shoes matter.",
+        "",
+        "If you are arriving by ferry instead, use %LINK:ferryDockToBrikette|Ferry dock → Hostel Brikette (with luggage)% and consider %LINK:porterServices|porter services%."
+      ]
+    },
+    {
+      "id": "parking-options",
+      "title": "Parking options (in-town vs outside Positano)",
+      "body": [
+        "**Option A — Private garages in Positano (best if you must drive):**",
+        "Some garages take reservations (examples guests mention: Mandara, Car Park Anna, Di Gennaro). Book ahead in summer. Confirm opening hours, height limits (often around 1.9 m / 6.2 ft), and whether you need to leave keys.",
+        "Typical expectation: **€35–€60 per 24 hours** in peak periods, sometimes more. Prices vary by location, vehicle size, and season.",
+        "",
+        "**Option B — Paid street bays (only if you get lucky):**",
+        "You will sometimes see blue-marked paid spaces, including in areas around Chiesa Nuova. Rates and maximum stays vary. Read the sign and assume enforcement.",
+        "",
+        "**Option C — Park outside Positano and finish by bus/ferry (best balance for most travelers):**",
+        "If you do not need a car during your stay, it is often cheaper and easier to park in Sorrento/Meta/Piano di Sorrento or in Salerno near the port, then use public transport. The %LINK:transportBudget|transport budget guide% compares costs and tradeoffs."
+      ]
+    },
+    {
+      "id": "free-parking-tip",
+      "title": "A realistic note about “free parking”",
+      "body": [
+        "In practice, free spots in Positano are not something you can plan around. Some drivers sometimes find pullouts or unmarked spaces, but rules change and fines are common.",
+        "",
+        "If you want to try your luck, do it only if you can also afford the backup plan (a paid garage). One location sometimes mentioned by drivers is the Plus Code **JFJG+2X Positano, SA** — treat it as a “maybe,” not a promise. Always check local signage and never block traffic or driveways."
+      ]
+    },
+    {
+      "id": "driving-tips",
+      "title": "Driving tips on the Amalfi Coast (short version)",
+      "body": [
+        "- Drive slowly and stay alert on blind bends. Locals often use the horn on tight corners.",
+        "- Avoid peak arrival windows (late morning to late afternoon) if you can. Traffic and parking searches are at their worst.",
+        "- Do not plan tight onward connections after a drive day. Delays are normal.",
+        "- Carry both card and cash. Some garages prefer cash or have card issues in busy periods.",
+        "- If you are tired, it is safer to park and switch to buses/ferries than push through late at night."
       ]
     }
   ],
+  "tipsTitle": "Quick tips",
   "tips": [
     "Sjekk ZTL- og oddetalls-/partallsregler før du kjører SS163; bøter sendes internasjonalt flere måneder senere.",
     "Pakk en dagssekk med det du trenger før du leverer nøklene – garasjen kan parkere bilene tett til utsjekk."
   ],
+  "faqsTitle": "Vanlige spørsmål",
   "faqs": [
     {
       "q": "Kan jeg parkere bare noen timer?",
@@ -46,11 +112,5 @@
         "De fleste har åpningstid 07.00–00.00; gi beskjed om sen retur slik at de kan legge nøklene hos nattevakten."
       ]
     }
-  ],
-  "tocTitle": "På denne siden",
-  "faqsTitle": "Vanlige spørsmål",
-  "seo": {
-    "title": "Parkering i Positano: garasjer, regler i gaten og alternativer",
-    "description": "Hvor du parkerer i Positano, hva garasjene koster, når gateparkering er realistisk, og smartere bilfrie alternativer."
-  }
+  ]
 }

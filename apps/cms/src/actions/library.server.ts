@@ -2,11 +2,14 @@
 "use server";
 
 import path from "path";
-import type { PageComponent } from "@acme/types";
-import { ensureAuthorized } from "./common/auth";
-import { readJsonFile, writeJsonFile, withFileLock } from "@/lib/server/jsonIO";
-import { validateTemplateCreation } from "@acme/platform-core/validation/templateValidation";
+
 import { rootPlacementOptions } from "@acme/platform-core/validation/options";
+import { validateTemplateCreation } from "@acme/platform-core/validation/templateValidation";
+import type { PageComponent } from "@acme/types";
+
+import { readJsonFile, withFileLock,writeJsonFile } from "@/lib/server/jsonIO";
+
+import { ensureAuthorized } from "./common/auth";
 
 export type LibraryItem = {
   id: string;

@@ -1,5 +1,6 @@
 import { jest } from "@jest/globals";
-import { jsonRequest, asNextJson } from "@acme/test-utils";
+
+import { asNextJson,jsonRequest } from "@acme/test-utils";
 
 afterEach(() => {
   jest.resetModules();
@@ -27,7 +28,7 @@ describe("cart API", () => {
   });
 
   it("handles SKU without sizes", async () => {
-    jest.doMock("@platform-core/products", () => ({
+    jest.doMock("@acme/platform-core/products", () => ({
       __esModule: true,
       getProductById: () => ({ id: "foo", stock: 1 }),
       PRODUCTS: [{ id: "foo", stock: 1 }],

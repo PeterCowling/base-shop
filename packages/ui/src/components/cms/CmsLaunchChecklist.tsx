@@ -1,9 +1,10 @@
 // packages/ui/src/components/cms/CmsLaunchChecklist.tsx
 
 import type { ReactElement } from "react";
-import { Button, Tag } from "@ui/components/atoms";
-import { Inline } from "@ui/components/atoms/primitives";
-import { cn } from "@ui/utils/style";
+
+import { Button, Tag } from "../../components/atoms";
+import { Inline } from "../../components/atoms/primitives/Inline";
+import { cn } from "../../utils/style";
 
 export type CmsLaunchStatus = "complete" | "warning" | "error" | "pending";
 

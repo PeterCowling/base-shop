@@ -1,10 +1,10 @@
-import { jest } from "@jest/globals";
 import { NextRequest } from "next/server";
+import { jest } from "@jest/globals";
 
 const CART_COOKIE = "__Host-CART_ID";
 
 function mockCartCookie(overrides: Record<string, unknown> = {}) {
-  jest.doMock("@platform-core/cartCookie", () => ({
+  jest.doMock("@acme/platform-core/cartCookie", () => ({
     __esModule: true,
     CART_COOKIE,
     encodeCartCookie: (v: string) => v,
@@ -15,7 +15,7 @@ function mockCartCookie(overrides: Record<string, unknown> = {}) {
 }
 
 function mockCartStore(overrides: Record<string, unknown> = {}) {
-  jest.doMock("@platform-core/cartStore", () => ({
+  jest.doMock("@acme/platform-core/cartStore", () => ({
     __esModule: true,
     createCart: jest.fn(),
     getCart: jest.fn(),
@@ -28,7 +28,7 @@ function mockCartStore(overrides: Record<string, unknown> = {}) {
 }
 
 function mockProducts(overrides: Record<string, unknown> = {}) {
-  jest.doMock("@platform-core/products", () => ({
+  jest.doMock("@acme/platform-core/products", () => ({
     __esModule: true,
     getProductById: jest.fn(),
     PRODUCTS: [],
@@ -68,7 +68,7 @@ describe("cart API handlers", () => {
       const get = jest.fn(async () => ({}));
       mockCartCookie();
       mockCartStore({ createCart: create, getCart: get });
-      const { GET } = await import("@platform-core/cartApi");
+      const { GET } = await import("@acme/platform-core/cartApi");
       const res = await GET(buildRequest("GET"));
       expect(create).toHaveBeenCalled();
       expect(res.headers.get("Set-Cookie")).toContain(CART_COOKIE);
@@ -81,7 +81,7 @@ describe("cart API handlers", () => {
       const get = jest.fn(async () => ({}));
       mockCartCookie({ decodeCartCookie: () => null });
       mockCartStore({ createCart: create, getCart: get });
-      const { GET } = await import("@platform-core/cartApi");
+      const { GET } = await import("@acme/platform-core/cartApi");
       const res = await GET(buildRequest("GET", undefined, "bad"));
       expect(create).toHaveBeenCalled();
       const data = await res.json();
@@ -94,7 +94,7 @@ describe("cart API handlers", () => {
       mockCartCookie();
       mockCartStore();
       mockProducts();
-      const { POST } = await import("@platform-core/cartApi");
+      const { POST } = await import("@acme/platform-core/cartApi");
       const res = await POST(buildRequest("POST", "not json"));
       expect(res.status).toBe(400);
     });
@@ -110,7 +110,7 @@ describe("cart API handlers", () => {
         incrementQty: increment,
       });
       mockProducts({ getProductById: () => sku, PRODUCTS: [sku] });
-      const { POST } = await import("@platform-core/cartApi");
+      const { POST } = await import("@acme/platform-core/cartApi");
       const res = await POST(
         buildRequest("POST", { sku: { id: sku.id }, qty: 1 }),
       );
@@ -126,7 +126,7 @@ describe("cart API handlers", () => {
     it("returns 400 for malformed body", async () => {
       mockCartCookie();
       mockCartStore();
-      const { PUT } = await import("@platform-core/cartApi");
+      const { PUT } = await import("@acme/platform-core/cartApi");
       const res = await PUT(buildRequest("PUT", "not json"));
       expect(res.status).toBe(400);
     });
@@ -135,7 +135,7 @@ describe("cart API handlers", () => {
       mockCartCookie();
       mockCartStore();
       mockProducts();
-      const { PUT } = await import("@platform-core/cartApi");
+      const { PUT } = await import("@acme/platform-core/cartApi");
       const res = await PUT(
         buildRequest("PUT", { lines: [{ sku: { id: "nope" }, qty: 1 }] }),
       );
@@ -147,7 +147,7 @@ describe("cart API handlers", () => {
       mockCartCookie();
       mockCartStore();
       mockProducts({ getProductById: () => sku });
-      const { PUT } = await import("@platform-core/cartApi");
+      const { PUT } = await import("@acme/platform-core/cartApi");
       const res = await PUT(
         buildRequest("PUT", { lines: [{ sku: { id: sku.id }, qty: 1 }] }),
       );
@@ -159,7 +159,7 @@ describe("cart API handlers", () => {
       mockCartCookie();
       mockCartStore();
       mockProducts({ getProductById: () => sku });
-      const { PUT } = await import("@platform-core/cartApi");
+      const { PUT } = await import("@acme/platform-core/cartApi");
       const res = await PUT(
         buildRequest("PUT", { lines: [{ sku: { id: sku.id }, qty: 2 }] }),
       );
@@ -171,7 +171,7 @@ describe("cart API handlers", () => {
       mockCartCookie({ decodeCartCookie: () => "c1" });
       mockCartStore({ getCart: jest.fn(async () => ({})) });
       mockProducts({ getProductById: () => sku });
-      const { PUT } = await import("@platform-core/cartApi");
+      const { PUT } = await import("@acme/platform-core/cartApi");
       const res = await PUT(
         buildRequest("PUT", { lines: [{ sku: { id: sku.id }, qty: 1 }] }, "c1"),
       );
@@ -187,7 +187,7 @@ describe("cart API handlers", () => {
         setCart: set,
       });
       mockProducts({ getProductById: () => sku });
-      const { PUT } = await import("@platform-core/cartApi");
+      const { PUT } = await import("@acme/platform-core/cartApi");
       const res = await PUT(
         buildRequest("PUT", {
           lines: [{ sku: { id: sku.id }, qty: 2 }],
@@ -204,7 +204,7 @@ describe("cart API handlers", () => {
     it("returns 400 for malformed body", async () => {
       mockCartCookie();
       mockCartStore();
-      const { PATCH } = await import("@platform-core/cartApi");
+      const { PATCH } = await import("@acme/platform-core/cartApi");
       const res = await PATCH(buildRequest("PATCH", "not json"));
       expect(res.status).toBe(400);
     });
@@ -212,7 +212,7 @@ describe("cart API handlers", () => {
     it("returns 404 when item missing", async () => {
       mockCartCookie();
       mockCartStore({ setQty: jest.fn(async () => null) });
-      const { PATCH } = await import("@platform-core/cartApi");
+      const { PATCH } = await import("@acme/platform-core/cartApi");
       const res = await PATCH(
         buildRequest("PATCH", { id: "foo", qty: 1 }, "c1"),
       );
@@ -227,7 +227,7 @@ describe("cart API handlers", () => {
         .mockResolvedValueOnce(updated);
       mockCartCookie();
       mockCartStore({ setQty });
-      const { PATCH } = await import("@platform-core/cartApi");
+      const { PATCH } = await import("@acme/platform-core/cartApi");
       const cookie = "c1";
       let res = await PATCH(
         buildRequest("PATCH", { id: "foo", qty: 0 }, cookie),
@@ -249,7 +249,7 @@ describe("cart API handlers", () => {
     it("returns 400 for malformed body", async () => {
       mockCartCookie();
       mockCartStore();
-      const { DELETE } = await import("@platform-core/cartApi");
+      const { DELETE } = await import("@acme/platform-core/cartApi");
       const res = await DELETE(buildRequest("DELETE", "not json"));
       expect(res.status).toBe(400);
     });
@@ -257,7 +257,7 @@ describe("cart API handlers", () => {
     it("returns 404 when cart missing", async () => {
       mockCartCookie({ decodeCartCookie: () => null });
       mockCartStore();
-      const { DELETE } = await import("@platform-core/cartApi");
+      const { DELETE } = await import("@acme/platform-core/cartApi");
       const res = await DELETE(
         buildRequest("DELETE", { id: "foo" }, "bad"),
       );
@@ -267,7 +267,7 @@ describe("cart API handlers", () => {
     it("returns 404 for unknown item", async () => {
       mockCartCookie();
       mockCartStore({ removeItem: jest.fn(async () => null) });
-      const { DELETE } = await import("@platform-core/cartApi");
+      const { DELETE } = await import("@acme/platform-core/cartApi");
       const res = await DELETE(
         buildRequest("DELETE", { id: "foo" }, "c1"),
       );
@@ -279,7 +279,7 @@ describe("cart API handlers", () => {
       const remove = jest.fn(async () => updated);
       mockCartCookie();
       mockCartStore({ removeItem: remove });
-      const { DELETE } = await import("@platform-core/cartApi");
+      const { DELETE } = await import("@acme/platform-core/cartApi");
       const res = await DELETE(
         buildRequest("DELETE", { id: "foo" }, "c1"),
       );

@@ -1,6 +1,6 @@
 /** @jest-environment node */
 
-import { describe, it, expect, afterEach, jest } from '@jest/globals';
+import { afterEach, describe, expect, it, jest } from '@jest/globals';
 
 describe('stripe wrapper (mock behavior)', () => {
   const OLD_ENV = process.env;
@@ -33,8 +33,8 @@ describe('stripe wrapper (mock behavior)', () => {
     expect(pi.id).toBe('pi_mock');
     expect((pi as any).client_secret).toBe('cs_mock');
 
-    // subscriptions.del
-    const sub = await stripe.subscriptions.del('sub_123');
+    // subscriptions.cancel (formerly .del)
+    const sub = await stripe.subscriptions.cancel('sub_123');
     expect(sub.id).toBe('sub_123');
     expect((sub as any).status).toBe('canceled');
 

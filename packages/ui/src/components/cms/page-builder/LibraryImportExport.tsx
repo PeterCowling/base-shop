@@ -1,12 +1,15 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useTranslations } from "@acme/i18n";
-import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger, Button } from "../../atoms/shadcn";
-import { listLibrary, saveLibrary, clearLibrary, syncFromServer, type LibraryItem } from "./libraryStore";
-import { validateTemplateCreation } from "@acme/platform-core/validation/templateValidation";
-import { rootPlacementOptions } from "@acme/platform-core/validation/options";
 import { ulid } from "ulid";
+
+import { useTranslations } from "@acme/i18n";
+import { rootPlacementOptions } from "@acme/platform-core/validation/options";
+import { validateTemplateCreation } from "@acme/platform-core/validation/templateValidation";
+
+import { Button,Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "../../atoms/shadcn";
+
+import { clearLibrary, type LibraryItem,listLibrary, saveLibrary, syncFromServer } from "./libraryStore";
 
 interface Props {
   shop: string | null | undefined;

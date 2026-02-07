@@ -1,15 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 
+// Mock auth to avoid pulling in the full auth chain
+jest.mock("@cms/actions/common/auth", () => ({
+  ensureAuthorized: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+  ensureShopAccess: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+  ensureShopReadAccess: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+}));
+
 const readFile = jest.fn();
 const writeFile = jest.fn();
 const mkdir = jest.fn();
 const rename = jest.fn();
 jest.mock("fs", () => ({ promises: { readFile, writeFile, mkdir, rename } }));
-jest.mock("@platform-core/dataRoot", () => ({ DATA_ROOT: "/tmp/data" }));
+jest.mock("@acme/platform-core/dataRoot", () => ({ DATA_ROOT: "/tmp/data" }));
 const validateShopName = jest.fn((s: string) => s);
 jest.mock("@acme/lib", () => ({ validateShopName }));
 const parseJsonBody = jest.fn();
-jest.mock("@shared-utils", () => ({ parseJsonBody }));
+jest.mock("@acme/lib/http/server", () => ({ parseJsonBody }));
 const segmentSchema = { extend: jest.fn(() => ({})) } as any;
 jest.mock("@acme/types", () => ({ segmentSchema }));
 

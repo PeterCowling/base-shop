@@ -1,0 +1,56 @@
+{
+  "seo": {
+    "title": "Come evitare la folla a Positano (percorsi alternativi)",
+    "description": "Orari migliori, quartieri tranquilli e mete alternative per vivere Positano senza code né affollamento."
+  },
+  "linkLabel": "Come evitare la folla a Positano (percorsi alternativi)",
+  "intro": [
+    "Evitare la folla a Positano significa scegliere gli orari giusti, passare per vicoli meno battuti e sapere quando spostarsi in un paese piu tranquillo."
+  ],
+  "sections": [
+    {
+      "id": "timing",
+      "title": "Tempistiche che funzionano",
+      "body": [
+        "Vai a Spiaggia Grande o ai belvedere principali all'alba o nell'ora d'oro; pranzi tardi (dopo le 14:30) evitano la domanda di punta.",
+        "Fai una pausa a meta giornata per ombra o siesta: la maggior parte dei visitatori riempie i vicoli tra le 10:00 e le 16:00."
+      ]
+    },
+    {
+      "id": "routes",
+      "title": "Percorsi e luoghi più tranquilli",
+      "body": [
+        "Usa il percorso alto tra Chiesa Nuova e Sponda per viste dai balconi senza l'imbuto di Via dei Mulini.",
+        "Vai a Fornillo Beach o al belvedere di Via Positanesi d'America per nuotate e foto piu tranquille."
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Basi alternative",
+      "body": [
+        "Praiano e Cetara offrono serate piu lente, tramonti facili e pasti piu economici senza perdere la vista mare.",
+        "I giardini di Ravello o i borghi collinari di Agerola sono ottime fughe in giornata quando Positano e troppo piena."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Quando e tranquilla Spiaggia Grande?",
+      "a": [
+        "Prima delle 09:00 o dopo le 18:30 trovi spazio per sederti e luce morbida per le foto: porta un asciugamano e arriva presto."
+      ]
+    },
+    {
+      "q": "Dove posso fare foto senza folla?",
+      "a": [
+        "Sali su Via Cristoforo Colombo per terrazze in quota o prendi il bus per Nocelle per panorami ampi del Sentiero degli Dei."
+      ]
+    },
+    {
+      "q": "Meglio dormire fuori Positano per serate piu tranquille?",
+      "a": [
+        "Si se preferisci serate piu calme: Praiano, Minori o Agerola costano meno e puoi raggiungere Positano in bus o traghetto di giorno."
+      ]
+    }
+  ]
+}

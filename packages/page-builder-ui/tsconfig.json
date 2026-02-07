@@ -12,6 +12,7 @@
   },
   "include": ["src/**/*"],
   "references": [
+    { "path": "../cms-ui" },
     { "path": "../page-builder-core" },
     { "path": "../ui" }
   ]

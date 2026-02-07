@@ -1,9 +1,10 @@
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import type React from "react";
-import { getEffectiveGuideStatus, toggleGuideStatus, type GuideStatus } from "@/utils/guideStatus";
-import type { GuideKey } from "@/routes.guides-helpers";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+
 import { IS_DEV } from "@/config/env";
+import type { GuideKey } from "@/routes.guides-helpers";
+import { getEffectiveGuideStatus, getManifestGuideStatus, type GuideStatus, toggleGuideStatus } from "@/utils/guideStatus";
 
 type TranslationFn = (key: string, opts?: Record<string, unknown>) => string;
 
@@ -26,7 +27,17 @@ export default function DevStatusPill({ guideKey }: DevStatusPillProps): JSX.Ele
   const pillBase =
     "absolute right-4 top-4 z-10 inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold shadow-sm"; // i18n-exempt -- DX-000 [ttl=2026-12-31] CSS utility classes, non-UI
 
-  const [current, setCurrent] = useState<GuideStatus>(() => getEffectiveGuideStatus(guideKey));
+  // Initialize with manifest status (no localStorage) to avoid SSR/client hydration mismatches
+  const [current, setCurrent] = useState<GuideStatus>(() => getManifestGuideStatus(guideKey));
+
+  // After mount, apply localStorage overrides if any exist
+  useEffect(() => {
+    const effectiveStatus = getEffectiveGuideStatus(guideKey);
+    if (effectiveStatus !== current) {
+      setCurrent(effectiveStatus);
+    }
+  }, [guideKey, current]);
+
   const pillClass =
     current === "draft"
       ? `${pillBase} border-amber-300 bg-amber-100 text-amber-900`

@@ -4,7 +4,8 @@
 /* -------------------------------------------------------------------------- */
 
 /* i18n-exempt file -- ABC-123 [ttl=2026-12-31] lazy import specifiers are not user-facing */
-import { lazy, type ComponentType } from "react";
+import { type ComponentType,lazy } from "react";
+
 import type {
   BookingModal2Props as UIBookingModal2Props,
   BookingModalProps as UIBookingModalProps,
@@ -13,7 +14,7 @@ import type {
   LanguageModalProps as UILanguageModalProps,
   LocationModalProps as UILocationModalProps,
   OffersModalProps as UIOffersModalProps,
-} from "@ui/organisms/modals";
+} from "../../organisms/modals";
 
 function lazyModal<T = Record<string, never>>(
   importer: () => Promise<{ default: ComponentType<T> }>,
@@ -22,23 +23,23 @@ function lazyModal<T = Record<string, never>>(
 }
 
 export const OffersModal = lazyModal<UIOffersModalProps>(() =>
-  import("@ui/organisms/modals/OffersModal"),
+  import("../../organisms/modals/OffersModal"),
 );
 export const BookingModal = lazyModal<UIBookingModalProps>(() =>
-  import("@ui/organisms/modals/BookingModal"),
+  import("../../organisms/modals/BookingModal"),
 );
 export const BookingModal2 = lazyModal<UIBookingModal2Props>(() =>
-  import("@ui/organisms/modals/BookingModal2"),
+  import("../../organisms/modals/BookingModal2"),
 );
 export const LocationModal = lazyModal<UILocationModalProps>(() =>
-  import("@ui/organisms/modals/LocationModal"),
+  import("../../organisms/modals/LocationModal"),
 );
 export const ContactModal = lazyModal<UIContactModalProps>(() =>
-  import("@ui/organisms/modals/ContactModal"),
+  import("../../organisms/modals/ContactModal"),
 );
 export const FacilitiesModal = lazyModal<UIFacilitiesModalProps>(() =>
-  import("@ui/organisms/modals/FacilitiesModal"),
+  import("../../organisms/modals/FacilitiesModal"),
 );
 export const LanguageModal = lazyModal<UILanguageModalProps>(() =>
-  import("@ui/organisms/modals/LanguageModal"),
+  import("../../organisms/modals/LanguageModal"),
 );

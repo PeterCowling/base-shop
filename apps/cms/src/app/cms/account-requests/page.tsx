@@ -1,15 +1,17 @@
 // apps/cms/src/app/cms/account-requests/page.tsx
 
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
 import { approveAccount, listPendingUsers } from "@cms/actions/accounts.server";
 import { authOptions } from "@cms/auth/options";
 import type { Role } from "@cms/auth/roles";
-import { getServerSession } from "next-auth";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
-import AccountRequestsPanel from "./AccountRequestsPanel.client";
-import type { ApproveAction } from "./AccountRequestsPanel.client";
+
 import type { ActionResult } from "../components/actionResult";
 import { ROLE_DETAILS } from "../components/roleDetails";
+
+import type { ApproveAction } from "./AccountRequestsPanel.client";
+import AccountRequestsPanel from "./AccountRequestsPanel.client";
 
 export const revalidate = 0;
 

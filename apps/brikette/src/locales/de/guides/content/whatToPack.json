@@ -1,54 +1,172 @@
 {
   "seo": {
-    "title": "Packliste für die Amalfiküste",
-    "description": "Saisonale Packliste für Positano und die Amalfiküste: Schuhe, Schichten, Sonnenschutz und Extras."
+    "title": "Was packen für die Amalfiküste | Saisonale Packliste",
+    "description": "Vollständige Packliste für Positano und die Amalfiküste. Saisonale Kleidung, Schuhe für Treppen, technische Basics, Kosten und was Sie vor Ort kaufen können."
   },
-  "linkLabel": "Packliste für die Amalfiküste",
+  "lastUpdated": "2025-02-04",
+  "linkLabel": "Was packen für die Amalfiküste",
   "intro": [
-    "Packliste nach Saison für Positano: Stufen und Sonne bestimmen die Smart-Packing-Strategie."
+    "Die dramatischen Treppen der Amalfiküste, das saisonale Wetter und die mediterrane Sonne bestimmen, was Sie packen sollten. Dieser Leitfaden behandelt das Wesentliche für Positano und die umliegenden Städte, mit saisonalen Variationen und praktischen Kosten für den lokalen Einkauf.",
+    "**Wichtige Packprinzipien:** Priorisieren Sie bequeme Wanderschuhe (Treppen sind überall), ganzjährigen Sonnenschutz und Schichten für Temperaturänderungen zwischen Küsten- und Hanggebieten.",
+    "**Gepäck-Tipp:** Rucksäcke und weiche Taschen bewältigen Treppen besser als Rollkoffer. Wenn Sie im Hostel Brikette oder anderen Hanglagen übernachten, werden Sie mehr als 100 Stufen mit Ihrem Gepäck steigen. Siehe unseren %LINK:checkinCheckout|Check-in- und Ankunftsguide% für weitere Details zum Erreichen des Hostels mit Taschen."
   ],
   "sections": [
     {
+      "id": "seasonal-packing",
+      "title": "Saisonales Packen: Was sich nach Jahreszeit ändert",
+      "body": [
+        "Die Amalfiküste hat vier ausgeprägte Jahreszeiten. Hier ist, was Sie für jede anpassen sollten:",
+        "**Frühling (März–Mai):** Packen Sie Schichten — Morgens kann es kühl sein (12–15°C / 54–59°F), nachmittags warm (18–22°C / 64–72°F). Bringen Sie eine leichte Regenjacke mit; Aprilschauer sind üblich. Sonnenschutz ist selbst im Frühling unerlässlich.",
+        "**Sommer (Juni–September):** Heiß und trocken (25–32°C / 77–90°F). Leichte, atmungsaktive Kleidung ist entscheidend. Packen Sie einen Hut, Sonnenbrille und Sonnenschutz mit hohem LSF. Die Abende bleiben warm, aber bringen Sie eine leichte Schicht für klimatisierte Restaurants mit. Dies ist Hochsaison — erwarten Sie Menschenmassen und höhere Preise.",
+        "**Herbst (Oktober–November):** Ähnlich wie Frühling, aber feuchter. Packen Sie wasserdichte Schuhe und einen kompakten Regenschirm. Das Meer bleibt bis Oktober schwimmfreundlich. Die Temperaturen reichen von 15–23°C / 59–73°F.",
+        "**Winter (Dezember–Februar):** Mild, aber regnerisch (8–15°C / 46–59°F). Sie benötigen eine richtige Regenjacke, warme Schichten und geschlossene Schuhe mit gutem Grip für nasse Treppen. Viele Strandclubs schließen, aber Wandern ist im Winter hervorragend."
+      ]
+    },
+    {
       "id": "footwear",
-      "title": "Schuhe",
+      "title": "Schuhe (wichtigste Kategorie)",
       "body": [
-        "Schuhe mit Profil für Treppen und Wanderungen; Sandalen mit rutschfester Sohle für den Strand.",
-        "Vermeide glatte Sohlen – Gassen können steil und poliert sein."
+        "Treppen definieren die Amalfiküste. Vom Hostel zum Strand, von Bushaltestellen zu Restaurants — erwarten Sie 50–200 Stufen pro Strecke. Ihre Schuhwahl ist hier wichtiger als fast überall sonst.",
+        "**Unverzichtbar: Wanderschuhe mit Grip** — Sneakers oder Wanderschuhe mit gutem Profil für Treppen und Küstenpfade. Vermeiden Sie glatte Lederschuhe oder Fashion-Sneakers mit flachen Sohlen — polierte Steinstufen sind rutschig, besonders wenn nass.",
+        "**Strandschuhe** — Wasserschuhe oder robuste Sandalen mit Riemen (keine Flip-Flops). Die Strände hier sind oft kiesig, und einige erfordern das Gehen auf Felsen, um ins Wasser zu gelangen. Schauen Sie sich unseren %LINK:positanoBeaches|Positano Strandführer% für Details zum Gelände jedes Strandes an.",
+        "**Abendschuhe (optional)** — Wenn Sie sich zum Abendessen schick machen möchten, bringen Sie ein Paar schönere Schuhe mit, aber stellen Sie sicher, dass sie noch Grip für den Heimweg auf Treppen haben.",
+        "**Was Sie weglassen sollten:** Absätze (gefährlich auf Treppen), reine Flip-Flops (unbequem für lange Spaziergänge), brandneue Schuhe (laufen Sie sie vor der Ankunft ein)."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/what-to-pack/landscape-architecture-aesthetic.jpeg",
+          "alt": "Steintreppen steigen durch eine schmale Altstadtgasse mit Pflanzen und Ladenschildern",
+          "caption": "Treppen sind das Hauptgeländemerkmal in Positano — packen Sie Schuhe, denen Sie vertrauen",
+          "width": 735,
+          "height": 1105
+        }
       ]
     },
     {
-      "id": "layers",
-      "title": "Schichten & Sonne",
+      "id": "clothing",
+      "title": "Kleidungsgrundlagen",
       "body": [
-        "Leichte Schichten für den Abend; Hut und SPF für Mittagswege.",
-        "Eine leichte Regenjacke in der Nebensaison."
+        "**Schichtenstrategie:** Die Küste kann 5°C wärmer sein als Positanos Oberstadt. Packen Sie Kleidung, die Sie leicht hinzufügen oder entfernen können.",
+        "**Bademode:** Bringen Sie mindestens 2 Badeanzüge mit, damit einer trocknen kann, während Sie den anderen tragen. Die Strandsaison läuft von April bis Oktober.",
+        "**Cover-ups:** Ein leichtes Kleid oder Hemd, um Bademode beim Gehen zum/vom Strand zu bedecken. Restaurants und Geschäfte bevorzugen, dass Sie nicht nur in Bademode sind.",
+        "**Abendkleidung:** Smart-Casual ist der Standard. Leichte lange Hosen oder ein Kleid für Abendessen. Italiener kleiden sich tendenziell gut, auch casual.",
+        "**Sonnenschutzkleidung:** Langärmelige UV-Shirts, breitkrempige Hüte und Sonnenbrillen. Die Mittelmeersonne ist intensiv, besonders auf Booten und Stränden.",
+        "**Regenkleidung:** Eine packbare Regenjacke funktioniert für alle Jahreszeiten. Lassen Sie Regenschirme im Sommer weg, es sei denn, Sie besuchen in der Zwischensaison (April, Oktober–November)."
       ]
     },
     {
-      "id": "bags",
+      "id": "bags-and-luggage",
       "title": "Taschen & Gepäck",
       "body": [
-        "Rucksäcke sind Stufenfreundlicher als große Koffer; Wertsachen nah am Körper tragen.",
-        "Nimm eine wiederbefüllbare Flasche mit; in Märkten gibt es große Wasserflaschen zum Nachfüllen."
+        "**Bestes Gepäck:** Rucksäcke oder weiche Seesäcke. Wenn Sie einen Rollkoffer mitbringen müssen, wählen Sie einen mit guten Rädern — Sie werden ihn häufig Treppen hinauftragen.",
+        "**Tagestasche:** Ein kleiner Rucksack oder eine Umhängetasche für tägliche Ausflüge. Halten Sie sie unter 15L für einfaches Manövrieren in überfüllten Bussen und Booten.",
+        "**Strandtasche:** Bringen Sie eine leichte Tragetasche oder Netztasche für Strandausrüstung mit. Sie können billige Strandtaschen vor Ort kaufen (€5–10), wenn Sie vergessen.",
+        "**Diebstahlschutz-Überlegungen:** Taschendiebe sind in Positano selten, aber häufiger in Neapel und auf überfüllten Fähren. Halten Sie Wertsachen in einer Tasche, die Sie vor sich halten können."
+      ]
+    },
+    {
+      "id": "sun-protection",
+      "title": "Sonnenschutz & Gesundheit",
+      "body": [
+        "**Sonnenschutz:** Packen Sie LSF 50+ für Gesicht und Körper. Lokaler Sonnenschutz kostet €15–25 für eine 200ml-Flasche (vs. €8–12 zu Hause). Riff-sicherer Sonnenschutz wird geschätzt, wenn Sie in Meeresnähe schwimmen.",
+        "**After-Sun-Pflege:** Aloe Vera Gel oder Feuchtigkeitscreme. Die Sonne hier ist stärker als in Nordeuropa oder Nordamerika.",
+        "**Insektenschutzmittel:** Mücken sind von April bis Oktober präsent, besonders in Wassernähe. Bringen Sie eine kleine Flasche mit oder kaufen Sie vor Ort (€8–12).",
+        "**Grundlegende Erste Hilfe:** Pflaster für Blasen (Treppen verursachen sie), Schmerzmittel, verschreibungspflichtige Medikamente. Apotheken sind gut bestückt, aber Ihre exakte Medikamentenmarke zu finden kann schwierig sein.",
+        "**Reisekrankheit:** Wenn Sie anfällig für Seekrankheit sind, bringen Sie Medikamente mit, bevor Sie Fähren nehmen. Die See kann unruhig sein, besonders auf den Capri-Routen."
+      ]
+    },
+    {
+      "id": "tech-and-adapters",
+      "title": "Technik, Adapter & Elektronik",
+      "body": [
+        "**Stromadapter:** Italien verwendet Typ L-Stecker (3-polig) und Typ C (2-polig europäisch). Spannung ist 230V. Bringen Sie einen Universaladapter mit oder kaufen Sie einen vor Ort (€5–10 bei tabacchi).",
+        "**Telefon und Ladegeräte:** Bringen Sie Ihr Telefonladegerät und eine tragbare Powerbank mit. Der Mobilfunkempfang ist generell gut, aber die Batterie entlädt sich schneller bei ständiger GPS-Nutzung zur Navigation.",
+        "**Kamera:** Die Amalfiküste ist unglaublich fotogen. Bringen Sie eine Kamera mit oder stellen Sie sicher, dass Ihr Telefonspeicher ausreichend ist. Eine wasserdichte Hülle ist nützlich für Bootsfahrten.",
+        "**E-Reader oder Tablet:** Zum Lesen am Strand. Lokale Buchhandlungen haben begrenzte englische Auswahl.",
+        "**Kopfhörer:** Nützlich für Fährfahrten und Busreisen."
+      ]
+    },
+    {
+      "id": "toiletries-and-personal",
+      "title": "Toilettenartikel & persönliche Gegenstände",
+      "body": [
+        "**Was Sie einpacken sollten:** Grundlegende Toilettenartikel (Shampoo, Seife, Zahnpasta usw.) in Reisegrößen. Hostels und Budgethotels bieten diese möglicherweise nicht an.",
+        "**Was Sie kaufen können:** Supermärkte und Apotheken führen alle wichtigen Toilettenartikel-Marken. Die Preise sind 10–30% höher als in Nordeuropa, aber vergleichbar mit anderen italienischen Touristengebieten.",
+        "**Wäsche:** Die meisten Hostels haben Waschmöglichkeiten (€3–5 pro Waschgang). Packen Sie genug Kleidung für 3–4 Tage, planen Sie dann zu waschen.",
+        "**Menstruationsprodukte:** Erhältlich in Supermärkten und Apotheken. Tampons und Binden kosten €3–6 pro Packung."
+      ]
+    },
+    {
+      "id": "money-and-documents",
+      "title": "Geld, Karten & Dokumente",
+      "body": [
+        "**Bargeld:** Tragen Sie €50–100 in kleinen Scheinen (€5, €10, €20). Viele kleine Geschäfte, Strandclubs und Busse sind nur Bargeld. Geldautomaten sind verfügbar, berechnen aber €3–5 pro Abhebung.",
+        "**Karten:** Große Kreditkarten (Visa, Mastercard) funktionieren an den meisten Orten. Amex ist weniger verbreitet. Benachrichtigen Sie Ihre Bank vor der Reise, um Kartensperrungen zu vermeiden.",
+        "**Dokumente:** Reisepass (oder EU-Personalausweis), Reiseversicherungsnachweis, medizinische Karten und Hostel/Hotel-Bestätigungs-E-Mails. Laden Sie Offline-Kopien auf Ihr Telefon herunter.",
+        "**Backup-Kopien:** Scannen Sie Ihren Reisepass und bewahren Sie eine digitale Kopie getrennt vom Original auf."
+      ]
+    },
+    {
+      "id": "optional-extras",
+      "title": "Optional Extras & Nice-to-haves",
+      "body": [
+        "**Wiederverwendbare Wasserflasche:** Leitungswasser ist trinkbar. Füllen Sie an Brunnen auf (viele Städte haben öffentliche Brunnen) oder kaufen Sie große Flaschen in Supermärkten (€0,30–0,50 pro Liter) zum Nachfüllen.",
+        "**Dry Bag:** Nützlich zum Schutz von Elektronik und Wertsachen bei Bootsfahrten oder am Strand.",
+        "**Kompaktes Handtuch:** Strandclubs vermieten Handtücher (€3–5), aber ein Mikrofaser-Reisehandtuch spart Geld und trocknet schnell.",
+        "**Schnorchelausrüstung:** Wenn Sie gerne schnorcheln. Verleih ist verfügbar (€10–15/Tag), aber die Qualität variiert.",
+        "**Tragbarer Lautsprecher:** Für Strandtage (Lautstärke respektvoll halten).",
+        "**Italienisches Phrasenbuch oder Sprach-App:** Grundlegendes Italienisch hilft. Viele Einheimische sprechen Englisch, aber Bemühungen werden geschätzt."
+      ]
+    },
+    {
+      "id": "what-to-leave-home",
+      "title": "Was Sie NICHT einpacken sollten",
+      "body": [
+        "**Diese Artikel weglassen:**",
+        "• Schwere Hartschalenkoffer (Treppen machen sie elend)",
+        "• Mehr als 2 Paar Schuhe (sie nehmen zu viel Platz ein)",
+        "• Föhn (die meisten Unterkünfte stellen sie bereit, und Spannungsunterschiede können ein Problem sein)",
+        "• Vollgroße Toilettenartikel (kaufen Sie vor Ort oder bringen Sie Reisegrößen mit)",
+        "• Formelle Kleidung, es sei denn, Sie haben spezifische Abendessenpläne",
+        "• Übermäßige Elektronik (halten Sie es einfach)",
+        "• Wintermäntel, es sei denn, Sie besuchen Dezember–Februar"
       ]
     }
   ],
   "tips": [
-    "Schwere Hartschalenkoffer vermeiden, wenn viele Treppen anstehen.",
-    "Hab kleine Euroscheine für Sonnenschirme, Busse und Snacks bereit."
+    "Lassen Sie schwere Hartschalenkoffer weg, wenn Ihr Aufenthalt Treppensteigen beinhaltet — Rucksäcke oder weiche Seesäcke sind viel einfacher.",
+    "Tragen Sie kleine Euro-Scheine (€5, €10) für Strandschirme, Busse und schnelle Snacks. Viele kleine Händler akzeptieren keine Karten.",
+    "Kaufen Sie Sonnenschutz und Insektenschutzmittel vor der Ankunft, um Geld zu sparen — lokale Preise sind 50% höher als zu Hause.",
+    "Laufen Sie Ihre Wanderschuhe vor der Reise ein. Blasen von neuen Schuhen + Treppen = Elend.",
+    "Packen Sie ein kleines Erste-Hilfe-Set mit Blasenpflastern, Schmerzmitteln und verschreibungspflichtigen Medikamenten ein. Apotheken sind hilfreich, aber haben möglicherweise nicht Ihre exakte Marke."
   ],
   "faqs": [
     {
-      "q": "Kann ich alles vor Ort kaufen?",
-      "a": [
-        "Ja, aber in der Hochsaison steigen die Preise – packe Essentials ein, um Aufschläge zu vermeiden."
+      "question": "Kann ich alles vor Ort kaufen, was ich brauche?",
+      "answer": [
+        "Ja, aber die Preise sind während der Hochsaison (Juni–September) deutlich höher. Supermärkte und Apotheken führen die meisten Basics, aber erwarten Sie, 20–50% mehr als zu Hause für Sonnenschutz, Toilettenartikel und Strandausrüstung zu zahlen.",
+        "Budget-Tipp: Packen Sie Basics wie Sonnenschutz, Insektenschutzmittel und spezifische Medikamente von zu Hause ein, um Aufschläge zu vermeiden."
       ]
     },
     {
-      "q": "Brauche ich einen Bademantel?",
-      "a": [
-        "Die meisten Unterkünfte stellen Handtücher; nimm nur einen leichten Überwurf mit, wenn du einen für den Strand bevorzugst."
+      "question": "Muss ich Strandhandtücher mitbringen?",
+      "answer": "Die meisten Unterkünfte stellen Badetücher, aber keine Strandhandtücher bereit. Strandclubs vermieten Handtücher für €3–5, oder Sie können ein leichtes Mikrofaser-Reisehandtuch einpacken. Hostels haben manchmal Strandhandtücher gegen eine kleine Kaution verfügbar."
+    },
+    {
+      "question": "Was ist das beste Gepäck für Positano?",
+      "answer": "Ein Rucksack oder eine weiche Seesacktasche ist ideal. Wenn Sie in Hanglagen wie Hostel Brikette übernachten, werden Sie mehr als 100 Stufen mit Ihrem Gepäck steigen. Rollkoffer sind schwierig auf Treppen und Kopfsteinpflaster. Packen Sie leicht — streben Sie nach Handgepäckgröße, wenn möglich."
+    },
+    {
+      "question": "Sollte ich einen Regenschirm einpacken?",
+      "answer": [
+        "Im Sommer (Juni–September): Nein, Regen ist selten. Packen Sie eine leichte Regenjacke für Abendbrise auf Booten.",
+        "Im Frühling/Herbst (April–Mai, Oktober–November): Ja, bringen Sie einen kompakten Regenschirm mit. April und November sind die feuchtesten Monate.",
+        "Im Winter (Dezember–Februar): Definitiv bringen Sie einen Regenschirm und eine wasserdichte Jacke mit. Winter ist die Regenzeit."
       ]
+    },
+    {
+      "question": "Brauche ich Wanderstiefel für den Pfad der Götter?",
+      "answer": "Richtige Wanderschuhe mit Knöchelunterstützung werden für den %LINK:pathOfTheGods|Pfad der Götter% und andere Küstenwege empfohlen. Trail-Running-Schuhe oder Wanderstiefel funktionieren gut. Normale Sneakers sind grenzwertig — sie funktionieren, wenn Sie erfahren sind, aber Knöchelunterstützung hilft bei felsigen Abschnitten."
     }
   ]
 }

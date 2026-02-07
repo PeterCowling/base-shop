@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { OrderTrackingTimeline, type OrderStep } from '../organisms/OrderTrackingTimeline';
+
+import { type OrderStep,OrderTrackingTimeline } from '../organisms/OrderTrackingTimeline';
 
 function OrdersDemo() {
   const shipping: OrderStep[] = [

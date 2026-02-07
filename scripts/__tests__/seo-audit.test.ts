@@ -40,11 +40,9 @@ describe("seo-audit script", () => {
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     const exitSpy = jest
       .spyOn(process, "exit")
-      .mockImplementation(((code?: number) => {
-        throw new Error(`exit ${code}`);
-      }) as any);
-    await expect(import("../seo-audit.ts")).rejects.toThrow("exit 1");
-    await Promise.resolve();
+      .mockImplementation((() => undefined) as any);
+    await import("../seo-audit.ts");
+    await new Promise((resolve) => setImmediate(resolve));
     expect(errorSpy).toHaveBeenCalled();
     expect(exitSpy).toHaveBeenCalledWith(1);
     errorSpy.mockRestore();

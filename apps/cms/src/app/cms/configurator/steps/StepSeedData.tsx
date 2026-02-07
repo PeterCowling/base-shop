@@ -1,8 +1,10 @@
 "use client";
 
-import { Button, Input } from "@ui/components/atoms/shadcn";
-import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
+
+import { Button, Input } from "@acme/design-system/shadcn";
+
+import useStepCompletion from "../hooks/useStepCompletion";
 
 interface Props {
   setCsvFile: (f: File | null) => void;

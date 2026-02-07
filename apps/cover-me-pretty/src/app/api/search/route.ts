@@ -1,7 +1,9 @@
 // apps/cover-me-pretty/src/app/api/search/route.ts
 import { NextResponse } from "next/server";
-import { PRODUCTS } from "@platform-core/products";
+
+import { PRODUCTS } from "@acme/platform-core/products";
 import { fetchPublishedPosts } from "@acme/sanity";
+
 import shop from "../../../../shop.json";
 
 export const runtime = "nodejs";

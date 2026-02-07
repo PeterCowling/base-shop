@@ -1,10 +1,11 @@
 import type { NextRequest } from "next/server";
+
 import {
+  type CartStore,
   ensureCartStore,
   getDecodedCartId,
-  withCartCookie,
   serverError,
-  type CartStore,
+  withCartCookie,
 } from "./utils";
 
 export async function GET(

@@ -1,5 +1,5 @@
-import type { Locale } from "@/types/locale";
 import { DEFAULT_LOCALE, LOCALES } from "@/lib/locales";
+import type { Locale } from "@/types/locale";
 
 const STORAGE_KEY = "cochlearfit:locale";
 

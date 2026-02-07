@@ -1,0 +1,226 @@
+{
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null",
+    "bookings": {
+      ".indexOn": ["start_time", "occupants"]
+    },
+    "messaging": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      "activities": {
+        "instances": {
+          ".indexOn": ["status"]
+        },
+        "templates": {
+          ".indexOn": ["createdAt"]
+        }
+      },
+      "channels": {
+        "$channelId": {
+          "messages": {
+            ".indexOn": ["createdAt"]
+          }
+        }
+      },
+      "users": {
+        "$uid": {
+          "settings": {
+            ".read": "auth != null && auth.uid == $uid",
+            ".write": "auth != null && auth.uid == $uid"
+          }
+        }
+      }
+    },
+    "messagingUsers": {
+      ".indexOn": ["role"]
+    },
+    "userProfiles": {
+      "$uid": {
+        ".read": "auth != null && (auth.uid == $uid || (root.child('userProfiles').child(auth.uid).child('roles').child('owner').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('developer').val() == true))",
+        ".write": "auth != null && ((auth.uid == $uid && !data.exists() && newData.child('roles').child('staff').val() == true && !newData.child('roles').child('owner').exists() && !newData.child('roles').child('developer').exists()) || (root.child('userProfiles').child(auth.uid).child('roles').child('owner').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('developer').val() == true))",
+        ".validate": "newData.hasChildren(['displayName','roles']) && newData.child('displayName').isString() && newData.child('roles').hasChildren()",
+        "roles": {
+          "owner": {
+            ".validate": "newData.isBoolean()"
+          },
+          "developer": {
+            ".validate": "newData.isBoolean()"
+          },
+          "staff": {
+            ".validate": "newData.isBoolean()"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "createdAt": {
+          ".validate": "newData.isNumber()"
+        },
+        "updatedAt": {
+          ".validate": "newData.isNumber()"
+        }
+      }
+    },
+    "cashCounts": {
+      ".read": "auth != null",
+      "$countId": {
+        ".write": "auth != null && root.child('userProfiles').child(auth.uid).exists() && (root.child('userProfiles').child(auth.uid).child('roles').child('owner').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('developer').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('staff').val() == true) && !data.exists()"
+      },
+      ".indexOn": ["timestamp"]
+    },
+    "safeCounts": {
+      ".read": "auth != null",
+      "$countId": {
+        ".write": "auth != null && root.child('userProfiles').child(auth.uid).exists() && (root.child('userProfiles').child(auth.uid).child('roles').child('owner').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('developer').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('staff').val() == true) && !data.exists()"
+      },
+      ".indexOn": ["timestamp"]
+    },
+    "tillShifts": {
+      ".read": "auth != null",
+      "$shiftId": {
+        ".write": "auth != null && root.child('userProfiles').child(auth.uid).exists() && (root.child('userProfiles').child(auth.uid).child('roles').child('owner').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('developer').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('staff').val() == true)"
+      }
+    },
+    "tillEvents": {
+      ".read": "auth != null",
+      "$eventId": {
+        ".write": "auth != null && root.child('userProfiles').child(auth.uid).exists() && (root.child('userProfiles').child(auth.uid).child('roles').child('owner').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('developer').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('staff').val() == true) && !data.exists()"
+      }
+    },
+    "cashDiscrepancies": {
+      ".read": "auth != null",
+      "$discId": {
+        ".write": "auth != null && root.child('userProfiles').child(auth.uid).exists() && (root.child('userProfiles').child(auth.uid).child('roles').child('owner').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('developer').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('staff').val() == true) && !data.exists()"
+      }
+    },
+    "keycardDiscrepancies": {
+      ".read": "auth != null",
+      "$discId": {
+        ".write": "auth != null && root.child('userProfiles').child(auth.uid).exists() && (root.child('userProfiles').child(auth.uid).child('roles').child('owner').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('developer').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('staff').val() == true) && !data.exists()"
+      }
+    },
+    "keycardTransfers": {
+      ".read": "auth != null",
+      "$transferId": {
+        ".write": "auth != null && root.child('userProfiles').child(auth.uid).exists() && (root.child('userProfiles').child(auth.uid).child('roles').child('owner').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('developer').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('staff').val() == true) && !data.exists()"
+      },
+      ".indexOn": ["timestamp"]
+    },
+    "ccIrregularities": {
+      ".read": "auth != null",
+      "$entryId": {
+        ".write": "auth != null && root.child('userProfiles').child(auth.uid).exists() && (root.child('userProfiles').child(auth.uid).child('roles').child('owner').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('developer').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('staff').val() == true) && !data.exists()"
+      }
+    },
+    "creditSlips": {
+      ".read": "auth != null",
+      "$slipId": {
+        ".write": "auth != null && root.child('userProfiles').child(auth.uid).exists() && (root.child('userProfiles').child(auth.uid).child('roles').child('owner').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('developer').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('staff').val() == true) && !data.exists()"
+      }
+    },
+    "allFinancialTransactions": {
+      ".read": "auth != null",
+      "$txnId": {
+        ".write": "auth != null && root.child('userProfiles').child(auth.uid).exists() && (root.child('userProfiles').child(auth.uid).child('roles').child('owner').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('developer').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('staff').val() == true) && !data.exists()"
+      },
+      ".indexOn": ["timestamp"]
+    },
+    "financialTransactionAudits": {
+      ".read": "auth != null",
+      "$auditId": {
+        ".write": "auth != null && root.child('userProfiles').child(auth.uid).exists() && (root.child('userProfiles').child(auth.uid).child('roles').child('owner').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('developer').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('staff').val() == true) && !data.exists()"
+      }
+    },
+    "reconciliation": {
+      ".read": "auth != null",
+      "manual": {
+        "$dateKey": {
+          "$collection": {
+            "$entryId": {
+              ".write": "auth != null && root.child('userProfiles').child(auth.uid).exists() && (root.child('userProfiles').child(auth.uid).child('roles').child('owner').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('developer').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('staff').val() == true) && !data.exists()"
+            }
+          }
+        }
+      }
+    },
+    "settings": {
+      "cashDrawerLimit": {
+        ".write": "auth != null && root.child('userProfiles').child(auth.uid).exists() && (root.child('userProfiles').child(auth.uid).child('roles').child('owner').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('developer').val() == true)"
+      },
+      "safeKeycards": {
+        ".write": "auth != null && root.child('userProfiles').child(auth.uid).exists() && (root.child('userProfiles').child(auth.uid).child('roles').child('owner').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('developer').val() == true)"
+      }
+    },
+    "inventory": {
+      ".read": "auth != null",
+      "items": {
+        "$itemId": {
+          ".write": "auth != null && root.child('userProfiles').child(auth.uid).exists() && (root.child('userProfiles').child(auth.uid).child('roles').child('owner').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('developer').val() == true)"
+        }
+      },
+      "ledger": {
+        "$entryId": {
+          ".write": "auth != null && root.child('userProfiles').child(auth.uid).exists() && (root.child('userProfiles').child(auth.uid).child('roles').child('owner').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('developer').val() == true) && !data.exists()"
+        },
+        ".indexOn": ["timestamp", "itemId"]
+      },
+      "recipes": {
+        "$productName": {
+          ".write": "auth != null && root.child('userProfiles').child(auth.uid).exists() && (root.child('userProfiles').child(auth.uid).child('roles').child('owner').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('developer').val() == true)"
+        }
+      }
+    },
+    "guestByRoom": {
+      ".indexOn": ["allocated", "booked"]
+    },
+    "checkins": {
+      ".indexOn": ["timestamp"]
+    },
+    "checkouts": {
+      ".indexOn": ["timestamp"]
+    },
+    "financialsRoom": {
+      ".read": "auth != null",
+      ".write": "auth != null && root.child('userProfiles').child(auth.uid).exists() && (root.child('userProfiles').child(auth.uid).child('roles').child('owner').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('developer').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('staff').val() == true)",
+      "$bookingRef": {
+        "transactions": {
+          ".indexOn": ["timestamp"]
+        }
+      }
+    },
+    "roomsByDate": {
+      ".indexOn": [".key"]
+    },
+    "preArrival": {
+      "$uuid": {
+        ".read": "auth != null && (auth.uid === $uuid || root.child('messagingUsers').child(auth.uid).child('role').val() === 'staff' || root.child('messagingUsers').child(auth.uid).child('role').val() === 'admin' || root.child('messagingUsers').child(auth.uid).child('role').val() === 'owner')",
+        ".write": "auth != null && auth.uid === $uuid"
+      }
+    },
+    "checkInCodes": {
+      "byCode": {
+        "$code": {
+          ".read": "auth != null && (root.child('messagingUsers').child(auth.uid).child('role').val() === 'staff' || root.child('messagingUsers').child(auth.uid).child('role').val() === 'admin' || root.child('messagingUsers').child(auth.uid).child('role').val() === 'owner')",
+          ".write": false
+        }
+      },
+      "byUuid": {
+        "$uuid": {
+          ".read": "auth != null && auth.uid === $uuid",
+          ".write": false
+        }
+      }
+    },
+    "checkInCodeCounter": {
+      ".read": false,
+      ".write": false
+    },
+    "checkInCodeLookups": {
+      "$lookupId": {
+        ".write": "auth != null && (root.child('messagingUsers').child(auth.uid).child('role').val() === 'staff' || root.child('messagingUsers').child(auth.uid).child('role').val() === 'admin' || root.child('messagingUsers').child(auth.uid).child('role').val() === 'owner')"
+      },
+      ".indexOn": ["timestamp", "staffUid"]
+    }
+  }
+}

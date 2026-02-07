@@ -1,7 +1,7 @@
 {
   "seo": {
     "title": "Strandhopping på Amalfikusten",
-    "description": "Planera strandhoppning längs kusten med färjor, båtar och dolda vikar."
+    "description": "Vilka stränder att kombinera på en dag, tillgångstips och kostnader."
   },
   "linkLabel": "Strandhopping på Amalfikusten",
   "intro": [
@@ -12,7 +12,7 @@
       "id": "morning",
       "title": "Morgon: Positano till Fornillo",
       "body": [
-        "Starta tidigt på Spiaggia Grande för ett snabbt dopp och gå sedan kuststigen till Fornillo senast 09.30 för lugnare vatten.",
+        "Starta tidigt på Spiaggia Grande för ett snabbt dopp och gå sedan kuststigen till Fornillo senast 09:30 för lugnare vatten.",
         "Boka solstolar i förväg om du vill ha skugga; annars packa ett lätt parasoll."
       ]
     },
@@ -25,17 +25,25 @@
       ]
     },
     {
-      "id": "evening",
-      "title": "Kväll: solnedgångsbad",
+      "id": "group-tours",
+      "title": "Gruppresor och delade båtar",
       "body": [
-        "Avsluta vid Laurito eller Arienzo för gyllene timmens ljus; båda vetter västerut och blir lugnare efter 17.00.",
+        "Se vår %LINK:boatTours|guide till båtturer i Positano% om du hellre vill hoppa mellan stränder på en delad båt istället för färjor.",
+        "Operatörer avgår från Positanos huvudbrygga; kom 15 minuter tidigt och bekräfta simstopp i Laurito eller Arienzo vid bokning."
+      ]
+    },
+    {
+      "id": "evening",
+      "title": "Kväll: Solnedgångsbad",
+      "body": [
+        "Avsluta vid Laurito eller Arienzo för gyllene timmens ljus; båda vetter västerut och blir lugnare efter 17:00.",
         "Ta sista färjan eller boka retur-taxi så slipper du gå uppför i mörker."
       ]
     }
   ],
   "tips": [
     "Ha med en snabbtorkande handduk och ombyte så är du bekväm på färjorna.",
-    "Packa snacks och minst 1 liter vatten – strandkiosker kan få slut under intensiva dagar."
+    "Packa snacks och minst 1 L / 34 oz vatten—strandkiosker kan få slut under intensiva dagar."
   ],
   "faqs": [
     {

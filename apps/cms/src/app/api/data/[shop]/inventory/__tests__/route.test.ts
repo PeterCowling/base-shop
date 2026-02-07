@@ -1,9 +1,10 @@
 import { NextRequest } from "next/server";
 import { __setMockSession } from "next-auth";
+
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 
 const write = jest.fn();
-jest.mock("@platform-core/repositories/inventory.server", () => ({
+jest.mock("@acme/platform-core/repositories/inventory.server", () => ({
   inventoryRepository: { write },
 }));
 

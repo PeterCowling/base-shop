@@ -1,6 +1,7 @@
-/* eslint-disable ds/no-hardcoded-copy -- UI-1421 [ttl=2025-12-31]: error strings represent upload diagnostics */
+ 
 "use client";
 import { useCallback, useState } from "react";
+
 import { resizeImageToMaxPx } from "./resize";
 
 export interface DirectUploadResult {

@@ -1,11 +1,13 @@
 /* eslint-disable security/detect-non-literal-fs-filename -- ABC-123: Paths derive from controlled DATA_ROOT */
 import "server-only";
 
-import { returnAuthorizationSchema, type ReturnAuthorization } from "@acme/types";
 import { promises as fs } from "fs";
 import * as path from "path";
-import { resolveDataRoot } from "../dataRoot";
 import { z } from "zod";
+
+import { type ReturnAuthorization,returnAuthorizationSchema } from "@acme/types";
+
+import { resolveDataRoot } from "../dataRoot";
 
 function raPath(): string {
   return path.join(resolveDataRoot(), "..", "return-authorizations.json");

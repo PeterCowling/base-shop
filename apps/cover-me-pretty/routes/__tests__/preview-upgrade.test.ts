@@ -1,7 +1,7 @@
 import { jest } from "@jest/globals";
 import type { Page } from "@acme/types";
-import { nowIso } from "@date-utils";
-import { createUpgradePreviewToken } from "@platform-core/previewTokens";
+import { nowIso } from "@acme/date-utils";
+import { createUpgradePreviewToken } from "@acme/platform-core/previewTokens";
 
 process.env.PREVIEW_TOKEN_SECRET = "testsecret";
 process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "upgradesecret";
@@ -41,11 +41,14 @@ test("valid upgrade token returns page JSON", async () => {
     createdBy: "tester",
   };
   const getPages = jest.fn(async () => [page]);
-  jest.doMock("@platform-core/repositories/pages/index.server", () => ({
+  jest.doMock("@acme/platform-core/repositories/pages/index.server", () => ({
     __esModule: true,
     getPages,
   }));
-  jest.doMock("@auth", () => ({ __esModule: true, requirePermission: jest.fn() }));
+  jest.doMock("@acme/auth", () => ({
+    __esModule: true,
+    requirePermission: jest.fn(),
+  }));
 
   const { GET: tokenGET } = await import(
     "../../src/app/api/preview-token/route"
@@ -68,7 +71,7 @@ test("valid upgrade token returns page JSON", async () => {
 
 test("invalid upgrade token yields 401", async () => {
   const getPages = jest.fn(async () => []);
-  jest.doMock("@platform-core/repositories/pages/index.server", () => ({
+  jest.doMock("@acme/platform-core/repositories/pages/index.server", () => ({
     __esModule: true,
     getPages,
   }));
@@ -85,7 +88,7 @@ test("invalid upgrade token yields 401", async () => {
 
 test("standard token not accepted as upgrade token", async () => {
   const getPages = jest.fn(async () => []);
-  jest.doMock("@platform-core/repositories/pages/index.server", () => ({
+  jest.doMock("@acme/platform-core/repositories/pages/index.server", () => ({
     __esModule: true,
     getPages,
   }));

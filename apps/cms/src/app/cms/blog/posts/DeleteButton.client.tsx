@@ -2,8 +2,11 @@
 "use client";
 
 import { useFormState } from "react-dom";
-import { Button, Toast } from "@ui/components/atoms";
 import { deletePost } from "@cms/actions/blog.server";
+
+import { Toast } from "@acme/design-system/atoms";
+import { Button } from "@acme/design-system/shadcn";
+
 import type { FormState } from "./PostForm.client";
 
 interface Props {

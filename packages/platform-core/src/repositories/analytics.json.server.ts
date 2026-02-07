@@ -2,9 +2,10 @@ import "server-only";
 
 import { promises as fs } from "fs";
 import * as path from "path";
+
+import type { AnalyticsAggregates, AnalyticsEvent } from "../analytics";
 import { DATA_ROOT } from "../dataRoot";
 import { validateShopName } from "../shops";
-import type { AnalyticsAggregates, AnalyticsEvent } from "../analytics";
 
 /**
  * Read analytics events from newline-delimited JSON files. When a shop is

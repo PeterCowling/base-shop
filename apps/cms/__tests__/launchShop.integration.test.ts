@@ -11,6 +11,17 @@ jest.mock("../src/app/cms/configurator/steps", () => {
   };
 });
 
+jest.mock("next/headers", () => ({
+  cookies: jest.fn(() => ({
+    get: (name: string) => (name === "csrf_token" ? { value: "token" } : undefined),
+  })),
+}));
+
+jest.mock("@cms/actions/common/auth", () => ({
+  __esModule: true,
+  ensureAuthorized: () => Promise.resolve({ user: { id: "test-user" } }),
+}));
+
 afterEach(() => {
   jest.resetModules();
   jest.resetAllMocks();
@@ -24,7 +35,8 @@ describe("launch-shop API", () => {
         shopId: "shop",
         state: { completed: {} },
       }),
-    } as Request;
+      headers: new Headers({ "x-csrf-token": "token" }),
+    } as unknown as Request;
     const res = await POST(req);
     expect(res.status).toBe(400);
     const json = await res.json();

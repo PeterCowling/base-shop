@@ -1,7 +1,7 @@
 import { promises as fs } from 'node:fs';
 import seoAudit from '../src/seoAudit';
 import { runSeoAudit } from '@acme/lib/seoAudit';
-import { trackEvent } from '@platform-core/analytics';
+import { trackEvent } from '@acme/platform-core/analytics';
 import { sendCampaignEmail } from '@acme/email';
 
 const mockFiles: Record<string, string> = {};
@@ -36,9 +36,9 @@ jest.mock('node:fs', () => {
 });
 
 jest.mock('@acme/lib/seoAudit', () => ({ runSeoAudit: jest.fn() }));
-jest.mock('@platform-core/analytics', () => ({ trackEvent: jest.fn() }));
+jest.mock('@acme/platform-core/analytics', () => ({ trackEvent: jest.fn() }));
 jest.mock('@acme/email', () => ({ sendCampaignEmail: jest.fn() }));
-jest.mock('@platform-core/dataRoot', () => ({ DATA_ROOT: '/data' }));
+jest.mock('@acme/platform-core/dataRoot', () => ({ DATA_ROOT: '/data' }));
 jest.mock('@acme/config/env/core', () => ({ coreEnv: { STOCK_ALERT_RECIPIENT: 'alerts@example.com' } }));
 
 const runSeoAuditMock = jest.mocked(runSeoAudit);

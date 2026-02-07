@@ -1,11 +1,10 @@
 "use client";
 
-import { useState, type ChangeEvent, type FormEvent } from "react";
-
-import { Toast } from "@/components/atoms";
-import { Button, Card, CardContent, Input } from "@/components/atoms/shadcn";
-import { FormField } from "@ui/components/molecules";
+import { type ChangeEvent, type FormEvent,useState } from "react";
 import { updateMaintenanceSchedule } from "@cms/actions/maintenance.server";
+
+import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
+import { Button, Card, CardContent, Input } from "@acme/design-system/shadcn";
 
 import { ErrorChips } from "../components/ErrorChips";
 import { useSettingsSaveForm } from "../hooks/useSettingsSaveForm";
@@ -18,9 +17,6 @@ export default function MaintenanceSchedulerEditor() {
     errors,
     setErrors,
     submit,
-    toast,
-    toastClassName,
-    closeToast,
     announceError,
   } = useSettingsSaveForm<void>({
     action: async (formData) => {
@@ -91,13 +87,6 @@ export default function MaintenanceSchedulerEditor() {
           </form>
         </CardContent>
       </Card>
-      <Toast
-        open={toast.open}
-        message={toast.message}
-        onClose={closeToast}
-        className={toastClassName}
-        role="status"
-      />
     </>
   );
 }

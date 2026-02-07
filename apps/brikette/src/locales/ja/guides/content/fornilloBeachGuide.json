@@ -3,6 +3,7 @@
     "title": "Fornillo Beach guide",
     "description": "レイアウト マップ、無料セクション、プペット、ダ フェルディナンド、グラッシ、ラ マリネッラのビーチ クラブのヒントに加え、ホステルへの往復のショートカットも掲載しています。"
   },
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
   "linkLabel": "フォルニッロ ビーチ ガイド: クラブと無料スポット",
   "intro": [
     "フォルニッロ ビーチは、ホステルから歩いてすぐのゆったりとした入り江です。ビーチクラブの料金はスピアッジャ グランデよりもお手頃で、パブリック ゾーンは寛大で、繁忙期であっても雰囲気は控えめです。",
@@ -45,6 +46,23 @@
       "body": [
         "2 つの主要な道がフォルニーリョに流れ込みます。 %LINK:hostelBriketteToFornilloBeach|ホステル ブリケット% からのショートカットは、ビーチの左側 (海に面した場合) に到着します。 Spiaggia Grande からのウォーターフロントの遊歩道は右側にあります。",
         "ホステルのアクセス ポイントからメインのビーチ パスに向かって、Pupetto、Da Ferdinando、Fratelli Grassi、La Marinella のビーチ クラブが順番に運営されています。リドの両端には 2 つの公共ゾーンがあります。プペットの横にある広い自由区域と、ラ マリネッラの向こうにある小さな入り江です。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/fornilloBeachGuide.webp",
+          "alt": "View of Fornillo Beach cove in Positano with the shoreline and cliffs",
+          "caption": "Fornillo Beach in Positano: a calmer alternative to the main beach, with free areas and several beach clubs"
+        },
+        {
+          "src": "/img/guides/fornillo-beach/02-main-free-section.jpg",
+          "alt": "Fornillo beach layout map showing paths from hostel and Spiaggia Grande, plus beach club locations",
+          "caption": "Fornillo layout: Path A from Hostel Brikette, Path B from Spiaggia Grande, with beach clubs numbered in sequence"
+        },
+        {
+          "src": "/img/guides/positano-beaches/positano-main-beach.webp",
+          "alt": "Positano main beach (Spiaggia Grande) with umbrellas and the town rising behind it",
+          "caption": "Spiaggia Grande: start here to walk the promenade to Fornillo, or return here to catch the internal bus uphill"
+        }
       ]
     },
     {
@@ -53,6 +71,13 @@
       "body": [
         "最大の無料セクションは、ホステルからのショートカットの真正面にあります。 10:30 前に到着し、喫水線近くの場所を確保してください。小石はすぐに温まるので、マットや厚手のタオルを用意してください。",
         "パペットとダ フェルディナンドはどちらもテイクアウトのドリンクとパニーニを販売しています。ラウンジャーを借りずに食事をしたい場合に最適です。肩の月には潮の流れに注意してください。秋の嵐により、海岸線が 1 ～ 2 日縮小することがあります。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/01-beach-layout-map.jpg",
+          "alt": "Main free section at Fornillo beach with pebbles and waterfront access",
+          "caption": "The largest free area at Fornillo — arrive before 10:30 to secure waterfront space"
+        }
       ]
     },
     {
@@ -61,6 +86,13 @@
       "body": [
         "パペットはフォルニーリョの左側にオレンジ色のラウンジャー、シャワー、フルサービスのレストランが並んでいます。最前列の席が必要な場合は、夏には WhatsApp または電話で予約してください。通常、ウォークインは 09:30 までであれば問題ありません。",
         "無料エリアをご利用のお客様は引き続きバーでテイクアウトを注文できます。また、Pupetto のバスルームは有料のお客様にもご利用いただけます。その日の途中でアップグレードする場合に便利です。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/03-pupetto-beach-club.jpg",
+          "alt": "Pupetto Beach Club with orange loungers and restaurant on Fornillo beach",
+          "caption": "Pupetto Beach Club — orange loungers, full-service restaurant, and showers on the left side of Fornillo"
+        }
       ]
     },
     {
@@ -69,6 +101,13 @@
       "body": [
         "Da Ferdinando では、青いラウンジャー、パドルボードのレンタル、人気のランチ メニュー (その日の獲物のグリル、サラダ、パスタなど) を提供し、冷たいビーチバーの雰囲気を保っています。価格はプペットより少し高いと予想されますが、それでもポジターノとしてはリーズナブルです。",
         "ラウリートとアリエンツォへの水上タクシーは、ダ フェルディナンドの桟橋のそばを運行しています。朝の水泳の後にビーチホップを計画している場合に便利です。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/04-da-ferdinando.jpg",
+          "alt": "Da Ferdinando beach bar with blue loungers and jetty at Fornillo",
+          "caption": "Da Ferdinando — beach-bar vibe with blue loungers, paddleboard rentals, and water taxi access"
+        }
       ]
     },
     {
@@ -77,6 +116,13 @@
       "body": [
         "Grassi はコンパクトな店で、赤いラウンジャーが整然と並んでおり、カクテルやグラニータを提供する日陰のバーもあります。カヤックをレンタルして近くの洞窟を探索する場合、チームは貴重品用のドライバッグを提供します。",
         "スペースに限りがあるため、週末は事前予約が便利です。通常、早めの予約が落ち着いたら、週半ばの 11:00 以降にウォークインが可能になります。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/05-fratelli-grassi.jpg",
+          "alt": "Fratelli Grassi Beach Bar with red loungers and shaded bar area at Fornillo",
+          "caption": "Fratelli Grassi — compact setup with red loungers, shaded cocktail bar, and kayak rentals"
+        }
       ]
     },
     {
@@ -85,16 +131,64 @@
       "body": [
         "La Marinella は、Spiaggia Grande 歩道の最も近くに位置し、真昼の太陽が降り注ぎます。行き届いたサービス、ランチの盛り合わせ、さらに日よけが充実したアッパーデッキのラウンジャーを予約するオプションも期待できます。",
         "肩の季節になると、ラ マリネッラではいくつかの椅子を隣の入り江に移動することがあります。スタッフは公共エリアのスペースを確保する必要がありますが、海が荒れているときは設置面積が狭くなることに備えてください。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/06-la-marinella.jpg",
+          "alt": "La Marinella beach club with loungers and restaurant near Spiaggia Grande walkway",
+          "caption": "La Marinella — attentive service, upper-deck loungers, and closest to the Spiaggia Grande walkway"
+        }
       ]
     },
     {
       "id": "secret-free",
-      "title": "「秘密」の無料セクション",
+      "title": "\\\"秘密\\\"の無料セクション",
       "body": [
         "ラ マリネッラを越えると、小さな入り江があり、小石の棚と穏やかな水のある静かな公共エリアがあります。サンゴ礁に優しい日焼け止めとウォーターシューズをご持参ください。入り口は岩が多く、端近くにウニが群がっている可能性があります。",
         "ラ マリネッラでは、嵐の日に予備のラウンジャーをここに設置することがあります。このゾーンは正式には無料のままなので、先に到着した場合でも快適にスペースを使用できます。椅子やカヤックを返却するためのスペースを残しておいてください。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/07-secret-free-section.jpg",
+          "alt": "Hidden free cove beyond La Marinella with rocky entry and calm water",
+          "caption": "The 'secret' free section — a quieter cove beyond La Marinella with rocky entry and sea urchin areas"
+        }
+      ]
+    },
+    {
+      "id": "hostel-day-plan",
+      "title": "A hostel-friendly Fornillo day plan",
+      "body": [
+        "If you want an easy beach day that still leaves energy for the evening, this simple plan works well for most guests.",
+        "1) Leave after breakfast and take the %LINK:hostelBriketteToFornilloBeach|shortcut down to Fornillo%. Aim to arrive before 10:30 if you want a good free spot.",
+        "2) Swim first. The water is usually calmest earlier in the day, and the sun feels less intense. Then decide: stay free, or upgrade to a lido for shade.",
+        "3) Lunch: keep it simple. Grab takeaway from a beach bar, or split a plate if you are on a budget. Drink water throughout the day — the heat plus steps is a real combo.",
+        "4) Leave before you are exhausted. Walk the promenade back toward Spiaggia Grande, then use the internal bus uphill. Follow the %LINK:fornilloBeachToBrikette|return route% so you do not end up doing the steepest staircase by accident.",
+        "5) Back at the hostel: shower, rehydrate, and you are ready for aperitivo. If you want a second beach day with a different vibe, compare options in our %LINK:positanoBeaches|Positano beaches overview%."
+      ]
+    },
+    {
+      "id": "what-to-bring",
+      "title": "What to bring (so you do not overpack)",
+      "body": [
+        "A light pack is the secret to enjoying the walk back up later. Most guests are happiest with a small day bag and a few essentials.",
+        "Bring: water shoes, sunscreen, a hat, a thick towel (or mat), and a refillable bottle. Add a light shirt for the walk back in the afternoon sun.",
+        "Skip: passports and big cash. Keep valuables locked up at the hostel. If you are paying for a lido, card machines sometimes struggle, so carry a little cash as backup.",
+        "If you want shade in the free section, you can bring a small foldable umbrella, but it can be awkward in wind. In peak summer, the simplest “shade plan” is to rent a parasol for a few hours."
       ]
     }
+  ],
+  "essentialsTitle": "基本情報",
+  "essentials": [
+    "ホステルからショートカットで15〜20分、またはスピアッジャ・グランデからの遊歩道でアクセス。",
+    "4つのクラブ（プペット、ダ・フェルディナンド、グラッシ、ラ・マリネッラ）と両端に2か所の無料ゾーン。",
+    "スピアッジャ・グランデよりリーズナブルなラウンジャー料金と、リラックスした雰囲気。"
+  ],
+  "typicalCostsTitle": "目安の費用",
+  "typicalCosts": [
+    "プペットまたはダ・フェルディナンドのラウンジャー＋パラソル：1人あたり20〜30ユーロ。",
+    "ビーチレストランでのランチ：1皿15〜25ユーロ。",
+    "インテルノバスの帰り：1.50ユーロ（タバッキで購入）。"
   ],
   "tipsTitle": "簡単なヒント",
   "tips": [

@@ -1,13 +1,14 @@
 "use client";
 
 import {
+  type FormEvent,
   useCallback,
   useEffect,
   useMemo,
   useState,
-  type FormEvent,
 } from "react";
-import { Cluster, Stack } from "@ui/components/atoms/primitives";
+
+import { Cluster, Stack } from "@acme/design-system/primitives";
 
 type Lead = {
   id: string;

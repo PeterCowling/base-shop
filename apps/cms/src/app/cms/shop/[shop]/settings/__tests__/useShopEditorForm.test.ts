@@ -1,9 +1,12 @@
-import { renderHook, act } from "@testing-library/react";
+import { act,renderHook } from "@testing-library/react";
+
 import { providersByType } from "@acme/configurator/providers";
 import { LOCALES } from "@acme/types";
+
 import useMappingRows from "@/hooks/useMappingRows";
-import useShopEditorSubmit from "../useShopEditorSubmit";
+
 import useShopEditorForm from "../useShopEditorForm";
+import useShopEditorSubmit from "../useShopEditorSubmit";
 
 jest.mock("@acme/configurator/providers", () => ({
   providersByType: jest.fn(),
@@ -88,8 +91,6 @@ describe("useShopEditorForm", () => {
     submitState = {
       saving: false,
       errors: {} as Record<string, string[]>,
-      toast: { open: false, status: "success" as const, message: "" },
-      closeToast: jest.fn(),
       onSubmit: jest.fn(),
     } as unknown as ReturnType<typeof useShopEditorSubmit>;
 
@@ -150,7 +151,6 @@ describe("useShopEditorForm", () => {
     expect(typeof result.current.seo.setCatalogFilters).toBe("function");
     expect(result.current.overrides.tokenRows).toBe(result.current.tokenRows);
 
-    expect(result.current.toast).toBe(submitState.toast);
     expect(result.current.errors).toBe(submitState.errors);
 
     expect(useShopEditorSubmitMock).toHaveBeenCalledWith({

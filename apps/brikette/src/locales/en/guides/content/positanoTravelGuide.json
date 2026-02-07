@@ -59,20 +59,8 @@
   ],
   "fallback": {
     "intro": [
-      "Positano is vertical, beautiful, and busy in high season. This guide focuses on practical choices: where to base yourself, when to come, how to move around, and what to actually do when you’re here."
+      "Positano is vertical, beautiful, and busy in high season. This guide focuses on practical choices: where to base yourself, when to come, how to move around, and what to actually do when you're here."
     ],
-    "gallery": {
-      "items": [
-        {
-          "alt": "Hostel terrace with panoramic view",
-          "caption": "Sunset from the terrace — stay steps from the Chiesa Nuova bus stop."
-        },
-        {
-          "alt": "Positano panorama",
-          "caption": "Fornillo and Spiaggia Grande are walkable; expect stairs."
-        }
-      ]
-    },
     "sections": {
       "whereToStay": {
         "title": "Where to stay",

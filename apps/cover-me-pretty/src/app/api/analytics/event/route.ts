@@ -1,8 +1,11 @@
 // apps/cover-me-pretty/src/app/api/analytics/event/route.ts
-import { NextRequest, NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { z } from "zod";
-import { trackEvent } from "@platform-core/analytics";
-import { getShopSettings } from "@platform-core/repositories/shops.server";
+
+import { trackEvent } from "@acme/platform-core/analytics";
+import { getShopSettings } from "@acme/platform-core/repositories/shops.server";
+
 import shop from "../../../../../shop.json";
 
 export const runtime = "nodejs";

@@ -3,16 +3,16 @@ process.env.STRIPE_SECRET_KEY = "sk_test_123";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test_123";
 
 import CheckoutForm from "../../packages/ui/src/components/checkout/CheckoutForm";
-import { CurrencyProvider } from "@platform-core/contexts/CurrencyContext";
+import { CurrencyProvider } from "@acme/platform-core/contexts/CurrencyContext";
 import { isoDateInNDays } from "@acme/date-utils";
-import * as sharedUtils from "@acme/shared-utils";
+import * as httpLib from "@acme/lib/http";
 
-jest.mock("@acme/shared-utils", () => ({
+jest.mock("@acme/lib/http", () => ({
   fetchJson: jest.fn(),
 }));
 
-const mockFetchJson = sharedUtils.fetchJson as jest.MockedFunction<
-  typeof sharedUtils.fetchJson
+const mockFetchJson = httpLib.fetchJson as jest.MockedFunction<
+  typeof httpLib.fetchJson
 >;
 
 const mockPush = jest.fn();
@@ -42,7 +42,7 @@ jest.mock("@stripe/react-stripe-js", () => {
   };
 });
 
-jest.mock("@platform-core/contexts/CurrencyContext", () =>
+jest.mock("@acme/platform-core/contexts/CurrencyContext", () =>
   require("../__mocks__/currencyContextMock")
 );
 

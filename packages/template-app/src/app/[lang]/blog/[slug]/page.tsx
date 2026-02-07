@@ -1,9 +1,10 @@
 // packages/template-app/src/app/[lang]/blog/[slug]/page.tsx
 
-import { notFound } from "next/navigation";
 import Image from "next/image";
+import { notFound } from "next/navigation";
+
+import Section from "@acme/cms-ui/blocks/Section";
 import { fetchPostBySlug, type PortableBlock } from "@acme/sanity";
-import Section from "@ui/components/cms/blocks/Section";
 
 export const revalidate = 60;
 

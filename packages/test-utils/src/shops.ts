@@ -2,7 +2,9 @@
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
+
 import type { Session } from 'next-auth';
+
 import { adminSession } from './mocks';
 
 export async function withShop(cb: (dir: string) => Promise<void>): Promise<void> {
@@ -59,7 +61,7 @@ export async function seedShop(
  * Mocks used by shop-related CMS tests so they don't touch real DB or theme loaders
  */
 export function mockShop(tokens: Record<string, string> = {}): void {
-  jest.doMock('@platform-core/db', () => ({
+  jest.doMock('@acme/platform-core/db', () => ({
     prisma: {
       shop: {
         findUnique: jest.fn().mockResolvedValue(null),
@@ -71,10 +73,10 @@ export function mockShop(tokens: Record<string, string> = {}): void {
   jest.doMock('@acme/config', () => ({
     env: { NEXTAUTH_SECRET: 'test-nextauth-secret-32-chars-long-string!' },
   }));
-  jest.doMock('@platform-core/createShop', () => ({
+  jest.doMock('@acme/platform-core/createShop', () => ({
     syncTheme: jest.fn().mockResolvedValue(tokens),
   }));
-  jest.doMock('@platform-core/themeTokens', () => ({
+  jest.doMock('@acme/platform-core/themeTokens', () => ({
     baseTokens: {},
     loadThemeTokens: jest.fn().mockResolvedValue(tokens),
   }));

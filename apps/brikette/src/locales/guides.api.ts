@@ -4,8 +4,8 @@
 // stable while allowing each concern to live in its own file.
 // -----------------------------------------------------------------------------
 
-export { __setGuidesModulesForTests } from "./guides.test-helpers";
 export { getGuidesBundle } from "./guides.get";
-export { peekGuidesBundle } from "./guides.peek";
 export { listGuidesLocales } from "./guides.list";
-export { isSplitGuidesLocale, hasGuidesLocale } from "./guides.predicates";
+export { peekGuidesBundle } from "./guides.peek";
+export { hasGuidesLocale,isSplitGuidesLocale } from "./guides.predicates";
+export { __setGuidesModulesForTests } from "./guides.test-helpers";

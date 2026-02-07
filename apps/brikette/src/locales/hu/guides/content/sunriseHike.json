@@ -1,94 +1,139 @@
 {
   "seo": {
-    "title": "Hostel Brikette sunrise hike",
-    "description": "Hajnal előtti útvonal a Hostel Brikette-től egy csendes sziklatetőre vezető kilátóhoz, ahonnan zavartalan kilátás nyílik a napfelkeltére Positano városára."
+    "title": "Napkeltetúra a Hostel Brikette-ből (Positano)",
+    "description": "Rövid hajnal előtti túra a Hostel Brikette-ből egy csendes kilátóponthoz Positano felett, helyes sorrendben lévő navigációs fotókkal."
   },
-  "linkLabel": "Hostel Brikette sunrise hike",
+  "linkLabel": "Napkeltetúra: Nézd meg a hajnalt Positano felett",
+  "lastUpdated": "2026-02-04",
   "intro": [
-    "Head out before dawn to catch the first light over the Amalfi Coast from a quiet vantage point above Positano.",
-    "This walk starts at Hostel Brikette and takes around 25 minutes including the stair climb to the viewpoint."
+    "Ha a legegyszerűbb napkeltét szeretnéd, akkor a hostel közös teraszáról nézheted a hajnalt, ahogy a nap balra kel (amikor a tenger felé nézel).",
+    "Ha szélesebb panorámát és egy csendesebb pillanatot szeretnél a város felett, kövesd ezt a rövid túrát a hegyekbe egy sziklatetői kilátóponthoz Positano felett."
   ],
   "sections": [
     {
-      "id": "overview",
-      "title": "What is the sunrise hike?",
+      "id": "what-is",
+      "title": "Mi a napkeltetúra?",
       "body": [
-        "If you prefer to stay put, you can watch the sunrise from the hostel terrace as it rises to the left of the building.",
-        "For a wider panorama, follow this short hike to a nearby cliff where you can watch the sun clear the horizon and light up the town below."
+        "Ez egy rövid, hajnal előtti oda-vissza séta a Hostel Brikette-ből egy kis kilátópontig Positano felett.",
+        "Ha hosszabb hegyi lehetőséget szeretnél, a %LINK:santaMariaDelCastelloHike|Santa Maria del Castello% nagyszerű alternatíva, de az alábbi útvonal a leggyorsabb módja egy drámai napkeltenézet megszerzésének anélkül, hogy egy egész napos túrára kötelezd el magad."
       ]
     },
     {
-      "id": "reach-stairs",
-      "title": "Reach the stairway trailhead",
+      "id": "before-you-go",
+      "title": "Mielőtt elindulsz (sötét lesz)",
       "body": [
-        "Exit the hostel through the main door and walk down to Via Pasitea.",
-        "Turn right towards Sorrento and follow the road for roughly 350 metres.",
-        "Look for a flight of stairs on your left heading uphill — the first section is paved and has a handrail."
+        "Vigyél telefonlámpát vagy fejlámpát, és tartsd szabadon a kezeidet (különösen a lépcsőkön).",
+        "Viselj tapadós cipőt — az első rész burkolt, de az erdei ösvény lehet laza vagy nedves.",
+        "Indulj elég korán, hogy 10-15 perccel a napkelte előtt érkezz, így le tudsz telepedni, megtalálod a helyedet és élvezheted az első fényt."
       ]
     },
     {
-      "id": "climb-to-viewpoint",
-      "title": "Climb to the viewpoint",
+      "id": "step-1",
+      "title": "1. lépés: Gyalogolj a hostelből a lépcsőhöz (≈350 m)",
       "body": [
-        "Take the stairs all the way up until you reach a small house at the top of the initial climb.",
-        "At the house, turn left to join the woodland trail.",
-        "When the path forks, take the right-hand branch and continue climbing through the trees.",
-        "As the path opens up and you can see the sea directly ahead, bear left.",
-        "Continue around the rocks to reach the exposed vantage point with sweeping sunrise views."
+        "Lépj ki a hostelből a főbejáraton és menj le az útra.",
+        "Fordulj Sorrento felé és gyalogolj kb. **350 métert** a főúton, amíg el nem érsz egy lépcsőhöz, amely felmászik az útról."
       ]
     },
     {
-      "id": "enjoy-sunrise",
-      "title": "Enjoy the sunrise safely",
+      "id": "step-2",
+      "title": "2. lépés: Mássz fel a házhoz, majd fordulj balra",
       "body": [
-        "The final rocks can be slick with morning dew; move carefully and avoid standing on loose edges.",
-        "From the main ledge you can watch the sun crest the horizon, or scramble a little higher for photos once there is enough light."
+        "Menj fel a lépcsőn egészen addig, amíg el nem éred az alább látható régi fehér házat.",
+        "A háznál **fordulj balra**, hogy csatlakozz az erdei ösvényhez."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/02-house.jpg",
+          "alt": "Régi fehér ház a lépcső mellett a napkeltetúra útvonalon Positano felett",
+          "caption": "Ez az épület jelzi a lépcsőmászás végét; fordulj itt balra, hogy belépj az erdei ösvényre.",
+          "width": 876,
+          "height": 530
+        }
+      ]
+    },
+    {
+      "id": "step-3",
+      "title": "3. lépés: Kövesd az erdei ösvényt a kilátóponthoz",
+      "body": [
+        "Kövesd az erdei ösvényt, ahogy finoman emelkedik a háztól távolodva.",
+        "Amikor az ösvény elágazik, válaszd a **jobb** ágat.",
+        "Végül elérsz egy pontot, ahol a fák megnyílnak, és egyenesen előtted láthatod a tengert. Onnan fordulj **balra**.",
+        "Ez a bal ösvény elvezet a kilátóponthoz. Óvatosan felmászhatsz a sziklákra magasabb pozícióért, vagy maradhatsz a főhelyen egy stabil kilátásért."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/03-viewpoint.jpg",
+          "alt": "Felülnézeti térkép az utolsó kanyarokkal a napkeltetúra útvonalon a Positano feletti kilátópontig",
+          "caption": "Használd ezt a felülnézetet az utolsó balkanyar megerősítésére a kilátópont felé, miután az ösvény megnyílik a tenger felé.",
+          "width": 677,
+          "height": 600
+        }
+      ]
+    },
+    {
+      "id": "share",
+      "title": "Oszd meg ezt az útmutatót (QR)",
+      "body": [
+        "Ha barátokkal indulsz, használhatod ezt a QR-kódot az útmutató gyors megosztásához egy másik telefonon."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/01-qr.png",
+          "alt": "QR-kód a Hostel Brikette napkeltetúra útmutatójához",
+          "width": 450,
+          "height": 450
+        }
       ]
     }
   ],
-  "tips": [
-    "Allow around 25 minutes from the hostel to the viewpoint and aim to arrive 10 minutes before the posted sunrise time.",
-    "Bring a headlamp or phone torch — the stair sections are dark before dawn.",
-    "Wear shoes with good grip and pack a layer; sea breezes make early mornings feel cooler."
+  "essentialsTitle": "Alapvető dolgok",
+  "essentials": [
+    "Fejlámpa vagy telefonlámpa (plusz töltött akkumulátor).",
+    "Tapadós cipő és egy könnyű réteg — hajnal előtt hűvösnek és szeles lehet.",
+    "Víz és egy kis snack, ha ülve nézed a napkeltét."
   ],
+  "tipsTitle": "Okos időzítés",
+  "tips": [
+    "Végezz egy gyors előrejelzés-ellenőrzést: a szél és az alacsony felhők elrejthetik a napkeltét még tiszta napokon is.",
+    "Ha bizonytalanság van egy csomópontnál a sötétben, állj meg és erősítsd meg az irányt, ahelyett, hogy találgatnál."
+  ],
+  "warningsTitle": "Biztonsági megjegyzések",
+  "warnings": [
+    "Menj lassan a lépcsőkön és tartsd szabadon a kezeidet — könnyen tévedhetsz gyenge fényben.",
+    "Ha az ösvény csúszósnak érződik eső után, fontold meg a nézést a hostel teraszáról helyette."
+  ],
+  "steps": [
+    {
+      "name": "Gyalogolj a lépcsőhöz",
+      "text": "A hostelből gyalogolj ~350 m-t Sorrento felé a főúton, amíg meg nem pillantod a felfelé mászszó lépcsőt."
+    },
+    {
+      "name": "Mássz fel a házhoz",
+      "text": "Kövesd a lépcsőt a régi fehér házig, majd fordulj balra az erdei ösvényre."
+    },
+    {
+      "name": "Válaszd a jobb ágat",
+      "text": "Amikor az erdei ösvény elágazik, maradj jobbra és folytasd, amíg nem látod a tengert."
+    },
+    {
+      "name": "Fordulj balra a kilátóponthoz",
+      "text": "Miután az ösvény kinyílik a tenger felé, fordulj balra, hogy elérje a kilátópontot (mássz fel óvatosan, ha magasabb pozíciót szeretnél)."
+    }
+  ],
+  "faqsTitle": "GYIK",
   "faqs": [
     {
-      "q": "Can I just watch the sunrise from the hostel?",
+      "q": "Nézhetem a napkeltét csak a hostelből?",
       "a": [
-        "Yes. The terrace faces east and you can see the sun rise to the left of the building without leaving the property.",
-        "The hike is for guests who want a wider panorama or photos without foreground buildings."
+        "Igen — a hostel terasza a legegyszerűbb lehetőség, és a nap az épület bal oldalán kel fel, amikor a tenger felé nézel."
       ]
     },
     {
-      "q": "Is the trail marked or difficult to follow?",
+      "q": "Mennyi ideig tart a túra?",
       "a": [
-        "The route follows local stairs and an informal woodland trail. There are no signposts, so bring a phone with offline maps or follow these instructions closely.",
-        "In the dark, walk slowly and use a torch to pick out uneven steps and tree roots."
-      ]
-    },
-    {
-      "q": "What should I bring?",
-      "a": [
-        "Wear trainers or hiking shoes with grip, carry water, and pack a light layer for the breeze.",
-        "If you plan to stay for sunrise photos, consider a tripod or phone stand."
+        "Ez egy rövid útvonal, de az időzítés függ a tempódtól és attól, mennyi időt töltesz a kilátóponton. Hagyj elég időt, hogy 10-15 perccel a napkelte előtt érkezz."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Képek",
-    "items": [
-      {
-        "alt": "QR code to share the guide",
-        "caption": "Oszd meg, olvasd be a QR-kódot"
-      },
-      {
-        "alt": "House at the top of the initial climb",
-        "caption": "Ház a lépcső tetején"
-      },
-      {
-        "alt": "Viewpoint over Positano at sunrise",
-        "caption": "Kilátópont napkeltével Positano felett"
-      }
-    ]
-  }
+  ]
 }

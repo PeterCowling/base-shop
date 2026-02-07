@@ -1,7 +1,10 @@
 import "server-only";
-import type { RentalOrder } from "@acme/types";
+
+import type { OrderLineItem, RentalOrder } from "@acme/types";
 
 export type Order = RentalOrder;
+// Re-export OrderLineItem from @acme/types for convenience
+export type { OrderLineItem };
 
 // Normalize Prisma results by replacing `null` fields with `undefined`.
 // When given a falsy value (e.g. `null`), return it directly so callers can
@@ -18,4 +21,3 @@ export function normalize<T extends Order>(order: T | null): T | null {
   });
   return o;
 }
-

@@ -1,88 +1,233 @@
 {
   "seo": {
-    "title": "Fähranleger → Hostel Brikette mit Gepäck",
-    "description": "Optionen ab dem Anleger: Porter oder SITA-Bus zu nahen Haltestellen, plus praktische Tipps und FAQs."
+    "title": "Fähranleger → Hostel Brikette, mit Gepäck",
+    "description": "Vollständiger 2026-Leitfaden: Fähranleger zum Hostel Brikette mit Gepäck mit Trägern und Interno-Bus. Kosten, Zeitplan, Schritt-für-Schritt-Anweisungen und Reisetipps."
   },
-  "linkLabel": "Fähranleger → Hostel Brikette mit Gepäck",
+  "lastUpdated": "2026-01-31",
+  "linkLabel": "Fähranleger → Hostel Brikette, mit Gepäck",
   "intro": [
-    "Du kommst mit dem Schiff und Gepäck an? Kombiniere den Interno-Positano-Bus mit den Porter-Services der Stadt, um ohne schwere Koffer die steilen Treppen zum Hostel Brikette zu umgehen."
+    "Ankunft mit der Fähre mit Gepäck? Kombinieren Sie den Interno Positano Bus mit Positanos Trägern, um das Hostel Brikette zu erreichen, ohne Taschen steile Treppen hinaufzuschleppen. Diese Route dauert 20-45 Minuten je nach Träger- und Bustiming, kostet €2-€6 pro Person plus optionale Trägergebühren und eliminiert die meisten der berüchtigten Treppensteigungen von Positano.",
+    "Aktualisiert für die Saison 2026 deckt dieser Leitfaden genaue Kosten, Busfahrpläne, Trägerpreise und die Schritt-für-Schritt-Route ab, die unser Personal Hunderten von ankommenden Gästen empfiehlt. Ob Sie allein mit einem Rucksack oder als Gruppe mit mehreren Koffern reisen, Sie finden praktische Ratschläge für eine reibungslose Ankunft."
   ],
   "beforeList": [
-    "Prüfe den aktuellen Fahrplan des Interno Positano – hier findest du den [aktuellen Fahrplan und die Ticketpreise](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
-    "Kaufe Interno-Positano-Tickets vor dem Einsteigen in einem Tabacchi oder Zeitungsladen.",
-    "Überleg dir, schweres Gepäck direkt am Anleger den Portern zu übergeben – sag ihnen, dass du im Hostel Brikette übernachtest."
+    "Überprüfen Sie den neuesten Interno Positano Fahrplan – hier ist der %URL:https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26|aktuelle Fahrplan und Ticketpreise%.",
+    "Kaufen Sie Interno Positano Tickets bei jedem Tabakwaren-/Zeitungshändler vor dem Einsteigen.",
+    "Erwägen Sie, schweres Gepäck den Trägern zu übergeben, wenn sie die Fähre treffen – sagen Sie ihnen, dass Sie im Hostel Brikette übernachten."
   ],
   "sections": [
     {
-      "id": "dock-to-mulini",
-      "title": "Vom Hafen zur Piazza dei Mulini",
+      "id": "ferry-dock-overview",
+      "title": "Was Sie am Positano Fähranleger erwarten können",
       "body": [
-        "Geh vom Hauptstrand über die beschilderte Promenade hinauf zur Piazza dei Mulini – nutze [diese Wegbeschreibung](https://www.google.com/maps/dir/Positano+Spiaggia/2+Viale+Pasitea+Positano,+Campania/@40.6289096,14.4857482,18z/data=!4m14!4m13!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!3e2).",
-        "Wenn du Gepäck trägst, denk über einen Porter-Service direkt am Anleger nach, damit sie alles für dich bergauf bringen – unser [Porter-Guide](guide:porterServices) erklärt Preise und Buchung."
+        "Der Fähranleger von Positano (offiziell Positano Spiaggia) liegt auf Strandniveau am Fuße der Stadt. Beim Aussteigen gehen Sie über eine kurze Gangway auf die Hauptstrandpromenade. Der gesamte Uferbereich ist kompakt – Sie können den Strand, die Ticketkioske und den Beginn des Bergaufwegs innerhalb von 100 Metern sehen.",
+        "Trägerdienste treffen jede Fährankunft. Sie erkennen sie sofort – sie tragen helle Westen und warten mit Rollwagen in der Nähe der Gangway. Vom Anleger aus haben Sie drei Hauptoptionen: Träger beauftragen, Ihre Taschen separat zu transportieren (empfohlen für schweres Gepäck), den Interno Positano Bus teilweise bergauf nehmen (am schnellsten und einfachsten) oder die gesamte Strecke laufen (nur praktisch mit leichtem Tagesrucksack).",
+        "Der Strandbereich verfügt über Toiletten (€1), einige Cafés und Ticketkioske, wo Sie Interno-Bustickets kaufen können. Die meisten Fähren kommen in der Sommersaison (April-Oktober) zwischen 09:00-19:00 Uhr an, mit den verkehrsreichsten Zeiten um 11:00-14:00 Uhr. Wenn Ihre Fähre verspätet ist, überprüfen Sie die %LINK:ferrySchedules|aktuellen Fährfahrpläne% für aktualisierte Ankunftszeiten.",
+        "Fährdienste nach Positano verkehren von mehreren Häfen entlang der Amalfiküste. Wenn Sie aus Salerno, Neapel oder Sorrento anreisen, legen Fähren typischerweise zwischen spätem Vormittag und frühem Abend in Positano Spiaggia an. Der Anleger bedient sowohl Tragflügelboote (Aliscafi) als auch langsamere traditionelle Fähren (Traghetti). Tragflügelboote sind schneller, aber teurer, während traditionelle Fähren Außensitzplätze und bessere Aussicht bieten. Beide kommen am selben Anleger an und folgen demselben Ausschiffungsprozess.",
+        "Das Wetter kann Fährfahrpläne erheblich beeinflussen. Bei rauer See oder starkem Wind (häufig im Herbst und Winter) können Fähren verspätet, zu alternativen Häfen umgeleitet oder ganz gestrichen werden. Wenn Sie in der Nebensaison (März-April oder September-November) reisen, haben Sie immer einen Backup-Plan. Der %LINK:amalfiPositanoBus|SITA-Bus von Amalfi% oder andere Küstenstädte können als Alternative dienen, wenn Ihre Fähre gestrichen wird, obwohl Sie dann bei Chiesa Nuova statt auf Strandniveau ankommen."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-positano-spiaggia-view.jpg",
+          "alt": "Positano Fähranleger und Strandpromenade mit Booten in der Bucht.",
+          "caption": "Der Fähranleger bei Positano Spiaggia – kompakt und einfach zu navigieren ab der Ausschiffung."
+        }
+      ]
+    },
+    {
+      "id": "porter-costs-timing",
+      "title": "Trägerkosten und Zeitplan (Saison 2026)",
+      "body": [
+        "Positanos offizieller Trägerdienst berechnet €15-€20 pro Tasche je nach Größe und Gewicht. Ein Standard-Rucksack oder Koffer (bis 20 kg) kostet €15, während übergroße Taschen oder mehrere Gegenstände €18-€20 kosten. Zahlung nur in bar – haben Sie Euro am Anleger bereit.",
+        "Träger laden Ihre Taschen auf Rollwagen und liefern sie innerhalb von 30-45 Minuten direkt zum Eingang des Hostel Brikette. Sie übergeben Ihr Gepäck, sagen ihnen 'Hostel Brikette' (sie kennen es), zahlen die Gebühr und behalten Ihre Wertsachen bei sich. Die Träger nehmen eine andere Route über Servicewege und Abkürzungen, sodass Sie Ihre Taschen erst sehen, wenn Sie das Hostel erreichen – das ist normal.",
+        "Aus unserer Erfahrung mit Hunderten von Fährankömmlingen: Träger sind zuverlässig und Taschen kommen immer sicher an, aber wir empfehlen, Medikamente, Elektronik und Reisedokumente in Ihrem Tagesrucksack zu behalten. Wenn Sie als Paar oder Gruppe reisen, erwägen Sie, Träger für schwere Taschen zu nutzen, während Sie jeweils eine kleine Tasche für die Reise behalten. Alleinreisende mit einer Tasche finden den Trägerdienst typischerweise jeden Euro wert – entspannt statt verschwitzt und erschöpft anzukommen, macht einen riesigen Unterschied für Ihre ersten Eindrücke von Positano.",
+        "Der Trägerdienst ist ganzjährig in Betrieb und trifft jede geplante Fährankunft. In den Hochsommermonaten (Juli-August) arbeiten mehrere Trägerteams gleichzeitig, um die Fährmassen zu bewältigen. Sie müssen nicht im Voraus buchen – nähern Sie sich ihnen einfach nach dem Ausschiffen am Anleger. Sie akzeptieren nur Barzahlung (Euro), also halten Sie vor Ihrer Fährabfahrt an einem Geldautomaten, falls nötig. Für vollständige Details zu Buchung und Preisen siehe unseren %LINK:porterServices|Trägerdienstleitfaden%."
+      ]
+    },
+    {
+      "id": "dock-to-mulini",
+      "title": "Hafen zur Piazza dei Mulini",
+      "body": [
+        "Gehen Sie vom Hauptstrand zur Piazza dei Mulini entlang der ausgeschilderten Promenade – verwenden Sie %URL:https://www.google.com/maps/dir/Positano+Spiaggia/2+Viale+Pasitea+Positano,+Campania/@40.6289096,14.4857482,18z/data=!4m14!4m13!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!3e2|diese Wegbeschreibung%.",
+        "Wenn Sie Taschen tragen, erwägen Sie, einen der Trägerdienste von Positano am Anleger zu beauftragen, damit sie alles bergauf für Sie transportieren – unser %LINK:porterServices|Trägerdienstleitfaden% deckt Preise und Buchung ab."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-promenade-to-mulini.jpg",
+          "alt": "Positano Strandpromenade mit Geschäften und Cafés entlang der Uferpromenade.",
+          "caption": "Die Promenade vom Fähranleger zur Piazza dei Mulini – ein kurzer Aufstieg durch den Strandbereich."
+        }
       ]
     },
     {
       "id": "mulini-to-bus",
-      "title": "Piazza dei Mulini zur Interno-Haltestelle",
+      "title": "Piazza dei Mulini zur Interno Bushaltestelle",
       "body": [
-        "An der Piazza dei Mulini kaufst du ein Interno-Ticket in einem der Eckläden oder Tabacchi. Danach gehst du zur Haltestelle am Rand der Piazza – dort, wo der Platz in die Straße übergeht.",
-        "Der Interno-Bus fährt etwa alle 30 Minuten vom Morgen bis Mitternacht und folgt [dieser Strecke bergauf](https://www.google.com/maps/dir/2+Viale+Pasitea+Positano,+Campania/Viale+Pasitea,+323,+84017+Positano+SA/@40.6309188,14.4819138,16z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!1m5!1m1!1s0x133b97667312711d:0xa2b15bca59b377fa!2m2!1d14.4824389!2d40.6293416!3e0) Richtung Hostel."
+        "Die Piazza dei Mulini liegt im Einkaufsviertel von Positano in der Nähe der Apotheke – es ist der niedrigste verkehrserreichbare Punkt in der Stadt, was es zum natürlichen Knotenpunkt für Busdienste macht.",
+        "Wenn Sie an der Piazza dei Mulini ankommen, holen Sie sich ein Interno-Busticket in einem der Eckgeschäfte oder 'Tabacchi'. Gehen Sie dann zur Bushaltestelle, die sich am Rand der Piazza befindet – wo die Piazza auf die Straße trifft.",
+        "Der Interno-Bus fährt etwa alle 30 Minuten von morgens bis Mitternacht. %URL:https://www.google.com/maps/dir/2+Viale+Pasitea+Positano,+Campania/Viale+Pasitea,+323,+84017+Positano+SA/@40.6309188,14.4819138,16z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!1m5!1m1!1s0x133b97667312711d:0xa2b15bca59b377fa!2m2!1d14.4824389!2d40.6293416!3e0|Sehen Sie die vollständige Busroute auf Google Maps%, um genau zu sehen, wo der Bus bergauf zum Hostel fährt."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-piazza-mulini-bus-stop.jpg",
+          "alt": "Piazza dei Mulini Bushaltestelle im Einkaufsviertel des Stadtzentrums von Positano.",
+          "caption": "Die Interno Bushaltestelle an der Piazza dei Mulini, am Rand der Piazza gelegen, wo sie auf die Hauptstraße trifft."
+        }
       ]
     },
     {
       "id": "identify-bus",
-      "title": "So erkennst du den Interno Positano",
+      "title": "Den Interno Positano Bus erkennen",
       "body": [
-        "Die Fahrzeuge variieren, aber das elektronische Display vorne zeigt immer \"interno positano\" an.",
-        "Erwarte einen kompakten Stadtbus mit Stehplätzen; steig am Bordstein ein und entwerte dein Ticket oder zeige es dem Fahrer."
+        "Die Flottenfahrzeuge unterscheiden sich, aber das elektronische Schild vorne zeigt immer 'interno positano'.",
+        "Erwarten Sie einen kompakten Stadtbus mit Stehplätzen; steigen Sie am Bordstein ein und entwerten oder zeigen Sie Ihr Ticket dem Fahrer."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-interno-yellow.jpg",
+          "alt": "Ein kleiner Interno Positano Bus mit 'INTERNO POSITANO' auf dem elektronischen Frontschild.",
+          "caption": "Suchen Sie nach dem 'INTERNO POSITANO'-Schild vorne."
+        },
+        {
+          "src": "/img/directions/ferry-dock-interno-red.jpg",
+          "alt": "Ein Interno Positano Bus in Positano mit 'INTERNO POSITANO' auf dem elektronischen Frontschild.",
+          "caption": "Busse variieren, aber das Schild ist einheitlich."
+        }
       ]
     },
     {
       "id": "bus-stop-to-hostel",
-      "title": "Von der Haltestelle zum Hostel Brikette",
+      "title": "Von der lokalen Haltestelle zum Hostel Brikette",
       "body": [
-        "Steig beim Tabacchi an der Haltestelle \"Chiesa Nuova\" aus. Geh zur Hauptstraße und biege dann links in die Viale Pasitea ein.",
-        "Laufe gut 100 Meter; das Hostel siehst du rechts. Achte auf das Schild auf der Terrasse im zweiten Stock, geh um die Kurve und nimm die Treppe rechts hinauf zum Eingang.",
-        "Du brauchst einen visuellen Weg? Folge [diesen letzten Metern](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Tabacchi+Cafiero+Emanuele,+Viale+Pasitea,+325a,+84017+Positano+SA/@40.6292434,14.4813669,19z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b97660ef186c1:0xc9eb9ab54d880307!2m2!1d14.4823321!2d40.6293865!3e2)."
+        "Steigen Sie am Tabacchi bei der Haltestelle 'Chiesa Nuova' aus (siehe Bild unten).",
+        "Verlassen Sie den Bus, biegen Sie rechts ab und gehen Sie zur Hauptstraße.",
+        "Biegen Sie links auf die Viale Pasitea ab und gehen Sie etwas über 100 Meter (330 Fuß).",
+        "Sie werden das Hostel auf Ihrer rechten Seite sehen – suchen Sie nach unserem Schild auf der Terrasse im zweiten Stock.",
+        "Gehen Sie am Schild vorbei, biegen Sie um die Kurve und nehmen Sie die Treppe rechts nach oben, um den Hosteleingang zu erreichen.",
+        "Benötigen Sie eine visuelle Route? Folgen Sie %URL:https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Tabacchi+Cafiero+Emanuele,+Viale+Pasitea,+325a,+84017+Positano+SA/@40.6292434,14.4813669,19z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b97660ef186c1:0xc9eb9ab54d880307!2m2!1d14.4823321!2d40.6293865!3e2|dieser finalen Wegbeschreibung%."
+      ],
+      "images": [
+        {
+          "src": "/img/tabacchi.webp",
+          "alt": "Der Tabacchi-Laden bei der Chiesa Nuova Bushaltestelle mit einer Markise mit 'TABACCHI' und 'ARTICOLI DA REGALO'.",
+          "caption": "Die Bushaltestelle ist direkt vor diesem Tabacchi."
+        },
+        {
+          "src": "/img/directions/hostel-brikette-entrance-steps.png",
+          "alt": "Die Straße in der Nähe des Hostel Brikette mit dem sichtbaren Hostelschild und der Treppe zum Eingang um die Kurve rechts.",
+          "caption": "Suchen Sie nach unserem Schild, dann nehmen Sie die Treppe rechts nach oben."
+        }
+      ]
+    },
+    {
+      "id": "total-journey-timing",
+      "title": "Gesamtreisezeit und Kostenaufschlüsselung",
+      "body": [
+        "**Mit Trägern + Interno Bus (empfohlen):** 20-30 Minuten freihändiges Reisen, €2-€6 pro Person für Bustickets, plus €15-€20 pro Tasche für Träger. Gesamtkosten für eine Person mit einer Tasche: etwa €17-€26. Gruppen von 2-3 können Trägerkosten teilen, wenn sie Gepäckwagen teilen.",
+        "**Nur Bus (keine Träger):** 25-35 Minuten mit eigenen Taschen, €2-€6 pro Person. Sie bewältigen Treppen am Hafen (kurze Treppe), gehen mit Gepäck zur Piazza dei Mulini (5 Minuten bergauf) und tragen Taschen in/aus dem Bus. Geeignet für Reisende mit einem kleinen Rucksack oder leichtem Gepäck.",
+        "**Die gesamte Strecke laufen:** Nicht empfohlen mit Gepäck. Die Route umfasst 300+ Stufen, steile Anstiege und dauert 45-60 Minuten. Erwägen Sie dies nur, wenn Sie ohne Taschen oder mit einem sehr leichten Tagesrucksack ankommen. Die meisten unserer Gäste, die dies mit Gepäck versuchen, enden erschöpft oder müssen mehrmals anhalten.",
+        "Wenn Sie von der %LINK:chiesaNuovaArrivals|Chiesa Nuova Bushaltestelle% statt vom Fähranleger ankommen, ist der letzte Gehbereich (100m + Treppen) identisch mit dem, was im letzten Abschnitt oben beschrieben wird."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-capri-ferry-img05.jpg",
+          "alt": "Fähre nähert sich Positano mit der farbenfrohen Hügelstadt im Hintergrund.",
+          "caption": "Ankunft mit der Fähre – Ihre Reise zum Hostel Brikette beginnt am Anleger auf Strandebene."
+        }
+      ]
+    },
+    {
+      "id": "alternative-options",
+      "title": "Alternative Optionen und wann man sie nutzt",
+      "body": [
+        "**Taxi vom Anleger:** Kostet €25-€35 für bis zu 4 Personen mit Gepäck. Erwägenswert, wenn Sie eine Gruppe von 3-4 sind, die den Fahrpreis teilt, sehr spät ankommen (nach Mitternacht, wenn Busse nicht fahren) oder bei Fährstreichungen, wenn Trägerdienste überlastet sind. Rufen Sie an oder WhatsApp +39 379 125 6222 zum Buchen – sagen Sie 'Hostel Brikette' und sie kennen den Standort. Taxis können nicht bis zum Hosteleingang fahren (kein Fahrzeugzugang), aber sie setzen Sie am nächsten Straßenpunkt ab, etwa 50 Meter von unserer Treppe entfernt. Wenn Sie Mobilitätsbedenken haben, besprechen Sie dies vorher mit dem Taxifahrer.",
+        "**Späte Nachtankünfte (nach 23:00):** Der Interno Bus fährt bis etwa Mitternacht, aber überprüfen Sie den genauen Fahrplan für Ihr Ankunftsdatum. Wenn Ihre Fähre nach dem letzten Bus ankommt, sind Ihre Optionen Taxi (€25-€35) oder Laufen ohne Gepäck, wenn Sie Taschen vorausgeschickt haben. Versuchen Sie nicht den vollen Weg mit schweren Taschen in der Dunkelheit – die Route hat unebene Treppen und schlechte Beleuchtung in Abschnitten. Unser Empfangsteam kann spät bleiben, um Sie zu treffen, wenn Sie vorher mit Ihrer Ankunftszeit Bescheid geben.",
+        "**Wenn Interno Busse voll oder verspätet sind:** In der Hochsaison (Juli-August) kann der Interno Bus schnell voll werden, besonders um Fährankunftszeiten. Wenn Sie einen Bus verpassen, kommt ein weiterer innerhalb von 30 Minuten. Alternativ gehen Sie zur Piazza dei Mulini und nehmen den Bus dort (er ist normalerweise weniger überfüllt an dieser Haltestelle), oder nutzen Sie ein Taxi als Backup. Einige Gäste warten lieber auf den zweiten oder dritten Bus, anstatt sich mit Gepäck in ein überfülltes Fahrzeug zu zwängen – das ist völlig in Ordnung und die zusätzlichen 30 Minuten werden Ihre Ankunft nicht wesentlich beeinträchtigen."
+      ]
+    },
+    {
+      "id": "staff-tips",
+      "title": "Tipps von unserem Empfangsteam",
+      "body": [
+        "**Beste Ankunftsstrategie laut unserem Personal:** Übergeben Sie Ihr Hauptgepäck den Trägern am Anleger (die meisten Gäste nutzen dies – es ist die €15-20 pro Tasche wert), behalten Sie einen kleinen Tagesrucksack mit dem Nötigsten, kaufen Sie Ihr Interno-Busticket während des Gehens zur Piazza dei Mulini und nehmen Sie den Bus zur Chiesa Nuova. So kommen Sie entspannt, taschenfrei und bereit an, Positano zu genießen.",
+        "**Wann Träger die meiste Mühe sparen:** Wenn Sie Taschen über 15 kg haben, mehrere Koffer oder im Sommer bei Hitze reisen, sind Träger unerlässlich. Wir haben zu viele Gäste erschöpft vom Tragen von Taschen bergauf ankommen sehen – die €15-20 Kosten sind gering im Vergleich dazu, Ihren Positano-Aufenthalt gestresst und verschwitzt zu beginnen.",
+        "**Koordinieren Sie das Trägerlieferungs-Timing:** Wenn Sie ankommen, bevor die Zimmer fertig sind, sagen Sie den Trägern, wann Sie erwarten, das Hostel zu erreichen, damit sie die Lieferung zeitlich abstimmen können. Taschen kommen normalerweise 30-45 Minuten nach der Übergabe an, was Ihnen Zeit gibt, den Bus zu nehmen und den Hosteleingang zu erreichen. Wenn Sie früh ankommen, können Sie normalerweise Gepäckaufbewahrung anfordern und die Stadt erkunden, während Sie warten.",
+        "**Erstbesucher in Positano:** Lassen Sie sich nicht von den Treppen und Hügeln einschüchtern – die Kombination von Trägern mit dem Interno Bus reduziert die körperliche Herausforderung erheblich. Die meisten unserer Gäste sagen uns, dass diese Ankunftsroute viel einfacher ist als erwartet, besonders im Vergleich zu Horrorgeschichten, die sie über Positanos Treppen gehört haben.",
+        "**Halten Sie Buswechselgeld bereit:** Interno-Bustickets kosten €2-€6 je nach Saison und genauer Route. Ticketverkäufer bei Tabacchi akzeptieren nur Bargeld (kleine Scheine bevorzugt – erwarten Sie nicht, dass sie einen €50-Schein wechseln). Haben Sie ein paar €5- oder €10-Scheine am Anleger bereit."
       ]
     }
   ],
   "stepsList": [
-    "Gepäck den Portern am Anleger übergeben und Interno-Tickets im Tabacchi kaufen.",
-    "Vom Hauptstrand zur Piazza dei Mulini gehen und weiter zur Interno-Haltestelle neben dem Tabacchi an der Viale Pasitea.",
-    "In den Interno-Positano-Bus mit der Anzeige \"interno positano\" einsteigen und bergauf Richtung Viale Pasitea 325 fahren.",
-    "Beim Tabacchi aussteigen, links die Viale Pasitea entlanggehen (gut 100 m) und rechts die Treppe zum Hostel Brikette hinaufsteigen."
+    "Übergeben Sie das Gepäck an die Träger am Dock und kaufen Sie Interno Positano Bustickets am Tabakladen.",
+    "Gehen Sie vom Hauptstrand zur Piazza dei Mulini und dann weiter zur Interno Bushaltestelle neben dem Tabakladen auf der Viale Pasitea.",
+    "Steigen Sie in den Interno Positano Bus ein (suchen Sie nach dem Schild \\\\\"interno positano\\\\\") und fahren Sie bergauf Richtung Viale Pasitea 325.",
+    "Steigen Sie vor dem Tabakladen aus, biegen Sie links auf die Viale Pasitea für etwas mehr als 100 m ab und steigen Sie die Treppe rechts hinauf, um das Hostel Brikette zu erreichen."
   ],
   "kneesList": [
-    "Der Interno-Bus erspart dir Hunderte steile Stufen.",
-    "Lass schweres Gepäck von den Portern transportieren, damit du im Bus und auf dem kurzen Fußweg die Hände frei hast."
+    "Die Fahrt mit dem Interno Positano Bus erspart Hunderte von steilen Stufen auf der Reise.",
+    "Lassen Sie die Träger schweres Gepäck separat transportieren, damit Sie auf der Fahrt und dem kurzen Spaziergang die Hände frei haben."
   ],
-  "kneesPorterPrefix": "Mehr Details zu Porterpreisen und Buchung findest du in unserem",
-  "kneesPorterLinkLabel": "Porter-Service-Guide",
+  "kneesPorterPrefix": "Benötigen Sie weitere Details zu Trägerpreisen und Buchung? Lesen Sie unseren",
+  "kneesPorterLinkLabel": "Trägerdienstleitfaden",
   "faqs": [
     {
-      "q": "Wo kaufe ich Tickets für den Interno Positano?",
+      "q": "Wo kaufe ich Interno Positano Bustickets?",
       "a": [
-        "Tickets erhältst du in jedem Tabacchi oder Zeitungskiosk im Ort, inklusive des Kiosks direkt neben der Haltestelle. Fahrer verkaufen an Bord keine Tickets."
+        "Holen Sie sich Tickets bei jedem Tabacchi/Zeitungsstand in der Stadt, einschließlich des Kiosks neben der Bushaltestelle. Fahrer verkaufen keine Tickets an Bord."
       ]
     },
     {
-      "q": "Wie oft fährt der Interno Positano?",
+      "q": "Wie oft fährt der Interno Positano Bus?",
       "a": [
-        "Die Fahrten sind ungefähr alle 30 Minuten von etwa 08:00 Uhr bis Mitternacht geplant, mit zusätzlichen Kursen in der Hochsaison – prüfe den Fahrplan vor deiner Überfahrt."
+        "Dienste sind etwa alle 30 Minuten von etwa 08:00 bis Mitternacht geplant, mit zusätzlichen Abfahrten in der Hochsaison – bestätigen Sie immer den Fahrplan vor der Abfahrt."
       ]
     },
     {
-      "q": "Wie funktionieren die Porter am Hafen?",
+      "q": "Wie funktionieren die Anlegeträger?",
       "a": [
-        "Die Porter empfangen jede Fähre, laden dein Gepäck und liefern es bergauf. Sag ihnen, dass du im Hostel Brikette wohnst, bezahle den genannten Preis und behalte Wertsachen oder Medikamente bei dir."
+        "Träger treffen jede Fähre, laden Ihre Taschen und liefern sie bergauf. Sagen Sie ihnen, dass Sie im Hostel Brikette übernachten, zahlen Sie die angegebene Gebühr und behalten Sie Wertsachen oder Medikamente bei sich."
+      ]
+    },
+    {
+      "q": "Wie viel kosten Träger vom Fähranleger?",
+      "a": [
+        "Offizielle Trägerpreise für die Saison 2026 sind €15 pro Standard-Tasche (bis 20 kg) und €18-€20 für übergroße oder schwere Gegenstände. Zahlung nur bar am Anleger. Für zwei Personen mit zwei Taschen erwarten Sie insgesamt €30-40 für den Trägerdienst zu zahlen."
+      ]
+    },
+    {
+      "q": "Was ist, wenn ich nach Mitternacht ankomme, wenn Busse nicht fahren?",
+      "a": [
+        "Der Interno Bus fährt bis etwa Mitternacht. Für späte Ankünfte buchen Sie ein Taxi im Voraus (€25-€35 zum Hostel, WhatsApp +39 379 125 6222) oder schreiben Sie unserem Empfangsteam, damit wir beim Arrangieren des Transports helfen können. Versuchen Sie nicht, mit Gepäck in der Dunkelheit zu laufen."
+      ]
+    },
+    {
+      "q": "Was sind die Check-in-Zeiten und kann ich Gepäck aufbewahren, wenn ich früh ankomme?",
+      "a": [
+        "Regulärer Check-in ist von 15:00 bis 22:30 Uhr. Gepäckaufbewahrung ist ab 10:30 Uhr für Gäste verfügbar, die einchecken (vorbehaltlich Platz). Für vollständige Details (Ausweisanforderungen, Kautionen und späte Ankunftsoptionen) siehe unseren Check-in & Check-out Leitfaden: %LINK:checkinCheckout|Check-in & Check-out%."
+      ]
+    },
+    {
+      "q": "Kann ich vom Fähranleger zum Hostel mit Gepäck laufen?",
+      "a": [
+        "Nicht empfohlen. Die Route umfasst 300+ Stufen, steile Bergaufabschnitte und dauert 45-60 Minuten mit Taschen. Fast alle unsere Gäste nutzen entweder Träger + Interno Bus (empfohlen) oder Taxi. Laufen ist nur mit leichtem Tagesrucksack praktisch."
+      ]
+    },
+    {
+      "q": "Ist diese Route für Rollstühle oder Kinderwagen zugänglich?",
+      "a": [
+        "Nein, diese Route umfasst Treppen und steile Wege, die für Rollstühle oder Kinderwagen ungeeignet sind. Kontaktieren Sie unser Empfangsteam vor der Ankunft – wir können barrierefreien Taxitransport direkt vom Fähranleger zum Hosteleingang arrangieren (€25-€35)."
+      ]
+    },
+    {
+      "q": "Was ist, wenn meine Fähre verspätet oder gestrichen wird?",
+      "a": [
+        "Überprüfen Sie den aktuellen Fährstatus auf der Website der Fährgesellschaft oder am Anleger. Wenn um 30+ Minuten verspätet, kann sich der Interno Bus-Fahrplan verschieben – fragen Sie beim Tabacchi nach aktualisiertem Timing. Wenn Ihre Fähre gestrichen wird, umfassen alternative Optionen eine Fähre zu einem anderen Hafen (Amalfi, Sorrento) zu nehmen und SITA-Busse zu nutzen, oder für die nächste verfügbare Überfahrt umzubuchen."
       ]
     }
   ],
   "howtoSteps": [
-    "Interno-Tickets kaufen und Gepäck den Portern am Anleger übergeben",
-    "Vom Strand zur Piazza dei Mulini und zur Interno-Haltestelle gehen",
-    "Mit dem Interno-Positano-Bus bergauf fahren (Ausschilderung \"interno positano\")",
-    "Beim Tabacchi aussteigen, 100 m laufen und die Treppe zum Hostel Brikette hinaufgehen"
+    "Kaufen Sie Interno Bustickets und übergeben Sie das Gepäck an die Träger am Dock",
+    "Gehen Sie vom Strand zur Piazza dei Mulini und zur Interno Bushaltestelle",
+    "Nehmen Sie den Interno Positano Bus bergauf (suchen Sie nach dem Schild \\\\\"interno positano\\\\\")",
+    "Steigen Sie beim Tabakladen aus, gehen Sie 100 m und steigen Sie die Treppe zum Hostel Brikette hinauf"
   ]
 }

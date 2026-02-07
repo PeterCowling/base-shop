@@ -6,7 +6,7 @@ jest.mock("@acme/sanity", () => ({
 
 import { fetchPublishedPosts } from "@acme/sanity";
 import { GET } from "../src/app/api/search/route";
-import { PRODUCTS } from "@platform-core/products";
+import { PRODUCTS } from "@acme/platform-core/products";
 
 function makeRequest(q: string) {
   return new Request(`http://example.com/api/search?q=${encodeURIComponent(q)}`);

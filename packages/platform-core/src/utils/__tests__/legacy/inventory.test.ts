@@ -1,9 +1,9 @@
 // packages/platform-core/src/utils/inventory.test.ts
 import {
-  flattenInventoryItem,
-  expandInventoryItem,
-  computeAvailability,
   applyInventoryBatch,
+  computeAvailability,
+  expandInventoryItem,
+  flattenInventoryItem,
 } from "../../inventory";
 import type { InventoryItem } from "../../types/inventory";
 

@@ -1,0 +1,39 @@
+{
+  "lastCommit": "05f8ca205d",
+  "scanDate": "2026-01-28T21:40:49Z",
+  "scanType": "full",
+  "changedFiles": [],
+  "summary": {
+    "cardsActive": 3,
+    "cardsModified": 0,
+    "cardsAdded": 0,
+    "cardsDeleted": 0,
+    "ideasInbox": 3,
+    "ideasWorked": 0,
+    "ideasModified": 0,
+    "ideasAdded": 2,
+    "plansModified": 0,
+    "stageDocsModified": 0
+  },
+  "findings": {
+    "highRelevance": [
+      {
+        "id": "SCAN-PLAT-001",
+        "type": "outdated-card",
+        "severity": "high",
+        "description": "PLAT-OPP-0001 shows incomplete but Phase 0 is 100% done"
+      },
+      {
+        "id": "SCAN-BRIK-001",
+        "type": "completion-check",
+        "severity": "medium",
+        "description": "BRIK-OPP-0001 may be complete, needs verification"
+      }
+    ]
+  },
+  "ideasCreated": [
+    "SCAN-PLAT-001",
+    "SCAN-BRIK-001"
+  ],
+  "notes": "First productive scan. Found 2 actionable issues: outdated Phase 0 card and potentially complete guide card."
+}

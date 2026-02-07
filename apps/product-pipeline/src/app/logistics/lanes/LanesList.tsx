@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { Cluster, Stack } from "@ui/components/atoms/primitives";
+
+import { Cluster, Stack } from "@acme/design-system/primitives";
+
 import type { LaneSummary, LogisticsStrings } from "./types";
 
 function formatLatestSummary(
@@ -37,12 +39,12 @@ function formatExpiryBadge(
   const diffMs = expires.getTime() - Date.now();
   const diffDays = Math.ceil(diffMs / 86_400_000);
   if (diffDays < 0) {
-    return { label: strings.badges.expired, tone: "text-red-600" };
+    return { label: strings.badges.expired, tone: "text-danger" };
   }
   if (diffDays <= 14) {
-    return { label: `${strings.badges.expiring} ${diffDays}d`, tone: "text-amber-600" };
+    return { label: `${strings.badges.expiring} ${diffDays}d`, tone: "text-warning" };
   }
-  return { label: `${strings.badges.valid} ${diffDays}d`, tone: "text-emerald-600" };
+  return { label: `${strings.badges.valid} ${diffDays}d`, tone: "text-success" };
 }
 
 export default function LanesList({

@@ -3,22 +3,21 @@
 import { useState } from "react";
 import Image from "next/image";
 import { ulid } from "ulid";
+
+import { Inline } from "@acme/design-system/primitives";
 import {
   Button,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@ui/components/atoms/shadcn";
-import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@ui/components/atoms";
-import { Inline } from "@ui/components/atoms/primitives";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
 import type { PageComponent } from "@acme/types";
 

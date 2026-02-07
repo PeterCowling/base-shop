@@ -1,7 +1,9 @@
 "use client";
 
 import * as React from "react";
+
 import type { SKU } from "@acme/types";
+
 import { Price } from "../../atoms/Price";
 
 export interface PDPDetailsSectionProps extends React.HTMLAttributes<HTMLDivElement> {

@@ -1,8 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
 import type { FormEvent } from "react";
+import { useEffect, useMemo, useState } from "react";
 import DOMPurify from "dompurify";
 import { z } from "zod";
+
 import type { MarketingEmailTemplateVariant } from "@acme/email-templates";
+
 import type { ActionResult } from "../../../components/actionResult";
 
 const formSchema = z

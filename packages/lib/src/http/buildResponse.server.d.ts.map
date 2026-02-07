@@ -1,0 +1,1 @@
+{"version":3,"file":"buildResponse.server.d.ts","sourceRoot":"","sources":["buildResponse.server.ts"],"names":[],"mappings":"AAAA,OAAO,aAAa,CAAC;AAErB,MAAM,WAAW,aAAa;IAC5B,QAAQ,EAAE;QACR,MAAM,EAAE,MAAM,CAAC;QACf,OAAO,EAAE,MAAM,CAAC,MAAM,EAAE,MAAM,CAAC,CAAC;QAChC,IAAI,CAAC,EAAE,MAAM,GAAG,IAAI,CAAC;KACtB,CAAC;CACH;AAED;;;;GAIG;AACH,wBAAgB,aAAa,CAAC,aAAa,EAAE,aAAa,GAAG,QAAQ,CAQpE"}

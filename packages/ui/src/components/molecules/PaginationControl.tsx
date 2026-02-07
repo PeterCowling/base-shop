@@ -1,9 +1,11 @@
 "use client";
 import * as React from "react";
-import { cn } from "../../utils/style";
-import { Button } from "../atoms/shadcn";
-import { Inline } from "../atoms/primitives";
+
 import { useTranslations } from "@acme/i18n";
+
+import { cn } from "../../utils/style";
+import { Inline } from "../atoms/primitives";
+import { Button } from "../atoms/shadcn";
 
 export interface PaginationControlProps
   extends React.HTMLAttributes<HTMLDivElement> {

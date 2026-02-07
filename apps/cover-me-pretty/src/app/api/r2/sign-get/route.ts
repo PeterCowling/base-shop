@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { AwsClient } from "aws4fetch";
+import { z } from "zod";
 
 export const runtime = "edge";
 

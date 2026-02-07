@@ -1,32 +1,34 @@
 // src/components/not-found/NotFoundView.tsx
-import { Fragment, memo, useCallback, useMemo } from "react";
+"use client";
+import { Fragment, memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Button } from "@acme/ui/atoms/Button";
+import { Button } from "@acme/design-system/primitives";
 import { AppLink as Link } from "@acme/ui/atoms/Link";
 
+import Page from "@/components/common/Page";
+import { BASE_URL } from "@/config/site";
 import * as ModalCtx from "@/context/ModalContext";
 import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { getSlug } from "@/utils/slug";
-import { safeUseLoaderData } from "@/utils/safeUseLoaderData";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { BASE_URL } from "@/config/site";
+import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { resolveI18nMeta } from "@/utils/i18nMeta";
-import type { LinksFunction, MetaDescriptor } from "react-router";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
 import { useApplyFallbackHead } from "@/utils/testHeadFallback";
 
-import Page from "@/components/common/Page";
+// Local types replacing react-router imports (used only for test head fallback)
+type MetaDescriptor = Record<string, string | undefined>;
+type LinkDescriptor = Record<string, string | undefined> & { key?: string };
+
+type LoaderData = { lang?: AppLanguage; title?: string; desc?: string };
 
 function NotFoundView() {
-  const data = safeUseLoaderData<{
-    lang: AppLanguage;
-    title: string;
-    desc: string;
-  }>();
+  // In App Router, there's no loader data - use fallbacks
+   
+  const data = undefined as LoaderData | undefined;
 
   const fallbackLang = i18nConfig.fallbackLng as AppLanguage;
   const docLang =
@@ -69,7 +71,7 @@ function NotFoundView() {
     return trimmed && trimmed !== fallbackKey ? trimmed : undefined;
   };
 
-  const fallbackReserveLabel = useMemo(() => {
+  const fallbackReserveLabel = (() => {
     const tFallbackTokens = i18n.getFixedT(fallbackLang, "_tokens");
     const tFallbackNotFound = i18n.getFixedT(fallbackLang, "notFoundPage");
     const tFallbackTranslation = i18n.getFixedT(fallbackLang, "translation");
@@ -83,9 +85,9 @@ function NotFoundView() {
     );
 
     return reserve ?? book ?? buttonFallback ?? translationFallback;
-  }, [fallbackLang]);
+  })();
 
-  const reserveLabel = useMemo(() => {
+  const reserveLabel = (() => {
     const reserve = sanitiseLabel(tTokens("reserveNow") as string, "reserveNow");
     const book = sanitiseLabel(tTokens("bookNow") as string, "bookNow");
     const buttonFallback = sanitiseLabel(t("buttonReserve") as string, "buttonReserve");
@@ -96,22 +98,22 @@ function NotFoundView() {
     );
 
     return reserve ?? book ?? buttonFallback ?? translationFallback ?? fallbackReserveLabel ?? fallbackTranslation;
-  }, [t, tTokens, tTranslation, fallbackReserveLabel, fallbackLang]);
+  })();
 
-  const reserveAriaLabel = useMemo(() => {
+  const reserveAriaLabel = (() => {
     const fallback = t("buttonReserve") as string;
     if (fallback && fallback.trim() && fallback !== "buttonReserve") {
       return fallback;
     }
     return reserveLabel;
-  }, [reserveLabel, t]);
+  })();
 
   const handleReserve = useCallback(() => {
     openModal("booking");
   }, [openModal]);
 
   // During tests, apply head tags to document.head to keep assertions simple
-  const fallbackHeadDescriptors = useMemo<MetaDescriptor[] | undefined>(() => {
+  const fallbackHeadDescriptors: MetaDescriptor[] | undefined = (() => {
     if (process.env.NODE_ENV !== "test") return undefined;
     const path = `/${lang}/404`;
     const url = `${BASE_URL}${path}`;
@@ -134,12 +136,12 @@ function NotFoundView() {
       image: { src: image, width: OG_IMAGE.width, height: OG_IMAGE.height },
       isPublished: false,
     }) as MetaDescriptor[];
-  }, [lang, data?.title, data?.desc]);
+  })();
 
-  const fallbackHeadLinks = useMemo<ReturnType<LinksFunction> | undefined>(() => {
+  const fallbackHeadLinks: LinkDescriptor[] | undefined = (() => {
     if (process.env.NODE_ENV !== "test") return undefined;
-    return buildRouteLinks();
-  }, []);
+    return buildRouteLinks() as LinkDescriptor[];
+  })();
 
   useApplyFallbackHead(fallbackHeadDescriptors, fallbackHeadLinks);
 
@@ -148,16 +150,24 @@ function NotFoundView() {
       {process.env.NODE_ENV === "test" && (
         <Fragment>
           {(fallbackHeadDescriptors ?? []).map((d, i) => {
-            const titleMaybe = (d as { title?: string }).title;
+            const descriptor = d as Record<string, string | undefined>;
+            const titleMaybe = descriptor["title"];
             if (typeof titleMaybe === "string" && titleMaybe) {
               return <title key={`t-${i}`}>{titleMaybe}</title>;
             }
-            const { key: _k, ...rest } = d as Record<string, string | undefined> & { key?: string };
-            return <meta key={`m-${i}`} {...(rest as Record<string, string | undefined>)} />;
+            const tagName = descriptor["tagName"];
+            if (tagName === "link") {
+              const { ["tagName"]: _ignored, ["key"]: _key, ...rest } = descriptor;
+              return <link key={`m-${i}`} {...rest} />;
+            }
+            const { ["key"]: _k, ["tagName"]: _tag, ...rest } = descriptor;
+            return <meta key={`m-${i}`} {...rest} />;
           })}
           {(fallbackHeadLinks ?? []).map((l, i) => {
-            const { key: linkKey, ...rest } = l as unknown as Record<string, string | undefined> & { key?: string };
-            return <link key={`l-${i}-${linkKey ?? ""}`} {...(rest as Record<string, string | undefined>)} />;
+            const descriptor = l as unknown as Record<string, string | undefined> & { key?: string };
+            const linkKey = descriptor["key"];
+            const { ["key"]: _ignored, ...rest } = descriptor;
+            return <link key={`l-${i}-${linkKey ?? ""}`} {...rest} />;
           })}
         </Fragment>
       )}

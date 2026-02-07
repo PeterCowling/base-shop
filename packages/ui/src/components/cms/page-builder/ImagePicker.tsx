@@ -1,10 +1,15 @@
 // packages/ui/src/components/cms/page-builder/ImagePicker.tsx
 "use client";
 
-import type { MediaItem } from "@acme/types";
-import useFileUpload from "@ui/hooks/useFileUpload";
+import { type ChangeEvent,memo, useEffect, useState } from "react";
 import Image from "next/image";
-import { memo, useEffect, useState, type ChangeEvent } from "react";
+
+import { useTranslations } from "@acme/i18n";
+import type { MediaItem } from "@acme/types";
+
+import useFileUpload from "../../../hooks/useFileUpload";
+import { Loader } from "../../atoms/Loader";
+import { Grid as DSGrid } from "../../atoms/primitives/Grid";
 import {
   Button,
   Dialog,
@@ -14,10 +19,8 @@ import {
   DialogTrigger,
   Input,
 } from "../../atoms/shadcn";
-import { Loader } from "../../atoms/Loader";
-import { Grid as DSGrid } from "../../atoms/primitives/Grid";
+
 import useMediaLibrary from "./useMediaLibrary";
-import { useTranslations } from "@acme/i18n";
 
 export interface ImagePickerProps {
   onSelect: (url: string) => void;
@@ -135,7 +138,7 @@ function ImagePicker({ onSelect, children }: ImagePickerProps) {
           </p>
         )}
         {uploadError && (
-          // eslint-disable-next-line ds/no-hardcoded-copy -- CMS-000: error message comes from server, not user-facing copy to translate
+           
           <p className="text-sm text-danger" data-token="--color-danger">{uploadError}</p>
         )}
         <Input
@@ -153,7 +156,7 @@ function ImagePicker({ onSelect, children }: ImagePickerProps) {
               </div>
             )}
             {!loading && mediaError && (
-              // eslint-disable-next-line ds/no-hardcoded-copy -- CMS-000: error string from server/logging
+               
               <p className="text-danger col-span-3 text-sm" data-token="--color-danger">{mediaError}</p>
             )}
             {!loading && !mediaError &&

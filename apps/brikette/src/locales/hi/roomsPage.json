@@ -266,6 +266,41 @@
   "loadingPrice": "मूल्य लोड हो रहा है…",
   "landingImageAlt": "{{room}} की लैंडिंग छवि",
   "priceNotes": {
-    "dorm": "Per night, per guest. One guest in one bunk bed."
+    "dorm": "प्रति रात, प्रति अतिथि। एक अतिथि, एक बंक बेड।"
+  },
+  "facts": {
+    "type": {
+      "privateRoom": "निजी कमरा",
+      "mixedDorm": "मिक्स्ड डॉर्म",
+      "femaleDorm": "महिला डॉर्म",
+      "femaleRoom": "महिला कमरा"
+    },
+    "bathroom": {
+      "bathroomEnsuite": "इन-सुइट बाथरूम",
+      "bathroomPrivate": "निजी बाथरूम",
+      "bathroomSharedFemale": "साझा महिला बाथरूम"
+    },
+    "sleeps": "क्षमता: {{count}}"
+  },
+  "detailsLine": {
+    "beds": {
+      "doubleBedForTwo": "दो अतिथियों के लिए डबल बेड",
+      "oneDormBedTwoGuests": "एक बंक बेड — दो अतिथि",
+      "threeSingleBedsThreeGuests": "तीन सिंगल बेड — तीन अतिथि",
+      "threeDormBedsSixGuests": "तीन बंक बेड — छह अतिथि",
+      "threeDormBedsPlusSingleSevenGuests": "तीन बंक + एक सिंगल — सात अतिथि",
+      "fourDormBedsEightGuests": "चार बंक बेड — आठ अतिथि"
+    },
+    "views": {
+      "seaViewTerrace": "समुद्री दृश्य टेरेस",
+      "seaViewExtraLargeTerrace": "बड़े आकार की समुद्री दृश्य टेरेस",
+      "gardenView": "बगीचे का दृश्य",
+      "courtyardView": "आंगन का दृश्य",
+      "noView": "कोई दृश्य नहीं"
+    }
+  },
+  "priceUnits": {
+    "perRoom": "कमरे के लिए",
+    "perBed": "बेड के लिए"
   }
 }

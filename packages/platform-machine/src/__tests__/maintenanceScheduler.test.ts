@@ -1,28 +1,30 @@
-jest.mock("fs/promises", () => ({
-  readdir: jest.fn(),
-}));
-
-jest.mock("@platform-core/utils", () => ({
-  logger: { error: jest.fn(), info: jest.fn() },
-}));
-
-jest.mock("@platform-core/repositories/inventory.server", () => ({
-  readInventory: jest.fn(),
-}));
-
-jest.mock("@platform-core/repositories/products.server", () => ({
-  readRepo: jest.fn(),
-}));
-
 import { readdir } from "fs/promises";
-import { logger } from "@platform-core/utils";
-import { readInventory } from "@platform-core/repositories/inventory.server";
-import { readRepo as readProducts } from "@platform-core/repositories/products.server";
+
+import { readInventory } from "@acme/platform-core/repositories/inventory.server";
+import { readRepo as readProducts } from "@acme/platform-core/repositories/products.server";
+import { logger } from "@acme/platform-core/utils";
+
 import {
   runMaintenanceScan,
   startMaintenanceScheduler,
 } from "../maintenanceScheduler";
 import * as maintenanceScheduler from "../maintenanceScheduler";
+
+jest.mock("fs/promises", () => ({
+  readdir: jest.fn(),
+}));
+
+jest.mock("@acme/platform-core/utils", () => ({
+  logger: { error: jest.fn(), info: jest.fn() },
+}));
+
+jest.mock("@acme/platform-core/repositories/inventory.server", () => ({
+  readInventory: jest.fn(),
+}));
+
+jest.mock("@acme/platform-core/repositories/products.server", () => ({
+  readRepo: jest.fn(),
+}));
 
 describe("runMaintenanceScan", () => {
   const readdirMock = readdir as unknown as jest.Mock;

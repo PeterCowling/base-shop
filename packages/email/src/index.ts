@@ -1,6 +1,11 @@
 import "server-only"; // i18n-exempt -- EMAIL-1000 [ttl=2026-03-31]
-import { sendEmail } from "./sendEmail";
+
 import { createRequire } from "module";
+
+import type * as Scheduler from "./scheduler";
+import type * as Segments from "./segments";
+import { sendEmail } from "./sendEmail";
+import type * as Storage from "./storage";
 
 try {
   const req =
@@ -15,15 +20,13 @@ try {
   // The core email service isn't available in the current environment.
 }
 
-export type { CampaignOptions } from "./send";
-export { sendCampaignEmail } from "./send";
-export { registerTemplate, renderTemplate, clearTemplates } from "./templates";
-export { escapeHtml } from "./escapeHtml";
 export type { AbandonedCart } from "./abandonedCart";
 export { recoverAbandonedCarts, resolveAbandonedCartDelay } from "./abandonedCart";
+export { escapeHtml } from "./escapeHtml";
+export type { CampaignOptions } from "./send";
+export { sendCampaignEmail } from "./send";
+export { clearTemplates,registerTemplate, renderTemplate } from "./templates";
 export { sendEmail };
-import type * as Segments from "./segments";
-import type * as Scheduler from "./scheduler";
 
 export const resolveSegment: typeof Segments.resolveSegment = async (
   ...args
@@ -78,7 +81,6 @@ export const syncCampaignAnalytics: typeof Scheduler.syncCampaignAnalytics = asy
   const mod: typeof Scheduler = await import("./scheduler");
   return mod.syncCampaignAnalytics(...args);
 };
-import type * as Storage from "./storage";
 
 export const setCampaignStore: typeof Storage.setCampaignStore = async (
   ...args
@@ -102,13 +104,13 @@ export const fsCampaignStore: Storage.CampaignStore = {
   },
 };
 
+export {
+  emitClick,
+  emitOpen,
+  emitSend,
+  onClick,
+  onOpen,
+  onSend,
+} from "./hooks";
 export type { CampaignStore } from "./storage";
 export type { Campaign } from "./types";
-export {
-  onSend,
-  onOpen,
-  onClick,
-  emitSend,
-  emitOpen,
-  emitClick,
-} from "./hooks";

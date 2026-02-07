@@ -1,8 +1,12 @@
 /* eslint-env jest */
 
+import { render, screen, within } from "@testing-library/react";
+
+import AiFeedPanel from "../src/app/cms/shop/[shop]/settings/seo/AiFeedPanel";
+
 const listEventsMock = jest.fn();
 
-jest.mock("@platform-core/repositories/analytics.server", () => ({
+jest.mock("@acme/platform-core/repositories/analytics.server", () => ({
   listEvents: (...args: unknown[]) => listEventsMock(...args),
 }));
 
@@ -19,9 +23,6 @@ jest.mock("@/components/atoms/shadcn", () => ({
   TableHead: ({ children, ...props }: any) => <th {...props}>{children}</th>,
   TableCell: ({ children, ...props }: any) => <td {...props}>{children}</td>,
 }));
-
-import { render, screen, within } from "@testing-library/react";
-import AiFeedPanel from "../src/app/cms/shop/[shop]/settings/seo/AiFeedPanel";
 
 beforeEach(() => {
   jest.clearAllMocks();

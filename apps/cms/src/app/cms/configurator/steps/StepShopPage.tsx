@@ -1,35 +1,36 @@
 "use client";
 
+import { useContext, useMemo, useState } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { ulid } from "ulid";
+
+import { Cluster,Inline } from "@acme/design-system/primitives";
 import {
   Button,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@ui/components/atoms/shadcn";
-import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@ui/components/atoms";
-import PageBuilder from "@/components/cms/PageBuilder";
-import { fillLocales } from "@i18n/fillLocales";
-import type { Page, PageComponent } from "@acme/types";
-import { apiRequest } from "../lib/api";
-import { ulid } from "ulid";
-import { useContext, useMemo, useState } from "react";
-import { Toast } from "@ui/components/atoms";
-import useStepCompletion from "../hooks/useStepCompletion";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
-import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
-import { ConfiguratorContext } from "../ConfiguratorContext";
-import { useThemeLoader } from "../hooks/useThemeLoader";
-import { Inline, Cluster } from "@ui/components/atoms/primitives";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
+import { fillLocales } from "@acme/i18n/fillLocales";
+import type { Page, PageComponent } from "@acme/types";
+import { useToast } from "@acme/ui/operations";
+
+import PageBuilder from "@/components/cms/PageBuilder";
+
+import { ConfiguratorContext } from "../ConfiguratorContext";
+import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
+import useStepCompletion from "../hooks/useStepCompletion";
+import { useThemeLoader } from "../hooks/useThemeLoader";
+import { apiRequest } from "../lib/api";
 
 interface Props {
   pageTemplates?: Array<{
@@ -93,10 +94,7 @@ export default function StepShopPage({
   // Always call hooks unconditionally; then choose value
   const loadedStyle = useThemeLoader();
   const style = themeStyle ?? loadedStyle;
-  const [toast, setToast] = useState<{ open: boolean; message: string }>({
-    open: false,
-    message: "",
-  });
+  const toast = useToast();
   const [, markComplete] = useStepCompletion("shop-page");
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
@@ -266,7 +264,7 @@ export default function StepShopPage({
           setIsSaving(false);
           if (data) {
             setPageId?.(data.id);
-            setToast({ open: true, message: String(t("cms.configurator.shopPage.draftSaved")) });
+            toast.success(String(t("cms.configurator.shopPage.draftSaved")));
           } else if (error) {
             setSaveError(error);
           }
@@ -282,7 +280,7 @@ export default function StepShopPage({
           setIsPublishing(false);
           if (data) {
             setPageId?.(data.id);
-            setToast({ open: true, message: String(t("cms.configurator.shopPage.pagePublished")) });
+            toast.success(String(t("cms.configurator.shopPage.pagePublished")));
           } else if (error) {
             setPublishError(error);
           }
@@ -316,11 +314,6 @@ export default function StepShopPage({
           </Button>
         )}
       </Cluster>
-      <Toast
-        open={toast.open}
-        onClose={() => setToast((t) => ({ ...t, open: false }))}
-        message={toast.message}
-      />
     </div>
   );
 }

@@ -1,19 +1,21 @@
 // apps/cms/src/actions/media/mediaFileService.ts
 
-import { validateShopName } from "@platform-core/shops";
-import type { ImageOrientation, MediaItem } from "@acme/types";
-import { promises as fs } from "fs";
 import type { Stats } from "fs";
+import { promises as fs } from "fs";
 import * as path from "path";
 import { ulid } from "ulid";
-// Use server-side translations loader inside async functions
 
+import { validateShopName } from "@acme/platform-core/shops";
+import type { ImageOrientation, MediaItem } from "@acme/types";
+
+import type { MediaMetadataEntry } from "../media.helpers";
+// Use server-side translations loader inside async functions
 import {
   readMetadata,
   uploadsDir,
   writeMetadata,
 } from "../media.helpers";
-import type { MediaMetadataEntry } from "../media.helpers";
+
 import { normalizeTagsForStorage } from "./tagUtils";
 
 const VIDEO_EXTENSIONS = new Set([

@@ -1,9 +1,11 @@
 // packages/ui/src/components/cms/page-builder/CanvasControlsMenu.tsx
 "use client";
 
-import { Button, Popover, PopoverContent, PopoverTrigger, Tooltip } from "../../atoms";
-import GridSettings from "./GridSettings";
 import { useTranslations } from "@acme/i18n";
+
+import { Button, Popover, PopoverContent, PopoverTrigger, Tooltip } from "../../atoms";
+
+import GridSettings from "./GridSettings";
 
 interface Props {
   gridProps: React.ComponentProps<typeof GridSettings>;

@@ -2,3 +2,4 @@
 export interface ApiError {
     error: string;
 }
+//# sourceMappingURL=ApiError.d.ts.map

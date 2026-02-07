@@ -27,7 +27,16 @@
       "points": [
         "Compra los billetes en línea con antelación en temporada alta o en los mostradores de los operadores junto al muelle.",
         "Llega 15–20 minutos antes de la salida para canjear vales y hacer fila para embarcar.",
-        "Mantén tu billete o código QR a mano para las comprobaciones del personal."
+        "Mantén tu billete o código QR a mano para las comprobaciones del personal.",
+        "Si viajas con equipaje grande, pregunta al personal sobre las normas de equipaje y dónde guardar las maletas a bordo."
+      ]
+    },
+    "gettingToPier": {
+      "title": "Cómo llegar al muelle desde Hostel Brikette",
+      "intro": "Si partes del hostel, usa <dockWalk>nuestra guía paso a paso al muelle del ferry</dockWalk> para llegar a Spiaggia Grande sin complicaciones.",
+      "points": [
+        "Deja tiempo extra para las escaleras, el calor y el tráfico peatonal lento en el pueblo.",
+        "Lleva agua y ten a mano los documentos esenciales (pasaporte/cartera/teléfono) para los controles de embarque."
       ]
     },
     "positanoPier": {
@@ -44,6 +53,15 @@
         "Los barcos llegan a los muelles del paseo marítimo de Amalfi, cerca de la Piazza Flavio Gioia.",
         "El centro histórico y el paseo marítimo están justo al lado del puerto.",
         "Para continuar en autobús (por ejemplo, a Ravello o Sorrento), sigue las indicaciones hacia la parada de SITA cerca del paseo marítimo."
+      ]
+    },
+    "planB": {
+      "title": "Si se cancela el ferry (Plan B que funciona)",
+      "intro": "En días ventosos, el mar puede detener los barcos. No te preocupes: cambia al <bus>autobús Positano → Amalfi</bus> y consulta <cancellations>nuestra guía de cancelaciones de ferry</cancellations> para horarios y soluciones.",
+      "points": [
+        "Si ya estás en la playa, sube de vuelta a la carretera principal y toma el próximo autobús o taxi disponible.",
+        "Deja tiempo extra: los autobuses pueden llegar llenos en meses de alta temporada, y los retrasos son normales.",
+        "Si viajas tarde, confirma temprano la última salida viable (ferry o autobús) para no quedarte varado."
       ]
     }
   },

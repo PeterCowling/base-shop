@@ -1,12 +1,14 @@
 /* eslint-disable security/detect-non-literal-fs-filename -- ABC-123: JSON backend uses validated shop names + DATA_ROOT */
 import "server-only";
 
-import { sectionTemplateSchema, type SectionTemplate } from "@acme/types";
 import { promises as fs } from "fs";
 import * as path from "path";
-import { validateShopName } from "../../shops/index";
-import { DATA_ROOT } from "../../dataRoot";
+
 import { nowIso } from "@acme/date-utils";
+import { type SectionTemplate,sectionTemplateSchema } from "@acme/types";
+
+import { DATA_ROOT } from "../../dataRoot";
+import { validateShopName } from "../../shops/index";
 
 function sectionsPath(shop: string): string {
   shop = validateShopName(shop);

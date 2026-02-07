@@ -1,0 +1,130 @@
+{
+  "meta": {
+    "title": "Nội quy | Hostel Brikette",
+    "description": "Nội quy Hostel Brikette về ứng xử, khách thăm, giờ yên tĩnh, an ninh, thẻ khóa và quy trình tại chỗ."
+  },
+  "headings": {
+    "pageTitle": "Hostel Brikette — Nội quy",
+    "pageSubtitle": "Nội quy"
+  },
+  "toc": {
+    "title": "Mục lục",
+    "aria": "Mục lục"
+  },
+  "footer": {
+    "end": "Hết tài liệu.",
+    "backToTop": "Lên đầu trang"
+  },
+  "sections": {
+    "s1": {
+      "title": "1. Ứng xử tôn trọng và an toàn",
+      "body": [
+        "Áp dụng cho: mọi khách và khách thăm tại cơ sở.",
+        "Nội quy là một phần của hợp đồng lưu trú. Vi phạm có thể dẫn đến yêu cầu rời khỏi cơ sở và/hoặc chấm dứt do vi phạm theo Điều khoản đặt chỗ.",
+        "1.1 Tôn trọng nhân viên và khách khác. Cấm quấy rối, đe dọa, bạo lực hoặc phân biệt đối xử.",
+        "1.2 Tuân theo hướng dẫn của nhân viên về an ninh và vận hành.",
+        "1.3 Không làm hư hỏng tài sản hoặc can thiệp thiết bị an toàn."
+      ]
+    },
+    "s2": {
+      "title": "2. Giờ yên tĩnh",
+      "body": [
+        "2.1 Giờ yên tĩnh: 23:45–08:00. Trong thời gian này, hạn chế tiếng ồn, không mở nhạc lớn, gọi điện ngoài khu ngủ.",
+        "2.2 Nếu gây ồn lặp lại, chúng tôi có thể yêu cầu bạn rời đi theo Điều khoản đặt chỗ."
+      ]
+    },
+    "s3": {
+      "title": "3. Khách thăm (chỉ khu vực chung)",
+      "body": [
+        "3.1 Khách thăm chỉ được phép theo quyết định của chúng tôi và chỉ ở khu vực chung; không vào phòng/ký túc.",
+        "3.2 Thời gian khách thăm (nếu cho phép): 10:30–23:00, tùy vận hành.",
+        "3.3 Khách thăm phải xuất trình giấy tờ gốc và tuân thủ biện pháp an ninh (vòng tay nếu có).",
+        "3.4 Không đưa khách thăm vào phòng; đây là vi phạm nghiêm trọng."
+      ]
+    },
+    "s4": {
+      "title": "4. Người chưa đăng ký",
+      "body": [
+        "4.1 Chỉ khách đã đăng ký mới được qua đêm.",
+        "4.2 Nếu phát hiện người chưa đăng ký trong phòng hoặc qua đêm, chúng tôi có thể yêu cầu đăng ký ngay hoặc rời đi và áp dụng phí theo Điều khoản đặt chỗ."
+      ]
+    },
+    "s5": {
+      "title": "5. Nhận phòng và đến sớm",
+      "body": [
+        "5.1 Khung giờ nhận phòng: 15:00–22:00.",
+        "5.2 Đến trước 10:30 có thể không vào được.",
+        "5.3 Trong khoảng mở cửa đến giờ nhận phòng, có thể cho phép chờ, vào khu vực chung và/hoặc gửi hành lý."
+      ]
+    },
+    "s6": {
+      "title": "6. Yêu cầu ID",
+      "body": [
+        "6.1 Khách và khách thăm phải xuất trình ID gốc khi được yêu cầu.",
+        "6.2 Không xuất trình ID có thể bị yêu cầu rời đi."
+      ]
+    },
+    "s7": {
+      "title": "7. Thẻ khóa/vòng tay",
+      "body": [
+        "7.1 Thẻ khóa/mã vào cửa là cá nhân, không được chia sẻ.",
+        "7.2 Nếu dùng vòng tay an ninh, phải đeo và xuất trình khi yêu cầu.",
+        "7.3 Mất/hỏng thẻ hoặc vòng tay phải báo ngay; có thể tính phí thay thế."
+      ]
+    },
+    "s8": {
+      "title": "8. Chăn ga và đặt cọc",
+      "body": [
+        "8.1 Chăn ga được cung cấp cho mỗi khách.",
+        "8.2 Nếu có đặt cọc (ví dụ €10), sẽ hoàn theo quy trình trả phòng khi trả đủ vật dụng."
+      ]
+    },
+    "s9": {
+      "title": "9. Quy tắc phòng ký túc",
+      "body": [
+        "9.1 Giường chọn theo thứ tự đến.",
+        "9.2 Chuyển giường phải có phép của nhân viên.",
+        "9.3 Giữ khu vực ngủ gọn gàng."
+      ]
+    },
+    "s10": {
+      "title": "10. Chính sách rượu",
+      "body": [
+        "10.1 Có thể cấm rượu mua ngoài mang vào; phát hiện có thể yêu cầu mang ra hoặc giữ đến khi trả phòng.",
+        "10.2 Vi phạm nghiêm trọng có thể dẫn đến chấm dứt lưu trú."
+      ]
+    },
+    "s11": {
+      "title": "11. Vật phẩm trái phép/nguy hiểm",
+      "body": [
+        "11.1 Cấm ma túy, vũ khí và vật phẩm nguy hiểm.",
+        "11.2 Có thể tịch thu và/hoặc báo cơ quan chức năng theo luật."
+      ]
+    },
+    "s12": {
+      "title": "12. Rệp",
+      "body": [
+        "12.1 Nghi ngờ rệp phải báo ngay; không tự ý đổi phòng hoặc di chuyển chăn ga.",
+        "12.2 Có thể yêu cầu thực hiện các biện pháp cách ly.",
+        "12.3 Phí xử lý được quy định theo Điều khoản đặt phòng."
+      ]
+    },
+    "s13": {
+      "title": "13. Trả phòng và đồ đạc",
+      "body": [
+        "13.1 Giờ trả phòng: 07:30–10:30.",
+        "13.2 Trả phòng muộn đến 12:00 nếu được xác nhận, phí EUR 40.",
+        "13.3 Không trả phòng đúng giờ có thể dẫn đến lưu giữ đồ và thu phí theo Điều khoản đặt chỗ.",
+        "13.4 Đồ bỏ quên được giữ 30 ngày rồi xử lý theo luật."
+      ]
+    },
+    "s14": {
+      "title": "14. Thực thi",
+      "body": [
+        "14.1 Vi phạm nhẹ có thể bị cảnh cáo.",
+        "14.2 Vi phạm nghiêm trọng/lặp lại có thể bị yêu cầu rời đi.",
+        "14.3 Các khoản phí xử lý theo Điều khoản đặt chỗ."
+      ]
+    }
+  }
+}

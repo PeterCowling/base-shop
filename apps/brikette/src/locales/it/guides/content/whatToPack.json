@@ -1,54 +1,172 @@
 {
   "seo": {
-    "title": "Cosa mettere in valigia per la Costiera Amalfitana",
-    "description": "Lista stagionale di abbigliamento, accessori e tecnologia per affrontare scale, sole intenso e trasporti."
+    "title": "Cosa mettere in valigia per la Costiera Amalfitana | Guida stagionale",
+    "description": "Lista completa per Positano e la Costiera Amalfitana. Abbigliamento stagionale, calzature per scale, tecnologia, costi e acquisti locali."
   },
+  "lastUpdated": "2025-02-04",
   "linkLabel": "Cosa mettere in valigia per la Costiera Amalfitana",
   "intro": [
-    "Checklist stagionale per Positano: scale e sole guidano le scelte più intelligenti."
+    "Le spettacolari scale della Costiera Amalfitana, il clima stagionale e il sole mediterraneo determinano cosa dovresti mettere in valigia. Questa guida copre gli essenziali per Positano e i paesi circostanti, con variazioni stagionali e costi pratici per l'acquisto di articoli in loco.",
+    "**Principi chiave per la valigia:** Dai priorità a scarpe comode da passeggio (ci sono scale ovunque), protezione solare tutto l'anno e strati per i cambiamenti di temperatura tra le zone costiere e collinari.",
+    "**Consiglio bagagli:** Zaini e borse morbide gestiscono meglio le scale rispetto alle valigie con ruote. Se alloggi all'Hostel Brikette o in altre località collinari, salirai più di 100 gradini con i bagagli. Consulta la nostra %LINK:checkinCheckout|guida al check-in e all'arrivo% per maggiori dettagli su come raggiungere l'ostello con le borse."
   ],
   "sections": [
     {
+      "id": "seasonal-packing",
+      "title": "Bagagli stagionali: cosa cambia per stagione",
+      "body": [
+        "La Costiera Amalfitana ha quattro stagioni distinte. Ecco cosa adattare per ciascuna:",
+        "**Primavera (marzo–maggio):** Porta strati — le mattine possono essere fresche (12–15°C / 54–59°F), i pomeriggi caldi (18–22°C / 64–72°F). Porta una giacca antipioggia leggera; gli acquazzoni di aprile sono comuni. La crema solare è essenziale anche in primavera.",
+        "**Estate (giugno–settembre):** Caldo e secco (25–32°C / 77–90°F). L'abbigliamento leggero e traspirante è fondamentale. Porta cappello, occhiali da sole e crema solare ad alta protezione. Le serate rimangono calde, ma porta uno strato leggero per i ristoranti con aria condizionata. Questa è l'alta stagione — aspettati affollamento e prezzi più alti.",
+        "**Autunno (ottobre–novembre):** Simile alla primavera ma più umido. Porta scarpe impermeabili e un ombrello compatto. L'oceano rimane balneabile fino ad ottobre. Le temperature vanno da 15 a 23°C / 59–73°F.",
+        "**Inverno (dicembre–febbraio):** Mite ma piovoso (8–15°C / 46–59°F). Avrai bisogno di una giacca antipioggia adeguata, strati caldi e scarpe chiuse con buona presa per le scale bagnate. Molti stabilimenti balneari chiudono, ma l'escursionismo è eccellente in inverno."
+      ]
+    },
+    {
       "id": "footwear",
-      "title": "Calzature",
+      "title": "Calzature (categoria più importante)",
       "body": [
-        "Scarpe con buona aderenza per scale e sentieri; sandali con suola tassellata per la spiaggia.",
-        "Evita le suole lisce: vicoli e rampe possono essere ripidi e levigati."
+        "Le scale definiscono la Costiera Amalfitana. Dall'ostello alla spiaggia, dalle fermate dell'autobus ai ristoranti, aspettati 50–200 gradini per viaggio. La scelta delle scarpe conta qui più che quasi ovunque.",
+        "**Essenziali: Scarpe da passeggio con aderenza** — Sneakers o scarpe da trekking con buona suola per scale e sentieri costieri. Evita scarpe eleganti con suola liscia o sneakers alla moda con suole piatte — i gradini di pietra levigata sono scivolosi, specialmente quando bagnati.",
+        "**Calzature da spiaggia** — Scarpette da scoglio o sandali robusti con cinturini (non infradito). Le spiagge qui sono spesso sassose e alcune richiedono di camminare sugli scogli per entrare in acqua. Consulta la nostra %LINK:positanoBeaches|guida alle spiagge di Positano% per dettagli sul terreno di ogni spiaggia.",
+        "**Scarpe da sera (opzionali)** — Se vuoi vestirti elegante per cena, porta un paio di scarpe più raffinate, ma assicurati che abbiano ancora aderenza per camminare sulle scale tornando a casa.",
+        "**Cosa evitare:** Tacchi (pericolosi sulle scale), infradito pure (scomode per lunghe camminate), scarpe nuovissime (rodatele prima di arrivare)."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/what-to-pack/landscape-architecture-aesthetic.jpeg",
+          "alt": "Gradini di pietra che salgono attraverso uno stretto vicolo del centro storico con piante e insegne",
+          "caption": "Le scale sono l'elemento principale del terreno a Positano — porta scarpe di cui ti fidi",
+          "width": 735,
+          "height": 1105
+        }
       ]
     },
     {
-      "id": "layers",
-      "title": "Strati e protezione solare",
+      "id": "clothing",
+      "title": "Abbigliamento essenziale",
       "body": [
-        "Strati leggeri per le sere, cappello e SPF per le camminate diurne.",
-        "Una giacca antipioggia leggera è utile nelle mezze stagioni."
+        "**Strategia a strati:** La costa può essere 5°C più calda della parte alta di Positano. Porta vestiti che puoi aggiungere o togliere facilmente.",
+        "**Costumi da bagno:** Porta almeno 2 costumi così uno può asciugarsi mentre indossi l'altro. La stagione balneare va da aprile a ottobre.",
+        "**Copricostumi:** Un vestito leggero o una camicia per coprire il costume quando vai/torni dalla spiaggia. Ristoranti e negozi preferiscono che tu non sia solo in costume.",
+        "**Abbigliamento da sera:** Lo smart-casual è lo standard. Pantaloni lunghi leggeri o un vestito per le cene. Gli italiani tendono a vestirsi bene anche casualmente.",
+        "**Abbigliamento protettivo solare:** Magliette UV a maniche lunghe, cappelli a tesa larga e occhiali da sole. Il sole mediterraneo è intenso, specialmente su barche e spiagge.",
+        "**Attrezzatura antipioggia:** Una giacca antipioggia pieghevole funziona per tutte le stagioni. Salta gli ombrelli in estate a meno che non visiti in stagione intermedia (aprile, ottobre–novembre)."
       ]
     },
     {
-      "id": "bags",
+      "id": "bags-and-luggage",
       "title": "Borse e bagagli",
       "body": [
-        "Gli zaini battono i trolley rigidi sulle scale; tieni i valori a portata di mano.",
-        "Porta una borraccia riutilizzabile: i minimarket vendono bottiglioni per ricaricarla."
+        "**Migliori bagagli:** Zaini o borsoni morbidi. Se devi portare una valigia con ruote, scegline una con buone ruote — la porterai su per le scale frequentemente.",
+        "**Borsa da giorno:** Un piccolo zaino o borsa a tracolla per le uscite quotidiane. Mantienila sotto i 15L per manovre facili su autobus e barche affollate.",
+        "**Borsa da spiaggia:** Porta una borsa leggera o una borsa a rete per l'attrezzatura da spiaggia. Puoi comprare borse da spiaggia economiche localmente (€5–10) se dimentichi.",
+        "**Considerazioni anti-furto:** Il borseggio è raro a Positano ma più comune a Napoli e sui traghetti affollati. Tieni gli oggetti di valore in una borsa che puoi tenere davanti a te."
+      ]
+    },
+    {
+      "id": "sun-protection",
+      "title": "Protezione solare e salute",
+      "body": [
+        "**Crema solare:** Porta SPF 50+ per viso e corpo. La crema solare locale costa €15–25 per una bottiglia da 200ml (contro €8–12 a casa). La crema solare reef-safe è apprezzata se nuoti vicino ad aree marine.",
+        "**Cura dopo-sole:** Gel di aloe vera o crema idratante. Il sole qui è più forte che nel nord Europa o in Nord America.",
+        "**Repellente per insetti:** Le zanzare sono presenti da aprile a ottobre, specialmente vicino all'acqua. Porta una piccola bottiglia o compra localmente (€8–12).",
+        "**Primo soccorso di base:** Cerotti per vesciche (le scale le causano), antidolorifici, qualsiasi farmaco su prescrizione. Le farmacie sono ben fornite ma trovare esattamente la tua marca di farmaci può essere difficile.",
+        "**Mal di movimento:** Se sei soggetto a mal di mare, porta farmaci prima di prendere i traghetti. Il mare può essere mosso, specialmente sulle rotte per Capri."
+      ]
+    },
+    {
+      "id": "tech-and-adapters",
+      "title": "Tecnologia, adattatori ed elettronica",
+      "body": [
+        "**Adattatore di corrente:** L'Italia usa spine di Tipo L (3 poli) e Tipo C (2 poli europei). Il voltaggio è 230V. Porta un adattatore universale o compralo localmente (€5–10 nei tabacchi).",
+        "**Telefono e caricatori:** Porta il caricabatterie del telefono e un power bank portatile. Il servizio cellulare è generalmente buono, ma la batteria si scarica più velocemente quando usi il GPS costantemente per la navigazione.",
+        "**Fotocamera:** La Costiera Amalfitana è incredibilmente fotogenica. Porta una fotocamera o assicurati che lo spazio di archiviazione del telefono sia sufficiente. Una custodia impermeabile è utile per le gite in barca.",
+        "**E-reader o tablet:** Per leggere in spiaggia. Le librerie locali hanno selezioni limitate in inglese.",
+        "**Cuffie:** Utili per corse in traghetto e viaggi in autobus."
+      ]
+    },
+    {
+      "id": "toiletries-and-personal",
+      "title": "Articoli da toilette e personali",
+      "body": [
+        "**Cosa portare:** Articoli da toilette di base (shampoo, sapone, dentifricio, ecc.) in formato da viaggio. Ostelli e hotel economici potrebbero non fornirli.",
+        "**Cosa puoi comprare:** Supermercati e farmacie hanno tutte le principali marche di articoli da toilette. I prezzi sono del 10–30% più alti del nord Europa ma paragonabili ad altre aree turistiche italiane.",
+        "**Lavanderia:** La maggior parte degli ostelli ha servizi di lavanderia (€3–5 per lavaggio). Porta abbastanza vestiti per 3–4 giorni, poi pianifica di fare il bucato.",
+        "**Prodotti mestruali:** Disponibili nei supermercati e farmacie. Tamponi e assorbenti costano €3–6 per confezione."
+      ]
+    },
+    {
+      "id": "money-and-documents",
+      "title": "Denaro, carte e documenti",
+      "body": [
+        "**Contanti:** Porta €50–100 in banconote piccole (€5, €10, €20). Molte piccole imprese, stabilimenti balneari e autobus accettano solo contanti. Gli ATM sono disponibili ma addebitano €3–5 per prelievo.",
+        "**Carte:** Le principali carte di credito (Visa, Mastercard) funzionano nella maggior parte dei posti. Amex è meno comune. Avvisa la tua banca prima di viaggiare per evitare blocchi della carta.",
+        "**Documenti:** Passaporto (o carta d'identità UE), prova di assicurazione di viaggio, eventuali carte mediche ed email di conferma dell'ostello/hotel. Scarica copie offline sul telefono.",
+        "**Copie di backup:** Scansiona il passaporto e tieni una copia digitale separata dall'originale."
+      ]
+    },
+    {
+      "id": "optional-extras",
+      "title": "Extra opzionali e cose utili",
+      "body": [
+        "**Borraccia riutilizzabile:** L'acqua del rubinetto è potabile. Riempi alle fontane (molte città hanno fontane pubbliche) o compra grandi bottiglie nei supermercati (€0,30–0,50 al litro) per riempire.",
+        "**Borsa impermeabile:** Utile per proteggere elettronica e oggetti di valore durante gite in barca o in spiaggia.",
+        "**Asciugamano compatto:** Gli stabilimenti balneari affittano asciugamani (€3–5), ma un asciugamano da viaggio in microfibra risparmia denaro e si asciuga rapidamente.",
+        "**Attrezzatura da snorkeling:** Se ti piace fare snorkeling. Il noleggio è disponibile (€10–15/giorno) ma la qualità varia.",
+        "**Altoparlante portatile:** Per giornate in spiaggia (mantieni il volume rispettoso).",
+        "**Frasario italiano o app linguistica:** L'italiano di base aiuta. Molti locali parlano inglese, ma lo sforzo è apprezzato."
+      ]
+    },
+    {
+      "id": "what-to-leave-home",
+      "title": "Cosa NON portare",
+      "body": [
+        "**Salta questi articoli:**",
+        "• Valigie rigide pesanti (le scale le rendono miserabili)",
+        "• Più di 2 paia di scarpe (occupano troppo spazio)",
+        "• Asciugacapelli (la maggior parte delle sistemazioni li fornisce e le differenze di voltaggio possono essere un problema)",
+        "• Articoli da toilette in formato standard (compra localmente o porta formati da viaggio)",
+        "• Abbigliamento formale a meno che tu non abbia piani per cene specifiche",
+        "• Elettronica eccessiva (mantieni semplice)",
+        "• Cappotti invernali a meno che tu non visiti a dicembre–febbraio"
       ]
     }
   ],
   "tips": [
-    "Evita i trolley rigidi pesanti se prevedi molte salite e discese.",
-    "Porta banconote piccole per ombrelloni, autobus e spuntini veloci."
+    "Salta le valigie rigide pesanti se il tuo soggiorno comporta salite di scale — zaini o borsoni morbidi sono molto più facili.",
+    "Porta banconote piccole in euro (€5, €10) per ombrelloni da spiaggia, autobus e snack veloci. Molti piccoli venditori non accettano carte.",
+    "Compra crema solare e repellente per insetti prima di arrivare per risparmiare denaro — i prezzi locali sono del 50% più alti che a casa.",
+    "Roda le tue scarpe da passeggio prima del viaggio. Vesciche da scarpe nuove + scale = miseria.",
+    "Porta un piccolo kit di primo soccorso con cerotti per vesciche, antidolorifici e qualsiasi farmaco su prescrizione. Le farmacie sono utili ma potrebbero non avere esattamente la tua marca."
   ],
   "faqs": [
     {
-      "q": "Posso comprare tutto in loco?",
-      "a": [
-        "Sì, ma in alta stagione i prezzi salgono: porta gli indispensabili per evitare rincari."
+      "question": "Posso comprare tutto ciò di cui ho bisogno localmente?",
+      "answer": [
+        "Sì, ma i prezzi sono significativamente più alti durante l'alta stagione (giugno–settembre). Supermercati e farmacie hanno la maggior parte degli articoli essenziali, ma aspettati di pagare il 20–50% in più rispetto a casa per crema solare, articoli da toilette e attrezzatura da spiaggia.",
+        "Consiglio budget: Porta gli essenziali come crema solare, repellente per insetti e farmaci specifici da casa per evitare maggiorazioni."
       ]
     },
     {
-      "q": "Serve portare un accappatoio?",
-      "a": [
-        "La maggior parte delle strutture fornisce asciugamani; porta un copricostume leggero solo se lo preferisci per la spiaggia."
+      "question": "Devo portare asciugamani da spiaggia?",
+      "answer": "La maggior parte delle sistemazioni fornisce asciugamani da bagno ma non asciugamani da spiaggia. Gli stabilimenti balneari affittano asciugamani per €3–5, oppure puoi portare un asciugamano da viaggio leggero in microfibra. Gli ostelli a volte hanno asciugamani da spiaggia disponibili con una piccola cauzione."
+    },
+    {
+      "question": "Qual è il miglior bagaglio per Positano?",
+      "answer": "Uno zaino o un borsone morbido è ideale. Se alloggi in località collinari come l'Hostel Brikette, salirai più di 100 gradini con i bagagli. Le valigie con ruote sono difficili sulle scale e sui ciottoli. Viaggia leggero — punta alla dimensione da cabina se possibile."
+    },
+    {
+      "question": "Dovrei portare un ombrello?",
+      "answer": [
+        "In estate (giugno–settembre): No, la pioggia è rara. Porta una giacca antipioggia leggera per le brezze serali in barca.",
+        "In primavera/autunno (aprile–maggio, ottobre–novembre): Sì, porta un ombrello compatto. Aprile e novembre sono i mesi più piovosi.",
+        "In inverno (dicembre–febbraio): Assolutamente porta un ombrello e una giacca impermeabile. L'inverno è la stagione delle piogge."
       ]
+    },
+    {
+      "question": "Ho bisogno di scarponi da trekking per il Sentiero degli Dei?",
+      "answer": "Scarpe da trekking adeguate con supporto alla caviglia sono consigliate per il %LINK:pathOfTheGods|Sentiero degli Dei% e altri sentieri costieri. Le scarpe da trail running o gli scarponi da trekking funzionano bene. Le sneakers normali sono al limite — funzioneranno se sei esperto, ma il supporto alla caviglia aiuta nelle sezioni rocciose."
     }
   ]
 }

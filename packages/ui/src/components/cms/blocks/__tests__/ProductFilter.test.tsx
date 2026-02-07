@@ -1,6 +1,7 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import ProductFilter from "../ProductFilter";
+import { fireEvent,render, screen } from "@testing-library/react";
+
 import { useProductFilters } from "../../../../hooks/useProductFilters";
+import ProductFilter from "../ProductFilter";
 
 const pushMock = jest.fn();
 let searchParams = new URLSearchParams();
@@ -35,7 +36,7 @@ describe("ProductFilter", () => {
     expect(screen.getByText("5 products")).toBeInTheDocument();
 
     const [sizeSelect, colorSelect] = screen.getAllByRole("combobox");
-    const [minInput, maxInput] = screen.getAllByRole("spinbutton");
+    const [minInput, maxInput] = screen.getAllByRole("spinbutton") as HTMLInputElement[];
     const defaultMin = minInput.value;
     const defaultMax = maxInput.value;
 

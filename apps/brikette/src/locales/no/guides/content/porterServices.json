@@ -10,7 +10,7 @@
   "sections": [
     {
       "id": "how",
-      "title": "How it typically works",
+      "title": "Slik fungerer det vanligvis",
       "body": [
         "Ordne hentepunkt og tid (brygge eller bussholdeplass). Del navnet på overnattingsstedet ditt og møtetidspunkt.",
         "Avtal gebyr før flytting. Prisene varierer etter avstand, trapper og tid på dagen.",
@@ -19,7 +19,7 @@
     },
     {
       "id": "resources",
-      "title": "Booking & resources",
+      "title": "Bestilling og ressurser",
       "body": [
         "Spør overnattingsstedet ditt etter pålitelige lokale leverandører i nærheten av kaien og de viktigste bussholdeplassene.",
         "Se aggregatorer som Bounce / Radical Storage for alternativer for lagring eller frie timer."
@@ -27,36 +27,31 @@
     },
     {
       "id": "etiquette",
-      "title": "Etiquette & tips",
+      "title": "Etikette og tips",
       "body": [
-        "Tips for eksepsjonell service eller tung last; bære kontanter i små valører.",
+        "Gi tips for ekstra god service eller tung last; ta med kontanter i små valører.",
         "Del ankomstplanen din på forhånd i høye perioder for å sikre deg en plass."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "Do I need porters?",
+      "q": "Trenger jeg portører?",
       "a": [
         "Anbefales hvis du bærer tung bagasje; byen har mange trapper og bratte stier."
       ]
     },
     {
-      "q": "Where can I book?",
+      "q": "Hvor kan jeg bestille?",
       "a": [
         "Spør overnattingsstedet ditt eller lokale tjenester nær hovedstranden og bussholdeplasser."
       ]
     },
     {
-      "q": "How much does it cost?",
+      "q": "Hva koster det?",
       "a": [
-        "Varierer etter avstand og belastning; bekrefte sats før tjenesten starter."
+        "Varierer etter avstand og belastning; bekreft satsen før tjenesten starter."
       ]
     }
-  ],
-  "galleryTitle": "Photo gallery",
-  "gallery": {
-    "standsCaption": "Porter stands (example)",
-    "cartsCaption": "Porter carts"
-  }
+  ]
 }

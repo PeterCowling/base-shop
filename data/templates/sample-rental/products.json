@@ -1,10 +1,14 @@
 [
   {
     "id": "smoke-product",
-    "title": { "en": "Smoke Test Product" },
     "price": 1000,
     "media": [],
-    "row_version": 0
+    "row_version": 0,
+    "title": {
+      "type": "inline",
+      "value": {
+        "en": "Smoke Test Product"
+      }
+    }
   }
 ]
-

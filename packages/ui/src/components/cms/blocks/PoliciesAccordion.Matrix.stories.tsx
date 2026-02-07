@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/PoliciesAccordion.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import PoliciesAccordion from './PoliciesAccordion';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './PoliciesAccordion.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import PoliciesAccordion from './PoliciesAccordion';
+import fixture from './PoliciesAccordion.fixtures.json';
 
 const meta: Meta<typeof PoliciesAccordion> = {
   title: 'CMS Blocks/PoliciesAccordion/Matrix',

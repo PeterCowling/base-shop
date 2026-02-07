@@ -1,3 +1,5 @@
+'use client';
+
 import { Wine } from 'lucide-react';
 import Link from 'next/link';
 

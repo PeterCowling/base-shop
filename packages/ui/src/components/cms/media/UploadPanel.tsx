@@ -1,16 +1,18 @@
 // packages/ui/src/components/cms/media/UploadPanel.tsx
 "use client";
 
+import { type ChangeEvent, type ReactElement, useEffect, useState } from "react";
 import Image from "next/image";
-import { Button, Input } from "../../atoms/shadcn";
-import type { ImageOrientation, MediaItem } from "@acme/types";
-import { useMediaUpload } from "@ui/hooks/useMediaUpload";
-import { ChangeEvent, ReactElement, useEffect, useState } from "react";
-import { Spinner } from "../../atoms";
-import { cn } from "../../../utils/style";
+
 import { useTranslations } from "@acme/i18n";
+import type { ImageOrientation, MediaItem } from "@acme/types";
+
+import { useMediaUpload } from "../../../hooks/useMediaUpload";
+import { cn } from "../../../utils/style";
+import { Spinner } from "../../atoms";
 import { Cover } from "../../atoms/primitives/Cover";
 import { Inline } from "../../atoms/primitives/Inline";
+import { Button, Input } from "../../atoms/shadcn";
 
 interface UploadPanelProps {
   shop: string;

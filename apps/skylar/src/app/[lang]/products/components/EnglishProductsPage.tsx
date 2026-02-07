@@ -1,6 +1,8 @@
 import Image from "next/image";
+
 import PageShell from "@/components/PageShell";
 import { joinClasses } from "@/lib/joinClasses";
+
 import type { ProductsPageComponentProps } from "../types";
 import { translateList } from "../utils";
 

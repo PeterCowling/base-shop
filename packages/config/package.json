@@ -46,6 +46,11 @@
       "import": "./dist/env/shipping.js",
       "default": "./dist/env/shipping.js"
     },
+    "./env-schema": {
+      "types": "./dist/env-schema.d.ts",
+      "import": "./dist/env-schema.js",
+      "default": "./dist/env-schema.js"
+    },
     "./jest.preset.cjs": "./jest.preset.cjs",
     "./tsconfig.app.json": "./tsconfig.app.json"
   },
@@ -57,10 +62,10 @@
     "prebuild": "rimraf dist tsconfig.tsbuildinfo && pnpm --filter @acme/zod-utils run build && pnpm run build:stubs",
     "prepare": "pnpm run build:stubs",
     "build:stubs": "node ./scripts/generate-env-stubs.mjs",
-    "build": "tsc -b tsconfig.json",
-    "dev": "tsc -p tsconfig.json -w",
+    "build": "tsc -b",
+    "dev": "tsc -b --watch",
     "clean": "rimraf dist *.tsbuildinfo",
-    "test": "jest packages/config/__tests__ packages/config/src/env/__tests__ --passWithNoTests --runInBand --config jest.preset.cjs",
+    "test": "jest packages/config/__tests__ packages/config/src/env/__tests__ --passWithNoTests --runInBand --config jest.config.cjs",
     "fix:env": "node ./scripts/fix-config-env.mjs",
     "verify:env": "node ./scripts/verify-config-env.mjs",
     "lint": "eslint ."

@@ -1,14 +1,15 @@
-import path from "node:path";
-import os from "node:os";
 import * as fsPromises from "node:fs/promises";
+import os from "node:os";
+import path from "node:path";
+
+import {
+  exportsToCandidates,
+  importByType,
+  resolvePluginEntry,
+} from "../src/plugins/resolvers";
 
 const reqMock = jest.fn();
 jest.mock("module", () => ({ createRequire: () => reqMock }));
-import {
-  exportsToCandidates,
-  resolvePluginEntry,
-  importByType,
-} from "../src/plugins/resolvers";
 
 describe("exportsToCandidates", () => {
   it("returns path for string exports", () => {

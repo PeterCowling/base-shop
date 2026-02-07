@@ -2,17 +2,21 @@
 
 "use client";
 
-import { Footer, Header, SideNav } from "@ui/components/organisms";
-import { AppShell } from "@ui/components/templates";
-import DynamicRenderer from "@ui/components/DynamicRenderer";
-import TranslationsProvider from "@/i18n/Translations";
-import enMessages from "@i18n/en.json";
+import React, { forwardRef,useEffect, useMemo, useState } from "react";
+
+import enMessages from "@acme/i18n/en.json";
 import type { PageComponent } from "@acme/types";
-import React, { useEffect, useState, useMemo, forwardRef } from "react";
+import DynamicRenderer from "@acme/ui/components/DynamicRenderer";
+import { Footer, Header, SideNav } from "@acme/ui/components/organisms";
+import { AppShell } from "@acme/ui/components/templates";
+import { type DevicePreset,devicePresets } from "@acme/ui/utils/devicePresets";
+
+import TranslationsProvider from "@/i18n/Translations";
+
 import { STORAGE_KEY } from "../configurator/hooks/useConfiguratorPersistence";
-import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
-import usePreviewTokens from "./usePreviewTokens";
 import { THEME_TOKEN_HOVER_EVENT, type TokenHoverDetail } from "../shop/[shop]/themes/events";
+
+import usePreviewTokens from "./usePreviewTokens";
 
 interface Props {
   style: React.CSSProperties;

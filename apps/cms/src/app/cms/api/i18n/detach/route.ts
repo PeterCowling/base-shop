@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+
 import { readLocalizedValues } from "@acme/i18n/editTranslations";
 
 export async function GET(request: Request) {

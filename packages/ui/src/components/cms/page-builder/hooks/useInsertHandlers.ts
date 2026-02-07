@@ -2,9 +2,11 @@
 
 import { useCallback, useMemo } from "react";
 import { ulid } from "ulid";
+
 import type { PageComponent } from "@acme/types";
+
+import { type ComponentType,CONTAINER_TYPES, defaults } from "../defaults";
 import { isTopLevelAllowed } from "../rules";
-import { CONTAINER_TYPES, defaults, type ComponentType } from "../defaults";
 import type { Action } from "../state";
 
 const clampIndex = (value: number, length: number) => Math.max(0, Math.min(value, length));

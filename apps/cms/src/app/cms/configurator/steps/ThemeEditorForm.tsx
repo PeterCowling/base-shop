@@ -1,14 +1,15 @@
 "use client";
 
-import { Button } from "@ui/components/atoms/shadcn";
-import StyleEditor from "@ui/components/cms/StyleEditor";
-import { getContrast } from "@ui/components/cms";
-import type { TokenMap } from "@ui/hooks/useTokenEditor";
-import ThemeSpectrum from "@ui/components/cms/ThemeSpectrum";
-import ColorThemeSelector from "./ColorThemeSelector";
+import { getContrast } from "@acme/cms-ui";
+import type { TokenMap } from "@acme/cms-ui/hooks/useTokenEditor";
+import StyleEditor from "@acme/cms-ui/StyleEditor";
+import ThemeSpectrum from "@acme/cms-ui/ThemeSpectrum";
+import { Grid as DSGrid } from "@acme/design-system/primitives/Grid";
+import { Inline } from "@acme/design-system/primitives/Inline";
+import { Button } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
-import { Grid as DSGrid } from "@ui/components/atoms/primitives/Grid";
-import { Inline } from "@ui/components/atoms/primitives/Inline";
+
+import ColorThemeSelector from "./ColorThemeSelector";
 
 const MIN_CONTRAST = 4.5;
 

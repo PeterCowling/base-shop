@@ -1,5 +1,6 @@
 /** @jest-environment jsdom */
 import { render, screen } from "@testing-library/react";
+
 import CleaningInfo from "../src/components/CleaningInfo";
 
 describe("CleaningInfo", () => {

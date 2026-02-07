@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Sorrento đến Positano bằng phà | Hostel Brikette",
+    "description": "Hướng dẫn từng bước từ Sorrento đến Positano bằng phà: vé, mẹo khởi hành và cách đi từ cảng Positano lên Hostel Brikette."
+  },
+  "intro": {
+    "title": "Sorrento đến Positano — Phà",
+    "body": "Đi phà trực tiếp từ Marina Piccola của Sorrento đến Positano. Hướng dẫn ngắn gọn này bao gồm nơi mua vé, thời điểm xếp hàng và những việc cần làm khi đến cảng Positano để đến Hostel Brikette dễ dàng hơn."
+  },
+  "callouts": {
+    "tip": "Cần xem tất cả các lựa chọn di chuyển? %HOWTO:how-to-get-here|Tổng quan Cách đến đây% để tham khảo xe buýt, taxi và hành trình kết hợp."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Tổng quan hành trình",
+      "list": [
+        "Dành khoảng 45–60 phút từ cầu tàu đến cầu tàu trong mùa.",
+        "Phà phụ thuộc vào thời tiết và có thể hết chỗ vào giờ cao điểm.",
+        "Mua vé sớm một chút giúp đảm bảo chỗ ngồi và lên tàu thuận lợi."
+      ]
+    },
+    {
+      "id": "sorrentoPort",
+      "title": "Đến cảng Sorrento (Marina Piccola)",
+      "list": [
+        "Đến Marina Piccola (cảng phà) của Sorrento và làm theo biển báo đến quầy bán vé.",
+        "Kiểm tra chuyến khởi hành tiếp theo đến Positano và xác nhận hãng khai thác (ví dụ Travelmar hoặc NLG).",
+        "Mua vé tại quầy hoặc trực tuyến và tiến đến cổng được chỉ định."
+      ]
+    },
+    {
+      "id": "boarding",
+      "title": "Mua vé và lên tàu",
+      "list": [
+        "Đến trước 15–20 phút trước giờ khởi hành để xếp hàng thoải mái.",
+        "Giữ vé sẵn để kiểm tra và làm theo hướng dẫn của thủy thủ đoàn khi lên tàu.",
+        "Để hành lý ở khu vực quy định và giữ đồ thiết yếu bên mình."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Đến Positano",
+      "list": [
+        "Xuống tàu tại cầu tàu chính của Positano (Spiaggia Grande).",
+        "Cân nhắc sử dụng dịch vụ khuân vác chính thức tại bến cho hành lý nặng (dịch vụ có tính phí).",
+        "Để đến Hostel Brikette dễ dàng hơn, hãy đi xe buýt địa phương Interno lên đồi đến \\\\\"Chiesa Nuova\\\\\" và đi bộ một đoạn ngắn đến hostel.",
+        "Hoặc đi bộ lên đồi qua Via dei Mulini/Via G. Marconi, dành thêm thời gian cho đoạn leo dốc."
+      ]
+    }
+  ]
+}

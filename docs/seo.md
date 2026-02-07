@@ -41,8 +41,8 @@ Key behaviours:
       - `total` is the total number of available items.
 
 - **Fields and fallbacks**
-  - Publications are loaded via `readRepo<ProductPublication>(shop)` from `@platform-core/repositories/products.server`.
-  - When no publications exist, a built-in catalogue (`PRODUCTS` from `@platform-core/products`) is used as a fallback.
+  - Publications are loaded via `readRepo<ProductPublication>(shop)` from `@acme/platform-core/repositories/products.server`.
+  - When no publications exist, a built-in catalogue (`PRODUCTS` from `@acme/platform-core/products`) is used as a fallback.
   - For each item:
     - `id` / `title` / `description` come from the publication.
     - `price` falls back to the SKU’s price if absent on the publication.
@@ -57,7 +57,7 @@ Key behaviours:
       - Responds with `200 OK` and a JSON body plus `Last-Modified`.
 
 - **Analytics**
-  - Each request emits an `ai_crawl` analytics event via `@platform-core/analytics`:
+  - Each request emits an `ai_crawl` analytics event via `@acme/platform-core/analytics`:
     - Includes `shop`, `page`, `status`, and `items` count.
 
 Example usage:

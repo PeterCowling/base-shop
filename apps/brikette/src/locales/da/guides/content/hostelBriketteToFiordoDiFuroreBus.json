@@ -1,71 +1,81 @@
 {
   "seo": {
-    "title": "Hostel Brikette → Fiordo di Furore by bus",
-    "description": "Step-by-step directions to reach Fiordo di Furore from Hostel Brikette using the SITA bus, including where to buy tickets and how to access the beach."
+    "title": "Hostel Brikette → Fiordo di Furore med bus",
+    "description": "Trin-for-trin-vejledning til at nå Fiordo di Furore fra Hostel Brikette med SITA-bus, inkl. hvor du køber billetter og hvordan du kommer til stranden."
   },
-  "linkLabel": "Hostel Brikette → Fiordo di Furore by bus",
+  "linkLabel": "Hostel Brikette → Fiordo di Furore med bus",
   "intro": [
     "Følg denne rute for at rejse fra Hostel Brikette til Fiordo di Furore på SITA-bussen uden at gå glip af et stop eller ankomme uforberedt.",
     "Fjorden har ingen billetfaciliteter eller butikker, så disse trin dækker billetter, det nærmeste busstoppested og trappen, der fører ned til stranden."
   ],
-  "warningsTitle": "Before you leave the hostel",
+  "warningsTitle": "Før du forlader hostellet",
   "warnings": [
-    "Buy a round-trip SITA ticket in Positano — there is no way to purchase or validate tickets once you reach the beach.",
-    "Buses fill quickly in peak months and may skip the stop when full, so allow extra time for your journey."
+    "Køb en returbillet til SITA i Positano — der er ingen mulighed for at købe eller validere billetter, når du når stranden.",
+    "Busserne fyldes hurtigt i højsæsonen og kan springe stoppet over, hvis de er fulde, så giv dig selv ekstra tid."
   ],
   "sections": [
     {
       "id": "walk-to-bus-stop",
-      "title": "Walk to the Chiesa Nuova bus stop",
+      "title": "Gå til Chiesa Nuova-busstoppestedet",
       "body": [
-        "The closest SITA stop is in the Chiesa Nuova area, about 140 metres (490 feet) from the hostel entrance.",
-        "Exit through the main door, walk down the stairs to Via Pasitea, turn left, and continue roughly 100 metres (330 feet).",
-        "Look for Bar Internazionale on the left-hand side; the bus stop sits directly outside the café."
+        "Det nærmeste SITA-stoppested ligger i Chiesa Nuova-området, ca. 140 meter fra hostellets indgang.",
+        "Gå ud af hoveddøren, ned ad trappen til Via Pasitea, drej til venstre og fortsæt ca. 100 meter.",
+        "Se efter Bar Internazionale på venstre side; busstoppestedet ligger lige uden for caféen."
       ]
     },
     {
       "id": "buy-bus-tickets",
-      "title": "Buy round-trip bus tickets",
+      "title": "Køb busbilletter tur/retur",
       "body": [
-        "Go into Bar Internazionale and ask for SITA tickets to Fiordo di Furore.",
-        "Staff may suggest one-way or return tickets depending on the price that day — buy a return so you are covered for the ride back."
+        "Gå ind på Bar Internazionale og bed om SITA-billetter til Fiordo di Furore.",
+        "Personalet kan foreslå enkelt- eller returbilletter afhængigt af dagens pris — køb en returbillet, så du er dækket på hjemturen."
       ]
     },
     {
       "id": "wait-for-bus",
-      "title": "Wait on the seaward side of the road",
+      "title": "Vent på søsiden af vejen",
       "body": [
-        "Cross Via Pasitea to the opposite side from the bar and wait at the marked SITA stop.",
-        "Arrive early and give yourself time for a second bus in case the first one is already full."
+        "Kryds Via Pasitea til modsatte side af baren og vent ved det markerede SITA-stoppested.",
+        "Kom tidligt og giv dig selv tid til en ekstra bus, hvis den første allerede er fuld."
       ]
     },
     {
       "id": "ride-the-bus",
-      "title": "Ride the SITA bus towards Amalfi",
+      "title": "Tag SITA-bussen mod Amalfi",
       "body": [
-        "Board a bus heading for Amalfi or Agerola and tell the driver you need the Fiordo di Furore stop so they know to pull over.",
-        "The ride covers about 10.8 kilometres (6.7 miles); intermediate stops depend on other passengers requesting them.",
-        "If you have mobile data, track the stop by searching for \"JH73+PQ Furore, Province of Salerno\" on Google Maps."
+        "Stig på en bus mod Amalfi eller Agerola og sig til chaufføren, at du skal af ved Fiordo di Furore, så de ved, at de skal stoppe.",
+        "Turen er ca. 10,8 kilometer; mellemliggende stop afhænger af andre passagerers ønsker.",
+        "Hvis du har mobildata, kan du følge stoppet ved at søge efter \\\\\"JH73+PQ Furore, Province of Salerno\\\\\" på Google Maps."
       ]
     },
     {
       "id": "walk-to-beach",
-      "title": "Take the stairs down to the beach",
+      "title": "Gå ned ad trappen til stranden",
       "body": [
-        "Get off beside the bridge, cross the road, and take the staircase that leads away from the traffic toward the cliffside walkway.",
-        "Follow the stairs up and over the bridge, then descend the final flights to reach the shingle beach at the bottom.",
+        "Stå af ved siden af broen, kryds vejen, og tag trappen, der fører væk fra trafikken mod stien langs klippen.",
+        "Følg trappen op og over broen, og gå ned ad de sidste trin for at nå stenstranden nederst.",
         "Brug den samme trappe til at vende tilbage til vejen, når du er klar til at tage af sted."
       ]
     }
   ],
-  "tipsTitle": "Extra tips",
-  "tips": [
-    "Check the latest SITA timetable posted at reception before you set out so you know when the next buses run.",
-    "Read our %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore beach guide% for packing tips and on-site expectations.",
-    "Gem %LINK:fiordoDiFuroreBusReturn|Fiordo di Furore → Hostel Brikette returguide% til din tur tilbage.",
-    "Jump to the %LINK:positanoBeaches|Positano beaches overview% to compare other swim spots for the same day."
+  "essentialsTitle": "Det vigtigste",
+  "essentials": [
+    "Solcreme.",
+    "Håndklæde.",
+    "Solbriller."
   ],
-  "faqsTitle": "Common questions",
+  "typicalCostsTitle": "Typiske omkostninger",
+  "typicalCosts": [
+    "Busbillet: 10 euro."
+  ],
+  "tipsTitle": "Ekstra tips",
+  "tips": [
+    "Tjek den seneste SITA-køreplan, der er opslået i receptionen, før du tager af sted, så du ved, hvornår de næste busser kører.",
+    "Læs vores %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore strandguide% for pakketips og forventninger på stedet.",
+    "Gem %LINK:fiordoDiFuroreBusReturn|Fiordo di Furore → Hostel Brikette returguide% til din tur tilbage.",
+    "Gå til %LINK:positanoBeaches|oversigten over Positanos strande% for at sammenligne andre badesteder samme dag."
+  ],
+  "faqsTitle": "Ofte stillede spørgsmål",
   "faqs": [
     {
       "q": "Skal jeg virkelig købe en returbillet på forhånd?",
@@ -80,9 +90,9 @@
       ]
     },
     {
-      "q": "How will I recognise the right stop?",
+      "q": "Hvordan genkender jeg det rigtige stop?",
       "a": [
-        "Efter at bussen har krydset den buede bro over fjorden, stopper den ved siden af ​​autoværnet. Hold øje med broudsigterne, lyt efter føreren, og brug Google Maps \"JH73+PQ Furore\"-nål som backup."
+        "Efter at bussen har krydset den buede bro over fjorden, stopper den ved siden af ​​autoværnet. Hold øje med broudsigterne, lyt efter føreren, og brug Google Maps \\\\\"JH73+PQ Furore\\\\\"-nål som backup."
       ]
     }
   ]

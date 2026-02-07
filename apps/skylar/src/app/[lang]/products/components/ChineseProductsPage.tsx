@@ -1,9 +1,11 @@
 /* eslint-disable ds/min-tap-size -- STYLING-0001 [ttl=2026-12-31] Skylar zh-products CTAs use shared pill tokens; DS tap-size rule misestimates actual button size */
 
 import Image from "next/image";
+
 import PageShell from "@/components/PageShell";
-import { localizedPath } from "@/lib/routes";
 import { joinClasses } from "@/lib/joinClasses";
+import { localizedPath } from "@/lib/routes";
+
 import type { ProductsPageComponentProps } from "../types";
 
 export function ChineseProductsPage({ lang, translator }: ProductsPageComponentProps) {

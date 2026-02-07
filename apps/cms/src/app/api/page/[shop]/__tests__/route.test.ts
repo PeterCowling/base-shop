@@ -1,7 +1,7 @@
 const mockGetPages = jest.fn();
 const mockUpdatePage = jest.fn();
 
-jest.mock("@platform-core/repositories/pages/index.server", () => ({
+jest.mock("@acme/platform-core/repositories/pages/index.server", () => ({
   getPages: mockGetPages,
   updatePage: mockUpdatePage,
 }));

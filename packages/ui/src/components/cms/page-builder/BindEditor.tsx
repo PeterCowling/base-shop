@@ -1,7 +1,8 @@
 "use client";
 
-import type { PageComponent } from "@acme/types";
 import { useTranslations } from "@acme/i18n";
+import type { PageComponent } from "@acme/types";
+
 import { Input } from "../../atoms/shadcn";
 
 type BindComponent = PageComponent & {

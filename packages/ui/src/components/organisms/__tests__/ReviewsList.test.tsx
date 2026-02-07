@@ -1,8 +1,10 @@
 /* i18n-exempt file -- tests verify placeholder and status messages */
-import { render, screen, cleanup } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { ReviewsList, type Review } from "../ReviewsList";
 import "../../../../../../test/resetNextMocks";
+
+import { cleanup,render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+
+import { type Review,ReviewsList } from "../ReviewsList";
 
 const reviews: Review[] = [
   { author: "Alice", rating: 5, content: "Great product" },

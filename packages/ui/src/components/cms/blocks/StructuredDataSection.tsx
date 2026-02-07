@@ -1,7 +1,9 @@
 "use client";
-/* eslint-disable ds/no-hardcoded-copy -- ABC-123: JSON-LD schema includes non-UI string literals (context/type identifiers) */
+ 
 
-import React from "react";
+import React from "react"; // i18n-exempt -- ABC-123
+
+import { getBreadcrumbs } from "@acme/platform-core/router/breadcrumbs";
 
 // i18n-exempt -- JSON-LD schema URL constant -- ABC-123
 const SCHEMA_CONTEXT = "https://schema.org"; // i18n-exempt -- ABC-123
@@ -14,8 +16,7 @@ const TYPE_ANSWER = "Answer"; // i18n-exempt -- ABC-123
 const TYPE_ORGANIZATION = "Organization"; // i18n-exempt -- ABC-123
 const TYPE_LOCAL_BUSINESS = "LocalBusiness"; // i18n-exempt -- ABC-123
 const TYPE_POSTAL_ADDRESS = "PostalAddress"; // i18n-exempt -- ABC-123
-const TYPE_GEOCOORDINATES = "GeoCoordinates"; // i18n-exempt -- ABC-123
-import { getBreadcrumbs } from "@acme/platform-core/router/breadcrumbs";
+const TYPE_GEOCOORDINATES = "GeoCoordinates";
 
 export interface StructuredDataSectionProps extends React.HTMLAttributes<HTMLDivElement> {
   breadcrumbs?: boolean;
@@ -59,7 +60,7 @@ export default function StructuredDataSection({ breadcrumbs = true, faq, faqItem
         "@context": SCHEMA_CONTEXT,
         // i18n-exempt -- schema type identifier -- ABC-123
         "@type": TYPE_BREADCRUMB_LIST,
-        itemListElement: crumbs.map((c, i) => ({
+        itemListElement: crumbs.map((c: { href: string; label: string }, i: number) => ({
           "@type": TYPE_LIST_ITEM,
           position: i + 1,
           name: c.label,

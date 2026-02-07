@@ -1,9 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
-import { requirePermission } from "@auth";
+import { type NextRequest, NextResponse } from "next/server";
+
+import { requirePermission } from "@acme/auth";
 import {
   diffHistory,
   type SettingsDiffEntry,
-} from "@platform-core/repositories/settings.server";
+} from "@acme/platform-core/repositories/settings.server";
 
 export const runtime = "nodejs";
 
@@ -34,14 +35,14 @@ export async function GET(req: NextRequest) {
       const pages = entry.diff?.pages;
       if (!pages) continue;
       for (const [pageId, pageDiff] of Object.entries(pages)) {
-        const comps = pageDiff.components;
+        const comps = (pageDiff as { components?: unknown[] }).components;
         if (!Array.isArray(comps)) continue;
         let set = map.get(pageId);
         if (!set) {
           set = new Set<string>();
           map.set(pageId, set);
         }
-        for (const comp of comps) {
+        for (const comp of comps as Array<string | { name?: string }>) {
           const name = typeof comp === "string" ? comp : comp.name;
           if (typeof name === "string") set.add(name);
         }
@@ -55,7 +56,8 @@ export async function GET(req: NextRequest) {
     );
     return NextResponse.json({ components });
   } catch (err) {
-    return NextResponse.json({ error: (err as Error).message }, { status: 500 });
+    console.error("[api/edit-changes] error:", err);
+    return NextResponse.json({ error: "Failed to fetch changes" }, { status: 500 });
   }
 }
 

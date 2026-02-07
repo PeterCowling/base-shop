@@ -1,0 +1,21 @@
+{
+  "contextFiles": [
+    "AGENTS.md",
+    "PROJECT_DIGEST.md"
+  ],
+  "ignorePatterns": [
+    "**/.next/**",
+    "**/.turbo/**",
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/coverage/**",
+    "**/storybook-static/**",
+    "**/.eslintcache",
+    "**/pnpm-lock.yaml",
+    "**/*.log",
+    "**/tmp/**",
+    "**/tmp-*/**"
+  ],
+  "maxContextTokens": 100000,
+  "preferredEditor": "vscode"
+}

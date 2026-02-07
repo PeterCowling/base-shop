@@ -64,7 +64,7 @@ describe("analytics provider selection", () => {
     await withAnalytics(async (analytics, { readShop, getShopSettings, fetch }, dir) => {
       readShop.mockResolvedValue({ analyticsEnabled: false });
 
-      const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+      const logSpy = jest.spyOn(console, "debug").mockImplementation(() => {});
       await analytics.trackEvent("test", { type: "page_view" });
 
       expect(readShop).toHaveBeenCalledWith("test");
@@ -108,7 +108,7 @@ describe("analytics provider selection", () => {
       readShop.mockResolvedValue({ analyticsEnabled: true });
       getShopSettings.mockResolvedValue({ analytics: { provider: "console" } });
 
-      const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+      const logSpy = jest.spyOn(console, "debug").mockImplementation(() => {});
       await analytics.trackEvent("test", { type: "page_view" });
 
       expect(logSpy).toHaveBeenCalledTimes(1);

@@ -58,15 +58,18 @@ export async function markStageRunRunning(
   }
 }
 
-export async function completeStageRun(
-  db: D1Database,
-  stageRun: StageRunRow,
-  status: "succeeded" | "failed",
-  output: StageMOutput | null,
-  error: RunnerError | null,
-  artifact: StoredArtifact | null,
-  now: string,
-): Promise<void> {
+export type CompleteStageRunOptions = {
+  db: D1Database;
+  stageRun: StageRunRow;
+  status: "succeeded" | "failed";
+  output: StageMOutput | null;
+  error: RunnerError | null;
+  artifact: StoredArtifact | null;
+  now: string;
+};
+
+export async function completeStageRun(opts: CompleteStageRunOptions): Promise<void> {
+  const { db, stageRun, status, output, error, artifact, now } = opts;
   const outputJson = output ? JSON.stringify(output) : null;
   const errorJson = error ? JSON.stringify(error) : null;
   const statements: D1PreparedStatement[] = [

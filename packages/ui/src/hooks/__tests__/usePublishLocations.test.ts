@@ -1,15 +1,15 @@
 // i18n-exempt: Test descriptions and fixtures use literal strings
 import { act, renderHook } from "@testing-library/react";
-import {
-  usePublishLocations,
-  loadPublishLocations,
-} from "@platform-core/hooks/usePublishLocations";
 
-jest.mock("@acme/shared-utils", () => ({
+import { fetchJson } from "@acme/lib/http";
+import {
+  loadPublishLocations,
+  usePublishLocations,
+} from "@acme/platform-core/hooks/usePublishLocations";
+
+jest.mock("@acme/lib/http", () => ({
   fetchJson: jest.fn(),
 }));
-
-import { fetchJson } from "@acme/shared-utils";
 
 const mockFetchJson = fetchJson as jest.MockedFunction<typeof fetchJson>;
 

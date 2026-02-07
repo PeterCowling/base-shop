@@ -1,9 +1,11 @@
 "use client";
 
-import { cn } from "../../../../utils/style";
 import { useTranslations } from "@acme/i18n";
-import InlineInsert from "../InlineInsert";
+
+import { cn } from "../../../../utils/style";
 import CanvasItem from "../CanvasItem";
+import InlineInsert from "../InlineInsert";
+
 import type { Props } from "./types";
 
 interface CanvasListProps {

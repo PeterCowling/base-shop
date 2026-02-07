@@ -5,14 +5,14 @@ const getShopById = jest.fn();
 const updateShopInRepo = jest.fn();
 
 jest.mock("../src/actions/common/auth", () => ({ ensureAuthorized: () => ensureAuthorized() }));
-jest.mock("@platform-core/repositories/shop.server", () => ({
+jest.mock("@acme/platform-core/repositories/shop.server", () => ({
   getShopById: (...args: any[]) => getShopById(...args),
   updateShopInRepo: (...args: any[]) => updateShopInRepo(...args),
 }));
-jest.mock("@platform-core/createShop", () => ({
+jest.mock("@acme/platform-core/createShop", () => ({
   syncTheme: jest.fn(),
 }));
-jest.mock("@platform-core/themeTokens", () => ({
+jest.mock("@acme/platform-core/themeTokens", () => ({
   baseTokens: {},
   loadThemeTokens: jest.fn(),
 }));

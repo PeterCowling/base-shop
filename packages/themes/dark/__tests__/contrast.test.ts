@@ -1,4 +1,5 @@
 import { getContrast } from 'polished';
+
 import { tokens } from '../src/tailwind-tokens';
 
 type TokenKey = keyof typeof tokens;

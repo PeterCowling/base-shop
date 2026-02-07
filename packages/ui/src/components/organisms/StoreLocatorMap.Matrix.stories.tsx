@@ -1,8 +1,10 @@
 // packages/ui/src/components/organisms/StoreLocatorMap.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { StoreLocatorMap } from './StoreLocatorMap';
+
 import { makeStateStory } from '../../story-utils/createStories';
+
+import { StoreLocatorMap } from './StoreLocatorMap';
 
 const stores = [
   { name: 'San Francisco', address: '123 Market St, SF, CA', lat: 37.7749, lng: -122.4194 },

@@ -1,5 +1,4 @@
 import React from 'react';
-import { fn } from 'storybook/test';
 
 function resolveStyle(style, fill) {
   if (!fill) return style;
@@ -24,4 +23,4 @@ const ImageComponent = function Image({ src, alt = '', fill = false, style, ...r
 
 ImageComponent.displayName = 'NextImageMock';
 
-export default fn(ImageComponent).mockName('next/image.default');
+export default jest.fn(ImageComponent).mockName('next/image.default');

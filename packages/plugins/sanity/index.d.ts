@@ -1,6 +1,8 @@
-import type { Plugin } from "@acme/types";
 import { type Mutation } from "@sanity/client";
 import { z } from "zod";
+
+import type { Plugin } from "@acme/types";
+
 export declare const configSchema: z.ZodObject<{
     projectId: z.ZodString;
     dataset: z.ZodString;

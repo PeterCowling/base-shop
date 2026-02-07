@@ -1,5 +1,5 @@
-import path from "node:path";
 import { execSync } from "node:child_process";
+import path from "node:path";
 
 describe("tailwind config", () => {
   it("includes expected plugins and content paths", async () => {

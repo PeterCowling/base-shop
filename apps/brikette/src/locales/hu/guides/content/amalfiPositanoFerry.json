@@ -1,0 +1,271 @@
+{
+  "lastUpdated": "2026-01-31",
+  "seo": {
+    "title": "Amalfi–Positano komp útmutató | Hostel Brikette",
+    "description": "Amalfi–Positano komp útmutató: pontos beszállási hely, 2026-os árak (€9-€10), legjobb ülések a part menti kilátásokhoz, poggyász tippek és a Brikette elérése a kikötőből."
+  },
+  "intro": {
+    "title": "Amalfi–Positano komp — Teljes útmutató",
+    "body": "Ez az Amalfi–Positano komp útmutató az Amalfi-part beutazásának legszebb módját fedi le: napi hajók március végétől októberig. Tartalmazza a pontos költségeket (€9–€10), hol szálljon fel Amalfiban, hogyan szerezze meg a legjobb helyeket a fedélzeten, és hogyan juthat el zökkenőmentesen a Hostel Brikette-hez a Positano kompkikötőjéből a poggyászával."
+  },
+  "callouts": {
+    "tip": "Más közlekedési lehetőségekre van szüksége? Nyissa meg a %HOWTO:how-to-get-here|Hogyan juthat el ide áttekintést% buszokhoz, vegyes útvonalakhoz és repülőtéri transzferekhez."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Gyors áttekintés",
+      "body": "Az Amalfi–Positano kompot (gyakran Amalfi–Positano kompként írják) elsősorban a Travelmar üzemelteti, amely március végétől októberig napi 8 járatot indít. Az utazási idő 15–25 perc a tengeri viszonyoktól és a közbenső megállóktól függően.",
+      "list": [
+        "**Költség:** €9–€10 személyenként egyirányban (2026-os szezon)",
+        "**Poggyász:** €2 táskánként a mellékelt kézipoggyászon túl (max 45cm × 35cm × 20cm)",
+        "**Első indulás:** Körülbelül 08:25 Amalfiból",
+        "**Utolsó indulás:** Körülbelül 20:00 Amalfiból",
+        "**Szezon:** Március végétől október végéig (időjárástól függően)"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/01-amalfi-dock.webp",
+          "alt": "Amalfi vízpart és kikötő terület hajókkal, a kompkikötő közelében látható",
+          "caption": "Amalfi kompkikötői a város melletti vízparton helyezkednek el — itt szállhat fel Positanóba. Fotó: %URL:https://commons.wikimedia.org/wiki/File:Amalfi_02_View_from_Ferry_Dock.jpg|Grueslayer% (%URL:https://creativecommons.org/licenses/by-sa/4.0|CC BY-SA 4.0%)."
+        }
+      ]
+    },
+    {
+      "id": "whyFerry",
+      "title": "Miért válassza a kompot?",
+      "body": "A komp sok szempontból felülmúlja a SITA buszt. Kihagyja a zsúfolt Strada Statale 163 parti utat. Nem kell harcolnia buszülésekért a csúcsszezonban. Közvetlenül a Spiaggia Grande strandon száll le Positanóban, közelebb a szállóhoz, mint a Chiesa Nuova vagy Sponda buszmegállók. És mindössze €9-ért csodálatos parti kilátást kap.",
+      "list": [
+        "Lássa közelebbről a sziklás városokat, mint Praiano, rejtett öblöket és függőleges citromteraszokat",
+        "Nincsenek forgalmi dugók — a kompok időben indulnak, még akkor is, amikor az SS163 út el van torlaszolva",
+        "Kikötés Positano fő strandjánál, a %LINK:porterServices|hordárszolgáltatások% és a %LINK:ferryDockToBrikette|szálló útvonal% közelében",
+        "Friss tengeri levegő és szabadtéri fedélzeti ülések (aki előbb jön, előbb választ)",
+        "Július-augusztusban gyakran gyorsabb, mint a busz, amikor a közúti forgalom a legrosszabb"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/05-li-galli.webp",
+          "alt": "A kis Li Galli szigetek a tengerben az Amalfi-part előtt",
+          "caption": "Tiszta napon észreveheti a Li Galli szigeteket a partról az Amalfi-parti kompútvonalakon. Fotó: %URL:https://commons.wikimedia.org/wiki/File:Isolotti_de_Li_Galli_(Costiera_Sorrentina).jpg|IlSistemone% (%URL:https://creativecommons.org/licenses/by-sa/3.0|CC BY-SA 3.0%)."
+        }
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Jegyek és menetrendek",
+      "body": "Vásároljon Travelmar jegyeket online a travelmar.it oldalon, az amalfi vízparti irodában, vagy a Piazza Flavio Gioia közelében lévő kioszkokban. Július-augusztusban foglaljon online 1–2 nappal előre. Ugyannapos jegyek április, május, szeptember és októberben működnek, de hétvégeken elfogyhatnak.",
+      "list": [
+        "**Online:** Foglaljon a travelmar.it oldalon. A jegy QR-kódként érkezik az e-mailjére.",
+        "**Személyesen:** Az amalfi vízparti jegyiroda az első hajó előtt 30 perccel nyit.",
+        "**Ár:** €9–€10 felnőttenként. A gyerekek és csecsemők kevesebbet fizethetnek.",
+        "**Poggyász:** Egy kis táska (45cm × 35cm × 20cm) ingyenes. A nagyobb hátizsákok és görgősök darabonként €2-ba kerülnek.",
+        "**Fizetés:** A kioszkokban készpénz és kártya is működik. Az online foglaláshoz kártya vagy PayPal szükséges."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/03-ferry-ride.webp",
+          "alt": "Utaskomp halad az Amalfi-part mentén Amalfi és Positano között",
+          "caption": "Gyors kompok és hidroszárnyasok közlekednek Amalfi és Positano között a szezonban. Fotó: %URL:https://commons.wikimedia.org/wiki/File:Ferry_Ride_Between_Amalfi_and_Positano_(42250218604).jpg|Nan Palmero from San Antonio, TX, USA% (%URL:https://creativecommons.org/licenses/by/2.0|CC BY 2.0%)."
+        }
+      ]
+    },
+    {
+      "id": "amalfiBoarding",
+      "title": "Hol szálljon fel Amalfiban",
+      "body": "A kompkikötő Amalfi vízpartján van, 2 perces sétára a Piazza Flavio Gioától (a fő tér a nagy szökőkúttal és a SITA buszmegállóval). Nézzen a tenger felé a térről. A kikötő a jobb oldalon van. Keressen Travelmar táblákat, kék-fehér kioszkokat és sorokat 15–20 perccel a hajók indulása előtt.",
+      "list": [
+        "**Helyszín:** Amalfi kikötő, felső szint, a Piazza Flavio Gioától keletre, a Via Lorenzo d'Amalfi mellett",
+        "**A SITA megállótól:** Sétáljon a vízhez, és forduljon jobbra a Lungomare dei Cavalieri sétány mentén",
+        "**Táblák:** A Travelmar pultok egyértelműek. A kék mellényes személyzet segít a beszállásnál.",
+        "**Indulási kapu:** Ellenőrizze a jegyét a megfelelő kikötőért. Két kikötő létezik. A nagyobb hajók a külsőt használják.",
+        "**Időzítés:** Érkezzen 15–20 perccel korábban, hogy megszerezze a szabadtéri fedélzeti üléseket és elkerülje a rohanást."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/02-piazza-flavio-gioia.webp",
+          "alt": "Piazza Flavio Gioia Amalfiban a szökőkúttal és a közeli buszmegálló területtel",
+          "caption": "A Piazza Flavio Gioia a legegyszerűbb tereptárgy Amalfiban: találja meg a szökőkutat, nézzen a tenger felé, majd sétáljon jobbra a kompkikötőhöz. Fotó: %URL:https://commons.wikimedia.org/wiki/File:Flavio_Gioia_(17734991371).jpg|Alpha 350 from Hungary% (%URL:https://creativecommons.org/licenses/by/2.0|CC BY 2.0%)."
+        }
+      ]
+    },
+    {
+      "id": "onboard",
+      "title": "Mire számíthat a fedélzeten",
+      "body": "A Travelmar hajókon beltéri légkondicionált ülések és szabadtéri fedélzeti tér található. A legjobb kilátásért menjen egyenesen a szabadtéri fedélzetre, amikor a beszállás kezdődik. Az ülések gyorsan megtelnek. Az Amalfi–Positano útvonalon üljön a **bal oldalra** (előre nézve), hogy lássa a sziklákat, olyan városokat, mint Conca dei Marini, és rejtett strandokat. Az út 15–25 perces. Nincsenek kabinok vagy ágyak — csak ülések.",
+      "list": [
+        "**Legjobb ülések:** Szabadtéri fedélzet, bal oldal, előre nézve a maximális kilátásért a Furore fjordra és a Li Galli szigetekre",
+        "**Beltéri kabin:** Légkondicionált társalgó padokkal. Jó hullámzó tengernél vagy déli forró napnál.",
+        "**Büfé:** Néhány hajón van pult italokkal, snackekkel és gelato-val (készpénz és kártya is működik).",
+        "**Poggyász:** Tegye a táskákat fedélzeti állványokra vagy az ülése alá. A személyzet segít, ha a táskák nagyok.",
+        "**Tengeribetegség:** Általában nyugodt. Ha tengeribeteggé válik, üljön bent a középen. Ne olvasson vagy használja a telefonját."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/04-furore-fiord.webp",
+          "alt": "Fiordo di Furore híd és sziklák láthatók a tengerről az Amalfi-part mentén",
+          "caption": "A bal oldali fedélzeti ülésekről észreveheti a drámai sziklákat és látványosságokat, mint a Fiordo di Furore. Fotó: %URL:https://commons.wikimedia.org/wiki/File:Fiordo_di_Furore_bridge,_as_seen_from_the_sea,_Furore,_2010.jpg|DimiTalen% (%URL:http://creativecommons.org/publicdomain/zero/1.0/deed.en|CC0%)."
+        }
+      ]
+    },
+    {
+      "id": "positanoArrival",
+      "title": "Érkezés Positanóba",
+      "body": "A hajók a Spiaggia Grande (a nagy nyilvános strand) fő kikötőjénél dokkolnak. A kikötőről a strandutra sétál. Innen három út vezet a Hostel Brikette-hez: gyalogoljon felfelé (meredek, 15–20 perc táskákkal), vegye az Interno Positano buszt (€2, kevesebb lépcső), vagy béreljen hordárt (€20–€25 táskánként, legjobb, ha nehéz cuccai vannak). Lásd a %LINK:ferryDockToBrikette|kikötőtől a Brikette-ig útmutatót% lépésről lépésre készült fotókért.",
+      "list": [
+        "**Kikötő:** Spiaggia Grande kikötő, Positano központja, a Via Positanesi d'America közelében",
+        "**Hordárok:** Várnak a kikötőnél. Kérdezze meg az árat, mielőtt odaadná a táskáit (€20–€25 táskánként a Brikette-ig).",
+        "**Interno busz:** A Via Cristoforo Colombóról indul a kikötő közelében. Vásároljon jegyeket kioszkokban vagy a buszon.",
+        "**Gyaloglás:** Meredek lépcsők és lejtők. Rendben napi hátizsákkal. Nehéz görgősökkel nyári melegben.",
+        "**Korai érkezés:** Ha korán érkezik és nem akarja a táskákat a városban hordani, használja a strand közelében a %LINK:luggageStorage|csomagmegőrzőt% (€5–€8 táskánként)."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/06-positano-panorama.webp",
+          "alt": "Széles panoráma Positano hegyoldali házairól a Spiaggia Grande strand felett",
+          "caption": "A komp a Spiaggia Grande-nél teszi le — a fő strand Positano hegyoldalának alján. Fotó: %URL:https://commons.wikimedia.org/wiki/File:Positano_panorama_01.jpg|Mihael Grmek% (%URL:https://creativecommons.org/licenses/by-sa/4.0|CC BY-SA 4.0%)."
+        },
+        {
+          "src": "/img/guides/amalfi-positano-ferry/07-positano-umbrellas.webp",
+          "alt": "Zsúfolt Spiaggia Grande strand Positanóban napernyők soraival és hajókkal az öbölben",
+          "caption": "Csúcsszezonban a Spiaggia Grande forgalmas — tartsa közel a táskáit és tervezze meg a következő lépését, mielőtt csatlakozna a tömeghez. Fotó: %URL:https://commons.wikimedia.org/wiki/File:Beach_Umbrellas_in_Positano_(41158690680).jpg|Nan Palmero from San Antonio, TX, USA% (%URL:https://creativecommons.org/licenses/by/2.0|CC BY 2.0%)."
+        }
+      ]
+    },
+    {
+      "id": "hostelTips",
+      "title": "Tippek a szállótól",
+      "body": "Sok vendéget láttunk Amalfiból komppal érkezni. Itt van, ami a legjobban működik, valódi visszajelzések és gyakori hibák alapján.",
+      "list": [
+        "**Vegye a 08:25-ös vagy 09:00-s hajót**, hogy a legtöbbet hozza ki az első napjából. Időben érkezik a bejelentkezéshez, leteszi a táskákat és felfedez ebéd előtt.",
+        "**Hagyja ki az utolsó kompot (20:00)**, hacsak nem baj a lépcsők a sötétben. Positano ösvényein nincs sok fény napnyugta után.",
+        "**Hozzon egy kis napi hátizsákot** az értékeihez. Tartsa magánál a fedélzeten. A nagy táskák az állványokba kerülnek, de ne hagyja ott a telefonokat vagy pénztárcákat.",
+        "**Viseljen rétegeket.** A fedélzet még nyáron is szeles lesz. Egy könnyű kabát segít a reggeli vagy esti utazásoknál.",
+        "**Töltsön le offline térképeket** beszállás előtt. A mobilszignál kiesik a keresztezés közepén. Útbaigazításokat akar készen, amikor kikötött.",
+        "**Tervezzen hordárokat**, ha egynél több táskája van vagy bármi 15kg felett. A séta felfelé a Via Pasitea-n a Brikette-hez meredekebb, mint amilyennek látszik."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/10-positano-street.webp",
+          "alt": "Meredek gyalogos utca és lépcsők Positanóban épületekkel szegélyezve",
+          "caption": "Positano gyönyörű, de függőleges — tervezze meg a felfelé vezető kapcsolatot a kikötőtől, ha csomagja van. Fotó: %URL:https://commons.wikimedia.org/wiki/File:Positano_street_II.jpg|Jensens% (%URL:https://commons.wikimedia.org/wiki/Commons:Licensing|Public domain%)."
+        }
+      ]
+    },
+    {
+      "id": "alternativeRoutes",
+      "title": "Más módok Positano elérésére",
+      "body": "Ha a kompidő nem működik, vagy ha a hajók időjárás miatt leállnak (ritka, de április-októberben előfordul), próbálja ezeket a tartalékokat. Lásd a %HOWTO:how-to-get-here|Hogyan juthat el ide útmutatót% a teljes részletekért.",
+      "list": [
+        "**SITA busz:** Amalfiból Positanóba az SS163 parti úton, €2–€3, egész évben közlekedik, de csúcsszezonban tele van.",
+        "**Magán vízi taxi:** Gyorsabb és rugalmasabb, mint az ütemezett hajók, de az egész hajó €80–€120-ba kerül (4–6 ember között megosztva).",
+        "**Úti taxi:** Agerolán és belső utakon, mint az SP2, €40–€60, jó, amikor a kompok nem járnak.",
+        "**Közvetlenül Nápolyból:** Nápolyi Capodichino repülőtérről érkezik? Lásd a %LINK:naplesAirportBus|Nápolyi repülőtértől Positanóba busszal% útmutatót, hogy kihagyja Amalfit."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/08-sita-bus.webp",
+          "alt": "Kék SITA busz halad a parti úton a tenger felett az Amalfi-parton",
+          "caption": "Amikor a tenger hullámzik, a SITA busz válik a fő tartalékká Amalfiból Positanóba (de zsúfolt lehet). Fotó: %URL:https://commons.wikimedia.org/wiki/File:Amalfi_Drive_Sita_Bus.jpeg|Robot8A% (%URL:https://creativecommons.org/licenses/by-sa/4.0|CC BY-SA 4.0%)."
+        }
+      ]
+    },
+    {
+      "id": "whenToGo",
+      "title": "Legjobb hónapok a komphoz",
+      "body": "A kompszezon március végétől október végéig tart. A csúcshónapok (július és augusztus) látják a legtöbb járatot, de a legnagyobb tömegeket és a legmagasabb árakat is. A váll hónapok (április, május, szeptember, október) jobb értéket, nyugodtabb tengereket és könnyebb jegyelérhetőséget kínálnak.",
+      "list": [
+        "**Április–május:** Kevesebb turista, nyugodt tenger, könnyebb ugyannap jegyet szerezni. Az időjárás április elején hűvös lehet.",
+        "**Június:** Forgalmas hétvégék, nyugodt tenger, teljes kompmenetrend kezdődik. Foglaljon 1 nappal előre hétvégékre.",
+        "**Július–augusztus:** Csúcsszezon. Foglaljon 2 nappal előre. A hajók gyorsan megtelnek. Számítson tömegekre az amalfi és positanoi kikötőknél.",
+        "**Szeptember–október:** A vállszezon visszatér. Nyugodtabb, mint nyáron, de októberben lehet hullámzó tenger és korai szezonzárás."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/09-amalfi-coast.webp",
+          "alt": "Kilátás az Amalfi-part szikláira és tengerére tiszta napon",
+          "caption": "A tavasz és a korai ősz gyakran nyugodtabb tengereket és kisebb tömegeket kínál — de mindig tartson tartalék busztervet a fejében. Fotó: %URL:https://commons.wikimedia.org/wiki/File:Amalfi_coast_(17735555990).jpg|Alpha 350 from Hungary% (%URL:https://creativecommons.org/licenses/by/2.0|CC BY 2.0%)."
+        }
+      ]
+    },
+    {
+      "id": "budgetTips",
+      "title": "Költségvetési tippek szállóvendégeknek",
+      "body": "A komp €9–€10-ba kerül, ami tisztességes 25 perc parti kilátásért. De az extra költségek gyorsan összeadódnak. Itt van, hogyan tartsa olcsón.",
+      "list": [
+        "**Pakoljon könnyűen.** Egy kis táska 45cm × 35cm × 20cm alatt ingyenes. A második táska €2-ba kerül. Ha nagy hátizsákja és napi hátizsákja van, viselje a napi hátizsákot és hordozza a hátizsákot a díj elkerülése érdekében.",
+        "**Hagyja ki a büfét.** Az italok és snackek a hajón kétszer annyiba kerülnek, mint amennyit egy amalfi boltban fizetne. Vásároljon vizet és snackeket egy szupermarketben a Piazza del Duomo közelében beszállás előtt.",
+        "**Foglaljon közvetlenül.** Vásároljon jegyeket a travelmar.it-ről vagy a kikötői kioszkból. A harmadik fél oldalak, mint a Viator vagy GetYourGuide, felárral számolnak. Takarítson meg €2–€3-t közvetlen foglalással.",
+        "**Utazzon vállszezonban.** A kompok ugyanazt az utat járják április, május, szeptember és októberben, de a jegyek könnyebben elérhetők és a tömegek vékonyabbak. Ugyanazokat a kilátásokat kapja kevesebb stresszel.",
+        "**Osszon meg egy vízi taxit.** Ha 4–6 fős csoportban van, egy magán vízi taxi (€80–€120) személyenként olcsóbb lehet, mint a kompok. Plusz kihagyja a sorokat és kiválasztja a saját idejét."
+      ]
+    },
+    {
+      "id": "commonMistakes",
+      "title": "Elkerülendő gyakori hibák",
+      "body": "Több száz szállóvendéget láttunk az Amalfi–Positano kompot venni. Itt vannak a legfontosabb hibák, amelyek felborítják az embereket.",
+      "list": [
+        "**Késve érkezni a kikötőhöz.** A Travelmar 10–15 perccel indulás előtt beszállít. Ha 5 perccel a hajó indulása előtt jelenik meg, lemarad róla vagy bent ragad rossz ülésekkel. Érkezzen 20 perccel korábban.",
+        "**Nem ellenőrzi az időjárást.** A kompok törlik, ha a tenger hullámzik. Ellenőrizze a Travelmar weboldalt vagy hívjon előre szeles napokon, különösen április-októberben. Legyen tartalékterve (SITA busz vagy taxi).",
+        "**Elfelejteni a készpénzt.** A legtöbb kioszk elfogad kártyát, de a fedélzeti büfé gyakran csak készpénzes. Hozzon €5–€10 érmét, ha italokat vagy snackeket akar.",
+        "**A jobb oldalon ülni.** Az Amalfi–Positano útvonalon a legjobb kilátások a bal oldalon vannak (előre nézve). A jobb oldal a nyílt tengerre néz. A turisták mindig először rossz oldalra ülnek.",
+        "**Nem tudni, melyik kikötő.** Amalfiban két kikötő van. Ellenőrizze a jegyét. Ha a rosszhoz megy, vissza kell futnia. Keressen Travelmar táblákat és kérdezze meg a személyzetet, ha bizonytalan.",
+        "**Túlbecsülni a sétát a positanoi kikötőtől.** A séta a Brikette-ig meredek. Ne próbálja nagy görgős táskával júliusi melegben. Tervezzen hordárt vagy buszt. Lásd a %LINK:ferryDockToBrikette|kikötőtől a szállóig útmutatót% a pontos útvonalért."
+      ]
+    },
+    {
+      "id": "whatToBring",
+      "title": "Mit vigyen a kompra",
+      "body": "A keresztezés rövid (15–25 perc), szóval nem kell sok. De néhány elem jobbá teszi az utat.",
+      "list": [
+        "**Kulacs.** A fedélzet nyáron forró lesz. Hozzon újratölthető palackot a szállójából vagy egy amalfi szökőkútból töltve.",
+        "**Napvédő és napszemüveg.** Nincs árnyék a szabadtéri fedélzeten. A nap a vízről tükröződik és gyorsan éget, még felhős napokon is.",
+        "**Könnyű kabát vagy pulóver.** A reggeli és esti kompok szeles lesznek. A tengeri permet átitathatja a könnyű ingeket, ha elöl ül.",
+        "**Telefontöltő vagy power bank.** Sok fotót fog készíteni. Győződjön meg róla, hogy a telefonja van tele, amikor Positanóba érkezik.",
+        "**Offline térképek.** Töltse le a Google Maps-et vagy a Maps.me-t beszállás előtt. A mobilszignál kiesik a keresztezés közepén, és útbaigazításokat fog akarni, amikor kikötött.",
+        "**Kis napi hátizsák.** Tartsa az értékeket magánál. Ne hagyja a táskákat őrizetlenül a csomagállványokban. A zsebtolvajok célba veszik a turistákat a zsúfolt hajókon csúcsszezonban."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Hozhatok nagy hátizsákot vagy görgős táskát a kompra?",
+      "a": "Igen, de a 45cm × 35cm × 20cm-nél nagyobb táskák táskánként €2 extra költséggel járnak. Vásárolja meg a csomagjegyet a kompjegyével (online vagy a kioszkban). Tegye a nagy táskákat a fedélzeti csomagállványokba."
+    },
+    {
+      "q": "Mi történik, ha a kompot időjárás miatt törlik?",
+      "a": "A Travelmar törli a járatokat, ha a tenger hullámzik (ritka, de korai/késői szezonban előfordul). E-mailt kap, ha online foglalt. A személyzet értesítéseket tesz közzé a kikötőnél. Vegye a SITA buszt Amalfiból Positanóba (€2–€3) vagy vegyen inkább taxit."
+    },
+    {
+      "q": "Jó a komp mobilitási problémákkal küzdő utazóknak?",
+      "a": "A beszálláshoz rövid pallósétára és esetleg lépcsőkre van szükség a kikötő és a fedélzet között. A legtöbb Travelmar kompnak nincs kerekesszék rámpája. Ha segítségre van szüksége, érkezzen korán és kérdezze meg a személyzetet. Először biztonságosabb úton tudják beszállítani."
+    },
+    {
+      "q": "Vásárolhatok kompjegyeket az utazás napján?",
+      "a": "Általában igen április, május, szeptember és októberben. De július-augusztusban 1–2 nappal előre elfogynak. Foglaljon online az előző este a biztonság kedvéért, különösen reggeli hajókra."
+    },
+    {
+      "q": "Hogyan jutok el a positanoi kikötőtől a Hostel Brikette-hez?",
+      "a": "Három módszer: gyalogoljon felfelé (15–20 perc, meredek lépcsők), vegye az Interno Positano buszt (€2), vagy béreljen hordárt (€20–€25 táskánként). Lásd a %LINK:ferryDockToBrikette|kikötőtől a Brikette-ig csomagútmutatót% útbaigazításokért és fotókért."
+    },
+    {
+      "q": "Vannak WC-k és snackek a fedélzeten?",
+      "a": "A legtöbb Travelmar hajón van egy kis büfé italokkal és könnyű étellel. A WC-k a nagyobb hajókon vannak, de a kisebbeken nem a csúcsidőn kívül. Használja a WC-t beszállás előtt, ha tudja."
+    },
+    {
+      "q": "Mikor a legjobb a kompot venni?",
+      "a": "A reggeli hajók (08:25–10:00) nyugodtabb tengereket és jobb fotófényt kínálnak. A délutáni utak forgalmasabbak lesznek napi kirándulókkal. Hagyja ki az utolsó hajót (20:00), hacsak nem baj sötétben érkezni."
+    },
+    {
+      "q": "Ki kell nyomtatnom a jegyemet vagy megmutathatom a telefonomat?",
+      "a": "A telefonja rendben van. A személyzet beolvassa a QR-kódot a képernyőjéről. Győződjön meg róla, hogy a telefonja fel van töltve és meg tudja nyitni az e-mailt vagy a foglalást internet nélkül (mentse offline vagy készítsen képernyőképet)."
+    },
+    {
+      "q": "Hol van pontosan az amalfi kompkikötő?",
+      "a": "Sétáljon a vízpartra a Piazza Flavio Gioától (fő tér a szökőkúttal). Nézzen a tenger felé és forduljon jobbra. A Travelmar kikötő 2 percre van a sétány mentén. Keressen kék-fehér táblákat és jegykioszkokat."
+    },
+    {
+      "q": "Tárolhatok csomagot Positanóban, ha korán érkezem?",
+      "a": "Igen. Több %LINK:luggageStorage|csomagmegőrző hely% a Spiaggia Grande strand közelében €5–€8-t kér táskánként naponta. Jó, ha a szálló bejelentkezése 15:00 előtt érkezik."
+    }
+  ]
+}

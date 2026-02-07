@@ -1,9 +1,12 @@
+import "@testing-library/jest-dom";
+import "../../../test/resetNextMocks";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import "@testing-library/jest-dom";
-import { CartTemplate } from "../src/components/templates/CartTemplate";
+
 import type { CartState } from "@acme/platform-core/cart";
-import "../../../test/resetNextMocks";
+
+import { CartTemplate } from "../src/components/templates/CartTemplate";
 
 jest.mock("@acme/platform-core/contexts/CurrencyContext", () => ({
   useCurrency: () => ["USD", jest.fn()],

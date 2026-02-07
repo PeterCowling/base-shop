@@ -1,11 +1,12 @@
 import React from "react";
-import { render, act, fireEvent } from "@testing-library/react";
+import { act, fireEvent,render } from "@testing-library/react";
+
 import ThemePanel from "../ThemePanel";
 
 jest.useFakeTimers();
 
 jest.mock("next/navigation", () => ({ __esModule: true, usePathname: () => "/cms/shop/acme" }));
-jest.mock("@acme/shared-utils", () => ({ __esModule: true, getShopFromPath: () => "acme" }));
+jest.mock("@acme/lib/shop", () => ({ __esModule: true, getShopFromPath: () => "acme" }));
 jest.mock("../../style/Tokens", () => ({ __esModule: true, default: ({ onRenameToken }: any) => <button onClick={() => onRenameToken("--color.brand", "--color.primary")}>Rename token</button> }));
 jest.mock("../ColorThemeSelector", () => ({ __esModule: true, default: () => <div /> }));
 jest.mock("../../../atoms/shadcn", () => ({ __esModule: true, DialogContent: ({ children }: any) => <div>{children}</div>, DialogTitle: ({ children }: any) => <div>{children}</div> }));
@@ -24,8 +25,8 @@ describe("ThemePanel rename conflict cancel", () => {
   it("does not schedule save when user cancels rename conflict", async () => {
     // Both defaults and tokens contain conflicting keys so confirm(false) path is exercised
     (global.fetch as jest.Mock).mockResolvedValueOnce({ ok: true, json: async () => ({
-      themeDefaults: { "--color.brand": "#000", "--color.primary": "#111" }, // eslint-disable-line ds/no-raw-color -- TEST-123: test fixture literals
-      themeTokens: { "--color.brand": "#000" }, // eslint-disable-line ds/no-raw-color -- TEST-123: test fixture literals
+      themeDefaults: { "--color.brand": "#000", "--color.primary": "#111" },  
+      themeTokens: { "--color.brand": "#000" },  
     }) } as any);
     (global.fetch as jest.Mock).mockResolvedValue({ ok: true } as any);
 

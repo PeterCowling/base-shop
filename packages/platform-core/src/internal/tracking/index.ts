@@ -1,5 +1,5 @@
-import { getTrackingStatus, type TrackingStatus } from "../../shipping";
 import { type EmailService, getEmailService } from "../../services/emailService";
+import { getTrackingStatus, type TrackingStatus } from "../../shipping";
 
 export interface TrackingItem {
   id: string;

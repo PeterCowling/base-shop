@@ -1,13 +1,14 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
-import type { Product, ProductColor, ProductSize, ProductVariant } from "@/types/product";
+
 import {
   getAvailableColors,
   getAvailableSizes,
   getDefaultVariant,
   getVariantBySelection,
 } from "@/lib/catalog";
+import type { Product, ProductColor, ProductSize, ProductVariant } from "@/types/product";
 
 export function useVariantSelection(product: Product, initialVariantId?: string) {
   const defaultVariant = useMemo<ProductVariant>(() => {

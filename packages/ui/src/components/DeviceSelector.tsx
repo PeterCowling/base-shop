@@ -1,17 +1,19 @@
 /* i18n-exempt file */
 "use client";
 
+import { useMemo } from "react";
 import { DesktopIcon, LaptopIcon, MobileIcon } from "@radix-ui/react-icons";
+
+import { type DevicePreset, getAllDevicePresets,getLegacyPreset } from "../utils/devicePresets";
+
 import {
   Button,
   Select,
-  SelectTrigger,
-  SelectValue,
   SelectContent,
   SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "./atoms/shadcn";
-import { getLegacyPreset, type DevicePreset, getAllDevicePresets } from "../utils/devicePresets";
-import { useMemo } from "react";
 // Local noop translator for developer tooling labels
 const t = (s: string) => s;
 

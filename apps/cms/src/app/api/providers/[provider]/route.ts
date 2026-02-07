@@ -1,8 +1,13 @@
 import "@acme/zod-utils/initZod";
-import { NextRequest, NextResponse } from "next/server";
+
+import { type NextRequest, NextResponse } from "next/server";
+import { ensureShopAccess } from "@cms/actions/common/auth";
 import path from "path";
 import { z } from "zod";
-import { resolveDataRoot } from "@platform-core/dataRoot";
+
+import { validateShopName } from "@acme/lib";
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
+
 import { writeJsonFile } from "@/lib/server/jsonIO";
 
 const ParamsSchema = z
@@ -21,7 +26,24 @@ export async function GET(
     return NextResponse.json({ error: "Invalid shop" }, { status: 400 });
   }
 
-  const { shop, code } = parsed.data;
+  // Validate shop name to prevent path traversal
+  let shop: string;
+  try {
+    shop = validateShopName(parsed.data.shop);
+  } catch {
+    return NextResponse.json({ error: "Invalid shop name" }, { status: 400 });
+  }
+
+  // Require authenticated session with access to this specific shop
+  try {
+    await ensureShopAccess(shop);
+  } catch (err) {
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 401;
+    return NextResponse.json({ error: message === "Forbidden" ? "Forbidden" : "Unauthorized" }, { status });
+  }
+
+  const { code } = parsed.data;
 
   if (!code) {
     const redirectParams = new URLSearchParams({ shop, code: "dummy-token" });

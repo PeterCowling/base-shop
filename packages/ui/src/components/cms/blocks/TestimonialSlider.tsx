@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+
 import { useTranslations } from "@acme/i18n";
 
 export type SliderTestimonial = { quote: string; name?: string };

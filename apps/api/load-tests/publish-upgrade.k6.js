@@ -3,9 +3,9 @@
  * Usage:
  *   API_BASE_URL=http://localhost:8788 UPGRADE_TOKEN=token k6 run publish-upgrade.k6.js
  */
-import http from 'k6/http';
 import { check, sleep } from 'k6';
 import { SharedArray } from 'k6/data';
+import http from 'k6/http';
 
 export const options = {
   scenarios: {

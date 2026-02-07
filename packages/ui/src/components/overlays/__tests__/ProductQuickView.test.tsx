@@ -1,7 +1,10 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import { ProductQuickView } from "../ProductQuickView";
-import type { SKU } from "@acme/types";
 import "../../../../../../test/resetNextMocks";
+
+import { fireEvent,render, screen } from "@testing-library/react";
+
+import type { SKU } from "@acme/types";
+
+import { ProductQuickView } from "../ProductQuickView";
 
 jest.mock("../../organisms/ProductCard", () => ({
   ProductCard: ({

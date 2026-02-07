@@ -1,4 +1,5 @@
-import { describe, it, expect, afterEach } from "@jest/globals";
+import { afterEach,describe, expect, it } from "@jest/globals";
+
 import { withEnv } from "../../../config/test/utils/withEnv";
 
 describe("shipping env", () => {
@@ -14,7 +15,7 @@ describe("shipping env", () => {
         DEFAULT_SHIPPING_ZONE: "domestic",
       },
       async () => {
-        const mod = await import("@acme/config/src/env/shipping.ts");
+        const mod = await import("@acme/config/env/shipping");
         return mod.loadShippingEnv();
       },
     );
@@ -28,7 +29,7 @@ describe("shipping env", () => {
       withEnv(
         { DEFAULT_SHIPPING_ZONE: "moon" },
         async () => {
-          const mod = await import("@acme/config/src/env/shipping.ts");
+          const mod = await import("@acme/config/env/shipping");
           return mod.loadShippingEnv();
         },
       ),
@@ -40,22 +41,14 @@ describe("shipping env", () => {
       withEnv(
         { FREE_SHIPPING_THRESHOLD: "abc" },
         async () => {
-          const mod = await import("@acme/config/src/env/shipping.ts");
+          const mod = await import("@acme/config/env/shipping");
           return mod.loadShippingEnv();
         },
       ),
     ).rejects.toThrow("Invalid shipping environment variables");
   });
 
-  it("throws during eager parse when env invalid", async () => {
-    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
-    await expect(
-      withEnv(
-        { UPS_KEY: 123 as any },
-        () => import("@acme/config/src/env/shipping.ts"),
-      ),
-    ).rejects.toThrow("Invalid shipping environment variables");
-    expect(errorSpy).toHaveBeenCalled();
-  });
+  // Removed: Test expected UPS_KEY: 123 (number) to fail validation,
+  // but process.env coerces all values to strings, so "123" is valid.
 });
 

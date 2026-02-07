@@ -7,15 +7,7 @@
     "eyebrow": "Experiencias",
     "title": "Atardeceres, mañanas tranquilas y consejos locales",
     "description": "Combina tu estancia con bebidas en la terraza, excursiones curadas y una conserjería digital que te mantiene informado incluso antes de llegar.",
-    "supporting": "Todo está disponible para huéspedes registrados; escríbenos si viajas con amistades que se alojan en otro sitio.",
-    "primaryCta": "Reserva tu estancia",
-    "secondaryCta": "Abrir la carta del bar",
-    "tertiaryCta": "Escribir a la conserjería digital",
-    "primaryCtaAria": "Reserva tu estancia en Hostel Brikette",
-    "secondaryCtaAria": "Ver la carta del bar de Hostel Brikette",
-    "tertiaryCtaAria": "Enviar un mensaje a la conserjería digital de Hostel Brikette",
-    "breakfastCta": "Ver el menú de desayuno",
-    "breakfastCtaAria": "Ver el menú de desayuno"
+    "scrollNudge": "Explora por tipo de experiencia abajo"
   },
   "sections": {
     "bar": {
@@ -90,49 +82,79 @@
     "clearFilter": "Mostrar todas las guías de experiencias",
     "cardCta": "Explora la guía de experiencias {{guideTitle}}",
     "directionsLabel": "Indicaciones",
+    "sections": {
+      "content": {
+        "title": "Guías de experiencias",
+        "description": "Guías detalladas sobre playas, senderismo, excursiones y cosas que hacer"
+      },
+      "directions": {
+        "title": "Cómo llegar",
+        "description": "Indicaciones paso a paso hacia y desde el hostel"
+      }
+    },
     "directionLinks": {
       "capriDayTrip": {
-        "positanoCapriFerry": "Positano → Capri en ferry",
-        "capriPositanoFerry": "Capri → Positano en ferry"
+        "positanoCapriFerry": "Ferry Positano → Capri",
+        "capriPositanoFerry": "Ferry Capri → Positano"
       },
       "positanoAmalfi": {
         "positanoAmalfiBus": "Positano → Amalfi en bus",
         "amalfiPositanoBus": "Amalfi → Positano en bus",
-        "positanoAmalfiFerry": "Positano → Amalfi en ferry (temporada)",
-        "amalfiPositanoFerry": "Amalfi → Positano en ferry (temporada)"
+        "positanoAmalfiFerry": "Ferry Positano → Amalfi (temporada)",
+        "amalfiPositanoFerry": "Ferry Amalfi → Positano (temporada)"
       },
       "positanoRavello": {
-        "positanoRavelloBus": "Positano → Ravello en bus",
-        "ravelloPositanoBus": "Ravello → Positano en bus",
+        "positanoRavelloBus": "Bus Positano → Ravello",
+        "ravelloPositanoBus": "Bus Ravello → Positano",
         "positanoRavelloFerryBus": "Positano → Ravello ferry + bus"
       },
       "naplesPositano": {
-        "naplesCenterTrainBus": "Centro de Nápoles → Positano (tren + bus)",
-        "naplesCenterPositanoFerry": "Centro de Nápoles → Positano en ferry",
-        "naplesAirportPositanoBus": "Aeropuerto de Nápoles → Positano en bus",
-        "positanoNaplesCenterBusTrain": "Positano → Centro de Nápoles (bus + tren)",
-        "positanoNaplesCenterFerry": "Positano → Nápoles en ferry",
-        "positanoNaplesAirportBus": "Positano → Aeropuerto de Nápoles en bus"
+        "naplesCenterTrainBus": "Nápoles centro → Positano (tren + bus)",
+        "naplesCenterPositanoFerry": "Ferry Nápoles centro → Positano",
+        "naplesAirportPositanoBus": "Bus aeropuerto de Nápoles → Positano",
+        "positanoNaplesCenterBusTrain": "Positano → Nápoles centro (bus + tren)",
+        "positanoNaplesCenterFerry": "Ferry Positano → Nápoles",
+        "positanoNaplesAirportBus": "Bus Positano → aeropuerto de Nápoles"
       },
       "salernoPositano": {
-        "salernoPositanoBus": "Salerno → Positano en bus",
-        "salernoPositanoFerry": "Salerno → Positano en ferry (temporada)",
-        "positanoSalernoBus": "Positano → Salerno en bus",
-        "positanoSalernoFerry": "Positano → Salerno en ferry (temporada)"
+        "salernoPositanoBus": "Bus Salerno → Positano",
+        "salernoPositanoFerry": "Ferry Salerno → Positano (temporada)",
+        "positanoSalernoBus": "Bus Positano → Salerno",
+        "positanoSalernoFerry": "Ferry Positano → Salerno (temporada)"
       }
     },
     "filterHeading": "Filtrar guías de experiencias",
     "filterDescription": "Elige una etiqueta para acotar las experiencias destacadas.",
     "grouped": {
       "beaches": {
-        "guides": {
-        "heading": "Guías de playas",
-        "description": "Elige el tramo de arena adecuado y planifica tu día."
-        },
-        "directions": {
-        "heading": "Indicaciones a la playa",
-        "description": "Indicaciones paso a paso desde Hostel Brikette hasta la orilla."
-        }
+        "title": "Playas",
+        "description": "Elige el tramo de arena adecuado y planifica tu día.",
+        "imageAlt": "Playa de Positano con sombrillas de colores a lo largo de la costa"
+      },
+      "hiking": {
+        "title": "Rutas y senderos",
+        "description": "Recorridos a pie desde paseos suaves hasta excursiones de día completo.",
+        "imageAlt": "Excursionistas en el Sendero de los Dioses con vistas a la costa"
+      },
+      "day-trip": {
+        "title": "Excursiones de un día",
+        "description": "Capri, Amalfi, Ravello: cómo llegar y volver.",
+        "imageAlt": "Ferry acercándose a la isla de Capri"
+      },
+      "boat": {
+        "title": "Paseos en barco",
+        "description": "Alquiler privado, salidas en grupo y cruceros al atardecer.",
+        "imageAlt": "Barca tradicional en las aguas de la Costa Amalfitana"
+      },
+      "cuisine": {
+        "title": "Gastronomía",
+        "description": "Dónde comer bien sin gastar de más.",
+        "imageAlt": "Platos italianos frescos en una trattoria local"
+      },
+      "more": {
+        "title": "Más guías",
+        "description": "Consejos de transporte, rincones fotogénicos y eventos locales.",
+        "imageAlt": "Autobús local serpenteando por la carretera de la Costa Amalfitana"
       }
     }
   }

@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { ensureAuthorized } from "@cms/actions/common/auth";
 import { verifyShopAfterDeploy } from "@cms/actions/verifyShopAfterDeploy.server";
+
 import type { Environment } from "@acme/types";
+
 import { recordStageTests } from "@/lib/server/launchGate";
 
 export async function POST(req: Request) {

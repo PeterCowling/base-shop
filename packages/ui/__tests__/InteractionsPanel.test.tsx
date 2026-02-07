@@ -1,3 +1,10 @@
+import { useState } from "react";
+import { fireEvent, render, screen } from "@testing-library/react";
+
+import type { PageComponent } from "@acme/types";
+
+import InteractionsPanel from "../src/components/cms/page-builder/panels/InteractionsPanel";
+
 jest.mock("../src/components/atoms/shadcn", () => {
   const React = require("react");
   return {
@@ -57,11 +64,6 @@ jest.mock("@acme/i18n", () => ({
       "cms.common.plainText": "Plain text",
     }[key] ?? key),
 }));
-
-import { render, fireEvent, screen } from "@testing-library/react";
-import { useState } from "react";
-import InteractionsPanel from "../src/components/cms/page-builder/panels/InteractionsPanel";
-import type { PageComponent } from "@acme/types";
 
 function Wrapper({ component }: { component: PageComponent }) {
   const [comp, setComp] = useState(component);

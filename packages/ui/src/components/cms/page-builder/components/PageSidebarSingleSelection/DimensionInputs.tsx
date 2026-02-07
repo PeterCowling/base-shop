@@ -1,5 +1,6 @@
-import UnitInput from "../../panels/layout/UnitInput";
 import { Button } from "../../../../atoms/shadcn";
+import UnitInput from "../../panels/layout/UnitInput";
+
 import type { BlockDimensions, HandleResize } from "./types";
 
 interface DimensionInputsProps {

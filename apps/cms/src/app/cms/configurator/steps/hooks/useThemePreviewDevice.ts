@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
+
+import { type DevicePreset,devicePresets } from "@acme/ui/utils/devicePresets";
 
 export function useThemePreviewDevice() {
   const [deviceId, setDeviceIdState] = useState(devicePresets[0].id);

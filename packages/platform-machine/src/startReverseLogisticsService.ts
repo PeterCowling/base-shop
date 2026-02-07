@@ -1,7 +1,9 @@
 /* eslint-disable security/detect-non-literal-fs-filename -- PLAT-1234: Paths are derived from internal configuration */
 import { readdir } from "fs/promises";
-import { resolveDataRoot } from "@platform-core/dataRoot";
-import { logger } from "@platform-core/utils";
+
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
+import { logger } from "@acme/platform-core/utils";
+
 import { processReverseLogisticsEventsOnce } from "./processReverseLogisticsEventsOnce";
 import { resolveConfig, type ReverseLogisticsConfig } from "./resolveConfig";
 

@@ -1,8 +1,9 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
+import { useEffect,useRef, useState } from "react";
+
+import { snapToGrid } from "./gridSnap";
 import type { Action } from "./state";
 import useGuides from "./useGuides";
-import { snapToGrid } from "./gridSnap";
 
 interface Options {
   componentId: string;

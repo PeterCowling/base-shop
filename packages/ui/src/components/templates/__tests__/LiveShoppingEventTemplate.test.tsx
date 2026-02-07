@@ -1,9 +1,12 @@
+import "@testing-library/jest-dom";
+import "../../../../../../test/resetNextMocks";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import "@testing-library/jest-dom";
-import { LiveShoppingEventTemplate } from "../LiveShoppingEventTemplate";
+
 import type { SKU } from "@acme/types";
-import "../../../../../../test/resetNextMocks";
+
+import { LiveShoppingEventTemplate } from "../LiveShoppingEventTemplate";
 
 const dispatch = jest.fn();
 jest.mock("@acme/platform-core/contexts/CurrencyContext", () => ({

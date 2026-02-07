@@ -1,4 +1,5 @@
 import { render } from "@testing-library/react";
+
 import CmsRecommendationCarousel, { getRuntimeProps } from "../RecommendationCarousel";
 
 jest.mock("../../../organisms/RecommendationCarousel", () => {

@@ -1,13 +1,14 @@
 // src/components/blog/BlogPortableText.tsx
-import { PortableText } from "@portabletext/react";
+import Link from "next/link";
 import type {
+  PortableTextComponentProps,
   PortableTextComponents,
   PortableTextMarkComponentProps,
   PortableTextTypeComponentProps,
-  PortableTextComponentProps,
 } from "@portabletext/react";
-import Link from "next/link";
-import { getProductBySlug, getProductById, type SKU } from "../../products";
+import { PortableText } from "@portabletext/react";
+
+import { getProductById, getProductBySlug, type SKU } from "../../products";
 import { ProductCard } from "../shop/ProductCard";
 
 const components: PortableTextComponents = {

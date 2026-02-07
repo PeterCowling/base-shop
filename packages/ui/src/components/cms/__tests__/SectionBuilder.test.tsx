@@ -1,6 +1,7 @@
 // packages/ui/src/components/cms/__tests__/SectionBuilder.test.tsx
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent,render, screen } from "@testing-library/react";
+
 import SectionBuilder from "../SectionBuilder";
 
 jest.mock("../page-builder/PageBuilder", () => ({

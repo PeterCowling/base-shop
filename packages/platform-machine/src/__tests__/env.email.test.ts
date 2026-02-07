@@ -1,4 +1,4 @@
-import { describe, it, expect } from "@jest/globals";
+import { describe, expect,it } from "@jest/globals";
 
 process.env.EMAIL_FROM = "from@example.com";
 const { emailEnvSchema } = require("@acme/config/env/email");

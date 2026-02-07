@@ -4,58 +4,59 @@
     "description": "Atteignez le Monte Sant'Angelo, le point culminant de la côte amalfitaine, avec ces instructions, conseils de préparation et avertissements."
   },
   "linkLabel": "Randonnée au sommet de la montagne depuis l'auberge Brikette",
+  "lastUpdated": "2026-02-04",
   "intro": [
-    "Monte Sant'Angelo towers above the Amalfi Coast and rewards hikers with sweeping 360-degree views stretching from Capri to the Sorrentine Peninsula.",
-    "This itinerary starts from Hostel Brikette, guides you up to Santa Maria del Castello, and explains the final push to the summit so you know exactly what to expect before committing."
+    "Le Monte Sant'Angelo domine la côte amalfitaine et récompense les randonneurs par des panoramas à 360 degrés, de Capri à la péninsule de Sorrente.",
+    "Cet itinéraire part de l'Hostel Brikette, vous guide jusqu'à Santa Maria del Castello et explique l'ultime montée vers le sommet pour que vous sachiez à quoi vous attendre."
   ],
   "sections": [
     {
       "id": "why-go",
-      "title": "Why tackle this hike",
+      "title": "Pourquoi entreprendre cette randonnée",
       "body": [
-        "Views from the summit sweep across the peninsula towards Capri and down the Lattari mountains, making the grind worthwhile for photographers and hikers alike.",
-        "Reaching the Amalfi Coast's highest point is a satisfying physical challenge and a story you will trade with other travellers back at the hostel.",
-        "The long ascent doubles as a serious cardio session, especially if you are training for bigger treks later in your trip."
+        "Les vues depuis le sommet balaient la péninsule vers Capri et les montagnes de Lattari, rendant l'effort rentable pour les photographes et randonneurs.",
+        "Atteindre le point culminant de la côte amalfitaine est un défi physique gratifiant et une histoire à partager avec d'autres voyageurs à l'auberge.",
+        "La longue montée sert aussi d'entraînement cardio sérieux, surtout si vous préparez des treks plus exigeants."
       ]
     },
     {
       "id": "getting-to-santa-maria",
-      "title": "Getting to Santa Maria del Castello",
+      "title": "Se rendre à Santa Maria del Castello",
       "body": [
-        "Follow our standard hostel-to-Santa-Maria directions until you arrive in the village; that climb covers just over one third of the total elevation for the day.",
-        "Take a breather in the square, refill water if the bar is open, and check that everyone in your group still feels strong before committing to the exposed upper trail."
+        "Suivez nos indications habituelles de l'auberge à Santa Maria jusqu'à l'arrivée au village ; cette montée représente un peu plus d'un tiers du dénivelé total de la journée.",
+        "Faites une pause sur la place, refaites le plein d'eau si le bar est ouvert, et vérifiez que tout le groupe se sent encore en forme avant la section supérieure exposée."
       ]
     },
     {
       "id": "santa-maria-to-summit",
-      "title": "From Santa Maria to the summit",
+      "title": "De Santa Maria au sommet",
       "body": [
-        "From the crossroads at the top of the village, turn right up the paved lane until a junction, then turn left and continue past the restaurant until the road bends sharply left.",
-        "Leave the road on the right-hand side, following the side path that drops slightly between houses. It will feel like private property at first, but you are still on the right track.",
-        "Stay on the mountain trail for an extended stretch until you reach a signed crossroads. Ignore the downhill options and take the steeply rising path.",
-        "The ascent quickly zig-zags before easing into a long, flatter traverse along the left-hand side of the mountain face. When you spot stone-cut steps on your right, follow them around the back of the peak for the final push.",
-        "Those rock steps lead to the last ramp of the day—keep climbing and you will emerge on the summit plateau with panoramic views in every direction."
+        "Au croisement en haut du village, tournez à droite sur la voie pavée jusqu'à une jonction, puis à gauche et continuez après le restaurant jusqu'à ce que la route tourne fortement à gauche.",
+        "Quittez la route sur la droite en suivant le sentier latéral qui descend légèrement entre les maisons. Cela peut sembler privé au début, mais vous êtes sur le bon chemin.",
+        "Restez sur le sentier de montagne sur une longue portion jusqu'à un croisement balisé. Ignorez les options en descente et prenez le sentier qui monte fortement.",
+        "La montée serpente rapidement puis s'adoucit en une longue traversée plus plane sur le flanc gauche de la montagne. Lorsque vous voyez des marches taillées dans la roche sur votre droite, suivez-les derrière le sommet pour la dernière poussée.",
+        "Ces marches mènent à la dernière rampe de la journée — continuez à monter et vous arriverez sur le plateau sommital avec des vues panoramiques dans toutes les directions."
       ]
     }
   ],
-  "essentialsTitle": "Essentials",
+  "essentialsTitle": "Essentiels",
   "essentials": [
     "Au moins 2 litres d'eau par personne plus des collations salées ; il n'y a pas de recharges fiables après Santa Maria del Castello.",
     "Chaussures de randonnée solides et adhérentes : les sections supérieures du sentier sont rocheuses, meubles et exposées.",
     "Protection solaire et couches pour le sommet ; le vent peut souffler sur la crête même par temps chaud."
   ],
-  "typicalCostsTitle": "Typical costs",
+  "typicalCostsTitle": "Coûts typiques",
   "typicalCosts": [
     "L'accès aux sentiers est gratuit; budget 5 à 10 € si vous envisagez de vous récompenser avec une boisson ou une collation à Santa Maria del Castello.",
     "Renvoyez les billets de bus SITA ou les tarifs du ferry si vous décidez de descendre via un autre village au lieu de faire tout le chemin du retour."
   ],
-  "tipsTitle": "Smart timing",
+  "tipsTitle": "Bon timing",
   "tips": [
-    "Commencez dès l’aube en été pour éviter de grimper en pleine chaleur ; late autumn and spring afternoons offer softer light without the scorching sun.",
+    "Commencez dès l’aube en été pour éviter de grimper en pleine chaleur ; les après-midis de fin d'automne et de printemps offrent une lumière plus douce sans soleil brûlant.",
     "Vérifiez les prévisions de tempêtes : la couverture nuageuse peut effacer la vue et la roche mouillée rend les marches du sommet glissantes.",
     "Informez quelqu'un à l'auberge de votre projet et de l'heure de retour prévue avant de partir."
   ],
-  "warningsTitle": "When to reconsider",
+  "warningsTitle": "Quand renoncer",
   "warnings": [
     "Évitez la randonnée si vous manquez d'expérience en montagne ou si vous êtes en bonne forme physique ; le gain d’altitude soutenu est pénible et il y a peu de points de sauvetage.",
     "Évitez l'itinéraire si les hauteurs vous déstabilisent : les rebords exposés et les dénivelés abrupts mettent au défi même les randonneurs confiants.",
@@ -63,46 +64,46 @@
   ],
   "steps": [
     {
-      "name": "Climb to Santa Maria del Castello",
-      "text": "Use the hostel's route to Santa Maria del Castello; atteindre la place signifie que vous avez parcouru environ un tiers de l’élévation."
+      "name": "Monter jusqu'à Santa Maria del Castello",
+      "text": "Utilisez le parcours de l'auberge vers Santa Maria del Castello ; atteindre la place signifie que vous avez parcouru environ un tiers du dénivelé."
     },
     {
-      "name": "Join the mountain trail",
+      "name": "Rejoindre le sentier de montagne",
       "text": "Depuis le carrefour du village, tourner à droite, puis à gauche devant le restaurant, et quitter la route par le chemin à droite qui longe les maisons."
     },
     {
-      "name": "Commit to the upper ascent",
+      "name": "S'engager sur la montée supérieure",
       "text": "Suivez le sentier accidenté jusqu'au carrefour balisé et choisissez le chemin qui monte tout droit vers le sommet."
     },
     {
-      "name": "Navigate the zig-zags",
+      "name": "Négocier les lacets",
       "text": "Traversez des lacets raides jusqu'à ce que le sentier s'aplatisse le long du flanc gauche de la montagne."
     },
     {
-      "name": "Take the rock-cut stairs",
+      "name": "Emprunter les marches taillées dans la roche",
       "text": "Montez les marches de pierre sur la droite, en faisant une boucle derrière la montagne jusqu'à la rampe finale."
     },
     {
-      "name": "Reach the summit",
+      "name": "Atteindre le sommet",
       "text": "Suivez la dernière montée jusqu'au sommet et profitez du panorama avant de revenir sur vos pas jusqu'à Santa Maria."
     }
   ],
-  "faqsTitle": "FAQs",
+  "faqsTitle": "FAQ",
   "faqs": [
     {
-      "q": "How long does the full hike take?",
+      "q": "Combien de temps dure la randonnée complète ?",
       "a": [
         "Prévoyez 6 à 7 heures pour l'aller-retour depuis l'auberge Brikette, y compris les pauses à Santa Maria et le temps passé au sommet."
       ]
     },
     {
-      "q": "Is the trail marked?",
+      "q": "Le sentier est-il balisé ?",
       "a": [
         "Les balises sont rares au-delà de Santa Maria ; emportez une carte hors ligne et faites attention aux sentiers visibles et aux panneaux indicateurs aux carrefours."
       ]
     },
     {
-      "q": "Can I turn back early?",
+      "q": "Puis-je faire demi-tour plus tôt ?",
       "a": [
         "Oui. Si la partie supérieure vous semble trop exposée, profitez de la vue depuis Santa Maria ou des lacets inférieurs et revenez par où vous êtes venu."
       ]
@@ -110,24 +111,7 @@
   ],
   "toc": {
     "labels": {
-      "warnings": "When to reconsider"
+      "warnings": "Quand renoncer"
     }
-  },
-  "gallery": {
-    "title": "Galerie photo",
-    "items": [
-      {
-        "alt": "Looking across the peninsula to Capri",
-        "caption": "Vue à travers la péninsule vers Capri"
-      },
-      {
-        "alt": "Scan to Share QR code",
-        "caption": "Scanner pour partager"
-      },
-      {
-        "alt": "Trail near the summit",
-        "caption": "À l’approche du sommet"
-      }
-    ]
   }
 }

@@ -1,14 +1,14 @@
 {
   "seo": {
     "title": "Hostel Brikette → Fiordo di Furore by bus",
-    "description": "Step-by-step directions to reach Fiordo di Furore from Hostel Brikette using the SITA bus, including where to buy tickets and how to access the beach."
+    "description": "Instrukcje krok po kroku z Hostel Brikette do Fiordo di Furore autobusem SITA, w tym gdzie kupić bilety i jak dojść na plażę."
   },
   "linkLabel": "Hostel Brikette → Fiordo di Furore by bus",
   "intro": [
     "Podążaj tą trasą, aby podróżować z Hostelu Brikette do Fiordo di Furore autobusem SITA, nie przegapiając żadnego przystanku ani nie dojeżdżając nieprzygotowanym.",
     "Przy fiordzie nie ma punktów sprzedaży biletów ani sklepów, więc te schody prowadzą do biletów, najbliższego przystanku autobusowego i schodów prowadzących na plażę."
   ],
-  "warningsTitle": "Before you leave the hostel",
+  "warningsTitle": "Przed wyjściem z hostelu",
   "warnings": [
     "Buy a round-trip SITA ticket in Positano — there is no way to purchase or validate tickets once you reach the beach.",
     "Buses fill quickly in peak months and may skip the stop when full, so allow extra time for your journey."
@@ -45,7 +45,7 @@
       "body": [
         "Board a bus heading for Amalfi or Agerola and tell the driver you need the Fiordo di Furore stop so they know to pull over.",
         "The ride covers about 10.8 kilometres (6.7 miles); intermediate stops depend on other passengers requesting them.",
-        "If you have mobile data, track the stop by searching for \"JH73+PQ Furore, Province of Salerno\" on Google Maps."
+        "If you have mobile data, track the stop by searching for \\\\\"JH73+PQ Furore, Province of Salerno\\\\\" on Google Maps."
       ]
     },
     {
@@ -58,6 +58,16 @@
       ]
     }
   ],
+  "essentialsTitle": "Niezbędne rzeczy",
+  "essentials": [
+    "Krem z filtrem.",
+    "Ręcznik.",
+    "Okulary przeciwsłoneczne."
+  ],
+  "typicalCostsTitle": "Typowe koszty",
+  "typicalCosts": [
+    "Bilet autobusowy: 10 euro."
+  ],
   "tipsTitle": "Extra tips",
   "tips": [
     "Check the latest SITA timetable posted at reception before you set out so you know when the next buses run.",
@@ -65,7 +75,7 @@
     "Zapisz %LINK:fiordoDiFuroreBusReturn|Fiordo di Furore → Przewodnik powrotny Hostel Brikette% na podróż powrotną.",
     "Jump to the %LINK:positanoBeaches|Positano beaches overview% to compare other swim spots for the same day."
   ],
-  "faqsTitle": "Common questions",
+  "faqsTitle": "Najczęściej zadawane pytania",
   "faqs": [
     {
       "q": "Czy naprawdę muszę wcześniej kupować bilet powrotny?",
@@ -82,7 +92,7 @@
     {
       "q": "How will I recognise the right stop?",
       "a": [
-        "Po przekroczeniu łukowego mostu nad fiordem autobus zatrzyma się obok bariery ochronnej. Uważaj na widoki z mostu, słuchaj kierowcy i użyj kodu PIN „JH73+PQ Furore” w Mapach Google jako kopii zapasowej."
+        "Po przekroczeniu łukowego mostu nad fiordem autobus zatrzyma się obok bariery ochronnej. Uważaj na widoki z mostu, słuchaj kierowcy i użyj kodu PIN \\\"JH73+PQ Furore” w Mapach Google jako kopii zapasowej."
       ]
     }
   ]

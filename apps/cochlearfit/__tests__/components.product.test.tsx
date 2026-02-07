@@ -3,15 +3,17 @@ import "~test/resetNextMocks";
 import React, { useEffect } from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+import Price from "@/components/Price";
 import ProductCard from "@/components/ProductCard";
+import ProductDetail from "@/components/ProductDetail";
 import ProductGrid from "@/components/ProductGrid";
 import ProductStickyBar from "@/components/ProductStickyBar";
-import ProductDetail from "@/components/ProductDetail";
-import Price from "@/components/Price";
-import { renderWithProviders } from "./testUtils";
-import { getProducts } from "@/lib/catalog";
 import { useCart } from "@/contexts/cart/CartContext";
+import { getProducts } from "@/lib/catalog";
 import type { Product } from "@/types/product";
+
+import { renderWithProviders } from "./testUtils";
 
 const CartCount = () => {
   const { itemCount } = useCart();

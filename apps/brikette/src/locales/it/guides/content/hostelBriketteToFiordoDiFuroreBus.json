@@ -1,88 +1,99 @@
 {
   "seo": {
-    "title": "Hostel Brikette → Fiordo di Furore by bus",
-    "description": "Step-by-step directions to reach Fiordo di Furore from Hostel Brikette using the SITA bus, including where to buy tickets and how to access the beach."
+    "title": "Hostel Brikette → Fiordo di Furore in autobus",
+    "description": "Indicazioni passo-passo per raggiungere il Fiordo di Furore dall'Hostel Brikette con il bus SITA, inclusi dove acquistare i biglietti e come scendere in spiaggia."
   },
-  "linkLabel": "Hostel Brikette → Fiordo di Furore by bus",
+  "linkLabel": "Hostel Brikette → Fiordo di Furore in autobus",
   "intro": [
-    "Segui questo itinerario per viaggiare da Hostel Brikette a Fiordo di Furore con l'autobus SITA senza perdere una fermata o arrivare impreparato.",
-    "Il fiordo non ha biglietterie o negozi, quindi questi gradini coprono i biglietti, la fermata dell'autobus più vicina e la scalinata che conduce alla spiaggia."
+    "Segui questo itinerario per viaggiare dall'Hostel Brikette al Fiordo di Furore con l'autobus SITA senza perdere una fermata o arrivare impreparato.",
+    "Il fiordo non ha biglietterie né negozi; questi passaggi coprono i biglietti, la fermata dell'autobus più vicina e la scalinata che conduce alla spiaggia."
   ],
-  "warningsTitle": "Before you leave the hostel",
+  "essentialsTitle": "Cosa aspettarsi",
+  "essentials": [
+    "Fermata dell'autobus Chiesa Nuova a 140 metri dall'ostello; acquista i biglietti al Bar Internazionale.",
+    "Il viaggio in autobus SITA verso Amalfi dura circa 25 minuti; chiedi all'autista di avvisarti alla fermata del Fiordo di Furore.",
+    "Nessun servizio in loco — acquista un biglietto andata e ritorno prima di partire e porta acqua, snack e contanti."
+  ],
+  "typicalCostsTitle": "Costi tipici",
+  "typicalCosts": [
+    "Biglietto SITA andata e ritorno: 4-6 € (tariffa variabile in base alla distanza).",
+    "Taxi di emergenza dalla strada principale se gli autobus sono pieni: circa 30-40 €."
+  ],
+  "warningsTitle": "Prima di lasciare l'ostello",
   "warnings": [
-    "Buy a round-trip SITA ticket in Positano — there is no way to purchase or validate tickets once you reach the beach.",
-    "Buses fill quickly in peak months and may skip the stop when full, so allow extra time for your journey."
+    "Acquista un biglietto SITA andata e ritorno a Positano — non c'è modo di acquistare o convalidare biglietti una volta sulla spiaggia.",
+    "Gli autobus si riempiono rapidamente nei mesi di punta e potrebbero saltare la fermata se pieni, quindi prevedi tempo extra."
   ],
   "sections": [
     {
       "id": "walk-to-bus-stop",
-      "title": "Walk to the Chiesa Nuova bus stop",
+      "title": "Raggiungi la fermata dell'autobus Chiesa Nuova",
       "body": [
-        "The closest SITA stop is in the Chiesa Nuova area, about 140 metres (490 feet) from the hostel entrance.",
-        "Exit through the main door, walk down the stairs to Via Pasitea, turn left, and continue roughly 100 metres (330 feet).",
-        "Look for Bar Internazionale on the left-hand side; the bus stop sits directly outside the café."
+        "La fermata SITA più vicina si trova nella zona di Chiesa Nuova, a circa 140 metri dall'ingresso dell'ostello.",
+        "Esci dalla porta principale, scendi le scale fino a Via Pasitea, gira a sinistra e continua per circa 100 metri.",
+        "Cerca il Bar Internazionale sul lato sinistro; la fermata dell'autobus si trova proprio davanti al bar."
       ]
     },
     {
       "id": "buy-bus-tickets",
-      "title": "Buy round-trip bus tickets",
+      "title": "Acquista i biglietti andata e ritorno",
       "body": [
-        "Go into Bar Internazionale and ask for SITA tickets to Fiordo di Furore.",
-        "Staff may suggest one-way or return tickets depending on the price that day — buy a return so you are covered for the ride back."
+        "Entra al Bar Internazionale e chiedi i biglietti SITA per il Fiordo di Furore.",
+        "Il personale potrebbe suggerirti biglietti di sola andata o andata e ritorno a seconda del prezzo del giorno — acquista l'andata e ritorno per essere coperto per il viaggio di ritorno."
       ]
     },
     {
       "id": "wait-for-bus",
-      "title": "Wait on the seaward side of the road",
+      "title": "Aspetta sul lato mare della strada",
       "body": [
-        "Cross Via Pasitea to the opposite side from the bar and wait at the marked SITA stop.",
-        "Arrive early and give yourself time for a second bus in case the first one is already full."
+        "Attraversa Via Pasitea verso il lato opposto rispetto al bar e aspetta alla fermata SITA segnalata.",
+        "Arriva in anticipo e prevedi tempo per un secondo autobus nel caso il primo sia già pieno."
       ]
     },
     {
       "id": "ride-the-bus",
-      "title": "Ride the SITA bus towards Amalfi",
+      "title": "Prendi l'autobus SITA verso Amalfi",
       "body": [
-        "Board a bus heading for Amalfi or Agerola and tell the driver you need the Fiordo di Furore stop so they know to pull over.",
-        "The ride covers about 10.8 kilometres (6.7 miles); intermediate stops depend on other passengers requesting them.",
-        "If you have mobile data, track the stop by searching for \"JH73+PQ Furore, Province of Salerno\" on Google Maps."
+        "Sali su un autobus diretto ad Amalfi o Agerola e di' all'autista che devi scendere alla fermata del Fiordo di Furore così sa di fermarsi.",
+        "Il viaggio copre circa 10,8 chilometri; le fermate intermedie dipendono dalle richieste degli altri passeggeri.",
+        "Se hai dati mobili, traccia la fermata cercando \\\\\"JH73+PQ Furore, Provincia di Salerno\\\\\" su Google Maps."
       ]
     },
     {
       "id": "walk-to-beach",
-      "title": "Take the stairs down to the beach",
+      "title": "Scendi le scale verso la spiaggia",
       "body": [
-        "Get off beside the bridge, cross the road, and take the staircase that leads away from the traffic toward the cliffside walkway.",
-        "Follow the stairs up and over the bridge, then descend the final flights to reach the shingle beach at the bottom.",
+        "Scendi accanto al ponte, attraversa la strada e prendi la scalinata che si allontana dal traffico verso il sentiero sulla scogliera.",
+        "Segui le scale su e oltre il ponte, poi scendi gli ultimi tratti per raggiungere la spiaggia di ciottoli in fondo.",
         "Usa la stessa scala per tornare sulla strada quando sei pronto a partire."
       ]
     }
   ],
-  "tipsTitle": "Extra tips",
+  "tipsTitle": "Consigli extra",
   "tips": [
-    "Check the latest SITA timetable posted at reception before you set out so you know when the next buses run.",
-    "Read our %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore beach guide% for packing tips and on-site expectations.",
-    "Risparmia la %LINK:fiordoDiFuroreBusReturn|Fiordo di Furore → Hostel Brikette guida al ritorno% per il tuo viaggio di ritorno.",
-    "Jump to the %LINK:positanoBeaches|Positano beaches overview% to compare other swim spots for the same day."
+    "Controlla l'ultimo orario SITA esposto alla reception prima di partire così sai quando passano i prossimi autobus.",
+    "Leggi la nostra %LINK:fiordoDiFuroreBeachGuide|guida alla spiaggia del Fiordo di Furore% per consigli su cosa portare e cosa aspettarsi.",
+    "Salva la %LINK:fiordoDiFuroreBusReturn|guida al ritorno Fiordo di Furore → Hostel Brikette% per il tuo viaggio di ritorno.",
+    "Consulta la %LINK:positanoBeaches|panoramica delle spiagge di Positano% per confrontare altri spot per il bagno nello stesso giorno."
   ],
-  "faqsTitle": "Common questions",
+  "faqsTitle": "Domande frequenti",
   "faqs": [
     {
-      "q": "È davvero necessario acquistare un biglietto di andata e ritorno in anticipo?",
+      "q": "Devo davvero acquistare un biglietto andata e ritorno in anticipo?",
       "a": [
-        "SÌ. Drivers expect validated SITA tickets and there are no machines or shops at the beach, so buy both legs in Positano before boarding."
+        "Sì. Gli autisti si aspettano biglietti SITA convalidati e non ci sono macchinette né negozi sulla spiaggia — acquista entrambe le tratte a Positano prima di salire."
       ]
     },
     {
       "q": "Cosa devo fare se l'autobus è pieno quando arriva?",
       "a": [
-        "Aspetta il prossimo servizio di linea e tieni d'occhio gli orari: durante l'alta stagione è normale che passino uno o due autobus prima che si liberi lo spazio."
+        "Aspetta il prossimo servizio previsto e tieni d'occhio gli orari: durante l'alta stagione è normale che passino uno o due autobus prima che si liberi posto."
       ]
     },
     {
-      "q": "How will I recognise the right stop?",
+      "q": "Come riconosco la fermata giusta?",
       "a": [
-        "Dopo che l'autobus avrà attraversato il ponte ad arco sul fiordo, si fermerà accanto al guardrail. Guarda le viste del ponte, ascolta l'autista e utilizza il segnaposto \"JH73+PQ Furore\" di Google Maps come backup."
+        "Dopo che l'autobus avrà attraversato il ponte ad arco sul fiordo, si fermerà accanto al guardrail. Guarda le viste del ponte, ascolta l'autista e usa il segnaposto \\\\\"JH73+PQ Furore\\\\\" di Google Maps come backup."
       ]
     }
   ]

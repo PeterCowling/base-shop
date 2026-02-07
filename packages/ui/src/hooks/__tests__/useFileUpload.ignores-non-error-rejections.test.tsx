@@ -1,5 +1,6 @@
 import * as React from "react";
 import { act, renderHook } from "@testing-library/react";
+
 import { useFileUpload } from "../useFileUpload.tsx";
 import { useImageOrientationValidation } from "../useImageOrientationValidation.ts";
 
@@ -11,7 +12,7 @@ function createShadcnStub() {
   return { Button };
 }
 
-jest.mock("@/components/atoms/shadcn", createShadcnStub);
+jest.mock("@acme/design-system/shadcn", createShadcnStub);
 
 jest.mock("../useImageOrientationValidation.ts", () => ({
   useImageOrientationValidation: jest.fn(),

@@ -1,4 +1,5 @@
 import type { Expression } from "estree";
+
 import { getStringIfStatic, isClassNameAttribute } from "./ast.js";
 import { isClassnameCallee, parseClassnameLikeArg, type Parsed } from "./classnames.js";
 

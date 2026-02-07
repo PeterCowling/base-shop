@@ -1,6 +1,7 @@
 import { expect } from "@jest/globals";
-import { withEnv } from "../test/utils/withEnv";
+
 import { expectInvalidAuthEnvWithConfigEnv as expectInvalidAuth } from "../test/utils/expectInvalidAuthEnv";
+import { withEnv } from "../test/utils/withEnv";
 
 const NEXT_SECRET = "nextauth-secret-32-chars-long-string!";
 const SESSION_SECRET = "session-secret-32-chars-long-string!";

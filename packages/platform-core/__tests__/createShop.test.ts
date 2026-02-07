@@ -1,6 +1,7 @@
-import { jest } from '@jest/globals';
 import fs from 'node:fs';
 import path from 'node:path';
+
+import { jest } from '@jest/globals';
 
 const prismaMock = {
   shop: { create: jest.fn(async () => ({})) },

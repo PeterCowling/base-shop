@@ -1,11 +1,11 @@
 {
-  "title": "Всегда проверяйте информацию о транспорте",
+  "title": "Вся информация о транспорте предоставлена добросовестно. Всегда проверяйте официальные расписания и сервисные объявления, особенно если у вас есть пересадки или другие важные по времени обязательства. Ниже приведены ссылки на расписания соответствующих перевозчиков.",
   "items": {
-    "buses": "Автобусы: проверяйте официальное расписание SITA Sud — <sitaLink>sitasudtrasporti.it</sitaLink>.",
-    "ferries": "Паромы: операторы публикуют сезонные рейсы и расписания (зависит от погоды). См. <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink>.",
-    "airlink": "Летите в Салерно Коста-д’Амальфи (QSR)? Используйте шаттл Airlink до Салерно — <airportLink>aeroportodisalerno.it</airportLink> и <airlinkLink>FS Busitalia Airlink</airlinkLink>.",
-    "driving": "Авто: на SS163 действует правило чередования номеров (апр.–окт.) и ZTL; стоимость парковки зависит от сезона и локации. Проверяйте официальные уведомления.",
-    "premium": "Премиум/сезонные: Uber Boat и вертолётные чартеры работают ограниченно летом — уточняйте доступность."
+    "buses": "Автобусы: <sitaLink>Амальфитанское побережье</sitaLink> и <curreriLink>аэропорт Неаполя ⇄ Сорренто</curreriLink>.",
+    "trains": "Поезда: <eavLink>Circumvesuviana</eavLink> (Naples ⇄ Sorrento), <trenitaliaLink>Trenitalia</trenitaliaLink> (поезда магистральных линий).",
+    "ferries": "Паромы: Перевозчики включают <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink>, <positanoJetLink>Positano Jet</positanoJetLink>, <alicostLink>Alicost</alicostLink>.",
+    "airlink": "Аэропорт Салерно Коста-д’Амальфи (QSR), <airlinkLink>шаттл Airlink до Салерно</airlinkLink>.",
+    "driving": "Авто: на SS163 действует правило чередования номеров (апр.–окт.) и ZTL; стоимость парковки зависит от сезона и локации. Проверяйте официальные уведомления."
   },
   "srLabel": "Транспортное предупреждение"
 }

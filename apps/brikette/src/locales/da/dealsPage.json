@@ -9,14 +9,14 @@
   "promo": "Book direkte – din {{percent}} % rabat trækkes automatisk ved betaling.",
   "dealCard": {
     "savePercent": "Spar {{percent}}",
-    "stayDatesLabel": "Opholdsdatoer:",
+    "stayDatesLabel": "Opholdsperiode:",
     "badges": {
-      "autoApplied": "Anvendes automatisk",
+      "autoApplied": "Trækkes automatisk",
       "directOnly": "Kun direkte booking"
     },
     "cta": {
       "bookDirect": "Book direkte",
-      "applyDeal": "Anvend tilbud"
+      "applyDeal": "Brug tilbuddet"
     },
     "status": {
       "upcoming": "Kommende tilbud · Starter {{startDate}}",
@@ -24,15 +24,15 @@
     }
   },
   "hero": {
-    "activeLabel": "Aktuelt tilbud",
+    "activeLabel": "Aktivt tilbud",
     "activeTitle": "Spar {{percent}}",
-    "activeDatesLabel": "Opholdsdatoer:",
-    "activeSubtitle": "Anvendes automatisk ved betaling. Kun direkte bookinger."
+    "activeDatesLabel": "Opholdsperiode:",
+    "activeSubtitle": "Trækkes automatisk ved betaling. Kun direkte bookinger."
   },
   "emptyState": {
-    "title": "Ingen aktuelle tilbud",
+    "title": "Ingen aktive tilbud",
     "subtitle": "Book direkte for den bedste pris og fordele.",
-    "secondaryCta": "Se fordele ved direkte booking"
+    "secondaryCta": "Se fordelene ved direkte booking"
   },
   "status": {
     "banner": {
@@ -80,13 +80,16 @@
   "perksIntroLink": "Se alle fordele",
   "perksList": [
     {
-      "title": "Op til 25 % rabat på normalprisen, når kuponen anvendes"
+      "title": "Op til 25 % rabat på normalprisen, når kuponen anvendes",
+      "subtitle": "Anvendes automatisk"
     },
     {
-      "title": "Gratis morgenmad"
+      "title": "Gratis morgenmad",
+      "subtitle": "Inkluderet dagligt"
     },
     {
-      "title": "Gratis aften-drik"
+      "title": "Gratis aften-drik",
+      "subtitle": "Husets udvalg"
     }
   ],
   "expired": {

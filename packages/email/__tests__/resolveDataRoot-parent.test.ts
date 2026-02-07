@@ -1,6 +1,7 @@
 import { promises as fs } from "fs";
-import path from "path";
 import os from "os";
+import path from "path";
+
 import { resolveDataRoot } from "../src/cli";
 
 // Ensure temporary directories are removed after test

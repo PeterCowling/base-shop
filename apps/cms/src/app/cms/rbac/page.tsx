@@ -1,24 +1,26 @@
 // apps/cms/src/app/cms/rbac/page.tsx
 
+import { revalidatePath } from "next/cache";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
+import type { UserWithRoles } from "@cms/actions/rbac.server";
 import {
   inviteUser,
   listUsers,
   updateUserRoles,
 } from "@cms/actions/rbac.server";
-import type { UserWithRoles } from "@cms/actions/rbac.server";
 import { authOptions } from "@cms/auth/options";
 import type { Role } from "@cms/auth/roles";
-import { getServerSession } from "next-auth";
-import Link from "next/link";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
-import RbacManagementPanel from "./RbacManagementPanel.client";
+
+import type { ActionResult } from "../components/actionResult";
+import { ROLE_DETAILS } from "../components/roleDetails";
+
 import type {
   InviteUserAction,
   SaveUserAction,
 } from "./RbacManagementPanel.client";
-import type { ActionResult } from "../components/actionResult";
-import { ROLE_DETAILS } from "../components/roleDetails";
+import RbacManagementPanel from "./RbacManagementPanel.client";
 
 export const revalidate = 0;
 

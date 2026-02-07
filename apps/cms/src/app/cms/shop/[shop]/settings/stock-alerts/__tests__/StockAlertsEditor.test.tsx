@@ -1,17 +1,18 @@
 import "@testing-library/jest-dom";
+
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe, toHaveNoViolations } from "jest-axe";
 
-import StockAlertsEditor from "../StockAlertsEditor";
 import {
   __getUseSettingsSaveFormToastLog,
   __resetUseSettingsSaveFormMock,
 } from "../../hooks/useSettingsSaveForm";
+import StockAlertsEditor from "../StockAlertsEditor";
 
 jest.mock("../../hooks/useSettingsSaveForm");
 
-expect.extend(toHaveNoViolations);
+expect.extend(toHaveNoViolations as any);
 
 const updateStockAlert = jest.fn();
 
@@ -21,12 +22,6 @@ jest.mock("@cms/actions/shops.server", () => ({
 jest.mock("@/components/atoms", () => ({
   __esModule: true,
   Chip: ({ children, ...props }: any) => <span {...props}>{children}</span>,
-  Toast: ({ open, message, className, ...props }: any) =>
-    open ? (
-      <div role="status" className={className} {...props}>
-        {message}
-      </div>
-    ) : null,
 }));
 jest.mock("@/components/atoms/shadcn", () => {
   const componentStub = require("../../../../../../../../../../test/__mocks__/componentStub.js");
@@ -74,8 +69,6 @@ describe("StockAlertsEditor", () => {
       "--color-danger",
     );
 
-    const toast = await screen.findByRole("status");
-    expect(toast).toHaveTextContent("Enter valid recipient email addresses.");
     const toastLog = __getUseSettingsSaveFormToastLog();
     expect(toastLog.at(-1)).toEqual({
       status: "error",
@@ -124,8 +117,6 @@ describe("StockAlertsEditor", () => {
     expect(formData.get("webhook")).toBe("https://hooks.example/path");
     expect(formData.get("threshold")).toBe("10");
 
-    const toast = await screen.findByRole("status");
-    expect(toast).toHaveTextContent("Stock alert settings saved.");
     const toastLog = __getUseSettingsSaveFormToastLog();
     expect(toastLog.at(-1)).toEqual({
       status: "success",

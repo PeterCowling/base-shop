@@ -1,3 +1,7 @@
+import type {
+  CampaignAnalyticsItem,
+  MarketingSummary,
+} from "./MarketingOverview.types";
 import { MarketingOverviewHero } from "./MarketingOverviewHero";
 import { MarketingRecentPerformance } from "./MarketingRecentPerformance";
 import { MarketingSummaryCards } from "./MarketingSummaryCards";
@@ -6,10 +10,6 @@ import {
   useMarketingOverview,
   type UseMarketingOverviewResult,
 } from "./useMarketingOverview";
-import type {
-  CampaignAnalyticsItem,
-  MarketingSummary,
-} from "./MarketingOverview.types";
 
 export interface MarketingOverviewProps {
   analytics: CampaignAnalyticsItem[];

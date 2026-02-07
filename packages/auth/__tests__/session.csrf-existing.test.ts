@@ -1,24 +1,43 @@
 import { jest } from "@jest/globals";
 
+import type { Role } from "../src/types";
+
+type CookieOptions = {
+  httpOnly?: boolean;
+  secure?: boolean;
+  path?: string;
+  sameSite?: "lax" | "strict" | "none";
+  maxAge?: number;
+  domain?: string;
+};
+
+type CookieStore = {
+  get: jest.MockedFunction<(name: string) => { name: string; value: string } | undefined>;
+  set: jest.MockedFunction<(name: string, value: string, opts?: CookieOptions) => void>;
+  delete: jest.MockedFunction<(opts: { name: string; path?: string; domain?: string }) => void>;
+};
+
+type HeadersStore = {
+  get: jest.MockedFunction<(name: string) => string | null>;
+};
+
 jest.mock("@acme/zod-utils/initZod", () => ({ initZod: jest.fn() }));
 
-const mockCookies = jest.fn();
-const mockHeaders = jest.fn(() => ({ get: () => null }));
+const mockCookies = jest.fn<Promise<CookieStore>, []>();
+const mockHeaders = jest.fn<HeadersStore, []>(() => ({ get: jest.fn(() => null) }));
 jest.mock("next/headers", () => ({
   cookies: () => mockCookies(),
   headers: () => mockHeaders(),
 }));
 
-import type { Role } from "../src/types";
-
-function createStore() {
+function createStore(): CookieStore {
   const jar = new Map<string, string>();
   return {
     get: jest.fn((name: string) => {
       const value = jar.get(name);
       return value ? { name, value } : undefined;
     }),
-    set: jest.fn((name: string, value: string, opts?: unknown) => {
+    set: jest.fn((name: string, value: string, opts?: CookieOptions) => {
       jar.set(name, value);
       return opts;
     }),
@@ -60,4 +79,3 @@ describe("getCustomerSession", () => {
     );
   });
 });
-

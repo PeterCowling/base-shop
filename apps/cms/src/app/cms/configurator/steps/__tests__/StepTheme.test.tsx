@@ -1,14 +1,15 @@
 /* eslint-env jest */
 import React from "react";
-import { render, fireEvent, screen } from "@testing-library/react";
-import StepTheme from "../StepTheme";
-import { STORAGE_KEY } from "../../hooks/useConfiguratorPersistence";
+import { useRouter } from "next/navigation";
+import { fireEvent, render, screen } from "@testing-library/react";
+
 import { useConfigurator } from "../../ConfiguratorContext";
+import { STORAGE_KEY } from "../../hooks/useConfiguratorPersistence";
+import useStepCompletion from "../../hooks/useStepCompletion";
 import { useThemeLoader } from "../../hooks/useThemeLoader";
 import { useThemePalette } from "../hooks/useThemePalette";
 import { useThemePreviewDevice } from "../hooks/useThemePreviewDevice";
-import useStepCompletion from "../../hooks/useStepCompletion";
-import { useRouter } from "next/navigation";
+import StepTheme from "../StepTheme";
 
 // ---------------------------------------------------------------------------
 // mocks
@@ -49,7 +50,7 @@ jest.mock("../ThemeEditorForm", () => {
   };
 });
 
-jest.mock("@ui/components/atoms/shadcn", () => {
+jest.mock("@acme/design-system/shadcn", () => {
   const React = require("react");
   return {
     Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
@@ -102,7 +103,7 @@ describe("StepTheme", () => {
   });
 
   it("changes theme and updates persistence", () => {
-    render(<StepTheme themes={[]} nextStepId="next" /> as any);
+    render(<StepTheme {...({themes: [], nextStepId: "next"} as any)} />);
     fireEvent.click(screen.getByText("select theme"));
     expect(update).toHaveBeenCalledWith("theme", "dark");
     expect(handleReset).toHaveBeenCalled();
@@ -112,7 +113,7 @@ describe("StepTheme", () => {
   });
 
   it("marks complete and navigates to next step", () => {
-    render(<StepTheme themes={[]} nextStepId="next" /> as any);
+    render(<StepTheme {...({themes: [], nextStepId: "next"} as any)} />);
     fireEvent.click(screen.getByTestId("next"));
     expect(markComplete).toHaveBeenCalledWith(true);
     expect(push).toHaveBeenCalledWith("/cms/configurator/next");

@@ -1,7 +1,7 @@
+import type { Campaign,CampaignStore } from "../storage";
 import { setCampaignStore } from "../storage";
-import type { CampaignStore, Campaign } from "../storage";
 
-jest.mock("@platform-core/repositories/analytics.server", () => ({
+jest.mock("@acme/platform-core/repositories/analytics.server", () => ({
   listEvents: jest.fn(),
 }));
 
@@ -29,13 +29,13 @@ jest.mock("@acme/lib", () => ({
   validateShopName: jest.fn((s: string) => s),
 }));
 
-export { listEvents } from "@platform-core/repositories/analytics.server";
-export { sendCampaignEmail } from "../send";
-export { emitSend } from "../hooks";
 export { syncCampaignAnalytics as fetchCampaignAnalytics } from "../analytics";
+export { emitSend } from "../hooks";
 export { resolveSegment } from "../segments";
+export { sendCampaignEmail } from "../send";
 export { renderTemplate } from "../templates";
 export { validateShopName } from "@acme/lib";
+export { listEvents } from "@acme/platform-core/repositories/analytics.server";
 
 export const shop = "test-shop";
 
@@ -54,7 +54,7 @@ export function setupTest() {
   jest.setSystemTime(now);
   const scheduler = require("../scheduler");
   scheduler.setClock({ now: () => new Date() });
-  (require("@platform-core/repositories/analytics.server").listEvents as jest.Mock).mockResolvedValue([]);
+  (require("@acme/platform-core/repositories/analytics.server").listEvents as jest.Mock).mockResolvedValue([]);
   return { memory, readCampaigns, writeCampaigns, listShops, now };
 }
 

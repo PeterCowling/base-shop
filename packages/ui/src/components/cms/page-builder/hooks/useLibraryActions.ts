@@ -1,11 +1,14 @@
 import { useCallback, useMemo } from "react";
-import type { PageComponent } from "@acme/types";
-import { ulid } from "ulid";
-import { saveLibrary } from "../libraryStore";
-import { validateTemplateCreation } from "@acme/platform-core/validation/templateValidation";
-import { rootPlacementOptions } from "@acme/platform-core/validation/options";
 import { usePathname } from "next/navigation";
-import { getShopFromPath } from "@acme/shared-utils";
+import { ulid } from "ulid";
+
+import { getShopFromPath } from "@acme/lib/shop";
+import { rootPlacementOptions } from "@acme/platform-core/validation/options";
+import { validateTemplateCreation } from "@acme/platform-core/validation/templateValidation";
+import type { PageComponent } from "@acme/types";
+
+import { saveLibrary } from "../libraryStore";
+
 import useLocalStrings from "./useLocalStrings";
 
 interface Args {

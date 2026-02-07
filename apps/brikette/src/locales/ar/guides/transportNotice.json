@@ -1,11 +1,11 @@
 {
-  "title": "تحقق دائمًا من تفاصيل المواصلات",
+  "title": "جميع معلومات النقل مقدّمة بحسن نية. احرص دائمًا على مراجعة الجداول الرسمية ونشرات/تنبيهات الخدمة، خصوصًا إذا كان لديك مواصلات متابعة أو التزامات حسّاسة للوقت. ستجد أدناه روابط لجداول مزوّدي الخدمة المعنيين.",
   "items": {
-    "buses": "الحافلات: تحقق من الجداول الرسمية لشركة SITA Sud — <sitaLink>sitasudtrasporti.it</sitaLink>.",
-    "ferries": "العبّارات: تنشر الشركات الجداول والمسارات الموسمية (تعتمد على الطقس). راجع <travelmarLink>Travelmar</travelmarLink> و<nlgLink>NLG</nlgLink>.",
-    "airlink": "تصل عبر مطار ساليرنو كوستا دي أمالفي (QSR)؟ استخدم حافلة Airlink إلى ساليرنو — <airportLink>aeroportodisalerno.it</airportLink> و<airlinkLink>FS Busitalia Airlink</airlinkLink>.",
-    "driving": "القيادة: طريق SS163 يطبق نظام تبادل لوحات المركبات (أبريل–أكتوبر) ومناطق دخول محدودة؛ تختلف تكاليف المواقف حسب الموسم والموقع. تحقق من الإشعارات الرسمية.",
-    "premium": "الخدمات المميزة أو الموسمية: تعمل خدمات أوبر بوت ورحلات الهليكوبتر بجداول صيفية محدودة — أكّد التوفر الحالي."
+    "buses": "الحافلات: <sitaLink>ساحل أمالفي</sitaLink> و <curreriLink>مطار نابولي ⇄ سورينتو</curreriLink>.",
+    "trains": "القطارات: <eavLink>Circumvesuviana</eavLink> (Naples ⇄ Sorrento)، <trenitaliaLink>Trenitalia</trenitaliaLink> (قطارات الخطوط الرئيسية).",
+    "ferries": "العبّارات: من المزوّدين <travelmarLink>Travelmar</travelmarLink>، <nlgLink>NLG</nlgLink>، <positanoJetLink>Positano Jet</positanoJetLink>، <alicostLink>Alicost</alicostLink>.",
+    "airlink": "مطار ساليرنو كوستا دي أمالفي (QSR)، <airlinkLink>حافلة Airlink إلى ساليرنو</airlinkLink>.",
+    "driving": "القيادة: طريق SS163 يطبق نظام تبادل لوحات المركبات (أبريل–أكتوبر) ومناطق دخول محدودة؛ تختلف تكاليف المواقف حسب الموسم والموقع. تحقق من الإشعارات الرسمية."
   },
   "srLabel": "تنبيه المواصلات"
 }

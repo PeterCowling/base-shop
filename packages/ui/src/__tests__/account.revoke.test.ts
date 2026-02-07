@@ -1,5 +1,16 @@
 // packages/ui/src/__tests__/account.revoke.test.ts
-jest.mock("@auth", () => ({
+import { revalidatePath } from "next/cache";
+
+import {
+  getCustomerSession,
+  hasPermission,
+  listSessions,
+  revokeSession as authRevokeSession,
+} from "@acme/auth";
+
+import { revoke } from "../account";
+
+jest.mock("@acme/auth", () => ({
   __esModule: true,
   getCustomerSession: jest.fn(),
   listSessions: jest.fn(),
@@ -10,15 +21,6 @@ jest.mock("@auth", () => ({
 jest.mock("next/cache", () => ({
   revalidatePath: jest.fn(),
 }));
-
-import {
-  getCustomerSession,
-  listSessions,
-  hasPermission,
-  revokeSession as authRevokeSession,
-} from "@auth";
-import { revalidatePath } from "next/cache";
-import { revoke } from "../account";
 
 describe("account revoke (server export)", () => {
   beforeEach(() => {

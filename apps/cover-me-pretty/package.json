@@ -5,30 +5,31 @@
     "dev": "next dev -p 3004",
     "build": "pnpm exec next build",
     "start": "next start -p 3004",
-    "lint": "eslint .",
+    "lint": "eslint \"src/**/*.{ts,tsx}\" --cache --cache-location .eslintcache --max-warnings=0",
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
   },
   "dependencies": {
+    "@acme/cms-ui": "workspace:*",
     "@acme/config": "workspace:*",
     "@acme/date-utils": "workspace:*",
+    "@acme/design-system": "workspace:*",
     "@acme/email": "workspace:*",
     "@acme/i18n": "workspace:*",
-    "@acme/next-config": "workspace:*",
-    "@acme/sanity": "workspace:*",
-    "@acme/shared-utils": "workspace:*",
     "@acme/lib": "workspace:*",
+    "@acme/next-config": "workspace:*",
+    "@acme/page-builder-core": "workspace:*",
+    "@acme/sanity": "workspace:*",
     "@acme/stripe": "workspace:*",
     "@acme/tailwind-config": "workspace:*",
     "@acme/template-app": "workspace:*",
-    "@acme/page-builder-core": "workspace:*",
     "@acme/zod-utils": "workspace:^",
     "@themes/base": "workspace:*",
+    "aws4fetch": "^1.0.20",
     "qrcode": "^1.5.4",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "aws4fetch": "^1.0.20"
+    "react": "19.2.1",
+    "react-dom": "19.2.1"
   },
   "devDependencies": {
-    "next": "^15.3.5"
+    "next": "^15.3.9"
   }
 }

@@ -1,6 +1,8 @@
 import { type Meta, type StoryObj } from "@storybook/nextjs";
-import { ProductGalleryTemplate } from "./ProductGalleryTemplate";
+
 import type { SKU } from "@acme/types";
+
+import { ProductGalleryTemplate } from "./ProductGalleryTemplate";
 
 const meta: Meta<typeof ProductGalleryTemplate> = {
   title: "Templates/ProductGalleryTemplate",

@@ -1,4 +1,5 @@
 import { ensureAuthorized } from "../common/auth";
+
 import { deletePage as deletePageFromService } from "./service";
 import { reportError } from "./utils";
 

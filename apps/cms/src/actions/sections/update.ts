@@ -1,9 +1,10 @@
 import { nowIso } from "@acme/date-utils";
-import type { SectionTemplate, PageComponent } from "@acme/types";
+import { getSections, updateSection } from "@acme/platform-core/repositories/sections/index.server";
+import type { PageComponent,SectionTemplate } from "@acme/types";
 import { sectionTemplateSchema } from "@acme/types";
+
 import { formDataToObject } from "../../utils/formData";
 import { ensureAuthorized } from "../common/auth";
-import { getSections, updateSection } from "@platform-core/repositories/sections/index.server";
 
 export async function updateSectionAction(
   shop: string,
@@ -30,7 +31,7 @@ export async function updateSectionAction(
     status,
     template: template as PageComponent,
     updatedAt: nowIso(),
-    createdBy: previous.createdBy || (session.user.email ?? "unknown"),
+    createdBy: previous.createdBy || (session.user?.email ?? "unknown"),
   };
 
   const parsed = sectionTemplateSchema.safeParse(patch);

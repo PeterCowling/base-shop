@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it } from "@jest/globals";
-import { withEnv } from "../../../config/test/utils/withEnv";
+
 import { expectInvalidAuthEnvWithConfigEnv } from "../../../config/test/utils/expectInvalidAuthEnv";
+import { withEnv } from "../../../config/test/utils/withEnv";
 
 const REDIS_URL = "https://redis.example.com";
 const STRONG_TOKEN = "strongtokenstrongtokenstrongtoken!!";
@@ -29,7 +30,7 @@ const devEnv = (overrides: EnvOverrides = {}): EnvOverrides => ({
 
 const expectInvalidProd = (
   overrides: EnvOverrides,
-  consoleErrorSpy?: jest.SpyInstance,
+  consoleErrorSpy?: jest.SpiedFunction<typeof console.error>,
 ) =>
   expectInvalidAuthEnvWithConfigEnv({
     env: prodEnv(overrides),

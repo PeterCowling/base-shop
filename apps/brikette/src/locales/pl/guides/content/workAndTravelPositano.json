@@ -1,40 +1,40 @@
 {
   "seo": {
-    "title": "Praca zdalna i podróż w Positano",
-    "description": "Jak połączyć pracę zdalną z pobytem w Positano: Wi-Fi, rytm dnia i polecane miejsca."
+    "title": "Work & Travel: równowaga zdalnej pracy w Positano",
+    "description": "Wi-Fi, kawiarnie, rytmy dnia i realne harmonogramy przy pracy na wybrzeżu."
   },
-  "linkLabel": "Praca zdalna i podróż w Positano",
+  "linkLabel": "Work & Travel: równowaga pracy zdalnej",
   "intro": [
-    "Tłumaczenie w przygotowaniu."
+    "Połącz fokus na pracę ze zwiedzaniem Positano: poznaj łącza, miejsca do pracy i rytm dnia dopasowany do tłumów."
   ],
   "sections": [
     {
       "id": "wifi",
-      "title": "Wi‑Fi & backups",
+      "title": "Wi-Fi i zapasowe rozwiązania",
       "body": [
-        "Korzystaj z kopii zapasowych eSIM; prędkości testowe; unikaj połączeń krytycznych w godzinach rozładunku promów na głównych pasach."
+        "Korzystaj z eSIM jako backupu; testuj prędkości i unikaj ważnych rozmów, gdy promy rozładowują się na głównych ulicach."
       ]
     },
     {
       "id": "cafes",
-      "title": "Work‑friendly cafés",
+      "title": "Kawiarnie sprzyjające pracy",
       "body": [
-        "Zobacz nasz przewodnik po Wi-Fi i kawiarniach przyjaznych pracy; umysł i kupuj regularnie."
+        "Zajrzyj do przewodnika po Wi-Fi i kawiarniach przyjaznych pracy; pilnuj dostępu do gniazdek i regularnie kupuj napoje."
       ]
     },
     {
       "id": "routines",
-      "title": "Routines that work",
+      "title": "Rutyny, które działają",
       "body": [
-        "Tłumaczenie w przygotowaniu."
+        "Układaj bloki pracy na poranki i wieczory; w środku dnia zwiedzaj, gdy tłumy są największe lub po zachodzie słońca."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "Is remote work viable here?",
+      "q": "Czy praca zdalna jest tu możliwa?",
       "a": [
-        "Tak, jeśli chodzi o planowanie — zatrzymaj się w pobliżu Chiesa Nuova, korzystaj z kopii zapasowych i zachowaj elastyczne godziny pracy."
+        "Tak, z planowaniem — mieszkaj blisko Chiesa Nuova, miej kopie zapasowe i elastyczne godziny."
       ]
     }
   ]

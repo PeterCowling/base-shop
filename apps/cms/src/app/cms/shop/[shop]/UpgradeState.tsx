@@ -1,9 +1,10 @@
 // apps/cms/src/app/cms/shop/[shop]/UpgradeState.tsx
 
-import { resolveDataRoot } from "@platform-core/dataRoot";
-import { validateShopName } from "@platform-core/shops";
 import fs from "fs/promises";
 import path from "path";
+
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
+import { validateShopName } from "@acme/platform-core/shops";
 
 export const revalidate = 0;
 

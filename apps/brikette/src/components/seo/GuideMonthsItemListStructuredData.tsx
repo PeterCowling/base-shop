@@ -1,13 +1,17 @@
-/* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
+ 
 // src/components/seo/GuideMonthsItemListStructuredData.tsx
-import { memo, useMemo } from "react";
-import { useLocation } from "react-router-dom";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
+import { usePathname } from "next/navigation";
+
+import { buildCanonicalUrl } from "@acme/ui/lib/seo";
+
+import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import i18n from "@/i18n";
 import type { GuideKey } from "@/routes.guides-helpers";
 import { guideAbsoluteUrl } from "@/routes.guides-helpers";
-import { BASE_URL } from "@/config/site";
-import i18n from "@/i18n";
+import { serializeJsonLdValue } from "@/utils/seo/jsonld";
 
 type MonthEntry = { name: string; note: string };
 
@@ -19,10 +23,10 @@ interface Props {
 
 function GuideMonthsItemListStructuredData({ guideKey, name, canonicalUrl }: Props): JSX.Element | null {
   const lang = useCurrentLanguage();
-  const { pathname } = useLocation();
+  const pathname = usePathname() ?? "";
   const { t, ready } = useTranslation("guides", { lng: lang });
 
-  const json = useMemo(() => {
+  const json = (() => {
     if (!ready) return "";
     const coerceMonthEntries = (value: unknown): MonthEntry[] => {
       if (!Array.isArray(value)) return [];
@@ -53,15 +57,16 @@ function GuideMonthsItemListStructuredData({ guideKey, name, canonicalUrl }: Pro
 
     if (months.length === 0) return "";
 
-    const url = typeof canonicalUrl === "string" && canonicalUrl.length > 0
-      ? canonicalUrl
-      : typeof pathname === "string" && pathname.length > 0
-      ? `${BASE_URL}${pathname}`
-      : guideAbsoluteUrl(lang, guideKey);
+    const url =
+      typeof canonicalUrl === "string" && canonicalUrl.length > 0
+        ? canonicalUrl
+        : typeof pathname === "string" && pathname.length > 0
+          ? buildCanonicalUrl(BASE_URL, pathname)
+          : guideAbsoluteUrl(lang, guideKey);
 
     const title = typeof name === "string" && name.trim().length > 0 ? name : "";
 
-    return JSON.stringify({
+    return serializeJsonLdValue({
       "@context": "https://schema.org",
       "@type": "ItemList",
       inLanguage: lang,
@@ -74,7 +79,7 @@ function GuideMonthsItemListStructuredData({ guideKey, name, canonicalUrl }: Pro
         description: m.note,
       })),
     });
-  }, [canonicalUrl, guideKey, lang, name, pathname, t, ready]);
+  })();
 
   if (!json) return null;
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: json }} />;

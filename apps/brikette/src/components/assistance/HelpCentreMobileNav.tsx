@@ -1,26 +1,28 @@
 /* file path: src/components/assistance/HelpCentreMobileNav.tsx */
 /* Mobile drawer – visible below lg (1024 px) */
 
-import { memo, useCallback, useMemo, type ReactNode } from "react";
-import clsx from "clsx";
+import { memo, type ReactNode, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useLocation } from "react-router-dom";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import clsx from "clsx";
+
 import HelpCentreMobileNavUI, {
   type AssistanceMobileNavItem,
   type HelpCentreMobileNavCopy,
 } from "@acme/ui/organisms/HelpCentreMobileNav";
+
 import { useBannerHeightOrZero } from "@/context/NotificationBannerContext";
+import { ASSISTANCE_GUIDE_KEYS } from "@/data/assistanceGuideKeys";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { useHelpDrawer } from "@/hooks/useHelpDrawer";
-import type { HelpArticleKey } from "@/routes.assistance-helpers";
-// Namespace import to handle partial test mocks gracefully
-import * as assistance from "@/routes.assistance-helpers";
-import { getSlug } from "@/utils/slug";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import assistanceFallback from "@/locales/en/assistanceCommon.json";
+import { guideSlug, type GuideKey } from "@/routes.guides-helpers";
+import { getSlug } from "@/utils/slug";
 
 /* ── helpers ─────────────────────────────────────────────────── */
-type CurrentKey = HelpArticleKey;
+type CurrentKey = GuideKey;
 
 const FALLBACK_LANGUAGE: AppLanguage = (() => {
   const raw = i18nConfig.fallbackLng;
@@ -69,17 +71,17 @@ function HelpCentreMobileNav({ currentKey, className = "", lang: explicitLang }:
   const { open, toggle } = useHelpDrawer();
   const fallbackLang = useCurrentLanguage();
   const lang = explicitLang ?? fallbackLang;
-  const { pathname } = useLocation();
+  const pathname = usePathname() ?? "";
   const { t, i18n } = useTranslation("assistanceCommon", { lng: lang });
   const bannerHeight = useBannerHeightOrZero();
 
-  const fallbackT = useMemo(() => {
+  const fallbackT = (() => {
     try {
       return i18n.getFixedT(FALLBACK_LANGUAGE, "assistanceCommon");
     } catch {
       return null;
     }
-  }, [i18n]);
+  })();
 
   const translate = useCallback(
     (key: string, fallbackFactory?: (rawKey: string) => string): string => {
@@ -98,36 +100,25 @@ function HelpCentreMobileNav({ currentKey, className = "", lang: explicitLang }:
     [fallbackT, t],
   );
 
-  const copy = useMemo<HelpCentreMobileNavCopy>(
-    () => ({
-      openLabel: translate("openSidebar"),
-      closeLabel: translate("closeSidebar"),
-      navLabel: translate("mobileSidebarLabel"),
-      hintLabel: translate("mobileHint"),
-    }),
-    [translate],
-  );
+  const copy: HelpCentreMobileNavCopy = {
+    openLabel: translate("openSidebar"),
+    closeLabel: translate("closeSidebar"),
+    navLabel: translate("mobileSidebarLabel"),
+    hintLabel: translate("mobileHint"),
+  };
 
-  const items = useMemo<AssistanceMobileNavItem[]>(() => {
-    const root = `/${lang}/${getSlug("assistance", lang)}`;
+  const root = `/${lang}/${getSlug("assistance", lang)}`;
 
-    type AssistanceModule = typeof assistance;
-    const keys: readonly HelpArticleKey[] =
-      ((assistance as Partial<AssistanceModule>).ARTICLE_KEYS ?? []) as readonly HelpArticleKey[];
-    const toSlug = (assistance as Partial<AssistanceModule>).articleSlug;
-    const articles = keys.map((key) => {
-      const slug = toSlug ? toSlug(lang, key) : String(key);
-      const href = `${root}/${slug}`;
-      return {
-        key,
-        label: translate(`nav.${key}`, humanizeKey),
-        href,
-        isActive: currentKey === key || pathname === href,
-      } satisfies AssistanceMobileNavItem;
-    });
-
-    return articles;
-  }, [currentKey, lang, pathname, translate]);
+  const items: AssistanceMobileNavItem[] = ASSISTANCE_GUIDE_KEYS.map((key) => {
+    const slug = guideSlug(lang, key);
+    const href = `${root}/${slug}`;
+    return {
+      key,
+      label: translate(`nav.${key}`, humanizeKey),
+      href,
+      isActive: currentKey === key || pathname === href,
+    } satisfies AssistanceMobileNavItem;
+  });
 
   const renderLink = useCallback(
     ({ item, highlighted: _highlighted, children }: {
@@ -136,7 +127,7 @@ function HelpCentreMobileNav({ currentKey, className = "", lang: explicitLang }:
       children: ReactNode;
     }) => (
       <Link
-        to={item.href}
+        href={item.href}
         aria-current={item.isActive ? "page" : undefined}
         className={clsx(
           "flex",

@@ -1,8 +1,10 @@
 // packages/platform-core/__tests__/CartContext.test.tsx
-import React from "react";
-import fetchMock from "jest-fetch-mock";
 import "jest-localstorage-mock";
+
+import React from "react";
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import fetchMock from "jest-fetch-mock";
+
 import { CartProvider, useCart } from "../src/contexts/CartContext";
 import { PRODUCTS } from "../src/products/index";
 

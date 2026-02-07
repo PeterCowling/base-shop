@@ -1,9 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { getCsrfToken } from "@acme/shared-utils";
+
+import { getCsrfToken } from "@acme/lib/security";
+
 import ProfileForm from "../ProfileForm";
 
-jest.mock("@acme/shared-utils", () => ({
+jest.mock("@acme/lib/security", () => ({
   __esModule: true,
   getCsrfToken: jest.fn(() => "csrf-token"),
 }));
@@ -14,8 +16,7 @@ describe("ProfileForm", () => {
   });
 
   afterEach(() => {
-    // @ts-expect-error — cleanup for tests that mock fetch
-    delete global.fetch;
+    (global as Partial<typeof globalThis>).fetch = undefined;
   });
 
   it("shows validation errors when fields are empty", async () => {
@@ -43,7 +44,6 @@ describe("ProfileForm", () => {
   });
 
   it("displays conflict error on 409 response", async () => {
-    // @ts-expect-error — mocking global.fetch in tests
     global.fetch = jest.fn().mockResolvedValue({
       ok: false,
       status: 409,
@@ -58,7 +58,6 @@ describe("ProfileForm", () => {
   });
 
   it("displays field errors on 400 response", async () => {
-    // @ts-expect-error — mocking global.fetch in tests
     global.fetch = jest.fn().mockResolvedValue({
       ok: false,
       status: 400,
@@ -74,7 +73,6 @@ describe("ProfileForm", () => {
   });
 
   it("displays generic error on 500 response", async () => {
-    // @ts-expect-error — mocking global.fetch in tests
     global.fetch = jest.fn().mockResolvedValue({
       ok: false,
       status: 500,
@@ -89,7 +87,6 @@ describe("ProfileForm", () => {
   });
 
   it("falls back to default copy when conflict response omits a message", async () => {
-    // @ts-expect-error — mocking global.fetch in tests
     global.fetch = jest.fn().mockResolvedValue({
       ok: false,
       status: 409,
@@ -105,7 +102,6 @@ describe("ProfileForm", () => {
   });
 
   it("uses the update failed fallback when the server omits an error", async () => {
-    // @ts-expect-error — mocking global.fetch in tests
     global.fetch = jest.fn().mockResolvedValue({
       ok: false,
       status: 500,
@@ -120,7 +116,6 @@ describe("ProfileForm", () => {
   });
 
   it("shows an unexpected error message when the request rejects", async () => {
-    // @ts-expect-error — mocking global.fetch in tests
     global.fetch = jest.fn().mockRejectedValue(new Error("network down"));
 
     render(<ProfileForm name="Jane" email="jane@example.com" />);
@@ -135,7 +130,6 @@ describe("ProfileForm", () => {
   it("sends an empty CSRF header when the token is unavailable", async () => {
     (getCsrfToken as jest.Mock).mockReturnValueOnce(undefined);
     const response = { ok: true, status: 200, json: async () => ({}) };
-    // @ts-expect-error — mocking global.fetch in tests
     global.fetch = jest.fn().mockResolvedValue(response);
 
     render(<ProfileForm name="Jane" email="jane@example.com" />);
@@ -151,7 +145,6 @@ describe("ProfileForm", () => {
   });
 
   it("shows success message on 200 response", async () => {
-    // @ts-expect-error — mocking global.fetch in tests
     global.fetch = jest.fn().mockResolvedValue({
       ok: true,
       status: 200,

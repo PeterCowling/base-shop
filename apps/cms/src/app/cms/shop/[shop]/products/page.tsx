@@ -1,29 +1,32 @@
 // apps/cms/src/app/cms/shop/[shop]/products/page.tsx
 
-import { Button, Card, CardContent } from "@/components/atoms/shadcn";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { getServerSession } from "next-auth";
 import {
   createDraft,
   deleteProduct,
   duplicateProduct,
 } from "@cms/actions/products.server";
 import { authOptions } from "@cms/auth/options";
-import { checkShopExists } from "@acme/lib";
-import type { ProductPublication } from "@platform-core/products";
-import { readRepo } from "@platform-core/repositories/json.server";
-import ProductsTable from "@ui/components/cms/ProductsTable.client";
-import { getServerSession } from "next-auth";
-import { notFound } from "next/navigation";
-import { Alert, Progress, Tag } from "@ui/components/atoms";
-import { Inline } from "@ui/components/atoms/primitives";
-import Link from "next/link";
-import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
-import type { Locale } from "@acme/i18n/locales";
-import { track } from "@acme/telemetry";
+
 import {
   CmsBuildHero,
-  CmsMetricTiles,
   CmsLaunchChecklist,
-} from "@ui/components/cms"; // UI: @ui/components/cms/CmsBuildHero, CmsMetricTiles, CmsLaunchChecklist
+  CmsMetricTiles,
+} from "@acme/cms-ui"; // UI: @acme/ui/components/cms/CmsBuildHero, CmsMetricTiles, CmsLaunchChecklist
+import ProductsTable from "@acme/cms-ui/ProductsTable.client";
+import { Alert, Progress, Tag } from "@acme/design-system/atoms";
+import { Inline } from "@acme/design-system/primitives";
+import type { Locale } from "@acme/i18n/locales";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+import type { ProductPublication } from "@acme/platform-core/products";
+import { inventoryRepository } from "@acme/platform-core/repositories/inventory.server";
+import { readRepo } from "@acme/platform-core/repositories/json.server";
+import { checkShopExists } from "@acme/platform-core/shops";
+import { track } from "@acme/telemetry";
+
+import { Button, Card, CardContent } from "@/components/atoms/shadcn";
 
 export const revalidate = 0;
 
@@ -47,6 +50,7 @@ export default async function ProductsPage({
     getServerSession(authOptions),
     readRepo<ProductPublication>(shop),
   ]);
+  const inventory = await inventoryRepository.read(shop);
 
   const t = await getServerTranslations("en" as Locale);
 
@@ -121,6 +125,42 @@ export default async function ProductsPage({
       "cms.products.viewerNotice",
     );
 
+  const isStaticStorefront = shop === "cochlearfit";
+  const cmsLocales = ["en", "de", "it", "es"] as const;
+
+  const sellability: Record<
+    string,
+    { state: "sellable" | "needs_attention"; issues: string[]; stock: number }
+  > = Object.fromEntries(
+    rows.map((product) => {
+      const issues: string[] = [];
+      const stock = inventory
+        .filter(
+          (item: { productId?: string; sku: string }) =>
+            item.productId === product.id ||
+            (product.sku && item.productId === product.sku) ||
+            item.sku === product.sku,
+        )
+        .reduce((sum: number, item: { quantity: number }) => sum + item.quantity, 0);
+
+      if (product.status !== "active") issues.push("inactive");
+      if (stock <= 0) issues.push("needs_stock");
+      if (!product.media?.length) issues.push("needs_media");
+      const missingLocales = cmsLocales.filter((locale) => !product.title?.[locale]);
+      if (missingLocales.length) issues.push("missing_translations");
+      if (isStaticStorefront) issues.push("pending_rebuild");
+
+      return [
+        product.id,
+        {
+          state: issues.length === 0 ? "sellable" : "needs_attention",
+          issues,
+          stock,
+        } as const,
+      ];
+    }),
+  );
+
   /* ---------------------------------------------------------------------- */
   /*  Render                                                                */
   /* ---------------------------------------------------------------------- */
@@ -135,6 +175,14 @@ export default async function ProductsPage({
               body={t("cms.products.hero.subtitle")}
               tone="build"
             />
+            {isStaticStorefront && (
+              <div className="rounded-2xl border border-warning/30 bg-warning/10 px-4 py-3 text-sm text-warning-foreground">
+                <p className="font-semibold">This storefront publishes on rebuild</p>
+                <p className="mt-1 text-warning-foreground/80">
+                  Changes to products, inventory, or media are saved now, but go live only after the static site is rebuilt/deployed.
+                </p>
+              </div>
+            )}
             {isAdmin && totalProducts === 0 && (
               <div
                 className="space-y-2 text-sm text-hero-foreground/80"
@@ -289,10 +337,11 @@ export default async function ProductsPage({
             </div>
             <ProductsTable
               shop={shop}
-              rows={rows}
+              rows={rows as any}
               isAdmin={isAdmin}
               onDuplicate={onDuplicate}
               onDelete={onDelete}
+              sellability={sellability}
             />
           </CardContent>
         </Card>

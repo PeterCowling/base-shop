@@ -1,4 +1,5 @@
 import { render } from "@testing-library/react";
+
 import CmsReviewsCarousel from "../ReviewsCarousel";
 
 jest.mock("../../../home/ReviewsCarousel", () => ({

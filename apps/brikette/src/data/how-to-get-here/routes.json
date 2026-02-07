@@ -33,69 +33,72 @@
       "contentKey": "capriPositanoFerry",
       "linkBindings": [
         {
-          "key": "tip.copy",
+          "key": "tip.body",
           "placeholders": {
-            "link": { "type": "howToOverview" }
-          }
-        },
-        {
-          "key": "sections.capriPort.link",
-          "placeholders": {
-            "capriLink": {
+            "link": {
               "type": "external",
-              "href": "https://www.capri.net/en/t/capri/positano"
-            },
-            "positanoLink": {
-              "type": "external",
-              "href": "https://www.positano.com/en/ferry-schedule"
+              "href": "https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26"
             }
           }
         },
         {
-          "key": "sections.bus.link",
+          "key": "sections.capriPort.body",
           "placeholders": {
-            "link": { "type": "guide", "guideKey": "ferryDockToBrikette" }
+            "link": {
+              "type": "external",
+              "href": "https://www.capri.net/en/t/capri/positano"
+            }
           }
         },
         {
-          "key": "sections.cancelled.link",
+          "key": "sections.positanoPortToMulini.body",
           "placeholders": {
-            "link": { "type": "directions", "slug": "naples-center-train-bus" }
+            "link": {
+              "type": "external",
+              "href": "https://www.google.com/maps/dir/Positano+Spiaggia/2+Viale+Pasitea+Positano,+Campania/@40.6289096,14.4857482,18z/data=!4m14!4m13!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!3e2"
+            }
           }
         },
         {
-          "key": "arrival.linkLabel",
-          "linkObject": { "type": "guide", "guideKey": "ferryDockToBrikette" }
+          "key": "sections.muliniToBusStop.list.*",
+          "placeholders": {
+            "link": {
+              "type": "external",
+              "href": "https://www.google.com/maps/dir/2+Viale+Pasitea+Positano,+Campania/Viale+Pasitea,+323,+84017+Positano+SA/@40.6309188,14.4819138,16z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!1m5!1m1!1s0x133b97667312711d:0xa2b15bca59b377fa!2m2!1d14.4824389!2d40.6293416!3e0"
+            }
+          }
+        },
+        {
+          "key": "sections.localBusStop.list.*",
+          "placeholders": {
+            "link": {
+              "type": "external",
+              "href": "https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Tabacchi+Cafiero+Emanuele,+Viale+Pasitea,+325a,+84017+Positano+SA/@40.6292434,14.4813669,19z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b97660ef186c1:0xc9eb9ab54d880307!2m2!1d14.4823321!2d40.6293865!3e2"
+            }
+          }
         }
       ],
       "galleries": [
         {
           "key": "photoGuide.items",
           "items": [
-            { "id": "scan", "src": "/img/directions/positano-capri-ferry-img01.png", "aspectRatio": "4/3", "preset": "gallery" },
-            { "id": "mapOverview", "src": "/img/directions/positano-capri-ferry-img02.jpg", "aspectRatio": "4/3", "preset": "gallery" },
-            { "id": "spiaggiaApproach", "src": "/img/directions/positano-capri-ferry-img03.jpg", "aspectRatio": "4/3", "preset": "gallery" },
-            { "id": "spiaggiaDetail", "src": "/img/directions/positano-capri-ferry-img04.png", "aspectRatio": "4/3", "preset": "gallery" },
-            { "id": "ticketBooths", "src": "/img/directions/positano-capri-ferry-img05.jpg", "aspectRatio": "4/3", "preset": "gallery" },
-            { "id": "point1", "src": "/img/directions/positano-capri-ferry-img06.jpg", "aspectRatio": "4/3", "preset": "gallery" },
-            { "id": "point2", "src": "/img/directions/positano-capri-ferry-img07.jpg", "aspectRatio": "4/3", "preset": "gallery" },
-            { "id": "point3", "src": "/img/directions/positano-capri-ferry-img08.jpg", "aspectRatio": "4/3", "preset": "gallery" },
-            { "id": "point4", "src": "/img/directions/positano-capri-ferry-img09.jpg", "aspectRatio": "4/3", "preset": "gallery" },
-            { "id": "point5", "src": "/img/directions/positano-capri-ferry-img10.jpg", "aspectRatio": "4/3", "preset": "gallery" }
-          ]
-        }
-      ],
-      "linkLists": [
-        {
-          "key": "journeyOverview.links",
-          "items": [
             {
-              "id": "capriNet",
-              "target": { "type": "external", "href": "https://www.capri.net/en/t/capri/positano" }
+              "id": "internoYellow",
+              "src": "/img/directions/capri-positano-interno-yellow.jpg",
+              "aspectRatio": "4/3",
+              "preset": "gallery"
             },
             {
-              "id": "positanoCom",
-              "target": { "type": "external", "href": "https://www.positano.com/en/ferry-schedule" }
+              "id": "internoRed",
+              "src": "/img/directions/capri-positano-interno-red.jpg",
+              "aspectRatio": "4/3",
+              "preset": "gallery"
+            },
+            {
+              "id": "tabacchi",
+              "src": "/img/directions/capri-positano-tabacchi.png",
+              "aspectRatio": "4/3",
+              "preset": "gallery"
             }
           ]
         }
@@ -312,35 +315,57 @@
         }
       ]
     },
-    "positano-amalfi-ferry": {
-      "contentKey": "positanoAmalfiFerry",
-      "linkBindings": [
-        {
-          "key": "tip.copy",
-          "linkObject": { "type": "howToOverview" }
-        },
-        {
-          "key": "sections.tickets.intro",
-          "placeholders": {
-            "travelmar": {
-              "type": "external",
-              "href": "https://travelmar.it/en"
-            },
-            "positano": {
-              "type": "external",
-              "href": "https://www.positano.com/en/ferry-schedule"
-            }
-          }
-        }
-      ]
-    },
+	    "positano-amalfi-ferry": {
+	      "contentKey": "positanoAmalfiFerry",
+	      "linkBindings": [
+	        {
+	          "key": "tip.copy",
+	          "placeholders": {
+	            "link": { "type": "howToOverview" }
+	          }
+	        },
+	        {
+	          "key": "sections.tickets.intro",
+	          "placeholders": {
+	            "travelmar": {
+	              "type": "external",
+	              "href": "https://travelmar.it/en"
+	            },
+	            "positano": {
+	              "type": "external",
+	              "href": "https://www.positano.com/en/ferry-schedule"
+	            },
+	            "ferrySchedules": {
+	              "type": "guide",
+	              "guideKey": "ferrySchedules"
+	            }
+	          }
+	        },
+	        {
+	          "key": "sections.gettingToPier.intro",
+	          "placeholders": {
+	            "dockWalk": {
+	              "type": "guide",
+	              "guideKey": "briketteToFerryDock"
+	            }
+	          }
+	        },
+	        {
+	          "key": "sections.planB.intro",
+	          "placeholders": {
+	            "bus": { "type": "directions", "slug": "positano-amalfi-bus" },
+	            "cancellations": { "type": "guide", "guideKey": "ferryCancellations" }
+	          }
+	        }
+	      ]
+	    },
     "positano-capri-ferry": {
       "contentKey": "positanoCapriFerry",
       "galleries": [
         {
           "key": "photoGuide.items",
+          "inline": true,
           "items": [
-            { "id": "scan", "src": "/img/directions/positano-capri-ferry-img01.png", "aspectRatio": "4/3", "preset": "gallery" },
             { "id": "mapOverview", "src": "/img/directions/positano-capri-ferry-img02.jpg", "aspectRatio": "4/3", "preset": "gallery" },
             { "id": "spiaggiaApproach", "src": "/img/directions/positano-capri-ferry-img03.jpg", "aspectRatio": "4/3", "preset": "gallery" },
             { "id": "spiaggiaDetail", "src": "/img/directions/positano-capri-ferry-img04.png", "aspectRatio": "4/3", "preset": "gallery" },

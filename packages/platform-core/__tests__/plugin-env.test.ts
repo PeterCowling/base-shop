@@ -1,7 +1,8 @@
 import fs from "node:fs";
 import * as fsPromises from "node:fs/promises";
-import path from "node:path";
 import os from "node:os";
+import path from "node:path";
+
 import { findPluginsDir, resolvePluginEnvironment } from "../src/plugins/env";
 
 describe("findPluginsDir", () => {

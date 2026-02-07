@@ -1,5 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/nextjs";
+
 import type { CartState } from "@acme/platform-core/cart";
+
 import { OrderConfirmationTemplate } from "./OrderConfirmationTemplate";
 
 const cart: CartState = {

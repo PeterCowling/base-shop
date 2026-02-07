@@ -1,9 +1,11 @@
 // apps/cms/__tests__/accounts.test.ts
 /* eslint-env jest */
 
-import argon2 from "argon2";
 import fs from "node:fs/promises";
 import path from "node:path";
+
+import argon2 from "argon2";
+
 import { withTempRepo } from "@acme/test-utils";
 
 // Account action tests spin up temporary repos and hash passwords; give them

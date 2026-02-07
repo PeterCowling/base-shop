@@ -2,6 +2,7 @@
 
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+
 import ColorContrastChecker from "color-contrast-checker";
 
 type Hsl = { h: number; s: number; l: number };

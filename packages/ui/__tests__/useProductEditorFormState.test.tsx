@@ -1,5 +1,6 @@
 import React from "react";
-import { renderHook, act } from "@testing-library/react";
+import { act,renderHook } from "@testing-library/react";
+
 import { useProductEditorFormState } from "../src/hooks/useProductEditorFormState";
 
 // Mock media manager to avoid real upload/location dependencies

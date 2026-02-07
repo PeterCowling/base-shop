@@ -10,7 +10,11 @@
       "default": "./dist/index.js"
     },
     "./package.json": "./package.json",
-    "./Translations": "./src/Translations.tsx",
+    "./Translations": {
+      "types": "./dist/Translations.d.ts",
+      "import": "./dist/Translations.js",
+      "default": "./dist/Translations.js"
+    },
     "./*": {
       "types": "./dist/*.d.ts",
       "import": "./dist/*.js",
@@ -22,11 +26,15 @@
   "scripts": {
     "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs",
     "build": "tsc -b",
+    "dev": "tsc -b --watch",
     "clean": "rimraf dist *.tsbuildinfo",
     "lint": "eslint ."
   },
+  "dependencies": {
+    "@acme/types": "workspace:^"
+  },
   "devDependencies": {
-    "next": "^15.3.5"
+    "next": "^15.3.9"
   },
   "files": [
     "dist"

@@ -1,20 +1,20 @@
 /** @jest-environment node */
 
 import {
-  listOrders,
   addOrder,
-  markReturned,
-  markRefunded,
-  updateRisk,
-  setReturnTracking,
-  setReturnStatus,
   getOrdersForCustomer,
-} from '@platform-core/orders';
+  listOrders,
+  markRefunded,
+  markReturned,
+  setReturnStatus,
+  setReturnTracking,
+  updateRisk,
+} from '@acme/platform-core/orders';
 
 jest.mock('@acme/date-utils', () => ({ nowIso: jest.fn(() => '2025-01-02T03:04:05Z') }));
 jest.mock('ulid', () => ({ ulid: jest.fn(() => 'id123') }));
 
-jest.mock('@platform-core/db', () => {
+jest.mock('@acme/platform-core/db', () => {
   const rentalOrders: any[] = [];
   return {
     prisma: {
@@ -32,12 +32,12 @@ jest.mock('@platform-core/db', () => {
   };
 });
 
-jest.mock('@platform-core/analytics', () => ({ trackOrder: jest.fn() }));
-jest.mock('@platform-core/subscriptionUsage', () => ({ incrementSubscriptionUsage: jest.fn() }));
+jest.mock('@acme/platform-core/analytics', () => ({ trackOrder: jest.fn() }));
+jest.mock('@acme/platform-core/subscriptionUsage', () => ({ incrementSubscriptionUsage: jest.fn() }));
 
 const timestamp = '2025-01-02T03:04:05Z';
 
-const { prisma, rentalOrders } = jest.requireMock('@platform-core/db') as {
+const { prisma, rentalOrders } = jest.requireMock('@acme/platform-core/db') as {
   prisma: {
     rentalOrder: {
       findMany: jest.Mock;
@@ -48,10 +48,10 @@ const { prisma, rentalOrders } = jest.requireMock('@platform-core/db') as {
   };
   rentalOrders: any[];
 };
-const { trackOrder } = jest.requireMock('@platform-core/analytics') as {
+const { trackOrder } = jest.requireMock('@acme/platform-core/analytics') as {
   trackOrder: jest.Mock;
 };
-const { incrementSubscriptionUsage } = jest.requireMock('@platform-core/subscriptionUsage') as {
+const { incrementSubscriptionUsage } = jest.requireMock('@acme/platform-core/subscriptionUsage') as {
   incrementSubscriptionUsage: jest.Mock;
 };
 

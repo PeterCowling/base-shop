@@ -1,4 +1,5 @@
 import { type Meta, type StoryObj } from "@storybook/nextjs";
+
 import { CheckoutTemplate } from "./CheckoutTemplate";
 
 const steps = [

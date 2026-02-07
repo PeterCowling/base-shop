@@ -1,0 +1,494 @@
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import {
+  AlertTriangle,
+  CheckCircle,
+  Info,
+  Loader2,
+  X,
+  XCircle,
+} from 'lucide-react';
+
+export type NotificationType = 'success' | 'error' | 'warning' | 'info' | 'loading';
+
+export interface Notification {
+  /**
+   * Unique identifier
+   */
+  id: string;
+
+  /**
+   * Notification type
+   */
+  type: NotificationType;
+
+  /**
+   * Title text
+   */
+  title: string;
+
+  /**
+   * Optional description
+   */
+  description?: string;
+
+  /**
+   * Duration in milliseconds (0 = persistent)
+   * @default 5000
+   */
+  duration?: number;
+
+  /**
+   * Whether the notification is dismissible
+   * @default true
+   */
+  dismissible?: boolean;
+
+  /**
+   * Optional action button
+   */
+  action?: {
+    label: string;
+    onClick: () => void;
+  };
+
+  /**
+   * Callback when notification is dismissed
+   */
+  onDismiss?: () => void;
+
+  /**
+   * Creation timestamp
+   */
+  createdAt: number;
+}
+
+export interface NotificationOptions {
+  type?: NotificationType;
+  title: string;
+  description?: string;
+  duration?: number;
+  dismissible?: boolean;
+  action?: {
+    label: string;
+    onClick: () => void;
+  };
+  onDismiss?: () => void;
+}
+
+interface NotificationContextValue {
+  notifications: Notification[];
+  addNotification: (options: NotificationOptions) => string;
+  removeNotification: (id: string) => void;
+  clearAll: () => void;
+  updateNotification: (id: string, options: Partial<NotificationOptions>) => void;
+}
+
+const NotificationContext = createContext<NotificationContextValue | null>(null);
+
+/**
+ * Hook to access the notification system
+ *
+ * @example
+ * ```tsx
+ * const { addNotification, removeNotification } = useNotifications();
+ *
+ * // Add a success notification
+ * addNotification({
+ *   type: 'success',
+ *   title: 'Changes saved',
+ *   description: 'Your changes have been saved successfully.',
+ * });
+ *
+ * // Add notification with action
+ * addNotification({
+ *   type: 'error',
+ *   title: 'Failed to save',
+ *   action: {
+ *     label: 'Retry',
+ *     onClick: () => saveChanges(),
+ *   },
+ * });
+ * ```
+ */
+export function useNotifications() {
+  const context = useContext(NotificationContext);
+  if (!context) {
+    throw new Error('useNotifications must be used within a NotificationProvider');
+  }
+  return context;
+}
+
+// Convenience hooks for common notification types
+export function useToast() {
+  const { addNotification, removeNotification, updateNotification } = useNotifications();
+
+  return useMemo(
+    () => ({
+      success: (title: string, options?: Omit<NotificationOptions, 'type' | 'title'>) =>
+        addNotification({ type: 'success', title, ...options }),
+      error: (title: string, options?: Omit<NotificationOptions, 'type' | 'title'>) =>
+        addNotification({ type: 'error', title, ...options }),
+      warning: (title: string, options?: Omit<NotificationOptions, 'type' | 'title'>) =>
+        addNotification({ type: 'warning', title, ...options }),
+      info: (title: string, options?: Omit<NotificationOptions, 'type' | 'title'>) =>
+        addNotification({ type: 'info', title, ...options }),
+      loading: (title: string, options?: Omit<NotificationOptions, 'type' | 'title'>) =>
+        addNotification({ type: 'loading', title, duration: 0, ...options }),
+      dismiss: removeNotification,
+      update: updateNotification,
+      promise: async <T,>(
+        promise: Promise<T>,
+        options: {
+          loading: string;
+          success: string | ((data: T) => string);
+          error: string | ((err: unknown) => string);
+        }
+      ): Promise<T> => {
+        const id = addNotification({
+          type: 'loading',
+          title: options.loading,
+          duration: 0,
+          dismissible: false,
+        });
+
+        try {
+          const result = await promise;
+          updateNotification(id, {
+            type: 'success',
+            title: typeof options.success === 'function' ? options.success(result) : options.success,
+            duration: 5000,
+            dismissible: true,
+          });
+          return result;
+        } catch (err) {
+          updateNotification(id, {
+            type: 'error',
+            title: typeof options.error === 'function' ? options.error(err) : options.error,
+            duration: 5000,
+            dismissible: true,
+          });
+          throw err;
+        }
+      },
+    }),
+    [addNotification, removeNotification, updateNotification]
+  );
+}
+
+let notificationId = 0;
+const generateId = () => `notification-${++notificationId}`;
+
+export interface NotificationProviderProps {
+  children: React.ReactNode;
+  /**
+   * Maximum number of notifications to show
+   * @default 5
+   */
+  maxNotifications?: number;
+  /**
+   * Default duration for notifications (ms)
+   * @default 5000
+   */
+  defaultDuration?: number;
+}
+
+/**
+ * Provider for the notification system
+ */
+export function NotificationProvider({
+  children,
+  maxNotifications = 5,
+  defaultDuration = 5000,
+}: NotificationProviderProps) {
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+
+  const addNotification = useCallback(
+    (options: NotificationOptions) => {
+      const id = generateId();
+      const notification: Notification = {
+        id,
+        type: options.type ?? 'info',
+        title: options.title,
+        description: options.description,
+        duration: options.duration ?? defaultDuration,
+        dismissible: options.dismissible ?? true,
+        action: options.action,
+        onDismiss: options.onDismiss,
+        createdAt: Date.now(),
+      };
+
+      setNotifications((prev) => {
+        const newList = [notification, ...prev];
+        return newList.slice(0, maxNotifications);
+      });
+
+      return id;
+    },
+    [defaultDuration, maxNotifications]
+  );
+
+  const removeNotification = useCallback((id: string) => {
+    setNotifications((prev) => {
+      const notification = prev.find((n) => n.id === id);
+      notification?.onDismiss?.();
+      return prev.filter((n) => n.id !== id);
+    });
+  }, []);
+
+  const updateNotification = useCallback(
+    (id: string, options: Partial<NotificationOptions>) => {
+      setNotifications((prev) =>
+        prev.map((n) =>
+          n.id === id
+            ? {
+                ...n,
+                ...options,
+                createdAt: options.type ? Date.now() : n.createdAt, // Reset timer on type change
+              }
+            : n
+        )
+      );
+    },
+    []
+  );
+
+  const clearAll = useCallback(() => {
+    setNotifications([]);
+  }, []);
+
+  const contextValue = useMemo(
+    () => ({
+      notifications,
+      addNotification,
+      removeNotification,
+      clearAll,
+      updateNotification,
+    }),
+    [notifications, addNotification, removeNotification, clearAll, updateNotification]
+  );
+
+  return (
+    <NotificationContext.Provider value={contextValue}>
+      {children}
+    </NotificationContext.Provider>
+  );
+}
+
+export interface NotificationContainerProps {
+  /**
+   * Position on the screen
+   * @default "top-right"
+   */
+  position?: 'top-left' | 'top-right' | 'top-center' | 'bottom-left' | 'bottom-right' | 'bottom-center';
+
+  /**
+   * Additional CSS classes
+   */
+  className?: string;
+}
+
+/**
+ * Container component that renders notifications
+ * Should be placed at the root of your app, inside NotificationProvider
+ */
+export function NotificationContainer({
+  position = 'top-right',
+  className = '',
+}: NotificationContainerProps) {
+  const { notifications, removeNotification } = useNotifications();
+
+  const positionClasses: Record<string, string> = {
+    'top-left': 'top-4 left-4',
+    'top-right': 'top-4 right-4',
+    'top-center': 'top-4 left-1/2 -translate-x-1/2',
+    'bottom-left': 'bottom-4 left-4',
+    'bottom-right': 'bottom-4 right-4',
+    'bottom-center': 'bottom-4 left-1/2 -translate-x-1/2',
+  };
+
+  return (
+    <div
+      className={`fixed z-[100] flex flex-col gap-2 pointer-events-none ${positionClasses[position]} ${className}`}
+      role="region"
+      aria-label="Notifications"
+    >
+      {notifications.map((notification) => (
+        <NotificationItem
+          key={notification.id}
+          notification={notification}
+          onDismiss={() => removeNotification(notification.id)}
+        />
+      ))}
+    </div>
+  );
+}
+
+interface NotificationItemProps {
+  notification: Notification;
+  onDismiss: () => void;
+}
+
+function NotificationItem({ notification, onDismiss }: NotificationItemProps) {
+  const { type, title, description, duration, dismissible, action } = notification;
+
+  // Auto-dismiss timer
+  useEffect(() => {
+    if (duration && duration > 0) {
+      const timer = setTimeout(onDismiss, duration);
+      return () => clearTimeout(timer);
+    }
+  }, [duration, onDismiss]);
+
+  const icons: Record<NotificationType, React.ReactNode> = {
+    success: <CheckCircle className="h-5 w-5 text-green-500" />,
+    error: <XCircle className="h-5 w-5 text-red-500" />,
+    warning: <AlertTriangle className="h-5 w-5 text-yellow-500" />,
+    info: <Info className="h-5 w-5 text-blue-500" />,
+    loading: <Loader2 className="h-5 w-5 animate-spin text-blue-500" />,
+  };
+
+  const bgColors: Record<NotificationType, string> = {
+    success: 'bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800',
+    error: 'bg-red-50 border-red-200 dark:bg-red-900/20 dark:border-red-800',
+    warning: 'bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800',
+    info: 'bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800',
+    loading: 'bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800',
+  };
+
+  return (
+    <div
+      role="alert"
+      className={`
+        pointer-events-auto w-80 rounded-lg border p-4 shadow-lg
+        animate-in slide-in-from-right-full fade-in duration-200
+        ${bgColors[type]}
+      `}
+    >
+      <div className="flex gap-3">
+        <div className="flex-shrink-0">{icons[type]}</div>
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-medium text-gray-900 dark:text-slate-100">
+            {title}
+          </p>
+          {description && (
+            <p className="mt-1 text-sm text-gray-600 dark:text-slate-300">
+              {description}
+            </p>
+          )}
+          {action && (
+            <button
+              type="button"
+              onClick={action.onClick}
+              className="mt-2 text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
+            >
+              {action.label}
+            </button>
+          )}
+        </div>
+        {dismissible && (
+          <button
+            type="button"
+            onClick={onDismiss}
+            className="flex-shrink-0 rounded p-1 text-gray-400 hover:bg-white/50 hover:text-gray-600 dark:hover:bg-black/20 dark:hover:text-slate-300"
+            aria-label="Dismiss"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// Standalone toast functions for use outside React components
+let externalAddNotification: ((options: NotificationOptions) => string) | null = null;
+let externalRemoveNotification: ((id: string) => void) | null = null;
+
+/**
+ * Standalone toast API for use outside React components
+ * Must be used with NotificationProviderWithGlobal
+ */
+export const toast = {
+  success: (title: string, options?: Omit<NotificationOptions, 'type' | 'title'>) => {
+    if (!externalAddNotification) {
+      console.warn('NotificationProviderWithGlobal is not mounted');
+      return '';
+    }
+    return externalAddNotification({ type: 'success', title, ...options });
+  },
+  error: (title: string, options?: Omit<NotificationOptions, 'type' | 'title'>) => {
+    if (!externalAddNotification) {
+      console.warn('NotificationProviderWithGlobal is not mounted');
+      return '';
+    }
+    return externalAddNotification({ type: 'error', title, ...options });
+  },
+  warning: (title: string, options?: Omit<NotificationOptions, 'type' | 'title'>) => {
+    if (!externalAddNotification) {
+      console.warn('NotificationProviderWithGlobal is not mounted');
+      return '';
+    }
+    return externalAddNotification({ type: 'warning', title, ...options });
+  },
+  info: (title: string, options?: Omit<NotificationOptions, 'type' | 'title'>) => {
+    if (!externalAddNotification) {
+      console.warn('NotificationProviderWithGlobal is not mounted');
+      return '';
+    }
+    return externalAddNotification({ type: 'info', title, ...options });
+  },
+  loading: (title: string, options?: Omit<NotificationOptions, 'type' | 'title'>) => {
+    if (!externalAddNotification) {
+      console.warn('NotificationProviderWithGlobal is not mounted');
+      return '';
+    }
+    return externalAddNotification({ type: 'loading', title, duration: 0, ...options });
+  },
+  dismiss: (id: string) => {
+    if (!externalRemoveNotification) {
+      console.warn('NotificationProviderWithGlobal is not mounted');
+      return;
+    }
+    externalRemoveNotification(id);
+  },
+};
+
+/**
+ * NotificationProvider with global toast API support
+ */
+export function NotificationProviderWithGlobal({
+  children,
+  ...props
+}: NotificationProviderProps) {
+  return (
+    <NotificationProvider {...props}>
+      <GlobalToastBridge />
+      {children}
+    </NotificationProvider>
+  );
+}
+
+function GlobalToastBridge() {
+  const { addNotification, removeNotification } = useNotifications();
+
+  useEffect(() => {
+    externalAddNotification = addNotification;
+    externalRemoveNotification = removeNotification;
+
+    return () => {
+      externalAddNotification = null;
+      externalRemoveNotification = null;
+    };
+  }, [addNotification, removeNotification]);
+
+  return null;
+}
+
+export default NotificationContainer;

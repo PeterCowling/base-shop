@@ -1,12 +1,16 @@
-/* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
+ 
 // src/components/seo/GuideSectionsItemListStructuredData.tsx
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import getGuideResource from "@/routes/guides/utils/getGuideResource";
-import type { GuideKey } from "@/routes.guides-helpers";
+import { usePathname } from "next/navigation";
+
+import { buildCanonicalUrl } from "@acme/ui/lib/seo";
+
 import { BASE_URL } from "@/config/site";
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import type { GuideKey } from "@/routes.guides-helpers";
+import getGuideResource from "@/routes/guides/utils/getGuideResource";
+import { serializeJsonLdValue } from "@/utils/seo/jsonld";
 
 type ListItem = { "@type": "ListItem"; position: number; name: string; description?: string };
 
@@ -18,10 +22,10 @@ interface Props {
 
 function GuideSectionsItemListStructuredData({ guideKey, name, canonicalUrl }: Props): JSX.Element | null {
   const lang = useCurrentLanguage();
-  const { pathname } = useLocation();
+  const pathname = usePathname() ?? "";
   const { t, ready } = useTranslation("guides", { lng: lang });
 
-  const json = useMemo(() => {
+  const json = (() => {
     if (!ready) return "";
     // Prefer raw structured sections from the translator
     const raw = t(`content.${guideKey}.sections`, { returnObjects: true }) as unknown;
@@ -113,10 +117,13 @@ function GuideSectionsItemListStructuredData({ guideKey, name, canonicalUrl }: P
 
     if (items.length === 0) return "";
 
-    const url = typeof canonicalUrl === "string" && canonicalUrl.length > 0 ? canonicalUrl : `${BASE_URL}${pathname}`;
+    const url =
+      typeof canonicalUrl === "string" && canonicalUrl.length > 0
+        ? canonicalUrl
+        : buildCanonicalUrl(BASE_URL, pathname);
     const title = typeof name === "string" && name.trim().length > 0 ? name : "";
 
-    return JSON.stringify({
+    return serializeJsonLdValue({
       "@context": "https://schema.org",
       "@type": "ItemList",
       inLanguage: lang,
@@ -124,7 +131,7 @@ function GuideSectionsItemListStructuredData({ guideKey, name, canonicalUrl }: P
       name: title,
       itemListElement: items,
     });
-  }, [canonicalUrl, guideKey, lang, name, pathname, t, ready]);
+  })();
 
   if (!json) return null;
 

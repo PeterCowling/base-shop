@@ -97,7 +97,7 @@ The mapping between `ConfiguratorStepId` and `ConfigCheck` is the canonical sour
       - Shape: internal to CMS (`{ state, completed }`); not part of the public contract.
     - If provided:
       - Returns server-side `ConfiguratorProgress` for that `shopId` by calling:
-        - `getConfiguratorProgressForShop(shopId)` from `@platform-core/configurator`.
+        - `getConfiguratorProgressForShop(shopId)` from `@acme/platform-core/configurator`.
 
 - **Responses**
   - `200` with JSON:
@@ -220,7 +220,7 @@ Client code (`useLaunchShop`) consumes the SSE stream and updates local launch s
   - Initially computes local progress from wizard `completed` state.
   - When a `shopId` is present:
     - Calls `GET /api/configurator-progress?shopId=...`.
-    - Uses `REQUIRED_CONFIG_CHECK_STEPS` and `OPTIONAL_CONFIG_CHECK_STEPS` from `@platform-core/configurator` to derive:
+    - Uses `REQUIRED_CONFIG_CHECK_STEPS` and `OPTIONAL_CONFIG_CHECK_STEPS` from `@acme/platform-core/configurator` to derive:
       - `completedRequired`, `totalRequired`.
       - `completedOptional`, `totalOptional`.
     - Updates the progress ring and counts based on server-side status.

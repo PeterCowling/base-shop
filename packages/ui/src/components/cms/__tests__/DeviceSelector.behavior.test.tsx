@@ -1,6 +1,7 @@
+import { useState } from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useState } from "react";
+
 import DeviceSelector from "../DeviceSelector";
 
 function Wrapper({ onToggle }: { onToggle?: () => void }) {
@@ -35,11 +36,8 @@ function Wrapper({ onToggle }: { onToggle?: () => void }) {
 describe("DeviceSelector behavior", () => {
   beforeAll(() => {
     // JSDOM doesn't implement these pointer APIs used by Radix Select
-    // @ts-expect-error JSDOM lacks pointer capture APIs in tests
     HTMLElement.prototype.hasPointerCapture = () => false;
-    // @ts-expect-error JSDOM lacks pointer capture APIs in tests
     HTMLElement.prototype.setPointerCapture = () => {};
-    // @ts-expect-error JSDOM lacks scrollIntoView in tests
     Element.prototype.scrollIntoView = () => {};
   });
 

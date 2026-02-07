@@ -1,9 +1,11 @@
 "use client";
 
-import { Input } from "../../atoms/shadcn";
-import type { TokenInfo } from "../../../hooks/useTokenEditor";
-import { ReactElement, ChangeEvent } from "react";
+import { type ChangeEvent,type ReactElement } from "react";
+
 import { useTranslations } from "@acme/i18n";
+
+import type { TokenInfo } from "../../../hooks/useTokenEditor";
+import { Input } from "../../atoms/shadcn";
 
 interface TextTokenProps extends Omit<TokenInfo, "key"> {
   tokenKey: TokenInfo["key"];
@@ -26,9 +28,9 @@ export function TextToken({
     const v = t("common.default");
     return v === "common.default" ? "Default" : (v as string);
   })();
-  // eslint-disable-next-line ds/no-hardcoded-copy -- DX-0002: utility classes are not user copy
+   
   const overrideClasses = isOverridden ? "border-s-2 border-s-info ps-2" : "";
-  // eslint-disable-next-line ds/no-hardcoded-copy -- DX-0002: utility classes are not user copy
+   
   const WRAPPER_CLASS = "min-w-0 flex-1";
   return (
     <label

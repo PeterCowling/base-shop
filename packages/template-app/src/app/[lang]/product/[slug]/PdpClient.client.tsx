@@ -1,13 +1,14 @@
 // packages/template-app/src/app/[lang]/product/[slug]/PdpClient.tsx
 "use client";
 
-import ImageGallery from "@platform-core/components/pdp/ImageGallery";
-import SizeSelector from "@platform-core/components/pdp/SizeSelector";
-import AddToCartButton from "@platform-core/components/shop/AddToCartButton.client";
-import { Price } from "@ui/components/atoms/Price";
-import type { SKU } from "@acme/types";
 import { useState } from "react";
+
+import { Price } from "@acme/design-system/atoms/Price";
 import { useTranslations } from "@acme/i18n";
+import ImageGallery from "@acme/platform-core/components/pdp/ImageGallery";
+import SizeSelector from "@acme/platform-core/components/pdp/SizeSelector";
+import AddToCartButton from "@acme/platform-core/components/shop/AddToCartButton.client";
+import type { SKU } from "@acme/types";
 
 export default function PdpClient({ product }: { product: SKU }) {
   const t = useTranslations();
@@ -20,7 +21,7 @@ export default function PdpClient({ product }: { product: SKU }) {
 
       <section className="flex flex-col gap-6">
         <h1 className="text-3xl font-bold">{product.title}</h1>
-        <p className="text-gray-700">{product.description}</p>
+        <p className="text-muted-foreground">{product.description}</p>
 
         <div>
           <div className="mb-2 font-medium">{t("pdp.selectSize")}</div>

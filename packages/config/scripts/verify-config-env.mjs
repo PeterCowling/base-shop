@@ -66,7 +66,7 @@ async function main() {
     offenders.forEach((o) => console.error(`  - ${o.file}: ${o.spec}`));
     process.exit(1);
   } else {
-    console.log("✓ No extensionless relative specifiers in dist/env/*.js");
+    console.info("✓ No extensionless relative specifiers in dist/env/*.js");
   }
 
   // 3) Evaluate modules (catch top-level side effects)
@@ -88,12 +88,12 @@ async function main() {
       console.error(`✗ Import failed: ${t}`);
       if (res.error) console.error(`  ${res.error}`);
     } else {
-      console.log(`✓ Import OK: ${t}`);
+      console.info(`✓ Import OK: ${t}`);
     }
   }
   if (anyFail) process.exit(1);
 
-  console.log("✓ All env modules import cleanly (no import-time side effects)");
+  console.info("✓ All env modules import cleanly (no import-time side effects)");
 }
 
 main().catch((e) => {

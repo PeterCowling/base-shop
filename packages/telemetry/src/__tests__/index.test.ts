@@ -10,8 +10,7 @@ describe("telemetry index", () => {
     delete process.env.NODE_ENV;
     delete process.env.FORCE_TELEMETRY;
     // restore fetch if mocked
-    // @ts-expect-error: assignment to global.fetch in tests
-    if (originalFetch) global.fetch = originalFetch;
+    if (originalFetch) (global as any).fetch = originalFetch;
   });
 
   let originalFetch: typeof fetch | undefined;
@@ -48,25 +47,23 @@ describe("telemetry index", () => {
     process.env.NODE_ENV = "production";
     const mod = await import("../index");
     const fetchMock = jest
-      .fn()
+      .fn<any, any[]>()
       .mockRejectedValueOnce(new Error("fail"))
       .mockResolvedValueOnce({ ok: true } as any);
     originalFetch = global.fetch;
-    // @ts-expect-error: override global.fetch for test
     global.fetch = fetchMock;
     mod.track("evt", { foo: "bar" });
     await mod.__flush();
     expect(fetchMock).toHaveBeenCalledTimes(2);
-    const body = JSON.parse(fetchMock.mock.calls[0][1].body as string);
+    const body = JSON.parse((fetchMock.mock.calls[0][1] as any).body as string);
     expect(body[0].name).toBe("evt");
     expect(mod.__buffer.length).toBe(0);
   });
 
   test("__flush does nothing when buffer empty", async () => {
     const mod = await import("../index");
-    const fetchMock = jest.fn();
+    const fetchMock = jest.fn<any, any[]>();
     originalFetch = global.fetch;
-    // @ts-expect-error: override global.fetch for test
     global.fetch = fetchMock;
     await mod.__flush();
     expect(fetchMock).not.toHaveBeenCalled();
@@ -76,9 +73,8 @@ describe("telemetry index", () => {
     process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
     process.env.NODE_ENV = "production";
     const mod = await import("../index");
-    const fetchMock = jest.fn().mockRejectedValue(new Error("fail"));
+    const fetchMock = jest.fn<any, any[]>().mockRejectedValue(new Error("fail"));
     originalFetch = global.fetch;
-    // @ts-expect-error: override global.fetch for test
     global.fetch = fetchMock;
     mod.__buffer.push({ name: "evt", payload: { foo: 1 }, ts: Date.now() });
     await mod.__flush();
@@ -91,9 +87,8 @@ describe("telemetry index", () => {
     process.env.NODE_ENV = "production";
     process.env.NEXT_PUBLIC_TELEMETRY_ENDPOINT = "/custom-endpoint";
     const mod = await import("../index");
-    const fetchMock = jest.fn().mockResolvedValue({ ok: true } as any);
+    const fetchMock = jest.fn<any, any[]>().mockResolvedValue({ ok: true } as any);
     originalFetch = global.fetch;
-    // @ts-expect-error: override global.fetch for test
     global.fetch = fetchMock;
     mod.track("evt");
     await mod.__flush();
@@ -120,9 +115,8 @@ describe("telemetry index", () => {
   test("does not send events when telemetry disabled", async () => {
     process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "false";
     process.env.NODE_ENV = "production";
-    const fetchMock = jest.fn();
+    const fetchMock = jest.fn<any, any[]>();
     originalFetch = global.fetch;
-    // @ts-expect-error: override global.fetch for test
     global.fetch = fetchMock;
     const mod = await import("../index");
     mod.track("evt");
@@ -151,16 +145,15 @@ describe("telemetry index", () => {
     process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
     process.env.NODE_ENV = "production";
     jest.useFakeTimers();
-    const fetchMock = jest.fn().mockRejectedValue(new Error("fail"));
+    const fetchMock = jest.fn<any, any[]>().mockRejectedValue(new Error("fail"));
     originalFetch = global.fetch;
-    // @ts-expect-error: override global.fetch for test
     global.fetch = fetchMock;
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     try {
       const mod = await import("../index");
       mod.track("e1");
       mod.track("e2");
-      await jest.runOnlyPendingTimersAsync();
+      await (jest as any).runOnlyPendingTimersAsync();
       expect(fetchMock).toHaveBeenCalledTimes(3);
       expect(errorSpy).toHaveBeenCalled();
       expect(mod.__buffer.map((e) => e.name)).toEqual(["e1", "e2"]);

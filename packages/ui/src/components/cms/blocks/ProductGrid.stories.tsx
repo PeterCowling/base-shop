@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
-import ProductGrid from "./ProductGrid.client";
+
 import { PRODUCTS } from "@acme/platform-core/products/index";
+
+import ProductGrid from "./ProductGrid.client";
 
 const meta: Meta<typeof ProductGrid> = {
   title: "CMS Blocks/ProductGrid",

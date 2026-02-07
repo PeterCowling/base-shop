@@ -1,24 +1,26 @@
 // packages/template-app/src/app/[lang]/checkout/page.tsx
-import CheckoutForm from "@/components/checkout/CheckoutForm";
-import OrderSummary from "@/components/organisms/OrderSummary";
-import { Locale, resolveLocale } from "@i18n/locales";
-import { useTranslations as getServerTranslations } from "@i18n/useTranslations.server";
-import { useTranslations } from "@i18n/Translations";
+import * as React from "react";
+import { cookies } from "next/headers";
+
+import Section from "@acme/cms-ui/blocks/Section";
+import { calculateRentalDays, isoDateInNDays } from "@acme/date-utils";
+import { type Locale, resolveLocale } from "@acme/i18n/locales";
+import { useTranslations } from "@acme/i18n/Translations";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 import {
   CART_COOKIE,
-  decodeCartCookie,
   type CartLine,
   type CartState,
-} from "@platform-core/cartCookie";
-import { createCartStore } from "@platform-core/cartStore";
-import { getProductById } from "@platform-core/products";
-import { cookies } from "next/headers";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
-import { readShop } from "@platform-core/repositories/shops.server";
-import { priceForDays, convertCurrency } from "@platform-core/pricing";
-import { calculateRentalDays, isoDateInNDays } from "@acme/date-utils";
-import * as React from "react";
-import Section from "@ui/components/cms/blocks/Section";
+  decodeCartCookie,
+} from "@acme/platform-core/cartCookie";
+import { createCartStore } from "@acme/platform-core/cartStore";
+import { convertCurrency,priceForDays } from "@acme/platform-core/pricing";
+import { getProductById } from "@acme/platform-core/products";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
+import { readShop } from "@acme/platform-core/repositories/shops.server";
+
+import CheckoutForm from "@/components/checkout/CheckoutForm";
+import OrderSummary from "@/components/organisms/OrderSummary";
 
 export async function generateMetadata({
   params,

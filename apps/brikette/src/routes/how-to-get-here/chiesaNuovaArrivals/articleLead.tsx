@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
 import type { HTMLAttributeReferrerPolicy } from "react";
+import Link from "next/link";
 
-import { CfImage } from "@/components/images/CfImage";
 import TableOfContents from "@/components/guides/TableOfContents";
+import { CfImage } from "@acme/ui/atoms/CfImage";
 import { guideHref } from "@/routes.guides-helpers";
 import type { GuideSeoTemplateContext } from "@/routes/guides/_GuideSeoTemplate";
 
@@ -59,7 +59,7 @@ export function renderArticleLead(context: GuideSeoTemplateContext, extras: Guid
                 data-aspect="4/3"
               />
               {image.caption ? (
-                <figcaption className="bg-brand-surface px-4 py-3 text-sm text-brand-text/70 dark:bg-brand-surface/70 dark:text-brand-surface/80">
+                <figcaption className="bg-brand-surface px-4 py-3 text-sm text-brand-text/70 dark:bg-brand-surface/70 dark:text-brand-text/80">
                   {image.caption}
                 </figcaption>
               ) : null}
@@ -74,9 +74,10 @@ export function renderArticleLead(context: GuideSeoTemplateContext, extras: Guid
       ) : null}
 
       {sections.map((section) => {
-        const isDuplicateOfGeneric = Array.isArray(context.sections)
-          ? context.sections.some((s) => s?.id === section.id)
-          : false;
+        const isDuplicateOfGeneric =
+          (context.renderGenericContent ?? true) &&
+          Array.isArray(context.sections) &&
+          context.sections.some((s) => s?.id === section.id);
         if (isDuplicateOfGeneric) return null;
 
         return (
@@ -166,7 +167,7 @@ export function renderArticleLead(context: GuideSeoTemplateContext, extras: Guid
               <li className="leading-relaxed">
                 {kneesDockPrefix}{" "}
                 <Link
-                  to={guideHref(context.lang, "ferryDockToBrikette")}
+                  href={guideHref(context.lang, "ferryDockToBrikette")}
                   className="font-medium text-brand-primary underline-offset-4 hover:underline dark:text-brand-secondary"
                 >
                   {kneesDockLinkText}
@@ -178,7 +179,7 @@ export function renderArticleLead(context: GuideSeoTemplateContext, extras: Guid
               <li className="leading-relaxed">
                 {kneesPorterPrefix}{" "}
                 <Link
-                  to={guideHref(context.lang, "porterServices")}
+                  href={guideHref(context.lang, "porterServices")}
                   className="font-medium text-brand-primary underline-offset-4 hover:underline dark:text-brand-secondary"
                 >
                   {kneesPorterLinkText}
@@ -199,7 +200,7 @@ export function renderArticleLead(context: GuideSeoTemplateContext, extras: Guid
                 key={index}
                 className="rounded-lg border border-brand-outline/20 bg-brand-surface/80 p-4 shadow-sm transition hover:border-brand-primary/40 dark:border-brand-outline/40 dark:bg-brand-surface/30"
               >
-                <summary className="cursor-pointer text-base font-semibold text-brand-heading outline-none transition focus-visible:ring-2 focus-visible:ring-brand-primary/60 focus-visible:ring-offset-2 dark:text-brand-surface">
+                <summary className="cursor-pointer text-base font-semibold text-brand-heading outline-none transition focus-visible:ring-2 focus-visible:ring-brand-primary/60 focus-visible:ring-offset-2 dark:text-brand-text">
                   {faq.q}
                 </summary>
                 <div className="mt-3 space-y-3">

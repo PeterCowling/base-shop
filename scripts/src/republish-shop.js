@@ -4,6 +4,7 @@ exports.republishShop = republishShop;
 var node_fs_1 = require("node:fs");
 var node_path_1 = require("node:path");
 var node_child_process_1 = require("node:child_process");
+
 var SHOP_ID_REGEX = /^[a-z0-9_-]+$/;
 function readUpgradeMeta(root, id) {
     var file = (0, node_path_1.join)(root, "data", "shops", id, "upgrade.json");

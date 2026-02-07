@@ -1,10 +1,10 @@
 // Single-purpose: public API to resolve a preview image by type
 
+import { bind,carouselContainer, dataset, genericSection, gridContainer, multiColumn, repeater, stackFlex, tabsAccordionContainer } from "./generators/containers";
+import { footerSection, footerSectionLegalHeavy,footerSectionMultiColumn, footerSectionNewsletter, footerSectionSimple, footerSectionSocial } from "./generators/footers";
+import { headerSection, headerSectionCenterLogo, headerSectionMinimal, headerSectionSplitUtilities, headerSectionSticky,headerSectionTransparent } from "./generators/headers";
+import { analyticsPixelsSection,announcementBar, blogListing, collectionList, consentSection, contactForm, contactFormWithMap, countdownTimer, currencySelector, faqBlock, featuredProduct, formBuilderBlock, gallery, giftCardBlock, heroBanner, imageSlider, lookbook, mapBlock, newsletter, popupModal, pricingTable, productBundle, productCarousel, productComparison, productFilter, productGrid, rentalAvailabilitySection, rentalTermsSection, searchBar, socialFeed, socialLinks, socialProof, storeLocatorBlock, structuredDataSection, tabs, testimonials, valueProps, videoBlock } from "./generators/sections";
 import type { } from "./types";
-import { genericSection, multiColumn, stackFlex, gridContainer, carouselContainer, tabsAccordionContainer, dataset, repeater, bind } from "./generators/containers";
-import { heroBanner, announcementBar, productGrid, gallery, testimonials, valueProps, newsletter, imageSlider, productCarousel, featuredProduct, collectionList, lookbook, contactForm, contactFormWithMap, blogListing, mapBlock, storeLocatorBlock, videoBlock, faqBlock, countdownTimer, socialLinks, socialFeed, socialProof, searchBar, pricingTable, tabs, productComparison, giftCardBlock, formBuilderBlock, popupModal, productBundle, productFilter, currencySelector, rentalAvailabilitySection, rentalTermsSection, structuredDataSection, consentSection, analyticsPixelsSection } from "./generators/sections";
-import { headerSection, headerSectionMinimal, headerSectionCenterLogo, headerSectionSplitUtilities, headerSectionTransparent, headerSectionSticky } from "./generators/headers";
-import { footerSection, footerSectionSimple, footerSectionMultiColumn, footerSectionNewsletter, footerSectionSocial, footerSectionLegalHeavy } from "./generators/footers";
 
 const GENERATORS: Record<string, () => string> = {
   // Containers

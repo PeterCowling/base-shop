@@ -3,16 +3,17 @@
 
 /* eslint-disable security/detect-non-literal-fs-filename -- ENG-1234: FS paths are constructed from validateShopName-guarded shop IDs, package names, and static repo directories; user input cannot control directory traversal */
 
-import { existsSync, readFileSync, readdirSync } from "fs";
-import path from "path";
+import { existsSync, readdirSync,readFileSync } from "fs";
 import jwt from "jsonwebtoken";
+import path from "path";
+
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 import { validateShopName } from "@acme/lib";
 import {
-  logger,
-  withRequestContext,
   type RequestContext,
-} from "@acme/shared-utils";
-import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+  withRequestContext,
+} from "@acme/lib/context";
+import { logger } from "@acme/lib/logger";
 
 const SERVICE_NAME = "api";
 const ENV_LABEL: "dev" | "stage" | "prod" =
@@ -238,4 +239,4 @@ async function handleRequest({
   });
 };
 
-export { extractSummary, gatherChanges, diffDirectories, listFiles };
+export { diffDirectories, extractSummary, gatherChanges, listFiles };

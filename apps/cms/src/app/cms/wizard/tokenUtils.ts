@@ -1,5 +1,5 @@
 // apps/cms/src/app/cms/wizard/tokenUtils.ts
-import { tokens as baseTokensSrc, type TokenMap as ThemeTokenMap } from "@themes/base";
+import { type TokenMap as ThemeTokenMap,tokens as baseTokensSrc } from "@themes/base";
 
 function typedEntries<T extends object>(obj: T): [keyof T, T[keyof T]][] {
   return Object.entries(obj) as [keyof T, T[keyof T]][];

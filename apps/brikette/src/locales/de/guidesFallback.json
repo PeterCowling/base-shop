@@ -4,7 +4,7 @@
     "before": "Bevor du losgehst",
     "steps": "Route Schritt für Schritt",
     "knees": "Knie & Gepäck",
-    "faqs": "FAQs"
+    "faqs": "Häufige Fragen"
   },
   "folkloreAmalfi": {
     "intro": [
@@ -81,7 +81,7 @@
       }
     ],
     "faqs": [],
-    "faqsTitle": "FAQs"
+    "faqsTitle": "Häufige Fragen"
   },
   "interrailItalyRailPassAmalfiCoast": {
     "toc": [
@@ -99,7 +99,7 @@
       },
       {
         "href": "#faqs",
-        "label": "FAQs"
+        "label": "Häufige Fragen"
       }
     ],
     "sections": [
@@ -125,7 +125,7 @@
         ]
       }
     ],
-    "faqsTitle": "FAQs",
+    "faqsTitle": "Häufige Fragen",
     "faqs": [
       {
         "q": "Lohnt sich ein Pass?",
@@ -263,11 +263,11 @@
     ],
     "gallery": [
       {
-        "alt": "Positano pier area",
+        "alt": "Bereich am Positano-Pier",
         "caption": "Steg Spiaggia Grande"
       },
       {
-        "alt": "Ferry approaching Amalfi",
+        "alt": "Fähre nähert sich Amalfi",
         "caption": "Fähren entlang der Küste"
       }
     ],
@@ -324,7 +324,7 @@
       }
     ],
     "faqs": [],
-    "faqsTitle": "FAQs"
+    "faqsTitle": "Häufige Fragen"
   },
   "itinerariesPillar": {
     "intro": "Du brauchst kein Auto, um die Amalfiküste zu genießen. Nutze Fähren für schöne Abschnitte, Busse für die Bergdörfer und etwas Timing, um die meistbesuchten Zeitfenster zu meiden. Starte mit diesen Vorlagen und passe sie an.",
@@ -333,12 +333,12 @@
       "threeDays": "3 Tage: Capri oder Amalfi+Ravello",
       "sevenDays": "7 Tage: komplette Runde",
       "tips": "Timing- & Transporttipps",
-      "faqs": "FAQs"
+      "faqs": "Häufige Fragen"
     },
     "twoDaysHeading": "2 Tage: Fokus Positano",
     "twoDaysItems": [
       "Tag 1: Altstadt Positano, Fornillo über den Küstenpfad, Sonnenuntergang von den Kurven der Via Pasitea.",
-      "Tag 2: <pathOfTheGodsLink>Path of the Gods</pathOfTheGodsLink> ab Nocelle; danach Abkühlung am Strand."
+      "Tag 2: <pathOfTheGodsLink>Pfad der Götter</pathOfTheGodsLink> ab Nocelle; danach Abkühlung am Strand."
     ],
     "threeDaysHeading": "3 Tage: Capri oder Ravello ergänzen",
     "threeDaysIntro": "Wähle eine Option:",
@@ -358,7 +358,7 @@
       "Kaufe Bustickets im Voraus und entwerte sie beim Einsteigen.",
       "Bei rauer See wechsle auf den Busplan; prüfe Hinweise der Betreiber."
     ],
-    "faqHeading": "FAQs",
+    "faqHeading": "Häufige Fragen",
     "faqs": [
       {
         "q": "Lohnt sich ein Auto?",
@@ -370,7 +370,7 @@
   },
   "amalfiTownGuide": {
     "headings": {
-      "highlights": "Highlights",
+      "highlights": "Höhepunkte",
       "gettingThere": "Anreise",
       "tips": "Tipps"
     },
@@ -392,54 +392,54 @@
       "overview": "Überblick",
       "dayByDay": "Tag für Tag",
       "tips": "Transport- & Timing-Tipps",
-      "faqs": "FAQs"
+      "faqs": "Häufige Fragen"
     },
     "days": [
       {
         "id": "day1",
-        "label": "Day 1",
+        "label": "Tag 1",
         "items": [
           "Ankunft in Positano; Altstadt & Fornillo"
         ]
       },
       {
         "id": "day2",
-        "label": "Day 2",
+        "label": "Tag 2",
         "items": [
-          "Path of the Gods ab Nocelle"
+          "Pfad der Götter ab Nocelle"
         ]
       },
       {
         "id": "day3",
-        "label": "Day 3",
+        "label": "Tag 3",
         "items": [
           "Capri-Tagesausflug oder Strand + Bootstour"
         ]
       },
       {
         "id": "day4",
-        "label": "Day 4",
+        "label": "Tag 4",
         "items": [
           "Transfer nach Amalfi; Dom; Sonnenuntergang am Pier"
         ]
       },
       {
         "id": "day5",
-        "label": "Day 5",
+        "label": "Tag 5",
         "items": [
           "Gärten in Ravello (Villa Rufolo/Villa Cimbrone)"
         ]
       },
       {
         "id": "day6",
-        "label": "Day 6",
+        "label": "Tag 6",
         "items": [
           "Übernachtung Capri oder Wechsel nach Sorrent"
         ]
       },
       {
         "id": "day7",
-        "label": "Day 7",
+        "label": "Tag 7",
         "items": [
           "Abreise"
         ]
@@ -464,14 +464,14 @@
     ],
     "sections": [
       {
-        "title": "Why this route works",
+        "title": "Warum diese Route passt",
         "body": [
           "Es sind 120 Meter (400 Fuß) vom Hosteleingang bis zur Haltestelle entlang der Hauptstraße.",
           "Wenn du Richtung Amalfi fährst, liegt die Haltestelle gegenüber vom Bar Internazionale. Stell dich auf der Meerseite der Straße an. Wenn du Richtung Sorrent fährst, wartest du direkt vor dem Bar Internazionale."
         ]
       },
       {
-        "title": "Tickets and timing",
+        "title": "Tickets und Timing",
         "body": [
           "Kauf dein SITA-Ticket im Tabacchi oder direkt in der Bar. Versuch nicht, ohne Ticket in den Bus zu steigen – an Bord kannst du keines kaufen. Zeig dein Ticket beim Einsteigen dem Fahrer. Wenn du den ersten Bus am Morgen nehmen möchtest, kauf das Ticket am Vortag und komm an der Rezeption vorbei, um den Checkout zu organisieren.",
           "Im Sommer sind die Busse oft voll. Plane entsprechend, besonders zu den geschäftigsten Zeiten."
@@ -480,29 +480,29 @@
     ],
     "beforeList": [],
     "stepsList": [
-      "Exit Hostel Brikette, take the short staircase to Viale Pasitea, and turn left.",
+      "Verlasse Hostel Brikette, nimm die kurze Treppe zur Viale Pasitea und biege links ab.",
       "Folge dem Gehweg etwa 120 Meter (400 Fuß) die Hauptstraße hinunter bis zum Bar Internazionale."
     ],
     "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sHostel+Brikette!4m1!2sBar+Internazionale",
     "kneesList": [],
-    "kneesDockPrefix": "Starting with luggage at the ferry dock? Use our",
-    "kneesDockLinkLabel": "Ferry dock luggage route",
-    "kneesPorterPrefix": "Need porter pricing or booking help? Check the",
-    "kneesPorterLinkLabel": "porter service guide",
+    "kneesDockPrefix": "Startest du mit Gepäck am Fähranleger? Nutze unsere",
+    "kneesDockLinkLabel": "Route mit Gepäck ab dem Fähranleger",
+    "kneesPorterPrefix": "Brauchst du Preise oder Buchungshilfe für Porter? Schau dir den",
+    "kneesPorterLinkLabel": "Porter-Guide",
     "faqs": [
       {
-        "q": "Do buses stop right outside the hostel?",
-        "a": "They stop at Bar Internazionale—about 120 metres (400 feet) downhill from the entrance."
+        "q": "Halten die Busse direkt vor dem Hostel?",
+        "a": "Sie halten am Bar Internazionale – etwa 120 Meter (400 Fuß) bergab vom Eingang."
       },
       {
-        "q": "Can I buy tickets at the last minute?",
-        "a": "Yes, the tabacchi next to the stop sells SITA tickets, but expect queues at peak times."
+        "q": "Kann ich Tickets in letzter Minute kaufen?",
+        "a": "Ja, der Tabacchi neben der Haltestelle verkauft SITA-Tickets, aber rechne zu Spitzenzeiten mit Warteschlangen."
       }
     ],
     "howtoSteps": [
-      "Leave Hostel Brikette and follow Viale Pasitea downhill",
-      "Join the queue at Bar Internazionale and validate on boarding"
+      "Verlasse Hostel Brikette und folge der Viale Pasitea bergab",
+      "Stell dich am Bar Internazionale an und entwerte beim Einsteigen"
     ],
-    "faqsTitle": "FAQs"
+    "faqsTitle": "Häufige Fragen"
   }
 }

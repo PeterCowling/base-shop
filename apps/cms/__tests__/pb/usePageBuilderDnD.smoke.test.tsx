@@ -1,9 +1,10 @@
-import { renderHook, act } from "@testing-library/react";
+import { act,renderHook } from "@testing-library/react";
+
 import { usePageBuilderDnD } from "@acme/page-builder-ui";
 
 // Mock dnd sensors and auto-scroll to keep logic synchronous and deterministic
-jest.mock(require.resolve("@ui/components/cms/page-builder/hooks/dnd/sensors"), () => ({ __esModule: true, useDndSensors: () => [] }));
-jest.mock(require.resolve("@ui/components/cms/page-builder/hooks/dnd/autoscroll"), () => ({
+jest.mock(require.resolve("@acme/ui/components/cms/page-builder/hooks/dnd/sensors"), () => ({ __esModule: true, useDndSensors: () => [] }));
+jest.mock(require.resolve("@acme/ui/components/cms/page-builder/hooks/dnd/autoscroll"), () => ({
   __esModule: true,
   autoScroll: () => {},
   AUTOSCROLL_EDGE_PX: 16,
@@ -11,7 +12,7 @@ jest.mock(require.resolve("@ui/components/cms/page-builder/hooks/dnd/autoscroll"
 }));
 
 // Tree helpers simplified
-jest.mock(require.resolve("@ui/components/cms/page-builder/hooks/dnd/tree"), () => ({
+jest.mock(require.resolve("@acme/ui/components/cms/page-builder/hooks/dnd/tree"), () => ({
   __esModule: true,
   findById: () => null,
   findParentId: () => undefined,
@@ -21,11 +22,11 @@ jest.mock(require.resolve("@ui/components/cms/page-builder/hooks/dnd/tree"), () 
 }));
 
 // Finalize drop no-op to avoid side-effects
-jest.mock(require.resolve("@ui/components/cms/page-builder/hooks/dnd/finalizeDrop"), () => ({ __esModule: true, finalizeDrop: () => {} }));
+jest.mock(require.resolve("@acme/ui/components/cms/page-builder/hooks/dnd/finalizeDrop"), () => ({ __esModule: true, finalizeDrop: () => {} }));
 
 // Coords and snapping simplified
-jest.mock(require.resolve("@ui/components/cms/page-builder/utils/coords"), () => ({ __esModule: true, screenToCanvas: (p: any) => p }));
-jest.mock(require.resolve("@ui/components/cms/page-builder/gridSnap"), () => ({ __esModule: true, snapToGrid: (x: number) => x }));
+jest.mock(require.resolve("@acme/ui/components/cms/page-builder/utils/coords"), () => ({ __esModule: true, screenToCanvas: (p: any) => p }));
+jest.mock(require.resolve("@acme/ui/components/cms/page-builder/gridSnap"), () => ({ __esModule: true, snapToGrid: (x: number) => x }));
 
 describe("usePageBuilderDnD (smoke)", () => {
   it("updates insert index on drag move and finalizes drop on drag end", () => {

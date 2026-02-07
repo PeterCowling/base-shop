@@ -2,8 +2,9 @@
 "use client";
 import type { MediaItem } from "@acme/types";
 
-import MediaFileItem from "./MediaFileItem";
 import { Grid } from "../atoms/primitives/Grid";
+
+import MediaFileItem from "./MediaFileItem";
 
 type WithUrl = MediaItem & { url: string };
 

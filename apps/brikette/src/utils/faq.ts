@@ -28,6 +28,8 @@ export interface LocalisedFaqItem {
   sourceLabel?: string;
 }
 
+export type FaqResourceImporter = (lang: string) => Promise<FaqResource | undefined>;
+
 const normalise = (value?: string): string => value?.trim() ?? "";
 
 const pickResource = (
@@ -74,17 +76,19 @@ const importFaqResource = async (lang: string): Promise<FaqResource | undefined>
     const faqModule = await import(`../locales/${lang}/faq.json`);
     return faqModule.default as FaqResource;
   } catch (err) {
-    if (process.env.NODE_ENV !== "test") console.warn(`⚠️  Missing FAQ resource for ${lang}:`, err);
+    if (process.env.NODE_ENV === "development") console.warn(`⚠️  Missing FAQ resource for ${lang}:`, err);
     return undefined;
   }
 };
 
 const isLanguageCode = (lang: string): lang is LanguageCode => isSupportedLanguage(lang);
 
-export const loadFaqEntries = async (): Promise<FAQEntry[]> => {
+export const loadFaqEntries = async (
+  importer: FaqResourceImporter = importFaqResource,
+): Promise<FAQEntry[]> => {
   const languages = [...i18nConfig.supportedLngs];
   const resources = await Promise.all(
-    languages.map(async (lang) => ({ lang, resource: await importFaqResource(lang) })),
+    languages.map(async (lang) => ({ lang, resource: await importer(lang) })),
   );
 
   const english = resources.find((entry) => entry.lang === "en")?.resource;

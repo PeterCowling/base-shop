@@ -2,10 +2,11 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 
-import { listShops } from "../src/lib/listShops";
-import { logger } from "@acme/shared-utils";
+import { logger } from "@acme/lib/logger";
 
-jest.mock("@acme/shared-utils", () => ({
+import { listShops } from "../src/lib/listShops";
+
+jest.mock("@acme/lib/logger", () => ({
   logger: { error: jest.fn() },
 }));
 

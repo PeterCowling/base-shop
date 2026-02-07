@@ -1,12 +1,15 @@
 // apps/cover-me-pretty/src/app/account/orders/[id]/page.tsx
-import { getCustomerSession } from "@auth";
-import { getOrdersForCustomer } from "@platform-core/orders";
-import { getReturnLogistics } from "@platform-core/returnLogistics";
-import { OrderTrackingTimeline, type OrderStep } from "@ui/components/organisms/OrderTrackingTimeline";
-import { redirect } from "next/navigation";
-import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+
+import { getCustomerSession } from "@acme/auth";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+import { getOrdersForCustomer } from "@acme/platform-core/orders";
+import { getReturnLogistics } from "@acme/platform-core/returnLogistics";
+import { type OrderStep,OrderTrackingTimeline } from "@acme/ui/components/organisms/OrderTrackingTimeline";
+
 import shop from "../../../../../shop.json";
+
 import { MobileReturnLink } from "./MobileReturnLink";
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {

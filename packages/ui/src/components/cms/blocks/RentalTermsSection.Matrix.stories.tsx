@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/RentalTermsSection.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import RentalTermsSection from './RentalTermsSection';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './RentalTermsSection.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import RentalTermsSection from './RentalTermsSection';
+import fixture from './RentalTermsSection.fixtures.json';
 
 const meta: Meta<typeof RentalTermsSection> = {
   title: 'CMS Blocks/RentalTermsSection/Matrix',

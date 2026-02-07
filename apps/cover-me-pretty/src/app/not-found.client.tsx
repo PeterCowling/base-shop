@@ -2,9 +2,11 @@
 
 "use client";
 
+import { memo, type ReactElement,useMemo } from "react";
 import Link from "next/link";
-import { memo, useMemo, type ReactElement } from "react";
-import { useTranslations } from "@i18n/Translations";
+
+import { useTranslations } from "@acme/i18n/Translations";
+
 // Pull the NotFoundMessages interface from our central types to ensure
 // consistent shape across server and client.  Even though this component
 // currently hard‑codes its copy, having the type ready makes it

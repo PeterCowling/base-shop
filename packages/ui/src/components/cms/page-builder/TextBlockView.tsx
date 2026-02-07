@@ -1,14 +1,15 @@
-/* eslint-disable ds/absolute-parent-guard, ds/no-nonlayered-zindex, ds/no-hardcoded-copy, jsx-a11y/no-noninteractive-element-interactions, react/forbid-dom-props -- PB-0001: builder canvas uses absolute/z-index, custom interactions, and dynamic inline styles for runtime positioning */
+/* eslint-disable ds/absolute-parent-guard, ds/no-nonlayered-zindex, jsx-a11y/no-noninteractive-element-interactions, react/forbid-dom-props -- PB-0001: builder canvas uses absolute/z-index, custom interactions, and dynamic inline styles for runtime positioning */
 "use client";
 
-import { EditorContent, type Editor } from "@tiptap/react";
+import { useCallback, useEffect, useState } from "react";
 import type { DraggableAttributes } from "@dnd-kit/core";
 import type { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
-import MenuBar from "./MenuBar";
-import DOMPurify from "dompurify";
 import { LockClosedIcon } from "@radix-ui/react-icons";
-import { useCallback, useEffect, useState } from "react";
+import { type Editor,EditorContent } from "@tiptap/react";
+import DOMPurify from "dompurify";
+
 import LinkPicker from "./LinkPicker";
+import MenuBar from "./MenuBar";
 
 interface Guides {
   x: number | null;

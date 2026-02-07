@@ -2,25 +2,29 @@
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { formatTimestamp } from "@acme/date-utils";
 import { getPost, updatePost } from "@cms/actions/blog.server";
-import { getSanityConfig } from "@platform-core/shops";
-import { getShopById } from "@platform-core/repositories/shop.server";
+
+import { formatTimestamp } from "@acme/date-utils";
+import { getShopById } from "@acme/platform-core/repositories/shop.server";
+import { getSanityConfig } from "@acme/platform-core/shops";
+
+import DeleteButton from "../DeleteButton.client";
 import PostForm from "../PostForm.client";
 import PublishButton from "../PublishButton.client";
 import UnpublishButton from "../UnpublishButton.client";
-import DeleteButton from "../DeleteButton.client";
 
 interface Params {
-  params: { id: string };
+  params: Promise<{ id: string }>;
   searchParams?: Promise<{ shopId?: string }>;
 }
 
 export default async function EditPostPage({ params, searchParams }: Params) {
   const sp = (await searchParams) ?? undefined;
+  const { id } = await params;
   const shopId = sp?.shopId;
   if (!shopId) return notFound();
   const shop = await getShopById(shopId);
+  if (!shop) return notFound();
   const sanity = getSanityConfig(shop);
   if (!sanity) {
     return (
@@ -35,7 +39,7 @@ export default async function EditPostPage({ params, searchParams }: Params) {
       </p>
     );
   }
-  const post = await getPost(shopId, params.id);
+  const post = await getPost(shopId, id);
   if (!post) return notFound();
   const status = post.published
     ? post.publishedAt && new Date(post.publishedAt) > new Date()
@@ -51,7 +55,7 @@ export default async function EditPostPage({ params, searchParams }: Params) {
       <PostForm
         action={updatePost.bind(null, shopId)}
         submitLabel="Save"
-        post={post}
+        post={post as any}
       />
       <div className="flex items-center space-x-4">
         {post.published ? (

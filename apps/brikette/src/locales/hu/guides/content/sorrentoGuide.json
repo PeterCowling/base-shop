@@ -1,46 +1,94 @@
 {
   "seo": {
-    "title": "Sorrento útmutató (kapu az Amalfi-parthoz)",
-    "description": "Megér-e bázisnak vagy elég egynapos kirándulás? Látnivalók és közlekedési kapcsolatok."
+    "title": "Sorrento: Az Amalfi-part kapuja",
+    "description": "Miért kezdje Sorrentóban, pontos szállítási költségek és menetrendek Positano, Amalfi és Capri felé, és mit lásson, ha itt telepszik le vagy csak átutazik."
   },
-  "linkLabel": "Sorrento útmutató (kapu az Amalfi-parthoz)",
+  "linkLabel": "Sorrento: Az Amalfi-part kapuja",
+  "lastUpdated": "2026-02-04",
   "intro": [
-    "A fordítás folyamatban van."
+    "Sorrento gyakori buszokat és kompokat kínál az Amalfi-partra, közvetlen vonatokat Nápolyba és Pompejibe, és több szálláslehetőséget, mint Positano—így praktikus kapunak számít, akár átutazik, akár néhány napra itt telepszik le."
   ],
   "sections": [
     {
-      "id": "why",
-      "title": "Why base in Sorrento",
+      "id": "transport-costs-schedules",
+      "title": "Szállítási költségek és menetrendek",
       "body": [
-        "A fordítás folyamatban van."
+        "**A SITA buszok** egész évben járnak Positanóba (€2,50, 40-50 perc) és Amalfibe (€3,60, 90 perc). A buszok 30-60 percenként indulnak a Circumvesuviana állomásról; vásároljon jegyet az állomás bárjában vagy trafikban felszállás előtt. A csúcsszezonban az útvonalak megtelhetnek, ezért érkezzen korán.",
+        "**Kompok Positanóba és Amalfibe** áprilistól októberig közlekednek, az időjárás függvényében. Positano €18-22-be kerül (35 perc), Amalfi €20-24-be (50 perc). A reggeli indulások 08:30 körül kezdődnek; az utolsó visszajárat általában 17:00-18:00. Foglaljon előre a csúcsnapokon a %LINK:ferrySchedules|kompüzemeltetőkön% keresztül.",
+        "**Vonatok Nápolyba** (Circumvesuviana vonal) €3,90-be kerülnek és óránként ~22:30-ig közlekednek (70 perc). A vonatok lassabbak, mint a buszok, de elkerülik a parti forgalmat, és közvetlenül összekötik Önt Pompejivel (€2,90, 30 perc).",
+        "**Capri kompok** gyakran indulnak szezonban (€20-25 egy útra, 20 perc). A holtszezonban a szolgáltatások csökkennek, de soha nem állnak le teljesen."
       ]
     },
     {
-      "id": "connections",
-      "title": "Connections to Positano",
+      "id": "why-base-or-pass-through",
+      "title": "Bázis vagy csak átutazás?",
       "body": [
-        "A fordítás folyamatban van."
+        "**Ha Sorrentóban telepszik le:** Számítson éjszakánként €30-60 szálláson történő megtakarításra Positanóhoz képest, valamint több étkezési lehetőségre közepes árakon. A kompromisszum: kevesebb sziklaperem-kilátás és hagyományosabb városi hangulat, mint Positano képeslapszerű látványa.",
+        "**Ha csak átutazik:** Sorrento könnyű első vagy utolsó megállót jelent. Érkezzen a nápolyi repülőtérről a %LINK:naplesAirportPositanoBus|Curreri busszal% (€10, 75 perc, közvetlenül Sorrentóba), majd fogjon továbbutazást Positanóba még aznap vagy másnap reggel.",
+        "Poggyászmegőrző elérhető a vasútállomáson (€6-8 táskánként naponta), ha fel akarja fedezni a várost csatlakozások között."
       ]
     },
     {
-      "id": "see",
-      "title": "What to see",
+      "id": "what-to-see",
+      "title": "Mit lásson Sorrentóban",
       "body": [
-        "A fordítás folyamatban van."
+        "A történelmi központban gyalogos utcák vannak, tele citromtermék-boltokkal, helyi kerámiákkal és intarziás famunka kézműveseivel. A Piazza Tasso a főtér; a Marina Grande és Marina Piccola a kikötőterületek sziklaperem-kilátással. A Via San Cesareo a fő bevásárlóutca—kerülje a limoncello vásárlást a Piazza Tasso közelében, ahol az árak 2-3-szor magasabbak.",
+        "A legtöbb utazó Sorrentót kiindulópontként kezeli, nem célpontként, 1-2 órát tölt a központ bejárásával, mielőtt továbbmegy. Ha éjszakázik, érdemes megnézni a naplementét a Villa Comunale parkból (ingyenes belépés, késő estig nyitva), és a vacsoraárak jelentősen csökkennek a főtértől távolabb—menjen be két háztömbbel a turistazóna költségének feléért autentikus trattoriákért.",
+        "A Duomo (székesegyház) megéri egy gyors pillantást, ha átutazik; ingyenes belépés és általában üres. A Chiostro di San Francesco nyugodt kolostorudvarral rendelkezik (ingyenes), ami jó pihenőhely, ha közlekedési csatlakozásokra vár.",
+        "Egy strandnapra Sorrentóból a %LINK:reginaGiovannaBath|Regina Giovanna fürdő% 30 perces buszútra van (€1,40) és egy eldugott öblöt kínál római romokkal—kevesebb tömeg, mint Positano fő strandján, és nincs belépődíj. Vigyen vizet és snackeket, mivel nincsenek létesítmények."
+      ]
+    },
+    {
+      "id": "booking-ahead",
+      "title": "Mikor foglaljon előre közlekedést",
+      "body": [
+        "**Foglaljon kompokat előre**, ha július-augusztusban vagy hétvégén utazik. A hajók megtelnek, különösen a közvetlen Capri járatok. Buszjegyeket nem lehet előre foglalni, ezért érkezzen 15-20 perccel korábban csúcsszezonban.",
+        "A nápolyi vonatjegyeket nem kell előre foglalni (vásároljon az állomáson), de ha repülőjáratra csatlakozik, számoljon legalább 2,5 órával Sorrentóból a nápolyi repülőtérre—a vonatok késhetnek, de a buszok forgalomba kerülhetnek."
+      ]
+    },
+    {
+      "id": "sorrento-vs-positano",
+      "title": "Sorrento vs Positano: melyik bázis?",
+      "body": [
+        "**Válassza Sorrentót, ha:** Alacsonyabb költségeket szeretne, könnyű vonat-hozzáférést Nápolyhoz/Pompejhez, vagy inkább egy funkcionális várost részesít előnyben a képeslap-látványnál. Sorrento jól működik olyan utazók számára, akik több célt (Capri, Pompeji, Amalfi-part) fednek le egy úton.",
+        "**Válassza Positanót, ha:** Az ikonikus sziklaoldali környezetet szeretné, és nem zavarja a magasabb árak vagy lépcsők. Positano látványosabb, de kevésbé praktikus a parton túli kirándulásokhoz.",
+        "Sok utazó megosztja az időt: 1-2 éjszaka Sorrentóban az érkezésekhez/kirándulásokhoz, majd költözik %LINK:onlyHostel|Positanóba% a parti élményért. %LINK:sorrentoPositanoBus|Sorrento Positanóba busszal% egyszerű (40 perc, €2,50)."
+      ]
+    },
+    {
+      "id": "practical-tips",
+      "title": "Gyakorlati tippek Sorrentóhoz",
+      "body": [
+        "**Bankjegykiadók és készpénz:** Elérhető a Piazza Tasso és a vasútállomás közelében. Sok kisbolt és buszjegy-árus csak készpénzt fogad el, ezért vegyen fel €50-100-at érkezéskor.",
+        "**Legjobb látogatási idő:** Április-június és szeptember-október ideális időjárást kínál (18-25°C) kevesebb tömeggel. Július-augusztus a legmelegebb és legzsúfoltabb—a kompok és buszok gyorsan megtelnek. November-március csendes, de sok komp leáll.",
+        "**Közlekedés a városban:** Sorrento gyalogosan bejárható, de dombos. A városközpont kompakt; számoljon 10-15 perc sétával a vasútállomástól a Marina Piccoláig (komp dokk). A Marina Grande strandhoz buszok indulnak a Piazza Tassóról (€1,40, 30 percenként).",
+        "**Wi-Fi és kapcsolat:** A legtöbb kávézó és szállás ingyenes Wi-Fi-t kínál. A mobil lefedettség jó az egész városban. A vasútállomásnak vannak töltőpontjai, ha csatlakozásokra kell várnia."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Olcsóbb-e Sorrento, mint Positano?",
       "a": [
-        "A fordítás folyamatban van."
+        "Igen—számítson éjszakánként €30-60 szállásmegtakarításra és több közepes árú étkezési lehetőségre. Egy pizza Sorrentóban €8-12-be kerül, szemben Positano €15-20-jával; hostel ágyak €25-35, szemben €40-60-nal."
       ]
     },
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Meddig járnak a vonatok vissza Nápolyba?",
       "a": [
-        "A fordítás folyamatban van."
+        "A Circumvesuviana kb. 22:30-ig közlekedik Sorrentóból Nápolyba. Utána használjon Curreri vagy SITA buszokat (utolsó busz ~20:30-21:00), vagy tervezzen éjszakázást, ha késői járata van."
+      ]
+    },
+    {
+      "q": "Meglátogathatom Sorrentót egy napos kirándulásként Positanóból?",
+      "a": [
+        "Igen—vegye a %LINK:positanoSorrentoBus|SITA buszt% (€2,50, 40 perc) vagy a szezonális %LINK:positanoSorrentoFerry|kompot% (€18-22, 25 perc). Számoljon összesen 4-5 órával egy gyors sorrentói látogatáshoz, többel, ha folytatja Pompejbe vagy Capriba."
+      ]
+    },
+    {
+      "q": "Beszélnem kell olaszul Sorrentóban?",
+      "a": [
+        "Az angolt széles körben beszélik a turista területeken. A vonat- és buszszemélyzet angoltudása korlátozott lehet, ezért tanuljon meg alapvető kifejezéseket, vagy használjon fordítóalkalmazást a jegypultokhoz és útbaigazítás kéréséhez."
       ]
     }
   ]

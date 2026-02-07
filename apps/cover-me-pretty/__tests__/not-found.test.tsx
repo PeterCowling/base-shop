@@ -1,4 +1,5 @@
 // apps/cover-me-pretty/__tests__/not-found.test.tsx
+import type React from "react";
 import type { AnchorHTMLAttributes, ReactNode } from "react";
 
 interface MockLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
@@ -36,7 +37,9 @@ describe("NotFound", () => {
   });
 
   it("server wrapper returns NotFoundContent", () => {
-    const element = NotFound();
+    // Cast to bypass TS expecting params on server components
+    const element = (NotFound as unknown as () => React.ReactElement)();
+    expect(element).not.toBeNull();
     expect(element.type).toBe(NotFoundContent);
   });
 });

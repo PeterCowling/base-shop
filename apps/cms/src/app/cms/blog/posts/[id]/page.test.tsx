@@ -1,9 +1,10 @@
-import { render, screen } from "@testing-library/react";
 import React from "react";
 import { notFound } from "next/navigation";
 import { getPost } from "@cms/actions/blog.server";
-import { getSanityConfig } from "@platform-core/shops";
-import { getShopById } from "@platform-core/repositories/shop.server";
+import { render, screen } from "@testing-library/react";
+
+import { getShopById } from "@acme/platform-core/repositories/shop.server";
+import { getSanityConfig } from "@acme/platform-core/shops";
 
 jest.mock("next/link", () => ({
   __esModule: true,
@@ -17,9 +18,9 @@ jest.mock("@cms/actions/blog.server", () => ({
   updatePost: jest.fn(),
 }));
 
-jest.mock("@platform-core/shops", () => ({ getSanityConfig: jest.fn() }));
+jest.mock("@acme/platform-core/shops", () => ({ getSanityConfig: jest.fn() }));
 
-jest.mock("@platform-core/repositories/shop.server", () => ({
+jest.mock("@acme/platform-core/repositories/shop.server", () => ({
   getShopById: jest.fn(),
 }));
 
@@ -58,7 +59,7 @@ afterEach(() => {
 
 it("calls notFound when shopId missing", async () => {
   const { default: Page } = await import("./page");
-  await Page({ params: { id: "1" }, searchParams: {} });
+  await Page({ params: Promise.resolve({ id: "1" }), searchParams: Promise.resolve({}) });
   expect(mockNotFound).toHaveBeenCalled();
 });
 
@@ -67,7 +68,7 @@ it("shows connect link when Sanity not configured", async () => {
   mockGetSanity.mockReturnValue(null);
   const { default: Page } = await import("./page");
   render(
-    await Page({ params: { id: "1" }, searchParams: { shopId: "s1" } })
+    await Page({ params: Promise.resolve({ id: "1" }), searchParams: Promise.resolve({ shopId: "s1" }) })
   );
   expect(
     screen.getByText("Sanity is not connected.")
@@ -87,7 +88,7 @@ it("renders post form when post exists", async () => {
   });
   const { default: Page } = await import("./page");
   render(
-    await Page({ params: { id: "p1" }, searchParams: { shopId: "s1" } })
+    await Page({ params: Promise.resolve({ id: "p1" }), searchParams: Promise.resolve({ shopId: "s1" }) })
   );
   expect(screen.getByText("Edit Post")).toBeInTheDocument();
   expect(screen.getByTestId("post-form")).toBeInTheDocument();
@@ -99,7 +100,7 @@ it("calls notFound when post does not exist", async () => {
   mockGetSanity.mockReturnValue({});
   mockGetPost.mockResolvedValue(null);
   const { default: Page } = await import("./page");
-  await Page({ params: { id: "missing" }, searchParams: { shopId: "s1" } });
+  await Page({ params: Promise.resolve({ id: "missing" }), searchParams: Promise.resolve({ shopId: "s1" }) });
   expect(mockNotFound).toHaveBeenCalled();
 });
 

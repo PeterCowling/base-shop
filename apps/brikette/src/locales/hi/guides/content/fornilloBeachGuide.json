@@ -1,8 +1,9 @@
 {
   "seo": {
-    "title": "Fornillo Beach guide",
+    "title": "Fornillo बीच गाइड",
     "description": "पुपेट्टो, दा फर्डिनेंडो, ग्रासी और ला मैरिनेला के लिए लेआउट मानचित्र, निःशुल्क अनुभाग और समुद्र तट क्लब युक्तियाँ - साथ ही हॉस्टल से आने-जाने के लिए शॉर्टकट।"
   },
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
   "linkLabel": "फ़ोर्निलो बीच गाइड: क्लब और निःशुल्क स्थान",
   "intro": [
     "फ़ोर्निलो समुद्र तट छात्रावास से थोड़ी पैदल दूरी पर एक आरामदायक खाड़ी है। समुद्र तट क्लब स्पिगिया ग्रांडे की तुलना में कीमतें कम रखते हैं, सार्वजनिक क्षेत्र उदार हैं, और व्यस्त सप्ताहों में भी माहौल कम महत्वपूर्ण रहता है।",
@@ -45,6 +46,23 @@
       "body": [
         "दो मुख्य रास्ते फ़ोर्निलो को खिलाते हैं। %LINK:hostelBriketteToFornilloBeach|छात्रावास ब्रिकेट% से शॉर्टकट समुद्र तट के बाईं ओर आता है (जब समुद्र का सामना करना पड़ता है); स्पियागिया ग्रांडे से तटवर्ती सैरगाह दाहिनी ओर पहुंचती है।",
         "बीच क्लब हॉस्टल पहुंच बिंदु से मुख्य समुद्र तट पथ की ओर क्रम में चलते हैं: पुपेटो, दा फर्डिनेंडो, फ्रेटेली ग्रासी और ला मारिनेला। दो सार्वजनिक क्षेत्र लिडोज़ को बुक करते हैं - पुपेटो के बगल में एक विस्तृत मुक्त खंड और ला मैरिनेला से परे एक छोटा कोव।"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/fornilloBeachGuide.webp",
+          "alt": "View of Fornillo Beach cove in Positano with the shoreline and cliffs",
+          "caption": "Fornillo Beach in Positano: a calmer alternative to the main beach, with free areas and several beach clubs"
+        },
+        {
+          "src": "/img/guides/fornillo-beach/02-main-free-section.jpg",
+          "alt": "Fornillo beach layout map showing paths from hostel and Spiaggia Grande, plus beach club locations",
+          "caption": "Fornillo layout: Path A from Hostel Brikette, Path B from Spiaggia Grande, with beach clubs numbered in sequence"
+        },
+        {
+          "src": "/img/guides/positano-beaches/positano-main-beach.webp",
+          "alt": "Positano main beach (Spiaggia Grande) with umbrellas and the town rising behind it",
+          "caption": "Spiaggia Grande: start here to walk the promenade to Fornillo, or return here to catch the internal bus uphill"
+        }
       ]
     },
     {
@@ -53,6 +71,13 @@
       "body": [
         "सबसे बड़ा मुफ़्त अनुभाग हॉस्टल से शॉर्टकट के ठीक सामने बैठता है। जलरेखा के निकट स्थान का दावा करने के लिए 10:30 से पहले पहुंचें; कंकड़ जल्दी गर्म हो जाते हैं इसलिए एक चटाई या मोटा तौलिया पैक कर लें।",
         "पपेट्टो और दा फर्डिनेंडो दोनों टेकअवे पेय और पैनीनी बेचते हैं - यदि आप लाउंजर किराए पर लिए बिना भोजन चाहते हैं तो यह बिल्कुल सही है। कंधे के महीनों में ज्वार पर नज़र रखें; शरद ऋतु के तूफान एक या दो दिन के लिए तटरेखा को सिकोड़ सकते हैं।"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/01-beach-layout-map.jpg",
+          "alt": "Main free section at Fornillo beach with pebbles and waterfront access",
+          "caption": "The largest free area at Fornillo — arrive before 10:30 to secure waterfront space"
+        }
       ]
     },
     {
@@ -61,6 +86,13 @@
       "body": [
         "पपेट्टो फोर्निलो के बाईं ओर नारंगी लाउंजर्स, शॉवर और एक पूर्ण-सेवा रेस्तरां की पंक्तियों के साथ लंगर डालता है। यदि आप आगे की पंक्ति की सीटें चाहते हैं तो गर्मियों में व्हाट्सएप या फोन द्वारा रिजर्व करें; 09:30 से पहले वॉक-इन सामान्यतः ठीक है।",
         "मुफ़्त क्षेत्र का उपयोग करने वाले मेहमान अभी भी बार से टेकअवे ऑर्डर कर सकते हैं, और पपेट्टो के बाथरूम भुगतान करने वाले ग्राहकों के लिए खुले हैं - यदि आप दिन के दौरान आंशिक रूप से अपग्रेड करने का निर्णय लेते हैं तो यह उपयोगी है।"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/03-pupetto-beach-club.jpg",
+          "alt": "Pupetto Beach Club with orange loungers and restaurant on Fornillo beach",
+          "caption": "Pupetto Beach Club — orange loungers, full-service restaurant, and showers on the left side of Fornillo"
+        }
       ]
     },
     {
@@ -69,6 +101,13 @@
       "body": [
         "दा फर्डिनेंडो नीले लाउंजर्स, पैडलबोर्ड किराये और एक लोकप्रिय लंच मेनू (दिन का ग्रील्ड कैच, सलाद और पास्ता के बारे में सोचें) के साथ एक ठंडा समुद्र तट-बार वाइब रखता है। उम्मीद है कि कीमतें प्यूपेटो से थोड़ी अधिक होंगी लेकिन पोसिटानो के लिए अभी भी उचित हैं।",
         "दा फर्डिनेंडो के घाट से लॉरिटो और एरिएंज़ो के लिए जल टैक्सियाँ झूलती हैं - यदि आप सुबह की तैराकी के बाद समुद्र तट पर जाने की योजना बनाते हैं तो यह उपयोगी है।"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/04-da-ferdinando.jpg",
+          "alt": "Da Ferdinando beach bar with blue loungers and jetty at Fornillo",
+          "caption": "Da Ferdinando — beach-bar vibe with blue loungers, paddleboard rentals, and water taxi access"
+        }
       ]
     },
     {
@@ -77,6 +116,13 @@
       "body": [
         "ग्रासी लाल लाउंजर्स की साफ-सुथरी पंक्तियों और कॉकटेल और ग्रैनिटा के लिए एक छायांकित बार के साथ कॉम्पैक्ट है। यदि आप आस-पास की गुफाओं का पता लगाने के लिए कश्ती किराए पर लेते हैं तो टीम क़ीमती सामानों के लिए सूखे बैग प्रदान करती है।",
         "क्योंकि जगह सीमित है, सप्ताहांत पर अग्रिम बुकिंग से मदद मिलती है। प्रारंभिक आरक्षण व्यवस्थित होने पर आमतौर पर सप्ताह के मध्य में 11:00 बजे के बाद वॉक-इन संभव है।"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/05-fratelli-grassi.jpg",
+          "alt": "Fratelli Grassi Beach Bar with red loungers and shaded bar area at Fornillo",
+          "caption": "Fratelli Grassi — compact setup with red loungers, shaded cocktail bar, and kayak rentals"
+        }
       ]
     },
     {
@@ -85,6 +131,13 @@
       "body": [
         "ला मैरिनेला स्पियागिया ग्रांडे वॉकवे के सबसे करीब है और दोपहर की धूप का आनंद लेता है। चौकस सेवा, दोपहर के भोजन की थाली और अतिरिक्त छाया के साथ ऊपरी डेक लाउंजर्स बुक करने के विकल्प की अपेक्षा करें।",
         "कंधे के मौसम में ला मैरिनेला कभी-कभी कुछ कुर्सियों को पड़ोसी खाड़ी में स्थानांतरित कर देता है। कर्मचारियों को सार्वजनिक क्षेत्र के लिए जगह छोड़नी चाहिए, लेकिन समुद्र के अशांत होने पर कड़ी कार्रवाई के लिए तैयार रहना चाहिए।"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/06-la-marinella.jpg",
+          "alt": "La Marinella beach club with loungers and restaurant near Spiaggia Grande walkway",
+          "caption": "La Marinella — attentive service, upper-deck loungers, and closest to the Spiaggia Grande walkway"
+        }
       ]
     },
     {
@@ -93,8 +146,49 @@
       "body": [
         "ला मैरिनेला से परे, एक छोटा सा कोव एक कंकड़ शेल्फ और शांत पानी के साथ एक शांत सार्वजनिक क्षेत्र प्रदान करता है। रीफ-अनुकूल सनस्क्रीन और पानी के जूते लाएँ - प्रवेश द्वार चट्टानी है और समुद्री अर्चिन किनारों के पास जमा हो सकते हैं।",
         "ला मैरिनेला कभी-कभी तूफानी दिनों में यहां अतिरिक्त लाउंजर लगाता है। क्षेत्र आधिकारिक तौर पर मुक्त रहता है, इसलिए यदि आप पहले पहुंचते हैं तो स्थान का उपयोग करने में सहज महसूस करें; बस लौटने वाली कुर्सियों या कश्ती के लिए जगह छोड़ दें।"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/07-secret-free-section.jpg",
+          "alt": "Hidden free cove beyond La Marinella with rocky entry and calm water",
+          "caption": "The 'secret' free section — a quieter cove beyond La Marinella with rocky entry and sea urchin areas"
+        }
+      ]
+    },
+    {
+      "id": "hostel-day-plan",
+      "title": "A hostel-friendly Fornillo day plan",
+      "body": [
+        "If you want an easy beach day that still leaves energy for the evening, this simple plan works well for most guests.",
+        "1) Leave after breakfast and take the %LINK:hostelBriketteToFornilloBeach|shortcut down to Fornillo%. Aim to arrive before 10:30 if you want a good free spot.",
+        "2) Swim first. The water is usually calmest earlier in the day, and the sun feels less intense. Then decide: stay free, or upgrade to a lido for shade.",
+        "3) Lunch: keep it simple. Grab takeaway from a beach bar, or split a plate if you are on a budget. Drink water throughout the day — the heat plus steps is a real combo.",
+        "4) Leave before you are exhausted. Walk the promenade back toward Spiaggia Grande, then use the internal bus uphill. Follow the %LINK:fornilloBeachToBrikette|return route% so you do not end up doing the steepest staircase by accident.",
+        "5) Back at the hostel: shower, rehydrate, and you are ready for aperitivo. If you want a second beach day with a different vibe, compare options in our %LINK:positanoBeaches|Positano beaches overview%."
+      ]
+    },
+    {
+      "id": "what-to-bring",
+      "title": "What to bring (so you do not overpack)",
+      "body": [
+        "A light pack is the secret to enjoying the walk back up later. Most guests are happiest with a small day bag and a few essentials.",
+        "Bring: water shoes, sunscreen, a hat, a thick towel (or mat), and a refillable bottle. Add a light shirt for the walk back in the afternoon sun.",
+        "Skip: passports and big cash. Keep valuables locked up at the hostel. If you are paying for a lido, card machines sometimes struggle, so carry a little cash as backup.",
+        "If you want shade in the free section, you can bring a small foldable umbrella, but it can be awkward in wind. In peak summer, the simplest “shade plan” is to rent a parasol for a few hours."
       ]
     }
+  ],
+  "essentialsTitle": "क्या उम्मीद करें",
+  "essentials": [
+    "हॉस्टल से 15–25 मिनट पैदल सीढ़ीनुमा रास्ते से; फ्लैट वॉकवे तट तक जाता है।",
+    "चार बीच क्लब (पुपेटो, दा फर्डिनेंडो, ग्रासी, ला मारिनेला) के बीच मुफ्त सेक्शन।",
+    "कंकड़ीला किनारा — वाटर शूज़ या चप्पल लाएं और मोटा तौलिया या मैट रखें।"
+  ],
+  "typicalCostsTitle": "सामान्य लागत",
+  "typicalCosts": [
+    "किसी भी क्लब में लाउंजर + छाता सेट: €20–€35/दिन।",
+    "दा फर्डिनेंडो पर पैडलबोर्ड किराया: ~€15/घंटा।",
+    "बार से टेकअवे पैनीनी: €6–€10; दोपहर के मुख्य व्यंजन €16–€26।"
   ],
   "tipsTitle": "त्वरित सुझाव",
   "tips": [

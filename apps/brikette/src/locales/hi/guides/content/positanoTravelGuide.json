@@ -5,112 +5,100 @@
   },
   "linkLabel": "Positano यात्रा गाइड",
   "intro": [
-    "अनुवाद तैयार किया जा रहा है।",
-    "अनुवाद तैयार किया जा रहा है।"
+    "Positano यात्रा प्लान करें: कहाँ ठहरें, कैसे घूमना है, सबसे अच्छे समय, और जरूरी हाइलाइट्स।",
+    "यह ओवरव्यू ट्रांसपोर्ट, बीच, हाइक, डे‑ट्रिप और बजटिंग पर गहरी गाइड्स से जोड़ता है।"
   ],
   "sections": [
     {
       "id": "when",
-      "title": "When to visit",
+      "title": "कब जाएँ",
       "body": [
-        "अनुवाद तैयार किया जा रहा है।",
-        "अनुवाद तैयार किया जा रहा है।"
+        "शोल्डर महीने (अप्रैल–मई, लेट सितंबर–अक्टूबर) मौसम और कीमतों का संतुलन देते हैं।",
+        "गर्मियों में फेरी और लंबे दिन होते हैं, लेकिन गर्मी और कतारें भी—जल्दी शुरुआत करें।"
       ]
     },
     {
       "id": "getting-around",
-      "title": "Getting around",
+      "title": "आना-जाना",
       "body": [
-        "अनुवाद तैयार किया जा रहा है।",
-        "अनुवाद तैयार किया जा रहा है।"
+        "पैदल चलना, SITA बसें और मौसमी फेरियाँ अधिकांश रूट कवर करती हैं; सीढ़ियाँ आम हैं।",
+        "टिकट, समय और भीड़ से बचने के टिप्स के लिए हमारी सार्वजनिक परिवहन गाइड देखें।"
       ]
     },
     {
       "id": "highlights",
-      "title": "Highlights",
+      "title": "मुख्य आकर्षण",
       "body": [
-        "अनुवाद तैयार किया जा रहा है।",
-        "अनुवाद तैयार किया जा रहा है।",
-        "अनुवाद तैयार किया जा रहा है।"
+        "Spiaggia Grande और Fornillo बीच; Via Pasitea के ऊपर सूर्यास्त व्यूपॉइंट्स।",
+        "Path of the Gods (Nocelle या Bomerano से); Amalfi + Ravello डे‑ट्रिप्स।",
+        "Capri डे‑ट्रिप (पहली फेरी), या क्लिफसाइड कैफ़े और व्यूपॉइंट्स के लिए स्थानीय रहें।"
       ]
     },
     {
       "id": "stays",
-      "title": "Where to stay",
+      "title": "कहाँ ठहरें",
       "body": [
-        "अनुवाद तैयार किया जा रहा है।",
-        "अनुवाद तैयार किया जा रहा है।"
+        "सामान के साथ सीढ़ियाँ कम रखने के लिए ‘Chiesa Nuova’ या ‘Sponda’ बस स्टॉप के पास रहें।",
+        "बजट में? Sorrento/Meta में बेस बनाएं और डे‑विज़िट के लिए फेरी/बस लें।"
       ]
     }
   ],
   "faqs": [
     {
-      "q": "Do I need a car?",
+      "q": "क्या मुझे कार चाहिए?",
       "a": [
-        "अनुवाद तैयार किया जा रहा है।"
+        "नहीं — बसें और फेरियाँ कोस्ट कवर करती हैं; पार्किंग सीमित और महंगी है।"
       ]
     },
     {
-      "q": "How many days?",
+      "q": "कितने दिन?",
       "a": [
-        "अनुवाद तैयार किया जा रहा है।"
+        "2–3 दिन स्वाद के लिए; 4–5 दिन अगर हाइक और डे‑ट्रिप जोड़ना हो।"
       ]
     }
   ],
   "fallback": {
     "intro": [
-      "अनुवाद तैयार किया जा रहा है।"
+      "Positano वर्टिकल, सुंदर और हाई‑सीज़न में व्यस्त है। यह गाइड व्यावहारिक विकल्पों पर फोकस करता है: कहाँ बेस बनाएं, कब आएँ, कैसे घूमें, और यहाँ क्या करें।"
     ],
-    "gallery": {
-      "items": [
-        {
-          "alt": "अनुवाद तैयार किया जा रहा है।",
-          "caption": "अनुवाद तैयार किया जा रहा है।"
-        },
-        {
-          "alt": "Positano panorama",
-          "caption": "अनुवाद तैयार किया जा रहा है।"
-        }
-      ]
-    },
     "sections": {
       "whereToStay": {
-        "title": "Where to stay",
-        "body": "अनुवाद तैयार किया जा रहा है।"
+        "title": "कहाँ ठहरें",
+        "body": "<em>Chiesa Nuova</em> के पास रुकने से आगमन और प्रस्थान पर सीढ़ियाँ कम होती हैं। Hostel Brikette बस स्टॉप से ~80 m दूर है और पैनोरमिक टेरेस के साथ किफायती बेड व प्राइवेट रूम देता है। Spiaggia Grande के पास बीचफ्रंट स्टे सुंदर हैं लेकिन सीढ़ियाँ और कीमतें अधिक होती हैं।"
       },
       "whenToVisit": {
-        "title": "When to visit",
-        "body": "अनुवाद तैयार किया जा रहा है।"
+        "title": "कब जाएँ",
+        "body": "गर्मी जीवंत होती है लेकिन भीड़ बढ़ती है; शोल्डर महीने मौसम और जगह का संतुलन देते हैं। पूरा विवरण हमारे <linkBestTime>best time to visit Positano</linkBestTime> में देखें। फेरियाँ मौसमी हैं और पीक महीनों के बाहर कम हो जाती हैं।"
       },
       "gettingAround": {
-        "title": "Getting around",
-        "arrivals": "अनुवाद तैयार किया जा रहा है।",
-        "withinTown": "अनुवाद तैयार किया जा रहा है।",
-        "ferries": "अनुवाद तैयार किया जा रहा है।"
+        "title": "आना-जाना",
+        "arrivals": "<strong>Arrivals</strong>: पहले <linkHowTo>how to get to Positano</linkHowTo> डिसीजन गाइड देखें, फिर <linkNaples>Naples → Positano</linkNaples> और <linkSalerno>Salerno → Positano</linkSalerno> में गहराई से जाएँ।",
+        "withinTown": "<strong>Within town</strong>: बसें <em>Chiesa Nuova</em>, <em>Sponda</em>, और बीच को जोड़ती हैं। पैदल चलना आम है — अनावश्यक सीढ़ियों से बचने के लिए रूट प्लान करें।",
+        "ferries": "<strong>Ferries</strong>: <linkFerries>ferry schedules</linkFerries> चेक करें और मौसम के लिए हमेशा बफर रखें।"
       },
       "thingsToDo": {
-        "title": "Things to do",
-        "beaches": "अनुवाद तैयार किया जा रहा है।",
-        "pathOfTheGods": "अनुवाद तैयार किया जा रहा है।",
-        "dayTrips": "अनुवाद तैयार किया जा रहा है।"
+        "title": "क्या करें",
+        "beaches": "<linkBeaches>Beaches</linkBeaches>: क्लासिक व्यू के लिए Spiaggia Grande; शांत माहौल के लिए Fornillo; क्लिफसाइड स्विम के लिए Arienzo।",
+        "pathOfTheGods": "<linkPath>Path of the Gods</linkPath> Nocelle या Bomerano से शानदार व्यूज़ देता है।",
+        "dayTrips": "Day trips: <linkCapri>Capri</linkCapri>, <linkAmalfi>Amalfi</linkAmalfi>, और <linkRavello>Ravello</linkRavello>."
       },
       "moneySavers": {
-        "title": "Money savers",
-        "eat": "अनुवाद तैयार किया जा रहा है।",
-        "travel": "अनुवाद तैयार किया जा रहा है।",
-        "stay": "अनुवाद तैयार किया जा रहा है।"
+        "title": "पैसे बचाने के तरीके",
+        "eat": "हमारी <linkCheapEats>cheap eats list</linkCheapEats> से खाएँ और रिफ़िलेबल बोतल रखें।",
+        "travel": "पीक वीकेंड के बाहर यात्रा करें; <linkBudgetArrival>budget arrival options</linkBudgetArrival> तुलना करें।",
+        "stay": "आगमन पर पोर्टर फीस और सीढ़ियाँ कम रखने के लिए <em>Chiesa Nuova</em> के पास रहें।"
       }
     },
-    "tipsTitle": "Where to save",
-    "faqHeading": "FAQs",
+    "tipsTitle": "कहाँ बचत करें",
+    "faqHeading": "अक्सर पूछे जाने वाले सवाल",
     "faqs": [
       {
-        "question": "अनुवाद तैयार किया जा रहा है।",
-        "answer": "अनुवाद तैयार किया जा रहा है।"
+        "question": "क्या Positano बजट में संभव है?",
+        "answer": "हाँ। बसें लें, फेरियाँ चुनकर लें, और मुफ़्त व्यूपॉइंट्स व बीच टाइम पर फोकस करें।"
       },
       {
-        "question": "अनुवाद तैयार किया जा रहा है।",
-        "answer": "अनुवाद तैयार किया जा रहा है।"
+        "question": "मुझे कहाँ बेस बनाना चाहिए?",
+        "answer": "आसान लॉजिस्टिक्स के लिए <em>Chiesa Nuova</em> के पास रहें। बीच वाइब के लिए Spiaggia Grande के पास बेस लें (अधिक सीढ़ियाँ होंगी)।"
       }
     ],
     "tips": [

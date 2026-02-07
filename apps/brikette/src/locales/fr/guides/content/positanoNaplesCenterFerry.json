@@ -1,0 +1,76 @@
+{
+  "seo": {
+    "title": "Positano vers le centre de Naples en ferry | Hostel Brikette",
+    "description": "Itinéraire détaillé de l'Hostel Brikette jusqu'au port de Positano, avec conseils sur les billets, l'embarquement et l'arrivée pour le ferry vers le centre de Naples."
+  },
+  "intro": {
+    "title": "Positano vers le centre de Naples – Ferry",
+    "body": "Suivez ces étapes pour marcher depuis l'Hostel Brikette jusqu'au port de Positano, acheter vos billets de ferry et naviguer vers Naples. Inclut des conseils sur les compagnies, la saisonnalité et l'arrivée à Napoli Centrale."
+  },
+  "galleries": [
+    {
+      "items": [
+        {
+          "src": "/img/directions/positano-capri-ferry-img01.png",
+          "alt": "Image de l’étape de l’itinéraire 1",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img02.jpg",
+          "alt": "Image de l’étape de l’itinéraire 2",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img03.jpg",
+          "alt": "Image de l’étape de l’itinéraire 3",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img04.png",
+          "alt": "Image de l’étape de l’itinéraire 4",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img05.jpg",
+          "alt": "Image de l’étape de l’itinéraire 5",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img06.jpg",
+          "alt": "Image de l’étape de l’itinéraire 6",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img07.jpg",
+          "alt": "Image de l’étape de l’itinéraire 7",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img08.jpg",
+          "alt": "Image de l’étape de l’itinéraire 8",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img09.jpg",
+          "alt": "Image de l’étape de l’itinéraire 9",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img10.jpg",
+          "alt": "Image de l’étape de l’itinéraire 10",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        }
+      ]
+    }
+  ]
+}

@@ -1,13 +1,18 @@
-/* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
+ 
 // src/components/seo/FaqStructuredData.tsx
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import type { FallbackLng } from "i18next";
 
+import { buildCanonicalUrl } from "@acme/ui/lib/seo";
+
 import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { parseFaqResource, type FaqResource } from "@/utils/faq";
+import { buildFaqJsonLd } from "@/utils/buildFaqJsonLd";
+import { type FaqResource,parseFaqResource } from "@/utils/faq";
 import { getSlug } from "@/utils/slug";
+
+import FaqJsonLdScript from "./FaqJsonLdScript";
 
 const pickFirstLanguage = (value: unknown): string | undefined => {
   if (typeof value === "string" && value.trim().length > 0) {
@@ -54,7 +59,8 @@ const resolveFallbackLanguage = (fallback: FallbackLng | undefined, requestedLan
 function FaqStructuredData(): JSX.Element {
   const lang = useCurrentLanguage();
   const { i18n } = useTranslation("faq", { lng: lang });
-  const pageUrl = `${BASE_URL}/${lang}/${getSlug("assistance", lang)}`;
+  const pagePath = `/${lang}/${getSlug("assistance", lang)}`;
+  const pageUrl = buildCanonicalUrl(BASE_URL, pagePath);
   const fallbackLangOption = i18n?.options?.fallbackLng;
   let fallbackLang: string | undefined;
   if (fallbackLangOption === false) {
@@ -64,57 +70,45 @@ function FaqStructuredData(): JSX.Element {
     fallbackLang = resolveFallbackLanguage(fallbackLangOption, lang);
   }
 
-  const getResourceBundle = useMemo(() => {
+  const getResourceBundle = (lng: string): FaqResource | undefined => {
     if (!i18n) {
-      return () => undefined;
+      return undefined;
     }
 
-    return (lng: string): FaqResource | undefined => {
-      const namespaceFromData = i18n.getDataByLanguage?.(lng)?.["faq"];
-      if (namespaceFromData && typeof namespaceFromData === "object") {
-        return namespaceFromData as FaqResource;
-      }
+    const namespaceFromData = i18n.getDataByLanguage?.(lng)?.["faq"];
+    if (namespaceFromData && typeof namespaceFromData === "object") {
+      return namespaceFromData as FaqResource;
+    }
 
-      const bundle = i18n.getResourceBundle?.(lng, "faq");
-      if (bundle && typeof bundle === "object") {
-        return bundle as FaqResource;
-      }
+    const bundle = i18n.getResourceBundle?.(lng, "faq");
+    if (bundle && typeof bundle === "object") {
+      return bundle as FaqResource;
+    }
 
-      const storeResource = i18n.services?.resourceStore?.data?.[lng]?.["faq"];
-      if (storeResource && typeof storeResource === "object") {
-        return storeResource as FaqResource;
-      }
+    const storeResource = i18n.services?.resourceStore?.data?.[lng]?.["faq"];
+    if (storeResource && typeof storeResource === "object") {
+      return storeResource as FaqResource;
+    }
 
-      return undefined;
-    };
-  }, [i18n]);
+    return undefined;
+  };
 
   const resource = getResourceBundle(lang);
   const fallbackResource = fallbackLang ? getResourceBundle(fallbackLang) : undefined;
 
-  const items = useMemo(() => parseFaqResource(resource, fallbackResource), [resource, fallbackResource]);
+  const items = parseFaqResource(resource, fallbackResource);
 
-  const data = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "@id": `${pageUrl}#faq`,
-    url: pageUrl,
-    inLanguage: lang,
-    isPartOf: { "@id": `${BASE_URL}#website` },
-    mainEntityOfPage: pageUrl,
-    mainEntity: items.map((item) => ({
-      "@type": "Question",
-      name: item.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: item.answer,
-      },
-    })),
-  };
+  const payload = buildFaqJsonLd(lang, pageUrl, items);
+  const data = payload
+    ? {
+        ...payload,
+        "@id": `${pageUrl}#faq`,
+        isPartOf: { "@id": `${BASE_URL}#website` },
+        mainEntityOfPage: pageUrl,
+      }
+    : null;
 
-  return (
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />
-  );
+  return <FaqJsonLdScript data={data} />;
 }
 
 export default memo(FaqStructuredData);

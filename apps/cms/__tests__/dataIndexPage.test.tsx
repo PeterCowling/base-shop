@@ -1,10 +1,11 @@
 import "@testing-library/jest-dom";
+
 import type { ReactNode } from "react";
 import { render, screen } from "@testing-library/react";
 
 import DataIndex from "../src/app/cms/shop/[shop]/data/page";
 
-jest.mock("@ui/components/atoms", () => ({
+jest.mock("@acme/design-system/atoms", () => ({
   __esModule: true,
   Tag: ({ children, ...props }: { children?: ReactNode }) => (
     <span {...props}>{children}</span>

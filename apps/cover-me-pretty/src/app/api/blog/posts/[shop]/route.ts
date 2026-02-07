@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
+
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 import type { Shop } from "@acme/types";
+
 import shopJson from "../../../../../../shop.json";
 import { getBlogProvider } from "../../../../[lang]/blog/provider";
-import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 
 export const runtime = "nodejs";
 

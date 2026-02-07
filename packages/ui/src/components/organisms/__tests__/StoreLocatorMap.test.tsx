@@ -1,5 +1,6 @@
 // packages/ui/src/components/organisms/__tests__/StoreLocatorMap.test.tsx
 import { render, waitFor } from "@testing-library/react";
+
 import { StoreLocatorMap } from "../StoreLocatorMap";
 
 describe("StoreLocatorMap", () => { // i18n-exempt: test titles
@@ -48,7 +49,7 @@ describe("StoreLocatorMap", () => { // i18n-exempt: test titles
     expect(appendBody).toHaveBeenCalled();
 
     (window as { L?: typeof L }).L = L;
-    scriptEl?.onload?.(new Event("load"));
+    (scriptEl as HTMLScriptElement | null)?.onload?.(new Event("load"));
 
     await waitFor(() => expect(L.map).toHaveBeenCalled());
     expect(L.map).toHaveBeenCalledWith(expect.any(HTMLElement));

@@ -29,6 +29,41 @@
     "keycard": "Acceso con tarjeta",
     "linen": "Ropa de cama y toalla incluidas"
   },
+  "facts": {
+    "type": {
+      "privateRoom": "Habitación privada",
+      "mixedDorm": "Dormitorio mixto",
+      "femaleDorm": "Dormitorio femenino",
+      "femaleRoom": "Habitación femenina"
+    },
+    "bathroom": {
+      "bathroomEnsuite": "En suite",
+      "bathroomPrivate": "Baño privado",
+      "bathroomSharedFemale": "Baño compartido"
+    },
+    "sleeps": "Capacidad: {{count}}"
+  },
+  "detailsLine": {
+    "beds": {
+      "doubleBedForTwo": "1 cama doble",
+      "threeSingleBedsThreeGuests": "3 camas individuales",
+      "oneDormBedTwoGuests": "1 litera",
+      "threeDormBedsSixGuests": "3 literas",
+      "threeDormBedsPlusSingleSevenGuests": "3 literas + 1 individual",
+      "fourDormBedsEightGuests": "4 literas"
+    },
+    "views": {
+      "seaViewTerrace": "Terraza con vista al mar",
+      "seaViewExtraLargeTerrace": "Terraza con vista al mar",
+      "gardenView": "Vista al jardín",
+      "courtyardView": "Vista al patio",
+      "noView": "Sin vista"
+    }
+  },
+  "priceUnits": {
+    "perRoom": "habitación",
+    "perBed": "cama"
+  },
   "rooms": {
     "title": "Nuestras habitaciones",
     "double_room": {
@@ -266,6 +301,6 @@
   "loadingPrice": "Cargando precio…",
   "landingImageAlt": "Imagen principal de {{room}}",
   "priceNotes": {
-    "dorm": "Per night, per guest. One guest in one bunk bed."
+    "dorm": "Por noche, por huésped. Un huésped en una litera."
   }
 }

@@ -1,9 +1,9 @@
 /* i18n-exempt file -- PP-1100 internal pipeline API [ttl=2026-06-30] */
 // apps/product-pipeline/src/routes/api/runner/status.ts
 
-import type { PipelineEventContext } from "../_lib/types";
 import { getDb, type PipelineEnv } from "../_lib/db";
 import { jsonResponse } from "../_lib/response";
+import type { PipelineEventContext } from "../_lib/types";
 
 const STALE_AFTER_MS = 5 * 60 * 1000;
 

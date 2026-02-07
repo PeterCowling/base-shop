@@ -5,65 +5,65 @@
   },
   "linkLabel": "Positano con un budget limitato",
   "intro": [
-    "Traduzione in arrivo."
+    "Allunga il budget combinando trasporti senza auto, pasti economici e belvedere gratuiti senza perdere i punti forti di Positano."
   ],
   "sections": [
     {
       "id": "transport",
-      "title": "Transport on the cheap",
+      "title": "Trasporti economici",
       "body": [
         "Utilizzare la navetta Alibus o Curreri per Sorrento poi l'autobus SITA per Positano; acquista i biglietti dell'autobus a blocchi da tabacchi per evitare ricarichi.",
-        "Traduzione in arrivo."
+        "Con mare calmo, abbina un tratto in traghetto ai bus per maggiore comfort: prenota solo le tratte necessarie per non pagare troppo."
       ]
     },
     {
       "id": "stay",
-      "title": "Smart stays",
+      "title": "Alloggi intelligenti",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Prenota dormitori in ostello o appartamenti condivisi vicino a Chiesa Nuova per ridurre costi di facchini e scalinate.",
+        "Valuta Meta o Praiano per soggiorni piu lunghi: il tragitto e 30-40 minuti ma le camere costano meno in alta stagione."
       ]
     },
     {
       "id": "food",
-      "title": "Food & drink savings",
+      "title": "Risparmio su cibo e bevande",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Prendi panini, sfogliatelle ed espresso al bar invece di brunch seduti; riempi una bottiglia da 1 L all'ostello prima di uscire.",
+        "Condividi gli antipasti, scegli trattorie informali per evitare il coperto e fai picnic in terrazza al tramonto."
       ]
     },
     {
       "id": "experiences",
-      "title": "Low-cost experiences",
+      "title": "Esperienze a basso costo",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Pianifica escursioni gratuite come il Sentiero degli Dei (bus per Nocelle) o passeggiate al tramonto su Via Cristoforo Colombo.",
+        "Investi in un'attivita speciale — ad esempio un tour in barca condiviso o un corso di cucina — e bilancia con spiagge e belvedere."
       ]
     }
   ],
   "tips": [
-    "Traduzione in arrivo.",
-    "Traduzione in arrivo."
+    "Viaggia in mezza stagione (aprile-maggio, fine settembre) per prezzi piu bassi e traghetti piu facili.",
+    "Tieni traccia delle spese in una nota: dividere i costi ogni giorno mantiene il gruppo allineato."
   ],
   "faqs": [
     {
-      "q": "Traduzione in arrivo.",
+      "q": "Che budget giornaliero dovrei prevedere?",
       "a": [
-        "Traduzione in arrivo."
+        "70-90 EUR coprono dormitorio, pasti da gastronomia, biglietti bus e un'attivita a pagamento; aggiungi 20-30 EUR se preferisci camere private o drink al tramonto."
       ]
     },
     {
-      "q": "Is tipping expected?",
+      "q": "La mancia e prevista?",
       "a": [
-        "Traduzione in arrivo."
+        "Il servizio e incluso; arrotonda di 1-2 EUR per un ottimo servizio o lascia il 10% solo in locali di fascia alta se lo ritieni meritato."
       ]
     }
   ],
-  "tocTitle": "On this page",
-  "faqsTitle": "FAQs",
-  "heroAlt": "Traduzione in arrivo.",
+  "tocTitle": "In questa pagina",
+  "faqsTitle": "Domande frequenti",
+  "heroAlt": "Vista economica su Positano dalla terrazza",
   "costBreakdown": {
-    "title": "Traduzione in arrivo.",
+    "title": "Ripartizione dei costi giornalieri (esempio)",
     "slices": [
       {
         "label": "Bed (dorm)",
@@ -82,15 +82,5 @@
         "value": 18
       }
     ]
-  },
-  "gallery": [
-    {
-      "alt": "Traduzione in arrivo.",
-      "caption": "Free viewpoints"
-    },
-    {
-      "alt": "Traduzione in arrivo.",
-      "caption": "Picnic to save on meals"
-    }
-  ]
+  }
 }

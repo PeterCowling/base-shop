@@ -1,3 +1,5 @@
+import { createManagedTryOnProvider } from "../providers/garment/managed";
+
 jest.mock(
   "@acme/i18n/en.json",
   () => ({
@@ -17,8 +19,6 @@ jest.mock(
   { virtual: true }
 );
 
-import { createManagedTryOnProvider } from "../providers/garment/managed";
-
 describe("createManagedTryOnProvider", () => {
   const originalEnv = { ...process.env };
   const originalFetch = global.fetch;
@@ -28,7 +28,7 @@ describe("createManagedTryOnProvider", () => {
   beforeEach(() => {
     Object.defineProperty(globalThis, "crypto", {
       configurable: true,
-      value: { randomUUID } as Crypto,
+      value: { randomUUID } as unknown as Crypto,
     });
     randomUUID.mockClear();
   });

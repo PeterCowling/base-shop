@@ -84,23 +84,6 @@
       "note": "Bageri med delizia al limone, babà al limoncello og kager, der er nemme at tage med til picnic på klippesiden."
     }
   ],
-  "gallery": {
-    "title": "Madfavoritter",
-    "items": [
-      {
-        "alt": "Pastaret med fisk og citronskiver fra Amalfikysten",
-        "caption": "Skaldyrsretter fra Positano-trattoriaer"
-      },
-      {
-        "alt": "Delizia al limone på en tallerken",
-        "caption": "Citronbaserede desserter at smage"
-      },
-      {
-        "alt": "Venner, der skåler i limoncello ved solnedgang",
-        "caption": "Digestivo med udsigt"
-      }
-    ]
-  },
   "fallback": {
     "toc": [
       {

@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import DynamicRenderer from './DynamicRenderer';
+
 import type { PageComponent } from '@acme/types';
+
+import DynamicRenderer from './DynamicRenderer';
 
 const meta: Meta<typeof DynamicRenderer> = {
   title: 'Utilities/DynamicRenderer',

@@ -3,6 +3,7 @@ import path from "path";
 import { pathToFileURL } from "url";
 
 import { pluginEnvVars } from "../configurator";
+
 import { defaultPaymentProviders } from "./defaultPaymentProviders";
 import { defaultShippingProviders } from "./defaultShippingProviders";
 

@@ -3,6 +3,7 @@
     "relatedGuides": "相关指南",
     "indexTitle": "波西塔诺旅游指南",
     "popularGuides": "热门指南",
+    "viewAll": "查看全部攻略",
     "helpfulGuides": "实用指南",
     "alsoSee": "另见",
     "sectionFallback": "Section {{position}}"
@@ -13,131 +14,337 @@
       "description": "帮助你在波西塔诺和阿马尔菲海岸出行的实用分步指南。"
     }
   },
+  "redirectPage": {
+    "title": "正在重定向…",
+    "message": "如果没有自动跳转，<link>请点击这里继续</link>。"
+  },
   "content": {
     "onlyHostel": {
-      "linkLabel": "The only hostel in Positano",
+      "linkLabel": "波西塔诺唯一的青年旅舍",
       "seo": {
-        "title": "The only hostel in Positano",
-        "description": "Affordable beds in Positano with panoramic views and friendly vibes."
+        "title": "波西塔诺唯一的青年旅舍",
+        "description": "波西塔诺经济实惠的床位，拥有全景视野和友好氛围。"
       }
     },
     "backpackerItineraries": {
-      "linkLabel": "Backpacker itineraries",
+      "linkLabel": "背包客行程",
       "seo": {
-        "title": "Backpacker itineraries on the Amalfi Coast",
-        "description": "Practical, budget-first routes for 2 to 7 days without a car."
+        "title": "阿马尔菲海岸背包客行程",
+        "description": "2至7天无车的实用、预算优先路线。"
       }
     },
     "reachBudget": {
-      "linkLabel": "Reach Positano on a budget",
+      "linkLabel": "经济实惠到达波西塔诺",
       "seo": {
-        "title": "Reach Positano on a budget",
-        "description": "Cheapest ways to get to Positano by bus, train and ferry."
+        "title": "经济实惠到达波西塔诺",
+        "description": "乘坐巴士、火车和渡轮到达波西塔诺的最便宜方式。"
       }
     },
     "ferrySchedules": {
-      "linkLabel": "Ferry schedules",
+      "linkLabel": "渡轮时刻表",
       "seo": {
-        "title": "Positano ferry schedules",
-        "description": "Up-to-date ferry operators and seasonal timetables for Positano."
+        "title": "波西塔诺渡轮时刻表",
+        "description": "波西塔诺最新的渡轮运营商和季节性时刻表。"
       }
     },
     "pathOfTheGods": {
-      "linkLabel": "Path of the Gods from Positano",
+      "linkLabel": "众神之路：波西塔诺完整指南",
       "seo": {
-        "title": "Hike the Path of the Gods",
-        "description": "Door-to-door instructions to hike Sentiero degli Dei from Positano."
+        "title": "徒步众神之路",
+        "description": "从波西塔诺徒步众神之路的详细说明。"
       }
     },
     "pathOfTheGodsFerry": {
-      "linkLabel": "Path of the Gods via Amalfi (ferry)",
+      "linkLabel": "众神之路：风景渡轮和徒步路线",
       "seo": {
-        "title": "Path of the Gods via Amalfi (ferry)",
-        "description": "Sail to Amalfi, bus up to Bomerano, then hike the Path of the Gods with return directions."
+        "title": "经阿马尔菲的众神之路（渡轮）",
+        "description": "乘渡轮到阿马尔菲，坐巴士到博美拉诺，然后徒步众神之路并获取返程指引。"
       }
     },
     "pathOfTheGodsBus": {
-      "linkLabel": "Path of the Gods via Amalfi (bus)",
+      "linkLabel": "众神之路：经济巴士和徒步",
       "seo": {
-        "title": "Path of the Gods via Amalfi (bus)",
-        "description": "Take the SITA Sud bus to Bomerano and follow our Path of the Gods route back toward Positano."
+        "title": "经阿马尔菲的众神之路（巴士）",
+        "description": "乘坐SITA Sud巴士到博美拉诺，沿着众神之路返回波西塔诺。"
       }
     },
     "pathOfTheGodsNocelle": {
-      "linkLabel": "Path of the Gods via Nocelle",
+      "linkLabel": "众神之路：从诺切莱短途徒步",
       "seo": {
-        "title": "Path of the Gods via Nocelle",
-        "description": "Shorter out-and-back hike from Nocelle with directions to return to Hostel Brikette."
+        "title": "经诺切莱的众神之路",
+        "description": "从诺切莱出发的较短往返徒步，附返回Hostel Brikette的指引。"
       }
     },
     "dayTripsAmalfi": {
-      "linkLabel": "Day trips from Positano",
+      "linkLabel": "最佳一日游：卡普里、阿马尔菲、庞贝等",
       "seo": {
-        "title": "Day trips from Positano",
-        "description": "Ideas for Amalfi, Ravello, Capri and Pompeii with timing and transport tips."
+        "title": "从波西塔诺出发的一日游",
+        "description": "阿马尔菲、拉韦洛、卡普里和庞贝的行程建议，附时间和交通提示。"
       }
     },
-    "publicTransportAmalfi": {
-      "linkLabel": "Amalfi Coast public transport guide",
+    "positanoBeaches": {
+      "linkLabel": "波西塔诺海滩：沙滩、阳光和秘密海湾",
       "seo": {
-        "title": "Amalfi Coast public transport guide",
-        "description": "How to use buses and ferries on the Amalfi Coast with passes, timing and routes."
+        "title": "波西塔诺海滩：阳光与秘密海湾",
+        "description": "探索波西塔诺最佳海滩，从标志性的大海滩到隐秘海湾和专属海滩俱乐部。"
+      }
+    },
+    "arienzoBeachClub": {
+      "linkLabel": "阿里恩佐海滩：波西塔诺的精品海滩俱乐部",
+      "seo": {
+        "title": "阿里恩佐海滩：波西塔诺的精品海滩俱乐部",
+        "description": "阿里恩佐海滩俱乐部指南，包括楼梯、日光浴床、餐厅以及从Hostel Brikette出发的路线。"
+      }
+    },
+    "fornilloBeachGuide": {
+      "linkLabel": "福尔尼洛海滩：波西塔诺更安静的选择",
+      "seo": {
+        "title": "福尔尼洛海滩：波西塔诺更安静的选择",
+        "description": "宁静的福尔尼洛海滩，免费沙滩区、本地餐厅，从波西塔诺中心步行即可轻松抵达。"
+      }
+    },
+    "lauritoBeachGuide": {
+      "linkLabel": "劳里托海滩：悬崖下的隐藏宝藏",
+      "seo": {
+        "title": "劳里托海滩：悬崖下的隐藏宝藏",
+        "description": "偏远的劳里托海滩，拥有450多级台阶、本地海鲜和远离人群的碧绿海水。"
+      }
+    },
+    "gavitellaBeachGuide": {
+      "linkLabel": "加维泰拉海滩：普拉亚诺的日落游泳点",
+      "seo": {
+        "title": "加维泰拉海滩：普拉亚诺的日落游泳点",
+        "description": "普拉亚诺的本地海滩，拥有日落美景、平静海水，从波西塔诺乘巴士可轻松抵达。"
+      }
+    },
+    "marinaDiPraiaBeaches": {
+      "linkLabel": "普拉亚码头：悬崖间的壮观海湾",
+      "seo": {
+        "title": "普拉亚码头：悬崖间的壮观海湾",
+        "description": "风景如画的普拉亚码头，拥有诺曼塔楼、海滨餐厅和清澈见底的游泳海湾。"
+      }
+    },
+    "fiordoDiFuroreBeachGuide": {
+      "linkLabel": "富罗雷峡湾：桥下的峡湾海滩",
+      "seo": {
+        "title": "富罗雷峡湾：桥下的峡湾海滩",
+        "description": "Instagram网红的富罗雷峡湾，翡翠色海水、悬崖跳水和壮观的桥景，从波西塔诺乘巴士可达。"
+      }
+    },
+    "reginaGiovannaBath": {
+      "linkLabel": "雷吉纳·乔万娜：罗马遗迹与天然泳池",
+      "seo": {
+        "title": "雷吉纳·乔万娜：罗马遗迹与天然泳池相遇",
+        "description": "索伦托的历史天然泳池，拥有罗马别墅遗迹、海岸步道和清澈海水游泳体验。"
+      }
+    },
+    "positanoMainBeach": {
+      "linkLabel": "大海滩：波西塔诺标志性的主海滩",
+      "seo": {
+        "title": "大海滩：波西塔诺标志性的主海滩",
+        "description": "波西塔诺主海滩完整指南，包括日光浴床价格、免费区域、餐厅和如何到达。"
+      }
+    },
+    "positanoMainBeachWalkDown": {
+      "linkLabel": "步行前往波西塔诺主海滩",
+      "seo": {
+        "title": "从Hostel Brikette步行至波西塔诺主海滩",
+        "description": "从Hostel Brikette步行至大海滩的路线指引，包括地标和预计时间。"
+      }
+    },
+    "positanoMainBeachBusDown": {
+      "linkLabel": "乘公交前往波西塔诺主海滩",
+      "seo": {
+        "title": "从Hostel Brikette乘公交至波西塔诺主海滩",
+        "description": "从Chiesa Nuova乘SITA巴士前往波西塔诺海滩，包括站点位置和时刻表。"
+      }
+    },
+    "positanoMainBeachWalkBack": {
+      "linkLabel": "从主海滩步行返回",
+      "seo": {
+        "title": "从大海滩步行返回Hostel Brikette",
+        "description": "从波西塔诺主海滩爬坡返回Hostel Brikette的分步路线指引。"
+      }
+    },
+    "positanoMainBeachBusBack": {
+      "linkLabel": "从大海滩乘公交返回",
+      "seo": {
+        "title": "从波西塔诺主海滩乘公交返回Hostel Brikette",
+        "description": "从波西塔诺海滩乘SITA巴士前往Chiesa Nuova，包括上车点和时刻表。"
+      }
+    },
+    "hostelBriketteToFornilloBeach": {
+      "linkLabel": "布里凯特旅舍 → 福尔尼洛海滩步行指南",
+      "seo": {
+        "title": "Hostel Brikette → 福尔尼洛海滩步行路线"
+      }
+    },
+    "fornilloBeachToBrikette": {
+      "linkLabel": "福尔尼洛海滩 → 布里凯特旅舍返程路线",
+      "seo": {
+        "title": "福尔尼洛海滩 → Hostel Brikette返程路线"
+      }
+    },
+    "hostelBriketteToFiordoDiFuroreBus": {
+      "linkLabel": "如何乘公交前往菲奥多迪富罗雷海滩",
+      "seo": {
+        "title": "乘公交前往富罗雷峡湾海滩"
+      }
+    },
+    "fiordoDiFuroreBusReturn": {
+      "linkLabel": "菲奥多迪富罗雷海滩 → 布里凯特旅舍乘公交",
+      "seo": {
+        "title": "从富罗雷峡湾海滩乘公交返回Hostel Brikette"
+      }
+    },
+    "lauritoBeachBusDown": {
+      "linkLabel": "如何乘公交前往劳里托海滩",
+      "seo": {
+        "title": "乘公交前往劳里托海滩"
+      }
+    },
+    "lauritoBeachBusBack": {
+      "linkLabel": "从劳里托海滩乘公交返回",
+      "seo": {
+        "title": "从劳里托海滩乘公交返回Hostel Brikette"
+      }
+    },
+    "hostelBriketteToArienzoBus": {
+      "linkLabel": "如何乘公交到达阿里恩佐海滩",
+      "seo": {
+        "title": "乘公交前往阿里恩佐海滩"
+      }
+    },
+    "arienzoBeachBusBack": {
+      "linkLabel": "从阿里恩佐海滩乘公交返回",
+      "seo": {
+        "title": "从阿里恩佐海滩乘公交返回Hostel Brikette"
+      }
+    },
+    "hostelBriketteToReginaGiovannaBath": {
+      "linkLabel": "如何前往雷吉娜乔万娜浴场",
+      "seo": {
+        "title": "前往雷吉纳·乔万娜浴场海滩"
+      }
+    },
+    "sunriseHike": {
+      "linkLabel": "日出徒步：观看黎明照耀波西塔诺"
+    },
+    "santaMariaDelCastelloHike": {
+      "linkLabel": "圣玛丽亚城堡山村徒步"
+    },
+    "topOfTheMountainHike": {
+      "linkLabel": "科穆内山：徒步至波西塔诺最高观景点"
+    },
+    "stayingFitAmalfi": {
+      "linkLabel": "在波西塔诺保持健身：楼梯、小径和海滩锻炼"
+    },
+    "capriDayTrip": {
+      "linkLabel": "卡普里一日游：从波西塔诺逃往小岛"
+    },
+    "capriOnABudget": {
+      "linkLabel": "省钱游卡普里"
+    },
+    "campingAmalfi": {
+      "linkLabel": "阿马尔菲海岸露营：酒店的经济替代选择"
+    },
+    "boatTours": {
+      "linkLabel": "游船之旅：日落巡航到私人包船"
+    },
+    "cheapEats": {
+      "linkLabel": "像当地人一样吃：波西塔诺最佳平价美食"
+    },
+    "eatingOutPositano": {
+      "linkLabel": "波西塔诺用餐指南：从休闲到庆典"
+    },
+    "positanoDining": {
+      "linkLabel": "Hostel Brikette附近波西塔诺最佳餐厅"
+    },
+    "limoncelloCuisine": {
+      "linkLabel": "品味波西塔诺：柠檬酒、柠檬和本地风味"
+    },
+    "instagramSpots": {
+      "linkLabel": "波西塔诺网红打卡：最佳拍照点和时间"
+    },
+    "sunsetViewpoints": {
+      "linkLabel": "波西塔诺日落：金色时刻的最佳观景点"
+    },
+    "ravelloFestival": {
+      "linkLabel": "拉韦洛音乐节：星空下的古典音乐会"
+    },
+    "ferragostoPositano": {
+      "linkLabel": "费拉戈斯托：波西塔诺的意大利8月15日庆典"
+    },
+    "luminariaPraiano": {
+      "linkLabel": "普拉亚诺烛光节：数千支蜡烛照亮夜空"
+    },
+    "walkingTourAudio": {
+      "linkLabel": "免费音频徒步导览：发现波西塔诺的隐藏故事"
+    },
+    "freeThingsPositano": {
+      "linkLabel": "波西塔诺免费活动：经济实惠的乐趣"
+    },
+    "publicTransportAmalfi": {
+      "linkLabel": "阿马尔菲海岸公共交通指南",
+      "seo": {
+        "title": "阿马尔菲海岸公共交通指南",
+        "description": "如何在阿马尔菲海岸使用巴士和渡轮，包括通行证、时间和路线。"
       }
     },
     "travelTipsFirstTime": {
-      "linkLabel": "Positano travel tips for first-time visitors",
+      "linkLabel": "波西塔诺初访者旅行提示",
       "seo": {
-        "title": "Positano travel tips for first-time visitors",
-        "description": "Arrivals, luggage, payments and connectivity — practical advice for your first trip."
+        "title": "波西塔诺初访者旅行提示",
+        "description": "到达、行李、支付和连接——首次旅行的实用建议。"
       }
     },
     "whatToPack": {
-      "linkLabel": "What to pack for the Amalfi Coast",
+      "linkLabel": "阿马尔菲海岸携带物品",
       "seo": {
-        "title": "What to pack for the Amalfi Coast",
-        "description": "Seasonal packing checklist for Positano and the Amalfi Coast."
+        "title": "阿马尔菲海岸携带物品",
+        "description": "波西塔诺和阿马尔菲海岸的季节性打包清单。"
       }
     }
   },
   "dev": {
     "statusPill": {
-      "title": "Guide status: {{status}} (click to toggle)"
+      "title": "指南状态：{{status}}（点击切换）"
     },
     "editorialPanel": {
-      "title": "Editorial workflow",
+      "title": "编辑工作流",
       "status": {
-        "draft": "Draft",
-        "review": "In review",
-        "live": "Live"
+        "draft": "草稿",
+        "review": "审核中",
+        "live": "已发布"
       },
       "workflow": {
-        "draftPreview": "Draft preview",
-        "published": "Published",
-        "pending": "Pending publication",
-        "allComplete": "All checklist items complete",
-        "outstanding_one": "{{count}} outstanding item",
-        "outstanding_other": "{{count}} outstanding items"
+        "draftPreview": "草稿预览",
+        "published": "已发布",
+        "pending": "待发布",
+        "allComplete": "所有检查项已完成",
+        "outstanding_one": "{{count}} 个待办项",
+        "outstanding_other": "{{count}} 个待办项"
       },
       "draftPath": {
-        "label": "Draft path",
-        "dashboardCta": "Open draft dashboard"
+        "label": "草稿路径",
+        "dashboardCta": "打开草稿控制台"
       },
       "publish": {
-        "heading": "Publish to",
-        "primary": "Primary"
+        "heading": "发布至",
+        "primary": "主要"
       },
       "checklist": {
-        "heading": "Completion checklist",
+        "heading": "完成检查清单",
         "status": {
-          "missing": "Missing",
-          "inProgress": "In progress",
-          "complete": "Complete"
+          "missing": "缺失",
+          "inProgress": "进行中",
+          "complete": "完成"
         }
       },
       "areaLabels": {
-        "howToGetHere": "How to get here",
-        "help": "Help centre",
-        "experience": "Experiences"
+        "howToGetHere": "如何到达",
+        "help": "帮助中心",
+        "experience": "体验"
       }
     }
   }

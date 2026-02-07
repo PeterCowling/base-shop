@@ -1,6 +1,10 @@
+/* eslint-disable ds/min-tap-size -- PP-1310 [ttl=2026-12-31] Pending DS token rollout for controls */
 "use client";
 
-import { Stack } from "@ui/components/atoms/primitives";
+import { useState } from "react";
+
+import { Stack } from "@acme/design-system/primitives";
+
 import type { Artifact, CandidateDetailStrings } from "./types";
 import { resolveArtifactHref, safeTimestamp } from "./types";
 
@@ -27,6 +31,8 @@ export default function ArtifactsCard({
   artifacts: Artifact[];
   strings: CandidateDetailStrings;
 }) {
+  const [expanded, setExpanded] = useState(false);
+
   return (
     <section className="pp-card p-6">
       <Stack gap={2}>
@@ -37,58 +43,67 @@ export default function ArtifactsCard({
           {strings.artifacts.title}
         </h2>
       </Stack>
-      <Stack gap={3} className="mt-4 text-sm">
-        {artifacts.length === 0 ? (
-          <div className="rounded-2xl border border-border-1 bg-surface-2 px-4 py-3 text-foreground/60">
-            {strings.notAvailable}
-          </div>
-        ) : (
-          artifacts.map((artifact) => {
-            const href = resolveArtifactHref(artifact.uri);
-            const kindLabel = resolveArtifactKindLabel(
-              artifact.kind ?? null,
-              strings.artifacts,
-              strings.notAvailable,
-            );
-            return (
-              <div
-                key={artifact.id}
-                className="rounded-2xl border border-border-1 bg-surface-2 px-4 py-3"
-              >
-                <div className="text-xs text-foreground/60">
-                  {strings.artifacts.kindLabel}:{" "}
-                  <span className="text-foreground">
-                    {kindLabel}
-                  </span>
-                </div>
-                <div className="mt-2 text-xs text-foreground/60">
-                  {strings.artifacts.uriLabel}:{" "}
-                  {href ? (
-                    <a
-                      className="inline-flex min-h-12 min-w-12 items-center justify-center text-primary underline"
-                      href={href}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {strings.artifacts.openLabel}
-                    </a>
-                  ) : (
+      <div className="mt-4">
+        <button
+          type="button"
+          className="text-sm font-semibold text-primary hover:underline"
+          onClick={() => setExpanded((current) => !current)}
+        >
+          {expanded ? strings.common.hideDetails : strings.common.showDetails}
+        </button>
+      </div>
+      {expanded ? (
+        <Stack gap={3} className="mt-4 text-sm">
+          {artifacts.length === 0 ? (
+            <div className="rounded-2xl border border-border-1 bg-surface-2 px-4 py-3 text-foreground/60">
+              {strings.notAvailable}
+            </div>
+          ) : (
+            artifacts.map((artifact) => {
+              const href = resolveArtifactHref(artifact.uri);
+              const kindLabel = resolveArtifactKindLabel(
+                artifact.kind ?? null,
+                strings.artifacts,
+                strings.notAvailable,
+              );
+              return (
+                <div
+                  key={artifact.id}
+                  className="rounded-2xl border border-border-1 bg-surface-2 px-4 py-3"
+                >
+                  <div className="text-xs text-foreground/60">
+                    {strings.artifacts.kindLabel}:{" "}
+                    <span className="text-foreground">{kindLabel}</span>
+                  </div>
+                  <div className="mt-2 text-xs text-foreground/60">
+                    {strings.artifacts.uriLabel}:{" "}
+                    {href ? (
+                      <a
+                        className="inline-flex min-h-12 min-w-12 items-center justify-center text-primary underline"
+                        href={href}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {strings.artifacts.openLabel}
+                      </a>
+                    ) : (
+                      <span className="text-foreground">
+                        {artifact.uri ?? strings.notAvailable}
+                      </span>
+                    )}
+                  </div>
+                  <div className="mt-2 text-xs text-foreground/60">
+                    {strings.artifacts.createdLabel}:{" "}
                     <span className="text-foreground">
-                      {artifact.uri ?? strings.notAvailable}
+                      {safeTimestamp(artifact.createdAt, strings.notAvailable)}
                     </span>
-                  )}
+                  </div>
                 </div>
-                <div className="mt-2 text-xs text-foreground/60">
-                  {strings.artifacts.createdLabel}:{" "}
-                  <span className="text-foreground">
-                    {safeTimestamp(artifact.createdAt, strings.notAvailable)}
-                  </span>
-                </div>
-              </div>
-            );
-          })
-        )}
-      </Stack>
+              );
+            })
+          )}
+        </Stack>
+      ) : null}
     </section>
   );
 }

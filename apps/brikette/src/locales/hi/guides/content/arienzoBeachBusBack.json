@@ -1,61 +1,53 @@
 {
   "seo": {
     "title": "एरिएन्ज़ो बीच से हॉस्टल ब्रिकेट के लिए बस",
-    "description": "Climb from the shoreline to the road, ride three kilometres to Chiesa Nuova, and finish with a short walk back to Hostel Brikette."
+    "description": "समुद्र तट से सड़क तक चलें, पोसिटानो की ओर वापस बस पकड़ें, बार इंटरनाज़ियोनाले/किएसा नुओवा पर उतरें, फिर हॉस्टल ब्रिकेट तक छोटे निर्देशों का पालन करें।"
   },
-  "linkLabel": "Bus back from Arienzo Beach",
+  "linkLabel": "एरिएन्ज़ो बीच से हॉस्टल ब्रिकेट के लिए बस",
   "intro": [
-    "Skip the full stair climb by catching the Amalfi Coast bus from Arienzo back toward Positano.",
-    "Buy your return ticket in town before heading to the beach — there is no vendor at Arienzo, so plan ahead or use the shuttle boat back to Spiaggia Grande."
+    "साझा करने के लिए स्कैन करें",
+    "सुझाव: बस समय सारणी। ध्यान दें कि समय सारणी में पोसिटानो के समय शामिल हैं, लेकिन एरिएन्ज़ो के नहीं। एरिएन्ज़ो बस स्टॉप स्पोंडा से लगभग 2-5 मिनट पहले स्थित है।",
+    "महत्वपूर्ण! यदि आपके पास अपनी वापसी यात्रा के लिए बस टिकट नहीं है, तो आप या तो स्पोंडा तक वापस चल सकते हैं और वहां से बस पकड़ सकते हैं, या पोसिटानो के मुख्य समुद्र तट पर वापस जाने के लिए वॉटर शटल ले सकते हैं। याद रखें, एरिएन्ज़ो बीच के पास कोई टिकट विक्रेता नहीं हैं, इसलिए पहले से योजना बनाना और वापसी यात्रा के लिए अपने टिकट पहले से खरीदना महत्वपूर्ण है।",
+    "सुझाव: हमारी %LINK:arienzoBeachClub|एरिएन्ज़ो बीच गाइड% देखें",
+    "सुझाव: हमारी %LINK:positanoBeaches|समुद्र तट अवलोकन% देखें"
   ],
   "sections": [
     {
       "id": "walk-to-stop",
-      "title": "Walk up to the bus stop",
+      "title": "बस स्टॉप तक चलें",
       "body": [
-        "Climb the stairs from the beach to the road and cross carefully to the inland side.",
-        "Look for the blue-and-white SITA sign on the metal pole opposite the entrance path and wait on the lay-by."
+        "हॉस्टल के लिए वापस बस पकड़ने के लिए, समुद्र तट से सड़क तक सीढ़ियाँ चढ़ें और सड़क के विपरीत दिशा में बस स्टॉप की तलाश करें। बस स्टॉप का चिन्ह नीला और सफेद है, जो धातु के खंभे पर लगा है (संदर्भ के लिए छवि देखें)। बस आने का इंतजार बस स्टॉप पर करें।"
       ]
     },
     {
       "id": "ride-the-bus",
-      "title": "Ride the Amalfi Coast bus",
+      "title": "बस लें",
       "body": [
-        "Flag the coach as it approaches and have your validated ticket ready.",
-        "Expect the journey to cover about 3 kilometres (1.9 miles) with a few intermediate stops before Positano."
+        "आपको उतरने से पहले बस कितनी बार रुकेगी यह अलग-अलग होगा। आपको जो दूरी तय करनी है वह लगभग 3 किमी / 1.9 मील है।"
       ]
     },
     {
       "id": "get-off-bus",
-      "title": "Get off at Bar Internazionale / Chiesa Nuova",
+      "title": "बस से उतरें",
       "body": [
-        "Listen for the announcement or watch for the Bar Internazionale tabacchi — the stop sits opposite the hostel.",
-        "Press the stop button early so the driver knows to drop you at Chiesa Nuova."
+        "आप बार इंटरनाज़ियोनाले/किएसा नुओवा बस स्टॉप पर उतरेंगे।"
       ]
     },
     {
       "id": "walk-to-hostel",
-      "title": "Walk back to Hostel Brikette",
+      "title": "हॉस्टल तक चलें",
       "body": [
-        "Continue in the direction the bus was heading for just over 100 metres (330 feet).",
-        "Take the staircase on your right back up to Hostel Brikette's main entrance."
+        "निर्देश:",
+        "* जिस दिशा में आप अभी उतरे हैं उस बस की दिशा में 100 मीटर / 330 फीट से थोड़ा अधिक जारी रखें।",
+        "* हॉस्टल के मुख्य दरवाजे तक सीढ़ियाँ लें।"
       ]
     }
   ],
-  "tipsTitle": "Bus tips",
+  "tipsTitle": "बस सुझाव",
   "tips": [
-    "मुद्रित समय सारिणी में केवल पॉसिटानो स्टॉप की सूची है; वापसी के रास्ते में पोसिटानो स्पोंडा से लगभग 2-5 मिनट पहले एरिएंज़ो की उम्मीद करें।",
-    "There is no ticket vendor at Arienzo. Buy your return ticket in town, or be ready to walk to Positano Sponda or take the water shuttle back to Spiaggia Grande.",
-    "Read our %LINK:arienzoBeachClub|Arienzo Beach guide% for facilities, shuttles, and planning tips.",
-    "Browse the %LINK:beaches|Positano beaches overview% to compare other coves and plan future visits."
-  ],
-  "gallery": {
-    "title": "अरीएंज़ो बस स्टॉप संदर्भ",
-    "items": [
-      {
-        "alt": "धातु के खंभे पर नीले-सफेद SITA बस स्टॉप का साइन",
-        "caption": "अरिएंज़ो के ऊपर सड़क के अंदरूनी तरफ SITA का साइन ढूंढें।"
-      }
-    ]
-  }
+    "मुद्रित समय सारणी में केवल पोसिटानो स्टॉप सूचीबद्ध हैं; वापसी के रास्ते पर पोसिटानो स्पोंडा से लगभग 2-5 मिनट पहले एरिएन्ज़ो की उम्मीद करें।",
+    "एरिएन्ज़ो बीच के पास कोई टिकट विक्रेता नहीं हैं। अपना वापसी टिकट शहर में पहले से खरीदें, या स्पोंडा तक चलकर वहां से बोर्ड करें, या पोसिटानो के मुख्य समुद्र तट पर वापस जाने के लिए वॉटर शटल लें।",
+    "सुविधाओं, शटल और योजना सुझावों के लिए हमारी %LINK:arienzoBeachClub|एरिएन्ज़ो बीच गाइड% पढ़ें।",
+    "अन्य खाड़ियों की तुलना करने और भविष्य की यात्राओं की योजना बनाने के लिए %LINK:positanoBeaches|समुद्र तट अवलोकन% ब्राउज़ करें।"
+  ]
 }

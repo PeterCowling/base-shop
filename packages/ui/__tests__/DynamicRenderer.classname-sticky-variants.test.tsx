@@ -1,3 +1,10 @@
+import { render } from "@testing-library/react";
+
+import type { PageComponent } from "@acme/types";
+
+import { blockRegistry } from "../src/components/cms/blocks";
+import DynamicRenderer from "../src/components/DynamicRenderer";
+
 jest.mock("../src/components/cms/page-builder/scrollEffects", () => ({
   ensureScrollStyles: jest.fn(),
   ensureAnimationStyles: jest.fn(),
@@ -14,16 +21,10 @@ jest.mock("../src/components/cms/lightbox", () => ({
   initLightbox: jest.fn(),
 }));
 
-import React from "react";
-import { render } from "@testing-library/react";
-import DynamicRenderer from "../src/components/DynamicRenderer";
-import { blockRegistry } from "../src/components/cms/blocks";
-import type { PageComponent } from "@acme/types";
-
 describe("DynamicRenderer className merge and sticky variants", () => {
   it("merges existing className with stackClass", () => {
     const spy = jest
-      .spyOn(blockRegistry.Text, "component")
+      .spyOn(blockRegistry.Text as any, "component")
       .mockImplementation(() => <div />);
     const components: PageComponent[] = [
       {
@@ -36,15 +37,15 @@ describe("DynamicRenderer className merge and sticky variants", () => {
     ];
     render(<DynamicRenderer components={components} locale="en" />);
     expect(spy).toHaveBeenCalled();
-    const passed = spy.mock.calls[0][0];
-    expect(passed.className).toContain("existing");
-    expect(passed.className).toContain("pb-stack-mobile-reverse");
+    const passed = spy.mock.calls[0]?.[0] as { className?: string } | undefined;
+    expect(passed?.className).toContain("existing");
+    expect(passed?.className).toContain("pb-stack-mobile-reverse");
     spy.mockRestore();
   });
 
   it("supports sticky bottom and an additional animation variant", () => {
     const spy = jest
-      .spyOn(blockRegistry.Text, "component")
+      .spyOn(blockRegistry.Text as any, "component")
       .mockImplementation(() => <div />);
     const components: PageComponent[] = [
       {

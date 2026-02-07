@@ -1,12 +1,14 @@
 import * as React from "react";
+
 import { useTranslations } from "@acme/i18n";
+import type { SKU } from "@acme/types";
+
 import { cn } from "../../utils/style";
+import { Grid as GridPrimitive } from "../atoms/primitives";
+import { Skeleton } from "../atoms/Skeleton";
 import { PaginationControl } from "../molecules/PaginationControl";
 import { SearchBar } from "../molecules/SearchBar";
-import type { SKU } from "@acme/types";
 import { ProductGrid } from "../organisms/ProductGrid";
-import { Skeleton } from "../atoms/Skeleton";
-import { Grid as GridPrimitive } from "../atoms/primitives";
 
 export interface SearchResultsTemplateProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "results"> {

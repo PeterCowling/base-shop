@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/FooterSection.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import FooterSection from './FooterSection';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './FooterSection.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import FooterSection from './FooterSection';
+import fixture from './FooterSection.fixtures.json';
 
 const meta: Meta<typeof FooterSection> = {
   title: 'CMS Blocks/FooterSection/Matrix',

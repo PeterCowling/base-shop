@@ -1,5 +1,5 @@
 import React from 'react';
-import { usePathname, useSearchParams, useRouter } from 'next/navigation';
+import { usePathname, useRouter,useSearchParams } from 'next/navigation';
 
 function RouterProbe() {
   const pathname = usePathname();

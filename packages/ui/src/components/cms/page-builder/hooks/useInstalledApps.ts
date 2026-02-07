@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
 import { listInstalledApps, subscribeInstalledApps } from "../appInstallStore";
 
 export default function useInstalledApps(shop: string | null | undefined) {

@@ -1,5 +1,6 @@
-import { CheckIcon } from "@radix-ui/react-icons";
 import * as React from "react";
+import { CheckIcon } from "@radix-ui/react-icons";
+
 import { cn } from "../../utils/style";
 
 export interface OrderStep {

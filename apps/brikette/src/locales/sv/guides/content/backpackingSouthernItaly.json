@@ -1,53 +1,53 @@
 {
   "seo": {
-    "title": "Backpacking i Syditalien: rutt inkl. Amalfikusten",
-    "description": "Backpacker-rutt genom Syditalien med stopp på Amalfikusten, transportval och budgettips."
+    "title": "Backpacking i Syditalien: rutt inklusive Amalfikusten",
+    "description": "En logisk rundtur genom höjdpunkterna med budgettransportanteckningar."
   },
-  "linkLabel": "Backpacking i Syditalien: rutt inkl. Amalfikusten",
+  "linkLabel": "Backpacking i Syditalien: rutt inkl. Amalfi",
   "intro": [
-    "Planera en rundtur i Syditalien där Positano förblir navet utan att budgeten spricker."
+    "Planera en rundtur genom södra Italien som håller Positano centralt utan att spräcka budgeten."
   ],
   "sections": [
     {
       "id": "route",
-      "title": "Föreslagen rutt",
+      "title": "Föreslagen rundtur",
       "body": [
-        "Börja i Neapel för flyg och tåg, stanna 2–3 nätter i Positano eller närliggande Praiano, fortsätt till Salerno och sväng sedan inåt mot Matera eller Apulien innan du vänder tillbaka.",
-        "Använd regionaltåg och långfärdsbussar för de längre sträckorna; boka 4–6 veckor i förväg för platser runt 15–25 €."
+        "Börja i Neapel för flyg och järnväg, tillbringa 2–3 nätter i Positano eller närliggande Praiano, fortsätt till Salerno och sväng sedan inåt landet till Matera eller Apulien innan du vänder tillbaka.",
+        "Använd regionaltåg och långfärdsbussar för att täcka längre sträckor billigt; boka 4–6 veckor i förväg för platser till €15–€25."
       ]
     },
     {
       "id": "arrivals",
       "title": "Ankomst & packning",
       "body": [
-        "Res med en 40 L-ryggsäck så klarar du trappor och bussarnas bagagehyllor utan problem.",
-        "Packa snabbtorkande lager, en kompakt handduk och sandaler för hostellduschar; tvättomater i Positano tar cirka 12–15 € för tvätt och tork."
+        "Res med en 40 L ryggsäck så att du enkelt kan navigera trappor och bussars bagagehyllor.",
+        "Packa snabbtorkande lager, en kompakt handduk och sandaler för hostellduschar; tvättstugor i Positano tar €12–€15 för tvätt- och torkpass."
       ]
     },
     {
       "id": "budget",
       "title": "Budgetknep",
       "body": [
-        "Kombinera matinköp (färsk focaccia, frukt, mozzarella) med picknick på terrasser; sikta på 8 € för lunch i stället för 18 € för sittande måltid.",
-        "Dela dagsutflykter med hostelkompisar: dela taxi till leder eller hyr scooter i Salerno/Praiano där priserna kan ligga kring 35 € per dag."
+        "Kombinera matinköp (färsk focaccia, frukt, mozzarella) med terrasspicknickar; budgetera €8 för lunch istället för €18 för sittande måltider.",
+        "Dela dagsutflykter med hostelkompisar: dela på taxitransfer till vandringsleder eller hyr scootrar i Salerno/Praiano där priserna sjunker till €35 per dag."
       ]
     }
   ],
   "tips": [
-    "Aktivera ett regionalt SIM eller eSIM (TIM/Vodafone) så kan du ladda busstidtabeller och checka in på hostel i farten.",
-    "Förboka hostel eller guesthouse första och sista natten på rutten och håll mitten flexibel för väderjusteringar."
+    "Aktivera ett regionalt SIM-kort eller eSIM (TIM/Vodafone) så att du kan ladda busstidtabeller och hostellincheckningar när du är på språng.",
+    "Reservera hostell eller gästhus för den första och sista natten på din rundtur och håll sedan flexibilitet mitt i resan för väderpivots."
   ],
   "faqs": [
     {
       "q": "Behöver jag hyra bil?",
       "a": [
-        "Nej. Tåg, bussar och färjor täcker rutten. En scooter kan vara rolig för kortare sträckor, men trafiken runt Amalfi kräver vana."
+        "Nej. Tåg, bussar och färjor täcker rundturen. Att hyra en skoter för korta sträckor kan vara roligt, men vägtrafiken runt Amalfi kräver självsäkerhet."
       ]
     },
     {
       "q": "Hur många dagar bör jag avsätta för Positano?",
       "a": [
-        "Planera minst tre nätter: en för Positano i sig, en för Path of the Gods eller båttur och en flexdag för Amalfi/Ravello eller väderbackup."
+        "Ge dig själv minst tre nätter: en för Positano i sig, en för Gudarnas stig eller en båtdag och en flexibel dag för Amalfi/Ravello eller väderreserver."
       ]
     }
   ]

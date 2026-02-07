@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
+
 import ReviewsCarousel from "./ReviewsCarousel";
 
 const meta: Meta<typeof ReviewsCarousel> = {

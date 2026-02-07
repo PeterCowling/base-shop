@@ -1,5 +1,7 @@
-import { render, configure } from "@testing-library/react";
+import { configure,render } from "@testing-library/react";
+
 import { useCart } from "../CartContext";
+
 import { clearCartStorage } from "./cartTestUtils";
 
 configure({ testIdAttribute: "data-testid" });

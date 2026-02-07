@@ -1,10 +1,18 @@
-const resolveRepoMock = jest.fn();
+import { getShopById, updateShopInRepo } from "../shop.server";
+
+// Use globalThis to avoid Jest mock hoisting issues
+declare global {
+  var __shopServerDelegationResolveRepoMock: jest.Mock | undefined;
+}
+globalThis.__shopServerDelegationResolveRepoMock = jest.fn();
+
 jest.mock("../repoResolver", () => ({
-  resolveRepo: resolveRepoMock,
+  get resolveRepo() {
+    return globalThis.__shopServerDelegationResolveRepoMock;
+  },
 }));
 
-import { resolveRepo } from "../repoResolver";
-import { getShopById, updateShopInRepo } from "../shop.server";
+const { resolveRepo } = require("../repoResolver") as { resolveRepo: jest.Mock };
 
 describe("shop.server delegation", () => {
   const repo = {
@@ -16,7 +24,7 @@ describe("shop.server delegation", () => {
   const originalInventoryBackend = process.env.INVENTORY_BACKEND;
 
   beforeEach(() => {
-    resolveRepoMock.mockReset();
+    globalThis.__shopServerDelegationResolveRepoMock.mockReset();
     (resolveRepo as jest.Mock).mockResolvedValue(repo);
     repo.getShopById.mockReset();
     repo.updateShopInRepo.mockReset();

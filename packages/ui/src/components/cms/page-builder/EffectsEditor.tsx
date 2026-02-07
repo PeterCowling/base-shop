@@ -2,6 +2,7 @@
 "use client";
 
 import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
+
 import { Input } from "../../atoms/shadcn";
 // i18n-exempt — Editor-only field labels
 /* i18n-exempt */

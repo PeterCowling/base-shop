@@ -1,8 +1,11 @@
+import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import "@testing-library/jest-dom";
-import ShopProvidersSection from "../ShopProvidersSection";
+
 import type { Provider } from "@acme/configurator/providers";
+
+import ShopProvidersSection from "../ShopProvidersSection";
 
 jest.mock(
   "@/components/atoms/shadcn",

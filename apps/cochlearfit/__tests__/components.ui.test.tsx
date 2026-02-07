@@ -1,11 +1,12 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import Container from "@/components/layout/Container";
 import Grid from "@/components/layout/Grid";
-import Section from "@/components/Section";
 import PageHeader from "@/components/PageHeader";
 import QuantityStepper from "@/components/QuantityStepper";
+import Section from "@/components/Section";
 
 describe("ui components", () => {
   it("renders container with base and custom classes", () => {

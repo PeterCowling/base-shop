@@ -1,18 +1,18 @@
 import type { HistoryState } from "@acme/types";
+
+import { redo,undo } from "./history";
 import type { Action } from "./layout";
 import {
   add,
+  duplicate,
   move,
   remove,
-  duplicate,
-  update,
   resize,
   set,
-  setGridCols,
   setBreakpoints,
-} from "./layout";
-import { undo, redo } from "./history";
-import { updateEditor } from "./layout";
+  setGridCols,
+  update,
+ updateEditor } from "./layout";
 
 export function reducer(state: HistoryState, action: Action): HistoryState {
   switch (action.type) {

@@ -1,16 +1,18 @@
 // i18n-exempt file -- ABC-123 [ttl=2025-06-30]
 // apps/cover-me-pretty/src/app/api/orders/[id]/route.ts
-import { getCustomerSession } from "@auth";
+import { NextResponse } from "next/server";
+
+import { getCustomerSession } from "@acme/auth";
 import {
   getOrdersForCustomer,
   markCancelled,
   markDelivered,
   refundOrder,
-} from "@platform-core/orders";
-import { NextResponse } from "next/server";
+} from "@acme/platform-core/orders";
+
 import shop from "../../../../../shop.json";
 
-// @auth relies on Node APIs, so use Node runtime
+// @acme/auth relies on Node APIs, so use Node runtime
 export const runtime = "nodejs";
 
 export async function GET(
@@ -29,7 +31,8 @@ export async function GET(
     }
     return NextResponse.json({ order });
   } catch (err) {
-    return NextResponse.json({ error: (err as Error).message }, { status: 500 });
+    console.error("[api/orders] GET error:", err); // i18n-exempt -- server log
+    return NextResponse.json({ error: "Failed to fetch order" }, { status: 500 }); // i18n-exempt -- generic error
   }
 }
 
@@ -81,6 +84,7 @@ export async function PATCH(
     }
     return NextResponse.json({ order });
   } catch (err) {
-    return NextResponse.json({ error: (err as Error).message }, { status: 500 });
+    console.error("[api/orders] PATCH error:", err); // i18n-exempt -- server log
+    return NextResponse.json({ error: "Failed to update order" }, { status: 500 }); // i18n-exempt -- generic error
   }
 }

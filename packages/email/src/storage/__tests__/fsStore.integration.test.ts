@@ -1,10 +1,12 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { DATA_ROOT } from "@platform-core/dataRoot";
-import { fsCampaignStore } from "../fsStore";
+
+import { DATA_ROOT } from "@acme/platform-core/dataRoot";
+
+import type { AbandonedCart } from "../../abandonedCart";
 import { recoverAbandonedCarts } from "../../abandonedCart";
 import { sendCampaignEmail } from "../../send";
-import type { AbandonedCart } from "../../abandonedCart";
+import { fsCampaignStore } from "../fsStore";
 import type { Campaign } from "../types";
 
 jest.mock("../../send", () => ({

@@ -1,4 +1,5 @@
 import type { Rule } from "eslint";
+
 import { extractFromJsxAttribute } from "../utils/classParser.js";
 
 const BREAKPOINTS = new Set(["sm", "md", "lg", "xl", "2xl"]);

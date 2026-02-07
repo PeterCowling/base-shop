@@ -1,14 +1,15 @@
-import { authOptions } from "@cms/auth/options";
-import { getServerSession } from "next-auth";
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
+import { ensureRole, ensureShopReadAccess } from "@cms/actions/common/auth";
 import { promises as fs } from "fs";
 import path from "path";
-import { resolveDataRoot } from "@platform-core/dataRoot";
-import { listEvents } from "@platform-core/repositories/analytics.server";
+
 import { coreEnv as env } from "@acme/config/env/core";
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
+import { listEvents } from "@acme/platform-core/repositories/analytics.server";
+import { validateShopName } from "@acme/platform-core/shops";
 import type { Coupon } from "@acme/types";
+
 import { writeJsonFile } from "@/lib/server/jsonIO";
-import { validateShopName } from "@platform-core/shops";
 
 interface Discount extends Coupon {
   active?: boolean;
@@ -45,15 +46,29 @@ async function writeDiscounts(shop: string, discounts: Discount[]): Promise<void
 }
 
 async function requireAdmin() {
-  const session = await getServerSession(authOptions);
-  if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
+  try {
+    await ensureRole(["admin", "ShopAdmin"]);
+    return null;
+  } catch {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
-  return null;
 }
 
 export async function GET(req: NextRequest) {
   const shop = getShop(req);
+
+  // Require shop read access to view discount codes
+  try {
+    await ensureShopReadAccess(shop);
+  } catch (err) {
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 401;
+    return NextResponse.json(
+      { error: message === "Forbidden" ? "Forbidden" : "Unauthorized" },
+      { status }
+    );
+  }
+
   const [discounts, events] = await Promise.all([
     readDiscounts(shop),
     listEvents(),

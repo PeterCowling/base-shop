@@ -1,5 +1,6 @@
-import type { ComponentType } from "./defaults";
 import type { PageComponent } from "@acme/types";
+
+import type { ComponentType } from "./defaults";
 
 export interface PaletteMeta {
   type: ComponentType;

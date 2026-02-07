@@ -1,4 +1,6 @@
 // apps/cover-me-pretty/__tests__/home-page.test.tsx
+import type React from "react";
+
 jest.mock("node:fs", () => ({
   promises: { readFile: jest.fn() },
 }));
@@ -22,7 +24,12 @@ test("Home receives components from fs and fetches posts when merchandising enab
   ];
   (fs.readFile as jest.Mock).mockResolvedValue(JSON.stringify(components));
 
-  const element = await Page({ params: { lang: "en" } });
+  // Cast Page to accept the expected props (server component typing is complex)
+  const PageFn = Page as unknown as (props: { params: Promise<{ lang?: string }> }) => Promise<React.ReactElement<{
+    components: PageComponent[];
+    locale: string;
+  }>>;
+  const element = await PageFn({ params: Promise.resolve({ lang: "en" }) });
 
   expect(fs.readFile).toHaveBeenCalledWith(
     expect.stringContaining("data/shops/cover-me-pretty/pages/home.json"),

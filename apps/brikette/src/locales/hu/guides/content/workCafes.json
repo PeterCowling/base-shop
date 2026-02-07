@@ -1,42 +1,35 @@
 {
   "seo": {
-    "title": "Wi-Fi és munkabarát kávézók Brikette közelében",
-    "description": "Hol dolgozhatsz nyugodtan: konnektor, internet, fogyasztási szabályok és nyitvatartás."
+    "title": "Wi‑Fi és munka-barát kávézók a Brikette közelében",
+    "description": "Tipikus sebességek, etikettszabályok, tartalék eSIM lehetőségek és felszerelési tippek a positanói kávézókból való munkához."
   },
-  "linkLabel": "Wi-Fi és munkabarát kávézók Brikette közelében",
+  "linkLabel": "Wi‑Fi és munka-barát kávézók a Brikette közelében",
   "intro": [
-    "A fordítás folyamatban van."
+    "A hostel környékén lévő kávézók, ahol használható Wi‑Fi van. Etiquette: vásárolj rendszeresen, kerüld a hosszú hívásokat bent, és tartsd a helyet rendezettnek."
   ],
   "sections": [
     {
       "id": "spots",
-      "title": "Spots near Brikette",
+      "title": "Helyek a Brikette közelében",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "A Via Pasitea és a Chiesa Nuova körüli kis kávézókban gyakran stabil a Wi‑Fi.",
+        "Hozz magaddal külső akkut; a régi helyeken kevés a hálózati csatlakozó."
       ]
     },
     {
       "id": "backup",
-      "title": "Backup connectivity",
+      "title": "Tartalék kapcsolat",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Tarts kéznél eSIM-et; a szolgáltatók területtől függően változnak — a TIM és Vodafone általában erős jelet ad.",
+        "Csatlakozz megosztott kapcsolatra, amikor az ebédidő lelassítja a kávézók hálózatát."
       ]
     }
   ],
-  "galleryTitle": "Gallery",
-  "gallery": {
-    "item1Alt": "Laptop on a café table",
-    "item1Caption": "A quiet corner for calls",
-    "item2Alt": "Espresso and notebook",
-    "item2Caption": "A fordítás folyamatban van."
-  },
   "faqs": [
     {
-      "q": "Is all‑day work OK?",
+      "q": "Lehet egész nap itt dolgozni?",
       "a": [
-        "A fordítás folyamatban van."
+        "Vásárolj 60–90 percenként, kerüld az ebédidőt; érdemes váltogatni a helyeket."
       ]
     }
   ]

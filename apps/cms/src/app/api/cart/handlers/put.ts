@@ -1,14 +1,16 @@
-import { NextResponse, type NextRequest } from "next/server";
-import { getProductById } from "@platform-core/products";
-import { putSchema } from "@platform-core/schemas/cart";
-import type { CartState } from "@platform-core/cart";
+import { type NextRequest,NextResponse } from "next/server";
+
+import type { CartState } from "@acme/platform-core/cart";
+import { getProductById } from "@acme/platform-core/products";
+import { putSchema } from "@acme/platform-core/schemas/cart";
+
 import {
-  ensureCartStore,
-  getDecodedCartId,
-  withCartCookie,
-  errorResponse,
-  serverError,
   type CartStore,
+  ensureCartStore,
+  errorResponse,
+  getDecodedCartId,
+  serverError,
+  withCartCookie,
 } from "./utils";
 
 export async function PUT(
@@ -37,7 +39,7 @@ export async function PUT(
         return errorResponse("Size required", 400);
       }
       const key = line.size ? `${sku.id}:${line.size}` : sku.id;
-      cart[key] = { sku, size: line.size, qty: line.qty };
+      cart[key] = { sku: sku as any, size: line.size, qty: line.qty };
     }
 
     await store.setCart(cartId, cart);

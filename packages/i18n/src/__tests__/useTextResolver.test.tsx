@@ -1,6 +1,8 @@
-import { renderHook } from "@testing-library/react";
 import type { PropsWithChildren } from "react";
+import { renderHook } from "@testing-library/react";
+
 import type { Locale, TranslatableText } from "@acme/types";
+
 import { TranslationsProvider } from "../Translations";
 import { useTextResolver } from "../useTextResolver";
 

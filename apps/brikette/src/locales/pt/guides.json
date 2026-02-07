@@ -3,6 +3,7 @@
     "relatedGuides": "Guias relacionados",
     "indexTitle": "Guias de viagem de Positano",
     "popularGuides": "Guias populares",
+    "viewAll": "Ver todos os guias",
     "helpfulGuides": "Guias úteis",
     "alsoSee": "Veja também",
     "sectionFallback": "Section {{position}}"
@@ -13,131 +14,337 @@
       "description": "Guias práticos passo a passo para se deslocar por Positano e pela Costa Amalfitana."
     }
   },
+  "redirectPage": {
+    "title": "Redirecionando…",
+    "message": "Se você não for redirecionado, <link>continue aqui</link>."
+  },
   "content": {
     "onlyHostel": {
-      "linkLabel": "The only hostel in Positano",
+      "linkLabel": "O único hostel em Positano",
       "seo": {
-        "title": "The only hostel in Positano",
-        "description": "Affordable beds in Positano with panoramic views and friendly vibes."
+        "title": "O único hostel em Positano",
+        "description": "Camas acessíveis em Positano com vistas panorâmicas e ambiente acolhedor."
       }
     },
     "backpackerItineraries": {
-      "linkLabel": "Backpacker itineraries",
+      "linkLabel": "Roteiros para mochileiros",
       "seo": {
-        "title": "Backpacker itineraries on the Amalfi Coast",
-        "description": "Practical, budget-first routes for 2 to 7 days without a car."
+        "title": "Roteiros para mochileiros na Costa Amalfitana",
+        "description": "Rotas práticas e econômicas para 2 a 7 dias sem carro."
       }
     },
     "reachBudget": {
-      "linkLabel": "Reach Positano on a budget",
+      "linkLabel": "Chegar a Positano com orçamento baixo",
       "seo": {
-        "title": "Reach Positano on a budget",
-        "description": "Cheapest ways to get to Positano by bus, train and ferry."
+        "title": "Chegar a Positano com orçamento baixo",
+        "description": "As formas mais baratas de chegar a Positano de ônibus, trem e ferry."
       }
     },
     "ferrySchedules": {
-      "linkLabel": "Ferry schedules",
+      "linkLabel": "Horários de ferry",
       "seo": {
-        "title": "Positano ferry schedules",
-        "description": "Up-to-date ferry operators and seasonal timetables for Positano."
+        "title": "Horários de ferry de Positano",
+        "description": "Operadores de ferry atualizados e horários sazonais para Positano."
       }
     },
     "pathOfTheGods": {
-      "linkLabel": "Path of the Gods from Positano",
+      "linkLabel": "Caminho dos Deuses: Guia completo de Positano",
       "seo": {
-        "title": "Hike the Path of the Gods",
-        "description": "Door-to-door instructions to hike Sentiero degli Dei from Positano."
+        "title": "Trilha do Caminho dos Deuses",
+        "description": "Instruções porta a porta para caminhar pelo Sentiero degli Dei a partir de Positano."
       }
     },
     "pathOfTheGodsFerry": {
-      "linkLabel": "Path of the Gods via Amalfi (ferry)",
+      "linkLabel": "Caminho dos Deuses: Rota cênica de ferry e trilha",
       "seo": {
-        "title": "Path of the Gods via Amalfi (ferry)",
-        "description": "Sail to Amalfi, bus up to Bomerano, then hike the Path of the Gods with return directions."
+        "title": "Caminho dos Deuses via Amalfi (ferry)",
+        "description": "Navegue até Amalfi, suba de ônibus para Bomerano, depois caminhe pelo Caminho dos Deuses com direções de retorno."
       }
     },
     "pathOfTheGodsBus": {
-      "linkLabel": "Path of the Gods via Amalfi (bus)",
+      "linkLabel": "Caminho dos Deuses: Trilha econômica de ônibus",
       "seo": {
-        "title": "Path of the Gods via Amalfi (bus)",
-        "description": "Take the SITA Sud bus to Bomerano and follow our Path of the Gods route back toward Positano."
+        "title": "Caminho dos Deuses via Amalfi (ônibus)",
+        "description": "Pegue o ônibus SITA Sud até Bomerano e siga nossa rota do Caminho dos Deuses de volta para Positano."
       }
     },
     "pathOfTheGodsNocelle": {
-      "linkLabel": "Path of the Gods via Nocelle",
+      "linkLabel": "Caminho dos Deuses: Trilha curta de Nocelle",
       "seo": {
-        "title": "Path of the Gods via Nocelle",
-        "description": "Shorter out-and-back hike from Nocelle with directions to return to Hostel Brikette."
+        "title": "Caminho dos Deuses via Nocelle",
+        "description": "Trilha mais curta de ida e volta de Nocelle com direções para retornar ao Hostel Brikette."
       }
     },
     "dayTripsAmalfi": {
-      "linkLabel": "Day trips from Positano",
+      "linkLabel": "Melhores passeios de um dia: Capri, Amalfi, Pompeia e mais",
       "seo": {
-        "title": "Day trips from Positano",
-        "description": "Ideas for Amalfi, Ravello, Capri and Pompeii with timing and transport tips."
+        "title": "Passeios de um dia a partir de Positano",
+        "description": "Ideias para Amalfi, Ravello, Capri e Pompeia com dicas de horários e transporte."
       }
     },
-    "publicTransportAmalfi": {
-      "linkLabel": "Amalfi Coast public transport guide",
+    "positanoBeaches": {
+      "linkLabel": "Praias de Positano: Areia, sol e enseadas secretas",
       "seo": {
-        "title": "Amalfi Coast public transport guide",
-        "description": "How to use buses and ferries on the Amalfi Coast with passes, timing and routes."
+        "title": "Praias de Positano: Sol e enseadas secretas",
+        "description": "Descubra as melhores praias de Positano, desde a icônica Spiaggia Grande até enseadas escondidas e beach clubs exclusivos."
+      }
+    },
+    "arienzoBeachClub": {
+      "linkLabel": "Praia Arienzo: O beach club exclusivo de Positano",
+      "seo": {
+        "title": "Praia Arienzo: Beach club boutique de Positano",
+        "description": "Guia do Arienzo Beach Club com escadas, espreguiçadeiras, restaurante e direções do Hostel Brikette."
+      }
+    },
+    "fornilloBeachGuide": {
+      "linkLabel": "Praia Fornillo: A alternativa tranquila de Positano",
+      "seo": {
+        "title": "Praia Fornillo: Alternativa mais tranquila de Positano",
+        "description": "Praia Fornillo tranquila com areia gratuita, restaurantes locais e fácil acesso a pé do centro de Positano."
+      }
+    },
+    "lauritoBeachGuide": {
+      "linkLabel": "Praia Laurito: Joia escondida sob as falésias",
+      "seo": {
+        "title": "Praia Laurito: Joia escondida sob as falésias",
+        "description": "Praia Laurito remota com mais de 450 degraus, frutos do mar locais e água turquesa longe das multidões."
+      }
+    },
+    "gavitellaBeachGuide": {
+      "linkLabel": "Praia Gavitella: O ponto de banho ao pôr do sol em Praiano",
+      "seo": {
+        "title": "Praia Gavitella: Ponto de natação ao pôr do sol de Praiano",
+        "description": "Praia local de Praiano com vistas do pôr do sol, água calma e fácil acesso de ônibus de Positano."
+      }
+    },
+    "marinaDiPraiaBeaches": {
+      "linkLabel": "Marina di Praia: Enseada espetacular entre as falésias",
+      "seo": {
+        "title": "Marina di Praia: Enseada dramática entre os penhascos",
+        "description": "Marina di Praia cênica com torre normanda, restaurantes à beira-mar e enseada de natação cristalina."
+      }
+    },
+    "fiordoDiFuroreBeachGuide": {
+      "linkLabel": "Fiordo di Furore: A praia do fiorde sob a ponte",
+      "seo": {
+        "title": "Fiordo di Furore: A praia do fiorde sob a ponte",
+        "description": "Fiorde de Furore famoso no Instagram com água esmeralda, mergulho de penhascos e vistas dramáticas da ponte de ônibus de Positano."
+      }
+    },
+    "reginaGiovannaBath": {
+      "linkLabel": "Regina Giovanna: Ruínas romanas e piscina natural",
+      "seo": {
+        "title": "Regina Giovanna: Ruínas romanas encontram piscina natural",
+        "description": "Piscina natural histórica em Sorrento com ruínas de villa romana, caminhada costeira e natação em águas claras."
+      }
+    },
+    "positanoMainBeach": {
+      "linkLabel": "Spiaggia Grande: A icônica praia principal de Positano",
+      "seo": {
+        "title": "Spiaggia Grande: A icônica praia principal de Positano",
+        "description": "Guia completo para a praia principal de Positano com preços de espreguiçadeiras, áreas gratuitas, restaurantes e como chegar."
+      }
+    },
+    "positanoMainBeachWalkDown": {
+      "linkLabel": "Caminhar até a praia principal de Positano",
+      "seo": {
+        "title": "Caminhar do Hostel Brikette até a praia principal de Positano",
+        "description": "Direções de caminhada do Hostel Brikette descendo até Spiaggia Grande com pontos de referência e estimativas de tempo."
+      }
+    },
+    "positanoMainBeachBusDown": {
+      "linkLabel": "Ônibus até a praia principal de Positano",
+      "seo": {
+        "title": "Ônibus do Hostel Brikette até a praia principal de Positano",
+        "description": "Pegue o ônibus SITA de Chiesa Nuova até a praia de Positano com localizações de paradas e horários."
+      }
+    },
+    "positanoMainBeachWalkBack": {
+      "linkLabel": "Caminhar de volta da praia principal de Positano",
+      "seo": {
+        "title": "Caminhar de volta ao Hostel Brikette da Spiaggia Grande",
+        "description": "Caminhada subindo da praia principal de Positano de volta ao Hostel Brikette com orientações passo a passo."
+      }
+    },
+    "positanoMainBeachBusBack": {
+      "linkLabel": "Ônibus de volta ao Hostel Brikette da Spiaggia Grande",
+      "seo": {
+        "title": "Ônibus de volta ao Hostel Brikette da praia principal de Positano",
+        "description": "Pegue o ônibus SITA da praia de Positano até Chiesa Nuova com pontos de embarque e horários."
+      }
+    },
+    "hostelBriketteToFornilloBeach": {
+      "linkLabel": "Hostel Brikette → Praia Fornillo guia de caminhada",
+      "seo": {
+        "title": "Hostel Brikette → Rota de caminhada para Praia Fornillo"
+      }
+    },
+    "fornilloBeachToBrikette": {
+      "linkLabel": "Praia Fornillo → Rota de retorno ao Hostel Brikette",
+      "seo": {
+        "title": "Praia Fornillo → Rota de retorno ao Hostel Brikette"
+      }
+    },
+    "hostelBriketteToFiordoDiFuroreBus": {
+      "linkLabel": "Como chegar à Praia Fiordo di Furore de ônibus",
+      "seo": {
+        "title": "Como chegar à Praia Fiordo di Furore de ônibus"
+      }
+    },
+    "fiordoDiFuroreBusReturn": {
+      "linkLabel": "Praia Fiordo di Furore → Hostel Brikette de ônibus",
+      "seo": {
+        "title": "Praia Fiordo di Furore → Hostel Brikette de ônibus"
+      }
+    },
+    "lauritoBeachBusDown": {
+      "linkLabel": "Como chegar à Praia Laurito de ônibus",
+      "seo": {
+        "title": "Como chegar à Praia Laurito de ônibus"
+      }
+    },
+    "lauritoBeachBusBack": {
+      "linkLabel": "Ônibus de volta ao Hostel Brikette da Praia Laurito",
+      "seo": {
+        "title": "Ônibus de volta ao Hostel Brikette da Praia Laurito"
+      }
+    },
+    "hostelBriketteToArienzoBus": {
+      "linkLabel": "Como chegar à Praia Arienzo de ônibus",
+      "seo": {
+        "title": "Como chegar à Praia Arienzo de ônibus"
+      }
+    },
+    "arienzoBeachBusBack": {
+      "linkLabel": "Ônibus de volta ao Hostel Brikette da Praia Arienzo",
+      "seo": {
+        "title": "Ônibus de volta ao Hostel Brikette da Praia Arienzo"
+      }
+    },
+    "hostelBriketteToReginaGiovannaBath": {
+      "linkLabel": "Como chegar à Praia Regina Giovanna Bath",
+      "seo": {
+        "title": "Como chegar à Praia Regina Giovanna Bath"
+      }
+    },
+    "sunriseHike": {
+      "linkLabel": "Trilha ao nascer do sol: Veja o amanhecer sobre Positano"
+    },
+    "santaMariaDelCastelloHike": {
+      "linkLabel": "Santa Maria del Castello: Trilha para vila na montanha"
+    },
+    "topOfTheMountainHike": {
+      "linkLabel": "Monte Comune: Trilha ao mirante mais alto de Positano"
+    },
+    "stayingFitAmalfi": {
+      "linkLabel": "Mantenha-se em forma em Positano: Escadas, trilhas e treinos na praia"
+    },
+    "capriDayTrip": {
+      "linkLabel": "Passeio a Capri: Fuga para a ilha a partir de Positano"
+    },
+    "capriOnABudget": {
+      "linkLabel": "Capri sem estourar o orçamento"
+    },
+    "campingAmalfi": {
+      "linkLabel": "Camping na Costa Amalfitana: Alternativa econômica a hotéis"
+    },
+    "boatTours": {
+      "linkLabel": "Passeios de barco: Cruzeiros ao pôr do sol e charters privados"
+    },
+    "cheapEats": {
+      "linkLabel": "Coma como um local: Os melhores lugares baratos de Positano"
+    },
+    "eatingOutPositano": {
+      "linkLabel": "Onde comer em Positano: Do casual à celebração"
+    },
+    "positanoDining": {
+      "linkLabel": "Os melhores restaurantes de Positano perto do Hostel Brikette"
+    },
+    "limoncelloCuisine": {
+      "linkLabel": "Sabores de Positano: Limoncello, limões e sabores locais"
+    },
+    "instagramSpots": {
+      "linkLabel": "Positano para Instagram: Melhores locais e horários para fotos"
+    },
+    "sunsetViewpoints": {
+      "linkLabel": "Pôr do sol em Positano: Os melhores mirantes para a hora dourada"
+    },
+    "ravelloFestival": {
+      "linkLabel": "Festival de Ravello: Concertos clássicos sob as estrelas"
+    },
+    "ferragostoPositano": {
+      "linkLabel": "Ferragosto: A celebração de 15 de agosto em Positano"
+    },
+    "luminariaPraiano": {
+      "linkLabel": "Luminaria di Praiano: Milhares de velas iluminam a noite"
+    },
+    "walkingTourAudio": {
+      "linkLabel": "Áudio tour gratuito: Descubra as histórias escondidas de Positano"
+    },
+    "freeThingsPositano": {
+      "linkLabel": "Coisas grátis em Positano: Diversão econômica"
+    },
+    "publicTransportAmalfi": {
+      "linkLabel": "Guia de transporte público da Costa Amalfitana",
+      "seo": {
+        "title": "Guia de transporte público da Costa Amalfitana",
+        "description": "Como usar ônibus e ferries na Costa Amalfitana com passes, horários e rotas."
       }
     },
     "travelTipsFirstTime": {
-      "linkLabel": "Positano travel tips for first-time visitors",
+      "linkLabel": "Dicas de viagem em Positano para visitantes de primeira viagem",
       "seo": {
-        "title": "Positano travel tips for first-time visitors",
-        "description": "Arrivals, luggage, payments and connectivity — practical advice for your first trip."
+        "title": "Dicas de viagem em Positano para visitantes de primeira viagem",
+        "description": "Chegadas, bagagem, pagamentos e conectividade — conselhos práticos para sua primeira viagem."
       }
     },
     "whatToPack": {
-      "linkLabel": "What to pack for the Amalfi Coast",
+      "linkLabel": "O que levar para a Costa Amalfitana",
       "seo": {
-        "title": "What to pack for the Amalfi Coast",
-        "description": "Seasonal packing checklist for Positano and the Amalfi Coast."
+        "title": "O que levar para a Costa Amalfitana",
+        "description": "Lista de bagagem sazonal para Positano e a Costa Amalfitana."
       }
     }
   },
   "dev": {
     "statusPill": {
-      "title": "Guide status: {{status}} (click to toggle)"
+      "title": "Status do guia: {{status}} (clique para alternar)"
     },
     "editorialPanel": {
-      "title": "Editorial workflow",
+      "title": "Fluxo editorial",
       "status": {
-        "draft": "Draft",
-        "review": "In review",
-        "live": "Live"
+        "draft": "Rascunho",
+        "review": "Em revisão",
+        "live": "Publicado"
       },
       "workflow": {
-        "draftPreview": "Draft preview",
-        "published": "Published",
-        "pending": "Pending publication",
-        "allComplete": "All checklist items complete",
-        "outstanding_one": "{{count}} outstanding item",
-        "outstanding_other": "{{count}} outstanding items"
+        "draftPreview": "Pré-visualização de rascunho",
+        "published": "Publicado",
+        "pending": "Publicação pendente",
+        "allComplete": "Todos os itens da lista de verificação completos",
+        "outstanding_one": "{{count}} item pendente",
+        "outstanding_other": "{{count}} itens pendentes"
       },
       "draftPath": {
-        "label": "Draft path",
-        "dashboardCta": "Open draft dashboard"
+        "label": "Caminho do rascunho",
+        "dashboardCta": "Abrir painel de rascunhos"
       },
       "publish": {
-        "heading": "Publish to",
-        "primary": "Primary"
+        "heading": "Publicar em",
+        "primary": "Principal"
       },
       "checklist": {
-        "heading": "Completion checklist",
+        "heading": "Lista de verificação de conclusão",
         "status": {
-          "missing": "Missing",
-          "inProgress": "In progress",
-          "complete": "Complete"
+          "missing": "Faltando",
+          "inProgress": "Em progresso",
+          "complete": "Completo"
         }
       },
       "areaLabels": {
-        "howToGetHere": "How to get here",
-        "help": "Help centre",
-        "experience": "Experiences"
+        "howToGetHere": "Como chegar aqui",
+        "help": "Centro de ajuda",
+        "experience": "Experiências"
       }
     }
   }

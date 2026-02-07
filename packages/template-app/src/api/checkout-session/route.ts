@@ -1,30 +1,32 @@
 // packages/template-app/src/api/checkout-session/route.ts
+import { type NextRequest, NextResponse } from "next/server";
+import type Stripe from "stripe";
+import { ulid } from "ulid";
+
+import { getCustomerSession } from "@acme/auth";
+import { coreEnv } from "@acme/config/env/core";
 import {
   CART_COOKIE,
-  decodeCartCookie,
   type CartState,
-} from "@platform-core/cartCookie";
-import { getCart } from "@platform-core/cartStore";
+  decodeCartCookie,
+} from "@acme/platform-core/cartCookie";
+import { getCart } from "@acme/platform-core/cartStore";
 import {
-  convertCurrency,
-  getPricing,
-} from "@platform-core/pricing";
-import {
+  CheckoutValidationError,
   createCheckoutSession,
   INSUFFICIENT_STOCK_ERROR,
-} from "@platform-core/checkout/session";
+} from "@acme/platform-core/checkout/session";
+import { getCustomerProfile } from "@acme/platform-core/customerProfiles";
+import { getOrCreateStripeCustomerId } from "@acme/platform-core/identity";
 import {
   cartToInventoryRequests,
   validateInventoryAvailability,
-} from "@platform-core/inventoryValidation";
-import { coreEnv } from "@acme/config/env/core";
-import { readShop } from "@platform-core/repositories/shops.server";
-import { getCustomerSession } from "@auth";
-import { getCustomerProfile } from "@platform-core/customerProfiles";
-import { getOrCreateStripeCustomerId } from "@platform-core/identity";
-import { NextRequest, NextResponse } from "next/server";
-import type Stripe from "stripe";
-import { ulid } from "ulid";
+} from "@acme/platform-core/inventoryValidation";
+import {
+  convertCurrency,
+  getPricing,
+} from "@acme/platform-core/pricing";
+import { readShop } from "@acme/platform-core/repositories/shops.server";
 
 export const runtime = "nodejs";
 
@@ -175,6 +177,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
     if (err instanceof Error && err.message === INSUFFICIENT_STOCK_ERROR) {
       return NextResponse.json({ error: INSUFFICIENT_STOCK_ERROR }, { status: 409 }); // i18n-exempt -- ABC-123: machine-readable API error
+    }
+    if (err instanceof CheckoutValidationError) {
+      return NextResponse.json(
+        { error: err.message, code: err.code, details: err.details },
+        { status: 409 },
+      );
     }
     console.error("Failed to create Stripe checkout session", err); // i18n-exempt -- ABC-123: developer log
     return NextResponse.json({ error: "Checkout failed" }, { status: 502 }); // i18n-exempt -- ABC-123: machine-readable API error

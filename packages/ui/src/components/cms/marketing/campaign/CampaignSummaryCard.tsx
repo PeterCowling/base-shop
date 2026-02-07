@@ -1,9 +1,12 @@
 import type { ReactNode } from "react";
+
+import { useTranslations } from "@acme/i18n";
+
+import { Inline } from "../../../atoms/primitives";
 import { Tag, type TagProps } from "../../../atoms/shadcn";
 import { SummaryCard, type SummaryMetric } from "../shared";
+
 import type { CampaignPreviewData } from "./types";
-import { Inline } from "../../../atoms/primitives";
-import { useTranslations } from "@acme/i18n";
 
 export interface CampaignSummaryCardProps {
   data: CampaignPreviewData;

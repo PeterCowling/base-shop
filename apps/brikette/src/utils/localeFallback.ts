@@ -1,4 +1,4 @@
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
 
 export type LocaleBundle = Record<string, unknown>;
 export type LocaleModule = { default: LocaleBundle } | LocaleBundle;

@@ -1,16 +1,16 @@
 // apps/cover-me-pretty/__tests__/shipping-rate.test.ts
-jest.mock("@platform-core/shipping/index", () => ({
+jest.mock("@acme/platform-core/shipping/index", () => ({
   __esModule: true,
   getShippingRate: jest.fn(),
 }));
 
-jest.mock("@platform-core/repositories/settings.server", () => ({
+jest.mock("@acme/platform-core/repositories/settings.server", () => ({
   __esModule: true,
   getShopSettings: jest.fn().mockResolvedValue({}),
 }));
 
-import { getShippingRate } from "@platform-core/shipping/index";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
+import { getShippingRate } from "@acme/platform-core/shipping/index";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
 import { POST } from "../src/app/api/shipping-rate/route";
 import type { ShopSettings } from "@acme/types";
 
@@ -86,10 +86,10 @@ test("returns 500 when provider throws", async () => {
 });
 
 test("uses premierDelivery when enabled and region allowed", async () => {
-  const settings: Pick<ShopSettings, "luxuryFeatures" | "premierDelivery"> = {
+  const settings = {
     luxuryFeatures: { premierDelivery: true },
-    premierDelivery: { regions: ["EU", "US"] },
-  };
+    premierDelivery: { regions: ["EU", "US"], windows: ["AM", "PM"], carriers: ["X"] },
+  } as Pick<ShopSettings, "luxuryFeatures" | "premierDelivery">;
   (getShopSettings as jest.Mock).mockResolvedValueOnce(settings);
   (getShippingRate as jest.Mock).mockResolvedValue({ rate: 99 });
   const res = await POST(
@@ -110,10 +110,10 @@ test("uses premierDelivery when enabled and region allowed", async () => {
 });
 
 test("falls back to dhl when region not allowed", async () => {
-  const settings: Pick<ShopSettings, "luxuryFeatures" | "premierDelivery"> = {
+  const settings = {
     luxuryFeatures: { premierDelivery: true },
-    premierDelivery: { regions: ["US"] },
-  };
+    premierDelivery: { regions: ["US"], windows: ["AM", "PM"], carriers: ["X"] },
+  } as Pick<ShopSettings, "luxuryFeatures" | "premierDelivery">;
   (getShopSettings as jest.Mock).mockResolvedValueOnce(settings);
   (getShippingRate as jest.Mock).mockResolvedValue({ rate: 55 });
   const res = await POST(

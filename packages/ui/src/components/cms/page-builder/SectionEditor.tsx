@@ -1,13 +1,16 @@
 // packages/ui/src/components/cms/page-builder/SectionEditor.tsx
 "use client";
 
-import type { PageComponent } from "@acme/types";
-import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
 import { useCallback, useMemo, useState } from "react";
-import ImageEditor, { type ImageEditState } from "./ImageEditor";
-import OverlayPicker from "./OverlayPicker";
+
+import type { PageComponent } from "@acme/types";
+
+import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
+
 import type { EditorProps } from "./EditorProps";
 import usePreviewTokens from "./hooks/usePreviewTokens";
+import ImageEditor, { type ImageEditState } from "./ImageEditor";
+import OverlayPicker from "./OverlayPicker";
 import { extractTextThemes, type TextTheme } from "./textThemes";
 
 type SectionExtra = PageComponent & {

@@ -1,11 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useState, type ChangeEvent } from "react";
-import { Card, CardContent, Input, Button } from "../atoms/shadcn";
-import LocaleContentAccordion, { type LocalePanelConfig } from "./LocaleContentAccordion";
+import { type ChangeEvent,useEffect, useMemo, useState } from "react";
+
+import { useTranslations } from "@acme/i18n";
 import type { Locale } from "@acme/i18n/locales";
 import { LOCALES } from "@acme/i18n/locales";
-import { useTranslations } from "@acme/i18n";
+
+import { Button,Card, CardContent, Input } from "../atoms/shadcn";
+
+import LocaleContentAccordion, { type LocalePanelConfig } from "./LocaleContentAccordion";
 
 interface Props {
   label?: string;
@@ -16,13 +19,20 @@ interface Props {
 }
 
 type Mode = "inline" | "key";
+type Messages = Record<string, string>;
+
+const localeLoaders: Record<Locale, () => Promise<Messages>> = {
+  en: async () => (await import("@acme/i18n/en.json")).default as Messages,
+  de: async () => (await import("@acme/i18n/de.json")).default as Messages,
+  it: async () => (await import("@acme/i18n/it.json")).default as Messages,
+};
 
 export default function LocalizedTextInput({ label, value = "", onChange, locale = "en" }: Props) {
   const [mode, setMode] = useState<Mode>("inline");
   const [search, setSearch] = useState("");
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
-  const [enMessages, setEnMessages] = useState<Record<string, string>>({});
-  const [localeMessages, setLocaleMessages] = useState<Record<string, string>>({});
+  const [enMessages, setEnMessages] = useState<Messages>({});
+  const [localeMessages, setLocaleMessages] = useState<Messages>({});
   const t = useTranslations();
 
   // Load messages for key mode search/preview
@@ -30,7 +40,7 @@ export default function LocalizedTextInput({ label, value = "", onChange, locale
     let mounted = true;
     (async () => {
       /* i18n-exempt -- ABC-123 dev-only dynamic i18n message import [ttl=2026-01-31] */
-      const en = (await import("@acme/i18n/en.json")).default as Record<string, string>;
+      const en = await localeLoaders.en();
       if (!mounted) return;
       setEnMessages(en);
     })();
@@ -46,10 +56,11 @@ export default function LocalizedTextInput({ label, value = "", onChange, locale
         setLocaleMessages(enMessages);
         return;
       }
+      const loadLocale = localeLoaders[locale] ?? localeLoaders.en;
       try {
-        const m = (await import(`@acme/i18n/${locale}.json`)).default as Record<string, string>;
+        const messages = await loadLocale();
         if (!mounted) return;
-        setLocaleMessages(m);
+        setLocaleMessages(messages);
       } catch {
         setLocaleMessages({});
       }

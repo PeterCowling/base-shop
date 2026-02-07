@@ -10,23 +10,23 @@
   "sections": [
     {
       "id": "day1-morning",
-      "title": "Day 1 — arrival & morning",
+      "title": "Dag 1 — ankomst og morgen",
       "body": [
         "Ankom den første SITA-bussen eller fergen, slipp poser på overnattingsstedet eller lageret ditt, og ta espresso pluss sfogliatella på Via dei Mulini.",
-        "Gå ned til Fornillo-stranden for en svømmetur før middag når lidos fortsatt er rolige og offentlige steder frigjør."
+        "Gå ned til Fornillo-stranden for en svømmetur før middag når strandklubbene fortsatt er rolige og de offentlige områdene frigjør."
       ]
     },
     {
       "id": "day1-afternoon",
-      "title": "Day 1 — afternoon & sunset",
+      "title": "Dag 1 — ettermiddag og solnedgang",
       "body": [
-        "Kjør den lokale bussen til Nocelle for en kort Path of the Gods-forsmak; tilbake i tide for solnedgang på Via Cristoforo Colombo.",
+        "Kjør den lokale bussen til Nocelle for en kort smakebit av Gudestien; tilbake i tide for solnedgang på Via Cristoforo Colombo.",
         "Bestill middag på en terrasse eller hent delikatessemat for en piknik på vandrerhjemmets balkong."
       ]
     },
     {
       "id": "day2-morning",
-      "title": "Day 2 — choose-your-adventure morning",
+      "title": "Dag 2 — morgen med valgfri rute",
       "body": [
         "Alternativ A: ferge til Amalfi og raskt hopp til Ravellos Villa Cimbrone-hager; alternativ B: bli med på en felles båttur for kystlinjeutsikt.",
         "Pakk frokost fra bakeriet slik at du kan starte tidlig uten å vente på kaféservering."
@@ -34,7 +34,7 @@
     },
     {
       "id": "day2-afternoon",
-      "title": "Day 2 — wrap-up & departure",
+      "title": "Dag 2 — avslutning og avreise",
       "body": [
         "Klem inn shopping hos håndverkssandalprodusenter eller keramikkstudioer før lunsj.",
         "Samle bagasje 90 minutter før avgang for å tillate trapper og køer ved kaien eller bussholdeplassen."
@@ -47,13 +47,13 @@
   ],
   "faqs": [
     {
-      "q": "Is one overnight enough?",
+      "q": "Holder en natt?",
       "a": [
         "Ja hvis du fokuserer på høydepunkter og holder deg sentralt, men to netter byr på et roligere tempo og backup for været."
       ]
     },
     {
-      "q": "Where should I watch sunset?",
+      "q": "Hvor bør jeg se solnedgangen?",
       "a": [
         "Via Cristoforo Colombo og vandrerhjemmets terrasse er enkle gevinster; strandbarer fungerer også, men forvent høyere priser."
       ]

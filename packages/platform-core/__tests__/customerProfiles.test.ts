@@ -1,10 +1,19 @@
 import { jest } from "@jest/globals";
 
-// Use the runtime Prisma stub and override customerProfile methods
-const actual = jest.requireActual("../src/db") as typeof import("../src/db");
+import { getCustomerProfile, updateCustomerProfile } from "../src/customerProfiles";
 
-const prisma = {
-  ...actual.prisma,
+// Use globalThis to avoid Jest mock hoisting issues
+declare global {
+  var __customerProfilesTestPrisma: {
+    customerProfile: {
+      findUnique: jest.Mock;
+      findFirst: jest.Mock;
+      upsert: jest.Mock;
+    };
+  } | undefined;
+}
+
+globalThis.__customerProfilesTestPrisma = {
   customerProfile: {
     findUnique: jest.fn(),
     findFirst: jest.fn(),
@@ -12,9 +21,13 @@ const prisma = {
   },
 };
 
-jest.mock("../src/db", () => ({ prisma }));
+const prisma = globalThis.__customerProfilesTestPrisma!;
 
-import { getCustomerProfile, updateCustomerProfile } from "../src/customerProfiles";
+jest.mock("../src/db", () => ({
+  get prisma() {
+    return globalThis.__customerProfilesTestPrisma;
+  },
+}));
 
 describe("customer profiles", () => {
   beforeEach(() => {

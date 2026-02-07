@@ -1,7 +1,8 @@
 import React from "react";
+
 import { LOCALES } from "@acme/i18n";
 
-jest.mock("@platform-core/products", () => ({ getProductBySlug: jest.fn() }));
+jest.mock("@acme/platform-core/products", () => ({ getProductBySlug: jest.fn() }));
 jest.mock("next/navigation", () => ({ notFound: jest.fn() }));
 jest.mock("./PdpClient.client", () => ({ __esModule: true, default: jest.fn(() => null) }));
 
@@ -22,7 +23,7 @@ describe("ProductDetailPage", () => {
   });
 
   it("generateMetadata returns product title when found", async () => {
-    const products = require("@platform-core/products");
+    const products = require("@acme/platform-core/products");
     products.getProductBySlug.mockReturnValue({ title: "Demo" });
     const { generateMetadata } = await import("./page");
     const metadata = await generateMetadata({
@@ -33,7 +34,7 @@ describe("ProductDetailPage", () => {
   });
 
   it("generateMetadata returns fallback title when product missing", async () => {
-    const products = require("@platform-core/products");
+    const products = require("@acme/platform-core/products");
     products.getProductBySlug.mockReturnValue(undefined);
     const { generateMetadata } = await import("./page");
     const metadata = await generateMetadata({
@@ -43,7 +44,7 @@ describe("ProductDetailPage", () => {
   });
 
   it("invokes notFound when product is missing", async () => {
-    const products = require("@platform-core/products");
+    const products = require("@acme/platform-core/products");
     products.getProductBySlug.mockReturnValue(undefined);
     const { default: ProductDetailPage } = await import("./page");
     const nav = require("next/navigation");
@@ -55,7 +56,7 @@ describe("ProductDetailPage", () => {
 
   it("returns PdpClient element when product exists", async () => {
     const product = { title: "Demo", description: "", media: [], sizes: [], price: 0 } as any;
-    const products = require("@platform-core/products");
+    const products = require("@acme/platform-core/products");
     products.getProductBySlug.mockReturnValue(product);
     const { default: ProductDetailPage } = await import("./page");
     const PdpClient = require("./PdpClient.client").default as React.FC<any>;

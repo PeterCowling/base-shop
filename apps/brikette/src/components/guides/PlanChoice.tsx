@@ -1,7 +1,7 @@
 // src/components/guides/PlanChoice.tsx
-import { memo, useMemo, useState } from "react";
-import clsx from "clsx";
+import React, { memo, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import clsx from "clsx";
 import type { TFunction } from "i18next";
 
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
@@ -20,7 +20,7 @@ type Props = {
   lang?: AppLanguage;
 };
 
-type ClusterProps = JSX.IntrinsicElements["div"];
+type ClusterProps = React.ComponentProps<"div">;
 
 function Cluster({ className, ...rest }: ClusterProps): JSX.Element {
   const baseClass = clsx("flex", "flex-wrap", "gap-2");

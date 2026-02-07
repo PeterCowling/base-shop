@@ -1,4 +1,5 @@
 import { renderHook, waitFor } from "@testing-library/react";
+
 import { useImageOrientationValidation } from "../useImageOrientationValidation";
 
 class MockImage {
@@ -103,7 +104,7 @@ describe("useImageOrientationValidation", () => {
 
     await waitFor(() => expect(result.current.actual).toBe("landscape"));
 
-    rerender({ f: null });
+    rerender({ f: null as unknown as File });
 
     await waitFor(() => expect(result.current.actual).toBeNull());
     expect(result.current.isValid).toBeNull();

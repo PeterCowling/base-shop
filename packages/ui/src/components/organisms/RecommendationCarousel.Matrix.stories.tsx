@@ -1,9 +1,12 @@
 // packages/ui/src/components/organisms/RecommendationCarousel.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
+
 import type { SKU } from '@acme/types';
-import { RecommendationCarousel } from './RecommendationCarousel';
+
 import { makeStateStory } from '../../story-utils/createStories';
+
+import { RecommendationCarousel } from './RecommendationCarousel';
 
 const recs: SKU[] = Array.from({ length: 6 }).map((_, i) => ({
   id: `rec-${i + 1}`,

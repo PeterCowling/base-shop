@@ -1,11 +1,12 @@
 import React from "react";
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { act,fireEvent, render, screen } from "@testing-library/react";
+
 import FontsPanel from "../FontsPanel";
 
 // Mock shadcn dialog bits to simple wrappers
 jest.mock("../../../atoms/shadcn", () => ({ __esModule: true, Dialog: ({ children }: any) => <div>{children}</div>, DialogContent: ({ children }: any) => <div role="dialog">{children}</div>, DialogTitle: ({ children }: any) => <div>{children}</div> }));
 jest.mock("next/navigation", () => ({ __esModule: true, usePathname: () => "/cms/shop/acme" }));
-jest.mock("@acme/shared-utils", () => ({ __esModule: true, getShopFromPath: () => "acme" }));
+jest.mock("@acme/lib/shop", () => ({ __esModule: true, getShopFromPath: () => "acme" }));
 
 describe("FontsPanel", () => {
   beforeEach(() => {

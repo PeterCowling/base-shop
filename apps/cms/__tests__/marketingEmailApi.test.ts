@@ -1,10 +1,23 @@
-import { jest } from "@jest/globals";
-import type { NextRequest } from "next/server";
-import path from "node:path";
 import { promises as fs } from "node:fs";
-import { DATA_ROOT } from "@platform-core/dataRoot";
+import path from "node:path";
 
-jest.doMock("@platform-core/analytics", () => ({
+import type { NextRequest } from "next/server";
+import { jest } from "@jest/globals";
+
+import { DATA_ROOT } from "@acme/platform-core/dataRoot";
+
+type MockFn = jest.Mock;
+
+// Mock auth to avoid pulling in the full auth chain
+jest.doMock("@cms/actions/common/auth", () => ({
+  __esModule: true,
+  ensureAuthorized: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+  ensureCanRead: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+  ensureShopAccess: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+  ensureShopReadAccess: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+}));
+
+jest.doMock("@acme/platform-core/analytics", () => ({
   __esModule: true,
   trackEvent: jest.fn(),
 }));
@@ -129,10 +142,10 @@ describe("marketing email API campaign listing", () => {
   });
 
   test("lists campaigns with aggregated metrics", async () => {
-    const listCampaigns = jest.fn().mockResolvedValue([
+    const listCampaigns = (jest.fn() as unknown as MockFn).mockResolvedValue([
       { id: "c1", shop, recipients: [], subject: "Hi", body: "<p>Hi</p>" },
     ]);
-    const listEvents = jest.fn().mockResolvedValue([
+    const listEvents = (jest.fn() as unknown as MockFn).mockResolvedValue([
       { type: "email_sent", campaign: "c1" },
       { type: "email_open", campaign: "c1" },
       { type: "email_click", campaign: "c1" },
@@ -143,7 +156,7 @@ describe("marketing email API campaign listing", () => {
       listCampaigns,
       renderTemplate: jest.fn(),
     }));
-    jest.doMock("@platform-core/repositories/analytics.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/analytics.server", () => ({
       __esModule: true,
       listEvents,
     }));
@@ -200,7 +213,7 @@ describe("marketing email API templates", () => {
 
   test("calls renderTemplate when templateId provided", async () => {
     const renderTemplate = jest.fn(() => "<p>Rendered</p>");
-    const createCampaign = jest.fn().mockResolvedValue("id1");
+    const createCampaign = (jest.fn() as unknown as MockFn).mockResolvedValue("id1");
     jest.doMock("@acme/email", () => ({
       __esModule: true,
       createCampaign,
@@ -225,7 +238,7 @@ describe("marketing email API templates", () => {
   });
 
   test("appends unsubscribe placeholder when no templateId", async () => {
-    const createCampaign = jest.fn().mockResolvedValue("id1");
+    const createCampaign = (jest.fn() as unknown as MockFn).mockResolvedValue("id1");
     const renderTemplate = jest.fn();
     jest.doMock("@acme/email", () => ({
       __esModule: true,

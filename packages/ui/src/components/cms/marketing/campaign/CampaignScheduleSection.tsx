@@ -1,12 +1,14 @@
 "use client";
 
+import { useTranslations } from "@acme/i18n";
+
 import { Card, CardContent, Input } from "../../../atoms/shadcn";
+
 import type { CampaignFormValues } from "./types";
 import type {
   CampaignErrors,
   CampaignFormUpdater,
 } from "./useCampaignForm";
-import { useTranslations } from "@acme/i18n";
 
 interface CampaignScheduleSectionProps {
   values: CampaignFormValues;

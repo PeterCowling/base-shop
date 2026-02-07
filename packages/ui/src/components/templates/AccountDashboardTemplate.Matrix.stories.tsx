@@ -1,11 +1,13 @@
 // packages/ui/components/templates/AccountDashboardTemplate.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/nextjs';
 import React from 'react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
+
+import { makeStateStory } from '../../story-utils/createStories';
 import type { Column } from '../organisms/DataTable';
 import type { StatItem } from '../organisms/StatsGrid';
+
 import { AccountDashboardTemplate, type AccountDashboardTemplateProps } from './AccountDashboardTemplate';
-import { makeStateStory } from '../../story-utils/createStories';
 
 interface OrderRow { id: number; total: string; }
 

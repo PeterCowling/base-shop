@@ -1,4 +1,4 @@
-import { getShopBaseUrl } from "@platform-core/shops/url";
+import { getShopBaseUrl } from "@acme/platform-core/shops/url";
 import type { Environment } from "@acme/types";
 
 /**
@@ -19,9 +19,9 @@ if (!shopId) {
 const baseUrl = shopId ? getShopBaseUrl({ shopId, env: shopEnv }) : null;
 
 const describeOrSkip = baseUrl ? describe : describe.skip;
+const origin = baseUrl?.origin.replace(/\/+$/, "") ?? "";
 
 describeOrSkip("shop smoke", () => {
-  const origin = baseUrl!.origin.replace(/\/+$/, "");
 
   it("serves home page", async () => {
     const res = await fetch(`${origin}/`, { method: "GET" });

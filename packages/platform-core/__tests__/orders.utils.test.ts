@@ -1,4 +1,4 @@
-import { normalize, Order } from "../src/orders/utils";
+import { normalize, type Order } from "../src/orders/utils";
 
 describe("normalize", () => {
   it("returns null when given null", () => {

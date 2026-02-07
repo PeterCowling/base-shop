@@ -1,5 +1,7 @@
 import { renderHook } from "@testing-library/react";
+
 import type { PageComponent } from "@acme/types";
+
 import useBlockDimensions from "../useBlockDimensions";
 
 describe("useBlockDimensions", () => {
@@ -72,7 +74,7 @@ describe("useBlockDimensions", () => {
       paddingVal,
     ) => {
       const { result } = renderHook(() =>
-        useBlockDimensions({ component, viewport })
+        useBlockDimensions({ component, viewport: viewport as "mobile" | "desktop" | "tablet" })
       );
 
       expect(result.current.widthKey).toBe(widthKey);

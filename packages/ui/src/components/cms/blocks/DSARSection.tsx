@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+
 import { useTranslations } from "@acme/i18n";
 
 export interface DSARSectionProps extends React.HTMLAttributes<HTMLDivElement> {

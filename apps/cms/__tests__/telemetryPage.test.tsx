@@ -1,7 +1,12 @@
 import "@testing-library/jest-dom";
-import { render, screen, fireEvent } from "@testing-library/react";
+
 import React from "react";
+import { fireEvent,render, screen } from "@testing-library/react";
+
 import type { TelemetryEvent } from "@acme/telemetry";
+
+import { TelemetryAnalyticsView } from "../src/app/cms/telemetry/page";
+import { filterTelemetryEvents } from "../src/app/cms/telemetry/telemetryUtils";
 
 jest.mock("@/components/atoms/shadcn", () => ({
   Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
@@ -17,9 +22,6 @@ jest.mock("@acme/ui", () => ({
   Toast: ({ open, message }: any) =>
     open ? <div role="status">{message}</div> : null,
 }));
-
-import { TelemetryAnalyticsView } from "../src/app/cms/telemetry/page";
-import { filterTelemetryEvents } from "../src/app/cms/telemetry/telemetryUtils";
 
 function createEvent(partial: Partial<TelemetryEvent> = {}): TelemetryEvent {
   return {

@@ -1,7 +1,8 @@
 // packages/i18n/__tests__/hydration.test.tsx
 import React from "react";
-import { renderToString } from "react-dom/server";
 import { hydrateRoot } from "react-dom/client";
+import { renderToString } from "react-dom/server";
+
 import { TranslationsProvider, useTranslations } from "../src/Translations";
 
 // `act` is attached to the default React export in jest.setup.ts for

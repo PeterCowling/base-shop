@@ -1,11 +1,12 @@
 import "@testing-library/jest-dom";
+
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe, toHaveNoViolations } from "jest-axe";
 
 import ReverseLogisticsEditor from "../ReverseLogisticsEditor";
 
-expect.extend(toHaveNoViolations);
+expect.extend(toHaveNoViolations as any);
 
 const updateReverseLogistics = jest.fn();
 
@@ -79,7 +80,7 @@ describe("ReverseLogisticsEditor", () => {
     const chip = await screen.findByText((content, element) => {
       return (
         content === "Interval must be greater than zero." &&
-        element?.classList.contains("bg-destructive/10")
+        (element?.classList.contains("bg-destructive/10") ?? false)
       );
     });
 

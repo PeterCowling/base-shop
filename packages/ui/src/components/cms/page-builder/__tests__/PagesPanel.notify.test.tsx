@@ -1,5 +1,6 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
 import PagesPanel from "../PagesPanel";
 
 // Drawer and overlay mocks (same pattern used in other tests)

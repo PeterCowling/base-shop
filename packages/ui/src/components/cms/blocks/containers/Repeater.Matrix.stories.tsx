@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/containers/Repeater.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/nextjs';
 import type { ComponentProps } from 'react';
-import Repeater from './Repeater';
-import { DatasetProvider } from '../data/DataContext';
+import type { Meta, StoryObj } from '@storybook/nextjs';
+
 import { makeStateStory } from '../../../../story-utils/createStories';
+import { DatasetProvider } from '../data/DataContext';
+
+import Repeater from './Repeater';
 
 const items = [
   { id: 1, title: 'Alpha', status: 'published', score: 2 },

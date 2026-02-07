@@ -1,19 +1,22 @@
 // apps/cms/src/app/cms/shop/[shop]/settings/seo/page.tsx
 
-import { getSettings } from "@cms/actions/shops.server";
-import { listEvents } from "@platform-core/repositories/analytics.server";
-import { readSeoAudits } from "@platform-core/repositories/seoAudit.server";
-import { readRepo } from "@platform-core/repositories/products.server";
-import { PRODUCTS } from "@platform-core/products";
-import type { ProductPublication } from "@acme/types";
 import dynamic from "next/dynamic";
+import { getSettings } from "@cms/actions/shops.server";
+
+import { Inline } from "@acme/design-system/primitives/Inline";
+import { PRODUCTS } from "@acme/platform-core/products";
+import { listEvents } from "@acme/platform-core/repositories/analytics.server";
+import { readRepo } from "@acme/platform-core/repositories/products.server";
+import { readSeoAudits } from "@acme/platform-core/repositories/seoAudit.server";
+import type { ProductPublication } from "@acme/types";
+
 import { Chip } from "@/components/atoms/Chip";
-import SeoProgressPanel from "./SeoProgressPanel";
+
 import AiCatalogSettings from "./AiCatalogSettings";
 import AiFeedPanel from "./AiFeedPanel";
-import SitemapStatusPanel from "./SitemapStatusPanel";
 import SeoIssuesBanner from "./SeoIssuesBanner";
-import { Inline } from "@ui/components/atoms/primitives/Inline";
+import SeoProgressPanel from "./SeoProgressPanel";
+import SitemapStatusPanel from "./SitemapStatusPanel";
 
 const SeoEditor = dynamic(() => import("./SeoEditor"));
 const SeoAuditPanel = dynamic(() => import("./SeoAuditPanel"));

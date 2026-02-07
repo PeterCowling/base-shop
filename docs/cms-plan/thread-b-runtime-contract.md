@@ -46,12 +46,12 @@ Inspect `packages/template-app` and related packages to identify:
   - Cart API:
     - Re‑export of `@acme/platform-core/cartApi` at `/api/cart` (HTTP interface, methods, payloads).
   - Checkout session endpoint:
-    - `/api/checkout-session` using shared helpers from `@platform-core/checkout/session` and related pricing utilities.
+    - `/api/checkout-session` using shared helpers from `@acme/platform-core/checkout/session` and related pricing utilities.
   - Return/refund endpoint for rentals:
-    - `/api/return` wired to `rentalOrders` and pricing (for example via `@platform-core/repositories/rentalOrders.server` and `@platform-core/pricing`).
+    - `/api/return` wired to `rentalOrders` and pricing (for example via `@acme/platform-core/repositories/rentalOrders.server` and `@acme/platform-core/pricing`).
   - Preview route(s):
     - URL shape (for example `/preview/[pageId]` and Cloudflare Worker route `/preview/:pageId`).
-    - Auth model (HMAC token, header names, expiry) using `@platform-core/previewTokens`.
+    - Auth model (HMAC token, header names, expiry) using `@acme/platform-core/previewTokens`.
   - Health endpoint:
     - If we choose to make a health endpoint part of the contract, define its URL and expected response (for automated health checks). This does **not** exist yet in the runtime apps.
 

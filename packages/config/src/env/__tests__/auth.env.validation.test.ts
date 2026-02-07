@@ -1,6 +1,8 @@
 /** @jest-environment node */
 import { describe, expect, it, jest } from "@jest/globals";
+
 import { createExpectInvalidAuthEnv } from "../../../test/utils/expectInvalidAuthEnv";
+
 import { withEnv } from "./test-helpers";
 
 const NEXT_SECRET = "nextauth-secret-32-chars-long-string!";
@@ -38,7 +40,7 @@ const devEnv = (overrides: EnvOverrides = {}): EnvOverrides => ({
 const expectInvalidProd = (
   overrides: EnvOverrides,
   accessor: (env: Record<string, unknown>) => unknown,
-  consoleErrorSpy?: jest.SpyInstance,
+  consoleErrorSpy?: { mockRestore: () => void },
 ) =>
   expectInvalidAuth({
     env: prodEnv(overrides),

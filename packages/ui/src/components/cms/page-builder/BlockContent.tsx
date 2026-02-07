@@ -2,6 +2,7 @@
 
 import type { Locale } from "@acme/i18n/locales";
 import type { PageComponent } from "@acme/types";
+
 import Block from "./Block";
 import InlineEditableButton from "./InlineEditableButton";
 import type { InlineTextApi } from "./useInlineText";

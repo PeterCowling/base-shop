@@ -1,11 +1,12 @@
 import { render, screen } from "@testing-library/react";
+
 import {
-  LOCALES,
   fillLocales,
-  TranslationsProvider,
-  useTranslations,
+  LOCALES,
   parseMultilingualInput,
   resolveLocale,
+  TranslationsProvider,
+  useTranslations,
 } from "@acme/i18n";
 
 describe("fillLocales", () => {

@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+
 import MenuBar from "../src/components/cms/page-builder/MenuBar";
 
 describe("MenuBar", () => {

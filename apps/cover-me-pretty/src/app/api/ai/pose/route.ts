@@ -1,8 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import { AwsClient } from 'aws4fetch';
 import { z } from "zod";
+
 import { getProvider } from "@acme/lib/tryon";
 import { kvGet, kvPut } from "@acme/lib/tryon/kv";
-import { AwsClient } from 'aws4fetch';
 
 export const runtime = "edge";
 
@@ -18,12 +20,18 @@ function todayKey(id: string) {
   return `${id}:${day}`;
 }
 function identity(req: Request): string {
+  // Check for user-specific cookie first (most reliable for logged-in users)
   const cookies = req.headers.get('cookie') || '';
   const m = /(?:^|;\s*)tryon\.uid=([^;]+)/.exec(cookies);
   if (m) return decodeURIComponent(m[1]);
+  // SECURITY: Prefer verified CDN headers over spoofable x-forwarded-for
+  // cf-connecting-ip is set by Cloudflare and cannot be spoofed by clients
+  const cfIp = req.headers.get('cf-connecting-ip');
+  if (cfIp) return cfIp;
+  // Fallback to x-forwarded-for only as last resort (can be spoofed in non-CDN environments)
   const xf = req.headers.get('x-forwarded-for') || '';
   if (xf) return xf.split(',')[0].trim();
-  return req.headers.get('cf-connecting-ip') || 'anon';
+  return 'anon';
 }
 async function checkQuota(req: Request): Promise<string | null> {
   const id = identity(req);
@@ -85,7 +93,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     const ms = Date.now() - t0;
     try {
       const host = new URL(imageUrl).host;
-      console.log("tryon.pose", { jobId: parsed.data.idempotencyKey, host, ms, ok: !resp.error });
+      console.info("tryon.pose", { jobId: parsed.data.idempotencyKey, host, ms, ok: !resp.error });
     } catch {}
     if (resp.error) return NextResponse.json({ error: resp.error }, { status: 502 });
     const url = resp.result?.url;

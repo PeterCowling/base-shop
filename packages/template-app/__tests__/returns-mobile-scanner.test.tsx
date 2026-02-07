@@ -1,5 +1,6 @@
 /** @jest-environment jsdom */
 import { render, screen } from "@testing-library/react";
+
 import Scanner from "../src/app/returns/mobile/Scanner";
 
 describe("Scanner", () => {

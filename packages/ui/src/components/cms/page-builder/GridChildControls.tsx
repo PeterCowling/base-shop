@@ -1,8 +1,10 @@
 "use client";
 
-import type { PageComponent } from "@acme/types";
-import type { Action } from "./state";
 import { useRef } from "react";
+
+import type { PageComponent } from "@acme/types";
+
+import type { Action } from "./state";
 
 type Props = {
   parent: PageComponent;

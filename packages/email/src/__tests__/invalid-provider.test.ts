@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterAll, jest } from "@jest/globals";
+import { afterAll, beforeAll, describe, expect, it, jest } from "@jest/globals";
 
 describe("invalid EMAIL_PROVIDER", () => {
   const original = process.env.EMAIL_PROVIDER;

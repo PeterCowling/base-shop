@@ -20,15 +20,15 @@ describe("runMaintenanceScan", () => {
     const error = jest.fn();
 
     jest.doMock("fs/promises", () => ({ __esModule: true, readdir }));
-    jest.doMock("@platform-core/repositories/inventory.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/inventory.server", () => ({
       __esModule: true,
       readInventory,
     }));
-    jest.doMock("@platform-core/repositories/products.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/products.server", () => ({
       __esModule: true,
       readRepo: readProducts,
     }));
-    jest.doMock("@platform-core/utils", () => ({
+    jest.doMock("@acme/platform-core/utils", () => ({
       __esModule: true,
       logger: { info, error },
     }));
@@ -60,15 +60,15 @@ describe("runMaintenanceScan", () => {
     const error = jest.fn();
 
     jest.doMock("fs/promises", () => ({ __esModule: true, readdir }));
-    jest.doMock("@platform-core/repositories/inventory.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/inventory.server", () => ({
       __esModule: true,
       readInventory,
     }));
-    jest.doMock("@platform-core/repositories/products.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/products.server", () => ({
       __esModule: true,
       readRepo: readProducts,
     }));
-    jest.doMock("@platform-core/utils", () => ({
+    jest.doMock("@acme/platform-core/utils", () => ({
       __esModule: true,
       logger: { info, error },
     }));
@@ -97,15 +97,15 @@ describe("runMaintenanceScan", () => {
     const error = jest.fn();
 
     jest.doMock("fs/promises", () => ({ __esModule: true, readdir }));
-    jest.doMock("@platform-core/repositories/inventory.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/inventory.server", () => ({
       __esModule: true,
       readInventory,
     }));
-    jest.doMock("@platform-core/repositories/products.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/products.server", () => ({
       __esModule: true,
       readRepo: readProducts,
     }));
-    jest.doMock("@platform-core/utils", () => ({
+    jest.doMock("@acme/platform-core/utils", () => ({
       __esModule: true,
       logger: { info, error },
     }));
@@ -150,15 +150,15 @@ describe("startMaintenanceScheduler", () => {
     const logger = { info: jest.fn(), error: jest.fn() };
 
     jest.doMock("fs/promises", () => ({ __esModule: true, readdir }));
-    jest.doMock("@platform-core/repositories/inventory.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/inventory.server", () => ({
       __esModule: true,
       readInventory,
     }));
-    jest.doMock("@platform-core/repositories/products.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/products.server", () => ({
       __esModule: true,
       readRepo: readProducts,
     }));
-    jest.doMock("@platform-core/utils", () => ({ __esModule: true, logger }));
+    jest.doMock("@acme/platform-core/utils", () => ({ __esModule: true, logger }));
 
     const scheduler = await import(
       "@acme/platform-machine/maintenanceScheduler"
@@ -196,7 +196,7 @@ describe("startMaintenanceScheduler", () => {
   it("logs errors from failed scans", async () => {
     const logger = { info: jest.fn(), error: jest.fn() };
     const errorSpy = jest.spyOn(logger, "error");
-    jest.doMock("@platform-core/utils", () => ({ __esModule: true, logger }));
+    jest.doMock("@acme/platform-core/utils", () => ({ __esModule: true, logger }));
 
     const scheduler = await import(
       "@acme/platform-machine/maintenanceScheduler"

@@ -1,11 +1,13 @@
-import type { CSSProperties, ComponentProps, RefObject, ReactNode } from "react";
+import type { ComponentProps, CSSProperties, ReactNode,RefObject } from "react";
+
 import type { Locale } from "@acme/i18n/locales";
 import type { PageComponent } from "@acme/types";
-import type { Step, CallBackProps } from "./PageBuilderTour";
+
 import type { ComponentType } from "./defaults";
 import type { DragMeta } from "./DragOverlayPreview";
+import type { CallBackProps,Step } from "./PageBuilderTour";
 
-// eslint-disable-next-line ds/no-hardcoded-copy -- DS-1234: type-only import specifier; not user-facing copy
+ 
 type DndContextComponent = typeof import("@dnd-kit/core").DndContext;
 type PageToolbarComponent = typeof import("./PageToolbar").default;
 type GridSettingsComponent = typeof import("./GridSettings").default;

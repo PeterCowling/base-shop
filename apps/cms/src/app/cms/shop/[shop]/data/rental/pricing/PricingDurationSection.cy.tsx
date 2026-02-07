@@ -1,4 +1,5 @@
 import React from 'react';
+
 import PricingDurationSection from './PricingDurationSection';
 
 const rows = [

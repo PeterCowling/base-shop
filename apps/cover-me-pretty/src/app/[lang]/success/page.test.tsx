@@ -1,6 +1,8 @@
 import { render, screen } from "@testing-library/react";
-import Success from "./page";
+
 import type { Locale } from "@acme/i18n";
+
+import Success from "./page";
 
 describe('Success page (localized)', () => {
   it("renders thank-you heading and receipt message", async () => {

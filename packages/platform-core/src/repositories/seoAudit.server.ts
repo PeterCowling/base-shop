@@ -1,6 +1,7 @@
 import "server-only";
 
 import { prisma } from "../db";
+
 import { resolveRepo } from "./repoResolver";
 
 export interface SeoAuditEntry {

@@ -1,15 +1,17 @@
 // apps/cover-me-pretty/src/app/layout.tsx
-import { CartProvider } from "@platform-core/contexts/CartContext";
-import { CurrencyProvider } from "@platform-core/contexts/CurrencyContext";
-import { ThemeProvider } from "@platform-core/contexts/ThemeContext";
-import { initTheme } from "@platform-core/utils";
+import "./globals.css";
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import ConsentSection from "@acme/ui/components/cms/blocks/ConsentSection";
-import AnalyticsPixelsSection from "@acme/ui/components/cms/blocks/AnalyticsPixelsSection";
-import StructuredDataSection from "@acme/ui/components/cms/blocks/StructuredDataSection";
-import RentalDemoProvider from "@acme/ui/components/cms/blocks/RentalDemoProvider.client";
+
+import AnalyticsPixelsSection from "@acme/cms-ui/blocks/AnalyticsPixelsSection";
+import ConsentSection from "@acme/cms-ui/blocks/ConsentSection";
+import RentalDemoProvider from "@acme/cms-ui/blocks/RentalDemoProvider.client";
+import StructuredDataSection from "@acme/cms-ui/blocks/StructuredDataSection";
+import { CartProvider } from "@acme/platform-core/contexts/CartContext";
+import { CurrencyProvider } from "@acme/platform-core/contexts/CurrencyContext";
+import { ShopThemeProvider } from "@acme/platform-core/contexts/ShopThemeContext";
+import { initTheme } from "@acme/platform-core/utils";
 
 /**
  * Root layout for the Shop app.
@@ -53,7 +55,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <CartProvider>
-          <ThemeProvider>
+        <ShopThemeProvider>
             <CurrencyProvider>
               {/* Demo rental provider wiring; safe no-op without consumers */}
               <RentalDemoProvider />
@@ -64,7 +66,7 @@ export default function RootLayout({
               <StructuredDataSection breadcrumbs />
               <div className="sf-content">{children}</div>
             </CurrencyProvider>
-          </ThemeProvider>
+        </ShopThemeProvider>
         </CartProvider>
       </body>
     </html>

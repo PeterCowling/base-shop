@@ -1,4 +1,6 @@
 import "@testing-library/jest-dom";
+
+import { __setMockSession } from "next-auth";
 import { render, screen } from "@testing-library/react";
 
 const createDraftMock = jest.fn();
@@ -19,12 +21,12 @@ jest.mock("@acme/lib", () => ({
 }));
 
 const readRepoMock = jest.fn();
-jest.mock("@platform-core/repositories/json.server", () => ({
+jest.mock("@acme/platform-core/repositories/json.server", () => ({
   readRepo: (...args: unknown[]) => readRepoMock(...args),
 }));
 
 const productsTableRenderSpy = jest.fn();
-jest.mock("@ui/components/cms/ProductsTable.client", () => {
+jest.mock("@acme/cms-ui/ProductsTable.client", () => {
   const React = require("react");
   return {
     __esModule: true,
@@ -57,7 +59,7 @@ jest.mock("@/components/atoms/shadcn", () => {
   };
 });
 
-jest.mock("@ui/components/atoms", () => {
+jest.mock("@acme/design-system/atoms", () => {
   const React = require("react");
   return {
     __esModule: true,
@@ -70,7 +72,7 @@ jest.mock("@ui/components/atoms", () => {
   };
 });
 
-jest.mock("@ui/utils/style", () => ({
+jest.mock("@acme/design-system/utils/style", () => ({
   cn: (...classes: any[]) => classes.filter(Boolean).join(" "),
 }));
 
@@ -82,8 +84,6 @@ jest.mock("next/link", () => {
       React.createElement("a", { href, ...props }, children),
   };
 });
-
-import { __setMockSession } from "next-auth";
 
 const notFoundMock = jest.fn();
 jest.mock("next/navigation", () => ({

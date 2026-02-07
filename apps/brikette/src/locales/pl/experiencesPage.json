@@ -7,15 +7,7 @@
     "eyebrow": "Doświadczenia",
     "title": "Doświadczenia w Hostelu Brikette",
     "description": "Wypij spritza na naszym tarasie, wybierz się na wędrówki z epickimi widokami i otrzymuj natychmiastowe wskazówki od concierge’a cyfrowego.",
-    "supporting": "Wszystko jest dostępne dla zameldowanych gości; daj nam znać, jeśli podróżujesz z przyjaciółmi zatrzymującymi się gdzie indziej.",
-    "primaryCta": "Zarezerwuj pobyt",
-    "secondaryCta": "Otwórz kartę baru",
-    "tertiaryCta": "Napisz do concierge’a cyfrowego",
-    "primaryCtaAria": "Zarezerwuj pobyt w Hostelu Brikette",
-    "secondaryCtaAria": "Zobacz kartę baru Hostelu Brikette",
-    "tertiaryCtaAria": "Wyślij wiadomość do concierge’a cyfrowego Hostelu Brikette",
-    "breakfastCta": "Zobacz menu śniadaniowe",
-    "breakfastCtaAria": "Zobacz menu śniadaniowe"
+    "scrollNudge": "Dowiedz się więcej"
   },
   "sections": {
     "bar": {
@@ -88,51 +80,81 @@
     "taggedDescription": "Te historie podkreślają chwile związane z {{tag}}. Usuń filtr, aby zobaczyć wszystkie.",
     "empty": "Nie mamy jeszcze przewodników doświadczeń dla {{tag}}. Wybierz inny tag lub usuń filtr.",
     "clearFilter": "Pokaż wszystkie przewodniki doświadczeń",
-    "cardCta": "Odkryj przewodnik po doświadczeniach „{{guideTitle}}”",
-    "directionsLabel": "Dojazd",
+    "cardCta": "Odkryj przewodnik po doświadczeniach: {{guideTitle}}",
+    "filterHeading": "Filtruj przewodniki po doświadczeniach",
+    "filterDescription": "Wybierz tag, aby zawęzić wyróżniane doświadczenia.",
+    "directionsLabel": "Jak tu dotrzeć",
+    "sections": {
+      "content": {
+        "title": "Przewodniki po doświadczeniach",
+        "description": "Szczegółowe przewodniki o plażach, wędrówkach, wycieczkach jednodniowych i atrakcjach"
+      },
+      "directions": {
+        "title": "Jak dotrzeć",
+        "description": "Instrukcje krok po kroku do i z hostelu"
+      }
+    },
     "directionLinks": {
       "capriDayTrip": {
-        "positanoCapriFerry": "Positano → Capri promem",
-        "capriPositanoFerry": "Capri → Positano promem"
+        "positanoCapriFerry": "Prom Positano → Capri",
+        "capriPositanoFerry": "Prom Capri → Positano"
       },
       "positanoAmalfi": {
         "positanoAmalfiBus": "Positano → Amalfi autobusem",
         "amalfiPositanoBus": "Amalfi → Positano autobusem",
-        "positanoAmalfiFerry": "Positano → Amalfi promem (sezonowo)",
-        "amalfiPositanoFerry": "Amalfi → Positano promem (sezonowo)"
+        "positanoAmalfiFerry": "Prom Positano → Amalfi (sezonowy)",
+        "amalfiPositanoFerry": "Prom Amalfi → Positano (sezonowy)"
       },
       "positanoRavello": {
-        "positanoRavelloBus": "Positano → Ravello autobusem",
-        "ravelloPositanoBus": "Ravello → Positano autobusem",
+        "positanoRavelloBus": "Autobus Positano → Ravello",
+        "ravelloPositanoBus": "Autobus Ravello → Positano",
         "positanoRavelloFerryBus": "Positano → Ravello prom + autobus"
       },
       "naplesPositano": {
         "naplesCenterTrainBus": "Centrum Neapolu → Positano (pociąg + autobus)",
-        "naplesCenterPositanoFerry": "Centrum Neapolu → Positano promem",
-        "naplesAirportPositanoBus": "Lotnisko Neapol → Positano autobusem",
-        "positanoNaplesCenterBusTrain": "Positano → Centrum Neapolu (autobus + pociąg)",
-        "positanoNaplesCenterFerry": "Positano → Neapol promem",
-        "positanoNaplesAirportBus": "Positano → Lotnisko Neapol autobusem"
+        "naplesCenterPositanoFerry": "Prom centrum Neapolu → Positano",
+        "naplesAirportPositanoBus": "Autobus lotnisko Neapol → Positano",
+        "positanoNaplesCenterBusTrain": "Positano → centrum Neapolu (autobus + pociąg)",
+        "positanoNaplesCenterFerry": "Prom Positano → Neapol",
+        "positanoNaplesAirportBus": "Autobus Positano → lotnisko Neapol"
       },
       "salernoPositano": {
-        "salernoPositanoBus": "Salerno → Positano autobusem",
-        "salernoPositanoFerry": "Salerno → Positano promem (sezonowo)",
-        "positanoSalernoBus": "Positano → Salerno autobusem",
-        "positanoSalernoFerry": "Positano → Salerno promem (sezonowo)"
+        "salernoPositanoBus": "Autobus Salerno → Positano",
+        "salernoPositanoFerry": "Prom Salerno → Positano (sezonowy)",
+        "positanoSalernoBus": "Autobus Positano → Salerno",
+        "positanoSalernoFerry": "Prom Positano → Salerno (sezonowy)"
       }
     },
-    "filterHeading": "Filtruj przewodniki po doświadczeniach",
-    "filterDescription": "Wybierz tag, aby zawęzić wyróżniane doświadczenia.",
     "grouped": {
       "beaches": {
-        "guides": {
-          "heading": "Przewodniki po plażach",
-          "description": "Wybierz odpowiedni odcinek plaży i zaplanuj swój dzień."
-        },
-        "directions": {
-          "heading": "Dojazd na plażę",
-          "description": "Instrukcje krok po kroku z Hostelu Brikette na brzeg."
-        }
+        "title": "Plaże i pływanie",
+        "description": "Miejsca do pływania, przewodniki po klubach plażowych i trasy na brzeg.",
+        "imageAlt": "Skalista zatoka z turkusową wodą wzdłuż Wybrzeża Amalfitańskiego"
+      },
+      "boat": {
+        "title": "Rejsy i promy",
+        "description": "Wycieczki łodzią, trasy promowe i pomysły na dzień na morzu.",
+        "imageAlt": "Zachód słońca nad morzem widziany z Positano"
+      },
+      "cuisine": {
+        "title": "Kuchnia i lokalne specjały",
+        "description": "Miejsca do jedzenia, targi i doświadczenia kulinarne.",
+        "imageAlt": "Tradycyjny włoski posiłek nad morzem"
+      },
+      "day-trip": {
+        "title": "Wycieczki jednodniowe",
+        "description": "Jednodniowe wypady z Positano — Capri, Ravello, Pompeje i więcej.",
+        "imageAlt": "Panoramiczny widok na Wybrzeże Amalfitańskie z balkonu w Ravello"
+      },
+      "hiking": {
+        "title": "Wędrówki i szlaki",
+        "description": "Trasy piesze od łatwych spacerów po całodzienne trekingi.",
+        "imageAlt": "Turyści na Szlaku Bogów z widokami na wybrzeże"
+      },
+      "more": {
+        "title": "Więcej przewodników",
+        "description": "Wskazówki transportowe, miejsca do zdjęć i lokalne wydarzenia.",
+        "imageAlt": "Lokalny autobus wijący się po drodze Wybrzeża Amalfitańskiego"
       }
     }
   }

@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/RecommendationCarousel.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import CmsRecommendationCarousel from './RecommendationCarousel';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './RecommendationCarousel.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import CmsRecommendationCarousel from './RecommendationCarousel';
+import fixture from './RecommendationCarousel.fixtures.json';
 
 const meta: Meta<typeof CmsRecommendationCarousel> = {
   title: 'CMS Blocks/RecommendationCarousel/Matrix',

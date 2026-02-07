@@ -1,6 +1,8 @@
-import { act, fireEvent, render } from "@testing-library/react";
-import React, { forwardRef } from "react";
 import type { ButtonHTMLAttributes, ForwardedRef } from "react";
+import React, { forwardRef } from "react";
+import { act, fireEvent, render } from "@testing-library/react";
+
+import { useFileUpload } from "../useFileUpload";
 
 function createShadcnStub() {
   const Button = forwardRef(function Button(
@@ -13,13 +15,11 @@ function createShadcnStub() {
   return { Button };
 }
 
-jest.mock("@/components/atoms/shadcn", createShadcnStub);
+jest.mock("@acme/design-system/shadcn", createShadcnStub);
 
 jest.mock("../useImageOrientationValidation.ts", () => ({
   useImageOrientationValidation: jest.fn(() => ({ actual: "landscape", isValid: true })),
 }));
-
-import { useFileUpload } from "../useFileUpload";
 
 // i18n-exempt: test name
 it("highlights dropzone on drag enter and removes highlight on drag leave", () => {

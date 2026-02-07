@@ -1,5 +1,7 @@
 import "@testing-library/jest-dom";
+
 import { fireEvent, render, screen } from "@testing-library/react";
+
 import type { MappingRowsController } from "../../useShopEditorSubmit";
 import ShopOverridesSection from "../ShopOverridesSection";
 
@@ -27,7 +29,7 @@ jest.mock(
 );
 
 jest.mock(
-  "@ui/components",
+  "@acme/ui/components",
   () => {
     const React = require("react");
     const {

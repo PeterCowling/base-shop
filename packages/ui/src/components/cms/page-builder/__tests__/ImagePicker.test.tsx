@@ -1,5 +1,7 @@
 import "../../../../../../../test/resetNextMocks";
+
 import { fireEvent, render, screen } from "@testing-library/react";
+
 import ImagePicker from "../ImagePicker";
 
 const loadMedia = jest.fn();
@@ -19,7 +21,7 @@ jest.mock("../useMediaLibrary", () => ({
   }),
 }));
 
-jest.mock("@ui/hooks/useFileUpload", () => () => ({
+jest.mock("../../../../hooks/useFileUpload", () => () => ({
   pendingFile: null,
   altText: "",
   setAltText: jest.fn(),

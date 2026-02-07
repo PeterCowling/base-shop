@@ -1,19 +1,28 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
+
 import type { SKU } from "@acme/types";
 
-const addToCartMock = jest.fn(() => <div data-cy="add" />);
+import { ProductCard } from "../src/components/shop/ProductCard";
+
+// Use globalThis to avoid Jest mock hoisting issues
+declare global {
+  var __productCardInnerTestAddToCartMock: jest.Mock | undefined;
+}
+globalThis.__productCardInnerTestAddToCartMock = jest.fn(() => <div data-cy="add" />);
+
+const addToCartMock = globalThis.__productCardInnerTestAddToCartMock!;
 
 jest.mock("../src/components/shop/AddToCartButton.client", () => ({
   __esModule: true,
-  default: addToCartMock,
+  get default() {
+    return globalThis.__productCardInnerTestAddToCartMock;
+  },
 }));
 
 jest.mock("../src/contexts/CurrencyContext", () =>
   require("../../../test/__mocks__/currencyContextMock.tsx"),
 );
-
-import { ProductCard } from "../src/components/shop/ProductCard";
 
 describe("ProductCard media and rendering", () => {
   function baseSku(): SKU {

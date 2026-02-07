@@ -1,15 +1,16 @@
+import { type NextRequest,NextResponse } from "next/server";
 import { ensureAuthorized } from "@cms/actions/common/auth";
-import { NextResponse, type NextRequest } from "next/server";
+import Busboy, { type FileInfo } from "busboy";
+import { fileTypeFromBuffer } from "file-type/core";
 import fs from "fs";
 import { mkdir, unlink } from "fs/promises";
 import path from "path";
 import { Readable } from "stream";
 import type { ReadableStream as NodeReadableStream } from "stream/web";
-import Busboy, { type FileInfo } from "busboy";
-import { fileTypeFromBuffer } from "file-type/core";
-import { resolveDataRoot } from "@platform-core/dataRoot";
-import { validateShopName } from "@platform-core/shops";
+
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
+import { validateShopName } from "@acme/platform-core/shops";
 
 function isWebReadableStream(
   stream: unknown,
@@ -61,9 +62,8 @@ export async function POST(
       let resolved = false;
       let fileFound = false;
 
-      busboy.on("file", (_name, file: NodeJS.ReadableStream, info: FileInfo) => {
+      busboy.on("file", (_name, file: NodeJS.ReadableStream, _info: FileInfo) => {
         fileFound = true;
-        const { mimeType } = info;
         // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123
         const writeStream = fs.createWriteStream(filePath);
         let firstChunk: Buffer | undefined;
@@ -95,10 +95,26 @@ export async function POST(
 
           fileTypeFromBuffer(firstChunk)
             .then((type) => {
-              const isCsv =
-                (type && type.mime === "text/csv") ||
-                (!type && mimeType === "text/csv");
-              if (!isCsv) {
+              // Security fix: Don't trust client-provided MIME type.
+              // CSV files often have no magic bytes, so we validate content structure.
+              // If magic bytes detect a non-text file type, reject immediately.
+              if (type && type.mime !== "text/csv" && type.mime !== "text/plain") {
+                // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123
+                void unlink(filePath).catch(() => {});
+                resolved = true;
+                resolve(
+                  NextResponse.json(
+                    { error: t("api.uploadCsv.invalidFileType") },
+                    { status: 415 }
+                  )
+                );
+                return;
+              }
+              // No magic bytes or text type - validate CSV structure
+              const sample = firstChunk.toString("utf8", 0, Math.min(1024, firstChunk.length));
+              const hasBinaryChars = /[\x00-\x08\x0E-\x1F]/.test(sample);
+              const looksLikeCsv = !hasBinaryChars && (sample.includes(",") || sample.includes("\t"));
+              if (!looksLikeCsv) {
                 // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123
                 void unlink(filePath).catch(() => {});
                 resolved = true;

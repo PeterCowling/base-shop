@@ -1,7 +1,7 @@
 import { readFile, stat } from "fs/promises";
 import path from "path";
 import { pathToFileURL } from "url";
-import { createRequire } from "module";
+
 import { logger } from "../utils";
 
 function unique<T>(arr: T[]): T[] {
@@ -107,17 +107,8 @@ export async function resolvePluginEntry(dir: string): Promise<{
   }
 }
 
-export async function importByType(entryPath: string, isModule: boolean) {
+export async function importByType(entryPath: string, _isModule: boolean) {
   const specifier = pathToFileURL(entryPath).href;
-
-  if (isModule) {
-    return import(/* webpackIgnore: true */ specifier);
-  }
-
-  try {
-    const req = createRequire(entryPath);
-    return req(entryPath);
-  } catch {
-    return import(/* webpackIgnore: true */ specifier);
-  }
+  // Dynamic import works for both ESM and CJS; CJS modules appear under `default`.
+  return import(/* webpackIgnore: true */ specifier);
 }

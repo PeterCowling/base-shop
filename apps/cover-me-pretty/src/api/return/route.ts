@@ -1,18 +1,21 @@
 // i18n-exempt file -- ABC-123 [ttl=2025-06-30]
 import "@acme/zod-utils/initZod";
-import { stripe } from "@acme/stripe";
-import { computeDamageFee } from "@platform-core/pricing";
+
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import { z } from "zod";
+
+import { computeDamageFee } from "@acme/platform-core/pricing";
 import {
   markRefunded,
   markReturned,
   readOrders,
-} from "@platform-core/repositories/rentalOrders.server";
-import { getReturnBagAndLabel } from "@platform-core/returnLogistics";
-import shop from "../../../shop.json";
+} from "@acme/platform-core/repositories/rentalOrders.server";
+import { getReturnBagAndLabel } from "@acme/platform-core/returnLogistics";
+import { stripe } from "@acme/stripe";
 import type { RentalOrder } from "@acme/types";
 
-import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import shop from "../../../shop.json";
 
 export const runtime = "edge";
 
@@ -145,7 +148,7 @@ export async function POST(req: NextRequest) {
 
 async function savePickup(appt: { zip: string; date: string; time: string }) {
   // Placeholder for database persistence
-  console.log(
+  console.info(
     "pickup scheduled", // i18n-exempt -- ABC-123 [ttl=2025-12-31] developer log, not user-facing
     appt,
   );

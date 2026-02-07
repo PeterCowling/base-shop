@@ -1,15 +1,15 @@
 "use client";
 
-import { Grid as DSGrid } from "@ui/components/atoms/primitives/Grid";
-import { useTranslations } from "@acme/i18n";
-import { track } from "@acme/telemetry";
-
-import type { SnapshotItem } from "../lib/pageSections";
 import {
   CmsBuildHero,
   CmsSettingsSnapshot,
   type CmsSettingsSnapshotRow,
-} from "@ui/components/cms"; // UI: @ui/components/cms/CmsBuildHero, CmsSettingsSnapshot
+} from "@acme/cms-ui"; // UI: @acme/ui/components/cms/CmsBuildHero, CmsSettingsSnapshot
+import { Grid as DSGrid } from "@acme/design-system/primitives/Grid";
+import { useTranslations } from "@acme/i18n";
+import { track } from "@acme/telemetry";
+
+import type { SnapshotItem } from "../lib/pageSections";
 
 interface SettingsHeroProps {
   readonly shop: string;
@@ -23,13 +23,13 @@ export default function SettingsHero({
   snapshotItems,
 }: SettingsHeroProps) {
   const t = useTranslations();
-  const snapshotRows: CmsSettingsSnapshotRow[] = snapshotItems.map(
+  const snapshotRows = snapshotItems.map(
     (item) => ({
       id: item.label,
       label: item.label,
       value: item.value,
     }),
-  );
+  ) as unknown as CmsSettingsSnapshotRow[];
   return (
     <section className="relative overflow-hidden rounded-3xl border border-border/70 bg-hero-contrast text-hero-foreground shadow-elevation-4">
       <DSGrid gap={8} className="relative p-8 lg:grid-cols-3 lg:gap-10">

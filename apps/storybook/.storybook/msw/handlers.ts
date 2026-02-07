@@ -1,6 +1,7 @@
-import { http, HttpResponse, delay } from "msw";
-import { PRODUCTS } from "../../../../packages/platform-core/src/products/index";
+import { delay,http, HttpResponse } from "msw";
+
 import type { CartState } from "../../../../packages/platform-core/src/cart";
+import { PRODUCTS } from "../../../../packages/platform-core/src/products/index";
 
 type SBGlobals = { msw?: { delayMs: number; netError: boolean }; scenario?: string; netError?: string };
 

@@ -1,17 +1,19 @@
 "use client"; // i18n-exempt -- DEV-000: Next.js directive, not user-facing
 import * as React from "react";
-import { cn } from "../../utils/style";
+
 import { useTranslations } from "@acme/i18n";
-import { Button } from "../atoms/shadcn";
-import { Price } from "../atoms/Price";
-import { ProductBadge } from "../atoms/ProductBadge";
-import type { MediaItem as GalleryMediaItem } from "../molecules/MediaSelector";
+import type { Locale } from "@acme/i18n/locales";
+import { resolveText } from "@acme/i18n/resolveText";
 import type { SKU } from "@acme/types";
 import type { TranslatableText } from "@acme/types/i18n";
-import type { Locale } from "@acme/i18n/locales";
-import { resolveText } from "@i18n/resolveText";
-import { ProductGallery } from "../organisms/ProductGallery";
+
+import { cn } from "../../utils/style";
+import { Price } from "../atoms/Price";
 import { Grid, Inline, Stack } from "../atoms/primitives";
+import { ProductBadge } from "../atoms/ProductBadge";
+import { Button } from "../atoms/shadcn";
+import type { MediaItem as GalleryMediaItem } from "../molecules/MediaSelector";
+import { ProductGallery } from "../organisms/ProductGallery";
 
 export interface ProductMediaGalleryTemplateProps
   extends React.HTMLAttributes<HTMLDivElement> {

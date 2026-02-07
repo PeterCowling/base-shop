@@ -1,5 +1,6 @@
 /** @jest-environment node */
 import { afterEach, describe, expect, it, jest } from "@jest/globals";
+
 import { loadCoreEnv } from "../../core.ts";
 
 const baseEnv = {
@@ -7,6 +8,10 @@ const baseEnv = {
   CMS_ACCESS_TOKEN: "token",
   SANITY_API_VERSION: "v1",
   EMAIL_FROM: "from@example.com",
+  SANITY_PROJECT_ID: "test-project",
+  SANITY_DATASET: "production",
+  SANITY_API_TOKEN: "test-token",
+  SANITY_PREVIEW_SECRET: "preview-secret",
 };
 
 const ORIGINAL_ENV = { ...process.env };
@@ -41,16 +46,28 @@ describe("loadCoreEnv errors and logging", () => {
 
   it("logs each issue and throws for missing required secrets", async () => {
     const originalNodeEnv = process.env.NODE_ENV;
+    const originalEnv = { ...process.env };
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
-    process.env.NODE_ENV = "production";
+
+    // Set up production mode with enough vars to pass fail-fast import check
+    Object.assign(process.env, {
+      NODE_ENV: "production",
+      ...baseEnv,
+      NEXTAUTH_SECRET: "nextauth-secret-32-chars-long-string!",
+      SESSION_SECRET: "session-secret-32-chars-long-string!",
+    });
+
     const { loadCoreEnv: freshLoad } = await import("../../core.ts");
+
+    // Now call with empty env to trigger missing secrets errors
     expect(() => freshLoad({} as NodeJS.ProcessEnv)).toThrow(
       "Invalid core environment variables",
     );
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid core environment variables:",
     );
+    // In production mode, NEXTAUTH_SECRET and SESSION_SECRET are required
     expect(errorSpy).toHaveBeenCalledWith(
       expect.stringContaining("NEXTAUTH_SECRET"),
     );
@@ -58,7 +75,7 @@ describe("loadCoreEnv errors and logging", () => {
       expect.stringContaining("SESSION_SECRET"),
     );
     errorSpy.mockRestore();
-    process.env.NODE_ENV = originalNodeEnv;
+    process.env = originalEnv;
     jest.resetModules();
   });
 

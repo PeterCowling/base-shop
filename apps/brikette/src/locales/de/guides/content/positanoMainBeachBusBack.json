@@ -29,7 +29,7 @@
       "id": "ride-uphill",
       "title": "Fahren Sie mit dem interno-Bus bergauf",
       "body": [
-        "Steigen Sie in den orangefarbenen Bus mit der Aufschrift \"Interno Positano\" und fahren Sie durch die Stadt in Richtung Chiesa Nuova.",
+        "Steigen Sie in den orangefarbenen Bus mit der Aufschrift \\\\\"Interno Positano\\\\\" und fahren Sie durch die Stadt in Richtung Chiesa Nuova.",
         "Achten Sie auf den Stoppanruf oder achten Sie auf die Tabacchi-Ecke, in der Sie früher am Tag an Bord gegangen sind."
       ]
     },
@@ -50,7 +50,7 @@
   ],
   "extras": {
     "photos": {
-      "title": "Photos",
+      "title": "Fotos",
       "items": {
         "busInterior": {
           "alt": "Interno Positano-Bus an der Haltestelle am Strand",

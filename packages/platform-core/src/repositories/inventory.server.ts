@@ -1,12 +1,13 @@
 import "server-only";
 
+import { prisma } from "../db";
 import {
-  inventoryItemSchema,
   type InventoryItem,
+  inventoryItemSchema,
   variantKey,
 } from "../types/inventory";
-import type { InventoryRepository, InventoryMutateFn } from "./inventory.types";
-import { prisma } from "../db";
+
+import type { InventoryMutateFn,InventoryRepository } from "./inventory.types";
 import { resolveRepo } from "./repoResolver";
 
 let repoPromise: Promise<InventoryRepository> | undefined;

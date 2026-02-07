@@ -1,7 +1,8 @@
 // src/components/guides/generic-content/toc.ts
+import { debugGuide } from "@/utils/debug";
+
 import { nextStableKey, normaliseKeySeedFromUnknown } from "./keys";
 import { isRecord, toTrimmedString } from "./strings";
-import { debugGuide } from "@/utils/debug";
 import type {
   ResolvedSection,
   SupplementalNavEntry,

@@ -7,7 +7,8 @@ import type { ConfiguratorProgress } from "@acme/types";
 import {
   OPTIONAL_CONFIG_CHECK_STEPS,
   REQUIRED_CONFIG_CHECK_STEPS,
-} from "@platform-core/configurator";
+} from "@acme/types/configuratorSteps";
+
 import type { LaunchChecklistItem } from "./types";
 
 export interface BuildLaunchChecklistParams {
@@ -19,7 +20,7 @@ export function buildLaunchChecklist({
   progress,
   translate,
 }: BuildLaunchChecklistParams): LaunchChecklistItem[] {
-  const stepsById = progress.steps ?? {};
+  const stepsById: Partial<Record<string, string>> = progress.steps ?? {};
 
   const requiredItems = REQUIRED_CONFIG_CHECK_STEPS.map((stepId) => {
     const rawStatus = stepsById[stepId] ?? "pending";
@@ -167,7 +168,7 @@ export function buildLaunchChecklist({
 }
 
 export function isLaunchReady(progress: ConfiguratorProgress): boolean {
-  const stepsById = progress.steps ?? {};
+  const stepsById: Partial<Record<string, string>> = progress.steps ?? {};
   return REQUIRED_CONFIG_CHECK_STEPS.every(
     (stepId) => stepsById[stepId] === "complete",
   );
@@ -181,7 +182,7 @@ export function calculateProgressFromServer(
   completedOptional: number;
   totalOptional: number;
 } {
-  const stepsById = progress.steps ?? {};
+  const stepsById: Partial<Record<string, string>> = progress.steps ?? {};
 
   const completedRequired = REQUIRED_CONFIG_CHECK_STEPS.filter(
     (id) => stepsById[id] === "complete",

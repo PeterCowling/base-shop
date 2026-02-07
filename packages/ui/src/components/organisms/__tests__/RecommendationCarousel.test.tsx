@@ -1,8 +1,10 @@
 /* i18n-exempt file -- tests use literal product titles and labels */
-import { render, waitFor, screen, fireEvent, act } from "@testing-library/react";
+import { act,fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { RecommendationCarousel } from "../RecommendationCarousel";
+
 import type { SKU } from "@acme/types";
+
+import { RecommendationCarousel } from "../RecommendationCarousel";
 
 jest.mock("../ProductCard", () => ({
   ProductCard: ({ product }: { product: SKU }) => (

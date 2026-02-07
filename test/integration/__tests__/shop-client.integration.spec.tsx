@@ -65,12 +65,12 @@ function mockProductGrid({ skus }: any) {
   );
 }
 
-jest.mock("@platform-core/components/shop/FilterBar", () => ({
+jest.mock("@acme/platform-core/components/shop/FilterBar", () => ({
   __esModule: true,
   default: mockFilterBar,
 }));
 
-jest.mock("@platform-core/components/shop/ProductGrid", () => ({
+jest.mock("@acme/platform-core/components/shop/ProductGrid", () => ({
   __esModule: true,
   ProductGrid: mockProductGrid,
 }));

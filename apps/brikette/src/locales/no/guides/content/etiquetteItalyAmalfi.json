@@ -10,21 +10,21 @@
   "sections": [
     {
       "id": "dining",
-      "title": "Dining",
+      "title": "Måltider",
       "body": [
         "Bestill på forhånd ved høye perioder, vær tålmodig mellom kursene, be om regningen når du er klar, og gi beskjeden tips for enestående service."
       ]
     },
     {
       "id": "churches",
-      "title": "Churches & dress",
+      "title": "Kirker og bekledning",
       "body": [
         "Dekk til skuldrene inne i kirker og unngå å gå gjennom butikker i badetøy."
       ]
     },
     {
       "id": "lanes",
-      "title": "Shared lanes",
+      "title": "Delt ferdsel",
       "body": [
         "Hold til høyre i smale trappegater, la andre passere, og bytt raskt på populære fotosteder."
       ]
@@ -32,13 +32,13 @@
   ],
   "faqs": [
     {
-      "q": "Do I need to tip?",
+      "q": "Må jeg gi tips?",
       "a": [
         "Tips er valgfritt; legg igjen €1–€2 for enestående service eller rund opp regningen. Coperto dekker allerede brød og borddekking."
       ]
     },
     {
-      "q": "What should I wear inside churches?",
+      "q": "Hva bør jeg ha på meg i kirker?",
       "a": [
         "Dekk til skuldre og knær, fjern hatter og hold stemmene lave. Bær et lett skjerf for å skli over ermeløse topper."
       ]

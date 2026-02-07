@@ -1,3 +1,11 @@
+---
+Type: Plan
+Status: Draft
+Domain: Identity
+Last-reviewed: 2026-01-18
+Relates-to charter: none
+---
+
 # Keycloak OIDC Implementation Plan (Multi-TLD)
 
 Status: Draft blueprint → execution starter
@@ -58,3 +66,10 @@ Scope: Web storefronts (multi‑TLD), OIDC Authorization Code + PKCE, Keycloak a
 - Add storefront auth routes and session middleware implementing the above cookie/CSRF posture.
 - Implement `internalCustomerId`/`stripeCustomerId` mapping service with idempotent creation.
 - Add conformance tests: login flow, callback SameSite behavior, session issuance, CSRF on state-changing routes, and mapping persistence in checkout.
+
+## Active tasks
+
+- **KEYCLOAK-01**: Stand up Keycloak realm and clients; record real issuer/redirect URIs
+- **KEYCLOAK-02**: Add storefront auth routes and session middleware
+- **KEYCLOAK-03**: Implement internalCustomerId/stripeCustomerId mapping service
+- **KEYCLOAK-04**: Add conformance tests for auth flows

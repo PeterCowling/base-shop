@@ -24,12 +24,12 @@
     },
     "timetable": {
       "title": "Den SITA-Fahrplan lesen",
-      "body": "Der offizielle Fahrplan listet Haltestellen als Zeilen und Fahrten als Spalten mit Buchstaben. Suche die Zeilen für Positano und Amalfi in derselben Spalte für deinen Reisetag.",
+      "body": "Der offizielle Fahrplan listet Haltestellen in Zeilen und Fahrten in Spalten mit Buchstaben. Finde die Zeilen Positano und Amalfi innerhalb derselben Buchstabenspalte für deinen Reisetag.",
       "list": [
-        "Die Zeilen in der ersten Spalte nennen jede Haltestelle der Strecke.",
-        "Die Spalten stehen für geplante Fahrten und sind mit Buchstaben gekennzeichnet.",
-        "Reist du Montag bis Samstag? Nutze die Spalten „F“ und „G“.",
-        "Reist du am Sonntag oder an einem Feiertag? Nutze die Spalten „G“ und „H“."
+        "Die Zeilen in der ersten Spalte listen jede Haltestelle entlang der Route auf.",
+        "Spalten entsprechen geplanten Fahrten mit Buchstaben gekennzeichnet.",
+        "Reist du Montag bis Samstag? Nutze die Spalten 'F' und 'G'.",
+        "Reist du am Sonntag oder an einem Feiertag? Nutze die Spalten 'G' und 'H'."
       ],
       "link": "Sieh dir den aktuellen Plan auf <link>Positano.com</link> an.",
       "linkHref": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result"

@@ -1,6 +1,6 @@
-import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import { test } from 'node:test';
 
 process.env.CMS_SPACE_URL = 'https://example.com';
 process.env.CMS_ACCESS_TOKEN = 'test-token';
@@ -40,12 +40,8 @@ test('next-config', async (t) => {
   await t.test('transpilePackages includes required packages', async () => {
     const { baseConfig } = await freshImport();
     assert.deepEqual(baseConfig.transpilePackages, [
-      '@acme/config',
-      '@acme/ui',
-      '@acme/platform-core',
-      '@acme/i18n',
       '@acme/template-app',
-      '@acme/shared-utils',
+      '@acme/lib',
     ]);
   });
 

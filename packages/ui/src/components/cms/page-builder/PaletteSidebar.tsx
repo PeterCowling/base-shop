@@ -2,9 +2,11 @@
 /* eslint-disable react/forbid-dom-props -- LINT-1007: fixed palette width uses inline style to avoid arbitrary Tailwind values */
 
 import React from "react";
-import Palette from "./Palette";
-import type { ComponentType } from "./defaults";
+
 import type { PageComponent } from "@acme/types";
+
+import type { ComponentType } from "./defaults";
+import Palette from "./Palette";
 
 interface Props {
   width: number;

@@ -10,7 +10,7 @@ jest.setTimeout(60000);
 
 async function withShop(
   cb: (
-    repo: typeof import("@platform-core/repositories/rentalOrders.server")
+    repo: typeof import("@acme/platform-core/repositories/rentalOrders.server")
   ) => Promise<void>
 ) {
   await withTempRepo(async (dir) => {
@@ -35,7 +35,7 @@ async function withShop(
       () => ({ initZod: () => {} }),
       { virtual: true },
     );
-    const repo = await import("@platform-core/repositories/rentalOrders.server");
+    const repo = await import("@acme/platform-core/repositories/rentalOrders.server");
     await cb(repo);
   });
 }

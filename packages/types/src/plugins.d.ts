@@ -1,5 +1,6 @@
-import type { z } from "zod";
 import type React from "react";
+import type { z } from "zod";
+
 export interface PaymentPayload {
     [key: string]: unknown;
 }
@@ -60,3 +61,4 @@ export interface Plugin<Config = Record<string, unknown>, PPay = PaymentPayload,
     /** optional async initialization hook */
     init?(config: Config): Promise<void> | void;
 }
+//# sourceMappingURL=plugins.d.ts.map

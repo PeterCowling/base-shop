@@ -1,25 +1,56 @@
 import "@testing-library/jest-dom";
+
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
+import AiCatalogSettings from "../src/app/cms/shop/[shop]/settings/seo/AiCatalogSettings";
+
 const mockUpdateAiCatalog = jest.fn();
 jest.mock("@cms/actions/shops.server", () => ({ updateAiCatalog: mockUpdateAiCatalog }));
-jest.mock("@/components/atoms/shadcn", () => ({
-  Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
-  Checkbox: ({ onCheckedChange, ...props }: any) => (
-    <input
-      type="checkbox"
-      onChange={(e) => onCheckedChange?.((e.target as HTMLInputElement).checked)}
-      {...props}
-    />
-  ),
-  Input: (props: any) => <input {...props} />,
-  Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-  CardContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+
+jest.mock("@acme/i18n", () => ({
+  __esModule: true,
+  useTranslations: () => (key: string) => key,
 }));
 
-import AiCatalogSettings from "../src/app/cms/shop/[shop]/settings/seo/AiCatalogSettings";
+jest.mock("@acme/date-utils", () => ({
+  formatTimestamp: (value: string) => `formatted-${value}`,
+}));
+
+jest.mock("@/components/atoms", () => {
+  const React = require("react");
+  return {
+    __esModule: true,
+    Toast: ({ open, message }: any) =>
+      open ? <div role="status" aria-live="polite">{message}</div> : null,
+    Tooltip: ({ children }: any) => <span>{children}</span>,
+  };
+});
+
+jest.mock("@/components/atoms/shadcn", () => {
+  const React = require("react");
+  return {
+    __esModule: true,
+    Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
+    Checkbox: ({ onCheckedChange, ...props }: any) => (
+      <input
+        type="checkbox"
+        onChange={(e) => onCheckedChange?.((e.target as HTMLInputElement).checked)}
+        {...props}
+      />
+    ),
+    Input: (props: any) => <input {...props} />,
+    Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    CardContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    Dialog: ({ open, onOpenChange, children }: any) => (
+      open ? <div role="dialog">{children}</div> : null
+    ),
+    DialogContent: ({ children }: any) => <div>{children}</div>,
+    DialogHeader: ({ children }: any) => <div>{children}</div>,
+    DialogTitle: ({ children }: any) => <h2>{children}</h2>,
+  };
+});
 
 describe("AiCatalogSettings", () => {
   beforeEach(() => {

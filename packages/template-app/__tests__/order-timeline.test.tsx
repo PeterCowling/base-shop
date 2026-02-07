@@ -1,8 +1,10 @@
 /** @jest-environment jsdom */
-import { render, screen } from "@testing-library/react";
 import type { ReactElement } from "react";
+import { render, screen } from "@testing-library/react";
+
+import { listEvents } from "@acme/platform-core/repositories/reverseLogisticsEvents.server";
+
 import OrderTimeline from "../src/app/account/orders/[id]/timeline";
-import { listEvents } from "@platform-core/repositories/reverseLogisticsEvents.server";
 
 const events = [
   { id: "1", sessionId: "s1", event: "received", createdAt: "2023-01-01" },
@@ -10,7 +12,7 @@ const events = [
   { id: "3", sessionId: "s2", event: "qaPassed", createdAt: "2023-03-01" },
 ];
 
-jest.mock("@platform-core/repositories/reverseLogisticsEvents.server", () => ({
+jest.mock("@acme/platform-core/repositories/reverseLogisticsEvents.server", () => ({
   listEvents: jest.fn(),
 }));
 

@@ -1,18 +1,20 @@
 "use client";
 
 // packages/ui/hooks/useProductEditorFormState.tsx
-import { useProductInputs, type ProductWithVariants } from "./useProductInputs";
-import { useProductMediaManager } from "./useProductMediaManager";
-import { buildProductFormData } from "../utils/buildProductFormData";
-import type { Locale } from "@acme/i18n/locales";
-
 import {
+  type FormEvent,
   useCallback,
   useMemo,
   useState,
-  type FormEvent,
 } from "react";
+
+import type { Locale } from "@acme/i18n/locales";
 import type { ProductPublication } from "@acme/types";
+
+import { buildProductFormData } from "../utils/buildProductFormData";
+
+import { type ProductWithVariants,useProductInputs } from "./useProductInputs";
+import { useProductMediaManager } from "./useProductMediaManager";
 
 export interface ProductSaveResult {
   product?: ProductPublication & { variants?: Record<string, string[]> };

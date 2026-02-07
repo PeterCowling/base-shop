@@ -1,11 +1,11 @@
-import clsx from "clsx";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import clsx from "clsx";
 
 import RoomImage from "../atoms/RoomImage";
 import VisuallyHidden from "../atoms/VisuallyHidden";
+import { Stack } from "../components/atoms/primitives/Stack";
 import { resolveAssetPath } from "../shared/media";
 import { ROOM_CARD_TEST_IDS } from "../shared/testIds";
-import { Stack } from "@/components/atoms/primitives/Stack";
 import type {
   RoomCardAction,
   RoomCardFacility,
@@ -82,6 +82,7 @@ function PriceBlock({ price }: { price?: RoomCardPrice }): JSX.Element | null {
     return (
       <>
         <p
+          data-cy={skeletonId}
           data-testid={skeletonId}
           aria-hidden="true"
           className="mb-1 min-h-5 w-20 animate-pulse rounded bg-brand-surface"

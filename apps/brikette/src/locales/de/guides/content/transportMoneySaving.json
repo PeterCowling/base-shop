@@ -7,7 +7,6 @@
   "intro": [
     "Praktische Wege, die Transportkosten zu senken: Pässe, Timing, Bus-Fähre-Mix und Schlechtwetter-Plan."
   ],
-  "planChoiceTitle": "Wähle deinen Sparfokus",
   "sections": [
     {
       "id": "passes",
@@ -38,7 +37,7 @@
       ]
     }
   ],
-  "faqsTitle": "FAQs",
+  "faqsTitle": "Häufige Fragen",
   "faqs": [
     {
       "q": "Lohnen sich Kombitickets?",

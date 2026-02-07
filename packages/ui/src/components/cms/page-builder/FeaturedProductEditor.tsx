@@ -1,5 +1,6 @@
-import { Input } from "../../atoms/shadcn";
 import { useTranslations } from "@acme/i18n";
+
+import { Input } from "../../atoms/shadcn";
 
 type FeaturedProductComponent = {
   type: "FeaturedProduct";

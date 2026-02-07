@@ -1,14 +1,14 @@
+import { authorize, fetchSettings, persistSettings } from "../helpers";
 import {
+  setFreezeTranslations,
+  updateAiCatalog,
   updateCurrencyAndTax,
   updateDeposit,
-  updateReverseLogistics,
-  updateUpsReturns,
-  updateStockAlert,
   updatePremierDelivery,
-  updateAiCatalog,
-  setFreezeTranslations,
+  updateReverseLogistics,
+  updateStockAlert,
+  updateUpsReturns,
 } from "../settingsService";
-import { authorize, fetchSettings, persistSettings } from "../helpers";
 
 jest.mock("../helpers", () => ({
   authorize: jest.fn().mockResolvedValue(undefined),

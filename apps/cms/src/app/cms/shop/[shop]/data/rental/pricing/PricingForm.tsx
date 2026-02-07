@@ -1,18 +1,19 @@
 "use client";
 
-import { Button, Input } from "@/components/atoms/shadcn";
-import { Toast, Tag } from "@/components/atoms";
-import { type PricingMatrix } from "@acme/types";
-import { cn } from "@ui/utils/style";
-import { Inline } from "@ui/components/atoms/primitives";
-import { useCallback, useState } from "react";
+import { Inline } from "@acme/design-system/primitives";
+import { cn } from "@acme/design-system/utils/style";
 import { useTranslations } from "@acme/i18n";
+import { type PricingMatrix } from "@acme/types";
+import { useToast } from "@acme/ui/operations";
+
+import { Tag } from "@/components/atoms";
+import { Button, Input } from "@/components/atoms/shadcn";
 
 import PricingCoverageSection from "./PricingCoverageSection";
 import PricingDamageSection from "./PricingDamageSection";
 import PricingDurationSection from "./PricingDurationSection";
 import PricingJsonEditor from "./PricingJsonEditor";
-import { usePricingFormState, type PricingFormTab } from "./usePricingFormState";
+import { type PricingFormTab,usePricingFormState } from "./usePricingFormState";
 
 interface Props {
   shop: string;
@@ -35,13 +36,11 @@ const TAB_INACTIVE_CLASS = "text-muted-foreground hover:bg-surface-3"; // i18n-e
 
 export default function PricingForm({ shop, initial }: Props) {
   const t = useTranslations();
-  const [toast, setToast] = useState<{ open: boolean; message: string }>({ open: false, message: "" });
+  const toast = useToast();
 
-  const emitToast = useCallback((message: string) => {
-    setToast({ open: true, message });
-  }, []);
-
-  const closeToast = useCallback(() => setToast({ open: false, message: "" }), []);
+  const emitToast = (message: string) => {
+    toast.info(message);
+  };
 
   const {
     refs: { fileInputRef },
@@ -222,7 +221,6 @@ export default function PricingForm({ shop, initial }: Props) {
         <span className="text-xs text-muted-foreground">{t("cms.pricing.saveNotice")}</span>
       </div>
 
-      <Toast open={toast.open} message={toast.message} onClose={closeToast} />
     </form>
   );
 }

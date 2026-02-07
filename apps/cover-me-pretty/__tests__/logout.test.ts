@@ -1,11 +1,11 @@
 // apps/cover-me-pretty/__tests__/logout.test.ts
-jest.mock("@auth", () => ({
+jest.mock("@acme/auth", () => ({
   __esModule: true,
   destroyCustomerSession: jest.fn(),
 }));
 jest.mock("next/headers", () => ({ cookies: jest.fn() }));
 
-import { destroyCustomerSession } from "@auth";
+import { destroyCustomerSession } from "@acme/auth";
 import { cookies } from "next/headers";
 import { GET } from "../src/app/logout/route";
 

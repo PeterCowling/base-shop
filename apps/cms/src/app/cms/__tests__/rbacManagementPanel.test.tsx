@@ -1,13 +1,14 @@
 import React from "react";
-import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import type { UserWithRoles } from "@cms/actions/rbac.server";
 import type { Role } from "@cms/auth/roles";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+
+import type { ActionResult } from "../components/actionResult";
+import { ROLE_DETAILS } from "../components/roleDetails";
 import RbacManagementPanel, {
   type InviteUserAction,
   type SaveUserAction,
 } from "../rbac/RbacManagementPanel.client";
-import { ROLE_DETAILS } from "../components/roleDetails";
-import type { ActionResult } from "../components/actionResult";
 
 jest.mock("@/components/atoms/shadcn", () => {
   const React = require("react");
@@ -32,17 +33,24 @@ jest.mock("@/components/atoms", () => {
   const React = require("react");
   return {
     __esModule: true,
-    Toast: ({ open, message, className }: any) =>
-      open
-        ? React.createElement(
-            "div",
-            { role: "status", className },
-            message
-          )
-        : null,
     Tooltip: ({ children }: any) => React.createElement(React.Fragment, null, children),
   };
 });
+
+const mockToastMessages: { type: string; message: string }[] = [];
+jest.mock("@acme/ui/operations", () => ({
+  __esModule: true,
+  useToast: () => ({
+    success: (message: string) => { mockToastMessages.push({ type: "success", message }); },
+    error: (message: string) => { mockToastMessages.push({ type: "error", message }); },
+    warning: (message: string) => { mockToastMessages.push({ type: "warning", message }); },
+    info: (message: string) => { mockToastMessages.push({ type: "info", message }); },
+    loading: (message: string) => { mockToastMessages.push({ type: "loading", message }); },
+    dismiss: () => {},
+    update: () => {},
+    promise: async (p: Promise<unknown>) => p,
+  }),
+}));
 
 const roles: Role[] = [
   "admin",
@@ -51,6 +59,10 @@ const roles: Role[] = [
   "CatalogManager",
   "ThemeEditor",
 ];
+
+beforeEach(() => {
+  mockToastMessages.length = 0;
+});
 
 describe("RbacManagementPanel", () => {
   const user: UserWithRoles = {
@@ -108,8 +120,8 @@ describe("RbacManagementPanel", () => {
     fireEvent.click(scoped.getByRole("button", { name: /Save changes/i }));
 
     expect(save).not.toHaveBeenCalled();
-    expect(await screen.findByRole("status")).toHaveTextContent(
-      /assign at least one role/i
+    expect(mockToastMessages).toContainEqual(
+      expect.objectContaining({ type: "error", message: expect.stringMatching(/assign at least one role/i) })
     );
     expect(screen.getByText(/role assignment required/i)).toBeInTheDocument();
   });
@@ -146,7 +158,11 @@ describe("RbacManagementPanel", () => {
       })
     );
 
-    expect(await screen.findByRole("status")).toHaveTextContent(/roles saved/i);
+    await waitFor(() =>
+      expect(mockToastMessages).toContainEqual(
+        expect.objectContaining({ type: "success", message: expect.stringMatching(/roles saved/i) })
+      )
+    );
     expect(screen.getByText(/2 roles active/i)).toBeInTheDocument();
   });
 
@@ -205,7 +221,11 @@ describe("RbacManagementPanel", () => {
       })
     );
 
-    expect(await screen.findByRole("status")).toHaveTextContent(/invite sent/i);
+    await waitFor(() =>
+      expect(mockToastMessages).toContainEqual(
+        expect.objectContaining({ type: "success", message: expect.stringMatching(/invite sent/i) })
+      )
+    );
     expect(screen.getByText("Alex Kim")).toBeInTheDocument();
     expect(screen.getByLabelText(/name/i)).toHaveValue("");
     expect(screen.getByLabelText(/email/i)).toHaveValue("");

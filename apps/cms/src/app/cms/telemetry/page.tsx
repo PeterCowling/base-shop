@@ -1,19 +1,21 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+
 import { useTranslations } from "@acme/i18n";
+import { median as libMedian, percentile as libPercentile } from "@acme/lib/math/statistics";
 import type { TelemetryEvent } from "@acme/telemetry";
-import { Toast } from "@ui/components/atoms";
+import { useToast } from "@acme/ui/operations";
 
 import { TelemetryFiltersPanel } from "./TelemetryFiltersPanel";
 import { TelemetryHeader } from "./TelemetryHeader";
-import { TelemetrySummaryCards } from "./TelemetrySummaryCards";
 import type { TelemetrySummaryMetric } from "./TelemetrySummaryCards";
+import { TelemetrySummaryCards } from "./TelemetrySummaryCards";
 import {
-  getPresets,
   buildChartData,
   buildSummary,
   filterTelemetryEvents,
+  getPresets,
   type TelemetryFilters,
 } from "./telemetryUtils";
 
@@ -31,22 +33,19 @@ export function TelemetryAnalyticsView({
   onReload,
 }: TelemetryAnalyticsViewProps) {
   const t = useTranslations();
+  const toast = useToast();
   const [filters, setFilters] = useState<TelemetryFilters>({
     name: "",
     start: "",
     end: "",
   });
   const [activePreset, setActivePreset] = useState<string>("all");
-  const [toast, setToast] = useState<{ open: boolean; message: string }>({
-    open: false,
-    message: "",
-  });
 
   useEffect(() => {
     if (error) {
-      setToast({ open: true, message: error });
+      toast.error(error);
     }
-  }, [error]);
+  }, [error, toast]);
 
   const filteredEvents = useMemo(
     () => filterTelemetryEvents(events, filters),
@@ -73,19 +72,11 @@ export function TelemetryAnalyticsView({
       })
       .filter((v): v is number => v !== null)
       .sort((a, b) => a - b);
-    const percentile = (p: number) => {
-      if (!durations.length) return null;
-      const idx = Math.min(
-        durations.length - 1,
-        Math.floor((p / 100) * durations.length),
-      );
-      return durations[idx];
-    };
-    const median =
-      durations.length > 0
-        ? durations[Math.floor(durations.length / 2)]
-        : null;
-    const p90 = percentile(90);
+    // Use library functions for statistics
+    const medianVal = libMedian(durations);
+    const median = Number.isNaN(medianVal) ? null : medianVal;
+    const p90Val = durations.length > 0 ? libPercentile(durations, 90) : NaN;
+    const p90 = Number.isNaN(p90Val) ? null : p90Val;
     return { median, p90 };
   }, [filteredEvents]);
 
@@ -147,12 +138,9 @@ export function TelemetryAnalyticsView({
     if (!preset) return;
     setActivePreset(presetId);
     setFilters((prev) => ({ ...prev, ...preset.apply() }));
-    setToast({
-      open: true,
-      message: String(
-        t("cms.telemetry.presetApplied", { preset: preset.label }) as string,
-      ),
-    });
+    toast.success(String(
+      t("cms.telemetry.presetApplied", { preset: preset.label }) as string,
+    ));
   }
 
   function handleFiltersChange(partial: Partial<TelemetryFilters>) {
@@ -162,13 +150,6 @@ export function TelemetryAnalyticsView({
 
   return (
     <div className="space-y-6">
-      <Toast
-        open={toast.open}
-        message={toast.message}
-        onClose={() => setToast((current) => ({ ...current, open: false }))}
-        role="status"
-        aria-live="assertive"
-      />
       <TelemetryHeader onReload={onReload} />
       <TelemetrySummaryCards metrics={heroMetrics} />
       <TelemetryFiltersPanel

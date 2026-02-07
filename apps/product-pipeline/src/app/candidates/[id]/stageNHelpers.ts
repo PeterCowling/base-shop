@@ -1,6 +1,6 @@
 "use client";
 
-import type { StageRun, StageNNegotiationStatus } from "./types";
+import type { StageNNegotiationStatus,StageRun } from "./types";
 
 export type StageNInput = {
   status?: StageNNegotiationStatus;

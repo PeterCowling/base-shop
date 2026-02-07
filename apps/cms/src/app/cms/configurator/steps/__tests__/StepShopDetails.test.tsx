@@ -1,9 +1,10 @@
 import React from "react";
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { act,fireEvent, render, screen } from "@testing-library/react";
+
 import StepShopDetails from "../StepShopDetails";
 
 // mocks for UI components
-jest.mock("@ui/components/atoms/shadcn", () => ({
+jest.mock("@acme/design-system/shadcn", () => ({
   Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
   Input: ({ "data-cy": dataCy, ...props }: any) => (
     <input data-testid={dataCy} data-cy={dataCy} {...props} />
@@ -25,7 +26,7 @@ jest.mock("@ui/components/atoms/shadcn", () => ({
   SelectValue: () => null,
 }));
 
-jest.mock("@ui/components/cms/page-builder/ImagePicker", () => ({
+jest.mock("@acme/cms-ui/page-builder/ImagePicker", () => ({
   __esModule: true,
   default: ({ children }: any) => <div>{children}</div>,
 }));
@@ -44,7 +45,7 @@ jest.mock("../hooks/useConfiguratorStep", () => ({
     if (!values.name) errors.name = "Required";
     for (const [k, v] of Object.entries(values.logo || {})) {
       try {
-        if (v) new URL(v);
+        if (v) new URL(v as string);
       } catch {
         errors[`logo.${k}`] = "Invalid URL";
       }
@@ -77,15 +78,17 @@ function Wrapper() {
   const [contactInfo, setContactInfo] = React.useState("");
   return (
     <StepShopDetails
-      shopId={shopId}
-      setShopId={setShopId}
-      storeName={storeName}
-      setStoreName={setStoreName}
-      logo={logo}
-      setLogo={setLogo}
-      contactInfo={contactInfo}
-      setContactInfo={setContactInfo}
-      templates={["default"]}
+      {...({
+        shopId,
+        setShopId,
+        storeName,
+        setStoreName,
+        logo,
+        setLogo,
+        contactInfo,
+        setContactInfo,
+        templates: ["default"],
+      } as any)}
     />
   );
 }

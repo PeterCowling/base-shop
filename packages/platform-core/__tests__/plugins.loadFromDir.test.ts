@@ -1,4 +1,5 @@
 import path from "node:path";
+
 import type { Dirent } from "fs";
 
 describe("loadPluginFromDir and loadPlugins", () => {

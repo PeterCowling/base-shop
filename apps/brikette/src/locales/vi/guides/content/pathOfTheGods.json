@@ -14,8 +14,7 @@
       "title": "Điểm nhấn nhanh",
       "body": [
         "Những ban công tự nhiên lơ lửng nhìn xuống Positano, Praiano và Capri, nên ngay cả đoạn ngắn cũng có điểm dừng sống ảo tuyệt đẹp.",
-        "Độ dốc đều chứ không quá kỹ thuật; chỉ cần đôi giày bám tốt và đủ nước, bạn có thể yên tâm chinh phục.",
-        "Sử dụng phương tiện công cộng giúp chi phí thấp hơn nhiều so với thuê tài xế riêng hay tour hướng dẫn, để bạn dành ngân sách cho phần thưởng sau chuyến đi."
+        "Độ dốc đều chứ không quá kỹ thuật; chỉ cần đôi giày bám tốt và đủ nước, bạn có thể yên tâm chinh phục."
       ]
     },
     {
@@ -40,7 +39,7 @@
       "title": "Thông tin cơ bản",
       "body": [
         "Sentiero degli Dei nối Bomerano và Nocelle với quãng đường khoảng 6 km lên xuống nhẹ, tổng độ chênh cao khoảng 200 m.",
-        "Biển chỉ đường là sọc đỏ-trắng của CAI cùng các mũi tên gỗ \"Sentiero\". Đường đi xen kẽ bậc đá, đất nén và gờ đá — nhớ mang giày bám tốt và để tay rảnh."
+        "Biển chỉ đường là sọc đỏ-trắng của CAI cùng các mũi tên gỗ \\\\\"Sentiero\\\\\". Đường đi xen kẽ bậc đá, đất nén và gờ đá — nhớ mang giày bám tốt và để tay rảnh."
       ]
     },
     {
@@ -128,25 +127,11 @@
       ]
     }
   ],
-  "galleryTitle": "Bộ ảnh",
-  "gallery": {
-    "items": [
-      {
-        "alt": "Khung cảnh dọc Con Đường của Các Vị Thần",
-        "caption": "Dọc đường mòn"
-      },
-      {
-        "alt": "Khung cảnh làng Nocelle",
-        "caption": "Nocelle nhìn từ trên cao"
-      }
-    ]
-  },
   "toc": {
     "onThisPage": "Nội dung chính",
     "essentials": "Vật dụng cần có",
     "costs": "Chi phí tham khảo",
     "tips": "Thời điểm lý tưởng",
-    "faqs": "Câu hỏi thường gặp",
-    "gallery": "Bộ ảnh"
+    "faqs": "Câu hỏi thường gặp"
   }
 }

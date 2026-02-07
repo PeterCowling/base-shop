@@ -3,7 +3,7 @@ import crypto from "crypto";
 
 process.env.CART_COOKIE_SECRET = "secret";
 
-jest.mock("@platform-core/analytics", () => ({
+jest.mock("@acme/platform-core/analytics", () => ({
   __esModule: true,
   trackEvent: jest.fn(),
 }));
@@ -31,7 +31,7 @@ describe("email provider webhooks", () => {
   let mapResendEvent: jest.Mock;
 
   beforeEach(() => {
-    trackEvent = require("@platform-core/analytics").trackEvent as jest.Mock;
+    trackEvent = require("@acme/platform-core/analytics").trackEvent as jest.Mock;
     mapResendEvent =
       require("@acme/email/analytics").mapResendEvent as jest.Mock;
     trackEvent.mockReset();

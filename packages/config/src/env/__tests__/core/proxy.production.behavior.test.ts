@@ -1,5 +1,6 @@
 /** @jest-environment node */
 import { afterEach, describe, expect, it, jest } from "@jest/globals";
+
 import { NEXT_SECRET, SESSION_SECRET } from "../authEnvTestUtils.ts";
 
 const baseEnv = {
@@ -7,6 +8,10 @@ const baseEnv = {
   CMS_ACCESS_TOKEN: "token",
   SANITY_API_VERSION: "v1",
   EMAIL_FROM: "from@example.com",
+  SANITY_PROJECT_ID: "test-project",
+  SANITY_DATASET: "production",
+  SANITY_API_TOKEN: "test-token",
+  SANITY_PREVIEW_SECRET: "preview-secret",
 };
 
 const ORIGINAL_ENV = { ...process.env };

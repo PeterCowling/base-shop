@@ -1,5 +1,6 @@
-import { jest } from "@jest/globals";
 import type { NextRequest } from "next/server";
+import { jest } from "@jest/globals";
+
 import { setupReturnMocks } from "./helpers/return";
 
 afterEach(() => jest.resetModules());

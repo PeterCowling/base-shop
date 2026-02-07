@@ -2,7 +2,10 @@
 /* eslint-env jest */
 
 import "@testing-library/jest-dom";
+
 import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+
+import SeoAuditPanel from "../src/app/cms/shop/[shop]/settings/seo/SeoAuditPanel";
 
 jest.mock("@/components/atoms/shadcn", () => ({
   Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
@@ -23,8 +26,6 @@ jest.mock("@/components/atoms", () => ({
   Toast: () => null,
   Tooltip: ({ children }: any) => <>{children}</>,
 }));
-
-import SeoAuditPanel from "../src/app/cms/shop/[shop]/settings/seo/SeoAuditPanel";
 
 describe("SeoAuditPanel", () => {
   const shop = "s1";

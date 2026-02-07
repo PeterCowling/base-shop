@@ -3,7 +3,7 @@
     "title": "Autobus z hostelu Brikette do głównej plaży w Positano",
     "description": "Jak zjechać pomarańczowym autobusem interno w dół do Piazza dei Mulini i przejść się do Spiaggia Grande."
   },
-  "linkLabel": "Bus down to Positano's main beach",
+  "linkLabel": "Autobus na główną plażę Positano",
   "intro": [
     "Pomarańczowy autobus Interno Positano łączy Hostel Brikette z Piazza dei Mulini, w odległości krótkiego spaceru od Spiaggia Grande.",
     "Wykonaj te czynności, aby kupić bilety w Tabacchi, zjechać w dół zbocza i pokonać ostatnie minuty na piechotę."
@@ -22,7 +22,7 @@
       "id": "ride-the-bus",
       "title": "Jedź autobusem Interno Positano w dół zbocza",
       "body": [
-        "Wsiądź do pomarańczowego minibusa oznaczonego „Interno Positano”. Trasa przebiega w różnych stylach pojazdów, ale miejsce docelowe na znaku elektronicznym pozostaje takie samo.",
+        "Wsiądź do pomarańczowego minibusa oznaczonego \\\"Interno Positano”. Trasa przebiega w różnych stylach pojazdów, ale miejsce docelowe na znaku elektronicznym pozostaje takie samo.",
         "Pozostań na miejscu, gdy autobus przejeżdża przez wzgórza Positano i zjeżdża w kierunku centrum miasta."
       ]
     },

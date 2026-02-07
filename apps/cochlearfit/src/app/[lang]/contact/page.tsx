@@ -1,11 +1,12 @@
-import Link from "next/link";
 import type { Metadata } from "next";
-import Section from "@/components/Section";
+import Link from "next/link";
+
 import PageHeader from "@/components/PageHeader";
+import Section from "@/components/Section";
 import { resolveLocale } from "@/lib/locales";
 import { createTranslator, loadMessages } from "@/lib/messages";
-import { SUPPORT_EMAIL, SUPPORT_PHONE } from "@/lib/site";
 import { buildMetadata } from "@/lib/seo";
+import { SUPPORT_EMAIL, SUPPORT_PHONE } from "@/lib/site";
 
 export async function generateMetadata({
   params,

@@ -1,4 +1,5 @@
-import { z } from "zod";
+import { type z } from "zod";
+
 import { themeLibrarySchema } from "@acme/types/theme/ThemeLibrary";
 
 export { themeLibrarySchema };

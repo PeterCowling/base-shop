@@ -266,6 +266,41 @@
   "loadingPrice": "Laddar pris...",
   "landingImageAlt": "Landningsbild av {{room}}",
   "priceNotes": {
-    "dorm": "Per night, per guest. One guest in one bunk bed."
+    "dorm": "Per natt, per gäst. En gäst i en våningssäng."
+  },
+  "facts": {
+    "type": {
+      "privateRoom": "Privat rum",
+      "mixedDorm": "Blandad sovsal",
+      "femaleDorm": "Kvinnosovsal",
+      "femaleRoom": "Rum endast för kvinnor"
+    },
+    "bathroom": {
+      "bathroomEnsuite": "Eget badrum",
+      "bathroomPrivate": "Privat badrum",
+      "bathroomSharedFemale": "Delat badrum"
+    },
+    "sleeps": "Sover {{count}}"
+  },
+  "detailsLine": {
+    "beds": {
+      "doubleBedForTwo": "1 dubbelsäng",
+      "threeSingleBedsThreeGuests": "3 enkelsängar",
+      "oneDormBedTwoGuests": "1 våningssäng",
+      "threeDormBedsSixGuests": "3 våningssängar",
+      "threeDormBedsPlusSingleSevenGuests": "3 våningssängar + 1 enkelsäng",
+      "fourDormBedsEightGuests": "4 våningssängar"
+    },
+    "views": {
+      "seaViewTerrace": "Terrass med havsutsikt",
+      "seaViewExtraLargeTerrace": "Terrass med havsutsikt",
+      "gardenView": "Trädgårdsutsikt",
+      "courtyardView": "Utsikt mot innergård",
+      "noView": "Ingen utsikt"
+    }
+  },
+  "priceUnits": {
+    "perRoom": "rum",
+    "perBed": "bädd"
   }
 }

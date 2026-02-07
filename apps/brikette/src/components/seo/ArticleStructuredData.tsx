@@ -1,12 +1,15 @@
-/* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
+ 
 // src/components/seo/ArticleStructuredData.tsx
-import { memo, useMemo } from "react";
+import { memo } from "react";
 
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import { buildCanonicalUrl } from "@acme/ui/lib/seo";
+
 import { BASE_URL } from "@/config/site";
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { buildArticlePayload } from "@/utils/seo/jsonld";
+import { serializeJsonLdValue } from "@/utils/seo/jsonld";
 
-import { ensureLeadingSlash, normaliseWindowPath, useOptionalRouterPathname } from "./locationUtils";
+import { ensureLeadingSlash, useOptionalRouterPathname } from "./locationUtils";
 
 type Props = {
   headline: string;
@@ -30,43 +33,27 @@ function ArticleStructuredData({
   publisherLogoUrl = `${BASE_URL}/img/hostel_brikette_icon.png`,
 }: Props): JSX.Element {
   const lang = useCurrentLanguage();
+  // Use Next.js router pathname directly. Avoid window.location fallback to prevent
+  // server/client hydration mismatches. usePathname() works reliably in App Router.
   const routerPathname = useOptionalRouterPathname();
-  const fallbackPath = normaliseWindowPath();
-  const rawPathname = routerPathname ?? fallbackPath;
-  const pathname = rawPathname ? ensureLeadingSlash(rawPathname) : "/";
+  const pathname = ensureLeadingSlash(routerPathname ?? "/");
 
-  const fallbackModified = useMemo(() => new Date().toISOString().slice(0, 10), []);
-  const canonicalUrl = useMemo(() => `${BASE_URL}${pathname}`, [pathname]);
-  const payload = useMemo(() => {
-    const img = image || `${BASE_URL}/img/hostel-communal-terrace-lush-view.webp`;
-    return (
-      buildArticlePayload({
-        headline,
-        description,
-        lang,
-        url: canonicalUrl,
-        image: img,
-        datePublished: datePublished || fallbackModified,
-        dateModified: dateModified || fallbackModified,
-        authorName,
-        publisherName,
-        publisherLogoUrl,
-      }) || undefined
-    );
-  }, [
-    authorName,
-    canonicalUrl,
-    dateModified,
-    datePublished,
-    description,
-    headline,
-    image,
-    lang,
-    publisherLogoUrl,
-    publisherName,
-    fallbackModified,
-  ]);
-  const json = useMemo(() => (payload ? JSON.stringify(payload) : ""), [payload]);
+  const canonicalUrl = buildCanonicalUrl(BASE_URL, pathname);
+  const img = image || `${BASE_URL}/img/hostel-communal-terrace-lush-view.webp`;
+  const payload =
+    buildArticlePayload({
+      headline,
+      description,
+      lang,
+      url: canonicalUrl,
+      image: img,
+      ...(datePublished ? { datePublished } : {}),
+      ...(dateModified ? { dateModified } : {}),
+      authorName,
+      publisherName,
+      publisherLogoUrl,
+    }) || undefined;
+  const json = payload ? serializeJsonLdValue(payload) : "";
   return (
     <script
       type="application/ld+json"

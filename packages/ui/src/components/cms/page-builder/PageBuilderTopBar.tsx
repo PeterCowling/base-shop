@@ -1,20 +1,22 @@
 import type { ComponentProps, ReactNode } from "react";
+import { CheckIcon, CopyIcon,ReloadIcon } from "@radix-ui/react-icons";
+
 import { useTranslations } from "@acme/i18n";
-import { CheckIcon, ReloadIcon, CopyIcon } from "@radix-ui/react-icons";
-import { Tooltip } from "../../atoms";
+import type { PageComponent } from "@acme/types";
+
+import { Tooltip as SmallTooltip,Tooltip  } from "../../atoms";
+import { Inline } from "../../atoms/primitives/Inline";
 import { Button, Dialog, DialogContent, DialogTitle, DialogTrigger } from "../../atoms/shadcn";
-import PageToolbar from "./PageToolbar";
+
+import type GridSettings from "./GridSettings";
 import HistoryControls from "./HistoryControls";
-import ResponsiveRightActions from "./ResponsiveRightActions";
+import NotificationsBell from "./NotificationsBell";
+import PageToolbar from "./PageToolbar";
 import PresenceAvatars from "./PresenceAvatars";
+import ResponsiveRightActions from "./ResponsiveRightActions";
+import { derivePublishState } from "./state/publishStatus";
 import StudioMenu from "./StudioMenu";
 import TopActionBar from "./TopActionBar";
-import NotificationsBell from "./NotificationsBell";
-import type GridSettings from "./GridSettings";
-import type { PageComponent } from "@acme/types";
-import { Inline } from "../../atoms/primitives/Inline";
-import { derivePublishState } from "./state/publishStatus";
-import { Tooltip as SmallTooltip } from "../../atoms";
 
 interface PageBuilderTopBarProps {
   historyProps: ComponentProps<typeof HistoryControls>;

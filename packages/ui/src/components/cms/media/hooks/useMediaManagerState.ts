@@ -2,15 +2,15 @@
 "use client";
 
 import {
+  type MediaItemWithUrl,
   type UseMediaManagerStateOptions,
   type UseMediaManagerStateResult,
-  type MediaItemWithUrl,
 } from "./utils/types";
-import { useMediaState } from "./utils/useMediaState";
 import { useDeleteHandlers } from "./utils/useDeleteHandlers";
-import { useUploadHandlers } from "./utils/useUploadHandlers";
-import { useReplaceHandlers } from "./utils/useReplaceHandlers";
 import { useDetailsHandlers } from "./utils/useDetailsHandlers";
+import { useMediaState } from "./utils/useMediaState";
+import { useReplaceHandlers } from "./utils/useReplaceHandlers";
+import { useUploadHandlers } from "./utils/useUploadHandlers";
 
 export function useMediaManagerState({
   shop,

@@ -1,9 +1,12 @@
-import { getSanityConfig } from "@platform-core/shops";
-import { getShopById } from "@platform-core/repositories/shop.server";
-import type { SanityConfig } from "@platform-core/repositories/blog.server";
+import type { SanityConfig } from "@acme/platform-core/repositories/blog.server";
+import { getShopById } from "@acme/platform-core/repositories/shop.server";
+import { getSanityConfig } from "@acme/platform-core/shops";
 
 export async function getConfig(shopId: string): Promise<SanityConfig> {
   const shop = await getShopById(shopId);
+  if (!shop) {
+    throw new Error(`Shop ${shopId} not found`);
+  }
   const sanity = getSanityConfig(shop) as SanityConfig | undefined;
   if (!sanity) {
     throw new Error(`Missing Sanity config for shop ${shopId}`);

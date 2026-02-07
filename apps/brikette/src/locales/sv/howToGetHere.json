@@ -14,18 +14,76 @@
       "routes": "Dörr-till-dörr-rutter",
       "destinations": "Täckta områden",
       "transport": "Transporttyper",
-      "experienceRoutes": "Experience routes"
+      "experienceRoutes": "Upplevelserutter"
+    }
+  },
+  "routePicker": {
+    "title": "Hitta bästa rutten för din ankomst",
+    "subtitle": "Svara på två snabba frågor — vi hoppar till bästa matchen och markerar den.",
+    "placeLabel": "Varifrån kommer du?",
+    "placePlaceholder": "Välj en startpunkt",
+    "arrivalLabel": "När anländer du?",
+    "arrival": {
+      "daytime": "Dagstid",
+      "evening": "Kväll",
+      "lateNight": "Sent på natten"
+    },
+    "preferencesLabel": "Preferenser",
+    "preferences": {
+      "none": "Ingen preferens",
+      "fastest": "Snabbast",
+      "cheapest": "Billigast",
+      "leastWalking": "Minst gång",
+      "luggageFriendly": "Mest bagagevänligt"
+    },
+    "cta": "Visa min bästa rutt",
+    "urlHint": "Filtren uppdaterar URL:en så att du kan dela länken.",
+    "lateNightHint": "Sen ankomst är ofta enklast med taxi eller shuttle — använd kontaktalternativen nedan om bussar/färjor har slutat gå."
+  },
+  "routeCard": {
+    "factsLabel": "Rutfakta",
+    "duration": "Varaktighet",
+    "cost": "Kostnad",
+    "walking": "Till fots",
+    "luggage": "Bagage",
+    "seasonality": "Säsong",
+    "seasonalityValues": {
+      "seasonal": "Säsongsbetonat",
+      "yearRound": "Året runt"
+    },
+    "cta": "Se steg för steg",
+    "direction": {
+      "to": "Till vandrarhemmet",
+      "from": "Från vandrarhemmet"
     }
   },
   "preview": {
-    "notPublished": "Preview only – this page is not published"
+    "notPublished": "Endast förhandsgranskning – denna sida är inte publicerad"
+  },
+  "jumpTo": {
+    "label": "Gå till",
+    "arrival": "Ankomsthjälp",
+    "rome": "Rom",
+    "experiences": "Upplevelser"
   },
   "intro": {
     "taxi": "Vill du boka taxi? Skicka ett WhatsApp-meddelande på engelska eller italienska till <Strong>{{contact}}</Strong>.",
     "shuttle": "Föredrar du shuttle? Sea Horse Car Service kör delade transfer. Boka en plats via deras <Link>officiella shuttlesida</Link>.",
     "taxiContact": "+39 379 125 6222",
     "taxiEyebrow": "Hostel Brikette by Taxi",
-    "shuttleEyebrow": "Hostel Brikette by Shuttle"
+    "shuttleEyebrow": "Hostel Brikette by Shuttle",
+    "whatsappTemplate": "Hej! Jag bor på Hostel Brikette. Jag vill boka en taxi till/från Positano. Min ankomsttid är: ____",
+    "emailSubject": "Hjälp vid ankomst",
+    "emailBody": "Hej Hostel Brikette-teamet — jag kommer idag och behöver hjälp att välja bästa sättet att ta mig fram. Min beräknade ankomsttid är: ____",
+    "whatsappCta": "WhatsApp-taxi",
+    "callCta": "Ring",
+    "taxiBestFor": "Bäst för: sena ankomster · tungt bagage · snabbaste alternativet",
+    "shuttleCta": "Boka shuttle",
+    "shuttleBestFor": "Bäst för: ankomst till flygplats · delad transfer · planering i förväg",
+    "helpEyebrow": "Behöver du hjälp?",
+    "helpCopy": "Kommer du sent eller med förseningar? Skriv till oss så kan vi planera din incheckning och föreslå en alternativ rutt.",
+    "emailCta": "Mejla receptionen",
+    "helpBestFor": "Bäst för: förseningar · inställda färjor · sen incheckning"
   },
   "destinations": {
     "filterLabel": "Plats",
@@ -37,7 +95,7 @@
         "image": {
           "src": "/img/positano-panorama.avif",
           "alt": "Panoramavy över Positanos hus på klippväggen",
-          "caption": "Positano is steep — plan for stairs, especially with luggage."
+          "caption": "Positano är brant — planera för trappor, särskilt med bagage."
         },
         "links": [
           {
@@ -46,10 +104,10 @@
             "internal": true,
             "facts": {
               "duration": "5–10 min",
-              "cost": "Free",
-              "walking": "~140 m + ~30 steps",
+              "cost": "Gratis",
+              "walking": "~140 m + ~30 trappsteg",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Året runt"
             }
           },
           {
@@ -57,11 +115,23 @@
             "href": "ferry-dock-to-hostel-brikette-with-luggage",
             "internal": true,
             "facts": {
-              "duration": "20–45 min (depends on porters/Interno bus)",
-              "cost": "€2–€6 pp (+ optional porter)",
-              "walking": "Port stairs; porters reduce carrying",
+              "duration": "20–45 min (beror på bärare/Interno-buss)",
+              "cost": "€2–€6 per person (+ valfri bärare)",
+              "walking": "Hamntrappor; bärare minskar bärande",
               "luggageFriendly": 1,
-              "seasonality": "Year-round"
+              "seasonality": "Året runt"
+            }
+          },
+          {
+            "label": "Hostel Brikette till färjekajen",
+            "href": "hostel-brikette-to-ferry-dock-with-luggage",
+            "internal": true,
+            "facts": {
+              "duration": "20–30 min (mer med bagage)",
+              "cost": "Gratis",
+              "walking": "Trappor + vägkorsningar",
+              "luggageFriendly": 1,
+              "seasonality": "Året runt"
             }
           },
           {
@@ -70,10 +140,10 @@
             "internal": true,
             "facts": {
               "duration": "5–10 min",
-              "cost": "Free",
-              "walking": "~140 m + ~30 steps (down)",
+              "cost": "Gratis",
+              "walking": "~140 m + ~30 trappsteg (nedför)",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Året runt"
             }
           }
         ]
@@ -83,7 +153,7 @@
         "image": {
           "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
           "alt": "SITA Sud-busshållplatsen i Amalfi för kustlinjen",
-          "caption": "Look for the SITA buses at Amalfi’s bus station."
+          "caption": "Leta efter SITA-bussarna vid Amalfis busststation."
         },
         "links": [
           {
@@ -91,11 +161,11 @@
             "href": "amalfi-positano-bus",
             "internal": true,
             "facts": {
-              "duration": "45–90 min (traffic dependent)",
-              "cost": "€2–€4 pp",
-              "walking": "Short stairs at the end (~30 steps)",
+              "duration": "45–90 min (beroende på trafik)",
+              "cost": "€2–€4 per person",
+              "walking": "Korta trappor i slutet (~30 steg)",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Året runt"
             }
           },
           {
@@ -103,11 +173,11 @@
             "href": "positano-amalfi-bus",
             "internal": true,
             "facts": {
-              "duration": "45–90 min (traffic dependent)",
-              "cost": "€2–€4 pp",
-              "walking": "Short stairs at the start/end (~30 steps)",
+              "duration": "45–90 min (beroende på trafik)",
+              "cost": "€2–€4 per person",
+              "walking": "Korta trappor i början/slutet (~30 steg)",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Året runt"
             }
           },
           {
@@ -115,11 +185,11 @@
             "href": "amalfi-positano-ferry",
             "internal": true,
             "facts": {
-              "duration": "25–45 min (sailing) + port transfer",
-              "cost": "€10–€20 pp",
-              "walking": "Stairs to/from the port",
+              "duration": "25–45 min (segling) + hamntransfer",
+              "cost": "€10–€20 per person",
+              "walking": "Trappor till/från hamnen",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Säsongsbetonat (apr–okt)"
             }
           },
           {
@@ -127,11 +197,11 @@
             "href": "positano-amalfi-ferry",
             "internal": true,
             "facts": {
-              "duration": "25–45 min (sailing) + port transfer",
-              "cost": "€10–€20 pp",
-              "walking": "Stairs to/from the port",
+              "duration": "25–45 min (segling) + hamntransfer",
+              "cost": "€10–€20 per person",
+              "walking": "Trappor till/från hamnen",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Säsongsbetonat (apr–okt)"
             }
           }
         ]
@@ -141,7 +211,7 @@
         "image": {
           "src": "/img/directions/positano-capri-ferry-img09.jpg",
           "alt": "Färja som lägger till i Marinan på Capri",
-          "caption": "Capri ferries depart from Marina Grande."
+          "caption": "Färjor till Capri avgår från Marina Grande."
         },
         "links": [
           {
@@ -149,11 +219,11 @@
             "href": "capri-positano-ferry",
             "internal": true,
             "facts": {
-              "duration": "30–60 min (sailing) + port transfer",
-              "cost": "€20–€35 pp",
-              "walking": "Port access; stairs likely in Positano",
+              "duration": "30–60 min (segling) + hamntransfer",
+              "cost": "€20–€35 per person",
+              "walking": "Hamnåtkomst; troligen trappor i Positano",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Säsongsbetonat (apr–okt)"
             }
           },
           {
@@ -161,11 +231,11 @@
             "href": "positano-capri-ferry",
             "internal": true,
             "facts": {
-              "duration": "30–60 min (sailing) + port transfer",
-              "cost": "€20–€35 pp",
-              "walking": "Port access; stairs likely in Positano",
+              "duration": "30–60 min (segling) + hamntransfer",
+              "cost": "€20–€35 per person",
+              "walking": "Hamnåtkomst; troligen trappor i Positano",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Säsongsbetonat (apr–okt)"
             }
           }
         ]
@@ -175,7 +245,7 @@
         "image": {
           "src": "/img/tabacchi.webp",
           "alt": "Tabacchi-butik på gatuplan i centrala Neapel",
-          "caption": "Buy bus tickets in tabacchi/newsstands before boarding."
+          "caption": "Köp bussbiljetter i tabacchi/kiosker innan ombordstigning."
         },
         "links": [
           {
@@ -183,11 +253,11 @@
             "href": "naples-center-train-bus",
             "internal": true,
             "facts": {
-              "duration": "2–3.5 h (incl. transfers)",
-              "cost": "€15–€25 pp",
-              "walking": "Low; change in Sorrento",
+              "duration": "2–3,5 tim (inkl. byten)",
+              "cost": "€15–€25 per person",
+              "walking": "Låg; byte i Sorrento",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Året runt"
             }
           },
           {
@@ -195,11 +265,11 @@
             "href": "positano-naples-center-bus-train",
             "internal": true,
             "facts": {
-              "duration": "2–3.5 h (incl. transfers)",
-              "cost": "€15–€25 pp",
-              "walking": "Short stairs at the start/end (~30 steps)",
+              "duration": "2–3,5 tim (inkl. byten)",
+              "cost": "€15–€25 per person",
+              "walking": "Korta trappor i början/slutet (~30 steg)",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Året runt"
             }
           },
           {
@@ -207,11 +277,11 @@
             "href": "naples-center-positano-ferry",
             "internal": true,
             "facts": {
-              "duration": "3–4.5 h (incl. port transfer)",
-              "cost": "€25–€45 pp",
-              "walking": "Transfer to port + stairs in Positano",
+              "duration": "3–4,5 tim (inkl. hamntransfer)",
+              "cost": "€25–€45 per person",
+              "walking": "Transfer till hamn + trappor i Positano",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Säsongsbetonat (apr–okt)"
             }
           },
           {
@@ -219,11 +289,11 @@
             "href": "positano-naples-center-ferry",
             "internal": true,
             "facts": {
-              "duration": "3–4.5 h (incl. port transfer)",
-              "cost": "€25–€45 pp",
-              "walking": "Stairs in Positano + transfer from port",
+              "duration": "3–4,5 tim (inkl. hamntransfer)",
+              "cost": "€25–€45 per person",
+              "walking": "Trappor i Positano + transfer från hamn",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Säsongsbetonat (apr–okt)"
             }
           },
           {
@@ -231,11 +301,11 @@
             "href": "positano-to-naples-directions-by-ferry",
             "internal": true,
             "facts": {
-              "duration": "3–4.5 h (incl. port transfer)",
-              "cost": "€25–€45 pp",
-              "walking": "Stairs in Positano + transfer from port",
+              "duration": "3–4,5 tim (inkl. hamntransfer)",
+              "cost": "€25–€45 per person",
+              "walking": "Trappor i Positano + transfer från hamn",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Säsongsbetonat (apr–okt)"
             }
           }
         ]
@@ -245,7 +315,7 @@
         "image": {
           "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
           "alt": "Curreri-shuttle som lastar passagerare utanför Neapels flygplats",
-          "caption": "Curreri buses pick up outside arrivals (follow bus signs)."
+          "caption": "Sorrentos tågstation, där du byter till buss"
         },
         "links": [
           {
@@ -253,11 +323,11 @@
             "href": "positano-naples-airport-bus",
             "internal": true,
             "facts": {
-              "duration": "2–3.5 h (incl. change in Sorrento)",
-              "cost": "€15–€25 pp",
-              "walking": "Short stairs at the start/end (~30 steps)",
+              "duration": "2–3,5 tim (inkl. byte i Sorrento)",
+              "cost": "€15–€25 per person",
+              "walking": "Korta trappor i början/slutet (~30 steg)",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Året runt"
             }
           },
           {
@@ -265,11 +335,11 @@
             "href": "naples-airport-positano-bus",
             "internal": true,
             "facts": {
-              "duration": "2–3.5 h (incl. change in Sorrento)",
-              "cost": "€15–€25 pp",
-              "walking": "Short stairs at the end (~30 steps)",
+              "duration": "2–3,5 tim (inkl. byte i Sorrento)",
+              "cost": "€15–€25 per person",
+              "walking": "Korta trappor i slutet (~30 steg)",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Året runt"
             }
           }
         ]
@@ -279,7 +349,7 @@
         "image": {
           "src": "/img/hostel-coastal-horizon.webp",
           "alt": "Utsikt över Amalfikusten mot Salerno",
-          "caption": "Salerno connects by train + bus, or by seasonal ferries."
+          "caption": "Salerno är kopplat via tåg + buss, eller säsongsbetonade färjor."
         },
         "links": [
           {
@@ -287,11 +357,11 @@
             "href": "salerno-positano-bus",
             "internal": true,
             "facts": {
-              "duration": "2.5–4 h (via Amalfi)",
-              "cost": "€6–€12 pp",
-              "walking": "Low; change buses in Amalfi",
+              "duration": "2,5–4 tim (via Amalfi)",
+              "cost": "€6–€12 per person",
+              "walking": "Låg; byte av buss i Amalfi",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Året runt"
             }
           },
           {
@@ -299,11 +369,11 @@
             "href": "positano-salerno-bus",
             "internal": true,
             "facts": {
-              "duration": "2.5–4 h (via Amalfi)",
-              "cost": "€6–€12 pp",
-              "walking": "Short stairs at the start/end (~30 steps)",
+              "duration": "2,5–4 tim (via Amalfi)",
+              "cost": "€6–€12 per person",
+              "walking": "Korta trappor i början/slutet (~30 steg)",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Året runt"
             }
           },
           {
@@ -311,11 +381,11 @@
             "href": "salerno-positano-ferry",
             "internal": true,
             "facts": {
-              "duration": "1–2 h (sailing) + port transfer",
-              "cost": "€15–€30 pp",
-              "walking": "Port stairs; porters recommended",
+              "duration": "1–2 tim (segling) + hamntransfer",
+              "cost": "€15–€30 per person",
+              "walking": "Hamntrappor; bärare rekommenderas",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Säsongsbetonat (apr–okt)"
             }
           },
           {
@@ -323,11 +393,11 @@
             "href": "positano-salerno-ferry",
             "internal": true,
             "facts": {
-              "duration": "1–2 h (sailing) + port transfer",
-              "cost": "€15–€30 pp",
-              "walking": "Port stairs; porters recommended",
+              "duration": "1–2 tim (segling) + hamntransfer",
+              "cost": "€15–€30 per person",
+              "walking": "Hamntrappor; bärare rekommenderas",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Säsongsbetonat (apr–okt)"
             }
           }
         ]
@@ -337,7 +407,7 @@
         "image": {
           "src": "/img/hostel-communal-terrace-lush-view.webp",
           "alt": "Klippor och trädgårdar vid Ravello med utsikt över kusten",
-          "caption": "Ravello is reached via Amalfi by bus."
+          "caption": "Ravello nås via Amalfi med buss."
         },
         "links": [
           {
@@ -345,11 +415,11 @@
             "href": "ravello-positano-bus",
             "internal": true,
             "facts": {
-              "duration": "1.5–2.5 h (via Amalfi)",
-              "cost": "€4–€8 pp",
-              "walking": "Low; change in Amalfi",
+              "duration": "1,5–2,5 tim (via Amalfi)",
+              "cost": "€4–€8 per person",
+              "walking": "Låg; byte i Amalfi",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Året runt"
             }
           },
           {
@@ -357,11 +427,11 @@
             "href": "positano-ravello-bus",
             "internal": true,
             "facts": {
-              "duration": "1.5–2.5 h (via Amalfi)",
-              "cost": "€4–€8 pp",
-              "walking": "Short stairs at the start/end (~30 steps)",
+              "duration": "1,5–2,5 tim (via Amalfi)",
+              "cost": "€4–€8 per person",
+              "walking": "Korta trappor i början/slutet (~30 steg)",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Året runt"
             }
           },
           {
@@ -369,11 +439,11 @@
             "href": "positano-ravello-ferry-bus",
             "internal": true,
             "facts": {
-              "duration": "2–3 h (ferry + bus)",
-              "cost": "€15–€30 pp",
-              "walking": "Port stairs + bus connection",
+              "duration": "2–3 tim (färja + buss)",
+              "cost": "€15–€30 per person",
+              "walking": "Hamntrappor + bussförbindelse",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Säsongsbetonat (apr–okt)"
             }
           }
         ]
@@ -381,6 +451,11 @@
     ]
   },
   "rome": {
+    "image": {
+      "src": "/img/directions/rome-forum.jpg",
+      "alt": "Colosseum i Rom",
+      "caption": "Romerska forum och Kapitolinska museerna"
+    },
     "title": "Rom",
     "description": "Följ våra skriftliga guider till Neapel eller Salerno och ta sedan tåget vidare därifrån.",
     "table": {
@@ -540,6 +615,11 @@
   },
   "sorrento": {
     "title": "Sorrento",
+    "image": {
+      "src": "/img/directions/sorrento-piazza-tasso.jpg",
+      "alt": "Hamnvy i Sorrento",
+      "caption": "Sorrento från Piazza Tasso"
+    },
     "links": [
       {
         "label": "Från Sorrento med buss",
@@ -547,10 +627,10 @@
         "internal": true,
         "facts": {
           "duration": "45–75 min",
-          "cost": "€2–€4 pp",
-          "walking": "Short stairs at the end (~30 steps)",
+          "cost": "€2–€4 per person",
+          "walking": "Korta trappor i slutet (~30 steg)",
           "luggageFriendly": 2,
-          "seasonality": "Year-round"
+          "seasonality": "Året runt"
         }
       },
       {
@@ -559,10 +639,10 @@
         "internal": true,
         "facts": {
           "duration": "45–75 min",
-          "cost": "€2–€4 pp",
-          "walking": "Short stairs at the start/end (~30 steps)",
+          "cost": "€2–€4 per person",
+          "walking": "Korta trappor i början/slutet (~30 steg)",
           "luggageFriendly": 2,
-          "seasonality": "Year-round"
+          "seasonality": "Året runt"
         }
       },
       {
@@ -570,11 +650,11 @@
         "href": "sorrento-positano-ferry",
         "internal": true,
         "facts": {
-          "duration": "30–45 min (sailing) + port stairs",
-          "cost": "€15–€25 pp",
-          "walking": "Port stairs; porters recommended",
+          "duration": "30–45 min (segling) + hamntrappor",
+          "cost": "€15–€25 per person",
+          "walking": "Hamntrappor; bärare rekommenderas",
           "luggageFriendly": 1,
-          "seasonality": "Seasonal (Apr–Oct)"
+          "seasonality": "Säsongsbetonat (apr–okt)"
         }
       },
       {
@@ -582,11 +662,11 @@
         "href": "positano-sorrento-ferry",
         "internal": true,
         "facts": {
-          "duration": "30–45 min (sailing) + port stairs",
-          "cost": "€15–€25 pp",
-          "walking": "Port stairs; porters recommended",
+          "duration": "30–45 min (segling) + hamntrappor",
+          "cost": "€15–€25 per person",
+          "walking": "Hamntrappor; bärare rekommenderas",
           "luggageFriendly": 1,
-          "seasonality": "Seasonal (Apr–Oct)"
+          "seasonality": "Säsongsbetonat (apr–okt)"
         }
       }
     ]
@@ -595,6 +675,7 @@
     "title": "Filtrera rutter",
     "resultsCount": "Resultat: {{count}} rutter",
     "editLabel": "Redigera filter",
+    "shareHint": "Filtren speglas i URL:en för enkel delning.",
     "transportLabel": "Transporttyp",
     "transportAll": "Alla",
     "transportModes": {
@@ -614,116 +695,116 @@
     "noResults": "Inga rutter matchar dina filter."
   },
   "romePlanner": {
-    "title": "Rome ↔ Positano: How to Travel",
-    "subtitle": "Pick a direction, set your preferences, and we’ll suggest a route.",
-    "directionPrompt": "Pick a direction",
+    "title": "Rom ↔ Positano: Hur du reser",
+    "subtitle": "Välj en riktning, ange dina preferenser så föreslår vi en rutt.",
+    "directionPrompt": "Välj en riktning",
     "tabs": {
-      "from": "From Rome → Hostel",
-      "to": "From Hostel → Rome"
+      "from": "Från Rom → Hostel",
+      "to": "Från Hostel → Rom"
     },
     "reco": {
-      "title": "Best match for your picks",
-      "why": "Why this route?"
+      "title": "Bästa match för ditt val",
+      "why": "Varför denna rutt?"
     },
-    "otherMatches": "Other matches for your pick",
-    "disclaimer": "Always check operators for latest schedules and availability. Crowding and journey times vary by season.",
+    "otherMatches": "Andra matchningar för ditt val",
+    "disclaimer": "Kontrollera alltid operatörer för senaste tidtabeller och tillgänglighet. Trängsel och restider varierar per säsong.",
     "pref": {
-      "prompt": "Any preference?",
+      "prompt": "Någon preferens?",
       "cheapest": {
-        "label": "Cheapest",
-        "description": "Prioritize lower cost over comfort."
+        "label": "Billigast",
+        "description": "Prioritera lägre kostnad framför komfort."
       },
       "scenic": {
-        "label": "Scenic",
-        "description": "Prioritize sea views (ferries)."
+        "label": "Vackert",
+        "description": "Prioritera havsutsikt (färjor)."
       },
-      "heavyPrefix": "I have",
+      "heavyPrefix": "Jag har",
       "heavy_luggage": {
-        "label": "Heavy luggage",
-        "description": "Minimize uphill walks and stairs with bags."
+        "label": "Tungt bagage",
+        "description": "Minimera uppförsbackar och trappor med väskor."
       }
     },
     "route": {
       "naples": {
         "busTrain": {
-          "title": "Via Naples — Bus + Train",
+          "title": "Via Neapel — Buss + Tåg",
           "summary": {
-            "from": "Bus to Sorrento → train to Naples → train to Rome.",
-            "to": "Train to Naples → train to Sorrento → bus to Positano."
+            "from": "Buss till Sorrento → tåg till Neapel → tåg till Rom.",
+            "to": "Tåg till Neapel → tåg till Sorrento → buss till Positano."
           },
           "steps": {
             "from": {
-              "1": "Bus Positano → Sorrento (drops at Sorrento train station).",
-              "2": "Local train Sorrento → Naples (arrive at Naples train station).",
-              "3": "Train Naples → Rome."
+              "1": "Buss Positano → Sorrento (släpper av vid Sorrentos tågstation).",
+              "2": "Lokaltåg Sorrento → Neapel (anländer till Neapels tågstation).",
+              "3": "Tåg Neapel → Rom."
             },
             "to": {
-              "1": "Train Rome → Naples (arrive at Naples train station).",
-              "2": "Local train Naples → Sorrento (arrive at Sorrento bus station).",
-              "3": "Bus Sorrento → Positano (stop close to the hostel)."
+              "1": "Tåg Rom → Neapel (anländer till Neapels tågstation).",
+              "2": "Lokaltåg Neapel → Sorrento (anländer till Sorrentos bussstation).",
+              "3": "Buss Sorrento → Positano (hållplats nära hostelet)."
             }
           }
         },
         "ferry": {
-          "title": "Via Naples — Ferry",
+          "title": "Via Neapel — Färja",
           "summary": {
-            "from": "Positano port → ferry to Naples → tram to station → train to Rome.",
-            "to": "Train to Naples → tram to port → ferry to Positano."
+            "from": "Positanos hamn → färja till Neapel → spårvagn till station → tåg till Rom.",
+            "to": "Tåg till Neapel → spårvagn till hamn → färja till Positano."
           },
           "steps": {
             "from": {
-              "1": "Positano → port (porters can help with bags).",
-              "2": "Ferry Positano → Naples.",
-              "3": "Tram Naples port → train station.",
-              "4": "Train Naples → Rome."
+              "1": "Positano → hamn (bärare kan hjälpa med väskor).",
+              "2": "Färja Positano → Neapel.",
+              "3": "Spårvagn Neapels hamn → tågstation.",
+              "4": "Tåg Neapel → Rom."
             },
             "to": {
-              "1": "Train Rome → Naples (arrive at Naples station).",
-              "2": "Tram Naples station → port.",
-              "3": "Ferry Naples → Positano.",
-              "4": "From Positano port → hostel (journey can be laborious; porters/Interno Bus can help)."
+              "1": "Tåg Rom → Neapel (anländer till Neapels station).",
+              "2": "Spårvagn Neapels station → hamn.",
+              "3": "Färja Neapel → Positano.",
+              "4": "Från Positanos hamn → hostel (resan kan vara mödosam; bärare/Interno-buss kan hjälpa)."
             }
           }
         }
       },
       "salerno": {
         "bus": {
-          "title": "Via Salerno — Bus (to/from Salerno)",
+          "title": "Via Salerno — Buss (till/från Salerno)",
           "summary": {
-            "from": "Bus Positano → Amalfi (change) → Salerno → train to Rome.",
-            "to": "Train to Salerno → bus to Amalfi (change) → Positano."
+            "from": "Buss Positano → Amalfi (byte) → Salerno → tåg till Rom.",
+            "to": "Tåg till Salerno → buss till Amalfi (byte) → Positano."
           },
           "steps": {
             "from": {
-              "1": "Bus Positano → Amalfi (change buses in Amalfi).",
-              "2": "Bus Amalfi → Salerno (drops at Salerno train station).",
-              "3": "Train Salerno → Rome."
+              "1": "Buss Positano → Amalfi (byt buss i Amalfi).",
+              "2": "Buss Amalfi → Salerno (släpper av vid Salernos tågstation).",
+              "3": "Tåg Salerno → Rom."
             },
             "to": {
-              "1": "Train Rome → Salerno (arrive at Salerno train station).",
-              "2": "Bus Salerno → Amalfi (change buses in Amalfi).",
-              "3": "Bus Amalfi → Positano (short walk to hostel)."
+              "1": "Tåg Rom → Salerno (anländer till Salernos tågstation).",
+              "2": "Buss Salerno → Amalfi (byt buss i Amalfi).",
+              "3": "Buss Amalfi → Positano (kort promenad till hostel)."
             }
           }
         },
         "ferry": {
-          "title": "Via Salerno — Ferry",
+          "title": "Via Salerno — Färja",
           "summary": {
-            "from": "Positano port → ferry to Salerno → short walk to station → train to Rome.",
-            "to": "Train to Salerno → short walk to port → ferry to Positano."
+            "from": "Positanos hamn → färja till Salerno → kort promenad till station → tåg till Rom.",
+            "to": "Tåg till Salerno → kort promenad till hamn → färja till Positano."
           },
           "steps": {
             "from": {
-              "1": "Positano → port (porters can help with bags).",
-              "2": "Ferry Positano → Salerno.",
-              "3": "Walk Salerno port → train station.",
-              "4": "Train Salerno → Rome."
+              "1": "Positano → hamn (bärare kan hjälpa med väskor).",
+              "2": "Färja Positano → Salerno.",
+              "3": "Promenad Salernos hamn → tågstation.",
+              "4": "Tåg Salerno → Rom."
             },
             "to": {
-              "1": "Train Rome → Salerno (arrive at Salerno station).",
-              "2": "Walk to Salerno port.",
-              "3": "Ferry Salerno → Positano.",
-              "4": "From Positano port → hostel (journey can be laborious; porters/Interno Bus can help)."
+              "1": "Tåg Rom → Salerno (anländer till Salernos station).",
+              "2": "Promenad till Salernos hamn.",
+              "3": "Färja Salerno → Positano.",
+              "4": "Från Positanos hamn → hostel (resan kan vara mödosam; bärare/Interno-buss kan hjälpa)."
             }
           }
         }
@@ -731,86 +812,86 @@
     },
     "note": {
       "salerno": {
-        "walkPortStation": "Walk between Salerno’s port and train station (short, straightforward)."
+        "walkPortStation": "Promenad mellan Salernos hamn och tågstation (kort, enkel)."
       },
       "naples": {
-        "tramPortStation": "Take the tram between Naples port and the train station."
+        "tramPortStation": "Ta spårvagnen mellan Neapels hamn och tågstationen."
       }
     },
     "pro": {
-      "posBusNearHostel": "Positano bus stop close to the hostel.",
-      "busDropsSorrentoStation": "Bus drops you right at the train station in Sorrento.",
-      "cheapBusTrain": "Bus and train are both very cheap.",
-      "arriveNaplesStation": "You arrive right at the train station in Naples.",
-      "easySwapNaples": "Swapping trains in Naples is relatively easy.",
-      "trainDropsSorrentoBusStation": "Train drops you right at the bus station in Sorrento.",
+      "posBusNearHostel": "Positanos busshållplats nära hostelet.",
+      "busDropsSorrentoStation": "Bussen släpper av dig direkt vid tågstationen i Sorrento.",
+      "cheapBusTrain": "Både buss och tåg är mycket billiga.",
+      "arriveNaplesStation": "Du anländer direkt till tågstationen i Neapel.",
+      "easySwapNaples": "Att byta tåg i Neapel är relativt enkelt.",
+      "trainDropsSorrentoBusStation": "Tåget släpper av dig direkt vid busstationen i Sorrento.",
       "salerno": {
-        "busStopNearHostel": "The Positano bus stop is just a short walk from the hostel."
+        "busStopNearHostel": "Positanos busshållplats ligger bara en kort promenad från hostelet."
       },
-      "busCollectsSalernoStation": "Bus collects you right at the train station in Salerno.",
-      "busDropsSalernoStation": "Bus drops you right at the train station in Salerno.",
-      "busCheap": "Bus is very cheap.",
-      "portersHelp": "Giving your bags to the porters allows you to travel more comfortably and easily.",
-      "ferryEnjoyableEasy": "The ferry journey itself is enjoyable and easy.",
-      "shortWalkSalernoStationPort": "The walk from Salerno’s Train Station to the port is short and straightforward."
+      "busCollectsSalernoStation": "Bussen hämtar dig direkt vid tågstationen i Salerno.",
+      "busDropsSalernoStation": "Bussen släpper av dig direkt vid tågstationen i Salerno.",
+      "busCheap": "Bussen är mycket billig.",
+      "portersHelp": "Att lämna väskorna till bärare gör att du kan resa mer bekvämt och enkelt.",
+      "ferryEnjoyableEasy": "Själva färjeturen är trevlig och enkel.",
+      "shortWalkSalernoStationPort": "Promenaden från Salernos tågstation till hamnen är kort och enkel."
     },
     "con": {
-      "changeBusToTrain": "Have to change from bus to train.",
-      "crowdedBusTrain": "Bus and train are both usually crowded.",
-      "fewHours": "Takes a few hours.",
-      "changeTrainToBusSorrento": "Have to change from train to bus in Sorrento.",
-      "busUsuallyCrowded": "Bus is usually crowded.",
-      "ferryCostHigherBus": "The cost of taking the ferry is higher than the cost of taking the bus.",
-      "hostelEasierBySita": "Arriving at the hostel via SITA bus is easier than arriving by ferry (the journey from the port is quite laborious — even with Positano’s Interno Bus and porters).",
-      "naplesPortComfort": "The port and city of Naples may not be suitable for everyone, as some people may not feel comfortable there.",
-      "ferriesLessFrequent": "Ferries do not run as frequently as other transportation options.",
-      "ferryCostHigherTrainBus": "The cost of taking the ferry is higher than the cost of taking the train or bus.",
-      "changeBusesAmalfi": "Have to change buses in Amalfi."
+      "changeBusToTrain": "Du måste byta från buss till tåg.",
+      "crowdedBusTrain": "Både buss och tåg är vanligtvis fulla.",
+      "fewHours": "Tar några timmar.",
+      "changeTrainToBusSorrento": "Du måste byta från tåg till buss i Sorrento.",
+      "busUsuallyCrowded": "Bussen är vanligtvis full.",
+      "ferryCostHigherBus": "Färjan kostar mer än bussen.",
+      "hostelEasierBySita": "Att ta sig till hostelet med SITA-buss är enklare än med färja (resan från hamnen är ganska besvärlig — även med Positanos Interno-buss och bärare).",
+      "naplesPortComfort": "Neapels hamn och stad passar kanske inte alla, vissa känner sig inte bekväma där.",
+      "ferriesLessFrequent": "Färjorna går inte lika ofta som andra transportalternativ.",
+      "ferryCostHigherTrainBus": "Färjan kostar mer än tåg eller buss.",
+      "changeBusesAmalfi": "Du måste byta buss i Amalfi."
     },
     "tag": {
       "cheap": "Budget",
-      "directish": "Simple",
-      "scenic": "Scenic",
-      "transfer": "Transfer",
-      "bus": "Bus",
-      "train": "Train",
-      "ferry": "Ferry"
+      "directish": "Enkel",
+      "scenic": "Vacker",
+      "transfer": "Byte",
+      "bus": "Buss",
+      "train": "Tåg",
+      "ferry": "Färja"
     },
     "reasons": {
       "cheapest": {
-        "busTrain": "Cheapest → bus/train options are very cheap.",
-        "ferry": "Cheapest → ferry costs higher than bus/train."
+        "busTrain": "Billigast → buss/tåg alternativen är mycket billiga.",
+        "ferry": "Billigast → färjan kostar mer än buss/tåg."
       },
       "fewest_changes": {
-        "busTrain": "Fewest changes → bus + train requires a mode change.",
-        "bus": "Fewest changes → bus route changes in Amalfi."
+        "busTrain": "Minst byten → buss + tåg kräver ett byte.",
+        "bus": "Minst byten → bussrutten byter i Amalfi."
       },
       "scenic": {
-        "ferry": "Scenic → ferry journey is enjoyable and easy."
+        "ferry": "Vacker → färjeresan är trevlig och enkel."
       },
       "heavy_luggage": {
-        "ferryFromRome": "Heavy luggage → arriving via ferry from the port is more laborious.",
-        "busStopClose": "Heavy luggage → Positano bus stop is close to the hostel."
+        "ferryFromRome": "Tungt bagage → att anlända med färja från hamnen är mer ansträngande.",
+        "busStopClose": "Tungt bagage → Positanos busshållplats ligger nära hostelet."
       }
     },
     "ui": {
-      "showDetails": "Show details",
-      "hideDetails": "Hide details",
-      "steps": "Steps",
-      "notes": "Notes",
-      "pros": "Pros",
-      "cons": "Cons"
+      "showDetails": "Visa detaljer",
+      "hideDetails": "Dölj detaljer",
+      "steps": "Steg",
+      "notes": "Anteckningar",
+      "pros": "För",
+      "cons": "Emot"
     }
   },
   "experienceGuides": {
-    "eyebrow": "Experience planners",
-    "title": "Experience routes with built-in directions",
-    "description": "These experiences combine the on-trail highlights with the exact transfers you need to leave and return to Hostel Brikette. Open one when you want the itinerary and the transport plan in the same guide.",
+    "eyebrow": "Upplevelseplanerare",
+    "title": "Upplevelserutter med inbyggda vägbeskrivningar",
+    "description": "Dessa upplevelser kombinerar höjdpunkterna på leden med exakt de transporter du behöver för att lämna och återvända till Hostel Brikette. Öppna en när du vill ha reseplan och transportplan i samma guide.",
     "items": [
       {
         "guideKey": "pathOfTheGodsFerry",
-        "label": "Path of the Gods via Amalfi (ferry + hike)",
-        "summary": "Sail from Positano to Amalfi, ride up to Bomerano, and follow our step-by-step return directions for the classic traverse back toward Positano.",
+        "label": "Gudarnas stig via Amalfi (färja + vandring)",
+        "summary": "Segla från Positano till Amalfi, åk upp till Bomerano och följ våra steg-för-steg återvändningsbeskrivningar för den klassiska genomfärden tillbaka mot Positano.",
         "transportModes": [
           "ferry",
           "bus",
@@ -819,8 +900,8 @@
       },
       {
         "guideKey": "pathOfTheGodsBus",
-        "label": "Path of the Gods via Amalfi (bus + hike)",
-        "summary": "Take the SITA Sud bus from Positano through Amalfi to Bomerano, hike across to Nocelle, and use the built-in transport section to reach the hostel afterward.",
+        "label": "Gudarnas stig via Amalfi (buss + vandring)",
+        "summary": "Ta SITA Sud-bussen från Positano genom Amalfi till Bomerano, vandra över till Nocelle och använd den inbyggda transportsektionen för att nå hostelet efteråt.",
         "transportModes": [
           "bus",
           "walk"
@@ -828,8 +909,8 @@
       },
       {
         "guideKey": "pathOfTheGodsNocelle",
-        "label": "Path of the Gods via Nocelle shuttle",
-        "summary": "Ride the Montepertuso–Nocelle shuttle for a shorter out-and-back hike and rely on the guide’s directions to walk or bus back down to Hostel Brikette.",
+        "label": "Gudarnas stig via Nocelle-shuttle",
+        "summary": "Åk Montepertuso–Nocelle-shutteln för en kortare tur-och-retur-vandring och följ guidens vägbeskrivningar för att gå eller åka buss tillbaka ner till Hostel Brikette.",
         "transportModes": [
           "bus",
           "walk"
@@ -844,8 +925,8 @@
     "defaultAlt": "Directions photo"
   },
   "lightbox": {
-    "titleFallback": "Image",
-    "openAria": "Open image",
-    "openAriaWithCaption": "Open image: {{caption}}"
+    "titleFallback": "Bild",
+    "openAria": "Öppna bild",
+    "openAriaWithCaption": "Öppna bild: {{caption}}"
   }
 }

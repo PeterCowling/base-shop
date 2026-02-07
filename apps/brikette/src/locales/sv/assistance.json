@@ -6,19 +6,29 @@
   },
   "quickLinks": [
     {
+      "label": "Vanliga frågor om hostellet",
+      "description": "Snabba svar på vanliga frågor om att bo på Hostel Brikette i Positano.",
+      "slug": "hostelFaqs"
+    },
+    {
+      "label": "Husregler",
+      "description": "Läs våra grundläggande husregler inklusive vår policy om inget alkohol utifrån och riktlinjer för omvårdnad.",
+      "slug": "rules"
+    },
+    {
       "label": "Ändra eller avboka en bokning",
       "description": "Se tidsfrister och tips för att undvika extra avgifter när planerna ändras.",
-      "slug": "Ändrar avstängning"
+      "slug": "changingCancelling"
     },
     {
       "label": "Guide för in- och utcheckning",
       "description": "Följ vår steg-för-steg-guide för ankomst och avresa på Hostel Brikette i Positano.",
-      "slug": "checkinKolla ut"
+      "slug": "checkinCheckout"
     },
     {
       "label": "Resa till Positano",
       "description": "Jämför färjor, bussar och taxibilar med vår steg-för-steg-guide för transporter.",
-      "slug": "resehjälp"
+      "href": "how-to-get-here"
     }
   ],
   "contactCta": {

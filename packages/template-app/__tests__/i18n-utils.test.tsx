@@ -1,11 +1,12 @@
 /** @jest-environment jsdom */
-import { render, screen, renderHook } from '@testing-library/react';
 import type { PropsWithChildren } from 'react';
+import { render, renderHook,screen } from '@testing-library/react';
+
 import {
-  TranslationsProvider,
-  useTranslations,
   assertLocales,
   resolveLocale,
+  TranslationsProvider,
+  useTranslations,
 } from '@acme/i18n';
 
 describe('TranslationsProvider', () => {

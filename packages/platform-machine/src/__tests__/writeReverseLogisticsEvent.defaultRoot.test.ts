@@ -1,5 +1,5 @@
 /** @jest-environment node */
-import { mkdir, writeFile, resetReverseLogisticsMocks } from "./reverseLogisticsTestHelpers";
+import { mkdir, resetReverseLogisticsMocks,writeFile } from "./reverseLogisticsTestHelpers";
 
 describe("writeReverseLogisticsEvent (default data root)", () => {
   beforeEach(() => {
@@ -8,7 +8,7 @@ describe("writeReverseLogisticsEvent (default data root)", () => {
   });
 
   it("uses resolveDataRoot() when dataRoot arg is omitted", async () => {
-    jest.doMock("@platform-core/dataRoot", () => ({
+    jest.doMock("@acme/platform-core/dataRoot", () => ({
       __esModule: true,
       resolveDataRoot: () => "/root",
     }));

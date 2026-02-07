@@ -62,10 +62,17 @@ export function PinAuthProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function usePinAuth() {
+export function usePinAuth(): PinAuthContextValue {
   const context = useContext(PinAuthContext);
   if (!context) {
-    throw new Error('usePinAuth must be used within a PinAuthProvider');
+    // Safe default for SSR/static prerendering (no provider available)
+    return {
+      user: null,
+      role: null,
+      isAuthenticated: false,
+      login: async () => false,
+      logout: () => {},
+    };
   }
   return context;
 }

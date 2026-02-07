@@ -1,0 +1,43 @@
+name: Business OS Export to PR
+
+# BOS-UW-06: Export D1 snapshot via API and open PR for docs/business-os
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  export:
+    name: Export snapshot and open PR
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+
+      - name: Configure git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Export snapshot to PR
+        env:
+          BOS_EXPORT_API_KEY: ${{ secrets.BOS_EXPORT_API_KEY }}
+          BOS_EXPORT_API_BASE_URL: ${{ vars.BOS_EXPORT_API_BASE_URL }}
+          BOS_AGENT_API_BASE_URL: ${{ vars.BOS_AGENT_API_BASE_URL }}
+          BOS_EXPORT_BASE_BRANCH: dev
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pnpm tsx apps/business-os/src/scripts/export-to-pr.ts

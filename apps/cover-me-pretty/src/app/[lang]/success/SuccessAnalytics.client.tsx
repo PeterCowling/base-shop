@@ -3,7 +3,8 @@
 
 import { useEffect } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { logAnalyticsEvent } from "@platform-core/analytics/client";
+
+import { logAnalyticsEvent } from "@acme/platform-core/analytics/client";
 
 export default function SuccessAnalytics({ locale }: { locale: string }) {
   const pathname = usePathname();

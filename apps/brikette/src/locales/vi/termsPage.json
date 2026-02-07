@@ -1,350 +1,180 @@
 {
   "meta": {
-    "title": "Đặt phòng — Điều khoản & Điều kiện | Hostel Brikette",
-    "description": "Điều khoản chính thức cho đặt phòng tại Hostel Brikette: đặt chỗ, hủy, check‑in/check‑out, thanh toán, nghĩa vụ chăm sóc và các chính sách."
+    "title": "Điều khoản đặt chỗ | Hostel Brikette",
+    "description": "Điều khoản đặt chỗ Hostel Brikette: đặt phòng, thanh toán, hủy, tiền đặt cọc, trách nhiệm và quyền riêng tư."
   },
   "headings": {
-    "pageTitle": "Bản dịch đang được chuẩn bị.",
-    "pageSubtitle": "Điều khoản & Điều kiện"
+    "pageTitle": "Hostel Brikette — Điều khoản đặt chỗ",
+    "pageSubtitle": "Điều khoản đặt chỗ"
   },
   "toc": {
     "title": "Mục lục",
-    "aria": "Danh sách nội dung"
+    "aria": "Mục lục"
   },
   "footer": {
-    "end": "Kết thúc tài liệu.",
-    "backToTop": "Quay về đầu trang"
+    "end": "Hết tài liệu.",
+    "backToTop": "Lên đầu trang"
   },
   "sections": {
     "s1": {
-      "title": "1. Định nghĩa và Giải thích",
+      "title": "1. Các bên và định nghĩa",
       "body": [
-        "1.1 ‘Điều khoản và Điều kiện’ — Các điều khoản và điều kiện được nêu trong tài liệu này.",
-        "Bản dịch đang được chuẩn bị.",
-        "1.3 ‘Bạn/khách’ — Bất kỳ ai gửi Yêu cầu đặt phòng, là Khách Chính thức của Nhà nghỉ, là Khách Tạm thời, là nhân viên, người tổ chức sự kiện, trưởng nhóm, hoặc bất kỳ nhà cung cấp/khách hàng bên thứ ba nào khác.",
-        "1.4 ‘Yêu cầu đặt phòng’ — Yêu cầu đặt chỗ tại Nhà nghỉ theo các điều khoản này, do bạn hoặc OTA của bạn thực hiện. Chỉ nhà nghỉ và các OTA được ủy quyền mới được phép chào bán giường; mọi hành vi bán lại bởi bên thứ ba không được ủy quyền sẽ dẫn đến từ chối yêu cầu hoặc hủy các đặt phòng đã xác nhận.",
-        "1.5 ‘Khu vực chung’ — Khu vực trong Nhà nghỉ có thể được sử dụng bởi cả Khách Chính thức và Khách Tạm thời. Bao gồm: lối vào/tiền sảnh; sân hiên chung; phòng tắm chung.",
-        "1.6 ‘Chủ thẻ tín dụng’ — Chủ sở hữu thẻ tín dụng được liệt kê trong Yêu cầu đặt phòng.",
-        "1.7 ‘Đề nghị phản hồi (Counteroffer)’ — Biến thể của Yêu cầu đặt phòng. Đề nghị phản hồi đầu tiên do Nhà nghỉ đưa ra và có thể có các đề nghị tiếp theo.",
-        "1.8 ‘Đặt phòng đã xác nhận’ — Khi Nhà nghỉ chấp nhận Yêu cầu đặt phòng hoặc bạn chấp nhận Đề nghị phản hồi, một hợp đồng có hiệu lực pháp lý được hình thành, bao gồm các cơ sở vật chất, dịch vụ và điều khoản trong tài liệu này.",
-        "1.9 ‘Vắng mặt (No Show)’ — Trạng thái áp dụng khi một hoặc nhiều khách không nhận phòng trước khi kết thúc Thời gian Check‑in Chính thức vào ngày đầu tiên của đặt phòng.",
-        "1.10 ‘Phí Vắng mặt’ — Phí do Nhà nghỉ áp dụng khi xảy ra Vắng mặt hoặc khi Hủy đặt phòng đã xác nhận vượt ngoài Thời hạn Báo trước Hủy. Mức phí dựa trên giá đã thỏa thuận và bằng mức cao hơn giữa: chi phí đêm đầu tiên hoặc khoản đặt cọc không hoàn lại.",
-        "1.11 ‘Yêu cầu hủy phòng’ — Yêu cầu hủy một Đặt phòng đã xác nhận.",
-        "1.12 ‘Thời hạn Báo trước Hủy’ — Thời gian báo trước (tính bằng giờ) để hủy Đặt phòng đã xác nhận. Nếu nêu bằng ngày, sẽ quy đổi ra giờ (ví dụ 3 ngày = 72 giờ).",
-        "1.13 ‘Phí xử lý hủy’ — Phí xử lý Yêu cầu hủy phòng; mức phí căn cứ theo giá đã thỏa thuận trong Đặt phòng đã xác nhận.",
-        "1.14 ‘Email chính thức của Nhà nghỉ’ — hostelpositano@gmail.com.",
-        "1.15 ‘Hủy đặt phòng đã xác nhận’ — Xác nhận bằng văn bản từ Email chính thức của Nhà nghỉ rằng Yêu cầu hủy phòng đã được xử lý.",
-        "1.16 ‘Yêu cầu thay đổi đặt phòng’ — Yêu cầu sửa đổi Đặt phòng đã xác nhận (hủy một phần thời gian lưu trú hoặc thay đổi ngày bắt đầu/kết thúc).",
-        "1.17 ‘Thay đổi đặt phòng đã xác nhận’ — Xác nhận bằng văn bản từ Nhà nghỉ rằng Yêu cầu thay đổi đã hoàn tất.",
-        "1.18 ‘Địa chỉ email được chỉ định’ — Địa chỉ email bạn cung cấp trong Yêu cầu đặt phòng sẽ được Nhà nghỉ dùng cho mọi liên lạc. Bạn chịu trách nhiệm đảm bảo tính chính xác và theo dõi hộp thư để đọc các thông tin/yêu cầu quan trọng.",
-        "1.19 ‘Yêu cầu gia hạn’ — Yêu cầu gia hạn một Đặt phòng đã xác nhận.",
-        "1.20 ‘Gia hạn đã xác nhận’ — Xác nhận bằng văn bản từ Nhà nghỉ rằng Yêu cầu gia hạn đã hoàn tất.",
-        "1.21 ‘Yêu cầu Check‑in’ — Yêu cầu nhận phòng và bắt đầu đặt phòng.",
-        "1.22 ‘Thời gian Check‑in Chính thức’ — Khung giờ check‑in từ 15:00 đến 22:00 trong ngày nhận phòng.",
-        "1.23 ‘Khách Chính thức của Nhà nghỉ’ — Người đã hoàn tất thủ tục check‑in.",
-        "1.24 ‘Phòng được chỉ định’ — Phòng được chỉ định cho Khách Chính thức (chỉ khách đó được phép vào).",
-        "1.25 ‘Phòng trong nhà nghỉ’ — Phòng riêng và giường ký túc xá dành riêng cho Khách Chính thức.",
-        "1.26 ‘Bộ khăn ga’ — Bộ được cấp khi check‑in (vỏ gối, ga phủ, ga trải, khăn tắm).",
-        "1.27 ‘Nâng hạng phòng’ — Chỉ định phòng có giá cao hơn so với phòng đã đặt (chỉ dựa trên giá).",
-        "1.28 ‘Thẻ chìa khóa (Keycard)’ — Thẻ nhựa có đặt cọc, được lập trình để mở cửa Phòng được chỉ định.",
-        "1.29 ‘Ủy quyền trước (Preauthorization)’ — Khoản giữ tạm trên thẻ để sử dụng cho các mục đích theo chính sách.",
-        "1.30 ‘Hoàn tất Check‑in’ — Trạng thái khi chúng tôi đã nhận đủ giấy tờ và thanh toán cần thiết.",
-        "1.31 ‘Check‑out’ — Quy trình kết thúc đặt phòng và rời đi vào ngày cuối cùng.",
-        "1.32 ‘Điều kiện sau Check‑out’ — Các điều kiện áp dụng sau khi hoàn tất check‑out.",
-        "1.33 ‘Cơ sở vật chất’ — Các khu vực và dịch vụ của Nhà nghỉ.",
-        "1.34 ‘Tài sản’ — Bao gồm tòa nhà, đồ đạc, thiết bị và đồ dùng của Nhà nghỉ.",
-        "1.35 ‘Đặt trước, không hoàn tiền’ — Mức giá ưu đãi yêu cầu thanh toán toàn bộ tại thời điểm đặt; về sau không đủ điều kiện hoàn tiền.",
-        "1.36 ‘Ưu tiên chọn trước’ — Chúng tôi không chỉ định giường cụ thể trong phòng tập thể; khách tự chọn trong số các giường còn trống và có thể đổi sang giường trống khác trong thời gian lưu trú.",
-        "1.37 ‘Loại đặt phòng’ — Hoặc Đặt trước, không hoàn tiền; hoặc Có thể hoàn tiền.",
-        "1.38 ‘Đặt phòng có thể hoàn tiền’ — Giá chuẩn với điều khoản linh hoạt (điều chỉnh ngày đến, thời lượng và chính sách hủy). Tùy thời điểm/chính sách, việc hủy có thể được hoàn toàn bộ hoặc không bị tính phí.",
-        "1.39 ‘Giấy tờ tùy thân’ — Hộ chiếu, Căn cước công dân/CMND, Giấy phép lái xe hoặc Thẻ quân nhân. Chỉ chấp nhận bản gốc.",
-        "1.40 ‘Lỗi nghiêm trọng’ — Lỗi mà chúng tôi đánh giá là ảnh hưởng nghiêm trọng đến kỳ lưu trú (ví dụ: giường hỏng, nhiệt độ phòng không an toàn, không vào được phòng, mất nước).",
-        "1.41 ‘OTA’ — Đại lý du lịch trực tuyến được ủy quyền bán giường nhận hoa hồng (ví dụ: Hostelworld.com, Booking.com)."
+        "Ngày hiệu lực: 2026-01-09.",
+        "Áp dụng cho: mọi đặt chỗ tại Hostel Brikette và, khi phù hợp, khách thăm tại chỗ.",
+        "Nếu đặt qua OTA, OTA có thể áp dụng điều khoản nền tảng riêng. Điều khoản này điều chỉnh hợp đồng lưu trú giữa bạn và Skylar SRL trong phạm vi pháp luật cho phép.",
+        "1.1 Chúng tôi là ai — Skylar SRL (\"chúng tôi\") vận hành Hostel Brikette. Địa chỉ đăng ký: Via Guglielmo Marconi, 358, 84017, Positano, Salerno, Italy. Địa chỉ cơ sở: Via Guglielmo Marconi, 358, 84017, Positano, Salerno, Italy. Email chính thức: hostelpositano@gmail.com. Website: https://hostel-positano.com.",
+        "1.2 \"Điều khoản đặt chỗ\" — tài liệu này.",
+        "1.3 \"Nội quy\" — tài liệu Nội quy Hostel Brikette, là một phần của hợp đồng lưu trú.",
+        "1.4 \"Người đặt\" — người gửi Yêu cầu đặt chỗ và đứng tên đặt chỗ.",
+        "1.5 \"Khách\" — người lưu trú qua đêm theo Đặt chỗ đã xác nhận.",
+        "1.6 \"Khách thăm\" — người chỉ được vào Khu vực chung và không lưu trú (một số nơi gọi \"Temporary Guest\").",
+        "1.7 \"Chủ thẻ\" — chủ thẻ dùng để thanh toán hoặc bảo đảm đặt chỗ.",
+        "1.8 \"Yêu cầu đặt chỗ\" — yêu cầu đặt lưu trú qua website của chúng tôi hoặc OTA được ủy quyền.",
+        "1.9 \"Đặt chỗ đã xác nhận\" — yêu cầu đặt chỗ được chúng tôi chấp nhận bằng văn bản, tạo hợp đồng lưu trú ràng buộc.",
+        "1.10 \"OTA\" — đại lý du lịch trực tuyến được ủy quyền (ví dụ Hostelworld.com, Booking.com).",
+        "1.11 \"Loại giá\" — quy tắc giá áp dụng cho đặt chỗ (hoàn tiền/không hoàn tiền).",
+        "1.12 \"Giá không hoàn tiền\" — yêu cầu thanh toán đầy đủ khi đặt và không hoàn tiền trừ khi luật yêu cầu.",
+        "1.13 \"Giá hoàn tiền\" — có thể cho phép hủy/đổi theo quy tắc khi đặt và trong xác nhận.",
+        "1.14 \"Khung giờ nhận phòng chính thức\" — 15:00–22:00 vào ngày đến, trừ khi xác nhận ghi khác.",
+        "1.15 \"No Show\" — không hoàn tất nhận phòng trước khi hết khung giờ chính thức và không được đồng ý đến muộn bằng văn bản.",
+        "1.16 \"Hủy muộn\" — hủy sau thời hạn thông báo của Loại giá.",
+        "1.17 \"Chấm dứt do vi phạm\" — chấm dứt lưu trú do vi phạm Nội quy hoặc Điều khoản này.",
+        "1.18 \"Tạm giữ\" — giữ tiền tạm thời trên thẻ, chưa trừ ngay.",
+        "1.19 \"Tiền đặt cọc bảo đảm\" — tiền cọc/tạm giữ để đảm bảo các khoản phải trả, theo Mục 5.",
+        "1.20 \"Khu vực chung\" — khu vực dùng chung theo Nội quy.",
+        "1.21 \"Lỗi nghiêm trọng\" — lỗi ảnh hưởng đáng kể đến lưu trú (giường hỏng, không có nước, không vào được phòng, v.v.).",
+        "1.22 Diễn giải — \"Bằng văn bản\" bao gồm email và tin nhắn OTA.",
+        "1.23 Thời gian và thời hạn theo giờ địa phương, trừ khi nêu khác.",
+        "1.24 Nếu Điều khoản này mâu thuẫn với Nội quy về tài chính, Điều khoản này ưu tiên; về hành vi/hoạt động tại chỗ, Nội quy ưu tiên."
       ]
     },
     "s2": {
-      "title": "2. Yêu cầu đặt phòng",
+      "title": "2. Yêu cầu đặt chỗ, kênh hợp lệ và hình thành hợp đồng",
       "body": [
-        "2.1 Gửi yêu cầu — Phải gửi bằng văn bản qua OTA hoặc trang web của chúng tôi. Trao đổi trực tiếp chỉ mang tính thông tin. Khi gửi yêu cầu, bạn đồng ý với các Điều khoản này và xác nhận tính chính xác thông tin.",
-        "2.2 Xử lý — Chúng tôi bắt đầu xử lý sau khi các khoản đặt cọc, ủy quyền trước hoặc thanh toán cần thiết được chấp nhận bằng phương thức hợp lệ. Chủ thẻ tín dụng phải được xác định và có thể cần ủy quyền phí bằng văn bản qua email chính thức. Nếu không xác minh được, chúng tôi sẽ từ chối yêu cầu.",
-        "2.3 Từ chối — Chúng tôi có thể từ chối bất kỳ Yêu cầu đặt phòng nào vì bất kỳ lý do nào.",
-        "2.4 Giới hạn quy mô yêu cầu — Tối đa bảy (7) đêm và nhóm tối đa năm (5) người. Yêu cầu lớn hơn được coi là nhiều đặt phòng.",
-        "2.5 Đề nghị thay thế — Nếu phòng yêu cầu không khả dụng, chúng tôi có thể gửi phương án thay thế đến Địa chỉ email được chỉ định của bạn. Việc chấp nhận sẽ kích hoạt việc thử thanh toán/ủy quyền trước.",
-        "2.6 Trả trước, không hoàn tiền — Có thể yêu cầu bạn đồng ý rõ ràng với các Điều khoản này; nếu không đồng ý, yêu cầu sẽ bị hủy. Chúng tôi tối đa thử thanh toán ba lần trước khi hủy.",
-        "2.7 Xác nhận — Đặt phòng chỉ được xác nhận khi chúng tôi gửi email xác nhận (mã đặt phòng, ngày đến, thời lượng, v.v.) đến Địa chỉ email được chỉ định. Bạn đồng ý kiểm tra thông tin và báo lỗi qua email chính thức.",
-        "2.9 Số lượng khách bao gồm — Một người/giường đơn; tối đa hai người/giường đôi; căn hộ theo sức chứa công bố. Không vượt quá công suất phòng.",
-        "2.9 Phạm vi cơ sở vật chất — Bao gồm Bộ khăn ga và một Thẻ chìa khóa mỗi người, quyền dùng phòng tắm/nước nóng theo khung giờ, và sử dụng Khu vực chung. Các dịch vụ khác là bổ sung, có điều khoản riêng.",
-        "2.10 Nghĩa vụ tài chính — Chủ thẻ tín dụng chịu trách nhiệm cho đặt phòng và các chi phí phát sinh (thiệt hại, dọn dẹp thêm, tiền phạt, vi phạm chính sách check‑out, v.v.).",
-        "2.11 Phân bổ phòng và giường ký túc — Mỗi người được chỉ định một Phòng được chỉ định. Giường ký túc xếp theo người đến trước chọn trước; đặt phòng nhóm có thể bị chia phòng.",
-        "2.12 Nâng hạng — Có thể nâng hạng khi thanh toán hoặc vì lý do tồn kho; nếu không thanh toán, chúng tôi có thể đưa về loại phòng ban đầu."
+        "2.1 Kênh hợp lệ và cấm bán lại — Chỉ đặt qua website hoặc OTA được ủy quyền. Cấm bán lại trái phép; chúng tôi có thể từ chối/hủy khi nghi ngờ gian lận.",
+        "2.2 Xác nhận — Chỉ khi chúng tôi xác nhận bằng văn bản thì đặt chỗ mới có hiệu lực.",
+        "2.3 Từ chối — Có thể từ chối vì an toàn, hạn chế công suất, thiếu xác minh/ thanh toán, nghi ngờ gian lận hoặc vi phạm điều khoản; không từ chối vì lý do phân biệt trái pháp luật.",
+        "2.4 Thông tin và liên lạc — Người đặt phải cung cấp thông tin liên lạc chính xác; chúng tôi có thể liên hệ qua OTA và/hoặc email.",
+        "2.5 Xác minh — Có thể yêu cầu xác minh danh tính/thanh toán; không cung cấp kịp thời có thể bị từ chối/hủy.",
+        "2.6 Giới hạn — Tối đa 7 đêm và 5 người/đặt chỗ nếu không có thỏa thuận khác.",
+        "2.7 Không chuyển nhượng — Không chuyển nhượng; thay đổi tên phải được chấp thuận bằng văn bản."
       ]
     },
     "s3": {
-      "title": "3. Độ tuổi và Khả năng tiếp cận",
+      "title": "3. Giá, bao gồm và phân bổ phòng",
       "body": [
-        "3.1 Tiếp cận — Vui lòng liên hệ trước khi đặt nếu có nhu cầu cụ thể. Tòa nhà có cầu thang và không có dịch vụ khuân vác. Thiết bị hỗ trợ ngủ phát tiếng chỉ được dùng trong phòng riêng.",
-        "3.2 Tự lập — Chúng tôi không cung cấp chăm sóc thường xuyên. Nếu bạn không thể tự quản lý, chúng tôi sẽ hủy đặt phòng.",
-        "3.3 Trẻ vị thành niên — Trẻ em không được tự đi du lịch tại Ý. Trẻ ≤16 tuổi chỉ ở phòng riêng. Người 17 tuổi có thể ở ký túc xá nếu đi cùng người ≥18 tuổi cùng phòng. Người giám hộ phải chứng minh năng lực pháp lý, nếu không đặt phòng sẽ bị hủy."
+        "3.1 Bao gồm — Giường/phòng cho mỗi khách, ga trải tiêu chuẩn, sử dụng khu vực chung và phòng tắm chung theo lịch (nếu có). Dịch vụ bổ sung có thể miễn phí hoặc tính phí.",
+        "3.2 Phân bổ — Theo xác nhận đặt chỗ; giường dorm theo thứ tự đến; nhóm có thể tách phòng.",
+        "3.3 Nâng hạng — Có thể nâng hạng có phí hoặc do vận hành; nếu thanh toán thất bại có thể quay về loại phòng ban đầu."
       ]
     },
     "s4": {
-      "title": "4. Bên thứ ba và Thanh toán",
+      "title": "4. Thanh toán, tiền cọc và tạm giữ",
       "body": [
-        "Khi bạn gửi Yêu cầu đặt phòng qua nền tảng thanh toán bên thứ ba (OTA), bạn hoàn tất thanh toán theo điều khoản của họ.",
-        "Khoản thanh toán cho bên thứ ba do thỏa thuận giữa bạn và họ điều chỉnh; Nhà nghỉ không kiểm soát các quy trình này.",
-        "Chúng tôi không nhận phần nào từ các khoản thanh toán đó và không chịu trách nhiệm cho các đặt phòng theo cách này.",
-        "Bạn có trách nhiệm đảm bảo thanh toán thành công và đặt phòng được xác nhận trước khi đến Nhà nghỉ.",
-        "Nếu có thắc mắc về thanh toán qua OTA, vui lòng liên hệ trực tiếp nhà cung cấp bên thứ ba."
+        "4.1 Phương thức thanh toán — Visa/Mastercard; tiền mặt EUR; chuyển khoản chỉ từ doanh nghiệp.",
+        "4.2 Thời điểm thanh toán — Theo Loại giá và kênh; giá không hoàn tiền thanh toán ngay; giá hoàn tiền có thể thanh toán khi đặt/nhận phòng/đúng hạn, có thể yêu cầu tạm giữ.",
+        "4.3 Thanh toán qua OTA — OTA hoặc Skylar SRL có thể là merchant of record; quy trình hoàn tiền theo xác nhận/OTA.",
+        "4.4 Tiền cọc/ứng trước — Có thể hoàn hoặc không tùy Loại giá và quy tắc hủy.",
+        "4.5 Tạm giữ — Có thể tạm giữ để đảm bảo phí dự kiến; thời gian giải phóng tùy ngân hàng."
       ]
     },
     "s5": {
-      "title": "5. Đặt cọc và Ủy quyền trước",
+      "title": "5. Tiền đặt cọc bảo đảm",
       "body": [
-        "5.1 Đặt cọc Yêu cầu đặt phòng — Chúng tôi có thể yêu cầu đặt cọc để giữ chỗ. Mức đặt cọc tùy loại đặt phòng; đặt trước không hoàn tiền yêu cầu 100% đặt cọc. Mọi đặt cọc trả cho Nhà nghỉ là không hoàn lại. Nếu không thu được, chúng tôi sẽ từ chối yêu cầu.",
-        "5.2 Ủy quyền trước — Có thể yêu cầu ủy quyền trước dựa trên giá/điều khoản đã thỏa thuận. Nếu không xử lý được số tiền cần thiết, chúng tôi sẽ từ chối yêu cầu."
+        "5.1 Quy tắc — Có thể yêu cầu tiền cọc tương đương 1 đêm/khách.",
+        "5.2 Sử dụng — Dùng cho khoản nợ, thiệt hại, phí vệ sinh, vi phạm nghiêm trọng, thay thẻ/ga; vượt quá cọc thì khách chịu phần còn lại.",
+        "5.3 Không có cọc — Có thể từ chối nhận phòng và xử lý theo No Show/huỷ."
       ]
     },
     "s6": {
-      "title": "6. Phí Vắng mặt (No Show)",
+      "title": "6. Hủy/đổi/No Show/rời sớm",
       "body": [
-        "Nếu bạn không đến nhận phòng, đặt phòng trở thành Vắng mặt và sẽ áp dụng Phí Vắng mặt.",
-        "Phí áp dụng cho mỗi Đặt phòng đã xác nhận. Mỗi đặt phòng có thể có thời hạn báo hủy khác nhau, ảnh hưởng đến kết quả."
+        "6.1 Cách yêu cầu đổi hoặc hủy — Mọi yêu cầu hủy hoặc đổi đều phải gửi bằng văn bản đến hostelpositano@gmail.com hoặc qua hệ thống tin nhắn OTA (nếu đặt qua OTA). Chúng tôi khuyến nghị bạn dùng cùng kênh đã dùng để đặt.",
+        "6.2 Thời hạn tính theo giờ địa phương, lùi từ 15:00 ngày đến.",
+        "6.3 Quy tắc và phí hủy — Phí hủy (nếu có), điều kiện hoàn tiền (nếu có), và thời hạn tùy thuộc vào Loại giá và kênh đặt, được nêu rõ khi bạn đặt, trong Đặt chỗ đã xác nhận của bạn và trong Phụ lục A (Bảng giá và phí).",
+        "6.4 Đổi và gia hạn — Yêu cầu đổi có thể được xử lý như hủy đặt chỗ ban đầu và tạo Đặt chỗ mới, tùy vào khả năng và Loại giá. Gia hạn tùy vào chỗ trống và được coi như giai đoạn đặt mới (có thể có Loại giá khác). Chúng tôi sẽ xác nhận những thay đổi được chấp thuận bằng văn bản. Cho đến khi xác nhận, Đặt chỗ ban đầu vẫn có hiệu lực.",
+        "6.5 No Show tính phí theo Loại giá.",
+        "6.6 Rời sớm và đêm chưa sử dụng — Nếu bạn rời đi sớm sau khi nhận phòng, điều này không tự động tạo ra quyền được hoàn tiền. Bất kỳ khoản hoàn tiền, tín dụng, hoặc miễn trừ (nếu có) đều được điều chỉnh bởi Loại giá, việc chúng tôi có xác nhận thay đổi/hủy bằng văn bản hay không, và các yêu cầu bắt buộc theo luật hiện hành.",
+        "6.7 Vi phạm có thể bị chấm dứt, tính phí, dùng cọc hoặc trừ thẻ; không coi là No Show."
       ]
     },
     "s7": {
-      "title": "7. Hủy đặt phòng",
+      "title": "7. Yêu cầu nhận phòng",
       "body": [
-        "Yêu cầu hủy phải gửi bằng văn bản đến email chính thức của chúng tôi.",
-        "Khi xác định yêu cầu có trong thời hạn báo trước hay không, thời gian được tính từ lúc chúng tôi nhận email của bạn đến 00:01 ngày bắt đầu đặt phòng.",
-        "Có thể áp dụng Phí xử lý hủy (mặc định 15% giá đặt phòng, trừ hoa hồng đã trả cho bên thứ ba).",
-        "Nếu chấp nhận yêu cầu của bạn, chúng tôi sẽ xác nhận qua email. Trước khi gửi email đó, đặt phòng vẫn được coi là đã xác nhận.",
-        "Đặt phòng có thể bị hủy mà không cần yêu cầu bằng văn bản nếu: bạn không check‑in trước khi lễ tân đóng cửa ngày đầu; bạn check‑out trước khi kết thúc đặt phòng; hoặc bạn vi phạm chính sách của nhà nghỉ.",
-        "Đặt lại sau khi hủy phụ thuộc vào tình trạng phòng trống.",
-        "Hủy ngoài thời hạn báo trước được coi là Vắng mặt và có thể bị Phí Vắng mặt."
+        "7.1 Nhận phòng 15:00–22:00; đến muộn phải báo trước.",
+        "7.2 Giấy tờ tùy thân — Mỗi Khách phải xuất trình giấy tờ tùy thân hợp lệ gốc khi nhận phòng theo yêu cầu đăng ký và an ninh. Giấy tờ được chấp nhận (danh sách ví dụ): hộ chiếu, chứng minh thư quốc gia, giấy phép lái xe, thẻ quân đội (chỉ tài liệu gốc). Các phiên bản địa phương nên bao gồm bất kỳ trường dữ liệu nào được yêu cầu tại địa phương. Nếu Khách không thể cung cấp giấy tờ hợp lệ trước 22:00 vào ngày đến, chúng tôi có thể từ chối nhận phòng và áp dụng quy tắc No Show/Hủy muộn cho Loại giá.",
+        "7.3 Thanh toán số dư trước khi hoàn tất nhận phòng.",
+        "7.4 Người đặt phải đủ 18 tuổi; người chưa đủ tuổi có thể bị giới hạn."
       ]
     },
     "s8": {
-      "title": "8. Thay đổi Đặt phòng đã xác nhận",
+      "title": "8. Khiếm khuyết và biện pháp",
       "body": [
-        "Chúng tôi tạo đặt phòng mới thay vì sửa đổi đặt phòng hiện có.",
-        "Gửi Yêu cầu thay đổi đặt phòng đến email chính thức trong thời hạn áp dụng.",
-        "Mọi thay đổi phụ thuộc vào phòng trống và các điều kiện khác.",
-        "Yêu cầu thay đổi thời lượng lưu trú được coi vừa là Yêu cầu thay đổi đặt phòng vừa là Yêu cầu hủy phòng hoặc Yêu cầu gia hạn.",
-        "Gia hạn được coi là đặt phòng mới.",
-        "Nếu bạn rời sớm mà không có Xác nhận hủy đặt phòng hợp lệ, đặt phòng ban đầu được coi là đã hoàn thành."
+        "8.1 Vui lòng báo ngay khi có vấn đề.",
+        "8.2 Ưu tiên sửa theo mức độ ảnh hưởng và an toàn.",
+        "8.3 Có thể đổi phòng hoặc điều chỉnh theo luật nếu lỗi nghiêm trọng."
       ]
     },
     "s9": {
-      "title": "9. Không được chuyển nhượng đặt phòng",
+      "title": "9. Thiệt hại, vệ sinh và rệp",
       "body": [
-        "Yêu cầu đặt phòng và Đặt phòng đã xác nhận không được chuyển nhượng, toàn bộ hoặc một phần.",
-        "Mỗi đặt phòng phải giữ nguyên tên người đặt ban đầu trong suốt thời gian hiệu lực.",
-        "Cố gắng check‑in bằng đặt phòng đã chuyển nhượng khiến cá nhân đó chịu trách nhiệm tài chính và có thể bị hủy ngay.",
-        "Cố gắng thay đổi tên khách được chỉ định cũng có thể dẫn đến hủy."
+        "9.1 Thiệt hại sẽ bị tính phí hợp lý; có thể trừ cọc hoặc trừ thẻ. Phí nhân công: Director €50/h, Manager €35/h, Staff €25/h.",
+        "9.2 Nếu có bằng chứng khách mang rệp, có thể tính chi phí xử lý và tổn thất trực tiếp."
       ]
     },
     "s10": {
-      "title": "10. Đặt trước, không hoàn tiền",
+      "title": "10. Tài sản cá nhân",
       "body": [
-        "Yêu cầu thanh toán toàn bộ tại thời điểm đặt. Nếu thanh toán thất bại, yêu cầu sẽ bị hủy.",
-        "Trong trường hợp Vắng mặt, sẽ không hoàn tiền.",
-        "Yêu cầu gia hạn được xem xét theo các điều khoản trong tài liệu này."
+        "Khách tự chịu trách nhiệm; dịch vụ cất giữ theo Nội quy/điều khoản riêng.",
+        "Không loại trừ trách nhiệm khi pháp luật không cho phép."
       ]
     },
     "s11": {
-      "title": "11. Đến nơi",
+      "title": "11. Trách nhiệm",
       "body": [
-        "11.1 Yêu cầu Check‑in — Tất cả khách phải xác minh danh tính và bắt đầu Check‑in khi đến nơi.",
-        "11.2 Đến sớm — Khách đến trước 10:30 sáng trong ngày nhận phòng sẽ không thể vào nhà nghỉ.",
-        "11.3 Đến trong khoảng 10:30–15:00 — Nếu chúng tôi đồng ý, bạn có thể trở thành Khách Tạm thời. Dịch vụ gửi hành lý (tùy nghi) có thể khả dụng và có điều khoản riêng.",
-        "11.4 Khung Check‑in — Check‑in thông thường diễn ra trong Thời gian Check‑in Chính thức (15:00–22:00).",
-        "11.5 Đến muộn — Lễ tân đóng sau 22:00. Tùy quyết định, chúng tôi có thể cung cấp hướng dẫn tự check‑in. Bạn chịu trách nhiệm nếu không nhận/không làm theo hướng dẫn hoặc cung cấp sai thông tin liên hệ."
+        "11.1 Trách nhiệm bắt buộc theo luật không bị loại trừ.",
+        "11.2 Không chịu trách nhiệm với lỗi do khách vi phạm, bên thứ ba ngoài kiểm soát hoặc bất khả kháng.",
+        "11.3 Trách nhiệm tối đa giới hạn ở khoản đã trả cho phần lưu trú."
       ]
     },
     "s12": {
-      "title": "12. Check‑in",
+      "title": "12. Quyền riêng tư và CCTV",
       "body": [
-        "12.1 Tính bắt buộc — Nếu không thể hoàn tất check‑in, chúng tôi sẽ từ chối nhận phòng và hủy đặt phòng của bạn (coi là Vắng mặt).",
-        "12.2 Xác minh danh tính — Chúng tôi phải nhận giấy tờ hợp lệ cho từng khách (Tên, Họ, Nơi sinh, Quốc tịch, Ngày sinh, Số giấy tờ). Không xuất trình trước 22:00 ngày đầu sẽ bị hủy (Vắng mặt).",
-        "12.2 Thanh toán số dư — Mọi số dư còn lại phải thanh toán bằng phương thức chấp nhận trước khi hoàn tất check‑in. Không thanh toán sẽ bị hủy (Vắng mặt).",
-        "12.3 Đặt cọc Thẻ chìa khóa & Bộ khăn ga — Yêu cầu đặt cọc tiền mặt €10 khi check‑in; hoàn lại khi check‑out sau khi trả Thẻ chìa khóa và Bộ khăn ga."
+        "12.1 Chính sách quyền riêng tư: https://hostel-positano.com/privacy-policy.",
+        "12.2 CCTV dùng cho an ninh, có biển báo; lưu 30 ngày; liên hệ: hostelpositano@gmail.com."
       ]
     },
     "s13": {
-      "title": "13. Quy trình bảo đảm",
+      "title": "13. Thông tin website",
       "body": [
-        "Chúng tôi có thể giữ số tiền tương đương một đêm/người làm đặt cọc an ninh trong suốt thời gian lưu trú (qua ủy quyền trước hoặc tiền mặt).",
-        "Khoản này có thể dùng để thanh toán tiền phạt, phí, gia hạn phòng, hoặc các khoản phải trả khác theo chính sách.",
-        "Nếu không thể ủy quyền trước, một thành viên khác trong nhóm bạn có thể cung cấp hoặc bạn có thể nộp tiền mặt; nếu không, đặt phòng có thể bị hủy."
+        "Thông tin có thể cập nhật; liên kết bên thứ ba chỉ mang tính tiện lợi."
       ]
     },
     "s14": {
-      "title": "14. Nghĩa vụ chăm sóc",
+      "title": "14. Sức khỏe và an toàn",
       "body": [
-        "Bạn phải tôn trọng khách khác và nhân viên, tránh gây hư hại và tuân thủ nội quy.",
-        "Vi phạm có thể dẫn đến hủy ngay (áp dụng chính sách Vắng mặt) và/hoặc yêu cầu rời đi mà không hoàn tiền.",
-        "Chi phí/phạt do hành vi của bạn có thể được tính cho bạn. Chúng tôi sẽ báo cáo vi phạm pháp luật theo quy định."
+        "Tuân thủ hành vi an toàn với bệnh truyền nhiễm; hoàn tiền theo Loại giá trừ khi luật yêu cầu khác."
       ]
     },
     "s15": {
-      "title": "15. Khiếm khuyết và Thiệt hại",
+      "title": "15. Khuyến mãi và phiếu giảm giá",
       "body": [
-        "15.1 Báo cáo khiếm khuyết — Vui lòng báo ngay mọi khiếm khuyết trong phòng.",
-        "15.2 Đánh giá khiếm khuyết — Chúng tôi đánh giá và ưu tiên xử lý theo mức ảnh hưởng tới lưu trú của bạn.",
-        "15.3 Khiếm khuyết nghiêm trọng — Chúng tôi sẽ cố gắng khắc phục; nếu không thể, sẽ tìm chỗ ở thay thế hoặc hoàn tiền theo tỷ lệ dựa trên chênh lệch giá hoặc số đêm còn lại.",
-        "15.4 Khiếm khuyết không báo — Nếu phát hiện sau, có thể áp dụng chính sách thiệt hại và thất thoát.",
-        "15.5 Thiệt hại — Chúng tôi có thể ủy quyền trước hoặc yêu cầu đặt cọc để bù đắp thiệt hại/mất mát. Hoàn tiền trừ đi các khoản phí phát sinh. Chi phí vượt (vật tư, lao động, hành chính) sẽ được tính: Giám đốc €50/giờ, Quản lý €35/giờ, Nhân viên €25/giờ."
+        "Phiếu giảm giá chỉ áp dụng theo điều kiện được nêu."
       ]
     },
     "s16": {
-      "title": "16. Rệp giường",
+      "title": "16. Luật áp dụng",
       "body": [
-        "Chúng tôi áp dụng biện pháp phòng ngừa và xử lý rệp giường. Nếu xảy ra trong thời gian bạn lưu trú, bạn có thể chịu trách nhiệm cho thiệt hại gồm mất doanh thu đặt phòng, khiếu nại của khách khác và chi phí vệ sinh/diệt côn trùng.",
-        "Nếu trước đây bạn từng lưu trú ở nơi có rệp giường, vui lòng thông báo khi check‑in và khử trùng đồ đạc.",
-        "Kiểm tra đồ dùng trước khi nhận phòng. Báo ngay mọi nghi ngờ."
+        "Áp dụng luật Ý và tòa án Ý, trừ khi quy định bắt buộc về người tiêu dùng áp dụng khác."
       ]
     },
     "s17": {
-      "title": "17. Tài sản cá nhân và An ninh",
+      "title": "Phụ lục A — Bảng giá và phí",
       "body": [
-        "Khách tự chịu trách nhiệm về tài sản cá nhân mọi lúc. Nhà nghỉ không chịu trách nhiệm mất mát/hư hại/trộm cắp trừ khi pháp luật yêu cầu.",
-        "Có thể cung cấp tủ/két, nhưng trách nhiệm vẫn thuộc về khách.",
-        "Đồ thất lạc sẽ được xử lý sau 30 ngày kể từ khi check‑out.",
-        "Cấm đồ nguy hiểm/phi pháp; có thể bị tịch thu hoặc báo cơ quan chức năng."
-      ]
-    },
-    "s18": {
-      "title": "Bản dịch đang được chuẩn bị.",
-      "body": [
-        "Tất cả khách phải đeo vòng an ninh được phát khi ở trong khuôn viên và xuất trình giấy tờ hợp lệ khi nhân viên yêu cầu.",
-        "Không đeo vòng hoặc không có giấy tờ có thể bị yêu cầu rời đi mà không hoàn tiền.",
-        "Mất/hỏng vòng phải báo ngay; có thể áp dụng phí thay thế nhỏ."
-      ]
-    },
-    "s19": {
-      "title": "19. Giám sát CCTV",
-      "body": [
-        "Camera CCTV lắp tại khu vực công cộng để bảo đảm an toàn cho khách và tài sản.",
-        "Bản ghi được lưu trữ an toàn, chỉ quản lý được ủy quyền truy cập và có thể chia sẻ với cơ quan thực thi pháp luật khi luật yêu cầu.",
-        "CCTV không bảo đảm an ninh tuyệt đối. Bằng việc đồng ý các điều khoản này, bạn đồng ý với việc sử dụng CCTV như mô tả."
-      ]
-    },
-    "s20": {
-      "title": "20. Khách Tạm thời",
-      "body": [
-        "Trạng thái Khách Tạm thời được cấp theo toàn quyền quyết định của chúng tôi.",
-        "Khách Tạm thời chỉ được vào Khu vực chung và không được vào phòng.",
-        "Khách Chính thức không được phép tự ý cấp trạng thái Khách Tạm thời cho người khác.",
-        "Yêu cầu có thể được chấp nhận từ 9:00 đến 23:00 vào ngày nhà nghỉ mở cửa.",
-        "Chúng tôi có quyền từ chối hoặc thu hồi trạng thái Khách Tạm thời bất cứ lúc nào."
-      ]
-    },
-    "s21": {
-      "title": "21. Người chưa đăng ký",
-      "body": [
-        "Mọi người ở trong cơ sở phải được đăng ký, bao gồm Khách Tạm thời.",
-        "Nếu phát hiện người chưa đăng ký lưu trú trong phòng, chúng tôi có thể tính giá phòng tiêu chuẩn cho mỗi người đó cùng phí hành chính bằng hai lần giá phòng tiêu chuẩn.",
-        "Người chưa đăng ký phải check‑in và tuân thủ quy trình; nếu không, chúng tôi có thể thông báo cho cảnh sát địa phương.",
-        "Không báo cáo người chưa đăng ký có thể dẫn đến hủy đặt phòng (có thể áp dụng chính sách Vắng mặt)."
-      ]
-    },
-    "s22": {
-      "title": "22. Check‑out",
-      "body": [
-        "Giờ check‑out chính thức: 07:30–10:30.",
-        "Sau khi hoàn tất check‑out, không quay lại phòng hoặc để đồ lại bên trong.",
-        "Bạn phải tuân thủ các điều kiện Sau khi check‑out được mô tả trong điều khoản này."
-      ]
-    },
-    "s23": {
-      "title": "23. Check‑out sớm",
-      "body": [
-        "Nếu cần rời đi trước 07:30, vui lòng đến lễ tân tối hôm trước để sắp xếp check‑out sớm và nhận lại đặt cọc thẻ chìa khóa.",
-        "Không trả thẻ chìa khóa sẽ mất cọc.",
-        "Chỉ hoàn cọc bằng tiền mặt, trực tiếp cho nhân viên."
-      ]
-    },
-    "s24": {
-      "title": "24. Check‑out muộn",
-      "body": [
-        "Check‑out muộn chỉ khả dụng khi có thỏa thuận bằng văn bản trước, cho phép đến 12:00.",
-        "Dịch vụ tùy thuộc tình trạng phòng và phải được xác nhận bằng văn bản.",
-        "Phí dịch vụ €40, ưu tiên theo thứ tự yêu cầu trước."
-      ]
-    },
-    "s25": {
-      "title": "25. Không thực hiện Check‑out",
-      "body": [
-        "Nếu bạn không check‑out đúng giờ đã thỏa thuận, chúng tôi có thể di chuyển đồ của bạn ra khỏi phòng mà không chịu trách nhiệm.",
-        "Mọi cố gắng vào khu vực chỉ dành cho khách sau thời điểm đã thỏa thuận có thể được coi là vi phạm an ninh theo chính sách của chúng tôi.",
-        "Chúng tôi có thể chuyển đồ của bạn đến dịch vụ khuân vác địa phương để lưu giữ; phí lấy đồ do dịch vụ khuân vác quy định."
-      ]
-    },
-    "s26": {
-      "title": "26. Sau khi Check‑out",
-      "body": [
-        "Khi hoàn tất quy trình check‑out, Đặt phòng đã xác nhận của bạn được coi là hoàn thành, bất kể thời lượng còn lại.",
-        "Bạn sẽ không còn là Khách Chính thức và trở thành Khách Tạm thời đến 15:30.",
-        "Theo yêu cầu, chúng tôi có thể đăng ký bạn vào dịch vụ gửi hành lý (tùy nghi), áp dụng điều khoản riêng."
-      ]
-    },
-    "s27": {
-      "title": "27. Đồ uống có cồn",
-      "body": [
-        "Là cơ sở có giấy phép, khách không được mang đồ uống có cồn mua bên ngoài vào nhà nghỉ.",
-        "Nếu phát hiện đồ uống có cồn từ bên ngoài trong khuôn viên, chúng tôi có thể niêm giữ và hoàn trả khi check‑out hoặc khi xác nhận sẽ tiêu thụ ngoài cơ sở.",
-        "Không tuân thủ có thể dẫn đến hủy đặt phòng ngay lập tức và được coi là Vắng mặt."
-      ]
-    },
-    "s28": {
-      "title": "28. Sửa đổi các Điều khoản và Điều kiện này",
-      "body": [
-        "Các Điều khoản và Điều kiện này cấu thành toàn bộ thỏa thuận giữa bạn và Nhà nghỉ và thay thế mọi thỏa thuận/hiểu biết trước đó, bằng văn bản hoặc lời nói.",
-        "Chúng tôi có quyền sửa đổi các Điều khoản và Điều kiện này bất cứ lúc nào."
-      ]
-    },
-    "s29": {
-      "title": "29. Phạm vi trách nhiệm",
-      "body": [
-        "Trách nhiệm của chúng tôi giới hạn trong các dịch vụ và hạng mục nêu tại đây.",
-        "Tổng trách nhiệm không vượt quá số tiền bạn đã trả cho đặt phòng.",
-        "Chúng tôi không chịu trách nhiệm mất mát/hư hại tài sản cá nhân, trừ khi pháp luật yêu cầu.",
-        "Chúng tôi không chịu trách nhiệm cho tổn thất gián tiếp, hệ quả, kinh tế, hoặc mất lợi nhuận/uy tín/cơ hội, kể cả do sơ suất hay bất khả kháng.",
-        "Chúng tôi cung cấp lưu trữ an toàn cho đồ có giá trị nhưng không chịu trách nhiệm tài chính cho chúng.",
-        "Chúng tôi có quyền di chuyển đồ đạc trong quá trình vệ sinh mà không cần thông báo."
-      ]
-    },
-    "s30": {
-      "title": "30. Luật điều chỉnh",
-      "body": [
-        "Các điều khoản này chịu sự điều chỉnh của pháp luật Ý; mọi hành động pháp lý phải thực hiện tại tòa án Ý."
-      ]
-    },
-    "s31": {
-      "title": "31. Thông tin trang web",
-      "body": [
-        "Chúng tôi nỗ lực đảm bảo độ chính xác thông tin trên trang web; tuy nhiên, không chịu trách nhiệm cho lỗi hoặc thiếu sót.",
-        "Chúng tôi có quyền thay đổi Trang web và nội dung bất cứ lúc nào mà không cần thông báo.",
-        "Một số hình ảnh có thể chỉ thể hiện phong cách chung và không phản ánh chính xác hạng mục hiển thị.",
-        "Mọi nội dung trên Trang web, gồm văn bản, hình ảnh, nhãn hiệu, thuộc sở hữu của Nhà nghỉ và không được sử dụng khi chưa có phép bằng văn bản.",
-        "Chúng tôi cung cấp liên kết đến trang web bên thứ ba vì sự tiện lợi, nhưng không chịu trách nhiệm về nội dung hoặc việc sử dụng của họ.",
-        "Vui lòng xem chính sách quyền riêng tư về cách chúng tôi bảo vệ quyền riêng tư của bạn khi sử dụng trang web."
-      ]
-    },
-    "s32": {
-      "title": "32. Chính sách Sức khỏe và An toàn",
-      "body": [
-        "Để đảm bảo an toàn và sức khỏe, bất kỳ khách nào vừa có phơi nhiễm với bệnh truyền nhiễm cần hành xử có trách nhiệm.",
-        "Các đặt phòng trả trước, không hoàn tiền vẫn giữ nguyên tính không hoàn tiền trong các trường hợp này.",
-        "Chúng tôi khuyến nghị mạnh mẽ mua bảo hiểm du lịch để bảo vệ trước các tình huống bất ngờ, bao gồm ốm bệnh hoặc không thể đi lại."
-      ]
-    },
-    "s33": {
-      "title": "33. Phiếu giảm giá",
-      "body": [
-        "Chúng tôi có thể phát hành phiếu khuyến mãi theo thời gian.",
-        "Phiếu chỉ có hiệu lực cho các đặt phòng thực hiện qua trang web chính thức (hostel-positano.com).",
-        "Mỗi phiếu có thể kèm các điều khoản cụ thể bổ sung so với những điều nêu trong tài liệu này."
+        "Phụ lục này phải phù hợp với những gì được hiển thị khi đặt phòng.",
+        "A1. Không hoàn tiền: thanh toán 100%, không hoàn tiền.",
+        "A2. Hoàn tiền: hủy miễn phí đến 72 giờ trước 15:00; phí hủy muộn/No Show theo quy tắc.",
+        "A3. Phí quản lý hủy — €5 mỗi đặt phòng, hiển thị khi đặt phòng và được nhắc lại trong email xác nhận của bạn."
       ]
     }
   }

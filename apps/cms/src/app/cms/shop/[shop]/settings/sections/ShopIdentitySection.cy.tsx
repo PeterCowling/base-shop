@@ -1,6 +1,8 @@
 import React from 'react';
-import ShopIdentitySection from './ShopIdentitySection';
+
 import type { Shop } from '@acme/types';
+
+import ShopIdentitySection from './ShopIdentitySection';
 
 function makeShop(overrides: Partial<Shop> = {}): Shop {
   return {

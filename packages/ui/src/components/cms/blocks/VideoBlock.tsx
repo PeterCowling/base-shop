@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+
 import { VideoPlayer } from "../../atoms/VideoPlayer";
 
 interface Props {

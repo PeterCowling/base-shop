@@ -2,10 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useTranslations } from "@i18n";
+
+import { useTranslations } from "@acme/i18n";
+
+import { joinClasses } from "@/lib/joinClasses";
 import type { Locale } from "@/lib/locales";
 import { localizedPath } from "@/lib/routes";
-import { joinClasses } from "@/lib/joinClasses";
 
 type HeroSectionProps = {
   lang: Locale;
@@ -16,7 +18,7 @@ export default function HeroSection({ lang, isZh }: HeroSectionProps) {
   const translator = useTranslations();
   const hostelLink = translator("links.hostel");
   const baseHero = ["rounded-[42px]", "border", "p-8", "md:p-10"];
-  const zhHero = ["bg-zinc-900/70", "border-accent/60", "text-zinc-100"];
+  const zhHero = ["bg-panel/70", "border-accent/60", "text-fg"];
   const enHero = ["bg-panel", "border-border", "text-fg"];
   const badgeText = isZh ? "text-accent" : "text-muted-foreground";
   const primaryButtonBase = [
@@ -31,8 +33,8 @@ export default function HeroSection({ lang, isZh }: HeroSectionProps) {
     "uppercase",
     "skylar-button-tracking",
   ];
-  const primaryVariantZh = ["bg-accent", "text-zinc-900"];
-  const primaryVariantEn = ["bg-slate-900", "text-white"];
+  const primaryVariantZh = ["bg-accent", "text-accent-foreground"];
+  const primaryVariantEn = ["bg-foreground", "text-background"];
   const secondaryVariantZh = ["border-accent/70", "text-accent"];
   const secondaryVariantEn = ["border-border", "text-fg"];
   return (
@@ -51,7 +53,7 @@ export default function HeroSection({ lang, isZh }: HeroSectionProps) {
             <div>
               <p
                 className={`text-xs uppercase skylar-nav-text ${
-                  isZh ? "text-zinc-200/70" : "text-muted-foreground"
+                  "text-muted-foreground"
                 }`}
               >
                 {translator("people.companyLine")}
@@ -76,7 +78,7 @@ export default function HeroSection({ lang, isZh }: HeroSectionProps) {
               "text-sm",
               "uppercase",
               "skylar-support-tracking",
-              isZh ? "text-zinc-200/70" : "text-muted-foreground"
+              "text-muted-foreground"
             )}
           >
             {translator("hero.support")}
@@ -86,7 +88,7 @@ export default function HeroSection({ lang, isZh }: HeroSectionProps) {
               "font-body",
               "text-base",
               "leading-7",
-              isZh ? "text-zinc-200" : "text-muted-foreground"
+              "text-muted-foreground"
             )}
           >
               {translator("hero.copy")}

@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+
 import { tokens } from '../src/tokens';
 
 const requiredKeys = [
@@ -22,6 +23,26 @@ const requiredKeys = [
   '--ring-offset-width',
 ] as const;
 
+const themeEditorTokens = [
+  '--color-primary',
+  '--color-primary-fg',
+  '--color-accent',
+  '--color-accent-fg',
+  '--color-bg',
+  '--color-fg',
+  '--color-muted',
+  '--color-muted-fg',
+  '--color-success',
+  '--color-success-fg',
+  '--color-info',
+  '--color-info-fg',
+  '--color-warning',
+  '--color-warning-fg',
+  '--color-danger',
+  '--color-danger-fg',
+  '--surface-input',
+] as const;
+
 describe('base theme tokens', () => {
   test('exports expected token keys', () => {
     for (const key of requiredKeys) {
@@ -30,7 +51,7 @@ describe('base theme tokens', () => {
   });
 
   test('css contains token variables', () => {
-    const cssDir = path.join(__dirname, '..', 'src');
+    const cssDir = path.join(__dirname, '..');
     const cssFiles = ['tokens.css', 'tokens.dynamic.css']
       .map((f) => path.join(cssDir, f))
       .filter(fs.existsSync);
@@ -39,6 +60,12 @@ describe('base theme tokens', () => {
 
     for (const key of requiredKeys) {
       expect(css).toContain(key);
+    }
+  });
+
+  test('theme editor token map stays within base tokens', () => {
+    for (const key of themeEditorTokens) {
+      expect(tokens).toHaveProperty(key);
     }
   });
 

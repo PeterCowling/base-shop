@@ -1,13 +1,13 @@
 import { renderToString } from "react-dom/server";
 import RootLayout from "../src/app/layout";
-import { initTheme } from "@platform-core/utils";
+import { initTheme } from "@acme/platform-core/utils";
 
 jest.mock("next/font/google", () => ({
   Geist: () => ({ variable: "--font-geist-sans" }),
   Geist_Mono: () => ({ variable: "--font-geist-mono" }),
 }));
 
-jest.mock("@platform-core/contexts/CartContext", () => ({
+jest.mock("@acme/platform-core/contexts/CartContext", () => ({
   CartProvider: ({ children }: { children: React.ReactNode }) => (
     <div data-cy="cart-provider">{children}</div>
   ),

@@ -1,3 +1,5 @@
+import { useTranslations } from "@acme/i18n";
+
 import {
   Button,
   Card,
@@ -9,8 +11,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../atoms/shadcn";
-import { useTranslations } from "@acme/i18n";
 import type { ValidationErrors } from "../shared";
+
 import type {
   SegmentDefinition,
   SegmentOperator,

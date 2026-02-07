@@ -1,88 +1,233 @@
 {
   "seo": {
-    "title": "Bến phà → Hostel Brikette, kèm hành lý",
-    "description": "Các lựa chọn từ bến: khuân vác hoặc xe buýt SITA tới điểm dừng gần hơn; mẹo thực tế và câu hỏi thường gặp."
+    "title": "Từ bến phà → Hostel Brikette, có hành lý",
+    "description": "Hướng dẫn hoàn chỉnh 2026: từ bến phà đến Hostel Brikette với hành lý bằng dịch vụ khuân vác và xe buýt Interno. Chi phí, thời gian, hướng dẫn từng bước và mẹo du lịch."
   },
-  "linkLabel": "Bến phà → Hostel Brikette, kèm hành lý",
+  "lastUpdated": "2026-01-31",
+  "linkLabel": "Từ bến phà → Hostel Brikette, có hành lý",
   "intro": [
-    "Đến Positano bằng phà và mang theo hành lý? Hãy kết hợp xe buýt Interno Positano với dịch vụ khuân vác ở cảng để tới Hostel Brikette mà không phải kéo vali lên những bậc thang dốc."
+    "Đến bằng phà với hành lý? Kết hợp xe buýt Interno Positano với dịch vụ khuân vác của Positano để đến Hostel Brikette mà không cần kéo túi lên cầu thang dốc. Tuyến đường này mất 20-45 phút tùy vào thời gian của dịch vụ khuân vác và xe buýt, chi phí €2-€6 mỗi người cộng với phí khuân vác tùy chọn, và loại bỏ hầu hết việc leo cầu thang nổi tiếng khó nhằn của Positano.",
+    "Cập nhật cho mùa 2026, hướng dẫn này bao gồm chi phí chính xác, lịch trình xe buýt, giá khuân vác và tuyến đường từng bước mà nhân viên chúng tôi khuyến nghị cho hàng trăm khách đến. Dù bạn đi một mình với ba lô hay theo nhóm với nhiều vali, bạn sẽ tìm thấy lời khuyên thiết thực cho chuyến đến suôn sẻ."
   ],
   "beforeList": [
-    "Kiểm tra lịch trình Interno Positano mới nhất — đây là [lịch và giá vé hiện tại](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
-    "Mua vé Interno Positano tại bất kỳ cửa hàng tabacchi/quầy báo nào trước khi lên xe.",
-    "Cân nhắc giao hành lý nặng cho đội khuân vác ngay khi họ đón phà — hãy nói rằng bạn lưu trú tại Hostel Brikette."
+    "Kiểm tra lịch trình xe buýt Interno Positano mới nhất — đây là %URL:https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26|lịch trình hiện tại và giá vé%.",
+    "Mua vé xe buýt Interno Positano tại bất kỳ cửa hàng tabacchi/bán báo nào trước khi lên xe.",
+    "Cân nhắc giao hành lý nặng cho nhân viên khuân vác khi họ đón phà – nói với họ rằng bạn ở tại Hostel Brikette."
   ],
   "sections": [
     {
-      "id": "dock-to-mulini",
-      "title": "Từ bến đến Piazza dei Mulini",
+      "id": "ferry-dock-overview",
+      "title": "Những gì cần biết tại bến phà Positano",
       "body": [
-        "Từ bãi biển chính đi bộ lên Piazza dei Mulini theo lối đi dọc bờ biển có biển chỉ dẫn — sử dụng [hướng dẫn này](https://www.google.com/maps/dir/Positano+Spiaggia/2+Viale+Pasitea+Positano,+Campania/@40.6289096,14.4857482,18z/data=!4m14!4m13!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!3e2).",
-        "Nếu mang nhiều hành lý, hãy thuê dịch vụ khuân vác của Positano tại bến để họ vận chuyển tất cả lên dốc giúp bạn — [hướng dẫn dịch vụ khuân vác](guide:porterServices) của chúng tôi nêu chi tiết giá và cách đặt."
+        "Bến phà Positano (chính thức là Positano Spiaggia) nằm ở mức bãi biển ở chân thị trấn. Khi bạn xuống tàu, bạn sẽ đi xuống cầu tàu ngắn vào lối đi dạo chính ở bãi biển. Toàn bộ khu vực ven biển khá nhỏ gọn — bạn có thể thấy bãi biển, ki-ốt bán vé và điểm bắt đầu của con đường lên dốc tất cả trong vòng 100 mét.",
+        "Dịch vụ khuân vác đón mọi chuyến phà đến. Bạn sẽ nhận ra họ ngay lập tức — họ mặc áo vest sáng màu và chờ với xe đẩy bánh xe gần cầu tàu. Từ bến tàu, bạn có ba lựa chọn chính: thuê nhân viên khuân vác để vận chuyển hành lý riêng (khuyến nghị cho hành lý nặng), đi xe buýt Interno Positano một phần đường lên (nhanh nhất và dễ nhất), hoặc đi bộ toàn bộ tuyến đường (chỉ thực tế với ba lô nhẹ).",
+        "Khu vực bãi biển có nhà vệ sinh (€1), một vài quán cà phê và ki-ốt bán vé nơi bạn có thể mua vé xe buýt Interno. Hầu hết các chuyến phà đến từ 09:00-19:00 trong mùa hè (tháng 4-10), với thời gian bận rộn nhất khoảng 11:00-14:00. Nếu chuyến phà của bạn chạy muộn, kiểm tra %LINK:ferrySchedules|lịch trình phà hiện tại% để biết thời gian đến cập nhật.",
+        "Dịch vụ phà đến Positano chạy từ nhiều cảng dọc Bờ biển Amalfi. Nếu bạn đến từ Salerno, Naples hoặc Sorrento, phà thường cập bến tại Positano Spiaggia từ cuối buổi sáng đến đầu buổi tối. Bến tàu phục vụ cả tàu cao tốc (aliscafi) và phà truyền thống chậm hơn (traghetti). Tàu cao tốc nhanh hơn nhưng đắt hơn, trong khi phà truyền thống cung cấp chỗ ngồi ngoài trời và tầm nhìn đẹp hơn. Cả hai đều cập bến cùng một nơi và theo quy trình xuống tàu giống nhau.",
+        "Thời tiết có thể ảnh hưởng đáng kể đến lịch trình phà. Trong những ngày biển động hoặc gió mạnh (phổ biến vào mùa thu và mùa đông), phà có thể bị trễ, chuyển hướng đến cảng thay thế hoặc hủy hoàn toàn. Nếu bạn đi du lịch trong mùa vừa (tháng 3-4 hoặc tháng 9-11), luôn có kế hoạch dự phòng. %LINK:amalfiPositanoBus|Xe buýt SITA từ Amalfi% hoặc các thị trấn ven biển khác có thể là phương án thay thế nếu chuyến phà của bạn bị hủy, mặc dù bạn sẽ đến Chiesa Nuova thay vì mức bãi biển."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-positano-spiaggia-view.jpg",
+          "alt": "Bến phà Positano và lối đi dạo bãi biển với thuyền trong vịnh.",
+          "caption": "Bến phà tại Positano Spiaggia — nhỏ gọn và dễ dàng di chuyển từ khi xuống tàu."
+        }
+      ]
+    },
+    {
+      "id": "porter-costs-timing",
+      "title": "Chi phí và thời gian khuân vác (mùa 2026)",
+      "body": [
+        "Dịch vụ khuân vác chính thức của Positano tính phí €15-€20 mỗi túi tùy vào kích thước và trọng lượng. Một ba lô hoặc vali tiêu chuẩn (đến 20kg) có giá €15, trong khi túi quá khổ hoặc nhiều món có giá €18-€20. Thanh toán chỉ bằng tiền mặt — chuẩn bị euro sẵn tại bến tàu.",
+        "Nhân viên khuân vác chất hành lý của bạn lên xe đẩy bánh xe và giao trực tiếp đến lối vào Hostel Brikette trong vòng 30-45 phút. Bạn giao hành lý, nói với họ 'Hostel Brikette' (họ biết), trả phí và giữ đồ quý giá bên mình. Nhân viên khuân vác đi tuyến đường khác sử dụng lối dịch vụ và đường tắt, vì vậy bạn sẽ không thấy túi của mình cho đến khi đến hostel — điều này bình thường.",
+        "Từ kinh nghiệm đón hàng trăm chuyến phà đến của chúng tôi: nhân viên khuân vác đáng tin cậy và hành lý luôn đến an toàn, nhưng chúng tôi khuyến nghị giữ thuốc men, đồ điện tử và giấy tờ du lịch trong ba lô ngày của bạn. Nếu bạn đi du lịch theo cặp hoặc nhóm, cân nhắc sử dụng khuân vác cho túi nặng trong khi giữ một túi nhỏ mỗi người cho hành trình. Du khách một mình với một túi thường thấy dịch vụ khuân vác đáng giá từng euro — đến nơi thư giãn thay vì mệt mỏi và kiệt sức tạo ra sự khác biệt lớn cho ấn tượng đầu tiên của bạn về Positano.",
+        "Dịch vụ khuân vác hoạt động quanh năm và đón mọi chuyến phà theo lịch. Trong những tháng hè cao điểm (tháng 7-8), nhiều đội khuân vác làm việc đồng thời để xử lý đám đông phà. Bạn không cần đặt trước — chỉ cần tiếp cận họ tại bến tàu sau khi xuống. Họ chỉ chấp nhận thanh toán bằng tiền mặt (euro), vì vậy dừng tại ATM trước khi khởi hành phà nếu cần. Để biết chi tiết đầy đủ về đặt chỗ và giá cả, xem %LINK:porterServices|hướng dẫn dịch vụ khuân vác% của chúng tôi."
+      ]
+    },
+    {
+      "id": "dock-to-mulini",
+      "title": "Từ cảng đến Piazza dei Mulini",
+      "body": [
+        "Đi bộ từ bãi biển chính lên đến Piazza dei Mulini theo lối đi dạo có biển báo — sử dụng %URL:https://www.google.com/maps/dir/Positano+Spiaggia/2+Viale+Pasitea+Positano,+Campania/@40.6289096,14.4857482,18z/data=!4m14!4m13!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!3e2|hướng dẫn này%.",
+        "Nếu bạn mang hành lý, cân nhắc thuê một trong những dịch vụ khuân vác của Positano tại bến tàu để họ vận chuyển mọi thứ lên dốc cho bạn — %LINK:porterServices|hướng dẫn dịch vụ khuân vác% của chúng tôi bao gồm giá cả và cách đặt."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-promenade-to-mulini.jpg",
+          "alt": "Lối đi dạo ven biển Positano với các cửa hàng và quán cà phê dọc bờ nước.",
+          "caption": "Lối đi dạo từ bến phà đến Piazza dei Mulini — một đoạn đi bộ ngắn lên dốc qua khu vực bãi biển."
+        }
       ]
     },
     {
       "id": "mulini-to-bus",
-      "title": "Piazza dei Mulini tới điểm đón Interno",
+      "title": "Từ Piazza dei Mulini đến trạm xe buýt Interno",
       "body": [
-        "Khi tới Piazza dei Mulini, mua vé interno tại một cửa hàng góc phố hoặc tabacchi. Sau đó đi tới điểm dừng nằm ở rìa quảng trường — ngay nơi quảng trường giao với đường chính.",
-        "Xe buýt Interno chạy khoảng mỗi 30 phút từ sáng tới nửa đêm và đi theo [lộ trình lên dốc này](https://www.google.com/maps/dir/2+Viale+Pasitea+Positano,+Campania/Viale+Pasitea,+323,+84017+Positano+SA/@40.6309188,14.4819138,16z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!1m5!1m1!1s0x133b97667312711d:0xa2b15bca59b377fa!2m2!1d14.4824389!2d40.6293416!3e0) về phía hostel."
+        "Piazza dei Mulini nằm trong khu mua sắm của Positano gần nhà thuốc — đây là điểm thấp nhất có thể tiếp cận bằng phương tiện trong thị trấn, làm cho nó trở thành trung tâm tự nhiên cho các dịch vụ xe buýt.",
+        "Khi bạn đến Piazza dei Mulini, mua vé xe buýt interno từ một trong những cửa hàng góc hoặc 'tabacchi'. Và sau đó đến trạm xe buýt ở rìa của Piazza - nơi Piazza nối với đường.",
+        "Xe buýt Interno chạy khoảng ~30 phút một lần từ sáng đến nửa đêm. %URL:https://www.google.com/maps/dir/2+Viale+Pasitea+Positano,+Campania/Viale+Pasitea,+323,+84017+Positano+SA/@40.6309188,14.4819138,16z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!1m5!1m1!1s0x133b97667312711d:0xa2b15bca59b377fa!2m2!1d14.4824389!2d40.6293416!3e0|Xem toàn bộ tuyến xe buýt trên Google Maps% để thấy chính xác nơi xe buýt đi lên dốc về phía hostel."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-piazza-mulini-bus-stop.jpg",
+          "alt": "Trạm xe buýt Piazza dei Mulini trong khu mua sắm trung tâm thị trấn Positano.",
+          "caption": "Trạm xe buýt Interno tại Piazza dei Mulini, nằm ở rìa của piazza nơi nó nối với đường chính."
+        }
       ]
     },
     {
       "id": "identify-bus",
       "title": "Nhận diện xe buýt Interno Positano",
       "body": [
-        "Xe có thể khác nhau, nhưng bảng điện tử phía trước luôn ghi \"interno positano\".",
-        "Đây là xe buýt đô thị cỡ nhỏ có chỗ đứng; lên xe từ lề đường và xác nhận hoặc đưa vé cho tài xế."
+        "Các xe trong đội khác nhau, nhưng biển báo điện tử phía trước sẽ luôn ghi 'interno positano.'",
+        "Mong đợi một xe buýt thành phố nhỏ gọn với chỗ đứng; lên xe ở lề đường và xác nhận hoặc xuất trình vé của bạn cho tài xế."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-interno-yellow.jpg",
+          "alt": "Một xe buýt Interno Positano nhỏ với 'INTERNO POSITANO' trên biển báo điện tử phía trước.",
+          "caption": "Tìm biển báo 'INTERNO POSITANO' ở phía trước."
+        },
+        {
+          "src": "/img/directions/ferry-dock-interno-red.jpg",
+          "alt": "Một xe buýt Interno Positano ở Positano với 'INTERNO POSITANO' trên biển báo điện tử phía trước.",
+          "caption": "Xe buýt khác nhau, nhưng biển báo nhất quán."
+        }
       ]
     },
     {
       "id": "bus-stop-to-hostel",
-      "title": "Từ điểm dừng tới Hostel Brikette",
+      "title": "Từ trạm địa phương đến Hostel Brikette",
       "body": [
-        "Xuống xe tại cửa hàng tabacchi ở điểm dừng ‘Chiesa Nuova’. Bước xuống, ra đường chính rồi rẽ trái vào Viale Pasitea.",
-        "Đi bộ hơn 100 mét; bạn sẽ thấy hostel bên tay phải. Tìm biển hiệu trên sân thượng tầng hai, đi tiếp qua khúc cua và leo cầu thang bên phải để tới lối vào.",
-        "Cần xem đường đi trực quan? Làm theo [chỉ dẫn cuối cùng này](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Tabacchi+Cafiero+Emanuele,+Viale+Pasitea,+325a,+84017+Positano+SA/@40.6292434,14.4813669,19z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b97660ef186c1:0xc9eb9ab54d880307!2m2!1d14.4823321!2d40.6293865!3e2)."
+        "Xuống xe tại tabacchi ở trạm 'Chiesa Nuova' (xem hình bên dưới).",
+        "Xuống xe, rẽ phải và đi bộ đến đường chính.",
+        "Rẽ trái vào Viale Pasitea và đi bộ hơn 100 mét (330 ft).",
+        "Bạn sẽ thấy hostel ở bên phải — tìm biển hiệu của chúng tôi trên sân thượng tầng hai.",
+        "Đi qua biển hiệu, uốn cong quanh khúc cua và đi lên cầu thang ở bên phải để đến lối vào hostel.",
+        "Cần tuyến đường trực quan? Làm theo %URL:https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Tabacchi+Cafiero+Emanuele,+Viale+Pasitea,+325a,+84017+Positano+SA/@40.6292434,14.4813669,19z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b97660ef186c1:0xc9eb9ab54d880307!2m2!1d14.4823321!2d40.6293865!3e2|hướng dẫn cuối cùng này%."
+      ],
+      "images": [
+        {
+          "src": "/img/tabacchi.webp",
+          "alt": "Cửa hàng tabacchi bên trạm xe buýt Chiesa Nuova với mái hiên ghi 'TABACCHI' và 'ARTICOLI DA REGALO'.",
+          "caption": "Trạm xe buýt ngay bên ngoài tabacchi này."
+        },
+        {
+          "src": "/img/directions/hostel-brikette-entrance-steps.png",
+          "alt": "Con đường gần Hostel Brikette với biển hiệu hostel có thể nhìn thấy và cầu thang đến lối vào quanh khúc cua bên phải.",
+          "caption": "Tìm biển hiệu của chúng tôi, sau đó đi lên cầu thang ở bên phải."
+        }
+      ]
+    },
+    {
+      "id": "total-journey-timing",
+      "title": "Tổng thời gian hành trình và phân tích chi phí",
+      "body": [
+        "**Với khuân vác + xe buýt Interno (khuyến nghị):** 20-30 phút di chuyển rảnh tay, €2-€6 mỗi người cho vé xe buýt, cộng €15-€20 mỗi túi cho khuân vác. Tổng chi phí cho một người với một túi: khoảng €17-€26. Nhóm 2-3 người có thể chia chi phí khuân vác nếu dùng chung xe đẩy hành lý.",
+        "**Chỉ xe buýt (không khuân vác):** 25-35 phút mang hành lý của riêng bạn, €2-€6 mỗi người. Bạn sẽ xử lý cầu thang tại cảng (chuyến bay ngắn), đi bộ với hành lý đến Piazza dei Mulini (5 phút lên dốc) và mang túi lên/xuống xe buýt. Phù hợp cho du khách với một ba lô nhỏ hoặc hành lý nhẹ.",
+        "**Đi bộ toàn bộ tuyến đường:** Không khuyến nghị với hành lý. Tuyến đường bao gồm 300+ bậc thang, độ dốc lớn và mất 45-60 phút. Chỉ cân nhắc điều này nếu bạn đến không có túi hoặc với ba lô ngày rất nhẹ. Hầu hết khách của chúng tôi thử với hành lý cuối cùng kiệt sức hoặc cần dừng nhiều lần.",
+        "Nếu bạn đến từ %LINK:chiesaNuovaArrivals|trạm xe buýt Chiesa Nuova% thay vì bến phà, phần đi bộ cuối cùng (100m + cầu thang) giống hệt với những gì được mô tả trong phần cuối ở trên."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-capri-ferry-img05.jpg",
+          "alt": "Phà đến Positano với thị trấn đồi đầy màu sắc ở phía sau.",
+          "caption": "Đến bằng phà — hành trình của bạn đến Hostel Brikette bắt đầu tại bến tàu mức bãi biển."
+        }
+      ]
+    },
+    {
+      "id": "alternative-options",
+      "title": "Các lựa chọn thay thế và khi nào sử dụng chúng",
+      "body": [
+        "**Taxi từ bến tàu:** Chi phí €25-€35 cho đến 4 người với hành lý. Đáng cân nhắc nếu bạn là nhóm 3-4 người chia giá, đến rất muộn (sau nửa đêm khi xe buýt ngừng), hoặc trong thời gian hủy phà khi dịch vụ khuân vác quá tải. Gọi hoặc WhatsApp +39 379 125 6222 để đặt — nói 'Hostel Brikette' và họ biết địa điểm. Taxi không thể lái hết đường đến lối vào hostel (không có lối xe), nhưng họ sẽ thả bạn ở điểm đường gần nhất, khoảng 50 mét từ cầu thang của chúng tôi. Nếu bạn có vấn đề về di chuyển, thảo luận điều này với tài xế taxi trước.",
+        "**Đến muộn (sau 23:00):** Xe buýt Interno chạy đến khoảng nửa đêm, nhưng kiểm tra lịch trình chính xác cho ngày đến của bạn. Nếu chuyến phà của bạn đến sau chuyến xe buýt cuối cùng, các lựa chọn của bạn là taxi (€25-€35) hoặc đi bộ không có hành lý nếu bạn đã gửi túi trước. Đừng thử đi bộ toàn bộ với túi nặng trong bóng tối — tuyến đường có cầu thang không bằng phẳng và ánh sáng kém ở các phần. Đội tiếp tân của chúng tôi có thể ở lại muộn để gặp bạn nếu bạn nhắn tin trước với thời gian đến của bạn.",
+        "**Nếu xe buýt Interno đầy hoặc trễ:** Trong mùa cao điểm (tháng 7-8), xe buýt Interno có thể đầy nhanh chóng, đặc biệt là vào thời gian phà đến. Nếu bạn lỡ một chuyến xe buýt, chuyến khác đến trong vòng 30 phút. Hoặc, đi bộ đến Piazza dei Mulini và bắt xe buýt ở đó (thường ít đông hơn ở trạm đó), hoặc sử dụng taxi để dự phòng. Một số khách thích chờ chuyến xe buýt thứ hai hoặc thứ ba thay vì chen chúc vào xe đầy hành lý — điều này hoàn toàn ổn và thêm 30 phút sẽ không ảnh hưởng đáng kể đến thời gian đến của bạn."
+      ]
+    },
+    {
+      "id": "staff-tips",
+      "title": "Mẹo từ đội tiếp tân của chúng tôi",
+      "body": [
+        "**Chiến lược đến tốt nhất theo nhân viên chúng tôi:** Giao hành lý chính cho nhân viên khuân vác tại bến tàu (hầu hết khách sử dụng điều này — đáng giá €15-20 mỗi túi), giữ một ba lô ngày nhỏ với đồ cần thiết, mua vé xe buýt Interno trong khi đi bộ đến Piazza dei Mulini và đi xe buýt đến Chiesa Nuova. Theo cách này bạn đến thư giãn, không có túi và sẵn sàng tận hưởng Positano.",
+        "**Khi khuân vác tiết kiệm nhiều công sức nhất:** Nếu bạn có túi trên 15kg, nhiều vali hoặc đi du lịch trong nắng nóng mùa hè, khuân vác là thiết yếu. Chúng tôi đã thấy quá nhiều khách đến kiệt sức vì mang túi lên dốc — chi phí €15-20 là nhỏ so với việc bắt đầu kỳ nghỉ Positano của bạn căng thẳng và đầm mồ hôi.",
+        "**Phối hợp thời gian giao khuân vác:** Nếu bạn đến trước khi phòng sẵn sàng, nói với nhân viên khuân vác khi bạn dự kiến đến hostel để họ có thể điều chỉnh thời gian giao hàng. Túi thường đến 30–45 phút sau khi bạn giao chúng, điều này cho bạn thời gian đi xe buýt và đến lối vào hostel. Nếu bạn đến sớm, bạn thường có thể yêu cầu lưu trữ hành lý và khám phá thị trấn trong khi chờ đợi.",
+        "**Du khách lần đầu đến Positano:** Đừng bị đe dọa bởi cầu thang và đồi — kết hợp khuân vác với xe buýt Interno giảm đáng kể thách thức về thể chất. Hầu hết khách của chúng tôi nói với chúng tôi tuyến đường đến này dễ dàng hơn nhiều so với họ mong đợi, đặc biệt là so với những câu chuyện kinh dị họ đã nghe về cầu thang của Positano.",
+        "**Chuẩn bị tiền lẻ xe buýt:** Vé xe buýt Interno có giá €2-€6 tùy vào mùa và tuyến đường chính xác. Người bán vé tại tabacchi chỉ chấp nhận tiền mặt (ưu tiên hóa đơn nhỏ — đừng mong họ phá tờ €50). Chuẩn bị sẵn một vài tờ €5 hoặc €10 tại bến tàu."
       ]
     }
   ],
   "stepsList": [
-    "Giao hành lý cho đội khuân vác tại bến và mua vé xe buýt Interno Positano ở tabacchi.",
-    "Đi bộ từ bãi biển chính tới Piazza dei Mulini, sau đó tới điểm dừng Interno bên cạnh tabacchi trên Viale Pasitea.",
-    "Lên xe buýt Interno Positano (tìm bảng \"interno positano\") và đi lên dốc về phía Viale Pasitea 325.",
-    "Xuống xe trước cửa hàng tabacchi, rẽ trái đi dọc Viale Pasitea hơn 100 m rồi leo cầu thang bên phải để tới Hostel Brikette."
+    "Giao hành lý cho nhân viên khuân vác bến tàu và mua vé xe buýt Interno Positano tại tabacchi.",
+    "Đi bộ từ bãi biển chính đến Piazza dei Mulini, sau đó tiếp tục đến trạm xe buýt Interno bên cạnh tabacchi trên Viale Pasitea.",
+    "Lên xe buýt Interno Positano (tìm biển báo 'interno positano') và đi lên dốc về phía Viale Pasitea 325.",
+    "Xuống xe bên ngoài tabacchi, rẽ trái dọc Viale Pasitea hơn 100 m và leo cầu thang bên phải để đến Hostel Brikette."
   ],
   "kneesList": [
-    "Đi xe buýt Interno Positano giúp bạn tránh hàng trăm bậc thang dốc.",
-    "Để đội khuân vác mang hành lý nặng riêng, bạn có thể rảnh tay trên xe và đoạn đường đi bộ ngắn."
+    "Đi xe buýt Interno Positano cắt giảm hàng trăm bậc thang dốc từ hành trình.",
+    "Để nhân viên khuân vác di chuyển túi nặng riêng để bạn có thể rảnh tay trong chuyến đi và đi bộ ngắn."
   ],
-  "kneesPorterPrefix": "Cần thêm thông tin về giá khuân vác và cách đặt? Hãy đọc",
-  "kneesPorterLinkLabel": "hướng dẫn dịch vụ khuân vác",
+  "kneesPorterPrefix": "Cần chi tiết hơn về giá khuân vác và cách đặt? Đọc",
+  "kneesPorterLinkLabel": "hướng dẫn dịch vụ khuân vác của chúng tôi",
   "faqs": [
     {
       "q": "Tôi mua vé xe buýt Interno Positano ở đâu?",
       "a": [
-        "Mua vé tại bất kỳ tabacchi/quầy báo nào trong thị trấn, bao gồm ki-ốt ngay cạnh điểm dừng. Tài xế không bán vé trên xe."
+        "Mua vé tại bất kỳ tabacchi/ki-ốt bán báo nào trong thị trấn, bao gồm ki-ốt bên cạnh trạm xe buýt. Tài xế không bán vé trên xe."
       ]
     },
     {
-      "q": "Xe buýt Interno Positano chạy bao lâu một chuyến?",
+      "q": "Xe buýt Interno Positano chạy thường xuyên như thế nào?",
       "a": [
-        "Tuyến hoạt động khoảng mỗi 30 phút từ 08:00 tới nửa đêm, và có thêm chuyến vào cao điểm — luôn kiểm tra lịch trước khi lên phà."
+        "Dịch vụ được lên lịch khoảng mỗi 30 phút từ khoảng 08:00 đến nửa đêm, với các chuyến đi thêm trong mùa cao điểm — luôn xác nhận lịch trình trước khi đi."
       ]
     },
     {
-      "q": "Dịch vụ khuân vác ở bến hoạt động ra sao?",
+      "q": "Nhân viên khuân vác bến tàu hoạt động như thế nào?",
       "a": [
-        "Đội khuân vác chờ sẵn mỗi chuyến phà, bốc hành lý và đưa lên dốc. Hãy nói rằng bạn ở Hostel Brikette, thanh toán mức giá đã báo và giữ vật dụng quý giá hoặc thuốc men bên mình."
+        "Nhân viên khuân vác đón mỗi chuyến phà, chất hành lý của bạn và giao chúng lên dốc. Nói với họ bạn ở tại Hostel Brikette, trả phí được báo giá và giữ đồ quý giá hoặc thuốc men bên mình."
+      ]
+    },
+    {
+      "q": "Nhân viên khuân vác từ bến phà có giá bao nhiêu?",
+      "a": [
+        "Giá khuân vác chính thức cho mùa 2026 là €15 mỗi túi tiêu chuẩn (đến 20kg) và €18-€20 cho các món quá khổ hoặc nặng. Thanh toán chỉ bằng tiền mặt tại bến tàu. Cho hai người với hai túi, dự kiến trả €30-40 tổng cộng cho dịch vụ khuân vác."
+      ]
+    },
+    {
+      "q": "Nếu tôi đến sau nửa đêm khi xe buýt không chạy thì sao?",
+      "a": [
+        "Xe buýt Interno chạy đến khoảng nửa đêm. Cho những lần đến muộn, đặt taxi trước (€25-€35 đến hostel, WhatsApp +39 379 125 6222) hoặc nhắn tin cho đội tiếp tân của chúng tôi để chúng tôi có thể giúp sắp xếp vận chuyển. Đừng thử đi bộ với hành lý trong bóng tối."
+      ]
+    },
+    {
+      "q": "Thời gian check-in là gì và tôi có thể lưu trữ hành lý nếu đến sớm không?",
+      "a": [
+        "Check-in thường xuyên từ 15:00 đến 22:30. Lưu trữ hành lý có sẵn từ 10:30 cho khách check-in (tùy thuộc vào không gian). Để biết chi tiết đầy đủ (yêu cầu ID, tiền đặt cọc và các lựa chọn đến muộn), xem hướng dẫn check-in & checkout của chúng tôi: %LINK:checkinCheckout|check-in & checkout%."
+      ]
+    },
+    {
+      "q": "Tôi có thể đi bộ từ bến phà đến hostel với hành lý không?",
+      "a": [
+        "Không khuyến nghị. Tuyến đường bao gồm 300+ bậc thang, các phần lên dốc và mất 45-60 phút với túi. Gần như tất cả khách của chúng tôi sử dụng khuân vác + xe buýt Interno (khuyến nghị) hoặc taxi. Đi bộ chỉ thực tế với ba lô ngày nhẹ."
+      ]
+    },
+    {
+      "q": "Tuyến đường này có thể tiếp cận cho xe lăn hoặc xe đẩy em bé không?",
+      "a": [
+        "Không, tuyến đường này bao gồm cầu thang và lối dốc không phù hợp cho xe lăn hoặc xe đẩy em bé. Liên hệ đội tiếp tân của chúng tôi trước khi đến — chúng tôi có thể sắp xếp vận chuyển taxi có thể tiếp cận trực tiếp từ bến phà đến lối vào hostel (€25-€35)."
+      ]
+    },
+    {
+      "q": "Nếu chuyến phà của tôi bị trễ hoặc hủy thì sao?",
+      "a": [
+        "Kiểm tra trạng thái phà hiện tại trên trang web công ty phà hoặc tại bến tàu. Nếu trễ hơn 30+ phút, lịch trình xe buýt Interno có thể thay đổi — hỏi tại tabacchi để biết thời gian cập nhật. Nếu chuyến phà của bạn bị hủy, các lựa chọn thay thế bao gồm đi phà đến cảng khác (Amalfi, Sorrento) và sử dụng xe buýt SITA, hoặc đặt lại cho chuyến đi có sẵn tiếp theo."
       ]
     }
   ],
   "howtoSteps": [
-    "Mua vé Interno và giao hành lý cho đội khuân vác tại bến",
-    "Đi bộ từ bãi biển tới Piazza dei Mulini và điểm dừng Interno",
-    "Đi xe buýt Interno Positano lên dốc (tìm bảng \"interno positano\")",
-    "Xuống tại tabacchi, đi bộ 100 m và leo cầu thang vào Hostel Brikette"
+    "Mua vé xe buýt Interno và giao hành lý cho nhân viên khuân vác bến tàu",
+    "Đi bộ từ bãi biển đến Piazza dei Mulini và trạm xe buýt Interno",
+    "Đi xe buýt Interno Positano lên dốc (tìm biển báo 'interno positano')",
+    "Xuống xe bên tabacchi, đi bộ 100 m và leo cầu thang đến Hostel Brikette"
   ]
 }

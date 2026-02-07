@@ -10,7 +10,7 @@
   "sections": [
     {
       "id": "why",
-      "title": "Why arrive via Salerno",
+      "title": "Hvorfor ankomme via Salerno",
       "body": [
         "Høyhastighetstog fra Roma eller Milano avslutter her, slik at du kan gå av Frecciarossa og inn på fergekaien i løpet av minutter.",
         "Overnatting og servering er billigere enn Positano, noe som gjør det ideelt for første eller siste netter."
@@ -18,7 +18,7 @@
     },
     {
       "id": "connections",
-      "title": "Connections onward",
+      "title": "Videre forbindelser",
       "body": [
         "Sesongbaserte ferger kommer til Positano på omtrent 70 minutter. Busser klatrer kysten året rundt; kjøp UnicoCampania-billetter før ombordstigning.",
         "Flybussen går til Napoli Capodichino på 60 minutter hvis du flyr ut etter oppholdet."
@@ -26,7 +26,7 @@
     },
     {
       "id": "staying",
-      "title": "Staying in Salerno",
+      "title": "Overnatting i Salerno",
       "body": [
         "Utforsk lungomare-promenaden, middelaldersenteret og Arechi-slottet for utsikt over solnedgangen.",
         "Bestill trattoriaer rundt Via Roma for utmerket sjømat uten Positano-prislapper."
@@ -39,13 +39,13 @@
   ],
   "faqs": [
     {
-      "q": "Are ferries reliable from Salerno?",
+      "q": "Er fergene pålitelige fra Salerno?",
       "a": [
         "Ja om sommeren. Skuldersesongene ser sporadiske værkanselleringer, så behold bussen som backup."
       ]
     },
     {
-      "q": "How early should I arrive for a train?",
+      "q": "Hvor tidlig bør jeg møte opp til tog?",
       "a": [
         "Ankom 15 minutter før avgang for å finne din plattform og validere regionale billetter om nødvendig."
       ]

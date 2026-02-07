@@ -1,33 +1,33 @@
 {
   "seo": {
-    "title": "Resa som par på hostel",
-    "description": "Hur par kan trivas på hostel: rumstyper, förväntningar och rutiner som minskar friktion."
+    "title": "Att resa som par på vandrarhem",
+    "description": "Tips för sovrum eller privata rum, hitta lugn och sätta förväntningar."
   },
-  "linkLabel": "Resa som par på hostel",
+  "linkLabel": "Att resa som par på vandrarhem",
   "intro": [
-    "Hostel funkar för par när ni väljer rätt rumstyp, packar lätt och sätter förväntningarna tillsammans."
+    "Vandrarhem fungerar för par när du väljer rätt rumstyp, packar lätt och sätter förväntningar tillsammans."
   ],
   "sections": [
     {
       "id": "room-types",
       "title": "Rumstyper",
       "body": [
-        "Boka privatrum om ni vill ha avskildhet; om budgeten är tight, dela kojer i samma sovsal och håll packningen lätt för trapporna."
+        "Boka ett privat rum för avskildhet; om du sträcker på budgeten, dela våningssängar i samma sovrum och håll bagaget lätt för trapporna."
       ]
     },
     {
       "id": "quiet",
-      "title": "Hitta lugnet",
+      "title": "Att hitta lugn",
       "body": [
-        "Ha öronproppar och sovmask redo, välj rum bort från bar eller gemensamma utrymmen och använd tidiga morgnar för lugnare sightseeing."
+        "Ta med öronproppar och en ögonmask, välj rum borta från baren eller gemensamma utrymmen, och använd tidiga morgnar för lugnare sightseeing."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "Kan vi dela privatrum ibland?",
+      "q": "Är ett vandrarhem lämpligt för par?",
       "a": [
-        "Ja, många par byter mellan privatrum och sovsal beroende på pris. Boka privatnätter i förväg under högsäsong."
+        "Ja — du får social energi och bra värde; privata rum balanserar komfort och kostnad."
       ]
     }
   ]

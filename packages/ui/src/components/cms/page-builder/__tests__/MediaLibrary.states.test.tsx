@@ -1,5 +1,6 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent,render, screen } from "@testing-library/react";
+
 import MediaLibrary from "../MediaLibrary";
 // Mock shadcn primitives to avoid Radix Select validation
 jest.mock("../../../atoms/shadcn", () => {

@@ -1,10 +1,24 @@
 import { z } from "zod";
+
 import { localeSchema } from "./Product";
+import { shopSeoFieldsSchema } from "./shop-seo";
 import { subscriptionPlanSchema } from "./SubscriptionPlan";
 
-export { shopSeoFieldsSchema, type ShopSeoFields } from "./shop-seo";
-export { shopLocaleSchema, type ShopLocale } from "./shop-locale";
-export { shopThemeSchema, type ShopTheme } from "./shop-theme";
+export { type ShopLocale,shopLocaleSchema } from "./shop-locale";
+export { shopSeoFieldsSchema as seoConfigSchema,type ShopSeoFields,shopSeoFieldsSchema } from "./shop-seo";
+export { type ShopTheme,shopThemeSchema } from "./shop-theme";
+
+// Required pages for Basic tier launches (LAUNCH-23)
+export const REQUIRED_PAGES_BASIC = [
+  "home",
+  "shop", // category/PLP
+  "about",
+  "contact",
+  "faq", // FAQ/size guide
+  "shipping-returns",
+] as const;
+
+export type RequiredPageSlug = (typeof REQUIRED_PAGES_BASIC)[number];
 
 export const sanityBlogConfigSchema = z
   .object({
@@ -50,6 +64,14 @@ export const shopSchema = z
     themeOverrides: z.record(z.string()).default({}),
     /** Mapping of design tokens to theme values (defaults merged with overrides) */
     themeTokens: z.record(z.string()).default({}),
+    /** Favicon URL for the shop (LAUNCH-23) */
+    favicon: z.string().url().optional(),
+    /** SEO configuration for the shop (LAUNCH-23) */
+    seo: shopSeoFieldsSchema.optional(),
+    /** Required pages mapping for Basic tier (LAUNCH-23) */
+    requiredPages: z
+      .record(z.enum(REQUIRED_PAGES_BASIC), z.string())
+      .optional(),
     /** Mapping of logical filter keys to catalog attributes */
     filterMappings: z.record(z.string()),
     /** Optional price overrides per locale (minor units) */
@@ -137,6 +159,12 @@ export const shopSchema = z
      * Used to determine which runtime app should be built/deployed.
      */
     runtimeAppId: z.string().optional(),
+    /**
+     * Shop tier level (LAUNCH-29).
+     * Determines feature access, limits, and support level.
+     * Defaults to "basic" for new shops.
+     */
+    tier: z.enum(["basic", "standard", "enterprise"]).default("basic"),
   })
   .strict();
 

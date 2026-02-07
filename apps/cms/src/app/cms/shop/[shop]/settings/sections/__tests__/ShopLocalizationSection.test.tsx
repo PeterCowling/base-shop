@@ -1,4 +1,5 @@
 import "@testing-library/jest-dom";
+
 import { fireEvent, render, screen } from "@testing-library/react";
 
 import type { MappingRowsController } from "../../useShopEditorSubmit";
@@ -14,7 +15,7 @@ jest.mock(
 );
 
 jest.mock(
-  "@ui/components/atoms",
+  "@acme/design-system/atoms",
   () => {
     const React = require("react");
     const SelectContent = Object.assign(
@@ -82,7 +83,7 @@ jest.mock(
 );
 
 jest.mock(
-  "@ui/components/molecules",
+  "@acme/design-system/molecules",
   () => ({
     FormField: ({ children, label, htmlFor, error }: any) => (
       <div>
@@ -126,7 +127,7 @@ describe("ShopLocalizationSection", () => {
     fireEvent.change(localeSelect, { target: { value: "en" } });
 
     expect(update).toHaveBeenCalledTimes(2);
-    expect(update.mock.calls.map(([, field, value]) => [field, value])).toEqual([
+    expect((update as jest.Mock).mock.calls.map(([, field, value]: [unknown, string, string]) => [field, value])).toEqual([
       ["key", "/collections/sale"],
       ["value", "en"],
     ]);

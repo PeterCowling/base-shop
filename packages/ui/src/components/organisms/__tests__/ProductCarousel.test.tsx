@@ -1,17 +1,20 @@
 /* i18n-exempt file -- tests use literal titles and UI labels */
+import "../../../../../../test/resetNextMocks";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { ProductCarousel, type Product } from "../ProductCarousel";
+
 import { CurrencyProvider } from "@acme/platform-core/contexts/CurrencyContext";
-import "../../../../../../test/resetNextMocks";
+
+import { type Product,ProductCarousel } from "../ProductCarousel";
 
 // Avoid TDZ issues with jest.mock hoisting by requiring inside the factory
 jest.mock(
-  "@platform-core/contexts/CurrencyContext",
+  "@acme/platform-core/contexts/CurrencyContext",
   () => require("~test/__mocks__/currencyContextMock.tsx")
 );
 
-jest.mock("@platform-core/contexts/CartContext", () => ({
+jest.mock("@acme/platform-core/contexts/CartContext", () => ({
   useCart: () => [{}, jest.fn()],
 }));
 

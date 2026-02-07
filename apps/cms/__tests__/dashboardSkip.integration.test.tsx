@@ -3,6 +3,10 @@
 
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
+import ConfiguratorDashboard from "../src/app/cms/configurator/Dashboard";
+import { STORAGE_KEY } from "../src/app/cms/configurator/hooks/useConfiguratorPersistence";
+import { getRequiredSteps, getSteps } from "../src/app/cms/configurator/steps";
+
 jest.mock(
   "@/components/atoms",
   () => {
@@ -36,7 +40,7 @@ jest.mock(
   { virtual: true }
 );
 
-jest.mock("@platform-core/contexts/LayoutContext", () => ({
+jest.mock("@acme/platform-core/contexts/LayoutContext", () => ({
   __esModule: true,
   useLayout: () => ({
     isMobileNavOpen: false,
@@ -44,6 +48,39 @@ jest.mock("@platform-core/contexts/LayoutContext", () => ({
     toggleNav: jest.fn(),
     setConfiguratorProgress: jest.fn(),
   }),
+}));
+
+jest.mock("@acme/platform-core/configurator-steps", () => ({
+  __esModule: true,
+  REQUIRED_CONFIG_CHECK_STEPS: [],
+  OPTIONAL_CONFIG_CHECK_STEPS: [],
+}));
+
+jest.mock("@acme/i18n", () => ({
+  __esModule: true,
+  useTranslations: () => (key: string) => {
+    const translations: Record<string, string> = {
+      "cms.configurator.launch": "Launch Shop",
+      "cms.configurator.launchPanel.launchButton": "Launch Shop",
+      "cms.configurator.launchPanel.title": "Launch",
+      "cms.configurator.launchPanel.body": "Ready to launch",
+      "cms.configurator.step.skipForNow": "Skip",
+      "actions.reset": "Reset Step",
+    };
+    return translations[key] ?? key;
+  },
+  LOCALES: ["en"],
+}));
+
+jest.mock("@acme/i18n/locales", () => ({
+  __esModule: true,
+  LOCALES: ["en"],
+  locales: ["en"],
+}));
+
+jest.mock("@acme/i18n/fillLocales", () => ({
+  __esModule: true,
+  fillLocales: (_val: unknown, def: string) => ({ en: def }),
 }));
 
 jest.mock("../src/app/cms/configurator/steps", () => {
@@ -77,14 +114,6 @@ jest.mock("../src/app/cms/configurator/steps", () => {
   };
 });
 
-import ConfiguratorDashboard from "../src/app/cms/configurator/Dashboard";
-import { getRequiredSteps, getSteps } from "../src/app/cms/configurator/steps";
-import { STORAGE_KEY } from "../src/app/cms/configurator/hooks/useConfiguratorPersistence";
-
-declare global {
-  var fetch: jest.Mock;
-}
-
 let serverState: { state: any; completed: Record<string, string> };
 let originalAddEventListener: any;
 
@@ -97,7 +126,7 @@ beforeEach(() => {
     completed: Object.fromEntries(required.map((s) => [s.id, "complete"])),
   };
   global.fetch = jest.fn((url: string, init?: RequestInit) => {
-    if (url === "/cms/api/configurator-progress") {
+    if (url === "/api/configurator-progress" || url.startsWith("/api/configurator-progress?")) {
       if (init?.method === "PUT") {
         const body = JSON.parse(init.body as string);
         serverState.state = { ...serverState.state, ...(body.data ?? {}) };
@@ -117,14 +146,17 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  global.fetch.mockRestore();
+  (global.fetch as jest.Mock).mockRestore?.();
   localStorage.clear();
   window.addEventListener = originalAddEventListener;
 });
 
 test("skipped optional steps do not block Launch Shop", async () => {
   render(<ConfiguratorDashboard />);
-  const launchBtn = await screen.findByRole("button", { name: /launch shop/i });
+  // There are two "Launch Shop" buttons - one in LaunchPanel (smaller) and one in Dashboard (larger hero button)
+  // The hero button should be enabled when all required steps are complete
+  const launchBtns = await screen.findAllByRole("button", { name: /launch shop/i });
+  const launchBtn = launchBtns.find((btn) => btn.classList.contains("rounded-full"))!;
   expect(launchBtn).toBeEnabled();
 
   const optional = getSteps().find((s) => s.optional)!;
@@ -133,7 +165,7 @@ test("skipped optional steps do not block Launch Shop", async () => {
   fireEvent.click(skipBtn);
 
   await screen.findByText(optional.label);
-  const resetBtn = await screen.findByRole("button", { name: /reset/i });
+  const resetBtn = await screen.findByRole("button", { name: /reset step/i });
   await waitFor(() => {
     const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
     expect(stored.completed?.[optional.id]).toBe("skipped");

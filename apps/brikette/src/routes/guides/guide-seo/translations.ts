@@ -1,16 +1,18 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import appI18n from "@/i18n";
-import getGuideResource from "@/routes/guides/utils/getGuideResource";
 
-import type { AppLanguage } from "@/i18n.config";
 // i18nFallback not required here; remove unused import
-
 import type { GenericContentTranslator } from "@/components/guides/GenericContent";
+import { IS_DEV } from "@/config/env";
+import appI18n from "@/i18n";
+import type { AppLanguage } from "@/i18n.config";
+import getGuideResource from "@/routes/guides/utils/getGuideResource";
+import { debugGuide } from "@/utils/debug";
+import { asFallbackCarrier, asGenericContentTranslator, asTranslator, tagTranslator } from "@/utils/i18n-types";
+
+import { getGuidesBundle, type GuidesNamespace } from "../../../locales/guides";
 
 import type { Translator } from "./types";
-import { getGuidesBundle, type GuidesNamespace } from "../../../locales/guides";
-import { debugGuide } from "@/utils/debug";
 
 export interface GuideTranslationSuite {
   tGuides: Translator;
@@ -85,7 +87,7 @@ export function useGuideTranslations(lang: AppLanguage): GuideTranslationSuite {
   // Be resilient by falling back to identity translators when a namespace is
   // not provided by the test stub.
   const useSafeTranslation = (ns: string): { t: Translator; i18n: I18nLike } => {
-    const identity: Translator = ((key: string) => key) as unknown as Translator;
+    const identity: Translator = asTranslator((key) => key);
     const out = useTranslation(ns, { lng: lang, useSuspense: false }) as unknown as {
       t?: unknown;
       i18n?: I18nLike;
@@ -105,13 +107,7 @@ export function useGuideTranslations(lang: AppLanguage): GuideTranslationSuite {
 
   const { t: tGuides, i18n } = useSafeTranslation("guides");
   // Ensure translator functions expose language/namespace markers for tests
-  try {
-    const fn = tGuides as unknown as { __lang?: string; __namespace?: string };
-    if (!fn.__lang) fn.__lang = lang;
-    if (!fn.__namespace) fn.__namespace = "guides";
-  } catch {
-    /* noop: metadata is only used by tests */
-  }
+  tagTranslator(tGuides, lang, "guides");
   // Also expose the guidesFallback translator so downstream code can use it
   // even when getFixedT is not available in unit tests.
   const { t: tGuidesFallback } = useSafeTranslation("guidesFallback");
@@ -120,8 +116,8 @@ export function useGuideTranslations(lang: AppLanguage): GuideTranslationSuite {
   // available/mocked) can still access curated fallback copy in tests.
   try {
     (i18n as I18nLike).__tGuidesFallback = tGuidesFallback as Translator;
-  } catch {
-    // If the i18n stub is immutable, continue without attaching.
+  } catch (err) {
+    if (IS_DEV) console.debug("[translations] attach fallback", err);
   }
   // Prefer hook-provided translators to avoid calling getFixedT in tests
   const { t: tHeader } = useSafeTranslation("header");
@@ -148,15 +144,15 @@ export function useGuideTranslations(lang: AppLanguage): GuideTranslationSuite {
         }
         // No hook translator available; return the key unchanged to avoid
         // triggering global getFixedT calls in tests.
-        return key as unknown as string;
+        return key;
       };
-      return apply as unknown as Translator;
+      return asTranslator(apply);
     };
   }, [i18n]);
 
   const guidesEn = useMemo<Translator>(() => {
     // Lazily resolve EN translator only when used to avoid getFixedT calls
-    const lazy: Translator = ((key: string, opts?: Record<string, unknown>) => {
+    const lazy = asTranslator((key, opts) => {
       try {
         debugGuide('guidesEn called', { key }); // i18n-exempt -- ABC-123 [ttl=2026-12-31]
       } catch (err) {
@@ -164,46 +160,39 @@ export function useGuideTranslations(lang: AppLanguage): GuideTranslationSuite {
       }
       const fixed = resolveFixedT("en", "guides");
       if (typeof fixed === "function") {
-        return fixed(key, opts) as unknown as string;
+        return fixed(key, opts);
       }
-      return key as unknown as string;
-    }) as unknown as Translator;
+      return key;
+    });
     // Tag EN helper so tests can assert translator identity
-    try {
-      (lazy as unknown as { __lang?: string; __namespace?: string }).__lang = "en";
-      (lazy as unknown as { __lang?: string; __namespace?: string }).__namespace = "guides";
-    } catch {
-      /* noop */
-    }
+    tagTranslator(lazy, "en", "guides");
     return lazy;
   }, [resolveFixedT]);
   const headerEn = useMemo<Translator>(() => {
-    const lazy: Translator = ((key: string, opts?: Record<string, unknown>) => {
+    return asTranslator((key, opts) => {
       const fixed = resolveFixedT("en", "header");
       if (typeof fixed === "function") {
-        return fixed(key, opts) as unknown as string;
+        return fixed(key, opts);
       }
-      return key as unknown as string;
-    }) as unknown as Translator;
-    return lazy;
+      return key;
+    });
   }, [resolveFixedT]);
   const commonEn = useMemo<Translator>(() => {
-    const lazy: Translator = ((key: string, opts?: Record<string, unknown>) => {
+    return asTranslator((key, opts) => {
       const fixed = resolveFixedT("en", "translation");
       if (typeof fixed === "function") {
-        return fixed(key, opts) as unknown as string;
+        return fixed(key, opts);
       }
-      return key as unknown as string;
-    }) as unknown as Translator;
-    return lazy;
+      return key;
+    });
   }, [resolveFixedT]);
 
   // Generic translators that accept ns:key (e.g., "header:home"). For EN, map
   // through getFixedT using the ns prefix when possible.
-  const tAny = useMemo<Translator>(() => ((k: string) => k) as unknown as Translator, []);
+  const tAny = useMemo<Translator>(() => asTranslator((k) => k), []);
   const anyEn = useMemo<Translator>(() => {
-    return ((key: string, opts?: Record<string, unknown>) => {
-      if (typeof key !== "string") return key as unknown as string;
+    return asTranslator((key, opts) => {
+      if (typeof key !== "string") return key;
       const parts = key.split(":");
       if (parts.length === 2) {
         const [ns, k] = parts as [string, string];
@@ -217,7 +206,7 @@ export function useGuideTranslations(lang: AppLanguage): GuideTranslationSuite {
         }
       }
       return key;
-    }) as unknown as Translator;
+    });
   }, [resolveFixedT]);
 
   const translateGuides = useMemo<GenericContentTranslator>(() => {
@@ -241,7 +230,7 @@ export function useGuideTranslations(lang: AppLanguage): GuideTranslationSuite {
       return typeof cursor === "string" ? cursor : undefined;
     };
 
-    const translator = ((...args: Parameters<GenericContentTranslator>) => {
+    const translator = asGenericContentTranslator((...args) => {
       const [rawKey, options] = args;
       const keyAsString = typeof rawKey === "string" ? rawKey : undefined;
       const primary: unknown = tGuides(...args);
@@ -343,8 +332,8 @@ export function useGuideTranslations(lang: AppLanguage): GuideTranslationSuite {
           const pickedLocal = pickLocal(localFbPrimary) ?? pickLocal(localFbAlt);
           if (pickedLocal !== undefined) return pickedLocal;
         }
-      } catch {
-        // ignore
+      } catch (err) {
+        if (IS_DEV) console.debug("[translations] local fallback", err);
       }
       if (explicitEmptyLocalizedFallback) return [];
 
@@ -387,8 +376,8 @@ export function useGuideTranslations(lang: AppLanguage): GuideTranslationSuite {
           const pickedEn = pickEn(enFbPrimary) ?? pickEn(enFbAlt);
           if (pickedEn !== undefined) return pickedEn;
         }
-      } catch {
-        // ignore
+      } catch (err) {
+        if (IS_DEV) console.debug("[translations] EN fallback", err);
       }
 
       // 5) Try i18n store resources via getGuideResource (locale → EN)
@@ -446,18 +435,10 @@ export function useGuideTranslations(lang: AppLanguage): GuideTranslationSuite {
 
       // Give up: return original primary (usually the key) to aid debugging
       return primary;
-    }) as unknown as GenericContentTranslator;
+    });
 
     // Expose language/namespace for tests that introspect translator identity
-    try {
-      const fn = translator as unknown as { __lang?: string; __namespace?: string };
-      // Prefer active lang; when tests drive EN-only fallbacks they often
-      // assert __lang === 'en'. Specific routes may override via wrappers.
-      fn.__lang = lang;
-      fn.__namespace = "guides";
-    } catch {
-      /* noop */
-    }
+    tagTranslator(translator, lang, "guides");
 
     return translator;
   }, [guidesEn, tGuides, lang, i18n, resolveFixedT, tGuidesFallback]);
@@ -466,11 +447,11 @@ export function useGuideTranslations(lang: AppLanguage): GuideTranslationSuite {
   // components that import it (without going through this hook) can still
   // discover a guidesFallback translator in tests.
   try {
-    const anyI18n = appI18n as unknown as { __tGuidesFallback?: Translator };
-    if (!anyI18n.__tGuidesFallback && typeof tGuidesFallback === 'function') {
-      anyI18n.__tGuidesFallback = tGuidesFallback as Translator;
+    const carrier = asFallbackCarrier(appI18n);
+    if (!carrier.__tGuidesFallback && typeof tGuidesFallback === 'function') {
+      carrier.__tGuidesFallback = tGuidesFallback as Translator;
     }
-  } catch { /* noop */ }
+  } catch (err) { if (IS_DEV) console.debug("[translations] attach carrier", err); }
 
   return {
     tGuides,
@@ -499,9 +480,9 @@ export function useGuideTranslations(lang: AppLanguage): GuideTranslationSuite {
 // or unavailable for the guidesFallback namespace.
 try {
   const attach = (fb: Translator | undefined) => {
-    const anyI18n = appI18n as unknown as { __tGuidesFallback?: Translator };
-    if (!anyI18n.__tGuidesFallback && typeof fb === 'function') {
-      anyI18n.__tGuidesFallback = fb as Translator;
+    const carrier = asFallbackCarrier(appI18n);
+    if (!carrier.__tGuidesFallback && typeof fb === 'function') {
+      carrier.__tGuidesFallback = fb as Translator;
     }
   };
   // This module executes within a React hook, so we expose a helper that can

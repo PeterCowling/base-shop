@@ -1,81 +1,213 @@
 {
   "seo": {
-    "title": "Wo man in Positano isst: Der Hostel-Brikette-Essensguide",
-    "description": "Plane deine Mahlzeiten rund um das Hostel Brikette mit Tipps zu Lokalen, Transport, Preisniveaus und besonderen Genussmomenten."
+    "title": "Wo man in Positano isst: Von Budget bis Festessen",
+    "description": "Von €7 Takeaway-Pizza bis €139 Sonnenuntergangs-Festmähler - Ihr kompletter Positano-Restaurantführer mit Transporttipps, Buchungsratschlägen und Hostel-geprüften Empfehlungen."
   },
-  "linkLabel": "Auswärts essen in Positano",
-  "heroAlt": "Abendessen auf einer Terrasse mit Blick auf Positano",
+  "linkLabel": "Wo man in Positano isst: Jedes Budget",
+  "heroAlt": "Candlelight-Dinner auf einer Terrasse mit Blick auf Positano bei Sonnenuntergang",
+  "images": [
+    {
+      "src": "/img/guides/eating-out-positano/terrace-dinner-positano.jpg",
+      "alt": "Romantic terrace dinner with Positano lights below"
+    },
+    {
+      "src": "/img/guides/eating-out-positano/pizza-al-taglio-positano.jpg",
+      "alt": "Fresh pizza al taglio at C'era Una Volta near Hostel Brikette"
+    },
+    {
+      "src": "/img/guides/eating-out-positano/la-tagliata-feast.jpg",
+      "alt": "Farmhouse feast spread at La Tagliata in Montepertuso"
+    },
+    {
+      "src": "/img/guides/eating-out-positano/gavitella-sunset.jpg",
+      "alt": "Sunset view from La Gavitella beach club restaurant in Praiano"
+    },
+    {
+      "src": "/img/guides/eating-out-positano/positano-main-beach-restaurants.jpg",
+      "alt": "Beachfront restaurants along Positano's main beach promenade"
+    },
+    {
+      "src": "/img/guides/eating-out-positano/neighbourhood-trattoria.jpg",
+      "alt": "Local trattoria with sea views in Chiesa Nuova neighbourhood"
+    }
+  ],
   "intro": [
-    "Positano ist voller Restaurants – vom einfachen Pizza-Schalter bis zum festlichen Degustationsmenü. Je näher du dem Hauptstrand kommst, desto höher werden die Preise, also mische Nachbarschaftsklassiker mit besonderen Ausflügen.",
-    "Reserviere möglichst online über Services wie TheFork und peile eine Uhrzeit zwischen 20:30 und 22:00 Uhr an, wenn die Gasträume am vollsten sind. Für spontane Mahlzeiten halte ein paar Lokale ohne Reservierung bereit, die bergauf vom Wasser liegen."
+    "**Am besten für:** Schnelle Entscheidungen, wo man isst, was man budgetieren sollte und wie man vom Hostel Brikette dorthin kommt.",
+    "**Preisspanne:** €7 Takeaway-Pizza bis €139 Mehrgänge-Erlebnisse. Die meisten Nachbarschaftsabendessen kosten €30-60 pro Person mit Wein.",
+    "**Transport:** Detaillierte Schritt-für-Schritt-Anweisungen unten für jedes Restaurant vom Hostel. Zu Fuß zu nahegelegenen Orten (2-12 Min), benutzen Sie den Interno-Bus für Hauptstrandrestaurants (€1,30) oder nehmen Sie den kostenlosen Shuttle zur La Tagliata. La Gavitella in Praiano ist per Boot vom Hauptstrand erreichbar.",
+    "Positanos Gastronomieszene reicht von einfachen Pizzatheken bis zu festlichen Degustationsmenüs. Die Preise steigen zur Uferpromenade hin, daher mischen wir lokale Restaurants in Hostel-Nähe mit besonderen Locations für besondere Abende. Nach Hunderten von Gästen jeden Sommer sind die unten genannten Orte im Sommer schnell ausgebucht - reservieren Sie Tische 2-3 Tage im Voraus für 20:30-22 Uhr Sitzungen, besonders im Sommer (Juni-September)."
   ],
   "sections": [
     {
-      "id": "signature-experiences",
-      "title": "Unvergessliche Erlebnisse",
+      "id": "quick-cheap-near-hostel",
+      "title": "Schnell und günstig in Hostel-Nähe",
       "body": [
-        "La Gavitella liegt gegenüber in Praiano und verbindet einen Beach-Club-Nachmittag mit einem Meeresfrüchte-Abendessen. Fahre mit dem Shuttleboot vom Hauptstrand Positanos hinüber oder nimm den SITA-Bus Richtung Amalfi und gehe vom Halt die Treppen hinab. Dich erwarten fangfrischer Fisch und Sonnenuntergänge über Capri.",
-        "Für einen unvergesslichen Luxus gönn dir die Sunset Cruise and Dinner. Die Tour umfasst eine Bootsfahrt, den Küstensonnenuntergang und ein mehrgängiges Meeresfrüchte-Menü für etwa 139 € pro Person – ideal für besondere Anlässe oder Gruppenfeiern."
-      ]
-    },
-    {
-      "id": "farmhouse-feasts",
-      "title": "Hofküche über Positano",
-      "body": [
-        "La Tagliata liegt 3 km oberhalb bei Montepertuso und Nocelle. Nimm den lokalen Bus Richtung Nocelle und steig kurz nach Montepertuso aus, oder buche den Restaurant-Shuttle. Das fixe Menü umfasst Antipasti, hausgemachte Pasta, Grillgerichte, Wein und Dessert für rund 65 € pro Person.",
-        "La Taverna del Leone bei Laurito und Il Ritrovo in Montepertuso komplettieren die klassische Trattoria-Runde auf dem Land. Beide erreichst du mit dem Bus Richtung Amalfi; sie bieten entspannte Bedienung und großzügige Portionen für 45–55 € pro Person."
+        "**C'era Una Volta** liegt direkt gegenüber vom Hostel Brikette und verkauft Pizza im Stück ab €7-12. Wir schicken Gäste hierher, wenn sie spät einchecken und nach der %LINK:naplesPositano|Fähre oder dem Bus aus Neapel% hungrig ankommen. Schnappen Sie sich ein Margherita- oder Capricciosa-Stück, essen Sie auf der Terrasse oben im Hostel und sparen Sie Energie fürs Erkunden am nächsten Tag.",
+        "**Il Grottino Azzurro** ist nur 160 Meter entfernt auf einem ebenen Weg - keine Treppen - und bietet hausgemachte Pasta-Spezialitäten um €12-18, volles Abendessen mit Wein für etwa €35. Die familiengeführte Küche kann vegetarische Gerichte zubereiten (fragen Sie nach Pasta al Pomodoro oder Melanzane Parmigiana) und kann glutenfrei kochen, wenn Sie vorher anrufen. Wir schicken Gäste hierher, wenn sie ein ordentliches Sit-down-Essen ohne die Wanderung zum Hauptstrand wollen.",
+        "Beide Orte sind an den meisten Abenden walk-in-freundlich, aber buchen Sie im Voraus Freitag-Sonntag in der Hochsaison (Juli-August), wenn Tische bis 20 Uhr voll sind."
       ]
     },
     {
       "id": "neighbourhood-favourites",
-      "title": "Lieblingslokale rund ums Hostel",
+      "title": "Nachbarschaftslieblinge mit Aussicht",
       "body": [
-        "Nur wenige Minuten vom Hostel Brikette entfernt findest du lässige Anlaufstellen wie C’era Una Volta (Pizza al taglio für 7–12 €) und Il Grottino Azzurro, nur 160 Meter entfernt mit hausgemachten Tagesgerichten um 35 €. Da Gabrisa, Next2 und Da Costantino ergänzen Sitzplatzrestaurants mit Meerblick für 30–60 €.",
-        "Weiter unten am Hang bieten Luna in der Villa Magia und Da Vincenzo 1958 gehobene Küche mit Panoramaterrassen; rechne mit 65–100 € pro Person und wünsche dir bei der Reservierung einen Fensterplatz. Denk für den steilen Rückweg von Strandlokalen wie Buca di Bacco an den Interno-Bus."
+        "Innerhalb von 5-10 Minuten vom Hostel finden Sie Sit-down-Restaurants mit Meerblick und lokalem Charakter. **Da Gabrisa** (260m bergab) hat eine Terrasse mit Blick auf die Küste und serviert klassische Positano-Gerichte - Spaghetti alle Vongole, gegrillten Fisch, %LINK:limoncelloCuisine|Limoncello% Tiramisu - für etwa €60 pro Person mit Wein. Buchen Sie Fenstertische zum Sonnenuntergang, wenn Sie etwas Besonderes feiern.",
+        "**Next2** (270m bergab) tendiert zu moderner italienischer Küche mit kreativen Präsentationen und jüngerem Ambiente; rechnen Sie mit €60 für das Abendessen. **Da Costantino** (300m bergauf) geht in die entgegengesetzte Richtung mit traditionellen Set-Menüs um €30, großzügigen Portionen und ruhigerer Hanglage, beliebt bei wiederkehrenden Gästen, die die Hauptstrandmassen meiden möchten.",
+        "Wenn Sie Mobilitätsbedenken haben, bleiben Sie bei Da Gabrisa und Next2 - beide haben ebenen Terrassenzugang. Da Costantino beinhaltet einen kurzen Aufstieg mit unregelmäßigen Steinstufen."
+      ]
+    },
+    {
+      "id": "main-beach-refined-dining",
+      "title": "Hauptstrand und gehobene Gastronomie",
+      "body": [
+        "Für einen besonderen Abend gehen Sie hinunter zur Uferpromenade. **Luna at Villa Magia** (450m, 10-Min-Fußweg) und **Da Vincenzo 1958** (500m) bieten beide gehobene Küche mit Panoramaterrassen; budgetieren Sie €65-100 pro Person und fordern Sie Fensterplätze bei der Buchung an. Diese Orte handhaben diätetische Einschränkungen gut - vegane und glutenfreie Optionen sind auf Speisekarten klar markiert.",
+        "**Buca di Bacco** sitzt direkt am Hauptstrand und gibt Ihnen das klassische Strandessen für etwa €50 pro Person. Es ist die beste Wahl, wenn Sie Sand- und Meerblick ohne extreme Preise wollen. Der %LINK:positanoMainBeach|Interno-Bus% fährt bis spät, sodass Sie bergauf zur Hostel-Haltestelle (€1,30) zurückfahren können, anstatt nach dem Abendessen 300+ Treppen zu steigen.",
+        "**Ohimà** (1,1 km bergab) und **Al Palazzo** (1,2 km) sind einen Besuch wert für ihre ruhigen Innenhöfe, aber planen Sie, den Interno-Bus in beide Richtungen zu nutzen - es ist schwer bergauf zu laufen nach dem Essen, besonders wenn Sie den ganzen Tag gewandert oder am Strand waren."
+      ]
+    },
+    {
+      "id": "farmhouse-feasts",
+      "title": "Bauernhof-Festmähler oberhalb Positanos",
+      "body": [
+        "**La Tagliata** (Montepertuso, 3 km bergauf) ist das berühmte Bauernhof-Essen. Das Festmenü umfasst viele Vorspeisen, hausgemachte Pasta, gegrilltes Fleisch, Gemüse aus ihrem Garten, Hauswein, Limoncello und Dessert für €65 pro Person. Die Familie betreibt einen kostenlosen Shuttle vom Positano Centro (vereinbaren Sie bei Ihrer Buchung); ohne ihn nehmen Sie den %LINK:chiesaNuovaDepartures|Nocelle-Bus% und gehen 10 Minuten von der Montepertuso-Haltestelle.",
+        "Gäste schwärmen jeden Sommer von La Tagliata, aber erwarten Sie eine 2-3-stündige Mahlzeit mit Familienstil-Service (sie bringen Essen, bis Sie aufgeben). Nicht ideal, wenn Sie sich beeilen, um die letzte Fähre zu erwischen, oder strenge diätetische Bedürfnisse haben - die Speisekarte hat viel Fleisch und wenige vegane Optionen.",
+        "**Il Ritrovo** (Montepertuso) und **La Taverna del Leone** (nahe Laurito) vervollständigen die ländlichen Optionen. Beide kosten €45-55, sind per %LINK:sitaTickets|SITA-Bus% erreichbar und servieren großzügige Portionen in entspannter Atmosphäre. Il Ritrovo hat bessere vegetarische Vielfalt; La Taverna del Leone glänzt bei gegrilltem Fisch. Prüfen Sie saisonale Öffnungszeiten - einige Bauernhof-Orte schließen November bis März."
+      ]
+    },
+    {
+      "id": "signature-experiences",
+      "title": "Feier-Erlebnisse",
+      "body": [
+        "**La Gavitella** liegt auf der anderen Seite der Bucht in Praiano. Es kombiniert einen Strandclub-Nachmittag mit einem Meeresfrüchte-Abendessen. Nehmen Sie das Shuttle-Boot vom Positano Hauptstrand (fährt stündlich, €10 pro Richtung, 15 Min) für eine malerische Ankunft, oder fahren Sie mit dem %LINK:positanoAmalfi|SITA-Bus Richtung Amalfi% und gehen Sie von der Praiano-Haltestelle hinunter (200 Stufen). Erwarten Sie außergewöhnlich frischen Fang, Sonnenuntergangsblick über Capri und etwa €50 pro Person für das Abendessen. Wenn Sie tagsüber schwimmen, packen Sie trockene Wechselkleidung fürs Abendboot zurück.",
+        "Für den ultimativen Luxus buchen Sie das **Sonnenuntergangs-Kreuzfahrt und Dinner** Erlebnis (€139 pro Person). Dieser Ausflug umfasst eine 2-stündige Bootsfahrt entlang der Küste, den Sonnenuntergang vom Wasser aus und ein Mehrgänge-Meeresfrüchte-Fest. Es ist ideal für Flitterwochen, Meilenstein-Geburtstage oder Gruppenfeiern - unser Personal kann Ihnen helfen, über lokale Anbieter im Hostel zu buchen.",
+        "Beide erfordern Vorab-Reservierungen (3-5 Tage im Sommer) und funktionieren nicht an Schlechtwetter-Tagen, wenn Fähren abgesagt werden. Überprüfen Sie den %LINK:ferryCancellations|Fährstatus%, wenn Sie eine bootabhängige Mahlzeit planen."
+      ]
+    },
+    {
+      "id": "transport-booking-tips",
+      "title": "Transport und Buchungstipps",
+      "body": [
+        "Die meisten Restaurants in Hostel-Nähe sind innerhalb von 5-15 Minuten zu Fuß erreichbar. Für Hauptstrand-Orte nutzen Sie den **%LINK:positanoMainBeach|Interno-Bus%** (€1,30, fährt alle 30 Min bis 23 Uhr), um den steilen Treppenaufstieg zurück zu vermeiden. Bauernhof-Restaurants wie La Tagliata bieten kostenlose Shuttles, wenn Sie im Voraus buchen.",
+        "**Buchungsstrategie:** Reservieren Sie Tische online (TheFork, Google oder direkte Restaurant-Websites) 2-3 Tage im Voraus für 20:30-22 Uhr Sitzungen - wenn Restaurants am vollsten sind und die beste Atmosphäre haben. Walk-in-freundliche Orte in Hostel-Nähe sind C'era Una Volta, Il Grottino Azzurro und Da Costantino (außer Freitag-Sonntag im Juli-August).",
+        "Tragen Sie **%LINK:simsAtms|Bargeld% für kleinere Locations und Trinkgelder**, auch wenn Karten akzeptiert werden. Geldautomaten sind am Hauptstrand und Chiesa Nuova verfügbar - siehe unseren %LINK:simsAtms|Geldautomaten-Führer% für Standorte. Wenn Sie diätetische Einschränkungen haben, rufen Sie Restaurants direkt am Tag vorher an, um Anpassungen zu bestätigen; Google Translate funktioniert gut für grundlegende Anfragen."
+      ]
+    },
+    {
+      "id": "seasonal-considerations",
+      "title": "Saisonale Hinweise",
+      "body": [
+        "**Hochsaison (Juni-September):** Buchen Sie alles 2-3 Tage im Voraus. Restaurants füllen sich bis 20 Uhr, und beliebte Orte wie La Tagliata benötigen 4-5 Tage Vorlauf. Erwarten Sie längere Wartezeiten an Walk-in-Orten.",
+        "**Nebensaison (April-Mai, Oktober):** Flexibler - Sie können oft am selben Tag buchen oder spontan vorbeikommen. Einige Bauernhof-Orte reduzieren ihre Öffnungszeiten; prüfen Sie vor der Anfahrt.",
+        "**Nebensaison (November-März):** Viele ländliche Restaurants schließen komplett. Nachbarschafts-Orte in Hostel-Nähe bleiben ganzjährig geöffnet, aber Hauptstrand-Restaurants haben möglicherweise eingeschränkte Öffnungszeiten. Dies ist die beste Zeit für spontanes Essen ohne Massen."
+      ]
+    },
+    {
+      "id": "detailed-directions",
+      "title": "Schritt-für-Schritt-Wegbeschreibungen vom Hostel",
+      "body": [
+        "Hier sind detaillierte Gehwegbeschreibungen vom Hostel Brikette (Via G. Marconi, 307, Chiesa Nuova) zu jedem Restaurant. Alle Zeiten gehen von einem gleichmäßigen Gehtempo aus. Wenn Sie fahren, siehe unseren %LINK:parking|Parkführer%; fügen Sie zusätzliche Zeit hinzu, wenn Sie Taschen tragen oder ein langsameres Tempo bevorzugen.",
+        "**C'era Una Volta** (direkt gegenüber der Straße)",
+        "Verlassen Sie den Haupteingang des Hostels, überqueren Sie Via Marconi vorsichtig (achten Sie auf Busse), und Sie sehen die Pizzeria direkt gegenüber bei Nummer 127. Insgesamt: 30 Sekunden, 0 Treppen.",
+        "**Il Grottino Azzurro** (160m, 2 Minuten)",
+        "Verlassen Sie das Hostel und biegen Sie rechts auf Via Marconi ab. Gehen Sie bergauf (weg vom Strand) für etwa 2 Minuten auf einem ebenen, gepflasterten Weg. Sie sehen das Restaurant auf Ihrer linken Seite bei den Nummern 302-304, gleich nach dem Chiesa Nuova Parkplatz. Insgesamt: 2 Minuten, 0 Treppen, vollständig barrierefrei.",
+        "**Da Gabrisa** (260m bergab, 5 Minuten)",
+        "Verlassen Sie das Hostel und biegen Sie links auf Via Marconi ab. Gehen Sie bergab Richtung Strand für etwa 5 Minuten. Sie passieren mehrere Geschäfte und Cafés. Da Gabrisa ist auf Ihrer rechten Seite mit einer Terrasse mit Blick auf die Bucht. Suchen Sie nach dem Schild bei Via Marconi, 205. Insgesamt: 5 Minuten, sanfter Abhang, etwa 30-40 Stufen in den Weg eingearbeitet.",
+        "**Next2** (270m bergab, 5 Minuten)",
+        "Gleiche Route wie Da Gabrisa - links raus, bergab auf Via Marconi für 5 Minuten. Next2 ist nur 10 Meter nach Da Gabrisa, ebenfalls auf der rechten Seite bei Via Marconi, 242. Suchen Sie nach modernen Schildern und Terrassensitzplätzen. Insgesamt: 5 Minuten, sanft bergab, 30-40 Stufen eingearbeitet.",
+        "**Da Costantino** (300m bergauf, 7-8 Minuten)",
+        "Verlassen Sie das Hostel und biegen Sie rechts auf Via Marconi ab. Gehen Sie bergauf an Il Grottino Azzurro vorbei und folgen Sie derselben Straße, während sie nach oben kurvt. Nach etwa 7-8 Minuten erreichen Sie eine kleine Kreuzung - Da Costantino ist links mit Panoramablick. Der Eingang beinhaltet unregelmäßige Steinstufen, tragen Sie also robuste Schuhe. Insgesamt: 7-8 Minuten, stetiger Aufstieg, 50-60 Steinstufen.",
+        "**Luna at Villa Magia** (450m bergab, 10 Minuten)",
+        "Gehen Sie links raus und bergab auf Via Marconi für 10 Minuten. Sie passieren Da Gabrisa und Next2, dann weiter, während die Straße steiler abfällt. Luna at Villa Magia ist etwas von der Straße zurückgesetzt auf der linken Seite - suchen Sie nach dem eleganten Villeneingang mit terrassierten Gärten. Adresse: Via G. Marconi, 307. Insgesamt: 10 Minuten, 80-100 Treppen gemischt mit Gefälle.",
+        "**Da Vincenzo 1958** (500m bergab, 12 Minuten)",
+        "Weiter an Luna at Villa Magia vorbei auf derselben Abwärtsroute. Nach weiteren 2 Minuten sehen Sie Da Vincenzo auf der linken Seite mit traditionellen Terrassensitzplätzen und klassischer Positano-Architektur. Adresse: Via Pasitea, 172-178. Insgesamt: 12 Minuten, 100-120 Treppen gemischt mit Gehen.",
+        "**Buca di Bacco** (Hauptstrand, 20 Minuten Fußweg oder 5 Min Bus)",
+        "Zu Fuß: Gehen Sie links raus auf Via Marconi und den ganzen Weg bergab für 20 Minuten, bis Sie die Strandpromenade erreichen. Buca di Bacco ist direkt am Strand - Sie können die Uferterrasse nicht verpassen. Gesamtgehzeit: 20 Minuten, 300+ Treppen. Busoption: Gehen Sie rechts zur Chiesa Nuova Interno-Bushaltestelle (1 Min), nehmen Sie den Interno-Bus Richtung Spiaggia/Beach (€1,30), fahren Sie 5 Minuten zur Strandhaltestelle, gehen Sie 2 Minuten zum Restaurant. Rückfahrtbus ist nach dem Abendessen essentiell, um die 300+ Treppen zu vermeiden.",
+        "**Ohimà** (1,1 km bergab, 22 Minuten Fußweg oder 6 Min Bus)",
+        "Zu Fuß nicht empfohlen wegen Entfernung und Treppen. Bus: Von Chiesa Nuova Haltestelle (1 Min Fußweg vom Hostel), nehmen Sie Interno-Bus Richtung Strand (€1,30), steigen Sie an Via Pasitea Haltestelle nach etwa 6 Minuten aus, gehen Sie 2 Minuten bergab zu Ohimà bei Via Pasitea, 258. Gesamte Busstrecke: 8-10 Minuten. Rückfahrtbus ist obligatorisch - versuchen Sie nicht, nach einer großen Mahlzeit bergauf zu gehen.",
+        "**Al Palazzo** (1,2 km bergab, 25 Minuten Fußweg oder 7 Min Bus)",
+        "Bus dringend empfohlen. Von Chiesa Nuova Haltestelle, nehmen Sie Interno-Bus Richtung Strand, fahren Sie 7 Minuten zur Via Colombo Haltestelle, gehen Sie 2 Minuten zu Al Palazzos Hofeingang bei Via G. Marconi, 230. Der Hof ist von der Hauptstraße versteckt - suchen Sie nach dem gewölbten Eingang. Gesamte Busstrecke: 10-12 Minuten. Wieder, nehmen Sie den Bus zurück bergauf.",
+        "**La Tagliata** (3 km bergauf in Montepertuso)",
+        "Gehen Sie NICHT zu Fuß - es ist ein steiler 3-km-Aufstieg ohne Gehweg. Zwei Optionen: 1) Buchen Sie La Tagliatas kostenlosen Shuttle bei Ihrer Reservierung. Sie holen vom Positano Centro ab (etwa 15 Min Fußweg bergab vom Hostel oder 5 Min Interno-Bus) und fahren Sie den Berg hinauf. 2) Nehmen Sie den Positano-Nocelle Lokalbus von der Chiesa Nuova Haltestelle. Der Bus fährt stündlich und braucht 10 Minuten nach Montepertuso. Steigen Sie an der Montepertuso-Haltestelle aus (fragen Sie den Fahrer), dann gehen Sie 10 Minuten bergauf auf Via Tagliata - es ist eine schmale Straße mit gelegentlichen Autos, bleiben Sie also an der Seite. Das Restaurant ist bei Nummer 32B auf Ihrer linken Seite. Der La Tagliata Shuttle ist viel einfacher und in Ihrer Mahlzeit enthalten.",
+        "**Il Ritrovo** (Montepertuso)",
+        "Gleiche Route wie La Tagliata. Nehmen Sie den Positano-Nocelle Bus von Chiesa Nuova, steigen Sie bei Montepertuso aus (10 Min), gehen Sie 5 Minuten zu Il Ritrovo bei Via Montepertuso, 77. Il Ritrovo bietet keinen Shuttle an, Sie müssen also den Rückbus erwischen (letzter Bus normalerweise gegen 22 Uhr - bestätigen Sie den Fahrplan).",
+        "**La Taverna del Leone** (nahe Laurito)",
+        "Nehmen Sie den SITA-Bus von Chiesa Nuova Richtung Amalfi. Sagen Sie dem Fahrer, dass Sie nach Laurito/La Taverna del Leone fahren. Die Fahrt dauert etwa 8-10 Minuten. Steigen Sie an der Laurito-Bushaltestelle aus, gehen Sie 5 Minuten bergab auf der Zufahrtsstraße zum Restaurant. Rückbus-Fahrplan ist begrenzt, besonders abends - bestätigen Sie Zeiten vor der Fahrt oder vereinbaren Sie ein Taxi zurück (etwa €25-30).",
+        "**La Gavitella** (Praiano)",
+        "Zwei Routen: Boot (empfohlen): Gehen Sie oder nehmen Sie Interno-Bus hinunter zum Positano Hauptstrand (20 Min Fußweg oder 5 Min Bus). Vom Strand nehmen Sie das Shuttle-Boot nach Praiano/La Gavitella (fährt stündlich in der Saison, €10 pro Richtung, 15 Min malerische Fahrt). Das Boot setzt Sie am Strandclub-Eingang ab. Rückboot-Fahrplan am Strand ausgehängt - letztes Boot normalerweise 20-21 Uhr. Busroute: Von Chiesa Nuova nehmen Sie SITA-Bus Richtung Amalfi, fahren Sie 12-15 Minuten zur Praiano-Haltestelle. Gehen Sie Via Capriglione Straße hinunter für 10 Minuten (etwa 200 Stufen) zum La Gavitella Strandclub. Bestätigen Sie Rückbus-Fahrplan oder vereinbaren Sie Abholung."
       ]
     }
   ],
   "essentialsTitle": "Restaurant-Spickzettel",
   "essentials": [
-    "C’era Una Volta – gegenüber vom Hostel; Pizza zum Mitnehmen 7–12 €.",
-    "Il Grottino Azzurro – 160 m ebener Weg; Abendessen ca. 35 €.",
-    "Da Gabrisa – 260 m bergab; Terrassenblick, rund 60 €.",
-    "Next2 – 270 m bergab; moderne italienische Küche für etwa 60 €.",
-    "Da Costantino – 300 m bergauf; Fensterplätze mit Menüs ab 30 €.",
-    "Luna in der Villa Magia – 450 m bergab; Fine Dining um 100 €.",
-    "Da Vincenzo 1958 – 500 m bergab; klassische Positano-Küche für 65 €.",
-    "Ohimà – 1,1 km bergab; nimm den Interno-Bus, rechne mit 75 €.",
-    "Al Palazzo – 1,2 km bergab; Freiluft-Hof, ca. 75 €.",
-    "Buca di Bacco – Hauptstrand; beste Strandoption um 50 €.",
-    "Il Ritrovo – Montepertuso; Busanbindung, etwa 55 €.",
-    "La Taverna del Leone – Laurito; Amalfi-Bushalt in der Nähe, 45 €.",
-    "La Gavitella – Praiano-Transfer per Boot; Meeresfrüchtefest für ca. 50 €.",
-    "Sunset Cruise & Dinner – Bootserlebnis mit Menü, 139 €.",
-    "La Tagliata – Shuttle Montepertuso; rustikales Festmahl für 65 €."
+    "Siehe Abschnitt \\\\\"Schritt-für-Schritt-Wegbeschreibungen\\\\\" unten für Turn-by-Turn-Gehwegbeschreibungen vom Hostel zu jedem Restaurant.",
+    "C'era Una Volta – gegenüber vom Hostel; Takeaway-Pizza €7-12.",
+    "Il Grottino Azzurro – 160m ebener Fußweg; Abendessen €35, passt sich an diätetische Bedürfnisse an.",
+    "Da Gabrisa – 260m bergab; Terrassenaussicht, €60 pro Person.",
+    "Next2 – 270m bergab; modernes Italienisch, €60.",
+    "Da Costantino – 300m bergauf; traditionelles Set-Menü €30.",
+    "Luna at Villa Magia – 450m bergab; gehobene Küche €65-100.",
+    "Da Vincenzo 1958 – 500m bergab; klassische Positano-Gerichte €65.",
+    "Buca di Bacco – Hauptstrand; Strandauswahl €50.",
+    "Ohimà – 1,1 km bergab; nutzen Sie Interno-Bus, €75.",
+    "Al Palazzo – 1,2 km bergab; Hofessen €75.",
+    "Il Ritrovo – Montepertuso; Buszugang, €55.",
+    "La Taverna del Leone – nahe Laurito; Bushaltestelle in der Nähe, €45.",
+    "La Gavitella – Praiano Bootstransfer; Meeresfrüchte €50.",
+    "Sonnenuntergangs-Kreuzfahrt & Dinner – Boot + Essen Erlebnis, €139.",
+    "La Tagliata – Montepertuso Shuttle; Bauernhof-Bankett €65."
   ],
   "typicalCostsTitle": "Was Mahlzeiten kosten",
   "typicalCosts": [
-    "Pizza zum Mitnehmen oder Panini nahe dem Hostel: 7–12 €.",
-    "Trattorien in der Nachbarschaft mit Wein und Dessert: 30–60 € pro Person.",
-    "Degustationsmenüs oder Dinner-Cruises: 65–139 € pro Person."
+    "Takeaway-Pizza oder Panini in Hostel-Nähe: €7-12.",
+    "Nachbarschafts-Trattorias mit Wein und Dessert: €30-60 pro Person.",
+    "Hauptstrand gehobene Küche: €50-100 pro Person.",
+    "Bauernhof-Festmähler: €45-65 pro Person.",
+    "Feier-Erlebnisse (Kreuzfahrten, Premium-Küche): €65-139 pro Person."
   ],
   "tips": [
-    "Reserviere online oder telefonisch für Zeitfenster zwischen 20:30 und 22:00 Uhr – dann ist in Positano am meisten los.",
-    "Nutze SITA- oder Interno-Busse sowie Restaurant-Shuttles wie den von La Tagliata, um nach dem Essen lange Treppen zu vermeiden.",
-    "Hab etwas Bargeld für kleinere Lokale und Trinkgeld dabei, auch wenn Karten akzeptiert werden.",
-    "Wenn du vor dem Dinner bei La Gavitella badest, packe trockene Kleidung für die Rückfahrt ein."
+    "Reservieren Sie 2-3 Tage im Voraus für 20:30-22 Uhr Sitzungen im Sommer; walk-in-freundliche Orte in Hostel-Nähe zu anderen Zeiten.",
+    "Nutzen Sie den Interno-Bus (€1,30), um steile Treppenstiege nach Hauptstrand-Abendessen zu vermeiden - fährt bis 23 Uhr.",
+    "Tragen Sie Bargeld für kleinere Locations und Trinkgelder; Geldautomaten am Hauptstrand und Chiesa Nuova.",
+    "Rufen Sie Restaurants direkt für diätetische Einschränkungen an (vegan, glutenfrei, Allergien) - die meisten können helfen, wenn Sie im Voraus anrufen.",
+    "Buchen Sie La Tagliatas kostenlosen Shuttle bei Reservierung; ohne ihn nehmen Sie Nocelle-Bus und gehen 10 Min.",
+    "Packen Sie trockene Kleidung, wenn Sie bei La Gavitella vor dem Abendessen schwimmen - Sie brauchen sie für die Bootsfahrt zurück.",
+    "Prüfen Sie saisonale Öffnungszeiten für Bauernhof-Orte (viele schließen November-März)."
   ],
   "faqs": [
     {
-      "q": "Wie komme ich vom Hostel Brikette nach La Gavitella?",
+      "q": "Wie komme ich von Hostel Brikette zu La Gavitella?",
       "a": [
-        "Geh zum Hauptstrand und nimm das Shuttleboot direkt zum Restaurant für eine panoramareiche Ankunft, oder fahr mit dem SITA-Bus Richtung Amalfi, steig unterwegs aus und folge den Treppen hinunter zum Beach Club."
+        "Gehen Sie hinunter zum Positano Hauptstrand (20 Min oder nehmen Sie Interno-Bus) und nehmen Sie das Shuttle-Boot nach Praiano (€10, 15 Min, fährt stündlich). Alternative: Fahren Sie mit SITA-Bus Richtung Amalfi, steigen Sie in Praiano aus und gehen Sie 200 Stufen hinunter zum Strandclub."
       ]
     },
     {
-      "q": "Bietet La Tagliata einen Rücktransport nach Positano an?",
+      "q": "Bietet La Tagliata Transport zurück nach Positano an?",
       "a": [
-        "Ja. Bitte den Shuttle bei der Reservierung oder spätestens beim Bestätigen des Abendessens, damit du nach dem mehrgängigen Festmahl bequem zurückkommst und dich nicht auf späte Busse verlassen musst."
+        "Ja. Buchen Sie ihren kostenlosen Shuttle bei Ihrer Reservierung - sie holen vom Positano Centro ab und bringen Sie nach dem Festmahl zurück. Ohne Shuttle würden Sie den Nocelle-Bus bergauf nehmen und 10 Minuten zum Restaurant gehen."
+      ]
+    },
+    {
+      "q": "Welche Restaurants können vegane oder glutenfreie Diäten bewältigen?",
+      "a": [
+        "Il Grottino Azzurro, Luna at Villa Magia und Da Vincenzo 1958 handhaben alle diätetische Einschränkungen gut - rufen Sie im Voraus an zur Bestätigung. Bauernhof-Festmähler wie La Tagliata sind schwieriger für Veganer (fleischlastige Auswahl), aber Il Ritrovo in Montepertuso hat bessere vegetarische Vielfalt."
+      ]
+    },
+    {
+      "q": "Was ist, wenn ich spät ankomme und alles ausgebucht ist?",
+      "a": [
+        "C'era Una Volta (gegenüber vom Hostel) ist spät geöffnet und walk-in-freundlich für Pizza al Taglio. Il Grottino Azzurro und Da Costantino haben normalerweise Platz an Wochentagsabenden. Vermeiden Sie Freitag-Sonntag im Juli-August ohne Reservierung - Sie enden mit Takeaway-Pizza oder wandern hinunter zum Hauptstrand für Last-Minute-Orte."
+      ]
+    },
+    {
+      "q": "Was ist der einfachste Weg, nach dem Abendessen am Strand bergauf zum Hostel zurückzukommen?",
+      "a": [
+        "Nehmen Sie den Interno-Bus von den Strandhaltestellen zurück nach Chiesa Nuova (€1,30, fährt alle 30 Min bis 23 Uhr). Der Bus steigt die 300+ Treppen für Sie. Die Haltestelle bei Chiesa Nuova ist 1 Minute vom Hostel entfernt. Versuchen Sie nicht, nach einer großen Mahlzeit bergauf zu gehen - selbst fitte Gäste finden es anstrengend, und die Treppen sind nachts schlecht beleuchtet."
+      ]
+    },
+    {
+      "q": "Kann ich alle diese Restaurants online buchen oder muss ich anrufen?",
+      "a": [
+        "Die meisten Restaurants akzeptieren Online-Buchungen über TheFork, Google oder ihre eigenen Websites. Für diätetische Einschränkungen oder spezielle Wünsche (glutenfrei, vegan, Allergien) rufen Sie direkt am Tag vorher an - das Personal ist hilfsbereit und viele sprechen Englisch. La Tagliata und Bauernhof-Orte bevorzugen Telefonbuchungen, um Shuttle zu vereinbaren und Menüanpassungen zu bestätigen."
       ]
     }
   ]

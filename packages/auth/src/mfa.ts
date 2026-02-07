@@ -1,8 +1,9 @@
 // packages/auth/src/mfa.ts
+import { randomInt } from "crypto";
 import { authenticator } from "otplib";
+
 import { prisma } from "@acme/platform-core/db";
 import type { CustomerMfa } from "@acme/types";
-import { randomInt } from "crypto";
 
 const SECRET_BYTES = 20;
 
@@ -56,6 +57,13 @@ export async function isMfaEnabled(customerId: string): Promise<boolean> {
     where: { customerId },
   });
   return record?.enabled ?? false;
+}
+
+export async function deactivateMfa(customerId: string): Promise<void> {
+  await prisma.customerMfa.update({
+    where: { customerId },
+    data: { secret: null, enabled: false },
+  });
 }
 
 export interface MfaToken {

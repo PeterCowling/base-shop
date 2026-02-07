@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import { trackEvent } from "../lib/telemetry";
 
 type ShopSummary = { id: string; name: string };

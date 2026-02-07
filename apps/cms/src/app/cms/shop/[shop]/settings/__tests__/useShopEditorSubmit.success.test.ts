@@ -1,12 +1,20 @@
-import { renderHook, act } from "@testing-library/react";
-import type { MappingRow } from "@/hooks/useMappingRows";
-import { useShopEditorSubmit } from "../useShopEditorSubmit";
 import { updateShop } from "@cms/actions/shops.server";
+import { act,renderHook } from "@testing-library/react";
+
+import type { MappingRow } from "@/hooks/useMappingRows";
+
+import { useShopEditorSubmit } from "../useShopEditorSubmit";
+
 import {
   createForm,
   createSections,
   submitEvent,
 } from "./helpers/shopEditorSubmitTestUtils";
+
+const mockToast = { success: jest.fn(), error: jest.fn(), warning: jest.fn(), info: jest.fn(), loading: jest.fn(), dismiss: jest.fn(), update: jest.fn(), promise: jest.fn() };
+jest.mock("@acme/ui/operations", () => ({
+  useToast: () => mockToast,
+}));
 
 jest.mock("@cms/actions/shops.server", () => ({
   updateShop: jest.fn(),
@@ -34,7 +42,7 @@ describe("useShopEditorSubmit — success flow", () => {
       priceOverrides: { en: 42 },
       localeOverrides: { banner: "it" },
       luxuryFeatures: sections.identity.info.luxuryFeatures,
-    };
+    } as any;
 
     updateShopMock.mockResolvedValueOnce({ shop: responseShop });
 
@@ -81,11 +89,7 @@ describe("useShopEditorSubmit — success flow", () => {
     ).toHaveBeenCalledWith([{ key: "banner", value: "it" }]);
 
     expect(result.current.errors).toEqual({});
-    expect(result.current.toast).toEqual({
-      open: true,
-      status: "success",
-      message: "Shop settings saved successfully.",
-    });
+    expect(mockToast.success).toHaveBeenCalledWith("Shop settings saved successfully.");
     expect(result.current.saving).toBe(false);
   });
 });

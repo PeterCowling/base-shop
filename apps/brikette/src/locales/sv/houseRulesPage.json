@@ -1,0 +1,130 @@
+{
+  "meta": {
+    "title": "Husregler | Hostel Brikette",
+    "description": "Husregler för Hostel Brikette om uppförande, besökare, tystnadstider, säkerhet, nyckelkort och rutiner på plats."
+  },
+  "headings": {
+    "pageTitle": "Hostel Brikette — Husregler",
+    "pageSubtitle": "Husregler"
+  },
+  "toc": {
+    "title": "Innehåll",
+    "aria": "Innehållsförteckning"
+  },
+  "footer": {
+    "end": "Slut på dokumentet.",
+    "backToTop": "Tillbaka till toppen"
+  },
+  "sections": {
+    "s1": {
+      "title": "1. Respektfullt uppförande och säkerhet",
+      "body": [
+        "Gäller: alla gäster och besökare på området.",
+        "Dessa Husregler är en del av ditt boendeavtal. Överträdelser kan leda till att du avvisas från boendet och/eller Avslut på grund av överträdelse enligt Bokningsvillkoren.",
+        "1.1 Behandla personal och andra gäster med respekt. Trakasserier, hot, våld eller diskriminerande beteende är inte tillåtet.",
+        "1.2 Följ personalens instruktioner som rör säkerhet och drift.",
+        "1.3 Skada inte egendom och ingrip inte i säkerhetsutrustning."
+      ]
+    },
+    "s2": {
+      "title": "2. Tystnadstider och ljud",
+      "body": [
+        "2.1 Tystnadstider är 23:45–08:00. Under tystnadstider: håll ljudnivån låg i rum och gemensamma utrymmen; ingen hög musik/högtalare; ta telefonsamtal utanför sovutrymmen.",
+        "2.2 Om du upprepade gånger stör andra kan vi be dig lämna enligt Bokningsvillkoren."
+      ]
+    },
+    "s3": {
+      "title": "3. Besökare / Tillfälliga gäster (endast gemensamma utrymmen)",
+      "body": [
+        "3.1 Besökare tillåts endast efter vår bedömning och endast i Gemensamma utrymmen. Besökare får inte vistas i gästrum/dorms.",
+        "3.2 Besökartider (om de tillåts) är 10:30–23:00, beroende på driftbehov.",
+        "3.3 Besökare måste visa giltig original‑ID och följa säkerhetsåtgärder (inklusive armband/band om sådana används).",
+        "3.4 Gäster får inte \"sponsra\" besökare in i rum. Försök att släppa in oregistrerade personer i rum är en allvarlig överträdelse."
+      ]
+    },
+    "s4": {
+      "title": "4. Oregistrerade personer",
+      "body": [
+        "4.1 Endast registrerade gäster får övernatta.",
+        "4.2 Om en oregistrerad person påträffas i ett rum eller övernattar: kan vi kräva omedelbar incheckning/registrering (om möjligt) eller be personen att lämna, och vi kan debitera avgifter enligt Bokningsvillkoren (Säkerhetsdeposition och skador/avgifter), enligt tillämplig lag."
+      ]
+    },
+    "s5": {
+      "title": "5. Incheckning och ankomst",
+      "body": [
+        "5.1 Officiellt incheckningsfönster är 15:00–22:00.",
+        "5.2 Ankomst före öppning: Om du anländer före 10:30 kan du kanske inte komma in.",
+        "5.3 Mellan öppningstid och incheckning kan vi (efter vårt eget bedömande) tillåta: väntan i angivna områden, besökar-/tillfällig gäst‑tillgång till gemensamma utrymmen och/eller bagageförvaring enligt separata villkor."
+      ]
+    },
+    "s6": {
+      "title": "6. Identitetskrav (på plats)",
+      "body": [
+        "6.1 Gäster och besökare måste på begäran visa giltig original‑ID för säkerhet och registrering.",
+        "6.2 Om du inte visar ID när det begärs kan du bli ombedd att lämna."
+      ]
+    },
+    "s7": {
+      "title": "7. Nyckelkort, armband/säkerhetsband och åtkomstkontroll",
+      "body": [
+        "7.1 Nyckelkort och/eller åtkomstkoder är personliga. Dela dem inte.",
+        "7.2 När säkerhetsband används måste du bära dem på området och visa dem på begäran.",
+        "7.3 Förlorade/skadade nyckelkort eller band ska rapporteras omedelbart. Ersättningsavgifter (om tillämpligt) finns anslagna på plats och/eller anges i Bokningsvillkoren."
+      ]
+    },
+    "s8": {
+      "title": "8. Linne och depositioner",
+      "body": [
+        "8.1 Linne tillhandahålls per gäst (enligt information vid incheckning).",
+        "8.2 Om en deposition tas ut (t.ex. nyckelkort/linne‑deposition på 10 €) återbetalas den enligt utcheckningsprocessen, förutsatt att utlämnade föremål återlämnas och att avdrag följer Bokningsvillkoren."
+      ]
+    },
+    "s9": {
+      "title": "9. Sovsalsetikett och bäddval",
+      "body": [
+        "9.1 Bäddar i sovsal väljs efter först‑till‑kvarn om inget annat anges.",
+        "9.2 Du får byta till en annan ledig bädd endast med personalens tillstånd och utan att störa andra gäster.",
+        "9.3 Håll ditt sovutrymme snyggt och förvara inte saker i andras utrymmen."
+      ]
+    },
+    "s10": {
+      "title": "10. Alkoholpolicy",
+      "body": [
+        "10.1 Om Hostel Brikette är licensierat och vi förbjuder alkohol utifrån: gäster får inte ta in alkohol som köpts utanför boendet. Om sådan alkohol påträffas kan personalen kräva att den tas bort eller förvara den för återlämning vid utcheckning (där tillåtet).",
+        "10.2 Upprepade eller allvarliga överträdelser kan leda till Avslut på grund av överträdelse enligt Bokningsvillkoren och avvisning från boendet."
+      ]
+    },
+    "s11": {
+      "title": "11. Olagliga eller farliga föremål",
+      "body": [
+        "11.1 Olagliga droger, vapen och farliga föremål är förbjudna.",
+        "11.2 Vi kan beslagta förbjudna föremål där det är tillåtet och/eller anmäla till myndigheter när det krävs."
+      ]
+    },
+    "s12": {
+      "title": "12. Vägglöss (gästens ansvar)",
+      "body": [
+        "12.1 Om du misstänker vägglöss, rapportera omedelbart. Byt inte rum/bädd och flytta inte linne eller mjuka föremål genom boendet utan personalens instruktioner.",
+        "12.2 Du kan behöva följa inneslutningsåtgärder (påse tillhörigheter, tvätt) för att förhindra spridning.",
+        "12.3 Kostnader för sanering regleras av Bokningsvillkoren och baseras på bevis och tillämplig lag."
+      ]
+    },
+    "s13": {
+      "title": "13. Utcheckning, sen utcheckning och tillhörigheter",
+      "body": [
+        "13.1 Utcheckningstid är 07:30–10:30 om du inte har skriftligt godkännande för sen utcheckning.",
+        "13.2 Sen utcheckning (om den erbjuds) är beroende av tillgänglighet och skriftlig bekräftelse, gäller till 12:00 och kostar EUR 40.",
+        "13.3 Om du inte checkar ut i tid kan vi: säkra dina tillhörigheter (packa och lagra dem på ett rimligt sätt); begränsa åtkomst till rum/gästområden; ta ut avgifter enligt Bokningsvillkoren.",
+        "13.4 Outhämtade tillhörigheter: kvarlämnade föremål kan förvaras i 30 dagar och därefter kasseras eller skänkas där det är lagligt."
+      ]
+    },
+    "s14": {
+      "title": "14. Tillämpning",
+      "body": [
+        "14.1 Vi kan utfärda varningar för mindre överträdelser.",
+        "14.2 Allvarliga eller upprepade överträdelser kan leda till avvisning och Avslut på grund av överträdelse enligt Bokningsvillkoren.",
+        "14.3 När avgifter tillkommer (skador, extra städning, avgifter) hanteras de enligt Bokningsvillkoren."
+      ]
+    }
+  }
+}

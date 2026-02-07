@@ -1,8 +1,10 @@
-import type { CollectionListComponent } from "@acme/types";
-import { Input } from "../../atoms/shadcn";
-import { useArrayEditor } from "./useArrayEditor";
-import type { EditorProps } from "./EditorProps";
 import { useTranslations } from "@acme/i18n";
+import type { CollectionListComponent } from "@acme/types";
+
+import { Input } from "../../atoms/shadcn";
+
+import type { EditorProps } from "./EditorProps";
+import { useArrayEditor } from "./useArrayEditor";
 
 type Props = EditorProps<CollectionListComponent>;
 

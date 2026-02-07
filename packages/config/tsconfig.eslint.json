@@ -4,6 +4,6 @@
     "noEmit": true,
     "rootDir": "."
   },
-  "include": ["src/**/*", "__tests__/**/*", "test/**/*"],
+  "include": ["src/**/*", "__tests__/**/*", "test/**/*", "env-schema.ts"],
   "exclude": ["dist", "node_modules"]
 }

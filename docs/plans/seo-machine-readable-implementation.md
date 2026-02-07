@@ -1,3 +1,13 @@
+---
+Type: Plan
+Status: Draft
+Domain: Platform
+Last-reviewed: 2026-01-17
+Relates-to charter: docs/runtime/runtime-charter.md
+Last-updated: 2026-01-17
+Last-updated-by: Codex
+---
+
 # SEO & Machine-Readable Implementation Plan
 
 > **Goal**: Achieve world-class SEO and AI/machine-readable capabilities across all customer-facing apps through automation and centralization.
@@ -497,7 +507,7 @@ export default async function robots() {
 // src/app/sitemap.ts
 import { generateSitemapRoute } from "@acme/seo/next";
 import { getShopSeoConfig } from "@acme/seo/config";
-import { getProducts } from "@platform-core/repositories/products.server";
+import { getProducts } from "@acme/platform-core/repositories/products.server";
 
 export default async function sitemap() {
   const shopId = process.env.NEXT_PUBLIC_SHOP_ID!;
@@ -781,3 +791,7 @@ CCBot           # Common Crawl (used by many AI)
 FacebookBot     # Meta AI
 Bytespider      # ByteDance AI
 ```
+
+## Active tasks
+
+- **SEO-01** - Create packages/seo directory structure and schema

@@ -6,8 +6,8 @@ jest.mock("resend", () => ({ Resend: ResendCtor }));
 describe("ResendProvider", () => {
   const realEnv = process.env;
   const realFetch = global.fetch;
-  let warnSpy: jest.SpyInstance;
-  let errorSpy: jest.SpyInstance;
+  let warnSpy: jest.SpiedFunction<typeof console.warn>;
+  let errorSpy: jest.SpiedFunction<typeof console.error>;
 
   const options = {
     to: "to@example.com",
@@ -18,7 +18,7 @@ describe("ResendProvider", () => {
 
   beforeEach(async () => {
     jest.resetModules();
-    const { logger } = await import("@acme/shared-utils");
+    const { logger } = await import("@acme/lib/logger");
     warnSpy = jest.fn();
     errorSpy = jest.fn();
     logger.warn = warnSpy as any;

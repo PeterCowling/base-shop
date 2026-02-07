@@ -1,6 +1,8 @@
-import { render, fireEvent, screen, waitFor, within, act } from "@testing-library/react";
 import type { ComponentProps } from "react";
+import { act,fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { z } from "zod";
+
+import InventoryForm from "../InventoryForm";
 
 jest.mock(
   "@/components/atoms/shadcn",
@@ -28,7 +30,7 @@ jest.mock(
   { virtual: true }
 );
 
-jest.mock("@platform-core/types/inventory", () => {
+jest.mock("@acme/platform-core/types/inventory", () => {
   const inventoryItemSchema = z
     .object({
       sku: z.string(),
@@ -44,10 +46,9 @@ jest.mock("@platform-core/types/inventory", () => {
   return { inventoryItemSchema };
 });
 
-import InventoryForm from "../InventoryForm";
 let capturedUpdateItem: (
   index: number,
-  field: keyof import("@platform-core/types/inventory").InventoryItem | `variantAttributes.${string}`,
+  field: keyof import("@acme/platform-core/types/inventory").InventoryItem | `variantAttributes.${string}`,
   value: string,
 ) => void;
 jest.mock("../InventoryRow", () => {

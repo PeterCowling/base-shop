@@ -1,18 +1,21 @@
 import "@testing-library/jest-dom";
-import { render, screen, fireEvent } from "@testing-library/react";
-import { act } from "react";
-import React from "react";
+
+import React, { act } from "react";
+import { fireEvent,render, screen } from "@testing-library/react";
+
+import { checkShopExists } from "@acme/lib";
+import { readPricing } from "@acme/platform-core/repositories/pricing.server";
 
 jest.mock("@acme/lib", () => ({
   checkShopExists: jest.fn(),
 }));
 
-jest.mock("@platform-core/repositories/pricing.server", () => ({
+jest.mock("@acme/platform-core/repositories/pricing.server", () => ({
   readPricing: jest.fn(),
 }));
 
 jest.mock(
-  "@ui/components/atoms/shadcn",
+  "@acme/design-system/shadcn",
   () => ({
     Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
     Textarea: (props: any) => <textarea {...props} />,
@@ -30,9 +33,6 @@ jest.mock(
   }),
   { virtual: true },
 );
-
-import { checkShopExists } from "@acme/lib";
-import { readPricing } from "@platform-core/repositories/pricing.server";
 
 const mockCheckShopExists = checkShopExists as jest.Mock;
 const mockReadPricing = readPricing as jest.Mock;
@@ -55,10 +55,8 @@ describe("PricingForm", () => {
     const fetchMock = jest
       .fn()
       .mockResolvedValue({ ok: true, json: async () => ({}) });
-    // @ts-expect-error assign global fetch for jsdom
-    global.fetch = fetchMock;
-    // @ts-expect-error assign window fetch
-    window.fetch = fetchMock;
+    (global as any).fetch = fetchMock;
+    (window as any).fetch = fetchMock;
 
     const { default: Page } = await import(
       "../src/app/cms/shop/[shop]/data/rental/pricing/page"
@@ -80,10 +78,8 @@ describe("PricingForm", () => {
     mockCheckShopExists.mockResolvedValueOnce(true);
     mockReadPricing.mockResolvedValueOnce(initial);
     const fetchMock = jest.fn();
-    // @ts-expect-error assign global fetch for jsdom
-    global.fetch = fetchMock;
-    // @ts-expect-error assign window fetch
-    window.fetch = fetchMock;
+    (global as any).fetch = fetchMock;
+    (window as any).fetch = fetchMock;
 
     const { default: Page } = await import(
       "../src/app/cms/shop/[shop]/data/rental/pricing/page"
@@ -110,10 +106,8 @@ describe("PricingForm", () => {
     mockCheckShopExists.mockResolvedValueOnce(true);
     mockReadPricing.mockResolvedValueOnce(initial);
     const fetchMock = jest.fn();
-    // @ts-expect-error assign global fetch for jsdom
-    global.fetch = fetchMock;
-    // @ts-expect-error assign window fetch
-    window.fetch = fetchMock;
+    (global as any).fetch = fetchMock;
+    (window as any).fetch = fetchMock;
 
     const { default: Page } = await import(
       "../src/app/cms/shop/[shop]/data/rental/pricing/page"

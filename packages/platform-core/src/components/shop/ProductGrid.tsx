@@ -1,15 +1,17 @@
 // src/components/shop/ProductGrid.tsx
 "use client";
 
-import type { SKU } from "@acme/types";
 import {
+  type HTMLAttributes,
   memo,
+  useEffect,
   useMemo,
   useRef,
   useState,
-  useEffect,
-  type HTMLAttributes,
 } from "react";
+
+import type { SKU } from "@acme/types";
+
 import { ProductCard } from "./ProductCard";
 
 type Props = {

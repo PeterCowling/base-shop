@@ -1,14 +1,18 @@
-import { renderHook, act } from "@testing-library/react";
+import { act,renderHook } from "@testing-library/react";
+
 import useFileDrop from "../src/components/cms/page-builder/hooks/useFileDrop";
 
 const onDropMock = jest.fn().mockResolvedValue(undefined);
-const useFileUploadMock = jest.fn(() => ({
+const useFileUploadMock = jest.fn((_opts?: unknown) => ({
   onDrop: onDropMock,
+  processDataTransfer: jest.fn(async () => "none"),
+  handleUpload: jest.fn(async () => {}),
+  isUploading: false,
   progress: null,
   isValid: true,
 }));
 
-jest.mock("@ui/hooks/useFileUpload", () => ({
+jest.mock("@acme/ui/hooks/useFileUpload", () => ({
   __esModule: true,
   default: function useFileUpload(opts: any) { return useFileUploadMock(opts); },
 }));
@@ -36,9 +40,15 @@ describe("useFileDrop", () => {
   it("dispatches add action on upload", () => {
     const dispatch = jest.fn();
     renderHook(() => useFileDrop({ shop: "shop", dispatch }));
-    const opts = useFileUploadMock.mock.calls[0][0];
+    const opts = useFileUploadMock.mock.calls[0]?.[0] as
+      | { onUploaded?: (item: { url: string; altText?: string }) => void }
+      | undefined;
+    const onUploaded = opts?.onUploaded;
+    if (!onUploaded) {
+      throw new Error("Expected useFileUpload to receive onUploaded");
+    }
     act(() => {
-      opts.onUploaded({ url: "u", altText: "a" });
+      onUploaded({ url: "u", altText: "a" });
     });
     expect(dispatch).toHaveBeenCalledWith(
       expect.objectContaining({ type: "add" })

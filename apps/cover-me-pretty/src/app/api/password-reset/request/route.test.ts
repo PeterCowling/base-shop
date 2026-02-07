@@ -26,7 +26,7 @@ describe("POST /api/password-reset/request", () => {
   });
 
   it("sends reset email for valid user", async () => {
-    jest.doMock("@platform-core/users", () => ({
+    jest.doMock("@acme/platform-core/users", () => ({
       __esModule: true,
       getUserByEmail: jest.fn().mockResolvedValue({ id: "u1", email: "a@b.com" }),
       setResetToken: jest.fn().mockResolvedValue(undefined),
@@ -39,14 +39,14 @@ describe("POST /api/password-reset/request", () => {
     const res = await POST(makeReq({ email: "a@b.com" }));
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({ ok: true });
-    const { setResetToken } = await import("@platform-core/users");
+    const { setResetToken } = await import("@acme/platform-core/users");
     const { sendEmail } = await import("@acme/email");
     expect((setResetToken as jest.Mock).mock.calls[0][0]).toBe("u1");
     expect((sendEmail as jest.Mock).mock.calls[0][0]).toBe("a@b.com");
   });
 
   it("returns ok for unknown email without leaking existence", async () => {
-    jest.doMock("@platform-core/users", () => ({
+    jest.doMock("@acme/platform-core/users", () => ({
       __esModule: true,
       getUserByEmail: jest.fn().mockRejectedValue(new Error("nope")),
       setResetToken: jest.fn(),
@@ -63,7 +63,7 @@ describe("POST /api/password-reset/request", () => {
     const env = process.env as Record<string, string | undefined>;
     env.NODE_ENV = "production";
     jest.resetModules();
-    jest.doMock("@platform-core/users", () => ({
+    jest.doMock("@acme/platform-core/users", () => ({
       __esModule: true,
       getUserByEmail: jest.fn().mockResolvedValue({ id: "u1", email: "a@b.com" }),
       setResetToken: jest.fn().mockResolvedValue(undefined),

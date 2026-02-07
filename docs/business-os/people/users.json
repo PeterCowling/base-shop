@@ -1,0 +1,32 @@
+{
+  "$schema": "./users.schema.json",
+  "users": [
+    {
+      "id": "pete",
+      "name": "Pete",
+      "email": "pete@business-os.local",
+      "role": "admin",
+      "passcodeHash": "$2a$10$9JI.fwCP9dBN9e3jrE.DL.AiF7gcqsE2hlWe9kJjTTlxKc0dLTpSa"
+    },
+    {
+      "id": "cristiana",
+      "name": "Cristiana",
+      "email": "cristiana@business-os.local",
+      "role": "admin",
+      "passcodeHash": "$2a$10$/reKXwS2aHYhSAcJUZtyEe40Ewf6LP.3hCAX.Z4N0N3IN6C7hOfCW"
+    },
+    {
+      "id": "avery",
+      "name": "Avery",
+      "email": "avery@business-os.local",
+      "role": "user",
+      "passcodeHash": "$2a$10$rUnjlaOlMPI.7lczNG129.A7iB40YZKmb1j/XxsgL3FAp31z9Q4Wy"
+    }
+  ],
+  "_devPasscodes": {
+    "_comment": "DEVELOPMENT ONLY - Remove in production",
+    "pete": "pete123",
+    "cristiana": "cristiana123",
+    "avery": "avery123"
+  }
+}

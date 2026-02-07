@@ -1,16 +1,21 @@
 import { jest } from "@jest/globals";
-import path from "path";
+import { spawn } from "child_process";
+import { readFileSync, writeFileSync } from "fs";
 import jwt from "jsonwebtoken";
+import path from "path";
 
-jest.mock("@acme/shared-utils", () => ({ logger: { warn: jest.fn() } }));
+import { logger } from "@acme/lib/logger";
+
+jest.mock("@acme/lib/logger", () => ({
+  logger: { warn: jest.fn() },
+}));
+jest.mock("@acme/lib/context", () => ({
+  withRequestContext: (_ctx: unknown, fn: () => unknown) => fn(),
+}));
 jest.mock("fs", () => ({ readFileSync: jest.fn(), writeFileSync: jest.fn() }));
 jest.mock("child_process", () => ({ spawn: jest.fn() }));
 
-import { logger } from "@acme/shared-utils";
-import { readFileSync, writeFileSync } from "fs";
-import { spawn } from "child_process";
-
-export { logger, readFileSync, writeFileSync, spawn, jwt };
+export { jwt,logger, readFileSync, spawn, writeFileSync };
 
 export const root = path.resolve(__dirname, "..", "../../../../../..");
 export const defaultShopId = "test-shop";

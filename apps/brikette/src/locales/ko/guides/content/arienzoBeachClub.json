@@ -3,6 +3,7 @@
     "title": "아리에조 비치 클럽 가이드",
     "description": "아리에조 비치 클럽을 위해 선베드를 예약하고, 300개 계단과 셔틀 보트 중에서 선택하며, 음식과 교통을 계획하세요."
   },
+  "lastUpdated": "2026-01-30T00:00:00.000Z",
   "linkLabel": "아리에조 비치 클럽 가이드",
   "intro": [
     "아리에조는 포지타노 동쪽에 자리해 오후 늦게까지 햇빛이 머무르고, 에메랄드빛 바다와 아말피 해안 도로에서 내려오는 극적인 계단을 갖추고 있습니다. 호스텔 브리켓에서 가장 쉽게 갈 수 있는 활기찬 리도이지만, 계단과 예약제 때문에 출발 전에 계획을 세우는 편이 좋습니다.",
@@ -37,6 +38,29 @@
       "body": [
         "아리에조는 스피아자 그란데의 혼잡을 벗어나 있으면서 호스텔 브리켓에서 가장 가까운 풀서비스 비치 클럽입니다. 절벽을 따라 층층이 자리한 테라스는 초저녁까지 햇빛을 받으며, 물은 수영하기에 맑게 유지되고, 바는 밤 문화로 치우치지 않으면서도 파티 분위기를 이어갑니다.",
         "일행에 따라 선베드와 점심이 포함된 패키지와 특별한 날을 위한 전면 덱을 나눠 예약할 수 있습니다. 조금만 계획하면 줄을 피하면서도 해 질 녘 테라스의 선셋 드링크 전에 호스텔로 돌아올 수 있습니다."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/02-arienzo-cliffs.webp",
+          "alt": "View over Arienzo bay with pebble beach under steep cliffs near Positano",
+          "caption": "Arienzo sits under the coastal road east of Positano. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:84017_Arienzo_SA,_Italy_-_panoramio_(1).jpg|Luigi Biondi% (%URL:https://creativecommons.org/licenses/by/3.0/|CC BY 3.0%)."
+        }
+      ]
+    },
+    {
+      "id": "when-to-go",
+      "title": "Best time to go (and when to skip it)",
+      "body": [
+        "Arienzo gets long afternoon sun, so it’s perfect if you want a slow start and still have light late. If you’re choosing between “morning sunbed marathon” and “easy golden hour”, Arienzo is the golden‑hour pick.",
+        "Avoid very windy days with rough seas. Shuttle boats can pause and swimming gets choppy. If it looks wild, swap to a more sheltered plan (or do a town day and save Arienzo for a calm afternoon).",
+        "In high season, weekends sell out first. Book ahead and choose a vibe that matches your energy: early for more swim time, late for sunset feels."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/05-amalfi-coast-positano.webp",
+          "alt": "View along the Amalfi Coast near Positano with cliffs and sea in afternoon light",
+          "caption": "Afternoon light is the reason to choose this side of Positano. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Amalfi_Coast_(Positano).jpg|Ron Clausen% (%URL:https://creativecommons.org/licenses/by-sa/2.0/|CC BY-SA 2.0%)."
+        }
       ]
     },
     {
@@ -46,6 +70,27 @@
         "가장 쉬운 방법은 스피아자 그란데에서 출발하는 아리에조 비치 클럽 셔틀 보트를 이용하는 것입니다. 보트는 09:30부터 대략 30분 간격으로 운행하며, 마지막 출항은 13:30 무렵입니다. 예약 확인 메일에는 QR 코드가 포함되어 있으니 부두에서 제시하고, 돌아오는 시간표도 바로 확인하세요.",
         "보트를 피하고 싶다면 도보 이동도 가능합니다. 호스텔에서 도보 10분 아래에 있는 스폰다 정류장에서 아말피 방향 SITA 버스를 타고, 아리에조 표지판이 있는 정류장에서 하차하세요. 그곳에서 레몬 테라스를 따라 300개의 계단을 내려가면 클럽 입구에 도착합니다.",
         "자동차나 스쿠터로 가는 것은 추천하지 않습니다. 주차 공간이 극히 제한되어 있고, 커브를 막는 차량에는 교통경찰이 벌금을 부과합니다."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/04-positano-beach.webp",
+          "alt": "Spiaggia Grande in Positano with colourful umbrellas and boats in the bay",
+          "caption": "Spiaggia Grande is often the shuttle boat’s starting point. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Positano_Beach_(42919362342).jpg|Chris% (%URL:https://creativecommons.org/licenses/by/2.0/|CC BY 2.0%)."
+        }
+      ]
+    },
+    {
+      "id": "stairs",
+      "title": "Stairs & accessibility (what 300 steps feels like)",
+      "body": [
+        "The stairs are real. They’re steep, uneven in places, and feel worse on the way up because you’re wet and salty. If you hate stairs or you’re carrying heavy, choose the boat and pack light.",
+        "Wear shoes with grip (trainers or sturdy sandals) and carry weight in a backpack. Take breaks on the landings — everyone does.",
+        "If someone has knee pain or an injury, make Arienzo a “boat‑only” day. Otherwise the steps can ruin your evening."
+      ],
+      "list": [
+        "Down: fine if you go slow and use the shade.",
+        "Up: allow 15–25 minutes depending on heat and fitness.",
+        "Late: feels harder — agree your return plan early."
       ]
     },
     {
@@ -55,6 +100,18 @@
         "메인 덱은 아리에조 비치 클럽 전용 구역으로 주황색 선베드, 타월 서비스, 담수 샤워, 활기찬 바가 갖춰져 있습니다. 보트 선착장 옆 오른편에 작은 무료 구역이 있지만 10:30 이후에는 자리가 거의 없고, 모든 장비를 들고 계단을 내려와야 한다는 점은 동일합니다.",
         "여름에는 절벽 그림자가 드리우기 전까지 첫 두 줄이 약 17:30까지 햇빛을 받습니다. 하루 종일 일광욕을 즐기고 싶다면 빛의 각도가 바뀔 때 직원에게 파라솔 각도를 조정해 달라고 요청하세요.",
         "담수 샤워, 락커, 탈의실은 일일 패키지에 포함되어 있습니다. 와이파이는 고르지 않으니 음악 플레이리스트나 페리 정보를 미리 다운로드해 두세요."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/01-beach-layout.webp",
+          "alt": "Layout diagram of Arienzo Beach Club with main deck and small free area near the boat landing",
+          "caption": "Layout: main deck (orange loungers, bar, and showers) + a small free area by the boat landing."
+        },
+        {
+          "src": "/img/guides/arienzo-beach/03-positano-umbrellas.webp",
+          "alt": "Rows of beach umbrellas on a pebble beach in Positano",
+          "caption": "Expect lido style: umbrellas, loungers, and table service. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Beach_Umbrellas_in_Positano_(41158690680).jpg|Chris% (%URL:https://creativecommons.org/licenses/by/2.0/|CC BY 2.0%)."
+        }
       ]
     },
     {
@@ -64,6 +121,37 @@
         "기본 데이베드는 두 사람 기준 약 €70부터 시작하며 파라솔, 타월, 웰컴 드링크 2잔, 셔틀 보트가 포함됩니다. 전면 플랫폼과 프레스티지 카바나는 시기에 따라 €120–€200까지 올라갑니다.",
         "점심은 12:30부터 제공되며 해산물 파스타, 샐러드, 그릴 메인이 준비됩니다. 1인 메뉴는 €18–€28 수준이며, 14:00 혼잡을 피하려면 체크인할 때 미리 테이블을 예약하세요.",
         "예약은 아리에조 공식 웹사이트 또는 WhatsApp 메시지로 진행됩니다. 결제 정보를 입력해야 자리가 확정되며, 48시간 이내 취소 시 수수료가 부과되는 경우가 많으니 날씨와 페리 일정을 먼저 확인하세요."
+      ]
+    },
+    {
+      "id": "what-to-pack",
+      "title": "What to pack (so the stairs don’t punish you)",
+      "body": [
+        "Treat it like a mini hike to a beach club. The less you carry, the better the day feels — especially on the way back up.",
+        "If you’re taking the boat you can bring a bit more. If you’re taking the stairs, stick to essentials and avoid heavy or fragile stuff."
+      ],
+      "list": [
+        "Water shoes or grippy sandals (pebbles + wet steps).",
+        "Small dry bag / zip pouch (phone, cash, tickets).",
+        "Refillable bottle (the climb dehydrates).",
+        "Reef‑safe sunscreen + sunglasses (strong glare).",
+        "A light layer for the ride back (breeze after swimming)."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/06-positano-umbrellas-panorama.webp",
+          "alt": "Panoramic view of Positano’s umbrellas and the town climbing the cliffs",
+          "caption": "Pack light and plan your exit so you can enjoy the view without stress. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Positano_Beach_Umbrellas_-_panoramio.jpg|Mauro% (%URL:https://creativecommons.org/licenses/by-sa/3.0/|CC BY-SA 3.0%)."
+        }
+      ]
+    },
+    {
+      "id": "sea-conditions",
+      "title": "If the boat cancels (a Plan B that works)",
+      "body": [
+        "On windy days, rough seas can pause the shuttle boats. Don’t panic — switch to land logistics.",
+        "If you’re already at Arienzo, the safe option is to walk up to the road and take the next bus or a taxi. Build in buffer, especially later when buses may pass by full.",
+        "If you haven’t left yet and the sea looks rough, choose a beach with easier logistics (see %LINK:positanoBeaches|our beach overview%) or a “no boat needed” option like %LINK:fornilloBeachGuide|Fornillo Beach%."
       ]
     },
     {
@@ -92,7 +180,7 @@
   "tips": [
     "예약 확인서를 스크린샷으로 저장하세요. 계단과 부두에서는 모바일 신호가 약해집니다.",
     "재사용 가능한 물병을 챙기면 바에서 리필할 수 있어 더운 날 비용을 아낄 수 있습니다.",
-    "%LINK:positanoBeaches|beaches overview%에서 더 조용하거나 무료인 해안 옵션을 비교해 보세요."
+    "%LINK:positanoBeaches|포지타노 해변 개요%에서 더 조용하거나 무료인 해안 옵션을 비교해 보세요."
   ],
   "warningsTitle": "알아두면 좋아요",
   "warnings": [
@@ -121,21 +209,5 @@
       ]
     }
   ],
-  "gallery": {
-    "title": "아리엔초 사진 하이라이트",
-    "items": [
-      {
-        "alt": "아리엔초 비치클럽 테라스",
-        "caption": "절벽 위 데크와 주황색 선베드"
-      },
-      {
-        "alt": "아리엔초 셔틀 보트 선착장",
-        "caption": "스피아자 그란데에서 탑승하는 셔틀"
-      },
-      {
-        "alt": "아리엔초로 내려가는 계단",
-        "caption": "레몬 테라스를 지나는 300개 계단"
-      }
-    ]
-  }
+  "galleryHeading": "Arienzo photo highlights"
 }

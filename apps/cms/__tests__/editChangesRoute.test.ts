@@ -6,11 +6,11 @@ describe("/api/edit-changes", () => {
   });
 
   test("returns 401 for unauthorized", async () => {
-    jest.doMock("@auth", () => ({
+    jest.doMock("@acme/auth", () => ({
       __esModule: true,
       requirePermission: jest.fn().mockRejectedValue(new Error("no")),
     }));
-    jest.doMock("@platform-core/repositories/settings.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/settings.server", () => ({
       __esModule: true,
       diffHistory: jest.fn(),
     }));
@@ -21,11 +21,11 @@ describe("/api/edit-changes", () => {
   });
 
   test("aggregates changed components", async () => {
-    jest.doMock("@auth", () => ({
+    jest.doMock("@acme/auth", () => ({
       __esModule: true,
       requirePermission: jest.fn(),
     }));
-    jest.doMock("@platform-core/repositories/settings.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/settings.server", () => ({
       __esModule: true,
       diffHistory: jest.fn().mockResolvedValue([
         { diff: { pages: { p1: { components: ["Hero", "Banner"] } } } },

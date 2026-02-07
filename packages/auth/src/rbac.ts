@@ -1,10 +1,10 @@
 // packages/auth/src/rbac.ts
 
 import {
-  READ_ROLES,
-  WRITE_ROLES,
   isRole,
+  READ_ROLES,
   type Role,
+  WRITE_ROLES,
 } from "./types/roles";
 
 export { READ_ROLES, WRITE_ROLES };

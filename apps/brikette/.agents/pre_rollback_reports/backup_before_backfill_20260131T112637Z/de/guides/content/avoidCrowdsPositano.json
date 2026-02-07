@@ -1,0 +1,56 @@
+{
+  "seo": {
+    "title": "So entgehst du den Massen in Positano (abseits der Pfade)",
+    "description": "Timing, ruhige Routen, alternative Orte und clevere Fotospots, um Positano ohne Warteschlangen zu erleben."
+  },
+  "linkLabel": "So entgehst du den Massen in Positano (abseits der Pfade)",
+  "intro": [
+    "Weniger Trubel in Positano gelingt mit gutem Timing, versteckten Gassen und dem Wissen, wann sich ein Abstecher in ruhigere Orte lohnt."
+  ],
+  "sections": [
+    {
+      "id": "timing",
+      "title": "Gutes Timing",
+      "body": [
+        "Besuche Spiaggia Grande oder die Hauptaussichtspunkte zum Sonnenaufgang oder zur Golden Hour; späte Mittagessen (nach 14:30) umgehen den größten Andrang.",
+        "Leg mittags eine Schattenpause oder Siesta ein – die meisten Tagesgäste füllen die Gassen zwischen 10:00 und 16:00."
+      ]
+    },
+    {
+      "id": "routes",
+      "title": "Routen & ruhige Spots",
+      "body": [
+        "Nutze den oberen Fußweg zwischen Chiesa Nuova und Sponda für Balkonblicke ohne das Nadelöhr Via dei Mulini.",
+        "Weiche an den Strand Fornillo oder den Aussichtspunkt Via Positanesi d’America aus, um entspannter zu baden und zu fotografieren."
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Alternative Basen",
+      "body": [
+        "Praiano und Cetara bieten ruhigere Abende, einfache Sunset-Spots und günstigere Mahlzeiten bei gleichbleibendem Küstenblick.",
+        "Ravellos Gärten oder Agerolas Bergdörfer eignen sich als Tagesausflug, wenn Positano überfüllt wirkt."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Wann ist die Spiaggia Grande ruhig?",
+      "a": [
+        "Vor 09:00 oder nach 18:30 findest du Platz und weiches Licht fürs Fotografieren – Handtuch einpacken und früh da sein."
+      ]
+    },
+    {
+      "q": "Wo kann ich ohne Menschenmengen fotografieren?",
+      "a": [
+        "Geh die Via Cristoforo Colombo hinauf für höhere Terrassen oder nimm den Bus nach Nocelle für weite Panoramen des Path of the Gods."
+      ]
+    },
+    {
+      "q": "Sollte ich außerhalb von Positano übernachten, um Ruhe zu haben?",
+      "a": [
+        "Ja, wenn du ruhigere Abende bevorzugst – Praiano, Minori oder Agerola sind günstiger, und du kannst tagsüber mit Bus oder Fähre nach Positano fahren."
+      ]
+    }
+  ]
+}

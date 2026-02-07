@@ -1,8 +1,10 @@
-/* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
-import { BASE_URL } from "@/config/site";
-import { ORG_ID, buildHotelNode } from "@/utils/schema";
-import IMAGE_MANIFEST from "@/data/imageManifest";
+ 
 import { memo } from "react";
+
+import { BASE_URL } from "@/config/site";
+import IMAGE_MANIFEST from "@/data/imageManifest";
+import { buildHotelNode,ORG_ID } from "@/utils/schema";
+import { serializeJsonLdValue } from "@/utils/seo/jsonld";
 
 const { name, sameAs } = buildHotelNode();
 const logoPath = "/img/hostel_brikette_icon.png" as const;
@@ -16,7 +18,7 @@ const logoNode = logoMeta
     }
   : `${BASE_URL}${logoPath}`;
 
-const orgJson = JSON.stringify({
+const orgJson = serializeJsonLdValue({
   "@context": "https://schema.org",
   "@type": "Organization",
   "@id": ORG_ID,

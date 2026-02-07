@@ -1,88 +1,90 @@
 import { z } from "zod";
-import { localeSchema } from "../Product";
+
 import type { Locale } from "../constants";
+import { localeSchema } from "../Product";
+
 import {
-  imageComponentSchema,
-  textComponentSchema,
-  customHtmlComponentSchema,
   buttonComponentSchema,
+  customHtmlComponentSchema,
   dividerComponentSchema,
+  imageComponentSchema,
   spacerComponentSchema,
+  textComponentSchema,
 } from "./atoms";
 import {
+  bindComponentSchema,
+  bindPageComponentSchema,
+  carouselContainerComponentSchema,
+  datasetComponentSchema,
+  footerComponentSchema,
+  gridContainerComponentSchema,
+  headerComponentSchema,
+  multiColumnComponentSchema,
+  repeaterComponentSchema,
+  sectionComponentSchema,
+  stackFlexComponentSchema,
+  tabsAccordionContainerComponentSchema,
+  tabsComponentSchema,
+} from "./layouts";
+import {
   announcementBarComponentSchema,
-  valuePropsComponentSchema,
-  reviewsCarouselComponentSchema,
   contactFormComponentSchema,
-  headerCartComponentSchema,
-  newsletterSignupComponentSchema,
-  searchBarComponentSchema,
-  mapBlockComponentSchema,
-  videoBlockComponentSchema,
-  faqBlockComponentSchema,
   countdownTimerComponentSchema,
-  socialLinksComponentSchema,
+  faqBlockComponentSchema,
+  headerCartComponentSchema,
+  mapBlockComponentSchema,
+  newsletterSignupComponentSchema,
+  reviewsCarouselComponentSchema,
+  searchBarComponentSchema,
   socialFeedComponentSchema,
+  socialLinksComponentSchema,
   socialProofComponentSchema,
+  valuePropsComponentSchema,
+  videoBlockComponentSchema,
 } from "./molecules";
 import {
-  heroBannerComponentSchema,
-  productGridComponentSchema,
-  productCarouselComponentSchema,
-  recommendationCarouselComponentSchema,
-  galleryComponentSchema,
-  lookbookComponentSchema,
-  campaignHeroSectionComponentSchema,
-  promoTilesSectionComponentSchema,
-  showcaseSectionComponentSchema,
-  reviewsSectionComponentSchema,
-  crossSellSectionComponentSchema,
-  imageSliderComponentSchema,
-  contactFormWithMapComponentSchema,
-  storeLocatorBlockComponentSchema,
-  blogListingComponentSchema,
-  testimonialsComponentSchema,
-  pricingTableComponentSchema,
-  testimonialSliderComponentSchema,
-  giftCardBlockComponentSchema,
-  popupModalComponentSchema,
-  collectionListComponentSchema,
-  featuredProductComponentSchema,
-  productComparisonComponentSchema,
-  formBuilderBlockComponentSchema,
-  productBundleComponentSchema,
-  productFilterComponentSchema,
-  financingBadgeComponentSchema,
-  certificateCheckComponentSchema,
-  policiesAccordionComponentSchema,
-  stickyBuyBarComponentSchema,
-  pdpDetailsSectionComponentSchema,
-  guidedSellingSectionComponentSchema,
-  cartSectionComponentSchema,
-  checkoutSectionComponentSchema,
-  thankYouSectionComponentSchema,
-  storeLocatorSectionComponentSchema,
-  emailReferralSectionComponentSchema,
-  dsarSectionComponentSchema,
-  ageGateSectionComponentSchema,
   accountSectionComponentSchema,
+  ageGateSectionComponentSchema,
+  blogListingComponentSchema,
+  campaignHeroSectionComponentSchema,
+  cartSectionComponentSchema,
+  certificateCheckComponentSchema,
+  checkoutSectionComponentSchema,
+  collectionListComponentSchema,
+  contactFormWithMapComponentSchema,
+  crossSellSectionComponentSchema,
+  dsarSectionComponentSchema,
+  emailReferralSectionComponentSchema,
+  featuredProductComponentSchema,
+  financingBadgeComponentSchema,
+  formBuilderBlockComponentSchema,
+  galleryComponentSchema,
+  giftCardBlockComponentSchema,
+  guidedSellingSectionComponentSchema,
+  heroBannerComponentSchema,
+  imageSliderComponentSchema,
+  lookbookComponentSchema,
+  pdpDetailsSectionComponentSchema,
+  policiesAccordionComponentSchema,
+  popupModalComponentSchema,
+  pricingTableComponentSchema,
+  productBundleComponentSchema,
+  productCarouselComponentSchema,
+  productComparisonComponentSchema,
+  productFilterComponentSchema,
+  productGridComponentSchema,
+  promoTilesSectionComponentSchema,
+  recommendationCarouselComponentSchema,
   rentalManageSectionComponentSchema,
+  reviewsSectionComponentSchema,
+  showcaseSectionComponentSchema,
+  stickyBuyBarComponentSchema,
+  storeLocatorBlockComponentSchema,
+  storeLocatorSectionComponentSchema,
+  testimonialsComponentSchema,
+  testimonialSliderComponentSchema,
+  thankYouSectionComponentSchema,
 } from "./organisms";
-import {
-  headerComponentSchema,
-  footerComponentSchema,
-  sectionComponentSchema,
-  multiColumnComponentSchema,
-  tabsComponentSchema,
-  stackFlexComponentSchema,
-  gridContainerComponentSchema,
-  carouselContainerComponentSchema,
-  tabsAccordionContainerComponentSchema,
-  bindPageComponentSchema,
-  datasetComponentSchema,
-  repeaterComponentSchema,
-  bindComponentSchema,
-} from "./layouts";
 
 // Add an explicit annotation to prevent TS from attempting to serialize the
 // enormous inferred discriminated union type (TS7056).
@@ -251,8 +253,7 @@ export const historyStateSchema = z
             .optional(),
         })
       )
-      .default({})
-      .optional(),
+      .default({}),
   })
   .passthrough()
   .default({ past: [], present: [], future: [], gridCols: 12, editor: {} }) as unknown as z.ZodType<HistoryState>;
@@ -278,7 +279,6 @@ export interface Page {
     title: Partial<Record<Locale, string>>;
     description?: Partial<Record<Locale, string>>;
     image?: Partial<Record<Locale, string>>;
-    /** When true, exclude from sitemaps and add robots noindex. */
     noindex?: boolean;
   };
   createdAt: string;
@@ -316,5 +316,5 @@ export const pageSchema = z
 export { localeSchema };
 
 
-export { scaffoldSpecSchema } from "./ScaffoldSpec";
 export type { ScaffoldSpec } from "./ScaffoldSpec";
+export { scaffoldSpecSchema } from "./ScaffoldSpec";

@@ -2,7 +2,8 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { logAnalyticsEvent } from "@platform-core/analytics/client";
+
+import { logAnalyticsEvent } from "@acme/platform-core/analytics/client";
 
 export default function CheckoutAnalytics({ locale }: { locale: string }) {
   const pathname = usePathname();

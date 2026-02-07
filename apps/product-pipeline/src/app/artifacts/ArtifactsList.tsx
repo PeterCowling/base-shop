@@ -1,7 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { Cluster, Grid, Stack } from "@ui/components/atoms/primitives";
+
+import { Cluster, Grid, Stack } from "@acme/design-system/primitives";
+
+import { resolveStageLabel } from "@/lib/stage-labels";
+
 import type { ArtifactEntry, ArtifactsStrings } from "./types";
 import { resolveArtifactHref, safeTimestamp } from "./types";
 
@@ -55,6 +59,15 @@ export default function ArtifactsList({
               artifact,
               strings.notAvailable,
             );
+            const stageLabel = resolveStageLabel(
+              artifact.stage,
+              strings.stageLabels,
+              strings.notAvailable,
+            );
+            const stageDisplay =
+              artifact.stage && strings.stageLabels[artifact.stage]
+                ? `${stageLabel} (${artifact.stage})`
+                : stageLabel;
             const candidateId = artifact.candidateId;
             return (
               <div
@@ -70,7 +83,7 @@ export default function ArtifactsList({
                       {candidateLabel}
                     </span>
                     <span className="text-xs text-foreground/60">
-                      {strings.fields.stage}: {formatText(artifact.stage, strings.notAvailable)}
+                      {strings.fields.stage}: {stageDisplay}
                     </span>
                   </Stack>
                   <Stack gap={2} className="items-end text-xs">

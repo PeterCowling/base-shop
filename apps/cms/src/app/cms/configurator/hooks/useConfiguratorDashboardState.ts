@@ -4,17 +4,38 @@
 // Docs: docs/cms/configurator-contract.md
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import {
-  configuratorStateSchema,
-  type ConfiguratorState,
-} from "../../wizard/schema";
-import type { ConfiguratorStep } from "../types";
-import { useConfiguratorPersistence } from "./useConfiguratorPersistence";
-import { useLaunchShop } from "./useLaunchShop";
-import { calculateConfiguratorProgress } from "../lib/progress";
-import { useLayout } from "@platform-core/contexts/LayoutContext";
-import { getRequiredSteps, getSteps, getStepsMap } from "../steps";
+
 import { useTranslations } from "@acme/i18n";
+import { getCsrfToken } from "@acme/lib/security";
+import { useLayout } from "@acme/platform-core/contexts/LayoutContext";
+import type { DeployShopResult } from "@acme/platform-core/createShop/deployTypes";
+import { track } from "@acme/telemetry";
+import type { ConfiguratorProgress as ServerConfiguratorProgress , Environment } from "@acme/types";
+import { REQUIRED_CONFIG_CHECK_STEPS } from "@acme/types/configuratorSteps";
+import { useToast } from "@acme/ui/operations";
+
+import {
+  deriveShopHealth,
+  type ShopHealthSummary,
+} from "../../../lib/shopHealth";
+import {
+  type ConfiguratorState,
+  configuratorStateSchema,
+} from "../../wizard/schema";
+import { calculateConfiguratorProgress } from "../lib/progress";
+import { getRequiredSteps, getSteps, getStepsMap } from "../steps";
+import type { ConfiguratorStep } from "../types";
+
+import { getFailedStepLink } from "./dashboard/failedStepLink";
+import { buildHeroData } from "./dashboard/heroData";
+import {
+  buildLaunchChecklist,
+  calculateProgressFromServer,
+  isLaunchReady,
+} from "./dashboard/launchChecklist";
+import { computeStepGroups } from "./dashboard/stepGroups";
+import { buildTimeToLaunch } from "./dashboard/timeToLaunch";
+import { buildTrackProgress } from "./dashboard/trackProgress";
 import type {
   ConfiguratorHeroData,
   LaunchChecklistItem,
@@ -22,26 +43,8 @@ import type {
   LaunchPanelData,
   TrackProgressItem,
 } from "./dashboard/types";
-import { computeStepGroups } from "./dashboard/stepGroups";
-import { buildHeroData } from "./dashboard/heroData";
-import { buildTrackProgress } from "./dashboard/trackProgress";
-import { getFailedStepLink } from "./dashboard/failedStepLink";
-import type { ConfiguratorProgress as ServerConfiguratorProgress } from "@acme/types";
-import { REQUIRED_CONFIG_CHECK_STEPS } from "@platform-core/configurator";
-import {
-  deriveShopHealth,
-  type ShopHealthSummary,
-} from "../../../lib/shopHealth";
-import type { Environment } from "@acme/types";
-import type { DeployShopResult } from "@platform-core/createShop/deployTypes";
-import { track } from "@acme/telemetry";
-import {
-  buildLaunchChecklist,
-  calculateProgressFromServer,
-  isLaunchReady,
-} from "./dashboard/launchChecklist";
-import { buildTimeToLaunch } from "./dashboard/timeToLaunch";
-import { getCsrfToken } from "@acme/shared-utils";
+import { useConfiguratorPersistence } from "./useConfiguratorPersistence";
+import { useLaunchShop } from "./useLaunchShop";
 
 type LaunchGateApi = {
   gate: {
@@ -63,19 +66,12 @@ type LaunchGateApi = {
   };
 };
 
-interface ToastState {
-  open: boolean;
-  message: string;
-}
-
 export function useConfiguratorDashboardState(): {
   state: ConfiguratorState;
   steps: ConfiguratorStep[];
   skipStep: (stepId: string) => void;
   resetStep: (stepId: string) => void;
   onStepClick: (step: ConfiguratorStep) => void;
-  toast: ToastState;
-  dismissToast: () => void;
   heroData: ConfiguratorHeroData;
   trackProgress: TrackProgressItem[];
   launchPanelData: LaunchPanelData;
@@ -87,7 +83,7 @@ export function useConfiguratorDashboardState(): {
   const [state, setState] = useState<ConfiguratorState>(
     configuratorStateSchema.parse({})
   );
-  const [toast, setToast] = useState<ToastState>({ open: false, message: "" });
+  const toast = useToast();
   const [shopHealth, setShopHealth] = useState<ShopHealthSummary | null>(null);
   const [quickLaunchBusy, setQuickLaunchBusy] = useState(false);
   const [launchEnv, setLaunchEnv] = useState<Environment>("stage");
@@ -303,12 +299,8 @@ export function useConfiguratorDashboardState(): {
 
   const quickLaunch = useCallback(() => {
     if (!state.shopId) {
-      setToast({
-        open: true,
-        message:
-          // i18n-exempt -- CMS-2134 helper text; surfaced in EN-only dashboard [ttl=2026-03-31]
-          "Set a shop ID and basic details in the configurator before using quick launch.",
-      });
+      // i18n-exempt -- CMS-2134 helper text; surfaced in EN-only dashboard [ttl=2026-03-31]
+      toast.warning("Set a shop ID and basic details in the configurator before using quick launch.");
       return;
     }
     if (quickLaunchBusy) return;
@@ -350,12 +342,8 @@ export function useConfiguratorDashboardState(): {
         void markStepComplete(step.id, "complete");
       });
 
-      setToast({
-        open: true,
-        message:
-          // i18n-exempt -- CMS-2134 helper text; surfaced in EN-only dashboard [ttl=2026-03-31]
-          "Quick-launch defaults applied. Review steps or run launch when you are ready.",
-      });
+      // i18n-exempt -- CMS-2134 helper text; surfaced in EN-only dashboard [ttl=2026-03-31]
+      toast.success("Quick-launch defaults applied. Review steps or run launch when you are ready.");
 
       // Trigger a server-side refresh of configuration checks for this shop.
       void fetch(
@@ -366,7 +354,7 @@ export function useConfiguratorDashboardState(): {
     } finally {
       setQuickLaunchBusy(false);
     }
-  }, [state, tFunc, markStepComplete, quickLaunchBusy]);
+  }, [state, tFunc, markStepComplete, quickLaunchBusy, toast]);
 
   const onStepClick = useCallback(
     (step: ConfiguratorStep) => {
@@ -374,15 +362,12 @@ export function useConfiguratorDashboardState(): {
         (id) => !state?.completed?.[id]
       );
       if (missing.length > 0) {
-        setToast({
-          open: true,
-          message: `Recommended to complete: ${missing
-            .map((id) => stepMap[id]?.label ?? id)
-            .join(", ")}`,
-        });
+        toast.info(`Recommended to complete: ${missing
+          .map((id) => stepMap[id]?.label ?? id)
+          .join(", ")}`);
       }
     },
-    [setToast, state?.completed, stepMap]
+    [toast, state?.completed, stepMap]
   );
 
   const {
@@ -397,12 +382,9 @@ export function useConfiguratorDashboardState(): {
   } = useLaunchShop(state, {
     env: launchEnv,
     onIncomplete: (missing) =>
-      setToast({
-        open: true,
-        message: `Complete required steps: ${missing
-          .map((s) => s.label)
-          .join(", ")}`,
-      }),
+      toast.warning(`Complete required steps: ${missing
+        .map((s) => s.label)
+        .join(", ")}`),
   });
 
   useEffect(() => {
@@ -486,18 +468,15 @@ export function useConfiguratorDashboardState(): {
         launchGate &&
         launchGate.prodAllowed === false
       ) {
-        setToast({
-          open: true,
-          message: String(
-            tFunc("cms.configurator.launchPanel.stageGate.toast") ??
-              "Deploy to Stage, pass smoke, and confirm QA before launching Prod.",
-          ),
-        });
+        toast.warning(String(
+          tFunc("cms.configurator.launchPanel.stageGate.toast") ??
+            "Deploy to Stage, pass smoke, and confirm QA before launching Prod.",
+        ));
         return;
       }
       setLaunchEnv(next);
     },
-    [launchGate, setToast, tFunc],
+    [launchGate, toast, tFunc],
   );
 
   const groups = useMemo(
@@ -635,18 +614,12 @@ export function useConfiguratorDashboardState(): {
     qaAckError,
   };
 
-  const dismissToast = useCallback(() => {
-    setToast({ open: false, message: "" });
-  }, [setToast]);
-
   return {
     state,
     steps,
     skipStep,
     resetStep,
     onStepClick,
-    toast,
-    dismissToast,
     heroData,
     trackProgress,
     launchPanelData,
@@ -660,10 +633,10 @@ export function useConfiguratorDashboardState(): {
 export default useConfiguratorDashboardState;
 
 export type {
-  QuickStat,
-  HeroResumeCta,
   ConfiguratorHeroData,
-  TrackProgressItem,
-  LaunchPanelData,
+  HeroResumeCta,
   LaunchErrorLink,
+  LaunchPanelData,
+  QuickStat,
+  TrackProgressItem,
 } from "./dashboard/types";

@@ -1,11 +1,11 @@
 {
-  "title": "परिवहन जानकारी हमेशा सत्यापित करें",
+  "title": "सभी परिवहन विवरण सद्भावना में प्रदान किए गए हैं। खासकर यदि आपके आगे कनेक्शन या समय-संवेदनशील प्रतिबद्धताएँ हैं, तो हमेशा आधिकारिक टाइमटेबल और ट्रैवल बुलेटिन/सेवा अपडेट जाँचें। संबंधित प्रदाताओं के टाइमटेबल लिंक नीचे दिए गए हैं।",
   "items": {
-    "buses": "अनुवाद तैयार किया जा रहा है।",
-    "ferries": "फेरी: ऑपरेटर मौसमी मार्ग और समय प्रकाशित करते हैं (मौसम पर निर्भर)। <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink> देखें।",
-    "airlink": "अनुवाद तैयार किया जा रहा है।",
+    "buses": "बस: <sitaLink>अमाल्फ़ी कोस्ट</sitaLink> और <curreriLink>नेपल्स एयरपोर्ट ⇄ सोरेंटो</curreriLink>।",
+    "ferries": "फेरी: प्रदाताओं में <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink>, <positanoJetLink>Positano Jet</positanoJetLink>, <alicostLink>Alicost</alicostLink> शामिल हैं।",
+    "airlink": "Salerno Costa d’Amalfi (QSR) एयरपोर्ट, <airlinkLink>Salerno के लिए Airlink शटल</airlinkLink>.",
     "driving": "ड्राइविंग: SS163 पर वैकल्पिक नंबर प्लेट नियम (अप्रैल–अक्टूबर) और ZTL; पार्किंग शुल्क मौसम और स्थान पर निर्भर। आधिकारिक नोटिस जाँचें।",
-    "premium": "प्रीमियम या मौसमी सेवाएँ: Uber Boat और हेलीकॉप्टर चार्टर गर्मियों में सीमित शेड्यूल पर चलते हैं — मौजूदा उपलब्धता की पुष्टि करें।"
+    "trains": "ट्रेन: <eavLink>Circumvesuviana</eavLink> (Naples ⇄ Sorrento), <trenitaliaLink>Trenitalia</trenitaliaLink> (मुख्य-लाइन ट्रेनें)।"
   },
   "srLabel": "परिवहन नोटिस"
 }

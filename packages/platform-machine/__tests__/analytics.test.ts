@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
-import * as path from 'path';
 import * as os from 'os';
+import * as path from 'path';
 
 jest.mock('@acme/date-utils', () => ({
   nowIso: () => '2024-01-01T00:00:00.000Z',
@@ -61,7 +61,7 @@ describe('analytics provider resolution', () => {
     getShopSettings.mockResolvedValue({
       analytics: { provider: 'console', enabled: true },
     });
-    const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const logSpy = jest.spyOn(console, 'debug').mockImplementation(() => {});
     const { trackEvent } = await import('@acme/platform-core/analytics');
     await trackEvent(shop, { type: 'page_view', page: 'home' });
     expect(logSpy).toHaveBeenCalledWith(

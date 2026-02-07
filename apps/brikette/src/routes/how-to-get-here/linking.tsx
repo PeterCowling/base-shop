@@ -1,9 +1,9 @@
-import clsx from "clsx";
 import { Fragment, type ReactNode } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
+import clsx from "clsx";
 
-import { guideHref } from "@/routes.guides-helpers";
 import type { LinkBinding, LinkTarget } from "@/lib/how-to-get-here/definitions";
+import { guideHref, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
 
 import type { LinkContext, RenderContext } from "./types";
 
@@ -39,7 +39,13 @@ export function resolveLinkTarget(
     case "guide":
       return { type: "internal", to: guideHref(ctx.lang, target.guideKey) };
     case "guidesSlug":
-      return { type: "internal", to: `/${ctx.lang}/${ctx.guidesSlug}/${target.slug}` };
+      {
+        const key = resolveGuideKeyFromSlug(target.slug, ctx.lang);
+        if (key) {
+          return { type: "internal", to: guideHref(ctx.lang, key) };
+        }
+        return { type: "internal", to: `/${ctx.lang}/${ctx.guidesSlug}/${target.slug}` };
+      }
     default:
       return { type: "external", href: "#" };
   }
@@ -52,7 +58,7 @@ export function renderLink(
 ) {
   if (target.type === "internal") {
     return (
-      <Link key={key} to={target.to} prefetch="intent" className={LINK_CLASSNAME}>
+      <Link key={key} href={target.to} prefetch={true} className={LINK_CLASSNAME}>
         {children}
       </Link>
     );

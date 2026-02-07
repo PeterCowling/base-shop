@@ -1,5 +1,6 @@
 // i18n-exempt file -- ABC-123 [ttl=2025-06-30]
 import { NextResponse } from "next/server";
+
 import { PRODUCTS, type SKU } from "@acme/platform-core/products";
 
 type SortKey = keyof Pick<SKU, "price" | "title" | "stock">;

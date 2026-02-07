@@ -1,0 +1,126 @@
+{
+  "lastUpdated": "2026-02-04T00:00:00.000Z",
+  "seo": {
+    "title": "Ayuda de viaje | Hostel Brikette Positano",
+    "description": "Resumen en dos minutos sobre cómo llegar y qué excursiones suelen hacer nuestros huéspedes, con enlaces a las guías completas."
+  },
+  "linkLabel": "Ayuda de viaje | Hostel Brikette Positano",
+  "intro": [
+    "Ayuda de viaje Positano: la mayoría de rutas pasan por Sorrento. En Positano, normalmente llegas a Chiesa Nuova (autobús) o Spiaggia Grande (ferry).",
+    "Usa esta página para elegir la guía correcta. Nuestras guías de rutas cubren billetes, paradas, equipaje y rutas alternativas. Nuestras guías de Experiencias cubren excursiones puerta a puerta."
+  ],
+  "sections": [
+    {
+      "id": "quick-start",
+      "title": "Inicio rápido (lee esto primero)",
+      "body": [
+        "**Plan de llegada por defecto:** Llega a Sorrento y luego toma el autobús SITA a Positano. Calcula de 2 a 3,5 horas desde Nápoles (los tiempos cambian según la temporada).",
+        "**Compra los billetes de autobús antes de subir:** Los autobuses SITA no venden billetes a bordo de forma fiable. En Sorrento, compra en un tabacchi/bar antes de hacer cola.",
+        "**Guarda lo básico:** haz capturas de pantalla de horarios y tus billetes. Anota la dirección del hostel. La señal puede caerse en la carretera de la costa.",
+        "**Llegando en ferry:** desembarcas en Spiaggia Grande. El último paso es subir cuesta arriba con tu equipaje. Si quieres el día de llegada más fácil, usa %LINK:porterServices|servicios de porteadores%.",
+        "**Si llegas tarde:** envíanos un mensaje en cuanto sepas tu ETA para que podamos organizar el check-in: %LINK:checkinCheckout|Check-in y check-out%."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.webp",
+          "alt": "Área de parada de autobús local en Positano"
+        },
+        {
+          "src": "/img/directions/ferry-dock-interno-yellow.webp",
+          "alt": "Autobús local Interno Positano en el muelle del ferry"
+        }
+      ]
+    },
+    {
+      "id": "travel-checklist",
+      "title": "Antes de viajar (checklist simple)",
+      "body": [
+        "- Carga tu móvil o lleva un cargador portátil.",
+        "- Lleva agua y un snack pequeño contigo.",
+        "- Lleva algo de efectivo para tiendas pequeñas y taquillas.",
+        "- Guarda tu billete en un bolsillo fácil para controles.",
+        "- Lleva buen calzado. Hay muchas escaleras.",
+        "- Si llevas maletas grandes, prepárate para escalones. Los porteadores ayudan.",
+        "- Lleva una chaqueta ligera. Las noches pueden sentirse frescas junto al mar.",
+        "- Guarda un enlace de mapa. Ayuda cuando llegas tarde.",
+        "- Si te mareas en coche, siéntate cerca del frente del autobús y mira por la ventana."
+      ]
+    },
+    {
+      "id": "how-to-get-here",
+      "title": "Cómo llegar aquí (lo que cubren las guías de rutas)",
+      "body": [
+        "Empieza con la página %HOWTO:how-to-get-here|Cómo llegar% si estás eligiendo entre autobús, ferry o una combinación.",
+        "Cada guía de ruta es paso a paso. Cubre:",
+        "- dónde comprar billetes (y qué capturar en pantalla)",
+        "- qué parada usar en Positano (a menudo Chiesa Nuova, la más cercana al hostel)",
+        "- consejos de equipaje para autobuses y ferries llenos",
+        "- notas de temporada (líneas de verano vs servicio de invierno)",
+        "- una ruta alternativa para mar agitado o conexiones perdidas.",
+        "",
+        "**Rutas de llegada más usadas:**",
+        "- %HOWTO:naples-airport-positano-bus|Aeropuerto de Nápoles → Positano (autobús vía Sorrento)% — shuttle Curreri a Sorrento, luego SITA a Positano.",
+        "- %HOWTO:naples-center-train-bus|Centro de Nápoles → Positano (tren + autobús)% — tren a Sorrento, luego SITA a Positano.",
+        "- %HOWTO:naples-center-positano-ferry|Centro de Nápoles → Positano (ferry)% — genial cuando funciona; ten una alternativa para mal tiempo marítimo.",
+        "- %HOWTO:salerno-positano-ferry|Salerno → Positano (ferry)% — buena opción en temporada.",
+        "- %HOWTO:sorrento-positano-bus|Sorrento → Positano (autobús)% — el enlace clave para muchos planes.",
+        "",
+        "**Salir de Positano después de tu estancia:**",
+        "- %HOWTO:positano-naples-airport-bus|Positano → Aeropuerto de Nápoles (transporte público)% — planifica margen extra para conexiones.",
+        "- %HOWTO:positano-naples-center-bus-train|Positano → Centro de Nápoles (autobús + tren)% — común cuando no funcionan los ferries.",
+        "- %HOWTO:positano-naples-center-ferry|Positano → Centro de Nápoles (ferry)% — lo más rápido cuando el mar está calmado."
+      ]
+    },
+    {
+      "id": "last-10-minutes",
+      "title": "Tus últimos 10 minutos: muelle del ferry o parada de autobús → el hostel",
+      "body": [
+        "**Llegando en autobús:** la mayoría de autobuses paran en Chiesa Nuova (cerca de Bar Internazionale). Desde ahí es un paseo corto al hostel. Usa: %LINK:chiesaNuovaArrivals|Chiesa Nuova → Hostel Brikette (llegadas)% y %LINK:chiesaNuovaDepartures|Hostel Brikette → Chiesa Nuova (salidas)%.",
+        "",
+        "**Llegando en ferry:** sigue la ruta amigable con equipaje desde el muelle. Si no viajas ligero, lee esto antes de empezar a subir: %LINK:ferryDockToBrikette|Muelle del ferry → Hostel Brikette (con equipaje)%.",
+        "",
+        "**Viajando con maletas pesadas:** Positano son escaleras y callejones empinados. Si quieres el día de llegada más fácil, combina las direcciones de arriba con %LINK:porterServices|servicios de porteadores%."
+      ]
+    },
+    {
+      "id": "delays-cancellations",
+      "title": "Si algo va mal (retrasos, mar agitado, conexiones perdidas)",
+      "body": [
+        "**Cancelaciones de ferry:** si el mar está agitado, los ferries pueden pararse con poco aviso. Conoce tu ruta alternativa con anticipación. Empieza aquí: %LINK:ferryCancellations|Cancelaciones de ferry y tiempo% y la %HOWTO:how-to-get-here|visión general de Cómo llegar%.",
+        "",
+        "**Perder una conexión en Sorrento:** puedes (1) esperar al próximo autobús SITA, (2) cambiar a un ferry si está funcionando, o (3) compartir un taxi si sois un grupo. Las guías de rutas de arriba muestran los puntos de cola comunes y márgenes de tiempo.",
+        "",
+        "**Llegar tarde al hostel:** envíanos un mensaje en cuanto sepas tu ETA para que podamos planificar tu check-in: %LINK:checkinCheckout|Check-in y check-out%."
+      ]
+    },
+    {
+      "id": "popular-excursions",
+      "title": "Excursiones populares de un día (direcciones puerta a puerta)",
+      "body": [
+        "Estas guías de Experiencias se centran en lo básico: primeras salidas, qué muelle/parada usar, qué empacar y errores comunes en el viaje de vuelta.",
+        "",
+        "- %LINK:capriDayTrip|Excursión de un día a Capri desde Positano% — itinerario + enlaces a direcciones de ferry de ida/vuelta.",
+        "- %LINK:pathOfTheGods|Sendero de los Dioses (Sentiero degli Dei)% — elige tu mejor enfoque (autobús, ferry + autobús, o la opción de Nocelle).",
+        "- %LINK:positanoPompeii|Positano → excursión de un día a Pompeya% — autobús a Sorrento + tren local, con consejos de tiempo y multitudes.",
+        "- %LINK:dayTripsAmalfi|Mejores excursiones de un día desde Positano% — selector rápido para Capri, Pompeya, Amalfi/Ravello y Sorrento.",
+        "",
+        "Para movimientos pueblo a pueblo, estas guías de transporte ayudan: %HOWTO:positano-amalfi-ferry|Positano → Amalfi (ferry)%, %HOWTO:positano-amalfi-bus|Positano → Amalfi (autobús)%, %HOWTO:positano-ravello-ferry-bus|Positano → Ravello (ferry + autobús)%."
+      ]
+    }
+  ],
+  "faqsTitle": "Preguntas frecuentes de ayuda de viaje",
+  "faqs": [
+    {
+      "q": "¿Dónde debería intentar llegar en Positano?",
+      "a": [
+        "Si vienes en autobús SITA, apunta a la parada Chiesa Nuova (cerca de Bar Internazionale). Es la parada más cercana y conveniente para Hostel Brikette. Si vienes en ferry, llegas a Spiaggia Grande (la playa/muelle principal) y luego subes cuesta arriba al hostel."
+      ]
+    },
+    {
+      "q": "¿Necesito reservar el transporte con anticipación?",
+      "a": [
+        "En temporada alta (especialmente fines de semana), ayuda planificar salidas más tempranas y estar en el muelle/parada de autobús temprano. Los ferries pueden agotarse en horarios populares, y las colas de autobús pueden ser largas. Si prefieres flexibilidad, ten en mente una ruta alternativa desde la %HOWTO:how-to-get-here|visión general de Cómo llegar%."
+      ]
+    }
+  ]
+}

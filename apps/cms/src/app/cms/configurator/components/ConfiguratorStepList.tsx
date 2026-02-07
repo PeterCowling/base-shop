@@ -5,20 +5,23 @@ import Link from "next/link";
 import {
   ArrowRightIcon,
   CheckCircledIcon,
-  ResetIcon,
-  TokensIcon,
   ImageIcon,
   LockClosedIcon,
   PlusIcon,
+  ResetIcon,
+  TokensIcon,
 } from "@radix-ui/react-icons";
-import { Tag } from "@ui/components/atoms";
-import { Grid } from "@ui/components/atoms/primitives";
-import type { ConfiguratorState } from "../../wizard/schema";
-import type { ConfiguratorStep, ConfiguratorStepTrack } from "../types";
-import { getStepTrackMeta } from "../steps";
-import { cn } from "@ui/utils/style";
-import { ButtonElement, CardRoot, CardSection } from "./DashboardPrimitives";
+
+import { Tag } from "@acme/design-system/atoms";
+import { Grid } from "@acme/design-system/primitives";
+import { cn } from "@acme/design-system/utils/style";
 import { useTranslations } from "@acme/i18n";
+
+import type { ConfiguratorState } from "../../wizard/schema";
+import { getStepTrackMeta } from "../steps";
+import type { ConfiguratorStep, ConfiguratorStepTrack } from "../types";
+
+import { ButtonElement, CardRoot, CardSection } from "./DashboardPrimitives";
 
 interface Props {
   state: ConfiguratorState;

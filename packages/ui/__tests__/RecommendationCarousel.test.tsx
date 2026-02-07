@@ -1,7 +1,9 @@
 import React from "react";
-import { render, waitFor, act, fireEvent } from "@testing-library/react";
-import { RecommendationCarousel } from "../src/components/organisms/RecommendationCarousel";
+import { act, fireEvent,render, waitFor } from "@testing-library/react";
+
 import type { SKU } from "@acme/types";
+
+import { RecommendationCarousel } from "../src/components/organisms/RecommendationCarousel";
 
 jest.mock("../src/components/organisms/ProductCard", () => ({
   ProductCard: ({ product }: { product: SKU }) => (

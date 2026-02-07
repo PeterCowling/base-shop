@@ -1,4 +1,6 @@
-import { render, fireEvent, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
+import InventoryForm from "../src/app/cms/shop/[shop]/data/inventory/InventoryForm";
 
 jest.mock(
   "@/components/atoms/shadcn",
@@ -31,7 +33,7 @@ jest.mock(
   { virtual: true }
 );
 
-jest.mock("@platform-core/types/inventory", () => {
+jest.mock("@acme/platform-core/types/inventory", () => {
   const { z } = require("zod");
   const inventoryItemSchema = z
     .object({
@@ -44,8 +46,6 @@ jest.mock("@platform-core/types/inventory", () => {
     .strict();
   return { inventoryItemSchema };
 });
-
-import InventoryForm from "../src/app/cms/shop/[shop]/data/inventory/InventoryForm";
 
 describe("InventoryForm integration", () => {
   beforeEach(() => {

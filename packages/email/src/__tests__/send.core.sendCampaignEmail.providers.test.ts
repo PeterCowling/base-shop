@@ -1,16 +1,16 @@
 // Focus: provider selection and fallbacks (excluding retries)
 
+import {
+  cleanupEnv,
+  mockResendSend,
+  mockSendgridSend,
+  resetMocks,
+  setupEnv,
+} from "./sendCampaignTestUtils";
+
 jest.mock("../config", () => ({
   getDefaultSender: () => "from@example.com",
 }));
-
-import {
-  resetMocks,
-  mockSendgridSend,
-  mockResendSend,
-  setupEnv,
-  cleanupEnv,
-} from "./sendCampaignTestUtils";
 
 describe("send core – sendCampaignEmail (providers)", () => {
   beforeEach(() => {

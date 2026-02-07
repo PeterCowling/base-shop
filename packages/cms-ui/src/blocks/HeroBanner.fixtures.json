@@ -1,0 +1,6 @@
+{
+  "slides": [
+    { "src": "/images/hero1.jpg", "altKey": "hero.slide1.alt", "headlineKey": "hero.slide1.headline", "ctaKey": "hero.cta" },
+    { "src": "/images/hero2.jpg", "altKey": "hero.slide2.alt", "headlineKey": "hero.slide2.headline", "ctaKey": "hero.cta" }
+  ]
+}

@@ -1,4 +1,5 @@
 import type { ConfiguratorStep } from "../../types";
+
 import type { CompletedState, StepGroupInfo } from "./types";
 
 export function computeStepGroups(

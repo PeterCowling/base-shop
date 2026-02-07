@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { Toast } from "@/components/atoms";
+import { useMemo } from "react";
+
+import { useToast } from "@acme/ui/operations";
+
 import { Button, Card, CardContent, Tag } from "@/components/atoms/shadcn";
 
 interface LivePreviewItem {
@@ -14,22 +16,8 @@ interface LivePreviewListProps {
   items: LivePreviewItem[];
 }
 
-type ToastState = {
-  open: boolean;
-  message: string;
-};
-
 export function LivePreviewList({ items }: LivePreviewListProps) {
-  const [toast, setToast] = useState<ToastState>({ open: false, message: "" });
-
-  useEffect(() => {
-    if (!toast.open) return undefined;
-    const timer = window.setTimeout(
-      () => setToast({ open: false, message: "" }),
-      4000
-    );
-    return () => window.clearTimeout(timer);
-  }, [toast.open]);
+  const toast = useToast();
 
   const sortedItems = useMemo(() => {
     return [...items].sort((a, b) => a.shop.localeCompare(b.shop));
@@ -40,22 +28,16 @@ export function LivePreviewList({ items }: LivePreviewListProps) {
     if (url) {
       const opened = window.open(url, "_blank", "noopener,noreferrer");
       if (!opened) {
-        setToast({
-          open: true,
-          message: `Popup blocked while opening ${item.shop}.`,
-        });
+        toast.warning(`Popup blocked while opening ${item.shop}.`);
       } else {
-        setToast({
-          open: true,
-          message: `${item.shop} opened in a new tab.`,
-        });
+        toast.success(`${item.shop} opened in a new tab.`);
         opened.opener = null;
       }
     } else {
       const message = item.error
         ? `Cannot open ${item.shop}: ${item.error}`
         : `No preview available for ${item.shop}.`;
-      setToast({ open: true, message });
+      toast.error(message);
     }
   };
 
@@ -90,12 +72,6 @@ export function LivePreviewList({ items }: LivePreviewListProps) {
           </Card>
         );
       })}
-      <Toast
-        open={toast.open}
-        message={toast.message}
-        onClose={() => setToast({ open: false, message: "" })}
-        role="status"
-      />
     </div>
   );
 }

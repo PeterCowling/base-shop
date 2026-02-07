@@ -1,4 +1,5 @@
 import type { Rule } from "eslint";
+
 import { extractFromJsxAttribute } from "../utils/classParser.js";
 
 const MEDIA_TAGS = new Set(["img", "video", "iframe", "picture"]);

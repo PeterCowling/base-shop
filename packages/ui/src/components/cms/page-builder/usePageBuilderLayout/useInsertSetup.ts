@@ -1,10 +1,11 @@
 // i18n-exempt -- Next.js directive literal (not user-facing copy)
 "use client";
 
+import type { PageComponent } from "@acme/types";
+
 import useInsertHandlers from "../hooks/useInsertHandlers";
 import type { Action } from "../state";
 import useMediaLibraryListener from "../useMediaLibraryListener";
-import type { PageComponent } from "@acme/types";
 
 interface InsertSetupInput {
   components: PageComponent[];

@@ -1,20 +1,22 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { PageComponent } from "@acme/types";
-import CommentsDrawer from "./CommentsDrawer";
 import { useSession } from "next-auth/react";
+
+import { useTranslations } from "@acme/i18n";
+import type { PageComponent } from "@acme/types";
+
 import usePresence from "./collab/usePresence";
-import type { Thread } from "./comments/types";
-import { useCommentsApi } from "./comments/useCommentsApi";
-import { usePositions } from "./comments/usePositions";
-import { useDragPins } from "./comments/useDragPins";
-import { useMentionPeople } from "./comments/useMentionPeople";
-import CommentsToolbar from "./comments/CommentsToolbar";
 import CommentsPinsLayer from "./comments/CommentsPinsLayer";
+import CommentsToolbar from "./comments/CommentsToolbar";
+import type { Thread } from "./comments/types";
 import UndoToast from "./comments/UndoToast";
 import useAltClickCreate from "./comments/useAltClickCreate";
-import { useTranslations } from "@acme/i18n";
+import { useCommentsApi } from "./comments/useCommentsApi";
+import { useDragPins } from "./comments/useDragPins";
+import { useMentionPeople } from "./comments/useMentionPeople";
+import { usePositions } from "./comments/usePositions";
+import CommentsDrawer from "./CommentsDrawer";
 
 interface Props {
   canvasRef: React.RefObject<HTMLDivElement | null>;

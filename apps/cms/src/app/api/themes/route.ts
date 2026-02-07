@@ -1,7 +1,9 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { type NextRequest,NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
-import { themeLibrarySchema, type ThemeLibraryEntry } from "@acme/theme";
+
+import { type ThemeLibraryEntry,themeLibrarySchema } from "@acme/theme";
+
 import { writeJsonFile } from "@/lib/server/jsonIO";
 
 const LIB_PATH = path.join(process.cwd(), "data", "themes", "library.json");
@@ -36,8 +38,9 @@ export async function POST(req: NextRequest) {
     await writeLibrary(themes);
     return NextResponse.json(parsed, { status: 201 });
   } catch (err) {
+    console.error("[api/themes] POST error:", err);
     return NextResponse.json(
-      { error: (err as Error).message },
+      { error: "Failed to create theme" },
       { status: 400 },
     );
   }

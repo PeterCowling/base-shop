@@ -14,12 +14,12 @@
   "filterActive": "फ़िल्टर: {{tags}}",
   "clearFilter": "साफ़ करें",
   "onThisPage": "इस पेज पर",
-  "faqsHeading": "FAQ",
+  "faqsHeading": "अक्सर पूछे जाने वाले सवाल",
   "costBreakdownTitle": "दैनिक खर्च का विभाजन",
   "costBreakdownCurrencySuffix": "{{currency}} का",
   "costBreakdownSliceLabel": "{{label}}: {{value}}%{{suffix}}",
   "backLink": "वापस",
   "typicalCostsHeading": "सामान्य खर्च",
   "essentialsHeading": "ज़रूरी सामान",
-  "tocSectionFallback": "Section"
+  "tocSectionFallback": "सेक्शन"
 }

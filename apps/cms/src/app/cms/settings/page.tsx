@@ -1,11 +1,15 @@
 // apps/cms/src/app/cms/settings/page.tsx
 
 import Link from "next/link";
-import SettingsShopChooser from "./SettingsShopChooser.client";
-import { Button, Card, CardContent, Tag } from "@ui/components/atoms";
-import { Grid as DSGrid, Inline } from "@ui/components/atoms/primitives";
-import { listShops } from "../../../lib/listShops";
+
+import { Tag } from "@acme/design-system/atoms";
+import { Grid as DSGrid, Inline } from "@acme/design-system/primitives";
+import { Button, Card, CardContent } from "@acme/design-system/shadcn";
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+
+import { listShops } from "../../../lib/listShops";
+
+import SettingsShopChooser from "./SettingsShopChooser.client";
 
 export default async function SettingsIndexPage() {
   const shops = await listShops();

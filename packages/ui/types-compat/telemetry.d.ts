@@ -4,4 +4,8 @@ declare module "@acme/telemetry" {
     name: string,
     payload?: Record<string, unknown>
   ): void;
+  export function captureError(
+    error: unknown,
+    context?: Record<string, unknown>
+  ): Promise<void>;
 }

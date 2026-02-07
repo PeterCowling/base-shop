@@ -38,7 +38,7 @@
       "id": "stays",
       "title": "Où loger",
       "body": [
-        "Près des arrêts « Chiesa Nuova » ou « Sponda » pour limiter les escaliers avec les bagages.",
+        "Près des arrêts \\\\\" Chiesa Nuova \\\\\" ou \\\\\" Sponda \\\\\" pour limiter les escaliers avec les bagages.",
         "Budget serré ? Basez-vous à Sorrente/Meta et venez en ferry/bus pour la journée."
       ]
     }
@@ -61,18 +61,6 @@
     "intro": [
       "Positano est verticale, splendide et très fréquentée en haute saison. Ce guide se concentre sur les choix pratiques : où vous installer, quand venir, comment circuler et quoi faire sur place."
     ],
-    "gallery": {
-      "items": [
-        {
-          "alt": "Terrasse de l’auberge avec vue panoramique",
-          "caption": "Coucher de soleil depuis la terrasse — à quelques pas de l’arrêt Chiesa Nuova."
-        },
-        {
-          "alt": "Panorama de Positano",
-          "caption": "Fornillo et Spiaggia Grande sont accessibles à pied ; attendez-vous à des escaliers."
-        }
-      ]
-    },
     "sections": {
       "whereToStay": {
         "title": "Où loger",

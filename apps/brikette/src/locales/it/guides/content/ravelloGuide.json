@@ -5,49 +5,49 @@
   },
   "linkLabel": "Guida di viaggio a Ravello",
   "intro": [
-    "Traduzione in arrivo."
+    "Ravello si trova in alto sopra Amalfi con giardini di ville, concerti classici e terrazze panoramiche. Usa questa guida per pianificare una visita senza stress."
   ],
   "sections": [
     {
       "id": "villas",
-      "title": "Villas & gardens",
+      "title": "Ville e giardini",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Villa Rufolo offre terrazze panoramiche e il famoso palco concerti sospeso sul mare.",
+        "La Terrazza dell'Infinito di Villa Cimbrone e imperdibile per le foto; arriva presto per evitare code sul camminamento stretto."
       ]
     },
     {
       "id": "music",
-      "title": "Music & events",
+      "title": "Musica ed eventi",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Controlla il calendario del Ravello Festival (giugno-settembre) per i concerti serali; i biglietti vanno da 25-70 EUR a seconda dei posti.",
+        "Porta uno strato leggero: la brezza serale a 365 m puo essere fresca anche in estate."
       ]
     },
     {
       "id": "logistics",
-      "title": "Getting there",
+      "title": "Come arrivare",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Prendi il bus SITA da Amalfi (25 minuti in salita) o condividi un taxi se vuoi una corsa piu rapida di 15 minuti.",
+        "Metti in conto tempo extra per il ritorno: le corse del tardo pomeriggio si riempiono in fretta, fai la fila 20 minuti prima."
       ]
     }
   ],
   "tips": [
-    "Traduzione in arrivo.",
+    "Indossa scarpe comode: le stradine di Ravello sono acciottolate e con lievi pendenze.",
     "Combina Ravello con una sosta a Minori per i dolci di Sal De Riso sulla via del ritorno a Positano."
   ],
   "faqs": [
     {
-      "q": "Traduzione in arrivo.",
+      "q": "Posso andare a Ravello a piedi da Amalfi?",
       "a": [
-        "Traduzione in arrivo."
+        "E' una salita ripida di 5 km (3,1 mi) lungo antiche scalinate. Provala solo se sei in forma, parti presto e porta acqua."
       ]
     },
     {
-      "q": "Do I need to pre-book villa tickets?",
+      "q": "Devo prenotare in anticipo i biglietti delle ville?",
       "a": [
-        "Traduzione in arrivo."
+        "I biglietti si acquistano all'ingresso. In alta stagione i pomeriggi possono avere code brevi, quindi meglio visitare al mattino."
       ]
     }
   ],
@@ -55,37 +55,37 @@
     "toc": [
       {
         "href": "#villas",
-        "label": "Villas & gardens"
+        "label": "Ville e giardini"
       },
       {
         "href": "#concerts",
-        "label": "Concerts"
+        "label": "Concerti"
       },
       {
         "href": "#getting",
-        "label": "Getting there"
+        "label": "Come arrivare"
       }
     ],
     "sections": [
       {
         "id": "villas",
-        "title": "Villas & gardens",
+        "title": "Ville e giardini",
         "body": [
           "Villa Rufolo e Villa Cimbrone offrono viste iconiche. Arrivare presto per evitare code."
         ]
       },
       {
         "id": "concerts",
-        "title": "Concerts",
+        "title": "Concerti",
         "body": [
-          "Traduzione in arrivo."
+          "Il Ravello Festival si svolge in estate: controlla il programma ufficiale e vestiti caldo per le serate ventilate."
         ]
       },
       {
         "id": "getting",
-        "title": "Getting there",
+        "title": "Come arrivare",
         "body": [
-          "Traduzione in arrivo."
+          "Bus da Amalfi, con corse che si diradano verso sera. Metti tempo extra per il rientro."
         ]
       }
     ]

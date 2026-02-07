@@ -1,13 +1,15 @@
 // packages/ui/components/cms/PublishLocationSelector.tsx
 "use client";
 
-import { Button, Input } from "../atoms/shadcn";
-import type { PublishLocation } from "@acme/types";
-import { usePublishLocations } from "@acme/platform-core/hooks/usePublishLocations";
-import { toggleItem } from "@acme/shared-utils";
 import { memo, useCallback } from "react";
-import { Stack, Inline } from "../atoms/primitives";
+
 import { useTranslations } from "@acme/i18n";
+import { toggleItem } from "@acme/lib/array";
+import { usePublishLocations } from "@acme/platform-core/hooks/usePublishLocations";
+import type { PublishLocation } from "@acme/types";
+
+import { Inline,Stack } from "../atoms/primitives";
+import { Button, Input } from "../atoms/shadcn";
 
 export interface PublishLocationSelectorProps {
   selectedIds: string[];

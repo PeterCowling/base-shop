@@ -1,5 +1,6 @@
 import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import MediaFileItem from "../MediaFileItem";
 
 type Props = React.ComponentProps<typeof MediaFileItem>;
@@ -41,7 +42,6 @@ export function makeFile(name = "hello.png", type = "image/png") {
 }
 
 export function mockFetchJson<T>(data: T, status = 200) {
-  // @ts-expect-error — tests control fetch
   global.fetch = jest.fn().mockResolvedValue(
     new Response(JSON.stringify(data), {
       status,

@@ -1,5 +1,7 @@
 import "server-only";
+
 import type { Campaign } from "./types";
+
 export interface Clock {
     now(): Date;
 }

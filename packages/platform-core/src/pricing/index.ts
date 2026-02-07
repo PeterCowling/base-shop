@@ -1,9 +1,12 @@
 import "server-only";
 
+import { promises as fs } from "node:fs";
+
+import * as path from "path";
+
 import type { PricingMatrix, SKU } from "@acme/types";
 import { coverageCodeSchema, pricingSchema } from "@acme/types";
-import { promises as fs } from "node:fs";
-import * as path from "path";
+
 import { resolveDataRoot } from "../dataRoot";
 
 let cached: PricingMatrix | null = null;

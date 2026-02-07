@@ -1,49 +1,48 @@
 {
   "seo": {
-    "title": "Közlekedési spórolási tippek az Amalfi-parton",
-    "description": "Hogyan kombináld a jegyeket, mikor válts bérletre és hogyan kerüld el a felárakat."
+    "title": "Költségkímélő tippek az Amalfi-part közlekedéséhez",
+    "description": "Bérletek vs egyes jegyek, időzítés, busz-komp kombinációk és időjárási tartalékok."
   },
-  "linkLabel": "Közlekedési spórolási tippek az Amalfi-parton",
+  "linkLabel": "Költségkímélő tippek a közlekedéshez",
   "intro": [
-    "A fordítás folyamatban van."
+    "Gyakorlati tippek a közlekedési kiadások csökkentésére: bérletek, időzítés, busz-komp kombináció és időjárási tartalék."
   ],
-  "planChoiceTitle": "Pick your savings focus",
   "sections": [
     {
       "id": "passes",
-      "title": "Passes vs singles",
+      "title": "Bérletek vagy egyes jegyek",
       "body": [
-        "A fordítás folyamatban van."
+        "Csak akkor érdemes napi bérletet venni, ha több utat is tervezel; egyébként az egyes jegyek olcsóbbak. Mindig érvényesítsd a jegyet."
       ]
     },
     {
       "id": "timing",
-      "title": "Timing & routing",
+      "title": "Időzítés és útvonal",
       "body": [
-        "A fordítás folyamatban van."
+        "Kerüld a 10:00–16:00 közti csúcsidőt; a hegygerinceken a közvetlen buszok praktikusak, a panorámáért a kompok."
       ]
     },
     {
       "id": "mixing",
-      "title": "Mixing bus and ferry",
+      "title": "Busz-komp kombináció",
       "body": [
-        "A fordítás folyamatban van."
+        "Válassz egy fizetős komp szakaszt (Positano ↔ Amalfi), a többit busszal tedd meg, hogy kényelmes maradj, de kevesebbet költs."
       ]
     },
     {
       "id": "contingency",
-      "title": "Weather contingency",
+      "title": "Időjárási tartalék",
       "body": [
-        "A fordítás folyamatban van."
+        "Ha a tenger felkavarodik, a kompokat törlik—legyen egy buszalapú B-terv és tartsd szem előtt az utolsó menetrendet."
       ]
     }
   ],
-  "faqsTitle": "FAQs",
+  "faqsTitle": "GYIK",
   "faqs": [
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Megérik a kombinált jegyek?",
       "a": [
-        "A fordítás folyamatban van."
+        "Néha igen, ha több kompúton ülsz meg; hasonlítsd össze az árukat az egyes jegyekkel."
       ]
     }
   ]

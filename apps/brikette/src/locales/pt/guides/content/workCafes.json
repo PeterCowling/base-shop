@@ -25,13 +25,6 @@
       ]
     }
   ],
-  "galleryTitle": "Galeria",
-  "gallery": {
-    "item1Alt": "Notebook sobre a mesa de um café",
-    "item1Caption": "Um canto silencioso para chamadas rápidas",
-    "item2Alt": "Espresso e caderno sobre a mesa",
-    "item2Caption": "Alterne locais e consuma com regularidade"
-  },
   "faqs": [
     {
       "q": "Posso ficar o dia inteiro?",

@@ -1,13 +1,17 @@
 import "@acme/zod-utils/initZod";
-import { NextRequest, NextResponse } from "next/server";
-import path from "path";
+
+import { type NextRequest, NextResponse } from "next/server";
+import { ensureShopAccess, ensureShopReadAccess } from "@cms/actions/common/auth";
 import { promises as fs } from "fs";
-import { writeJsonFile } from "@/lib/server/jsonIO";
-import { DATA_ROOT } from "@platform-core/dataRoot";
-import { validateShopName } from "@acme/lib";
+import path from "path";
 import { z } from "zod";
-import { parseJsonBody } from "@shared-utils";
-import { segmentSchema, type Segment } from "@acme/types";
+
+import { validateShopName } from "@acme/lib";
+import { parseJsonBody } from "@acme/lib/http/server";
+import { DATA_ROOT } from "@acme/platform-core/dataRoot";
+import { type Segment,segmentSchema } from "@acme/types";
+
+import { writeJsonFile } from "@/lib/server/jsonIO";
 
 function segmentsPath(shop: string): string {
   shop = validateShopName(shop);
@@ -36,7 +40,15 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   if (!parsed.success) {
     return NextResponse.json({ error: "Missing shop" }, { status: 400 });
   }
-  const segments = await readSegments(parsed.data);
+  const shop = parsed.data;
+  try {
+    await ensureShopReadAccess(shop);
+  } catch (err) {
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 401;
+    return NextResponse.json({ error: message === "Forbidden" ? "Forbidden" : "Unauthorized" }, { status });
+  }
+  const segments = await readSegments(shop);
   return NextResponse.json({ segments });
 }
 
@@ -48,6 +60,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   );
   if (parsed.success === false) return parsed.response;
   const { shop, id, name, filters } = parsed.data;
+  try {
+    await ensureShopAccess(shop);
+  } catch (err) {
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 401;
+    return NextResponse.json({ error: message === "Forbidden" ? "Forbidden" : "Unauthorized" }, { status });
+  }
   const segments = await readSegments(shop);
   const def: Segment = { id, name: name ?? id, filters };
   const idx = segments.findIndex((s) => s.id === id);
@@ -64,15 +83,23 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
   if (!shopParsed.success) {
     return NextResponse.json({ error: "Missing shop" }, { status: 400 });
   }
+  const shop = shopParsed.data;
+  try {
+    await ensureShopAccess(shop);
+  } catch (err) {
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 401;
+    return NextResponse.json({ error: message === "Forbidden" ? "Forbidden" : "Unauthorized" }, { status });
+  }
   const idParsed = z.string().min(1).safeParse(idParam);
   if (!idParsed.success) {
     return NextResponse.json({ error: "Missing id" }, { status: 400 });
   }
-  const segments = await readSegments(shopParsed.data);
+  const segments = await readSegments(shop);
   const idx = segments.findIndex((s) => s.id === idParsed.data);
   if (idx >= 0) {
     segments.splice(idx, 1);
-    await writeSegments(shopParsed.data, segments);
+    await writeSegments(shop, segments);
   }
   return NextResponse.json({ ok: true });
 }

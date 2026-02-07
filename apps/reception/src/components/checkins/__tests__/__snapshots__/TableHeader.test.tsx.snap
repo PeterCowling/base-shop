@@ -1,0 +1,223 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TableHeader > renders column titles with icons 1`] = `
+<div>
+  <table>
+    <thead
+      class="sticky top-0 bg-gray-100 text-gray-800 border-b border-gray-300 z-5 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
+    >
+      <tr
+        class="h-12"
+      >
+        <th
+          class="px-4 py-2 w-[200px] font-semibold"
+          title="Guest Name"
+        >
+          <div
+            class="flex justify-center items-center"
+          >
+            <i
+              class="fas fa-user"
+            />
+          </div>
+        </th>
+        <th
+          class="px-4 py-2 w-[120px] font-semibold"
+          title="Room Allocated"
+        >
+          <div
+            class="flex justify-center items-center"
+          >
+            <i
+              class="fas fa-bed"
+            />
+          </div>
+        </th>
+        <th
+          class="px-4 py-2 w-[125px] font-semibold"
+          title="Room Payment"
+        >
+          <div
+            class="flex justify-center items-center"
+          >
+            <i
+              class="fas fa-credit-card"
+            />
+          </div>
+        </th>
+        <th
+          class="px-4 py-2 w-[125px] font-semibold"
+          title="City Tax"
+        >
+          <div
+            class="flex justify-center items-center"
+          >
+            <i
+              class="fas fa-coins"
+            />
+          </div>
+        </th>
+        <th
+          class="px-4 py-2 w-[125px] font-semibold"
+          title="Keycard Deposit"
+        >
+          <div
+            class="flex justify-center items-center"
+          >
+            <i
+              class="fas fa-key"
+            />
+          </div>
+        </th>
+        <th
+          class="px-4 py-2 w-[120px] font-semibold"
+          title="Status"
+        >
+          <div
+            class="flex justify-center items-center"
+          >
+            <i
+              class="fas fa-clock"
+            />
+          </div>
+        </th>
+        <th
+          class="px-4 py-2 w-[150px] font-semibold"
+          title="Document Insert"
+        >
+          <div
+            class="flex justify-center items-center"
+          >
+            <i
+              class="fas fa-file-alt"
+            />
+          </div>
+        </th>
+        <th
+          class="px-4 py-2 w-[150px] font-semibold"
+          title="Email Booking"
+        >
+          <div
+            class="flex justify-center items-center"
+          >
+            <i
+              class="fas fa-envelope"
+            />
+          </div>
+        </th>
+      </tr>
+    </thead>
+  </table>
+</div>
+`;
+
+exports[`TableHeader renders column titles with icons 1`] = `
+<div>
+  <table>
+    <thead
+      class="sticky top-0 bg-gray-100 text-gray-800 border-b border-gray-300 z-5 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
+    >
+      <tr
+        class="h-12"
+      >
+        <th
+          class="px-4 py-2 w-[200px] font-semibold"
+          title="Guest Name"
+        >
+          <div
+            class="flex justify-center items-center"
+          >
+            <i
+              class="fas fa-user"
+            />
+          </div>
+        </th>
+        <th
+          class="px-4 py-2 w-[120px] font-semibold"
+          title="Room Allocated"
+        >
+          <div
+            class="flex justify-center items-center"
+          >
+            <i
+              class="fas fa-bed"
+            />
+          </div>
+        </th>
+        <th
+          class="px-4 py-2 w-[125px] font-semibold"
+          title="Room Payment"
+        >
+          <div
+            class="flex justify-center items-center"
+          >
+            <i
+              class="fas fa-credit-card"
+            />
+          </div>
+        </th>
+        <th
+          class="px-4 py-2 w-[125px] font-semibold"
+          title="City Tax"
+        >
+          <div
+            class="flex justify-center items-center"
+          >
+            <i
+              class="fas fa-coins"
+            />
+          </div>
+        </th>
+        <th
+          class="px-4 py-2 w-[125px] font-semibold"
+          title="Keycard Deposit"
+        >
+          <div
+            class="flex justify-center items-center"
+          >
+            <i
+              class="fas fa-key"
+            />
+          </div>
+        </th>
+        <th
+          class="px-4 py-2 w-[120px] font-semibold"
+          title="Status"
+        >
+          <div
+            class="flex justify-center items-center"
+          >
+            <i
+              class="fas fa-clock"
+            />
+          </div>
+        </th>
+        <th
+          class="px-4 py-2 w-[150px] font-semibold"
+          title="Document Insert"
+        >
+          <div
+            class="flex justify-center items-center"
+          >
+            <i
+              class="fas fa-file-alt"
+            />
+          </div>
+        </th>
+        <th
+          class="px-4 py-2 w-[150px] font-semibold"
+          title="Email Booking"
+        >
+          <div
+            class="flex justify-center items-center"
+          >
+            <i
+              class="fas fa-envelope"
+            />
+          </div>
+        </th>
+      </tr>
+    </thead>
+  </table>
+</div>
+`;

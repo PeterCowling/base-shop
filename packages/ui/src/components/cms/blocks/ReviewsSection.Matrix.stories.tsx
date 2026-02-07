@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/ReviewsSection.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import ReviewsSection from './ReviewsSection';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './ReviewsSection.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import ReviewsSection from './ReviewsSection';
+import fixture from './ReviewsSection.fixtures.json';
 
 const meta: Meta<typeof ReviewsSection> = {
   title: 'CMS Blocks/ReviewsSection/Matrix',

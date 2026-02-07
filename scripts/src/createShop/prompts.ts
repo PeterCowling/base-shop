@@ -1,8 +1,12 @@
-import { readdirSync } from "fs";
 import readline from "node:readline";
+
+import { readdirSync } from "fs";
 import { join } from "path";
-import { listProviders } from "@acme/platform-core/createShop/listProviders";
+
+import { listThemes } from "@acme/platform-core/createShop";
 import type { ProviderInfo } from "@acme/platform-core/createShop/listProviders";
+import { listProviders } from "@acme/platform-core/createShop/listProviders";
+
 import type { Options } from "./parse";
 
 /**
@@ -30,10 +34,7 @@ export async function gatherOptions(
   /** Prompt for theme when none is provided on the command line. */
   async function ensureTheme() {
     if (!themeProvided && process.stdin.isTTY) {
-      const themesDir = join("packages", "themes");
-      const themes = readdirSync(themesDir, { withFileTypes: true })
-        .filter((d) => d.isDirectory())
-        .map((d) => d.name);
+      const themes = listThemes();
       const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout,

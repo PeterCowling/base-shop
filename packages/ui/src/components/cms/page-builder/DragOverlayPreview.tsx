@@ -1,13 +1,16 @@
 "use client";
 
-import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
+import Image from "next/image";
+
+import { useTranslations } from "@acme/i18n";
+
 import useReducedMotion from "../../../hooks/useReducedMotion";
-import { defaultIcon, getPaletteCategories } from "./paletteData";
+
 import { listInstalledApps, subscribeInstalledApps } from "./appInstallStore";
 import type { ComponentType } from "./defaults";
 import type { PaletteMeta } from "./palette.types";
-import { useTranslations } from "@acme/i18n";
+import { defaultIcon, getPaletteCategories } from "./paletteData";
 
 export type DragMeta = {
   from: "palette" | "library" | "canvas";

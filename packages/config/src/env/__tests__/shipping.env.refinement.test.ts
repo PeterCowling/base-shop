@@ -1,6 +1,7 @@
 /** @jest-environment node */
-import { describe, it, expect, jest } from "@jest/globals";
-import { shippingEnvSchema, loadShippingEnv } from "../shipping.ts";
+import { describe, expect, it, jest } from "@jest/globals";
+
+import { loadShippingEnv,shippingEnvSchema } from "../shipping.ts";
 
 describe("shippingEnvSchema refinements", () => {
   it("converts ALLOWED_COUNTRIES to uppercase array", () => {

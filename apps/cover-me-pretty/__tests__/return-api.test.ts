@@ -39,13 +39,13 @@ describe("/api/return", () => {
       }),
       { virtual: true }
     );
-    jest.doMock("@platform-core/repositories/rentalOrders.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/rentalOrders.server", () => ({
       __esModule: true,
       markReturned,
       markRefunded,
       addOrder: jest.fn(),
     }));
-    jest.doMock("@platform-core/pricing", () => ({
+    jest.doMock("@acme/platform-core/pricing", () => ({
       __esModule: true,
       computeDamageFee,
       priceForDays: jest.fn(),
@@ -96,13 +96,13 @@ describe("/api/return", () => {
       }),
       { virtual: true }
     );
-    jest.doMock("@platform-core/repositories/rentalOrders.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/rentalOrders.server", () => ({
       __esModule: true,
       markReturned,
       markRefunded,
       addOrder: jest.fn(),
     }));
-    jest.doMock("@platform-core/pricing", () => ({
+    jest.doMock("@acme/platform-core/pricing", () => ({
       __esModule: true,
       computeDamageFee,
       priceForDays: jest.fn(),
@@ -154,13 +154,13 @@ describe("/api/return", () => {
       }),
       { virtual: true }
     );
-    jest.doMock("@platform-core/repositories/rentalOrders.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/rentalOrders.server", () => ({
       __esModule: true,
       markReturned,
       markRefunded,
       addOrder: jest.fn(),
     }));
-    jest.doMock("@platform-core/pricing", () => ({
+    jest.doMock("@acme/platform-core/pricing", () => ({
       __esModule: true,
       computeDamageFee,
       priceForDays: jest.fn(),
@@ -204,13 +204,13 @@ describe("/api/return", () => {
       }),
       { virtual: true }
     );
-    jest.doMock("@platform-core/repositories/rentalOrders.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/rentalOrders.server", () => ({
       __esModule: true,
       markReturned,
       markRefunded,
       addOrder: jest.fn(),
     }));
-    jest.doMock("@platform-core/pricing", () => ({
+    jest.doMock("@acme/platform-core/pricing", () => ({
       __esModule: true,
       computeDamageFee,
       priceForDays: jest.fn(),
@@ -229,7 +229,7 @@ describe("/api/return", () => {
     const markReturned = jest
       .fn<Promise<unknown>, [string, string, number?]>()
       .mockResolvedValue(undefined);
-    jest.doMock("@platform-core/repositories/rentalOrders.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/rentalOrders.server", () => ({
       __esModule: true,
       markReturned,
       markRefunded: jest.fn(),
@@ -239,7 +239,7 @@ describe("/api/return", () => {
       __esModule: true,
       stripe: { checkout: { sessions: { retrieve: jest.fn() } }, refunds: { create: jest.fn() } },
     }));
-    jest.doMock("@platform-core/pricing", () => ({
+    jest.doMock("@acme/platform-core/pricing", () => ({
       __esModule: true,
       computeDamageFee: jest.fn(),
       priceForDays: jest.fn(),

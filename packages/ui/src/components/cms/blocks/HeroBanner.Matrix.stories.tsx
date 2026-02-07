@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/HeroBanner.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import CmsHeroBanner from './HeroBanner';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './HeroBanner.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import CmsHeroBanner from './HeroBanner';
+import fixture from './HeroBanner.fixtures.json';
 
 const meta: Meta<typeof CmsHeroBanner> = {
   title: 'CMS Blocks/HeroBanner/Matrix',

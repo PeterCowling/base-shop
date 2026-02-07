@@ -1,20 +1,22 @@
-import { DragOverlay, defaultDropAnimation, defaultDropAnimationSideEffects } from "@dnd-kit/core";
 import type {
-  CSSProperties,
   ComponentProps,
+  CSSProperties,
   PointerEvent as ReactPointerEvent,
   RefObject,
 } from "react";
-import PlaceholderAnimations from "./PlaceholderAnimations";
+import { defaultDropAnimation, defaultDropAnimationSideEffects,DragOverlay } from "@dnd-kit/core";
+
 import { useTranslations } from "@acme/i18n";
-import ErrorBoundary from "./ErrorBoundary";
-import PageCanvas from "./PageCanvas";
-import EmptyCanvasOverlay from "./EmptyCanvasOverlay";
+
+import type { ComponentType } from "./defaults";
 import DevToolsOverlay from "./devtools/DevToolsOverlay";
 import DragOverlayPreview, { type DragMeta } from "./DragOverlayPreview";
-import PreviewPane from "./PreviewPane";
-import type { ComponentType } from "./defaults";
+import EmptyCanvasOverlay from "./EmptyCanvasOverlay";
+import ErrorBoundary from "./ErrorBoundary";
 import type { PageBuilderLayoutProps } from "./PageBuilderLayout.types";
+import PageCanvas from "./PageCanvas";
+import PlaceholderAnimations from "./PlaceholderAnimations";
+import PreviewPane from "./PreviewPane";
 
 type CanvasProps = ComponentProps<typeof PageCanvas>;
 type PreviewProps = PageBuilderLayoutProps["previewProps"];

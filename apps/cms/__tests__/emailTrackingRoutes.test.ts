@@ -6,7 +6,7 @@ jest.mock("@acme/email", () => ({
   emitOpen: jest.fn(),
 }));
 
-jest.mock("@platform-core/analytics", () => ({
+jest.mock("@acme/platform-core/analytics", () => ({
   __esModule: true,
   trackEvent: jest.fn(),
 }));

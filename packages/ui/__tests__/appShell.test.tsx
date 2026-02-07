@@ -1,12 +1,13 @@
+import { usePathname } from "next/navigation";
 import { fireEvent, render, screen } from "@testing-library/react";
+
+import { useLayout } from "@acme/platform-core";
+
+import { AppShell } from "../src/components/templates/AppShell";
 
 jest.mock("next/navigation", () => ({
   usePathname: jest.fn(),
 }));
-
-import { useLayout } from "@platform-core";
-import { AppShell } from "../src/components/templates/AppShell";
-import { usePathname } from "next/navigation";
 
 function LayoutInfo() {
   const { isMobileNavOpen, breadcrumbs, toggleNav } = useLayout();

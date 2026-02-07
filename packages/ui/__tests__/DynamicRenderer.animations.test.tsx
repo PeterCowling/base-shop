@@ -1,3 +1,10 @@
+import React from "react";
+import { render } from "@testing-library/react";
+
+import type { PageComponent } from "@acme/types";
+
+import DynamicRenderer from "../src/components/DynamicRenderer";
+
 jest.mock("../src/components/cms/page-builder/scrollEffects", () => ({
   ensureScrollStyles: jest.fn(),
   ensureAnimationStyles: jest.fn(),
@@ -13,11 +20,6 @@ jest.mock("../src/components/cms/lightbox", () => ({
   ensureLightboxStyles: jest.fn(),
   initLightbox: jest.fn(),
 }));
-
-import React from "react";
-import { render } from "@testing-library/react";
-import DynamicRenderer from "../src/components/DynamicRenderer";
-import type { PageComponent } from "@acme/types";
 
 describe("DynamicRenderer animations and typography vars", () => {
   const variants = [

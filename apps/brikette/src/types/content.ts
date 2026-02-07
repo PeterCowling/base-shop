@@ -3,17 +3,17 @@
 // Surfaces readonly versions of frequently-used inferred Zod types.
 
 import type {
-  LinkTarget as _LinkTarget,
-  LinkBinding as _LinkBinding,
-  MediaBinding as _MediaBinding,
-  GalleryBindingItem as _GalleryBindingItem,
   GalleryBinding as _GalleryBinding,
-  LinkListBindingItem as _LinkListBindingItem,
+  GalleryBindingItem as _GalleryBindingItem,
+  HowToGetHereRoutesLocale as _HowToGetHereRoutesLocale,
+  LinkBinding as _LinkBinding,
   LinkListBinding as _LinkListBinding,
+  LinkListBindingItem as _LinkListBindingItem,
+  LinkTarget as _LinkTarget,
+  MediaBinding as _MediaBinding,
+  RouteContent as _RouteContent,
   RouteDefinitionDocument as _RouteDefinitionDocument,
   RouteDefinitionEntry as _RouteDefinitionEntry,
-  HowToGetHereRoutesLocale as _HowToGetHereRoutesLocale,
-  RouteContent as _RouteContent,
 } from "@/lib/how-to-get-here/schema";
 
 import type { GuidesNamespace as _GuidesNamespace } from "../locales/guides";

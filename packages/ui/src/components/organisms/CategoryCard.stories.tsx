@@ -1,4 +1,5 @@
 import { type Meta, type StoryObj } from "@storybook/nextjs";
+
 import { CategoryCard } from "./CategoryCard";
 
 const meta: Meta<typeof CategoryCard> = {

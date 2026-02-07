@@ -1,6 +1,15 @@
 // i18n-exempt file -- ABC-123 [ttl=2025-06-30]
 // apps/cover-me-pretty/src/app/api/delivery/route.ts
 import "@acme/zod-utils/initZod";
+
+import fs from "node:fs";
+import path from "node:path";
+
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import { z } from "zod";
+
+import { parseJsonBody } from "@acme/lib/http/server";
 import {
   initPlugins,
   type PaymentPayload,
@@ -9,12 +18,8 @@ import {
   type ShippingRequest,
   type WidgetComponent,
   type WidgetProps,
-} from "@platform-core/plugins";
-import { parseJsonBody } from "@shared-utils";
-import { NextRequest, NextResponse } from "next/server";
-import fs from "node:fs";
-import path from "node:path";
-import { z } from "zod";
+} from "@acme/platform-core/plugins";
+
 import shop from "../../../../shop.json";
 
 // Ensure Node runtime (we use node path/fs)
@@ -170,8 +175,9 @@ export async function POST(req: NextRequest) {
     await provider.schedulePickup(region, date, window, carrier);
     return NextResponse.json({ ok: true });
   } catch (err) {
+    console.error("[api/delivery] schedulePickup error:", err); // i18n-exempt -- server log
     return NextResponse.json(
-      { error: (err as Error).message },
+      { error: "Failed to schedule pickup" }, // i18n-exempt -- generic error
       { status: 400 }
     );
   }

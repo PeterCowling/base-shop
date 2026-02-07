@@ -1,18 +1,20 @@
 // i18n-exempt file -- ABC-123 [ttl=2025-06-30]
 // apps/cover-me-pretty/src/app/api/account/profile/route.ts
 import "@acme/zod-utils/initZod";
-import { getCustomerSession } from "@auth";
-import {
-  getCustomerProfile,
-  updateCustomerProfile,
-} from "@platform-core/customerProfiles";
+
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { parseJsonBody } from "@shared-utils";
-import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 
-// This route uses @auth which relies on Node.js APIs like `crypto`.
+import { getCustomerSession } from "@acme/auth";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+import { parseJsonBody } from "@acme/lib/http/server";
+import {
+  getCustomerProfile,
+  updateCustomerProfile,
+} from "@acme/platform-core/customerProfiles";
+
+// This route uses @acme/auth which relies on Node.js APIs like `crypto`.
 // The Edge runtime does not provide these modules, so we must opt into
 // the Node.js runtime to ensure the build succeeds.
 export const runtime = "nodejs";

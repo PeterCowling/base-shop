@@ -1,10 +1,13 @@
 "use client";
-import { useLayout } from "@platform-core/contexts/LayoutContext";
-import { usePathname } from "next/navigation";
-import TopBar from "@ui/components/cms/TopBar.client";
 import type { ReactNode } from "react";
-import { Progress } from "@/components/atoms";
+import { usePathname } from "next/navigation";
+
+import TopBar from "@acme/cms-ui/TopBar.client";
+import { useLayout } from "@acme/platform-core/contexts/LayoutContext";
+
 import { resetConfiguratorProgress } from "@/app/cms/configurator/hooks/useConfiguratorPersistence";
+import { Progress } from "@/components/atoms";
+
 import ChunkReloadBoundary from "./ChunkReloadBoundary.client";
 
 export default function LayoutClient({

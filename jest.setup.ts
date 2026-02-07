@@ -53,7 +53,8 @@ Object.defineProperty(process, "env", {
   },
 });
 
-mutableEnv.NODE_ENV ||= "development"; // relax “edge” runtime checks
+mutableEnv.NODE_ENV ||= "development"; // relax "edge" runtime checks
+mutableEnv.LOG_LEVEL ||= "silent"; // suppress pino/metric logging during tests
 mutableEnv.CART_COOKIE_SECRET ||= "test-cart-secret"; // cart cookie signing
 mutableEnv.STRIPE_WEBHOOK_SECRET ||= "whsec_test"; // dummy Stripe webhook secret
 mutableEnv.EMAIL_FROM ||= "test@example.com"; // dummy sender email
@@ -284,11 +285,17 @@ type ConsolePattern = string | RegExp;
 
 const JSDOM_NAV_ERROR = "Not implemented: navigation (except hash changes)";
 
+const IGNORED_LOG_PATTERNS: ConsolePattern[] = [
+  // Pino JSON logs (level 10=trace, 20=debug, 30=info)
+  /^\{"level":(10|20|30),/,
+];
+
 const IGNORED_ERROR_PATTERNS: ConsolePattern[] = [
   JSDOM_NAV_ERROR,
   // Service-layer logs exercised in tests
   "Failed to unpublish post",
   "Failed to list media",
+  "Inventory patch failed",
   // React dev warnings for DS props on DOM elements
   /React does not recognize the `%s` prop on a DOM element\..*labelClassName/,
   /React does not recognize the `%s` prop on a DOM element\..*trailingIcon/,
@@ -307,10 +314,17 @@ const IGNORED_ERROR_PATTERNS: ConsolePattern[] = [
   "Failed to send campaign email",
   // Bullet-point issue details printed by core/shipping env loaders
   /^  • .*: .+/,
+  // MSW warning for unhandled AI catalog feed preview request in tests
+  /\[MSW\] Error: intercepted a request without a matching request handler:.*\/api\/seo\/ai-catalog/,
 ];
 
 const IGNORED_WARN_PATTERNS: ConsolePattern[] = [
   "⚠️ Invalid payments environment variables",
+  // Content readiness audit warnings (expected in content quality tests)
+  /ALLOW_EN_FALLBACKS=1 set; found \d+ English strings/,
+  /\[WARN\] i18n parity\/quality issues found/,
+  /\[WARN\] Guide content parity\/quality issues found/,
+  /\[guide-manifest-overrides\] Malformed JSON, using empty defaults/,
 ];
 
 const shouldIgnoreConsoleMessage = (
@@ -341,16 +355,81 @@ const shouldIgnoreConsoleMessage = (
   const originalConsole = globalThis.console;
   const patchedConsole = Object.create(originalConsole) as Console;
 
+  patchedConsole.log = (...args: unknown[]) => {
+    if (shouldIgnoreConsoleMessage(args, IGNORED_LOG_PATTERNS)) return;
+    originalConsole.log(...(args as []));
+  };
+
   patchedConsole.error = (...args: unknown[]) => {
     if (shouldIgnoreConsoleMessage(args, IGNORED_ERROR_PATTERNS)) return;
     originalConsole.error(...(args as []));
+    // Fail tests on unexpected console.error calls
+    throw new Error(`Unexpected console.error in test:\n${args.map(a => typeof a === 'string' ? a : JSON.stringify(a)).join(' ')}`);
   };
 
   patchedConsole.warn = (...args: unknown[]) => {
     if (shouldIgnoreConsoleMessage(args, IGNORED_WARN_PATTERNS)) return;
     originalConsole.warn(...(args as []));
+    // Fail tests on unexpected console.warn calls
+    throw new Error(`Unexpected console.warn in test:\n${args.map(a => typeof a === 'string' ? a : JSON.stringify(a)).join(' ')}`);
   };
 
   // eslint-disable-next-line no-console
   globalThis.console = patchedConsole;
 })();
+
+if (process.env.JEST_DEBUG_HANDLES === "1") {
+  afterAll(() => {
+    const getHandles = (process as any)._getActiveHandles?.bind(process);
+    const getRequests = (process as any)._getActiveRequests?.bind(process);
+    const handles: any[] = getHandles ? getHandles() : [];
+    const requests: any[] = getRequests ? getRequests() : [];
+
+    // Surface handle types to help identify open resources keeping Jest alive.
+    const handleSummary = handles.map((handle) => {
+      const type = handle?.constructor?.name;
+      const base = {
+        type,
+        hasRef: typeof handle?.hasRef === "function" ? handle.hasRef() : undefined,
+      };
+
+      if (type === "Timeout") {
+        return { ...base, details: { repeat: handle?._repeat, idleTimeout: handle?._idleTimeout } };
+      }
+
+      if (type === "Socket") {
+        const socket = handle as {
+          localAddress?: string;
+          localPort?: number;
+          remoteAddress?: string;
+          remotePort?: number;
+          fd?: number;
+          readable?: boolean;
+          writable?: boolean;
+        };
+        return {
+          ...base,
+          details: {
+            local: socket.localAddress ? `${socket.localAddress}:${socket.localPort ?? ""}` : undefined,
+            remote: socket.remoteAddress
+              ? `${socket.remoteAddress}:${socket.remotePort ?? ""}`
+              : undefined,
+            fd: socket.fd,
+            readable: socket.readable,
+            writable: socket.writable,
+          },
+        };
+      }
+
+      return base;
+    });
+
+    // eslint-disable-next-line no-console
+    console.log("JEST_DEBUG_HANDLES active handles:", handleSummary);
+    // eslint-disable-next-line no-console
+    console.log(
+      "JEST_DEBUG_HANDLES active requests:",
+      requests.map((req) => req?.constructor?.name),
+    );
+  });
+}

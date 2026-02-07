@@ -1,13 +1,14 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { useTranslations } from "@i18n/Translations";
+
 import {
-  Button,
   Popover,
   PopoverAnchor,
   PopoverContent,
-} from "@ui/components/atoms";
+} from "@acme/design-system/atoms";
+import { Button } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n/Translations";
 
 interface Props {
   inspectMode?: boolean;
@@ -139,7 +140,7 @@ export default function TokenInspector({
     return () => window.removeEventListener("keydown", keyHandler);
   }, [inspectMode, selectedIndex]);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- ABC-123: cloneElement typing requires any to support arbitrary child props
+   
   const child = children as React.ReactElement<any>;
   return (
     <>

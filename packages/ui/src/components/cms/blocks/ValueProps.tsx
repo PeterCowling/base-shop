@@ -1,5 +1,5 @@
 // packages/ui/components/cms/blocks/ValueProps.tsx
-import { ValueProps, type ValuePropItem } from "../../home/ValueProps";
+import { type ValuePropItem,ValueProps } from "../../home/ValueProps";
 
 interface Props {
   items?: ValuePropItem[];

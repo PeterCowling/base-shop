@@ -1,5 +1,6 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent,render, screen } from "@testing-library/react";
+
 import FileSelector from "../src/components/atoms/FileSelector";
 
 function createFile(name: string, type = "text/plain") {

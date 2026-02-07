@@ -1,28 +1,32 @@
 import { TransformStream } from "node:stream/web";
-import * as fsSync from "fs";
-import path from "path";
+
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { ensureAuthorized } from "@cms/actions/common/auth";
-import { getRequiredSteps } from "../../cms/configurator/steps";
-import {
-  runRequiredConfigChecks,
-  getConfiguratorProgressForShop,
-} from "@platform-core/configurator";
 import { verifyShopAfterDeploy } from "@cms/actions/verifyShopAfterDeploy.server";
 import { enqueueDeploy } from "@cms/lib/deployQueue";
-import type { Environment } from "@acme/types";
+import * as fsSync from "fs";
+import path from "path";
+
 import {
-  configuratorStateSchema,
-  type ConfiguratorState,
-  type StepStatus,
-} from "../../cms/wizard/schema";
+  getConfiguratorProgressForShop,
+  runRequiredConfigChecks,
+} from "@acme/platform-core/configurator";
+import type { Environment } from "@acme/types";
+
 import {
   evaluateProdGate,
   getLaunchGate,
   recordFirstProdLaunch,
   recordStageTests,
 } from "@/lib/server/launchGate";
+
+import { getRequiredSteps } from "../../cms/configurator/steps";
+import {
+  type ConfiguratorState,
+  configuratorStateSchema,
+  type StepStatus,
+} from "../../cms/wizard/schema";
 
 export type LaunchStepStatus = "pending" | "success" | "failure";
 
@@ -106,8 +110,11 @@ async function readPersistedConfiguratorState(
     const parsed = readConfiguratorProgress();
     const entry = parsed[userId];
     if (!entry || typeof entry !== "object") return null;
+    const stateObj = typeof entry.state === "object" && entry.state !== null && !Array.isArray(entry.state)
+      ? entry.state
+      : {};
     const safeState = configuratorStateSchema.safeParse({
-      ...(entry.state ?? {}),
+      ...stateObj,
       completed: entry.completed ?? {},
     });
     if (!safeState.success) return null;

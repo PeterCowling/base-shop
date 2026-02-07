@@ -1,12 +1,26 @@
 /* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Non-UI literals pending localization. */
-import i18n from "@/i18n";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
-import { getGuidesBundle, type GuidesNamespace } from "../locales/guides";
 import { IS_SERVER } from "@/config/env";
+import i18n from "@/i18n";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import { loadLocaleResource } from "@/locales/locale-loader";
+import { IS_DEV } from "@/config/env";
+
+import type { GuidesNamespace } from "../locales/guides.types";
+
 const nodeCache = new Set<string>();
 // Cross-runtime guard to avoid duplicate adds even when SSR detection falls back
 const onceCache = new Set<string>();
+
+const shouldReloadEveryTimeInDev = (ns: string): boolean => {
+  // In Next dev, i18n resource bundles are cached in-memory across requests.
+  // That is great for performance, but it means edits to guide JSON files won't
+  // show up until a server restart (and client HMR can also preserve old state).
+  //
+  // The guides namespace is edited frequently during authoring, so prefer
+  // correctness over caching in dev.
+  if (!IS_DEV) return false;
+  return ns === "guides" || ns === "guidesFallback";
+};
 
 const isSeededBundle = (ns: string, existing: Record<string, unknown>): boolean => {
   if (ns === "dealsPage") {
@@ -81,51 +95,71 @@ async function loadBundleFromFs(lang: string, ns: string): Promise<unknown | und
  */
 export async function loadI18nNs(lang: string, ns: string): Promise<void> {
   const onceKey = `${lang}/${ns}`;
-  if (onceCache.has(onceKey)) return;
+  const forceReload = shouldReloadEveryTimeInDev(ns);
+  const hasExistingResource = (() => {
+    if (typeof i18n.hasResourceBundle !== "function") return false;
+    try {
+      return i18n.hasResourceBundle(lang, ns);
+    } catch {
+      return false;
+    }
+  })();
 
   const existing = (() => {
+    if (typeof i18n.getResourceBundle !== "function") return undefined;
     try {
       return i18n.getResourceBundle(lang, ns) as Record<string, unknown> | undefined;
     } catch {
       return undefined;
     }
   })();
-  if (
-    existing &&
-    typeof existing === "object" &&
-    Object.keys(existing).length > 0 &&
-    !isSeededBundle(ns, existing)
-  ) {
+
+  const hasValidExisting =
+    (existing &&
+      typeof existing === "object" &&
+      Object.keys(existing).length > 0 &&
+      !isSeededBundle(ns, existing)) ||
+    (hasExistingResource && existing === undefined);
+
+  if (hasValidExisting && !forceReload) {
     onceCache.add(onceKey);
     return;
   }
 
+  if (onceCache.has(onceKey) && !forceReload) return;
+
   if (isServerRuntime()) {
     const key = `${lang}/${ns}`;
-    if (nodeCache.has(key)) return;
+    if (nodeCache.has(key) && !forceReload) return;
 
     if (ns === "guides") {
       const guidesBundle = await loadGuidesNamespace(lang);
       if (guidesBundle) {
         i18n.addResourceBundle(lang, ns, guidesBundle, true, true);
-        nodeCache.add(key);
-        onceCache.add(onceKey);
+        if (!forceReload) {
+          nodeCache.add(key);
+          onceCache.add(onceKey);
+        }
         return;
       }
     }
     const dataFromImport = await loadBundleViaImport(lang, ns);
     if (typeof dataFromImport !== "undefined") {
       i18n.addResourceBundle(lang, ns, dataFromImport, true, true);
-      nodeCache.add(key);
-      onceCache.add(onceKey);
+      if (!forceReload) {
+        nodeCache.add(key);
+        onceCache.add(onceKey);
+      }
       return;
     }
 
     const fsData = await loadBundleFromFs(lang, ns);
     if (typeof fsData !== "undefined") {
       i18n.addResourceBundle(lang, ns, fsData, true, true);
-      nodeCache.add(key);
-      onceCache.add(onceKey);
+      if (!forceReload) {
+        nodeCache.add(key);
+        onceCache.add(onceKey);
+      }
       return;
     }
 
@@ -135,7 +169,9 @@ export async function loadI18nNs(lang: string, ns: string): Promise<void> {
       const guidesBundle = await loadGuidesNamespace(lang);
       if (guidesBundle) {
         i18n.addResourceBundle(lang, ns, guidesBundle, true, true);
-        onceCache.add(onceKey);
+        if (!forceReload) {
+          onceCache.add(onceKey);
+        }
         return;
       }
     }
@@ -148,14 +184,18 @@ export async function loadI18nNs(lang: string, ns: string): Promise<void> {
       const fsData = await loadBundleFromFs(lang, ns);
       if (typeof fsData !== "undefined") {
         i18n.addResourceBundle(lang, ns, fsData, true, true);
-        onceCache.add(onceKey);
+        if (!forceReload) {
+          onceCache.add(onceKey);
+        }
         return;
       }
       throw new Error(`Missing i18n namespace bundle for ${lang}/${ns}`);
     }
 
     i18n.addResourceBundle(lang, ns, data, true, true);
-    onceCache.add(onceKey);
+    if (!forceReload) {
+      onceCache.add(onceKey);
+    }
   }
 }
 
@@ -216,20 +256,16 @@ export async function preloadNamespacesWithFallback(
 }
 
 async function loadGuidesNamespace(lang: string): Promise<GuidesNamespace | undefined> {
-  const bundle = getGuidesBundle(lang);
-  if (bundle) return bundle;
-
   const hasNode =
     typeof process !== "undefined" &&
     Boolean((process as unknown as { versions?: { node?: unknown } }).versions?.node);
-  if (isServerRuntime() || hasNode) {
-    try {
-      const { loadGuidesNamespaceFromFs } = await import("@/locales/_guides/node-loader");
-      return loadGuidesNamespaceFromFs(lang) ?? undefined;
-    } catch {
-      // fall through to return undefined
-    }
-  }
 
-  return undefined;
+  try {
+    const { loadGuidesNamespace } = await import("@/locales/guides.backend");
+    return (
+      (await loadGuidesNamespace(lang, { canUseNodeFs: isServerRuntime() || hasNode })) ?? undefined
+    );
+  } catch {
+    return undefined;
+  }
 }

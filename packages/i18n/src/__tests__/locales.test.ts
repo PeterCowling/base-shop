@@ -1,4 +1,4 @@
-import { assertLocales, resolveLocale, LOCALES, locales } from "../locales";
+import { assertLocales, LOCALES, locales,resolveLocale } from "../locales";
 
 describe("assertLocales", () => {
   it("throws when provided an empty array or non-array", () => {

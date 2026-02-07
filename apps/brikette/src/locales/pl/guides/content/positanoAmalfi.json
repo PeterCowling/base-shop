@@ -1,96 +1,96 @@
 {
   "seo": {
-    "title": "Z Positano do Amalfi: jak dojechać",
-    "description": "Opcje autobusowe i promowe między Positano a Amalfi, z czasami przejazdu i wskazówkami."
+    "title": "Positano ↔ Amalfi: jak dojechać",
+    "description": "Autobusowe i promowe połączenia między Positano a Amalfi, z godzinami i poradami."
   },
-  "linkLabel": "Z Positano do Amalfi: jak dojechać",
+  "linkLabel": "Positano ↔ Amalfi: jak dojechać",
   "intro": [
-    "Tłumaczenie w przygotowaniu."
+    "Positano ↔ Amalfi autobusem lub sezonowym promem — jak wybrać i kiedy najlepiej jechać."
   ],
   "sections": [
     {
       "id": "bus",
-      "title": "Bus (year‑round)",
+      "title": "Autobus (cały rok)",
       "body": [
-        "autobus SITA; kupować i kasować bilety; kolejki na szczytach – zacznij wcześnie.",
-        "Tłumaczenie w przygotowaniu."
+        "Autobus SITA — kup i skasuj bilet; w szczycie kolejki, więc ruszaj wcześnie.",
+        "Siadaj po prawej stronie od wyjazdu z Positano, by ująć w kadrze klifowe widoki."
       ]
     },
     {
       "id": "ferry",
-      "title": "Ferry (seasonal)",
+      "title": "Prom (sezonowo)",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Szybciej i bardziej malowniczo przy spokojnym morzu; sprawdź aktualne rozkłady i zostaw czas zapasowy.",
+        "Latem przyjdź wcześniej, by złapać miejsca."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "How long is the trip?",
+      "q": "Ile trwa podróż?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Autobus jedzie 40–55 minut, zależnie od ruchu; prom pokonuje trasę w około 25 minut przy spokojnym morzu."
       ]
     },
     {
-      "q": "Do I need to reserve seats?",
+      "q": "Czy trzeba rezerwować siedzenia?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Bilety autobusowe kupuj wcześniej, ale miejsca są na zasadzie kto pierwszy — promy można rezerwować online i warto zarezerwować kursy szczytowe dzień wcześniej."
       ]
     }
   ],
   "howTo": {
     "steps": [
       {
-        "name": "SITA bus to Amalfi",
-        "text": "Tłumaczenie w przygotowaniu."
+        "name": "Autobus SITA do Amalfi",
+        "text": "Wsiądź do SITA w stronę Amalfi; kup bilety przed wejściem."
       },
       {
-        "name": "Tłumaczenie w przygotowaniu.",
-        "text": "Sprawdź sezonowe rozkłady jazdy; ferries run frequently in peak months."
+        "name": "Alternatywa: prom (latem)",
+        "text": "Sprawdź sezonowe rozkłady; promy kursują często w szczycie sezonu."
       }
     ]
   },
   "fallback": {
     "intro": [
-      "Korzystaj z autobusu SITA, aby zapewnić niezawodność przez cały rok; latem promy są malowniczą alternatywą."
+      "Autobus SITA jest niezawodny przez cały rok, a latem promy stanowią malowniczą alternatywę."
     ],
     "toc": [
       {
         "href": "#bus",
-        "label": "SITA bus (year-round)"
+        "label": "Autobus SITA (cały rok)"
       },
       {
         "href": "#ferry",
-        "label": "Ferry (seasonal)"
+        "label": "Prom (sezonowo)"
       },
       {
         "href": "#faqs",
-        "label": "FAQs"
+        "label": "FAQ"
       }
     ],
     "sections": [
       {
         "id": "bus",
-        "title": "SITA bus (year-round)",
+        "title": "Autobus SITA (cały rok)",
         "body": [
-          "Tłumaczenie w przygotowaniu."
+          "Kup bilety przed wejściem i ustaw się w kolejce w szczytowych godzinach. Wysiądź na dworcu autobusowym w Amalfi."
         ]
       },
       {
         "id": "ferry",
-        "title": "Ferry (seasonal)",
+        "title": "Prom (sezonowo)",
         "body": [
-          "Tłumaczenie w przygotowaniu."
+          "Sprawdź strony operatorów pod kątem rozkładów i ostrzeżeń o trudnych warunkach; przybądź 20–30 minut wcześniej."
         ]
       }
     ],
-    "faqsTitle": "FAQs",
+    "faqsTitle": "FAQ",
     "faqs": [
       {
-        "q": "Which is faster?",
+        "q": "Co jest szybsze?",
         "a": [
-          "Tłumaczenie w przygotowaniu."
+          "Latem promy dorównują czasowi przejazdu i są ładniejsze, a autobusy są częściej dostępne."
         ]
       }
     ]

@@ -1,5 +1,5 @@
-import type { Locale } from "@/types/locale";
 import { DEFAULT_LOCALE, LOCALES } from "@/lib/locales";
+import type { Locale } from "@/types/locale";
 
 export function stripLocale(pathname: string): string {
   const parts = pathname.split("/").filter(Boolean);

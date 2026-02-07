@@ -3,9 +3,10 @@
     "relatedGuides": "Hướng dẫn liên quan",
     "indexTitle": "Hướng dẫn du lịch Positano",
     "popularGuides": "Hướng dẫn phổ biến",
+    "viewAll": "Xem tất cả hướng dẫn",
     "helpfulGuides": "Hướng dẫn hữu ích",
     "alsoSee": "Xem thêm",
-    "sectionFallback": "Section {{position}}"
+    "sectionFallback": "Phần {{position}}"
   },
   "meta": {
     "index": {
@@ -13,131 +14,337 @@
       "description": "Các hướng dẫn thực tế theo từng bước để di chuyển quanh Positano và Bờ biển Amalfi."
     }
   },
+  "redirectPage": {
+    "title": "Đang chuyển hướng...",
+    "message": "Nếu bạn không được chuyển hướng, hãy <link>tiếp tục tại đây</link>."
+  },
   "content": {
     "onlyHostel": {
-      "linkLabel": "The only hostel in Positano",
+      "linkLabel": "Hostel duy nhất ở Positano",
       "seo": {
-        "title": "The only hostel in Positano",
-        "description": "Affordable beds in Positano with panoramic views and friendly vibes."
+        "title": "Hostel duy nhất ở Positano",
+        "description": "Giường giá phải chăng ở Positano với tầm nhìn toàn cảnh và không khí thân thiện."
       }
     },
     "backpackerItineraries": {
-      "linkLabel": "Backpacker itineraries",
+      "linkLabel": "Lịch trình cho người đi bụi",
       "seo": {
-        "title": "Backpacker itineraries on the Amalfi Coast",
-        "description": "Practical, budget-first routes for 2 to 7 days without a car."
+        "title": "Lịch trình cho người đi bụi tại Bờ biển Amalfi",
+        "description": "Các tuyến đường thực tế, ưu tiên ngân sách từ 2 đến 7 ngày không cần xe hơi."
       }
     },
     "reachBudget": {
-      "linkLabel": "Reach Positano on a budget",
+      "linkLabel": "Đến Positano với ngân sách tiết kiệm",
       "seo": {
-        "title": "Reach Positano on a budget",
-        "description": "Cheapest ways to get to Positano by bus, train and ferry."
+        "title": "Đến Positano với ngân sách tiết kiệm",
+        "description": "Cách rẻ nhất để đến Positano bằng xe buýt, tàu hỏa và phà."
       }
     },
     "ferrySchedules": {
-      "linkLabel": "Ferry schedules",
+      "linkLabel": "Lịch trình phà",
       "seo": {
-        "title": "Positano ferry schedules",
-        "description": "Up-to-date ferry operators and seasonal timetables for Positano."
+        "title": "Lịch trình phà Positano",
+        "description": "Các nhà điều hành phà cập nhật và lịch trình theo mùa cho Positano."
       }
     },
     "pathOfTheGods": {
-      "linkLabel": "Path of the Gods from Positano",
+      "linkLabel": "Con đường của các vị thần: Hướng dẫn đầy đủ từ Positano",
       "seo": {
-        "title": "Hike the Path of the Gods",
-        "description": "Door-to-door instructions to hike Sentiero degli Dei from Positano."
+        "title": "Đi bộ Con đường của các vị thần",
+        "description": "Hướng dẫn chi tiết để đi bộ Sentiero degli Dei từ Positano."
       }
     },
     "pathOfTheGodsFerry": {
-      "linkLabel": "Path of the Gods via Amalfi (ferry)",
+      "linkLabel": "Con đường của các vị thần: Tuyến phà và đi bộ đẹp",
       "seo": {
-        "title": "Path of the Gods via Amalfi (ferry)",
-        "description": "Sail to Amalfi, bus up to Bomerano, then hike the Path of the Gods with return directions."
+        "title": "Con đường của các vị thần qua Amalfi (phà)",
+        "description": "Đi phà đến Amalfi, xe buýt lên Bomerano, sau đó đi bộ Con đường của các vị thần với hướng dẫn quay về."
       }
     },
     "pathOfTheGodsBus": {
-      "linkLabel": "Path of the Gods via Amalfi (bus)",
+      "linkLabel": "Con đường của các vị thần: Xe buýt và đi bộ tiết kiệm",
       "seo": {
-        "title": "Path of the Gods via Amalfi (bus)",
-        "description": "Take the SITA Sud bus to Bomerano and follow our Path of the Gods route back toward Positano."
+        "title": "Con đường của các vị thần qua Amalfi (xe buýt)",
+        "description": "Đi xe buýt SITA Sud đến Bomerano và theo tuyến Con đường của các vị thần quay về Positano."
       }
     },
     "pathOfTheGodsNocelle": {
-      "linkLabel": "Path of the Gods via Nocelle",
+      "linkLabel": "Con đường của các vị thần: Đi bộ ngắn từ Nocelle",
       "seo": {
-        "title": "Path of the Gods via Nocelle",
-        "description": "Shorter out-and-back hike from Nocelle with directions to return to Hostel Brikette."
+        "title": "Con đường của các vị thần qua Nocelle",
+        "description": "Đi bộ khứ hồi ngắn hơn từ Nocelle với hướng dẫn quay về Hostel Brikette."
       }
     },
     "dayTripsAmalfi": {
-      "linkLabel": "Day trips from Positano",
+      "linkLabel": "Chuyến đi trong ngày tuyệt nhất: Capri, Amalfi, Pompeii và hơn thế",
       "seo": {
-        "title": "Day trips from Positano",
-        "description": "Ideas for Amalfi, Ravello, Capri and Pompeii with timing and transport tips."
+        "title": "Chuyến đi trong ngày từ Positano",
+        "description": "Ý tưởng cho Amalfi, Ravello, Capri và Pompeii với mẹo về thời gian và phương tiện."
       }
     },
-    "publicTransportAmalfi": {
-      "linkLabel": "Amalfi Coast public transport guide",
+    "positanoBeaches": {
+      "linkLabel": "Bãi biển Positano: Cát, nắng và vịnh bí mật",
       "seo": {
-        "title": "Amalfi Coast public transport guide",
-        "description": "How to use buses and ferries on the Amalfi Coast with passes, timing and routes."
+        "title": "Bãi biển Positano: nắng và vịnh bí mật",
+        "description": "Khám phá các bãi biển đẹp nhất Positano từ Spiaggia Grande mang tính biểu tượng đến các vịnh ẩn và câu lạc bộ bãi biển độc quyền."
+      }
+    },
+    "arienzoBeachClub": {
+      "linkLabel": "Bãi biển Arienzo: Câu lạc bộ bãi biển sang trọng của Positano",
+      "seo": {
+        "title": "Bãi biển Arienzo: câu lạc bộ bãi biển sang trọng của Positano",
+        "description": "Hướng dẫn về Arienzo Beach Club với cầu thang, ghế tắm nắng, nhà hàng và chỉ đường từ Hostel Brikette."
+      }
+    },
+    "fornilloBeachGuide": {
+      "linkLabel": "Bãi biển Fornillo: Lựa chọn yên tĩnh hơn của Positano",
+      "seo": {
+        "title": "Bãi biển Fornillo: lựa chọn yên tĩnh hơn của Positano",
+        "description": "Bãi biển Fornillo yên bình với cát miễn phí, nhà hàng địa phương và dễ dàng đi bộ từ trung tâm Positano."
+      }
+    },
+    "lauritoBeachGuide": {
+      "linkLabel": "Bãi biển Laurito: Viên ngọc ẩn dưới vách đá",
+      "seo": {
+        "title": "Bãi biển Laurito: viên ngọc ẩn dưới vách đá",
+        "description": "Bãi biển Laurito xa xôi với hơn 450 bậc thang, hải sản địa phương và nước màu ngọc lam xa đám đông."
+      }
+    },
+    "gavitellaBeachGuide": {
+      "linkLabel": "Bãi biển Gavitella: Điểm bơi ngắm hoàng hôn Praiano",
+      "seo": {
+        "title": "Bãi biển Gavitella: điểm bơi ngắm hoàng hôn của Praiano",
+        "description": "Bãi biển địa phương của Praiano với tầm nhìn hoàng hôn, nước biển yên tĩnh và xe buýt dễ dàng từ Positano."
+      }
+    },
+    "marinaDiPraiaBeaches": {
+      "linkLabel": "Marina di Praia: Vịnh ấn tượng giữa các vách đá",
+      "seo": {
+        "title": "Marina di Praia: vịnh ấn tượng giữa các vách đá",
+        "description": "Marina di Praia tuyệt đẹp với tháp Norman, nhà hàng ven biển và vịnh bơi trong vắt."
+      }
+    },
+    "fiordoDiFuroreBeachGuide": {
+      "linkLabel": "Fiordo di Furore: Bãi biển vịnh hẹp dưới cầu",
+      "seo": {
+        "title": "Fiordo di Furore: bãi biển vịnh hẹp dưới cầu",
+        "description": "Vịnh hẹp Furore nổi tiếng trên Instagram với nước màu ngọc lục bảo, lặn vách đá và tầm nhìn cầu ấn tượng bằng xe buýt từ Positano."
+      }
+    },
+    "reginaGiovannaBath": {
+      "linkLabel": "Regina Giovanna: Di tích La Mã gặp hồ bơi tự nhiên",
+      "seo": {
+        "title": "Regina Giovanna: di tích La Mã gặp hồ bơi tự nhiên",
+        "description": "Hồ bơi tự nhiên lịch sử ở Sorrento với tàn tích biệt thự La Mã, đi bộ dọc bờ biển và bơi lội trong nước trong."
+      }
+    },
+    "positanoMainBeach": {
+      "linkLabel": "Spiaggia Grande: Bãi biển chính mang tính biểu tượng của Positano",
+      "seo": {
+        "title": "Spiaggia Grande: bãi biển chính mang tính biểu tượng của Positano",
+        "description": "Hướng dẫn đầy đủ về bãi biển chính Positano với giá ghế tắm nắng, khu vực miễn phí, nhà hàng và cách đến đó."
+      }
+    },
+    "positanoMainBeachWalkDown": {
+      "linkLabel": "Đi bộ xuống bãi biển chính Positano",
+      "seo": {
+        "title": "Đi bộ từ Hostel Brikette đến bãi biển chính Positano",
+        "description": "Hướng dẫn đi bộ từ Hostel Brikette xuống Spiaggia Grande với các địa danh và ước tính thời gian."
+      }
+    },
+    "positanoMainBeachBusDown": {
+      "linkLabel": "Xe buýt xuống bãi biển chính Positano",
+      "seo": {
+        "title": "Xe buýt từ Hostel Brikette đến bãi biển chính Positano",
+        "description": "Đi xe buýt SITA từ Chiesa Nuova xuống bãi biển Positano với vị trí điểm dừng và thời gian."
+      }
+    },
+    "positanoMainBeachWalkBack": {
+      "linkLabel": "Đi bộ quay lại từ bãi biển chính",
+      "seo": {
+        "title": "Đi bộ quay lại Hostel Brikette từ Spiaggia Grande",
+        "description": "Đi bộ lên dốc từ bãi biển chính Positano trở lại Hostel Brikette với hướng dẫn tuyến đường từng bước."
+      }
+    },
+    "positanoMainBeachBusBack": {
+      "linkLabel": "Xe buýt quay lại từ Spiaggia Grande",
+      "seo": {
+        "title": "Xe buýt quay lại Hostel Brikette từ bãi biển chính Positano",
+        "description": "Bắt xe buýt SITA từ bãi biển Positano lên Chiesa Nuova với điểm đón và lịch trình."
+      }
+    },
+    "hostelBriketteToFornilloBeach": {
+      "linkLabel": "Hostel Brikette → Bãi biển Fornillo hướng dẫn đi bộ",
+      "seo": {
+        "title": "Hostel Brikette → Bãi biển Fornillo lộ trình đi bộ"
+      }
+    },
+    "fornilloBeachToBrikette": {
+      "linkLabel": "Bãi biển Fornillo → Hostel Brikette lộ trình quay về",
+      "seo": {
+        "title": "Bãi biển Fornillo → Hostel Brikette lộ trình quay về"
+      }
+    },
+    "hostelBriketteToFiordoDiFuroreBus": {
+      "linkLabel": "Cách đến Bãi biển Fiordo di Furore bằng xe buýt",
+      "seo": {
+        "title": "Cách đến Bãi biển Fiordo di Furore bằng xe buýt"
+      }
+    },
+    "fiordoDiFuroreBusReturn": {
+      "linkLabel": "Bãi biển Fiordo di Furore → Hostel Brikette bằng xe buýt",
+      "seo": {
+        "title": "Bãi biển Fiordo di Furore → Hostel Brikette bằng xe buýt"
+      }
+    },
+    "lauritoBeachBusDown": {
+      "linkLabel": "Cách đến Bãi biển Laurito bằng xe buýt",
+      "seo": {
+        "title": "Cách đến Bãi biển Laurito bằng xe buýt"
+      }
+    },
+    "lauritoBeachBusBack": {
+      "linkLabel": "Xe buýt quay lại từ Bãi biển Laurito",
+      "seo": {
+        "title": "Xe buýt quay lại Hostel Brikette từ Bãi biển Laurito"
+      }
+    },
+    "hostelBriketteToArienzoBus": {
+      "linkLabel": "Cách đến Bãi biển Arienzo bằng xe buýt",
+      "seo": {
+        "title": "Cách đến Bãi biển Arienzo bằng xe buýt"
+      }
+    },
+    "arienzoBeachBusBack": {
+      "linkLabel": "Xe buýt quay lại từ Bãi biển Arienzo",
+      "seo": {
+        "title": "Xe buýt quay lại Hostel Brikette từ Bãi biển Arienzo"
+      }
+    },
+    "hostelBriketteToReginaGiovannaBath": {
+      "linkLabel": "Cách đến Bể tắm Regina Giovanna",
+      "seo": {
+        "title": "Cách đến Bể tắm Regina Giovanna"
+      }
+    },
+    "sunriseHike": {
+      "linkLabel": "Đi bộ lúc bình minh: Ngắm nhìn rạng đông trên Positano"
+    },
+    "santaMariaDelCastelloHike": {
+      "linkLabel": "Santa Maria del Castello: Đi bộ đến làng núi"
+    },
+    "topOfTheMountainHike": {
+      "linkLabel": "Monte Comune: Đi bộ đến điểm ngắm cảnh cao nhất Positano"
+    },
+    "stayingFitAmalfi": {
+      "linkLabel": "Giữ dáng ở Positano: Cầu thang, đường mòn và tập luyện bãi biển"
+    },
+    "capriDayTrip": {
+      "linkLabel": "Chuyến đi Capri trong ngày: Thoát ra đảo từ Positano"
+    },
+    "capriOnABudget": {
+      "linkLabel": "Capri tiết kiệm"
+    },
+    "campingAmalfi": {
+      "linkLabel": "Cắm trại Bờ biển Amalfi: Lựa chọn thay thế khách sạn tiết kiệm"
+    },
+    "boatTours": {
+      "linkLabel": "Tour thuyền: Du thuyền hoàng hôn đến thuê thuyền riêng"
+    },
+    "cheapEats": {
+      "linkLabel": "Ăn như dân địa phương: Món ngon giá rẻ nhất Positano"
+    },
+    "eatingOutPositano": {
+      "linkLabel": "Ăn ở đâu tại Positano: Từ bình dân đến sang trọng"
+    },
+    "positanoDining": {
+      "linkLabel": "Nhà hàng ngon nhất Positano gần Hostel Brikette"
+    },
+    "limoncelloCuisine": {
+      "linkLabel": "Hương vị Positano: Limoncello, chanh và ẩm thực địa phương"
+    },
+    "instagramSpots": {
+      "linkLabel": "Positano đáng chụp Instagram: Điểm và thời điểm chụp ảnh đẹp nhất"
+    },
+    "sunsetViewpoints": {
+      "linkLabel": "Hoàng hôn Positano: Điểm ngắm cảnh tốt nhất cho giờ vàng"
+    },
+    "ravelloFestival": {
+      "linkLabel": "Lễ hội Ravello: Hòa nhạc cổ điển dưới bầu trời sao"
+    },
+    "ferragostoPositano": {
+      "linkLabel": "Ferragosto: Lễ hội 15 tháng 8 của Ý tại Positano"
+    },
+    "luminariaPraiano": {
+      "linkLabel": "Luminaria di Praiano: Hàng nghìn ngọn nến thắp sáng đêm"
+    },
+    "walkingTourAudio": {
+      "linkLabel": "Tour đi bộ audio miễn phí: Khám phá những câu chuyện ẩn giấu của Positano"
+    },
+    "freeThingsPositano": {
+      "linkLabel": "Hoạt động miễn phí tại Positano: Vui chơi tiết kiệm"
+    },
+    "publicTransportAmalfi": {
+      "linkLabel": "Hướng dẫn giao thông công cộng Bờ biển Amalfi",
+      "seo": {
+        "title": "Hướng dẫn giao thông công cộng Bờ biển Amalfi",
+        "description": "Cách sử dụng xe buýt và phà tại Bờ biển Amalfi với vé, thời gian và tuyến đường."
       }
     },
     "travelTipsFirstTime": {
-      "linkLabel": "Positano travel tips for first-time visitors",
+      "linkLabel": "Mẹo du lịch Positano cho người đến lần đầu",
       "seo": {
-        "title": "Positano travel tips for first-time visitors",
-        "description": "Arrivals, luggage, payments and connectivity — practical advice for your first trip."
+        "title": "Mẹo du lịch Positano cho người đến lần đầu",
+        "description": "Đến nơi, hành lý, thanh toán và kết nối — lời khuyên thực tế cho chuyến đi đầu tiên."
       }
     },
     "whatToPack": {
-      "linkLabel": "What to pack for the Amalfi Coast",
+      "linkLabel": "Cần mang gì đến Bờ biển Amalfi",
       "seo": {
-        "title": "What to pack for the Amalfi Coast",
-        "description": "Seasonal packing checklist for Positano and the Amalfi Coast."
+        "title": "Cần mang gì đến Bờ biển Amalfi",
+        "description": "Danh sách đồ đóng gói theo mùa cho Positano và Bờ biển Amalfi."
       }
     }
   },
   "dev": {
     "statusPill": {
-      "title": "Guide status: {{status}} (click to toggle)"
+      "title": "Trạng thái hướng dẫn: {{status}} (nhấn để thay đổi)"
     },
     "editorialPanel": {
-      "title": "Editorial workflow",
+      "title": "Quy trình biên tập",
       "status": {
         "draft": "Draft",
         "review": "In review",
         "live": "Live"
       },
       "workflow": {
-        "draftPreview": "Draft preview",
+        "draftPreview": "Xem trước bản nháp",
         "published": "Published",
-        "pending": "Pending publication",
-        "allComplete": "All checklist items complete",
-        "outstanding_one": "{{count}} outstanding item",
-        "outstanding_other": "{{count}} outstanding items"
+        "pending": "Đang chờ xuất bản",
+        "allComplete": "Đã hoàn thành tất cả mục kiểm tra",
+        "outstanding_one": "{{count}} mục chưa hoàn thành",
+        "outstanding_other": "{{count}} mục chưa hoàn thành"
       },
       "draftPath": {
         "label": "Draft path",
-        "dashboardCta": "Open draft dashboard"
+        "dashboardCta": "Mở bảng điều khiển bản nháp"
       },
       "publish": {
         "heading": "Publish to",
         "primary": "Primary"
       },
       "checklist": {
-        "heading": "Completion checklist",
+        "heading": "Danh sách kiểm tra hoàn thiện",
         "status": {
           "missing": "Missing",
-          "inProgress": "In progress",
+          "inProgress": "Đang xử lý",
           "complete": "Complete"
         }
       },
       "areaLabels": {
-        "howToGetHere": "How to get here",
-        "help": "Help centre",
-        "experience": "Experiences"
+        "howToGetHere": "Cách đến đây",
+        "help": "Trung tâm trợ giúp",
+        "experience": "Trải nghiệm"
       }
     }
   }

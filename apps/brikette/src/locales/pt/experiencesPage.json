@@ -7,15 +7,7 @@
     "eyebrow": "Experiências",
     "title": "Pôr-do-sol, manhãs calmas e dicas de quem vive aqui",
     "description": "Combine a sua estadia com bebidas no terraço, caminhadas curadas e um concierge digital que envia alertas mesmo antes de chegar.",
-    "supporting": "Tudo está disponível para hóspedes registados; avise-nos se viajar com amigos que ficam noutro alojamento.",
-    "primaryCta": "Reservar estadia",
-    "secondaryCta": "Abrir menu do bar",
-    "tertiaryCta": "Falar com o concierge digital",
-    "primaryCtaAria": "Reservar a sua estadia no Hostel Brikette",
-    "secondaryCtaAria": "Ver o menu do bar do Hostel Brikette",
-    "tertiaryCtaAria": "Enviar mensagem ao concierge digital do Hostel Brikette",
-    "breakfastCta": "Ver o menu do pequeno-almoço",
-    "breakfastCtaAria": "Ver o menu do pequeno-almoço"
+    "scrollNudge": "Navegue por tipo de experiência abaixo"
   },
   "sections": {
     "bar": {
@@ -89,7 +81,17 @@
     "empty": "Ainda não temos guias de experiências para {{tag}}. Experimente outra etiqueta ou remova o filtro.",
     "clearFilter": "Mostrar todas as guias de experiências",
     "cardCta": "Explore o guia de experiências {{guideTitle}}",
-    "directionsLabel": "Como chegar",
+    "directionsLabel": "Direções",
+    "sections": {
+      "content": {
+        "title": "Guias de experiências",
+        "description": "Guias detalhados sobre praias, trilhas, bate-voltas e coisas para fazer"
+      },
+      "directions": {
+        "title": "Como chegar",
+        "description": "Direções passo a passo para ir e voltar do hostel"
+      }
+    },
     "directionLinks": {
       "capriDayTrip": {
         "positanoCapriFerry": "Positano → Capri de ferry",
@@ -104,7 +106,7 @@
       "positanoRavello": {
         "positanoRavelloBus": "Positano → Ravello de autocarro",
         "ravelloPositanoBus": "Ravello → Positano de autocarro",
-        "positanoRavelloFerryBus": "Positano → Ravello ferry + autocarro"
+        "positanoRavelloFerryBus": "Positano → Ravello de ferry + autocarro"
       },
       "naplesPositano": {
         "naplesCenterTrainBus": "Centro de Nápoles → Positano (comboio + autocarro)",
@@ -125,14 +127,34 @@
     "filterDescription": "Escolha uma etiqueta para reduzir as experiências em destaque.",
     "grouped": {
       "beaches": {
-        "guides": {
-          "heading": "Guias de praia",
-          "description": "Escolha o trecho de areia ideal e planeie o seu dia."
-        },
-        "directions": {
-          "heading": "Como chegar à praia",
-          "description": "Instruções passo a passo do Hostel Brikette até à praia."
-        }
+        "title": "Praias",
+        "description": "Escolha o trecho de areia ideal e planeie o seu dia.",
+        "imageAlt": "Praia de Positano com guarda-sóis coloridos ao longo da costa"
+      },
+      "hiking": {
+        "title": "Trilhos e Caminhadas",
+        "description": "Rotas de passeios fáceis a caminhadas de dia inteiro.",
+        "imageAlt": "Caminhantes no Trilho dos Deuses com vistas para a costa"
+      },
+      "day-trip": {
+        "title": "Passeios de Dia",
+        "description": "Capri, Amalfi, Ravello — como ir e voltar.",
+        "imageAlt": "Ferry a aproximar-se da ilha de Capri"
+      },
+      "boat": {
+        "title": "Passeios de Barco",
+        "description": "Barcos privados, excursões de grupo e cruzeiros ao pôr-do-sol.",
+        "imageAlt": "Barco tradicional nas águas da Costa Amalfitana"
+      },
+      "cuisine": {
+        "title": "Comida e Bebida",
+        "description": "Onde comer bem sem gastar muito.",
+        "imageAlt": "Pratos italianos frescos numa trattoria local"
+      },
+      "more": {
+        "title": "Mais Guias",
+        "description": "Dicas de transporte, locais para fotografar e eventos locais.",
+        "imageAlt": "Autocarro local na estrada da Costa Amalfitana"
       }
     }
   }

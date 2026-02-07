@@ -2,7 +2,9 @@
 
 /* eslint-disable react/forbid-dom-props -- PB-2419: PB-DEVTOOLS dynamic overlay positioning requires inline styles (left/top/width/height). Dev-only, safe. */
 import React, { useEffect, useRef, useState } from "react";
+
 import { useTranslations } from "@acme/i18n";
+
 import { AUTOSCROLL_EDGE_PX } from "../hooks/usePageBuilderDnD";
 
 type Props = {

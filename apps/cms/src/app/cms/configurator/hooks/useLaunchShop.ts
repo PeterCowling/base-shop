@@ -5,12 +5,14 @@
 // Docs: docs/cms/configurator-contract.md
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { getCsrfToken } from "@acme/shared-utils";
-import { getRequiredSteps } from "../steps";
+
 import { useTranslations } from "@acme/i18n";
-import type { ConfiguratorState } from "../../wizard/schema";
-import type { ConfiguratorStep } from "../types";
+import { getCsrfToken } from "@acme/lib/security";
 import type { Environment } from "@acme/types";
+
+import type { ConfiguratorState } from "../../wizard/schema";
+import { getRequiredSteps } from "../steps";
+import type { ConfiguratorStep } from "../types";
 
 export type LaunchStepStatus = "idle" | "pending" | "success" | "failure";
 

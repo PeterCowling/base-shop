@@ -1,6 +1,7 @@
-import { render } from "@testing-library/react";
 import { DndContext } from "@dnd-kit/core";
 import { SortableContext } from "@dnd-kit/sortable";
+import { render } from "@testing-library/react";
+
 import CanvasItem from "../src/components/cms/page-builder/CanvasItem";
 
 describe("CanvasItem", () => {

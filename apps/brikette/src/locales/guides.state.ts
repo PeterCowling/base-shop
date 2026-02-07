@@ -4,25 +4,26 @@
 // -----------------------------------------------------------------------------
 
 /* i18n-exempt file -- ABC-123 [ttl=2026-12-31] module loader patterns are not user-facing */
+import { getWebpackContext, supportsWebpackGlob, webpackContextToRecord } from "../utils/webpackGlob";
+
+import { loadGuidesModuleOverridesFromFs, loadGuidesModuleOverridesFromFsSync } from "./guides.fs";
 import type {
+  GlobalGuidesState,
   GuidesNamespace,
   GuidesState,
-  GlobalGuidesState,
   JsonModule,
   ModuleOverrides,
   ModuleRecord,
   PartialGuidesNamespace,
 } from "./guides.types";
-
 import { assignNestedValue, finaliseSplitBundle, normalisePathSegments, readModule } from "./guides.util";
-import { loadGuidesModuleOverridesFromFs, loadGuidesModuleOverridesFromFsSync } from "./guides.fs";
-import { supportsWebpackGlob, type WebpackRequire, webpackContextToRecord } from "@/utils/webpackGlob";
-
-declare const require: WebpackRequire | undefined;
 
 // Avoid the unsafe `Function` type; we only need to check presence
 // of a callable webpack context at runtime.
 export const supportsImportMetaGlob = supportsWebpackGlob;
+
+// Typed accessor for globalThis storage keys (avoids repeated as unknown as casts)
+const globalRecord = globalThis as unknown as Record<string, unknown>;
 
 function buildGuidesState(overrides?: ModuleOverrides): GuidesState {
   // Only use import.meta.glob when it's available in this runtime
@@ -36,9 +37,7 @@ function buildGuidesState(overrides?: ModuleOverrides): GuidesState {
     ? overrides?.legacy ?? ({} as ModuleRecord<GuidesNamespace>)
     : (shouldUseRealModules
       ? (webpackContextToRecord<GuidesNamespace>(
-          typeof require === "function" && typeof require.context === "function"
-            ? require.context("./", true, /guides\\.json$/)
-            : undefined
+          getWebpackContext("./", true, /guides\\.json$/)
         ) as ModuleRecord<GuidesNamespace>)
         : ({} as ModuleRecord<GuidesNamespace>));
 
@@ -46,9 +45,7 @@ function buildGuidesState(overrides?: ModuleOverrides): GuidesState {
     ? overrides?.splitGlobal ?? ({} as ModuleRecord)
     : shouldUseRealModules
       ? webpackContextToRecord(
-          typeof require === "function" && typeof require.context === "function"
-            ? require.context("./", true, /guides\/.*\\.json$/)
-            : undefined
+          getWebpackContext("./", true, /guides\/.*\\.json$/)
         )
       : ({} as ModuleRecord);
 
@@ -56,9 +53,7 @@ function buildGuidesState(overrides?: ModuleOverrides): GuidesState {
     ? overrides?.splitContent ?? ({} as ModuleRecord)
     : shouldUseRealModules
       ? webpackContextToRecord(
-          typeof require === "function" && typeof require.context === "function"
-            ? require.context("./", true, /guides\/content\/[^/]+\\.json$/)
-            : undefined
+          getWebpackContext("./", true, /guides\/content\/[^/]+\\.json$/)
         )
       : ({} as ModuleRecord);
 
@@ -136,11 +131,11 @@ let guidesBundles: Map<string, GuidesNamespace>;
 let splitLocales: Set<string>;
 
 function setGlobalState(state: GlobalGuidesState): void {
-  (globalThis as unknown as Record<string, unknown>)[GLOBAL_STATE_KEY] = state as unknown;
+  globalRecord[GLOBAL_STATE_KEY] = state;
 }
 
 function getGlobalState(): GlobalGuidesState | undefined {
-  const value = (globalThis as unknown as Record<string, unknown>)[GLOBAL_STATE_KEY];
+  const value = globalRecord[GLOBAL_STATE_KEY];
   if (!value || typeof value !== "object") return undefined;
   const state = value as Partial<GlobalGuidesState>;
   if (!(state.guidesBundles instanceof Map) || !(state.splitLocales instanceof Set)) {
@@ -152,7 +147,6 @@ function getGlobalState(): GlobalGuidesState | undefined {
 // Compute initial overrides only once per process when import.meta.glob is unavailable.
 // Avoid top-level await to keep the browser build target at "es2020".
 if (!supportsImportMetaGlob) {
-  const globalRecord = globalThis as unknown as Record<string, unknown>;
   const cached = globalRecord[GLOBAL_OVERRIDES_KEY] as ModuleOverrides | undefined;
   if (cached) {
     initialModuleOverrides = cached;
@@ -162,12 +156,12 @@ if (!supportsImportMetaGlob) {
     const syncOverrides = loadGuidesModuleOverridesFromFsSync();
     if (syncOverrides) {
       initialModuleOverrides = syncOverrides;
-      globalRecord[GLOBAL_OVERRIDES_KEY] = syncOverrides as unknown;
+      globalRecord[GLOBAL_OVERRIDES_KEY] = syncOverrides;
     } else {
       // Warm the global cache asynchronously for non-Vite Node contexts (tests/scripts).
       // This does not block module initialisation in the browser bundle.
       void loadGuidesModuleOverridesFromFs().then((overrides) => {
-        globalRecord[GLOBAL_OVERRIDES_KEY] = overrides as unknown;
+        globalRecord[GLOBAL_OVERRIDES_KEY] = overrides;
         if (initialModuleOverrides === undefined) {
           initialModuleOverrides = overrides;
         }

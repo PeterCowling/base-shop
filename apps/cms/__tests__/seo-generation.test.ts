@@ -1,6 +1,7 @@
 /* apps/cms/__tests__/seo-generation.test.ts */
 /* eslint-env jest */
 import path from "node:path";
+
 import React from "react";
 import { DefaultSeo } from "next-seo";
 import { render } from "@testing-library/react";
@@ -19,14 +20,14 @@ const saved: any = {
   updatedAt: "",
   updatedBy: "",
 };
-jest.mock("@platform-core/repositories/settings.server", () => ({
+jest.mock("@acme/platform-core/repositories/settings.server", () => ({
   getShopSettings: jest.fn().mockImplementation(async () => saved),
   saveShopSettings: jest.fn(async (_shop: string, settings: any) => {
     Object.assign(saved, settings);
   }),
   diffHistory: jest.fn(),
 }));
-jest.mock("@platform-core/repositories/shops.server", () => ({
+jest.mock("@acme/platform-core/repositories/shops.server", () => ({
   getShopSettings: jest.fn(async () => saved),
 }));
 

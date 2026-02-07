@@ -1,6 +1,6 @@
 /* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Non-UI literals pending localization. */
 // src/utils/validate.ts
-import { z, ZodTypeAny } from "zod";
+import { type z, type ZodTypeAny } from "zod";
 
 /**
  * Validate an unknown `data` payload against a Zod `schema`.

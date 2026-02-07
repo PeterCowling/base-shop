@@ -1,0 +1,160 @@
+{
+  "seo": {
+    "title": "Guide til check-in og check-out på Hostel Brikette (Positano)",
+    "description": "Trin-for-trin instruktioner om ankomsttider, legitimation, bagageopbevaring, depositum og check-out hjælp hos Hostel Brikette i Positano."
+  },
+  "linkLabel": "Guide til check-in og check-out på Hostel Brikette",
+  "sections": [
+    {
+      "id": "checkInRequest",
+      "title": "Check-in forespørgsel",
+      "body": [
+        "Når du ankommer, skal du gå til receptionen for at starte check-in og få tildelt dit værelse.",
+        "Hvis du ankommer med færge, følg %LINK:ferryDockToBrikette|ruten fra færgelejet til hostellet%. Hvis du ankommer med bus, brug %LINK:chiesaNuovaArrivals|ankomstguiden til Chiesa Nuova% for at nå indgangen."
+      ],
+      "images": [
+        {
+          "src": "/img/checkin-desk.avif",
+          "alt": "Receptionens check-in skranke på hostellet.",
+          "caption": "Check-in starter i receptionen på Hostel Brikette."
+        }
+      ]
+    },
+    {
+      "id": "earlyArrival",
+      "title": "Tidlig ankomst",
+      "body": [
+        "Hvis du ankommer før 10:30 AM på din bookedag, kan du endnu ikke komme ind på hostellet.",
+        "Brug tiden på morgenmad, en kort gåtur eller at planlægge dagen, mens du venter på check-in vinduet."
+      ]
+    },
+    {
+      "id": "middayArrival",
+      "title": "Ankomst midt på dagen",
+      "body": [
+        "Hvis du ankommer mellem 10:30 AM og 3:00 PM, kan du få adgang som Midlertidig Gæst, afhængigt af godkendelse. I dette tidsrum kan du bede om bagageopbevaring, hvis der er plads. Bagageopbevaring er adskilt fra din værelsesbooking og har egne vilkår.",
+        "Hvis du har brug for en garanteret løsning, se %LINK:luggageStorage|vores guide til bagageopbevaring% før ankomst."
+      ]
+    },
+    {
+      "id": "checkInWindow",
+      "title": "Check-in tidsrum",
+      "body": [
+        "Du kan checke ind fra 3:00 PM til 10:30 PM hver dag. I dette tidsrum følger du vores standard check-in proces."
+      ]
+    },
+    {
+      "id": "lateArrival",
+      "title": "Sen ankomst",
+      "body": [
+        "Hvis du planlægger at ankomme efter receptionen lukker kl. 10:30 PM, kan vi tilbyde selvbetjent sen check-in, afhængigt af tilgængelighed. Vi sender instruktioner til de kontaktoplysninger, du angav ved booking. Sørg for, at din enhed er opladet, og at dine oplysninger er korrekte, da vi ikke kan holdes ansvarlige for problemer forårsaget af forkerte oplysninger eller tekniske fejl.",
+        "Hvis du forventer at ankomme sent, så del din forventede ankomsttid på forhånd, så vi kan bekræfte om sen check-in er mulig."
+      ]
+    },
+    {
+      "id": "necessityOfProcess",
+      "title": "Krav om fuld check-in proces",
+      "body": [
+        "Du skal gennemføre hele check-in processen for at få adgang til hostellet. Hvis du ikke kan gennemføre check-in, bliver din reservation annulleret og behandlet som No Show."
+      ]
+    },
+    {
+      "id": "proofOfIdentity",
+      "title": "Legitimation",
+      "body": [
+        "Du skal fremvise gyldig original legitimation (pas, nationalt ID, kørekort eller militær ID) ved ankomst. Hvis du ikke fremviser gyldigt ID inden 10:30 PM på din planlagte check-in dag, bliver din reservation annulleret som No Show."
+      ]
+    },
+    {
+      "id": "paymentBalance",
+      "title": "Restbetaling",
+      "body": [
+        "Du skal betale eventuel restsaldo fuldt ud med en accepteret betalingsmetode, før du gennemfører check-in. Hvis du ikke kan betale det fulde beløb, bliver din reservation annulleret og markeret som No Show."
+      ]
+    },
+    {
+      "id": "keycardLinenDeposit",
+      "title": "Depositum for nøglekort og linned",
+      "body": [
+        "Ved check-in skal du betale et kontant depositum på €10 for dit nøglekort og linned. Depositummet refunderes fuldt ud kontant ved check-out, når du afleverer begge dele. Kredit- eller betalingskort accepteres ikke til dette depositum."
+      ],
+      "images": [
+        {
+          "src": "https://www.retrotouch.co.uk/user/products/large/Boutique%20hotel%20range/Card%20Key/Key%20card%20white.jpg",
+          "alt": "Hvidt hotelnøglekort.",
+          "caption": "Behold dit nøglekort; aflever det ved check-out for at få dit €10 depositum tilbage kontant — Foto: RetroTouch (retrotouch.co.uk). Tilpasset/beskåret."
+        }
+      ]
+    },
+    {
+      "id": "checkoutWindow",
+      "title": "Check-out tidsrum",
+      "body": [
+        "Check-out er fra 7:30 AM til 10:30 AM. Efter check-out kan du ikke gå tilbage til værelset eller efterlade personlige ejendele."
+      ]
+    },
+    {
+      "id": "earlyCheckout",
+      "title": "Tidlig check-out",
+      "body": [
+        "Hvis du skal afsted før 7:30 AM, aftal tidlig check-out i receptionen aftenen før for at få depositummet tilbage kontant. Hvis du efterlader nøglekortet uden personalets bekræftelse, mister du depositummet."
+      ]
+    },
+    {
+      "id": "lateCheckout",
+      "title": "Sen check-out",
+      "body": [
+        "Vi tilbyder ikke sen check-out. Check-out skal være afsluttet inden 10:30 AM."
+      ]
+    },
+    {
+      "id": "failureToCheckout",
+      "title": "Manglende check-out",
+      "body": [
+        "Hostellet er meget ofte fuldt booket, så værelserne skal ryddes hurtigt, så rengøringen kan klargøre dem til ankommende gæster.",
+        "Hvis du ikke har tjekket ud, og dine ejendele stadig er på værelset efter check-out tiden, kan vi være nødt til at frigøre værelset. Vi vil gøre vores bedste for at kontakte dig først, men vi kan fjerne dine ting og opbevare dem hos en lokal portørservice. Eventuelle opbevarings- og håndteringsomkostninger vil blive opkrævet hos dig."
+      ]
+    },
+    {
+      "id": "postCheckout",
+      "title": "Efter check-out",
+      "body": [
+        "Når du har tjekket ud, slutter din reservation officielt. Du kan blive på hostellets område som Midlertidig Gæst indtil 3:30 PM, med adgang kun til fællesområderne (ingen adgang til værelser). Bagageopbevaring kan anmodes om, afhængigt af tilgængelighed, og der gælder separate vilkår.",
+        "Hvis du skal flytte tung bagage efter check-out, kan du bruge %LINK:porterServices|portørservice% eller se %LINK:luggageStorage|vores guide til bagageopbevaring% for at udforske byen uden bagage."
+      ]
+    }
+  ],
+  "lastUpdated": "2026-02-04T00:00:00.000Z",
+  "intro": [
+    "Denne guide forklarer check-in og check-out på Hostel Brikette, så du kan planlægge ankomsttider, dokumenter og betalinger på forhånd.",
+    "De fleste gæster checker ind mellem 3:00 PM og 10:30 PM, men tidlige ankomster kan få midlertidig adgang og bagageopbevaring afhængigt af plads.",
+    "Inden ankomst skal du have gyldig legitimation klar, betale eventuel restsaldo og huske €10 kontant depositum for nøglekort og linned. Check-out er fra 7:30–10:30 AM."
+  ],
+  "tipsTitle": "Hurtige tips",
+  "tips": [
+    "Hav ID og betalingsmetode klar, før du når receptionen, så check-in går hurtigere.",
+    "Hvis du ankommer tidligt, gem %LINK:luggageStorage|guiden til bagageopbevaring% for at planlægge dagen uden bagage.",
+    "Hvis du rejser med tung bagage fra kajen, kan %LINK:porterServices|portørservice% bære taskerne, mens du går."
+  ],
+  "faqsTitle": "Check-in og check-out FAQ",
+  "faqs": [
+    {
+      "q": "Kan jeg checke ind før 3:00 PM?",
+      "a": [
+        "Tidlig adgang er begrænset og afhænger af tilgængelighed. Du kan anmode om adgang som Midlertidig Gæst og bagageopbevaring, men fuld check-in starter først kl. 3:00 PM."
+      ]
+    },
+    {
+      "q": "Hvad sker der, hvis jeg glemmer mit ID?",
+      "a": [
+        "Vi skal bruge gyldig original legitimation for at gennemføre check-in. Uden den kan din reservation blive annulleret som No Show."
+      ]
+    },
+    {
+      "q": "Kan jeg opbevare bagage efter check-out?",
+      "a": [
+        "Vi kan normalt opbevare tasker i en begrænset periode afhængigt af plads. Se %LINK:luggageStorage|vores guide til bagageopbevaring% for detaljer og alternativer."
+      ]
+    }
+  ]
+}

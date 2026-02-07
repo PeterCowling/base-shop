@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { localeSchema } from "./Product";
+
 export declare const shopLocaleSchema: z.ZodObject<{
     priceOverrides: z.ZodDefault<z.ZodRecord<z.ZodEnum<["en", "de", "it"]>, z.ZodNumber>>;
     localeOverrides: z.ZodDefault<z.ZodRecord<z.ZodString, z.ZodEnum<["en", "de", "it"]>>>;
@@ -17,3 +17,4 @@ export declare const shopLocaleSchema: z.ZodObject<{
     homeDescription?: Partial<Record<"en" | "de" | "it", string>> | undefined;
 }>;
 export type ShopLocale = z.infer<typeof shopLocaleSchema>;
+//# sourceMappingURL=shop-locale.d.ts.map

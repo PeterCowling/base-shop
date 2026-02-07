@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "playwright/test";
 
 test("toolbar globals switch tokens + dark class", async ({ page }) => {
   // Base view lists base primary text

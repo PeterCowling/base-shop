@@ -2,9 +2,11 @@
 "use client";
 
 import * as React from "react";
-import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../../atoms/shadcn";
+
 import { Inline } from "../../../../atoms/primitives/Inline";
 import { Stack } from "../../../../atoms/primitives/Stack";
+import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../../atoms/shadcn";
+
 import { cssError } from "./helpers";
 
 type Axis = "w" | "h";

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { SizeControls } from '@acme/page-builder-ui';
 
 describe('SizeControls (CT)', { tags: ['inspectors'] }, () => {

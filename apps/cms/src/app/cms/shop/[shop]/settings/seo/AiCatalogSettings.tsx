@@ -1,23 +1,25 @@
 "use client";
 
-import { useState, type FormEvent, type ChangeEvent } from "react";
+import { type ChangeEvent,type FormEvent, useState } from "react";
+import { updateAiCatalog } from "@cms/actions/shops.server";
 
-import { Toast, Tooltip } from "@/components/atoms";
+import { formatTimestamp } from "@acme/date-utils";
+import { useTranslations } from "@acme/i18n";
+import type { AiCatalogField } from "@acme/types";
+import { useToast } from "@acme/ui/operations";
+
+import { Tooltip } from "@/components/atoms";
 import {
   Button,
   Card,
   CardContent,
   Checkbox,
-  Input,
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
+  Input,
 } from "@/components/atoms/shadcn";
-import { updateAiCatalog } from "@cms/actions/shops.server";
-import { formatTimestamp } from "@acme/date-utils";
-import type { AiCatalogField } from "@acme/types";
-import { useTranslations } from "@acme/i18n";
 
 const ALL_FIELDS: AiCatalogField[] = [
   "id",
@@ -34,14 +36,11 @@ interface Props {
 
 export default function AiCatalogSettings({ shop, initial }: Props) {
   const t = useTranslations();
+  const toast = useToast();
   const [state, setState] = useState(initial);
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const [quickActionBusy, setQuickActionBusy] = useState(false);
-  const [toast, setToast] = useState<{ open: boolean; message: string }>({
-    open: false,
-    message: "",
-  });
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewItems, setPreviewItems] = useState<unknown[]>([]);
   const [previewLoading, setPreviewLoading] = useState(false);
@@ -80,7 +79,7 @@ export default function AiCatalogSettings({ shop, initial }: Props) {
     setQuickActionBusy(true);
     try {
       await new Promise((resolve) => setTimeout(resolve, 300));
-      setToast({ open: true, message: String(t("AI catalog crawl queued")) });
+      toast.success(String(t("AI catalog crawl queued")));
     } finally {
       setQuickActionBusy(false);
     }
@@ -95,11 +94,11 @@ export default function AiCatalogSettings({ shop, initial }: Props) {
           setPreviewItems(data.items as unknown[]);
           setPreviewOpen(true);
         } else {
-          setToast({ open: true, message: String(t("Unable to load preview")) });
+          toast.error(String(t("Unable to load preview")));
         }
       })
       .catch(() => {
-        setToast({ open: true, message: String(t("Unable to load preview")) });
+        toast.error(String(t("Unable to load preview")));
       })
       .finally(() => setPreviewLoading(false));
   };
@@ -201,11 +200,6 @@ export default function AiCatalogSettings({ shop, initial }: Props) {
           </form>
         </CardContent>
       </Card>
-      <Toast
-        open={toast.open}
-        message={toast.message}
-        onClose={() => setToast((t) => ({ ...t, open: false }))}
-      />
       <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
         <DialogContent>
           <DialogHeader>

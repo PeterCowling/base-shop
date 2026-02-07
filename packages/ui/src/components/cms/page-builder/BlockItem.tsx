@@ -1,26 +1,27 @@
 "use client";
 
 import { memo } from "react";
+import { LockClosedIcon } from "@radix-ui/react-icons";
+
 import { useTranslations } from "@acme/i18n";
-import useBlockItemMetadata from "./useBlockItemMetadata";
-import useBlockItemInlineEditing from "./useBlockItemInlineEditing";
-import useBlockItemInteractions from "./useBlockItemInteractions";
-import useBlockItemStyles from "./useBlockItemStyles";
-import useBlockItemContextMenu from "./useBlockItemContextMenu";
-import BlockContent from "./BlockContent";
-import BlockResizer from "./BlockResizer";
+
 import BlockChildren from "./BlockChildren";
+import BlockContent from "./BlockContent";
+import type { BlockItemProps as Props } from "./BlockItem.types";
+import BlockResizer from "./BlockResizer";
+import buildBlockKeyDownHandler from "./buildBlockKeyDownHandler";
 import CanvasOverlays from "./CanvasOverlays";
+import ContextMenu from "./ContextMenu";
 import DeleteButton from "./DeleteButton";
 import DragHandle from "./DragHandle";
 import HiddenBadge from "./HiddenBadge";
 import ImageEditingOverlays from "./ImageEditingOverlays";
-import ContextMenu from "./ContextMenu";
+import useBlockItemContextMenu from "./useBlockItemContextMenu";
+import useBlockItemInlineEditing from "./useBlockItemInlineEditing";
+import useBlockItemInteractions from "./useBlockItemInteractions";
+import useBlockItemMetadata from "./useBlockItemMetadata";
+import useBlockItemStyles from "./useBlockItemStyles";
 import ZIndexMenu from "./ZIndexMenu";
-import buildBlockKeyDownHandler from "./buildBlockKeyDownHandler";
-import { LockClosedIcon } from "@radix-ui/react-icons";
-
-import type { BlockItemProps as Props } from "./BlockItem.types";
 
 const BlockItem = memo(function BlockItemComponent({
   component,
@@ -102,17 +103,17 @@ const BlockItem = memo(function BlockItemComponent({
 
   // Compose wrapper class (utility classes only) outside JSX to avoid i18n rule noise.
   const wrapperClass =
-    // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2462: utility classNames; not user-visible copy
+     
     "hover:border-primary relative rounded border hover:border-dashed" +
-    // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2462: utility classNames; not user-visible copy
+     
     (selected ? " ring-2 ring-blue-500" : "") +
-    // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2462: utility classNames; not user-visible copy
+     
     (overlay.snapping ? " border-primary" : "") +
     (dnd.isOver || dnd.isDragging
       ? dropAllowed === false
-        // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2462: utility classNames; not user-visible copy
+         
         ? " border-danger border-dashed cursor-not-allowed"
-        // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2462: utility classNames; not user-visible copy
+         
         : " border-primary border-dashed"
       : "");
 

@@ -10,7 +10,7 @@
   "sections": [
     {
       "id": "why",
-      "title": "Why visit",
+      "title": "Hvorfor besøke",
       "body": [
         "Nyt panoramasolnedganger fra Piazza San Gennaro uten albue-til-albue folkemengder.",
         "Overnatting koster €20–40 € billigere per natt enn Positano mens busstilgangen opprettholdes."
@@ -18,15 +18,15 @@
     },
     {
       "id": "beaches",
-      "title": "Beaches & swimming",
+      "title": "Strender og bading",
       "body": [
-        "Marina di Praia tilbyr en dramatisk bukt med strandklubber og kajakkutleie; ankomme før kl. 11.00 for solsenger på første rad.",
+        "Marina di Praia tilbyr en dramatisk bukt med strandklubber og kajakkutleie; kom før kl. 11.00 for solsenger på første rad.",
         "Gavitella-stranden vender mot vest for svømmetur i gylne timer; tell 400 trinn ned, så planlegg snacks og vann."
       ]
     },
     {
       "id": "dining",
-      "title": "Food & nightlife",
+      "title": "Mat og uteliv",
       "body": [
         "Bestill Il Pirata eller Kasai for sjømatmiddager med terrasseutsikt; reserver solnedgangsbord noen dager fremover om sommeren.",
         "Praianos strandbarer arrangerer levende musikk i helgene – sjekk plakater i nærheten av SITA-stoppet for faste tider."
@@ -39,7 +39,7 @@
   ],
   "faqs": [
     {
-      "q": "How long is the bus ride from Positano?",
+      "q": "Hvor lang er bussturen fra Positano?",
       "a": [
         "Rundt 15 minutter på SITA-bussen, lengre i rushtiden. Tjenestene kjører omtrent hvert 30. minutt om sommeren."
       ]

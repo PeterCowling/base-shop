@@ -1,8 +1,9 @@
-import { unpublishPost as repoUnpublishPost } from "@platform-core/repositories/blog.server";
+import { unpublishPost as repoUnpublishPost } from "@acme/platform-core/repositories/blog.server";
+import { incrementOperationalError } from "@acme/platform-core/shops/health";
+import { recordMetric } from "@acme/platform-core/utils";
+
 import { ensureAuthorized } from "../../../actions/common/auth";
 import { getConfig } from "../config";
-import { recordMetric } from "@platform-core/utils";
-import { incrementOperationalError } from "@platform-core/shops/health";
 
 export async function unpublishPost(
   shopId: string,

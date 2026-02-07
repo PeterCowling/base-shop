@@ -1,36 +1,11 @@
-import { Dialog, Transition } from "@headlessui/react";
+import { type ComponentPropsWithoutRef, memo } from "react";
+import { DialogTitle } from "@radix-ui/react-dialog";
 import clsx from "clsx";
-import { Fragment, memo, type ComponentPropsWithoutRef } from "react";
-import { ModalContainer, ModalOverlay, ModalPanel, ModalFooterButton } from "./primitives";
+
+import { ModalFooterButton, ModalFrame, ModalPanel } from "./primitives";
 import type { LanguageModalCopy, LanguageOption } from "./types";
 
 const DEFAULT_TEST_ID = "language-modal";
-
-const BACKDROP_ENTER = [
-  "motion-safe:animate-in",
-  "motion-safe:animate-fade-in",
-  "duration-200",
-] as const;
-
-const BACKDROP_LEAVE = [
-  "motion-safe:animate-out",
-  "motion-safe:animate-fade-out",
-  "duration-150",
-] as const;
-
-const PANEL_ENTER = [
-  "motion-safe:animate-in",
-  "motion-safe:animate-fade-in",
-  "motion-safe:animate-zoom-in-95",
-  "duration-200",
-] as const;
-
-const PANEL_LEAVE = [
-  "motion-safe:animate-out",
-  "motion-safe:animate-fade-out",
-  "motion-safe:animate-zoom-out-95",
-  "duration-150",
-] as const;
 
 const OPTION_BASE = [
   "inline-flex",
@@ -78,7 +53,7 @@ export interface LanguageModalProps {
 const Cluster = memo(function Cluster({ className, ...rest }: ComponentPropsWithoutRef<"div">): JSX.Element {
   const base =
     /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
-    "flex flex-wrap gap-2";
+    "flex max-h-[50svh] flex-wrap gap-2 overflow-y-auto pr-1 sm:max-h-[60svh]";
   return <div className={className ? `${base} ${className}` : base} {...rest} />;
 });
 
@@ -97,47 +72,42 @@ function LanguageModal({
   const themeClass = theme === "dark" ? "lang-dark" : "lang-light";
 
   return (
-    <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="layer-modal relative" onClose={onClose} data-testid={testId}>
-        <Transition.Child as={Fragment} enter={BACKDROP_ENTER.join(" ")} leave={BACKDROP_LEAVE.join(" ")}>
-          <ModalOverlay animated className="layer-modal-backdrop" />
-        </Transition.Child>
-
-        <ModalContainer className="layer-modal-container">
-          <div className="flex min-h-full items-center justify-center p-4 text-center">
-            <Transition.Child as={Fragment} enter={PANEL_ENTER.join(" ")} leave={PANEL_LEAVE.join(" ")}>
-              <Dialog.Panel
-                as={ModalPanel}
+    <ModalFrame
+      isOpen={isOpen}
+      onClose={onClose}
+      testId={testId}
+      overlayClassName="layer-modal-backdrop motion-safe:animate-in motion-safe:animate-fade-in duration-200"
+      contentClassName="layer-modal-container"
+    >
+      <div className="flex min-h-full items-center justify-center p-4 text-center">
+        <ModalPanel
           widthClassName={/* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */ "w-full sm:w-96"}
-                className="layer-modal-panel transform bg-brand-bg p-6 text-start dark:bg-brand-text dark:text-brand-surface"
+          className="layer-modal-panel pointer-events-auto transform bg-brand-bg p-6 text-start dark:bg-brand-text dark:text-brand-surface motion-safe:animate-in motion-safe:animate-fade-in motion-safe:animate-zoom-in-95 duration-200"
+        >
+          <DialogTitle className="mb-4 text-xl font-semibold text-brand-heading text-shadow-sm [--tw-text-shadow-color:theme(colors.slate.500/0.3)]">
+            {copy.title}
+          </DialogTitle>
+
+          <Cluster>
+            {options.map(({ code, label }) => (
+              <button
+                key={code}
+                type="button"
+                onClick={() => onSelect(code)}
+                aria-current={code === currentCode ? "true" : undefined}
+                className={clsx(OPTION_BASE, themeClass, OPTION_INTERACTION, code === currentCode && OPTION_ACTIVE)}
               >
-                <Dialog.Title className="mb-4 text-xl font-semibold text-brand-heading text-shadow-sm [--tw-text-shadow-color:theme(colors.slate.500/0.3)]">
-                  {copy.title}
-                </Dialog.Title>
+                {label}
+              </button>
+            ))}
+          </Cluster>
 
-                <Cluster>
-                  {options.map(({ code, label }) => (
-                    <button
-                      key={code}
-                      type="button"
-                      onClick={() => onSelect(code)}
-                      aria-current={code === currentCode ? "true" : undefined}
-                      className={clsx(OPTION_BASE, themeClass, OPTION_INTERACTION, code === currentCode && OPTION_ACTIVE)}
-                    >
-                      {label}
-                    </button>
-                  ))}
-                </Cluster>
-
-                <div className="mt-6 text-end">
-                  <ModalFooterButton onClick={onClose}>{copy.closeLabel}</ModalFooterButton>
-                </div>
-              </Dialog.Panel>
-            </Transition.Child>
+          <div className="mt-6 text-end">
+            <ModalFooterButton onClick={onClose}>{copy.closeLabel}</ModalFooterButton>
           </div>
-        </ModalContainer>
-      </Dialog>
-    </Transition>
+        </ModalPanel>
+      </div>
+    </ModalFrame>
   );
 }
 

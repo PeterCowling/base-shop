@@ -11,7 +11,7 @@ describe("db env guards", () => {
   it("falls back to the stub client when core env throws", async () => {
     process.env.NODE_ENV = "production";
     let prisma: any;
-    await jest.isolateModulesAsync(async () => {
+    await (jest as any).isolateModulesAsync(async () => {
       jest.doMock("@acme/config/env/core", () => ({
         loadCoreEnv: () => {
           throw new Error("missing");
@@ -27,7 +27,7 @@ describe("db env guards", () => {
   it("errors on invalid DATABASE_URL", async () => {
     process.env.NODE_ENV = "production";
     await expect(
-      jest.isolateModulesAsync(async () => {
+      (jest as any).isolateModulesAsync(async () => {
         jest.doMock("@acme/config/env/core", () => ({
           loadCoreEnv: () => ({ DATABASE_URL: "bad" }),
         }));
@@ -46,7 +46,7 @@ describe("db env guards", () => {
   });
 
   it("creates client with valid URL", async () => {
-    await jest.isolateModulesAsync(async () => {
+    await (jest as any).isolateModulesAsync(async () => {
       const ctor = jest.fn().mockReturnValue({});
       jest.doMock("@acme/config/env/core", () => ({
         loadCoreEnv: () => ({ DATABASE_URL: "postgres://ok" }),
@@ -64,7 +64,7 @@ describe("db env guards", () => {
   });
 
   it("returns cached client on reinit", async () => {
-    await jest.isolateModulesAsync(async () => {
+    await (jest as any).isolateModulesAsync(async () => {
       const ctor = jest.fn().mockReturnValue({});
       jest.doMock("@acme/config/env/core", () => ({
         loadCoreEnv: () => ({ DATABASE_URL: "postgres://ok" }),

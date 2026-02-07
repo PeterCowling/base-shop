@@ -1,0 +1,18 @@
+{
+  "name": "@apps/handbag-configurator-api",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm exec tsx watch src/server.ts",
+    "build": "tsc -b",
+    "start": "node dist/server.js",
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
+  },
+  "dependencies": {
+    "@acme/product-configurator": "workspace:*",
+    "zod": "^3.25.73"
+  }
+}
+

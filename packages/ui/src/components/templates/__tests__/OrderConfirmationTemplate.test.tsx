@@ -1,5 +1,8 @@
-import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
+
+import { render, screen } from "@testing-library/react";
+
+import { OrderConfirmationTemplate } from "../OrderConfirmationTemplate";
 // Minimal i18n shim so visible text matches test expectations
 const translations: Record<string, string> = {
   "order.confirmation.title": "Order Confirmation",
@@ -19,8 +22,6 @@ jest.mock("@acme/i18n", () => ({
     );
   },
 }));
-
-import { OrderConfirmationTemplate } from "../OrderConfirmationTemplate";
 
 jest.mock("../../atoms/Price", () => ({
   Price: ({ amount }: any) => <div data-cy="price">{amount}</div>,

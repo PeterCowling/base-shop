@@ -1,5 +1,6 @@
 import { renderHook } from "@testing-library/react";
-import { tryOnReducer, useTryOnDerived, type TryOnState } from "../state";
+
+import { tryOnReducer, type TryOnState,useTryOnDerived } from "../state";
 
 describe("tryOnReducer", () => {
   const base: TryOnState = { phase: "idle" };

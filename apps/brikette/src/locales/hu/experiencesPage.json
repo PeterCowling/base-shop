@@ -7,15 +7,7 @@
     "eyebrow": "Élmények",
     "title": "Naplementék, ráérős reggelek és helyi tudás",
     "description": "Egészítse ki tartózkodását teraszbárral, szervezett túrákkal és egy digitális concierge-zsel, amely már érkezés előtt képben tartja.",
-    "supporting": "Minden élmény a regisztrált vendégek előtt nyitva áll; írjon nekünk, ha máshol megszálló barátokkal érkezik.",
-    "primaryCta": "Foglalja le tartózkodását",
-    "secondaryCta": "Nézze meg az itallapot",
-    "tertiaryCta": "Üzenjen a digitális concierge-nek",
-    "primaryCtaAria": "Foglalja le tartózkodását a Hostel Brikette-ben",
-    "secondaryCtaAria": "Tekintse meg a Hostel Brikette bárjának kínálatát",
-    "tertiaryCtaAria": "Küldjön üzenetet a Hostel Brikette digitális concierge-ének",
-    "breakfastCta": "Nézze meg a reggelimenüt",
-    "breakfastCtaAria": "Nézze meg a reggelimenüt"
+    "scrollNudge": "Böngésszen élménytípus szerint lent"
   },
   "sections": {
     "bar": {
@@ -89,50 +81,80 @@
     "empty": "Még nincs élménykalauzunk {{tag}} témában. Próbáljon másik címkét vagy vegye le a szűrőt.",
     "clearFilter": "Összes élménykalauz megjelenítése",
     "cardCta": "Fedezd fel a {{guideTitle}} élménykalauzt",
-    "directionsLabel": "Útvonal",
+    "filterHeading": "Élménykalauzok szűrése",
+    "filterDescription": "Válasszon címkét, hogy szűkítse a kiemelt élményeket.",
+    "directionsLabel": "Útbaigazítások",
+    "sections": {
+      "content": {
+        "title": "Élmény-útmutatók",
+        "description": "Részletes útmutatók strandokról, túrákról, egynapos kiruccanásokról és programokról"
+      },
+      "directions": {
+        "title": "Hogyan jutsz oda",
+        "description": "Lépésről lépésre útbaigazítás a hostelhez és onnan vissza"
+      }
+    },
     "directionLinks": {
       "capriDayTrip": {
-        "positanoCapriFerry": "Positano → Capri komppal",
-        "capriPositanoFerry": "Capri → Positano komppal"
+        "positanoCapriFerry": "Positano → Capri komp",
+        "capriPositanoFerry": "Capri → Positano komp"
       },
       "positanoAmalfi": {
         "positanoAmalfiBus": "Positano → Amalfi busszal",
         "amalfiPositanoBus": "Amalfi → Positano busszal",
-        "positanoAmalfiFerry": "Positano → Amalfi komppal (szezonális)",
-        "amalfiPositanoFerry": "Amalfi → Positano komppal (szezonális)"
+        "positanoAmalfiFerry": "Positano → Amalfi komp (szezonális)",
+        "amalfiPositanoFerry": "Amalfi → Positano komp (szezonális)"
       },
       "positanoRavello": {
-        "positanoRavelloBus": "Positano → Ravello busszal",
-        "ravelloPositanoBus": "Ravello → Positano busszal",
+        "positanoRavelloBus": "Positano → Ravello busz",
+        "ravelloPositanoBus": "Ravello → Positano busz",
         "positanoRavelloFerryBus": "Positano → Ravello komp + busz"
       },
       "naplesPositano": {
-        "naplesCenterTrainBus": "Nápoly központ → Positano (vonat + busz)",
-        "naplesCenterPositanoFerry": "Nápoly központ → Positano komppal",
-        "naplesAirportPositanoBus": "Nápoly repülőtér → Positano busszal",
-        "positanoNaplesCenterBusTrain": "Positano → Nápoly központ (busz + vonat)",
-        "positanoNaplesCenterFerry": "Positano → Nápoly komppal",
-        "positanoNaplesAirportBus": "Positano → Nápoly repülőtér busszal"
+        "naplesCenterTrainBus": "Nápoly belváros → Positano (vonat + busz)",
+        "naplesCenterPositanoFerry": "Nápoly belváros → Positano komp",
+        "naplesAirportPositanoBus": "Nápolyi reptér → Positano busz",
+        "positanoNaplesCenterBusTrain": "Positano → Nápoly belváros (busz + vonat)",
+        "positanoNaplesCenterFerry": "Positano → Nápoly komp",
+        "positanoNaplesAirportBus": "Positano → Nápolyi reptér busz"
       },
       "salernoPositano": {
-        "salernoPositanoBus": "Salerno → Positano busszal",
-        "salernoPositanoFerry": "Salerno → Positano komppal (szezonális)",
-        "positanoSalernoBus": "Positano → Salerno busszal",
-        "positanoSalernoFerry": "Positano → Salerno komppal (szezonális)"
+        "salernoPositanoBus": "Salerno → Positano busz",
+        "salernoPositanoFerry": "Salerno → Positano komp (szezonális)",
+        "positanoSalernoBus": "Positano → Salerno busz",
+        "positanoSalernoFerry": "Positano → Salerno komp (szezonális)"
       }
     },
-    "filterHeading": "Élménykalauzok szűrése",
-    "filterDescription": "Válasszon címkét, hogy szűkítse a kiemelt élményeket.",
     "grouped": {
       "beaches": {
-        "guides": {
-          "heading": "Strandkalauzok",
-          "description": "Válassza ki a megfelelő partszakaszt, és tervezze meg a napját."
-        },
-        "directions": {
-          "heading": "Útbaigazítás a strandhoz",
-          "description": "Lépésről lépésre útbaigazítás a Hostel Brikette-től a partra."
-        }
+        "title": "Strandok",
+        "description": "Válaszd ki a megfelelő partszakaszt és tervezd meg a napodat.",
+        "imageAlt": "Positanói strand színes napernyőkkel a partvonal mentén"
+      },
+      "hiking": {
+        "title": "Túrák és ösvények",
+        "description": "Gyalogtúrák a könnyű sétáktól az egész napos kirándulásokig.",
+        "imageAlt": "Túrázók az Istenek Ösvényén tengerparti kilátással"
+      },
+      "day-trip": {
+        "title": "Egynapos kirándulások",
+        "description": "Capri, Amalfi, Ravello — hogyan juss el és vissza.",
+        "imageAlt": "Komp közelít Capri szigetéhez"
+      },
+      "boat": {
+        "title": "Hajótúrák",
+        "description": "Magáncharter, csoportos utak és naplementés hajózások.",
+        "imageAlt": "Hagyományos hajó az Amalfi-part vizein"
+      },
+      "cuisine": {
+        "title": "Étel és ital",
+        "description": "Hol ehetsz jól anélkül, hogy túlfizetnél.",
+        "imageAlt": "Friss olasz ételek egy helyi trattoriában"
+      },
+      "more": {
+        "title": "További kalauzok",
+        "description": "Közlekedési tippek, fotóhelyszínek és helyi események.",
+        "imageAlt": "Helyi busz kanyarog az Amalfi-parti úton"
       }
     }
   }

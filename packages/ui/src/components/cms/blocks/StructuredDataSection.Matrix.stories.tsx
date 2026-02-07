@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/StructuredDataSection.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import StructuredDataSection from './StructuredDataSection';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './StructuredDataSection.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import StructuredDataSection from './StructuredDataSection';
+import fixture from './StructuredDataSection.fixtures.json';
 
 const meta: Meta<typeof StructuredDataSection> = {
   title: 'CMS Blocks/StructuredDataSection/Matrix',

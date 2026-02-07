@@ -1,10 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
-import { DATA_ROOT } from "@platform-core/dataRoot";
-import { validateShopName } from "@acme/lib";
+import { type NextRequest, NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
-import { writeJsonFile } from "@/lib/server/jsonIO";
+
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+import { validateShopName } from "@acme/lib";
+import { DATA_ROOT } from "@acme/platform-core/dataRoot";
+
+import { writeJsonFile } from "@/lib/server/jsonIO";
 
 interface Body {
   shop: string;

@@ -1,13 +1,14 @@
 // apps/cms/src/app/cms/shop/[shop]/products/first/page.tsx
 
 import { redirect } from "next/navigation";
-import { Button, Card, CardContent, Input } from "@ui/components/atoms/shadcn";
-import { Alert, Tag } from "@ui/components/atoms";
-import { Grid } from "@ui/components/atoms/primitives";
-import { checkShopExists } from "@acme/lib";
 import { createMinimalFirstProduct } from "@cms/actions/products.server";
-import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+
+import { Alert, Tag } from "@acme/design-system/atoms";
+import { Grid } from "@acme/design-system/primitives";
+import { Button, Card, CardContent, Input } from "@acme/design-system/shadcn";
 import type { Locale } from "@acme/i18n/locales";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+import { checkShopExists } from "@acme/platform-core/shops";
 
 interface Params {
   shop: string;

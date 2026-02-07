@@ -2,10 +2,10 @@
 /* eslint-env jest */
 
 import {
-  PREVIEW_TOKENS_KEY,
-  PREVIEW_TOKENS_EVENT,
-  savePreviewTokens,
   loadPreviewTokens,
+  PREVIEW_TOKENS_EVENT,
+  PREVIEW_TOKENS_KEY,
+  savePreviewTokens,
 } from "../src/app/cms/wizard/previewTokens";
 
 describe("previewTokens", () => {

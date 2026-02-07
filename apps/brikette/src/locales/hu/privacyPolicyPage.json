@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "title": "Adatvédelmi szabályzat | Hostel Brikette",
+    "description": "Hogyan gyűjti, használja, tárolja és osztja meg a Hostel Brikette a személyes adatokat, amikor böngészed a weboldalunkat vagy szobát foglalsz."
+  },
+  "headings": {
+    "pageTitle": "Adatvédelmi szabályzat",
+    "subtitle": "Hogyan kezeljük a személyes adataidat"
+  },
+  "lastUpdated": {
+    "label": "Utolsó frissítés",
+    "date": "2026-01-09"
+  },
+  "toc": {
+    "title": "Ezen az oldalon",
+    "aria": "Az adatvédelmi szabályzat tartalomjegyzéke"
+  },
+  "sections": {
+    "intro": {
+      "title": "Áttekintés",
+      "body": [
+        "Ez az adatvédelmi szabályzat elmagyarázza, milyen személyes adatokat gyűjtünk, miért gyűjtjük őket, és hogyan használjuk őket, amikor böngészed a weboldalunkat, kapcsolatba lépsz velünk vagy szobát foglalsz.",
+        "Ha a foglalás szabályait és kereskedelmi feltételeit keresed (fizetések, lemondási határidők, be‑ és kijelentkezés, valamint a vendégek kötelezettségei), olvasd el a Szobafoglalási Általános Szerződési Feltételeinket."
+      ]
+    },
+    "controller": {
+      "title": "Ki felelős az adataidért",
+      "body": [
+        "Az adatkezelő a Skylar SRL, amely Hostel Brikette néven működik („mi”).",
+        "Ha kérdésed van ezzel a szabályzattal kapcsolatban, vagy élni szeretnél adatvédelmi jogaiddal, írj nekünk a {{email}} címre."
+      ]
+    },
+    "dataWeCollect": {
+      "title": "A gyűjtött személyes adatok",
+      "body": [
+        "Amikor kapcsolatba lépsz velünk vagy foglalást kérsz, megadhatod többek között a nevedet, e‑mail címedet, telefonszámodat, állampolgárságodat, tartózkodási dátumokat, és az általad küldött üzeneteket.",
+        "Ha Online Travel Agenten (OTA) vagy harmadik fél foglalási motorján keresztül fejezed be a foglalást, az adott szolgáltató saját adatvédelmi szabályzata alapján kezeli a fizetési adataidat. Általában megkapjuk a foglaláshoz szükséges információkat (például: vendég neve, elérhetőségek, dátumok és foglalási referencia).",
+        "Amikor böngészed a weboldalunkat, a szervereink alapvető technikai adatokat (például IP‑cím, eszköz‑ és böngészőinformációk, valamint a kért oldalak) kezelhetnek biztonsági, hibakeresési és teljesítménycélokra."
+      ]
+    },
+    "howWeUse": {
+      "title": "Hogyan használjuk az adataidat",
+      "body": [
+        "Megkeresések megválaszolására és ügyféltámogatás nyújtására.",
+        "A foglalásod, a check‑in és az ott‑tartózkodással kapcsolatos kommunikáció kezelésére.",
+        "Jogszabályi kötelezettségek teljesítésére (beleértve a vendéglátáshoz és a közbiztonsághoz kapcsolódókat).",
+        "A weboldalunk védelmére és fenntartására (csalásmegelőzés, visszaélés‑monitorozás, megbízhatóság)."
+      ]
+    },
+    "legalBases": {
+      "title": "Jogalapok (miért kezelhetjük az adatokat)",
+      "body": [
+        "Szerződés: az Ön kérésére lépéseket tegyünk a foglalás megkötése előtt, és a foglalási szerződést teljesítsük.",
+        "Jogszabályi kötelezettség: az alkalmazandó jogi előírások teljesítése (beleértve az olasz vendéglátási szabályozásokat).",
+        "Jogos érdek: a weboldalunk és kommunikációink működtetése, védelme és javítása, feltéve, hogy ezek az érdekek nem írják felül az Ön jogait."
+      ]
+    },
+    "sharing": {
+      "title": "Kivel osztjuk meg az adatokat",
+      "body": [
+        "Személyes adatokat csak akkor osztunk meg, amikor ez szükséges a szolgáltatások nyújtásához vagy a jogszabályok betartásához. Ide tartozhatnak az Ön által választott foglalási platformok, az azok által használt fizetési szolgáltatók, e‑mail/kommunikációs szolgáltatók, valamint a weboldalunkat hostoló vagy védő technikai szolgáltatók.",
+        "Nem értékesítünk személyes adatokat."
+      ]
+    },
+    "retention": {
+      "title": "Meddig őrizzük meg az adatokat",
+      "body": [
+        "A személyes adatokat csak addig tartjuk meg, ameddig az a fent leírt célokhoz, illetve jogi, számviteli vagy jelentési kötelezettségek teljesítéséhez szükséges.",
+        "Az őrzési időszak a nyilvántartás típusától és az alkalmazandó jogi kötelezettségtől függően változhat."
+      ]
+    },
+    "security": {
+      "title": "Hogyan védjük az adataidat",
+      "body": [
+        "Ésszerű technikai és szervezési intézkedéseket alkalmazunk a személyes adatok elvesztése, visszaélése és jogosulatlan hozzáférés ellen.",
+        "Egyetlen rendszer sem garantálhat 100%‑os biztonságot, de folyamatosan dolgozunk a biztonság javításán."
+      ]
+    },
+    "yourRights": {
+      "title": "Az Ön jogai",
+      "body": [
+        "Tartózkodási helyedtől és az alkalmazandó jogtól függően jogaid lehetnek a személyes adataidhoz való hozzáférésre, helyesbítésre, törlésre vagy a kezelés korlátozására, valamint bizonyos kezelések elleni tiltakozásra.",
+        "Jogaid gyakorlásához írj nekünk a {{email}} címre. Lehet, hogy igazolnunk kell a személyazonosságodat."
+      ]
+    },
+    "international": {
+      "title": "Nemzetközi adattovábbítás",
+      "body": [
+        "Egyes szolgáltatók az adataidat az országodon kívül dolgozhatják fel. Szükség esetén megfelelő garanciákat alkalmazunk a nemzetközi adattovábbításokhoz."
+      ]
+    },
+    "changes": {
+      "title": "A szabályzat változásai",
+      "body": [
+        "Időnként frissíthetjük ezt az adatvédelmi szabályzatot. A legfrissebb verzió az, amely ezen az oldalon megjelenik."
+      ]
+    }
+  },
+  "footer": {
+    "backToTop": "Vissza a tetejére"
+  }
+}

@@ -1,6 +1,7 @@
 // src/routes/guides/blocks/index.ts
 import type { GuideManifestEntry } from "../guide-manifest";
 import type { GuideSeoTemplateProps } from "../guide-seo/types";
+
 import { composeBlocks } from "./composeBlocks";
 
 export type BlockTemplateResult = {

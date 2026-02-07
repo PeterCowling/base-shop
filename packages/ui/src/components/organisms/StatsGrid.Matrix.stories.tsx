@@ -1,8 +1,10 @@
 // packages/ui/src/components/organisms/StatsGrid.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { StatsGrid, type StatItem } from './StatsGrid';
+
 import { makeStateStory } from '../../story-utils/createStories';
+
+import { type StatItem,StatsGrid } from './StatsGrid';
 
 const stats: StatItem[] = [
   { label: 'Orders', value: 124 },

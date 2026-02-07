@@ -1,14 +1,14 @@
 "use client";
 
-import { FormEvent, useCallback, useMemo, useState } from "react";
-import { useTranslations } from "@i18n/Translations";
-import en from "@i18n/en.json";
-
+import { type FormEvent, useCallback, useMemo, useState } from "react";
 import {
   generateSeo as runGenerateSeo,
   setFreezeTranslations,
   updateSeo,
 } from "@cms/actions/shops.server";
+
+import en from "@acme/i18n/en.json";
+import { useTranslations } from "@acme/i18n/Translations";
 import type { Locale } from "@acme/types";
 
 export interface SeoData {

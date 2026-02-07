@@ -2,13 +2,15 @@
 "use client";
 
 import { useCallback, useMemo } from "react";
+
 import { useTranslations } from "@acme/i18n";
 import type { MediaItem } from "@acme/types";
+
 import type { MediaDetailsFormValues } from "../../details/MediaDetailsPanel";
 
-import { hasUrl } from "./utils";
 import type { MediaItemWithUrl, UseMediaManagerStateOptions } from "./types";
 import type { MediaManagerState, MediaStateActions } from "./useMediaState";
+import { hasUrl } from "./utils";
 
 interface DetailsDeps {
   shop: UseMediaManagerStateOptions["shop"];

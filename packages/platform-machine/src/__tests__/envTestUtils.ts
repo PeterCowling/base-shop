@@ -20,7 +20,7 @@ export async function withEnv(
 
     jest.resetModules();
 
-    await jest.isolateModulesAsync(async () => {
+    await (jest as any).isolateModulesAsync(async () => {
       await fn();
     });
   } finally {
@@ -30,7 +30,7 @@ export async function withEnv(
 
 export async function importFresh<T>(path: string): Promise<T> {
   let mod!: T;
-  await jest.isolateModulesAsync(async () => {
+  await (jest as any).isolateModulesAsync(async () => {
     mod = (await import(path)) as T;
   });
   return mod;

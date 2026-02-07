@@ -1,3 +1,7 @@
+import { prisma } from "../../db";
+import { readShop } from "../shops.server";
+import { setStripeSubscriptionId } from "../users.server";
+
 jest.mock("../shops.server", () => ({
   readShop: jest.fn(),
 }));
@@ -9,10 +13,6 @@ jest.mock("../../db", () => ({
     },
   },
 }));
-
-import { setStripeSubscriptionId } from "../users.server";
-import { readShop } from "../shops.server";
-import { prisma } from "../../db";
 
 const readShopMock = readShop as jest.Mock;
 const updateMock = prisma.user.update as jest.Mock;

@@ -1,6 +1,6 @@
-import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
-import { act } from "react";
+import React, { act } from "react";
+import { fireEvent,render, screen } from "@testing-library/react";
+
 import RevokeSessionButton from "../src/components/account/RevokeSessionButton";
 
 jest.useFakeTimers();
@@ -14,7 +14,7 @@ describe("RevokeSessionButton disabled state", () => {
     render(
       <RevokeSessionButton
         sessionId="sid"
-        revoke={async () => new Promise((r) => setTimeout(() => r({ success: true }), 100))}
+        revoke={async () => new Promise((resolve) => setTimeout(() => resolve({ success: true }), 100))}
       />
     );
     const btn = screen.getByRole("button", { name: /revoke/i });

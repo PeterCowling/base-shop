@@ -1,5 +1,6 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
 import RevokeSessionButton from "../src/components/account/RevokeSessionButton";
 
 const refreshMock = jest.fn();

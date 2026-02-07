@@ -1,5 +1,5 @@
-import DOMPurify from "dompurify";
 import { memo } from "react";
+import DOMPurify from "dompurify";
 
 export interface CustomHtmlProps {
   html?: string;

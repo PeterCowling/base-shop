@@ -3,6 +3,7 @@ import { existsSync, readdirSync, realpathSync } from "node:fs";
 import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+
 import preset from "@acme/next-config/next.config.mjs";
 
 const require = createRequire(import.meta.url);
@@ -116,6 +117,28 @@ const REACT_DOM_INDEX = require.resolve("react-dom");
 const REACT_DOM_CLIENT = require.resolve("react-dom/client");
 const REACT_DOM_SERVER = require.resolve("react-dom/server");
 
+const tryResolve = (id) => {
+  try {
+    return require.resolve(id);
+  } catch {
+    return null;
+  }
+};
+
+const NEXT_COMPILED_REACT = tryResolve("next/dist/compiled/react");
+const NEXT_COMPILED_REACT_DOM = tryResolve("next/dist/compiled/react-dom");
+const NEXT_COMPILED_REACT_DOM_CLIENT = tryResolve(
+  "next/dist/compiled/react-dom/client",
+);
+const NEXT_COMPILED_REACT_DOM_SERVER = tryResolve(
+  "next/dist/compiled/react-dom/server",
+);
+
+const REACT_ALIAS = NEXT_COMPILED_REACT ?? REACT_INDEX;
+const REACT_DOM_ALIAS = NEXT_COMPILED_REACT_DOM ?? REACT_DOM_INDEX;
+const REACT_DOM_CLIENT_ALIAS = NEXT_COMPILED_REACT_DOM_CLIENT ?? REACT_DOM_CLIENT;
+const REACT_DOM_SERVER_ALIAS = NEXT_COMPILED_REACT_DOM_SERVER ?? REACT_DOM_SERVER;
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Start from shared preset to keep apps consistent
@@ -170,7 +193,6 @@ const nextConfig = {
       "@acme/ui",
       "@acme/date-utils",
       "@acme/lib",
-      "@acme/shared-utils",
       "@acme/types",
       "@acme/tailwind-config",
       "@acme/design-tokens",
@@ -234,12 +256,12 @@ const nextConfig = {
       "entities/lib/escape.js": ENTITIES_ESCAPE_PATH,
 
       // EXACT-MATCH ALIASES — do NOT shadow subpaths like `react/jsx-runtime`
-      react$: REACT_INDEX,
-      "react-dom$": REACT_DOM_INDEX,
+      react$: REACT_ALIAS,
+      "react-dom$": REACT_DOM_ALIAS,
 
       // Useful concrete entries (do not use `$` here, these are explicit subpaths)
-      "react-dom/client": REACT_DOM_CLIENT,
-      "react-dom/server": REACT_DOM_SERVER,
+      "react-dom/client": REACT_DOM_CLIENT_ALIAS,
+      "react-dom/server": REACT_DOM_SERVER_ALIAS,
     };
 
     if (config.resolve.alias["oidc-token-hash"] === undefined) {
@@ -278,10 +300,7 @@ const nextConfig = {
       }
     });
 
-    const sharedUtilsPinoSymlink = path.resolve(
-      __dirname,
-      "../../packages/shared-utils/node_modules/pino",
-    );
+    const libPinoSymlink = path.resolve(__dirname, "../../packages/lib/node_modules/pino");
 
     // Turbopack keeps `resolve.symlinks` disabled for better pnpm support, but
     // that prevents it from following the symlinked copy of `pino` to the
@@ -289,8 +308,8 @@ const nextConfig = {
     // and Node bundles can resolve them without needing to mutate pnpm's lock
     // file during development.
 
-    if (existsSync(sharedUtilsPinoSymlink)) {
-      const pinoRealDir = realpathSync(sharedUtilsPinoSymlink);
+    if (existsSync(libPinoSymlink)) {
+      const pinoRealDir = realpathSync(libPinoSymlink);
       const pinoDepsRoot = path.dirname(pinoRealDir);
       const pinoRuntimeDeps = [
         "atomic-sleep",

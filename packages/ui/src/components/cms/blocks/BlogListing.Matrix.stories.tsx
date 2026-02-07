@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/BlogListing.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import BlogListing from './BlogListing';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './BlogListing.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import BlogListing from './BlogListing';
+import fixture from './BlogListing.fixtures.json';
 
 const meta: Meta<typeof BlogListing> = {
   title: 'CMS Blocks/BlogListing/Matrix',

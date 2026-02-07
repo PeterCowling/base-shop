@@ -10,13 +10,15 @@ export const GUIDE_BLOCK_TYPES = [
   "hero",
   "genericContent",
   "faq",
-  "gallery",
+  "callout",
+  "table",
   "serviceSchema",
   "breadcrumbs",
   "relatedGuides",
   "alsoHelpful",
   "planChoice",
   "transportNotice",
+  "transportDropIn",
   "jsonLd",
   "custom",
 ] as const;
@@ -62,37 +64,29 @@ const faqBlockOptionsSchema = z
   .strict()
   .optional();
 
-const galleryItemSchema = z
+const calloutBlockOptionsSchema = z
   .object({
-    image: z.string().min(1),
-    altKey: z.string().min(1).optional(),
-    alt: z.string().min(1).optional(),
-    captionKey: z.string().min(1).optional(),
-    caption: z.string().min(1).optional(),
-    width: z.number().int().positive().optional(),
-    height: z.number().int().positive().optional(),
-    format: z.enum(IMAGE_FORMAT_VALUES).optional(),
-    quality: z.number().int().min(10).max(100).optional(),
+    variant: z.enum(["tip", "cta", "aside"]),
+    titleKey: z.string().min(1).optional(),
+    bodyKey: z.string().min(1),
   })
   .strict();
 
-const galleryBlockOptionsSchema = z
+const tableBlockOptionsSchema = z
   .object({
-    items: z.array(galleryItemSchema).min(1).optional(),
-    source: z.string().min(1).optional(),
-    contentKey: z.string().min(1).optional(),
-    headingKey: z.string().min(1).optional(),
+    id: z.string().min(1).optional(),
+    titleKey: z.string().min(1).optional(),
+    title: z.string().min(1).optional(),
+    columns: z.array(
+      z.object({
+        key: z.string().min(1),
+        label: z.string().min(1),
+        align: z.enum(["left", "center", "right"]).optional(),
+      })
+    ).min(1),
+    rows: z.array(z.record(z.string(), z.string())).min(1),
   })
-  .strict()
-  .superRefine((value, ctx) => {
-    if (!value.items && !value.source) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Provide either gallery items or a source module",
-        path: ["items"],
-      });
-    }
-  });
+  .strict();
 
 const serviceSchemaBlockOptionsSchema = z
   .object({
@@ -154,6 +148,12 @@ const transportNoticeBlockOptionsSchema = z
   .strict()
   .optional();
 
+const transportDropInBlockOptionsSchema = z
+  .object({
+    component: z.enum(["chiesaNuovaArrivals"]),
+  })
+  .strict();
+
 const jsonLdBlockOptionsSchema = z
   .object({
     module: z.string().min(1),
@@ -171,14 +171,15 @@ const customBlockOptionsSchema = z
 export type HeroBlockOptions = z.infer<typeof heroBlockOptionsSchema>;
 export type GenericContentBlockOptions = z.infer<typeof genericContentBlockOptionsSchema>;
 export type FaqBlockOptions = z.infer<typeof faqBlockOptionsSchema>;
-export type GalleryBlockOptions = z.infer<typeof galleryBlockOptionsSchema>;
-export type GalleryBlockItem = z.infer<typeof galleryItemSchema>;
+export type CalloutBlockOptions = z.infer<typeof calloutBlockOptionsSchema>;
+export type TableBlockOptions = z.infer<typeof tableBlockOptionsSchema>;
 export type ServiceSchemaBlockOptions = z.infer<typeof serviceSchemaBlockOptionsSchema>;
 export type BreadcrumbsBlockOptions = z.infer<typeof breadcrumbsBlockOptionsSchema>;
 export type RelatedGuidesBlockOptions = z.infer<typeof relatedGuidesBlockOptionsSchema>;
 export type AlsoHelpfulBlockOptions = z.infer<typeof alsoHelpfulBlockOptionsSchema>;
 export type PlanChoiceBlockOptions = z.infer<typeof planChoiceBlockOptionsSchema>;
 export type TransportNoticeBlockOptions = z.infer<typeof transportNoticeBlockOptionsSchema>;
+export type TransportDropInBlockOptions = z.infer<typeof transportDropInBlockOptionsSchema>;
 export type JsonLdBlockOptions = z.infer<typeof jsonLdBlockOptionsSchema>;
 export type CustomBlockOptions = z.infer<typeof customBlockOptionsSchema>;
 
@@ -197,9 +198,14 @@ export type FaqBlock = {
   options?: FaqBlockOptions;
 };
 
-export type GalleryBlock = {
-  type: "gallery";
-  options: GalleryBlockOptions;
+export type CalloutBlock = {
+  type: "callout";
+  options: CalloutBlockOptions;
+};
+
+export type TableBlock = {
+  type: "table";
+  options: TableBlockOptions;
 };
 
 export type ServiceSchemaBlock = {
@@ -232,6 +238,11 @@ export type TransportNoticeBlock = {
   options?: TransportNoticeBlockOptions;
 };
 
+export type TransportDropInBlock = {
+  type: "transportDropIn";
+  options: TransportDropInBlockOptions;
+};
+
 export type JsonLdBlock = {
   type: "jsonLd";
   options: JsonLdBlockOptions;
@@ -246,13 +257,15 @@ export type GuideBlockDeclaration =
   | HeroBlock
   | GenericContentBlock
   | FaqBlock
-  | GalleryBlock
+  | CalloutBlock
+  | TableBlock
   | ServiceSchemaBlock
   | BreadcrumbsBlock
   | RelatedGuidesBlock
   | AlsoHelpfulBlock
   | PlanChoiceBlock
   | TransportNoticeBlock
+  | TransportDropInBlock
   | JsonLdBlock
   | CustomBlock;
 
@@ -270,8 +283,12 @@ export const GUIDE_BLOCK_DECLARATION_SCHEMA = z.discriminatedUnion("type", [
     options: faqBlockOptionsSchema,
   }),
   z.object({
-    type: z.literal("gallery"),
-    options: galleryBlockOptionsSchema,
+    type: z.literal("callout"),
+    options: calloutBlockOptionsSchema,
+  }),
+  z.object({
+    type: z.literal("table"),
+    options: tableBlockOptionsSchema,
   }),
   z.object({
     type: z.literal("serviceSchema"),
@@ -296,6 +313,10 @@ export const GUIDE_BLOCK_DECLARATION_SCHEMA = z.discriminatedUnion("type", [
   z.object({
     type: z.literal("transportNotice"),
     options: transportNoticeBlockOptionsSchema,
+  }),
+  z.object({
+    type: z.literal("transportDropIn"),
+    options: transportDropInBlockOptionsSchema,
   }),
   z.object({
     type: z.literal("jsonLd"),

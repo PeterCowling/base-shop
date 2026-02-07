@@ -1,9 +1,10 @@
 import { describe, expect, it, jest } from "@jest/globals";
 import type { Mock } from "jest-mock";
+
 import { deletePage } from "../delete";
 
 jest.mock("../../common/auth", () => ({
-  ensureAuthorized: jest.fn().mockResolvedValue({ user: { email: "user@example.com" } }),
+  ensureAuthorized: jest.fn<Promise<{ user: { email: string } }>, []>().mockResolvedValue({ user: { email: "user@example.com" } }),
 }));
 
 jest.mock("../service", () => ({
@@ -13,7 +14,7 @@ jest.mock("../service", () => ({
 jest.mock("@/utils/sentry.server", () => ({ captureException: jest.fn() }));
 
 const service = jest.requireMock("../service") as {
-  deletePage: Mock;
+  deletePage: Mock<any, any>;
 };
 
 describe("deletePage", () => {

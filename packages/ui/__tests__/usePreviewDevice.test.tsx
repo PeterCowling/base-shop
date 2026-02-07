@@ -1,7 +1,8 @@
-import { renderHook, act, waitFor } from "@testing-library/react";
+import { act, renderHook, waitFor } from "@testing-library/react";
+
 import {
-  usePreviewDevice,
   PREVIEW_DEVICE_STORAGE_KEY,
+  usePreviewDevice,
 } from "../src/hooks/usePreviewDevice";
 
 describe("usePreviewDevice", () => {

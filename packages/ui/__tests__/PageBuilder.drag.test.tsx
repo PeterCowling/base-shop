@@ -1,6 +1,11 @@
-import { render, fireEvent } from "@testing-library/react";
 import React from "react";
+import { fireEvent,render } from "@testing-library/react";
+
+import PageBuilder from "../src/components/cms/PageBuilder";
+import { devicePresets, getLegacyPreset } from "../src/utils/devicePresets";
+
 import { CanvasItem, renderCanvasItem, setRect } from "./helpers/pageBuilderSetup";
+
 jest.mock("../src/components/cms/page-builder/PageCanvas.tsx", () => ({
   __esModule: true,
   default: ({ viewport }: any) => (
@@ -17,8 +22,6 @@ jest.mock("../src/components/cms/page-builder/PageSidebar", () => {
   (PageSidebar as any).displayName = "PageSidebarMock";
   return PageSidebar;
 });
-import PageBuilder from "../src/components/cms/PageBuilder";
-import { devicePresets, getLegacyPreset } from "../src/utils/devicePresets";
 
 describe("PageBuilder drag interactions", () => {
 

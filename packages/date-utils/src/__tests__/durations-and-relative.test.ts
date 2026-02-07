@@ -1,4 +1,4 @@
-import { getTimeRemaining, formatDuration, parseDateSafe, formatRelative } from "../index";
+import { formatDuration, formatRelative,getTimeRemaining, parseDateSafe } from "../index";
 
 describe("getTimeRemaining and formatDuration", () => {
   const base = new Date("2025-01-01T00:00:00Z");

@@ -82,15 +82,5 @@
         "value": 18
       }
     ]
-  },
-  "gallery": [
-    {
-      "alt": "Free viewpoint over Positano",
-      "caption": "Free viewpoints"
-    },
-    {
-      "alt": "Picnic with Positano view",
-      "caption": "Picnic to save on meals"
-    }
-  ]
+  }
 }

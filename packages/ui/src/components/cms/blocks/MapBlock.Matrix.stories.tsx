@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/MapBlock.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import MapBlock from './MapBlock';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './MapBlock.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import MapBlock from './MapBlock';
+import fixture from './MapBlock.fixtures.json';
 
 const meta: Meta<typeof MapBlock> = {
   title: 'CMS Blocks/MapBlock/Matrix',

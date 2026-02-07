@@ -1,14 +1,14 @@
 import { jest } from "@jest/globals";
 
+import { LOCALES } from "@acme/i18n/locales";
+
 const getShopSettingsMock = jest.fn();
 
-jest.mock("@platform-core/repositories/shops.server", () => ({
+jest.mock("@acme/platform-core/repositories/shops.server", () => ({
   getShopSettings: getShopSettingsMock,
 }));
 
 jest.mock("@acme/config/env/core", () => ({ coreEnv: {} }));
-
-import { LOCALES } from "@i18n/locales";
 
 describe("getSeo", () => {
   const settings = {

@@ -1,6 +1,7 @@
 // scripts/__tests__/setup-ci.test.ts
-import fs from "fs";
 import path from "node:path";
+
+import fs from "fs";
 
 jest.mock("@config/src/env", () => ({
   envSchema: { parse: jest.fn() },
@@ -8,6 +9,11 @@ jest.mock("@config/src/env", () => ({
 
 describe("setup-ci script", () => {
   const ORIGINAL_ARGV = process.argv;
+
+  const findWorkflowWrite = (writeMock: jest.SpyInstance) =>
+    writeMock.mock.calls.find(([wfPath]) =>
+      wfPath === path.join(".github", "workflows", "cover-me-pretty.yml")
+    );
 
   beforeEach(() => {
     jest.resetModules();
@@ -49,18 +55,23 @@ describe("setup-ci script", () => {
 
     expect(existsMock).toHaveBeenCalled();
     expect(readMock).toHaveBeenCalled();
-    expect(writeMock).toHaveBeenCalledTimes(1);
-    const [wfPath, content] = writeMock.mock.calls[0];
-    expect(wfPath).toBe(
-      path.join(".github", "workflows", "cover-me-pretty.yml")
+    const workflowCall = findWorkflowWrite(writeMock);
+    expect(workflowCall).toBeDefined();
+    const [, content] = workflowCall as [string, string];
+    expect(content).toContain("uses: ./.github/workflows/reusable-app.yml");
+    expect(content).toContain('app-filter: "@apps/cover-me-pretty"');
+    expect(content).toContain(
+      'build-cmd: "pnpm --filter @apps/cover-me-pretty... build"'
     );
-    expect(content).toContain("@apps/cover-me-pretty");
-    expect(content).toContain("STRIPE_SECRET_KEY: sk");
-    expect(content).toContain("STRIPE_WEBHOOK_SECRET: whsec");
+    expect(content).toContain(
+      "pnpm exec next-on-pages deploy --project-name cover-me-pretty --branch ${{ github.ref_name }}"
+    );
+    expect(content).toContain('project-name: "cover-me-pretty"');
+    expect(content).not.toContain("STRIPE_SECRET_KEY");
     expect(exitMock).not.toHaveBeenCalled();
   });
 
-  it("injects domain env vars when configured", async () => {
+  it("includes path filters for the app and packages", async () => {
     const { envSchema } = await import("@config/src/env");
     (envSchema.parse as jest.Mock).mockReturnValue({});
 
@@ -69,16 +80,10 @@ describe("setup-ci script", () => {
       "STRIPE_WEBHOOK_SECRET=whsec",
       "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk",
     ].join("\n");
-    jest
-      .spyOn(fs, "existsSync")
-      .mockImplementation((p) => true);
-    jest
-      .spyOn(fs, "readFileSync")
-      .mockImplementation((p) =>
-        p.toString().endsWith(".env")
-          ? env
-          : JSON.stringify({ domain: { name: "shop.example.com" } })
-      );
+    jest.spyOn(fs, "existsSync").mockReturnValue(true);
+    jest.spyOn(fs, "readFileSync").mockImplementation((p) =>
+      p.toString().endsWith(".env") ? env : "{}"
+    );
     const writeMock = jest
       .spyOn(fs, "writeFileSync")
       .mockImplementation(() => {});
@@ -87,8 +92,12 @@ describe("setup-ci script", () => {
 
     await import("../src/setup-ci");
 
-    const [, content] = writeMock.mock.calls[0];
-    expect(content).toContain("SHOP_DOMAIN: shop.example.com");
+    const workflowCall = findWorkflowWrite(writeMock);
+    expect(workflowCall).toBeDefined();
+    const [, content] = workflowCall as [string, string];
+    expect(content).toContain("apps/cover-me-pretty/**");
+    expect(content).toContain("packages/**");
+    expect(content).toContain(".github/workflows/cover-me-pretty.yml");
   });
 
   it("fails when env file is missing", async () => {
@@ -112,7 +121,7 @@ describe("setup-ci script", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       `Missing ${path.join("apps", "cover-me-pretty", ".env")}`
     );
-    expect(writeMock).not.toHaveBeenCalled();
+    expect(findWorkflowWrite(writeMock)).toBeUndefined();
     expect(exitMock).toHaveBeenCalledWith(1);
   });
 
@@ -139,7 +148,7 @@ describe("setup-ci script", () => {
     await expect(import("../src/setup-ci")).rejects.toThrow("EXIT:1");
     expect(errorSpy).toHaveBeenCalled();
     expect(errorSpy.mock.calls[0][0]).toContain("Invalid environment variables");
-    expect(writeMock).not.toHaveBeenCalled();
+    expect(findWorkflowWrite(writeMock)).toBeUndefined();
     expect(exitMock).toHaveBeenCalledWith(1);
   });
 });

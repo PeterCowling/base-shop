@@ -1,11 +1,12 @@
 "use client";
 
-import type { HistoryState } from "@acme/types";
-import type { Action } from "../state";
-import { Button } from "../../../atoms/shadcn";
-import { Inline } from "../../../atoms/primitives/Inline";
-import type { EditorFlags } from "../state/layout/types";
 import { useTranslations } from "@acme/i18n";
+import type { HistoryState } from "@acme/types";
+
+import { Inline } from "../../../atoms/primitives/Inline";
+import { Button } from "../../../atoms/shadcn";
+import type { Action } from "../state";
+import type { EditorFlags } from "../state/layout/types";
 
 interface Breakpoint { id: string; label: string; min?: number; max?: number }
 

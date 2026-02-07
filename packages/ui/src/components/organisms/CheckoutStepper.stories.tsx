@@ -1,4 +1,5 @@
 import { type Meta, type StoryObj } from "@storybook/nextjs";
+
 import { CheckoutStepper } from "./CheckoutStepper";
 
 const meta: Meta<typeof CheckoutStepper> = {

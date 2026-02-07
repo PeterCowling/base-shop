@@ -1,13 +1,14 @@
 // packages/ui/src/components/cms/page-builder/panels/content/ResponsiveItems.tsx
 "use client";
 
-import type { PageComponent } from "@acme/types";
-import { Input } from "../../../../atoms/shadcn";
-import { Tooltip } from "../../../../atoms";
-import { Button } from "../../../../atoms/shadcn";
 import { useTranslations } from "@acme/i18n";
-import type { ContentComponent, HandleInput } from "./types";
+import type { PageComponent } from "@acme/types";
+
+import { Tooltip } from "../../../../atoms";
+import { Button,Input  } from "../../../../atoms/shadcn";
+
 import { nonNegative } from "./helpers";
+import type { ContentComponent, HandleInput } from "./types";
 
 interface Props {
   component: PageComponent;

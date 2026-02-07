@@ -34,7 +34,7 @@ export async function loadDocsRegistry(
   baseDir: string = process.cwd(),
 ): Promise<DocRegistry> {
   const registryPath = resolveRegistryPath(baseDir);
-  // eslint-disable-next-line security/detect-non-literal-fs-filename -- DOCS-2102 path validated via resolveRegistryPath and confined to docs/
+   
   const buf = await fs.readFile(registryPath, "utf8");
   const data = JSON.parse(buf) as unknown;
   if (!Array.isArray(data)) {

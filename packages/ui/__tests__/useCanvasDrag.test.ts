@@ -1,5 +1,6 @@
-import React from "react";
-import { renderHook, act } from "@testing-library/react";
+import type React from "react";
+import { act,renderHook } from "@testing-library/react";
+
 import useCanvasDrag from "../src/components/cms/page-builder/useCanvasDrag";
 
 // Polyfill PointerEvent for jsdom

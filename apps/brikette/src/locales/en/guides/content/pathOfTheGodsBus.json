@@ -3,7 +3,7 @@
     "title": "Path of the Gods via Amalfi bus",
     "description": "Ride the SITA buses through Amalfi to Bomerano, then hike to Nocelle and return by shuttle with a full-day plan."
   },
-  "linkLabel": "Path of the Gods via Amalfi (bus + hike)",
+  "linkLabel": "Path of the Gods: Budget-Friendly Bus & Hike",
   "intro": [
     "Prefer to stay on wheels? This route takes the SITA bus from Positano to Amalfi and onward to Bomerano before hiking the Path of the Gods back toward Nocelle. It is dependable in rough seas and often the quickest way to reach the full trail.",
     "Buses get busy in peak season, so buy tickets the day before if possible and arrive early at each stop."
@@ -16,6 +16,13 @@
         "You need three bus tickets per person: Positano → Amalfi, Amalfi → Bomerano, and Nocelle → Positano. Ask the staff at Bar Internazionale for the best combination (single or integrated).",
         "Check the SITA timetable posted inside the bar or via the Unico Campania app. Aim for a morning departure to avoid queues and midday sun on the trail.",
         "Pack water, snacks, and sun protection—there are no services between Bomerano and Nocelle."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-bus/01-nav.jpg",
+          "alt": "Bar Internazionale café location in Positano where SITA bus tickets are sold",
+          "caption": "Bar Internazionale — buy your three SITA tickets here before boarding the bus"
+        }
       ]
     },
     {
@@ -39,8 +46,20 @@
       "id": "bus-to-bomerano",
       "title": "Bus uphill to Bomerano",
       "body": [
-        "Board the bus marked “Agerola/Bomerano”. Use your second ticket and keep a hand free to steady yourself on tight curves.",
+        "Board the bus marked 'Agerola/Bomerano'. Use your second ticket and keep a hand free to steady yourself on tight curves.",
         "Alight at the Bomerano stop opposite Ristorante Jerla. Cross the road, take the side street to the piazza, then follow signs to the Path of the Gods trailhead."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/11-nav.jpg",
+          "alt": "Walking route from Amalfi ferry dock to SITA bus terminal",
+          "caption": "1. Bomerano stop — disembark here when you see the Jerla restaurant sign, then cross the road"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/12-nav.jpg",
+          "alt": "Bomerano bus stop location with Ristorante Jerla signpost marker",
+          "caption": "2. Cross the road from the bus stop and follow this side street downhill to the piazza"
+        }
       ]
     },
     {
@@ -49,6 +68,28 @@
       "body": [
         "Follow the Sentiero degli Dei signage across terraces and ridges. Allow 2.5–3 hours for the hike with photo stops.",
         "Carry litter out with you and respect private farmland along the path."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/13-nav.jpg",
+          "alt": "Side street from Bomerano bus stop descending toward the piazza",
+          "caption": "3. Continue left across the piazza following signs for 'Sentiero degli Dei'"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/14-nav.jpg",
+          "alt": "Town square (piazza) in Bomerano with left-hand route markers",
+          "caption": "4. Once through the piazza, look for the notice board and a turn to the left, this is where the trail begins. Follow the path to a section with wooden steps."
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/15-nav.jpg",
+          "alt": "Wooden steps ascending along the hiking trail ridge",
+          "caption": "When the dirt trail meets this concrete walkway, you've reached Nocelle"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/16-nav.jpg",
+          "alt": "Concrete paved walkway marking entry into Nocelle village",
+          "caption": "Nocelle map — as you walk through the village be sure to turn right at the junction to reach the bus stop; avoid the 1,700-step staircase to Positano at all costs!"
+        }
       ]
     },
     {
@@ -57,6 +98,23 @@
       "body": [
         "When the trail turns to concrete, you have reached Nocelle. Keep right at the first junction to avoid the long staircase down to Positano.",
         "Walk about 175 metres to the small car park and bus shelter. Arrive early; buses occasionally park just before the stop when the lot is full."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/17-nav.jpg",
+          "alt": "Nocelle village navigation map showing route to bus stop and staircase warning",
+          "caption": "CRITICAL: Do NOT follow the signs to 'Positano' down the stairs — turn right here instead"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/18-nav.jpg",
+          "alt": "Directional signpost in Nocelle showing the stairs-to-Positano option to avoid",
+          "caption": "Climb these steps for roughly 175 meters to reach the bus stop at the car park"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/19-nav.jpg",
+          "alt": "Stone steps ascending through Nocelle streets toward the bus stop",
+          "caption": "You have reached the bus stop."
+        }
       ]
     },
     {
@@ -144,6 +202,14 @@
       "q": "What if I miss the Nocelle bus back?",
       "a": [
         "Check the posted timetable at the stop. If the next bus is over an hour away, you can walk the paved road down to Positano in about 45–60 minutes."
+      ]
+    },
+    {
+      "q": "How do I read the SITA bus timetable?",
+      "a": [
+        "**Reading the Rows:** The rows in the first column represent different bus stops along the route.",
+        "**Reading the Columns:** The timetable assigns an alphabetical letter to each scheduled journey, which are listed as headers in each column. If you are traveling Monday through Saturday, look for columns 'F' and 'G'. If you are traveling on Sunday or a holiday, look for columns 'G' and 'H'.",
+        "**Combining Rows and Columns:** Choose your departure and arrival bus stops, then check the columns to see when buses are available and what time they will arrive at your destination. For example, to see the departure time from Sorrento, look at the Sorrento row. To see the arrival time in Positano (Chiesa Nuova / Bar Internazionale), look at the Positano (Chiesa Nuova) row."
       ]
     }
   ],

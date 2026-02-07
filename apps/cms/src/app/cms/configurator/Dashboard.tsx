@@ -1,14 +1,14 @@
 "use client";
 
-import { Toast } from "@/components/atoms";
-import { ButtonElement } from "./components/DashboardPrimitives";
-import ConfiguratorStepList from "./components/ConfiguratorStepList";
-import { ConfiguratorHero } from "./components/ConfiguratorHero";
-import { LaunchPanel } from "./components/LaunchPanel";
-import { TrackProgressList } from "./components/TrackProgressList";
-import TimeToLaunchHud from "./components/TimeToLaunchHud";
-import { useConfiguratorDashboardState } from "./hooks/useConfiguratorDashboardState";
 import { useTranslations } from "@acme/i18n";
+
+import { ConfiguratorHero } from "./components/ConfiguratorHero";
+import ConfiguratorStepList from "./components/ConfiguratorStepList";
+import { ButtonElement } from "./components/DashboardPrimitives";
+import { LaunchPanel } from "./components/LaunchPanel";
+import TimeToLaunchHud from "./components/TimeToLaunchHud";
+import { TrackProgressList } from "./components/TrackProgressList";
+import { useConfiguratorDashboardState } from "./hooks/useConfiguratorDashboardState";
 
 export default function ConfiguratorDashboard() {
   const t = useTranslations();
@@ -18,8 +18,6 @@ export default function ConfiguratorDashboard() {
     skipStep,
     resetStep,
     onStepClick,
-    toast,
-    dismissToast,
     heroData,
     trackProgress,
     launchPanelData,
@@ -84,13 +82,6 @@ export default function ConfiguratorDashboard() {
         </div>
       </section>
 
-      {toast.open && (
-        <Toast
-          open={toast.open}
-          message={toast.message}
-          onClose={dismissToast}
-        />
-      )}
     </div>
   );
 }

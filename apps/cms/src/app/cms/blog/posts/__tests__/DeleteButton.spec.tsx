@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from "@testing-library/react";
 import DeleteButton from "@cms/app/cms/blog/posts/DeleteButton.client";
+import { fireEvent,render, screen } from "@testing-library/react";
 
 const mockDelete = jest.fn();
 
@@ -14,7 +14,7 @@ jest.mock("react-dom", () => ({
   useFormState: (...args: any[]) => mockUseFormState(...args),
 }));
 
-jest.mock("@ui", () => ({
+jest.mock("@acme/ui", () => ({
   Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
   Toast: ({ open, message }: any) => (open ? <div role="alert">{message}</div> : null),
 }));

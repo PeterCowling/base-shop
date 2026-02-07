@@ -1,4 +1,5 @@
 import { type Meta, type StoryObj } from "@storybook/nextjs";
+
 import { StoreLocatorTemplate } from "./StoreLocatorTemplate";
 
 const meta: Meta<typeof StoreLocatorTemplate> = {

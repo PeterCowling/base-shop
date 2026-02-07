@@ -4,8 +4,9 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import QRCode from "qrcode";
-import { getCsrfToken } from "@acme/shared-utils";
+
 import { useTranslations } from "@acme/i18n";
+import { getCsrfToken } from "@acme/lib/security";
 
 export default function MfaSetup() {
   const t = useTranslations();

@@ -1,20 +1,23 @@
 "use client";
-import { DragEndEvent, DragMoveEvent, DragStartEvent, closestCenter } from "@dnd-kit/core";
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { PageComponent, HistoryState } from "@acme/types";
-import type { Action } from "../state";
-import { snapToGrid } from "../gridSnap";
+import { closestCenter,type DragEndEvent, type DragMoveEvent, type DragStartEvent } from "@dnd-kit/core";
+
+import type { HistoryState,PageComponent } from "@acme/types";
+
 import type { ComponentType } from "../defaults";
+import { snapToGrid } from "../gridSnap";
 import { canDropChild } from "../rules";
-import { screenToCanvas } from "../utils/coords";
+import type { Action } from "../state";
 import type { Point } from "../utils/coords";
-import { useDndSensors } from "./dnd/sensors";
+import { screenToCanvas } from "../utils/coords";
+
 import { autoScroll, AUTOSCROLL_EDGE_PX, AUTOSCROLL_MAX_SPEED_PX } from "./dnd/autoscroll";
 import { isPointerEvent, safeDispatchEvent } from "./dnd/dom";
-import { findById, findParentId, getTypeOfId, getVisibleComponents, resolveParentKind } from "./dnd/tree";
-import { useIframeShields } from "./dnd/iframeShields";
-import { useLastTabHover } from "./dnd/tabHover";
 import { finalizeDrop } from "./dnd/finalizeDrop";
+import { useIframeShields } from "./dnd/iframeShields";
+import { useDndSensors } from "./dnd/sensors";
+import { useLastTabHover } from "./dnd/tabHover";
+import { findById, findParentId, getTypeOfId, getVisibleComponents, resolveParentKind } from "./dnd/tree";
 
 const noop = () => {};
 

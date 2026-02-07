@@ -1,5 +1,5 @@
 /** @jest-environment node */
-import { createUpgradePreviewToken } from "@platform-core/previewTokens";
+import { createUpgradePreviewToken } from "@acme/platform-core/previewTokens";
 
 describe("GET /api/preview-token", () => {
   afterEach(() => {
@@ -12,7 +12,7 @@ describe("GET /api/preview-token", () => {
   }
 
   it("returns token when authorized and secret configured", async () => {
-    jest.doMock("@auth", () => ({
+    jest.doMock("@acme/auth", () => ({
       __esModule: true,
       requirePermission: jest.fn().mockResolvedValue(undefined),
     }));
@@ -37,7 +37,7 @@ describe("GET /api/preview-token", () => {
   });
 
   it("returns 401 when unauthorized", async () => {
-    jest.doMock("@auth", () => ({
+    jest.doMock("@acme/auth", () => ({
       __esModule: true,
       requirePermission: jest.fn().mockRejectedValue(new Error("nope")),
     }));
@@ -54,7 +54,7 @@ describe("GET /api/preview-token", () => {
   });
 
   it("returns 400 when pageId missing", async () => {
-    jest.doMock("@auth", () => ({
+    jest.doMock("@acme/auth", () => ({
       __esModule: true,
       requirePermission: jest.fn().mockResolvedValue(undefined),
     }));
@@ -71,7 +71,7 @@ describe("GET /api/preview-token", () => {
   });
 
   it("returns 500 when secret missing", async () => {
-    jest.doMock("@auth", () => ({
+    jest.doMock("@acme/auth", () => ({
       __esModule: true,
       requirePermission: jest.fn().mockResolvedValue(undefined),
     }));

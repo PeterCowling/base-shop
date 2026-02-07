@@ -1,12 +1,15 @@
 // packages/ui/src/components/organisms/MiniCart.client.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/nextjs';
 import React from 'react';
-import { MiniCart } from './MiniCart.client';
+import type { Meta, StoryObj } from '@storybook/nextjs';
+import { expect, userEvent, within } from '@storybook/test';
+
 import { CartProvider } from '@acme/platform-core/contexts/CartContext';
 import { CurrencyProvider } from '@acme/platform-core/contexts/CurrencyContext';
+
 import { makeStateStory } from '../../story-utils/createStories';
-import { expect, userEvent, within } from '@storybook/test';
+
+import { MiniCart } from './MiniCart.client';
 
 const Wrapper: React.FC<React.PropsWithChildren> = ({ children }) => (
   <CurrencyProvider>

@@ -1,33 +1,31 @@
 // packages/template-app/src/components/DynamicRenderer.tsx
 "use client";
 
-import NextImage, { type ImageProps } from "next/image";
 import * as React from "react";
+import NextImage, { type ImageProps } from "next/image";
 
-import HeroBanner from "@ui/components/cms/blocks/HeroBanner";
-import ReviewsCarousel from "@ui/components/home/ReviewsCarousel";
-import { ValueProps } from "@ui/components/home/ValueProps";
-import { ProductGrid } from "@platform-core/components/shop/ProductGrid";
-
-import BlogListing from "@ui/components/cms/blocks/BlogListing";
-import ContactForm from "@ui/components/cms/blocks/ContactForm";
-import ContactFormWithMap from "@ui/components/cms/blocks/ContactFormWithMap";
-import Gallery from "@ui/components/cms/blocks/Gallery";
-import HeaderCart from "@ui/components/cms/blocks/HeaderCart";
-import Testimonials from "@ui/components/cms/blocks/Testimonials";
-import TestimonialSlider from "@ui/components/cms/blocks/TestimonialSlider";
-import { Textarea as TextBlock } from "@ui/components/atoms/primitives/textarea";
-
-import { PRODUCTS } from "@platform-core/products/index";
-import type { PageComponent, HistoryState } from "@acme/page-builder-core";
+import { ensureLightboxStyles, initLightbox } from "@acme/cms-ui";
+import BlogListing from "@acme/cms-ui/blocks/BlogListing";
+import ContactForm from "@acme/cms-ui/blocks/ContactForm";
+import ContactFormWithMap from "@acme/cms-ui/blocks/ContactFormWithMap";
+import Gallery from "@acme/cms-ui/blocks/Gallery";
+import HeaderCart from "@acme/cms-ui/blocks/HeaderCart";
+import HeroBanner from "@acme/cms-ui/blocks/HeroBanner";
+import Section from "@acme/cms-ui/blocks/Section";
+import Testimonials from "@acme/cms-ui/blocks/Testimonials";
+import TestimonialSlider from "@acme/cms-ui/blocks/TestimonialSlider";
+import { Textarea as TextBlock } from "@acme/design-system/primitives/textarea";
+import { cssVars } from "@acme/design-system/utils/style/cssVars";
+import type { Locale } from "@acme/i18n/locales";
+import type { BlockTypeId, HistoryState, PageComponent } from "@acme/page-builder-core";
+import { buildBlockRegistry, coreBlockDescriptors } from "@acme/page-builder-core";
+import { applyTextThemeToOverrides,extractTextThemes } from "@acme/page-builder-ui";
+import { ProductGrid } from "@acme/platform-core/components/shop/ProductGrid";
+import { PRODUCTS } from "@acme/platform-core/products/index";
 import type { SKU } from "@acme/types";
 import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
-import { cssVars } from "@ui/utils/style/cssVars";
-import { extractTextThemes, applyTextThemeToOverrides } from "@acme/page-builder-ui";
-import type { Locale } from "@i18n/locales";
-import { ensureLightboxStyles, initLightbox } from "@ui/components/cms";
-import Section from "@ui/components/cms/blocks/Section";
-import { buildBlockRegistry, coreBlockDescriptors, type BlockTypeId } from "@acme/page-builder-core";
+import ReviewsCarousel from "@acme/ui/components/home/ReviewsCarousel";
+import { ValueProps } from "@acme/ui/components/home/ValueProps";
 
 /* ------------------------------------------------------------------
  * next/image wrapper usable in CMS blocks

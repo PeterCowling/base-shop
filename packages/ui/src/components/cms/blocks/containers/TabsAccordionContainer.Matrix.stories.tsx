@@ -1,8 +1,10 @@
 // packages/ui/src/components/cms/blocks/containers/TabsAccordionContainer.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import TabsAccordionContainer from './TabsAccordionContainer';
+
 import { makeStateStory } from '../../../../story-utils/createStories';
+
+import TabsAccordionContainer from './TabsAccordionContainer';
 
 const meta: Meta<typeof TabsAccordionContainer> = {
   title: 'CMS Blocks/Containers/TabsAccordionContainer/Matrix',

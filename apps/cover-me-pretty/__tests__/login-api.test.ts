@@ -1,5 +1,5 @@
 // apps/cover-me-pretty/__tests__/login-api.test.ts
-jest.mock("@auth", () => ({
+jest.mock("@acme/auth", () => ({
   __esModule: true,
   createCustomerSession: jest.fn(),
   validateCsrfToken: jest.fn(),
@@ -7,7 +7,7 @@ jest.mock("@auth", () => ({
   verifyMfa: jest.fn(),
 }));
 
-import { createCustomerSession, validateCsrfToken } from "@auth";
+import { createCustomerSession, validateCsrfToken } from "@acme/auth";
 import { POST } from "../src/app/api/login/route";
 
 type LoginBody = {
@@ -124,7 +124,7 @@ test("returns 400 for invalid body", async () => {
 test("rate limits after five rapid requests", async () => {
   (validateCsrfToken as jest.Mock).mockResolvedValue(true);
   const originalEnv = process.env.NODE_ENV;
-  process.env.NODE_ENV = "production";
+  (process.env as { NODE_ENV: string }).NODE_ENV = "production";
   try {
     const body = { customerId: "cust1", password: "pass1234" };
     const headers = { "x-csrf-token": "token" };
@@ -137,6 +137,6 @@ test("rate limits after five rapid requests", async () => {
     expect(res6.status).toBe(429);
     await expect(res6.json()).resolves.toEqual({ error: "Too Many Requests" });
   } finally {
-    process.env.NODE_ENV = originalEnv;
+    (process.env as { NODE_ENV?: string }).NODE_ENV = originalEnv;
   }
 });

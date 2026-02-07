@@ -1,4 +1,5 @@
 import type { HistoryState, PageComponent } from "@acme/types";
+
 import { exportComponents, exportComponentsFromHistory } from "../runtime/exportComponents";
 
 describe("exportComponents", () => {

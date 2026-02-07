@@ -5,16 +5,17 @@ import { fireEvent, screen, waitFor, within } from "@testing-library/react";
 /* -------------------------------------------------------------------------- */
 /*  External stubs                                                            */
 /* -------------------------------------------------------------------------- */
-jest.mock("@platform-core/contexts/ThemeContext", () => {
-  const React = require("react");
-  return {
-    __esModule: true,
-    ThemeProvider: ({ children }: { children: React.ReactNode }) =>
-      React.createElement(React.Fragment, null, children),
-    useLayout: () => ({}),
-  };
-});
-jest.mock("@platform-core", () => {
+jest.mock("@acme/platform-core/contexts/ThemeModeContext", () => ({
+  __esModule: true,
+  ThemeModeProvider: ({ children }: { children: React.ReactNode }) => children,
+  useThemeMode: () => ({ isDark: false, mode: "light", setMode: () => {} }),
+}));
+jest.mock("@acme/platform-core/contexts/ShopThemeContext", () => ({
+  __esModule: true,
+  ShopThemeProvider: ({ children }: { children: React.ReactNode }) => children,
+  useShopTheme: () => ({ themeName: "base", setThemeName: () => {} }),
+}));
+jest.mock("@acme/platform-core", () => {
   const React = require("react");
   return {
     __esModule: true,

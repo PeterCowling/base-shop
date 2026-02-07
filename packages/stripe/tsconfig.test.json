@@ -1,7 +1,13 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "noEmit": true
+    "noEmit": true,
+    "types": ["node", "jest"],
+    "typeRoots": ["../../node_modules/@types", "../../node_modules"],
+    "allowImportingTsExtensions": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "noImplicitAny": false
   },
   "include": ["src", "tests", "__tests__", "*.ts", "*.tsx"],
   "exclude": ["dist", "node_modules"]

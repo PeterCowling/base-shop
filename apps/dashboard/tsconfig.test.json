@@ -1,10 +1,25 @@
-// apps/dashboard/tsconfig.test.json
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "types": ["@testing-library/jest-dom", "jest", "node"],
     "allowJs": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "noEmit": true,
+    "rootDir": "../..",
+    "verbatimModuleSyntax": false,
+    "skipLibCheck": true,
+    "baseUrl": "../..",
+    "paths": {
+      "@/*": ["apps/dashboard/src/*"],
+      "@ui": ["packages/ui/dist/index.d.ts"],
+      "@ui/*": ["packages/ui/dist/*"],
+      "@acme/ui": ["packages/ui/dist/index.d.ts"],
+      "@acme/ui/*": ["packages/ui/dist/*"],
+      "@acme/types": ["packages/types/dist/index.d.ts"],
+      "@acme/types/*": ["packages/types/dist/*"],
+      "@acme/telemetry": ["packages/telemetry/dist/index.d.ts"],
+      "@acme/telemetry/*": ["packages/telemetry/dist/*"]
+    }
   },
   "include": ["src/**/*", "__tests__/**/*"]
 }

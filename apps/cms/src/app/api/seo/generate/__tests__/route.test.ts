@@ -19,7 +19,7 @@ describe("POST", () => {
 
   it("generates seo metadata and stores file", async () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), "seo-"));
-    jest.doMock("@platform-core/dataRoot", () => ({ DATA_ROOT: dir }));
+    jest.doMock("@acme/platform-core/dataRoot", () => ({ DATA_ROOT: dir }));
     const validateShopName = jest.fn((s: string) => s);
     jest.doMock("@acme/lib", () => ({ validateShopName }));
     const result = {
@@ -56,7 +56,7 @@ describe("POST", () => {
 
   it("throws when templates are missing", async () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), "seo-"));
-    jest.doMock("@platform-core/dataRoot", () => ({ DATA_ROOT: dir }));
+    jest.doMock("@acme/platform-core/dataRoot", () => ({ DATA_ROOT: dir }));
     jest.doMock("@acme/lib", () => ({ validateShopName: (s: string) => s }));
     jest.doMock("@acme/lib/generateMeta", () => ({
       generateMeta: () => {

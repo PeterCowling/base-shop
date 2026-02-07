@@ -69,7 +69,7 @@
     "whatToPack",
     "workCafes"
   ],
-  "arrivalText": "Мы находимся примерно в 80 м от остановки SITA «Chiesa Nuova», по пути нет лестниц. Приезжаете на пароме? Рассмотрите носильщика или автобус SITA вверх по холму.",
+  "arrivalText": "Мы находимся примерно в 80 м от остановки SITA \\\\\"Chiesa Nuova\\\\\", по пути нет лестниц. Приезжаете на пароме? Рассмотрите носильщика или автобус SITA вверх по холму.",
   "arrivalLinks": [
     "chiesaNuovaArrivals",
     "ferryDockToBrikette",

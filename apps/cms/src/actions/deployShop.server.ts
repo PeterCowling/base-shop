@@ -1,16 +1,19 @@
 // apps/cms/src/actions/deployShop.server.ts
 "use server";
 
-import { deployShop, type DeployShopResult } from "@platform-core/createShop";
-import { resolveDataRoot } from "@platform-core/dataRoot";
 import fs from "fs/promises";
 import path from "path";
-import { writeJsonFile, withFileLock } from "@/lib/server/jsonIO";
-import { ensureAuthorized } from "./common/auth";
-import { validateShopName } from "@platform-core/shops";
-import { verifyShopAfterDeploy } from "./verifyShopAfterDeploy.server";
+
+import { deployShop, type DeployShopResult } from "@acme/platform-core/createShop";
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
+import { validateShopName } from "@acme/platform-core/shops";
 import type { Environment } from "@acme/types";
+
+import { withFileLock,writeJsonFile } from "@/lib/server/jsonIO";
 import { recordStageTests } from "@/lib/server/launchGate";
+
+import { ensureAuthorized } from "./common/auth";
+import { verifyShopAfterDeploy } from "./verifyShopAfterDeploy.server";
 
 // API status constant; not user-facing
 const STATUS_PENDING = "pending"; // i18n-exempt -- INTL-000 API status label (non-UI) [ttl=2026-03-31]
@@ -126,7 +129,7 @@ export async function updateDeployStatus(
     try {
       // i18n-exempt -- CMS-2651 [ttl=2026-01-01] non-UI module specifier
       const { updateShopInRepo } = await import(
-        "@platform-core/repositories/shop.server" // i18n-exempt -- CMS-2651 [ttl=2026-01-01] non-UI module specifier
+        "@acme/platform-core/repositories/shop.server" // i18n-exempt -- CMS-2651 [ttl=2026-01-01] non-UI module specifier
       );
       await updateShopInRepo(id, {
         id,

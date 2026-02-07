@@ -2,18 +2,20 @@
 
 "use client";
 
-import { blockRegistry, type BlockType } from "./cms/blocks";
-import type { BlockRegistryEntry } from "./cms/blocks/types";
-import type { Locale } from "@acme/i18n/locales";
-import type { PageComponent, HistoryState } from "@acme/page-builder-core";
 import type { CSSProperties, ReactNode } from "react";
 import { useEffect } from "react";
-import { ensureScrollStyles, ensureAnimationStyles, initScrollEffects } from "./cms/page-builder/scrollEffects";
-import { initTimelines } from "./cms/page-builder/timeline";
-import { initLottie } from "./cms/page-builder/lottie";
-import { ensureLightboxStyles, initLightbox } from "./cms/lightbox";
-import { cssVars } from "../utils/style";
+
+import { cssVars } from "@acme/design-system/utils/style";
+import type { Locale } from "@acme/i18n/locales";
+import type { HistoryState,PageComponent } from "@acme/page-builder-core";
 import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
+
+import { blockRegistry, type BlockType } from "./cms/blocks";
+import type { BlockRegistryEntry } from "./cms/blocks/types";
+import { ensureLightboxStyles, initLightbox } from "./cms/lightbox";
+import { initLottie } from "./cms/page-builder/lottie";
+import { ensureAnimationStyles, ensureScrollStyles, initScrollEffects } from "./cms/page-builder/scrollEffects";
+import { initTimelines } from "./cms/page-builder/timeline";
 
 export default function DynamicRenderer({
   components,

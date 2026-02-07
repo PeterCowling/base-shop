@@ -1,4 +1,5 @@
 import { type Meta, type StoryObj } from "@storybook/nextjs";
+
 import { ProductFeatures } from "./ProductFeatures";
 
 const meta: Meta<typeof ProductFeatures> = {

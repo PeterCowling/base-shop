@@ -2,12 +2,15 @@ import { expect, jest } from "@jest/globals";
 
 import { withEnv as configWithEnv } from "./withEnv";
 
-type EnvOverrides = Record<string, string | number | undefined>;
+type EnvOverrides = Record<string, string | undefined>;
 
-type WithEnvExecutor<TEnv extends EnvOverrides> = (
+type WithEnvExecutor<TEnv extends EnvOverrides> = <T>(
   env: TEnv,
-  fn: () => Promise<unknown> | unknown,
-) => Promise<unknown>;
+  fn: () => Promise<T>,
+) => Promise<T>;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Jest SpyInstance types vary between @jest/globals and @types/jest
+type AnySpyInstance = { mockRestore: () => void } & Record<string, any>;
 
 export interface ExpectInvalidAuthEnvOptions<TEnv extends EnvOverrides> {
   env: TEnv;
@@ -15,7 +18,7 @@ export interface ExpectInvalidAuthEnvOptions<TEnv extends EnvOverrides> {
     authModule: Awaited<typeof import("@acme/config/env/auth")>,
   ) => unknown | Promise<unknown>;
   withEnv: WithEnvExecutor<TEnv>;
-  consoleErrorSpy?: jest.SpyInstance;
+  consoleErrorSpy?: AnySpyInstance;
   expectedMessage?: string;
 }
 
@@ -25,8 +28,13 @@ async function runAccessor(
   ) => unknown | Promise<unknown>,
 ): Promise<void> {
   jest.resetModules();
-  if (typeof jest.isolateModulesAsync === "function") {
-    await jest.isolateModulesAsync(async () => {
+  const isolateModulesAsync = (
+    jest as unknown as {
+      isolateModulesAsync?: (fn: () => Promise<void>) => Promise<void>;
+    }
+  ).isolateModulesAsync;
+  if (typeof isolateModulesAsync === "function") {
+    await isolateModulesAsync(async () => {
       const authModule = await import("@acme/config/env/auth");
       await accessor(authModule);
     });

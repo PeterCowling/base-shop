@@ -43,7 +43,7 @@ describe("ingestExternalUrl", () => {
   test("ingestFromText returns text handled when no url, or delegates to url ingestion", async () => {
     globalThis.fetch = jest
       .fn()
-      .mockResolvedValue({ ok: true, headers: new Headers({ "content-type": "image/png" }), blob: async () => new Blob([1], { type: "image/png" }) }) as unknown as typeof fetch;
+      .mockResolvedValue({ ok: true, headers: new Headers({ "content-type": "image/png" }), blob: async () => new Blob([""], { type: "image/png" }) }) as unknown as typeof fetch;
     const t = await ingestFromText("hello", { allowedMimePrefixes: ["image/"] });
     expect(t.handled).toBe("text");
     const u = await ingestFromText("see https://a.com/x.png", { allowedMimePrefixes: ["image/"] });

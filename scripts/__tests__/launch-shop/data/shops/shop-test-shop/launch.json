@@ -1,0 +1,14 @@
+{
+  "launchId": "20260118143052-a1b2c3d",
+  "shopId": "test-shop",
+  "configHash": "e8d955cb32c4",
+  "gitRef": "unknown",
+  "mode": "preview",
+  "deployUrl": "https://test-shop.pages.dev",
+  "workflowRunUrl": "https://github.com/org/repo/actions/runs/12345",
+  "steps": [],
+  "smokeChecks": [],
+  "startedAt": "2026-02-05T15:45:07.008Z",
+  "completedAt": "2026-02-05T15:45:07.008Z",
+  "totalDurationMs": 0
+}

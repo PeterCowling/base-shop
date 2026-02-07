@@ -1,11 +1,12 @@
 // packages/template-app/src/api/subscribe/route.ts
-import { stripe } from "@acme/stripe";
-import { NextRequest, NextResponse } from "next/server";
-import { readShop } from "@platform-core/repositories/shops.server";
+import { type NextRequest, NextResponse } from "next/server";
+
+import { readShop } from "@acme/platform-core/repositories/shops.server";
 import {
   getUserById,
   setStripeSubscriptionId,
-} from "@platform-core/repositories/users";
+} from "@acme/platform-core/repositories/users";
+import { stripe } from "@acme/stripe";
 
 const SHOP_ID = "bcd";
 

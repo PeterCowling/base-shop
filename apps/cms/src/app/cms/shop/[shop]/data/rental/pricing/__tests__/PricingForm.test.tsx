@@ -1,8 +1,10 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import type { ComponentProps, ReactNode } from "react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
+import PricingForm from "../PricingForm";
 
 jest.mock("@/components/atoms/shadcn", () => {
-  const React = require("react");
+  const React = require("react") as typeof import("react");
   return {
     __esModule: true,
     Button: (() => {
@@ -57,8 +59,6 @@ jest.mock("@/components/atoms", () => ({
     open ? <div role="alert">{message}</div> : null,
   Tag: ({ children }: { children: ReactNode }) => <span>{children}</span>,
 }));
-
-import PricingForm from "../PricingForm";
 
 describe("PricingForm", () => {
   const initial = {

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
-import { http, HttpResponse, delay } from "msw";
+import { delay,http, HttpResponse } from "msw";
+
 import ShopSelector from "./ShopSelector";
 
 const baseShops = ["acme-boutique", "luxury-lab", "flagship-eu"];

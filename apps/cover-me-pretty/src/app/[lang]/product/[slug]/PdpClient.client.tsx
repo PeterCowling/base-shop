@@ -1,18 +1,19 @@
 // apps/cover-me-pretty/src/app/[lang]/product/[slug]/PdpClient.tsx
 "use client";
 
-import ImageGallery from "@platform-core/components/pdp/ImageGallery";
-import SizeSelector from "@platform-core/components/pdp/SizeSelector";
-import AddToCartButton from "@platform-core/components/shop/AddToCartButton.client";
-import { Price } from "@ui/components/atoms/Price";
-import type { SKU } from "@acme/types";
-import { useState } from "react";
-import Section from "@ui/components/cms/blocks/Section";
-import { useTranslations } from "@i18n/Translations";
-import TryOnPanel from "./TryOnPanel.client";
-import { useEffect } from "react";
+import { useEffect,useState  } from "react";
 import { usePathname } from "next/navigation";
-import { logAnalyticsEvent } from "@platform-core/analytics/client";
+
+import Section from "@acme/cms-ui/blocks/Section";
+import { Price } from "@acme/design-system/atoms/Price";
+import { useTranslations } from "@acme/i18n/Translations";
+import { logAnalyticsEvent } from "@acme/platform-core/analytics/client";
+import ImageGallery from "@acme/platform-core/components/pdp/ImageGallery";
+import SizeSelector from "@acme/platform-core/components/pdp/SizeSelector";
+import AddToCartButton from "@acme/platform-core/components/shop/AddToCartButton.client";
+import type { SKU } from "@acme/types";
+
+import TryOnPanel from "./TryOnPanel.client";
 
 export default function PdpClient({ product }: { product: SKU }) {
   const t = useTranslations();
@@ -35,7 +36,7 @@ export default function PdpClient({ product }: { product: SKU }) {
 
         <section className="flex flex-col gap-6">
           <h1 className="text-3xl font-bold">{product.title}</h1>
-          <p className="text-gray-700">{product.description}</p>
+          <p className="text-fg">{product.description}</p>
 
           <div>
             <div className="mb-2 font-medium">{t("pdp.selectSize")}</div>

@@ -1,19 +1,22 @@
 // apps/cms/src/app/cms/shop/[shop]/pages/edit/page.tsx
 
-import { canWrite } from "@auth";
-import { authOptions } from "@cms/auth/options";
-import { checkShopExists } from "@acme/lib";
-import { getPages } from "@platform-core/repositories/pages/index.server";
-import type { Page } from "@acme/types";
-import { getServerSession } from "next-auth";
-import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import PagesClient from "../PagesClient";
-import { Card, CardContent } from "@/components/atoms/shadcn";
-import { Tag } from "@ui/components/atoms";
-import { cn } from "@ui/utils/style";
-import { Grid as DSGrid } from "@ui/components/atoms/primitives";
+import { notFound } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@cms/auth/options";
+
+import { canWrite } from "@acme/auth";
+import { Tag } from "@acme/design-system/atoms";
+import { Grid as DSGrid } from "@acme/design-system/primitives";
+import { cn } from "@acme/design-system/utils/style";
 import { useTranslations as serverUseTranslations } from "@acme/i18n/useTranslations.server";
+import { getPages } from "@acme/platform-core/repositories/pages/index.server";
+import { checkShopExists } from "@acme/platform-core/shops";
+import type { Page } from "@acme/types";
+
+import { Card, CardContent } from "@/components/atoms/shadcn";
+
+import PagesClient from "../PagesClient";
 
 export const revalidate = 0;
 

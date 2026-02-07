@@ -1,7 +1,9 @@
-import { Card, CardContent } from "../../../atoms/shadcn";
-import { Tag } from "../../../atoms";
 import { useTranslations } from "@acme/i18n";
+
+import { Tag } from "../../../atoms";
+import { Card, CardContent } from "../../../atoms/shadcn";
 import { PreviewPanel } from "../shared";
+
 import type { SegmentPreviewData } from "./types";
 
 export interface SegmentPreviewPanelProps {

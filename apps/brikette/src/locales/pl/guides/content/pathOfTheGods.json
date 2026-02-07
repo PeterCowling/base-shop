@@ -87,28 +87,14 @@
     }
   ],
   "faqsTitle": "FAQ",
-  "galleryTitle": "Galeria zdjęć",
-  "gallery": {
-    "items": [
-      {
-        "alt": "Widok na Sentiero degli Dei",
-        "caption": "Na trasie"
-      },
-      {
-        "alt": "Panorama wioski Nocelle",
-        "caption": "Widoki w Nocelle"
-      }
-    ]
-  },
   "toc": {
     "onThisPage": "Na tej stronie",
     "essentials": "Niezbędnik",
     "costs": "Typowe koszty",
     "faqs": "FAQ",
-    "gallery": "Galeria zdjęć",
-    "tips": "Smart timing"
+    "tips": "Planowanie czasu"
   },
-  "tipsTitle": "Smart timing",
+  "tipsTitle": "Planowanie czasu",
   "tips": [
     "Wyjedź przed 09:00 w lipcu i sierpniu lub staraj się cieszyć złotymi godzinami wiosną i jesienią, gdy panuje niższa temperatura i łagodniejsze światło.",
     "Unikaj zejścia do Positano liczącego 1700 stopni, chyba że masz świeże kolana – zejście po schodach Montepertuso po długiej wędrówce jest brutalne.",

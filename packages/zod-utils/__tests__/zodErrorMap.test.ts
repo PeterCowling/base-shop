@@ -1,3 +1,7 @@
+import { z, type ZodIssue, ZodIssueCode, type ZodIssueOptionalMessage } from 'zod';
+
+import { applyFriendlyZodMessages, friendlyErrorMap } from '../src/zodErrorMap';
+
 jest.mock('zod', () => {
   const actual = jest.requireActual('zod');
   return {
@@ -5,9 +9,6 @@ jest.mock('zod', () => {
     z: { ...actual.z, setErrorMap: jest.fn(actual.z.setErrorMap) },
   };
 });
-
-import { z, ZodIssueCode, type ZodIssue } from 'zod';
-import { applyFriendlyZodMessages, friendlyErrorMap } from '../src/zodErrorMap';
 
 describe('applyFriendlyZodMessages', () => {
   it('sets the global error map', () => {
@@ -26,6 +27,7 @@ describe('friendlyErrorMap', () => {
       code: ZodIssueCode.invalid_type,
       expected: 'string',
       received: 'undefined',
+      message: '',
       path: [],
     };
     expect(friendlyErrorMap(issue, ctx).message).toBe('Required');
@@ -36,72 +38,77 @@ describe('friendlyErrorMap', () => {
       code: ZodIssueCode.invalid_type,
       expected: 'number',
       received: 'string',
+      message: '',
       path: [],
     };
     expect(friendlyErrorMap(issue, ctx).message).toBe('Expected number');
   });
 
   it('handles invalid_enum_value', () => {
-    const issue = {
+    const issue: ZodIssueOptionalMessage = {
       code: ZodIssueCode.invalid_enum_value,
       options: ['a', 'b'],
       received: 'c',
       path: [],
-    } as const;
+    };
     expect(friendlyErrorMap(issue, ctx).message).toBe('Invalid value');
   });
 
   it('handles too_small string', () => {
-    const issue = {
+    const issue: ZodIssueOptionalMessage = {
       code: ZodIssueCode.too_small,
       minimum: 2,
       inclusive: true,
       type: 'string',
       path: [],
-    } as const;
+    };
     expect(friendlyErrorMap(issue, ctx).message).toBe('Must be at least 2 characters');
   });
 
   it('handles too_small array', () => {
-    const issue = {
+    const issue: ZodIssueOptionalMessage = {
       code: ZodIssueCode.too_small,
       minimum: 1,
       inclusive: true,
       type: 'array',
       path: [],
-    } as const;
+    };
     expect(friendlyErrorMap(issue, ctx).message).toBe('Must have at least 1 items');
   });
 
   it('handles too_big string', () => {
-    const issue = {
+    const issue: ZodIssueOptionalMessage = {
       code: ZodIssueCode.too_big,
       maximum: 3,
       inclusive: true,
       type: 'string',
       path: [],
-    } as const;
+    };
     expect(friendlyErrorMap(issue, ctx).message).toBe('Must be at most 3 characters');
   });
 
   it('handles too_big array', () => {
-    const issue = {
+    const issue: ZodIssueOptionalMessage = {
       code: ZodIssueCode.too_big,
       maximum: 4,
       inclusive: true,
       type: 'array',
       path: [],
-    } as const;
+    };
     expect(friendlyErrorMap(issue, ctx).message).toBe('Must have at most 4 items');
   });
 
   it('uses issue.message in default case', () => {
-    const issue = { code: ZodIssueCode.custom, message: 'Boom', path: [] } as const;
+    const issue: ZodIssueOptionalMessage = {
+      code: ZodIssueCode.custom,
+      message: 'Boom',
+      path: [],
+    };
     expect(friendlyErrorMap(issue, ctx).message).toBe('Boom');
   });
 
   it('falls back to ctx.defaultError', () => {
-    const issue = { code: ZodIssueCode.custom, path: [] } as const;
+    const issue: ZodIssueOptionalMessage = { code: ZodIssueCode.custom, path: [] };
     expect(friendlyErrorMap(issue, ctx).message).toBe(ctx.defaultError);
   });
 });

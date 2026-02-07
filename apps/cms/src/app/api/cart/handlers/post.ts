@@ -1,13 +1,15 @@
-import { NextResponse, type NextRequest } from "next/server";
-import { getProductById, PRODUCTS } from "@platform-core/products";
-import { postSchema } from "@platform-core/schemas/cart";
+import { type NextRequest,NextResponse } from "next/server";
+
+import { getProductById, PRODUCTS } from "@acme/platform-core/products";
+import { postSchema } from "@acme/platform-core/schemas/cart";
+
 import {
-  ensureCartStore,
-  getDecodedCartId,
-  withCartCookie,
-  errorResponse,
-  serverError,
   type CartStore,
+  ensureCartStore,
+  errorResponse,
+  getDecodedCartId,
+  serverError,
+  withCartCookie,
 } from "./utils";
 
 export async function POST(
@@ -52,7 +54,7 @@ export async function POST(
       return errorResponse("Insufficient stock", 409);
     }
 
-    const updated = await store.incrementQty(cartId, sku, qty, size);
+    const updated = await store.incrementQty(cartId, sku as any, qty, size);
     return withCartCookie(cartId, updated);
   } catch (err) {
     return serverError("POST", err);

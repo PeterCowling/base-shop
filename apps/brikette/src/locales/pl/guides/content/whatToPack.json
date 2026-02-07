@@ -1,54 +1,172 @@
 {
   "seo": {
-    "title": "Co spakować na Wybrzeże Amalfitańskie",
-    "description": "Sezonowa lista rzeczy do Positano i na wybrzeże: obuwie, warstwy, ochrona przeciwsłoneczna i dodatki."
+    "title": "Co spakować na Wybrzeże Amalfitańskie | Przewodnik po pakowaniu sezonowym",
+    "description": "Kompletna lista rzeczy do spakowania na Positano i Wybrzeże Amalfitańskie. Ubrania sezonowe, obuwie na schody, niezbędne technologie, koszty i co można kupić lokalnie."
   },
+  "lastUpdated": "2025-02-04",
   "linkLabel": "Co spakować na Wybrzeże Amalfitańskie",
   "intro": [
-    "Tłumaczenie w przygotowaniu."
+    "Dramatyczne schody Wybrzeża Amalfitańskiego, sezonowa pogoda i śródziemnomorskie słońce kształtują to, co powinieneś spakować. Ten przewodnik obejmuje niezbędne rzeczy do Positano i okolicznych miast, z wariacjami sezonowymi i praktycznymi kosztami zakupu przedmiotów lokalnie.",
+    "**Kluczowe zasady pakowania:** Priorytetem są wygodne buty do chodzenia (schody są wszędzie), ochrona przeciwsłoneczna przez cały rok oraz warstwy ubrań na zmiany temperatury między obszarami przybrzeżnymi a wzgórzami.",
+    "**Wskazówka dotycząca bagażu:** Plecaki i miękkie torby radzą sobie ze schodami lepiej niż walizki na kółkach. Jeśli zatrzymasz się w Hostel Brikette lub innych miejscach na wzgórzach, będziesz wspinać się na ponad 100 stopni z bagażem. Zobacz nasz %LINK:checkinCheckout|przewodnik po meldowaniu i przyjeździe%, aby uzyskać więcej informacji o dotarciu do hostelu z bagażem."
   ],
   "sections": [
     {
+      "id": "seasonal-packing",
+      "title": "Pakowanie sezonowe: co się zmienia w zależności od sezonu",
+      "body": [
+        "Wybrzeże Amalfitańskie ma cztery wyraźne pory roku. Oto, co należy dostosować dla każdej z nich:",
+        "**Wiosna (marzec–maj):** Pakuj warstwy — poranne mogą być chłodne (12–15°C), popołudnia ciepłe (18–22°C). Zabierz lekką kurtkę przeciwdeszczową; kwietniowe deszcze są powszechne. Krem z filtrem jest niezbędny nawet wiosną.",
+        "**Lato (czerwiec–wrzesień):** Gorąco i sucho (25–32°C). Lekkie, przewiewne ubrania są kluczowe. Spakuj kapelusz, okulary przeciwsłoneczne i krem z wysokim SPF. Wieczory pozostają ciepłe, ale zabierz jedną lekką warstwę na klimatyzowane restauracje. To jest szczyt sezonu — spodziewaj się tłumów i wyższych cen.",
+        "**Jesień (październik–listopad):** Podobnie do wiosny, ale bardziej wilgotno. Spakuj wodoodporne buty i kompaktowy parasol. Ocean nadaje się do pływania do października. Temperatury wahają się od 15–23°C.",
+        "**Zima (grudzień–luty):** Łagodnie, ale deszczowo (8–15°C). Będziesz potrzebować właściwej kurtki przeciwdeszczowej, ciepłych warstw i butów zamkniętych z dobrą przyczepnością na mokre schody. Wiele klubów plażowych jest zamkniętych, ale wędrówki zimą są doskonałe."
+      ]
+    },
+    {
       "id": "footwear",
-      "title": "Footwear",
+      "title": "Obuwie (najważniejsza kategoria)",
       "body": [
-        "Przyczepne buty na schody i wędrówki; sandały z bieżnikiem na plażę.",
-        "Unikaj śliskich podeszew – ścieżki mogą być strome i wypolerowane."
+        "Schody definiują Wybrzeże Amalfitańskie. Od hostelu do plaży, od przystanków autobusowych do restauracji, spodziewaj się 50–200 stopni na podróż. Wybór butów ma tutaj większe znaczenie niż prawie gdziekolwiek indziej.",
+        "**Niezbędne: Buty do chodzenia z przyczepnością** — Sneakersy lub buty trekkingowe z dobrym bieżnikiem na schody i nadmorskie ścieżki. Unikaj butów wizytowych z gładkimi podeszwami lub modnych sneakersów z płaskimi podeszwami — polerowane kamienne schody są śliskie, szczególnie gdy są mokre.",
+        "**Obuwie plażowe** — Buty do wody lub solidne sandały z paskami (nie klapki). Plaże tutaj są często kamieniste, a niektóre wymagają chodzenia po kamieniach, aby wejść do wody. Sprawdź nasz %LINK:positanoBeaches|przewodnik po plażach Positano%, aby uzyskać szczegółowe informacje o terenie każdej plaży.",
+        "**Buty wieczorowe (opcjonalnie)** — Jeśli chcesz się elegancko ubrać na kolację, zabierz jedną parę elegantszych butów, ale upewnij się, że nadal mają przyczepność do chodzenia do domu po schodach.",
+        "**Co pominąć:** Obcasy (niebezpieczne na schodach), czyste klapki (niewygodne na długie spacery), zupełnie nowe buty (rozchodnij je przed przyjazdem)."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/what-to-pack/landscape-architecture-aesthetic.jpeg",
+          "alt": "Kamienne schody wspinające się przez wąską uliczkę starego miasta z roślinami i znakami sklepów",
+          "caption": "Schody są główną cechą terenu w Positano — spakuj buty, którym ufasz",
+          "width": 735,
+          "height": 1105
+        }
       ]
     },
     {
-      "id": "layers",
-      "title": "Layers & sun",
+      "id": "clothing",
+      "title": "Niezbędne ubrania",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "A light rain jacket in shoulder months."
+        "**Strategia warstwowa:** Wybrzeże może być o 5°C cieplejsze niż górne miasto Positano. Pakuj ubrania, które możesz łatwo dodawać lub zdejmować.",
+        "**Stroje kąpielowe:** Zabierz co najmniej 2 stroje kąpielowe, aby jeden mógł schnąć, podczas gdy nosisz drugi. Sezon plażowy trwa od kwietnia do października.",
+        "**Okrycia:** Lekka sukienka lub koszula do przykrycia stroju kąpielowego podczas chodzenia na/z plaży. Restauracje i sklepy wolą, abyś nie był tylko w stroju kąpielowym.",
+        "**Ubrania wieczorowe:** Smart-casual jest standardem. Lekkie długie spodnie lub sukienka na kolacje. Włosi mają tendencję do eleganckiego ubierania się nawet w sposób swobodny.",
+        "**Odzież chroniąca przed słońcem:** Koszule z długim rękawem z ochroną UV, kapelusze z szerokim rondem i okulary przeciwsłoneczne. Śródziemnomorskie słońce jest intensywne, szczególnie na łodziach i plażach.",
+        "**Odzież przeciwdeszczowa:** Składana kurtka przeciwdeszczowa działa przez wszystkie pory roku. Pomiń parasole latem, chyba że odwiedzasz w sezonie przejściowym (kwiecień, październik–listopad)."
       ]
     },
     {
-      "id": "bags",
-      "title": "Bags & luggage",
+      "id": "bags-and-luggage",
+      "title": "Torby i bagaż",
       "body": [
-        "W przypadku schodów plecaki przewyższają duże walizki; trzymaj cenne przedmioty blisko siebie.",
-        "Przynieś butelkę wielokrotnego użytku; rynki sprzedają duże butelki do uzupełnień."
+        "**Najlepszy bagaż:** Plecaki lub miękkie torby podróżne. Jeśli musisz zabrać walizkę na kółkach, wybierz taką z dobrymi kółkami — często będziesz ją nosić po schodach.",
+        "**Torba dzienna:** Mały plecak lub torba na ramię do codziennych wycieczek. Trzymaj go poniżej 15L, aby łatwo manewrować w zatłoczonych autobusach i łodziach.",
+        "**Torba plażowa:** Zabierz lekką torbę typu tote lub siatkową na sprzęt plażowy. Możesz kupić tanie torby plażowe lokalnie (€5–10), jeśli zapomnisz.",
+        "**Względy antykradzieżowe:** Kieszonkowcy są rzadkością w Positano, ale częściej występują w Neapolu i na zatłoczonych promach. Trzymaj wartościowe przedmioty w torbie, którą możesz trzymać przed sobą."
+      ]
+    },
+    {
+      "id": "sun-protection",
+      "title": "Ochrona przeciwsłoneczna i zdrowie",
+      "body": [
+        "**Krem z filtrem:** Spakuj SPF 50+ na twarz i ciało. Lokalny krem z filtrem kosztuje €15–25 za butelkę 200ml (w porównaniu z €8–12 w domu). Krem z filtrem bezpieczny dla rafy jest doceniany, jeśli pływasz w pobliżu obszarów morskich.",
+        "**Pielęgnacja po opalaniu:** Żel aloesowy lub nawilżający. Słońce tutaj jest silniejsze niż w północnej Europie czy Ameryce Północnej.",
+        "**Środek odstraszający owady:** Komary są obecne od kwietnia do października, szczególnie w pobliżu wody. Zabierz małą butelkę lub kup lokalnie (€8–12).",
+        "**Podstawowa apteczka:** Plastry na pęcherze (schody je powodują), środki przeciwbólowe, wszelkie leki na receptę. Apteki są dobrze zaopatrzone, ale znalezienie dokładnie Twojej marki leków może być trudne.",
+        "**Choroba lokomocyjna:** Jeśli jesteś podatny na chorobę morską, zabierz leki przed płynięciem promami. Morze może być wzburzone, szczególnie na trasach do Capri."
+      ]
+    },
+    {
+      "id": "tech-and-adapters",
+      "title": "Technologia, adaptery i elektronika",
+      "body": [
+        "**Adapter zasilania:** Włochy używają wtyczek typu L (3-pinowych) i typu C (2-pinowych europejskich). Napięcie wynosi 230V. Zabierz uniwersalny adapter lub kup lokalnie (€5–10 w tabacchi).",
+        "**Telefon i ładowarki:** Zabierz ładowarkę do telefonu i przenośny power bank. Zasięg komórkowy jest ogólnie dobry, ale bateria rozładowuje się szybciej przy ciągłym używaniu GPS do nawigacji.",
+        "**Aparat:** Wybrzeże Amalfitańskie jest niewiarygodnie fotogeniczne. Zabierz aparat lub upewnij się, że pamięć telefonu jest wystarczająca. Wodoodporne etui jest przydatne na rejsy łodzią.",
+        "**Czytnik e-booków lub tablet:** Do czytania na plaży. Lokalne księgarnie mają ograniczony wybór w języku angielskim.",
+        "**Słuchawki:** Przydatne na przejazdy promem i autobusem."
+      ]
+    },
+    {
+      "id": "toiletries-and-personal",
+      "title": "Przybory toaletowe i rzeczy osobiste",
+      "body": [
+        "**Co spakować:** Podstawowe przybory toaletowe (szampon, mydło, pasta do zębów itp.) w rozmiarach podróżnych. Hostele i hotele ekonomiczne mogą ich nie zapewniać.",
+        "**Co można kupić:** Supermarkety i apteki mają wszystkie główne marki przyborów toaletowych. Ceny są o 10–30% wyższe niż w północnej Europie, ale porównywalne z innymi włoskimi obszarami turystycznymi.",
+        "**Pranie:** Większość hosteli ma pralnie (€3–5 za pranie). Spakuj wystarczającą ilość ubrań na 3–4 dni, a następnie zaplanuj pranie.",
+        "**Produkty menstruacyjne:** Dostępne w supermarketach i aptekach. Tampony i podpaski kosztują €3–6 za opakowanie."
+      ]
+    },
+    {
+      "id": "money-and-documents",
+      "title": "Pieniądze, karty i dokumenty",
+      "body": [
+        "**Gotówka:** Noś €50–100 w małych nominałach (€5, €10, €20). Wiele małych firm, klubów plażowych i autobusów przyjmuje tylko gotówkę. Bankomaty są dostępne, ale pobierają €3–5 za wypłatę.",
+        "**Karty:** Główne karty kredytowe (Visa, Mastercard) działają w większości miejsc. Amex jest mniej powszechny. Powiadom swój bank przed podróżą, aby uniknąć blokad kart.",
+        "**Dokumenty:** Paszport (lub karta ID UE), dowód ubezpieczenia podróżnego, wszelkie karty medyczne oraz potwierdzenia rezerwacji hostelu/hotelu. Pobierz kopie offline na telefon.",
+        "**Kopie zapasowe:** Zeskanuj paszport i przechowuj cyfrową kopię oddzielnie od oryginału."
+      ]
+    },
+    {
+      "id": "optional-extras",
+      "title": "Opcjonalne dodatki i przydatne rzeczy",
+      "body": [
+        "**Butelka na wodę wielokrotnego użytku:** Woda z kranu jest bezpieczna do picia. Napełniaj przy fontannach (wiele miast ma publiczne fontanny) lub kupuj duże butelki w supermarketach (€0.30–0.50 za litr) do napełniania.",
+        "**Worek wodoodporny:** Przydatny do ochrony elektroniki i wartościowych przedmiotów podczas rejsów łodzią lub na plaży.",
+        "**Kompaktowy ręcznik:** Kluby plażowe wynajmują ręczniki (€3–5), ale ręcznik podróżny z mikrofibry oszczędza pieniądze i szybko schnie.",
+        "**Sprzęt do nurkowania z rurką:** Jeśli lubisz nurkowanie z rurką. Wynajem jest dostępny (€10–15/dzień), ale jakość jest zróżnicowana.",
+        "**Przenośny głośnik:** Na dni plażowe (zachowaj odpowiednią głośność).",
+        "**Rozmówki włoskie lub aplikacja językowa:** Podstawowy włoski pomaga. Wielu lokalnych mieszkańców mówi po angielsku, ale wysiłek jest doceniany."
+      ]
+    },
+    {
+      "id": "what-to-leave-home",
+      "title": "Czego NIE pakować",
+      "body": [
+        "**Pomiń te przedmioty:**",
+        "• Ciężkie walizki twarde (schody sprawiają, że są okropne)",
+        "• Więcej niż 2 pary butów (zajmują za dużo miejsca)",
+        "• Suszarka do włosów (większość miejsc noclegowych je zapewnia, a różnice napięcia mogą być problemem)",
+        "• Pełnowymiarowe przybory toaletowe (kupuj lokalnie lub zabieraj rozmiary podróżne)",
+        "• Formalne ubrania, chyba że masz konkretne plany kolacyjne",
+        "• Nadmierna elektronika (zachowaj prostotę)",
+        "• Kurtki zimowe, chyba że odwiedzasz w grudniu–lutym"
       ]
     }
   ],
   "tips": [
-    "Pomiń ciężkie, twarde walizki, jeśli Twój pobyt wiąże się z długimi wspinaczkami po schodach.",
-    "Tłumaczenie w przygotowaniu."
+    "Pomiń ciężkie walizki twarde, jeśli Twój pobyt wiąże się ze wspinaniem się po schodach — plecaki lub miękkie torby podróżne są dużo łatwiejsze.",
+    "Noś małe banknoty euro (€5, €10) na parasole plażowe, autobusy i szybkie przekąski. Wielu małych sprzedawców nie akceptuje kart.",
+    "Kup krem z filtrem i środek odstraszający owady przed przyjazdem, aby zaoszczędzić pieniądze — lokalne ceny są o 50% wyższe niż w domu.",
+    "Rozchodnij swoje buty do chodzenia przed podróżą. Pęcherze od nowych butów + schody = nieszczęście.",
+    "Spakuj małą apteczkę z plastrami na pęcherze, środkami przeciwbólowymi i wszelkimi lekami na receptę. Apteki są pomocne, ale mogą nie mieć dokładnie Twojej marki."
   ],
   "faqs": [
     {
-      "q": "Tłumaczenie w przygotowaniu.",
-      "a": [
-        "Tak, ale ceny w szczycie sezonu gwałtownie rosną — spakuj najpotrzebniejsze rzeczy, aby uniknąć podwyżek."
+      "question": "Czy mogę kupić wszystko, czego potrzebuję lokalnie?",
+      "answer": [
+        "Tak, ale ceny są znacznie wyższe podczas szczytu sezonu (czerwiec–wrzesień). Supermarkety i apteki mają większość niezbędnych rzeczy, ale spodziewaj się zapłacić o 20–50% więcej niż w domu za krem z filtrem, przybory toaletowe i sprzęt plażowy.",
+        "Wskazówka budżetowa: Spakuj niezbędne rzeczy, takie jak krem z filtrem, środek odstraszający owady i wszelkie specyficzne leki z domu, aby uniknąć narzutów."
       ]
     },
     {
-      "q": "Do I need to bring a bathrobe?",
-      "a": [
-        "Tłumaczenie w przygotowaniu."
+      "question": "Czy muszę zabierać ręczniki plażowe?",
+      "answer": "Większość miejsc noclegowych zapewnia ręczniki kąpielowe, ale nie ręczniki plażowe. Kluby plażowe wynajmują ręczniki za €3–5, lub możesz spakować lekki ręcznik podróżny z mikrofibry. Hostele czasami mają ręczniki plażowe dostępne za małą kaucję."
+    },
+    {
+      "question": "Jaki jest najlepszy bagaż do Positano?",
+      "answer": "Plecak lub miękka torba podróżna jest idealna. Jeśli zatrzymujesz się w miejscach na wzgórzach, takich jak Hostel Brikette, będziesz wspinać się na ponad 100 stopni z bagażem. Walizki na kółkach są trudne na schodach i brukowanych uliczkach. Pakuj lekko — staraj się o rozmiar bagażu podręcznego, jeśli to możliwe."
+    },
+    {
+      "question": "Czy powinienem spakować parasol?",
+      "answer": [
+        "Latem (czerwiec–wrzesień): Nie, deszcz jest rzadki. Spakuj lekką kurtkę przeciwdeszczową na wieczorną bryzę na łodziach.",
+        "Wiosną/jesienią (kwiecień–maj, październik–listopad): Tak, zabierz kompaktowy parasol. Kwiecień i listopad to najbardziej deszczowe miesiące.",
+        "Zimą (grudzień–luty): Zdecydowanie zabierz parasol i wodoodporną kurtkę. Zima to pora deszczowa."
       ]
+    },
+    {
+      "question": "Czy potrzebuję butów trekkingowych na Ścieżkę Bogów?",
+      "answer": "Właściwe buty trekkingowe z podparciem kostki są zalecane na %LINK:pathOfTheGods|Ścieżkę Bogów% i inne nadmorskie szlaki. Buty do biegania w terenie lub buty trekkingowe działają dobrze. Zwykłe sneakersy są na granicy — będą działać, jeśli masz doświadczenie, ale podparcie kostki pomaga na kamienistych odcinkach."
     }
   ]
 }

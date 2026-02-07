@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
+
 import { getLocaleFromPath } from "@/lib/locales";
 
 export default function HtmlLangUpdater() {

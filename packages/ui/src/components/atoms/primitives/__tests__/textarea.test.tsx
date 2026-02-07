@@ -1,5 +1,7 @@
 import "../../../../../../../test/resetNextMocks";
-import { render, screen, fireEvent } from "@testing-library/react";
+
+import { fireEvent,render, screen } from "@testing-library/react";
+
 import { Textarea } from "../textarea";
 
 describe("Textarea", () => {
@@ -15,12 +17,12 @@ describe("Textarea", () => {
     const { container } = render(
       <Textarea label="Notes" className="custom" />
     );
-    const wrapper = container.firstChild as HTMLElement;
-    const [label, textarea] = wrapper.children;
+    const label = screen.getByText("Notes");
+    const textarea = screen.getByRole("textbox");
 
     expect(label.tagName).toBe("LABEL");
     expect(label).toHaveTextContent("Notes");
-    expect(label).toHaveClass("mb-1", "block", "text-sm", "font-medium");
+    expect(label).toHaveClass("text-sm", "font-medium", "text-foreground");
     expect(textarea.tagName).toBe("TEXTAREA");
     expect(textarea).toHaveClass("min-h-[6rem]", "custom");
   });
@@ -43,8 +45,8 @@ describe("Textarea", () => {
         onBlur={handleBlur}
       />
     );
-    const wrapper = container.firstChild as HTMLElement;
-    const [textarea, label] = wrapper.children;
+    const textarea = screen.getByRole("textbox");
+    const label = screen.getByText("Message");
 
     expect(label).toHaveClass("absolute", "top-2", "left-3");
     expect(label).not.toHaveClass("-translate-y-3", "text-xs");
@@ -66,7 +68,7 @@ describe("Textarea", () => {
 
     const error = screen.getByText("Required");
     expect(error).toHaveClass("text-danger");
-    expect(error).toHaveAttribute("data-token", "--color-danger");
+    expect(error).not.toHaveAttribute("data-token");
   });
 
   it("toggles aria-invalid when error prop changes", () => {

@@ -73,18 +73,5 @@
         "Gatubelysningen varierar – ta med ficklampa eller mobilens ljus för sena nedstigningar."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Photo gallery",
-    "items": [
-      {
-        "caption": "Terrassen vid Chiesa Nuova",
-        "alt": "Solnedgång från Chiesa Nuova"
-      },
-      {
-        "caption": "Nocelle",
-        "alt": "Solnedgång från Nocelle"
-      }
-    ]
-  }
+  ]
 }

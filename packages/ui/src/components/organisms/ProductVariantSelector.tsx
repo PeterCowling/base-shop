@@ -1,9 +1,10 @@
 "use client";
 import * as React from "react";
+
 import { cn } from "../../utils/style";
 import { ColorSwatch } from "../atoms/ColorSwatch";
-import { QuantityInput } from "../molecules/QuantityInput";
 import { Inline } from "../atoms/primitives";
+import { QuantityInput } from "../molecules/QuantityInput";
 
 export interface VariantSelectorProps
   extends React.HTMLAttributes<HTMLDivElement> {

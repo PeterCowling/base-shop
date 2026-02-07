@@ -1,8 +1,8 @@
 // src/utils/seo/jsonld/normalize.ts
 // Shared normalizers for JSON-LD builders
 
+import { type NormalizedFaqEntry,normalizeFaqEntries } from "@/utils/buildFaqJsonLd";
 import { ensureArray } from "@/utils/i18nContent";
-import { normalizeFaqEntries, type NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
 
 /**
  * Returns a trimmed string when meaningful, otherwise an empty string.

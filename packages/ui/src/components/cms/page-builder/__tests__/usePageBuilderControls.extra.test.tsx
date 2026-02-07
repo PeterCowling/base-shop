@@ -1,4 +1,5 @@
-import { renderHook, act } from "@testing-library/react";
+import { act,renderHook } from "@testing-library/react";
+
 import usePageBuilderControls from "../hooks/usePageBuilderControls";
 
 describe("usePageBuilderControls – extras", () => {
@@ -35,15 +36,17 @@ describe("usePageBuilderControls – extras", () => {
     expect(desktopStyle.width).toBe("777px");
 
     // Switch to a tablet-like preset (from extraDevices or built-ins via device.type change)
-    const tabletId = (result.current.extraDevices.find((d) => d.type === 'tablet') || []).id || 'tablet';
-    act(() => { result.current.setDeviceId(tabletId as any); });
+    const tabletPreset = result.current.extraDevices.find((d) => d.type === 'tablet');
+    const tabletId = tabletPreset ? tabletPreset.id : 'tablet';
+    act(() => { result.current.setDeviceId(tabletId as string); });
     // Set tablet override
     act(() => { result.current.setEditingSizePx(555); });
     expect((result.current.viewportStyle as any).width).toBe("555px");
 
     // Switch back to a desktop preset (first desktop extra or fallback)
-    const desktopPreset = (result.current.extraDevices.find((d) => d.type === 'desktop') || []).id || result.current.deviceId;
-    act(() => { result.current.setDeviceId(desktopPreset as any); });
+    const desktopPresetDevice = result.current.extraDevices.find((d) => d.type === 'desktop');
+    const desktopPreset = desktopPresetDevice ? desktopPresetDevice.id : result.current.deviceId;
+    act(() => { result.current.setDeviceId(desktopPreset as string); });
     expect((result.current.viewportStyle as any).width).toBe("777px");
   });
 

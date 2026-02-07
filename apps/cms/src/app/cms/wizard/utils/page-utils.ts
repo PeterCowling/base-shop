@@ -1,7 +1,8 @@
 // apps/cms/src/app/cms/wizard/utils/page.ts
 
-import { fillLocales } from "@i18n/fillLocales";
+import { fillLocales } from "@acme/i18n/fillLocales";
 import type { PageComponent } from "@acme/types";
+
 import type { PageInfo } from "../schema";
 
 export function toPageInfo(draft: Partial<PageInfo>): PageInfo {

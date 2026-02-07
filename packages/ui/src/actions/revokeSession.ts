@@ -1,10 +1,11 @@
 "use server";
 
-import type { SessionRecord } from "@auth";
 import { revalidatePath } from "next/cache";
 
+import type { SessionRecord } from "@acme/auth";
+
 export async function revoke(id: string) {
-  const { getCustomerSession, listSessions, hasPermission, revokeSession } = await import("@auth");
+  const { getCustomerSession, listSessions, hasPermission, revokeSession } = await import("@acme/auth");
   try {
     const session = await getCustomerSession();
     if (!session || !hasPermission(session.role, "manage_sessions")) {

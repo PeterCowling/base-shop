@@ -1,20 +1,22 @@
 // apps/cms/src/middleware.ts
 
-import type { Role } from "@auth/types";
-import { canRead, canWrite } from "@auth/rbac";
-import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { authSecret } from "./auth/secret";
-import {
-  logger,
-  withRequestContext,
-  type RequestContext,
-} from "@acme/shared-utils";
+import { getToken } from "next-auth/jwt";
 import { createHeadersObject } from "next-secure-headers";
 import helmet from "helmet";
 import type { IncomingMessage, ServerResponse } from "http";
-// Avoid importing @auth/session in middleware (Edge) because it pulls in
+
+import { canRead, canWrite } from "@acme/auth/rbac";
+import type { Role } from "@acme/auth/types";
+import {
+  type RequestContext,
+  withRequestContext,
+} from "@acme/lib/context";
+import { logger } from "@acme/lib/logger";
+
+import { authSecret } from "./auth/secret";
+// Avoid importing @acme/auth/session in middleware (Edge) because it pulls in
 // Node-only dependencies like 'crypto' via iron-session. We'll perform a
 // lightweight CSRF check inline using the request cookies instead.
 
@@ -35,7 +37,7 @@ interface CmsToken {
  *   /cms/shop/{shop}/media (and subpaths)
  */
 const ADMIN_PATH_REGEX =
-  /^\/cms\/shop\/([^/]+)\/(?:products\/[^/]+\/edit|settings|media(?:\/|$))/;
+  /^\/cms\/shop\/([^/]+)\/(?:products\/[^/]+\/edit|settings|media(?:\/|$)|uploads(?:\/|$))/;
 
 const SERVICE_NAME = "cms";
 const ENV_LABEL: "dev" | "stage" | "prod" =
@@ -164,6 +166,8 @@ async function handleRequest(req: NextRequest, pathname: string) {
   /* Skip static assets, auth endpoints, and login/signup pages */
   if (
     pathname.startsWith("/_next") ||
+    pathname === "/uploads" ||
+    pathname.startsWith("/uploads/") ||
     pathname === "/login" ||
     pathname === "/signup" ||
     pathname === "/favicon.ico"

@@ -2,9 +2,12 @@
 // i18n-exempt file -- PB-238: Builder-only panel with limited microcopy
 "use client";
 
-import type { PageComponent } from "@acme/types";
 import { useMemo } from "react";
-import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Checkbox } from "../../../atoms/shadcn";
+
+import type { PageComponent } from "@acme/types";
+
+import { Button, Checkbox,Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../atoms/shadcn";
+
 import { easingPresets } from "./EasingPresets";
 
 interface Props {

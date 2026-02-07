@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useCallback, useMemo } from "react";
+
 import { useTranslations } from "@acme/i18n";
-import type { ProductColor, ProductSize } from "@/types/product";
-import { getColorHex } from "@/lib/catalog";
+
 import Inline from "@/components/layout/Inline";
+import { getColorHex } from "@/lib/catalog";
+import type { ProductColor, ProductSize } from "@/types/product";
 
 type VariantSelectorProps = {
   sizes: ProductSize[];

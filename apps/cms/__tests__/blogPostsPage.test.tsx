@@ -4,11 +4,11 @@ jest.mock("@cms/actions/blog.server", () => ({
   getPosts: jest.fn(),
 }));
 
-jest.mock("@platform-core/shops", () => ({
+jest.mock("@acme/platform-core/shops", () => ({
   getSanityConfig: jest.fn().mockReturnValue({}),
 }));
 
-jest.mock("@platform-core/repositories/shop.server", () => ({
+jest.mock("@acme/platform-core/repositories/shop.server", () => ({
   getShopById: jest.fn().mockResolvedValue({}),
 }));
 
@@ -18,7 +18,7 @@ jest.mock("next/link", () => ({
     <a href={href}>{children}</a>
   ),
 }));
-jest.mock("@ui", () => ({
+jest.mock("@acme/ui", () => ({
   Button: ({ children }: any) => <button>{children}</button>,
 }));
 
@@ -30,7 +30,7 @@ describe("BlogPostsPage", () => {
       { _id: "1", title: "Post", published: true, publishedAt: future },
     ]);
     const Page = (await import("../src/app/cms/blog/posts/page")).default;
-    render(await Page({ searchParams: { shopId: "s" } }));
+    render(await Page({ searchParams: Promise.resolve({ shopId: "s" }) }));
     expect(screen.getByText(/scheduled for/i)).toBeInTheDocument();
   });
 });

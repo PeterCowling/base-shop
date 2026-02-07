@@ -1,10 +1,10 @@
 {
   "labels": {
-    "onThisPage": "On this page",
-    "before": "Before you head out",
-    "steps": "Step-by-step route",
-    "knees": "Legs & luggage",
-    "faqs": "FAQs"
+    "onThisPage": "Trên trang này",
+    "before": "Trước khi xuất phát",
+    "steps": "Lộ trình từng bước",
+    "knees": "Chân và hành lý",
+    "faqs": "Câu hỏi thường gặp"
   },
   "folkloreAmalfi": {
     "intro": [
@@ -107,7 +107,7 @@
         "id": "routes",
         "title": "Tuyến chính",
         "body": [
-          "Bản dịch đang được chuẩn bị."
+          "Roma → Naples/Salerno tàu cao tốc; tàu địa phương đến Sorrento; xe buýt đến Positano."
         ]
       },
       {
@@ -121,7 +121,7 @@
         "id": "last-mile",
         "title": "Chặng cuối đến Positano",
         "body": [
-          "Bản dịch đang được chuẩn bị."
+          "Từ Naples: Circumvesuviana đến Sorrento rồi xe buýt SITA. Từ Salerno: phà/xe buýt theo mùa."
         ]
       }
     ],
@@ -224,8 +224,8 @@
         "body": [
           "Mùa cao điểm: tháng 4–10. Mùa đông dịch vụ hạn chế hoặc không có.",
           "Đến sớm trước giờ khởi hành để xếp hàng và kích hoạt vé.",
-          "Từ cảng lên hostel là đường dốc; cân nhắc dịch vụ khuân vác hoặc xe buýt tới “Chiesa Nuova”.",
-          "Bản dịch đang được chuẩn bị."
+          "Từ cảng lên hostel là đường dốc; cân nhắc dịch vụ khuân vác hoặc xe buýt tới \"Chiesa Nuova\".",
+          "Để biết thêm lời khuyên về việc đến nơi, hãy xem bài viết trợ giúp \"Đến bằng phà\"."
         ]
       }
     ],
@@ -243,7 +243,7 @@
         ]
       },
       {
-        "q": "Bản dịch đang được chuẩn bị.",
+        "q": "Tôi nên dùng bến nào ở Positano?",
         "a": [
           "Bến chính nằm tại Spiaggia Grande. Trên ngày cao điểm, hãy xem vé để biết làn lên tàu chính xác."
         ]
@@ -343,7 +343,7 @@
     "threeDaysHeading": "3 ngày: thêm Capri hoặc Ravello",
     "threeDaysIntro": "Chọn một:",
     "threeDaysOptions": [
-      "Bản dịch đang được chuẩn bị.",
+      "Chuyến đi Capri trong ngày: phà sớm → Marina Grande → cáp treo Anacapri → vòng qua Marina Piccola.",
       "Amalfi + Ravello: xe buýt tới Amalfi, đi tiếp lên Ravello ngắm vườn và cảnh; về bằng xe buýt/phà."
     ],
     "sevenDaysHeading": "7 ngày: vòng trọn",
@@ -376,7 +376,7 @@
     },
     "highlights": [
       "Nhà thờ Duomo di Amalfi và chiêm ngưỡng Chiostro del Paradiso (tu viện).",
-      "Bản dịch đang được chuẩn bị.",
+      "Bảo tàng Giấy (Museo della Carta) — độc nhất trong lịch sử Amalfi.",
       "Dạo bộ ven biển và ăn kem trên những bậc thang."
     ],
     "gettingThere": "Từ Positano, phà (vào mùa) vừa đẹp vừa thoải mái. Nếu không, đi xe buýt SITA; hãy chờ xếp hàng vào giờ cao điểm và mua vé trước.",
@@ -399,7 +399,7 @@
         "id": "day1",
         "label": "Ngày 1",
         "items": [
-          "Bản dịch đang được chuẩn bị."
+          "Đến Positano; phố cổ & Fornillo"
         ]
       },
       {
@@ -427,7 +427,7 @@
         "id": "day5",
         "label": "Ngày 5",
         "items": [
-          "Bản dịch đang được chuẩn bị."
+          "Vườn Ravello (Villa Rufolo/Villa Cimbrone)"
         ]
       },
       {
@@ -464,14 +464,14 @@
     ],
     "sections": [
       {
-        "title": "Why this route works",
+        "title": "Tại sao lộ trình này hiệu quả",
         "body": [
           "Từ cửa hostel đến trạm chỉ 120 mét (400 feet) đi bộ dọc theo con đường chính.",
           "Nếu bạn đi hướng Amalfi, trạm nằm đối diện Bar Internazionale. Hãy xếp hàng ở phía đường nhìn ra biển. Nếu bạn đi hướng Sorrento, bạn sẽ chờ ngay trước cửa quán bar."
         ]
       },
       {
-        "title": "Tickets and timing",
+        "title": "Vé và thời gian",
         "body": [
           "Mua vé SITA tại tiệm thuốc lá hoặc bên trong quán bar. Đừng cố lên xe mà không có vé vì bạn sẽ không thể mua trên xe. Xuất trình vé cho tài xế khi lên xe. Nếu bạn bắt chuyến đầu tiên trong ngày, hãy mua vé từ ngày hôm trước và ghé quầy lễ tân để sắp xếp thủ tục trả phòng.",
           "Vào mùa hè xe buýt thường kín chỗ. Hãy lên kế hoạch phù hợp, đặc biệt trong những thời điểm đông nhất."
@@ -480,29 +480,29 @@
     ],
     "beforeList": [],
     "stepsList": [
-      "Exit Hostel Brikette, take the short staircase to Viale Pasitea, and turn left.",
+      "Ra khỏi Hostel Brikette, đi xuống cầu thang ngắn đến Viale Pasitea và rẽ trái.",
       "Đi theo vỉa hè khoảng 120 mét (400 feet) dọc theo đường chính để tới Bar Internazionale."
     ],
     "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sHostel+Brikette!4m1!2sBar+Internazionale",
     "kneesList": [],
-    "kneesDockPrefix": "Starting with luggage at the ferry dock? Use our",
-    "kneesDockLinkLabel": "Ferry dock luggage route",
-    "kneesPorterPrefix": "Need porter pricing or booking help? Check the",
-    "kneesPorterLinkLabel": "porter service guide",
+    "kneesDockPrefix": "Bắt đầu với hành lý ở bến phà? Dùng",
+    "kneesDockLinkLabel": "Lộ trình hành lý từ bến phà",
+    "kneesPorterPrefix": "Cần giá hoặc trợ giúp đặt dịch vụ khuân vác? Xem",
+    "kneesPorterLinkLabel": "hướng dẫn dịch vụ khuân vác",
     "faqs": [
       {
-        "q": "Do buses stop right outside the hostel?",
-        "a": "They stop at Bar Internazionale—about 120 metres (400 feet) downhill from the entrance."
+        "q": "Xe buýt có dừng ngay ngoài hostel không?",
+        "a": "Xe dừng tại Bar Internazionale — cách lối vào khoảng 120 mét (400 feet) xuống dốc."
       },
       {
-        "q": "Can I buy tickets at the last minute?",
-        "a": "Yes, the tabacchi next to the stop sells SITA tickets, but expect queues at peak times."
+        "q": "Tôi có thể mua vé vào phút chót không?",
+        "a": "Có, cửa hàng tabacchi bên cạnh trạm bán vé SITA, nhưng hãy chuẩn bị xếp hàng vào giờ cao điểm."
       }
     ],
     "howtoSteps": [
-      "Leave Hostel Brikette and follow Viale Pasitea downhill",
-      "Join the queue at Bar Internazionale and validate on boarding"
+      "Rời Hostel Brikette và đi xuống theo Viale Pasitea",
+      "Xếp hàng tại Bar Internazionale và đóng dấu khi lên xe"
     ],
-    "faqsTitle": "FAQs"
+    "faqsTitle": "Câu hỏi thường gặp"
   }
 }

@@ -1,7 +1,8 @@
+import { readRbac } from "@cms/lib/server/rbacStore";
 import fs from "fs/promises";
 import path from "path";
-import { resolveDataRoot } from "@platform-core/dataRoot";
-import { readRbac } from "@cms/lib/server/rbacStore";
+
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
 
 export type Stats = {
   users: number;

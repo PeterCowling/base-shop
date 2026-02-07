@@ -1,10 +1,11 @@
 // packages/ui/src/components/cms/page-builder/StylePreviewCard.tsx
 "use client";
 
-import { useMemo, useState } from "react";
 import type { CSSProperties } from "react";
-import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
+import { useMemo, useState } from "react";
+
 import { useTranslations } from "@acme/i18n";
+import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
 
 function composeTransform(fx: NonNullable<StyleOverrides["effects"]> | undefined): string | undefined {
   if (!fx) return undefined;

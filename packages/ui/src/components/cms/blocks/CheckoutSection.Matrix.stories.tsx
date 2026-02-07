@@ -1,11 +1,14 @@
 // packages/ui/src/components/cms/blocks/CheckoutSection.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import CheckoutSection from './CheckoutSection';
-import type { Locale } from '@acme/i18n/locales';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './CheckoutSection.fixtures.json';
 import { z } from 'zod';
+
+import type { Locale } from '@acme/i18n/locales';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import CheckoutSection from './CheckoutSection';
+import fixture from './CheckoutSection.fixtures.json';
 
 const meta: Meta<typeof CheckoutSection> = {
   title: 'CMS Blocks/CheckoutSection/Matrix',

@@ -1,7 +1,8 @@
 import crypto from "crypto";
 
+import type { RentalLineItem,SKU } from "@acme/types";
+
 import type { CartState } from "../cart";
-import type { SKU, RentalLineItem } from "@acme/types";
 import type { CartStore } from "../cartStore";
 
 /** In-memory implementation of CartStore */
@@ -28,7 +29,10 @@ export class MemoryCartStore implements CartStore {
   }
 
   async setCart(id: string, cart: CartState): Promise<void> {
-    this.carts.set(id, { cart, expires: Date.now() + this.ttl * 1000 });
+    this.carts.set(id, {
+      cart,
+      expires: Date.now() + this.ttl * 1000,
+    });
     this.resetTimer(id);
   }
 

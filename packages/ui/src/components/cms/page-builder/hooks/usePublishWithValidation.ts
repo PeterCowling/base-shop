@@ -1,9 +1,10 @@
 import { useCallback } from "react";
+
 import { useTranslations } from "@acme/i18n";
-import { validateSectionRules } from "@acme/platform-core/validation/sectionRules";
 import type { ValidationResult } from "@acme/platform-core/validation/sectionRules";
-import type { SectionTemplate } from "@acme/types/section/template";
+import { validateSectionRules } from "@acme/platform-core/validation/sectionRules";
 import type { PageComponent } from "@acme/types";
+import type { SectionTemplate } from "@acme/types/section/template";
 
 type ToastState = { open: boolean; message: string; retry?: () => void };
 

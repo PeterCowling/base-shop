@@ -1,12 +1,15 @@
 "use client";
 
-import type { Locale } from "@acme/i18n/locales";
-import type { PageComponent, TextComponent, HistoryState } from "@acme/types";
 import { memo } from "react";
+
+import type { Locale } from "@acme/i18n/locales";
+import type { HistoryState,PageComponent, TextComponent } from "@acme/types";
+
+import type { DevicePreset } from "../../../utils/devicePresets";
+
+import BlockItem from "./BlockItem";
 import type { Action } from "./state";
 import TextBlock from "./TextBlock";
-import BlockItem from "./BlockItem";
-import type { DevicePreset } from "../../../utils/devicePresets";
 
 type Props = {
   component: PageComponent;

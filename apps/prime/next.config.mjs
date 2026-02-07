@@ -1,13 +1,12 @@
+import { baseConfig } from '@acme/next-config';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  ...baseConfig,
+  // Trailing slashes required for Cloudflare Pages static routing
   trailingSlash: true,
-  images: {
-    unoptimized: true,
-  },
-  // Disable server-side features for static export
-  experimental: {
-    // Enable if needed for specific features
+  eslint: {
+    ignoreDuringBuilds: true,
   },
 };
 

@@ -1,5 +1,9 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
+
+import ShopEditor from "../ShopEditor";
+import { useShopEditorForm } from "../useShopEditorForm";
 import type { MappingRowsController } from "../useShopEditorSubmit";
 
 jest.mock(
@@ -50,17 +54,11 @@ jest.mock(
   "@/components/atoms",
   () => ({
     __esModule: true,
-    Toast: ({ message, open, ...props }: any) =>
-      open ? (
-        <div data-testid="toast" {...props}>
-          {message}
-        </div>
-      ) : null,
   }),
   { virtual: true },
 );
 
-jest.mock("@ui/components/cms/DataTable", () => ({
+jest.mock("@acme/cms-ui/DataTable", () => ({
   __esModule: true,
   default: ({ rows }: any) => (
     <div data-testid="data-table">{rows.length} rows</div>
@@ -85,9 +83,6 @@ jest.mock("../useShopEditorForm", () => ({
   useShopEditorForm: jest.fn(),
 }));
 
-import ShopEditor from "../ShopEditor";
-import { useShopEditorForm } from "../useShopEditorForm";
-
 type MappingRowLike = { key: string; value: string };
 
 const mockUseShopEditorForm = jest.mocked(useShopEditorForm);
@@ -108,7 +103,7 @@ describe("ShopEditor", () => {
     jest.clearAllMocks();
   });
 
-  it("renders sections, toast, and section errors from the form state", () => {
+  it("renders sections and section errors from the form state", () => {
     const filterMappings = createMappingController([
       { key: "color", value: "attributes.color" },
     ]);
@@ -194,12 +189,6 @@ describe("ShopEditor", () => {
         catalogFilters: info.catalogFilters,
         setCatalogFilters: jest.fn(),
       },
-      toast: {
-        open: true,
-        status: "error",
-        message: "Validation issues",
-      },
-      closeToast: jest.fn(),
       onSubmit: jest.fn(),
     } as any);
 
@@ -227,9 +216,6 @@ describe("ShopEditor", () => {
     sectionKeys.forEach((key) => {
       expect(renderedSections).toContain(key);
     });
-
-    const toast = screen.getByText("Validation issues");
-    expect(toast).toHaveClass("bg-destructive");
 
     expect(screen.getByText("Shop name is required")).toBeInTheDocument();
     expect(

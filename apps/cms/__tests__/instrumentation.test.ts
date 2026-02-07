@@ -1,21 +1,24 @@
-import { describe, it, beforeEach, afterEach, expect, jest } from "@jest/globals";
+import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
+
 import { register } from "../instrumentation";
 
+type MockSpyInstance = jest.SpyInstance<any, any>;
+
 describe("instrumentation register (browser)", () => {
-  let processOnSpy: jest.SpyInstance;
-  let consoleErrorSpy: jest.SpyInstance;
-  let consoleLogSpy: jest.SpyInstance;
+  let processOnSpy: MockSpyInstance;
+  let consoleErrorSpy: MockSpyInstance;
+  let consoleLogSpy: MockSpyInstance;
   const handlers: Record<string, (...args: unknown[]) => void> = {};
 
   beforeEach(() => {
     processOnSpy = jest
       .spyOn(process, "on")
-      .mockImplementation((event: string, handler: (...args: unknown[]) => void) => {
+      .mockImplementation(((event: string, handler: (...args: unknown[]) => void) => {
         handlers[event] = handler;
         return process;
-      });
-    consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
-    consoleLogSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+      }) as any) as unknown as MockSpyInstance;
+    consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {}) as unknown as MockSpyInstance;
+    consoleLogSpy = jest.spyOn(console, "log").mockImplementation(() => {}) as unknown as MockSpyInstance;
   });
 
   afterEach(() => {

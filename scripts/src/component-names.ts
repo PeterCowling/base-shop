@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, statSync } from "node:fs";
 import * as path from "node:path";
 
 /**
@@ -67,6 +67,10 @@ export function getComponentNameMap(componentsDir: string): Record<string, strin
       const specifiers = namedMatch[1].split(",").map((s) => s.trim()).filter(Boolean);
       const file = resolveFile(dir, rel);
       if (!file) continue;
+      if (statSync(file).isDirectory()) {
+        walk(file);
+        continue;
+      }
       for (const spec of specifiers) {
         if (spec.startsWith("type ")) continue;
         let name = spec;
@@ -88,4 +92,3 @@ export function getComponentNameMap(componentsDir: string): Record<string, strin
   walk(componentsDir);
   return Object.fromEntries(map.entries());
 }
-

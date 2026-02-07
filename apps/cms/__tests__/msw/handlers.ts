@@ -1,62 +1,60 @@
-import { rest } from "~test/msw/shared";
+import { HttpResponse } from "msw";
+
 import { baseTokens } from "../../src/app/cms/wizard/tokenUtils";
 
+import { rest } from "~test/msw/shared";
+
 export const handlers = [
-  rest.get("/cms/api/configurator-progress", (_req, res, ctx) =>
-    res(ctx.status(200), ctx.json({ state: {}, completed: {} }))
+  rest.get("/cms/api/configurator-progress", () =>
+    HttpResponse.json({ state: {}, completed: {} })
   ),
-  rest.put("/cms/api/configurator-progress", (_req, res, ctx) =>
-    res(ctx.status(200), ctx.json({}))
+  rest.put("/cms/api/configurator-progress", () =>
+    HttpResponse.json({})
   ),
-  rest.patch("/cms/api/configurator-progress", (_req, res, ctx) =>
-    res(ctx.status(200), ctx.json({}))
+  rest.patch("/cms/api/configurator-progress", () =>
+    HttpResponse.json({})
   ),
-  rest.post("/cms/api/configurator", async (_req, res, ctx) =>
-    res(
-      ctx.status(201),
-      ctx.json({ id: "testshop", message: "shop created successfully" })
+  rest.post("/cms/api/configurator", () =>
+    HttpResponse.json(
+      { id: "testshop", message: "shop created successfully" },
+      { status: 201 }
     )
   ),
-  rest.get("/cms/api/theme/list", (_req, res, ctx) =>
-    res(ctx.status(200), ctx.json({ themes: ["base", "dark"] }))
+  rest.get("/cms/api/theme/list", () =>
+    HttpResponse.json({ themes: ["base", "dark"] })
   ),
-  rest.get("/cms/api/theme/tokens", (req, res, ctx) => {
-    const name = req.url.searchParams.get("name");
+  rest.get("/cms/api/theme/tokens", ({ request }) => {
+    const url = new URL(request.url);
+    const _name = url.searchParams.get("name");
     // For tests we reuse base tokens regardless of theme name
-    return res(ctx.status(200), ctx.json(baseTokens));
+    return HttpResponse.json(baseTokens);
   }),
-  rest.get("/cms/api/pages/:shopId", (_req, res, ctx) =>
-    res(ctx.status(200), ctx.json([]))
+  rest.get("/cms/api/pages/:shopId", () =>
+    HttpResponse.json([])
   ),
-  rest.get("/cms/api/products/slug/:slug", (_req, res, ctx) =>
-    res(
-      ctx.status(200),
-      ctx.json({
-        title: "Test",
-        price: 100,
-        stock: 1,
-        media: [{ url: "/image.png" }],
-      })
-    )
+  rest.get("/cms/api/products/slug/:slug", () =>
+    HttpResponse.json({
+      title: "Test",
+      price: 100,
+      stock: 1,
+      media: [{ url: "/image.png" }],
+    })
   ),
-  rest.get("*/api/products", (_req, res, ctx) =>
-    res(
-      ctx.status(200),
-      ctx.json({
-        title: "Test",
-        price: 100,
-        stock: 1,
-        media: [{ url: "/image.png" }],
-      })
-    )
+  rest.get("*/api/products", () =>
+    HttpResponse.json({
+      title: "Test",
+      price: 100,
+      stock: 1,
+      media: [{ url: "/image.png" }],
+    })
   ),
   rest.post(
     "/cms/api/marketing/email/provider-webhooks/sendgrid",
-    (_req, res, ctx) => res(ctx.status(200), ctx.json({ received: true }))
+    () => HttpResponse.json({ received: true })
   ),
   rest.post(
     "/cms/api/marketing/email/provider-webhooks/resend",
-    (_req, res, ctx) => res(ctx.status(200), ctx.json({ received: true }))
+    () => HttpResponse.json({ received: true })
   ),
 ];
 

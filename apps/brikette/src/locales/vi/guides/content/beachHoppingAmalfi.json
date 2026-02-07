@@ -1,53 +1,61 @@
 {
   "seo": {
-    "title": "Hành trình nhiều bãi biển trên Amalfi Coast",
-    "description": "Gợi ý kết hợp bãi biển trong ngày, cách đến và chi phí."
+    "title": "Nhảy bãi biển trên Bờ biển Amalfi",
+    "description": "Các bãi biển nào kết hợp trong một ngày, mẹo tiếp cận và chi phí."
   },
-  "linkLabel": "Hành trình nhiều bãi biển trên Amalfi Coast",
+  "linkLabel": "Nhảy bãi biển trên Bờ biển Amalfi",
   "intro": [
-    "Lên kế hoạch một ngày ghé nhiều bãi biển cân bằng giữa phà, view vách đá và thời gian thư giãn trên cát."
+    "Lên kế hoạch một ngày nhảy bãi biển cân bằng giữa đi phà, cảnh đá vách và thời gian thư giãn trên cát."
   ],
   "sections": [
     {
       "id": "morning",
-      "title": "Bản dịch đang được chuẩn bị.",
+      "title": "Buổi sáng: Positano đến Fornillo",
       "body": [
-        "Bắt đầu sớm ở Spiaggia Grande để nhúng mình rồi đi bộ theo lối ven biển tới Fornillo lúc 09:30 khi nước êm hơn.",
-        "Nếu cần bóng râm hãy đặt ghế trước; không thì mang theo ô gấp nhẹ."
+        "Bắt đầu sớm tại Spiaggia Grande để tắm nhanh, sau đó đi bộ theo đường ven biển đến Fornillo trước 09:30 để có nước lặng hơn.",
+        "Đặt ghế tắm nắng trước nếu bạn muốn bóng râm; nếu không thì mang theo ô nhẹ."
       ]
     },
     {
       "id": "midday",
-      "title": "Bản dịch đang được chuẩn bị.",
+      "title": "Giữa trưa: Amalfi hoặc Atrani",
       "body": [
-        "Đi phà cuối buổi sáng tới Amalfi, ăn trưa ở bến rồi tắm biển tại bãi thị trấn hoặc vũng nhỏ của Atrani.",
-        "Gửi đồ ở dịch vụ ký gửi Amalfi để rảnh tay khám phá."
+        "Đi phà cuối buổi sáng đến Amalfi và ăn trưa trên bến tàu trước khi bơi ở bãi biển thị trấn hoặc vịnh nhỏ Atrani.",
+        "Gửi túi ở nơi gửi đồ Amalfi để có thể khám phá rảnh tay."
+      ]
+    },
+    {
+      "id": "group-tours",
+      "title": "Tour nhóm & thuyền chia sẻ",
+      "body": [
+        "Xem %LINK:boatTours|hướng dẫn tour thuyền ở Positano% của chúng tôi nếu bạn thích nhảy giữa các bãi biển bằng thuyền chia sẻ thay vì phà.",
+        "Các nhà điều hành khởi hành từ bến chính Positano; đến sớm 15 phút và xác nhận điểm dừng bơi Laurito hoặc Arienzo khi đặt."
       ]
     },
     {
       "id": "evening",
-      "title": "Chiều: Tắm hoàng hôn",
+      "title": "Buổi tối: Bơi hoàng hôn",
       "body": [
-        "Kết thúc ở Laurito hoặc Arienzo để ngắm hoàng hôn; cả hai đều hướng tây nên ánh sáng ấm và ít đông sau 17:00.",
-        "Bắt chuyến phà cuối hoặc đặt taxi về để khỏi leo dốc trong bóng tối."
+        "Kết thúc tại Laurito hoặc Arienzo để ngắm cảnh giờ vàng; cả hai đều hướng về phía tây để có ánh sáng ấm áp và ít đám đông hơn sau 17:00.",
+        "Bắt chuyến phà cuối cùng hoặc đặt taxi về để tránh đi bộ lên dốc trong bóng tối."
       ]
     }
   ],
   "tips": [
-    "Bản dịch đang được chuẩn bị.",
-    "Chuẩn bị đồ ăn nhẹ và ít nhất 1 lít nước — quầy bán trên bãi có thể hết hàng vào ngày đông."
+    "Mang khăn khô nhanh và quần áo thay để thoải mái trên phà.",
+    "Đóng gói đồ ăn nhẹ và ít nhất 1 L / 34 oz nước—ki-ốt bãi biển có thể hết hàng vào những ngày bận rộn."
   ],
   "faqs": [
     {
-      "q": "Có cần đặt ghế trước không?",
+      "q": "Tôi có cần đặt trước ghế tắm nắng không?",
       "a": [
-        "Có, nhất là tháng 7–8. Liên hệ beach club qua WhatsApp trước một ngày để giữ hàng ghế đầu."
+        "Có trong tháng 7–8. Liên hệ câu lạc bộ bãi biển qua WhatsApp trước một ngày để đảm bảo hàng ghế đầu."
       ]
     },
     {
-      "q": "Tôi mang đồ ăn riêng được không?",
+      "q": "Tôi có thể mang đồ ăn riêng không?",
       "a": [
-        "Khu vực tự do thường cho picnic. Beach club thường cho mang đồ ăn nhẹ nhưng mong bạn mua đồ uống tại quầy."
+        "Hầu hết các khu vực miễn phí cho phép dã ngoại. Các câu lạc bộ bãi biển thường cho phép đồ ăn nhẹ nhỏ nhưng thích bạn mua đồ uống từ quầy bar của họ."
       ]
     }
   ]

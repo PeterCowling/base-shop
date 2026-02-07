@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import { Button } from "@ui/components/atoms";
-import DeviceSelector from "@ui/components/common/DeviceSelector";
 import { ReloadIcon } from "@radix-ui/react-icons";
-import { usePreviewDevice } from "@ui/hooks";
-import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
+
+import { Button } from "@acme/design-system/shadcn";
+import DeviceSelector from "@acme/ui/components/common/DeviceSelector";
+import { usePreviewDevice } from "@acme/ui/hooks";
+import { type DevicePreset,devicePresets } from "@acme/ui/utils/devicePresets";
 
 interface Props {
   onChange?: (device: DevicePreset) => void;

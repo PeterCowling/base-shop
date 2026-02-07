@@ -1,42 +1,121 @@
-import {
-  prepareOptions,
-  createShopOptionsSchema as baseCreateShopOptionsSchema,
-  type CreateShopOptions,
-  type PreparedCreateShopOptions,
-  type NavItem,
-} from "./schema";
-import { createShop } from "./createShop";
-import type { DeployShopResult } from "./deployTypes";
-import { ensureDir, writeJSON, fileExists, readFile } from "./fsUtils";
-import { join } from "path";
 import { createHash } from "crypto";
+import { join } from "path";
+
+import { type Environment,type ShopConfig, shopConfigSchema } from "@acme/types";
+
 import { prisma } from "../db";
-import { shopConfigSchema, type ShopConfig, type Environment } from "@acme/types";
+
+import { createShop } from "./createShop";
 import { defaultPaymentProviders } from "./defaultPaymentProviders";
+import type { DeployShopResult } from "./deployTypes";
+import { ensureDir, fileExists, readFile,writeJSON } from "./fsUtils";
+import {
+  type ComplianceSignOff,
+  type CreateShopOptions,
+  createShopOptionsSchema as baseCreateShopOptionsSchema,
+  type LaunchConfig,
+  launchConfigSchema as baseLaunchConfigSchema,
+  type NavItem,
+  OPTIONAL_LEGAL_PAGES,
+  type OptionalLegalPageSlug,
+  type PageConfig,
+  type PreparedCreateShopOptions,
+  prepareOptions,
+  REQUIRED_LEGAL_PAGES,
+  REQUIRED_PAGES_BASIC,
+  type RequiredLegalPageSlug,
+  type RequiredPageSlug,
+  type SeoConfig,
+} from "./schema";
 
 export { createShop } from "./createShop";
 export { deployShop, deployShopImpl } from "./deploy";
 export {
-  repoRoot,
-  ensureTemplateExists,
-  copyTemplate,
-  ensureDir,
-  readFile,
-  writeFile,
-  writeJSON,
-  listThemes,
-  syncTheme,
-} from "./fsUtils";
-export { loadTokens, loadBaseTokens } from "./themeUtils";
-export {
-  type ShopDeploymentAdapter,
   CloudflareDeploymentAdapter,
   defaultDeploymentAdapter,
+  type ShopDeploymentAdapter,
 } from "./deploymentAdapter";
+export {
+  copyTemplate,
+  ensureDir,
+  ensureTemplateExists,
+  listThemes,
+  readFile,
+  repoRoot,
+  syncTheme,
+  writeFile,
+  writeJSON,
+} from "./fsUtils";
+export { loadBaseTokens,loadTokens } from "./themeUtils";
 export { prepareOptions };
-export type { CreateShopOptions, PreparedCreateShopOptions, NavItem };
-export type { DeployStatusBase, DeployShopResult } from "./deployTypes";
+export { REQUIRED_PAGES_BASIC };
+// LAUNCH-27: Legal page exports
+export { OPTIONAL_LEGAL_PAGES,REQUIRED_LEGAL_PAGES };
+export type { CreateShopOptions, NavItem, PageConfig, PreparedCreateShopOptions, RequiredPageSlug, SeoConfig };
+export type { ComplianceSignOff, LaunchConfig, OptionalLegalPageSlug,RequiredLegalPageSlug };
+// LAUNCH-28: Account registry exports
+export type {
+  AccountAllocation,
+  AccountPool,
+  AccountStatus,
+  RegisteredAccount,
+  ShopAccountConfig,
+} from "./accountRegistry";
+export {
+  accountAllocationSchema,
+  accountPoolSchema,
+  accountStatusSchema,
+  canAllocate,
+  getRequiredEnvVarsForConfig,
+  registeredAccountSchema,
+  shopAccountConfigSchema,
+  validateShopAccountConfig,
+} from "./accountRegistry";
+// LAUNCH-26: Brand kit exports
+export type {
+  BrandKit,
+  BrandKitValidationError,
+  BrandKitValidationResult,
+  BrandKitValidationWarning,
+  ColorPalette,
+  FaviconConfig,
+  LogoVariants,
+  SocialBranding,
+  StandardLogoVariant,
+  TypographyConfig,
+} from "./brandKit";
+export {
+  brandKitSchema,
+  brandKitToCssVars,
+  colorPaletteSchema,
+  faviconConfigSchema,
+  getFaviconForSize,
+  getLogoForContext,
+  logoVariantsSchema,
+  mergeBrandKitWithTheme,
+  socialBrandingSchema,
+  STANDARD_LOGO_VARIANTS,
+  typographyConfigSchema,
+  validateBrandKit,
+} from "./brandKit";
+// LAUNCH-26: Asset ingest exports
+export type {
+  AssetIngestOptions,
+  AssetIngestResult,
+  AssetSlot,
+  BatchIngestResult,
+  PopulateBrandKitAssetsOptions,
+  PopulateBrandKitAssetsResult,
+} from "./assetIngest";
+export {
+  generateFaviconSizes,
+  ingestAsset,
+  ingestAssetBatch,
+  populateBrandKitAssets,
+} from "./assetIngest";
+export type { DeployShopResult,DeployStatusBase } from "./deployTypes";
 export const createShopOptionsSchema = baseCreateShopOptionsSchema.strict();
+export const launchConfigSchema = baseLaunchConfigSchema;
 
 export interface ShopCreationState {
   shopId: string;
@@ -69,6 +148,14 @@ export function mapConfigToCreateShopOptions(
     )
       ? (billingProvider as CreateShopOptions["billingProvider"])
       : undefined;
+  // Cast to access LAUNCH-23 fields that may not be in ShopConfig yet
+  const cfgAny = cfg as ShopConfig & {
+    themeDefaults?: Record<string, string>;
+    themeTokens?: Record<string, string>;
+    favicon?: string;
+    seo?: SeoConfig;
+    requiredPages?: Partial<Record<RequiredPageSlug, string>>;
+  };
   const options: Partial<CreateShopOptions> = {
     ...(cfg.name && { name: cfg.name }),
     ...(cfg.logo && { logo: cfg.logo }),
@@ -76,6 +163,9 @@ export function mapConfigToCreateShopOptions(
     ...(cfg.type && { type: cfg.type }),
     ...(cfg.theme && { theme: cfg.theme }),
     ...(cfg.themeOverrides && { themeOverrides: cfg.themeOverrides }),
+    // LAUNCH-23: Theme defaults and tokens
+    ...(cfgAny.themeDefaults && { themeDefaults: cfgAny.themeDefaults }),
+    ...(cfgAny.themeTokens && { themeTokens: cfgAny.themeTokens }),
     ...(cfg.template && { template: cfg.template }),
     ...(cfg.payment && {
       payment: cfg.payment as CreateShopOptions["payment"],
@@ -88,8 +178,13 @@ export function mapConfigToCreateShopOptions(
     ...(cfg.pageTitle && { pageTitle: cfg.pageTitle }),
     ...(cfg.pageDescription && { pageDescription: cfg.pageDescription }),
     ...(cfg.socialImage && { socialImage: cfg.socialImage }),
+    // LAUNCH-23: Brand kit fields
+    ...(cfgAny.favicon && { favicon: cfgAny.favicon }),
+    ...(cfgAny.seo && { seo: cfgAny.seo }),
     ...(cfg.navItems && { navItems: cfg.navItems }),
     ...(cfg.pages && { pages: cfg.pages as CreateShopOptions["pages"] }),
+    // LAUNCH-23: Required pages mapping
+    ...(cfgAny.requiredPages && { requiredPages: cfgAny.requiredPages }),
     ...(cfg.checkoutPage && {
       checkoutPage: cfg.checkoutPage as CreateShopOptions["checkoutPage"],
     }),

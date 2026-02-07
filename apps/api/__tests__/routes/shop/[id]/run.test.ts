@@ -1,5 +1,6 @@
-import { run } from "../../../../src/routes/shop/[id]/publish-upgrade";
 import * as childProcess from "child_process";
+
+import { run } from "../../../../src/routes/shop/[id]/publish-upgrade";
 
 jest.mock("child_process");
 

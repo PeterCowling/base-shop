@@ -1,5 +1,5 @@
 // apps/cms/src/app/cms/shop/[shop]/themes/brandIntensity.ts
-import { defaultPalette, type Mode, type Palette } from "@ui/lib/useThemePalette";
+import { defaultPalette, type Mode, type Palette } from "@acme/ui/lib/useThemePalette";
 
 export type BrandIntensity = "Value" | "Everyday" | "Premium" | "Luxury";
 

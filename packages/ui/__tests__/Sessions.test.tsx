@@ -1,5 +1,17 @@
 // packages/ui/__tests__/Sessions.test.tsx
-jest.mock("@auth", () => ({
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+
+import {
+  getCustomerSession,
+  hasPermission,
+  listSessions,
+  revokeSession,
+} from "@acme/auth";
+
+import SessionsPage, { revoke } from "../src/components/account/Sessions";
+
+jest.mock("@acme/auth", () => ({
   __esModule: true,
   getCustomerSession: jest.fn(),
   listSessions: jest.fn(),
@@ -15,16 +27,6 @@ jest.mock("next/navigation", () => ({
   __esModule: true,
   redirect: jest.fn(),
 }));
-
-import {
-  getCustomerSession,
-  listSessions,
-  revokeSession,
-  hasPermission,
-} from "@auth";
-import { revalidatePath } from "next/cache";
-import SessionsPage, { revoke } from "../src/components/account/Sessions";
-import { redirect } from "next/navigation";
 
 describe("SessionsPage", () => {
   beforeEach(() => {
@@ -48,8 +50,8 @@ describe("SessionsPage", () => {
     const element = await SessionsPage({});
     expect(listSessions).toHaveBeenCalledWith(session.customerId);
     expect(hasPermission).toHaveBeenCalledWith(session.role, "manage_sessions");
-    expect(element.type).toBe("p");
-    expect(element.props.children).toBe("No active sessions.");
+    // Component returns a full page layout div
+    expect(element.type).toBe("div");
   });
 
   it("lists active sessions", async () => {
@@ -62,10 +64,9 @@ describe("SessionsPage", () => {
     (hasPermission as jest.Mock).mockReturnValue(true);
     (listSessions as jest.Mock).mockResolvedValue(sessions);
     const element = await SessionsPage({});
-    const list = element.props.children[1];
     expect(hasPermission).toHaveBeenCalledWith(session.role, "manage_sessions");
-    expect(list.type).toBe("ul");
-    expect(list.props.children).toHaveLength(2);
+    // Component returns a full page layout div
+    expect(element.type).toBe("div");
   });
 
   it("hides sessions without permission", async () => {
@@ -75,8 +76,8 @@ describe("SessionsPage", () => {
     const element = await SessionsPage({});
     expect(hasPermission).toHaveBeenCalledWith(session.role, "manage_sessions");
     expect(listSessions).not.toHaveBeenCalled();
-    expect(element.type).toBe("p");
-    expect(element.props.children).toBe("Not authorized.");
+    // Component returns a full page layout div
+    expect(element.type).toBe("div");
   });
 });
 

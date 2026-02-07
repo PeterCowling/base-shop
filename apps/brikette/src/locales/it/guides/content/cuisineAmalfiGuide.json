@@ -84,23 +84,6 @@
       "note": "Pasticceria per delizia al limone, babà e dolci comodi da portare su un sentiero panoramico."
     }
   ],
-  "gallery": {
-    "title": "Piatti in evidenza",
-    "items": [
-      {
-        "alt": "Pasta ai frutti di mare con limoni della Costiera",
-        "caption": "Classici di mare dalle trattorie di Positano"
-      },
-      {
-        "alt": "Delizia al limone pastry on a plate",
-        "caption": "Dessert al limone da provare"
-      },
-      {
-        "alt": "Brindisi con limoncello al tramonto",
-        "caption": "Digestivi con vista"
-      }
-    ]
-  },
   "fallback": {
     "toc": [
       {

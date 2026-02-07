@@ -1,5 +1,6 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent,render, screen } from "@testing-library/react";
+
 import PositionControls from "../panels/layout/PositionControls";
 
 // Mock shadcn Select to simple DOM

@@ -1,15 +1,17 @@
 import { useCallback, useState } from "react";
+
 import { useTranslations } from "@acme/i18n";
+import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
+
 import {
   Button,
-  Textarea,
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  Textarea,
 } from "../../../atoms/shadcn";
-import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
 import type { CustomPreset } from "../style/customPresets";
 
 type MoveDirection = "up" | "down";

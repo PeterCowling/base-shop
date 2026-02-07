@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
 import { useTranslations } from "@acme/i18n";
 import type { ApiError } from "@acme/types";
-import ComponentPreview from "@ui/components/ComponentPreview";
+import ComponentPreview from "@acme/ui/components/ComponentPreview";
 
 interface UpgradeComponent {
   file: string;
@@ -113,7 +114,7 @@ export default function UpgradePreviewPage() {
       </button>
 
       {error && (
-        <p role="alert" className="text-red-600">
+        <p role="alert" className="text-danger">
           {error}
         </p>
       )}

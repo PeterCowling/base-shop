@@ -1,5 +1,7 @@
 import { jest } from "@jest/globals";
 
+import type { SessionStore } from "../src/store";
+
 describe("createSessionStore", () => {
   beforeEach(() => {
     jest.resetModules();
@@ -108,7 +110,13 @@ describe("createSessionStore", () => {
     const { createSessionStore, setSessionStoreFactory } = await import(
       "../src/store"
     );
-    const custom = { custom: true };
+    const custom: SessionStore & { custom: true } = {
+      custom: true,
+      get: jest.fn(),
+      set: jest.fn(),
+      delete: jest.fn(),
+      list: jest.fn(),
+    };
     setSessionStoreFactory(async () => custom);
     const store = await createSessionStore();
     expect(store).toBe(custom);

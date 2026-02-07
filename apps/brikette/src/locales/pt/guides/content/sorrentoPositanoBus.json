@@ -1,0 +1,64 @@
+{
+  "seo": {
+    "title": "Sorrento para Positano de Autocarro | Hostel Brikette",
+    "description": "Passo a passo desde Sorrento até ao Hostel Brikette no autocarro SITA para Positano (Chiesa Nuova): bilhetes, dicas de horário e como chegar ao hostel a partir da paragem."
+  },
+  "intro": {
+    "title": "Sorrento para Positano — Autocarro SITA",
+    "body": "Use este guia ao viajar de Sorrento para Positano. Vai apanhar o autocarro SITA Sud e sair em Positano (Chiesa Nuova), a paragem mais próxima do hostel. Explicamos como comprar bilhetes, ler o horário e chegar ao hostel a partir da paragem."
+  },
+  "callouts": {
+    "tip": "Precisa de todas as opções de transporte? Abra a %HOWTO:how-to-get-here|visão geral de Como Chegar% para ferries, táxis e alternativas."
+  },
+  "sections": [
+    {
+      "id": "journey",
+      "title": "Resumo da viagem",
+      "body": "Reserve 1 a 1,5 horas na época alta. Os autocarros circulam com frequência entre Sorrento e Positano. Compre o bilhete antes de embarcar e mantenha-o à mão para validação."
+    },
+    {
+      "id": "tickets",
+      "title": "Bilhetes e validação",
+      "body": "A SITA (SITA Sud) opera esta rota. Compre bilhetes em quiosques ou tabacarias. Apresente o bilhete ao motorista ao embarcar; guarde-o até ao fim da viagem. Valide-o antes de usar, quando necessário."
+    },
+    {
+      "id": "timetable",
+      "title": "Como ler o horário",
+      "list": [
+        "As linhas da primeira coluna listam cada paragem ao longo do percurso.",
+        "As colunas correspondem às viagens programadas, identificadas por letras.",
+        "Vai viajar de segunda a sábado? Utilize as colunas \\\\\"F\\\\\" e \\\\\"G\\\\\".",
+        "Vai viajar ao domingo ou feriado? Utilize as colunas \\\\\"G\\\\\" e \\\\\"H\\\\\"."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Chegada a Positano (Chiesa Nuova)",
+      "list": [
+        "Existem duas paragens SITA listadas para Positano: \\\\\"Sponda\\\\\" e \\\\\"Chiesa Nuova\\\\\".",
+        "Para o hostel, \\\\\"Positano (Chiesa Nuova)\\\\\" é a paragem correta na Via G. Marconi.",
+        "A paragem fica no exterior do café/bar \\\\\"Bar Internazionale\\\\\"."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Caminhada até ao Hostel Brikette",
+      "list": [
+        "Caminhe pouco mais de 100 metros (330 pés) pela Via G. Marconi.",
+        "Procure a nossa placa acima do terraço do segundo piso, do lado direito.",
+        "Vire à direita e suba as escadas para chegar à porta principal do hostel."
+      ]
+    }
+  ],
+  "lastUpdated": "2026-01-31",
+  "faqs": [
+    {
+      "q": "Como leio o horário do ônibus SITA?",
+      "a": [
+        "**Leitura das linhas:** As linhas na primeira coluna representam diferentes pontos de ônibus ao longo da rota.",
+        "**Leitura das colunas:** O horário atribui uma letra alfabética a cada viagem programada, que são listadas como cabeçalhos em cada coluna. Se você está viajando de segunda a sábado, procure as colunas 'F' e 'G'. Se você está viajando no domingo ou em um feriado, procure as colunas 'G' e 'H'.",
+        "**Combinação de linhas e colunas:** Escolha seus pontos de partida e chegada, depois verifique as colunas para ver quando os ônibus estão disponíveis e a que horas chegarão ao seu destino. Por exemplo, para ver o horário de partida de Sorrento, veja a linha Sorrento. Para ver o horário de chegada em Positano (Chiesa Nuova / Bar Internazionale), veja a linha Positano (Chiesa Nuova)."
+      ]
+    }
+  ]
+}

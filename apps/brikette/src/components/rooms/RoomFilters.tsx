@@ -1,7 +1,7 @@
 // src/components/rooms/RoomFilters.tsx
-import { memo } from "react";
-import clsx from "clsx";
+import React, { memo } from "react";
 import { useTranslation } from "react-i18next";
+import clsx from "clsx";
 
 export type RoomFilter = "all" | "private" | "dorms";
 
@@ -11,7 +11,7 @@ interface RoomFiltersProps {
   lang?: string;
 }
 
-type InlineProps = JSX.IntrinsicElements["div"];
+type InlineProps = React.ComponentProps<"div">;
 
 function Inline({ className, ...props }: InlineProps): JSX.Element {
   return <div className={clsx("flex", className)} {...props} />;

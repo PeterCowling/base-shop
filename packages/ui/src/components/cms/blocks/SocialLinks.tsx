@@ -1,5 +1,6 @@
-import { cn } from "../../../utils/style";
 import React from "react";
+
+import { cn } from "../../../utils/style";
 
 export interface SocialLinksProps extends React.HTMLAttributes<HTMLDivElement> {
   facebook?: string;

@@ -1,8 +1,12 @@
-import { render, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import "../../../../../../test/resetNextMocks";
 
-jest.mock("@acme/shared-utils", () => ({
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import QRCode from "qrcode";
+
+import MfaSetup from "../MfaSetup";
+
+jest.mock("@acme/lib/security", () => ({
   __esModule: true,
   getCsrfToken: jest.fn(() => "csrf-token"),
 }));
@@ -11,8 +15,6 @@ jest.mock("qrcode", () => ({
   __esModule: true,
   default: { toDataURL: jest.fn() },
 }));
-
-import QRCode from "qrcode";
 
 // Minimal i18n shim so visible text matches test expectations
 const translations: Record<string, string> = {
@@ -28,8 +30,6 @@ jest.mock("@acme/i18n", () => ({
   useTranslations: () => (key: string) => translations[key] ?? key,
 }));
 
-import MfaSetup from "../MfaSetup";
-
 const toDataURL = (QRCode as any).toDataURL as jest.Mock;
 
 
@@ -40,8 +40,7 @@ describe("MfaSetup", () => {
   });
 
   it("enroll displays secret and QR code", async () => {
-    // @ts-expect-error — mocking global.fetch in tests
-    global.fetch = jest.fn().mockResolvedValue({
+        global.fetch = jest.fn().mockResolvedValue({
       ok: true,
       json: async () => ({ secret: "abc123", otpauth: "otpauth://test" }),
     });
@@ -57,8 +56,7 @@ describe("MfaSetup", () => {
   });
 
   it("shows status messages for verification", async () => {
-    // @ts-expect-error — mocking global.fetch in tests
-    global.fetch = jest
+        global.fetch = jest
       .fn()
       .mockResolvedValueOnce({
         ok: true,
@@ -85,8 +83,7 @@ describe("MfaSetup", () => {
   });
 
   it("skips QR code when otpauth is null", async () => {
-    // @ts-expect-error — mocking global.fetch in tests
-    global.fetch = jest.fn().mockResolvedValue({
+        global.fetch = jest.fn().mockResolvedValue({
       ok: true,
       json: async () => ({ secret: "abc123", otpauth: null }),
     });

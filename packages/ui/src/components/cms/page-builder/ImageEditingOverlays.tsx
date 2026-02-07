@@ -1,9 +1,10 @@
 "use client";
 
-import ImageFocalOverlay from "./ImageFocalOverlay";
+import type { PageComponent } from "@acme/types";
+
 import ImageAspectToolbar from "./ImageAspectToolbar";
 import ImageCropOverlay from "./ImageCropOverlay";
-import type { PageComponent } from "@acme/types";
+import ImageFocalOverlay from "./ImageFocalOverlay";
 import type { Action } from "./state";
 
 type Props = {

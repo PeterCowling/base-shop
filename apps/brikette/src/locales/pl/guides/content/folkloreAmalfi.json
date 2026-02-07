@@ -1,7 +1,8 @@
 {
   "seo": {
     "title": "Legendy i folklor Wybrzeża Amalfi",
-    "description": "Syreny, święci i opowieści, które wyjaśniają lokalne rytuały i nazwy miejsc."
+    "description": "Syreny, święci i opowieści, które wyjaśniają lokalne rytuały i nazwy miejsc.",
+    "lastUpdated": "2026-01-31"
   },
   "linkLabel": "Legendy i folklor Wybrzeża Amalfi",
   "intro": [
@@ -10,44 +11,46 @@
   "sections": [
     {
       "id": "saint",
-      "title": "Saint Andrew",
+      "title": "Święty Andrzej",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Katedra w Amalfi przechowuje relikwie świętego Andrzeja; mieszkańcy przypisują mu uspokajanie burz i ochronę rybaków.",
+        "Co 27 czerwca i 30 listopada procesje niosą jego figurę przez miasto z pokazami fajerwerków i orkiestrami dętymi."
       ]
     },
     {
       "id": "sirens",
-      "title": "Sirens of Li Galli",
+      "title": "Syreny z Li Galli",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Legenda głosi, że wyspy Li Galli wabiły żeglarzy śpiewem; dziś trasy łodzi opowiadają te historie, mijając prywatne wysepki.",
+        "Warto wysłuchać odniesień do Parthenope i syren w Neapolu — łączą one mity obu regionów."
       ]
     },
     {
       "id": "traditions",
-      "title": "Living traditions",
+      "title": "Żywe tradycje",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Ręcznie robione płytki ceramiczne często przedstawiają świętych, cytryny lub nadmorskie legendy — można je dostrzec na drzwiach i schodach kościoła."
+        "Praianońska Luminaria i błogosławieństwa rybaków w Positano łączą wiarę z folklorem przez rytuały przy świecach.",
+        "Ręcznie robione płytki ceramiczne często przedstawiają świętych, cytryny lub nadmorskie legendy — można je dostrzec na drzwiach i schodach kościołów."
       ]
     }
   ],
+  "tipsTitle": "Doświadczanie folkloru jako podróżny",
   "tips": [
-    "Tłumaczenie w przygotowaniu.",
-    "Tłumaczenie w przygotowaniu."
+    "Sprawdź kalendarz wydarzeń gminy, by wziąć udział w szacownych obchodach świąt.",
+    "Zabierz lekki szal — wiele wydarzeń przechodzi w nabożeństwo, gdzie doceniana jest skromna odzież."
   ],
+  "faqsTitle": "Najczęściej zadawane pytania",
   "faqs": [
     {
-      "q": "Tłumaczenie w przygotowaniu.",
+      "q": "Czy każdy może wziąć udział w procesjach?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Tak — stań wzdłuż trasy, klaszcz z szacunkiem i pozwól mieszkańcom niosącym figury przejść jako pierwszym."
       ]
     },
     {
       "q": "Where do I hear traditional music?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Szukaj koncertów folkowych w Atrani i Ravello podczas letnich festiwali; kasy turystyczne publikują tygodniowe programy."
       ]
     }
   ]

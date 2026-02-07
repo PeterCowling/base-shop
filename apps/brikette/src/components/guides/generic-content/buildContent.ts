@@ -1,8 +1,14 @@
 // src/components/guides/generic-content/buildContent.ts
-import { toStringArray, toTrimmedString } from "./strings";
+import { getContentAlias, shouldMergeAliasFaqs } from "@/config/guide-overrides";
+import i18n from "@/i18n";
+import type { GuideKey } from "@/routes.guides-helpers";
+import { debugGuide } from "@/utils/debug";
+import { allowEnglishGuideFallback } from "@/utils/guideFallbackPolicy";
+
+import { resolveSections, toListSection } from "./sections";
+import { looksLikePlaceholderTranslation, toStringArray, toTrimmedString } from "./strings";
 import { normaliseTocOverrides } from "./toc";
 import { resolveLabelFallback, resolveTitle } from "./translations";
-import { resolveSections, toListSection } from "./sections";
 import type {
   FAQ,
   GenericContentTranslator,
@@ -12,10 +18,6 @@ import type {
   SupplementalNavEntry,
   TocOverrides,
 } from "./types";
-import type { GuideKey } from "@/routes.guides-helpers";
-import { debugGuide } from "@/utils/debug";
-import i18n from "@/i18n";
-import { allowEnglishGuideFallback } from "@/utils/guideFallbackPolicy";
 
 export type GenericContentData = {
   intro: string[];
@@ -45,6 +47,9 @@ export function buildGenericContentData(
   const tocRaw = t(`content.${guideKey}.toc`, { returnObjects: true });
   const tipsRaw = t(`content.${guideKey}.tips`, { returnObjects: true });
   const warningsRaw = t(`content.${guideKey}.warnings`, { returnObjects: true });
+  const warningsContentKey = `content.${guideKey}.warnings` as const;
+  const aliasKey = getContentAlias(guideKey);
+  const mergeAliasFaqs = shouldMergeAliasFaqs(guideKey);
 
   // Normalise intro to support legacy shapes like { default: string[] }
   const intro = (() => {
@@ -64,9 +69,11 @@ export function buildGenericContentData(
     const baseMeaningful = base.filter((paragraph) =>
       filterPlaceholder(paragraph, `content.${guideKey}.intro`),
     );
-    if (guideKey === ("interrailAmalfi" as GuideKey) && baseMeaningful.length === 0) {
+    if (aliasKey && baseMeaningful.length === 0) {
       try {
-        const aliasIntro = toStringArray(t("content.interrailItalyRailPassAmalfiCoast.intro", { returnObjects: true }));
+        const aliasIntro = toStringArray(
+          t(`content.${aliasKey}.intro`, { returnObjects: true }),
+        );
         if (aliasIntro.length > 0) return aliasIntro;
       } catch { /* noop */ }
     }
@@ -93,17 +100,17 @@ export function buildGenericContentData(
   const sections = (() => {
     if (Array.isArray(sectionsRaw)) {
       const base = sectionsRaw as Section[];
-      if (guideKey === ("interrailAmalfi" as GuideKey) && (!Array.isArray(base) || base.length === 0)) {
+      if (aliasKey && (!Array.isArray(base) || base.length === 0)) {
         try {
-          const aliasSections = t("content.interrailItalyRailPassAmalfiCoast.sections", { returnObjects: true }) as unknown;
+          const aliasSections = t(`content.${aliasKey}.sections`, { returnObjects: true }) as unknown;
           if (Array.isArray(aliasSections)) return aliasSections as Section[];
         } catch { /* noop */ }
       }
       return base;
     }
-    if (guideKey === ("interrailAmalfi" as GuideKey)) {
+    if (aliasKey) {
       try {
-        const aliasSections = t("content.interrailItalyRailPassAmalfiCoast.sections", { returnObjects: true }) as unknown;
+        const aliasSections = t(`content.${aliasKey}.sections`, { returnObjects: true }) as unknown;
         if (Array.isArray(aliasSections)) return aliasSections as Section[];
       } catch { /* noop */ }
     }
@@ -138,18 +145,18 @@ export function buildGenericContentData(
   }
 
   // Prefer route-specific alias FAQs when present
-  const aliasFaqsA = guideKey === ("interrailAmalfi" as GuideKey)
+  const aliasFaqsA = aliasKey && mergeAliasFaqs
     ? ((): FAQ[] => {
         try {
-          const raw = t("content.interrailItalyRailPassAmalfiCoast.faqs", { returnObjects: true });
+          const raw = t(`content.${aliasKey}.faqs`, { returnObjects: true });
           return Array.isArray(raw) ? (raw as FAQ[]) : [];
         } catch { return []; }
       })()
     : [];
-  const aliasFaqsB = guideKey === ("interrailAmalfi" as GuideKey)
+  const aliasFaqsB = aliasKey && mergeAliasFaqs
     ? ((): FAQ[] => {
         try {
-          const raw = t("content.interrailItalyRailPassAmalfiCoast.faq", { returnObjects: true });
+          const raw = t(`content.${aliasKey}.faq`, { returnObjects: true });
           return Array.isArray(raw) ? (raw as FAQ[]) : [];
         } catch { return []; }
       })()
@@ -272,15 +279,15 @@ export function buildGenericContentData(
     faqsTitleSuppressed = false;
   }
 
-  // Route-specific alias support: for the Interrail guide, prefer the
-  // more-specific content key's ToC FAQs label when present. This allows
-  // `content.interrailItalyRailPassAmalfiCoast.toc.faqs` to define the
-  // FAQs section heading even when the generic guide key is used. Always
-  // prefer the route-specific alias when provided to match tests/UX.
-  if (guideKey === ("interrailAmalfi" as GuideKey)) {
+  // Route-specific alias support: prefer the alias key's ToC FAQs label when
+  // present. This allows `content.<alias>.toc.faqs` to define the FAQs section
+  // heading even when the primary guide key is used. Always prefer the alias
+  // when provided to match tests/UX.
+  if (aliasKey && mergeAliasFaqs) {
     try {
-      const aliasLabel = toTrimmedString(t("content.interrailItalyRailPassAmalfiCoast.toc.faqs") as unknown);
-      if (aliasLabel && aliasLabel !== "content.interrailItalyRailPassAmalfiCoast.toc.faqs") {
+      const aliasKeyPath = `content.${aliasKey}.toc.faqs` as const;
+      const aliasLabel = toTrimmedString(t(aliasKeyPath) as unknown);
+      if (aliasLabel && aliasLabel !== aliasKeyPath) {
         faqsTitle = aliasLabel;
       }
     } catch {
@@ -288,8 +295,13 @@ export function buildGenericContentData(
     }
   }
 
-  const tips = toStringArray(tipsRaw);
-  const warnings = toStringArray(warningsRaw);
+  const tipsContentKey = `content.${guideKey}.tips` as const;
+  const tips = toStringArray(tipsRaw).filter((value) =>
+    !looksLikePlaceholderTranslation(value, tipsContentKey, guideKey),
+  );
+  const warnings = toStringArray(warningsRaw).filter((value) =>
+    !looksLikePlaceholderTranslation(value, warningsContentKey, guideKey),
+  );
 
   const tipsKey = "labels.tipsHeading" as const;
   const warningsKey = "labels.warningsHeading" as const;
@@ -325,6 +337,10 @@ export function buildGenericContentData(
     t(`content.${guideKey}.essentials`, { returnObjects: true }),
     essentialsTitle,
     "essentials",
+    {
+      expectedKey: `content.${guideKey}.essentials`,
+      guideKey,
+    },
   );
 
   const costsTitleKey = `content.${guideKey}.typicalCostsTitle` as const;
@@ -340,6 +356,10 @@ export function buildGenericContentData(
     t(`content.${guideKey}.typicalCosts`, { returnObjects: true }),
     costsTitle,
     "costs",
+    {
+      expectedKey: `content.${guideKey}.typicalCosts`,
+      guideKey,
+    },
   );
 
   const resolvedSections = resolveSections(sections, tocOverrides);

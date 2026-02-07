@@ -1,61 +1,55 @@
 {
   "seo": {
     "title": "Tour thuyền ở Positano",
-    "description": "Tour thuyền riêng và ghép: mong đợi gì, khung giá và mẹo đặt chỗ vào mùa."
+    "description": "Tour thuyền riêng và ghép đoàn: mong đợi gì, khung giá và mẹo đặt chỗ vào mùa."
   },
-  "linkLabel": "Tour thuyền ở Positano",
+  "linkLabel": "Tour thuyền: Từ chuyến hoàng hôn đến thuê riêng",
   "intro": [
-    "Tour thuyền cho phép bạn men theo vách đá Amalfi Coast mà không phải chen chúc trên đường bộ; mùa cao điểm nên đặt trước và chuẩn bị kế hoạch dự phòng khi thời tiết xấu."
+    "Tour thuyền cho phép bạn men theo các vách đá Amalfi Coast mà không phải vật lộn với giao thông đường bộ; hãy đặt trước vào các tháng cao điểm và chuẩn bị phương án dự phòng khi thời tiết xấu."
   ],
   "sections": [
     {
       "id": "group-tours",
-      "title": "Tour ghép & thuyền chia sẻ",
+      "title": "Tour ghép đoàn và thuyền chung",
       "body": [
-        "Tour ghép 3 giờ rời Positano cuối buổi sáng, thường có điểm dừng tắm; tháng 7–8 giá 85–120 € mỗi người.",
-        "Mang giày bơi và áo khoác nhẹ — ngoài khơi gió mát hơn nhiều so với trên sân thượng."
+        "Các chuyến ghép đoàn 3 giờ khởi hành từ Positano vào cuối buổi sáng và bao gồm các điểm dừng bơi lội; dự kiến €85–€120 mỗi người vào tháng 7–8.",
+        "Mang giày bơi và áo khoác nhẹ — gió ngoài khơi mát hơn so với trên các sân thượng."
       ]
     },
     {
       "id": "private-charters",
       "title": "Thuê thuyền riêng",
       "body": [
-        "Thuyền trưởng báo giá 550–850 € cho chuyến gozzo nửa ngày (tối đa 6 người) cộng nhiên liệu; xác nhận dịch vụ đi kèm như prosecco hoặc khăn tắm.",
-        "Có thể thương lượng giờ khởi hành vào bình minh hoặc cuối chiều để ánh sáng dịu và ít bị sóng lớn từ phà."
+        "Thuyền trưởng báo giá €550–€850 cho chuyến gozzo nửa ngày (tối đa 6 người) cộng nhiên liệu; xác nhận các dịch vụ đi kèm như prosecco hoặc khăn tắm.",
+        "Thương lượng thời gian khởi hành vào bình minh hoặc cuối chiều nếu bạn muốn ánh sáng dịu hơn và ít sóng lớn hơn từ phà."
       ]
     },
     {
       "id": "weather-backup",
-      "title": "Thời tiết & phương án dự phòng",
+      "title": "Thời tiết và phương án dự phòng",
       "body": [
-        "Nhà vận hành sẽ huỷ khi gió trên cấp 4; luôn chuẩn bị kế hoạch đi xe buýt hoặc ngày biển khác để không áp lực.",
-        "Biển có thể lắc dù là mùa hè — mang vòng chống say sóng nếu bạn dễ bị ảnh hưởng."
+        "Nhà điều hành sẽ hủy khi gió vượt quá cấp 4; chuẩn bị sẵn phương án đi xe buýt hoặc ngày biển để hành trình vẫn thư thái.",
+        "Biển có thể động dù là mùa hè — mang băng chống say sóng nếu bạn dễ bị ảnh hưởng."
       ]
     }
   ],
   "tips": [
-    "Có mặt trước 20 phút để thanh toán phần còn lại và đi giày boong do nhà tàu cung cấp.",
-    "Mang túi chống nước cho điện thoại và chai nước 1 lít; bóng râm trên thuyền khá hạn chế."
+    "Có mặt trước 20 phút để thanh toán số dư và đi giày boong được cung cấp.",
+    "Mang túi chống nước cho điện thoại và chai nước 1 L (34 oz); bóng râm trên thuyền rất hạn chế."
   ],
   "faqs": [
     {
-      "q": "Có cần đặt trước không?",
+      "q": "Tôi có cần đặt trước không?",
       "a": [
-        "Có, từ tháng 5–9 thuyền thường hết chỗ vài ngày trước, đặc biệt khung giờ hoàng hôn."
+        "Có vào tháng 5–9 — thuyền thường hết chỗ vài ngày trước, đặc biệt là khung giờ hoàng hôn."
       ]
     },
     {
-      "q": "Tour có chuẩn bị khăn tắm không?",
+      "q": "Có bao gồm khăn tắm không?",
       "a": [
-        "Tour ghép thường cấp mỗi người một khăn; thuyền riêng tuỳ nơi, nên mang khăn mau khô để chắc chắn."
+        "Tour ghép đoàn thường cung cấp một chiếc mỗi người; thuyền trưởng riêng khác nhau, nên mang khăn khô nhanh để chắc chắn."
       ]
     }
   ],
-  "galleryHeading": "Bộ sưu tập ảnh",
-  "gallery": {
-    "primaryAlt": "Bản dịch đang được chuẩn bị.",
-    "primaryCaption": "Hành trình trên biển",
-    "secondaryAlt": "Điểm dừng tắm gần vách đá Positano",
-    "secondaryCaption": "Dừng lại để tắm"
-  }
+  "galleryHeading": "Thư viện ảnh"
 }

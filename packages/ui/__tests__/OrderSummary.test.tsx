@@ -1,10 +1,12 @@
 import { render, screen } from "@testing-library/react";
-import type { CartState } from "@/lib/cartCookie";
-import OrderSummary from "../src/components/organisms/OrderSummary";
-import { useCart } from "@ui/hooks/useCart";
-import { formatPrice } from "@acme/shared-utils";
 
-jest.mock("@ui/hooks/useCart", () => ({
+import { formatPrice } from "@acme/lib/format";
+import type { CartLine } from "@acme/types/Cart";
+import { useCart } from "@acme/ui/hooks/useCart";
+
+import OrderSummary from "../src/components/organisms/OrderSummary";
+
+jest.mock("@acme/ui/hooks/useCart", () => ({
   useCart: jest.fn(),
 }));
 
@@ -14,7 +16,7 @@ jest.mock("../src/components/atoms/Price", () => ({
   ),
 }));
 
-const mockCart: CartState = {
+const mockCart: Record<string, CartLine> = {
   "a:S": {
     sku: {
       id: "a",
@@ -22,6 +24,7 @@ const mockCart: CartState = {
       title: "Product A",
       price: 10,
       deposit: 2,
+      stock: 10,
       forSale: true,
       forRental: false,
       media: [{ url: "/a.jpg", type: "image" }],
@@ -38,6 +41,7 @@ const mockCart: CartState = {
       title: "Product B",
       price: 20,
       deposit: 3,
+      stock: 5,
       forSale: true,
       forRental: false,
       media: [{ url: "/b.jpg", type: "image" }],
@@ -79,7 +83,7 @@ describe("OrderSummary", () => {
   });
 
   it("uses provided totals when given", async () => {
-    mockUseCart.mockReturnValue([{}, jest.fn()]);
+    mockUseCart.mockReturnValue([{} as Record<string, CartLine>, jest.fn()]);
 
     render(<OrderSummary cart={mockCart} totals={{ subtotal: 30, deposit: 7, total: 37 }} />);
 

@@ -2,9 +2,10 @@
 /* eslint-env jest */
 
 import React from "react";
-import { render, screen, act } from "@testing-library/react";
+import { act,render, screen } from "@testing-library/react";
+
+import { PREVIEW_TOKENS_EVENT,PREVIEW_TOKENS_KEY } from "../src/app/cms/wizard/previewTokens";
 import usePreviewTokens from "../src/app/cms/wizard/usePreviewTokens";
-import { PREVIEW_TOKENS_KEY, PREVIEW_TOKENS_EVENT } from "../src/app/cms/wizard/previewTokens";
 
 function Tester() {
   const tokens = usePreviewTokens();

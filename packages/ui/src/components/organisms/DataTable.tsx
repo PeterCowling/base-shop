@@ -1,7 +1,9 @@
 "use client"; // i18n-exempt -- PB-000 [ttl=2025-12-31]: Next.js directive string
 
-import { ReactNode, useState } from "react";
-import { toggleItem } from "@acme/shared-utils";
+import { type ReactNode, useState } from "react";
+
+import { toggleItem } from "@acme/lib/array";
+
 import {
   Table,
   TableBody,

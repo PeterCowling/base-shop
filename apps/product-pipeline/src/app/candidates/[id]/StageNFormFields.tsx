@@ -1,8 +1,9 @@
 "use client";
 
 import type { Dispatch, SetStateAction } from "react";
-import type { CandidateDetailStrings, StageNNegotiationStatus } from "./types";
+
 import type { StageNFormState } from "./stageNForm";
+import type { CandidateDetailStrings, StageNNegotiationStatus } from "./types";
 
 export type StageNStatusOption = {
   value: StageNNegotiationStatus;

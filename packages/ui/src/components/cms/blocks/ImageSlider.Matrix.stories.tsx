@@ -1,11 +1,14 @@
 // packages/ui/src/components/cms/blocks/ImageSlider.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import ImageSlider from './ImageSlider';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './ImageSlider.fixtures.json';
 import { z } from 'zod';
+
 import type { Locale } from '@acme/i18n/locales';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import ImageSlider from './ImageSlider';
+import fixture from './ImageSlider.fixtures.json';
 
 const meta: Meta<typeof ImageSlider> = {
   title: 'CMS Blocks/ImageSlider/Matrix',

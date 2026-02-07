@@ -1,13 +1,13 @@
 /** @jest-environment node */
 
-jest.mock("../../analytics", () => ({ trackOrder: jest.fn() }));
-jest.mock("../../subscriptionUsage", () => ({ incrementSubscriptionUsage: jest.fn() }));
-
 import { prisma } from "../../db";
-import { addOrder, listOrders, getOrdersForCustomer } from "../../orders/creation";
-import { markReturned, setReturnTracking, setReturnStatus } from "../../orders/status";
+import { addOrder, getOrdersForCustomer,listOrders } from "../../orders/creation";
 import { markRefunded } from "../../orders/refunds";
 import { updateRisk } from "../../orders/risk";
+import { markReturned, setReturnStatus,setReturnTracking } from "../../orders/status";
+
+jest.mock("../../analytics", () => ({ trackOrder: jest.fn() }));
+jest.mock("../../subscriptionUsage", () => ({ incrementSubscriptionUsage: jest.fn() }));
 
 const trackOrder: jest.Mock =
   jest.requireMock("../../analytics").trackOrder;

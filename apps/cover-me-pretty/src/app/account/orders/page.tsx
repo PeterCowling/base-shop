@@ -1,8 +1,9 @@
 // apps/cover-me-pretty/src/app/account/orders/page.tsx
 import {
-  OrdersPage as Orders,
   ordersMetadata as metadata,
-} from "@ui/account";
+  OrdersPage as Orders,
+} from "@acme/ui/account";
+
 import shop from "../../../../shop.json";
 
 export { metadata };

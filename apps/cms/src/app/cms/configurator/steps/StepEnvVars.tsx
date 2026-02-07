@@ -1,12 +1,14 @@
 "use client";
 
-import { useState, type ChangeEvent } from "react";
+import { type ChangeEvent,useState } from "react";
+import { useRouter } from "next/navigation";
+
 import {
   Button,
   Input,
 } from "@/components/atoms/shadcn";
+
 import useStepCompletion from "../hooks/useStepCompletion";
-import { useRouter } from "next/navigation";
 
 interface EnvVar {
   key: string;

@@ -1,21 +1,22 @@
 {
   "seo": {
-    "title": "Guide des restaurants de Positano : dîners d’exception et tables proches",
-    "description": "Sélection gourmande sur la Côte Amalfitaine : croisières au coucher du soleil, fermes-auberges et restaurants à quelques minutes d’Hostel Brikette."
+    "title": "Restaurants de Positano : dîners signature et guide des tables proches",
+    "description": "Sélection culinaire sur la Côte Amalfitaine : dîners en bateau au coucher du soleil, festins à la ferme et restaurants à quelques minutes de l'Hostel Brikette."
   },
-  "linkLabel": "Guide gastronomique de Positano",
+  "linkLabel": "Les meilleurs restaurants de Positano près de l'Hostel Brikette",
   "intro": [
-    "Notre équipe a recensé ses restaurants préférés pour tous les budgets, en commençant par les adresses les plus proches d’Hostel Brikette.",
-    "Servez-vous de ce guide pour prévoir dîners au coucher du soleil, expériences fermes-à-table et repas rapides quand vous voulez bien manger sans longues montées."
+    "Les restaurants de Positano vont de pizzas à emporter à 7 € à des menus dégustation à plus de 100 €. Ce guide se concentre sur les lieux de restauration accessibles à pied ou en bus SITA depuis l'Hostel Brikette à Chiesa Nuova, avec les coûts, les besoins de réservation et comment s'y rendre.",
+    "La plupart des restaurants voisins sont plats ou en descente sur la Via Marconi, mais les restaurants en bord de mer nécessitent des escaliers raides au retour. Prévoyez 35-60 € pour un dîner assis, ou 7-12 € pour un plat à emporter. Réservez les tables en terrasse au moins un jour à l'avance en été.",
+    "Pour des expériences signature, le festin à la ferme de La Tagliata coûte 65 € avec transport inclus, et le dîner en bateau au coucher du soleil de La Gavitella coûte environ 139 €. Les deux nécessitent une réservation anticipée et se remplissent rapidement en juillet-août."
   ],
   "toc": [
     {
       "href": "#signature-experiences",
-      "label": "Expériences culinaires incontournables"
+      "label": "Expériences culinaires signature"
     },
     {
       "href": "#near-hostel",
-      "label": "Restaurants près d’Hostel Brikette"
+      "label": "Restaurants près de l'Hostel Brikette"
     },
     {
       "href": "#destination-dinners",
@@ -25,70 +26,141 @@
   "sections": [
     {
       "id": "signature-experiences",
-      "title": "Expériences culinaires incontournables",
+      "title": "Expériences culinaires signature",
       "body": [
-        "La croisière coucher de soleil de La Gavitella combine la traversée en bateau depuis Spiaggia Grande et un menu dégustation de fruits de mer sur leur terrasse de Praiano. Comptez environ 139 € par personne avec le retour inclus : arrivez tôt pour l’embarquement et profitez de la golden hour.",
-        "La Tagliata se trouve 3 km plus haut à Montepertuso. Prenez le bus SITA vers Nocelle et descendez juste après le village ou réservez la navette du restaurant. Préparez-vous à un généreux festin fermier à 65 € avec antipasti, pâtes fraîches, grillades, dessert et vin maison à volonté."
+        "**La croisière au coucher du soleil de La Gavitella** combine une traversée en bateau depuis la plage principale de Positano (Spiaggia Grande) avec un menu dégustation de fruits de mer sur leur terrasse de Praiano. Le forfait complet coûte environ 139 € par personne et inclut la traversée retour. Embarquez 15 minutes plus tôt sur la plage—le personnel vous enregistrera avant le départ. Le trajet dure environ 20 minutes dans chaque sens, et vous dînerez pendant que le soleil se couche sur la côte.",
+        "**La Tagliata** se trouve à 3 km en montée dans le village de Montepertuso. Vous pouvez prendre le bus SITA vers Nocelle et descendre juste après le panneau du village, puis marcher cinq minutes le long d'une allée signalisée. Ou demandez au restaurant d'envoyer leur navette gratuite—indiquez votre heure de prise en charge à l'Hostel Brikette lors de votre réservation. Le repas est un généreux festin à la ferme pour 65 € : antipasti, pâtes faites maison, viandes grillées, salade, dessert et vin maison à flots. Attendez-vous à plus de 2 heures de plats servis à la façon familiale sur de longues tables avec des vues imprenables.",
+        "Les deux restaurants sont complets en haute saison (juillet-août), réservez donc au moins 2-3 jours à l'avance. Mentionnez que vous séjournez à l'Hostel Brikette pour que les navettes sachent exactement où vous récupérer. Emportez une couche légère pour le retour en bateau ou la brise du soir à Montepertuso."
       ]
     },
     {
       "id": "near-hostel",
-      "title": "Restaurants près d’Hostel Brikette",
+      "title": "Restaurants près de l'Hostel Brikette",
       "body": [
-        "C’era Una Volta est quasiment en face de l’auberge via Marconi : parfait pour des pizzas à emporter à 7–12 € ou un repas détendu sur place.",
-        "Il Grottino Azzurro se trouve à 160 m sur la même rue, tout plat en deux minutes, et sert des classiques campaniens autour de 35 €.",
-        "Da Gabrisa (260 m, 52 m de dénivelé négatif) et Next2 (270 m, 75 m en descente) offrent des terrasses panoramiques et des menus fixes autour de 60 €.",
-        "Da Costantino récompense une courte montée de 300 m avec des baies vitrées et des portions généreuses à partir de 30 €, tandis que Luna à Villa Magia est à sept minutes, 450 m en descente, pour un menu dégustation d’exception autour de 100 €."
+        "Chiesa Nuova (où se trouve l'Hostel Brikette) offre plusieurs options de restauration à moins de 5 minutes à pied, la plupart plates ou en pente douce sur la Via Marconi.",
+        "**C'era Una Volta** est presque en face de l'entrée de l'auberge. C'est le choix idéal pour des pizzas à emporter (7-12 €) ou des repas assis avec des croûtes classiques de style napolitain et des garnitures fraîches. Pas besoin de réservation pour les plats à emporter ; arrivez avant 20h pour éviter les files d'attente.",
+        "**Il Grottino Azzurro** est à 160 m sur la même rue (2 minutes à plat). Ils servent des classiques campaniens—pensez paccheri al ragu, poisson frais, desserts au citron—pour environ 35 € par personne. La terrasse attrape le soleil de l'après-midi, et vous pouvez généralement entrer sans réservation au déjeuner. Le dîner se remplit en été, alors appelez à l'avance ou demandez au concierge de l'auberge.",
+        "**Da Gabrisa** (à 260 m, 52 m en descente) et **Next2** (à 270 m, 75 m en descente) offrent tous deux des vues en terrasse et des menus dégustation multi-plats autour de 60 €. Ce sont de bonnes options pour se faire plaisir quand vous voulez quelque chose de spécial sans aller loin. Les deux prennent des réservations par téléphone ou via le service de conciergerie de l'auberge—réservez un jour à l'avance pour les places en terrasse.",
+        "**Da Costantino** récompense une courte promenade de 300 m en montée (environ 5 minutes) avec des vues sur les fenêtres et des portions copieuses à partir d'environ 30 €. C'est un restaurant familial avec des assiettes de pâtes généreuses et des viandes grillées. Les arrivées sans réservation fonctionnent généralement au déjeuner ; le dîner est plus animé.",
+        "**Luna at Villa Magia** est à 7 minutes de marche en descente (450 m, 90 m de dénivelé) pour un menu dégustation d'occasion spéciale autour de 100 €. Le cadre est élégant avec des jardins en terrasses, et la cuisine se concentre sur des interprétations modernes des ingrédients d'Amalfi. Attendez-vous à un repas de plus de 2 heures. Réservez bien à l'avance, et rappelez-vous la montée au retour—portez des chaussures confortables ou organisez un %LINK:porterServices|porteur% pour vous ramener si nécessaire."
       ]
     },
     {
       "id": "destination-dinners",
       "title": "Dîners qui valent le déplacement au-delà de Chiesa Nuova",
       "body": [
-        "Buca di Bacco ancre la plage principale à 1 km (167 m de descente) avec un service soigné et un dîner en bord de mer à 50 € : anticipez la remontée ou réservez un porteur si vous vous attardez.",
-        "Il Ritrovo à Montepertuso et La Taverna del Leone près de Laurito demandent de prendre le bus SITA (2,3 km et 4 km depuis l’auberge) mais récompensent l’effort avec des menus à 45–55 € et des panoramas ouverts.",
-        "Les menus standards de La Tagliata et La Gavitella tournent autour de 50 € si vous laissez de côté les formules premium : toujours excellents pour partager, savourer les produits de leurs potagers et admirer la côte."
+        "**Buca di Bacco** ancre la plage principale de Positano (1 km de l'auberge, 167 m en descente). C'est un restaurant de plage raffiné avec nappes, service attentionné et menus axés sur les fruits de mer autour de 50 € par personne. La descente prend 15-20 minutes par des escaliers et des allées piétonnes. Le retour est raide—prévoyez 25-30 minutes en montée, ou réservez un %LINK:porterServices|porteur% si vous avez bu du vin. Réservations essentielles en été.",
+        "**Il Ritrovo** à Montepertuso et **La Taverna del Leone** près de Laurito nécessitent tous deux un trajet en bus SITA (respectivement 2,3 km et 4 km de l'auberge). Les deux servent des menus dégustation de 45-55 € avec des vues côtières imprenables. Prenez le bus depuis Chiesa Nuova vers Nocelle (pour Il Ritrovo) ou vers Praiano (pour La Taverna). Vérifiez le dernier bus de retour avant de vous asseoir—les services se raréfient après 22h en basse saison.",
+        "Vous pouvez également commander des menus standard à La Tagliata et La Gavitella sans les forfaits premium. Attendez-vous à payer environ 50 € par personne pour des assiettes à partager, des produits de leurs propres jardins et des places en terrasse panoramique. Toujours un excellent rapport qualité-prix, juste sans le transfert en bateau ou la navette incluse.",
+        "Pour des idées de restauration plus économiques à travers Positano, consultez notre %LINK:cheapEats|guide des restaurants bon marché%. Si vous planifiez une journée complète autour des plages de Positano, consultez %LINK:positanoBeaches|où nager et prendre le soleil%."
+      ]
+    },
+    {
+      "id": "practical-tips",
+      "title": "Conseils pratiques pour manger dehors",
+      "body": [
+        "**Réserver à l'avance :** Réservez les tables en terrasse au moins 1-2 jours à l'avance en haute saison (juin-septembre). Les places sans réservation se tarissent rapidement après 19h. Utilisez le concierge de l'Hostel Brikette ou appelez directement—mentionnez que vous êtes à l'auberge pour que les navettes et porteurs connaissent le point de prise en charge exact.",
+        "**Transport :** Les billets de bus SITA coûtent 1,30-2,50 € selon la distance. Achetez-les dans les bureaux de tabac (tabacchi) ou à bord avec paiement sans contact. Les bus circulent toutes les 30-60 minutes ; consultez les %LINK:sitaTickets|horaires% et prévoyez une marge de 20 minutes en haute saison quand ils se remplissent.",
+        "**Escaliers et terrain :** La plupart des restaurants près de l'auberge sont plats ou en pente douce. Les endroits en bord de mer comme Buca di Bacco impliquent des escaliers raides au retour—portez des chaussures sécurisées et allez à votre rythme. Si vous avez trop abusé, les services de porteurs coûtent 30-50 € pour la montée de retour à Chiesa Nuova.",
+        "**Paiement :** La plupart des endroits acceptent les cartes, mais les petites trattorias préfèrent les espèces. Les distributeurs automatiques sont disponibles au centre de Positano (près de la plage principale). Le pourboire n'est pas obligatoire mais 5-10% est apprécié pour un excellent service.",
+        "**Contingences météorologiques :** La mer agitée annule parfois les transferts en bateau du soir vers Praiano et Laurito. Gardez les horaires du bus SITA comme solution de secours. En hiver (novembre-mars), certains restaurants ferment ou fonctionnent à horaires réduits—appelez à l'avance pour confirmer."
       ]
     }
   ],
-  "typicalCostsTitle": "Dépense moyenne par personne",
+  "typicalCostsTitle": "Dépense typique par personne",
   "typicalCosts": [
-    "Croisière au coucher du soleil et dîner chez La Gavitella : environ 139 € avec transfert en bateau et festin de fruits de mer.",
-    "Festin fermier à La Tagliata : environ 65 € avec antipasti, pâtes, grillades, dessert et vin maison.",
-    "Trattorias du quartier : pizzas à emporter 7–12 € chez C’era Una Volta ; assiettes autour de 35 € chez Il Grottino Azzurro ; menus dégustation à 60 € chez Da Gabrisa ou Next2.",
-    "Dîners de destination : 30 € chez Da Costantino, 45 € à La Taverna del Leone, 50 € chez Buca di Bacco ou pour les menus standards de La Tagliata/La Gavitella, et 100 €+ chez Luna à Villa Magia."
+    "Croisière au coucher du soleil et dîner chez La Gavitella : environ 139 € avec transfert en bateau et festin de fruits de mer multi-plats.",
+    "Festin à la ferme chez La Tagliata : 65 € incluant antipasti, pâtes, viandes grillées, dessert et vin maison illimité.",
+    "Trattorias de quartier : pizzas à emporter 7-12 € chez C'era Una Volta ; repas assis 30-35 € chez Il Grottino Azzurro ou Da Costantino ; menus dégustation 60 € chez Da Gabrisa ou Next2.",
+    "Dîners de destination : 45-55 € chez Il Ritrovo ou La Taverna del Leone ; 50 € chez Buca di Bacco ou menus standard La Tagliata/La Gavitella ; 100 €+ chez Luna at Villa Magia."
   ],
   "tips": [
-    "Réservez les tables en terrasse au moins un jour à l’avance ; précisez que vous séjournez à Hostel Brikette pour que les navettes sachent où vous récupérer.",
-    "Prévoyez espèces ou cartes sans contact pour les billets de bus SITA vers Montepertuso, Nocelle, Laurito ou Praiano et gardez 20 minutes de marge en haute saison.",
-    "Pour les transferts en bateau de La Gavitella, emportez une couche légère pour le retour et confirmez la dernière navette avant de vous installer."
+    "Réservez les tables en terrasse 1-2 jours à l'avance en été—mentionnez l'Hostel Brikette pour la coordination navette/porteur.",
+    "Achetez des billets de bus SITA (1,30-2,50 €) dans les bureaux de tabac ou à bord ; prévoyez une marge de 20 minutes quand les bus sont occupés.",
+    "Emportez une couche légère pour les transferts en bateau et les brises du soir dans les villages en hauteur.",
+    "Portez des chaussures sécurisées pour les escaliers raides au retour des restaurants en bord de mer—ou prévoyez 30-50 € pour le service de porteur.",
+    "Vérifiez les heures d'ouverture des restaurants en hiver (novembre-mars) car certains ferment ou réduisent le service."
   ],
   "warnings": [
-    "Attendez-vous à des escaliers raides au retour des dîners au bord de mer : portez des chaussures stables et remontez à votre rythme.",
-    "Les formules coucher de soleil et les places navette partent vite ; réservez sur le site du restaurant ou via le concierge avant midi, surtout en juillet et août.",
-    "La mer agitée peut suspendre les bateaux du soir vers Praiano et Laurito ; gardez l’horaire du bus SITA comme solution de repli."
+    "Les escaliers raides au retour des dîners en bord de mer (Buca di Bacco, zone de la plage principale) peuvent prendre 25-30 minutes en montée—allez à votre rythme et envisagez les services de porteurs si nécessaire.",
+    "Les forfaits croisière au coucher du soleil et les navettes de restaurant se vendent rapidement en juillet-août—réservez via les sites web des restaurants ou le concierge de l'Hostel Brikette avant midi.",
+    "La mer agitée suspend parfois les bateaux du soir vers Praiano et Laurito—gardez les horaires du bus SITA comme itinéraire de secours.",
+    "Les tables sans réservation disparaissent après 19h en haute saison—réservez à l'avance ou mangez tôt pour éviter la déception."
   ],
   "faqs": [
     {
-      "q": "Faut-il réserver à l’avance la croisière coucher de soleil de La Gavitella ?",
+      "q": "Dois-je réserver la croisière au coucher du soleil de La Gavitella à l'avance ?",
       "a": [
-        "Oui : réservez auprès du restaurant ou du concierge d’Hostel Brikette et demandez le forfait croisière coucher de soleil (environ 139 €).",
-        "Arrivez 15 minutes plus tôt à Spiaggia Grande pour que l’équipage puisse embarquer tout le monde sereinement avant le départ."
+        "Oui—réservez via le site web du restaurant ou via le concierge de l'Hostel Brikette et demandez le forfait croisière au coucher du soleil (environ 139 €).",
+        "Arrivez 15 minutes plus tôt à Spiaggia Grande (la plage principale de Positano) pour que l'équipage puisse enregistrer tout le monde avant le départ. Le bateau part à l'heure prévue."
       ]
     },
     {
-      "q": "Comment rejoindre La Tagliata sans voiture ?",
+      "q": "Comment rejoindre La Tagliata sans voiture ?",
       "a": [
-        "Prenez le bus SITA vers Nocelle et descendez juste après Montepertuso, puis suivez l’allée indiquée pendant cinq minutes à pied.",
-        "Vous pouvez aussi confirmer la navette gratuite lors de la réservation ; indiquez votre heure de prise en charge à l’auberge pour qu’ils organisent le trajet."
+        "Option 1 : Prenez le bus SITA vers Nocelle depuis Chiesa Nuova (1,30-2,50 €). Descendez juste après le panneau du village de Montepertuso et suivez l'allée signalisée pendant 5 minutes à pied.",
+        "Option 2 : Demandez à La Tagliata d'envoyer leur navette gratuite lorsque vous réservez. Indiquez-leur votre heure de prise en charge à l'Hostel Brikette pour qu'ils puissent planifier le circuit. La navette vous fait économiser le prix du bus et vous dépose directement à la porte du restaurant."
       ]
     },
     {
-      "q": "Y a-t-il des options abordables près d’Hostel Brikette ?",
+      "q": "Y a-t-il des endroits abordables près de l'Hostel Brikette ?",
       "a": [
-        "C’era Una Volta est en face avec des pizzas autour de 7–12 € et un service rapide à emporter.",
-        "Il Grottino Azzurro, Da Gabrisa et Next2 sont à moins de cinq minutes à pied avec des menus entre 35 et 60 € et des tables avec vue sur la mer."
+        "Oui—C'era Una Volta se trouve de l'autre côté de la route avec des pizzas à emporter de 7-12 € et un service rapide.",
+        "Il Grottino Azzurro (2 minutes à plat sur la Via Marconi) sert des repas assis pour environ 35 €. Da Costantino (5 minutes en montée) offre des portions copieuses à partir de 30 €.",
+        "Pour plus d'idées économiques à travers Positano, consultez notre guide des restaurants bon marché."
+      ]
+    },
+    {
+      "q": "Que se passe-t-il si le bateau au coucher du soleil est annulé en raison de la mer agitée ?",
+      "a": [
+        "La Gavitella proposera généralement de reprogrammer ou de fournir un remboursement. Si vous voulez quand même y aller, prenez le bus SITA vers Praiano (20-30 minutes depuis Chiesa Nuova) et marchez jusqu'au restaurant.",
+        "Vérifiez les prévisions météorologiques et les conditions de la mer à l'avance—le restaurant vous appellera s'ils doivent annuler le bateau."
+      ]
+    },
+    {
+      "q": "Puis-je entrer pour dîner sans réservation ?",
+      "a": [
+        "Au déjeuner, les arrivées sans réservation fonctionnent généralement dans la plupart des endroits. Pour le dîner en haute saison (juin-septembre), les tables se remplissent rapidement après 19h—réservez 1-2 jours à l'avance pour les places en terrasse.",
+        "C'era Una Volta (pizzas à emporter) ne nécessite pas de réservation, mais arrivez avant 20h pour éviter les files d'attente."
       ]
     }
-  ]
+  ],
+  "images": [
+    {
+      "src": "/img/guides/positano-dining/01-la-tagliata-terrace.jpg",
+      "alt": "Terrasse en hauteur de La Tagliata avec de longues tables et vues côtières à Montepertuso",
+      "caption": "La terrasse à la ferme de La Tagliata sert des festins à la façon familiale avec vues sur la Côte Amalfitaine"
+    },
+    {
+      "src": "/img/guides/positano-dining/02-chiesa-nuova-restaurants.jpg",
+      "alt": "Terrasse de restaurant sur la Via Marconi près de l'Hostel Brikette à Chiesa Nuova",
+      "caption": "Les restaurants le long de la Via Marconi à Chiesa Nuova offrent un accès plat et facile depuis l'auberge"
+    },
+    {
+      "src": "/img/guides/positano-dining/03-sunset-boat-dining.jpg",
+      "alt": "Croisière en bateau au coucher du soleil le long de la Côte Amalfitaine approchant Praiano",
+      "caption": "La croisière au coucher du soleil de La Gavitella combine transfert en bateau avec menu dégustation de fruits de mer"
+    },
+    {
+      "src": "/img/guides/positano-dining/04-positano-beachfront-dining.jpg",
+      "alt": "Tables de restaurant en bord de mer à Spiaggia Grande à Positano",
+      "caption": "Dîner en bord de mer à la plage principale de Positano nécessite des escaliers raides au retour"
+    },
+    {
+      "src": "/img/guides/positano-dining/05-trattoria-interior.jpg",
+      "alt": "Intérieur de trattoria traditionnelle avec nappes à carreaux et plats locaux",
+      "caption": "Les trattorias de quartier servent des plats campaniens classiques à quelques minutes de l'auberge"
+    },
+    {
+      "src": "/img/guides/positano-dining/06-terrace-view-dinner.jpg",
+      "alt": "Table de dîner en terrasse avec vue sur la mer et citronniers au coucher du soleil",
+      "caption": "Réservez les tables en terrasse 1-2 jours à l'avance en été pour les meilleures vues"
+    },
+    {
+      "src": "/img/guides/positano-dining/07-pizza-takeaway.jpg",
+      "alt": "Pizza fraîche de style napolitain prête à emporter",
+      "caption": "Les pizzas à emporter de C'era Una Volta coûtent 7-12 € avec service rapide"
+    }
+  ],
+  "lastUpdated": "2026-02-04"
 }

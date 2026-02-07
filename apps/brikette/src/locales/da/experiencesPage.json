@@ -7,15 +7,7 @@
     "eyebrow": "Oplevelser",
     "title": "Oplevelser på Hostel Brikette",
     "description": "Nyd en spritz på tagterrassen, tag på vandreture med panoramaudsigt, og få øjeblikkelige tips via vores digitale concierge.",
-    "supporting": "Alt er åbent for registrerede gæster; skriv til os, hvis du rejser med venner, der bor et andet sted.",
-    "primaryCta": "Book dit ophold",
-    "secondaryCta": "Åbn barmenuen",
-    "tertiaryCta": "Skriv til den digitale concierge",
-    "primaryCtaAria": "Book dit ophold på Hostel Brikette",
-    "secondaryCtaAria": "Se Hostel Brikettes barmenu",
-    "tertiaryCtaAria": "Send en besked til Hostel Brikettes digitale concierge",
-    "breakfastCta": "Se morgenmenuen",
-    "breakfastCtaAria": "Se morgenmenuen"
+    "scrollNudge": "Læs mere"
   },
   "sections": {
     "bar": {
@@ -89,50 +81,80 @@
     "empty": "Vi har endnu ingen oplevelsesguides for {{tag}}. Prøv et andet tag eller fjern filteret.",
     "clearFilter": "Vis alle oplevelsesguides",
     "cardCta": "Udforsk oplevelsesguiden {{guideTitle}}",
-    "directionsLabel": "Rutevejledning",
+    "filterHeading": "Filtrér oplevelsesguides",
+    "filterDescription": "Vælg et tag for at indsnævre de oplevelser, vi fremhæver.",
+    "directionsLabel": "Vejvisning",
+    "sections": {
+      "content": {
+        "title": "Oplevelsesguider",
+        "description": "Fordybende guider om strande, vandreture, dagsture og ting at lave"
+      },
+      "directions": {
+        "title": "Sådan kommer du derhen",
+        "description": "Trin-for-trin-vejvisning til og fra vandrerhjemmet"
+      }
+    },
     "directionLinks": {
       "capriDayTrip": {
-        "positanoCapriFerry": "Positano → Capri med færge",
-        "capriPositanoFerry": "Capri → Positano med færge"
+        "positanoCapriFerry": "Positano → Capri færge",
+        "capriPositanoFerry": "Capri → Positano færge"
       },
       "positanoAmalfi": {
         "positanoAmalfiBus": "Positano → Amalfi med bus",
         "amalfiPositanoBus": "Amalfi → Positano med bus",
-        "positanoAmalfiFerry": "Positano → Amalfi med færge (sæsonbestemt)",
-        "amalfiPositanoFerry": "Amalfi → Positano med færge (sæsonbestemt)"
+        "positanoAmalfiFerry": "Positano → Amalfi færge (sæsonafhængig)",
+        "amalfiPositanoFerry": "Amalfi → Positano færge (sæsonafhængig)"
       },
       "positanoRavello": {
-        "positanoRavelloBus": "Positano → Ravello med bus",
-        "ravelloPositanoBus": "Ravello → Positano med bus",
+        "positanoRavelloBus": "Positano → Ravello bus",
+        "ravelloPositanoBus": "Ravello → Positano bus",
         "positanoRavelloFerryBus": "Positano → Ravello færge + bus"
       },
       "naplesPositano": {
         "naplesCenterTrainBus": "Napoli centrum → Positano (tog + bus)",
-        "naplesCenterPositanoFerry": "Napoli centrum → Positano med færge",
-        "naplesAirportPositanoBus": "Napoli lufthavn → Positano med bus",
+        "naplesCenterPositanoFerry": "Napoli centrum → Positano færge",
+        "naplesAirportPositanoBus": "Napoli lufthavn → Positano bus",
         "positanoNaplesCenterBusTrain": "Positano → Napoli centrum (bus + tog)",
-        "positanoNaplesCenterFerry": "Positano → Napoli med færge",
-        "positanoNaplesAirportBus": "Positano → Napoli lufthavn med bus"
+        "positanoNaplesCenterFerry": "Positano → Napoli færge",
+        "positanoNaplesAirportBus": "Positano → Napoli lufthavn bus"
       },
       "salernoPositano": {
-        "salernoPositanoBus": "Salerno → Positano med bus",
-        "salernoPositanoFerry": "Salerno → Positano med færge (sæsonbestemt)",
-        "positanoSalernoBus": "Positano → Salerno med bus",
-        "positanoSalernoFerry": "Positano → Salerno med færge (sæsonbestemt)"
+        "salernoPositanoBus": "Salerno → Positano bus",
+        "salernoPositanoFerry": "Salerno → Positano færge (sæsonafhængig)",
+        "positanoSalernoBus": "Positano → Salerno bus",
+        "positanoSalernoFerry": "Positano → Salerno færge (sæsonafhængig)"
       }
     },
-    "filterHeading": "Filtrér oplevelsesguides",
-    "filterDescription": "Vælg et tag for at indsnævre de oplevelser, vi fremhæver.",
     "grouped": {
       "beaches": {
-        "guides": {
-          "heading": "Strandguides",
-          "description": "Vælg den rette strandstrækning og planlæg din dag."
-        },
-        "directions": {
-          "heading": "Vej til stranden",
-          "description": "Trin-for-trin ruter fra Hostel Brikette ned til kysten."
-        }
+        "title": "Strandguides",
+        "description": "Vælg den rette strandstrækning og planlæg din dag.",
+        "imageAlt": "Billede af strand på Amalfikysten"
+      },
+      "boat": {
+        "title": "Bådture",
+        "description": "Udforsk grotter, bugter og naboøer fra havet.",
+        "imageAlt": "Traditionel gozzo-båd langs Amalfikysten"
+      },
+      "cuisine": {
+        "title": "Mad og drikke",
+        "description": "Madmarkeder, restauranttips og lokale specialiteter.",
+        "imageAlt": "Frisk fisk og citron serveret på Amalfikysten"
+      },
+      "day-trip": {
+        "title": "Dagsture",
+        "description": "Besøg Capri, Pompeji, Ravello og andre højdepunkter i nærheden.",
+        "imageAlt": "Udsigt over Capri fra havet"
+      },
+      "hiking": {
+        "title": "Vandreture",
+        "description": "Sentiero degli Dei, kyststier og strandstier.",
+        "imageAlt": "Vandrer på Guderuten med kystpanorama"
+      },
+      "more": {
+        "title": "Flere guides",
+        "description": "Praktiske tips, kultur og sæsonråd.",
+        "imageAlt": "Farverige huse i Positano"
       }
     }
   }

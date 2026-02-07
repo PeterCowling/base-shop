@@ -2,7 +2,7 @@ import plugin from "../index";
 
 const createProvider = () => {
   const registry = { add: jest.fn() } as any;
-  plugin.registerShipping(registry, {
+  plugin.registerShipping!(registry, {
     regions: ["zone1"],
     windows: ["10-11"],
     carriers: ["fast"],

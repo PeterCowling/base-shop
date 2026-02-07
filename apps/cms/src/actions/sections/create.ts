@@ -1,10 +1,12 @@
-import { nowIso } from "@acme/date-utils";
-import type { SectionTemplate, PageComponent } from "@acme/types";
-import { sectionTemplateSchema } from "@acme/types";
 import { ulid } from "ulid";
+
+import { nowIso } from "@acme/date-utils";
+import { getSections, saveSection } from "@acme/platform-core/repositories/sections/index.server";
+import type { PageComponent,SectionTemplate } from "@acme/types";
+import { sectionTemplateSchema } from "@acme/types";
+
 import { formDataToObject } from "../../utils/formData";
 import { ensureAuthorized } from "../common/auth";
-import { getSections, saveSection } from "@platform-core/repositories/sections/index.server";
 // Load server-side translations within the async action
 
 export async function createSection(
@@ -35,7 +37,7 @@ export async function createSection(
     template: (template ?? { id: ulid(), type: "Section", children: [] }) as PageComponent,
     createdAt: now,
     updatedAt: now,
-    createdBy: session.user.email ?? "unknown",
+    createdBy: session.user?.email ?? "unknown",
   };
 
   const parsed = sectionTemplateSchema.safeParse(base);

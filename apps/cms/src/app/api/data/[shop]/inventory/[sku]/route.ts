@@ -1,16 +1,20 @@
-import { authOptions } from "@cms/auth/options";
-import { getServerSession } from "next-auth";
-import { NextResponse, type NextRequest } from "next/server";
-import { inventoryItemSchema } from "@platform-core/types/inventory";
-import { inventoryRepository } from "@platform-core/repositories/inventory.server";
+import { type NextRequest,NextResponse } from "next/server";
+import { ensureShopAccess } from "@cms/actions/common/auth";
+
+import { inventoryRepository } from "@acme/platform-core/repositories/inventory.server";
+import { inventoryItemSchema } from "@acme/platform-core/types/inventory";
 
 export async function PATCH(
   req: NextRequest,
   context: { params: Promise<{ shop: string; sku: string }> },
 ) {
-  const session = await getServerSession(authOptions);
-  if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  const { shop, sku } = await context.params;
+  try {
+    await ensureShopAccess(shop);
+  } catch (err) {
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 401;
+    return NextResponse.json({ error: message === "Forbidden" ? "Forbidden" : "Unauthorized" }, { status });
   }
   try {
     const body = await req.json();
@@ -21,7 +25,6 @@ export async function PATCH(
         { status: 400 },
       );
     }
-    const { shop, sku } = await context.params;
     const patch = parsed.data;
     const variantAttributes = patch.variantAttributes ?? {};
     const updated = await inventoryRepository.update(

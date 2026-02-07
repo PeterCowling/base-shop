@@ -1,10 +1,12 @@
-import { describe, it, expect } from "@jest/globals";
+import { describe, expect,it } from "@jest/globals";
+
 import { expectInvalidAuthEnvWithConfigEnv } from "../../../test/utils/expectInvalidAuthEnv";
+
 import {
   NEXT_SECRET,
-  SESSION_SECRET,
   OAUTH_ISSUER,
   OAUTH_REDIRECT_ORIGIN,
+  SESSION_SECRET,
 } from "./authEnvTestUtils";
 
 type EnvOverrides = Record<string, string | undefined>;

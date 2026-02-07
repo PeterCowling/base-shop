@@ -1,27 +1,31 @@
 // Use a loose PrismaClient type to avoid requiring the heavy @prisma/client
 // dependency during tests. The actual client will be loaded dynamically when
 // available.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- DS-0001 Allow loose PrismaClient type in tests
-type PrismaClientType = any;
+ 
 import { createRequire } from 'module';
+
 import { loadCoreEnv } from '@acme/config/env/core';
+
 import {
-  createRentalOrderDelegate,
-  createShopDelegate,
-  createPageDelegate,
-  createCustomerProfileDelegate,
-  createCustomerMfaDelegate,
   createCustomerIdentityDelegate,
+  createCustomerMfaDelegate,
+  createCustomerProfileDelegate,
   createCustomerStripeMappingDelegate,
+  createInventoryItemDelegate,
+  createPageDelegate,
+  createProductDelegate,
+  createRentalOrderDelegate,
+  createReverseLogisticsEventDelegate,
+  createSectionTemplateDelegate,
+  createShopDelegate,
+  createStripeWebhookEventDelegate,
   createSubscriptionUsageDelegate,
   createUserDelegate,
-  createReverseLogisticsEventDelegate,
-  createProductDelegate,
-  createInventoryItemDelegate,
-  createSectionTemplateDelegate,
-  createStripeWebhookEventDelegate,
   type InventoryItemDelegate,
 } from './db/stubs';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- PrismaClient type varies by generated schema; safe to use any here
+type PrismaClientType = any;
 
 /**
  * Avoid augmenting `PrismaClient` with a permissive index signature.
@@ -158,4 +162,4 @@ const prisma: PrismaClientType = useStub
       return new PC({ datasources: { db: { url: DATABASE_URL } } }) as unknown as PrismaClientType;
     })();
 
-export { prisma, createTestPrismaStub, loadPrismaClient };
+export { createTestPrismaStub, loadPrismaClient,prisma };

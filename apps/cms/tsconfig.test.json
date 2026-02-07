@@ -1,35 +1,89 @@
-// apps/cms/tsconfig.test.json
 {
   "extends": "./tsconfig.json",
-
   "compilerOptions": {
-    /* ------------------------------------------------------------------ */
-    /*  Jest / Testing-library runtime types                              */
-    /* ------------------------------------------------------------------ */
     "types": ["@testing-library/jest-dom", "jest", "node"],
-
-    /* ------------------------------------------------------------------ */
-    /*  Test-only compiler flags                                          */
-    /* ------------------------------------------------------------------ */
     "noEmit": true,
     "allowJs": true,
     "jsx": "react-jsx",
-    "outDir": ".ts-jest",
-    // Force CommonJS modules for Jest/ts-jest so ESM deps (transformed) run under Jest
-    "module": "CommonJS",
-    "moduleResolution": "Node"
+    "verbatimModuleSyntax": false,
+    "allowImportingTsExtensions": true,
+    "baseUrl": "../..",
+    "paths": {
+      "@/*": ["apps/cms/src/*"],
+      "@cms/*": ["apps/cms/src/*"],
+      "@/components/*": ["packages/ui/dist/components/*"],
+      "@/lib/*": ["apps/cms/src/lib/*", "packages/ui/dist/lib/*", "packages/platform-core/dist/*"],
+      "@/contexts/*": ["packages/platform-core/dist/contexts/*"],
+      "@/i18n/*": ["packages/i18n/dist/*"],
+      "@i18n": ["packages/i18n/dist/index.d.ts"],
+      "@i18n/*": ["packages/i18n/dist/*"],
+      "@ui/*": ["packages/ui/dist/*"],
+      "@ui": ["packages/ui/dist/index.d.ts"],
+      "@acme/ui": ["packages/ui/dist/index.d.ts"],
+      "@acme/ui/*": ["packages/ui/dist/*"],
+      "@auth": ["packages/auth/dist/index.d.ts"],
+      "@auth/*": ["packages/auth/dist/*"],
+      "@acme/auth": ["packages/auth/dist/index.d.ts"],
+      "@acme/auth/*": ["packages/auth/dist/*"],
+      "@acme/lib": ["packages/lib/dist/index.d.ts"],
+      "@acme/lib/*": ["packages/lib/dist/*"],
+      "@acme/types": ["packages/types/dist/index.d.ts"],
+      "@acme/types/*": ["packages/types/dist/*"],
+      "@acme/date-utils": ["packages/date-utils/dist/index.d.ts"],
+      "@acme/date-utils/*": ["packages/date-utils/dist/*"],
+      "@date-utils": ["packages/date-utils/dist/index.d.ts"],
+      "@date-utils/*": ["packages/date-utils/dist/*"],
+      "@themes/*": ["packages/themes/*/dist"],
+      "@acme/themes/*": ["packages/themes/*/dist"],
+      "@platform-core": ["packages/platform-core/dist/index.d.ts"],
+      "@platform-core/*": ["packages/platform-core/dist/*"],
+      "@acme/platform-core": ["packages/platform-core/dist/index.d.ts"],
+      "@acme/platform-core/*": ["packages/platform-core/dist/*"],
+      "@acme/platform-machine": ["packages/platform-machine/dist/src/index.d.ts"],
+      "@acme/platform-machine/*": ["packages/platform-machine/dist/src/*"],
+      "@acme/email": ["packages/email/dist/index.d.ts"],
+      "@acme/email/*": ["packages/email/dist/*"],
+      "@acme/email-templates": ["packages/email-templates/dist/index.d.ts"],
+      "@acme/email-templates/*": ["packages/email-templates/dist/*"],
+      "@acme/config": ["packages/config/dist/index.d.ts"],
+      "@acme/config/*": ["packages/config/dist/*"],
+      "@acme/i18n": ["packages/i18n/dist/index.d.ts"],
+      "@acme/i18n/*": ["packages/i18n/dist/*"],
+      "@acme/zod-utils": ["packages/zod-utils/dist/index.d.ts"],
+      "@acme/zod-utils/*": ["packages/zod-utils/dist/*"],
+      "@acme/telemetry": ["packages/telemetry/dist/index.d.ts"],
+      "@acme/telemetry/*": ["packages/telemetry/dist/*"],
+      "@acme/theme": ["packages/theme/dist/index.d.ts"],
+      "@acme/theme/*": ["packages/theme/dist/*"],
+      "@acme/templates": ["packages/templates/dist/index.d.ts"],
+      "@acme/templates/*": ["packages/templates/dist/*"],
+      "@acme/page-builder-core": ["packages/page-builder-core/dist/index.d.ts"],
+      "@acme/page-builder-core/*": ["packages/page-builder-core/dist/*"],
+      "@acme/page-builder-ui": ["packages/page-builder-ui/dist/index.d.ts"],
+      "@acme/page-builder-ui/*": ["packages/page-builder-ui/dist/*"],
+      "@acme/test-utils": ["packages/test-utils/dist/index.d.ts"],
+      "@acme/test-utils/*": ["packages/test-utils/dist/*"],
+      "~test/*": ["test/*"]
+    }
   },
-
-  /* ------------------------------------------------------------------ */
-  /*  Unit-test sources that ts-jest should see                          */
-  /* ------------------------------------------------------------------ */
   "include": [
     "src/**/*",
+    "src/**/*.json",
     "__tests__/**/*",
+    "types-compat/**/*",
+    "instrumentation.ts",
     "jest.env.ts",
     "jest.setup.ts",
     "jest.setup.after.ts",
-    "jest.setup.polyfills.ts"
+    "jest.setup.polyfills.ts",
+    "../../test/polyfills/**/*",
+    "../../test/msw/**/*",
+    "../../test/mocks/**/*",
+    "../../test/resetNextMocks.ts",
+    "../../test/setup-response-json.ts",
+    "../../packages/i18n/dist/**/*.json",
+    "../../packages/ui/dist/**/*.json",
+    "../../packages/themes/*/src/**/*"
   ],
-  "exclude": ["src/lib/__tests__/**"]
+  "exclude": ["src/lib/__tests__/**", "**/*.cy.tsx", "**/*.cy.ts"]
 }

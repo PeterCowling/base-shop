@@ -39,8 +39,15 @@
       "@acme/editorial/*": [
         "packages/editorial/src/*",
         "packages/editorial/dist/*"
-      ]
-      ,
+      ],
+      "@acme/design-system": [
+        "packages/design-system/src/index.ts",
+        "packages/design-system/dist/index.d.ts"
+      ],
+      "@acme/design-system/*": [
+        "packages/design-system/src/*",
+        "packages/design-system/dist/*"
+      ],
       "@acme/platform-machine": [
         "packages/platform-machine/src/index.ts",
         "packages/platform-machine/dist/index.d.ts"
@@ -54,14 +61,6 @@
         "packages/ui/dist/index.d.ts"
       ],
       "@acme/ui/*": [
-        "packages/ui/src/*",
-        "packages/ui/dist/*"
-      ],
-      "@ui": [
-        "packages/ui/src/index.ts",
-        "packages/ui/dist/index.d.ts"
-      ],
-      "@ui/*": [
         "packages/ui/src/*",
         "packages/ui/dist/*"
       ],
@@ -85,14 +84,6 @@
         "packages/lib/src/*",
         "packages/lib/dist/*"
       ],
-      "@i18n": [
-        "packages/i18n/src/index.ts",
-        "packages/i18n/dist/index.d.ts"
-      ],
-      "@i18n/*": [
-        "packages/i18n/src/*",
-        "packages/i18n/dist/*"
-      ],
       "@acme/i18n": [
         "packages/i18n/src/index.ts",
         "packages/i18n/dist/index.d.ts"
@@ -101,21 +92,13 @@
         "packages/i18n/src/*",
         "packages/i18n/dist/*"
       ],
-      "@auth": [
+      "@acme/auth": [
         "packages/auth/src/index.ts",
         "packages/auth/dist/index.d.ts"
       ],
-      "@auth/*": [
+      "@acme/auth/*": [
         "packages/auth/src/*",
         "packages/auth/dist/*"
-      ],
-      "@platform-core": [
-        "packages/platform-core/src/index.ts",
-        "packages/platform-core/dist/index.d.ts"
-      ],
-      "@platform-core/*": [
-        "packages/platform-core/src/*",
-        "packages/platform-core/dist/*"
       ],
       "@acme/platform-core": [
         "packages/platform-core/src/index.ts",
@@ -124,22 +107,6 @@
       "@acme/platform-core/*": [
         "packages/platform-core/src/*",
         "packages/platform-core/dist/*"
-      ],
-      "@acme/shared-utils": [
-        "packages/shared-utils/src/index.ts",
-        "packages/shared-utils/dist/index.d.ts"
-      ],
-      "@acme/shared-utils/*": [
-        "packages/shared-utils/src/*",
-        "packages/shared-utils/dist/*"
-      ],
-      "@shared-utils": [
-        "packages/shared-utils/src/index.ts",
-        "packages/shared-utils/dist/index.d.ts"
-      ],
-      "@shared-utils/*": [
-        "packages/shared-utils/src/*",
-        "packages/shared-utils/dist/*"
       ],
       "@acme/email": [
         "packages/email/src/index.ts",
@@ -181,14 +148,6 @@
         "packages/date-utils/src/*",
         "packages/date-utils/dist/*"
       ],
-      "@date-utils": [
-        "packages/date-utils/src/index.ts",
-        "packages/date-utils/dist/index.d.ts"
-      ],
-      "@date-utils/*": [
-        "packages/date-utils/src/*",
-        "packages/date-utils/dist/*"
-      ],
       "@acme/config": [
         "packages/config/src/index.ts",
         "packages/config/dist/index.d.ts"
@@ -205,7 +164,6 @@
         "packages/configurator/src/*",
         "packages/configurator/dist/*"
       ],
-      
       "@acme/tailwind-config": [
         "packages/tailwind-config/src/index.ts",
         "packages/tailwind-config/dist/index.d.ts"
@@ -237,8 +195,7 @@
       "@acme/zod-utils/*": [
         "packages/zod-utils/src/*",
         "packages/zod-utils/dist/*"
-      ]
-      ,
+      ],
       "@acme/test-utils": [
         "packages/test-utils/src/index.ts",
         "packages/test-utils/dist/index.d.ts"
@@ -255,6 +212,14 @@
         "packages/page-builder-core/src/*",
         "packages/page-builder-core/dist/*"
       ],
+      "@acme/cms-ui": [
+        "packages/cms-ui/src/index.ts",
+        "packages/cms-ui/dist/index.d.ts"
+      ],
+      "@acme/cms-ui/*": [
+        "packages/cms-ui/src/*",
+        "packages/cms-ui/dist/*"
+      ],
       "@acme/templates": [
         "packages/templates/src/index.ts",
         "packages/templates/dist/index.d.ts"
@@ -270,6 +235,14 @@
       "@acme/pipeline-engine/*": [
         "packages/pipeline-engine/src/*",
         "packages/pipeline-engine/dist/*"
+      ],
+      "@acme/types": [
+        "packages/types/src/index.ts",
+        "packages/types/dist/index.d.ts"
+      ],
+      "@acme/types/*": [
+        "packages/types/src/*",
+        "packages/types/dist/*"
       ]
     }
   },

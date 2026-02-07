@@ -1,14 +1,16 @@
 "use client"; // i18n-exempt -- I18N-0001 [ttl=2026-01-31]: Next.js directive string
 import * as React from "react";
-import { cn } from "../../utils/style";
-import { Button, Input } from "../atoms/shadcn";
+
+import { useTranslations } from "@acme/i18n";
+import type { Locale } from "@acme/i18n/locales";
+import { resolveText } from "@acme/i18n/resolveText";
 import type { SKU } from "@acme/types";
 import type { TranslatableText } from "@acme/types/i18n";
-import type { Locale } from "@acme/i18n/locales";
-import { resolveText } from "@i18n/resolveText";
-import { ProductCard } from "../organisms/ProductCard";
-import { useTranslations } from "@acme/i18n";
+
+import { cn } from "../../utils/style";
 import { Grid, Inline } from "../atoms/primitives";
+import { Button, Input } from "../atoms/shadcn";
+import { ProductCard } from "../organisms/ProductCard";
 
 export interface ChatMessage {
   id: string;
@@ -65,7 +67,7 @@ export function LiveShoppingEventTemplate({
         <div className="aspect-video w-full bg-fg">
           <video src={streamUrl} controls className="h-full w-full" data-aspect="16/9">
             {/* i18n-exempt: placeholder captions track for accessibility tooling */}
-            {/* eslint-disable ds/no-hardcoded-copy -- PB-2419: non-user-facing data URI and internal labels */}
+            { }
             <track
               kind="captions"
               srcLang="en"
@@ -73,7 +75,7 @@ export function LiveShoppingEventTemplate({
               src="data:text/vtt;base64,"
               default
             />
-            {/* eslint-enable ds/no-hardcoded-copy */}
+            { }
           </video>
         </div>
         <div className="space-y-2">

@@ -1,11 +1,11 @@
 "use client";
 import {
+  type ChangeEvent,
   useCallback,
   useEffect,
   useMemo,
   useRef,
   useState,
-  type ChangeEvent,
 } from "react";
 // i18n-exempt — identifiers only; provide identity translator for linting
 /* i18n-exempt */

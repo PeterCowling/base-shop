@@ -1,18 +1,19 @@
-/* eslint-disable ds/no-raw-color -- TEST-0004: tests simulate raw hex inputs and token defaults */
+ 
+import { savePreviewTokens as mockSavePreviewTokens } from "../src/app/cms/wizard/previewTokens";
+
 import {
+  act,
   fireEvent,
+  mockDeletePreset,
+  mockSavePreset,
   renderThemeEditor,
   screen,
   waitFor,
-  mockSavePreset,
-  mockDeletePreset,
-  act,
 } from "./ThemeEditor.test-utils";
 
 jest.mock("../src/app/cms/wizard/previewTokens", () => ({
   savePreviewTokens: jest.fn(),
 }));
-import { savePreviewTokens as mockSavePreviewTokens } from "../src/app/cms/wizard/previewTokens";
 
 describe("ThemeEditor - presets", () => {
   beforeEach(() => {

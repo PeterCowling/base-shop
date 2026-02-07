@@ -1,5 +1,6 @@
+import { publishPost,verifyCredentials } from "@acme/plugin-sanity";
+
 import { connectSanity, createSanityPost } from "../src/actions/sanity.server";
-import { verifyCredentials, publishPost } from "@acme/plugin-sanity";
 
 jest.mock("@acme/plugin-sanity", () => ({
   verifyCredentials: jest.fn(),

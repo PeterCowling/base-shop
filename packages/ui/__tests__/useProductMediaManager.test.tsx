@@ -1,9 +1,10 @@
 import React from "react";
-import { renderHook, act } from "@testing-library/react";
+import { act,renderHook } from "@testing-library/react";
+
 import { useProductMediaManager } from "../src/hooks/useProductMediaManager";
 
 // Mock platform publish locations
-jest.mock("@platform-core/hooks/usePublishLocations", () => ({
+jest.mock("@acme/platform-core/hooks/usePublishLocations", () => ({
   usePublishLocations: () => ({
     locations: [
       { id: "loc-a", requiredOrientation: "portrait" },

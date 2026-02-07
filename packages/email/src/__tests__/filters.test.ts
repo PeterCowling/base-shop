@@ -1,4 +1,4 @@
-import { matches, type Filter } from "../segments/filters";
+import { type Filter,matches } from "../segments/filters";
 
 describe("matches", () => {
   it("compares numeric values", () => {

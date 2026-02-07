@@ -1,6 +1,9 @@
 import type { ReactNode } from "react";
-import type { Column } from "@ui/components/cms/DataTable";
+
+import type { Column } from "@acme/cms-ui/DataTable";
+
 import type { ThemeTokenRow } from "./lib/pageSections";
+
 export type { ThemeTokenRow } from "./lib/pageSections";
 
 function isHexColor(value: string): boolean {

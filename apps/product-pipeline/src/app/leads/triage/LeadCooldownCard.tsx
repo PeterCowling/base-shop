@@ -1,7 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useState, type FormEvent } from "react";
-import { Cluster, Stack } from "@ui/components/atoms/primitives";
+import { type FormEvent,useCallback, useEffect, useState } from "react";
+
+import { Cluster, Stack } from "@acme/design-system/primitives";
+
 import type { LeadTriageStrings } from "./types";
 
 type CooldownFormState = {

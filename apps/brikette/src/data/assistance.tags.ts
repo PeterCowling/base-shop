@@ -1,10 +1,11 @@
 // src/data/assistance.tags.ts
-// Map Assistance article keys to high-level guide tags to power cross-links.
+// Map Assistance guide keys to high-level guide tags to power cross-links.
 // Tags should match those used in src/data/guides.index.ts
 
-import type { HelpArticleKey } from "@/routes.assistance-helpers";
+import type { GuideKey } from "@/routes.guides-helpers";
 
-export const ASSISTANCE_TAGS: Record<HelpArticleKey, string[]> = {
+// Partial because we only define tags for the assistance guides, not all guides.
+export const ASSISTANCE_TAGS: Partial<Record<GuideKey, string[]>> = {
   ageAccessibility: ["stairs", "safety", "positano"],
   bookingBasics: ["accommodation", "planning", "tips", "positano", "comparison"],
   changingCancelling: ["planning", "budgeting", "insurance", "tips"],
@@ -17,9 +18,10 @@ export const ASSISTANCE_TAGS: Record<HelpArticleKey, string[]> = {
   arrivingByFerry: ["transport", "ferry", "bus", "logistics", "stairs", "porters"],
   naplesAirportBus: ["transport", "bus", "naples", "logistics", "planning"],
   travelHelp: ["transport", "planning", "positano"],
+  hostelFaqs: ["hostel-life", "accommodation", "planning", "tips"],
 };
 
-export function tagsForAssistance(key: HelpArticleKey | undefined): string[] {
+export function tagsForAssistance(key: GuideKey | undefined): string[] {
   if (!key) return [];
   return ASSISTANCE_TAGS[key] ?? [];
 }

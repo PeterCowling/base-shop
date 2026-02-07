@@ -1,9 +1,12 @@
 // packages/ui/src/components/templates/ProductComparisonTemplate.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
+
 import type { SKU } from '@acme/types';
-import { ProductComparisonTemplate } from './ProductComparisonTemplate';
+
 import { makeStateStory } from '../../story-utils/createStories';
+
+import { ProductComparisonTemplate } from './ProductComparisonTemplate';
 
 const products: SKU[] = [
   {

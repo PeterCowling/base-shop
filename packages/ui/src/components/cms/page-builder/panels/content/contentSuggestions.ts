@@ -1,6 +1,6 @@
 // i18n-exempt file — editor-only suggestions UI; copy pending i18n wiring
-import type { PageComponent } from "@acme/types";
-import type { TextComponent, ImageComponent } from "@acme/types";
+import enMessages from "@acme/i18n/en.json";
+import type { ImageComponent,PageComponent , TextComponent } from "@acme/types";
 
 export interface ContentSuggestion {
   id: string;
@@ -29,8 +29,6 @@ function filenameToAlt(src?: string): string | undefined {
     return undefined;
   }
 }
-
-import enMessages from "@acme/i18n/en.json";
 
 type Translator = (key: string) => string;
 

@@ -1,9 +1,10 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import ThemeEditorForm from "../ThemeEditorForm";
 
-jest.mock("@ui/components/atoms/shadcn", () => ({
+jest.mock("@acme/design-system/shadcn", () => ({
   Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
   Select: ({ value, onValueChange, children, ...props }: any) => (
     <select
@@ -22,7 +23,7 @@ jest.mock("@ui/components/atoms/shadcn", () => ({
   SelectValue: () => null,
 }));
 
-jest.mock("@ui/components/cms/StyleEditor", () => ({
+jest.mock("@acme/cms-ui/StyleEditor", () => ({
   __esModule: true,
   default: ({ onChange }: any) => (
     <button onClick={() => onChange({ token: "value" })}>MockStyleEditor</button>
@@ -39,8 +40,8 @@ jest.mock("../ColorThemeSelector", () => ({
 }));
 
 const getContrastMock = jest.fn((fg: string, bg: string) => (fg === "low" || bg === "low" ? 1 : 5));
-jest.mock("@ui/components/cms", () => ({
-  getContrast: (...args: any) => getContrastMock(...args),
+jest.mock("@acme/cms-ui", () => ({
+  getContrast: (...args: [string, string]) => getContrastMock(...args),
 }));
 
 // Mock next/image without using a raw <img> to satisfy DS lint rules

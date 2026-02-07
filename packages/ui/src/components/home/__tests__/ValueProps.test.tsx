@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+
 import ValueProps from "../ValueProps";
 
 jest.mock("@acme/i18n", () => ({

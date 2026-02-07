@@ -1,8 +1,9 @@
-import { promises as fs } from "fs";
-import { join } from "path";
 import { NextResponse } from "next/server";
-import { requirePermission } from "@auth";
+import { promises as fs } from "fs";
 import { createRequire } from "module";
+import { join } from "path";
+
+import { requirePermission } from "@acme/auth";
 // The republish utility lives in the top-level scripts directory and isn't
 // published as a package. Load it via `createRequire` so the build can
 // resolve the CommonJS module without relying on a workspace alias.

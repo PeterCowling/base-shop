@@ -1,16 +1,16 @@
 // Focus: HTML sanitization behavior of sendCampaignEmail
 
+import {
+  cleanupEnv,
+  mockSanitizeHtml,
+  mockSendgridSend,
+  resetMocks,
+  setupEnv,
+} from "./sendCampaignTestUtils";
+
 jest.mock("../config", () => ({
   getDefaultSender: () => "from@example.com",
 }));
-
-import {
-  resetMocks,
-  mockSendgridSend,
-  mockSanitizeHtml,
-  setupEnv,
-  cleanupEnv,
-} from "./sendCampaignTestUtils";
 
 describe("send core – sendCampaignEmail (sanitization)", () => {
   beforeEach(() => {

@@ -1,8 +1,10 @@
 "use client";
-import { useCallback, useRef, useState } from "react";
 import type { DragEvent } from "react";
+import { useCallback, useRef, useState } from "react";
 import { ulid } from "ulid";
-import type { PageComponent, MediaItem } from "@acme/types";
+
+import type { MediaItem,PageComponent } from "@acme/types";
+
 import useFileUpload from "../../../../hooks/useFileUpload";
 import type { Action } from "../state/layout";
 

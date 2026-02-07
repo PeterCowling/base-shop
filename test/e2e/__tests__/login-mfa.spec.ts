@@ -1,5 +1,5 @@
 import { authenticator } from "otplib";
-import { enrollMfa, verifyMfa } from "@auth";
+import { enrollMfa, verifyMfa } from "@acme/auth";
 
 describe("MFA login", () => {
   it("allows login with TOTP", () => {

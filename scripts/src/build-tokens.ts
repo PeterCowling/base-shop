@@ -6,7 +6,10 @@ import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { runInNewContext } from "node:vm";
+
 import ts from "typescript";
+
+import { tokens } from "../../packages/themes/base/src/tokens";
 
 export interface Token {
   readonly light: string;
@@ -18,16 +21,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const require = createRequire(import.meta.url);
-const tokensPath = path.resolve(
-  __dirname,
-  "..",
-  "..",
-  "packages",
-  "themes",
-  "base",
-  "tokens.js"
-);
-const { tokens } = require(tokensPath) as { tokens: TokenMap };
 
 /* -------------------------------------------------------------------------- */
 /*  Base theme                                                                */
@@ -100,16 +93,18 @@ if (process.argv[1] === __filename) {
     "themes",
     "base"
   );
+  const dynamicCss = generateDynamicCss(tokens);
+  writeFileSync(path.join(baseDir, "tokens.css"), dynamicCss);
   writeFileSync(
     path.join(baseDir, "tokens.static.css"),
     generateStaticCss(tokens)
   );
   writeFileSync(
     path.join(baseDir, "tokens.dynamic.css"),
-    generateDynamicCss(tokens)
+    dynamicCss
   );
 
-  console.log("→ tokens.static.css and tokens.dynamic.css generated");
+  console.log("→ tokens.css, tokens.static.css, and tokens.dynamic.css generated");
 
   /* ---------------------------------------------------------------------- */
   /*  Extra themes                                                          */
@@ -147,6 +142,17 @@ export function generateThemeCss(map: Record<string, string>): string {
   return css;
 }
 
+function flattenTokenMap(map: TokenMap): Record<string, string> {
+  const flattened: Record<string, string> = {};
+  for (const [name, defs] of Object.entries(map)) {
+    flattened[name] = defs.light;
+    if (defs.dark !== undefined) {
+      flattened[`${name}-dark`] = defs.dark;
+    }
+  }
+  return flattened;
+}
+
 if (process.argv[1] === __filename) {
   async function buildThemeCss(): Promise<void> {
     const themesDir = path.resolve(__dirname, "..", "..", "packages", "themes");
@@ -154,9 +160,7 @@ if (process.argv[1] === __filename) {
       .filter((d) => d.isDirectory() && d.name !== "base")
       .map((d) => d.name);
 
-    for (const theme of themes) {
-      const modPath = path.join(themesDir, theme, "src", "tailwind-tokens.ts");
-      if (!existsSync(modPath)) continue;
+    const loadModuleExports = (modPath: string): Record<string, unknown> => {
       const source = readFileSync(modPath, "utf8");
       const transpiled = ts.transpileModule(source, {
         compilerOptions: { module: ts.ModuleKind.CommonJS },
@@ -173,10 +177,25 @@ if (process.argv[1] === __filename) {
       };
       sandbox.exports = sandbox.module.exports;
       runInNewContext(transpiled, sandbox);
+      return sandbox.module.exports;
+    };
 
-      const themeTokens = sandbox.module.exports.tokens as Record<string, string>;
-      const css = generateThemeCss(themeTokens);
-      writeFileSync(path.join(themesDir, theme, "src", "tokens.css"), css);
+    for (const theme of themes) {
+      const tailwindPath = path.join(themesDir, theme, "src", "tailwind-tokens.ts");
+      const tokensPath = path.join(themesDir, theme, "src", "tokens.ts");
+
+      if (existsSync(tailwindPath)) {
+        const themeTokens = loadModuleExports(tailwindPath).tokens as Record<string, string>;
+        const css = generateThemeCss(themeTokens);
+        writeFileSync(path.join(themesDir, theme, "tokens.css"), css);
+        continue;
+      }
+
+      if (existsSync(tokensPath)) {
+        const themeTokens = loadModuleExports(tokensPath).tokens as TokenMap;
+        const css = generateThemeCss(flattenTokenMap(themeTokens));
+        writeFileSync(path.join(themesDir, theme, "tokens.css"), css);
+      }
     }
   }
 

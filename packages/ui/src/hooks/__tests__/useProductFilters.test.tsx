@@ -1,10 +1,11 @@
 // packages/ui/hooks/__tests__/useProductFilters.test.tsx
+import { useEffect } from "react";
 import { describe, expect, it } from "@jest/globals";
 import { render, screen, waitFor } from "@testing-library/react";
-import { useEffect } from "react";
 
 import type { ProductPublication } from "@acme/types";
-import { useProductFilters, type ProductStatus } from "../useProductFilters";
+
+import { type ProductStatus,useProductFilters } from "../useProductFilters";
 
 /* ------------------------------------------------------------------
  * Test fixtures

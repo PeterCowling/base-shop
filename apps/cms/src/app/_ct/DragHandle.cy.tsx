@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { DragHandle } from '@acme/page-builder-ui';
 
 describe('DragHandle (CT)', { tags: ['inspectors'] }, () => {

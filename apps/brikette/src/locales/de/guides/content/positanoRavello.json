@@ -53,7 +53,7 @@
     "Wasser und Snacks mitnehmen – rund um den Busbahnhof Amalfi ist die Auswahl klein und teuer.",
     "Bequeme Schuhe mit Profil tragen: Ravello hat Gefälle und der Fußweg zwischen den Villen kann rutschig werden."
   ],
-  "faqsTitle": "FAQs",
+  "faqsTitle": "Häufige Fragen",
   "faqs": [
     {
       "q": "Ist die Route familienfreundlich?",
@@ -95,7 +95,7 @@
       },
       {
         "href": "#faqs",
-        "label": "FAQs"
+        "label": "Häufige Fragen"
       }
     ],
     "sections": [
@@ -115,7 +115,7 @@
       }
     ],
     "tipsTitle": "Tipps",
-    "faqsTitle": "FAQs",
+    "faqsTitle": "Häufige Fragen",
     "faqs": [
       {
         "q": "Wie viel Zeit sollte ich für Ravello einplanen?",

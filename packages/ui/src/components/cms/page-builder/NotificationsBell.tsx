@@ -2,9 +2,11 @@
 // i18n-exempt — editor-only notifications UI; copy slated for extraction
 
 import React from "react";
-import { Popover, PopoverTrigger, PopoverContent, Tooltip } from "../../atoms";
 import { BellIcon } from "@radix-ui/react-icons";
+
 import { useTranslations } from "@acme/i18n";
+
+import { Popover, PopoverContent, PopoverTrigger, Tooltip } from "../../atoms";
 
 export default function NotificationsBell({ shop, pageId }: { shop?: string | null; pageId?: string | null }) {
   const t = useTranslations();

@@ -1,5 +1,6 @@
 import React from "react";
 import { render, within } from "@testing-library/react";
+
 import BlockChildren from "../src/components/cms/page-builder/BlockChildren";
 
 // Lightweight stub to avoid heavy canvas item rendering

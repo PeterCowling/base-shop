@@ -1,0 +1,9 @@
+# Brikette Cloudflare Workers deployment config (via @opennextjs/cloudflare)
+name = "brikette-staging"
+main = ".open-next/worker.js"
+compatibility_date = "2025-06-20"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"

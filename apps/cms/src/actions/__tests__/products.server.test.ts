@@ -1,5 +1,29 @@
 /** @jest-environment node */
 
+import { redirect } from 'next/navigation';
+
+import {
+  deleteProductFromRepo,
+  duplicateProductInRepo,
+  getProductById,
+  readRepo,
+  readSettings,
+  updateProductInRepo,
+  writeRepo,
+} from '@acme/platform-core/repositories/json.server';
+
+import { captureException } from '@/utils/sentry.server';
+
+import { ensureAuthorized } from '../common/auth';
+import {
+  createDraft,
+  createDraftRecord,
+  deleteProduct,
+  duplicateProduct,
+  promoteProduct,
+  updateProduct,
+} from '../products.server';
+
 jest.mock('../common/auth', () => ({
   ensureAuthorized: jest.fn(),
 }));
@@ -8,7 +32,7 @@ jest.mock('next/navigation', () => ({
   redirect: jest.fn(),
 }));
 
-jest.mock('@platform-core/repositories/json.server', () => ({
+jest.mock('@acme/platform-core/repositories/json.server', () => ({
   readSettings: jest.fn(),
   readRepo: jest.fn(),
   writeRepo: jest.fn(),
@@ -21,27 +45,6 @@ jest.mock('@platform-core/repositories/json.server', () => ({
 jest.mock('@/utils/sentry.server', () => ({
   captureException: jest.fn(),
 }));
-
-import {
-  createDraftRecord,
-  createDraft,
-  updateProduct,
-  duplicateProduct,
-  deleteProduct,
-  promoteProduct,
-} from '../products.server';
-import { ensureAuthorized } from '../common/auth';
-import {
-  readSettings,
-  readRepo,
-  writeRepo,
-  getProductById,
-  updateProductInRepo,
-  duplicateProductInRepo,
-  deleteProductFromRepo,
-} from '@platform-core/repositories/json.server';
-import { redirect } from 'next/navigation';
-import { captureException } from '@/utils/sentry.server';
 
 describe('products.server actions', () => {
   const shop = 'shop1';

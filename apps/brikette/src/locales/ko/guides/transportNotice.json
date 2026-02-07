@@ -1,11 +1,11 @@
 {
-  "title": "교통 정보는 반드시 재확인하세요",
+  "title": "교통 정보는 선의로 제공됩니다. 이후 환승이나 시간에 민감한 일정이 있다면 특히 공식 시간표와 운행 공지(공지사항)를 반드시 확인하세요. 아래에 관련 운행사 시간표 링크를 정리했습니다.",
   "items": {
-    "buses": "번역을 준비하고 있습니다.",
-    "ferries": "페리: 계절과 날씨에 따라 운항이 달라집니다. <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink> 등 운영사 공지를 확인하세요.",
-    "airlink": "번역을 준비하고 있습니다.",
-    "driving": "운전: SS163 도로는 번호판 요일제(4~10월)와 ZTL이 있습니다. 주차 요금은 계절과 위치에 따라 다르니, 공식 공지사항을 확인하세요.",
-    "premium": "프리미엄·계절 상품: 우버 보트와 헬리콥터 전세는 여름에만 제한적으로 운영됩니다. 이용 전 최신 정보를 확인하세요."
+    "buses": "버스: <sitaLink>아말피 해안</sitaLink> 및 <curreriLink>나폴리 공항 ⇄ 소렌토</curreriLink>.",
+    "trains": "기차: <eavLink>Circumvesuviana</eavLink> (Naples ⇄ Sorrento), <trenitaliaLink>Trenitalia</trenitaliaLink> (본선 열차).",
+    "ferries": "페리: 주요 운항사: <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink>, <positanoJetLink>Positano Jet</positanoJetLink>, <alicostLink>Alicost</alicostLink>.",
+    "airlink": "살레르노 코스타 다말피(QSR) 공항, <airlinkLink>살레르노행 Airlink 셔틀</airlinkLink>.",
+    "driving": "운전: SS163 도로는 번호판 요일제(4~10월)와 ZTL이 있습니다. 주차 요금은 계절과 위치에 따라 다르니, 공식 공지사항을 확인하세요."
   },
   "srLabel": "교통 공지"
 }

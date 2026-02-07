@@ -1,8 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import ArtifactsUploadCard from "./ArtifactsUploadCard";
+
 import ArtifactsList from "./ArtifactsList";
+import ArtifactsUploadCard from "./ArtifactsUploadCard";
 import type { ArtifactEntry, ArtifactsStrings } from "./types";
 
 export default function ArtifactsClient({

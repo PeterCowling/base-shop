@@ -1,105 +1,105 @@
 {
   "seo": {
-    "title": "Főzőtanfolyamok az Amalfi-parton",
-    "description": "Mire számíts egy órán, mit fogsz főzni és hogyan válassz tanfolyamot."
+    "title": "Főzőkurzusok az Amalfi-parton",
+    "description": "Milyen egy kurzus, mit főzöl és hogyan válassz."
   },
-  "linkLabel": "Főzőtanfolyamok az Amalfi-parton",
+  "linkLabel": "Főzőkurzusok az Amalfi-parton",
   "intro": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
+    "Az Amalfi-parti főzőkurzusok felfűzik az sfusato citromokat, friss tésztát és családi recepteket kis konyhákban panorámával.",
+    "Ez az útmutató segít kiválasztani a költségvetésedhez és időbeosztásodhoz megfelelő kurzust, és ellenőrizni a részleteket, mielőtt leteszed az előleget."
   ],
   "sections": [
     {
       "id": "flow",
-      "title": "A fordítás folyamatban van.",
+      "title": "Így zajlik egy tipikus kurzus",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "A házigazdák kávéval vagy proseccóval köszöntenek, majd bemutatják a hozzávalókat: friss citromhéjat, szezonális zöldségeket és a saját készítésű tésztát.",
+        "Két–három fogást főztök: friss tészta, szósz és citromos desszert, majd közösen megvacsoráztok; a foglalkozás 2,5–4 órát tart az étkezéssel együtt."
       ]
     },
     {
       "id": "choose",
-      "title": "Choosing the right class",
+      "title": "Hogy válassz",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Nézd meg a csoport méretét és hogy a konyha Positanóban, egy domboldali farmon vagy szomszédos településen van-e; az utazás lehet benne az árban vagy külön fizetendő.",
+        "Tudd meg, mi jár az árban: alapanyagok, borpárosítás, nyomtatott receptek, takaró és maradék hazavitel."
       ]
     },
     {
       "id": "logistics",
-      "title": "Logistics and timing",
+      "title": "Logisztika és időzítés",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "A főszezonban hetekre előre fogynak a kurzusok; biztosítsd a helyed még az utazás előtt, különösen az esti programokra.",
+        "Ha a helyszín Positanón kívül van, erősítsd meg a felvételi pontot, vagy számolj taxival; a lépcsők miatt kényelmes cipő ajánlott."
       ]
     },
     {
       "id": "dietary",
-      "title": "A fordítás folyamatban van.",
+      "title": "Diéta és etikett",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Közöld az allergiákat, vegetáriánus vagy gluténmentes igényeket foglaláskor; sokan képesek a menüt módosítani.",
+        "Viselj zárt cipőt, kösd hátra a hosszú hajadat, és kerüld a túl erős parfümöt – a konyhák kicsik, a friss hozzávalók közel vannak."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Kezdőknek való?",
       "a": [
-        "A fordítás folyamatban van."
+        "Igen. Az oktatók minden lépést bemutatnak, javítanak menet közben, és felosztják a feladatokat, így senki sem érezheti kapkodónak."
       ]
     },
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Kell beszélnem olaszul?",
       "a": [
-        "A fordítás folyamatban van."
+        "Nem. A legtöbb kurzus angolul vagy kétnyelvűen zajlik, és a vizuális bemutatók megkönnyítik a követést."
       ]
     },
     {
-      "q": "What should I bring?",
+      "q": "Mit vigyek?",
       "a": [
-        "A fordítás folyamatban van."
+        "Hozz egy kis jegyzetfüzetet, ha szeretsz tippeket leírni, töltsd fel a telefonod fotókhoz, és tarts készpénzt a további fizetésekre vagy közlekedésre."
       ]
     }
   ],
   "fallback": {
     "intro": [
-      "A fordítás folyamatban van."
+      "Kézzel gyúrt tészta, szószok, citromos desszert és kis csoportos konyhák."
     ],
     "toc": [
       {
         "href": "#what",
-        "label": "What to expect"
+        "label": "Mit várhatsz"
       },
       {
         "href": "#choose",
-        "label": "How to choose"
+        "label": "Hogyan válassz"
       },
       {
         "href": "#tips",
-        "label": "Tips"
+        "label": "Tippek"
       }
     ],
     "sections": [
       {
         "id": "what",
-        "title": "What to expect",
+        "title": "Mit várhatsz",
         "body": [
-          "A fordítás folyamatban van."
+          "Kézmunka tészta, szósz és citromos desszert; kis csoport és szép konyha."
         ]
       },
       {
         "id": "choose",
-        "title": "How to choose",
+        "title": "Hogyan válassz",
         "body": [
-          "A fordítás folyamatban van."
+          "Nézd meg a csoport méretét, időtartamát, mit tartalmaz és hogyan jutok oda."
         ]
       },
       {
         "id": "tips",
-        "title": "Tips",
+        "title": "Tippek",
         "body": [
-          "A fordítás folyamatban van."
+          "Foglalj előre a csúcsszezonban; jelezd a diétás igényeket."
         ]
       }
     ]

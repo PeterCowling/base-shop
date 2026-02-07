@@ -1,8 +1,11 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import { StickyAddToCartBar } from "../StickyAddToCartBar";
-import type { SKU } from "@acme/types";
 import "@testing-library/jest-dom";
 import "../../../../../../test/resetNextMocks";
+
+import { fireEvent, render, screen } from "@testing-library/react";
+
+import type { SKU } from "@acme/types";
+
+import { StickyAddToCartBar } from "../StickyAddToCartBar";
 
 jest.mock("@acme/platform-core/contexts/CurrencyContext", () => ({
   useCurrency: () => ["USD", jest.fn()],

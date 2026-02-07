@@ -1,0 +1,142 @@
+{
+  "seo": {
+    "title": "Path of the Gods via shuttle de Nocelle",
+    "description": "Apanhe o autocarro Montepertuso–Nocelle para uma caminhada de ida e volta no Sentiero degli Dei, com horários, dicas e opções de regresso."
+  },
+  "linkLabel": "Path of the Gods via shuttle de Nocelle",
+  "intro": [
+    "Com pouco tempo ou quer evitar várias ligações? Apanhe o autocarro Montepertuso–Nocelle desde o Hostel Brikette, percorra a secção mais panorâmica do Path of the Gods em ida e volta e regresse pelo mesmo caminho.",
+    "Esta opção evita o ferry e a ligação em Amalfi, sendo ideal para dias tranquilos ou viajantes que preferem um roteiro mais leve."
+  ],
+  "sections": [
+    {
+      "id": "prep",
+      "title": "Prepare-se no hostel",
+      "body": [
+        "Compre dois bilhetes de autocarro por pessoa no Bar Internazionale: Positano → Nocelle e Nocelle → Positano. A equipa pode sugerir a combinação mais económica.",
+        "Consulte o horário mais recente do Montepertuso/Nocelle para saber qual é o último regresso antes do pôr do sol.",
+        "Leve água, snacks e camadas. O quiosque em Nocelle vende bebidas na época, mas não há lojas ao longo do trilho."
+      ]
+    },
+    {
+      "id": "bus-to-nocelle",
+      "title": "Suba de autocarro até Nocelle",
+      "body": [
+        "Espere em frente ao Bar Internazionale. Os autocarros exibem “Montepertuso - Nocelle” na frente.",
+        "A viagem sobe por Montepertuso antes de terminar no pequeno parque de estacionamento em Nocelle. Permaneça a bordo até o autocarro fazer inversão de marcha para descer novamente — essa é a sua paragem.",
+        "Valide o bilhete ao embarcar e guarde-o à mão para o regresso."
+      ]
+    },
+    {
+      "id": "walk-through-town",
+      "title": "Atravesse Nocelle até ao trilho",
+      "body": [
+        "Do parque de estacionamento, siga as escadas pedonais até ao passeio principal e vire à esquerda.",
+        "Caminhe cerca de 175 metros, mantendo-se à direita na bifurcação principal para evitar a escadaria que desce para Positano.",
+        "Continue em frente até encontrar as placas do Sentiero degli Dei e o caminho de pedra que sai da aldeia."
+      ]
+    },
+    {
+      "id": "hike",
+      "title": "Caminhe até onde quiser",
+      "body": [
+        "Siga em direção ao Colle Serra para os melhores miradouros. A ida e volta completa até Bomerano tem cerca de 11,6 km, mas pode inverter o sentido quando quiser.",
+        "Siga as marcas vermelho e branco do CAI, pise com cuidado nas zonas expostas e pare para fotografias nos balcões panorâmicos.",
+        "Quando estiver pronto, volte pelo mesmo caminho até Nocelle."
+      ]
+    },
+    {
+      "id": "return",
+      "title": "Regresse a Positano",
+      "body": [
+        "Atravesse Nocelle pelo mesmo percurso, virando à direita na bifurcação principal para chegar à paragem de autocarro.",
+        "Use o bilhete de regresso para descer até ao Bar Internazionale ou Chiesa Nuova. Se os autocarros estiverem cheios, pode descer pela estrada asfaltada (cerca de 4 km), mas conte com 45–60 minutos.",
+        "Evite o atalho das escadas, a não ser que queira propositadamente uma longa descida que exige dos joelhos e termina no lado oposto da vila."
+      ]
+    },
+    {
+      "id": "journey-planner",
+      "title": "Exemplos de horários",
+      "body": [
+        "06h30 autocarro → 06h50 chegada a Nocelle → caminhada de 3 horas → 09h50 autocarro de regresso → 10h10 chegada a Positano (3h40 porta a porta).",
+        "08h30 partida → 08h50 chegada a Nocelle → caminhada de 3h20 → 11h50 autocarro de regresso → 12h10 chegada a Positano (4h no total).",
+        "10h30 partida → 10h50 chegada a Nocelle → caminhada de 3 horas → 13h50 autocarro de regresso → 14h10 chegada a Positano (3h40 no total)."
+      ]
+    }
+  ],
+  "essentialsTitle": "Essenciais",
+  "essentials": [
+    "Dois bilhetes SITA por pessoa (subida e descida) mais um extra.",
+    "Água, snacks, protetor solar e chapéu para a crista exposta.",
+    "Calçado confortável com aderência e bastões de caminhada opcionais para degraus irregulares."
+  ],
+  "typicalCostsTitle": "Custos médios",
+  "typicalCosts": [
+    "Bilhetes do shuttle para Nocelle: 1,80–2,40 € por trajeto, conforme o passe.",
+    "Granita ou bebidas no quiosque de Nocelle: 3–5 €.",
+    "Acesso ao trilho: gratuito."
+  ],
+  "tipsTitle": "Dicas de percurso",
+  "tips": [
+    "Tente sair de manhã cedo para aproveitar temperaturas mais frescas e trilhos tranquilos.",
+    "Leve um casaco leve — a crista pode ter vento mesmo quando Positano está quente.",
+    "Reserve um miminho no quiosque perto da igreja para celebrar o regresso."
+  ],
+  "warningsTitle": "Atenções",
+  "warnings": [
+    "Ignore o sinal que aponta para a escadaria até Positano, a menos que queira uma descida exigente que termina longe do hostel.",
+    "Os autocarros são menos frequentes à tarde — defina um alarme para o último horário que consegue apanhar com conforto.",
+    "O trilho é exposto; evite caminhar nas horas mais quentes durante julho e agosto."
+  ],
+  "steps": [
+    {
+      "name": "Compre os bilhetes de autocarro",
+      "text": "Adquira os bilhetes para Nocelle no Bar Internazionale antes de sair do hostel."
+    },
+    {
+      "name": "Suba até Nocelle",
+      "text": "Apanhe o autocarro Montepertuso–Nocelle e fique a bordo até ele inverter a marcha no parque."
+    },
+    {
+      "name": "Acesse o trilho",
+      "text": "Siga o caminho pedonal pela aldeia, mantendo-se à direita para encontrar as placas do Sentiero degli Dei."
+    },
+    {
+      "name": "Caminhada de ida e volta",
+      "text": "Caminhe em direção ao Colle Serra e volte quando estiver pronto para regressar."
+    },
+    {
+      "name": "Regresso a Positano",
+      "text": "Refaça o percurso até à paragem e regresse de autocarro ao Bar Internazionale ou Chiesa Nuova."
+    }
+  ],
+  "faqsTitle": "Perguntas frequentes",
+  "faqs": [
+    {
+      "q": "Quanto devo caminhar antes de voltar?",
+      "a": [
+        "Muitos caminhantes continuam 45–60 minutos em direção ao Colle Serra para alcançar os miradouros mais famosos e depois regressam. Reserve mais tempo se pretende chegar a Bomerano."
+      ]
+    },
+    {
+      "q": "O autocarro de Nocelle é fiável?",
+      "a": [
+        "Sim, mas segue um horário fixo com intervalos maiores ao meio-dia. Verifique o quadro no Bar Internazionale e planeie uma margem caso o autocarro esteja cheio."
+      ]
+    },
+    {
+      "q": "Posso descer a pé em vez de apanhar o autocarro?",
+      "a": [
+        "Pode descer pela estrada asfaltada em cerca de 45–60 minutos. Evite a escadaria a não ser que procure um treino intenso e esteja confortável com milhares de degraus."
+      ]
+    }
+  ],
+  "toc": {
+    "onThisPage": "Nesta página",
+    "essentials": "Essenciais",
+    "costs": "Custos médios",
+    "tips": "Dicas de percurso",
+    "warnings": "Atenções",
+    "faqs": "Perguntas frequentes"
+  }
+}

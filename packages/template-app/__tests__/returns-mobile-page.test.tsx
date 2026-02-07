@@ -1,18 +1,19 @@
 /** @jest-environment jsdom */
 import { render, screen } from "@testing-library/react";
+
 import MobileReturnPage from "../src/app/returns/mobile/page";
 
-jest.mock("@platform-core/returnLogistics", () => ({
+jest.mock("@acme/platform-core/returnLogistics", () => ({
   getReturnLogistics: jest.fn(),
   getReturnBagAndLabel: jest.fn(),
 }));
-const rl = jest.requireMock("@platform-core/returnLogistics");
+const rl = jest.requireMock("@acme/platform-core/returnLogistics");
 
-jest.mock("@platform-core/repositories/shops.server", () => ({
+jest.mock("@acme/platform-core/repositories/shops.server", () => ({
   getShopSettings: jest.fn(),
   readShop: jest.fn(),
 }));
-const shops = jest.requireMock("@platform-core/repositories/shops.server");
+const shops = jest.requireMock("@acme/platform-core/repositories/shops.server");
 
 jest.mock("../src/components/CleaningInfo", () => {
   function CleaningInfoMock() {

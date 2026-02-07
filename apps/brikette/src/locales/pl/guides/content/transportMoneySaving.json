@@ -5,45 +5,44 @@
   },
   "linkLabel": "Jak oszczędzać na transporcie na Wybrzeżu Amalfitańskim",
   "intro": [
-    "Tłumaczenie w przygotowaniu."
+    "Praktyczne sposoby na obniżenie kosztów transportu: karnety, odpowiednie godziny podróży, mieszanie autobusu i promu oraz plany awaryjne na pogorszenie pogody."
   ],
-  "planChoiceTitle": "Pick your savings focus",
   "sections": [
     {
       "id": "passes",
-      "title": "Passes vs singles",
+      "title": "Karnety czy bilety jednorazowe",
       "body": [
-        "Tłumaczenie w przygotowaniu."
+        "Korzystaj z karnetów tylko wtedy, gdy robisz kilka przejazdów dziennie; w przeciwnym razie bardziej ekonomiczne są pojedyncze bilety. Pamiętaj o skasowaniu."
       ]
     },
     {
       "id": "timing",
-      "title": "Timing & routing",
+      "title": "Czas i trasa",
       "body": [
-        "Tłumaczenie w przygotowaniu."
+        "Podróżuj poza godzinami szczytu 10:00–16:00 w dni największego ruchu; wybieraj autobusy bezpośrednie na grzbiety i promy na widokowe odcinki."
       ]
     },
     {
       "id": "mixing",
-      "title": "Tłumaczenie w przygotowaniu.",
+      "title": "Mieszanie autobusu i promu",
       "body": [
-        "Tłumaczenie w przygotowaniu."
+        "Wybierz jeden płatny rejs promem (Positano ↔ Amalfi) i korzystaj z autobusów w pozostałych trasach, by oszczędzać przy zachowaniu komfortu."
       ]
     },
     {
       "id": "contingency",
-      "title": "Weather contingency",
+      "title": "Plan awaryjny na pogodę",
       "body": [
-        "Tłumaczenie w przygotowaniu."
+        "Wzburzone morze odwołuje promy: miej plan B z autobusem i zostaw margines na ostatnie popołudniowe kursy."
       ]
     }
   ],
-  "faqsTitle": "FAQs",
+  "faqsTitle": "Najczęściej zadawane pytania",
   "faqs": [
     {
-      "q": "Are combo tickets worth it?",
+      "q": "Czy bilety łączone się opłacają?",
       "a": [
-        "Czasami na dni promowe z wieloma przeskokami; porównać z taryfami pojedynczymi."
+        "Czasem tak podczas dni z wieloma przesiadkami promowymi — porównaj ceny z biletami pojedynczymi."
       ]
     }
   ]

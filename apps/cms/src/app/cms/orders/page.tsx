@@ -1,8 +1,10 @@
 // apps/cms/src/app/cms/orders/page.tsx
 
-import OrdersShopChooser from "./OrdersShopChooser.client";
-import { Tag } from "@ui/components/atoms";
+import { Tag } from "@acme/design-system/atoms";
+
 import { listShops } from "../../../lib/listShops";
+
+import OrdersShopChooser from "./OrdersShopChooser.client";
 
 export default async function OrdersIndexPage() {
   const shops = await listShops();

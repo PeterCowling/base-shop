@@ -1,6 +1,7 @@
-import { syncTheme } from "@platform-core/createShop";
-import { baseTokens, loadThemeTokens } from "@platform-core/themeTokens";
+import { syncTheme } from "@acme/platform-core/createShop";
+import { baseTokens, loadThemeTokens } from "@acme/platform-core/themeTokens";
 import type { Shop } from "@acme/types";
+
 import type { ShopForm } from "./validation";
 
 export async function buildThemeData(
@@ -15,10 +16,11 @@ export async function buildThemeData(
   const overrides = form.themeOverrides as Record<string, string>;
   let themeDefaults: Record<string, string>;
   if (!form.themeDefaults || Object.keys(form.themeDefaults).length === 0) {
-    themeDefaults =
+    themeDefaults = (
       current.themeId !== form.themeId
         ? await syncTheme(shop, form.themeId)
-        : { ...baseTokens, ...(await loadThemeTokens(form.themeId)) };
+        : { ...baseTokens, ...(await loadThemeTokens(form.themeId)) }
+    ) as Record<string, string>;
   } else {
     themeDefaults = form.themeDefaults as Record<string, string>;
   }

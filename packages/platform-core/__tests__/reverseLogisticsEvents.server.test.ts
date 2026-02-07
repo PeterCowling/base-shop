@@ -1,3 +1,8 @@
+import { nowIso } from "@acme/date-utils";
+
+import { prisma } from "../src/db";
+import * as repo from "../src/repositories/reverseLogisticsEvents.server";
+
 jest.mock("../src/db", () => ({
   prisma: {
     reverseLogisticsEvent: {
@@ -10,10 +15,6 @@ jest.mock("../src/db", () => ({
 jest.mock("@acme/date-utils", () => ({
   nowIso: jest.fn(() => "now"),
 }));
-
-import { prisma } from "../src/db";
-import { nowIso } from "@acme/date-utils";
-import * as repo from "../src/repositories/reverseLogisticsEvents.server";
 
 const create = prisma.reverseLogisticsEvent.create as jest.Mock;
 const findMany = prisma.reverseLogisticsEvent.findMany as jest.Mock;

@@ -1,28 +1,139 @@
 {
   "seo": {
-    "title": "Hostel Brikette sunrise hike",
-    "description": "Percorso prima dell'alba dall'Hostel Brikette fino a un tranquillo punto panoramico in cima a una scogliera con vista ininterrotta dell'alba su Positano."
+    "title": "Escursione all'alba dall'Hostel Brikette (Positano)",
+    "description": "Una breve escursione pre-alba dall'Hostel Brikette a un tranquillo punto panoramico sopra Positano, con foto di navigazione nell'ordine corretto."
   },
-  "linkLabel": "Hostel Brikette sunrise hike",
-  "intro": [],
-  "sections": [],
-  "tips": [],
-  "faqs": [],
-  "gallery": {
-    "title": "Immagini",
-    "items": [
-      {
-        "alt": "QR code to share the guide",
-        "caption": "Scansiona per condividere"
-      },
-      {
-        "alt": "House at the top of the initial climb",
-        "caption": "Casa in cima alle scale"
-      },
-      {
-        "alt": "Viewpoint over Positano at sunrise",
-        "caption": "Belvedere con alba su Positano"
-      }
-    ]
-  }
+  "linkLabel": "Escursione all'alba: Guarda l'alba sorgere su Positano",
+  "lastUpdated": "2026-02-04",
+  "intro": [
+    "Se desideri l'alba più semplice, puoi guardare l'aurora dalla terrazza comune dell'ostello mentre il sole sorge a sinistra (quando guardi verso il mare).",
+    "Se desideri un panorama più ampio e un momento più tranquillo sopra la città, segui questa breve escursione sulle colline fino a un punto panoramico su una scogliera sopra Positano."
+  ],
+  "sections": [
+    {
+      "id": "what-is",
+      "title": "Cos'è l'escursione all'alba?",
+      "body": [
+        "Questa è una breve escursione di andata e ritorno prima dell'alba dall'Hostel Brikette a un piccolo punto panoramico sopra Positano.",
+        "Se desideri un'opzione montana più lunga, %LINK:santaMariaDelCastelloHike|Santa Maria del Castello% è un'ottima alternativa, ma il percorso qui sotto è il modo più veloce per ottenere una vista drammatica dell'alba senza impegnarti in un'escursione di un'intera giornata."
+      ]
+    },
+    {
+      "id": "before-you-go",
+      "title": "Prima di partire (sarà buio)",
+      "body": [
+        "Porta una luce del telefono o una lampada frontale e tieni le mani libere (specialmente sulle scale).",
+        "Indossa scarpe con presa — la prima parte è pavimentata, ma il sentiero nel bosco può essere sciolto o umido.",
+        "Parti abbastanza presto per arrivare 10-15 minuti prima dell'alba in modo da poterti sistemare, trovare il tuo posto e goderti la prima luce."
+      ]
+    },
+    {
+      "id": "step-1",
+      "title": "Passo 1: Cammina dall'ostello alla scala (≈350 m)",
+      "body": [
+        "Esci dall'ostello dalla porta principale e scendi fino alla strada.",
+        "Gira verso Sorrento e cammina per circa **350 metri** lungo la strada principale fino a raggiungere una scala che sale dalla strada."
+      ]
+    },
+    {
+      "id": "step-2",
+      "title": "Passo 2: Sali fino alla casa, poi gira a sinistra",
+      "body": [
+        "Prendi la scala fino in cima fino a raggiungere la vecchia casa bianca raffigurata qui sotto.",
+        "Alla casa, **gira a sinistra** per unirti al sentiero nel bosco."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/02-house.jpg",
+          "alt": "Vecchia casa bianca accanto alla scala sul percorso dell'escursione all'alba sopra Positano",
+          "caption": "Questo edificio segna la fine della salita delle scale; gira a sinistra qui per entrare nel sentiero nel bosco.",
+          "width": 876,
+          "height": 530
+        }
+      ]
+    },
+    {
+      "id": "step-3",
+      "title": "Passo 3: Segui il sentiero nel bosco fino al punto panoramico",
+      "body": [
+        "Segui il sentiero nel bosco mentre sale dolcemente allontanandosi dalla casa.",
+        "Quando il sentiero si biforca, prendi il ramo di **destra**.",
+        "Raggiungerai infine un punto in cui gli alberi si aprono e puoi vedere il mare dritto davanti a te. Da lì, dirigiti a **sinistra**.",
+        "Quel sentiero sinistro ti porta al punto panoramico. Puoi arrampicarti con attenzione sulle rocce per una posizione più alta, o restare nel punto principale per una vista stabile."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/03-viewpoint.jpg",
+          "alt": "Vista dall'alto della mappa che mostra le ultime svolte sul percorso dell'escursione all'alba verso il punto panoramico sopra Positano",
+          "caption": "Usa questa vista dall'alto per confermare l'ultima svolta a sinistra verso il punto panoramico dopo che il sentiero si apre al mare.",
+          "width": 677,
+          "height": 600
+        }
+      ]
+    },
+    {
+      "id": "share",
+      "title": "Condividi questa guida (QR)",
+      "body": [
+        "Se esci con amici, puoi usare questo codice QR per condividere rapidamente la guida su un altro telefono."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/01-qr.png",
+          "alt": "Codice QR che collega alla guida dell'escursione all'alba dell'Hostel Brikette",
+          "width": 450,
+          "height": 450
+        }
+      ]
+    }
+  ],
+  "essentialsTitle": "Essenziali",
+  "essentials": [
+    "Lampada frontale o luce del telefono (più una batteria carica).",
+    "Scarpe con presa e uno strato leggero — può sentirsi fresco e ventoso prima dell'alba.",
+    "Acqua e uno spuntino piccolo se prevedi di sederti e guardare l'alba."
+  ],
+  "tipsTitle": "Tempismo intelligente",
+  "tips": [
+    "Fai un rapido controllo delle previsioni: vento e nuvole basse possono nascondere l'alba anche in giorni altrimenti sereni.",
+    "Se sei incerto su un incrocio al buio, fermati e conferma i tuoi orientamenti piuttosto che indovinare."
+  ],
+  "warningsTitle": "Note di sicurezza",
+  "warnings": [
+    "Vai piano sulle scale e tieni le mani libere — è facile fare un passo falso con poca luce.",
+    "Se il sentiero sembra scivoloso dopo la pioggia, considera di guardare dalla terrazza dell'ostello invece."
+  ],
+  "steps": [
+    {
+      "name": "Cammina fino alla scala",
+      "text": "Dall'ostello, cammina ~350 m verso Sorrento sulla strada principale fino a individuare la scala che sale in salita."
+    },
+    {
+      "name": "Sali fino alla casa",
+      "text": "Segui le scale fino alla vecchia casa bianca, poi gira a sinistra sul sentiero nel bosco."
+    },
+    {
+      "name": "Prendi il ramo destro",
+      "text": "Quando il sentiero nel bosco si biforca, tieni la destra e continua fino a vedere il mare."
+    },
+    {
+      "name": "Gira a sinistra verso il punto panoramico",
+      "text": "Dopo che il sentiero si apre al mare, dirigiti a sinistra per raggiungere il punto panoramico (arrampicati con attenzione se vuoi una posizione più alta)."
+    }
+  ],
+  "faqsTitle": "FAQ",
+  "faqs": [
+    {
+      "q": "Posso semplicemente guardare l'alba dall'ostello?",
+      "a": [
+        "Sì — la terrazza dell'ostello è l'opzione più semplice e il sole sorge a sinistra dell'edificio quando guardi verso il mare."
+      ]
+    },
+    {
+      "q": "Quanto tempo richiede l'escursione?",
+      "a": [
+        "È un percorso breve, ma i tempi dipendono dal tuo ritmo e da quanto tempo trascorri al punto panoramico. Lascia abbastanza tempo per arrivare 10-15 minuti prima dell'alba."
+      ]
+    }
+  ]
 }

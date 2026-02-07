@@ -1,9 +1,11 @@
-import { readFile, readdir } from "node:fs/promises";
+import { readdir,readFile } from "node:fs/promises";
 import path from "node:path";
+
 import type { Prisma } from "@prisma/client";
 
-import { prisma } from "../src/db";
 import { nowIso } from "@acme/date-utils";
+
+import { prisma } from "../src/db";
 import { variantKey } from "../src/types/inventory";
 
 const skipInventory = process.argv.includes("--skip-inventory");

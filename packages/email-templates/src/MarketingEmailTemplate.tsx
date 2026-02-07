@@ -1,5 +1,6 @@
 import * as React from "react";
-import { Logo } from "@acme/ui";
+
+import { Logo } from "@acme/ui/components/atoms/Logo";
 
 export interface MarketingEmailTemplateProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "content"> {

@@ -1,11 +1,11 @@
 {
-  "title": "Kontrollera alltid information om transporter",
+  "title": "All transportinformation lämnas i god tro. Kontrollera alltid officiella tidtabeller och driftmeddelanden, särskilt om du har vidare anslutningar eller andra tidskritiska åtaganden. Länkar till relevanta operatörers tidtabeller finns nedan.",
   "items": {
-    "buses": "Bussar: kontrollera officiella tidtabeller från SITA Sud — <sitaLink>sitasudtrasporti.it</sitaLink>.",
-    "ferries": "Färjor: rederierna publicerar säsongsavgångar och tider (väderberoende). Se <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink>.",
-    "airlink": "Flyger du till Salerno Costa d’Amalfi (QSR)? Använd Airlink-bussen till Salerno — <airportLink>aeroportodisalerno.it</airportLink> och <airlinkLink>FS Busitalia Airlink</airlinkLink>.",
-    "driving": "Bil: SS163 har växelvisa registreringsbegränsningar (apr–okt) och ZTL; parkeringskostnader varierar efter säsong och plats. Kontrollera officiella aviseringar.",
-    "premium": "Premium eller säsong: Uber Boat och helikoptercharter kör begränsade sommarturer — bekräfta aktuell tillgänglighet."
+    "buses": "Bussar: <sitaLink>Amalfikusten</sitaLink> och <curreriLink>Neapels flygplats ⇄ Sorrento</curreriLink>.",
+    "trains": "Tåg: <eavLink>Circumvesuviana</eavLink> (Naples ⇄ Sorrento), <trenitaliaLink>Trenitalia</trenitaliaLink> (huvudlinjetåg).",
+    "ferries": "Färjor: Operatörer inkluderar <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink>, <positanoJetLink>Positano Jet</positanoJetLink>, <alicostLink>Alicost</alicostLink>.",
+    "airlink": "Salerno Costa d’Amalfi (QSR)-flygplatsen, <airlinkLink>Airlink-buss till Salerno</airlinkLink>.",
+    "driving": "Bil: SS163 har växelvisa registreringsbegränsningar (apr–okt) och ZTL; parkeringskostnader varierar efter säsong och plats. Kontrollera officiella aviseringar."
   },
   "srLabel": "Transportnotis"
 }

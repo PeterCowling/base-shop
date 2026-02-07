@@ -1,13 +1,13 @@
-import { defineConfig } from "cypress";
-import { encode as nextAuthEncode } from "next-auth/jwt";
-import tsconfigPaths from "vite-tsconfig-paths";
-import istanbul from "vite-plugin-istanbul";
-import { appendFileSync, cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
-import { join, resolve as resolvePath } from "node:path";
-import os from "node:os";
-import path from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
 import { spawnSync } from "node:child_process";
+import { appendFileSync, cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import os from "node:os";
+import path, { join, resolve as resolvePath } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
+
+import { encode as nextAuthEncode } from "next-auth/jwt";
+import { defineConfig } from "cypress";
+import istanbul from "vite-plugin-istanbul";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -227,7 +227,7 @@ export default defineConfig({
             "next/link": resolvePath(repoRoot, "test/mocks/next-link.tsx"),
             "~test": resolvePath(repoRoot, "test"),
             "@cms/actions/shops.server": resolvePath(repoRoot, "test/shims/cms-actions-seo.ts"),
-            "@platform-core/repositories/settings.server": resolvePath(repoRoot, "test/shims/platform-settings-repo.ts"),
+            "@acme/platform-core/repositories/settings.server": resolvePath(repoRoot, "test/shims/platform-settings-repo.ts"),
           },
         },
       },

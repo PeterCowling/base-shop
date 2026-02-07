@@ -1,6 +1,8 @@
-import { Button } from "../../../atoms/shadcn";
 import { useTranslations } from "@acme/i18n";
+
+import { Button } from "../../../atoms/shadcn";
 import type { SubmissionStatus } from "../shared";
+
 import SegmentPreviewPanel from "./SegmentPreviewPanel";
 import SegmentSummaryCard from "./SegmentSummaryCard";
 import type { SegmentPreviewData } from "./types";

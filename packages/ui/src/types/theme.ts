@@ -5,11 +5,12 @@
 // between colour-schemes.
 // -----------------------------------------------------------------
 
+import type { ThemeMode } from "@acme/platform-core/contexts/themeStorage";
+
 /**
- * User-selectable theme setting.
+ * User-selectable theme mode.
  * - 'light'   → force light UI
  * - 'dark'    → force dark UI
- * The OS preference is respected only on first load if no
- * choice was previously stored.
+ * - 'system'  → follow OS preference
  */
-export type Theme = "light" | "dark";
+export type Theme = ThemeMode;

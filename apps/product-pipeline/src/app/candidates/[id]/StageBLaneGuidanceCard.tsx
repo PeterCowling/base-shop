@@ -1,6 +1,7 @@
 "use client";
 
-import { Stack } from "@ui/components/atoms/primitives";
+import { Stack } from "@acme/design-system/primitives";
+
 import type { CandidateDetailStrings } from "./types";
 
 export default function StageBLaneGuidanceCard({

@@ -1,11 +1,14 @@
 // packages/ui/src/components/cms/blocks/EmailReferralSection.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import EmailReferralSection from './EmailReferralSection';
-import type { Locale } from '@acme/types';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './EmailReferralSection.fixtures.json';
 import { z } from 'zod';
+
+import type { Locale } from '@acme/types';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import EmailReferralSection from './EmailReferralSection';
+import fixture from './EmailReferralSection.fixtures.json';
 
 const meta: Meta<typeof EmailReferralSection> = {
   title: 'CMS Blocks/EmailReferralSection/Matrix',

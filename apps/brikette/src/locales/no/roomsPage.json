@@ -251,8 +251,8 @@
   "checkRatesNonRefundable": "Ikke‑refunderbare priser",
   "checkRatesFlexible": "Fleksible rompriser",
   "ctaSuffix": {
-    "nonRefundable": "Non‑Refundable",
-    "flexible": "Flexible"
+    "nonRefundable": "Ikke‑refunderbar",
+    "flexible": "Fleksibel"
   },
   "details": "Detaljer",
   "ratesFrom": "Fra €{{price}}",
@@ -266,6 +266,41 @@
   "loadingPrice": "Laster pris…",
   "landingImageAlt": "Forsidebilde av {{room}}",
   "priceNotes": {
-    "dorm": "Per night, per guest. One guest in one bunk bed."
+    "dorm": "Per natt, per gjest. Én gjest per køyeseng."
+  },
+  "facts": {
+    "type": {
+      "privateRoom": "Privat rom",
+      "mixedDorm": "Blandet sovesal",
+      "femaleDorm": "Kvinnerom",
+      "femaleRoom": "Rom kun for kvinner"
+    },
+    "bathroom": {
+      "bathroomEnsuite": "Eget bad",
+      "bathroomPrivate": "Privat bad",
+      "bathroomSharedFemale": "Delt bad"
+    },
+    "sleeps": "Sover {{count}}"
+  },
+  "detailsLine": {
+    "beds": {
+      "doubleBedForTwo": "1 dobbeltseng",
+      "threeSingleBedsThreeGuests": "3 enkeltsenger",
+      "oneDormBedTwoGuests": "1 køyeseng",
+      "threeDormBedsSixGuests": "3 køyesenger",
+      "threeDormBedsPlusSingleSevenGuests": "3 køyesenger + 1 enkeltseng",
+      "fourDormBedsEightGuests": "4 køyesenger"
+    },
+    "views": {
+      "seaViewTerrace": "Terrasse med havutsikt",
+      "seaViewExtraLargeTerrace": "Terrasse med havutsikt",
+      "gardenView": "Hageutsikt",
+      "courtyardView": "Utsikt mot gårdsrom",
+      "noView": "Ingen utsikt"
+    }
+  },
+  "priceUnits": {
+    "perRoom": "rom",
+    "perBed": "seng"
   }
 }

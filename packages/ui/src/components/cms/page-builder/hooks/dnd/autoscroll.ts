@@ -1,4 +1,4 @@
-import { RefObject } from "react";
+import { type RefObject } from "react";
 
 // Expose autoscroll tuning so DevTools can visualize thresholds
 export const AUTOSCROLL_EDGE_PX = 48;

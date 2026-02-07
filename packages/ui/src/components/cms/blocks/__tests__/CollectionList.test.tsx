@@ -1,4 +1,5 @@
-import { render, act } from "@testing-library/react";
+import { act,render } from "@testing-library/react";
+
 import CollectionList, {
   type CollectionListProps,
 } from "../CollectionList";
@@ -40,7 +41,7 @@ function setup(props?: Partial<CollectionListProps>) {
   });
   const setWidth = (w: number) => {
     width = w;
-    act(() => resizeCb([]));
+    act(() => resizeCb([], {} as ResizeObserver));
   };
   return { root, setWidth };
 }

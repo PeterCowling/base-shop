@@ -1,7 +1,9 @@
 // packages/platform-core/src/users.ts
 import "server-only";
-import { prisma } from "./db";
+
 import type { User } from "@acme/types";
+
+import { prisma } from "./db";
 
 export async function getUserById(id: string): Promise<User> {
   const user = await prisma.user.findUnique({ where: { id } });

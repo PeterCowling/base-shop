@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 import { imageOrientationSchema } from "./ImageOrientation";
 /**
  * Definition of a publish-to location within the shop-front.

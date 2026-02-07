@@ -1,6 +1,7 @@
 "use client";
 
-import { Cluster, Stack } from "@ui/components/atoms/primitives";
+import { Cluster, Stack } from "@acme/design-system/primitives";
+
 import type { LeadFilters, LeadTriageStrings } from "./types";
 
 export default function LeadTriageFilters({

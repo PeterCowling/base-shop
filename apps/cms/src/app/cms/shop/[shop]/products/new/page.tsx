@@ -1,5 +1,5 @@
-import { createDraftRecord } from "@cms/actions/products.server";
 import { redirect } from "next/navigation";
+import { createDraftRecord } from "@cms/actions/products.server";
 
 export default async function NewProductPage({
   params,

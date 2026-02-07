@@ -1,6 +1,8 @@
 import React from "react";
 import { act, render } from "@testing-library/react";
+
 import { ThemeProvider, useTheme } from "../ThemeContext";
+
 import { ThemeDisplay } from "./themeTestUtils";
 
 describe("ThemeContext: switching to base removes class and sets light scheme", () => {
@@ -42,6 +44,7 @@ describe("ThemeContext: switching to base removes class and sets light scheme", 
 
     expect(getByTestId("theme").textContent).toBe("dark");
     expect(document.documentElement.classList.contains("theme-dark")).toBe(true);
+    expect(document.documentElement.classList.contains("dark")).toBe(true);
     expect(document.documentElement.style.colorScheme).toBe("dark");
 
     expect(() => act(() => changeTheme("base"))).not.toThrow();
@@ -49,7 +52,9 @@ describe("ThemeContext: switching to base removes class and sets light scheme", 
     expect(getByTestId("theme").textContent).toBe("base");
     expect(document.documentElement.className).toBe("");
     expect(document.documentElement.style.colorScheme).toBe("light");
-    expect(setItem).toHaveBeenLastCalledWith("theme", "base");
+    expect(document.documentElement.classList.contains("dark")).toBe(false);
+    expect(setItem).toHaveBeenCalledWith("theme-mode", "light");
+    expect(setItem).toHaveBeenCalledWith("theme-name", "base");
+    expect(setItem).toHaveBeenCalledWith("theme", "base");
   });
 });
-

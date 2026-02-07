@@ -1,14 +1,15 @@
 // packages/ui/components/cms/MediaFileItem.tsx
 "use client";
 
-import type { MediaItem } from "@acme/types";
+import { type KeyboardEvent, type ReactElement, useMemo, useRef } from "react";
 import type { CheckedState } from "@radix-ui/react-checkbox";
-import { KeyboardEvent, ReactElement, useMemo, useRef } from "react";
 
-import { Card, CardContent, Tag } from "../atoms/shadcn";
-import { cn } from "../../utils/style";
 import { useTranslations } from "@acme/i18n";
+import type { MediaItem } from "@acme/types";
+
+import { cn } from "../../utils/style";
 import { Cluster, Inline } from "../atoms/primitives";
+import { Card, CardContent, Tag } from "../atoms/shadcn";
 
 import { MediaFileActions } from "./MediaFileActions";
 import { MediaFilePreview } from "./MediaFilePreview";

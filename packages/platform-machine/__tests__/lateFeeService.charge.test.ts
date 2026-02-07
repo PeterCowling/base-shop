@@ -114,7 +114,7 @@ describe("chargeLateFeesOnce", () => {
       returnDueDate: new Date(NOW - 5 * 24 * 60 * 60 * 1000).toISOString(),
     } as any;
     const mocks = await setupLateFeeTest({ orders: [overdueOrder] });
-    const { logger } = await import("@platform-core/utils");
+    const { logger } = await import("@acme/platform-core/utils");
     jest.doMock("@acme/config/env/core", () => ({
       __esModule: true,
       coreEnv: {},
@@ -209,7 +209,7 @@ describe("chargeLateFeesOnce", () => {
       returnDueDate: new Date(NOW - 5 * 24 * 60 * 60 * 1000).toISOString(),
     } as any;
     const mocks = await setupLateFeeTest({ orders: [overdueOrder] });
-    const { logger } = await import("@platform-core/utils");
+    const { logger } = await import("@acme/platform-core/utils");
     jest.doMock("@acme/config/env/core", () => ({
       __esModule: true,
       coreEnv: {},

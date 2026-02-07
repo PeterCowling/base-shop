@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "title": "Polityka plików cookie | Hostel Brikette",
+    "description": "Jak Hostel Brikette wykorzystuje pliki cookie i podobne technologie na naszej stronie oraz jakie masz opcje."
+  },
+  "headings": {
+    "pageTitle": "Polityka plików cookie",
+    "subtitle": "Pliki cookie, pamięć lokalna i usługi stron trzecich"
+  },
+  "lastUpdated": {
+    "label": "Ostatnia aktualizacja",
+    "date": "2026-01-09"
+  },
+  "toc": {
+    "title": "Na tej stronie",
+    "aria": "Spis treści polityki plików cookie"
+  },
+  "sections": {
+    "intro": {
+      "title": "Przegląd",
+      "body": [
+        "Niniejsza polityka plików cookie wyjaśnia, czym są pliki cookie, czy używamy ich na tej stronie oraz jak usługi stron trzecich mogą używać plików cookie, gdy wchodzisz w interakcję z ich treściami."
+      ]
+    },
+    "whatAreCookies": {
+      "title": "Czym są pliki cookie",
+      "body": [
+        "Pliki cookie to małe pliki tekstowe, które strony internetowe mogą zapisywać na Twoim urządzeniu, aby zapamiętać informacje między wizytami. Podobne technologie obejmują pamięć lokalną oraz pamięć sesji w Twojej przeglądarce."
+      ]
+    },
+    "ourUse": {
+      "title": "Jak używamy plików cookie na tej stronie",
+      "body": [
+        "Staramy się ograniczać pliki cookie do minimum. Gdy to możliwe, używamy pamięci przeglądarki (pamięci lokalnej) do prostych preferencji zamiast plików cookie.",
+        "Jeśli w przyszłości wprowadzimy pliki cookie (np. dla niezbędnego bezpieczeństwa, analityki lub usług osadzonych), zaktualizujemy tę politykę."
+      ]
+    },
+    "localStorage": {
+      "title": "Pamięć lokalna (preferencje)",
+      "body": [
+        "Pamięć lokalna pozwala stronie zapamiętać określone preferencje na Twoim urządzeniu. Na przykład może służyć do zachowania ustawień interfejsu między stronami.",
+        "Możesz wyczyścić pamięć lokalną w ustawieniach przeglądarki."
+      ]
+    },
+    "thirdParties": {
+      "title": "Usługi stron trzecich",
+      "body": [
+        "Niektóre linki lub osadzone treści mogą być dostarczane przez strony trzecie (np. mapy lub dostawców rezerwacji). Te strony trzecie mogą ustawiać pliki cookie lub używać podobnych technologii zgodnie z własnymi politykami.",
+        "Gdy przechodzisz na stronę osoby trzeciej, obowiązują jej polityki prywatności i plików cookie."
+      ]
+    },
+    "choices": {
+      "title": "Twoje opcje",
+      "body": [
+        "Większość przeglądarek pozwala blokować lub usuwać pliki cookie oraz czyścić dane witryny takie jak pamięć lokalna. Blokowanie niektórych technologii może wpływać na działanie.",
+        "Możesz też używać trybów przeglądania prywatnego lub rozszerzeń przeglądarki, aby ograniczyć śledzenie."
+      ]
+    },
+    "contact": {
+      "title": "Kontakt",
+      "body": [
+        "Jeśli masz pytania dotyczące tej polityki plików cookie, skontaktuj się z nami pod adresem {{email}}."
+      ]
+    }
+  },
+  "footer": {
+    "backToTop": "Powrót na górę"
+  }
+}

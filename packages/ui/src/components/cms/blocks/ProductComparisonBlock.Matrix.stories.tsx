@@ -1,12 +1,15 @@
 // packages/ui/src/components/cms/blocks/ProductComparisonBlock.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import ProductComparisonBlock from './ProductComparisonBlock';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './ProductComparisonBlock.fixtures.json';
 import { z } from 'zod';
+
 import { PRODUCTS } from '@acme/platform-core/products/index';
 import type { SKU } from '@acme/types';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import ProductComparisonBlock from './ProductComparisonBlock';
+import fixture from './ProductComparisonBlock.fixtures.json';
 
 const meta: Meta<typeof ProductComparisonBlock> = {
   title: 'CMS Blocks/ProductComparisonBlock/Matrix',

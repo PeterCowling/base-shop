@@ -1,36 +1,39 @@
 // .storybook/preview.ts
 
-import { withThemeByClassName } from "@storybook/addon-themes";
-import { ThemeProvider as SBThemeProvider, themes, type ThemeVars } from "storybook/theming";
+import "./styles/sb-globals.css";
+
+import { type ComponentPropsWithoutRef, type ReactNode,useEffect, useRef } from "react";
+import React from "react";
 import { ThemeProvider as EmotionThemeProvider } from "@emotion/react";
+import { withThemeByClassName } from "@storybook/addon-themes";
 import { DocsContainer, Primary, Stories } from "@storybook/blocks";
 import type { Decorator, Preview } from "@storybook/nextjs";
 import type { GlobalTypes } from "@storybook/types";
-import { useEffect, useRef, type ComponentPropsWithoutRef, type ReactNode } from "react";
-import React from "react";
+import { initialize, mswLoader } from "msw-storybook-addon";
 import * as Scheduler from "scheduler";
+import { ThemeProvider as SBThemeProvider, themes, type ThemeVars } from "storybook/theming";
+
+import enMessages from "@acme/i18n/en.json";
 import { CartProvider } from "@acme/platform-core/contexts/CartContext";
 import {
-  CurrencyProvider,
   type Currency,
+  CurrencyProvider,
 } from "@acme/platform-core/contexts/CurrencyContext";
 import {
-  ThemeProvider as PlatformThemeProvider,
   type Theme as PlatformTheme,
+  ThemeProvider as PlatformThemeProvider,
 } from "@acme/platform-core/contexts/ThemeContext";
-import "./styles/sb-globals.css";
-import { initialize, mswLoader } from "msw-storybook-addon";
-import { handlers as mswHandlers } from "./msw/handlers";
-import { mapDataStateToMsw } from "./msw/state-mapping";
-import { VIEWPORTS } from "./viewports";
-import { withRTL } from "./decorators/rtlDecorator";
-import { withPerf } from "./decorators/perfDecorator";
-import { withHighlight } from "./decorators/highlightDecorator";
-import { stressGlobal, withStress } from "./decorators/stressDecorator";
+
 import { a11yGlobals, a11yParameters } from "./a11y";
 import { createBackgroundOptions } from "./backgrounds";
-import type { ToolbarGlobals, StoryDataState } from "./types";
-import enMessages from "@acme/i18n/en.json";
+import { withHighlight } from "./decorators/highlightDecorator";
+import { withPerf } from "./decorators/perfDecorator";
+import { withRTL } from "./decorators/rtlDecorator";
+import { stressGlobal, withStress } from "./decorators/stressDecorator";
+import { handlers as mswHandlers } from "./msw/handlers";
+import { mapDataStateToMsw } from "./msw/state-mapping";
+import type { StoryDataState,ToolbarGlobals } from "./types";
+import { VIEWPORTS } from "./viewports";
 
 // Lightweight translation function for Storybook config (non-React context)
 const t = (key: string): string => (enMessages as Record<string, string>)[key] ?? key;

@@ -2,6 +2,7 @@
 "use client";
 
 import { Suspense, useEffect } from "react";
+
 import LoginForm from "./LoginForm";
 
 /**

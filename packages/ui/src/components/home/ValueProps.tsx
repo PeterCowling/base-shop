@@ -1,6 +1,8 @@
 // src/components/home/ValueProps.tsx
-import { useTranslations } from "@acme/i18n";
 import { memo } from "react";
+
+import { useTranslations } from "@acme/i18n";
+
 import { Grid } from "../atoms/primitives";
 
 export type ValuePropItem = { icon: string; title: string; desc: string };

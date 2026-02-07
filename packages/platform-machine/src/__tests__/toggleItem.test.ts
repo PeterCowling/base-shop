@@ -1,4 +1,4 @@
-import { toggleItem } from '@acme/shared-utils/src/toggleItem';
+import { toggleItem } from '@acme/lib/array';
 
 describe('toggleItem', () => {
   it('adds an item when missing without mutating input', () => {

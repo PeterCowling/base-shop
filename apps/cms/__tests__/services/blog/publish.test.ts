@@ -1,7 +1,8 @@
 /* eslint-env jest */
 
+import { nowIso } from '@acme/date-utils';
+
 import { publishPost } from '../../../src/services/blog/posts/publish';
-import { nowIso } from '@date-utils';
 
 jest.mock('../../../src/actions/common/auth', () => ({
   ensureAuthorized: jest.fn(),
@@ -13,11 +14,11 @@ jest.mock('../../../src/services/blog/config', () => ({
 
 const repoPublishPost = jest.fn();
 
-jest.mock('@platform-core/repositories/blog.server', () => ({
+jest.mock('@acme/platform-core/repositories/blog.server', () => ({
   publishPost: (...args: unknown[]) => repoPublishPost(...args),
 }));
 
-jest.mock('@date-utils', () => ({
+jest.mock('@acme/date-utils', () => ({
   nowIso: jest.fn(),
 }));
 

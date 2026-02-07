@@ -6,6 +6,8 @@ describe("cms env – URLs", () => {
     ...process.env,
     SANITY_PROJECT_ID: "test-project",
     SANITY_DATASET: "production",
+    SANITY_API_TOKEN: "test-token",
+    SANITY_PREVIEW_SECRET: "preview-secret",
   } as NodeJS.ProcessEnv;
 
   afterEach(() => {

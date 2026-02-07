@@ -1,12 +1,15 @@
 // packages/auth/src/session.ts
 import "server-only";
+
 import { cookies, headers } from "next/headers";
-import { sealData, unsealData } from "iron-session";
 import { randomUUID } from "crypto";
+import { sealData, unsealData } from "iron-session";
+
 import { coreEnv } from "@acme/config/env/core";
-import type { Role } from "./types/index";
+
 import type { SessionRecord } from "./store";
 import { createSessionStore, SESSION_TTL_S } from "./store";
+import type { Role } from "./types/index";
 
 export const CUSTOMER_SESSION_COOKIE = "customer_session";
 export const CSRF_TOKEN_COOKIE = "csrf_token";

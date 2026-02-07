@@ -1,4 +1,5 @@
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { act,fireEvent, render, screen } from "@testing-library/react";
+
 import HeroBanner from "../HeroBanner.client";
 
 // Mock next/image to render a plain img without passing Next-only boolean props
@@ -75,8 +76,8 @@ describe("HeroBanner.client", () => {
 
   it("wraps around with previous and next buttons", () => {
     render(<HeroBanner slides={[]} />);
-    const prev = screen.getByRole("button", { name: /previous slide/i });
-    const next = screen.getByRole("button", { name: /next slide/i });
+    const prev = screen.getByRole("button", { name: "hero.nav.prev" });
+    const next = screen.getByRole("button", { name: "hero.nav.next" });
 
     fireEvent.click(prev);
     expect(

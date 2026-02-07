@@ -1,6 +1,6 @@
 /** @jest-environment node */
 
-import { describe, it, expect, afterEach, jest } from '@jest/globals';
+import { afterEach, describe, expect, it, jest } from '@jest/globals';
 
 describe('stripe wrapper', () => {
   const OLD_ENV = process.env;
@@ -22,9 +22,9 @@ describe('stripe wrapper', () => {
 
   it('throws with invalid STRIPE_SECRET_KEY format', async () => {
     process.env = { ...OLD_ENV, STRIPE_USE_MOCK: 'false' } as NodeJS.ProcessEnv;
-    const StripeCtor = jest.fn().mockImplementation(() => ({}));
-    StripeCtor.createFetchHttpClient = jest.fn().mockReturnValue({});
-    StripeCtor.mockImplementation(() => {
+    const StripeCtor = jest.fn().mockImplementation(() => ({})) as unknown as jest.Mock & { createFetchHttpClient: jest.Mock };
+    StripeCtor.createFetchHttpClient = jest.fn().mockReturnValue({}) as unknown as jest.Mock;
+    (StripeCtor as jest.Mock).mockImplementation(() => {
       throw new Error('Invalid API Key provided: invalid');
     });
 
@@ -41,8 +41,8 @@ describe('stripe wrapper', () => {
     const create = jest.fn();
     const StripeCtor = jest.fn().mockImplementation(() => ({
       charges: { create },
-    }));
-    StripeCtor.createFetchHttpClient = jest.fn().mockReturnValue({});
+    })) as unknown as jest.Mock & { createFetchHttpClient: jest.Mock };
+    StripeCtor.createFetchHttpClient = jest.fn().mockReturnValue({}) as unknown as jest.Mock;
 
     jest.doMock('stripe', () => ({ __esModule: true, default: StripeCtor }));
     jest.doMock('@acme/config/env/core', () => ({
@@ -58,8 +58,8 @@ describe('stripe wrapper', () => {
 
   it('reuses existing client instance on subsequent imports', async () => {
     process.env = { ...OLD_ENV, STRIPE_USE_MOCK: 'false' } as NodeJS.ProcessEnv;
-    const StripeCtor = jest.fn().mockImplementation(() => ({}));
-    StripeCtor.createFetchHttpClient = jest.fn().mockReturnValue({});
+    const StripeCtor = jest.fn().mockImplementation(() => ({})) as unknown as jest.Mock & { createFetchHttpClient: jest.Mock };
+    StripeCtor.createFetchHttpClient = jest.fn().mockReturnValue({}) as unknown as jest.Mock;
 
     jest.doMock('stripe', () => ({ __esModule: true, default: StripeCtor }));
     jest.doMock('@acme/config/env/core', () => ({

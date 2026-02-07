@@ -1,9 +1,10 @@
 import type { Dispatch, SetStateAction } from "react";
+
+import CMSPanel from "./CMSPanel";
 import CommandPalette from "./CommandPalette";
 import GlobalsPanel from "./GlobalsPanel";
-import PagesPanel from "./PagesPanel";
-import CMSPanel from "./CMSPanel";
 import type { PageBuilderLayoutProps } from "./PageBuilderLayout.types";
+import PagesPanel from "./PagesPanel";
 import type { Action as LayoutAction } from "./state/layout/types";
 
 type CanvasProps = PageBuilderLayoutProps["canvasProps"];

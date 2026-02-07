@@ -1,13 +1,16 @@
 // packages/ui/src/components/cms/blocks/ProductGrid.client.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { http, HttpResponse, delay } from 'msw';
-import type { SKU } from '@acme/types';
-import { PRODUCTS } from '@acme/platform-core/products/index';
-import ProductGrid from './ProductGrid.client';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './ProductGrid.client.fixtures.json';
+import { delay,http, HttpResponse } from 'msw';
 import { z } from 'zod';
+
+import { PRODUCTS } from '@acme/platform-core/products/index';
+import type { SKU } from '@acme/types';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import ProductGrid from './ProductGrid.client';
+import fixture from './ProductGrid.client.fixtures.json';
 
 const meta: Meta<typeof ProductGrid> = {
   title: 'CMS Blocks/ProductGrid/Matrix',

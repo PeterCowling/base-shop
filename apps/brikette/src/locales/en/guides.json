@@ -3,7 +3,8 @@
     "relatedGuides": "Related guides",
     "indexTitle": "Positano travel guides",
     "popularGuides": "Popular guides",
-    "helpfulGuides": "Helpful guides",
+    "viewAll": "View all guides",
+    "helpfulGuides": "Helpful Guides",
     "alsoSee": "Also see",
     "sectionFallback": "Section {{position}}"
   },
@@ -47,39 +48,241 @@
       }
     },
     "pathOfTheGods": {
-      "linkLabel": "Path of the Gods from Positano",
+      "linkLabel": "Path of the Gods: Complete Guide from Positano",
       "seo": {
         "title": "Hike the Path of the Gods",
         "description": "Door-to-door instructions to hike Sentiero degli Dei from Positano."
       }
     },
     "pathOfTheGodsFerry": {
-      "linkLabel": "Path of the Gods via Amalfi (ferry)",
+      "linkLabel": "Path of the Gods: Scenic Ferry & Hike Route",
       "seo": {
         "title": "Path of the Gods via Amalfi (ferry)",
         "description": "Sail to Amalfi, bus up to Bomerano, then hike the Path of the Gods with return directions."
       }
     },
     "pathOfTheGodsBus": {
-      "linkLabel": "Path of the Gods via Amalfi (bus)",
+      "linkLabel": "Path of the Gods: Budget-Friendly Bus & Hike",
       "seo": {
         "title": "Path of the Gods via Amalfi (bus)",
         "description": "Take the SITA Sud bus to Bomerano and follow our Path of the Gods route back toward Positano."
       }
     },
     "pathOfTheGodsNocelle": {
-      "linkLabel": "Path of the Gods via Nocelle",
+      "linkLabel": "Path of the Gods: Short Hike from Nocelle",
       "seo": {
         "title": "Path of the Gods via Nocelle",
         "description": "Shorter out-and-back hike from Nocelle with directions to return to Hostel Brikette."
       }
     },
     "dayTripsAmalfi": {
-      "linkLabel": "Day trips from Positano",
+      "linkLabel": "Best Day Trips: Capri, Amalfi, Pompeii & More",
       "seo": {
         "title": "Day trips from Positano",
         "description": "Ideas for Amalfi, Ravello, Capri and Pompeii with timing and transport tips."
       }
+    },
+    "positanoBeaches": {
+      "linkLabel": "Positano Beaches: Sun & Secret Coves",
+      "seo": {
+        "title": "Positano Beaches: Sun & Secret Coves",
+        "description": "Discover Positano's best beaches from the iconic Spiaggia Grande to hidden coves and exclusive beach clubs."
+      }
+    },
+    "arienzoBeachClub": {
+      "linkLabel": "Arienzo Beach: Positano's Boutique Beach Club",
+      "seo": {
+        "title": "Arienzo Beach: Positano's Boutique Beach Club",
+        "description": "Guide to Arienzo Beach Club with stairs, sunbeds, restaurant, and directions from Hostel Brikette."
+      }
+    },
+    "fornilloBeachGuide": {
+      "linkLabel": "Fornillo Beach: Positano's Quieter Alternative",
+      "seo": {
+        "title": "Fornillo Beach: Positano's Quieter Alternative",
+        "description": "Peaceful Fornillo Beach with free sand, local restaurants, and easy walking access from central Positano."
+      }
+    },
+    "lauritoBeachGuide": {
+      "linkLabel": "Laurito Beach: Hidden Gem Below the Cliffs",
+      "seo": {
+        "title": "Laurito Beach: Hidden Gem Below the Cliffs",
+        "description": "Remote Laurito Beach with 450+ stairs, local seafood, and turquoise water away from the crowds."
+      }
+    },
+    "gavitellaBeachGuide": {
+      "linkLabel": "Gavitella Beach: Praiano's Sunset Swimming Spot",
+      "seo": {
+        "title": "Gavitella Beach: Praiano's Sunset Swimming Spot",
+        "description": "Praiano's local beach with sunset views, calm water, and easy bus access from Positano."
+      }
+    },
+    "marinaDiPraiaBeaches": {
+      "linkLabel": "Marina di Praia: Dramatic Cove Between the Cliffs",
+      "seo": {
+        "title": "Marina di Praia: Dramatic Cove Between the Cliffs",
+        "description": "Scenic Marina di Praia with Norman tower, waterfront restaurants, and crystal-clear swimming cove."
+      }
+    },
+    "fiordoDiFuroreBeachGuide": {
+      "linkLabel": "Fiordo di Furore: The Fjord Beach Under the Bridge",
+      "seo": {
+        "title": "Fiordo di Furore: The Fjord Beach Under the Bridge",
+        "description": "Instagram-famous Furore Fjord with emerald water, cliff diving, and dramatic bridge views by bus from Positano."
+      }
+    },
+    "reginaGiovannaBath": {
+      "linkLabel": "Regina Giovanna: Roman Ruins Meet Natural Pool",
+      "seo": {
+        "title": "Regina Giovanna: Roman Ruins Meet Natural Pool",
+        "description": "Historic natural pool in Sorrento with Roman villa ruins, coastal walk, and swimming in clear waters."
+      }
+    },
+    "positanoMainBeach": {
+      "linkLabel": "Spiaggia Grande: Positano's Iconic Main Beach",
+      "seo": {
+        "title": "Spiaggia Grande: Positano's Iconic Main Beach",
+        "description": "Complete guide to Positano's main beach with sunbed prices, free areas, restaurants, and getting there."
+      }
+    },
+    "positanoMainBeachWalkDown": {
+      "linkLabel": "Walk down to Positano's main beach",
+      "seo": {
+        "title": "Walk from Hostel Brikette to Positano's main beach",
+        "description": "Walking directions from Hostel Brikette down to Spiaggia Grande with landmarks and time estimates."
+      }
+    },
+    "positanoMainBeachBusDown": {
+      "linkLabel": "Bus down to Positano's main beach",
+      "seo": {
+        "title": "Bus from Hostel Brikette to Positano's main beach",
+        "description": "Take the SITA bus from Chiesa Nuova down to Positano beach with stop locations and timing."
+      }
+    },
+    "positanoMainBeachWalkBack": {
+      "linkLabel": "Walk back from Positano's main beach",
+      "seo": {
+        "title": "Walk back to Hostel Brikette from Spiaggia Grande",
+        "description": "Uphill walk from Positano's main beach back to Hostel Brikette with step-by-step route guidance."
+      }
+    },
+    "positanoMainBeachBusBack": {
+      "linkLabel": "Bus back to Hostel Brikette from Spiaggia Grande",
+      "seo": {
+        "title": "Bus back to Hostel Brikette from Positano's main beach",
+        "description": "Catch the SITA bus from Positano beach up to Chiesa Nuova with pickup points and schedules."
+      }
+    },
+    "hostelBriketteToFornilloBeach": {
+      "linkLabel": "Hostel Brikette → Fornillo Beach walking guide",
+      "seo": {
+        "title": "Hostel Brikette → Fornillo Beach walking route"
+      }
+    },
+    "fornilloBeachToBrikette": {
+      "linkLabel": "Fornillo Beach → Hostel Brikette return route",
+      "seo": {
+        "title": "Fornillo Beach → Hostel Brikette return route"
+      }
+    },
+    "hostelBriketteToFiordoDiFuroreBus": {
+      "linkLabel": "Getting to Fiordo di Furore Beach by Bus",
+      "seo": {
+        "title": "Getting to Fiordo di Furore Beach by Bus"
+      }
+    },
+    "fiordoDiFuroreBusReturn": {
+      "linkLabel": "Fiordo di Furore beach → Hostel Brikette by bus",
+      "seo": {
+        "title": "Fiordo di Furore beach → Hostel Brikette by bus"
+      }
+    },
+    "lauritoBeachBusDown": {
+      "linkLabel": "Getting to Laurito Beach by Bus",
+      "seo": {
+        "title": "Getting to Laurito Beach by Bus"
+      }
+    },
+    "lauritoBeachBusBack": {
+      "linkLabel": "Bus back to Hostel Brikette from Laurito Beach",
+      "seo": {
+        "title": "Bus back to Hostel Brikette from Laurito Beach"
+      }
+    },
+    "hostelBriketteToArienzoBus": {
+      "linkLabel": "Getting to Arienzo Beach by Bus",
+      "seo": {
+        "title": "Getting to Arienzo Beach by Bus"
+      }
+    },
+    "arienzoBeachBusBack": {
+      "linkLabel": "Bus back to Hostel Brikette from Arienzo Beach",
+      "seo": {
+        "title": "Bus back to Hostel Brikette from Arienzo Beach"
+      }
+    },
+    "hostelBriketteToReginaGiovannaBath": {
+      "linkLabel": "Getting to Regina Giovanna Bath Beach",
+      "seo": {
+        "title": "Getting to Regina Giovanna Bath Beach"
+      }
+    },
+    "sunriseHike": {
+      "linkLabel": "Sunrise Hike: Watch Dawn Break Over Positano"
+    },
+    "santaMariaDelCastelloHike": {
+      "linkLabel": "Santa Maria del Castello: Mountain Village Hike"
+    },
+    "topOfTheMountainHike": {
+      "linkLabel": "Monte Comune: Hike to Positano's Highest Viewpoint"
+    },
+    "stayingFitAmalfi": {
+      "linkLabel": "Stay Fit in Positano: Stairs, Trails & Beach Workouts"
+    },
+    "capriDayTrip": {
+      "linkLabel": "Capri Day Trip: Island Escape from Positano"
+    },
+    "capriOnABudget": {
+      "linkLabel": "Capri Without Breaking the Bank"
+    },
+    "campingAmalfi": {
+      "linkLabel": "Camping the Amalfi Coast: Budget Alternative to Hotels"
+    },
+    "boatTours": {
+      "linkLabel": "Boat Tours: Sunset Cruises to Private Charters"
+    },
+    "cheapEats": {
+      "linkLabel": "Eat Like a Local: Positano's Best Budget Bites"
+    },
+    "eatingOutPositano": {
+      "linkLabel": "Where to Eat in Positano: Casual to Celebration"
+    },
+    "positanoDining": {
+      "linkLabel": "Positano's Best Restaurants Near Hostel Brikette"
+    },
+    "limoncelloCuisine": {
+      "linkLabel": "Taste Positano: Limoncello, Lemons & Local Flavors"
+    },
+    "instagramSpots": {
+      "linkLabel": "Instagram-Worthy Positano: Best Photo Spots & Times"
+    },
+    "sunsetViewpoints": {
+      "linkLabel": "Sunset in Positano: Best Viewpoints for Golden Hour"
+    },
+    "ravelloFestival": {
+      "linkLabel": "Ravello Festival: Classical Concerts Under the Stars"
+    },
+    "ferragostoPositano": {
+      "linkLabel": "Ferragosto: Italy's August 15th Celebration in Positano"
+    },
+    "luminariaPraiano": {
+      "linkLabel": "Luminaria di Praiano: Thousands of Candles Light the Night"
+    },
+    "walkingTourAudio": {
+      "linkLabel": "Free Audio Walking Tour: Discover Positano's Hidden Stories"
+    },
+    "freeThingsPositano": {
+      "linkLabel": "Free Things to Do in Positano: Budget-Friendly Fun"
     },
     "publicTransportAmalfi": {
       "linkLabel": "Amalfi Coast public transport guide",

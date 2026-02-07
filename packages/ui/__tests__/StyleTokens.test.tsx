@@ -1,4 +1,8 @@
-jest.mock("@ui/hooks/useTokenEditor", () => ({ useTokenEditor: jest.fn() }));
+import { fireEvent, render, screen } from "@testing-library/react";
+
+import Tokens from "../src/components/cms/style/Tokens";
+
+jest.mock("../src/hooks/useTokenEditor", () => ({ useTokenEditor: jest.fn() }));
 jest.mock("../src/components/cms/index", () => ({
   ColorInput: ({ value, onChange }: any) => (
     <input value={value} onChange={(e) => onChange(e.target.value)} />
@@ -8,16 +12,14 @@ jest.mock("../src/components/cms/index", () => ({
   getContrast: () => 5,
   suggestContrastColor: () => "",
 }));
-import { useTokenEditor } from "@ui/hooks/useTokenEditor";
-import { render, fireEvent, screen } from "@testing-library/react";
-import Tokens from "../src/components/cms/style/Tokens";
-
-const mockEditor = useTokenEditor as jest.MockedFunction<typeof useTokenEditor>;
 
 test("updates token via setToken", () => {
+  const { useTokenEditor } = jest.requireMock(
+    "../src/hooks/useTokenEditor"
+  ) as { useTokenEditor: jest.Mock };
   const setToken = jest.fn();
-  mockEditor.mockReturnValue({
-    // eslint-disable-next-line ds/no-raw-color -- DS-TEST-010: hex values required to exercise token editor
+  useTokenEditor.mockReturnValue({
+     
     colors: [{ key: "--color-bg", value: "#fff", defaultValue: "#fff", isOverridden: false }],
     fonts: [],
     others: [],
@@ -32,8 +34,8 @@ test("updates token via setToken", () => {
     setGoogleFont: jest.fn(),
   });
   render(<Tokens tokens={{}} baseTokens={{}} onChange={() => {}} />);
-  // eslint-disable-next-line ds/no-raw-color -- DS-TEST-010: simulate user entering hex color
+   
   fireEvent.change(screen.getByDisplayValue("#fff"), { target: { value: "#000" } });
-  // eslint-disable-next-line ds/no-raw-color -- DS-TEST-010: assertion uses raw hex for correctness
+   
   expect(setToken).toHaveBeenCalledWith("--color-bg", "#000");
 });

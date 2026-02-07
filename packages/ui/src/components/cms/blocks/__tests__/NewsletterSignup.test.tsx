@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import NewsletterSignup from "../NewsletterSignup";
 
 describe("NewsletterSignup", () => {
@@ -20,7 +21,6 @@ describe("NewsletterSignup", () => {
   it("clears form and shows success message on successful submission", async () => {
     const user = userEvent.setup();
     const fetchMock = jest.fn().mockResolvedValue({ ok: true });
-    // @ts-expect-error - overriding fetch for test
     global.fetch = fetchMock;
     render(
       <NewsletterSignup
@@ -37,7 +37,12 @@ describe("NewsletterSignup", () => {
       expect.objectContaining({
         method: "post",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: "test@example.com" }),
+        body: JSON.stringify({
+          type: "newsletter",
+          email: "test@example.com",
+          locale: "en",
+          source: "footer",
+        }),
       })
     );
     expect(await screen.findByText(/success/i)).toBeInTheDocument();
@@ -47,7 +52,6 @@ describe("NewsletterSignup", () => {
   it("shows error message on failed submission", async () => {
     const user = userEvent.setup();
     const fetchMock = jest.fn().mockResolvedValue({ ok: false });
-    // @ts-expect-error - overriding fetch for test
     global.fetch = fetchMock;
     render(
       <NewsletterSignup

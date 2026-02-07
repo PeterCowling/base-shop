@@ -1,5 +1,6 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import SearchBarBlock from "../src/components/cms/blocks/SearchBar";
 import { SearchBar } from "../src/components/molecules/SearchBar";
 
@@ -9,7 +10,6 @@ describe("SearchBar block", () => {
       { slug: "a", title: "Alpha" },
       { slug: "b", title: "Beta" },
     ];
-    // @ts-expect-error - override global.fetch with a jest mock for this test
     global.fetch = jest.fn().mockResolvedValue({ json: () => Promise.resolve(results) });
 
     const { container } = render(<SearchBarBlock placeholder="Search products…" />);

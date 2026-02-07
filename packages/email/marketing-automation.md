@@ -35,7 +35,7 @@ await fetch("/api/marketing/email", {
 Segments are backed by analytics events. Recording either `segment:<id>` or `segment` events assigns contacts to a segment. `resolveSegment` reads the event log and returns the current members:
 
 ```ts
-import { trackEvent } from "@platform-core/analytics";
+import { trackEvent } from "@acme/platform-core/analytics";
 import { resolveSegment } from "@acme/email";
 
 await trackEvent("demo", { type: "segment:vip", email: "ada@example.com" });
@@ -50,7 +50,7 @@ const vipRecipients = await resolveSegment("demo", "vip");
 Delivery and engagement metrics are likewise stored as analytics events (`email_sent`, `email_open`, `email_click`). They can be aggregated to report campaign performance:
 
 ```ts
-import { listEvents } from "@platform-core/repositories/analytics.server";
+import { listEvents } from "@acme/platform-core/repositories/analytics.server";
 
 const events = await listEvents("demo");
 const sent = events.filter((e) => e.type === "email_sent" && e.campaign === "c1").length;

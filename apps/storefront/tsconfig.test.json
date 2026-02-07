@@ -1,10 +1,18 @@
-// apps/storefront/tsconfig.test.json
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "types": ["@testing-library/jest-dom", "jest", "node"],
     "allowJs": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "noEmit": true,
+    "rootDir": "../..",
+    "verbatimModuleSyntax": false,
+    "baseUrl": "../..",
+    "paths": {
+      "@/*": ["apps/storefront/src/*"],
+      "@acme/platform-core": ["packages/platform-core/dist/index.d.ts"],
+      "@acme/platform-core/*": ["packages/platform-core/dist/*"]
+    }
   },
   "include": ["src/**/*", "__tests__/**/*"]
 }

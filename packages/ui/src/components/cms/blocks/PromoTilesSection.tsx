@@ -2,10 +2,11 @@
 
 import * as React from "react";
 import Image from "next/image";
+
 import { useTranslations } from "@acme/i18n";
-import { resolveText } from "@i18n/resolveText";
-import type { TranslatableText } from "@acme/types/i18n";
 import type { Locale } from "@acme/i18n/locales";
+import { resolveText } from "@acme/i18n/resolveText";
+import type { TranslatableText } from "@acme/types/i18n";
 
 export type PromoTile = {
   imageSrc?: string;

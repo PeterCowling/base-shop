@@ -1,5 +1,9 @@
 "use client";
 
+import { useTranslations } from "@acme/i18n";
+
+import { cn } from "../../../../utils/style";
+import { Toast } from "../../../atoms";
 import {
   Button,
   Card,
@@ -7,23 +11,21 @@ import {
   Input,
   Textarea,
 } from "../../../atoms/shadcn";
-import { Toast } from "../../../atoms";
-import { cn } from "../../../../utils/style";
-import { useTranslations } from "@acme/i18n";
 import {
-  type EmailScheduleFormValues,
-  type EmailSchedulePreviewData,
-} from "./types";
-import { ScheduleTimingFields } from "./ScheduleTimingFields";
+  type AsyncSubmissionHandler,
+  type SubmissionStatus,
+} from "../shared";
+
 import { FollowUpControls } from "./FollowUpControls";
 import {
   type EmailScheduleErrors,
   useEmailScheduleFormState,
 } from "./hooks/useEmailScheduleFormState";
+import { ScheduleTimingFields } from "./ScheduleTimingFields";
 import {
-  type AsyncSubmissionHandler,
-  type SubmissionStatus,
-} from "../shared";
+  type EmailScheduleFormValues,
+  type EmailSchedulePreviewData,
+} from "./types";
 
 export interface EmailScheduleFormProps {
   defaultValues?: Partial<EmailScheduleFormValues>;

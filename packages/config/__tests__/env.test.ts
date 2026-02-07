@@ -1,4 +1,5 @@
 import { expect } from "@jest/globals";
+
 import { withEnv } from "../test/utils/withEnv";
 
 const NEXT_SECRET = "nextauth-secret-32-chars-long-string!";
@@ -21,6 +22,10 @@ describe("env", () => {
         CMS_SPACE_URL: "https://cms.example.com",
         CMS_ACCESS_TOKEN: "token",
         SANITY_API_VERSION: "2023-01-01",
+        SANITY_PROJECT_ID: "test-project",
+        SANITY_DATASET: "production",
+        SANITY_API_TOKEN: "test-token",
+        SANITY_PREVIEW_SECRET: "preview-secret",
         EMAIL_FROM: "from@example.com",
         EMAIL_PROVIDER: "sendgrid",
         SENDGRID_API_KEY: "sg-key",
@@ -57,6 +62,10 @@ describe("env", () => {
         CMS_SPACE_URL: undefined,
         CMS_ACCESS_TOKEN: undefined,
         SANITY_API_VERSION: undefined,
+        SANITY_PROJECT_ID: undefined,
+        SANITY_DATASET: undefined,
+        SANITY_API_TOKEN: undefined,
+        SANITY_PREVIEW_SECRET: undefined,
         EMAIL_PROVIDER: undefined,
         STRIPE_SECRET_KEY: undefined,
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: undefined,
@@ -110,6 +119,10 @@ describe("env", () => {
           CMS_SPACE_URL: "notaurl",
           CMS_ACCESS_TOKEN: "token",
           SANITY_API_VERSION: "2023-01-01",
+          SANITY_PROJECT_ID: "test-project",
+          SANITY_DATASET: "production",
+          SANITY_API_TOKEN: "test-token",
+          SANITY_PREVIEW_SECRET: "preview-secret",
           EMAIL_FROM: "from@example.com",
         },
         () => import("../src/env"),

@@ -11,7 +11,7 @@ describe('generateMeta', () => {
   it('produces basic meta tags', async () => {
     let meta;
     await jest.isolateModulesAsync(async () => {
-      process.env.NODE_ENV = 'test';
+      (process.env as Record<string, string | undefined>).NODE_ENV = 'test';
       jest.doMock('@acme/config/env/core', () => ({ coreEnv: {} }));
       const { generateMeta } = await import('../generateMeta');
       meta = await generateMeta(baseProduct);
@@ -27,7 +27,7 @@ describe('generateMeta', () => {
   it('handles missing inputs gracefully', async () => {
     let meta;
     await jest.isolateModulesAsync(async () => {
-      process.env.NODE_ENV = 'test';
+      (process.env as Record<string, string | undefined>).NODE_ENV = 'test';
       jest.doMock('@acme/config/env/core', () => ({ coreEnv: {} }));
       const { generateMeta } = await import('../generateMeta');
       meta = await generateMeta({ id: '1' } as any);
@@ -43,7 +43,7 @@ describe('generateMeta', () => {
   it('merges custom tags', async () => {
     let merged;
     await jest.isolateModulesAsync(async () => {
-      process.env.NODE_ENV = 'test';
+      (process.env as Record<string, string | undefined>).NODE_ENV = 'test';
       jest.doMock('@acme/config/env/core', () => ({ coreEnv: {} }));
       const { generateMeta } = await import('../generateMeta');
       const meta = await generateMeta(baseProduct);

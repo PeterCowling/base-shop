@@ -6,11 +6,11 @@ import {
   markCancelled,
   markDelivered,
   refundOrder,
-} from "@platform-core/orders";
-import { getCustomerSession } from "@auth";
+} from "@acme/platform-core/orders";
+import { getCustomerSession } from "@acme/auth";
 import { stripe } from "@acme/stripe";
 
-jest.mock("@platform-core/orders", () => ({
+jest.mock("@acme/platform-core/orders", () => ({
   __esModule: true,
   getOrdersForCustomer: jest.fn(),
   markCancelled: jest.fn(),
@@ -18,7 +18,7 @@ jest.mock("@platform-core/orders", () => ({
   refundOrder: jest.fn(),
 }));
 
-jest.mock("@auth", () => ({
+jest.mock("@acme/auth", () => ({
   __esModule: true,
   getCustomerSession: jest.fn(),
 }));
@@ -30,16 +30,16 @@ jest.mock("@acme/stripe", () => ({
   },
 }));
 
-const getOrdersForCustomerMock = jest.mocked(getOrdersForCustomer);
-const markCancelledMock = jest.mocked(markCancelled);
-const markDeliveredMock = jest.mocked(markDelivered);
-const refundOrderMock = jest.mocked(refundOrder);
-const getCustomerSessionMock = jest.mocked(getCustomerSession);
-const stripeMock = jest.mocked(stripe);
+const getOrdersForCustomerMock = getOrdersForCustomer as jest.Mock;
+const markCancelledMock = markCancelled as jest.Mock;
+const markDeliveredMock = markDelivered as jest.Mock;
+const refundOrderMock = refundOrder as jest.Mock;
+const getCustomerSessionMock = getCustomerSession as jest.Mock;
+const stripeMock = stripe as unknown as { refunds: { create: jest.Mock } };
 
 beforeEach(() => {
   jest.resetAllMocks();
-  getCustomerSessionMock.mockResolvedValue({ customerId: "cust" });
+  getCustomerSessionMock.mockResolvedValue({ customerId: "cust", role: "customer" });
 });
 
 describe("/api/orders/[id]", () => {

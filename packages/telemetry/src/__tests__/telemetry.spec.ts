@@ -102,16 +102,15 @@ describe("telemetry", () => {
     process.env.NODE_ENV = "production";
     jest.useFakeTimers();
     const mod = await import("../index");
-    const fetchMock = jest.fn().mockResolvedValue({});
-    // @ts-expect-error: override global.fetch for test
+    const fetchMock = jest.fn<any, any[]>().mockResolvedValue({});
     global.fetch = fetchMock;
     try {
       mod.track("e1");
       mod.track("e2");
       expect(mod.__buffer.length).toBe(2);
-      await jest.runOnlyPendingTimersAsync();
+      await (jest as any).runOnlyPendingTimersAsync();
       expect(fetchMock).toHaveBeenCalledTimes(1);
-      const body = JSON.parse(fetchMock.mock.calls[0][1].body as string);
+      const body = JSON.parse((fetchMock.mock.calls[0][1] as any).body as string);
       expect(body.map((e: any) => e.name)).toEqual(["e1", "e2"]);
       expect(mod.__buffer.length).toBe(0);
     } finally {
@@ -123,8 +122,7 @@ describe("telemetry", () => {
     process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
     process.env.NODE_ENV = "production";
     const mod = await import("../index");
-    const fetchMock = jest.fn().mockRejectedValue(new Error("fail"));
-    // @ts-expect-error: override global.fetch for test
+    const fetchMock = jest.fn<any, any[]>().mockRejectedValue(new Error("fail"));
     global.fetch = fetchMock;
     mod.track("event");
     await mod.__flush();
@@ -137,10 +135,9 @@ describe("telemetry", () => {
     process.env.NODE_ENV = "production";
     const mod = await import("../index");
     const fetchMock = jest
-      .fn()
+      .fn<any, any[]>()
       .mockRejectedValueOnce(new Error("fail"))
       .mockResolvedValueOnce({});
-    // @ts-expect-error: override global.fetch for test
     global.fetch = fetchMock;
     mod.track("event", { foo: "bar" });
     await mod.__flush();

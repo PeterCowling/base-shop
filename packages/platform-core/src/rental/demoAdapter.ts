@@ -1,4 +1,4 @@
-import type { AvailabilityAdapter, Availability } from "./availability";
+import type { Availability,AvailabilityAdapter } from "./availability";
 
 export function createDemoAvailabilityAdapter(): AvailabilityAdapter {
   return {

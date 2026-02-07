@@ -1,21 +1,25 @@
 {
   "seo": {
-    "title": "Gavitella Beach Guide",
-    "description": "Planera en solnedgångsvänlig dag på Praianos strandklubbar La Gavitella och One Fire med transport, bokningar och returtips."
+    "title": "Gavitella Beach Praiano-guide: Solnedgång, trappor och strandklubbar",
+    "description": "En vandrarhemsguide till Gavitella Beach Praiano: hur man tar sig dit, väljer La Gavitella vs One Fire, vad det kostar och hur man kommer tillbaka utan att lida."
   },
-  "linkLabel": "Gavitella Beach Guide",
+  "lastUpdated": "2026-01-30T00:00:00.000Z",
+  "linkLabel": "Gavitella Beach: Praianos solnedgångsbad",
   "intro": [
-    "Gavitella-viken i Praiano vetter mot väster, vilket ger lång eftermiddagssol och gyllene utsikter mot Positano och Capri vid solnedgången. Två lidos — La Gavitella och One Fire — delar den smala strandlinjen bredvid en liten offentlig del uthuggen ur klippan.",
-    "Räkna med en omsorgsfull upplevelse där reservation gäller: de branta trapporna håller folkmängden nere, klubbarna samordnar båtskjutsar och kvällarna kretsar kring skaldjursmiddagar eller DJ-ledda sunsetfester."
+    "Gavitella Beach Praiano är kustens \"solnedgångsstrand\": den lilla viken vetter mot väster, så du får långt eftermiddagsljus och gyllene timme-vyer tillbaka mot Positano och Capri.",
+    "Större delen av strandpromenaden drivs av två lidos (strandklubbar) — La Gavitella och One Fire — plus en smal offentlig remsa huggit i klippan mellan dem. Under högsäsong är utrymmet begränsat och bokningar viktiga.",
+    "Denna guide är skriven för Hostel Brikette-gäster. Från vandrarhemsdisken ser vi samma två misstag varje vecka: folk packar för mycket till trapporna och stannar till solnedgången utan återkomstplan. Vi hjälper dig undvika båda.",
+    "Den fokuserar på de praktiska sakerna: trappan ner från Piazza San Gennaro, hur man tajmar din dag så att du inte blir strandsatt efter solnedgången, vad du ska packa (vattenskor är icke-förhandlingsbart) och hur man väljer mellan en lugn lunchklubb vs en festsetup.",
+    "Snabb tumregel: kom tidigare än du tror, simma innan folkmassorna och vinden ökar, och bestäm din \"återkomstplan\" innan du förbinder dig till solnedgångsevenemang."
   ],
   "toc": [
     {
       "href": "#overview",
-      "label": "Upplägg och känsla"
+      "label": "Layout & stämning"
     },
     {
       "href": "#access",
-      "label": "Så tar du dig till Gavitella"
+      "label": "Hur man når Gavitella"
     },
     {
       "href": "#gavitella-club",
@@ -27,88 +31,237 @@
     },
     {
       "href": "#amenities",
-      "label": "Faciliteter och planering"
+      "label": "Faciliteter & planering"
+    },
+    {
+      "href": "#best-time",
+      "label": "Bästa tid att åka"
+    },
+    {
+      "href": "#hostel-day-plan",
+      "label": "Vandrarhemsplan för dagen"
+    },
+    {
+      "href": "#what-to-pack",
+      "label": "Vad du ska ta med"
+    },
+    {
+      "href": "#backup-plan",
+      "label": "Om det är blåsigt (reservplan)"
     }
   ],
   "sections": [
     {
       "id": "overview",
-      "title": "Upplägg och känsla",
+      "title": "Layout och stämning",
       "body": [
-        "Stranden ligger nedanför Piazza San Gennaro i Praiano. Ungefär 400 trappsteg slingrar sig mellan villor och citronterrasser ner till en stenplattform, en hylla av småsten och en smal gratiszon mellan de två lidos.",
-        "La Gavitella håller till på vänster sida (med havet framför dig) med restaurangbord, soldäck och förtöjningsplatser för middagsgäster. One Fire kantar den högra piren med färgstarka solstolar, en DJ-scen och en brygga för deras partybåtar."
+        "Gavitella ligger under Praianos Piazza San Gennaro. Ungefär 400 steg slingrar sig förbi villor och citterrasser till en stenplattform, en grusshylla och en smal offentlig remsa mellan de två lidosna.",
+        "La Gavitella upptar vänster sida (mot havet) med restaurangbord, soldäck och förtöjningar för tenderbåtar. One Fire kantar höger pir med ljusa solstolar, en DJ-podium och en docka för deras festbåtar.",
+        "Det hjälper att tänka på viken som två upplevelser: en klassisk \"Amalfikusten lunch och bad\" på La Gavitella-sidan, och en högljuddare, social eftermiddag på One Fire. Båda kan vara roliga — men om du dyker upp och förväntar dig en stor gratis sandstrand kommer du att bli besviken.",
+        "Vandrarhemsverklighets-check: trapporna är vad som gör platsen speciell (färre dagsturister), men de gör det också lätt att överboka. Håll din väska lätt och planera din återkomst före solnedgången."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/gavitellaBeachGuide.webp",
+          "alt": "View of Gavitella Beach in Praiano with cliffside platforms and the sea",
+          "caption": "Gavitella Beach Praiano är liten, klipphuggen och bäst upplevd som en eftermiddag-till-solnedgång badplats"
+        },
+        {
+          "src": "/img/guides/gavitella-beach/01-beach-layout.webp",
+          "alt": "Gavitella Beach layout diagram showing La Gavitella and One Fire beach clubs",
+          "caption": "Strandlayouten: La Gavitella till vänster med restaurang, One Fire till höger med DJ-podium"
+        },
+        {
+          "src": "/img/guides/gavitella-beach/04-steps-and-return.webp",
+          "alt": "Infographic showing the 400-step descent to Gavitella Beach and return options",
+          "caption": "Planera trapporna: ner är lätt; upp efter solnedgången är den svåra delen — bestäm din återkomst innan du går"
+        }
       ]
     },
     {
       "id": "access",
-      "title": "Så tar du dig till Gavitella",
+      "title": "Hur man når Gavitella",
       "body": [
-        "Från Hostel Brikette eller centrala Positano tar du SITA-bussen mot Amalfi och kliver av vid hållplatsen Piazza San Gennaro i Praiano; räkna med 10–15 minuter för att gå nerför trapporna till din bokning.",
-        "Praianos interna skyttel går i loop mellan den övre vägen och Marina di Praia — ta den tillbaka så slipper du gå upp för hundratals trappsteg efter solnedgången. När havet är lugnt kan båda klubbarna ordna båtskjuts från Positano eller Marina di Praia."
+        "Från Hostel Brikette eller centrala Positano, ta SITA-bussen mot Amalfi och hoppa av vid Praianos Piazza San Gennaro. Från torget, följ den skyltade trappan ner till havet; ge dig själv 10-15 minuter för nedstigningen (mer om du bär en strandväska).",
+        "Om du träffar vänner eller har en bokad tid, behandla trappan som en \"hård deadline\". I juli/augusti är det vanligt att komma svettigt — ta med vatten, och planera inte att sprinta sista delen.",
+        "För återkomsten, tänk i alternativ: (1) förbind dig till trapporna tillbaka upp, (2) använd Praianos interno-shuttle där det är möjligt, eller (3) ordna en båtshuttle när havet är lugnt och personalen bekräftar att den går. Anta inte att båtar alltid opererar — havet bestämmer."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/gavitella-beach/05-getting-there.webp",
+          "alt": "Infographic with steps for getting to Gavitella Beach from the SITA bus stop in Praiano",
+          "caption": "Vandrarhemsanpassad approach: SITA till Piazza San Gennaro, sedan trappor ner — planera extra tid på sommaren"
+        }
       ]
     },
     {
       "id": "gavitella-club",
       "title": "La Gavitella Beach Club",
       "body": [
-        "La Gavitella handlar om långsamma luncher, aperitivi och en båttur i solnedgången runt Li Galli-öarna. Köket fokuserar på säsongens skaldjur — crudo-fat, paccheri med lokal fisk och en dessertlista full av citron.",
-        "Nämn dina transferbehov när du bokar: personalen samordnar tenderbåtar för middagsgäster och kan förvara väskor medan du badar innan aperitifkryssningen."
+        "La Gavitella är det \"klassiska\" alternativet: långsamma luncher, aperitivi och solnedgångsstämning utan full festenergi. Köket lutar åt skaldjur med säsongsbetonade rätter (och gott om citron i äkta Amalfikusten-stil).",
+        "Om du gör detta som en speciell dag är den bästa versionen enkel: kom tillräckligt tidigt för att simma, byta om, sedan slå sig ner för en lång lunch som naturligt blir solnedgångsdrinkar.",
+        "Personaltips: när du bokar, ställ två praktiska frågor i förväg — (1) vilken tid de vill ha dig på plats för ditt bord/solstolar, och (2) vilka återkomstalternativ finns den dagen. Om båtar går kan personalen koordinera tender-transporter för gäster, men det beror på förhållandena."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/gavitella-beach/02-la-gavitella-club.webp",
+          "alt": "La Gavitella Beach Club terrace with sea views and sunset dining",
+          "caption": "La Gavitella — långsamma luncher, aperitivi och solnedgångsbåtturer runt Li Galli-holmarna"
+        }
       ]
     },
     {
       "id": "one-fire",
       "title": "One Fire Beach Club",
       "body": [
-        "One Fire är Amalfikustens partystrand, känd för sin eftermiddagsritual med vattenmelon, DJ-set och publikens koreografi som tajmas perfekt med solnedgången.",
-        "Boka solstolar eller cabanas via WhatsApp — handpenning är vanligt i juli och augusti. När havet samarbetar hämtar deras båtar grupper från Positano och kör tillbaka efter att musiken tystnat."
+        "One Fire är festalternativet: DJ-set, hög energi och en folkmassa som ökar när eftermiddagen går på (ofta perfekt tajmat med solnedgången). Om du letar efter en social dag där du träffar andra resenärer är detta det uppenbara valet.",
+        "Boka solstolar eller kabanor via WhatsApp — depositioner är vanliga i juli och augusti. Bekräfta vad som ingår (sängar vs handdukar vs minimiförbrukning) så att du inte blir överraskad vid ankomsten.",
+        "Vandrarhemsverklighets-check: One Fire är roligt, men det är lätt att tappa tidsuppfattningen. Om du planerar att stanna till solnedgången, bekräfta din återkomstplan tidigt (trappor vs interno vs båtshuttle) så att du inte förhandlar om logistik när du är trött."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/gavitella-beach/03-one-fire-club.webp",
+          "alt": "One Fire Beach Club with bright loungers, DJ podium, and party atmosphere",
+          "caption": "One Fire — Amalfikusten feststrand med DJ-set, vattenmelonritual och solnedgångskoreografi"
+        }
       ]
     },
     {
       "id": "amenities",
       "title": "Faciliteter och planering",
       "body": [
-        "Båda klubbarna har duschar, omklädningskabiner och betalskåp; handdukar ingår oftast i solstolsavgiften. Packa revsäker solkräm och badskor för stenplattformen och småstensinsteget.",
-        "En pytteliten offentlig remsa skiljer lidos åt. Utrymmet är begränsat, så kom före 10:00 med egen matta och räkna med att personalen plockar bort stolar om vågorna pressar in dem mot land."
+        "Båda klubbarna tillhandahåller vanligtvis duschar och omklädningsrum; skåp är ofta betalda. Handdukar kan ingå i solstolsavgiften, men lita inte på det — packa en liten handduk om du kan.",
+        "Ingången är stenig och plattformen kan vara hal. Vattenskor gör dagen bättre (och säkrare). Ta med revvänlig solkräm och en påfyllningsbar flaska; solen är fortfarande stark sent på dagen.",
+        "Den lilla offentliga remsan mellan lidosna är verklig, men den är liten. Om du går \"spiaggia libera\" (gratis strand), kom tidigt med din egen matta och en enkel setup. I grövre hav kan personalen behöva flytta stolar inåt land och den fria remsan kan kännas ännu trängre."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/gavitella-beach/06-packing-checklist.webp",
+          "alt": "Packing checklist infographic for Gavitella Beach day trip from a hostel",
+          "caption": "Packa lätt: vattenskor, solkräm, påfyllningsbar flaska och en liten handduk gör trapporna lättare"
+        }
+      ]
+    },
+    {
+      "id": "best-time",
+      "title": "Bästa tid att åka (och vad havet gör)",
+      "body": [
+        "Gavitella Beach Praiano är bäst från mitten av eftermiddagen till gyllene timme. Eftersom viken vetter mot väster behåller den solljus senare än många Amalfikusten-stränder — vilket är exakt varför solnedgången här är känd.",
+        "Om du vill ha det lugnaste badet, gå tidigare på dagen och behandla solnedgången som en bonus. Vind och chop kan byggas senare, och plattformarna känns mindre när havet är aktivt.",
+        "Mellansäsong (sen vår / tidig höst) kan vara sweet spot för vandrarhemsresenärer: färre bokningar, mer andrum, och du kan fortfarande få det varma sena ljuset utan högsommarens trängsel."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/gavitella-beach/07-sunset-window.webp",
+          "alt": "Infographic explaining why Gavitella faces west and catches late afternoon sun",
+          "caption": "Varför det är en solnedgångsstrand: västvänt ljus varar längre, så den bästa stämningen är sen eftermiddag"
+        }
+      ]
+    },
+    {
+      "id": "hostel-day-plan",
+      "title": "En vandrarhemsplan för Gavitella-dagen",
+      "body": [
+        "Om du vill ha den \"bästa versionen\" av Gavitella utan att tömma din energi (eller budget), fungerar denna plan bra för de flesta gäster.",
+        "1) Ge dig iväg efter frukost och ta SITA-bussen mot Amalfi. Hoppa av vid Piazza San Gennaro och börja trapporna ner med vatten i hand.",
+        "2) Simma först. Ju tidigare du simmar, desto mindre trångt känns det och desto lättare är det att göra anspråk på en bekväm plats.",
+        "3) Bestäm din stämning: La Gavitella för en lång lunch + solnedgångsaperitivo, eller One Fire om du vill ha en social eftermiddag med musik.",
+        "4) Lås in din återkomstplan tidigt. Om du stannar till solnedgången, bekräfta (trappor vs interno shuttle vs båtshuttle) innan dagen blir högljudd.",
+        "5) Tillbaka på Hostel Brikette: duscha, rehydrera, och du är redo för aperitivo i staden. Om du vill ha en enklare andra stranddag, jämför alternativ i vår %LINK:positanoBeaches|Positano strandsöversikt%."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/gavitella-beach/08-hostel-day-plan.webp",
+          "alt": "Timeline infographic for a hostel-friendly day at Gavitella Beach from morning to sunset",
+          "caption": "En enkel dagsplan: buss + trappor, simma tidigt, välj ditt lido och bekräfta återkomsten före solnedgången"
+        }
+      ]
+    },
+    {
+      "id": "what-to-pack",
+      "title": "Vad du ska ta med (så att du inte packar för mycket)",
+      "body": [
+        "En lätt väska är hemligheten till att njuta av Gavitella. Trapporna är hela poängen — men de straffar överpacking.",
+        "Ta med: vattenskor, solkräm, en hatt, en liten handduk och en påfyllningsbar flaska. Lägg till ett lätt lager för hemresan om du är ute efter solnedgången (havsbris + blöt hud blir kallt snabbt).",
+        "Hoppa över: pass och stora kontanter. Förvara värdesaker låsta på vandrarhemmet. Bär precis tillräckligt med kontanter som backup för små extra och transportsurpriser."
+      ]
+    },
+    {
+      "id": "backup-plan",
+      "title": "Om det är blåsigt (reservplan)",
+      "body": [
+        "När havet är grovt känns plattformarna mindre och båtshuttles pausar ofta. Om du anländer och det känns kaotiskt, byt planer istället för att tvinga det.",
+        "Två enkla vandrarhemsreserver: (1) välj en mer skyddad vik som %LINK:marinaDiPraiaBeaches|Marina di Praia%, eller (2) gör en stadsdag och spara Gavitella för ditt nästa lugna väderfönster.",
+        "Om ditt mål är \"solnedgång + bra vibes\" snarare än \"sim\", kan du fortfarande använda Praianos utsiktspunkter och terrasser för gyllene timme utan att förbinda dig till trapporna."
       ]
     }
   ],
-  "tipsTitle": "Snabba tips",
+  "images": {
+    "overview": {
+      "src": "/img/guides/gavitella-beach/01-beach-layout.webp",
+      "alt": "Aerial view of Gavitella Beach cove and the sun decks",
+      "caption": "De två strandklubbarna delar en smal plattform huggen i klippan."
+    },
+    "gavitellaClub": {
+      "src": "/img/guides/gavitella-beach/02-la-gavitella-club.webp",
+      "alt": "Terrace dinner table overlooking the Amalfi Coast at sunset",
+      "caption": "La Gavitellas solnedgångsmiddagar parar havsvyer med långa aperitivi."
+    },
+    "oneFire": {
+      "src": "/img/guides/gavitella-beach/03-one-fire-club.webp",
+      "alt": "Bright orange umbrellas and sunbeds at One Fire Beach Club",
+      "caption": "One Fire är känd för livliga eftermiddagar och en DJ-ledd solnedgångsscen."
+    }
+  },
+  "essentialsTitle": "Väsentligheter",
+  "essentials": [
+    "Boka i förväg för båda klubbarna; solnedgångsplatser och helger säljer slut först.",
+    "Planera för 400+ steg ner från Piazza San Gennaro och en brant återkomst om du inte tar interno-shuttle.",
+    "Packa vattenskor för den steniga plattformen och revvänlig solkräm för sent eftermiddagssolz."
+  ],
+  "typicalCostsTitle": "Typiska kostnader",
+  "typicalCosts": [
+    "La Gavitella solstolsset för två: €70–€100 beroende på säsong.",
+    "One Fire dagsäng eller kabana för två: €100–€180, ofta med deposition i toppmånader.",
+    "Båtshuttle-tillägg (när tillgänglig): €10–€20 per person vardera vägen."
+  ],
+  "tipsTitle": "Snabbtips",
   "tips": [
-    "Använd %LINK:positanoAmalfi|vår guide för transport Positano ↔ Amalfi% för att planera SITA-resan till Piazza San Gennaro innan du tar dig ner för 400 trappsteg.",
-    "Kolla %LINK:sitaTickets|tipsen om SITA-biljetter% för hemresan; Praianos interna linje sparar dig från att klättra upp i mörkret.",
-    "Boka La Gavitellas klipprestaurang samtidigt som solstolarna — skaldjursmenyn och båtturen i solnedgången är värda extrakostnaden.",
-    "Jämför solstolar, gratiszoner och alternativa vikar i vår %LINK:positanoBeaches|översikt över Positanos stränder% innan du bestämmer dig."
+    "Använd %LINK:positanoAmalfi|vår Positano ↔ Amalfi transportguide% för att planera SITA-resan till Piazza San Gennaro innan du tar dig an de 400 stegen ner.",
+    "Kolla %LINK:sitaTickets|SITA biljett-tips% för återkomstalternativ; Praianos interno-loop sparar dig från att klättra tillbaka upp i mörkret.",
+    "Boka La Gavitellas klipphängande restaurang när du bokar solstolar — skaldjursprovningsmenyn och solnedgångsbåtspin är värda att spendera.",
+    "Jämför solstolar, fria zoner och alternativa vikar i vår %LINK:positanoBeaches|Positano strandsöversikt% innan du förbinder dig."
   ],
   "warningsTitle": "Bra att veta",
   "warnings": [
-    "Räkna med cirka 400 ojämna trappsteg åt båda håll; Gavitella är inte tillgänglig för rullstolar eller tungt bagage.",
-    "Gratiszonen kan försvinna när havet är stökigt — ha en reservplan för blåsiga dagar.",
-    "Båtskjutsarna pausas så snart havet slår om, så bekräfta din retur innan kvällsevenemangen drar igång."
+    "Förvänta dig cirka 400 ojämna steg vardera vägen; Gavitella är inte tillgänglig för rullstolar eller tungt bagage.",
+    "Den fria sektionen kan försvinna under grova hav — håll en reservplan för blåsiga dagar.",
+    "Båtshuttles pausar när havet vänder, så bekräfta din hemresa innan solnedgångsevenemang börjar."
   ],
-  "faqsTitle": "Vanliga frågor om Gavitella",
+  "faqsTitle": "Gavitella FAQ",
   "faqs": [
     {
-      "q": "Hur tar jag mig till Gavitella från Hostel Brikette?",
+      "q": "Hur når jag Gavitella från Hostel Brikette?",
       "a": [
-        "Gå till hållplatsen Chiesa Nuova och ta SITA-bussen mot Amalfi. Kliv av vid Piazza San Gennaro i Praiano och följ den skyltade trappan ungefär 400 steg ner till stranden. I lugnt väder kan du även förboka båtskjuts från Positanos huvudbrygga."
+        "Gå till Chiesa Nuova-hållplatsen och gå ombord på SITA-bussen mot Amalfi. Hoppa av vid Praianos Piazza San Gennaro, följ sedan den skyltade trappan för ungefär 400 steg till stranden. I lugnt väder kan du också förboka båtshuttles från Positanos huvudpir."
       ]
     },
     {
       "q": "Behöver jag boka i förväg?",
       "a": [
-        "Ja. Kontakta La Gavitella eller One Fire via WhatsApp eller deras onlineformulär, ange din ankomsttid och fråga om deposition. Helger och solnedgångstider säljer slut snabbt från juni till september."
+        "Ja. Kontakta La Gavitella eller One Fire via WhatsApp eller deras onlineformulär, dela din ankomsttid och fråga om depositioner. Helger och solnedgångsplatser säljer slut snabbt från juni till september."
       ]
     },
     {
-      "q": "Finns det en gratisdel om jag inte hyr solstol?",
+      "q": "Finns det ett fritt område om jag inte hyr solstolar?",
       "a": [
-        "Det finns en smal offentlig remsa mellan klubbarna. Ta med matta eller badskor, kom tidigt och respektera rep eller gångar som personalen ordnar för båttrafiken."
+        "En smal offentlig remsa sitter mellan de två klubbarna. Ta med en matta eller vattenskor, kom tidigt och respektera eventuella rep eller gångvägar som personalen sätter upp för båtåtkomst."
       ]
     },
     {
-      "q": "Kan jag stanna för middag eller sena event?",
+      "q": "Kan jag stanna för middag eller sena evenemang?",
       "a": [
-        "La Gavitella serverar middag på terrassen och kombinerar den ofta med en kort båttur. One Fire håller sunset-fester som avslutas runt sista interna bussen. Bekräfta hemresan med personalen så att du slipper klättra i trapporna nattetid."
+        "La Gavitella serverar middag på terrassen och parar ofta det med en kort båtkryssning. One Fire kör solnedgångsfester som slutar runt den sista interno-bussen. Bekräfta returntransport med personalen så att du inte klättrar trapporna på natten."
       ]
     }
   ]

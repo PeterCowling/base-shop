@@ -1,17 +1,17 @@
 import {
-  fetchShop,
-  persistShop,
-  fetchSettings,
-  persistSettings,
   fetchDiffHistory,
+  fetchSettings,
+  fetchShop,
+  persistSettings,
+  persistShop,
 } from "../persistence";
 
-jest.mock("@platform-core/repositories/shop.server", () => ({
+jest.mock("@acme/platform-core/repositories/shop.server", () => ({
   getShopById: jest.fn().mockResolvedValue({ id: "1" }),
   updateShopInRepo: jest.fn().mockResolvedValue({ id: "1" }),
 }));
 
-jest.mock("@platform-core/repositories/settings.server", () => ({
+jest.mock("@acme/platform-core/repositories/settings.server", () => ({
   getShopSettings: jest.fn().mockResolvedValue({ foo: "bar" }),
   saveShopSettings: jest.fn().mockResolvedValue(undefined),
   diffHistory: jest.fn().mockResolvedValue([]),
@@ -36,7 +36,7 @@ describe("persistence service", () => {
   it("persists settings", async () => {
     await persistSettings("s1", { foo: "bar" } as any);
     const { saveShopSettings } = await import(
-      "@platform-core/repositories/settings.server"
+      "@acme/platform-core/repositories/settings.server"
     );
     expect(saveShopSettings).toHaveBeenCalled();
   });

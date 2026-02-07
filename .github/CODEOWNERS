@@ -1,0 +1,20 @@
+# CODEOWNERS - Require review for high-conflict files
+# See: docs/plans/ralph-methodology-adoption-plan.md § "Concurrency Protocol"
+#
+# These files are frequently edited and prone to merge conflicts.
+# The Docs Custodian serializes edits to prevent thrashing.
+#
+# Note: CODEOWNERS requires a GitHub Ruleset with "Require code owner review"
+# enabled to be enforced. See: Settings → Rules → Rulesets
+
+# High-conflict global docs — require custodian review
+AGENTS.md @petercowling
+CLAUDE.md @petercowling
+CODEX.md @petercowling
+IMPLEMENTATION_PLAN.md @petercowling
+docs/INDEX_FOR_CLAUDE.md @petercowling
+.claude/SKILLS_INDEX.md @petercowling
+.claude/prompts/README.md @petercowling
+
+# Workflows — high-impact, often touched by multiple agents
+.github/workflows/** @petercowling

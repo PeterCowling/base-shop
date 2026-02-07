@@ -1,6 +1,7 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { type NextRequest,NextResponse } from "next/server";
 import { patchTheme } from "@cms/services/shops";
-import { readShop } from "@platform-core/repositories/shops.server";
+
+import { readShop } from "@acme/platform-core/repositories/shops.server";
 
 export async function PATCH(
   req: NextRequest,
@@ -9,8 +10,9 @@ export async function PATCH(
   try {
     const body = await req.json();
     const { shop } = await context.params;
-    const { themeOverrides, themeDefaults } = body ?? {};
+    const { themeId, themeOverrides, themeDefaults } = body ?? {};
     const result = await patchTheme(shop, {
+      themeId,
       themeOverrides,
       themeDefaults,
     });

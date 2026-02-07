@@ -1,13 +1,16 @@
 import Link from "next/link";
-import { listShops } from "../../../lib/listShops";
+
+import { Grid } from "@acme/design-system/primitives/Grid";
+import { Sidebar } from "@acme/design-system/primitives/Sidebar";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+import { deriveOperationalHealth } from "@acme/platform-core/shops/health";
+
 import { Button, Card, CardContent, Progress, Tag } from "@/components/atoms/shadcn";
-import { Grid } from "@ui/components/atoms/primitives/Grid";
-import { Sidebar } from "@ui/components/atoms/primitives/Sidebar";
-import { deriveOperationalHealth } from "@platform-core/shops/health";
+
+import { listShops } from "../../../lib/listShops";
 
 // i18n-exempt -- CMS-TECH-001 [ttl=2026-01-01]
 const HERO_LABEL_CLASS = "text-hero-foreground/90";
-import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
 
 function SeverityFilter({ brokenOnly }: { brokenOnly: boolean }) {
   return (

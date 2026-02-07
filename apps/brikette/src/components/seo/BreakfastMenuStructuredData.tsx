@@ -1,6 +1,8 @@
 // src/components/seo/BreakfastMenuStructuredData.tsx
 import React, { memo } from "react";
 
+import { serializeJsonLdValue } from "@/utils/seo/jsonld";
+
 type Props = {
   graph: unknown;
   type?: string;
@@ -8,8 +10,14 @@ type Props = {
   lang?: string;
 };
 
-function BreakfastMenuStructuredData({ graph, type = "application/ld+json", dataId, lang }: Props): JSX.Element {
-  const json = JSON.stringify(graph);
+function BreakfastMenuStructuredData({
+  graph,
+  type = "application/ld+json",
+  dataId,
+  lang,
+}: Props): JSX.Element | null {
+  const json = serializeJsonLdValue(graph);
+  if (!json) return null;
   return (
     <script
       type={type}

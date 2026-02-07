@@ -1,11 +1,11 @@
 import { createElement } from "react";
+
+import ErrorChips from "./ErrorChips";
 import type {
   MappingFieldName,
   MappingListFieldFieldConfig,
   MappingListFieldSelectConfig,
 } from "./MappingListField";
-
-import ErrorChips from "./ErrorChips";
 
 const BASE_ROW_CLASSNAME = "grid gap-4 sm:items-end";
 const DEFAULT_ROW_TEMPLATE = "sm:grid-cols-[2fr,1fr,auto]";

@@ -1,9 +1,10 @@
 import { useCallback, useState, useTransition } from "react";
-
 import type { UserWithRoles } from "@cms/actions/rbac.server";
 import type { Role } from "@cms/auth/roles";
 
-import type { ActionResult, ActionStatus } from "../../components/actionResult";
+import { useToast } from "@acme/ui/operations";
+
+import type { ActionResult } from "../../components/actionResult";
 import type { RoleDetail } from "../../components/roleDetails";
 
 export type InviteFormState = {
@@ -27,7 +28,6 @@ export type InviteUserAction = (
 type UseInviteUserFormOptions = {
   roleDetails: Record<Role, RoleDetail>;
   onInvite: InviteUserAction;
-  showToast: (status: ActionStatus, message: string) => void;
   onInviteSuccess: (user: UserWithRoles) => void;
 };
 
@@ -51,9 +51,9 @@ const createInviteFormState = (): InviteFormState => ({
 export function useInviteUserForm({
   roleDetails,
   onInvite,
-  showToast,
   onInviteSuccess,
 }: UseInviteUserFormOptions): UseInviteUserFormResult {
+  const toast = useToast();
   const [form, setForm] = useState<InviteFormState>(() => createInviteFormState());
   const [isInviting, startInviteTransition] = useTransition();
 
@@ -97,7 +97,7 @@ export function useInviteUserForm({
       issues.push("Assign at least one role.");
     }
     if (issues.length > 0) {
-      showToast("error", issues.join(" "));
+      toast.error(issues.join(" "));
       return;
     }
 
@@ -109,12 +109,14 @@ export function useInviteUserForm({
         roles: selectedRoles,
       })
         .then((result) => {
-          showToast(result.status, result.message);
           if (result.status === "success") {
+            toast.success(result.message);
             resetForm();
             if (result.user) {
               onInviteSuccess(result.user);
             }
+          } else {
+            toast.error(result.message);
           }
         })
         .catch((error: unknown) => {
@@ -122,10 +124,10 @@ export function useInviteUserForm({
             error instanceof Error
               ? error.message
               : "Failed to invite the user.";
-          showToast("error", message);
+          toast.error(message);
         });
     });
-  }, [form, onInvite, onInviteSuccess, resetForm, showToast]);
+  }, [form, onInvite, onInviteSuccess, resetForm, toast]);
 
   const getHelperText = useCallback(() => {
     return form.roles.length === 0

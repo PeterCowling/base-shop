@@ -1,7 +1,8 @@
 // packages/auth/src/types/roles.ts
 
-import rolesConfig from "../roles.json" with { type: "json" };
 import { z } from "zod";
+
+import rolesConfig from "../roles.json" with { type: "json" };
 
 type RolesConfig = {
   write: readonly string[];

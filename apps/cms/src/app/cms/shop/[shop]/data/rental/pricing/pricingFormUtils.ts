@@ -1,4 +1,4 @@
-import { pricingSchema, type PricingMatrix, type CoverageCode } from "@acme/types";
+import { type CoverageCode,type PricingMatrix, pricingSchema } from "@acme/types";
 
 export type PricingFormStatus = "idle" | "saving" | "saved" | "error";
 export type PricingFormTab = "guided" | "json";

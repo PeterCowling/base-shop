@@ -1,13 +1,13 @@
 /** @jest-environment node */
 
+import { ensureAuthorized } from "../common/auth";
+import { setupSanityBlog } from "../setupSanityBlog";
+
 jest.mock("../common/auth", () => ({
   ensureAuthorized: jest.fn(),
 }));
 
 jest.mock("@acme/config", () => ({ env: {} }));
-
-import { setupSanityBlog } from "../setupSanityBlog";
-import { ensureAuthorized } from "../common/auth";
 
 describe("setupSanityBlog", () => {
   const creds = { projectId: "proj", dataset: "blog", token: "tok" };
@@ -68,7 +68,7 @@ describe("setupSanityBlog", () => {
 
     expect(res).toEqual({ success: true });
     expect(
-      fetchSpy.mock.calls.some(([, opts]) => opts?.method === "PUT"),
+      (fetchSpy.mock.calls as [unknown, { method?: string } | undefined][]).some(([, opts]) => opts?.method === "PUT"),
     ).toBe(false);
     expect(fetchSpy).toHaveBeenCalledTimes(3);
 
@@ -91,7 +91,7 @@ describe("setupSanityBlog", () => {
     expect(fetchSpy.mock.calls[1][0]).toBe(
       "https://api.sanity.io/v1/projects/proj/datasets/blog",
     );
-    expect(fetchSpy.mock.calls[1][1]?.method).toBe("PUT");
+    expect((fetchSpy.mock.calls[1][1] as { method?: string } | undefined)?.method).toBe("PUT");
     expect(fetchSpy).toHaveBeenCalledTimes(4);
     expect(res).toEqual({ success: true });
 

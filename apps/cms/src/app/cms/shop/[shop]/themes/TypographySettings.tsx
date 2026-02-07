@@ -1,9 +1,11 @@
 // apps/cms/src/app/cms/shop/[shop]/themes/TypographySettings.tsx
 "use client";
+import type { ChangeEvent,MutableRefObject } from "react";
+
+import { Grid as DSGrid } from "@acme/design-system/primitives/Grid";
+import { Inline } from "@acme/design-system/primitives/Inline";
+
 import { Input } from "@/components/atoms/shadcn";
-import type { MutableRefObject, ChangeEvent } from "react";
-import { Grid as DSGrid } from "@ui/components/atoms/primitives/Grid";
-import { Inline } from "@ui/components/atoms/primitives/Inline";
 
 interface Props {
   tokens: Record<string, string>;

@@ -1,18 +1,18 @@
 // packages/ui/src/organisms/DealsPage.tsx
-import DealsStructuredData from "@/components/seo/DealsStructuredData";
-import { Card, CardContent } from "../atoms/Card";
-import { Section } from "../atoms/Section";
-import { useModal } from "@/context/ModalContext";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
-import { resolveBookingCtaLabel } from "@ui/shared";
-import formatDisplayDate from "@/utils/formatDisplayDate";
-import { ArrowRight, CheckCircle2, Coffee, Percent, Wine } from "lucide-react";
-import { Fragment, memo, useCallback, useMemo, type ReactNode } from "react";
+import { Fragment, memo, type ReactNode,useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useLoaderData } from "react-router-dom";
+import { ArrowRight, CheckCircle2, Coffee, Percent, Wine } from "lucide-react";
+
 import { AppLink as Link } from "../atoms/Link";
-import { getSlug } from "@/utils/slug";
-import { Stack } from "@/components/atoms/primitives/Stack";
+import { Section } from "../atoms/Section";
+import { Stack } from "../components/atoms/primitives/Stack";
+import { Card, CardContent } from "../components/atoms/shadcn";
+import DealsStructuredData from "../components/seo/DealsStructuredData";
+import { useModal } from "../context/ModalContext";
+import { type AppLanguage,i18nConfig } from "../i18n.config";
+import { resolveBookingCtaLabel } from "../shared";
+import formatDisplayDate from "../utils/formatDisplayDate";
+import { getSlug } from "../utils/slug";
 
 const DISCOUNT_PCT = 15;
 const perkIcons = [Percent, Coffee, Wine];
@@ -21,8 +21,14 @@ const OG_LOCALE_ALTERNATE_PROPERTY = "og:locale:alternate";
 const PERKS_HEADING_ID = "perks-heading";
 const RESTRICTIONS_HEADING_ID = "restrictions-heading";
 
-function DealsPage(): JSX.Element {
-  const { lang, title, desc } = useLoaderData() as { lang: AppLanguage; title: string; desc: string };
+interface DealsPageProps {
+  lang: AppLanguage;
+  title: string;
+  desc: string;
+  structuredData?: Record<string, unknown> | unknown[];
+}
+
+function DealsPage({ lang, title, desc, structuredData }: DealsPageProps): JSX.Element {
   const { supportedLngs } = i18nConfig;
   const { t, ready } = useTranslation("dealsPage", { lng: lang });
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
@@ -95,9 +101,9 @@ function DealsPage(): JSX.Element {
         key: "terms",
         node: (
           <Link
-            to={`/${lang}/${getSlug("terms", lang)}`}
+            href={`/${lang}/${getSlug("terms", lang)}`}
             className="underline text-brand-primary hover:text-brand-bougainvillea"
-            prefetch="viewport"
+            prefetch
           >
             {t("restrictions.other")}
           </Link>
@@ -119,7 +125,7 @@ function DealsPage(): JSX.Element {
           <meta key={l} property={OG_LOCALE_ALTERNATE_PROPERTY} content={l} />
         ))}
 
-      <DealsStructuredData />
+      <DealsStructuredData data={structuredData} />
 
       <Section as="main" padding="none" className="max-w-3xl space-y-10 p-6 pt-34 text-center">
         <header className="space-y-4">

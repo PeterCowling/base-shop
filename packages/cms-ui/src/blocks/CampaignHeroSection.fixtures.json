@@ -1,0 +1,8 @@
+{
+  "mediaType": "image",
+  "imageSrc": "/images/hero1.jpg",
+  "imageAlt": "Campaign",
+  "usps": ["Free shipping", "30-day returns", "New arrivals"],
+  "hotspots": [{ "x": 25, "y": 60, "sku": "green-sneaker" }]
+}
+

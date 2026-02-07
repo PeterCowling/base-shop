@@ -5,36 +5,64 @@
   },
   "linkLabel": "Bus back to Hostel Brikette from Spiaggia Grande",
   "intro": [
-    "To catch the bus back to the hostel, walk up the stairs from the beach to the road and look for the bus stop on the opposite side of the road. The bus stop sign is in blue and white, mounted on a metallic pole. Wait at the bus stop for the bus to arrive."
+    "After enjoying the beach, follow these steps to take the bus back up to Hostel Brikette."
   ],
   "sections": [
     {
-      "id": "take-the-bus",
-      "title": "2. Take the Bus",
+      "id": "walk-to-bus-stop",
+      "title": "1. Walk to the bus stop",
       "body": [
-        "The number of times that the bus will stop before you need to get off will vary. The distance you need to travel is about 4.1km / 2.5 miles."
+        "From the beach, walk up the stairs to reach the main road level. The Piazza dei Mulini bus stop is located in the center of town, in the middle of the shopping district near the pharmacy.",
+        "This bus stop represents the lowest point in the town that traffic can reach. Look for the blue and white bus stop sign mounted on a metallic pole.",
+        "Wait at this stop for the interno Positano bus heading uphill."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-main-beach-bus-back/01-bus-stop-piazza-dei-mulini.jpg",
+          "alt": "Piazza dei Mulini bus stop in the center of Positano near the main beach",
+          "caption": "The Piazza dei Mulini bus stop — located in the town center shopping district near the pharmacy"
+        }
+      ]
+    },
+    {
+      "id": "take-the-bus",
+      "title": "2. Take the bus",
+      "body": [
+        "Board the bus when it arrives — check the electronic sign on the front to confirm it displays 'interno positano'.",
+        "Validate your ticket when boarding. The bus will wind its way uphill through Positano's narrow streets, making several stops along the way.",
+        "The total distance is about 4.1km (2.5 miles). Stay alert for your stop at Bar Internazionale/Chiesa Nuova."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-main-beach-bus-back/02-bus-view.jpg",
+          "alt": "View from inside the interno Positano bus showing the winding coastal route",
+          "caption": "The interno bus winds uphill through Positano's streets — check the electronic sign says 'interno positano'"
+        }
       ]
     },
     {
       "id": "get-off",
-      "title": "3. Get off the Bus",
+      "title": "3. Get off the bus",
       "body": [
-        "You will get off at the Bar Internazionale/Chiesa Nuova bus stop."
+        "Get off at the Bar Internazionale/Chiesa Nuova bus stop. You'll see the tabacchi (convenience store) at this stop.",
+        "After exiting, head back to the main road if needed."
       ]
     },
     {
       "id": "walk-to-hostel",
       "title": "4. Walk to the hostel",
       "body": [
-        "Continue in the direction the bus you just got off takes for just over 100m / 330 feet.",
-        "Take the steps up to the hostel’s main door."
+        "From the bus stop, turn left and walk approximately 100m (330 feet) along the main road in the direction the bus was traveling.",
+        "Look for the stairs on your right that lead up to the hostel's main entrance. Take these stairs up to reach Hostel Brikette's main door."
       ]
     }
   ],
   "tipsTitle": "Bus tips",
   "tips": [
-    "Carry a spare ticket so you can board immediately if the bus is busy.",
+    "Purchase bus tickets at any tabacchi (newsagents/convenience stores) before boarding. Carry a spare ticket so you can board immediately if the bus is busy.",
+    "Check the interno bus timetable for current schedules and ticket prices — these can vary by season.",
     "If services finish early, fall back to the %LINK:positanoMainBeachWalkBack|walking route% — it follows the hostel's staircase checkpoints.",
+    "The Piazza dei Mulini stop is the lowest point in town that buses can reach, making it the most convenient pickup point from the beach area.",
     "Let reception know if you spot timetable changes so the digital concierge stays current for other guests."
   ],
   "extras": {

@@ -1,15 +1,22 @@
 // src/components/guides/generic-content/sections.ts
-import { normaliseKeySeed, nextStableKey } from "./keys";
-import { toStringArray, toTrimmedString } from "./strings";
-import type { ListSectionConfig, Section, ResolvedSection, TocOverrides } from "./types";
+import { nextStableKey,normaliseKeySeed } from "./keys";
+import { looksLikePlaceholderTranslation, toStringArray, toTrimmedString } from "./strings";
+import type { ListSectionConfig, ResolvedSection, Section, SectionImage, TocOverrides } from "./types";
 
 export function toListSection(
   rawItems: unknown,
   title: string,
   id: string,
+  options?: { expectedKey?: string; guideKey?: string },
 ): ListSectionConfig | null {
   const items = toStringArray(rawItems);
-  if (items.length === 0) return null;
+  const meaningfulItems = options
+    ? items.filter(
+        (item) =>
+          !looksLikePlaceholderTranslation(item, options.expectedKey, options.guideKey),
+      )
+    : items;
+  if (meaningfulItems.length === 0) return null;
   return { id, title, items };
 }
 
@@ -20,13 +27,16 @@ export function resolveSections(
   const sectionCounter = new Map<string, number>();
 
   const baseSectionLabel = tocOverrides.labels.get("section");
+  // Legacy data may include fields not in the Section type
+  type LegacySection = Section & { paragraphs?: unknown; list?: unknown; links?: unknown; images?: unknown };
   return sections.map((section, index) => {
+    const legacy = section as LegacySection;
     // Derive a stable id while preserving semantics expected by tests:
     // - string ids are used as-is (trimmed)
     // - numeric ids are preserved verbatim (e.g. id: 42 -> "42")
     // - when id is missing but a title exists, generate an id from the title
     //   and include the section in the ToC
-    const val = (section as unknown as { id?: unknown }).id;
+    const val = section.id as unknown;
     const rawId = (() => {
       if (typeof val === 'string') return toTrimmedString(val);
       if (typeof val === 'number' && Number.isFinite(val)) return String(val);
@@ -49,14 +59,12 @@ export function resolveSections(
     const bodyParts: string[] = [];
     const bodyArray = toStringArray(section.body);
     if (bodyArray.length > 0) bodyParts.push(...bodyArray);
-    const paragraphsArray = toStringArray(
-      (section as unknown as { paragraphs?: unknown }).paragraphs,
-    );
+    const paragraphsArray = toStringArray(legacy.paragraphs);
     if (paragraphsArray.length > 0) bodyParts.push(...paragraphsArray);
-    const listArray = toStringArray((section as unknown as { list?: unknown }).list);
+    const listArray = toStringArray(legacy.list);
     if (listArray.length > 0) bodyParts.push(...listArray);
     try {
-      const rawLinks = (section as unknown as { links?: unknown }).links;
+      const rawLinks = legacy.links;
       if (Array.isArray(rawLinks)) {
         const isGuideKeyShape = (val: string): boolean => {
           if (!val || val.length < 2) return false;
@@ -99,6 +107,40 @@ export function resolveSections(
       /* ignore invalid links */
     }
 
+    const images = (() => {
+      const rawImages = legacy.images;
+      if (!Array.isArray(rawImages) || rawImages.length === 0) return undefined;
+      const parsed = rawImages
+        .map((image): SectionImage | null => {
+          if (!image || typeof image !== "object") return null;
+          const record = image as Record<string, unknown>;
+          const src = typeof record.src === "string" ? record.src.trim() : "";
+          const alt = typeof record.alt === "string" ? record.alt.trim() : "";
+          if (!src || !alt) return null;
+          const captionRaw = record.caption;
+          const caption = typeof captionRaw === "string" ? captionRaw.trim() : undefined;
+          const widthRaw = record.width;
+          const width =
+            typeof widthRaw === "number" && Number.isFinite(widthRaw) && widthRaw > 0
+              ? Math.trunc(widthRaw)
+              : undefined;
+          const heightRaw = record.height;
+          const height =
+            typeof heightRaw === "number" && Number.isFinite(heightRaw) && heightRaw > 0
+              ? Math.trunc(heightRaw)
+              : undefined;
+          return {
+            src,
+            alt,
+            ...(caption ? { caption } : {}),
+            ...(typeof width === "number" ? { width } : {}),
+            ...(typeof height === "number" ? { height } : {}),
+          };
+        })
+        .filter((image): image is SectionImage => image != null);
+      return parsed.length > 0 ? parsed : undefined;
+    })();
+
     const titleForHeading = titleSeed ?? "";
     const labelForToc =
       titleSeed ??
@@ -112,6 +154,7 @@ export function resolveSections(
       label: labelForToc,
       body: bodyParts,
       includeInToc,
+      ...(images ? { images } : {}),
     };
   });
 }

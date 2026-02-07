@@ -1,102 +1,14 @@
-import { Fragment, type ReactNode } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 import TableOfContents from "@/components/guides/TableOfContents";
-import { guideHref, type GuideKey } from "@/routes.guides-helpers";
+import { CfImage } from "@acme/ui/atoms/CfImage";
+import { guideHref } from "@/routes.guides-helpers";
 import type { GuideSeoTemplateContext } from "@/routes/guides/_GuideSeoTemplate";
+
+import { INLINE_LINK_CLASSES, renderInlineLinks } from "../renderInlineLinks";
 
 import { createGuideLabelReader } from "./labels";
 import type { GuideExtras } from "./types";
-
-const inlineLinkPattern = /\[([^\]]+)\]\(([^)]+)\)/g;
-
-const GUIDE_SCHEME_PREFIX = "guide:" as const;
-
-function renderInlineLinks(
-  value: string,
-  keyPrefix: string,
-  context: GuideSeoTemplateContext,
-): ReactNode {
-  inlineLinkPattern.lastIndex = 0;
-  let match: RegExpExecArray | null;
-  let lastIndex = 0;
-  const parts: ReactNode[] = [];
-
-  while ((match = inlineLinkPattern.exec(value))) {
-    if (match.index > lastIndex) {
-      const textSegment = value.slice(lastIndex, match.index);
-      if (textSegment) {
-        parts.push(<Fragment key={`${keyPrefix}-text-${match.index}`}>{textSegment}</Fragment>);
-      }
-    }
-
-    const labelRaw = match[1];
-    const hrefRaw = match[2];
-    if (!labelRaw || !hrefRaw) {
-      lastIndex = inlineLinkPattern.lastIndex;
-      continue;
-    }
-    const label = labelRaw.trim();
-    const href = hrefRaw.trim();
-    const key = `${keyPrefix}-link-${match.index}`;
-
-    if (href.startsWith(GUIDE_SCHEME_PREFIX)) {
-      const guideKey = href.slice(GUIDE_SCHEME_PREFIX.length).trim();
-        if (guideKey.length > 0) {
-          parts.push(
-            <Link
-              key={key}
-              to={guideHref(context.lang, guideKey as GuideKey)}
-              prefetch="intent"
-              className="inline-flex min-h-11 min-w-11 items-center align-middle font-medium text-brand-primary underline-offset-4 hover:underline dark:text-brand-secondary"
-            >
-              {label}
-            </Link>,
-          );
-      } else {
-        parts.push(
-          <Fragment key={key}>
-            {label}
-          </Fragment>,
-        );
-      }
-    } else if (href.startsWith("/")) {
-      parts.push(
-        <Link
-          key={key}
-          to={href}
-          prefetch="intent"
-          className="inline-flex min-h-11 min-w-11 items-center align-middle font-medium text-brand-primary underline-offset-4 hover:underline dark:text-brand-secondary"
-        >
-          {label}
-        </Link>,
-      );
-    } else {
-      parts.push(
-        <a
-          key={key}
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex min-h-11 min-w-11 items-center align-middle font-medium text-brand-primary underline-offset-4 hover:underline dark:text-brand-secondary"
-        >
-          {label}
-        </a>,
-      );
-    }
-
-    lastIndex = inlineLinkPattern.lastIndex;
-  }
-
-  if (lastIndex < value.length) {
-    const textSegment = value.slice(lastIndex);
-    if (textSegment) {
-      parts.push(<Fragment key={`${keyPrefix}-text-${lastIndex}`}>{textSegment}</Fragment>);
-    }
-  }
-
-  return parts.length > 0 ? parts : value;
-}
 
 export function renderArticleLead(
   context: GuideSeoTemplateContext,
@@ -152,6 +64,28 @@ export function renderArticleLead(
               </p>
             ))}
           </div>
+          {Array.isArray(section.figures) && section.figures.length > 0 ? (
+            <div className={section.figures.length > 1 ? "grid gap-4 md:grid-cols-2" : "space-y-4"}>
+              {section.figures.map((figure, index) => (
+                <figure
+                  key={`${section.id}-figure-${index}`}
+                  className="overflow-hidden rounded-2xl border border-brand-outline/20 shadow-sm"
+                >
+                  <CfImage
+                    src={figure.src}
+                    preset="gallery"
+                    alt={figure.alt}
+                    className="size-full object-cover"
+                  />
+                  {figure.caption ? (
+                    <figcaption className="bg-brand-surface px-4 py-3 text-sm text-brand-text/70 dark:bg-brand-surface/70 dark:text-brand-text/80">
+                      {figure.caption}
+                    </figcaption>
+                  ) : null}
+                </figure>
+              ))}
+            </div>
+          ) : null}
         </section>
       ))}
 
@@ -200,8 +134,8 @@ export function renderArticleLead(
               <li className="leading-relaxed">
                 {kneesDockPrefix}{" "}
                 <Link
-                  to={guideHref(context.lang, "chiesaNuovaArrivals")}
-                  className="inline-flex min-h-11 min-w-11 items-center align-middle font-medium text-brand-primary underline-offset-4 hover:underline dark:text-brand-secondary"
+                  href={guideHref(context.lang, "chiesaNuovaArrivals")}
+                  className={INLINE_LINK_CLASSES}
                 >
                   {kneesDockLinkText}
                 </Link>
@@ -212,8 +146,8 @@ export function renderArticleLead(
               <li className="leading-relaxed">
                 {kneesPorterPrefix}{" "}
                 <Link
-                  to={guideHref(context.lang, "porterServices")}
-                  className="inline-flex min-h-11 min-w-11 items-center align-middle font-medium text-brand-primary underline-offset-4 hover:underline dark:text-brand-secondary"
+                  href={guideHref(context.lang, "porterServices")}
+                  className={INLINE_LINK_CLASSES}
                 >
                   {kneesPorterLinkText}
                 </Link>
@@ -233,7 +167,7 @@ export function renderArticleLead(
                 key={index}
                 className="rounded-lg border border-brand-outline/20 bg-brand-surface/80 p-4 shadow-sm transition hover:border-brand-primary/40 dark:border-brand-outline/40 dark:bg-brand-surface/30"
               >
-                <summary className="cursor-pointer text-base font-semibold text-brand-heading outline-none transition focus-visible:ring-2 focus-visible:ring-brand-primary/60 focus-visible:ring-offset-2 dark:text-brand-surface">
+                <summary className="cursor-pointer text-base font-semibold text-brand-heading outline-none transition focus-visible:ring-2 focus-visible:ring-brand-primary/60 focus-visible:ring-offset-2 dark:text-brand-text">
                   {faq.q}
                 </summary>
                 <div className="mt-3 space-y-3">

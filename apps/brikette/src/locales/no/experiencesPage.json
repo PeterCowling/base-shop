@@ -7,15 +7,7 @@
     "eyebrow": "Opplevelser",
     "title": "Solnedganger, rolige morgener og lokal innsikt",
     "description": "Kombiner oppholdet med terrassedrinker, kuraterte fotturer og en digital concierge som holder deg oppdatert allerede før du ankommer.",
-    "supporting": "Alt er tilgjengelig for registrerte gjester; send oss en melding hvis du reiser med venner som bor et annet sted.",
-    "primaryCta": "Bestill oppholdet",
-    "secondaryCta": "Åpne barmenyen",
-    "tertiaryCta": "Send melding til conciergen",
-    "primaryCtaAria": "Bestill oppholdet ditt på Hostel Brikette",
-    "secondaryCtaAria": "Se barmenyen til Hostel Brikette",
-    "tertiaryCtaAria": "Send en melding til Hostel Brikettes digitale concierge",
-    "breakfastCta": "Se frokostmenyen",
-    "breakfastCtaAria": "Se frokostmenyen"
+    "scrollNudge": "Les mer"
   },
   "sections": {
     "bar": {
@@ -89,50 +81,80 @@
     "empty": "Vi har ikke opplevelsesguider for {{tag}} ennå. Prøv et annet stikkord eller fjern filteret.",
     "clearFilter": "Vis alle opplevelsesguider",
     "cardCta": "Utforsk opplevelsesguiden {{guideTitle}}",
-    "directionsLabel": "Veibeskrivelse",
+    "filterHeading": "Filtrer opplevelsesguider",
+    "filterDescription": "Velg et stikkord for å snevre inn opplevelsene vi fremhever.",
+    "directionsLabel": "Veibeskrivelser",
+    "sections": {
+      "content": {
+        "title": "Opplevelsesguider",
+        "description": "Fordypende guider om strender, fotturer, dagsturer og ting å gjøre"
+      },
+      "directions": {
+        "title": "Slik kommer du deg dit",
+        "description": "Trinnvise veibeskrivelser til og fra vandrerhjemmet"
+      }
+    },
     "directionLinks": {
       "capriDayTrip": {
-        "positanoCapriFerry": "Positano → Capri med ferge",
-        "capriPositanoFerry": "Capri → Positano med ferge"
+        "positanoCapriFerry": "Positano → Capri ferge",
+        "capriPositanoFerry": "Capri → Positano ferge"
       },
       "positanoAmalfi": {
         "positanoAmalfiBus": "Positano → Amalfi med buss",
         "amalfiPositanoBus": "Amalfi → Positano med buss",
-        "positanoAmalfiFerry": "Positano → Amalfi med ferge (sesong)",
-        "amalfiPositanoFerry": "Amalfi → Positano med ferge (sesong)"
+        "positanoAmalfiFerry": "Positano → Amalfi ferge (sesong)",
+        "amalfiPositanoFerry": "Amalfi → Positano ferge (sesong)"
       },
       "positanoRavello": {
-        "positanoRavelloBus": "Positano → Ravello med buss",
-        "ravelloPositanoBus": "Ravello → Positano med buss",
+        "positanoRavelloBus": "Positano → Ravello buss",
+        "ravelloPositanoBus": "Ravello → Positano buss",
         "positanoRavelloFerryBus": "Positano → Ravello ferge + buss"
       },
       "naplesPositano": {
         "naplesCenterTrainBus": "Napoli sentrum → Positano (tog + buss)",
-        "naplesCenterPositanoFerry": "Napoli sentrum → Positano med ferge",
-        "naplesAirportPositanoBus": "Napoli flyplass → Positano med buss",
+        "naplesCenterPositanoFerry": "Napoli sentrum → Positano ferge",
+        "naplesAirportPositanoBus": "Napoli flyplass → Positano buss",
         "positanoNaplesCenterBusTrain": "Positano → Napoli sentrum (buss + tog)",
-        "positanoNaplesCenterFerry": "Positano → Napoli med ferge",
-        "positanoNaplesAirportBus": "Positano → Napoli flyplass med buss"
+        "positanoNaplesCenterFerry": "Positano → Napoli ferge",
+        "positanoNaplesAirportBus": "Positano → Napoli flyplass buss"
       },
       "salernoPositano": {
-        "salernoPositanoBus": "Salerno → Positano med buss",
-        "salernoPositanoFerry": "Salerno → Positano med ferge (sesong)",
-        "positanoSalernoBus": "Positano → Salerno med buss",
-        "positanoSalernoFerry": "Positano → Salerno med ferge (sesong)"
+        "salernoPositanoBus": "Salerno → Positano buss",
+        "salernoPositanoFerry": "Salerno → Positano ferge (sesong)",
+        "positanoSalernoBus": "Positano → Salerno buss",
+        "positanoSalernoFerry": "Positano → Salerno ferge (sesong)"
       }
     },
-    "filterHeading": "Filtrer opplevelsesguider",
-    "filterDescription": "Velg et stikkord for å snevre inn opplevelsene vi fremhever.",
     "grouped": {
       "beaches": {
-        "guides": {
-          "heading": "Strandguider",
-          "description": "Velg riktig strandstrekning og planlegg dagen."
-        },
-        "directions": {
-          "heading": "Strandveibeskrivelser",
-          "description": "Steg-for-steg-veibeskrivelse fra Hostel Brikette ned til stranden."
-        }
+        "title": "Strandguider",
+        "description": "Velg riktig strandstrekning og planlegg dagen.",
+        "imageAlt": "Bilde av strand på Amalfikysten"
+      },
+      "boat": {
+        "title": "Båtturer",
+        "description": "Utforsk grotter, viker og naboøyer fra sjøen.",
+        "imageAlt": "Tradisjonell gozzo-båt langs Amalfikysten"
+      },
+      "cuisine": {
+        "title": "Mat og drikke",
+        "description": "Matmarkeder, restauranttips og lokale spesialiteter.",
+        "imageAlt": "Fersk sjømat og sitron servert på Amalfikysten"
+      },
+      "day-trip": {
+        "title": "Dagsturer",
+        "description": "Besøk Capri, Pompeii, Ravello og andre høydepunkter i nærheten.",
+        "imageAlt": "Utsikt over Capri fra sjøen"
+      },
+      "hiking": {
+        "title": "Fotturer",
+        "description": "Sentiero degli Dei, kystløyper og strandstier.",
+        "imageAlt": "Fotgjenger på Path of the Gods med kystpanorama"
+      },
+      "more": {
+        "title": "Flere guider",
+        "description": "Praktiske tips, kultur og sesongråd.",
+        "imageAlt": "Fargerike hus i Positano"
       }
     }
   }

@@ -6,19 +6,20 @@ import '@testing-library/cypress/add-commands';
 import 'cypress-axe';
 import '@cypress/grep';
 import '@cypress/code-coverage/support';
-import { mount as cypressMount } from 'cypress/react';
-import React from 'react';
-import { ThemeProvider } from '@platform-core/contexts/ThemeContext';
-import { LayoutProvider } from '@platform-core/contexts/LayoutContext';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import './component-globals.css';
+
+import React from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import axeSource from 'axe-core/axe.min.js?raw';
-import { TranslationsProvider } from '@i18n';
-import type { Messages } from '@i18n/Translations';
+import { mount as cypressMount } from 'cypress/react';
+
+import { TranslationsProvider } from '@acme/i18n';
+import type { Messages } from '@acme/i18n/Translations';
+import { LayoutProvider } from '@acme/platform-core/contexts/LayoutContext';
+import { ShopThemeProvider } from '@acme/platform-core/contexts/ShopThemeContext';
+
 // Router stub provider is exported from our Vite alias for 'next/navigation'
- 
 import type { RouterStubState } from '~test/shims/next-navigation-ct';
- 
 import { RouterStubProvider } from '~test/shims/next-navigation-ct';
 
 type CypressMountOptions = Parameters<typeof cypressMount>[1];
@@ -78,11 +79,11 @@ declare global {
 function Providers({ children }: { children: React.ReactNode }) {
   const [client] = React.useState(() => new QueryClient());
   return (
-    <ThemeProvider>
+    <ShopThemeProvider>
       <LayoutProvider>
         <QueryClientProvider client={client}>{children}</QueryClientProvider>
       </LayoutProvider>
-    </ThemeProvider>
+    </ShopThemeProvider>
   );
 }
 

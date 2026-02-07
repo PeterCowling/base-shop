@@ -1,13 +1,13 @@
 import { render, screen } from "@testing-library/react";
 
-const mockCategoryCollectionTemplate = jest.fn(() => null);
+import { CategoryList,NewsletterForm, PromoBanner } from "../molecules";
+
+const mockCategoryCollectionTemplate = jest.fn((_props: unknown) => null);
 
 jest.mock("../../../templates/CategoryCollectionTemplate", () => ({
   __esModule: true,
-  CategoryCollectionTemplate: (props: any) => mockCategoryCollectionTemplate(props),
+  CategoryCollectionTemplate: (props: unknown) => mockCategoryCollectionTemplate(props),
 }));
-
-import { NewsletterForm, PromoBanner, CategoryList } from "../molecules";
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -17,13 +17,13 @@ describe("NewsletterForm", () => {
   it("resolves locale-specific placeholder and submit label", () => {
     render(
       <NewsletterForm
-        placeholder={{ en: "Email", fr: "Courriel" }}
-        submitLabel={{ en: "Join", fr: "Adhérer" }}
-        locale="fr"
+        placeholder={{ en: "Email", de: "E-Mail", it: "E-mail" }}
+        submitLabel={{ en: "Join", de: "Beitreten", it: "Iscriviti" }}
+        locale="de"
       />
     );
-    expect(screen.getByPlaceholderText("Courriel")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Adhérer" })).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("E-Mail")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Beitreten" })).toBeInTheDocument();
   });
 
   it("uses provided action and method", () => {
@@ -52,15 +52,15 @@ describe("PromoBanner", () => {
   it("resolves locale text and button label", () => {
     render(
       <PromoBanner
-        text={{ en: "Hi", fr: "Bonjour" }}
-        buttonLabel={{ en: "Shop", fr: "Acheter" }}
-        href="/fr"
-        locale="fr"
+        text={{ en: "Hi", de: "Hallo", it: "Ciao" }}
+        buttonLabel={{ en: "Shop", de: "Einkaufen", it: "Acquista" }}
+        href="/de"
+        locale="de"
       />
     );
-    expect(screen.getByText("Bonjour")).toBeInTheDocument();
+    expect(screen.getByText("Hallo")).toBeInTheDocument();
     expect(
-      screen.getByRole("link", { name: "Acheter" })
+      screen.getByRole("link", { name: "Einkaufen" })
     ).toBeInTheDocument();
   });
 });
@@ -76,7 +76,7 @@ describe("CategoryList", () => {
     const categories = [{ id: "1", title: "Cat", image: "/a.jpg" }];
     render(<CategoryList categories={categories} columns={4} />);
     expect(mockCategoryCollectionTemplate).toHaveBeenCalledTimes(1);
-    expect(mockCategoryCollectionTemplate.mock.calls[0][0]).toMatchObject({
+    expect((mockCategoryCollectionTemplate.mock.calls[0] as unknown[])[0]).toMatchObject({
       categories,
       columns: 4,
     });

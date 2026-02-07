@@ -1,32 +1,33 @@
 // i18n-exempt -- Next.js directive literal (not user-facing copy)
 "use client";
 
-import { locales, type Locale } from "@acme/i18n/locales";
-import { createElement, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties } from "react";
+import { createElement, useCallback, useEffect, useMemo, useRef, useState } from "react";
+
+import { type Locale,locales } from "@acme/i18n/locales";
+import { scaffoldPageFromTemplate, type TemplateDescriptor } from "@acme/page-builder-core";
+import type { HistoryState, Page,PageComponent } from "@acme/types";
+
+import { buildCanvasProps, buildGridProps, buildHistoryProps, buildPreviewProps, buildTourProps } from "./buildProps";
+import { createLinkedSectionHandler } from "./createLinkedSectionHandler";
+import { createToolbarProps } from "./createToolbarProps";
 import useFileDrop from "./hooks/useFileDrop";
-import usePageBuilderState from "./hooks/usePageBuilderState";
-import usePageBuilderControls from "./hooks/usePageBuilderControls";
-import usePreviewTokens from "./hooks/usePreviewTokens";
+import useGridSize from "./hooks/useGridSize";
 import useLayerSelectionPreference from "./hooks/useLayerSelectionPreference";
 import useLocalStrings from "./hooks/useLocalStrings";
-import useGridSize from "./hooks/useGridSize";
-import { buildCanvasProps, buildGridProps, buildHistoryProps, buildPreviewProps, buildTourProps } from "./buildProps";
-import { createToolbarProps } from "./createToolbarProps";
-import { createLinkedSectionHandler } from "./createLinkedSectionHandler";
-import useSectionModeInitialSelection from "./useSectionModeInitialSelection";
-import type { PageComponent, HistoryState, Page } from "@acme/types";
-import { scaffoldPageFromTemplate, type TemplateDescriptor } from "@acme/page-builder-core";
-import type { PageBuilderLayoutProps, PageBuilderProps } from "./PageBuilder.types";
+import usePageBuilderControls from "./hooks/usePageBuilderControls";
+import usePageBuilderState from "./hooks/usePageBuilderState";
 import usePresetActions from "./hooks/usePresetActions";
+import usePreviewTokens from "./hooks/usePreviewTokens";
+import type { PageBuilderLayoutProps, PageBuilderProps } from "./PageBuilder.types";
+import { computeRevisionId } from "./state/revision";
 import TemplateActions from "./TemplateActions";
-
-// single-purpose helpers
-import useShop from "./usePageBuilderLayout/useShop";
 import useDnDSetup from "./usePageBuilderLayout/useDnDSetup";
 import useInsertSetup from "./usePageBuilderLayout/useInsertSetup";
 import useSavePublish from "./usePageBuilderLayout/useSavePublish";
-import { computeRevisionId } from "./state/revision";
+// single-purpose helpers
+import useShop from "./usePageBuilderLayout/useShop";
+import useSectionModeInitialSelection from "./useSectionModeInitialSelection";
 
 const usePageBuilderLayout = ({
   page,

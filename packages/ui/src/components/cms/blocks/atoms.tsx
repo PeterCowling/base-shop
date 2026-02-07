@@ -1,19 +1,22 @@
 // src/atoms/index.tsx
-import type { Locale } from "@acme/i18n/locales";
 import React, {
-  createElement,
-  memo,
   type ComponentPropsWithoutRef,
-  type JSXElementConstructor,
+  createElement,
   type JSX as ReactJSX,
+  type JSXElementConstructor,
+  memo,
 } from "react";
 import NextImage, { type ImageProps as NextImageProps } from "next/image";
-import type { BlockRegistryEntry } from "./types";
+
+import type { Locale } from "@acme/i18n/locales";
+
+import ButtonBlock from "./Button";
+import CustomHtml from "./CustomHtml";
 import Divider from "./Divider";
 import Spacer from "./Spacer";
-import CustomHtml from "./CustomHtml";
-import ButtonBlock from "./Button";
-export { Divider, Spacer, CustomHtml, ButtonBlock as Button };
+import type { BlockRegistryEntry } from "./types";
+
+export { ButtonBlock as Button,CustomHtml, Divider, Spacer };
 
 const defaultPreview = "/window.svg";
 

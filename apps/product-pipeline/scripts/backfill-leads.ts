@@ -6,6 +6,7 @@ import { rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+
 import { fingerprintLead } from "../src/lib/pipeline/fingerprint";
 
 type LeadRow = {

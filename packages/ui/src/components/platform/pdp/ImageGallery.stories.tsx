@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
+
 import type { MediaItem } from "@acme/types";
+
 import { ImageGallery } from "./index";
 
 const mediaItems: MediaItem[] = [

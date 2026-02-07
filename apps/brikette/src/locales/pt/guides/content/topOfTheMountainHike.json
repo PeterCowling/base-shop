@@ -4,58 +4,59 @@
     "description": "Chegue ao Monte Sant'Angelo, o ponto mais alto da Costa Amalfitana, com estas instruções, dicas de preparação e avisos."
   },
   "linkLabel": "Caminhada no topo da montanha do Hostel Brikette",
+  "lastUpdated": "2026-02-04",
   "intro": [
-    "Monte Sant'Angelo towers above the Amalfi Coast and rewards hikers with sweeping 360-degree views stretching from Capri to the Sorrentine Peninsula.",
-    "This itinerary starts from Hostel Brikette, guides you up to Santa Maria del Castello, and explains the final push to the summit so you know exactly what to expect before committing."
+    "O Monte Sant'Angelo se ergue acima da Costa Amalfitana e recompensa os caminhantes com vistas amplas de 360 graus, de Capri à Península Sorrentina.",
+    "Este roteiro parte do Hostel Brikette, leva você até Santa Maria del Castello e explica o trecho final até o cume para que saiba exatamente o que esperar antes de se comprometer."
   ],
   "sections": [
     {
       "id": "why-go",
-      "title": "Why tackle this hike",
+      "title": "Por que encarar esta caminhada",
       "body": [
-        "Views from the summit sweep across the peninsula towards Capri and down the Lattari mountains, making the grind worthwhile for photographers and hikers alike.",
-        "Reaching the Amalfi Coast's highest point is a satisfying physical challenge and a story you will trade with other travellers back at the hostel.",
-        "The long ascent doubles as a serious cardio session, especially if you are training for bigger treks later in your trip."
+        "As vistas do cume varrem a península em direção a Capri e às montanhas Lattari, tornando o esforço valioso para fotógrafos e caminhantes.",
+        "Chegar ao ponto mais alto da Costa Amalfitana é um desafio físico satisfatório e uma história para contar no hostel.",
+        "A longa subida também serve como um treino de cardio sério, especialmente se você está se preparando para trilhas maiores."
       ]
     },
     {
       "id": "getting-to-santa-maria",
-      "title": "Getting to Santa Maria del Castello",
+      "title": "Chegando a Santa Maria del Castello",
       "body": [
-        "Follow our standard hostel-to-Santa-Maria directions until you arrive in the village; that climb covers just over one third of the total elevation for the day.",
-        "Take a breather in the square, refill water if the bar is open, and check that everyone in your group still feels strong before committing to the exposed upper trail."
+        "Siga nossas direções padrão do hostel para Santa Maria até chegar à vila; essa subida cobre pouco mais de um terço do ganho total de elevação do dia.",
+        "Faça uma pausa na praça, reabasteça água se o bar estiver aberto e confirme que todos do grupo ainda se sentem bem antes do trecho superior exposto."
       ]
     },
     {
       "id": "santa-maria-to-summit",
-      "title": "From Santa Maria to the summit",
+      "title": "De Santa Maria ao cume",
       "body": [
-        "From the crossroads at the top of the village, turn right up the paved lane until a junction, then turn left and continue past the restaurant until the road bends sharply left.",
-        "Leave the road on the right-hand side, following the side path that drops slightly between houses. It will feel like private property at first, but you are still on the right track.",
-        "Stay on the mountain trail for an extended stretch until you reach a signed crossroads. Ignore the downhill options and take the steeply rising path.",
-        "The ascent quickly zig-zags before easing into a long, flatter traverse along the left-hand side of the mountain face. When you spot stone-cut steps on your right, follow them around the back of the peak for the final push.",
-        "Those rock steps lead to the last ramp of the day—keep climbing and you will emerge on the summit plateau with panoramic views in every direction."
+        "Do cruzamento no topo da vila, vire à direita pela rua pavimentada até a próxima junção, depois vire à esquerda e siga passando pelo restaurante até a estrada dobrar bruscamente à esquerda.",
+        "Saia da estrada pelo lado direito, seguindo o caminho lateral que desce ligeiramente entre as casas. No começo parece propriedade privada, mas você ainda está na rota certa.",
+        "Permaneça na trilha da montanha por um bom trecho até chegar a um cruzamento sinalizado. Ignore as opções de descida e pegue o caminho que sobe íngreme.",
+        "A subida faz zigue-zague rapidamente antes de se transformar em uma longa travessia mais plana pela face esquerda da montanha. Quando você avistar degraus talhados na pedra à direita, siga por eles contornando a parte de trás do pico para o empurrão final.",
+        "Esses degraus de pedra levam à última rampa do dia — continue subindo e você chegará ao platô do cume com vistas panorâmicas em todas as direções."
       ]
     }
   ],
-  "essentialsTitle": "Essentials",
+  "essentialsTitle": "Essenciais",
   "essentials": [
     "Pelo menos 2 litros de água por pessoa mais salgadinhos; não há recargas confiáveis ​​depois de Santa Maria del Castello.",
     "Sapatos de caminhada sólidos e com aderência – as seções superiores da trilha são rochosas, soltas e expostas.",
     "Proteção solar e camadas para o cume; o vento pode chicotear a cordilheira mesmo em dias quentes."
   ],
-  "typicalCostsTitle": "Typical costs",
+  "typicalCostsTitle": "Custos típicos",
   "typicalCosts": [
     "O acesso à trilha é gratuito; orçamento de 5 a 10 euros se você planeja se recompensar com uma bebida ou lanche em Santa Maria del Castello.",
     "Devolva as passagens de ônibus ou de balsa da SITA se você decidir descer por outra vila em vez de caminhar todo o caminho de volta."
   ],
-  "tipsTitle": "Smart timing",
+  "tipsTitle": "Melhor horário",
   "tips": [
     "Comece ao amanhecer no verão para evitar subir sob o pico de calor; as tardes de outono e primavera oferecem uma luz mais suave, sem o sol escaldante.",
     "Verifique a previsão de tempestades: a cobertura de nuvens pode apagar a vista e as rochas molhadas tornam os degraus do cume escorregadios.",
     "Informe alguém do albergue sobre seu plano e o horário previsto de retorno antes de partir."
   ],
-  "warningsTitle": "When to reconsider",
+  "warningsTitle": "Quando reconsiderar",
   "warnings": [
     "Pule a caminhada se você não tiver experiência em montanhas ou boa forma física; o ganho sustentado de elevação é punitivo e há poucos pontos de resgate.",
     "Evite a rota se as alturas o perturbarem - saliências expostas e quedas íngremes desafiam até mesmo os caminhantes confiantes.",
@@ -63,46 +64,46 @@
   ],
   "steps": [
     {
-      "name": "Climb to Santa Maria del Castello",
+      "name": "Suba até Santa Maria del Castello",
       "text": "Use a rota do albergue para Santa Maria del Castello; alcançar o quadrado significa que você completou cerca de um terço da elevação."
     },
     {
-      "name": "Join the mountain trail",
+      "name": "Entre na trilha da montanha",
       "text": "A partir do cruzamento da aldeia virar à direita, depois à esquerda, passando pelo restaurante, e sair da estrada pelo caminho da direita que contorna o casario."
     },
     {
-      "name": "Commit to the upper ascent",
+      "name": "Assuma a subida final",
       "text": "Siga a trilha acidentada até o cruzamento sinalizado e escolha o caminho que sobe direto em direção ao cume."
     },
     {
-      "name": "Navigate the zig-zags",
+      "name": "Enfrente os zigue-zagues",
       "text": "Percorra curvas íngremes até que a trilha se achate ao longo do flanco esquerdo da montanha."
     },
     {
-      "name": "Take the rock-cut stairs",
+      "name": "Pegue os degraus talhados na pedra",
       "text": "Suba os degraus de pedra à direita, contornando a face da montanha até a rampa final."
     },
     {
-      "name": "Reach the summit",
+      "name": "Chegue ao cume",
       "text": "Siga a última subida até ao topo e desfrute do panorama antes de refazer os seus passos até Santa Maria."
     }
   ],
-  "faqsTitle": "FAQs",
+  "faqsTitle": "Perguntas frequentes",
   "faqs": [
     {
-      "q": "How long does the full hike take?",
+      "q": "Quanto tempo leva a caminhada completa?",
       "a": [
         "Reserve de 6 a 7 horas para a viagem de ida e volta do Hostel Brikette, incluindo pausas em Santa Maria e tempo no cume."
       ]
     },
     {
-      "q": "Is the trail marked?",
+      "q": "A trilha é sinalizada?",
       "a": [
         "Os marcadores são esparsos além de Santa Maria; leve um mapa off-line e preste atenção à trilha obviamente desgastada e às placas de sinalização nos cruzamentos."
       ]
     },
     {
-      "q": "Can I turn back early?",
+      "q": "Posso voltar antes?",
       "a": [
         "Sim. Se a parte superior parecer muito exposta, aprecie as vistas de Santa Maria ou dos ziguezagues inferiores e retorne por onde veio."
       ]
@@ -110,24 +111,7 @@
   ],
   "toc": {
     "labels": {
-      "warnings": "When to reconsider"
+      "warnings": "Quando reconsiderar"
     }
-  },
-  "gallery": {
-    "title": "Galeria de fotos",
-    "items": [
-      {
-        "alt": "Looking across the peninsula to Capri",
-        "caption": "Vista pela península em direção a Capri"
-      },
-      {
-        "alt": "Scan to Share QR code",
-        "caption": "Escaneie para compartilhar"
-      },
-      {
-        "alt": "Trail near the summit",
-        "caption": "Chegando ao cume"
-      }
-    ]
   }
 }

@@ -1,7 +1,7 @@
 import { jest } from "@jest/globals";
 import type { Page } from "@acme/types";
-import { nowIso } from "@date-utils";
-import { createPreviewToken } from "@platform-core/previewTokens";
+import { nowIso } from "@acme/date-utils";
+import { createPreviewToken } from "@acme/platform-core/previewTokens";
 
 process.env.PREVIEW_TOKEN_SECRET = "testsecret";
 process.env.NEXT_PUBLIC_SHOP_ID = "shop";
@@ -33,7 +33,7 @@ test("valid token returns page JSON", async () => {
     createdBy: "tester",
   };
   const getPages = jest.fn(async () => [page]);
-  jest.doMock("@platform-core/repositories/pages/index.server", () => ({
+  jest.doMock("@acme/platform-core/repositories/pages/index.server", () => ({
     __esModule: true,
     getPages,
   }));
@@ -58,7 +58,7 @@ test("valid token returns page JSON", async () => {
 
 test("missing page yields 404", async () => {
   const getPages = jest.fn(async () => []);
-  jest.doMock("@platform-core/repositories/pages/index.server", () => ({
+  jest.doMock("@acme/platform-core/repositories/pages/index.server", () => ({
     __esModule: true,
     getPages,
   }));
@@ -82,7 +82,7 @@ test("missing page yields 404", async () => {
 
 test("invalid token yields 401", async () => {
   const getPages = jest.fn(async () => []);
-  jest.doMock("@platform-core/repositories/pages/index.server", () => ({
+  jest.doMock("@acme/platform-core/repositories/pages/index.server", () => ({
     __esModule: true,
     getPages,
   }));

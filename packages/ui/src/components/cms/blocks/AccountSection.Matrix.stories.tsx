@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/AccountSection.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import AccountSection from './AccountSection';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './AccountSection.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import AccountSection from './AccountSection';
+import fixture from './AccountSection.fixtures.json';
 
 const meta: Meta<typeof AccountSection> = {
   title: 'CMS Blocks/AccountSection/Matrix',

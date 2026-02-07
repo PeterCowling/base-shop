@@ -1,15 +1,15 @@
 import {
   addDays,
-  format,
-  fromZonedTime,
-  nowIso,
-  isoDateInNDays,
   calculateRentalDays,
-  formatTimestamp,
-  parseTargetDate,
-  getTimeRemaining,
+  format,
   formatDuration,
-} from "@date-utils";
+  formatTimestamp,
+  fromZonedTime,
+  getTimeRemaining,
+  isoDateInNDays,
+  nowIso,
+  parseTargetDate,
+} from "@acme/date-utils";
 
 describe("date-utils", () => {
   it("nowIso returns ISO 8601 string", () => {

@@ -27,13 +27,13 @@ describe("/api/delivery", () => {
   test("schedules pickup via provider", async () => {
     jest.doMock("../shop.json", () => ({ shippingProviders: ["premier-shipping"] }));
     const schedulePickup = jest.fn();
-    jest.doMock("@shared-utils", () => ({
+    jest.doMock("@acme/lib/http/server", () => ({
       parseJsonBody: jest.fn().mockResolvedValue({
         success: true,
         data: { region: "US", date: "2025-01-01", window: "9-12", carrier: "UPS" },
       }),
     }));
-    jest.doMock("@platform-core/plugins", () => ({
+    jest.doMock("@acme/platform-core/plugins", () => ({
       initPlugins: jest.fn(async () => ({
         shipping: new Map([["premier-shipping", { schedulePickup }]]),
       })),
@@ -47,13 +47,13 @@ describe("/api/delivery", () => {
 
   test("returns error when provider missing", async () => {
     jest.doMock("../shop.json", () => ({ shippingProviders: ["premier-shipping"] }));
-    jest.doMock("@shared-utils", () => ({
+    jest.doMock("@acme/lib/http/server", () => ({
       parseJsonBody: jest.fn().mockResolvedValue({
         success: true,
         data: { region: "US", date: "2025-01-01", window: "9-12" },
       }),
     }));
-    jest.doMock("@platform-core/plugins", () => ({
+    jest.doMock("@acme/platform-core/plugins", () => ({
       initPlugins: jest.fn(async () => ({ shipping: new Map() })),
     }));
     const { POST } = await import("../src/app/api/delivery/route");
@@ -65,7 +65,7 @@ describe("/api/delivery", () => {
   test("returns parse error response when body invalid", async () => {
     jest.doMock("../shop.json", () => ({ shippingProviders: ["premier-shipping"] }));
     const parseResponse = Response.json({ error: "bad" }, { status: 400 });
-    jest.doMock("@shared-utils", () => ({
+    jest.doMock("@acme/lib/http/server", () => ({
       parseJsonBody: jest.fn().mockResolvedValue({ success: false, response: parseResponse }),
     }));
     const { POST } = await import("../src/app/api/delivery/route");
@@ -76,13 +76,13 @@ describe("/api/delivery", () => {
   test("returns error when schedulePickup throws", async () => {
     jest.doMock("../shop.json", () => ({ shippingProviders: ["premier-shipping"] }));
     const schedulePickup = jest.fn().mockRejectedValue(new Error("boom"));
-    jest.doMock("@shared-utils", () => ({
+    jest.doMock("@acme/lib/http/server", () => ({
       parseJsonBody: jest.fn().mockResolvedValue({
         success: true,
         data: { region: "US", date: "2025-01-01", window: "9-12" },
       }),
     }));
-    jest.doMock("@platform-core/plugins", () => ({
+    jest.doMock("@acme/platform-core/plugins", () => ({
       initPlugins: jest.fn(async () => ({
         shipping: new Map([["premier-shipping", { schedulePickup }]]),
       })),

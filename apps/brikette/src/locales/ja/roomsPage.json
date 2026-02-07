@@ -1,8 +1,8 @@
 {
   "meta": {
-    "title": "翻訳を準備中です。",
+    "title": "客室と料金 | Brikette Hostel Positano",
     "description": "専用の海が見えるダブルルームとお得なドミトリー：写真・設備・最新料金をチェックして、Brikette Hostel Positanoを直接予約して最安値を手に入れよう。",
-    "ogImageAlt": "翻訳を準備中です。"
+    "ogImageAlt": "共用ドミトリールームの内観"
   },
   "facilities": {
     "privateRoom": "個室",
@@ -28,6 +28,41 @@
     "airCon": "エアコン",
     "keycard": "キー カード式ドア",
     "linen": "ベッドリネン・タオル付き"
+  },
+  "facts": {
+    "type": {
+      "privateRoom": "個室",
+      "mixedDorm": "男女混合ドミトリー",
+      "femaleDorm": "女性専用ドミトリー",
+      "femaleRoom": "女性専用ルーム"
+    },
+    "bathroom": {
+      "bathroomEnsuite": "専用バスルーム",
+      "bathroomPrivate": "プライベートバスルーム",
+      "bathroomSharedFemale": "共用バスルーム"
+    },
+    "sleeps": "定員{{count}}名"
+  },
+  "detailsLine": {
+    "beds": {
+      "doubleBedForTwo": "ダブルベッド1台",
+      "threeSingleBedsThreeGuests": "シングルベッド3台",
+      "oneDormBedTwoGuests": "二段ベッド1台",
+      "threeDormBedsSixGuests": "二段ベッド3台",
+      "threeDormBedsPlusSingleSevenGuests": "二段ベッド3台＋シングル1台",
+      "fourDormBedsEightGuests": "二段ベッド4台"
+    },
+    "views": {
+      "seaViewTerrace": "海が見えるテラス",
+      "seaViewExtraLargeTerrace": "海が見えるテラス",
+      "gardenView": "ガーデンビュー",
+      "courtyardView": "中庭ビュー",
+      "noView": "眺望なし"
+    }
+  },
+  "priceUnits": {
+    "perRoom": "1室",
+    "perBed": "1ベッド"
   },
   "rooms": {
     "title": "客室",
@@ -170,7 +205,7 @@
       "bed_description": "スーペリア女性専用ドミトリーは、ドミトリーベッド3台＋シングルベッド1台（合計7ベッド）で最大7名様まで宿泊可能です。3階にあり、専用バスルーム、海が見えるテラス、エアコン、キー カード式ドアを備えています。ベッドリネンとタオルはチェックイン時にお渡しします。",
       "facilities": [
         "femaleDorm",
-        "翻訳を準備中です。",
+        "threeDormBedsPlusSingleSevenGuests",
         "thirdFloor",
         "bathroomEnsuite",
         "seaViewTerrace",
@@ -189,7 +224,7 @@
       "bed_description": "デラックス男女混合ルームはシングルベッド3台で最大3名様まで宿泊できます。4階にあり、専用バスルームと中庭ビュー、エアコン、キー カード式ドアを備えています。ベッドリネンとタオルはチェックイン時にお渡しします。",
       "facilities": [
         "mixedDorm",
-        "翻訳を準備中です。",
+        "threeSingleBedsThreeGuests",
         "fourthFloor",
         "bathroomEnsuite",
         "courtyardView",
@@ -264,8 +299,8 @@
   "cancel": "キャンセル",
   "moreAboutThisRoom": "この部屋の詳細",
   "loadingPrice": "Loading price…",
-  "landingImageAlt": "Landing image of {{room}}",
+  "landingImageAlt": "{{room}}のメイン画像",
   "priceNotes": {
-    "dorm": "Per night, per guest. One guest in one bunk bed."
+    "dorm": "1泊1名様。1つの二段ベッドに1名様。"
   }
 }

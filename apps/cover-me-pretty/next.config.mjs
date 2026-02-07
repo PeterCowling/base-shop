@@ -15,6 +15,11 @@ process.env.CART_COOKIE_SECRET ??= "dev-cart-secret";
 process.env.CMS_SPACE_URL ??= "https://cms.example.com";
 process.env.CMS_ACCESS_TOKEN ??= "placeholder-token";
 process.env.SANITY_API_VERSION ??= "2021-10-21";
+// Sanity: provide safe defaults so env validation doesn't fail in CI/edge
+process.env.SANITY_PROJECT_ID ??= "dummy-project-id";
+process.env.SANITY_DATASET ??= "production";
+process.env.SANITY_API_TOKEN ??= "dummy-api-token";
+process.env.SANITY_PREVIEW_SECRET ??= "dummy-preview-secret";
 // Email: default to noop provider during local builds so env validation passes
 process.env.EMAIL_PROVIDER ??= "noop";
 if (process.env.NODE_ENV !== "production") {
@@ -27,6 +32,9 @@ const { default: sharedConfig } = await import("@acme/next-config/next.config.mj
 
 const config = {
   ...sharedConfig,
+  typescript: {
+    tsconfigPath: "./tsconfig.next.json",
+  },
   // Shop BCD should not be exported as static HTML when OUTPUT_EXPORT is set.
   // Override the shared `output: "export"` flag so dynamic API routes such as
   // `/api/collections/[id]` remain valid during workspace builds.

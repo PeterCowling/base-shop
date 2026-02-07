@@ -1,10 +1,7 @@
 // packages/ui/src/components/cms/nav/useCmsNavItems.tsx
 "use client";
 
-import { getShopFromPath } from "@acme/shared-utils";
-import { features } from "@acme/platform-core/features";
 import { useMemo } from "react";
-import { useTranslations } from "@acme/i18n";
 import {
   BoxIcon,
   EnvelopeClosedIcon,
@@ -13,14 +10,19 @@ import {
   LayersIcon,
   MagnifyingGlassIcon,
   MixIcon,
+  PersonIcon,
   PlusIcon,
   ReaderIcon,
   ResetIcon,
   RocketIcon,
   TokensIcon,
   UpdateIcon,
-  PersonIcon,
+  UploadIcon,
 } from "@radix-ui/react-icons";
+
+import { useTranslations } from "@acme/i18n";
+import { getShopFromPath } from "@acme/lib/shop";
+import { features } from "@acme/platform-core/features";
 
 export interface CmsNavItem {
   href: string; // base href without /cms prefix
@@ -80,6 +82,9 @@ export function useCmsNavItems({
       // Since "Pages" routes directly to the builder when a shop is selected,
       // avoid adding a separate "Create new page" entry to prevent duplicate keys.
       { href: shop ? `${base}/media` : "/media", label: String(t("Media")), icon: <ImageIcon className={iconCls} /> },
+      ...(shop && role && ["admin", "ShopAdmin", "CatalogManager"].includes(role)
+        ? [{ href: `${base}/uploads`, label: String(t("Uploads")), icon: <UploadIcon className={iconCls} /> }]
+        : []),
       // Global marketing workspace (email, discounts, segments)
       { href: "/marketing", label: String(t("Marketing")), icon: <EnvelopeClosedIcon className={iconCls} /> },
       ...(shop ? [{ href: `${base}/edit-preview`, label: String(t("Edit Preview")), icon: <UpdateIcon className={iconCls} /> }] : []),

@@ -2,9 +2,9 @@
 
 import { spawnSync } from "child_process";
 import { join } from "path";
-import { ensureDir, writeJSON } from "./fsUtils";
 
 import type { DeployShopResult } from "./deployTypes";
+import { ensureDir, writeJSON } from "./fsUtils";
 
 export interface ShopDeploymentAdapter {
   scaffold(appPath: string): void;

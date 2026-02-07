@@ -1,5 +1,6 @@
-import type { PageComponent } from "@acme/types";
 import { ulid as generateId } from "ulid";
+
+import type { PageComponent } from "@acme/types";
 
 export function groupIntoContainer(
   list: PageComponent[],

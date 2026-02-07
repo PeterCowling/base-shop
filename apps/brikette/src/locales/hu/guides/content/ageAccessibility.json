@@ -1,0 +1,144 @@
+{
+  "seo": {
+    "title": "Korhatárok és akadálymentesítés a Hostel Brikette-ben (Positano)",
+    "description": "A foglalás előtt értse meg lépcsős hozzáférésünket, poggyász- és önellátási elvárásainkat, kiskorúakra vonatkozó szabályzatunkat, segítő állatokra vonatkozó útmutatást és gyakorlati érkezési tippeket (komp és busz)."
+  },
+  "linkLabel": "Korhatárok és akadálymentesítés",
+  "sections": [
+    {
+      "id": "quickChecklist",
+      "title": "Foglalás előtt (gyors ellenőrző lista)",
+      "body": [
+        "Szeretnénk, hogy érkezése zökkenőmentes legyen – Positano gyönyörű, de nem \\\\\"lapos és könnyű\\\\\". Itt van, ami a legfontosabb:",
+        "* **A lépcsők elkerülhetetlenek:** a recepcióhoz ≈30 kültéri kőlépcső vezet, és a legtöbb hálóterem 1-2 további emeletre van felette.\n* **Nincs lift / nincs lépcsőmentes hozzáférés:** történelmi épületünk nem rámákhoz vagy liftekhez épült.\n* **Tervezze meg poggyászát:** nincs portásszolgálatunk – hozza el, amit el tud vinni, vagy szervezzen egy hordárt.\n* **A kiskorúakra vonatkozó szabályok szigorúak:** 17 év alattiak csak privát szobában; 17 éveseknek felügyelő felnőtt + dokumentáció szükséges.\n* **Ha nem biztos benne, küldjön nekünk e-mailt foglalás előtt:** részletesen leírjuk az elrendezést és a jellemző gyalogos útvonalakat."
+      ]
+    },
+    {
+      "id": "accessibilityRequirements",
+      "title": "Akadálymentesítési követelmények",
+      "body": [
+        "A Hostel Brikette egy történelmi positanói épületben található, amely a domboldalba épült. Ez része a varázsnak – és a fő akadálymentesítési szempont is: **nincs lift és nincs lépcsőmentes útvonal**.",
+        "**Mire számíthat a szállodában:**\n* ≈30 kültéri kőlépcső a legközelebbi gyalogjárótól a recepcióig.\n* A legtöbb hálóterem **egy vagy két további belső emeletre** van a recepció felett.",
+        "Maga Positano is meredek. A tengerparthoz és a kikötőhöz vezető sok útvonal lépcsőket és egyenetlen felületeket tartalmaz.",
+        "Ha a lépcsők, egyensúly vagy poggyász cipelése kihívást jelenthetne, kérjük, küldjön nekünk e-mailt foglalás előtt. Elmagyarázzuk az elrendezést és segítünk megalapozott döntést hozni."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/hostel-brikette-entrance-steps.webp",
+          "alt": "A Hostel Brikette bejáratához vezető lépcsők, közvetlenül a főúton Positanóban.",
+          "caption": "Számítson kültéri lépcsőkre a recepció eléréséhez – nincs lift vagy lépcsőmentes hozzáférés."
+        }
+      ]
+    },
+    {
+      "id": "arrivalByFerry",
+      "title": "Érkezés kompon",
+      "body": [
+        "A kompon való érkezés festői, de a kikötő messze a szálló alatt van, és a felvezető utak meredek szakaszokat és lépcsőket tartalmaznak.",
+        "**Poggyásszal nem ajánljuk a gyaloglást** a kikötőtől a szállóig – különösen a nyári hőségben.",
+        "Megbízható terv:\n* Szervezzen regisztrált hordárt a kikötőben, hogy a poggyászt közvetlenül a szállóhoz szállítsa.\n* Vegyen fel a helyi Interno buszt a központból (Piazza dei Mulini terület), majd gyalogoljon meg a rövid végső szakaszt.",
+        "Lépésről lépésre szóló útmutatásért lásd: %LINK:arrivingByFerry|Positano kikötő → Szálló útmutató%."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-positano-spiaggia-view.jpg",
+          "alt": "Positano komphajóállás tengerparti szinten csónakokkal az öbölben.",
+          "caption": "A kikötő tengerparti szinten van – tervezzen poggyászsegítséget (hordár) plusz buszmenetelt felfelé."
+        }
+      ]
+    },
+    {
+      "id": "arrivalByBus",
+      "title": "Érkezés busszal",
+      "body": [
+        "A legközelebbi buszmegálló körülbelül **100 m / 330 láb** távolságra van. A megálló és a szálló közötti útvonal rövid és többnyire lapos.",
+        "Az utcáról továbbra is kezelnie kell a lépcsőket:\n* lépcsők a recepcióhoz\n* további belső emeletek a legtöbb szobához"
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.webp",
+          "alt": "Positano buszmegálló jelzés az útszélen.",
+          "caption": "A megállótól rövid séta van – majd lépcsők a recepcióhoz."
+        }
+      ]
+    },
+    {
+      "id": "generalArrivalTips",
+      "title": "Általános érkezési tippek",
+      "body": [
+        "Néhány apró döntés nagy különbséget jelent Positanóban:",
+        "* Csomagoljon könnyedén, ahol lehetséges.\n* Részesítse előnyben a hátizsákot egy nagy kerekes bőrönd helyett.\n* Viseljen jó tapadású cipőt (a kőlépcsők csúszósak lehetnek).\n* Ha kompon érkezik poggyásszal, előre tervezzen hordár + busz kombinációt."
+      ]
+    },
+    {
+      "id": "reducedMobility",
+      "title": "Csökkent mobilitás útmutató",
+      "body": [
+        "Ha csökkent mobilitással, látássérüléssel, krónikus fájdalommal, egyensúlyi aggályokkal rendelkezik, vagy segítő eszközökre támaszkodik, kérjük, küldjön nekünk e-mailt foglalás előtt.",
+        "Leírhatjuk az elrendezést (lépcsők, jellemző gyalogos útvonalak, szoba elhelyezési lehetőségek), hogy felmérhesse, hogy helyünk és létesítményeink megfelelnek-e igényeinek."
+      ]
+    },
+    {
+      "id": "serviceAnimals",
+      "title": "Segítő állatok",
+      "body": [
+        "**Tanúsított segítő állatokat** fogadhatunk **csak privát szobákban**, előzetes megállapodás és vonatkozó szabályozások függvényében.",
+        "Kérjük, lépjen kapcsolatba velünk előre, hogy megerősíthessük a dokumentációs követelményeket és a legjobb szoba opciót."
+      ]
+    },
+    {
+      "id": "assistedSleeping",
+      "title": "Segített alvás eszközök",
+      "body": [
+        "A megosztott hálótermekben nyugodt légkör megőrzése érdekében a folyamatos vagy megszakított hangot keltő eszközök (például CPAP gépek, fehérzaj generátorok, meditációs hangszórók vagy beszélő órák) **csak privát szoba foglalással** használhatók."
+      ]
+    },
+    {
+      "id": "selfSufficiencyPolicy",
+      "title": "Önellátási szabályzat",
+      "body": [
+        "A Hostel Brikette egy hátizsákos stílusú szálló: barátságos és támogató, de **nem gondozási létesítmény**.",
+        "Csapatunk segíthet információkkal és gyakorlati tippekkel, de nem tudunk orvosi vagy gondozási szolgáltatásokat nyújtani, és nem tudunk receptköteles gyógyszereket tárolni vagy beadni.",
+        "**Nálunk való tartózkodáshoz a vendégeknek képesnek kell lenniük:**\n* saját poggyászuk cipelésére (vagy hordár szervezésére)\n* a fent leírt lépcsők megmászására\n* önállóan bejelentkezni/kijelentkezni\n* személyes higiénia önálló kezelésére\n* közös terek használatára személyzeti felügyelet nélkül"
+      ]
+    },
+    {
+      "id": "essentialMedicine",
+      "title": "Alapvető gyógyszer",
+      "body": [
+        "Ha hűtést igénylő alapvető gyógyszerrel utazik, általában tárolhatjuk Önnek – kérjük, küldjön nekünk e-mailt érkezés előtt hely foglalásához.",
+        "Közeli lehetőségek:\n* Gyógyszertár: ~450 m-re a Viale Pasitea-n.\n* Nyilvános orvosi rendelő: Praiano (~3 km busszal).",
+        "Vészhelyzet esetén a személyzet felveszi a kapcsolatot az olasz vészhelyzeti szolgálatokkal (112 / 118). Nem tudunk professzionális orvosi segítséget nyújtani a helyszínen.",
+        "Ha tartózkodása során kiderül, hogy nem tudja teljesíteni a fenti minimális önellátási követelményeket, előfordulhat, hogy nem tudjuk biztonságosan fogadni Önt. A kapcsolódó feltételekért lásd: %LINK:changingCancelling|Változtatás és lemondás% és %LINK:rules|Házirendek%."
+      ]
+    },
+    {
+      "id": "minorsPolicy",
+      "title": "Kiskorúakra vonatkozó szabályzat",
+      "body": [
+        "Az olasz vendéglátó szabályok a kiskorúak körül szigorúak, és mi betartjuk őket. Ez védi a fiatal utazókat és megfelelőségi állapotban tartja a szállót – kérjük, olvassa el figyelmesen foglalás előtt.",
+        "**16 éves kor és alatta:**\n* Csak privát szobák.\n* 18+ éves szülő/törvényes gyám kíséretében kell lenniük.\n* A gyámnak az egész tartózkodás alatt ugyanabban a szobában kell maradnia.",
+        "**17 éves kor:** hálótermi ágyak csak felügyelő felnőttel (18+) lehetségesek ugyanabban a hálóteremben és megfelelő beleegyezési/gyámsági dokumentációval érkezéskor (küldjön nekünk e-mailt előre, hogy megerősíthessük, mire van szükség az Ön helyzetéhez).",
+        "**18 év alatti csoportok (iskola/sport/cserkész):** kizárólagos elfoglaltságot kell szervezniük és írásos felelősségi dokumentációt kell benyújtaniuk a szervező intézménytől legalább 7 nappal érkezés előtt.",
+        "Kiskorúakat nem lehet felügyelet nélkül hagyni a közös területeken. Ha a követelményeket nem teljesítik bejelentkezéskor, jogilag kötelesek lehetünk elutasítani a tartózkodást."
+      ]
+    },
+    {
+      "id": "locationOverview",
+      "title": "Helyszín áttekintés",
+      "body": [
+        "Közel vagyunk a helyi kényelmekhez:\n* főút és buszmegállók (~100 m / 330 láb)\n* élelmiszer boltok, ATM, éttermek és kis szükségletek a közelben",
+        "Positano tengerparti területe és kompkikötője lejjebb van a dombon; a helyi busz a legegyszerűbb módja oda-vissza menni."
+      ]
+    },
+    {
+      "id": "transportationGuide",
+      "title": "Közlekedési útmutató",
+      "body": [
+        "Lépésről lépésre történő útvonaltervezéshez használja ezeket az útmutatókat kiindulási pontként:",
+        "Gyakori útvonalak:\n* Nápolyi repülőtérről: %LINK:naplesAirportPositanoBus|Nápolyi repülőtér → Positano%.\n* Nápoly városközpontból: %LINK:naplesCenterTrainBus|Nápoly központ → Positano%.\n* Kompon (szezonális): %LINK:arrivingByFerry|Positano kikötő → Szálló%.",
+        "Autóval való érkezés lehetséges, de nem ajánlott csúcsszezonban a korlátozott és drága parkolás miatt. Ha vezet, tervezze meg a parkolást előre, és tartsa a poggyászt a lehető legkönnyebbé."
+      ]
+    }
+  ]
+}

@@ -1,17 +1,19 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+
+import { useTranslations } from "@acme/i18n";
+
 import {
+  Button,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  Button,
   Input,
 } from "../../atoms/shadcn";
-import { useTranslations } from "@acme/i18n";
 
 type PageItem = { id: string; slug: string; seo?: { title?: Record<string, string> } };
 type ProductItem = { slug: string; title: string };

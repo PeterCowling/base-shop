@@ -1,9 +1,12 @@
 "use client";
 import React from "react";
+
 import type { ImageSliderComponent } from "@acme/types";
-import { Button, Input, Checkbox } from "../../atoms/shadcn";
-import ImagePicker from "./ImagePicker";
+
+import { Button, Checkbox,Input } from "../../atoms/shadcn";
+
 import type { EditorProps } from "./EditorProps";
+import ImagePicker from "./ImagePicker";
 
 // i18n-exempt — editor-only labels and placeholders
 const t = (s: string) => s;

@@ -1,13 +1,15 @@
 import "server-only";
-import { listEvents } from "@platform-core/repositories/analytics.server";
-import type { AnalyticsEvent } from "@platform-core/analytics";
-import { readSegments, analyticsMTime, SegmentCache, cacheTtl } from "./storage";
-import { matches } from "./filters";
-import { createContact, addToList, listSegments } from "./providers";
-import { logger } from "@acme/shared-utils";
 
-export { createContact, addToList, listSegments };
-export { readSegments, analyticsMTime, SegmentCache, cacheTtl };
+import { logger } from "@acme/lib/logger";
+import type { AnalyticsEvent } from "@acme/platform-core/analytics";
+import { listEvents } from "@acme/platform-core/repositories/analytics.server";
+
+import { matches } from "./filters";
+import { addToList, createContact, listSegments } from "./providers";
+import { analyticsMTime, cacheTtl,readSegments, SegmentCache } from "./storage";
+
+export { addToList, createContact, listSegments };
+export { analyticsMTime, cacheTtl,readSegments, SegmentCache };
 export type { SegmentDef } from "./filters";
 
 const cache = new SegmentCache();

@@ -1,9 +1,9 @@
-import { NextResponse, type NextRequest } from "next/server";
-import { getPages } from "@platform-core/repositories/pages/index.server";
-import type { Page } from "@acme/types";
+import { type NextRequest,NextResponse } from "next/server";
+import { ensureRole } from "@cms/actions/common/auth";
 import { createPage as createPageAction } from "@cms/actions/pages/create";
-import { authOptions } from "@cms/auth/options";
-import { getServerSession } from "next-auth";
+
+import { getPages } from "@acme/platform-core/repositories/pages/index.server";
+import type { Page } from "@acme/types";
 
 function parsePositiveInt(value: string | null, fallback: number): number {
   const n = Number.parseInt(value ?? "", 10);
@@ -16,11 +16,7 @@ export async function GET(
   context: { params: Promise<{ shop: string }> }
 ) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
-
+    await ensureRole(["admin", "ShopAdmin"]);
     const { shop } = await context.params;
     const { searchParams } = new URL(req.url);
     const q = (searchParams.get("q") || "").toLowerCase().trim();
@@ -49,7 +45,8 @@ export async function GET(
 
     return NextResponse.json(result);
   } catch (err) {
-    return NextResponse.json({ error: (err as Error).message }, { status: 400 });
+    console.error("[api/pages] GET error:", err);
+    return NextResponse.json({ error: "Failed to fetch pages" }, { status: 400 });
   }
 }
 
@@ -89,6 +86,7 @@ export async function POST(
     if (result.errors) return NextResponse.json({ errors: result.errors }, { status: 400 });
     return NextResponse.json(result.page as Page, { status: 201 });
   } catch (err) {
-    return NextResponse.json({ error: (err as Error).message }, { status: 400 });
+    console.error("[api/pages] POST error:", err);
+    return NextResponse.json({ error: "Failed to create page" }, { status: 400 });
   }
 }

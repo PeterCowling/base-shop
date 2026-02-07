@@ -1,14 +1,17 @@
 // packages/ui/src/components/cms/page-builder/MediaLibrary.tsx
 "use client";
 
-import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
+import { ImageIcon, MixIcon, ReloadIcon,TokensIcon, VideoIcon } from "@radix-ui/react-icons";
+
 import { useTranslations } from "@acme/i18n";
-import useMediaLibrary from "./useMediaLibrary";
-import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Dialog, DialogContent, DialogTitle, DialogFooter } from "../../atoms/shadcn";
-import { ImageIcon, VideoIcon, MixIcon, TokensIcon, ReloadIcon } from "@radix-ui/react-icons";
+
 import { Tooltip } from "../../atoms";
 import { Grid } from "../../atoms/primitives";
+import { Button, Dialog, DialogContent, DialogFooter,DialogTitle, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
+
+import useMediaLibrary from "./useMediaLibrary";
 
 interface Props {
   onInsertImage: (url: string) => void;

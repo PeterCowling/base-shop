@@ -1,12 +1,14 @@
 "use client";
-import Image from "next/image";
 import * as React from "react";
-import { cn } from "../../utils/style";
+import Image from "next/image";
+
 import { useTranslations } from "@acme/i18n";
-import { Button } from "../atoms/shadcn";
-import { Price } from "../atoms/Price";
 import type { SKU } from "@acme/types";
+
+import { cn } from "../../utils/style";
+import { Price } from "../atoms/Price";
 import { Inline } from "../atoms/primitives";
+import { Button } from "../atoms/shadcn";
 
 export interface WishlistItem extends SKU {
   quantity?: number;

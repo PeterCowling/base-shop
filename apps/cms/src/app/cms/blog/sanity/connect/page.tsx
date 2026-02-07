@@ -1,7 +1,8 @@
 // apps/cms/src/app/cms/blog/sanity/connect/page.tsx
+import { getShopById } from "@acme/platform-core/repositories/shop.server";
+import { getSanityConfig } from "@acme/platform-core/shops";
+
 import ConnectForm from "./ConnectForm.client";
-import { getShopById } from "@platform-core/repositories/shop.server";
-import { getSanityConfig } from "@platform-core/shops";
 
 export const revalidate = 0;
 
@@ -14,6 +15,7 @@ export default async function SanityConnectPage({
   const shopId = sp?.shopId;
   if (!shopId) return <p>No shop selected.</p>;
   const shop = await getShopById(shopId);
+  if (!shop) return <p>Shop not found.</p>;
   const sanity = getSanityConfig(shop) as
     | { projectId: string; dataset: string; token?: string }
     | undefined;

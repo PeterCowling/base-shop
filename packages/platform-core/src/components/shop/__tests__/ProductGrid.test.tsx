@@ -1,5 +1,6 @@
-import { render, screen, waitFor, act } from "@testing-library/react";
-import { useState, useMemo } from "react";
+import { useMemo,useState } from "react";
+import { act,render, screen, waitFor } from "@testing-library/react";
+
 import { ProductGrid } from "../ProductGrid";
 
 // Mock ProductCard to simplify rendering

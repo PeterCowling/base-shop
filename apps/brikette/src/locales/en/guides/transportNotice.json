@@ -1,11 +1,11 @@
 {
-  "title": "Always verify transport details",
+  "title": "All transportation details are provided in good faith. Always check official timetables and travel bulletins, especially if you have onward connections or other time-critical commitments. Links to the relevant provider timetables are provided below",
   "items": {
-    "buses": "Buses: check SITA Sud official timetables — <sitaLink>sitasudtrasporti.it</sitaLink>.",
-    "ferries": "Ferries: operators publish seasonal routes and times (weather-dependent). See <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink>.",
-    "airlink": "Flying into Salerno Costa d’Amalfi (QSR)? Use the Airlink shuttle to Salerno — <airportLink>aeroportodisalerno.it</airportLink> and <airlinkLink>FS Busitalia Airlink</airlinkLink>.",
-    "driving": "Driving: SS163 alternated-plate restrictions (Apr–Oct) and ZTL; parking costs vary by season and location. Check official notices.",
-    "premium": "Premium or seasonal: Uber Boat and helicopter charters run limited summer schedules — confirm current availability."
+    "buses": "Buses: <sitaLink>Amalfi Coast</sitaLink> and <curreriLink>Naples Airport ⇄ Sorrento</curreriLink>.",
+    "trains": "Trains: <eavLink>Circumvesuviana</eavLink> (Naples ⇄ Sorrento), <trenitaliaLink>Trenitalia</trenitaliaLink> (Mainline trains).",
+    "ferries": "Ferries: Providers include <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink>, <positanoJetLink>Positano Jet</positanoJetLink>, <alicostLink>Alicost</alicostLink>.",
+    "airlink": "Planes: Salerno - <airlinkLink>Airlink shuttle to Salerno</airlinkLink>.",
+    "driving": "Driving: Read our <arrivingByCarLink>how to get here by car guide</arrivingByCarLink>, featuring congestion charging and parking."
   },
   "srLabel": "Transport notice"
 }

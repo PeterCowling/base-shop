@@ -1,6 +1,6 @@
 // apps/cover-me-pretty/src/app/account/sessions/page.tsx
 export {
+  SessionsPage as default,
   sessionsMetadata as metadata,
   revoke,
-  SessionsPage as default,
-} from "@ui/account";
+} from "@acme/ui/account";

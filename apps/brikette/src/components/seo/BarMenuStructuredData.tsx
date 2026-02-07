@@ -1,12 +1,16 @@
 // src/components/seo/BarMenuStructuredData.tsx
 import React, { memo } from "react";
 
+import { serializeJsonLdValue } from "@/utils/seo/jsonld";
+
 type Props = {
-  json: string;
+  data: unknown;
   type?: string;
 };
 
-function BarMenuStructuredData({ json, type = "application/ld+json" }: Props): JSX.Element {
+function BarMenuStructuredData({ data, type = "application/ld+json" }: Props): JSX.Element | null {
+  const json = serializeJsonLdValue(data);
+  if (!json) return null;
   return (
     <script type={type} suppressHydrationWarning dangerouslySetInnerHTML={{ __html: json }} />
   );

@@ -1,7 +1,16 @@
 import { NextResponse } from "next/server";
+import { ensureAuthorized } from "@cms/actions/common/auth";
+
 import { readRbac } from "@/lib/server/rbacStore";
 
 export async function GET() {
+  try {
+    await ensureAuthorized();
+  } catch (err) {
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 401;
+    return NextResponse.json({ error: message === "Forbidden" ? "Forbidden" : "Unauthorized" }, { status });
+  }
   try {
     const db = await readRbac();
     const set = new Set<string>();

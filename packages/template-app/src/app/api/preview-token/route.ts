@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { requirePermission } from "@auth";
+
+import { requirePermission } from "@acme/auth";
 import { coreEnv } from "@acme/config/env/core";
-import { createUpgradePreviewToken } from "@platform-core/previewTokens";
+import { createUpgradePreviewToken } from "@acme/platform-core/previewTokens";
 
 export const runtime = "nodejs";
 

@@ -7,15 +7,7 @@
     "eyebrow": "체험",
     "title": "Hostel Brikette 체험",
     "description": "테라스 바에서 스프리츠를 즐기고, 장엄한 전망을 따라 하이킹을 떠나고, 디지털 컨시어지로 즉시 팁을 받아보세요.",
-    "supporting": "등록된 투숙객이라면 모두 이용 가능합니다. 다른 숙소에 묵는 친구와 함께라면 먼저 메시지를 보내주세요.",
-    "primaryCta": "숙소 예약하기",
-    "secondaryCta": "바 메뉴 열기",
-    "tertiaryCta": "디지털 컨시어지에게 메시지 보내기",
-    "primaryCtaAria": "Hostel Brikette 숙박 예약하기",
-    "secondaryCtaAria": "Hostel Brikette 바 메뉴 보기",
-    "tertiaryCtaAria": "Hostel Brikette 디지털 컨시어지에게 메시지를 보내세요",
-    "breakfastCta": "아침 식사 메뉴 보기",
-    "breakfastCtaAria": "아침 식사 메뉴 보기"
+    "scrollNudge": "아래에서 체험 유형별로 탐색하세요"
   },
   "sections": {
     "bar": {
@@ -88,8 +80,18 @@
     "taggedDescription": "이 스토리들은 {{tag}} 순간을 보여줍니다. 필터를 해제하면 모든 가이드를 확인할 수 있습니다.",
     "empty": "{{tag}} 관련 체험 가이드는 아직 없습니다. 다른 태그를 선택하거나 필터를 제거하세요.",
     "clearFilter": "모든 체험 가이드 보기",
-    "cardCta": "“{{guideTitle}}” 체험 가이드를 살펴보세요",
+    "cardCta": "\"{{guideTitle}}\" 체험 가이드를 살펴보세요",
     "directionsLabel": "길 안내",
+    "sections": {
+      "content": {
+        "title": "체험 가이드",
+        "description": "해변, 하이킹, 당일치기, 즐길 거리까지 자세히 다룬 가이드"
+      },
+      "directions": {
+        "title": "찾아오는 길",
+        "description": "호스텔로 가는 길과 돌아오는 길을 단계별로 안내"
+      }
+    },
     "directionLinks": {
       "capriDayTrip": {
         "positanoCapriFerry": "포지타노 → 카프리 페리",
@@ -107,10 +109,10 @@
         "positanoRavelloFerryBus": "포지타노 → 라벨로 페리 + 버스"
       },
       "naplesPositano": {
-        "naplesCenterTrainBus": "나폴리 중심부 → 포지타노 (기차 + 버스)",
-        "naplesCenterPositanoFerry": "나폴리 중심부 → 포지타노 페리",
+        "naplesCenterTrainBus": "나폴리 시내 → 포지타노 (기차 + 버스)",
+        "naplesCenterPositanoFerry": "나폴리 시내 → 포지타노 페리",
         "naplesAirportPositanoBus": "나폴리 공항 → 포지타노 버스",
-        "positanoNaplesCenterBusTrain": "포지타노 → 나폴리 중심부 (버스 + 기차)",
+        "positanoNaplesCenterBusTrain": "포지타노 → 나폴리 시내 (버스 + 기차)",
         "positanoNaplesCenterFerry": "포지타노 → 나폴리 페리",
         "positanoNaplesAirportBus": "포지타노 → 나폴리 공항 버스"
       },
@@ -125,14 +127,34 @@
     "filterDescription": "태그를 선택해 강조할 체험을 좁혀보세요.",
     "grouped": {
       "beaches": {
-        "guides": {
-          "heading": "해변 가이드",
-          "description": "맞는 해변을 골라 하루 일정을 계획하세요."
-        },
-        "directions": {
-          "heading": "해변 길 안내",
-          "description": "Hostel Brikette에서 해변까지 단계별로 안내합니다."
-        }
+        "title": "해변",
+        "description": "맞는 해변을 골라 하루 일정을 계획하세요.",
+        "imageAlt": "포지타노 해변의 다채로운 파라솔이 해안선을 따라 늘어선 풍경"
+      },
+      "hiking": {
+        "title": "하이킹 & 트레일",
+        "description": "가벼운 산책부터 종일 트레킹까지 다양한 도보 경로.",
+        "imageAlt": "해안 절경을 배경으로 신들의 길을 걷는 하이커들"
+      },
+      "day-trip": {
+        "title": "당일치기 여행",
+        "description": "카프리, 아말피, 라벨로—가는 방법과 돌아오는 길.",
+        "imageAlt": "카프리 섬으로 다가가는 페리"
+      },
+      "boat": {
+        "title": "보트 투어",
+        "description": "프라이빗 전세, 그룹 투어, 선셋 크루즈.",
+        "imageAlt": "아말피 해안 바다 위의 전통 보트"
+      },
+      "cuisine": {
+        "title": "음식 & 음료",
+        "description": "가격 부담 없이 맛있게 먹을 수 있는 곳.",
+        "imageAlt": "현지 트라토리아의 신선한 이탈리아 요리"
+      },
+      "more": {
+        "title": "추가 가이드",
+        "description": "교통 팁, 사진 명소, 현지 이벤트.",
+        "imageAlt": "아말피 해안 도로를 따라 달리는 로컬 버스"
       }
     }
   }

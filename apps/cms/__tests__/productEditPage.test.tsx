@@ -1,10 +1,13 @@
 import "@testing-library/jest-dom";
-import React from "react";
+
+import type React from "react";
 import { render, screen } from "@testing-library/react";
+
+import ProductEditPage from "../src/app/cms/shop/[shop]/products/[id]/edit/page";
 
 const mockGetProductById = jest.fn();
 const mockReadSettings = jest.fn();
-jest.mock("@platform-core/repositories/json.server", () => ({
+jest.mock("@acme/platform-core/repositories/json.server", () => ({
   getProductById: (...args: any[]) => mockGetProductById(...args),
   readSettings: (...args: any[]) => mockReadSettings(...args),
 }));
@@ -17,8 +20,6 @@ jest.mock("next/dynamic", () => {
 });
 const notFound = jest.fn();
 jest.mock("next/navigation", () => ({ notFound }));
-
-import ProductEditPage from "../src/app/cms/shop/[shop]/products/[id]/edit/page";
 
 describe("ProductEditPage", () => {
   it("renders editor when product found", async () => {

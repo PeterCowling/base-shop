@@ -1,8 +1,44 @@
+import dns from "node:dns";
+import http from "node:http";
+import https from "node:https";
+
 import type { RunnerResult } from "lighthouse";
 
 export interface SeoAuditResult {
   score: number;
   recommendations: string[];
+}
+
+async function prewarmUrl(input: string, timeoutMs = 2500): Promise<void> {
+  let url: URL;
+  try {
+    url = new URL(input);
+  } catch {
+    return;
+  }
+
+  await new Promise<void>((resolve) => {
+    const lib = url.protocol === "https:" ? https : http;
+    const req = lib.request(
+      {
+        method: "GET",
+        hostname: url.hostname,
+        port: url.port || undefined,
+        path: `${url.pathname}${url.search}`,
+        headers: { "user-agent": "seo-audit-prewarm" },
+      },
+      (res) => {
+        res.resume();
+        resolve();
+      },
+    );
+    req.on("error", () => resolve());
+    req.setTimeout(timeoutMs, () => {
+      req.destroy();
+      resolve();
+    });
+    req.end();
+  });
 }
 
 /**
@@ -46,6 +82,21 @@ export function resolveDesktopConfig(mod: unknown): unknown {
 }
 
 export async function runSeoAudit(url: string): Promise<SeoAuditResult> {
+  // Ensure Node-side fetches inside Lighthouse prefer IPv4 for localhost.
+  // This avoids flaky failures when ::1 is resolved first but the dev server isn't listening on IPv6 loopback.
+  try {
+    dns.setDefaultResultOrder("ipv4first");
+  } catch {
+    // ignore
+  }
+
+  // Best-effort warmup for dev servers (robots.txt route compilation is a common source of flakiness).
+  try {
+    await prewarmUrl(new URL("/robots.txt", url).toString());
+  } catch {
+    // ignore
+  }
+
   // Resolve the `launch` function from chrome-launcher lazily to support both
   // CommonJS and ESM versions of the library. This mirrors how generateMeta
   // resolves the OpenAI client above.
@@ -83,7 +134,13 @@ export async function runSeoAudit(url: string): Promise<SeoAuditResult> {
     throw new Error("lighthouse desktop config not available");
   }
 
-  const chrome = await launch({ chromeFlags: ["--headless"] });
+  const chrome = await launch({
+    chromeFlags: [
+      "--headless",
+      // Prefer IPv4 loopback for localhost to avoid IPv6 (::1) resolution issues in dev.
+      "--host-resolver-rules=MAP localhost 127.0.0.1",
+    ],
+  });
   try {
     const result: RunnerResult | undefined = await lighthouseFn(
       url,
@@ -102,11 +159,23 @@ export async function runSeoAudit(url: string): Promise<SeoAuditResult> {
     const recommendations = Object.values(lhr.audits)
       .filter(
         (a) =>
-          a.score !== 1 &&
+          (a.scoreDisplayMode === "error" || (typeof a.score === "number" && a.score < 1)) &&
           a.scoreDisplayMode !== "notApplicable" &&
           a.title,
       )
-      .map((a) => a.title as string);
+      .map((a) => {
+        const title = a.title as string;
+        if (a.scoreDisplayMode === "error" && a.errorMessage) {
+          return `${title}: ${a.errorMessage}`;
+        }
+        if (typeof a.explanation === "string" && a.explanation.trim().length > 0) {
+          return `${title}: ${a.explanation}`;
+        }
+        if (typeof a.displayValue === "string" && a.displayValue.trim().length > 0) {
+          return `${title}: ${a.displayValue}`;
+        }
+        return title;
+      });
     return { score, recommendations };
   } finally {
     await chrome.kill();

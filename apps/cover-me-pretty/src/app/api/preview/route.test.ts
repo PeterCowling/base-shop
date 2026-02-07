@@ -1,5 +1,6 @@
 /** @jest-environment node */
 import type { NextRequest } from "next/server";
+
 import { POST } from "./route";
 
 function mockReq(result: unknown, shouldFail = false): NextRequest {

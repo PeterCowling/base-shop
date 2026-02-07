@@ -1,15 +1,16 @@
+import { type NextResponse } from "next/server";
 import fs from "fs/promises";
-import { NextResponse } from "next/server";
-import { logger } from "@acme/shared-utils";
+
+import { logger } from "@acme/lib/logger";
 
 const requirePermission = jest.fn();
-jest.mock("@auth", () => ({ requirePermission }));
+jest.mock("@acme/auth", () => ({ requirePermission }));
 
-jest.mock("@platform-core/shops", () => ({
+jest.mock("@acme/platform-core/shops", () => ({
   validateShopName: (val: string) => val,
 }));
 
-jest.mock("@acme/shared-utils", () => ({
+jest.mock("@acme/lib/logger", () => ({
   logger: { error: jest.fn() },
 }));
 

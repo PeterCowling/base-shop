@@ -1,8 +1,9 @@
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
+
 import { prisma } from "../src/db";
 import {
-  updateSubscriptionPaymentStatus,
   syncSubscriptionData,
+  updateSubscriptionPaymentStatus,
 } from "../src/repositories/subscriptions.server";
 
 jest.mock("../src/db", () => ({

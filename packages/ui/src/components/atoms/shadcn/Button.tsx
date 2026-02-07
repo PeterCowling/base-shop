@@ -3,6 +3,7 @@
 // i18n-exempt file -- DS-1234 [ttl=2025-11-30] — component has no embedded user-facing strings
 
 import * as React from "react";
+
 import { cn } from "../../../utils/style";
 import type { ButtonProps as BaseButtonProps } from "../primitives/button";
 import { Button as BaseButton } from "../primitives/button";
@@ -61,4 +62,4 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     );
   }
 );
-Button.displayName = "Button"; // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+Button.displayName = "Button";

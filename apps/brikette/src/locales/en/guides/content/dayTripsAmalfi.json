@@ -1,61 +1,250 @@
 {
   "seo": {
     "title": "Day Trips from Positano: Capri, Pompeii, Ravello, Amalfi",
-    "description": "How to plan popular day trips from Positano with ferries and buses, including timing and ticket tips."
+    "description": "Budget-friendly day trips from Positano—Capri, Pompeii, Amalfi, Ravello, and Sorrento with ferry and bus timing, costs, and backpacker tips."
   },
-  "linkLabel": "Day Trips from Positano",
+  "linkLabel": "Best Day Trips: Capri, Amalfi, Pompeii & More",
   "intro": [
-    "Use Positano as a base for day trips by ferry and bus—start early, pre-book key tickets, and always carry a weather fallback."
+    "Positano works brilliantly as a day-trip base—ferries and buses connect you to Capri, Pompeii, Amalfi, Ravello, and Sorrento within 30-90 minutes. Most trips cost €15-35 for transport plus site entry, and you'll avoid hauling luggage or changing hostels.",
+    "Start early to beat cruise crowds, pre-book tickets for Pompeii and popular ferries, and always keep a weather backup plan (ferries cancel in rough seas). Pack snacks, water, sunscreen, and a light rain jacket—cafés near tourist sites charge premium prices."
   ],
   "sections": [
     {
-      "id": "capri",
-      "title": "Capri highlights",
+      "id": "quick-comparison",
+      "title": "Quick day trip comparison",
       "body": [
-        "Book the first ferry out, ride the chairlift to Monte Solaro, and stroll Giardini di Augusto before cruise visitors arrive.",
-        "Return on a late-afternoon sailing and keep a bus timetable screenshot in case seas get rough."
+        "Capri: Most expensive (€20 ferry each way, ~€35-40 total with funicular/chairlift), most scenic, needs full day. Best for: iconic views, photos, hiking to Arco Naturale or Villa Jovis. %LINK:capriDayTrip|Full Capri day trip guide%",
+        "Pompeii: Best value (€9 bus to Sorrento, €2.50 train, €18 entry = ~€32 total), history-rich, 3-4 hours on site. Best for: archaeology buffs, early starters who want afternoon back in Positano. %LINK:positanoPompeii|Positano to Pompeii directions%",
+        "Amalfi + Ravello: Easy combo (€8 ferry or €4 bus to Amalfi, €2.50 bus up to Ravello), food and gardens. Best for: shorter half-day trips, sunset views from Villa Cimbrone. %LINK:positanoAmalfi|Positano to Amalfi transport%",
+        "Sorrento: Relaxed vibe (€12 ferry or €4 bus), lemon groves, limoncello, seafood, Villa Comunale viewpoint. Best for: market shopping, food tastings, late-morning departures. %LINK:naplesPositano|Naples-Positano connections via Sorrento%",
+        "Herculaneum: Smaller than Pompeii (€9 bus to Sorrento, €2.50 train, €13 entry = ~€27 total), better-preserved mosaics, 2-3 hours on site. Best for: seeing ruins without Pompeii crowds."
+      ]
+    },
+    {
+      "id": "capri",
+      "title": "Capri: Full-day island escape",
+      "body": [
+        "Why go: Iconic cliffside views, Faraglioni rock stacks, Blue Grotto (weather permitting), boutique shopping in Capri town, hiking trails, and hillside gardens. Capri is the most photogenic day trip, but also the priciest—expect to spend €50-70 total including transport, funicular/chairlift, and a modest lunch.",
+        "Best for: Clear-weather days when you want dramatic coastal scenery and don't mind tourist crowds. Photographers should aim for morning or late-afternoon light.",
+        "Getting there: Take the first ferry from Positano (usually 08:15-09:00, €20 each way, 40 minutes, %LINK:ferryCancellations|check ferry status% at Positano ferry dock or online). Book a day or two ahead in summer—morning sailings sell out. Return ferries run until 18:00-19:00 depending on season. %LINK:briketteToFerryDock|Walk from hostel to ferry dock% takes 10-15 minutes.",
+        "Money-saving moves: Skip the Blue Grotto (€18 entry plus €15-20 for the rowboat, often closed due to waves)—the views from land are stunning and free. Bring a packed lunch from Positano supermarkets (avoid overpriced island cafés). Walk between Capri town and Anacapri instead of taking the bus (steep but saves €4 round-trip).",
+        "Suggested itinerary: Arrive early, take funicular up to Capri town (€2 each way, included in some ferry packages), walk to Giardini di Augusto (€1 entry) for Faraglioni views before 10:00 when tour groups arrive. Bus or walk to Anacapri (€2 bus each way), ride Monte Solaro chairlift (€13 round-trip, opens 09:30) for 360° panoramas. Explore Villa San Michele or hike to Arco Naturale (free, 20 minutes from Capri town), then catch the 17:00-18:00 ferry back. Weather backup: If ferries cancel, explore Sorrento or take the bus to Amalfi instead.",
+        "Local tips from the hostel: Pack a swimsuit—there are rocky swimming spots near Faraglioni and Marina Piccola if you have extra time. Avoid peak summer weekends (July-August Saturdays) when day-trippers triple. Check %LINK:ferryCancellations|ferry schedules% the night before and screenshot them—mobile signal is patchy on Capri cliffs."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/dayTripsAmalfi.jpg",
+          "alt": "Coastline and boats for day trips from Positano.",
+          "caption": "Start early and keep a weather backup for popular day trips."
+        },
+        {
+          "src": "/img/guides/topics/capriFaraglioni.jpg",
+          "alt": "Faraglioni rock stacks off the coast of Capri.",
+          "caption": "The iconic Faraglioni rocks—Capri's most photographed view."
+        },
+        {
+          "src": "/img/guides/topics/capriMonteSolaro.jpg",
+          "alt": "Monte Solaro chairlift with panoramic views over Capri and the coast.",
+          "caption": "Monte Solaro chairlift—360° views worth the €13."
+        }
       ]
     },
     {
       "id": "pompeii",
-      "title": "Pompeii or Herculaneum",
+      "title": "Pompeii or Herculaneum: Ancient ruins",
       "body": [
-        "Take the early bus to Sorrento and connect with the Circumvesuviana train; buy skip-the-line tickets online to save time.",
-        "Carry water and a sun hat—there is little shade on site, and visits easily run 3–4 hours."
+        "Why go: Walk through 2,000-year-old streets, homes, bakeries, and bathhouses frozen by the AD 79 eruption of Mount Vesuvius. Pompeii is vast and crowded; Herculaneum is smaller, better-preserved, and quieter. Both are world-class archaeology sites and easy on the budget.",
+        "Best for: History lovers, early risers (sites open at 09:00, arrive then to beat tour buses), anyone wanting a half-day trip with afternoon back in Positano.",
+        "Getting there: Take the %LINK:sitaTickets|SITA bus% from Positano to Sorrento (€4, 50 minutes, departs from %LINK:chiesaNuovaDepartures|Chiesa Nuova% or Positano Sponda stop depending on your location). From Sorrento, board the Circumvesuviana train toward Napoli and get off at Pompei Scavi-Villa dei Misteri (€2.50, 35 minutes, trains every 30 minutes) or Ercolano Scavi for Herculaneum (€2.50, 20 minutes). Walk 5-10 minutes from each station to the site entrance.",
+        "Costs: Pompeii entry €18 (book online to skip ticket queues), Herculaneum €13, plus ~€13 round-trip transport from Positano. Total: €31-32 for Pompeii, €26-27 for Herculaneum.",
+        "Money-saving moves: Buy Pompeii tickets online at least a day ahead (www.ticketone.it or official Pompeii site) to avoid 30-60 minute queue in peak season. Bring your own water (1.5L per person) and snacks—there's one café inside Pompeii charging €5 for a panini. Wear a hat and sunscreen—excavations have zero shade and summer temps hit 35°C. If you're under 25 and EU resident, check for youth discounts.",
+        "Suggested itinerary (Pompeii): Catch the 07:30 or 08:00 bus from Positano, arrive at Pompeii by 09:30, spend 3-4 hours walking the Forum, Stabian Baths, House of the Faun, Villa of the Mysteries, and Amphitheatre. Head back to Sorrento around 13:30, grab lunch there or return to Positano by 15:00. You can also climb Vesuvius (€10 entry, 20 minutes from Pompeii by Vesuvio Express bus €10 round-trip) if you have energy—views are spectacular but add 2-3 hours to your day.",
+        "Suggested itinerary (Herculaneum): Smaller site means 2-3 hours is enough. Arrive by 10:00, explore the perfectly preserved mosaics, wooden fixtures, and two-story houses, then return to Positano by early afternoon. Pair with a Sorrento stop on the way back for lunch and lemon grove walks.",
+        "Local tips from the hostel: Circumvesuviana trains are basic (no AC, graffiti, pickpockets in crowded carriages)—keep valuables in a front pocket or daypack on your chest. Download offline maps for Pompeii (it's huge and confusing). If it's a scorching day (35°C+), Herculaneum's covered walkways make it more bearable."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/pompeiiForum.jpg",
+          "alt": "Ancient Forum ruins at Pompeii archaeological site.",
+          "caption": "Arrive early to explore Pompeii before tour groups and heat."
+        },
+        {
+          "src": "/img/guides/topics/vesuviusFromPompeii.jpg",
+          "alt": "Mount Vesuvius viewed from Pompeii excavations.",
+          "caption": "Vesuvius looms over the ruins—you can climb it after Pompeii."
+        }
       ]
     },
     {
       "id": "amalfi-ravello",
-      "title": "Amalfi & Ravello combo",
+      "title": "Amalfi & Ravello combo: Coastal culture",
       "body": [
-        "Sail to Amalfi, explore the Duomo, then ride the 5110 bus up to Ravello for Villa Cimbrone and lunch with a view.",
-        "Stay for late-afternoon light and catch a twilight ferry or bus back—queues shrink after 18:00."
+        "Why go: Amalfi's dramatic Duomo, seaside cafés, and paper museum; Ravello's hillside gardens (Villa Cimbrone and Villa Rufolo), classical music venues, and sunset panoramas over the coast. Easy to pair both in one day, and the 5110 bus ride up to Ravello is a white-knuckle hairpin experience.",
+        "Best for: Shorter trips (half-day or full-day), garden lovers, sunset chasers, anyone who wants a mix of seaside and mountain village vibes without Capri's price tag.",
+        "Getting there: Ferry from Positano to Amalfi (€8, 20-30 minutes, multiple departures 08:00-18:00, more frequent April-October) or %LINK:sitaTickets|SITA bus% (€4, 40 minutes, slower but cheaper). From Amalfi port or bus stop, walk to the main square and catch the SITA 5110 bus up to Ravello (€2.50, 25 minutes, hairpin bends, departs hourly). Return via bus to Amalfi and then ferry or bus back to Positano. %LINK:positanoAmalfi|Full transport guide%",
+        "Costs: €8-16 round-trip transport (ferry is faster, bus is cheaper), plus €10 entry to Villa Cimbrone or €7 for Villa Rufolo. Total: €18-26 depending on choices.",
+        "Money-saving moves: Skip the villas if you're on a tight budget—Ravello's public terraces (Piazza Duomo, belvedere near the main church) have free sweeping views. Pack a picnic lunch from Positano and eat in Ravello's gardens or on a bench overlooking the cliffs. Take the bus both ways to save €8 vs round-trip ferry—just budget extra time for winding roads and potential queues.",
+        "Suggested itinerary: Take the 09:00-10:00 ferry or bus to Amalfi, explore the Duomo (free entry to main nave, €3 for Cloister of Paradise), wander the old town lanes, then catch the 12:00 or 13:00 bus up to Ravello. Visit Villa Cimbrone (the Terrace of Infinity is the highlight—arrive mid-afternoon for softer light), stroll through Ravello's Piazza Duomo, and catch the 17:00-18:00 bus back to Amalfi. Take a twilight ferry back to Positano (queues shrink after 18:00) or the last bus around 19:30-20:00.",
+        "Weather backup: If ferries are cancelled, take the bus—it runs in almost all conditions. If you only have 2-3 hours, visit Amalfi solo and skip Ravello (or reverse it and go straight to Ravello for sunset views).",
+        "Local tips from the hostel: Ravello hosts summer classical music concerts (Ravello Festival, June-September) in Villa Rufolo's gardens—check the schedule if you want to stay late. The 5110 bus gets packed in summer; queue early or stand near the front of the line. If you're prone to motion sickness, sit near the front and keep eyes on the horizon."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/ravelloTerrace.jpg",
+          "alt": "Terrace of Infinity at Villa Cimbrone in Ravello overlooking Amalfi Coast.",
+          "caption": "Villa Cimbrone's Terrace of Infinity—worth the €10 entry."
+        },
+        {
+          "src": "/img/guides/topics/amalfiDuomo.jpg",
+          "alt": "Amalfi Cathedral facade with grand staircase.",
+          "caption": "Amalfi's dramatic Duomo dominates the town square."
+        }
       ]
     },
     {
       "id": "sorrento",
-      "title": "Sorrento & food focus",
+      "title": "Sorrento: Food, markets & lemon groves",
       "body": [
-        "Hop on the mid-morning ferry to Sorrento for a market crawl, limoncello tastings, and sunset at the Villa Comunale terrace.",
-        "Return via late bus to Positano if the last ferry sells out; the ride takes about 50 minutes."
+        "Why go: Sorrento is the most relaxed day trip—less tourist pressure than Capri, less ruined-out than Pompeii, and full of lemon groves, limoncello shops, fresh seafood, artisan markets, and a breezy clifftop promenade (Villa Comunale) with sunset views over the Bay of Naples.",
+        "Best for: Foodies, market shoppers, anyone wanting a late-morning departure (you don't need to rush), travelers pairing Sorrento with Pompeii or using it as a transport hub.",
+        "Getting there: Ferry from Positano (€12, 30 minutes, multiple departures 08:00-18:00) or %LINK:sitaTickets|SITA bus% (€4, 50 minutes, departs from %LINK:chiesaNuovaDepartures|Chiesa Nuova% or Positano Sponda). Ferry is faster and more scenic; bus is cheaper and runs even when seas are rough. %LINK:naplesPositano|Naples-Positano route guide% covers Sorrento connections.",
+        "Costs: €8-24 round-trip transport depending on ferry vs bus, plus food/drink costs (budget €10-20 for lunch, €5-10 for limoncello tasting). Total: €20-40 depending on how much you eat/drink.",
+        "Money-saving moves: Skip overpriced limoncello shops in the main square—walk 10 minutes to local alimentari (grocery stores) for €8-10 bottles vs €15-20 tourist prices. Eat at family-run trattorie on side streets (Via Fuoro, Via Tasso side alleys) instead of marina-front restaurants—same food, half the price. The Villa Comunale terrace and Marina Grande beach are free and perfect for picnics.",
+        "Suggested itinerary: Take the 10:00-11:00 ferry or bus, arrive in Sorrento by 11:30, explore the morning market (if it's Thursday), wander lemon groves near the town center (some offer free tastings), visit Sedil Dominova (free historic building with frescoed ceilings), have lunch at a side-street trattoria, then walk to Villa Comunale for clifftop views and photos. Catch the 16:00-17:00 ferry or 18:00 bus back to Positano. If you pair this with Pompeii, visit the ruins first (early morning) and arrive in Sorrento around 13:00-14:00 for late lunch and sunset.",
+        "Weather backup: Sorrento is accessible by bus even if ferries are cancelled—it's the most reliable day trip for rough-weather days.",
+        "Local tips from the hostel: Marina Grande (Sorrento's small fishing beach) is a 10-minute walk down steep steps from town—worth it for colorful boats, fewer tourists, and decent seafood lunch. If you're buying limoncello or ceramics, ask the hostel for recommendations on non-touristy shops. Sorrento's gelato (I Giardini di Cataldo, Davide Gelato) is some of the best on the coast—budget €3-4 for a cone."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/sorrentoLemonGrove.jpg",
+          "alt": "Lemon grove in Sorrento with terraced gardens.",
+          "caption": "Sorrento's famous lemon groves offer free tastings."
+        },
+        {
+          "src": "/img/guides/topics/sorrentoVillaComunale.jpg",
+          "alt": "Villa Comunale clifftop terrace in Sorrento with Bay of Naples view.",
+          "caption": "Villa Comunale terrace—free sunset views over the bay."
+        }
+      ]
+    },
+    {
+      "id": "planning-tips",
+      "title": "General planning & money-saving tips",
+      "body": [
+        "Start early: First departures (08:00-09:00) give you the sites before tour groups and cruise passengers arrive. Capri, Pompeii, and Ravello are noticeably quieter before 11:00.",
+        "Pre-book when needed: Pompeii tickets, popular morning ferries to Capri (especially July-August weekends), and any villa entries in Ravello can sell out or have long queues. Book 1-2 days ahead. %LINK:transportMoneySaving|Transport money-saving tips%",
+        "Weather backup plans: %LINK:ferryCancellations|Ferry cancellations% are common in spring/autumn storms. Always have a bus alternative ready, or swap coastal trips (Capri, Amalfi via ferry) for inland ones (Pompeii, Sorrento via bus) if seas are rough. Check ferry status the night before and morning of your trip—ask at the hostel or check online schedules.",
+        "Pack smart: Water (1L+ per person), snacks (tourist-site cafés are expensive), sunscreen, hat, light rain jacket (summer storms hit fast), and a small daypack. Wear comfortable walking shoes—Pompeii and Capri involve 2-4 hours of walking on uneven stone.",
+        "Offline maps and timetables: Download Google Maps offline areas for Pompeii, Capri, Amalfi, and Sorrento. Screenshot bus and ferry timetables—mobile signal is weak on Circumvesuviana trains, Capri cliffs, and mountain roads to Ravello.",
+        "Food and drink costs: Budget €10-15 for lunch if you eat at local spots, €5-7 for a coffee/gelato break, and carry your own water. Avoid marina-front and main-square restaurants unless you're treating yourself—walk 5-10 minutes inland for 30-50% cheaper meals.",
+        "Pair trips smartly: Amalfi + Ravello (easy combo, same direction). Sorrento + Pompeii or Herculaneum (on the same train line). Capri is best solo—it's a full day and can't be rushed. Avoid pairing Capri with anything else unless you only do a quick island loop.",
+        "Student and youth discounts: If you're under 25 and EU resident, bring ID for discounted entry to Pompeii, Herculaneum, and some villas. Non-EU students with ISIC cards may get discounts at Pompeii—ask at the ticket desk.",
+        "Return transport timing: Check last ferry/bus times before you leave Positano. Ferries stop around 18:00-19:00 (earlier off-season), buses run later but are slower. Missing the last ferry means a 50-90 minute bus ride back—not a disaster but cuts into your evening."
+      ]
+    },
+    {
+      "id": "budget-breakdown",
+      "title": "Day trip budget breakdown",
+      "body": [
+        "Here's what to expect for costs, including transport, entry fees, food, and optional extras. All prices are per person and based on 2025 rates (may vary slightly by season).",
+        "Capri full day: Ferry round-trip €40, funicular to Capri town €4, Monte Solaro chairlift €13, Giardini di Augusto entry €1, lunch €10-15 (packed) or €20-30 (café), gelato/drink €5-7. Total: €53-70 budget, €73-100 if you eat out and add extras like Blue Grotto (€33-38). Ways to save: Walk instead of funicular (steep but free), skip Blue Grotto, pack lunch.",
+        "Pompeii: Bus to Sorrento €9, Circumvesuviana train €5 round-trip, Pompeii entry €18, water/snacks from home €0, lunch in Sorrento €10-12. Total: €42-44. Add Vesuvius (€20 for bus + entry) if you have time. Ways to save: Book Pompeii tickets online to skip queue, bring all food/water from Positano (save €10-15 vs site café).",
+        "Amalfi + Ravello: Ferry or bus round-trip €8-16, bus Amalfi-Ravello-Amalfi €5, Villa Cimbrone entry €10 (or skip for free views), lunch/gelato €8-12. Total: €21-43 depending on transport and villa choices. Ways to save: Take bus both ways (€8 vs €16 ferry), skip villas and enjoy free terraces, picnic lunch from Positano.",
+        "Sorrento: Ferry or bus round-trip €8-24, lunch at trattoria €10-15, limoncello tasting €5-8, gelato €3-4, all attractions free (Villa Comunale, Marina Grande, markets, lemon groves). Total: €26-51 depending on transport. Ways to save: Take bus (€8 vs €24 ferry), buy limoncello at grocery (€8-10 vs €15-20 tourist shops), picnic at Villa Comunale.",
+        "Herculaneum: Bus to Sorrento €9, Circumvesuviana €5 round-trip, entry €13, lunch/snacks €8-10. Total: €35-37. Ways to save: Pair with Sorrento stop on the way back for dual-destination value, pack snacks, arrive early before heat.",
+        "General money-saving strategies: Always take the bus over ferry if budget is tight (saves €8-16 per trip). Pre-load on snacks/water from Positano supermarkets (saves €10-20 per day vs tourist cafés). Use student/youth discounts where eligible (Pompeii, Herculaneum, some villas). Ask the hostel for insider tips on free viewpoints, non-touristy lunch spots, and current transport deals. Screenshot timetables and use offline maps to avoid roaming data charges."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/budgetDayTrips.jpg",
+          "alt": "Budget travel planning with coins and ferry tickets.",
+          "caption": "Most day trips cost €20-45 total if you budget smart."
+        }
+      ]
+    },
+    {
+      "id": "transport-logistics",
+      "title": "Transport logistics & insider tips",
+      "body": [
+        "Buses (SITA): Buy tickets onboard (cash) or at tabacchi shops before boarding. Have small bills ready—drivers sometimes can't break €20+ notes. Queues form early in Chiesa Nuova for popular routes like Positano-Sorrento (07:30-09:00) and Amalfi-Ravello (10:00-12:00). Stand near the front of the queue or risk standing for 40-90 minutes on winding roads. %LINK:sitaTickets|Full SITA bus ticketing guide%",
+        "Ferries: Buy tickets at the dock booth (Positano ferry terminal) same-day or 1-2 days ahead for guaranteed seats on popular morning sailings (Capri 08:15-09:00). Check weather the night before—rough seas (Forza 4-5+) cancel ferries. If cancelled, pivot to bus-accessible destinations. %LINK:ferryCancellations|Ferry cancellation guide%",
+        "Trains (Circumvesuviana): Basic regional trains with no AC, graffiti, and occasional pickpockets. Keep valuables in front pockets or a chest daypack. Validate tickets in yellow machines on platforms before boarding (€50 fine if caught without validation). Trains Sorrento-Pompeii-Ercolano-Napoli run every 30 minutes, first departure ~06:00, last ~22:30. Buy tickets at station counters or tabacchi near stations (not onboard).",
+        "Walking from hostel to transport hubs: %LINK:chiesaNuovaDepartures|Chiesa Nuova bus stop% is ~5 minutes uphill from Hostel Brikette (main SITA stop for Sorrento, Amalfi, Ravello routes). %LINK:briketteToFerryDock|Ferry dock% is 10-15 minutes downhill via stairs (use porters if you have luggage). Ask hostel staff the night before for current queues/delays on your planned route.",
+        "Peak vs off-peak timing: July-August weekends are the worst for queues and crowds—everything takes 30-50% longer. April-June and September-October are ideal (good weather, fewer tourists, lower prices). November-March sees reduced ferry schedules and some sites (Capri chairlift, villas) close or have limited hours—check ahead. Shoulder season (April-May, September-October) offers the best balance of weather, crowds, and cost.",
+        "Luggage storage: Hostel Brikette offers free luggage storage on check-in/check-out days. Pompeii, Sorrento, and Amalfi have paid storage near stations/ferry terminals (€5-8 per bag). Don't lug suitcases on day trips—stow them at the hostel or a station locker.",
+        "Mobile apps and offline tools: Download Google Maps offline areas for Pompeii, Capri, Amalfi, Sorrento before you leave. Screenshot ferry timetables (Positano dock posts them, or check online). Use Trenitalia app for Circumvesuviana real-time delays (trains run late sometimes). Check weather apps the night before—sudden storms cancel ferries and make Pompeii miserable.",
+        "Asking at the hostel: The front desk knows current conditions (ferry cancellations, bus delays, Pompeii queues, weather quirks). Ask for: recommended day trip for tomorrow's weather, current transport hiccups, non-touristy lunch spots, best time to queue for buses. They see 100+ travelers per week and have real-time intel."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/sitaBusPositano.jpg",
+          "alt": "SITA bus at Chiesa Nuova stop in Positano.",
+          "caption": "SITA buses connect Positano to all day trip destinations."
+        }
+      ]
+    },
+    {
+      "id": "which-trip-when",
+      "title": "Which trip for which day?",
+      "body": [
+        "Good weather, clear skies: Capri (ferry views and clifftop panoramas are the main draw) or Amalfi + Ravello via ferry (coastal sailing is half the experience).",
+        "Rough seas or rain forecast: Pompeii or Herculaneum (covered walkways, no ferry needed), Sorrento via bus, or Ravello via bus from Amalfi (buses run in almost all weather).",
+        "Limited time (half-day): Amalfi solo (morning), Ravello solo (afternoon/sunset), or Sorrento (late morning start). All are 3-4 hours round-trip from Positano.",
+        "Budget priority: Pompeii or Herculaneum (best value, €31-32 total), Amalfi via bus (€8 round-trip if you skip villas), or Sorrento via bus with picnic lunch (€15-20 total).",
+        "Photography focus: Capri (Faraglioni, Monte Solaro, Arco Naturale), Ravello's Terrace of Infinity, or Positano's own beaches/viewpoints at sunrise/sunset.",
+        "First-timer priorities: Capri (iconic), Pompeii (world-famous), and Amalfi + Ravello (classic coastal combo). Sorrento and Herculaneum are excellent but less must-see unless you have extra days."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/positanoFerryDock.jpg",
+          "alt": "Positano ferry dock with boats departing for day trips.",
+          "caption": "Start day trips early from Positano ferry dock—10-15 minutes from hostel."
+        }
       ]
     }
   ],
   "tips": [
-    "Pre-load offline maps and timetables; mobile data can dip inside train tunnels and on the Capri cliffs.",
-    "Pack a lightweight rain jacket—summer storms roll in fast and ferries pause during lightning."
+    "Pre-load offline maps and timetables—mobile data dips inside Circumvesuviana train tunnels, on Capri cliffs, and on mountain roads to Ravello.",
+    "Pack a lightweight rain jacket—summer storms roll in fast and ferries pause during lightning.",
+    "Bring your own water and snacks—cafés near tourist sites charge €5+ for a sandwich and €3-4 for bottled water.",
+    "Check ferry schedules the night before and screenshot them—some routes reduce frequency off-season or cancel in rough weather.",
+    "Ask at the hostel for current transport updates, insider tips on which trips to prioritize, and recommendations for non-touristy lunch spots."
   ],
   "faqs": [
     {
       "q": "Which day trip needs the earliest start?",
       "a": [
-        "Capri and Pompeii benefit from first departures; they get crowded by mid-morning and involve more travel time."
+        "Capri and Pompeii benefit most from first departures—both get crowded by mid-morning and involve more travel time. Aim to leave Positano by 08:00-08:30 for these. Amalfi, Ravello, and Sorrento are more flexible and work well with 10:00-11:00 departures."
       ]
     },
     {
       "q": "Can I fit two towns into one day?",
       "a": [
-        "Yes—pair Amalfi with Ravello or Sorrento with Pompeii. Avoid stacking Capri with anything else; give it a full day."
+        "Yes—Amalfi and Ravello pair perfectly (same direction, 25-minute bus between them). Sorrento and Pompeii or Herculaneum also work well (same train line). Avoid stacking Capri with anything else—give it a full day. If you try to squeeze two unrelated destinations (e.g., Capri + Pompeii), you'll spend all day in transit and miss the best parts of both."
+      ]
+    },
+    {
+      "q": "What if ferries are cancelled due to weather?",
+      "a": [
+        "Take the SITA bus instead—it runs in almost all conditions. Swap Capri (ferry-only access) for a bus-accessible trip like Pompeii, Sorrento, or Amalfi/Ravello. Check ferry status the night before and morning of your trip by asking at the hostel or checking online schedules. Always have a backup plan."
+      ]
+    },
+    {
+      "q": "Which day trip is cheapest?",
+      "a": [
+        "Pompeii or Herculaneum are the best value (€26-32 total including transport and entry). Amalfi via bus (€8 round-trip if you skip villa entries) and Sorrento via bus with a picnic lunch (€15-20 total) are also budget-friendly. Capri is the most expensive (€50-70+ including ferry, funicular/chairlift, and food)."
+      ]
+    },
+    {
+      "q": "Do I need to book transport or site tickets in advance?",
+      "a": [
+        "Pre-book Pompeii tickets online to skip queues (30-60 minutes in peak season). Book Capri ferries 1-2 days ahead in July-August—morning sailings sell out. Bus tickets for SITA routes (Positano-Sorrento, Amalfi-Ravello) are bought onboard or at tabacchi shops and don't need advance booking. Ferry tickets to Amalfi or Sorrento can usually be bought same-day at the dock, but check availability if it's a summer weekend."
+      ]
+    },
+    {
+      "q": "Can I store luggage anywhere if I'm doing a day trip before/after check-in or check-out?",
+      "a": [
+        "Yes—Hostel Brikette offers free luggage storage for guests on arrival/departure days. If you're checking out and doing a day trip before leaving the coast, store your bags at the hostel and pick them up when you return. Pompeii, Sorrento, and Amalfi also have paid luggage storage services (€5-8 per bag per day) near train/ferry terminals if needed."
       ]
     }
   ]

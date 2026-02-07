@@ -3,6 +3,7 @@
     "relatedGuides": "関連ガイド",
     "indexTitle": "ポジターノ旅行ガイド",
     "popularGuides": "人気のガイド",
+    "viewAll": "すべてのガイドを見る",
     "helpfulGuides": "役立つガイド",
     "alsoSee": "こちらもご覧ください",
     "sectionFallback": "Section {{position}}"
@@ -13,131 +14,337 @@
       "description": "ポジターノやアマルフィ海岸を効率よく回るための実用的なステップバイステップガイド。"
     }
   },
+  "redirectPage": {
+    "title": "リダイレクト中…",
+    "message": "自動で移動しない場合は、<link>こちらをクリック</link>してください。"
+  },
   "content": {
     "onlyHostel": {
-      "linkLabel": "The only hostel in Positano",
+      "linkLabel": "ポジターノ唯一のホステル",
       "seo": {
-        "title": "The only hostel in Positano",
-        "description": "Affordable beds in Positano with panoramic views and friendly vibes."
+        "title": "ポジターノ唯一のホステル",
+        "description": "絶景ビューとフレンドリーな雰囲気で、ポジターノの手頃なベッドを紹介します。"
       }
     },
     "backpackerItineraries": {
-      "linkLabel": "Backpacker itineraries",
+      "linkLabel": "バックパッカー向け旅程",
       "seo": {
-        "title": "Backpacker itineraries on the Amalfi Coast",
-        "description": "Practical, budget-first routes for 2 to 7 days without a car."
+        "title": "アマルフィ海岸のバックパッカー向け旅程",
+        "description": "車なしで2〜7日を回る、予算重視の実用ルート。"
       }
     },
     "reachBudget": {
-      "linkLabel": "Reach Positano on a budget",
+      "linkLabel": "予算を抑えてポジターノへ",
       "seo": {
-        "title": "Reach Positano on a budget",
-        "description": "Cheapest ways to get to Positano by bus, train and ferry."
+        "title": "予算を抑えてポジターノへ",
+        "description": "バス・電車・フェリーで行く最安ルート。"
       }
     },
     "ferrySchedules": {
-      "linkLabel": "Ferry schedules",
+      "linkLabel": "フェリー時刻表",
       "seo": {
-        "title": "Positano ferry schedules",
-        "description": "Up-to-date ferry operators and seasonal timetables for Positano."
+        "title": "ポジターノのフェリー時刻表",
+        "description": "ポジターノ行きフェリー運航会社と季節ダイヤの最新情報。"
       }
     },
     "pathOfTheGods": {
-      "linkLabel": "Path of the Gods from Positano",
+      "linkLabel": "ポジターノ発「神々の道」ハイク",
       "seo": {
-        "title": "Hike the Path of the Gods",
-        "description": "Door-to-door instructions to hike Sentiero degli Dei from Positano."
+        "title": "「神々の道」を歩く",
+        "description": "ポジターノから Sentiero degli Dei を歩くドアツードアの手順。"
       }
     },
     "pathOfTheGodsFerry": {
-      "linkLabel": "Path of the Gods via Amalfi (ferry)",
+      "linkLabel": "アマルフィ経由（フェリー）で「神々の道」",
       "seo": {
-        "title": "Path of the Gods via Amalfi (ferry)",
-        "description": "Sail to Amalfi, bus up to Bomerano, then hike the Path of the Gods with return directions."
+        "title": "アマルフィ経由（フェリー）で「神々の道」",
+        "description": "フェリーでアマルフィへ、バスでボメラーノへ上り、復路案内付きで「神々の道」をハイク。"
       }
     },
     "pathOfTheGodsBus": {
-      "linkLabel": "Path of the Gods via Amalfi (bus)",
+      "linkLabel": "アマルフィ経由（バス）で「神々の道」",
       "seo": {
-        "title": "Path of the Gods via Amalfi (bus)",
-        "description": "Take the SITA Sud bus to Bomerano and follow our Path of the Gods route back toward Positano."
+        "title": "アマルフィ経由（バス）で「神々の道」",
+        "description": "SITA Sud でボメラーノへ行き、ポジターノ方面へ戻るルートに沿って「神々の道」を歩きます。"
       }
     },
     "pathOfTheGodsNocelle": {
-      "linkLabel": "Path of the Gods via Nocelle",
+      "linkLabel": "ノチェッレ経由で「神々の道」",
       "seo": {
-        "title": "Path of the Gods via Nocelle",
-        "description": "Shorter out-and-back hike from Nocelle with directions to return to Hostel Brikette."
+        "title": "ノチェッレ経由で「神々の道」",
+        "description": "ノチェッレ発の短い往復ハイクで、Hostel Briketteへの戻り方も案内。"
       }
     },
     "dayTripsAmalfi": {
-      "linkLabel": "Day trips from Positano",
+      "linkLabel": "ポジターノ発のデイトリップ",
       "seo": {
-        "title": "Day trips from Positano",
-        "description": "Ideas for Amalfi, Ravello, Capri and Pompeii with timing and transport tips."
+        "title": "ポジターノ発のデイトリップ",
+        "description": "アマルフィ、ラヴェッロ、カプリ、ポンペイのアイデアと時間・交通のコツ。"
       }
     },
-    "publicTransportAmalfi": {
-      "linkLabel": "Amalfi Coast public transport guide",
+    "positanoBeaches": {
+      "linkLabel": "ポジターノのビーチ：砂浜、太陽、秘密の入り江",
       "seo": {
-        "title": "Amalfi Coast public transport guide",
-        "description": "How to use buses and ferries on the Amalfi Coast with passes, timing and routes."
+        "title": "ポジターノのビーチ:太陽と秘密の入り江",
+        "description": "象徴的なスピアッジャ・グランデから隠れた入り江、高級ビーチクラブまで、ポジターノ最高のビーチを発見。"
+      }
+    },
+    "arienzoBeachClub": {
+      "linkLabel": "アリエンツォビーチ：ポジターノの高級ビーチクラブ",
+      "seo": {
+        "title": "アリエンツォビーチ:ポジターノのブティックビーチクラブ",
+        "description": "階段、サンベッド、レストラン、Hostel Briketteからの道順を含むアリエンツォ・ビーチクラブのガイド。"
+      }
+    },
+    "fornilloBeachGuide": {
+      "linkLabel": "フォルニッロビーチ：ポジターノの静かな穴場",
+      "seo": {
+        "title": "フォルニッロビーチ:ポジターノの静かな代替地",
+        "description": "無料の砂浜、地元レストラン、ポジターノ中心部から徒歩アクセス可能な穏やかなフォルニッロビーチ。"
+      }
+    },
+    "lauritoBeachGuide": {
+      "linkLabel": "ラウリートビーチ：断崖下の隠れた宝石",
+      "seo": {
+        "title": "ラウリートビーチ:断崖下の隠れた宝石",
+        "description": "450段以上の階段、地元の海鮮料理、混雑から離れたターコイズの海が魅力の秘境ラウリートビーチ。"
+      }
+    },
+    "gavitellaBeachGuide": {
+      "linkLabel": "ガヴィテッラビーチ：プライアーノの夕日を眺める海水浴スポット",
+      "seo": {
+        "title": "ガヴィテッラビーチ:プライアーノの夕日スイミングスポット",
+        "description": "夕日の眺め、穏やかな海、ポジターノからバスで簡単アクセスのプライアーノ地元ビーチ。"
+      }
+    },
+    "marinaDiPraiaBeaches": {
+      "linkLabel": "マリーナ・ディ・プライア：断崖に挟まれた絶景の入り江",
+      "seo": {
+        "title": "マリーナ・ディ・プライア:断崖間の劇的な入り江",
+        "description": "ノルマン塔、海沿いのレストラン、透き通った海の入り江が魅力の景観豊かなマリーナ・ディ・プライア。"
+      }
+    },
+    "fiordoDiFuroreBeachGuide": {
+      "linkLabel": "フューロレのフィヨルド：橋の下のフィヨルドビーチ",
+      "seo": {
+        "title": "フィオルド・ディ・フローレ:橋の下のフィヨルドビーチ",
+        "description": "エメラルドグリーンの海、崖からの飛び込み、ポジターノからバスで行けるドラマチックな橋の眺めが人気のフローレ・フィヨルド。"
+      }
+    },
+    "reginaGiovannaBath": {
+      "linkLabel": "レジーナ・ジョヴァンナ：ローマ遺跡と天然プール",
+      "seo": {
+        "title": "レジーナ・ジョヴァンナ:ローマ遺跡と天然プールの出会い",
+        "description": "ローマ時代の別荘遺跡、海岸沿いの散歩、透明な海での海水浴が楽しめるソレント歴史的天然プール。"
+      }
+    },
+    "positanoMainBeach": {
+      "linkLabel": "スピアッジャ・グランデ：ポジターノを象徴するメインビーチ",
+      "seo": {
+        "title": "スピアッジャ・グランデ:ポジターノの象徴的メインビーチ",
+        "description": "サンベッド料金、無料エリア、レストラン、アクセス方法を含むポジターノのメインビーチ完全ガイド。"
+      }
+    },
+    "positanoMainBeachWalkDown": {
+      "linkLabel": "ポジターノのメインビーチまで歩いて降りる",
+      "seo": {
+        "title": "ホステル ブリケットからポジターノのメインビーチまで歩く",
+        "description": "ランドマークと所要時間を含む、Hostel Briketteからスピアッジャ・グランデまでの徒歩ルート案内。"
+      }
+    },
+    "positanoMainBeachBusDown": {
+      "linkLabel": "ポジターノのメインビーチまでバスで降りる",
+      "seo": {
+        "title": "Hostel Briketteからポジターノのメインビーチ行きのバス",
+        "description": "Chiesa NuovaからポジターノビーチへのSITAバス利用ガイド、停留所の場所と時刻表付き。"
+      }
+    },
+    "positanoMainBeachWalkBack": {
+      "linkLabel": "ポジターノのメインビーチから歩いて戻る",
+      "seo": {
+        "title": "Spiaggia GrandeからHostel Briketteまで歩いて戻ります。",
+        "description": "ポジターノのメインビーチからHostel Briketteまでの上り坂ルート、ステップバイステップの道案内付き。"
+      }
+    },
+    "positanoMainBeachBusBack": {
+      "linkLabel": "Spiaggia GrandeからHostel Briketteに戻るバス",
+      "seo": {
+        "title": "ポジターノのメインビーチからバスでホステル ブリケットに戻ります",
+        "description": "ポジターノビーチからChiesa NuovaまでのSITAバス利用ガイド、乗車地点と時刻表付き。"
+      }
+    },
+    "hostelBriketteToFornilloBeach": {
+      "linkLabel": "ホステル・ブリケット → フォルニッロ・ビーチ徒歩ガイド",
+      "seo": {
+        "title": "ホステル・ブリケット → フォルニッロ・ビーチ徒歩ルート"
+      }
+    },
+    "fornilloBeachToBrikette": {
+      "linkLabel": "復路ルート：フォルニッロビーチ → ホステル・ブリケット",
+      "seo": {
+        "title": "復路ルート：フォルニッロビーチ → ホステル・ブリケット"
+      }
+    },
+    "hostelBriketteToFiordoDiFuroreBus": {
+      "linkLabel": "フィオルド・ディ・フローレビーチへのバスでの行き方",
+      "seo": {
+        "title": "Hostel Brikette → Fiordo di Furore by bus"
+      }
+    },
+    "fiordoDiFuroreBusReturn": {
+      "linkLabel": "フィヨルド・ディ・フローレのビーチ → ホステル・ブリケッテ（バス）",
+      "seo": {
+        "title": "フィヨルド・ディ・フローレのビーチからバスでホステル・ブリケッテへ"
+      }
+    },
+    "lauritoBeachBusDown": {
+      "linkLabel": "ラウリトビーチへのバスでの行き方",
+      "seo": {
+        "title": "Bus from Hostel Brikette to Laurito Beach"
+      }
+    },
+    "lauritoBeachBusBack": {
+      "linkLabel": "ラウリトビーチからホステル・ブリケットへバスで戻る",
+      "seo": {
+        "title": "ラウリトビーチからバスでホステル ブリケットに戻ります"
+      }
+    },
+    "hostelBriketteToArienzoBus": {
+      "linkLabel": "アリエンツォビーチへのバスでの行き方",
+      "seo": {
+        "title": "Bus to Arienzo Beach from Hostel Brikette"
+      }
+    },
+    "arienzoBeachBusBack": {
+      "linkLabel": "アリエンツォビーチからホステル・ブリケットへのバス",
+      "seo": {
+        "title": "アリエンツォビーチからホステル・ブリケットへのバス"
+      }
+    },
+    "hostelBriketteToReginaGiovannaBath": {
+      "linkLabel": "レジーナ・ジョヴァンナ・バスビーチへの行き方",
+      "seo": {
+        "title": "How to get from Hostel Brikette to Regina Giovanna Bath"
+      }
+    },
+    "sunriseHike": {
+      "linkLabel": "日の出ハイキング：ポジターノの夜明けを眺める"
+    },
+    "santaMariaDelCastelloHike": {
+      "linkLabel": "サンタ・マリア・デル・カステッロ：山村ハイキング"
+    },
+    "topOfTheMountainHike": {
+      "linkLabel": "モンテ・コムーネ：ポジターノ最高峰の展望台ハイク"
+    },
+    "stayingFitAmalfi": {
+      "linkLabel": "ポジターノで体を動かす：階段、トレイル、ビーチワークアウト"
+    },
+    "capriDayTrip": {
+      "linkLabel": "カプリ島日帰り旅行：ポジターノからの島脱出"
+    },
+    "capriOnABudget": {
+      "linkLabel": "カプリをお財布に優しく楽しむ"
+    },
+    "campingAmalfi": {
+      "linkLabel": "アマルフィ海岸でキャンプ：ホテルに代わる低予算オプション"
+    },
+    "boatTours": {
+      "linkLabel": "ボートツアー：サンセットクルーズからプライベートチャーターまで"
+    },
+    "cheapEats": {
+      "linkLabel": "地元っ子のように食べる：ポジターノのベストお手頃グルメ"
+    },
+    "eatingOutPositano": {
+      "linkLabel": "ポジターノの食事処：カジュアルからお祝いまで"
+    },
+    "positanoDining": {
+      "linkLabel": "Hostel Brikette近くのポジターノのベストレストラン"
+    },
+    "limoncelloCuisine": {
+      "linkLabel": "ポジターノの味：リモンチェッロ、レモン、地元の風味"
+    },
+    "instagramSpots": {
+      "linkLabel": "インスタ映えするポジターノ：ベストフォトスポットと時間帯"
+    },
+    "sunsetViewpoints": {
+      "linkLabel": "ポジターノの夕日：ゴールデンアワーに最高の展望台"
+    },
+    "ravelloFestival": {
+      "linkLabel": "ラヴェッロ音楽祭：星空の下でクラシックコンサート"
+    },
+    "ferragostoPositano": {
+      "linkLabel": "フェラゴスト：8月15日のイタリアの祝日をポジターノで"
+    },
+    "luminariaPraiano": {
+      "linkLabel": "プライアーノのルミナリア：何千ものキャンドルが夜を照らす"
+    },
+    "walkingTourAudio": {
+      "linkLabel": "無料オーディオウォーキングツアー：ポジターノの隠れた物語を発見"
+    },
+    "freeThingsPositano": {
+      "linkLabel": "ポジターノで無料でできること：お財布に優しい楽しみ方"
+    },
+    "publicTransportAmalfi": {
+      "linkLabel": "アマルフィ海岸 公共交通ガイド",
+      "seo": {
+        "title": "アマルフィ海岸 公共交通ガイド",
+        "description": "パス、時間帯、ルートを含むバスとフェリーの使い方。"
       }
     },
     "travelTipsFirstTime": {
-      "linkLabel": "Positano travel tips for first-time visitors",
+      "linkLabel": "初めてのポジターノ旅行のヒント",
       "seo": {
-        "title": "Positano travel tips for first-time visitors",
-        "description": "Arrivals, luggage, payments and connectivity — practical advice for your first trip."
+        "title": "初めてのポジターノ旅行のヒント",
+        "description": "到着、荷物、支払い、通信など、初めての旅に役立つ実用アドバイス。"
       }
     },
     "whatToPack": {
-      "linkLabel": "What to pack for the Amalfi Coast",
+      "linkLabel": "アマルフィ海岸の持ち物",
       "seo": {
-        "title": "What to pack for the Amalfi Coast",
-        "description": "Seasonal packing checklist for Positano and the Amalfi Coast."
+        "title": "アマルフィ海岸の持ち物",
+        "description": "ポジターノとアマルフィ海岸の季節別持ち物チェックリスト。"
       }
     }
   },
   "dev": {
     "statusPill": {
-      "title": "Guide status: {{status}} (click to toggle)"
+      "title": "ガイドのステータス: {{status}}（クリックで切り替え）"
     },
     "editorialPanel": {
-      "title": "Editorial workflow",
+      "title": "編集ワークフロー",
       "status": {
-        "draft": "Draft",
-        "review": "In review",
-        "live": "Live"
+        "draft": "下書き",
+        "review": "レビュー中",
+        "live": "公開中"
       },
       "workflow": {
-        "draftPreview": "Draft preview",
-        "published": "Published",
-        "pending": "Pending publication",
-        "allComplete": "All checklist items complete",
-        "outstanding_one": "{{count}} outstanding item",
-        "outstanding_other": "{{count}} outstanding items"
+        "draftPreview": "下書きプレビュー",
+        "published": "公開済み",
+        "pending": "公開待ち",
+        "allComplete": "チェックリストがすべて完了",
+        "outstanding_one": "未完了が{{count}}件",
+        "outstanding_other": "未完了が{{count}}件"
       },
       "draftPath": {
-        "label": "Draft path",
-        "dashboardCta": "Open draft dashboard"
+        "label": "下書きパス",
+        "dashboardCta": "下書きダッシュボードを開く"
       },
       "publish": {
-        "heading": "Publish to",
-        "primary": "Primary"
+        "heading": "公開先",
+        "primary": "主要"
       },
       "checklist": {
-        "heading": "Completion checklist",
+        "heading": "完了チェックリスト",
         "status": {
-          "missing": "Missing",
-          "inProgress": "In progress",
-          "complete": "Complete"
+          "missing": "不足",
+          "inProgress": "進行中",
+          "complete": "完了"
         }
       },
       "areaLabels": {
-        "howToGetHere": "How to get here",
-        "help": "Help centre",
-        "experience": "Experiences"
+        "howToGetHere": "アクセス方法",
+        "help": "ヘルプセンター",
+        "experience": "体験"
       }
     }
   }

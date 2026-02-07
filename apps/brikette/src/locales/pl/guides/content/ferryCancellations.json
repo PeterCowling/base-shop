@@ -1,72 +1,72 @@
 {
   "seo": {
-    "title": "Odwołane promy i wzburzone morze",
-    "description": "Co robić, gdy promy nie płyną z powodu pogody, alternatywy i jak sprawdzać status kursów."
+    "title": "Odwołania promów i wzburzone morze",
+    "description": "Co zrobić, gdy promy są odwoływane z powodu pogody, alternatywy i jak sprawdzić status."
   },
-  "linkLabel": "Odwołane promy i wzburzone morze",
+  "linkLabel": "Odwołania promów i wzburzone morze",
   "intro": [
-    "Tłumaczenie w przygotowaniu.",
-    "Przygotuj kopię zapasową naziemną i monitoruj alerty na żywo, aby nadal nawiązywać połączenie."
+    "Wzburzone morze może zawiesić promy do i z Positano z niewielkim wyprzedzeniem.",
+    "Przygotuj zapasową trasę lądową i monitoruj alerty na żywo, aby nadal zdążyć na połączenie."
   ],
   "sections": [
     {
       "id": "monitoring",
-      "title": "Monitor live updates",
+      "title": "Monitoruj aktualizacje na żywo",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Sprawdzaj strony i aplikacje operatorów (Travelmar, NLG, Alilauro) oraz tablice informacyjne w porcie co 30 minut w wietrzne dni.",
+        "Włącz alerty SMS/e-mail lub śledź lokalne kanały Telegram/społecznościowe, aby odwołania dotarły do Ciebie, nawet jeśli odejdziesz od molo."
       ]
     },
     {
       "id": "plan-b",
-      "title": "Tłumaczenie w przygotowaniu.",
+      "title": "Przejdź na trasy lądowe",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Jeśli rejsy przestaną kursować, przejdź na autobusy i pociągi: SITA do Sorrento, następnie Circumvesuviana do Neapolu/Pompei lub autobus przez Amalfi i pociąg regionalny z Salerno.",
+        "Zarezerwuj co najmniej 60 minut bufora na ostatnie odjazdy dnia i zwaliduj bilety przed wejściem na pokład."
       ]
     },
     {
       "id": "refunds",
-      "title": "Refunds & vouchers",
+      "title": "Zwroty i vouchery",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Zanim opuścisz stanowisko, daj znać personelowi, czy wolisz najbliższy dostępny rejs czy kupon sezonowy."
+        "Zachowaj paragony i zrób zrzut ekranu powiadomienia o odwołaniu, aby operator mógł przetworzyć zwroty, zmianę rezerwacji lub kredyty.",
+        "Poinformuj personel, czy wolisz następny dostępny rejs, czy voucher sezonowy, zanim opuścisz ladę."
       ]
     },
     {
       "id": "overnight",
-      "title": "Managing overnight delays",
+      "title": "Zarządzanie opóźnieniami nocnymi",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Zapytaj punkt informacyjny w porcie o wspólne taksówki, autobusy zastępcze lub przechowalnię bagażu, jeśli musisz poczekać do następnego ranka."
+        "Powiadom swoje zakwaterowanie lub organizatora wycieczki, gdy tylko ogłoszono opóźnienia; wielu dostosuje zameldowanie lub wyjazd, jeśli zostanie ostrzeżonych z wyprzedzeniem.",
+        "Zapytaj w punkcie informacyjnym portu o wspólne taksówki, zastępcze busy lub przechowalnię bagażu, jeśli musisz czekać do następnego ranka."
       ]
     }
   ],
   "tips": [
-    "Tłumaczenie w przygotowaniu.",
-    "Tłumaczenie w przygotowaniu.",
-    "Tłumaczenie w przygotowaniu."
+    "Sprawdź prognozę morską—wiatry powyżej 20 węzłów lub fale powyżej 1,5 metra (około 5 stóp) często powodują odwołania.",
+    "Ubezpieczenie podróżne pokrywające opóźnienia pogodowe pomaga odzyskać koszty dodatkowych nocy hotelowych lub zastępczych transferów.",
+    "Poranne rejsy są najbardziej niezawodne; unikaj polegania na ostatnim statku dnia, gdy prognozowane są burze."
   ],
   "faqs": [
     {
-      "q": "How do I know when sailings resume?",
+      "q": "Skąd mam wiedzieć, kiedy rejsy zostaną wznowione?",
       "a": [
-        "Tłumaczenie w przygotowaniu.",
-        "Personel kasy biletowej może również potwierdzić, czy kursuje następny statek, zanim opuścisz port."
+        "Odśwież stronę internetową operatora lub kanały społecznościowe i słuchaj ogłoszeń głośnikowych na molo—decyzje są zwykle publikowane w ciągu 30 minut od zaplanowanego odjazdu.",
+        "Personel kasy biletowej może również potwierdzić, czy następny statek kursuje, zanim opuścisz port."
       ]
     },
     {
-      "q": "Tłumaczenie w przygotowaniu.",
+      "q": "Co się stanie z moim biletem?",
       "a": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Pokaż paragon lub kod QR, aby poprosić o zwrot, voucher lub zmianę rezerwacji na następny rejs.",
+        "Jeśli rezerwowałeś przez agencję internetową, wyślij im zrzut ekranu odwołania e-mailem w ciągu 24 godzin, aby rozpocząć proces zwrotu."
       ]
     },
     {
-      "q": "Tłumaczenie w przygotowaniu.",
+      "q": "Czy są jakieś promy gwarantowane w trudnych warunkach pogodowych?",
       "a": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Nie—gdy straż przybrzeżna zamyka port, wszystkie odjazdy są wstrzymane. Przygotuj trasę lądową.",
+        "Kilka prywatnych czarterów może pływać w umiarkowanym morzu, ale są drogie i zależą od uznania kapitana; dokładnie rozważ komfort i koszt."
       ]
     }
   ]

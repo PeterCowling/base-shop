@@ -1,4 +1,5 @@
 import type { SectionTemplate } from "@acme/types";
+
 import { validateSectionRules } from "../sectionRules";
 
 function sectionWith(nodes: any[], overrides: Partial<SectionTemplate> = {}): SectionTemplate {

@@ -1,11 +1,15 @@
 // apps/cms/src/app/cms/shop/[shop]/settings/useShopEditorForm.ts
 "use client";
 
-import { useMemo, useState, ChangeEvent } from "react";
-import { providersByType } from "@acme/configurator/providers";
+import { type ChangeEvent,useMemo, useState } from "react";
+
 import type { Provider } from "@acme/configurator/providers";
+import { providersByType } from "@acme/configurator/providers";
 import { LOCALES, type Shop } from "@acme/types";
+
 import useMappingRows from "@/hooks/useMappingRows";
+
+import { mapThemeTokenRows } from "./lib/pageSections";
 import useShopEditorSubmit, {
   type IdentityField,
   type LuxuryCheckboxKey,
@@ -16,7 +20,6 @@ import useShopEditorSubmit, {
   type ShopEditorOverridesSection,
   type ShopEditorProvidersSection,
 } from "./useShopEditorSubmit";
-import { mapThemeTokenRows } from "./lib/pageSections";
 
 interface HookArgs {
   shop: string;
@@ -160,7 +163,7 @@ export function useShopEditorForm({
     tokenRows,
   };
 
-  const { saving, errors, toast, closeToast, onSubmit } = useShopEditorSubmit({
+  const { saving, errors, onSubmit } = useShopEditorSubmit({
     shop,
     identity,
     localization,
@@ -175,8 +178,6 @@ export function useShopEditorForm({
     setTrackingProviders,
     saving,
     errors,
-    toast,
-    closeToast,
     filterMappings: filterMappings.rows,
     addFilterMapping: filterMappings.add,
     updateFilterMapping: filterMappings.update,

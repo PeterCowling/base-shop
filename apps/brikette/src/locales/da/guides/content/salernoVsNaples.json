@@ -10,7 +10,7 @@
   "sections": [
     {
       "id": "when-salerno",
-      "title": "When Salerno wins",
+      "title": "Når Salerno er bedst",
       "body": [
         "Sæsonbestemte færger sejler direkte til Positano eller Amalfi med lettere menneskemængder end Napoli-molerne.",
         "Par Salerno Costa d'Amalfi (QSR) lufthavn med Airlink-shuttlen for at gøre overførsler enkel."
@@ -18,7 +18,7 @@
     },
     {
       "id": "when-naples",
-      "title": "When Naples wins",
+      "title": "Når Napoli er bedst",
       "body": [
         "Pålidelighed uden for sæsonen: højhastighedstog plus SITA via Sorrento fortsætter med at køre, når færger holder pause.",
         "Sene ankomster finder flere overnatningsmuligheder og videre transportmuligheder omkring Napoli."
@@ -26,7 +26,7 @@
     },
     {
       "id": "luggage",
-      "title": "Luggage & stairs",
+      "title": "Bagage og trapper",
       "body": [
         "Ankom til Chiesa Nuova for at minimere trapperne op til vandrerhjemmet.",
         "Landing med færge? Book en portier ved kajen, eller kør med SITA-bussen op ad bakke i stedet for at trække tasker."
@@ -35,7 +35,7 @@
   ],
   "faqs": [
     {
-      "q": "Is Salerno Airport (QSR) worth it?",
+      "q": "Er Salerno Airport (QSR) det værd?",
       "a": [
         "I stigende grad ja til sommer: Kombiner QSR-flyvninger med Airlink-shuttle og færge, når havet er roligt, og fald tilbage til busser, hvis vejret vender."
       ]

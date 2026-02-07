@@ -1,4 +1,4 @@
-import Stripe from "stripe";
+import type Stripe from "stripe";
 
 /**
  * Extend Stripe type to access internal helpers for testing.

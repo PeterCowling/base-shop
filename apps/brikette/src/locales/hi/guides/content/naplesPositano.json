@@ -3,7 +3,7 @@
     "title": "नेपल्स ↔ Positano यात्रा विकल्प",
     "description": "हाई-स्पीड ट्रेन + बस, फेरी और निजी ट्रांसफ़र की तुलना — कीमत और समय सहित।"
   },
-  "linkLabel": "Naples to Positano: how to go",
+  "linkLabel": "Naples से Positano: कैसे जाएँ",
   "intro": [
     "नेपल्स → पोसितानो: साल भर सोरेंटो तक शटल + SITA बस, समुद्र अनुकूल हो तो गर्मियों में फ़ेरी, और देर से पहुँचने पर ट्रांसफ़र विकल्प।"
   ],
@@ -65,20 +65,5 @@
         "‘Chiesa Nuova’ स्टॉप से लगभग 80 मीटर, वह भी बिना सीढ़ियों के।"
       ]
     }
-  ],
-  "gallery": {
-    "title": "संदर्भ चित्र",
-    "items": [
-      {
-        "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
-        "alt": "पोसितानो का चिएसा नोवा / बार इंटरनाज़ियोनाले SITA बस स्टॉप",
-        "caption": "Bar Internazionale / Chiesa Nuova स्टॉप"
-      },
-      {
-        "src": "/img/directions/naples-airport-positano-bus-hostel-entrance-steps.png",
-        "alt": "हॉस्टल ब्रिकेट के मुख्य प्रवेश की सीढ़ियाँ",
-        "caption": "Hostel Brikette प्रवेश सीढ़ियाँ"
-      }
-    ]
-  }
+  ]
 }

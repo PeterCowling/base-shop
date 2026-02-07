@@ -1,8 +1,10 @@
 // packages/ui/src/components/organisms/AccountPanel.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { AccountPanel } from './AccountPanel';
+
 import { makeStateStory } from '../../story-utils/createStories';
+
+import { AccountPanel } from './AccountPanel';
 
 const meta: Meta<typeof AccountPanel> = {
   title: 'Organisms/Account Panel/Matrix',

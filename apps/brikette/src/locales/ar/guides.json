@@ -3,9 +3,10 @@
     "relatedGuides": "أدلة ذات صلة",
     "indexTitle": "أدلة السفر إلى بوسيتانو",
     "popularGuides": "أدلة شائعة",
+    "viewAll": "عرض كل الأدلة",
     "helpfulGuides": "أدلة مفيدة",
     "alsoSee": "شاهد أيضًا",
-    "sectionFallback": "Section {{position}}"
+    "sectionFallback": "القسم {{position}}"
   },
   "meta": {
     "index": {
@@ -13,131 +14,337 @@
       "description": "أدلة عملية خطوة بخطوة للتنقل في بوسيتانو وعلى ساحل أمالفي."
     }
   },
+  "redirectPage": {
+    "title": "جارٍ إعادة التوجيه...",
+    "message": "إذا لم يتم إعادة توجيهك، <link>تابع من هنا</link>."
+  },
   "content": {
     "onlyHostel": {
-      "linkLabel": "The only hostel in Positano",
+      "linkLabel": "النُزل الوحيد في بوسيتانو",
       "seo": {
-        "title": "The only hostel in Positano",
-        "description": "Affordable beds in Positano with panoramic views and friendly vibes."
+        "title": "النُزل الوحيد في بوسيتانو",
+        "description": "أسِرّة بأسعار مناسبة في بوسيتانو مع إطلالات بانورامية وأجواء ودودة."
       }
     },
     "backpackerItineraries": {
-      "linkLabel": "Backpacker itineraries",
+      "linkLabel": "مسارات رحّالة الحقائب",
       "seo": {
-        "title": "Backpacker itineraries on the Amalfi Coast",
-        "description": "Practical, budget-first routes for 2 to 7 days without a car."
+        "title": "مسارات رحّالة الحقائب على ساحل أمالفي",
+        "description": "مسارات عملية تراعي الميزانية لمدة 2 إلى 7 أيام دون سيارة."
       }
     },
     "reachBudget": {
-      "linkLabel": "Reach Positano on a budget",
+      "linkLabel": "الوصول إلى بوسيتانو بميزانية محدودة",
       "seo": {
-        "title": "Reach Positano on a budget",
-        "description": "Cheapest ways to get to Positano by bus, train and ferry."
+        "title": "الوصول إلى بوسيتانو بميزانية محدودة",
+        "description": "أرخص طرق الوصول إلى بوسيتانو بالحافلة أو القطار أو العبّارة."
       }
     },
     "ferrySchedules": {
-      "linkLabel": "Ferry schedules",
+      "linkLabel": "جداول العبّارات",
       "seo": {
-        "title": "Positano ferry schedules",
-        "description": "Up-to-date ferry operators and seasonal timetables for Positano."
+        "title": "جداول عبّارات بوسيتانو",
+        "description": "أحدث مشغّلي العبّارات والجداول الموسمية لبوسيتانو."
       }
     },
     "pathOfTheGods": {
-      "linkLabel": "Path of the Gods from Positano",
+      "linkLabel": "طريق الآلهة من بوسيتانو",
       "seo": {
-        "title": "Hike the Path of the Gods",
-        "description": "Door-to-door instructions to hike Sentiero degli Dei from Positano."
+        "title": "المشي في طريق الآلهة",
+        "description": "إرشادات تفصيلية للمشي في Sentiero degli Dei من بوسيتانو."
       }
     },
     "pathOfTheGodsFerry": {
-      "linkLabel": "Path of the Gods via Amalfi (ferry)",
+      "linkLabel": "طريق الآلهة عبر أمالفي (عبّارة)",
       "seo": {
-        "title": "Path of the Gods via Amalfi (ferry)",
-        "description": "Sail to Amalfi, bus up to Bomerano, then hike the Path of the Gods with return directions."
+        "title": "طريق الآلهة عبر أمالفي (عبّارة)",
+        "description": "أبحر إلى أمالفي، ثم بالحافلة إلى بوميرانو، وبعدها امشِ في طريق الآلهة مع إرشادات العودة."
       }
     },
     "pathOfTheGodsBus": {
-      "linkLabel": "Path of the Gods via Amalfi (bus)",
+      "linkLabel": "طريق الآلهة عبر أمالفي (حافلة)",
       "seo": {
-        "title": "Path of the Gods via Amalfi (bus)",
-        "description": "Take the SITA Sud bus to Bomerano and follow our Path of the Gods route back toward Positano."
+        "title": "طريق الآلهة عبر أمالفي (حافلة)",
+        "description": "استقل حافلة SITA Sud إلى بوميرانو واتبع مسار طريق الآلهة عائدًا نحو بوسيتانو."
       }
     },
     "pathOfTheGodsNocelle": {
-      "linkLabel": "Path of the Gods via Nocelle",
+      "linkLabel": "طريق الآلهة عبر نوتشيلي",
       "seo": {
-        "title": "Path of the Gods via Nocelle",
-        "description": "Shorter out-and-back hike from Nocelle with directions to return to Hostel Brikette."
+        "title": "طريق الآلهة عبر نوتشيلي",
+        "description": "مسار أقصر ذهابًا وإيابًا من نوتشيلي مع إرشادات العودة إلى Hostel Brikette."
       }
     },
     "dayTripsAmalfi": {
-      "linkLabel": "Day trips from Positano",
+      "linkLabel": "رحلات يومية من بوسيتانو",
       "seo": {
-        "title": "Day trips from Positano",
-        "description": "Ideas for Amalfi, Ravello, Capri and Pompeii with timing and transport tips."
+        "title": "رحلات يومية من بوسيتانو",
+        "description": "أفكار لزيارة أمالفي ورافيللو وكابري وبومبي مع نصائح للتوقيت والتنقّل."
       }
     },
-    "publicTransportAmalfi": {
-      "linkLabel": "Amalfi Coast public transport guide",
+    "positanoBeaches": {
+      "linkLabel": "شواطئ بوسيتانو: رمال وشمس وخلجان سرية",
       "seo": {
-        "title": "Amalfi Coast public transport guide",
-        "description": "How to use buses and ferries on the Amalfi Coast with passes, timing and routes."
+        "title": "شواطئ بوسيتانو: شمس وخلجان سرية",
+        "description": "اكتشف أفضل شواطئ بوسيتانو من سبياجيا غراندي الأيقوني إلى الخلجان المخفية ونوادي الشاطئ الحصرية."
+      }
+    },
+    "arienzoBeachClub": {
+      "linkLabel": "شاطئ أريينزو: نادي الشاطئ الفاخر في بوسيتانو",
+      "seo": {
+        "title": "شاطئ أريينزو: نادي الشاطئ الفاخر في بوسيتانو",
+        "description": "دليل نادي شاطئ أريينزو مع الدرج والكراسي المظللة والمطعم والاتجاهات من هوستل بريكيت."
+      }
+    },
+    "fornilloBeachGuide": {
+      "linkLabel": "شاطئ فورنيلو: البديل الهادئ لبوسيتانو",
+      "seo": {
+        "title": "شاطئ فورنيلو: البديل الهادئ في بوسيتانو",
+        "description": "شاطئ فورنيلو الهادئ مع رمال مجانية ومطاعم محلية وسهولة الوصول سيرًا على الأقدام من وسط بوسيتانو."
+      }
+    },
+    "lauritoBeachGuide": {
+      "linkLabel": "شاطئ لوريتو: جوهرة مخفية تحت المنحدرات",
+      "seo": {
+        "title": "شاطئ لوريتو: جوهرة مخفية تحت المنحدرات",
+        "description": "شاطئ لوريتو النائي مع أكثر من 450 درجة ومأكولات بحرية محلية ومياه فيروزية بعيدًا عن الزحام."
+      }
+    },
+    "gavitellaBeachGuide": {
+      "linkLabel": "شاطئ جافيتيلا: مكان السباحة عند الغروب في برايانو",
+      "seo": {
+        "title": "شاطئ جافيتيلا: مكان السباحة عند الغروب في برايانو",
+        "description": "شاطئ برايانو المحلي مع إطلالات الغروب ومياه هادئة وسهولة الوصول بالحافلة من بوسيتانو."
+      }
+    },
+    "marinaDiPraiaBeaches": {
+      "linkLabel": "مارينا دي برايا: خليج مذهل بين المنحدرات",
+      "seo": {
+        "title": "مارينا دي برايا: خليج مذهل بين المنحدرات",
+        "description": "مارينا دي برايا الخلابة مع برج نورماني ومطاعم على الواجهة البحرية وخليج سباحة صافٍ."
+      }
+    },
+    "fiordoDiFuroreBeachGuide": {
+      "linkLabel": "فيوردو دي فوروري: شاطئ الفيورد تحت الجسر",
+      "seo": {
+        "title": "فيوردو دي فوروري: شاطئ الفيورد تحت الجسر",
+        "description": "فيورد فوروري الشهير على إنستغرام مع مياه زمردية والغوص من الجرف وإطلالات جسر مذهلة بالحافلة من بوسيتانو."
+      }
+    },
+    "reginaGiovannaBath": {
+      "linkLabel": "ريجينا جيوفانا: آثار رومانية ومسبح طبيعي",
+      "seo": {
+        "title": "ريجينا جيوفانا: آثار رومانية تلتقي بمسبح طبيعي",
+        "description": "مسبح طبيعي تاريخي في سورينتو مع آثار فيلا رومانية ومسير ساحلي وسباحة في مياه صافية."
+      }
+    },
+    "positanoMainBeach": {
+      "linkLabel": "سبياجيا غراندي: الشاطئ الرئيسي الأيقوني في بوسيتانو",
+      "seo": {
+        "title": "سبياجيا غراندي: الشاطئ الرئيسي الأيقوني في بوسيتانو",
+        "description": "دليل كامل للشاطئ الرئيسي في بوسيتانو مع أسعار الكراسي المظللة والمناطق المجانية والمطاعم وكيفية الوصول."
+      }
+    },
+    "positanoMainBeachWalkDown": {
+      "linkLabel": "المشي من هوستل بريكيت إلى الشاطئ الرئيسي",
+      "seo": {
+        "title": "المشي من هوستل بريكيت إلى الشاطئ الرئيسي في بوسيتانو",
+        "description": "إرشادات المشي من هوستل بريكيت نزولاً إلى سبياجيا غراندي مع المعالم وتقديرات الوقت."
+      }
+    },
+    "positanoMainBeachBusDown": {
+      "linkLabel": "الحافلة من هوستل بريكيت إلى الشاطئ الرئيسي",
+      "seo": {
+        "title": "الحافلة من هوستل بريكيت إلى الشاطئ الرئيسي في بوسيتانو",
+        "description": "استقل حافلة SITA من كييزا نوفا نزولاً إلى شاطئ بوسيتانو مع مواقع المحطات والتوقيت."
+      }
+    },
+    "positanoMainBeachWalkBack": {
+      "linkLabel": "المشي عائدًا من سبياجيا غراندي إلى الهوستل",
+      "seo": {
+        "title": "المشي عائدًا إلى هوستل بريكيت من سبياجيا غراندي",
+        "description": "مسار المشي الصاعد من الشاطئ الرئيسي في بوسيتانو عائدًا إلى هوستل بريكيت مع إرشادات المسار خطوة بخطوة."
+      }
+    },
+    "positanoMainBeachBusBack": {
+      "linkLabel": "الحافلة عائدًا من الشاطئ الرئيسي إلى هوستل بريكيت",
+      "seo": {
+        "title": "الحافلة عائدًا إلى هوستل بريكيت من الشاطئ الرئيسي",
+        "description": "استقل حافلة SITA من شاطئ بوسيتانو صعودًا إلى كييزا نوفا مع نقاط الصعود والجداول الزمنية."
+      }
+    },
+    "hostelBriketteToFornilloBeach": {
+      "linkLabel": "هوستل بريكيت → شاطئ فورنيلو (دليل سير)",
+      "seo": {
+        "title": "هوستل بريكيت → شاطئ فورنيلو: مسار سير"
+      }
+    },
+    "fornilloBeachToBrikette": {
+      "linkLabel": "مسار العودة من شاطئ فورنيلو إلى هوستل بريكيت",
+      "seo": {
+        "title": "شاطئ فورنيلو → هوستل بريكيت: مسار العودة"
+      }
+    },
+    "hostelBriketteToFiordoDiFuroreBus": {
+      "linkLabel": "هوستل بريكيت → فيوردو دي فيوروري بالحافلة",
+      "seo": {
+        "title": "هوستل بريكيت → فيوردو دي فيوروري بالحافلة"
+      }
+    },
+    "fiordoDiFuroreBusReturn": {
+      "linkLabel": "شاطئ فيوردو دي فوروري → هوستل بريكيت بالحافلة",
+      "seo": {
+        "title": "شاطئ فيوردو دي فوروري → هوستل بريكيت بالحافلة"
+      }
+    },
+    "lauritoBeachBusDown": {
+      "linkLabel": "حافلة إلى شاطئ لوريتو",
+      "seo": {
+        "title": "حافلة من هوستل بريكيت إلى شاطئ لوريتو"
+      }
+    },
+    "lauritoBeachBusBack": {
+      "linkLabel": "حافلة العودة من شاطئ لوريتو",
+      "seo": {
+        "title": "العودة بالحافلة إلى هوستل بريكيت من شاطئ لوريتو"
+      }
+    },
+    "hostelBriketteToArienzoBus": {
+      "linkLabel": "حافلة إلى شاطئ أرينزو",
+      "seo": {
+        "title": "حافلة إلى شاطئ أرينزو من هوستل بريكيت"
+      }
+    },
+    "arienzoBeachBusBack": {
+      "linkLabel": "العودة بالحافلة من شاطئ أرينزو",
+      "seo": {
+        "title": "العودة بالحافلة إلى هوستل بريكيت من شاطئ أرينزو"
+      }
+    },
+    "hostelBriketteToReginaGiovannaBath": {
+      "linkLabel": "من هوستل بريكيت إلى حمّام ريجينا جيوفانا",
+      "seo": {
+        "title": "كيفية الوصول من هوستل بريكيت إلى حمّام ريجينا جيوفانا"
+      }
+    },
+    "sunriseHike": {
+      "linkLabel": "رحلة شروق الشمس: شاهد الفجر فوق بوسيتانو"
+    },
+    "santaMariaDelCastelloHike": {
+      "linkLabel": "سانتا ماريا ديل كاستيلو: رحلة إلى قرية جبلية"
+    },
+    "topOfTheMountainHike": {
+      "linkLabel": "مونتي كوموني: رحلة إلى أعلى نقطة مراقبة في بوسيتانو"
+    },
+    "stayingFitAmalfi": {
+      "linkLabel": "حافظ على لياقتك في بوسيتانو: سلالم ومسارات وتمارين الشاطئ"
+    },
+    "capriDayTrip": {
+      "linkLabel": "رحلة يومية إلى كابري: هروب إلى الجزيرة من بوسيتانو"
+    },
+    "capriOnABudget": {
+      "linkLabel": "كابري بميزانية محدودة"
+    },
+    "campingAmalfi": {
+      "linkLabel": "التخييم في ساحل أمالفي: بديل اقتصادي للفنادق"
+    },
+    "boatTours": {
+      "linkLabel": "جولات القارب: من رحلات الغروب إلى الاستئجار الخاص"
+    },
+    "cheapEats": {
+      "linkLabel": "كُل كالمحليين: أفضل الأكلات الاقتصادية في بوسيتانو"
+    },
+    "eatingOutPositano": {
+      "linkLabel": "أين تأكل في بوسيتانو: من العادي إلى الاحتفالي"
+    },
+    "positanoDining": {
+      "linkLabel": "أفضل مطاعم بوسيتانو بالقرب من Hostel Brikette"
+    },
+    "limoncelloCuisine": {
+      "linkLabel": "تذوق بوسيتانو: ليمونتشيلو وليمون ونكهات محلية"
+    },
+    "instagramSpots": {
+      "linkLabel": "بوسيتانو المثالية للإنستغرام: أفضل أماكن وأوقات التصوير"
+    },
+    "sunsetViewpoints": {
+      "linkLabel": "غروب الشمس في بوسيتانو: أفضل نقاط المراقبة للساعة الذهبية"
+    },
+    "ravelloFestival": {
+      "linkLabel": "مهرجان رافيللو: حفلات كلاسيكية تحت النجوم"
+    },
+    "ferragostoPositano": {
+      "linkLabel": "فيراغوستو: احتفال 15 أغسطس الإيطالي في بوسيتانو"
+    },
+    "luminariaPraiano": {
+      "linkLabel": "لوميناريا دي برايانو: آلاف الشموع تضيء الليل"
+    },
+    "walkingTourAudio": {
+      "linkLabel": "جولة صوتية مجانية: اكتشف قصص بوسيتانو المخفية"
+    },
+    "freeThingsPositano": {
+      "linkLabel": "أنشطة مجانية في بوسيتانو: متعة اقتصادية"
+    },
+    "publicTransportAmalfi": {
+      "linkLabel": "دليل النقل العام في ساحل أمالفي",
+      "seo": {
+        "title": "دليل النقل العام في ساحل أمالفي",
+        "description": "كيفية استخدام الحافلات والعبّارات على ساحل أمالفي مع البطاقات والتوقيت والمسارات."
       }
     },
     "travelTipsFirstTime": {
-      "linkLabel": "Positano travel tips for first-time visitors",
+      "linkLabel": "نصائح بوسيتانو للزائرين لأول مرة",
       "seo": {
-        "title": "Positano travel tips for first-time visitors",
-        "description": "Arrivals, luggage, payments and connectivity — practical advice for your first trip."
+        "title": "نصائح بوسيتانو للزائرين لأول مرة",
+        "description": "الوصول، الأمتعة، المدفوعات والاتصال — نصائح عملية لرحلتك الأولى."
       }
     },
     "whatToPack": {
-      "linkLabel": "What to pack for the Amalfi Coast",
+      "linkLabel": "ماذا تحزم لساحل أمالفي",
       "seo": {
-        "title": "What to pack for the Amalfi Coast",
-        "description": "Seasonal packing checklist for Positano and the Amalfi Coast."
+        "title": "ماذا تحزم لساحل أمالفي",
+        "description": "قائمة تجهيزات موسمية لبوسيتانو وساحل أمالفي."
       }
     }
   },
   "dev": {
     "statusPill": {
-      "title": "Guide status: {{status}} (click to toggle)"
+      "title": "حالة الدليل: {{status}} (انقر للتبديل)"
     },
     "editorialPanel": {
-      "title": "Editorial workflow",
+      "title": "سير العمل التحريري",
       "status": {
-        "draft": "Draft",
-        "review": "In review",
-        "live": "Live"
+        "draft": "مسودة",
+        "review": "قيد المراجعة",
+        "live": "منشور"
       },
       "workflow": {
-        "draftPreview": "Draft preview",
-        "published": "Published",
-        "pending": "Pending publication",
-        "allComplete": "All checklist items complete",
-        "outstanding_one": "{{count}} outstanding item",
-        "outstanding_other": "{{count}} outstanding items"
+        "draftPreview": "معاينة المسودة",
+        "published": "منشور",
+        "pending": "بانتظار النشر",
+        "allComplete": "اكتملت جميع عناصر القائمة",
+        "outstanding_one": "{{count}} عنصر متبقٍ",
+        "outstanding_other": "{{count}} عناصر متبقية"
       },
       "draftPath": {
-        "label": "Draft path",
-        "dashboardCta": "Open draft dashboard"
+        "label": "مسار المسودة",
+        "dashboardCta": "افتح لوحة المسودات"
       },
       "publish": {
-        "heading": "Publish to",
-        "primary": "Primary"
+        "heading": "انشر إلى",
+        "primary": "الأساسي"
       },
       "checklist": {
-        "heading": "Completion checklist",
+        "heading": "قائمة إكمال المهام",
         "status": {
-          "missing": "Missing",
-          "inProgress": "In progress",
-          "complete": "Complete"
+          "missing": "مفقود",
+          "inProgress": "قيد التنفيذ",
+          "complete": "مكتمل"
         }
       },
       "areaLabels": {
-        "howToGetHere": "How to get here",
-        "help": "Help centre",
-        "experience": "Experiences"
+        "howToGetHere": "كيفية الوصول",
+        "help": "مركز المساعدة",
+        "experience": "التجارب"
       }
     }
   }

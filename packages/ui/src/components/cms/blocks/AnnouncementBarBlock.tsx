@@ -1,6 +1,7 @@
-import AnnouncementBar from "../../organisms/AnnouncementBar";
-import type { TranslatableText } from "@acme/types/i18n";
 import type { Locale } from "@acme/i18n/locales";
+import type { TranslatableText } from "@acme/types/i18n";
+
+import AnnouncementBar from "../../organisms/AnnouncementBar";
 
 interface Props {
   text?: TranslatableText;

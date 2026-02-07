@@ -1,9 +1,11 @@
 // packages/platform-core/__tests__/repositories.test.ts
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import type { ProductPublication } from "../src/products/index";
-import { nowIso } from "@date-utils";
+
+import { nowIso } from "@acme/date-utils";
 import { withTempRepo } from "@acme/test-utils";
+
+import type { ProductPublication } from "../src/products/index";
 
 // These integration-style tests touch the filesystem and can occasionally be
 // slow on CI machines, so allow a more generous timeout than Jest's default

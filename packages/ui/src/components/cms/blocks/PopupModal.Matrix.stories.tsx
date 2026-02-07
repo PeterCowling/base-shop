@@ -2,10 +2,12 @@
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
 import { expect, userEvent, within } from '@storybook/test';
-import PopupModal from './PopupModal';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './PopupModal.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import PopupModal from './PopupModal';
+import fixture from './PopupModal.fixtures.json';
 
 const meta: Meta<typeof PopupModal> = {
   title: 'CMS Blocks/PopupModal/Matrix',

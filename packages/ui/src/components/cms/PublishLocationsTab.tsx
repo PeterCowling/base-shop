@@ -1,10 +1,13 @@
-import { Card, CardContent } from "../atoms/shadcn";
-import { Chip } from "../atoms";
-import PublishLocationSelector from "./PublishLocationSelector";
-import type { PublishLocation } from "@acme/types";
 import { useMemo } from "react";
-import { Inline } from "../atoms/primitives/Inline";
+
 import { useTranslations } from "@acme/i18n";
+import type { PublishLocation } from "@acme/types";
+
+import { Chip } from "../atoms";
+import { Inline } from "../atoms/primitives/Inline";
+import { Card, CardContent } from "../atoms/shadcn";
+
+import PublishLocationSelector from "./PublishLocationSelector";
 
 interface PublishLocationsTabProps {
   selectedIds: string[];

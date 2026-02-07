@@ -1,0 +1,144 @@
+{
+  "seo": {
+    "title": "Alderskrav og tilgjengelighet på Hostel Brikette (Positano)",
+    "description": "Forstå vår trappeadgang, forventninger til bagasje og selvhjulpenhet, mindreårigpolitikk, veiledning om tjenestedyr og praktiske ankomsttips (ferge og buss) før du booker."
+  },
+  "linkLabel": "Alderskrav og tilgjengelighet",
+  "sections": [
+    {
+      "id": "quickChecklist",
+      "title": "Før du booker (hurtig sjekkliste)",
+      "body": [
+        "Vi ønsker at ankomsten din skal være problemfri – Positano er vakker, men det er ikke \\\\\"flatt og enkelt\\\\\". Her er det som betyr mest:",
+        "* **Trapper er uunngåelige:** resepsjonen nås via ≈30 utendørs steintrinn, og de fleste sovsalene er 1-2 ekstra etasjer opp.\n* **Ingen heis / ingen trinnfri adgang:** vår historiske bygning ble ikke bygget for ramper eller heiser.\n* **Planlegg bagasjen din:** vi har ikke en concierge/portør-tjeneste – ta med deg det du kan bære, eller organiser en portør.\n* **Regler for mindreårige er strenge:** under 17 år kun privat rom; 17-åringer krever en veileder voksen + dokumentasjon.\n* **Hvis du er usikker, send oss en e-post før booking:** vi vil beskrive oppsettet og typiske gangveier i detalj."
+      ]
+    },
+    {
+      "id": "accessibilityRequirements",
+      "title": "Tilgjengelighetskrav",
+      "body": [
+        "Hostel Brikette er i en historisk Positano-bygning bygget inn i åssiden. Det er en del av sjarmen – og også den viktigste tilgjengelighetsvurderingen: **det er ingen heis og ingen trinnfri rute**.",
+        "**Hva du kan forvente på herberget:**\n* ≈30 utendørs steintrinn fra nærmeste gangfelt til resepsjonen.\n* De fleste sovsalene er **en eller to ekstra interne etasjer** over resepsjonen.",
+        "Positano selv er også bratt. Mange ruter til/fra stranden og havnen involverer trapper og ujevne overflater.",
+        "Hvis trapper, balanse eller å bære bagasje kunne være utfordrende, vennligst send oss en e-post før booking. Vi vil forklare oppsettet og hjelpe deg med å ta en informert beslutning."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/hostel-brikette-entrance-steps.webp",
+          "alt": "Trappene opp til Hostel Brikettes inngang, rett ved hovedveien i Positano.",
+          "caption": "Forvent utendørs trinn for å nå resepsjonen – det er ingen heis eller trinnfri adgang."
+        }
+      ]
+    },
+    {
+      "id": "arrivalByFerry",
+      "title": "Ankomst med ferge",
+      "body": [
+        "Ankomst med ferge er malerisk, men havnen er langt under herberget og rutene opp inkluderer bratte seksjoner og trapper.",
+        "**Med bagasje anbefaler vi ikke å gå** fra havnen til herberget – spesielt i sommervarmen.",
+        "En pålitelig plan er:\n* Organiser en registrert portør ved havnen for å levere bagasje direkte til herberget.\n* Ta den lokale Interno-bussen opp fra sentrum (Piazza dei Mulini-området), og gå deretter den korte siste strekningen.",
+        "For trinn-for-trinn-veiledning, se %LINK:arrivingByFerry|Positano havn → Herbergsguide%."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-positano-spiaggia-view.jpg",
+          "alt": "Positano fergekai på strandnivå med båter i bukten.",
+          "caption": "Havnen er på strandnivå – planlegg hjelp til bagasje (portør) pluss en busstur oppover."
+        }
+      ]
+    },
+    {
+      "id": "arrivalByBus",
+      "title": "Ankomst med buss",
+      "body": [
+        "Nærmeste bussholdeplass er rundt **100 m / 330 fot** unna. Ruten mellom holdeplassen og herberget er kort og for det meste flat.",
+        "Fra gaten må du fortsatt håndtere trapper:\n* trapper opp til resepsjonen\n* ytterligere interne etasjer til de fleste rommene"
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.webp",
+          "alt": "Positano bussholdeplass-skilting ved veikanten.",
+          "caption": "Fra holdeplassen er det en kort gåtur – deretter trapper opp til resepsjonen."
+        }
+      ]
+    },
+    {
+      "id": "generalArrivalTips",
+      "title": "Generelle ankomsttips",
+      "body": [
+        "Noen få små valg gjør stor forskjell i Positano:",
+        "* Pakk lett der det er mulig.\n* Foretrekk en ryggsekk fremfor en stor koffert med hjul.\n* Bruk sko med godt grep (steintrinn kan være glatte).\n* Hvis du ankommer med ferge med bagasje, planlegg en portør + buss-kombinasjon på forhånd."
+      ]
+    },
+    {
+      "id": "reducedMobility",
+      "title": "Veiledning om redusert mobilitet",
+      "body": [
+        "Hvis du har redusert mobilitet, synshemming, kroniske smerter, balanseproblemer eller er avhengig av hjelpemidler, vennligst send oss en e-post før booking.",
+        "Vi kan beskrive oppsettet (trapper, typiske gangveier, romplaseringsalternativer) slik at du kan vurdere om vår plassering og fasiliteter oppfyller dine behov."
+      ]
+    },
+    {
+      "id": "serviceAnimals",
+      "title": "Tjenestedyr",
+      "body": [
+        "Vi kan være vert for **sertifiserte tjenestedyr** i **kun private rom**, underlagt forhåndsavtale og gjeldende forskrifter.",
+        "Vennligst kontakt oss på forhånd slik at vi kan bekrefte dokumentasjonskrav og det beste romalternativet."
+      ]
+    },
+    {
+      "id": "assistedSleeping",
+      "title": "Søvnhjelpemidler",
+      "body": [
+        "For å bevare en rolig atmosfære i delte sovsaler, kan enheter som skaper kontinuerlig eller intermitterende lyd (for eksempel CPAP-maskiner, hvit støy-generatorer, meditasjonshøyttalere eller snakkende klokker) kun brukes **med en privat rombooking**."
+      ]
+    },
+    {
+      "id": "selfSufficiencyPolicy",
+      "title": "Selvhjulpenhetspolitikk",
+      "body": [
+        "Hostel Brikette er et backpacker-stil herberge: vennlig og støttende, men **ikke et omsorgstilbud**.",
+        "Teamet vårt kan hjelpe med informasjon og praktiske tips, men vi kan ikke levere medisinske eller omsorgstjenester, og vi kan ikke oppbevare eller administrere reseptbelagte medisiner.",
+        "**For å bo hos oss må gjester kunne:**\n* bære sin egen bagasje (eller organisere en portør)\n* klatre trappene beskrevet ovenfor\n* sjekke inn/ut selvstendig\n* håndtere personlig hygiene selvstendig\n* bruke delte områder uten å kreve personalovervåking"
+      ]
+    },
+    {
+      "id": "essentialMedicine",
+      "title": "Essensiell medisin",
+      "body": [
+        "Hvis du reiser med essensiell medisin som krever kjøling, kan vi vanligvis oppbevare den for deg – vennligst send oss en e-post før ankomst for å reservere plass.",
+        "Nærliggende alternativer:\n* Apotek: ~450 m unna på Viale Pasitea.\n* Offentlig medisinsk klinikk: Praiano (~3 km med buss).",
+        "I nødsfall vil personalet kontakte italienske nødtjenester (112 / 118). Vi kan ikke yte profesjonell medisinsk bistand på stedet.",
+        "Hvis det under oppholdet ditt blir klart at du ikke kan oppfylle minimumskravene til selvhjulpenhet ovenfor, kan vi kanskje ikke være vert for deg på en sikker måte. For de relaterte vilkårene, se %LINK:changingCancelling|Endring og avbestilling% og %LINK:rules|Husregler%."
+      ]
+    },
+    {
+      "id": "minorsPolicy",
+      "title": "Mindreårigpolitikk",
+      "body": [
+        "Italienske gjestfrihetregler rundt mindreårige er strenge, og vi følger dem. Dette beskytter unge reisende og holder herberget i samsvar – vennligst les nøye før booking.",
+        "**Alder 16 og under:**\n* Kun private rom.\n* Må ledsages av en forelder/verge i alderen 18+.\n* Vergen må bli i samme rom i hele oppholdet.",
+        "**Alder 17:** sovesalssenger kan være mulig bare med en veileder voksen (18+) i samme sovsal og passende samtykke/vergemålsdokumentasjon ved ankomst (send oss en e-post på forhånd slik at vi kan bekrefte hva som trengs for din situasjon).",
+        "**Grupper (skole/sport/speider) under 18:** må organisere eksklusiv belegg og gi skriftlig ansvarsdokumentasjon fra den organiserende institusjonen minst 7 dager før ankomst.",
+        "Mindreårige kan ikke etterlates uten tilsyn i fellesområder. Hvis kravene ikke er oppfylt ved innsjekking, kan vi være juridisk pålagt å avvise oppholdet."
+      ]
+    },
+    {
+      "id": "locationOverview",
+      "title": "Plasseringsoversikt",
+      "body": [
+        "Vi er nær lokale bekvemmeligheter:\n* hovedvei og bussholdeplasser (~100 m / 330 fot)\n* dagligvarebutikker, minibank, restauranter og små nødvendigheter i nærheten",
+        "Positanos strandområde og fergehavnen er lenger nede på åsen; den lokale bussen er den enkleste måten å reise frem og tilbake på."
+      ]
+    },
+    {
+      "id": "transportationGuide",
+      "title": "Transportguide",
+      "body": [
+        "For trinn-for-trinn ruteplanning, bruk disse guidene som utgangspunkt:",
+        "Vanlige ruter:\n* Fra Napoli lufthavn: %LINK:naplesAirportPositanoBus|Napoli lufthavn → Positano%.\n* Fra Napoli sentrum: %LINK:naplesCenterTrainBus|Napoli sentrum → Positano%.\n* Med ferge (sesongbasert): %LINK:arrivingByFerry|Positano havn → Herberge%.",
+        "Ankomst med bil er mulig, men ikke anbefalt i høysesongen på grunn av begrenset og dyrt parkering. Hvis du kjører, planlegg parkering på forhånd og hold bagasjen så lett som mulig."
+      ]
+    }
+  ]
+}

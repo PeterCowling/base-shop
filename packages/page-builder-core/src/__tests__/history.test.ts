@@ -1,4 +1,5 @@
 import type { HistoryState, PageComponent } from "@acme/types";
+
 import { commit, redo, undo } from "../history";
 
 function makeState(overrides: Partial<HistoryState> = {}): HistoryState {

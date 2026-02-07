@@ -1,16 +1,16 @@
 {
   "seo": {
-    "title": "Positano z plecakiem: plan na 1–3 dni",
-    "description": "Plany dzień po dniu, które obejmują najważniejsze atrakcje Positano i trzymają koszty w ryzach."
+    "title": "Positano z plecakiem: plan na 1-3 dni",
+    "description": "Proste plany na 1-3 dni z plażami, punktami widokowymi i tanimi wycieczkami."
   },
-  "linkLabel": "Positano z plecakiem: plan na 1–3 dni",
+  "linkLabel": "Positano z plecakiem: plan na 1-3 dni",
   "intro": [
-    "Praktyczne plany dzień po dniu, które obejmują najważniejsze atrakcje bez przekraczania budżetu."
+    "Wybierz plan na 1, 2 lub 3 dni, który trzyma koszty w ryzach, a jednocześnie obejmuje widoki, plaże i wycieczki."
   ],
   "toc": [
     {
       "href": "#day1",
-      "label": "Dzień 1: Positano w pigułce"
+      "label": "Dzień 1: najważniejsze w Positano"
     },
     {
       "href": "#day2",
@@ -36,68 +36,72 @@
   "sections": [
     {
       "id": "pacing",
-      "title": "Rozłóż dni z dużą liczbą schodów",
+      "title": "Zacznij od większych podejść",
       "body": [
-        "Pierwszego dnia zwiedzaj Chiesa Nuova i Fornillo; dłuższe podejścia (Ścieżka Bogów, schody Arienzo) zostaw na czas po porządnej nocy.",
-        "Grupuj zajęcia według poziomu wysokości, aby zostać na jednym tarasie — skończ punkty w górnej części miasta, zanim zejdziesz do mariny."
+        "Pierwszy dzień przeznacz na spacery w dolnej części (Spiaggia Grande, Fornillo), a duże porcje schodów (Ścieżka Bogów, schody Arienzo) zostaw na czas po przespanej nocy.",
+        "Grupuj postoje według wysokości, żeby zostać na jednym poziomie tarasów; najpierw punkty widokowe w górze, potem zejście do mariny."
       ]
     },
     {
       "id": "budget-mix",
-      "title": "Łącz płatne i darmowe atrakcje",
+      "title": "Jedna płatna atrakcja dziennie",
       "body": [
-        "Planuj jedną płatną atrakcję dziennie (rejs łodzią, degustacja limoncello, prom na Capri), a resztę wypełnij darmowymi plażami i spacerami widokowymi.",
-        "Noś przekąski i butelki wielorazowe; zakupy w minimarkecie przy Chiesa Nuova są dużo tańsze niż w kawiarniach przy nabrzeżu."
+        "Zaplanuj jedną płatną rzecz dziennie (prom na Capri, wspólny rejs, wejście do ogrodów), a resztę wypełnij darmowymi spacerami i plażą.",
+        "Zaopatrz się w przekąski i wodę w okolicy Chiesa Nuova; kawiarnie przy wodzie mają największe narzuty."
       ]
     },
     {
       "id": "viewpoints",
-      "title": "Wpleć najlepsze punkty widokowe",
+      "title": "Punkty widokowe bez biletów",
       "body": [
-        "Via Cristoforo Colombo zapewnia pocztówkowy kadr o świcie i w złotej godzinie bez opłat za wstęp.",
-        "Aby zrobić zdjęcia w spokoju, zajrzyj na kafelkowy dziedziniec przy Chiesa Nuova lub mały belweder nad Fornillo około 08:00."
+        "Via Cristoforo Colombo daje klasyczny pocztówkowy kadr o wschodzie słońca lub w golden hour, bez opłat.",
+        "Na spokojniejsze zdjęcia skręć na kafelkowy dziedziniec przy Chiesa Nuova albo na mały belweder nad Fornillo przed 08:30."
       ]
     },
     {
       "id": "swim-breaks",
-      "title": "Zaplanuj budżetowe przerwy na kąpiel",
+      "title": "Budżetowe przerwy na kąpiel",
       "body": [
-        "Plaża Fornillo jest darmowa i mniej zatłoczona — przejdź pieszo ze Spiaggia Grande i wynajmij tylko potrzebny sprzęt.",
-        "Jeśli marzysz o klimacie plażowego klubu Arienzo, zejdź schodami przed 10:30, by zająć miejsca w części publicznej, a piknik przygotuj z supermarketowej focacci."
+        "Plaża Fornillo ma darmowy odcinek publiczny; przejdź ścieżką od Spiaggia Grande i wynajmij tylko to, czego potrzebujesz.",
+        "Po klimat beach clubu w Arienzo zejdź schodami przed 10:30, żeby złapać miejsce w części publicznej, i zrób piknik z focaccią i owocami."
       ]
     },
     {
       "id": "evenings",
-      "title": "Wieczory bez nadwyrężania budżetu",
+      "title": "Tanie wieczory",
       "body": [
-        "Zachód słońca na tarasie hostelu nic nie kosztuje; przygotuj własnego spritza z prosecco z marketu i przekąskami do podziału.",
-        "Sprawdzaj tablicę ogłoszeń w poszukiwaniu wieczorów integracyjnych albo idź do Music on the Rocks po 23:30, gdy wejście dla gości hostelu jest tańsze — zabierz dokument tożsamości."
+        "Zachód słońca na tarasie hostelu nic nie kosztuje; zrób prostego spritza z prosecco z marketu i podziel się przekąskami.",
+        "Sprawdź tablicę hostelu; jeśli wychodzisz, przyjdź późno, gdy wejście jest tańsze, i zabierz dokument."
       ]
     }
   ],
-  "day1Title": "1 dzień: najważniejsze punkty",
+  "day1Title": "1 dzień: najważniejsze w Positano",
   "day1": [
-    "Poranek: punkty widokowe Spiaggia Grande → Fornillo ścieżką przybrzeżną",
-    "Lunch: panini/pizza al taglio w okolicy Chiesa Nuova, żeby oszczędzić",
-    "Zachód słońca: tarasy widokowe przy hostelu"
+    "Rano: punkty widokowe przy Spiaggia Grande, potem ścieżka nadmorska do Fornillo na kąpiel.",
+    "Lunch: pizza al taglio lub panini w okolicy Chiesa Nuova; jedz na tarasach.",
+    "Zachód słońca: Via Cristoforo Colombo albo taras hostelu."
   ],
   "day2Title": "2 dni: dodaj Ścieżkę Bogów",
   "day2": [
-    "Dzień 1 jak wyżej",
-    "Dzień 2: autobus SITA do Nocelle → odcinki Sentiero degli Dei → plażowy relaks"
+    "Rano: %LINK:pathOfTheGodsNocelle|Sentiero degli Dei / Path of the Gods% (autobus do Nocelle, zejście pieszo do Positano).",
+    "Popołudnie: %LINK:fornilloBeachGuide|schłodzenie na plaży Fornillo% lub późny lunch w miasteczku."
   ],
-  "day3Title": "3 dni: wyspa lub zestaw Amalfi",
+  "day3Title": "3 dni: Capri lub Amalfi + Ravello",
   "day3": [
-    "Opcja A: jednodniowa wycieczka na Capri (wczesny prom) z własnym spacerem po wyspie",
-    "Opcja B: Amalfi + Ravello autobusem; ogrody Villa Rufolo, potem gelato na schodach katedry"
+    "Opcja A: %LINK:capriDayTrip|wycieczka na Capri% - złap pierwszy prom, zaplanuj własną pętlę i zabierz przekąski.",
+    "Opcja B: %LINK:positanoRavello|Amalfi + Ravello% - autobus lub prom do Amalfi, potem w górę do Villa Rufolo lub Villa Cimbrone."
   ],
   "savingsTitle": "Porady oszczędnościowe",
   "savings": [
-    "Podróżuj w sezonach przejściowych; korzystaj z autobusów SITA i przechodź między punktami widokowymi.",
-    "Śpij w dormach, przygotowuj proste śniadania i rób pikniki na punktach widokowych o zachodzie."
+    "Podróżuj w sezonie przejściowym (kwiecień-maj, koniec września), by płacić mniej i uniknąć tłumów.",
+    "Korzystaj z autobusów SITA na większości tras; dołóż jeden prom dla widoków.",
+    "Śpij w dormie lub dziel pokój blisko Chiesa Nuova, aby oszczędzić na tragarzach i schodach.",
+    "Uzupełniaj wodę w hostelu lub przy publicznych fontannach przed wyjściem.",
+    "Jeśli rezerwowałeś bezpośrednio, wykorzystaj darmowe śniadanie i wieczornego drinka, by pokryć posiłek.",
+    "Chodź między punktami widokowymi zamiast jechać autobusem; schody są darmowe i widokowe."
   ],
   "foodTitle": "Tanie jedzenie",
-  "foodText": "Szukaj panini, pizzy al taglio i sałatek z supermarketu w śródmieściu; omijaj nadmorskie ceny.",
+  "foodText": "Wybieraj pizza al taglio, panini i sałatki z deli w okolicy Via dei Mulini i Chiesa Nuova. Zrób zakupy w mini-markecie na piknik, a posiłki na siedząco zostaw na jeden raz.",
   "transportTitle": "Wskazówki transportowe",
   "transportCompareLabel": "Porównaj trasy:",
   "transportCompareLinks": [
@@ -117,25 +121,25 @@
     {
       "q": "Jaki plan na 1 dzień jest najlepszy?",
       "a": [
-        "Zacznij na Spiaggia Grande, przejdź do Fornillo, zachód oglądaj z tarasu przy Chiesa Nuova, kolacja z przyjaciółmi z hostelu."
+        "Zacznij na Spiaggia Grande, przejdź nadmorską ścieżką do Fornillo i obejrzyj zachód słońca z Via Cristoforo Colombo lub tarasu hostelu."
       ]
     },
     {
       "q": "Jak ograniczyć koszty transportu?",
       "a": [
-        "Korzystaj z autobusów SITA i pokonuj schody pieszo, gdy to możliwe; promy są świetne w sezonie, ale droższe."
+        "Korzystaj z autobusów SITA na większości tras i dodaj jeden prom dla widoków; kup bilety przed wejściem, by uniknąć niespodzianek."
       ]
     },
     {
       "q": "Jak wygląda plan na 2 dni?",
       "a": [
-        "Dzień 1 obejmuje najważniejsze miejsca Positano; dzień 2 dodaje pętlę Ścieżki Bogów przez Nocelle oraz plażę Arienzo lub Fornillo."
+        "Dzień 1 obejmuje najważniejsze miejsca Positano; dzień 2 dodaje Ścieżkę Bogów przez Nocelle oraz przerwę na plaży."
       ]
     },
     {
       "q": "Jakie dodatki na 3 dni?",
       "a": [
-        "Jednodniowa wycieczka na Capri albo połączenie Amalfi + Ravello; zaplanuj wczesne promy i zabierz przekąski, aby oszczędzić."
+        "Wybierz jedno: wycieczka na Capri lub Amalfi + Ravello; wyrusz wcześnie i zabierz przekąski, by oszczędzić."
       ]
     }
   ]

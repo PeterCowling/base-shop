@@ -1,4 +1,4 @@
-import { PageItem } from "./types";
+import { type PageItem } from "./types";
 
 export async function fetchPages(shop: string): Promise<PageItem[]> {
   const res = await fetch(`/cms/api/pages/${shop}`);

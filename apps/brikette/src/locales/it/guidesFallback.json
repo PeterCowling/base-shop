@@ -180,9 +180,21 @@
     ],
     "faqs": [
       {
-        "q": "Dove prelevare?",
+        "q": "Posso comprare una SIM locale a Positano?",
         "a": [
-          "Vicino al porto."
+          "I negozi sono limitati; considera di utilizzare una eSIM o di acquistare a Napoli/Sorrento per prezzi migliori."
+        ]
+      },
+      {
+        "q": "La copertura è affidabile?",
+        "a": [
+          "Generalmente solida in paese, con zone irregolari lungo i sentieri e le scogliere."
+        ]
+      },
+      {
+        "q": "Ci sono sportelli bancomat disponibili?",
+        "a": [
+          "Ci sono sportelli ma le commissioni variano; dai priorità alle macchine gestite dalle banche e porta una carta di riserva."
         ]
       }
     ]
@@ -468,28 +480,28 @@
     ],
     "beforeList": [],
     "stepsList": [
-      "Exit Hostel Brikette, take the short staircase to Viale Pasitea, and turn left.",
+      "Esci dall'Hostel Brikette, prendi la breve scalinata verso Viale Pasitea e gira a sinistra.",
       "Segui il marciapiede per circa 120 metri (400 piedi) lungo la strada principale fino a Bar Internazionale."
     ],
     "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sHostel+Brikette!4m1!2sBar+Internazionale",
     "kneesList": [],
-    "kneesDockPrefix": "Starting with luggage at the ferry dock? Use our",
+    "kneesDockPrefix": "Parti con i bagagli dal molo dei traghetti? Usa il nostro",
     "kneesDockLinkLabel": "Ferry dock luggage route",
-    "kneesPorterPrefix": "Need porter pricing or booking help? Check the",
+    "kneesPorterPrefix": "Hai bisogno di prezzi o aiuto per prenotare un facchino? Consulta la",
     "kneesPorterLinkLabel": "porter service guide",
     "faqs": [
       {
-        "q": "Do buses stop right outside the hostel?",
-        "a": "They stop at Bar Internazionale—about 120 metres (400 feet) downhill from the entrance."
+        "q": "Gli autobus si fermano proprio davanti all'ostello?",
+        "a": "Si fermano al Bar Internazionale, a circa 120 metri (400 piedi) in discesa dall'ingresso."
       },
       {
-        "q": "Can I buy tickets at the last minute?",
-        "a": "Yes, the tabacchi next to the stop sells SITA tickets, but expect queues at peak times."
+        "q": "Posso comprare i biglietti all'ultimo minuto?",
+        "a": "Sì, il tabacchi vicino alla fermata vende biglietti SITA, ma aspettati code nelle ore di punta."
       }
     ],
     "howtoSteps": [
-      "Leave Hostel Brikette and follow Viale Pasitea downhill",
-      "Join the queue at Bar Internazionale and validate on boarding"
+      "Lascia l'Hostel Brikette e segui Viale Pasitea in discesa",
+      "Mettiti in fila al Bar Internazionale e convalida il biglietto salendo a bordo"
     ],
     "faqsTitle": "FAQs"
   }

@@ -1,6 +1,8 @@
 import React from "react";
 import { act, render } from "@testing-library/react";
+
 import { ThemeProvider } from "../ThemeContext";
+
 import { ThemeDisplay } from "./themeTestUtils";
 
 describe("ThemeContext: storage event updates theme", () => {
@@ -31,6 +33,7 @@ describe("ThemeContext: storage event updates theme", () => {
     expect(getByTestId("theme").textContent).toBe("base");
     expect(document.documentElement.className).toBe("");
     expect(document.documentElement.style.colorScheme).toBe("light");
+    expect(document.documentElement.classList.contains("dark")).toBe(false);
 
     act(() => {
       window.dispatchEvent(
@@ -40,8 +43,10 @@ describe("ThemeContext: storage event updates theme", () => {
 
     expect(getByTestId("theme").textContent).toBe("dark");
     expect(document.documentElement.classList.contains("theme-dark")).toBe(true);
+    expect(document.documentElement.classList.contains("dark")).toBe(true);
     expect(document.documentElement.style.colorScheme).toBe("dark");
+    expect(setItem).toHaveBeenCalledWith("theme-mode", "dark");
+    expect(setItem).toHaveBeenCalledWith("theme-name", "base");
     expect(setItem).toHaveBeenCalledWith("theme", "dark");
   });
 });
-

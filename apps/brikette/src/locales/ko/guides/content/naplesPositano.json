@@ -65,20 +65,5 @@
         "‘Chiesa Nuova’ 정류장에서 내려오면 약 80m를 걸으면 되고 계단이 거의 없습니다."
       ]
     }
-  ],
-  "gallery": {
-    "title": "참고 이미지",
-    "items": [
-      {
-        "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
-        "alt": "포시타노 Chiesa Nuova / Bar Internazionale SITA 정류장",
-        "caption": "Bar Internazionale / Chiesa Nuova 정류장"
-      },
-      {
-        "src": "/img/directions/naples-airport-positano-bus-hostel-entrance-steps.png",
-        "alt": "호스텔 브리케테 정문으로 가는 계단",
-        "caption": "Hostel Brikette 입구 계단"
-      }
-    ]
-  }
+  ]
 }

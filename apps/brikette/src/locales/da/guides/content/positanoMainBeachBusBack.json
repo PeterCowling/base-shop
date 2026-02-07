@@ -29,7 +29,7 @@
       "id": "ride-uphill",
       "title": "Kør i internobussen op ad bakke",
       "body": [
-        "Stig om bord på den orange bus, der er mærket \"Interno Positano\", og kør, mens den kører gennem byen mod Chiesa Nuova.",
+        "Stig om bord på den orange bus, der er mærket \\\\\"Interno Positano\\\\\", og kør, mens den kører gennem byen mod Chiesa Nuova.",
         "Lyt efter stopopkaldet, eller hold øje med tabacchi-hjørnet, hvor du gik om bord tidligere på dagen."
       ]
     },
@@ -42,7 +42,7 @@
       ]
     }
   ],
-  "tipsTitle": "Bus tips",
+  "tipsTitle": "Busstips",
   "tips": [
     "Medbring en ekstra billet, så du kan gå om bord med det samme, hvis bussen er optaget.",
     "Hvis servicerne afsluttes tidligt, skal du falde tilbage til %LINK:positanoMainBeachWalkBack|vandrerute% — det følger vandrerhjemmets trappekontrolpunkter.",
@@ -50,7 +50,7 @@
   ],
   "extras": {
     "photos": {
-      "title": "Photos",
+      "title": "Fotos",
       "items": {
         "busInterior": {
           "alt": "Interno Positano bus ved stoppestedet ved stranden",

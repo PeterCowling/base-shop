@@ -9,20 +9,35 @@
     "Use this checklist to leave the hostel, buy the right tickets at Bar Internazionale, ride to the Metropole stop in Sorrento, and follow the pedestrian lane down to the cove."
   ],
   "toc": [
-    { "href": "#step-1", "label": "1. Go to The Nearest Bus Stop" },
-    { "href": "#step-2", "label": "2. Buy Bus Tickets" },
-    { "href": "#step-3", "label": "3. Wait for the Bus" },
-    { "href": "#step-4a", "label": "4. Take the Bus" },
-    { "href": "#step-4b", "label": "4. Walk to the Baths" }
+    {
+      "href": "#step-1",
+      "label": "1. Go to The Nearest Bus Stop"
+    },
+    {
+      "href": "#step-2",
+      "label": "2. Buy Bus Tickets"
+    },
+    {
+      "href": "#step-3",
+      "label": "3. Wait for the Bus"
+    },
+    {
+      "href": "#step-4a",
+      "label": "4. Take the Bus"
+    },
+    {
+      "href": "#step-4b",
+      "label": "4. Walk to the Baths"
+    }
   ],
   "sections": [
     {
       "id": "step-1",
       "title": "1. Go to The Nearest Bus Stop",
       "body": [
-        "The nearest bus stop is located in the \"Chiesa Nuova\" area of Positano. It is approximately 140 meters (490 feet) from the hostel.",
-        "The bus stop is located outside the cafe/bar called \"Bar Internazionale\".",
-        "Directions: Exit the hostel through the main door and go down the steps to the road. Turn left and walk about 100 meters (330 feet). You will see the cafe/bar called \"Bar Internazionale\" on the left side of the road."
+        "The nearest bus stop is located in the \\\\\"Chiesa Nuova\\\\\" area of Positano. It is approximately 140 meters (490 feet) from the hostel.",
+        "The bus stop is located outside the cafe/bar called \\\\\"Bar Internazionale\\\\\".",
+        "Directions: Exit the hostel through the main door and go down the steps to the road. Turn left and walk about 100 meters (330 feet). You will see the cafe/bar called \\\\\"Bar Internazionale\\\\\" on the left side of the road."
       ]
     },
     {
@@ -44,7 +59,7 @@
       "title": "4. Take the Bus",
       "body": [
         "Take the bus to the Hostel Metropole bus stop, which is in Sorrento. The scheduled time to get to this bus stop is 44 minutes.",
-        "When you get into Sorrento, you will take the road until you get to Hotel Metropole, which as the image shows is on the intersection with the \"Via Capo\" road."
+        "When you get into Sorrento, you will take the road until you get to Hotel Metropole, which as the image shows is on the intersection with the \\\\\"Via Capo\\\\\" road."
       ]
     },
     {
@@ -65,13 +80,27 @@
   "scanToShare": {
     "title": "Scan to Share",
     "items": [
-      { "alt": "Scan to Share / route image 1" },
-      { "alt": "Scan to Share / route image 2" },
-      { "alt": "Scan to Share / route image 3" },
-      { "alt": "Scan to Share / route image 4" },
-      { "alt": "Scan to Share / route image 5" },
-      { "alt": "Scan to Share / route image 6" },
-      { "alt": "Scan to Share / route image 7" }
+      {
+        "alt": "Scan to Share / route image 1"
+      },
+      {
+        "alt": "Scan to Share / route image 2"
+      },
+      {
+        "alt": "Scan to Share / route image 3"
+      },
+      {
+        "alt": "Scan to Share / route image 4"
+      },
+      {
+        "alt": "Scan to Share / route image 5"
+      },
+      {
+        "alt": "Scan to Share / route image 6"
+      },
+      {
+        "alt": "Scan to Share / route image 7"
+      }
     ]
   }
 }

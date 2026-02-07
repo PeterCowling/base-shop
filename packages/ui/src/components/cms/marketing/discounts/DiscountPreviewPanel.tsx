@@ -1,7 +1,9 @@
+import { useTranslations } from "@acme/i18n";
+
 import { Tag } from "../../../atoms";
 import { PreviewPanel } from "../shared";
+
 import type { DiscountPreviewData } from "./types";
-import { useTranslations } from "@acme/i18n";
 
 export interface DiscountPreviewPanelProps {
   data: DiscountPreviewData;

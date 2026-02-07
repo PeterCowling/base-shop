@@ -1,7 +1,7 @@
 Type: Guide
 Status: Active
 Domain: Testing
-Last-reviewed: 2025-12-02
+Last-reviewed: 2026-01-17
 
 # Cypress E2E Setup
 
@@ -32,7 +32,13 @@ Note: The Cypress config lives with the CMS app at `apps/cms/cypress.config.mjs`
 
 All of the above rely on `start-server-and-test` to boot the app and wait until the target port responds before executing `cypress run`.
 
-Scripts are defined in `package.json:34-39`.
+Scripts are defined in `package.json`.
+
+## CI Entry Points
+
+- Root CI (`.github/workflows/ci.yml`) runs the cross-app **shop** subset (`pnpm e2e:shop`) when shop paths change.
+- CMS E2E suites (smoke + dashboard) run in `.github/workflows/cypress.yml`.
+- Workspace CI (`.github/workflows/test.yml`) runs `e2e` only for workspaces that define it (`--if-present`) on schedule/manual dispatch.
 
 ## Config Highlights
 

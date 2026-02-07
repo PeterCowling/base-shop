@@ -2,18 +2,18 @@
 
 import crypto from "crypto";
 
+import {
+  asSetCookieHeader,
+  CART_COOKIE,
+  decodeCartCookie,
+  encodeCartCookie,
+} from "../cartCookie";
+
 const SECRET = "test_secret";
 
 jest.mock("@acme/config/env/core", () => ({
   loadCoreEnv: () => ({ CART_COOKIE_SECRET: SECRET }),
 }));
-
-import {
-  CART_COOKIE,
-  encodeCartCookie,
-  decodeCartCookie,
-  asSetCookieHeader,
-} from "../cartCookie";
 
 describe("cartCookie helpers", () => {
   it("encodes values with HMAC and decodes original object", () => {

@@ -1,15 +1,17 @@
 // apps/cms/src/app/cms/rbac/permissions/page.tsx
-import { Button } from "@/components/atoms/shadcn";
-import { Inline } from "@ui/components/atoms/primitives";
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
 import { updateRolePermissions } from "@cms/actions/rbac.server";
 import { authOptions } from "@cms/auth/options";
 import type { Role } from "@cms/auth/roles";
-import type { Permission } from "@auth";
-import { PERMISSIONS } from "@auth/types/permissions";
 import { readRbac } from "@cms/lib/server/rbacStore";
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
+
+import type { Permission } from "@acme/auth";
+import { PERMISSIONS } from "@acme/auth/types/permissions";
+import { Inline } from "@acme/design-system/primitives";
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+
+import { Button } from "@/components/atoms/shadcn";
 
 export const revalidate = 0;
 

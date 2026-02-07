@@ -16,10 +16,10 @@
     },
     "cta": {
       "bookDirect": "Direkt buchen",
-      "applyDeal": "Angebot einlösen"
+      "applyDeal": "Angebot anwenden"
     },
     "status": {
-      "upcoming": "Kommendes Angebot · Startet {{startDate}}",
+      "upcoming": "Kommendes Angebot · Startet am {{startDate}}",
       "expired": "Abgelaufen"
     }
   },
@@ -27,12 +27,12 @@
     "activeLabel": "Aktuelles Angebot",
     "activeTitle": "{{percent}} sparen",
     "activeDatesLabel": "Aufenthaltsdaten:",
-    "activeSubtitle": "Wird automatisch beim Checkout angewendet. Nur Direktbuchungen."
+    "activeSubtitle": "Automatisch beim Checkout angewendet. Nur Direktbuchungen."
   },
   "emptyState": {
     "title": "Keine aktuellen Angebote",
-    "subtitle": "Buche direkt für den besten Preis und alle Extras.",
-    "secondaryCta": "Vorteile der Direktbuchung"
+    "subtitle": "Buche direkt für den besten Preis und exklusive Vorteile.",
+    "secondaryCta": "Vorteile der Direktbuchung ansehen"
   },
   "status": {
     "banner": {
@@ -80,13 +80,16 @@
   "perksIntroLink": "Alle Vorteile ansehen",
   "perksList": [
     {
-      "title": "Bis zu 25 % Rabatt auf den regulären Preis (automatisch angewendet)"
+      "title": "Bis zu 25 % Rabatt auf den regulären Preis (automatisch angewendet)",
+      "subtitle": "Automatisch angewendet"
     },
     {
-      "title": "Kostenloses Frühstück"
+      "title": "Kostenloses Frühstück",
+      "subtitle": "Täglich inklusive"
     },
     {
-      "title": "Kostenloses Abendgetränk"
+      "title": "Kostenloses Abendgetränk",
+      "subtitle": "Hausauswahl"
     }
   ],
   "expired": {

@@ -2,12 +2,13 @@
 "use client";
 
 import { useCallback } from "react";
+
 import { useTranslations } from "@acme/i18n";
 import type { MediaItem } from "@acme/types";
 
-import { hasUrl } from "./utils";
 import type { MediaItemWithUrl } from "./types";
 import type { MediaManagerState, MediaStateActions } from "./useMediaState";
+import { hasUrl } from "./utils";
 
 interface ReplaceDeps {
   state: Pick<MediaManagerState, "files" | "replacingUrl" | "selectedUrl">;

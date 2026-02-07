@@ -1,5 +1,6 @@
-import { getBarMenuPriceAmount, type BarMenuItemKey } from "@/data/menuPricing";
+import { type BarMenuItemKey,getBarMenuPriceAmount } from "@/data/menuPricing";
 import type { AppLanguage } from "@/i18n.config";
+
 import type { BarMenuStrings } from "./strings";
 import { getBarMenuFallback } from "./strings";
 
@@ -105,7 +106,7 @@ export const buildBarMenuStructuredData = ({
   fallbackTranslate,
   lang,
   url,
-}: BuildBarMenuStructuredDataArgs): string => {
+}: BuildBarMenuStructuredDataArgs): Record<string, unknown> => {
   const menuTitle = barMenuString("header.menuTitle");
   const menuTitleForJsonLd = menuTitle.replace(/,\s*(?=\d)/g, " ");
 
@@ -163,5 +164,5 @@ export const buildBarMenuStructuredData = ({
     hasMenuSection: sections,
   } as const;
 
-  return JSON.stringify(menuGraph);
+  return menuGraph;
 };

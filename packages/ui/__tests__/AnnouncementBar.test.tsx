@@ -1,6 +1,8 @@
 import "../../../test/resetNextMocks";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import AnnouncementBar from "../src/components/organisms/AnnouncementBar";
 
 describe("AnnouncementBar", () => {

@@ -1,15 +1,15 @@
+import * as provider from "@acme/email";
+
 import {
-  getEmailService,
-  setEmailService,
   type EmailService,
+  getEmailService,
   sendSystemEmail,
+  setEmailService,
 } from "../emailService";
 
 jest.mock("@acme/email", () => ({
   sendEmail: jest.fn(),
 }));
-
-import * as provider from "@acme/email";
 
 describe("emailService", () => {
   it("throws before a service is registered", async () => {

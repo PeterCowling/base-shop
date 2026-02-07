@@ -5,13 +5,14 @@
     "description": "Buche, chatte und hol dir Reise-Tipps direkt beim Hostel Brikette. Unser digitaler Assistent begleitet dich vor und während deines Positano-Aufenthalts."
   },
   "heading": "Digitale Unterstützung",
+  "heroEyebrow": "Buchen und Vernetzen",
   "subheading": "Buche, entdecke und verbinde dich online mit uns.",
   "heroIntro": "Erhalte sofort Antworten von unserem Team und dem digitalen Assistenten, damit du deinen Aufenthalt schneller planen kannst.",
   "otherBookingOptions": "Weitere Buchungsoptionen & Social Media",
   "addressLabel": "Adresse:",
   "addressValue": "Via G. Marconi, 358, 84017 Positano",
   "bookingOptions": {
-    "googleBusiness": "Google Business",
+    "googleBusiness": "Google Unternehmensprofil",
     "bookingCom": "Booking.com",
     "hostelWorld": "Hostelworld",
     "instagram": "Instagram"

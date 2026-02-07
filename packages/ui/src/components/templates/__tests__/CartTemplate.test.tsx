@@ -1,9 +1,12 @@
+import "@testing-library/jest-dom";
+import "../../../../../../test/resetNextMocks";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import "@testing-library/jest-dom";
-import { CartTemplate } from "../CartTemplate";
+
 import type { CartState } from "@acme/platform-core/cart";
-import "../../../../../../test/resetNextMocks";
+
+import { CartTemplate } from "../CartTemplate";
 
 jest.mock("@acme/platform-core/contexts/CurrencyContext", () => ({
   useCurrency: () => ["USD", jest.fn()],
@@ -121,12 +124,12 @@ describe("CartTemplate", () => {
       <CartTemplate cart={cart} onQtyChange={onQtyChange} onRemove={onRemove} />
     );
 
-    const img = container.querySelector("img");
+    const img = container.querySelector("input[type=\"image\"]");
     const video = container.querySelector("video");
-    expect(
-      decodeURIComponent(img!.getAttribute("src") || "")
-    ).toContain("/img1.jpg");
     expect(video).toHaveAttribute("src", "/vid1.mp4");
+    expect(
+      decodeURIComponent(img?.getAttribute("src") || "")
+    ).toContain("/img1.jpg");
 
     const incButtons = screen.getAllByRole("button", { name: "+" });
     await userEvent.click(incButtons[0]);

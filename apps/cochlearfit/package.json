@@ -7,16 +7,17 @@
     "start": "next start -p 3011",
     "preview": "OUTPUT_EXPORT=1 next build && python3 -m http.server 3011 --directory out",
     "preview:pages": "OUTPUT_EXPORT=1 next build && pnpm exec wrangler pages dev out --compatibility-flag=nodejs_compat --port 3011",
-    "lint": "eslint .",
+    "lint": "eslint . --no-error-on-unmatched-pattern",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
+    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs"
   },
   "dependencies": {
+    "@acme/design-system": "workspace:*",
     "@acme/i18n": "workspace:*",
     "@acme/next-config": "workspace:*",
     "@acme/tailwind-config": "workspace:*",
-    "next": "^15.3.5",
-    "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "next": "^15.3.9",
+    "react": "19.2.1",
+    "react-dom": "19.2.1"
   }
 }

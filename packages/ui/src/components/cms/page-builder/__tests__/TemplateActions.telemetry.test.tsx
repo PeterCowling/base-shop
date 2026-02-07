@@ -1,7 +1,9 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import TemplateActions from "../TemplateActions";
+
 import type { TemplateDescriptor } from "@acme/page-builder-core";
 import type { Page } from "@acme/types";
+
+import TemplateActions from "../TemplateActions";
 
 const track = jest.fn();
 
@@ -69,7 +71,7 @@ describe("TemplateActions telemetry", () => {
       ),
     );
 
-    fireEvent.click(screen.getByText("Tpl One"));
+    fireEvent.click(screen.getByTestId("template-tpl-1"));
     expect(track).toHaveBeenCalledWith(
       "pb_template_select",
       expect.objectContaining({ templateId: "tpl-1", pageId: "page-1" }),

@@ -1,9 +1,11 @@
 "use client";
 
 import type { CSSProperties } from "react";
-import type { TextTheme } from "../textThemes";
-import { Inline, Stack } from "../../../atoms/primitives";
+
 import { useTranslations } from "@acme/i18n";
+
+import { Inline, Stack } from "../../../atoms/primitives";
+import type { TextTheme } from "../textThemes";
 
 interface Props {
   textThemes: TextTheme[];

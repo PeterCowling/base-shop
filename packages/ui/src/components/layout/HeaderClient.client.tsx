@@ -1,14 +1,16 @@
 "use client"; // i18n-exempt -- PB-123 Next.js directive, not user-facing copy [ttl=2025-12-31]
 
-import { useCart } from "@acme/platform-core/contexts/CartContext";
-import { useTranslations } from "@acme/i18n";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+
+import { useTranslations } from "@acme/i18n";
+import { useCart } from "@acme/platform-core/contexts/CartContext";
+
 import { cn } from "../../utils/style";
-import ThemeToggle from "../ThemeToggle";
-import { CurrencySwitcher } from "../molecules";
 import { Stack } from "../atoms/primitives/Stack";
+import { CurrencySwitcher } from "../molecules";
+import ThemeToggle from "../ThemeToggle";
 
 export default function HeaderClient({
   lang,
@@ -92,7 +94,7 @@ export default function HeaderClient({
   );
 }
 
-/* eslint-disable ds/no-hardcoded-copy -- STYLING-0001: className tokens and layout strings only */
+ 
 function EnglishHeader({
   lang,
   nav,
@@ -336,4 +338,4 @@ function EnglishHeader({
     </header>
   );
 }
-/* eslint-enable ds/no-hardcoded-copy */
+ 

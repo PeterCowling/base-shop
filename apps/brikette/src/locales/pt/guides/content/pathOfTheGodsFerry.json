@@ -49,9 +49,16 @@
       "id": "bus-to-bomerano",
       "title": "Apanhe o autocarro para Bomerano",
       "body": [
-        "Procure o autocarro SITA com indicação “Agerola/Bomerano”. Valide o bilhete ao entrar e sente-se mais à frente para evitar tantas curvas.",
+        "Procure o autocarro SITA com indicação \\\\\"Agerola/Bomerano\\\\\". Valide o bilhete ao entrar e sente-se mais à frente para evitar tantas curvas.",
         "Após cerca de 45 minutos, desça na paragem de Bomerano ao lado do Ristorante Jerla. Atravesse a estrada e siga a rua lateral a descer até à praça.",
-        "Continue à esquerda pela praça e siga as placas “Sentiero degli Dei” até ao painel do início da trilha."
+        "Continue à esquerda pela praça e siga as placas \\\\\"Sentiero degli Dei\\\\\" até ao painel do início da trilha."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/12-nav.jpg",
+          "alt": "Side street from Bomerano bus stop descending toward the piazza",
+          "caption": "2. Atravesse a estrada da paragem de autocarro e siga esta rua lateral a descer até à praça"
+        }
       ]
     },
     {
@@ -61,6 +68,28 @@
         "O trilho sobe e desce ao longo de cerca de 6 quilómetros. Espere degraus de pedra, passagens estreitas e miradouros espetaculares sobre a costa.",
         "Faça pausas nos miradouros sinalizados e leve de volta todo o lixo. Respeite os agricultores locais e mantenha-se no percurso marcado.",
         "Quando o caminho de terra encontra a passagem de cimento que entra em Nocelle, chegou ao final."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/13-nav.jpg",
+          "alt": "Town square (piazza) in Bomerano with left-hand route markers",
+          "caption": "3. Continue à esquerda pela praça seguindo as placas 'Sentiero degli Dei'"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/14-nav.jpg",
+          "alt": "Wooden steps ascending along the hiking trail ridge",
+          "caption": "4. Atravessada a praça, procure o painel informativo e vire à esquerda; aqui começa o trilho. Siga o caminho até uma secção com degraus de madeira."
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/15-nav.jpg",
+          "alt": "Concrete paved walkway marking entry into Nocelle village",
+          "caption": "Quando o caminho de terra encontra esta passagem de cimento, chegou a Nocelle"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/16-nav.jpg",
+          "alt": "Nocelle village navigation map showing route to bus stop and staircase warning",
+          "caption": "Mapa de Nocelle — ao atravessar a aldeia, certifique-se de virar à direita na bifurcação para chegar à paragem do autocarro; evite a todo o custo os 1.700 degraus para Positano!"
+        }
       ]
     },
     {
@@ -70,6 +99,23 @@
         "Siga o caminho pavimentado para a aldeia, mantendo-se à direita na primeira bifurcação para evitar os 1.700 degraus até Positano.",
         "Ande cerca de 175 metros até à paragem de autocarro junto ao pequeno parque de estacionamento. O quiosque ao lado da igreja vende bebidas frescas na época.",
         "Chegue com pelo menos 10 minutos de antecedência; quando o parque está cheio, os autocarros às vezes param antes do abrigo."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/17-nav.jpg",
+          "alt": "Directional signpost in Nocelle showing the stairs-to-Positano option to avoid",
+          "caption": "CRÍTICO: NÃO siga as placas para 'Positano' descendo pelas escadas — vire à direita aqui em vez disso"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/18-nav.jpg",
+          "alt": "Stone steps ascending through Nocelle streets toward the bus stop",
+          "caption": "Suba estes degraus durante cerca de 175 metros para chegar à paragem do autocarro no parque"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/19-nav.jpg",
+          "alt": "Bus stop arrival point in Nocelle",
+          "caption": "Chegou à paragem do autocarro."
+        }
       ]
     },
     {

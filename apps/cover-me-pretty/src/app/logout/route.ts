@@ -1,6 +1,7 @@
 // apps/cover-me-pretty/src/app/logout/route.ts
 import { NextResponse } from "next/server";
-import { destroyCustomerSession } from "@auth";
+
+import { destroyCustomerSession } from "@acme/auth";
 import { authEnv } from "@acme/config/env/auth";
 
 export async function GET(_req: Request) {

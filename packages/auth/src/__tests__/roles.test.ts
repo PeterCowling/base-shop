@@ -1,11 +1,12 @@
 import { jest } from "@jest/globals";
+
+import { canRead, canWrite } from "../rbac";
 import {
-  isRole,
   extendRoles,
+  isRole,
   READ_ROLES,
   WRITE_ROLES,
 } from "../types/roles";
-import { canRead, canWrite } from "../rbac";
 
 afterAll(() => {
   jest.resetModules();

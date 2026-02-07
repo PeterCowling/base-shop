@@ -1,0 +1,131 @@
+/* src/libs/reservation-grid/src/lib/rvg.css */
+:root {
+  --rvg-font-face: "sans-serif";
+  --rvg-font-size: "14px";
+  --rvg-color-text: #30424f;
+  --rvg-color-background: #ffffff;
+  --rvg-color-border: #ddebf3;
+  --rvg-color-free: transparent;
+  --rvg-color-awaiting: #ddebf3;
+  --rvg-color-confirmed: #006490;
+  --rvg-color-inaccessible: #759ab5;
+  --rvg-color-today: #e4ffe6;
+  --rvg-color-selected: #fff2f2;
+  --rvg-color-weekend: #f8fafb;
+  --rvg-width-title: 50%;
+  --rvg-width-info: 50%;
+}
+
+.dark {
+  --rvg-color-background: theme('colors.darkSurface');
+  --rvg-color-text: theme('colors.darkAccentGreen');
+  --rvg-color-border: theme('colors.darkSurface');
+  --rvg-color-awaiting: theme('colors.darkAccentOrange');
+  --rvg-color-confirmed: theme('colors.darkAccentGreen');
+  --rvg-color-inaccessible: theme('colors.darkSurface');
+  --rvg-color-today: theme('colors.darkAccentGreen');
+  --rvg-color-selected: theme('colors.darkAccentOrange');
+  --rvg-color-weekend: theme('colors.darkBg');
+}
+
+.rvg-wrapper {
+  width: 100%;
+  position: relative;
+  overflow-x: auto;
+  padding: 0;
+  border-left: 1px solid var(--rvg-color-border);
+  border-right: 1px solid var(--rvg-color-border);
+}
+
+.rvg-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  border-top: 1px solid var(--rvg-color-border);
+  background: var(--rvg-color-background);
+  font-family: var(--rvg-font-face);
+}
+
+.rvg-table tr,
+.rvg-table tbody > tr {
+  padding: 0;
+}
+
+.rvg-table tbody {
+  max-width: 100%;
+}
+
+.rvg-table td,
+.rvg-table th {
+  display: table-cell;
+  border-right: 1px solid var(--rvg-color-border);
+  border-bottom: 1px solid var(--rvg-color-border);
+  font-weight: normal;
+  font-size: var(--rvg-font-size);
+  color: var(--rvg-color-text);
+  text-align: center;
+  vertical-align: middle;
+  padding: 0;
+  background: var(--rvg-color-background);
+}
+
+.rvg-table td:last-child,
+.rvg-table th:last-child {
+  border-right: none;
+}
+
+.rvg-table td.weekend,
+.rvg-table th.weekend {
+  background: var(--rvg-color-weekend);
+}
+
+.rvg-table td.today,
+.rvg-table th.today {
+  background: var(--rvg-color-today);
+}
+
+.rvg-table td.selected,
+.rvg-table th.selected {
+  background: var(--rvg-color-selected);
+}
+
+.rvg-table td > div.day,
+.rvg-table th > div.day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.rvg-title,
+.rvg-info {
+  min-width: 54px;
+}
+
+.rvg-title {
+  width: var(--rvg-width-title);
+}
+
+.rvg-info {
+  width: var(--rvg-width-info);
+}
+
+.rvg-fixed {
+  position: sticky;
+  top: auto;
+  left: -1px;
+  z-index: 2;
+}
+
+.rvg-cell {
+  height: 33px;
+  width: 33px;
+  min-width: 33px;
+  max-width: 33px;
+  min-height: 33px;
+  max-height: 33px;
+}
+
+.rvg-clickable {
+  cursor: pointer;
+}

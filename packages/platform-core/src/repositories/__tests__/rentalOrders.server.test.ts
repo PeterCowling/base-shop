@@ -1,18 +1,19 @@
+import { nowIso } from "@acme/date-utils";
+
 import { prisma } from "../../db";
 import {
-  markReceived,
-  markRepair,
-  markQa,
   markAvailable,
-  markLateFeeCharged,
   markCleaning,
-  updateStatus,
-  readOrders,
+  markLateFeeCharged,
+  markQa,
+  markReceived,
   markRefunded,
+  markRepair,
+  readOrders,
+  updateStatus,
 } from "../rentalOrders.server";
 
 jest.mock("@acme/date-utils", () => ({ nowIso: jest.fn() }));
-import { nowIso } from "@acme/date-utils";
 
 describe("rental orders status updates", () => {
   const shop = "test-shop";

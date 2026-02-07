@@ -1,13 +1,16 @@
 // src/molecules/index.tsx
 "use client";
 
-import type { Locale } from "@acme/i18n/locales";
 import { memo, useState } from "react";
-import type { BlockRegistryEntry } from "./types";
+
+import { useTranslations } from "@acme/i18n";
+import type { Locale } from "@acme/i18n/locales";
+
+import { Inline } from "../../atoms/primitives";
 import type { CategoryCollectionTemplateProps } from "../../templates/CategoryCollectionTemplate";
 import { CategoryCollectionTemplate } from "../../templates/CategoryCollectionTemplate";
-import { Inline } from "../../atoms/primitives";
-import { useTranslations } from "@acme/i18n";
+
+import type { BlockRegistryEntry } from "./types";
 
 const defaultPreview = "/window.svg";
 

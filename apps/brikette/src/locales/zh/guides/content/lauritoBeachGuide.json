@@ -1,126 +1,279 @@
 {
   "seo": {
-    "title": "Laurito Beach guide",
-    "description": "Choose between Da Adolfo and Tre Ville, learn how the shuttle boats work, and plan a stress-free beach day in Laurito."
+    "title": "劳里托海滩，波西塔诺：Da Adolfo、Tre Ville与攻略",
+    "description": "青年旅舍友好的劳里托海滩指南：Da Adolfo vs Villa Tre Ville、预订、接驳船、巴士+楼梯、费用及打包清单。"
   },
-  "linkLabel": "Laurito Beach guide",
+  "linkLabel": "劳里托海滩：悬崖下的隐秘宝石",
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
   "intro": [
-    "Laurito is a pocket-sized cove tucked between Positano and Praiano. Two beach clubs — Da Adolfo and Villa Tre Ville — dominate the shoreline, leaving just a sliver of public sand. The reward is west-facing sunshine, iconic lunch spots, and a quieter atmosphere than Spiaggia Grande.",
-    "Use this guide to decide which club suits your style, understand how the water taxis operate, and map out the bus-and-stairs route back to Hostel Brikette."
+    "劳里托是位于波西塔诺和普莱亚诺之间的一个袖珍海湾。两家海滩俱乐部 —— Da Adolfo 和 Villa Tre Ville —— 占据了大部分海岸线，只留下一小片公共沙滩。回报是西向的阳光、标志性的午餐地点，以及比 Spiaggia Grande 更安静的氛围。",
+    "对于青年旅舍的客人来说，劳里托是「犒劳自己」的海滩日：你可以在平静的海湾游泳，享受悠长的午餐，仍然能赶回镇上看日落喝酒 —— 只要你计划好返程。",
+    "使用本指南在 Da Adolfo 和 Villa Tre Ville 之间做出选择，了解接驳船的运作方式，并通过%LINK:lauritoBeachBusDown|巴士下行路线%和%LINK:lauritoBeachBusBack|返程指南%制定可靠的备用计划。"
   ],
   "toc": [
     {
+      "href": "#quick-plan",
+      "label": "快速计划（从青年旅舍出发）"
+    },
+    {
       "href": "#why-go",
-      "label": "Why visit Laurito"
+      "label": "为什么值得去劳里托"
+    },
+    {
+      "href": "#getting-there",
+      "label": "如何到达（船vs巴士）"
     },
     {
       "href": "#layout",
-      "label": "Layout & services"
+      "label": "布局与服务"
     },
     {
       "href": "#tre-ville",
-      "label": "Villa Tre Ville beach club"
+      "label": "Villa Tre Ville 海滩俱乐部"
     },
     {
       "href": "#da-adolfo",
-      "label": "Da Adolfo beach club"
+      "label": "Da Adolfo 海滩俱乐部"
     },
     {
-      "href": "#logistics",
-      "label": "Logistics & getting back"
+      "href": "#returns",
+      "label": "时间安排与返程"
+    },
+    {
+      "href": "#pack",
+      "label": "打包清单"
+    },
+    {
+      "href": "#image-credits",
+      "label": "图片来源"
     }
   ],
   "sections": [
     {
-      "id": "why-go",
-      "title": "Why Laurito is worth the effort",
+      "id": "quick-plan",
+      "title": "从 Hostel Brikette 出发的快速计划（2分钟摘要）",
       "body": [
-        "Laurito sits just outside Positano’s centre, so crowds thin out compared with Spiaggia Grande. Sun hits the deck until early evening, the water stays calm for swimming, and the cliff backdrop makes for classic Amalfi Coast photos.",
-        "You will need either a confirmed reservation or patience for the tiny free strip, but once you are settled it is one of the most relaxed spots within a short ride of Hostel Brikette."
+        "如果你想要简单版本：在离开青年旅舍前选择一条「主要路线」和一条「备用路线」。劳里托很小，当你放松地到达时，这一天会很棒 —— 而不是在没有信号的码头即兴发挥时。",
+        "工作人员提示：在旺季，破坏计划的两件事是 (1) 船满员 和 (2) 海浪导致接驳服务暂停。如果你为这两点做好计划，其余的就很容易了。"
+      ],
+      "list": [
+        "选择你的风格：Da Adolfo 适合经典的午餐和躺椅日，或者 Villa Tre Ville 提供高级平台和更安静的服务。如果你只想要海湾，早点瞄准那一小片公共区域并自带遮阳。",
+        "主要路线（最方便）：从 Spiaggia Grande 乘坐接驳船。确认在哪里排队，并在到达时询问最后一班返程。",
+        "备用路线（最可靠）：%LINK:lauritoBeachBusDown|乘巴士下到劳里托% + 楼梯；然后在当天晚些时候%LINK:lauritoBeachBusBack|乘巴士返回%。",
+        "设定你的「去/不去」时间：如果你没有预订，早点出发会增加机会。如果已经是上午晚些时候并且你看到船的队伍，考虑一个替代方案，比如%LINK:positanoBeaches|另一个波西塔诺海滩%，而不是强行去劳里托。",
+        "打包基本物品：水鞋、现金/卡、防晒霜，以及一件轻薄外套以备返程船上使用（午后晚些时候风会变大）。"
+      ]
+    },
+    {
+      "id": "why-go",
+      "title": "为什么劳里托值得这番努力",
+      "body": [
+        "劳里托位于波西塔诺中心外，因此与 Spiaggia Grande 相比人群会稀疏一些。阳光会照到海湾直到傍晚，水面通常很平静适合游泳，悬崖为海湾构建出经典的阿马尔菲海岸照片框架。",
+        "这也是将海滩日变成难忘的「悠长午餐」日的最简单地点之一。两家俱乐部都经营真正的厨房（不只是小吃），所以你可以游泳、吃饭和休息，而无需返回镇上。",
+        "权衡之处在于进入权限：大部分海岸线由俱乐部控制，公共区域确实很小。如果你没有计划就出现，劳里托可能会感觉像死胡同。如果你带着预订或明确的备用路线出现，这是从 Hostel Brikette 出发最轻松的半日游之一。",
+        "如果劳里托当天看起来太紧张（队伍、船满员，或者你想要更多自由空间），可以在我们的%LINK:positanoBeaches|波西塔诺海滩概览%中与替代方案进行比较。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/02-beach-overview.jpg",
+          "alt": "劳里托海滩海湾，悬崖背景，海滩俱乐部沿着海岸线",
+          "caption": "劳里托海滩布局：1. 免费区域 2. TreVilla 海滩俱乐部 3. Da Adolfo",
+          "width": 403,
+          "height": 500
+        }
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "如何到达：接驳船 vs 巴士 + 楼梯",
+      "body": [
+        "到达劳里托有两种实际方式：从 Spiaggia Grande 乘坐接驳船（最方便）或乘坐 SITA 巴士然后走楼梯（在海浪汹涌或船满员时最可靠）。",
+        "船路线（当你有预订时最好）：前往 Spiaggia Grande 并找到海滩接驳船使用的小码头/登船点。队伍可能会很快变长，尤其是在平静、晴朗的日子。如果你不确定，在码头询问并展示你要去的俱乐部名称，以便登上正确的船。",
+        "巴士路线（最佳备用）：按照%LINK:lauritoBeachBusDown|我们的分步巴士指南%到达劳里托站，然后沿着标志走下楼梯。这比船慢，但也是当水上出租车暂停时仍然有效的计划。",
+        "返程计划：即使你乘船到达，也要将%LINK:lauritoBeachBusBack|乘巴士返回指南%保存在手机上。如果你错过最后一班接驳船或海浪变大，这是最简单的「B计划」。",
+        "时刻表会变化。要获取最新的 SITA 时刻表，请在承诺晚归之前查阅%URL:https://www.positano.com/en/bus-schedule|Positano.com 的巴士时刻表%。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/06-amalfi-coast-sita-bus.jpg",
+          "alt": "蓝色 SITA 巴士沿着阿马尔菲海岸公路行驶在海面上方",
+          "caption": "当船暂停时你的可靠备用：沿着海岸公路的 SITA 巴士",
+          "width": 1920,
+          "height": 1080
+        }
       ]
     },
     {
       "id": "layout",
-      "title": "Layout and who runs what",
+      "title": "布局以及谁运营什么",
       "body": [
-        "The cove splits into three zones. A narrow public area sits on the far right for those who bring their own towels. Villa Tre Ville’s club occupies the central decks with terracotta loungers, while Da Adolfo operates the left-hand side with wooden beds and the restaurant terrace.",
-        "All guests arrive by boat or via the steep stairway from the SITA bus stop. Expect to queue at peak times because both clubs control access to most of the shoreline."
+        "海湾分为三个区域。最右边是一个狭窄的公共区域，供自带毛巾的人使用。Villa Tre Ville 的俱乐部占据中央平台，配有赤陶色躺椅，而 Da Adolfo 经营左侧，配有木床和餐厅露台。",
+        "所有客人都乘船或通过从 SITA 巴士站出发的陡峭楼梯到达。预计在高峰时段需要排队，因为两家俱乐部都控制着大部分海岸线的进入权限。",
+        "实用说明：如果你瞄准公共区域，请早点到达，自带水和遮阳物，并准备好面对鹅卵石/岩石板而不是柔软的沙滩。如果你预订了俱乐部，请确认是否包括毛巾以及是否需要现金购买额外服务。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/01-beach-layout-map.jpg",
+          "alt": "劳里托海滩布局图，显示三个区域：免费区、Villa Tre Ville 和 Da Adolfo",
+          "caption": "劳里托布局：狭窄的公共区域（最右边）、Villa Tre Ville 中央平台和 Da Adolfo 露台（左边）",
+          "width": 1500,
+          "height": 1000
+        }
       ]
     },
     {
       "id": "tre-ville",
-      "title": "Villa Tre Ville beach club",
+      "title": "Villa Tre Ville 海滩俱乐部",
       "body": [
-        "Villa Tre Ville hosts a boutique club with limited loungers, attentive service, and pricing to match. Expect premium day beds, à la carte dining, and prosecco served to your chair.",
-        "Reservations run through the hotel concierge. Seats can exceed €200 for two in high season, but include towels, showers, and return boat service to Spiaggia Grande.",
-        "Late afternoon is particularly scenic; staff often arrange sunset spritz tastings before the final shuttle back to Positano."
+        "Villa Tre Ville 提供精品俱乐部服务，躺椅有限，服务周到，价格匹配。期待高级日床、点菜式用餐以及送到椅子上的普罗塞克。",
+        "预订通过酒店礼宾部进行。价格随季节和排位而变化，但这是劳里托的「高级」选项：计划更高的最低消费和更少的临时步入可能性。",
+        "值得的原因：更少的混乱、躺椅之间更好的间距，以及如果你想安静地阅读、小睡或摆脱宿醉的更平静氛围。如果你作为情侣或小团体旅行并想要可预测的一天，这通常是更顺畅的选择。",
+        "傍晚时分尤其美丽。在办理入住时询问工作人员最后一班返程船的时间，不要仅仅因为太阳还没下山就假定它会晚点运行。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg",
+          "alt": "Villa Tre Ville 海滩俱乐部，赤陶色躺椅和高级服务",
+          "caption": "Villa Tre Ville —— 精品海滩俱乐部，配有高级日床和礼宾式服务",
+          "width": 1280,
+          "height": 1600
+        }
       ]
     },
     {
       "id": "da-adolfo",
-      "title": "Da Adolfo beach club",
+      "title": "Da Adolfo 海滩俱乐部",
       "body": [
-        "Da Adolfo is famous for its grilled mozzarella on lemon leaves and relaxed, bohemian vibe. Booking is notoriously difficult — they reply slowly, and day-of slots go to returning guests first.",
-        "If you cannot secure a reservation, arrive early at Spiaggia Grande and ask to join the Da Adolfo water taxi as a standby guest. Once at the dock, staff will add you to their waitlist for any no-shows.",
-        "Lounger packages hover around €50–€70 for two people including the shuttle. Lunch mains run €18–€26 and the kitchen stays open through late afternoon."
+        "Da Adolfo 以其柠檬叶上的烤马苏里拉奶酪和轻松的波西米亚氛围而闻名。预订出了名的困难 —— 他们回复慢，当天的位置首先给回头客。",
+        "如果你无法确保预订，可以尝试候补：早点到 Spiaggia Grande，要求加入 Da Adolfo 水上出租车，并对等候名单保持礼貌。你开始得越早，越有可能有人没来。",
+        "预计这里是「午餐优先」的氛围：人们为食物和氛围而来，就像为游泳而来一样多。如果你有预订，计划安顿下来并待一会儿，而不是试图将其挤进匆忙的早晨。",
+        "价格因季节和可用性而异。作为一个大概估计，两人的躺椅套餐通常在包括接驳的€50–€70范围内，午餐主菜通常在€18–€30范围内。将这些视为估计值，并在到达时确认。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg",
+          "alt": "Da Adolfo 海滩俱乐部码头和餐厅露台，波西米亚氛围",
+          "caption": "Da Adolfo —— 以轻松的午餐氛围和从 Spiaggia Grande 的水上出租车通道而闻名",
+          "width": 512,
+          "height": 215
+        }
       ]
     },
     {
-      "id": "logistics",
-      "title": "Logistics, tickets, and getting back",
+      "id": "returns",
+      "title": "时间安排、海况以及返回青年旅舍",
       "body": [
-        "Water taxis for both clubs depart from the small pier on Spiaggia Grande. Boats typically run every 30 minutes from 09:30 until early afternoon, then resume returns around 15:00. Keep an eye on the chalkboard at the dock for changes when seas are rough.",
-        "Prefer public transport? Follow our %LINK:lauritoBeachBusDown|bus guide% for the outbound journey and %LINK:lauritoBeachBusBack|return guide% for the climb back. Buy your bus tickets before leaving town — there is nowhere to purchase them at Laurito.",
-        "On the way home, the coastal bus towards Sorrento or Positano stops beside the staircase entrance. Services thin out after 19:00, so confirm the last departure or budget for a taxi arranged via the hostel."
+        "大部分劳里托的压力发生在一天结束时，而不是开始时。早点决定你的返程路线，然后在到达后立即确认「最后一班船」时间（它可能会随海况和季节而变化）。",
+        "俱乐部的水上出租车从 Spiaggia Grande 出发。如果海浪变得汹涌，接驳船可能会暂停。当这种情况发生时，你最好的做法是切换到巴士和楼梯计划，而不是在码头无限期地等待。",
+        "从一开始就偏好公共交通？按照%LINK:lauritoBeachBusDown|我们的巴士指南%进行出程，按照%LINK:lauritoBeachBusBack|返程指南%进行爬回。在离开镇上之前购买巴士票 —— 劳里托没有地方购买。",
+        "如果你在悠长的午餐后返回，预留缓冲时间。巴士可能会拥挤且缓慢，赶早班车比挽救错过的最后一班车要容易。如果你天黑后还在外面，出租车是可能的但很贵 —— 询问青年旅舍当天的最佳选择。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/05-positano-view.jpg",
+          "alt": "俯瞰波西塔诺和海面，船只靠近海岸",
+          "caption": "Spiaggia Grande 是许多海滩接驳船和船只的主要出发点",
+          "width": 1280,
+          "height": 1707
+        }
+      ]
+    },
+    {
+      "id": "pack",
+      "title": "打包清单（青年旅舍友好清单）",
+      "body": [
+        "劳里托是「小海湾」日，这意味着你应该假设俱乐部外的设施有限。即使你有预订，聪明地打包也会让一天更顺利。",
+        "携带：水鞋（鹅卵石/岩石板）、珊瑚礁安全防晒霜、返程船用的轻薄外套，以及少量现金/卡用于额外费用。如果你计划尝试公共区域，请添加自己的毛巾/垫子和遮阳物。",
+        "码头的手机信号可能不可靠。截屏任何预订确认，并将%LINK:lauritoBeachBusBack|乘巴士返回步骤%保存为备用。"
+      ]
+    },
+    {
+      "id": "image-credits",
+      "title": "图片来源",
+      "body": [
+        "本指南中的一些照片根据知识共享许可使用："
+      ],
+      "list": [
+        "波西塔诺海岸线 —— 照片来源：%URL:https://commons.wikimedia.org/wiki/File:Positano_sea.jpg|Alexis Lours% (%URL:https://creativecommons.org/licenses/by/4.0/|CC BY 4.0%)。",
+        "SITA 巴士 —— 照片来源：%URL:https://commons.wikimedia.org/wiki/File:Amalfi_Drive_Sita_Bus.jpeg|Robot8A% (%URL:https://creativecommons.org/licenses/by-sa/4.0/|CC BY-SA 4.0%)。"
       ]
     }
   ],
-  "essentialsTitle": "What to expect",
+  "images": {
+    "whyGo": {
+      "src": "/img/guides/laurito-beach/02-beach-overview.jpg",
+      "alt": "劳里托海滩海湾，沿海岸线的海滩俱乐部",
+      "caption": "劳里托的悬崖支撑海湾比主海滩更平静、更安静。"
+    },
+    "layout": {
+      "src": "/img/guides/laurito-beach/01-beach-layout-map.jpg",
+      "alt": "劳里托的海滩平台和海岸线布局",
+      "caption": "三个区域共享海湾：公共区域、Villa Tre Ville 平台和 Da Adolfo 露台。"
+    },
+    "treVille": {
+      "src": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg",
+      "alt": "Villa Tre Ville 海滩俱乐部躺椅和海景",
+      "caption": "Villa Tre Ville 专注于高级躺椅和礼宾式服务。"
+    },
+    "daAdolfo": {
+      "src": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg",
+      "alt": "Da Adolfo 海滩俱乐部码头和座位区",
+      "caption": "Da Adolfo 的接驳船将客人送到餐厅露台旁边。"
+    },
+    "positanoView": {
+      "src": "/img/guides/laurito-beach/05-positano-view.jpg",
+      "alt": "俯瞰波西塔诺和海面，船只靠近海岸",
+      "caption": "Spiaggia Grande 是许多海滩接驳船和船只的主要出发点。"
+    },
+    "sitaBus": {
+      "src": "/img/guides/laurito-beach/06-amalfi-coast-sita-bus.jpg",
+      "alt": "蓝色 SITA 巴士沿着阿马尔菲海岸公路行驶在海面上方",
+      "caption": "当船暂停时，沿海的 SITA 巴士是有用的备用。"
+    }
+  },
+  "essentialsTitle": "期待什么",
   "essentials": [
-    "Reservations are essential for both clubs in summer; walk-ins only succeed before 10:00.",
-    "Tiny public section fills quickly — arrive with your own umbrella and mat if you plan to use it.",
-    "Return boats leave mid-afternoon; have the bus backup ready for evening plans."
+    "夏季两家俱乐部都必须预订；步入式只有在10:00之前才能成功。",
+    "小公共区域很快填满 —— 如果你打算使用它，请带上自己的伞和垫子。",
+    "返程船在下午中段出发；为晚上计划准备好巴士备用。"
   ],
-  "typicalCostsTitle": "Typical costs",
+  "typicalCostsTitle": "典型费用",
   "typicalCosts": [
-    "Da Adolfo lounger set for two: €50–€70 including shuttle boat.",
-    "Villa Tre Ville premium deck for two: €180–€220 with towels and concierge service.",
-    "Lunch mains at either club: €18–€30, cocktails €12–€15, bottled water €3–€4."
+    "Da Adolfo 两人躺椅套装：€50–€70，包括接驳船。",
+    "Villa Tre Ville 两人高级平台：€180–€220，含毛巾和礼宾服务。",
+    "任一俱乐部的午餐主菜：€18–€30，鸡尾酒€12–€15，瓶装水€3–€4。"
   ],
-  "tipsTitle": "Quick tips",
+  "tipsTitle": "快速提示",
   "tips": [
-    "Screenshot confirmation emails — mobile signal fades near the dock.",
-    "Pack reef-safe sunscreen and water shoes; the shoreline mixes pebbles and rock slabs.",
-    "Review our %LINK:beaches|Positano beaches overview% to compare Laurito with other coves."
+    "截屏确认邮件 —— 码头附近的移动信号会减弱。",
+    "打包珊瑚礁安全防晒霜和水鞋；海岸线混合着鹅卵石和岩石板。",
+    "查看我们的%LINK:positanoBeaches|波西塔诺海滩概览%，将劳里托与其他海湾进行比较。"
   ],
-  "warningsTitle": "Good to know",
+  "warningsTitle": "需要知道",
   "warnings": [
-    "Rough seas pause shuttle boats; staff will text updates but the bus may be your only route back.",
-    "No ATMs or shops at the cove — bring cash or cards for meals and extras.",
-    "The stairway is steep with uneven steps; plan breaks and wear grippy footwear."
+    "汹涌的海浪会暂停接驳船；工作人员会发送更新，但巴士可能是你回去的唯一路线。",
+    "海湾没有 ATM 或商店 —— 带上现金或卡用于餐食和额外费用。",
+    "楼梯陡峭且台阶不平；计划休息并穿有抓地力的鞋。"
   ],
-  "faqsTitle": "Laurito Beach FAQs",
+  "faqsTitle": "劳里托海滩常见问题",
   "faqs": [
     {
-      "q": "Do I need a reservation?",
+      "q": "我需要预订吗？",
       "a": [
-        "Yes. Both clubs prioritise guests with confirmed bookings. Da Adolfo accepts standby visitors on a waitlist, but only after pre-booked guests are seated."
+        "是的。两家俱乐部都优先考虑有确认预订的客人。Da Adolfo 在等候名单上接受候补访客，但只有在预订客人就座后。"
       ]
     },
     {
-      "q": "Can I use the public section?",
+      "q": "我可以使用公共区域吗？",
       "a": [
-        "You can, but space is extremely limited. Bring everything you need, including shade and water, and arrive before 09:30 to claim a spot."
+        "你可以，但空间极其有限。带上你需要的一切，包括遮阳物和水，并在09:30之前到达以占位。"
       ]
     },
     {
-      "q": "How late do the boats run?",
+      "q": "船运行到多晚？",
       "a": [
-        "Most return shuttles finish by 18:00 in summer, earlier in shoulder season. Always confirm the last departure on arrival and have the bus timetable saved as a backup."
+        "大多数返程接驳在夏季18:00结束，肩季更早。始终在到达时确认最后一班出发时间，并将巴士时刻表保存为备用。"
       ]
     }
-  ],
-  "gallery": {
-    "alt": "Laurito Beach shoreline"
-  }
+  ]
 }

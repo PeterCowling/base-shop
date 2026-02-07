@@ -1,0 +1,14 @@
+{
+  "rating": { "rating": 4.6, "count": 128 },
+  "testimonials": [
+    { "quote": "Amazing quality!", "name": "Alex" },
+    { "quote": "Great service.", "name": "Sam" }
+  ],
+  "ugc": [ { "src": "/images/ugc1.jpg", "alt": "UGC 1" } ],
+  "influencers": [ { "name": "Pat", "handle": "@pat" } ],
+  "logos": [ { "src": "/logo1.svg", "alt": "Logo" } ],
+  "emitOrgSchema": true,
+  "orgName": "Base Shop",
+  "orgSameAs": ["https://twitter.com/baseshop"]
+}
+

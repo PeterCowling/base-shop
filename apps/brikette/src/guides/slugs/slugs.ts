@@ -1,10 +1,11 @@
 import type { AppLanguage } from "../../i18n.config";
 import { slugify } from "../../utils/slugify";
 import { transliterateGuideLabel } from "../../utils/transliterate-guide-label";
-import { SUPPORTED_LANGS } from "./supported-langs";
-import { GUIDE_SLUG_OVERRIDES } from "./overrides";
-import { getGuideLinkLabels, isPlaceholderGuideLabel } from "./labels";
+
 import { ENGLISH_SLUGS, type GuideKey } from "./keys";
+import { getGuideLinkLabels, isPlaceholderGuideLabel } from "./labels";
+import { GUIDE_SLUG_OVERRIDES } from "./overrides";
+import { SUPPORTED_LANGS } from "./supported-langs";
 
 type PerLang = Readonly<Record<string, string>>;
 

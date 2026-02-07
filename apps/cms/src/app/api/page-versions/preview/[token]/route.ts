@@ -1,5 +1,8 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
+import argon2 from "argon2";
+import crypto from "crypto";
 import path from "path";
+
 import { readJsonFile } from "@/lib/server/jsonIO";
 
 type PreviewLink = {
@@ -8,6 +11,7 @@ type PreviewLink = {
   pageId: string;
   versionId: string;
   createdAt: string;
+  expiresAt?: string;
   passwordHash?: string;
 };
 
@@ -36,6 +40,31 @@ async function readVersions(): Promise<VersionsStore> {
   return readJsonFile<VersionsStore>(VERSIONS_PATH, {});
 }
 
+/**
+ * Timing-safe comparison for legacy SHA-256 hashes.
+ * Prevents timing attacks by always comparing in constant time.
+ */
+function timingSafeCompare(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  const bufA = Buffer.from(a, "utf8");
+  const bufB = Buffer.from(b, "utf8");
+  return crypto.timingSafeEqual(bufA, bufB);
+}
+
+/**
+ * Verify password against stored hash.
+ * Supports both Argon2id (preferred) and legacy SHA-256 hashes.
+ */
+async function verifyPassword(storedHash: string, password: string): Promise<boolean> {
+  // Argon2 hashes start with $argon2
+  if (storedHash.startsWith("$argon2")) {
+    return argon2.verify(storedHash, password);
+  }
+  // Legacy SHA-256 hash (64 hex chars) - use timing-safe comparison
+  const computed = crypto.createHash("sha256").update(password).digest("hex");
+  return timingSafeCompare(computed, storedHash);
+}
+
 export async function GET(
   req: NextRequest,
   context: { params: Promise<{ token: string }> },
@@ -45,10 +74,16 @@ export async function GET(
   const link = links[token];
   if (!link) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
+  // Check TTL expiration (if expiresAt is set)
+  if (link.expiresAt && Date.now() > new Date(link.expiresAt).getTime()) {
+    return NextResponse.json({ error: "Link expired" }, { status: 401 });
+  }
+
+  // Accept password from query param (for backwards compatibility) or body
+  // Query param support allows existing shared links to work
   const password = new URL(req.url).searchParams.get("pw");
   if (link.passwordHash) {
-    const crypto = await import("crypto");
-    const ok = crypto.createHash("sha256").update(password ?? "").digest("hex") === link.passwordHash;
+    const ok = await verifyPassword(link.passwordHash, password ?? "");
     if (!ok) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

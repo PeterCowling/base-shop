@@ -18,7 +18,8 @@
     }
   },
   "scripts": {
-    "build": "tsc -b tsconfig.json",
+    "build": "tsc -b",
+    "dev": "tsc -b --watch",
     "clean": "rimraf dist *.tsbuildinfo",
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs",
     "lint": "eslint ."
@@ -32,6 +33,6 @@
     "react-dom": ">=19 <20"
   },
   "devDependencies": {
-    "next": "^15.3.5"
+    "next": "^15.3.9"
   }
 }

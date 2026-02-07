@@ -1,6 +1,6 @@
 import type { HookPayload } from "../src/hooks";
 
-jest.mock("@platform-core/analytics", () => ({
+jest.mock("@acme/platform-core/analytics", () => ({
   trackEvent: jest.fn(),
 }));
 
@@ -17,7 +17,7 @@ describe.each([
 
   beforeEach(async () => {
     jest.resetModules();
-    const analytics = await import("@platform-core/analytics");
+    const analytics = await import("@acme/platform-core/analytics");
     (analytics.trackEvent as jest.Mock).mockClear();
     const mod = await import("../src/hooks");
     on = mod[onName as keyof typeof mod] as typeof on;
@@ -28,12 +28,12 @@ describe.each([
     const order: string[] = [];
     const first = jest.fn(async () => {
       order.push("a-start");
-      await new Promise((r) => setTimeout(r, 10));
+      await new Promise((resolve) => setTimeout(resolve, 10));
       order.push("a-end");
     });
     const second = jest.fn(async () => {
       order.push("b-start");
-      await new Promise((r) => setTimeout(r, 10));
+      await new Promise((resolve) => setTimeout(resolve, 10));
       order.push("b-end");
     });
 
@@ -85,7 +85,7 @@ describe("default analytics listeners", () => {
     ["emitOpen", "email_open"],
     ["emitClick", "email_click"],
   ])("tracks %s events", async (emitName, type) => {
-    const { trackEvent } = await import("@platform-core/analytics");
+    const { trackEvent } = await import("@acme/platform-core/analytics");
     (trackEvent as jest.Mock).mockClear();
 
     const { [emitName as string]: emit } = await import("../src/hooks");

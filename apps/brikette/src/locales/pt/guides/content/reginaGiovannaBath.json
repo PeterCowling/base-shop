@@ -1,122 +1,192 @@
 {
   "seo": {
-    "title": "Guia da Piscina Regina Giovanna",
-    "description": "Planeie um mergulho sem multidões na piscina natural de Sorrento com indicações de autocarro, dicas do que levar e notas de segurança."
+    "title": "Guia de praia de Bagni della Regina Giovanna (Sorrento)",
+    "description": "Guia para hóspedes de hostel em Bagni della Regina Giovanna, em Sorrento: como chegar de bus, o que levar, segurança na água e um plano de dia simples."
   },
-  "linkLabel": "Guia da Piscina Regina Giovanna",
+  "lastUpdated": "2026-01-30T00:00:00.000Z",
+  "linkLabel": "Regina Giovanna: ruínas romanas e piscina natural",
   "intro": [
-    "Bagni della Regina Giovanna é uma gruta marinha colapsada na península de Sorrento, onde a água cristalina entra numa piscina natural abrigada. Não existem beach clubs nem quiosques aqui — apenas falésias de calcário, águas esmeralda e arcos perfeitos para fotografias.",
-    "Use este guia para chegar à enseada de autocarro público, fazer a mala como um local e aproveitar as plataformas de mergulho antes de regressar a Sorrento para comer."
+    "Bagni della Regina Giovanna é uma gruta marinha colapsada na península de Sorrento onde água cristalina entra numa piscina natural abrigada. Não há beach clubs nem snack bars — só falésias de calcário, águas esmeralda e um arco natural que faz a água brilhar nas manhãs de sol.",
+    "Este guia foi escrito para hóspedes de hostel. Se quiseres o percurso exato passo a passo desde Positano (bilhetes, pontos de troca e a última descida pela viela), começa com %LINK:hostelBriketteToReginaGiovannaBath|Hostel Brikette → Bagni della Regina Giovanna: direções% e volta aqui para a parte do “como é”. Planeia o dia em duas fases: nada cedo enquanto as rochas estão tranquilas e depois regressa a Sorrento para almoçar e passear antes de voltares no %LINK:sorrentoPositanoBus|bus Sorrento → Positano% (ou no %LINK:sorrentoPositanoFerry|ferry Sorrento → Positano% quando o mar estiver calmo)."
   ],
   "toc": [
     {
       "href": "#why-go",
-      "label": "Why go"
+      "label": "Porquê ir"
     },
     {
       "href": "#getting-there",
-      "label": "Getting there"
+      "label": "Como chegar"
     },
     {
       "href": "#what-to-pack",
-      "label": "What to pack"
+      "label": "O que levar"
     },
     {
       "href": "#swimming",
-      "label": "Swimming & safety"
+      "label": "Nadar e segurança"
     },
     {
       "href": "#pair-it",
-      "label": "Pair it with Sorrento"
+      "label": "Combina com Sorrento"
     }
   ],
   "sections": [
     {
       "id": "why-go",
-      "title": "Porque vale a pena desviar até à Regina Giovanna",
+      "title": "Porque Regina Giovanna Bath vale o desvio",
       "body": [
-        "As ruínas da villa romana acima da piscina enquadram a água turquesa que entra do mar através de um arco natural. Chegue cedo e poderá flutuar sob as falésias com apenas alguns locais por companhia.",
-        "Ao contrário dos lidos de Positano, este local é gratuito todo o ano. Leve tudo o que precisa e prepare-se para trepar pelas rochas — a recompensa é um poço natural impressionante que rende fotos incríveis na golden hour."
+        "As ruínas de uma villa romana acima da piscina enquadram a água turquesa que entra do mar através de um arco natural. Quando o mar está calmo, a piscina fica abrigada mesmo que a costa aberta pareça agitada — parece uma “sala” secreta para nadar esculpida no calcário.",
+        "Ao contrário dos lidos de Positano, este lugar é gratuito o ano todo. Essa liberdade tem contrapartidas: não há aluguer de sombra, não há casas de banho, não há nadadores-salvadores e o acesso é rochoso. Se fizeres a mochila com cabeça, é um dos mergulhos mais memoráveis perto de Sorrento sem reservar barco. Dica do staff Brikette: trata isto como uma missão ao nascer do sol ou cedo. As plataformas são estreitas e, quando chegam grupos, deixa de ser relaxante. Entra, nada, tira fotos e sai antes que o calor do meio-dia transforme a subida num castigo."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/reginaGiovannaBath.webp",
+          "width": 760,
+          "height": 516,
+          "alt": "Bagni della Regina Giovanna natural pool in Sorrento, seen from above with swimmers in clear turquoise water",
+          "caption": "This is the spot: a sheltered natural pool by the Roman ruins — best enjoyed early before the ledges fill up"
+        }
       ]
     },
     {
       "id": "getting-there",
-      "title": "Como chegar de autocarro ao início do trilho",
+      "title": "Como ir de bus até ao início do trilho",
       "body": [
-        "Do Hostel Brikette, apanhe o autocarro SITA para Sorrento e faça ligação com a linha local A ou C (operada pela EAV). Peça \"Capo di Sorrento\" ou \"Regina Giovanna\" para o motorista saber que pretende descer perto do trilho.",
-        "A paragem fica a cerca de 15 minutos da estação de Sorrento. Siga pela Via Capo até ver sinais para \"Bagni della Regina Giovanna\" e desça a estrada pavimentada. Calcule 10 minutos até às ruínas e mais cinco para descer os degraus de pedra até à enseada.",
-        "Os autocarros de regresso passam aproximadamente a cada 30 minutos até ao início da noite; vigie o horário afixado e planeie estar de volta à estrada antes do pôr do sol."
+        "De Hostel Brikette, apanha o SITA bus até Sorrento e faz ligação com um bus local EAV em direção a Capo di Sorrento. Se não tiveres a certeza de onde trocar, usa o guia completo do percurso: %LINK:hostelBriketteToReginaGiovannaBath|Hostel Brikette → Bagni della Regina Giovanna% (inclui o ponto de ligação e a caminhada do “último quilómetro”).",
+        "Quando estiveres na Via Capo, procura a sinalização “Bagni della Regina Giovanna”. A viela de descida é asfaltada no início e torna-se mais irregular à medida que te aproximas das ruínas. Conta cerca de 10 minutos até à zona da villa e mais cinco para descer as escadas de pedra até à enseada.",
+        "Dica do staff Brikette: faz screenshot das opções de regresso antes de desceres para a água. O sinal pode falhar junto às rochas e não queres adivinhar ao pôr do sol. Ao fim do dia há menos buses — planeia estar de volta à estrada com margem, especialmente fora do pico do verão."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image3.png",
+          "alt": "Bar Internazionale in Positano (Chiesa Nuova) on the roadside",
+          "caption": "Step 1: Start at the Chiesa Nuova bus stop outside Bar Internazionale (buy tickets here)"
+        },
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image5.png",
+          "alt": "Map screenshot showing the bus route from Positano toward Sorrento (Hotel Metropole stop)",
+          "caption": "Step 2: Ride to Sorrento and get off at the Hotel Metropole stop"
+        },
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image1.png",
+          "alt": "Map screenshot showing Hotel Metropole at the Via Capo junction in Sorrento",
+          "caption": "Step 3: From Hotel Metropole, continue via the Via Capo road"
+        },
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image2.png",
+          "alt": "Map screenshot showing the walking route along Via Capo toward the Bagni della Regina Giovanna area",
+          "caption": "Step 4: Walk along Via Capo (about 1.1 km / 0.7 mi) toward the turnoff"
+        },
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image4.png",
+          "alt": "Street view of the pedestrian lane entrance at 49 Via Capo in Sorrento",
+          "caption": "Step 5: At 49 Via Capo, turn into the pedestrian-only lane downhill"
+        },
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image7.png",
+          "alt": "Satellite view of the Bagni Regina Giovanna area and nearby paths above the swimming cove",
+          "caption": "Step 6: Follow the lane down to the ruins and the natural pool cove"
+        }
+      ]
+    },
+    {
+      "id": "best-time",
+      "title": "Best time to go (and a hostel-friendly day plan)",
+      "body": [
+        "If you only remember one thing: go early. The “beach” here is not a wide stretch of sand — it’s rock ledges. When a few groups arrive, it gets crowded fast, and it becomes harder to find a safe entry point into the water.",
+        "Season matters. In shoulder season, the water can be cold and the steps can stay damp; in mid-summer, the heat on the rocks is intense and shade is limited. Either way, stable weather makes the experience better: after storms the access route can be slippery with algae and debris.",
+        "A simple Brikette day plan: leave after breakfast, arrive for a morning swim, then head back to Sorrento for lunch and a walk. If you want a “big views” add-on, finish the day at a viewpoint or a waterfront aperitivo — and keep your return route in mind via %LINK:sorrentoPositanoBus|bus% or %LINK:sorrentoPositanoFerry|ferry%."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/hostelBriketteToReginaGiovannaBath.webp",
+          "width": 1332,
+          "height": 1000,
+          "alt": "The rocky natural pool at Bagni della Regina Giovanna with a low arch opening to the sea",
+          "caption": "Aim for calm sea and good light: you’ll enjoy safer entries, clearer water, and better photos"
+        }
       ]
     },
     {
       "id": "what-to-pack",
       "title": "O que levar quando não há serviços",
       "body": [
-        "Não há nadadores-salvadores, casas de banho ou quiosques no local. Leve água, snacks e um saco para o lixo para transportar tudo de volta.",
-        "Use calçado firme para o trilho rochoso e leve sapatilhas de água para as plataformas escorregadias. Uma toalha leve e uma bolsa estanque ajudam a manter os pertences secos.",
-        "No auge do verão acrescente protetor solar, chapéu e pelo menos 1,5 litros de água por pessoa — há pouca sombra depois de o sol ultrapassar as falésias."
+        "Não há nadadores-salvadores, casas de banho ou quiosques no local. Leva água, snacks e um saco para o lixo para poderes levar tudo de volta.",
+        "Usa calçado resistente para a aproximação e leva sapatos de água para as rochas escorregadias. Uma toalha leve, um dry bag (ou sacos zip) e um cordão barato para o telemóvel ajudam a manter os valores longe dos salpicos.",
+        "No pico do verão acrescenta protetor solar, chapéu e pelo menos 1.5 litres de água por pessoa — há pouca sombra quando o sol passa as falésias. Se ficas facilmente com calor, leva um saquinho de eletrólitos: a subida parece mais íngreme do que no mapa. Máscara de snorkel é opcional, mas vale em dias calmos: a piscina abrigada facilita ver peixes em comparação com muitas praias de calhau expostas."
       ]
     },
     {
       "id": "swimming",
-      "title": "Banhos, saltos e segurança",
+      "title": "Nadar, saltos e notas de segurança",
       "body": [
-        "A piscina é suficientemente profunda para quem nada com confiança, mas não existe escada. Entre devagar usando as plataformas naturais e evite mergulhos sem verificar a profundidade por conta própria.",
-        "Os locais às vezes saltam do arco na maré cheia; só acompanhe se o mar estiver calmo e se sentir à vontade com a altura. Caso contrário, flutue dentro da piscina e atravesse para o lado voltado ao mar para vistas mais amplas.",
-        "Após tempestades os degraus de acesso podem ficar escorregadios com algas. Avance com cuidado e considere luvas se precisar de se apoiar no corrimão."
+        "A piscina é suficientemente funda para quem nada com confiança, mas não há uma escada formal. Entra devagar pelas prateleiras naturais e evita mergulhar de cabeça sem confirmares a profundidade.",
+        "Alguns locais saltam do arco na maré cheia; só faças o mesmo se o mar estiver calmo e estiveres confortável com a altura. Caso contrário, flutua dentro da piscina e passa para o lado virado ao mar para vistas mais amplas (mas mantém-te bem longe da borda se houver ondulação).",
+        "Depois de tempestades, as escadas podem ficar escorregadias com algas. Vai com cuidado, mantém uma mão livre e não leves vidro. Em grupo, combina uma regra simples: uma pessoa fica “seca” para vigiar as mochilas e estar atenta a quem se cansa. Sem nadadores-salvadores e com piso irregular, é uma melhoria fácil."
       ]
     },
     {
       "id": "pair-it",
-      "title": "Combine o mergulho com clássicos de Sorrento",
+      "title": "Combina o mergulho com clássicos de Sorrento",
       "body": [
-        "Leve um piquenique ou planeie um almoço tardio no centro histórico de Sorrento depois do mergulho. O Bar Ruccio, na Marina Piccola, e o Da Emilia, à beira-mar, servem pratos de marisco descontraídos com vista.",
-        "Se ficar para o pôr do sol, reserve 20 minutos para subir até à paragem e apanhar o autocarro de volta à cidade. Comboios e ferries rumo a Nápoles e à Costa Amalfitana reduzem a frequência depois das 20h30, por isso confirme os horários antes de demorar."
+        "Este mergulho combina bem com uma tarde fácil em Sorrento: recarrega no centro histórico, faz um circuito rápido por um miradouro e volta para Positano. Se quiseres um dia maior de comparação de praias mais tarde, guarda %LINK:positanoBeaches|a nossa visão geral das praias de Positano% para decidir “qual enseada é para nós?”.",
+        "Se ficares até ao pôr do sol, dá-te tempo para subir de volta à estrada e apanhar um regresso fiável. Com mar picado, o %LINK:sorrentoPositanoBus|bus% costuma ser mais seguro do que o ferry. Fontes e leitura: Contexto sobre as ruínas da villa romana (muitas vezes associadas a Pollio Felice): %URL:https://aboutsorrento.com/cosa-vedere/sorrento/i-bagni-della-regina-giovanna/|About Sorrento — I Bagni della Regina Giovanna%. Notas adicionais (história + info prática): %URL:https://www.museionline.info/tipologie-museo/villa-di-pollio-felice|MuseiOnline — Villa di Pollio Felice%. Crédito da — Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Sorrento_2013_-_3_(9694522728).jpg|Wikimedia Commons (CC BY 2.0)%. Confirma sempre horários no próprio dia (os horários sazonais mudam) e segue a sinalização local e quaisquer avisos de acesso no local."
+      ]
+    },
+    {
+      "id": "sources",
+      "title": "Sources and further reading",
+      "body": [
+        "Background on the site’s Roman-era villa ruins (often associated with Pollio Felice): %URL:https://aboutsorrento.com/cosa-vedere/sorrento/i-bagni-della-regina-giovanna/|About Sorrento — I Bagni della Regina Giovanna%.",
+        "Additional notes on the villa (history + practical info): %URL:https://www.museionline.info/tipologie-museo/villa-di-pollio-felice|MuseiOnline — Villa di Pollio Felice%.",
+        "Photo credit for the Sorrento coastline image used above: %URL:https://commons.wikimedia.org/wiki/File:Sorrento_2013_-_3_(9694522728).jpg|Wikimedia Commons (CC BY 2.0)%.",
+        "Always confirm transport times on the day (seasonal schedules change), and follow local signage and any access notices at the site."
       ]
     }
   ],
   "essentialsTitle": "O que esperar",
   "essentials": [
-    "Piscina natural gratuita escavada nas falésias a oeste de Sorrento — sem espreguiçadeiras ou restaurantes.",
-    "Autocarro + curta caminhada: apanhe as linhas EAV A ou C até Capo di Sorrento e siga a estrada sinalizada a descer.",
-    "Acesso rochoso com degraus irregulares; leve calçado firme e traga o lixo de volta."
+    "Piscina natural gratuita escavada nas falésias a oeste de Sorrento — sem espreguiçadeiras nem restaurantes.",
+    "Bus + caminhada curta: apanha o bus EAV A ou C até Capo di Sorrento e segue a viela sinalizada a descer.",
+    "Acesso rochoso com degraus irregulares; leva calçado firme e traz todo o lixo contigo."
   ],
-  "typicalCostsTitle": "Custos médios",
+  "typicalCostsTitle": "Custos típicos",
   "typicalCosts": [
-    "Autocarro SITA Positano ⇄ Sorrento: 2–3 € por trajeto, conforme o tipo de bilhete.",
-    "Autocarro local EAV para Capo di Sorrento: 1,50 € se comprado com antecedência.",
-    "Táxi de regresso a Sorrento (se perder o autocarro): 18–22 € para até quatro pessoas."
+    "SITA bus Positano ⇄ Sorrento: €2–€3 por viagem dependendo do bilhete.",
+    "Bus local EAV para Capo di Sorrento: €1.50 se comprado com antecedência.",
+    "Táxi de volta a Sorrento (se perderes o bus): €18–€22 até quatro pessoas."
   ],
   "tipsTitle": "Dicas rápidas",
   "tips": [
-    "Valide todos os bilhetes de autocarro — há fiscais frequentes nas rotas de Sorrento, sobretudo no verão.",
-    "Chegue antes das 10h00 para encontrar água mais calma e menos banhistas nas plataformas estreitas.",
-    "Leve uma bolsa estanque e prenda-a às rochas; não há cacifos nem serviços no local."
+    "Valida todos os bilhetes de bus — há fiscalização nas rotas de Sorrento, sobretudo no verão.",
+    "Chega antes das 10:00 para água mais calma e menos gente nas rochas estreitas.",
+    "Leva um dry bag e prende-o às rochas; não há cacifos nem instalações com staff."
   ],
-  "warningsTitle": "Importa saber",
+  "warningsTitle": "Bom saber",
   "warnings": [
-    "Sem nadadores-salvadores ou equipamento de segurança — nade dentro do seu limite e vigie a maré.",
-    "Sombra limitada depois do meio-dia; o calor acumula-se rapidamente nas rochas em julho e agosto.",
-    "O caminho é irregular e escorregadio quando molhado; evite chinelos e redobre o cuidado após chuva."
+    "Sem nadadores-salvadores ou equipamento — nada dentro do teu conforto e presta atenção à maré.",
+    "Pouca sombra depois do meio-dia; o calor acumula rápido nas rochas em julho e agosto.",
+    "O caminho é irregular e escorregadio quando molhado; evita chinelos e tem cuidado extra após chuva."
   ],
-  "faqsTitle": "Perguntas frequentes sobre Regina Giovanna",
+  "faqsTitle": "FAQs Regina Giovanna Bath",
   "faqs": [
     {
       "q": "Posso levar comida e bebidas para a piscina?",
       "a": [
-        "Sim, mas não há caixotes — leve o seu piquenique e traga tudo de volta. Garrafas de água congeladas funcionam como acumuladores de frio e mantêm-se frescas para a viagem de regresso."
+        "Sim, mas não há caixotes — leva o teu picnic e traz tudo de volta. Garrafas de água congeladas servem de gelo e mantêm-se frias para o bus de regresso."
       ]
     },
     {
-      "q": "Há algum lugar para trocar de roupa ou ir à casa de banho?",
+      "q": "Há algum lugar para mudar de roupa ou usar casa de banho?",
       "a": [
-        "As instalações limitam-se às ruínas no topo do trilho, que muitas vezes estão fechadas. Troque na sua hospedagem ou use casas de banho em Sorrento antes de apanhar o autocarro."
+        "As instalações limitam-se às ruínas no topo do trilho, que muitas vezes estão fechadas. Muda de roupa no teu alojamento ou usa casas de banho em Sorrento antes de apanhar o bus."
       ]
     },
     {
-      "q": "Quanto tempo devo reservar para a viagem de ida e volta desde Positano?",
+      "q": "Quanto tempo devo planear para a ida e volta desde Positano?",
       "a": [
-        "Calcule cerca de três horas porta a porta: uma hora em cada sentido para os autocarros e ligação, mais pelo menos uma hora no local. Acrescente tempo extra se quiser explorar Sorrento a seguir."
+        "Conta cerca de três horas porta a porta: uma hora em cada sentido para buses e ligação, mais pelo menos uma hora no local. Acrescenta tempo se quiseres explorar Sorrento depois."
       ]
     }
   ]

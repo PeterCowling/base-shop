@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+
 import HeaderBlock from "../HeaderBlock";
 
 jest.mock("next/image", () => {
@@ -118,7 +119,6 @@ describe("HeaderBlock", () => {
     viewport = "desktop";
     const nav = [{ title: "Home", href: "/" }];
     render(
-      // @ts-expect-error showSearch is forwarded by CMS
       <HeaderBlock nav={nav} shopName="Shop" locale="en" showSearch />
     );
     expect(

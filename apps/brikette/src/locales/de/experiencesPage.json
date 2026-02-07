@@ -1,21 +1,13 @@
 {
   "meta": {
-    "title": "Übersetzung in Arbeit.",
+    "title": "Erlebnisse im Hostel Brikette – Terrasse, Wanderungen & Concierge",
     "description": "Genieße Sundowner auf unserer Terrasse, nimm an kuratierten Wanderungen teil und plane entspannte Amalfi-Küsten-Tage mit unserem digitalen Concierge."
   },
   "hero": {
     "eyebrow": "Erlebnisse",
     "title": "Sonnenuntergänge, entspannte Morgen und lokales Know-how",
     "description": "Kombiniere deinen Aufenthalt mit Drinks auf der Terrasse, kuratierten Wanderungen und einem digitalen Concierge, der dich schon vor der Anreise auf dem Laufenden hält.",
-    "supporting": "Alles steht registrierten Gästen offen; schreib uns, wenn du mit Freund:innen reist, die anderswo wohnen.",
-    "primaryCta": "Aufenthalt buchen",
-    "secondaryCta": "Bar-Menü öffnen",
-    "breakfastCta": "Frühstücksmenü ansehen",
-    "tertiaryCta": "Digitalen Concierge anschreiben",
-    "primaryCtaAria": "Buche deinen Aufenthalt im Hostel Brikette",
-    "secondaryCtaAria": "Übersetzung in Arbeit.",
-    "breakfastCtaAria": "Frühstücksmenü ansehen",
-    "tertiaryCtaAria": "Sende eine Nachricht an den digitalen Concierge des Hostel Brikette"
+    "scrollNudge": "Entdecke Erlebnisse nach Kategorie"
   },
   "sections": {
     "bar": {
@@ -25,7 +17,7 @@
       "highlights": [
         "Signature-Spritzes und lokale Weine eisgekühlt serviert.",
         "Social Nights und Verkostungen in den Hochsaison-Wochen.",
-        "Übersetzung in Arbeit."
+        "Panoramablicke, ideal für Fotos in der goldenen Stunde."
       ],
       "imageAlt": "Gäste stoßen bei Sonnenuntergang auf der Terrasse des Hostel Brikette an."
     },
@@ -74,7 +66,7 @@
       "concierge": "Mit dem Concierge chatten"
     }
   },
-  "title": "Übersetzung in Arbeit.",
+  "title": "Erlebnisse im Hostel Brikette",
   "intro": "Genieße einen Spritz auf unserer Terrasse, schließe dich Wanderungen mit Traumkulisse an und erhalte sofort Tipps über unseren digitalen Concierge.",
   "items": {
     "bar": "Terrassenbar bei Sonnenuntergang mit Spritz und lokalen Weinen.",
@@ -88,51 +80,81 @@
     "taggedDescription": "Diese Beiträge zeigen {{tag}}-Momente. Entferne den Filter, um alles zu sehen.",
     "empty": "Wir haben noch keine Erlebnis-Guides für {{tag}}. Wähle einen anderen Tag oder entferne den Filter.",
     "clearFilter": "Alle Erlebnis-Guides anzeigen",
-    "cardCta": "Entdecke den Erlebnisleitfaden „{{guideTitle}}“",
-    "directionsLabel": "Wegbeschreibung",
+    "cardCta": "Entdecke den Erlebnisleitfaden '{{guideTitle}}'",
+    "directionsLabel": "Wegbeschreibungen",
+    "sections": {
+      "content": {
+        "title": "Erlebnis-Guides",
+        "description": "Detaillierte Guides zu Stränden, Wanderungen, Tagesausflügen und Aktivitäten"
+      },
+      "directions": {
+        "title": "Anreise",
+        "description": "Schritt-für-Schritt-Anleitungen zum Hostel und zurück"
+      }
+    },
     "directionLinks": {
       "capriDayTrip": {
-        "positanoCapriFerry": "Positano → Capri Fähre",
-        "capriPositanoFerry": "Capri → Positano Fähre"
+        "positanoCapriFerry": "Fähre Positano → Capri",
+        "capriPositanoFerry": "Fähre Capri → Positano"
       },
       "positanoAmalfi": {
         "positanoAmalfiBus": "Positano → Amalfi mit dem Bus",
         "amalfiPositanoBus": "Amalfi → Positano mit dem Bus",
-        "positanoAmalfiFerry": "Positano → Amalfi Fähre (saisonal)",
-        "amalfiPositanoFerry": "Amalfi → Positano Fähre (saisonal)"
+        "positanoAmalfiFerry": "Fähre Positano → Amalfi (saisonal)",
+        "amalfiPositanoFerry": "Fähre Amalfi → Positano (saisonal)"
       },
       "positanoRavello": {
-        "positanoRavelloBus": "Positano → Ravello Bus",
-        "ravelloPositanoBus": "Ravello → Positano Bus",
+        "positanoRavelloBus": "Bus Positano → Ravello",
+        "ravelloPositanoBus": "Bus Ravello → Positano",
         "positanoRavelloFerryBus": "Positano → Ravello Fähre + Bus"
       },
       "naplesPositano": {
         "naplesCenterTrainBus": "Neapel Zentrum → Positano (Zug + Bus)",
-        "naplesCenterPositanoFerry": "Neapel Zentrum → Positano Fähre",
-        "naplesAirportPositanoBus": "Neapel Flughafen → Positano Bus",
+        "naplesCenterPositanoFerry": "Fähre Neapel Zentrum → Positano",
+        "naplesAirportPositanoBus": "Bus Flughafen Neapel → Positano",
         "positanoNaplesCenterBusTrain": "Positano → Neapel Zentrum (Bus + Zug)",
-        "positanoNaplesCenterFerry": "Positano → Neapel Fähre",
-        "positanoNaplesAirportBus": "Positano → Neapel Flughafen Bus"
+        "positanoNaplesCenterFerry": "Fähre Positano → Neapel",
+        "positanoNaplesAirportBus": "Bus Positano → Flughafen Neapel"
       },
       "salernoPositano": {
-        "salernoPositanoBus": "Salerno → Positano Bus",
-        "salernoPositanoFerry": "Salerno → Positano Fähre (saisonal)",
-        "positanoSalernoBus": "Positano → Salerno Bus",
-        "positanoSalernoFerry": "Positano → Salerno Fähre (saisonal)"
+        "salernoPositanoBus": "Bus Salerno → Positano",
+        "salernoPositanoFerry": "Fähre Salerno → Positano (saisonal)",
+        "positanoSalernoBus": "Bus Positano → Salerno",
+        "positanoSalernoFerry": "Fähre Positano → Salerno (saisonal)"
       }
     },
     "filterHeading": "Erlebnis-Guides filtern",
     "filterDescription": "Wähle ein Tag, um die hervorgehobenen Erlebnisse einzugrenzen.",
     "grouped": {
       "beaches": {
-        "guides": {
-          "heading": "Strand-Guides",
-          "description": "Wähle den passenden Strandabschnitt und plane deinen Tag."
-        },
-        "directions": {
-          "heading": "Weg zum Strand",
-          "description": "Schritt-für-Schritt-Wegbeschreibung vom Hostel Brikette hinunter zur Küste."
-        }
+        "title": "Strände",
+        "description": "Finde den richtigen Strandabschnitt und plane deinen Tag.",
+        "imageAlt": "Strand von Positano mit bunten Sonnenschirmen entlang der Küste"
+      },
+      "hiking": {
+        "title": "Wanderungen & Wege",
+        "description": "Routen von entspannten Spaziergängen bis hin zu Ganztageswanderungen.",
+        "imageAlt": "Wanderer auf dem Götterpfad mit Küstenblick"
+      },
+      "day-trip": {
+        "title": "Tagesausflüge",
+        "description": "Capri, Amalfi, Ravello — wie du hinkommst und zurück.",
+        "imageAlt": "Fähre auf dem Weg zur Insel Capri"
+      },
+      "boat": {
+        "title": "Bootstouren",
+        "description": "Private Charter, Gruppenfahrten und Sunset-Cruises.",
+        "imageAlt": "Traditionelles Boot auf den Gewässern der Amalfiküste"
+      },
+      "cuisine": {
+        "title": "Essen & Trinken",
+        "description": "Wo du gut isst, ohne zu viel zu zahlen.",
+        "imageAlt": "Frische italienische Gerichte in einer lokalen Trattoria"
+      },
+      "more": {
+        "title": "Weitere Guides",
+        "description": "Transporttipps, Fotospots und lokale Events.",
+        "imageAlt": "Lokaler Bus auf der Küstenstraße der Amalfiküste"
       }
     }
   }

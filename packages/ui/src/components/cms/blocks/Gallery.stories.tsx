@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
+
 import Gallery from "./Gallery";
 
 const meta: Meta<typeof Gallery> = {

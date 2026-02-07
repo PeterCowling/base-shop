@@ -14,7 +14,7 @@ describe("analytics core functions", () => {
       readShop,
       getShopSettings,
     }));
-    const consoleLog = jest.spyOn(console, "log").mockImplementation(() => {});
+    const consoleLog = jest.spyOn(console, "debug").mockImplementation(() => {});
     const analytics = await import("../src/analytics");
     await analytics.trackEvent("shop", { type: "page_view" });
     await analytics.trackEvent("shop", { type: "page_view" });
@@ -47,7 +47,7 @@ describe("analytics core functions", () => {
       .fn()
       .mockReturnValue("2023-01-01T00:00:00.000Z");
     jest.doMock("@acme/date-utils", () => ({ nowIso }));
-    const consoleLog = jest.spyOn(console, "log").mockImplementation(() => {});
+    const consoleLog = jest.spyOn(console, "debug").mockImplementation(() => {});
     const analytics = await import("../src/analytics");
     await analytics.trackEvent("shop", { type: "page_view" });
     await analytics.trackPageView("shop", "/home");

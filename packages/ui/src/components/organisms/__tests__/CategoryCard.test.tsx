@@ -1,7 +1,9 @@
 /* i18n-exempt file -- tests use literal copy for assertions */
-import { render, screen } from "@testing-library/react";
-import { CategoryCard } from "../CategoryCard";
 import "../../../../../../test/resetNextMocks";
+
+import { render, screen } from "@testing-library/react";
+
+import { CategoryCard } from "../CategoryCard";
 
 describe("CategoryCard", () => {
   const category = {

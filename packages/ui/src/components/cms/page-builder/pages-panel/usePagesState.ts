@@ -1,9 +1,11 @@
 "use client";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { PageItem } from "./types";
-import { createPage, fetchPages, patchPage, updateOrder } from "./api";
-import { notify, uid } from "./utils";
+
 import { useTranslations } from "@acme/i18n";
+
+import { createPage, fetchPages, patchPage, updateOrder } from "./api";
+import { type PageItem } from "./types";
+import { notify, uid } from "./utils";
 
 export function usePagesState(open: boolean, shop: string) {
   const t = useTranslations();

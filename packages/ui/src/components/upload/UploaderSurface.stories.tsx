@@ -1,6 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/nextjs';
-import { UploaderSurface } from './UploaderSurface';
 import { useRef, useState } from 'react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
+
+import { UploaderSurface } from './UploaderSurface';
 
 function UploaderHarness() {
   const inputRef = useRef<HTMLInputElement | null>(null);

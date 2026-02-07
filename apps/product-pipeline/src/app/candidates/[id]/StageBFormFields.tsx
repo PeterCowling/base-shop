@@ -1,8 +1,9 @@
 "use client";
 
 import type { Dispatch, SetStateAction } from "react";
-import type { CandidateDetailStrings } from "./types";
+
 import type { StageBFormState } from "./stageBForm";
+import type { CandidateDetailStrings } from "./types";
 
 export default function StageBFormFields({
   form,

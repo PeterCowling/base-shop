@@ -1,0 +1,31 @@
+name = "xa-b-site"
+compatibility_date = "2025-06-20"
+pages_build_output_dir = ".vercel/output/static"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+XA_STEALTH_MODE = "true"
+XA_REQUIRE_CF_ACCESS = "true"
+XA_STRICT_STEALTH = "true"
+NEXT_PUBLIC_STEALTH_MODE = "true"
+# NOTE: Do not commit real hostnames/domains. Configure these per-environment in Cloudflare Pages:
+# - XA_ALLOWED_HOSTS
+# - NEXT_PUBLIC_SITE_DOMAIN
+
+[env.preview]
+name = "xa-b-preview"
+
+[env.preview.vars]
+XA_STEALTH_MODE = "true"
+XA_REQUIRE_CF_ACCESS = "true"
+XA_STRICT_STEALTH = "true"
+NEXT_PUBLIC_STEALTH_MODE = "true"
+
+[env.backup]
+name = "xa-b-backup"
+
+[env.backup.vars]
+XA_STEALTH_MODE = "true"
+XA_REQUIRE_CF_ACCESS = "true"
+XA_STRICT_STEALTH = "true"
+NEXT_PUBLIC_STEALTH_MODE = "true"

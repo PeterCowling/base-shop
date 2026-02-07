@@ -1,6 +1,8 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import type { MediaItem } from "@acme/types";
+
 import MediaOverviewHero from "../components/MediaOverviewHero";
 
 describe("MediaOverviewHero", () => {

@@ -1,8 +1,11 @@
 import type { ReactNode } from "react";
+
+import { useTranslations } from "@acme/i18n";
+
 import { Tag } from "../../../atoms";
 import { SummaryCard, type SummaryMetric } from "../shared";
+
 import type { DiscountPreviewData } from "./types";
-import { useTranslations } from "@acme/i18n";
 
 export interface DiscountSummaryCardProps {
   data: DiscountPreviewData;

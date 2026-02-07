@@ -1,5 +1,13 @@
 name: "Setup Repo"
-description: "Setup Node/PNPM and install dependencies"
+description: "Setup Node/PNPM and install dependencies with optional Turbo remote cache"
+
+inputs:
+  turbo-token:
+    description: "Turbo remote cache token (from Vercel)"
+    required: false
+  turbo-team:
+    description: "Turbo team slug for remote cache"
+    required: false
 
 runs:
   using: "composite"
@@ -17,4 +25,18 @@ runs:
 
     - name: Install Dependencies
       run: pnpm install --frozen-lockfile
+      shell: bash
+
+    - name: Configure Turbo remote cache
+      if: inputs.turbo-token != ''
+      shell: bash
+      run: |
+        echo "TURBO_TOKEN=${{ inputs.turbo-token }}" >> $GITHUB_ENV
+        echo "TURBO_TEAM=${{ inputs.turbo-team }}" >> $GITHUB_ENV
+        echo "Turbo remote cache enabled for team: ${{ inputs.turbo-team }}"
+
+    - name: Build critical packages
+      run: |
+        pnpm --filter @acme/tailwind-config build
+        pnpm --filter @acme/eslint-plugin-ds build
       shell: bash

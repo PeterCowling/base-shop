@@ -1,0 +1,51 @@
+{
+  "seo": {
+    "title": "Endre og Kansellere Din Positano Hostel Reservasjon",
+    "description": "Detaljert veiledning om dine kanselleringsalternativer, no-show policyer, hvordan du endrer reservasjonen din, regler for overføring av booking og forhåndsbetalte ikke-refunderbare bestillinger på Positanos eneste hostel."
+  },
+  "linkLabel": "Endre og Kansellere Din Positano Hostel Reservasjon",
+  "sections": [
+    {
+      "id": "noShowCharges",
+      "title": "No-Show Gebyrer",
+      "body": [
+        "Hvis du ikke har sjekket inn innen kl. 22:30 på den første dagen av reservasjonen din, vil bookingen din automatisk bli merket som 'No-Show'. Du vil bli belastet det høyeste beløpet av enten første natts opphold eller ditt ikke-refunderbare depositum. Hvis du har flere bestillinger, kan hver ha sin egen kanselleringsvarselperiode og gebyrer."
+      ]
+    },
+    {
+      "id": "cancellationsPolicy",
+      "title": "Kanselleringspolicy",
+      "body": [
+        "Send alle kanselleringsforespørsler skriftlig til vår offisielle e-postadresse (%URL:mailto:hostelpositano@gmail.com|hostelpositano@gmail.com%). Kanselleringsperioden begynner når hostelet mottar e-posten din og slutter kl. 00:01 på din planlagte innsjekkingsdato. Bookingen din forblir aktiv til du mottar e-postbekreftelse på at kanselleringen er behandlet. Et separat kanselleringsadministrasjonsgebyr - vanligvis 15% av bookingprisen ekskludert tredjepartskommisjoner - vil bli belastet. Hostelet kan kansellere bookingen din uten skriftlig forespørsel hvis du ikke sjekker inn før resepsjonen stenger på ankomstdagen, reiser tidligt uten skikkelig varsling, eller bryter hostelets retningslinjer. Hvis du ikke gir tilstrekkelig varsel, vil du pådra deg gebyrer tilsvarende et No-Show."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/f/f4/Man_with_smartphone_and_laptop_%28Unsplash%29.jpg",
+          "alt": "Person som bruker smarttelefon og laptop",
+          "caption": "E-post er den raskeste måten å få en skriftlig registrering av endringer eller kanselleringer."
+        }
+      ]
+    },
+    {
+      "id": "changingConfirmedBookings",
+      "title": "Endre Bekreftede Bestillinger",
+      "body": [
+        "Eksisterende reservasjoner kan ikke endres direkte; i stedet erstattes de helt av nye bestillinger. Send din endringsforespørsel via e-post til vår offisielle e-postadresse innen den nødvendige varselsperioden. Du vil motta en e-post når endringen er godkjent. Alle endringer er underlagt romtilgjengelighet og andre betingelser. Hvis du forkorter eller forlenger oppholdet ditt, vil justeringen håndteres som en kansellerings- eller forlengelsesforespørsel, og enhver forlengelse behandles som en ny reservasjon. Hvis du reiser før din bekreftede avreisedato uten å motta en offisiell kanselleringsbekreftelse, forblir de opprinnelige bookingbetingelsene i kraft."
+      ]
+    },
+    {
+      "id": "bookingTransferability",
+      "title": "Overførbarhet av Booking",
+      "body": [
+        "Bookingen din må forbli i ditt navn for hele oppholdet. Overføring av reservasjonen eller endring av gjestenavnet er ikke tillatt. Hvis noen forsøker å sjekke inn under en overført booking, vil reservasjonen bli kansellert umiddelbart, og du forblir økonomisk ansvarlig for hele beløpet."
+      ]
+    },
+    {
+      "id": "prepaidNonRefundableBookings",
+      "title": "Forhåndsbetalte, Ikke-Refunderbare Bestillinger",
+      "body": [
+        "Forhåndsbetalte, ikke-refunderbare reservasjoner krever full betaling ved bestillingstidspunktet. Hvis betalingen ikke går gjennom, vil reservasjonen din bli kansellert automatisk. Disse bestillingene er ikke refunderbare, selvom du kansellerer eller ikke dukker opp. Enhver forlengelse av oppholdet ditt vil bli behandlet som en separat, ny ikke-refunderbar bestilling."
+      ]
+    }
+  ]
+}

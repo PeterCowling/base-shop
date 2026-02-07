@@ -1,0 +1,27 @@
+{
+  "seo": {
+    "title": "Coucher de soleil en terrasse à Positano",
+    "description": "Un plan sunset simple et budget à Hostel Brikette : quand arriver pour rester sans stress."
+  },
+  "linkLabel": "Sunset en terrasse",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": [
+    "Pour un coucher de soleil sans dîner long et cher, la terrasse est l’option la plus simple."
+  ],
+  "sections": [
+    {
+      "id": "timing",
+      "title": "Timing",
+      "body": [
+        "En haute saison : 30–45 minutes avant le coucher du soleil pour une bonne place."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/terraceSunsets.webp",
+          "alt": "Lumière de coucher de soleil sur Positano depuis la terrasse"
+        }
+      ]
+    }
+  ],
+  "fallback": "Arrivez un peu tôt, prenez un verre, puis gardez la soirée simple."
+}

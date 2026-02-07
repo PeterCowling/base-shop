@@ -84,23 +84,6 @@
       "note": "Pastelaria para delizia al limone, babà al limoncello e doces ideais para levar a um piquenique nas falésias."
     }
   ],
-  "gallery": {
-    "title": "Dish highlights",
-    "items": [
-      {
-        "alt": "Seafood pasta with Amalfi Coast lemons",
-        "caption": "Frutos do mar básicos das trattorias de Positano"
-      },
-      {
-        "alt": "Delizia al limone pastry on a plate",
-        "caption": "Lemon desserts to sample"
-      },
-      {
-        "alt": "Amigos tilintando copos de limoncello ao pôr do sol",
-        "caption": "Digestivos with a view"
-      }
-    ]
-  },
   "fallback": {
     "toc": [
       {

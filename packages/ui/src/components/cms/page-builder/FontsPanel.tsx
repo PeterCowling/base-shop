@@ -2,15 +2,18 @@
 /* i18n-exempt file -- ABC-123 internal CMS editor panel; copy not end-user facing [ttl=2026-12-31] */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Dialog, DialogContent, DialogTitle } from "../../atoms/shadcn";
-import { Grid as DSGrid } from "../../atoms/primitives/Grid";
-import { Cluster } from "../../atoms/primitives/Cluster";
-import { Inline } from "../../atoms/primitives/Inline";
-import { type TokenMap } from "../../../hooks/useTokenEditor";
-import usePreviewTokens, { savePreviewTokens } from "./hooks/usePreviewTokens";
 import { usePathname } from "next/navigation";
-import { getShopFromPath } from "@acme/shared-utils";
+
+import { getShopFromPath } from "@acme/lib/shop";
+
+import { type TokenMap } from "../../../hooks/useTokenEditor";
+import { Cluster } from "../../atoms/primitives/Cluster";
+import { Grid as DSGrid } from "../../atoms/primitives/Grid";
+import { Inline } from "../../atoms/primitives/Inline";
+import { Dialog, DialogContent, DialogTitle } from "../../atoms/shadcn";
 import presetData from "../style/presets.json";
+
+import usePreviewTokens, { savePreviewTokens } from "./hooks/usePreviewTokens";
 
 interface Props {
   open: boolean;

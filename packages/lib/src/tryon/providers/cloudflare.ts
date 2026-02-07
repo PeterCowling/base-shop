@@ -1,8 +1,10 @@
-import type { TryOnProvider } from "./types";
 import type { ProviderResponse } from "@acme/types/tryon";
-import { createBreaker } from "./circuitBreaker";
-import { BUDGET } from "../index";
+
 import { t } from "../i18n";
+import { BUDGET } from "../index";
+
+import { createBreaker } from "./circuitBreaker";
+import type { TryOnProvider } from "./types";
 
 const SEGMENT_MODEL = "@cf/unum/u2net"; // background/foreground segmentation
 const DEPTH_MODEL = "@cf/openmmlab/midas"; // depth estimation

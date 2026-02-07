@@ -80,7 +80,7 @@
       },
       {
         "href": "#faqs",
-        "label": "FAQs"
+        "label": "FAQ"
       }
     ],
     "classics": {
@@ -137,7 +137,7 @@
       ]
     },
     "faqs": {
-      "heading": "FAQs",
+      "heading": "FAQ",
       "items": [
         {
           "summary": "Quel est le meilleur moment pour shooter ?",

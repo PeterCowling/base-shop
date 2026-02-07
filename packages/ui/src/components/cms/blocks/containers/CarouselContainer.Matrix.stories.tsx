@@ -1,8 +1,10 @@
 // packages/ui/src/components/cms/blocks/containers/CarouselContainer.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import CarouselContainer from './CarouselContainer';
+
 import { makeStateStory } from '../../../story-utils/createStories';
+
+import CarouselContainer from './CarouselContainer';
 
 const meta: Meta<typeof CarouselContainer> = {
   title: 'CMS Blocks/Containers/CarouselContainer/Matrix',

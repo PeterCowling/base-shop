@@ -12,45 +12,50 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "disableSourceOfProjectReferenceRedirect": true,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "paths": {
       "@/*": [
         "src/*",
         "dist/*"
       ],
       "@ui": [
-        "../../packages/ui/dist/index.d.ts",
-        "../../packages/ui/src/index.ts"
+        "../../packages/ui/dist/index.d.ts"
       ],
       "@ui/*": [
-        "../../packages/ui/dist/*",
-        "../../packages/ui/src/*"
+        "../../packages/ui/dist/*"
       ],
       "@acme/ui": [
-        "../../packages/ui/dist/index.d.ts",
-        "../../packages/ui/src/index.ts"
+        "../../packages/ui/dist/index.d.ts"
       ],
       "@acme/ui/*": [
-        "../../packages/ui/dist/*",
-        "../../packages/ui/src/*"
+        "../../packages/ui/dist/*"
       ],
       "@i18n": [
-        "../../packages/i18n/dist/index.d.ts",
-        "../../packages/i18n/src/index.ts"
+        "../../packages/i18n/dist/index.d.ts"
       ],
       "@i18n/*": [
-        "../../packages/i18n/dist/*",
-        "../../packages/i18n/src/*"
+        "../../packages/i18n/dist/*"
       ],
       "@acme/pipeline-engine": [
-        "../../packages/pipeline-engine/src/index.ts",
         "../../packages/pipeline-engine/dist/index.d.ts"
       ],
       "@acme/pipeline-engine/*": [
-        "../../packages/pipeline-engine/src/*",
         "../../packages/pipeline-engine/dist/*"
+      ],
+      "@acme/lib": [
+        "../../packages/lib/dist/index.d.ts"
+      ],
+      "@acme/lib/*": [
+        "../../packages/lib/dist/*"
+      ],
+      "@acme/design-system": [
+        "../../packages/design-system/dist/index.d.ts"
+      ],
+      "@acme/design-system/*": [
+        "../../packages/design-system/dist/*"
       ]
     },
+    "types": ["node", "react", "react-dom", "three"],
     "jsx": "preserve"
   },
   "include": [

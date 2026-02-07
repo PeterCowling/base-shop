@@ -1,4 +1,5 @@
 import type { Rule } from "eslint";
+
 import { extractFromJsxAttribute } from "../utils/classParser.js";
 
 function hasClass(attr: any, pred: (c: string) => boolean): boolean {

@@ -1,8 +1,14 @@
 // apps/cms/src/actions/products.ts
 "use server";
 
+import { redirect } from "next/navigation";
 import type { ProductForm } from "@cms/actions/schemas";
 import { productSchema } from "@cms/actions/schemas";
+import { ulid } from "ulid";
+
+import { nowIso } from "@acme/date-utils";
+import { fillLocales } from "@acme/i18n/fillLocales";
+import { updateInventoryItem } from "@acme/platform-core/repositories/inventory.server";
 import {
   deleteProductFromRepo,
   duplicateProductInRepo,
@@ -11,17 +17,15 @@ import {
   readSettings,
   updateProductInRepo,
   writeRepo,
-} from "@platform-core/repositories/json.server";
-import { fillLocales } from "@i18n/fillLocales";
-import { captureException } from "@/utils/sentry.server";
-import type { Locale, ProductPublication, PublicationStatus } from "@acme/types";
-import { ensureAuthorized } from "./common/auth";
-import { redirect } from "next/navigation";
-import { ulid } from "ulid";
-import { nowIso } from "@acme/date-utils";
-import { formDataToObject } from "../utils/formData";
-import { updateInventoryItem } from "@platform-core/repositories/inventory.server";
+} from "@acme/platform-core/repositories/json.server";
 import { track } from "@acme/telemetry";
+import type { Locale, MediaItem, ProductPublication, PublicationStatus } from "@acme/types";
+
+import { captureException } from "@/utils/sentry.server";
+
+import { formDataToObject } from "../utils/formData";
+
+import { ensureAuthorized } from "./common/auth";
 
 /* -------------------------------------------------------------------------- */
 /*  Helpers                                                                    */
@@ -42,8 +46,8 @@ export async function createDraftRecord(
   const now = nowIso();
   const locales = await getLocales(shop);
   const first = locales[0] ?? "en";
-  const title = fillLocales({ [first]: "Untitled" }, "");
-  const description = fillLocales(undefined, "");
+  const title = fillLocales({ [first]: "Untitled" }, "") as any;
+  const description = fillLocales(undefined, "") as any;
 
   const draft: ProductPublication = {
     id: ulid(),
@@ -114,7 +118,7 @@ export async function createMinimalFirstProduct(
     description: parsed.description as unknown as Record<Locale, string>,
     price: parsed.price,
     currency: settings.currency ?? "EUR",
-    media: parsed.media,
+    media: parsed.media as MediaItem[],
     status: "active",
     shop,
     row_version: 1,
@@ -203,7 +207,7 @@ export async function updateProduct(
 
   const data: ProductForm = parsed.data;
   const { id, price, media: nextMedia } = data;
-  const mediaItems = nextMedia.filter((m) => Boolean(m.url) && Boolean(m.type));
+  const mediaItems = nextMedia.filter((m): m is MediaItem => Boolean(m.url) && Boolean(m.type));
   const current = await getProductById(shop, id);
   if (!current) throw new Error(`Product ${id} not found in ${shop}`);
 

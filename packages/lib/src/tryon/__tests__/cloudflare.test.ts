@@ -1,3 +1,6 @@
+import { BUDGET } from "../index";
+import * as cloudflare from "../providers/cloudflare";
+
 jest.mock(
   "@acme/i18n/en.json",
   () => ({
@@ -19,9 +22,6 @@ jest.mock(
   }),
   { virtual: true }
 );
-
-import * as cloudflare from "../providers/cloudflare";
-import { BUDGET } from "../index";
 
 class MockFormData {
   private entries: Array<[string, unknown, string | undefined]> = [];
@@ -273,7 +273,7 @@ describe("createCloudflareProvider", () => {
       global.fetch = jest.fn(async () => new Response(bytes, { status: 200 })) as unknown as typeof fetch;
 
       const blob = new Blob(["image"], { type: "image/png" });
-      const result = await cloudflare.runWorkersAi("model", blob);
+      const result = await cloudflare.runWorkersAi("model", blob) as { contentType: string; body: ArrayBuffer };
 
       expect(result.contentType).toBe("application/octet-stream");
       expect(Buffer.from(new Uint8Array(result.body))).toEqual(Buffer.from(bytes));
@@ -329,7 +329,7 @@ describe("createCloudflareProvider", () => {
       ) as unknown as typeof fetch;
 
       const blob = new Blob(["image"], { type: "image/png" });
-      const result = await cloudflare.runWorkersAi("model", blob);
+      const result = await cloudflare.runWorkersAi("model", blob) as { contentType: string; body: ArrayBuffer };
 
       expect(Buffer.from(new Uint8Array(result.body))).toEqual(Buffer.from([0, 1, 2]));
       expect(result.contentType).toBe("image/png");
@@ -349,7 +349,7 @@ describe("createCloudflareProvider", () => {
       ) as unknown as typeof fetch;
 
       const blob = new Blob(["image"], { type: "image/png" });
-      const result = await cloudflare.runWorkersAi("model", blob);
+      const result = await cloudflare.runWorkersAi("model", blob) as { contentType: string; body: ArrayBuffer };
 
       expect(Buffer.from(new Uint8Array(result.body)).toString()).toBe("gateway");
       expect(result.contentType).toBe("image/png");
@@ -372,7 +372,7 @@ describe("createCloudflareProvider", () => {
       ) as unknown as typeof fetch;
 
       const blob = new Blob(["image"], { type: "image/png" });
-      const result = await cloudflare.runWorkersAi("model", blob);
+      const result = await cloudflare.runWorkersAi("model", blob) as { contentType: string; body: ArrayBuffer };
 
       expect(Buffer.from(new Uint8Array(result.body)).toString()).toBe("top-level");
       expect(result.contentType).toBe("image/png");
@@ -391,7 +391,7 @@ describe("createCloudflareProvider", () => {
       ) as unknown as typeof fetch;
 
       const blob = new Blob(["image"], { type: "image/png" });
-      const result = await cloudflare.runWorkersAi("model", blob);
+      const result = await cloudflare.runWorkersAi("model", blob) as { contentType: string; body: ArrayBuffer };
 
       expect(Buffer.from(new Uint8Array(result.body)).toString()).toBe("nested");
     });
@@ -439,7 +439,7 @@ describe("createCloudflareProvider", () => {
       delete process.env.CLOUDFLARE_AI_GATEWAY_ID;
 
       global.fetch = jest.fn((_, init?: RequestInit) =>
-        new Promise<Response>((_, reject) => {
+        new Promise<Response>((_resolve, reject) => {
           init?.signal?.addEventListener("abort", () => reject(new Error("aborted")));
         })
       ) as unknown as typeof fetch;

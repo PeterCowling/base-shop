@@ -1,10 +1,12 @@
-jest.mock("@acme/shared-utils", () => ({
+import { act, renderHook, waitFor } from "@testing-library/react";
+
+import { fetchJson } from "@acme/lib/http";
+
+import { loadPublishLocations, usePublishLocations } from "../src/hooks/usePublishLocations";
+
+jest.mock("@acme/lib/http", () => ({
   fetchJson: jest.fn(),
 }));
-
-import { renderHook, act, waitFor } from "@testing-library/react";
-import { fetchJson } from "@acme/shared-utils";
-import { loadPublishLocations, usePublishLocations } from "../src/hooks/usePublishLocations";
 
 afterEach(() => {
   jest.clearAllMocks();

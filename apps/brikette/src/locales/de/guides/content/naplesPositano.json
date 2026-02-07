@@ -31,7 +31,7 @@
       "title": "Zug + Bus (ganzjährig)",
       "body": [
         "Vom Flughafen NAP nimmst du den Curreri-Shuttle (oder Alibus + Circumvesuviana) nach Sorrent und steigst dort in den SITA-Bus Richtung Amalfi um.",
-        "Tickets vor dem Einstieg kaufen, Tagesfahrplan prüfen und an der Haltestelle »Chiesa Nuova« aussteigen – dort gibt es am wenigsten Stufen zum Hostel Brikette."
+        "Tickets vor dem Einstieg kaufen, Tagesfahrplan prüfen und an der Haltestelle \\\\\"Chiesa Nuova\\\\\" aussteigen – dort gibt es am wenigsten Stufen zum Hostel Brikette."
       ]
     },
     {
@@ -62,23 +62,8 @@
     {
       "q": "Wie viele Stufen sind es bis zum Hostel?",
       "a": [
-        "Von der Haltestelle »Chiesa Nuova« sind es ca. 80 Meter ohne Treppen."
+        "Von der Haltestelle \\\\\"Chiesa Nuova\\\\\" sind es ca. 80 Meter ohne Treppen."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Referenzbilder",
-    "items": [
-      {
-        "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
-        "alt": "SITA-Haltestelle Chiesa Nuova / Bar Internazionale in Positano",
-        "caption": "Haltestelle Bar Internazionale / Chiesa Nuova"
-      },
-      {
-        "src": "/img/directions/naples-airport-positano-bus-hostel-entrance-steps.png",
-        "alt": "Treppen zum Haupteingang des Hostel Brikette",
-        "caption": "Eingangstreppen des Hostel Brikette"
-      }
-    ]
-  }
+  ]
 }

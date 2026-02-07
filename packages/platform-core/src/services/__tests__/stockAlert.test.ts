@@ -1,4 +1,5 @@
 import { jest } from "@jest/globals";
+
 import { variantKey } from "../../repositories/inventory.server";
 
 const sendEmail = jest.fn();
@@ -126,7 +127,7 @@ describe("checkAndAlert", () => {
     });
 
     sendEmail.mockRejectedValueOnce(new Error("email fail"));
-    fetchMock.mockRejectedValueOnce(new Error("webhook fail"));
+    fetchMock.mockRejectedValue(new Error("webhook fail"));
     const consoleError = jest.spyOn(console, "error").mockImplementation(() => {});
 
     const { checkAndAlert } = await import("../stockAlert.server");
@@ -144,8 +145,8 @@ describe("checkAndAlert", () => {
       expect.any(Error),
     );
     expect(consoleError).toHaveBeenCalledWith(
-      "Failed to send stock alert webhook",
-      expect.any(Error),
+      "Failed to send stock alert webhook:",
+      expect.any(String),
     );
     consoleError.mockRestore();
   });

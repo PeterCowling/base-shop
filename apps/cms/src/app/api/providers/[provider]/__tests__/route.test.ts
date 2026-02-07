@@ -2,14 +2,20 @@ import { NextRequest, NextResponse } from "next/server";
 
 jest
   .spyOn(NextResponse, "redirect")
-  .mockImplementation((url: string) =>
-    new Response(null, { status: 307, headers: { location: url } }),
-  );
+  .mockImplementation(((url: string | URL) =>
+    new Response(null, { status: 307, headers: { location: String(url) } })) as any);
 
 const mkdir = jest.fn();
 const writeFile = jest.fn();
 jest.mock("fs", () => ({ promises: { mkdir, writeFile } }));
-jest.mock("@platform-core/dataRoot", () => ({ resolveDataRoot: () => "/tmp/data" }));
+jest.mock("@acme/platform-core/dataRoot", () => ({ resolveDataRoot: () => "/tmp/data" }));
+
+// Mock auth to avoid pulling in the full auth chain
+jest.mock("@cms/actions/common/auth", () => ({
+  ensureAuthorized: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+  ensureShopAccess: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+  ensureShopReadAccess: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+}));
 
 let GET: typeof import("../route").GET;
 

@@ -2,8 +2,8 @@
 import { ingestExternalUrl, ingestFromText } from "../../upload/ingestExternalUrl";
 
 const originalFetch: typeof fetch = globalThis.fetch;
-const mockFetch = jest.fn<Promise<Response>, Parameters<typeof fetch>>(
-  async (_url: string) =>
+const mockFetch = jest.fn(
+  async (_url: string | URL | Request, _init?: RequestInit) =>
     ({
       ok: true,
       headers: new Map([["content-type", "image/png"]]) as unknown as Headers,

@@ -2,22 +2,23 @@
 
 "use client";
 
-import { Button, Input } from "@ui/components/atoms/shadcn";
-import { LOCALES, useTranslations } from "@acme/i18n";
-import type { Locale } from "@acme/types";
-import type { ConfiguratorProgress } from "@acme/types";
 import React, { useEffect, useState } from "react";
-import WizardPreview from "../../wizard/WizardPreview";
-import PreviewDeviceSelector from "../../wizard/PreviewDeviceSelector";
-import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
-import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
+
 import {
   CmsLaunchChecklist,
   type CmsLaunchChecklistItem,
   type CmsLaunchStatus,
-} from "@ui/components/cms"; // UI: @ui/components/cms/CmsLaunchChecklist
+} from "@acme/cms-ui"; // UI: @acme/ui/components/cms/CmsLaunchChecklist
+import { Button, Input } from "@acme/design-system/shadcn";
+import { LOCALES, useTranslations } from "@acme/i18n";
+import type { ConfiguratorProgress,Locale  } from "@acme/types";
+import { type DevicePreset,devicePresets } from "@acme/ui/utils/devicePresets";
+
+import PreviewDeviceSelector from "../../wizard/PreviewDeviceSelector";
+import WizardPreview from "../../wizard/WizardPreview";
 import { buildLaunchChecklist } from "../hooks/dashboard/launchChecklist";
+import useStepCompletion from "../hooks/useStepCompletion";
 
 interface Props {
   shopId: string;

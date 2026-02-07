@@ -1,5 +1,6 @@
 import React from 'react';
-import FilterBar, { type FilterDefinition, type Filters } from '@platform-core/components/shop/FilterBar';
+
+import FilterBar, { type FilterDefinition, type Filters } from '@acme/platform-core/components/shop/FilterBar';
 
 describe('FilterBar (CT)', { tags: ['forms'] }, () => {
   it('emits typed values for selects and numbers; clear works', () => {

@@ -1,6 +1,6 @@
-import Header from "./HeaderBlock";
-import Footer from "./FooterBlock";
 import Canvas from "./Canvas";
+import Footer from "./FooterBlock";
+import Header from "./HeaderBlock";
 import type { BlockRegistryEntry } from "./types";
 
 const defaultPreview = "/window.svg";

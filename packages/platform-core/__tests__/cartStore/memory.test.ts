@@ -1,12 +1,12 @@
 import { jest } from "@jest/globals";
 
+import { createCartStore } from "../../src/cartStore";
+
 process.env.STRIPE_SECRET_KEY = "test";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "test";
 process.env.CART_COOKIE_SECRET = "test";
 
 jest.mock("@upstash/redis", () => ({ Redis: jest.fn() }));
-
-import { createCartStore } from "../../src/cartStore";
 
 describe("MemoryCartStore", () => {
   beforeEach(() => {

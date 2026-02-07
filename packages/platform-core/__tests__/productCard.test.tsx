@@ -1,9 +1,11 @@
 import React from "react";
-import { render, screen, act } from "@testing-library/react";
-import { ProductCard, Price } from "../src/components/shop/ProductCard";
+import { act,render, screen } from "@testing-library/react";
+
+import type { SKU } from "@acme/types";
+
+import { Price,ProductCard } from "../src/components/shop/ProductCard";
 import { CartProvider } from "../src/contexts/CartContext";
 import { CurrencyProvider } from "../src/contexts/CurrencyContext";
-import type { SKU } from "@acme/types";
 import { PRODUCTS } from "../src/products/index";
 
 describe("ProductCard", () => {

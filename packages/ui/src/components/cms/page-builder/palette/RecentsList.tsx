@@ -1,11 +1,11 @@
 "use client";
 
-import PaletteItem from "../PaletteItem";
-import { defaultIcon } from "../paletteData";
-import { isTopLevelAllowed } from "../rules";
 import { Inline, Stack } from "../../../atoms/primitives";
 import type { ComponentType } from "../defaults";
 import type { PaletteMeta } from "../palette.types";
+import { defaultIcon } from "../paletteData";
+import PaletteItem from "../PaletteItem";
+import { isTopLevelAllowed } from "../rules";
 
 interface Props {
   recents: string[];

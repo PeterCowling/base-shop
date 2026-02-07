@@ -1,4 +1,5 @@
 import { RuleTester } from "eslint";
+
 const rule = require("../src/rules/no-raw-spacing.ts").default as typeof import("../src/rules/no-raw-spacing").default;
 
 // Polyfills and parser setup

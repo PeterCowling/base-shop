@@ -1,8 +1,9 @@
 // React 19 requires this flag to silence act warnings in tests
-(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
-
 import { render, screen } from "@testing-library/react";
+
 import UpgradeSummary from "@/app/cms/shop/[shop]/UpgradeSummary";
+
+(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
 
 describe("UpgradeSummary", () => {
   const shop = "demo-shop";

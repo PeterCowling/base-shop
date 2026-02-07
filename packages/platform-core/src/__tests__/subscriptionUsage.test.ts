@@ -1,13 +1,13 @@
 /** @jest-environment node */
 
+import { prisma } from "../db";
+import { getSubscriptionUsage, incrementSubscriptionUsage } from "../subscriptionUsage";
+
 jest.mock("../db", () => ({
   prisma: {
     subscriptionUsage: { findUniqueOrThrow: jest.fn(), upsert: jest.fn() },
   },
 }));
-
-import { prisma } from "../db";
-import { getSubscriptionUsage, incrementSubscriptionUsage } from "../subscriptionUsage";
 
 const store: Record<string, any> = {};
 const findUniqueOrThrowMock =

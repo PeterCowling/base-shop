@@ -1,7 +1,9 @@
-import { Card, CardContent, Skeleton } from "@ui/components/atoms";
-import { Grid } from "@ui/components/atoms/primitives";
-import { AnalyticsSummaryCard } from "@ui/components/cms/marketing";
+import { AnalyticsSummaryCard } from "@acme/cms-ui/marketing";
+import { Skeleton } from "@acme/design-system/atoms";
+import { Grid } from "@acme/design-system/primitives";
+import { Card, CardContent } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
+
 import type { CampaignMetrics } from "./useEmailCampaignComposer";
 
 function clampPercent(value: number): number {

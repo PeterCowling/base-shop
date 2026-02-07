@@ -1,8 +1,10 @@
 import { notFound } from "next/navigation";
-import { pageSchema, type Page, type PageComponent } from "@acme/page-builder-core";
-import type { Locale } from "@i18n/locales";
-import { devicePresets, getLegacyPreset } from "@ui/utils/devicePresets";
+
+import type { Locale } from "@acme/i18n/locales";
+import { type Page, type PageComponent,pageSchema } from "@acme/page-builder-core";
 import { exportComponents } from "@acme/page-builder-core";
+import { devicePresets, getLegacyPreset } from "@acme/ui/utils/devicePresets";
+
 import PreviewClient from "./PreviewClient";
 
 export default async function PreviewPage({

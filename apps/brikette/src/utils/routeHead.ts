@@ -1,16 +1,21 @@
 // src/utils/routeHead.ts
+// Local type definitions (no longer using react-router types)
+import { PUBLIC_BASE_URL } from "@/config/env";
 import { BASE_URL } from "@/config/site";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
-import type { LinksFunction, MetaFunction } from "react-router";
+import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
+import { getOrigin } from "@/utils/env-helpers";
+import { OG_IMAGE as DEFAULT_OG_IMAGE } from "@/utils/headConstants";
 // Use a namespace import so partial vi.mocks that only export a subset
 // of the SEO helpers (e.g. pageHead) don't throw at import time.
 import * as seo from "@/utils/seo";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import { getSlug } from "@/utils/slug";
-import { OG_IMAGE as DEFAULT_OG_IMAGE } from "@/utils/headConstants";
-import { getOrigin } from "@/root/environment";
-import { PUBLIC_BASE_URL } from "@/config/env";
+
+type MetaDescriptor = Record<string, string>;
+type LinkDescriptor = { rel: string; href: string; hrefLang?: string };
+type MetaFunction = () => MetaDescriptor[];
+type LinksFunction = () => LinkDescriptor[];
 
 const FALLBACK_CANONICAL_ORIGIN = "https://hostel-positano.com";
 
@@ -134,7 +139,7 @@ export function buildRouteMeta({
       });
     } catch {
       // If buildLinks throws (e.g., during partial mocks), fall back to canonical only.
-      const canonicalPath = path !== "/" && path.endsWith("/") ? path.slice(0, -1) : path;
+      const canonicalPath = path === "/" || path.endsWith("/") ? path : `${path}/`;
       tags.push({
         tagName: "link",
         rel: "canonical",
@@ -164,7 +169,17 @@ export function buildRouteLinks(args?: BuildRouteLinksArgs): ReturnType<LinksFun
   const contextSource = args ?? routeLinkContextStack.pop() ?? lastRouteLinkContext;
   if (!contextSource) return [];
 
-  const resolvedOrigin = contextSource.origin ?? CANONICAL_ORIGIN;
+  const resolvedOrigin = (() => {
+    if (contextSource.origin) return contextSource.origin;
+    if (contextSource.url) {
+      try {
+        return new URL(contextSource.url).origin;
+      } catch {
+        // ignore invalid url and fall back
+      }
+    }
+    return CANONICAL_ORIGIN;
+  })();
 
   const resolvedPath = (() => {
     if (contextSource.path && contextSource.path.trim().length > 0) {

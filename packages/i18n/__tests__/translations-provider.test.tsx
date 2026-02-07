@@ -1,6 +1,7 @@
-import { render, screen } from "@testing-library/react";
-import { TranslationsProvider, useTranslations } from "../src/Translations";
 import type { ReactNode } from "react";
+import { render, screen } from "@testing-library/react";
+
+import { TranslationsProvider, useTranslations } from "../src/Translations";
 
 describe("TranslationsProvider and useTranslations", () => {
   function Show({ tKey }: { tKey: string }): React.JSX.Element {
@@ -20,7 +21,7 @@ describe("TranslationsProvider and useTranslations", () => {
 
   it("falls back to the key and warns when a translation is missing", () => {
     const original = process.env.NODE_ENV;
-    process.env.NODE_ENV = "development";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "development";
     const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
 
     render(
@@ -35,7 +36,7 @@ describe("TranslationsProvider and useTranslations", () => {
     );
 
     warnSpy.mockRestore();
-    process.env.NODE_ENV = original;
+    (process.env as Record<string, string | undefined>).NODE_ENV = original;
   });
 
   it("memoises the translation function and updates when messages change", () => {

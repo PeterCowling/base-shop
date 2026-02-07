@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/SearchBar.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import SearchBar from './SearchBar';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './SearchBar.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import SearchBar from './SearchBar';
+import fixture from './SearchBar.fixtures.json';
 
 const meta: Meta<typeof SearchBar> = {
   title: 'CMS Blocks/SearchBar/Matrix',

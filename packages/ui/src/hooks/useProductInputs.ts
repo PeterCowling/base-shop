@@ -1,14 +1,15 @@
 "use client";
 
 // packages/ui/hooks/useProductInputs.ts
-import { parseMultilingualInput } from "@acme/i18n/parseMultilingualInput";
-import type { Locale } from "@acme/i18n/locales";
-import type { ProductPublication } from "@acme/types";
 import {
+  type ChangeEvent,
   useCallback,
   useState,
-  type ChangeEvent,
 } from "react";
+
+import type { Locale } from "@acme/i18n/locales";
+import { parseMultilingualInput } from "@acme/i18n/parseMultilingualInput";
+import type { ProductPublication } from "@acme/types";
 
 export type ProductWithVariants = ProductPublication & {
   variants: Record<string, string[]>;

@@ -4,24 +4,24 @@
 
 import React from "react";
 import {
-  ImageIcon,
-  ReaderIcon,
-  SectionIcon,
-  ViewGridIcon,
-  LayersIcon,
-  TableIcon,
-  CodeIcon,
-  HeadingIcon,
   BoxIcon,
-  VideoIcon,
+  ClockIcon,
+  CodeIcon,
+  DividerHorizontalIcon,
+  EnvelopeClosedIcon,
+  HeadingIcon,
+  ImageIcon,
+  LayersIcon,
   MagnifyingGlassIcon,
   QuestionMarkCircledIcon,
-  EnvelopeClosedIcon,
+  ReaderIcon,
   RocketIcon,
+  SectionIcon,
   StarIcon,
+  TableIcon,
   TextAlignLeftIcon,
-  DividerHorizontalIcon,
-  ClockIcon,
+  VideoIcon,
+  ViewGridIcon,
 } from "@radix-ui/react-icons";
 
 // Map known component types to a Radix icon.

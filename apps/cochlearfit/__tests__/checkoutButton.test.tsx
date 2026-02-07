@@ -1,5 +1,7 @@
 import { screen } from "@testing-library/react";
+
 import CheckoutButton from "@/components/checkout/CheckoutButton";
+
 import { renderWithProviders } from "./testUtils";
 
 const noop = () => undefined;

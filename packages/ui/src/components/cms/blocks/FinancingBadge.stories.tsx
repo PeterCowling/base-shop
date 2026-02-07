@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
+
 import FinancingBadge from "./FinancingBadge";
 
 const meta: Meta<typeof FinancingBadge> = {

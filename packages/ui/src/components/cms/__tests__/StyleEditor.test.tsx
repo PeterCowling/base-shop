@@ -1,14 +1,14 @@
 /* i18n-exempt file -- TEST-0003: unit test literals are not user-facing */
-/* eslint-disable ds/no-raw-color -- TEST-0003: passing raw hex to props is required for this unit test */
+ 
 import { render, within } from "@testing-library/react";
+
 import type { TokenMap } from "../../../hooks/useTokenEditor";
+import Presets from "../style/Presets";
+import Tokens from "../style/Tokens";
 import StyleEditor from "../StyleEditor";
 
 jest.mock("../style/Presets", () => jest.fn(() => <div>presets</div>));
 jest.mock("../style/Tokens", () => jest.fn(() => <div>tokens</div>));
-
-import Presets from "../style/Presets";
-import Tokens from "../style/Tokens";
 
 const MockPresets = Presets as unknown as jest.Mock;
 const MockTokens = Tokens as unknown as jest.Mock;

@@ -1,11 +1,12 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { runInNewContext } from "node:vm";
+
 import ts from "typescript";
 
 import {
-  tokens as baseTokensSrc,
   type TokenMap as ThemeTokenMap,
+  tokens as baseTokensSrc,
 } from "../../../themes/base/src";
 
 function typedEntries<T extends object>(obj: T): [keyof T, T[keyof T]][] {

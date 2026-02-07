@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/SocialProof.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import SocialProof from './SocialProof';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './SocialProof.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import SocialProof from './SocialProof';
+import fixture from './SocialProof.fixtures.json';
 
 const meta: Meta<typeof SocialProof> = {
   title: 'CMS Blocks/SocialProof/Matrix',

@@ -2,12 +2,14 @@
 "use client";
 
 import type { PageComponent } from "@acme/types";
-import { Button } from "../../../../atoms/shadcn";
+
 import { Tooltip } from "../../../../atoms";
 import IconButton from "../../../../atoms/IconButton";
-import UnitInput from "./UnitInput";
+import { Button } from "../../../../atoms/shadcn";
 import useLocalStrings from "../../hooks/useLocalStrings";
+
 import { isOverridden } from "./helpers";
+import UnitInput from "./UnitInput";
 
 interface Props {
   component: PageComponent;

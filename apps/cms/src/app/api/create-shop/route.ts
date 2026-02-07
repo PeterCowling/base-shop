@@ -1,9 +1,11 @@
 // apps/cms/src/app/api/create-shop/route.ts
 import "@acme/zod-utils/initZod";
-import { createNewShop } from "@cms/actions/createShop.server";
-import { shopConfigSchema, type ShopConfig } from "@acme/types";
+
 import { NextResponse } from "next/server";
+import { createNewShop } from "@cms/actions/createShop.server";
 import { z } from "zod";
+
+import { type ShopConfig,shopConfigSchema } from "@acme/types";
 
 /**
  * POST /cms/api/create-shop

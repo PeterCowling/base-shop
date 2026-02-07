@@ -13,7 +13,12 @@ Last-reviewed: 2025-12-02
   pnpm lint
   ```
 
-- Pre-commit hooks (`simple-git-hooks` + `lint-staged`) already run ESLint on staged files with `--max-warnings=0`, so lint failures should be caught locally rather than in CI.
+- Pre-commit hooks (`simple-git-hooks`) run check-only ESLint on staged files via `lint-staged --no-stash`:
+  - Partially staged files are blocked (to prevent unstaged hunks being staged under lint-staged 15.x behavior).
+  - Reproduce the hook locally without committing: `pnpm lint:staged`.
+- Pre-commit also runs `pnpm typecheck:staged` (affected workspaces only) to catch issues before they land in git history.
+- Pre-commit runs `pnpm validate:agent-context` to warn on agent context drift (digest size, CLAUDE size, and duplicated 3-line blocks between always-on files).
+- Pre-push runs `pnpm typecheck` and `pnpm lint` to catch issues before remote CI churn.
 
 ## Tests and CI gating
 
@@ -27,7 +32,7 @@ Last-reviewed: 2025-12-02
 
 - CI workflows (`ci.yml`, app-specific workflows, and the workspace matrix in `test.yml`) are responsible for running the full test suites (unit, integration, E2E) and acting as the main gate for merges and deploys.
 - For monorepo-wide tests:
-  - `pnpm test` runs `turbo run test` across all workspaces.
+  - `pnpm test` runs `turbo run test` across all workspaces. **Warning:** Never run this locally — it spawns too many workers. Use targeted tests instead. See [testing-policy.md](testing-policy.md).
   - `pnpm test:affected` runs `turbo run test --affected`, executing tests only in affected workspaces plus their dependents (used on all branches in root CI to keep runs fast).
 
 ## CI ownership and app workflows
@@ -68,7 +73,7 @@ When you add a new app, keep CI aligned with the patterns above:
 - For generated shops:
   - Use `pnpm setup-ci <id>` to scaffold a `shop-<id>.yml` workflow under `.github/workflows/`.
   - The generated workflow:
-    - Installs dependencies and runs `pnpm lint && pnpm test`.
+    - Installs dependencies and runs `pnpm lint && pnpm --filter @apps/shop-<id> test`.
     - Builds `@apps/shop-<id>` and deploys it to Cloudflare Pages via `@cloudflare/next-on-pages`.
   - Make sure the shop’s `.env` and Cloudflare Pages env vars are configured before the first deploy.
 

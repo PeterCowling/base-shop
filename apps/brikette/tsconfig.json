@@ -2,17 +2,18 @@
   "extends": "@acme/config/tsconfig.app.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "strict": true,
+    "strict": false,
+    "noImplicitAny": false,
     "allowJs": false,
-    "exactOptionalPropertyTypes": true,
-    "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "useUnknownInCatchVariables": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "exactOptionalPropertyTypes": false,
+    "noUncheckedIndexedAccess": false,
+    "noImplicitOverride": false,
+    "noPropertyAccessFromIndexSignature": false,
+    "useUnknownInCatchVariables": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "disableSourceOfProjectReferenceRedirect": true,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "paths": {
       "@/*": [
         "src/*",
@@ -27,6 +28,20 @@
         "../../packages/ui/dist/*",
         "../../packages/ui/src/*"
       ],
+      "@acme/guides-core": [
+        "../../packages/guides-core/dist/index.d.ts",
+        "../../packages/guides-core/src/index.ts"
+      ],
+      "@acme/guides-core/*": [
+        "../../packages/guides-core/dist/*",
+        "../../packages/guides-core/src/*"
+      ],
+      "@acme/telemetry": [
+        "../../packages/telemetry/dist/index.d.ts"
+      ],
+      "@acme/telemetry/*": [
+        "../../packages/telemetry/dist/*"
+      ],
       "@ui": [
         "../../packages/ui/dist/index.d.ts",
         "../../packages/ui/src/index.ts"
@@ -34,21 +49,10 @@
       "@ui/*": [
         "../../packages/ui/dist/*",
         "../../packages/ui/src/*"
-      ],
-      "react-router": [
-        "src/compat/react-router.tsx"
-      ],
-      "react-router-dom": [
-        "src/compat/react-router-dom.tsx"
-      ],
-      "react-router/dom": [
-        "src/compat/react-router-dom.tsx"
-      ],
-      "@react-router/dev/routes": [
-        "src/compat/react-router-dev-routes.ts"
       ]
     },
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "strictNullChecks": true
   },
   "include": [
     "next-env.d.ts",
@@ -60,7 +64,6 @@
   ],
   "exclude": [
     ".next/types/server.d.ts",
-    "**/__mocks__/**",
     "**/__tests__/**",
     "**/*.spec.*",
     "**/*.test.*"

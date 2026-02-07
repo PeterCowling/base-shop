@@ -1,7 +1,9 @@
 // packages/platform-core/src/subscriptionUsage.ts
 import "server-only";
-import { prisma } from "./db";
+
 import type { SubscriptionUsage } from "@acme/types";
+
+import { prisma } from "./db";
 
 export async function getSubscriptionUsage(
   shop: string,

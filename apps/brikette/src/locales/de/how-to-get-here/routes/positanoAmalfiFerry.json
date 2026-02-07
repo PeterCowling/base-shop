@@ -27,7 +27,16 @@
       "points": [
         "Kaufe in der Hochsaison Tickets vorab online oder an den Schaltern der Betreiber am Pier.",
         "Sei 15–20 Minuten vor Abfahrt da, um Gutscheine einzulösen und dich anzustellen.",
-        "Halte dein Ticket oder den QR-Code für Kontrollen durch das Personal bereit."
+        "Halte dein Ticket oder den QR-Code für Kontrollen durch das Personal bereit.",
+        "Wenn du mit viel Gepäck reist, frage das Personal nach Gepäckregeln und wo du Taschen an Bord verstauen kannst."
+      ]
+    },
+    "gettingToPier": {
+      "title": "Vom Hostel Brikette zum Pier",
+      "intro": "Wenn du im Hostel startest, nutze <dockWalk>unsere Schritt-für-Schritt-Anleitung zum Fähranleger</dockWalk>, um die Spiaggia Grande ohne Umwege zu erreichen.",
+      "points": [
+        "Plane Pufferzeit für Treppen, Hitze und langsamen Fußgängerverkehr in der Stadt ein.",
+        "Nimm Wasser mit und halte wichtige Dinge (Reisepass/Geldbörse/Handy) für die Bordkontrollen griffbereit."
       ]
     },
     "positanoPier": {
@@ -44,6 +53,15 @@
         "Die Boote legen an den Uferstegen von Amalfi nahe der Piazza Flavio Gioia an.",
         "Das historische Zentrum und die Promenade schließen direkt an den Hafen an.",
         "Für Weiterfahrten (z. B. nach Ravello oder Sorrent) folge der Beschilderung zur SITA-Haltestelle am Wasser."
+      ]
+    },
+    "planB": {
+      "title": "Wenn die Fähre ausfällt (Plan B, der funktioniert)",
+      "intro": "An windigen Tagen kann das Meer die Boote stoppen. Keine Panik – wechsle zum <bus>Bus Positano → Amalfi</bus> und sieh dir <cancellations>unseren Fährausfall-Leitfaden</cancellations> für Zeitplanung und Problemlösung an.",
+      "points": [
+        "Wenn du bereits am Strand bist, gehe zurück zur Hauptstraße und nimm den nächsten verfügbaren Bus oder ein Taxi.",
+        "Plane Pufferzeit ein: Busse können in Spitzenmonaten voll ankommen und Verspätungen sind normal.",
+        "Wenn du spät reist, bestätige frühzeitig die letzte mögliche Abfahrt (Fähre oder Bus), damit du nicht strandest."
       ]
     }
   },

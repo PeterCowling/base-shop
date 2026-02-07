@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import Section from "@/components/Section";
+
 import PageHeader from "@/components/PageHeader";
 import ProductGrid from "@/components/ProductGrid";
-import { getProducts } from "@/lib/catalog";
+import Section from "@/components/Section";
+import { listCochlearfitProducts } from "@/lib/cochlearfitCatalog.server";
 import { resolveLocale } from "@/lib/locales";
 import { createTranslator, loadMessages } from "@/lib/messages";
 import { buildMetadata } from "@/lib/seo";
@@ -34,7 +35,7 @@ export default async function ShopPage({
   const locale = resolveLocale(resolved?.lang);
   const messages = await loadMessages(locale);
   const t = createTranslator(messages);
-  const products = getProducts();
+  const products = await listCochlearfitProducts(locale);
 
   return (
     <Section>

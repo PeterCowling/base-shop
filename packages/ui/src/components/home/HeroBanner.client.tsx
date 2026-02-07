@@ -2,11 +2,12 @@
 
 "use client"; // i18n-exempt -- PB-123 Next.js directive, not user-facing copy [ttl=2025-12-31]
 
-import { useTranslations } from "@acme/i18n";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+
+import { useTranslations } from "@acme/i18n";
 
 export type Slide = {
   src: string;

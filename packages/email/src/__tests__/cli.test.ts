@@ -1,5 +1,6 @@
 /** @jest-environment node */
 import path from "path";
+
 jest.setTimeout(10000);
 
 const files: Record<string, string> = {};

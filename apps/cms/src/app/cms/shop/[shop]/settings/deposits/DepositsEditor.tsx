@@ -1,11 +1,10 @@
 "use client";
 
-import { useCallback, useState, type ChangeEvent, type FormEvent } from "react";
-
-import { Toast } from "@/components/atoms";
-import { Button, Card, CardContent, Input } from "@/components/atoms/shadcn";
-import { FormField } from "@ui/components/molecules";
+import { type ChangeEvent, type FormEvent,useCallback, useState } from "react";
 import { updateDeposit } from "@cms/actions/shops.server";
+
+import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
+import { Button, Card, CardContent, Input } from "@acme/design-system/shadcn";
 
 import { ErrorChips } from "../components/ErrorChips";
 import { ServiceToggleField } from "../components/ServiceToggleField";
@@ -36,9 +35,6 @@ export default function DepositsEditor({ shop, initial }: Props) {
     errors,
     setErrors,
     submit,
-    toast,
-    toastClassName,
-    closeToast,
     announceError,
   } = useSettingsSaveForm<DepositResult>({
       action: (formData) => updateDeposit(shop, formData),
@@ -154,13 +150,6 @@ export default function DepositsEditor({ shop, initial }: Props) {
           </form>
         </CardContent>
       </Card>
-      <Toast
-        open={toast.open}
-        message={toast.message}
-        onClose={closeToast}
-        className={toastClassName}
-        role="status"
-      />
     </>
   );
 }

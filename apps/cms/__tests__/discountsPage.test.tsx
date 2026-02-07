@@ -1,6 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import DiscountsPage from "../src/app/cms/marketing/discounts/page";
 
 describe("DiscountsPage", () => {
@@ -8,7 +9,6 @@ describe("DiscountsPage", () => {
 
   afterEach(() => {
     global.fetch = originalFetch;
-    // @ts-expect-error jsdom window
     window.fetch = originalFetch;
   });
 
@@ -60,7 +60,6 @@ describe("DiscountsPage", () => {
     );
 
     global.fetch = fetchMock as any;
-    // @ts-expect-error jsdom window
     window.fetch = fetchMock as any;
 
     const user = userEvent.setup();

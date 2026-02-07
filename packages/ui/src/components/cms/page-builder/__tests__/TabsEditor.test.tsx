@@ -1,4 +1,5 @@
-import { render, fireEvent, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
+
 import TabsEditor from "../TabsEditor";
 
 jest.mock("../../../atoms/shadcn", () => {

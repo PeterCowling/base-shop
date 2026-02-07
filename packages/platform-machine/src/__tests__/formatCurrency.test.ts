@@ -1,4 +1,4 @@
-import { formatCurrency } from '@acme/shared-utils/src/formatCurrency';
+import { formatCurrency } from '@acme/lib/format';
 
 describe('formatCurrency', () => {
   const original = (Intl as any).supportedValuesOf;

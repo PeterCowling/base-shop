@@ -1,9 +1,10 @@
 // packages/ui/components/organisms/OrderSummary.stories.tsx
 
-import { Meta, StoryObj } from "@storybook/nextjs";
+import { type Meta, type StoryObj } from "@storybook/nextjs";
+
+import { Price } from "../atoms/Price";
 
 import OrderSummary from "./OrderSummary";
-import { Price } from "../atoms/Price";
 
 /* ------------------------------------------------------------------ *
  *  Storybook meta

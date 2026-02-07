@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
+
 import PricingTable from "./PricingTable";
 
 const meta: Meta<typeof PricingTable> = {

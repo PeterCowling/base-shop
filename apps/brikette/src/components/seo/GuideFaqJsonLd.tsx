@@ -1,12 +1,14 @@
-/* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
+ 
 // src/components/seo/GuideFaqJsonLd.tsx
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
+
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { guideAbsoluteUrl, type GuideKey } from "@/routes.guides-helpers";
-import { BASE_URL } from "@/config/site";
+import getGuideResource from "@/routes/guides/utils/getGuideResource";
 import { buildFaqJsonLd, type NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
-import { ensureLeadingSlash, normaliseWindowPath, useOptionalRouterPathname } from "./locationUtils";
+
+import FaqJsonLdScript from "./FaqJsonLdScript";
 
 interface GuideFaqJsonLdProps {
   guideKey: GuideKey;
@@ -15,50 +17,43 @@ interface GuideFaqJsonLdProps {
 
 function GuideFaqJsonLd({ guideKey, fallback }: GuideFaqJsonLdProps): JSX.Element | null {
   const lang = useCurrentLanguage();
-  const routerPathname = useOptionalRouterPathname();
-  const fallbackPath = normaliseWindowPath();
-  const rawPathname = routerPathname ?? fallbackPath;
-  const pathname = rawPathname ? ensureLeadingSlash(rawPathname) : undefined;
   const { t } = useTranslation("guides", { lng: lang });
   const faqsRaw = t(`content.${guideKey}.faqs`, { returnObjects: true }) as unknown;
-
-  const canonicalUrl = useMemo(() => {
-    if (typeof pathname === "string" && pathname.length > 0) {
-      return `${BASE_URL}${pathname}`;
+  const faqsResolved = (() => {
+    if (Array.isArray(faqsRaw)) return faqsRaw;
+    const fromStore = getGuideResource<unknown>(lang, `content.${guideKey}.faqs`);
+    if (fromStore !== undefined && fromStore !== null) return fromStore;
+    if (lang !== "en") {
+      const fromEn = getGuideResource<unknown>("en", `content.${guideKey}.faqs`);
+      if (fromEn !== undefined && fromEn !== null) return fromEn;
     }
-    return guideAbsoluteUrl(lang, guideKey);
-  }, [guideKey, lang, pathname]);
+    return faqsRaw;
+  })();
 
-  const faqJson = useMemo(() => {
-    const fromTranslations = buildFaqJsonLd(lang, canonicalUrl, faqsRaw);
-    if (fromTranslations && fromTranslations.length > 0) {
-      return fromTranslations;
-    }
+  // Use guide-specific URL directly to ensure consistent server/client rendering.
+  // Avoids hydration mismatch from window.location fallback in normaliseWindowPath.
+  const canonicalUrl = guideAbsoluteUrl(lang, guideKey);
 
-    if (!fallback) {
-      return "";
-    }
+  const payload = buildFaqJsonLd(lang, canonicalUrl, faqsResolved);
 
-    // Try route-provided fallback for the active language; if that yields
-    // no entries, attempt EN explicitly as a last resort to satisfy tests
-    // that strip locale data entirely.
-    const primaryFallback = fallback(lang);
-    const primaryJson = buildFaqJsonLd(lang, canonicalUrl, primaryFallback);
-    if (primaryJson && primaryJson.length > 0) return primaryJson;
+  if (!fallback) {
+    return <FaqJsonLdScript data={payload} />;
+  }
 
+  const fallbackPayload = (() => {
+    if (payload) return null;
     try {
+      const primaryFallback = fallback(lang);
+      const primaryPayload = buildFaqJsonLd(lang, canonicalUrl, primaryFallback);
+      if (primaryPayload) return primaryPayload;
       const enFallback = fallback("en");
       return buildFaqJsonLd(lang, canonicalUrl, enFallback);
     } catch {
-      return "";
+      return null;
     }
-  }, [canonicalUrl, faqsRaw, fallback, lang]);
+  })();
 
-  if (!faqJson) {
-    return null;
-  }
-
-  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqJson }} />;
+  return <FaqJsonLdScript data={payload} fallback={fallbackPayload} />;
 }
 
 export default memo(GuideFaqJsonLd);

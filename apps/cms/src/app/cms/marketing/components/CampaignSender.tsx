@@ -3,8 +3,10 @@
 import { useMemo, useState } from "react";
 import DOMPurify from "dompurify";
 import { z } from "zod";
-import { Button, Card, CardContent, Input, Textarea } from "@ui/components/atoms";
-import { FormField } from "@ui/components/molecules";
+
+import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
+import { Button, Card, CardContent, Input, Textarea } from "@acme/design-system/shadcn";
+
 import type { ActionResult } from "../../components/actionResult";
 
 const formSchema = z.object({
@@ -100,7 +102,7 @@ export function CampaignSender({ sendCampaign, onNotify }: CampaignSenderProps) 
               <Textarea
                 id="campaign-body"
                 value={form.body}
-                onChange={(event) => updateField("body", event.target.value)}
+                onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => updateField("body", event.target.value)}
                 rows={8}
                 placeholder="Author the HTML body"
               />

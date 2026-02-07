@@ -8,7 +8,7 @@ import type {
   Money,
   RoomCategory,
   SeasonalPrice,
-} from "@/types/machine-layer/ml.ts";
+} from "../types/machine-layer/ml.ts";
 
 /* ─── helpers & local types ──────────────────────────────────────────── */
 export type RoomId =
@@ -69,7 +69,7 @@ const roomsData: Room[] = [
       ota: { nr: "433491", flex: "434398" },
     },
     occupancy: 2,
-    pricingModel: "perBed",
+    pricingModel: "perRoom",
     basePrice: { amount: 259.2, currency: "EUR" },
     seasonalPrices: SEASONAL,
     availability: { totalBeds: 2, defaultRelease: 2 } as Availability,

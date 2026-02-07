@@ -1,9 +1,11 @@
-import React from "react";
 import "@testing-library/jest-dom";
+
+import type React from "react";
+import { updateSeo } from "@cms/actions/shops.server";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import SeoForm from "../src/app/cms/shop/[shop]/settings/seo/SeoForm.client";
-import { updateSeo } from "@cms/actions/shops.server";
 
 jest.mock("@cms/actions/shops.server", () => ({
   updateSeo: jest.fn(),
@@ -50,18 +52,18 @@ describe("SeoForm", () => {
   it("switches language tabs and updates fields", async () => {
     const user = userEvent.setup();
     render(
-      <SeoForm shop="shop" languages={["en", "fr"]} initialSeo={{}} />,
+      <SeoForm shop="shop" languages={["en", "de"]} initialSeo={{}} />,
     );
 
     const enTitle = screen.getAllByLabelText(/title/i)[0] as HTMLInputElement;
     await user.type(enTitle, "Hello EN");
     expect(enTitle).toHaveValue("Hello EN");
 
-    await user.click(screen.getByRole("button", { name: "FR" }));
-    const frTitle = screen.getAllByLabelText(/title/i)[0] as HTMLInputElement;
-    expect(frTitle).toHaveValue("");
-    await user.type(frTitle, "Bonjour FR");
-    expect(frTitle).toHaveValue("Bonjour FR");
+    await user.click(screen.getByRole("button", { name: "DE" }));
+    const deTitle = screen.getAllByLabelText(/title/i)[0] as HTMLInputElement;
+    expect(deTitle).toHaveValue("");
+    await user.type(deTitle, "Hallo DE");
+    expect(deTitle).toHaveValue("Hallo DE");
 
     await user.click(screen.getByRole("button", { name: "EN" }));
     expect(screen.getAllByLabelText(/title/i)[0]).toHaveValue("Hello EN");
@@ -74,7 +76,7 @@ describe("SeoForm", () => {
     });
 
     render(
-      <SeoForm shop="shop" languages={["en", "fr"]} initialSeo={{}} />,
+      <SeoForm shop="shop" languages={["en", "de"]} initialSeo={{}} />,
     );
 
     const titleInput = screen.getAllByLabelText(/title/i)[0] as HTMLInputElement;
@@ -96,6 +98,7 @@ describe("SeoForm", () => {
       brand: "",
       offers: "",
       aggregateRating: "",
+      structuredData: "",
     });
 
     expect(
@@ -109,7 +112,7 @@ describe("SeoForm", () => {
       errors: { title: ["Required"] },
     });
 
-    render(<SeoForm shop="shop" languages={["en", "fr"]} initialSeo={{}} />);
+    render(<SeoForm shop="shop" languages={["en", "de"]} initialSeo={{}} />);
 
     await user.click(screen.getByRole("button", { name: /save/i }));
 

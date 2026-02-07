@@ -1,21 +1,25 @@
 "use client";
 
-import { Button } from "@/components/atoms/shadcn";
-import PageBuilder from "@/components/cms/PageBuilder";
-import TemplateSelector from "@/app/cms/configurator/components/TemplateSelector";
-import { fillLocales } from "@i18n/fillLocales";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
+import { Cluster } from "@acme/design-system/primitives/Cluster";
+import { useTranslations } from "@acme/i18n";
+import { fillLocales } from "@acme/i18n/fillLocales";
 import {
+  historyStateSchema,
   type Page,
   type PageComponent,
-  historyStateSchema,
 } from "@acme/types";
-import { apiRequest } from "../lib/api";
-import { useEffect, useState } from "react";
-import useStepCompletion from "../hooks/useStepCompletion";
-import { useRouter } from "next/navigation";
+import { useToast } from "@acme/ui/operations";
+
+import TemplateSelector from "@/app/cms/configurator/components/TemplateSelector";
+import { Button } from "@/components/atoms/shadcn";
+import PageBuilder from "@/components/cms/PageBuilder";
+
 import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
-import { Cluster } from "@ui/components/atoms/primitives/Cluster";
-import { useTranslations } from "@acme/i18n";
+import useStepCompletion from "../hooks/useStepCompletion";
+import { apiRequest } from "../lib/api";
 
 interface Props {
   pageTemplates: Array<{
@@ -39,23 +43,6 @@ interface Props {
   nextStepId?: string;
 }
 
-function SimpleToast({
-  open,
-  message,
-  onClose,
-}: {
-  open: boolean;
-  message: string;
-  onClose: () => void;
-}) {
-  if (!open) return null;
-  return (
-    <div onClick={onClose} role="status">
-      {message}
-    </div>
-  );
-}
-
 export default function StepHomePage({
   pageTemplates,
   homeLayout,
@@ -70,10 +57,7 @@ export default function StepHomePage({
   nextStepId,
 }: Props): React.JSX.Element {
   const t = useTranslations();
-  const [toast, setToast] = useState<{ open: boolean; message: string }>({
-    open: false,
-    message: "",
-  });
+  const toast = useToast();
   const [, markComplete] = useStepCompletion("home-page");
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
@@ -113,10 +97,10 @@ export default function StepHomePage({
           }
         }
       } else if (error) {
-        setToast({ open: true, message: error });
+        toast.error(error);
       }
     })();
-  }, [shopId, homePageId, setComponents, setHomePageId]);
+  }, [shopId, homePageId, setComponents, setHomePageId, toast]);
   return (
     <div className="space-y-4">
       <div className="flex items-start justify-between gap-3">
@@ -182,7 +166,7 @@ export default function StepHomePage({
           setIsSaving(false);
           if (data) {
             setHomePageId(data.id);
-            setToast({ open: true, message: String(t("cms.configurator.homePage.draftSaved")) });
+            toast.success(String(t("cms.configurator.homePage.draftSaved")));
           } else if (error) {
             setSaveError(error);
           }
@@ -198,7 +182,7 @@ export default function StepHomePage({
           setIsPublishing(false);
           if (data) {
             setHomePageId(data.id);
-            setToast({ open: true, message: String(t("cms.configurator.homePage.pagePublished")) });
+            toast.success(String(t("cms.configurator.homePage.pagePublished")));
           } else if (error) {
             setPublishError(error);
           }
@@ -233,11 +217,6 @@ export default function StepHomePage({
           </Button>
         )}
       </Cluster>
-      <SimpleToast
-        open={toast.open}
-        onClose={() => setToast((t) => ({ ...t, open: false }))}
-        message={toast.message}
-      />
     </div>
   );
 }

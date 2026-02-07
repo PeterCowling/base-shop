@@ -3,14 +3,18 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Tooltip, type TagProps } from "@/components/atoms";
-import { cn } from "@ui/utils/style";
-import type { LaunchPanelData } from "../hooks/useConfiguratorDashboardState";
-import { ButtonElement, CardRoot, CardSection, TagElement } from "./DashboardPrimitives";
-import { Inline } from "@ui/components/atoms/primitives";
-import { track } from "@acme/telemetry";
-import { CmsLaunchChecklist, type CmsLaunchStatus } from "@ui/components/cms"; // UI: @ui/components/cms/CmsLaunchChecklist
+
+import { CmsLaunchChecklist, type CmsLaunchStatus } from "@acme/cms-ui"; // UI: @acme/ui/components/cms/CmsLaunchChecklist
+import { Inline } from "@acme/design-system/primitives";
+import { cn } from "@acme/design-system/utils/style";
 import { useTranslations } from "@acme/i18n";
+import { track } from "@acme/telemetry";
+
+import { type TagProps,Tooltip } from "@/components/atoms";
+
+import type { LaunchPanelData } from "../hooks/useConfiguratorDashboardState";
+
+import { ButtonElement, CardRoot, CardSection, TagElement } from "./DashboardPrimitives";
 
 type LaunchPanelProps = LaunchPanelData;
 

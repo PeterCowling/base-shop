@@ -1,12 +1,14 @@
 // apps/cms/src/app/cms/shop/[shop]/products/[id]/edit/page.tsx
 
+import dynamic from "next/dynamic";
+import { notFound } from "next/navigation";
+
+import { Card, CardContent } from "@acme/design-system/shadcn";
 import {
   getProductById,
   readSettings,
-} from "@platform-core/repositories/json.server";
-import dynamic from "next/dynamic";
-import { notFound } from "next/navigation";
-import { Card, CardContent } from "@ui/components/atoms/shadcn";
+} from "@acme/platform-core/repositories/json.server";
+
 import ProductEditHero from "./ProductEditHero.client";
 
 /* ------------------------------------------------------------------ */

@@ -1,15 +1,16 @@
 import { jest } from '@jest/globals';
+
 import { jsonRequest } from '@acme/test-utils';
 
-const createNewShop = jest.fn();
-const validateShopEnv = jest.fn();
+const createNewShop = jest.fn<Promise<{ ok: boolean }>, any[]>();
+const validateShopEnv = jest.fn<void, any[]>();
 
 jest.mock('@cms/actions/createShop.server', () => ({
   __esModule: true,
   createNewShop: (...args: any[]) => createNewShop(...args),
 }));
 
-jest.mock('@platform-core/configurator', () => ({
+jest.mock('@acme/platform-core/configurator', () => ({
   __esModule: true,
   validateShopEnv: (...args: any[]) => validateShopEnv(...args),
 }));
@@ -20,12 +21,12 @@ beforeAll(async () => {
   ({ POST } = await import('../route'));
 });
 
-let consoleError: jest.SpyInstance;
+let consoleError: jest.SpyInstance<any, any, any>;
 
 beforeEach(() => {
   consoleError = jest
     .spyOn(console, 'error')
-    .mockImplementation(() => {});
+    .mockImplementation((() => {}) as any) as unknown as jest.SpyInstance<any, any, any>;
 });
 
 afterEach(() => {

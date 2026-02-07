@@ -1,6 +1,8 @@
 import * as React from "react";
-import { cn } from "../../utils/style";
+
 import type { SKU } from "@acme/types";
+
+import { cn } from "../../utils/style";
 import { ProductCard } from "../organisms/ProductCard";
 
 export interface ProductComparisonTemplateProps

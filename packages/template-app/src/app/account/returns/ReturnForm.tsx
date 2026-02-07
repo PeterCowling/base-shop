@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+
 import { useTranslations } from "@acme/i18n";
 
 interface ReturnFormProps {
@@ -125,7 +126,7 @@ export default function ReturnForm({
           ) : null}
         </p>
       )}
-      {error && <p className="text-red-600">{error}</p>}
+      {error && <p className="text-danger">{error}</p>}
     </div>
   );
 }

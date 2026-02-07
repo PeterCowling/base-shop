@@ -1,8 +1,10 @@
 "use client";
 
-import { useCallback, useMemo, type CSSProperties } from "react";
+import { type CSSProperties,useCallback, useMemo } from "react";
+
+import { extractTextThemes, type TextTheme,toCssValue } from "../textThemes";
+
 import usePreviewTokens from "./usePreviewTokens";
-import { extractTextThemes, toCssValue, type TextTheme } from "../textThemes";
 
 export default function useTextThemesPreview() {
   const previewTokens = usePreviewTokens();

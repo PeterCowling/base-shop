@@ -2,9 +2,11 @@
 
 import { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { track } from "@acme/telemetry";
+
+import { Progress } from "@acme/design-system/atoms";
+import { Button, Card, CardContent } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
-import { Button, Card, CardContent, Progress } from "@ui/components/atoms";
+import { track } from "@acme/telemetry";
 
 export default function DesignSystemImportPage() {
   const params = useParams<{ shop: string }>();

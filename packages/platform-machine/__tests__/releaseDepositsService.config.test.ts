@@ -1,9 +1,9 @@
 import {
-  resetReleaseDepositsEnv,
-  restoreOriginalEnv,
   readdir,
   readFile,
   readOrders,
+  resetReleaseDepositsEnv,
+  restoreOriginalEnv,
 } from "./helpers/releaseDepositsSetup";
 
 let service: typeof import("@acme/platform-machine");

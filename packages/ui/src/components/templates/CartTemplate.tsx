@@ -1,12 +1,14 @@
 "use client";
-import type { CartLine, CartState } from "@acme/platform-core/cart";
-import Image from "next/image";
 import * as React from "react";
+import Image from "next/image";
+
+import { useTranslations } from "@acme/i18n";
+import type { CartLine, CartState } from "@acme/platform-core/cart";
+
 import { cn } from "../../utils/style";
 import { Price } from "../atoms/Price";
-import { QuantityInput } from "../molecules/QuantityInput";
-import { useTranslations } from "@acme/i18n";
 import { Inline } from "../atoms/primitives";
+import { QuantityInput } from "../molecules/QuantityInput";
 
 export interface CartTemplateProps
   extends React.HTMLAttributes<HTMLDivElement> {

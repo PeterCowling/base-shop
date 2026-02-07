@@ -1,7 +1,9 @@
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@ui/components/atoms/primitives";
+
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@acme/design-system/primitives";
+
 import Upgrade from "../Upgrade";
 
 type ShopSummary = {
@@ -118,7 +120,7 @@ export default function ShopDetail() {
             <p className="text-xs text-slate-600">Loading shop context…</p>
           )}
           {state === "error" && (
-            <p className="text-xs text-red-700">{error}</p>
+            <p className="text-xs text-danger">{error}</p>
           )}
           {state === "idle" && meta && (
             <div className="flex flex-wrap items-center gap-2 text-xs text-slate-700">
@@ -151,7 +153,7 @@ export default function ShopDetail() {
           {retryStatus !== "idle" && (
             <p
               className={`text-xs ${
-                retryStatus === "success" ? "text-green-700" : "text-red-700"
+                retryStatus === "success" ? "text-success" : "text-danger"
               }`}
             >
               {retryMessage}
@@ -161,7 +163,7 @@ export default function ShopDetail() {
             <p className="text-xs text-slate-600">Loading history…</p>
           )}
           {historyState === "error" && (
-            <p className="text-xs text-red-700">{historyError}</p>
+            <p className="text-xs text-danger">{historyError}</p>
           )}
           {historyState === "idle" && history.length === 0 && (
             <p className="text-sm text-slate-700">No history yet.</p>
@@ -184,7 +186,7 @@ export default function ShopDetail() {
                 <p className="text-sm text-slate-800">
                   Components: {(job.components ?? []).join(", ") || "—"}
                 </p>
-                {job.error && <p className="text-sm text-red-700">Error: {job.error}</p>}
+                {job.error && <p className="text-sm text-danger">Error: {job.error}</p>}
                 <div className="flex flex-wrap gap-2 text-xs">
                   <Link
                     className="rounded border border-blue-200 px-2 py-1 font-semibold text-blue-700 hover:border-blue-300 hover:text-blue-900"
@@ -288,7 +290,7 @@ function StatusBadge({
 }) {
   const map: Record<typeof status, string> = {
     ready: "bg-emerald-100 text-emerald-800",
-    failed: "bg-red-100 text-red-700",
+    failed: "bg-red-100 text-danger",
     up_to_date: "bg-blue-100 text-blue-800",
     unknown: "bg-slate-100 text-slate-700",
   };

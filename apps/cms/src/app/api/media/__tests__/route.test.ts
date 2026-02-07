@@ -12,6 +12,15 @@ jest.mock("@cms/actions/media.server", () => ({
   getMediaOverview,
 }));
 
+// Mock auth - tests run with CMS_TEST_ASSUME_ADMIN=1, but we mock to avoid
+// pulling in the full auth chain which has module resolution issues in tests
+jest.mock("@cms/actions/common/auth", () => ({
+  ensureAuthorized: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+  ensureCanRead: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+  ensureShopAccess: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+  ensureShopReadAccess: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+}));
+
 let GET: typeof import("../route").GET;
 let POST: typeof import("../route").POST;
 let DELETE: typeof import("../route").DELETE;
@@ -267,3 +276,5 @@ describe("media route", () => {
     });
   });
 });
+
+export {};

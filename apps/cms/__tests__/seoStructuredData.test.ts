@@ -1,8 +1,9 @@
-(process.env as Record<string, string>).NODE_ENV = "development";
-
 import fs from "node:fs/promises";
 import path from "node:path";
+
 import { withTempRepo } from "@acme/test-utils";
+
+(process.env as Record<string, string>).NODE_ENV = "development";
 
 jest.setTimeout(120_000);
 
@@ -10,8 +11,8 @@ describe("SEO structured data persistence", () => {
   it("maps UI fields into structuredData string", async () => {
     await withTempRepo(async (dir) => {
       // authorize admin
-      const { __setMockSession } = await import("next-auth");
-      __setMockSession({ user: { role: "admin" } } as any);
+      const { __setMockSession } = await import("~test/mocks/next-auth");
+      __setMockSession({ user: { role: "admin" } });
 
       jest.doMock("next/cache", () => ({ revalidatePath: jest.fn() }));
 
@@ -20,14 +21,19 @@ describe("SEO structured data persistence", () => {
       const fd = new FormData();
       fd.append("locale", "en");
       fd.append("title", "Hello");
-      fd.append("brand", "Acme");
-      fd.append("offers", '{"price":"19.99","priceCurrency":"USD"}');
-      fd.append(
-        "aggregateRating",
-        '{"ratingValue":4.5,"reviewCount":10}',
-      );
+      fd.append("description", "Test description");
+      fd.append("structuredData", JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "brand": "Acme",
+        "offers": { "price": "19.99", "priceCurrency": "USD" },
+        "aggregateRating": { "ratingValue": 4.5, "reviewCount": 10 }
+      }));
 
-      await actions.updateSeo("test", fd);
+      const result = await actions.updateSeo("test", fd);
+      if (result.errors) {
+        throw new Error(`updateSeo failed: ${JSON.stringify(result.errors)}`);
+      }
 
       const settingsFile = path.join(
         dir,

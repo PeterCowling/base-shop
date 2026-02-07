@@ -1,13 +1,14 @@
 // apps/cms/src/app/[lang]/product/[slug]/PdpClient.tsx
 "use client";
 
-import ImageGallery from "@platform-core/components/pdp/ImageGallery";
-import SizeSelector from "@platform-core/components/pdp/SizeSelector";
-import AddToCartButton from "@platform-core/components/shop/AddToCartButton.client";
-import { Price } from "@ui/components/atoms/Price";
-import type { SKU } from "@acme/types";
 import type { ChangeEvent } from "react";
 import { useState } from "react";
+
+import { Price } from "@acme/design-system/atoms/Price";
+import ImageGallery from "@acme/platform-core/components/pdp/ImageGallery";
+import SizeSelector from "@acme/platform-core/components/pdp/SizeSelector";
+import AddToCartButton from "@acme/platform-core/components/shop/AddToCartButton.client";
+import type { SKU } from "@acme/types";
 
 export default function PdpClient({ product }: { product: SKU }) {
   const [size, setSize] = useState<string | null>(null);

@@ -1,6 +1,7 @@
-import { validateShopName } from "@acme/platform-core/shops";
-import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
 import { promises as fs } from "fs";
+
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
+import { validateShopName } from "@acme/platform-core/shops";
 
 const readFileSpy = jest.spyOn(fs, "readFile");
 

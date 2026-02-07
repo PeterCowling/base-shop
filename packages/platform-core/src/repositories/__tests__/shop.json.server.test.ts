@@ -1,44 +1,59 @@
-import * as path from "path";
+import { promises as fs } from "fs";
 import * as os from "os";
+import * as path from "path";
+
 const DATA_ROOT = path.join(os.tmpdir(), "shop-json-tests");
 
 jest.mock("../../dataRoot", () => ({ DATA_ROOT }));
 
+// Use globalThis to store test files - this avoids Jest hoisting issues
+declare global {
+  var __shopJsonTestFiles: Map<string, string> | undefined;
+}
+globalThis.__shopJsonTestFiles = new Map<string, string>();
+
 jest.mock("fs", () => {
-  const files = new Map<string, string>();
   return {
     promises: {
       readFile: jest.fn(async (p: string) => {
-        const data = files.get(p);
+        const files = globalThis.__shopJsonTestFiles;
+        const data = files?.get(p);
         if (data === undefined) throw new Error("not found");
         return data;
       }),
       writeFile: jest.fn(async (p: string, data: string) => {
-        files.set(p, data);
+        globalThis.__shopJsonTestFiles?.set(p, data);
       }),
       rename: jest.fn(async (tmp: string, dest: string) => {
-        const data = files.get(tmp);
+        const files = globalThis.__shopJsonTestFiles;
+        const data = files?.get(tmp);
         if (data === undefined) throw new Error("missing");
-        files.set(dest, data);
-        files.delete(tmp);
+        files?.set(dest, data);
+        files?.delete(tmp);
       }),
       mkdir: jest.fn(async () => {}),
-      __files: files,
+      get __files() {
+        return globalThis.__shopJsonTestFiles;
+      },
     },
   };
 });
 
-const validateShopName = jest.fn((s: string) => s);
-jest.mock("../../shops/index", () => ({ validateShopName }));
+jest.mock("../../shops/index", () => ({ validateShopName: jest.fn((s: string) => s) }));
 
-import { promises as fs } from "fs";
+// Import the mocked validateShopName from the mocked module
+const { validateShopName } = require("../../shops/index") as { validateShopName: jest.Mock };
 
 describe("shop.json.server", () => {
   const fsMock = fs as unknown as typeof fs & { __files: Map<string, string> };
   beforeEach(() => {
-    fsMock.__files.clear();
+    globalThis.__shopJsonTestFiles?.clear();
     jest.clearAllMocks();
     validateShopName.mockImplementation((s: string) => s);
+  });
+
+  afterAll(() => {
+    delete globalThis.__shopJsonTestFiles;
   });
 
   it("reads existing shop file", async () => {
@@ -178,4 +193,3 @@ describe("shop.json.server", () => {
     await expect(getShopJson("nope")).rejects.toThrow(/not found/);
   });
 });
-

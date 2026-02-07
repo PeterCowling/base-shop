@@ -1,18 +1,21 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
+import { ulid } from "ulid";
+
+import { useTranslations } from "@acme/i18n";
 import type { PageComponent } from "@acme/types";
 import type { SectionTemplate } from "@acme/types/section/template";
-import { Button, Input } from "../../atoms/shadcn";
-import { ulid } from "ulid";
-import { getBuiltInSections } from "./builtInSections.data";
-import { getPalettePreview } from "./previewImages";
-import Image from "next/image";
-import { useTranslations } from "@acme/i18n";
+
 import { Grid as DSGrid } from "../../atoms/primitives/Grid";
-import { Stack as DSStack } from "../../atoms/primitives/Stack";
 import { Inline as DSInline } from "../../atoms/primitives/Inline";
+import { Stack as DSStack } from "../../atoms/primitives/Stack";
+import { Button, Input } from "../../atoms/shadcn";
+
+import { getBuiltInSections } from "./builtInSections.data";
 import type { ComponentType } from "./defaults";
+import { getPalettePreview } from "./previewImages";
 
 function cloneWithIds(node: PageComponent): PageComponent {
   const base = node as unknown as Record<string, unknown>;
@@ -214,7 +217,7 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked, allowedT
             ));
         })()}
       </div>
-      {/* eslint-disable-next-line ds/no-hardcoded-copy -- PB-123 style value string; not user-facing copy */}
+      { }
       <DSStack gap={2} className="overflow-auto p-2" style={{ maxHeight: "calc(100svh - 6rem)" }}>
         {items.length === 0 && !loading && <div className="p-2 text-sm text-muted-foreground">{t("cms.builder.sections.none")}</div>}
         {items

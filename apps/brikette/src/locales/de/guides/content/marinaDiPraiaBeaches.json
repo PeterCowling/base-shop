@@ -1,92 +1,237 @@
 {
   "seo": {
-    "title": "Marina di Praia & versteckte Strände",
-    "description": "So erreichst du abgelegene Buchten und das erwartet dich vor Ort."
+    "title": "Marina di Praia Guide: SITA-Bus, Lido & Abendessen",
+    "description": "Hostel-Guide zu Marina di Praia: Anreise mit dem SITA-Bus, beste Spots (Lido vs. freier Strand), Packliste und Dinner-Ideen vor der Rückfahrt."
   },
-  "linkLabel": "Marina di Praia & versteckte Strände",
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
+  "linkLabel": "Marina di Praia: Dramatische Bucht zwischen Klippen",
   "intro": [
-    "Entdecke Marina di Praia und nahegelegene Buchten als Abwechslung zum Hauptstrand von Positano."
-  ],
-  "sections": [
-    {
-      "id": "marina",
-      "title": "Marina-di-Praia-Basics",
-      "body": [
-        "Zwischen Klippen gelegen bietet der Kiesstrand Liegen, Kajakverleih und Meeresfrüchte-Restaurants direkt im Felsen.",
-        "Komm vor 10:30, um Liegen in der ersten Reihe zu sichern; ab 16:00 wandert Schatten in die Bucht."
-      ]
-    },
-    {
-      "id": "coves",
-      "title": "Nahe Buchten",
-      "body": [
-        "Leih ein Kajak, um die Grotta di Suppraiano zu erkunden, oder nimm ein Boot zu versteckten Spots wie Gavitella oder Laurito.",
-        "Pack riffverträgliche Sonnencreme und Wasserschuhe ein – der felsige Boden bietet hervorragende Schnorchelsicht."
-      ]
-    },
-    {
-      "id": "logistics",
-      "title": "Anreise",
-      "body": [
-        "Steig in Positano in den SITA-Bus Richtung Amalfi; bitte den Fahrer um Halt bei Marina di Praia und geh die Rampe (5 Minuten) hinab.",
-        "Roller parken oben an der Bucht – nimm Münzen für die Parkautomaten mit."
-      ]
-    }
-  ],
-  "tips": [
-    "Reserviere zum Mittagessen im Il Pirata oder La Praia für Essen auf der Klippe zwischen zwei Badegängen.",
-    "Pack einen Drybag für Wertsachen ein – der Strand ist kompakt, und geordnete Taschen sparen Platz."
-  ],
-  "faqs": [
-    {
-      "q": "Ist der Strand kostenlos?",
-      "a": [
-        "Es gibt einen freien Bereich, aber er ist klein. Rechne in der Hochsaison mit 20–25 € für zwei Liegen plus Schirm in den Strandbädern."
-      ]
-    },
-    {
-      "q": "Kann ich von Positano laufen?",
-      "a": [
-        "Der Fußweg entlang der Straße dauert rund 50 Minuten und hat schmale Seitenstreifen. Bus oder Roller sind sicherer – besonders im Verkehr der Hochsaison."
-      ]
-    }
+    "Marina di Praia ist eine versteckte Kiesbucht in Praiano – eine kurze SITA-Busfahrt von Hostel Brikette, aber meist deutlich ruhiger als Positanos große Strand-Hotspots. Fischerboote, ein Wachturm und steinerne Wege geben der Bucht dieses \\\"hidden gem“-Gefühl, ohne dass du auf Essen und Infrastruktur verzichten musst.",
+    "Wenn du einen stressfreien Strandtag willst (schwimmen, snacken, im Schatten chillen und danach unkompliziert essen gehen), ist das eine der besten Optionen in der Nähe für Hostelgäste.",
+    "Dieser Guide erklärt die Bus-Route, die Strandaufteilung (Lido vs. freier Abschnitt), was du für Kies und Schatten einpackst und wie du nach Sonnenuntergang am einfachsten zurück nach Positano kommst."
   ],
   "toc": [
     {
       "href": "#why-go",
-      "label": "Why go"
+      "label": "Warum hin"
     },
     {
       "href": "#getting-there",
-      "label": "Getting there"
+      "label": "Anreise"
     },
     {
       "href": "#layout",
-      "label": "Layout & services"
+      "label": "Aufbau & Services"
+    },
+    {
+      "href": "#what-to-bring",
+      "label": "Was mitnehmen"
+    },
+    {
+      "href": "#best-time",
+      "label": "Beste Zeit"
+    },
+    {
+      "href": "#nearby",
+      "label": "Ruhige Spots in der Nähe"
     },
     {
       "href": "#evening",
-      "label": "Stay for dinner"
+      "label": "Dinner & Rückweg"
     }
   ],
-  "essentialsTitle": "What to expect",
+  "sections": [
+    {
+      "id": "why-go",
+      "title": "Warum diese Bucht perfekt für Hostelgäste ist",
+      "body": [
+        "Anders als Spiaggia Grande oder Fornillo liegt diese Bucht in einer schmalen Schlucht direkt außerhalb von Praiano. Die Klippen schützen das Wasser vor Wellen, Fischerboote schaukeln im kleinen Hafen, und selbst im Hochsommer bleibt die Stimmung eher entspannt.",
+        "Das ist ein idealer \\\"Mittelweg“-Tag: bequemer als wilde, treppenlastige Buchten, aber weniger chaotisch als die großen Positano-Strände. Du hast Duschen und Essen – fühlst dich aber trotzdem zwischen Felsen statt mitten im Ort.",
+        "Plane es als Halbtag (Morgenschwimmen + langes Lunch) oder als spätnachmittägliches Chill-Setup, das mit einem Dinner am Wasser endet, bevor du zurückfährst."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/01-marina-di-praia-overlook.webp",
+          "width": 1600,
+          "height": 1066,
+          "alt": "Blick auf die Marina-di-Praia-Bucht mit Booten, Sonnenschirmen und steilen Klippen in Praiano",
+          "caption": "Geschützt, dramatisch – und meist ruhiger als die großen Strände in Positano. Foto: Falk2 (CC BY-SA 4.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "Hin und zurück mit dem SITA-Bus",
+      "body": [
+        "Vom Hostel Brikette läufst du die Via Pasitea hinunter zur Haltestelle Sponda und nimmst einen SITA-Bus Richtung Amalfi. Sag dem Fahrer, dass du nach \\\"Marina di Praia“ willst – die Haltestelle liegt zwischen Praiano und Furore und ist bei vollem Bus leicht zu übersehen.",
+        "Steig an der ausgeschilderten Haltestelle aus und folge dem steinernen Weg bergab (ca. zwei Minuten) zum Wasser. Der Zugang ist gepflastert, also auch mit Flip-Flops unkompliziert.",
+        "Für die Rückfahrt gehst du auf die andere Straßenseite und wartest auf einen Bus zurück nach Positano. Im Sommer passt die Frequenz oft, aber abends wird es dünner – check den Aushang, sobald du ankommst, und nimm lieber den vorletzten Bus, wenn du zum Dinner bleibst.",
+        "Kaufe und entwerte SITA-Tickets vor dem Einsteigen. Wenn du Ticketarten, Verkaufsstellen und \\\"Was tun, wenn der Bus voll ist?“ nachlesen willst, schau in unseren %LINK:sitaTickets|SITA-Ticket-Guide%. Wenn du den Tag als Praiano-Spaziergang planst (Kirchen, Aussichtspunkte, Küstenwege), kombiniere es mit dem %LINK:praianoGuide|Praiano-Guide%."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/06-amalfi-coast-sita-bus.jpg",
+          "width": 1200,
+          "height": 1600,
+          "alt": "Steinerne Uferpromenade in Marina di Praia mit Booten und Felswänden",
+          "caption": "Die Promenade macht die letzten zwei Minuten runter ans Wasser super easy. Foto: Falk2 (CC BY-SA 4.0) via Wikimedia Commons."
+        },
+        {
+          "src": "/img/guides/marina-di-praia/08-san-gennaro-church.webp",
+          "width": 1600,
+          "height": 1200,
+          "alt": "Kirche San Gennaro in Praiano mit Kuppel aus Keramikfliesen und Blick auf die Amalfiküste",
+          "caption": "Wenn du Strand und Praiano-Spaziergang kombinierst, ist die Kirche San Gennaro ein einfacher Abstecher. Foto: Elliott Brown (CC BY 2.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "layout",
+      "title": "Strandaufbau: Lido & Services",
+      "body": [
+        "Der Strand ist schmal, kiesig, und teilt sich in einen kleinen freien Abschnitt und den Hauptbereich des Lidos. Wenn du den kostenlosen Teil nah am Wasser willst, komm früher – am Wochenende füllt er sich zuerst.",
+        "Der wichtigste Anbieter ist Marina di Praia Beach Club (Liegen, Schirme, Duschen und meist irgendwas Richtung Paddle/Kajak). In der Hochsaison zahlst du eher für Komfort als für Platz – lohnt sich aber, wenn du Toiletten und ein entspanntes \\\"Sachen ablegen und relaxen“-Setup willst.",
+        "Entlang der Promenade gibt’s Restaurants und Kioske für kalte Drinks. Kartenterminals können zicken: nimm etwas Bargeld für kleine Beträge mit und plan ein Backup, falls der Ticketkiosk später zu ist.",
+        "Hostel-Realität: bring keine Wertsachen mit, die dich stressen. Wenn du solo bist, such dir einen gut sichtbaren Spot (nahe bei anderen Gruppen), pack dein Handy in eine Reißverschlusstasche und geh lieber öfter kurz ins Wasser, statt dein Zeug lange unbeaufsichtigt zu lassen."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/03-marina-di-praia-from-sea.webp",
+          "width": 1600,
+          "height": 1045,
+          "alt": "Marina di Praia vom Meer aus: Kiesstrand und Promenade am Fuß der Klippen",
+          "caption": "Vom Wasser siehst du, wie kompakt die Bucht ist – früh da sein hilft, wenn du freien Platz willst. Foto: Gilbert Bochenek (CC BY-SA 3.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "what-to-bring",
+      "title": "Was mitnehmen (damit Kies nicht nervt)",
+      "body": [
+        "Hier ist Kies, kein weicher Sand. Das macht viel aus: mit nur einem dünnen Handtuch rutschst du wahrscheinlich alle paar Minuten herum, statt wirklich zu entspannen.",
+        "Pack wie für einen Hostel-Daytrip: leicht genug für den Rückweg bergauf, aber mit ein paar Essentials, die Kies und Schatten easy machen."
+      ],
+      "list": [
+        "Wasserschuhe: am Ufer kann’s rutschig sein und Kies tut nach Stunden weh.",
+        "Dickeres Handtuch oder Matte: auf Kies wird’s schnell \\\"hart“.",
+        "Leichte Schicht für den späten Nachmittag: die Klippen bringen früh Schatten und nach dem Schwimmen wird’s kühler.",
+        "Bargeld + Karte: manche kleinen Zahlungen/Terminals sind unzuverlässig.",
+        "Kleiner Drybag oder Zip-Beutel fürs Handy, wenn du oft ins Wasser gehst."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/05-praiano-coastline.webp",
+          "width": 1600,
+          "height": 1200,
+          "alt": "Küste bei Praiano mit Klippen und tiefblauem Meer an der Amalfiküste",
+          "caption": "Klippen bedeuten schnelle Schattenwechsel – nimm eine Schicht mit, wenn du länger bleibst. Foto: Barochat (CC BY-SA 3.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "best-time",
+      "title": "Beste Zeit (und wie sich das Wasser anfühlt)",
+      "body": [
+        "Für einen ruhigen, einfachen Tag komm am besten morgens. Du findest eher einen bequemen Platz, es ist weniger Gedränge auf der Promenade, und das \\\"Base → Swim“-Timing ist entspannter.",
+        "Ab mittags/nachmittags werfen die Klippen mehr Schatten. Das ist super, wenn du überhitzt bist, kann aber auch bedeuten, dass es bei Wind schneller frisch wird – vor allem nach einem langen Swim.",
+        "Der Strand fällt schnell ab: geh beim ersten Einstieg langsam rein und achte darauf, wo du deine Tasche ablegst, wenn die Wellen höher laufen."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/06-praiano-view.webp",
+          "width": 1600,
+          "height": 1066,
+          "alt": "Blick entlang der Küste von Praiano mit Klippen und Häusern am Hang",
+          "caption": "Hier bestimmen die Klippen Licht und Schatten – plane damit. Foto: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "nearby",
+      "title": "Ruhige Spots in der Nähe (realistisch geplant)",
+      "body": [
+        "Die Amalfiküste ist berühmt für \\\"Secret Coves“, aber viele sind privat, nur per Boot erreichbar oder haben fragwürdige Klippenpfade. Für Hostelgäste ist die beste Strategie: diese Bucht als komfortable Base nutzen und einen kurzen \\\"Wow“-Stop auf derselben Buslinie hinzufügen.",
+        "Der einfachste dramatische Stop in der Nähe ist %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore%: früh hin für Fotos und einen kurzen Swim, danach zurück hierher für Lunch, Schatten und entspannteres Baden.",
+        "Wenn du einen ganzen \\\"Sampler Day“ willst, plane Reihenfolge (und Bus-Timing) mit unserem %LINK:beachHoppingAmalfi|Beach-Hopping-Guide Amalfiküste%, damit du nicht den halben Nachmittag vollgepackten Bussen hinterherschaust."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/07-fiordo-di-furore.webp",
+          "width": 1200,
+          "height": 1600,
+          "alt": "Fiordo-di-Furore-Schlucht mit türkisfarbenem Wasser und steilen Felswänden",
+          "caption": "Fiordo di Furore ist der dramatische Foto-Stop in der Nähe – kombiniere ihn mit einer ruhigeren Base-Bucht. Foto: Luca Aless (CC BY-SA 4.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "evening",
+      "title": "Dinner am Wasser, dann stressfrei zurück",
+      "body": [
+        "Das ist eine der schönsten Buchten, um nach dem Schwimmen noch draußen zu bleiben: wenn die Sonne runtergeht, schalten Restaurants in den Dinner-Modus und die Promenadenlichter spiegeln sich im Wasser. Wenn du einen bestimmten Tisch willst, reserviere – besonders im Juli und August.",
+        "Damit der Rückweg easy bleibt, check den Busfahrplan direkt bei Ankunft. Nimm den vorletzten Bus Richtung Positano, damit du Puffer hast, falls ein Bus voll ist.",
+        "Wenn du den letzten Bus verpasst, können Taxis von Praiano nach Positano teuer werden – wenn du länger bleibst, organisiere eine Teilung mit Leuten aus dem Hostel."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/04-torre-a-mare-watchtower.webp",
+          "width": 1200,
+          "height": 1600,
+          "alt": "Küstenwachturm bei Praiano oberhalb der Klippen am Meer",
+          "caption": "Die Küste hier ist voller historischer Türme und Klippenwege. Foto: Falk2 (CC BY-SA 4.0) via Wikimedia Commons."
+        }
+      ]
+    }
+  ],
+  "essentialsTitle": "Was dich erwartet",
   "essentials": [
-    "20-minütige Fahrt mit dem SITA-Bus von Positano; Fragen Sie nach der Haltestelle Marina di Praia und gehen Sie zwei Minuten bergab.",
-    "Schmaler Kiesstrand mit einem Hauptstrandbad und einem kleinen freien Abschnitt in der Mitte.",
-    "Restaurants und Snack-Kioske säumen den Gehweg – ideal für ein Abendessen bei Sonnenuntergang, bevor Sie sich auf den Heimweg machen."
+    "Kurze SITA-Busfahrt ab Positano: frag den Fahrer nach dem Stopp Marina di Praia und lauf zwei Minuten bergab ans Wasser.",
+    "Schmale Kiesbucht mit einem Haupt-Lido und einem kleinen freien Abschnitt: früh kommen, wenn du kostenlos liegen willst.",
+    "Essen und Infrastruktur vor Ort (Restaurants, Drinks, Duschen im Lido) – perfekt für einen entspannten Halbtag oder Dinner vor der Rückfahrt."
   ],
-  "typicalCostsTitle": "Typical costs",
+  "typicalCostsTitle": "Typische Kosten",
   "typicalCosts": [
-    "Liege + Sonnenschirm im Marina di Praia Beach Club: 25–35 € pro Tag (Sets für zwei Personen verfügbar).",
-    "Kajakverleih: ca. 20 € pro Stunde für zwei Personen.",
-    "Hauptgerichte zum Abendessen im Da Armandino oder Il Pirata: 16–28 €, je nach Fang und Pasta-Spezialitäten."
+    "Liege + Schirm im Marina di Praia Beach Club: €25–€35 pro Tag (Zweier-Sets verfügbar).",
+    "Kajak: ca. €20 pro Stunde für zwei Personen.",
+    "Hauptgerichte bei Da Armandino oder Il Pirata: €16–€28 je nach Fisch und Pasta-Special."
   ],
-  "tipsTitle": "Quick tips",
-  "warningsTitle": "Good to know",
+  "tipsTitle": "Schnelle Tipps",
+  "tips": [
+    "Ticket direkt beim Einsteigen entwerten und ein Extra für die Rückfahrt behalten, falls der Kiosk abends zu ist.",
+    "Wasserschuhe einpacken: Kies kann rutschig sein und das Wasser wird schnell tief.",
+    "Vergleiche Alternativen in unserer %LINK:positanoBeaches|Strand-Übersicht% wenn du Marina di Praia mit einem Positano-Tag kombinieren willst."
+  ],
+  "warningsTitle": "Gut zu wissen",
   "warnings": [
-    "Der Platz ist begrenzt; Der freie Bereich füllt sich zuerst und am Wochenende sind die Lido-Liegen ausverkauft.",
-    "Die Klippen blockieren am Nachmittag die direkte Sonneneinstrahlung – ideal zum Abkühlen, aber an windigen Tagen kann es kühl sein.",
-    "Der Mobilfunkempfang bricht in der Schlucht ein; Laden Sie vorab Busfahrpläne oder Buchungsbestätigungen für das Abendessen herunter."
+    "Wenig Platz: der freie Abschnitt ist zuerst voll, und Liegen im Lido können am Wochenende ausverkauft sein.",
+    "Klippen blocken die direkte Sonne ab mittags: gut zum Abkühlen, aber an windigen Tagen kann’s frisch wirken.",
+    "Mobilfunk kann in der Schlucht schwächer sein: Busfahrplan oder Dinner-Reservierung vorher offline sichern."
   ],
-  "faqsTitle": "Marina di Praia FAQs"
+  "faqsTitle": "Marina di Praia FAQ",
+  "faqs": [
+    {
+      "q": "Wo genau nehme ich den Bus in Positano?",
+      "a": [
+        "Nimm die Haltestelle Sponda an der Via Pasitea für Busse Richtung Amalfi. Vom Hostel sind es etwa 10 Minuten bergab; in der Hochsaison 10 Minuten früher da sein, damit du noch in den Bus kommst, bevor er voll ist."
+      ]
+    },
+    {
+      "q": "Gibt es einen freien Bereich oder muss ich Liegen mieten?",
+      "a": [
+        "Es gibt einen kleinen öffentlichen Abschnitt in der Mitte der Bucht. Nimm eine Matte oder ein dickeres Handtuch mit – die Kiesel sind grob – und rechne damit, dass du dich je nach Wasserstand näher an die Felsen schiebst. Liegen im Marina di Praia Beach Club beinhalten Duschen und Toiletten, wenn du es bequemer willst."
+      ]
+    },
+    {
+      "q": "Wie spät kann ich zum Dinner bleiben und trotzdem zurück zum Hostel?",
+      "a": [
+        "Die letzten SITA-Busse Richtung Positano variieren je nach Monat, fahren im Sommer aber oft bis etwa 21:30. Check den Aushang bei Ankunft und nimm den vorletzten Bus, falls einer voll ist. Nach dem letzten Bus kosten Taxis Praiano → Positano ca. €35–€45 – also am besten teilen."
+      ]
+    },
+    {
+      "q": "Ist Marina di Praia gut, wenn ich alleine hingehe?",
+      "a": [
+        "Ja – die Bucht ist relativ \\\"solo-friendly“, weil es Services gibt und die Promenade gut einsehbar ist. Trotzdem: Hostel-Common-Sense. Nimm nur mit, was du tragen willst, halte dein Handy sicher verstaut und geh lieber öfter kurz schwimmen, statt deinen Rucksack lange unbeaufsichtigt zu lassen."
+      ]
+    }
+  ]
 }

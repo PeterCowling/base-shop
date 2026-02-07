@@ -1,6 +1,7 @@
 /* i18n-exempt file -- test titles and UI copy are asserted literally */
-import { render, fireEvent } from "@testing-library/react";
 import React from "react";
+import { fireEvent,render } from "@testing-library/react";
+
 import UploaderSurface from "../UploaderSurface";
 
 function makeProps(

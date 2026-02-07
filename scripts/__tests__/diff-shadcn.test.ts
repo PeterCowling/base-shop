@@ -18,9 +18,8 @@ describe("diff-shadcn script", () => {
   });
 
   it("spawns diff for existing upstream component", async () => {
-    existsMock.mockImplementation((p: unknown) =>
-      typeof p === "string" && p.includes("button.tsx")
-    );
+    // Mock all upstream components as existing to avoid console.error
+    existsMock.mockReturnValue(true);
     const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
     await import("../diff-shadcn.ts");
     expect(spawnMock).toHaveBeenCalledWith(

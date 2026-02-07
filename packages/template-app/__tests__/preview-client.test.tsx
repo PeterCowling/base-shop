@@ -1,5 +1,6 @@
 /** @jest-environment jsdom */
 import { render, screen } from "@testing-library/react";
+
 import PreviewClient from "../src/app/preview/[pageId]/PreviewClient";
 
 jest.mock("@/components/DynamicRenderer", () => ({
@@ -7,19 +8,19 @@ jest.mock("@/components/DynamicRenderer", () => ({
   default: (props: any) => <div data-cy="renderer" {...props} />,
 }));
 
-jest.mock("@ui/components/DeviceSelector", () => ({
+jest.mock("@acme/ui/components/DeviceSelector", () => ({
   __esModule: true,
   default: () => <div data-cy="selector" />,
 }));
 
-jest.mock("@ui/utils/devicePresets", () => ({
+jest.mock("@acme/ui/utils/devicePresets", () => ({
   devicePresets: [
     { id: "phone", width: 10, height: 20 },
     { id: "tablet", width: 30, height: 40 },
   ],
 }));
 
-jest.mock("@ui/hooks/usePreviewDevice", () => ({
+jest.mock("@acme/cms-ui/hooks/usePreviewDevice", () => ({
   usePreviewDevice: () => ["phone", jest.fn()],
 }));
 

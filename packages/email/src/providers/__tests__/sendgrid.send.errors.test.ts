@@ -1,15 +1,15 @@
+import { createSendgridTestHarness } from "../../__tests__/sendgrid/setup";
+
 jest.mock("@sendgrid/mail", () => {
   const setApiKey = jest.fn();
   const send = jest.fn();
   return { __esModule: true, default: { setApiKey, send }, setApiKey, send };
 });
 
-import { createSendgridTestHarness } from "../../__tests__/sendgrid/setup";
-
 describe("SendgridProvider send – error handling", () => {
   const getSgMail = createSendgridTestHarness();
-  let warnSpy: jest.SpyInstance;
-  let errorSpy: jest.SpyInstance;
+  let warnSpy: jest.SpiedFunction<typeof console.warn>;
+  let errorSpy: jest.SpiedFunction<typeof console.error>;
 
   beforeAll(() => {
     warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});

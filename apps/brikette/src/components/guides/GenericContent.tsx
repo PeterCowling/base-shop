@@ -1,70 +1,30 @@
 // src/components/guides/GenericContent.tsx
-import { Children, Fragment, createElement, type ReactNode } from "react";
-import TableOfContents from "./TableOfContents";
-import { applyStableKeys, buildTableOfContents, toTocItems } from "./generic-content/toc";
-import { SectionHeading } from "./generic-content/SectionHeading";
-import { buildGenericContentData } from "./generic-content/buildContent";
-import type { GenericContentTranslator } from "./generic-content/types";
-import type { GuideKey } from "@/routes.guides-helpers";
+import { Children, Fragment, type ReactNode } from "react";
+
+import {
+  getContentAlias,
+  getTocSectionFilter,
+  shouldMergeAliasFaqs,
+  shouldSuppressFaqOnlyToc,
+} from "@/config/guide-overrides";
+import { GUIDE_SECTION_BY_KEY } from "@/data/guides.index";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { renderGuideLinkTokens } from "@/routes/guides/utils/_linkTokens";
 import i18n from "@/i18n";
-import type { TFunction } from "i18next";
+import { type GuideKey } from "@/routes.guides-helpers";
+import { renderBodyBlocks, renderGuideLinkTokens } from "@/routes/guides/utils/linkTokens";
 import { debugGuide } from "@/utils/debug";
-import type { AppLanguage } from "@/i18n.config";
+
+import { buildGenericContentData } from "./generic-content/buildContent";
+import { GenericContentFaqSection, resolveFaqsHeadingLabel } from "./generic-content/FaqSection";
+import { SectionHeading } from "./generic-content/SectionHeading";
+import { applyStableKeys, buildTableOfContents, toTocItems } from "./generic-content/toc";
+import type { GenericContentTranslator } from "./generic-content/types";
+import ImageGallery from "./ImageGallery";
+import TableOfContents from "./TableOfContents";
 
 const DEBUG_KEYS = {
   tocFinalItems: "guides.genericContent.toc.finalItems",
 } as const;
-
-const FAQS_HEADING_KEY = "labels.faqsHeading" as const;
-const FAQS_HEADING_FALLBACK_LANG = "en" as AppLanguage;
-
-const normalizeLabelCandidate = (value: unknown): string => {
-  if (typeof value !== "string") {
-    return "";
-  }
-  const trimmed = value.trim();
-  if (!trimmed || trimmed === FAQS_HEADING_KEY) {
-    return "";
-  }
-  return trimmed;
-};
-
-const getGuidesLabel = (lang: string | undefined, key: string): string => {
-  if (!lang) {
-    return "";
-  }
-  try {
-    const fixed = i18n.getFixedT?.(lang, "guides");
-    if (typeof fixed !== "function") {
-      return "";
-    }
-    return normalizeLabelCandidate((fixed as TFunction)(key));
-  } catch {
-    return "";
-  }
-};
-
-const resolveFaqsHeadingLabel = (lang: AppLanguage, translator: GenericContentTranslator): string => {
-  try {
-    const direct = normalizeLabelCandidate(translator(FAQS_HEADING_KEY) as unknown);
-    if (direct) {
-      return direct;
-    }
-  } catch {
-    // ignore
-  }
-  const localized = getGuidesLabel(lang, FAQS_HEADING_KEY);
-  if (localized) {
-    return localized;
-  }
-  const fallback = getGuidesLabel(FAQS_HEADING_FALLBACK_LANG, FAQS_HEADING_KEY);
-  if (fallback) {
-    return fallback;
-  }
-  return FAQS_HEADING_KEY;
-};
 
 const TEST_IDS = {
   root: "guides.genericContent.root",
@@ -110,15 +70,20 @@ export default function GenericContent({
   faqHeadingLevel = 2,
 }: Props): JSX.Element | null {
   const lang = useCurrentLanguage();
+  const isExperiencesGuide = GUIDE_SECTION_BY_KEY[guideKey] === "experiences";
 
   const content = buildGenericContentData(t, guideKey);
   if (!content) return null;
+  const aliasKey = getContentAlias(guideKey) ?? null;
+  const mergeAliasFaqs = shouldMergeAliasFaqs(guideKey);
+  const suppressFaqOnlyToc = shouldSuppressFaqOnlyToc(guideKey);
+  const tocSectionFilter = getTocSectionFilter(guideKey);
 
   const faqsHeadingLabel = resolveFaqsHeadingLabel(lang, t);
   const normalizedFaqsHeadingLabel = faqsHeadingLabel.toLowerCase();
 
   const renderTokens = (value: string, key: string): ReactNode => {
-    const nodes = renderGuideLinkTokens(value, lang, key);
+    const nodes = renderGuideLinkTokens(value, lang, key, guideKey);
     if (nodes.length === 1) {
       return nodes[0];
     }
@@ -161,56 +126,18 @@ export default function GenericContent({
     return fallback;
   };
 
+  const tocItemsForFaqCheck = toTocItems(content.tocRaw, resolveSectionFallbackLabel);
+
   const hideFaQsOnlyToc =
-    guideKey === ("interrailAmalfi" as GuideKey) &&
+    suppressFaqOnlyToc &&
     content.sections.length === 0 &&
-    toTocItems(content.tocRaw, resolveSectionFallbackLabel).length === 0 &&
+    tocItemsForFaqCheck.length === 0 &&
     content.faqs.length > 0;
 
-  const effectiveFaqs = (() => {
-    if (
-      guideKey === ("interrailAmalfi" as GuideKey) &&
-      content.sections.length === 0 &&
-      toTocItems(content.tocRaw, resolveSectionFallbackLabel).length === 0
-    ) {
-      try {
-        // Resolve fallback FAQs via i18n.getFixedT to avoid calling additional hooks.
-        const fixed: TFunction | undefined = (i18n.getFixedT?.(lang, "guidesFallback") as unknown as TFunction | undefined);
-        const raw = typeof fixed === "function"
-          ? (fixed("interrailItalyRailPassAmalfiCoast.faqs", { returnObjects: true }) as unknown)
-          : undefined;
-        if (Array.isArray(raw)) {
-          const arr = Array.isArray(raw) ? (raw as unknown[]) : [];
-          type FaqCandidate = { q?: unknown; a?: unknown; answer?: unknown } | Record<string, unknown> | unknown;
-          const normalised = arr
-            .map((e: FaqCandidate) => {
-              const obj = (e ?? {}) as Record<string, unknown>;
-              const qVal = obj["q"];
-              const q = typeof qVal === "string" ? qVal.trim() : "";
-              const aRaw =
-                ("a" in obj ? obj["a"] : undefined) ?? ("answer" in obj ? obj["answer"] : undefined);
-              const a = Array.isArray(aRaw)
-                ? (aRaw as unknown[])
-                    .filter((v): v is string => typeof v === "string")
-                    .map((v) => v.trim())
-                    .filter(Boolean)
-                : [];
-              if (!q || a.length === 0) return null;
-              return { q, a } as { q: string; a: string[] };
-            })
-            .filter((e): e is { q: string; a: string[] } => e != null);
-          if (normalised.length > 0) {
-            // Append fallback FAQs after any generic FAQs so tests
-            // can assert both Generic and Fallback entries appear.
-            return [...content.faqs, ...normalised];
-          }
-        }
-      } catch {
-        // ignore and fall back to generic FAQs
-      }
-    }
-    return content.faqs;
-  })();
+  const shouldAppendAliasFaqs =
+    Boolean(aliasKey && mergeAliasFaqs) &&
+    content.sections.length === 0 &&
+    tocItemsForFaqCheck.length === 0;
 
   const navItems = buildTableOfContents({
     showToc: showToc && !hideFaQsOnlyToc,
@@ -223,14 +150,16 @@ export default function GenericContent({
   const keyedNavItems = applyStableKeys(navItems);
 
   const { sectionsForRender, hiddenSectionAnchors } = (() => {
-    if (guideKey !== ("soloTravelPositano" as GuideKey)) {
+    if (!tocSectionFilter) {
       return { sectionsForRender: content.sections, hiddenSectionAnchors: [] as string[] };
     }
     const anchors: string[] = [];
     const seen = new Set<string>();
     const filtered = content.sections.filter((section) => {
       const rawId = typeof section?.id === "string" ? section.id.trim() : "";
-      if (/^section-\d+$/u.test(rawId)) {
+      if (!rawId) return true;
+      const keep = tocSectionFilter(rawId);
+      if (!keep) {
         if (!seen.has(rawId)) {
           anchors.push(rawId);
           seen.add(rawId);
@@ -262,7 +191,7 @@ export default function GenericContent({
           }
           // Otherwise, upgrade the generic label to the localized heading label when available
           if (isGeneric) {
-            if (faqsHeadingLabel && faqsHeadingLabel !== FAQS_HEADING_KEY) {
+            if (faqsHeadingLabel && faqsHeadingLabel !== "labels.faqsHeading") {
               return { href, label: faqsHeadingLabel };
             }
           }
@@ -287,34 +216,6 @@ export default function GenericContent({
     content.sections.length === 0 &&
     content.faqs.length === 0;
 
-  const effectiveFaqsTitle = (() => {
-    if (guideKey === ("interrailAmalfi" as GuideKey)) {
-      try {
-        const fbLocal: TFunction | undefined = (i18n as unknown as { __tGuidesFallback?: TFunction })?.__tGuidesFallback;
-        const fixed: TFunction | undefined = (i18n.getFixedT?.(lang, "guidesFallback") as unknown as TFunction | undefined);
-        const get = (fn: TFunction | undefined, key: string): unknown => (typeof fn === 'function' ? (fn as TFunction)(key) : undefined);
-        // Prefer the hook-attached fallback translator when present; fall back
-        // to getFixedT for environments that provide it.
-        const raw1 = get(fbLocal, "interrailItalyRailPassAmalfiCoast.faqsTitle") ?? get(fixed, "interrailItalyRailPassAmalfiCoast.faqsTitle");
-        const raw2 = get(fbLocal, "content.interrailItalyRailPassAmalfiCoast.faqsTitle") ?? get(fixed, "content.interrailItalyRailPassAmalfiCoast.faqsTitle");
-        const pick = (v: unknown, sentinel?: string) => {
-          if (typeof v !== 'string') return '';
-          const s = v.trim();
-          if (!s) return '';
-          if (sentinel && s === sentinel) return '';
-          return s;
-        };
-        const c2 = pick(raw2, 'content.interrailItalyRailPassAmalfiCoast.faqsTitle');
-        if (c2) return c2;
-        const c1 = pick(raw1, 'interrailItalyRailPassAmalfiCoast.faqsTitle');
-        if (c1) return c1;
-      } catch {
-        // ignore and fall through
-      }
-    }
-    return content.faqsTitle;
-  })();
-
   // Compute an optional explicit title for the ToC. Only provide a title when
   // content specifies one or the translated generic label is meaningful. Avoid
   // passing the default "On this page" so tests that assert props match
@@ -326,7 +227,7 @@ export default function GenericContent({
       if (v.length > 0) return v;
     }
     try {
-      const fallback = t("labels.onThisPage", { defaultValue: "On this page" }) as unknown as string;
+      const fallback: unknown = t("labels.onThisPage", { defaultValue: "On this page" });
       if (typeof fallback === "string") {
         const v = fallback.trim();
         // Only treat the translated value as explicit when it differs from the
@@ -340,7 +241,7 @@ export default function GenericContent({
   })();
 
   return (
-    <div data-testid={TEST_IDS.root}>
+    <div data-testid={TEST_IDS.root} className={isExperiencesGuide ? "space-y-10" : undefined}>
       {introParagraphs.length > 0 ? (
         <div className="space-y-4">
           {introParagraphs.map((paragraph, index) => (
@@ -363,7 +264,7 @@ export default function GenericContent({
         sectionsForRender
           .filter((section) =>
             Array.isArray(section.body)
-              ? section.body.length > 0 || !showToc
+              ? section.body.length > 0 || (section.images?.length ?? 0) > 0 || !showToc
               : !showToc,
           )
           .map((section, sectionIndex) => (
@@ -376,10 +277,11 @@ export default function GenericContent({
                 <div>{sectionTopExtras[section.id]}</div>
               ) : null}
               {Array.isArray(section.body)
-                ? section.body.map((paragraph, index) => (
-                    <p key={index}>{renderTokens(paragraph, `${guideKey}-section-${section.id}-${index}`)}</p>
-                  ))
+                ? renderBodyBlocks(section.body, lang, `${guideKey}-section-${section.id}`, guideKey)
                 : null}
+              {section.images?.length ? (
+                <ImageGallery items={section.images} className="my-0" />
+              ) : null}
               {sectionBottomExtras?.[section.id] ? (
                 <div>{sectionBottomExtras[section.id]}</div>
               ) : null}
@@ -431,90 +333,18 @@ export default function GenericContent({
         </section>
       ) : null}
 
-      {(() => {
-        const headingRaw = typeof effectiveFaqsTitle === 'string' ? effectiveFaqsTitle.trim() : '';
-        // Render FAQs whenever entries exist; fallback the heading label inside
-        // the section if an explicit title is not provided.
-        const showFaqs = effectiveFaqs.length > 0;
-        try {
-          if (process.env["DEBUG_TOC"] === "1") {
-            console.log("GC:showFaqs", { headingRaw, count: effectiveFaqs.length });
-          }
-        } catch {
-          /* noop */
-        }
-        return showFaqs ? (
-          <section id="faqs" className="scroll-mt-28 space-y-4">
-            {(() => {
-              const raw = typeof effectiveFaqsTitle === 'string' ? effectiveFaqsTitle.trim() : '';
-              if (content.faqsTitleSuppressed && raw.length === 0) {
-                return null;
-              }
-              const isRawKey = raw === `content.${guideKey}.faqsTitle` || raw === guideKey || raw.length === 0;
-              let fallbackTitle: string;
-              if (!isRawKey) {
-                fallbackTitle = raw;
-              } else if (guideKey === ("interrailAmalfi" as GuideKey)) {
-                // Prefer an alias-provided FAQs label when available
-                try {
-                  const aliasRaw = t('content.interrailItalyRailPassAmalfiCoast.toc.faqs') as unknown as string;
-                  const alias = typeof aliasRaw === 'string' ? aliasRaw.trim() : '';
-                  if (alias && alias !== 'content.interrailItalyRailPassAmalfiCoast.toc.faqs') {
-                    fallbackTitle = alias;
-                  } else {
-                    fallbackTitle = faqsHeadingLabel;
-                  }
-                } catch {
-                  fallbackTitle = faqsHeadingLabel;
-                }
-              } else {
-                fallbackTitle = faqsHeadingLabel;
-              }
-              const HeadingTag: "h2" | "h3" = faqHeadingLevel === 3 ? "h3" : "h2";
-              const faqHeadingClassName = [
-                "text-pretty",
-                "text-2xl",
-                "font-semibold",
-                "tracking-tight",
-                "text-brand-heading",
-              ].join(" ");
-              return createElement(
-                HeadingTag,
-                {
-                  id: "faqs",
-                  className: faqHeadingClassName,
-                },
-                fallbackTitle,
-              );
-            })()}
-            <div className="space-y-4">
-              {effectiveFaqs.map((item, index) => (
-                <details
-                  key={index}
-                  className="overflow-hidden rounded-2xl border border-brand-outline/20 bg-brand-surface/40 shadow-sm transition-shadow hover:shadow-md dark:border-brand-outline/40 dark:bg-brand-bg/60"
-                >
-                  <summary className="px-4 py-3 text-lg font-semibold text-brand-heading">
-                    {renderTokens(item.q, `${guideKey}-faq-${index}-question`)}
-                  </summary>
-                  {Array.isArray(item.a) ? (
-                    <div className="space-y-3 px-4 pb-4 pt-1 text-base text-brand-text/90">
-                      {item.a.map((answer, answerIndex) => (
-                        <p key={answerIndex}>
-                          {renderTokens(answer, `${guideKey}-faq-${index}-answer-${answerIndex}`)}
-                        </p>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="px-4 pb-4 pt-1 text-base text-brand-text/90">
-                      {renderTokens(item.a, `${guideKey}-faq-${index}-answer`)}
-                    </p>
-                  )}
-                </details>
-              ))}
-            </div>
-          </section>
-        ) : null;
-      })()}
+      <GenericContentFaqSection
+        guideKey={guideKey}
+        content={content}
+        lang={lang}
+        t={t}
+        renderTokens={renderTokens}
+        faqsHeadingLabel={faqsHeadingLabel}
+        faqHeadingLevel={faqHeadingLevel}
+        aliasKey={aliasKey}
+        mergeAliasFaqs={mergeAliasFaqs}
+        shouldAppendAliasFaqs={shouldAppendAliasFaqs}
+      />
     </div>
   );
 }

@@ -1,8 +1,10 @@
 // apps/cms/src/app/[lang]/product/[slug]/page.tsx
-import { LOCALES } from "@acme/i18n";
-import { getProductBySlug } from "@platform-core/products";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+
+import { LOCALES } from "@acme/i18n";
+import { getProductBySlug } from "@acme/platform-core/products";
+
 import PdpClient from "./PdpClient.client";
 
 /* -------------------------------------------------------------------------- */
@@ -36,7 +38,7 @@ export async function generateMetadata({
   params: Promise<Params>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
 
   return {
     title: product ? `${product.title} · Base‑Shop` : "Product not found",
@@ -53,8 +55,8 @@ export default async function ProductDetailPage({
   params: Promise<Params>;
 }) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
   if (!product) return notFound();
 
-  return <PdpClient product={product} />;
+  return <PdpClient product={product as any} />;
 }

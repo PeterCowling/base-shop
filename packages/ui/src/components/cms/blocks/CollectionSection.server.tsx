@@ -1,4 +1,5 @@
 import type { SKU } from "@acme/types";
+
 import CollectionSectionClient from "./CollectionSection.client";
 
 export interface CollectionServerProps {

@@ -1,7 +1,8 @@
-import { describe, it, expect, afterEach } from "@jest/globals";
-import { withEnv } from "../../../config/test/utils/withEnv";
-import { expectInvalidAuthEnvWithConfigEnv } from "../../../config/test/utils/expectInvalidAuthEnv";
+import { afterEach,describe, expect, it } from "@jest/globals";
+
 import { selectStore } from "../../../config/src/env/__tests__/authEnvTestUtils";
+import { expectInvalidAuthEnvWithConfigEnv } from "../../../config/test/utils/expectInvalidAuthEnv";
+import { withEnv } from "../../../config/test/utils/withEnv";
 
 const NEXT_SECRET = "nextauth-secret-32-chars-long-string!";
 const SESSION_SECRET = "session-secret-32-chars-long-string!";
@@ -24,7 +25,7 @@ const prodEnv = (overrides: EnvOverrides = {}): EnvOverrides => ({
 const expectInvalidProd = (
   overrides: EnvOverrides,
   accessor: (env: Record<string, unknown>) => unknown,
-  consoleErrorSpy?: jest.SpyInstance,
+  consoleErrorSpy?: jest.SpiedFunction<typeof console.error>,
 ) =>
   expectInvalidAuthEnvWithConfigEnv({
     env: prodEnv(overrides),

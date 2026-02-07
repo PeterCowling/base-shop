@@ -1,20 +1,22 @@
 "use client";
 
-import { FormEvent, useState } from "react";
-
-import { Alert, Toast } from "@/components/atoms";
-import { Button, Card, CardContent } from "@/components/atoms/shadcn";
-import type { Locale } from "@acme/types";
-import { useTranslations } from "@acme/i18n";
-import { Inline } from "@ui/components/atoms/primitives/Inline";
-import { Stack } from "@ui/components/atoms/primitives/Stack";
+import { type FormEvent, useState } from "react";
 import clsx from "clsx";
+
+import { Tag } from "@acme/design-system/atoms/Tag";
+import { Inline } from "@acme/design-system/primitives/Inline";
+import { Stack } from "@acme/design-system/primitives/Stack";
+import { useTranslations } from "@acme/i18n";
+import type { Locale } from "@acme/types";
+import { useToast } from "@acme/ui/operations";
+
+import { Alert } from "@/components/atoms";
+import { Button, Card, CardContent } from "@/components/atoms/shadcn";
 
 import { SeoAdvancedSettings } from "./SeoAdvancedSettings";
 import { SeoEditorHeader } from "./SeoEditorHeader";
 import { SeoSharedFields } from "./SeoSharedFields";
 import { useSeoEditor, type UseSeoEditorProps } from "./useSeoEditor";
-import { Tag } from "@ui/components/atoms/Tag";
 
 const Tabs = ({
   value,
@@ -85,9 +87,7 @@ export default function SeoEditor(props: UseSeoEditorProps) {
   } = useSeoEditor(props);
 
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const [toast, setToast] = useState<{ open: boolean; message: string }>(
-    { open: false, message: "" },
-  );
+  const toast = useToast();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -96,15 +96,19 @@ export default function SeoEditor(props: UseSeoEditorProps) {
       result.status === "warning" && result.warnings && result.warnings.length > 0
         ? `: ${result.warnings.join(", ")}`
         : "";
-    setToast({ open: true, message: `${result.message}${warningSuffix}` });
+    if (result.status === "error") {
+      toast.error(`${result.message}${warningSuffix}`);
+    } else if (result.status === "warning") {
+      toast.warning(`${result.message}${warningSuffix}`);
+    } else {
+      toast.success(`${result.message}${warningSuffix}`);
+    }
   };
 
   const handleGenerate = async () => {
     const result = await generate();
-    setToast({ open: true, message: result.message });
+    toast.success(result.message);
   };
-
-  const closeToast = () => setToast((t) => ({ ...t, open: false }));
 
   return (
     <>
@@ -188,7 +192,6 @@ export default function SeoEditor(props: UseSeoEditorProps) {
           </form>
         </CardContent>
       </Card>
-      <Toast open={toast.open} message={toast.message} onClose={closeToast} />
     </>
   );
 }

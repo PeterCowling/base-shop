@@ -1,61 +1,53 @@
 {
   "seo": {
     "title": "العودة بالحافلة إلى هوستل بريكيت من شاطئ أرينزو",
-    "description": "اصعد من الشاطئ إلى الطريق، ثم اركب الحافلة ثلاثة كيلومترات إلى تشيزا نوفا وأنهِ المسار بمشية قصيرة إلى هوستل بريكيت."
+    "description": "اصعد من الشاطئ إلى الطريق، اركب الحافلة عائدًا نحو بوسيتانو، انزل عند بار إنترناسيونالي/كييزا نوفا، ثم اتبع التعليمات القصيرة للعودة إلى هوستل بريكيت."
   },
-  "linkLabel": "Bus back from Arienzo Beach",
+  "linkLabel": "العودة بالحافلة إلى هوستل بريكيت من شاطئ أرينزو",
   "intro": [
-    "Skip the full stair climb by catching the Amalfi Coast bus from Arienzo back toward Positano.",
-    "Buy your return ticket in town before heading to the beach — there is no vendor at Arienzo, so plan ahead or use the shuttle boat back to Spiaggia Grande."
+    "امسح للمشاركة",
+    "نصيحة: جدول مواعيد الحافلات. لاحظ أن الجدول يتضمن أوقات بوسيتانو، لكن ليس أوقات أرينزو. موقف حافلة أرينزو يقع قبل سبوندا بحوالي 2-5 دقائق.",
+    "مهم! إذا لم يكن لديك تذكرة حافلة لرحلة العودة، يمكنك إما المشي عائدًا إلى سبوندا وركوب الحافلة من هناك، أو ركوب القارب المكوكي عائدًا إلى الشاطئ الرئيسي في بوسيتانو. تذكر، لا يوجد بائعو تذاكر بالقرب من شاطئ أرينزو، لذا من المهم التخطيط مسبقًا وشراء تذاكرك مقدمًا لرحلة العودة.",
+    "نصيحة: انظر %LINK:arienzoBeachClub|دليل شاطئ أرينزو%",
+    "نصيحة: انظر %LINK:positanoBeaches|نظرة عامة على الشواطئ%"
   ],
   "sections": [
     {
       "id": "walk-to-stop",
-      "title": "Walk up to the bus stop",
+      "title": "اصعد إلى موقف الحافلة",
       "body": [
-        "Climb the stairs from the beach to the road and cross carefully to the inland side.",
-        "Look for the blue-and-white SITA sign on the metal pole opposite the entrance path and wait on the lay-by."
+        "لركوب الحافلة عائدًا إلى النزل، اصعد الدرج من الشاطئ إلى الطريق وابحث عن موقف الحافلة على الجانب المقابل من الطريق. لافتة موقف الحافلة زرقاء وبيضاء، مثبتة على عمود معدني (انظر الصورة للمرجع). انتظر عند موقف الحافلة حتى تصل الحافلة."
       ]
     },
     {
       "id": "ride-the-bus",
-      "title": "Ride the Amalfi Coast bus",
+      "title": "اركب الحافلة",
       "body": [
-        "Flag the coach as it approaches and have your validated ticket ready.",
-        "Expect the journey to cover about 3 kilometres (1.9 miles) with a few intermediate stops before Positano."
+        "عدد المرات التي ستتوقف فيها الحافلة قبل أن تحتاج إلى النزول سيختلف. المسافة التي تحتاج لقطعها حوالي 3 كيلومتر / 1.9 ميل."
       ]
     },
     {
       "id": "get-off-bus",
-      "title": "Get off at Bar Internazionale / Chiesa Nuova",
+      "title": "انزل من الحافلة",
       "body": [
-        "Listen for the announcement or watch for the Bar Internazionale tabacchi — the stop sits opposite the hostel.",
-        "Press the stop button early so the driver knows to drop you at Chiesa Nuova."
+        "ستنزل عند موقف حافلة بار إنترناسيونالي/كييزا نوفا."
       ]
     },
     {
       "id": "walk-to-hostel",
-      "title": "Walk back to Hostel Brikette",
+      "title": "امشِ إلى النزل",
       "body": [
-        "Continue in the direction the bus was heading for just over 100 metres (330 feet).",
-        "Take the staircase on your right back up to Hostel Brikette's main entrance."
+        "التعليمات:",
+        "* تابع في الاتجاه الذي تسلكه الحافلة التي نزلت منها لمسافة تزيد قليلاً عن 100 متر / 330 قدمًا.",
+        "* اصعد الدرج إلى الباب الرئيسي للنزل."
       ]
     }
   ],
-  "tipsTitle": "Bus tips",
+  "tipsTitle": "نصائح الحافلات",
   "tips": [
-    "الجداول المطبوعة تعرض محطات بوسيتانو فقط؛ توقّع مرور الحافلة على أرينزو قبل بوسيتانو سبوندا بحوالي 2–5 دقائق في طريق العودة.",
-    "There is no ticket vendor at Arienzo. Buy your return ticket in town, or be ready to walk to Positano Sponda or take the water shuttle back to Spiaggia Grande.",
-    "Read our %LINK:arienzoBeachClub|Arienzo Beach guide% for facilities, shuttles, and planning tips.",
-    "Browse the %LINK:beaches|Positano beaches overview% to compare other coves and plan future visits."
-  ],
-  "gallery": {
-    "title": "مرجع موقف حافلات أرينزو",
-    "items": [
-      {
-        "alt": "لافتة موقف حافلات SITA باللونين الأزرق والأبيض على عمود معدني",
-        "caption": "ابحث عن لافتة موقف SITA على الجانب الداخلي للطريق فوق أرينزو."
-      }
-    ]
-  }
+    "الجداول الزمنية المطبوعة تدرج فقط محطات بوسيتانو؛ توقع أن تمر أرينزو حوالي 2-5 دقائق قبل بوسيتانو سبوندا في طريق العودة.",
+    "لا يوجد بائعو تذاكر بالقرب من شاطئ أرينزو. اشترِ تذكرة العودة في البلدة مسبقًا، أو امشِ إلى سبوندا للصعود من هناك، أو اركب القارب المكوكي عائدًا إلى الشاطئ الرئيسي في بوسيتانو.",
+    "اقرأ %LINK:arienzoBeachClub|دليل شاطئ أرينزو% للمرافق والمكوكات ونصائح التخطيط.",
+    "تصفح %LINK:positanoBeaches|نظرة عامة على الشواطئ% لمقارنة الخلجان الأخرى والتخطيط للزيارات المستقبلية."
+  ]
 }

@@ -1,3 +1,5 @@
+import { useTranslations } from "@acme/i18n";
+
 interface CursorSectionProps {
   cursor: string | undefined;
   cursorUrl: string | undefined;
@@ -48,4 +50,3 @@ export default function CursorSection({ cursor, cursorUrl, onCursorChange, onCur
     </div>
   );
 }
-import { useTranslations } from "@acme/i18n";

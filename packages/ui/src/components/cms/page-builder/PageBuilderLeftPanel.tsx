@@ -1,17 +1,19 @@
 import type { ComponentProps } from "react";
-import LeftRail from "./LeftRail";
-import PaletteSidebar from "./PaletteSidebar";
-import SectionsPanel from "./SectionsPanel";
-import LayersSidebar from "./LayersSidebar";
-import QuickPaletteControls from "./QuickPaletteControls";
-import type GridSettings from "./GridSettings";
-import type PageSidebar from "./PageSidebar";
+
+import type { PageComponent } from "@acme/types";
+
 import type { ComponentType } from "./defaults";
 import FontsPanel from "./FontsPanel";
-import ThemePanel from "./ThemePanel";
-import SidebarPane from "./SidebarPane";
-import type { PageComponent } from "@acme/types";
+import type GridSettings from "./GridSettings";
+import LayersSidebar from "./LayersSidebar";
+import LeftRail from "./LeftRail";
+import type PageSidebar from "./PageSidebar";
+import PaletteSidebar from "./PaletteSidebar";
 import type { Breakpoint } from "./panels/BreakpointsPanel";
+import QuickPaletteControls from "./QuickPaletteControls";
+import SectionsPanel from "./SectionsPanel";
+import SidebarPane from "./SidebarPane";
+import ThemePanel from "./ThemePanel";
 
 type SidebarProps = ComponentProps<typeof PageSidebar>;
 

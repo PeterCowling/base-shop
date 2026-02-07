@@ -1,4 +1,5 @@
 import TableOfContents from "@/components/guides/TableOfContents";
+
 import type { TocItem } from "../types";
 import { logStructuredToc } from "../utils/logging";
 

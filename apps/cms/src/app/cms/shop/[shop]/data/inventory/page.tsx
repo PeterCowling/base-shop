@@ -1,13 +1,16 @@
-import { checkShopExists } from "@acme/lib";
-import { readInventory } from "@platform-core/repositories/inventory.server";
 import { notFound } from "next/navigation";
-import InventoryForm from "./InventoryForm";
-import { Card, CardContent } from "@/components/atoms/shadcn";
-import { Grid as DSGrid } from "@ui/components/atoms/primitives";
-import { Tag } from "@ui/components/atoms";
-import { cn } from "@ui/utils/style";
-import { INVENTORY_STAT_ACCENT, INVENTORY_STAT_CONTAINER } from "./styles";
+
+import { Tag } from "@acme/design-system/atoms";
+import { Grid as DSGrid } from "@acme/design-system/primitives";
+import { cn } from "@acme/design-system/utils/style";
 import { useTranslations as serverT } from "@acme/i18n/useTranslations.server";
+import { readInventory } from "@acme/platform-core/repositories/inventory.server";
+import { checkShopExists } from "@acme/platform-core/shops";
+
+import { Card, CardContent } from "@/components/atoms/shadcn";
+
+import InventoryForm from "./InventoryForm";
+import { INVENTORY_STAT_ACCENT, INVENTORY_STAT_CONTAINER } from "./styles";
 
 export const revalidate = 0;
 

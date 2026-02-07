@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Säkerhet i Positano och på Amalfikusten",
+    "description": "Praktiska säkerhetstips för bussar, färjor, trappor, sol och nödsituationer i Positano och på Amalfikusten."
+  },
+  "linkLabel": "Säkerhet i Positano och på Amalfikusten",
+  "intro": [
+    "Positano är ett säkert resmål, men terrängen, transporterna och sommarhettan kan överraska.",
+    "Använd tipsen och checklistorna nedan för en stressfri resa – särskilt på trappor, färjor och bussar."
+  ],
+  "sections": [
+    {
+      "id": "stairs",
+      "title": "Trappor och promenader",
+      "body": [
+        "Ha skor med bra grepp – många gränder är polerad sten och blir hala när det regnar.",
+        "Använd räcken där de finns och ta pauser i långa backar; det finns vattenposter i stan."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Bussar och färjor",
+      "body": [
+        "På buss: håll i handtagen och blockera inte gången med ryggsäck; chaufförer bromsar ofta i hårnålskurvor.",
+        "På färjor: följ besättningens instruktioner och stå inte vid landgången under ombordstigning/avstigning."
+      ]
+    },
+    {
+      "id": "sun-sea",
+      "title": "Sol, hav och vätskebrist",
+      "body": [
+        "Ta med vatten och använd SPF 30+; skugga är begränsad på stränder och stigar.",
+        "Simma bara i anvisade områden och se upp för båttrafik när du snorklar nära klippor."
+      ]
+    }
+  ],
+  "faqsTitle": "Vanliga frågor om säkerhet",
+  "faqs": [
+    {
+      "q": "Är Positano säkert på natten?",
+      "a": [
+        "Ja. Småstölder är ovanliga; håll dig till upplysta trappor och gränder."
+      ]
+    },
+    {
+      "q": "Vilket nummer ringer jag i nödfall?",
+      "a": [
+        "Ring 112 — EU:s nödnummer för polis, ambulans och brandkår."
+      ]
+    }
+  ]
+}

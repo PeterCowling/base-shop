@@ -1,5 +1,10 @@
 import "@testing-library/jest-dom";
+
 import { configure, render, screen } from "@testing-library/react";
+
+import { PRODUCTS } from "@acme/platform-core/products/index";
+
+import ProductBundle, { getRuntimeProps } from "../ProductBundle";
 
 configure({ testIdAttribute: "data-testid" });
 
@@ -18,9 +23,6 @@ jest.mock("@acme/platform-core/products/index", () => ({
     { id: "3", title: "C", price: 20 },
   ],
 }));
-
-import ProductBundle, { getRuntimeProps } from "../ProductBundle";
-import { PRODUCTS } from "@acme/platform-core/products/index";
 
 describe("ProductBundle", () => {
   it("returns null when skus is missing or empty", () => {

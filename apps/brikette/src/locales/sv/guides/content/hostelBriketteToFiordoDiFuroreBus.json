@@ -1,7 +1,7 @@
 {
   "seo": {
     "title": "Hostel Brikette → Fiordo di Furore by bus",
-    "description": "Step-by-step directions to reach Fiordo di Furore from Hostel Brikette using the SITA bus, including where to buy tickets and how to access the beach."
+    "description": "Steg‑för‑steg‑väg till Fiordo di Furore från Hostel Brikette med SITA-buss, inklusive var du köper biljetter och hur du tar dig ner till stranden."
   },
   "linkLabel": "Hostel Brikette → Fiordo di Furore by bus",
   "intro": [
@@ -45,7 +45,7 @@
       "body": [
         "Board a bus heading for Amalfi or Agerola and tell the driver you need the Fiordo di Furore stop so they know to pull over.",
         "The ride covers about 10.8 kilometres (6.7 miles); intermediate stops depend on other passengers requesting them.",
-        "If you have mobile data, track the stop by searching for \"JH73+PQ Furore, Province of Salerno\" on Google Maps."
+        "If you have mobile data, track the stop by searching for \\\\\"JH73+PQ Furore, Province of Salerno\\\\\" on Google Maps."
       ]
     },
     {
@@ -57,6 +57,16 @@
         "Använd samma trappa för att gå tillbaka till vägen när du är redo att gå."
       ]
     }
+  ],
+  "essentialsTitle": "Det viktigaste",
+  "essentials": [
+    "Solkräm.",
+    "Handduk.",
+    "Solglasögon."
+  ],
+  "typicalCostsTitle": "Typiska kostnader",
+  "typicalCosts": [
+    "Bussbiljett: 10 euro."
   ],
   "tipsTitle": "Extra tips",
   "tips": [
@@ -82,7 +92,7 @@
     {
       "q": "How will I recognise the right stop?",
       "a": [
-        "Efter att bussen korsat den välvda bron över fjorden stannar den bredvid bilräcket. Håll utkik efter brovyerna, lyssna efter föraren och använd Google Maps \"JH73+PQ Furore\"-stift som backup."
+        "Efter att bussen korsat den välvda bron över fjorden stannar den bredvid bilräcket. Håll utkik efter brovyerna, lyssna efter föraren och använd Google Maps \\\\\"JH73+PQ Furore\\\\\"-stift som backup."
       ]
     }
   ]

@@ -1,5 +1,13 @@
-import { setupTest, teardown, fetchCampaignAnalytics } from "./testUtils";
+// Mock i18n to avoid dynamic import issues (Jest hoists this above imports)
 import { syncCampaignAnalytics } from "../scheduler";
+
+import { fetchCampaignAnalytics,setupTest, teardown } from "./testUtils";
+
+jest.mock("@acme/i18n/useTranslations.server", () => ({
+  useTranslations: jest.fn(() =>
+    Promise.resolve((key: string) => key === "email.unsubscribe" ? "Unsubscribe" : key)
+  ),
+}));
 
 describe("syncCampaignAnalytics", () => {
   beforeEach(() => {

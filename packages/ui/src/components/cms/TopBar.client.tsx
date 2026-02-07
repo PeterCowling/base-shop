@@ -1,19 +1,22 @@
 // packages/ui/components/cms/TopBar.tsx
 "use client";
-/* eslint-disable ds/no-hardcoded-copy -- UI-1421: className literals and control labels handled via t(); remaining literals are non-user-facing */
+ 
 
-import { getShopFromPath } from "@acme/shared-utils";
-import { signOut } from "next-auth/react";
+import { memo, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { memo, useEffect, useState } from "react";
+import { signOut } from "next-auth/react";
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
-import { Button, Card } from "../atoms/shadcn";
-import { Switch } from "../atoms";
-import Breadcrumbs from "./Breadcrumbs.client";
-import ShopSelector from "./ShopSelector";
-import NavMenu from "./NavMenu.client";
+
 import { useTranslations } from "@acme/i18n";
+import { getShopFromPath } from "@acme/lib/shop";
+
+import { Switch } from "../atoms";
+import { Button, Card } from "../atoms/shadcn";
+
+import Breadcrumbs from "./Breadcrumbs.client";
+import NavMenu from "./NavMenu.client";
+import ShopSelector from "./ShopSelector";
 
 interface TopBarProps {
   role?: string;
@@ -91,7 +94,7 @@ function TopBarInner({ role, onConfiguratorStartNew }: TopBarProps) {
               aria-labelledby="cms-theme-label"
               checked={isDark}
               onChange={(e) => {
-                const next = e.currentTarget.checked ? "dark" : "base";
+                const next = e.currentTarget.checked ? "dark" : "light";
                 try {
                   localStorage.setItem("theme", next);
                 } catch {}

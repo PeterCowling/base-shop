@@ -1,5 +1,5 @@
 // apps/cms/src/app/success/page.tsx
-import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 
 export default async function Success() {
   const t = await getTranslations("en");

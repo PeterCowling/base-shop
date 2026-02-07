@@ -12,24 +12,24 @@
       "id": "transport",
       "title": "交通问路",
       "body": [
-        "\"Dov'è la fermata SITA?\"（多-维 拉 费尔玛塔 SITA?）= SITA 公车站在哪里？",
-        "\"A che ora parte il traghetto per Positano?\" = 前往波西塔诺的渡轮几点出发？"
+        "\\\\\"Dov'è la fermata SITA?\\\\\"（多-维 拉 费尔玛塔 SITA?）= SITA 公车站在哪里？",
+        "\\\\\"A che ora parte il traghetto per Positano?\\\\\" = 前往波西塔诺的渡轮几点出发？"
       ]
     },
     {
       "id": "food",
       "title": "餐饮点餐",
       "body": [
-        "\"Possiamo avere il menù?\" = 可以给我们菜单吗？",
-        "\"Senza carne/pesce, per favore.\" = 麻烦不要肉/不要海鲜。"
+        "\\\\\"Possiamo avere il menù?\\\\\" = 可以给我们菜单吗？",
+        "\\\\\"Senza carne/pesce, per favore.\\\\\" = 麻烦不要肉/不要海鲜。"
       ]
     },
     {
       "id": "courtesy",
       "title": "日常礼貌",
       "body": [
-        "\"Buongiorno\"（布翁佐诺）= 早安/午安；\"Buonasera\" = 晚安问候。",
-        "\"Per favore\" = 请；\"Grazie mille\" = 非常感谢；\"Scusi\" = 不好意思、借过。"
+        "\\\\\"Buongiorno\\\\\"（布翁佐诺）= 早安/午安；\\\\\"Buonasera\\\\\" = 晚安问候。",
+        "\\\\\"Per favore\\\\\" = 请；\\\\\"Grazie mille\\\\\" = 非常感谢；\\\\\"Scusi\\\\\" = 不好意思、借过。"
       ]
     }
   ],

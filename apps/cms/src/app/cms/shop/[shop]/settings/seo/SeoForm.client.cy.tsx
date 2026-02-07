@@ -1,6 +1,8 @@
 import React from 'react';
-import SeoForm from './SeoForm.client';
+
 import type { Locale } from '@acme/types';
+
+import SeoForm from './SeoForm.client';
 
 const languages = ['en'] as unknown as Locale[];
 

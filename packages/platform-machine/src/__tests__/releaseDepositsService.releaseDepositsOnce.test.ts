@@ -1,6 +1,15 @@
 /** @jest-environment node */
 import { readdir, readFile } from "node:fs/promises";
 
+import {
+  markRefunded,
+  readOrders,
+} from "@acme/platform-core/repositories/rentalOrders.server";
+import { logger } from "@acme/platform-core/utils";
+import { stripe } from "@acme/stripe";
+
+import * as service from "../releaseDepositsService";
+
 jest.mock("node:fs/promises", () => ({
   readdir: jest.fn(),
   readFile: jest.fn(),
@@ -13,26 +22,18 @@ jest.mock("@acme/stripe", () => ({
   },
 }));
 
-jest.mock("@platform-core/repositories/rentalOrders.server", () => ({
+jest.mock("@acme/platform-core/repositories/rentalOrders.server", () => ({
   readOrders: jest.fn(),
   markRefunded: jest.fn(),
 }));
 
-jest.mock("@platform-core/utils", () => ({
+jest.mock("@acme/platform-core/utils", () => ({
   logger: { info: jest.fn(), error: jest.fn() },
 }));
 
 jest.mock("@acme/config/env/core", () => ({
   coreEnv: {},
 }));
-
-import * as service from "../releaseDepositsService";
-import { stripe } from "@acme/stripe";
-import {
-  readOrders,
-  markRefunded,
-} from "@platform-core/repositories/rentalOrders.server";
-import { logger } from "@platform-core/utils";
 
 const readdirMock = readdir as unknown as jest.Mock;
 const stripeRetrieveMock = stripe.checkout.sessions

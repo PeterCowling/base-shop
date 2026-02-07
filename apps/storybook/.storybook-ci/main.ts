@@ -1,16 +1,16 @@
-import type { StorybookConfig } from "@storybook/nextjs";
-import type { Configuration as WebpackConfiguration, ResolveOptions } from "webpack";
 import path, { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import webpack from "webpack";
-import { createRequire } from "node:module";
 
+import type { StorybookConfig } from "@storybook/nextjs";
+import type { Configuration as WebpackConfiguration, ResolveOptions } from "webpack";
+import webpack from "webpack";
+
+import { getStorybookAliases } from "../.storybook/aliases.ts";
 import { coverageAddon } from "../.storybook/coverage.ts";
 /* i18n-exempt file -- DS-2410 non-UI Storybook config strings [ttl=2026-01-01] */
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const require = createRequire(import.meta.url);
 
 const config: StorybookConfig = {
   framework: {
@@ -68,16 +68,7 @@ const config: StorybookConfig = {
 
     const aliases: NonNullable<ResolveOptions["alias"]> = {
       ...existingAlias,
-      "@platform-core/contexts/ThemeContext": path.resolve(
-        __dirname,
-        "../.storybook/mocks/ThemeContext.tsx"
-      ),
-      "@themes-local": path.resolve(__dirname, "../../../packages/themes"),
-      "@acme/i18n": path.resolve(__dirname, "../../../packages/i18n/src"),
-      "@acme/i18n/package.json": path.resolve(__dirname, "../../../packages/i18n/package.json"),
-      "@acme/design-tokens": path.resolve(__dirname, "../../../packages/design-tokens/src"),
-      "@acme/tailwind-config": path.resolve(__dirname, "../../../packages/tailwind-config/src"),
-      "@storybook/blocks": require.resolve("@storybook/addon-docs/blocks"),
+      ...getStorybookAliases(),
       "@storybook/test": path.resolve(__dirname, "../.storybook/mocks/storybook-test.ts"),
       "node:fs": false,
       "node:path": false,
@@ -90,6 +81,13 @@ const config: StorybookConfig = {
     };
 
     config.resolve = { ...resolve, alias: aliases };
+    const existingExtensionAlias = config.resolve.extensionAlias ?? {};
+    config.resolve.extensionAlias = {
+      ...existingExtensionAlias,
+      ".js": [".ts", ".tsx", ".js"],
+      ".jsx": [".tsx", ".jsx"],
+    };
+    config.resolve.extensions = [".ts", ".tsx", ".js", ".jsx", ".json"];
 
     const existingFallback = (config.resolve?.fallback ?? {}) as Record<string, false | string>;
     config.resolve.fallback = {

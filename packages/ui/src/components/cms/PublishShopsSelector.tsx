@@ -1,11 +1,13 @@
 // packages/ui/src/components/cms/PublishShopsSelector.tsx
 "use client";
 
-import { Button, Input } from "../atoms/shadcn";
-import { toggleItem } from "@acme/shared-utils";
 import { memo, useCallback, useEffect, useState } from "react";
-import { Stack, Inline } from "../atoms/primitives";
+
 import { useTranslations } from "@acme/i18n";
+import { toggleItem } from "@acme/lib/array";
+
+import { Inline,Stack } from "../atoms/primitives";
+import { Button, Input } from "../atoms/shadcn";
 
 export interface PublishShopsSelectorProps {
   selectedIds: string[];
@@ -78,7 +80,7 @@ function PublishShopsSelectorInner({
     return <span className="text-sm">{t("shops.loading")}</span>;
   if (status === "error")
     return (
-      // eslint-disable-next-line ds/no-hardcoded-copy -- ABC-123: design token reference is not UI copy
+       
       <span className="text-sm text-danger" data-token="--color-danger">
         {errorMsg ?? (t("shops.loadFailed") as string)}
       </span>

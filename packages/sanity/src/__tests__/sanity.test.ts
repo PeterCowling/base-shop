@@ -1,22 +1,24 @@
-jest.mock('@sanity/client', () => ({
-  createClient: jest.fn(),
-}));
-jest.mock('@platform-core/repositories/shop.server', () => ({
-  getShopById: jest.fn(),
-}));
-jest.mock('@platform-core/shops', () => ({
-  getSanityConfig: jest.fn(),
-}));
+import { createClient } from '@sanity/client';
+
+import { getShopById } from '@acme/platform-core/repositories/shop.server';
+import { getSanityConfig } from '@acme/platform-core/shops';
 
 import {
-  fetchPublishedPosts,
   fetchPostBySlug,
+  fetchPublishedPosts,
   getConfig,
   publishQueuedPost,
 } from '../index';
-import { createClient } from '@sanity/client';
-import { getShopById } from '@platform-core/repositories/shop.server';
-import { getSanityConfig } from '@platform-core/shops';
+
+jest.mock('@sanity/client', () => ({
+  createClient: jest.fn(),
+}));
+jest.mock('@acme/platform-core/repositories/shop.server', () => ({
+  getShopById: jest.fn(),
+}));
+jest.mock('@acme/platform-core/shops', () => ({
+  getSanityConfig: jest.fn(),
+}));
 
 describe('sanity.server', () => {
   const createClientMock = createClient as jest.Mock;

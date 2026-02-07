@@ -1,11 +1,12 @@
+import { usePathname } from "next/navigation";
 import { render, screen, waitFor } from "@testing-library/react";
+
 import BreadcrumbsClient from "../src/components/cms/Breadcrumbs.client";
 
 jest.mock("next/navigation", () => ({
   usePathname: jest.fn(),
 }));
 
-import { usePathname } from "next/navigation";
 const mockPathname = usePathname as jest.MockedFunction<typeof usePathname>;
 
 describe("CMS Breadcrumbs client", () => {

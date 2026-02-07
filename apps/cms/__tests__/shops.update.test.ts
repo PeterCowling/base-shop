@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { withShop, seedShop, mockShop } from "@acme/test-utils";
+
+import { mockShop,seedShop, withShop } from "@acme/test-utils";
 
 jest.setTimeout(20000);
 
@@ -48,7 +49,7 @@ describe("updateShop flow", () => {
       expect(saved.themeTokens).toEqual({ ...defaultTokens, ...overrides });
       expect(result.shop?.themeTokens).toEqual({ ...defaultTokens, ...overrides });
 
-      const { readShop } = await import("@platform-core/repositories/shops.server");
+      const { readShop } = await import("@acme/platform-core/repositories/shops.server");
       const reloaded = await readShop("test");
       expect(reloaded.themeDefaults).toEqual(defaultTokens);
       expect(reloaded.themeOverrides).toEqual(overrides);

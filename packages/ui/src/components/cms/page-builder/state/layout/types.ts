@@ -1,4 +1,4 @@
-import type { PageComponent, EditorFlags as CoreEditorFlags } from "@acme/page-builder-core";
+import type { EditorFlags as CoreEditorFlags,PageComponent } from "@acme/page-builder-core";
 
 export type EditorFlags = CoreEditorFlags;
 

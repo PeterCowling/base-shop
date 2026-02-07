@@ -1,9 +1,12 @@
-import { useCart } from "@acme/platform-core/contexts/CartContext";
-import { type Meta, type StoryObj } from "@storybook/nextjs";
-import type { CartLine, CartState } from "@acme/platform-core/cart";
-import type { SKU } from "@acme/types";
 import * as React from "react";
+import { type Meta, type StoryObj } from "@storybook/nextjs";
+
+import type { CartLine, CartState } from "@acme/platform-core/cart";
+import { useCart } from "@acme/platform-core/contexts/CartContext";
+import type { SKU } from "@acme/types";
+
 import { Button } from "../atoms/shadcn";
+
 import { MiniCart } from "./MiniCart.client";
 
 const sku1: SKU = {

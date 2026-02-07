@@ -1,6 +1,8 @@
 import type { Locale } from "@acme/i18n/locales";
-import type { PageComponent, HistoryState } from "@acme/types";
+import type { HistoryState,PageComponent } from "@acme/types";
+
 import type { DevicePreset } from "../../../utils/devicePresets";
+
 import type { Action } from "./state";
 
 export type BlockItemProps = {

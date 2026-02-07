@@ -1,13 +1,15 @@
 // apps/cms/src/app/[lang]/checkout/page.tsx
+import type { Metadata } from "next";
+import { cookies } from "next/headers";
+
+import { createCartStore } from "@acme/platform-core/cartStore";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
+
 import CheckoutForm from "@/components/checkout/CheckoutForm";
 import OrderSummary from "@/components/organisms/OrderSummary";
-import { Locale, resolveLocale } from "@/i18n/locales";
-import type { Metadata } from "next";
+import { type Locale, resolveLocale } from "@/i18n/locales";
 // Use server-side translations in server components/routes
 import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
-import { createCartStore } from "@platform-core/cartStore";
-import { cookies } from "next/headers";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { useTranslations: getServerTranslations } = await import(

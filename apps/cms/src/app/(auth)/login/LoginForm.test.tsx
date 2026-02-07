@@ -1,7 +1,8 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { __resetReactAuthImpls,__setSignInImpl } from "next-auth/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
 import LoginForm from "./LoginForm";
-import { __setSignInImpl, __resetReactAuthImpls } from "next-auth/react";
 
 jest.mock("@/components/atoms/shadcn", () => ({
   Button: (props: any) => <button {...props} />, 

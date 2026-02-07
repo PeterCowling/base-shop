@@ -1,5 +1,9 @@
 import React, { type FC, type ReactElement } from "react";
 
+import { getLegacyPreset } from "@acme/ui/utils/devicePresets";
+
+import PreviewPage from "./page";
+
 const notFound = jest.fn();
 jest.mock("next/navigation", () => ({ notFound: () => notFound() }));
 
@@ -13,16 +17,13 @@ jest.mock("./PreviewClient", () => {
   return MockPreviewClient;
 });
 
-jest.mock("@ui/utils/devicePresets", () => ({
+jest.mock("@acme/ui/utils/devicePresets", () => ({
   devicePresets: [
     { id: "preset1", label: "Preset 1", width: 100, height: 200 },
     { id: "preset2", label: "Preset 2", width: 300, height: 400 },
   ],
   getLegacyPreset: jest.fn((view: string) => ({ id: `${view}-id` })),
 }));
-
-import PreviewPage from "./page";
-import { getLegacyPreset } from "@ui/utils/devicePresets";
 
 jest.mock("@acme/types", () => ({
   pageSchema: { parse: (data: unknown) => data },

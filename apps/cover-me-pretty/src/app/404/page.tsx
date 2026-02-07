@@ -1,6 +1,7 @@
 // apps/cover-me-pretty/src/app/404/page.tsx
 
 import { type ReactElement } from "react";
+
 import NotFoundContent from "../../components/NotFoundContent";
 
 /**

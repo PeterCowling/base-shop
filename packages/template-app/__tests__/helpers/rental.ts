@@ -35,7 +35,7 @@ export function mockRentalRepo(overrides: Partial<RentalRepoMock> = {}) {
     ...overrides,
   };
   jest.doMock(
-    "@platform-core/repositories/rentalOrders.server",
+    "@acme/platform-core/repositories/rentalOrders.server",
     () => ({ __esModule: true, ...repo }),
   );
   return repo;

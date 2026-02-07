@@ -1,17 +1,17 @@
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import clsx from "clsx";
 import {
-  Fragment,
+  type ComponentType,
   forwardRef,
+  Fragment,
+  type HTMLAttributes,
   memo,
+  type ReactNode,
+  type SVGProps,
   useCallback,
   useEffect,
   useState,
-  type HTMLAttributes,
-  type ComponentType,
-  type ReactNode,
-  type SVGProps,
 } from "react";
+import clsx from "clsx";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export interface AssistanceNavItem {
   key: string;

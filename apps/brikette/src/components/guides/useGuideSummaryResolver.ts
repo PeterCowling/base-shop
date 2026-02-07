@@ -1,9 +1,9 @@
 // src/components/guides/useGuideSummaryResolver.ts
 import { useCallback } from "react";
-
 import type { i18n as I18nInstance } from "i18next";
 
 import type { AppLanguage } from "@/i18n.config";
+
 import type { GuideSummaryResolver } from "./GuideCollection.types";
 
 const pickString = (value: unknown): string | undefined => {

@@ -10,21 +10,21 @@
   "sections": [
     {
       "id": "near-dock",
-      "title": "Near the dock",
+      "title": "Nær kaien",
       "body": [
         "Time/daglig lagring med billett; forvent køer i høysesongen - bestill på forhånd hvis mulig."
       ]
     },
     {
       "id": "aggregators",
-      "title": "Aggregators",
+      "title": "Formidlere",
       "body": [
         "Bounce / Radical Storage: bekreft nøyaktig adresse og åpningstider før du betaler online."
       ]
     },
     {
       "id": "etiquette",
-      "title": "Etiquette & tips",
+      "title": "Etikette og tips",
       "body": [
         "Hold verdisaker med deg; merke poser tydelig; ta et bilde av krav på billetter."
       ]
@@ -32,21 +32,21 @@
   ],
   "faqs": [
     {
-      "q": "Open in the evening?",
+      "q": "Åpent om kvelden?",
       "a": [
         "Timene varierer; sjekk for tidlig stengetid utenom sesongen og siste fergetider."
       ]
     }
   ],
-  "tocTitle": "On this page",
-  "faqsTitle": "FAQs",
+  "tocTitle": "På denne siden",
+  "faqsTitle": "Ofte stilte spørsmål",
   "heroAlt": "Portier som leder en bagasjevogn opp trappene til Positano",
-  "serviceType": "Luggage storage",
+  "serviceType": "Bagasjeoppbevaring",
   "areaServed": "Positano",
   "gallery": {
     "primaryAlt": "Positanos klippehus med utsikt over havet",
-    "primaryCaption": "Positano panorama",
+    "primaryCaption": "Panorama over Positano",
     "secondaryAlt": "Portier dytter en bagasjevogn nær Positanos fergekai",
-    "secondaryCaption": "Porter carts near the dock"
+    "secondaryCaption": "Portørvogner ved kaien"
   }
 }

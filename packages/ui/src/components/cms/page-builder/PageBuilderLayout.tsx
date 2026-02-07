@@ -1,14 +1,16 @@
 "use client";
 
 import { DndContext } from "@dnd-kit/core";
+
 import { Toast } from "../../atoms";
-import PageBuilderTour from "./PageBuilderTour";
-import PageSidebar from "./PageSidebar";
-import PageBuilderLeftPanel from "./PageBuilderLeftPanel";
-import PageBuilderTopBar from "./PageBuilderTopBar";
+
 import PageBuilderCanvasArea from "./PageBuilderCanvasArea";
 import PageBuilderDialogs from "./PageBuilderDialogs";
 import type { PageBuilderLayoutProps } from "./PageBuilderLayout.types";
+import PageBuilderLeftPanel from "./PageBuilderLeftPanel";
+import PageBuilderTopBar from "./PageBuilderTopBar";
+import PageBuilderTour from "./PageBuilderTour";
+import PageSidebar from "./PageSidebar";
 import { usePageBuilderLayoutState } from "./usePageBuilderLayoutState";
 
 const PageBuilderLayout = (props: PageBuilderLayoutProps) => {

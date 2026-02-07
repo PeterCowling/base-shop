@@ -25,6 +25,48 @@
         "ホステルを出て左へ約100m進み、バール・インテルナツィオナーレへ。坂を下る前にタバッキで SITA のチケットを購入します。",
         "ショートカットの階段を使ってスピアッジャ・グランデへ下りましょう。徒歩20〜30分ほど見込んで、混雑日は余裕を持って出発を。",
         "ビーチに着いたら右へ進み、フェリー会社が並ぶチケットブースのある小さな港へ向かいます。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/01-nav.jpg",
+          "alt": "Route map from Hostel Brikette to Positano port with numbered waypoints (1-5)",
+          "caption": "ホステルから港までの徒歩ルートと主要参照ポイントを示す概要地図"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/02-nav.jpg",
+          "alt": "Street corner intersection marking Point 1 on the route",
+          "caption": "ポイント1：角の交差点で右折すると、タバッキが見えます。"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/03-nav.jpg",
+          "alt": "Tabacchi shop storefront where SITA bus tickets can be purchased",
+          "caption": "バール・インテルナツィオナーレのタバッキ — アマルフィからボメラーノ（アジェローラ）への SITA バスチケットはここで購入することをお勧めします。ハイキング後にノチェッレからポジターノ行きのバスを利用する予定の方も、港へ向かう前にここで購入しておきましょう。"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/04-nav.jpg",
+          "alt": "Switchback bend in the road at Point 2 where you leave the main road",
+          "caption": "ポイント2：ヘアピンカーブ — ここで道路から右へ折れ、ショートカットの階段を使います"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/05-nav.jpg",
+          "alt": "Stone stairs descending downhill at Point 3",
+          "caption": "ポイント3：道路をまっすぐ横断し、スピアッジャ・グランデに向かって階段を下ります"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/06-nav.jpg",
+          "alt": "Road junction at Point 4 showing the crossing point",
+          "caption": "ポイント4：道路を渡り、階段を下ります"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/07-nav.jpg",
+          "alt": "Final stairway section leading down at Point 5",
+          "caption": "ポイント5：このエリアを通り抜けてアーチの下を進みます"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/08-nav.jpg",
+          "alt": "Archway entrance marking the arrival at Positano port",
+          "caption": "アーチを抜けたらすぐ先に港があります。フェリーのチケットブースは前方です"
+        }
       ]
     },
     {
@@ -34,6 +76,18 @@
         "Lucibello と Travelmar の掲示板で次の出航を確認しましょう。ハイシーズンの午前便は30〜60分間隔で運航されます。",
         "アマルフィ行きの片道チケットを購入し、乗船時にすぐ提示できるよう手元に準備しておきます。各社とも出発数分前に搭乗案内があります。",
         "行列はすぐに伸びるので、希望の便には少なくとも15分前には並び、デッキの席を確保しましょう。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/09-nav.jpg",
+          "alt": "Lucibello and Travelmar ferry ticket booths at Positano port",
+          "caption": "時刻表を確認し、アマルフィ行きの片道チケットを購入して、フェリーが到着したら乗船します。"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/10-nav.jpg",
+          "alt": "Port waiting area with ferry passengers",
+          "caption": "アマルフィで下船したら、まっすぐ前方に進み、広場の左側にあるバスターミナルへ向かいます"
+        }
       ]
     },
     {
@@ -43,15 +97,29 @@
         "乗船時間は約25分。進行方向右側に立つと、ポジターノやプライアーノを振り返る景色が楽しめます。",
         "到着したらすぐに下船し、港の広場を左に進んでバスターミナルへ向かいます。",
         "バスまで時間があれば、大聖堂前の広場を歩いたりエスプレッソを楽しんだりしてもOK。ただしアジェローラ行きのバスベイから目を離さないように。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/11-nav.jpg",
+          "alt": "Walking route from Amalfi ferry dock to SITA bus terminal",
+          "caption": "1. ボメラーノ停留所 — イエルラレストランの看板が見えたら下車し、道路を横断します"
+        }
       ]
     },
     {
       "id": "bus-to-bomerano",
       "title": "ボメラーノ行きバスに乗車",
       "body": [
-        "「Agerola/Bomerano」と表示された SITA バスを探し、乗車時にチケットを刻印します。車酔いを避けたい場合は前方座席に座りましょう。",
+        "\\\"Agerola/Bomerano\\\"と表示された SITA バスを探し、乗車時にチケットを刻印します。車酔いを避けたい場合は前方座席に座りましょう。",
         "約45分でリストランテ・イエルラ横のボメラーノ停留所に到着。道路を渡り、脇道を下って広場へ向かいます。",
-        "広場を左へ抜け、「Sentiero degli Dei」の標識に従ってトレイルヘッドの掲示板まで進みます。"
+        "広場を左へ抜け、\\\"Sentiero degli Dei\\\"の標識に従ってトレイルヘッドの掲示板まで進みます。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/12-nav.jpg",
+          "alt": "Side street from Bomerano bus stop descending toward the piazza",
+          "caption": "2. バス停から道路を渡り、この脇道を下って広場へ向かいます"
+        }
       ]
     },
     {
@@ -61,6 +129,28 @@
         "トレイルは約6kmにわたりアップダウンが続きます。石段や細い稜線、海岸線を見渡す絶景テラスが待っています。",
         "ビューポイントでは適度に休憩し、ゴミは必ず持ち帰りましょう。地元の農地を尊重し、標識のある道から外れないように。",
         "土の道がノチェッレのコンクリート遊歩道に合流したらゴールです。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/13-nav.jpg",
+          "alt": "Town square (piazza) in Bomerano with left-hand route markers",
+          "caption": "3. 広場を左へ進み、\\\"Sentiero degli Dei\\\"の標識に従います"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/14-nav.jpg",
+          "alt": "Wooden steps ascending along the hiking trail ridge",
+          "caption": "4. 広場を抜けたら掲示板と左への曲がり角を探します。ここがトレイルの始まりです。木製の階段がある区間まで道を進みます。"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/15-nav.jpg",
+          "alt": "Concrete paved walkway marking entry into Nocelle village",
+          "caption": "土の道がこのコンクリート遊歩道に合流したら、ノチェッレに到着です"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/16-nav.jpg",
+          "alt": "Nocelle village navigation map showing route to bus stop and staircase warning",
+          "caption": "ノチェッレの地図 — 村を歩く際は分岐点で右に曲がってバス停へ向かいます。1,700段の階段でポジターノへ下るのは絶対に避けましょう！"
+        }
       ]
     },
     {
@@ -70,6 +160,28 @@
         "舗装路を進んで集落へ入り、最初の分岐では右側へ進みます。左へ行くとポジターノへ1,700段の階段が続くので注意。",
         "約175m歩くと小さな駐車スペースのそばにバス停があります。教会横の売店はシーズン中、冷たい飲み物を販売しています。",
         "少なくとも10分前には到着を。駐車場が混んでいると、バスが停留所の手前で停まることがあります。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/17-nav.jpg",
+          "alt": "Directional signpost in Nocelle showing the stairs-to-Positano option to avoid",
+          "caption": "重要：\\\"Positano\\\"の標識に従って階段を下らないでください — 代わりにここで右に曲がります"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/18-nav.jpg",
+          "alt": "Stone steps ascending through Nocelle streets toward the bus stop",
+          "caption": "この階段を約175m上ると、駐車場のバス停に到着します"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/19-nav.jpg",
+          "alt": "Bus stop arrival point in Nocelle",
+          "caption": "バス停に到着しました。"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/20-nav.jpg",
+          "alt": "Bus stop at the car park in Nocelle",
+          "caption": "バス停に到着しました。"
+        }
       ]
     },
     {

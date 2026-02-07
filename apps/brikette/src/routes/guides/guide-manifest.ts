@@ -3,14 +3,20 @@
 // src/routes/guides/guide-manifest.ts
 import { z } from "zod";
 
+import type { AppLanguage } from "@/i18n.config";
+import { i18nConfig } from "@/i18n.config";
 import type { GuideKey } from "../../guides/slugs/keys";
 import { GUIDE_KEYS, GUIDE_KEYS_WITH_OVERRIDES } from "../../guides/slugs/keys";
 import { GUIDE_SLUGS } from "../../guides/slugs/slugs";
 import { slugify } from "../../utils/slugify";
+
 import {
   GUIDE_BLOCK_DECLARATION_SCHEMA,
   type GuideBlockDeclaration,
 } from "./blocks/types";
+import { analyzeGuideCompleteness, analyzeTranslationCoverage, analyzeDateValidation } from "./guide-diagnostics";
+import type { GuideChecklistDiagnostics } from "./guide-diagnostics.types";
+import type { ManifestOverrides } from "./guide-manifest-overrides";
 
 /**
  * Supported publish status values for guides. These power both routing (draft vs live)
@@ -46,7 +52,7 @@ export function guideAreaToSlugKey(area: GuideArea): GuideAreaSlugKey {
  * of a guide still need attention before promotion. Items intentionally stay generic so
  * we can derive them from content analysis in a follow-up iteration.
  */
-export const CHECKLIST_ITEM_IDS = ["translations", "jsonLd", "faqs", "content", "media"] as const;
+export const CHECKLIST_ITEM_IDS = ["translations", "jsonLd", "faqs", "content", "seoAudit"] as const;
 export type ChecklistItemId = (typeof CHECKLIST_ITEM_IDS)[number];
 
 export const CHECKLIST_STATUS_VALUES = ["missing", "inProgress", "complete"] as const;
@@ -84,6 +90,9 @@ export type StructuredDataDeclaration =
       type: StructuredDataType;
       options?: Record<string, unknown> | undefined;
     };
+
+export const GUIDE_TEMPLATE_VALUES = ["help", "experience", "localGuide", "pillar"] as const;
+export type GuideTemplate = (typeof GUIDE_TEMPLATE_VALUES)[number];
 
 const STRUCTURED_DATA_SCHEMA = z.union([
   z.enum(STRUCTURED_DATA_TYPES),
@@ -205,6 +214,14 @@ export type GuideManifestEntry = {
   options?: GuideRouteOptions;
   expectations?: GuideRouteExpectations;
   checklist?: GuideChecklistItem[];
+  /**
+   * Optional SEO/content auditing hints.
+   * These are intentionally non-blocking fields that can be rolled out incrementally.
+   */
+  template?: GuideTemplate;
+  focusKeyword?: string;
+  primaryQuery?: string;
+  timeSensitive?: boolean;
 };
 
 const GUIDE_MANIFEST_ENTRY_SCHEMA_BASE = z
@@ -224,6 +241,10 @@ const GUIDE_MANIFEST_ENTRY_SCHEMA_BASE = z
     options: GUIDE_ROUTE_OPTIONS_SCHEMA,
     expectations: GUIDE_ROUTE_EXPECTATIONS_SCHEMA,
     checklist: z.array(CHECKLIST_ITEM_SCHEMA).optional(),
+    template: z.enum(GUIDE_TEMPLATE_VALUES).optional(),
+    focusKeyword: z.string().trim().min(3).optional(),
+    primaryQuery: z.string().trim().min(3).optional(),
+    timeSensitive: z.boolean().optional(),
   })
   .superRefine((value, ctx) => {
     const ogType = value.options?.ogType?.trim();
@@ -245,7 +266,18 @@ export const GUIDE_MANIFEST_ENTRY_SCHEMA: z.ZodEffects<
   typeof GUIDE_MANIFEST_ENTRY_SCHEMA_BASE,
   GuideManifestEntry
 > = GUIDE_MANIFEST_ENTRY_SCHEMA_BASE.transform((value) => {
-  const { draftPathSegment, metaKey, options, expectations, checklist, ...rest } = value;
+  const {
+    draftPathSegment,
+    metaKey,
+    options,
+    expectations,
+    checklist,
+    template,
+    focusKeyword,
+    primaryQuery,
+    timeSensitive,
+    ...rest
+  } = value;
   const cleanOptions = options
     ? (Object.fromEntries(Object.entries(options).filter(([, v]) => typeof v !== "undefined")) as GuideRouteOptions)
     : undefined;
@@ -268,6 +300,10 @@ export const GUIDE_MANIFEST_ENTRY_SCHEMA: z.ZodEffects<
     ...(typeof cleanOptions !== "undefined" ? { options: cleanOptions } : {}),
     ...(typeof cleanExpectations !== "undefined" ? { expectations: cleanExpectations } : {}),
     ...(Array.isArray(cleanChecklist) ? { checklist: cleanChecklist } : {}),
+    ...(typeof template === "string" ? { template } : {}),
+    ...(typeof focusKeyword === "string" ? { focusKeyword } : {}),
+    ...(typeof primaryQuery === "string" ? { primaryQuery } : {}),
+    ...(typeof timeSensitive === "boolean" ? { timeSensitive } : {}),
     status: (value.status ?? "draft") as GuideStatus,
     structuredData: value.structuredData ?? [],
     relatedGuides: value.relatedGuides ?? [],
@@ -282,11 +318,335 @@ export function createGuideManifestEntry(input: GuideManifestEntryInput): GuideM
 export type GuideManifest = Record<GuideKey, GuideManifestEntry>;
 
 const manifestSeed: GuideManifestEntry[] = [
+  // --- Assistance articles (converted from legacy help system) ---
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "rules",
+    slug: "rules",
+    contentKey: "rules",
+    status: "draft",
+    draftPathSegment: "assistance/rules",
+    areas: ["help"],
+    primaryArea: "help",
+    structuredData: ["Article", "BreadcrumbList"],
+    relatedGuides: ["security", "legal"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "rules", showToc: true },
+      },
+    ],
+    options: {
+      showTagChips: false,
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "ageAccessibility",
+    slug: "age-accessibility",
+    contentKey: "ageAccessibility",
+    status: "draft",
+    draftPathSegment: "assistance/age-accessibility",
+    areas: ["help"],
+    primaryArea: "help",
+    structuredData: ["Article", "BreadcrumbList"],
+    relatedGuides: ["bookingBasics", "checkinCheckout"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "ageAccessibility", showToc: true },
+      },
+    ],
+    options: {
+      showTagChips: false,
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      {
+        id: "content",
+        status: "complete",
+        note: "EN copy refreshed 2026-02-04; link tokens validated; brikette typecheck passed",
+      },
+      { id: "jsonLd", status: "complete" },
+      { id: "faqs", status: "missing" },
+      { id: "seoAudit", status: "inProgress" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "arrivingByFerry",
+    slug: "arriving-by-ferry",
+    contentKey: "arrivingByFerry",
+    status: "draft",
+    draftPathSegment: "assistance/arriving-by-ferry",
+    areas: ["help"],
+    primaryArea: "help",
+    structuredData: ["Article", "BreadcrumbList"],
+    relatedGuides: ["ferryDockToBrikette", "travelHelp", "naplesAirportBus"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "arrivingByFerry", showToc: true },
+      },
+    ],
+    options: {
+      showTagChips: false,
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "changingCancelling",
+    slug: "changing-cancelling",
+    contentKey: "changingCancelling",
+    status: "draft",
+    draftPathSegment: "assistance/changing-cancelling",
+    areas: ["help"],
+    primaryArea: "help",
+    structuredData: ["Article", "BreadcrumbList"],
+    relatedGuides: ["bookingBasics", "depositsPayments", "legal"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "changingCancelling", showToc: true },
+      },
+    ],
+    options: {
+      showTagChips: false,
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "checkinCheckout",
+    slug: "checkin-checkout",
+    contentKey: "checkinCheckout",
+    status: "draft",
+    draftPathSegment: "assistance/checkin-checkout",
+    areas: ["help"],
+    primaryArea: "help",
+    focusKeyword: "hostel brikette check-in and checkout",
+    structuredData: ["Article", "BreadcrumbList"],
+    relatedGuides: ["rules", "security", "ageAccessibility"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "checkinCheckout", showToc: true },
+      },
+    ],
+    options: {
+      showTagChips: false,
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "defectsDamages",
+    slug: "defects-damages",
+    contentKey: "defectsDamages",
+    status: "draft",
+    draftPathSegment: "assistance/defects-damages",
+    areas: ["help"],
+    primaryArea: "help",
+    structuredData: ["Article", "BreadcrumbList"],
+    relatedGuides: ["rules", "security", "legal"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "defectsDamages", showToc: true },
+      },
+    ],
+    options: {
+      showTagChips: false,
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "depositsPayments",
+    slug: "deposits-payments",
+    contentKey: "depositsPayments",
+    status: "draft",
+    draftPathSegment: "assistance/deposits-payments",
+    areas: ["help"],
+    primaryArea: "help",
+    structuredData: ["Article", "BreadcrumbList"],
+    relatedGuides: ["bookingBasics", "changingCancelling", "legal"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "depositsPayments", showToc: true },
+      },
+    ],
+    options: {
+      showTagChips: false,
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "legal",
+    slug: "legal",
+    contentKey: "legal",
+    status: "draft",
+    draftPathSegment: "assistance/legal",
+    areas: ["help"],
+    primaryArea: "help",
+    structuredData: ["Article", "BreadcrumbList"],
+    relatedGuides: ["rules", "changingCancelling", "depositsPayments"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "legal", showToc: true },
+      },
+    ],
+    options: {
+      showTagChips: false,
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "naplesAirportBus",
+    slug: "naples-airport-to-positano-bus",
+    contentKey: "naplesAirportBus",
+    status: "draft",
+    draftPathSegment: "assistance/naples-airport-to-positano-bus",
+    areas: ["help"],
+    primaryArea: "help",
+    structuredData: ["Article", "BreadcrumbList"],
+    relatedGuides: ["arrivingByFerry", "travelHelp", "chiesaNuovaArrivals"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "naplesAirportBus", showToc: true },
+      },
+    ],
+    options: {
+      showTagChips: false,
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "security",
+    slug: "security",
+    contentKey: "security",
+    status: "draft",
+    draftPathSegment: "assistance/security",
+    areas: ["help"],
+    primaryArea: "help",
+    structuredData: ["Article", "BreadcrumbList"],
+    relatedGuides: ["rules", "checkinCheckout", "defectsDamages"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "security", showToc: true },
+      },
+    ],
+    options: {
+      showTagChips: false,
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "travelHelp",
+    slug: "travel-help",
+    contentKey: "travelHelp",
+    status: "draft",
+    draftPathSegment: "assistance/travel-help",
+    areas: ["help"],
+    primaryArea: "help",
+    structuredData: ["Article", "BreadcrumbList"],
+    focusKeyword: "travel help Positano",
+    relatedGuides: ["arrivingByFerry", "naplesAirportBus", "ferryDockToBrikette"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "travelHelp", showToc: true },
+      },
+    ],
+    options: {
+      showTagChips: false,
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "bookingBasics",
+    slug: "booking-basics",
+    contentKey: "bookingBasics",
+    status: "draft",
+    draftPathSegment: "assistance/booking-basics",
+    areas: ["help"],
+    primaryArea: "help",
+    structuredData: ["Article", "BreadcrumbList"],
+    relatedGuides: ["checkinCheckout", "depositsPayments", "changingCancelling", "rules"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "bookingBasics", showToc: true },
+      },
+    ],
+    options: {
+      showTagChips: false,
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "hostelFaqs",
+    slug: "hostel-faqs",
+    contentKey: "hostelFaqs",
+    status: "draft",
+    draftPathSegment: "assistance/hostel-faqs",
+    areas: ["help"],
+    primaryArea: "help",
+    structuredData: ["Article", "FAQPage", "BreadcrumbList"],
+    relatedGuides: ["checkinCheckout", "bookingBasics", "rules"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "hostelFaqs", showToc: true },
+      },
+    ],
+    options: {
+      suppressUnlocalizedFallback: false,
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+    ],
+  }),
+  // --- End assistance articles ---
+
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "luggageStorage",
     slug: "luggage-storage-positano",
     contentKey: "luggageStorage",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/luggage-storage-positano",
     areas: ["help"],
     primaryArea: "help",
@@ -321,12 +681,6 @@ const manifestSeed: GuideManifestEntry[] = [
         },
       },
       {
-        type: "gallery",
-        options: {
-          source: "luggage-storage-positano",
-        },
-      },
-      {
         type: "alsoHelpful",
         options: {
           tags: ["porters", "logistics", "positano"],
@@ -341,7 +695,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       showTransportNotice: false,
     },
     checklist: [
@@ -349,14 +703,13 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "complete" },
       { id: "faqs", status: "complete" },
       { id: "content", status: "complete" },
-      { id: "media", status: "complete" },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "whatToPack",
     slug: "what-to-pack-amalfi-coast",
     contentKey: "whatToPack",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/what-to-pack-amalfi-coast",
     areas: ["help"],
     primaryArea: "help",
@@ -378,7 +731,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferManualWhenUnlocalized: true,
     },
   }),
@@ -386,7 +739,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "positanoWinterBudget",
     slug: "positano-in-winter-on-a-budget",
     contentKey: "positanoWinterBudget",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/positano-in-winter-on-a-budget",
     areas: ["experience"],
     primaryArea: "experience",
@@ -408,14 +761,14 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "laundryPositano",
     slug: "laundry-positano",
     contentKey: "laundryPositano",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/laundry-positano",
     areas: ["help"],
     primaryArea: "help",
@@ -430,14 +783,13 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "inProgress", note: "Ensure HowTo schema mirrors localized steps." },
       { id: "faqs", status: "complete" },
       { id: "content", status: "complete" },
-      { id: "media", status: "inProgress", note: "Confirm gallery assets for all locales." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "limoncelloCuisine",
     slug: "limoncello-and-local-cuisine",
     contentKey: "limoncelloCuisine",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/limoncello-and-local-cuisine",
     areas: ["experience"],
     primaryArea: "experience",
@@ -455,7 +807,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferGenericWhenFallback: true,
     },
     checklist: [
@@ -463,14 +815,13 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "inProgress", note: "Review Article metadata for regional schema requirements." },
       { id: "faqs", status: "inProgress", note: "Ensure FAQ entries mirror updated tasting notes." },
       { id: "content", status: "complete" },
-      { id: "media", status: "inProgress", note: "Confirm gallery photography rights." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "pathOfTheGods",
     slug: "path-of-the-gods",
     contentKey: "pathOfTheGods",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/path-of-the-gods",
     areas: ["experience"],
     primaryArea: "experience",
@@ -487,14 +838,13 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "inProgress", note: "Validate HowTo payload for totalTime extras." },
       { id: "faqs", status: "complete" },
       { id: "content", status: "complete" },
-      { id: "media", status: "inProgress", note: "Confirm gallery imagery licensing." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "pathOfTheGodsBus",
     slug: "path-of-the-gods-via-amalfi-bus",
     contentKey: "pathOfTheGodsBus",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/path-of-the-gods-via-amalfi-bus",
     areas: ["experience"],
     primaryArea: "experience",
@@ -520,14 +870,13 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "inProgress", note: "Confirm HowTo schema reflects bus timings." },
       { id: "faqs", status: "complete" },
       { id: "content", status: "complete" },
-      { id: "media", status: "missing", note: "Add route imagery for bus stops." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "pathOfTheGodsFerry",
     slug: "path-of-the-gods-via-amalfi-ferry",
     contentKey: "pathOfTheGodsFerry",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/path-of-the-gods-via-amalfi-ferry",
     areas: ["experience"],
     primaryArea: "experience",
@@ -553,20 +902,35 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "inProgress", note: "Ensure HowTo steps include ferry legs." },
       { id: "faqs", status: "complete" },
       { id: "content", status: "complete" },
-      { id: "media", status: "missing", note: "Source imagery for ferry terminals." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "simsAtms",
     slug: "sim-esim-and-atms-positano",
     contentKey: "simsAtms",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/sim-esim-and-atms-positano",
     areas: ["help"],
     primaryArea: "help",
     structuredData: ["Article"],
     relatedGuides: ["groceriesPharmacies", "whatToPack", "naplesPositano"],
-    blocks: [],
+    blocks: [
+      {
+        type: "hero",
+        options: {
+          image: "/img/tabacchi.webp",
+          alt: "A tabacchi shop sign in Positano",
+        },
+      },
+      {
+        type: "genericContent",
+        options: { contentKey: "simsAtms", showToc: true },
+      },
+      {
+        type: "faq",
+        options: { fallbackKey: "simsAtms", alwaysProvideFallback: true },
+      },
+    ],
     options: {
       showTagChips: true,
     },
@@ -575,14 +939,13 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "inProgress", note: "Confirm FAQ fallback mirrors guidesFallback strings." },
       { id: "faqs", status: "complete" },
       { id: "content", status: "complete" },
-      { id: "media", status: "missing", note: "Add imagery for SIM shops/ATMs." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "freeThingsPositano",
     slug: "free-low-cost-things-to-do-positano",
     contentKey: "freeThingsPositano",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/free-low-cost-things-to-do-positano",
     areas: ["help"],
     primaryArea: "help",
@@ -604,21 +967,20 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
     checklist: [
       { id: "translations", status: "inProgress", note: "Localize free-activity highlights per locale." },
       { id: "jsonLd", status: "missing", note: "Add Article structured data for budget experiences." },
       { id: "faqs", status: "inProgress", note: "Ensure fallback FAQs match localized content." },
       { id: "content", status: "complete" },
-      { id: "media", status: "missing", note: "Source imagery for featured free experiences." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "couplesInHostels",
     slug: "traveling-as-a-couple-in-hostels",
     contentKey: "couplesInHostels",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/traveling-as-a-couple-in-hostels",
     areas: ["experience"],
     primaryArea: "experience",
@@ -640,7 +1002,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferManualWhenUnlocalized: true,
       suppressUnlocalizedFallback: true,
     },
@@ -649,46 +1011,45 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "missing", note: "Add Article structured data when ready." },
       { id: "faqs", status: "inProgress", note: "Ensure fallback FAQs align with localized content." },
       { id: "content", status: "inProgress", note: "Verify couple-friendly sections render as expected." },
-      { id: "media", status: "missing", note: "Add imagery showcasing private hostel spaces for couples." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
-    key: "stayingFitAmalfi",
-    slug: "staying-fit-while-traveling-amalfi-coast",
-    contentKey: "stayingFitAmalfi",
-    status: "live",
-    draftPathSegment: "guides/staying-fit-while-traveling-amalfi-coast",
+    key: "stayingFitPositano",
+    slug: "stay-fit-positano",
+    contentKey: "stayingFitPositano",
+    status: "draft",
+    draftPathSegment: "guides/stay-fit-positano",
     areas: ["experience"],
     primaryArea: "experience",
     structuredData: ["Article"],
+    focusKeyword: "stay fit Positano",
     relatedGuides: ["pathOfTheGods", "sunsetViewpoints", "positanoTravelGuide"],
     blocks: [
       {
         type: "genericContent",
-        options: { contentKey: "stayingFitAmalfi" },
+        options: { contentKey: "stayingFitPositano" },
       },
       {
         type: "faq",
-        options: { fallbackKey: "stayingFitAmalfi", alwaysProvideFallback: true },
+        options: { fallbackKey: "stayingFitPositano", alwaysProvideFallback: true },
       },
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
     checklist: [
       { id: "translations", status: "inProgress", note: "Localize fitness and trail guidance per locale." },
       { id: "jsonLd", status: "missing", note: "Add Article structured data when finalized." },
       { id: "faqs", status: "inProgress", note: "Ensure fallback FAQs capture wellness tips." },
       { id: "content", status: "inProgress", note: "Verify workout sections render correctly." },
-      { id: "media", status: "missing", note: "Add imagery for fitness routes if available." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "naplesPositano",
     slug: "naples-to-positano",
     contentKey: "naplesPositano",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/naples-to-positano",
     areas: ["experience"],
     primaryArea: "experience",
@@ -714,21 +1075,20 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
     checklist: [
       { id: "translations", status: "inProgress", note: "Localize transport guidance across locales." },
       { id: "jsonLd", status: "missing", note: "Add Article structured data for transport advice." },
       { id: "faqs", status: "inProgress", note: "Ensure fallback FAQs cover route options." },
       { id: "content", status: "complete" },
-      { id: "media", status: "missing", note: "Add gallery imagery for transit routes." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "weekend48Positano",
     slug: "48-hour-positano-weekend",
     contentKey: "weekend48Positano",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/48-hour-positano-weekend",
     areas: ["experience"],
     primaryArea: "experience",
@@ -750,14 +1110,14 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "sevenDayNoCar",
     slug: "7-day-amalfi-coast-itinerary-no-car",
     contentKey: "sevenDayNoCar",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/7-day-amalfi-coast-itinerary-no-car",
     areas: ["experience"],
     primaryArea: "experience",
@@ -779,7 +1139,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       suppressUnlocalizedFallback: true,
       preferGenericWhenFallback: true,
     },
@@ -788,7 +1148,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "capriDayTrip",
     slug: "day-trip-capri-from-positano",
     contentKey: "capriDayTrip",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/day-trip-capri-from-positano",
     areas: ["experience"],
     primaryArea: "experience",
@@ -816,18 +1176,17 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       suppressUnlocalizedFallback: true,
     },
     checklist: [
-      { id: "media", status: "inProgress", note: "Curate Capri gallery coverage before launch." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "dayTripsAmalfi",
     slug: "day-trips-from-positano",
     contentKey: "dayTripsAmalfi",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/day-trips-from-positano",
     areas: ["experience"],
     primaryArea: "experience",
@@ -849,7 +1208,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       renderGenericWhenEmpty: true,
     },
   }),
@@ -857,7 +1216,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "itinerariesPillar",
     slug: "amalfi-coast-itineraries-no-car",
     contentKey: "itinerariesPillar",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/amalfi-coast-itineraries-no-car",
     areas: ["experience"],
     primaryArea: "experience",
@@ -879,7 +1238,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferManualWhenUnlocalized: true,
     },
     checklist: [
@@ -890,7 +1249,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "topViewpointsAmalfi",
     slug: "top-viewpoints-amalfi-coast",
     contentKey: "topViewpointsAmalfi",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/top-viewpoints-amalfi-coast",
     areas: ["experience"],
     primaryArea: "experience",
@@ -912,20 +1271,51 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferManualWhenUnlocalized: true,
+    },
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "santaMariaDelCastelloHike",
+    slug: "santa-maria-del-castello-hike",
+    contentKey: "santaMariaDelCastelloHike",
+    status: "draft",
+    draftPathSegment: "guides/santa-maria-del-castello-hike",
+    areas: ["experience"],
+    primaryArea: "experience",
+    structuredData: ["Article"],
+    relatedGuides: ["topOfTheMountainHike", "pathOfTheGods", "sunriseHike"],
+    blocks: [
+      {
+        type: "hero",
+        options: {
+          image: "santa-maria-castello/smaria-to-positano.jpg",
+        },
+      },
+      {
+        type: "genericContent",
+        options: { contentKey: "santaMariaDelCastelloHike", showToc: true },
+      },
+      {
+        type: "relatedGuides",
+        options: { guides: ["topOfTheMountainHike", "pathOfTheGods", "sunriseHike"] },
+      },
+    ],
+    options: {
+      showTagChips: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "topOfTheMountainHike",
     slug: "top-of-the-mountain-hike",
     contentKey: "topOfTheMountainHike",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/top-of-the-mountain-hike",
     areas: ["experience"],
     primaryArea: "experience",
     structuredData: ["Article"],
-    relatedGuides: ["pathOfTheGods", "sunsetViewpoints", "stayingFitAmalfi"],
+    relatedGuides: ["pathOfTheGods", "sunsetViewpoints", "stayingFitPositano"],
     blocks: [
       {
         type: "genericContent",
@@ -937,12 +1327,12 @@ const manifestSeed: GuideManifestEntry[] = [
       },
       {
         type: "relatedGuides",
-        options: { guides: ["pathOfTheGods", "sunsetViewpoints", "stayingFitAmalfi"] },
+        options: { guides: ["pathOfTheGods", "sunsetViewpoints", "stayingFitPositano"] },
       },
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       renderGenericWhenEmpty: true,
       suppressFaqWhenUnlocalized: true,
       fallbackToEnTocTitle: false,
@@ -952,7 +1342,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "instagramSpots",
     slug: "positano-instagram-spots",
     contentKey: "instagramSpots",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/positano-instagram-spots",
     areas: ["experience"],
     primaryArea: "experience",
@@ -974,7 +1364,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       renderGenericWhenEmpty: false,
     },
   }),
@@ -982,11 +1372,12 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "historyPositano",
     slug: "history-of-positano",
     contentKey: "historyPositano",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/history-of-positano",
     areas: ["experience"],
     primaryArea: "experience",
     structuredData: ["Article"],
+    focusKeyword: "history of Positano",
     relatedGuides: ["positanoTravelGuide", "instagramSpots", "scenicWalksPositano"],
     blocks: [
       {
@@ -1004,7 +1395,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferGenericWhenFallback: true,
       ogType: "article",
     },
@@ -1013,7 +1404,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "ravelloGuide",
     slug: "ravello-travel-guide",
     contentKey: "ravelloGuide",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/ravello-travel-guide",
     areas: ["experience"],
     primaryArea: "experience",
@@ -1035,14 +1426,14 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "fornilloBeachGuide",
     slug: "fornillo-beach-guide",
     contentKey: "fornilloBeachGuide",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/fornillo-beach-guide",
     areas: ["experience"],
     primaryArea: "experience",
@@ -1064,18 +1455,136 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
+    },
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "positanoBeaches",
+    slug: "positano-beaches",
+    contentKey: "positanoBeaches",
+    status: "draft",
+    draftPathSegment: "experiences/positano-beaches",
+    areas: ["experience"],
+    primaryArea: "experience",
+    structuredData: ["Article", "ItemList"],
+    focusKeyword: "Positano beaches",
+    relatedGuides: ["fornilloBeachGuide", "positanoMainBeach", "gavitellaBeachGuide", "marinaDiPraiaBeaches"],
+    blocks: [
+      {
+        type: "hero",
+        options: {
+          image: "/img/guides/positano-beaches/positano-main-beach.webp",
+          alt: "Positano's main beach with colorful umbrellas and the town rising up the cliffs",
+          showIntro: true,
+        },
+      },
+      {
+        type: "genericContent",
+        options: { contentKey: "positanoBeaches", showToc: true },
+      },
+      {
+        type: "table",
+        options: {
+          id: "beach-comparison",
+          titleKey: "comparisonTable.title",
+          columns: [
+            { key: "beach", label: "Beach", align: "left" },
+            { key: "price", label: "Lounger Prices", align: "left" },
+            { key: "freeArea", label: "Free Area?", align: "center" },
+            { key: "pros", label: "Pros", align: "left" },
+            { key: "cons", label: "Cons", align: "left" },
+          ],
+          rows: [
+            {
+              beach: "Fornillo",
+              price: "€15+ (Pupetto, Grassi, Ferdinando, La Marinella)",
+              freeArea: "Yes",
+              pros: "Cheaper; large free section; secret free area",
+              cons: "Steep walk back; easier route via main beach & bus",
+            },
+            {
+              beach: "Main (Grande)",
+              price: "€25+ (L'Incanto); €100-400 (La Scogliera)",
+              freeArea: "Yes",
+              pros: "Classic Positano views; town backdrop",
+              cons: "Most expensive; crowded",
+            },
+            {
+              beach: "Arienzo",
+              price: "€60+ with food/drink deals",
+              freeArea: "Yes",
+              pros: "Long sunshine; stunning views; good value packages",
+              cons: "Hundreds of stairs; water taxi needed",
+            },
+            {
+              beach: "Laurito",
+              price: "Free with restaurant purchase (Da Adolfo); €30+ (Villa Tre Ville)",
+              freeArea: "Yes",
+              pros: "Extended sunshine; remarkable views",
+              cons: "Da Adolfo overrated; small free area; water taxi needed",
+            },
+            {
+              beach: "Gavitella (Praiano)",
+              price: "Not listed",
+              freeArea: "No",
+              pros: "Ideal evening; sunset/aperitif atmosphere",
+              cons: "Concrete jungle during day",
+            },
+            {
+              beach: "Marina di Praia",
+              price: "Not listed",
+              freeArea: "Yes",
+              pros: "Charming fishing cove",
+              cons: "Narrow; limited morning sun",
+            },
+            {
+              beach: "Fiordo di Furore",
+              price: "Not listed",
+              freeArea: "Yes",
+              pros: "Instagram-worthy; cliff jumping; budget-friendly",
+              cons: "Difficult access; extremely limited space",
+            },
+            {
+              beach: "Regina Giovanna Bath (Sorrento)",
+              price: "Free entry",
+              freeArea: "Yes",
+              pros: "Free natural pool; relatively unknown",
+              cons: "No facilities",
+            },
+            {
+              beach: "Amalfi Marina Grande",
+              price: "Premium pricing (multiple clubs)",
+              freeArea: "Varies",
+              pros: "Multiple clubs; easy ferry/bus access",
+              cons: "Premium pricing; book ahead in peak",
+            },
+          ],
+        },
+      },
+      {
+        type: "faq",
+        options: { fallbackKey: "positanoBeaches", alwaysProvideFallback: true },
+      },
+      {
+        type: "relatedGuides",
+        options: { guides: ["fornilloBeachGuide", "positanoMainBeach", "gavitellaBeachGuide", "marinaDiPraiaBeaches"] },
+      },
+    ],
+    options: {
+      showTagChips: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "positanoMainBeach",
     slug: "positano-main-beach-guide",
     contentKey: "positanoMainBeach",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/positano-main-beach-guide",
     areas: ["experience"],
     primaryArea: "experience",
     structuredData: ["Article"],
+    focusKeyword: "Spiaggia Grande Positano",
     relatedGuides: ["positanoBeaches", "fornilloBeachGuide", "positanoMainBeachBusDown"],
     blocks: [
       {
@@ -1093,14 +1602,14 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "fiordoDiFuroreBeachGuide",
     slug: "fiordo-di-furore-beach-guide",
     contentKey: "fiordoDiFuroreBeachGuide",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/fiordo-di-furore-beach-guide",
     areas: ["experience"],
     primaryArea: "experience",
@@ -1122,7 +1631,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferGenericWhenFallback: true,
     },
   }),
@@ -1130,7 +1639,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "ferrySchedules",
     slug: "ferry-schedules",
     contentKey: "ferrySchedules",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/ferry-schedules",
     areas: ["help"],
     primaryArea: "help",
@@ -1164,7 +1673,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "amalfiTownGuide",
     slug: "amalfi-town-guide",
     contentKey: "amalfiTownGuide",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/amalfi-town-guide",
     areas: ["experience"],
     primaryArea: "experience",
@@ -1186,14 +1695,15 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "avoidCrowdsPositano",
     slug: "avoid-crowds-off-the-beaten-path-positano",
     contentKey: "avoidCrowdsPositano",
-    status: "live",
+    focusKeyword: "avoid crowds Positano",
+    status: "draft",
     draftPathSegment: "guides/avoid-crowds-off-the-beaten-path-positano",
     areas: ["experience"],
     primaryArea: "experience",
@@ -1215,14 +1725,14 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "cuisineAmalfiGuide",
     slug: "amalfi-coast-cuisine-guide",
     contentKey: "cuisineAmalfiGuide",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/amalfi-coast-cuisine-guide",
     areas: ["experience"],
     primaryArea: "experience",
@@ -1244,7 +1754,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       showTransportNotice: false,
       showTocWhenUnlocalized: false,
     },
@@ -1256,11 +1766,12 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "positanoDining",
     slug: "positano-dining-guide",
     contentKey: "positanoDining",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/positano-dining-guide",
     areas: ["experience"],
     primaryArea: "experience",
     structuredData: ["Article", "FAQPage"],
+    focusKeyword: "positano restaurants",
     relatedGuides: ["cheapEats", "cuisineAmalfiGuide", "freeThingsPositano"],
     blocks: [
       {
@@ -1278,7 +1789,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       renderGenericWhenEmpty: true,
       preferGenericWhenFallback: true,
     },
@@ -1287,7 +1798,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "cheapEats",
     slug: "cheap-eats-in-positano",
     contentKey: "cheapEats",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/cheap-eats-in-positano",
     areas: ["experience"],
     primaryArea: "experience",
@@ -1309,18 +1820,19 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "ferragostoPositano",
     slug: "ferragosto-in-positano",
     contentKey: "ferragostoPositano",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/ferragosto-in-positano",
     areas: ["experience"],
     primaryArea: "experience",
     structuredData: ["Article"],
+    focusKeyword: "Ferragosto Positano",
     relatedGuides: ["bestTimeToVisit", "sunsetViewpoints", "positanoBeaches"],
     blocks: [
       {
@@ -1338,14 +1850,14 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "safetyAmalfi",
     slug: "staying-safe-positano-amalfi-coast",
     contentKey: "safetyAmalfi",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/staying-safe-positano-amalfi-coast",
     areas: ["help"],
     primaryArea: "help",
@@ -1374,7 +1886,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "sitaTickets",
     slug: "sita-bus-tickets",
     contentKey: "sitaTickets",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/sita-bus-tickets",
     areas: ["help"],
     primaryArea: "help",
@@ -1397,14 +1909,14 @@ const manifestSeed: GuideManifestEntry[] = [
     options: {
       showTagChips: true,
       showTransportNotice: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "transportBudget",
     slug: "transport-on-a-budget-amalfi-coast",
     contentKey: "transportBudget",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/transport-on-a-budget-amalfi-coast",
     areas: ["help"],
     primaryArea: "help",
@@ -1426,14 +1938,14 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "publicTransportAmalfi",
     slug: "amalfi-coast-public-transport-guide",
     contentKey: "publicTransportAmalfi",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/amalfi-coast-public-transport-guide",
     areas: ["help"],
     primaryArea: "help",
@@ -1455,7 +1967,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       showTransportNotice: true,
       suppressUnlocalizedFallback: true,
       preferManualWhenUnlocalized: true,
@@ -1465,7 +1977,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "travelFaqsAmalfi",
     slug: "amalfi-coast-travel-faqs",
     contentKey: "travelFaqsAmalfi",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/amalfi-coast-travel-faqs",
     areas: ["help"],
     primaryArea: "help",
@@ -1487,19 +1999,19 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "ecoFriendlyAmalfi",
     slug: "eco-friendly-travel-amalfi-coast",
     contentKey: "ecoFriendlyAmalfi",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/eco-friendly-travel-amalfi-coast",
     areas: ["help"],
     primaryArea: "help",
     structuredData: ["Article", "FAQPage"],
-    relatedGuides: ["stayingFitAmalfi", "safetyAmalfi", "workAndTravelPositano"],
+    relatedGuides: ["stayingFitPositano", "safetyAmalfi", "workAndTravelPositano"],
     blocks: [
       {
         type: "genericContent",
@@ -1511,19 +2023,19 @@ const manifestSeed: GuideManifestEntry[] = [
       },
       {
         type: "relatedGuides",
-        options: { guides: ["stayingFitAmalfi", "safetyAmalfi", "workAndTravelPositano"] },
+        options: { guides: ["stayingFitPositano", "safetyAmalfi", "workAndTravelPositano"] },
       },
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "workAndTravelPositano",
     slug: "work-and-travel-remote-work-positano",
     contentKey: "workAndTravelPositano",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/work-and-travel-remote-work-positano",
     areas: ["help"],
     primaryArea: "help",
@@ -1545,14 +2057,14 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "workExchangeItaly",
     slug: "work-exchange-in-italian-hostels",
     contentKey: "workExchangeItaly",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/work-exchange-in-italian-hostels",
     areas: ["help"],
     primaryArea: "help",
@@ -1574,7 +2086,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferManualWhenUnlocalized: true,
       suppressUnlocalizedFallback: true,
     },
@@ -1583,7 +2095,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "petsAmalfi",
     slug: "traveling-with-pets-amalfi-coast",
     contentKey: "petsAmalfi",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/traveling-with-pets-amalfi-coast",
     areas: ["help"],
     primaryArea: "help",
@@ -1605,7 +2117,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       showRelatedWhenLocalized: false,
     },
   }),
@@ -1613,10 +2125,11 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "bestTimeToVisit",
     slug: "best-time-to-visit-positano",
     contentKey: "bestTimeToVisit",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/best-time-to-visit-positano",
     areas: ["help"],
     primaryArea: "help",
+    focusKeyword: "best time to visit Positano",
     structuredData: ["Article", "FAQPage"],
     relatedGuides: ["positanoTravelGuide", "transportBudget", "ecoFriendlyAmalfi"],
     blocks: [
@@ -1635,19 +2148,20 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "parking",
-    slug: "positano-parking",
+    slug: "arriving-by-car",
     contentKey: "parking",
-    status: "live",
-    draftPathSegment: "guides/positano-parking",
-    areas: ["help"],
-    primaryArea: "help",
+    status: "draft",
+    draftPathSegment: "guides/arriving-by-car",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
     structuredData: ["Article", "FAQPage"],
-    relatedGuides: ["drivingAmalfi", "transportBudget", "publicTransportAmalfi"],
+    focusKeyword: "arriving by car Positano",
+    relatedGuides: ["transportBudget", "publicTransportAmalfi", "scooterRentalPositano"],
     blocks: [
       {
         type: "genericContent",
@@ -1659,20 +2173,20 @@ const manifestSeed: GuideManifestEntry[] = [
       },
       {
         type: "relatedGuides",
-        options: { guides: ["drivingAmalfi", "transportBudget", "publicTransportAmalfi"] },
+        options: { guides: ["transportBudget", "publicTransportAmalfi", "scooterRentalPositano"] },
       },
     ],
     options: {
       showTagChips: true,
       showTransportNotice: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "salernoPositano",
     slug: "salerno-to-positano",
     contentKey: "salernoPositano",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/salerno-to-positano",
     areas: ["experience"],
     primaryArea: "experience",
@@ -1702,14 +2216,14 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "interrailAmalfi",
     slug: "interrail-italy-rail-pass-amalfi-coast",
     contentKey: "interrailAmalfi",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/interrail-italy-rail-pass-amalfi-coast",
     areas: ["help"],
     primaryArea: "help",
@@ -1731,14 +2245,14 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "naplesCityGuide",
     slug: "naples-city-guide-for-amalfi-travelers",
     contentKey: "naplesCityGuide",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/naples-city-guide-for-amalfi-travelers",
     areas: ["help"],
     primaryArea: "help",
@@ -1760,14 +2274,14 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "backpackingSouthernItaly",
     slug: "backpacking-southern-italy-itinerary",
     contentKey: "backpackingSouthernItaly",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/backpacking-southern-italy-itinerary",
     areas: ["experience"],
     primaryArea: "experience",
@@ -1785,14 +2299,14 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "hitchhikingAmalfi",
     slug: "hitchhiking-the-amalfi-coast",
     contentKey: "hitchhikingAmalfi",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/hitchhiking-the-amalfi-coast",
     areas: ["help"],
     primaryArea: "help",
@@ -1818,7 +2332,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferGenericWhenFallback: true,
       renderGenericWhenEmpty: true,
     },
@@ -1827,7 +2341,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "offbeatVillagesAmalfi",
     slug: "offbeat-amalfi-coast-villages",
     contentKey: "offbeatVillagesAmalfi",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/offbeat-amalfi-coast-villages",
     areas: ["experience"],
     primaryArea: "experience",
@@ -1849,7 +2363,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferManualWhenUnlocalized: true,
     },
   }),
@@ -1857,7 +2371,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "praianoGuide",
     slug: "praiano-travel-guide",
     contentKey: "praianoGuide",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/praiano-travel-guide",
     areas: ["experience"],
     primaryArea: "experience",
@@ -1879,14 +2393,44 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
+    },
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "sorrentoGuide",
+    slug: "sorrento-gateway-guide",
+    contentKey: "sorrentoGuide",
+    status: "draft",
+    draftPathSegment: "guides/sorrento-gateway-guide",
+    areas: ["help"],
+    primaryArea: "help",
+    structuredData: ["Article"],
+    relatedGuides: ["sorrentoPositanoBus", "sorrentoPositanoFerry", "ferrySchedules"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "sorrentoGuide", showToc: true },
+      },
+      {
+        type: "faq",
+        options: { fallbackKey: "sorrentoGuide", alwaysProvideFallback: true },
+      },
+      {
+        type: "relatedGuides",
+        options: { guides: ["sorrentoPositanoBus", "sorrentoPositanoFerry", "ferrySchedules"] },
+      },
+    ],
+    options: {
+      showTagChips: true,
+      showPlanChoice: false,
+      showTocWhenUnlocalized: true,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "salernoGatewayGuide",
     slug: "salerno-amalfi-coast-gateway",
     contentKey: "salernoGatewayGuide",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/salerno-amalfi-coast-gateway",
     areas: ["help"],
     primaryArea: "help",
@@ -1908,7 +2452,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       showTocWhenUnlocalized: true,
     },
   }),
@@ -1916,7 +2460,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "positanoMainBeachWalkDown",
     slug: "walk-down-to-positano-main-beach",
     contentKey: "positanoMainBeachWalkDown",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/walk-down-to-positano-main-beach",
     areas: ["experience"],
     primaryArea: "experience",
@@ -1946,14 +2490,14 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "positanoMainBeachWalkBack",
     slug: "walk-back-to-hostel-brikette-from-positano-main-beach",
     contentKey: "positanoMainBeachWalkBack",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/walk-back-to-hostel-brikette-from-positano-main-beach",
     areas: ["experience"],
     primaryArea: "experience",
@@ -1983,14 +2527,14 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "positanoMainBeachBusDown",
     slug: "bus-down-to-positano-main-beach",
     contentKey: "positanoMainBeachBusDown",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/bus-down-to-positano-main-beach",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2020,48 +2564,56 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
-    key: "drivingAmalfi",
-    slug: "driving-the-amalfi-coast-tips",
-    contentKey: "drivingAmalfi",
-    status: "live",
-    draftPathSegment: "guides/driving-the-amalfi-coast-tips",
-    areas: ["help"],
-    primaryArea: "help",
+    key: "positanoMainBeachBusBack",
+    slug: "bus-back-to-hostel-brikette-from-positano-main-beach",
+    contentKey: "positanoMainBeachBusBack",
+    status: "draft",
+    draftPathSegment: "guides/bus-back-to-hostel-brikette-from-positano-main-beach",
+    areas: ["experience"],
+    primaryArea: "experience",
     structuredData: ["Article"],
-    relatedGuides: ["transportBudget", "publicTransportAmalfi", "salernoPositano"],
+    relatedGuides: ["positanoMainBeachBusDown", "positanoMainBeachWalkBack", "positanoBeaches"],
     blocks: [
       {
         type: "genericContent",
-        options: { contentKey: "drivingAmalfi", showToc: true },
+        options: { contentKey: "positanoMainBeachBusBack", showToc: true },
       },
       {
         type: "faq",
-        options: { fallbackKey: "drivingAmalfi", alwaysProvideFallback: true },
+        options: { fallbackKey: "positanoMainBeachBusBack", alwaysProvideFallback: true },
+      },
+      {
+        type: "relatedGuides",
+        options: { guides: ["positanoMainBeachBusDown", "positanoMainBeachWalkBack", "positanoBeaches"] },
       },
       {
         type: "alsoHelpful",
-        options: { tags: ["transport", "car", "positano", "planning"], includeRooms: true },
+        options: {
+          tags: ["beaches", "positano", "bus"],
+          excludeGuide: ["positanoMainBeachBusDown", "positanoMainBeachBusBack", "positanoBeaches"],
+          includeRooms: true,
+        },
       },
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "scooterRentalPositano",
     slug: "scooter-rental-positano-guide",
     contentKey: "scooterRentalPositano",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/scooter-rental-positano-guide",
     areas: ["help"],
     primaryArea: "help",
     structuredData: ["Article", "FAQPage", "BreadcrumbList"],
-    relatedGuides: ["drivingAmalfi", "publicTransportAmalfi", "transportBudget"],
+    relatedGuides: ["parking", "publicTransportAmalfi", "transportBudget"],
     blocks: [
       {
         type: "genericContent",
@@ -2073,7 +2625,7 @@ const manifestSeed: GuideManifestEntry[] = [
       },
       {
         type: "relatedGuides",
-        options: { guides: ["drivingAmalfi", "publicTransportAmalfi", "transportBudget"] },
+        options: { guides: ["parking", "publicTransportAmalfi", "transportBudget"] },
       },
     ],
     options: {
@@ -2087,7 +2639,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "souvenirsAmalfi",
     slug: "thrifty-souvenir-shopping-amalfi-coast",
     contentKey: "souvenirsAmalfi",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/thrifty-souvenir-shopping-amalfi-coast",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2109,7 +2661,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferManualWhenUnlocalized: true,
     },
   }),
@@ -2117,7 +2669,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "soloTravelPositano",
     slug: "solo-travel-positano-tips",
     contentKey: "soloTravelPositano",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/solo-travel-positano-tips",
     areas: ["help"],
     primaryArea: "help",
@@ -2135,7 +2687,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       showTocWhenUnlocalized: false,
       showTransportNotice: false,
     },
@@ -2144,7 +2696,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "travelInsuranceAmalfi",
     slug: "travel-insurance-amalfi-coast",
     contentKey: "travelInsuranceAmalfi",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/travel-insurance-amalfi-coast",
     areas: ["help"],
     primaryArea: "help",
@@ -2162,7 +2714,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       renderGenericWhenEmpty: true,
       suppressUnlocalizedFallback: true,
     },
@@ -2171,7 +2723,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "italianPhrasesCampania",
     slug: "italian-phrases-for-travelers-campania",
     contentKey: "italianPhrasesCampania",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/italian-phrases-for-travelers-campania",
     areas: ["help"],
     primaryArea: "help",
@@ -2189,7 +2741,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferGenericWhenFallback: true,
     },
   }),
@@ -2197,11 +2749,12 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "folkloreAmalfi",
     slug: "local-legends-and-folklore-amalfi-coast",
     contentKey: "folkloreAmalfi",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/local-legends-and-folklore-amalfi-coast",
     areas: ["experience"],
     primaryArea: "experience",
     structuredData: ["Article"],
+    focusKeyword: "Amalfi Coast folklore",
     relatedGuides: ["luminariaPraiano", "ravelloFestival", "ferragostoPositano"],
     blocks: [
       {
@@ -2215,7 +2768,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferManualWhenUnlocalized: true,
     },
   }),
@@ -2223,7 +2776,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "foodieGuideNaplesAmalfi",
     slug: "foodies-guide-naples-amalfi",
     contentKey: "foodieGuideNaplesAmalfi",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/foodies-guide-naples-amalfi",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2245,14 +2798,14 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "cookingClassesAmalfi",
     slug: "cooking-classes-amalfi-coast",
     contentKey: "cookingClassesAmalfi",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/cooking-classes-amalfi-coast",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2266,7 +2819,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferManualWhenUnlocalized: true,
     },
   }),
@@ -2274,7 +2827,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "sunriseHike",
     slug: "sunrise-hike-positano",
     contentKey: "sunriseHike",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/sunrise-hike-positano",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2292,7 +2845,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       renderGenericWhenEmpty: false,
     },
   }),
@@ -2300,7 +2853,8 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "gavitellaBeachGuide",
     slug: "gavitella-beach-guide",
     contentKey: "gavitellaBeachGuide",
-    status: "live",
+    status: "draft",
+    focusKeyword: "Gavitella Beach Praiano",
     draftPathSegment: "guides/gavitella-beach-guide",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2322,14 +2876,14 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "lauritoBeachBusBack",
     slug: "bus-back-from-laurito-beach",
     contentKey: "lauritoBeachBusBack",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/bus-back-from-laurito-beach",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2351,14 +2905,14 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "lauritoBeachBusDown",
     slug: "bus-down-to-positano-main-beach",
     contentKey: "lauritoBeachBusDown",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/bus-down-to-positano-main-beach",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2380,14 +2934,15 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "lauritoBeachGuide",
     slug: "laurito-beach-guide",
     contentKey: "lauritoBeachGuide",
-    status: "live",
+    focusKeyword: "Laurito Beach",
+    status: "draft",
     draftPathSegment: "guides/laurito-beach-guide",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2409,14 +2964,14 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "arienzoBeachBusBack",
     slug: "bus-back-from-arienzo-beach",
     contentKey: "arienzoBeachBusBack",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/bus-back-from-arienzo-beach",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2438,14 +2993,14 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "artisansPositanoShopping",
     slug: "art-and-artisans-positano-shopping",
     contentKey: "artisansPositanoShopping",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/art-and-artisans-positano-shopping",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2467,14 +3022,14 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "budgetAccommodationBeyond",
     slug: "budget-accommodation-beyond-positano",
     contentKey: "budgetAccommodationBeyond",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/budget-accommodation-beyond-positano",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2496,14 +3051,14 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "ischiaProcidaGuide",
     slug: "ischia-and-procida-guide",
     contentKey: "ischiaProcidaGuide",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/ischia-and-procida-guide",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2525,7 +3080,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferGenericWhenFallback: true,
     },
   }),
@@ -2533,7 +3088,8 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "etiquetteItalyAmalfi",
     slug: "italy-travel-etiquette-amalfi-examples",
     contentKey: "etiquetteItalyAmalfi",
-    status: "live",
+    focusKeyword: "Italy travel etiquette",
+    status: "draft",
     draftPathSegment: "guides/italy-travel-etiquette-amalfi-examples",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2555,7 +3111,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       renderGenericWhenEmpty: true,
       showTocWhenUnlocalized: false,
       preferGenericWhenFallback: true,
@@ -2565,7 +3121,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "scenicWalksPositano",
     slug: "scenic-walks-positano-environs",
     contentKey: "scenicWalksPositano",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/scenic-walks-positano-environs",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2587,7 +3143,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferGenericWhenFallback: true,
     },
   }),
@@ -2595,7 +3151,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "campingAmalfi",
     slug: "camping-on-the-amalfi-coast",
     contentKey: "campingAmalfi",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/camping-on-the-amalfi-coast",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2617,7 +3173,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferGenericWhenFallback: true,
     },
   }),
@@ -2625,7 +3181,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "capriOnABudget",
     slug: "capri-on-a-budget",
     contentKey: "capriOnABudget",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/capri-on-a-budget",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2655,7 +3211,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferGenericWhenFallback: true,
     },
   }),
@@ -2663,7 +3219,8 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "reginaGiovannaBath",
     slug: "regina-giovanna-bath-beach-guide",
     contentKey: "reginaGiovannaBath",
-    status: "live",
+    focusKeyword: "Bagni della Regina Giovanna",
+    status: "draft",
     draftPathSegment: "guides/regina-giovanna-bath-beach-guide",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2685,7 +3242,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferGenericWhenFallback: true,
     },
   }),
@@ -2693,7 +3250,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "tramontiWineries",
     slug: "tramonti-wineries-amalfi-coast",
     contentKey: "tramontiWineries",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/tramonti-wineries-amalfi-coast",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2715,7 +3272,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferManualWhenUnlocalized: true,
     },
   }),
@@ -2723,7 +3280,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "photographyGuidePositano",
     slug: "positano-photography-guide-best-spots",
     contentKey: "photographyGuidePositano",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/positano-photography-guide-best-spots",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2745,7 +3302,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferGenericWhenFallback: true,
       showRelatedWhenLocalized: false,
       showTocWhenUnlocalized: true,
@@ -2755,7 +3312,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "boatTours",
     slug: "boat-tours-positano",
     contentKey: "boatTours",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/boat-tours-positano",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2777,7 +3334,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferGenericWhenFallback: true,
     },
   }),
@@ -2785,7 +3342,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "hostelBriketteToArienzoBus",
     slug: "bus-to-arienzo-beach",
     contentKey: "hostelBriketteToArienzoBus",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/bus-to-arienzo-beach",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2815,14 +3372,14 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "pathOfTheGodsNocelle",
     slug: "path-of-the-gods-via-nocelle",
     contentKey: "pathOfTheGodsNocelle",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/path-of-the-gods-via-nocelle",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2852,7 +3409,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "marinaDiPraiaBeaches",
     slug: "marina-di-praia-and-secluded-beaches",
     contentKey: "marinaDiPraiaBeaches",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/marina-di-praia-and-secluded-beaches",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2874,14 +3431,14 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "beachHoppingAmalfi",
     slug: "beach-hopping-amalfi-coast",
     contentKey: "beachHoppingAmalfi",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/beach-hopping-amalfi-coast",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2903,14 +3460,14 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "hostelBriketteToFiordoDiFuroreBus",
     slug: "hostel-brikette-to-fiordo-di-furore-by-bus",
     contentKey: "hostelBriketteToFiordoDiFuroreBus",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/hostel-brikette-to-fiordo-di-furore-by-bus",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2940,14 +3497,14 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "hostelBriketteToFornilloBeach",
     slug: "hostel-brikette-to-fornillo-beach",
     contentKey: "hostelBriketteToFornilloBeach",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/hostel-brikette-to-fornillo-beach",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2977,14 +3534,14 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "hostelBriketteToReginaGiovannaBath",
     slug: "hostel-brikette-to-regina-giovanna-bath",
     contentKey: "hostelBriketteToReginaGiovannaBath",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/hostel-brikette-to-regina-giovanna-bath",
     areas: ["experience"],
     primaryArea: "experience",
@@ -3014,14 +3571,14 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "arienzoBeachClub",
     slug: "arienzo-beach-guide",
     contentKey: "arienzoBeachClub",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/arienzo-beach-guide",
     areas: ["experience"],
     primaryArea: "experience",
@@ -3043,14 +3600,14 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "limoncelloFactory",
     slug: "inside-a-limoncello-factory-amalfi-coast",
     contentKey: "limoncelloFactory",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/inside-a-limoncello-factory-amalfi-coast",
     areas: ["experience"],
     primaryArea: "experience",
@@ -3072,7 +3629,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       suppressUnlocalizedFallback: true,
     },
   }),
@@ -3080,7 +3637,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "walkingTourAudio",
     slug: "free-walking-tour-audio-positano",
     contentKey: "walkingTourAudio",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/free-walking-tour-audio-positano",
     areas: ["experience"],
     primaryArea: "experience",
@@ -3102,7 +3659,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferGenericWhenFallback: true,
     },
   }),
@@ -3110,7 +3667,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "groceriesPharmacies",
     slug: "groceries-and-pharmacies-positano",
     contentKey: "groceriesPharmacies",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/groceries-and-pharmacies-positano",
     areas: ["experience"],
     primaryArea: "experience",
@@ -3132,7 +3689,7 @@ const manifestSeed: GuideManifestEntry[] = [
     ],
     options: {
       showTagChips: true,
-      showPlanChoice: true,
+      showPlanChoice: false,
       preferManualWhenUnlocalized: true,
       suppressUnlocalizedFallback: true,
     },
@@ -3141,7 +3698,8 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "ferryDockToBrikette",
     slug: "ferry-dock-to-hostel-brikette-with-luggage",
     contentKey: "ferryDockToBrikette",
-    status: "live",
+    status: "draft",
+    focusKeyword: "ferry dock to hostel brikette",
     draftPathSegment: "guides/ferry-dock-to-hostel-brikette-with-luggage",
     areas: ["howToGetHere"],
     primaryArea: "howToGetHere",
@@ -3156,7 +3714,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "briketteToFerryDock",
     slug: "hostel-brikette-to-ferry-dock-with-luggage",
     contentKey: "briketteToFerryDock",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/hostel-brikette-to-ferry-dock-with-luggage",
     areas: ["howToGetHere"],
     primaryArea: "howToGetHere",
@@ -3171,13 +3729,14 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "chiesaNuovaArrivals",
     slug: "chiesa-nuova-bar-internazionale-to-hostel-brikette",
     contentKey: "chiesaNuovaArrivals",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/chiesa-nuova-bar-internazionale-to-hostel-brikette",
     areas: ["howToGetHere"],
     primaryArea: "howToGetHere",
     structuredData: ["BreadcrumbList"],
     relatedGuides: [],
     blocks: [],
+    focusKeyword: "Chiesa Nuova / Bar Internazionale bus stop",
     expectations: {
       redirectOnly: true,
     },
@@ -3186,16 +3745,695 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "chiesaNuovaDepartures",
     slug: "hostel-brikette-to-chiesa-nuova-bar-internazionale",
     contentKey: "chiesaNuovaDepartures",
-    status: "live",
+    status: "draft",
     draftPathSegment: "guides/hostel-brikette-to-chiesa-nuova-bar-internazionale",
     areas: ["howToGetHere"],
     primaryArea: "howToGetHere",
     structuredData: ["BreadcrumbList"],
     relatedGuides: [],
     blocks: [],
+    focusKeyword: "Positano Chiesa Nuova / Bar Internazionale bus stop",
     expectations: {
       redirectOnly: true,
     },
+  }),
+  // --- Transport routes (pilot migration from legacy how-to-get-here system) ---
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "amalfiPositanoFerry",
+    slug: "amalfi-positano-ferry",
+    contentKey: "amalfiPositanoFerry",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    focusKeyword: "Amalfi to Positano ferry",
+    relatedGuides: ["ferryDockToBrikette"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "amalfiPositanoFerry", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "amalfiPositanoBus",
+    slug: "amalfi-positano-bus",
+    contentKey: "amalfiPositanoBus",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    focusKeyword: "Amalfi Positano bus",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "amalfiPositanoBus", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "aside", bodyKey: "callouts.aside" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "naplesAirportPositanoBus",
+    slug: "naples-airport-positano-bus",
+    contentKey: "naplesAirportPositanoBus",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    focusKeyword: "naples airport to positano bus",
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "naplesAirportPositanoBus", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "naplesCenterTrainBus",
+    slug: "naples-center-train-bus",
+    contentKey: "naplesCenterTrainBus",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    focusKeyword: "Naples to Positano train bus",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "naplesCenterTrainBus", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "positanoAmalfiBus",
+    slug: "positano-amalfi-bus",
+    contentKey: "positanoAmalfiBus",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "positanoAmalfiBus", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "positanoNaplesAirportBus",
+    slug: "positano-naples-airport-bus",
+    contentKey: "positanoNaplesAirportBus",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "positanoNaplesAirportBus", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "positanoNaplesCenterBusTrain",
+    slug: "positano-naples-center-bus-train",
+    contentKey: "positanoNaplesCenterBusTrain",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "positanoNaplesCenterBusTrain", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "positanoSorrentoBus",
+    slug: "positano-sorrento-bus",
+    contentKey: "positanoSorrentoBus",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "positanoSorrentoBus", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "ravelloPositanoBus",
+    slug: "ravello-positano-bus",
+    contentKey: "ravelloPositanoBus",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "ravelloPositanoBus", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "positanoCapriFerry",
+    slug: "positano-capri-ferry",
+    contentKey: "positanoCapriFerry",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "positanoCapriFerry", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "capriPositanoFerry",
+    slug: "capri-positano-ferry",
+    contentKey: "capriPositanoFerry",
+    status: "draft",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "capriPositanoFerry", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "inProgress" },
+      { id: "content", status: "inProgress" },
+      { id: "jsonLd", status: "complete" },
+      { id: "seoAudit", status: "inProgress" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "positanoAmalfiFerry",
+    slug: "positano-amalfi-ferry",
+    contentKey: "positanoAmalfiFerry",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "positanoAmalfiFerry", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "naplesCenterPositanoFerry",
+    slug: "naples-center-positano-ferry",
+    contentKey: "naplesCenterPositanoFerry",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "naplesCenterPositanoFerry", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "positanoSorrentoFerry",
+    slug: "positano-sorrento-ferry",
+    contentKey: "positanoSorrentoFerry",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "positanoSorrentoFerry", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "positanoNaplesCenterFerry",
+    slug: "positano-naples-center-ferry",
+    contentKey: "positanoNaplesCenterFerry",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "positanoNaplesCenterFerry", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "positanoRavelloBus",
+    slug: "positano-ravello-bus",
+    contentKey: "positanoRavelloBus",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "positanoRavelloBus", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "positanoRavelloFerryBus",
+    slug: "positano-ravello-ferry-bus",
+    contentKey: "positanoRavelloFerryBus",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "positanoRavelloFerryBus", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "positanoSalernoFerry",
+    slug: "positano-salerno-ferry",
+    contentKey: "positanoSalernoFerry",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "positanoSalernoFerry", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "salernoPositanoFerry",
+    slug: "salerno-positano-ferry",
+    contentKey: "salernoPositanoFerry",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "salernoPositanoFerry", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "positanoSalernoBus",
+    slug: "positano-salerno-bus",
+    contentKey: "positanoSalernoBus",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "positanoSalernoBus", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "positanoToNaplesDirectionsByFerry",
+    slug: "positano-to-naples-directions-by-ferry",
+    contentKey: "positanoToNaplesDirectionsByFerry",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "positanoToNaplesDirectionsByFerry", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "salernoPositanoBus",
+    slug: "salerno-positano-bus",
+    contentKey: "salernoPositanoBus",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "salernoPositanoBus", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "sorrentoPositanoBus",
+    slug: "sorrento-positano-bus",
+    contentKey: "sorrentoPositanoBus",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "sorrentoPositanoBus", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "sorrentoPositanoFerry",
+    slug: "sorrento-positano-ferry",
+    contentKey: "sorrentoPositanoFerry",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "sorrentoPositanoFerry", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
   }),
 ];
 
@@ -3206,7 +4444,7 @@ const fallbackEntries = fallbackKeys.map((key) =>
     key,
     slug: GUIDE_SLUGS[key]?.["en"] ?? slugify(key),
     contentKey: key,
-    status: "live",
+    status: "draft",
     areas: ["experience"],
     primaryArea: "experience",
     structuredData: ["Article"],
@@ -3229,9 +4467,64 @@ export function listGuideManifestEntries(): GuideManifestEntry[] {
   return Object.values(guideManifest);
 }
 
+/**
+ * Merges a manifest override into a base entry, returning an updated entry.
+ * Browser-safe: takes overrides as parameter (no FS access).
+ */
+export function mergeManifestOverride(
+  entry: GuideManifestEntry,
+  override: { areas?: GuideArea[]; primaryArea?: GuideArea; status?: GuideManifestEntry["status"] } | undefined,
+): GuideManifestEntry {
+  if (!override) return entry;
+
+  const areas = override.areas ?? entry.areas;
+  const primaryArea = override.primaryArea ?? entry.primaryArea;
+  const status = override.status ?? entry.status;
+
+  // Ensure primaryArea is valid for the areas
+  const validPrimary = areas.includes(primaryArea) ? primaryArea : areas[0];
+
+  return {
+    ...entry,
+    areas,
+    primaryArea: validPrimary,
+    status,
+  };
+}
+
+/**
+ * Gets a manifest entry with optional overrides applied.
+ * Browser-safe: takes overrides as parameter (no FS access).
+ */
+export function getGuideManifestEntryWithOverrides(
+  key: GuideKey,
+  overrides?: Partial<Record<GuideKey, { areas?: GuideArea[]; primaryArea?: GuideArea; status?: GuideManifestEntry["status"] }>>,
+): GuideManifestEntry | undefined {
+  const entry = guideManifest[key];
+  if (!entry) return undefined;
+  return mergeManifestOverride(entry, overrides?.[key]);
+}
+
+/**
+ * Lists all manifest entries with optional overrides applied.
+ * Browser-safe: takes overrides as parameter (no FS access).
+ */
+export function listGuideManifestEntriesWithOverrides(
+  overrides?: Partial<Record<GuideKey, { areas?: GuideArea[]; primaryArea?: GuideArea }>>,
+): GuideManifestEntry[] {
+  if (!overrides) return Object.values(guideManifest);
+  return Object.values(guideManifest).map((entry) =>
+    mergeManifestOverride(entry, overrides[entry.key]),
+  );
+}
+
 export type ChecklistSnapshot = {
   status: GuideStatus;
-  items: GuideChecklistItem[];
+  items: ChecklistSnapshotItem[];
+};
+
+export type ChecklistSnapshotItem = GuideChecklistItem & {
+  diagnostics?: GuideChecklistDiagnostics;
 };
 
 export const CHECKLIST_LABELS: Record<ChecklistItemId, string> = {
@@ -3239,36 +4532,134 @@ export const CHECKLIST_LABELS: Record<ChecklistItemId, string> = {
   jsonLd: "Structured data",
   faqs: "FAQs",
   content: "Content sections",
-  media: "Media & galleries",
+  seoAudit: "SEO Audit",
 };
 
 /**
  * Build the checklist payload surfaced in editorial dashboards. When entries omit a particular
- * checklist item we treat it as “missing” by default so gaps remain obvious. Future iterations
+ * checklist item we treat it as "missing" by default so gaps remain obvious. Future iterations
  * will replace these heuristics with lint-driven signals.
  */
-export function buildGuideChecklist(entry: GuideManifestEntry): ChecklistSnapshot {
-  const defaults: Record<ChecklistItemId, GuideChecklistItem> = Object.fromEntries(
-    CHECKLIST_ITEM_IDS.map((id) => [
-      id,
-      {
-        id,
-        status: "missing",
-        note: id === "jsonLd" && entry.structuredData.length > 0
-          ? "Structured data declared; validate generators."
-          : undefined,
+export function buildGuideChecklist(
+  entry: GuideManifestEntry,
+  options?: {
+    includeDiagnostics?: boolean;
+    lang?: AppLanguage;
+    includeTranslationCoverage?: boolean;
+    overrides?: ManifestOverrides;
+  },
+): ChecklistSnapshot {
+  const resolvedLang = options?.lang ?? (i18nConfig.fallbackLng as AppLanguage);
+  const diagnostics = (() => {
+    if (!options?.includeDiagnostics) return undefined;
+    const completeness = analyzeGuideCompleteness(entry.key, resolvedLang);
+    // Translation coverage analysis requires all locale bundles to be loaded.
+    // In SSR/hydration contexts, only the current locale is reliably available,
+    // which would cause all other locales to appear incomplete. Only compute
+    // when explicitly requested (e.g., from server-only contexts like API routes).
+    // For accurate cross-locale coverage, use /api/guides/bulk-translation-status.
+    const coverage = options?.includeTranslationCoverage
+      ? analyzeTranslationCoverage(
+          entry.key,
+          i18nConfig.supportedLngs as AppLanguage[],
+        )
+      : undefined;
+    // Date validation: check if English has a date but other locales don't
+    const dateValidation = options?.includeTranslationCoverage
+      ? analyzeDateValidation(
+          entry.key,
+          i18nConfig.supportedLngs as AppLanguage[],
+        )
+      : undefined;
+    return {
+      translations: coverage,
+      dateValidation,
+      content: {
+        intro: completeness.fields.intro,
+        sections: completeness.fields.sections,
       },
-    ]),
-  ) as Record<ChecklistItemId, GuideChecklistItem>;
+      faqs: {
+        count: completeness.faqCount,
+        hasFaqs: completeness.fields.faqs,
+      },
+    } satisfies GuideChecklistDiagnostics;
+  })();
 
-  const overrides = (entry.checklist ?? []).reduce<Record<ChecklistItemId, GuideChecklistItem>>((acc, item) => {
+  // Auto-infer status based on diagnostics and declarations
+  const inferStatus = (id: ChecklistItemId): ChecklistStatus => {
+    if (id === "jsonLd" && entry.structuredData.length > 0) {
+      return "complete";
+    }
+    if (id === "content" && diagnostics?.content) {
+      const { intro, sections } = diagnostics.content;
+      if (intro && sections) return "complete";
+      if (intro || sections) return "inProgress";
+    }
+    if (id === "faqs" && diagnostics?.faqs) {
+      if (diagnostics.faqs.hasFaqs && diagnostics.faqs.count > 0) return "complete";
+    }
+    if (id === "seoAudit" && options?.overrides) {
+      const audit = options.overrides[entry.key]?.auditResults;
+      if (!audit) return "missing";
+      if (audit.score >= 9.0) return "complete";
+      return "inProgress";
+    }
+    return "missing";
+  };
+
+  const inferNote = (id: ChecklistItemId): string | undefined => {
+    if (id === "jsonLd" && entry.structuredData.length > 0) {
+      return "Structured data declared; validate generators.";
+    }
+    if (id === "seoAudit" && options?.overrides) {
+      const audit = options.overrides[entry.key]?.auditResults;
+      if (audit) {
+        return `Score: ${audit.score.toFixed(1)}/10`;
+      }
+      return "Not audited";
+    }
+    return undefined;
+  };
+
+  const defaults: Record<ChecklistItemId, ChecklistSnapshotItem> = Object.fromEntries(
+    CHECKLIST_ITEM_IDS.map((id) => {
+      // Add audit results to seoAudit item diagnostics
+      const itemDiagnostics = id === "seoAudit" && options?.overrides
+        ? {
+            ...diagnostics,
+            seoAudit: options.overrides[entry.key]?.auditResults,
+          }
+        : diagnostics;
+
+      return [
+        id,
+        {
+          id,
+          status: inferStatus(id),
+          note: inferNote(id),
+          diagnostics: itemDiagnostics,
+        },
+      ];
+    }),
+  ) as Record<ChecklistItemId, ChecklistSnapshotItem>;
+
+  const overrides = (entry.checklist ?? []).reduce<Record<ChecklistItemId, ChecklistSnapshotItem>>((acc, item) => {
+    // Add audit results to seoAudit item diagnostics
+    const itemDiagnostics = item.id === "seoAudit" && options?.overrides
+      ? {
+          ...diagnostics,
+          seoAudit: options.overrides[entry.key]?.auditResults,
+        }
+      : diagnostics;
+
     acc[item.id] = {
       id: item.id,
       status: item.status,
       note: item.note ?? CHECKLIST_LABELS[item.id],
+      diagnostics: itemDiagnostics,
     };
     return acc;
-  }, {} as Record<ChecklistItemId, GuideChecklistItem>);
+  }, {} as Record<ChecklistItemId, ChecklistSnapshotItem>);
 
   const merged = CHECKLIST_ITEM_IDS.map((id) => {
     const source = overrides[id] ?? defaults[id];
@@ -3284,9 +4675,29 @@ export function buildGuideChecklist(entry: GuideManifestEntry): ChecklistSnapsho
   };
 }
 
-export function resolveDraftPathSegment(entry: GuideManifestEntry): string {
+/**
+ * Resolves the draft path segment for a guide entry.
+ * Priority order:
+ * 1. Override draftPathSegment (from JSON overrides file)
+ * 2. Entry draftPathSegment (from TypeScript manifest)
+ * 3. Computed from slug or key
+ *
+ * @param entry - The guide manifest entry
+ * @param overridePath - Optional override from the JSON overrides file
+ */
+export function resolveDraftPathSegment(
+  entry: GuideManifestEntry,
+  overridePath?: string | undefined,
+): string {
+  // Check override first
+  const override = overridePath?.trim();
+  if (override) return override;
+
+  // Then check explicit entry value
   const explicit = entry.draftPathSegment?.trim();
   if (explicit) return explicit;
+
+  // Fall back to computed value from slug
   const slug = entry.slug.trim();
   if (!slug) return `guides/${entry.key}`;
   return slug.includes("/") ? slug : `guides/${slug}`;

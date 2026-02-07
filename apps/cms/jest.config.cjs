@@ -1,11 +1,30 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
-const base = require("@acme/config/jest.preset.cjs");
+
+// CMS uses CJS preset for Next.js compatibility
+const base = require("@acme/config/jest.preset.cjs")({
+  useCjs: true,
+});
+
 const {
   "^@/(.*)$": _unused,
   "^../components/(.*)$": _unused2,
   ...baseModuleNameMapper
 } = base.moduleNameMapper;
+
+const relaxCoverage =
+  process.env.JEST_ALLOW_PARTIAL_COVERAGE === "1" ||
+  process.env.JEST_DISABLE_COVERAGE_THRESHOLD === "1";
+
+// When running Jest shards (`--shard=n/m`), each job only executes a subset of
+// test files. If we also force "all-files" coverage (via `collectCoverageFrom`),
+// Jest will repeatedly instrument the entire CMS source tree for every shard,
+// which is extremely slow and can exceed CI job timeouts.
+//
+// For sharded runs we intentionally collect coverage only for files actually
+// executed in that shard and disable coverage thresholds. Full, "all-files"
+// coverage can be enforced in a separate non-sharded job when needed.
+const isShardRun = process.argv.some((arg) => arg === "--shard" || arg.startsWith("--shard="));
 
 /** @type {import('jest').Config} */
 module.exports = {
@@ -86,24 +105,35 @@ module.exports = {
   ],
   // Collect coverage only from the CMS source code; exclude declarations and tests.
   collectCoverage: true,
-  collectCoverageFrom: [
-    "apps/cms/src/**/*.{ts,tsx}",
-    // Include UI page-builder internals when exercised from CMS tests
-    "packages/ui/src/components/cms/page-builder/**/*.{ts,tsx}",
-    "packages/ui/src/components/cms/PageBuilder.tsx",
-    "!apps/cms/src/**/*.d.ts",
-    "!apps/cms/src/**/?(*.)+(spec|test).{ts,tsx}",
-    "!apps/cms/src/**/__tests__/**",
-  ],
+  collectCoverageFrom: isShardRun
+    ? undefined
+    : [
+        "apps/cms/src/**/*.{ts,tsx}",
+        // Include UI page-builder internals when exercised from CMS tests
+        "packages/ui/src/components/cms/page-builder/**/*.{ts,tsx}",
+        "packages/ui/src/components/cms/PageBuilder.tsx",
+        "!apps/cms/src/**/*.d.ts",
+        "!apps/cms/src/**/?(*.)+(spec|test).{ts,tsx}",
+        "!apps/cms/src/**/__tests__/**",
+      ],
   coverageReporters: ["text", "lcov"],
   // Preserve the base coverage ignore patterns to avoid instrumenting other packages/apps
   coveragePathIgnorePatterns: base.coveragePathIgnorePatterns,
-  coverageThreshold: {
-    global: {
-      statements: 40,
-      branches: 30,
-      functions: 10,
-      lines: 40,
-    },
-  },
+  coverageThreshold: isShardRun || relaxCoverage
+    ? {
+        global: {
+          statements: 0,
+          branches: 0,
+          functions: 0,
+          lines: 0,
+        },
+      }
+    : {
+        global: {
+          statements: 40,
+          branches: 30,
+          functions: 10,
+          lines: 40,
+        },
+      },
 };

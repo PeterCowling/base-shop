@@ -1,13 +1,15 @@
 import { coreEnv as env } from "@acme/config/env/core";
+import { nowIso } from "@acme/date-utils";
+import { incrementOperationalError } from "@acme/platform-core/shops/health";
+import { recordMetric } from "@acme/platform-core/utils";
 import type { Page } from "@acme/types";
+
 import { formDataToObject } from "../../utils/formData";
 import { ensureAuthorized } from "../common/auth";
-import { updateSchema } from "./validation";
+
 import { getPages, updatePage as updatePageInService } from "./service";
 import { computeRevisionId, mapLocales, parseHistory, reportError } from "./utils";
-import { recordMetric } from "@platform-core/utils";
-import { incrementOperationalError } from "@platform-core/shops/health";
-import { nowIso } from "@acme/date-utils";
+import { updateSchema } from "./validation";
 
 export async function updatePage(
   shop: string,

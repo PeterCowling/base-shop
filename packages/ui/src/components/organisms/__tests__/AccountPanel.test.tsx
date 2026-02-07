@@ -1,8 +1,10 @@
 /* i18n-exempt file -- tests use literals for clarity */
+import "../../../../../../test/resetNextMocks";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import { AccountPanel } from "../AccountPanel";
-import "../../../../../../test/resetNextMocks";
 
 describe("AccountPanel", () => {
   it("renders user info and logout button", async () => {

@@ -1,6 +1,7 @@
 // packages/ui/src/components/cms/blocks/ShowcaseSection.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
+
 import ShowcaseSection from './ShowcaseSection';
 
 const meta: Meta<typeof ShowcaseSection> = {

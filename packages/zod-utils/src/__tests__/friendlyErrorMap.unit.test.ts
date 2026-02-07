@@ -1,3 +1,7 @@
+import { z, type ZodIssue, ZodIssueCode, type ZodIssueOptionalMessage } from "zod";
+
+import { applyFriendlyZodMessages, friendlyErrorMap } from "../zodErrorMap";
+
 jest.mock("zod", () => {
   const actual = jest.requireActual("zod");
   return {
@@ -5,8 +9,6 @@ jest.mock("zod", () => {
     z: { ...actual.z, setErrorMap: jest.fn(actual.z.setErrorMap) },
   };
 });
-import { z, ZodIssueCode, type ZodIssue } from "zod";
-import { applyFriendlyZodMessages, friendlyErrorMap } from "../zodErrorMap";
 
 describe("applyFriendlyZodMessages", () => {
   test("sets the global error map", () => {
@@ -56,6 +58,7 @@ describe("friendlyErrorMap", () => {
       code: ZodIssueCode.invalid_type,
       expected: "string",
       received: "undefined",
+      message: "",
       path: [],
     };
     expect(friendlyErrorMap(issue, ctx).message).toBe("Required");
@@ -66,101 +69,102 @@ describe("friendlyErrorMap", () => {
       code: ZodIssueCode.invalid_type,
       expected: "number",
       received: "string",
+      message: "",
       path: [],
     };
     expect(friendlyErrorMap(issue, ctx).message).toBe("Expected number");
   });
 
   test("invalid_enum_value", () => {
-    const issue = {
+    const issue: ZodIssueOptionalMessage = {
       code: ZodIssueCode.invalid_enum_value,
       options: ["a", "b"],
       received: "c",
       path: [],
-    } as const;
+    };
     expect(friendlyErrorMap(issue, ctx).message).toBe("Invalid value");
   });
 
   test("too_small string", () => {
-    const issue = {
+    const issue: ZodIssueOptionalMessage = {
       code: ZodIssueCode.too_small,
       minimum: 5,
       inclusive: true,
       type: "string",
       path: [],
-    } as const;
+    };
     expect(friendlyErrorMap(issue, ctx).message).toBe("Must be at least 5 characters");
   });
 
   test("too_small array", () => {
-    const issue = {
+    const issue: ZodIssueOptionalMessage = {
       code: ZodIssueCode.too_small,
       minimum: 2,
       inclusive: true,
       type: "array",
       path: [],
-    } as const;
+    };
     expect(friendlyErrorMap(issue, ctx).message).toBe("Must have at least 2 items");
   });
 
   test("too_small number", () => {
-    const issue = {
+    const issue: ZodIssueOptionalMessage = {
       code: ZodIssueCode.too_small,
       minimum: 3,
       inclusive: true,
       type: "number",
       path: [],
-    } as const;
+    };
     expect(friendlyErrorMap(issue, ctx)).toEqual({ message: ctx.defaultError });
   });
 
   test("too_big string", () => {
-    const issue = {
+    const issue: ZodIssueOptionalMessage = {
       code: ZodIssueCode.too_big,
       maximum: 2,
       inclusive: true,
       type: "string",
       path: [],
-    } as const;
+    };
     expect(friendlyErrorMap(issue, ctx).message).toBe("Must be at most 2 characters");
   });
 
   test("too_big array", () => {
-    const issue = {
+    const issue: ZodIssueOptionalMessage = {
       code: ZodIssueCode.too_big,
       maximum: 2,
       inclusive: true,
       type: "array",
       path: [],
-    } as const;
+    };
     expect(friendlyErrorMap(issue, ctx).message).toBe("Must have at most 2 items");
   });
 
   test("too_big number", () => {
-    const issue = {
+    const issue: ZodIssueOptionalMessage = {
       code: ZodIssueCode.too_big,
       maximum: 2,
       inclusive: true,
       type: "number",
       path: [],
-    } as const;
+    };
     expect(friendlyErrorMap(issue, ctx)).toEqual({ message: ctx.defaultError });
   });
 
   test("default case with custom message", () => {
-    const issue = {
+    const issue: ZodIssueOptionalMessage = {
       code: ZodIssueCode.custom,
       message: "Boom",
       path: [],
-    } as const;
+    };
     expect(friendlyErrorMap(issue, ctx).message).toBe("Boom");
   });
 
   test("default case with ctx default error", () => {
-    const issue = {
+    const issue: ZodIssueOptionalMessage = {
       code: ZodIssueCode.custom,
       path: [],
-    } as const;
+    };
     const customCtx = {
       defaultError: "Ctx default message",
       data: undefined,
@@ -170,4 +174,3 @@ describe("friendlyErrorMap", () => {
     );
   });
 });
-

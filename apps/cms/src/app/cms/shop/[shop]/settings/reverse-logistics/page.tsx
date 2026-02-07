@@ -1,7 +1,7 @@
 // apps/cms/src/app/cms/shop/[shop]/settings/reverse-logistics/page.tsx
 
-import { getSettings } from "@cms/actions/shops.server";
 import dynamic from "next/dynamic";
+import { getSettings } from "@cms/actions/shops.server";
 
 const ReverseLogisticsEditor = dynamic(() => import("./ReverseLogisticsEditor"));
 void ReverseLogisticsEditor;

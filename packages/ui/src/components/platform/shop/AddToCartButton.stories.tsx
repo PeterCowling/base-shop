@@ -1,9 +1,11 @@
-import type { Meta, StoryObj } from "@storybook/react";
 import type { PropsWithChildren } from "react";
 import React, { useEffect } from "react";
-import type { SKU } from "@acme/types";
+import type { Meta, StoryObj } from "@storybook/react";
+
 import { CartProvider } from "@acme/platform-core/contexts/CartContext";
 import { CurrencyProvider } from "@acme/platform-core/contexts/CurrencyContext";
+import type { SKU } from "@acme/types";
+
 import { AddToCartButton } from "./index";
 
 const demoSku: SKU = {

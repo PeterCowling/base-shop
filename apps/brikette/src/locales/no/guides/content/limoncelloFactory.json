@@ -36,7 +36,7 @@
     },
     {
       "id": "shopping",
-      "title": "Buying and storing a bottle",
+      "title": "Kjøp og oppbevaring",
       "body": [
         "Velg ugjennomsiktige glass eller UV-beskyttede flasker, og sjekk etiketter for produsentens adresse og produksjonsdato.",
         "Hold flasken avkjølt når du åpner den hjemme; hvis du planlegger å reise med den, putt den i klær eller be butikken om beskyttende emballasje."
@@ -57,7 +57,7 @@
       ]
     },
     {
-      "q": "How long does limoncello keep?",
+      "q": "Hvor lenge holder limoncello?",
       "a": [
         "Uåpnede flasker holder seg friske i opptil ett år; Når de er åpnet, oppbevar du dem i kjøleskapet eller fryseren og nyt innen noen få måneder for maksimal aroma."
       ]

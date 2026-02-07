@@ -1,12 +1,13 @@
 // packages/template-app/__tests__/product-facade.test.ts
 import { jest } from "@jest/globals";
+
 import {
-  getProductBySlug,
   getProductById,
+  getProductBySlug,
   getProducts,
   searchProducts,
-} from "@platform-core/products";
-import * as base from "@platform-core/products/index";
+} from "@acme/platform-core/products";
+import * as base from "@acme/platform-core/products/index";
 
 afterEach(() => {
   jest.restoreAllMocks();

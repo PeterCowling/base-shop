@@ -1,5 +1,21 @@
 "use client";
 
+import { useCallback, useEffect, useMemo, useState } from "react";
+import Image from "next/image";
+import { ulid } from "ulid";
+
+import { Grid, Inline, Stack } from "@acme/design-system/primitives";
+import { useTranslations } from "@acme/i18n";
+import { track } from "@acme/telemetry";
+import type { PageComponent } from "@acme/types";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/atoms";
 import {
   Button,
   Input,
@@ -9,20 +25,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/atoms/shadcn";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/atoms";
-import type { PageComponent } from "@acme/types";
-import { ulid } from "ulid";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import Image from "next/image";
-import { useTranslations } from "@acme/i18n";
-import { track } from "@acme/telemetry";
-import { Grid, Inline, Stack } from "@ui/components/atoms/primitives";
 
 interface Template {
   id: string;
@@ -175,7 +177,7 @@ export default function TemplateSelector({
                 aria-label={tt("cms.builder.templates.searchLabel", "Search templates")}
                 className="w-56 flex-1"
               />
-              <Select value={filterCategory} onValueChange={(v) => setFilterCategory(v)}>
+              <Select value={filterCategory} onValueChange={(v: string) => setFilterCategory(v)}>
                 <SelectTrigger className="w-40">
                   <SelectValue placeholder={tt("cms.builder.templates.category", "Category")} />
                 </SelectTrigger>
@@ -186,7 +188,7 @@ export default function TemplateSelector({
                   ))}
                 </SelectContent>
               </Select>
-              <Select value={filterKind} onValueChange={(v) => setFilterKind(v)}>
+              <Select value={filterKind} onValueChange={(v: string) => setFilterKind(v)}>
                 <SelectTrigger className="w-36">
                   <SelectValue placeholder={tt("cms.builder.templates.kind", "Kind")} />
                 </SelectTrigger>

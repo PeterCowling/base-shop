@@ -1,20 +1,140 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
 import type { PageComponent } from "../page";
+
 export interface SectionComponent extends PageComponentBase {
     type: "Section";
     children?: PageComponent[];
+    /** Optional per-section grid column count for editor snapping */
+    gridCols?: number;
+    /** Optional per-section grid gutter (px/rem) for editor overlay */
+    gridGutter?: string;
+    /** Optional per-section toggle: enable grid snapping for children */
+    gridSnap?: boolean;
+    /** Optional text theme identifier applied to this section */
+    textTheme?: string;
+    /** Height preset for section container */
+    heightPreset?: 'auto' | 'compact' | 'standard' | 'tall' | 'full';
+    /** Minimum height (e.g. '480px', '80vh') */
+    minHeight?: string;
+    /** Background image URL */
+    backgroundImageUrl?: string;
+    /** Background image focal point (0..1) */
+    backgroundFocalPoint?: {
+        x: number;
+        y: number;
+    };
+    /** Background size */
+    backgroundSize?: 'cover' | 'contain' | 'auto';
+    /** Background repeat */
+    backgroundRepeat?: 'no-repeat' | 'repeat' | 'repeat-x' | 'repeat-y';
+    /** Background attachment */
+    backgroundAttachment?: 'scroll' | 'fixed' | 'local';
+    /** Optional overlay (e.g., rgba or gradient) */
+    backgroundOverlay?: string;
+    /** Background video URL */
+    backgroundVideoUrl?: string;
+    /** Background video poster */
+    backgroundVideoPoster?: string;
+    /** Background video loop flag */
+    backgroundVideoLoop?: boolean;
+    /** Background video mute flag */
+    backgroundVideoMuted?: boolean;
+    /** Parallax factor applied to Section container */
+    sectionParallax?: number;
 }
 export declare const sectionComponentSchema: z.ZodObject<{
     id: z.ZodString;
+    name: z.ZodOptional<z.ZodString>;
+    hidden: z.ZodOptional<z.ZodBoolean>;
+    locked: z.ZodOptional<z.ZodBoolean>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
     tabletItems: z.ZodOptional<z.ZodNumber>;
     mobileItems: z.ZodOptional<z.ZodNumber>;
-    clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
+    clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate", "open-modal", "scroll-to"]>>;
     href: z.ZodOptional<z.ZodString>;
-    animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+    modalHtml: z.ZodOptional<z.ZodString>;
+    animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide", "slide-up", "slide-down", "slide-left", "slide-right", "zoom", "rotate"]>>;
+    animationDuration: z.ZodOptional<z.ZodNumber>;
+    animationDelay: z.ZodOptional<z.ZodNumber>;
+    animationEasing: z.ZodOptional<z.ZodString>;
+    reveal: z.ZodOptional<z.ZodEnum<["fade", "slide-up", "slide-down", "slide-left", "slide-right", "zoom", "rotate"]>>;
+    parallax: z.ZodOptional<z.ZodNumber>;
+    sticky: z.ZodOptional<z.ZodEnum<["top", "bottom"]>>;
+    stickyOffset: z.ZodOptional<z.ZodUnion<[z.ZodString, z.ZodNumber]>>;
+    hoverScale: z.ZodOptional<z.ZodNumber>;
+    hoverOpacity: z.ZodOptional<z.ZodNumber>;
+    staggerChildren: z.ZodOptional<z.ZodNumber>;
+    timeline: z.ZodOptional<z.ZodObject<{
+        trigger: z.ZodOptional<z.ZodEnum<["load", "click", "in-view", "scroll"]>>;
+        loop: z.ZodOptional<z.ZodBoolean>;
+        name: z.ZodOptional<z.ZodString>;
+        steps: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            at: z.ZodOptional<z.ZodNumber>;
+            duration: z.ZodOptional<z.ZodNumber>;
+            easing: z.ZodOptional<z.ZodString>;
+            opacity: z.ZodOptional<z.ZodNumber>;
+            x: z.ZodOptional<z.ZodNumber>;
+            y: z.ZodOptional<z.ZodNumber>;
+            scale: z.ZodOptional<z.ZodNumber>;
+            rotate: z.ZodOptional<z.ZodNumber>;
+        }, "strict", z.ZodTypeAny, {
+            at?: number | undefined;
+            duration?: number | undefined;
+            rotate?: number | undefined;
+            easing?: string | undefined;
+            opacity?: number | undefined;
+            x?: number | undefined;
+            y?: number | undefined;
+            scale?: number | undefined;
+        }, {
+            at?: number | undefined;
+            duration?: number | undefined;
+            rotate?: number | undefined;
+            easing?: string | undefined;
+            opacity?: number | undefined;
+            x?: number | undefined;
+            y?: number | undefined;
+            scale?: number | undefined;
+        }>, "many">>;
+    }, "strict", z.ZodTypeAny, {
+        name?: string | undefined;
+        trigger?: "load" | "click" | "in-view" | "scroll" | undefined;
+        loop?: boolean | undefined;
+        steps?: {
+            at?: number | undefined;
+            duration?: number | undefined;
+            rotate?: number | undefined;
+            easing?: string | undefined;
+            opacity?: number | undefined;
+            x?: number | undefined;
+            y?: number | undefined;
+            scale?: number | undefined;
+        }[] | undefined;
+    }, {
+        name?: string | undefined;
+        trigger?: "load" | "click" | "in-view" | "scroll" | undefined;
+        loop?: boolean | undefined;
+        steps?: {
+            at?: number | undefined;
+            duration?: number | undefined;
+            rotate?: number | undefined;
+            easing?: string | undefined;
+            opacity?: number | undefined;
+            x?: number | undefined;
+            y?: number | undefined;
+            scale?: number | undefined;
+        }[] | undefined;
+    }>>;
+    motionPreset: z.ZodOptional<z.ZodString>;
+    lottieUrl: z.ZodOptional<z.ZodString>;
+    lottieAutoplay: z.ZodOptional<z.ZodBoolean>;
+    lottieLoop: z.ZodOptional<z.ZodBoolean>;
+    lottieSpeed: z.ZodOptional<z.ZodNumber>;
+    lottieTrigger: z.ZodOptional<z.ZodEnum<["load", "hover", "click", "in-view", "scroll"]>>;
 } & {
     width: z.ZodOptional<z.ZodString>;
     widthDesktop: z.ZodOptional<z.ZodString>;
@@ -26,8 +146,19 @@ export declare const sectionComponentSchema: z.ZodObject<{
     heightMobile: z.ZodOptional<z.ZodString>;
 } & {
     position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    zIndex: z.ZodOptional<z.ZodNumber>;
     top: z.ZodOptional<z.ZodString>;
+    topDesktop: z.ZodOptional<z.ZodString>;
+    topTablet: z.ZodOptional<z.ZodString>;
+    topMobile: z.ZodOptional<z.ZodString>;
     left: z.ZodOptional<z.ZodString>;
+    leftDesktop: z.ZodOptional<z.ZodString>;
+    leftTablet: z.ZodOptional<z.ZodString>;
+    leftMobile: z.ZodOptional<z.ZodString>;
+    right: z.ZodOptional<z.ZodString>;
+    bottom: z.ZodOptional<z.ZodString>;
+    dockX: z.ZodOptional<z.ZodEnum<["left", "right", "center"]>>;
+    dockY: z.ZodOptional<z.ZodEnum<["top", "bottom", "center"]>>;
 } & {
     margin: z.ZodOptional<z.ZodString>;
     marginDesktop: z.ZodOptional<z.ZodString>;
@@ -40,16 +171,123 @@ export declare const sectionComponentSchema: z.ZodObject<{
 } & {
     type: z.ZodLiteral<"Section">;
     children: z.ZodDefault<z.ZodArray<z.ZodLazy<z.ZodTypeAny>, "many">>;
+    gridCols: z.ZodOptional<z.ZodNumber>;
+    gridGutter: z.ZodOptional<z.ZodString>;
+    gridSnap: z.ZodOptional<z.ZodBoolean>;
+    textTheme: z.ZodOptional<z.ZodString>;
+    heightPreset: z.ZodOptional<z.ZodEnum<["auto", "compact", "standard", "tall", "full"]>>;
+    minHeight: z.ZodOptional<z.ZodString>;
+    backgroundImageUrl: z.ZodOptional<z.ZodString>;
+    backgroundFocalPoint: z.ZodOptional<z.ZodObject<{
+        x: z.ZodNumber;
+        y: z.ZodNumber;
+    }, "strip", z.ZodTypeAny, {
+        x: number;
+        y: number;
+    }, {
+        x: number;
+        y: number;
+    }>>;
+    backgroundSize: z.ZodOptional<z.ZodEnum<["cover", "contain", "auto"]>>;
+    backgroundRepeat: z.ZodOptional<z.ZodEnum<["no-repeat", "repeat", "repeat-x", "repeat-y"]>>;
+    backgroundAttachment: z.ZodOptional<z.ZodEnum<["scroll", "fixed", "local"]>>;
+    backgroundOverlay: z.ZodOptional<z.ZodString>;
+    backgroundVideoUrl: z.ZodOptional<z.ZodString>;
+    backgroundVideoPoster: z.ZodOptional<z.ZodString>;
+    backgroundVideoLoop: z.ZodOptional<z.ZodBoolean>;
+    backgroundVideoMuted: z.ZodOptional<z.ZodBoolean>;
+    sectionParallax: z.ZodOptional<z.ZodNumber>;
 }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
     id: z.ZodString;
+    name: z.ZodOptional<z.ZodString>;
+    hidden: z.ZodOptional<z.ZodBoolean>;
+    locked: z.ZodOptional<z.ZodBoolean>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
     tabletItems: z.ZodOptional<z.ZodNumber>;
     mobileItems: z.ZodOptional<z.ZodNumber>;
-    clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
+    clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate", "open-modal", "scroll-to"]>>;
     href: z.ZodOptional<z.ZodString>;
-    animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+    modalHtml: z.ZodOptional<z.ZodString>;
+    animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide", "slide-up", "slide-down", "slide-left", "slide-right", "zoom", "rotate"]>>;
+    animationDuration: z.ZodOptional<z.ZodNumber>;
+    animationDelay: z.ZodOptional<z.ZodNumber>;
+    animationEasing: z.ZodOptional<z.ZodString>;
+    reveal: z.ZodOptional<z.ZodEnum<["fade", "slide-up", "slide-down", "slide-left", "slide-right", "zoom", "rotate"]>>;
+    parallax: z.ZodOptional<z.ZodNumber>;
+    sticky: z.ZodOptional<z.ZodEnum<["top", "bottom"]>>;
+    stickyOffset: z.ZodOptional<z.ZodUnion<[z.ZodString, z.ZodNumber]>>;
+    hoverScale: z.ZodOptional<z.ZodNumber>;
+    hoverOpacity: z.ZodOptional<z.ZodNumber>;
+    staggerChildren: z.ZodOptional<z.ZodNumber>;
+    timeline: z.ZodOptional<z.ZodObject<{
+        trigger: z.ZodOptional<z.ZodEnum<["load", "click", "in-view", "scroll"]>>;
+        loop: z.ZodOptional<z.ZodBoolean>;
+        name: z.ZodOptional<z.ZodString>;
+        steps: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            at: z.ZodOptional<z.ZodNumber>;
+            duration: z.ZodOptional<z.ZodNumber>;
+            easing: z.ZodOptional<z.ZodString>;
+            opacity: z.ZodOptional<z.ZodNumber>;
+            x: z.ZodOptional<z.ZodNumber>;
+            y: z.ZodOptional<z.ZodNumber>;
+            scale: z.ZodOptional<z.ZodNumber>;
+            rotate: z.ZodOptional<z.ZodNumber>;
+        }, "strict", z.ZodTypeAny, {
+            at?: number | undefined;
+            duration?: number | undefined;
+            rotate?: number | undefined;
+            easing?: string | undefined;
+            opacity?: number | undefined;
+            x?: number | undefined;
+            y?: number | undefined;
+            scale?: number | undefined;
+        }, {
+            at?: number | undefined;
+            duration?: number | undefined;
+            rotate?: number | undefined;
+            easing?: string | undefined;
+            opacity?: number | undefined;
+            x?: number | undefined;
+            y?: number | undefined;
+            scale?: number | undefined;
+        }>, "many">>;
+    }, "strict", z.ZodTypeAny, {
+        name?: string | undefined;
+        trigger?: "load" | "click" | "in-view" | "scroll" | undefined;
+        loop?: boolean | undefined;
+        steps?: {
+            at?: number | undefined;
+            duration?: number | undefined;
+            rotate?: number | undefined;
+            easing?: string | undefined;
+            opacity?: number | undefined;
+            x?: number | undefined;
+            y?: number | undefined;
+            scale?: number | undefined;
+        }[] | undefined;
+    }, {
+        name?: string | undefined;
+        trigger?: "load" | "click" | "in-view" | "scroll" | undefined;
+        loop?: boolean | undefined;
+        steps?: {
+            at?: number | undefined;
+            duration?: number | undefined;
+            rotate?: number | undefined;
+            easing?: string | undefined;
+            opacity?: number | undefined;
+            x?: number | undefined;
+            y?: number | undefined;
+            scale?: number | undefined;
+        }[] | undefined;
+    }>>;
+    motionPreset: z.ZodOptional<z.ZodString>;
+    lottieUrl: z.ZodOptional<z.ZodString>;
+    lottieAutoplay: z.ZodOptional<z.ZodBoolean>;
+    lottieLoop: z.ZodOptional<z.ZodBoolean>;
+    lottieSpeed: z.ZodOptional<z.ZodNumber>;
+    lottieTrigger: z.ZodOptional<z.ZodEnum<["load", "hover", "click", "in-view", "scroll"]>>;
 } & {
     width: z.ZodOptional<z.ZodString>;
     widthDesktop: z.ZodOptional<z.ZodString>;
@@ -61,8 +299,19 @@ export declare const sectionComponentSchema: z.ZodObject<{
     heightMobile: z.ZodOptional<z.ZodString>;
 } & {
     position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    zIndex: z.ZodOptional<z.ZodNumber>;
     top: z.ZodOptional<z.ZodString>;
+    topDesktop: z.ZodOptional<z.ZodString>;
+    topTablet: z.ZodOptional<z.ZodString>;
+    topMobile: z.ZodOptional<z.ZodString>;
     left: z.ZodOptional<z.ZodString>;
+    leftDesktop: z.ZodOptional<z.ZodString>;
+    leftTablet: z.ZodOptional<z.ZodString>;
+    leftMobile: z.ZodOptional<z.ZodString>;
+    right: z.ZodOptional<z.ZodString>;
+    bottom: z.ZodOptional<z.ZodString>;
+    dockX: z.ZodOptional<z.ZodEnum<["left", "right", "center"]>>;
+    dockY: z.ZodOptional<z.ZodEnum<["top", "bottom", "center"]>>;
 } & {
     margin: z.ZodOptional<z.ZodString>;
     marginDesktop: z.ZodOptional<z.ZodString>;
@@ -75,16 +324,123 @@ export declare const sectionComponentSchema: z.ZodObject<{
 } & {
     type: z.ZodLiteral<"Section">;
     children: z.ZodDefault<z.ZodArray<z.ZodLazy<z.ZodTypeAny>, "many">>;
+    gridCols: z.ZodOptional<z.ZodNumber>;
+    gridGutter: z.ZodOptional<z.ZodString>;
+    gridSnap: z.ZodOptional<z.ZodBoolean>;
+    textTheme: z.ZodOptional<z.ZodString>;
+    heightPreset: z.ZodOptional<z.ZodEnum<["auto", "compact", "standard", "tall", "full"]>>;
+    minHeight: z.ZodOptional<z.ZodString>;
+    backgroundImageUrl: z.ZodOptional<z.ZodString>;
+    backgroundFocalPoint: z.ZodOptional<z.ZodObject<{
+        x: z.ZodNumber;
+        y: z.ZodNumber;
+    }, "strip", z.ZodTypeAny, {
+        x: number;
+        y: number;
+    }, {
+        x: number;
+        y: number;
+    }>>;
+    backgroundSize: z.ZodOptional<z.ZodEnum<["cover", "contain", "auto"]>>;
+    backgroundRepeat: z.ZodOptional<z.ZodEnum<["no-repeat", "repeat", "repeat-x", "repeat-y"]>>;
+    backgroundAttachment: z.ZodOptional<z.ZodEnum<["scroll", "fixed", "local"]>>;
+    backgroundOverlay: z.ZodOptional<z.ZodString>;
+    backgroundVideoUrl: z.ZodOptional<z.ZodString>;
+    backgroundVideoPoster: z.ZodOptional<z.ZodString>;
+    backgroundVideoLoop: z.ZodOptional<z.ZodBoolean>;
+    backgroundVideoMuted: z.ZodOptional<z.ZodBoolean>;
+    sectionParallax: z.ZodOptional<z.ZodNumber>;
 }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
     id: z.ZodString;
+    name: z.ZodOptional<z.ZodString>;
+    hidden: z.ZodOptional<z.ZodBoolean>;
+    locked: z.ZodOptional<z.ZodBoolean>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
     tabletItems: z.ZodOptional<z.ZodNumber>;
     mobileItems: z.ZodOptional<z.ZodNumber>;
-    clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
+    clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate", "open-modal", "scroll-to"]>>;
     href: z.ZodOptional<z.ZodString>;
-    animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+    modalHtml: z.ZodOptional<z.ZodString>;
+    animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide", "slide-up", "slide-down", "slide-left", "slide-right", "zoom", "rotate"]>>;
+    animationDuration: z.ZodOptional<z.ZodNumber>;
+    animationDelay: z.ZodOptional<z.ZodNumber>;
+    animationEasing: z.ZodOptional<z.ZodString>;
+    reveal: z.ZodOptional<z.ZodEnum<["fade", "slide-up", "slide-down", "slide-left", "slide-right", "zoom", "rotate"]>>;
+    parallax: z.ZodOptional<z.ZodNumber>;
+    sticky: z.ZodOptional<z.ZodEnum<["top", "bottom"]>>;
+    stickyOffset: z.ZodOptional<z.ZodUnion<[z.ZodString, z.ZodNumber]>>;
+    hoverScale: z.ZodOptional<z.ZodNumber>;
+    hoverOpacity: z.ZodOptional<z.ZodNumber>;
+    staggerChildren: z.ZodOptional<z.ZodNumber>;
+    timeline: z.ZodOptional<z.ZodObject<{
+        trigger: z.ZodOptional<z.ZodEnum<["load", "click", "in-view", "scroll"]>>;
+        loop: z.ZodOptional<z.ZodBoolean>;
+        name: z.ZodOptional<z.ZodString>;
+        steps: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            at: z.ZodOptional<z.ZodNumber>;
+            duration: z.ZodOptional<z.ZodNumber>;
+            easing: z.ZodOptional<z.ZodString>;
+            opacity: z.ZodOptional<z.ZodNumber>;
+            x: z.ZodOptional<z.ZodNumber>;
+            y: z.ZodOptional<z.ZodNumber>;
+            scale: z.ZodOptional<z.ZodNumber>;
+            rotate: z.ZodOptional<z.ZodNumber>;
+        }, "strict", z.ZodTypeAny, {
+            at?: number | undefined;
+            duration?: number | undefined;
+            rotate?: number | undefined;
+            easing?: string | undefined;
+            opacity?: number | undefined;
+            x?: number | undefined;
+            y?: number | undefined;
+            scale?: number | undefined;
+        }, {
+            at?: number | undefined;
+            duration?: number | undefined;
+            rotate?: number | undefined;
+            easing?: string | undefined;
+            opacity?: number | undefined;
+            x?: number | undefined;
+            y?: number | undefined;
+            scale?: number | undefined;
+        }>, "many">>;
+    }, "strict", z.ZodTypeAny, {
+        name?: string | undefined;
+        trigger?: "load" | "click" | "in-view" | "scroll" | undefined;
+        loop?: boolean | undefined;
+        steps?: {
+            at?: number | undefined;
+            duration?: number | undefined;
+            rotate?: number | undefined;
+            easing?: string | undefined;
+            opacity?: number | undefined;
+            x?: number | undefined;
+            y?: number | undefined;
+            scale?: number | undefined;
+        }[] | undefined;
+    }, {
+        name?: string | undefined;
+        trigger?: "load" | "click" | "in-view" | "scroll" | undefined;
+        loop?: boolean | undefined;
+        steps?: {
+            at?: number | undefined;
+            duration?: number | undefined;
+            rotate?: number | undefined;
+            easing?: string | undefined;
+            opacity?: number | undefined;
+            x?: number | undefined;
+            y?: number | undefined;
+            scale?: number | undefined;
+        }[] | undefined;
+    }>>;
+    motionPreset: z.ZodOptional<z.ZodString>;
+    lottieUrl: z.ZodOptional<z.ZodString>;
+    lottieAutoplay: z.ZodOptional<z.ZodBoolean>;
+    lottieLoop: z.ZodOptional<z.ZodBoolean>;
+    lottieSpeed: z.ZodOptional<z.ZodNumber>;
+    lottieTrigger: z.ZodOptional<z.ZodEnum<["load", "hover", "click", "in-view", "scroll"]>>;
 } & {
     width: z.ZodOptional<z.ZodString>;
     widthDesktop: z.ZodOptional<z.ZodString>;
@@ -96,8 +452,19 @@ export declare const sectionComponentSchema: z.ZodObject<{
     heightMobile: z.ZodOptional<z.ZodString>;
 } & {
     position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    zIndex: z.ZodOptional<z.ZodNumber>;
     top: z.ZodOptional<z.ZodString>;
+    topDesktop: z.ZodOptional<z.ZodString>;
+    topTablet: z.ZodOptional<z.ZodString>;
+    topMobile: z.ZodOptional<z.ZodString>;
     left: z.ZodOptional<z.ZodString>;
+    leftDesktop: z.ZodOptional<z.ZodString>;
+    leftTablet: z.ZodOptional<z.ZodString>;
+    leftMobile: z.ZodOptional<z.ZodString>;
+    right: z.ZodOptional<z.ZodString>;
+    bottom: z.ZodOptional<z.ZodString>;
+    dockX: z.ZodOptional<z.ZodEnum<["left", "right", "center"]>>;
+    dockY: z.ZodOptional<z.ZodEnum<["top", "bottom", "center"]>>;
 } & {
     margin: z.ZodOptional<z.ZodString>;
     marginDesktop: z.ZodOptional<z.ZodString>;
@@ -110,5 +477,31 @@ export declare const sectionComponentSchema: z.ZodObject<{
 } & {
     type: z.ZodLiteral<"Section">;
     children: z.ZodDefault<z.ZodArray<z.ZodLazy<z.ZodTypeAny>, "many">>;
+    gridCols: z.ZodOptional<z.ZodNumber>;
+    gridGutter: z.ZodOptional<z.ZodString>;
+    gridSnap: z.ZodOptional<z.ZodBoolean>;
+    textTheme: z.ZodOptional<z.ZodString>;
+    heightPreset: z.ZodOptional<z.ZodEnum<["auto", "compact", "standard", "tall", "full"]>>;
+    minHeight: z.ZodOptional<z.ZodString>;
+    backgroundImageUrl: z.ZodOptional<z.ZodString>;
+    backgroundFocalPoint: z.ZodOptional<z.ZodObject<{
+        x: z.ZodNumber;
+        y: z.ZodNumber;
+    }, "strip", z.ZodTypeAny, {
+        x: number;
+        y: number;
+    }, {
+        x: number;
+        y: number;
+    }>>;
+    backgroundSize: z.ZodOptional<z.ZodEnum<["cover", "contain", "auto"]>>;
+    backgroundRepeat: z.ZodOptional<z.ZodEnum<["no-repeat", "repeat", "repeat-x", "repeat-y"]>>;
+    backgroundAttachment: z.ZodOptional<z.ZodEnum<["scroll", "fixed", "local"]>>;
+    backgroundOverlay: z.ZodOptional<z.ZodString>;
+    backgroundVideoUrl: z.ZodOptional<z.ZodString>;
+    backgroundVideoPoster: z.ZodOptional<z.ZodString>;
+    backgroundVideoLoop: z.ZodOptional<z.ZodBoolean>;
+    backgroundVideoMuted: z.ZodOptional<z.ZodBoolean>;
+    sectionParallax: z.ZodOptional<z.ZodNumber>;
 }, z.ZodTypeAny, "passthrough">>;
 //# sourceMappingURL=section.d.ts.map

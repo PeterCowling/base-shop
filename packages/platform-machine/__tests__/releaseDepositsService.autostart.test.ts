@@ -1,4 +1,5 @@
-import { logger } from "@platform-core/utils";
+import { logger } from "@acme/platform-core/utils";
+
 import {
   resetReleaseDepositsEnv,
   restoreOriginalEnv,
@@ -49,7 +50,7 @@ describe("auto-start", () => {
 
     jest.doMock("../src/releaseDepositsService", () => {
       if (process.env.RUN_DEPOSIT_RELEASE_SERVICE === "true") {
-        startMock().catch((e) => {
+        startMock().catch((e: any) => {
           logger.error("failed to start deposit release service", { err: e });
           console.error("failed to start deposit release service", e);
         });

@@ -1,16 +1,16 @@
 import { jest } from "@jest/globals";
 
-const generateSecret = jest.fn();
-const keyuri = jest.fn();
-const verify = jest.fn();
+const generateSecret = jest.fn<string, any[]>();
+const keyuri = jest.fn<string, any[]>();
+const verify = jest.fn<boolean, any[]>();
 
 jest.mock("otplib", () => ({
   authenticator: { generateSecret, keyuri, verify },
 }));
 
-const upsert = jest.fn();
-const findUnique = jest.fn();
-const update = jest.fn();
+const upsert = jest.fn<Promise<unknown>, any[]>();
+const findUnique = jest.fn<Promise<unknown>, any[]>();
+const update = jest.fn<Promise<unknown>, any[]>();
 
 jest.mock("@acme/platform-core/db", () => ({
   prisma: {

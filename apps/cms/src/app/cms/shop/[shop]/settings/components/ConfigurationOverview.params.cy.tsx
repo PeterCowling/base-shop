@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams } from 'next/navigation';
+
 import ConfigurationOverview from './ConfigurationOverview';
 
 function Wrapper() {

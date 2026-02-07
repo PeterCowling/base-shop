@@ -58,6 +58,16 @@
       ]
     }
   ],
+  "essentialsTitle": "Essentials",
+  "essentials": [
+    "Sunscreen.",
+    "Towel.",
+    "Sunglasses."
+  ],
+  "typicalCostsTitle": "Typical costs",
+  "typicalCosts": [
+    "Bus ticket: 10 euros."
+  ],
   "tipsTitle": "Tips",
   "tips": [
     "Tip: check the SITA timetable in advance and allow time in case a bus is already full.",
@@ -82,7 +92,7 @@
     {
       "q": "How will I recognise the right stop?",
       "a": [
-        "After the bus crosses the arched bridge over the fiord it will stop beside the crash barrier. Watch for the bridge views, listen for the driver, and use Google Maps’ \"JH73+PQ Furore\" pin as a backup."
+        "After the bus crosses the arched bridge over the fiord it will stop beside the crash barrier. Watch for the bridge views, listen for the driver, and use Google Maps’ \\\\\"JH73+PQ Furore\\\\\" pin as a backup."
       ]
     }
   ]

@@ -1,13 +1,16 @@
 // packages/ui/src/components/cms/blocks/CollectionSection.client.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { http, HttpResponse, delay } from 'msw';
-import type { SKU } from '@acme/types';
+import { delay,http, HttpResponse } from 'msw';
+import { z } from 'zod';
+
 import { PRODUCTS } from '@acme/platform-core/products/index';
+import type { SKU } from '@acme/types';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
 import CollectionSectionClient from './CollectionSection.client';
 import fixture from './CollectionSection.client.fixtures.json';
-import { z } from 'zod';
-import { makeStateStory } from '../../../story-utils/createStories';
 
 const meta: Meta<typeof CollectionSectionClient> = {
   title: 'CMS Blocks/CollectionSection/Matrix',

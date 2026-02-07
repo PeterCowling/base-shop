@@ -1,5 +1,7 @@
-import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
+
+import { render, screen } from "@testing-library/react";
+
 import { AccountDashboardTemplate } from "../AccountDashboardTemplate";
 
 jest.mock("../../organisms/StatsGrid", () => ({
@@ -29,7 +31,7 @@ const user = {
 const stats = [{ label: "Orders", value: 5 }];
 
 const orders = [{ id: "1" }];
-const columns = [{ header: "ID", accessor: "id" }];
+const columns = [{ header: "ID", render: (row: { id: string }) => row.id }];
 
 describe("AccountDashboardTemplate", () => {
   it("renders user info and passes data to children", () => {

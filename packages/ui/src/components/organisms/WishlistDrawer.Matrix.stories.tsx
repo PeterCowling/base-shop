@@ -2,8 +2,10 @@
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
 import { expect, userEvent, within } from '@storybook/test';
-import { WishlistDrawer } from './WishlistDrawer';
+
 import { makeStateStory } from '../../story-utils/createStories';
+
+import { WishlistDrawer } from './WishlistDrawer';
 
 const meta: Meta<typeof WishlistDrawer> = {
   title: 'Organisms/Wishlist Drawer/Matrix',

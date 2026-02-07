@@ -1,9 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { Cover } from "../../atoms/primitives/Cover";
-import { Button } from "../../atoms";
+
 import { useTranslations } from "@acme/i18n";
+
+import { Button } from "../../atoms";
+import { Cover } from "../../atoms/primitives/Cover";
 
 export interface AgeGateSectionProps extends React.HTMLAttributes<HTMLDivElement> {
   minAge?: number;

@@ -1,8 +1,10 @@
 // packages/ui/src/components/organisms/ImageCarousel.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { ImageCarousel } from './ImageCarousel';
+
 import { makeStateStory } from '../../story-utils/createStories';
+
+import { ImageCarousel } from './ImageCarousel';
 
 const images = [
   { src: 'https://placehold.co/800x600/png', alt: 'Hero 1' },

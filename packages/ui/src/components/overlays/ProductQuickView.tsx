@@ -1,10 +1,12 @@
 "use client"; // i18n-exempt: Next.js directive string, not user-facing copy
 import * as React from "react";
-import { Dialog, DialogContent, Button } from "../atoms/shadcn";
-import type { SKU } from "@acme/types";
-import { ProductCard } from "../organisms/ProductCard";
+
 import { useTranslations } from "@acme/i18n";
-import { logAnalyticsEvent } from "@platform-core/analytics/client";
+import { logAnalyticsEvent } from "@acme/platform-core/analytics/client";
+import type { SKU } from "@acme/types";
+
+import { Button,Dialog, DialogContent } from "../atoms/shadcn";
+import { ProductCard } from "../organisms/ProductCard";
 
 export interface ProductQuickViewProps {
   /** Product to display */

@@ -1,4 +1,4 @@
-import { postSchema, patchSchema, putSchema } from "../src/schemas/cart";
+import { patchSchema, postSchema, putSchema } from "../src/schemas/cart";
 
 describe("cart postSchema", () => {
   it("accepts valid cart line items", () => {

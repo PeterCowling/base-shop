@@ -1,0 +1,20 @@
+{
+  "seo": {
+    "title": "Positano per Ravello in autobus | Hostel Brikette",
+    "description": "Istruzioni passo passo da Positano a Ravello via Amalfi con autobus SITA, consigli sui biglietti, guida all’orario, dettagli sulla fermata Chiesa Nuova e suggerimenti per il cambio."
+  },
+  "intro": {
+    "title": "Positano → Ravello – via Amalfi in autobus",
+    "body": "Viaggia da Positano a Ravello con un semplice cambio ad Amalfi. Questa guida spiega dove acquistare i biglietti SITA, come leggere l’orario e cosa aspettarti durante il cambio ad Amalfi — oltre a come raggiungere la fermata di Positano partendo da Hostel Brikette."
+  },
+  "faqs": [
+    {
+      "q": "Come si legge l'orario degli autobus SITA?",
+      "a": [
+        "**Lettura delle righe:** Le righe nella prima colonna rappresentano le diverse fermate lungo il percorso.",
+        "**Lettura delle colonne:** L'orario assegna una lettera alfabetica a ciascuna corsa programmata, elencate come intestazioni in ogni colonna. Se viaggi da lunedì a sabato, cerca le colonne 'F' e 'G'. Se viaggi di domenica o in un giorno festivo, usa le colonne 'G' e 'H'.",
+        "**Combinare righe e colonne:** Scegli le fermate di partenza e arrivo, quindi controlla le colonne per vedere quando gli autobus sono disponibili e a che ora arrivano a destinazione. Ad esempio, per vedere l'ora di partenza da Sorrento, guarda la riga Sorrento. Per l'ora di arrivo a Positano (Chiesa Nuova / Bar Internazionale), consulta la riga Positano (Chiesa Nuova)."
+      ]
+    }
+  ]
+}

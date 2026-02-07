@@ -1,5 +1,7 @@
 import { z } from "zod";
-import { localeSchema, type Locale } from "@acme/types";
+
+import { type Locale,localeSchema } from "@acme/types";
+
 import { formDataToObject } from "../../../utils/formData";
 
 const seoSchema = z

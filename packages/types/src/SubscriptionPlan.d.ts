@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 export declare const subscriptionPlanSchema: z.ZodObject<{
     id: z.ZodString;
     price: z.ZodNumber;
@@ -22,3 +23,4 @@ export declare const subscriptionPlanSchema: z.ZodObject<{
     prorateOnChange?: boolean | undefined;
 }>;
 export type SubscriptionPlan = z.infer<typeof subscriptionPlanSchema>;
+//# sourceMappingURL=SubscriptionPlan.d.ts.map

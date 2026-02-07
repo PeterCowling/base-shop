@@ -1,3 +1,5 @@
+'use client';
+
 import { MessageCircle } from 'lucide-react';
 import Link from 'next/link';
 

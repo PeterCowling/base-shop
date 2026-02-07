@@ -1,4 +1,5 @@
 import type { RentalOrder } from "@acme/types";
+
 import { setupLateFeeTest } from "../helpers/lateFee";
 
 describe("chargeLateFeesOnce", () => {

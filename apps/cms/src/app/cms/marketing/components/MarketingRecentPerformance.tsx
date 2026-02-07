@@ -1,8 +1,11 @@
 import Link from "next/link";
-import { Card, CardContent, Tag } from "@ui/components/atoms";
-import { Grid, Inline, Cluster } from "@ui/components/atoms/primitives";
-import type { MarketingRecentPerformanceItem } from "./useMarketingOverview";
+
+import { Tag } from "@acme/design-system/atoms";
+import { Cluster,Grid, Inline } from "@acme/design-system/primitives";
+import { Card, CardContent } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
+
+import type { MarketingRecentPerformanceItem } from "./useMarketingOverview";
 
 export interface MarketingRecentPerformanceProps {
   items: MarketingRecentPerformanceItem[];

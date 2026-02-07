@@ -1,0 +1,21 @@
+name = "business-os"
+main = ".open-next/worker.js"
+compatibility_date = "2025-06-20"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"
+
+[[d1_databases]]
+binding = "BUSINESS_OS_DB"
+database_name = "business-os"
+database_id = "91101d18-6ba2-41e2-97ab-1ac438cd56c8" # Created: 2026-01-31
+
+[vars]
+# Environment variables for Business OS
+# For local development, use wrangler.toml (this file)
+# For production, set via Cloudflare dashboard
+
+# BUSINESS_OS_AUTH_ENABLED will be set via Cloudflare dashboard when auth is ready
+# SESSION_SECRET will be set via Cloudflare secrets: wrangler secret put SESSION_SECRET

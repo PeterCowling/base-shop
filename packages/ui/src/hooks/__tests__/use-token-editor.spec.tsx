@@ -1,7 +1,8 @@
+import { type ChangeEvent,useState } from "react";
 import { beforeEach, describe, expect, it } from "@jest/globals";
 import { act, render } from "@testing-library/react";
-import { useState, type ChangeEvent } from "react";
-import { useTokenEditor, type TokenMap } from "../useTokenEditor";
+
+import { type TokenMap,useTokenEditor } from "../useTokenEditor";
 
 class MockFileReader {
   result: string | ArrayBuffer | null = null;

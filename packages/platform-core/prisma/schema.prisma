@@ -76,6 +76,10 @@ model RentalOrder {
   stripeBalanceTransactionId  String?
   stripeCustomerId            String?
 
+  /// CAT-01: Line items for this order with inventory allocation tracking.
+  /// JSON array of OrderLineItem: { sku, productId?, variantAttributes, quantity, previousQuantity?, nextQuantity? }
+  lineItems          Json?
+
   @@unique([shop, sessionId])
   @@unique([shop, trackingNumber])
   @@index([customerId])
@@ -203,4 +207,83 @@ model StripeWebhookEvent {
   @@index([shop])
   @@index([status])
   @@index([updatedAt])
+}
+
+// ============================================================
+// Central Inventory (LAUNCH-13b)
+// Source of truth for inventory across all shops.
+// Per-shop inventory is derived from central + routing rules.
+// ============================================================
+
+model CentralInventoryItem {
+  id                String   @id @default(cuid())
+  sku               String
+  productId         String
+  variantKey        String
+  variantAttributes Json
+  quantity          Int
+  lowStockThreshold Int?
+  wearCount         Int?
+  wearAndTearLimit  Int?
+  maintenanceCycle  Int?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  routings InventoryRouting[]
+
+  @@unique([sku, variantKey])
+  @@index([sku])
+  @@index([productId])
+}
+
+model InventoryRouting {
+  id                     String               @id @default(cuid())
+  centralInventoryItemId String
+  centralInventoryItem   CentralInventoryItem @relation(fields: [centralInventoryItemId], references: [id], onDelete: Cascade)
+  shopId                 String
+  /// Allocation mode: "all" routes all stock, "fixed" uses allocatedQuantity, "percentage" uses allocatedPercent
+  allocationMode         String               @default("all")
+  /// Fixed quantity allocated to this shop (when allocationMode = "fixed")
+  allocatedQuantity      Int?
+  /// Percentage of stock allocated to this shop (when allocationMode = "percentage")
+  allocatedPercent       Int?
+  /// Priority for allocation when stock is limited (lower = higher priority)
+  priority               Int                  @default(0)
+  createdAt              DateTime             @default(now())
+  updatedAt              DateTime             @updatedAt
+
+  @@unique([centralInventoryItemId, shopId])
+  @@index([shopId])
+  @@index([centralInventoryItemId])
+}
+
+model InventoryHold {
+  id          String    @id @default(cuid())
+  shopId      String
+  status      String    // "active" | "committed" | "released" | "expired"
+  expiresAt   DateTime
+  createdAt   DateTime  @default(now())
+  committedAt DateTime?
+  releasedAt  DateTime?
+  expiredAt   DateTime?
+
+  items InventoryHoldItem[]
+
+  @@index([shopId])
+  @@index([status])
+  @@index([expiresAt])
+}
+
+model InventoryHoldItem {
+  id                String        @id @default(cuid())
+  holdId            String
+  hold              InventoryHold @relation(fields: [holdId], references: [id], onDelete: Cascade)
+  shopId            String
+  sku               String
+  productId         String
+  variantKey        String
+  variantAttributes Json
+  quantity          Int
+
+  @@index([holdId])
 }

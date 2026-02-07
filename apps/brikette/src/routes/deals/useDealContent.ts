@@ -1,42 +1,33 @@
-import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 import type { AppLanguage } from "@/i18n.config";
-import formatDisplayDate from "@/utils/formatDisplayDate";
 
-import { DEAL_END, DEAL_VALIDITY } from "./constants";
+import { DEALS_NAMESPACE } from "./constants";
+import {
+  buildPerksList,
+  type PerkItem,
+  resolvePerksHeading,
+} from "./content";
 import {
   createFallbackTranslator,
   createTokenResolver,
   type FallbackTranslator,
+  type TokenResolver,
 } from "./fallback";
-import {
-  buildPerksList,
-  buildRestrictions,
-  resolveActiveCtaLabel,
-  resolveExpiredCtaLabel,
-  resolvePerksHeading,
-} from "./content";
-import { DEALS_NAMESPACE } from "./constants";
 
 export interface DealsPageLabels {
-  seasonLabel: string;
   perksHeading: string;
   perksIntro: string;
   perksGuarantee: string;
+  perksLinkLabel: string;
   termsLabel: string;
-  expiredRobotsDirective: string;
-  expiredCtaLabel: string;
-  activeCtaLabel: string;
+  checkAvailabilityLabel: string;
 }
 
 export interface DealsPageContent {
   translate: FallbackTranslator;
-  perks: string[];
-  restrictions: string[];
-  isExpired: boolean;
-  validityFrom: string;
-  validityTo: string;
+  resolveToken: TokenResolver;
+  perks: PerkItem[];
   labels: DealsPageLabels;
 }
 
@@ -46,64 +37,33 @@ export function useDealContent(lang: AppLanguage): DealsPageContent {
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
   const { t: tTokensEn, ready: tokensEnReady } = useTranslation("_tokens", { lng: "en" });
 
-  const translate = useMemo(() => {
-    if (!ready && !readyEn) {
-      return createFallbackTranslator(tEn, tEn);
-    }
-    return createFallbackTranslator(t, tEn);
-  }, [t, tEn, ready, readyEn]);
-  const resolveToken = useMemo(() => {
-    if (!tokensReady && !tokensEnReady) {
-      return createTokenResolver(tTokensEn, tTokensEn);
-    }
-    return createTokenResolver(tTokens, tTokensEn);
-  }, [tTokens, tTokensEn, tokensReady, tokensEnReady]);
+  const translate =
+    !ready && !readyEn ? createFallbackTranslator(tEn, tEn) : createFallbackTranslator(t, tEn);
+  const resolveToken =
+    !tokensReady && !tokensEnReady
+      ? createTokenResolver(tTokensEn, tTokensEn)
+      : createTokenResolver(tTokens, tTokensEn);
 
-  const perks = useMemo(() => {
-    if (!ready && !readyEn) {
-      return buildPerksList(tEn, tEn);
-    }
-    return buildPerksList(t, tEn);
-  }, [t, tEn, ready, readyEn]);
-  const restrictions = useMemo(() => buildRestrictions(translate), [translate]);
-
-  const isExpired = Date.now() > DEAL_END.getTime();
-  const validityFrom = formatDisplayDate(lang, DEAL_VALIDITY.start);
-  const validityTo = formatDisplayDate(lang, DEAL_VALIDITY.end);
-  const seasonLabel = translate("seasonLabel");
+  const perks = !ready && !readyEn ? buildPerksList(tEn, tEn) : buildPerksList(t, tEn);
   const directBookingPerksLabel = resolveToken("directBookingPerks");
   const perksHeading = resolvePerksHeading(directBookingPerksLabel, translate);
   const perksIntro = translate("perksIntro");
   const perksGuarantee = translate("perksGuarantee");
+  const perksLinkLabel = translate("perksIntroLink");
   const termsLabel = translate("restrictions.other");
   const checkAvailabilityLabel = resolveToken("checkAvailability");
-  const reserveLabel = resolveToken("reserveNow");
-  const bookLabel = resolveToken("bookNow");
-  const expiredRobotsDirective = translate("robots.expiredNoindex");
-  const expiredCtaLabel = resolveExpiredCtaLabel(
-    checkAvailabilityLabel,
-    reserveLabel,
-    bookLabel,
-    translate
-  );
-  const activeCtaLabel = resolveActiveCtaLabel(reserveLabel, bookLabel, translate);
 
   return {
     translate,
+    resolveToken,
     perks,
-    restrictions,
-    isExpired,
-    validityFrom,
-    validityTo,
     labels: {
-      seasonLabel,
       perksHeading,
       perksIntro,
       perksGuarantee,
+      perksLinkLabel,
       termsLabel,
-      expiredRobotsDirective,
-      expiredCtaLabel,
-      activeCtaLabel,
+      checkAvailabilityLabel,
     },
   };
 }

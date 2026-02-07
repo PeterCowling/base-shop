@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
+
 import { fillLocales } from "../fillLocales";
-import { LOCALES, type Locale } from "../locales";
+import { type Locale,LOCALES } from "../locales";
 
 jest.mock("node:fs/promises", () => ({
   readFile: jest.fn(),

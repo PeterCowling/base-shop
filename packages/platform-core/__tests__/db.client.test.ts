@@ -29,8 +29,8 @@ describe('loadPrismaClient', () => {
   });
 
   it('instantiates PrismaClient when available and DATABASE_URL is set', async () => {
-    process.env.NODE_ENV = 'production';
-    process.env.DATABASE_URL = 'postgres://db';
+    (process.env as Record<string, string | undefined>).NODE_ENV = 'production';
+    (process.env as Record<string, string | undefined>).DATABASE_URL = 'postgres://db';
 
     const PrismaClientMock = jest.fn().mockImplementation((opts) => ({ opts }));
     jest.doMock('@prisma/client', () => ({ PrismaClient: PrismaClientMock }), {
@@ -60,8 +60,8 @@ describe('loadPrismaClient', () => {
   });
 
   it('falls back to stub when PrismaClient is missing in production', async () => {
-    process.env.NODE_ENV = 'production';
-    process.env.DATABASE_URL = 'postgres://db';
+    (process.env as Record<string, string | undefined>).NODE_ENV = 'production';
+    (process.env as Record<string, string | undefined>).DATABASE_URL = 'postgres://db';
     jest.doMock(
       '@prisma/client',
       () => {

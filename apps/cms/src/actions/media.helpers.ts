@@ -1,9 +1,12 @@
 // apps/cms/src/actions/media.helpers.ts
 
-import { validateShopName } from "@platform-core/shops";
 import { promises as fs } from "fs";
 import * as path from "path";
+
+import { validateShopName } from "@acme/platform-core/shops";
+
 import { writeJsonFile } from "@/lib/server/jsonIO";
+
 import { normalizeTagsInput } from "./media/tagUtils";
 
 export type MediaMetadataEntry = {

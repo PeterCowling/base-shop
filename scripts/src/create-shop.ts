@@ -1,11 +1,12 @@
 // scripts/create-shop.ts
 // Import directly to avoid relying on tsconfig path aliases when using ts-node.
+import { ensureTemplateExists } from "@acme/platform-core/createShop";
+
 import { parseArgs } from "./createShop/parse";
 import { gatherOptions } from "./createShop/prompts";
-import { writeShop, type Options as WriteOptions } from "./createShop/write";
-import { ensureTemplateExists } from "@acme/platform-core/createShop";
-import { seedShop } from "./seedShop";
+import { type Options as WriteOptions,writeShop } from "./createShop/write";
 import { ensureRuntime } from "./runtime";
+import { seedShop } from "./seedShop";
 
 ensureRuntime();
 

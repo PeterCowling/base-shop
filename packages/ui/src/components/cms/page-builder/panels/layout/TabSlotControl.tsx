@@ -1,11 +1,13 @@
 // packages/ui/src/components/cms/page-builder/panels/layout/TabSlotControl.tsx
 "use client"; // i18n-exempt: Next.js directive
 
-import type { PageComponent } from "@acme/types";
-import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../../atoms/shadcn";
-import { Tooltip } from "../../../../atoms";
 import { useEffect, useState } from "react";
+
 import { useTranslations } from "@acme/i18n";
+import type { PageComponent } from "@acme/types";
+
+import { Tooltip } from "../../../../atoms";
+import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../../atoms/shadcn";
 
 interface Props {
   component: PageComponent;

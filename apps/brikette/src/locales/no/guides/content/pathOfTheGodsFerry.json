@@ -49,9 +49,16 @@
       "id": "bus-to-bomerano",
       "title": "Ta bussen til Bomerano",
       "body": [
-        "Se etter SITA-bussen merket «Agerola/Bomerano». Valider billetten når du går om bord og sett deg langt fremme for færre svinger.",
+        "Se etter SITA-bussen merket \\\\\"Agerola/Bomerano\\\\\". Valider billetten når du går om bord og sett deg langt fremme for færre svinger.",
         "Etter rundt 45 minutter går du av ved Bomerano-holdeplassen ved siden av Ristorante Jerla. Kryss veien og følg sidegaten ned til piazzaen.",
-        "Fortsett til venstre over torget og følg skiltene til «Sentiero degli Dei» for å nå oppslagstavlen ved startpunktet."
+        "Fortsett til venstre over torget og følg skiltene til \\\\\"Sentiero degli Dei\\\\\" for å nå oppslagstavlen ved startpunktet."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/12-nav.jpg",
+          "alt": "Side street from Bomerano bus stop descending toward the piazza",
+          "caption": "2. Kryss veien fra bussholdeplassen og følg denne sidegaten ned til piazzaen"
+        }
       ]
     },
     {
@@ -61,6 +68,28 @@
         "Stien bølger seg i omtrent 6 kilometer. Forvent steintrapper, smale hyller og spektakulære utsiktspunkter over kysten.",
         "Ta pauser på merkede utsiktsposter og ta med alt avfall tilbake. Vis respekt for bøndene langs stien og hold deg på de merkede traséene.",
         "Når grusstien møter betonggangveien inn til Nocelle, er du i mål."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/13-nav.jpg",
+          "alt": "Town square (piazza) in Bomerano with left-hand route markers",
+          "caption": "3. Fortsett til venstre over piazzaen og følg skiltene mot 'Sentiero degli Dei'"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/14-nav.jpg",
+          "alt": "Wooden steps ascending along the hiking trail ridge",
+          "caption": "4. Når du har passert piazzaen, finn oppslagstavlen og sving til venstre; her begynner stien. Følg stien til en seksjon med tretrapper."
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/15-nav.jpg",
+          "alt": "Concrete paved walkway marking entry into Nocelle village",
+          "caption": "Når grusstien møter denne betonggangveien, har du nådd Nocelle"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/16-nav.jpg",
+          "alt": "Nocelle village navigation map showing route to bus stop and staircase warning",
+          "caption": "Nocelle-kart — når du går gjennom landsbyen, pass på å ta til høyre i krysset for å nå busstoppet; unngå 1 700-trinns trappen til Positano for enhver pris!"
+        }
       ]
     },
     {
@@ -70,6 +99,23 @@
         "Følg den asfalterte gangveien inn i landsbyen, og hold til høyre i det første krysset for å unngå de 1 700 trappetrinnene ned til Positano.",
         "Gå omtrent 175 meter til busstoppet ved den lille parkeringsplassen. Kiosken ved kirken selger kalde drikker i sesong.",
         "Vær på plass minst 10 minutter før avgang; busser stopper noen ganger like før skuret når parkeringen er full."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/17-nav.jpg",
+          "alt": "Directional signpost in Nocelle showing the stairs-to-Positano option to avoid",
+          "caption": "KRITISK: IKKE følg skiltene til 'Positano' ned trappene — ta til høyre her i stedet"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/18-nav.jpg",
+          "alt": "Stone steps ascending through Nocelle streets toward the bus stop",
+          "caption": "Klatre disse trappene i omtrent 175 meter for å nå busstoppet ved parkeringsplassen"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/19-nav.jpg",
+          "alt": "Bus stop arrival point in Nocelle",
+          "caption": "Du har nådd busstoppet."
+        }
       ]
     },
     {

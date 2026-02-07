@@ -1,94 +1,139 @@
 {
   "seo": {
-    "title": "Hostel Brikette sunrise hike",
-    "description": "Предрассветный маршрут от хостела Brikette к тихой смотровой площадке на вершине скалы с беспрепятственным видом на восход солнца над Позитано."
+    "title": "Поход на рассвет из Hostel Brikette (Позитано)",
+    "description": "Короткий предрассветный поход из Hostel Brikette к тихой смотровой площадке над Позитано с навигационными фотографиями в правильном порядке."
   },
-  "linkLabel": "Hostel Brikette sunrise hike",
+  "linkLabel": "Поход на рассвет: наблюдайте за восходом над Позитано",
+  "lastUpdated": "2026-02-04",
   "intro": [
-    "Head out before dawn to catch the first light over the Amalfi Coast from a quiet vantage point above Positano.",
-    "This walk starts at Hostel Brikette and takes around 25 minutes including the stair climb to the viewpoint."
+    "Если вы хотите самый простой рассвет, вы можете наблюдать восход с общей террасы хостела, когда солнце восходит слева (когда вы смотрите на море).",
+    "Если вы хотите более широкую панораму и спокойный момент над городом, следуйте по этому короткому походу в холмы к смотровой площадке на вершине скалы над Позитано."
   ],
   "sections": [
     {
-      "id": "overview",
-      "title": "What is the sunrise hike?",
+      "id": "what-is",
+      "title": "Что такое поход на рассвет?",
       "body": [
-        "If you prefer to stay put, you can watch the sunrise from the hostel terrace as it rises to the left of the building.",
-        "For a wider panorama, follow this short hike to a nearby cliff where you can watch the sun clear the horizon and light up the town below."
+        "Это короткая предрассветная прогулка туда и обратно из Hostel Brikette к небольшой смотровой площадке над Позитано.",
+        "Если вы хотите более длинный горный вариант, %LINK:santaMariaDelCastelloHike|Санта-Мария-дель-Кастелло% — отличная альтернатива, но маршрут ниже — самый быстрый способ получить драматический вид на восход без обязательств на полнодневный поход."
       ]
     },
     {
-      "id": "reach-stairs",
-      "title": "Reach the stairway trailhead",
+      "id": "before-you-go",
+      "title": "Перед выходом (будет темно)",
       "body": [
-        "Exit the hostel through the main door and walk down to Via Pasitea.",
-        "Turn right towards Sorrento and follow the road for roughly 350 metres.",
-        "Look for a flight of stairs on your left heading uphill — the first section is paved and has a handrail."
+        "Возьмите фонарик телефона или налобный фонарь и держите руки свободными (особенно на лестницах).",
+        "Носите обувь с хорошим сцеплением — первая часть вымощена, но лесная тропа может быть рыхлой или влажной.",
+        "Начните достаточно рано, чтобы прибыть за 10-15 минут до восхода солнца, чтобы вы могли устроиться, найти свое место и насладиться первым светом."
       ]
     },
     {
-      "id": "climb-to-viewpoint",
-      "title": "Climb to the viewpoint",
+      "id": "step-1",
+      "title": "Шаг 1: Пройдите от хостела до лестницы (≈350 м)",
       "body": [
-        "Take the stairs all the way up until you reach a small house at the top of the initial climb.",
-        "At the house, turn left to join the woodland trail.",
-        "When the path forks, take the right-hand branch and continue climbing through the trees.",
-        "As the path opens up and you can see the sea directly ahead, bear left.",
-        "Continue around the rocks to reach the exposed vantage point with sweeping sunrise views."
+        "Выйдите из хостела через главную дверь и спуститесь к дороге.",
+        "Поверните в сторону Сорренто и пройдите около **350 метров** по главной дороге, пока не дойдете до лестницы, поднимающейся от дороги."
       ]
     },
     {
-      "id": "enjoy-sunrise",
-      "title": "Enjoy the sunrise safely",
+      "id": "step-2",
+      "title": "Шаг 2: Поднимитесь к дому, затем поверните налево",
       "body": [
-        "The final rocks can be slick with morning dew; move carefully and avoid standing on loose edges.",
-        "From the main ledge you can watch the sun crest the horizon, or scramble a little higher for photos once there is enough light."
+        "Поднимитесь по лестнице до старого белого дома, изображенного ниже.",
+        "У дома **поверните налево**, чтобы выйти на лесную тропу."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/02-house.jpg",
+          "alt": "Старый белый дом рядом с лестницей на маршруте похода на рассвет над Позитано",
+          "caption": "Это здание отмечает конец подъема по лестнице; поверните здесь налево, чтобы войти на лесную тропу.",
+          "width": 876,
+          "height": 530
+        }
+      ]
+    },
+    {
+      "id": "step-3",
+      "title": "Шаг 3: Следуйте по лесной тропе до смотровой площадки",
+      "body": [
+        "Следуйте по лесной тропе, когда она плавно поднимается от дома.",
+        "Когда тропа разветвляется, возьмите **правую** ветвь.",
+        "В конце концов вы достигнете точки, где деревья раскрываются и вы можете видеть море прямо впереди. Оттуда направляйтесь **налево**.",
+        "Этот левый путь приведет вас к смотровой площадке. Вы можете осторожно взобраться на скалы для более высокого места, или остаться на главном месте для стабильного вида."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/03-viewpoint.jpg",
+          "alt": "Вид карты сверху, показывающий финальные повороты на маршруте похода на рассвет к смотровой площадке над Позитано",
+          "caption": "Используйте этот вид сверху, чтобы подтвердить финальный левый поворот к смотровой площадке после того, как тропа откроется к морю.",
+          "width": 677,
+          "height": 600
+        }
+      ]
+    },
+    {
+      "id": "share",
+      "title": "Поделитесь этим гидом (QR)",
+      "body": [
+        "Если вы выходите с друзьями, вы можете использовать этот QR-код для быстрого обмена гидом на другом телефоне."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/01-qr.png",
+          "alt": "QR-код, ссылающийся на гид по походу на рассвет Hostel Brikette",
+          "width": 450,
+          "height": 450
+        }
       ]
     }
   ],
-  "tips": [
-    "Allow around 25 minutes from the hostel to the viewpoint and aim to arrive 10 minutes before the posted sunrise time.",
-    "Bring a headlamp or phone torch — the stair sections are dark before dawn.",
-    "Wear shoes with good grip and pack a layer; sea breezes make early mornings feel cooler."
+  "essentialsTitle": "Необходимое",
+  "essentials": [
+    "Налобный фонарь или свет телефона (плюс заряженная батарея).",
+    "Обувь с хорошим сцеплением и легкий слой — может быть прохладно и ветрено перед рассветом.",
+    "Вода и небольшая закуска, если вы планируете сидеть и наблюдать за восходом солнца."
   ],
+  "tipsTitle": "Умный тайминг",
+  "tips": [
+    "Сделайте быструю проверку прогноза: ветер и низкие облака могут скрыть восход солнца даже в другие ясные дни.",
+    "Если вы не уверены в развилке в темноте, остановитесь и подтвердите свои направления, а не гадайте."
+  ],
+  "warningsTitle": "Примечания по безопасности",
+  "warnings": [
+    "Идите медленно по лестницам и держите руки свободными — легко оступиться при слабом свете.",
+    "Если тропа кажется скользкой после дождя, подумайте о том, чтобы наблюдать с террасы хостела."
+  ],
+  "steps": [
+    {
+      "name": "Пройдите к лестнице",
+      "text": "От хостела пройдите ~350 м в сторону Сорренто по главной дороге, пока не увидите лестницу, поднимающуюся вверх."
+    },
+    {
+      "name": "Поднимитесь к дому",
+      "text": "Следуйте по лестнице до старого белого дома, затем поверните налево на лесную тропу."
+    },
+    {
+      "name": "Возьмите правую ветвь",
+      "text": "Когда лесная тропа разветвляется, держитесь правее и продолжайте, пока не увидите море."
+    },
+    {
+      "name": "Поверните налево к смотровой площадке",
+      "text": "После того как тропа откроется к морю, идите налево, чтобы достичь смотровой площадки (осторожно взбирайтесь, если хотите место повыше)."
+    }
+  ],
+  "faqsTitle": "Часто задаваемые вопросы",
   "faqs": [
     {
-      "q": "Can I just watch the sunrise from the hostel?",
+      "q": "Могу ли я просто наблюдать восход солнца из хостела?",
       "a": [
-        "Yes. The terrace faces east and you can see the sun rise to the left of the building without leaving the property.",
-        "The hike is for guests who want a wider panorama or photos without foreground buildings."
+        "Да — терраса хостела — самый простой вариант, и солнце восходит слева от здания, когда вы смотрите на море."
       ]
     },
     {
-      "q": "Is the trail marked or difficult to follow?",
+      "q": "Сколько времени занимает поход?",
       "a": [
-        "The route follows local stairs and an informal woodland trail. There are no signposts, so bring a phone with offline maps or follow these instructions closely.",
-        "In the dark, walk slowly and use a torch to pick out uneven steps and tree roots."
-      ]
-    },
-    {
-      "q": "What should I bring?",
-      "a": [
-        "Wear trainers or hiking shoes with grip, carry water, and pack a light layer for the breeze.",
-        "If you plan to stay for sunrise photos, consider a tripod or phone stand."
+        "Это короткий маршрут, но время зависит от вашего темпа и того, сколько времени вы проводите на смотровой площадке. Выделите достаточно времени, чтобы прибыть за 10-15 минут до восхода солнца."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Фото",
-    "items": [
-      {
-        "alt": "QR code to share the guide",
-        "caption": "Отсканируйте, чтобы поделиться"
-      },
-      {
-        "alt": "House at the top of the initial climb",
-        "caption": "Дом у вершины лестницы"
-      },
-      {
-        "alt": "Viewpoint over Positano at sunrise",
-        "caption": "Смотровая площадка с рассветом над Позитано"
-      }
-    ]
-  }
+  ]
 }

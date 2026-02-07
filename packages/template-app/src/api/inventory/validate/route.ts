@@ -1,10 +1,11 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { type NextRequest,NextResponse } from "next/server";
 import { z } from "zod";
+
 import { coreEnv } from "@acme/config/env/core";
+import { INSUFFICIENT_STOCK_ERROR } from "@acme/platform-core/checkout/session";
 import {
   validateInventoryAvailability,
-} from "@platform-core/inventoryValidation";
-import { INSUFFICIENT_STOCK_ERROR } from "@platform-core/checkout/session";
+} from "@acme/platform-core/inventoryValidation";
 
 export const runtime = "nodejs";
 

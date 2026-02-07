@@ -1,94 +1,139 @@
 {
   "seo": {
-    "title": "Hostel Brikette sunrise hike",
-    "description": "호스텔 브리켓(Hostel Brikette)에서 포지타노(Positano)의 탁 트인 일출 전망을 감상할 수 있는 조용한 절벽 꼭대기 전망대까지의 동트기 전 경로입니다."
+    "title": "Hostel Brikette에서 일출 하이킹 (포지타노)",
+    "description": "Hostel Brikette에서 포지타노 위의 조용한 전망대까지 짧은 새벽 전 하이킹, 올바른 순서의 내비게이션 사진 포함."
   },
-  "linkLabel": "Hostel Brikette sunrise hike",
+  "linkLabel": "일출 하이킹: 포지타노 위에서 새벽 보기",
+  "lastUpdated": "2026-02-04",
   "intro": [
-    "Head out before dawn to catch the first light over the Amalfi Coast from a quiet vantage point above Positano.",
-    "This walk starts at Hostel Brikette and takes around 25 minutes including the stair climb to the viewpoint."
+    "가장 간단한 일출을 원한다면 호스텔의 공용 테라스에서 새벽을 볼 수 있습니다. 태양은 왼쪽에서 뜹니다(바다를 바라볼 때).",
+    "더 넓은 파노라마와 도시 위의 더 조용한 순간을 원한다면, 포지타노 위의 절벽 전망대로 향하는 이 짧은 하이킹을 따라가세요."
   ],
   "sections": [
     {
-      "id": "overview",
-      "title": "What is the sunrise hike?",
+      "id": "what-is",
+      "title": "일출 하이킹이란 무엇인가요?",
       "body": [
-        "If you prefer to stay put, you can watch the sunrise from the hostel terrace as it rises to the left of the building.",
-        "For a wider panorama, follow this short hike to a nearby cliff where you can watch the sun clear the horizon and light up the town below."
+        "이것은 Hostel Brikette에서 포지타노 위의 작은 전망대까지의 짧은 새벽 전 왕복 산책입니다.",
+        "더 긴 산악 옵션을 원한다면 %LINK:santaMariaDelCastelloHike|Santa Maria del Castello%가 훌륭한 대안이지만, 아래 경로는 하루 종일 하이킹에 전념하지 않고 극적인 일출 전망을 얻는 가장 빠른 방법입니다."
       ]
     },
     {
-      "id": "reach-stairs",
-      "title": "Reach the stairway trailhead",
+      "id": "before-you-go",
+      "title": "출발 전에 (어두울 것입니다)",
       "body": [
-        "Exit the hostel through the main door and walk down to Via Pasitea.",
-        "Turn right towards Sorrento and follow the road for roughly 350 metres.",
-        "Look for a flight of stairs on your left heading uphill — the first section is paved and has a handrail."
+        "전화 조명 또는 헤드램프를 가져오고 손을 자유롭게 유지하세요(특히 계단에서).",
+        "그립이 있는 신발을 착용하세요 — 첫 번째 부분은 포장되어 있지만 숲 트레일은 느슨하거나 습할 수 있습니다.",
+        "일출 10-15분 전에 도착할 수 있도록 충분히 일찍 출발하여 정착하고 자리를 찾고 첫 번째 빛을 즐길 수 있습니다."
       ]
     },
     {
-      "id": "climb-to-viewpoint",
-      "title": "Climb to the viewpoint",
+      "id": "step-1",
+      "title": "1단계: 호스텔에서 계단까지 걷기 (≈350 m)",
       "body": [
-        "Take the stairs all the way up until you reach a small house at the top of the initial climb.",
-        "At the house, turn left to join the woodland trail.",
-        "When the path forks, take the right-hand branch and continue climbing through the trees.",
-        "As the path opens up and you can see the sea directly ahead, bear left.",
-        "Continue around the rocks to reach the exposed vantage point with sweeping sunrise views."
+        "정문을 통해 호스텔을 나와 도로로 내려가세요.",
+        "소렌토 방향으로 돌아서 도로에서 올라가는 계단에 도달할 때까지 주요 도로를 따라 약 **350미터** 걸으세요."
       ]
     },
     {
-      "id": "enjoy-sunrise",
-      "title": "Enjoy the sunrise safely",
+      "id": "step-2",
+      "title": "2단계: 집까지 올라가기, 그런 다음 왼쪽으로 돌기",
       "body": [
-        "The final rocks can be slick with morning dew; move carefully and avoid standing on loose edges.",
-        "From the main ledge you can watch the sun crest the horizon, or scramble a little higher for photos once there is enough light."
+        "아래에 표시된 오래된 흰색 집에 도달할 때까지 계단을 끝까지 올라가세요.",
+        "집에서 숲 트레일에 합류하기 위해 **왼쪽으로 돌**으세요."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/02-house.jpg",
+          "alt": "포지타노 위 일출 하이킹 경로의 계단 옆에 있는 오래된 흰색 집",
+          "caption": "이 건물은 계단 오르기의 끝을 표시합니다; 숲 트레일에 들어가기 위해 여기에서 왼쪽으로 도세요.",
+          "width": 876,
+          "height": 530
+        }
+      ]
+    },
+    {
+      "id": "step-3",
+      "title": "3단계: 전망대까지 숲 트레일 따라가기",
+      "body": [
+        "집에서 부드럽게 올라가는 숲 트레일을 따라가세요.",
+        "트레일이 갈라지면 **오른쪽** 가지를 택하세요.",
+        "나무가 열리고 바로 앞에 바다를 볼 수 있는 지점에 도달합니다. 거기서 **왼쪽**으로 향하세요.",
+        "그 왼쪽 길은 전망대로 이어집니다. 더 높은 위치를 위해 조심스럽게 바위를 올라갈 수 있거나 안정적인 전망을 위해 주요 지점에 머물 수 있습니다."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/03-viewpoint.jpg",
+          "alt": "포지타노 위 전망대로 향하는 일출 하이킹 경로의 마지막 회전을 보여주는 오버헤드 지도 보기",
+          "caption": "트레일이 바다로 열린 후 전망대로 향하는 마지막 왼쪽 회전을 확인하기 위해 이 오버헤드 뷰를 사용하세요.",
+          "width": 677,
+          "height": 600
+        }
+      ]
+    },
+    {
+      "id": "share",
+      "title": "이 가이드 공유하기 (QR)",
+      "body": [
+        "친구들과 함께 나가는 경우 이 QR 코드를 사용하여 다른 전화에서 가이드를 빠르게 공유할 수 있습니다."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/01-qr.png",
+          "alt": "Hostel Brikette 일출 하이킹 가이드에 연결되는 QR 코드",
+          "width": 450,
+          "height": 450
+        }
       ]
     }
   ],
-  "tips": [
-    "Allow around 25 minutes from the hostel to the viewpoint and aim to arrive 10 minutes before the posted sunrise time.",
-    "Bring a headlamp or phone torch — the stair sections are dark before dawn.",
-    "Wear shoes with good grip and pack a layer; sea breezes make early mornings feel cooler."
+  "essentialsTitle": "필수 품목",
+  "essentials": [
+    "헤드램프 또는 전화 조명 (충전된 배터리 포함).",
+    "그립이 있는 신발과 가벼운 겉옷 — 새벽 전에는 시원하고 바람이 불 수 있습니다.",
+    "일출을 앉아서 보려는 경우 물과 작은 스낵."
   ],
+  "tipsTitle": "스마트 타이밍",
+  "tips": [
+    "빠른 예보 확인을 하세요: 바람과 낮은 구름은 맑은 날에도 일출을 숨길 수 있습니다.",
+    "어둠 속에서 교차로에서 확실하지 않은 경우 추측하는 대신 멈추고 방향을 확인하세요."
+  ],
+  "warningsTitle": "안전 참고 사항",
+  "warnings": [
+    "계단에서 천천히 가고 손을 자유롭게 유지하세요 — 낮은 조명에서 발을 잘못 디디기 쉽습니다.",
+    "비 후 트레일이 미끄럽게 느껴지면 호스텔 테라스에서 보는 것을 고려하세요."
+  ],
+  "steps": [
+    {
+      "name": "계단까지 걷기",
+      "text": "호스텔에서 주요 도로에서 소렌토 방향으로 ~350 m 걸어 언덕을 올라가는 계단을 발견하세요."
+    },
+    {
+      "name": "집까지 올라가기",
+      "text": "오래된 흰색 집까지 계단을 따라간 다음 숲 트레일로 왼쪽으로 도세요."
+    },
+    {
+      "name": "오른쪽 가지 택하기",
+      "text": "숲 트레일이 갈라지면 오른쪽을 유지하고 바다를 볼 수 있을 때까지 계속하세요."
+    },
+    {
+      "name": "전망대로 왼쪽으로 돌기",
+      "text": "트레일이 바다로 열린 후 전망대에 도달하기 위해 왼쪽으로 향하세요 (더 높은 위치를 원한다면 조심스럽게 올라가세요)."
+    }
+  ],
+  "faqsTitle": "자주 묻는 질문",
   "faqs": [
     {
-      "q": "Can I just watch the sunrise from the hostel?",
+      "q": "호스텔에서 일출을 볼 수 있나요?",
       "a": [
-        "Yes. The terrace faces east and you can see the sun rise to the left of the building without leaving the property.",
-        "The hike is for guests who want a wider panorama or photos without foreground buildings."
+        "예 — 호스텔 테라스가 가장 간단한 옵션이며 바다를 향할 때 태양이 건물 왼쪽에서 뜹니다."
       ]
     },
     {
-      "q": "Is the trail marked or difficult to follow?",
+      "q": "하이킹은 얼마나 걸리나요?",
       "a": [
-        "The route follows local stairs and an informal woodland trail. There are no signposts, so bring a phone with offline maps or follow these instructions closely.",
-        "In the dark, walk slowly and use a torch to pick out uneven steps and tree roots."
-      ]
-    },
-    {
-      "q": "What should I bring?",
-      "a": [
-        "Wear trainers or hiking shoes with grip, carry water, and pack a light layer for the breeze.",
-        "If you plan to stay for sunrise photos, consider a tripod or phone stand."
+        "짧은 경로이지만 타이밍은 속도와 전망대에서 보내는 시간에 따라 다릅니다. 일출 10-15분 전에 도착할 수 있도록 충분한 시간을 남겨두세요."
       ]
     }
-  ],
-  "gallery": {
-    "title": "사진",
-    "items": [
-      {
-        "alt": "QR code to share the guide",
-        "caption": "공유용 QR 코드 스캔"
-      },
-      {
-        "alt": "House at the top of the initial climb",
-        "caption": "계단 상단의 집"
-      },
-      {
-        "alt": "Viewpoint over Positano at sunrise",
-        "caption": "포지타노 일출 전망 포인트"
-      }
-    ]
-  }
+  ]
 }

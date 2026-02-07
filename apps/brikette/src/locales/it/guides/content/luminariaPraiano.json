@@ -5,62 +5,58 @@
   },
   "linkLabel": "Luminaria di San Domenico (Praiano)",
   "intro": [
-    "Traduzione in arrivo."
+    "Pianifica la visita alla Luminaria di San Domenico a Praiano: vicoli illuminati, fuochi d'artificio e rispetto per chi vive qui."
   ],
   "sections": [
     {
       "id": "basics",
-      "title": "Festival basics",
+      "title": "Essenziali del festival",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "L'evento si svolge la prima settimana di agosto, con le serate clou intorno all'1-4 agosto quando migliaia di candele illuminano Piazza San Gennaro.",
+        "Arriva prima del tramonto per vedere i volontari posare le candele e assicurarti un buon punto di vista."
       ]
     },
     {
       "id": "transport",
-      "title": "Getting there & back",
+      "title": "Come arrivare e tornare",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Prendi il bus SITA da Positano (20 minuti) o prenota una navetta condivisa; gli ultimi bus per il rientro sono intorno a mezzanotte, ma verifica il giorno stesso.",
+        "Se pensi di fermarti tardi, organizza un taxi in anticipo o pernotta a Praiano per evitare attese dopo i fuochi."
       ]
     },
     {
       "id": "etiquette",
-      "title": "Viewing etiquette",
+      "title": "Galateo di visione",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Lascia intatte le candele per i residenti; evita di entrare nelle aree delimitate o bloccare i passaggi con i treppiedi.",
+        "Usa treppiede o superfici stabili per le lunghe esposizioni, ma resta lontano da ingressi della chiesa e vie di emergenza."
       ]
     }
   ],
   "tips": [
-    "Traduzione in arrivo.",
-    "Traduzione in arrivo."
+    "Porta una borraccia (500 ml) e una piccola torcia per muoverti nei vicoli dopo il buio.",
+    "Rispetta le ore di quiete dopo i fuochi: i residenti puliscono la cera fino a tarda notte."
   ],
   "faqs": [
     {
-      "q": "Is the festival free?",
+      "q": "Il festival e gratuito?",
       "a": [
-        "Traduzione in arrivo."
+        "Si, la visione e gratuita. Sostieni le bancarelle locali con uno spuntino o fai una donazione in chiesa per finanziare le candele degli anni futuri."
       ]
     },
     {
-      "q": "What if it rains?",
+      "q": "Cosa succede se piove?",
       "a": [
-        "Traduzione in arrivo."
+        "Piogge forti possono rimandare le candele; gli organizzatori pubblicano aggiornamenti sulla pagina Facebook del Comune di Praiano. Tieni una serata di riserva."
       ]
     }
   ],
   "event": {
     "date": "1–4 August (peak nights)",
-    "location": "Traduzione in arrivo.",
+    "location": "Piazza San Gennaro, Praiano",
     "tips": [
-      "Traduzione in arrivo.",
-      "Traduzione in arrivo."
+      "Arriva prima del tramonto per vedere i volontari disporre le candele.",
+      "Porta una piccola torcia o la luce del telefono per il rientro nei vicoli bui."
     ]
-  },
-  "gallery": {
-    "terraceAlt": "Traduzione in arrivo.",
-    "coastAlt": "Traduzione in arrivo."
   }
 }

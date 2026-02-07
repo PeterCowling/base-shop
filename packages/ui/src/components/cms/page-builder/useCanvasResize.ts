@@ -1,15 +1,16 @@
 // i18n-exempt -- Next.js directive literal (not user-facing copy)
 "use client";
-import { useState, useRef, useEffect } from "react";
-import type { ResizeAction } from "./state/layout";
-import useGuides from "./useGuides";
-import type { Handle } from "./canvasResize/types";
+import { useEffect,useRef, useState } from "react";
+
 import { applyAspectRatio } from "./canvasResize/aspect";
 import { clampToParent } from "./canvasResize/bounds";
-import { applySnapping } from "./canvasResize/snap";
-import { computePatch } from "./canvasResize/patch";
-import { setPointerCaptureSafe, releasePointerCaptureSafe } from "./canvasResize/pointerCapture";
 import { createKeyboardNudge } from "./canvasResize/keyboardNudge";
+import { computePatch } from "./canvasResize/patch";
+import { releasePointerCaptureSafe,setPointerCaptureSafe } from "./canvasResize/pointerCapture";
+import { applySnapping } from "./canvasResize/snap";
+import type { Handle } from "./canvasResize/types";
+import type { ResizeAction } from "./state/layout";
+import useGuides from "./useGuides";
 
 interface Options {
   componentId: string;

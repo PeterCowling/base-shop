@@ -1,11 +1,13 @@
-import crypto from "crypto";
 import type { Redis } from "@upstash/redis";
+import crypto from "crypto";
+
+import type { RentalLineItem,SKU } from "@acme/types";
 
 import type { CartState } from "../cart";
-import type { SKU, RentalLineItem } from "@acme/types";
 import type { CartStore } from "../cartStore";
-import { withFallback, expireBoth } from "./redisHelpers";
+
 import type { AsyncOp } from "./redisHelpers";
+import { expireBoth,withFallback } from "./redisHelpers";
 
 const MAX_REDIS_FAILURES = 3;
 

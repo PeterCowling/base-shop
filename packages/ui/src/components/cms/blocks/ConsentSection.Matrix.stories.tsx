@@ -1,8 +1,10 @@
 // packages/ui/src/components/cms/blocks/ConsentSection.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import ConsentSection from './ConsentSection';
+
 import { makeStateStory } from '../../../story-utils/createStories';
+
+import ConsentSection from './ConsentSection';
 
 const meta: Meta<typeof ConsentSection> = {
   title: 'CMS Blocks/ConsentSection/Matrix',

@@ -1,6 +1,7 @@
+import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
+
 import type { Action } from "./state";
 import type { EditorFlags } from "./state/layout/types";
-import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
 import { getStyleClipboard, setStyleClipboard } from "./style/styleClipboard";
 
 export type CtxItem =

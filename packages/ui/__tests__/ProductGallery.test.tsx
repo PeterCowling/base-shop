@@ -1,6 +1,7 @@
-import { render, screen, fireEvent, within } from "@testing-library/react";
-import { ProductGallery } from "../src/components/organisms/ProductGallery";
+import { fireEvent, render, screen, within } from "@testing-library/react";
+
 import type { MediaItem } from "../src/components/molecules/MediaSelector";
+import { ProductGallery } from "../src/components/organisms/ProductGallery";
 
 describe("ProductGallery", () => {
   it("returns null when media is empty", () => {
@@ -30,8 +31,8 @@ describe("ProductGallery", () => {
 
   it("renders model media", () => {
     const media: MediaItem[] = [{ type: "model", src: "/model.glb" }];
-    const { container } = render(<ProductGallery media={media} />);
-    expect(container.querySelector("model-viewer")).toBeInTheDocument();
+    render(<ProductGallery media={media} />);
+    expect(screen.getByRole("status")).toHaveTextContent(/loading 3d model/i);
   });
 
   it("updates viewer when selecting different media", () => {

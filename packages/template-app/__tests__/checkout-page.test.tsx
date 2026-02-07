@@ -2,7 +2,9 @@
 
 import type { ReactElement } from "react";
 import { render, screen } from "@testing-library/react";
-import type { CartState } from "@platform-core/cartCookie";
+
+import type { CartState } from "@acme/platform-core/cartCookie";
+
 import CheckoutPage from "../src/app/[lang]/checkout/page";
 
 jest.mock("next/headers", () => ({
@@ -33,34 +35,34 @@ jest.mock("@/components/organisms/OrderSummary", () => {
   return OrderSummaryMock;
 });
 
-jest.mock("@platform-core/cartCookie", () => {
-  const actual = jest.requireActual("@platform-core/cartCookie");
+jest.mock("@acme/platform-core/cartCookie", () => {
+  const actual = jest.requireActual("@acme/platform-core/cartCookie");
   return { ...actual, decodeCartCookie: jest.fn(() => "cart") };
 });
 
 const getCartMock = jest.fn();
-jest.mock("@platform-core/cartStore", () => ({
+jest.mock("@acme/platform-core/cartStore", () => ({
   createCartStore: () => ({ getCart: getCartMock }),
 }));
 
 const getProductMock = jest.fn();
-jest.mock("@platform-core/products", () => ({
+jest.mock("@acme/platform-core/products", () => ({
   getProductById: (id: string) => getProductMock(id),
 }));
 
 const settingsMock = jest.fn();
-jest.mock("@platform-core/repositories/settings.server", () => ({
+jest.mock("@acme/platform-core/repositories/settings.server", () => ({
   getShopSettings: () => settingsMock(),
 }));
 
 const shopMock = jest.fn();
-jest.mock("@platform-core/repositories/shops.server", () => ({
+jest.mock("@acme/platform-core/repositories/shops.server", () => ({
   readShop: () => shopMock(),
 }));
 
 const priceForDaysMock = jest.fn();
 const convertCurrencyMock = jest.fn((v: number) => v);
-jest.mock("@platform-core/pricing", () => ({
+jest.mock("@acme/platform-core/pricing", () => ({
   priceForDays: (...args: any[]) => priceForDaysMock(...args),
   convertCurrency: (v: number) => convertCurrencyMock(v),
 }));

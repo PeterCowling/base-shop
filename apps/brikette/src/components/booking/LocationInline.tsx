@@ -2,8 +2,11 @@
 import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import type { FallbackLng, FallbackLngObjList } from "i18next";
+import { Bus, MapPin } from "@/icons";
+
+import { Button } from "@acme/design-system/primitives";
+
 import { useModal } from "@/context/ModalContext";
-import { Bus, MapPin } from "lucide-react";
 
 function LocationInline({ lang }: { lang?: string }): JSX.Element {
   const translationOptions = lang ? { lng: lang } : undefined;
@@ -68,14 +71,18 @@ function LocationInline({ lang }: { lang?: string }): JSX.Element {
         <Bus className="size-4 text-brand-primary" aria-hidden />
         {proximity}
       </span>
-      <button
+      <Button
         type="button"
         onClick={openMap}
-        className="inline-flex min-h-11 min-w-11 items-center justify-center gap-1 rounded-full bg-brand-surface px-3 py-1 text-xs font-medium text-brand-primary transition-colors hover:bg-brand-primary/10 focus-visible:ring-1 focus-visible:ring-brand-primary/30"
+        tone="soft"
+        color="accent"
+        size="sm"
+        leadingIcon={<MapPin className="size-3.5" aria-hidden />}
+        iconSize="sm"
+        className="rounded-full text-xs"
       >
-        <MapPin className="size-3.5" aria-hidden />
         {resolveText("getDirections")}
-      </button>
+      </Button>
     </div>
   );
 }

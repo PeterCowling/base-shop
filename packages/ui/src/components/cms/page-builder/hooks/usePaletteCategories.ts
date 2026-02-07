@@ -1,8 +1,9 @@
 "use client";
 
 import { useMemo } from "react";
-import { getPaletteCategories } from "../paletteData";
+
 import type { PaletteCategoryDefinition } from "../paletteData";
+import { getPaletteCategories } from "../paletteData";
 
 export type PaletteMode = "all" | "elements" | "sections";
 

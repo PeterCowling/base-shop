@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 export declare const segmentSchema: z.ZodObject<{
     id: z.ZodString;
     name: z.ZodOptional<z.ZodString>;
@@ -28,3 +29,4 @@ export declare const segmentSchema: z.ZodObject<{
     name?: string | undefined;
 }>;
 export type Segment = z.infer<typeof segmentSchema>;
+//# sourceMappingURL=Segment.d.ts.map

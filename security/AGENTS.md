@@ -29,9 +29,10 @@ Act as a senior secure-code reviewer. Surface high‑impact risks quickly, expla
   - Add/extend tests to assert the vulnerable behavior is blocked.
 
 ## Useful Commands
-- Run all tests: `pnpm test`
-- Focus a package/app: `pnpm --filter <name> test`
+- Run targeted tests: `pnpm --filter <name> test` (preferred)
 - Build workspace (type safety): `pnpm -r build`
+
+> **Warning:** Never run `pnpm test` unfiltered — it spawns too many workers and can destabilize the system. See [docs/testing-policy.md](../docs/testing-policy.md).
 
 ## Notes
 - Keep changes tightly scoped and consistent with code style.

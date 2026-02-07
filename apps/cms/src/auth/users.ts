@@ -1,6 +1,7 @@
 // apps/cms/src/auth/users.ts
 
 import type { CmsUser } from "@acme/types";
+
 export type { CmsUser } from "@acme/types";
 
 /** Phase-0 in-memory users (replace with DB in Phase-1). */

@@ -1,8 +1,10 @@
+import "../styles/globals.css";
+
 import type { AppProps } from "next/app";
 import Link from "next/link";
+
 import { TranslationsProvider } from "@acme/i18n";
 import enMessages from "@acme/i18n/en.json";
-import "../styles/globals.css";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (

@@ -1,21 +1,21 @@
 // packages/platform-core/__tests__/coupons.test.ts
+import { promises as fs } from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { promises as fs } from "node:fs";
+
+import {
+  findCoupon,
+  listCoupons,
+  saveCoupons,
+  type StoredCoupon,
+} from "@acme/platform-core/coupons";
  
 
 let tmpDir = "";
 
-jest.mock("@platform-core/dataRoot", () => ({
+jest.mock("@acme/platform-core/dataRoot", () => ({
   resolveDataRoot: () => tmpDir,
 }));
-
-import {
-  saveCoupons,
-  findCoupon,
-  listCoupons,
-  type StoredCoupon,
-} from "@platform-core/coupons";
 
 const shop = "test";
 beforeAll(async () => {

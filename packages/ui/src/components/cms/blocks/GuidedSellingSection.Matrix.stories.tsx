@@ -1,8 +1,10 @@
 // packages/ui/src/components/cms/blocks/GuidedSellingSection.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import GuidedSellingSection from './GuidedSellingSection';
+
 import { makeStateStory } from '../../../story-utils/createStories';
+
+import GuidedSellingSection from './GuidedSellingSection';
 
 const meta: Meta<typeof GuidedSellingSection> = {
   title: 'CMS Blocks/GuidedSellingSection/Matrix',

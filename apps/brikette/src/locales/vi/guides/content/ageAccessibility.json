@@ -1,0 +1,144 @@
+{
+  "seo": {
+    "title": "Yêu cầu về tuổi và khả năng tiếp cận tại Hostel Brikette (Positano)",
+    "description": "Hiểu rõ lối vào cầu thang, kỳ vọng về hành lý và tự túc, chính sách về trẻ vị thành niên, hướng dẫn về động vật phục vụ và mẹo đến thực tế (phà và xe buýt) trước khi đặt phòng."
+  },
+  "linkLabel": "Yêu cầu về tuổi và khả năng tiếp cận",
+  "sections": [
+    {
+      "id": "quickChecklist",
+      "title": "Trước khi đặt phòng (danh sách kiểm tra nhanh)",
+      "body": [
+        "Chúng tôi muốn sự đến của bạn được suôn sẻ – Positano đẹp, nhưng nó không \\\\\"bằng phẳng và dễ dàng\\\\\". Đây là những gì quan trọng nhất:",
+        "* **Cầu thang là không thể tránh khỏi:** lễ tân được tiếp cận qua ≈30 bậc đá ngoài trời, và hầu hết các phòng ngủ tập thể ở 1-2 tầng bổ sung phía trên.\n* **Không có thang máy / không có lối đi không có bậc:** tòa nhà lịch sử của chúng tôi không được xây dựng cho dốc hoặc thang máy.\n* **Lên kế hoạch hành lý của bạn:** chúng tôi không có dịch vụ bảo vệ/chuông – mang theo những gì bạn có thể mang, hoặc sắp xếp người khuân vác.\n* **Quy tắc về trẻ vị thành niên rất nghiêm ngặt:** dưới 17 tuổi chỉ phòng riêng; 17 tuổi yêu cầu người lớn giám sát + tài liệu.\n* **Nếu bạn không chắc chắn, gửi email cho chúng tôi trước khi đặt phòng:** chúng tôi sẽ mô tả bố cục và các tuyến đường đi bộ điển hình chi tiết."
+      ]
+    },
+    {
+      "id": "accessibilityRequirements",
+      "title": "Yêu cầu về khả năng tiếp cận",
+      "body": [
+        "Hostel Brikette nằm trong một tòa nhà Positano lịch sử được xây dựng vào sườn đồi. Đó là một phần của sự quyến rũ – và cũng là yếu tố khả năng tiếp cận chính: **không có thang máy và không có lối đi không có bậc**.",
+        "**Những gì mong đợi tại hostel:**\n* ≈30 bậc đá ngoài trời từ làn đường dành cho người đi bộ gần nhất đến lễ tân.\n* Hầu hết các phòng ngủ tập thể ở **một hoặc hai tầng nội bộ bổ sung** phía trên lễ tân.",
+        "Chính Positano cũng dốc. Nhiều tuyến đường đến/từ bãi biển và cảng bao gồm cầu thang và bề mặt không bằng phẳng.",
+        "Nếu cầu thang, cân bằng hoặc mang hành lý có thể là thách thức, vui lòng gửi email cho chúng tôi trước khi đặt phòng. Chúng tôi sẽ giải thích bố cục và giúp bạn đưa ra quyết định sáng suốt."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/hostel-brikette-entrance-steps.webp",
+          "alt": "Cầu thang lên lối vào Hostel Brikette, ngay cạnh đường chính ở Positano.",
+          "caption": "Mong đợi các bậc ngoài trời để đến lễ tân – không có thang máy hoặc lối đi không có bậc."
+        }
+      ]
+    },
+    {
+      "id": "arrivalByFerry",
+      "title": "Đến bằng phà",
+      "body": [
+        "Đến bằng phà rất đẹp, nhưng cảng ở xa bên dưới hostel và các tuyến đường lên bao gồm các đoạn dốc và cầu thang.",
+        "**Với hành lý, chúng tôi không khuyến nghị đi bộ** từ cảng đến hostel – đặc biệt là trong cái nóng mùa hè.",
+        "Một kế hoạch đáng tin cậy là:\n* Sắp xếp một người khuân vác đã đăng ký tại cảng để giao hành lý trực tiếp đến hostel.\n* Đi xe buýt Interno địa phương lên từ trung tâm (khu vực Piazza dei Mulini), sau đó đi bộ đoạn cuối ngắn.",
+        "Để biết hướng dẫn từng bước, xem %LINK:arrivingByFerry|Hướng dẫn Cảng Positano → Hostel%."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-positano-spiaggia-view.jpg",
+          "alt": "Bến phà Positano ở mức bãi biển với thuyền trong vịnh.",
+          "caption": "Cảng ở mức bãi biển – lên kế hoạch trợ giúp hành lý (người khuân vác) cộng với một chuyến xe buýt lên dốc."
+        }
+      ]
+    },
+    {
+      "id": "arrivalByBus",
+      "title": "Đến bằng xe buýt",
+      "body": [
+        "Trạm xe buýt gần nhất cách khoảng **100 m / 330 feet**. Tuyến đường giữa trạm và hostel ngắn và chủ yếu bằng phẳng.",
+        "Từ đường phố, bạn vẫn cần quản lý cầu thang:\n* cầu thang lên lễ tân\n* các tầng nội bộ bổ sung đến hầu hết các phòng"
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.webp",
+          "alt": "Biển báo trạm xe buýt Positano bên lề đường.",
+          "caption": "Từ trạm, đó là một chặng đi bộ ngắn – sau đó là cầu thang lên lễ tân."
+        }
+      ]
+    },
+    {
+      "id": "generalArrivalTips",
+      "title": "Mẹo đến chung",
+      "body": [
+        "Một vài lựa chọn nhỏ tạo nên sự khác biệt lớn ở Positano:",
+        "* Đóng gói nhẹ nhất có thể.\n* Ưu tiên ba lô thay vì vali lớn có bánh xe.\n* Đi giày có độ bám tốt (bậc đá có thể trơn).\n* Nếu bạn đến bằng phà với hành lý, lên kế hoạch kết hợp người khuân vác + xe buýt trước."
+      ]
+    },
+    {
+      "id": "reducedMobility",
+      "title": "Hướng dẫn về khả năng di chuyển giảm",
+      "body": [
+        "Nếu bạn có khả năng di chuyển giảm, khiếm thị, đau mãn tính, lo ngại về cân bằng hoặc phụ thuộc vào thiết bị hỗ trợ, vui lòng gửi email cho chúng tôi trước khi đặt phòng.",
+        "Chúng tôi có thể mô tả bố cục (cầu thang, các tuyến đường đi bộ điển hình, tùy chọn vị trí phòng) để bạn có thể đánh giá xem vị trí và cơ sở của chúng tôi có đáp ứng nhu cầu của bạn không."
+      ]
+    },
+    {
+      "id": "serviceAnimals",
+      "title": "Động vật phục vụ",
+      "body": [
+        "Chúng tôi có thể đón **động vật phục vụ được chứng nhận** trong **chỉ phòng riêng**, tùy thuộc vào thỏa thuận trước và các quy định áp dụng.",
+        "Vui lòng liên hệ với chúng tôi trước để chúng tôi có thể xác nhận yêu cầu tài liệu và tùy chọn phòng tốt nhất."
+      ]
+    },
+    {
+      "id": "assistedSleeping",
+      "title": "Thiết bị hỗ trợ ngủ",
+      "body": [
+        "Để duy trì bầu không khí yên tĩnh trong các phòng ngủ tập thể được chia sẻ, các thiết bị tạo âm thanh liên tục hoặc gián đoạn (ví dụ: máy CPAP, máy phát tiếng ồn trắng, loa thiền hoặc đồng hồ nói) chỉ có thể được sử dụng **với đặt phòng riêng**."
+      ]
+    },
+    {
+      "id": "selfSufficiencyPolicy",
+      "title": "Chính sách tự túc",
+      "body": [
+        "Hostel Brikette là một hostel phong cách du lịch ba lô: thân thiện và hỗ trợ, nhưng **không phải là cơ sở chăm sóc**.",
+        "Đội ngũ của chúng tôi có thể giúp đỡ với thông tin và mẹo thực tế, nhưng chúng tôi không thể cung cấp dịch vụ y tế hoặc chăm sóc, và chúng tôi không thể lưu trữ hoặc quản lý thuốc theo đơn.",
+        "**Để ở với chúng tôi, khách phải có khả năng:**\n* mang hành lý của riêng mình (hoặc sắp xếp người khuân vác)\n* leo cầu thang được mô tả ở trên\n* làm thủ tục nhận/trả phòng một cách độc lập\n* quản lý vệ sinh cá nhân một cách độc lập\n* sử dụng không gian chung mà không yêu cầu giám sát của nhân viên"
+      ]
+    },
+    {
+      "id": "essentialMedicine",
+      "title": "Thuốc thiết yếu",
+      "body": [
+        "Nếu bạn đi du lịch với thuốc thiết yếu cần làm lạnh, chúng tôi thường có thể lưu trữ cho bạn – vui lòng gửi email cho chúng tôi trước khi đến để đặt chỗ.",
+        "Các tùy chọn gần đó:\n* Hiệu thuốc: ~450 m trên Viale Pasitea.\n* Phòng khám y tế công cộng: Praiano (~3 km bằng xe buýt).",
+        "Trong trường hợp khẩn cấp, nhân viên sẽ liên hệ với các dịch vụ khẩn cấp của Ý (112 / 118). Chúng tôi không thể cung cấp hỗ trợ y tế chuyên nghiệp tại chỗ.",
+        "Nếu, trong thời gian lưu trú của bạn, rõ ràng là bạn không thể đáp ứng các yêu cầu tự túc tối thiểu ở trên, chúng tôi có thể không thể đón bạn một cách an toàn. Đối với các điều khoản liên quan, xem %LINK:changingCancelling|Thay đổi và hủy bỏ% và %LINK:rules|Quy tắc nhà%."
+      ]
+    },
+    {
+      "id": "minorsPolicy",
+      "title": "Chính sách về trẻ vị thành niên",
+      "body": [
+        "Các quy tắc khách sạn của Ý về trẻ vị thành niên rất nghiêm ngặt, và chúng tôi tuân theo chúng. Điều này bảo vệ khách du lịch trẻ và giữ hostel tuân thủ – vui lòng đọc kỹ trước khi đặt phòng.",
+        "**Độ tuổi 16 trở xuống:**\n* Chỉ phòng riêng.\n* Phải được đi cùng với cha mẹ/người giám hộ hợp pháp từ 18 tuổi trở lên.\n* Người giám hộ phải ở trong cùng phòng trong suốt thời gian lưu trú.",
+        "**Độ tuổi 17:** giường phòng ngủ tập thể có thể chỉ có với người lớn giám sát (18+) trong cùng phòng ngủ tập thể và tài liệu đồng ý/giám hộ thích hợp khi đến (gửi email cho chúng tôi trước để chúng tôi có thể xác nhận những gì cần thiết cho tình huống của bạn).",
+        "**Nhóm (trường học/thể thao/hướng đạo) dưới 18 tuổi:** phải sắp xếp chiếm hữu độc quyền và cung cấp tài liệu trách nhiệm bằng văn bản từ tổ chức tổ chức ít nhất 7 ngày trước khi đến.",
+        "Trẻ vị thành niên không thể bị bỏ mặc không giám sát trong khu vực chung. Nếu các yêu cầu không được đáp ứng khi làm thủ tục nhận phòng, chúng tôi có thể bị yêu cầu hợp pháp để từ chối lưu trú."
+      ]
+    },
+    {
+      "id": "locationOverview",
+      "title": "Tổng quan về vị trí",
+      "body": [
+        "Chúng tôi gần các tiện nghi địa phương:\n* đường chính và trạm xe buýt (~100 m / 330 feet)\n* cửa hàng tạp hóa, ATM, nhà hàng và những thứ cần thiết nhỏ gần đó",
+        "Khu vực bãi biển Positano và cảng phà ở xa hơn xuống đồi; xe buýt địa phương là cách dễ nhất để đi lại qua lại."
+      ]
+    },
+    {
+      "id": "transportationGuide",
+      "title": "Hướng dẫn vận chuyển",
+      "body": [
+        "Để lập kế hoạch tuyến đường từng bước, sử dụng các hướng dẫn này làm điểm khởi đầu:",
+        "Các tuyến đường thông thường:\n* Từ sân bay Naples: %LINK:naplesAirportPositanoBus|Sân bay Naples → Positano%.\n* Từ trung tâm thành phố Naples: %LINK:naplesCenterTrainBus|Trung tâm Naples → Positano%.\n* Bằng phà (theo mùa): %LINK:arrivingByFerry|Cảng Positano → Hostel%.",
+        "Đến bằng ô tô là có thể nhưng không được khuyến nghị trong mùa cao điểm do bãi đậu xe hạn chế và đắt đỏ. Nếu bạn lái xe, lên kế hoạch đậu xe trước và giữ hành lý nhẹ nhất có thể."
+      ]
+    }
+  ]
+}

@@ -14,6 +14,10 @@ export type PipelineEnv = {
   PIPELINE_STAGE_M_CAPTURE_PROFILES_AMAZON?: string;
   PIPELINE_STAGE_M_CAPTURE_PROFILES_TAOBAO?: string;
   PIPELINE_QUEUE?: Queue;
+  /** API key for authenticating requests. Set as Cloudflare secret. */
+  PIPELINE_API_KEY?: string;
+  /** Environment mode: "dev" allows unauthenticated requests */
+  PIPELINE_ENV?: string;
 };
 
 export type LeadRow = {
@@ -175,6 +179,20 @@ export async function fetchStageRunById(
       "SELECT id, candidate_id, stage, status, input_json, output_json, error_json, created_at, started_at, finished_at FROM stage_runs WHERE id = ?",
     )
     .bind(id)
+    .first<StageRunRow>();
+  return result ?? null;
+}
+
+export async function fetchLatestStageRunByStage(
+  db: D1Database,
+  candidateId: string,
+  stage: string,
+): Promise<StageRunRow | null> {
+  const result = await db
+    .prepare(
+      "SELECT id, candidate_id, stage, status, input_json, output_json, error_json, created_at, started_at, finished_at FROM stage_runs WHERE candidate_id = ? AND stage = ? AND status = 'succeeded' ORDER BY created_at DESC LIMIT 1",
+    )
+    .bind(candidateId, stage)
     .first<StageRunRow>();
   return result ?? null;
 }

@@ -1,8 +1,10 @@
 import dynamic from "next/dynamic";
-import { Card, CardContent } from "@/components/atoms/shadcn";
-import { Alert } from "@ui/components/atoms";
-import type { Shop } from "@acme/types";
+
+import { Alert } from "@acme/design-system/atoms";
 import { useTranslations } from "@acme/i18n";
+import type { Shop } from "@acme/types";
+
+import { Card, CardContent } from "@/components/atoms/shadcn";
 
 const ShopEditor = dynamic(() => import("../ShopEditor"));
 void ShopEditor;

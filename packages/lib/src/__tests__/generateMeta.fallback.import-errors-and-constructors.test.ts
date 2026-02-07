@@ -1,9 +1,10 @@
-import { describe, it, expect, afterEach, jest } from "@jest/globals";
-jest.mock("path", () => ({
-  join: jest.fn((...parts) => parts.join("/")),
-  dirname: jest.fn((p) => p.split("/").slice(0, -1).join("/")),
-}));
+import { afterEach, describe, expect, it, jest } from "@jest/globals";
 import * as path from "path";
+
+jest.mock("path", () => ({
+  join: jest.fn((...parts: string[]) => parts.join("/")),
+  dirname: jest.fn((p: string) => p.split("/").slice(0, -1).join("/")),
+}));
 
 const product = { id: "123", title: "Title", description: "Desc" };
 const writeMock = jest.fn();
@@ -22,7 +23,7 @@ describe("generateMeta", () => {
   const originalEnv = process.env.NODE_ENV;
 
   afterEach(() => {
-    process.env.NODE_ENV = originalEnv;
+    (process.env as Record<string, string | undefined>).NODE_ENV = originalEnv;
     delete (global as any).__OPENAI_IMPORT_ERROR__;
     expect(fetchMock).not.toHaveBeenCalled();
     writeMock.mockReset();
@@ -34,7 +35,7 @@ describe("generateMeta", () => {
   });
 
   it("falls back when import error flag is set", async () => {
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     (global as any).__OPENAI_IMPORT_ERROR__ = true;
     await jest.isolateModulesAsync(async () => {
       const envMock = { OPENAI_API_KEY: "key" };
@@ -53,7 +54,7 @@ describe("generateMeta", () => {
   });
 
   it("falls back when OpenAI import throws", async () => {
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     await jest.isolateModulesAsync(async () => {
       const envMock = { OPENAI_API_KEY: "key" };
       jest.doMock("@acme/config/env/core", () => ({ coreEnv: envMock }));
@@ -78,7 +79,7 @@ describe("generateMeta", () => {
   });
 
   it("falls back when OpenAI constructor missing", async () => {
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     await jest.isolateModulesAsync(async () => {
       const envMock = { OPENAI_API_KEY: "key" };
       jest.doMock("@acme/config/env/core", () => ({ coreEnv: envMock }));
@@ -97,7 +98,7 @@ describe("generateMeta", () => {
   });
 
   it("falls back when default export is not a constructor", async () => {
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     await jest.isolateModulesAsync(async () => {
       const envMock = { OPENAI_API_KEY: "key" };
       jest.doMock("@acme/config/env/core", () => ({ coreEnv: envMock }));
@@ -118,7 +119,7 @@ describe("generateMeta", () => {
   });
 
   it("falls back when named OpenAI export is not a constructor", async () => {
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     await jest.isolateModulesAsync(async () => {
       const envMock = { OPENAI_API_KEY: "key" };
       jest.doMock("@acme/config/env/core", () => ({ coreEnv: envMock }));
@@ -139,7 +140,7 @@ describe("generateMeta", () => {
   });
 
   it("falls back when nested default export is not a constructor", async () => {
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     await jest.isolateModulesAsync(async () => {
       const envMock = { OPENAI_API_KEY: "key" };
       jest.doMock("@acme/config/env/core", () => ({ coreEnv: envMock }));

@@ -69,7 +69,7 @@
     "whatToPack",
     "workCafes"
   ],
-  "arrivalText": "Nous sommes à environ 80 m de l’arrêt SITA « Chiesa Nuova » sans escaliers. Vous arrivez par ferry ? Pensez à un porteur ou au bus SITA pour monter la côte.",
+  "arrivalText": "Nous sommes à environ 80 m de l’arrêt SITA \\\\\" Chiesa Nuova \\\\\" sans escaliers. Vous arrivez par ferry ? Pensez à un porteur ou au bus SITA pour monter la côte.",
   "arrivalLinks": [
     "chiesaNuovaArrivals",
     "ferryDockToBrikette",

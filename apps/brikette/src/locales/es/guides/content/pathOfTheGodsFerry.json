@@ -49,9 +49,16 @@
       "id": "bus-to-bomerano",
       "title": "Toma el autobús a Bomerano",
       "body": [
-        "Busca el autobús SITA con el letrero “Agerola/Bomerano”. Valida tu billete al subir y siéntate cerca del frente para reducir los mareos en las curvas.",
+        "Busca el autobús SITA con el letrero \\\\\"Agerola/Bomerano\\\\\". Valida tu billete al subir y siéntate cerca del frente para reducir los mareos en las curvas.",
         "Tras unos 45 minutos, bájate en la parada de Bomerano junto al Ristorante Jerla. Cruza la carretera y baja por la calle lateral hasta la piazza.",
-        "Sigue a la izquierda a través de la plaza y luego continúa las señales de “Sentiero degli Dei” hasta llegar al panel del inicio del sendero."
+        "Sigue a la izquierda a través de la plaza y luego continúa las señales de \\\\\"Sentiero degli Dei\\\\\" hasta llegar al panel del inicio del sendero."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/12-nav.jpg",
+          "alt": "Side street from Bomerano bus stop descending toward the piazza",
+          "caption": "2. Cruza la carretera desde la parada de autobús y sigue esta calle lateral bajando hasta la piazza"
+        }
       ]
     },
     {
@@ -61,6 +68,28 @@
         "El sendero ondula durante unos 6 kilómetros. Encontrarás escalones de piedra, cornisas estrechas y miradores espectaculares sobre la costa.",
         "Haz pausas en los miradores señalizados y llévate toda tu basura. Respeta a los agricultores locales y mantente en el camino marcado.",
         "Cuando el sendero de tierra se une con la pasarela de hormigón que entra en Nocelle habrás terminado."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/13-nav.jpg",
+          "alt": "Town square (piazza) in Bomerano with left-hand route markers",
+          "caption": "3. Sigue a la izquierda a través de la piazza y continúa las señales de 'Sentiero degli Dei'"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/14-nav.jpg",
+          "alt": "Wooden steps ascending along the hiking trail ridge",
+          "caption": "4. Una vez atravesada la piazza, busca el panel informativo y gira a la izquierda; aquí comienza el sendero. Sigue el camino hasta una sección con escalones de madera."
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/15-nav.jpg",
+          "alt": "Concrete paved walkway marking entry into Nocelle village",
+          "caption": "Cuando el sendero de tierra se une con esta pasarela de hormigón, has llegado a Nocelle"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/16-nav.jpg",
+          "alt": "Nocelle village navigation map showing route to bus stop and staircase warning",
+          "caption": "Mapa de Nocelle — al caminar por el pueblo asegúrate de girar a la derecha en el cruce para llegar a la parada de autobús; ¡evita la escalera de 1.700 peldaños a Positano a toda costa!"
+        }
       ]
     },
     {
@@ -70,6 +99,23 @@
         "Sigue el camino pavimentado hacia el pueblo y mantente a la derecha en la primera bifurcación para evitar la escalera de 1.700 peldaños que baja a Positano.",
         "Camina unos 175 metros hasta la parada de autobús junto al pequeño aparcamiento. El quiosco junto a la iglesia vende bebidas frías en temporada.",
         "Llega con al menos 10 minutos de antelación; cuando el aparcamiento está lleno, los autobuses a veces paran antes de la marquesina."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/17-nav.jpg",
+          "alt": "Directional signpost in Nocelle showing the stairs-to-Positano option to avoid",
+          "caption": "CRÍTICO: NO sigas las señales hacia 'Positano' bajando las escaleras — gira a la derecha aquí en su lugar"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/18-nav.jpg",
+          "alt": "Stone steps ascending through Nocelle streets toward the bus stop",
+          "caption": "Sube estos escalones durante unos 175 metros para llegar a la parada de autobús en el aparcamiento"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/19-nav.jpg",
+          "alt": "Bus stop arrival point in Nocelle",
+          "caption": "Has llegado a la parada de autobús."
+        }
       ]
     },
     {

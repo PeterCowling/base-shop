@@ -6,8 +6,8 @@ import {
   markFulfilled,
   markReturned,
   markShipped,
-  setReturnTracking,
   setReturnStatus,
+  setReturnTracking,
 } from "../src/orders/status";
 
 jest.mock("../src/db", () => ({

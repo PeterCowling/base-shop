@@ -1,1 +1,1 @@
-export { default } from "@ui/components/cms/MediaManager";
+export { default } from "@acme/cms-ui/MediaManager";

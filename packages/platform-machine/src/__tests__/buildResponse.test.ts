@@ -1,4 +1,4 @@
-import { buildResponse, type ProxyResponse } from '@acme/shared-utils/src/buildResponse';
+import { buildResponse, type ProxyResponse } from '@acme/lib/http/server';
 
 describe('buildResponse', () => {
   it('builds OK response with JSON body and headers', async () => {

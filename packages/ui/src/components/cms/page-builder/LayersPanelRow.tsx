@@ -3,10 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { EyeOpenIcon, EyeClosedIcon, LockClosedIcon, LockOpen2Icon } from "@radix-ui/react-icons";
-import { Inline } from "../../atoms/primitives/Inline";
-import type { LayerNode } from "./LayersPanel.types";
+import { EyeClosedIcon, EyeOpenIcon, LockClosedIcon, LockOpen2Icon } from "@radix-ui/react-icons";
+
 import { useTranslations } from "@acme/i18n";
+
+import { Inline } from "../../atoms/primitives/Inline";
+
+import type { LayerNode } from "./LayersPanel.types";
 
 export function LayersPanelRow({ node, index, parentId, selected, onSelect, onToggleHidden, onToggleLocked, onRename }: {
   node: LayerNode;
@@ -32,7 +35,7 @@ export function LayersPanelRow({ node, index, parentId, selected, onSelect, onTo
     ["aria" + "-label"]: (node.locked ? (t("cms.builder.layer.unlockAria") as string) : (t("cms.builder.layer.lockAria") as string)),
   } as const;
 
-  /* eslint-disable-next-line ds/no-hardcoded-copy -- PB-123 className tokens only; no user-facing text */
+   
   const rowClass = "group flex items-center justify-between rounded px-2 py-1 text-sm" + (selected ? " bg-primary/10" : "");
 
   return (

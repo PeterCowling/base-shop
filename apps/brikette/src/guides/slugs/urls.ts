@@ -1,11 +1,14 @@
-import type { AppLanguage } from "../../i18n.config";
+import { createGuideUrlHelpers } from "@acme/guides-core";
+
 import { BASE_URL } from "../../config/site";
-import { getSlug } from "../../utils/slug";
-import { GUIDE_SLUGS } from "./slugs";
-import { GUIDE_SLUG_OVERRIDES } from "./overrides";
-import { GUIDE_SLUG_FALLBACKS, GUIDE_COMPONENT_OVERRIDES } from "./components";
+import type { AppLanguage } from "../../i18n.config";
+import { GUIDE_COMPONENT_OVERRIDES,GUIDE_SLUG_FALLBACKS } from "./components";
 import type { GuideKey } from "./keys";
+import { GUIDE_KEYS_WITH_OVERRIDES } from "./keys";
 import { guideNamespace } from "./namespaces";
+import { GUIDE_SLUG_OVERRIDES } from "./overrides";
+import { GUIDE_SLUGS } from "./slugs";
+import { SUPPORTED_LANGS } from "./supported-langs";
 
 function fallbackSlugFromKey(key: GuideKey): string {
   return key
@@ -28,6 +31,37 @@ export function guideSlug(lang: AppLanguage, key: GuideKey): string {
   return dict[lang] ?? dict["en"] ?? GUIDE_SLUG_FALLBACKS[key] ?? fallbackSlugFromKey(key);
 }
 
+const SLUGS_BY_KEY = Object.freeze(
+  GUIDE_KEYS_WITH_OVERRIDES.reduce<Record<GuideKey, Record<AppLanguage, string>>>(
+    (acc, key) => {
+      const perLang = SUPPORTED_LANGS.reduce<Record<AppLanguage, string>>((langs, lang) => {
+        langs[lang as AppLanguage] = guideSlug(lang as AppLanguage, key);
+        return langs;
+      }, {} as Record<AppLanguage, string>);
+      acc[key] = Object.freeze(perLang);
+      return acc;
+    },
+    {} as Record<GuideKey, Record<AppLanguage, string>>,
+  ),
+);
+
+const guideUrlHelpers = createGuideUrlHelpers<AppLanguage, GuideKey>({
+  baseUrl: BASE_URL,
+  keys: GUIDE_KEYS_WITH_OVERRIDES,
+  languages: SUPPORTED_LANGS as AppLanguage[],
+  slugsByKey: SLUGS_BY_KEY,
+  defaultLang: "en",
+  basePathForKey: (lang, key) => {
+    const base = guideNamespace(lang, key);
+    return `/${lang}/${base.baseSlug}`;
+  },
+  fallbackSlugsByKey: GUIDE_SLUG_FALLBACKS,
+  fallbackSlugFromKey,
+});
+
+export const { guidePath, guideHref, guideAbsoluteUrl, resolveGuideKeyFromSlug, slugLookupsByLang } =
+  guideUrlHelpers;
+
 export function guideComponentPath(key: GuideKey): string {
   const override = GUIDE_COMPONENT_OVERRIDES[key];
   if (override) return override;
@@ -35,25 +69,4 @@ export function guideComponentPath(key: GuideKey): string {
   return `routes/guides/${slug}.tsx`;
 }
 
-export function guideHref(
-  lang: AppLanguage,
-  key: GuideKey,
-  options?: { forceGuidesBase?: boolean },
-): string {
-  // Allow callers (e.g., link-token rendering) to pin links under the public
-  // guides base regardless of namespace routing. This keeps cross-guide links
-  // stable and matches tests that expect the canonical /guides/ base.
-  if (options?.forceGuidesBase) {
-    return `/${lang}/guides/${guideSlug(lang, key)}`;
-  }
-  // Special-case: ensure porterServices lives under the public guides base
-  if (key === ("porterServices" as GuideKey)) {
-    return `/${lang}/${getSlug("guides", lang)}/${guideSlug(lang, key)}`;
-  }
-  const base = guideNamespace(lang, key);
-  return `/${lang}/${base.baseSlug}/${guideSlug(lang, key)}`;
-}
-
-export function guideAbsoluteUrl(lang: AppLanguage, key: GuideKey): string {
-  return `${BASE_URL}${guideHref(lang, key)}`;
-}
+export const GUIDE_SLUG_LOOKUP_BY_LANG = slugLookupsByLang;

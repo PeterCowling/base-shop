@@ -1,9 +1,11 @@
 // src/components/home/ReviewsCarousel.tsx
 "use client"; // i18n-exempt -- PB-123 Next.js directive, not user-facing copy [ttl=2025-12-31]
 
-import { useTranslations } from "@acme/i18n";
-import { Inline } from "../atoms/primitives/Inline";
 import { useCallback, useEffect, useState } from "react";
+
+import { useTranslations } from "@acme/i18n";
+
+import { Inline } from "../atoms/primitives/Inline";
 
 export type Review = { nameKey: string; quoteKey: string };
 

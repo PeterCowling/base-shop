@@ -1,3 +1,7 @@
+import { afterEach, describe, expect, it, jest } from "@jest/globals";
+
+import { createBreaker } from "../providers/circuitBreaker";
+
 jest.mock(
   "@acme/i18n/en.json",
   () => ({
@@ -10,9 +14,6 @@ jest.mock(
   }),
   { virtual: true },
 );
-
-import { describe, expect, it, afterEach, jest } from "@jest/globals";
-import { createBreaker } from "../providers/circuitBreaker";
 
 describe("createBreaker", () => {
   afterEach(() => {
@@ -37,7 +38,7 @@ describe("createBreaker", () => {
     let now = 0;
     jest.spyOn(Date, "now").mockImplementation(() => now);
 
-    const fail = jest.fn().mockRejectedValue(new Error("boom"));
+    const fail = async () => { throw new Error("boom"); };
 
     await expect(breaker.exec("svc", fail)).rejects.toThrow("boom");
 

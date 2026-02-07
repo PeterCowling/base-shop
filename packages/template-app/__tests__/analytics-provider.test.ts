@@ -5,7 +5,7 @@ jest.mock("@acme/date-utils", () => ({ nowIso: () => "2024-01-01T00:00:00.000Z" 
 
 const readShop = jest.fn();
 const getShopSettings = jest.fn();
-jest.mock("@platform-core/repositories/shops.server", () => ({
+jest.mock("@acme/platform-core/repositories/shops.server", () => ({
   readShop: (...args: any[]) => readShop(...args),
   getShopSettings: (...args: any[]) => getShopSettings(...args),
 }));
@@ -50,7 +50,7 @@ describe("analytics provider resolution", () => {
   test("analytics disabled returns Noop provider", async () => {
     readShop.mockResolvedValue({ analyticsEnabled: false });
     getShopSettings.mockResolvedValue({});
-    const { trackEvent } = await import("@platform-core/analytics");
+    const { trackEvent } = await import("@acme/platform-core/analytics");
     await trackEvent(shop, { type: "page_view", page: "/" });
     expect(appendFile).not.toHaveBeenCalled();
   });
@@ -59,7 +59,7 @@ describe("analytics provider resolution", () => {
     readShop.mockResolvedValue({ analyticsEnabled: true });
     getShopSettings.mockResolvedValue({ analytics: { provider: "console", enabled: true } });
     const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
-    const { trackEvent } = await import("@platform-core/analytics");
+    const { trackEvent } = await import("@acme/platform-core/analytics");
     await trackEvent(shop, { type: "page_view", page: "home" });
     expect(logSpy).toHaveBeenCalledWith(
       "analytics",
@@ -73,7 +73,7 @@ describe("analytics provider resolution", () => {
     getShopSettings.mockResolvedValue({ analytics: { provider: "ga", id: "G-XYZ" } });
     process.env.GA_API_SECRET = "secret";
     const fetchMock = globalThis.fetch as jest.Mock;
-    const { trackEvent } = await import("@platform-core/analytics");
+    const { trackEvent } = await import("@acme/platform-core/analytics");
     await trackEvent(shop, { type: "page_view", page: "home" });
     expect(fetchMock).toHaveBeenCalledTimes(1);
   });
@@ -82,7 +82,7 @@ describe("analytics provider resolution", () => {
     readShop.mockResolvedValue({ analyticsEnabled: true });
     getShopSettings.mockResolvedValue({ analytics: { provider: "ga", id: "G-XYZ" } });
     const fetchMock = globalThis.fetch as jest.Mock;
-    const { trackEvent } = await import("@platform-core/analytics");
+    const { trackEvent } = await import("@acme/platform-core/analytics");
     await trackEvent(shop, { type: "page_view", page: "home" });
     expect(fetchMock).not.toHaveBeenCalled();
     const file = path.join("/data", shop, "analytics.jsonl");
@@ -92,7 +92,7 @@ describe("analytics provider resolution", () => {
   test("default FileProvider writes analytics.jsonl", async () => {
     readShop.mockResolvedValue({ analyticsEnabled: true });
     getShopSettings.mockResolvedValue({});
-    const { trackEvent } = await import("@platform-core/analytics");
+    const { trackEvent } = await import("@acme/platform-core/analytics");
     await trackEvent(shop, { type: "page_view", page: "home" });
     const file = path.join("/data", shop, "analytics.jsonl");
     expect(files.get(file)).toContain("\"type\":\"page_view\"");
@@ -101,7 +101,7 @@ describe("analytics provider resolution", () => {
   test("provider result is cached", async () => {
     readShop.mockResolvedValue({ analyticsEnabled: true });
     getShopSettings.mockResolvedValue({});
-    const { trackEvent } = await import("@platform-core/analytics");
+    const { trackEvent } = await import("@acme/platform-core/analytics");
     await trackEvent(shop, { type: "page_view", page: "home" });
     await trackEvent(shop, { type: "page_view", page: "about" });
     expect(readShop).toHaveBeenCalledTimes(1);
@@ -112,7 +112,7 @@ describe("analytics provider resolution", () => {
   test("updateAggregates increments metrics", async () => {
     readShop.mockResolvedValue({ analyticsEnabled: true });
     getShopSettings.mockResolvedValue({});
-    const { trackPageView, trackOrder, trackEvent } = await import("@platform-core/analytics");
+    const { trackPageView, trackOrder, trackEvent } = await import("@acme/platform-core/analytics");
     await trackPageView(shop, "home");
     await trackOrder(shop, "o1", 5);
     await trackEvent(shop, { type: "discount_redeemed", code: "SAVE" });

@@ -26,3 +26,4 @@ export interface SanityPostUpdate {
     categories?: string[];
     publishedAt?: string;
 }
+//# sourceMappingURL=Blog.d.ts.map

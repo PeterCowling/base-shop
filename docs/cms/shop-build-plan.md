@@ -243,6 +243,22 @@ The primary UX aspiration is that a non‑technical shop owner can go from “no
   - Definition of done:
     - The agreed telemetry events are in place for build flows, and the observability docs describe how to calculate and monitor the one-hour launch funnel using those events.
 
+- **CMS-BUILD-14 — Restore full theming coverage in Configurator**
+  - Status: ☑
+  - Scope:
+    - Reinstate base theme selection and color token overrides in the Configurator flow.
+    - Ensure `StepTheme` and `StepTokens` cover theme ID + color tokens + typography, and wire to `checkTheme`.
+    - Add explicit links from Configurator summary to Theme Editor when advanced overrides are required.
+  - Dependencies:
+    - CMS-BUILD-02, CMS-BUILD-09.
+  - Code/docs:
+    - `apps/cms/src/app/cms/configurator/steps/StepTheme.tsx`
+    - `apps/cms/src/app/cms/configurator/steps/StepTokens.tsx`
+    - `apps/cms/src/app/cms/configurator/steps/StepSummary.tsx`
+    - `docs/cms/shop-build-gap-analysis.md`
+  - Definition of done:
+    - Configurator exposes end-to-end theme readiness (theme selection + tokens) and `checkTheme` passes without requiring a hidden `/themes` detour.
+
 ## Completed / historical
 
 - None yet.

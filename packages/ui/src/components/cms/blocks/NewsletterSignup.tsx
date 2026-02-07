@@ -1,10 +1,11 @@
 "use client";
 
-import { NewsletterForm } from "./molecules";
-import type { TranslatableText } from "@acme/types/i18n";
-import type { Locale } from "@acme/i18n/locales";
 import { useTranslations } from "@acme/i18n";
-import { resolveText } from "@i18n/resolveText";
+import type { Locale } from "@acme/i18n/locales";
+import { resolveText } from "@acme/i18n/resolveText";
+import type { TranslatableText } from "@acme/types/i18n";
+
+import { NewsletterForm } from "./molecules";
 
 interface Props {
   /** API endpoint to submit the email to */

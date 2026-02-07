@@ -1,4 +1,5 @@
 import type { PageComponent } from "@acme/types";
+
 import { addAt } from "./addAt";
 
 export function addComponent(

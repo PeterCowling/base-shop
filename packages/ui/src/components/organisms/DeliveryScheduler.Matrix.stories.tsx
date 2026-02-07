@@ -1,8 +1,10 @@
 // packages/ui/src/components/organisms/DeliveryScheduler.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { DeliveryScheduler } from './DeliveryScheduler';
+
 import { makeStateStory } from '../../story-utils/createStories';
+
+import { DeliveryScheduler } from './DeliveryScheduler';
 
 const meta: Meta<typeof DeliveryScheduler> = {
   title: 'Organisms/Delivery Scheduler/Matrix',

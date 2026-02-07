@@ -1,12 +1,14 @@
 import "@testing-library/jest-dom";
-import { render, screen, waitFor } from "@testing-library/react";
+
 import React from "react";
+import { render, screen, waitFor } from "@testing-library/react";
+
 import PreviewViewer from "../src/app/preview/[token]/page";
 
-jest.mock("@ui/components/DynamicRenderer", () => ({
+jest.mock("@acme/ui/components/DynamicRenderer", () => ({
   __esModule: true,
   default: (props: { components: unknown[] }) => (
-    <div data-testid="runtime-preview">
+    <div data-cy="runtime-preview">
       {Array.isArray(props.components) ? props.components.length : "no-components"}
     </div>
   ),
@@ -16,7 +18,6 @@ describe("Version preview page", () => {
   const originalFetch = global.fetch;
 
   beforeEach(() => {
-    // @ts-expect-error jest override
     global.fetch = jest.fn().mockResolvedValue({
       ok: true,
       status: 200,
@@ -34,7 +35,6 @@ describe("Version preview page", () => {
 
   afterEach(() => {
     jest.resetAllMocks();
-    // @ts-expect-error jest override
     global.fetch = originalFetch;
   });
 

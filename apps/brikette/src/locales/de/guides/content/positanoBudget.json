@@ -74,7 +74,7 @@
         "value": 25
       },
       {
-        "label": "Transport",
+        "label": "Verkehr",
         "value": 12
       },
       {
@@ -82,15 +82,5 @@
         "value": 18
       }
     ]
-  },
-  "gallery": [
-    {
-      "alt": "Kostenfreier Aussichtspunkt über Positano",
-      "caption": "Kostenlose Aussichtspunkte"
-    },
-    {
-      "alt": "Picknick mit Positano-Blick",
-      "caption": "Picknick statt Restaurant"
-    }
-  ]
+  }
 }

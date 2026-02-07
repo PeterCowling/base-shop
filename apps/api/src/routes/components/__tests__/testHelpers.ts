@@ -1,11 +1,18 @@
+import jwt from 'jsonwebtoken';
+import { vol } from 'memfs';
+
+import { validateShopName } from '@acme/lib';
+import { logger } from '@acme/lib/logger';
+
 jest.mock('fs', () => require('memfs').fs);
 jest.mock('jsonwebtoken', () => ({ verify: jest.fn() }));
 jest.mock('@acme/lib', () => ({ validateShopName: jest.fn((s: string) => s) }));
+jest.mock('@acme/lib/context', () => ({
+  withRequestContext: (_ctx: unknown, fn: () => unknown) => fn(),
+}));
 
-import jwt from 'jsonwebtoken';
-import { vol } from 'memfs';
-import { validateShopName } from '@acme/lib';
-import { logger } from '@acme/shared-utils';
+// Import onRequest AFTER mocks are registered so the module loads with mocked dependencies.
+const { onRequest } = require('../[shopId]') as typeof import('../[shopId]');
 
 export const verify = jwt.verify as jest.Mock;
 export const validate = validateShopName as jest.Mock;
@@ -48,4 +55,4 @@ export function createToken(payload: object, secret: string) {
   });
 }
 
-export { vol };
+export { onRequest, vol };

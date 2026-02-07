@@ -1,9 +1,11 @@
 "use client";
 
-import { Grid, Stack } from "@ui/components/atoms/primitives";
+import { Grid, Stack } from "@acme/design-system/primitives";
+
 import { formatNumber, formatPercent } from "@/lib/format";
-import type { CandidateDetailStrings } from "./types";
+
 import type { StageMSummary } from "./stageMHelpers";
+import type { CandidateDetailStrings } from "./types";
 import { safeTimestamp } from "./types";
 
 function formatEuro(value: number | null | undefined, fallback: string): string {

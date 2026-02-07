@@ -1,9 +1,10 @@
+import { PRODUCTS } from "@acme/platform-core/products/index";
+import type { SKU } from "@acme/types";
+
 import {
   RecommendationCarousel as BaseCarousel,
   type RecommendationCarouselProps,
 } from "../../organisms/RecommendationCarousel";
-import { PRODUCTS } from "@acme/platform-core/products/index";
-import type { SKU } from "@acme/types";
 
 export default function CmsRecommendationCarousel({
   minItems,

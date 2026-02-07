@@ -22,6 +22,23 @@ export type StageBLaneMeta = {
   laneCostAmount?: number | null;
 };
 
+export type StageBQuoteBasketMeta = {
+  profileId?: string | null;
+  name?: string | null;
+  profileType?: string | null;
+  origin?: string | null;
+  destination?: string | null;
+  destinationType?: string | null;
+  incoterm?: string | null;
+  cartonCount?: number | null;
+  unitsPerCarton?: number | null;
+  weightKg?: number | null;
+  cbm?: number | null;
+  dimensionsCm?: string | null;
+  hazmatFlag?: boolean | null;
+  notes?: string | null;
+};
+
 export type StageBInput = {
   unitsPlanned?: number;
   unitCostCents?: number;
@@ -37,6 +54,7 @@ export type StageBInput = {
   incoterms?: string;
   notes?: string | null;
   lane?: StageBLaneMeta;
+  quoteBasket?: StageBQuoteBasketMeta;
 };
 
 export type StageBSummary = {

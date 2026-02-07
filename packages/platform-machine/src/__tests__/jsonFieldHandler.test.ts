@@ -1,4 +1,4 @@
-import { jsonFieldHandler, type ErrorSetter } from '@acme/shared-utils/src/jsonFieldHandler';
+import { type ErrorSetter,jsonFieldHandler } from '@acme/lib/json';
 
 describe('jsonFieldHandler', () => {
   it('parses JSON and clears errors', () => {

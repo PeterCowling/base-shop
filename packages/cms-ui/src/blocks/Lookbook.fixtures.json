@@ -1,0 +1,7 @@
+{
+  "items": [
+    { "src": "/images/look1.jpg", "alt": "Look 1", "hotspots": [{"x":20, "y":40, "sku": "green-sneaker"}] },
+    { "src": "/images/look2.jpg", "alt": "Look 2", "hotspots": [{"x":60, "y":30, "sku": "blue-shirt"}] }
+  ]
+}
+

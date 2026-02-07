@@ -4,7 +4,8 @@
 /* -------------------------------------------------------------------------- */
 
 import { useContext } from "react";
-import { ModalContext, ssrStub, type ModalContextValue } from "./context";
+
+import { ModalContext, type ModalContextValue,ssrStub } from "./context";
 
 export function useModal(): ModalContextValue {
   const ctx = useContext(ModalContext);

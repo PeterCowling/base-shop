@@ -1,8 +1,9 @@
 "use client";
 
-/* eslint-disable ds/no-hardcoded-copy -- UI-1420 [ttl=2025-12-31]: aria labels and helper text for resize handles are editor-only controls */
-import { useTranslations } from "@acme/i18n";
+ 
 import type { PointerEvent } from "react";
+
+import { useTranslations } from "@acme/i18n";
 
 type ResizeHandle = "se" | "ne" | "sw" | "nw" | "e" | "w" | "n" | "s";
 type SpacingType = "margin" | "padding";

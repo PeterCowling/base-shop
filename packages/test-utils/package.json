@@ -22,9 +22,9 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "dev": "tsc -p tsconfig.json -w",
-    "clean": "rimraf dist *.tsbuildinfo"
+    "build": "tsc -b",
+    "dev": "tsc -b --watch",
+    "clean": "rimraf dist *.tsbuildinfo",
+    "lint": "eslint ."
   }
 }
-

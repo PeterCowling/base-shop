@@ -1,7 +1,10 @@
 import "@testing-library/jest-dom";
+
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+import DesignSystemImportPage from "../src/app/cms/shop/[shop]/import/design-system/page";
 
 const track = jest.fn();
 const push = jest.fn();
@@ -14,8 +17,6 @@ jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
   useParams: jest.fn(),
 }));
-
-import DesignSystemImportPage from "../src/app/cms/shop/[shop]/import/design-system/page";
 
 describe("DesignSystemImportPage", () => {
   const useRouter = require("next/navigation").useRouter as jest.Mock;

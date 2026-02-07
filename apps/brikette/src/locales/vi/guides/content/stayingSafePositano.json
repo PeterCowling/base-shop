@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Giữ an toàn tại Positano và Bờ biển Amalfi",
+    "description": "Mẹo an toàn thực tế khi đi xe buýt, phà, leo bậc, nắng nóng và xử lý khẩn cấp quanh Positano và Bờ biển Amalfi."
+  },
+  "linkLabel": "Giữ an toàn tại Positano và Bờ biển Amalfi",
+  "intro": [
+    "Positano nhìn chung an toàn nhưng địa hình, giao thông và nắng nóng mùa hè có thể khiến bạn bất ngờ.",
+    "Hãy dùng các mẹo và danh sách dưới đây để chuyến đi nhẹ nhàng hơn — nhất là khi đi cầu thang, phà và xe buýt."
+  ],
+  "sections": [
+    {
+      "id": "stairs",
+      "title": "Cầu thang và đi bộ",
+      "body": [
+        "Đi giày bám tốt — nhiều lối nhỏ lát đá bóng, trơn khi mưa.",
+        "Bám tay vịn khi có và nghỉ ngơi trên những đoạn dốc dài; trong thị trấn có vòi nước uống."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Xe buýt và phà",
+      "body": [
+        "Trên xe buýt hãy bám tay cầm và đừng chặn lối đi bằng ba lô; tài xế thường phanh gắt ở khúc cua gắt.",
+        "Trên phà hãy làm theo hướng dẫn của thủy thủ đoàn và tránh đứng gần cầu lên xuống khi khách lên/xuống."
+      ]
+    },
+    {
+      "id": "sun-sea",
+      "title": "Nắng, biển và mất nước",
+      "body": [
+        "Mang nước và thoa kem chống nắng SPF 30+; bãi biển và lối mòn ít bóng râm.",
+        "Chỉ bơi trong khu vực cho phép và chú ý thuyền bè khi lặn ống thở gần đá."
+      ]
+    }
+  ],
+  "faqsTitle": "Câu hỏi thường gặp về an toàn",
+  "faqs": [
+    {
+      "q": "Positano có an toàn vào ban đêm không?",
+      "a": [
+        "Có. Trộm vặt hiếm; cứ đi trên các bậc thang và lối đi có đèn."
+      ]
+    },
+    {
+      "q": "Gọi số nào khi khẩn cấp?",
+      "a": [
+        "Gọi 112 — số khẩn cấp EU cho cảnh sát, cấp cứu và cứu hỏa."
+      ]
+    }
+  ]
+}

@@ -3,6 +3,12 @@
 /*  Barrel file for modal context utilities                                   */
 /* -------------------------------------------------------------------------- */
 
-export { ModalContext, type ModalContextValue, type ModalProviderProps, type ModalType } from "./modal/context";
-export { ModalProvider } from "./modal/provider";
+export {
+  ModalContext,
+  type ModalContextValue,
+  type ModalProviderProps,
+  type ModalType,
+  ssrStub,
+} from "./modal/context";
 export { useModal, useOptionalModal } from "./modal/hooks";
+export { ModalProvider } from "./modal/provider";

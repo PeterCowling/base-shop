@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+
 import { addOrUpdateKey } from "@acme/i18n/editTranslations";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 

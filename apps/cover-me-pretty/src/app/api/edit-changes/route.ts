@@ -1,8 +1,9 @@
 // apps/cover-me-pretty/src/app/api/edit-changes/route.ts
+import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
-import { NextResponse } from "next/server";
-import { requirePermission } from "@auth";
+
+import { requirePermission } from "@acme/auth";
 
 export const runtime = "nodejs";
 

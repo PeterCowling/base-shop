@@ -1,14 +1,14 @@
-import { render, screen, fireEvent } from "@testing-library/react";
 import RichTextEditor from "@cms/app/cms/blog/posts/RichTextEditor";
 import type { PortableTextBlock } from "@cms/app/cms/blog/posts/schema";
 import { PortableTextEditor } from "@portabletext/editor";
+import { fireEvent,render, screen } from "@testing-library/react";
 
 const translations: Record<string, string> = {
   "cms.blog.editor.loadFailedProducts": "Failed to load products",
 };
 const translate = (key: string) => translations[key] ?? key;
 
-jest.mock("@ui/components/atoms", () => ({
+jest.mock("@acme/design-system/atoms", () => ({
   Button: ({ children, ...props }: any) => (
     <button {...props}>{children}</button>
   ),
@@ -19,7 +19,7 @@ jest.mock("@ui/components/atoms", () => ({
     </label>
   ),
 }));
-jest.mock("@ui/components/cms/page-builder", () => ({
+jest.mock("@acme/cms-ui/page-builder", () => ({
   ImagePicker: ({ children }: any) => <div>{children}</div>,
 }));
 jest.mock("next/image", () => ({
@@ -31,7 +31,7 @@ jest.mock("next/image", () => ({
 jest.mock("@acme/i18n", () => ({
   useTranslations: () => translate,
 }));
-jest.mock("@acme/shared-utils", () => ({
+jest.mock("@acme/lib/format", () => ({
   formatCurrency: (value: number) => `$${value}`,
 }));
 jest.mock("@portabletext/editor", () => ({

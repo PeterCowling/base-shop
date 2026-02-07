@@ -1,13 +1,16 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { PageComponent, HistoryState } from "@acme/types";
-import type { EditorFlags } from "../state/layout/types";
-import type { Action } from "../state";
 import { usePathname } from "next/navigation";
-import { getShopFromPath } from "@acme/shared-utils";
 import { ulid } from "ulid";
-import { saveGlobalForPage, updateGlobalForPage, listGlobalsForPage, listGlobals, saveGlobal, updateGlobal, type GlobalItem } from "../libraryStore";
-import { validateTemplateCreation } from "@acme/platform-core/validation/templateValidation";
+
+import { getShopFromPath } from "@acme/lib/shop";
 import { rootPlacementOptions } from "@acme/platform-core/validation/options";
+import { validateTemplateCreation } from "@acme/platform-core/validation/templateValidation";
+import type { HistoryState,PageComponent } from "@acme/types";
+
+import { type GlobalItem,listGlobals, listGlobalsForPage, saveGlobal, saveGlobalForPage, updateGlobal, updateGlobalForPage } from "../libraryStore";
+import type { Action } from "../state";
+import type { EditorFlags } from "../state/layout/types";
+
 import useLocalStrings from "./useLocalStrings";
 
 interface Args {

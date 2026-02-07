@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/SocialLinks.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import SocialLinks from './SocialLinks';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './SocialLinks.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import SocialLinks from './SocialLinks';
+import fixture from './SocialLinks.fixtures.json';
 
 const meta: Meta<typeof SocialLinks> = {
   title: 'CMS Blocks/SocialLinks/Matrix',

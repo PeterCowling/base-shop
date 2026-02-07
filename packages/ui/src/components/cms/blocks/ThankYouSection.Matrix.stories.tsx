@@ -1,8 +1,10 @@
 // packages/ui/src/components/cms/blocks/ThankYouSection.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import ThankYouSection from './ThankYouSection';
+
 import { makeStateStory } from '../../../story-utils/createStories';
+
+import ThankYouSection from './ThankYouSection';
 
 const meta: Meta<typeof ThankYouSection> = {
   title: 'CMS Blocks/ThankYouSection/Matrix',

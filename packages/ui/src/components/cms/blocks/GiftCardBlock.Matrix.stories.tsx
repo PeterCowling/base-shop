@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/GiftCardBlock.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import GiftCardBlock from './GiftCardBlock';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './GiftCardBlock.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import GiftCardBlock from './GiftCardBlock';
+import fixture from './GiftCardBlock.fixtures.json';
 
 const meta: Meta<typeof GiftCardBlock> = {
   title: 'CMS Blocks/GiftCardBlock/Matrix',

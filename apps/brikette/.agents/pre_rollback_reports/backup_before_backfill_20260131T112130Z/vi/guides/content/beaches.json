@@ -1,0 +1,218 @@
+{
+  "seo": {
+    "title": "Bãi biển đẹp nhất ở Positano",
+    "description": "Tổng quan về Spiaggia Grande, Fornillo, Arienzo và cách di chuyển tới từng bãi."
+  },
+  "linkLabel": "Bãi biển đẹp nhất ở Positano",
+  "intro": [
+    "Để bạn có một ngày tắm biển thật trọn vẹn, chúng tôi đã tổng hợp danh sách những bãi biển chính. Danh sách được trình bày dưới dạng bảng nhằm giúp bạn nắm nhanh đặc điểm và tiện ích của từng bãi.",
+    "Muốn tìm hiểu kỹ hơn, hãy nhấp vào tên bãi biển trong bảng bên dưới để mở hướng dẫn chi tiết với chỉ đường, gợi ý di chuyển và mô tả từng khu vực."
+  ],
+  "toc": [
+    {
+      "href": "#guides-directions",
+      "label": "Hướng dẫn kèm chỉ đường"
+    },
+    {
+      "href": "#positano-beaches",
+      "label": "Bãi biển Positano"
+    },
+    {
+      "href": "#praiano-beaches",
+      "label": "Bãi biển Praiano"
+    },
+    {
+      "href": "#furore-beach",
+      "label": "Bãi biển Furore"
+    },
+    {
+      "href": "#sorrento-beaches",
+      "label": "Bãi biển Sorrento"
+    },
+    {
+      "href": "#amalfi-beaches",
+      "label": "Bãi biển Amalfi"
+    },
+    {
+      "href": "#capri-day-trips",
+      "label": "Đi Capri trong ngày"
+    }
+  ],
+  "sections": [
+    {
+      "id": "guides-directions",
+      "title": "Hướng dẫn chi tiết, kèm chỉ đường",
+      "body": [
+        "Chạm hoặc nhấp vào tên bãi biển bên dưới để mở hướng dẫn chi tiết. Mỗi bài đều có tuyến đường di chuyển, ranh giới giữa khu miễn phí và khu có phí, cùng mẹo khám phá từng khu vực."
+      ]
+    },
+    {
+      "id": "positano-beaches",
+      "title": "Bãi biển tại Positano",
+      "body": [
+        "Fornillo, Spiaggia Grande, Arienzo và Laurito là những lựa chọn chính nằm trong tầm đi bộ hoặc đi xe trung chuyển từ hostel. Bạn có thể đi bộ dọc lối mòn ven vách đá hoặc dùng thuyền taxi để di chuyển giữa các bãi, và nhớ tính sẵn phương án đi xe buýt hoặc thuyền về lại đồi sau một ngày dài."
+      ]
+    },
+    {
+      "id": "praiano-beaches",
+      "title": "Bãi biển Praiano",
+      "body": [
+        "Những vịnh nhỏ ở Praiano rất thích hợp cho chuyến đi trong ngày từ Positano. Gavitella là điểm ngắm hoàng hôn lý tưởng cho bữa aperitivo và bữa tối, còn Marina di Praia là làng chài hoạt động với các câu lạc bộ bãi biển và một khu công cộng nhỏ nằm giữa thuyền bè."
+      ]
+    },
+    {
+      "id": "furore-beach",
+      "title": "Bãi biển Furore",
+      "body": [
+        "Fiordo di Furore là bãi biển dạng vịnh hẹp nổi tiếng trên Instagram. Vào cửa miễn phí, nhưng việc di chuyển và các bậc thang dốc khiến bạn phải lên kế hoạch kỹ, nhất là nếu muốn rời đi trước khi bãi đỗ xe nhỏ kín chỗ."
+      ]
+    },
+    {
+      "id": "sorrento-beaches",
+      "title": "Bãi biển Sorrento",
+      "body": [
+        "Regina Giovanna Bath là lựa chọn nổi bật để tắm biển ở Sorrento. Đây là hồ bơi tự nhiên mở cửa miễn phí, nước mát lạnh và có tầm nhìn vách đá — rất phù hợp nếu bạn muốn tránh đông đúc trong một buổi chiều."
+      ]
+    },
+    {
+      "id": "amalfi-beaches",
+      "title": "Bãi biển Amalfi",
+      "body": [
+        "Bãi biển trung tâm Amalfi nằm đối diện bến du thuyền với hàng loạt lido như Stella Maris, Marina Grande Beach Club, Silver Moon, Bagni Mar di Cobalto và Tonino ò Beach. Hãy đặt chỗ trước vào mùa cao điểm hoặc đến sớm để giữ chỗ khu công cộng."
+      ]
+    },
+    {
+      "id": "capri-day-trips",
+      "title": "Đi Capri trong ngày",
+      "body": [
+        "Nếu bạn ghé Capri, hãy lưu ý các khu biển chính như Marina di Mulo, Bagni di Tiberio và Marina Grande. Mỗi nơi đều có ghế phơi nắng trả phí, nước trong xanh và kết nối phà thuận tiện quay lại hệ thống giao thông của đảo."
+      ]
+    }
+  ],
+  "prosCons": [
+    {
+      "title": "Fornillo (Positano)",
+      "pros": [
+        "Các câu lạc bộ Pupetto, Grassi, Ferdinando và La Marinella chỉ khoảng 15 € cho một bộ ghế tắm nắng.",
+        "Hai khu công cộng, trong đó có một đoạn ‘bí mật’ ít người biết phía sau khu miễn phí chính."
+      ],
+      "cons": [
+        "Đường leo về Hostel Brikette khá dốc; nếu mệt hãy đi sang bãi chính và bắt xe buýt địa phương lên đồi."
+      ]
+    },
+    {
+      "title": "Spiaggia Grande (Positano)",
+      "pros": [
+        "Khung cảnh biểu tượng của Positano với thị trấn làm nền.",
+        "Có khu vực công cộng nếu bạn đến đủ sớm."
+      ],
+      "cons": [
+        "L’Incanto khoảng 25 € mỗi ghế, còn La Scogliera dao động 100–400 €.",
+        "Nhiều khách vẫn thích không khí và mức giá ở Fornillo hơn."
+      ]
+    },
+    {
+      "title": "Arienzo (Positano)",
+      "pros": [
+        "Gói ghế tắm nắng kèm bữa trưa và đồ uống từ khoảng 60 € rất đáng tiền so với vị trí.",
+        "Được tắm nắng nhiều giờ với tầm nhìn ôm trọn đường bờ biển."
+      ],
+      "cons": [
+        "Khó tiếp cận nếu không đặt thuyền taxi của câu lạc bộ hoặc chấp nhận leo bộ bậc thang dài."
+      ]
+    },
+    {
+      "title": "Laurito (Positano)",
+      "pros": [
+        "Da Adolfo tặng ghế phơi nắng khi bạn dùng bữa, còn bộ ghế của Villa Tre Ville bắt đầu khoảng 30 €.",
+        "Nắng kéo dài và khung cảnh đặc trưng; Da Adolfo mang tính biểu tượng còn Villa Tre Ville rất riêng tư."
+      ],
+      "cons": [
+        "Đi thuyền taxi của câu lạc bộ là cách dễ nhất để tới vịnh, và khu miễn phí cực kỳ nhỏ."
+      ]
+    },
+    {
+      "title": "Gavitella (Praiano)",
+      "pros": [
+        "Lý tưởng vào cuối ngày để tắm biển ngắm hoàng hôn, uống aperitivo và ăn tối trên sân thượng."
+      ],
+      "cons": [
+        "Ban ngày chủ yếu là các bục bê tông nên sẽ chật chội nếu bạn không đặt trước.",
+        "Không có khu hoàn toàn miễn phí — hãy chuẩn bị trả tiền ghế nếu muốn ở lâu."
+      ]
+    },
+    {
+      "title": "Marina di Praia (Praiano)",
+      "pros": [
+        "Không khí làng chài với các quán hải sản ngay sát mặt nước.",
+        "Có một lối vào công cộng nhỏ cho phép tắm biển mà không cần thuê lido."
+      ],
+      "cons": [
+        "Vịnh hẹp mất nắng sớm vào buổi chiều.",
+        "Phần lớn bờ biển do các câu lạc bộ quản lý nên hãy đặt ghế trước."
+      ]
+    },
+    {
+      "title": "Fiordo di Furore",
+      "pros": [
+        "Vào cửa miễn phí với vách đá ấn tượng và bóng râm tự nhiên.",
+        "Nổi tiếng với hoạt động nhảy vách đá và chụp ảnh — chuẩn phong cách Instagram."
+      ],
+      "cons": [
+        "Khâu di chuyển và bậc thang dốc khiến việc đến và rời đi khá vất vả, nhất là khi bãi đỗ xe đầy."
+      ]
+    },
+    {
+      "title": "Regina Giovanna Bath (Sorrento)",
+      "pros": [
+        "Hồ bơi tự nhiên ít người biết với làn nước trong vắt.",
+        "Vào cửa miễn phí và là điểm nghỉ mát tuyệt vời sau khi tham quan các bến tàu ở Sorrento."
+      ],
+      "cons": [
+        "Lối đi nhiều đá, cần đi giày chắc và cẩn thận khi xuống nước.",
+        "Không có dịch vụ tại chỗ — hãy mang theo nước, đồ ăn nhẹ và kem chống nắng."
+      ]
+    },
+    {
+      "title": "Amalfi town beach",
+      "pros": [
+        "Vị trí trung tâm đối diện bến phà với nhiều lido để lựa chọn.",
+        "Có các lựa chọn như Stella Maris, Marina Grande Beach Club, Silver Moon, Bagni Mar di Cobalto và Tonino ò Beach."
+      ],
+      "cons": [
+        "Giá cao vào mùa cao điểm; nên đặt trước.",
+        "Khu công cộng hạn chế và đầy chỗ rất nhanh vào buổi sáng."
+      ]
+    }
+  ],
+  "itemList": [
+    {
+      "name": "Fornillo",
+      "note": "Các câu lạc bộ giá dễ chịu từ khoảng 15 € cùng hai khu công cộng riêng biệt."
+    },
+    {
+      "name": "Spiaggia Grande",
+      "note": "Bãi chính mang tính biểu tượng với tầm nhìn bưu thiếp và các lido cao cấp."
+    },
+    {
+      "name": "Arienzo",
+      "note": "Vịnh nắng ấm với gói bữa trưa khoảng 60 € và thuyền taxi theo mùa."
+    },
+    {
+      "name": "Laurito",
+      "note": "Đi thuyền taxi đến Da Adolfo hoặc Villa Tre Ville, cộng với một dải công cộng rất nhỏ."
+    },
+    {
+      "name": "Fiordo di Furore",
+      "note": "Bãi biển kiểu vịnh hẹp miễn phí, nổi tiếng với hoạt động nhảy vách đá và cảnh quan ngoạn mục."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Các bãi biển có miễn phí không?",
+      "a": [
+        "Mỗi bãi biển được nhắc tới đều có khu công cộng, nhưng các lido trả phí mới cung cấp ghế tắm nắng, ô che và dịch vụ đồ ăn. Hãy lên kế hoạch trước nếu bạn cần bóng râm hoặc muốn chắc chắn có chuyến thuyền taxi."
+      ]
+    }
+  ]
+}

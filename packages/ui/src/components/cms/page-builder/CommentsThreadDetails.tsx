@@ -1,12 +1,16 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
 import type React from "react";
-import { Button, Input, Textarea } from "../../atoms/shadcn";
-import { Inline } from "../../atoms/primitives";
-import type { CommentThread } from "./CommentsDrawer";
+import { useMemo, useRef, useState } from "react";
 import Image from "next/image";
+
+import { getCsrfToken } from "@acme/lib/security";
+
 import { LinkText } from "../../atoms";
+import { Inline } from "../../atoms/primitives";
+import { Button, Input, Textarea } from "../../atoms/shadcn";
+
+import type { CommentThread } from "./CommentsDrawer";
 
 // i18n-exempt — internal editor UI; strings are minimal and not end-user content
 /* i18n-exempt */
@@ -153,8 +157,10 @@ export default function CommentsThreadDetails({
     data.append("file", file);
     setUploading(true);
     try {
-      const res = await fetch(`/cms/api/media?shop=${encodeURIComponent(shop)}`, {
+      const csrfToken = getCsrfToken();
+      const res = await fetch(`/api/media?shop=${encodeURIComponent(shop)}`, {
         method: "POST",
+        headers: csrfToken ? { "x-csrf-token": csrfToken } : undefined,
         body: data,
       });
       const json = await res.json();

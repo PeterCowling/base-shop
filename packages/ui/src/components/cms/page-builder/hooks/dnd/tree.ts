@@ -1,7 +1,8 @@
-import type { PageComponent, HistoryState } from "@acme/types";
+import type { HistoryState,PageComponent } from "@acme/types";
+
 import type { ComponentType } from "../../defaults";
-import { isHiddenForViewport } from "../../state/layout/utils";
 import type { ParentKind } from "../../rules";
+import { isHiddenForViewport } from "../../state/layout/utils";
 
 export function hasChildren(
   c: PageComponent

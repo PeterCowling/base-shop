@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+
 import { getAvailability } from "@acme/platform-core/rental/availability";
 
 const t = (s: string) => s;

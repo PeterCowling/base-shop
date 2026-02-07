@@ -1,10 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+
 import { useTranslations } from "@acme/i18n";
+
+import type { TokenMap } from "../../../hooks/useTokenEditor";
 import { Grid as DSGrid } from "../../atoms/primitives/Grid";
 import { Inline as DSInline } from "../../atoms/primitives/Inline";
-import type { TokenMap } from "../../../hooks/useTokenEditor";
+
 import data from "./color-themes.json";
 
 type ColorTheme = {

@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
-import ProductCarousel from "./ProductCarousel";
+
 import { PRODUCTS } from "@acme/platform-core/products/index";
 import type { SKU } from "@acme/types";
+
+import ProductCarousel from "./ProductCarousel";
 
 const meta: Meta<typeof ProductCarousel> = {
   title: "CMS Blocks/ProductCarousel",

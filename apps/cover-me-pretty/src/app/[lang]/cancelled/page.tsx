@@ -2,10 +2,11 @@
 
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
-import Section from "@ui/components/cms/blocks/Section";
-import { useTranslations } from "@i18n/Translations";
+import { useSearchParams } from "next/navigation";
+
+import Section from "@acme/cms-ui/blocks/Section";
+import { useTranslations } from "@acme/i18n/Translations";
 
 /**
  * Payment cancelled page.

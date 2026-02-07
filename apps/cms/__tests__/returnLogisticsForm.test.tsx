@@ -1,6 +1,9 @@
 import "@testing-library/jest-dom";
+
 import React from "react";
-import { render, screen, fireEvent, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
+
+import ReturnLogisticsPage from "../src/app/cms/shop/[shop]/data/return-logistics/page";
 
 const mockCheckShopExists = jest.fn();
 const mockReadReturnLogistics = jest.fn();
@@ -8,11 +11,11 @@ const mockReadReturnLogistics = jest.fn();
 jest.mock("@acme/lib", () => ({
   checkShopExists: (...args: any[]) => mockCheckShopExists(...args),
 }));
-jest.mock("@platform-core/repositories/returnLogistics.server", () => ({
+jest.mock("@acme/platform-core/repositories/returnLogistics.server", () => ({
   readReturnLogistics: (...args: any[]) => mockReadReturnLogistics(...args),
 }));
 
-jest.mock("@ui/components/atoms/shadcn", () => ({
+jest.mock("@acme/design-system/shadcn", () => ({
   Button: (props: any) => <button {...props} />,
   Input: (props: any) => <input {...props} />,
   Checkbox: ({ onCheckedChange, ...props }: any) => (
@@ -25,8 +28,6 @@ jest.mock("@ui/components/atoms/shadcn", () => ({
     />
   ),
 }));
-
-import ReturnLogisticsPage from "../src/app/cms/shop/[shop]/data/return-logistics/page";
 
 const initial = {
   labelService: "ups",

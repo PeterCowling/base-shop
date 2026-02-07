@@ -16,7 +16,7 @@ This document is the canonical reference for:
 - Which **import paths are public API** and safe for apps/CMS to depend on.
 - Which paths are **internal details** (subject to change without notice).
 
-The same rules apply whether code imports the packages directly (for example `@acme/platform-core`) or via workspace aliases (for example `@platform-core`, `@ui`) configured in `tsconfig.paths`.
+The same rules apply whether code imports the packages directly (for example `@acme/platform-core`) or via workspace aliases (for example `@acme/platform-core`, `@ui`) configured in `tsconfig.paths`.
 
 ---
 
@@ -73,7 +73,7 @@ The same rules apply whether code imports the packages directly (for example `@a
 
 ## Public API: `@acme/platform-core`
 
-The patterns below describe the **intended public surface**. Code in apps and CMS should stick to these imports (or their `@platform-core` alias equivalents).
+The patterns below describe the **intended public surface**. Code in apps and CMS should stick to these imports (or their `@acme/platform-core` alias equivalents).
 
 ### Root export
 
@@ -216,7 +216,7 @@ In addition to the root exports, the following are treated as public for layout/
 - `@acme/ui/components/ThemeStyle` — server component that injects theme tokens and fonts for a shop.
 - `@acme/ui/components/cms/ShopChooser` — CMS shop chooser.
 - Layout primitives used by CMS and dashboards:
-  - `@acme/ui/components/atoms/primitives` (for example `Grid`, `Stack`, `Inline`, `Sidebar`).
+  - `@acme/design-system/primitives` (for example `Grid`, `Stack`, `Inline`, `Sidebar`).
 - Layout shell components for storefronts:
   - `@acme/ui/components/layout/Header`
   - `@acme/ui/components/layout/Footer`

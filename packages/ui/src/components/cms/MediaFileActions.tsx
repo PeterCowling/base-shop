@@ -1,10 +1,12 @@
 "use client";
 
+import type { MouseEvent as ReactMouseEvent } from "react";
 import type { CheckedState } from "@radix-ui/react-checkbox";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import type { MouseEvent as ReactMouseEvent } from "react";
+
 import { useTranslations } from "@acme/i18n";
 
+import { Spinner } from "../atoms";
 import {
   Button,
   Checkbox,
@@ -15,7 +17,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../atoms/shadcn";
-import { Spinner } from "../atoms";
 
 interface MediaFileActionsProps {
   actionsDisabled: boolean;

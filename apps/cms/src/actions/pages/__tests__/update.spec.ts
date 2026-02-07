@@ -1,5 +1,6 @@
 import { describe, expect, it, jest } from "@jest/globals";
 import type { Mock } from "jest-mock";
+
 import { updatePage } from "../update";
 
 jest.mock("@acme/types", () => ({
@@ -7,7 +8,7 @@ jest.mock("@acme/types", () => ({
 }), { virtual: true });
 
 jest.mock("../../common/auth", () => ({
-  ensureAuthorized: jest.fn().mockResolvedValue({ user: { email: "user@example.com" } }),
+  ensureAuthorized: jest.fn<Promise<{ user: { email: string } }>, []>().mockResolvedValue({ user: { email: "user@example.com" } }),
 }));
 
 jest.mock("../service", () => ({
@@ -19,8 +20,8 @@ jest.mock("@/utils/sentry.server", () => ({ captureException: jest.fn() }));
 jest.mock("@acme/config/env/core", () => ({ coreEnv: { NODE_ENV: "test" } }));
 
 const service = jest.requireMock("../service") as {
-  getPages: Mock;
-  updatePage: Mock;
+  getPages: Mock<any, any>;
+  updatePage: Mock<any, any>;
 };
 
 describe("updatePage", () => {

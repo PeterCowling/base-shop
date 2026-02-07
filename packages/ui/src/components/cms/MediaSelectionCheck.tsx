@@ -1,8 +1,9 @@
 // packages/ui/src/components/cms/MediaSelectionCheck.tsx
 "use client";
 
-import { CheckIcon } from "@radix-ui/react-icons";
 import type { ReactElement } from "react";
+import { CheckIcon } from "@radix-ui/react-icons";
+
 import { cn } from "../../utils/style";
 
 export interface MediaSelectionCheckProps {

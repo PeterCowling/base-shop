@@ -1,0 +1,68 @@
+{
+  "scanDate": "2026-01-28T21:40:49Z",
+  "cards": [
+    {
+      "id": "PLAT-OPP-0001",
+      "business": "PLAT",
+      "lane": "Planned",
+      "priority": "P0",
+      "owner": "Pete",
+      "title": "Implement Business OS Phase 0",
+      "path": "docs/business-os/cards/PLAT-OPP-0001.user.md",
+      "hasFactFindDoc": true,
+      "issue": "Outdated - shows incomplete but Phase 0 is 100% done"
+    },
+    {
+      "id": "PLAT-OPP-0002",
+      "business": "PLAT",
+      "lane": "Inbox",
+      "priority": "P2",
+      "owner": "Pete",
+      "title": "Example card for testing edit functionality",
+      "path": "docs/business-os/cards/PLAT-OPP-0002.user.md",
+      "hasFactFindDoc": false,
+      "note": "Test/example card"
+    },
+    {
+      "id": "BRIK-OPP-0001",
+      "business": "BRIK",
+      "lane": "In progress",
+      "priority": "P1",
+      "owner": "Pete",
+      "title": "Add Santa Maria del Castello hike guide",
+      "path": "docs/business-os/cards/BRIK-OPP-0001.user.md",
+      "hasFactFindDoc": false,
+      "issue": "May be complete - guide file exists"
+    }
+  ],
+  "ideas": [
+    {
+      "id": "BRIK-OPP-0002",
+      "business": "BRIK",
+      "status": "raw",
+      "location": "inbox",
+      "title": "Hostel booking FAQs content",
+      "path": "docs/business-os/ideas/inbox/BRIK-OPP-0002.user.md"
+    },
+    {
+      "id": "SCAN-PLAT-001",
+      "business": "PLAT",
+      "status": "raw",
+      "location": "inbox",
+      "title": "Update PLAT-OPP-0001: Business OS Phase 0 complete",
+      "path": "docs/business-os/ideas/inbox/SCAN-PLAT-001.user.md",
+      "source": "scan-generated"
+    },
+    {
+      "id": "SCAN-BRIK-001",
+      "business": "BRIK",
+      "status": "raw",
+      "location": "inbox",
+      "title": "Review BRIK-OPP-0001: Santa Maria guide may be complete",
+      "path": "docs/business-os/ideas/inbox/SCAN-BRIK-001.user.md",
+      "source": "scan-generated"
+    }
+  ],
+  "plans": [],
+  "people": null
+}

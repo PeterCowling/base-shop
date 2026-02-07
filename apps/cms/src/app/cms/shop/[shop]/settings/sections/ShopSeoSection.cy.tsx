@@ -1,4 +1,5 @@
 import React from 'react';
+
 import ShopSeoSection from './ShopSeoSection';
 
 describe('ShopSeoSection (CT)', { tags: ['forms'] }, () => {

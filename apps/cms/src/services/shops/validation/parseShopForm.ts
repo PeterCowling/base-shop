@@ -1,10 +1,10 @@
-import { shopSchema, type ShopForm } from "../../../actions/schemas";
+import { type ShopForm,shopSchema } from "../../../actions/schemas";
+import { formDataEntries } from "../../../utils/formData";
 import {
   parseFilterMappings,
-  parsePriceOverrides,
   parseLocaleOverrides,
+  parsePriceOverrides,
 } from "../formData";
-import { formDataEntries } from "../../../utils/formData";
 
 export type { ShopForm };
 

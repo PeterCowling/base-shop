@@ -1,13 +1,21 @@
 import type { ComponentPropsWithoutRef, ComponentType, PropsWithChildren } from "react";
 
 import type { AppLanguage } from "@/i18n.config";
-import type { GuideKey } from "@/routes.guides-helpers";
 import type { LinkBinding, RouteDefinition } from "@/lib/how-to-get-here/definitions";
 import type { RouteContent } from "@/lib/how-to-get-here/schema";
+import type { GuideKey } from "@/routes.guides-helpers";
 
 export type RouteDirection = "to" | "from";
 
 export type TransportMode = "bus" | "ferry" | "train" | "car" | "walk";
+
+export type RouteFacts = {
+  duration?: string;
+  cost?: string;
+  walking?: string;
+  luggageFriendly?: 1 | 2 | 3;
+  seasonality?: string;
+};
 
 export type DestinationLink = {
   label: string;
@@ -16,6 +24,9 @@ export type DestinationLink = {
   external?: boolean;
   direction?: RouteDirection;
   transportModes?: TransportMode[];
+  summary?: string;
+  facts?: RouteFacts;
+  groupKey?: string;
 };
 
 export type RichTextTextPart = {
@@ -41,6 +52,7 @@ export type DestinationSectionImage = {
 
 export type DestinationSection = {
   name: string;
+  description?: string;
   image?: DestinationSectionImage;
   links?: DestinationLink[] | Record<string, DestinationLink> | DestinationLink;
 };
@@ -48,6 +60,7 @@ export type DestinationSection = {
 export type NormalizedDestinationSection = {
   id: string;
   name: string;
+  description?: string;
   links: DestinationLink[];
   image?: DestinationSectionImage;
 };
@@ -55,11 +68,13 @@ export type NormalizedDestinationSection = {
 export type SorrentoContent = {
   title?: string;
   links?: DestinationLink[] | Record<string, DestinationLink> | DestinationLink;
+  image?: DestinationSectionImage;
 };
 
 export type NormalizedSorrentoContent = {
   title: string;
   links: DestinationLink[];
+  image?: DestinationSectionImage;
 };
 
 export type AugmentedDestinationLink = DestinationLink & {
@@ -133,6 +148,7 @@ export type InlineListProps = ComponentPropsWithoutRef<"ul">;
 
 export type IntroHighlightCardProps = PropsWithChildren<{
   eyebrow: string;
+  className?: string;
 }>;
 
 export type OverviewLoaderData = {

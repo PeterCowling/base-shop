@@ -1,17 +1,18 @@
-import { stripe } from "@acme/stripe";
-import type { SKU } from "@acme/types";
-import type { InventoryItem } from "@platform-core/types/inventory";
-import { readShop } from "@platform-core/repositories/shops.server";
+import { type NextRequest, NextResponse } from "next/server";
+
+import { reserveRentalInventory } from "@acme/platform-core/orders/rentalAllocation";
+import { computeDamageFee } from "@acme/platform-core/pricing";
+import { readInventory } from "@acme/platform-core/repositories/inventory.server";
+import { readRepo as readProducts } from "@acme/platform-core/repositories/products.server";
 import {
   addOrder,
-  markReturned,
   markRefunded,
-} from "@platform-core/repositories/rentalOrders.server";
-import { readInventory } from "@platform-core/repositories/inventory.server";
-import { readRepo as readProducts } from "@platform-core/repositories/products.server";
-import { reserveRentalInventory } from "@platform-core/orders/rentalAllocation";
-import { computeDamageFee } from "@platform-core/pricing";
-import { NextRequest, NextResponse } from "next/server";
+  markReturned,
+} from "@acme/platform-core/repositories/rentalOrders.server";
+import { readShop } from "@acme/platform-core/repositories/shops.server";
+import type { InventoryItem } from "@acme/platform-core/types/inventory";
+import { stripe } from "@acme/stripe";
+import type { SKU } from "@acme/types";
 
 const SHOP_ID = "bcd";
 

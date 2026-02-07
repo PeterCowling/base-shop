@@ -1,5 +1,7 @@
 import path from "node:path";
+
 import { jest } from "@jest/globals";
+
 import type { Page } from "@acme/types";
 
 // In-memory file system mock
@@ -61,7 +63,7 @@ beforeAll(async () => {
   repo = await import("../src/repositories/pages/index.server");
 });
 
-let consoleErrorSpy: jest.SpyInstance;
+let consoleErrorSpy: { mockRestore: () => void };
 
 beforeEach(() => {
   files.clear();

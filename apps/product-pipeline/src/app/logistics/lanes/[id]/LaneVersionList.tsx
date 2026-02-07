@@ -1,9 +1,12 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
-import { Cluster, Inline, Stack } from "@ui/components/atoms/primitives";
+
+import { Cluster, Inline, Stack } from "@acme/design-system/primitives";
+
 import { formatNumber, formatPercent } from "@/lib/format";
-import type { LaneEvidence, LaneDetailStrings, LaneVersion } from "./types";
+
+import type { LaneDetailStrings, LaneEvidence, LaneVersion } from "./types";
 
 const DIFF_FIELDS: Array<{
   key: keyof LaneVersion;
@@ -79,12 +82,12 @@ function getExpiryBadge(
   const diffMs = expires.getTime() - Date.now();
   const diffDays = Math.ceil(diffMs / 86_400_000);
   if (diffDays < 0) {
-    return { label: strings.badges.expired, tone: "text-red-600" };
+    return { label: strings.badges.expired, tone: "text-danger" };
   }
   if (diffDays <= 14) {
-    return { label: `${strings.badges.expiring} ${diffDays}d`, tone: "text-amber-600" };
+    return { label: `${strings.badges.expiring} ${diffDays}d`, tone: "text-warning" };
   }
-  return { label: `${strings.badges.valid} ${diffDays}d`, tone: "text-emerald-600" };
+  return { label: `${strings.badges.valid} ${diffDays}d`, tone: "text-success" };
 }
 
 function diffSummary(

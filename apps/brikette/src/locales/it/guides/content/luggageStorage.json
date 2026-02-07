@@ -10,43 +10,43 @@
   "sections": [
     {
       "id": "near-dock",
-      "title": "Near the dock",
+      "title": "Vicino al molo",
       "body": [
-        "Traduzione in arrivo."
+        "Deposito orario/giornaliero con biglietto; aspettati code in alta stagione — prenota in anticipo se possibile."
       ]
     },
     {
       "id": "aggregators",
-      "title": "Aggregators",
+      "title": "Piattaforme",
       "body": [
-        "Traduzione in arrivo."
+        "Bounce / Radical Storage: verifica indirizzo esatto e orari di apertura prima di pagare online."
       ]
     },
     {
       "id": "etiquette",
-      "title": "Etiquette & tips",
+      "title": "Buone pratiche e consigli",
       "body": [
-        "Traduzione in arrivo."
+        "Tieni con te gli oggetti di valore; etichetta bene le borse; scatta una foto dei tagliandi."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "Open in the evening?",
+      "q": "Aperto la sera?",
       "a": [
-        "Traduzione in arrivo."
+        "Gli orari variano; in bassa stagione attenzione alle chiusure anticipate e agli orari dell'ultimo traghetto."
       ]
     }
   ],
-  "tocTitle": "On this page",
-  "faqsTitle": "FAQs",
-  "heroAlt": "Traduzione in arrivo.",
-  "serviceType": "Luggage storage",
+  "tocTitle": "In questa pagina",
+  "faqsTitle": "Domande frequenti",
+  "heroAlt": "Facchino che guida un carrello bagagli su per le scale di Positano",
+  "serviceType": "Deposito bagagli",
   "areaServed": "Positano",
   "gallery": {
-    "primaryAlt": "Traduzione in arrivo.",
+    "primaryAlt": "Case di Positano sul costone con vista mare",
     "primaryCaption": "Positano panorama",
-    "secondaryAlt": "Traduzione in arrivo.",
-    "secondaryCaption": "Traduzione in arrivo."
+    "secondaryAlt": "Facchino che spinge un carrello bagagli vicino al molo dei traghetti di Positano",
+    "secondaryCaption": "Carrelli dei facchini vicino al molo"
   }
 }

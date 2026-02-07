@@ -1,11 +1,13 @@
+import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import type { SKU } from "@acme/types";
+
 import ShopClient from "./ShopClient.client";
-import React from "react";
 
 // Mock ProductGrid to render simple titles for assertions
-jest.mock("@platform-core/components/shop/ProductGrid", () => ({
+jest.mock("@acme/platform-core/components/shop/ProductGrid", () => ({
   ProductGrid: ({ skus }: { skus: SKU[] }) => (
     <div data-testid="product-grid">
       {skus.map((s) => (

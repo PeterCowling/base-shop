@@ -1,3 +1,5 @@
+'use client';
+
 import { UtensilsCrossed } from 'lucide-react';
 import Link from 'next/link';
 

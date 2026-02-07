@@ -1,18 +1,19 @@
+import { useCallback, useState } from "react";
 import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import type { MediaItem } from "@acme/types";
-import { useCallback, useState } from "react";
 
 import Library from "../media/Library";
 import MediaManager from "../MediaManager";
 
-jest.mock("@ui/hooks/useMediaUpload", () => {
+jest.mock("../../../hooks/useMediaUpload", () => {
   const React = require("react");
   return {
     useMediaUpload: jest.fn((options: any) => {
       const { useState } = React;
-      const [pendingFile, setPendingFile] = useState<any>(null);
-      const [progress, setProgress] = useState<any>(null);
+      const [pendingFile, setPendingFile] = useState(null as any);
+      const [progress, setProgress] = useState(null as any);
 
       const onDrop = (event: any) => {
         event.preventDefault?.();

@@ -1,11 +1,12 @@
 // packages/ui/src/components/templates/CheckoutTemplate.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/nextjs';
 import React from 'react';
-import { CheckoutTemplate } from './CheckoutTemplate';
+import type { Meta, StoryObj } from '@storybook/nextjs';
+import { expect, fn,userEvent, within  } from '@storybook/test';
+
 import { makeStateStory } from '../../story-utils/createStories';
-import { expect, userEvent, within } from '@storybook/test';
-import { fn } from '@storybook/test';
+
+import { CheckoutTemplate } from './CheckoutTemplate';
 
 const stepContent = {
   contact: (

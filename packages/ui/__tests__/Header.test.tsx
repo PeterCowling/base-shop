@@ -1,6 +1,8 @@
-import { readShop } from "@acme/platform-core/repositories/json.server";
-import Header from "../src/components/layout/Header";
 import "../../../test/resetNextMocks";
+
+import { readShop } from "@acme/platform-core/repositories/json.server";
+
+import Header from "../src/components/layout/Header";
 
 jest.mock("@acme/platform-core/repositories/json.server", () => ({
   readShop: jest.fn(),

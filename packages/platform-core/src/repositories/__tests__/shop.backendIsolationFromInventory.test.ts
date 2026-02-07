@@ -1,9 +1,16 @@
-const resolveRepoMock = jest.fn();
+// Use globalThis to avoid Jest mock hoisting issues
+declare global {
+  var __shopBackendIsolationResolveRepoMock: jest.Mock | undefined;
+}
+globalThis.__shopBackendIsolationResolveRepoMock = jest.fn();
+
 jest.mock("../repoResolver", () => ({
-  resolveRepo: resolveRepoMock,
+  get resolveRepo() {
+    return globalThis.__shopBackendIsolationResolveRepoMock;
+  },
 }));
 
-import { resolveRepo } from "../repoResolver";
+const { resolveRepo } = require("../repoResolver") as { resolveRepo: jest.Mock };
 
 describe("shop backend unaffected by INVENTORY_BACKEND", () => {
   const origInventoryBackend = process.env.INVENTORY_BACKEND;
@@ -12,7 +19,7 @@ describe("shop backend unaffected by INVENTORY_BACKEND", () => {
 
   beforeEach(() => {
     jest.resetModules();
-    jest.clearAllMocks();
+    globalThis.__shopBackendIsolationResolveRepoMock?.mockReset();
     process.env.DATABASE_URL = "postgres://test";
   });
 

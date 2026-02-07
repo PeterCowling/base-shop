@@ -1,7 +1,8 @@
 import { jest } from "@jest/globals";
 
-const lighthouseMock = jest.fn();
-const launchMock = jest.fn();
+type MockFn = jest.Mock & { mockResolvedValue: (v: any) => void };
+const lighthouseMock = jest.fn() as unknown as MockFn;
+const launchMock = jest.fn() as unknown as MockFn;
 
 let lighthouseModule: any;
 let chromeModule: any;

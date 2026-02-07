@@ -1,19 +1,22 @@
 // packages/ui/src/components/account/Sessions.tsx
-import { type SessionRecord } from "@auth";
+import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
+
+import { type SessionRecord } from "@acme/auth";
 import type { Locale } from "@acme/i18n/locales";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
-import RevokeSessionButton from "./RevokeSessionButton";
+
 import { revoke } from "../../actions/revokeSession";
+
 import AccountNavigation from "./AccountNavigation";
-import type { ReactNode } from "react";
-import { resolveTranslatableText } from "./translations";
 import {
-  ACCOUNT_PROFILE_PATH,
   ACCOUNT_ORDERS_PATH,
+  ACCOUNT_PROFILE_PATH,
   ACCOUNT_SESSIONS_PATH,
   ACCOUNT_SHELL_TEST_ID,
 } from "./constants";
+import RevokeSessionButton from "./RevokeSessionButton";
+import { resolveTranslatableText } from "./translations";
 
 export { revoke };
 
@@ -34,8 +37,8 @@ export default async function SessionsPage({
   callbackUrl = ACCOUNT_SESSIONS_PATH,
   locale = "en",
 }: SessionsPageProps = {}) {
-  const { getCustomerSession, listSessions, hasPermission } = await import("@auth");
-  const t = await getServerTranslations(locale as Locale);
+  const { getCustomerSession, listSessions, hasPermission } = await import("@acme/auth");
+  const t = await getServerTranslations(locale as "en" | "de" | "it");
   const session = await getCustomerSession();
   if (!session) {
     redirect(`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`);

@@ -1,54 +1,53 @@
 {
   "seo": {
-    "title": "Mochileando por el sur de Italia con parada en la costa",
-    "description": "Ruta lógica por los imprescindibles con notas de transporte económico."
+    "title": "Mochileando por el sur de Italia: Ruta incluyendo la costa de Amalfi",
+    "description": "Un recorrido lógico por los puntos destacados con notas de transporte económico."
   },
-  "linkLabel": "Mochileando por el sur de Italia",
+  "linkLabel": "Mochileando por el sur de Italia: Ruta incl. Amalfi",
   "intro": [
-    "Combina Nápoles, la Costa Amalfitana y el sur de Italia con mochila ligera y pases de tren.",
-    "Deja márgenes entre trayectos para manejar retrasos y el calor."
+    "Planifica un recorrido circular por el sur de Italia que mantenga Positano en el centro sin reventar el presupuesto."
   ],
   "sections": [
     {
-      "id": "naples",
-      "title": "Días 1–2: Nápoles",
+      "id": "route",
+      "title": "Ruta sugerida",
       "body": [
-        "Explora el Centro Storico, Pompeya o Herculano usando los trenes Circumvesuviana.",
-        "Duerme cerca de la estación para facilitar la salida hacia la costa."
+        "Comienza en Nápoles por vuelos y trenes, pasa 2–3 noches en Positano o en la cercana Praiano, continúa a Salerno y luego dirígete al interior hacia Matera o Puglia antes de regresar.",
+        "Usa trenes regionales y autobuses para cubrir tramos largos a bajo costo; reserva con 4–6 semanas de anticipación para conseguir asientos de €15–€25."
       ]
     },
     {
-      "id": "amalfi",
-      "title": "Días 3–5: Positano y Amalfi",
+      "id": "arrivals",
+      "title": "Llegadas y equipaje",
       "body": [
-        "Instálate en el hostel, recorre el Sentiero degli Dei y súmate a excursiones en barco asequibles.",
-        "Usa ferris y autobuses para Amalfi, Ravello y playas alternativas."
+        "Viaja con una mochila de 40 L para poder navegar escaleras y portaequipajes de autobuses fácilmente.",
+        "Empaca capas de secado rápido, una toalla compacta y sandalias para las duchas de hostales; las lavanderías en Positano cobran €12–€15 por lavado y secado."
       ]
     },
     {
-      "id": "beyond",
-      "title": "Días 6–7: Salerno o Cilento",
+      "id": "budget",
+      "title": "Trucos de presupuesto",
       "body": [
-        "Ve a Salerno para museos y conexión con trenes nacionales.",
-        "Extiende el viaje al Parque del Cilento para senderos y playas menos concurridas."
+        "Combina compras en supermercados (focaccia fresca, fruta, mozzarella) con picnics en terrazas; presupuesta €8 para el almuerzo en lugar de €18 en comidas sentado.",
+        "Comparte excursiones de día con compañeros de hostal: divide traslados en taxi a senderos o alquila scooters en Salerno/Praiano donde las tarifas bajan a €35 por día."
       ]
     }
   ],
   "tips": [
-    "Activa una SIM regional o eSIM (TIM/Vodafone) para cargar horarios de autobuses y hacer check-in en hostales sobre la marcha.",
-    "Reserva hostales o pensiones para la primera y la última noche de tu ruta, y mantén flexibilidad a mitad del viaje por si el tiempo cambia."
+    "Activa una SIM regional o eSIM (TIM/Vodafone) para poder cargar horarios de autobuses y check-ins de hostales mientras te mueves.",
+    "Reserva hostales o pensiones para la primera y última noche de tu recorrido, luego mantén flexibilidad a mitad del viaje para ajustes por clima."
   ],
   "faqs": [
     {
-      "q": "¿Qué pase de transporte me conviene?",
+      "q": "¿Necesito alquilar un coche?",
       "a": [
-        "El Interrail Italia o la Campania ArteCard combinan entradas y trenes regionales. Compara según tu edad y duración del viaje."
+        "No. Trenes, autobuses y ferris cubren el recorrido. Alquilar un scooter para tramos cortos puede ser divertido, pero el tráfico alrededor de Amalfi requiere confianza."
       ]
     },
     {
-      "q": "¿Puedo viajar sin reservar alojamiento?",
+      "q": "¿Cuántos días debo dedicar a Positano?",
       "a": [
-        "En temporada alta es arriesgado: reserva al menos las primeras noches en Positano y Nápoles."
+        "Date al menos tres noches: una para Positano en sí, una para el Sendero de los Dioses o un día en barco, y un día flexible para Amalfi/Ravello o respaldo por clima."
       ]
     }
   ]

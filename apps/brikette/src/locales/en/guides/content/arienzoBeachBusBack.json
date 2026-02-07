@@ -9,7 +9,7 @@
     "Tip: Bus Timetable. Note that the timetable includes Positano times, but not Arienzo ones. Arienzo bus stop is located about 2–5 minutes before Sponda.",
     "Important! If you don't have a bus ticket for your return journey, you can either walk back to Sponda and catch the bus from there, or take the water shuttle back to the main beach in Positano. Remember, there are no ticket vendors near Arienzo Beach, so it's important to plan ahead and purchase your tickets in advance for the return trip.",
     "Tip: See our %LINK:arienzoBeachClub|Arienzo Beach Guide%",
-    "Tip: See our %LINK:beaches|Beaches Overview%"
+    "Tip: See our %LINK:positanoBeaches|Beaches Overview%"
   ],
   "sections": [
     {
@@ -48,12 +48,6 @@
     "Printed timetables list only Positano stops; expect Arienzo around 2–5 minutes before Positano Sponda on the way back.",
     "There are no ticket vendors near Arienzo Beach. Buy your return ticket in town in advance, or walk to Sponda to board there, or take the water shuttle back to the main beach in Positano.",
     "Read our %LINK:arienzoBeachClub|Arienzo Beach Guide% for facilities, shuttles, and planning tips.",
-    "Browse the %LINK:beaches|Beaches Overview% to compare other coves and plan future visits."
-  ],
-  "gallery": {
-    "title": "Arienzo bus stop reference",
-    "items": [
-      { "alt": "Blue-and-white SITA bus stop sign on metal pole", "caption": "Look for the SITA bus stop sign on the inland side of the road above Arienzo." }
-    ]
-  }
+    "Browse the %LINK:positanoBeaches|Beaches Overview% to compare other coves and plan future visits."
+  ]
 }

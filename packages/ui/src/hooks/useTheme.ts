@@ -1,7 +1,8 @@
 // src/hooks/useTheme.ts
 // -----------------------------------------------------------------
-import { ThemeContext, ThemeContextValue } from "@/providers/ThemeProvider";
 import { useContext } from "react";
+
+import { ThemeContext, type ThemeContextValue } from "../providers/ThemeProvider";
 
 /**
  * Access the current theme and setter.

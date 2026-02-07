@@ -1,9 +1,9 @@
 {
   "seo": {
-    "title": "Bus to Arienzo Beach from Hostel Brikette",
-    "description": "Catch the Amalfi Coast bus from Chiesa Nuova, ride three kilometres south, and take the cliffside stairs down to Arienzo Beach."
+    "title": "حافلة إلى شاطئ أرينزو من هوستل بريكيت",
+    "description": "استقل حافلة ساحل أمالفي من تشيزا نوفا، واتجه جنوباً لمسافة ثلاثة كيلومترات، ثم انزل الدرج المطل على الجرف إلى شاطئ أرينزو."
   },
-  "linkLabel": "Bus to Arienzo Beach",
+  "linkLabel": "حافلة إلى شاطئ أرينزو",
   "intro": [
     "يقع شاطئ أرينزو على بعد بضعة كيلومترات جنوب هوستل بريكيت وأسهل طريقة للوصول إليه هي حافلة ساحل أمالفي.",
     "اتبع هذه الخطوات للعثور على الموقف، شراء التذاكر، الركوب بثقة، وإنهاء الرحلة بالسلم الصحيح للنزول إلى الرمال."
@@ -11,55 +11,55 @@
   "sections": [
     {
       "id": "reach-bus-stop",
-      "title": "Go to the Chiesa Nuova bus stop",
+      "title": "اذهب إلى موقف حافلات تشيزا نوفا",
       "body": [
-        "Leave Hostel Brikette through the main entrance and walk down the stairs to the road.",
-        "Turn left and continue roughly 100 metres (330 feet) until you reach Bar Internazionale.",
-        "The SITA bus stop sits outside the bar in the Chiesa Nuova area, about 140 metres (490 feet) from the hostel."
+        "اخرج من هوستل بريكيت من المدخل الرئيسي وانزل الدرج إلى الطريق.",
+        "انعطف يساراً وواصل قرابة 100 متر (330 قدماً) حتى تصل إلى بار إنترناسيونالي.",
+        "يقع موقف حافلات SITA أمام البار في منطقة تشيزا نوفا، على بعد نحو 140 متراً (490 قدماً) من النزل."
       ]
     },
     {
       "id": "buy-tickets",
-      "title": "Buy bus tickets inside the bar",
+      "title": "اشترِ تذاكر الحافلة من داخل البار",
       "body": [
-        "Enter Bar Internazionale and purchase your tickets from the tabacchi counter.",
-        "Ask for both outbound and return tickets — staff may recommend either one combined ticket or two singles depending on the current pricing."
+        "ادخل إلى بار إنترناسيونالي واشترِ التذاكر من كاونتر التبغ (تاباكّي).",
+        "اطلب تذاكر الذهاب والعودة — قد يوصي الموظفون بتذكرة مدمجة واحدة أو تذكرتين مفردتين حسب السعر الحالي."
       ]
     },
     {
       "id": "wait-for-bus",
-      "title": "Wait for the Amalfi Coast bus",
+      "title": "انتظر حافلة ساحل أمالفي",
       "body": [
-        "Cross the road to the marked bus stop opposite Bar Internazionale.",
-        "Stand where the driver can see you and flag the coach as it approaches from the Positano direction."
+        "اعبر الطريق إلى الموقف المعلَّم مقابل بار إنترناسيونالي.",
+        "قف حيث يستطيع السائق رؤيتك ولوّح للحافلة عند اقترابها من جهة بوزيتانو."
       ]
     },
     {
       "id": "ride-to-arienzo",
-      "title": "Ride to the Arienzo stop",
+      "title": "استقل الحافلة إلى محطة أرينزو",
       "body": [
-        "Stay alert during the journey — the bus will make intermediate stops based on passenger requests.",
-        "Expect the trip to cover roughly 3 kilometres (1.9 miles). Arienzo comes two to five minutes after the Positano Sponda stop.",
-        "Use mobile data or download Google Maps offline and search for \"JFGW+X6 Arienzo, Province of Salerno\" if you want live confirmation of the stop."
+        "ابقَ متنبهاً أثناء الرحلة — فالحافلة تتوقف في محطات وسيطة حسب طلب الركاب.",
+        "توقّع أن تغطي الرحلة نحو 3 كيلومترات (1.9 ميل). تأتي أرينزو بعد 2 إلى 5 دقائق من محطة بوزيتانو سبوندا.",
+        "استخدم بيانات الهاتف أو نزّل خرائط Google للاستخدام دون اتصال وابحث عن \\\\\"JFGW+X6 Arienzo, Province of Salerno\\\\\" إذا أردت تأكيداً مباشراً للمحطة."
       ]
     },
     {
       "id": "walk-to-beach",
-      "title": "Walk down to the beach",
+      "title": "انزل مشياً إلى الشاطئ",
       "body": [
-        "After stepping off the bus, walk a short distance back in the direction you arrived from.",
-        "Look for the Arienzo signpost and the staircase on the seaward side of the road, then follow the steps down to the lido entrance."
+        "بعد نزولك من الحافلة، امشِ مسافة قصيرة عائداً باتجاه قدومك.",
+        "ابحث عن لافتة أرينزو والدرج على جهة البحر من الطريق، ثم اتبع الدرج نزولاً حتى مدخل الليدو."
       ]
     }
   ],
-  "tipsTitle": "Bus tips",
+  "tipsTitle": "نصائح الحافلة",
   "tips": [
-    "Printed timetables list Positano stops; expect Arienzo to appear about 2–5 minutes after Positano Sponda when heading from town.",
-    "Buy return tickets before leaving the hostel — there are no shops at the beach to sell you more if you decide to stay longer.",
-    "Check our %LINK:beaches|Positano beaches overview% for Arienzo facilities, shuttle boats, and alternative ways back to town."
+    "جداول المواعيد المطبوعة تعرض محطات بوزيتانو؛ توقّع ظهور أرينزو بعد 2–5 دقائق من محطة بوزيتانو سبوندا عند الانطلاق من البلدة.",
+    "اشترِ تذاكر العودة قبل مغادرة النزل — لا توجد متاجر على الشاطئ لشراء المزيد إذا قررت البقاء لفترة أطول.",
+    "راجع %LINK:positanoBeaches|نظرة عامة على شواطئ بوزيتانو% لمعرفة مرافق أرينزو وقوارب النقل وخيارات العودة الأخرى."
   ],
   "afterArticle": {
-    "scanToShareHeading": "Scan to Share",
+    "scanToShareHeading": "امسح للمشاركة",
     "scanToShareGalleryAlt": [
       "امسح للمشاركة – رمز QR أو بطاقة دليل حافلة أرينزو",
       "منطقة بار إنترناسيونالي وموقف حافلات تشيزا نوفا",

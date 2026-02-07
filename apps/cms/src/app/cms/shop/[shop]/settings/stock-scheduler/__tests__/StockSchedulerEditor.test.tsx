@@ -1,12 +1,13 @@
 import "@testing-library/jest-dom";
+
+import type { ComponentProps } from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe, toHaveNoViolations } from "jest-axe";
-import type { ComponentProps } from "react";
 
 import StockSchedulerEditor from "../StockSchedulerEditor";
 
-expect.extend(toHaveNoViolations);
+expect.extend(toHaveNoViolations as any);
 
 const updateStockScheduler = jest.fn();
 

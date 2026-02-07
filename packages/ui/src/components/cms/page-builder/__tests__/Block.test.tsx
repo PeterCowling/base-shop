@@ -1,29 +1,28 @@
-import { render, screen } from "@testing-library/react";
 import React from "react";
-import Button from "../../blocks/Button";
-
-const blockRegistryMock = {
-  Foo: {
-    component: ({ style }: { style?: React.CSSProperties }) => (
-      // eslint-disable-next-line react/forbid-dom-props -- TEST-STYLE-PASS: verify style passthrough to DOM in unit test
-      <div data-cy="foo" style={style}>
-        Foo
-      </div>
-    ),
-  },
-  Bar: {
-    component: () => <div data-cy="bar">Bar</div>,
-  },
-  Button: {
-    component: Button,
-  },
-};
-
-jest.mock("../../blocks", () => ({
-  blockRegistry: blockRegistryMock,
-}));
+import { render, screen } from "@testing-library/react";
 
 import Block from "../Block";
+
+jest.mock("../../blocks", () => ({
+  blockRegistry: {
+    Foo: {
+      component: ({ style }: { style?: React.CSSProperties }) => (
+        // eslint-disable-next-line react/forbid-dom-props -- TEST-STYLE-PASS: verify style passthrough to DOM in unit test
+        <div data-cy="foo" style={style}>
+          Foo
+        </div>
+      ),
+    },
+    Bar: {
+      component: () => <div data-cy="bar">Bar</div>,
+    },
+    Button: {
+      component: ({ href }: { href?: string }) => (
+        <a href={href}>Button</a>
+      ),
+    },
+  },
+}));
 
 describe("Block", () => {
   it.each([
@@ -61,12 +60,12 @@ describe("Block", () => {
         component={{
           id: "8",
           type: "Text" as any,
-          text: { en: "Hello", fr: "Bonjour" },
+          text: { en: "Hello", de: "Hallo" },
         }}
-        locale="fr"
+        locale="de"
       />,
     );
-    expect(screen.getByText("Bonjour")).toBeInTheDocument();
+    expect(screen.getByText("Hallo")).toBeInTheDocument();
   });
 
   it("returns null for unknown component type", () => {

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
+
 import HeroBanner from "./HeroBanner";
 
 const meta: Meta<typeof HeroBanner> = {

@@ -19,20 +19,9 @@
       "applyDeal": "Aplicar oferta"
     },
     "status": {
-      "upcoming": "Próxima oferta · Inicia {{startDate}}",
+      "upcoming": "Próxima oferta · Empieza el {{startDate}}",
       "expired": "Finalizada"
     }
-  },
-  "hero": {
-    "activeLabel": "Oferta actual",
-    "activeTitle": "Ahorra {{percent}}",
-    "activeDatesLabel": "Fechas de estancia:",
-    "activeSubtitle": "Se aplica automáticamente al pagar. Solo reservas directas."
-  },
-  "emptyState": {
-    "title": "Sin ofertas actuales",
-    "subtitle": "Reserva directamente para el mejor precio y todas las ventajas.",
-    "secondaryCta": "Ver ventajas de reserva directa"
   },
   "status": {
     "banner": {
@@ -59,6 +48,17 @@
     "expired": "Ofertas finalizadas",
     "noneCurrent": "No hay ofertas vigentes en este momento."
   },
+  "hero": {
+    "activeLabel": "Oferta actual",
+    "activeTitle": "Ahorra {{percent}}",
+    "activeDatesLabel": "Fechas de estancia:",
+    "activeSubtitle": "Aplicado automáticamente al pagar. Solo reservas directas."
+  },
+  "emptyState": {
+    "title": "Sin ofertas actuales",
+    "subtitle": "Reserva directo para obtener la mejor tarifa y ventajas.",
+    "secondaryCta": "Ver ventajas de reserva directa"
+  },
   "chips": {
     "nonRefundable": "No reembolsable",
     "directOnly": "Solo web",
@@ -80,13 +80,16 @@
   "perksIntroLink": "Ver todas las ventajas",
   "perksList": [
     {
-      "title": "Hasta un 25 % de descuento sobre el precio habitual al aplicar el cupón"
+      "title": "Hasta un 25 % de descuento sobre el precio habitual al aplicar el cupón",
+      "subtitle": "Aplicado automáticamente"
     },
     {
-      "title": "Desayuno gratuito"
+      "title": "Desayuno gratuito",
+      "subtitle": "Incluido diariamente"
     },
     {
-      "title": "Bebida de cortesía por la tarde"
+      "title": "Bebida de cortesía por la tarde",
+      "subtitle": "Selección de la casa"
     }
   ],
   "expired": {

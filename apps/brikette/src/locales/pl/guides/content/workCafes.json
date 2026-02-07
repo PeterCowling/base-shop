@@ -5,38 +5,31 @@
   },
   "linkLabel": "Wi-Fi i kawiarnie przyjazne pracy w pobliżu Brikette",
   "intro": [
-    "Tłumaczenie w przygotowaniu."
+    "Kawiarnie blisko hostelu z Wi-Fi nadającym się do pracy. Etykieta: zamawiaj regularnie, unikaj długich rozmów telefonicznych i zostawiaj mało miejsca."
   ],
   "sections": [
     {
       "id": "spots",
-      "title": "Spots near Brikette",
+      "title": "Miejsca przy Brikette",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Małe kawiarnie na Via Pasitea i wokół Chiesa Nuova często mają stabilne Wi-Fi.",
+        "Zabierz powerbank; gniazdka są ograniczone w starszych lokalach."
       ]
     },
     {
       "id": "backup",
-      "title": "Backup connectivity",
+      "title": "Kopie połączenia",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tetheruj, gdy pośpiech w porze lunchu spowalnia sieci kawiarni."
+        "Miej eSIM jako plan awaryjny; zasięg różni się w zależności od operatora — TIM i Vodafone są zwykle niezawodne.",
+        "Tetheruj, gdy lunchowy tłok przygasa i kawiarniane sieci znów działają."
       ]
     }
   ],
-  "galleryTitle": "Gallery",
-  "gallery": {
-    "item1Alt": "Laptop on a café table",
-    "item1Caption": "A quiet corner for calls",
-    "item2Alt": "Tłumaczenie w przygotowaniu.",
-    "item2Caption": "Rotate venues and order regularly"
-  },
   "faqs": [
     {
-      "q": "Is all‑day work OK?",
+      "q": "Czy można pracować cały dzień?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Zamawiaj co 60–90 minut i unikaj szczytu lunchowego; rozważ zmianę lokalu."
       ]
     }
   ]

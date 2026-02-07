@@ -1,56 +1,54 @@
 {
   "seo": {
-    "title": "Guía de la ciudad de Amalfi: historia, visitas y consejos",
-    "description": "Catedral, museo del papel, claustro, playas y cómo llegar desde Positano."
+    "title": "Guía de la ciudad de Amalfi: historia, lugares de interés y consejos de visita",
+    "description": "Iglesia, museo del papel, claustro, playas y cómo llegar desde Positano."
   },
-  "linkLabel": "Guía de la ciudad de Amalfi",
+  "linkLabel": "Guía de la ciudad de Amalfi: historia, lugares de interés y consejos de visita",
   "intro": [
-    "Amalfi combina historia, mar y conexiones fáciles con otras localidades.",
-    "Úsala como base para subir a Ravello o como parada en una excursión de medio día."
+    "Aprovecha al máximo un día en la ciudad de Amalfi: lugares clave, cómo llegar y consejos de horarios para evitar las multitudes de autobuses turísticos."
   ],
   "sections": [
     {
       "id": "highlights",
-      "title": "Imprescindibles",
+      "title": "Principales lugares de interés",
       "body": [
-        "Duomo di Amalfi y Chiostro del Paradiso; el Museo del Papel para empaparte de historia local.",
-        "Pasea por el lungomare y toma un gelato en las escalinatas del Duomo al atardecer."
+        "Sube los 62 escalones hasta la Catedral de Amalfi para ver la fachada a rayas, el claustro y el museo (se requiere vestimenta modesta).",
+        "Visita el Museo della Carta para ver demostraciones de papel hecho a mano y llevarte recuerdos ligeros."
       ]
     },
     {
-      "id": "getting",
+      "id": "arrival",
       "title": "Cómo llegar",
       "body": [
-        "Desde Positano, los ferris de temporada son más cómodos; con mal tiempo recurre al bus SITA (prepárate para las colas).",
-        "Compra el billete de regreso al llegar y confirma el último horario del día."
+        "Los ferris desde Positano tardan 20 minutos; los autobuses tardan entre 40 y 50 minutos según el tráfico. Llega antes de las 10:00 para conseguir sombra en la plaza.",
+        "Compra los billetes de ferry de regreso a primera hora de la tarde por si ajustan las salidas por el viento."
       ]
     },
     {
-      "id": "tips",
-      "title": "Consejos rápidos",
+      "id": "timing",
+      "title": "Cuándo ir",
       "body": [
-        "Llega antes de las 10:00 para evitar grupos grandes.",
-        "Combínalo con Ravello (bus de 25 minutos) si tienes medio día extra.",
-        "Lleva sombrero y protector: hay poca sombra cerca del muelle."
+        "Las mañanas (antes de las 11:00) o las tardes (después de las 17:00) son las más tranquilas una vez que se van los excursionistas.",
+        "Combina Amalfi con Atrani (cinco minutos a pie) para cenar en la plaza más pequeña antes de volver."
       ]
     }
   ],
   "tips": [
     "Lleva un pañuelo ligero para visitar iglesias y para protegerte del sol durante el trayecto en ferry.",
-    "Pide una granita de limón en los quioscos del paseo marítimo para refrescarte entre paradas."
+    "Consigue una granita de limón en los quioscos del paseo marítimo para refrescarte entre paradas."
   ],
   "faqTitle": "Preguntas frecuentes",
   "faqs": [
     {
       "q": "¿Cuánto tiempo necesito en Amalfi?",
       "a": [
-        "Con 2–3 horas cubres Duomo, paseo y gelato; añade Ravello para un día completo."
+        "Dedica de tres a cuatro horas para cubrir la catedral, el museo del papel y una comida relajada. Añade tiempo extra si planeas nadar en la pequeña playa del pueblo."
       ]
     },
     {
-      "q": "¿Hay opciones para guardar equipaje?",
+      "q": "¿Hay opciones de consigna de equipaje?",
       "a": [
-        "Sí, hay consignas cerca del muelle de ferris. Calcula entre 5 y 8 € por bolsa durante el día."
+        "Sí, hay consignas cerca del muelle del ferry. Espera pagar entre 5 y 8 € por bolsa al día."
       ]
     }
   ]

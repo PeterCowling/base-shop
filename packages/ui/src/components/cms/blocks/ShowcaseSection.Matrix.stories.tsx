@@ -1,12 +1,15 @@
 // packages/ui/src/components/cms/blocks/ShowcaseSection.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { http, HttpResponse, delay } from 'msw';
-import ShowcaseSection from './ShowcaseSection';
-import { PRODUCTS } from '@acme/platform-core/products/index';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './ShowcaseSection.fixtures.json';
+import { delay,http, HttpResponse } from 'msw';
 import { z } from 'zod';
+
+import { PRODUCTS } from '@acme/platform-core/products/index';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import ShowcaseSection from './ShowcaseSection';
+import fixture from './ShowcaseSection.fixtures.json';
 
 const meta: Meta<typeof ShowcaseSection> = {
   title: 'CMS Blocks/ShowcaseSection/Matrix',

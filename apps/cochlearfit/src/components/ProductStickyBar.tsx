@@ -1,10 +1,11 @@
 "use client";
 
 import React from "react";
+
 import Button from "@/components/Button";
+import Container from "@/components/layout/Container";
 import Price from "@/components/Price";
 import type { CurrencyCode } from "@/types/product";
-import Container from "@/components/layout/Container";
 
 type ProductStickyBarProps = {
   amount: number;

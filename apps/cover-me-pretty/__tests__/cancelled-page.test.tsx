@@ -1,4 +1,5 @@
 // apps/cover-me-pretty/__tests__/cancelled-page.test.tsx
+import type { ReactElement } from "react";
 import { render, screen } from "@testing-library/react";
 
 import CancelledBase from "../src/app/cancelled/page";
@@ -12,7 +13,7 @@ const useSearchParams = jest.requireMock("next/navigation")
   .useSearchParams as jest.Mock;
 
 const cancelledPages: ReadonlyArray<
-  [string, () => JSX.Element]
+  [string, () => ReactElement]
 > = [
   ["non-locale /cancelled page", CancelledBase],
   ["localized /[lang]/cancelled page", CancelledLocalized],

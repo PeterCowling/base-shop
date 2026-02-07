@@ -1,8 +1,8 @@
-import { describe, it, expect } from "@jest/globals";
+import { describe, expect,it } from "@jest/globals";
 
-import { isStringLiteral, getStringIfStatic, getBooleanIfStatic, isClassNameAttribute } from "../../src/utils/ast";
+import { getBooleanIfStatic, getStringIfStatic, isClassNameAttribute,isStringLiteral } from "../../src/utils/ast";
 import { isClassnameCallee, parseClassnameLikeArg } from "../../src/utils/classnames";
-import { parseFromExpression, extractFromJsxAttribute } from "../../src/utils/classParser";
+import { extractFromJsxAttribute,parseFromExpression } from "../../src/utils/classParser";
 
 // These targeted unit tests ensure 100% branch coverage of helper utilities.
 

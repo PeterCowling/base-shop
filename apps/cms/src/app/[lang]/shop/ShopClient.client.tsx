@@ -1,15 +1,16 @@
 // apps/cms/src/app/[lang]/shop/ShopClient.tsx
 "use client";
 
-import FilterBar, {
-  type Filters,
-  type FilterDefinition,
-} from "@platform-core/components/shop/FilterBar";
-import { ProductGrid } from "@platform-core/components/shop/ProductGrid";
-import type { SKU } from "@acme/types";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useTranslations } from "@i18n/Translations";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
+import { useTranslations } from "@acme/i18n/Translations";
+import FilterBar, {
+  type FilterDefinition,
+  type Filters,
+} from "@acme/platform-core/components/shop/FilterBar";
+import { ProductGrid } from "@acme/platform-core/components/shop/ProductGrid";
+import type { SKU } from "@acme/types";
 
 export default function ShopClient({ skus }: { skus: SKU[] }) {
   const t = useTranslations();

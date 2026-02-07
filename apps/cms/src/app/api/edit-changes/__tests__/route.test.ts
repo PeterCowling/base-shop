@@ -1,9 +1,9 @@
 import { NextRequest } from "next/server";
 
 const requirePermission = jest.fn();
-jest.mock("@auth", () => ({ requirePermission }));
+jest.mock("@acme/auth", () => ({ requirePermission }));
 const diffHistory = jest.fn();
-jest.mock("@platform-core/repositories/settings.server", () => ({ diffHistory }));
+jest.mock("@acme/platform-core/repositories/settings.server", () => ({ diffHistory }));
 
 let GET: typeof import("../route").GET;
 

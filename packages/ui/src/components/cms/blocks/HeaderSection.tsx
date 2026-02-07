@@ -1,15 +1,18 @@
 "use client";
 
 import React from "react";
+
 import { useTranslations } from "@acme/i18n";
-import { Cluster, Cover } from "../../atoms/primitives";
 import { resolveLocale } from "@acme/i18n/locales";
-import AnnouncementBar from "./AnnouncementBarBlock";
-import SearchBar from "./SearchBar";
-import CurrencySelector from "./CurrencySelector";
-import LanguageSwitcher from "../../molecules/LanguageSwitcher";
-import ExperimentGate from "../../ab/ExperimentGate";
 import { getBreadcrumbs } from "@acme/platform-core/router/breadcrumbs";
+
+import ExperimentGate from "../../ab/ExperimentGate";
+import { Cluster, Cover } from "../../atoms/primitives";
+import LanguageSwitcher from "../../molecules/LanguageSwitcher";
+
+import AnnouncementBar from "./AnnouncementBarBlock";
+import CurrencySelector from "./CurrencySelector";
+import SearchBar from "./SearchBar";
 
 export interface HeaderSectionProps extends React.HTMLAttributes<HTMLElement> {
   variant?: "minimal" | "centerLogo" | "splitUtilities" | "transparent" | "sticky";
@@ -114,7 +117,7 @@ export default function HeaderSection({
   };
 
   return (
-    // eslint-disable-next-line ds/no-hardcoded-copy -- DS-0003: CSS utility classes only [ttl=2026-12-31]
+     
     <header className={[className, stickyClass, transparentClass, "relative w-full border-b border-border"].filter(Boolean).join(" ") || undefined} {...rest}>
       {announcement ? (
         experimentKey ? (
@@ -146,7 +149,7 @@ export default function HeaderSection({
         <div className="mx-auto px-4 pb-3 text-sm text-muted-foreground">
           <nav aria-label={String(t("breadcrumb.ariaLabel"))}>
             <ol>
-              {breadcrumbs.map((c, i) => (
+              {breadcrumbs.map((c: { href: string; label: string }, i: number) => (
                 <li key={c.href} className="inline-block align-middle me-2 last:me-0">
                   <a href={c.href} className="inline-flex items-center min-h-10 min-w-10 hover:underline px-1">{c.label}</a> {/* i18n-exempt -- DS-1024: dynamic route labels provided by router [ttl=2026-12-31] */}
                   {i < breadcrumbs.length - 1 ? <span className="mx-1" aria-hidden>/</span> : null} {/* i18n-exempt -- DS-1027: separator glyph only [ttl=2026-12-31] */}

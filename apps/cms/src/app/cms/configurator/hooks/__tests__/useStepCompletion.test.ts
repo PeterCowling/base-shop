@@ -1,6 +1,7 @@
-import { renderHook, act } from "@testing-library/react";
-import useStepCompletion from "../useStepCompletion";
+import { act,renderHook } from "@testing-library/react";
+
 import { useConfigurator } from "../../ConfiguratorContext";
+import useStepCompletion from "../useStepCompletion";
 
 jest.mock("../../ConfiguratorContext", () => ({
   useConfigurator: jest.fn(),

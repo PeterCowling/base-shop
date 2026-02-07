@@ -1,8 +1,10 @@
-import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { CategoryCollectionTemplate } from "../CategoryCollectionTemplate";
-import { CategoryCard, type Category } from "../../organisms/CategoryCard";
 import "../../../../../../test/resetNextMocks";
+
+import { render, screen } from "@testing-library/react";
+
+import { type Category,CategoryCard } from "../../organisms/CategoryCard";
+import { CategoryCollectionTemplate } from "../CategoryCollectionTemplate";
 
 jest.mock("../../organisms/CategoryCard", () => ({
   CategoryCard: jest.fn(({ category }: { category: Category }) => (
@@ -22,14 +24,11 @@ describe("CategoryCollectionTemplate", () => {
     );
 
     const wrapper = container.firstChild as HTMLDivElement;
-    expect(wrapper.style.gridTemplateColumns).toBe(
-      "repeat(4, minmax(0, 1fr))"
-    );
+    expect(wrapper).toHaveClass("grid-cols-4");
 
-    expect(CategoryCard as jest.Mock).toHaveBeenCalledTimes(categories.length);
+    expect(CategoryCard as unknown as jest.Mock).toHaveBeenCalledTimes(categories.length);
     categories.forEach((c) => {
       expect(screen.getByText(c.title)).toBeInTheDocument();
     });
   });
 });
-

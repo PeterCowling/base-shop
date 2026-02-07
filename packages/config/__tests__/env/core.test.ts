@@ -1,4 +1,5 @@
-import { describe, it, expect } from "@jest/globals";
+import { describe, expect,it } from "@jest/globals";
+
 import { withEnv } from "../../test/utils/withEnv";
 
 const baseEnv = {
@@ -6,6 +7,10 @@ const baseEnv = {
   CMS_ACCESS_TOKEN: "token",
   SANITY_API_VERSION: "v1",
   EMAIL_FROM: "from@example.com",
+  SANITY_PROJECT_ID: "test-project",
+  SANITY_DATASET: "production",
+  SANITY_API_TOKEN: "test-token",
+  SANITY_PREVIEW_SECRET: "preview-secret",
 };
 
 describe("@acme/config/env/core", () => {

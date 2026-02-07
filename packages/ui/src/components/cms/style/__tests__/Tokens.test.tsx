@@ -1,12 +1,14 @@
-import { render as rtlRender, fireEvent, screen, waitFor, act } from "@testing-library/react";
 import React from "react";
-import Tokens from "../Tokens";
-import Presets from "../Presets";
-import * as tokenEditor from "../../../../hooks/useTokenEditor";
-import type { TokenMap } from "../../../../hooks/useTokenEditor";
-import { hexToHsl } from "../../../../utils/colorUtils";
+import { act,fireEvent, render as rtlRender, screen, waitFor } from "@testing-library/react";
+
 import { TranslationsProvider } from "@acme/i18n";
 import en from "@acme/i18n/en.json";
+
+import type { TokenMap } from "../../../../hooks/useTokenEditor";
+import * as tokenEditor from "../../../../hooks/useTokenEditor";
+import { hexToHsl } from "../../../../utils/colorUtils";
+import Presets from "../Presets";
+import Tokens from "../Tokens";
 
 jest.mock("../../../atoms/shadcn", () => {
   const actual = jest.requireActual("../../../atoms/shadcn");
@@ -55,7 +57,7 @@ describe("Tokens", () => {
     const input = container.querySelector(
       'label[data-token-key="--color-bg"] input'
     ) as HTMLInputElement;
-    // eslint-disable-next-line ds/no-raw-color -- test simulates raw hex input from user
+     
     fireEvent.change(input, { target: { value: "#000000" } });
 
     expect(handleChange).toHaveBeenCalledWith({ "--color-bg": "0 0% 0%" });
@@ -92,7 +94,7 @@ describe("Tokens", () => {
     const input = container.querySelector(
       'label[data-token-key="--color-bg"] input'
     ) as HTMLInputElement;
-    // eslint-disable-next-line ds/no-raw-color -- test simulates raw hex input from user
+     
     fireEvent.change(input, { target: { value: "#000000" } });
     rerender(
       <Tokens
@@ -305,7 +307,7 @@ describe("Tokens", () => {
     const onReplace = jest.fn();
     const promptSpy = jest
       .spyOn(window, "prompt")
-      // eslint-disable-next-line ds/no-raw-color -- test exercises hex normalization path
+       
       .mockReturnValue("#112233");
 
     render(
@@ -321,7 +323,7 @@ describe("Tokens", () => {
     fireEvent.click(trigger);
     fireEvent.click(screen.getByText("Replace across tokens…"));
 
-    // eslint-disable-next-line ds/no-raw-color -- test validates conversion of specific hex
+     
     expect(onReplace).toHaveBeenCalledWith("--color-bg", hexToHsl("#112233"));
     promptSpy.mockRestore();
   });

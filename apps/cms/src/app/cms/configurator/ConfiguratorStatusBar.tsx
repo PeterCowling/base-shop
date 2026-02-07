@@ -1,13 +1,15 @@
 // apps/cms/src/app/cms/configurator/ConfiguratorStatusBar.tsx
 "use client";
 
-import { useConfigurator } from "./ConfiguratorContext";
-import { useGuidedTour } from "./GuidedTour";
-import { Loader, Tag } from "@ui/components/atoms";
-import { Inline } from "@ui/components/atoms/primitives";
 import { CheckIcon } from "@radix-ui/react-icons";
+
+import { Loader, Tag } from "@acme/design-system/atoms";
+import { Inline } from "@acme/design-system/primitives";
 import { useTranslations } from "@acme/i18n";
 import { track } from "@acme/telemetry";
+
+import { useConfigurator } from "./ConfiguratorContext";
+import { useGuidedTour } from "./GuidedTour";
 
 export default function ConfiguratorStatusBar(): React.JSX.Element {
   const { saving, dirty, state } = useConfigurator();

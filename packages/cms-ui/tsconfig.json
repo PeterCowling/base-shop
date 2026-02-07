@@ -1,0 +1,68 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "noEmit": false,
+    "emitDeclarationOnly": false,
+    "rootDir": "src",
+    "outDir": "dist",
+    "declarationDir": "dist",
+    "declarationMap": true,
+    "jsx": "react-jsx",
+    "types": ["react", "react-dom", "jest", "@testing-library/jest-dom"],
+    "resolveJsonModule": true,
+    "moduleResolution": "Bundler",
+    "module": "ESNext",
+    "target": "ES2022",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@acme/cms-ui": ["./src/index.ts"],
+      "@acme/cms-ui/*": ["./src/*"],
+      "@acme/design-system": ["../design-system/dist/index.d.ts"],
+      "@acme/design-system/*": ["../design-system/dist/*"],
+      "@acme/ui": ["../ui/dist/index.d.ts"],
+      "@acme/ui/*": ["../ui/dist/*"],
+      "@acme/platform-core": ["../platform-core/dist/index.d.ts"],
+      "@acme/platform-core/*": ["../platform-core/dist/*"],
+      "@acme/page-builder-core": ["../page-builder-core/dist/index.d.ts"],
+      "@acme/page-builder-core/*": ["../page-builder-core/dist/*"],
+      "@acme/types": ["../types/dist/index.d.ts"],
+      "@acme/types/*": ["../types/dist/*"],
+      "@acme/telemetry": ["../telemetry/dist/index.d.ts"],
+      "@acme/telemetry/*": ["../telemetry/dist/*"]
+    }
+  },
+  "references": [
+    {
+      "path": "../design-system"
+    },
+    {
+      "path": "../i18n"
+    },
+    {
+      "path": "../page-builder-core"
+    },
+    {
+      "path": "../platform-core"
+    },
+    {
+      "path": "../telemetry"
+    },
+    {
+      "path": "../types"
+    },
+    {
+      "path": "../ui"
+    }
+  ],
+  "include": ["src", "src/**/*.json"],
+  "exclude": [
+    "__tests__",
+    "**/__tests__/**",
+    "**/*.test.*",
+    "**/*.spec.*",
+    "**/*.stories.*"
+  ]
+}

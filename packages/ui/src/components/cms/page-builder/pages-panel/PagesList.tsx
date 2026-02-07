@@ -1,10 +1,13 @@
 "use client";
 import React from "react";
-import { Button, Input } from "../../../atoms/shadcn";
-import { Cluster } from "../../../atoms/primitives/Cluster";
-import type { PageItem } from "./types";
-import { PagesListItem } from "./PagesListItem";
+
 import { useTranslations } from "@acme/i18n";
+
+import { Cluster } from "../../../atoms/primitives/Cluster";
+import { Button, Input } from "../../../atoms/shadcn";
+
+import { PagesListItem } from "./PagesListItem";
+import type { PageItem } from "./types";
 
 export function PagesList({
   query,

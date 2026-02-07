@@ -69,7 +69,7 @@
     "whatToPack",
     "workCafes"
   ],
-  "arrivalText": "Vi ligger ~80 m från SITA-hållplatsen \"Chiesa Nuova\" utan trappor på vägen. Kommer du med färja? Överväg en bärare eller SITA-bussen uppför backen.",
+  "arrivalText": "Vi ligger ~80 m från SITA-hållplatsen \\\\\"Chiesa Nuova\\\\\" utan trappor på vägen. Kommer du med färja? Överväg en bärare eller SITA-bussen uppför backen.",
   "arrivalLinks": [
     "chiesaNuovaArrivals",
     "ferryDockToBrikette",

@@ -1,7 +1,10 @@
+import { IS_PROD } from "@/config/env";
+
 import definitions from "../../data/how-to-get-here/routes.json";
+
 import {
-  howToGetHereRouteDefinitionsSchema,
   type GalleryBinding,
+  howToGetHereRouteDefinitionsSchema,
   type LinkBinding,
   type LinkListBinding,
   type LinkTarget,
@@ -9,7 +12,6 @@ import {
   type RouteDefinitionDocument,
   type RouteDefinitionEntry,
 } from "./schema";
-import { IS_PROD } from "@/config/env";
 
 export type RouteDefinition = Omit<
   RouteDefinitionEntry,

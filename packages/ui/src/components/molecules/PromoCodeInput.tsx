@@ -1,9 +1,11 @@
 /* i18n-exempt file -- UI-000: Non-user-facing literals (class names). All visible text uses i18n keys. */
 "use client";
 import * as React from "react";
+
+import { useTranslations } from "@acme/i18n";
+
 import { cn } from "../../utils/style";
 import { Button, Input } from "../atoms/shadcn";
-import { useTranslations } from "@acme/i18n";
 
 export interface PromoCodeInputProps
   extends React.HTMLAttributes<HTMLFormElement> {

@@ -1,9 +1,12 @@
 // packages/ui/src/components/organisms/ProductCarousel.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
+
 import type { SKU } from '@acme/types';
-import { ProductCarousel } from './ProductCarousel';
+
 import { makeStateStory } from '../../story-utils/createStories';
+
+import { ProductCarousel } from './ProductCarousel';
 
 const products: SKU[] = Array.from({ length: 6 }).map((_, i) => ({
   id: `sku-${i + 1}`,

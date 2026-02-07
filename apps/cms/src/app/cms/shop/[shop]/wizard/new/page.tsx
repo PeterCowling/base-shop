@@ -2,12 +2,14 @@
 
 import { useCallback, useState } from "react";
 import { useParams } from "next/navigation";
+
+import { useTranslations } from "@acme/i18n";
 import { track } from "@acme/telemetry";
 import type { ScaffoldSpec } from "@acme/types/page/ScaffoldSpec";
-import SpecForm from "./components/SpecForm";
-import PreviewPane from "./components/PreviewPane";
+
 import { createDraft, finalize } from "./actions";
-import { useTranslations } from "@acme/i18n";
+import PreviewPane from "./components/PreviewPane";
+import SpecForm from "./components/SpecForm";
 
 export default function NewWizardPage() {
   const params = useParams<{ shop: string }>();

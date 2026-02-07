@@ -1,6 +1,16 @@
 // packages/ui/__tests__/Orders.test.tsx
+import { redirect } from "next/navigation";
 import { render, screen } from "@testing-library/react";
-jest.mock("@auth", () => ({
+
+import { getCustomerSession, hasPermission } from "@acme/auth";
+import { getOrdersForCustomer } from "@acme/platform-core/orders";
+import { getTrackingStatus as getReturnTrackingStatus } from "@acme/platform-core/returnAuthorization";
+import { getTrackingStatus as getShippingTrackingStatus } from "@acme/platform-core/shipping";
+
+import OrdersPage from "../src/components/account/Orders";
+import StartReturnButton from "../src/components/account/StartReturnButton";
+
+jest.mock("@acme/auth", () => ({
   __esModule: true,
   getCustomerSession: jest.fn(),
   hasPermission: jest.fn(),
@@ -25,14 +35,6 @@ jest.mock("next/navigation", () => ({
   __esModule: true,
   redirect: jest.fn(),
 }));
-
-import { getCustomerSession, hasPermission } from "@auth";
-import { getOrdersForCustomer } from "@acme/platform-core/orders";
-import { getTrackingStatus as getShippingTrackingStatus } from "@acme/platform-core/shipping";
-import { getTrackingStatus as getReturnTrackingStatus } from "@acme/platform-core/returnAuthorization";
-import OrdersPage from "../src/components/account/Orders";
-import StartReturnButton from "../src/components/account/StartReturnButton";
-import { redirect } from "next/navigation";
 
 describe("OrdersPage permissions", () => {
   beforeEach(() => {

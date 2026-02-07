@@ -1,0 +1,5 @@
+export declare const version = "0.0.0-dev";
+export { aboutPageTemplates, accessibilityPageTemplates, contactPageTemplates, checkoutPageTemplates, cookiePageTemplates, corePageTemplates, faqPageTemplates, homePageTemplates, legalPageTemplates, privacyPageTemplates, productPageTemplates, returnsPageTemplates, shippingReturnsPageTemplates, shopPageTemplates, termsPageTemplates, vatPageTemplates, } from "./corePageTemplates";
+export { legalBundles, getRapidLaunchLegalBundles, pickRapidLaunchLegalBundle, type ConsentConfig, type LegalBundle, type LegalDocument, type LegalDocumentSection, type VatConfig, } from "./corePageTemplates";
+export { allProviderTemplates, getDirectorApprovedTemplates, getProviderTemplate, getProviderTemplatesByCategory, getProviderTemplatesByProvider, getRapidLaunchTemplates, paymentProviderTemplates, pickRapidLaunchTemplate, type ProviderTemplate, providerTemplateSchema, shippingProviderTemplates, taxProviderTemplates, validateProviderTemplate, } from "./providerTemplates";
+//# sourceMappingURL=index.d.ts.map

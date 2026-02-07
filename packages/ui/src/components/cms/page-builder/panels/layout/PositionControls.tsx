@@ -2,11 +2,12 @@
 "use client";
 
 import type { PageComponent } from "@acme/types";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../../atoms/shadcn";
-import { Button } from "../../../../atoms/shadcn";
+
 import { Tooltip } from "../../../../atoms";
-import UnitInput from "./UnitInput";
+import { Button,Select, SelectContent, SelectItem, SelectTrigger, SelectValue  } from "../../../../atoms/shadcn";
 import useLocalStrings from "../../hooks/useLocalStrings";
+
+import UnitInput from "./UnitInput";
 
 interface Props {
   component: PageComponent;

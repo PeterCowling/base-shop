@@ -1,9 +1,10 @@
-export { buildLineItemsForItem } from "./lineItems";
-export { computeTotals } from "./totals";
-export { buildCheckoutMetadata } from "./metadata";
+export type { CartState } from "../cart";
 export {
   createCheckoutSession,
   type CreateCheckoutSessionOptions,
   INSUFFICIENT_STOCK_ERROR,
 } from "./createSession";
-export type { CartState } from "../cart";
+export { buildLineItemsForItem } from "./lineItems";
+export { buildCheckoutMetadata } from "./metadata";
+export { CheckoutValidationError } from "./reprice";
+export { computeTotals } from "./totals";

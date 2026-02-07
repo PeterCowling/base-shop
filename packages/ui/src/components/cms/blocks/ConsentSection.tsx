@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+
 import { useTranslations } from "@acme/i18n";
 
 function getCookie(name: string): string | null {

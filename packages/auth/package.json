@@ -28,6 +28,7 @@
   "scripts": {
     "test": "JEST_FORCE_CJS=1 pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs",
     "build": "tsc -b",
+    "dev": "tsc -b --watch",
     "clean": "rimraf dist *.tsbuildinfo",
     "lint": "eslint ."
   },
@@ -40,7 +41,7 @@
     "@acme/platform-core": "workspace:^"
   },
   "devDependencies": {
-    "next": "^15.3.5"
+    "next": "^15.3.9"
   },
   "files": [
     "dist"
@@ -49,6 +50,6 @@
   "module": "./dist/index.js",
   "types": "dist/index.d.ts",
   "peerDependencies": {
-    "next": "^15.3.5"
+    "next": "^15.3.9"
   }
 }

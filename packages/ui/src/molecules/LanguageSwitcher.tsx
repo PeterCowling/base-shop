@@ -1,9 +1,10 @@
 // Copied from src/components/header/LanguageSwitcher.tsx
-import { useModal } from "@/context/ModalContext";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { useTheme } from "@/hooks/useTheme";
-import type { AppLanguage } from "@/i18n.config";
 import { memo } from "react";
+
+import { useModal } from "../context/ModalContext";
+import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
+import { useTheme } from "../hooks/useTheme";
+import type { AppLanguage } from "../i18n.config";
 
 const LABELS: Record<AppLanguage, string> = {
   de: "Deutsch",
@@ -51,7 +52,7 @@ function LanguageSwitcher({ closeMenu }: Props): React.JSX.Element {
       className={`lang-option lang-pill ${themeClass}`}
       data-testid={LANGUAGE_BUTTON_TEST_ID}
     >
-      {LABELS[lang]}
+      {LABELS[lang] ?? lang.toUpperCase()}
     </button>
   );
 }

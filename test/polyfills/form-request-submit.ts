@@ -216,7 +216,7 @@ function applyFormRequestSubmitPolyfill() {
     const patchImplMethod = (method: keyof FormImplProto) => {
       const original = protoWithMethods[method];
       if (typeof original === "function") {
-        protoWithMethods[method] = function (
+        (protoWithMethods as any)[method] = function (
           this: unknown,
           submitter?: HTMLElement,
         ) {

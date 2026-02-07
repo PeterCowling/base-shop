@@ -1,6 +1,7 @@
 import type { PageComponent } from "@acme/types";
+
 import { validateComponentRules } from "./componentRules";
-import { validatePlacement, type ParentKind } from "./placement";
+import { type ParentKind,validatePlacement } from "./placement";
 
 export type ValidationIssue = { path: Array<string | number>; message: string };
 export type ValidationResult = { ok: true } | { ok: false; errors: string[]; issues?: ValidationIssue[] };

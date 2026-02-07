@@ -1,4 +1,5 @@
 import { Input, Textarea } from "../../atoms/shadcn";
+
 import type { EditorProps } from "./EditorProps";
 
 type ProductBundleComponent = {

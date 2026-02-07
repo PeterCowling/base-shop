@@ -1,5 +1,6 @@
 import React from "react";
-import AccountNavigation from "@ui/components/account/AccountNavigation";
+
+import AccountNavigation from "@acme/ui/components/account/AccountNavigation";
 
 const navItems = [
   { href: "/account/profile", label: "Profile" },

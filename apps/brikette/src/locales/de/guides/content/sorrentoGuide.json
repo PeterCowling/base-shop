@@ -1,32 +1,68 @@
 {
   "seo": {
-    "title": "Sorrent-Guide (Tor zur Amalfiküste)",
-    "description": "Basis oder Tagesausflug? Verbindungen und Sehenswertes."
+    "title": "Sorrent: Tor zur Amalfiküste",
+    "description": "Warum in Sorrent starten, genaue Transportkosten und Fahrpläne nach Positano, Amalfi und Capri, und was man sehen kann, wenn man hier wohnt oder durchreist."
   },
-  "linkLabel": "Sorrent-Guide (Tor zur Amalfiküste)",
+  "linkLabel": "Sorrent: Tor zur Amalfiküste",
+  "lastUpdated": "2026-02-04",
   "intro": [
-    "Sorrent ist eine praktische Basis: viele Unterkünfte, einfache Bahnverbindungen und schnelle Transfers nach Capri und Pompeji. Der Preis dafür sind weniger Postkartenblicke als in Positano."
+    "Sorrent bietet häufige Busse und Fähren zur Amalfiküste, direkte Züge nach Neapel und Pompeji sowie mehr Unterkunftsmöglichkeiten als Positano – was es zu einem praktischen Ausgangspunkt macht, egal ob man durchreist oder hier ein paar Tage bleibt."
   ],
   "sections": [
     {
-      "id": "why",
-      "title": "Warum Sorrent als Basis",
+      "id": "transport-costs-schedules",
+      "title": "Transportkosten und Fahrpläne",
       "body": [
-        "Mehr Unterkunftsauswahl und unkomplizierte Zuganbindung. Im Gegenzug gibt es weniger dramatische Panoramen als in Positano."
+        "**SITA-Busse** fahren ganzjährig nach Positano (€2,50, 40-50 Min.) und Amalfi (€3,60, 90 Min.). Busse fahren alle 30-60 Minuten von der Circumvesuviana-Station ab; kaufen Sie Tickets vor dem Einsteigen an der Stationsbar oder im Tabakladen. Spitzenstrecken im Sommer können voll werden, daher früh ankommen.",
+        "**Fähren nach Positano und Amalfi** verkehren April–Oktober, wetterabhängig. Positano kostet €18–22 (35 Min.), Amalfi €20–24 (50 Min.). Morgenabfahrten beginnen gegen 08:30; letzte Rückfahrt typisch 17:00–18:00. Buchen Sie an Spitzentagen im Voraus über %LINK:ferrySchedules|Fährbetreiber%.",
+        "**Züge nach Neapel** (Circumvesuviana-Linie) kosten €3,90 und fahren stündlich bis ~22:30 (70 Min.). Züge sind langsamer als Busse, umgehen aber den Küstenverkehr und verbinden Sie direkt mit Pompeji (€2,90, 30 Min.).",
+        "**Capri-Fähren** fahren in der Saison häufig ab (€20–25 pro Richtung, 20 Min.). Außerhalb der Saison werden die Verbindungen reduziert, hören aber nie ganz auf."
       ]
     },
     {
-      "id": "connections",
-      "title": "Verbindungen nach Positano",
+      "id": "why-base-or-pass-through",
+      "title": "Hier wohnen oder nur durchreisen?",
       "body": [
-        "Häufige SITA-Busse und saisonale Fähren. Bustickets vor dem Einstieg kaufen; Fähren können an Spitzentagen ausverkauft sein."
+        "**Wenn Sie in Sorrent wohnen:** Erwarten Sie Unterkunftsersparnisse von €30–60 pro Nacht im Vergleich zu Positano, plus mehr Essensoptionen im mittleren Preissegment. Der Kompromiss sind weniger Klippen-Ausblicke und ein traditionelleres Stadtgefühl statt der Postkarten-Szenerie von Positano.",
+        "**Wenn Sie durchreisen:** Sorrent ist ein einfacher erster oder letzter Stopp. Kommen Sie vom Flughafen Neapel per %LINK:naplesAirportPositanoBus|Curreri-Bus% (€10, 75 Min., direkt nach Sorrent), nehmen Sie dann am selben Tag oder nächsten Morgen den Weitertransport nach Positano.",
+        "Gepäckaufbewahrung ist am Bahnhof verfügbar (€6–8 pro Tasche pro Tag), wenn Sie die Stadt zwischen Verbindungen erkunden möchten."
       ]
     },
     {
-      "id": "see",
-      "title": "Sehenswürdigkeiten",
+      "id": "what-to-see",
+      "title": "Was man in Sorrent sehen kann",
       "body": [
-        "Historisches Zentrum, Marinas und Aussichtspunkte; perfekter Ausgangspunkt für Capri und Pompeji."
+        "Das historische Zentrum hat Fußgängerzonen mit Zitronenprodukt-Läden, lokaler Keramik und Intarsien-Holzhandwerkern. Piazza Tasso ist der Hauptplatz; Marina Grande und Marina Piccola sind die Hafengebiete mit Klippen-Ausblicken. Via San Cesareo ist die Haupteinkaufsstraße – vermeiden Sie Limoncello-Käufe in der Nähe der Piazza Tasso, wo die Preise 2-3x höher sind.",
+        "Die meisten Reisenden behandeln Sorrent als Ausgangspunkt statt als Ziel und verbringen 1-2 Stunden mit Spaziergängen im Zentrum, bevor sie weiterziehen. Wenn Sie übernachten, lohnt sich der Sonnenuntergang vom Villa Comunale Park (freier Eintritt, bis spät geöffnet), und die Abendessenspreise sinken deutlich abseits des Hauptplatzes – gehen Sie zwei Blocks ins Landesinnere für authentische Trattorien zu halben Touristenzone-Kosten.",
+        "Der Dom (Duomo) lohnt sich für einen kurzen Blick, wenn man vorbeikommt; freier Eintritt und normalerweise leer. Chiostro di San Francesco hat einen friedlichen Kreuzgang (frei), der eine gute Ruhepause ist, wenn Sie auf Transportverbindungen warten.",
+        "Für einen Strandtag von Sorrent aus ist das %LINK:reginaGiovannaBath|Regina Giovanna Bad% 30 Minuten Busfahrt entfernt (€1,40) und bietet eine abgeschiedene Bucht mit römischen Ruinen – weniger Menschenmassen als Positanos Hauptstrand und keine Eintrittsgebühr. Bringen Sie Wasser und Snacks mit, da es keine Einrichtungen gibt."
+      ]
+    },
+    {
+      "id": "booking-ahead",
+      "title": "Wann Transport im Voraus buchen",
+      "body": [
+        "**Buchen Sie Fähren im Voraus**, wenn Sie Juli–August oder an Wochenenden reisen. Boote sind ausverkauft, besonders die direkten Capri-Routen. Bustickets können nicht reserviert werden, also kommen Sie in der Hochsaison 15-20 Minuten früh.",
+        "Zugtickets nach Neapel benötigen keine Vorab-Buchung (am Bahnhof kaufen), aber wenn Sie einen Flug erreichen müssen, planen Sie mindestens 2,5 Stunden von Sorrent zum Flughafen Neapel ein – Züge haben Verspätung, aber Busse können im Verkehr stecken."
+      ]
+    },
+    {
+      "id": "sorrento-vs-positano",
+      "title": "Sorrent vs. Positano: welche Basis?",
+      "body": [
+        "**Wählen Sie Sorrent, wenn:** Sie niedrigere Kosten wollen, einfachen Zugzugang nach Neapel/Pompeji, oder eine funktionale Stadt gegenüber Postkarten-Szenerie bevorzugen. Sorrent funktioniert gut für Reisende, die mehrere Ziele (Capri, Pompeji, Amalfiküste) in einer Reise abdecken.",
+        "**Wählen Sie Positano, wenn:** Sie die ikonische Klippen-Lage wollen und höhere Preise oder Treppen nicht stören. Positano ist malerischer, aber weniger praktisch für Tagesausflüge über die Küste hinaus.",
+        "Viele Reisende teilen ihre Zeit: 1-2 Nächte in Sorrent für Ankünfte/Tagesausflüge, dann Umzug nach %LINK:onlyHostel|Positano% für das Küstenerlebnis. %LINK:sorrentoPositanoBus|Sorrent nach Positano mit dem Bus% ist unkompliziert (40 Min., €2,50)."
+      ]
+    },
+    {
+      "id": "practical-tips",
+      "title": "Praktische Tipps für Sorrent",
+      "body": [
+        "**Geldautomaten und Bargeld:** Verfügbar in der Nähe der Piazza Tasso und des Bahnhofs. Viele kleine Geschäfte und Busticket-Verkäufer akzeptieren nur Bargeld, also heben Sie €50-100 bei Ankunft ab.",
+        "**Beste Reisezeit:** April–Juni und September–Oktober bieten ideales Wetter (18-25°C) mit weniger Menschenmassen. Juli–August ist am heißesten und vollsten – Fähren und Busse füllen sich schnell. November–März ist ruhig, aber viele Fähren stellen den Betrieb ein.",
+        "**In der Stadt herumkommen:** Sorrent ist zu Fuß erreichbar, aber hügelig. Das Stadtzentrum ist kompakt; rechnen Sie mit 10-15 Minuten Fußweg vom Bahnhof zur Marina Piccola (Fähranleger). Busse zum Strand Marina Grande fahren von der Piazza Tasso ab (€1,40, alle 30 Min.).",
+        "**WLAN und Konnektivität:** Die meisten Cafés und Unterkünfte bieten kostenloses WLAN. Mobilfunkabdeckung ist in der ganzen Stadt gut. Der Bahnhof hat Ladestationen, wenn Sie auf Verbindungen warten müssen."
       ]
     }
   ],
@@ -34,13 +70,25 @@
     {
       "q": "Ist Sorrent günstiger als Positano?",
       "a": [
-        "In der Regel ja – rechne mit Unterkunftsersparnissen von 30–60 € pro Nacht und mehr Restaurants im mittleren Preisniveau."
+        "Ja – erwarten Sie Unterkunftsersparnisse von €30–60 pro Nacht und mehr Essensoptionen im mittleren Preissegment. Eine Pizza in Sorrent kostet €8–12 vs. €15–20 in Positano; Hostel-Betten €25–35 vs. €40–60."
       ]
     },
     {
       "q": "Wie spät fahren Züge zurück nach Neapel?",
       "a": [
-        "Die Circumvesuviana verkehrt bis etwa 22:30 Uhr; danach auf Regionalbusse ausweichen oder bei spätem Flug eine Übernachtung planen."
+        "Die Circumvesuviana fährt bis etwa 22:30 von Sorrent nach Neapel. Danach nutzen Sie Curreri- oder SITA-Busse (letzter Bus ~20:30–21:00) oder planen Sie zu übernachten, wenn Sie einen späten Flug haben."
+      ]
+    },
+    {
+      "q": "Kann ich Sorrent als Tagesausflug von Positano aus machen?",
+      "a": [
+        "Ja – nehmen Sie den %LINK:positanoSorrentoBus|SITA-Bus% (€2,50, 40 Min.) oder die saisonale %LINK:positanoSorrentoFerry|Fähre% (€18–22, 25 Min.). Planen Sie 4-5 Stunden insgesamt für einen schnellen Sorrent-Besuch ein, mehr wenn Sie nach Pompeji oder Capri weiterfahren."
+      ]
+    },
+    {
+      "q": "Muss ich in Sorrent Italienisch sprechen?",
+      "a": [
+        "Englisch wird in touristischen Gebieten weithin gesprochen. Zug- und Buspersonal haben möglicherweise eingeschränktes Englisch, also lernen Sie grundlegende Sätze oder verwenden Sie eine Übersetzungs-App für Ticketschalter und Wegbeschreibungen."
       ]
     }
   ]

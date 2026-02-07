@@ -1,4 +1,5 @@
 import type { StorybookConfig } from '@storybook/nextjs';
+
 import en from "../../../packages/i18n/src/en.json";
 
 const t = (key: string) => (en as Record<string, string>)[key] ?? key;

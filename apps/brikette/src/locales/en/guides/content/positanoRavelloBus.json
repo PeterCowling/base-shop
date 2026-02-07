@@ -1,0 +1,20 @@
+{
+  "seo": {
+    "title": "Positano to Ravello by Bus | Hostel Brikette",
+    "description": "Step-by-step from Positano to Ravello via Amalfi on SITA buses, with ticket tips, timetable guidance, Chiesa Nuova stop details, and transfer advice."
+  },
+  "intro": {
+    "title": "Positano to Ravello – via Amalfi by Bus",
+    "body": "Travel from Positano to Ravello with a simple change in Amalfi. This guide covers where to buy SITA tickets, how to read the timetable, and what to expect when changing in Amalfi — plus how to reach the Positano bus stop from Hostel Brikette."
+  },
+  "faqs": [
+    {
+      "q": "How do I read the SITA bus timetable?",
+      "a": [
+        "**Reading the Rows:** The rows in the first column represent different bus stops along the route.",
+        "**Reading the Columns:** The timetable assigns an alphabetical letter to each scheduled journey, which are listed as headers in each column. If you are traveling Monday through Saturday, look for columns 'F' and 'G'. If you are traveling on Sunday or a holiday, look for columns 'G' and 'H'.",
+        "**Combining Rows and Columns:** Choose your departure and arrival bus stops, then check the columns to see when buses are available and what time they will arrive at your destination. For example, to see the departure time from Sorrento, look at the Sorrento row. To see the arrival time in Positano (Chiesa Nuova / Bar Internazionale), look at the Positano (Chiesa Nuova) row."
+      ]
+    }
+  ]
+}

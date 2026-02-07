@@ -43,7 +43,13 @@
     "Planeje mais tempo na praia com nosso %LINK:fornilloBeachGuide|Guia de praia de Fornillo% e %LINK:positanoBeaches|Visão geral das praias de Positano%.",
     "Veja como esta caminhada se encaixa em uma viagem completa na visão geral de viagens de Positano."
   ],
-  "faqsTitle": "Route FAQs",
+  "tipsTitle": "Dicas rápidas",
+  "warningsTitle": "Avisos",
+  "warnings": [
+    "Os degraus podem ficar escorregadios quando molhados — use calçado adequado.",
+    "Não há lojas até chegar à costa; leve água e snacks."
+  ],
+  "faqsTitle": "Perguntas frequentes sobre o percurso",
   "faqs": [
     {
       "q": "How long does the walk take?",

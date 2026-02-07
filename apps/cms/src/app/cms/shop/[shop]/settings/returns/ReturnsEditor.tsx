@@ -1,10 +1,9 @@
 "use client";
 
-import { useCallback, useState, type FormEvent } from "react";
-
-import { Toast } from "@/components/atoms";
-import { Button, Card, CardContent } from "@/components/atoms/shadcn";
+import { type FormEvent,useCallback, useState } from "react";
 import { updateUpsReturns } from "@cms/actions/shops.server";
+
+import { Button, Card, CardContent } from "@/components/atoms/shadcn";
 
 import { ServiceToggleField } from "../components/ServiceToggleField";
 import { useSettingsSaveForm } from "../hooks/useSettingsSaveForm";
@@ -30,9 +29,6 @@ export default function ReturnsEditor({ shop, initial }: Props) {
     errors,
     setErrors,
     handleSubmit: handleServerSubmit,
-    toast,
-    toastClassName,
-    closeToast,
     announceError,
   } = useSettingsSaveForm<ReturnsResult>({
     action: (formData) => updateUpsReturns(shop, formData),
@@ -147,13 +143,6 @@ export default function ReturnsEditor({ shop, initial }: Props) {
           </form>
         </CardContent>
       </Card>
-      <Toast
-        open={toast.open}
-        message={toast.message}
-        onClose={closeToast}
-        className={toastClassName}
-        role="status"
-      />
     </>
   );
 }

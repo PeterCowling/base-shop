@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
-import AccountSection from "./AccountSection";
+
 import type { RentalOrder } from "@acme/types";
+
+import AccountSection from "./AccountSection";
 
 const meta: Meta<typeof AccountSection> = {
   title: "CMS Blocks/AccountSection",

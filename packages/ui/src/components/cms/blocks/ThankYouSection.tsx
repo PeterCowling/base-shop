@@ -1,9 +1,11 @@
 "use client";
 
 import * as React from "react";
+
 import { useTranslations } from "@acme/i18n";
-import ShowcaseSection from "./ShowcaseSection";
+
 import Section from "./Section";
+import ShowcaseSection from "./ShowcaseSection";
 
 export interface ThankYouSectionProps extends React.HTMLAttributes<HTMLDivElement> {
   headline?: string;

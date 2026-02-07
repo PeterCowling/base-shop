@@ -11,9 +11,9 @@
       "between": "chez-soi loin de",
       "home": "chez soi"
     },
-    "paragraph1": "Hostel Brikette est <strong>la seule auberge de Positano</strong>, offrant des hébergements <strong>économiques</strong> qui placent les points forts de la côte amalfitaine à votre porte.",
-    "paragraph2": "Perché sur les falaises, nous offrons des <strong>vues imprenables sur la mer</strong>, des commodités pratiques et des informations locales disponibles 24h/24 grâce à notre <strong>concierge numérique</strong> – votre guide personnel pour les horaires de ferry, les itinéraires de randonnée, les restaurants et plus encore.",
-    "paragraph3": "Que vous choisissiez un dortoir ou une chambre privée, chacun est conçu pour offrir <strong>confort</strong> et <strong>commodité</strong>."
+    "paragraph1": "Hostel Brikette est la seule auberge de Positano - abordable, superbement située et parfaitement placée pour explorer la côte amalfitaine.",
+    "paragraph2": "Nous associons des vues sur la mer inoubliables au confort pratique dont vous avez vraiment besoin, plus des conseils locaux 24h/24 via notre concierge numérique : horaires de ferry, conseils de sentiers, bonnes adresses...tout ce qu'il vous faut.",
+    "paragraph3": "Choisissez entre dortoirs conviviaux ou chambres privées—chacune est conçue pour être simple, confortable et facile pour votre séjour."
   },
   "facilitiesModal": {
     "title": "Installations & Commodités",
@@ -107,14 +107,31 @@
     "locationButton": "Emplacement",
     "contactButton": "Contactez-nous",
     "helpButton": "Aide",
-    "reserveNow": "Réservez maintenant"
+    "reserveNow": "Réservez maintenant",
+    "title": "Hostel Brikette, Positano",
+    "subtitle": "Le seul hostel de Positano — vues mer, espaces communs et concierge digital.",
+    "primaryCta": "Vérifier les disponibilités",
+    "selectDatesCta": "Sélectionner les dates",
+    "secondaryCta": "Voir les chambres",
+    "trustItems": [
+      "À 100 m de l’arrêt SITA",
+      "Terrasse avec vue mer",
+      "Conseils du concierge digital"
+    ]
   },
   "quickLinksSection": {
     "location": "Emplacement",
     "photosAndVideos": "Photos & Vidéos",
     "facilitiesAndAmenities": "Installations & Commodités",
     "barMenu": "Menu du bar",
-    "breakfastMenu": "Menu du petit-déjeuner"
+    "breakfastMenu": "Menu du petit-déjeuner",
+    "rooms": "Chambres",
+    "roomsHint": "Dortoirs et chambres privées",
+    "commonAreas": "Espaces communs",
+    "commonAreasHint": "Terrasse, bar et espaces partagés",
+    "locationHint": "Arrêt de bus et conseils plage",
+    "guides": "Guides",
+    "guidesHint": "Conseils locaux pour votre voyage"
   },
   "destinationSlideshow": {
     "sectionTitle": "Belles zones communes",
@@ -135,5 +152,41 @@
         "alt": "Large horizon marin depuis la terrasse de l'auberge"
       }
     ]
+  },
+  "bookingWidget": {
+    "invalidDateRange": "Le départ doit être après l’arrivée."
+  },
+  "whyStaySection": {
+    "title": "Pourquoi séjourner ici",
+    "items": [
+      {
+        "title": "Concierge digital",
+        "text": "Conseils instantanés pour ferries, randonnées et restaurants."
+      },
+      {
+        "title": "Espaces communs avec vue mer",
+        "text": "Terrasse, bar et espaces partagés pensés pour se rencontrer."
+      },
+      {
+        "title": "Séjours abordables",
+        "text": "Dortoirs confortables et chambres privées pour maîtriser le budget."
+      }
+    ]
+  },
+  "locationSection": {
+    "title": "Localisation & transports",
+    "subtitle": "Perché au-dessus de Positano, avec accès rapide aux bus, à la plage et aux ferries.",
+    "nearbyBeach": "≈350 m jusqu’à la plage",
+    "mapLabel": "Ouvrir dans Maps",
+    "mapHint": "Touchez pour ouvrir un repère et les itinéraires dans Google Maps.",
+    "mapCta": "Voir la carte"
+  },
+  "socialProof": {
+    "title": "Les voyageurs adorent Brikette",
+    "subtitle": "Excellentes notes et avis récents de voyageurs."
+  },
+  "faqSection": {
+    "title": "Réponses rapides",
+    "ctaLabel": "Visiter le centre d’aide"
   }
 }

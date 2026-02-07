@@ -1,10 +1,11 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { type NextRequest,NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import * as path from "path";
-import { DATA_ROOT } from "@platform-core/dataRoot";
-import { validateShopName } from "@platform-core/shops";
+
 // Use server translation loader; alias to avoid hooks lint
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+import { DATA_ROOT } from "@acme/platform-core/dataRoot";
+import { validateShopName } from "@acme/platform-core/shops";
 
 type GlobalItem = {
   globalId: string;

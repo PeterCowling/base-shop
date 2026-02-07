@@ -1,22 +1,32 @@
 {
   "seo": {
-    "title": "A fordítás folyamatban van.",
-    "description": "Évszakok összehasonlítása időjárással, árakkal, tömegekkel és programokkal."
+    "title": "Mikor a legjobb Positanóba menni | Időjárás és tömeg útmutató",
+    "description": "Mikor érdemes Positanóba utazni? Hasonlítsd össze az időjárást, a tömeget, az árakat és a kompjáratokat havonta, hogy megtaláld az utazásodhoz legjobb időszakot."
   },
-  "linkLabel": "Best time to visit Positano",
+  "linkLabel": "Mikor a legjobb Positanóba menni",
   "intro": [
-    "Úgy tervezze az utat, hogy reális képe legyen az időjárásról, a tömegről és a kompmenetrendről.",
-    "A szezonális táblázat és a hónapról hónapra szóló jegyzetek segítenek eldönteni, mikor passzol legjobban Positano az igényeihez."
+    "Positano varázsa az évszakokkal változik. A legjobb látogatási időszak attól függ, mi a legfontosabb számodra: időjárás, tömeg, árak vagy kompok elérhetősége.",
+    "A csúcsszezon nyarán (június–augusztus) garantált napsütést és teljes kompmenetet kapsz, de ehhez jár az intenzív hőség, zsúfolt utcák és magas árak. A vállszezontok (április–május és szeptember–október) egyensúlyt teremtenek a jó időjárás, kevesebb tömeg és jobb ár-érték arány között. A tél (november–március) csendes és olcsó, de sok szolgáltatás zárva van, és a kompok nem járnak.",
+    "Ez az útmutató hónapról hónapra bontja le az információkat, hogy kiválaszthasd a prioritásaidnak megfelelő időszakot. Használd a szezonális mátrixot és a havi megjegyzéseket, hogy reális elvárásokkal tervezd meg látogatásodat."
   ],
+  "lastUpdated": "2026-02-04",
   "tocTitle": "Ezen az oldalon",
   "toc": [
     {
+      "href": "#quickAnswer",
+      "label": "Gyors válasz"
+    },
+    {
       "href": "#matrix",
-      "label": "Időjárás/tömeg/árak mátrix"
+      "label": "Időjárás/tömeg/árak mátrixa"
     },
     {
       "href": "#months",
-      "label": "Hónapról hónapra jegyzetek"
+      "label": "Hónapról hónapra lebontás"
+    },
+    {
+      "href": "#considerations",
+      "label": "Mérlegelendő szempontok"
     },
     {
       "href": "#faqs",
@@ -25,57 +35,114 @@
   ],
   "sections": [
     {
-      "id": "matrix",
-      "title": "Időjárás / tömeg / árak mátrix",
+      "id": "quickAnswer",
+      "title": "Gyors válasz: legjobb időszakok prioritás szerint",
       "body": [
-        "Csúcsszezon (június–augusztus): forróság, tömeg és a legmagasabb árak. Előszezon (április–május) és utószezon (szeptember–október): enyhébb idő és jobb ár-érték arány. Tél (november–március): csendes időszak csökkentett szolgáltatásokkal."
+        "Ha az időjárás, tömeg és érték legjobb általános egyensúlyát szeretnéd: látogass el májusban vagy szeptemberben. Ezek a hónapok meleg hőmérsékletet, nyugodt tengert, gyakori kompjáratokat és alacsonyabb árakat kínálnak, mint a csúcsszezon nyarán.",
+        "Ha garantált meleg időt és fürdőzést szeretnél: látogass el júniustól szeptember elejéig. Számíts tömegre, magas árakra és arra, hogy előre kell foglalnod a közlekedést és a szállást.",
+        "Ha el szeretnéd kerülni a tömeget és pénzt akarsz megtakarítani: látogass el áprilisban vagy októberben. Az időjárás kevésbé kiszámítható (hűvösebb, esetenként eső), de több helyed lesz és jobb ajánlatokat kapsz. A kompok járnak, de kevesebb indulással.",
+        "Ha verhetetlen árakat és magányt szeretnél: látogass el novembertől márciusig. Sok szálloda, étterem és látnivaló zárva van. A kompok nem járnak, így a buszokra kell támaszkodnod. Az időjárás esős és hűvös lehet, de Positano békés és hiteles."
+      ],
+      "images": [
+        {
+          "src": "/img/hostel-coastal-horizon.webp",
+          "alt": "Tengerparti horizont kilátás a tengerre Positano közelében.",
+          "caption": "Derült nyári napok nyugodt tengert és csúcs tömegeket hoznak."
+        }
+      ]
+    },
+    {
+      "id": "matrix",
+      "title": "Időjárás / tömeg / árak mátrixa",
+      "body": [
+        "Csúcsszezon (június–augusztus): Meleg időjárás (25–32°C), intenzív napsütés, nyugodt tenger tökéletes fürdéshez. Az utcák, strandok és kompok zsúfoltak. A szállásárak a legmagasabbak. Foglalj mindent előre — kompokat, strandklubokat, éttermeket.",
+        "Vállszezon (április–május, szeptember–október): Enyhe vagy meleg időjárás (18–26°C). Áprilisban és októberben lehet eső. A tömeg kisebb, az árak 20–40%-kal csökkennek, és gyakran rövid határidővel is foglalhatsz közlekedést és étkezést. A kompok járnak, de kevesebb napi indulással, mint nyáron.",
+        "Holtidény (november–március): Hűvös és gyakran esős (10–16°C). Sok szálloda, étterem és túraszervező zárva van. Nincs kompjárat — a buszok az egyetlen tömegközlekedési lehetőséged. Az árak a legalacsonyabbak, és a város helyi falunak tűnik. A legjobb olyan utazóknak, akik nyugalmat akarnak és elfogadják a korlátozott szolgáltatásokat."
+      ],
+      "images": [
+        {
+          "src": "/img/positano-panorama.avif",
+          "alt": "Panorámakép Positanóról a sziklákra építve a tenger fölött.",
+          "caption": "Positano tiszta időben — gyors vizuális a csúcsszezon körülményeihez."
+        }
       ]
     },
     {
       "id": "months",
-      "title": "Hónapról hónapra jegyzetek",
+      "title": "Hónapról hónapra lebontás",
       "body": [
-        "Április: indulnak a kompok, enyhe hőmérséklet, kevesebb látogató.",
-        "Május: remek idő, több járat; a hétvégék zsúfoltabbak.",
-        "Június–augusztus: csúcsszezon, hőség és sorok – a közlekedést és programokat előre foglalja le.",
-        "Szeptember: meleg tenger, valamivel nyugodtabb, mint augusztusban.",
-        "Október: utószezon, a hónap vége felé ritkulnak a kompok.",
-        "November–március: csendes holtszezon csökkentett szolgáltatásokkal; ilyenkor a buszok a fő közlekedési mód.",
-        "A kompok sűrűsége tavasztól nő, nyáron tetőzik, majd október végére lecseng."
+        "**Április:** A kompszezon indul (általában a hónap közepén). Enyhe hőmérséklet (16–20°C) és kisebb tömeg. Néhány szálloda és étterem még zárva van a hónap elején. Esetenként eső, de gyakran napos. Jó a %LINK:pathOfTheGods|Path of the Gods% túrázáshoz hőség nélkül.",
+        "**Május:** Kiváló időjárás (20–24°C), május végére elég meleg fürdéshez. A kompindulások növekednek. A hétvégék forgalmasabbak, ahogy az olasz és európai látogatók megérkeznek. Az árak mérsékeltek. Az egyik legjobb hónap az általános élményhez.",
+        "**Június:** Kezdődik a csúcsszezon. Meleg (24–28°C), napos és zsúfolt. A kompok gyakran járnak. Az árak emelkednek. Foglald le előre a szállást, közlekedést és tevékenységeket. Még kevésbé intenzív, mint július–augusztus.",
+        "**Július:** A legmelegebb és legzsúfoltabb hónap. A hőmérséklet elérheti a 30–32°C-ot. Az utcák, strandok és kompok zsúfoltak. Az év legmagasabb árai. Elengedhetetlen mindent előre foglalni. Ha nem bírod jól a hőséget és a tömeget, kerüld a júliust.",
+        "**Augusztus:** Hasonló a júliushoz, de még zsúfoltabb augusztus közepén (Ferragosto, olasz nemzeti ünnep). Sok olasz szabadságon van, így minden maximális kapacitáson működik. A tenger a legmelegebb. Számíts sorokra, teljesen lefoglalt szolgáltatásokra és prémium árakra.",
+        "**Szeptember:** Meleg tenger (még mindig 24–26°C) és kicsit nyugodtabb, mint augusztusban. Az időjárás a hónap elején meleg marad, majd kényelmes szintre hűl. A tömeg szeptember közepétől csökken. Kiváló hónap fürdéshez és városnézéshez csúcsszezon intenzitása nélkül.",
+        "**Október:** Vállszezon. Enyhe időjárás (18–22°C), de változékonyabb — napos napok esővel vegyítve. A kompok a hónap vége felé csökkennek (a szolgáltatás általában október végén ér véget). Kevesebb turista, alacsonyabb árak. Jó a költségvetési utazóknak, akiket nem zavar a hűvösebb, kevésbé kiszámítható időjárás.",
+        "**November–március:** Csendes holtidény. Hűvös (10–16°C) és gyakran esős. Sok szálloda, étterem és látnivaló zárva van. Nincs kompjárat — a buszok egész évben járnak, de lassúak és ritkák lehetnek. Positano valódi falunak tűnik, nem turistavárosnak. A legjobb olyan utazóknak, akik magányt, helyi életet és verhetetlen árakat keresnek. Nem ideális, ha strandidőt vagy éjszakai életet szeretnél."
+      ]
+    },
+    {
+      "id": "considerations",
+      "title": "Mérlegelendő szempontok választáskor",
+      "body": [
+        "**Kompok elérhetősége:** A kompok áprilistól október végéig járnak. Ha festői kompélményt szeretnél (Positanóból Amálfiba, Capriba stb.), kerüld november–március időszakát. Kompmenetek és útvonalak: lásd %LINK:ferrySchedules|kompmenetek útmutatónkat%.",
+        "**Fürdés és strandok:** A tenger május végétől szeptemberig elég meleg a kényelmes fürdéshez. A legnagyobb melegség július–augusztusban van. Ha a fürdés a prioritásod, látogass el júniustól szeptemberig. Strandhoz való hozzáférés és lehetőségek: lásd %LINK:positanoBeaches|Positano strandok útmutatónkat%.",
+        "**Tömeg és foglalás:** Júliusban–augusztusban előzetes foglalás szükséges szállodákhoz, kompokhoz, strandklubokhoz és népszerű éttermekhez. Ha a spontaneitást részesíted előnyben és utálod a tömeget, látogass el áprilisban–májusban vagy szeptemberben–októberben.",
+        "**Költségvetés:** Az árak júliusban–augusztusban érik el a csúcsot. A vállhónapok (április–május, szeptember–október) 20–40%-os megtakarítást kínálnak a szálláson. A tél (november–március) a legolcsóbb árakkal rendelkezik, de korlátozott szolgáltatásokkal.",
+        "**Időjárás kiszámíthatósága:** Június–augusztus kínálja a legmegbízhatóbb napsütést. Áprilisban, májusban és októberben a legtöbb napon jó az idő, de esetenként eső. November–március nedves és felhős lehet.",
+        "**Közlekedési lehetőségek:** Nyáron a kompok gyakoriak és megbízhatóak. A holtidényben (november–március) teljesen a %HOWTO:positano-amalfi-bus|buszokra% fogsz támaszkodni, amelyek lassabbak és ritkábbak. Szezonális különbségek: lásd %HOWTO:how-to-get-here|közlekedési útmutatóinkat%."
       ]
     }
   ],
   "schemaMonths": [
     {
       "name": "Április",
-      "note": "A kompok indulása, enyhe idő, kevés turista."
+      "note": "Kompszezon kezdete; enyhe hőmérséklet; kevesebb tömeg."
     },
     {
       "name": "Május",
-      "note": "Kiváló időjárás, sűrű kompjáratok, élénkebb hétvégék."
+      "note": "Kiváló időjárás; gyakori kompok; forgalmasabb hétvégék."
     },
     {
       "name": "Június–augusztus",
-      "note": "Csúcsszezon: meleg, foglalja előre a közlekedést és programokat."
+      "note": "Csúcsszezon; forróság; foglalj időben közlekedést/tevékenységeket."
     },
     {
       "name": "Szeptember",
-      "note": "Meleg tenger, valamivel kevesebb tömeg, mint augusztusban."
+      "note": "Meleg tenger; kicsit kevesebb tömeg, mint augusztusban."
     },
     {
       "name": "Október",
-      "note": "Utószezon, a hónap végén ritkulnak a kompok."
+      "note": "Vállszezon; kompok a hónap végére csökkennek."
     },
     {
       "name": "November–március",
-      "note": "Csendes időszak, sok szolgáltatás szünetel; a busz a fő közlekedési eszköz."
+      "note": "Csendes; sok szolgáltatás csökkentve; buszok elsődleges közlekedés."
     }
   ],
   "faqs": [
     {
-      "q": "Mikor a legmelegebb a tenger?",
+      "q": "Mikor a legmelegebb a tenger fürdéshez?",
       "a": [
-        "Június vége és szeptember eleje között a legmelegebb a víz úszáshoz."
+        "Június végétől szeptember elejéig általában a legmelegebb a víz fürdéshez, a tenger hőmérséklete körülbelül 24–26°C. Július és augusztus a csúcsmelegség."
+      ]
+    },
+    {
+      "q": "Melyik a legjobb hónap a tömeg elkerülésére?",
+      "a": [
+        "Áprilisban és októberben a legkisebb a tömeg, miközben még mindig kapsz tisztességes időjárást és némi kompjáratot. November–március a legcsendesebb, de sok szolgáltatás zárva van, és a kompok nem járnak."
+      ]
+    },
+    {
+      "q": "Látogathatok Positanóba télen?",
+      "a": [
+        "Igen, de számíts korlátozott szolgáltatásokra. Sok szálloda, étterem és túraszervező novembertől márciusig zárva van. Nem járnak kompok, így a buszokra kell támaszkodnod. Az időjárás hűvös és gyakran esős. A legjobb olyan utazóknak, akik nyugalmat és alacsony árakat keresnek, nem stranddal kapcsolatos tevékenységeket."
+      ]
+    },
+    {
+      "q": "Előre kell foglalnom szállást a vállszezonban?",
+      "a": [
+        "Áprilisban, májusban, szeptemberben és októberben gyakran találhatsz szállást rövid határidővel, de a 2–4 héttel előre történő foglalás biztonságosabb, különösen hétvégékre és népszerű szállodákba. A csúcsszezon (június–augusztus) hónapokkal előre történő foglalást igényel."
       ]
     }
   ]

@@ -1,6 +1,7 @@
 // packages/ui/src/components/cms/__tests__/RangeInput.test.tsx
-import { render, screen, fireEvent, act } from "@testing-library/react";
 import React from "react";
+import { act,fireEvent, render, screen } from "@testing-library/react";
+
 import { RangeInput } from "../RangeInput";
 
 describe("RangeInput", () => {

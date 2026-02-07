@@ -1,12 +1,13 @@
 import type { Locale } from "@/lib/locales";
-import type { Translator } from "./types";
+
 import { TypoHeroSection } from "./HeroSection";
-import { TypoProductTile, type ProductTile } from "./ProductTileSection";
 import { TypoMarquee } from "./MarqueeSection";
-import { TypoShowcaseGrid } from "./ShowcaseGrid";
-import { TypoServicesSection } from "./ServicesSection";
-import { TypoRealEstateSection } from "./RealEstateSection";
 import { TypoPeopleSection } from "./PeopleSection";
+import { type ProductTile,TypoProductTile } from "./ProductTileSection";
+import { TypoRealEstateSection } from "./RealEstateSection";
+import { TypoServicesSection } from "./ServicesSection";
+import { TypoShowcaseGrid } from "./ShowcaseGrid";
+import type { Translator } from "./types";
 
 type Props = {
   lang: Locale;

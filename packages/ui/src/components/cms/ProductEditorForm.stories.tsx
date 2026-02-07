@@ -1,7 +1,9 @@
-import type { ProductPublication } from "@acme/types";
-import type { Locale } from "@acme/i18n";
 import type { Meta, StoryObj } from "@storybook/nextjs";
 import { fn } from "storybook/test";
+
+import type { Locale } from "@acme/i18n";
+import type { ProductPublication } from "@acme/types";
+
 import ProductEditorForm from "./ProductEditorForm";
 
 const sample: ProductPublication & { variants: Record<string, string[]> } = {

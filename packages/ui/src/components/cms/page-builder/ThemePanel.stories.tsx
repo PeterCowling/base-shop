@@ -1,9 +1,11 @@
 // packages/ui/src/components/cms/page-builder/ThemePanel.stories.tsx
-import type { Meta, StoryObj } from "@storybook/nextjs";
 import React from "react";
+import type { Meta, StoryObj } from "@storybook/nextjs";
 import { http, HttpResponse } from "msw";
-import ThemePanel from "./ThemePanel";
+
 import { Dialog } from "../../atoms/shadcn";
+
+import ThemePanel from "./ThemePanel";
 
 const themeResponse = {
   themeDefaults: { "color.brand": "var(--color-bg-dark)", "font.body": "Inter" },

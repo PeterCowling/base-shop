@@ -1,33 +1,33 @@
 {
   "seo": {
-    "title": "Páros utazás hostelben",
-    "description": "Tippek hálótermekhez vagy priváthoz, csendes idősávok és elvárások egyeztetése."
+    "title": "Párokként utazni hostelekben",
+    "description": "Tippek hálótermekhez vagy privát szobákhoz, nyugalom megtalálása és elvárások meghatározása."
   },
-  "linkLabel": "Páros utazás hostelben",
+  "linkLabel": "Párokként utazni hostelekben",
   "intro": [
-    "A fordítás folyamatban van."
+    "A hostelek működnek párok számára, ha a megfelelő szobatípust választod, könnyedén csomagolsz, és együtt határozod meg az elvárásokat."
   ],
   "sections": [
     {
       "id": "room-types",
-      "title": "Room types",
+      "title": "Szobatípusok",
       "body": [
-        "A fordítás folyamatban van."
+        "Foglalj privát szobát a magánéletért; ha szűkös a költségvetés, osszatok meg ágyakat ugyanabban a hálóteremben, és tartsátok könnyűnek a csomagot a lépcsők miatt."
       ]
     },
     {
       "id": "quiet",
-      "title": "Finding quiet",
+      "title": "Nyugalom megtalálása",
       "body": [
-        "A fordítás folyamatban van."
+        "Vigyél fülzárót és szemmaszkot, válassz szobát távol a bártól vagy közös terektől, és használd a korai reggeli órákat nyugodtabb városnézéshez."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Alkalmas-e a hostel párok számára?",
       "a": [
-        "A fordítás folyamatban van."
+        "Igen — szociális energiát és jó értéket kapsz; a privát szobák egyensúlyt teremtenek a kényelem és a költség között."
       ]
     }
   ]

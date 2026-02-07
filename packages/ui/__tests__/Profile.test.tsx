@@ -1,6 +1,12 @@
 // packages/ui/__tests__/Profile.test.tsx
 import { render, screen } from "@testing-library/react";
-jest.mock("@auth", () => ({
+
+import { getCustomerSession, hasPermission } from "@acme/auth";
+import { getCustomerProfile } from "@acme/platform-core/customerProfiles";
+
+import ProfilePage from "../src/components/account/Profile";
+
+jest.mock("@acme/auth", () => ({
   __esModule: true,
   getCustomerSession: jest.fn(),
   hasPermission: jest.fn(),
@@ -10,10 +16,6 @@ jest.mock("@acme/platform-core/customerProfiles", () => ({
   __esModule: true,
   getCustomerProfile: jest.fn(),
 }));
-
-import { getCustomerSession, hasPermission } from "@auth";
-import { getCustomerProfile } from "@acme/platform-core/customerProfiles";
-import ProfilePage from "../src/components/account/Profile";
 
 describe("ProfilePage permissions", () => {
   beforeEach(() => {

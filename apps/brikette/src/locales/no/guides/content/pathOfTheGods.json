@@ -11,104 +11,90 @@
   "sections": [
     {
       "id": "timing",
-      "title": "Best time to hike",
+      "title": "Beste tid å gå",
       "body": [
-        "Target April–June or September–October for clear skies and manageable temperatures; winter showers can make the stone steps slick.",
-        "In July–August start before 09:00 or after 15:00 because the trail is exposed and shade is limited."
+        "Sikt på april–juni eller september–oktober for klar himmel og håndterbare temperaturer; vinterbyger kan gjøre steintrappene glatte.",
+        "I juli–august, start før 09:00 eller etter 15:00 fordi stien er eksponert og skyggen er begrenset."
       ]
     },
     {
       "id": "route-options",
-      "title": "Pick your route",
+      "title": "Velg rute",
       "body": [
-        "Bomerano → Nocelle covers the classic 6.5 km ridge with continuous climbs and descents; allow 2.5–3 hours of walking plus transit.",
-        "Short on time? Ride the bus to Nocelle, walk the panoramic section out-and-back to Colle Serra, or descend the 1,700 steps to Positano."
+        "Bomerano → Nocelle dekker den klassiske 6,5 km ryggen med kontinuerlige opp- og nedstigninger; beregn 2,5–3 timer med gåing pluss transport.",
+        "Kort tid? Ta bussen til Nocelle, gå den panoramiske delen tur-retur til Colle Serra, eller gå ned de 1 700 trappene til Positano."
       ]
     },
     {
       "id": "navigation",
-      "title": "Navigation and safety",
+      "title": "Navigasjon og sikkerhet",
       "body": [
-        "Follow the red-and-white CAI blazes and wooden Sentiero degli Dei arrows; download an offline map because mobile data drops in the ravines.",
-        "The path mixes stone stairs, packed dirt, and loose gravel—wear trail shoes with grip and keep hiking poles folded until the steeper descents."
+        "Følg de rød-hvite CAI-merkene og trepilene for Sentiero degli Dei; last ned et offline-kart fordi mobildata kan falle bort i ravinene.",
+        "Stien blander steintrapper, hardpakket jord og løs grus – bruk tursko med godt grep og hold stavene sammenfoldet til de brattere nedstigningene."
       ]
     },
     {
       "id": "amenities",
-      "title": "Water, snacks, and the return",
+      "title": "Vann, snacks og retur",
       "body": [
-        "Stock up in Bomerano’s main square (cafés, bakery, last public restroom) before starting; Nocelle has a kiosk and a lemon granita stand near the church.",
-        "Back to Positano: descend the stairs to Arienzo beach or catch the SITA bus from Nocelle/Montepertuso—keep an extra validated ticket in your daypack."
+        "Fyll på i Bomeranos hovedtorg (kafeer, bakeri, siste offentlige toalett) før du starter; Nocelle har en kiosk og en sitron-granita-stand ved kirken.",
+        "Tilbake til Positano: gå ned trappene til Arienzo-stranden eller ta SITA-bussen fra Nocelle/Montepertuso – ha en ekstra validert billett i dagsekken."
       ]
     }
   ],
-  "essentialsTitle": "Essentials",
+  "essentialsTitle": "Nødvendigheter",
   "essentials": [
-    "Good footwear, water, sun protection; avoid midday heat in summer.",
-    "Bus tickets must be purchased before boarding (tobacconists, kiosks).",
-    "Allow ~4 hours including transit and photo stops."
+    "Godt fottøy, vann, solbeskyttelse; unngå middagsvarmen om sommeren.",
+    "Bussbilletter må kjøpes før ombordstigning (tobakksbutikker, kiosker).",
+    "Beregn ca. 4 timer inkludert transport og fotostopp."
   ],
-  "typicalCostsTitle": "Typical costs",
+  "typicalCostsTitle": "Typiske kostnader",
   "typicalCosts": [
-    "SITA bus (Positano ⇄ Nocelle/Bomerano): ~€2–€4 each way depending on ticket type",
-    "Snacks/water: €3–€8 (bring your own to save)",
-    "Trail: free (no entry fee)"
+    "SITA-buss (Positano ⇄ Nocelle/Bomerano): ~€2–€4 hver vei avhengig av billettype",
+    "Snacks/vann: €3–€8 (ta med eget for å spare)",
+    "Sti: gratis (ingen inngangsavgift)"
   ],
   "steps": [
     {
-      "name": "Walk to Chiesa Nuova bus stop",
-      "text": "From the hostel, walk uphill ~80m to the SITA bus stop at Chiesa Nuova."
+      "name": "Gå til busstoppet Chiesa Nuova",
+      "text": "Fra vandrerhjemmet, gå oppover ca. 80 m til SITA-busstoppet ved Chiesa Nuova."
     },
     {
-      "name": "Bus to Nocelle or Bomerano",
-      "text": "Take SITA toward Amalfi and alight at Nocelle for the shorter finish, or continue to Agerola/Bomerano for the classic start."
+      "name": "Buss til Nocelle eller Bomerano",
+      "text": "Ta SITA mot Amalfi og gå av i Nocelle for den kortere avslutningen, eller fortsett til Agerola/Bomerano for klassisk start."
     },
     {
-      "name": "Trail entry",
-      "text": "At Nocelle, follow signs to Sentiero degli Dei (finish). At Bomerano, follow the main square signage to the trailhead (start)."
+      "name": "Start på stien",
+      "text": "I Nocelle, følg skiltene til Sentiero degli Dei (avslutning). I Bomerano, følg skiltingen fra hovedtorget til stistart (start)."
     },
     {
-      "name": "Return options",
-      "text": "Finish in Nocelle and descend to Positano via stairs, or bus back to Chiesa Nuova."
+      "name": "Returalternativer",
+      "text": "Avslutt i Nocelle og gå ned til Positano via trapper, eller ta buss tilbake til Chiesa Nuova."
     }
   ],
   "faq": [
     {
-      "q": "Where do I start the hike?",
-      "a": "Classic start is Bomerano (Agerola). Shorter option finishes in Nocelle."
+      "q": "Hvor starter jeg turen?",
+      "a": "Klassisk start er Bomerano (Agerola). Kortere alternativ avsluttes i Nocelle."
     },
     {
-      "q": "How long is it?",
-      "a": "Allow ~4 hours including transit and photo stops."
+      "q": "Hvor lang er den?",
+      "a": "Beregn ca. 4 timer inkludert transport og fotostopp."
     },
     {
-      "q": "What should I bring?",
-      "a": "Sturdy shoes, water, sun protection. Avoid midday heat in summer."
+      "q": "Hva bør jeg ta med?",
+      "a": "Gode sko, vann og solbeskyttelse. Unngå middagsvarmen om sommeren."
     }
   ],
-  "faqsTitle": "FAQs",
-  "galleryTitle": "Photo gallery",
-  "gallery": {
-    "items": [
-      {
-        "alt": "View along the Path of the Gods",
-        "caption": "Along the trail"
-      },
-      {
-        "alt": "Nocelle village views",
-        "caption": "Nocelle views"
-      }
-    ]
-  },
+  "faqsTitle": "Vanlige spørsmål",
   "toc": {
-    "onThisPage": "On this page",
-    "essentials": "Essentials",
-    "costs": "Typical costs",
-    "faqs": "FAQs",
-    "gallery": "Photo gallery",
-    "tips": "Smart timing"
+    "onThisPage": "På denne siden",
+    "essentials": "Nødvendigheter",
+    "costs": "Typiske kostnader",
+    "faqs": "Vanlige spørsmål",
+    "tips": "God timing"
   },
-  "tipsTitle": "Smart timing",
+  "tipsTitle": "God timing",
   "tips": [
     "Dra før kl. 09.00 i juli–august eller sikte på de gylne timene om våren og høsten for kjøligere temperaturer og mykere lys.",
     "Unngå nedstigningen på 1700 trinn til Positano med mindre knærne dine er friske – det er brutalt å gå ned Montepertuso-trappene etter en lang fottur.",
@@ -122,13 +108,13 @@
       ]
     },
     {
-      "q": "Is the trail suitable for beginners?",
+      "q": "Passer stien for nybegynnere?",
       "a": [
         "Ja, forutsatt at du er stødig på beina og komfortabel med høyder. Det er ingen tekniske stigninger, bare jevne stigninger og nedstigninger."
       ]
     },
     {
-      "q": "What happens if ferries are cancelled?",
+      "q": "Hva skjer hvis fergene blir kansellert?",
       "a": [
         "Bytt til bussen via Amalfi eller kjør direkte til Nocelle. Ha alltid en ekstra bussbillett slik at du kan tilpasse deg sjø- eller værforhold."
       ]

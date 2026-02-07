@@ -36,18 +36,6 @@
       "@acme/ui/*": [
         "../../packages/ui/dist/*", "../../packages/ui/src/*"
       ],
-      "@i18n": [
-        "../../packages/i18n/src/index.ts", "../../packages/i18n/dist/index"
-      ],
-      "@i18n/*": [
-        "../../packages/i18n/src/*", "../../packages/i18n/dist/*"
-      ],
-      "@acme/i18n": [
-        "../../packages/i18n/src/index.ts", "../../packages/i18n/dist/index"
-      ],
-      "@acme/i18n/*": [
-        "../../packages/i18n/src/*", "../../packages/i18n/dist/*"
-      ],
       "@acme/config": [
         "../../packages/config/src/index.ts",
         "../../packages/config/src",
@@ -76,6 +64,15 @@
         "../../packages/auth/dist"
       ],
       "@auth/*": [
+        "../../packages/auth/src/*", "../../packages/auth/dist/*"
+      ],
+      "@acme/auth": [
+        "../../packages/auth/src/index.ts",
+        "../../packages/auth/src",
+        "../../packages/auth/dist/index",
+        "../../packages/auth/dist"
+      ],
+      "@acme/auth/*": [
         "../../packages/auth/src/*", "../../packages/auth/dist/*"
       ],
       "@date-utils": [
@@ -123,24 +120,6 @@
       "@acme/email-templates/*": [
         "../../packages/email-templates/src/*",
         "../../packages/email-templates/dist/*"
-      ],
-      "@shared-utils": [
-        "../../packages/shared-utils/src/index.ts",
-        "../../packages/shared-utils/src",
-        "../../packages/shared-utils/dist/index",
-        "../../packages/shared-utils/dist"
-      ],
-      "@shared-utils/*": [
-        "../../packages/shared-utils/src/*", "../../packages/shared-utils/dist/*"
-      ],
-      "@acme/shared-utils": [
-        "../../packages/shared-utils/src/index.ts",
-        "../../packages/shared-utils/src",
-        "../../packages/shared-utils/dist/index",
-        "../../packages/shared-utils/dist"
-      ],
-      "@acme/shared-utils/*": [
-        "../../packages/shared-utils/src/*", "../../packages/shared-utils/dist/*"
       ],
       "@scripts": [
         "../../scripts/src/index.ts",
@@ -248,9 +227,6 @@
     },
     {
       "path": "../../packages/date-utils"
-    },
-    {
-      "path": "../../packages/shared-utils"
     },
     {
       "path": "../../packages/types"

@@ -1,43 +1,44 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent,render, screen } from "@testing-library/react";
+
 import ThemeToggle from "../src/components/ThemeToggle";
 
-const state: { theme: "base" | "dark" | "system" } = { theme: "base" };
-const setThemeMock = jest.fn((next: string) => {
+const state: { mode: "light" | "dark" | "system" } = { mode: "light" };
+const setModeMock = jest.fn((next: string) => {
   // update mock state so repeated renders can observe changes if needed
-  state.theme = next as any;
+  state.mode = next as any;
 });
 
-jest.mock("@platform-core/contexts/ThemeContext", () => ({
-  useTheme: () => ({ theme: state.theme, setTheme: setThemeMock }),
+jest.mock("@acme/platform-core/contexts/ThemeModeContext", () => ({
+  useThemeMode: () => ({ mode: state.mode, setMode: setModeMock }),
 }));
 
 describe("ThemeToggle", () => {
   beforeEach(() => {
-    state.theme = "base";
-    setThemeMock.mockClear();
+    state.mode = "light";
+    setModeMock.mockClear();
   });
 
   it("cycles to next theme on click", () => {
     render(<ThemeToggle />);
-    // base -> dark
+    // light -> dark
     fireEvent.click(screen.getByRole("button"));
-    expect(setThemeMock).toHaveBeenCalledWith("dark");
+    expect(setModeMock).toHaveBeenCalledWith("dark");
   });
 
   it("cycles on Enter keydown", () => {
-    state.theme = "dark"; // dark -> system
+    state.mode = "dark"; // dark -> system
     render(<ThemeToggle />);
     const btn = screen.getByRole("button");
     fireEvent.keyDown(btn, { key: "Enter" });
-    expect(setThemeMock).toHaveBeenCalledWith("system");
+    expect(setModeMock).toHaveBeenCalledWith("system");
   });
 
   it("cycles on Space keydown", () => {
-    state.theme = "system"; // system -> base
+    state.mode = "system"; // system -> light
     render(<ThemeToggle />);
     const btn = screen.getByRole("button");
     fireEvent.keyDown(btn, { key: " " });
-    expect(setThemeMock).toHaveBeenCalledWith("base");
+    expect(setModeMock).toHaveBeenCalledWith("light");
   });
 });

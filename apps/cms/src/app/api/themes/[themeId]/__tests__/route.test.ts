@@ -1,7 +1,10 @@
 import { NextRequest } from "next/server";
-import path from "path";
 import { promises as fs } from "fs";
+import path from "path";
+
 import { writeJsonFile } from "@/lib/server/jsonIO";
+
+import { DELETE,GET, PATCH } from "../route";
 
 jest.mock("fs", () => ({
   promises: {
@@ -20,8 +23,6 @@ jest.mock(
   () => require("@acme/types/theme/ThemeLibrary"),
   { virtual: true },
 );
-
-import { GET, PATCH, DELETE } from "../route";
 
 describe("theme by id API route", () => {
   const LIB_PATH = path.join(process.cwd(), "data", "themes", "library.json");

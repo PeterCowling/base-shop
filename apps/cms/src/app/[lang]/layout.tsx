@@ -1,16 +1,15 @@
 // apps/cms/src/app/[lang]/layout.tsx
 import "../globals.css";
 
-import Footer from "@ui/components/layout/Footer";
-import Header from "@ui/components/layout/Header";
-
-import { TranslationsProvider } from "@i18n/Translations";
-import { Locale, resolveLocale } from "@i18n/locales";
-
 import type { ReactNode } from "react";
 
 /** Import English messages (EN-only configuration) */
-import en from "@i18n/en.json";
+import en from "@acme/i18n/en.json";
+import { type Locale, resolveLocale } from "@acme/i18n/locales";
+import { TranslationsProvider } from "@acme/i18n/Translations";
+import Footer from "@acme/ui/components/layout/Footer";
+import Header from "@acme/ui/components/layout/Header";
+
 import type { Messages } from "@/types/i18n";
 
 /** Layout for every route under `/[lang]/*` */

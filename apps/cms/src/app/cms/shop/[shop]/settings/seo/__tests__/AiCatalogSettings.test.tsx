@@ -1,11 +1,12 @@
 import "@testing-library/jest-dom";
+
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe, toHaveNoViolations } from "jest-axe";
 
 import AiCatalogSettings from "../AiCatalogSettings";
 
-expect.extend(toHaveNoViolations);
+expect.extend(toHaveNoViolations as any);
 
 const updateAiCatalog = jest.fn();
 
@@ -55,10 +56,10 @@ describe("AiCatalogSettings", () => {
 
   const initial = {
     enabled: true,
-    fields: ["id", "title", "description"],
+    fields: ["id", "title", "description"] as ("title" | "description" | "id" | "media" | "price")[],
     pageSize: 20,
     lastCrawl: "2025-01-01T00:00:00Z",
-  } as const;
+  };
 
   it("submits updates, surfaces validation feedback, and meets accessibility expectations", async () => {
     updateAiCatalog.mockResolvedValue({

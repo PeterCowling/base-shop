@@ -1,11 +1,14 @@
 // packages/ui/src/components/cms/blocks/Gallery.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import Gallery from './Gallery';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './Gallery.fixtures.json';
 import { z } from 'zod';
+
 import type { Locale } from '@acme/i18n/locales';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import Gallery from './Gallery';
+import fixture from './Gallery.fixtures.json';
 
 const meta: Meta<typeof Gallery> = {
   title: 'CMS Blocks/Gallery/Matrix',

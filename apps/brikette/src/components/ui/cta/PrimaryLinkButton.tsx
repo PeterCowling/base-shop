@@ -1,13 +1,13 @@
 // src/components/ui/cta/PrimaryLinkButton.tsx
-import clsx from "clsx";
 import type { ReactNode } from "react";
-import { Link, type LinkProps } from "react-router-dom";
+import Link from "next/link";
+import clsx from "clsx";
 
 type PrimaryLinkButtonProps = {
-  to: LinkProps["to"];
+  to: string;
   children: ReactNode;
   ariaLabel?: string | null;
-  prefetch?: LinkProps["prefetch"];
+  prefetch?: boolean;
   className?: string;
   tone?: "default" | "surface";
 };
@@ -16,13 +16,13 @@ export function PrimaryLinkButton({
   to,
   children,
   ariaLabel,
-  prefetch = "intent",
+  prefetch = true,
   className,
   tone = "default",
 }: PrimaryLinkButtonProps): JSX.Element {
   return (
     <Link
-      to={to}
+      href={to}
       prefetch={prefetch}
       aria-label={ariaLabel || undefined}
       className={clsx(

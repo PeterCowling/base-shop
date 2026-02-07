@@ -1,5 +1,6 @@
 // packages/ui/src/components/cms/media/hooks/utils/utils.ts
 import type { MediaItem } from "@acme/types";
+
 import type { MediaItemWithUrl } from "./types";
 
 export function hasUrl(item: MediaItem): item is MediaItemWithUrl {

@@ -1,6 +1,8 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import type { ScaffoldSpec } from "@acme/types/page/ScaffoldSpec";
+
 import PreviewPane from "../src/app/cms/shop/[shop]/wizard/new/components/PreviewPane";
 
 type PreviewRendererProps = {
@@ -21,12 +23,12 @@ const previewRendererMock = jest.fn((props: PreviewRendererProps) => {
   return <div data-testid="preview-renderer" />;
 });
 
-jest.mock("@ui/components/cms/page-builder/PreviewRenderer", () => ({
+jest.mock("@acme/cms-ui/page-builder/PreviewRenderer", () => ({
   __esModule: true,
   default: (props: PreviewRendererProps) => previewRendererMock(props),
 }));
 
-jest.mock("@ui/components/common/DeviceSelector", () => ({
+jest.mock("@acme/ui/components/common/DeviceSelector", () => ({
   __esModule: true,
   default: ({ deviceId, onChange }: DeviceSelectorProps) => (
     <button

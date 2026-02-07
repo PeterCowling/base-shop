@@ -1,11 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { useState, useMemo } from "react";
-import { useProductFilters } from "../../../hooks/useProductFilters";
+import { useMemo,useState } from "react";
+import * as nav from "next/navigation";
+
 import { PRODUCTS } from "@acme/platform-core/products/index";
 import type { SKU } from "@acme/types";
-import * as nav from "next/navigation";
+
+import { useProductFilters } from "../../../hooks/useProductFilters";
 
 const t = (s: string) => s;
 

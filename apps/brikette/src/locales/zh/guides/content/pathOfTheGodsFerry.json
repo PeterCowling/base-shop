@@ -43,15 +43,29 @@
         "航程约 25 分钟。建议站在右舷，可回望波西塔诺与普拉亚诺。",
         "靠岸后迅速下船，直行至港口广场左侧的巴士总站。",
         "如果还有空档，可在阿马尔菲大教堂广场散步或喝杯浓缩咖啡——但要随时注意巴士候车区的 Agerola 班次。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/11-nav.jpg",
+          "alt": "Bomerano bus stop location with Ristorante Jerla signpost marker",
+          "caption": "1. Bomerano 站点——看到 Jerla 餐厅标志后在此下车，然后过马路"
+        }
       ]
     },
     {
       "id": "bus-to-bomerano",
       "title": "搭乘巴士前往 Bomerano",
       "body": [
-        "寻找标有 “Agerola/Bomerano” 的 SITA 巴士。上车时打票，并尽量坐在前排以减少弯道颠簸。",
+        "寻找标有 \\\\\"Agerola/Bomerano\\\\\" 的 SITA 巴士。上车时打票，并尽量坐在前排以减少弯道颠簸。",
         "约 45 分钟后在 Ristorante Jerla 旁的 Bomerano 站下车。过马路后沿旁边的小路下坡进入广场。",
-        "穿过广场向左转，跟随 “Sentiero degli Dei” 指示牌前往登山口告示牌。"
+        "穿过广场向左转，跟随 \\\\\"Sentiero degli Dei\\\\\" 指示牌前往登山口告示牌。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/12-nav.jpg",
+          "alt": "Side street from Bomerano bus stop descending toward the piazza",
+          "caption": "2. 从巴士站过马路，沿这条小路下坡前往广场"
+        }
       ]
     },
     {
@@ -61,6 +75,28 @@
         "步道全长约 6 公里，途中有石阶、狭窄山脊与能俯瞰海岸的绝佳观景台。",
         "在标示的观景点适时休息，并自行带走所有垃圾。尊重当地农户，务必沿着标示路径行走。",
         "当土路与通往 Nocelle 的水泥步道汇合时，说明你已经抵达终点。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/13-nav.jpg",
+          "alt": "Town square (piazza) in Bomerano with left-hand route markers",
+          "caption": "3. 向左穿过广场，跟随'Sentiero degli Dei'指示牌"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/14-nav.jpg",
+          "alt": "Wooden steps ascending along the hiking trail ridge",
+          "caption": "4. 穿过广场后，找到告示牌并向左转，这就是步道起点。沿路径前行，直到看到有木质台阶的区段。"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/15-nav.jpg",
+          "alt": "Concrete paved walkway marking entry into Nocelle village",
+          "caption": "当土路与这条水泥步道汇合时，你已抵达 Nocelle"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/16-nav.jpg",
+          "alt": "Nocelle village navigation map showing route to bus stop and staircase warning",
+          "caption": "Nocelle 地图——穿行小镇时，务必在岔路口右转前往巴士站；切勿走下通往波西塔诺的 1,700 级台阶！"
+        }
       ]
     },
     {
@@ -70,6 +106,23 @@
         "沿铺设好的步道进入小镇，在第一个岔路口保持右侧，以免走下通往波西塔诺的 1,700 级台阶。",
         "步行约 175 米即可到达小型停车场旁的巴士站。教堂旁的亭子在旺季会贩售冰饮。",
         "请至少提前 10 分钟抵达；停车区繁忙时，巴士有时会在站棚前停靠。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/17-nav.jpg",
+          "alt": "Directional signpost in Nocelle showing the stairs-to-Positano option to avoid",
+          "caption": "重要提示：切勿跟随指向'Positano'的台阶下行——请在此处右转"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/18-nav.jpg",
+          "alt": "Stone steps ascending through Nocelle streets toward the bus stop",
+          "caption": "沿这些台阶向上步行约 175 米，即可到达停车场旁的巴士站"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/19-nav.jpg",
+          "alt": "Bus stop arrival point in Nocelle",
+          "caption": "你已抵达巴士站。"
+        }
       ]
     },
     {

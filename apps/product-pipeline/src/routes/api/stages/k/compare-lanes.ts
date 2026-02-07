@@ -1,30 +1,34 @@
 /* i18n-exempt file -- PP-1100 internal pipeline API [ttl=2026-06-30] */
 // apps/product-pipeline/src/routes/api/stages/k/compare-lanes.ts
 
-import type { PipelineEventContext } from "../../_lib/types";
 import { z } from "zod";
+
 import { computeStageK } from "@acme/pipeline-engine";
-import {
-  buildStageKScenario,
-  type VelocityPrior,
-} from "@/lib/pipeline/stage-k-scenario";
+
 import { computeStageBOutput } from "@/lib/pipeline/stage-b";
 import {
   buildAdjustedStageBInput,
   buildLaneWarnings,
   buildSummary,
+  type LaneVersionSnapshot,
   safeJsonParse,
+  type StageKSummary,
   toStageKInput,
   unwrapStageBInput,
-  type LaneVersionSnapshot,
-  type StageKSummary,
 } from "@/lib/pipeline/stage-k-lane-compare";
+import {
+  buildStageKScenario,
+  type VelocityPrior,
+} from "@/lib/pipeline/stage-k-scenario";
+
 import {
   fetchCandidateById,
   getDb,
   type PipelineEnv,
 } from "../../_lib/db";
 import { errorResponse, jsonResponse } from "../../_lib/response";
+import { checkStageTSGate } from "../../_lib/stage-gating";
+import type { PipelineEventContext } from "../../_lib/types";
 
 const bodySchema = z.object({
   candidateId: z.string().min(1),
@@ -109,6 +113,11 @@ export const onRequestPost = async ({
   const candidate = await fetchCandidateById(db, candidateId);
   if (!candidate) {
     return errorResponse(404, "candidate_not_found", { candidateId });
+  }
+
+  const stageGate = await checkStageTSGate(db, candidateId);
+  if (stageGate) {
+    return errorResponse(409, stageGate.code, stageGate.details);
   }
 
   const stageB = await fetchLatestStageRun(db, candidateId, "B");

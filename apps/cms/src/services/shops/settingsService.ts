@@ -1,15 +1,16 @@
+import { recordMetric } from "@acme/platform-core/utils";
 import type { ShopSettings } from "@acme/types";
+
 import { authorize, fetchSettings, persistSettings } from "./helpers";
-import { recordMetric } from "@platform-core/utils";
 import {
+  parseAiCatalogForm,
   parseCurrencyTaxForm,
   parseDepositForm,
   parseLateFeeForm,
-  parseReverseLogisticsForm,
-  parseUpsReturnsForm,
   parsePremierDeliveryForm,
-  parseAiCatalogForm,
+  parseReverseLogisticsForm,
   parseStockAlertForm,
+  parseUpsReturnsForm,
 } from "./validation";
 
 export function getSettings(shop: string) {
@@ -19,7 +20,7 @@ export function getSettings(shop: string) {
 export async function setFreezeTranslations(shop: string, freeze: boolean) {
   await authorize();
   const current = await fetchSettings(shop);
-  const updated: ShopSettings = { ...current, freezeTranslations: freeze };
+  const updated = { ...current, freezeTranslations: freeze } as ShopSettings;
   await persistSettings(shop, updated);
   recordMetric("cms_settings_save_total", {
     shopId: shop,
@@ -39,11 +40,11 @@ export async function updateCurrencyAndTax(
     return { errors };
   }
   const current = await fetchSettings(shop);
-  const updated: ShopSettings = {
+  const updated = {
     ...current,
     currency: data.currency,
     taxRegion: data.taxRegion,
-  };
+  } as ShopSettings;
   await persistSettings(shop, updated);
   recordMetric("cms_settings_save_total", {
     shopId: shop,
@@ -63,13 +64,13 @@ export async function updateDeposit(
     return { errors };
   }
   const current = await fetchSettings(shop);
-  const updated: ShopSettings = {
+  const updated = {
     ...current,
     depositService: {
       enabled: data.enabled,
       intervalMinutes: data.intervalMinutes,
     },
-  };
+  } as ShopSettings;
   await persistSettings(shop, updated);
   recordMetric("cms_settings_save_total", {
     shopId: shop,
@@ -89,13 +90,13 @@ export async function updateLateFee(
     return { errors };
   }
   const current = await fetchSettings(shop);
-  const updated: ShopSettings = {
+  const updated = {
     ...current,
     lateFeeService: {
       enabled: data.enabled,
       intervalMinutes: data.intervalMinutes,
     },
-  };
+  } as ShopSettings;
   await persistSettings(shop, updated);
   recordMetric("cms_settings_save_total", {
     shopId: shop,
@@ -115,13 +116,13 @@ export async function updateReverseLogistics(
     return { errors };
   }
   const current = await fetchSettings(shop);
-  const updated: ShopSettings = {
+  const updated = {
     ...current,
     reverseLogisticsService: {
       enabled: data.enabled,
       intervalMinutes: data.intervalMinutes,
     },
-  };
+  } as ShopSettings;
   await persistSettings(shop, updated);
   recordMetric("cms_settings_save_total", {
     shopId: shop,
@@ -141,14 +142,14 @@ export async function updateUpsReturns(
     return { errors };
   }
   const current = await fetchSettings(shop);
-  const updated: ShopSettings = {
+  const updated = {
     ...current,
     returnService: {
       upsEnabled: data.enabled,
       bagEnabled: data.bagEnabled ?? false,
       homePickupEnabled: data.homePickupEnabled ?? false,
     },
-  };
+  } as ShopSettings;
   await persistSettings(shop, updated);
   recordMetric("cms_settings_save_total", {
     shopId: shop,
@@ -168,14 +169,14 @@ export async function updateStockAlert(
     return { errors };
   }
   const current = await fetchSettings(shop);
-  const updated: ShopSettings = {
+  const updated = {
     ...current,
     stockAlert: {
       recipients: data.recipients,
       webhook: data.webhook,
       threshold: data.threshold,
     },
-  };
+  } as unknown as ShopSettings;
   await persistSettings(shop, updated);
   recordMetric("cms_settings_save_total", {
     shopId: shop,
@@ -195,7 +196,7 @@ export async function updatePremierDelivery(
     return { errors };
   }
   const current = await fetchSettings(shop);
-  const updated: ShopSettings = {
+  const updated = {
     ...current,
     premierDelivery: {
       regions: data.regions,
@@ -208,7 +209,7 @@ export async function updatePremierDelivery(
       ...(current.luxuryFeatures ?? {}),
       premierDelivery: true,
     },
-  };
+  } as ShopSettings;
   await persistSettings(shop, updated);
   return { settings: updated };
 }
@@ -229,7 +230,7 @@ export async function updateAiCatalog(
     fields: data.fields,
     pageSize: data.pageSize,
   };
-  const updated: ShopSettings = { ...current, seo };
+  const updated = { ...current, seo } as ShopSettings;
   await persistSettings(shop, updated);
   return { settings: updated };
 }

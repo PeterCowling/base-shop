@@ -1,5 +1,5 @@
-import { revertSeo } from "../seoService";
 import { authorize, fetchDiffHistory, persistSettings } from "../helpers";
+import { revertSeo } from "../seoService";
 
 jest.mock("../helpers", () => ({
   authorize: jest.fn().mockResolvedValue(undefined),

@@ -5,80 +5,65 @@
   },
   "linkLabel": "Da Napoli a Positano: come arrivare",
   "intro": [
-    "Traduzione in arrivo."
+    "Da Napoli aeroporto o citta, raggiungi Positano tutto l'anno con navetta o Alibus + treno per Sorrento, poi bus SITA verso Amalfi. In estate ci sono i traghetti con mare calmo. Questa guida mostra dove scendere (Chiesa Nuova/Bar Internazionale) e come camminare gli ultimi 2-5 minuti fino a Hostel Brikette."
   ],
   "toc": [
     {
       "href": "#train-bus",
-      "label": "Train + bus (year-round)"
+      "label": "Treno + bus (tutto l'anno)"
     },
     {
       "href": "#ferry",
-      "label": "Ferry (summer)"
+      "label": "Traghetto (estate)"
     },
     {
       "href": "#transfer",
-      "label": "Late arrivals & transfers"
+      "label": "Arrivi tardivi e transfer"
     },
     {
       "href": "#faqs",
-      "label": "FAQs"
+      "label": "Domande frequenti"
     }
   ],
   "sections": [
     {
       "id": "train-bus",
-      "title": "Train + bus (year-round)",
+      "title": "Treno + bus (tutto l'anno)",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Aeroporto → Sorrento: dagli arrivi NAP, prendi la navetta Curreri per Sorrento (diretta, pagamento a bordo/online) oppure l'Alibus per Napoli Centrale/Garibaldi e poi la Circumvesuviana per Sorrento.",
+        "A Sorrento: esci dalla stazione e segui i cartelli per le fermate bus. Compra i biglietti SITA in tabacchi/edicola (serve biglietto convalidato prima di salire)."
       ]
     },
     {
       "id": "ferry",
-      "title": "Ferry (summer)",
+      "title": "Traghetto (estate)",
       "body": [
-        "Alibus → Molo Beverello; take a ferry to Positano and confirm fares with the operator on the day.",
-        "Traduzione in arrivo."
+        "Alibus → Molo Beverello; prendi un traghetto per Positano e conferma tariffe con l'operatore il giorno stesso.",
+        "Dal molo di Positano, combina bus Interno Positano e facchini se hai bagagli — vedi %LINK:ferryDockToBrikette|molo → ostello% e %LINK:porterServices|guida facchini%."
       ]
     },
     {
       "id": "transfer",
-      "title": "Late arrivals & transfers",
+      "title": "Arrivi tardivi e transfer",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Se arrivi dopo l'ultimo bus/traghetto, prenota un transfer privato o passa la notte vicino alla stazione di Napoli o a Sorrento.",
+        "Conferma il punto di scarico vicino all'alloggio e chiedi assistenza bagagli se serve."
       ]
     }
   ],
-  "faqsTitle": "FAQs",
+  "faqsTitle": "Domande frequenti",
   "faqs": [
     {
-      "q": "Traduzione in arrivo.",
+      "q": "Dove compro i biglietti SITA?",
       "a": [
-        "Traduzione in arrivo."
+        "Nei tabacchi/edicole vicino alle fermate a Sorrento e al Bar Internazionale a Positano. Compra prima di salire e convalida sul bus se richiesto."
       ]
     },
     {
-      "q": "Traduzione in arrivo.",
+      "q": "Qual e la fermata migliore per l'ostello?",
       "a": [
-        "Traduzione in arrivo."
+        "Chiesa Nuova (fuori dal Bar Internazionale). E' la fermata piu vicina a Hostel Brikette e evita lunghe scalinate."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Immagini di riferimento",
-    "items": [
-      {
-        "src": "/img/directions/napoli-aeroporto-positano-autobus-fermata-autobus.png",
-        "alt": "Fermata SITA Chiesa Nuova / Bar Internazionale a Positano",
-        "caption": "Fermata Bar Internazionale / Chiesa Nuova"
-      },
-      {
-        "src": "/img/indicazioni/napoli-aeroporto-positano-bus-ostello-ingresso-scalini.png",
-        "alt": "Scale per l'ingresso principale dell'Hostel Brikette",
-        "caption": "Scale d'ingresso dell'Hostel Brikette"
-      }
-    ]
-  }
+  ]
 }

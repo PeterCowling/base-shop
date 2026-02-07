@@ -1,7 +1,9 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
-import ComponentPreview from "../src/components/ComponentPreview";
+import { fireEvent,render, screen } from "@testing-library/react";
+
 import type { UpgradeComponent } from "@acme/types";
+
+import ComponentPreview from "../src/components/ComponentPreview";
 
 describe("ComponentPreview", () => {
   afterEach(() => {
@@ -11,12 +13,13 @@ describe("ComponentPreview", () => {
   const component: UpgradeComponent = {
     componentName: "MyComp",
     file: "MyComp.tsx",
+    newChecksum: "new",
   } as UpgradeComponent;
 
   it("renders new component without comparison controls when no legacy component", async () => {
     const NewComp = () => <div>New Component</div>;
     (globalThis as any).__UPGRADE_MOCKS__ = {
-      "@ui/components/MyComp": NewComp,
+      "@acme/ui/components/MyComp": NewComp,
     };
 
     render(<ComponentPreview component={component} />);
@@ -29,8 +32,8 @@ describe("ComponentPreview", () => {
     const NewComp = () => <div>New Component</div>;
     const OldComp = () => <div>Old Component</div>;
     (globalThis as any).__UPGRADE_MOCKS__ = {
-      "@ui/components/MyComp": NewComp,
-      "@ui/components/MyComp.bak": OldComp,
+      "@acme/ui/components/MyComp": NewComp,
+      "@acme/ui/components/MyComp.bak": OldComp,
     };
 
     render(<ComponentPreview component={component} />);
@@ -48,8 +51,8 @@ describe("ComponentPreview", () => {
     const NewComp = () => <div>New Component</div>;
     const OldComp = () => <div>Old Component</div>;
     (globalThis as any).__UPGRADE_MOCKS__ = {
-      "@ui/components/MyComp": NewComp,
-      "@ui/components/MyComp.bak": OldComp,
+      "@acme/ui/components/MyComp": NewComp,
+      "@acme/ui/components/MyComp.bak": OldComp,
     };
 
     render(<ComponentPreview component={component} />);
@@ -70,8 +73,8 @@ describe("ComponentPreview", () => {
     const NewComp = () => <div>New Component</div>;
     const OldComp = () => <div>Old Component</div>;
     (globalThis as any).__UPGRADE_MOCKS__ = {
-      "@ui/components/MyComp": NewComp,
-      "@ui/components/MyComp.bak": OldComp,
+      "@acme/ui/components/MyComp": NewComp,
+      "@acme/ui/components/MyComp.bak": OldComp,
     };
 
     render(<ComponentPreview component={component} />);
@@ -89,4 +92,3 @@ describe("ComponentPreview", () => {
     expect(screen.queryByText("Old Component")).not.toBeInTheDocument();
   });
 });
-

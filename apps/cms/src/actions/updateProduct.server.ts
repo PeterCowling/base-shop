@@ -2,11 +2,11 @@
 "use server";
 
 import { LOCALES } from "@acme/i18n";
-import { ProductPublication } from "@platform-core/products";
+import { type ProductPublication } from "@acme/platform-core/products";
 import {
   getProductById,
   updateProductInRepo,
-} from "@platform-core/repositories/json.server";
+} from "@acme/platform-core/repositories/json.server";
 import type { Locale } from "@acme/types";
 
 /**

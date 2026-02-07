@@ -1,6 +1,7 @@
 import "server-only";
 
 import type { AnalyticsAggregates, AnalyticsEvent } from "../analytics";
+
 import { jsonAnalyticsRepository } from "./analytics.json.server";
 
 export async function listEvents(

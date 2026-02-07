@@ -1,7 +1,9 @@
+import { useRef,useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import ProductQuickView from './ProductQuickView';
+
 import type { SKU } from '@acme/types';
-import { useState, useRef } from 'react';
+
+import ProductQuickView from './ProductQuickView';
 
 const demoProduct: SKU = {
   id: 'sku_1',

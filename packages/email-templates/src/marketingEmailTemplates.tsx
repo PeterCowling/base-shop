@@ -1,5 +1,6 @@
 import * as React from "react";
-import { MarketingEmailTemplate, MarketingEmailTemplateProps } from "./MarketingEmailTemplate";
+
+import { MarketingEmailTemplate, type MarketingEmailTemplateProps } from "./MarketingEmailTemplate";
 
 export interface MarketingEmailTemplateVariant {
   id: string;

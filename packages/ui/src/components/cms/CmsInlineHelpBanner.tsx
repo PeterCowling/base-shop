@@ -1,8 +1,9 @@
 // packages/ui/src/components/cms/CmsInlineHelpBanner.tsx
 
 import type { ReactElement } from "react";
-import { Alert, Button } from "@ui/components/atoms";
-import { Inline } from "@ui/components/atoms/primitives";
+
+import { Alert, Button } from "../../components/atoms";
+import { Inline } from "../../components/atoms/primitives/Inline";
 
 export type CmsInlineHelpTone = "info" | "warning";
 

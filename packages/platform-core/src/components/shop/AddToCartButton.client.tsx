@@ -1,10 +1,12 @@
 // packages/platform-core/components/shop/AddToCartButton.tsx
 "use client";
 
-import { useCart } from "../../contexts/CartContext";
-import type { SKU } from "@acme/types";
 import { useEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
+
+import type { SKU } from "@acme/types";
+
+import { useCart } from "../../contexts/CartContext";
 
 type Props = {
   sku: SKU;

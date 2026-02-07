@@ -3,86 +3,99 @@
 /*  Language modal container                                                  */
 /* -------------------------------------------------------------------------- */
 
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
+import type { LanguageModalCopy, LanguageOption } from "@acme/ui/organisms/modals";
+
+import { IS_DEV } from "@/config/env";
 import { useTheme } from "@/hooks/useTheme";
+import { guideSlug, resolveGuideKeyFromSlug, type GuideKey } from "@/routes.guides-helpers";
+import { SLUG_KEYS, type SlugMap,SLUGS } from "@/slug-map";
 import { preloadI18nNamespaces } from "@/utils/loadI18nNs";
 import { translatePath } from "@/utils/translate-path";
-import { articleSlug, type HelpArticleKey } from "@/routes.assistance-helpers";
-import { GUIDE_KEYS, guideSlug } from "@/routes.guides-helpers";
-import { HELP_ARTICLE_KEYS } from "@/components/assistance/HelpCentreNav";
-import { SLUGS, SLUG_KEYS, type SlugMap } from "@/slug-map";
-import { IS_DEV } from "@/config/env";
 
-import { LanguageModal } from "../lazy-modals";
+import { type AppLanguage,CORE_LAYOUT_NAMESPACES, i18nConfig } from "../constants";
 import { useModal } from "../hooks";
-import { useSafeLocation, useSafeNavigate } from "../navigation";
-import { CORE_LAYOUT_NAMESPACES, LANGUAGE_ORDER, i18nConfig, type AppLanguage } from "../constants";
-import type { LanguageModalCopy, LanguageOption } from "@acme/ui/organisms/modals";
+import { LanguageModal } from "../lazy-modals";
 
 export function LanguageGlobalModal(): JSX.Element | null {
   const { closeModal } = useModal();
-  const { theme } = useTheme();
-  const navigate = useSafeNavigate();
-  const location = useSafeLocation();
+  const { isDark } = useTheme();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  // Build a location-like object for compatibility
+  const search = searchParams?.toString();
+  const location = {
+    pathname: pathname ?? "/",
+    search: search ? `?${search}` : "",
+    hash: typeof window !== "undefined" ? window.location.hash : "",
+  };
+  const navigate = useCallback((path: string, options?: { replace?: boolean }) => {
+    if (options?.replace) {
+      router.replace(path);
+    } else {
+      router.push(path);
+    }
+  }, [router]);
 
-  const { t: tModals, i18n, ready: modalsReady } = useTranslation("modals");
+  const { t: tModals, i18n } = useTranslation("modals");
 
-  const pathSegments = useMemo(() => location.pathname.split("/").filter(Boolean), [location.pathname]);
+  const pathSegments = location.pathname.split("/").filter(Boolean);
 
-  const curLang = useMemo<AppLanguage>(() => {
+  const curLang: AppLanguage = (() => {
     const first = pathSegments[0];
     return i18nConfig.supportedLngs.includes(first as AppLanguage)
       ? (first as AppLanguage)
       : (i18nConfig.fallbackLng as AppLanguage);
-  }, [pathSegments]);
+  })();
 
-  const slugKey = useMemo<keyof SlugMap | null>(() => {
-    const maybe = pathSegments[1];
-    return (
-      SLUG_KEYS.find((key) => i18nConfig.supportedLngs.some((lng) => SLUGS[key][lng] === maybe)) ?? null
-    );
-  }, [pathSegments]);
+  const slugKey: keyof SlugMap | null =
+    SLUG_KEYS.find((key) => i18nConfig.supportedLngs.some((lng) => SLUGS[key][lng] === pathSegments[1])) ??
+    null;
 
-  const articleKey = useMemo<HelpArticleKey | null>(() => {
+  // Resolve guide key for assistance pages (null if on assistance index)
+  const assistanceGuideKey: GuideKey | null = (() => {
     if (slugKey !== "assistance") return null;
     const slugSegment = pathSegments[2];
-    if (!slugSegment) {
-      return HELP_ARTICLE_KEYS[0] ?? null;
-    }
-    return HELP_ARTICLE_KEYS.find((key) => articleSlug(curLang, key) === slugSegment) ?? null;
-  }, [slugKey, pathSegments, curLang]);
+    // If no slug segment, we're on the assistance index — keep null to stay on index
+    if (!slugSegment) return null;
+    // Resolve the guide key from the slug
+    return resolveGuideKeyFromSlug(slugSegment, curLang) ?? null;
+  })();
 
-  const languageOptions = useMemo<LanguageOption[]>(() => {
-    return LANGUAGE_ORDER.map((lng) => {
-      let label = lng.toUpperCase();
-      if (typeof Intl !== "undefined" && typeof Intl.DisplayNames === "function") {
-        try {
-          const display = new Intl.DisplayNames([lng], { type: "language" });
-          const resolved = display.of(lng);
-          if (resolved) {
-            const [firstGrapheme, ...rest] = Array.from(resolved);
-            if (firstGrapheme) {
-              label = `${firstGrapheme.toLocaleUpperCase(lng)}${rest.join("")}`;
-            }
+  const candidates = [
+    i18nConfig.fallbackLng as AppLanguage,
+    ...((i18nConfig.supportedLngs ?? []) as AppLanguage[]),
+  ];
+  if (!candidates.includes(curLang)) {
+    candidates.unshift(curLang);
+  }
+  const languageOptions: LanguageOption[] = Array.from(new Set(candidates)).map((lng) => {
+    let label = lng.toUpperCase();
+    if (typeof Intl !== "undefined" && typeof Intl.DisplayNames === "function") {
+      try {
+        const display = new Intl.DisplayNames([lng], { type: "language" });
+        const resolved = display.of(lng);
+        if (resolved) {
+          const [firstGrapheme, ...rest] = Array.from(resolved);
+          if (firstGrapheme) {
+            label = `${firstGrapheme.toLocaleUpperCase(lng)}${rest.join("")}`;
           }
-        } catch {
-          label = lng.toUpperCase();
         }
+      } catch {
+        label = lng.toUpperCase();
       }
-      return { code: lng, label };
-    });
-  }, []);
+    }
+    return { code: lng, label };
+  });
 
-  const languageCopy = useMemo<LanguageModalCopy>(() => {
-    const base: LanguageModalCopy = {
-      title: tModals("language.title"),
-      closeLabel: tModals("language.close"),
-    };
-    if (!modalsReady) return { ...base };
-    return base;
-  }, [modalsReady, tModals]);
+  const languageCopy: LanguageModalCopy = {
+    title: tModals("language.title"),
+    closeLabel: tModals("language.close"),
+  };
 
   const warmLayoutNamespaces = useCallback(async (target: AppLanguage): Promise<void> => {
     try {
@@ -115,15 +128,17 @@ export function LanguageGlobalModal(): JSX.Element | null {
 
           const trailingSegments = remainder.slice(1);
 
-          if (slugKey === "assistance" && articleKey) {
-            nextSegments.push(articleSlug(nextLang, articleKey));
+          // Handle assistance guides and other guide namespaces uniformly
+          if (slugKey === "assistance" && assistanceGuideKey) {
+            // On an assistance guide page — translate the guide slug
+            nextSegments.push(guideSlug(nextLang, assistanceGuideKey));
             nextSegments.push(...trailingSegments.slice(1));
           } else if (
             (slugKey === "guides" || slugKey === "experiences" || slugKey === "howToGetHere") &&
             trailingSegments.length > 0
           ) {
             const currentSecond = trailingSegments[0] ?? "";
-            const matchedGuideKey = GUIDE_KEYS.find((k) => guideSlug(curLang, k) === currentSecond);
+            const matchedGuideKey = resolveGuideKeyFromSlug(currentSecond, curLang);
             if (matchedGuideKey) {
               nextSegments.push(guideSlug(nextLang, matchedGuideKey));
               nextSegments.push(...trailingSegments.slice(1));
@@ -131,6 +146,7 @@ export function LanguageGlobalModal(): JSX.Element | null {
               nextSegments.push(...trailingSegments);
             }
           } else {
+            // Assistance index or other pages — keep trailing segments as-is
             nextSegments.push(...trailingSegments);
           }
         } else {
@@ -143,7 +159,7 @@ export function LanguageGlobalModal(): JSX.Element | null {
       navigate(`${basePath}${location.search}${location.hash}`, { replace: true });
       closeModal();
     },
-    [articleKey, closeModal, curLang, i18n, location, navigate, slugKey, warmLayoutNamespaces],
+    [assistanceGuideKey, closeModal, curLang, i18n, location, navigate, slugKey, warmLayoutNamespaces],
   );
 
   return (
@@ -154,7 +170,7 @@ export function LanguageGlobalModal(): JSX.Element | null {
       currentCode={curLang}
       onSelect={(code) => changeLanguage(code as AppLanguage)}
       copy={languageCopy}
-      theme={theme}
+      theme={isDark ? "dark" : "light"}
     />
   );
 }

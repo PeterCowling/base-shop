@@ -1,17 +1,18 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 
-import LateFeesTable from "../LateFeesTable";
 import { mapLateFeeRows } from "../../tableMappers";
+import LateFeesTable from "../LateFeesTable";
 
 const readOrders = jest.fn();
-const DataTable = jest.fn(() => null);
+const DataTable = jest.fn((_props: unknown) => null);
 
-jest.mock("@platform-core/repositories/rentalOrders.server", () => ({
+jest.mock("@acme/platform-core/repositories/rentalOrders.server", () => ({
   readOrders: (...args: unknown[]) => readOrders(...args),
 }));
 
-jest.mock("@ui/components/cms/DataTable", () => ({
+jest.mock("@acme/cms-ui/DataTable", () => ({
   __esModule: true,
   default: (props: unknown) => DataTable(props),
 }));

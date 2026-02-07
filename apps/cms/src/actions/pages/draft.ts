@@ -1,10 +1,13 @@
+import { ulid } from "ulid";
+
 import { nowIso } from "@acme/date-utils";
 import type { Page } from "@acme/types";
-import { ulid } from "ulid";
+
 import { ensureAuthorized } from "../common/auth";
-import { componentsField, emptyTranslated } from "./validation";
+
 import { getPages, savePage } from "./service";
 import { parseHistory, reportError } from "./utils";
+import { componentsField, emptyTranslated } from "./validation";
 
 export async function savePageDraft(
   shop: string,
@@ -53,7 +56,7 @@ export async function savePageDraft(
         },
         createdAt: now,
         updatedAt: now,
-        createdBy: session.user.email ?? "unknown",
+        createdBy: session.user?.email ?? "unknown",
       };
 
   try {

@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
+
 import { parseDsPackage } from "@acme/theme";
 
 export async function POST(req: NextRequest) {

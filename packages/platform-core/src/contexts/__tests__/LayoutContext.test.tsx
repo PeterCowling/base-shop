@@ -1,6 +1,7 @@
-import { render, fireEvent, configure } from "@testing-library/react";
-import { LayoutProvider, useLayout } from "../LayoutContext";
 import { usePathname } from "next/navigation";
+import { configure,fireEvent, render } from "@testing-library/react";
+
+import { LayoutProvider, useLayout } from "../LayoutContext";
 
 configure({ testIdAttribute: "data-testid" });
 

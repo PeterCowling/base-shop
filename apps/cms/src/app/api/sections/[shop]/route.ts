@@ -1,10 +1,11 @@
-import { NextResponse, type NextRequest } from "next/server";
-import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
-import { getSections, saveSection, updateSection, deleteSection } from "@platform-core/repositories/sections/index.server";
-import { pageComponentSchema, type SectionTemplate } from "@acme/types";
+import { type NextRequest,NextResponse } from "next/server";
 import { ensureAuthorized } from "@cms/actions/common/auth";
 import { ulid } from "ulid";
+
 import { nowIso } from "@acme/date-utils";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+import { deleteSection,getSections, saveSection, updateSection } from "@acme/platform-core/repositories/sections/index.server";
+import { pageComponentSchema, type SectionTemplate } from "@acme/types";
 
 export async function GET(
   req: NextRequest,
@@ -23,7 +24,8 @@ export async function GET(
       .map((t) => t.trim().toLowerCase())
       .filter(Boolean);
     const pageRaw = parseInt(url.searchParams.get("page") || "", 10);
-    const page = Number.isFinite(pageRaw) && pageRaw > 0 ? pageRaw : 0;
+    // Cap page at 1000 to prevent resource exhaustion attacks
+    const page = Number.isFinite(pageRaw) && pageRaw > 0 ? Math.min(pageRaw, 1000) : 0;
     const pageSizeRaw = parseInt(url.searchParams.get("pageSize") || "0", 10) || 0;
     // Allow larger result sets to support shops with many sections
     const pageSize = page > 0 ? Math.min(500, Math.max(1, pageSizeRaw || 24)) : 0;
@@ -122,7 +124,7 @@ export async function POST(
       template: parsedTemplate,
       createdAt: now,
       updatedAt: now,
-      createdBy: session.user.email ?? "unknown",
+      createdBy: session.user?.email ?? "unknown",
     };
     const saved = await saveSection(shop, section, undefined);
     return NextResponse.json(saved, { status: 201 });

@@ -1,15 +1,16 @@
-import { render, screen } from "@testing-library/react";
 import React from "react";
-import { listEvents, readAggregates } from "@platform-core/repositories/analytics.server";
-import { readShop } from "@platform-core/repositories/shops.server";
 import { buildMetrics } from "@cms/lib/analytics";
+import { render, screen } from "@testing-library/react";
 
-jest.mock("@platform-core/repositories/analytics.server", () => ({
+import { listEvents, readAggregates } from "@acme/platform-core/repositories/analytics.server";
+import { readShop } from "@acme/platform-core/repositories/shops.server";
+
+jest.mock("@acme/platform-core/repositories/analytics.server", () => ({
   listEvents: jest.fn(),
   readAggregates: jest.fn(),
 }));
 
-jest.mock("@platform-core/repositories/shops.server", () => ({
+jest.mock("@acme/platform-core/repositories/shops.server", () => ({
   readShop: jest.fn(),
 }));
 
@@ -69,7 +70,7 @@ it("renders campaign filter and charts", async () => {
 
   const { default: Page } = await import("./page");
   render(
-    await Page({ params: { shop: "s1" }, searchParams: {} })
+    await Page({ params: Promise.resolve({ shop: "s1" }), searchParams: {} })
   );
 
   expect(screen.getByText("Dashboard: s1")).toBeInTheDocument();

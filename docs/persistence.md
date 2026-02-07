@@ -71,9 +71,9 @@ In **DB mode** (that is, when `SHOP_BACKEND` / `SETTINGS_BACKEND` resolve to `"p
 
 These fields are read and written via Prisma‑backed repositories:
 
-- `@platform-core/repositories/shop.server` for low‑level access (`getShopById`, `updateShopInRepo`).
-- `@platform-core/repositories/shops.server` for higher‑level helpers (`readShop`, `writeShop`).
-- `@platform-core/repositories/settings.server` for `ShopSettings` (`getShopSettings`, `saveShopSettings`, `diffHistory`).
+- `@acme/platform-core/repositories/shop.server` for low‑level access (`getShopById`, `updateShopInRepo`).
+- `@acme/platform-core/repositories/shops.server` for higher‑level helpers (`readShop`, `writeShop`).
+- `@acme/platform-core/repositories/settings.server` for `ShopSettings` (`getShopSettings`, `saveShopSettings`, `diffHistory`).
 
 In DB mode, domain code must not read business fields from the filesystem; JSON under `DATA_ROOT` is treated as a mirror or seed only when the corresponding backend is explicitly set to `"json"` for that repository.
 

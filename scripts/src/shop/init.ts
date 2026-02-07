@@ -1,9 +1,11 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+
 import {
   createShop,
   type CreateShopOptions,
 } from "@acme/platform-core/createShop";
+
 import { seedShop } from "../seedShop";
 
 interface PluginMeta {

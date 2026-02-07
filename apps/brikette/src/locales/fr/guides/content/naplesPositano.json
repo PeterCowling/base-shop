@@ -65,20 +65,5 @@
         "Depuis l'arrêt ‘Chiesa Nuova’, comptez ~80 m sans escaliers."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Images de référence",
-    "items": [
-      {
-        "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
-        "alt": "Arrêt SITA Chiesa Nuova / Bar Internazionale à Positano",
-        "caption": "Arrêt Bar Internazionale / Chiesa Nuova"
-      },
-      {
-        "src": "/img/directions/naples-airport-positano-bus-hostel-entrance-steps.png",
-        "alt": "Escaliers vers l'entrée principale de l'Hostel Brikette",
-        "caption": "Escaliers d'entrée de l'Hostel Brikette"
-      }
-    ]
-  }
+  ]
 }

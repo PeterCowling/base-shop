@@ -1,14 +1,15 @@
 import "@testing-library/jest-dom";
+
 import React from "react";
 import { render, screen } from "@testing-library/react";
+
+import ExportPage from "../src/app/cms/shop/[shop]/pages/[page]/export/page";
 
 const translate = jest.fn();
 
 jest.mock("@acme/i18n", () => ({
   useTranslations: () => translate,
 }));
-
-import ExportPage from "../src/app/cms/shop/[shop]/pages/[page]/export/page";
 
 describe("ExportPage", () => {
   const headingText = "Mocked export heading";

@@ -1,11 +1,13 @@
 "use client"; // i18n-exempt -- DEV-000: Next.js directive, not user-facing
 import type { ReactElement, RefObject } from "react";
 import { useRef, useState } from "react";
-import { Button } from "../atoms/shadcn";
-import { Alert } from "../atoms";
-import { cn } from "../../utils/style";
-import type { ImageOrientation } from "@acme/types";
+
 import { useTranslations } from "@acme/i18n";
+import type { ImageOrientation } from "@acme/types";
+
+import { cn } from "../../utils/style";
+import { Alert } from "../atoms";
+import { Button } from "../atoms/shadcn";
 // i18n-exempt -- DEV-000: file input accept types
 const ACCEPT = "image/*,video/*";
 

@@ -28,10 +28,6 @@
     "twitterHandle": "@brikette"
   },
   "internalErrors": {
-    "assistanceSlugMissing": "ARTICLE_SLUGS must define at least one assistance slug"
-  },
-  "accessibility": {
-    "skipToMain": "Spring til hovedindhold",
-    "skipToNav": "Spring til navigation"
+    "assistanceSlugMissing": "ARTICLE_SLUGS skal definere mindst én assistance slug"
   }
 }

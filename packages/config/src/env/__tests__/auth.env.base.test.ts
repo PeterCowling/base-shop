@@ -13,8 +13,11 @@ import {
   testEnv,
 } from "./authTestHelpers";
 
+ 
+type AnySpyInstance = { mockRestore: () => void } & Record<string, any>;
+
 const expectSecretsError = (
-  errorSpy: jest.SpyInstance,
+  errorSpy: AnySpyInstance,
   keys: string[],
 ) => {
   expect(errorSpy).toHaveBeenCalledWith(

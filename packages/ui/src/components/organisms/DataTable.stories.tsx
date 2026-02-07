@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { DataTable, type Column } from "./DataTable";
+
+import { type Column,DataTable } from "./DataTable";
 
 type Row = { id: string; name: string; email: string; role: string };
 

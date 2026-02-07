@@ -1,13 +1,25 @@
 import { describe, expect, it, jest } from "@jest/globals";
 
-const discover = jest.fn(async () => ({
+import { getOidcClient } from "../src/oidc/client";
+
+// Use globalThis to avoid Jest mock hoisting issues
+declare global {
+  var __oidcClientTestDiscover: jest.Mock | undefined;
+}
+globalThis.__oidcClientTestDiscover = jest.fn(async () => ({
   Client: function Client(this: any, config: any) {
     this.config = config;
   },
 }));
 
+const discover = globalThis.__oidcClientTestDiscover!;
+
 jest.mock("openid-client", () => ({
-  Issuer: { discover },
+  Issuer: {
+    get discover() {
+      return globalThis.__oidcClientTestDiscover;
+    },
+  },
 }));
 
 jest.mock("../src/oidc/config", () => ({
@@ -22,8 +34,6 @@ jest.mock("../src/oidc/config", () => ({
     scope: "openid profile email",
   }),
 }));
-
-import { getOidcClient } from "../src/oidc/client";
 
 describe("getOidcClient", () => {
   it("discovers issuer once and caches the client", async () => {

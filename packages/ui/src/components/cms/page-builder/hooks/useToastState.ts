@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import { buildToastProps } from "../buildProps";
 
 export type ToastState = { open: boolean; message: string; retry?: () => void };

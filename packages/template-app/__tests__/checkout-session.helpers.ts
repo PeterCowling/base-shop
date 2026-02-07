@@ -1,6 +1,6 @@
 // Small helper only: build Next.js request with cookie
+import { CART_COOKIE } from "@acme/platform-core/cartCookie";
 import { asNextJson } from "@acme/test-utils";
-import { CART_COOKIE } from "@platform-core/cartCookie";
 
 export function createRequest(
   body: any,

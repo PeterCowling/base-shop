@@ -28,10 +28,6 @@
     "twitterHandle": "@brikette"
   },
   "internalErrors": {
-    "assistanceSlugMissing": "ARTICLE_SLUGS must define at least one assistance slug"
-  },
-  "accessibility": {
-    "skipToMain": "メインコンテンツへスキップ",
-    "skipToNav": "ナビゲーションへスキップ"
+    "assistanceSlugMissing": "ARTICLE_SLUGSには少なくとも1つのアシスタンススラッグが定義されている必要があります"
   }
 }

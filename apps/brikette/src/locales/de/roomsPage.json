@@ -1,4 +1,39 @@
 {
+  "facts": {
+    "type": {
+      "privateRoom": "Privatzimmer",
+      "mixedDorm": "Gemischter Schlafsaal",
+      "femaleDorm": "Frauenschlafsaal",
+      "femaleRoom": "Frauenzimmer"
+    },
+    "bathroom": {
+      "bathroomEnsuite": "Eigenes Bad",
+      "bathroomPrivate": "Privates Bad",
+      "bathroomSharedFemale": "Gemeinschaftsbad"
+    },
+    "sleeps": "Schlafplätze: {{count}}"
+  },
+  "detailsLine": {
+    "beds": {
+      "doubleBedForTwo": "1 Doppelbett",
+      "threeSingleBedsThreeGuests": "3 Einzelbetten",
+      "oneDormBedTwoGuests": "1 Etagenbett",
+      "threeDormBedsSixGuests": "3 Etagenbetten",
+      "threeDormBedsPlusSingleSevenGuests": "3 Etagenbetten + 1 Einzelbett",
+      "fourDormBedsEightGuests": "4 Etagenbetten"
+    },
+    "views": {
+      "seaViewTerrace": "Terrasse mit Meerblick",
+      "seaViewExtraLargeTerrace": "Meerblick mit großer Terrasse",
+      "gardenView": "Gartenblick",
+      "courtyardView": "Innenhofblick",
+      "noView": "Kein Ausblick"
+    }
+  },
+  "priceUnits": {
+    "perRoom": "Zimmer",
+    "perBed": "Bett"
+  },
   "meta": {
     "title": "Zimmer & Preise | Brikette Hostel Positano",
     "description": "Private Doppelzimmer mit Meerblick und preisgünstige Schlafsäle: Entdecke Fotos, Ausstattungen und Live-Preise und buche direkt für das beste Angebot im Brikette Hostel Positano.",
@@ -266,6 +301,6 @@
   "loadingPrice": "Preis wird geladen…",
   "landingImageAlt": "Titelbild von {{room}}",
   "priceNotes": {
-    "dorm": "Per night, per guest. One guest in one bunk bed."
+    "dorm": "Pro Nacht, pro Gast. Ein Gast in einem Etagenbett."
   }
 }

@@ -11,12 +11,12 @@ const mockDiffHistory = jest.fn();
 const mockSaveShopSettings = jest.fn();
 const mockGetShopSettings = jest.fn();
 
-jest.mock("@platform-core/repositories/settings.server", () => ({
+jest.mock("@acme/platform-core/repositories/settings.server", () => ({
   diffHistory: (...args: any[]) => mockDiffHistory(...args),
   saveShopSettings: (...args: any[]) => mockSaveShopSettings(...args),
   getShopSettings: (...args: any[]) => mockGetShopSettings(...args),
 }));
-jest.mock("@platform-core/repositories/json.server", () => ({}));
+jest.mock("@acme/platform-core/repositories/json.server", () => ({}));
 
 beforeEach(() => {
   jest.clearAllMocks();

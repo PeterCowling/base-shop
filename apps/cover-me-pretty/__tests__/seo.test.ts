@@ -1,12 +1,12 @@
 // apps/cover-me-pretty/__tests__/seo.test.ts
 import { getSeo } from "../src/lib/seo";
-import type { getShopSettings as GetShopSettingsFn } from "@platform-core/repositories/settings.server";
+import type { getShopSettings as GetShopSettingsFn } from "@acme/platform-core/repositories/settings.server";
 
 const getShopSettingsMock = jest.fn();
 
 type GetShopSettings = typeof GetShopSettingsFn;
 
-jest.mock("@platform-core/repositories/settings.server", () => ({
+jest.mock("@acme/platform-core/repositories/settings.server", () => ({
   getShopSettings: (...args: Parameters<GetShopSettings>) =>
     getShopSettingsMock(...args),
 }));

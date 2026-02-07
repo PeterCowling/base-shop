@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { requirePermission } from "@auth";
+
+import { requirePermission } from "@acme/auth";
 import { restoreSection } from "@acme/platform-core/repositories/sections/sections.json.server";
 import type { SectionTemplate } from "@acme/types";
 

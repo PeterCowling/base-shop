@@ -1,7 +1,10 @@
 import "server-only";
+
 import type { CampaignOptions } from "../send";
-import type { CampaignProvider } from "./types";
 import { type CampaignStats } from "../stats";
+
+import type { CampaignProvider } from "./types";
+
 interface ProviderOptions {
     /**
      * When true, the constructor will make a lightweight API request to verify

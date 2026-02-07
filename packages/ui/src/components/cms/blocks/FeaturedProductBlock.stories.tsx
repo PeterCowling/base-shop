@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
-import FeaturedProductBlock from "./FeaturedProductBlock";
+
 import { PRODUCTS } from "@acme/platform-core/products/index";
 import type { SKU } from "@acme/types";
+
+import FeaturedProductBlock from "./FeaturedProductBlock";
 
 const meta: Meta<typeof FeaturedProductBlock> = {
   title: "CMS Blocks/FeaturedProductBlock",

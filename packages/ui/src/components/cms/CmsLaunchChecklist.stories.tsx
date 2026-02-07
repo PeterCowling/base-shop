@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
+
 import { CmsLaunchChecklist, type CmsLaunchStatus } from "./CmsLaunchChecklist";
 
 const meta: Meta<typeof CmsLaunchChecklist> = {

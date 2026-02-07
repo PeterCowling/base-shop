@@ -1,13 +1,15 @@
 "use client";
 
 import React, { useCallback, useMemo } from "react";
+
 import { useTranslations } from "@acme/i18n";
+
+import Button from "@/components/Button";
+import Price from "@/components/Price";
+import QuantityStepper from "@/components/QuantityStepper";
+import { useCart } from "@/contexts/cart/CartContext";
 import type { CartItem } from "@/types/cart";
 import type { Product, ProductVariant } from "@/types/product";
-import { useCart } from "@/contexts/cart/CartContext";
-import QuantityStepper from "@/components/QuantityStepper";
-import Price from "@/components/Price";
-import Button from "@/components/Button";
 
 type CartItemRowProps = {
   item: CartItem;

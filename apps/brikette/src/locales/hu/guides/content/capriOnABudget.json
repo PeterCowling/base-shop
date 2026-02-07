@@ -1,47 +1,162 @@
 {
   "seo": {
-    "title": "Capri költségbarát módon",
-    "description": "Kompjegyek, belépők, olcsó étkezés és hogyan kerüld el a legmagasabb árakat."
+    "title": "Capri Olcsón: Ingyenes Kilátók és Olcsó Kajálda Útmutató",
+    "description": "Pénzmegtakarítás Caprin: költséghatékony komp tippek, ingyenes kilátópontok, olcsó ételhelyek, nyilvános strandok és mit hagyjunk ki. Teljes hátizsákos útmutató Positanóból."
   },
-  "linkLabel": "Capri költségbarát módon",
+  "linkLabel": "Capri Anélkül, Hogy Tönkremennénk",
   "intro": [
-    "Capri egynapos meglátogatása is maradhat megfizethető, ha előre megtervezi a kompokat, a kilátópontokat és az étkezéseket."
+    "**Hagyd ki a turistacsapdákat és nézd meg Caprit megfizethető módon.** Amire szükséged van: okos komp időzítés (€20-25 retúr Positanóból), ingyenes kilátópontok, amik vetekszenek a fizetősekkel, és olcsó kajáldák a kikötők közelében. Hagyd ki a Kék-barlangot—drága és gyakran zárva. Ez az útmutató megmutatja, hogyan csináld meg Caprit €40-50-ért összesen a Hostel Brikette-ből.",
+    "**Kinek a legjobb:** Költségtudatos hátizsákosoknak, akik Instagram-méltó kilátókat akarnak a luxus árú jegy nélkül. **Szükséges idő:** Egész nap (7:00-18:00).",
+    "**Költségek:** Komp €20-25 retúr, libegő €12 retúr (opcionális), étel €10-15, busz €2-4. Összesen: €40-50. **Tudnivaló:** Foglald le a reggeli kompokat korán nyáron; vigyél vizet és snackeket; az ingyenes séták felülmúlják a legtöbb fizetős látványosságot."
   ],
   "sections": [
     {
-      "id": "ferries",
-      "title": "Kompok és időzítés",
+      "id": "ferry-strategy",
+      "title": "Komp költségek és foglalás",
       "body": [
-        "Csúcsszezonban foglaljon korai kompokat, és célozzon meg kora délutáni visszaindulást, így elkerüli az utolsó járatok tömegét."
+        "**Positanóból Capriba: €20-25 retúr.** Foglalj közvetlenül a %LINK:briketteToFerryDock|komp dokknál% (5 perc gyalog a Brikette-ből) vagy online a Travelmar/NLG-n keresztül. Ne foglalj túracsomagokat—€10-15-öt adnak hozzá a semmiért.",
+        "**Az okos időzítés pénzt takarít meg:** Vedd a 8:15-ös vagy 9:00-ós kompot odafelé (€11-13 egy útra). Térj vissza 17:00-18:00 körül, hogy elkerüld az utolsó járat káoszát. Július-augusztusban foglalj 2-3 nappal előre online, hogy rögzítsd az olcsóbb árat. Holtszezonban (okt-máj) jelentkezz 8:00-kor és vegyél a dokknál—általában kapsz helyet és megspórolod a foglalási díjat.",
+        "**Salernóból (ha vonattal érkezel):** A Salerno-Capri kompok €18-22 retúr áron mennek és 1 órát vesznek igénybe. A Marina Grande-nál fogsz kikötni, ugyanúgy, mint a positanói kompnál. Nézd meg a %LINK:salernoPositanoBus|salernói közlekedést%, ha ezt kombinálod egy positanói szakasszal.",
+        "**Marina Grande-nál:** A fő kikötőben fogsz kikötni. Sétálj 50m-t jobbra a funikulárishoz (€2 útonként) fel Capri városba, vagy vedd a buszt Anacapribe (€2). Ne vegyél taxit—€15-20-at számolnak fel egy 5 perces utazásért."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-on-a-budget/01-positano-ferry-dock-capri.jpg",
+          "alt": "Positanói komp dokk indulási tábla Capri útvonalakkal és időpontokkal"
+        },
+        {
+          "src": "/img/guides/capri-on-a-budget/02-capri-marina-grande-funicular.jpg",
+          "alt": "Marina Grande funikuláris állomás bejárata jegypénztárral"
+        }
       ]
     },
     {
-      "id": "free-views",
-      "title": "Ingyenes kilátópontok",
+      "id": "free-viewpoints",
+      "title": "Ingyenes és olcsó kilátópontok",
       "body": [
-        "A Giardini di Augusto (kis belépővel), az anacapri kilátók és a Marina Piccola pontjai minimális költség mellett kínálnak lenyűgöző panorámát."
+        "**Anacapri az a hely, ahol a költséghatékony varázslat megtörténik.** Hagyd ki a zsúfolt Capri városi piazzettát (túlárazott kávé) és menj egyenesen Anacapriba busszal (€2 a Marina Grande-tól, 15 perc).",
+        "**Monte Solaro libegő (€12 retúr):** Megéri. 12 perces feljutás az 589m-es csúcsra 360°-os kilátással a Nápolyi-öbölre, az Amalfi-partra és a Faraglioni sziklákra. Nyitva 9:30-17:00 (télen rövidebb). Ez az egyetlen kidobásod—a kilátások verhetetlen és sokkal olcsóbb, mint a Kék-barlang.",
+        "**Villa San Michele kertek (€10 belépő, vagy kívülről ingyenes):** A terasz átfogó kilátást kínál. Ha szűkös a költségvetésed, sétálj a nyilvános belvedere-ig közvetlenül a villa bejárata után—ugyanaz a kilátás, nulla költség. Napnyugtakor mentünk arra és az ingyenes kilátópont majdnem olyan jó.",
+        "**Punta Carena világítótorony séta:** Anacapriból sétálj 30 percet lefelé (vagy busz €2) Punta Carenába. Ingyenes világítótorony kilátópont, sziklás úszóhelyek és sokkal kevesebb turista. Vigyél snackeket és vizet—távoli. A gyaloglás vissza felfelé 45 percet vesz igénybe.",
+        "**Via Krupp & Giardini di Augusto (€2 belépő):** Capri városban ezek a kertek a Faraglioni sziklákra néznek. Maga a Via Krupp (a hajtűkanyaros ösvény lefelé) gyakran zárva van, de a kertek olcsók és a kilátás az, amit a fotókon látunk. Megéri a €2-t, ha van."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-on-a-budget/03-anacapri-monte-solaro-chairlift.jpg",
+          "alt": "Monte Solaro libegő emelkedik Anacapri tetői felett tengeri kilátással"
+        },
+        {
+          "src": "/img/guides/capri-on-a-budget/04-punta-carena-lighthouse-view.jpg",
+          "alt": "Punta Carena világítótorony sziklás partszakasszal és kék vízzel"
+        }
       ]
     },
     {
-      "id": "beaches",
-      "title": "Strandlehetőségek",
+      "id": "beaches-swimming",
+      "title": "Strand és úszóhelyek",
       "body": [
-        "Vannak közterületi partszakaszok; vigyen saját törölközőt és vizet, így nem kell bérleti díjat fizetni."
+        "**Marina Piccola nyilvános strand (ingyenes):** Capri városból sétálj lefelé 20 percet (vagy busz €2). Van egy kis nyilvános rész a fizetős lidók között. Vidd a törölköződet, vizet és snackeket. Sziklás bejárat, de tiszta víz. 11:00-ra zsúfolttá válik—érkezz korán.",
+        "**Punta Carena sziklák (ingyenes):** Legjobb ingyenes úszóhely. Lapos sziklák napozáshoz, létra mély vízbe. A helyiek itt úsznak. Nincsenek létesítmények—vigyél mindent. Van egy kis bár 100m-re felfelé az úton, ha italokra van szükséged.",
+        "**Hagyd ki a lidókat:** A lidók (magán strandklubok) €15-30-at számolnak fel egy napozóágyért. Nem éri meg költséghatékonyan. Törölköző nyilvános sziklákon = ingyenes."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-on-a-budget/05-marina-piccola-public-beach.jpg",
+          "alt": "Marina Piccola nyilvános strand terület Faraglioni sziklákkal a háttérben"
+        },
+        {
+          "src": "/img/guides/capri-on-a-budget/08-punta-carena-swimming-rocks.jpg",
+          "alt": "Punta Carena sziklás úszóterület létrafokkal és tiszta kék vízzel"
+        }
       ]
     },
     {
-      "id": "food",
-      "title": "Olcsó falatok",
+      "id": "cheap-food",
+      "title": "Hol együnk olcsón",
       "body": [
-        "Vegyen paninit vagy szeletelt pizzát a kikötő közelében, és kerülje a legforgalmasabb utcák ültetett ebédjeit."
+        "**Capri és Anacapri drága. Tervezz előre.** Egy ülőhelyes ebéd Capri főterén €20-30 személyenként. Így ehetsz €10-15-ért összesen:",
+        "**Vigyél snackeket Positanóból:** Mindig azt mondjuk a vendégeknek, hogy vegyenek paninit, gyümölcsöt és vizet Positanóból a komp előtt. A positanói árak magasak, de Capri rosszabb. Egy üveg víz €3-4 Caprin vs €1-2 Positanóban.",
+        "**Pizza al taglio a Marina Grande közelében:** Van 2-3 elviteles pizza hely 100m-en belül a komp dokktól. €3-5 egy nagy szeletért. Nem csodálatos, de gyors és olcsó. Egyél a kikötő padjai mellett.",
+        "**Anacapri mellékutcák:** Sétálj 2-3 háztömböt el az anacapri főtértől és találsz kis szendvicsbárokat és focaccia üzleteket. €5-8 egy töltött focacciáért és italért. Ettünk a \\\\\"Bar Gabbiano\\\\\"-nál (buszmegálló közelében)—rendben van és a tér fele ára.",
+        "**Hagyd ki a citromokat:** Capri híres a citromairól, de a limoncello és a citromos granitá turistaáron van. Tartsd meg ezt Positanónak, ahol olcsóbb és gyakran házilag készült."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-on-a-budget/06-anacapri-cheap-sandwich-bar.jpg",
+          "alt": "Kis szendvics üzlet Anacapri mellékutcájában ártáblával"
+        }
+      ]
+    },
+    {
+      "id": "what-to-skip",
+      "title": "Mit hagyjunk ki (takarítsd meg a pénzed)",
+      "body": [
+        "**Kék-barlang (összesen €18):** €14 hajóút + €4 evezős csónak belépő. Gyakran zárva a hullámok vagy szél miatt. Amikor nyitva van, 5 percet kapsz egy kék vízzel teli barlangban. Őszintén? Az ingyenes kilátópontok jobb értéket adnak. Volt vendégeink kihagyták és azt a €18-t a libegőre + jó ebédre költötték—boldogabbak voltak.",
+        "**Taxik:** A capri taxik turistacsapda. €15-20 egy 5 perces utazásért, ami €2 busszal. Mindig buszozz.",
+        "**Éttermek a Piazzetta Umberto I-n (Capri városi tér):** A kávé €6-8. Az ebéd €25+. A többi turista látásáért fizetsz. Sétálj 3 háztömböt arrébb és az árak megfeleződnek.",
+        "**Designer vásárlás:** Caprin van Gucci, Prada stb. Hacsak nem kirakatnézegetés, ez nem költséghatékony megálló."
+      ]
+    },
+    {
+      "id": "budget-itinerary",
+      "title": "Minta €45-ös nap a Brikette-ből",
+      "body": [
+        "Ezt ajánljuk a vendégeknek, akik a teljes Capri élményt akarják €50 alatt:",
+        "**8:15:** Komp Positanóból (€22 retúr, 2 nappal előre online foglalva).",
+        "**9:30:** Érkezés Marina Grande. Végy olcsó pizza szeletet (€4). Busz Anacapriba (€2).",
+        "**10:30:** Monte Solaro libegő (€12 retúr). Tölts 30-45 percet a csúcson.",
+        "**12:30:** Sétálj a Punta Carena világítótoronyhoz (ingyenes). Ússzál a sziklákon. Egyél csomagolt ebédet.",
+        "**15:00:** Busz vissza Anacapriba (€2). Sétálj le Capri városba (30 perc lefelé, ingyenes).",
+        "**16:00:** Giardini di Augusto (€2). Gyors séta körbe, fotók a Faraglioniról.",
+        "**17:00:** Funikuláris le Marina Grande-ba (€2). Komp vissza Positanóba (retúr jegy fedezi).",
+        "**Összesen: €46.** Láttad a legjobb kilátásokat, úsztál tiszta vízben és elkerülted a turistacsapdákat."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-on-a-budget/07-faraglioni-rocks-sunset-view.jpg",
+          "alt": "Faraglioni sziklák arany órában a Giardini di Augustoból nézve"
+        }
+      ]
+    },
+    {
+      "id": "practical-tips",
+      "title": "Gyakorlati tippek a hoszteltől",
+      "body": [
+        "**Vigyél hátizsákot ezzel:** Víz (1L személyenként—töltsd fel Anacapriban a nyilvános kutaknál), snackek, naptej, sapka, fürdőruha, törölköző, telefontöltő. Caprin korlátozott árnyék van és minden túlárazott.",
+        "**Komp időjárás:** A kompok törlődnek durva tengeren (különösen nov-márc). Ellenőrizd a reggeli előrejelzést vagy kérdezd meg a positanói dokknál. Ha határ esete, legyen tartalék terv—lásd a %LINK:dayTripsAmalfi|kirándulási alternatíváinkat%.",
+        "**Tömegek:** Július-augusztusban Caprin 15 000+ napkirándulós van. Menj korán (első komp) és először Anacaprit támadj—a legtöbb turista 11:00-ig Capri városban marad, így Anacapri magadnak lesz.",
+        "**Poggyász:** Ne vigyél poggyászt. Nincs tárolás a Marina Grande-nál. Ha ugyanazon a napon hagyod el Brikette-t, kérd meg, hogy tartsuk a táskáidat—megőrizzük, amíg visszatérsz.",
+        "**Séta:** Caprin dombok és lépcsők vannak. Viselj jó cipőket. A papucs rendben van a komphoz, de nem sétáláshoz."
+      ]
+    },
+    {
+      "id": "links",
+      "title": "Kapcsolódó útmutatók",
+      "body": [
+        "**Odajutás:** %LINK:capriPositanoFerry|Positano-Capri komp irányok% (idők, dokk helye, jegyek).",
+        "**Ha több költségvetésed van:** Lásd a %LINK:capriDayTrip|teljes Capri kirándulási útmutatónkat% több opcióval.",
+        "**Egyéb költséghatékony kirándulások:** %LINK:dayTripsAmalfi|Amalfi-parti kirándulások% (Pompeji, Amalfi, Ravello).",
+        "**Spórolás közlekedésen:** %LINK:transportMoneySaving|Közlekedési pénzmegtakarítási útmutató% (bérletek, trükkök, csúcsidőn kívül)."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "Megéri a Kék-barlang, ha spórolni szeretnék?",
+      "q": "Csinálhatjuk Caprit €50 alatt Positanóból?",
       "a": [
-        "Feláras és időjárásfüggő program; az anacapri libegő olcsóbb és biztos élmény."
+        "Igen. Komp €22 retúr, libegő €12, busz €4-6, étel €10 (ha viszel snackeket). Összesen €48. Hagyd ki a Kék-barlangot és a lidókat, és a költségvetésben maradsz."
+      ]
+    },
+    {
+      "q": "Megéri a Kék-barlang költséghatékonyan?",
+      "a": [
+        "Nem igazán. Összesen €18 (€14 hajó + €4 evezős belépő), gyakran zárva, és 5 percet kapsz bent. Költsd el azt a €18-t a Monte Solaro libegőre és egy jó ebédre—sokkal jobb érték a tapasztalataink alapján."
+      ]
+    },
+    {
+      "q": "Mi a legolcsóbb módja Capriba jutni a Brikette-ből?",
+      "a": [
+        "Sétálj le a positanói komp dokkhoz (5 perc a Brikette-től) és vedd a reggeli kompot (€22 retúr, ha 2-3 nappal előre online foglalod, vagy €25, ha a dokknál veszed). Holtszezonban gyakran kaphatsz azonnal jegyeket €20-ért."
       ]
     }
   ]

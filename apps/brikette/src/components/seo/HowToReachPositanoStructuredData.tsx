@@ -1,8 +1,13 @@
-/* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
+ 
 // /src/components/seo/HowToReachPositanoStructuredData.tsx
+import { memo } from "react";
+import { usePathname } from "next/navigation";
+
+import { buildCanonicalUrl } from "@acme/ui/lib/seo/buildCanonicalUrl";
+
+import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { memo, useMemo } from "react";
-import { useLocation } from "react-router-dom";
+import { serializeJsonLdValue } from "@/utils/seo/jsonld";
 
 type StepContent = {
   name: string;
@@ -86,8 +91,6 @@ type HowToLocale = keyof typeof HOW_TO_LOCALE_COPY;
 const DEFAULT_LOCALE: HowToLocale = "en";
 const DEFAULT_COPY = HOW_TO_LOCALE_COPY[DEFAULT_LOCALE];
 
-const HOST_URL = "https://hostel-positano.com";
-
 const hasOwn = <Obj extends Record<PropertyKey, unknown>, Key extends PropertyKey>(
   obj: Obj,
   key: Key
@@ -112,47 +115,43 @@ function resolveHowToCopy(language: string): ResolvedHowToCopy {
 }
 
 function HowToReachPositanoStructuredData(): JSX.Element {
-  const lang = useCurrentLanguage(); // “en”, “de”, …
-  const { pathname } = useLocation();
+  const lang = useCurrentLanguage(); // "en", "de", …
+  const pathname = usePathname() ?? "";
 
-  const json = useMemo(() => {
-    const { steps: localizedSteps, name, alternateName, isFallback } = resolveHowToCopy(lang);
-    const steps = localizedSteps.map((s, i) => ({
-      "@type": "HowToStep",
-      position: i + 1,
-      name: s.name,
-      text: s.text,
-      ...(s.url ? { url: s.url } : {}),
-      ...(s.image ? { image: s.image } : {}),
-    }));
+  const { steps: localizedSteps, name, alternateName, isFallback } = resolveHowToCopy(lang);
+  const steps = localizedSteps.map((s, i) => ({
+    "@type": "HowToStep",
+    position: i + 1,
+    name: s.name,
+    text: s.text,
+    ...(s.url ? { url: s.url } : {}),
+    ...(s.image ? { image: s.image } : {}),
+  }));
 
-    const base = {
-      "@context": "https://schema.org",
-      "@type": "HowTo",
-      inLanguage: lang,
-      url: `${HOST_URL}${pathname}`,
-      totalTime: "PT2H30M",
-      estimatedCost: {
-        "@type": "MonetaryAmount",
-        currency: "EUR",
-        value: "12.10",
-      },
-      step: steps,
-      name,
-      ...(alternateName ? { alternateName } : {}),
-      ...(isFallback
-        ? {
-            translationOfWork: {
-              "@type": "CreativeWork",
-              inLanguage: DEFAULT_LOCALE,
-              name: DEFAULT_COPY.name,
-            },
-          }
-        : {}),
-    } satisfies Record<string, unknown>;
-
-    return JSON.stringify(base);
-  }, [lang, pathname]);
+  const json = serializeJsonLdValue({
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    inLanguage: lang,
+    url: buildCanonicalUrl(BASE_URL, pathname),
+    totalTime: "PT2H30M",
+    estimatedCost: {
+      "@type": "MonetaryAmount",
+      currency: "EUR",
+      value: "12.10",
+    },
+    step: steps,
+    name,
+    ...(alternateName ? { alternateName } : {}),
+    ...(isFallback
+      ? {
+          translationOfWork: {
+            "@type": "CreativeWork",
+            inLanguage: DEFAULT_LOCALE,
+            name: DEFAULT_COPY.name,
+          },
+        }
+      : {}),
+  } satisfies Record<string, unknown>);
 
   return (
     <script

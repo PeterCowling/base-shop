@@ -1,6 +1,6 @@
 // apps/cover-me-pretty/__tests__/preview-token.test.ts
 import path from "node:path";
-import { createUpgradePreviewToken } from "@platform-core/previewTokens";
+import { createUpgradePreviewToken } from "@acme/platform-core/previewTokens";
 
 describe("/api/preview-token", () => {
   const appDir = path.join(__dirname, "..");
@@ -17,7 +17,7 @@ describe("/api/preview-token", () => {
   });
 
   test("returns 401 for unauthorized", async () => {
-    jest.doMock("@auth", () => ({
+    jest.doMock("@acme/auth", () => ({
       __esModule: true,
       requirePermission: jest.fn().mockRejectedValue(new Error("no")),
     }));
@@ -27,7 +27,7 @@ describe("/api/preview-token", () => {
   });
 
   test("returns token when authorized", async () => {
-    jest.doMock("@auth", () => ({
+    jest.doMock("@acme/auth", () => ({
       __esModule: true,
       requirePermission: jest.fn(),
     }));

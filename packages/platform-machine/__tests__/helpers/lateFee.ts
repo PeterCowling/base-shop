@@ -36,12 +36,12 @@ export async function setupLateFeeTest({ orders, shop }: SetupOptions) {
 
   const readOrders = jest.fn().mockResolvedValue(orders);
   const markLateFeeCharged = jest.fn().mockResolvedValue(null);
-  jest.doMock("@platform-core/repositories/rentalOrders.server", () => ({
+  jest.doMock("@acme/platform-core/repositories/rentalOrders.server", () => ({
     __esModule: true,
     readOrders,
     markLateFeeCharged,
   }));
-  jest.doMock("@platform-core/utils", () => ({
+  jest.doMock("@acme/platform-core/utils", () => ({
     __esModule: true,
     logger: { info: jest.fn(), error: jest.fn() },
   }));

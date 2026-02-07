@@ -3,7 +3,7 @@ import {
   createUpgradePreviewToken,
   verifyPreviewToken,
   verifyUpgradePreviewToken,
-} from "@platform-core/previewTokens";
+} from "@acme/platform-core/previewTokens";
 
 describe("previewTokens", () => {
   const payload = { shopId: "shop", pageId: "page1" };

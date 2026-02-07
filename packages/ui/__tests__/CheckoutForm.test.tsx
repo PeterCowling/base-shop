@@ -1,7 +1,8 @@
+import * as RHF from "react-hook-form";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import CheckoutForm from "../src/components/checkout/CheckoutForm";
-import * as RHF from "react-hook-form";
 
 const fetchJson = jest.fn();
 const confirm = jest.fn();
@@ -21,7 +22,7 @@ jest.mock("next/navigation", () => ({
   useRouter: () => ({ push }),
 }));
 
-jest.mock("@acme/shared-utils", () => ({
+jest.mock("@acme/lib/http", () => ({
   fetchJson: (...args: unknown[]) => fetchJson(...args),
 }));
 

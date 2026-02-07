@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+
 import type { PageBuilderProps } from "@acme/page-builder-ui";
 
 const PageBuilder = dynamic<PageBuilderProps>(

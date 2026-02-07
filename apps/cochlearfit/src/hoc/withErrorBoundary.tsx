@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+
 import ErrorBoundary from "@/components/ErrorBoundary";
 
 type ComponentType<P> = React.ComponentType<P>;

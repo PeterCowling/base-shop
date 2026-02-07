@@ -1,8 +1,11 @@
-import PageHeader from "@/components/PageHeader";
-import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
-import { Grid, Stack } from "@ui/components/atoms/primitives";
-import LeadsClient from "./LeadsClient";
 import Link from "next/link";
+
+import { Grid, Stack } from "@acme/design-system/primitives";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+
+import PageHeader from "@/components/PageHeader";
+
+import LeadsClient from "./LeadsClient";
 
 export default async function LeadsPage() {
   const t = await getTranslations("en");

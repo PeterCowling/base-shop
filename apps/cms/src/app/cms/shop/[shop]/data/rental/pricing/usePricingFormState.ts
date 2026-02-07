@@ -1,5 +1,6 @@
+import { type FormEvent,useCallback, useMemo, useState } from "react";
+
 import type { PricingMatrix } from "@acme/types";
-import { useCallback, useMemo, useState, type FormEvent } from "react";
 
 import {
   type PricingFormStatus,
@@ -72,12 +73,13 @@ export function usePricingFormState({ initial, shop, onToast }: UsePricingFormSt
 
       if (next === "json") {
         const result = getFormPricing();
-        if (!result.success) {
+        if (!result.success && "errors" in result) {
           setFieldErrors(result.errors);
           setStatus("error");
           onToast("Resolve highlighted fields before viewing JSON.");
           return;
         }
+        if (!result.success) return;
 
         clearFieldErrors();
         setDraftFromMatrix(result.data);
@@ -86,13 +88,14 @@ export function usePricingFormState({ initial, shop, onToast }: UsePricingFormSt
       }
 
       const parsed = parseDraft();
-      if (!parsed.success) {
+      if (!parsed.success && "errors" in parsed) {
         const message = parsed.errors.json ?? "JSON is invalid";
         setJsonError(message);
         setStatus("error");
         onToast("Fix JSON errors before returning to the form.");
         return;
       }
+      if (!parsed.success) return;
 
       hydrateFromMatrix(parsed.data);
       setDraftFromMatrix(parsed.data);
@@ -120,25 +123,27 @@ export function usePricingFormState({ initial, shop, onToast }: UsePricingFormSt
       let pricing: PricingMatrix;
       if (activeTab === "json") {
         const parsed = parseDraft();
-        if (!parsed.success) {
+        if (!parsed.success && "errors" in parsed) {
           const message = parsed.errors.json ?? "JSON could not be parsed.";
           setJsonError(message);
           setStatus("error");
           onToast(message);
           return;
         }
+        if (!parsed.success) return;
         pricing = parsed.data;
         hydrateFromMatrix(parsed.data);
         clearFieldErrors();
         setDraftFromMatrix(parsed.data);
       } else {
         const result = getFormPricing();
-        if (!result.success) {
+        if (!result.success && "errors" in result) {
           setFieldErrors(result.errors);
           setStatus("error");
           onToast("Fix validation issues before saving.");
           return;
         }
+        if (!result.success) return;
         pricing = result.data;
         clearFieldErrors();
         setDraftFromMatrix(result.data);
@@ -210,9 +215,9 @@ export function usePricingFormState({ initial, shop, onToast }: UsePricingFormSt
 }
 
 export type {
-  DurationDraft,
-  DamageDraft,
   CoverageDraft,
+  DamageDraft,
+  DurationDraft,
   PricingFormStatus,
   PricingFormTab,
 } from "./pricingFormUtils";

@@ -1,4 +1,5 @@
-import { describe, it, expect, afterEach } from "@jest/globals";
+import { afterEach,describe, expect, it } from "@jest/globals";
+
 import { withEnv } from "../../../config/test/utils/withEnv";
 
 describe("email env", () => {
@@ -11,7 +12,7 @@ describe("email env", () => {
     await expect(
       withEnv(
         { EMAIL_PROVIDER: "sendgrid", EMAIL_FROM: "from@example.com" },
-        () => import("@acme/config/src/env/email.ts"),
+        () => import("@acme/config/env/email"),
       ),
     ).rejects.toThrow("Invalid email environment variables");
     const formatted = errorSpy.mock.calls[0][1];
@@ -25,7 +26,7 @@ describe("email env", () => {
         EMAIL_FROM: "from@example.com",
         SENDGRID_API_KEY: "key",
       },
-      () => import("@acme/config/src/env/email.ts"),
+      () => import("@acme/config/env/email"),
     );
     expect(emailEnv.EMAIL_PROVIDER).toBe("sendgrid");
   });
@@ -35,7 +36,7 @@ describe("email env", () => {
     await expect(
       withEnv(
         { EMAIL_PROVIDER: "resend", EMAIL_FROM: "from@example.com" },
-        () => import("@acme/config/src/env/email.ts"),
+        () => import("@acme/config/env/email"),
       ),
     ).rejects.toThrow("Invalid email environment variables");
     const formatted = errorSpy.mock.calls[0][1];
@@ -49,7 +50,7 @@ describe("email env", () => {
         EMAIL_FROM: "from@example.com",
         RESEND_API_KEY: "key",
       },
-      () => import("@acme/config/src/env/email.ts"),
+      () => import("@acme/config/env/email"),
     );
     expect(emailEnv.EMAIL_PROVIDER).toBe("resend");
   });
@@ -57,7 +58,7 @@ describe("email env", () => {
   it("loads noop provider without keys", async () => {
     const { emailEnv } = await withEnv(
       { EMAIL_PROVIDER: "noop" },
-      () => import("@acme/config/src/env/email.ts"),
+      () => import("@acme/config/env/email"),
     );
     expect(emailEnv.EMAIL_PROVIDER).toBe("noop");
   });

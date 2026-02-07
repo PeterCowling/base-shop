@@ -4,58 +4,59 @@
     "description": "وصول إلى مونتي سانت أنجلو، أعلى نقطة في ساحل أمالفي، مع هذه الإرشادات ونصائح التحضير والتنبيهات."
   },
   "linkLabel": "مسار قمة الجبل من هوستل بريكيت",
+  "lastUpdated": "2026-02-04",
   "intro": [
-    "Monte Sant'Angelo towers above the Amalfi Coast and rewards hikers with sweeping 360-degree views stretching from Capri to the Sorrentine Peninsula.",
-    "This itinerary starts from Hostel Brikette, guides you up to Santa Maria del Castello, and explains the final push to the summit so you know exactly what to expect before committing."
+    "يعلو مونتي سانت أنجلو فوق ساحل أمالفي ويكافئ المتنزهين بإطلالات بانورامية بزاوية 360 درجة تمتد من كابري إلى شبه جزيرة سورينتو.",
+    "تبدأ هذه الرحلة من هوستل بريكيت، وتقودك حتى سانتا ماريا دل كاستيلو، وتشرح الدفعة الأخيرة إلى القمة حتى تعرف بالضبط ما ينتظرك قبل الالتزام."
   ],
   "sections": [
     {
       "id": "why-go",
-      "title": "Why tackle this hike",
+      "title": "لماذا تخوض هذا المسار",
       "body": [
-        "Views from the summit sweep across the peninsula towards Capri and down the Lattari mountains, making the grind worthwhile for photographers and hikers alike.",
-        "Reaching the Amalfi Coast's highest point is a satisfying physical challenge and a story you will trade with other travellers back at the hostel.",
-        "The long ascent doubles as a serious cardio session, especially if you are training for bigger treks later in your trip."
+        "تمتد الإطلالات من القمة عبر شبه الجزيرة نحو كابري وعلى جبال ليتاري، ما يجعل الجهد مجزياً للمصورين والمتنزهين على حد سواء.",
+        "الوصول إلى أعلى نقطة في ساحل أمالفي تحدٍ بدني مُرضٍ وقصة ستتشاركها مع المسافرين الآخرين في النزل.",
+        "الصعود الطويل يمثل تمريناً قوياً للقلب، خاصة إذا كنت تتدرب لرحلات أطول لاحقاً."
       ]
     },
     {
       "id": "getting-to-santa-maria",
-      "title": "Getting to Santa Maria del Castello",
+      "title": "الوصول إلى سانتا ماريا دل كاستيلو",
       "body": [
-        "Follow our standard hostel-to-Santa-Maria directions until you arrive in the village; that climb covers just over one third of the total elevation for the day.",
-        "Take a breather in the square, refill water if the bar is open, and check that everyone in your group still feels strong before committing to the exposed upper trail."
+        "اتبع إرشاداتنا المعتادة من النزل إلى سانتا ماريا حتى تصل إلى القرية؛ هذا الصعود يغطي أكثر قليلاً من ثلث الارتفاع الإجمالي لليوم.",
+        "خذ نفساً في الساحة، واملأ الماء إذا كان البار مفتوحاً، وتأكد من أن الجميع في مجموعتك ما زالوا بخير قبل الالتزام بالمسار العلوي المكشوف."
       ]
     },
     {
       "id": "santa-maria-to-summit",
-      "title": "From Santa Maria to the summit",
+      "title": "من سانتا ماريا إلى القمة",
       "body": [
-        "From the crossroads at the top of the village, turn right up the paved lane until a junction, then turn left and continue past the restaurant until the road bends sharply left.",
-        "Leave the road on the right-hand side, following the side path that drops slightly between houses. It will feel like private property at first, but you are still on the right track.",
-        "Stay on the mountain trail for an extended stretch until you reach a signed crossroads. Ignore the downhill options and take the steeply rising path.",
-        "The ascent quickly zig-zags before easing into a long, flatter traverse along the left-hand side of the mountain face. When you spot stone-cut steps on your right, follow them around the back of the peak for the final push.",
-        "Those rock steps lead to the last ramp of the day—keep climbing and you will emerge on the summit plateau with panoramic views in every direction."
+        "من التقاطع أعلى القرية، انعطف يميناً على الطريق المعبد حتى مفترق، ثم انعطف يساراً وواصل بعد المطعم حتى ينعطف الطريق بحدة إلى اليسار.",
+        "غادر الطريق من الجهة اليمنى واتبع المسار الجانبي الذي ينحدر قليلاً بين البيوت. قد يبدو كأنه ملكية خاصة في البداية، لكنك ما زلت على المسار الصحيح.",
+        "ابقَ على المسار الجبلي لفترة طويلة حتى تصل إلى تقاطع مع لافتة. تجاهل المسارات الهابطة وخذ المسار الصاعد بشدة.",
+        "يتعرج الصعود بسرعة قبل أن يستوي إلى ممر طويل أكثر انبساطاً على الجانب الأيسر من الجبل. عندما ترى درجات منحوتة في الصخر على يمينك، اتبعها خلف القمة للدفعة الأخيرة.",
+        "تؤدي الدرجات الحجرية إلى المنحدر الأخير لليوم — واصل الصعود وستخرج إلى هضبة القمة بإطلالات بانورامية في كل اتجاه."
       ]
     }
   ],
-  "essentialsTitle": "Essentials",
+  "essentialsTitle": "المستلزمات",
   "essentials": [
     "على الأقل 2 لتر ماء لكل شخص مع وجبات مالحة؛ لا توجد نقاط تعبئة موثوقة بعد سانتا ماريا ديل كاستيلو.",
     "حذاء مشي متين بسطح ممسك — بعض أجزاء المسار العلوي صخرية ومفككة ومعرضة للهواء.",
     "حماية من الشمس وطبقات للقمّة؛ الرياح قد تعصف عبر القمة حتى في الأيام الدافئة."
   ],
-  "typicalCostsTitle": "Typical costs",
+  "typicalCostsTitle": "تكاليف معتادة",
   "typicalCosts": [
     "المسار مجاني؛ خصص 5–10 يورو إذا كنت تخطط لمشروب أو وجبة خفيفة في سانتا ماريا ديل كاستيلو.",
     "تذاكر حافلات SITA أو أجرة العبّارة في حال قررت النزول عبر قرية أخرى بدلاً من المشي طوال الطريق."
   ],
-  "tipsTitle": "Smart timing",
+  "tipsTitle": "توقيت ذكي",
   "tips": [
     "ابدأ عند الفجر في الصيف لتجنب التسلق في ذروة الحرارة؛ تعطي بعد الظهر في أواخر الخريف والربيع ضوءاً ألطف بلا حرارة حادة.",
     "تحقق من توقعات العواصف — الغيوم قد تحجب الإطلالات والصخور الرطبة تجعل درجات القمة زلقة.",
     "أخبر أحداً في الهوستل بخطتك ووقت عودتك المتوقع قبل الانطلاق."
   ],
-  "warningsTitle": "When to reconsider",
+  "warningsTitle": "متى تعيد التفكير",
   "warnings": [
     "تجنب المسار إذا كنت تفتقر لخبرة الجبال أو لياقة قوية؛ الارتفاع المستمر مرهق ولا توجد حواجز في نقاط عدة.",
     "تجنب المسار إذا كانت المرتفعات تزعجك — الحواف المكشوفة والانحدارات الشديدة قد تتحدّى حتى الواثقين.",
@@ -81,7 +82,7 @@
       "text": "اتبع الصعود الأخير إلى القمة واستمتع بالإطلالة ثم عد أدراجك إلى سانتا ماريا."
     }
   ],
-  "faqsTitle": "FAQs",
+  "faqsTitle": "الأسئلة الشائعة",
   "faqs": [
     {
       "q": "كم يستغرق المسار ذهاباً وإياباً؟",
@@ -104,24 +105,7 @@
   ],
   "toc": {
     "labels": {
-      "warnings": "When to reconsider"
+      "warnings": "متى تعيد التفكير"
     }
-  },
-  "gallery": {
-    "title": "معرض صور",
-    "items": [
-      {
-        "alt": "Looking across the peninsula to Capri",
-        "caption": "إطلالة عبر شبه الجزيرة نحو كابري"
-      },
-      {
-        "alt": "Scan to Share QR code",
-        "caption": "امسح للمشاركة"
-      },
-      {
-        "alt": "Trail near the summit",
-        "caption": "الاقتراب من القمة"
-      }
-    ]
   }
 }

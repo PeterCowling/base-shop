@@ -1,5 +1,7 @@
 import { screen } from "@testing-library/react";
+
 import NotFoundContent from "@/components/NotFoundContent";
+
 import { renderWithProviders } from "./testUtils";
 
 describe("NotFoundContent", () => {

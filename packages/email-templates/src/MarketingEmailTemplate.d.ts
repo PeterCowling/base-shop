@@ -1,4 +1,5 @@
 import * as React from "react";
+
 export interface MarketingEmailTemplateProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "content"> {
     logoSrc?: string;
     shopName?: string;

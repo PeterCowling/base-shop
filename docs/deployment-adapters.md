@@ -36,7 +36,7 @@ or deployment workflows without touching `createShop` itself.
 adapter is provided, the Cloudflare implementation is used:
 
 ```ts
-import { createShop, CloudflareDeploymentAdapter } from "@platform-core/createShop";
+import { createShop, CloudflareDeploymentAdapter } from "@acme/platform-core/createShop";
 
 await createShop("my-shop", options, { deploy: true }, new CloudflareDeploymentAdapter());
 ```

@@ -1,96 +1,96 @@
 {
   "seo": {
-    "title": "A fordítás folyamatban van.",
-    "description": "Busz, komp és taxicsónak összehasonlítása, viteldíjak, menetrendek és lépcsőmentes érkezés."
+    "title": "Positano és Amalfi közötti közlekedés",
+    "description": "Busz- és kompjáratok Positanó és Amalfi között, időpontokkal és hasznos tippekkel."
   },
-  "linkLabel": "Positano to Amalfi: how to go",
+  "linkLabel": "Positano ↔ Amalfi útmutató",
   "intro": [
-    "A fordítás folyamatban van."
+    "Positano és Amalfi közötti utazás buszsal vagy szezonális komppal: hogyan válassz és mikor érdemes indulni."
   ],
   "sections": [
     {
       "id": "bus",
-      "title": "Bus (year‑round)",
+      "title": "Busz (egész évben)",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "SITA busz – vásárolj és érvényesíts jegyet, a csúcsidőben sorok alakulnak ki, ezért indulj korán.",
+        "Ülj a jobb oldalon Positanóból indulva a sziklafalak felé néző kilátásért."
       ]
     },
     {
       "id": "ferry",
-      "title": "Ferry (seasonal)",
+      "title": "Komp (szezonális)",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Gyorsabb és festőibb nyugodt tengerben – ellenőrizd az élő menetrendet és tarts tartalékidőt.",
+        "Érkezz korán a csúcsszezonban, hogy helyet foglalj."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "How long is the trip?",
+      "q": "Mennyi ideig tart az út?",
       "a": [
-        "A fordítás folyamatban van."
+        "A busz 40–55 perc alatt teszi meg a távot a forgalomtól függően; a komp körülbelül 25 perc alatt áthajózik nyugodt időben."
       ]
     },
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Kell előre foglalni?",
       "a": [
-        "A fordítás folyamatban van."
+        "A buszjegyeket érdemes előre megvenni, de a helyek érkezési sorrendben fogynak; a kompokat online foglalhatod, és főszezonban már előző nap biztosíts helyet."
       ]
     }
   ],
   "howTo": {
     "steps": [
       {
-        "name": "SITA bus to Amalfi",
-        "text": "A fordítás folyamatban van."
+        "name": "SITA busz Amalfi felé",
+        "text": "Szállj fel az Amalfi felé tartó SITA buszra, és vásárolj jegyet a felszállás előtt."
       },
       {
-        "name": "Alternative: ferry (summer)",
-        "text": "A fordítás folyamatban van."
+        "name": "Alternatíva: komp (nyár)",
+        "text": "Nézd meg a szezonális menetrendeket; a kompok gyakran járnak a csúcshónapokban."
       }
     ]
   },
   "fallback": {
     "intro": [
-      "A fordítás folyamatban van."
+      "A SITA busz megbízható egész évben; nyáron a komp egy festői alternatíva."
     ],
     "toc": [
       {
         "href": "#bus",
-        "label": "SITA bus (year-round)"
+        "label": "SITA busz (egész évben)"
       },
       {
         "href": "#ferry",
-        "label": "Ferry (seasonal)"
+        "label": "Komp (szezonális)"
       },
       {
         "href": "#faqs",
-        "label": "FAQs"
+        "label": "GYIK"
       }
     ],
     "sections": [
       {
         "id": "bus",
-        "title": "SITA bus (year-round)",
+        "title": "SITA busz (egész évben)",
         "body": [
-          "A fordítás folyamatban van."
+          "Vásárolj jegyet felszállás előtt és állj sorba a főszezonban. Szállj le az amalfi buszpályaudvarnál."
         ]
       },
       {
         "id": "ferry",
-        "title": "Ferry (seasonal)",
+        "title": "Komp (szezonális)",
         "body": [
-          "A fordítás folyamatban van."
+          "Ellenőrizd az üzemeltetői oldalakat és a viharriasztásokat; érkezz 20–30 perccel korábban."
         ]
       }
     ],
-    "faqsTitle": "FAQs",
+    "faqsTitle": "GYIK",
     "faqs": [
       {
-        "q": "Which is faster?",
+        "q": "Mi gyorsabb?",
         "a": [
-          "A fordítás folyamatban van."
+          "Nyáron a komp hasonló idő alatt utazik és festőibb, a buszszolgálat pedig gyakrabban jár."
         ]
       }
     ]

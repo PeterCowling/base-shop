@@ -1,4 +1,5 @@
 import { jest } from "@jest/globals";
+
 import designTokens from "../index.ts";
 
 describe("designTokens Tailwind plugin", () => {

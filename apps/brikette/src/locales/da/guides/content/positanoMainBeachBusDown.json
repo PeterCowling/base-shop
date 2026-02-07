@@ -3,7 +3,7 @@
     "title": "Bus fra Hostel Brikette til Positanos hovedstrand",
     "description": "Sådan kører du med den orange internobus ned ad bakke til Piazza dei Mulini og slentrer til Spiaggia Grande."
   },
-  "linkLabel": "Bus down to Positano's main beach",
+  "linkLabel": "Bus ned til Positanos hovedstrand",
   "intro": [
     "Den orange Interno Positano bus forbinder Hostel Brikette med Piazza dei Mulini, en kort gåtur fra Spiaggia Grande.",
     "Følg disse trin for at købe billetter ved tabacchi, køre ned ad bakke og dække de sidste minutter til fods."
@@ -22,7 +22,7 @@
       "id": "ride-the-bus",
       "title": "Kør med Interno Positano-bussen ned ad bakke",
       "body": [
-        "Stig om bord i den orange minibus mærket \"Interno Positano\". Forskellige køretøjstyper kører ruten, men destinationen på det elektroniske skilt forbliver den samme.",
+        "Stig om bord i den orange minibus mærket \\\\\"Interno Positano\\\\\". Forskellige køretøjstyper kører ruten, men destinationen på det elektroniske skilt forbliver den samme.",
         "Bliv på, mens bussen kører gennem Positanos gader på bjergsiden og ned mod byens centrum."
       ]
     },
@@ -43,7 +43,7 @@
       ]
     }
   ],
-  "tipsTitle": "Bus tips",
+  "tipsTitle": "Busstips",
   "tips": [
     "Køb interno-billetter i tabacchi, før du står i kø. Køb om bord koster lidt mere, og chauffører sælger nogle gange ud.",
     "Skærmbillede af tidsplanen fra receptionen eller den digitale concierge — senaftenstjenester tyndes ud i skuldersæsonen.",

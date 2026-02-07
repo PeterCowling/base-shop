@@ -1,9 +1,9 @@
 /** @jest-environment node */
 
-import "./setup";
 import * as orders from "../../src/orders";
-import { prismaMock, nowIsoMock } from "./setup";
+
 import { createOrder } from "./orderFactory";
+import { nowIsoMock, prismaMock } from "./setup";
 
 const {
   markFulfilled,

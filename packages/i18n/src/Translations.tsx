@@ -18,11 +18,12 @@
  */
 
 import { createContext, useContext, useMemo } from "react";
+
 // Provide sensible defaults for tests and environments without an explicit
 // provider by falling back to English messages bundled with the package.
 // This ensures components render human‑readable strings instead of raw keys
 // when no TranslationsProvider is mounted.
-import enMessages from "./en.json";
+import enMessages from "./en.json" assert { type: "json" };
 
 /**
  * Key–value map of translation messages.

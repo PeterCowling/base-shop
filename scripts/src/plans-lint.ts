@@ -1,4 +1,4 @@
-/* eslint-disable security/detect-non-literal-fs-filename -- DOCS-2402: CLI walks repo docs tree; paths are workspace-derived and not user input */
+ 
 /* i18n-exempt file -- ENG-2402 CLI-only plan lint output, not user-facing UI [ttl=2026-12-31] */
 import { promises as fs } from "fs";
 import path from "path";
@@ -73,11 +73,20 @@ function parseTasks(content: string): string[] {
   let inActive = false;
   for (const line of lines) {
     if (line.startsWith("## ")) {
-      inActive = line.trim().toLowerCase() === "## active tasks";
+      inActive = line.trim().toLowerCase().startsWith("## active tasks");
       continue;
     }
     if (!inActive) continue;
-    if (line.startsWith("- **")) {
+    // Skip phase/section headings (e.g., "### Phase 1", "### Implementation")
+    if (line.match(/^###\s+(Phase|Implementation|Background|Context|Overview)/i)) {
+      continue;
+    }
+    // Accept both list-based tasks (- **ID: or - [x] ID:) and heading-based tasks (### ID:)
+    // Allow optional markdown bold (**) around task IDs
+    if (
+      line.match(/^- (\[[ x]\] )?\*{0,2}[A-Z0-9-]+-\d+/) ||
+      line.match(/^### \*{0,2}[A-Z0-9-]+-\d+/)
+    ) {
       tasks.push(line);
     }
   }
@@ -86,11 +95,13 @@ function parseTasks(content: string): string[] {
 
 function validateTaskLine(line: string, rel: string): string[] {
   const errors: string[] = [];
-  // Expect "- **ID" at minimum (e.g. CMS-01, CMS-PLAN-01, I18N-01)
-  const match = line.match(/^- \*\*([A-Z0-9-]+-\d+)/);
-  if (!match) {
+  // Task lines should already be filtered to have valid IDs by parseTasks()
+  // This validation is mainly a sanity check
+  const listMatch = line.match(/^- (\[[ x]\] )?\*{0,2}[A-Z0-9-]+-\d+/);
+  const headingMatch = line.match(/^### \*{0,2}[A-Z0-9-]+-\d+/);
+  if (!listMatch && !headingMatch) {
     errors.push(
-      `[plans-lint] ${rel}: task line does not start with an ID like CMS-01: ${line.trim()}`,
+      `[plans-lint] ${rel}: task line does not match expected format: ${line.trim()}`,
     );
   }
   return errors;
@@ -130,6 +141,9 @@ async function main() {
         `[plans-lint] ${rel}: Plan missing Relates-to charter header`,
       );
       hadError = true;
+    } else if (header.relatesToCharter.toLowerCase() === "none") {
+      // "none" is a valid explicit acknowledgment that the plan doesn't relate to a charter
+      // This is acceptable for repo-level or cross-cutting plans
     } else {
       const ok = await hasCharterType(header.relatesToCharter);
       if (!ok) {
@@ -150,10 +164,35 @@ async function main() {
 
     const tasks = parseTasks(content);
     if (tasks.length === 0) {
-      console.warn(
-        `[plans-lint] ${rel}: Plan has no tasks under "## Active tasks"`,
-      );
-      // Not an error yet; just warn.
+      // Suppress warning for terminal-status plans and archived/historical paths —
+      // having no active tasks is expected for completed work.
+      const terminalStatuses = new Set([
+        "Historical",
+        "Complete",
+        "Superseded",
+        "Accepted",
+        "Archived",
+        "Done",
+      ]);
+      const isTerminal =
+        (header.status && terminalStatuses.has(header.status)) ||
+        rel.includes("/historical/") ||
+        rel.includes("/archive/");
+      // Also suppress when the section explicitly states there are no active tasks
+      const activeSection = content
+        .split(/^## Active tasks/m)[1]
+        ?.split(/^## /m)[0]
+        ?.toLowerCase();
+      const explicitlyEmpty =
+        activeSection &&
+        /no active tasks|all (tasks )?complete|see .* section/.test(
+          activeSection,
+        );
+      if (!isTerminal && !explicitlyEmpty) {
+        console.warn(
+          `[plans-lint] ${rel}: Plan has no tasks under "## Active tasks"`,
+        );
+      }
     }
     for (const line of tasks) {
       const errs = validateTaskLine(line, rel);

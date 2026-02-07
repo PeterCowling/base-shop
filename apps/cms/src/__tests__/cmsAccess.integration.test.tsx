@@ -1,11 +1,14 @@
 /* eslint-env jest */
 
+import { NextResponse } from "next/server";
 import type { JWT } from "next-auth/jwt";
+import { __resetMockToken,__setMockToken } from "next-auth/jwt";
+import { render, screen } from "@testing-library/react";
+
 import { middleware } from "../middleware";
-import { __setMockToken, __resetMockToken } from "next-auth/jwt";
 
 // Mock RBAC helpers to control permission checks
-jest.mock("@auth/rbac", () => ({
+jest.mock("@acme/auth/rbac", () => ({
   __esModule: true,
   canRead: jest.fn(() => true),
   canWrite: jest.fn(() => true),
@@ -37,9 +40,6 @@ jest.mock("next/server", () => ({
     ),
   },
 }));
-
-import { NextResponse } from "next/server";
-import { render, screen } from "@testing-library/react";
 const redirect = NextResponse.redirect as jest.Mock;
 const next = NextResponse.next as jest.Mock;
 const rewrite = NextResponse.rewrite as jest.Mock;
@@ -87,12 +87,12 @@ describe("/cms access", () => {
   });
 
   it("returns 403 for roles without read access", async () => {
-    const { canRead } = (await import("@auth/rbac")) as {
+    const { canRead } = (await import("@acme/auth/rbac")) as unknown as {
       canRead: jest.Mock;
       canWrite: jest.Mock;
     };
     canRead.mockReturnValueOnce(false);
-    __setMockToken({ role: "stranger" } as JWT);
+    __setMockToken({ role: "stranger" } as unknown as JWT);
 
     const res = await middleware(createRequest("/cms"));
 

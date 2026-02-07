@@ -1,8 +1,8 @@
-import { DEFAULT_LOCALE, type Locale, resolveLocale } from "./locales";
-
 import en from "../../i18n/en.json";
 import it from "../../i18n/it.json";
 import zh from "../../i18n/zh.json";
+
+import { DEFAULT_LOCALE, type Locale, resolveLocale } from "./locales";
 
 const localeMessages: Record<Locale, Record<string, string>> = {
   en,

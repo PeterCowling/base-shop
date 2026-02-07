@@ -1,51 +1,60 @@
+import { promises as fs } from "fs";
+import * as path from "path";
+
+import type { AnalyticsAggregates } from "../../analytics";
+import { listEvents, readAggregates } from "../analytics.server";
+
 jest.mock("../../dataRoot", () => ({
   DATA_ROOT: "/data/root",
 }));
 
-const files = new Map<string, string>();
-const readdir = jest.fn(async () => []);
-const readFile = jest.fn(async (p: string) => {
-  const data = files.get(p);
-  if (data === undefined) {
-    const err = new Error("not found") as NodeJS.ErrnoException;
-    err.code = "ENOENT";
-    throw err;
-  }
-  return data;
-});
+// Use globalThis to store test files - this avoids Jest hoisting issues
+// because the mock factory can safely access globalThis at runtime
+declare global {
+  var __analyticsServerTestFiles: Map<string, string> | undefined;
+}
+globalThis.__analyticsServerTestFiles = new Map<string, string>();
 
 jest.mock("fs", () => ({
   promises: {
-    readdir,
-    readFile,
-    __files: files,
+    readdir: jest.fn(async () => []),
+    readFile: jest.fn(async (p: string) => {
+      const files = globalThis.__analyticsServerTestFiles;
+      const data = files?.get(p);
+      if (data === undefined) {
+        const err = new Error("not found") as NodeJS.ErrnoException;
+        err.code = "ENOENT";
+        throw err;
+      }
+      return data;
+    }),
   },
 }));
 
-const validateShopName = jest.fn((s: string) => s.trim());
-jest.mock("../../shops", () => ({ validateShopName }));
-
-import { promises as fs } from "fs";
-import * as path from "path";
-import type { AnalyticsAggregates } from "../../analytics";
-import { listEvents, readAggregates } from "../analytics.server";
+jest.mock("../../shops", () => ({ validateShopName: jest.fn((s: string) => s.trim()) }));
 
 const DATA_ROOT = "/data/root";
 const readdirMock = fs.readdir as jest.Mock;
 const readFileMock = fs.readFile as jest.Mock;
-const memfs = (fs as any).__files as Map<string, string>;
+
+// Import the mocked validateShopName from the mocked module
+const { validateShopName } = require("../../shops") as { validateShopName: jest.Mock };
 
 beforeEach(() => {
   jest.clearAllMocks();
-  memfs.clear();
+  globalThis.__analyticsServerTestFiles?.clear();
   validateShopName.mockImplementation((s: string) => s.trim());
+});
+
+afterAll(() => {
+  delete globalThis.__analyticsServerTestFiles;
 });
 
 describe("listEvents", () => {
   it("reads events for a specific shop and normalizes the name", async () => {
     validateShopName.mockImplementation((s) => s.trim().toLowerCase());
     const file = path.join(DATA_ROOT, "shop1", "analytics.jsonl");
-    memfs.set(
+    globalThis.__analyticsServerTestFiles?.set(
       file,
       JSON.stringify({ type: "a" }) +
         "\nnot json\n" +
@@ -74,7 +83,7 @@ describe("listEvents", () => {
       { name: "shop2", isDirectory: () => true },
     ]);
     const file1 = path.join(DATA_ROOT, "shop1", "analytics.jsonl");
-    memfs.set(file1, JSON.stringify({ type: "a" }) + "\ninvalid\n");
+    globalThis.__analyticsServerTestFiles?.set(file1, JSON.stringify({ type: "a" }) + "\ninvalid\n");
 
     const events = await listEvents();
 
@@ -96,7 +105,7 @@ describe("readAggregates", () => {
       discount_redeemed: { d: { CODE: 4 } },
       ai_crawl: { d: 5 },
     };
-    memfs.set(file, JSON.stringify(agg));
+    globalThis.__analyticsServerTestFiles?.set(file, JSON.stringify(agg));
 
     const result = await readAggregates(" SHOP1 ");
 
@@ -118,4 +127,3 @@ describe("readAggregates", () => {
     });
   });
 });
-

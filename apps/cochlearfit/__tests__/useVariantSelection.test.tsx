@@ -1,9 +1,10 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import type { Product } from "@/types/product";
-import { getProducts } from "@/lib/catalog";
+
 import { useVariantSelection } from "@/hooks/useVariantSelection";
+import { getProducts } from "@/lib/catalog";
+import type { Product } from "@/types/product";
 
 const HookHarness = ({
   product,

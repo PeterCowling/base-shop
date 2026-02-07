@@ -1,6 +1,7 @@
 // apps/cms/src/app/cms/configurator/hooks/dashboard/timeToLaunch.ts
-import type { ConfiguratorStep } from "../../types";
 import type { StepStatus } from "../../../wizard/schema";
+import type { ConfiguratorStep } from "../../types";
+
 import type { TimeToLaunchData } from "./types";
 
 // Approximate minute budgets lifted from docs/cms/build-shop-guide.md

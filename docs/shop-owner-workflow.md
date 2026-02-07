@@ -1,3 +1,9 @@
+---
+Type: Reference
+Status: Canonical
+Domain: CMS
+---
+
 # Shop Owner Workflow — Plan → Build → Launch
 
 **Role split:** shop owners compose from the published template library and do not create/edit templates. Template authors work in fixture shops/Storybook; see `docs/template-builder-workflow.md`. Owners stay inside CMS/Configurator/Page Builder and Launch only.

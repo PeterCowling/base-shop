@@ -1,22 +1,24 @@
 "use client";
+// (no additional shadcn imports needed)
+import { useEffect, useMemo, useState } from "react";
 import { DesktopIcon, LaptopIcon, MobileIcon } from "@radix-ui/react-icons";
+
+import { useTranslations } from "@acme/i18n";
+
+import {
+  type DevicePreset,
+  devicePresets,
+  getCustomDevicePresets,
+  getLegacyPreset,
+} from "../../utils/devicePresets";
 import {
   Button,
   Select,
-  SelectTrigger,
-  SelectValue,
   SelectContent,
   SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "../atoms/shadcn";
-import {
-  devicePresets,
-  getLegacyPreset,
-  type DevicePreset,
-  getCustomDevicePresets,
-} from "../../utils/devicePresets";
-// (no additional shadcn imports needed)
-import { useEffect, useMemo, useState } from "react";
-import { useTranslations } from "@acme/i18n";
 
 interface Props {
   deviceId: string;

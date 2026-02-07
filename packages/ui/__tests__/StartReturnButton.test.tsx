@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import StartReturnButton from "../src/components/account/StartReturnButton";
 
 const originalFetch = global.fetch;
@@ -25,8 +26,8 @@ describe("StartReturnButton", () => {
     (global as any).fetch = mockFetch;
 
     let resolvePost: (value: unknown) => void;
-    const postPromise = new Promise((res) => {
-      resolvePost = res;
+    const postPromise = new Promise((resolve) => {
+      resolvePost = resolve;
     });
 
     mockFetch
@@ -69,8 +70,8 @@ describe("StartReturnButton", () => {
     (global as any).fetch = mockFetch;
 
     let rejectPost: (reason?: unknown) => void;
-    const postPromise = new Promise((_, rej) => {
-      rejectPost = rej;
+    const postPromise = new Promise((_resolve, reject) => {
+      rejectPost = reject;
     });
 
     mockFetch.mockReturnValueOnce(postPromise as any);

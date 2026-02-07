@@ -1,11 +1,14 @@
 "use client";
 
-import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from "react";
-import { patchShopTheme } from "../../../wizard/services/patchTheme";
+import { type Dispatch, type SetStateAction, useEffect, useMemo, useRef, useState } from "react";
+
+import { useTranslations } from "@acme/i18n";
+
 import { savePreviewTokens } from "../../../wizard/previewTokens";
+import { patchShopTheme } from "../../../wizard/services/patchTheme";
+
 import type { BrandIntensity } from "./brandIntensity";
 import { computeBrandOverlay } from "./brandIntensity";
-import { useTranslations } from "@acme/i18n";
 
 interface Args {
   shop: string;
@@ -89,11 +92,21 @@ export function useThemeTokenSync({
     schedulePreviewUpdate(preview);
   }, [mergedTokens, brandIntensity]);
 
+  // If the theme changes, cancel any pending patch so old overrides don't
+  // persist into the newly-selected theme.
+  useEffect(() => {
+    pendingPatchRef.current = { overrides: {}, defaults: {} };
+    if (saveDebounceRef.current) {
+      clearTimeout(saveDebounceRef.current);
+      saveDebounceRef.current = null;
+    }
+  }, [theme]);
+
   // Broadcast initial tokens so previews reflect the current theme on mount
   useEffect(() => {
     savePreviewTokens(previewTokens);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- CMS-2145: run once on mount to broadcast initial preview tokens
-  }, []);
+    }, []);
 
   useEffect(() => {
     return () => {

@@ -1,11 +1,13 @@
 "use client";
 
-import type { PageComponent, HistoryState } from "@acme/types";
-import type { Action } from "./state";
 import { useMemo } from "react";
+
 import { useTranslations } from "@acme/i18n";
+import type { HistoryState,PageComponent } from "@acme/types";
+
 import PageSidebarMultipleSelection from "./components/PageSidebarMultipleSelection";
 import PageSidebarSingleSelection from "./components/PageSidebarSingleSelection";
+import type { Action } from "./state";
 
 export interface PageSidebarProps {
   components: PageComponent[];

@@ -1,6 +1,7 @@
 // apps/cms/__tests__/signup-page.test.tsx
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 const mockRequestAccount = jest.fn().mockResolvedValue(undefined);
 const redirectMock = jest.fn();
 

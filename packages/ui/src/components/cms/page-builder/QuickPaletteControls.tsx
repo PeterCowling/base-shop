@@ -1,9 +1,11 @@
 "use client";
 
 import React from "react";
-import { Tooltip, Popover, PopoverTrigger, PopoverContent } from "../../atoms";
-import Palette from "./Palette";
+
+import { Popover, PopoverContent,PopoverTrigger, Tooltip } from "../../atoms";
+
 import type { ComponentType } from "./defaults";
+import Palette from "./Palette";
 import type { PaletteProps } from "./palette.types";
 
 interface Props {

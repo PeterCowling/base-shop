@@ -9,7 +9,10 @@
  */
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+
 import { z, ZodError } from "zod";
+
+import { getShopAppSlug } from "@acme/platform-core/shops";
 
 // Define the required environment variables with friendly error messages.
 const envSchema = z
@@ -52,16 +55,16 @@ if (!shopId) {
   process.exit(1);
 }
 
-const appSlug = shopId === "bcd" ? "cover-me-pretty" : `shop-${shopId}`;
+const appSlug = getShopAppSlug(shopId);
 const envPath = join("apps", appSlug, ".env");
 
-// eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-2003: envPath is workspace-relative and derived from a trusted app slug, not HTTP input
+ 
 if (!existsSync(envPath)) {
   console.error(`Missing ${envPath}`);
   process.exit(1);
 }
 
-// eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-2003: envPath is workspace-relative and derived from a trusted app slug, not HTTP input
+ 
 const envRaw = readFileSync(envPath, "utf8");
 const env: Record<string, string> = {};
 for (const line of envRaw.split(/\n+/)) {

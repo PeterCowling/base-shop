@@ -1,16 +1,18 @@
-import { describe, it, expect, jest } from "@jest/globals";
-import { withEnv } from "../../../test/utils/withEnv";
+import { describe, expect, it, jest } from "@jest/globals";
+
 import { expectInvalidAuthEnvWithConfigEnv as expectInvalidAuth } from "../../../test/utils/expectInvalidAuthEnv";
+import { withEnv } from "../../../test/utils/withEnv";
+
 import {
-  NEXT_SECRET,
-  SESSION_SECRET,
-  REDIS_URL,
-  REDIS_TOKEN,
   DEV_NEXTAUTH_SECRET,
   DEV_SESSION_SECRET,
-  selectStore,
+  NEXT_SECRET,
   OAUTH_ISSUER,
   OAUTH_REDIRECT_ORIGIN,
+  REDIS_TOKEN,
+  REDIS_URL,
+  selectStore,
+  SESSION_SECRET,
 } from "./authEnvTestUtils";
 
 const redisUnset = {
@@ -44,7 +46,7 @@ const devEnv = (overrides: EnvOverrides = {}): EnvOverrides => ({
 const expectInvalidProd = (
   overrides: EnvOverrides,
   accessor: (env: Record<string, unknown>) => unknown,
-  consoleErrorSpy?: jest.SpyInstance,
+  consoleErrorSpy?: { mockRestore: () => void },
 ) =>
   expectInvalidAuth({
     env: prodEnv(overrides),

@@ -1,15 +1,17 @@
 // packages/ui/components/cms/PagesTable.tsx
 "use client";
 
-import Link from "next/link";
 import { useMemo, useState } from "react";
+import Link from "next/link";
 
-import type { Page } from "@acme/types";
-import DataTable, { type Column } from "./DataTable";
-import { Card, CardContent, Input } from "../atoms/shadcn";
-import { Tag } from "../atoms";
-import { cn } from "@ui/utils/style";
 import { useTranslations } from "@acme/i18n";
+import type { Page } from "@acme/types";
+
+import { cn } from "../../utils/style";
+import { Tag } from "../atoms";
+import { Card, CardContent, Input } from "../atoms/shadcn";
+
+import DataTable, { type Column } from "./DataTable";
 
 // Use shared translations hook; defaults to English in tests/storybook
 // and resolves known keys like cms.pages.* to human-readable labels.

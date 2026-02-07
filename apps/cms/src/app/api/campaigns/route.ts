@@ -1,7 +1,17 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { type NextRequest,NextResponse } from "next/server";
+import { ensureAuthorized } from "@cms/actions/common/auth";
+
 import { sendCampaignEmail } from "@acme/email";
 
 export async function POST(req: NextRequest) {
+  try {
+    await ensureAuthorized();
+  } catch (err) {
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 401;
+    return NextResponse.json({ error: message === "Forbidden" ? "Forbidden" : "Unauthorized" }, { status });
+  }
+
   let payload: unknown;
   try {
     payload = await req.json();

@@ -15,6 +15,21 @@ Shared TypeScript type definitions.
 - `rootDir` is `"src"` and `outDir` is `"dist"`
 - `package.json` includes `"types": "dist/index.d.ts"`
 - Add a project reference in `tsconfig.json` when importing this package.
+
+## Generated Artifacts Policy
+The repo intentionally tracks type declaration files in `packages/types/src/*.d.ts` alongside their `.ts` sources.
+This keeps the public type surface visible in diffs and allows tooling to consume declarations without requiring
+a local build.
+
+We do NOT track generated runtime artifacts in `packages/types/src`:
+- `packages/types/src/**/*.js`
+- `packages/types/src/**/*.d.ts.map`
+
+When updating types:
+1. Regenerate declarations (see "Clean & Rebuild").
+2. Commit updated `packages/types/src/*.d.ts` only.
+3. Ensure `packages/types/dist` stays build output only (do not edit or commit it directly unless the repo
+   already tracks a specific file).
 ## Clean & Rebuild
 ```sh
 rimraf dist tsconfig.tsbuildinfo

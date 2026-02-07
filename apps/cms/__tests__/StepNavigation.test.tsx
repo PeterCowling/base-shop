@@ -1,15 +1,13 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import StepNavigation from "../src/app/cms/configurator/steps/StepNavigation";
 
 // Provide missing pointer APIs for Radix Select used in DeviceSelector
 beforeAll(() => {
-  // @ts-expect-error - JSDOM lacks pointer capture API
   HTMLElement.prototype.hasPointerCapture = () => false;
-  // @ts-expect-error - JSDOM lacks pointer capture API
   HTMLElement.prototype.setPointerCapture = () => {};
-  // @ts-expect-error - JSDOM doesn't implement scrollIntoView in test env
   Element.prototype.scrollIntoView = () => {};
 });
 

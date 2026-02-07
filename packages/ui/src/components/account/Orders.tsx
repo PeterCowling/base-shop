@@ -1,25 +1,28 @@
 // packages/ui/src/components/account/Orders.tsx
-import { getCustomerSession, hasPermission } from "@auth";
-import { getOrdersForCustomer } from "@acme/platform-core/orders";
-import { getTrackingStatus as getShippingTrackingStatus } from "@acme/platform-core/shipping";
-import { getTrackingStatus as getReturnTrackingStatus } from "@acme/platform-core/returnAuthorization";
-import type { RentalOrder } from "@acme/types";
+import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
+
+import { getCustomerSession, hasPermission } from "@acme/auth";
 import type { Locale } from "@acme/i18n/locales";
-import type { TranslatableText } from "@acme/types/i18n";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
-import StartReturnButton from "./StartReturnButton";
+import { getOrdersForCustomer } from "@acme/platform-core/orders";
+import { getTrackingStatus as getReturnTrackingStatus } from "@acme/platform-core/returnAuthorization";
+import { getTrackingStatus as getShippingTrackingStatus } from "@acme/platform-core/shipping";
+import type { RentalOrder } from "@acme/types";
+import type { TranslatableText } from "@acme/types/i18n";
+
 import type { OrderStep } from "../organisms/OrderTrackingTimeline";
 import { OrderTrackingTimeline } from "../organisms/OrderTrackingTimeline";
+
 import AccountNavigation from "./AccountNavigation";
-import type { ReactNode } from "react";
-import { resolveTranslatableText } from "./translations";
 import {
-  ACCOUNT_PROFILE_PATH,
   ACCOUNT_ORDERS_PATH,
+  ACCOUNT_PROFILE_PATH,
   ACCOUNT_SESSIONS_PATH,
   ACCOUNT_SHELL_TEST_ID,
 } from "./constants";
+import StartReturnButton from "./StartReturnButton";
+import { resolveTranslatableText } from "./translations";
 
 export interface OrdersPageProps {
   /** ID of the current shop for fetching orders */
@@ -52,7 +55,7 @@ export default async function OrdersPage({
   trackingProviders = [],
   locale = "en",
 }: OrdersPageProps) {
-  const t = await getServerTranslations(locale);
+  const t = await getServerTranslations(locale as "en" | "de" | "it");
   const session = await getCustomerSession();
   if (!session) {
     redirect(`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`);

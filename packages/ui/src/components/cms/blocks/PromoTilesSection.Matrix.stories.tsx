@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/PromoTilesSection.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import PromoTilesSection from './PromoTilesSection';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './PromoTilesSection.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import PromoTilesSection from './PromoTilesSection';
+import fixture from './PromoTilesSection.fixtures.json';
 
 const meta: Meta<typeof PromoTilesSection> = {
   title: 'CMS Blocks/PromoTilesSection/Matrix',

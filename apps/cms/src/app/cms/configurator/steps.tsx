@@ -1,27 +1,31 @@
 "use client";
 /* i18n-exempt file -- DS-4287 CSS class tokens only [ttl=2026-01-01] */
 
+import Link from "next/link";
+import { CheckIcon, ChevronLeftIcon, ChevronRightIcon, DotsHorizontalIcon } from "@radix-ui/react-icons";
+
+import { cn } from "@acme/design-system/utils/style";
+import { useTranslations } from "@acme/i18n";
+
+// Tooltip not required in compact progress UI
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/atoms/shadcn";
+import type { ConfiguratorStepProps } from "@/types/configurator";
+
+import type { StepStatus } from "../wizard/schema";
+
+import StepCheckoutPage from "./steps/StepCheckoutPage";
+import StepEnvVars from "./steps/StepEnvVars";
+import StepHosting from "./steps/StepHosting";
+import StepImportData from "./steps/StepImportData";
+import StepInventory from "./steps/StepInventory";
+import StepPaymentProvider from "./steps/StepPaymentProvider";
+import StepReachSocial from "./steps/StepReachSocial";
+import StepShipping from "./steps/StepShipping";
 import StepShopDetails from "./steps/StepShopDetails";
 import StepShopType from "./steps/StepShopType";
 import StepTheme from "./steps/StepTheme";
 import StepTokens from "./steps/StepTokens";
-import StepPaymentProvider from "./steps/StepPaymentProvider";
-import StepShipping from "./steps/StepShipping";
-import StepCheckoutPage from "./steps/StepCheckoutPage";
-import StepInventory from "./steps/StepInventory";
-import StepEnvVars from "./steps/StepEnvVars";
-import StepImportData from "./steps/StepImportData";
-import StepHosting from "./steps/StepHosting";
-import StepReachSocial from "./steps/StepReachSocial";
-import { CheckIcon, ChevronLeftIcon, ChevronRightIcon, DotsHorizontalIcon } from "@radix-ui/react-icons";
-import Link from "next/link";
-import type { StepStatus } from "../wizard/schema";
-import { cn } from "@ui/utils/style";
-// Tooltip not required in compact progress UI
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/atoms/shadcn";
 import type { ConfiguratorStep, ConfiguratorStepTrack } from "./types";
-import type { ConfiguratorStepProps } from "@/types/configurator";
-import { useTranslations } from "@acme/i18n";
 
 type TFunc = (key: string, vars?: Record<string, unknown>) => string;
 
@@ -300,7 +304,7 @@ export function ConfiguratorProgress({ currentStepId, completed }: ProgressProps
                   <DropdownMenuItem
                     key={s.id}
                     className="cursor-pointer"
-                    onSelect={(e) => {
+                    onSelect={(e: Event) => {
                       e.preventDefault();
                       window.location.assign(`/cms/configurator/${s.id}`);
                     }}

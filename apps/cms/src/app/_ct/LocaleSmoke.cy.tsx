@@ -1,5 +1,6 @@
 import React from 'react';
-import { useTranslations } from '@i18n';
+
+import { useTranslations } from '@acme/i18n';
 
 function I18nProbe() {
   const t = useTranslations();

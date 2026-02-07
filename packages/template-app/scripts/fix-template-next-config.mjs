@@ -1,5 +1,4 @@
 // packages/template-app/scripts/fix-template-next-config.mjs
-/* eslint-disable security/detect-non-literal-fs-filename, security/detect-non-literal-regexp -- ABC-123: Script manipulates file paths and regexes derived from workspace layout */
 import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
@@ -180,7 +179,7 @@ function normalizeTemplateImport(cfgPath, providerExports) {
     if (m[1].includes("@acme/next-config")) specs.add(m[1]);
 
   if (specs.size === 0) {
-    console.log("No @acme/next-config import in config; nothing to change.");
+    console.info("No @acme/next-config import in config; nothing to change.");
     return;
   }
 
@@ -210,11 +209,11 @@ function normalizeTemplateImport(cfgPath, providerExports) {
   }
   if (changed) {
     write(cfgPath, src);
-    console.log(
+    console.info(
       `✓ Rewrote ${path.relative(repoRoot, cfgPath)} to use: ${target}`
     );
   } else {
-    console.log("No changes needed; already using:", target);
+    console.info("No changes needed; already using:", target);
   }
 }
 
@@ -228,7 +227,7 @@ function normalizeTemplateImport(cfgPath, providerExports) {
     );
     process.exit(1);
   }
-  console.log("Found config:", path.relative(repoRoot, cfgPath));
+  console.info("Found config:", path.relative(repoRoot, cfgPath));
 
   const providerRoot = findProviderRoot();
   if (!providerRoot) {
@@ -239,7 +238,7 @@ function normalizeTemplateImport(cfgPath, providerExports) {
   }
 
   const { entry, hasNextDotConfig } = ensureProviderExports(providerRoot);
-  console.log(`Ensured @acme/next-config exports -> ${entry}`);
+  console.info(`Ensured @acme/next-config exports -> ${entry}`);
 
   // Don’t try to import the provider here; it may depend on env set by the template’s dev-defaults.
   normalizeTemplateImport(cfgPath, { hasNextDotConfig });
@@ -251,6 +250,6 @@ function normalizeTemplateImport(cfgPath, providerExports) {
   if (pj.scripts?.build) {
     run("pnpm", ["--filter", "@acme/next-config", "build"], repoRoot, false);
   } else {
-    console.log("Provider has no build script; skipping build.");
+  console.info("Provider has no build script; skipping build.");
   }
 })();

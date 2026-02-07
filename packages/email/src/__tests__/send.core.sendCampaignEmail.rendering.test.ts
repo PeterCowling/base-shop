@@ -1,5 +1,12 @@
 // Focus: template rendering behavior of sendCampaignEmail
 
+import {
+  cleanupEnv,
+  mockSendgridSend,
+  resetMocks,
+  setupEnv,
+} from "./sendCampaignTestUtils";
+
 let mockRenderTemplate: jest.Mock;
 
 jest.mock("../templates", () => ({
@@ -9,13 +16,6 @@ jest.mock("../templates", () => ({
 jest.mock("../config", () => ({
   getDefaultSender: () => "from@example.com",
 }));
-
-import {
-  resetMocks,
-  mockSendgridSend,
-  setupEnv,
-  cleanupEnv,
-} from "./sendCampaignTestUtils";
 
 describe("send core – sendCampaignEmail (rendering)", () => {
   beforeEach(() => {

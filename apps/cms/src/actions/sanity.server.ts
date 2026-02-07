@@ -1,7 +1,7 @@
 // apps/cms/src/actions/sanity.server.ts
 "use server";
 
-import { verifyCredentials, publishPost } from "@acme/plugin-sanity";
+import { publishPost,verifyCredentials } from "@acme/plugin-sanity";
 
 interface SanityConfig {
   projectId: string;

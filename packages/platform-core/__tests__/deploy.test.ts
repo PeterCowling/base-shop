@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { Volume, createFsFromVolume } from 'memfs';
+import { createFsFromVolume,Volume } from 'memfs';
 import path from 'path';
 
 const vol = new Volume();
@@ -8,7 +8,7 @@ const fs = createFsFromVolume(vol);
 jest.mock('fs', () => fs);
 
 const genSecret = jest.fn(() => 'secret-123');
-jest.mock('@acme/shared-utils', () => ({ genSecret }));
+jest.mock('@acme/lib/security', () => ({ genSecret }));
 
 const originalFetch = global.fetch;
 

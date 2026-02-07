@@ -1,0 +1,53 @@
+{
+  "seo": {
+    "title": "Szorrentóból Positanóba komppal | Hostel Brikette",
+    "description": "Lépésről lépésre útmutató Szorrentóból Positanóba komppal: jegyek, indulási tippek és hogyan juthatsz fel Positano kikötőjéből a Hostel Brikette-hez."
+  },
+  "intro": {
+    "title": "Szorrentóból Positanóba — komp",
+    "body": "Szállj fel közvetlen kompra Szorrento Marina Piccola kikötőjéből Positanóba. Ez a rövid útmutató bemutatja, hol vásárolhatsz jegyet, mikor érdemes sorba állni, és mit tegyél a positanói kikötőben érkezéskor, hogy a Hostel Brikette-hez vezető utolsó szakasz könnyebb legyen."
+  },
+  "callouts": {
+    "tip": "Szeretnéd látni az összes közlekedési lehetőséget? %HOWTO:how-to-get-here|Hogyan juthatsz el hozzánk áttekintés% buszokért, taxikért és kombinált útvonalakért."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Utazás áttekintése",
+      "list": [
+        "Szezonban számíts nagyjából 45–60 percre a két kikötő között.",
+        "A kompok időjárásfüggők, és csúcsidőben gyorsan megtelhetnek.",
+        "A korai jegyvásárlás segít biztosítani a helyet és gördülékennyé teszi a beszállást."
+      ]
+    },
+    {
+      "id": "sorrentoPort",
+      "title": "Utazás Szorrento kikötőjébe (Marina Piccola)",
+      "list": [
+        "Menj Szorrento Marina Piccola kikötőjébe, és kövesd a jegypénztárakhoz vezető táblákat.",
+        "Ellenőrizd a következő positanói indulást, és erősítsd meg a szolgáltatót (például Travelmar vagy NLG).",
+        "Vásárold meg a jegyet a pénztárnál vagy online, majd menj a kijelölt kapuhoz."
+      ]
+    },
+    {
+      "id": "boarding",
+      "title": "Jegyvásárlás és beszállás",
+      "list": [
+        "Érkezz 15–20 perccel indulás előtt, hogy nyugodtan sorba állhass.",
+        "Tartsd kéznél a jegyed az ellenőrzéshez, és kövesd a személyzet utasításait beszálláskor.",
+        "A csomagokat rögzítsd a kijelölt helyen, az értékeket tartsd magadnál."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Érkezés Positanóba",
+      "list": [
+        "Szállj le a positanói fő mólónál (Spiaggia Grande).",
+        "Nehéz csomagokhoz fontold meg a mólón elérhető hivatalos hordárszolgáltatást (fizetős szolgáltatás).",
+        "A Hostel Brikette könnyebb elérése érdekében szállj fel a helyi Interno buszra felfelé a \\\\\"Chiesa Nuova\\\\\" megállóig, és sétálj rövid utat a hostelhez.",
+        "Másik lehetőségként gyalogolj felfelé a Via dei Mulini/Via G. Marconi útvonalon, de hagyj rá extra időt az emelkedő miatt."
+      ]
+    }
+  ],
+  "lastUpdated": "2026-01-31"
+}

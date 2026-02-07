@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import {
+  configure,
+  fireEvent,
   render,
   screen,
-  fireEvent,
-  configure,
   within,
 } from "@testing-library/react";
+
+import { devicePresets,getLegacyPreset } from "../../utils/devicePresets";
 import DeviceSelector from "../DeviceSelector";
-import { getLegacyPreset, devicePresets } from "../../utils/devicePresets";
 
 configure({ testIdAttribute: "data-testid" });
 

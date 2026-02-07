@@ -1,20 +1,22 @@
 "use client";
 
-import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
 import { useCallback, useRef } from "react";
-import type { PageComponent } from "@acme/types";
-import type { SectionComponent } from "@acme/types/page/layouts/section";
-import type { GridContainerComponent } from "@acme/types/page/layouts/grid-container";
-import type { TabsAccordionContainerComponent } from "@acme/types/page/layouts/tabs-accordion-container";
-import type { TabsComponent } from "@acme/types/page/layouts/tabs";
-import { isHiddenForViewport } from "./state/layout/utils";
-import GridOverlay from "./GridOverlay";
-import DefaultChildrenList from "./DefaultChildrenList";
-import TabbedChildren from "./TabbedChildren";
-import GridAreaChildren from "./GridAreaChildren";
-import type { BlockChildrenProps as Props, SlotDef } from "./BlockChildren.types";
-import type { EditorFlags } from "./state/layout/types";
+import { rectSortingStrategy,SortableContext } from "@dnd-kit/sortable";
+
 import { useTranslations } from "@acme/i18n";
+import type { PageComponent } from "@acme/types";
+import type { GridContainerComponent } from "@acme/types/page/layouts/grid-container";
+import type { SectionComponent } from "@acme/types/page/layouts/section";
+import type { TabsComponent } from "@acme/types/page/layouts/tabs";
+import type { TabsAccordionContainerComponent } from "@acme/types/page/layouts/tabs-accordion-container";
+
+import type { BlockChildrenProps as Props, SlotDef } from "./BlockChildren.types";
+import DefaultChildrenList from "./DefaultChildrenList";
+import GridAreaChildren from "./GridAreaChildren";
+import GridOverlay from "./GridOverlay";
+import type { EditorFlags } from "./state/layout/types";
+import { isHiddenForViewport } from "./state/layout/utils";
+import TabbedChildren from "./TabbedChildren";
 
 export default function BlockChildren({
   component,
@@ -120,9 +122,9 @@ export default function BlockChildren({
 
   // Compute container class name once (utility classes only).
   const containerClass =
-    // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2461: utility classNames; not user-visible copy
+     
     "border-muted relative m-2 flex flex-col gap-4 border border-dashed p-2 " +
-    // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2461: utility classNames; not user-visible copy
+     
     (isOver && dropAllowed === false ? "ring-2 ring-danger border-danger cursor-not-allowed" : "");
 
   return (
@@ -151,11 +153,11 @@ export default function BlockChildren({
             data-placeholder
             className={
               (dropAllowed === false
-                // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2461: utility classNames; not user-visible copy
+                 
                 ? "border-danger bg-danger/10 ring-2 ring-danger"
-                // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2461: utility classNames; not user-visible copy
+                 
                 : "border-primary bg-primary/10 ring-2 ring-primary") +
-              // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2461: utility classNames; not user-visible copy
+               
               " h-4 w-full rounded border-2 border-dashed"
             }
           />

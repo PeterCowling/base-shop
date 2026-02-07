@@ -1,10 +1,12 @@
 "use client";
 
-import React, { memo, useMemo } from "react";
 import type { CSSProperties } from "react";
-import type { Page, PageComponent } from "@acme/types";
+import React, { memo, useMemo } from "react";
+
 import type { Locale } from "@acme/i18n/locales";
+import type { Page, PageComponent } from "@acme/types";
 import type { SectionTemplate } from "@acme/types/section/template";
+
 import PageBuilder from "./page-builder/PageBuilder";
 
 export interface SectionBuilderProps {

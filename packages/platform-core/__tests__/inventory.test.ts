@@ -1,7 +1,9 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import type { InventoryItem } from "../src/types/inventory";
+
 import { withTempRepo } from "@acme/test-utils";
+
+import type { InventoryItem } from "../src/types/inventory";
 
 const withRepo = (
   cb: (

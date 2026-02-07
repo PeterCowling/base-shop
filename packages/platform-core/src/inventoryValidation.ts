@@ -4,6 +4,9 @@ import type { CartState } from "./cart";
 import { readInventory } from "./repositories/inventory.server";
 import { variantKey } from "./types/inventory";
 
+// Central inventory imports (lazy to avoid circular deps)
+type CentralInventoryModule = typeof import("./centralInventory/centralInventory.server");
+
 export type InventoryValidationRequest = {
   sku: string;
   quantity: number;
@@ -65,6 +68,50 @@ export async function validateInventoryAvailability(
   for (const item of inventory) {
     const key = variantKey(item.sku, item.variantAttributes);
     available.set(key, item.quantity);
+  }
+
+  const insufficient: InventoryValidationFailure[] = [];
+  for (const entry of requested.values()) {
+    const qty = available.get(entry.variantKey) ?? 0;
+    entry.available = qty;
+    if (entry.requested > qty) {
+      insufficient.push({ ...entry });
+    }
+  }
+
+  if (insufficient.length) {
+    return { ok: false, insufficient };
+  }
+  return { ok: true };
+}
+
+/**
+ * Validate inventory against central inventory allocations for a shop.
+ * Falls back to per-shop inventory if central inventory is unavailable.
+ */
+export async function validateInventoryFromCentral(
+  shopId: string,
+  requests: InventoryValidationRequest[],
+): Promise<{ ok: true } | { ok: false; insufficient: InventoryValidationFailure[] }> {
+  const requested = normalizeRequests(requests);
+
+  let centralModule: CentralInventoryModule | null = null;
+  try {
+    centralModule = await import("./centralInventory/centralInventory.server");
+  } catch {
+    // Central inventory not available, fall back to shop inventory
+    return validateInventoryAvailability(shopId, requests);
+  }
+
+  const allocations = await centralModule.calculateAllAllocationsForShop(shopId);
+  if (!allocations.length) {
+    // No central inventory routing, fall back to shop inventory
+    return validateInventoryAvailability(shopId, requests);
+  }
+
+  const available = new Map<string, number>();
+  for (const allocation of allocations) {
+    available.set(allocation.variantKey, allocation.allocatedQuantity);
   }
 
   const insufficient: InventoryValidationFailure[] = [];

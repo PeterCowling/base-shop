@@ -1,0 +1,56 @@
+{
+  "seo": {
+    "title": "Så undviker du folkmassorna i Positano (utanför turiststråken)",
+    "description": "Timing, lugna rutter, alternativa städer och smarta fotoplatser för att uppleva Positano utan köer."
+  },
+  "linkLabel": "Så undviker du folkmassorna i Positano (utanför turiststråken)",
+  "intro": [
+    "För att slippa trängsel i Positano krävs rätt timing, genvägar över mindre använda gränder och ibland en utflykt till en lugnare granne."
+  ],
+  "sections": [
+    {
+      "id": "timing",
+      "title": "Timing som fungerar",
+      "body": [
+        "Besök Spiaggia Grande eller huvudutsikterna vid soluppgång eller gyllene timme; sena luncher (efter 14.30) undviker också trycket på restauranger.",
+        "Ta paus mitt på dagen för skugga eller siesta — flest dagsbesökare fyller gränderna mellan 10.00 och 16.00."
+      ]
+    },
+    {
+      "id": "routes",
+      "title": "Rutter & lugnare platser",
+      "body": [
+        "Använd övre gångvägen mellan Chiesa Nuova och Sponda för balkongvyer utan flaskhalsen vid Via dei Mulini.",
+        "Gå till Fornillo Beach eller utsiktspunkten Via Positanesi d’America för lugnare bad och foton."
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Alternativa baser",
+      "body": [
+        "Praiano och Cetara bjuder på långsammare kvällar, lätta solnedgångsplatser och billigare måltider utan att tappa kustutsikten.",
+        "Ravellos trädgårdar eller Agerolas bergsbyar är bra dagsutflykter när Positano känns överfullt."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "När är Spiaggia Grande som lugnast?",
+      "a": [
+        "Före 09.00 eller efter 18.30 finns det plats och mjukare ljus för foton — ta med handduk och kom tidigt."
+      ]
+    },
+    {
+      "q": "Var kan jag fotografera utan folkmassor?",
+      "a": [
+        "Promenera uppför Via Cristoforo Colombo för terrasser med utsikt eller ta bussen till Nocelle för vida panoramor över Path of the Gods."
+      ]
+    },
+    {
+      "q": "Bör jag bo utanför Positano för lugnare kvällar?",
+      "a": [
+        "Ja om du vill ha tystare nätter — Praiano, Minori eller Agerola håller priserna nere och du kan buss- eller färjependlare in till Positano dagtid."
+      ]
+    }
+  ]
+}

@@ -1,4 +1,5 @@
-import { getPost as repoGetPost, type SanityPost } from "@platform-core/repositories/blog.server";
+import { getPost as repoGetPost, type SanityPost } from "@acme/platform-core/repositories/blog.server";
+
 import { ensureCanRead } from "../../../actions/common/auth";
 import { getConfig } from "../config";
 
@@ -8,5 +9,5 @@ export async function getPost(
 ): Promise<SanityPost | null> {
   await ensureCanRead();
   const config = await getConfig(shopId);
-  return repoGetPost(config, id);
+  return repoGetPost(config as any, id);
 }

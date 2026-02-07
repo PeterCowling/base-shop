@@ -1,0 +1,93 @@
+name: Deploy Brikette
+
+on:
+  push:
+    branches:
+      - main
+      - staging
+    paths:
+      - 'apps/brikette/**'
+      - 'packages/design-system/**'
+      - 'packages/design-tokens/**'
+      - 'packages/guides-core/**'
+      - 'packages/next-config/**'
+      - 'packages/platform-core/**'
+      - 'packages/telemetry/**'
+      - 'packages/ui/**'
+      - '.github/workflows/brikette.yml'
+      - '.github/workflows/reusable-app.yml'
+  pull_request:
+    paths:
+      - 'apps/brikette/**'
+      - 'packages/design-system/**'
+      - 'packages/design-tokens/**'
+      - 'packages/guides-core/**'
+      - 'packages/next-config/**'
+      - 'packages/platform-core/**'
+      - 'packages/telemetry/**'
+      - 'packages/ui/**'
+      - '.github/workflows/brikette.yml'
+      - '.github/workflows/reusable-app.yml'
+  workflow_dispatch:
+    inputs:
+      publish_to_production:
+        description: "Publish to production (Cloudflare Workers custom domain)"
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: brikette-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  staging:
+    name: Deploy (staging)
+    uses: ./.github/workflows/reusable-app.yml
+    with:
+      app-filter: "@apps/brikette"
+      # Build deps with turbo, then run static export (OUTPUT_EXPORT=1 → output:'export' in next.config)
+      # Hide routes incompatible with static export before building; restore after.
+      build-cmd: >
+        pnpm exec turbo run build --filter=@apps/brikette^... &&
+        cd apps/brikette &&
+        mv src/app/api src/app/_api-off &&
+        mv "src/app/[lang]/draft" "src/app/[lang]/_draft-off" &&
+        mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off" &&
+        (OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm exec next build; e=$?;
+        mv src/app/_api-off src/app/api;
+        mv "src/app/[lang]/_draft-off" "src/app/[lang]/draft";
+        mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]";
+        exit $e)
+      artifact-path: "apps/brikette/out"
+      # Deploy static HTML to Cloudflare Pages (free tier — no Worker needed)
+      deploy-cmd: >
+        cd apps/brikette &&
+        pnpm exec wrangler pages deploy out
+        --project-name ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette-website' }}
+        --branch staging
+      project-name: ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette-website' }}
+      environment-name: "staging"
+      environment-url: ${{ format('https://staging.{0}.pages.dev', vars.BRIKETTE_PAGES_PROJECT || 'brikette-website') }}
+      healthcheck-args: "--staging"
+    secrets: inherit
+
+  production:
+    name: Deploy (production)
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.publish_to_production && github.ref == 'refs/heads/main' }}
+    uses: ./.github/workflows/reusable-app.yml
+    with:
+      app-filter: "@apps/brikette"
+      build-cmd: >
+        pnpm exec turbo run build --filter=@apps/brikette^... &&
+        cd apps/brikette &&
+        pnpm exec opennextjs-cloudflare build
+      artifact-path: "apps/brikette/.open-next"
+      deploy-cmd: >
+        cd apps/brikette &&
+        pnpm exec wrangler deploy
+      project-name: "brikette-production"
+      environment-name: "production"
+      environment-url: "https://www.hostel-positano.com"
+      healthcheck-base-url: "https://www.hostel-positano.com"
+    secrets: inherit

@@ -1,8 +1,9 @@
-import { render, fireEvent, screen } from "@testing-library/react";
-import { ColorToken } from "../ColorToken";
-import { hexToHsl } from "../../../../utils/colorUtils";
+import { fireEvent, render, screen } from "@testing-library/react";
+
 import { useTokenColors } from "../../../../hooks/useTokenColors";
 import type { TokenMap } from "../../../../hooks/useTokenEditor";
+import { hexToHsl } from "../../../../utils/colorUtils";
+import { ColorToken } from "../ColorToken";
 
 jest.mock("../../../../hooks/useTokenColors");
 const mockedUseTokenColors =
@@ -71,10 +72,10 @@ describe("ColorToken", () => {
     );
 
     const input = container.querySelector('input[type="color"]') as HTMLInputElement;
-    // eslint-disable-next-line ds/no-raw-color -- DX-0006: testing color input hex handling
+     
     fireEvent.change(input, { target: { value: "#000000" } });
 
-    // eslint-disable-next-line ds/no-raw-color -- DX-0006: testing conversion from hex
+     
     expect(setToken).toHaveBeenCalledWith("--color-bg", hexToHsl("#000000"));
   });
 
@@ -100,7 +101,7 @@ describe("ColorToken", () => {
     const setToken = jest.fn();
     mockedUseTokenColors.mockReturnValue({
       contrast: 2,
-      // eslint-disable-next-line ds/no-raw-color -- DX-0006: suggestion mocked as hex for UI message test
+       
       suggestion: "#fff",
     });
 

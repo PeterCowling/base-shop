@@ -1,6 +1,7 @@
-import { render, screen, act } from "@testing-library/react";
+import { act,render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import ReviewsCarousel from "../ReviewsCarousel";
+
+import ReviewsCarousel, { type Review } from "../ReviewsCarousel";
 
 const translations: Record<string, string> = {};
 
@@ -57,10 +58,10 @@ describe("ReviewsCarousel", () => {
     render(<ReviewsCarousel />);
     expect(screen.getByText(/Anna quote/)).toBeInTheDocument();
 
-    await user.click(screen.getByLabelText(/next review/i));
+    await user.click(screen.getByLabelText("reviews.next"));
     expect(screen.getByText(/Luca quote/)).toBeInTheDocument();
 
-    await user.click(screen.getByLabelText(/previous review/i));
+    await user.click(screen.getByLabelText("reviews.prev"));
     expect(screen.getByText(/Anna quote/)).toBeInTheDocument();
   });
 
@@ -94,7 +95,7 @@ describe("ReviewsCarousel", () => {
       jest.advanceTimersByTime(8000);
     });
     expect(screen.getByText(/Quote 2/)).toBeInTheDocument();
-    await user.click(screen.getByLabelText(/previous review/i));
+    await user.click(screen.getByLabelText("reviews.prev"));
     expect(screen.getByText(/Quote 1/)).toBeInTheDocument();
   });
 

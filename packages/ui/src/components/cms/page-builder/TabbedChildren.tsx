@@ -1,17 +1,20 @@
 "use client";
 
-import type { PageComponent, HistoryState } from "@acme/types";
+import { useEffect, useState } from "react";
+
+import { useTranslations } from "@acme/i18n";
 import type { Locale } from "@acme/i18n/locales";
-import type { Action } from "./state";
+import type { HistoryState,PageComponent } from "@acme/types";
+
 import type { DevicePreset } from "../../../utils/devicePresets";
+import { cn } from "../../../utils/style/cn";
+import { Cluster } from "../../atoms/primitives/Cluster";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
+
 import type { SlotDef } from "./BlockChildren.types";
 import CanvasItem from "./CanvasItem";
 import InlineInsert from "./InlineInsert";
-import { useEffect, useState } from "react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
-import { Cluster } from "../../atoms/primitives/Cluster";
-import { cn } from "../../../utils/style/cn";
-import { useTranslations } from "@acme/i18n";
+import type { Action } from "./state";
 
 type Props = {
   component: PageComponent;

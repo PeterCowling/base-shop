@@ -1,5 +1,6 @@
-import { envSchema } from "@acme/config/env";
 import { spawnSync } from "node:child_process";
+
+import { envSchema } from "@acme/config/env";
 
 const REQUIRED_ENV_VARS = [
   "STRIPE_SECRET_KEY",
@@ -48,6 +49,6 @@ switch (cmd) {
     break;
   default:
     // i18n-exempt: CLI usage text for developers; not user-facing UI
-    console.log("Usage: pnpm configurator <dev|build|deploy>");
+    console.info("Usage: pnpm configurator <dev|build|deploy>");
     process.exit(1);
 }

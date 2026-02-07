@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "title": "Cookie-Richtlinie | Hostel Brikette",
+    "description": "Wie Hostel Brikette Cookies und ähnliche Technologien auf unserer Website verwendet und welche Optionen Sie haben."
+  },
+  "headings": {
+    "pageTitle": "Cookie-Richtlinie",
+    "subtitle": "Cookies, lokaler Speicher und Drittanbieter-Dienste"
+  },
+  "lastUpdated": {
+    "label": "Zuletzt aktualisiert",
+    "date": "2026-01-09"
+  },
+  "toc": {
+    "title": "Auf dieser Seite",
+    "aria": "Inhaltsverzeichnis der Cookie-Richtlinie"
+  },
+  "sections": {
+    "intro": {
+      "title": "Übersicht",
+      "body": [
+        "Diese Cookie-Richtlinie erklärt, was Cookies sind, ob wir sie auf dieser Website verwenden und wie Drittanbieter Cookies verwenden können, wenn Sie mit deren Inhalten interagieren."
+      ]
+    },
+    "whatAreCookies": {
+      "title": "Was Cookies sind",
+      "body": [
+        "Cookies sind kleine Textdateien, die Websites auf Ihrem Gerät speichern können, um Informationen zwischen Besuchen zu merken. Ähnliche Technologien sind der lokale Speicher und der Sitzungsspeicher in Ihrem Browser."
+      ]
+    },
+    "ourUse": {
+      "title": "Wie wir Cookies auf dieser Website verwenden",
+      "body": [
+        "Wir bemühen uns, Cookies auf ein Minimum zu beschränken. Wenn möglich, verwenden wir den Browserspeicher (lokaler Speicher) für einfache Präferenzen anstelle von Cookies.",
+        "Wenn wir in Zukunft Cookies einführen (zum Beispiel für wesentliche Sicherheit, Analysen oder eingebettete Dienste), aktualisieren wir diese Richtlinie."
+      ]
+    },
+    "localStorage": {
+      "title": "Lokaler Speicher (Präferenzen)",
+      "body": [
+        "Der lokale Speicher ermöglicht es der Website, bestimmte Präferenzen auf Ihrem Gerät zu merken. Zum Beispiel kann er verwendet werden, um Ihre Oberflächeneinstellungen zwischen Seiten zu behalten.",
+        "Sie können den lokalen Speicher über die Einstellungen Ihres Browsers löschen."
+      ]
+    },
+    "thirdParties": {
+      "title": "Drittanbieter-Dienste",
+      "body": [
+        "Einige Links oder eingebettete Inhalte können von Drittanbietern bereitgestellt werden (zum Beispiel Karten oder Buchungsanbieter). Diese Drittanbieter können Cookies setzen oder ähnliche Technologien nach ihren eigenen Richtlinien nutzen.",
+        "Wenn Sie einem Link zu einer Drittanbieter-Website folgen, gelten deren Datenschutz- und Cookie-Richtlinien."
+      ]
+    },
+    "choices": {
+      "title": "Ihre Auswahlmöglichkeiten",
+      "body": [
+        "Die meisten Browser ermöglichen das Blockieren oder Löschen von Cookies und das Löschen von Site-Daten wie dem lokalen Speicher. Das Blockieren bestimmter Technologien kann die Funktionalität beeinträchtigen.",
+        "Sie können auch private Browsing-Modi oder Browser-Erweiterungen nutzen, um Tracking zu begrenzen."
+      ]
+    },
+    "contact": {
+      "title": "Kontakt",
+      "body": [
+        "Wenn Sie Fragen zu dieser Cookie-Richtlinie haben, kontaktieren Sie uns unter {{email}}."
+      ]
+    }
+  },
+  "footer": {
+    "backToTop": "Nach oben"
+  }
+}

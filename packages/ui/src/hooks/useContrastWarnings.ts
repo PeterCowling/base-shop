@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+
 import { getContrast, suggestContrastColor } from "../components/cms/ColorInput";
 
 export interface ContrastWarning {

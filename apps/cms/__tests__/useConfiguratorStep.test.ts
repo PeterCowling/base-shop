@@ -1,5 +1,6 @@
 import { renderHook, waitFor } from "@testing-library/react";
 import { z } from "zod";
+
 import useConfiguratorStep from "../src/app/cms/configurator/steps/hooks/useConfiguratorStep";
 
 const markComplete = jest.fn();
@@ -12,6 +13,10 @@ jest.mock("../src/app/cms/configurator/hooks/useStepCompletion", () => ({
 
 jest.mock("next/navigation", () => ({
   useRouter: () => ({ push }),
+}));
+
+jest.mock("../src/app/cms/configurator/ConfiguratorContext", () => ({
+  useConfigurator: () => ({ state: { shopId: "test-shop" } }),
 }));
 
 describe("useConfiguratorStep", () => {

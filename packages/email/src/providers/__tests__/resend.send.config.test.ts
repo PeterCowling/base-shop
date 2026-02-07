@@ -35,7 +35,7 @@ describe("ResendProvider send – config edge cases", () => {
   it("warns and skips send when API key missing", async () => {
     process.env.CAMPAIGN_FROM = "campaign@example.com";
     const { send } = require("resend");
-    const { logger } = await import("@acme/shared-utils");
+    const { logger } = await import("@acme/lib/logger");
     const warn = jest
       .spyOn(logger, "warn")
       .mockImplementation(() => undefined);

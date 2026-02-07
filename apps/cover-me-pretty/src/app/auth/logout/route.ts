@@ -1,5 +1,7 @@
-import { NextResponse, type NextRequest } from "next/server";
-import { buildOidcLogoutUrl, destroyCustomerSession } from "@auth";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+
+import { buildOidcLogoutUrl, destroyCustomerSession } from "@acme/auth";
 import { authEnv } from "@acme/config/env/auth";
 
 export const runtime = "nodejs";

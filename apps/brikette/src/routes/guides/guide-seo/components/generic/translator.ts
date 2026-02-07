@@ -1,6 +1,10 @@
-import i18n from "@/i18n";
 import type { TFunction } from "i18next";
+
 import type { GenericContentTranslator } from "@/components/guides/generic-content/types";
+import { getGuideOverrideValue } from "@/config/guide-overrides";
+import type { GuideKey } from "@/guides/slugs";
+import i18n from "@/i18n";
+import { tagTranslator } from "@/utils/i18n-types";
 
 export type GuidesTranslator = TFunction;
 
@@ -34,11 +38,9 @@ export function makeBaseGenericProps(params: {
     guideKey,
     allowEnglishFallback = true,
   } = params;
-  // Coverage-specific nuance: for sunsetViewpoints, tests assert the translator
-  // passed into GenericContent returns an empty array for returnObjects when
-  // the active locale lacks structured content. Prefer the active translator
-  // rather than auto-switching to EN in this case.
-  if (!hasLocalizedContent && guideKey === "sunsetViewpoints") {
+  // When configured, prefer the active translator rather than auto-switching
+  // to EN when the locale lacks structured content.
+  if (!hasLocalizedContent && getGuideOverrideValue(guideKey as GuideKey, "useActiveTranslatorWhenUnlocalized")) {
     return { t: translations.tGuides, guideKey } as const;
   }
   // When localized structured content exists but the route explicitly prefers
@@ -64,13 +66,7 @@ export function makeBaseGenericProps(params: {
   // available (from the hook or the app-level i18n). This allows tests to
   // provide getFixedT stubs and assert EN fallback rendering deterministically.
   const tagAsEn = (fn: TFunction): TFunction => {
-    try {
-      // Help tests identify EN fallback translator
-      (fn as unknown as { __lang?: string }).__lang ??= "en";
-      (fn as unknown as { __namespace?: string }).__namespace ??= "guides";
-    } catch {
-      /* noop */
-    }
+    tagTranslator(fn, "en", "guides");
     return fn;
   };
   if (preferGenericWhenFallback) {

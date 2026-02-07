@@ -1,18 +1,17 @@
 // This file has been automatically migrated to valid ESM format by Storybook.
-import { createRequire } from "node:module";
+import path, { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-// .storybook/main.ts
 
+// .storybook/main.ts
 import type { StorybookConfig } from "@storybook/nextjs";
 import type { Configuration as WebpackConfiguration, ResolveOptions } from "webpack";
 import webpack from "webpack";
-import path, { dirname } from "node:path";
 
+import { getStorybookAliases } from "./aliases.ts";
 import { coverageAddon } from "./coverage.ts";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const require = createRequire(import.meta.url);
 const enableChromaticAddon = process.env.STORYBOOK_ENABLE_CHROMATIC_ADDON === "true";
 
 const config: StorybookConfig = {
@@ -67,49 +66,16 @@ const config: StorybookConfig = {
     const existingAlias: AliasMap = (config.resolve.alias ?? {}) as AliasMap;
     const newAlias: AliasMap = {
       ...existingAlias,
-      "@themes-local": path.resolve(__dirname, "../../../packages/themes"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-      "@acme/i18n": path.resolve(__dirname, "../../../packages/i18n/src"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-      "@acme/i18n/package.json": path.resolve(__dirname, "../../../packages/i18n/package.json"),
-      "@acme/types": path.resolve(__dirname, "../../../packages/types/src"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-      "@acme/types/package.json": path.resolve(__dirname, "../../../packages/types/package.json"),
-      "@acme/zod-utils": path.resolve(__dirname, "../../../packages/zod-utils/src"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-      "@acme/zod-utils/package.json": path.resolve(__dirname, "../../../packages/zod-utils/package.json"),
-      // Use Jest-style mocks for Next client modules when running in Storybook
-      "next/image": path.resolve(__dirname, "../../../__mocks__/next/image.js"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-      "next/navigation": path.resolve(__dirname, "../../../__mocks__/next/navigation.js"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-      "next/headers": path.resolve(__dirname, "../../../__mocks__/next/headers.js"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-      "@platform-core/contexts/ThemeContext": // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-      path.resolve(
-        __dirname,
-        "./mocks/ThemeContext.tsx"
-      ),
-      "@acme/design-tokens": // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-      path.resolve(__dirname, "../../../packages/design-tokens/src"),
-      "@acme/tailwind-config": // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-      path.resolve(__dirname, "../../../packages/tailwind-config/src"),
-      // Force UI stories to use the pure data-only module to avoid server imports
-      "@acme/platform-core/products$": // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-      path.resolve(__dirname, "../../../packages/platform-core/src/products/index.ts"),
-      // Stub server-only module used by Next server code paths
-      "server-only": false, // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-      // Map node: scheme to stubs to avoid UnhandledSchemeError in Webpack
-      "node:fs": false, // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-      "node:path": false, // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-      "node:crypto": false, // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-      "node:module": false, // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-      // Some files import the bare 'module' builtin; stub it in browser
-      module: false, // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-      fs: false, // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-      path: false, // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-      // Third-party SDK not needed in Storybook bundles
-      openai: false, // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-      // Storybook blocks live in addon-docs; alias to avoid extra dep
-      "@storybook/blocks": require.resolve("@storybook/addon-docs/blocks"),
-      // Deduplicate Emotion to avoid multiple ThemeContexts between blocks/MDX
-      "@emotion/react": require.resolve("@emotion/react"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-      "@emotion/styled": require.resolve("@emotion/styled"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
+      ...getStorybookAliases(),
     };
     config.resolve.alias = newAlias as ResolveOptions["alias"];
+    const existingExtensionAlias = config.resolve.extensionAlias ?? {};
+    config.resolve.extensionAlias = {
+      ...existingExtensionAlias,
+      ".js": [".ts", ".tsx", ".js"],
+      ".jsx": [".tsx", ".jsx"],
+    };
+    config.resolve.extensions = [".ts", ".tsx", ".js", ".jsx", ".json"];
 
     // Provide resolve.fallback for Node core modules
     const existingFallback = (config.resolve.fallback ?? {}) as Record<string, string | false>;

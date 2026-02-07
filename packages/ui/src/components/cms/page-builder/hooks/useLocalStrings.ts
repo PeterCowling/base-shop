@@ -7,7 +7,7 @@
 export default function useLocalStrings(locale?: string | null) {
   const L = locale || "en";
   // i18n-exempt: Local dictionary for PageBuilder-only overlay strings.
-  /* eslint-disable ds/no-hardcoded-copy -- AGENTS-0001: Localized copy entries live here by design */
+   
   const dict: Record<string, Record<string, string>> = {
     en: {
       cannotPlace: "Cannot place ${type} here",
@@ -86,7 +86,7 @@ export default function useLocalStrings(locale?: string | null) {
       device_mobile: "Mobile",
     },
   };
-  /* eslint-enable ds/no-hardcoded-copy */
+   
 
   const table = dict[L] || dict.en;
 

@@ -1,6 +1,7 @@
+import { loadAuthEnv } from "@acme/config/env/auth";
+
 import { shouldUseTestDefaults } from "./constants.js";
 import { snapshotForCoreEnv } from "./env.snapshot.js";
-import { loadAuthEnv } from "@acme/config/env/auth";
 
 if (shouldUseTestDefaults()) {
   const snapshot = snapshotForCoreEnv();

@@ -2,6 +2,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
+
 import type { NextRequest } from "next/server";
 
 const parseJsonBody = jest.fn();
@@ -14,8 +15,8 @@ const nextResponseJson = jest.fn(
   })
 );
 
-jest.mock("@shared-utils", () => ({ parseJsonBody }));
-jest.mock("@platform-core/plugins", () => ({ initPlugins }));
+jest.mock("@acme/lib/http/server", () => ({ parseJsonBody }));
+jest.mock("@acme/platform-core/plugins", () => ({ initPlugins }));
 jest.mock("next/server", () => ({
   NextResponse: { json: nextResponseJson },
   NextRequest: class {},

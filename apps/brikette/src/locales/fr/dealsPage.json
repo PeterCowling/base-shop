@@ -15,24 +15,24 @@
       "directOnly": "Réservations directes uniquement"
     },
     "cta": {
-      "bookDirect": "Réserver directement",
+      "bookDirect": "Réserver en direct",
       "applyDeal": "Appliquer l'offre"
     },
     "status": {
-      "upcoming": "Offre à venir · Débute le {{startDate}}",
+      "upcoming": "Offre à venir · Commence le {{startDate}}",
       "expired": "Expirée"
     }
   },
   "hero": {
-    "activeLabel": "Offre actuelle",
+    "activeLabel": "Offre en cours",
     "activeTitle": "Économisez {{percent}}",
     "activeDatesLabel": "Dates de séjour :",
     "activeSubtitle": "Appliqué automatiquement au paiement. Réservations directes uniquement."
   },
   "emptyState": {
-    "title": "Pas d'offre en cours",
-    "subtitle": "Réservez directement pour le meilleur tarif et tous les avantages.",
-    "secondaryCta": "Voir les avantages réservation directe"
+    "title": "Aucune offre en cours",
+    "subtitle": "Réservez en direct pour le meilleur tarif et des avantages exclusifs.",
+    "secondaryCta": "Voir les avantages de la réservation directe"
   },
   "status": {
     "banner": {
@@ -80,13 +80,16 @@
   "perksIntroLink": "Voir tous les avantages",
   "perksList": [
     {
-      "title": "Jusqu'à 25 % de remise sur le tarif standard lors de l'application du coupon"
+      "title": "Jusqu'à 25 % de remise sur le tarif standard lors de l'application du coupon",
+      "subtitle": "Appliqué automatiquement"
     },
     {
-      "title": "Petit-déjeuner offert"
+      "title": "Petit-déjeuner offert",
+      "subtitle": "Inclus quotidiennement"
     },
     {
-      "title": "Boisson offerte en soirée"
+      "title": "Boisson offerte en soirée",
+      "subtitle": "Sélection maison"
     }
   ],
   "expired": {

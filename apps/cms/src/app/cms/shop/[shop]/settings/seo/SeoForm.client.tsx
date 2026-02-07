@@ -1,12 +1,14 @@
 "use client";
 
-import { Button } from "@/components/atoms/shadcn";
-import { Alert } from "@/components/atoms";
+import { useTranslations } from "@acme/i18n";
 import type { Locale } from "@acme/types";
+
+import { Alert } from "@/components/atoms";
+import { Button } from "@/components/atoms/shadcn";
+
 import SeoLanguageTabs from "./SeoLanguageTabs";
 import type { SeoRecord } from "./useSeoForm";
 import useSeoForm from "./useSeoForm";
-import { useTranslations } from "@acme/i18n";
 
 interface Props {
   shop: string;

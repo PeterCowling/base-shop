@@ -1,61 +1,250 @@
 {
   "seo": {
-    "title": "Gite giornaliere da Positano",
-    "description": "Capri, Amalfi, Ravello, Pompei e Sorrento: tempi, mezzi consigliati e budget indicativi per ogni escursione."
+    "title": "Gite giornaliere da Positano: Capri, Pompei, Ravello, Amalfi",
+    "description": "Escursioni economiche da Positano—Capri, Pompei, Amalfi, Ravello e Sorrento con orari traghetti e bus, costi e consigli per backpacker."
   },
-  "linkLabel": "Gite giornaliere da Positano",
+  "linkLabel": "Migliori gite giornaliere: Capri, Amalfi, Pompei & altro",
   "intro": [
-    "Traduzione in arrivo."
+    "Positano funziona perfettamente come base per gite giornaliere—traghetti e bus ti collegano a Capri, Pompei, Amalfi, Ravello e Sorrento in 30-90 minuti. La maggior parte delle gite costa 15-35 € per trasporti più ingressi ai siti, e eviterai di trascinare bagagli o cambiare ostello.",
+    "Parti presto per battere le folle delle crociere, prenota in anticipo i biglietti per Pompei e i traghetti popolari, e tieni sempre un piano di riserva per il meteo (i traghetti cancellano con mare mosso). Porta snack, acqua, crema solare e una giacca antipioggia leggera—i bar vicino ai siti turistici applicano prezzi premium."
   ],
   "sections": [
     {
-      "id": "capri",
-      "title": "I punti forti di Capri",
+      "id": "quick-comparison",
+      "title": "Confronto rapido delle gite giornaliere",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Capri: Più costosa (20 € traghetto andata, ~35-40 € totale con funicolare/seggiovia), più scenografica, richiede giornata intera. Ideale per: viste iconiche, foto, escursioni all'Arco Naturale o Villa Jovis. %LINK:capriDayTrip|Guida completa gita a Capri%",
+        "Pompei: Miglior rapporto qualità-prezzo (9 € bus per Sorrento, 2,50 € treno, 18 € ingresso = ~32 € totale), ricca di storia, 3-4 ore sul sito. Ideale per: appassionati di archeologia, chi parte presto e vuole tornare a Positano nel pomeriggio. %LINK:positanoPompeii|Indicazioni Positano-Pompei%",
+        "Amalfi + Ravello: Combinazione facile (8 € traghetto o 4 € bus per Amalfi, 2,50 € bus fino a Ravello), cibo e giardini. Ideale per: gite brevi di mezza giornata, tramonti da Villa Cimbrone. %LINK:positanoAmalfi|Trasporti Positano-Amalfi%",
+        "Sorrento: Atmosfera rilassata (12 € traghetto o 4 € bus), limoneti, limoncello, frutti di mare, belvedere di Villa Comunale. Ideale per: shopping al mercato, degustazioni gastronomiche, partenze tarda mattinata. %LINK:naplesPositano|Collegamenti Napoli-Positano via Sorrento%",
+        "Ercolano: Più piccola di Pompei (9 € bus per Sorrento, 2,50 € treno, 13 € ingresso = ~27 € totale), mosaici meglio conservati, 2-3 ore sul sito. Ideale per: vedere rovine senza le folle di Pompei."
+      ]
+    },
+    {
+      "id": "capri",
+      "title": "Capri: Fuga sull'isola per l'intera giornata",
+      "body": [
+        "Perché andare: Viste iconiche sulle scogliere, faraglioni, Grotta Azzurra (meteo permettendo), shopping boutique a Capri centro, sentieri escursionistici e giardini sui pendii. Capri è la gita più fotogenica, ma anche la più costosa—aspettati di spendere 50-70 € totali inclusi trasporti, funicolare/seggiovia e pranzo modesto.",
+        "Ideale per: Giornate di bel tempo quando vuoi paesaggi costieri drammatici e non ti dispiacciono le folle turistiche. I fotografi dovrebbero puntare alla luce del mattino o del tardo pomeriggio.",
+        "Come arrivare: Prendi il primo traghetto da Positano (di solito 08:15-09:00, 20 € andata, 40 minuti, %LINK:ferryCancellations|verifica stato traghetto% al molo di Positano o online). Prenota con un giorno o due di anticipo in estate—le partenze mattutine si esauriscono. I traghetti di ritorno funzionano fino alle 18:00-19:00 a seconda della stagione. %LINK:briketteToFerryDock|Camminata dall'ostello al molo traghetti% richiede 10-15 minuti.",
+        "Mosse per risparmiare: Salta la Grotta Azzurra (18 € ingresso più 15-20 € per la barca a remi, spesso chiusa per onde)—le viste da terra sono stupende e gratuite. Porta un pranzo al sacco dai supermercati di Positano (evita i bar sovrappezzati dell'isola). Cammina tra Capri centro e Anacapri invece di prendere il bus (ripido ma risparmi 4 € andata-ritorno).",
+        "Itinerario suggerito: Arrivo presto, prendi la funicolare fino a Capri centro (2 € andata, inclusa in alcuni pacchetti traghetto), cammina ai Giardini di Augusto (1 € ingresso) per le viste dei Faraglioni prima delle 10:00 quando arrivano i gruppi turistici. Bus o camminata ad Anacapri (2 € bus andata), seggiovia Monte Solaro (13 € andata-ritorno, apre 09:30) per panorami a 360°. Esplora Villa San Michele o fai un'escursione all'Arco Naturale (gratuito, 20 minuti da Capri centro), poi prendi il traghetto delle 17:00-18:00 di ritorno. Riserva meteo: Se i traghetti cancellano, esplora Sorrento o prendi il bus per Amalfi.",
+        "Consigli locali dall'ostello: Porta un costume da bagno—ci sono punti rocciosi per nuotare vicino ai Faraglioni e Marina Piccola se hai tempo extra. Evita i weekend estivi di punta (sabati luglio-agosto) quando i gitalgiornalieri triplicano. Verifica gli %LINK:ferryCancellations|orari traghetti% la sera prima e fai uno screenshot—il segnale mobile è irregolare sulle scogliere di Capri."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/dayTripsAmalfi.jpg",
+          "alt": "Costa e barche per gite giornaliere da Positano.",
+          "caption": "Parti presto e tieni un piano di riserva meteo per le gite popolari."
+        },
+        {
+          "src": "/img/guides/topics/capriFaraglioni.jpg",
+          "alt": "Faraglioni al largo della costa di Capri.",
+          "caption": "I Faraglioni iconici—la vista più fotografata di Capri."
+        },
+        {
+          "src": "/img/guides/topics/capriMonteSolaro.jpg",
+          "alt": "Seggiovia Monte Solaro con vista panoramica su Capri e la costa.",
+          "caption": "Seggiovia Monte Solaro—viste a 360° che valgono i 13 €."
+        }
       ]
     },
     {
       "id": "pompeii",
-      "title": "Pompei o Ercolano",
+      "title": "Pompei o Ercolano: Rovine antiche",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Perché andare: Cammina attraverso strade, case, panetterie e bagni di 2000 anni fa congelati dall'eruzione del 79 d.C. del Vesuvio. Pompei è vasta e affollata; Ercolano è più piccola, meglio conservata e più tranquilla. Entrambe sono siti archeologici di livello mondiale e facili sul budget.",
+        "Ideale per: Amanti della storia, mattinieri (i siti aprono alle 09:00, arriva allora per battere i bus turistici), chiunque voglia una gita di mezza giornata con rientro pomeridiano a Positano.",
+        "Come arrivare: Prendi il %LINK:sitaTickets|bus SITA% da Positano a Sorrento (4 €, 50 minuti, parte da %LINK:chiesaNuovaDepartures|Chiesa Nuova% o fermata Positano Sponda a seconda della tua posizione). Da Sorrento, sali sul treno Circumvesuviana verso Napoli e scendi a Pompei Scavi-Villa dei Misteri (2,50 €, 35 minuti, treni ogni 30 minuti) o Ercolano Scavi per Ercolano (2,50 €, 20 minuti). Cammina 5-10 minuti da ogni stazione all'ingresso del sito.",
+        "Costi: Ingresso Pompei 18 € (prenota online per saltare le code biglietti), Ercolano 13 €, più ~13 € trasporto andata-ritorno da Positano. Totale: 31-32 € per Pompei, 26-27 € per Ercolano.",
+        "Mosse per risparmiare: Acquista biglietti Pompei online almeno un giorno prima (www.ticketone.it o sito ufficiale Pompei) per evitare code di 30-60 minuti in alta stagione. Porta la tua acqua (1,5 l a persona) e snack—c'è un bar dentro Pompei che chiede 5 € per un panino. Indossa cappello e crema solare—gli scavi hanno zero ombra e le temperature estive raggiungono i 35°C. Se hai meno di 25 anni e sei residente UE, verifica sconti giovani.",
+        "Itinerario suggerito (Pompei): Prendi il bus delle 07:30 o 08:00 da Positano, arriva a Pompei entro le 09:30, passa 3-4 ore camminando nel Foro, Terme Stabiane, Casa del Fauno, Villa dei Misteri e Anfiteatro. Torna a Sorrento verso le 13:30, pranza lì o ritorna a Positano entro le 15:00. Puoi anche salire sul Vesuvio (10 € ingresso, 20 minuti da Pompei con bus Vesuvio Express 10 € andata-ritorno) se hai energia—le viste sono spettacolari ma aggiungono 2-3 ore alla tua giornata.",
+        "Itinerario suggerito (Ercolano): Sito più piccolo significa che 2-3 ore sono sufficienti. Arrivo entro le 10:00, esplora i mosaici perfettamente conservati, arredi in legno e case a due piani, poi ritorna a Positano nel primo pomeriggio. Abbina con una sosta a Sorrento sulla via del ritorno per pranzo e passeggiate nei limoneti.",
+        "Consigli locali dall'ostello: I treni Circumvesuviana sono basici (no AC, graffiti, borseggiatori nelle carrozze affollate)—tieni gli oggetti di valore nella tasca anteriore o zaino sul petto. Scarica mappe offline per Pompei (è enorme e confusa). Se è una giornata torrida (35°C+), i passaggi coperti di Ercolano la rendono più sopportabile."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/pompeiiForum.jpg",
+          "alt": "Rovine del Foro antico al sito archeologico di Pompei.",
+          "caption": "Arrivo presto per esplorare Pompei prima dei gruppi e del caldo."
+        },
+        {
+          "src": "/img/guides/topics/vesuviusFromPompeii.jpg",
+          "alt": "Vesuvio visto dagli scavi di Pompei.",
+          "caption": "Il Vesuvio incombe sulle rovine—puoi scalarlo dopo Pompei."
+        }
       ]
     },
     {
       "id": "amalfi-ravello",
-      "title": "Combinata Amalfi e Ravello",
+      "title": "Combo Amalfi & Ravello: Cultura costiera",
       "body": [
-        "Naviga verso Amalfi, esplora il Duomo, poi prendi l'autobus 5110 fino a Ravello per Villa Cimbrone e un pranzo con vista.",
-        "Traduzione in arrivo."
+        "Perché andare: Il Duomo drammatico di Amalfi, bar sul mare e museo della carta; i giardini collinari di Ravello (Villa Cimbrone e Villa Rufolo), sedi di musica classica e panorami al tramonto sulla costa. Facile abbinare entrambi in un giorno, e il viaggio in bus 5110 fino a Ravello è un'esperienza a tornanti mozzafiato.",
+        "Ideale per: Gite brevi (mezza giornata o giornata intera), amanti dei giardini, cacciatori di tramonti, chiunque voglia un mix di mare e atmosfera di villaggio montano senza il prezzo di Capri.",
+        "Come arrivare: Traghetto da Positano ad Amalfi (8 €, 20-30 minuti, partenze multiple 08:00-18:00, più frequenti aprile-ottobre) o %LINK:sitaTickets|bus SITA% (4 €, 40 minuti, più lento ma più economico). Dal porto di Amalfi o fermata bus, cammina alla piazza principale e prendi il bus SITA 5110 fino a Ravello (2,50 €, 25 minuti, curve a tornante, parte ogni ora). Ritorna via bus ad Amalfi poi traghetto o bus a Positano. %LINK:positanoAmalfi|Guida trasporti completa%",
+        "Costi: 8-16 € trasporto andata-ritorno (traghetto più veloce, bus più economico), più 10 € ingresso Villa Cimbrone o 7 € per Villa Rufolo. Totale: 18-26 € a seconda delle scelte.",
+        "Mosse per risparmiare: Salta le ville se hai un budget ristretto—le terrazze pubbliche di Ravello (Piazza Duomo, belvedere vicino alla chiesa principale) hanno viste panoramiche gratuite. Porta un pranzo al sacco da Positano e mangia nei giardini di Ravello o su una panchina con vista sulle scogliere. Prendi il bus in entrambe le direzioni per risparmiare 8 € vs traghetto andata-ritorno—prevedi solo tempo extra per strade tortuose e possibili code.",
+        "Itinerario suggerito: Prendi il traghetto o bus delle 09:00-10:00 per Amalfi, esplora il Duomo (ingresso gratuito alla navata principale, 3 € per il Chiostro del Paradiso), vaga per i vicoli del centro storico, poi prendi il bus delle 12:00 o 13:00 fino a Ravello. Visita Villa Cimbrone (la Terrazza dell'Infinito è il punto forte—arriva metà pomeriggio per luce più morbida), passeggia nella Piazza Duomo di Ravello e prendi il bus delle 17:00-18:00 di ritorno ad Amalfi. Prendi un traghetto al crepuscolo di ritorno a Positano (le code diminuiscono dopo le 18:00) o l'ultimo bus verso le 19:30-20:00.",
+        "Riserva meteo: Se i traghetti sono cancellati, prendi il bus—funziona in quasi tutte le condizioni. Se hai solo 2-3 ore, visita solo Amalfi e salta Ravello (o invertilo e vai direttamente a Ravello per viste al tramonto).",
+        "Consigli locali dall'ostello: Ravello ospita concerti di musica classica estivi (Festival di Ravello, giugno-settembre) nei giardini di Villa Rufolo—controlla il programma se vuoi restare fino a tardi. Il bus 5110 si riempie in estate; fai la coda presto o mettiti vicino alla testa della fila. Se soffri il mal d'auto, siediti vicino alla parte anteriore e tieni gli occhi sull'orizzonte."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/ravelloTerrace.jpg",
+          "alt": "Terrazza dell'Infinito a Villa Cimbrone a Ravello con vista sulla Costiera Amalfitana.",
+          "caption": "Terrazza dell'Infinito di Villa Cimbrone—vale i 10 € di ingresso."
+        },
+        {
+          "src": "/img/guides/topics/amalfiDuomo.jpg",
+          "alt": "Facciata della Cattedrale di Amalfi con grande scalinata.",
+          "caption": "Il Duomo drammatico di Amalfi domina la piazza del paese."
+        }
       ]
     },
     {
       "id": "sorrento",
-      "title": "Sorrento e sapori locali",
+      "title": "Sorrento: Cibo, mercati e limoneti",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Perché andare: Sorrento è la gita più rilassata—meno pressione turistica di Capri, meno rovine di Pompei, e piena di limoneti, negozi di limoncello, frutti di mare freschi, mercati artigianali e una passeggiata sulla scogliera ventilata (Villa Comunale) con viste al tramonto sul Golfo di Napoli.",
+        "Ideale per: Buongustai, acquirenti di mercato, chiunque voglia una partenza tarda mattinata (non serve affrettarsi), viaggiatori che abbinano Sorrento con Pompei o la usano come hub di trasporto.",
+        "Come arrivare: Traghetto da Positano (12 €, 30 minuti, partenze multiple 08:00-18:00) o %LINK:sitaTickets|bus SITA% (4 €, 50 minuti, parte da %LINK:chiesaNuovaDepartures|Chiesa Nuova% o Positano Sponda). Il traghetto è più veloce e più panoramico; il bus è più economico e funziona anche con mare mosso. %LINK:naplesPositano|Guida percorso Napoli-Positano% copre i collegamenti con Sorrento.",
+        "Costi: 8-24 € trasporto andata-ritorno a seconda di traghetto vs bus, più costi cibo/bevande (prevedi 10-20 € per pranzo, 5-10 € per degustazione limoncello). Totale: 20-40 € a seconda di quanto mangi/bevi.",
+        "Mosse per risparmiare: Salta i negozi di limoncello troppo cari nella piazza principale—cammina 10 minuti verso alimentari locali per bottiglie da 8-10 € vs 15-20 € prezzi turistici. Mangia in trattorie a conduzione familiare nelle strade laterali (Via Fuoro, vicoli laterali Via Tasso) invece di ristoranti sul lungomare—stesso cibo, metà prezzo. La terrazza di Villa Comunale e la spiaggia di Marina Grande sono gratuite e perfette per picnic.",
+        "Itinerario suggerito: Prendi il traghetto o bus delle 10:00-11:00, arriva a Sorrento entro le 11:30, esplora il mercato mattutino (se è giovedì), vaga nei limoneti vicino al centro città (alcuni offrono degustazioni gratuite), visita Sedil Dominova (edificio storico gratuito con soffitti affrescati), pranza in una trattoria laterale, poi cammina a Villa Comunale per viste e foto dalla scogliera. Prendi il traghetto delle 16:00-17:00 o il bus delle 18:00 di ritorno a Positano. Se abbini questo con Pompei, visita le rovine prima (mattina presto) e arriva a Sorrento verso le 13:00-14:00 per pranzo tardivo e tramonto.",
+        "Riserva meteo: Sorrento è accessibile in bus anche se i traghetti sono cancellati—è la gita più affidabile per giorni di brutto tempo.",
+        "Consigli locali dall'ostello: Marina Grande (piccola spiaggia di pescatori di Sorrento) è una camminata di 10 minuti giù per scale ripide dalla città—vale la pena per barche colorate, meno turisti e pranzo decente di frutti di mare. Se compri limoncello o ceramiche, chiedi all'ostello raccomandazioni su negozi non turistici. Il gelato di Sorrento (I Giardini di Cataldo, Davide Gelato) è tra i migliori della costa—prevedi 3-4 € per un cono."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/sorrentoLemonGrove.jpg",
+          "alt": "Limoneto a Sorrento con giardini terrazzati.",
+          "caption": "I famosi limoneti di Sorrento offrono degustazioni gratuite."
+        },
+        {
+          "src": "/img/guides/topics/sorrentoVillaComunale.jpg",
+          "alt": "Terrazza sulla scogliera di Villa Comunale a Sorrento con vista sul Golfo di Napoli.",
+          "caption": "Terrazza Villa Comunale—viste gratuite al tramonto sul golfo."
+        }
+      ]
+    },
+    {
+      "id": "planning-tips",
+      "title": "Consigli generali di pianificazione e risparmio",
+      "body": [
+        "Parti presto: Le prime partenze (08:00-09:00) ti danno i siti prima che arrivino i gruppi turistici e i passeggeri delle crociere. Capri, Pompei e Ravello sono notevolmente più tranquille prima delle 11:00.",
+        "Prenota quando necessario: Biglietti Pompei, traghetti mattutini popolari per Capri (soprattutto weekend luglio-agosto) e qualsiasi ingresso alle ville a Ravello possono esaurirsi o avere lunghe code. Prenota 1-2 giorni prima. %LINK:transportMoneySaving|Consigli risparmio trasporti%",
+        "Piani di riserva meteo: Le %LINK:ferryCancellations|cancellazioni traghetti% sono comuni nelle tempeste primaverili/autunnali. Tieni sempre pronta un'alternativa in bus, o scambia gite costiere (Capri, Amalfi via traghetto) con quelle interne (Pompei, Sorrento via bus) se il mare è mosso. Verifica lo stato dei traghetti la sera prima e la mattina della tua gita—chiedi all'ostello o controlla gli orari online.",
+        "Prepara lo zaino in modo intelligente: Acqua (1l+ a persona), snack (i bar nei siti turistici sono costosi), crema solare, cappello, giacca antipioggia leggera (i temporali estivi colpiscono velocemente) e un piccolo zaino. Indossa scarpe comode da camminata—Pompei e Capri comportano 2-4 ore di cammino su pietra irregolare.",
+        "Mappe offline e orari: Scarica aree offline di Google Maps per Pompei, Capri, Amalfi e Sorrento. Fai screenshot degli orari bus e traghetti—il segnale mobile è debole sui treni Circumvesuviana, sulle scogliere di Capri e sulle strade di montagna per Ravello.",
+        "Costi cibo e bevande: Prevedi 10-15 € per pranzo se mangi in posti locali, 5-7 € per una pausa caffè/gelato, e porta la tua acqua. Evita ristoranti sul lungomare e in piazza principale a meno che non ti stia concedendo un lusso—cammina 5-10 minuti nell'entroterra per pasti 30-50% più economici.",
+        "Abbina le gite in modo intelligente: Amalfi + Ravello (combinazione facile, stessa direzione). Sorrento + Pompei o Ercolano (sulla stessa linea ferroviaria). Capri è meglio da sola—è una giornata intera e non può essere affrettata. Evita di abbinare Capri con qualcos'altro a meno che tu non faccia solo un giro veloce dell'isola.",
+        "Sconti studenti e giovani: Se hai meno di 25 anni e sei residente UE, porta un documento d'identità per ingresso scontato a Pompei, Ercolano e alcune ville. Studenti non UE con carte ISIC possono ottenere sconti a Pompei—chiedi alla biglietteria.",
+        "Tempistica trasporto di ritorno: Verifica gli orari dell'ultimo traghetto/bus prima di lasciare Positano. I traghetti si fermano verso le 18:00-19:00 (prima fuori stagione), i bus funzionano più tardi ma sono più lenti. Perdere l'ultimo traghetto significa un viaggio in bus di 50-90 minuti—non un disastro ma toglie tempo alla tua serata."
+      ]
+    },
+    {
+      "id": "budget-breakdown",
+      "title": "Ripartizione budget gita giornaliera",
+      "body": [
+        "Ecco cosa aspettarsi per i costi, inclusi trasporti, biglietti d'ingresso, cibo ed extra opzionali. Tutti i prezzi sono per persona e basati su tariffe 2025 (possono variare leggermente per stagione).",
+        "Capri giornata intera: Traghetto andata-ritorno 40 €, funicolare a Capri centro 4 €, seggiovia Monte Solaro 13 €, ingresso Giardini di Augusto 1 €, pranzo 10-15 € (al sacco) o 20-30 € (bar), gelato/bevanda 5-7 €. Totale: 53-70 € budget, 73-100 € se mangi fuori e aggiungi extra come Grotta Azzurra (33-38 €). Modi per risparmiare: Cammina invece della funicolare (ripido ma gratuito), salta Grotta Azzurra, porta pranzo.",
+        "Pompei: Bus per Sorrento 9 €, treno Circumvesuviana 5 € andata-ritorno, ingresso Pompei 18 €, acqua/snack da casa 0 €, pranzo a Sorrento 10-12 €. Totale: 42-44 €. Aggiungi Vesuvio (20 € per bus + ingresso) se hai tempo. Modi per risparmiare: Prenota biglietti Pompei online per saltare la coda, porta tutto cibo/acqua da Positano (risparmia 10-15 € vs bar del sito).",
+        "Amalfi + Ravello: Traghetto o bus andata-ritorno 8-16 €, bus Amalfi-Ravello-Amalfi 5 €, ingresso Villa Cimbrone 10 € (o salta per viste gratuite), pranzo/gelato 8-12 €. Totale: 21-43 € a seconda del trasporto e scelte ville. Modi per risparmiare: Prendi bus in entrambe le direzioni (8 € vs 16 € traghetto), salta ville e goditi terrazze gratuite, pranzo al sacco da Positano.",
+        "Sorrento: Traghetto o bus andata-ritorno 8-24 €, pranzo in trattoria 10-15 €, degustazione limoncello 5-8 €, gelato 3-4 €, tutte le attrazioni gratuite (Villa Comunale, Marina Grande, mercati, limoneti). Totale: 26-51 € a seconda del trasporto. Modi per risparmiare: Prendi bus (8 € vs 24 € traghetto), compra limoncello al supermercato (8-10 € vs 15-20 € negozi turistici), picnic a Villa Comunale.",
+        "Ercolano: Bus per Sorrento 9 €, Circumvesuviana 5 € andata-ritorno, ingresso 13 €, pranzo/snack 8-10 €. Totale: 35-37 €. Modi per risparmiare: Abbina con sosta a Sorrento sulla via del ritorno per valore doppia destinazione, porta snack, arriva presto prima del caldo.",
+        "Strategie generali di risparmio: Prendi sempre il bus invece del traghetto se il budget è limitato (risparmia 8-16 € per viaggio). Caricati di snack/acqua dai supermercati di Positano (risparmia 10-20 € al giorno vs bar turistici). Usa sconti studenti/giovani dove idoneo (Pompei, Ercolano, alcune ville). Chiedi all'ostello consigli da insider su punti panoramici gratuiti, posti pranzo non turistici e offerte trasporti attuali. Fai screenshot degli orari e usa mappe offline per evitare costi dati roaming."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/budgetDayTrips.jpg",
+          "alt": "Pianificazione viaggio economico con monete e biglietti traghetto.",
+          "caption": "La maggior parte delle gite costa 20-45 € totali se gestisci bene il budget."
+        }
+      ]
+    },
+    {
+      "id": "transport-logistics",
+      "title": "Logistica trasporti e consigli da insider",
+      "body": [
+        "Bus (SITA): Compra biglietti a bordo (contanti) o nei tabacchi prima di salire. Tieni pronte banconote piccole—i conducenti a volte non possono cambiare banconote da 20+ €. Le code si formano presto a Chiesa Nuova per percorsi popolari come Positano-Sorrento (07:30-09:00) e Amalfi-Ravello (10:00-12:00). Mettiti vicino alla testa della coda o rischi di stare in piedi per 40-90 minuti su strade tortuose. %LINK:sitaTickets|Guida completa bigliettazione bus SITA%",
+        "Traghetti: Compra biglietti alla cabina del molo (terminal traghetti Positano) stesso giorno o 1-2 giorni prima per posti garantiti sulle partenze mattutine popolari (Capri 08:15-09:00). Verifica il meteo la sera prima—mare mosso (Forza 4-5+) cancella i traghetti. Se cancellati, passa a destinazioni accessibili in bus. %LINK:ferryCancellations|Guida cancellazioni traghetti%",
+        "Treni (Circumvesuviana): Treni regionali basici senza AC, graffiti e occasionali borseggiatori. Tieni gli oggetti di valore nelle tasche anteriori o in uno zaino sul petto. Convalida i biglietti nelle macchinette gialle sulle banchine prima di salire (multa 50 € se beccato senza convalida). Treni Sorrento-Pompei-Ercolano-Napoli ogni 30 minuti, prima partenza ~06:00, ultima ~22:30. Compra biglietti agli sportelli della stazione o nei tabacchi vicino alle stazioni (non a bordo).",
+        "Camminata dall'ostello agli hub di trasporto: La %LINK:chiesaNuovaDepartures|fermata bus Chiesa Nuova% è ~5 minuti in salita da Hostel Brikette (fermata SITA principale per percorsi Sorrento, Amalfi, Ravello). Il %LINK:briketteToFerryDock|molo traghetti% è 10-15 minuti in discesa via scale (usa facchini se hai bagagli). Chiedi al personale dell'ostello la sera prima per code/ritardi attuali sul tuo percorso pianificato.",
+        "Tempistica alta vs bassa stagione: I weekend luglio-agosto sono i peggiori per code e folle—tutto richiede il 30-50% in più di tempo. Aprile-giugno e settembre-ottobre sono ideali (bel tempo, meno turisti, prezzi più bassi). Novembre-marzo vede orari traghetti ridotti e alcuni siti (seggiovia Capri, ville) chiusi o con orari limitati—controlla prima. La stagione intermedia (aprile-maggio, settembre-ottobre) offre il miglior equilibrio di meteo, folle e costi.",
+        "Deposito bagagli: Hostel Brikette offre deposito bagagli gratuito nei giorni di check-in/check-out. Pompei, Sorrento e Amalfi hanno depositi a pagamento vicino a stazioni/terminal traghetti (5-8 € a borsa). Non trascinare valigie nelle gite giornaliere—riponile all'ostello o in un armadietto della stazione.",
+        "App mobili e strumenti offline: Scarica aree offline di Google Maps per Pompei, Capri, Amalfi, Sorrento prima di partire. Fai screenshot degli orari traghetti (il molo di Positano li affigge, o controlla online). Usa l'app Trenitalia per ritardi in tempo reale della Circumvesuviana (i treni a volte sono in ritardo). Controlla le app meteo la sera prima—le tempeste improvvise cancellano i traghetti e rendono Pompei miserabile.",
+        "Chiedere all'ostello: La reception conosce le condizioni attuali (cancellazioni traghetti, ritardi bus, code Pompei, stranezze meteo). Chiedi: gita consigliata per il meteo di domani, intoppi trasporti attuali, posti pranzo non turistici, miglior orario per code bus. Vedono 100+ viaggiatori a settimana e hanno informazioni in tempo reale."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/sitaBusPositano.jpg",
+          "alt": "Bus SITA alla fermata Chiesa Nuova a Positano.",
+          "caption": "I bus SITA collegano Positano a tutte le destinazioni gite giornaliere."
+        }
+      ]
+    },
+    {
+      "id": "which-trip-when",
+      "title": "Quale gita per quale giorno?",
+      "body": [
+        "Bel tempo, cieli sereni: Capri (viste traghetto e panorami scogliera sono l'attrazione principale) o Amalfi + Ravello via traghetto (la navigazione costiera è metà dell'esperienza).",
+        "Mare mosso o previsione pioggia: Pompei o Ercolano (passaggi coperti, nessun traghetto necessario), Sorrento via bus, o Ravello via bus da Amalfi (i bus funzionano in quasi tutte le condizioni meteo).",
+        "Tempo limitato (mezza giornata): Solo Amalfi (mattina), solo Ravello (pomeriggio/tramonto), o Sorrento (partenza tarda mattinata). Tutte sono 3-4 ore andata-ritorno da Positano.",
+        "Priorità budget: Pompei o Ercolano (miglior rapporto, 31-32 € totale), Amalfi via bus (8 € andata-ritorno se salti le ville), o Sorrento via bus con pranzo al sacco (15-20 € totale).",
+        "Focus fotografia: Capri (Faraglioni, Monte Solaro, Arco Naturale), Terrazza dell'Infinito di Ravello, o spiagge/punti panoramici di Positano all'alba/tramonto.",
+        "Priorità prima volta: Capri (iconica), Pompei (famosa nel mondo) e Amalfi + Ravello (combo costiera classica). Sorrento ed Ercolano sono eccellenti ma meno imperdibili a meno che tu non abbia giorni extra."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/positanoFerryDock.jpg",
+          "alt": "Molo traghetti Positano con barche in partenza per gite giornaliere.",
+          "caption": "Inizia le gite presto dal molo traghetti Positano—10-15 minuti dall'ostello."
+        }
       ]
     }
   ],
   "tips": [
-    "Traduzione in arrivo.",
-    "Traduzione in arrivo."
+    "Carica mappe e orari offline—i dati mobili calano dentro i tunnel dei treni Circumvesuviana, sulle scogliere di Capri e sulle strade di montagna per Ravello.",
+    "Porta una giacca antipioggia leggera—i temporali estivi arrivano velocemente e i traghetti si fermano durante i fulmini.",
+    "Porta la tua acqua e snack—i bar vicino ai siti turistici chiedono 5+ € per un panino e 3-4 € per acqua in bottiglia.",
+    "Verifica gli orari traghetti la sera prima e fai uno screenshot—alcune rotte riducono la frequenza fuori stagione o cancellano con brutto tempo.",
+    "Chiedi all'ostello aggiornamenti trasporti attuali, consigli insider su quali gite dare priorità e raccomandazioni per posti pranzo non turistici."
   ],
   "faqs": [
     {
-      "q": "Traduzione in arrivo.",
+      "q": "Quale gita richiede la partenza più presto?",
       "a": [
-        "Traduzione in arrivo."
+        "Capri e Pompei beneficiano di più dalle prime partenze—entrambe si affollano entro metà mattina e comportano più tempo di viaggio. Punta a lasciare Positano entro le 08:00-08:30 per queste. Amalfi, Ravello e Sorrento sono più flessibili e funzionano bene con partenze 10:00-11:00."
       ]
     },
     {
-      "q": "Traduzione in arrivo.",
+      "q": "Posso inserire due città in un giorno?",
       "a": [
-        "Traduzione in arrivo."
+        "Sì—Amalfi e Ravello si abbinano perfettamente (stessa direzione, bus di 25 minuti tra loro). Anche Sorrento e Pompei o Ercolano funzionano bene (stessa linea ferroviaria). Evita di sovrapporre Capri con qualcos'altro—dalle un giorno intero. Se provi a infilare due destinazioni non correlate (es. Capri + Pompei), passerai tutto il giorno in transito e perderai le parti migliori di entrambe."
+      ]
+    },
+    {
+      "q": "Cosa succede se i traghetti sono cancellati per il meteo?",
+      "a": [
+        "Prendi il bus SITA invece—funziona in quasi tutte le condizioni. Scambia Capri (accesso solo via traghetto) per una gita accessibile in bus come Pompei, Sorrento o Amalfi/Ravello. Verifica lo stato traghetti la sera prima e la mattina della tua gita chiedendo all'ostello o controllando gli orari online. Tieni sempre un piano di riserva."
+      ]
+    },
+    {
+      "q": "Quale gita è la più economica?",
+      "a": [
+        "Pompei o Ercolano sono il miglior rapporto (26-32 € totale inclusi trasporto e ingresso). Amalfi via bus (8 € andata-ritorno se salti gli ingressi ville) e Sorrento via bus con pranzo al sacco (15-20 € totale) sono anche economiche. Capri è la più costosa (50-70+ € inclusi traghetto, funicolare/seggiovia e cibo)."
+      ]
+    },
+    {
+      "q": "Devo prenotare trasporti o biglietti siti in anticipo?",
+      "a": [
+        "Prenota biglietti Pompei online per saltare le code (30-60 minuti in alta stagione). Prenota traghetti Capri 1-2 giorni prima in luglio-agosto—le partenze mattutine si esauriscono. I biglietti bus per percorsi SITA (Positano-Sorrento, Amalfi-Ravello) si comprano a bordo o nei tabacchi e non servono prenotazioni anticipate. I biglietti traghetto per Amalfi o Sorrento di solito possono essere comprati lo stesso giorno al molo, ma controlla disponibilità se è un weekend estivo."
+      ]
+    },
+    {
+      "q": "Posso depositare bagagli da qualche parte se faccio una gita prima/dopo check-in o check-out?",
+      "a": [
+        "Sì—Hostel Brikette offre deposito bagagli gratuito per gli ospiti nei giorni di arrivo/partenza. Se fai check-out e fai una gita prima di lasciare la costa, deposita le borse all'ostello e recuperale quando torni. Pompei, Sorrento e Amalfi hanno anche servizi deposito bagagli a pagamento (5-8 € a borsa al giorno) vicino ai terminal treni/traghetti se necessario."
       ]
     }
   ]

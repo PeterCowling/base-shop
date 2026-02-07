@@ -1,19 +1,22 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Dialog, DialogContent, DialogTitle, Input, Button } from "../../atoms/shadcn";
-import { Grid } from "../../atoms/primitives";
-import type { PageComponent } from "@acme/types";
 import { ulid } from "ulid";
-import { defaults, CONTAINER_TYPES, type ComponentType } from "./defaults";
+
+import { useTranslations } from "@acme/i18n";
+import type { PageComponent } from "@acme/types";
+
+import { Grid } from "../../atoms/primitives";
+import { Button,Dialog, DialogContent, DialogTitle, Input } from "../../atoms/shadcn";
+import { atomRegistry, containerRegistry, layoutRegistry,moleculeRegistry, organismRegistry } from "../blocks";
+
+import { type ComponentType,CONTAINER_TYPES, defaults } from "./defaults";
 import { canDropChild, getAllowedChildren, isTopLevelAllowed, type ParentKind } from "./rules";
 import type { Action } from "./state/layout/types";
-import { atomRegistry, moleculeRegistry, organismRegistry, containerRegistry, layoutRegistry } from "../blocks";
 
 // i18n-exempt — internal builder tool; generic labels remain local
 /* i18n-exempt */
 const t = (s: string) => s;
-import { useTranslations } from "@acme/i18n";
 
 type Props = {
   open: boolean;

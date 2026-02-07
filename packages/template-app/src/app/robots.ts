@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+
 import { loadCoreEnv } from "@acme/config/env/core";
 
 export default function robots(): MetadataRoute.Robots {

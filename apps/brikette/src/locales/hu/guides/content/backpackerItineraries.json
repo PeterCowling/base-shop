@@ -1,16 +1,16 @@
 {
   "seo": {
-    "title": "Positano hátizsákos költségvetéssel: 1–3 napos útitervek",
-    "description": "Napról napra bontott programok, amelyek a legjobb látnivalókat érintik, miközben alacsonyan tartják a kiadásokat."
+    "title": "Positano hátizsákos költségvetéssel: 1-3 napos útitervek",
+    "description": "Egyszerű 1-3 napos tervek strandokkal, kilátókkal és olcsó kirándulásokkal."
   },
-  "linkLabel": "Positano hátizsákos költségvetéssel: 1–3 napos útiterv",
+  "linkLabel": "Positano hátizsákos költségvetéssel: 1-3 napos útiterv",
   "intro": [
-    "Gyakorlati, napokra bontott tervek, amelyek lefedik a fő látnivalókat anélkül, hogy elszállna a költségvetésed."
+    "Válassz 1, 2 vagy 3 napos tervet, ami alacsonyan tartja a költségeket, de mégis lefedi a legjobb kilátásokat, strandokat és kiruccanásokat."
   ],
   "toc": [
     {
       "href": "#day1",
-      "label": "1. nap: Positano alap"
+      "label": "1. nap: Positano alapok"
     },
     {
       "href": "#day2",
@@ -36,68 +36,72 @@
   "sections": [
     {
       "id": "pacing",
-      "title": "Oszd be a sok lépcsős napokat",
+      "title": "A nagy lépcsős napokat előre vedd",
       "body": [
-        "Érkezéskor fedezd fel először a Chiesa Nuova környékét és Fornillót; a hosszabb lépcsős túrákat (Sentiero degli Dei, Arienzo) hagyd a kipihent napokra.",
-        "Csoportosítsd a programokat magassági szint szerint, hogy egyszerre maradj egy teraszon – dolgozd le a felső városrészt, mielőtt leereszkedsz a kikötőbe."
+        "Az érkezés napjára hagyj alsó városi sétákat (Spiaggia Grande, Fornillo), a nagy lépcsőzéseket (Sentiero degli Dei, Arienzo lépcsők) pedig egy kipihent éjszaka utánra.",
+        "Csoportosítsd a megállókat magassági szint szerint, hogy egy teraszon maradj; előbb a felső kilátópontok, aztán le a marinához."
       ]
     },
     {
       "id": "budget-mix",
-      "title": "Fizetős és ingyenes élmények egyensúlya",
+      "title": "Napi egy fizetős csúcsélmény",
       "body": [
-        "Napi egy fizetős program bőven elég (hajókirándulás, limoncello kóstoló, Capri komp); a többi időt ingyenes strandokkal és sétákkal töltsd ki.",
-        "Vigyél nasit és kulacsot; a Chiesa Nuova minimarketben sokkal olcsóbb a feltöltés, mint a tengerparti kávézókban."
+        "Naponta tervezz be egy fizetős élményt (komp Capri-ra, közös hajó, kertbelépő), a többit töltsd ki ingyenes sétákkal és stranddal.",
+        "Töltsd fel a készleteket Chiesa Nuova körül; a vízparti kávézókban a legnagyobb a felár."
       ]
     },
     {
       "id": "viewpoints",
-      "title": "Hozd ki a kilátásokból a maximumot",
+      "title": "Kilátópontok belépő nélkül",
       "body": [
-        "A Via Cristoforo Colombo adja a klasszikus képeslapnézetet napkeltekor és aranyórában belépő nélkül.",
-        "Csendes fotókhoz térj be a Chiesa Nuova melletti csempés udvarba vagy a Fornillo fölötti kis kilátóra 08:00 körül."
+        "A Via Cristoforo Colombo adja a klasszikus képeslapnézetet napfelkeltekor vagy aranyórában, belépő nélkül.",
+        "Nyugodtabb fotókhoz térj be a Chiesa Nuova csempés udvarába vagy a Fornillo feletti kis kilátóhoz 08:30 előtt."
       ]
     },
     {
       "id": "swim-breaks",
-      "title": "Strandolás költségtudatosan",
+      "title": "Költségbarát fürdőszünetek",
       "body": [
-        "A Fornillo strand ingyenes és kevésbé zsúfolt – sétálj át a parti ösvényen a Spiaggia Grande-ról, és csak azt a felszerelést béreld, amire szükséged van.",
-        "Ha Arienzo beach club hangulatára vágysz, érkezz 10:30 előtt, hogy maradjon hely a közterületen, majd piknikezz bolti focacciával."
+        "A Fornillo Beach-nek van ingyenes nyilvános része; sétálj a parti ösvényen a Spiaggia Grande-tól, és csak azt béreld, amire szükséged van.",
+        "Arienzo beach club hangulathoz menj le 10:30 előtt, hogy legyen hely a közterületen, és piknikezz focacciával és gyümölccsel."
       ]
     },
     {
       "id": "evenings",
-      "title": "Esték túlköltés nélkül",
+      "title": "Költségkímélő esték",
       "body": [
-        "A hostel teraszán a naplemente ingyenes; keverd ki a spritzet szupermarket proseccóból, és oszd meg a tapas jellegű falatokat.",
-        "Nézd meg a faliújságot a közös programokért, vagy menj a Music on the Rocks klubba 23:30 után, amikor a belépő kedvezőbb hostelvendégeknek – legyen nálad személyi."
+        "A naplemente a hostel teraszáról ingyenes; készíts egyszerű spritzet szupermarket proseccóból, és oszd meg a nasikat.",
+        "Nézd meg a hostel hirdetőtábláját; ha kimész, menj későn, amikor olcsóbb a belépő, és vigyél személyit."
       ]
     }
   ],
-  "day1Title": "1 nap: alapok",
+  "day1Title": "1 nap: Positano alapok",
   "day1": [
-    "Reggel: kilátópontok a Spiaggia Grande körül → Fornillo a parti ösvényen át",
-    "Ebéd: panini/pizza al taglio a Chiesa Nuova környékén spórolósan",
-    "Naplemente: terasz-kilátópontok a hostel közelében"
+    "Reggel: kilátópontok a Spiaggia Grande körül, majd parti ösvény Fornillóig egy fürdésre.",
+    "Ebéd: pizza al taglio vagy panini a Chiesa Nuova közelében; egyél a teraszokon.",
+    "Naplemente: Via Cristoforo Colombo vagy a hostel terasza."
   ],
-  "day2Title": "2 nap: plusz az istenek ösvénye",
+  "day2Title": "2 nap: add hozzá az Isteni ösvényt",
   "day2": [
-    "1. nap programja",
-    "2. nap: SITA Nocellébe → Sentiero degli Dei szakaszok → strandolás levezetésként"
+    "Reggel: %LINK:pathOfTheGodsNocelle|Sentiero degli Dei / Path of the Gods% (busz Nocellébe, gyalog le Positanóba).",
+    "Délután: %LINK:fornilloBeachGuide|felfrissülés a Fornillo strandon% vagy késői ebéd a városban."
   ],
-  "day3Title": "3 nap: sziget vagy Amalfi kombó",
+  "day3Title": "3 nap: Capri vagy Amalfi + Ravello",
   "day3": [
-    "A opció: egynapos Capri kirándulás (korai komp) saját sétakörrel",
-    "B opció: Amalfi + Ravello busszal; Villa Rufolo kertek, majd fagyi a dóm lépcsőjén"
+    "Opció A: %LINK:capriDayTrip|Capri egynapos kirándulás% - fogd az első kompot, tervezz saját kört, és vigyél nassolnivalót.",
+    "Opció B: %LINK:positanoRavello|Amalfi + Ravello% - busz vagy komp Amalfiig, majd fel a Villa Rufolo vagy Villa Cimbrone felé."
   ],
   "savingsTitle": "Pénztárcabarát tippek",
   "savings": [
-    "Utazz elő- vagy utószezonban; használj SITA buszt és sétálj a kilátópontok között.",
-    "Aludj hálóteremben, készíts egyszerű reggelit, és piknikezz naplementekor a kilátóknál."
+    "Utazz elő- vagy utószezonban (április-május, szeptember vége) alacsonyabb árakért és kevesebb tömegért.",
+    "Használj SITA buszokat a legtöbb útra; egy kompmenet legyen a kilátásért.",
+    "Aludj hálóteremben vagy ossz meg szobát Chiesa Nuova közelében, hogy spórolj a hordárokon és a lépcsőkön.",
+    "Töltsd újra a kulacsot a hostelben vagy nyilvános kutaknál indulás előtt.",
+    "Ha közvetlenül foglaltál, használd az ingyenes reggelit és esti italt egy étkezés kiváltására.",
+    "Sétálj a kilátópontok között a busz helyett; a lépcsők ingyenesek és látványosak."
   ],
   "foodTitle": "Olcsó falatok",
-  "foodText": "Paninit, pizza al taglio-t és kész salátákat a városközpontban találsz; kerüld a tengerparti felárat.",
+  "foodText": "Válaszd a pizza al taglio-t, paninit és deli salátákat a Via dei Mulini és a Chiesa Nuova környékén. Vásárolj mini-marketben piknikhez, az ülős étkezést hagyd egyetlen alkalomra.",
   "transportTitle": "Közlekedési tippek",
   "transportCompareLabel": "Útvonalak összehasonlítása:",
   "transportCompareLinks": [
@@ -117,25 +121,25 @@
     {
       "q": "Mi a legjobb egynapos program?",
       "a": [
-        "Kezdd a Spiaggia Grande-nál, sétálj át Fornillóba, naplemente a Chiesa Nuova teraszáról, vacsora hostelbarát társaságban."
+        "Kezdd a Spiaggia Grande-nál, sétálj a parti ösvényen Fornillóba, majd nézd meg a naplementét a Via Cristoforo Colombo-nál vagy a hostel teraszáról."
       ]
     },
     {
       "q": "Hogyan tartsam alacsonyan a közlekedési költségeket?",
       "a": [
-        "Használd a SITA buszt, és ahol lehet lépcsőzz; a komp szezonban szuper, de drágább."
+        "A legtöbb úton SITA buszt használj, és egy kompot iktass be a kilátásért; jegyet indulás előtt vegyél, hogy ne érjen meglepetés."
       ]
     },
     {
       "q": "Mit javasoltok két napra?",
       "a": [
-        "Az első nap lefedi Positano alapjait; a második napon jöhet a Sentiero degli Dei Nocelléből és egy strandolás Arienzóban vagy Fornillón."
+        "Az első nap lefedi Positano alapjait; a második napon jön a Sentiero degli Dei Nocellén át és egy strandos pihenő."
       ]
     },
     {
       "q": "Mi fér bele három napba?",
       "a": [
-        "Egynapos Capri kirándulás vagy Amalfi + Ravello kombináció; indulj korai kompokkal, és vigyél nassolnivalót a spóroláshoz."
+        "Válassz egyet: Capri egynapos kirándulás vagy Amalfi + Ravello; indulj korán és vigyél nasit a spóroláshoz."
       ]
     }
   ]

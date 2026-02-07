@@ -1,14 +1,15 @@
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
+
+import { prisma } from "../src/db";
 import {
   createUser,
-  setResetToken,
+  getUserByEmail,
+  getUserById,
   getUserByResetToken,
+  setResetToken,
   updatePassword,
   verifyEmail,
-  getUserById,
-  getUserByEmail,
 } from "../src/users";
-import { prisma } from "../src/db";
 
 type StoreUser = {
   id: string;

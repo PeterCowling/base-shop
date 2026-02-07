@@ -1,5 +1,7 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import React from "react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
+import PageBuilder from "../src/components/cms/PageBuilder";
 
 jest.mock("next/navigation", () => ({
   usePathname: () => "/shop",
@@ -30,7 +32,6 @@ jest.mock("../src/components/cms/PageBuilder", () => {
   (MockedPageBuilder as any).displayName = "MockedPageBuilder";
   return { __esModule: true, default: MockedPageBuilder };
 });
-import PageBuilder from "../src/components/cms/PageBuilder";
 
 describe("PageBuilder history persistence", () => {
   const basePage = {

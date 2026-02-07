@@ -1,11 +1,11 @@
 // apps/cover-me-pretty/__tests__/account-profile-api.test.ts
 jest.mock("@acme/zod-utils/initZod", () => ({}));
-jest.mock("@auth", () => ({
+jest.mock("@acme/auth", () => ({
   __esModule: true,
   getCustomerSession: jest.fn(),
 }));
 
-jest.mock("@platform-core/customerProfiles", () => ({
+jest.mock("@acme/platform-core/customerProfiles", () => ({
   __esModule: true,
   getCustomerProfile: jest.fn(),
   updateCustomerProfile: jest.fn(),
@@ -18,8 +18,8 @@ jest.mock("next/server", () => ({
   },
 }));
 
-import { getCustomerSession } from "@auth";
-import { getCustomerProfile } from "@platform-core/customerProfiles";
+import { getCustomerSession } from "@acme/auth";
+import { getCustomerProfile } from "@acme/platform-core/customerProfiles";
 import { GET } from "../src/app/api/account/profile/route";
 
 describe("/api/account/profile GET", () => {

@@ -1,11 +1,14 @@
 // apps/cms/__tests__/createShopActions.test.tsx
 /* eslint-env jest */
 
-import { jest } from "@jest/globals";
+import "../src/types/next-auth.d.ts";
+
 import fs from "node:fs/promises";
 import path from "node:path";
-import { withTempRepo, mockNextAuthAdmin } from "@acme/test-utils";
-import "../src/types/next-auth.d.ts";
+
+import { jest } from "@jest/globals";
+
+import { mockNextAuthAdmin,withTempRepo } from "@acme/test-utils";
 
 /* -------------------------------------------------------------------------- */
 /* Helpers                                                                    */
@@ -48,7 +51,7 @@ describe("createNewShop authorization", () => {
     const prevEnv = process.env.NODE_ENV;
     (process.env as Record<string, string>).NODE_ENV = "development";
 
-    jest.doMock("@platform-core/createShop", () => ({
+    jest.doMock("@acme/platform-core/createShop", () => ({
       __esModule: true,
       createShop: jest.fn(),
     }));
@@ -74,10 +77,10 @@ describe("createNewShop authorization", () => {
     (process.env as Record<string, string>).NODE_ENV = "development";
 
     const deployResult = { status: "success", previewUrl: "https://shop2.pages.dev" };
-    const createShop = jest.fn().mockResolvedValue(deployResult);
-    jest.doMock("@platform-core/createShop", () => ({
+    const createShopFromConfig = (jest.fn() as unknown as jest.Mock).mockResolvedValue(deployResult);
+    jest.doMock("@acme/platform-core/createShop", () => ({
       __esModule: true,
-      createShop,
+      createShopFromConfig,
     }));
     mockNextAuthAdmin();
     jest.doMock("@acme/config", () => ({ env: { NEXTAUTH_SECRET: "test-nextauth-secret-32-chars-long-string!", EMAIL_FROM: "test@example.com", EMAIL_PROVIDER: "noop" } }));
@@ -87,8 +90,8 @@ describe("createNewShop authorization", () => {
     );
     const res = await createNewShop("shop2", { theme: "base" } as any);
 
-    expect(createShop).toHaveBeenCalledTimes(1);
-    expect(createShop).toHaveBeenCalledWith("shop2", { theme: "base" }, { deploy: false });
+    expect(createShopFromConfig).toHaveBeenCalledTimes(1);
+    expect(createShopFromConfig).toHaveBeenCalledWith("shop2", { theme: "base" }, { deploy: false });
     expect(res).toBe(deployResult);
 
     (process.env as Record<string, string>).NODE_ENV = prevEnv;
@@ -121,11 +124,11 @@ describe("submitShop error handling", () => {
   });
 
   it("returns error when env request fails", async () => {
-    jest.doMock("@platform-core/createShop", () => ({
+    jest.doMock("@acme/platform-core/createShop", () => ({
       __esModule: true,
       createShopOptionsSchema: { safeParse: () => ({ success: true, data: {} }) },
     }));
-    jest.doMock("@platform-core/shops", () => ({
+    jest.doMock("@acme/platform-core/shops", () => ({
       validateShopName: jest.fn(),
     }));
 
@@ -133,8 +136,7 @@ describe("submitShop error handling", () => {
       /* webpackIgnore: true */ "../src/app/cms/wizard/services/submitShop"
     );
 
-    const mockFetch = jest
-      .fn()
+    const mockFetch = (jest.fn() as unknown as jest.Mock)
       .mockResolvedValueOnce({ ok: true, json: async () => ({}) })
       .mockResolvedValueOnce({ ok: false, json: async () => ({}) })
       .mockResolvedValueOnce({ ok: true, json: async () => ({}) });
@@ -148,11 +150,11 @@ describe("submitShop error handling", () => {
   });
 
   it("returns error when providers request fails", async () => {
-    jest.doMock("@platform-core/createShop", () => ({
+    jest.doMock("@acme/platform-core/createShop", () => ({
       __esModule: true,
       createShopOptionsSchema: { safeParse: () => ({ success: true, data: {} }) },
     }));
-    jest.doMock("@platform-core/shops", () => ({
+    jest.doMock("@acme/platform-core/shops", () => ({
       validateShopName: jest.fn(),
     }));
 
@@ -160,8 +162,7 @@ describe("submitShop error handling", () => {
       /* webpackIgnore: true */ "../src/app/cms/wizard/services/submitShop"
     );
 
-    const mockFetch = jest
-      .fn()
+    const mockFetch = (jest.fn() as unknown as jest.Mock)
       .mockResolvedValueOnce({ ok: true, json: async () => ({}) })
       .mockResolvedValueOnce({ ok: false, json: async () => ({}) });
     global.fetch = mockFetch as any;

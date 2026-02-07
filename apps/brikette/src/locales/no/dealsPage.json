@@ -9,13 +9,13 @@
   "promo": "Bestill direkte – rabatten på {{percent}} % blir automatisk trukket i kassen.",
   "dealCard": {
     "savePercent": "Spar {{percent}}",
-    "stayDatesLabel": "Opphold:",
+    "stayDatesLabel": "Oppholdsperiode:",
     "badges": {
-      "autoApplied": "Brukes automatisk",
-      "directOnly": "Kun direkte booking"
+      "autoApplied": "Trekkes automatisk",
+      "directOnly": "Kun direktebestilling"
     },
     "cta": {
-      "bookDirect": "Book direkte",
+      "bookDirect": "Bestill direkte",
       "applyDeal": "Bruk tilbudet"
     },
     "status": {
@@ -24,15 +24,15 @@
     }
   },
   "hero": {
-    "activeLabel": "Nåværende tilbud",
+    "activeLabel": "Aktivt tilbud",
     "activeTitle": "Spar {{percent}}",
-    "activeDatesLabel": "Opphold:",
-    "activeSubtitle": "Brukes automatisk ved utsjekking. Kun direktebookinger."
+    "activeDatesLabel": "Oppholdsperiode:",
+    "activeSubtitle": "Trekkes automatisk ved kassen. Kun direktebestillinger."
   },
   "emptyState": {
     "title": "Ingen aktive tilbud",
-    "subtitle": "Book direkte for beste pris og fordeler.",
-    "secondaryCta": "Se fordeler med direkte booking"
+    "subtitle": "Bestill direkte for beste pris og fordeler.",
+    "secondaryCta": "Se fordelene ved direktebestilling"
   },
   "status": {
     "banner": {
@@ -80,13 +80,16 @@
   "perksIntroLink": "Se alle fordeler",
   "perksList": [
     {
-      "title": "Opptil 25 % avslag fra ordinær pris når kupong brukes"
+      "title": "Opptil 25 % avslag fra ordinær pris når kupong brukes",
+      "subtitle": "Brukes automatisk"
     },
     {
-      "title": "Gratis frokost"
+      "title": "Gratis frokost",
+      "subtitle": "Inkludert daglig"
     },
     {
-      "title": "Gratis kveldsdrink"
+      "title": "Gratis kveldsdrink",
+      "subtitle": "Husets utvalg"
     }
   ],
   "expired": {

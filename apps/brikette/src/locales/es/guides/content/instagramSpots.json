@@ -1,67 +1,190 @@
 {
   "seo": {
-    "title": "Lugares de Instagram en Positano sin multitudes",
-    "description": "Sitios fotogénicos con los mejores horarios para evitar filas y alternativas menos conocidas."
+    "title": "Spots de foto en Positano: mejores miradores + horas",
+    "description": "Ángulos de postal y miradores infravalorados: mejores horas de luz y menos gente, rutas seguras y etiqueta para fotos."
   },
-  "linkLabel": "Lugares de Instagram en Positano sin multitudes",
+  "linkLabel": "Spots de foto en Positano",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
   "intro": [
-    "Los rincones más fotogénicos de Positano y cómo capturarlos sin agobios.",
-    "Planifica la luz y respeta a quienes viven y trabajan en estas calles estrechas."
+    "Encontrar spots de foto en Positano es fácil: lo difícil es sacar la foto sin multitudes, sin estrés y sin bloquear una escalera estrecha.",
+    "Si solo sigues un plan: fotos temprano, caminar despacio y elegir un mirador de golden hour en lugar de correr entre “spots”. La mejor luz suele llegar antes del atardecer real y desaparece rápido.",
+    "Mentalidad “desde el hostel”: haz tu gran paseo de fotos temprano y deja el atardecer para algo fácil (un drink, un mirador). %LINK:terraceSunsets|Atardeceres en terraza% es el plan más simple al final del día si no quieres subir escaleras de noche.",
+    "Si quieres el panorama más “alto premio” en un día despejado, %LINK:pathOfTheGods|Sendero de los Dioses% es imbatible, pero trata las fotos como un bonus: primero seguridad y ritmo."
   ],
   "sections": [
     {
+      "id": "quick-plan",
+      "title": "Plan rápido (si tienes poco tiempo)",
+      "body": [
+        "1) Mañana temprano: saca un ángulo de postal cuando las calles están tranquilas.",
+        "2) Media mañana: paseo más lento para fotos de detalles (puertas, escaleras, azulejos, limones, carteles).",
+        "3) Golden hour: elige un mirador y quédate. Moverse al atardecer suele significar más gente, tráfico y fotos con prisas.",
+        "Si también quieres bañarte, elige una playa que encaje con tu energía (y cuántas escaleras te apetece hacer). %LINK:positanoBeaches|Playas de Positano% te ayuda a elegir."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/instagramSpots.jpg",
+          "alt": "Un mirador escénico de Positano, un objetivo clásico para fotos"
+        }
+      ]
+    },
+    {
       "id": "classics",
-      "title": "Postales clásicas",
+      "title": "Clásicos de postal (el timing importa)",
       "body": [
-        "Fotografía desde las escaleras de Santa Maria Assunta justo después del amanecer; la playa está vacía y la cúpula toma tonos cálidos.",
-        "Camina hasta el muelle para un plano gran angular del acantilado; llega antes de las 09:00, cuando comienzan las colas de excursiones."
+        "Iglesia + cúpula + playa: dispara cerca de la Iglesia de Santa Maria Assunta temprano. La cúpula se ve cálida y el paseo marítimo está más calmado.",
+        "Gran angular desde la zona del ferri: camina hacia el muelle para una vista amplia hacia el acantilado. Mejor temprano: las colas crecen con los excursionistas.",
+        "Curvas en la carretera principal: el look “postal” suele salir desde una curva segura o una terraza donde puedas apartarte, no desde el medio de una escalera.",
+        "Tip móvil: expón para el cielo (toca la zona brillante) para no quemar altas luces. Luego podrás aclarar caras."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-main-beach.webp",
+          "alt": "La playa principal de Positano con luz más suave, ideal para fotos temprano"
+        }
       ]
     },
     {
-      "id": "hidden",
-      "title": "Ángulos menos conocidos",
+      "id": "underrated",
+      "title": "Ángulos infravalorados (más tranquilos, más fáciles)",
       "body": [
-        "Sube al mirador de Via Trara Genoino sobre Fornillo para captar barcas de pesca y casas en capas.",
-        "Toma el autobús local a Nocelle y dispara desde la terraza del Sentiero degli Dei; el panorama es imbatible en mañanas despejadas."
+        "Lado Fornillo: vistas escalonadas y un ambiente más calmado que la playa principal al mediodía. Perfecto para fotos “Positano, pero más tranquilo”.",
+        "Ganan los detalles: puertas, escaleras, placas de azulejo, limones y rincones pequeños suelen quedar mejor que miradores llenos. Y puedes disparar sin molestar a nadie.",
+        "Miradores más altos: en mañanas despejadas, las terrazas superiores dan el look de “pueblo apilado” sin pelearte con multitudes junto al agua.",
+        "Si quieres una foto de caminata con gran vista, %LINK:topOfTheMountainHike|rutas a miradores altos% te ayuda a elegir la opción más fácil que siga siendo épica."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/fornillo-beach-positano.webp",
+          "alt": "Vistas hacia la zona de Fornillo en Positano, a menudo más tranquila que la playa principal"
+        }
       ]
     },
     {
-      "id": "sunset",
-      "title": "Configuraciones para la hora dorada",
+      "id": "best-spots",
+      "title": "Mejores spots (elige 3–5, no todos)",
       "body": [
-        "Asegura un banco en Via Cristoforo Colombo unos 45 minutos antes del atardecer; en verano el sol cae detrás de las islas Li Galli.",
-        "Ve a la playa de Laurito para siluetas del skyline de Positano; las escaleras son empinadas, usa calzado con agarre y lleva una linterna para regresar."
+        "El mejor “spot” es el que puedes fotografiar con calma. Un plan realista es elegir 3–5 lugares y disfrutar del paseo entre ellos.",
+        "Ideas para mezclar:",
+        "- Un clásico junto al agua (temprano).",
+        "- Un ángulo alto en carretera/terraza (media mañana).",
+        "- Una ruta lateral tranquila (Fornillo).",
+        "- Un mirador de golden hour (quédate allí).",
+        "Si quieres el plan más fácil de golden hour sin perseguir reservas, %LINK:terraceSunsets|atardeceres en terraza% es la versión low‑effort."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/sunsetViewpoints.jpg",
+          "alt": "Miradores de atardecer sobre Positano, donde llegar temprano ayuda"
+        }
+      ]
+    },
+    {
+      "id": "golden-hour",
+      "title": "Golden hour y atardecer (cómo no perderlo)",
+      "body": [
+        "Llega 45 minutos antes del atardecer si quieres tiempo para encontrar sitio, asentarte y hacer unas fotos antes de que se vaya la mejor luz.",
+        "El mayor error es moverse demasiado. Elige un mirador y quédate: correr entre “spots” suele hacer que te pierdas la mejor luz.",
+        "Si quieres siluetas, elige un lugar desde el que puedas volver con seguridad. Escaleras con poca luz + piernas cansadas es mala combinación.",
+        "Si prefieres no navegar escaleras de noche, haz el atardecer como drinks en vez de una cena completa: %LINK:terraceSunsets|atardeceres en terraza% es el plan más simple."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
+          "alt": "Luz de golden hour en Positano, cuando el timing lo es todo"
+        }
+      ]
+    },
+    {
+      "id": "routes",
+      "title": "Dos rutas fáciles para un photo‑walk (sin improvisar)",
+      "body": [
+        "Ruta A (clásica + simple): empieza temprano con las fotos de postal, luego camina despacio por la carretera principal para detalles. Termina en un mirador para golden hour.",
+        "Ruta B (más tranquila): haz el lado Fornillo para composiciones calmadas y vuelve a subir antes del atardecer para no ir con prisa en escaleras con poca luz.",
+        "Si quieres evitar las zonas más llenas, %LINK:avoidCrowdsPositano|evitar multitudes y Positano fuera de ruta% tiene rincones más calmados que quedan genial en fotos."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
+          "alt": "Vista de Positano y playa, un final natural para un paseo fotográfico"
+        }
+      ]
+    },
+    {
+      "id": "gear",
+      "title": "Equipo y ajustes (manténlo simple)",
+      "body": [
+        "No necesitas equipo pro en Positano. Lo que más importa es estabilidad: dos manos en el móvil, codos pegados y lente limpia antes de disparar.",
+        "Un paño de microfibra es el mejor accesorio aquí. Crema solar y spray del mar hacen que las fotos se vean “hazy” sin darte cuenta.",
+        "Para retratos, usa luz suave. Sombra, mañana temprano y la última hora antes del atardecer favorecen más que el sol del mediodía.",
+        "Si quieres un look “postal” limpio, aléjate e incluye más pueblo. Los primeros planos pueden sentirse apretados porque Positano es estrecho y está lleno.",
+        "Si vas a compartir el mismo día, guarda uno o dos presets “fáciles” (menos altas luces, más sombras). Mantiene un feed coherente sin perder una hora editando.",
+        "Si haces senderismo por las vistas, viaja ligero y lleva el móvil a mano. %LINK:whatToPack|qué llevar% ayuda a evitar peso innecesario en escaleras."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/pathOfTheGods.jpg",
+          "alt": "Foto de senderismo panorámico, donde equipo ligero y ajustes simples funcionan mejor"
+        }
+      ]
+    },
+    {
+      "id": "seasonality",
+      "title": "Multitudes y temporada (qué cambia la foto)",
+      "body": [
+        "Pleno verano: los spots clásicos están llenos durante horas. Tu mejor palanca es el tiempo: ve antes de lo que crees.",
+        "Temporada media: luz preciosa y menos gente, pero algunos servicios y horarios bajan. Si mezclas fotos con transporte, ojo con la fiabilidad del ferri.",
+        "Días ventosos: la costa puede verse brutal, pero los ferris pueden cancelarse. Si quieres fotografiar desde el agua o viajar en barco, revisa %LINK:ferryCancellations|cancelaciones de ferri y mar agitado% primero.",
+        "Días de lluvia también pueden dar fotos increíbles: calles mojadas reflejan luz y los colores se ven más ricos. Protege el móvil y evita correr en escaleras resbaladizas.",
+        "Si viajas en pareja o grupo y quieres algo más calmado, planea un momento de “mirador tranquilo” en vez de perseguir cada spot famoso. %LINK:sunsetViewpoints|miradores de atardecer% tiene opciones sin colas.",
+        "Para un atardecer tranquilo incluso en días llenos, elige un lugar y llega temprano. La versión más fácil es %LINK:terraceSunsets|atardeceres en terraza%: golden hour sin pelearte con el centro."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
+          "alt": "Bahía de Positano en un día ventoso, cuando condiciones y multitudes afectan el plan de fotos"
+        }
       ]
     },
     {
       "id": "etiquette",
-      "title": "Etiqueta fotográfica",
+      "title": "Etiqueta para fotos (haz esto y todos mejor)",
       "body": [
-        "Mantén los trípodes compactos y hazte a un lado después de la toma para que las escaleras sigan transitables.",
-        "Evita volar drones dentro del pueblo; la normativa italiana exige permisos y las multas son elevadas si te detectan sin licencia."
+        "No bloquees escaleras ni carreteras. Haz la foto y muévete. Los locales usan estos pasos todo el día.",
+        "Mantén trípodes compactos y evita montarlos en puntos estrechos y llenos. Si hay mucha gente, disparar a mano es lo respetuoso.",
+        "Respeta la propiedad privada. Terrazas y miradores de hoteles no son escenarios públicos.",
+        "Evita drones cerca del pueblo y de multitudes: en Italia la normativa es estricta y se aplica."
       ]
     }
   ],
   "tips": [
-    "Llega antes del amanecer o 20–30 minutos antes de la puesta de sol para elegir buen sitio.",
-    "Un trípode pequeño o un estabilizador ayudan con la poca luz sin molestar a otras personas."
+    "Lleva un paño de microfibra para spray del mar y manchas de crema solar en la lente.",
+    "Guarda tus ángulos favoritos offline en Google Maps; la cobertura puede fallar en terrazas y senderos.",
+    "Mete una pausa sentada en un día largo de fotos: café + sombra + recargar batería salva la tarde.",
+    "Si un spot se siente inseguro o demasiado lleno, sáltalo. Las mejores fotos son las que haces con calma."
   ],
   "faqs": [
     {
-      "q": "¿Debo pedir permiso en cafés u hoteles?",
+      "q": "¿Es mejor amanecer o atardecer para fotos?",
       "a": [
-        "Siempre es mejor preguntar, sobre todo si aparecen otros clientes o planeas usar trípode."
+        "El amanecer suele tener menos gente y luz más suave; el atardecer puede ser espectacular pero atrae a más personas y miradores más apretados."
       ]
     },
     {
-      "q": "¿Cuándo está la playa más tranquila?",
+      "q": "¿Puedo posar en terrazas de hotel si no soy huésped?",
       "a": [
-        "Antes de las 09:00 o después de las 18:00; los meses de abril, mayo, septiembre y octubre son más llevaderos."
+        "No: son privadas. Si quieres esa perspectiva, reserva una mesa y pregunta al personal antes de montar fotos."
+      ]
+    },
+    {
+      "q": "¿Cuál es el consejo de seguridad más importante?",
+      "a": [
+        "No te metas en la carretera ni bloquees escaleras por una foto. Si no puedes hacerla con seguridad en un minuto, no merece la pena."
       ]
     }
   ],
   "fallback": {
-    "intro": "Positano es fotogénico desde casi cualquier ángulo, pero los lugares más populares están concurridos gran parte del día. Aquí te explicamos cómo capturar las vistas clásicas sin colas largas, además de alternativas menos conocidas.",
+    "intro": "Positano es fotogénico desde casi cualquier ángulo, pero los puntos más populares están llenos gran parte del día. Aquí tienes cómo capturar las vistas clásicas sin largas colas, más alternativas infravaloradas.",
     "toc": [
       {
         "href": "#classics",
@@ -69,11 +192,11 @@
       },
       {
         "href": "#alternatives",
-        "label": "Alternativas poco conocidas"
+        "label": "Alternativas infravaloradas"
       },
       {
         "href": "#sunset",
-        "label": "Opciones para el atardecer"
+        "label": "Opciones de atardecer"
       },
       {
         "href": "#etiquette",
@@ -81,7 +204,7 @@
       },
       {
         "href": "#faqs",
-        "label": "Preguntas frecuentes"
+        "label": "FAQs"
       }
     ],
     "classics": {
@@ -89,72 +212,71 @@
       "items": [
         {
           "title": "Spiaggia Grande",
-          "description": "Llega al amanecer para encontrar el muelle vacío y el mar en calma; evita las colas de media mañana."
+          "description": "Llega al amanecer para muelles vacíos y mar calmado; evita las colas de media mañana."
         },
         {
-          "title": "Senda de Fornillo",
-          "description": "Paseo costero suave con vistas en capas de los acantilados; es mejor a primera hora o justo después del atardecer."
+          "title": "Camino a Fornillo",
+          "description": "Paseo costero suave con vistas escalonadas; mejor temprano o justo después del atardecer."
         },
         {
           "title": "Curvas de Via Pasitea",
-          "description": "Las curvas elevadas ofrecen el ángulo de postal sin multitudes. Respeta el tráfico y evita invadir la calzada."
+          "description": "Las curvas altas dan el ángulo de postal sin multitudes. Respeta el tráfico y quédate fuera de la calzada."
         }
       ]
     },
     "alternatives": {
-      "heading": "Alternativas poco conocidas",
+      "heading": "Alternativas infravaloradas",
       "items": [
         {
           "title": "Terrazas de Chiesa Nuova",
-          "description": "Hora dorada sobre Fornillo; pocas multitudes y a un corto paseo del hostel."
+          "description": "Golden hour sobre Fornillo; poca gente y paseo corto desde el hostel."
         },
         {
           "link": {
             "guideKey": "pathOfTheGods"
           },
-          "description": "Crestas panorámicas; la luz es mejor temprano."
+          "description": "Cresta panorámica; la mejor luz es temprano."
         },
         {
           "link": {
             "guideKey": "sunsetViewpoints"
           },
-          "description": "Consulta la lista para obtener composiciones variadas."
+          "description": "Lista para variar composiciones."
         }
       ]
     },
     "sunset": {
-      "heading": "Opciones para el atardecer",
+      "heading": "Opciones de atardecer",
       "paragraphs": [
-        "Para disfrutar de la hora dorada sin multitudes, sube a los apartaderos de la parte alta de Via Pasitea o a las terrazas cerca de Chiesa Nuova.",
-        "Si prefieres siluetas en la playa, llega 30–45 minutos antes del atardecer a Fornillo."
+        "Para golden hour sin multitudes, ve a los miradores altos de Via Pasitea o a las terrazas cerca de Chiesa Nuova.",
+        "Si prefieres siluetas en playa, llega 30–45 minutos antes del atardecer a Fornillo."
       ]
     },
     "etiquette": {
       "heading": "Etiqueta y consejos locales",
       "items": [
-        "No bloquees escaleras ni calles estrechas; toma la foto y hazte a un lado.",
-        "Respeta la propiedad privada y evita subirte a muros o tejados.",
-        "Usa un trípode pequeño fuera de las horas punta; evita los senderos concurridos a mediodía."
+        "No bloquees escaleras estrechas ni carreteras; haz la foto y apártate.",
+        "Respeta la propiedad privada y evita subir a muros/tejados.",
+        "Usa un trípode pequeño fuera de horas punta; evita los caminos más llenos al mediodía."
       ]
     },
     "faqs": {
-      "heading": "Preguntas frecuentes",
+      "heading": "FAQs",
       "items": [
         {
-          "summary": "¿Cuál es la mejor hora para fotos?",
-          "body": "Amanecer para lugares más vacíos; golden hour para tonos cálidos y sombras suaves."
+          "summary": "¿Cuál es el mejor momento para fotos?",
+          "body": "Amanecer para escenas más vacías; golden hour para tonos cálidos y sombras más suaves."
         }
       ]
     },
     "drone": {
       "summary": "¿Necesito permiso para dron?",
-      "body": "Italia tiene normas estrictas para drones y muchas zonas de exclusión aérea. Consulta siempre las guías de ENAC y la normativa local; evita volar cerca de multitudes."
+      "body": "En Italia la normativa de drones es estricta y hay muchas zonas de exclusión. Comprueba siempre la guía ENAC y normas locales; evita volar cerca de multitudes."
     },
     "galleryAlt": [
-      "Positano desde las alturas",
+      "Positano desde arriba",
       "Panorama costero"
     ],
     "galleryFallbackAlt": "Vista panorámica de la costa de Positano"
-  },
-  "faqsTitle": "Preguntas frecuentes"
+  }
 }

@@ -1,11 +1,13 @@
 import React from "react";
-import { renderHook, render, act, fireEvent } from "@testing-library/react";
-import { useProductMediaManager } from "../useProductMediaManager";
-import type { ProductWithVariants } from "../useProductInputs";
-import { usePublishLocations } from "@platform-core/hooks/usePublishLocations";
-import { useFileUpload } from "../useFileUpload";
+import { act, fireEvent,render, renderHook } from "@testing-library/react";
 
-jest.mock("@platform-core/hooks/usePublishLocations", () => ({
+import { usePublishLocations } from "@acme/platform-core/hooks/usePublishLocations";
+
+import { useFileUpload } from "../useFileUpload";
+import type { ProductWithVariants } from "../useProductInputs";
+import { useProductMediaManager } from "../useProductMediaManager";
+
+jest.mock("@acme/platform-core/hooks/usePublishLocations", () => ({
   usePublishLocations: jest.fn(),
 }));
 
@@ -30,11 +32,11 @@ describe("useProductMediaManager", () => {
       reload: jest.fn(),
     });
     type UploadOpts = { onUploaded?: (m: unknown) => void };
-    mockUseFileUpload.mockImplementation((opts: UploadOpts) => ({
+    mockUseFileUpload.mockImplementation(((opts: UploadOpts) => ({
       uploader: (
         <button onClick={() => opts.onUploaded?.(media)}>upload</button> // i18n-exempt: button label in test
       ),
-    }));
+    })) as unknown as typeof useFileUpload);
 
     const { result } = renderHook(() => {
       const [product, setProduct] = React.useState<ProductWithVariants>(
@@ -62,7 +64,7 @@ describe("useProductMediaManager", () => {
     const item3 = { url: "3.png" };
 
     mockUsePublishLocations.mockReturnValue({ locations: [], reload: jest.fn() });
-    mockUseFileUpload.mockReturnValue({ uploader: <div /> });
+    mockUseFileUpload.mockReturnValue({ uploader: <div /> } as ReturnType<typeof useFileUpload>);
 
     const { result } = renderHook(() => {
       const [product, setProduct] = React.useState<ProductWithVariants>(
@@ -88,7 +90,7 @@ describe("useProductMediaManager", () => {
     const item2 = { url: "2.png" };
 
     mockUsePublishLocations.mockReturnValue({ locations: [], reload: jest.fn() });
-    mockUseFileUpload.mockReturnValue({ uploader: <div /> });
+    mockUseFileUpload.mockReturnValue({ uploader: <div /> } as ReturnType<typeof useFileUpload>);
 
     const { result } = renderHook(() => {
       const [product, setProduct] = React.useState<ProductWithVariants>(
@@ -111,7 +113,7 @@ describe("useProductMediaManager", () => {
     const item3 = { url: "3.png" };
 
     mockUsePublishLocations.mockReturnValue({ locations: [], reload: jest.fn() });
-    mockUseFileUpload.mockReturnValue({ uploader: <div /> });
+    mockUseFileUpload.mockReturnValue({ uploader: <div /> } as ReturnType<typeof useFileUpload>);
 
     let product: ProductWithVariants = {
       media: [item1, item2, item3],
@@ -143,7 +145,7 @@ describe("useProductMediaManager", () => {
     const item3 = { url: "3.png" };
 
     mockUsePublishLocations.mockReturnValue({ locations: [], reload: jest.fn() });
-    mockUseFileUpload.mockReturnValue({ uploader: <div /> });
+    mockUseFileUpload.mockReturnValue({ uploader: <div /> } as ReturnType<typeof useFileUpload>);
 
     let product: ProductWithVariants = {
       media: [item1, item2, item3],

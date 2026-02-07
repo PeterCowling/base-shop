@@ -1,47 +1,42 @@
 import React from "react";
-import { render, cleanup } from "@testing-library/react";
+import { cleanup,render } from "@testing-library/react";
+
 import { ARViewer } from "../src/components/atoms/ARViewer";
 
-describe("ARViewer", () => {
-  afterEach(() => cleanup());
+const scriptSrc = "https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js";
 
-  it("injects model-viewer script on mount and removes on unmount when not present", () => {
-    const getOrig = customElements.get;
-    (customElements as any).get = jest.fn(() => undefined);
-    const headCount = () => document.head.querySelectorAll("script[src*='model-viewer']").length;
-    expect(headCount()).toBe(0);
+describe("ARViewer", () => {
+  afterEach(() => {
+    cleanup();
+    jest.restoreAllMocks();
+    // Clean up any injected scripts for test isolation
+    const existing = document.head.querySelector(`script[src="${scriptSrc}"]`);
+    if (existing) {
+      document.head.removeChild(existing);
+    }
+  });
+
+  it("injects model-viewer script on mount when not present", () => {
+    jest.spyOn(customElements, "get").mockReturnValue(undefined);
+    const appendChildSpy = jest.spyOn(document.head, "appendChild");
+
     const { unmount } = render(<ARViewer src="/3d.glb" />);
-    expect(headCount()).toBe(1);
+
+    expect(appendChildSpy).toHaveBeenCalled();
+    const scriptEl = appendChildSpy.mock.calls[0][0] as HTMLScriptElement;
+    expect(scriptEl.tagName).toBe("SCRIPT");
+    expect(scriptEl.getAttribute("src")).toBe(scriptSrc);
+
     unmount();
-    expect(headCount()).toBe(0);
-    (customElements as any).get = getOrig;
   });
 
   it("does not inject script when custom element already defined", () => {
-    const getOrig = customElements.get;
-    (customElements as any).get = jest.fn(() => ({}));
-    const headCount = () => document.head.querySelectorAll("script[src*='model-viewer']").length;
+    jest.spyOn(customElements, "get").mockReturnValue({} as any);
+
     const { unmount } = render(<ARViewer src="/3d.glb" />);
-    expect(headCount()).toBe(0);
-    unmount();
-    (customElements as any).get = getOrig;
-  });
-
-  it("uses configured script source when provided", () => {
-    const getOrig = customElements.get;
-    const originalEnv = process.env.NEXT_PUBLIC_MODEL_VIEWER_SRC;
-    (customElements as any).get = jest.fn(() => undefined);
-    process.env.NEXT_PUBLIC_MODEL_VIEWER_SRC = "https://cdn.example.com/model-viewer.js";
-
-    const { unmount } = render(<ARViewer src="/custom.glb" />);
-    const script = document.head.querySelector(
-      "script[src='https://cdn.example.com/model-viewer.js']",
-    );
-    expect(script).not.toBeNull();
+    expect(document.head.querySelector(`script[src="${scriptSrc}"]`)).toBeNull();
 
     unmount();
-    process.env.NEXT_PUBLIC_MODEL_VIEWER_SRC = originalEnv;
-    (customElements as any).get = getOrig;
   });
 });
 

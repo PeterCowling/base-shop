@@ -1,7 +1,8 @@
 import * as React from "react";
+
 import {
-  marketingEmailTemplates,
   MarketingEmailTemplate,
+  marketingEmailTemplates,
 } from "@acme/email-templates";
 
 marketingEmailTemplates.forEach((variant) => {
@@ -9,19 +10,19 @@ marketingEmailTemplates.forEach((variant) => {
     it("returns empty fragment when props are undefined", () => {
       const result = variant.make(undefined as any);
       expect(result.type).toBe(React.Fragment);
-      expect(result.props.children).toBeUndefined();
+      expect((result.props as any).children).toBeUndefined();
     });
 
     it("returns empty fragment when headline is missing", () => {
       const result = variant.make({ content: <p /> } as any);
       expect(result.type).toBe(React.Fragment);
-      expect(result.props.children).toBeUndefined();
+      expect((result.props as any).children).toBeUndefined();
     });
 
     it("returns empty fragment when content is missing", () => {
       const result = variant.make({ headline: "Hello" } as any);
       expect(result.type).toBe(React.Fragment);
-      expect(result.props.children).toBeUndefined();
+      expect((result.props as any).children).toBeUndefined();
     });
 
     it("buildSubject echoes the headline", () => {
@@ -44,7 +45,7 @@ describe("basic variant", () => {
     expect(basic).toBeDefined();
     const element = basic!.make(validProps);
     expect(element.type).toBe(MarketingEmailTemplate);
-    expect(element.props.className).toBeUndefined();
+    expect((element.props as any).className).toBeUndefined();
   });
 });
 
@@ -56,7 +57,7 @@ describe("centered variant", () => {
     expect(centered).toBeDefined();
     const element = centered!.make(validProps);
     expect(element.type).toBe(MarketingEmailTemplate);
-    expect(element.props.className).toBe("text-center");
+    expect((element.props as any).className).toBe("text-center");
   });
 });
 

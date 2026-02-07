@@ -1,5 +1,6 @@
 import React from "react";
-import { render, fireEvent, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
 import StepLayout from "../src/app/cms/configurator/steps/StepLayout";
 
 // Mocks for router and theme loader

@@ -1,10 +1,11 @@
-import { act, render, fireEvent, screen, waitFor } from "@testing-library/react";
-import React, { useState } from "react";
-import * as persistence from "../useConfiguratorPersistence";
+import React, { type ReactElement,useState } from "react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+
 import {
-  configuratorStateSchema,
   type ConfiguratorState,
+  configuratorStateSchema,
 } from "../../../wizard/schema";
+import * as persistence from "../useConfiguratorPersistence";
 
 const { STORAGE_KEY, useConfiguratorPersistence } = persistence;
 
@@ -12,7 +13,7 @@ describe("useConfiguratorPersistence", () => {
   let fetchMock: jest.Mock;
   let complete: ((id: string, status: any) => void) | null = null;
 
-  function TestComponent({ onInvalid }: { onInvalid?: () => void }): JSX.Element {
+  function TestComponent({ onInvalid }: { onInvalid?: () => void }): ReactElement {
     const [state, setState] = useState<ConfiguratorState>(
       configuratorStateSchema.parse({})
     );

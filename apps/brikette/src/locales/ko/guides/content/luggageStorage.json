@@ -5,48 +5,48 @@
   },
   "linkLabel": "포시타노 수하물 보관 옵션",
   "intro": [
-    "번역을 준비하고 있습니다."
+    "포시타노에서 짐을 보관하는 방법: 부두 근처와 비아 데이 물리니 주변 옵션을 소개합니다."
   ],
   "sections": [
     {
       "id": "near-dock",
-      "title": "Near the dock",
+      "title": "부두 근처",
       "body": [
-        "번역을 준비하고 있습니다."
+        "시간/일 단위 보관권을 제공하며 성수기에는 대기열이 생깁니다. 가능하면 사전 예약하세요."
       ]
     },
     {
       "id": "aggregators",
-      "title": "Aggregators",
+      "title": "플랫폼 서비스",
       "body": [
-        "번역을 준비하고 있습니다."
+        "Bounce / Radical Storage: 온라인 결제 전에 정확한 주소와 운영 시간을 확인하세요."
       ]
     },
     {
       "id": "etiquette",
-      "title": "Etiquette & tips",
+      "title": "에티켓과 팁",
       "body": [
-        "번역을 준비하고 있습니다."
+        "귀중품은 직접 소지하고, 가방에 라벨을 붙이며, 보관권 사진을 찍어두세요."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "Open in the evening?",
+      "q": "저녁에도 운영하나요?",
       "a": [
-        "번역을 준비하고 있습니다."
+        "운영 시간은 지점마다 다릅니다. 비수기 조기 마감과 마지막 페리 시간을 확인하세요."
       ]
     }
   ],
-  "tocTitle": "On this page",
-  "faqsTitle": "FAQs",
-  "heroAlt": "번역을 준비하고 있습니다.",
-  "serviceType": "Luggage storage",
-  "areaServed": "Positano",
+  "tocTitle": "이 페이지에서",
+  "faqsTitle": "자주 묻는 질문",
+  "heroAlt": "포시타노 계단을 따라 짐 카트를 끄는 포터",
+  "serviceType": "수하물 보관",
+  "areaServed": "포시타노",
   "gallery": {
-    "primaryAlt": "번역을 준비하고 있습니다.",
-    "primaryCaption": "Positano panorama",
-    "secondaryAlt": "번역을 준비하고 있습니다.",
-    "secondaryCaption": "번역을 준비하고 있습니다."
+    "primaryAlt": "바다를 내려다보는 포시타노의 절벽 마을",
+    "primaryCaption": "포시타노 파노라마",
+    "secondaryAlt": "포시타노 페리 부두 근처에서 짐 카트를 미는 포터",
+    "secondaryCaption": "부두 근처 포터 카트"
   }
 }

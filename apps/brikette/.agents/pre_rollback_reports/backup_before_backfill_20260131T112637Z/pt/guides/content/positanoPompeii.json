@@ -1,0 +1,135 @@
+{
+  "seo": {
+    "title": "Positano a Pompeia: como ir",
+    "description": "Comparativo de rotas via Sorrento, Salerno e Nápoles — horários recomendados, onde comprar bilhetes e dicas para encaixar a visita em um dia."
+  },
+  "linkLabel": "Positano a Pompeia: como ir",
+  "intro": [
+    "Pompeia é vasta, impressionante e fácil de sobrecarregar na agenda. Este plano ajuda-te a ver o essencial sem passar o dia inteiro em deslocações.",
+    "No verão conta com calor, pó e muita gente: leva água, proteção solar e sê realista quanto à parte do sítio que consegues visitar."
+  ],
+  "toc": [
+    {
+      "href": "#at-a-glance",
+      "label": "Em resumo"
+    },
+    {
+      "href": "#entry-cost-and-hours",
+      "label": "Preços e horários"
+    },
+    {
+      "href": "#other-facilities",
+      "label": "Serviços no local"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Como chegar"
+    },
+    {
+      "href": "#self-guided-tour",
+      "label": "Percurso autónomo"
+    },
+    {
+      "href": "#faqs",
+      "label": "Perguntas frequentes"
+    }
+  ],
+  "sections": [
+    {
+      "id": "at-a-glance",
+      "title": "Em resumo",
+      "body": [
+        "A dimensão de Pompeia impressiona assim que entras: quase toda a cidade foi escavada e é fácil de percorrer a pé.",
+        "É uma saída económica se estiveres disposto a visitar por conta própria — o contexto histórico ganha vida mesmo sem guia privado.",
+        "Herculano é mais pequena e está melhor preservada; lembra-te dela se quiseres frescos e mosaicos intactos em vez das ruas extensas de Pompeia.",
+        "Quem parte de Positano em transportes públicos deve prever calor, pó e tempos de viagem longos."
+      ]
+    },
+    {
+      "id": "entry-cost-and-hours",
+      "title": "Preços e horários de abertura",
+      "body": [
+        "Os preços e horários variam consoante a época — confirma o site oficial do Parco Archeologico di Pompei antes de sair.",
+        "O bilhete normal costuma rondar a dezena e meia de euros; a última entrada situa-se entre o fim da tarde e o início da noite, dependendo do mês."
+      ]
+    },
+    {
+      "id": "other-facilities",
+      "title": "Serviços no local",
+      "body": [
+        "Levanta o mapa gratuito no posto de informação ao lado das bilheteiras; facilita muito a orientação dentro das ruínas.",
+        "À entrada podes alugar audioguias ou contratar guias credenciados se quiseres comentários adicionais.",
+        "Existem pontos de restauração, mas podem ser limitados — chega com bastante água, sobretudo nos meses mais quentes.",
+        "Podes guardar bagagens na estação Pompeii Scavi (serviço pago) ou deixá-las gratuitamente no guarda-volumes logo após a entrada."
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "Como chegar",
+      "body": [
+        "De Positano, apanha o autocarro SITA até Sorrento; compra os bilhetes no tabacaria ou a bordo e conta com cerca de uma hora de viagem.",
+        "Em Sorrento sobe as escadas para os cais da Circumvesuviana e apanha o comboio local para ‘Pompei Scavi – Villa dei Misteri’.",
+        "Ao sair da estação vira à direita: em menos de um minuto estarás na entrada Porta Marina Superiore, à esquerda."
+      ]
+    },
+    {
+      "id": "self-guided-tour",
+      "title": "Percurso autónomo",
+      "body": [
+        "À entrada vira à esquerda para o posto de informação, recolhe o mapa e, se necessário, trata da consignação de bagagem antes de comprares os bilhetes nas bilheteiras em frente.",
+        "Já dentro, identifica Porta Marina Superiore no mapa — estarás na Via Marina com sinalização clara à tua frente.",
+        "Segue a Via Marina em direção ao anfiteatro, desviando-te para as casas, termas e fóruns que te interessem antes de regressar ao percurso principal.",
+        "Depois de explorares o anfiteatro, regressa atravessando a parte inferior do sítio para cobrir mais destaques sem repetir caminhos.",
+        "Este circuito permite ver entre 60 % e 80 % dos pontos-chave em muito menos tempo do que tentar percorrer todas as ruas."
+      ]
+    }
+  ],
+  "howTo": {
+    "steps": [
+      {
+        "name": "Autocarro para Sorrento",
+        "text": "Apanha o autocarro SITA em Positano e segue até à estação principal de Sorrento (cerca de 60 minutos)."
+      },
+      {
+        "name": "Comboio para Pompeii Scavi",
+        "text": "Sobe aos cais da Circumvesuviana e apanha o comboio para ‘Pompei Scavi – Villa dei Misteri’."
+      },
+      {
+        "name": "Caminhada até à entrada",
+        "text": "Ao sair da estação vira à direita; Porta Marina Superiore fica a uns 50 metros à esquerda."
+      }
+    ]
+  },
+  "tipsTitle": "Dicas para o dia",
+  "tips": [
+    "Levanta o mapa gratuito antes de passar as torniquetes para planear desvios sem regressar atrás.",
+    "Leva bastante água e reabastece sempre que vires uma fonte — no verão os quiosques podem ter filas longas.",
+    "Assinala pontos fotogénicos ou frescos que queiras rever na saída; é fácil esquecê-los com o calor."
+  ],
+  "warningsTitle": "Avisos importantes",
+  "warnings": [
+    "Em época alta, as filas para o autocarro SITA e para a Circumvesuviana podem acrescentar 20–30 minutos a cada trajeto — reserva algum tempo extra.",
+    "Grande parte do sítio é a céu aberto sem sombra; evita as visitas ao meio-dia se és sensível ao calor."
+  ],
+  "faqsTitle": "Perguntas frequentes",
+  "faqs": [
+    {
+      "q": "Qual é a melhor entrada?",
+      "a": [
+        "Porta Marina Superiore, junto à estação Pompei Scavi, é a mais prática para quem visita de forma independente: fica a poucos metros do comboio e perto do guarda-volumes."
+      ]
+    },
+    {
+      "q": "Posso visitar sem guia?",
+      "a": [
+        "Sim. O mapa oficial gratuito é detalhado e a maioria dos edifícios principais tem sinalética em italiano e inglês. Há audioguias e guias credenciados disponíveis se quiseres mais contexto."
+      ]
+    },
+    {
+      "q": "Existe guarda-volumes seguro?",
+      "a": [
+        "Podes deixar malas pequenas na estação Pompei Scavi mediante pagamento, e o sítio oferece um guarda-volumes gratuito logo após a entrada."
+      ]
+    }
+  ]
+}

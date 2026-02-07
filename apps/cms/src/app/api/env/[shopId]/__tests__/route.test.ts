@@ -1,19 +1,20 @@
 import { type NextRequest } from "next/server";
-import path from "path";
 import { __setMockSession } from "next-auth";
+import path from "path";
+
 const setupSanityBlog = jest.fn();
 const parseJsonBody = jest.fn();
 
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 jest.mock("@cms/actions/setupSanityBlog", () => ({ setupSanityBlog }));
-jest.mock("@shared-utils", () => ({ parseJsonBody }));
+jest.mock("@acme/lib/http/server", () => ({ parseJsonBody }));
 
 const mkdir = jest.fn();
 const writeFile = jest.fn();
 jest.mock("fs", () => ({ promises: { mkdir, writeFile } }));
 
 const resolveDataRoot = jest.fn();
-jest.mock("@platform-core/dataRoot", () => ({ resolveDataRoot }));
+jest.mock("@acme/platform-core/dataRoot", () => ({ resolveDataRoot }));
 
 let POST: typeof import("../route").POST;
 

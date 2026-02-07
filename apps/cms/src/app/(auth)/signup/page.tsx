@@ -1,7 +1,8 @@
 // apps/cms/src/app/(auth)/signup/page.tsx
-import { Button, Input } from "@/components/atoms/shadcn";
-import { requestAccount } from "@cms/actions/accounts.server";
 import { redirect } from "next/navigation";
+import { requestAccount } from "@cms/actions/accounts.server";
+
+import { Button, Input } from "@/components/atoms/shadcn";
 
 export default function SignupPage() {
   async function createAccount(formData: FormData) {

@@ -77,6 +77,11 @@
       "import": "./dist/shops/index.js",
       "default": "./dist/shops/index.js"
     },
+    "./shops/client": {
+      "types": "./dist/shops/client.d.ts",
+      "import": "./dist/shops/client.js",
+      "default": "./dist/shops/client.js"
+    },
     "./shops/health": {
       "types": "./dist/shops/health.d.ts",
       "import": "./dist/shops/health.js",
@@ -86,6 +91,11 @@
       "types": "./dist/utils/index.d.ts",
       "import": "./dist/utils/index.js",
       "default": "./dist/utils/index.js"
+    },
+    "./contexts/CurrencyContext": {
+      "types": "./dist/contexts/CurrencyContext.d.ts",
+      "import": "./dist/contexts/CurrencyContext.js",
+      "default": "./dist/contexts/CurrencyContext.js"
     },
     "./components/*": {
       "types": "./dist/components/*.d.ts",
@@ -107,6 +117,12 @@
       "import": "./dist/repositories/*.js",
       "default": "./dist/repositories/*.js"
     },
+    "./repositories/pages": {
+      "types": "./dist/repositories/pages/index.server.d.ts",
+      "import": "./dist/repositories/pages/index.server.js",
+      "default": "./dist/repositories/pages/index.server.js"
+    },
+    "./repositories/pages/schema.json": "./dist/repositories/pages/schema.json",
     "./router/*": {
       "types": "./dist/router/*.d.ts",
       "import": "./dist/router/*.js",
@@ -117,15 +133,75 @@
       "import": "./dist/rental/*.js",
       "default": "./dist/rental/*.js"
     },
+    "./pricing": {
+      "types": "./dist/pricing/index.d.ts",
+      "import": "./dist/pricing/index.js",
+      "default": "./dist/pricing/index.js"
+    },
+    "./tax": {
+      "types": "./dist/tax/index.d.ts",
+      "import": "./dist/tax/index.js",
+      "default": "./dist/tax/index.js"
+    },
     "./createShop": {
       "types": "./dist/createShop/index.d.ts",
       "import": "./dist/createShop/index.js",
       "default": "./dist/createShop/index.js"
     },
+    "./themeRegistry": {
+      "types": "./dist/themeRegistry/index.d.ts",
+      "import": "./dist/themeRegistry/index.js",
+      "default": "./dist/themeRegistry/index.js"
+    },
+    "./centralInventory": {
+      "types": "./dist/centralInventory/index.d.ts",
+      "import": "./dist/centralInventory/index.js",
+      "default": "./dist/centralInventory/index.js"
+    },
+    "./centralInventory/server": {
+      "types": "./dist/centralInventory/centralInventory.server.d.ts",
+      "import": "./dist/centralInventory/centralInventory.server.js",
+      "default": "./dist/centralInventory/centralInventory.server.js"
+    },
+    "./centralInventory/csvIngest": {
+      "types": "./dist/centralInventory/csvIngest.d.ts",
+      "import": "./dist/centralInventory/csvIngest.js",
+      "default": "./dist/centralInventory/csvIngest.js"
+    },
     "./email": {
       "types": "./dist/email.d.ts",
       "import": "./dist/email.js",
       "default": "./dist/email.js"
+    },
+    "./media": {
+      "types": "./dist/media/index.d.ts",
+      "import": "./dist/media/index.js",
+      "default": "./dist/media/index.js"
+    },
+    "./logging": {
+      "types": "./dist/logging/index.d.ts",
+      "import": "./dist/logging/index.js",
+      "default": "./dist/logging/index.js"
+    },
+    "./secrets": {
+      "types": "./dist/secrets/index.d.ts",
+      "import": "./dist/secrets/index.js",
+      "default": "./dist/secrets/index.js"
+    },
+    "./stripeConnect": {
+      "types": "./dist/stripeConnect/index.d.ts",
+      "import": "./dist/stripeConnect/index.js",
+      "default": "./dist/stripeConnect/index.js"
+    },
+    "./d1": {
+      "types": "./dist/d1/index.server.d.ts",
+      "import": "./dist/d1/index.server.js",
+      "default": "./dist/d1/index.server.js"
+    },
+    "./repositories/businessOs.server": {
+      "types": "./dist/repositories/businessOs.server.d.ts",
+      "import": "./dist/repositories/businessOs.server.js",
+      "default": "./dist/repositories/businessOs.server.js"
     },
     "./*": {
       "types": "./dist/*.d.ts",
@@ -139,6 +215,7 @@
   "sideEffects": false,
   "scripts": {
     "build": "tsc -b",
+    "dev": "tsc -b --watch",
     "clean": "rimraf dist *.tsbuildinfo",
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs",
     "lint": "eslint .",
@@ -155,18 +232,20 @@
     "@acme/i18n": "workspace:^",
     "@acme/page-builder-core": "workspace:^",
     "@acme/plugin-sanity": "workspace:^",
-    "@acme/shared-utils": "workspace:^",
+    "@acme/lib": "workspace:^",
     "@acme/stripe": "workspace:^",
+    "@acme/templates": "workspace:^",
     "@acme/types": "workspace:^",
     "@portabletext/react": "^3.2.1",
     "@themes/base": "workspace:^",
     "@types/node": "^20.19.4",
-    "next": "^15.3.5",
+    "aws4fetch": "^1.0.20",
+    "next": "^15.3.9",
     "ulid": "^3.0.1"
   },
   "devDependencies": {
     "@prisma/client": "6.14.0",
     "prisma": "6.14.0",
-    "react-test-renderer": "19.2.0-canary-3fbfb9ba-20250409"
+    "react-test-renderer": "19.2.1"
   }
 }

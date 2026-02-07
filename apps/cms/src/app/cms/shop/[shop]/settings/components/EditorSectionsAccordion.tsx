@@ -12,7 +12,6 @@ import {
   CardContent,
   Input,
 } from "@/components/atoms/shadcn";
-import { Toast } from "@/components/atoms";
 
 import type { EditorSectionConfig } from "../editorSections";
 
@@ -21,18 +20,10 @@ interface HiddenFieldConfig {
   readonly value: string;
 }
 
-interface EditorToastState {
-  readonly open: boolean;
-  readonly status: "success" | "error";
-  readonly message: string;
-}
-
 export interface EditorSectionsAccordionProps {
   readonly sections: readonly EditorSectionConfig[];
   readonly onSubmit: FormEventHandler<HTMLFormElement>;
   readonly saving: boolean;
-  readonly toast: EditorToastState;
-  readonly onToastClose: () => void;
   readonly hiddenFields?: readonly HiddenFieldConfig[];
 }
 
@@ -40,15 +31,9 @@ export default function EditorSectionsAccordion({
   sections,
   onSubmit,
   saving,
-  toast,
-  onToastClose,
   hiddenFields,
 }: EditorSectionsAccordionProps) {
   const defaultOpenSections = sections.map((section) => section.key);
-  const toastClassName =
-    toast.status === "error"
-      ? "bg-destructive text-destructive-foreground"
-      : "bg-success text-success-fg";
 
   return (
     <form onSubmit={onSubmit} className="space-y-6">
@@ -87,13 +72,6 @@ export default function EditorSectionsAccordion({
           {saving ? "Saving…" : "Save"}
         </Button>
       </div>
-      <Toast
-        open={toast.open}
-        message={toast.message}
-        onClose={onToastClose}
-        className={toastClassName}
-        role="status"
-      />
     </form>
   );
 }

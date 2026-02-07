@@ -1,6 +1,8 @@
-import { describe, it, expect, jest } from '@jest/globals';
-import { withEnv } from './test-helpers';
+import { describe, expect, it, jest } from '@jest/globals';
+
 import { expectInvalidAuthEnvWithConfigEnv } from '../../../test/utils/expectInvalidAuthEnv';
+
+import { withEnv } from './test-helpers';
 
 const NEXT = 'nextauth-secret-32-chars-long-string!';
 const SESSION = 'session-secret-32-chars-long-string!';
@@ -30,7 +32,7 @@ const devEnv = (overrides: EnvOverrides = {}): EnvOverrides => ({
 const expectInvalidProd = (
   overrides: EnvOverrides,
   accessor: (env: Record<string, unknown>) => unknown,
-  consoleErrorSpy?: jest.SpyInstance,
+  consoleErrorSpy?: { mockRestore: () => void },
 ) =>
   expectInvalidAuthEnvWithConfigEnv({
     env: prodEnv(overrides),
@@ -41,7 +43,7 @@ const expectInvalidProd = (
 const expectInvalidDev = (
   overrides: EnvOverrides,
   accessor: (env: Record<string, unknown>) => unknown,
-  consoleErrorSpy?: jest.SpyInstance,
+  consoleErrorSpy?: { mockRestore: () => void },
 ) =>
   expectInvalidAuthEnvWithConfigEnv({
     env: devEnv(overrides),

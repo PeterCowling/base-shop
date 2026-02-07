@@ -1,8 +1,8 @@
 // Single-purpose: svg wrapper and data-url encoding
 
-import type { Size, Colors } from "./types";
-import { CANVAS } from "./types";
 import { getColors } from "./color";
+import type { Colors,Size } from "./types";
+import { CANVAS } from "./types";
 
 export function svg(parts: string[], size: Size = CANVAS, c: Colors = getColors()): string {
   const body = parts.join("");

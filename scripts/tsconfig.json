@@ -16,11 +16,11 @@
 
     /* ───── language / module target ───── */
     "module": "esnext",
-    "target": "ES2017",
+    "target": "ES2022",
     "moduleResolution": "bundler",
 
-    /* ───── Node typings only ───── */
-    "types": ["node"],
+    /* ───── Node typings + test framework ───── */
+    "types": ["node", "jest"],
 
     /* ───── workspace package resolution ───── */
     "paths": {
@@ -34,6 +34,7 @@
         "packages/types/src/*",
         "packages/types/src/*/index.ts"
       ],
+      "@config/env-schema": ["packages/config/env-schema.ts"],
       "@config/src/env": ["packages/config/src/env/index.ts"],
       "@config/src/*": ["packages/config/src/*"]
     },
@@ -54,6 +55,7 @@
   "exclude": [
     "dist", // freshly emitted output
     "__tests__", // unit/integration tests
+    "**/*.test.ts", // test files using @jest/globals
     ".turbo", // turbo cache
     "node_modules", // package deps (if any local)
     "src/release-deposits.ts" // checked via apps/cms project

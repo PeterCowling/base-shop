@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { withTempRepo, mockNextAuthAdmin, jsonRequest } from "@acme/test-utils";
+
+import { jsonRequest,mockNextAuthAdmin, withTempRepo } from "@acme/test-utils";
 
 // Response.json polyfill is provided in jest.setup.ts
 
@@ -22,7 +23,7 @@ describe("inventory update route", () => {
           },
         }));
       const { writeInventory, readInventory } = await import(
-        "@platform-core/repositories/inventory.server",
+        "@acme/platform-core/repositories/inventory.server",
       );
       await writeInventory("test", [
         {
@@ -65,7 +66,7 @@ describe("inventory update route", () => {
           },
         }));
       const { writeInventory, readInventory } = await import(
-        "@platform-core/repositories/inventory.server",
+        "@acme/platform-core/repositories/inventory.server",
       );
       await writeInventory("test", [
         { sku: "a", productId: "p1", quantity: 0, variantAttributes: {} },

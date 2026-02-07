@@ -1,7 +1,9 @@
-import { render, screen, fireEvent } from "@testing-library/react";
 import React, { useState } from "react";
-import InteractionsPanel from "../InteractionsPanel";
+import { fireEvent,render, screen } from "@testing-library/react";
+
 import type { PageComponent } from "@acme/types";
+
+import InteractionsPanel from "../InteractionsPanel";
 
 // Provide minimal runtime exports needed by downstream modules (e.g. @acme/i18n)
 jest.mock("@acme/types", () => ({

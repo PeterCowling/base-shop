@@ -1,6 +1,7 @@
-import { Button } from "@ui/components/atoms";
-import { ImagePicker } from "@acme/page-builder-ui";
 import Image from "next/image";
+
+import { Button } from "@acme/design-system/shadcn";
+import { ImagePicker } from "@acme/page-builder-ui";
 
 interface Props {
   value: string;

@@ -1,6 +1,8 @@
 import type { HistoryState } from "@acme/types";
-import type { MoveAction } from "./types";
+
 import { commit } from "../history";
+
+import type { MoveAction } from "./types";
 import { moveComponent } from "./utils";
 
 export function move(state: HistoryState, action: MoveAction): HistoryState {

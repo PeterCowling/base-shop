@@ -1,4 +1,5 @@
 import type { HistoryState } from "@acme/types";
+
 import type { UpdateEditorAction } from "./types";
 
 export function updateEditor(

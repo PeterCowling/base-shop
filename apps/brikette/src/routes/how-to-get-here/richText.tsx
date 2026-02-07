@@ -1,9 +1,9 @@
 import { Fragment, type ReactNode } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
+import { resolveRichTextParts } from "./normalizers";
 import { externalLinkClass } from "./styles";
 import type { DestinationLink, RichText } from "./types";
-import { resolveRichTextParts } from "./normalizers";
 
 function resolveHref(link: DestinationLink, basePath: string) {
   if (link.internal && !link.href.startsWith("/")) {
@@ -28,7 +28,7 @@ export function renderRichText(note: RichText | undefined, basePath: string): Re
 
     if (part.internal) {
       return (
-        <Link key={key} className={externalLinkClass} prefetch="intent" to={resolvedHref}>
+        <Link key={key} className={externalLinkClass} prefetch={true} href={resolvedHref}>
           {part.label}
         </Link>
       );

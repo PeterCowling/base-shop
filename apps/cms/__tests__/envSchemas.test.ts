@@ -1,5 +1,5 @@
 /** @jest-environment node */
-import { describe, it, expect, beforeEach, afterEach } from "@jest/globals";
+import { afterEach,beforeEach, describe, expect, it } from "@jest/globals";
 
 const ORIGINAL_ENV = { ...process.env };
 const NEXTAUTH_SECRET = "nextauth-secret-32-chars-long-string!";
@@ -29,7 +29,7 @@ afterEach(() => {
 
 describe("auth env schema", () => {
   it("fails when session secret missing in production", async () => {
-    process.env.NODE_ENV = "production";
+    (process.env as { NODE_ENV: string }).NODE_ENV = "production";
     delete process.env.JEST_WORKER_ID;
     jest.resetModules();
     const { authEnvSchema } = await import("@acme/config/env/auth");
@@ -40,7 +40,7 @@ describe("auth env schema", () => {
   });
 
   it("applies development defaults", async () => {
-    process.env.NODE_ENV = "development";
+    (process.env as { NODE_ENV: string }).NODE_ENV = "development";
     jest.resetModules();
     const { authEnvSchema } = await import("@acme/config/env/auth");
     const parsed = authEnvSchema.parse({});
@@ -49,7 +49,7 @@ describe("auth env schema", () => {
   });
 
   it("coerces booleans and rejects invalid TTL", async () => {
-    process.env.NODE_ENV = "production";
+    (process.env as { NODE_ENV: string }).NODE_ENV = "production";
     delete process.env.JEST_WORKER_ID;
     jest.resetModules();
     const { authEnvSchema } = await import("@acme/config/env/auth");
@@ -69,7 +69,7 @@ describe("auth env schema", () => {
   });
 
   it("requires redis credentials when SESSION_STORE=redis", async () => {
-    process.env.NODE_ENV = "production";
+    (process.env as { NODE_ENV: string }).NODE_ENV = "production";
     delete process.env.JEST_WORKER_ID;
     jest.resetModules();
     const { authEnvSchema } = await import("@acme/config/env/auth");
@@ -94,7 +94,7 @@ describe("core env schema", () => {
   } as const;
 
   it("defaults CART_COOKIE_SECRET outside production", async () => {
-    process.env.NODE_ENV = "development";
+    (process.env as { NODE_ENV: string }).NODE_ENV = "development";
     jest.resetModules();
     const { coreEnvSchema } = await import("@acme/config/env/core");
     const parsed = coreEnvSchema.parse({ ...base });
@@ -102,7 +102,7 @@ describe("core env schema", () => {
   });
 
   it("requires CART_COOKIE_SECRET in production", async () => {
-    process.env.NODE_ENV = "production";
+    (process.env as { NODE_ENV: string }).NODE_ENV = "production";
     delete process.env.JEST_WORKER_ID;
     process.env.CART_COOKIE_SECRET = "secret";
     jest.resetModules();
@@ -112,7 +112,7 @@ describe("core env schema", () => {
   });
 
   it("validates boolean and number refinements", async () => {
-    process.env.NODE_ENV = "development";
+    (process.env as { NODE_ENV: string }).NODE_ENV = "development";
     jest.resetModules();
     const { coreEnvSchema } = await import("@acme/config/env/core");
     const ok = coreEnvSchema.safeParse({
@@ -221,10 +221,10 @@ describe("shipping env schema", () => {
       FREE_SHIPPING_THRESHOLD: "25",
     });
     expect(ok.success).toBe(true);
-    expect(ok.data.ALLOWED_COUNTRIES).toEqual(["US", "CA"]);
-    expect(ok.data.LOCAL_PICKUP_ENABLED).toBe(true);
-    expect(ok.data.DEFAULT_COUNTRY).toBe("US");
-    expect(ok.data.FREE_SHIPPING_THRESHOLD).toBe(25);
+    expect(ok.data!.ALLOWED_COUNTRIES).toEqual(["US", "CA"]);
+    expect(ok.data!.LOCAL_PICKUP_ENABLED).toBe(true);
+    expect(ok.data!.DEFAULT_COUNTRY).toBe("US");
+    expect(ok.data!.FREE_SHIPPING_THRESHOLD).toBe(25);
 
     const missing = shippingEnvSchema.safeParse({ SHIPPING_PROVIDER: "ups" });
     expect(missing.success).toBe(false);

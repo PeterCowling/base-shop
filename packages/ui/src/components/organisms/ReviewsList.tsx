@@ -1,7 +1,9 @@
 "use client"; // i18n-exempt: Next.js directive string, not user-facing copy
 import * as React from "react";
+
+import { useTranslations } from "@acme/i18n";
+
 import { cn } from "../../utils/style";
-import { RatingStars } from "../atoms/RatingStars";
 import { Input } from "../atoms/primitives/input";
 import {
   Select,
@@ -10,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../atoms/primitives/select";
-import { useTranslations } from "@acme/i18n";
+import { RatingStars } from "../atoms/RatingStars";
 
 export interface Review {
   author: string;

@@ -1,4 +1,4 @@
-import type { SKU, RentalLineItem } from "@acme/types";
+import type { RentalLineItem,SKU } from "@acme/types";
 
 export interface CartLine {
   sku: SKU;

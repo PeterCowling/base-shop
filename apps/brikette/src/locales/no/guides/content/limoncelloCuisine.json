@@ -1,69 +1,117 @@
 {
   "seo": {
-    "title": "Limoncello og lokal mat på Amalfikysten",
-    "description": "Hva du bør smake i Positano: limoncello, sjømatfavoritter, sitrondesserter og bestillingsetikette."
+    "title": "Limoncello & Lokalt Kjøkken på Amalfikysten",
+    "description": "Budsjettguide til Positanos limoncello, lokalt kjøkken og sitrongodsaker. Hvor man smaker gratis prøver, billigste autentiske flasker og rimelige lokale spisesteder."
   },
-  "linkLabel": "Limoncello og lokal mat",
+  "linkLabel": "Smak Positano: Limoncello, Sitroner & Lokale Smaker",
   "intro": [
-    "Limoncello og lokal mat på Amalfikysten: hva du bør smake og hvordan du bestiller som en lokal.",
-    "Her er hvor du kan nippe, hva du skal kjøpe og hvordan du lager mat med dem hjemme."
+    "Limoncello og sitron-alt definerer Amalfikysten — men du trenger ikke et stort budsjett for å smake det beste.",
+    "Her er hvor du kan smake gratis, hvilke flasker som gir mest for pengene, og hvordan man spiser som en innfødt uten turistfelle-priser."
   ],
-  "tocTitle": "On this page",
+  "tocTitle": "På denne siden",
   "sections": [
     {
-      "id": "tasting",
-      "title": "Tasting",
+      "id": "free-tasting",
+      "title": "Gratis smakinger & hvor man prøver",
       "body": [
-        "Besøk small botteghe for håndverkslimoncello og be om en prøve for å sammenligne stiler.",
-        "Kombiner smaksprøver med sitrongelato, sorbet eller bakverk for å måle sødme og balanse."
+        "De fleste små limoncello-butikker og botteghe i Positano tilbyr gratis prøver — det er standard praksis, ikke en turistfordel. Gå inn i enhver håndverks produsent og spør høflig; de heller vanligvis 2-3 stiler slik at du kan sammenligne.",
+        "De beste smakingsstedene er på Via dei Mulini og gatene bak Chiesa Nuova — bort fra turistfellene ved strandpromenaden. Se etter familiedrevne butikker med enkle skilt og lokale som kikker; de er mindre påtrengende, og limoncelloen er ofte sterkere og mindre sukkerholdig.",
+        "Par smakingen din med gratis sitrongodt (de fleste butikker tilbyr disse) eller ta en €1,50 sitrongranita fra en gelateria for å rense ganen mellom slurker.",
+        "%IMAGE:limoncello-tasting-shop.jpg|Local limoncello shop offering free tasting samples in Positano%",
+        "Pro tips fra hostellet: butikkene på Via Cristoforo Colombo (veien som slynger seg opp fra Chiesa Nuova) har ofte færre turister og mer sjenerøse skjenk. Vi har sett lokale bringe sine egne flasker tilbake for påfyll til engrospriser — et tegn på at du har funnet det riktige stedet."
       ]
     },
     {
-      "id": "purchase",
-      "title": "Buying & shipping",
+      "id": "buying-smart",
+      "title": "Kjøp av flasker: hva man skal se etter & hva man skal unngå",
       "body": [
-        "Sjekk flyselskapets væskegrenser; pakke flasker trygt i innsjekket bagasje.",
-        "Se etter IGP Costa d’Amalfi-etiketter og resirkulerbar emballasje fra lokale produsenter."
+        "Ekte limoncello skal liste Sorrento IGP-sitroner (eller Costa d'Amalfi IGP) på etiketten og ha minst 28-30% alkoholinnhold. Hvis den er lysende neongul eller mistenkelig billig (under €8 for 500ml), er det sannsynligvis kunstig smak og sukkersirup.",
+        "Best verdi: 500ml flasker fra lokale produsenter koster €10-15 i Positano, €8-12 i Praiano eller Amalfi by. Ikke betal mer enn €15 med mindre det er en premium håndverks blanding med uvanlige sitrusfrukter (bergamott, cedro).",
+        "Flyplass- og togstasjonsbutikker tar 30-50% mer for de samme flaskene. Hvis du flyr ut fra Napoli, kjøp i Positano og pakk forsiktig i innsjekket bagasje (pakk inn i klær + plastpose).",
+        "Flyselskapers væskegrenser: maks 100ml i håndbagasjen. Standardflasker er 500ml eller 750ml, så innsjekket bagasje er ditt eneste alternativ. Vi har aldri hatt en flaske knust når den er pakket riktig i midten av en ryggsekk.",
+        "%IMAGE:limoncello-bottles-local.jpg|Authentic limoncello bottles from local Amalfi Coast producers%"
       ]
     },
     {
-      "id": "cooking",
-      "title": "Cooking with lemons",
+      "id": "budget-eats",
+      "title": "Billig lokal mat: sitronretter verdt å prøve",
       "body": [
-        "Bruk skall og juice i salater, sjømatpasta og desserter for lysstyrke.",
-        "Oppbevar sitroner på et kjølig, mørkt sted og bruk skallene til sirup eller marinader."
+        "Hopp over de €25 turistmenyene på hovedstranden. Gå i stedet til Da Vincenzo (Via Pasitea 172) for €8-12 pastaretter med sitron — deres spaghetti al limone er enkle, friske og bruker lokale sitroner. Kun kontanter, ingen reservasjoner, lokale står i kø kl. 19:00.",
+        "Til dessert koster delizia al limone (sitronsvamp gjennomtrukket med limoncello-krem) €4-6 hos de fleste pasticcerier. Vår favoritt: Pasticceria La Zagara (Via dei Mulini) — €5 for et sjenerøst stykke, utendørs sitteplasser, gratis vannpåfyll.",
+        "Budsjettfrokost: ta en sfogliatella (€2-3) og espresso (€1,20) på en bar, kjøp deretter et kilo friske sitroner fra en grønnsakshandler (€2-4) til å snackse på eller lage frisk sitronvann på hostellet.",
+        "Terrassen til %LINK:chiesaNuovaArrivals|hostellet% er perfekt for å sette sammen egne sitron-måltider: kjøp frisk mozzarella (€3-4), tomater (€2/kg), basilikum og sitroner på Chiesa Nuova-markedet (torsdager morgen), drypp deretter med lokal olivenolje. Total kostnad: €10-12 for to personer.",
+        "%IMAGE:spaghetti-al-limone.jpg|Fresh spaghetti al limone with Amalfi lemons at local restaurant%"
+      ]
+    },
+    {
+      "id": "cooking-tips",
+      "title": "Matlaging med Amalfi-sitroner",
+      "body": [
+        "Amalfi-sitroner (sfusato amalfitano) har tykke, duftende skrell og mindre syre enn supermarkedssitroner — bruk dem til retter hvor skrellet skinner.",
+        "Klassisk bruk: riv skrell ned i pastavann for spaghetti al limone, knus skrell med sukker for hjemmelaget limoncello, eller kandiser tykke striper til dessertpynt.",
+        "Oppbevaring: hold sitroner på et kjølig, mørkt sted (ikke i kjøleskapet) i opptil 2 uker. Hvis du kjøper en stor pose på markedet, press halvparten og frys saften i isbiter brett for senere bruk.",
+        "Overskytende skrell: kok med vann og sukker for å lage sitronsirup til cocktails, eller tørk dem og tilsett til te. Null avfall, maksimal smak.",
+        "%IMAGE:amalfi-lemons-cooking.jpg|Fresh Amalfi Coast lemons (sfusato amalfitano) for cooking%"
+      ]
+    },
+    {
+      "id": "ordering-etiquette",
+      "title": "Bestillingsetikette & unngå turistfeller",
+      "body": [
+        "Hvis en restaurant har en meny på 6 språk og bilder av hver rett, er det en turistfelle. Se etter håndskrevne menyer på italiensk med maks 8-12 retter — det er der lokale spiser.",
+        "Limoncello serveres tradisjonelt iskald etter et måltid som digestif, ikke før eller under. Hvis et sted presser limoncello-cocktailer før middag, sikter de mot turister.",
+        "Coperto (kuvertavgift) er standard i Italia: €1,50-3 per person for brød og bordservice. Hvis det er over €3, betaler du for mye. Sjekk menyens 'coperto'-priser før du setter deg.",
+        "Vann: 'Acqua naturale' er stille vann, 'frizzante' er kullsyre. Postevann er trygt, men serveres sjelden på restauranter — bestill en €2-3 flaske og påfyll gratis fra hostellets fontene før du går ut.",
+        "%IMAGE:local-italian-restaurant.jpg|Authentic local restaurant with handwritten Italian menu%",
+        "Tipskultur: serviceavgift (servizio) er noen ganger inkludert i regningen. Hvis ikke, er det høflig men ikke obligatorisk å etterlate €1-2 eller runde opp regningen. Italienere tipper ikke 15-20% som i USA — spar euroene dine til mer limoncello."
+      ]
+    },
+    {
+      "id": "market-shopping",
+      "title": "Markedshandling & bringe sitroner hjem",
+      "body": [
+        "%LINK:chiesaNuovaArrivals|Chiesa Nuova-markedet% (torsdager 08:00-13:00) selger ferske produkter, inkludert massive Amalfi-sitroner for €2-4/kg. Sammenlign med €1-2 per sitron i turistsuvenir-butikker.",
+        "Hvis du vil bringe sitroner hjem: velg faste, plettfrie frukter og pakk i midten av vesken din pakket inn i papirhåndklær. De holder 5-7 dager hvis holdt kjølig. EU-toll tillater opptil 2kg fersk frukt; sjekk landets regler hvis du flyr utenfor EU.",
+        "For limoncello-ingredienser, kjøp ren alkohol (alcool puro, 95%) på et apotek eller stort supermarked i Salerno eller Napoli — det er €8-12 for 1L versus €15-20 i Positanos små butikker.",
+        "%IMAGE:chiesa-nuova-market-lemons.jpg|Fresh Amalfi lemons at Chiesa Nuova Thursday market%"
       ]
     }
   ],
   "tips": [
-    "Oppbevar flasker kjølig og mørkt når du reiser hjem – smaken holder seg best slik.",
-    "Spør om frakten; mange produsenter sender internasjonalt og tar hånd om papirarbeidet."
+    "Gratis prøver er standard — ikke føl deg presset til å kjøpe etter smakingen. Høflig 'grazie, ci penso' (takk, jeg tenker på det) fungerer fint.",
+    "Kjøp limoncello og sitroner i Amalfi by eller Praiano for 20-30% mindre enn Positano-priser.",
+    "Hopp over de keramiske sitronformede flaskene (€20-30) — de er skjøre, tunge, og limoncelloen inni er middelmådig. Få en vanlig glassflaske og bruk besparelsen på bedre kvalitetsvæske.",
+    "De fleste restauranter i Positano serverer gratis limoncello etter middag hvis du bestiller et fullstendig måltid. Hvis de ikke tilbyr, spør — 'Limoncello offerto?' — og de vil vanligvis bringe et lite glass.",
+    "%LINK:cheapEats|Hostellets kjøkken% er flott for å sette sammen billige sitron-måltider. Kjøp ingredienser på torsdagsmarkedet eller Conad i Chiesa Nuova og spar 50-70% kontra restaurantmåltider."
   ],
   "faqs": [
     {
       "q": "Kan jeg ta med limoncello i håndbagasjen?",
       "a": [
-        "Kun miniflasker under væskegrensen; pakk ellers i innsjekket bagasje og beskytt mot knus."
+        "Nei, ikke i flasker over 100ml. Standard limoncelloflasker er 500-750ml, så du må pakke dem i innsjekket bagasje.",
+        "Pakk flasker inn i klær eller bobleplast, forsegl i en plastpose i tilfelle lekkasje, og pakk i midten av vesken din bort fra harde gjenstander. Vi har fløyet med 4-5 flasker på denne måten uten problemer."
       ]
     },
     {
-      "q": "Hvor lenge holder en flaske?",
+      "q": "Hva er en rettferdig pris for limoncello i Positano?",
       "a": [
-        "Uåpnet holder den 1–2 år; åpnet bør drikkes innen seks måneder for best smak."
+        "€10-15 for en 500ml flaske fra en lokal produsent er standard. Alt over €18 er for dyrt med mindre det er en spesialblanding.",
+        "Billigere i Amalfi by (€8-12) eller Praiano. Unngå flyplassbutikker — de tar €20-25 for de samme flaskene."
+      ]
+    },
+    {
+      "q": "Er det alkoholfrie sitrongodsaker?",
+      "a": [
+        "Ja! Prøv sitrongranita (€2-3), frisk sitronvann (€3-4), eller sitronsorbet (€2,50-4). Disse er overalt og like forfriskende som limoncello.",
+        "Til matlaging er sitron-infundert olivenolje og sitronmarmelade flotte gaver og har intet alkoholinnhold."
+      ]
+    },
+    {
+      "q": "Hvor er best verdi for sitronsmaks måltider?",
+      "a": [
+        "Da Vincenzo (Via Pasitea 172) for €8-12 pastaretter. Pasticceria La Zagara (Via dei Mulini) for €5 delizia al limone dessert.",
+        "Eller lag selv mat: kjøp sitroner, mozzarella, tomater og olivenolje på Chiesa Nuova-markedet og sett sammen måltider på hostellet for €5-6 per person."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Photo gallery",
-    "items": [
-      {
-        "alt": "Positano vintage poster with lemons",
-        "caption": "Vintage lemons"
-      },
-      {
-        "alt": "Terrace table with limoncello glasses",
-        "caption": "Terrace limoncello"
-      }
-    ]
-  }
+  ]
 }

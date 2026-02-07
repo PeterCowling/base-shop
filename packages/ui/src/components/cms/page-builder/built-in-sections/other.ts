@@ -1,5 +1,7 @@
 import { ulid } from "ulid";
+
 import type { PageComponent } from "@acme/types";
+
 import type { BuiltInSection } from "./types";
 /**
  * Returns translated non-header/footer section variants for the Section Library.

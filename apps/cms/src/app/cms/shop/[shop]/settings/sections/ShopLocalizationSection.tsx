@@ -1,13 +1,14 @@
 "use client";
 
-import { Card, CardContent } from "@/components/atoms/shadcn";
 import { useTranslations } from "@acme/i18n";
-import type { MappingRowsController } from "../useShopEditorSubmit";
+
+import { Card, CardContent } from "@/components/atoms/shadcn";
 
 import MappingListField, {
   type MappingListFieldErrors,
   type MappingListFieldSelectOption,
 } from "../components/MappingListField";
+import type { MappingRowsController } from "../useShopEditorSubmit";
 
 const DEFAULT_LOCALES = ["en"] as const;
 

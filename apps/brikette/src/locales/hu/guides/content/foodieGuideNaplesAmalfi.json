@@ -1,53 +1,53 @@
 {
   "seo": {
-    "title": "Gasztrokalauz Nápolyhoz és az Amalfi-parthoz",
-    "description": "Mit egyél és hol: klasszikus fogások, helyi specialitások és ajánlott helyek."
+    "title": "Gasztroútmutató Nápoly és Amalfi között",
+    "description": "Mit egyél, hol és hogyan vásárolj minőségi helyi ízeket anélkül, hogy túlfizetnél."
   },
-  "linkLabel": "Gasztrokalauz Nápolyhoz és az Amalfi-parthoz",
+  "linkLabel": "Gasztroútmutató Nápoly-Amalfi",
   "intro": [
-    "A fordítás folyamatban van."
+    "A gasztronómiai élvezetek Nápoly és az Amalfi-part között könnyen beilleszthetők a napjaidba. Ebben a kalauzban azt találod, hova menj, mit kóstolj és hogyan vigyázz az árakra."
   ],
   "sections": [
     {
       "id": "naples",
-      "title": "Naples essentials",
+      "title": "Nápoly ízei",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "A pizza az egyik legkézenfekvőbb érv, de figyelj a valódi fatüzelésű kemencékre és a rövid sorokra. Kóstolj meg egy olaszország széles körben dicsért \\\"ragù” ragut és a sfogliatellét egy kávé mellé.",
+        "Ha lazább élményre vágysz, keress családi trattoriát a Spaccanapoli környékén, és kérj ajánlást helyi pincérektől."
       ]
     },
     {
       "id": "amalfi",
-      "title": "Amalfi Coast specialties",
+      "title": "Amalfi part menti ínyencségek",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Amalfi híres a citromjáról — limoncello, citromhab és colatura di alici (ansziovaszósz) mellőzhetetlen. Nézz be egy kis kézműves boltba, ahol saját üvegeiket árulják.",
+        "Keress kiülős déli teraszt, ahol friss halételek, kagylók és a helyi sajtok szerepelnek. Egy pizzettát is beilleszthetsz, ha a város központjában vagy."
       ]
     },
     {
-      "id": "street",
-      "title": "Street food & markets",
+      "id": "markets",
+      "title": "Piacok és alapanyagok",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Nápolyban szedd össze a friss zöldségeket és a házi szalámit a Mercato di Porta Nolana gyalogos részén.",
+        "Amalfi vagy Maiori piacain keress pácolt citromot, kecskesajtot és a caffe sospesot, amit simán készíthetsz reggel vagy piknikhez."
       ]
     }
   ],
   "tips": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
+    "Ha valamelyik étteremben bizonytalan vagy, kérj \\\"antipasti” tálat – több kis falatból álló élmény, ami megmutatja a konyha karakterét.",
+    "Vásárolj helyi olívaolajat vagy szárított tésztát kisebb csomagolásban; a kézműves üzletek általában gondosan csomagolnak a hazaszállításhoz."
   ],
   "faqs": [
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Hol van a legjobb pizza?",
       "a": [
-        "A fordítás folyamatban van."
+        "Nápolyban a híres pizzeriák (például Da Michele vagy Sorbillo) a klasszikus nevet viselik, de a kisebb éttermek is óriásit dobhatnak. Válassz kemencét és kóstold meg a margherita vagy a marinara verziót."
       ]
     },
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Milyen ajándékot érdemes vinni haza?",
       "a": [
-        "A fordítás folyamatban van."
+        "Kis üveges limoncello, olívaolaj vagy kolbászcsomag jól tűri az utazást. Kérd, hogy buborékfóliával vagy ruhával védjék a törékeny tárgyakat."
       ]
     }
   ]

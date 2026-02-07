@@ -1,0 +1,8 @@
+{
+  "items": [
+    { "icon": "🚚", "title": "Fast shipping", "desc": "2-3 business days" },
+    { "icon": "↩️", "title": "Free returns", "desc": "30-day policy" },
+    { "icon": "🌱", "title": "Eco friendly", "desc": "Sustainable packaging" }
+  ]
+}
+

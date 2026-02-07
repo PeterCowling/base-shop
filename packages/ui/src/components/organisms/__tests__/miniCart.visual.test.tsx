@@ -2,6 +2,7 @@
 import * as React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import { MiniCart } from "../MiniCart.client";
 // Provide a test Cart context provider shim that returns an empty cart and no-op dispatch.
 jest.mock("@acme/platform-core/contexts/CartContext", () => ({

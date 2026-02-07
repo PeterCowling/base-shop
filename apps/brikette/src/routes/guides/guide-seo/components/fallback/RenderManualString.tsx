@@ -1,15 +1,18 @@
-import i18n from "@/i18n";
-import type { TFunction } from "@/utils/i18nSafe";
 import type { GuideKey } from "@/guides/slugs";
+import i18n from "@/i18n";
+import type { AppLanguage } from "@/i18n.config";
+import { renderBodyBlocks } from "@/routes/guides/utils/linkTokens";
+import type { TFunction } from "@/utils/i18nSafe";
 
 interface Props {
   translations: { tGuides: TFunction };
   hookI18n?: { getFixedT?: (lng: string, ns: string) => TFunction | undefined };
   guideKey: GuideKey;
+  lang: AppLanguage;
 }
 
 /** Simple string fallback under content.{guideKey}.fallback */
-export default function RenderManualString({ translations, hookI18n, guideKey }: Props): JSX.Element | null {
+export default function RenderManualString({ translations, hookI18n, guideKey, lang }: Props): JSX.Element | null {
   try {
     const keyExpect = `content.${guideKey}.fallback` as const;
     const fbLocalRaw = translations.tGuides(keyExpect) as unknown;
@@ -44,7 +47,7 @@ export default function RenderManualString({ translations, hookI18n, guideKey }:
       return (
         <>
           <div className="space-y-4">
-            <p>{fb}</p>
+            {renderBodyBlocks([fb], lang, `manual-string-${guideKey}`, guideKey)}
           </div>
         </>
       );

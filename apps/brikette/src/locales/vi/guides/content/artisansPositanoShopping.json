@@ -1,53 +1,53 @@
 {
   "seo": {
-    "title": "Nghệ nhân & mua sắm ở Positano",
-    "description": "Sandals đóng theo chân, gốm thủ công và cách vận chuyển an toàn về nhà."
+    "title": "Nghệ thuật và nghệ nhân Positano (mua sắm)",
+    "description": "Sandals, đồ gốm, tranh in — nơi tìm chất lượng và cách vận chuyển."
   },
-  "linkLabel": "Nghệ nhân & mua sắm ở Positano",
+  "linkLabel": "Nghệ thuật và nghệ nhân Positano (mua sắm)",
   "intro": [
-    "Mua sắm đồ thủ công Positano mà không bị chặt chém: sandals, gốm sứ, tranh in và cách gửi đồ về nhà."
+    "Mua sắm ở làng nghề Positano không bị chặt chém: sandals, đồ gốm, tranh in và cách gửi đồ về nhà."
   ],
   "sections": [
     {
       "id": "sandals",
       "title": "Sandals đóng theo chân",
       "body": [
-        "Bản dịch đang được chuẩn bị.",
-        "Mang theo hoặc vẽ khuôn bàn chân để đặt hàng từ xa sau này — nhiều nghệ nhân nhận ship toàn cầu khi đã có số đo của bạn."
+        "Xem thợ đóng giày làm sandals da trong vòng 30 phút; giá các đôi đặt riêng bắt đầu từ khoảng 80 €.",
+        "Mang theo hoặc vẽ khuôn bàn chân để đặt hàng từ xa sau này — nhiều nghệ nhân gửi hàng toàn cầu khi đã có số đo của bạn."
       ]
     },
     {
       "id": "ceramics",
-      "title": "Gốm & nghệ thuật",
+      "title": "Đồ gốm & nghệ thuật",
       "body": [
-        "Ghé các xưởng gốm gia đình để tìm gạch, đồ bàn ăn vẽ tay. Nếu định dùng cho thực phẩm, hãy hỏi về men không chì.",
-        "Nghệ sĩ địa phương bán tranh in và màu nước dọc Via Cristoforo Colombo — ống giấy bảo vệ tác phẩm khi mang về."
+        "Ghé các xưởng gốm gia đình để xem gạch men và bộ đồ ăn vẽ tay. Hỏi về men không chì nếu bạn định dùng đồ để đựng thức ăn.",
+        "Các nghệ sĩ địa phương bán tranh in và tranh màu nước dọc Via Cristoforo Colombo — ống giấy bảo vệ tác phẩm khi di chuyển."
       ]
     },
     {
       "id": "shipping",
       "title": "Thanh toán & vận chuyển",
       "body": [
-        "Đa số cửa hàng nhận thẻ nhưng thường giảm giá khi trả tiền mặt. Giữ sẵn giấy tờ tùy thân để làm thủ tục hoàn thuế cho đơn từ 154,94 € trở lên.",
-        "Gửi đồ dễ vỡ bằng dịch vụ chuyển phát bảo hiểm (DHL/UPS) và yêu cầu đóng hai lớp hộp; phí bắt đầu khoảng 40 € tuỳ trọng lượng."
+        "Hầu hết cửa hàng nhận thẻ nhưng giảm giá khi trả tiền mặt. Giữ sẵn giấy tờ tùy thân để làm thủ tục hoàn thuế cho đơn hàng trên 154,94 €.",
+        "Gửi đồ dễ vỡ bằng dịch vụ chuyển phát có bảo hiểm (DHL/UPS) và yêu cầu đóng hai lớp hộp; phí bắt đầu từ khoảng 40 € tùy trọng lượng."
       ]
     }
   ],
   "tips": [
-    "Chụp lại hoá đơn và thông tin nghệ nhân để nhớ xưởng nào làm từng món.",
-    "Mang theo túi khí/bubble wrap nếu định xách gốm trong hành lý — hostel thường có sẵn vật liệu đệm từ các kiện hàng."
+    "Chụp lại hóa đơn và thông tin nghệ nhân để nhớ xưởng nào làm từng món.",
+    "Mang theo màng xốp hơi nếu định mang gốm sứ trong hành lý — hostel thường có sẵn vật liệu đệm từ các kiện hàng giao."
   ],
   "faqs": [
     {
-      "q": "Nghệ nhân có cá nhân hoá sản phẩm không?",
+      "q": "Nghệ nhân có thể cá nhân hóa sản phẩm không?",
       "a": [
-        "Có. Nhiều nơi dập được tên viết tắt lên sandals hoặc tuỳ chỉnh màu gốm nếu bạn báo trước vài ngày."
+        "Có. Nhiều nơi khắc chữ viết tắt lên sandals hoặc tùy chỉnh màu đồ gốm nếu bạn báo trước vài ngày."
       ]
     },
     {
-      "q": "Làm sao nhận hoàn thuế VAT?",
+      "q": "Làm sao để được hoàn thuế VAT?",
       "a": [
-        "Yêu cầu mẫu tax-free khi mua, đóng dấu tại sân bay hoặc bến phà và nộp trong vòng ba tháng để nhận hoàn tiền."
+        "Yêu cầu biểu mẫu miễn thuế khi mua hàng, đóng dấu tại sân bay hoặc bến phà và nộp trong vòng ba tháng để nhận hoàn tiền."
       ]
     }
   ]

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
+
 import AgeGateSection from "./AgeGateSection";
 
 const meta: Meta<typeof AgeGateSection> = {

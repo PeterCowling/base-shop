@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+
 import { useTranslations } from "@acme/i18n";
 
 interface Props {

@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import CommentsToolbar from "../comments/CommentsToolbar";
 
 // Mock the atoms/shadcn primitives to simple DOM controls so we can drive menu actions reliably
@@ -38,7 +39,7 @@ describe("CommentsToolbar dropdown actions", () => {
     const onReload = jest.fn();
     const onAddForSelected = jest.fn();
     const onToggleDrawer = jest.fn();
-    // eslint-disable-next-line ds/no-raw-color -- TEST-123: test fixture literal color for avatar
+     
     const peers = Array.from({ length: 8 }, (_, i) => ({ id: `p${i}`, label: `U${i}`, color: "#f00" } as any));
 
     render(

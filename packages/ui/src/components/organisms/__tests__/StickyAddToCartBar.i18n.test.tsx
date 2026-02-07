@@ -1,8 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { StickyAddToCartBar } from '../../organisms/StickyAddToCartBar';
+
 import { TranslationsProvider } from '@acme/i18n';
 import { CurrencyProvider } from '@acme/platform-core/contexts/CurrencyContext';
+
+import { StickyAddToCartBar } from '../../organisms/StickyAddToCartBar';
 
 const product = { id: 'sku1', title: 'Shoe', price: 100 } as any;
 

@@ -1,9 +1,11 @@
 // apps/cover-me-pretty/src/app/api/orders/route.ts
-import { getCustomerSession } from "@auth";
-import { getOrdersForCustomer } from "@platform-core/orders";
 import { NextResponse } from "next/server";
-import shop from "../../../../shop.json";
+
+import { getCustomerSession } from "@acme/auth";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+import { getOrdersForCustomer } from "@acme/platform-core/orders";
+
+import shop from "../../../../shop.json";
 
 export const runtime = "nodejs";
 

@@ -1,21 +1,21 @@
 {
   "meta": {
-    "title": "Positano til Sorrento av Ferry | Hostel Brikette",
-    "description": "Trinn-for-trinn fra Positano til Sorrento av Ferry: Walking to the Pier, billetter, boarding tips og ankomstnotater for Sorrentos Marina Piccola."
+    "title": "Positano til Sorrento med ferge | Hostel Brikette",
+    "description": "Trinn-for-trinn fra Positano til Sorrento med ferge: gå til brygga, billetter, ombordstigningstips og ankomstnotater for Sorrentos Marina Piccola."
   },
   "hero": {
-    "eyebrow": "Hostel Brikette Travel Guide",
-    "title": "Positano til Sorrento - Ferry",
-    "description": "Ta en direkte ferge fra Positanos Spiaggia Grande Pier til Sorrento. Denne korte guiden dekker Walking to the Pier, hvor du kan kjøpe billetter, boarding tips og hva du kan forvente ved ankomst til Sorrentos havn."
+    "eyebrow": "Hostel Brikette reiseguide",
+    "title": "Positano til Sorrento - ferge",
+    "description": "Ta en direkte ferge fra Positanos Spiaggia Grande-brygge til Sorrento. Denne korte guiden dekker hvordan du går til brygga, hvor du kan kjøpe billetter, ombordstigningstips og hva du kan forvente ved ankomst til Sorrentos havn."
   },
   "cta": {
     "label": "Tips",
-    "copy": "Trenger du hvert transportalternativ? Åpne <link>Hvisk hvordan du kommer over oversikt</link> for busser, drosjer og blandede reiseruter."
+    "copy": "Trenger du hvert transportalternativ? Åpne <link>oversikten Slik kommer du hit</link> for busser, drosjer og kombinerte reiseruter."
   },
   "journeyOverview": {
     "title": "Reiseoversikt",
     "items": [
-      "Tillat omtrent 45–60 minutters dock-to-dock i sesongen.",
+      "Beregn omtrent 45–60 minutter kaikant til kaikant i sesongen.",
       "Ferger er væravhengige og kan selges ut på høye tider.",
       "Å kjøpe billetter litt tidlig hjelper deg med å sikre seter og jevn ombordstigning."
     ]
@@ -23,26 +23,26 @@
   "walkToPier": {
     "title": "Gå til Positanos brygge",
     "items": [
-      "Fra hostel Brikette, ta turen nedover mot Spiaggia Grande (Main Beach/Pier).",
+      "Fra hostel Brikette, ta turen nedover mot Spiaggia Grande (hovedstranden/brygga).",
       "Hvis du bærer tung bagasje, kan du vurdere å bestille den offisielle portertjenesten på brygga.",
       "Kjøp billetter på vannkanten eller via operatørens nettsteder (for eksempel Travelmar eller NLG)."
     ],
-    "note": "Kontroller tider og priser på <positano>positano.com - Ferry Schedules</positano> og på operatørenes nettsteder som <travelmar>travelmar</travelmar> eller <nlg>nlg</nlg>."
+    "note": "Kontroller tider og priser på <positano>positano.com - fergerutetider</positano> og på operatørenes nettsteder som <travelmar>travelmar</travelmar> eller <nlg>nlg</nlg>."
   },
   "boarding": {
-    "title": "Kjøp billetten din og styret",
+    "title": "Kjøp billetten din og gå om bord",
     "items": [
       "Ankom 20–30 minutter før avreise for å stå i kø rolig og bytte kuponger om nødvendig.",
       "Hold billetten hendig og følg mannskapsinstruksjonene når du går ombord.",
-      "Plasser større poser i det angitte bagasjeområdet; Hold verdisaker med deg."
+      "Plasser større poser i det angitte bagasjeområdet; ha verdisaker med deg."
     ]
   },
   "arrival": {
     "title": "Ankommer Sorrento",
     "items": [
-      "Dembark ved Sorrentos Marina Piccola (Ferry Port).",
-      "Følg signeringen til byen eller bruk lokal transport for å nå Sorrentos jernbanestasjon hvis de fortsetter videre.",
-      "Sjekk videre tog/busser på forhånd, spesielt kvelder og skuldersesong."
+      "Gå i land ved Sorrentos Marina Piccola (fergehavn).",
+      "Følg skiltingen til byen eller bruk lokal transport for å nå Sorrentos jernbanestasjon hvis du reiser videre.",
+      "Sjekk videre tog/busser på forhånd, spesielt på kvelder og i skuldersesongen."
     ]
   },
   "externalLinks": {

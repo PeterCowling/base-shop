@@ -1,6 +1,8 @@
 import type { HistoryState } from "@acme/types";
-import type { AddAction } from "./types";
+
 import { commit } from "../history";
+
+import type { AddAction } from "./types";
 import { addComponent } from "./utils";
 
 export function add(state: HistoryState, action: AddAction): HistoryState {

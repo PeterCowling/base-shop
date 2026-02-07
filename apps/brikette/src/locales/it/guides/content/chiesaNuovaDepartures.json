@@ -1,63 +1,235 @@
 {
   "seo": {
-    "title": "Hostel Brikette → fermata Chiesa Nuova/Bar Internazionale",
-    "description": "Micropercorso dall'Hostel Brikette alla fermata dell'autobus Chiesa Nuova con scale minime; controllo dei biglietti e degli orari di partenza."
+    "title": "Fermata bus Chiesa Nuova / Bar Internazionale, Positano",
+    "description": "Guida alla fermata SITA Chiesa Nuova / Bar Internazionale di Positano: lato della fila, biglietti, orari e collegamenti—più la camminata di 2–4 minuti dall’Hostel Brikette."
   },
-  "linkLabel": "Hostel Brikette fino alla fermata dell'autobus Chiesa Nuova/Bar Internazionale",
-  "intro": "Uscire dall'ostello per prendere l'autobus per Amalfi, Sorrento? Questo micropercorso mostra il percorso più veloce dall'Hostel Brikette alla fermata dell'autobus Chiesa Nuova/Bar Internazionale e fornisce alcuni suggerimenti.",
+  "linkLabel": "Hostel Brikette → fermata bus Chiesa Nuova / Bar Internazionale",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": "La fermata bus Positano Chiesa Nuova / Bar Internazionale è la principale fermata SITA per gli ospiti dell’Hostel Brikette diretti a Amalfi, Sorrento, Napoli, Salerno o oltre. Questa guida parla della fermata: come è indicata negli orari (spesso “Positano (Chiesa Nuova)”), su quale lato fare la fila per i bus verso est o ovest, dove comprare e convalidare i biglietti (le corse singole costano di solito €2,50–€4 a seconda della destinazione), cosa aspettarsi nelle code estive e—rapidamente—la camminata più semplice di 2–4 minuti dall’ostello.",
   "image": {
-    "alt": "La fermata Chiesa Nuova SITA di Positano è fuori dal Bar Internazionale",
-    "caption": "L'Hostel Brikette si trova a una curva in salita dalla fermata. Concedetevi un paio di minuti in modo da potervi mettere in coda prima dell'arrivo dell'autobus."
+    "alt": "Fermata SITA Chiesa Nuova / Bar Internazionale a Positano davanti al Bar Internazionale",
+    "caption": "L'Hostel Brikette si trova a una curva dalla fermata. Concediti un paio di minuti per unirti alla coda prima che arrivi l'autobus, soprattutto in estate quando i servizi si riempiono rapidamente."
   },
   "toc": {
-    "onThisPage": "On this page",
-    "before": "Before you leave",
-    "steps": "Step-by-step",
-    "knees": "Legs & luggage",
-    "faqs": "FAQs"
+    "onThisPage": "In questa pagina",
+    "before": "Prima di partire",
+    "steps": "Passo dopo passo",
+    "knees": "Gambe e bagagli",
+    "faqs": "Domande frequenti"
   },
   "sections": [
     {
       "id": "why-route",
-      "title": "Why this route works",
+      "title": "Perché usare la fermata Chiesa Nuova / Bar Internazionale",
       "body": [
-        "Sono 120 metri (400 piedi) a piedi dall'ingresso dell'ostello fino alla fermata, sulla strada principale.",
-        "Se andate in direzione Amalfi la fermata è di fronte al Bar Internazionale. Coda sul lato della strada vista mare.  Se vai in direzione Sorrento, attenderai direttamente fuori dal bar stesso."
+        "La fermata **Chiesa Nuova / Bar Internazionale** è la fermata SITA più vicina all’Hostel Brikette ed è spesso il modo più semplice per prendere l’autobus senza affrontare le lunghe scale di Positano. Che tu stia esplorando la costa, facendo una coincidenza a Sorrento o iniziando un viaggio più lungo via Salerno, questa è la fermata “base” dell’ostello.",
+        "È anche una delle fermate più facili da usare correttamente perché le file sono semplici: **verso Amalfi/Salerno (est)** sul lato mare (di fronte al Bar Internazionale) e **verso Sorrento/Napoli (ovest)** sul lato monte (fuori dal bar).",
+        "Dall’Hostel Brikette sono 120 metri (400 piedi), 2–4 minuti lungo Viale Pasitea. Il marciapiede è abbastanza largo per i bagagli ed è ben illuminato di notte.",
+        "Per le indicazioni a piedi con mappa, vedi questo %URL:https://www.google.com/maps/dir/V.+G.+Marconi,+358,+84017+Positano+SA/Bar+Internazionale,+V.+G.+Marconi,+306,+84017+Positano+SA/@40.6294795,14.4790535,746m/data=!3m2!1e3!4b1!4m14!4m13!1m5!1m1!1s0x133b976683fb47c9:0x209c0949d4fb4c3b!2m2!1d14.4809356!2d40.6296237!1m5!1m1!1s0x133b976673927785:0x5187a720325ee588!2m2!1d14.482264!2d40.629495!3e0?hl=en&entry=ttu&g_ep=EgoyMDI2MDEyOC4wIKXMDSoKLDEwMDc5MjA3MUgBUAM%3D|percorso su Google Maps dall'Hostel Brikette alla fermata dell'autobus%."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.png",
+          "alt": "Cartello fermata bus SITA a Chiesa Nuova a Positano",
+          "caption": "La fermata bus SITA Chiesa Nuova fuori dal Bar Internazionale"
+        }
+      ]
+    },
+    {
+      "id": "where-buses-go",
+      "title": "Dove vanno gli autobus da questa fermata",
+      "body": [
+        "Dalla fermata Chiesa Nuova / Bar Internazionale, i bus SITA vanno in entrambe le direzioni lungo la costa:",
+        "**Verso Amalfi (direzione est):** Gli autobus passano attraverso Praiano, passando Marina di Praia e Fiordo di Furore prima di raggiungere %LINK:amalfiTownGuide|Amalfi% (30-40 minuti). Da Amalfi, puoi continuare verso %LINK:salernoPositano|Salerno% (altri 45 minuti) o prendere autobus di collegamento per Ravello.",
+        "**Verso Sorrento (direzione ovest):** Gli autobus si snodano lungo la costa attraverso diverse gallerie panoramiche prima di raggiungere %LINK:sorrentoGuide|Sorrento% (40-50 minuti). Da Sorrento, puoi collegarti ai treni diretti a %LINK:naplesPositano|Napoli% (linea Circumvesuviana per la Stazione Centrale di Napoli) o continuare per l'aeroporto di Napoli.",
+        "Per la pianificazione completa del viaggio da Positano, consulta le nostre guide dedicate: %LINK:positanoAmalfiBus|Positano-Amalfi in autobus%, %LINK:positanoSorrentoBus|Positano-Sorrento in autobus%, %LINK:positanoNaplesCenterBusTrain|Positano-Napoli% via Sorrento e %LINK:positanoSalernoBus|Positano-Salerno in autobus%.",
+        "**Orari degli autobus:** Visualizza gli orari attuali per gli %URL:https://www.sorrentoinsider.com/en/sorrento-to-positano-bus-schedule?route=amalfi_positano_sorrento|autobus verso ovest per Sorrento% o gli %URL:https://www.sorrentoinsider.com/en/sorrento-to-positano-bus-schedule?route=sorrento_positano_amalfi|autobus verso est per Amalfi%."
+      ],
+      "images": [
+        {
+          "src": "https://simplyamalficoast.it/wp-content/uploads/2025/11/simply-amalfi-coast-bus-sita-4.jpg",
+          "alt": "Autobus SITA alla fermata di Positano diretto ad Amalfi",
+          "caption": "Gli autobus SITA collegano Positano alle destinazioni di tutta la Costiera Amalfitana"
+        },
+        {
+          "src": "/img/positano-panorama.avif",
+          "alt": "Panorama della costa di Positano da Viale Pasitea",
+          "caption": "Vedute lungo la strada costiera vicino alla fermata Chiesa Nuova / Bar Internazionale."
+        }
+      ]
+    },
+    {
+      "id": "bus-schedules",
+      "title": "Orari e frequenza degli autobus",
+      "body": [
+        "Gli autobus SITA viaggiano spesso tra Positano e sia Amalfi che Sorrento durante l'alta stagione (aprile-ottobre). Aspettati autobus ogni 20-30 minuti durante il giorno, con meno autobus al mattino presto (prima delle 8:00) e la sera (dopo le 21:00). Il viaggio dura circa 40 minuti per Amalfi e 50 minuti per Sorrento, ma può durare più a lungo durante le giornate estive affollate quando il traffico è intenso.",
+        "**Primi autobus:** Il primo autobus verso est per Amalfi parte di solito dalla fermata Chiesa Nuova / Bar Internazionale intorno alle 6:30–7:00. Il primo autobus verso ovest per Sorrento parte di solito intorno alle 6:45–7:15. Controlla gli orari attuali al Bar Internazionale o in reception perché cambiano con la stagione. In estate ci sono più autobus che in inverno.",
+        "**Ultimi autobus:** Gli autobus serali diventano molto meno frequenti dopo le 22:00. L'ultimo autobus per Amalfi parte solitamente intorno alle 22:30, e l'ultimo autobus per Sorrento parte intorno alle 23:00. Controlla sempre gli orari esatti alla reception o guarda l'orario SITA affisso alla fermata. Cerca di prendere il penultimo autobus se viaggi di notte così non perdi l'ultimo e rimani bloccato.",
+        "**Orari invernali (novembre-marzo):** Gli autobus viaggiano meno spesso in inverno, circa ogni 40-60 minuti, e gli ultimi autobus partono prima. Alcuni autobus serali potrebbero non circolare affatto la domenica o nei giorni festivi. Controlla sempre l'orario invernale prima di viaggiare."
+      ],
+      "images": [
+        {
+          "src": "https://www.thetrainline.com/cms/media/1452/italy-atrani-amalfi-coast.jpg?mode=crop&width=860&height=574&quality=70",
+          "alt": "Vista della costa di Positano con edifici a cascata sulla collina",
+          "caption": "Il percorso panoramico da Positano collega alle destinazioni di tutta la Costiera Amalfitana"
+        }
       ]
     },
     {
       "id": "bus-basics",
-      "title": "Tickets and timing",
+      "title": "Biglietti: dove acquistare e come convalidare",
       "body": [
-        "Acquista il biglietto SITA ai tabacchi o all'interno del bar.  Non provare a salire sull'autobus senza biglietto perché non potrai acquistarne uno sull'autobus stesso.  Presenta il tuo biglietto all'autista al momento dell'imbarco.  Se prendi il primo autobus in partenza, acquista il biglietto il giorno prima e vieni a trovarci alla reception per organizzare il checkout.",
-        "Gli autobus estivi spesso si riempiono. Pianificatevi di conseguenza, soprattutto durante i periodi più impegnativi."
+        "Puoi acquistare i biglietti dell'autobus SITA presso qualsiasi edicola o tabaccheria (tabacchi). Quando sali sull'autobus, presenta il biglietto all'autista, che lo timbrerà o lo strapperà parzialmente per indicare che è stato utilizzato. Tieni presente che i biglietti dell'autobus devono essere convalidati prima dell'uso, quindi assicurati di avere il biglietto pronto quando sali.",
+        "Acquista i biglietti dell'autobus SITA al tabacchi (tabaccheria) vicino al Bar Internazionale, o all'interno del bar stesso. I biglietti sono venduti come corse singole o pass giornalieri. Non cercare di salire sull'autobus senza un biglietto che hai acquistato prima—non puoi comprare biglietti dall'autista. Il tabacchi di solito apre alle 7:00 e chiude alle 20:00.",
+        "**Prezzi dei biglietti (2026):** Una corsa singola da Positano ad Amalfi costa €2,50. Positano-Sorrento costa €2,50. Positano-Salerno (passando per Amalfi) costa €4,00. Un pass Costiera da 24 ore costa €8,00 e ti permette di prendere tutti gli autobus che vuoi tra Sorrento e Salerno. Il pass giornaliero è un buon affare se pensi di fare più di tre viaggi in un giorno.",
+        "**Convalida:** Mostra il tuo biglietto all'autista quando sali sull'autobus. L'autista lo timbrerà o lo strapperà parzialmente per contrassegnarlo come usato. Sui nuovi autobus, puoi anche scansionare il tuo biglietto alla macchinetta appena dentro la porta. Conserva il tuo biglietto convalidato per tutto il viaggio—i controllori spesso salgono sull'autobus e controllano i biglietti. Se non hai un biglietto convalidato, riceverai subito una multa che costa molto più del biglietto.",
+        "**Acquista in anticipo:** Se prendi il primo autobus della mattina (prima delle 7:30), acquista il biglietto la sera prima perché il tabacchi potrebbe non essere ancora aperto. Vieni alla reception dell'ostello se devi fare il check-out presto. Il bar vende anche biglietti e apre prima del tabacchi, di solito entro le 6:30.",
+        "Per maggiori dettagli sui biglietti SITA, pass e prezzi, consulta la nostra %LINK:sitaTickets|guida completa ai biglietti dell'autobus SITA%."
+      ],
+      "images": [
+        {
+          "src": "/img/tabacchi.webp",
+          "alt": "Tabaccheria alla fermata bus Chiesa Nuova a Positano",
+          "caption": "Acquista i biglietti SITA al tabacchi vicino al Bar Internazionale"
+        }
+      ]
+    },
+    {
+      "id": "boarding-tips",
+      "title": "Attesa e imbarco: code estive e bagagli",
+      "body": [
+        "**Arriva presto in estate:** Gli autobus estivi (giugno-settembre) spesso si riempiono completamente, specialmente durante gli orari di punta come la tarda mattinata (9:00-12:00) e il tardo pomeriggio (16:00-19:00). Arriva alla fermata almeno 10-15 minuti prima del tuo autobus per avere un buon posto vicino all'inizio della fila. Se l'autobus è pieno, potrebbe non fermarsi affatto e dovrai aspettare il prossimo.",
+        "**Regole della fila:** Forma una fila chiara vicino alla pensilina sul lato destro della strada. Non spingere o affollare—gli italiani di solito rispettano l'ordine della fila. Quando arriva l'autobus, aspetta che la gente scenda prima di salire. L'autista potrebbe chiudere la porta se la gente cerca di spingersi avanti.",
+        "**Bagagli:** Non c'è molto spazio per i bagagli sugli autobus SITA—di solito solo un piccolo spazio sul retro o sotto i sedili. Se hai zaini grandi o valigie, cerca di salire presto per ottenere uno spazio per i bagagli. Pensa di usare un %LINK:porterServices|servizio di facchino% per portare i tuoi bagagli al tuo prossimo posto se hai borse pesanti. La maggior parte degli autobus ha spazio solo per 4-5 borse grandi nel vano sul retro.",
+        "**Posti in piedi:** Sugli autobus pieni d'estate, potresti dover stare in piedi per parte o tutto il viaggio. La strada costiera ha molte curve e angoli stretti, quindi tieniti forte alle sbarre sopra la tua testa o agli schienali dei sedili. L'autista potrebbe frenare forte se un'auto si ferma improvvisamente davanti."
+      ],
+      "images": [
+        {
+          "src": "https://themillennialrunaway.com/wp-content/uploads/2023/10/IMG_3655-scaled.jpg",
+          "alt": "Passeggeri in attesa alla fermata bus SITA a Positano",
+          "caption": "Arriva presto durante l'estate per assicurarti il tuo posto in coda"
+        }
+      ]
+    },
+    {
+      "id": "connecting-journeys",
+      "title": "Collegamenti per Napoli, Salerno e oltre",
+      "body": [
+        "La fermata Chiesa Nuova è il punto di partenza per la maggior parte dei viaggi in partenza degli ospiti dell'ostello da Positano. Ecco come collegarsi alle principali destinazioni:",
+        "**Per Napoli:** Prendi l'autobus verso ovest diretto a Sorrento (50 minuti), poi collega al treno Circumvesuviana da Sorrento alla Stazione Centrale di Napoli (60 minuti). Tempo di viaggio totale: circa 2 ore. Consulta la nostra %LINK:positanoNaplesCenterBusTrain|guida completa Positano-Napoli% per orari e informazioni sulle piattaforme.",
+        "**Per l'aeroporto di Napoli:** Segui il percorso per Napoli sopra, poi prendi la navetta Alibus dalla Stazione Centrale di Napoli all'aeroporto (20 minuti). In alternativa, prenota una navetta diretta da Positano—chiedi alla reception. La nostra %LINK:naplesAirportPositanoBus|guida dell'aeroporto di Napoli% copre tutte le opzioni.",
+        "**Per Salerno:** Prendi l'autobus verso est diretto ad Amalfi (35 minuti), poi continua sullo stesso autobus o su un autobus di collegamento per Salerno (45 minuti). Salerno ha treni principali per Roma, Firenze e altre città italiane. Consulta %LINK:salernoPositano|Salerno-Positano% per il viaggio di ritorno e la %LINK:salernoGatewayGuide|guida gateway di Salerno% per i collegamenti ferroviari.",
+        "**Per il molo dei traghetti:** Se prevedi di prendere un traghetto dal molo della spiaggia principale di Positano invece dell'autobus, consulta la nostra guida %LINK:briketteToFerryDock|Dall'Hostel Brikette al molo dei traghetti con bagagli% per il percorso a piedi con scale minime."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-promenade-to-mulini.jpg",
+          "alt": "Lungomare di Positano con area del molo dei traghetti",
+          "caption": "Il molo dei traghetti offre un'alternativa agli autobus per i collegamenti costieri"
+        }
+      ]
+    },
+    {
+      "id": "alternative-transport",
+      "title": "Alternative all'autobus SITA",
+      "body": [
+        "Mentre l'autobus SITA è l'opzione più economica e frequente, gli ospiti dell'ostello hanno diverse alternative:",
+        "**Traghetto (solo aprile-ottobre):** Scendi al molo dei traghetti della spiaggia principale di Positano e prendi un aliscafo o traghetto per Amalfi, Salerno, Capri o Napoli. I traghetti sono più veloci e panoramici degli autobus ma costano 2-3 volte di più. Consulta la nostra %LINK:ferrySchedules|guida agli orari dei traghetti% per gli orari e il nostro %LINK:briketteToFerryDock|percorso a piedi verso il molo%.",
+        "**Transfer privato/taxi:** Aspettati di pagare €80-150 per un'auto privata per Sorrento o Amalfi, €150-200 per l'aeroporto di Napoli e €100-140 per Salerno. I taxi possono essere prenotati alla reception. Vale la pena considerarlo se hai bagagli pesanti o viaggi come gruppo di 3-4 persone.",
+        "**Noleggio scooter:** I motociclisti esperti possono noleggiare uno scooter a Positano e guidare la strada costiera da soli. Consulta la nostra %LINK:scooterRentalPositano|guida al noleggio scooter% per negozi di noleggio, prezzi e consigli di sicurezza. Non raccomandato per motociclisti nervosi—la strada costiera SS163 è stretta e tortuosa con traffico intenso in estate."
+      ],
+      "images": [
+        {
+          "src": "https://forum.amalfi.com/uploads/default/original/1X/da74ebd4925614aa758c601b44557129bf6b5405.jpeg",
+          "alt": "Traghetto al molo della spiaggia di Positano con passeggeri",
+          "caption": "I traghetti offrono un'alternativa panoramica agli autobus durante la stagione aprile-ottobre"
+        }
+      ]
+    },
+    {
+      "id": "safety-timing",
+      "title": "Consigli su sicurezza e tempistiche ottimali",
+      "body": [
+        "**Camminare di notte:** Il marciapiede dall'ostello alla fermata dell'autobus è ben illuminato e sicuro a tutte le ore. L'illuminazione stradale illumina l'intero percorso e l'area vede traffico pedonale regolare anche a tarda sera. Tuttavia, presta attenzione ai tuoi passi—il marciapiede si restringe in un paio di punti dove incontra scooter parcheggiati o posti a sedere di caffè all'aperto. Se prendi un autobus tardivo, lascia qualche minuto in più per navigare con attenzione in visibilità ridotta.",
+        "**Orari di punta da evitare:** Se hai flessibilità nel tuo programma, evita di prendere gli autobus durante i periodi più affollati: 9:00–11:00 (arrivo dei gitanti), 16:00–18:00 (partenza dei gitanti). Gli autobus durante questi orari spesso si riempiono completamente alle fermate precedenti, lasciando i passeggeri bloccati a Chiesa Nuova. Invece, punta alle partenze al mattino presto (7:00–8:30) o nel pomeriggio (13:00–15:00) quando è più probabile ottenere un posto.",
+        "**Considerazioni sul tempo:** La camminata è esposta agli elementi—non c'è una sezione coperta tra l'ostello e la pensilina dell'autobus. In caso di pioggia intensa, ti bagnerai durante la camminata di 2 minuti. Porta un ombrello o una giacca antipioggia se le previsioni sembrano incerte. Nel caldo estivo, il marciapiede non offre ombra; indossa la protezione solare e porta acqua se arrivi presto alla fermata per fare la coda. L'inverno può portare venti forti lungo questa sezione esposta di Viale Pasitea—fissa eventuali oggetti sciolti nella tua borsa.",
+        "**Lasciare borse alla reception:** Se stai facendo il check-out ma devi esplorare Positano per qualche ora prima del tuo autobus, chiedi alla reception di lasciare il tuo bagaglio. Questo ti permette di camminare alla fermata più tardi senza borse e semplicemente ritirarle sulla strada per prendere l'autobus. Questo è particolarmente utile se vuoi visitare la spiaggia o pranzare in città prima di partire."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/hostel-brikette-entrance-steps.png",
+          "alt": "Scale d’ingresso dell’Hostel Brikette su Viale Pasitea di notte",
+          "caption": "Le scale d’ingresso sono ben illuminate, ma concediti un minuto in più se arrivi dopo il buio."
+        },
+        {
+          "src": "/img/checkin-desk.avif",
+          "alt": "Banco reception dell’Hostel Brikette",
+          "caption": "La reception può custodire i bagagli se vuoi rilassarti prima di prendere l’autobus."
+        }
       ]
     }
   ],
-  "beforeList": [],
-  "stepsList": [
-    "Usciti dalla reception, scendere la breve scalinata fino a Viale Pasitea e svoltare a sinistra per proseguire in discesa.",
-    "Seguire il marciapiede per circa 120 metri (400 piedi) lungo la strada principale per raggiungere il Bar Internazionale."
+  "beforeList": [
+    "Acquista il tuo biglietto SITA la sera prima se prendi un autobus mattutino presto (prima delle 7:30)",
+    "Controlla gli orari attuali in reception o alla fermata Chiesa Nuova / Bar Internazionale—gli orari cambiano stagionalmente",
+    "Viaggia leggero se possibile—lo spazio per i bagagli sugli autobus è molto limitato, soprattutto in estate",
+    "Arriva 10-15 minuti prima nei mesi estivi di punta per assicurarti il tuo posto in coda"
   ],
-  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sHostel+Brikette!4m1!2sBar+Internazionale",
-  "kneesList": [],
-  "kneesDockPrefix": "A partire dai bagagli al molo dei traghetti? Utilizza il nostro",
-  "kneesDockLinkLabel": "Ferry dock luggage route",
-  "kneesPorterPrefix": "Hai bisogno di prezzi di facchinaggio o aiuto per la prenotazione? Controlla il",
-  "kneesPorterLinkLabel": "porter service guide",
+  "stepsList": [
+    "Lascia la reception dell'ostello e scendi la breve scala d'ingresso fino a Viale Pasitea",
+    "Gira a sinistra (in discesa) e cammina per 120 metri (400 piedi) lungo il marciapiede pavimentato su Viale Pasitea",
+    "Dopo 2-3 minuti, raggiungerai il Bar Internazionale sulla tua sinistra",
+    "Per Amalfi/Salerno: fai la fila sul lato opposto (vista mare) della strada",
+    "Per Sorrento: fai la fila direttamente fuori dall'ingresso del bar sul lato montagna"
+  ],
+  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!5e0!3m2!1sen!2sit!4v1700000000000",
+  "kneesList": [
+    "L'intera camminata è una leggera discesa su marciapiede pavimentato—nessuna scala fino alla fermata",
+    "Se hai problemi alle ginocchia e bagagli pesanti, considera di utilizzare il servizio di facchino (prenota alla reception)"
+  ],
+  "kneesDockPrefix": "Vai al molo dei traghetti invece che all'autobus? Consulta il nostro",
+  "kneesDockLinkLabel": "Percorso per il molo dei traghetti dall'Hostel Brikette con bagagli",
+  "kneesPorterPrefix": "Hai bisogno di un facchino per trasportare i bagagli alla fermata o alla tua prossima destinazione? Consulta la nostra",
+  "kneesPorterLinkLabel": "Guida ai servizi di facchino e prezzi",
   "faqs": [
     {
-      "q": "How early should I reach the stop?",
-      "a": "In estate arrivate almeno 10 minuti prima del bus prescelto così potrete fare la fila vicino alla pensilina e salire comodamente."
+      "q": "Con quanto anticipo devo raggiungere la fermata?",
+      "a": "Arriva almeno 10-15 minuti prima del tuo autobus prescelto in estate (giugno-settembre) in modo da poter fare la fila vicino alla pensilina e assicurarti un posto. In inverno, 5 minuti sono solitamente sufficienti poiché gli autobus sono meno affollati."
     },
     {
-      "q": "Where can I buy or validate tickets?",
-      "a": "Per la vendita dei biglietti utilizzare i tabacchi accanto al Bar Internazionale. I validatori sono a bordo; ritaglia o scansiona il tuo biglietto non appena sali."
+      "q": "Dove posso acquistare o convalidare i biglietti?",
+      "a": "Acquista i biglietti al tabacchi vicino al Bar Internazionale o all'interno del bar stesso. Convalida presentando il biglietto all'autista mentre sali (lo timbrerà) o scannerizzandolo al validatore elettronico dentro la porta dell'autobus."
+    },
+    {
+      "q": "Posso portare un grande zaino o valigia sull'autobus?",
+      "a": "Sì, ma lo spazio per i bagagli è molto limitato. Arriva presto per assicurarti uno spazio nel vano bagagli posteriore o pianifica di tenere la tua borsa in grembo o tra le gambe. Per borse grandi o multiple, considera un servizio di facchino o transfer privato."
+    },
+    {
+      "q": "Cosa succede se perdo l'ultimo autobus della sera?",
+      "a": "Gli ultimi autobus partono intorno alle 22:30-23:00 a seconda della destinazione. Se perdi l'ultimo autobus, le tue uniche opzioni sono un taxi (costoso, €80-150 a seconda della destinazione) o tornare a piedi all'ostello e riprovare domani. Punta sempre al penultimo autobus per evitare questa situazione."
+    },
+    {
+      "q": "Da che lato della strada devo fare la fila?",
+      "a": "Per gli autobus diretti a est verso Amalfi e Salerno, fai la fila sul lato della strada con vista mare (di fronte al Bar Internazionale). Per gli autobus diretti a ovest verso Sorrento e Napoli, fai la fila sul lato montagna direttamente fuori dall'ingresso del bar."
+    },
+    {
+      "q": "Devo prenotare gli autobus in anticipo?",
+      "a": "No, gli autobus SITA non possono essere prenotati in anticipo. È primo arrivato, primo servito in base alla posizione in coda. Basta acquistare il biglietto e unirsi alla coda alla fermata. In piena estate, gli autobus potrebbero riempirsi e passare senza fermarsi—arriva presto per evitarlo."
+    },
+    {
+      "q": "Come leggo l'orario degli autobus SITA?",
+      "a": [
+        "**Lettura delle righe:** Le righe nella prima colonna rappresentano diverse fermate dell'autobus lungo il percorso.",
+        "**Lettura delle colonne:** L'orario assegna una lettera alfabetica a ciascuna corsa programmata, che sono elencate come intestazioni in ogni colonna. Se viaggi dal lunedì al sabato, cerca le colonne 'F' e 'G'. Se viaggi di domenica o in un giorno festivo, cerca le colonne 'G' e 'H'.",
+        "Per gli arrivi alla fermata Chiesa Nuova / Bar Internazionale, l’orario è di solito indicato come riga “Positano (Chiesa Nuova)”."
+      ]
     }
   ],
   "howtoSteps": [
-    "Cammina per 2-4 minuti in discesa dall'Hostel Brikette fino alla fermata Bar Internazionale",
-    "Fare la fila sul lato mare della strada e convalidare i biglietti all'imbarco",
-    "Combinalo con traghetti o guide a lunga distanza per proseguire il viaggio"
+    "Cammina 2–4 minuti in discesa dall’Hostel Brikette alla fermata Chiesa Nuova / Bar Internazionale",
+    "Acquista il biglietto SITA al tabacchi o all'interno del bar (non puoi acquistare sull'autobus)",
+    "Fai la fila sul lato corretto: lato vista mare per Amalfi/est, lato montagna per Sorrento/ovest",
+    "Convalida il biglietto con l'autista o al validatore elettronico quando sali",
+    "Collega a Napoli via Sorrento (treno) o a Salerno via Amalfi (autobus)"
   ]
 }

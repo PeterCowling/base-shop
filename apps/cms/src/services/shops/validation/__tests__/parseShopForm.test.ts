@@ -1,15 +1,15 @@
+import {
+  parseFilterMappings,
+  parseLocaleOverrides,
+  parsePriceOverrides,
+} from "../../formData";
+import { parseShopForm } from "../parseShopForm";
+
 jest.mock("../../formData", () => ({
   parseFilterMappings: jest.fn(() => '{"f":"m"}'),
   parsePriceOverrides: jest.fn(() => '{"p":1}'),
   parseLocaleOverrides: jest.fn(() => '{"en":"L"}'),
 }));
-
-import { parseShopForm } from "../parseShopForm";
-import {
-  parseFilterMappings,
-  parsePriceOverrides,
-  parseLocaleOverrides,
-} from "../../formData";
 
 describe("parseShopForm", () => {
   beforeEach(() => {

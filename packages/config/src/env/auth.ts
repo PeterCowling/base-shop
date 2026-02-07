@@ -1,4 +1,5 @@
 import "@acme/zod-utils/initZod";
+
 import { z } from "zod";
 
 const nodeEnv = process.env.NODE_ENV;
@@ -136,7 +137,9 @@ const baseSchema = z.object({
   ENFORCE_2FA: booleanFromString.default(false),
 });
 
-export const authEnvSchema = baseSchema.superRefine((env, ctx) => {
+type BaseEnv = z.infer<typeof baseSchema>;
+
+function validateSessionStore(env: BaseEnv, ctx: z.RefinementCtx): void {
   const sessionStoreProvider =
     env.SESSION_STORE_PROVIDER ?? env.SESSION_STORE ?? "memory";
 
@@ -158,7 +161,9 @@ export const authEnvSchema = baseSchema.superRefine((env, ctx) => {
       });
     }
   }
+}
 
+function validateRateLimitStore(env: BaseEnv, ctx: z.RefinementCtx): void {
   const rateLimitProvider =
     env.RATE_LIMIT_STORE_PROVIDER ??
     (env.LOGIN_RATE_LIMIT_REDIS_URL || env.LOGIN_RATE_LIMIT_REDIS_TOKEN
@@ -184,15 +189,15 @@ export const authEnvSchema = baseSchema.superRefine((env, ctx) => {
       });
     }
   }
+}
 
-  if (env.AUTH_PROVIDER === "jwt") {
-    if (!env.JWT_SECRET) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["JWT_SECRET"],
-        message: "JWT_SECRET is required when AUTH_PROVIDER=jwt", // i18n-exempt: validation copy (non-UI)
-      });
-    }
+function validateAuthProvider(env: BaseEnv, ctx: z.RefinementCtx): void {
+  if (env.AUTH_PROVIDER === "jwt" && !env.JWT_SECRET) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["JWT_SECRET"],
+      message: "JWT_SECRET is required when AUTH_PROVIDER=jwt", // i18n-exempt: validation copy (non-UI)
+    });
   }
   if (env.AUTH_PROVIDER === "oauth") {
     if (!env.OAUTH_ISSUER) {
@@ -225,6 +230,12 @@ export const authEnvSchema = baseSchema.superRefine((env, ctx) => {
       });
     }
   }
+}
+
+export const authEnvSchema = baseSchema.superRefine((env, ctx) => {
+  validateSessionStore(env, ctx);
+  validateRateLimitStore(env, ctx);
+  validateAuthProvider(env, ctx);
 });
 
 type ParsedAuthEnv = z.infer<typeof authEnvSchema>;

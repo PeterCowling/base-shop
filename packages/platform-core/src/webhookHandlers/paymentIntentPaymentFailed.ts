@@ -1,9 +1,10 @@
 import type Stripe from "stripe";
-import { markNeedsAttention } from "../orders/risk";
+
 import {
-  extractSessionIdFromCharge,
   type ChargeWithInvoice,
+  extractSessionIdFromCharge,
 } from "../internal/helpers/risk";
+import { markNeedsAttention } from "../orders/risk";
 
 export default async function paymentIntentPaymentFailed(
   shop: string,

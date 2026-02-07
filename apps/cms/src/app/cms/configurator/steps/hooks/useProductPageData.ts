@@ -1,19 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { type Page, type PageComponent, historyStateSchema } from "@acme/types";
-import { apiRequest } from "../../lib/api";
 
-interface ToastSetter {
-  (v: { open: boolean; message: string }): void;
-}
+import { historyStateSchema,type Page, type PageComponent } from "@acme/types";
+import { useToast } from "@acme/ui/operations";
+
+import { apiRequest } from "../../lib/api";
 
 interface Options {
   shopId: string;
   productPageId: string | null;
   setProductPageId: (v: string) => void;
   setProductComponents: (v: PageComponent[]) => void;
-  setToast: ToastSetter;
 }
 
 export default function useProductPageData({
@@ -21,8 +19,8 @@ export default function useProductPageData({
   productPageId,
   setProductPageId,
   setProductComponents,
-  setToast,
 }: Options) {
+  const toast = useToast();
   const [isSaving, setIsSaving] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
@@ -55,10 +53,10 @@ export default function useProductPageData({
           }
         }
       } else if (error) {
-        setToast({ open: true, message: error });
+        toast.error(error);
       }
     })();
-  }, [shopId, productPageId, setProductComponents, setProductPageId, setToast]);
+  }, [shopId, productPageId, setProductComponents, setProductPageId, toast]);
 
   const saveDraft = async (fd: FormData) => {
     setIsSaving(true);
@@ -70,7 +68,7 @@ export default function useProductPageData({
     setIsSaving(false);
     if (data) {
       setProductPageId(data.id);
-      setToast({ open: true, message: "Draft saved" });
+      toast.success("Draft saved");
     } else if (error) {
       setSaveError(error);
     }
@@ -87,7 +85,7 @@ export default function useProductPageData({
     setIsPublishing(false);
     if (data) {
       setProductPageId(data.id);
-      setToast({ open: true, message: "Page published" });
+      toast.success("Page published");
     } else if (error) {
       setPublishError(error);
     }

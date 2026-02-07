@@ -1,14 +1,14 @@
 // apps/cover-me-pretty/src/app/account/orders/[id]/MobileReturnLink.test.tsx
 import { render, screen, waitFor } from "@testing-library/react";
+import QRCode from "qrcode";
+
+import { MobileReturnLink } from "./MobileReturnLink";
 
 jest.mock("qrcode", () => ({
   __esModule: true,
   default: { toDataURL: jest.fn() },
   toDataURL: jest.fn(),
 }));
-
-import QRCode from "qrcode";
-import { MobileReturnLink } from "./MobileReturnLink";
 
 describe("MobileReturnLink", () => {
   it("renders link and shows QR when ready", async () => {

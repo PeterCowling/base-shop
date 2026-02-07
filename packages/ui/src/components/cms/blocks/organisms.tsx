@@ -1,78 +1,78 @@
+import AccountSection from "./AccountSection";
+import AgeGateSection from "./AgeGateSection";
+import AnalyticsPixelsSection from "./AnalyticsPixelsSection";
+import AnnouncementBar from "./AnnouncementBarBlock";
 import BlogListing from "./BlogListing";
+import CampaignHeroSection from "./CampaignHeroSection";
+import CartSection from "./CartSection";
+import CertificateCheck from "./CertificateCheck";
+import CheckoutSection from "./CheckoutSection";
+import CollectionList from "./CollectionList";
+import ConsentSection from "./ConsentSection";
 import ContactForm from "./ContactForm";
 import ContactFormWithMap from "./ContactFormWithMap";
-import Gallery from "./Gallery";
-import Lookbook from "./Lookbook";
-import HeroBanner from "./HeroBanner";
-import ProductCarousel, {
-  getRuntimeProps as getProductCarouselRuntimeProps,
-} from "./ProductCarousel";
-import ProductGrid, {
-  getRuntimeProps as getProductGridRuntimeProps,
-} from "./ProductGrid.client";
-import ReviewsCarousel from "./ReviewsCarousel";
-import TestimonialSlider from "./TestimonialSlider";
-import Testimonials from "./Testimonials";
-import ValueProps from "./ValueProps";
-import RecommendationCarousel, {
-  getRuntimeProps as getRecommendationCarouselRuntimeProps,
-} from "./RecommendationCarousel";
+import CountdownTimer from "./CountdownTimer";
+import CrossSellSection from "./CrossSellSection";
+import CurrencySelector from "./CurrencySelector";
+import DSARSection from "./DSARSection";
+import EmailReferralSection from "./EmailReferralSection";
+import FAQBlock from "./FAQBlock";
 import FeaturedProductBlock, {
   getRuntimeProps as getFeaturedProductRuntimeProps,
 } from "./FeaturedProductBlock";
-import AnnouncementBar from "./AnnouncementBarBlock";
-import MapBlock from "./MapBlock";
-import StoreLocatorBlock from "./StoreLocatorBlock";
-import VideoBlock from "./VideoBlock";
-import FAQBlock from "./FAQBlock";
-import CountdownTimer from "./CountdownTimer";
-import SocialLinks from "./SocialLinks";
-import SocialFeed from "./SocialFeed";
-import SocialProof from "./SocialProof";
-import PricingTable from "./PricingTable";
-import NewsletterSignup from "./NewsletterSignup";
-import Tabs from "./Tabs";
-import ImageSlider from "./ImageSlider";
-import CollectionList from "./CollectionList";
-import SearchBar from "./SearchBar";
-import HeaderCart from "./HeaderCart";
-import ProductComparisonBlock from "./ProductComparisonBlock";
-import GiftCardBlock from "./GiftCardBlock";
+import FinancingBadge from "./FinancingBadge";
+import FooterSection from "./FooterSection";
 import FormBuilderBlock from "./FormBuilderBlock";
+import Gallery from "./Gallery";
+import GiftCardBlock from "./GiftCardBlock";
+import GuidedSellingSection from "./GuidedSellingSection";
+import HeaderCart from "./HeaderCart";
+import HeaderSection from "./HeaderSection";
+import HeroBanner from "./HeroBanner";
+import ImageSlider from "./ImageSlider";
+import Lookbook from "./Lookbook";
+import MapBlock from "./MapBlock";
+import NewsletterSignup from "./NewsletterSignup";
+import PDPDetailsSection from "./PDPDetailsSection";
+import PoliciesAccordion from "./PoliciesAccordion";
 import PopupModal from "./PopupModal";
+import PricingTable from "./PricingTable";
 import ProductBundle, {
   getRuntimeProps as getProductBundleRuntimeProps,
 } from "./ProductBundle";
+import ProductCarousel, {
+  getRuntimeProps as getProductCarouselRuntimeProps,
+} from "./ProductCarousel";
+import ProductComparisonBlock from "./ProductComparisonBlock";
 import ProductFilter from "./ProductFilter";
-import HeaderSection from "./HeaderSection";
-import FooterSection from "./FooterSection";
-import CurrencySelector from "./CurrencySelector";
-import CampaignHeroSection from "./CampaignHeroSection";
+import ProductGrid, {
+  getRuntimeProps as getProductGridRuntimeProps,
+} from "./ProductGrid.client";
 import PromoTilesSection from "./PromoTilesSection";
-import ShowcaseSection from "./ShowcaseSection";
-import CrossSellSection from "./CrossSellSection";
-import FinancingBadge from "./FinancingBadge";
-import CertificateCheck from "./CertificateCheck";
-import PoliciesAccordion from "./PoliciesAccordion";
-import StickyBuyBar from "./StickyBuyBar";
-import PDPDetailsSection from "./PDPDetailsSection";
-import GuidedSellingSection from "./GuidedSellingSection";
-import CartSection from "./CartSection";
-import CheckoutSection from "./CheckoutSection";
-import ThankYouSection from "./ThankYouSection";
-import StoreLocatorSection from "./StoreLocatorSection";
-import EmailReferralSection from "./EmailReferralSection";
-import DSARSection from "./DSARSection";
-import AgeGateSection from "./AgeGateSection";
-import AccountSection from "./AccountSection";
-import RentalManageSection from "./RentalManageSection";
+import RecommendationCarousel, {
+  getRuntimeProps as getRecommendationCarouselRuntimeProps,
+} from "./RecommendationCarousel";
 import RentalAvailabilitySection from "./RentalAvailabilitySection";
+import RentalManageSection from "./RentalManageSection";
 import RentalTermsSection from "./RentalTermsSection";
-import StructuredDataSection from "./StructuredDataSection";
-import ConsentSection from "./ConsentSection";
-import AnalyticsPixelsSection from "./AnalyticsPixelsSection";
+import ReviewsCarousel from "./ReviewsCarousel";
 import ReviewsSection from "./ReviewsSection";
+import SearchBar from "./SearchBar";
+import ShowcaseSection from "./ShowcaseSection";
+import SocialFeed from "./SocialFeed";
+import SocialLinks from "./SocialLinks";
+import SocialProof from "./SocialProof";
+import StickyBuyBar from "./StickyBuyBar";
+import StoreLocatorBlock from "./StoreLocatorBlock";
+import StoreLocatorSection from "./StoreLocatorSection";
+import StructuredDataSection from "./StructuredDataSection";
+import Tabs from "./Tabs";
+import Testimonials from "./Testimonials";
+import TestimonialSlider from "./TestimonialSlider";
+import ThankYouSection from "./ThankYouSection";
 import type { BlockRegistryEntry } from "./types";
+import ValueProps from "./ValueProps";
+import VideoBlock from "./VideoBlock";
 
 const defaultPreview = "/window.svg";
 

@@ -5,6 +5,16 @@ const config = [
     ignores: ["jest.config.cjs", "postcss.config.cjs"],
   },
   ...rootConfig,
+  {
+    files: ["src/**/*.{ts,tsx}"],
+    rules: {
+      complexity: ["error", 45],
+      "max-lines-per-function": [
+        "error",
+        { max: 400, skipBlankLines: true, skipComments: true },
+      ],
+    },
+  },
   // Local overrides for cover-me-pretty try-on/AI prototype:
   // relax strict TS rules within this app only.
   {

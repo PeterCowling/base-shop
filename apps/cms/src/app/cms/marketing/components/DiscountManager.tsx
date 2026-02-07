@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
+
+import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
 import {
   Button,
   Card,
@@ -14,8 +16,8 @@ import {
   TableHeader,
   TableRow,
   Textarea,
-} from "@ui/components/atoms";
-import { FormField } from "@ui/components/molecules";
+} from "@acme/design-system/shadcn";
+
 import type { ActionResult } from "../../components/actionResult";
 
 export interface Discount {
@@ -199,7 +201,7 @@ export function DiscountManager({
                 id="discount-description"
                 placeholder="Optional context for the team"
                 value={form.description}
-                onChange={(event) => updateField("description", event.target.value)}
+                onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => updateField("description", event.target.value)}
                 rows={3}
               />
               <p className="text-xs text-muted-foreground">

@@ -1,8 +1,9 @@
 import { jest } from "@jest/globals";
 
-import { RedisCartStore } from "../redisStore";
-import { MemoryCartStore } from "../memoryStore";
 import type { SKU } from "@acme/types";
+
+import { MemoryCartStore } from "../memoryStore";
+import { RedisCartStore } from "../redisStore";
 
 class MockRedis {
   data = new Map<string, Record<string, any>>();

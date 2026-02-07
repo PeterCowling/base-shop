@@ -36,16 +36,16 @@ describe("/api/rental", () => {
       }),
       { virtual: true }
     );
-    jest.doMock("@platform-core/repositories/rentalOrders.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/rentalOrders.server", () => ({
       __esModule: true,
       addOrder,
       markReturned: jest.fn(),
     }));
-    jest.doMock("@platform-core/pricing", () => ({
+    jest.doMock("@acme/platform-core/pricing", () => ({
       __esModule: true,
       computeDamageFee: jest.fn(),
     }));
-    jest.doMock("@platform-core/repositories/shops.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/shops.server", () => ({
       __esModule: true,
       readShop: jest.fn(),
     }));
@@ -74,16 +74,16 @@ describe("/api/rental", () => {
         refunds: { create: jest.fn() },
       },
     }));
-    jest.doMock("@platform-core/repositories/rentalOrders.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/rentalOrders.server", () => ({
       __esModule: true,
       addOrder: jest.fn(),
       markReturned,
     }));
-    jest.doMock("@platform-core/pricing", () => ({
+    jest.doMock("@acme/platform-core/pricing", () => ({
       __esModule: true,
       computeDamageFee: jest.fn(),
     }));
-    jest.doMock("@platform-core/repositories/shops.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/shops.server", () => ({
       __esModule: true,
       readShop: jest.fn(),
     }));
@@ -121,16 +121,16 @@ describe("/api/rental", () => {
       }),
       { virtual: true }
     );
-    jest.doMock("@platform-core/repositories/rentalOrders.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/rentalOrders.server", () => ({
       __esModule: true,
       addOrder: jest.fn(),
       markReturned,
     }));
-    jest.doMock("@platform-core/pricing", () => ({
+    jest.doMock("@acme/platform-core/pricing", () => ({
       __esModule: true,
       computeDamageFee,
     }));
-    jest.doMock("@platform-core/repositories/shops.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/shops.server", () => ({
       __esModule: true,
       readShop,
     }));

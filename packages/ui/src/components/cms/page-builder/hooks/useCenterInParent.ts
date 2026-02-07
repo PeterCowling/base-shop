@@ -1,6 +1,8 @@
-import type { PageComponent, HistoryState } from "@acme/types";
-import type { Action, ResizeAction } from "../state/layout/types";
 import { useCallback } from "react";
+
+import type { HistoryState,PageComponent } from "@acme/types";
+
+import type { Action, ResizeAction } from "../state/layout/types";
 
 interface Args {
   components: PageComponent[];

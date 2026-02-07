@@ -1,6 +1,8 @@
 import type { HistoryState } from "@acme/types";
-import type { UpdateAction } from "./types";
+
 import { commit } from "../history";
+
+import type { UpdateAction } from "./types";
 import { updateComponent } from "./utils";
 
 export function update(state: HistoryState, action: UpdateAction): HistoryState {

@@ -1,17 +1,22 @@
 // src/components/guides/TransportNotice.tsx
-import { memo, type ComponentProps, type ComponentPropsWithoutRef } from "react";
-import clsx from "clsx";
+import { type ComponentProps, type ComponentPropsWithoutRef, memo } from "react";
 import * as I18n from "react-i18next";
-type TransComponentProps = ComponentProps<(typeof I18n)["Trans"]>;
+import clsx from "clsx";
+
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import { guideHref } from "@/routes.guides-helpers";
+
+type TransComponentProps = ComponentProps<(typeof I18n)["Trans"]>;
 
 const LINK_CLASS_NAME = clsx(
   "inline-flex",
   "min-h-10",
-  "min-w-10",
   "items-center",
-  "justify-start",
   "px-2",
+  "-mx-2",
+  "py-1",
+  "-my-1",
+  "rounded-sm",
   "text-brand-primary",
   "underline",
   "underline-offset-4",
@@ -35,72 +40,12 @@ function TransLink({ children, className, ...props }: TransLinkProps): JSX.Eleme
   );
 }
 
-type NoticeItemKey = "buses" | "ferries" | "airlink" | "driving" | "premium";
+type NoticeItemKey = "buses" | "trains" | "ferries" | "airlink" | "driving";
 
 type NoticeItem = {
   key: NoticeItemKey;
   components?: TransComponents;
 };
-
-const NOTICE_ITEMS: ReadonlyArray<NoticeItem> = [
-  {
-    key: "buses",
-    components: {
-      sitaLink: (
-        <TransLink
-          className={LINK_CLASS_NAME}
-          href="https://www.sitasudtrasporti.it"
-          rel="nofollow noopener noreferrer"
-          target="_blank"
-        />
-      ),
-    } satisfies TransComponents,
-  },
-  {
-    key: "ferries",
-    components: {
-      travelmarLink: (
-        <TransLink
-          className={LINK_CLASS_NAME}
-          href="https://www.travelmar.it"
-          rel="noopener noreferrer"
-          target="_blank"
-        />
-      ),
-      nlgLink: (
-        <TransLink
-          className={LINK_CLASS_NAME}
-          href="https://www.navlib.it"
-          rel="noopener noreferrer"
-          target="_blank"
-        />
-      ),
-    } satisfies TransComponents,
-  },
-  {
-    key: "airlink",
-    components: {
-      airportLink: (
-        <TransLink
-          className={LINK_CLASS_NAME}
-          href="https://www.aeroportodisalerno.it"
-          rel="noopener noreferrer"
-          target="_blank"
-        />
-      ),
-      airlinkLink: (
-        <TransLink
-          className={LINK_CLASS_NAME}
-          href="https://www.fsbusitalia.it/airlink"
-          rel="noopener noreferrer"
-          target="_blank"
-        />
-      ),
-    } satisfies TransComponents,
-  },
-  { key: "driving" },
-  { key: "premium" },
-];
 
 type Props = {
   className?: string;
@@ -128,6 +73,107 @@ function TransportNotice({ className = "" }: Props): JSX.Element {
   const titleRaw = t("transportNotice.title", { lng: lang });
   const titleText = typeof titleRaw === "string" ? titleRaw : "transportNotice.title";
 
+  const noticeItems: ReadonlyArray<NoticeItem> = [
+    {
+      key: "buses",
+      components: {
+        sitaLink: (
+          <TransLink
+            className={LINK_CLASS_NAME}
+            href="https://www.sitasudtrasporti.it"
+            rel="nofollow noopener noreferrer"
+            target="_blank"
+          />
+        ),
+        curreriLink: (
+          <TransLink
+            className={LINK_CLASS_NAME}
+            href="https://www.curreriviaggi.it/en/naples-airport-shuttle"
+            rel="nofollow noopener noreferrer"
+            target="_blank"
+          />
+        ),
+      } satisfies TransComponents,
+    },
+    {
+      key: "trains",
+      components: {
+        eavLink: (
+          <TransLink
+            className={LINK_CLASS_NAME}
+            href="https://www.eavsrl.it/orari-linee-ferroviarie/"
+            rel="nofollow noopener noreferrer"
+            target="_blank"
+          />
+        ),
+        trenitaliaLink: (
+          <TransLink
+            className={LINK_CLASS_NAME}
+            href="https://www.trenitalia.com/en.html"
+            rel="nofollow noopener noreferrer"
+            target="_blank"
+          />
+        ),
+      } satisfies TransComponents,
+    },
+    {
+      key: "ferries",
+      components: {
+        travelmarLink: (
+          <TransLink
+            className={LINK_CLASS_NAME}
+            href="https://www.travelmar.it"
+            rel="noopener noreferrer"
+            target="_blank"
+          />
+        ),
+        nlgLink: (
+          <TransLink
+            className={LINK_CLASS_NAME}
+            href="https://www.navlib.it"
+            rel="noopener noreferrer"
+            target="_blank"
+          />
+        ),
+        positanoJetLink: (
+          <TransLink
+            className={LINK_CLASS_NAME}
+            href="https://www.positanojet.com"
+            rel="noopener noreferrer"
+            target="_blank"
+          />
+        ),
+        alicostLink: (
+          <TransLink
+            className={LINK_CLASS_NAME}
+            href="https://www.alicost.it"
+            rel="noopener noreferrer"
+            target="_blank"
+          />
+        ),
+      } satisfies TransComponents,
+    },
+    {
+      key: "airlink",
+      components: {
+        airlinkLink: (
+          <TransLink
+            className={LINK_CLASS_NAME}
+            href="https://www.fsbusitalia.it/it/turismo/servizi-speciali/collegamento-aeroporto-costa-amalfi.html"
+            rel="noopener noreferrer"
+            target="_blank"
+          />
+        ),
+      } satisfies TransComponents,
+    },
+    {
+      key: "driving",
+      components: {
+        arrivingByCarLink: <TransLink className={LINK_CLASS_NAME} href={guideHref(lang, "parking")} />,
+      } satisfies TransComponents,
+    },
+  ];
+
   return (
     <aside
       aria-label={srLabel || undefined}
@@ -148,7 +194,7 @@ function TransportNotice({ className = "" }: Props): JSX.Element {
     >
       <p className="font-medium">{titleText}</p>
       <ul className="mt-2 list-disc space-y-1 pl-5">
-        {NOTICE_ITEMS.map(({ key, components }) => {
+        {noticeItems.map(({ key, components }) => {
           // Some tests mock `react-i18next` without exporting `Trans`.
           // Vitest's module mock throws on missing named exports when accessed.
           // Guard the access to avoid an exception and fall back to plain text.

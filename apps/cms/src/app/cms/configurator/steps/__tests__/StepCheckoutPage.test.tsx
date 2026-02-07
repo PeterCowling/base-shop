@@ -1,8 +1,9 @@
 import React from "react";
-import { render, screen, fireEvent, act } from "@testing-library/react";
-import StepCheckoutPage from "../StepCheckoutPage";
+import { act,fireEvent, render, screen } from "@testing-library/react";
+
+import type { ConfiguratorState } from "../../../wizard/schema";
 import { ConfiguratorContext, type ConfiguratorContextValue } from "../../ConfiguratorContext";
-import type { ConfiguratorState } from "../../wizard/schema";
+import StepCheckoutPage from "../StepCheckoutPage";
 
 const markComplete = jest.fn();
 jest.mock("../../hooks/useStepCompletion", () => ({

@@ -1,10 +1,11 @@
 // packages/platform-core/src/repositories/users.server.ts
 import "server-only";
 
-export * from "../users";
-
 import { prisma } from "../db";
+
 import { readShop } from "./shops.server";
+
+export * from "../users";
 
 export async function setStripeSubscriptionId(
   id: string,

@@ -1,4 +1,7 @@
-import { renderHook, act } from "@testing-library/react";
+import { act,renderHook } from "@testing-library/react";
+
+import { autoScroll } from "../hooks/dnd/autoscroll";
+import usePageBuilderDnD from "../hooks/usePageBuilderDnD";
 
 // Mock autoscroll to capture calls
 jest.mock("../hooks/dnd/autoscroll", () => ({
@@ -7,9 +10,6 @@ jest.mock("../hooks/dnd/autoscroll", () => ({
   AUTOSCROLL_EDGE_PX: 16,
   AUTOSCROLL_MAX_SPEED_PX: 64,
 }));
-
-import { autoScroll } from "../hooks/dnd/autoscroll";
-import usePageBuilderDnD from "../hooks/usePageBuilderDnD";
 
 describe("usePageBuilderDnD – autoscroll", () => {
   it("calls autoScroll with scrollRef and screen coords near edges", () => {

@@ -1,7 +1,10 @@
-import React from "react";
-import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
-import StepHomePage from "../src/app/cms/configurator/steps/StepHomePage";
+import type React from "react";
+import { act,fireEvent, render, screen, waitFor } from "@testing-library/react";
+
+import { NotificationContainer, NotificationProvider } from "@acme/ui/operations";
+
 import { STORAGE_KEY } from "../src/app/cms/configurator/hooks/useConfiguratorPersistence";
+import StepHomePage from "../src/app/cms/configurator/steps/StepHomePage";
 
 jest.mock("../src/app/cms/configurator/components/TemplateSelector", () => {
   const React = require("react");
@@ -61,7 +64,7 @@ jest.mock("../src/app/cms/configurator/lib/api", () => ({
   apiRequest: (...args: any[]) => apiRequest(...args),
 }));
 
-const setup = (props: Partial<React.ComponentProps<typeof StepHomePage>> = {}) => {
+const setup = async (props: Partial<React.ComponentProps<typeof StepHomePage>> = {}) => {
   const defaultProps = {
     pageTemplates: [],
     homeLayout: "",
@@ -73,7 +76,14 @@ const setup = (props: Partial<React.ComponentProps<typeof StepHomePage>> = {}) =
     shopId: "shop",
     themeStyle: {},
   };
-  render(<StepHomePage {...defaultProps} {...props} />);
+  await act(async () => {
+    render(
+      <NotificationProvider>
+        <StepHomePage {...defaultProps} {...props} />
+        <NotificationContainer />
+      </NotificationProvider>
+    );
+  });
   return defaultProps;
 };
 
@@ -112,7 +122,7 @@ describe("useEffect fetching existing page", () => {
       ],
       error: null,
     });
-    const props = setup();
+    const props = await setup();
     await waitFor(() => expect(props.setHomePageId).toHaveBeenCalledWith("p1"));
     expect(props.setComponents).toHaveBeenCalledWith([{ id: "c" }]);
     expect(window.localStorage.setItem).toHaveBeenCalledWith(
@@ -123,18 +133,16 @@ describe("useEffect fetching existing page", () => {
 
   it("shows toast on error", async () => {
     apiRequest.mockResolvedValueOnce({ data: null, error: "load failed" });
-    await act(async () => {
-      setup();
-    });
+    await setup();
     await screen.findByText("load failed");
   });
 });
 
 describe("Template selection", () => {
-  it("persists selection and dispatches event", () => {
+  it("persists selection and dispatches event", async () => {
     (window.localStorage as any).getItem.mockReturnValue(JSON.stringify({}));
     apiRequest.mockResolvedValueOnce({ data: [], error: null });
-    const props = setup();
+    const props = await setup();
     fireEvent.click(screen.getByText("choose template"));
     expect(props.setHomeLayout).toHaveBeenCalledWith("layout-id");
     expect(props.setComponents).toHaveBeenCalledWith([{ id: "comp" }]);
@@ -148,10 +156,10 @@ describe("Template selection", () => {
     );
   });
 
-  it("falls back when storage parsing fails", () => {
+  it("falls back when storage parsing fails", async () => {
     (window.localStorage as any).getItem.mockReturnValue("not-json");
     apiRequest.mockResolvedValueOnce({ data: [], error: null });
-    const props = setup();
+    const props = await setup();
     expect(() => fireEvent.click(screen.getByText("choose template"))).not.toThrow();
     expect(props.setHomeLayout).toHaveBeenCalledWith("layout-id");
     expect(window.localStorage.setItem).not.toHaveBeenCalledWith(
@@ -168,7 +176,7 @@ describe("onSave and onPublish callbacks", () => {
       .mockResolvedValueOnce({ data: [], error: null })
       .mockResolvedValueOnce({ data: { id: "1" }, error: null })
       .mockResolvedValueOnce({ data: null, error: "save error" });
-    const props = setup();
+    const props = await setup();
     await act(async () => {
       fireEvent.click(screen.getByText("save"));
     });
@@ -185,7 +193,7 @@ describe("onSave and onPublish callbacks", () => {
       .mockResolvedValueOnce({ data: [], error: null })
       .mockResolvedValueOnce({ data: { id: "2" }, error: null })
       .mockResolvedValueOnce({ data: null, error: "publish error" });
-    const props = setup();
+    const props = await setup();
     await act(async () => {
       fireEvent.click(screen.getByText("publish"));
     });
@@ -199,9 +207,9 @@ describe("onSave and onPublish callbacks", () => {
 });
 
 describe("navigation buttons", () => {
-  it("renders based on step ids and navigates", () => {
+  it("renders based on step ids and navigates", async () => {
     apiRequest.mockResolvedValueOnce({ data: [], error: null });
-    setup({
+    await setup({
       prevStepId: "prev",
       nextStepId: "next",
       homeLayout: "layout-id",
@@ -215,9 +223,9 @@ describe("navigation buttons", () => {
     expect(pushMock).toHaveBeenCalledWith("/cms/configurator/next");
   });
 
-  it("hides buttons when ids missing", () => {
+  it("hides buttons when ids missing", async () => {
     apiRequest.mockResolvedValueOnce({ data: [], error: null });
-    setup();
+    await setup();
     expect(screen.queryByText("Back")).toBeNull();
     expect(screen.queryByText("Next")).toBeNull();
   });

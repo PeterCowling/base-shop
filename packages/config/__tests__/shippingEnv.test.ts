@@ -1,4 +1,5 @@
 import { expect } from "@jest/globals";
+
 import { withEnv } from "../test/utils/withEnv";
 
 describe("shippingEnv", () => {
@@ -29,7 +30,6 @@ describe("shippingEnv", () => {
         {
           TAXJAR_KEY: "tax",
           UPS_KEY: "ups",
-          // @ts-expect-error - intentionally invalid type to trigger schema failure
           DHL_KEY: 123,
         } as unknown as NodeJS.ProcessEnv,
         () => import("../src/env/shipping"),

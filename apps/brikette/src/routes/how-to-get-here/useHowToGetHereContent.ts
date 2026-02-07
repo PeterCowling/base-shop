@@ -1,11 +1,10 @@
 import { useMemo } from "react";
-import type { TFunction } from "i18next";
 import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 
 import type { AppLanguage } from "@/i18n.config";
 import { getSlug } from "@/utils/slug";
 
-import { augmentDestinationSections } from "./transport";
 import {
   normalizeDestinationSections,
   normalizeExperienceGuides,
@@ -13,14 +12,16 @@ import {
   normalizeSorrentoContent,
   slugify,
 } from "./normalizers";
+import { INTRO_INTRO_KEY } from "./styles";
+import { augmentDestinationSections } from "./transport";
 import type {
   AugmentedDestinationSection,
   DestinationSection,
+  DestinationSectionImage,
+  ExperienceGuidesContent,
   HeaderContent,
   RomeTable,
-  ExperienceGuidesContent,
 } from "./types";
-import { INTRO_INTRO_KEY } from "./styles";
 
 export type HowToGetHereContent = {
   t: TFunction<"howToGetHere">;
@@ -33,6 +34,7 @@ export type HowToGetHereContent = {
   romeTitle: string;
   romeDescription: string;
   romeTable: RomeTable;
+  romeImage?: DestinationSectionImage;
   destinationFilterLabel: string;
   destinationFilterAllLabel: string;
   filtersHelper: string;
@@ -90,6 +92,7 @@ export function useHowToGetHereContent(lang: AppLanguage): HowToGetHereContent {
               id: slugify(sorrento.title) || "sorrento",
               name: sorrento.title,
               links: sorrento.links,
+              ...(sorrento.image ? { image: sorrento.image } : {}),
             },
           ]
         : normalizedSections;
@@ -113,6 +116,20 @@ export function useHowToGetHereContent(lang: AppLanguage): HowToGetHereContent {
       (t("rome.table", { returnObjects: true }) as Record<string, unknown> | undefined) ??
       ({ headers: { route: "", toRome: "", toHostel: "" }, options: [] });
     const romeTable = normalizeRomeTable(romeTableRaw);
+    const romeImageRaw = (t("rome.image", { returnObjects: true }) as
+      | DestinationSectionImage
+      | Record<string, unknown>
+      | undefined);
+    const romeImage =
+      romeImageRaw &&
+      typeof romeImageRaw.src === "string" &&
+      typeof romeImageRaw.alt === "string"
+        ? {
+            src: romeImageRaw.src,
+            alt: romeImageRaw.alt,
+            caption: typeof romeImageRaw.caption === "string" ? romeImageRaw.caption : undefined,
+          }
+        : undefined;
 
     const destinationStatsFallback = withFallback(
       t("header.stats.destinations"),
@@ -160,6 +177,7 @@ export function useHowToGetHereContent(lang: AppLanguage): HowToGetHereContent {
       introKey,
       internalBasePath,
       experienceGuides,
+      romeImage,
     } satisfies HowToGetHereContent;
   }, [lang, ready, t]);
 }

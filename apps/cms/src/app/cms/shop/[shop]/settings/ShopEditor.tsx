@@ -42,8 +42,6 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
       hiddenFields={[{ name: "id", value: String(form.info.id) }]}
       onSubmit={form.onSubmit}
       saving={form.saving}
-      toast={form.toast}
-      onToastClose={form.closeToast}
     />
   );
 }

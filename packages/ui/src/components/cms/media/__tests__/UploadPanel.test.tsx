@@ -1,10 +1,11 @@
 import React from "react";
-import { render, fireEvent, screen, waitFor } from "@testing-library/react";
-import UploadPanel from "../UploadPanel";
-import { useMediaUpload } from "@ui/hooks/useMediaUpload";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
-jest.mock("@ui/hooks/useMediaUpload", () => ({ useMediaUpload: jest.fn() }));
-jest.mock("@/components/atoms/shadcn", () => {
+import { useMediaUpload } from "../../../../hooks/useMediaUpload";
+import UploadPanel from "../UploadPanel";
+
+jest.mock("../../../../hooks/useMediaUpload", () => ({ useMediaUpload: jest.fn() }));
+jest.mock("@acme/design-system/shadcn", () => {
   const React = require("react");
   const Input = React.forwardRef(function InputMock(
     props: any,
@@ -50,7 +51,7 @@ function setupMock(overrides: Partial<ReturnType<typeof useMediaUpload>> = {}) {
     onFileChange: jest.fn(),
     handleUpload: jest.fn(),
   };
-  mockHook.mockReturnValue({ ...defaults, ...overrides });
+  mockHook.mockReturnValue({ ...defaults, ...overrides } as ReturnType<typeof useMediaUpload>);
   return { ...defaults, ...overrides };
 }
 

@@ -1,4 +1,4 @@
-import { isoDateInNDays, calculateRentalDays } from "../src";
+import { calculateRentalDays,isoDateInNDays } from "../src";
 
 describe("leap year handling", () => {
   beforeEach(() => {

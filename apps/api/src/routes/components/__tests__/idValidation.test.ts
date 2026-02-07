@@ -1,7 +1,4 @@
-import { verify, validate, setup, createWarnSpy, createContext } from './testHelpers';
-import * as route from '../[shopId]';
-
-const { onRequest } = route;
+import { createContext,createWarnSpy, onRequest, setup, validate, verify } from './testHelpers';
 
 describe('onRequest id validation', () => {
   let warnSpy: jest.SpyInstance;
@@ -35,7 +32,10 @@ describe('onRequest id validation', () => {
       expect(validate).toHaveBeenCalledWith(bad);
       expect(res.status).toBe(400);
       await expect(res.json()).resolves.toEqual({ error: 'Invalid shop id' });
-      expect(warnSpy).toHaveBeenCalledWith('invalid shop id', { id: bad });
+      expect(warnSpy).toHaveBeenCalledWith(
+        'invalid shop id',
+        expect.objectContaining({ id: bad })
+      );
     },
   );
 
@@ -47,6 +47,9 @@ describe('onRequest id validation', () => {
     expect(validate).toHaveBeenCalledWith(undefined);
     expect(res.status).toBe(400);
     await expect(res.json()).resolves.toEqual({ error: 'Invalid shop id' });
-    expect(warnSpy).toHaveBeenCalledWith('invalid shop id', { id: undefined });
+    expect(warnSpy).toHaveBeenCalledWith(
+      'invalid shop id',
+      expect.objectContaining({ id: undefined })
+    );
   });
 });

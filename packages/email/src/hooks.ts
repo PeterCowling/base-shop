@@ -19,7 +19,7 @@ const clickListeners: HookHandler[] = [];
  * @example
  * ```ts
  * onSend(async (shop, payload) => {
- *   console.log(`Email sent for ${shop}`, payload);
+ *   console.info(`Email sent for ${shop}`, payload);
  * });
  * ```
  */
@@ -35,7 +35,7 @@ export function onSend(listener: HookHandler): void {
  * @example
  * ```ts
  * onOpen(async (shop, payload) => {
- *   console.log(`Email opened for ${shop}`, payload);
+ *   console.info(`Email opened for ${shop}`, payload);
  * });
  * ```
  */
@@ -51,7 +51,7 @@ export function onOpen(listener: HookHandler): void {
  * @example
  * ```ts
  * onClick(async (shop, payload) => {
- *   console.log(`Email link clicked for ${shop}`, payload);
+ *   console.info(`Email link clicked for ${shop}`, payload);
  * });
  * ```
  */
@@ -108,7 +108,7 @@ export async function emitClick(shop: string, payload: HookPayload): Promise<voi
 }
 
 async function track(shop: string, data: AnalyticsEvent): Promise<void> {
-  const { trackEvent } = await import("@platform-core/analytics"); // i18n-exempt -- EMAIL-1000 [ttl=2026-03-31]
+  const { trackEvent } = await import("@acme/platform-core/analytics"); // i18n-exempt -- EMAIL-1000 [ttl=2026-03-31]
   await trackEvent(shop, data);
 }
 

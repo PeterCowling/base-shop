@@ -1,94 +1,139 @@
 {
   "seo": {
-    "title": "Hostel Brikette sunrise hike",
-    "description": "Rutten före gryningen från Hostel Brikette till en lugn utsiktspunkt på en klippa med fri utsikt över soluppgången över Positano."
+    "title": "Soluppgångsvandring från Hostel Brikette (Positano)",
+    "description": "En kort vandring före gryningen från Hostel Brikette till en lugn utsiktspunkt ovanför Positano, med navigeringsfoton i rätt ordning."
   },
-  "linkLabel": "Hostel Brikette sunrise hike",
+  "linkLabel": "Soluppgångsvandring: Se gryningen bryta över Positano",
+  "lastUpdated": "2026-02-04",
   "intro": [
-    "Head out before dawn to catch the first light over the Amalfi Coast from a quiet vantage point above Positano.",
-    "This walk starts at Hostel Brikette and takes around 25 minutes including the stair climb to the viewpoint."
+    "Om du vill ha den enklaste soluppgången kan du se gryningen från hostellets gemensamma terrass när solen går upp till vänster (när du tittar ut mot havet).",
+    "Om du vill ha ett bredare panorama och ett lugnare ögonblick ovanför staden, följ denna korta vandring upp i bergen till en utsiktspunkt på klippkanten över Positano."
   ],
   "sections": [
     {
-      "id": "overview",
-      "title": "What is the sunrise hike?",
+      "id": "what-is",
+      "title": "Vad är soluppgångsvandringen?",
       "body": [
-        "If you prefer to stay put, you can watch the sunrise from the hostel terrace as it rises to the left of the building.",
-        "For a wider panorama, follow this short hike to a nearby cliff where you can watch the sun clear the horizon and light up the town below."
+        "Detta är en kort tur och retur-vandring före gryningen från Hostel Brikette till en liten utsiktspunkt ovanför Positano.",
+        "Om du vill ha ett längre bergsalternativ är %LINK:santaMariaDelCastelloHike|Santa Maria del Castello% ett bra alternativ, men rutten nedan är det snabbaste sättet att få en dramatisk soluppgångsvy utan att förbinda sig till en heldagsvandring."
       ]
     },
     {
-      "id": "reach-stairs",
-      "title": "Reach the stairway trailhead",
+      "id": "before-you-go",
+      "title": "Innan du går (det kommer vara mörkt)",
       "body": [
-        "Exit the hostel through the main door and walk down to Via Pasitea.",
-        "Turn right towards Sorrento and follow the road for roughly 350 metres.",
-        "Look for a flight of stairs on your left heading uphill — the first section is paved and has a handrail."
+        "Ta med en telefonlampa eller pannlampa och håll händerna fria (särskilt på trapporna).",
+        "Bär skor med grepp — den första delen är asfalterad, men skogsleden kan vara lös eller fuktig.",
+        "Börja tillräckligt tidigt så att du anländer 10-15 minuter före soluppgången så att du kan sätta dig tillrätta, hitta din plats och njuta av det första ljuset."
       ]
     },
     {
-      "id": "climb-to-viewpoint",
-      "title": "Climb to the viewpoint",
+      "id": "step-1",
+      "title": "Steg 1: Gå från hostellet till trappan (≈350 m)",
       "body": [
-        "Take the stairs all the way up until you reach a small house at the top of the initial climb.",
-        "At the house, turn left to join the woodland trail.",
-        "When the path forks, take the right-hand branch and continue climbing through the trees.",
-        "As the path opens up and you can see the sea directly ahead, bear left.",
-        "Continue around the rocks to reach the exposed vantage point with sweeping sunrise views."
+        "Lämna hostellet genom huvuddörren och gå ner till vägen.",
+        "Sväng mot Sorrento och gå cirka **350 meter** längs huvudvägen tills du når en trappa som klättrar upp från vägen."
       ]
     },
     {
-      "id": "enjoy-sunrise",
-      "title": "Enjoy the sunrise safely",
+      "id": "step-2",
+      "title": "Steg 2: Klättra till huset, sväng sedan vänster",
       "body": [
-        "The final rocks can be slick with morning dew; move carefully and avoid standing on loose edges.",
-        "From the main ledge you can watch the sun crest the horizon, or scramble a little higher for photos once there is enough light."
+        "Ta trappan hela vägen upp tills du når det gamla vita huset som visas nedan.",
+        "Vid huset, **sväng vänster** för att gå med på skogsleden."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/02-house.jpg",
+          "alt": "Gammalt vitt hus bredvid trappan på soluppgångsvandringens rutt ovanför Positano",
+          "caption": "Denna byggnad markerar slutet på trappklättringen; sväng vänster här för att komma in på skogsleden.",
+          "width": 876,
+          "height": 530
+        }
+      ]
+    },
+    {
+      "id": "step-3",
+      "title": "Steg 3: Följ skogsleden till utsiktspunkten",
+      "body": [
+        "Följ skogsleden när den klättrar försiktigt bort från huset.",
+        "När leden delar sig, ta den **högra** grenen.",
+        "Du kommer så småningom att nå en punkt där träden öppnar sig och du kan se havet rakt fram. Därifrån, gå runt till din **vänster**.",
+        "Den vänstra vägen tar dig till utsiktspunkten. Du kan försiktigt klättra upp på klipporna för en högre sittplats, eller stanna vid huvudplatsen för en stabil utsikt."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/03-viewpoint.jpg",
+          "alt": "Kartvy ovanifrån som visar de sista svängarna på soluppgångsvandringens rutt till utsiktspunkten ovanför Positano",
+          "caption": "Använd denna vy ovanifrån för att bekräfta den sista vänstersväng mot utsiktspunkten efter att leden öppnar sig mot havet.",
+          "width": 677,
+          "height": 600
+        }
+      ]
+    },
+    {
+      "id": "share",
+      "title": "Dela denna guide (QR)",
+      "body": [
+        "Om du är på väg ut med vänner kan du använda denna QR-kod för att snabbt dela guiden på en annan telefon."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/01-qr.png",
+          "alt": "QR-kod som länkar till Hostel Brikette soluppgångsvandring guide",
+          "width": 450,
+          "height": 450
+        }
       ]
     }
   ],
-  "tips": [
-    "Allow around 25 minutes from the hostel to the viewpoint and aim to arrive 10 minutes before the posted sunrise time.",
-    "Bring a headlamp or phone torch — the stair sections are dark before dawn.",
-    "Wear shoes with good grip and pack a layer; sea breezes make early mornings feel cooler."
+  "essentialsTitle": "Nödvändigheter",
+  "essentials": [
+    "Pannlampa eller telefonljus (plus ett laddat batteri).",
+    "Skor med grepp och ett lätt lager — det kan kännas svalt och blåsigt före gryningen.",
+    "Vatten och ett litet mellanmål om du planerar att sitta och se soluppgången."
   ],
+  "tipsTitle": "Smart timing",
+  "tips": [
+    "Gör en snabb väderkontroll: vind och låga moln kan dölja soluppgången även på annars klara dagar.",
+    "Om du är osäker på en korsning i mörkret, pausa och bekräfta din riktning istället för att gissa."
+  ],
+  "warningsTitle": "Säkerhetsanteckningar",
+  "warnings": [
+    "Gå långsamt på trapporna och håll händerna fria — det är lätt att snubbla i dåligt ljus.",
+    "Om leden känns hal efter regn, överväg att se från hostellets terrass istället."
+  ],
+  "steps": [
+    {
+      "name": "Gå till trappan",
+      "text": "Från hostellet, gå ~350 m mot Sorrento på huvudvägen tills du ser trappan som klättrar uppför."
+    },
+    {
+      "name": "Klättra till huset",
+      "text": "Följ trappan till det gamla vita huset, sväng sedan vänster till skogsleden."
+    },
+    {
+      "name": "Ta högra grenen",
+      "text": "När skogsleden delar sig, håll till höger och fortsätt tills du kan se havet."
+    },
+    {
+      "name": "Sväng vänster till utsiktspunkten",
+      "text": "Efter att leden öppnar sig mot havet, gå vänster för att nå utsiktspunkten (klättra försiktigt om du vill ha en högre plats)."
+    }
+  ],
+  "faqsTitle": "Vanliga frågor",
   "faqs": [
     {
-      "q": "Can I just watch the sunrise from the hostel?",
+      "q": "Kan jag bara se soluppgången från hostellet?",
       "a": [
-        "Yes. The terrace faces east and you can see the sun rise to the left of the building without leaving the property.",
-        "The hike is for guests who want a wider panorama or photos without foreground buildings."
+        "Ja — hostellets terrass är det enklaste alternativet och solen går upp till vänster om byggnaden när du står vänd mot havet."
       ]
     },
     {
-      "q": "Is the trail marked or difficult to follow?",
+      "q": "Hur lång tid tar vandringen?",
       "a": [
-        "The route follows local stairs and an informal woodland trail. There are no signposts, so bring a phone with offline maps or follow these instructions closely.",
-        "In the dark, walk slowly and use a torch to pick out uneven steps and tree roots."
-      ]
-    },
-    {
-      "q": "What should I bring?",
-      "a": [
-        "Wear trainers or hiking shoes with grip, carry water, and pack a light layer for the breeze.",
-        "If you plan to stay for sunrise photos, consider a tripod or phone stand."
+        "Det är en kort rutt, men tiden beror på din takt och hur länge du stannar vid utsiktspunkten. Ge dig själv tillräckligt med tid för att anlända 10-15 minuter före soluppgången."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Bilder",
-    "items": [
-      {
-        "alt": "QR code to share the guide",
-        "caption": "Skanna för att dela"
-      },
-      {
-        "alt": "House at the top of the initial climb",
-        "caption": "Hus högst upp i trappan"
-      },
-      {
-        "alt": "Viewpoint over Positano at sunrise",
-        "caption": "Utsiktspunkt med soluppgång över Positano"
-      }
-    ]
-  }
+  ]
 }

@@ -1,4 +1,5 @@
 import * as path from "path";
+
 import type { SeoAuditEntry } from "../src/repositories/seoAudit.server";
 
 describe("seoAudit JSON repo", () => {

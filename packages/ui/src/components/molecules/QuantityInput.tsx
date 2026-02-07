@@ -1,7 +1,9 @@
 "use client";
 import * as React from "react";
-import { cn } from "../../utils/style";
+
 import { useTranslations } from "@acme/i18n";
+
+import { cn } from "../../utils/style";
 
 export interface QuantityInputProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {

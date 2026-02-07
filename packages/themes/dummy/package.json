@@ -1,0 +1,20 @@
+{
+  "name": "@themes/dummy",
+  "private": true,
+  "type": "module",
+  "version": "0.0.0",
+  "files": [
+    "src",
+    "tokens.css"
+  ],
+  "main": "./src/tailwind-tokens.ts",
+  "exports": {
+    ".": "./src/tailwind-tokens.ts",
+    "./tailwind-tokens": "./src/tailwind-tokens.ts",
+    "./tokens.css": "./tokens.css"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "lint": "eslint . --no-error-on-unmatched-pattern"
+  }
+}

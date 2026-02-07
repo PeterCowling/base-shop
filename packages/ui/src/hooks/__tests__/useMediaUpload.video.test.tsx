@@ -6,21 +6,18 @@ describe("useMediaUpload (video thumbnail path)", () => {
   const originalCreateEl = document.createElement;
 
   afterEach(() => {
-    // @ts-expect-error: restore stubbed API
     URL.createObjectURL = originalCreate;
-    // @ts-expect-error: restore stubbed API
-    document.createElement = originalCreateEl as any;
+    document.createElement = originalCreateEl;
     jest.resetModules();
   });
 
   test("creates thumbnail from video via canvas", async () => {
     jest.doMock("../useFileUpload", () => ({
-      useFileUpload: () => ({ pendingFile: new File([1], "v.mp4", { type: "video/mp4" }) }),
+      useFileUpload: () => ({ pendingFile: new File([""], "v.mp4", { type: "video/mp4" }) }),
     }));
     const { default: useMediaUpload } = await import("../useMediaUpload");
 
     // Stub object URL
-    // @ts-expect-error: test stubs object URL API
     URL.createObjectURL = jest.fn(() => "blob:video");
 
     // Fake video + canvas
@@ -39,12 +36,11 @@ describe("useMediaUpload (video thumbnail path)", () => {
       getContext: () => ({ drawImage: jest.fn() }),
       toDataURL: () => "data:video-thumb",
     };
-    // @ts-expect-error: override createElement for test
-    document.createElement = (tag: string) => {
+    document.createElement = ((tag: string) => {
       if (tag === "video") return fakeVideo as any;
       if (tag === "canvas") return fakeCanvas as any;
       return originalCreateEl.call(document, tag) as any;
-    };
+    }) as typeof document.createElement;
 
     const { result } = renderHook(() => useMediaUpload({ shop: "s", requiredOrientation: "landscape" } as any));
 

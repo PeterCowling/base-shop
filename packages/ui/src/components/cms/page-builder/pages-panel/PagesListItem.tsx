@@ -1,7 +1,10 @@
 "use client";
 import React from "react";
-import { Button } from "../../../atoms/shadcn";
+
 import { useTranslations } from "@acme/i18n";
+
+import { Button } from "../../../atoms/shadcn";
+
 import type { PageItem } from "./types";
 
 export function PagesListItem({

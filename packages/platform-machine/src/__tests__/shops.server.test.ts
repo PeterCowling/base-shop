@@ -1,3 +1,10 @@
+import { promises as fs } from "fs";
+
+import { prisma } from "@acme/platform-core/db";
+import { updateShopInRepo } from "@acme/platform-core/repositories/shop.server";
+import * as shops from "@acme/platform-core/repositories/shops.server";
+import { shopSchema } from "@acme/types";
+
 jest.mock("@acme/platform-core/dataRoot", () => ({
   DATA_ROOT: "/data",
 }));
@@ -41,12 +48,6 @@ jest.mock("@acme/platform-core/themeTokens/index", () => ({
   baseTokens: { base: "base" },
   loadThemeTokens: jest.fn(async () => ({ theme: "theme" })),
 }));
-
-import { promises as fs } from "fs";
-import { prisma } from "@acme/platform-core/db";
-import { shopSchema } from "@acme/types";
-import { updateShopInRepo } from "@acme/platform-core/repositories/shop.server";
-import * as shops from "@acme/platform-core/repositories/shops.server";
 
 const { readShop, writeShop } = shops;
 

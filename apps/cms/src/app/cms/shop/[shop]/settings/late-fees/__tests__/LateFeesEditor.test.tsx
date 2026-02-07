@@ -1,13 +1,14 @@
 import "@testing-library/jest-dom";
+
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe, toHaveNoViolations } from "jest-axe";
 
 import LateFeesEditor from "../LateFeesEditor";
 
-expect.extend(toHaveNoViolations);
+expect.extend(toHaveNoViolations as any);
 
-const parseLateFeeForm = jest.fn(() => ({
+const parseLateFeeForm = jest.fn((_formData: FormData) => ({
   data: { enabled: true, intervalMinutes: 5 },
 }));
 
@@ -20,7 +21,7 @@ jest.mock("../../../../../../../services/shops/validation", () => ({
   parseLateFeeForm,
 }));
 jest.mock(
-  "@ui/components/atoms/shadcn",
+  "@acme/design-system/shadcn",
   () => ({
     Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
     Checkbox: ({ onCheckedChange, ...props }: any) => (

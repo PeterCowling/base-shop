@@ -1,11 +1,11 @@
-import { afterEach, expect, test, describe, jest } from "@jest/globals";
+import { afterEach, describe, expect, jest,test } from "@jest/globals";
 
-jest.mock("@platform-core/repositories/shop.server", () => ({
-  getShopById: jest.fn().mockResolvedValue({}),
+jest.mock("@acme/platform-core/repositories/shop.server", () => ({
+  getShopById: (jest.fn() as unknown as jest.Mock).mockResolvedValue({}),
 }));
 
-jest.mock("@platform-core/shops", () => ({
-  getSanityConfig: jest.fn().mockReturnValue({ projectId: "p", dataset: "d", token: "t" }),
+jest.mock("@acme/platform-core/shops", () => ({
+  getSanityConfig: (jest.fn() as unknown as jest.Mock).mockReturnValue({ projectId: "p", dataset: "d", token: "t" }),
 }));
 
 jest.mock("../src/actions/common/auth", () => ({
@@ -18,7 +18,7 @@ describe("blog actions", () => {
   });
 
   test("createPost forwards publishedAt", async () => {
-    global.fetch = jest.fn().mockResolvedValue({ json: async () => ({ results: [{ id: "1" }] }) }) as any;
+    global.fetch = (jest.fn() as unknown as jest.Mock).mockResolvedValue({ json: async () => ({ results: [{ id: "1" }] }) }) as any;
     const { createPost } = await import("../src/actions/blog.server");
     const fd = new FormData();
     fd.set("title", "T");
@@ -34,7 +34,7 @@ describe("blog actions", () => {
   });
 
   test("publishPost uses provided publishedAt", async () => {
-    global.fetch = jest.fn().mockResolvedValue({ json: async () => ({}) }) as any;
+    global.fetch = (jest.fn() as unknown as jest.Mock).mockResolvedValue({ json: async () => ({}) }) as any;
     const { publishPost } = await import("../src/actions/blog.server");
     const fd = new FormData();
     fd.set("publishedAt", "2025-01-02T12:00");
@@ -46,8 +46,7 @@ describe("blog actions", () => {
   });
 
   test("createPost collects product slugs", async () => {
-    global.fetch = jest
-      .fn()
+    global.fetch = (jest.fn() as unknown as jest.Mock)
       .mockResolvedValueOnce({ ok: true })
       .mockResolvedValueOnce({ json: async () => ({ result: null }) })
       .mockResolvedValueOnce({ json: async () => ({ results: [{ id: "1" }] }) }) as any;
@@ -66,8 +65,7 @@ describe("blog actions", () => {
   });
 
   test("updatePost collects product slugs", async () => {
-    global.fetch = jest
-      .fn()
+    global.fetch = (jest.fn() as unknown as jest.Mock)
       .mockResolvedValueOnce({ ok: true })
       .mockResolvedValueOnce({ ok: true })
       .mockResolvedValueOnce({ json: async () => ({ result: null }) })
@@ -91,8 +89,7 @@ describe("blog actions", () => {
   });
 
   test("createPost filters invalid product slugs", async () => {
-    global.fetch = jest
-      .fn()
+    global.fetch = (jest.fn() as unknown as jest.Mock)
       .mockResolvedValueOnce({ ok: false })
       .mockResolvedValueOnce({ json: async () => ({ result: null }) })
       .mockResolvedValueOnce({ json: async () => ({ results: [{ id: "1" }] }) }) as any;
@@ -111,8 +108,7 @@ describe("blog actions", () => {
   });
 
   test("createPost forwards products from field", async () => {
-    global.fetch = jest
-      .fn()
+    global.fetch = (jest.fn() as unknown as jest.Mock)
       .mockResolvedValueOnce({ ok: true, json: async () => ["foo", "bar"] })
       .mockResolvedValueOnce({ json: async () => ({ result: null }) })
       .mockResolvedValueOnce({ json: async () => ({ results: [{ id: "1" }] }) }) as any;
@@ -129,8 +125,7 @@ describe("blog actions", () => {
   });
 
   test("updatePost filters invalid product slugs", async () => {
-    global.fetch = jest
-      .fn()
+    global.fetch = (jest.fn() as unknown as jest.Mock)
       .mockResolvedValueOnce({ ok: false })
       .mockResolvedValueOnce({ json: async () => ({ result: null }) })
       .mockResolvedValueOnce({ json: async () => ({}) }) as any;

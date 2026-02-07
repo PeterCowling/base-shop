@@ -1,13 +1,13 @@
+import { spawnSync } from "node:child_process";
 import {
   appendFileSync,
   existsSync,
-  readFileSync,
   readdirSync,
+  readFileSync,
   unlinkSync,
   writeFileSync,
 } from "node:fs";
 import { join } from "node:path";
-import { spawnSync } from "node:child_process";
 
 const SHOP_ID_REGEX = /^[a-z0-9_-]+$/;
 

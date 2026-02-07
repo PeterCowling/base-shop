@@ -7,15 +7,7 @@
     "eyebrow": "Esperienze",
     "title": "Tramonti, mattine lente e consigli da chi vive qui",
     "description": "Abbina il tuo soggiorno a drink in terrazza, escursioni curate e a un concierge digitale che ti aggiorna prima ancora di arrivare.",
-    "supporting": "Tutte le attività sono aperte agli ospiti registrati; se viaggi con amici esterni scrivici e verifichiamo la disponibilità.",
-    "primaryCta": "Prenota il tuo soggiorno",
-    "secondaryCta": "Apri il menu del bar",
-    "tertiaryCta": "Scrivi al concierge digitale",
-    "primaryCtaAria": "Prenota il tuo soggiorno all'Hostel Brikette",
-    "secondaryCtaAria": "Visualizza il menu del bar dell'Hostel Brikette",
-    "tertiaryCtaAria": "Invia un messaggio al concierge digitale dell'Hostel Brikette",
-    "breakfastCta": "Vedi il menu della colazione",
-    "breakfastCtaAria": "Vedi il menu della colazione"
+    "scrollNudge": "Scopri le esperienze per categoria"
   },
   "sections": {
     "bar": {
@@ -89,7 +81,51 @@
     "empty": "Non abbiamo ancora guide di esperienze per {{tag}}. Prova un altro tag o rimuovi il filtro.",
     "clearFilter": "Mostra tutte le guide di esperienze",
     "cardCta": "Esplora la guida esperienziale {{guideTitle}}",
+    "filterHeading": "Filtra le guide esperienziali",
+    "filterDescription": "Scegli un tag per restringere le esperienze in evidenza.",
+    "grouped": {
+      "beaches": {
+        "title": "Spiagge",
+        "description": "Scegli il tratto di spiaggia giusto e pianifica la tua giornata.",
+        "imageAlt": "Spiaggia di Positano con ombrelloni colorati lungo la costa"
+      },
+      "hiking": {
+        "title": "Escursioni & Sentieri",
+        "description": "Itinerari che vanno da passeggiate facili a trekking giornalieri.",
+        "imageAlt": "Escursionista sul Sentiero degli Dei con vista sulla costa"
+      },
+      "day-trip": {
+        "title": "Gite di un giorno",
+        "description": "Capri, Amalfi, Ravello — come arrivarci e tornare.",
+        "imageAlt": "Traghetto diretto all'isola di Capri"
+      },
+      "boat": {
+        "title": "Uscite in barca",
+        "description": "Noleggi privati, tour di gruppo e crociere al tramonto.",
+        "imageAlt": "Barca tradizionale nelle acque della Costiera Amalfitana"
+      },
+      "cuisine": {
+        "title": "Gastronomia",
+        "description": "Dove mangiare bene senza spendere troppo.",
+        "imageAlt": "Piatti italiani freschi in una trattoria locale"
+      },
+      "more": {
+        "title": "Altre guide",
+        "description": "Consigli sui trasporti, spot fotografici ed eventi locali.",
+        "imageAlt": "Autobus locale sulla strada costiera amalfitana"
+      }
+    },
     "directionsLabel": "Indicazioni",
+    "sections": {
+      "content": {
+        "title": "Guide alle esperienze",
+        "description": "Guide approfondite su spiagge, trekking, gite di un giorno e cose da fare"
+      },
+      "directions": {
+        "title": "Come arrivare",
+        "description": "Indicazioni passo passo da e per l’ostello"
+      }
+    },
     "directionLinks": {
       "capriDayTrip": {
         "positanoCapriFerry": "Positano → Capri in traghetto",
@@ -104,35 +140,21 @@
       "positanoRavello": {
         "positanoRavelloBus": "Positano → Ravello in autobus",
         "ravelloPositanoBus": "Ravello → Positano in autobus",
-        "positanoRavelloFerryBus": "Positano → Ravello traghetto + bus"
+        "positanoRavelloFerryBus": "Positano → Ravello traghetto + autobus"
       },
       "naplesPositano": {
-        "naplesCenterTrainBus": "Centro Napoli → Positano (treno + bus)",
-        "naplesCenterPositanoFerry": "Centro Napoli → Positano in traghetto",
-        "naplesAirportPositanoBus": "Aeroporto Napoli → Positano in autobus",
-        "positanoNaplesCenterBusTrain": "Positano → Centro Napoli (bus + treno)",
+        "naplesCenterTrainBus": "Centro di Napoli → Positano (treno + autobus)",
+        "naplesCenterPositanoFerry": "Centro di Napoli → Positano in traghetto",
+        "naplesAirportPositanoBus": "Aeroporto di Napoli → Positano in autobus",
+        "positanoNaplesCenterBusTrain": "Positano → Centro di Napoli (autobus + treno)",
         "positanoNaplesCenterFerry": "Positano → Napoli in traghetto",
-        "positanoNaplesAirportBus": "Positano → Aeroporto Napoli in autobus"
+        "positanoNaplesAirportBus": "Positano → Aeroporto di Napoli in autobus"
       },
       "salernoPositano": {
         "salernoPositanoBus": "Salerno → Positano in autobus",
         "salernoPositanoFerry": "Salerno → Positano in traghetto (stagionale)",
         "positanoSalernoBus": "Positano → Salerno in autobus",
         "positanoSalernoFerry": "Positano → Salerno in traghetto (stagionale)"
-      }
-    },
-    "filterHeading": "Filtra le guide esperienziali",
-    "filterDescription": "Scegli un tag per restringere le esperienze in evidenza.",
-    "grouped": {
-      "beaches": {
-        "guides": {
-          "heading": "Guide spiagge",
-          "description": "Scegli il tratto di spiaggia giusto e organizza la giornata."
-        },
-        "directions": {
-          "heading": "Indicazioni per le spiagge",
-          "description": "Indicazioni passo passo dall'Hostel Brikette fino alla spiaggia."
-        }
       }
     }
   }

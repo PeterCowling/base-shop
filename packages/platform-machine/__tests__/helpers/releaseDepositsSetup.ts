@@ -28,7 +28,7 @@ jest.mock(
 
 export const readOrders = jest.fn();
 export const markRefunded = jest.fn();
-jest.mock("@platform-core/repositories/rentalOrders.server", () => ({
+jest.mock("@acme/platform-core/repositories/rentalOrders.server", () => ({
   __esModule: true,
   readOrders,
   markRefunded,

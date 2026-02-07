@@ -1,7 +1,8 @@
 // apps/cms/src/app/cms/shop/[shop]/settings/late-fees/page.tsx
 
-import { getSettings } from "@cms/actions/shops.server";
 import dynamic from "next/dynamic";
+import { getSettings } from "@cms/actions/shops.server";
+
 import LateFeesTable from "./LateFeesTable";
 
 const LateFeesEditor = dynamic(() => import("./LateFeesEditor"));

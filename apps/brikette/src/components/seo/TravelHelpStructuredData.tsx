@@ -1,20 +1,27 @@
-/* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
+ 
 // src/components/seo/TravelHelpStructuredData.tsx
-import NEARBY from "@/schema/travel-help/en-nearby.jsonld?raw";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import { useTranslation } from "react-i18next";
+
+import { buildCanonicalUrl } from "@acme/ui/lib/seo";
+
 import { BASE_URL } from "@/config/site";
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import { guideSlug } from "@/routes.guides-helpers";
+import NEARBY from "@/schema/travel-help/en-nearby.jsonld?raw";
 import { HOTEL_ID } from "@/utils/schema";
 import { getSlug } from "@/utils/slug";
-import { articleSlug } from "@/routes.assistance-helpers";
+import { buildFaqJsonLd } from "@/utils/buildFaqJsonLd";
+import { serializeJsonLdValue } from "@/utils/seo/jsonld";
+
+import FaqJsonLdScript from "./FaqJsonLdScript";
 import { parseTravelHelpResource, type TravelHelpResource } from "@/utils/travelHelp";
-import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
 
 export default function TravelHelpStructuredData() {
   const lang = useCurrentLanguage();
   const assistanceSlug = getSlug("assistance", lang);
-  const slug = articleSlug(lang, "travelHelp");
-  const pageUrl = `${BASE_URL}/${lang}/${assistanceSlug}/${slug}`;
+  const slug = guideSlug(lang, "travelHelp");
+  const pagePath = `/${lang}/${assistanceSlug}/${slug}`;
+  const pageUrl = buildCanonicalUrl(BASE_URL, pagePath);
 
   const translation = useTranslation("travelHelp", { lng: lang });
   const i18nInstance = translation?.i18n;
@@ -76,33 +83,23 @@ export default function TravelHelpStructuredData() {
   const resource = getResourceBundle(lang);
   const fallbackResource = getResourceBundle(fallbackLang);
 
-  const travelHelp = useMemo(
-    () => parseTravelHelpResource(resource, fallbackResource),
-    [resource, fallbackResource],
+  const travelHelp = parseTravelHelpResource(resource, fallbackResource);
+
+  const faqPayload = buildFaqJsonLd(
+    lang,
+    pageUrl,
+    travelHelp.items.map((item) => ({ question: item.question, answer: item.answer })),
   );
-
-  const faqData = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "@id": `${pageUrl}#faq`,
-    url: pageUrl,
-    inLanguage: lang,
-    isPartOf: { "@id": `${BASE_URL}#website` },
-    mainEntityOfPage: pageUrl,
-    mainEntity: travelHelp.items.map((item) => ({
-      "@type": "Question",
-      name: item.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: item.answer,
-      },
-    })),
-  };
-
-  const faqJson = JSON.stringify(faqData);
-
+  const faqData = faqPayload
+    ? {
+        ...faqPayload,
+        "@id": `${pageUrl}#faq`,
+        isPartOf: { "@id": `${BASE_URL}#website` },
+        mainEntityOfPage: pageUrl,
+      }
+    : null;
   // Parse and normalize NEARBY to use the canonical HOTEL_ID and inLanguage
-  let nearbyJson = NEARBY;
+  let nearbyJson = "";
   let nearbyParsed: NearbyGraph | undefined;
   try {
     const parsed = JSON.parse(NEARBY) as unknown;
@@ -120,30 +117,15 @@ export default function TravelHelpStructuredData() {
       parsed.inLanguage = lang;
       parsed.url = pageUrl;
       nearbyParsed = parsed;
-      nearbyJson = JSON.stringify(parsed);
+      nearbyJson = serializeJsonLdValue(parsed);
     }
   } catch {
-    // keep original
-  }
-
-  try {
-    const snapshot =
-      nearbyParsed ??
-      (() => {
-        try {
-          return JSON.parse(nearbyJson) as unknown;
-        } catch {
-          return nearbyJson;
-        }
-      })();
-    (globalThis as Record<string, unknown>)["nearbyJson"] = snapshot;
-  } catch {
-    /* noop */
+    nearbyJson = serializeJsonLdValue(NEARBY);
   }
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqJson }} />
+      <FaqJsonLdScript data={faqData} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: nearbyJson }} />
     </>
   );

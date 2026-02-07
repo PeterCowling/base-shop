@@ -1,19 +1,19 @@
 // packages/platform-core/src/contexts/CartContext.tsx
 "use client";
 
-import { type CartState } from "../cart";
-
-import type { SKU, RentalLineItem } from "@acme/types";
-import type { CartLine } from "../cart";
 import {
   createContext,
+  type ReactNode,
   useContext,
   useEffect,
   useRef,
   useState,
-  type ReactNode,
 } from "react";
+
+import type { RentalLineItem,SKU } from "@acme/types";
+
 import { logAnalyticsEvent } from "../analytics/client";
+import type { CartLine, CartState } from "../cart";
 
 /* ------------------------------------------------------------------
  * Action types

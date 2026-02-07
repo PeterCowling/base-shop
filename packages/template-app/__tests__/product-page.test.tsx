@@ -1,21 +1,24 @@
 /** @jest-environment jsdom */
-import { render, screen, fireEvent } from "@testing-library/react";
 import type { ReactElement } from "react";
-import PdpClient from "../src/app/[lang]/product/[slug]/PdpClient.client";
-import ProductPage, {
-  generateStaticParams,
-  generateMetadata,
-} from "../src/app/[lang]/product/[slug]/page";
+import { notFound } from "next/navigation";
+import { fireEvent,render, screen } from "@testing-library/react";
+
 import type { SKU } from "@acme/types";
 
-jest.mock("@platform-core/components/pdp/ImageGallery", () => {
+import ProductPage, {
+  generateMetadata,
+  generateStaticParams,
+} from "../src/app/[lang]/product/[slug]/page";
+import PdpClient from "../src/app/[lang]/product/[slug]/PdpClient.client";
+
+jest.mock("@acme/platform-core/components/pdp/ImageGallery", () => {
   function ImageGalleryMock() {
     return <div data-testid="gallery" />;
   }
   return ImageGalleryMock;
 });
 
-jest.mock("@platform-core/components/pdp/SizeSelector", () => {
+jest.mock("@acme/platform-core/components/pdp/SizeSelector", () => {
   function SizeSelectorMock(props: any) {
     return <button data-cy="size" onClick={() => props.onSelect("M")} />;
   }
@@ -23,7 +26,7 @@ jest.mock("@platform-core/components/pdp/SizeSelector", () => {
 });
 
 const addProps: any[] = [];
-jest.mock("@platform-core/components/shop/AddToCartButton.client", () => {
+jest.mock("@acme/platform-core/components/shop/AddToCartButton.client", () => {
   function AddToCartButtonMock(props: any) {
     addProps.push(props);
     return <button data-testid="add" />;
@@ -31,15 +34,13 @@ jest.mock("@platform-core/components/shop/AddToCartButton.client", () => {
   return AddToCartButtonMock;
 });
 
-jest.mock("@ui/components/atoms/Price", () => ({
+jest.mock("@acme/design-system/atoms/Price", () => ({
   Price: ({ amount }: { amount: number }) => <span data-testid="price">{amount}</span>,
 }));
-
-import { notFound } from "next/navigation";
 jest.mock("next/navigation", () => ({ notFound: jest.fn() }));
 
 const getProduct = jest.fn();
-jest.mock("@platform-core/products", () => ({
+jest.mock("@acme/platform-core/products", () => ({
   getProductBySlug: (s: string) => getProduct(s),
 }));
 

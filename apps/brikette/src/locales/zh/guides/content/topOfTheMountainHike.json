@@ -4,6 +4,7 @@
     "description": "带着这些指示、准备提示和警告，到达阿马尔菲海岸的最高点圣天使山。"
   },
   "linkLabel": "从 Hostel Brikette 出发的山顶徒步旅行",
+  "lastUpdated": "2026-02-04",
   "intro": [
     "Monte Sant'Angelo towers above the Amalfi Coast and rewards hikers with sweeping 360-degree views stretching from Capri to the Sorrentine Peninsula.",
     "This itinerary starts from Hostel Brikette, guides you up to Santa Maria del Castello, and explains the final push to the summit so you know exactly what to expect before committing."
@@ -112,22 +113,5 @@
     "labels": {
       "warnings": "When to reconsider"
     }
-  },
-  "gallery": {
-    "title": "照片集",
-    "items": [
-      {
-        "alt": "Looking across the peninsula to Capri",
-        "caption": "眺望半岛对面的卡普里"
-      },
-      {
-        "alt": "Scan to Share QR code",
-        "caption": "扫码分享"
-      },
-      {
-        "alt": "Trail near the summit",
-        "caption": "接近山顶的路段"
-      }
-    ]
   }
 }

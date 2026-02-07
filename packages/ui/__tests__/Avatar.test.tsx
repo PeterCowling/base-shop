@@ -1,5 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
+
 import { Avatar } from "../src/components/atoms/Avatar";
 
 jest.mock("next/image", () => ({
@@ -11,7 +12,7 @@ jest.mock("next/image", () => ({
 
 describe("Avatar", () => {
   it("renders fallback when no src, using alt initial", () => {
-    render(<Avatar alt="Alice" size={40} />);
+    render(<Avatar src="" alt="Alice" size={40} />);
     const el = screen.getByText("A");
     expect(el).toHaveClass("rounded-full");
     expect((el as HTMLElement).style.width).toBe("40px");
@@ -30,4 +31,3 @@ describe("Avatar", () => {
     expect(img.className).toMatch(/m-1/);
   });
 });
-

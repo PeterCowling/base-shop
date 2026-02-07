@@ -26,6 +26,11 @@
 **/.next/
 
 # ---------------------------
+# OpenNext (Cloudflare Workers) build output
+# ---------------------------
+**/.open-next/
+
+# ---------------------------
 # Production / build artefacts
 # ---------------------------
 /build
@@ -36,9 +41,19 @@ apps/cms/dist/
 **/.turbo/
 
 # ---------------------------
+# Generated documentation
+# ---------------------------
+docs/api/
+
+# ---------------------------
 # Misc
 # ---------------------------
 .DS_Store
+.eslintcache
+.eslint-report.json
+.cache/
+/tmp/
+.worktrees/
 *.pem
 *.tsbuildinfo
 next-env.d.ts
@@ -57,13 +72,59 @@ yarn-error.log*
 # ---------------------------
 .env*
 !**/.env.example
-!apps/cms/.env.production
+!**/.env.*.sops
 !docs/.env.reference.md
+# Note: .env.production files are decrypted from .sops in CI and should NEVER be committed
 
 # Build outputs (monorepo)
 **/dist/
 **/.tsbuildinfo
 **/.next/
+**/out/
 **/coverage/
+# Some apps may legitimately have a folder named `coverage` (e.g. Next.js route segments,
+# or test suites under `__tests__/coverage`). Keep coverage outputs ignored, but allow these.
+!**/src/app/**/coverage/
+!**/src/app/**/coverage/**
+!**/app/**/coverage/
+!**/app/**/coverage/**
+!**/__tests__/coverage/
+!**/__tests__/coverage/**
 **/.ts-jest/
 .lighthouseci/
+**/storybook-static/
+packages/types/src/**/*.js
+packages/types/src/**/*.d.ts.map
+
+# ---------------------------
+# Agent ephemeral files
+# ---------------------------
+# Local Claude skill/config backups (ephemeral; should not be committed)
+.claude.backup/
+
+# Session learnings (may contain task details, gitignored)
+.agents/learnings/*
+!.agents/learnings/.gitkeep
+
+# Worker status files (ephemeral coordination, gitignored)
+.agents/status/*
+!.agents/status/.gitkeep
+
+# Private agent artifacts (may contain PII; must never be committed)
+.agents/private/*
+!.agents/private/.gitkeep
+
+# Working-tree backup/restore reports (ephemeral; should not be committed)
+.agents/pre_rollback_reports/
+
+# VS Code MCP port sentinel (ephemeral)
+.vscode/.mcp-port
+
+# ---------------------------
+# Gmail OAuth credentials
+# ---------------------------
+# OAuth client credentials (never commit these!)
+**/credentials.json
+# OAuth tokens (contain access/refresh tokens)
+**/token.json
+docs/plans/email-autodraft-consolidation-baseline-sample.txt

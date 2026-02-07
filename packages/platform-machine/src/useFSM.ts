@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useRef, useState } from "react";
-import { createFSM, Transition } from "./fsm";
+
+import { createFSM, type Transition } from "./fsm";
 
 export function useFSM<State extends string, Event extends string>(
   initial: State,

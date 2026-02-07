@@ -1,7 +1,9 @@
 "use client";
 
-import { useCallback, useState, type FormEvent } from "react";
-import { Cluster, Stack } from "@ui/components/atoms/primitives";
+import { type FormEvent,useCallback, useState } from "react";
+
+import { Cluster, Stack } from "@acme/design-system/primitives";
+
 import type { LaneDetailStrings } from "./types";
 
 const DEFAULT_FORM = {

@@ -1,16 +1,17 @@
 // packages/template-app/src/app/[lang]/subscribe/page.tsx
-import { resolveLocale, type Locale } from "@i18n/locales";
-import { useTranslations as getServerTranslations } from "@i18n/useTranslations.server";
-import { stripe } from "@acme/stripe";
-import type Stripe from "stripe";
-import { coreEnv } from "@acme/config/env/core";
-import { readShop } from "@platform-core/repositories/shops.server";
-import { getCustomerSession } from "@auth";
 import { notFound } from "next/navigation";
+import type Stripe from "stripe";
+
+import { getCustomerSession } from "@acme/auth";
+import { coreEnv } from "@acme/config/env/core";
+import { type Locale,resolveLocale } from "@acme/i18n/locales";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+import { readShop } from "@acme/platform-core/repositories/shops.server";
 import {
   setUserPlan,
-} from "@platform-core/repositories/subscriptionUsage.server";
-import { setStripeSubscriptionId } from "@platform-core/repositories/users";
+} from "@acme/platform-core/repositories/subscriptionUsage.server";
+import { setStripeSubscriptionId } from "@acme/platform-core/repositories/users";
+import { stripe } from "@acme/stripe";
 import type { SubscriptionPlan } from "@acme/types";
 
 export default async function SubscribePage({

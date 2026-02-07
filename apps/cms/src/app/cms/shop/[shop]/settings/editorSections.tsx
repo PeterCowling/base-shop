@@ -1,27 +1,28 @@
 import type { ComponentType } from "react";
+
 import type { Shop } from "@acme/types";
 
 import {
   ShopIdentitySection,
-  ShopLocalizationSection,
-  ShopOverridesSection,
-  ShopProvidersSection,
-  ShopSeoSection,
-  ShopThemeSection,
   type ShopIdentitySectionErrors,
+  ShopLocalizationSection,
   type ShopLocalizationSectionErrors,
+  ShopOverridesSection,
   type ShopOverridesSectionErrors,
+  ShopProvidersSection,
   type ShopProvidersSectionErrors,
+  ShopSeoSection,
   type ShopSeoSectionErrors,
+  ShopThemeSection,
   type ShopThemeSectionErrors,
 } from "./sections";
+import type { ShopEditorErrorBags } from "./useShopEditorErrors";
 import type {
   ShopEditorIdentitySection,
   ShopEditorLocalizationSection,
   ShopEditorOverridesSection,
   ShopEditorProvidersSection,
 } from "./useShopEditorSubmit";
-import type { ShopEditorErrorBags } from "./useShopEditorErrors";
 
 interface ShopEditorSeoState {
   readonly catalogFilters: readonly string[];

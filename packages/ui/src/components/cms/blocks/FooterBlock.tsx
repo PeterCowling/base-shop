@@ -1,6 +1,8 @@
 import type { Locale } from "@acme/i18n/locales";
+
 import { Footer, type FooterLink } from "../../organisms/Footer";
 import type { LogoVariants } from "../../organisms/types";
+
 import SocialLinks, { type SocialLinksProps } from "./SocialLinks";
 
 interface LinkGroup {

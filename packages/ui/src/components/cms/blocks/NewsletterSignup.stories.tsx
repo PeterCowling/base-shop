@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
+
 import NewsletterSignup from "./NewsletterSignup";
 
 const meta: Meta<typeof NewsletterSignup> = {

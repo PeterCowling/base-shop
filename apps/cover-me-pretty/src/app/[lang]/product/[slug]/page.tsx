@@ -1,64 +1,39 @@
 // apps/cover-me-pretty/src/app/[lang]/product/[slug]/page.tsx
 
-import { LOCALES } from "@acme/i18n";
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import { draftMode } from "next/headers";
-import BlogListing, { type BlogPost } from "@ui/components/cms/blocks/BlogListing";
-import { fetchPublishedPosts } from "@acme/sanity";
-import shop from "../../../../../shop.json";
-import PdpClient from "./PdpClient.client";
-import { readRepo } from "@platform-core/repositories/json.server";
-import type { SKU, ProductPublication, Locale } from "@acme/types";
-import { resolveLocale } from "@i18n/locales";
-import { getReturnLogistics } from "@platform-core/returnLogistics";
-import { getSeo } from "../../../util/seo";
-import { JsonLdScript, productJsonLd } from "../../../../lib/jsonld";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
+import { notFound } from "next/navigation";
+
+import BlogListing, { type BlogPost } from "@acme/cms-ui/blocks/BlogListing";
+import { LOCALES } from "@acme/i18n";
+import { resolveLocale } from "@acme/i18n/locales";
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+import { getShopSkuBySlug, listShopSkus } from "@acme/platform-core/repositories/catalogSkus.server";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
+import { getReturnLogistics } from "@acme/platform-core/returnLogistics";
+import { fetchPublishedPosts } from "@acme/sanity";
+import type { Locale,SKU } from "@acme/types";
+
+import shop from "../../../../../shop.json";
+import { JsonLdScript, productJsonLd } from "../../../../lib/jsonld";
+import { getSeo } from "../../../util/seo";
+
+import PdpClient from "./PdpClient.client";
 
 async function getProduct(
   slug: string,
   lang: Locale,
   preview: boolean
 ): Promise<SKU | null> {
-  const catalogue = await readRepo<ProductPublication>(shop.id);
-  const record = catalogue.find((p) => p.sku === slug || p.id === slug);
-  if (!record) return null;
-  if (!preview && record.status !== "active") return null;
-  const title =
-    record.title[lang] ?? record.title.en ?? Object.values(record.title)[0] ?? "";
-  const description =
-    record.description[lang] ??
-    record.description.en ??
-    Object.values(record.description)[0] ??
-    "";
-  return {
-    id: record.id,
-    slug: record.sku ?? record.id,
-    title,
-    price: record.price,
-    deposit: record.deposit ?? 0,
-    stock: 0,
-    forSale: record.forSale ?? true,
-    forRental: record.forRental ?? false,
-    dailyRate: record.dailyRate,
-    weeklyRate: record.weeklyRate,
-    monthlyRate: record.monthlyRate,
-    availability: record.availability ?? [],
-    media: record.media ?? [],
-    sizes: [],
-    description,
-  };
+  return await getShopSkuBySlug(shop.id, slug, lang, { includeDraft: preview });
 }
 
 export async function generateStaticParams() {
-  return LOCALES.flatMap((lang) =>
-    ["green-sneaker", "sand-sneaker", "black-sneaker"].map((slug) => ({
-      lang,
-      slug,
-    }))
+  const resolved = await listShopSkus(shop.id, "en", { includeDraft: false }).catch(
+    () => [] as SKU[],
   );
+  const unique = Array.from(new Set(resolved.map((s) => s.slug))).filter(Boolean);
+  return LOCALES.flatMap((lang) => unique.map((slug) => ({ lang, slug })));
 }
 
 export const revalidate = 60;

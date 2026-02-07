@@ -1,8 +1,11 @@
+import "./globals.css";
+
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Space_Grotesk } from "next/font/google";
-import "./globals.css";
+
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+
 import AppShell from "@/components/AppShell";
-import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],

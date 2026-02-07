@@ -1,8 +1,10 @@
-import { Card, CardContent, Input } from "../atoms/shadcn";
-import { Chip, IconButton } from "../atoms";
-import { Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import type { ChangeEvent } from "react";
+import { Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
+
 import { useTranslations } from "@acme/i18n";
+
+import { Chip, IconButton } from "../atoms";
+import { Card, CardContent, Input } from "../atoms/shadcn";
 
 interface VariantsTabProps {
   variants: Record<string, string[]>;

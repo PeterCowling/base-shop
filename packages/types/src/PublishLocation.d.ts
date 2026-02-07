@@ -15,15 +15,16 @@ export declare const publishLocationSchema: z.ZodObject<{
     requiredOrientation: z.ZodEnum<["portrait", "landscape"]>;
 }, "strict", z.ZodTypeAny, {
     path: string;
-    id: string;
     name: string;
+    id: string;
     requiredOrientation: "portrait" | "landscape";
     description?: string | undefined;
 }, {
     path: string;
-    id: string;
     name: string;
+    id: string;
     requiredOrientation: "portrait" | "landscape";
     description?: string | undefined;
 }>;
 export type PublishLocation = z.infer<typeof publishLocationSchema>;
+//# sourceMappingURL=PublishLocation.d.ts.map

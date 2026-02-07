@@ -1,6 +1,7 @@
 import { describe, expect, it, jest } from "@jest/globals";
-import * as health from "../health";
+
 import type { DeployInfo } from "../deployInfo";
+import * as health from "../health";
 
 jest.mock("../deployInfo", () => {
   const actual = jest.requireActual("../deployInfo");

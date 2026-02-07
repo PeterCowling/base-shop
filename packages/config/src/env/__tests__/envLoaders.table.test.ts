@@ -1,5 +1,7 @@
-import { describe, it, expect } from '@jest/globals';
+import { describe, expect,it } from '@jest/globals';
+
 import { createExpectInvalidAuthEnv } from '../../../test/utils/expectInvalidAuthEnv';
+
 import { withEnv } from './test-helpers';
 
 const NEXT = 'nextauth-secret-32-chars-long-string!';
@@ -134,7 +136,17 @@ describe('cms env', () => {
 
 // ------------ core ------------
 describe('core env', () => {
-  const base = { NEXTAUTH_SECRET: NEXT, SESSION_SECRET: SESSION };
+  const base = {
+    NEXTAUTH_SECRET: NEXT,
+    SESSION_SECRET: SESSION,
+    CMS_SPACE_URL: 'https://cms.example.com',
+    CMS_ACCESS_TOKEN: 'token',
+    SANITY_API_VERSION: '2021-10-21',
+    SANITY_PROJECT_ID: 'test-project',
+    SANITY_DATASET: 'production',
+    SANITY_API_TOKEN: 'test-token',
+    SANITY_PREVIEW_SECRET: 'preview-secret',
+  };
   describe.each([
     [{ NODE_ENV: 'production', CART_COOKIE_SECRET: 'cart', ...base }],
     [{ NODE_ENV: 'development', ...base }],

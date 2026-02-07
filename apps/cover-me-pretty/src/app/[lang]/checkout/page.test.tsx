@@ -1,21 +1,24 @@
 import type { ReactElement } from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
-import CheckoutPage from "./page";
+import { fireEvent,render, screen } from "@testing-library/react";
+
+import type { DeliverySchedulerProps } from "@acme/ui/components/organisms/DeliveryScheduler";
+
 import shop from "../../../../shop.json";
-import type { DeliverySchedulerProps } from "@ui/components/organisms/DeliveryScheduler";
+
+import CheckoutPage from "./page";
 
 const cookiesMock = jest.fn();
 jest.mock("next/headers", () => ({
   cookies: () => cookiesMock(),
 }));
 
-type DecodeCartCookie = typeof import("@platform-core/cartCookie").decodeCartCookie;
+type DecodeCartCookie = typeof import("@acme/platform-core/cartCookie").decodeCartCookie;
 const decodeCartCookieMock: jest.Mock<
   ReturnType<DecodeCartCookie>,
   Parameters<DecodeCartCookie>
 > = jest.fn();
-jest.mock("@platform-core/cartCookie", () => {
-  const actual = jest.requireActual("@platform-core/cartCookie");
+jest.mock("@acme/platform-core/cartCookie", () => {
+  const actual = jest.requireActual("@acme/platform-core/cartCookie");
   return {
     ...actual,
     decodeCartCookie: (...args: Parameters<DecodeCartCookie>) =>
@@ -23,21 +26,21 @@ jest.mock("@platform-core/cartCookie", () => {
   };
 });
 
-type GetShopSettings = typeof import("@platform-core/repositories/settings.server").getShopSettings;
+type GetShopSettings = typeof import("@acme/platform-core/repositories/settings.server").getShopSettings;
 const getShopSettingsMock = jest.fn();
-jest.mock("@platform-core/repositories/settings.server", () => ({
+jest.mock("@acme/platform-core/repositories/settings.server", () => ({
   getShopSettings: (...args: Parameters<GetShopSettings>) =>
     getShopSettingsMock(...args),
 }));
 
-jest.mock("@ui/components/checkout/CheckoutForm", () => {
+jest.mock("@acme/ui/components/checkout/CheckoutForm", () => {
   function MockCheckoutForm() {
     return <div data-cy="checkout-form" />;
   }
   MockCheckoutForm.displayName = "MockCheckoutForm";
   return MockCheckoutForm;
 });
-jest.mock("@ui/components/organisms/OrderSummary", () => {
+jest.mock("@acme/ui/components/organisms/OrderSummary", () => {
   function MockOrderSummary() {
     return <div data-cy="order-summary" />;
   }
@@ -62,7 +65,7 @@ const DeliverySchedulerStub = ({ onChange }: { onChange?: DeliverySchedulerOnCha
     schedule
   </button>
 );
-jest.mock("@ui/components/organisms", () => ({
+jest.mock("@acme/ui/components/organisms", () => ({
   DeliveryScheduler: (props: DeliverySchedulerProps) => DeliverySchedulerStub(props),
 }));
 

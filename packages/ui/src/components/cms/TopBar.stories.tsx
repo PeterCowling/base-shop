@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
+
 import TopBar from "./TopBar.client";
 
 const meta: Meta<typeof TopBar> = {

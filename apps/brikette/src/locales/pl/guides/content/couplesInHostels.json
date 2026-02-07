@@ -1,33 +1,33 @@
 {
   "seo": {
-    "title": "Podróżowanie w parze i noclegi w hostelach",
-    "description": "Jak sprawić, by hostel był wygodny dla par: wybór łóżek, plan dnia i niezbędne akcesoria."
+    "title": "Podróżowanie jako para w hostelach",
+    "description": "Wskazówki dotyczące dormitoriów lub pokoi prywatnych, znajdowania ciszy i ustalania oczekiwań."
   },
-  "linkLabel": "Podróżowanie w parze i noclegi w hostelach",
+  "linkLabel": "Podróżowanie jako para w hostelach",
   "intro": [
-    "Tłumaczenie w przygotowaniu."
+    "Hostele działają dla par, gdy wybierasz odpowiedni typ pokoju, pakujesz lekko i ustalacie oczekiwania razem."
   ],
   "sections": [
     {
       "id": "room-types",
-      "title": "Room types",
+      "title": "Typy pokoi",
       "body": [
-        "Tłumaczenie w przygotowaniu."
+        "Zarezerwuj prywatny pokój dla prywatności; jeśli ograniczasz budżet, podzielcie się łóżkami w tym samym dormitorium i utrzymujcie bagaż lekki ze względu na schody."
       ]
     },
     {
       "id": "quiet",
-      "title": "Finding quiet",
+      "title": "Znajdowanie ciszy",
       "body": [
-        "Tłumaczenie w przygotowaniu."
+        "Zabierz zatyczki do uszu i maskę na oczy, wybieraj pokoje z dala od baru lub przestrzeni wspólnych i wykorzystuj wczesne ranki na spokojniejsze zwiedzanie."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "Is a hostel suitable for couples?",
+      "q": "Czy hostel jest odpowiedni dla par?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Tak — otrzymujesz energię społeczną i dobrą wartość; prywatne pokoje równoważą komfort i koszt."
       ]
     }
   ]

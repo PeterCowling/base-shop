@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+
 import {
-  parseTargetDate,
-  getTimeRemaining,
   formatDuration,
+  getTimeRemaining,
+  parseTargetDate,
 } from "@acme/date-utils";
 
 interface Props {

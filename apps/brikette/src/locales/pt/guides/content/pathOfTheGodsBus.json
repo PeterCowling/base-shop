@@ -11,7 +11,7 @@
   "sections": [
     {
       "id": "prep",
-      "title": "Buy tickets and plan your timing",
+      "title": "Compre as passagens e planeje o horário",
       "body": [
         "Você precisa de três passagens de ônibus por pessoa: Positano → Amalfi, Amalfi → Bomerano e Nocelle → Positano. Peça ao pessoal do Bar Internazionale a melhor combinação (individual ou integrada).",
         "Consulte os horários da SITA afixados no interior do bar ou através do aplicativo Unico Campania. Procure sair pela manhã para evitar filas e o sol do meio-dia na trilha.",
@@ -20,7 +20,7 @@
     },
     {
       "id": "bus-to-amalfi",
-      "title": "Ride from Bar Internazionale to Amalfi",
+      "title": "Vá do Bar Internazionale a Amalfi de ônibus",
       "body": [
         "Saia do albergue, vire à esquerda e chegue ao Bar Internazionale em cerca de dois minutos. Compre as passagens e espere no lado oposto da estrada pelo ônibus com destino a Amalfi.",
         "Valide seu bilhete no momento do embarque. A viagem leva de 45 a 60 minutos, dependendo do trânsito, e inclui vários ziguezagues com vistas deslumbrantes do mar.",
@@ -29,7 +29,7 @@
     },
     {
       "id": "wait-in-amalfi",
-      "title": "Pause in Amalfi (optional)",
+      "title": "Pausa em Amalfi (opcional)",
       "body": [
         "Se você tiver uma folga antes do próximo ônibus, caminhe um pouco até a cidade para tomar um café ou comer doces. Retorne ao terminal pelo menos 10 minutos antes da partida.",
         "Faça fila no início do verão, pois o ônibus enche rapidamente. O motorista pode limitar o embarque assim que todos os assentos e espaço seguro para ficar em pé estiverem ocupados."
@@ -37,7 +37,7 @@
     },
     {
       "id": "bus-to-bomerano",
-      "title": "Bus uphill to Bomerano",
+      "title": "Ônibus subindo para Bomerano",
       "body": [
         "Embarque no ônibus marcado “Agerola/Bomerano”. Use seu segundo bilhete e mantenha a mão livre para se firmar em curvas fechadas.",
         "Desça na parada Bomerano em frente ao Ristorante Jerla. Atravesse a rua, pegue a rua lateral até a praça e siga as indicações para o início da trilha do Caminho dos Deuses."
@@ -45,7 +45,7 @@
     },
     {
       "id": "hike",
-      "title": "Hike to Nocelle",
+      "title": "Caminhada até Nocelle",
       "body": [
         "Siga a sinalização do Sentiero degli Dei pelos terraços e cumes. Reserve de 2,5 a 3 horas para a caminhada com paradas para fotos.",
         "Leve o lixo consigo e respeite as terras agrícolas privadas ao longo do caminho."
@@ -53,7 +53,7 @@
     },
     {
       "id": "nocelle",
-      "title": "Navigate Nocelle and reach the bus stop",
+      "title": "Atravesse Nocelle e chegue à parada de ônibus",
       "body": [
         "Quando a trilha vira concreto, você chega a Nocelle. Mantenha-se à direita no primeiro cruzamento para evitar a longa escadaria que leva a Positano.",
         "Caminhe cerca de 175 metros até ao pequeno parque de estacionamento e abrigo de autocarros. Chegue cedo; os ônibus ocasionalmente estacionam um pouco antes da parada, quando o estacionamento está cheio."
@@ -61,7 +61,7 @@
     },
     {
       "id": "return",
-      "title": "Return to Positano",
+      "title": "Retorno a Positano",
       "body": [
         "Use seu último bilhete para pegar o ônibus Nocelle/Montepertuso de volta ao Bar Internazionale ou Chiesa Nuova.",
         "Se perder o autocarro, pode caminhar pela estrada (cerca de 4 km), mas esteja preparado para uma descida sustentada com trânsito."
@@ -69,32 +69,32 @@
     },
     {
       "id": "journey-planner",
-      "title": "Sample timetable",
+      "title": "Exemplo de horário",
       "body": [
         "07:00 saída do albergue → 07:15 ônibus para Amalfi → 08:10 chegada em Amalfi → 08:30 ônibus para Bomerano → 09:10 início da caminhada → 12:00 chegada Nocelle → 12:30 ônibus de volta para Positano.",
         "Opção no final da manhã: a partida às 8h ainda retorna no meio da tarde se as conexões estiverem alinhadas."
       ]
     }
   ],
-  "essentialsTitle": "Essentials",
+  "essentialsTitle": "Essenciais",
   "essentials": [
     "Três ingressos SITA por pessoa (Positano → Amalfi, Amalfi → Bomerano, Nocelle → Positano) mais um extra.",
     "Água, lanches, protetor solar e camadas para uma caminhada na cordilheira exposta.",
     "Calçado confortável com aderência e telefone carregado com mapas offline."
   ],
-  "typicalCostsTitle": "Typical costs",
+  "typicalCostsTitle": "Custos típicos",
   "typicalCosts": [
     "Bilhetes de ônibus SITA: € 2–€ 4 por trecho dependendo do livrete ou tarifas integradas.",
     "Café ou lanches durante a conexão Amalfi: 2€–6€.",
-    "Trail access: free."
+    "Acesso à trilha: gratuito."
   ],
-  "tipsTitle": "Route tips",
+  "tipsTitle": "Dicas de rota",
   "tips": [
     "Chegue com 10 a 15 minutos de antecedência em cada parada – os ônibus podem lotar antes das partidas na alta temporada.",
     "Sente-se do lado direito, saindo de Positano, para vistas deslumbrantes da costa, e à esquerda, ao retornar de Amalfi.",
     "Leve pequenos trocos caso precise validar um bilhete extra a bordo."
   ],
-  "warningsTitle": "Watch-outs",
+  "warningsTitle": "Atenções",
   "warnings": [
     "Não siga a escadaria de 1.700 degraus de Nocelle, a menos que esteja preparado para uma descida extenuante e com muitos joelhos.",
     "Os serviços de fim de semana podem atrasar; mantenha lanches e água à mão caso espere mais do que o planejado.",
@@ -102,57 +102,65 @@
   ],
   "steps": [
     {
-      "name": "Buy SITA tickets",
+      "name": "Compre as passagens SITA",
       "text": "Compre as passagens de ônibus necessárias no Bar Internazionale antes da partida."
     },
     {
-      "name": "Bus to Amalfi",
+      "name": "Ônibus para Amalfi",
       "text": "Pegue o ônibus com destino a Amalfi no Bar Internazionale e continue pelas aldeias costeiras."
     },
     {
-      "name": "Transfer to the Agerola bus",
+      "name": "Transfira para o ônibus de Agerola",
       "text": "Aguarde no terminal de Amalfi e embarque no serviço Agerola/Bomerano."
     },
     {
-      "name": "Reach the trailhead",
+      "name": "Chegue ao início da trilha",
       "text": "Desembarque em Bomerano, siga as indicações pela praça e entre no Sentiero degli Dei."
     },
     {
-      "name": "Hike to Nocelle",
+      "name": "Caminhe até Nocelle",
       "text": "Siga as marcas do CAI ao longo do cume até chegar à passarela de concreto para a cidade."
     },
     {
-      "name": "Return by bus",
+      "name": "Volte de ônibus",
       "text": "Pegue o ônibus Nocelle/Montepertuso de volta ao Bar Internazionale ou Chiesa Nuova."
     }
   ],
-  "faqsTitle": "FAQs",
+  "faqsTitle": "Perguntas frequentes",
   "faqs": [
     {
-      "q": "How crowded are the buses?",
+      "q": "Quão lotados são os ônibus?",
       "a": [
         "Os serviços matinais lotam rapidamente no verão. Chegue cedo, faça fila com calma e esteja pronto para ficar de pé. Os motoristas podem recusar o embarque quando o corredor estiver cheio."
       ]
     },
     {
-      "q": "Can I stop in Amalfi for sightseeing?",
+      "q": "Posso parar em Amalfi para passear?",
       "a": [
         "Sim, reserve pelo menos um intervalo completo de ônibus (30 a 60 minutos) para que você tenha tempo para explorar e ainda entrar na fila antes da próxima partida de Agerola."
       ]
     },
     {
-      "q": "What if I miss the Nocelle bus back?",
+      "q": "E se eu perder o ônibus de Nocelle na volta?",
       "a": [
         "Confira o horário divulgado na parada. Se o próximo ônibus estiver a mais de uma hora de distância, você pode caminhar pela estrada pavimentada até Positano em cerca de 45 a 60 minutos."
+      ]
+    },
+    {
+      "q": "Como leio o horário de ônibus SITA?",
+      "a": [
+        "**Leitura das linhas:** As linhas na primeira coluna representam diferentes pontos de ônibus ao longo da rota.",
+        "**Leitura das colunas:** O horário atribui uma letra alfabética a cada viagem programada, que são listadas como cabeçalhos em cada coluna. Se você estiver viajando de segunda a sábado, procure as colunas 'F' e 'G'. Se você estiver viajando em um domingo ou feriado, procure as colunas 'G' e 'H'.",
+        "**Combinação de linhas e colunas:** Escolha seus pontos de partida e chegada, depois verifique as colunas para ver quando os ônibus estão disponíveis e a que horas chegarão ao seu destino. Por exemplo, para ver o horário de partida de Sorrento, veja a linha Sorrento. Para ver o horário de chegada em Positano (Chiesa Nuova / Bar Internazionale), veja a linha Positano (Chiesa Nuova)."
       ]
     }
   ],
   "toc": {
-    "onThisPage": "On this page",
-    "essentials": "Essentials",
-    "costs": "Typical costs",
-    "tips": "Route tips",
-    "warnings": "Watch-outs",
-    "faqs": "FAQs"
+    "onThisPage": "Nesta página",
+    "essentials": "Essenciais",
+    "costs": "Custos típicos",
+    "tips": "Dicas de rota",
+    "warnings": "Atenções",
+    "faqs": "Perguntas frequentes"
   }
 }

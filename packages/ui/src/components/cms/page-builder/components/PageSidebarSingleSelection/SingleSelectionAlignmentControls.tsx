@@ -1,16 +1,17 @@
 import { useCallback } from "react";
 import {
-  AlignLeftIcon,
-  AlignRightIcon,
-  AlignTopIcon,
   AlignBottomIcon,
   AlignCenterHorizontallyIcon,
   AlignCenterVerticallyIcon,
+  AlignLeftIcon,
+  AlignRightIcon,
+  AlignTopIcon,
   ColumnSpacingIcon,
   RowSpacingIcon,
 } from "@radix-ui/react-icons";
 
 import { Button } from "../../../../atoms/shadcn";
+
 import type { BlockDimensions, HandleResize, UpdateComponent } from "./types";
 
 interface SingleSelectionAlignmentControlsProps {

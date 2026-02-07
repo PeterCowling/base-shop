@@ -1,5 +1,6 @@
 import React from "react";
-import { render, act } from "@testing-library/react";
+import { act,render } from "@testing-library/react";
+
 import PageBuilder from "../PageBuilder";
 
 // capture dispatch and setSelectedIds
@@ -24,7 +25,7 @@ jest.mock("../defaults", () => ({
 
 jest.mock("ulid", () => ({ ulid: () => "uid-1" }));
 jest.mock("next/navigation", () => ({ usePathname: () => "/shop" }));
-jest.mock("@acme/shared-utils", () => ({ getShopFromPath: () => "shop" }));
+jest.mock("@acme/lib/shop", () => ({ getShopFromPath: () => "shop" }));
 jest.mock("@acme/i18n/locales", () => ({ locales: ["en"] }));
 
 jest.mock("../hooks/useFileDrop", () => ({
@@ -38,14 +39,14 @@ jest.mock("../hooks/useFileDrop", () => ({
   }),
 }));
 
-const pageBuilderDnDMock = jest.fn(() => ({
+const pageBuilderDnDMock = jest.fn((_args: unknown) => ({
   dndContext: {},
   insertIndex: 0,
   activeType: null,
 }));
 jest.mock("../hooks/usePageBuilderDnD", () => ({
   __esModule: true,
-  default: (args: any) => pageBuilderDnDMock(args),
+  default: (args: unknown) => pageBuilderDnDMock(args),
 }));
 
 jest.mock("../hooks/usePageBuilderControls", () => {

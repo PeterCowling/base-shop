@@ -1,7 +1,9 @@
-import type { Meta, StoryObj } from "@storybook/react";
 import React, { useState } from "react";
-import DeviceSelector from "./DeviceSelector";
+import type { Meta, StoryObj } from "@storybook/react";
+
 import { devicePresets } from "../../utils/devicePresets";
+
+import DeviceSelector from "./DeviceSelector";
 
 const meta: Meta<typeof DeviceSelector> = {
   title: "Common/DeviceSelector",

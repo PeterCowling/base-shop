@@ -1,12 +1,12 @@
-import Section from "./Section";
-import MultiColumn from "./containers/MultiColumn";
-import StackFlex from "./containers/StackFlex";
-import GridContainer from "./containers/GridContainer";
-import CarouselContainer from "./containers/CarouselContainer";
-import TabsAccordionContainer from "./containers/TabsAccordionContainer";
-import Dataset from "./containers/Dataset";
-import Repeater from "./containers/Repeater";
 import Bind from "./containers/Bind";
+import CarouselContainer from "./containers/CarouselContainer";
+import Dataset from "./containers/Dataset";
+import GridContainer from "./containers/GridContainer";
+import MultiColumn from "./containers/MultiColumn";
+import Repeater from "./containers/Repeater";
+import StackFlex from "./containers/StackFlex";
+import TabsAccordionContainer from "./containers/TabsAccordionContainer";
+import Section from "./Section";
 import type { BlockRegistryEntry } from "./types";
 
 const defaultPreview = "/window.svg";

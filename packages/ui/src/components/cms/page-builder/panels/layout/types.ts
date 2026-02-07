@@ -1,5 +1,5 @@
 // packages/ui/src/components/cms/page-builder/panels/layout/types.ts
-import type { PageComponent, HistoryState } from "@acme/types";
+import type { HistoryState,PageComponent } from "@acme/types";
 
 // Local copy to avoid package export mismatch (same as original file)
 export type EditorFlags = {

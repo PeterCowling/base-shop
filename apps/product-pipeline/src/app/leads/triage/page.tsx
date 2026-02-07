@@ -1,6 +1,8 @@
+import { Stack } from "@acme/design-system/primitives";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+
 import PageHeader from "@/components/PageHeader";
-import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
-import { Stack } from "@ui/components/atoms/primitives";
+
 import LeadTriageClient from "./LeadTriageClient";
 import type { LeadTriageStrings } from "./types";
 
@@ -46,6 +48,24 @@ export default async function LeadsTriagePage() {
       primary: t("pipeline.leads.triage.duplicate.primary"),
       duplicateOf: t("pipeline.leads.triage.duplicate.duplicateOf"),
       holdDuplicates: t("pipeline.leads.triage.duplicate.hold"),
+    },
+    override: {
+      label: t("pipeline.leads.triage.override.label"),
+      title: t("pipeline.leads.triage.override.title"),
+      reasonLabel: t("pipeline.leads.triage.override.reason"),
+      requestedByLabel: t("pipeline.leads.triage.override.requestedBy"),
+      apply: t("pipeline.leads.triage.override.apply"),
+      noSelection: t("pipeline.leads.triage.override.noSelection"),
+    },
+    fingerprintOverride: {
+      label: t("pipeline.leads.triage.fingerprintOverride.label"),
+      title: t("pipeline.leads.triage.fingerprintOverride.title"),
+      fingerprintLabel: t("pipeline.leads.triage.fingerprintOverride.fingerprint"),
+      reasonLabel: t("pipeline.leads.triage.fingerprintOverride.reason"),
+      requestedByLabel: t("pipeline.leads.triage.fingerprintOverride.requestedBy"),
+      apply: t("pipeline.leads.triage.fingerprintOverride.apply"),
+      clear: t("pipeline.leads.triage.fingerprintOverride.clear"),
+      noSelection: t("pipeline.leads.triage.fingerprintOverride.noSelection"),
     },
     cooldown: {
       label: t("pipeline.leads.triage.cooldown.label"),

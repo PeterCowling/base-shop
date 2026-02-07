@@ -1,8 +1,9 @@
 "use client";
 
 import * as React from "react";
+
 import { cn } from "../../../utils/style";
-import { Category, CategoryCard } from "../../organisms/CategoryCard";
+import { type Category, CategoryCard } from "../../organisms/CategoryCard";
 
 export interface CollectionListProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "style"> {
   collections: Category[];

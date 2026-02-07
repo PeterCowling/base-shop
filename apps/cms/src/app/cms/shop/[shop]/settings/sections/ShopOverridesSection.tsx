@@ -7,13 +7,13 @@ import {
   AccordionTrigger,
   Card,
   CardContent,
-} from "@ui/components/atoms";
-import type { MappingRowsController } from "../useShopEditorSubmit";
+} from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
 
 import MappingListField, {
   type MappingListFieldErrors,
 } from "../components/MappingListField";
-import { useTranslations } from "@acme/i18n";
+import type { MappingRowsController } from "../useShopEditorSubmit";
 
 export type ShopOverridesSectionErrors = Partial<
   Record<"filterMappings" | "priceOverrides", MappingListFieldErrors>

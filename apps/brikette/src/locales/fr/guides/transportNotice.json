@@ -1,11 +1,11 @@
 {
-  "title": "Vérifiez toujours les informations de transport",
+  "title": "Toutes les informations de transport sont fournies de bonne foi. Vérifie toujours les horaires officiels et les avis de service, surtout si tu as des correspondances ou d’autres engagements à heure fixe. Les liens vers les horaires des opérateurs concernés se trouvent ci-dessous.",
   "items": {
-    "buses": "Bus : consultez les horaires officiels de SITA Sud — <sitaLink>sitasudtrasporti.it</sitaLink>.",
-    "ferries": "Ferries : les opérateurs publient des routes et horaires saisonniers (selon la météo). Voir <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink>.",
-    "airlink": "Vous atterrissez à Salerno Costa d’Amalfi (QSR) ? Utilisez la navette Airlink vers Salerne — <airportLink>aeroportodisalerno.it</airportLink> et <airlinkLink>FS Busitalia Airlink</airlinkLink>.",
-    "driving": "En voiture : restrictions de plaque alternée sur la SS163 (avr.–oct.) et ZTL ; les frais de stationnement varient selon la saison et le lieu. Vérifiez les avis officiels.",
-    "premium": "Premium ou saisonnier : Uber Boat et les hélicoptères n’assurent que quelques rotations estivales — confirmez la disponibilité actuelle."
+    "buses": "Bus : <sitaLink>côte amalfitaine</sitaLink> et <curreriLink>aéroport de Naples ⇄ Sorrente</curreriLink>.",
+    "trains": "Trains : <eavLink>Circumvesuviana</eavLink> (Naples ⇄ Sorrento), <trenitaliaLink>Trenitalia</trenitaliaLink> (trains grandes lignes).",
+    "ferries": "Ferries : Les opérateurs incluent <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink>, <positanoJetLink>Positano Jet</positanoJetLink>, <alicostLink>Alicost</alicostLink>.",
+    "airlink": "Aéroport Salerno Costa d’Amalfi (QSR), <airlinkLink>navette Airlink vers Salerne</airlinkLink>.",
+    "driving": "En voiture : restrictions de plaque alternée sur la SS163 (avr.–oct.) et ZTL ; les frais de stationnement varient selon la saison et le lieu. Vérifiez les avis officiels."
   },
   "srLabel": "Avis transport"
 }

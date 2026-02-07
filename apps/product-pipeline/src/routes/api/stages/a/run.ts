@@ -1,9 +1,10 @@
 /* i18n-exempt file -- PP-1100 internal pipeline API [ttl=2026-06-30] */
 // apps/product-pipeline/src/routes/api/stages/a/run.ts
 
-import type { PipelineEventContext } from "../../_lib/types";
 import { z } from "zod";
+
 import { isCooldownActive } from "@/lib/pipeline/cooldown";
+
 import {
   fetchCandidateById,
   fetchLatestCooldownByFingerprint,
@@ -12,6 +13,7 @@ import {
   type PipelineEnv,
 } from "../../_lib/db";
 import { errorResponse, jsonResponse } from "../../_lib/response";
+import type { PipelineEventContext } from "../../_lib/types";
 
 const centsSchema = z.number().int().min(0);
 

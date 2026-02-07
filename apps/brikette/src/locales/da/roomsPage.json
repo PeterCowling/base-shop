@@ -266,6 +266,41 @@
   "loadingPrice": "Indlæser pris…",
   "landingImageAlt": "Forsidebillede af {{room}}",
   "priceNotes": {
-    "dorm": "Per night, per guest. One guest in one bunk bed."
+    "dorm": "Per nat, pr. gæst. Én gæst i én køjeseng."
+  },
+  "facts": {
+    "type": {
+      "privateRoom": "Privat værelse",
+      "mixedDorm": "Blandet sovesal",
+      "femaleDorm": "Kvinde-sovesal",
+      "femaleRoom": "Værelse kun for kvinder"
+    },
+    "bathroom": {
+      "bathroomEnsuite": "Eget badeværelse",
+      "bathroomPrivate": "Privat badeværelse",
+      "bathroomSharedFemale": "Delt badeværelse"
+    },
+    "sleeps": "Sover {{count}}"
+  },
+  "detailsLine": {
+    "beds": {
+      "doubleBedForTwo": "1 dobbeltseng",
+      "threeSingleBedsThreeGuests": "3 enkeltsenge",
+      "oneDormBedTwoGuests": "1 køjeseng",
+      "threeDormBedsSixGuests": "3 køjesenge",
+      "threeDormBedsPlusSingleSevenGuests": "3 køjesenge + 1 enkeltseng",
+      "fourDormBedsEightGuests": "4 køjesenge"
+    },
+    "views": {
+      "seaViewTerrace": "Terrasse med havudsigt",
+      "seaViewExtraLargeTerrace": "Terrasse med havudsigt",
+      "gardenView": "Haveudsigt",
+      "courtyardView": "Udsigt til gårdhave",
+      "noView": "Ingen udsigt"
+    }
+  },
+  "priceUnits": {
+    "perRoom": "værelse",
+    "perBed": "seng"
   }
 }

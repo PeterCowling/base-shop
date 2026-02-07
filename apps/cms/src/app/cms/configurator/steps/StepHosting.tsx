@@ -1,12 +1,15 @@
 "use client";
 
-import { Button, Input } from "@/components/atoms/shadcn";
-import { Alert } from "@ui/components/atoms";
-import { useEffect, type ChangeEvent } from "react";
-import { getDeployStatus, type DeployInfo } from "../../wizard/services/deployShop";
-import useStepCompletion from "../hooks/useStepCompletion";
+import { type ChangeEvent,useEffect } from "react";
 import { useRouter } from "next/navigation";
+
+import { Alert } from "@acme/design-system/atoms";
 import { useTranslations } from "@acme/i18n";
+
+import { Button, Input } from "@/components/atoms/shadcn";
+
+import { type DeployInfo,getDeployStatus } from "../../wizard/services/deployShop";
+import useStepCompletion from "../hooks/useStepCompletion";
 
 interface Props {
   shopId: string;

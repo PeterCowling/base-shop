@@ -1,10 +1,10 @@
 // apps/cover-me-pretty/__tests__/orders-history-api.test.ts
-jest.mock("@auth", () => ({
+jest.mock("@acme/auth", () => ({
   __esModule: true,
   getCustomerSession: jest.fn(),
 }));
 
-jest.mock("@platform-core/orders", () => ({
+jest.mock("@acme/platform-core/orders", () => ({
   __esModule: true,
   getOrdersForCustomer: jest.fn(),
 }));
@@ -16,8 +16,8 @@ jest.mock("next/server", () => ({
   },
 }));
 
-import { getCustomerSession } from "@auth";
-import { getOrdersForCustomer } from "@platform-core/orders";
+import { getCustomerSession } from "@acme/auth";
+import { getOrdersForCustomer } from "@acme/platform-core/orders";
 import { GET } from "../src/app/api/orders/route";
 
 describe("/api/orders GET", () => {

@@ -1,3 +1,9 @@
+import {
+  expectBuildAndDeployForShop,
+  expectComponentsWritten,
+  mockPackageState,
+  postUpgrade,
+} from "./publish-upgrade.success.test-utils";
 import type { OnRequestPost } from "./publish-upgrade.test-helpers";
 import {
   defaultShopId,
@@ -5,12 +11,6 @@ import {
   mockSuccessfulSpawn,
   resetTestState,
 } from "./publish-upgrade.test-helpers";
-import {
-  expectBuildAndDeployForShop,
-  expectComponentsWritten,
-  mockPackageState,
-  postUpgrade,
-} from "./publish-upgrade.success.test-utils";
 
 let onRequestPost: OnRequestPost;
 const id = defaultShopId;

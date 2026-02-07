@@ -1,9 +1,14 @@
 [
   {
     "id": "prod-1",
-    "title": { "en": "Sample Product" },
     "price": 1000,
     "media": [],
-    "row_version": 0
+    "row_version": 0,
+    "title": {
+      "type": "inline",
+      "value": {
+        "en": "Sample Product"
+      }
+    }
   }
 ]

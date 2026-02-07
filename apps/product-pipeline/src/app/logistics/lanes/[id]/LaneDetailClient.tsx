@@ -1,9 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Cluster, Stack } from "@ui/components/atoms/primitives";
-import LaneEvidenceUploadCard from "./LaneEvidenceUploadCard";
+
+import { Cluster, Stack } from "@acme/design-system/primitives";
+
 import LaneActualsCreateCard from "./LaneActualsCreateCard";
+import LaneEvidenceUploadCard from "./LaneEvidenceUploadCard";
 import LaneVersionCreateCard from "./LaneVersionCreateCard";
 import LaneVersionList from "./LaneVersionList";
 import type { LaneDetail, LaneDetailStrings, LaneVersion } from "./types";

@@ -1,17 +1,19 @@
 "use client";
 
 import { useTranslations } from "@acme/i18n";
+
 import useContrastWarnings from "../../../../hooks/useContrastWarnings";
-import PresetGallery from "../PresetGallery";
-import EffectsEditor from "../EffectsEditor";
-import StylePreviewCard from "../StylePreviewCard";
 import ColorEditor from "../ColorEditor";
+import EffectsEditor from "../EffectsEditor";
+import PresetGallery from "../PresetGallery";
+import StylePreviewCard from "../StylePreviewCard";
 import TypographyEditor from "../TypographyEditor";
-import type { StylePanelProps } from "./types";
-import useStylePanelState from "./useStylePanelState";
+
 import CursorSection from "./CursorSection";
 import PresetManager from "./PresetManager";
 import TextThemeSelector from "./TextThemeSelector";
+import type { StylePanelProps } from "./types";
+import useStylePanelState from "./useStylePanelState";
 
 export default function StylePanel({ component, handleInput }: StylePanelProps) {
   const state = useStylePanelState({ component, handleInput });

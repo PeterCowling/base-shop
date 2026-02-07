@@ -87,25 +87,11 @@
     }
   ],
   "faqsTitle": "Частые вопросы",
-  "galleryTitle": "Фотогалерея",
-  "gallery": {
-    "items": [
-      {
-        "alt": "Вид на тропе богов",
-        "caption": "Вдоль маршрута"
-      },
-      {
-        "alt": "Виды деревни Ночелле",
-        "caption": "Панорама Ночелле"
-      }
-    ]
-  },
   "toc": {
     "onThisPage": "На этой странице",
     "essentials": "Что важно",
     "costs": "Обычные расходы",
     "faqs": "Частые вопросы",
-    "gallery": "Фотогалерея",
     "tips": "Smart timing"
   },
   "tipsTitle": "Smart timing",

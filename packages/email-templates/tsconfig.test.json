@@ -3,7 +3,12 @@
   "compilerOptions": {
     "types": ["@testing-library/jest-dom", "jest", "node"],
     "noEmit": true,
-    "rootDir": "."
+    "rootDir": "../..",
+    "skipLibCheck": true,
+    "paths": {
+      "@acme/types": ["../types/dist/index.d.ts"],
+      "@acme/types/*": ["../types/dist/*"]
+    }
   },
   "include": ["src/**/*", "__tests__/**/*"],
   "exclude": ["dist", ".turbo", "node_modules"]

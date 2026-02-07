@@ -1,17 +1,21 @@
 {
   "seo": {
-    "title": "Gavitella Beach Guide",
-    "description": "Lên kế hoạch cho một ngày ngắm cảnh hoàng hôn tại các câu lạc bộ bãi biển La Gavitella và One Fire của Praiano với các mẹo vận chuyển, đặt chỗ và trả lại."
+    "title": "Hướng Dẫn Bãi Biển Gavitella Praiano: Hoàng Hôn, Bậc Thang & Câu Lạc Bộ Bãi Biển",
+    "description": "Hướng dẫn thân thiện với nhà trọ về Bãi biển Gavitella Praiano: cách đến đó, chọn La Gavitella hay One Fire, chi phí và cách quay về mà không vất vả."
   },
-  "linkLabel": "Gavitella Beach Guide",
+  "lastUpdated": "2026-01-30T00:00:00.000Z",
+  "linkLabel": "Bãi Biển Gavitella: Địa Điểm Bơi Lội Hoàng Hôn Của Praiano",
   "intro": [
-    "Vịnh Gavitella của Praiano quay mặt về phía tây nên nhận được nắng chiều kéo dài cùng khoảnh khắc hoàng hôn vàng óng hướng về Positano và Capri. Hai lido — La Gavitella và One Fire — cùng chia sẻ dải bờ hẹp nằm cạnh một khu vực công cộng nhỏ được đục vào vách đá.",
-    "Hãy chuẩn bị cho một trải nghiệm được chăm chút và cần đặt trước: cầu thang dốc giới hạn lượng khách, các câu lạc bộ điều phối tàu đưa đón và buổi tối xoay quanh bữa hải sản hoặc tiệc hoàng hôn do DJ dẫn dắt."
+    "Bãi biển Gavitella Praiano là \"bãi biển hoàng hôn\" của bờ biển: vịnh nhỏ hướng về phía tây, vì vậy bạn có ánh sáng chiều dài và tầm nhìn giờ vàng trở lại về phía Positano và Capri.",
+    "Hầu hết bờ biển được điều hành bởi hai lido (câu lạc bộ bãi biển) — La Gavitella và One Fire — cộng với một dải công cộng mỏng khắc vào đá giữa chúng. Trong mùa cao điểm, không gian hạn chế và đặt chỗ quan trọng.",
+    "Hướng dẫn này được viết cho khách của Hostel Brikette. Từ quầy lễ tân nhà trọ, chúng tôi thấy hai sai lầm giống nhau mỗi tuần: mọi người đóng gói quá nhiều cho cầu thang và mọi người ở lại để xem hoàng hôn mà không có kế hoạch quay về. Chúng tôi sẽ giúp bạn tránh cả hai.",
+    "Nó tập trung vào những thứ thực tế: cầu thang xuống từ Piazza San Gennaro, cách lên lịch ngày của bạn để bạn không bị mắc kẹt sau hoàng hôn, cần mang gì (giày đi nước là bắt buộc) và cách chọn giữa câu lạc bộ ăn trưa bình yên hay thiết lập tiệc tùng.",
+    "Nguyên tắc nhanh: đến sớm hơn bạn nghĩ, bơi trước khi đám đông và gió nổi lên, và quyết định \"kế hoạch quay về\" của bạn trước khi bạn cam kết với các sự kiện hoàng hôn."
   ],
   "toc": [
     {
       "href": "#overview",
-      "label": "Bố cục & bầu không khí"
+      "label": "Bố cục & không khí"
     },
     {
       "href": "#access",
@@ -19,96 +23,245 @@
     },
     {
       "href": "#gavitella-club",
-      "label": "La Gavitella Beach Club"
+      "label": "Câu Lạc Bộ Bãi Biển La Gavitella"
     },
     {
       "href": "#one-fire",
-      "label": "One Fire Beach Club"
+      "label": "Câu Lạc Bộ Bãi Biển One Fire"
     },
     {
       "href": "#amenities",
-      "label": "Tiện ích & kế hoạch"
+      "label": "Tiện nghi & lập kế hoạch"
+    },
+    {
+      "href": "#best-time",
+      "label": "Thời gian tốt nhất để đi"
+    },
+    {
+      "href": "#hostel-day-plan",
+      "label": "Kế hoạch ngày thân thiện nhà trọ"
+    },
+    {
+      "href": "#what-to-pack",
+      "label": "Cần mang gì"
+    },
+    {
+      "href": "#backup-plan",
+      "label": "Nếu có gió (kế hoạch dự phòng)"
     }
   ],
   "sections": [
     {
       "id": "overview",
-      "title": "Bố cục & bầu không khí",
+      "title": "Bố cục và không khí",
       "body": [
-        "Bãi biển nằm phía dưới quảng trường Piazza San Gennaro của Praiano. Khoảng 400 bậc thang len lỏi giữa các biệt thự và vườn chanh bậc thang, dẫn xuống một bục đá, một gờ sỏi và dải khu vực tự do mảnh giữa hai lido.",
-        "La Gavitella nằm bên trái (khi hướng ra biển) với bàn ăn nhà hàng, sân tắm nắng và cầu cảng đón khách dùng bữa tối. One Fire trải dài theo bến phải với ghế tắm nắng rực rỡ, bục DJ và cầu tàu dành cho thuyền tiệc."
+        "Gavitella nằm dưới Piazza San Gennaro của Praiano. Khoảng 400 bậc uốn lượn qua các villa và ruộng bậc thang chanh đến một nền tảng đá, một giá sỏi, và một dải công cộng hẹp giữa hai lido.",
+        "La Gavitella chiếm bên trái (hướng ra biển) với bàn nhà hàng, sàn phơi nắng và chỗ neo đậu cho thuyền tender. One Fire xếp hàng ở bến phải với ghế nằm sáng, bục DJ và bến tàu cho thuyền tiệc của họ.",
+        "Nó giúp nghĩ về vịnh là hai trải nghiệm: một \"bữa trưa và bơi lội Bờ biển Amalfi\" cổ điển ở phía La Gavitella, và một buổi chiều ồn ào, xã hội hơn tại One Fire. Cả hai đều có thể vui — nhưng nếu bạn xuất hiện mong đợi một bãi biển cát miễn phí lớn, bạn sẽ thất vọng.",
+        "Kiểm tra thực tế nhà trọ: các bậc thang làm cho nơi này đặc biệt (ít khách du lịch trong ngày hơn), nhưng chúng cũng khiến việc đóng gói quá mức trở nên dễ dàng. Giữ túi của bạn nhẹ và lập kế hoạch quay về trước hoàng hôn."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/gavitellaBeachGuide.webp",
+          "alt": "Tầm nhìn của Bãi biển Gavitella ở Praiano với nền tảng vách đá và biển",
+          "caption": "Bãi biển Gavitella Praiano nhỏ, khắc vào vách đá, và được tận hưởng tốt nhất như một điểm bơi chiều đến hoàng hôn"
+        },
+        {
+          "src": "/img/guides/gavitella-beach/01-beach-layout.webp",
+          "alt": "Sơ đồ bố cục Bãi biển Gavitella cho thấy các câu lạc bộ bãi biển La Gavitella và One Fire",
+          "caption": "Bố cục bãi biển: La Gavitella ở bên trái với nhà hàng, One Fire ở bên phải với bục DJ"
+        },
+        {
+          "src": "/img/guides/gavitella-beach/04-steps-and-return.webp",
+          "alt": "Infographic cho thấy cái xuống 400 bậc xuống Bãi biển Gavitella và các lựa chọn quay về",
+          "caption": "Lập kế hoạch cầu thang: xuống thì dễ; lên sau hoàng hôn là phần khó — quyết định quay về của bạn trước khi bạn đi"
+        }
       ]
     },
     {
       "id": "access",
       "title": "Cách đến Gavitella",
       "body": [
-        "Từ Hostel Brikette hoặc trung tâm Positano, bắt xe buýt SITA hướng Amalfi và xuống tại trạm Piazza San Gennaro của Praiano; dành ra 10–15 phút để đi xuống cầu thang đến điểm đã đặt chỗ.",
-        "Xe shuttle interno của Praiano di chuyển vòng giữa tuyến đường phía trên và Marina di Praia — hãy dùng chuyến này khi quay về để khỏi phải leo hàng trăm bậc sau hoàng hôn. Khi biển êm, cả hai câu lạc bộ cũng có thể sắp xếp thuyền đưa đón từ Positano hoặc Marina di Praia."
+        "Từ Hostel Brikette hoặc trung tâm Positano, đi xe buýt SITA về phía Amalfi và xuống tại Piazza San Gennaro của Praiano. Từ quảng trường, đi theo cầu thang có biển báo xuống biển; cho bản thân 10–15 phút để xuống (nhiều hơn nếu bạn mang túi bãi biển).",
+        "Nếu bạn gặp bạn bè hoặc bạn có thời gian đặt chỗ, đối xử với cầu thang như một \"deadline cứng\". Vào tháng 7/8, phổ biến là đến đổ mồ hôi — mang nước, và không lên kế hoạch chạy nước rút phần cuối.",
+        "Để quay về, hãy nghĩ về các lựa chọn: (1) cam kết với cầu thang trở lên, (2) sử dụng xe buýt interno của Praiano khi có thể, hoặc (3) sắp xếp xe buýt thuyền khi biển lặng và nhân viên xác nhận nó đang chạy. Đừng cho rằng thuyền luôn hoạt động — biển quyết định."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/gavitella-beach/05-getting-there.webp",
+          "alt": "Infographic với các bước để đến Bãi biển Gavitella từ điểm dừng xe buýt SITA ở Praiano",
+          "caption": "Cách tiếp cận thân thiện với nhà trọ: SITA đến Piazza San Gennaro, sau đó cầu thang xuống — lập kế hoạch thêm thời gian vào mùa hè"
+        }
       ]
     },
     {
       "id": "gavitella-club",
-      "title": "La Gavitella Beach Club",
+      "title": "Câu Lạc Bộ Bãi Biển La Gavitella",
       "body": [
-        "La Gavitella hướng đến những bữa trưa thong thả, giờ aperitivo và chuyến tàu vòng quanh quần đảo Li Galli lúc hoàng hôn. Bếp tập trung vào hải sản theo mùa — đĩa crudo, paccheri cá địa phương và thực đơn tráng miệng đậm hương chanh.",
-        "Nhớ nêu nhu cầu di chuyển khi đặt chỗ: nhân viên sẽ điều phối tàu nhỏ cho khách dùng bữa và có thể giữ hành lý giúp bạn trong lúc bơi lội trước chuyến du ngoạn aperitif."
+        "La Gavitella là tùy chọn \"cổ điển\": bữa trưa chậm, aperitivi, và không khí hoàng hôn mà không có năng lượng tiệc tùng đầy đủ. Nhà bếp nghiêng về hải sản với các món ăn theo mùa (và nhiều chanh theo phong cách Bờ biển Amalfi thực sự).",
+        "Nếu bạn làm điều này như một ngày đặc biệt, phiên bản tốt nhất là đơn giản: đến đủ sớm để bơi, thay đồ, sau đó ổn định cho một bữa trưa dài tự nhiên trở thành đồ uống hoàng hôn.",
+        "Mẹo nhân viên: khi bạn đặt chỗ, hỏi hai câu hỏi thực tế ngay từ đầu — (1) họ muốn bạn có mặt vào lúc nào cho bàn/ghế nằm của bạn, và (2) các lựa chọn quay về ngày hôm đó là gì. Nếu thuyền đang chạy, nhân viên có thể phối hợp chuyển giao tender cho khách, nhưng nó phụ thuộc vào điều kiện."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/gavitella-beach/02-la-gavitella-club.webp",
+          "alt": "Sân thượng Câu lạc bộ Bãi biển La Gavitella với tầm nhìn biển và bữa tối hoàng hôn",
+          "caption": "La Gavitella — bữa trưa chậm, aperitivi, và chuyến du ngoạn thuyền hoàng hôn quanh các hòn đảo Li Galli"
+        }
       ]
     },
     {
       "id": "one-fire",
-      "title": "One Fire Beach Club",
+      "title": "Câu Lạc Bộ Bãi Biển One Fire",
       "body": [
-        "One Fire là bãi biển tiệc tùng của Bờ biển Amalfi, nổi tiếng với nghi thức ăn dưa hấu buổi chiều, các set DJ và màn khuấy động đám đông khớp nhịp cùng mặt trời lặn.",
-        "Đặt ghế tắm nắng hoặc cabana qua WhatsApp — tiền cọc là điều thường thấy vào tháng 7 và 8. Khi sóng yên, tàu của họ sẽ đón nhóm khách từ Positano và đưa về sau khi âm nhạc kết thúc."
+        "One Fire là tùy chọn tiệc tùng: bộ DJ, năng lượng cao, và đám đông tăng lên khi buổi chiều tiếp tục (thường được định thời hoàn hảo với hoàng hôn). Nếu bạn đang tìm kiếm một ngày xã hội nơi bạn sẽ gặp các du khách khác, đây là lựa chọn rõ ràng.",
+        "Đặt ghế nằm hoặc cabana qua WhatsApp — tiền đặt cọc phổ biến vào tháng 7 và tháng 8. Xác nhận những gì được bao gồm (giường vs khăn vs chi tiêu tối thiểu) để bạn không bị ngạc nhiên khi đến.",
+        "Kiểm tra thực tế khách nhà trọ: One Fire rất vui, nhưng dễ mất dấu thời gian. Nếu bạn lên kế hoạch ở lại cho đến hoàng hôn, xác nhận kế hoạch quay về của bạn sớm (cầu thang vs interno vs xe buýt thuyền) để bạn không đàm phán logistics khi bạn mệt."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/gavitella-beach/03-one-fire-club.webp",
+          "alt": "Câu lạc bộ Bãi biển One Fire với ghế nằm sáng, bục DJ, và bầu không khí tiệc tùng",
+          "caption": "One Fire — bãi biển tiệc của Bờ biển Amalfi với bộ DJ, nghi lễ dưa hấu, và vũ đạo hoàng hôn"
+        }
       ]
     },
     {
       "id": "amenities",
-      "title": "Tiện ích & kế hoạch",
+      "title": "Tiện nghi & lập kế hoạch",
       "body": [
-        "Cả hai câu lạc bộ đều có vòi sen, phòng thay đồ và tủ khóa trả phí; khăn tắm thường được bao gồm trong giá ghế tắm nắng. Mang theo kem chống nắng thân thiện với rạn san hô và giày đi nước để di chuyển trên bục đá và lối xuống sỏi.",
-        "Một dải công cộng nhỏ tách hai lido. Không gian hạn chế nên hãy đến trước 10:00 cùng tấm thảm của riêng bạn và sẵn sàng tinh thần rằng nhân viên sẽ thu dọn ghế nếu sóng đánh dạt vào bờ."
+        "Cả hai câu lạc bộ thường cung cấp vòi hoa sen và cabin thay đồ; tủ khóa thường phải trả tiền. Khăn có thể được bao gồm với phí ghế nằm, nhưng đừng dựa vào nó — đóng gói một chiếc khăn nhỏ nếu bạn có thể.",
+        "Lối vào có đá và nền tảng có thể trơn. Giày đi nước làm cho ngày tốt hơn (và an toàn hơn). Mang kem chống nắng an toàn cho rạn san hô và chai có thể nạp lại; mặt trời vẫn mạnh vào cuối ngày.",
+        "Dải công cộng nhỏ giữa các lido là có thật, nhưng nó nhỏ. Nếu bạn đi \"spiaggia libera\" (bãi biển miễn phí), đến sớm với thảm của riêng bạn và một thiết lập đơn giản. Trong biển gồ ghề hơn, nhân viên có thể cần di chuyển ghế vào đất liền và dải miễn phí có thể cảm thấy thậm chí chặt hơn."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/gavitella-beach/06-packing-checklist.webp",
+          "alt": "Infographic danh sách kiểm tra đóng gói cho chuyến đi một ngày Bãi biển Gavitella từ nhà trọ",
+          "caption": "Đóng gói nhẹ: giày đi nước, kem chống nắng, chai có thể nạp lại, và một chiếc khăn nhỏ làm cầu thang dễ dàng hơn"
+        }
+      ]
+    },
+    {
+      "id": "best-time",
+      "title": "Thời gian tốt nhất để đi (và biển làm gì)",
+      "body": [
+        "Bãi biển Gavitella Praiano tốt nhất từ giữa buổi chiều đến giờ vàng. Bởi vì vịnh hướng về phía tây, nó giữ ánh sáng mặt trời lâu hơn nhiều bãi biển Bờ biển Amalfi — đó chính xác là lý do tại sao hoàng hôn ở đây nổi tiếng.",
+        "Nếu bạn muốn bơi lặng nhất, hãy đi sớm hơn trong ngày và đối xử với hoàng hôn như một phần thưởng. Gió và sóng có thể xây dựng sau đó, và các nền tảng cảm thấy nhỏ hơn khi biển đang hoạt động.",
+        "Mùa vai (cuối xuân / đầu thu) có thể là điểm ngọt cho khách du lịch nhà trọ: ít đặt chỗ hơn, nhiều không gian thở hơn, và bạn vẫn có thể có được ánh sáng muộn ấm áp đó mà không có sự nghiền nát cao điểm mùa hè."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/gavitella-beach/07-sunset-window.webp",
+          "alt": "Infographic giải thích tại sao Gavitella hướng về phía tây và bắt được mặt trời chiều muộn",
+          "caption": "Tại sao đó là bãi biển hoàng hôn: ánh sáng hướng về phía tây kéo dài lâu hơn, vì vậy không khí tốt nhất là chiều muộn"
+        }
+      ]
+    },
+    {
+      "id": "hostel-day-plan",
+      "title": "Kế hoạch ngày thân thiện nhà trọ Gavitella",
+      "body": [
+        "Nếu bạn muốn \"phiên bản tốt nhất\" của Gavitella mà không thổi năng lượng (hoặc ngân sách) của bạn, kế hoạch này hoạt động tốt cho hầu hết khách.",
+        "1) Rời đi sau bữa sáng và đi xe buýt SITA về phía Amalfi. Xuống tại Piazza San Gennaro và bắt đầu cầu thang xuống với nước trong tay.",
+        "2) Bơi trước. Càng sớm bạn bơi, nó càng ít đông đúc và càng dễ dàng để yêu cầu một chỗ thoải mái.",
+        "3) Quyết định không khí của bạn: La Gavitella cho một bữa trưa dài + aperitivo hoàng hôn, hoặc One Fire nếu bạn muốn một buổi chiều xã hội với âm nhạc.",
+        "4) Khóa kế hoạch quay về của bạn sớm. Nếu bạn ở lại cho hoàng hôn, xác nhận (cầu thang vs xe buýt interno vs xe buýt thuyền) trước khi ngày trở nên ồn ào.",
+        "5) Trở lại tại Hostel Brikette: tắm, bù nước, và bạn đã sẵn sàng cho aperitivo trong thị trấn. Nếu bạn muốn một ngày bãi biển thứ hai dễ dàng hơn, so sánh các lựa chọn trong %LINK:positanoBeaches|tổng quan bãi biển Positano% của chúng tôi."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/gavitella-beach/08-hostel-day-plan.webp",
+          "alt": "Infographic dòng thời gian cho một ngày thân thiện nhà trọ tại Bãi biển Gavitella từ sáng đến hoàng hôn",
+          "caption": "Một kế hoạch ngày đơn giản: xe buýt + cầu thang, bơi sớm, chọn lido của bạn, và xác nhận quay về trước hoàng hôn"
+        }
+      ]
+    },
+    {
+      "id": "what-to-pack",
+      "title": "Cần mang gì (để bạn không đóng gói quá nhiều)",
+      "body": [
+        "Một túi nhẹ là bí mật để tận hưởng Gavitella. Cầu thang là toàn bộ điểm — nhưng chúng trừng phạt đóng gói quá mức.",
+        "Mang: giày đi nước, kem chống nắng, mũ, một chiếc khăn nhỏ, và một chai có thể nạp lại. Thêm một lớp nhẹ cho chuyến đi trở lại nếu bạn sẽ ra ngoài sau hoàng hôn (gió biển + da ướt trở nên lạnh nhanh).",
+        "Bỏ qua: hộ chiếu và tiền mặt lớn. Giữ đồ có giá trị khóa tại nhà trọ. Chỉ mang đủ tiền mặt như dự phòng cho các thêm nhỏ và bất ngờ vận chuyển."
+      ]
+    },
+    {
+      "id": "backup-plan",
+      "title": "Nếu có gió (kế hoạch dự phòng)",
+      "body": [
+        "Khi biển gồ ghề, các nền tảng cảm thấy nhỏ hơn và xe buýt thuyền thường tạm dừng. Nếu bạn đến và nó cảm thấy hỗn loạn, chuyển đổi kế hoạch thay vì ép buộc nó.",
+        "Hai dự phòng đơn giản thân thiện nhà trọ: (1) chọn một vịnh được bảo vệ hơn như %LINK:marinaDiPraiaBeaches|Marina di Praia%, hoặc (2) làm một ngày thị trấn và lưu Gavitella cho cửa sổ thời tiết lặng tiếp theo của bạn.",
+        "Nếu mục tiêu của bạn là \"hoàng hôn + không khí tốt\" hơn là \"bơi lội\", bạn vẫn có thể sử dụng các điểm nhìn và sân thượng của Praiano cho giờ vàng mà không cam kết với cầu thang."
       ]
     }
   ],
+  "images": {
+    "overview": {
+      "src": "/img/guides/gavitella-beach/01-beach-layout.webp",
+      "alt": "Tầm nhìn trên không của vịnh Bãi biển Gavitella và các sàn phơi nắng",
+      "caption": "Hai câu lạc bộ bãi biển chia sẻ một nền tảng hẹp khắc vào vách đá."
+    },
+    "gavitellaClub": {
+      "src": "/img/guides/gavitella-beach/02-la-gavitella-club.webp",
+      "alt": "Bàn ăn tối sân thượng nhìn ra Bờ biển Amalfi lúc hoàng hôn",
+      "caption": "Bữa tối hoàng hôn của La Gavitella kết hợp tầm nhìn biển với aperitivi dài."
+    },
+    "oneFire": {
+      "src": "/img/guides/gavitella-beach/03-one-fire-club.webp",
+      "alt": "Ô cam sáng và giường phơi nắng tại Câu lạc bộ Bãi biển One Fire",
+      "caption": "One Fire được biết đến với buổi chiều sống động và một cảnh hoàng hôn do DJ dẫn dắt."
+    }
+  },
+  "essentialsTitle": "Điều cần thiết",
+  "essentials": [
+    "Đặt trước cho cả hai câu lạc bộ; các vị trí hoàng hôn và cuối tuần bán hết trước.",
+    "Lập kế hoạch cho 400+ bậc xuống từ Piazza San Gennaro và một lần trở về dốc trừ khi bạn đi xe buýt interno.",
+    "Đóng gói giày đi nước cho nền tảng đá và kem chống nắng an toàn cho rạn san hô cho mặt trời chiều muộn."
+  ],
+  "typicalCostsTitle": "Chi phí điển hình",
+  "typicalCosts": [
+    "Bộ ghế nằm La Gavitella cho hai người: €70–€100 tùy thuộc vào mùa.",
+    "Giường ngày One Fire hoặc cabana cho hai người: €100–€180, thường với tiền đặt cọc trong các tháng cao điểm.",
+    "Tiện ích xe buýt thuyền (khi có sẵn): €10–€20 mỗi người mỗi chiều."
+  ],
   "tipsTitle": "Mẹo nhanh",
   "tips": [
-    "Dùng %LINK:positanoAmalfi|hướng dẫn đi lại Positano ↔ Amalfi của chúng tôi% để lên kế hoạch chuyến SITA đến Piazza San Gennaro trước khi bước xuống 400 bậc thang.",
-    "Xem %LINK:sitaTickets|mẹo mua vé xe buýt SITA% cho chặng quay về; tuyến interno của Praiano giúp bạn khỏi phải leo dốc trong bóng tối.",
-    "Đặt luôn nhà hàng trên vách đá của La Gavitella khi giữ chỗ ghế tắm nắng — thực đơn thử hải sản và chuyến tàu hoàng hôn rất đáng tiền.",
-    "So sánh ghế tắm nắng, khu vực miễn phí và các vịnh thay thế trong %LINK:positanoBeaches|tổng quan bãi biển Positano% trước khi quyết định."
+    "Sử dụng %LINK:positanoAmalfi|hướng dẫn vận chuyển Positano ↔ Amalfi của chúng tôi% để lập kế hoạch chuyến đi SITA đến Piazza San Gennaro trước khi bạn giải quyết 400 bậc xuống.",
+    "Kiểm tra %LINK:sitaTickets|mẹo vé xe buýt SITA% cho các lựa chọn quay về; vòng interno của Praiano giúp bạn không phải leo trở lên trong bóng tối.",
+    "Đặt nhà hàng vách đá La Gavitella khi bạn đặt ghế nằm — menu nếm thử hải sản và spin thuyền hoàng hôn đáng để phung phí.",
+    "So sánh ghế nằm, khu vực miễn phí, và các vịnh thay thế trong %LINK:positanoBeaches|tổng quan bãi biển Positano% của chúng tôi trước khi bạn cam kết."
   ],
-  "warningsTitle": "Lưu ý",
+  "warningsTitle": "Tốt để biết",
   "warnings": [
-    "Mỗi chiều có khoảng 400 bậc thang gập ghềnh; Gavitella không phù hợp với xe lăn hoặc hành lý cồng kềnh.",
-    "Khu vực miễn phí có thể biến mất khi biển động — hãy chuẩn bị phương án dự phòng cho những ngày gió lớn.",
-    "Tàu đưa đón sẽ dừng khi biển chuyển động, vì vậy hãy xác nhận chuyến về trước khi các sự kiện hoàng hôn bắt đầu."
+    "Mong đợi khoảng 400 bậc không đều mỗi chiều; Gavitella không thể tiếp cận cho xe lăn hoặc hành lý nặng.",
+    "Phần miễn phí có thể biến mất trong biển gồ ghề — giữ một kế hoạch dự phòng cho những ngày có gió.",
+    "Xe buýt thuyền tạm dừng khi biển quay, vì vậy xác nhận chuyến đi trở về của bạn trước khi các sự kiện hoàng hôn bắt đầu."
   ],
-  "faqsTitle": "Câu hỏi thường gặp về Gavitella",
+  "faqsTitle": "FAQ Gavitella",
   "faqs": [
     {
-      "q": "Làm sao để đến Gavitella từ Hostel Brikette?",
+      "q": "Làm thế nào để đến Gavitella từ Hostel Brikette?",
       "a": [
-        "Đi bộ đến trạm Chiesa Nuova và bắt xe buýt SITA hướng Amalfi. Xuống tại Piazza San Gennaro của Praiano rồi theo cầu thang có biển chỉ dẫn khoảng 400 bậc xuống bãi biển. Khi biển lặng, bạn cũng có thể đặt trước tàu đưa đón từ bến chính Positano."
+        "Đi bộ đến điểm dừng Chiesa Nuova và lên xe buýt SITA về phía Amalfi. Xuống tại Piazza San Gennaro của Praiano, sau đó đi theo cầu thang có biển báo khoảng 400 bậc xuống bãi biển. Trong thời tiết lặng, bạn cũng có thể đặt trước xe buýt thuyền từ bến chính của Positano."
       ]
     },
     {
-      "q": "Tôi có cần đặt chỗ trước không?",
+      "q": "Tôi có cần đặt trước không?",
       "a": [
-        "Có. Liên hệ La Gavitella hoặc One Fire qua WhatsApp hay biểu mẫu trực tuyến, cung cấp thời gian đến và hỏi về khoản đặt cọc. Cuối tuần và khung giờ hoàng hôn từ tháng 6 đến tháng 9 thường kín nhanh."
+        "Có. Liên hệ La Gavitella hoặc One Fire qua WhatsApp hoặc biểu mẫu trực tuyến của họ, chia sẻ thời gian đến của bạn, và hỏi về tiền đặt cọc. Cuối tuần và các vị trí hoàng hôn bán hết nhanh chóng từ tháng 6 đến tháng 9."
       ]
     },
     {
-      "q": "Nếu không thuê ghế tắm nắng thì có khu miễn phí không?",
+      "q": "Có khu vực miễn phí nếu tôi không thuê ghế nằm không?",
       "a": [
-        "Giữa hai câu lạc bộ có một dải công cộng hẹp. Mang theo thảm hoặc giày đi nước, đến sớm và tuân thủ dây hoặc lối đi mà nhân viên bố trí cho thuyền ra vào."
+        "Một dải công cộng hẹp nằm giữa hai câu lạc bộ. Mang thảm hoặc giày đi nước, đến sớm, và tôn trọng bất kỳ dây thừng hoặc lối đi nào mà nhân viên đặt cho truy cập thuyền."
       ]
     },
     {
-      "q": "Tôi có thể ở lại dùng bữa tối hoặc tham gia sự kiện muộn không?",
+      "q": "Tôi có thể ở lại để ăn tối hoặc sự kiện muộn không?",
       "a": [
-        "La Gavitella phục vụ bữa tối trên sân thượng và thường kết hợp với chuyến tàu ngắn. One Fire tổ chức tiệc hoàng hôn kết thúc vào khoảng chuyến interno cuối cùng. Hãy xác nhận phương tiện quay lại với nhân viên để khỏi phải leo cầu thang trong đêm."
+        "La Gavitella phục vụ bữa tối trên sân thượng và thường kết hợp nó với một chuyến du ngoạn thuyền ngắn. One Fire chạy các bữa tiệc hoàng hôn kết thúc vào khoảng xe buýt interno cuối cùng. Xác nhận vận chuyển trở về với nhân viên để bạn không leo cầu thang vào ban đêm."
       ]
     }
   ]

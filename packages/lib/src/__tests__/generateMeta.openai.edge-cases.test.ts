@@ -1,18 +1,17 @@
-import { describe, it, afterEach, expect, jest } from "@jest/globals";
+import { afterEach, describe, expect, it, jest } from "@jest/globals";
+import * as path from "path";
 
 jest.mock("path", () => ({
   join: jest.fn((...parts: string[]) => parts.join("/")),
   dirname: jest.fn((p: string) => p.split("/").slice(0, -1).join("/")),
 }));
 
-import * as path from "path";
-
 const product = { id: "edge", title: "Edge", description: "Case" };
 const writeMock = jest.fn();
 const mkdirMock = jest.fn();
 const fetchMock = jest.fn();
 
-(global as { fetch: typeof fetch }).fetch = fetchMock;
+(global as { fetch: typeof fetch }).fetch = fetchMock as unknown as typeof fetch;
 
 jest.mock("fs", () => ({
   promises: {
@@ -25,7 +24,7 @@ describe("generateMeta edge cases", () => {
   const originalEnv = process.env.NODE_ENV;
 
   afterEach(() => {
-    process.env.NODE_ENV = originalEnv;
+    (process.env as Record<string, string | undefined>).NODE_ENV = originalEnv;
     writeMock.mockReset();
     mkdirMock.mockReset();
     fetchMock.mockReset();
@@ -35,9 +34,9 @@ describe("generateMeta edge cases", () => {
   });
 
   it("handles responses that omit content entries", async () => {
-    process.env.NODE_ENV = "production";
-    const responsesCreate = jest.fn().mockResolvedValue({ output: [] });
-    const imagesGenerate = jest.fn().mockResolvedValue({ data: [{ b64_json: "" }] });
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
+    const responsesCreate = jest.fn(() => Promise.resolve({ output: [] }));
+    const imagesGenerate = jest.fn(() => Promise.resolve({ data: [{ b64_json: "" }] }));
     const OpenAI = jest.fn().mockImplementation(() => ({
       responses: { create: responsesCreate },
       images: { generate: imagesGenerate },
@@ -64,8 +63,8 @@ describe("generateMeta edge cases", () => {
   });
 
   it("ignores non-string content payloads", async () => {
-    process.env.NODE_ENV = "production";
-    const responsesCreate = jest.fn().mockResolvedValue({
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
+    const responsesCreate = jest.fn(() => Promise.resolve({
       output: [
         {
           content: [
@@ -75,8 +74,8 @@ describe("generateMeta edge cases", () => {
           ],
         },
       ],
-    });
-    const imagesGenerate = jest.fn().mockResolvedValue({ data: [{ b64_json: "" }] });
+    }));
+    const imagesGenerate = jest.fn(() => Promise.resolve({ data: [{ b64_json: "" }] }));
     const OpenAI = jest.fn().mockImplementation(() => ({
       responses: { create: responsesCreate },
       images: { generate: imagesGenerate },

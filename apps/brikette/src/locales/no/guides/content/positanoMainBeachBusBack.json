@@ -1,7 +1,7 @@
 {
   "seo": {
     "title": "Buss tilbake til Hostel Brikette fra Positanos hovedstrand",
-    "description": "Catch the interno bus at Piazza dei Mulini and ride up to the tabacchi beside Hostel Brikette."
+    "description": "Ta Interno-bussen ved Piazza dei Mulini og kjør opp til tabacchi ved siden av Hostel Brikette."
   },
   "linkLabel": "Buss tilbake til Hostel Brikette fra Spiaggia Grande",
   "intro": [
@@ -29,7 +29,7 @@
       "id": "ride-uphill",
       "title": "Ta interno-bussen oppoverbakke",
       "body": [
-        "Gå ombord på den oransje vognen merket «Interno Positano» og kjør i sløyfe gjennom byen mot Chiesa Nuova.",
+        "Gå ombord på den oransje vognen merket \\\\\"Interno Positano\\\\\" og kjør i sløyfe gjennom byen mot Chiesa Nuova.",
         "Lytt etter stoppsignalet eller se etter tobakksbjelken der du gikk ombord tidligere på dagen."
       ]
     },
@@ -50,7 +50,7 @@
   ],
   "extras": {
     "photos": {
-      "title": "Photos",
+      "title": "Bilder",
       "items": {
         "busInterior": {
           "alt": "Interno Positano-buss ved stoppet ved stranden",

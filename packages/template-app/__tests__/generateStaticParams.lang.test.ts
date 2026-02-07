@@ -1,6 +1,7 @@
 /** @jest-environment node */
-import generateStaticParams from "../src/app/[lang]/generateStaticParams";
 import { LOCALES } from "@acme/i18n";
+
+import generateStaticParams from "../src/app/[lang]/generateStaticParams";
 
 describe("[lang]/generateStaticParams", () => {
   it("returns one param per supported locale", () => {

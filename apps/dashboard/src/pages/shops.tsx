@@ -1,6 +1,7 @@
 /* eslint-disable ds/container-widths-only-at, ds/no-arbitrary-tailwind -- DASH-3201 dashboard demo tables use custom widths [ttl=2026-06-30] */
-import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+
 import { trackEvent } from "../lib/telemetry";
 
 type ShopListItem = {

@@ -3,9 +3,10 @@
     "relatedGuides": "संबंधित मार्गदर्शिकाएँ",
     "indexTitle": "पोसितानो यात्रा मार्गदर्शिकाएँ",
     "popularGuides": "लोकप्रिय मार्गदर्शिकाएँ",
+    "viewAll": "सभी गाइड देखें",
     "helpfulGuides": "सहायक मार्गदर्शिकाएँ",
     "alsoSee": "यह भी देखें",
-    "sectionFallback": "Section {{position}}"
+    "sectionFallback": "सेक्शन {{position}}"
   },
   "meta": {
     "index": {
@@ -13,131 +14,337 @@
       "description": "पोसितानो और अमाल्फी तट पर घूमने के लिए व्यावहारिक, चरण-दर-चरण मार्गदर्शिकाएँ।"
     }
   },
+  "redirectPage": {
+    "title": "पुनर्निर्देशित किया जा रहा है...",
+    "message": "यदि आपको पुनर्निर्देशित नहीं किया जाता है, तो <link>यहाँ जारी रखें</link>."
+  },
   "content": {
     "onlyHostel": {
-      "linkLabel": "The only hostel in Positano",
+      "linkLabel": "Positano में एकमात्र हॉस्टल",
       "seo": {
-        "title": "The only hostel in Positano",
-        "description": "Affordable beds in Positano with panoramic views and friendly vibes."
+        "title": "Positano में एकमात्र हॉस्टल",
+        "description": "Positano में किफ़ायती बेड, शानदार नज़ारे और दोस्ताना माहौल।"
       }
     },
     "backpackerItineraries": {
-      "linkLabel": "Backpacker itineraries",
+      "linkLabel": "बैकपैकर यात्रा कार्यक्रम",
       "seo": {
-        "title": "Backpacker itineraries on the Amalfi Coast",
-        "description": "Practical, budget-first routes for 2 to 7 days without a car."
+        "title": "अमाल्फ़ी कोस्ट पर बैकपैकर यात्रा कार्यक्रम",
+        "description": "2 से 7 दिनों के लिए बिना कार के व्यावहारिक, बजट-फ्रेंडली रूट।"
       }
     },
     "reachBudget": {
-      "linkLabel": "Reach Positano on a budget",
+      "linkLabel": "बजट में Positano पहुँचें",
       "seo": {
-        "title": "Reach Positano on a budget",
-        "description": "Cheapest ways to get to Positano by bus, train and ferry."
+        "title": "बजट में Positano पहुँचें",
+        "description": "बस, ट्रेन और फेरी से Positano पहुँचने के सबसे सस्ते तरीके।"
       }
     },
     "ferrySchedules": {
-      "linkLabel": "Ferry schedules",
+      "linkLabel": "फेरी समय-सारिणी",
       "seo": {
-        "title": "Positano ferry schedules",
-        "description": "Up-to-date ferry operators and seasonal timetables for Positano."
+        "title": "Positano फेरी समय-सारिणी",
+        "description": "Positano के लिए अपडेटेड फेरी ऑपरेटर और मौसमी समय-सारिणी।"
       }
     },
     "pathOfTheGods": {
-      "linkLabel": "Path of the Gods from Positano",
+      "linkLabel": "Positano से पाथ ऑफ द गॉड्स",
       "seo": {
-        "title": "Hike the Path of the Gods",
-        "description": "Door-to-door instructions to hike Sentiero degli Dei from Positano."
+        "title": "पाथ ऑफ द गॉड्स हाइक",
+        "description": "Positano से Sentiero degli Dei हाइक के लिए दरवाज़े से दरवाज़े निर्देश।"
       }
     },
     "pathOfTheGodsFerry": {
-      "linkLabel": "Path of the Gods via Amalfi (ferry)",
+      "linkLabel": "अमाल्फ़ी के रास्ते पाथ ऑफ द गॉड्स (फेरी)",
       "seo": {
-        "title": "Path of the Gods via Amalfi (ferry)",
-        "description": "Sail to Amalfi, bus up to Bomerano, then hike the Path of the Gods with return directions."
+        "title": "अमाल्फ़ी के रास्ते पाथ ऑफ द गॉड्स (फेरी)",
+        "description": "अमाल्फ़ी तक फेरी लें, बस से Bomerano जाएँ, फिर पाथ ऑफ द गॉड्स हाइक करें और वापसी के निर्देश पाएं।"
       }
     },
     "pathOfTheGodsBus": {
-      "linkLabel": "Path of the Gods via Amalfi (bus)",
+      "linkLabel": "अमाल्फ़ी के रास्ते पाथ ऑफ द गॉड्स (बस)",
       "seo": {
-        "title": "Path of the Gods via Amalfi (bus)",
-        "description": "Take the SITA Sud bus to Bomerano and follow our Path of the Gods route back toward Positano."
+        "title": "अमाल्फ़ी के रास्ते पाथ ऑफ द गॉड्स (बस)",
+        "description": "SITA Sud बस से Bomerano जाएँ और हमारे पाथ ऑफ द गॉड्स रूट से Positano लौटें।"
       }
     },
     "pathOfTheGodsNocelle": {
-      "linkLabel": "Path of the Gods via Nocelle",
+      "linkLabel": "Nocelle के रास्ते पाथ ऑफ द गॉड्स",
       "seo": {
-        "title": "Path of the Gods via Nocelle",
-        "description": "Shorter out-and-back hike from Nocelle with directions to return to Hostel Brikette."
+        "title": "Nocelle के रास्ते पाथ ऑफ द गॉड्स",
+        "description": "Nocelle से छोटी राउंड-ट्रिप हाइक और Hostel Brikette लौटने के निर्देश।"
       }
     },
     "dayTripsAmalfi": {
-      "linkLabel": "Day trips from Positano",
+      "linkLabel": "Positano से डे ट्रिप",
       "seo": {
-        "title": "Day trips from Positano",
-        "description": "Ideas for Amalfi, Ravello, Capri and Pompeii with timing and transport tips."
+        "title": "Positano से डे ट्रिप",
+        "description": "अमाल्फ़ी, रावेलो, कैपरी और पोंपई के लिए आइडिया, टाइमिंग और ट्रांसपोर्ट टिप्स।"
       }
     },
-    "publicTransportAmalfi": {
-      "linkLabel": "Amalfi Coast public transport guide",
+    "positanoBeaches": {
+      "linkLabel": "पॉज़िटानो के समुद्र तट: रेत, धूप और गुप्त खाड़ियाँ",
       "seo": {
-        "title": "Amalfi Coast public transport guide",
-        "description": "How to use buses and ferries on the Amalfi Coast with passes, timing and routes."
+        "title": "पॉज़िटानो के समुद्र तट: धूप और गुप्त खाड़ियाँ",
+        "description": "प्रतिष्ठित स्पियाज्जा ग्रांदे से लेकर छिपे हुए खाड़ियों और विशेष बीच क्लबों तक पॉज़िटानो के सर्वश्रेष्ठ समुद्र तटों की खोज करें।"
+      }
+    },
+    "arienzoBeachClub": {
+      "linkLabel": "अरिएन्ज़ो बीच: पॉज़िटानो का बुटीक बीच क्लब",
+      "seo": {
+        "title": "अरिएन्ज़ो बीच: पॉज़िटानो का बुटीक बीच क्लब",
+        "description": "सीढ़ियों, सनबेड, रेस्टोरेंट और हॉस्टल ब्रिकेट से दिशा-निर्देशों के साथ अरिएन्ज़ो बीच क्लब की गाइड।"
+      }
+    },
+    "fornilloBeachGuide": {
+      "linkLabel": "फोर्निलो बीच: पॉज़िटानो का शांत विकल्प",
+      "seo": {
+        "title": "फोर्निलो बीच: पॉज़िटानो का शांत विकल्प",
+        "description": "मुफ्त रेत, स्थानीय रेस्तरां और केंद्रीय पॉज़िटानो से आसान पैदल पहुंच के साथ शांतिपूर्ण फोर्निलो बीच।"
+      }
+    },
+    "lauritoBeachGuide": {
+      "linkLabel": "लॉरिटो बीच: चट्टानों के नीचे छिपा रत्न",
+      "seo": {
+        "title": "लॉरिटो बीच: चट्टानों के नीचे छिपा हुआ रत्न",
+        "description": "450+ सीढ़ियों, स्थानीय समुद्री भोजन और भीड़ से दूर फ़िरोज़ा पानी के साथ दूरस्थ लॉरिटो बीच।"
+      }
+    },
+    "gavitellaBeachGuide": {
+      "linkLabel": "गैविटेला बीच: प्रायानो का सूर्यास्त स्विमिंग स्पॉट",
+      "seo": {
+        "title": "गैविटेला बीच: प्रायानो का सूर्यास्त स्विमिंग स्पॉट",
+        "description": "सूर्यास्त के दृश्य, शांत पानी और पॉज़िटानो से आसान बस पहुंच के साथ प्रायानो का स्थानीय समुद्र तट।"
+      }
+    },
+    "marinaDiPraiaBeaches": {
+      "linkLabel": "मरीना डि प्रैया: चट्टानों के बीच नाटकीय खाड़ी",
+      "seo": {
+        "title": "मरीना डि प्रैया: चट्टानों के बीच नाटकीय खाड़ी",
+        "description": "नॉर्मन टावर, वॉटरफ्रंट रेस्तरां और क्रिस्टल-साफ़ स्विमिंग खाड़ी के साथ सुंदर मरीना डि प्रैया।"
+      }
+    },
+    "fiordoDiFuroreBeachGuide": {
+      "linkLabel": "फियोर्डो डि फुरोरे: पुल के नीचे फियोर्ड बीच",
+      "seo": {
+        "title": "फियोर्डो डि फुरोरे: पुल के नीचे फियोर्ड बीच",
+        "description": "पॉज़िटानो से बस द्वारा पन्ना पानी, क्लिफ डाइविंग और नाटकीय पुल दृश्यों के साथ इंस्टाग्राम-प्रसिद्ध फुरोरे फियोर्ड।"
+      }
+    },
+    "reginaGiovannaBath": {
+      "linkLabel": "रेजिना जियोवन्ना: रोमन खंडहर और प्राकृतिक पूल",
+      "seo": {
+        "title": "रेजिना जियोवन्ना: रोमन खंडहर और प्राकृतिक पूल",
+        "description": "रोमन विला खंडहर, तटीय सैर और साफ पानी में तैराकी के साथ सोरेंटो में ऐतिहासिक प्राकृतिक पूल।"
+      }
+    },
+    "positanoMainBeach": {
+      "linkLabel": "स्पियाज्जा ग्रांदे: पॉज़िटानो का प्रतिष्ठित मुख्य समुद्र तट",
+      "seo": {
+        "title": "स्पियाज्जा ग्रांदे: पॉज़िटानो का प्रतिष्ठित मुख्य समुद्र तट",
+        "description": "सनबेड की कीमतों, मुफ्त क्षेत्रों, रेस्तरां और वहां पहुंचने के लिए पॉज़िटानो के मुख्य समुद्र तट की पूर्ण गाइड।"
+      }
+    },
+    "positanoMainBeachWalkDown": {
+      "linkLabel": "Positano के मुख्य बीच तक पैदल उतरें",
+      "seo": {
+        "title": "हॉस्टल ब्रिकेट से पॉसिटानो के मुख्य समुद्र तट तक पैदल चलें",
+        "description": "लैंडमार्क और समय अनुमान के साथ हॉस्टल ब्रिकेट से स्पियाज्जा ग्रांदे तक पैदल दिशा-निर्देश।"
+      }
+    },
+    "positanoMainBeachBusDown": {
+      "linkLabel": "Positano के मुख्य बीच तक बस से जाएँ",
+      "seo": {
+        "title": "हॉस्टल ब्रिकेट से पॉसिटानो के मुख्य समुद्र तट तक बस",
+        "description": "स्टॉप स्थानों और समय के साथ किएसा नुओवा से पॉज़िटानो बीच तक SITA बस लें।"
+      }
+    },
+    "positanoMainBeachWalkBack": {
+      "linkLabel": "Positano के मुख्य बीच से पैदल वापस आएँ",
+      "seo": {
+        "title": "स्पिआगिया ग्रांडे से हॉस्टल ब्रिकेट की ओर वापस चलें",
+        "description": "चरण-दर-चरण मार्ग मार्गदर्शन के साथ पॉज़िटानो के मुख्य समुद्र तट से हॉस्टल ब्रिकेट तक चढ़ाई की सैर।"
+      }
+    },
+    "positanoMainBeachBusBack": {
+      "linkLabel": "स्पियागिया ग्रांडे से हॉस्टल ब्रिकेट के लिए बस",
+      "seo": {
+        "title": "पोसिटानो के मुख्य समुद्र तट से हॉस्टल ब्रिकेट के लिए बस",
+        "description": "पिकअप पॉइंट और शेड्यूल के साथ पॉज़िटानो बीच से किएसा नुओवा तक SITA बस पकड़ें।"
+      }
+    },
+    "hostelBriketteToFornilloBeach": {
+      "linkLabel": "हॉस्टल ब्रिकेट → फ़ोर्निलो बीच वॉकिंग गाइड",
+      "seo": {
+        "title": "हॉस्टल ब्रिकेटे → फ़ोर्निल्लो बीच पैदल मार्ग"
+      }
+    },
+    "fornilloBeachToBrikette": {
+      "linkLabel": "वापसी मार्ग: फोर्निल्लो बीच → हॉस्टल ब्रिकेते",
+      "seo": {
+        "title": "वापसी मार्ग: फोर्निल्लो बीच → हॉस्टल ब्रिकेते"
+      }
+    },
+    "hostelBriketteToFiordoDiFuroreBus": {
+      "linkLabel": "Hostel Brikette → Fiordo di Furore बस से",
+      "seo": {
+        "title": "Hostel Brikette → Fiordo di Furore बस से"
+      }
+    },
+    "fiordoDiFuroreBusReturn": {
+      "linkLabel": "फियोर्दो दी फुरोरे बीच → हॉस्टल ब्रिकेत्ते (बस से)",
+      "seo": {
+        "title": "फियोर्दो दी फुरोरे बीच → हॉस्टल ब्रिकेत्ते (बस से)"
+      }
+    },
+    "lauritoBeachBusDown": {
+      "linkLabel": "लॉरिटो बीच तक बस से पहुंचना",
+      "seo": {
+        "title": "Hostel Brikette से Laurito Beach तक बस"
+      }
+    },
+    "lauritoBeachBusBack": {
+      "linkLabel": "लॉरिटो बीच से वापस बस",
+      "seo": {
+        "title": "लॉरिटो बीच से हॉस्टल ब्रिकेट के लिए बस"
+      }
+    },
+    "hostelBriketteToArienzoBus": {
+      "linkLabel": "एरीएंजो बीच तक बस से पहुंचना",
+      "seo": {
+        "title": "Hostel Brikette से Arienzo Beach तक बस"
+      }
+    },
+    "arienzoBeachBusBack": {
+      "linkLabel": "एरीएंजो बीच से होस्टल ब्रिकेट तक बस",
+      "seo": {
+        "title": "एरिएन्ज़ो बीच से हॉस्टल ब्रिकेट के लिए बस"
+      }
+    },
+    "hostelBriketteToReginaGiovannaBath": {
+      "linkLabel": "Hostel Brikette से Regina Giovanna Bath",
+      "seo": {
+        "title": "Hostel Brikette से Regina Giovanna Bath कैसे पहुँचें"
+      }
+    },
+    "sunriseHike": {
+      "linkLabel": "सूर्योदय हाइक: पॉज़िटानो पर भोर देखें"
+    },
+    "santaMariaDelCastelloHike": {
+      "linkLabel": "सांता मारिया डेल कास्टेलो: पहाड़ी गाँव की हाइक"
+    },
+    "topOfTheMountainHike": {
+      "linkLabel": "मोंटे कोमुने: पॉज़िटानो के सबसे ऊंचे व्यूपॉइंट तक हाइक"
+    },
+    "stayingFitAmalfi": {
+      "linkLabel": "पॉज़िटानो में फिट रहें: सीढ़ियाँ, ट्रेल्स और बीच वर्कआउट"
+    },
+    "capriDayTrip": {
+      "linkLabel": "कैप्री डे ट्रिप: पॉज़िटानो से द्वीप पलायन"
+    },
+    "capriOnABudget": {
+      "linkLabel": "बजट में कैप्री का आनंद लें"
+    },
+    "campingAmalfi": {
+      "linkLabel": "अमाल्फ़ी कोस्ट पर कैंपिंग: होटल का बजट विकल्प"
+    },
+    "boatTours": {
+      "linkLabel": "बोट टूर: सनसेट क्रूज़ से प्राइवेट चार्टर तक"
+    },
+    "cheapEats": {
+      "linkLabel": "स्थानीय की तरह खाएं: पॉज़िटानो के बेस्ट बजट बाइट्स"
+    },
+    "eatingOutPositano": {
+      "linkLabel": "पॉज़िटानो में कहाँ खाएं: कैज़ुअल से सेलिब्रेशन तक"
+    },
+    "positanoDining": {
+      "linkLabel": "Hostel Brikette के पास पॉज़िटानो के बेस्ट रेस्टोरेंट"
+    },
+    "limoncelloCuisine": {
+      "linkLabel": "पॉज़िटानो का स्वाद: लिमोन्सेलो, नींबू और स्थानीय फ्लेवर"
+    },
+    "instagramSpots": {
+      "linkLabel": "इंस्टाग्राम-योग्य पॉज़िटानो: बेस्ट फोटो स्पॉट्स और समय"
+    },
+    "sunsetViewpoints": {
+      "linkLabel": "पॉज़िटानो में सूर्यास्त: गोल्डन आवर के लिए बेस्ट व्यूपॉइंट्स"
+    },
+    "ravelloFestival": {
+      "linkLabel": "रावेलो फेस्टिवल: तारों के नीचे क्लासिकल कॉन्सर्ट"
+    },
+    "ferragostoPositano": {
+      "linkLabel": "फेरागोस्टो: पॉज़िटानो में इटली का 15 अगस्त उत्सव"
+    },
+    "luminariaPraiano": {
+      "linkLabel": "लूमिनारिया डि प्रायानो: हज़ारों मोमबत्तियाँ रात को रोशन करती हैं"
+    },
+    "walkingTourAudio": {
+      "linkLabel": "मुफ्त ऑडियो वॉकिंग टूर: पॉज़िटानो की छिपी कहानियाँ खोजें"
+    },
+    "freeThingsPositano": {
+      "linkLabel": "पॉज़िटानो में मुफ्त चीज़ें: बजट-फ्रेंडली मज़ा"
+    },
+    "publicTransportAmalfi": {
+      "linkLabel": "अमाल्फ़ी कोस्ट पब्लिक ट्रांसपोर्ट गाइड",
+      "seo": {
+        "title": "अमाल्फ़ी कोस्ट पब्लिक ट्रांसपोर्ट गाइड",
+        "description": "पास, समय और रूट्स के साथ अमाल्फ़ी कोस्ट में बस और फेरी कैसे लें।"
       }
     },
     "travelTipsFirstTime": {
-      "linkLabel": "Positano travel tips for first-time visitors",
+      "linkLabel": "पहली बार आने वालों के लिए Positano ट्रैवल टिप्स",
       "seo": {
-        "title": "Positano travel tips for first-time visitors",
-        "description": "Arrivals, luggage, payments and connectivity — practical advice for your first trip."
+        "title": "पहली बार आने वालों के लिए Positano ट्रैवल टिप्स",
+        "description": "आगमन, सामान, भुगतान और कनेक्टिविटी — पहली यात्रा के लिए व्यावहारिक सलाह।"
       }
     },
     "whatToPack": {
-      "linkLabel": "What to pack for the Amalfi Coast",
+      "linkLabel": "अमाल्फ़ी कोस्ट के लिए क्या पैक करें",
       "seo": {
-        "title": "What to pack for the Amalfi Coast",
-        "description": "Seasonal packing checklist for Positano and the Amalfi Coast."
+        "title": "अमाल्फ़ी कोस्ट के लिए क्या पैक करें",
+        "description": "Positano और अमाल्फ़ी कोस्ट के लिए मौसमी पैकिंग चेकलिस्ट।"
       }
     }
   },
   "dev": {
     "statusPill": {
-      "title": "Guide status: {{status}} (click to toggle)"
+      "title": "गाइड स्थिति: {{status}} (बदलने के लिए क्लिक करें)"
     },
     "editorialPanel": {
-      "title": "Editorial workflow",
+      "title": "एडिटोरियल वर्कफ़्लो",
       "status": {
-        "draft": "Draft",
-        "review": "In review",
-        "live": "Live"
+        "draft": "ड्राफ्ट",
+        "review": "रिव्यू में",
+        "live": "लाइव"
       },
       "workflow": {
-        "draftPreview": "Draft preview",
-        "published": "Published",
-        "pending": "Pending publication",
-        "allComplete": "All checklist items complete",
-        "outstanding_one": "{{count}} outstanding item",
-        "outstanding_other": "{{count}} outstanding items"
+        "draftPreview": "ड्राफ्ट प्रीव्यू",
+        "published": "प्रकाशित",
+        "pending": "प्रकाशन लंबित",
+        "allComplete": "सभी चेकलिस्ट आइटम पूरे",
+        "outstanding_one": "{{count}} लंबित आइटम",
+        "outstanding_other": "{{count}} लंबित आइटम"
       },
       "draftPath": {
-        "label": "Draft path",
-        "dashboardCta": "Open draft dashboard"
+        "label": "ड्राफ्ट पाथ",
+        "dashboardCta": "ड्राफ्ट डैशबोर्ड खोलें"
       },
       "publish": {
-        "heading": "Publish to",
-        "primary": "Primary"
+        "heading": "प्रकाशित करें",
+        "primary": "मुख्य"
       },
       "checklist": {
-        "heading": "Completion checklist",
+        "heading": "पूर्णता चेकलिस्ट",
         "status": {
-          "missing": "Missing",
-          "inProgress": "In progress",
-          "complete": "Complete"
+          "missing": "गायब",
+          "inProgress": "चल रहा है",
+          "complete": "पूर्ण"
         }
       },
       "areaLabels": {
-        "howToGetHere": "How to get here",
-        "help": "Help centre",
-        "experience": "Experiences"
+        "howToGetHere": "यहाँ कैसे पहुँचें",
+        "help": "हेल्प सेंटर",
+        "experience": "अनुभव"
       }
     }
   }

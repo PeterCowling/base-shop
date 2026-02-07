@@ -1,5 +1,6 @@
-import { fetchJson } from '@acme/shared-utils/src/fetchJson';
 import { z } from 'zod';
+
+import { fetchJson } from '@acme/lib/http';
 
 describe('fetchJson', () => {
   beforeEach(() => {

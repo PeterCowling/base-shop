@@ -1,4 +1,4 @@
-import { genSecret } from '@acme/shared-utils/src/genSecret';
+import { genSecret } from '@acme/lib/security';
 
 describe('genSecret', () => {
   const original = globalThis.crypto;

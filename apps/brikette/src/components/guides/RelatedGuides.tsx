@@ -1,13 +1,14 @@
 // src/components/guides/RelatedGuides.tsx
 import { memo } from "react";
-import { Link } from "react-router-dom";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { useTranslation } from "react-i18next";
+import Link from "next/link";
 import type { TFunction } from "i18next";
+
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import type { AppLanguage } from "@/i18n.config";
+import type { GuideKey } from "@/routes.guides-helpers";
 import * as Guides from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
-import type { GuideKey } from "@/routes.guides-helpers";
-import type { AppLanguage } from "@/i18n.config";
 import { getGuideLinkLabel } from "@/utils/translationFallbacks";
 
 const BASE_SECTION_CLASS = [
@@ -62,7 +63,7 @@ function RelatedGuides({
 
   return (
     <section className={sectionClassName}>
-      <h2 className="mb-3 text-lg font-semibold tracking-tight text-brand-heading dark:text-brand-surface">
+      <h2 className="mb-3 text-lg font-semibold tracking-tight text-brand-heading dark:text-brand-heading">
         {title ?? t(titleKey)}
       </h2>
       <ul className={listClassNameValue}>
@@ -73,13 +74,19 @@ function RelatedGuides({
             typeof Guides.guideSlug === "function"
               ? Guides.guideSlug(lang, key)
               : key.replace(/([a-z\d])([A-Z])/g, "$1-$2").replace(/_/g, "-").toLowerCase();
-          // Prefer a local computation for href to avoid depending on external helpers
-          // in tests that partially mock the module without exporting guideHref.
-          const computedHref = `/${lang}/${getSlug("guides", lang)}/${computedSlug}`;
+          // Prefer canonical helper when available to respect namespace routing.
+          const fallbackBase =
+            typeof Guides.guideNamespace === "function"
+              ? Guides.guideNamespace(lang, key).baseSlug
+              : getSlug("experiences", lang);
+          const computedHref =
+            typeof Guides.guideHref === "function"
+              ? Guides.guideHref(lang, key)
+              : `/${lang}/${fallbackBase}/${computedSlug}`;
           return (
             <li key={computedSlug}>
               <Link
-                to={computedHref}
+                href={computedHref}
                 className="block rounded-lg border border-brand-outline/40 bg-brand-bg px-4 py-3 text-brand-primary underline-offset-4 hover:underline dark:bg-brand-text dark:text-brand-secondary"
                 aria-label={ariaLabel}
               >

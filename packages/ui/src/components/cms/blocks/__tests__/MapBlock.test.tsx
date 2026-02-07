@@ -1,4 +1,5 @@
 import { render } from "@testing-library/react";
+
 import MapBlock from "../MapBlock";
 
 jest.mock("../../../organisms/StoreLocatorMap", () => {

@@ -1,7 +1,7 @@
 import { promises as fs } from "node:fs";
-import { DATA_ROOT } from "@platform-core/dataRoot";
+import { DATA_ROOT } from "@acme/platform-core/dataRoot";
 import { publishQueuedPost } from "@acme/sanity";
-import { trackEvent } from "@platform-core/analytics";
+import { trackEvent } from "@acme/platform-core/analytics";
 
 async function handleShop(shop: string): Promise<void> {
   try {

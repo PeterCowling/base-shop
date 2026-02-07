@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
+
 import { useTranslations } from "@acme/i18n";
 
 export function ComparePreview({ baseUrl, enhancedUrl }: { baseUrl: string; enhancedUrl: string }) {

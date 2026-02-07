@@ -1,17 +1,15 @@
+import Link from "next/link";
 import clsx from "clsx";
-import { Link } from "react-router-dom";
 import type { TFunction } from "i18next";
-
-import { Grid } from "@acme/ui/atoms/Grid";
 
 import { EXPERIENCE_GUIDE_KEYS } from "@/data/guides.index";
 import type { AppLanguage } from "@/i18n.config";
-import { guideHref, guideSlug, type GuideKey } from "@/routes.guides-helpers";
+import { guideHref, type GuideKey,guideSlug } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
 
 import { TRANSPORT_MODE_ICONS } from "../transport";
-import { Cluster, Inline, Stack } from "../ui";
 import type { ExperienceGuidesContent } from "../types";
+import { Cluster, Inline, Stack } from "../ui";
 
 export type ExperienceGuidesSectionProps = {
   content: ExperienceGuidesContent;
@@ -51,7 +49,7 @@ const badgeClassName = clsx(
   "group-hover:bg-brand-primary/10",
   "dark:border-brand-outline/30",
   "dark:bg-brand-surface/20",
-  "dark:text-brand-secondary",
+  "dark:text-brand-text",
 );
 
 export function ExperienceGuidesSection({ content, lang, t }: ExperienceGuidesSectionProps) {
@@ -60,27 +58,28 @@ export function ExperienceGuidesSection({ content, lang, t }: ExperienceGuidesSe
   }
 
   const columns = (content.items.length >= 3 ? 3 : content.items.length === 2 ? 2 : 1) as 1 | 2 | 3;
+  const columnsClass =
+    columns === 1
+      ? "md:grid-cols-1"
+      : columns === 2
+      ? "md:grid-cols-2"
+      : "md:grid-cols-3";
 
   return (
     <section className="rounded-3xl border border-brand-outline/30 bg-brand-surface p-6 shadow-sm dark:border-brand-outline/20 dark:bg-brand-surface/60">
-      <header className="space-y-3 text-brand-text dark:text-brand-surface/80">
+      <header className="space-y-3 text-brand-text dark:text-brand-text/80">
         {content.eyebrow ? (
           <p className="text-xs font-semibold uppercase tracking-widest text-brand-secondary">
             {content.eyebrow}
           </p>
         ) : null}
-        <h2 className="text-2xl font-semibold text-brand-heading dark:text-brand-surface">{content.title}</h2>
+        <h2 className="text-2xl font-semibold text-brand-heading dark:text-brand-text">{content.title}</h2>
         {content.description ? (
           <p className="text-base leading-relaxed">{content.description}</p>
         ) : null}
       </header>
 
-      <Grid
-        as="ul"
-        columns={{ base: 1, md: columns }}
-        gap={5}
-        className="mt-6"
-      >
+      <ul className={`mt-6 grid grid-cols-1 gap-5 ${columnsClass}`}>
         {content.items.map((item) => {
           const href = resolveGuideHref(lang, item.guideKey);
           const [primaryMode] = item.transportModes;
@@ -90,8 +89,8 @@ export function ExperienceGuidesSection({ content, lang, t }: ExperienceGuidesSe
             <li key={item.guideKey} className="h-full">
               <Stack
                 as={Link}
-                prefetch="intent"
-                to={href}
+                prefetch={true}
+                href={href}
                 className="group flex h-full flex-col justify-between rounded-2xl border border-brand-outline/30 bg-brand-surface/80 p-5 text-start shadow-sm transition hover:border-brand-primary/40 hover:shadow-md dark:border-brand-outline/20 dark:bg-brand-surface/70"
               >
                 <Stack className="gap-3">
@@ -104,15 +103,15 @@ export function ExperienceGuidesSection({ content, lang, t }: ExperienceGuidesSe
                         <PrimaryIcon aria-hidden className="size-5" />
                       </Inline>
                     ) : null}
-                    <span className="text-lg font-semibold text-brand-heading dark:text-brand-surface">
-                      {item.label}
-                    </span>
-                  </Inline>
-                  {item.summary ? (
-                    <p className="text-sm leading-relaxed text-brand-text dark:text-brand-surface/80">
-                      {item.summary}
-                    </p>
-                  ) : null}
+                  <span className="text-lg font-semibold text-brand-heading dark:text-brand-text">
+                    {item.label}
+                  </span>
+                </Inline>
+                {item.summary ? (
+                  <p className="text-sm leading-relaxed text-brand-text dark:text-brand-text/80">
+                    {item.summary}
+                  </p>
+                ) : null}
                 </Stack>
                 {item.transportModes.length ? (
                   <Cluster as="div" className="mt-4">
@@ -132,7 +131,7 @@ export function ExperienceGuidesSection({ content, lang, t }: ExperienceGuidesSe
             </li>
           );
         })}
-      </Grid>
+      </ul>
     </section>
   );
 }

@@ -1,9 +1,11 @@
 "use client";
 import React, { useRef, useState } from "react";
+
 import { useTranslations } from "@acme/i18n";
-import { Button } from "../../../atoms/shadcn";
+
 import { cn } from "../../../../utils/style";
 import { Inline } from "../../../atoms/primitives/Inline";
+import { Button } from "../../../atoms/shadcn";
 
 export interface CarouselContainerProps {
   children?: React.ReactNode;

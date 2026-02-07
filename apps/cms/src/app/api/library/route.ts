@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
+import { ensureShopAccess, ensureShopReadAccess } from "@cms/actions/common/auth";
 import {
-  listLibrary,
-  saveLibraryItem,
-  removeLibraryItem,
   clearUserLibrary,
-  updateLibraryItem,
   type LibraryItem,
+  listLibrary,
+  removeLibraryItem,
+  saveLibraryItem,
+  updateLibraryItem,
 } from "@cms/actions/library.server";
 
 export async function GET(req: Request) {
@@ -13,10 +14,18 @@ export async function GET(req: Request) {
   const shop = url.searchParams.get("shop");
   if (!shop) return NextResponse.json({ error: "Missing shop" }, { status: 400 });
   try {
+    await ensureShopReadAccess(shop);
+  } catch (err) {
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 401;
+    return NextResponse.json({ error: message === "Forbidden" ? "Forbidden" : "Unauthorized" }, { status });
+  }
+  try {
     const items = await listLibrary(shop);
     return NextResponse.json(items);
   } catch (err) {
-    return NextResponse.json({ error: (err as Error).message }, { status: 400 });
+    console.error("[api/library] GET error:", err);
+    return NextResponse.json({ error: "Failed to fetch library" }, { status: 400 });
   }
 }
 
@@ -24,6 +33,13 @@ export async function POST(req: Request) {
   const url = new URL(req.url);
   const shop = url.searchParams.get("shop");
   if (!shop) return NextResponse.json({ error: "Missing shop" }, { status: 400 });
+  try {
+    await ensureShopAccess(shop);
+  } catch (err) {
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 401;
+    return NextResponse.json({ error: message === "Forbidden" ? "Forbidden" : "Unauthorized" }, { status });
+  }
   let payload: unknown;
   try {
     payload = await req.json();
@@ -67,6 +83,13 @@ export async function PATCH(req: Request) {
   const url = new URL(req.url);
   const shop = url.searchParams.get("shop");
   if (!shop) return NextResponse.json({ error: "Missing shop" }, { status: 400 });
+  try {
+    await ensureShopAccess(shop);
+  } catch (err) {
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 401;
+    return NextResponse.json({ error: message === "Forbidden" ? "Forbidden" : "Unauthorized" }, { status });
+  }
   let payload: unknown;
   try {
     payload = await req.json();
@@ -81,7 +104,8 @@ export async function PATCH(req: Request) {
     await updateLibraryItem(shop, id, patch);
     return NextResponse.json({ ok: true });
   } catch (err) {
-    return NextResponse.json({ error: (err as Error).message }, { status: 400 });
+    console.error("[api/library] PATCH error:", err);
+    return NextResponse.json({ error: "Failed to update library item" }, { status: 400 });
   }
 }
 
@@ -89,6 +113,13 @@ export async function DELETE(req: Request) {
   const url = new URL(req.url);
   const shop = url.searchParams.get("shop");
   if (!shop) return NextResponse.json({ error: "Missing shop" }, { status: 400 });
+  try {
+    await ensureShopAccess(shop);
+  } catch (err) {
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 401;
+    return NextResponse.json({ error: message === "Forbidden" ? "Forbidden" : "Unauthorized" }, { status });
+  }
   const id = url.searchParams.get("id");
   const all = url.searchParams.get("all");
   try {
@@ -101,6 +132,7 @@ export async function DELETE(req: Request) {
     }
     return NextResponse.json({ ok: true });
   } catch (err) {
-    return NextResponse.json({ error: (err as Error).message }, { status: 400 });
+    console.error("[api/library] DELETE error:", err);
+    return NextResponse.json({ error: "Failed to delete library item" }, { status: 400 });
   }
 }

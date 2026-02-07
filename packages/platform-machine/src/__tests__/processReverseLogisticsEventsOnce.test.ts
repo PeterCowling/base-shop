@@ -1,20 +1,21 @@
 /** @jest-environment node */
 import path from "node:path";
+
+import { processReverseLogisticsEventsOnce } from "../processReverseLogisticsEventsOnce";
+
 import {
-  readdir,
-  readFile,
-  unlink,
+  logger,
   markAvailable,
   markCleaning,
   markQa,
   markReceived,
   markRepair,
-  reverseLogisticsEvents,
-  logger,
+  readdir,
+  readFile,
   resetReverseLogisticsMocks,
+  reverseLogisticsEvents,
+  unlink,
 } from "./reverseLogisticsTestHelpers";
-
-import { processReverseLogisticsEventsOnce } from "../processReverseLogisticsEventsOnce";
 
 describe("processReverseLogisticsEventsOnce", () => {
   beforeEach(() => {
@@ -197,9 +198,9 @@ describe("processReverseLogisticsEventsOnce", () => {
 afterAll(() => {
   jest.resetModules();
   jest.unmock("fs/promises");
-  jest.unmock("@platform-core/repositories/rentalOrders.server");
-  jest.unmock("@platform-core/repositories/reverseLogisticsEvents.server");
-  jest.unmock("@platform-core/utils");
+  jest.unmock("@acme/platform-core/repositories/rentalOrders.server");
+  jest.unmock("@acme/platform-core/repositories/reverseLogisticsEvents.server");
+  jest.unmock("@acme/platform-core/utils");
   jest.unmock("crypto");
 });
 

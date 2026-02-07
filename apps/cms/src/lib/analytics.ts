@@ -1,7 +1,7 @@
 import type {
   AnalyticsAggregates,
   AnalyticsEvent,
-} from "@platform-core/analytics";
+} from "@acme/platform-core/analytics";
 
 export interface Series {
   labels: string[];

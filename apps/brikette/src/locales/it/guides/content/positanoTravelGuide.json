@@ -61,18 +61,6 @@
     "intro": [
       "Panoramica rapida su soggiorno, logistica e attività essenziali."
     ],
-    "gallery": {
-      "items": [
-        {
-          "alt": "Spiaggia Grande al mattino",
-          "caption": "Barche ormeggiate e i colori di Positano visti dalla spiaggia principale."
-        },
-        {
-          "alt": "Positano panorama",
-          "caption": "Vista panoramica di Positano dal mare al tramonto."
-        }
-      ]
-    },
     "sections": {
       "whereToStay": {
         "title": "Dove dormire",

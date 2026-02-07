@@ -1,5 +1,6 @@
-import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import type React from "react";
+import { fireEvent,render, screen } from "@testing-library/react";
+
 import StepProductPage from "../StepProductPage";
 
 const pushMock = jest.fn();
@@ -51,7 +52,7 @@ jest.mock("@/components/cms/ProductPageBuilder", () => {
   };
 });
 
-jest.mock("@ui/components/atoms", () => {
+jest.mock("@acme/design-system/atoms", () => {
   const React = require("react");
   const MockToast = ({ open, message }: any) => (open ? <div>{message}</div> : null);
   MockToast.displayName = "MockToast";
@@ -61,7 +62,7 @@ jest.mock("@ui/components/atoms", () => {
   };
 });
 
-jest.mock("@ui/components/atoms/shadcn", () => {
+jest.mock("@acme/design-system/shadcn", () => {
   const React = require("react");
   const MockButton = ({ children, onClick, ...props }: any) => (
     <button onClick={onClick} {...props}>{children}</button>

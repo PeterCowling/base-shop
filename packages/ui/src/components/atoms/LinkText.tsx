@@ -1,8 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "../../utils/style";
 import { Slot } from "@radix-ui/react-slot";
+
+import { cn } from "../../utils/style";
 
 export type LinkColor =
   | "default"
@@ -59,4 +60,4 @@ export const LinkText = React.forwardRef<HTMLAnchorElement, LinkTextProps>(
     );
   }
 );
-LinkText.displayName = "LinkText"; // i18n-exempt -- DS-1234 [ttl=2025-11-30] — component displayName
+LinkText.displayName = "LinkText";

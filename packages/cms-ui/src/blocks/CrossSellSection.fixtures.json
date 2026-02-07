@@ -1,0 +1,2 @@
+{ "rules": { "includeForRental": true, "onlyInStock": true, "maxItems": 4 }, "layout": "grid" }
+

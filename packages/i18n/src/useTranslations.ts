@@ -1,1 +1,1 @@
-export { useTranslations } from "./useTranslations.server";
+export { useTranslations } from "./useTranslations.server.js";

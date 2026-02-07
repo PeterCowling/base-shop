@@ -1,6 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
+import { apiRequest } from "../../../lib/api";
+import StepAdditionalPages from "../StepAdditionalPages";
+
 const markCompleteMock = jest.fn();
 const pushMock = jest.fn();
 const setPages = jest.fn();
@@ -74,13 +77,10 @@ jest.mock("next/navigation", () => ({
 jest.mock("../../../lib/api", () => ({
   apiRequest: jest.fn(),
 }));
-import { apiRequest } from "../../../lib/api";
 const apiRequestMock = apiRequest as jest.Mock;
 apiRequestMock
   .mockResolvedValueOnce({ data: [], error: null })
   .mockResolvedValue({ data: { id: "id1" }, error: null });
-
-import StepAdditionalPages from "../StepAdditionalPages";
 
 describe("StepAdditionalPages", () => {
   beforeEach(() => {

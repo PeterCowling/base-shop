@@ -1,5 +1,6 @@
-import { parseJsonBody } from '@acme/shared-utils/src/parseJsonBody';
 import { z } from 'zod';
+
+import { parseJsonBody } from '@acme/lib/http/server';
 
 type HeadersInit = Record<string, string> | undefined;
 

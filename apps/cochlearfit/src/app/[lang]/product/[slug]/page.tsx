@@ -1,19 +1,23 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+
 import ProductDetailBoundary from "@/components/ProductDetailBoundary";
-import { getProductBySlug, getProducts } from "@/lib/catalog";
+import {
+  getCochlearfitProductBySlug,
+  listCochlearfitProductSlugs,
+} from "@/lib/cochlearfitCatalog.server";
 import { LOCALES, resolveLocale } from "@/lib/locales";
 import { createTranslator, loadMessages } from "@/lib/messages";
+import { withLocale } from "@/lib/routes";
 import { buildMetadata } from "@/lib/seo";
 import { SITE_URL } from "@/lib/site";
-import { withLocale } from "@/lib/routes";
 
 export const dynamicParams = false;
 
-export function generateStaticParams() {
-  const products = getProducts();
+export async function generateStaticParams() {
+  const slugs = await listCochlearfitProductSlugs();
   return LOCALES.flatMap((lang) =>
-    products.map((product) => ({ lang, slug: product.slug }))
+    slugs.map((slug) => ({ lang, slug }))
   );
 }
 
@@ -27,7 +31,7 @@ export async function generateMetadata({
   const messages = await loadMessages(locale);
   const t = createTranslator(messages);
   const slug = resolved?.slug ?? "";
-  const product = getProductBySlug(slug);
+  const product = await getCochlearfitProductBySlug(locale, slug);
 
   if (!product) {
     return buildMetadata({
@@ -70,7 +74,8 @@ export default async function ProductPage({
 }) {
   const resolved = await params;
   const slug = resolved?.slug ?? "";
-  const product = getProductBySlug(slug);
+  const locale = resolveLocale(resolved?.lang);
+  const product = await getCochlearfitProductBySlug(locale, slug);
   if (!product) {
     notFound();
   }

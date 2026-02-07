@@ -1,7 +1,8 @@
-import React from "react";
-import { render, screen, fireEvent, act } from "@testing-library/react";
-import StepShopPage from "../StepShopPage";
+import type React from "react";
+import { act,fireEvent, render, screen } from "@testing-library/react";
+
 import { STORAGE_KEY } from "../../hooks/useConfiguratorPersistence";
+import StepShopPage from "../StepShopPage";
 
 // Mocks
 const push = jest.fn();
@@ -29,7 +30,7 @@ jest.mock("next/image", () => {
   };
 });
 
-jest.mock("@ui/components/atoms/shadcn", () => {
+jest.mock("@acme/design-system/shadcn", () => {
   const React = require("react");
   const Button = ({ children, ...props }: any) => <button {...props}>{children}</button>;
   Button.displayName = "MockButton";
@@ -59,7 +60,7 @@ jest.mock("@ui/components/atoms/shadcn", () => {
   };
 });
 
-jest.mock("@ui/components/atoms", () => {
+jest.mock("@acme/design-system/atoms", () => {
   const React = require("react");
   const Dialog = ({ open, children }: any) => (open ? <div>{children}</div> : null);
   Dialog.displayName = "MockDialog";

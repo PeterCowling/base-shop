@@ -2,17 +2,22 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
+
+import { useTranslations } from "@acme/i18n";
 import { diffPage, type TemplateDescriptor } from "@acme/page-builder-core";
 import type { Page } from "@acme/types";
-import { useTranslations } from "@acme/i18n";
+
+import { Grid } from "../../atoms/primitives/Grid";
+import { Inline } from "../../atoms/primitives/Inline";
+import { Stack } from "../../atoms/primitives/Stack";
 import {
   Button,
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
   Input,
   Select,
   SelectContent,
@@ -20,14 +25,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../atoms/shadcn";
-import { Stack } from "../../atoms/primitives/Stack";
-import { Inline } from "../../atoms/primitives/Inline";
-import { Grid } from "../../atoms/primitives/Grid";
 
 let telemetryTrack: (name: string, payload?: Record<string, unknown>) => void = () => {};
-// Optional telemetry hook; noop when unavailable (storybook/tests)
-const TELEMETRY_MODULE_ID = "@acme/telemetry"; // i18n-exempt -- DS-3472 module id for optional telemetry import, not user-facing [ttl=2026-12-31]
-void import(TELEMETRY_MODULE_ID)
+// Optional telemetry hook; noop when unavailable (storybook/tests).
+void import("@acme/telemetry")
   .then((mod) => {
     telemetryTrack = mod.track;
   })

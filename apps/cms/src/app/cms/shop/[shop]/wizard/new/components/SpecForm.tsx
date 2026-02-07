@@ -1,8 +1,9 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import type { ScaffoldSpec } from "@acme/types/page/ScaffoldSpec";
+
 import { useTranslations } from "@acme/i18n";
+import type { ScaffoldSpec } from "@acme/types/page/ScaffoldSpec";
 
 interface Props {
   onNext: (spec: ScaffoldSpec) => void;

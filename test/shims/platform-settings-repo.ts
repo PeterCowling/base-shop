@@ -1,4 +1,4 @@
-// CT shim for @platform-core/repositories/settings.server
+// CT shim for @acme/platform-core/repositories/settings.server
 // Provides an in-memory diffHistory that reads from a global list.
 
 export type SettingsDiffEntry = { timestamp: string; diff: unknown };

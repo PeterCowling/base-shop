@@ -1,7 +1,8 @@
-import { validateInventoryItems } from "../useInventoryValidation";
-import type { InventoryItem } from "@platform-core/types/inventory";
+import type { InventoryItem } from "@acme/platform-core/types/inventory";
 
-jest.mock("@platform-core/types/inventory", () => {
+import { validateInventoryItems } from "../useInventoryValidation";
+
+jest.mock("@acme/platform-core/types/inventory", () => {
   const { z } = require("zod");
   const inventoryItemSchema = z
     .object({
@@ -15,10 +16,10 @@ jest.mock("@platform-core/types/inventory", () => {
   return { inventoryItemSchema };
 });
 
-jest.mock("@platform-core/utils/inventory", () => ({
+jest.mock("@acme/platform-core/utils/inventory", () => ({
   expandInventoryItem: jest.fn((i) => i),
 }));
-const { expandInventoryItem } = require("@platform-core/utils/inventory") as {
+const { expandInventoryItem } = require("@acme/platform-core/utils/inventory") as {
   expandInventoryItem: jest.Mock;
 };
 
@@ -35,7 +36,7 @@ describe("validateInventoryItems", () => {
     ]);
     expect(res.success).toBe(true);
     expect(res.data).toHaveLength(1);
-    expect(res.data[0].variantAttributes).toEqual({ color: "blue" });
+    expect(res.data![0].variantAttributes).toEqual({ color: "blue" });
   });
 
   it("returns error for invalid quantity", () => {

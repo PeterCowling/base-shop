@@ -1,9 +1,10 @@
 "use client";
 
 import React from "react";
-import type { Product } from "@/types/product";
-import ProductCard from "@/components/ProductCard";
+
 import Grid from "@/components/layout/Grid";
+import ProductCard from "@/components/ProductCard";
+import type { Product } from "@/types/product";
 
 type ProductGridProps = {
   products: Product[];

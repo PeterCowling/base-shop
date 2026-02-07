@@ -1,11 +1,11 @@
 {
-  "title": "Bản dịch đang được chuẩn bị.",
+  "title": "Mọi thông tin về phương tiện di chuyển được cung cấp với thiện chí. Luôn kiểm tra thời gian biểu chính thức và thông báo dịch vụ, đặc biệt nếu bạn có chặng nối tiếp hoặc các cam kết cần đúng giờ. Liên kết đến thời gian biểu của các nhà cung cấp liên quan được liệt kê bên dưới.",
   "items": {
-    "buses": "Bản dịch đang được chuẩn bị.",
-    "ferries": "Bản dịch đang được chuẩn bị.",
-    "airlink": "Bản dịch đang được chuẩn bị.",
-    "driving": "Bản dịch đang được chuẩn bị.",
-    "premium": "Bản dịch đang được chuẩn bị."
+    "buses": "Xe buýt: <sitaLink>Bờ biển Amalfi</sitaLink> và <curreriLink>Sân bay Naples ⇄ Sorrento</curreriLink>.",
+    "trains": "Tàu: <eavLink>Circumvesuviana</eavLink> (Naples ⇄ Sorrento), <trenitaliaLink>Trenitalia</trenitaliaLink> (tàu tuyến chính).",
+    "ferries": "Phà: Nhà cung cấp gồm <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink>, <positanoJetLink>Positano Jet</positanoJetLink>, <alicostLink>Alicost</alicostLink>.",
+    "airlink": "Sân bay Salerno Costa d’Amalfi (QSR), <airlinkLink>xe đưa đón Airlink đến Salerno</airlinkLink>.",
+    "driving": "Lái xe: SS163 có hạn chế biển số chẵn/lẻ (th4–th10) và ZTL; phí đỗ xe thay đổi theo mùa và địa điểm. Hãy kiểm tra thông báo chính thức."
   },
-  "srLabel": "Transport notice"
+  "srLabel": "Thông báo di chuyển"
 }

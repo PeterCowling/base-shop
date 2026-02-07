@@ -1,14 +1,17 @@
 "use client";
+import { type ComponentType, type CSSProperties,memo } from "react";
+import DOMPurify from "dompurify";
+
 import type { Locale } from "@acme/i18n/locales";
 import type { PageComponent } from "@acme/types";
-import DOMPurify from "dompurify";
-import { memo, type ComponentType, type CSSProperties } from "react";
 import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
-import { blockRegistry } from "../blocks";
+
 import { cssVars } from "../../../utils/style/cssVars";
+import { blockRegistry } from "../blocks";
+
+import { initLottie } from "./lottie";
 import { ensureScrollStyles } from "./scrollEffects";
 import { initTimelines } from "./timeline";
-import { initLottie } from "./lottie";
 
 const ANIMATION_STYLE_ID = "pb-animations";
 function injectAnimations() {

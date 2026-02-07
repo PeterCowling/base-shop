@@ -1,3 +1,3 @@
-declare module "@date-utils" {
+declare module "@acme/date-utils" {
   export function nowIso(): string;
 }

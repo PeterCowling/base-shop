@@ -1,3 +1,11 @@
+import * as fs from 'node:fs';
+import { join } from 'node:path';
+import { runInNewContext } from 'node:vm';
+
+import ts from 'typescript';
+
+import * as themeTokens from '../index';
+
 jest.mock('node:fs', () => ({
   existsSync: jest.fn(),
   readFileSync: jest.fn(),
@@ -12,12 +20,6 @@ jest.mock('typescript', () => ({
     ModuleKind: { CommonJS: 1 },
   },
 }));
-
-import * as fs from 'node:fs';
-import { runInNewContext } from 'node:vm';
-import ts from 'typescript';
-import { join } from 'node:path';
-import * as themeTokens from '../index';
 
 const transpiled = "module.exports.tokens = { '--foo': 'bar' };";
 

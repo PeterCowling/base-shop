@@ -1,12 +1,13 @@
-import { NextResponse, type NextRequest } from "next/server";
-import type { CartState } from "@platform-core/cart";
+import { type NextRequest,NextResponse } from "next/server";
+
+import type { CartState } from "@acme/platform-core/cart";
 import {
   asSetCookieHeader,
   CART_COOKIE,
   decodeCartCookie,
   encodeCartCookie,
-} from "@platform-core/cartCookie";
-import { createCartStore } from "@platform-core/cartStore";
+} from "@acme/platform-core/cartCookie";
+import { createCartStore } from "@acme/platform-core/cartStore";
 
 export type CartStore = ReturnType<typeof createCartStore>;
 let _store: CartStore | null = null;
@@ -37,9 +38,11 @@ export const errorResponse = (message: string, status: number) =>
   NextResponse.json({ error: message }, { status });
 
 export const serverError = (label: string, err: unknown) => {
+  // Log full error server-side for debugging
   console.error(`[api/cart:${label}] error`, err);
+  // Return generic error to client to prevent information disclosure
   return NextResponse.json(
-    { ok: false, error: (err as Error).message },
+    { ok: false, error: "An unexpected error occurred" }, // i18n-exempt -- generic server error
     { status: 500 },
   );
 };

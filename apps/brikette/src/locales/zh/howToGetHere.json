@@ -14,18 +14,76 @@
       "routes": "门到门路线",
       "destinations": "覆盖地区",
       "transport": "交通类型",
-      "experienceRoutes": "Experience routes"
+      "experienceRoutes": "体验路线"
+    }
+  },
+  "routePicker": {
+    "title": "找到最适合你抵达的路线",
+    "subtitle": "回答两个简短问题，我们会跳转到最佳匹配并高亮显示。",
+    "placeLabel": "你从哪里出发？",
+    "placePlaceholder": "选择出发点",
+    "arrivalLabel": "你何时到达？",
+    "arrival": {
+      "daytime": "白天",
+      "evening": "晚上",
+      "lateNight": "深夜"
+    },
+    "preferencesLabel": "偏好",
+    "preferences": {
+      "none": "无偏好",
+      "fastest": "最快",
+      "cheapest": "最便宜",
+      "leastWalking": "最少步行",
+      "luggageFriendly": "最适合带行李"
+    },
+    "cta": "显示我的最佳路线",
+    "urlHint": "筛选会更新 URL，方便你分享链接。",
+    "lateNightHint": "深夜到达通常最方便的是出租车或接驳车——如果公交/渡轮已结束，请使用下面的联系方式。"
+  },
+  "routeCard": {
+    "factsLabel": "路线信息",
+    "duration": "用时",
+    "cost": "费用",
+    "walking": "步行",
+    "luggage": "行李",
+    "seasonality": "季节",
+    "seasonalityValues": {
+      "seasonal": "季节性",
+      "yearRound": "全年"
+    },
+    "cta": "查看步骤",
+    "direction": {
+      "to": "去旅舍",
+      "from": "从旅舍"
     }
   },
   "preview": {
-    "notPublished": "Preview only – this page is not published"
+    "notPublished": "仅供预览 — 此页面未发布"
+  },
+  "jumpTo": {
+    "label": "跳转到",
+    "arrival": "到达帮助",
+    "rome": "罗马",
+    "experiences": "体验"
   },
   "intro": {
     "taxi": "若要预约出租车，可使用 WhatsApp 以英语或意大利语联系以下号码：<Strong>{{contact}}</Strong>。",
     "shuttle": "想搭乘接驳车？Sea Horse Car Service 提供多人共乘服务，可透过其 <Link>官方接驳预约页面</Link> 预订座位。",
     "taxiContact": "+39 379 125 6222",
     "taxiEyebrow": "Hostel Brikette by Taxi",
-    "shuttleEyebrow": "Hostel Brikette by Shuttle"
+    "shuttleEyebrow": "Hostel Brikette by Shuttle",
+    "whatsappTemplate": "你好！我住在 Hostel Brikette。想预订往返波西塔诺的出租车。我的到达时间是：____",
+    "emailSubject": "到达协助",
+    "emailBody": "Hostel Brikette 团队你好——我今天到达，需要帮助选择最佳到达方式。我的预计到达时间是：____",
+    "whatsappCta": "WhatsApp 叫车",
+    "callCta": "拨打电话",
+    "taxiBestFor": "适合：深夜到达 · 行李重 · 最快捷选择",
+    "shuttleCta": "预订班车",
+    "shuttleBestFor": "适合：机场到达 · 拼车接送 · 提前规划",
+    "helpEyebrow": "需要帮助吗？",
+    "helpCopy": "晚到或有延误？给我们发消息，我们可以安排入住并建议备用路线。",
+    "emailCta": "给前台发邮件",
+    "helpBestFor": "适合：延误 · 渡轮取消 · 晚入住"
   },
   "destinations": {
     "filterLabel": "地点",
@@ -37,7 +95,7 @@
         "image": {
           "src": "/img/positano-panorama.avif",
           "alt": "波西塔诺悬崖上的房屋全景",
-          "caption": "Positano is steep — plan for stairs, especially with luggage."
+          "caption": "波西塔诺很陡峭——特别是带行李时要注意楼梯。"
         },
         "links": [
           {
@@ -45,11 +103,11 @@
             "href": "chiesa-nuova-bar-internazionale-to-hostel-brikette",
             "internal": true,
             "facts": {
-              "duration": "5–10 min",
-              "cost": "Free",
-              "walking": "~140 m + ~30 steps",
+              "duration": "5–10分钟",
+              "cost": "免费",
+              "walking": "约140米+约30级台阶",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "全年"
             }
           },
           {
@@ -57,11 +115,23 @@
             "href": "ferry-dock-to-hostel-brikette-with-luggage",
             "internal": true,
             "facts": {
-              "duration": "20–45 min (depends on porters/Interno bus)",
-              "cost": "€2–€6 pp (+ optional porter)",
-              "walking": "Port stairs; porters reduce carrying",
+              "duration": "20–45分钟（取决于搬运工/内部巴士）",
+              "cost": "每人€2–€6（可选搬运工）",
+              "walking": "港口楼梯；搬运工可减轻负重",
               "luggageFriendly": 1,
-              "seasonality": "Year-round"
+              "seasonality": "全年"
+            }
+          },
+          {
+            "label": "从 Hostel Brikette 到渡轮码头",
+            "href": "hostel-brikette-to-ferry-dock-with-luggage",
+            "internal": true,
+            "facts": {
+              "duration": "20–30分钟（有行李需要更久）",
+              "cost": "免费",
+              "walking": "楼梯 + 过马路",
+              "luggageFriendly": 1,
+              "seasonality": "全年"
             }
           },
           {
@@ -69,11 +139,11 @@
             "href": "hostel-brikette-to-chiesa-nuova-bar-internazionale",
             "internal": true,
             "facts": {
-              "duration": "5–10 min",
-              "cost": "Free",
-              "walking": "~140 m + ~30 steps (down)",
-              "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "duration": "20–30分钟（带行李更久）",
+              "cost": "免费",
+              "walking": "楼梯+过马路",
+              "luggageFriendly": 1,
+              "seasonality": "全年"
             }
           }
         ]
@@ -83,7 +153,7 @@
         "image": {
           "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
           "alt": "阿马尔菲沿海路线的 SITA Sud 巴士站",
-          "caption": "Look for the SITA buses at Amalfi’s bus station."
+          "caption": "在阿马尔菲巴士站寻找SITA巴士。"
         },
         "links": [
           {
@@ -91,11 +161,11 @@
             "href": "amalfi-positano-bus",
             "internal": true,
             "facts": {
-              "duration": "45–90 min (traffic dependent)",
-              "cost": "€2–€4 pp",
-              "walking": "Short stairs at the end (~30 steps)",
+              "duration": "45–90分钟（视交通状况）",
+              "cost": "每人€2–€4",
+              "walking": "终点有短梯（约30级）",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "全年"
             }
           },
           {
@@ -103,11 +173,11 @@
             "href": "positano-amalfi-bus",
             "internal": true,
             "facts": {
-              "duration": "45–90 min (traffic dependent)",
-              "cost": "€2–€4 pp",
-              "walking": "Short stairs at the start/end (~30 steps)",
+              "duration": "45–90分钟（视交通状况）",
+              "cost": "每人€2–€4",
+              "walking": "起点/终点有短梯（约30级）",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "全年"
             }
           },
           {
@@ -115,11 +185,11 @@
             "href": "amalfi-positano-ferry",
             "internal": true,
             "facts": {
-              "duration": "25–45 min (sailing) + port transfer",
-              "cost": "€10–€20 pp",
-              "walking": "Stairs to/from the port",
+              "duration": "航行25–45分钟+港口换乘",
+              "cost": "每人€10–€20",
+              "walking": "往返港口需爬梯",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "季节性（4-10月）"
             }
           },
           {
@@ -127,11 +197,11 @@
             "href": "positano-amalfi-ferry",
             "internal": true,
             "facts": {
-              "duration": "25–45 min (sailing) + port transfer",
-              "cost": "€10–€20 pp",
-              "walking": "Stairs to/from the port",
+              "duration": "航行25–45分钟+港口换乘",
+              "cost": "每人€10–€20",
+              "walking": "往返港口需爬梯",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "季节性（4-10月）"
             }
           }
         ]
@@ -141,7 +211,7 @@
         "image": {
           "src": "/img/directions/positano-capri-ferry-img09.jpg",
           "alt": "渡轮停靠在卡普里 Marina Grande",
-          "caption": "Capri ferries depart from Marina Grande."
+          "caption": "前往卡普里的渡轮从Marina Grande出发。"
         },
         "links": [
           {
@@ -149,11 +219,11 @@
             "href": "capri-positano-ferry",
             "internal": true,
             "facts": {
-              "duration": "30–60 min (sailing) + port transfer",
-              "cost": "€20–€35 pp",
-              "walking": "Port access; stairs likely in Positano",
+              "duration": "航行30–60分钟+港口换乘",
+              "cost": "每人€20–€35",
+              "walking": "港口通道；波西塔诺可能有楼梯",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "季节性（4-10月）"
             }
           },
           {
@@ -161,11 +231,11 @@
             "href": "positano-capri-ferry",
             "internal": true,
             "facts": {
-              "duration": "30–60 min (sailing) + port transfer",
-              "cost": "€20–€35 pp",
-              "walking": "Port access; stairs likely in Positano",
+              "duration": "航行30–60分钟+港口换乘",
+              "cost": "每人€20–€35",
+              "walking": "港口通道；波西塔诺可能有楼梯",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "季节性（4-10月）"
             }
           }
         ]
@@ -175,7 +245,7 @@
         "image": {
           "src": "/img/tabacchi.webp",
           "alt": "那不勒斯市中心街边的 Tabacchi 店铺",
-          "caption": "Buy bus tickets in tabacchi/newsstands before boarding."
+          "caption": "上车前在烟草店/报刊亭购买巴士票。"
         },
         "links": [
           {
@@ -183,11 +253,11 @@
             "href": "naples-center-train-bus",
             "internal": true,
             "facts": {
-              "duration": "2–3.5 h (incl. transfers)",
-              "cost": "€15–€25 pp",
-              "walking": "Low; change in Sorrento",
+              "duration": "2–3.5小时（含换乘）",
+              "cost": "每人€15–€25",
+              "walking": "少量步行；在索伦托换乘",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "全年"
             }
           },
           {
@@ -195,11 +265,11 @@
             "href": "positano-naples-center-bus-train",
             "internal": true,
             "facts": {
-              "duration": "2–3.5 h (incl. transfers)",
-              "cost": "€15–€25 pp",
-              "walking": "Short stairs at the start/end (~30 steps)",
+              "duration": "2–3.5小时（含换乘）",
+              "cost": "每人€15–€25",
+              "walking": "起点/终点有短楼梯（约 30 级）",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "全年"
             }
           },
           {
@@ -207,11 +277,11 @@
             "href": "naples-center-positano-ferry",
             "internal": true,
             "facts": {
-              "duration": "3–4.5 h (incl. port transfer)",
-              "cost": "€25–€45 pp",
-              "walking": "Transfer to port + stairs in Positano",
+              "duration": "3–4.5小时（含港口换乘）",
+              "cost": "每人€25–€45",
+              "walking": "前往港口+波西塔诺有楼梯",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "季节性（4-10月）"
             }
           },
           {
@@ -219,11 +289,11 @@
             "href": "positano-naples-center-ferry",
             "internal": true,
             "facts": {
-              "duration": "3–4.5 h (incl. port transfer)",
-              "cost": "€25–€45 pp",
-              "walking": "Stairs in Positano + transfer from port",
+              "duration": "3–4.5小时（含港口换乘）",
+              "cost": "每人€25–€45",
+              "walking": "波西塔诺有楼梯+从港口换乘",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "季节性（4-10月）"
             }
           },
           {
@@ -231,11 +301,11 @@
             "href": "positano-to-naples-directions-by-ferry",
             "internal": true,
             "facts": {
-              "duration": "3–4.5 h (incl. port transfer)",
-              "cost": "€25–€45 pp",
-              "walking": "Stairs in Positano + transfer from port",
+              "duration": "3–4.5小时（含港口换乘）",
+              "cost": "每人€25–€45",
+              "walking": "波西塔诺有楼梯+从港口换乘",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "季节性（4-10月）"
             }
           }
         ]
@@ -245,7 +315,7 @@
         "image": {
           "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
           "alt": "那不勒斯国际机场外的 Curreri 班车上客区",
-          "caption": "Curreri buses pick up outside arrivals (follow bus signs)."
+          "caption": "索伦托火车站，您将在此换乘巴士"
         },
         "links": [
           {
@@ -253,11 +323,11 @@
             "href": "positano-naples-airport-bus",
             "internal": true,
             "facts": {
-              "duration": "2–3.5 h (incl. change in Sorrento)",
-              "cost": "€15–€25 pp",
-              "walking": "Short stairs at the start/end (~30 steps)",
+              "duration": "2–3.5小时（含在索伦托换乘）",
+              "cost": "每人€15–€25",
+              "walking": "起点/终点有短楼梯（约 30 级）",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "全年"
             }
           },
           {
@@ -265,11 +335,11 @@
             "href": "naples-airport-positano-bus",
             "internal": true,
             "facts": {
-              "duration": "2–3.5 h (incl. change in Sorrento)",
-              "cost": "€15–€25 pp",
-              "walking": "Short stairs at the end (~30 steps)",
+              "duration": "2–3.5小时（含在索伦托换乘）",
+              "cost": "每人€15–€25",
+              "walking": "终点有短楼梯（约 30 级）",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "全年"
             }
           }
         ]
@@ -279,7 +349,7 @@
         "image": {
           "src": "/img/hostel-coastal-horizon.webp",
           "alt": "俯瞰阿马尔菲海岸通往萨莱尔诺的景色",
-          "caption": "Salerno connects by train + bus, or by seasonal ferries."
+          "caption": "萨莱诺通过火车+巴士连接，或季节性渡轮。"
         },
         "links": [
           {
@@ -287,11 +357,11 @@
             "href": "salerno-positano-bus",
             "internal": true,
             "facts": {
-              "duration": "2.5–4 h (via Amalfi)",
-              "cost": "€6–€12 pp",
-              "walking": "Low; change buses in Amalfi",
+              "duration": "2.5–4小时（经阿马尔菲）",
+              "cost": "每人€6–€12",
+              "walking": "少量步行；在阿马尔菲换车",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "全年"
             }
           },
           {
@@ -299,23 +369,23 @@
             "href": "positano-salerno-bus",
             "internal": true,
             "facts": {
-              "duration": "2.5–4 h (via Amalfi)",
-              "cost": "€6–€12 pp",
-              "walking": "Short stairs at the start/end (~30 steps)",
+              "duration": "2.5–4小时（经阿马尔菲）",
+              "cost": "每人€6–€12",
+              "walking": "起点/终点有短楼梯（约 30 级）",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "全年"
             }
           },
           {
-            "label": "Salerno to Positano by Ferry",
+            "label": "萨莱尔诺至波西塔诺（渡轮）",
             "href": "salerno-positano-ferry",
             "internal": true,
             "facts": {
-              "duration": "1–2 h (sailing) + port transfer",
-              "cost": "€15–€30 pp",
-              "walking": "Port stairs; porters recommended",
+              "duration": "航行1–2小时+港口换乘",
+              "cost": "每人€15–€30",
+              "walking": "港口楼梯；建议使用搬运工",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "季节性（4-10月）"
             }
           },
           {
@@ -323,11 +393,11 @@
             "href": "positano-salerno-ferry",
             "internal": true,
             "facts": {
-              "duration": "1–2 h (sailing) + port transfer",
-              "cost": "€15–€30 pp",
-              "walking": "Port stairs; porters recommended",
+              "duration": "航行1–2小时+港口换乘",
+              "cost": "每人€15–€30",
+              "walking": "港口楼梯；建议使用搬运工",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "季节性（4-10月）"
             }
           }
         ]
@@ -337,7 +407,7 @@
         "image": {
           "src": "/img/hostel-communal-terrace-lush-view.webp",
           "alt": "俯瞰海岸线的拉韦洛悬崖花园",
-          "caption": "Ravello is reached via Amalfi by bus."
+          "caption": "可通过阿马尔菲乘巴士到达拉韦洛。"
         },
         "links": [
           {
@@ -345,11 +415,11 @@
             "href": "ravello-positano-bus",
             "internal": true,
             "facts": {
-              "duration": "1.5–2.5 h (via Amalfi)",
-              "cost": "€4–€8 pp",
-              "walking": "Low; change in Amalfi",
+              "duration": "1.5–2.5小时（经阿马尔菲）",
+              "cost": "每人€4–€8",
+              "walking": "少量步行；在阿马尔菲换乘",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "全年"
             }
           },
           {
@@ -357,11 +427,11 @@
             "href": "positano-ravello-bus",
             "internal": true,
             "facts": {
-              "duration": "1.5–2.5 h (via Amalfi)",
-              "cost": "€4–€8 pp",
-              "walking": "Short stairs at the start/end (~30 steps)",
+              "duration": "1.5–2.5小时（经阿马尔菲）",
+              "cost": "每人€4–€8",
+              "walking": "起点/终点有短楼梯（约 30 级）",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "全年"
             }
           },
           {
@@ -369,18 +439,28 @@
             "href": "positano-ravello-ferry-bus",
             "internal": true,
             "facts": {
-              "duration": "2–3 h (ferry + bus)",
-              "cost": "€15–€30 pp",
-              "walking": "Port stairs + bus connection",
+              "duration": "2–3小时（渡轮+巴士）",
+              "cost": "每人€15–€30",
+              "walking": "港口楼梯+巴士接驳",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "季节性（4-10月）"
             }
           }
         ]
       }
     ]
   },
+  "lightbox": {
+    "titleFallback": "图片",
+    "openAria": "打开图片",
+    "openAriaWithCaption": "打开图片：{{caption}}"
+  },
   "rome": {
+    "image": {
+      "src": "/img/directions/rome-forum.jpg",
+      "alt": "从卡比托利欧博物馆俯瞰罗马广场",
+      "caption": "罗马广场与卡比托利欧博物馆"
+    },
     "title": "罗马",
     "description": "先按照我们的文字指南前往那不勒斯或萨莱诺，再从其中任一城市搭乘火车。",
     "table": {
@@ -539,6 +619,11 @@
     }
   },
   "sorrento": {
+    "image": {
+      "src": "/img/directions/sorrento-piazza-tasso.jpg",
+      "alt": "从塔索广场俯瞰索伦托",
+      "caption": "塔索广场俯瞰索伦托"
+    },
     "title": "索伦托",
     "links": [
       {
@@ -546,11 +631,11 @@
         "href": "sorrento-positano-bus",
         "internal": true,
         "facts": {
-          "duration": "45–75 min",
-          "cost": "€2–€4 pp",
-          "walking": "Short stairs at the end (~30 steps)",
+          "duration": "45–75分钟",
+          "cost": "每人€2–€4",
+          "walking": "终点有短梯（约30级）",
           "luggageFriendly": 2,
-          "seasonality": "Year-round"
+          "seasonality": "全年"
         }
       },
       {
@@ -558,11 +643,11 @@
         "href": "positano-sorrento-bus",
         "internal": true,
         "facts": {
-          "duration": "45–75 min",
-          "cost": "€2–€4 pp",
-          "walking": "Short stairs at the start/end (~30 steps)",
+          "duration": "45–75分钟",
+          "cost": "每人€2–€4",
+          "walking": "起点/终点有短梯（约30级）",
           "luggageFriendly": 2,
-          "seasonality": "Year-round"
+          "seasonality": "全年"
         }
       },
       {
@@ -570,11 +655,11 @@
         "href": "sorrento-positano-ferry",
         "internal": true,
         "facts": {
-          "duration": "30–45 min (sailing) + port stairs",
-          "cost": "€15–€25 pp",
-          "walking": "Port stairs; porters recommended",
+          "duration": "航行30–45分钟+港口楼梯",
+          "cost": "每人€15–€25",
+          "walking": "港口楼梯；建议使用搬运工",
           "luggageFriendly": 1,
-          "seasonality": "Seasonal (Apr–Oct)"
+          "seasonality": "季节性（4-10月）"
         }
       },
       {
@@ -582,11 +667,11 @@
         "href": "positano-sorrento-ferry",
         "internal": true,
         "facts": {
-          "duration": "30–45 min (sailing) + port stairs",
-          "cost": "€15–€25 pp",
-          "walking": "Port stairs; porters recommended",
+          "duration": "航行30–45分钟+港口楼梯",
+          "cost": "每人€15–€25",
+          "walking": "港口楼梯；建议使用搬运工",
           "luggageFriendly": 1,
-          "seasonality": "Seasonal (Apr–Oct)"
+          "seasonality": "季节性（4-10月）"
         }
       }
     ]
@@ -595,6 +680,7 @@
     "title": "路线筛选",
     "resultsCount": "结果：{{count}} 条路线",
     "editLabel": "编辑筛选",
+    "shareHint": "筛选会反映到 URL，方便分享。",
     "transportLabel": "交通类别",
     "transportAll": "全部",
     "transportModes": {
@@ -614,116 +700,116 @@
     "noResults": "暂无符合筛选条件的路线。"
   },
   "romePlanner": {
-    "title": "Rome ↔ Positano: How to Travel",
-    "subtitle": "Pick a direction, set your preferences, and we’ll suggest a route.",
-    "directionPrompt": "Pick a direction",
+    "title": "罗马 ↔ 波西塔诺：出行方式",
+    "subtitle": "选择方向、设置偏好，我们会为您推荐路线。",
+    "directionPrompt": "选择方向",
     "tabs": {
-      "from": "From Rome → Hostel",
-      "to": "From Hostel → Rome"
+      "from": "从罗马 → 旅舍",
+      "to": "从旅舍 → 罗马"
     },
     "reco": {
-      "title": "Best match for your picks",
-      "why": "Why this route?"
+      "title": "最符合您选择的路线",
+      "why": "为什么选这条路线？"
     },
-    "otherMatches": "Other matches for your pick",
-    "disclaimer": "Always check operators for latest schedules and availability. Crowding and journey times vary by season.",
+    "otherMatches": "其他符合的路线",
+    "disclaimer": "请务必向运营商确认最新时刻表和座位情况。拥挤程度和旅程时间因季节而异。",
     "pref": {
-      "prompt": "Any preference?",
+      "prompt": "有什么偏好吗？",
       "cheapest": {
-        "label": "Cheapest",
-        "description": "Prioritize lower cost over comfort."
+        "label": "最便宜",
+        "description": "优先考虑低成本而非舒适度。"
       },
       "scenic": {
-        "label": "Scenic",
-        "description": "Prioritize sea views (ferries)."
+        "label": "风景",
+        "description": "优先考虑海景（渡轮）。"
       },
-      "heavyPrefix": "I have",
+      "heavyPrefix": "我有",
       "heavy_luggage": {
-        "label": "Heavy luggage",
-        "description": "Minimize uphill walks and stairs with bags."
+        "label": "重行李",
+        "description": "尽量减少带行李上坡和爬楼梯。"
       }
     },
     "route": {
       "naples": {
         "busTrain": {
-          "title": "Via Naples — Bus + Train",
+          "title": "经那不勒斯 — 巴士 + 火车",
           "summary": {
-            "from": "Bus to Sorrento → train to Naples → train to Rome.",
-            "to": "Train to Naples → train to Sorrento → bus to Positano."
+            "from": "巴士至索伦托 → 火车至那不勒斯 → 火车至罗马。",
+            "to": "火车至那不勒斯 → 火车至索伦托 → 巴士至波西塔诺。"
           },
           "steps": {
             "from": {
-              "1": "Bus Positano → Sorrento (drops at Sorrento train station).",
-              "2": "Local train Sorrento → Naples (arrive at Naples train station).",
-              "3": "Train Naples → Rome."
+              "1": "巴士 波西塔诺 → 索伦托（停靠索伦托火车站）。",
+              "2": "区域火车 索伦托 → 那不勒斯（抵达那不勒斯火车站）。",
+              "3": "火车 那不勒斯 → 罗马。"
             },
             "to": {
-              "1": "Train Rome → Naples (arrive at Naples train station).",
-              "2": "Local train Naples → Sorrento (arrive at Sorrento bus station).",
-              "3": "Bus Sorrento → Positano (stop close to the hostel)."
+              "1": "火车 罗马 → 那不勒斯（抵达那不勒斯火车站）。",
+              "2": "区域火车 那不勒斯 → 索伦托（抵达索伦托巴士站）。",
+              "3": "巴士 索伦托 → 波西塔诺（停靠点靠近旅舍）。"
             }
           }
         },
         "ferry": {
-          "title": "Via Naples — Ferry",
+          "title": "经那不勒斯 — 渡轮",
           "summary": {
-            "from": "Positano port → ferry to Naples → tram to station → train to Rome.",
-            "to": "Train to Naples → tram to port → ferry to Positano."
+            "from": "波西塔诺港口 → 渡轮至那不勒斯 → 电车至车站 → 火车至罗马。",
+            "to": "火车至那不勒斯 → 电车至港口 → 渡轮至波西塔诺。"
           },
           "steps": {
             "from": {
-              "1": "Positano → port (porters can help with bags).",
-              "2": "Ferry Positano → Naples.",
-              "3": "Tram Naples port → train station.",
-              "4": "Train Naples → Rome."
+              "1": "波西塔诺 → 港口（搬运工可帮忙搬行李）。",
+              "2": "渡轮 波西塔诺 → 那不勒斯。",
+              "3": "电车 那不勒斯港口 → 火车站。",
+              "4": "火车 那不勒斯 → 罗马。"
             },
             "to": {
-              "1": "Train Rome → Naples (arrive at Naples station).",
-              "2": "Tram Naples station → port.",
-              "3": "Ferry Naples → Positano.",
-              "4": "From Positano port → hostel (journey can be laborious; porters/Interno Bus can help)."
+              "1": "火车 罗马 → 那不勒斯（抵达那不勒斯车站）。",
+              "2": "电车 那不勒斯车站 → 港口。",
+              "3": "渡轮 那不勒斯 → 波西塔诺。",
+              "4": "从波西塔诺港口 → 旅舍（路程可能费力；搬运工/内部巴士可提供帮助）。"
             }
           }
         }
       },
       "salerno": {
         "bus": {
-          "title": "Via Salerno — Bus (to/from Salerno)",
+          "title": "经萨莱诺 — 巴士（往返萨莱诺）",
           "summary": {
-            "from": "Bus Positano → Amalfi (change) → Salerno → train to Rome.",
-            "to": "Train to Salerno → bus to Amalfi (change) → Positano."
+            "from": "巴士 波西塔诺 → 阿马尔菲（换乘）→ 萨莱诺 → 火车至罗马。",
+            "to": "火车至萨莱诺 → 巴士至阿马尔菲（换乘）→ 波西塔诺。"
           },
           "steps": {
             "from": {
-              "1": "Bus Positano → Amalfi (change buses in Amalfi).",
-              "2": "Bus Amalfi → Salerno (drops at Salerno train station).",
-              "3": "Train Salerno → Rome."
+              "1": "巴士 波西塔诺 → 阿马尔菲（在阿马尔菲换乘巴士）。",
+              "2": "巴士 阿马尔菲 → 萨莱诺（停靠萨莱诺火车站）。",
+              "3": "火车 萨莱诺 → 罗马。"
             },
             "to": {
-              "1": "Train Rome → Salerno (arrive at Salerno train station).",
-              "2": "Bus Salerno → Amalfi (change buses in Amalfi).",
-              "3": "Bus Amalfi → Positano (short walk to hostel)."
+              "1": "火车 罗马 → 萨莱诺（抵达萨莱诺火车站）。",
+              "2": "巴士 萨莱诺 → 阿马尔菲（在阿马尔菲换乘巴士）。",
+              "3": "巴士 阿马尔菲 → 波西塔诺（步行一小段至旅舍）。"
             }
           }
         },
         "ferry": {
-          "title": "Via Salerno — Ferry",
+          "title": "经萨莱诺 — 渡轮",
           "summary": {
-            "from": "Positano port → ferry to Salerno → short walk to station → train to Rome.",
-            "to": "Train to Salerno → short walk to port → ferry to Positano."
+            "from": "波西塔诺港口 → 渡轮至萨莱诺 → 步行一小段至车站 → 火车至罗马。",
+            "to": "火车至萨莱诺 → 步行一小段至港口 → 渡轮至波西塔诺。"
           },
           "steps": {
             "from": {
-              "1": "Positano → port (porters can help with bags).",
-              "2": "Ferry Positano → Salerno.",
-              "3": "Walk Salerno port → train station.",
-              "4": "Train Salerno → Rome."
+              "1": "波西塔诺 → 港口（搬运工可帮忙搬行李）。",
+              "2": "渡轮 波西塔诺 → 萨莱诺。",
+              "3": "步行 萨莱诺港口 → 火车站。",
+              "4": "火车 萨莱诺 → 罗马。"
             },
             "to": {
-              "1": "Train Rome → Salerno (arrive at Salerno station).",
-              "2": "Walk to Salerno port.",
-              "3": "Ferry Salerno → Positano.",
-              "4": "From Positano port → hostel (journey can be laborious; porters/Interno Bus can help)."
+              "1": "火车 罗马 → 萨莱诺（抵达萨莱诺车站）。",
+              "2": "步行至萨莱诺港口。",
+              "3": "渡轮 萨莱诺 → 波西塔诺。",
+              "4": "从波西塔诺港口 → 旅舍（路程可能费力；搬运工/内部巴士可提供帮助）。"
             }
           }
         }
@@ -731,86 +817,86 @@
     },
     "note": {
       "salerno": {
-        "walkPortStation": "Walk between Salerno’s port and train station (short, straightforward)."
+        "walkPortStation": "在萨莱诺港口与火车站之间步行（距离短、路线直）。"
       },
       "naples": {
-        "tramPortStation": "Take the tram between Naples port and the train station."
+        "tramPortStation": "搭乘电车往返那不勒斯港口与火车站。"
       }
     },
     "pro": {
-      "posBusNearHostel": "Positano bus stop close to the hostel.",
-      "busDropsSorrentoStation": "Bus drops you right at the train station in Sorrento.",
-      "cheapBusTrain": "Bus and train are both very cheap.",
-      "arriveNaplesStation": "You arrive right at the train station in Naples.",
-      "easySwapNaples": "Swapping trains in Naples is relatively easy.",
-      "trainDropsSorrentoBusStation": "Train drops you right at the bus station in Sorrento.",
+      "posBusNearHostel": "波西塔诺巴士站靠近旅舍。",
+      "busDropsSorrentoStation": "巴士直接停靠索伦托火车站。",
+      "cheapBusTrain": "巴士和火车都非常便宜。",
+      "arriveNaplesStation": "直接抵达那不勒斯火车站。",
+      "easySwapNaples": "在那不勒斯换乘火车相对简单。",
+      "trainDropsSorrentoBusStation": "火车直接停靠索伦托巴士站。",
       "salerno": {
-        "busStopNearHostel": "The Positano bus stop is just a short walk from the hostel."
+        "busStopNearHostel": "波西塔诺巴士站距离旅舍仅需步行一小段。"
       },
-      "busCollectsSalernoStation": "Bus collects you right at the train station in Salerno.",
-      "busDropsSalernoStation": "Bus drops you right at the train station in Salerno.",
-      "busCheap": "Bus is very cheap.",
-      "portersHelp": "Giving your bags to the porters allows you to travel more comfortably and easily.",
-      "ferryEnjoyableEasy": "The ferry journey itself is enjoyable and easy.",
-      "shortWalkSalernoStationPort": "The walk from Salerno’s Train Station to the port is short and straightforward."
+      "busCollectsSalernoStation": "巴士直接在萨莱诺火车站接客。",
+      "busDropsSalernoStation": "巴士直接停靠萨莱诺火车站。",
+      "busCheap": "巴士非常便宜。",
+      "portersHelp": "将行李交给搬运工可让旅程更加舒适轻松。",
+      "ferryEnjoyableEasy": "渡轮航程本身既愉快又省力。",
+      "shortWalkSalernoStationPort": "从萨莱诺火车站步行至港口的距离短且路线清晰。"
     },
     "con": {
-      "changeBusToTrain": "Have to change from bus to train.",
-      "crowdedBusTrain": "Bus and train are both usually crowded.",
-      "fewHours": "Takes a few hours.",
-      "changeTrainToBusSorrento": "Have to change from train to bus in Sorrento.",
-      "busUsuallyCrowded": "Bus is usually crowded.",
-      "ferryCostHigherBus": "The cost of taking the ferry is higher than the cost of taking the bus.",
-      "hostelEasierBySita": "Arriving at the hostel via SITA bus is easier than arriving by ferry (the journey from the port is quite laborious — even with Positano’s Interno Bus and porters).",
-      "naplesPortComfort": "The port and city of Naples may not be suitable for everyone, as some people may not feel comfortable there.",
-      "ferriesLessFrequent": "Ferries do not run as frequently as other transportation options.",
-      "ferryCostHigherTrainBus": "The cost of taking the ferry is higher than the cost of taking the train or bus.",
-      "changeBusesAmalfi": "Have to change buses in Amalfi."
+      "changeBusToTrain": "需要从巴士换乘火车。",
+      "crowdedBusTrain": "巴士和火车通常都很拥挤。",
+      "fewHours": "需要数小时。",
+      "changeTrainToBusSorrento": "需要在索伦托从火车换乘巴士。",
+      "busUsuallyCrowded": "巴士通常很拥挤。",
+      "ferryCostHigherBus": "渡轮费用高于巴士。",
+      "hostelEasierBySita": "相比渡轮，经由 SITA 巴士抵达旅舍更轻松（从港口上山的过程相当费力——即使有波西塔诺内部巴士与搬运工协助）。",
+      "naplesPortComfort": "那不勒斯的港口与市区不一定适合所有人，有些旅客会觉得不太自在。",
+      "ferriesLessFrequent": "渡轮班次没有其他交通方式频繁。",
+      "ferryCostHigherTrainBus": "渡轮费用高于火车或巴士。",
+      "changeBusesAmalfi": "需要在阿马尔菲换乘巴士。"
     },
     "tag": {
-      "cheap": "Budget",
-      "directish": "Simple",
-      "scenic": "Scenic",
-      "transfer": "Transfer",
-      "bus": "Bus",
-      "train": "Train",
-      "ferry": "Ferry"
+      "cheap": "经济实惠",
+      "directish": "简单",
+      "scenic": "风景",
+      "transfer": "换乘",
+      "bus": "巴士",
+      "train": "火车",
+      "ferry": "渡轮"
     },
     "reasons": {
       "cheapest": {
-        "busTrain": "Cheapest → bus/train options are very cheap.",
-        "ferry": "Cheapest → ferry costs higher than bus/train."
+        "busTrain": "最便宜 → 巴士/火车选项非常便宜。",
+        "ferry": "最便宜 → 渡轮费用高于巴士/火车。"
       },
       "fewest_changes": {
-        "busTrain": "Fewest changes → bus + train requires a mode change.",
-        "bus": "Fewest changes → bus route changes in Amalfi."
+        "busTrain": "换乘最少 → 巴士 + 火车需要换乘交通工具。",
+        "bus": "换乘最少 → 巴士路线在阿马尔菲换乘。"
       },
       "scenic": {
-        "ferry": "Scenic → ferry journey is enjoyable and easy."
+        "ferry": "风景 → 渡轮航程既愉快又省力。"
       },
       "heavy_luggage": {
-        "ferryFromRome": "Heavy luggage → arriving via ferry from the port is more laborious.",
-        "busStopClose": "Heavy luggage → Positano bus stop is close to the hostel."
+        "ferryFromRome": "重行李 → 从港口乘渡轮抵达更费力。",
+        "busStopClose": "重行李 → 波西塔诺巴士站靠近旅舍。"
       }
     },
     "ui": {
-      "showDetails": "Show details",
-      "hideDetails": "Hide details",
-      "steps": "Steps",
-      "notes": "Notes",
-      "pros": "Pros",
-      "cons": "Cons"
+      "showDetails": "显示详情",
+      "hideDetails": "隐藏详情",
+      "steps": "步骤",
+      "notes": "备注",
+      "pros": "优点",
+      "cons": "缺点"
     }
   },
   "experienceGuides": {
-    "eyebrow": "Experience planners",
-    "title": "Experience routes with built-in directions",
-    "description": "These experiences combine the on-trail highlights with the exact transfers you need to leave and return to Hostel Brikette. Open one when you want the itinerary and the transport plan in the same guide.",
+    "eyebrow": "体验规划",
+    "title": "含内置路线的体验指南",
+    "description": "这些体验将沿途亮点与您离开和返回 Hostel Brikette 所需的确切换乘信息结合在一起。当您希望在同一份指南中同时获得行程和交通计划时，请打开其中一份。",
     "items": [
       {
         "guideKey": "pathOfTheGodsFerry",
-        "label": "Path of the Gods via Amalfi (ferry + hike)",
-        "summary": "Sail from Positano to Amalfi, ride up to Bomerano, and follow our step-by-step return directions for the classic traverse back toward Positano.",
+        "label": "经阿马尔菲的众神之路（渡轮 + 徒步）",
+        "summary": "从波西塔诺乘船至阿马尔菲，再搭车前往博梅拉诺，然后按照我们的分步返程指引，完成经典的徒步穿越回到波西塔诺。",
         "transportModes": [
           "ferry",
           "bus",
@@ -819,8 +905,8 @@
       },
       {
         "guideKey": "pathOfTheGodsBus",
-        "label": "Path of the Gods via Amalfi (bus + hike)",
-        "summary": "Take the SITA Sud bus from Positano through Amalfi to Bomerano, hike across to Nocelle, and use the built-in transport section to reach the hostel afterward.",
+        "label": "经阿马尔菲的众神之路（巴士 + 徒步）",
+        "summary": "从波西塔诺乘坐 SITA Sud 巴士经阿马尔菲前往博梅拉诺，徒步穿越至诺切莱，然后使用内置的交通部分抵达旅舍。",
         "transportModes": [
           "bus",
           "walk"
@@ -828,8 +914,8 @@
       },
       {
         "guideKey": "pathOfTheGodsNocelle",
-        "label": "Path of the Gods via Nocelle shuttle",
-        "summary": "Ride the Montepertuso–Nocelle shuttle for a shorter out-and-back hike and rely on the guide’s directions to walk or bus back down to Hostel Brikette.",
+        "label": "经诺切莱接驳车的众神之路",
+        "summary": "乘坐蒙泰佩尔图索–诺切莱接驳车进行较短的往返徒步，并依靠指南的路线说明步行或乘坐巴士返回 Hostel Brikette。",
         "transportModes": [
           "bus",
           "walk"
@@ -838,14 +924,9 @@
     ]
   },
   "breadcrumbs": {
-    "itemTitleFallback": "Directions"
+    "itemTitleFallback": "路线指引"
   },
   "galleries": {
-    "defaultAlt": "Directions photo"
-  },
-  "lightbox": {
-    "titleFallback": "Image",
-    "openAria": "Open image",
-    "openAriaWithCaption": "Open image: {{caption}}"
+    "defaultAlt": "路线照片"
   }
 }

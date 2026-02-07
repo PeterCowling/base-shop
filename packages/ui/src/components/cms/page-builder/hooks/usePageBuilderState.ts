@@ -1,16 +1,18 @@
 "use client";
 import {
+  type Reducer,
   useCallback,
   useEffect,
   useMemo,
   useReducer,
   useState,
-  type Reducer,
 } from "react";
-import type { Page, PageComponent, HistoryState } from "@acme/types";
-import type { EditorFlags } from "../state/layout/types";
-import { historyStateSchema, reducer, type Action } from "../state";
+
 import { useTranslations } from "@acme/i18n";
+import type { HistoryState,Page, PageComponent } from "@acme/types";
+
+import { type Action,historyStateSchema, reducer } from "../state";
+import type { EditorFlags } from "../state/layout/types";
 
 interface Params {
   page: Page;

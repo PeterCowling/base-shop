@@ -1,7 +1,9 @@
 "use client";
-import type { ReactNode, HTMLAttributes } from "react";
+import type { HTMLAttributes,ReactNode } from "react";
 import { useMemo } from "react";
+
 import useInView from "../../../hooks/useInView";
+
 import ShapeDivider from "./ShapeDivider";
 
 export interface SectionProps extends HTMLAttributes<HTMLDivElement> {

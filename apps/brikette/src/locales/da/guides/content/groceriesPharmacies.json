@@ -41,16 +41,6 @@
       ]
     }
   ],
-  "gallery": [
-    {
-      "alt": "Butikker langs hovedvejen i Positano",
-      "caption": "Butikker langs hovedvejen"
-    },
-    {
-      "alt": "Indkøbskurve fyldt med frugt",
-      "caption": "Frugt og basisvarer"
-    }
-  ],
   "tips": [
     "Medbring et let net eller en rygsæk, så du kan bære indkøb op ad trapper uden at overbelaste én hånd.",
     "Brug genopfyldelige vandflasker: de fleste butikker sælger billige 1,5 L-flasker, og hostellets terrasser har filtreret vand."
@@ -59,7 +49,7 @@
     {
       "q": "Kan jeg købe glutenfri varer lokalt?",
       "a": [
-        "Ja – se efter hylder markeret \"senza glutine\" i minimarkederne eller spørg på apoteket; udvalget er begrænset, så køb, når du ser det."
+        "Ja – se efter hylder markeret \\\\\"senza glutine\\\\\" i minimarkederne eller spørg på apoteket; udvalget er begrænset, så køb, når du ser det."
       ]
     },
     {

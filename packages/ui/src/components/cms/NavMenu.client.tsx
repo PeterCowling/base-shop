@@ -1,9 +1,13 @@
 // packages/ui/src/components/cms/NavMenu.client.tsx
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
 import { memo, useCallback } from "react";
-import { getShopFromPath } from "@acme/shared-utils";
+import { usePathname, useRouter } from "next/navigation";
+import { MixIcon,PlusIcon } from "@radix-ui/react-icons";
+
+import { useTranslations } from "@acme/i18n";
+import { getShopFromPath } from "@acme/lib/shop";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,9 +17,8 @@ import {
   DropdownMenuTrigger,
 } from "../atoms/primitives/dropdown-menu";
 import { Button } from "../atoms/shadcn";
+
 import { useCmsNavItems } from "./nav/useCmsNavItems";
-import { PlusIcon, MixIcon } from "@radix-ui/react-icons";
-import { useTranslations } from "@acme/i18n";
 
 interface NavMenuProps {
   role?: string;
@@ -104,7 +107,7 @@ function NavMenu({ role, onConfiguratorStartNew, label, variant = "cms" }: NavMe
       <DropdownMenuContent align="start" sideOffset={8}>
         <DropdownMenuLabel>{t("nav.navigate")}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {/* eslint-disable ds/no-hardcoded-copy -- ABC-123: route paths, keys and style classes are not UI copy */}
+        { }
         {variant === "cms" && (
           <DropdownMenuItem
             key="add-shop"
@@ -229,7 +232,7 @@ function NavMenu({ role, onConfiguratorStartNew, label, variant = "cms" }: NavMe
             </DropdownMenuItem>
           ))
         )}
-        {/* eslint-enable ds/no-hardcoded-copy */}
+        { }
       </DropdownMenuContent>
     </DropdownMenu>
   );

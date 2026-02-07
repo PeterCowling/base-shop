@@ -63,7 +63,7 @@ import {
 } from "@acme/page-builder-ui";
 
 import { coreBlockDescriptors } from "@acme/page-builder-core";
-import HeroBanner from "@ui/components/cms/blocks/HeroBanner";
+import HeroBanner from "@acme/ui/components/cms/blocks/HeroBanner";
 
 type BlockComponent = React.ComponentType<Record<string, unknown>>;
 

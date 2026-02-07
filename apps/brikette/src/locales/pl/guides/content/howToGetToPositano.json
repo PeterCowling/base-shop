@@ -4,56 +4,56 @@
     "description": "Porównaj prom, pociąg+autobus, shuttle i transfer prywatny — z uwagami sezonowymi i poradami dotyczącymi bagażu."
   },
   "linkLabel": "Jak dotrzeć do Positano (przewodnik po opcjach)",
-  "intro": "Tłumaczenie w przygotowaniu.",
+  "intro": "Porównanie wszystkich realnych sposobów dotarcia do Positano — z uwzględnieniem sezonu, budżetu, bagażu i czasu przyjazdu.",
   "toc": {
-    "onThisPage": "On this page",
-    "naples": "Via Naples",
-    "salerno": "Via Salerno",
-    "ferry": "Ferry (summer)",
-    "private": "Private transfer",
-    "faqs": "FAQs"
+    "onThisPage": "Na tej stronie",
+    "naples": "Przez Neapol",
+    "salerno": "Przez Salerno",
+    "ferry": "Prom (latem)",
+    "private": "Transfer prywatny",
+    "faqs": "FAQ"
   },
   "labels": {
-    "whenHeading": "When to choose",
-    "cheapestHeading": "Cheapest route",
-    "seasonalHeading": "Seasonal notes"
+    "whenHeading": "Kiedy wybrać",
+    "cheapestHeading": "Najtańsza opcja",
+    "seasonalHeading": "Uwagi sezonowe"
   },
   "sections": [
     {
       "id": "naples",
-      "title": "Via Naples",
+      "title": "Przez Neapol",
       "body": [
-        "Transfer z lotniska do Sorrento + SITA do Positano (najtańszy) lub pociąg do Sorrento + SITA.",
-        "Tłumaczenie w przygotowaniu."
+        "Shuttle z lotniska do Sorrento + SITA do Positano (najtaniej) albo pociąg do Sorrento + SITA.",
+        "Latem promy z Molo Beverello na spokojnym morzu; sprawdzaj anulowania."
       ]
     },
     {
       "id": "salerno",
-      "title": "Via Salerno",
+      "title": "Przez Salerno",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Poza sezonem: autobus przez Amalfi; wolniej, ale niezawodnie."
+        "Pociąg do Salerno i dalej promem do Positano (sezonowo, wygodniejsze z bagażem).",
+        "Poza sezonem: autobus przez Amalfi — wolniej, ale pewniej."
       ]
     },
     {
       "id": "private",
-      "title": "Private transfer",
+      "title": "Transfer prywatny",
       "body": [
-        "Tłumaczenie w przygotowaniu."
+        "Door-to-door; drożej, ale najwygodniej przy późnych przylotach lub ciężkich walizkach."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "What’s fastest in summer?",
+      "q": "Co jest najszybsze latem?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Pociąg do Salerno + prom, gdy morze jest spokojne — omijasz korki na drodze."
       ]
     },
     {
-      "q": "Tłumaczenie w przygotowaniu.",
+      "q": "Gdzie wysiąść z autobusu?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Przystanek ‚Chiesa Nuova’ oszczędza około 80 m schodów do Hostelu Brikette."
       ]
     }
   ]

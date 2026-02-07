@@ -1,20 +1,21 @@
 /** @jest-environment node */
-import { describe, it, beforeEach, afterEach, expect, jest } from "@jest/globals";
+import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
+
 import { register } from "../instrumentation.node";
 
 describe("instrumentation register (node)", () => {
-  let processOnSpy: jest.SpyInstance;
-  let consoleErrorSpy: jest.SpyInstance;
+  let processOnSpy: jest.SpyInstance<any, any, any>;
+  let consoleErrorSpy: jest.SpyInstance<any, any, any>;
   const handlers: Record<string, (...args: unknown[]) => void> = {};
 
   beforeEach(() => {
     processOnSpy = jest
       .spyOn(process, "on")
-      .mockImplementation((event: string, handler: (...args: unknown[]) => void) => {
+      .mockImplementation(((event: string, handler: (...args: unknown[]) => void) => {
         handlers[event] = handler;
         return process;
-      });
-    consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+      }) as any) as unknown as jest.SpyInstance<any, any, any>;
+    consoleErrorSpy = jest.spyOn(console, "error").mockImplementation((() => {}) as any) as unknown as jest.SpyInstance<any, any, any>;
   });
 
   afterEach(() => {

@@ -2,9 +2,8 @@
 // apps/product-pipeline/src/routes/api/stages/k/run.ts
 // NOTE: Exceeds 350 lines due to inline Stage K math + API orchestration; follow-up: extract helpers into lib/pipeline/stage-k-run-helpers.ts.
 
-import type { PipelineEventContext } from "../../_lib/types";
 import { z } from "zod";
-import { isCooldownActive } from "@/lib/pipeline/cooldown";
+
 import {
   computeSensitivities,
   computeStageK,
@@ -12,10 +11,13 @@ import {
   type StageKInput,
   type StageKResult,
 } from "@acme/pipeline-engine";
+
+import { isCooldownActive } from "@/lib/pipeline/cooldown";
 import {
   buildStageKScenario,
   type VelocityPrior,
 } from "@/lib/pipeline/stage-k-scenario";
+
 import {
   fetchCandidateById,
   fetchLatestCooldownByFingerprint,
@@ -24,6 +26,8 @@ import {
   type PipelineEnv,
 } from "../../_lib/db";
 import { errorResponse, jsonResponse } from "../../_lib/response";
+import { checkStageTSGate } from "../../_lib/stage-gating";
+import type { PipelineEventContext } from "../../_lib/types";
 
 const moneySchema = z.union([z.number(), z.string()]);
 
@@ -344,6 +348,11 @@ export const onRequestPost = async ({
   const candidate = await fetchCandidateById(db, candidateId);
   if (!candidate) {
     return errorResponse(404, "candidate_not_found", { candidateId });
+  }
+
+  const stageGate = await checkStageTSGate(db, candidateId);
+  if (stageGate) {
+    return errorResponse(409, stageGate.code, stageGate.details);
   }
   if (candidate.fingerprint) {
     const cooldown = await fetchLatestCooldownByFingerprint(

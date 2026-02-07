@@ -1,12 +1,14 @@
 /** @jest-environment jsdom */
 import React from "react";
-import { render, screen, fireEvent, configure } from "@testing-library/react";
-configure({ testIdAttribute: "data-testid" });
+import { configure,fireEvent, render, screen } from "@testing-library/react";
+
 import PdpClient from "./PdpClient.client";
+
+configure({ testIdAttribute: "data-testid" });
 
 const addToCartMock = jest.fn();
 
-jest.mock("@platform-core/components/shop/AddToCartButton.client", () => ({
+jest.mock("@acme/platform-core/components/shop/AddToCartButton.client", () => ({
   __esModule: true,
   default: (props: any) => {
     addToCartMock(props);
@@ -14,12 +16,12 @@ jest.mock("@platform-core/components/shop/AddToCartButton.client", () => ({
   },
 }));
 
-jest.mock("@platform-core/components/pdp/ImageGallery", () => ({
+jest.mock("@acme/platform-core/components/pdp/ImageGallery", () => ({
   __esModule: true,
   default: () => <div data-testid="image-gallery" />,
 }));
 
-jest.mock("@ui/components/atoms/Price", () => ({
+jest.mock("@acme/design-system/atoms/Price", () => ({
   __esModule: true,
   Price: ({ amount }: any) => <span>{amount}</span>,
 }));

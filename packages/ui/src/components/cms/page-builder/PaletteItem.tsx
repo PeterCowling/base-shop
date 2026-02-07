@@ -1,16 +1,18 @@
 "use client";
 /* eslint-disable react/forbid-dom-props -- LINT-1001: dnd-kit requires inline transform for drag sorting */
 
+import { memo, useCallback, useMemo,useState } from "react";
+import Image from "next/image";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { memo, useState, useCallback, useMemo } from "react";
-import Image from "next/image";
+
 import { Popover, PopoverContent, PopoverTrigger, Tooltip } from "../../atoms";
+
+import useThemeSignature from "./hooks/useThemeSignature";
 import type { PaletteItemProps } from "./palette.types";
+import { defaultIcon } from "./paletteData";
 import { getPaletteGlyph } from "./paletteIcons";
 import { getPalettePreview } from "./previewImages";
-import useThemeSignature from "./hooks/useThemeSignature";
-import { defaultIcon } from "./paletteData";
 
 const PaletteItem = memo(function PaletteItem({
   type,

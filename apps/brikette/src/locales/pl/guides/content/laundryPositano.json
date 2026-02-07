@@ -5,22 +5,22 @@
   },
   "linkLabel": "Pralnie w Positano (samoobsługowe i z obsługą)",
   "intro": [
-    "Tłumaczenie w przygotowaniu."
+    "Pralnie samoobsługowe i z obsługą działają w mieście; poza sezonem sprawdzaj godziny i spodziewaj się kolejek w dniach wymiany gości."
   ],
   "toc": {
-    "onThisPage": "On this page",
-    "selfService": "Self‑service laundromats",
-    "dropOff": "Drop‑off services",
-    "howto": "How‑to: self‑service",
-    "tips": "Detergent & machines",
-    "faqs": "FAQs"
+    "onThisPage": "Na tej stronie",
+    "selfService": "Pralnie samoobsługowe",
+    "dropOff": "Usługi pralnicze",
+    "howto": "Instrukcja: pralnia samoobsługowa",
+    "tips": "Proszki i maszyny",
+    "faqs": "Najczęściej zadawane pytania"
   },
-  "selfServiceText": "Tłumaczenie w przygotowaniu.",
-  "dropOffText": "Tłumaczenie w przygotowaniu.",
+  "selfServiceText": "Spodziewaj się kompaktowych europejskich maszyn. Zabierz drobne i wybierz godziny poza szczytem (późne poranki lub wczesne popołudnia), by uniknąć kolejek.",
+  "dropOffText": "Poproś o cennik za kg i możliwość odbioru tego samego dnia. W sezonie oddaj bieliznę wcześnie, by mieć pewność obsługi.",
   "howtoSteps": [
     "Wybierz rozmiar maszyny w oparciu o obciążenie; nie przepełniaj.",
     "Dodaj detergent/zmiękczacz zgodnie z zaleceniami; niektóre maszyny dozują automatycznie.",
-    "Tłumaczenie w przygotowaniu."
+    "Wybierz program (zimny/ciepły) i uruchom. Nastaw timer, by wrócić przed końcem cyklu."
   ],
   "tipsList": [
     "W przypadku szybkoschnących tkanin i strojów kąpielowych należy stosować delikatne cykle.",
@@ -31,14 +31,14 @@
       "id": "self-service",
       "title": "Self‑service",
       "body": [
-        "Tłumaczenie w przygotowaniu."
+        "Spodziewaj się kompaktowych urządzeń europejskich; wybierz godziny poza sezonem i zabierz drobne."
       ]
     },
     {
       "id": "drop-off",
       "title": "Drop‑off services",
       "body": [
-        "Tłumaczenie w przygotowaniu."
+        "Zapytaj o cenę za kg i szybką realizację. W sezonie early drop-off zwiększa szanse na odbiór tego samego dnia."
       ]
     }
   ],
@@ -50,9 +50,9 @@
       ]
     },
     {
-      "q": "Where to wait while laundry runs?",
+      "q": "Gdzie poczekać, aż pranie się skończy?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Wpadnij do pobliskiej kawiarni (patrz %LINK:workCafes|work-friendly cafés%) lub wybierz krótki spacer."
       ]
     }
   ]

@@ -1,7 +1,9 @@
 import { randomUUID } from "crypto";
+
 import { stripe } from "@acme/stripe";
-import { prisma } from "./db";
+
 import { updateCustomerProfile } from "./customerProfiles";
+import { prisma } from "./db";
 
 const DEFAULT_ENVIRONMENT = process.env.NODE_ENV ?? "development";
 

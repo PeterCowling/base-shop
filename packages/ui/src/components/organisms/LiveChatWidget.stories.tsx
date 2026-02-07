@@ -1,7 +1,10 @@
 // i18n-exempt -- Storybook demo copy; not user-visible in production
-import { type Meta, type StoryObj } from "@storybook/nextjs";
 import * as React from "react";
+import { type Meta, type StoryObj } from "@storybook/nextjs";
+
 import { cn } from "../../utils/style";
+import { Inline } from "../atoms/primitives/Inline";
+import { Stack } from "../atoms/primitives/Stack";
 import {
   Button,
   Dialog,
@@ -11,9 +14,8 @@ import {
   DialogTrigger,
   Input,
 } from "../atoms/shadcn";
+
 import { LiveChatWidget } from "./LiveChatWidget";
-import { Stack } from "../atoms/primitives/Stack";
-import { Inline } from "../atoms/primitives/Inline";
 
 interface ChatMessage {
   id: number;

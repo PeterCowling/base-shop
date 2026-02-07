@@ -2,12 +2,13 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 
 // Target under test (UI package source)
-import PageCanvas from "@ui/components/cms/page-builder/PageCanvas";
+import PageCanvas from "@acme/cms-ui/page-builder/PageCanvas";
+import type { Locale } from "@acme/i18n/locales";
 
 // Stub heavy editable canvas subtree to avoid deep dependencies while
 // still executing PageCanvas branching and prop plumbing.
 // Resolve absolute module path so relative imports from UI resolve to the same.
-jest.mock(require.resolve("@ui/components/cms/page-builder/EditableCanvas"), () => ({
+jest.mock(require.resolve("@acme/ui/components/cms/page-builder/EditableCanvas"), () => ({
   __esModule: true,
   default: (props: any) => (
     <div data-cy="editable-canvas-stub">
@@ -23,7 +24,7 @@ jest.mock(require.resolve("@ui/components/cms/page-builder/EditableCanvas"), () 
 }));
 
 // Also stub PreviewCanvas to keep render minimal
-jest.mock(require.resolve("@ui/components/cms/page-builder/PreviewCanvas"), () => ({
+jest.mock(require.resolve("@acme/ui/components/cms/page-builder/PreviewCanvas"), () => ({
   __esModule: true,
   default: (props: any) => (
     <div data-cy="preview-canvas-stub">
@@ -38,7 +39,7 @@ jest.mock(require.resolve("@ui/components/cms/page-builder/PreviewCanvas"), () =
 
 const baseProps = {
   components: [],
-  locale: "en",
+  locale: "en" as Locale,
   containerStyle: { width: 1000 },
   viewport: "desktop" as const,
 };

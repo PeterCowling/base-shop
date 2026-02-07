@@ -1,8 +1,9 @@
 /** @jest-environment node */
 import { afterEach, describe, expect, it, jest } from "@jest/globals";
 
-import { importShippingModule, resetShippingEnv, spyOnConsoleError } from "./shipping.test-helpers";
 import { withEnv as withGlobalEnv } from "../../../test/utils/withEnv";
+
+import { importShippingModule, resetShippingEnv, spyOnConsoleError } from "./shipping.test-helpers";
 
 afterEach(() => {
   resetShippingEnv();

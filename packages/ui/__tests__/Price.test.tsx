@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+
 import { Price } from "../src/components/atoms/Price";
 
 const mockUseCurrency = jest.fn();

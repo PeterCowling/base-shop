@@ -1,10 +1,11 @@
 "use client";
 import { useId, useState } from "react";
-import type { TranslatableText } from "@acme/types/i18n";
-import type { Locale } from "@acme/i18n/locales";
-import { useTranslations } from "@acme/i18n";
-import { resolveText } from "@i18n/resolveText";
 import NextImage from "next/image";
+
+import { useTranslations } from "@acme/i18n";
+import type { Locale } from "@acme/i18n/locales";
+import { resolveText } from "@acme/i18n/resolveText";
+import type { TranslatableText } from "@acme/types/i18n";
 
 export type ImageSlide = {
   src: string;

@@ -1,11 +1,11 @@
-/* eslint-disable ds/no-raw-color -- TEST-0004: tests simulate raw hex inputs and token defaults */
+ 
 import {
   fireEvent,
+  mockUpdateShop,
   renderThemeEditor,
   screen,
-  within,
   waitFor,
-  mockUpdateShop,
+  within,
 } from "./ThemeEditor.test-utils";
 
 describe("ThemeEditor - colors", () => {

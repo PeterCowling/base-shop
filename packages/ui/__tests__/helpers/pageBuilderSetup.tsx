@@ -1,5 +1,8 @@
-import { render } from "@testing-library/react";
 import React from "react";
+import { render } from "@testing-library/react";
+
+import CanvasItem from "../../src/components/cms/page-builder/CanvasItem";
+import ComponentEditor from "../../src/components/cms/page-builder/ComponentEditor";
 
 jest.mock("next/navigation", () => ({
   usePathname: () => "/shop",
@@ -44,9 +47,6 @@ if (typeof (globalThis as any).CSS === "undefined") {
 } else if (typeof (globalThis as any).CSS.supports !== "function") {
   (globalThis as any).CSS.supports = () => true;
 }
-
-import CanvasItem from "../../src/components/cms/page-builder/CanvasItem";
-import ComponentEditor from "../../src/components/cms/page-builder/ComponentEditor";
 
 export { CanvasItem, ComponentEditor };
 

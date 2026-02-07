@@ -1,6 +1,7 @@
-import { fireEvent, render } from "@testing-library/react";
 import { act } from "react";
-import NavigationEditor, { NavItem } from "../NavigationEditor";
+import { fireEvent, render } from "@testing-library/react";
+
+import NavigationEditor, { type NavItem } from "../NavigationEditor";
 
 let dndHandlers: any;
 jest.mock("@dnd-kit/core", () => {

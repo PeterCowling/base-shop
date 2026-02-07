@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "title": "Personvernerklæring | Hostel Brikette",
+    "description": "Hvordan Hostel Brikette samler inn, bruker, lagrer og deler personopplysninger når du besøker nettstedet vårt eller bestiller et rom."
+  },
+  "headings": {
+    "pageTitle": "Personvernerklæring",
+    "subtitle": "Hvordan vi behandler dine personopplysninger"
+  },
+  "lastUpdated": {
+    "label": "Sist oppdatert",
+    "date": "2026-01-09"
+  },
+  "toc": {
+    "title": "På denne siden",
+    "aria": "Innholdsfortegnelse for personvernerklæring"
+  },
+  "sections": {
+    "intro": {
+      "title": "Oversikt",
+      "body": [
+        "Denne personvernerklæringen forklarer hvilke personopplysninger vi samler inn, hvorfor vi samler dem inn og hvordan vi bruker dem når du besøker nettstedet vårt, kontakter oss eller bestiller et rom.",
+        "Hvis du leter etter regler og kommersielle vilkår for en bestilling (betalinger, avbestillingsfrister, check‑in/out og gjestenes plikter), vennligst les våre Vilkår og betingelser for rombestillinger."
+      ]
+    },
+    "controller": {
+      "title": "Hvem som er ansvarlig for dine data",
+      "body": [
+        "Behandlingsansvarlig er Skylar SRL som driver Hostel Brikette (\"vi\").",
+        "Hvis du har spørsmål om denne policyen eller ønsker å utøve personvernrettighetene dine, kontakt oss på {{email}}."
+      ]
+    },
+    "dataWeCollect": {
+      "title": "Personopplysninger vi samler inn",
+      "body": [
+        "Når du kontakter oss eller ber om en bestilling, kan du oppgi opplysninger som navn, e‑postadresse, telefonnummer, nasjonalitet, oppholdsdatoer og eventuelle meldinger du sender oss.",
+        "Hvis du fullfører en bestilling gjennom en Online Travel Agent (OTA) eller en tredjeparts bookingmotor, behandler leverandøren betalingsinformasjonen din under sin egen personvernerklæring. Vi mottar vanligvis bestillingsinformasjonen vi trenger for å være vert for deg (for eksempel: gjestenavn, kontaktopplysninger, datoer og reservasjonsreferanse).",
+        "Når du besøker nettstedet vårt, kan serverne våre behandle grunnleggende tekniske data (som IP‑adresse, enhets- og nettleserinformasjon og etterspurte sider) for sikkerhet, feilsøking og ytelse."
+      ]
+    },
+    "howWeUse": {
+      "title": "Hvordan vi bruker dine data",
+      "body": [
+        "For å svare på henvendelser og gi kundestøtte.",
+        "For å behandle og administrere reservasjonen din, check‑in og kommunikasjon knyttet til oppholdet.",
+        "For å overholde juridiske forpliktelser (inkludert de som gjelder gjestfrihet og offentlig sikkerhet).",
+        "For å sikre og vedlikeholde nettstedet vårt (svindelforebygging, overvåking av misbruk og pålitelighet)."
+      ]
+    },
+    "legalBases": {
+      "title": "Rettslige grunnlag (hvorfor vi kan behandle data)",
+      "body": [
+        "Kontrakt: for å iverksette tiltak på din forespørsel før en bestilling inngås og for å oppfylle bestillingskontrakten.",
+        "Rettslig forpliktelse: for å oppfylle krav fastsatt i gjeldende lov (inkludert italienske regler for gjestfrihet).",
+        "Berettigede interesser: for å drive, sikre og forbedre nettstedet vårt og kommunikasjon, forutsatt at disse interessene ikke går foran dine rettigheter."
+      ]
+    },
+    "sharing": {
+      "title": "Hvem vi deler data med",
+      "body": [
+        "Vi deler personopplysninger kun når det er nødvendig for å levere tjenester eller overholde loven. Dette kan inkludere bookingplattformer du velger å bruke, betalingsleverandører brukt av disse plattformene, e‑post/kommunikasjonsleverandører og tekniske tjenesteleverandører som hoster eller beskytter nettstedet vårt.",
+        "Vi selger ikke personopplysninger."
+      ]
+    },
+    "retention": {
+      "title": "Hvor lenge vi lagrer data",
+      "body": [
+        "Vi beholder personopplysninger bare så lenge det er nødvendig for formålene over og for å oppfylle juridiske, regnskapsmessige eller rapporteringskrav.",
+        "Lagringstider kan variere avhengig av type registre og gjeldende rettslig forpliktelse."
+      ]
+    },
+    "security": {
+      "title": "Hvordan vi beskytter dine data",
+      "body": [
+        "Vi bruker rimelige tekniske og organisatoriske tiltak for å beskytte personopplysninger mot tap, misbruk og uautorisert tilgang.",
+        "Ingen system kan garantere 100 % sikkerhet, men vi arbeider kontinuerlig med å forbedre sikkerheten."
+      ]
+    },
+    "yourRights": {
+      "title": "Dine rettigheter",
+      "body": [
+        "Avhengig av hvor du befinner deg og gjeldende lov kan du ha rett til innsyn, retting, sletting eller begrensning av behandlingen av dine personopplysninger samt å protestere mot visse behandlinger.",
+        "For å utøve dine rettigheter, kontakt oss på {{email}}. Vi kan måtte verifisere identiteten din."
+      ]
+    },
+    "international": {
+      "title": "Internasjonale overføringer",
+      "body": [
+        "Noen tjenesteleverandører kan behandle data utenfor landet ditt. Når det er nødvendig, bruker vi passende sikkerhetstiltak for internasjonale dataoverføringer."
+      ]
+    },
+    "changes": {
+      "title": "Endringer i denne policyen",
+      "body": [
+        "Vi kan oppdatere denne personvernerklæringen fra tid til annen. Den nyeste versjonen er den som er publisert på denne siden."
+      ]
+    }
+  },
+  "footer": {
+    "backToTop": "Tilbake til toppen"
+  }
+}

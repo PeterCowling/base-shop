@@ -1,9 +1,10 @@
 import { useMemo } from "react";
 
 import type { AppLanguage } from "@/i18n.config";
+import { stripGuideMarkup } from "@/routes/guides/utils/linkTokens";
+import { buildHowToPayload } from "@/utils/seo/jsonld";
 
 import type { GuideSeoTemplateContext, HowToStep } from "./types";
-import { buildHowToPayload } from "@/utils/seo/jsonld";
 
 function isHowToObjectPayload(value: unknown): value is {
   steps?: readonly HowToStep[] | null;
@@ -48,8 +49,8 @@ export function useHowToJson({
 
     if (!steps && includeHowToStructuredData) {
       steps = context.sections.map((section) => ({
-        name: section.title,
-        text: section.body.join(" "),
+        name: stripGuideMarkup(section.title).trim(),
+        text: stripGuideMarkup(section.body.join(" ")).trim(),
       }));
     }
 

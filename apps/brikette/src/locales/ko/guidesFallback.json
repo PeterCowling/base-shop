@@ -225,7 +225,7 @@
           "성수기: 4~10월. 겨울에는 일부 노선이 줄거나 중단됩니다.",
           "출항 20~30분 전에 도착해 줄을 서고 티켓을 확인하세요.",
           "선착장부터 호스텔까지는 오르막 계단입니다. 짐이 무거우면 포터 서비스나 ‘Chiesa Nuova’행 버스를 고려하세요.",
-          "번역을 준비하고 있습니다."
+          "더 많은 도착 팁은 도움말 센터의 “페리로 도착하기” 문서를 참고하세요."
         ]
       }
     ],
@@ -239,7 +239,7 @@
       {
         "q": "실시간 시간표는 어디서 확인하나요?",
         "a": [
-          "번역을 준비하고 있습니다."
+          "NLG, Travelmar, Alilauro 등 운항사 사이트나 여름철 DirectFerries 같은 예약 사이트를 이용하세요."
         ]
       },
       {
@@ -464,14 +464,14 @@
     ],
     "sections": [
       {
-        "title": "Why this route works",
+        "title": "이 경로가 좋은 이유",
         "body": [
           "호스텔 입구에서 정류장까지는 메인도로를 따라 약 120미터(400피트)입니다.",
           "아말피 방향으로 가는 경우 정류장은 바르 인테르나치오날레 맞은편에 있습니다. 도로의 바다 쪽에서 줄을 서세요. 소렌토 방향이라면 바르 바로 앞에서 기다리게 됩니다."
         ]
       },
       {
-        "title": "Tickets and timing",
+        "title": "티켓과 시간 관리",
         "body": [
           "SITA 승차권은 담배 가게나 바 안에서 구입하세요. 버스에서 표를 살 수 없으니, 표 없이 승차하려고 하지 마세요. 승차할 때 운전기사에게 표를 보여주세요. 첫 차를 탈 예정이라면 하루 전에 표를 구입하고 체크아웃을 정리하려면 리셉션을 찾아오세요.",
           "여름철 버스는 자주 만석이 됩니다. 특히 가장 혼잡한 시간에는 미리 계획하세요."
@@ -480,29 +480,29 @@
     ],
     "beforeList": [],
     "stepsList": [
-      "Exit Hostel Brikette, take the short staircase to Viale Pasitea, and turn left.",
+      "Hostel Brikette를 나와 짧은 계단으로 비알레 파시테아에 올라간 뒤 왼쪽으로 꺾으세요.",
       "메인도로를 따라 약 120미터(400피트) 정도 인도를 내려가면 바르 인테르나치오날레에 도착합니다."
     ],
     "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sHostel+Brikette!4m1!2sBar+Internazionale",
     "kneesList": [],
-    "kneesDockPrefix": "Starting with luggage at the ferry dock? Use our",
-    "kneesDockLinkLabel": "Ferry dock luggage route",
-    "kneesPorterPrefix": "Need porter pricing or booking help? Check the",
-    "kneesPorterLinkLabel": "porter service guide",
+    "kneesDockPrefix": "페리 선착장에서 짐을 들고 시작하시나요? 다음 가이드를 참고하세요:",
+    "kneesDockLinkLabel": "페리 선착장 짐 이동 경로",
+    "kneesPorterPrefix": "포터 요금/예약 도움이 필요하신가요? 다음을 확인하세요:",
+    "kneesPorterLinkLabel": "포터 서비스 가이드",
     "faqs": [
       {
-        "q": "Do buses stop right outside the hostel?",
-        "a": "They stop at Bar Internazionale—about 120 metres (400 feet) downhill from the entrance."
+        "q": "버스가 호스텔 바로 앞에 서나요?",
+        "a": "입구에서 내리막으로 약 120미터(400피트) 떨어진 Bar Internazionale에서 정차합니다."
       },
       {
-        "q": "Can I buy tickets at the last minute?",
-        "a": "Yes, the tabacchi next to the stop sells SITA tickets, but expect queues at peak times."
+        "q": "막판에 티켓을 살 수 있나요?",
+        "a": "네. 정류장 옆 타바키에서 SITA 티켓을 판매하지만 피크 시간에는 줄이 깁니다."
       }
     ],
     "howtoSteps": [
-      "Leave Hostel Brikette and follow Viale Pasitea downhill",
-      "Join the queue at Bar Internazionale and validate on boarding"
+      "Hostel Brikette를 나와 비알레 파시테아를 따라 내리막으로 이동",
+      "Bar Internazionale에서 줄을 서고 탑승 시 티켓을 검표하세요"
     ],
-    "faqsTitle": "FAQs"
+    "faqsTitle": "자주 묻는 질문"
   }
 }

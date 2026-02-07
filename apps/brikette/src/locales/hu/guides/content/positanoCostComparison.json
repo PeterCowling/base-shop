@@ -1,53 +1,53 @@
 {
   "seo": {
-    "title": "Positano költségei más tengerparti úti célokhoz képest",
-    "description": "Árösszehasonlítás Cinque Terre, Ibiza, Santorini és más célpontok között."
+    "title": "Positano költsége más tengerparti célpontokhoz képest",
+    "description": "Szállás, étkezés és közlekedés összevetése – mikor jó ár-érték."
   },
-  "linkLabel": "Positano költségei más tengerparti úti célokhoz képest",
+  "linkLabel": "Positano költséghasadékok",
   "intro": [
-    "A fordítás folyamatban van."
+    "Nézd meg, hogyan viszonyul Positano más európai tengerparti úti célokhoz, hogy okosan tudd megszervezni a költést és megindokolni a kényeztető élményeket."
   ],
   "sections": [
     {
       "id": "stay",
-      "title": "Accommodation vs peers",
+      "title": "Szállás összevetve",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "A főszezonban egy hálótermi ágy körülbelül duplája annak, mint Lisszabonban vagy Splitben. A privát szobák hasonlóak Santorinihoz, de kevésbé állnak rendelkezésre a szűk készlet miatt.",
+        "Ha 40–60 eurót szeretnél megspórolni éjszakánként, maradj Praianóban vagy Sorrentóban, és használd a komp-/buszhálózatot Positano elérésére."
       ]
     },
     {
       "id": "food",
-      "title": "Food & drink",
+      "title": "Étel és ital",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Egy laza étkezés 5–10 euróval többe kerül Barihoz vagy Valenciához képest, de a térség alapanyagai kiváló minőségűek. Aperitivo tálakkal 12 euró környékén ehetsz itallal együtt.",
+        "Az önellátáshoz reggelikhez használj piacról származó gyümölcsöt és péksüteményt, ezzel kompenzálhatod a kilátás miatt drágább vacsorákat."
       ]
     },
     {
       "id": "transport",
-      "title": "Transport & experiences",
+      "title": "Közlekedés és élmények",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "A kompok 9–22 euró közötti díjjal járnak; egy kissé drágábbak, mint a horvát kompok, de olcsóbbak a görög vízitaxiknál.",
+        "A hajós túrák vagy főzőkurzusok árai hasonlóak Amalfihoz vagy Santorinihoz; foglalj vállszezonban, hogy alacsonyabb díjakat és nyugodtabb tengert kapj."
       ]
     }
   ],
   "tips": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
+    "Utazz áprilisban, májusban vagy októberben, hogy az árak közelebb legyenek Dubrovnik szintjéhez, miközben hűvösebb az idő.",
+    "Foglalj csomagajánlatokat (pl. hostel főzőkurzus + hajótúra) a különálló foglalások helyett."
   ],
   "faqs": [
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Megéri a plusz költség?",
       "a": [
-        "A fordítás folyamatban van."
+        "Ha a meredek kilátást, ikonikus strandot és gyors kompkapcsolatot értékeled, igen; csökkentsd a kiadásokat, ha a költségvetést ragaszkodsz, azzal, hogy a közelben maradsz és csak az igazán különleges élményekre költesz."
       ]
     },
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Hol találok hasonló kilátást olcsóbban?",
       "a": [
-        "A fordítás folyamatban van."
+        "Praiano és Minori hasonló Amalfi-parti panorámát kínál alacsonyabb szállásdíjakkal. Tervezz Positano napi kirándulást a poszterképeket adó pillanatokhoz."
       ]
     }
   ],
@@ -55,31 +55,31 @@
     "toc": [
       {
         "href": "#overview",
-        "label": "Overview"
+        "label": "Áttekintés"
       },
       {
         "href": "#when",
-        "label": "When it’s good value"
+        "label": "Mikor éri meg"
       },
       {
         "href": "#faqs",
-        "label": "FAQs"
+        "label": "GYIK"
       }
     ],
-    "faqLabel": "FAQs",
     "sections": {
       "overview": {
-        "heading": "Overview",
-        "body": "A fordítás folyamatban van."
+        "heading": "Áttekintés",
+        "body": "A szállás lehet drágább, de okos választásokkal a közlekedés és az étkezés megfizethető maradhat."
       },
       "when": {
-        "heading": "When it’s good value",
-        "body": "A fordítás folyamatban van."
+        "heading": "Mikor jó ár-érték",
+        "body": "A vállszezon, a hétköznapok és a hosszabb tartózkodás Chiesa Nuova környékén csökkentik költségeket."
       }
     },
     "faq": {
-      "summary": "A fordítás folyamatban van.",
-      "answer": "A fordítás folyamatban van."
-    }
+      "summary": "Drágább Positano, mint Amalfi?",
+      "answer": "Többszörösen igen a tengerparti szállásoknál; az ár-érték javul, ha beljebb maradsz vagy buszmegálló közelében."
+    },
+    "faqLabel": "GYIK"
   }
 }

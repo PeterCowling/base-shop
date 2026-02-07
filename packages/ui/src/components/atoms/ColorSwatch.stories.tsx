@@ -1,4 +1,5 @@
 import { type Meta, type StoryObj } from "@storybook/nextjs";
+
 import { ColorSwatch } from "./ColorSwatch";
 import { Inline } from "./primitives/Inline";
 

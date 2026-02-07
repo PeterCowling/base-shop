@@ -1,6 +1,8 @@
+import { Stack } from "@acme/design-system/primitives";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+
 import PageHeader from "@/components/PageHeader";
-import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
-import { Stack } from "@ui/components/atoms/primitives";
+
 import QuoteBasketProfilesClient from "./QuoteBasketProfilesClient";
 import type { QuoteBasketStrings } from "./types";
 

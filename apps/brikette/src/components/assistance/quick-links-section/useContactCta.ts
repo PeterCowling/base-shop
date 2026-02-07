@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import type { TFunction } from "i18next";
 
 import { FALLBACK_EN_CONTACT_CTA } from "./fallbacks";
@@ -9,13 +8,11 @@ export function useContactCta(
   tAssistance: TFunction<"assistance">,
   tAssistanceEn: TFunction<"assistance">,
 ): ContactCta | null {
-  return useMemo(() => {
-    const contactRaw = tAssistance("contactCta", { returnObjects: true }) as unknown;
-    const contactPrimary = normaliseContactCta(contactRaw);
-    const contactFallback = normaliseContactCta(
-      tAssistanceEn("contactCta", { returnObjects: true }) as unknown,
-    );
+  const contactRaw = tAssistance("contactCta", { returnObjects: true }) as unknown;
+  const contactPrimary = normaliseContactCta(contactRaw);
+  const contactFallback = normaliseContactCta(
+    tAssistanceEn("contactCta", { returnObjects: true }) as unknown,
+  );
 
-    return contactPrimary ?? contactFallback ?? FALLBACK_EN_CONTACT_CTA;
-  }, [tAssistance, tAssistanceEn]);
+  return contactPrimary ?? contactFallback ?? FALLBACK_EN_CONTACT_CTA;
 }

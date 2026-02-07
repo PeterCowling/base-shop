@@ -1,7 +1,7 @@
 // packages/ui/src/components/cms/blocks/StoreLocatorBlock.tsx
 "use client";
 
-import { StoreLocatorMap, type Location } from "../../organisms/StoreLocatorMap";
+import { type Location,StoreLocatorMap } from "../../organisms/StoreLocatorMap";
 
 interface LocationInput {
   lat?: number | string;

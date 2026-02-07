@@ -1,9 +1,10 @@
 "use client";
 
 import {
-  Currency,
+  type Currency,
   useCurrency,
 } from "@acme/platform-core/contexts/CurrencyContext";
+
 import {
   Select,
   SelectContent,
@@ -18,7 +19,7 @@ export default function CurrencySwitcher() {
   const [currency, setCurrency] = useCurrency();
 
   return (
-    <Select value={currency} onValueChange={(v) => setCurrency(v as Currency)}>
+      <Select value={currency} onValueChange={(v: Currency) => setCurrency(v)}>
       <SelectTrigger className="w-24">
         <SelectValue aria-label={currency}>{currency}</SelectValue>
       </SelectTrigger>

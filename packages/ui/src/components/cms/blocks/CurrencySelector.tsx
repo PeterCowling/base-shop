@@ -1,8 +1,9 @@
 "use client";
 
 import React from "react";
+
 import { useTranslations } from "@acme/i18n";
-import { useCurrency, type Currency } from "@acme/platform-core/contexts/CurrencyContext";
+import { type Currency,useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
 
 export type CurrencySelectorProps = React.HTMLAttributes<HTMLDivElement>;
 

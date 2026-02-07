@@ -1,14 +1,16 @@
 "use client"; // i18n-exempt -- PB-000 [ttl=2025-12-31]: Next.js directive string
 
 import * as React from "react";
-import { cn } from "../../utils/style";
-import { Button, Input } from "../atoms/shadcn";
-import { Drawer, DrawerContent, DrawerTrigger, DrawerTitle, DrawerDescription, DrawerPortal } from "../atoms/primitives/drawer";
-import { OverlayScrim } from "../atoms";
-import { useTranslations } from "@acme/i18n";
-import { Stack } from "../atoms/primitives/Stack";
-import { Inline } from "../atoms/primitives/Inline";
 import Image from "next/image";
+
+import { useTranslations } from "@acme/i18n";
+
+import { cn } from "../../utils/style";
+import { OverlayScrim } from "../atoms";
+import { Drawer, DrawerContent, DrawerDescription, DrawerPortal,DrawerTitle, DrawerTrigger } from "../atoms/primitives/drawer";
+import { Inline } from "../atoms/primitives/Inline";
+import { Stack } from "../atoms/primitives/Stack";
+import { Button, Input } from "../atoms/shadcn";
 
 interface ChatMessage {
   id: number;

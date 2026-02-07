@@ -1,6 +1,7 @@
-import Link from "next/link";
 import type { ReactElement } from "react";
-import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
+import Link from "next/link";
+
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 
 // This function must return a JSX element.
 export default async function NotFound(): Promise<ReactElement> {

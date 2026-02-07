@@ -1,12 +1,13 @@
 // packages/ui/src/organisms/StickyBookNow.tsx
 // Floating CTA that deep‑links to Octorate with prefilled params when available.
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
-import { ArrowRight, BadgeCheck, Sparkles, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
-import { i18nConfig } from "@/i18n.config";
-import { resolveBookingCtaLabel } from "@ui/shared";
+import { ArrowRight, BadgeCheck, Sparkles, X } from "lucide-react";
+
 import { Section } from "../atoms/Section";
+import { i18nConfig } from "../i18n.config";
+import { resolveBookingCtaLabel } from "../shared";
+import { getDatePlusTwoDays, getTodayIso } from "../utils/dateUtils";
 
 const STICKY_CTA_STORAGE_KEY = "sticky-cta-dismissed";
 

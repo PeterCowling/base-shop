@@ -1,14 +1,23 @@
 import { jest } from "@jest/globals";
 
+type CookieOptions = {
+  httpOnly?: boolean;
+  secure?: boolean;
+  path?: string;
+  sameSite?: "lax" | "strict" | "none";
+  maxAge?: number;
+  domain?: string;
+};
+
 export interface CookieStoreMock {
   jar: Map<string, string>;
-  get: jest.Mock<{ name: string; value: string } | undefined, [string]>;
-  set: jest.Mock<void, [string, string, unknown?]>;
-  delete: jest.Mock<void, [{ name: string; path?: string; domain?: string }]>;
+  get: jest.MockedFunction<(key: string) => { name: string; value: string } | undefined>;
+  set: jest.MockedFunction<(key: string, value: string, opts?: CookieOptions) => void>;
+  delete: jest.MockedFunction<(opts: { name: string; path?: string; domain?: string }) => void>;
 }
 
 export interface HeadersMock {
-  get: jest.Mock<string | null, [string]>;
+  get: jest.MockedFunction<(key: string) => string | null>;
 }
 
 export interface MockSessionRecord {
@@ -19,20 +28,24 @@ export interface MockSessionRecord {
 }
 
 export interface SessionStoreMock {
-  get: jest.Mock<Promise<MockSessionRecord | null>, [string]>;
-  set: jest.Mock<Promise<void>, [MockSessionRecord]>;
-  delete: jest.Mock<Promise<void>, [string]>;
-  list: jest.Mock<Promise<MockSessionRecord[]>, [string]>;
+  get: jest.MockedFunction<(id: string) => Promise<MockSessionRecord | null>>;
+  set: jest.MockedFunction<(record: MockSessionRecord) => Promise<void>>;
+  delete: jest.MockedFunction<(id: string) => Promise<void>>;
+  list: jest.MockedFunction<(customerId: string) => Promise<MockSessionRecord[]>>;
 }
 
 interface SessionMockState {
   cookies: CookieStoreMock;
   headers: HeadersMock;
-  sealData: jest.Mock<Promise<string>, [unknown, { password: string; ttl: number }]>;
-  unsealData: jest.Mock<Promise<any>, [string, { password: string; ttl: number }]>;
-  randomUUID: jest.Mock<string, []>;
+  sealData: jest.MockedFunction<
+    (data: unknown, options: { password: string; ttl: number }) => Promise<string>
+  >;
+  unsealData: jest.MockedFunction<
+    (token: string, options: { password: string; ttl: number }) => Promise<unknown>
+  >;
+  randomUUID: jest.MockedFunction<() => string>;
   sessionStore: SessionStoreMock;
-  createSessionStoreImpl: jest.Mock<Promise<SessionStoreMock>, []>;
+  createSessionStoreImpl: jest.MockedFunction<() => Promise<SessionStoreMock>>;
   sessionTtlSeconds: number;
   env: {
     SESSION_SECRET?: string;
@@ -50,13 +63,10 @@ function createCookieStore(): CookieStoreMock {
     }),
     set: jest.fn(function set(this: CookieStoreMock, key: string, value: string) {
       this.jar.set(key, value);
-    }) as CookieStoreMock["set"],
-    delete: jest.fn(function del(
-      this: CookieStoreMock,
-      opts: { name: string }
-    ) {
+    }),
+    delete: jest.fn(function del(this: CookieStoreMock, opts: { name: string }) {
       this.jar.delete(opts.name);
-    }) as CookieStoreMock["delete"],
+    }),
   };
   return store;
 }
@@ -94,8 +104,8 @@ const ORIGINAL_ENV = { ...process.env };
 const state: SessionMockState = {
   cookies: createCookieStore(),
   headers: createHeaders(),
-  sealData: jest.fn(async () => "sealed-token"),
-  unsealData: jest.fn(async () => {
+  sealData: jest.fn(async (_data: unknown, _options: { password: string; ttl: number }) => "sealed-token"),
+  unsealData: jest.fn(async (_token: string, _options: { password: string; ttl: number }) => {
     throw new Error("unsealData mock not configured");
   }),
   randomUUID: jest.fn(),
@@ -136,7 +146,7 @@ jest.mock("@acme/config/env/core", () => ({
 }));
 
 jest.mock("../../src/store", () => {
-  const actual = jest.requireActual("../../src/store");
+  const actual = jest.requireActual<typeof import("../../src/store")>("../../src/store");
   return {
     __esModule: true,
     ...actual,

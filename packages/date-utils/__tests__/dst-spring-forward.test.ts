@@ -1,4 +1,4 @@
-import { parseTargetDate, isoDateInNDays, calculateRentalDays } from "../src";
+import { calculateRentalDays,isoDateInNDays, parseTargetDate } from "../src";
 
 describe("DST boundaries — spring forward in New York", () => {
   beforeEach(() => {

@@ -1,7 +1,9 @@
 import type { ReactNode } from "react";
-import { Progress, Tag } from "../../../atoms";
-import { cn } from "../../../../utils/style";
+
 import { useTranslations } from "@acme/i18n";
+
+import { cn } from "../../../../utils/style";
+import { Progress, Tag } from "../../../atoms";
 import { Inline } from "../../../atoms/primitives/Inline";
 
 export interface StepDefinition {

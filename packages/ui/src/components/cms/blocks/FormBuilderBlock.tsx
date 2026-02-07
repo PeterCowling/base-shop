@@ -1,7 +1,7 @@
 "use client";
 
-import type { FormField, FormFieldOption } from "@acme/types";
 import { useTranslations } from "@acme/i18n";
+import type { FormField, FormFieldOption } from "@acme/types";
 
 interface Props {
   action?: string;

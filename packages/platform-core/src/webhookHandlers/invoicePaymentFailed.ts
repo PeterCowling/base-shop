@@ -1,4 +1,5 @@
 import type Stripe from "stripe";
+
 import { updateSubscriptionPaymentStatus } from "../repositories/subscriptions.server";
 
 interface InvoiceWithSubscription extends Stripe.Invoice {

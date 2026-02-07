@@ -1,13 +1,15 @@
 // packages/ui/src/components/templates/ProductDetailTemplate.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/nextjs';
 import React from 'react';
-import type { SKU } from '@acme/types';
+import type { Meta, StoryObj } from '@storybook/nextjs';
+import { expect, fn,userEvent, within  } from '@storybook/test';
+
 import type { Locale } from '@acme/i18n/locales';
-import { ProductDetailTemplate } from './ProductDetailTemplate';
+import type { SKU } from '@acme/types';
+
 import { makeStateStory } from '../../story-utils/createStories';
-import { expect, userEvent, within } from '@storybook/test';
-import { fn } from '@storybook/test';
+
+import { ProductDetailTemplate } from './ProductDetailTemplate';
 
 const baseProduct: SKU = {
   id: 'sku-helmet',

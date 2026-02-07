@@ -3,6 +3,7 @@
     "title": "Fornillo Beach guide",
     "description": "Pupetto、Da Ferdinando、Grassi 和 La Marinella 的布局地图、免费区域和海滩俱乐部提示，以及往返旅馆的捷径。"
   },
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
   "linkLabel": "福尼洛海滩指南：俱乐部和免费景点",
   "intro": [
     "Fornillo 海滩是一个轻松的海湾，距离旅舍仅几步之遥。海滩俱乐部的价格比 Spiaggia Grande 便宜，公共区域宽敞，即使在高峰期，气氛也保持低调。",
@@ -45,6 +46,23 @@
       "body": [
         "两条主要道路为福尼洛提供食物。从%LINK:hostelBriketteToFornilloBeach|布里克特旅馆%出发的捷径到达海滩的左侧（面向大海时）；从 Spiaggia Grande 出发的海滨长廊一直延伸到右侧。",
         "海滩俱乐部从旅馆入口处依次延伸至主要海滩路径：Pupetto、Da Ferdinando、Fratelli Grassi 和 La Marinella。利多斯周围有两个公共区域——Pupetto 旁边的宽阔自由区域和 La Marinella 之外的较小海湾。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/fornilloBeachGuide.webp",
+          "alt": "View of Fornillo Beach cove in Positano with the shoreline and cliffs",
+          "caption": "Fornillo Beach in Positano: a calmer alternative to the main beach, with free areas and several beach clubs"
+        },
+        {
+          "src": "/img/guides/fornillo-beach/02-main-free-section.jpg",
+          "alt": "Fornillo beach layout map showing paths from hostel and Spiaggia Grande, plus beach club locations",
+          "caption": "Fornillo layout: Path A from Hostel Brikette, Path B from Spiaggia Grande, with beach clubs numbered in sequence"
+        },
+        {
+          "src": "/img/guides/positano-beaches/positano-main-beach.webp",
+          "alt": "Positano main beach (Spiaggia Grande) with umbrellas and the town rising behind it",
+          "caption": "Spiaggia Grande: start here to walk the promenade to Fornillo, or return here to catch the internal bus uphill"
+        }
       ]
     },
     {
@@ -53,6 +71,13 @@
       "body": [
         "最大的免费区域就位于旅馆捷径的前面。 10:30之前到达，抢占水线附近的位置；鹅卵石很快就会变暖，因此请带上垫子或厚毛巾。",
         "Pupetto 和 Da Ferdinando 都出售外卖饮料和帕尼尼 - 如果您想吃东西而不租躺椅，那么这里是完美的选择。平月期间留意潮汐；秋季暴风雨会使海岸线缩小一两天。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/01-beach-layout-map.jpg",
+          "alt": "Main free section at Fornillo beach with pebbles and waterfront access",
+          "caption": "The largest free area at Fornillo — arrive before 10:30 to secure waterfront space"
+        }
       ]
     },
     {
@@ -61,6 +86,13 @@
       "body": [
         "Pupetto 位于 Fornillo 的左侧，有一排橙色躺椅、淋浴间和一家提供全方位服务的餐厅。夏季，如果您想要前排座位，请通过 WhatsApp 或电话预订；一般情况下，09:30 之前可以直接上门。",
         "使用免费区域的客人仍然可以从酒吧订购外卖，Pupetto 的浴室也向付费顾客开放——如果您决定在一天中途升级的话，这会很方便。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/03-pupetto-beach-club.jpg",
+          "alt": "Pupetto Beach Club with orange loungers and restaurant on Fornillo beach",
+          "caption": "Pupetto Beach Club — orange loungers, full-service restaurant, and showers on the left side of Fornillo"
+        }
       ]
     },
     {
@@ -69,6 +101,13 @@
       "body": [
         "Da Ferdinando 保持着海滩酒吧的清凉氛围，配有蓝色躺椅、桨板租赁服务和受欢迎的午餐菜单（想想当天的烤鱼、沙拉和意大利面）。预计价格会比普佩托高一点，但对波西塔诺来说仍然合理。",
         "前往劳里托 (Laurito) 和阿里恩佐 (Arienzo) 的水上出租车会经过 Da Ferdinando 的码头，如果您打算在早上游泳后去海滩畅游，那么这会非常有用。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/04-da-ferdinando.jpg",
+          "alt": "Da Ferdinando beach bar with blue loungers and jetty at Fornillo",
+          "caption": "Da Ferdinando — beach-bar vibe with blue loungers, paddleboard rentals, and water taxi access"
+        }
       ]
     },
     {
@@ -77,6 +116,13 @@
       "body": [
         "Grassi 布局紧凑，摆放着整齐的红色躺椅，还有一个供应鸡尾酒和格兰尼塔的阴凉酒吧。如果您租用皮划艇探索附近的洞穴，团队会提供存放贵重物品的干燥袋。",
         "由于空间有限，周末提前预订会有所帮助。一旦提前预订完成，通常可以在周中 11:00 之后直接前来。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/05-fratelli-grassi.jpg",
+          "alt": "Fratelli Grassi Beach Bar with red loungers and shaded bar area at Fornillo",
+          "caption": "Fratelli Grassi — compact setup with red loungers, shaded cocktail bar, and kayak rentals"
+        }
       ]
     },
     {
@@ -85,6 +131,13 @@
       "body": [
         "La Marinella 距离 Spiaggia Grande 步道最近，可以享受正午的阳光。您可以享受周到的服务、午餐拼盘，还可以选择预订带有额外遮阳处的上层躺椅。",
         "在淡季，拉马里内拉有时会将一些椅子搬到邻近的海湾。工作人员应为公共区域留出空间，但要做好海浪汹涌时占地面积更小的准备。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/06-la-marinella.jpg",
+          "alt": "La Marinella beach club with loungers and restaurant near Spiaggia Grande walkway",
+          "caption": "La Marinella — attentive service, upper-deck loungers, and closest to the Spiaggia Grande walkway"
+        }
       ]
     },
     {
@@ -93,8 +146,49 @@
       "body": [
         "在拉马里内拉之外，有一个小海湾，提供了一个安静的公共区域，配有卵石架和平静的水面。带上适合珊瑚礁的防晒霜和水鞋——入口处布满岩石，海胆可能聚集在边缘附近。",
         "在暴风雨的日子里，马里内拉偶尔会在这里设置备用躺椅。该区域仍然是官方免费的，因此如果您先到达，请放心使用该空间；只需为归还的椅子或皮划艇留出空间即可。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/07-secret-free-section.jpg",
+          "alt": "Hidden free cove beyond La Marinella with rocky entry and calm water",
+          "caption": "The 'secret' free section — a quieter cove beyond La Marinella with rocky entry and sea urchin areas"
+        }
+      ]
+    },
+    {
+      "id": "hostel-day-plan",
+      "title": "A hostel-friendly Fornillo day plan",
+      "body": [
+        "If you want an easy beach day that still leaves energy for the evening, this simple plan works well for most guests.",
+        "1) Leave after breakfast and take the %LINK:hostelBriketteToFornilloBeach|shortcut down to Fornillo%. Aim to arrive before 10:30 if you want a good free spot.",
+        "2) Swim first. The water is usually calmest earlier in the day, and the sun feels less intense. Then decide: stay free, or upgrade to a lido for shade.",
+        "3) Lunch: keep it simple. Grab takeaway from a beach bar, or split a plate if you are on a budget. Drink water throughout the day — the heat plus steps is a real combo.",
+        "4) Leave before you are exhausted. Walk the promenade back toward Spiaggia Grande, then use the internal bus uphill. Follow the %LINK:fornilloBeachToBrikette|return route% so you do not end up doing the steepest staircase by accident.",
+        "5) Back at the hostel: shower, rehydrate, and you are ready for aperitivo. If you want a second beach day with a different vibe, compare options in our %LINK:positanoBeaches|Positano beaches overview%."
+      ]
+    },
+    {
+      "id": "what-to-bring",
+      "title": "What to bring (so you do not overpack)",
+      "body": [
+        "A light pack is the secret to enjoying the walk back up later. Most guests are happiest with a small day bag and a few essentials.",
+        "Bring: water shoes, sunscreen, a hat, a thick towel (or mat), and a refillable bottle. Add a light shirt for the walk back in the afternoon sun.",
+        "Skip: passports and big cash. Keep valuables locked up at the hostel. If you are paying for a lido, card machines sometimes struggle, so carry a little cash as backup.",
+        "If you want shade in the free section, you can bring a small foldable umbrella, but it can be awkward in wind. In peak summer, the simplest “shade plan” is to rent a parasol for a few hours."
       ]
     }
+  ],
+  "essentialsTitle": "行前须知",
+  "essentials": [
+    "从 Hostel Brikette 沿捷径约 15–20 分钟可达；沿海滨长廊绕行约 25 分钟。",
+    "四家海滩俱乐部——Pupetto、Da Ferdinando、Grassi、La Marinella——以及两段公共区域。",
+    "躺椅价格比 Spiaggia Grande 便宜，上午 09:30 前免预约常有空位。"
+  ],
+  "typicalCostsTitle": "参考费用",
+  "typicalCosts": [
+    "Pupetto 或 Da Ferdinando 躺椅：两人约 €30–€50。",
+    "Grassi 或 La Marinella 躺椅：两人约 €25–€40。",
+    "午餐主菜 €15–€25、鸡尾酒 €10–€14、瓶装水 €3–€4。"
   ],
   "tipsTitle": "快速提示",
   "tips": [

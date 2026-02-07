@@ -1,12 +1,18 @@
+// Disable MSW - this test mocks all dependencies with Jest
 import "@testing-library/jest-dom";
+
 import React from "react";
 import { render, screen } from "@testing-library/react";
+
+import SeoSettingsPage from "../src/app/cms/shop/[shop]/settings/seo/page";
+
+process.env.DISABLE_MSW = "1";
 
 const getSettings = jest.fn();
 const listEvents = jest.fn();
 
 jest.mock("@cms/actions/shops.server", () => ({ getSettings }));
-jest.mock("@platform-core/repositories/analytics.server", () => ({ listEvents }));
+jest.mock("@acme/platform-core/repositories/analytics.server", () => ({ listEvents }));
 
 const seoEditorMock = jest.fn((props: any) => <div data-cy="seo-editor" />);
 const aiCatalogMock = jest.fn((props: any) => <div data-cy="ai-catalog" />);
@@ -22,10 +28,16 @@ jest.mock("../src/app/cms/shop/[shop]/settings/seo/AiFeedPanel", () => ({
 }));
 
 const seoAuditMock = jest.fn((props: any) => <div data-cy="seo-audit" />);
-const seoProgressMock = jest.fn(() => <div />);
+const seoProgressMock = jest.fn((_props?: any) => <div />);
 jest.mock("../src/app/cms/shop/[shop]/settings/seo/SeoProgressPanel", () => ({
   __esModule: true,
   default: (props: any) => seoProgressMock(props),
+}));
+
+const sitemapStatusMock = jest.fn(() => <div data-cy="sitemap-status" />);
+jest.mock("../src/app/cms/shop/[shop]/settings/seo/SitemapStatusPanel", () => ({
+  __esModule: true,
+  default: () => sitemapStatusMock(),
 }));
 
 jest.mock("next/dynamic", () => {
@@ -40,8 +52,6 @@ jest.mock("next/dynamic", () => {
     return () => null;
   };
 });
-
-import SeoSettingsPage from "../src/app/cms/shop/[shop]/settings/seo/page";
 
 describe("SeoSettingsPage", () => {
   it("renders panels with props", async () => {

@@ -1,6 +1,8 @@
-import { describe, it, expect } from "@jest/globals";
+import { describe, expect,it } from "@jest/globals";
+
 import { withEnv } from "../../../test/utils/withEnv";
-import { NEXT_SECRET, SESSION_SECRET, BoolKey } from "./authEnvTestUtils";
+
+import { type BoolKey,NEXT_SECRET, SESSION_SECRET } from "./authEnvTestUtils";
 
 describe("boolean coercions and defaults", () => {
   const baseVars = { NEXTAUTH_SECRET: NEXT_SECRET, SESSION_SECRET };

@@ -1,6 +1,8 @@
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 
+import { readPricing, writePricing } from "../pricing.server";
+
 jest.mock("../../dataRoot", () => ({
   resolveDataRoot: jest.fn(() => "/data/root"),
 }));
@@ -13,8 +15,6 @@ jest.mock("node:fs", () => ({
     rename: jest.fn(),
   },
 }));
-
-import { readPricing, writePricing } from "../pricing.server";
 
 describe("pricing repository", () => {
   const readFile = fs.readFile as jest.Mock;

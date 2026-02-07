@@ -1,1 +1,1 @@
-export { default } from "@ui/components/cms/MediaFileItem";
+export { default } from "@acme/cms-ui/MediaFileItem";

@@ -1,9 +1,11 @@
 // packages/email/src/sendEmail.ts
 
 import "server-only";
+
 import nodemailer from "nodemailer";
 import pino from "pino";
 import { z } from "zod";
+
 import { getDefaultSender } from "./config";
 
 type MailTransporter = {

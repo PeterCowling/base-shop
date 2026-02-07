@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+
 import { StatsGrid } from "../src/components/organisms/StatsGrid";
 
 describe("StatsGrid", () => {

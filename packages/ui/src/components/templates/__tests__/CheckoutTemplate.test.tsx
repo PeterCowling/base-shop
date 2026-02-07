@@ -1,8 +1,10 @@
+import "@testing-library/jest-dom";
+import "../../../../../../test/resetNextMocks";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import "@testing-library/jest-dom";
+
 import { CheckoutTemplate } from "../CheckoutTemplate";
-import "../../../../../../test/resetNextMocks";
 
 describe("CheckoutTemplate", () => {
   it("navigates steps and completes", async () => {

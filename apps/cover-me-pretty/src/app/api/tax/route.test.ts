@@ -1,13 +1,15 @@
 /** @jest-environment node */
-import { NextResponse, type NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+
 import { POST } from "./route";
 
-jest.mock("@shared-utils", () => ({ parseJsonBody: jest.fn() }));
-const parseJsonBody = jest.requireMock("@shared-utils")
+jest.mock("@acme/lib/http/server", () => ({ parseJsonBody: jest.fn() }));
+const parseJsonBody = jest.requireMock("@acme/lib/http/server")
   .parseJsonBody as jest.Mock;
 
-jest.mock("@platform-core/tax", () => ({ calculateTax: jest.fn() }));
-const calculateTax = jest.requireMock("@platform-core/tax")
+jest.mock("@acme/platform-core/tax", () => ({ calculateTax: jest.fn() }));
+const calculateTax = jest.requireMock("@acme/platform-core/tax")
   .calculateTax as jest.Mock;
 
 afterEach(() => {

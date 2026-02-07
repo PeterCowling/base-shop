@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+
 import CustomHtmlEditor from "../src/components/cms/page-builder/CustomHtmlEditor";
 
 const handleInput = jest.fn();
@@ -11,7 +12,7 @@ describe("CustomHtmlEditor", () => {
   it("calls handleInput with updated html", () => {
     render(
       <CustomHtmlEditor
-        component={{ type: "CustomHtml", html: "" }}
+        component={{ id: "custom-1", type: "CustomHtml", html: "" }}
         onChange={jest.fn()}
       />,
     );

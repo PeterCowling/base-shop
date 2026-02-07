@@ -1,10 +1,12 @@
 "use client";
 
-import { Card, CardContent, Input } from "../../../atoms/shadcn";
+import { useTranslations } from "@acme/i18n";
+
 import { Switch } from "../../../atoms";
+import { Card, CardContent, Input } from "../../../atoms/shadcn";
+
 import type { EmailScheduleErrors } from "./hooks/useEmailScheduleFormState";
 import type { EmailScheduleFormValues } from "./types";
-import { useTranslations } from "@acme/i18n";
 
 type FollowUpField = "followUpEnabled" | "followUpDelayHours";
 

@@ -1,4 +1,5 @@
-import { describe, it, expect } from "@jest/globals";
+import { describe, expect,it } from "@jest/globals";
+
 import { pageComponentSchema } from "../../../page/page";
 import { bindComponentSchema } from "../bind";
 import { carouselContainerComponentSchema } from "../carousel-container";

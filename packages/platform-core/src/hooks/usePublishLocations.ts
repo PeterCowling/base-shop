@@ -1,9 +1,10 @@
 "use client";
 // packages/platform-core/hooks/usePublishLocations.ts
 
-import type { PublishLocation } from "@acme/types";
-import { fetchJson } from "@acme/shared-utils";
 import { useCallback, useEffect, useMemo, useState } from "react";
+
+import { fetchJson } from "@acme/lib/http";
+import type { PublishLocation } from "@acme/types";
 
 export interface UsePublishLocationsResult {
   locations: PublishLocation[];

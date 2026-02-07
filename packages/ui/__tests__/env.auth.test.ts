@@ -1,7 +1,8 @@
 /** @jest-environment node */
-import { describe, it, expect, jest } from "@jest/globals";
-import { withEnv } from "../../config/test/utils/withEnv";
+import { describe, expect, it, jest } from "@jest/globals";
+
 import { expectInvalidAuthEnvWithConfigEnv } from "../../config/test/utils/expectInvalidAuthEnv";
+import { withEnv } from "../../config/test/utils/withEnv";
 
 const REDIS_URL = "https://example.com";
 const STRONG_SECRET = "redis-token-32-chars-long-string!";
@@ -16,7 +17,7 @@ const devEnv = (overrides: EnvOverrides = {}): EnvOverrides => ({
 const expectInvalidDev = (
   overrides: EnvOverrides,
   accessor: (env: Record<string, unknown>) => unknown,
-  consoleErrorSpy?: jest.SpyInstance,
+  consoleErrorSpy?: { mockRestore: () => void },
 ) =>
   expectInvalidAuthEnvWithConfigEnv({
     env: devEnv(overrides),
@@ -73,7 +74,7 @@ describe("auth env validation", () => {
         UPSTASH_REDIS_REST_URL: REDIS_URL,
         UPSTASH_REDIS_REST_TOKEN: STRONG_SECRET,
       }),
-      () => import("@acme/config/src/env/auth.ts"),
+      () => import("@acme/config/env/auth"),
     );
     expect(authEnv.SESSION_STORE).toBe("redis");
   });

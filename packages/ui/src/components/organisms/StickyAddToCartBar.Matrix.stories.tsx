@@ -1,8 +1,10 @@
 // packages/ui/src/components/organisms/StickyAddToCartBar.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { StickyAddToCartBar } from './StickyAddToCartBar';
+
 import { makeStateStory } from '../../story-utils/createStories';
+
+import { StickyAddToCartBar } from './StickyAddToCartBar';
 
 const meta: Meta<typeof StickyAddToCartBar> = {
   title: 'Organisms/Sticky Add To Cart Bar/Matrix',

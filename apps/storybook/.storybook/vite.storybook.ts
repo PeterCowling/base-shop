@@ -1,12 +1,14 @@
 // .storybook/vite.storybook.ts
 import path from 'node:path';
+
+import tailwindcss from '@tailwindcss/postcss';
 import { defineConfig, type PluginOption } from 'vite';
-import tsconfigPaths from 'vite-tsconfig-paths';
 // SVGR is optional; if present we include it
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- ABC-123
 // @ts-ignore
 import svgr from 'vite-plugin-svgr';
-import tailwindcss from '@tailwindcss/postcss';
+import tsconfigPaths from 'vite-tsconfig-paths';
+
 import { getStorybookAliases } from './aliases';
 
 const alias = getStorybookAliases();

@@ -2,18 +2,20 @@
 
 import React, { useCallback, useMemo, useState } from "react";
 import Image from "next/image";
+
 import { useTranslations } from "@acme/i18n";
-import type { Product } from "@/types/product";
-import Section from "@/components/Section";
-import Grid from "@/components/layout/Grid";
-import VariantSelector from "@/components/VariantSelector";
-import QuantityStepper from "@/components/QuantityStepper";
-import Price from "@/components/Price";
+
 import Button from "@/components/Button";
+import Grid from "@/components/layout/Grid";
+import Price from "@/components/Price";
 import ProductStickyBar from "@/components/ProductStickyBar";
+import QuantityStepper from "@/components/QuantityStepper";
+import Section from "@/components/Section";
+import VariantSelector from "@/components/VariantSelector";
 import { useCart } from "@/contexts/cart/CartContext";
-import { clampQuantity } from "@/lib/quantity";
 import { useVariantSelection } from "@/hooks/useVariantSelection";
+import { clampQuantity } from "@/lib/quantity";
+import type { Product } from "@/types/product";
 
 export default function ProductDetail({ product }: { product: Product }) {
   const t = useTranslations();

@@ -1,5 +1,5 @@
-import { cssVars } from "../cssVars";
 import { boxProps } from "../boxProps";
+import { cssVars } from "../cssVars";
 import { drawerWidthProps } from "../drawerWidth";
 
 describe("style utils", () => {

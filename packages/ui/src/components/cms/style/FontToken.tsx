@@ -1,10 +1,12 @@
 // i18n-exempt -- Next.js directive literal (not user-facing copy)
 "use client";
 
-import { FontSelect } from "../FontSelect";
-import type { TokenInfo } from "../../../hooks/useTokenEditor";
 import type { ChangeEvent, ReactElement } from "react";
+
 import { useTranslations } from "@acme/i18n";
+
+import type { TokenInfo } from "../../../hooks/useTokenEditor";
+import { FontSelect } from "../FontSelect";
 
 interface FontTokenProps extends Omit<TokenInfo, "key"> {
   tokenKey: string;
@@ -29,7 +31,7 @@ export function FontToken({
   setGoogleFont,
 }: FontTokenProps): ReactElement {
   const t = useTranslations();
-  // eslint-disable-next-line ds/no-hardcoded-copy -- DX-0002: utility classes are not user copy
+   
   const overrideClasses = isOverridden ? "border-s-2 border-s-info ps-2" : "";
   return (
     <label

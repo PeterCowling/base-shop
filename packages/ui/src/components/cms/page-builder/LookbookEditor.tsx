@@ -1,6 +1,8 @@
 import type { LookbookComponent } from "@acme/types";
-import type { EditorProps } from "./EditorProps";
+
 import { Button, Input } from "../../atoms/shadcn";
+
+import type { EditorProps } from "./EditorProps";
 import ImagePicker from "./ImagePicker";
 import { useArrayEditor } from "./useArrayEditor";
 

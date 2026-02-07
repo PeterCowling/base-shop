@@ -7,7 +7,7 @@ jest.mock("../src/app/preview/[pageId]/PreviewClient", () => ({
   default: (props: any) => <div data-cy="preview" data-props={JSON.stringify(props)} />,
 }));
 
-jest.mock("@ui/utils/devicePresets", () => ({
+jest.mock("@acme/ui/utils/devicePresets", () => ({
   devicePresets: [{ id: "D0" }, { id: "D1" }],
   getLegacyPreset: (k: "desktop" | "tablet" | "mobile") => ({ id: `LEGACY_${k}` }),
 }));

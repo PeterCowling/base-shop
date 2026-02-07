@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/SocialFeed.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import SocialFeed from './SocialFeed';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './SocialFeed.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import SocialFeed from './SocialFeed';
+import fixture from './SocialFeed.fixtures.json';
 
 const meta: Meta<typeof SocialFeed> = {
   title: 'CMS Blocks/SocialFeed/Matrix',

@@ -1,11 +1,11 @@
 {
   "meta": {
-    "title": "Room Bookings — Terms & Conditions | Hostel Brikette",
-    "description": "Official terms for room bookings at Hostel Brikette: booking, cancellations, check-in/out, payments, duty of care, and policies."
+    "title": "Booking Terms | Hostel Brikette",
+    "description": "Booking terms for Hostel Brikette covering reservations, payments, cancellations, deposits, liability, and privacy."
   },
   "headings": {
-    "pageTitle": "Hostel Brikette — Room Bookings",
-    "pageSubtitle": "Terms & Conditions"
+    "pageTitle": "Hostel Brikette — Booking Terms",
+    "pageSubtitle": "Booking Terms"
   },
   "toc": {
     "title": "Contents",
@@ -17,334 +17,164 @@
   },
   "sections": {
     "s1": {
-      "title": "1. Definitions and Interpretations",
+      "title": "1. Parties and Definitions",
       "body": [
-        "1.1 \"Terms and Conditions\" — The terms and conditions outlined in this document.",
-        "1.2 \"The Hostel,\" \"we,\" or \"our\" — Skylar SRL, whose registered office is located at Via Guglielmo Marconi, 358, 84017, Positano, Salerno, Italy.",
-        "1.3 \"You,\" \"your,\" customer, resident, or \"guest\" — Anyone who submits a Room Booking Request, is an Official Hostel Guest, is a Temporary Guest, is a member of staff, is an event organizer, group leader, or any other third-party provider or purchaser.",
-        "1.4 \"Room Booking Request\" — A request to book a stay at The Hostel in accordance with these terms and conditions, either by your or your OTA. Please note that only the hostel and our authorised OTAs are permitted to offer beds for sale, and any attempt at resale by unauthorised third parties will result in booking requests being denied or confirmed bookings being cancelled.",
-        "1.5 \"Communal Areas\" — Designated areas within The Hostel that may be used by both Official Hostel Guests and Temporary Guests. Communal Areas include: the entrance and lobby; the communal terrace; the communal bathrooms.",
-        "1.6 \"Credit Card Holder\" — The owner of the credit card listed on the Room Booking Request.",
-        "1.7 \"Counteroffer\" — A variation of a Room Booking Request. The initial counteroffer will be made by The Hostel, and additional counteroffers may follow.",
-        "1.8 \"Confirmed Room Booking\" — When The Hostel accepts a Room Booking Request or a Counteroffer is accepted by you, a legally binding contract is formed. This contract includes the purchase of the facilities, services, and terms and conditions defined in this document.",
-        "1.9 \"No Show\" — A status that may be applied to an individual guest or a Confirmed Room Booking by The Hostel. This status is assigned when one or more eligible guests fail to check in by the end of the Official Check-in Time on the first day of the Confirmed Room Booking.",
-        "1.10 \"No Show Charge\" — A fee assessed by The Hostel. Occurs in two situations: when a No Show occurs or when a Confirmed Room Cancellation falls outside the Cancellation Notice Period. The amount of the No Show Charge will be based on the rate agreed upon in the Confirmed Room Booking, and will be the greater of the following amounts: the cost of the first night's stay or the non-refundable deposit.",
-        "1.11 \"Room Cancellation Request\" — A request to cancel a Confirmed Room Booking.",
-        "1.12 \"Cancellation Notice Period\" — The required notice time, in hours, for canceling a Confirmed Room Booking. If the cancellation notice period is stated in days, it will be translated into hours. For example, a three-day cancellation notice period will be 72 hours.",
-        "1.13 \"Cancellation Administration Fee\" — A processing charge for a Room Cancellation Request. The amount of the cancellation administration fee will be based on the rate agreed upon in the Confirmed Room Booking.",
-        "1.14 \"The Hostel's Official Email Address\" — hostelpositano@gmail.com.",
-        "1.15 \"Confirmed Room Cancellation\" — Written confirmation from The Hostel via The Hostel's Official Email Address that a Room Cancellation Request has been processed.",
-        "1.16 \"Booking Change Request\" — A request to alter a Confirmed Room Booking. Requests can be for canceling part of the stay (if the guest does not want to cancel the entire booking), or alterations to the booking's commencement or termination date.",
-        "1.17 \"Confirmed Booking Change\" — Written confirmation from The Hostel via The Hostel's Official Email Address that a Booking Change Request has been completed.",
-        "1.18 \"Designated Email Address\" — The email address you provide in your Room Booking Request will be used by The Hostel for all correspondence. By submitting a Room Booking Request, you agree to ensure the accuracy of the provided email address and to monitor your inbox for any communication from us. It is your responsibility to read the emails sent by The Hostel, which may include essential information and requests.",
-        "1.19 \"Booking Extension Request\" — A request to extend a Confirmed Room Booking.",
-        "1.20 \"Confirmed Booking Extension\" — Written confirmation from The Hostel via The Hostel's Official Email Address that a Booking Extension Request has been completed.",
-        "1.21 \"Check-In Request\" — A request to check in to The Hostel and begin a booking.",
-        "1.22 \"Official Check-In Time\" — The check-in window between 3 and 10 PM on the day a Confirmed Room Booking begins.",
-        "1.23 \"Official Hostel Guest\" — A person who has completed the check-in process.",
-        "1.24 \"Assigned Room\" — The specific room that has been assigned to an Official Hostel Guest, who is permitted to enter only this room.",
-        "1.25 \"The Hostel's Rooms\" — Bedrooms and dorm rooms available to Official Hostel Guests.",
-        "1.26 \"Linen\" — Linen packs provided on check-in consisting of a pillowcase, bedsheet, undersheet, and a towel.",
-        "1.27 \"Room Upgrade\" — When you are allocated a room that is more expensive than the one you booked. The number of beds or other factors does not determine upgrades, only price.",
-        "1.28 \"Keycard\" — A plastic card, provided on deposit, which is encoded to unlock your Assigned Room’s door.",
-        "1.29 \"Preauthorization\" — The process where a Credit Card Holder’s credit card is temporarily authorized for a specified amount. Funds are reserved for potential future use and not taken immediately.",
-        "1.30 \"Checkout\" — Occurs only when all of the following have been done by an Official Hostel Guest: return Linen; return the Keycard; remove all personal belongings from the Assigned Room.",
-        "1.31 \"Minor\" — A person under the age of 18 in Italy.",
-        "1.32 \"Complimentary Service\" — A service the hostel may provide free of charge but is not part of a Confirmed Room Booking. Each complimentary service has its own terms (e.g., Breakfast, Drinks, Wi-Fi, Luggage Storage, Fridge Storage).",
-        "1.33 \"Temporary Guest\" — An individual permitted to access only the Communal Areas of The Hostel, granted upon verification of original identification. Only Hostel Staff may grant this status.",
-        "1.34 \"Accepted Payment Methods\" — MasterCard or Visa credit cards. Bank transfer is accepted only from an incorporated business. Other cards and platforms (e.g., AmEx, PayPal) are not accepted. Euros are accepted for cash.",
-        "1.35 \"Prepaid, Non Refundable Bookings\" — Discounted rate bookings requiring full payment at the time of booking; never eligible for refund thereafter.",
-        "1.36 \"First-come-first-to-choose\" — We do not allocate specific dorm beds; guests select from available beds and may change to another available bed during the stay.",
-        "1.37 \"Room Booking Type\" — Either Prepaid, Non Refundable or Refundable.",
-        "1.38 \"Refundable Bookings\" — Standard rate reservations with flexible terms (adjustable arrival dates, duration, and lenient cancellation policies). Depending on timing/policy, cancellations may lead to full refund or no charge.",
-        "1.39 \"Proof of Identity\" — Passport, National Identity Card, Driver’s Licence, or Military ID. Original documents only.",
-        "1.40 \"Serious Defect\" — A defect that we assess as seriously affecting your stay (e.g., broken bed, unsafe room temperatures, inability to access room, lack of water).",
-        "1.41 \"OTA\" — Online Travel Agent authorised to sell beds for commission (e.g., Hostelworld.com and Booking.com)."
+        "Effective date: 2026-01-09.",
+        "Applies to: all Bookings at Hostel Brikette and, where relevant, Visitors on site.",
+        "If you booked through an OTA, the OTA may also impose its own platform terms. These Booking Terms govern the accommodation contract between you and Skylar SRL for your stay at Hostel Brikette, to the extent permitted by applicable law.",
+        "1.1 Who we are — Skylar SRL (\"we\", \"us\", \"our\") operates Hostel Brikette. Registered office: Via Guglielmo Marconi, 358, 84017, Positano, Salerno, Italy. Property address: Via Guglielmo Marconi, 358, 84017, Positano, Salerno, Italy. Official contact email: hostelpositano@gmail.com. Website: https://hostel-positano.com.",
+        "1.2 \"Booking Terms\" — This document.",
+        "1.3 \"House Rules\" — The separate Hostel Brikette House Rules document in effect for your stay, incorporated by reference into the accommodation contract.",
+        "1.4 \"Booker\" — The person who submits a Booking Request and on whose name the Booking is made.",
+        "1.5 \"Guest\" — A person staying overnight under a Confirmed Booking.",
+        "1.6 \"Visitor\" — A person permitted to access only Communal Areas under the House Rules and who is not staying overnight (also referred to in some locales as \"Temporary Guest\").",
+        "1.7 \"Cardholder\" — The owner of the payment card used to pay for or guarantee a Booking.",
+        "1.8 \"Booking Request\" — A request to reserve accommodation at Hostel Brikette, made through our Website or an authorised OTA.",
+        "1.9 \"Confirmed Booking\" — A Booking Request we have accepted in writing (including by email or by confirmation through an OTA platform message/confirmation), forming a binding accommodation contract.",
+        "1.10 \"OTA\" — An online travel agency authorised by us to offer our beds/rooms for sale (examples include Hostelworld.com and Booking.com).",
+        "1.11 \"Rate Type\" — The pricing rule set attached to a Booking, such as Refundable Rate or Non‑Refundable Rate, as shown at booking and in your Confirmed Booking.",
+        "1.12 \"Non‑Refundable Rate\" — A discounted or restricted rate requiring full payment at booking and not eligible for refund except where required by law.",
+        "1.13 \"Refundable Rate\" — A rate that may allow cancellation or changes within the rules shown at booking and in your Confirmed Booking.",
+        "1.14 \"Official Check‑In Window\" — 15:00 to 22:00 on the arrival date, unless your Confirmed Booking states otherwise.",
+        "1.15 \"No Show\" — A Guest does not complete check‑in by the end of the Official Check‑In Window on the arrival date and has not obtained our written agreement to arrive later.",
+        "1.16 \"Late Cancellation\" — A cancellation requested outside the applicable cancellation notice period for the Rate Type.",
+        "1.17 \"Termination for Breach\" — We end a stay (or refuse continued accommodation) due to a breach of the House Rules or these Booking Terms.",
+        "1.18 \"Preauthorisation\" — A temporary hold on a payment card, reserving funds without immediate capture.",
+        "1.19 \"Security Deposit\" — A deposit or preauthorisation held to cover amounts owed under these Booking Terms or the House Rules (e.g., damages, fines, unpaid fees), as described in Section 5.",
+        "1.20 \"Communal Areas\" — Designated shared areas as described in the House Rules (and excludes Guest rooms/dormitories unless expressly stated).",
+        "1.21 \"Serious Defect\" — An accommodation or facility defect that materially impacts the stay (examples: broken bed, lack of water, inability to access room) assessed reasonably by us.",
+        "1.22 Interpretation — \"Writing\" includes email and messages through the OTA platform.",
+        "1.23 Times and deadlines are in local time unless stated otherwise.",
+        "1.24 If there is a conflict between these Booking Terms and the House Rules on financial matters, these Booking Terms prevail; on conduct and on‑site operations, the House Rules prevail."
       ]
     },
     "s2": {
-      "title": "2. Booking Requests",
+      "title": "2. Booking Requests, Authorised Channels, and Contract Formation",
       "body": [
-        "2.1 Submitting a Booking Request — Requests must be made in writing via an OTA or our website. In-person discussions are informational only. By submitting you agree to these Terms and confirm accuracy of your details.",
-        "2.2 Processing — We begin processing after required deposits, preauthorisations, or payments clear via an accepted method. The Credit Card Holder must be identified and may need to authorise charges in writing via our official email. If verification is not obtained, we decline the request.",
-        "2.3 Declining — We may decline any Room Booking Request for any reason.",
-        "2.4 Request Size Limit — Maximum seven (7) nights and groups of five (5) people or fewer. Larger requests are treated as multiple bookings.",
-        "2.5 Counter Offer — If requested rooms are unavailable we may send alternatives to your Designated Email Address. Acceptance triggers payment/preauth attempts.",
-        "2.6 Prepaid, Non Refundable — We may require explicit agreement to these Terms; failure to agree cancels the request. We make up to three payment attempts before cancelling.",
-        "2.7 Confirmation — A booking is confirmed only when we email confirmation (booking reference, arrival date, duration, etc.) to the Designated Email Address. You agree to verify details and notify us of errors via our official email.",
-        "2.9 Number of Guests Included — One per single bed; up to two per double; apartments up to advertised allowance. Room capacity must not be exceeded.",
-        "2.9 Scope of Facilities — Includes Linen and a Keycard per person, access to showers and hot water at stated times, and access to Communal Areas. All other services are complimentary and subject to separate terms.",
-        "2.10 Financial Obligation — The Credit Card Holder is responsible for the booking and any additional charges (damages, extra cleaning, fines, failure to checkout policy, etc.).",
-        "2.11 Allocation of Rooms and Dorm Beds — We assign each person to an Assigned Room. Dorm beds are first-come-first-to-choose; group bookings may be split across rooms.",
-        "2.12 Allocating Upgrades — Upgrades may be assigned on payment or for inventory reasons; if not paid, we may revert to the original room type."
+        "2.1 Authorised booking channels and resale prohibition — Bookings must be made through our Website or an authorised OTA. Unauthorised resale of our accommodation inventory is prohibited. We may refuse or cancel requests we reasonably believe involve unauthorised resale or fraud.",
+        "2.2 How a Booking becomes confirmed — A Booking becomes a Confirmed Booking only when we issue written confirmation (by email, OTA confirmation, or OTA message thread). Until then, discussions (including in person or by phone) are informational only.",
+        "2.3 Declining Booking Requests — We may decline a Booking Request where necessary for lawful operation, safety, capacity/inventory constraints, failure to complete required verification or payment, suspected fraud, or breach of these Booking Terms or the House Rules. We will not decline bookings on unlawful discriminatory grounds.",
+        "2.4 Accuracy of details and communications — The Booker must provide accurate contact details (including a monitored email address). We send material booking communications to the contact details provided. If you booked through an OTA, we may communicate via the OTA message system and/or email.",
+        "2.5 Verification, fraud prevention, and authorisations — We may require identity and/or payment verification to prevent fraud (including confirmation that the Cardholder authorises charges). If required verification is not provided within a reasonable time, we may decline the Booking Request or cancel the Booking (and apply the applicable fee rules if it had already become a Confirmed Booking).",
+        "2.6 Booking size limits — Unless we agree otherwise in writing, the following limits apply: maximum stay length per Booking: 7 nights; maximum group size per Booking: 5 people. If larger requests are accepted, they may be structured as multiple bookings. Fee rules apply per Booking unless we confirm otherwise in writing.",
+        "2.7 Non‑transferability — Bookings are non‑transferable. The Booker name cannot be changed without our written approval. Guests listed on a Booking may be changed only with our written approval and subject to identity verification and capacity rules."
       ]
     },
     "s3": {
-      "title": "3. Age and Accessibility",
+      "title": "3. Rates, Inclusions, and Room Allocation",
       "body": [
-        "3.1 Accessibility — Please contact us before booking for specific needs. The building has stairs and no porter service. Sound-producing sleep equipment may be used in private rooms only.",
-        "3.2 Fit and Independent — We cannot provide ongoing care. If you are unable to manage independently, we will cancel the booking.",
-        "3.3 Minors — Minors cannot travel alone in Italy. Children 16 and under may only stay in private rooms. Guests aged 17 may stay in dorms only with a companion aged 18+ in the same room. Guardians must prove legal capacity or the booking will be cancelled."
+        "3.1 What is included — Unless your Confirmed Booking states otherwise, accommodation includes: a bed/room for each Guest for the booked nights; standard linen as provided at check‑in (see House Rules for details); access to Communal Areas during your stay; access to shared bathrooms/showers subject to posted schedules (if any). Any additional services (e.g., breakfast, drinks, Wi‑Fi, luggage storage, fridge storage) may be complimentary or paid and may be subject to separate terms communicated on site or on the Website.",
+        "3.2 Room and bed allocation — We allocate room types based on your Confirmed Booking. For dormitories, beds are generally assigned on a first‑come selection basis unless we specify otherwise. Group bookings may be split across rooms due to availability.",
+        "3.3 Upgrades — If we provide an upgrade, it may be paid (where you agree in writing and we successfully take payment) or operational (where we temporarily place you in a different room for inventory reasons). If an upgrade is paid but payment fails, we may revert the Booking to the original room type (subject to availability)."
       ]
     },
     "s4": {
-      "title": "4. Third Party Processes and Payments",
+      "title": "4. Payments, Deposits, and Preauthorisations",
       "body": [
-        "When you submit a Room Booking Request through a third-party payment processor (OTA), you complete payment on their platform according to their terms and conditions.",
-        "Payments made directly to the third party are governed by your agreement with them, and The Hostel has no control over these processes.",
-        "We do not receive any part of those payments and cannot assume liability for bookings made this way.",
-        "You are responsible for ensuring the payment was successful and the booking is confirmed before arriving at The Hostel.",
-        "For questions about payment on an OTA, contact the third-party provider directly."
+        "4.1 Accepted payment methods — Accepted payment methods are: Visa and Mastercard; cash in EUR; bank transfer only from incorporated businesses.",
+        "4.2 When payment is due — Payment timing depends on the Rate Type and booking channel. Non‑Refundable Rate: full payment is due at booking (or at confirmation if we process payment manually). Refundable Rate: payment may be due at booking, at check‑in, or within a stated timeframe; we may require a preauthorisation/guarantee. Your Confirmed Booking will state the payment timing and rules applicable to your Rate Type.",
+        "4.3 Payments via OTAs — If you book through an OTA, your payment may be collected either by the OTA (as merchant of record) or Skylar SRL (as merchant of record). The merchant of record and applicable refund process will be indicated in your booking confirmation and/or the OTA booking page. Where the OTA is merchant of record, refund processing (if any) is handled by the OTA under its procedures.",
+        "4.4 Deposits and advance payments — If we take a deposit or advance payment, whether it is refundable depends on the Rate Type and the cancellation rules shown at booking and in your Confirmed Booking. We do not treat all deposits as automatically non‑refundable unless explicitly stated for that Rate Type.",
+        "4.5 Preauthorisations — We may preauthorise a payment card for amounts consistent with the accommodation price, the Security Deposit rule (Section 5), and/or charges reasonably anticipated under the Booking (e.g., late cancellation, no show, damages). A preauthorisation is not a final charge. Release timing depends on card issuer and processing bank."
       ]
     },
     "s5": {
-      "title": "5. Deposits and Pre‑authorizations",
+      "title": "5. Security Deposit and Safeguarding",
       "body": [
-        "5.1 Booking Request Deposits — We may require a deposit to secure your booking. Amounts vary by booking type; prepaid non‑refundable bookings require 100% deposit. All deposits paid to The Hostel are non‑refundable. If we cannot collect the required deposit, we will decline your request.",
-        "5.2 Booking Request Preauthorizations — We may require a preauthorization based on the agreed price and terms. If we are unable to process the required amount, we will decline your request."
+        "5.1 Security Deposit rule — We may require a Security Deposit for the duration of the stay of one night per Guest, taken as either a preauthorisation or cash deposit (permitted methods may vary by locale).",
+        "5.2 Use of Security Deposit — We may apply all or part of the Security Deposit to amounts owed under these Booking Terms or the House Rules, including: unpaid accommodation or extensions; damages or missing items; cleaning fees for excessive mess; penalties for serious House Rules breaches (where permitted); keycard/linen replacement where applicable. If costs exceed the Security Deposit, you remain responsible for the balance.",
+        "5.3 If we cannot obtain the Security Deposit — If we cannot obtain the Security Deposit by preauthorisation, we may accept cash or another acceptable method, or another Guest/Cardholder may provide it. If no acceptable Security Deposit is provided, we may refuse check‑in and treat the Booking under the No Show / cancellation rules applicable to the Rate Type."
       ]
     },
     "s6": {
-      "title": "6. No Show Charges",
+      "title": "6. Cancellations, Changes, No Shows, Early Departure",
       "body": [
-        "If you fail to arrive for your reservation, your booking becomes a No Show and a No Show Charge will be applied.",
-        "The charge applies to each Confirmed Room Booking. Different bookings may have different cancellation notice periods, which may affect outcomes."
+        "6.1 How to request changes or cancellations — All cancellation or change requests must be made in writing to hostelpositano@gmail.com or via the OTA message system (if booked through an OTA). We recommend you use the same channel you used to book.",
+        "6.2 How notice periods are measured — Unless your Confirmed Booking states otherwise: notice periods are measured in local time and counted back from 15:00 on the scheduled arrival date.",
+        "6.3 Cancellation rules and fees — Cancellation fees (if any), refund eligibility (if any), and deadlines depend on the Rate Type and booking channel and are set out at the time you book, in your Confirmed Booking, and in Appendix A (Rate & Fee Schedule).",
+        "6.4 Changes and extensions — A change request may be treated as a cancellation of the original Booking and creation of a new Booking, depending on availability and Rate Type. Extensions are subject to availability and are treated as a new booking period (which may have a different Rate Type). We will confirm approved changes in writing. Until confirmed, the original Booking remains in effect.",
+        "6.5 No Show — If a Booking becomes a No Show, fees will apply according to the Rate Type and Appendix A. For Non‑Refundable Rates, this generally means no refund.",
+        "6.6 Early departure and unused nights — If you leave early after check‑in, this does not automatically create a refund. Any refund, credit, or waiver (if any) is governed by the Rate Type, whether we have confirmed a change/cancellation in writing, and any mandatory requirements of applicable law.",
+        "6.7 Termination for breach (eviction / refusal of continued stay) — If we terminate your stay due to a serious breach of these Booking Terms or the House Rules: you may be required to leave immediately; you may remain responsible for charges for unused nights as permitted by applicable law and consistent with the Rate Type; we may apply the Security Deposit to amounts owed and/or charge the Cardholder. Termination for breach is not a \"No Show\"."
       ]
     },
     "s7": {
-      "title": "7. Cancellations",
+      "title": "7. Check‑In Requirements (Eligibility, ID, and Payment)",
       "body": [
-        "Cancellation requests must be sent in writing to our official email address.",
-        "When determining if a request is within the notice period, timing is measured from when we receive your email until 00:01 on the day your booking begins.",
-        "A Cancellation Administration Fee may apply (standard 15% of the booking price, minus any commissions already paid to third parties).",
-        "If we accept your request, we will confirm by email. Until that email is sent, the booking remains confirmed.",
-        "A booking may be cancelled without a written request if: you fail to check in before reception closes on the first day; you check out before the end of your booking; or you breach hostel policies.",
-        "Re‑booking after cancellation is subject to availability.",
-        "Cancellations outside the notice period are treated as No Show and may incur a No Show Charge."
+        "7.1 Check‑in window and late arrivals — Check‑in is available during 15:00–22:00. If you expect to arrive late, you must request late‑arrival instructions in advance. Any self‑service check‑in is discretionary and may require successful ID and payment verification in advance.",
+        "7.2 Proof of identity — Each Guest must present valid original identification at check‑in as required for registration and security. Accepted IDs (example list): passport, national identity card, driver’s licence, military ID (original documents only). Locale versions should include any locally required data fields. If a Guest cannot provide valid ID by 22:00 on the arrival date, we may refuse check‑in and apply the No Show/Late Cancellation rules for the Rate Type.",
+        "7.3 Balance payment at check‑in — Any remaining balance due must be paid before check‑in is completed.",
+        "7.4 Age and minors (policy) — The Booker must be at least 18. Guests under 18 (\"Minors\") may be restricted to private rooms and/or may require an accompanying adult and proof of guardianship, as stated in the House Rules and/or the Confirmed Booking."
       ]
     },
     "s8": {
-      "title": "8. Changing Confirmed Room Bookings",
+      "title": "8. Defects, Maintenance, and Remedies",
       "body": [
-        "We replace Confirmed Room Bookings with new ones rather than modify existing reservations.",
-        "Send Booking Change Requests to our official email within the applicable notice period.",
-        "All changes are subject to availability and other conditions.",
-        "Requests to change length of stay are treated as both a Booking Change Request and either a Room Cancellation Request or a Booking Extension Request.",
-        "Extensions are treated as new bookings.",
-        "If you depart early without an approved Confirmed Room Cancellation, your original booking is considered fulfilled."
+        "8.1 Reporting — Guests must report defects or maintenance issues as soon as reasonably possible so we can investigate.",
+        "8.2 Handling and prioritisation — We prioritise repairs based on impact and safety.",
+        "8.3 Serious Defects — If we confirm a Serious Defect and cannot reasonably remedy it within a reasonable time, we may (as appropriate and subject to availability) move you to an alternative room/property accommodation, provide a pro‑rata adjustment for affected nights, and/or provide another remedy required by applicable law."
       ]
     },
     "s9": {
-      "title": "9. Booking Transferability",
+      "title": "9. Damage, Excess Cleaning, and Bed Bugs (Charges)",
       "body": [
-        "Room Booking Requests and Confirmed Room Bookings are strictly non‑transferable, in whole or in part.",
-        "Each booking must remain under the original booker's name throughout its duration.",
-        "Attempts to check in using a transferred booking will make the individual financially responsible for their stay and may result in immediate cancellation.",
-        "Attempts to alter the assigned guest name may also lead to cancellation."
+        "9.1 Damage and loss — If you damage property or cause loss, you are responsible for reasonable repair/replacement costs and reasonable administrative costs, subject to applicable law. We may charge the Cardholder and/or apply the Security Deposit. Staff labour rates (if used): Director €50/h, Manager €35/h, Staff €25/h.",
+        "9.2 Bed bugs — If we reasonably determine (based on inspection and evidence) that a Guest introduced bed bugs, we may charge reasonable direct costs of remediation and associated demonstrable losses, subject to applicable law. See House Rules for required Guest conduct (reporting, containment steps)."
       ]
     },
     "s10": {
-      "title": "10. Prepaid, Non‑Refundable Bookings",
+      "title": "10. Personal Belongings and Property Storage",
       "body": [
-        "Payment in full is required at the time of booking. If payment fails, the booking request will be cancelled.",
-        "In the event of a No Show, no refund will be issued.",
-        "Extension requests are considered under the terms outlined in this document."
+        "Guests are responsible for their belongings. Where we offer lockers/safes or storage as a convenience, availability and rules are set out in the House Rules and/or separate storage terms.",
+        "Nothing in these Booking Terms excludes or limits liability where such exclusion/limitation is not permitted by applicable law."
       ]
     },
     "s11": {
-      "title": "11. Arrival",
+      "title": "11. Liability",
       "body": [
-        "11.1 Check‑In Request — All guests must identify themselves and initiate a Check‑In upon arrival.",
-        "11.2 Early Arrival — Guests arriving before 10:30 AM on the day of their booking will be unable to enter the hostel.",
-        "11.3 Arrival Between 10:30 AM and 3:00 PM — If agreed by us, you may become a Temporary Guest. A discretionary luggage storage facility may be available and has separate terms.",
-        "11.3 Check‑In Window — Regular check‑in occurs during the Official Check‑In Time (3–10 PM).",
-        "11.5 Late Arrival — Reception is closed after 10:00 PM. We may, at our discretion, provide self‑service check‑in instructions. You accept responsibility for issues arising from an inability to receive or follow instructions or for providing incorrect contact details."
+        "11.1 Mandatory‑law carve‑out — Nothing in these Booking Terms limits or excludes our liability where it cannot be limited or excluded under applicable law.",
+        "11.2 Scope — Subject to Section 11.1, we are responsible for providing the accommodation and services included in your Confirmed Booking. We are not responsible for issues caused by your breach of these Booking Terms or the House Rules, third parties not under our control (including OTAs, payment processors, carriers), or events outside our reasonable control (force majeure), to the extent permitted by law.",
+        "11.3 Loss types and caps (where permitted) — Subject to Section 11.1, and to the extent permitted by applicable law: we are not liable for indirect or consequential losses, and our total liability in connection with the Booking is limited to the total amount paid to us for the accommodation portion of the Confirmed Booking."
       ]
     },
     "s12": {
-      "title": "12. Check‑In",
+      "title": "12. Privacy and CCTV",
       "body": [
-        "12.1 Necessity of Process — If we are unable to complete check‑in, we will refuse to check you in and cancel your booking (treated as a No Show).",
-        "12.2 Proof of Identity — We must receive valid ID for each guest (First Name, Surname, Place of Birth, Citizenship, Date of Birth, ID number). Failure to present valid ID by 10 PM on the first day of your booking will result in cancellation (No Show).",
-        "12.2 Balance Payment — Any remaining balance must be settled via an accepted payment method before check‑in can be completed. Failure to pay will result in cancellation (No Show).",
-        "12.3 Keycard & Linen Deposit — A €10 cash deposit is required at check‑in and will be refunded on checkout upon return of the Keycard and Linen."
+        "12.1 Privacy notice — We process personal data in accordance with our privacy policy at https://hostel-positano.com/privacy-policy. That policy describes what we collect, why, legal bases (where relevant), retention, and how to exercise rights.",
+        "12.2 CCTV in public areas — We operate CCTV in certain public areas of the property for safety, security, and fraud prevention purposes. CCTV is signposted on site, is accessed only by authorised personnel, may be shared with law enforcement where required or permitted by law, and is retained for 30 days unless a longer period is required for an incident investigation or by law. For CCTV questions or data requests, contact: hostelpositano@gmail.com."
       ]
     },
     "s13": {
-      "title": "13. Safeguarding Process",
+      "title": "13. Website Information and Third‑Party Links",
       "body": [
-        "We may hold an amount equal to one night per person as a security deposit for the duration of your stay (via preauthorization or cash).",
-        "This amount may be used to pay fines, fees, room extensions, or other monies owed in accordance with hostel policies.",
-        "If we cannot preauthorize the amount, another member of your group may provide it or you may pay cash; otherwise your booking may be cancelled."
+        "We aim to keep Website information accurate but may update content. Photos may be illustrative. Third‑party links are provided for convenience; we are not responsible for third‑party content."
       ]
     },
     "s14": {
-      "title": "14. Duty of Care",
+      "title": "14. Health and Safety",
       "body": [
-        "You must respect other guests and staff, avoid damage, and follow hostel rules.",
-        "Breaches may result in immediate cancellation (No Show policy may apply) and/or a request to depart without refund.",
-        "Costs or fines caused by your actions may be billed to you. We report breaches of the law as required."
+        "Guests should act responsibly regarding transmissible diseases. Refund rules follow the Rate Type unless mandatory law requires otherwise. We recommend travel insurance."
       ]
     },
     "s15": {
-      "title": "15. Defects and Damage",
+      "title": "15. Promotions and Coupons",
       "body": [
-        "15.1 Reporting Defects — Please report any room defects immediately.",
-        "15.2 Assessing Defects — We assess and prioritise responses based on impact to your stay.",
-        "15.3 Serious Defects — We will attempt to fix serious defects; if not possible, we will seek alternative accommodation or provide pro‑rata refunds based on price difference or remaining nights.",
-        "15.4 Unreported Defects — If discovered later, we may apply our damage and loss policy.",
-        "15.5 Damages — We may preauthorize or request a deposit to cover potential damage or loss. Refunds are net of charges incurred. Excess costs (materials, labour, administration) will be billed. Overtime rates: Director €50/h, Manager €35/h, Staff €25/h."
+        "Coupons, where offered, are valid only as stated (e.g., Website‑only) and may have additional terms shown with the promotion."
       ]
     },
     "s16": {
-      "title": "16. Bed Bugs",
+      "title": "16. Governing Law and Venue",
       "body": [
-        "We take measures to prevent and remove bed bug infestations. If an infestation occurs during your stay, you may be held responsible for damages including lost booking revenue, claims by other guests, and cleaning and pest-removal costs.",
-        "If you have previously stayed in a place with bed bugs, please disclose this during check‑in and disinfect your belongings.",
-        "Check your possessions before checking in. Report any suspected issues immediately."
+        "These Booking Terms are governed by Italian law and disputes must be brought in the courts of Italy, subject to any mandatory consumer jurisdiction rules that apply in the Guest’s place of residence."
       ]
     },
     "s17": {
-      "title": "17. Personal Belongings and Security",
+      "title": "Appendix A — Rate & Fee Schedule",
       "body": [
-        "Guests are responsible for their belongings at all times. The hostel is not liable for loss, damage, or theft except as required by law.",
-        "Lockers or safe boxes may be provided, but responsibility for belongings remains with the guest.",
-        "Unclaimed items will be disposed of after 30 days from checkout.",
-        "Dangerous or illegal items are prohibited and may be confiscated or reported to authorities."
-      ]
-    },
-    "s18": {
-      "title": "18. Identification and Security Measures",
-      "body": [
-        "All guests must wear the provided security bands while on the premises and produce valid identification upon request by hostel staff.",
-        "Failure to wear the security band or provide ID may result in being asked to leave without refund.",
-        "Lost or damaged bands must be reported immediately; a small replacement charge may apply."
-      ]
-    },
-    "s19": {
-      "title": "19. CCTV Surveillance",
-      "body": [
-        "CCTV cameras are installed in public areas for the safety and security of guests and property.",
-        "Recordings are stored securely, accessed only by authorised management, and may be shared with law enforcement where required by law.",
-        "CCTV does not guarantee complete security. By agreeing to these terms, you consent to CCTV usage as described."
-      ]
-    },
-    "s20": {
-      "title": "20. Temporary Guests",
-      "body": [
-        "Temporary Guest status may be granted at our sole discretion.",
-        "Temporary Guests may access only the Communal Areas and are not permitted in rooms.",
-        "Official Hostel Guests are not permitted to grant Temporary Guest status to others.",
-        "Requests may be accepted between 9 AM and 11 PM on days when the hostel is open.",
-        "We reserve the right to decline or revoke Temporary Guest status at any time."
-      ]
-    },
-    "s21": {
-      "title": "21. Unregistered Persons",
-      "body": [
-        "All individuals staying at the property must be registered, including Temporary Guests.",
-        "If we discover an unregistered person staying in a room, we may charge the standard room rate for each unregistered person plus an administrative fee equal to twice the standard room rate.",
-        "The unregistered person must check in and follow standard procedures or we may notify local police.",
-        "Failure to report an unregistered person may result in cancellation of the booking (No Show policy may apply)."
-      ]
-    },
-    "s22": {
-      "title": "22. Checkout",
-      "body": [
-        "The official checkout time is between 7:30 AM and 10:30 AM.",
-        "After completing checkout, do not re‑enter your room or leave belongings inside.",
-        "You must adhere to the Post‑Checkout conditions described in these terms."
-      ]
-    },
-    "s23": {
-      "title": "23. Early Checkout",
-      "body": [
-        "If you need to leave before 7:30 AM, please visit reception the night before to arrange early checkout and obtain a refund of your keycard deposit.",
-        "Unreturned keycards will result in forfeiture of the deposit.",
-        "Deposits are refunded in cash only, to a staff member in person."
-      ]
-    },
-    "s24": {
-      "title": "24. Late Checkout",
-      "body": [
-        "Late checkout is available only with prior written agreement, allowing checkout by 12:00 PM.",
-        "This is discretionary, depends on occupancy, and must be confirmed in writing.",
-        "The service costs €40 and is offered on a first‑come, first‑served basis."
-      ]
-    },
-    "s25": {
-      "title": "25. Failure to Checkout",
-      "body": [
-        "If you fail to check out by the agreed time, we may remove your belongings from the room without liability.",
-        "Any attempt to access guest‑only areas after the agreed time may be treated as a security breach in accordance with our policies.",
-        "We may transfer your belongings to a local porter service for storage; collection fees will be determined by the porter service."
-      ]
-    },
-    "s26": {
-      "title": "26. Post Checkout",
-      "body": [
-        "Once you complete the checkout process, your Confirmed Room Booking is fulfilled, regardless of the remaining booked duration.",
-        "You will cease to be an Official Hostel Guest and become a Temporary Guest until 3:30 PM.",
-        "On request, we may enroll you into our luggage storage facility at our discretion, subject to separate terms and conditions."
-      ]
-    },
-    "s27": {
-      "title": "27. Alcohol",
-      "body": [
-        "As a licensed premises, guests are not permitted to bring alcohol purchased off‑site into the hostel.",
-        "If we become aware of off‑site alcohol on the premises, we may safeguard it and return it at checkout or when assured it will be consumed off‑site.",
-        "Failure to comply may result in immediate cancellation of your booking and will be treated as a No Show."
-      ]
-    },
-    "s28": {
-      "title": "28. Modification of These Terms and Conditions",
-      "body": [
-        "These Terms and Conditions constitute the entire agreement between you and The Hostel and supersede any prior agreements or understandings, whether written or oral.",
-        "We reserve the right to modify these Terms and Conditions at any time."
-      ]
-    },
-    "s29": {
-      "title": "29. Scope of Liability",
-      "body": [
-        "Our liability is limited to the services and items listed in these terms.",
-        "Our total liability will not exceed the amount you paid for the booking.",
-        "We are not responsible for loss or damage to personal property, except as required by law.",
-        "We are not liable for indirect, consequential, or economic losses, or loss of profit, goodwill, or opportunity, including those caused by negligence or force majeure.",
-        "We provide secure storage for valuable possessions but assume no financial liability for them.",
-        "We reserve the right to move items during cleaning without notice."
-      ]
-    },
-    "s30": {
-      "title": "30. Governing Law",
-      "body": [
-        "These terms and conditions are governed by the laws of Italy, and any legal action must be brought in the courts of Italy."
-      ]
-    },
-    "s31": {
-      "title": "31. Website Information",
-      "body": [
-        "We make every effort to ensure the accuracy of the information on our website; however, we cannot be held responsible for errors or omissions.",
-        "We reserve the right to make changes to the Website and its content at any time without notice.",
-        "Some images on the Website may represent the general style of our products and facilities and may not depict the exact product or aspect shown.",
-        "All content on the Website, including text, images, and trademarks, is the property of The Hostel and may not be used without written permission.",
-        "We provide links to third-party websites for your convenience, but we are not responsible for their content or use.",
-        "Please see our privacy policy for information on how we protect your privacy when using our website."
-      ]
-    },
-    "s32": {
-      "title": "32. Health and Safety Policy",
-      "body": [
-        "To ensure safety and well-being, any guest recently exposed to a transmissible disease should act responsibly.",
-        "Pre‑paid, non‑refundable bookings remain non‑refundable under these circumstances.",
-        "We strongly recommend purchasing travel insurance to protect against unforeseen events, including illness or inability to travel."
-      ]
-    },
-    "s33": {
-      "title": "33. Coupons",
-      "body": [
-        "We may issue promotional coupons from time to time.",
-        "Coupons are valid exclusively for bookings made through our official website (hostel-positano.com).",
-        "Each coupon may be subject to specific terms in addition to those outlined in this document."
+        "This appendix must be consistent with what you show at booking.",
+        "A1. Non‑Refundable Rate (Prepaid) — Payment: 100% at booking/confirmation. Cancellation: no refund (except where required by law). No Show: no refund. Changes: treated as a new booking; price/rate may differ; subject to availability.",
+        "A2. Refundable Rate (Guarantee only) — Payment: at check‑in (or within a stated pre‑arrival window), but we may preauthorise at booking. Free cancellation: up to 72 hours before 15:00 on arrival date. Late Cancellation fee: the higher of the first night’s stay or any non‑refundable deposit, plus any applicable cancellation administration fee. No Show fee: the higher of the first night’s stay or any non‑refundable deposit.",
+        "A3. Cancellation administration fee — €5 per booking, displayed at booking and reiterated in your confirmation email."
       ]
     }
   }

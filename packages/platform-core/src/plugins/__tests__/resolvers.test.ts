@@ -1,9 +1,11 @@
-import { mkdtemp, writeFile } from "fs/promises";
-import * as fs from "fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { exportsToCandidates, resolvePluginEntry, importByType } from "../resolvers";
+
+import { mkdtemp, writeFile } from "fs/promises";
+import * as fs from "fs/promises";
+
 import { logger } from "../../utils";
+import { exportsToCandidates, importByType,resolvePluginEntry } from "../resolvers";
 
 jest.mock("fs/promises", () => {
   const actual = jest.requireActual("fs/promises");

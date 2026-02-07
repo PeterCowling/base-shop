@@ -1,12 +1,12 @@
+import type { InventoryItem } from "../../types/inventory";
 import {
-  flattenInventoryItem,
-  expandInventoryItem,
-  normalizeQuantity,
-  computeAvailability,
   applyInventoryBatch,
+  computeAvailability,
+  expandInventoryItem,
+  flattenInventoryItem,
+  normalizeQuantity,
   type RawInventoryItem,
 } from "../inventory";
-import type { InventoryItem } from "../../types/inventory";
 
 describe("normalizeQuantity", () => {
   it("handles pair units", () => {

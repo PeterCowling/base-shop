@@ -1,11 +1,17 @@
 import "@testing-library/jest-dom";
-import { render, waitFor, act } from "@testing-library/react";
+
+import * as React from "react";
+import { act,render, waitFor } from "@testing-library/react";
+
+import { PRODUCTS } from "@acme/platform-core/products/index";
+
+import CmsProductCarousel, { getRuntimeProps } from "../ProductCarousel";
+import { fetchCollection } from "../products/fetchCollection";
 
 jest.mock("react", () => {
   const actual = jest.requireActual("react");
   return { ...actual, useState: jest.fn(actual.useState) };
 });
-import * as React from "react";
 
 jest.mock("../products/fetchCollection", () => ({
   fetchCollection: jest.fn(),
@@ -20,10 +26,6 @@ jest.mock("../../../organisms/ProductCarousel", () => ({
 jest.mock("@acme/platform-core/products/index", () => ({
   PRODUCTS: [{ id: "mock" }],
 }));
-
-import CmsProductCarousel, { getRuntimeProps } from "../ProductCarousel";
-import { fetchCollection } from "../products/fetchCollection";
-import { PRODUCTS } from "@acme/platform-core/products/index";
 
 describe("CmsProductCarousel", () => {
   let setProducts: jest.Mock;
@@ -68,8 +70,8 @@ describe("CmsProductCarousel", () => {
     let resolve: (value: unknown) => void;
     (fetchCollection as jest.Mock).mockImplementationOnce(
       () =>
-        new Promise((res) => {
-          resolve = res;
+        new Promise((r) => {
+          resolve = r;
         })
     );
 

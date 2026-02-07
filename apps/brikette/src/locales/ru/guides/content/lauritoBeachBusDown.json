@@ -5,9 +5,7 @@
   },
   "linkLabel": "Bus to Laurito Beach",
   "lead": {
-    "shareLabel": "Scan to Share",
-    "qrAlt": "QR code to share this guide",
-    "figures": [
+    "images": [
       {
         "alt": "Автобусная остановка Chiesa Nuova рядом с баром Internazionale.",
         "caption": "Chiesa Nuova – Bar Internazionale stop"

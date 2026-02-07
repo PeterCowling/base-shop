@@ -1,4 +1,5 @@
-import { renderHook, act } from "@testing-library/react";
+import { act,renderHook } from "@testing-library/react";
+
 import useRemoteImageProbe from "../src/hooks/useRemoteImageProbe";
 
 describe("useRemoteImageProbe", () => {
@@ -43,8 +44,8 @@ describe("useRemoteImageProbe", () => {
 
   it("sets loading during fetch and resets after success", async () => {
     let resolveFetch: (value: unknown) => void;
-    const fetchPromise = new Promise((res) => {
-      resolveFetch = res;
+    const fetchPromise = new Promise((resolve) => {
+      resolveFetch = resolve;
     });
     mockFetch.mockReturnValueOnce(fetchPromise as any);
     const { result } = renderHook(() => useRemoteImageProbe());
@@ -94,8 +95,8 @@ describe("useRemoteImageProbe", () => {
 
   it("sets loading during fetch and resets after failure", async () => {
     let rejectFetch: (reason?: unknown) => void;
-    const fetchPromise = new Promise((_, rej) => {
-      rejectFetch = rej;
+    const fetchPromise = new Promise((_resolve, reject) => {
+      rejectFetch = reject;
     });
     mockFetch.mockReturnValueOnce(fetchPromise as any);
     const { result } = renderHook(() => useRemoteImageProbe());

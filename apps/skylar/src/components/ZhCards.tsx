@@ -2,11 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useTranslations } from "@i18n";
+
+import { useTranslations } from "@acme/i18n";
+
 import { getContactRowsForPerson } from "@/data/people";
+import { CRISTIANA_WECHAT_QR_IMAGE } from "@/lib/assets";
 import type { Locale } from "@/lib/locales";
 import { localizedPath } from "@/lib/routes";
-import { CRISTIANA_WECHAT_QR_IMAGE } from "@/lib/assets";
 
 type CardProps = {
   lang: Locale;

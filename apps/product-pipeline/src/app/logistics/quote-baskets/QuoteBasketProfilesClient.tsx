@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+
 import QuoteBasketCreateCard from "./QuoteBasketCreateCard";
 import QuoteBasketProfilesList from "./QuoteBasketProfilesList";
 import type { QuoteBasketProfile, QuoteBasketStrings } from "./types";

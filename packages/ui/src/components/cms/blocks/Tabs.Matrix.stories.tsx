@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/Tabs.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import TabsBlock from './Tabs';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './Tabs.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import TabsBlock from './Tabs';
+import fixture from './Tabs.fixtures.json';
 
 const meta: Meta<typeof TabsBlock> = {
   title: 'CMS Blocks/Tabs/Matrix',

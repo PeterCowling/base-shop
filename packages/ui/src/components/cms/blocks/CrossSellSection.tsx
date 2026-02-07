@@ -1,12 +1,14 @@
 "use client";
 
 import * as React from "react";
+
+import { useTranslations } from "@acme/i18n";
 import { PRODUCTS } from "@acme/platform-core/products/index";
 import type { SKU } from "@acme/types";
-import { ProductCard } from "../../organisms/ProductCard";
+
 import { Grid as DSGrid } from "../../atoms/primitives/Grid";
 import { Inline } from "../../atoms/primitives/Inline";
-import { useTranslations } from "@acme/i18n";
+import { ProductCard } from "../../organisms/ProductCard";
 
 export interface CrossSellRules {
   seedId?: string;

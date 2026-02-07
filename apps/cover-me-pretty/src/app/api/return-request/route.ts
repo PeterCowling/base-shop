@@ -3,11 +3,13 @@ import "@acme/zod-utils/initZod";
 
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { parseJsonBody } from "@shared-utils";
-import { createReturnAuthorization } from "@platform-core/returnAuthorization";
+
 import { sendEmail } from "@acme/email";
-import { getReturnLogistics } from "@platform-core/returnLogistics";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
+import { parseJsonBody } from "@acme/lib/http/server";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
+import { createReturnAuthorization } from "@acme/platform-core/returnAuthorization";
+import { getReturnLogistics } from "@acme/platform-core/returnLogistics";
+
 import shop from "../../../../shop.json";
 
 export const runtime = "nodejs";

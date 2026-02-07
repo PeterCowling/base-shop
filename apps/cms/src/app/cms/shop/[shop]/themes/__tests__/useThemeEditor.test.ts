@@ -1,6 +1,7 @@
-import { renderHook, act } from "@testing-library/react";
-import { useThemeEditor } from "../useThemeEditor";
+import { act,renderHook } from "@testing-library/react";
+
 import { patchShopTheme } from "../../../../wizard/services/patchTheme";
+import { useThemeEditor } from "../useThemeEditor";
 
 jest.mock("../../../../wizard/services/patchTheme", () => ({
   patchShopTheme: jest.fn().mockResolvedValue(undefined),

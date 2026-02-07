@@ -1,6 +1,8 @@
 import { z } from "zod";
+
 import { baseComponentSchema, type PageComponentBase } from "../base";
 import type { PageComponent } from "../page";
+
 import { pageComponentSchemaRef } from "./shared";
 
 export interface SectionComponent extends PageComponentBase {

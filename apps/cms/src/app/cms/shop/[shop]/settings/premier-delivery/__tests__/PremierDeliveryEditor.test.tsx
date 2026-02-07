@@ -1,17 +1,18 @@
 import "@testing-library/jest-dom";
+
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe, toHaveNoViolations } from "jest-axe";
 
-import PremierDeliveryEditor from "../PremierDeliveryEditor";
 import {
   __getUseSettingsSaveFormToastLog,
   __resetUseSettingsSaveFormMock,
 } from "../../hooks/useSettingsSaveForm";
+import PremierDeliveryEditor from "../PremierDeliveryEditor";
 
 jest.mock("../../hooks/useSettingsSaveForm");
 
-expect.extend(toHaveNoViolations);
+expect.extend(toHaveNoViolations as any);
 
 const updatePremierDelivery = jest.fn();
 
@@ -34,12 +35,6 @@ jest.mock(
 jest.mock("@/components/atoms", () => ({
   __esModule: true,
   Chip: ({ children, ...props }: any) => <span {...props}>{children}</span>,
-  Toast: ({ open, message, className, ...props }: any) =>
-    open ? (
-      <div role="status" className={className} {...props}>
-        {message}
-      </div>
-    ) : null,
 }));
 
 describe("PremierDeliveryEditor", () => {

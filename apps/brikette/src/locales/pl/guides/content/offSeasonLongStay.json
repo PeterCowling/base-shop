@@ -5,62 +5,62 @@
   },
   "linkLabel": "Dłuższy pobyt poza sezonem: wskazówki",
   "intro": [
-    "Tłumaczenie w przygotowaniu."
+    "Kilkutygodniowy pobyt poza sezonem to niższe temperatury, mniej promów i więcej czasu, by żyć jak miejscowi."
   ],
   "sections": [
     {
       "id": "housing",
-      "title": "Housing & rates",
+      "title": "Zakwaterowanie i stawki",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Negocjuj miesięczne pobyty bezpośrednio z pensjonatami w górnych dzielnicach Positano — od listopada do marca często zniżki 20–30%.",
+        "Rozważ bazy w Praiano lub Minori, jeśli chcesz mieć sklepy i płaskie spacery; w razie tęsknoty za Positano dojedziesz autobusem."
       ]
     },
     {
       "id": "weather",
-      "title": "Weather & packing",
+      "title": "Pogoda i pakowanie",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Noś kompaktowy parasol; Wiatr wieje przez dolinę, więc porywy są silniejsze, niż sugeruje prognoza."
+        "Spodziewaj się dziennych temperatur 12–16 °C, z przelotnymi opadami — pakuj warstwy, wodoodporną kurtkę i buty z dobrą przyczepnością na mokre schody.",
+        "Noś kompaktowy parasol; wiatr ciągnie przez dolinę, więc jego porywy bywają mocniejsze, niż pokazują prognozy."
       ]
     },
     {
       "id": "work-life",
-      "title": "Work & daily rhythm",
+      "title": "Praca i rytm dnia",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Wiele kawiarni ogranicza godziny otwarcia, więc planuj sesje coworkingowe wokół niezawodnego Wi-Fi w hostelu lub mieszkaniu.",
+        "Częściej gotuj samodzielnie — targi w Meta czy Sorrento mają szerszy wybór, a autobusy są pustsze na zakupy."
       ]
     },
     {
       "id": "community",
-      "title": "Staying social",
+      "title": "Utrzymanie kontaktu",
       "body": [
-        "Dołącz do lokalnych grup na Facebooku lub czatów WhatsApp, aby uczestniczyć w wymianie językowej i wspólnych kolacjach.",
-        "Tłumaczenie w przygotowaniu."
+        "Dołącz do lokalnych grup na Facebooku lub czatów WhatsApp, by brać udział w wymianach językowych i wspólnych kolacjach.",
+        "Wolontariat przy sprzątaniu miasta lub wydarzeniach kulturalnych łączy z mieszkańcami; gmina wiesza harmonogramy przy Piazza dei Mulini."
       ]
     }
   ],
   "tips": [
     "Zachowaj trochę monet euro do grzejników i pralni samoobsługowych – w miesiącach zimowych wiele maszyn nadal obsługuje wiele automatów.",
-    "Tłumaczenie w przygotowaniu."
+    "Śledź tygodniowo zredukowane rozkłady autobusów i promów — harmonogramy zmieniają się przy świętach."
   ],
   "faqs": [
     {
       "q": "Do restaurants stay open?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Część restauracji działa przez cały rok, ale więcej opcji znajdziesz w Amalfi i Sorrento — planuj kolacje podczas wyjazdów do tych miast."
       ]
     },
     {
-      "q": "Tłumaczenie w przygotowaniu.",
+      "q": "Czy Droga Bogów jest bezpieczna zimą?",
       "a": [
-        "Tak w suche dni, ale unikaj tego po ulewnym deszczu; skały stają się śliskie, a małe osuwiska są częstsze."
+        "Tak, ale tylko w suche dni — po ulewnych deszczach skały robią się śliskie, a małe osuwiska są częstsze."
       ]
     }
   ],
   "fallback": {
-    "tocTitle": "On this page",
+    "tocTitle": "Na tej stronie",
     "intro": [],
     "toc": [
       {
@@ -73,7 +73,7 @@
       },
       {
         "href": "#transport",
-        "label": "Tłumaczenie w przygotowaniu."
+        "label": "Transport poza sezonem"
       },
       {
         "href": "#weather",
@@ -89,7 +89,7 @@
         "id": "connectivity",
         "title": "Connectivity",
         "body": [
-          "Tłumaczenie w przygotowaniu."
+          "Połącz stabilne Wi-Fi w kawiarniach z eSIMem w zapasie; sprawdzaj mapy operatorów (TIM/Vodafone/WindTre)."
         ]
       },
       {
@@ -101,7 +101,7 @@
       },
       {
         "id": "transport",
-        "title": "Tłumaczenie w przygotowaniu.",
+        "title": "Transport poza sezonem",
         "body": [
           "Promy zmniejszają się; polegaj na autobusach i planuj dni na deszcz/wiatr."
         ]
@@ -110,16 +110,16 @@
         "id": "weather",
         "title": "Weather & packing",
         "body": [
-          "Tłumaczenie w przygotowaniu."
+          "Weź warstwy i ochronę przed deszczem; dobre buty na mokre schody są koniecznością."
         ]
       }
     ],
-    "faqsTitle": "FAQs",
+    "faqsTitle": "Najczęściej zadawane pytania",
     "faqs": [
       {
-        "q": "Tłumaczenie w przygotowaniu.",
+        "q": "Czy coś jest otwarte zimą?",
         "a": [
-          "Tłumaczenie w przygotowaniu."
+          "Tak, ale mniej opcji. Skup się na zakupach, wędrówkach, punktach widokowych i sąsiednich miasteczkach."
         ]
       }
     ]

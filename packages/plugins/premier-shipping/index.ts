@@ -3,12 +3,12 @@
 // Shops that do not offer luxury models can omit this plugin by removing
 // "premier-shipping" from their `shippingProviders` configuration.
 import type {
-  Plugin,
   PaymentPayload,
   PaymentProvider,
+  Plugin,
+  ShippingProvider,
   ShippingRegistry,
   ShippingRequest,
-  ShippingProvider,
   WidgetProps,
 } from "@acme/types";
 

@@ -1,6 +1,7 @@
-import { describe, it, expect, afterEach } from "@jest/globals";
-import { withEnv } from "../../../config/test/utils/withEnv";
+import { afterEach,describe, expect, it } from "@jest/globals";
+
 import { expectInvalidAuthEnvWithConfigEnv } from "../../../config/test/utils/expectInvalidAuthEnv";
+import { withEnv } from "../../../config/test/utils/withEnv";
 
 const REDIS_URL = "https://example.com";
 const STRONG_TOKEN = "redis-token-32-chars-long-string!";
@@ -19,7 +20,7 @@ const devEnv = (overrides: EnvOverrides = {}): EnvOverrides => ({
 const expectInvalidDev = (
   overrides: EnvOverrides,
   accessor: (env: Record<string, unknown>) => unknown,
-  consoleErrorSpy?: jest.SpyInstance,
+  consoleErrorSpy?: jest.SpiedFunction<typeof console.error>,
 ) =>
   expectInvalidAuthEnvWithConfigEnv({
     env: devEnv(overrides),
@@ -36,7 +37,7 @@ describe("auth env validation", () => {
     const result = await withEnv(
       devEnv({ AUTH_TOKEN_TTL: " 5 m " }),
       async () => {
-        const mod = await import("@acme/config/src/env/auth.ts");
+        const mod = await import("@acme/config/env/auth");
         return { ...mod, ttl: process.env.AUTH_TOKEN_TTL };
       },
     );
@@ -85,7 +86,7 @@ describe("auth env validation", () => {
         UPSTASH_REDIS_REST_URL: REDIS_URL,
         UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN,
       }),
-      () => import("@acme/config/src/env/auth.ts"),
+      () => import("@acme/config/env/auth"),
     );
     expect(authEnv.SESSION_STORE).toBe("redis");
   });
@@ -132,7 +133,7 @@ describe("auth env validation", () => {
   it("loads for jwt provider with secret", async () => {
     const { authEnv } = await withEnv(
       devEnv({ AUTH_PROVIDER: "jwt", JWT_SECRET: STRONG_TOKEN }),
-      () => import("@acme/config/src/env/auth.ts"),
+      () => import("@acme/config/env/auth"),
     );
     expect(authEnv.JWT_SECRET).toBe(STRONG_TOKEN);
   });
@@ -172,7 +173,7 @@ describe("auth env validation", () => {
         OAUTH_CLIENT_ID: "client-id",
         OAUTH_CLIENT_SECRET: STRONG_TOKEN,
       }),
-      () => import("@acme/config/src/env/auth.ts"),
+      () => import("@acme/config/env/auth"),
     );
     expect(authEnv.AUTH_PROVIDER).toBe("oauth");
     expect(authEnv.OAUTH_CLIENT_ID).toBe("client-id");

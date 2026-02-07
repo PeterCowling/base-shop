@@ -1,7 +1,9 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import ComponentPreview from "../src/components/ComponentPreview";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
 import type { UpgradeComponent } from "@acme/types";
+
+import ComponentPreview from "../src/components/ComponentPreview";
 
 describe("ComponentPreview advanced modes and error handling", () => {
   afterEach(() => {
@@ -11,12 +13,13 @@ describe("ComponentPreview advanced modes and error handling", () => {
   it("does not show compare when no backup component and renders new only", async () => {
     const NewComp = () => <div>Only New</div>;
     (globalThis as any).__UPGRADE_MOCKS__ = {
-      "@ui/components/Only": NewComp,
+      "@acme/ui/components/Only": NewComp,
     };
 
     const component: UpgradeComponent = {
       componentName: "Only",
       file: "Only.tsx",
+      newChecksum: "new",
     } as UpgradeComponent;
 
     render(<ComponentPreview component={component} />);
@@ -29,13 +32,14 @@ describe("ComponentPreview advanced modes and error handling", () => {
     const NewComp = () => <div>NewC</div>;
     const OldComp = () => <div>OldC</div>;
     (globalThis as any).__UPGRADE_MOCKS__ = {
-      "@ui/components/Thing": NewComp,
-      "@ui/components/Thing.bak": OldComp,
+      "@acme/ui/components/Thing": NewComp,
+      "@acme/ui/components/Thing.bak": OldComp,
     };
 
     const component: UpgradeComponent = {
       componentName: "Thing",
       file: "Thing.tsx",
+      newChecksum: "new",
     } as UpgradeComponent;
 
     render(<ComponentPreview component={component} />);
@@ -55,22 +59,20 @@ describe("ComponentPreview advanced modes and error handling", () => {
   });
 
   it("renders error boundary fallback when component throws", async () => {
-    const consoleErrorMock = console.error as jest.MockedFunction<typeof console.error>;
-    const originalConsoleImpl = consoleErrorMock.getMockImplementation();
-    const initialCallCount = consoleErrorMock.mock.calls.length;
-    consoleErrorMock.mockImplementation(() => {});
+    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
 
     try {
       const Thrower = () => {
         throw new Error("boom");
       };
       (globalThis as any).__UPGRADE_MOCKS__ = {
-        "@ui/components/Boom": Thrower,
+        "@acme/ui/components/Boom": Thrower,
       };
 
       const component: UpgradeComponent = {
         componentName: "Boom",
         file: "Boom.tsx",
+        newChecksum: "new",
       } as UpgradeComponent;
 
       render(<ComponentPreview component={component} />);
@@ -81,24 +83,21 @@ describe("ComponentPreview advanced modes and error handling", () => {
 
       await waitFor(
         () => {
-          expect(consoleErrorMock.mock.calls.length).toBeGreaterThan(initialCallCount + 1);
+          expect(consoleErrorSpy.mock.calls.length).toBeGreaterThan(1);
         },
         { timeout: 3000 },
       );
 
-      const newCalls = consoleErrorMock.mock.calls.slice(initialCallCount);
-
       expect(
-        newCalls.some(([first]) =>
+        consoleErrorSpy.mock.calls.some(([first]) =>
           typeof first === "string" && first.includes("Component preview failed"),
         ),
       ).toBe(true);
       expect(
-        newCalls.some(([, error]) => error instanceof Error && error.message === "boom"),
+        consoleErrorSpy.mock.calls.some(([, error]) => error instanceof Error && error.message === "boom"),
       ).toBe(true);
     } finally {
-      consoleErrorMock.mockImplementation(originalConsoleImpl ?? (() => {}));
+      consoleErrorSpy.mockRestore();
     }
   });
 });
-

@@ -1,4 +1,4 @@
-import { setupSegmentTest, emptySegments } from './segmentTestHelpers';
+import { emptySegments,setupSegmentTest } from './segmentTestHelpers';
 
 afterAll(() => { jest.resetModules(); jest.clearAllMocks(); });
 
@@ -147,7 +147,7 @@ describe('resolveSegment', () => {
       mockStat.mockResolvedValue({ mtimeMs: 1 });
       const err = new Error('listEvents error');
       mockListEvents.mockRejectedValue(err);
-      const { logger } = await import("@acme/shared-utils");
+      const { logger } = await import("@acme/lib/logger");
       const spy = jest.fn();
       const originalError = logger.error;
       logger.error = spy as any;

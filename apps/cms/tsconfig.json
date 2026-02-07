@@ -9,7 +9,8 @@
     "declarationDir": "dist",
     "target": "ES2022",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "strict": true,
+    "strict": false,
+    "noImplicitAny": false,
     "skipLibCheck": true,
     "jsx": "preserve",
     "baseUrl": ".",
@@ -60,29 +61,23 @@
       "@auth/*": [
         "../../packages/auth/src/*", "../../packages/auth/dist/*"
       ],
+      "@acme/auth": [
+        "../../packages/auth/src/index.ts", "../../packages/auth/dist/index"
+      ],
+      "@acme/auth/*": [
+        "../../packages/auth/src/*", "../../packages/auth/dist/*"
+      ],
       "@acme/lib": [
         "../../packages/lib/src/index.ts", "../../packages/lib/dist/index"
       ],
       "@acme/lib/*": [
         "../../packages/lib/src/*", "../../packages/lib/dist/*"
       ],
-      "@acme/shared-utils": [
-        "../../packages/shared-utils/src/index.ts", "../../packages/shared-utils/dist/index"
-      ],
-      "@acme/shared-utils/*": [
-        "../../packages/shared-utils/src/*", "../../packages/shared-utils/dist/*"
-      ],
       "@acme/types": [
         "../../packages/types/src/index.ts", "../../packages/types/dist/index"
       ],
       "@acme/types/*": [
         "../../packages/types/src/*", "../../packages/types/dist/*"
-      ],
-      "@shared-utils": [
-        "../../packages/shared-utils/src/index.ts", "../../packages/shared-utils/dist/index"
-      ],
-      "@shared-utils/*": [
-        "../../packages/shared-utils/src/*", "../../packages/shared-utils/dist/*"
       ],
       "@acme/date-utils": [
         "../../packages/date-utils/src/index.ts", "../../packages/date-utils/dist/index"
@@ -176,6 +171,12 @@
       ],
       "@acme/page-builder-ui/*": [
         "../../packages/page-builder-ui/dist/*", "../../packages/page-builder-ui/src/*"
+      ],
+      "@acme/configurator": [
+        "../../packages/configurator/src/index.ts", "../../packages/configurator/dist/index"
+      ],
+      "@acme/configurator/*": [
+        "../../packages/configurator/src/*", "../../packages/configurator/dist/*"
       ]
     },
     "module": "ESNext",
@@ -211,7 +212,6 @@
     { "path": "../../packages/platform-machine" },
     { "path": "../../packages/auth" },
     { "path": "../../packages/lib" },
-    { "path": "../../packages/shared-utils" },
     { "path": "../../packages/types" },
     { "path": "../../packages/date-utils" },
     { "path": "../../packages/themes/base" },

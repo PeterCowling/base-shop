@@ -1,5 +1,6 @@
+import type { ComponentType,LazyExoticComponent } from "react";
 import { lazy } from "react";
-import type { LazyExoticComponent, ComponentType } from "react";
+
 import type { EditorProps } from "./EditorProps";
 
 // Helper to coerce lazy modules to the shared EditorProps

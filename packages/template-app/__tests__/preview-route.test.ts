@@ -1,10 +1,11 @@
 import { jest } from "@jest/globals";
-import type { Page } from "@acme/types";
-import { nowIso } from "@date-utils";
+
+import { nowIso } from "@acme/date-utils";
 import {
   createPreviewToken,
   createUpgradePreviewToken,
-} from "@platform-core/previewTokens";
+} from "@acme/platform-core/previewTokens";
+import type { Page } from "@acme/types";
 
 process.env.PREVIEW_TOKEN_SECRET = "testsecret";
 process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "upgradesecret";
@@ -43,7 +44,7 @@ test("valid token returns page JSON", async () => {
     createdBy: "tester",
   };
   const getPages = jest.fn(async () => [page]);
-  jest.doMock("@platform-core/repositories/pages/index.server", () => ({
+  jest.doMock("@acme/platform-core/repositories/pages/index.server", () => ({
     __esModule: true,
     getPages,
   }));
@@ -61,7 +62,7 @@ test("valid token returns page JSON", async () => {
 test("invalid token yields 401", async () => {
   mockEnv();
   const getPages = jest.fn(async () => []);
-  jest.doMock("@platform-core/repositories/pages/index.server", () => ({
+  jest.doMock("@acme/platform-core/repositories/pages/index.server", () => ({
     __esModule: true,
     getPages,
   }));
@@ -78,7 +79,7 @@ test("invalid token yields 401", async () => {
 test("missing token yields 401", async () => {
   mockEnv();
   const getPages = jest.fn(async () => []);
-  jest.doMock("@platform-core/repositories/pages/index.server", () => ({
+  jest.doMock("@acme/platform-core/repositories/pages/index.server", () => ({
     __esModule: true,
     getPages,
   }));
@@ -97,7 +98,7 @@ test("missing secret yields 401", async () => {
   delete process.env.PREVIEW_TOKEN_SECRET;
   mockEnv();
   const getPages = jest.fn(async () => []);
-  jest.doMock("@platform-core/repositories/pages/index.server", () => ({
+  jest.doMock("@acme/platform-core/repositories/pages/index.server", () => ({
     __esModule: true,
     getPages,
   }));
@@ -119,7 +120,7 @@ test("timingSafeEqual error yields 401", async () => {
     return { ...actual, timingSafeEqual: () => { throw new Error("boom"); } };
   });
   const getPages = jest.fn(async () => []);
-  jest.doMock("@platform-core/repositories/pages/index.server", () => ({
+  jest.doMock("@acme/platform-core/repositories/pages/index.server", () => ({
     __esModule: true,
     getPages,
   }));
@@ -137,7 +138,7 @@ test("timingSafeEqual error yields 401", async () => {
 test("valid token with missing page yields 404", async () => {
   mockEnv();
   const getPages = jest.fn(async () => [] as Page[]);
-  jest.doMock("@platform-core/repositories/pages/index.server", () => ({
+  jest.doMock("@acme/platform-core/repositories/pages/index.server", () => ({
     __esModule: true,
     getPages,
   }));
@@ -156,7 +157,7 @@ test("falls back to default shop when NEXT_PUBLIC_SHOP_ID is unset", async () =>
   delete process.env.NEXT_PUBLIC_SHOP_ID;
   mockEnv();
   const getPages = jest.fn(async () => [] as Page[]);
-  jest.doMock("@platform-core/repositories/pages/index.server", () => ({
+  jest.doMock("@acme/platform-core/repositories/pages/index.server", () => ({
     __esModule: true,
     getPages,
   }));
@@ -185,7 +186,7 @@ test("valid upgrade token returns page JSON", async () => {
     createdBy: "tester",
   };
   const getPages = jest.fn(async () => [page]);
-  jest.doMock("@platform-core/repositories/pages/index.server", () => ({
+  jest.doMock("@acme/platform-core/repositories/pages/index.server", () => ({
     __esModule: true,
     getPages,
   }));
@@ -210,7 +211,7 @@ test("valid upgrade token returns page JSON", async () => {
 test("invalid upgrade token yields 401", async () => {
   mockEnv();
   const getPages = jest.fn(async () => []);
-  jest.doMock("@platform-core/repositories/pages/index.server", () => ({
+  jest.doMock("@acme/platform-core/repositories/pages/index.server", () => ({
     __esModule: true,
     getPages,
   }));
@@ -227,7 +228,7 @@ test("invalid upgrade token yields 401", async () => {
 test("standard token not accepted as upgrade token", async () => {
   mockEnv();
   const getPages = jest.fn(async () => []);
-  jest.doMock("@platform-core/repositories/pages/index.server", () => ({
+  jest.doMock("@acme/platform-core/repositories/pages/index.server", () => ({
     __esModule: true,
     getPages,
   }));

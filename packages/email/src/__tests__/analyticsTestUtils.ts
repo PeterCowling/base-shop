@@ -2,7 +2,7 @@ export function setupMocks() {
   jest.resetModules();
   process.env.CART_COOKIE_SECRET = "secret";
   const trackEvent = jest.fn();
-  jest.doMock("@platform-core/analytics", () => ({
+  jest.doMock("@acme/platform-core/analytics", () => ({
     __esModule: true,
     trackEvent,
   }));

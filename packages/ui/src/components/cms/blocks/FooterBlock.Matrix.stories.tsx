@@ -1,11 +1,14 @@
 // packages/ui/src/components/cms/blocks/FooterBlock.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import FooterBlock from './FooterBlock';
-import type { Locale } from '@acme/i18n/locales';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './FooterBlock.fixtures.json';
 import { z } from 'zod';
+
+import type { Locale } from '@acme/i18n/locales';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import FooterBlock from './FooterBlock';
+import fixture from './FooterBlock.fixtures.json';
 
 const meta: Meta<typeof FooterBlock> = {
   title: 'CMS Blocks/FooterBlock/Matrix',

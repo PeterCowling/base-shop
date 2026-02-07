@@ -3,6 +3,11 @@ import { NextRequest } from "next/server";
 const sendCampaignEmail = jest.fn();
 jest.mock("@acme/email", () => ({ sendCampaignEmail }));
 
+// Mock auth to avoid pulling in the full auth chain
+jest.mock("@cms/actions/common/auth", () => ({
+  ensureAuthorized: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+}));
+
 let POST: typeof import("../route").POST;
 
 beforeAll(async () => {

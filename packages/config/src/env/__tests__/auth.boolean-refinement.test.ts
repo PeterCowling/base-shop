@@ -1,14 +1,16 @@
 import { describe, expect, it, jest } from "@jest/globals";
-import { z } from "zod";
+import { type z } from "zod";
+
 import { createExpectInvalidAuthEnv } from "../../../test/utils/expectInvalidAuthEnv";
 import { withEnv } from "../../../test/utils/withEnv";
+
 import {
   NEXT_SECRET,
-  SESSION_SECRET,
-  REDIS_URL,
-  REDIS_TOKEN,
   OAUTH_ISSUER,
   OAUTH_REDIRECT_ORIGIN,
+  REDIS_TOKEN,
+  REDIS_URL,
+  SESSION_SECRET,
 } from "./authEnvTestUtils";
 
 const base = {

@@ -1,5 +1,9 @@
+import type { ReactElement } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+import GuidedTour, { useGuidedTour } from "../GuidedTour";
+
 jest.mock("@acme/i18n", () => ({
   useTranslations: () => {
     const dictionary: Record<string, (options?: Record<string, unknown>) => string> = {
@@ -16,9 +20,7 @@ jest.mock("@acme/i18n", () => ({
   },
 }));
 
-import GuidedTour, { useGuidedTour } from "../GuidedTour";
-
-function ReplayButton(): JSX.Element {
+function ReplayButton(): ReactElement {
   const { replay } = useGuidedTour();
   return <button onClick={replay}>Replay</button>;
 }

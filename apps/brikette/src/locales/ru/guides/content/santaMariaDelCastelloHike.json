@@ -1,0 +1,143 @@
+{
+  "lastUpdated": "2026-02-04",
+  "seo": {
+    "title": "Поход в Санта-Мария-дель-Кастелло от Hostel Brikette - Позитано",
+    "description": "Полный путеводитель по походу в Санта-Мария-дель-Кастелло, горную деревню над Позитано с указаниями, смотровыми площадками и потрясающими видами на побережье."
+  },
+  "linkLabel": "Санта-Мария-дель-Кастелло: Поход в горную деревню",
+  "intro": [
+    "Санта-Мария-дель-Кастелло находится на высоте 670 метров (2200 футов) над Позитано, предлагая виды, которые равны или превосходят виды с Тропы богов. В этой горной деревне есть ресторан с хорошей едой по доступным ценам и потрясающими панорамными видами.",
+    "Великолепные виды открываются всего через 15 минут после выхода из хостела, что делает этот поход полезным для тех, кто ищет гибкость и хочет избежать переполненных автобусов SITA."
+  ],
+  "sections": [
+    {
+      "id": "scan-to-share",
+      "title": "Scan to share",
+      "body": [
+        "Want to open this guide on another phone or share it with a hiking buddy? Scan the QR code below."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/santa-maria-castello/scan-to-share.png",
+          "alt": "QR code to open and share the Santa Maria del Castello hike guide.",
+          "caption": "Scan to open/share this guide."
+        }
+      ]
+    },
+    {
+      "id": "what-is-santa-maria",
+      "title": "Что такое Санта-Мария-дель-Кастелло?",
+      "body": [
+        "Ваша цель — горная деревня, расположенная над Позитано на высоте 670 метров (2200 футов). В деревне есть ресторан с хорошей едой по доступным ценам, а также великолепными видами.",
+        "Специальная смотровая площадка предлагает потрясающие панорамные виды на побережье Амальфи, Позитано и окружающие горы."
+      ]
+    },
+    {
+      "id": "why-do-this-hike",
+      "title": "Почему стоит совершить этот поход?",
+      "body": [
+        "Виды равны или превосходят виды с Тропы богов, предлагая захватывающие панорамы побережья.",
+        "Великолепные виды появляются всего через 15 минут после выхода из хостела — вам не нужно долго ждать награды.",
+        "Предлагает гибкость и предпочитается теми, кто избегает переполненных автобусов SITA.",
+        "Служит отправной точкой для исследования других горных районов вокруг Позитано."
+      ]
+    },
+    {
+      "id": "considerations",
+      "title": "Важные соображения",
+      "body": [
+        "Этот поход значительно более напряженный, чем Тропа богов. Будьте готовы к крутым подъемам.",
+        "Может не подойти тем, кто ставит во главу угла опыт Тропы богов как главную цель похода.",
+        "Летняя жара требует избегать этого похода с 11:00 до 16:00. Ранние утренние или поздние дневные выходы необходимы в теплые месяцы."
+      ]
+    },
+    {
+      "id": "directions-to-village",
+      "title": "Указания к деревне",
+      "body": [
+        "Следуйте этим пошаговым указаниям от Hostel Brikette, чтобы добраться до деревни Санта-Мария-дель-Кастелло:"
+      ]
+    },
+    {
+      "id": "directions-to-lookout",
+      "title": "Указания к смотровой площадке",
+      "body": [
+        "Как только вы достигнете перекрестка, где тропа выравнивается, следуйте этим указаниям, чтобы попасть на потрясающую смотровую площадку."
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "name": "Turn right and take the steps",
+      "text": "From the hostel, turn right and take the steps that lead up the side of the building."
+    },
+    {
+      "name": "Continue on the footpath",
+      "text": "At the top of the steps, continue on the footpath."
+    },
+    {
+      "name": "Turn left at the junction",
+      "text": "At the junction, choose the left option to go uphill (not right/downhill)."
+    },
+    {
+      "name": "Turn right up more stairs",
+      "text": "Follow the steps until you reach a point where you can either turn right up more stairs that lead to a road, or continue left on the path. Choose to turn right and go up the stairs."
+    },
+    {
+      "name": "Cross the road to the next stairs",
+      "text": "At the top of the stairs, look across the road for a set of stairs leading alongside some houses. Cross the road and take those stairs."
+    },
+    {
+      "name": "Follow stairs behind the houses",
+      "text": "Follow the stairs behind the houses until they lead you to a mountain trail."
+    },
+    {
+      "name": "Continue on the mountain trail",
+      "text": "Continue on the mountain trail, which will take you to the village."
+    },
+    {
+      "name": "Take the uphill splits",
+      "text": "In two places the mountain trail splits in two directions. Choose the path that goes uphill."
+    },
+    {
+      "name": "Reach the crossroads",
+      "text": "You have reached the top when the mountain trail levels out and you reach a crossroads."
+    },
+    {
+      "name": "Turn right at the crossroads",
+      "text": "For the lookout point, turn right at the crossroads. Please note that cars do travel on this road."
+    },
+    {
+      "name": "Take the road uphill",
+      "text": "Take the road uphill until you reach a junction."
+    },
+    {
+      "name": "Turn right at the junction",
+      "text": "At the junction, turn right and follow the road around to the right."
+    },
+    {
+      "name": "Head to the grassy section and viewpoints",
+      "text": "When you see a grassy section off the road, go there and proceed to the vantage points. Use extreme caution—there are sudden drop-offs of several hundred meters."
+    }
+  ],
+  "warningsTitle": "Предупреждения о безопасности",
+  "warnings": [
+    "Точки обзора имеют внезапные обрывы на несколько сотен метров. Держитесь подальше от краев и внимательно следите за детьми.",
+    "Этот поход значительно более напряженный, чем Тропа богов. Оцените свой уровень физической подготовки перед попыткой.",
+    "Избегайте походов с 11:00 до 16:00 в летние месяцы из-за сильной жары на горной тропе."
+  ],
+  "essentialsTitle": "Что взять с собой",
+  "essentials": [
+    "Прочную походную обувь с хорошим сцеплением для крутой неровной местности",
+    "Минимум 1,5 литра воды на человека — ограниченные возможности пополнения",
+    "Защита от солнца: шляпа, солнцезащитный крем и солнцезащитные очки для открытых участков",
+    "Легкие закуски или обед, если планируете провести время в деревенском ресторане"
+  ],
+  "tipsTitle": "Советы по походу",
+  "tips": [
+    "Начинайте рано утром в летние месяцы, чтобы избежать полуденной жары.",
+    "Не торопитесь на крутых участках — виды стоят того, чтобы ими наслаждаться по пути.",
+    "Рассмотрите возможность пообедать в деревенском ресторане перед спуском обратно в Позитано.",
+    "Возьмите камеру или полностью заряженный телефон — возможности для фотографий со смотровой площадки исключительные."
+  ]
+}

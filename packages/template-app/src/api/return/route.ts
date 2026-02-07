@@ -1,14 +1,14 @@
-import { stripe } from "@acme/stripe";
+import { type NextRequest, NextResponse } from "next/server";
+
+import { computeDamageFee } from "@acme/platform-core/pricing";
 import {
   markRefunded,
   markReturned,
-} from "@platform-core/repositories/rentalOrders.server";
-import { computeDamageFee } from "@platform-core/pricing";
-
-import { NextRequest, NextResponse } from "next/server";
-import { getReturnBagAndLabel } from "@platform-core/returnLogistics";
-import { readShop } from "@platform-core/repositories/shops.server";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
+} from "@acme/platform-core/repositories/rentalOrders.server";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
+import { readShop } from "@acme/platform-core/repositories/shops.server";
+import { getReturnBagAndLabel } from "@acme/platform-core/returnLogistics";
+import { stripe } from "@acme/stripe";
 
 const SHOP_ID = "bcd";
 
@@ -16,7 +16,7 @@ export const runtime = "edge";
 
 async function savePickup(appt: { zip: string; date: string; time: string }) {
   // Placeholder for database persistence
-  console.log(
+  console.info(
     "pickup scheduled", // i18n-exempt -- ABC-123 [ttl=2025-12-31] developer log, not user-facing
     appt,
   );

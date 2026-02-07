@@ -1,17 +1,17 @@
 // packages/ui/src/organisms/Footer.tsx
-import { CONTACT_EMAIL } from "@/config/hotel";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { buildNavLinks, type TranslateFn } from "@/utils/buildNavLinks";
-import { Section } from "@/atoms/Section";
-import { Inline } from "@/components/atoms/primitives/Inline";
-import { Facebook, Instagram } from "lucide-react";
 import { memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
-import { SLUGS } from "@/slug-map";
-import type { AppLanguage } from "@/i18n.config";
-import { i18nConfig } from "@/i18n.config";
-import { translatePath } from "@/utils/translate-path";
+import Link from "next/link";
+import { Facebook, Instagram } from "lucide-react";
+
+import { Section } from "../atoms/Section";
+import { Inline } from "../components/atoms/primitives/Inline";
+import { CONTACT_EMAIL } from "../config/hotel";
+import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
+import type { AppLanguage } from "../i18n.config";
+import { i18nConfig } from "../i18n.config";
+import { SLUGS } from "../slug-map";
+import { buildNavLinks, type TranslateFn } from "../utils/buildNavLinks";
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -44,7 +44,6 @@ function FooterComponent({ lang: explicitLang }: { lang?: AppLanguage }): JSX.El
   // Build links on each render so labels update when i18n
   // resources are loaded for the current language.
   const { navLinks } = buildNavLinks(lang, tNav);
-  const apartmentPath = `/${translatePath("apartment", lang)}`;
 
   const linkClasses = useCallback((small = false): string => {
     const sizeClass = small
@@ -94,11 +93,10 @@ function FooterComponent({ lang: explicitLang }: { lang?: AppLanguage }): JSX.El
           >
             <ul>
               {navLinks.map(({ key, to, label }) => (
-                <li key={key} className="text-center sm:flex-1">
+                <li key={key} className="text-center sm:flex-1 sm:px-4 lg:px-6">
                   <Link
-                    to={`/${lang}${to}`}
-                    prefetch={to === apartmentPath ? "intent" : "viewport"}
-                    data-prefetch={to === apartmentPath ? "intent" : undefined}
+                    href={`/${lang}${to}`}
+                    prefetch
                     className={`${linkClasses(false)} text-center`}
                   >
                     {label}
@@ -155,10 +153,10 @@ function FooterComponent({ lang: explicitLang }: { lang?: AppLanguage }): JSX.El
       <div className="bg-gradient-to-b from-brand-gradient-start to-brand-gradient-end py-6 md:py-8">
         <Section as="div" padding="none" width="full" className="mx-auto max-w-screen-xl px-4">
           <div className="flex w-full flex-row flex-wrap items-center justify-between gap-3">
-            <Link to={`/${lang}/${SLUGS.terms[lang]}`} className={linkClasses(true)}>
+            <Link href={`/${lang}/${SLUGS.terms[lang]}`} className={linkClasses(true)}>
               {tFooter("terms", { lng: lang })}
             </Link>
-            <Link to={`/${lang}`} className={linkClasses(true)}>
+            <Link href={`/${lang}`} className={linkClasses(true)}>
               {tFooter("copyright", { lng: lang, year: CURRENT_YEAR })}
             </Link>
             <a href="#top" aria-label={backToTopLabel} className={`${linkClasses(true)} font-semibold ml-2`}>

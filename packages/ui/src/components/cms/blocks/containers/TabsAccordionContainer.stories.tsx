@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
+
 import TabsAccordionContainer from './TabsAccordionContainer';
 
 const meta: Meta<typeof TabsAccordionContainer> = {

@@ -1,5 +1,5 @@
 // scripts/src/add-locale.ts
-import { readFileSync, writeFileSync, existsSync } from "node:fs";
+import { existsSync,readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 function usage(): never {

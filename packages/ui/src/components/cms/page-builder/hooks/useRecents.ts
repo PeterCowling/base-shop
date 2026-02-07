@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+
 import type { ComponentType } from "../defaults";
 
 export default function useRecents() {

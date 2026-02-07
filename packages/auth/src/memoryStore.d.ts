@@ -1,4 +1,5 @@
 import type { SessionRecord, SessionStore } from "./store.js";
+
 export declare class MemorySessionStore implements SessionStore {
     private ttl;
     private sessions;

@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/CampaignHeroSection.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import CampaignHeroSection from './CampaignHeroSection';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './CampaignHeroSection.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import CampaignHeroSection from './CampaignHeroSection';
+import fixture from './CampaignHeroSection.fixtures.json';
 
 const meta: Meta<typeof CampaignHeroSection> = {
   title: 'CMS Blocks/CampaignHeroSection/Matrix',

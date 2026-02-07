@@ -1,15 +1,17 @@
 // packages/template-app/src/app/[lang]/product/[slug]/page.tsx
 
-import { LOCALES, type Locale } from "@acme/i18n";
-import { getProductBySlug } from "@platform-core/products";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import PdpClient from "./PdpClient.client";
-import { getStructuredData, serializeJsonLd } from "../../../../lib/seo";
-import { CleaningInfo } from "../../../../components/CleaningInfo";
+
+import { type Locale, LOCALES, resolveLocale } from "@acme/i18n/locales";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+import { getProductBySlug } from "@acme/platform-core/products";
+
 import shop from "../../../../../shop.json";
-import { resolveLocale } from "@i18n/locales";
-import { useTranslations as getServerTranslations } from "@i18n/useTranslations.server";
+import { CleaningInfo } from "../../../../components/CleaningInfo";
+import { getStructuredData, serializeJsonLd } from "../../../../lib/seo";
+
+import PdpClient from "./PdpClient.client";
 
 export async function generateStaticParams() {
   return LOCALES.flatMap((lang: Locale) =>

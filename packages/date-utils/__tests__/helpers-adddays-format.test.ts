@@ -1,4 +1,4 @@
-import { parseISO, addDays, format } from "../src";
+import { addDays, format,parseISO } from "../src";
 
 describe("exported helpers", () => {
   test("addDays and format combine", () => {

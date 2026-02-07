@@ -1,31 +1,54 @@
 /** @jest-environment node */
 
-const mockedEnv: any = {
-  CLOUDFLARE_ACCOUNT_ID: "acc",
-  CLOUDFLARE_API_TOKEN: "tok",
+import { provisionDomain } from "../cloudflare.server";
+import { ensureAuthorized } from "../common/auth";
+
+type MockedCoreEnv = {
+  CLOUDFLARE_ACCOUNT_ID: string;
+  CLOUDFLARE_API_TOKEN: string;
 };
 
-jest.mock("@acme/config/env/core", () => ({ coreEnv: mockedEnv }), { virtual: true });
+declare global {
+  var __cmsCloudflareCoreEnv: MockedCoreEnv | undefined;
+}
+
+jest.mock(
+  "@acme/config/env/core",
+  () => {
+    const env: MockedCoreEnv = {
+      CLOUDFLARE_ACCOUNT_ID: "acc",
+      CLOUDFLARE_API_TOKEN: "tok",
+    };
+    globalThis.__cmsCloudflareCoreEnv = env;
+    return { coreEnv: env };
+  },
+  { virtual: true },
+);
 
 jest.mock("../common/auth", () => ({
   ensureAuthorized: jest.fn(),
 }));
 
-import { provisionDomain } from "../cloudflare.server";
-import { ensureAuthorized } from "../common/auth";
-
 const originalFetch = global.fetch;
 const fetchMock = jest.fn();
+
+const getMockedCoreEnv = (): MockedCoreEnv => {
+  const env = globalThis.__cmsCloudflareCoreEnv;
+  if (!env) throw new Error("Expected globalThis.__cmsCloudflareCoreEnv to be initialized");
+  return env;
+};
 
 beforeEach(() => {
   jest.clearAllMocks();
   global.fetch = fetchMock as any;
+  const mockedEnv = getMockedCoreEnv();
   mockedEnv.CLOUDFLARE_ACCOUNT_ID = "acc";
   mockedEnv.CLOUDFLARE_API_TOKEN = "tok";
 });
 
 afterAll(() => {
   global.fetch = originalFetch;
+  delete globalThis.__cmsCloudflareCoreEnv;
 });
 
 describe("provisionDomain", () => {
@@ -176,8 +199,8 @@ describe("provisionDomain", () => {
   });
 
   it.each([
-    ["CLOUDFLARE_ACCOUNT_ID", () => (mockedEnv.CLOUDFLARE_ACCOUNT_ID = undefined)],
-    ["CLOUDFLARE_API_TOKEN", () => (mockedEnv.CLOUDFLARE_API_TOKEN = undefined)],
+    ["CLOUDFLARE_ACCOUNT_ID", () => (getMockedCoreEnv().CLOUDFLARE_ACCOUNT_ID = "")],
+    ["CLOUDFLARE_API_TOKEN", () => (getMockedCoreEnv().CLOUDFLARE_API_TOKEN = "")],
   ])("throws when %s is missing", async (_name, unset) => {
     unset();
     await expect(provisionDomain("shop", "shop.example.com")).rejects.toThrow(
@@ -302,4 +325,3 @@ describe("provisionDomain", () => {
     expect(fetchMock).toHaveBeenCalledTimes(3);
   });
 });
-

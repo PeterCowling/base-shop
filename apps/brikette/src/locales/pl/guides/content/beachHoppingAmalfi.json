@@ -1,7 +1,7 @@
 {
   "seo": {
     "title": "Objazd plaż na Wybrzeżu Amalfi",
-    "description": "Plan na plażowanie w różnych miejscowościach: promy, autobusy i tipy logistyczne."
+    "description": "Które plaże łączyć w jeden dzień, porady dotyczące dostępu i koszty."
   },
   "linkLabel": "Objazd plaż na Wybrzeżu Amalfi",
   "intro": [
@@ -10,9 +10,9 @@
   "sections": [
     {
       "id": "morning",
-      "title": "Poranek: Positano → Fornillo",
+      "title": "Poranek: Positano do Fornillo",
       "body": [
-        "Zacznij wcześnie na Spiaggia Grande od krótkiej kąpieli, potem do 9:30 przejdź ścieżką przybrzeżną do spokojniejszego Fornillo.",
+        "Zacznij wcześnie na Spiaggia Grande od krótkiej kąpieli, potem do 09:30 przejdź ścieżką przybrzeżną do spokojniejszego Fornillo.",
         "Zarezerwuj leżaki z wyprzedzeniem, jeśli potrzebujesz cienia; w przeciwnym razie zabierz lekką parasolkę."
       ]
     },
@@ -25,8 +25,16 @@
       ]
     },
     {
+      "id": "group-tours",
+      "title": "Wycieczki grupowe i wspólne łodzie",
+      "body": [
+        "Zobacz nasz %LINK:boatTours|przewodnik po wycieczkach łodzią w Positano%, jeśli wolisz skakać między plażami na wspólnej łodzi zamiast promami.",
+        "Operatorzy wypływają z głównego mola Positano; przyjdź 15 minut wcześniej i potwierdź przystanki pływackie w Laurito lub Arienzo podczas rezerwacji."
+      ]
+    },
+    {
       "id": "evening",
-      "title": "Wieczór: kąpiel o zachodzie",
+      "title": "Wieczór: Kąpiel o zachodzie",
       "body": [
         "Zakończ w Laurito lub Arienzo, aby obejrzeć złotą godzinę; obie plaże są zwrócone na zachód i po 17:00 są spokojniejsze.",
         "Złap ostatni prom albo zamów powrotną taksówkę, by uniknąć nocnej wspinaczki pod górę."
@@ -35,13 +43,13 @@
   ],
   "tips": [
     "Miej szybkoschnący ręcznik i ubranie na zmianę, aby czuć się komfortowo na promach.",
-    "Spakuj przekąski i co najmniej 1 l wody — kioski plażowe w zatłoczone dni mogą mieć braki."
+    "Spakuj przekąski i co najmniej 1 L / 34 oz wody—kioski plażowe w zatłoczone dni mogą mieć braki."
   ],
   "faqs": [
     {
       "q": "Czy trzeba rezerwować leżaki?",
       "a": [
-        "Tak, w lipcu–sierpniu warto rezerwować z wyprzedzeniem. Skontaktuj się z klubami plażowymi przez WhatsApp dzień wcześniej, aby zapewnić sobie miejsca z przodu."
+        "Tak w lipcu–sierpniu. Skontaktuj się z klubami plażowymi przez WhatsApp dzień wcześniej, aby zapewnić sobie miejsca z przodu."
       ]
     },
     {

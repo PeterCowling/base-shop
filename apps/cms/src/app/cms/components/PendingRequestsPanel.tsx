@@ -1,10 +1,14 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
-import { approveAccount } from "@cms/actions/accounts.server";
 import type { PendingUser } from "@cms/actions/accounts.server";
+import { approveAccount } from "@cms/actions/accounts.server";
 import type { Role } from "@cms/auth/roles";
-import { Toast } from "@/components/atoms";
+
+import { Grid as DSGrid } from "@acme/design-system/primitives/Grid";
+import { useTranslations } from "@acme/i18n";
+import { useToast } from "@acme/ui/operations";
+
 import {
   Button,
   Card,
@@ -12,19 +16,12 @@ import {
   Checkbox,
   Tag,
 } from "@/components/atoms/shadcn";
-import { Grid as DSGrid } from "@ui/components/atoms/primitives/Grid";
-import { useTranslations } from "@acme/i18n";
 
 interface PendingRequestsPanelProps {
   pending: PendingUser[];
   roles: Role[];
   headingId: string;
 }
-
-type ToastState = {
-  open: boolean;
-  message: string;
-};
 
 type SelectionState = Map<string, Set<Role>>;
 
@@ -34,9 +31,9 @@ export function PendingRequestsPanel({
   headingId,
 }: PendingRequestsPanelProps) {
   const t = useTranslations();
+  const toast = useToast();
   const [requests, setRequests] = useState(pending);
   const [selections, setSelections] = useState<SelectionState>(() => new Map());
-  const [toast, setToast] = useState<ToastState>({ open: false, message: "" });
   const [isPending, startTransition] = useTransition();
   const lastTriggerRef = useRef<HTMLButtonElement | null>(null);
 
@@ -91,16 +88,13 @@ export function PendingRequestsPanel({
           next.delete(summary.id);
           return next;
         });
-        setToast({
-          open: true,
-          message: String(t("cms.accounts.requests.toast.approved", { name: summary.name })),
-        });
+        toast.success(String(t("cms.accounts.requests.toast.approved", { name: summary.name })));
       } catch (error) {
         const message =
           error instanceof Error
             ? error.message
             : String(t("cms.accounts.requests.toast.approveFailed"));
-        setToast({ open: true, message });
+        toast.error(message);
       }
     });
   };
@@ -188,12 +182,6 @@ export function PendingRequestsPanel({
           </div>
         )}
 
-        <Toast
-          open={toast.open}
-          message={toast.message}
-          onClose={() => setToast({ open: false, message: "" })}
-          role="status"
-        />
       </CardContent>
     </Card>
   );

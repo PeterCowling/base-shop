@@ -1,7 +1,8 @@
 /* i18n-exempt file -- TEST-0001: unit test titles and literals are not user-facing */
-import { buildProductFormData } from "../buildProductFormData";
-import type { ProductWithVariants } from "../../hooks/useProductInputs";
 import type { MediaItem } from "@acme/types";
+
+import type { ProductWithVariants } from "../../hooks/useProductInputs";
+import { buildProductFormData } from "../buildProductFormData";
 
 describe("buildProductFormData", () => {
   it("serializes core fields, locales, media (stripping File), and variants", () => {
@@ -11,8 +12,8 @@ describe("buildProductFormData", () => {
     };
     const product: ProductWithNullableMedia = {
       id: "p1",
-      title: { en: "Hat", fr: "Chapeau" },
-      description: { en: "Nice", fr: "Joli" },
+      title: { en: "Hat", de: "Hut" },
+      description: { en: "Nice", de: "Schön" },
       price: 1299,
       media: [
         { id: "m1", url: "/img1.png" },
@@ -21,7 +22,7 @@ describe("buildProductFormData", () => {
       ],
       variants: { color: ["red", "blue", ""], size: ["m"] },
     };
-    const fd = buildProductFormData(product, ["storefront", "bcd"], ["en", "fr"] as const);
+    const fd = buildProductFormData(product, ["storefront", "bcd"], ["en", "de"] as const);
     const entries = Array.from(fd.entries());
     const map = Object.fromEntries(entries) as Record<string, FormDataEntryValue>;
 
@@ -30,9 +31,9 @@ describe("buildProductFormData", () => {
 
     expect(s("id")).toBe("p1");
     expect(s("title_en")).toBe("Hat");
-    expect(s("title_fr")).toBe("Chapeau");
+    expect(s("title_de")).toBe("Hut");
     expect(s("desc_en")).toBe("Nice");
-    expect(s("desc_fr")).toBe("Joli");
+    expect(s("desc_de")).toBe("Schön");
     expect(s("price")).toBe("1299");
     // file_1 should exist and be a File; file_0 not present
     expect(fval("file_1")).toBe(file);

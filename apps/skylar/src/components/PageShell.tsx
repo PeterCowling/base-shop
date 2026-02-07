@@ -1,13 +1,16 @@
 'use client';
 
 
-import { useTranslations } from "@i18n";
-import type { Locale } from "@/lib/locales";
 import type { ReactNode } from "react";
-import type { Section } from "@/lib/routes";
+
+import { useTranslations } from "@acme/i18n";
+
 import { getContactRowsForPerson } from "@/data/people";
-import Nav from "./Nav";
 import { joinClasses } from "@/lib/joinClasses";
+import type { Locale } from "@/lib/locales";
+import type { Section } from "@/lib/routes";
+
+import Nav from "./Nav";
 
 type PageShellProps = {
   children: ReactNode;

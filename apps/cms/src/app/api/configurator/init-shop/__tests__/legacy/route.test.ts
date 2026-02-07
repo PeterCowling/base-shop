@@ -22,7 +22,7 @@ function setSession(session: any) {
 }
 
 const validateShopName = jest.fn((s: string) => s);
-jest.mock("@platform-core/shops", () => ({ validateShopName }));
+jest.mock("@acme/platform-core/shops", () => ({ validateShopName }));
 
 const buildRequest = (body: unknown) =>
   new Request("http://localhost/cms/api/configurator/init-shop", {
@@ -97,3 +97,5 @@ describe("POST /cms/api/configurator/init-shop", () => {
     expect(await res.json()).toEqual({ error: "disk" });
   });
 });
+
+export {};

@@ -1,16 +1,16 @@
-/* eslint-disable ds/no-raw-color -- DS-TEST-012: raw hex inputs are necessary to exercise contrast calculations */
+ 
 import { renderHook } from "@testing-library/react";
+
+import {
+  getContrast,
+  suggestContrastColor,
+} from "../src/components/cms/ColorInput";
 import useContrastWarnings from "../src/hooks/useContrastWarnings";
 
 jest.mock("../src/components/cms/ColorInput", () => ({
   getContrast: jest.fn(),
   suggestContrastColor: jest.fn(),
 }));
-
-import {
-  getContrast,
-  suggestContrastColor,
-} from "../src/components/cms/ColorInput";
 
 const mockGetContrast = getContrast as jest.MockedFunction<typeof getContrast>;
 const mockSuggestContrastColor =

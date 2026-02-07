@@ -2,6 +2,7 @@
 /* eslint-disable react/forbid-dom-props -- LINT-1003: dynamic peer selection boxes need precise inline positioning and colors */
 
 import { Fragment } from "react";
+
 import type { PresencePeer } from "./collab/usePresence";
 import type { Rect } from "./utils/coords";
 

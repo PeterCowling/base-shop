@@ -1,5 +1,5 @@
 // src/utils/lang.ts
-import { i18nConfig, type AppLanguage } from "../i18n.config";
+import { type AppLanguage,i18nConfig } from "../i18n.config";
 
 /** Runtime check for an AppLanguage value. */
 export function isAppLanguage(input: unknown): input is AppLanguage {

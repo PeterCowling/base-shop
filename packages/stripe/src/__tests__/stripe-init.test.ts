@@ -25,7 +25,7 @@ describe("stripe client initialization", () => {
     (process.env as Record<string, string>).STRIPE_USE_MOCK = "false";
     const httpClient = {};
     const createHttpClient = jest.fn().mockReturnValue(httpClient);
-    const StripeMock = jest.fn().mockImplementation(() => ({}));
+    const StripeMock = jest.fn().mockImplementation(() => ({})) as jest.Mock & { createFetchHttpClient: jest.Mock };
     StripeMock.createFetchHttpClient = createHttpClient;
 
     jest.doMock("stripe", () => ({ __esModule: true, default: StripeMock }));

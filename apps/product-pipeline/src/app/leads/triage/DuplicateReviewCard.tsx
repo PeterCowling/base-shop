@@ -1,6 +1,7 @@
 "use client";
 
-import { Cluster, Stack } from "@ui/components/atoms/primitives";
+import { Cluster, Stack } from "@acme/design-system/primitives";
+
 import type { DuplicateGroup, LeadTriageStrings } from "./types";
 
 function formatScore(score: number | null, fallback: string): string {

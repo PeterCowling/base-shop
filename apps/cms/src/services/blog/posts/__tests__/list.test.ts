@@ -8,7 +8,7 @@ jest.mock("../../config", () => ({
   getConfig: jest.fn(),
 }));
 
-jest.mock("@platform-core/repositories/blog.server", () => ({
+jest.mock("@acme/platform-core/repositories/blog.server", () => ({
   listPosts: jest.fn(),
 }));
 
@@ -23,13 +23,13 @@ describe("getPosts", () => {
     );
     const { getConfig } = await import("../../config");
     const { listPosts } = await import(
-      "@platform-core/repositories/blog.server"
+      "@acme/platform-core/repositories/blog.server"
     );
 
     const config = { id: "config" } as any;
     const posts = [{ id: "a" }] as any;
-    getConfig.mockResolvedValue(config);
-    listPosts.mockResolvedValue(posts);
+    (getConfig as jest.Mock).mockResolvedValue(config);
+    (listPosts as jest.Mock).mockResolvedValue(posts);
 
     const result = await getPosts("shop123");
 
@@ -45,11 +45,11 @@ describe("getPosts", () => {
     );
     const { getConfig } = await import("../../config");
     const { listPosts } = await import(
-      "@platform-core/repositories/blog.server"
+      "@acme/platform-core/repositories/blog.server"
     );
 
     const error = new Error("failed");
-    getConfig.mockRejectedValue(error);
+    (getConfig as jest.Mock).mockRejectedValue(error);
 
     await expect(getPosts("shop123")).rejects.toThrow(error);
     expect(ensureCanRead).toHaveBeenCalled();

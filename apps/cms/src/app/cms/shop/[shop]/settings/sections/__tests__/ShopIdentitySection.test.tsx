@@ -1,11 +1,12 @@
-import React from "react";
+import type React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
+
 import type { Shop } from "@acme/types";
 
 import ShopIdentitySection from "../ShopIdentitySection";
 
 jest.mock("@/components/atoms/shadcn", () => {
-  const React = require("react");
+  const React = require("react") as typeof import("react");
 
   const Card = ({
     children,

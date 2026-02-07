@@ -1,6 +1,11 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 
+import { DashboardHero } from "../DashboardHero";
+import { PendingSummaryPanel } from "../PendingSummaryPanel";
+// Next/link mocked globally in jest.setup via test/resetNextMocks.ts
+import { ShopOverviewCard } from "../ShopOverviewCard";
+
 // Provide lightweight renderable shadcn atoms so children text is visible
 jest.mock("@/components/atoms/shadcn", () => {
   const React = require("react");
@@ -21,12 +26,6 @@ jest.mock("@/components/atoms/shadcn", () => {
     Progress,
   };
 });
-
-// Next/link mocked globally in jest.setup via test/resetNextMocks.ts
-
-import { ShopOverviewCard } from "../ShopOverviewCard";
-import { PendingSummaryPanel } from "../PendingSummaryPanel";
-import { DashboardHero } from "../DashboardHero";
 
 const makeStats = (overrides?: Partial<{ users: number; shops: number; products: number }>) => ({
   users: 0,

@@ -1,10 +1,11 @@
 "use client";
 
-import type { MediaItem } from "@acme/types";
-import Image from "next/image";
 import type { KeyboardEvent, ReactNode } from "react";
 import { useCallback } from "react";
+import Image from "next/image";
+
 import { useTranslations } from "@acme/i18n";
+import type { MediaItem } from "@acme/types";
 
 import { Progress, Tag } from "../atoms/shadcn";
 

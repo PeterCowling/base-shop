@@ -2,10 +2,12 @@
 "use client";
 
 import React from "react";
-import CanvasControlsMenu from "./CanvasControlsMenu";
-import ViewMenu from "./ViewMenu";
-import type GridSettings from "./GridSettings";
+
 import type { PageComponent } from "@acme/types";
+
+import CanvasControlsMenu from "./CanvasControlsMenu";
+import type GridSettings from "./GridSettings";
+import ViewMenu from "./ViewMenu";
 
 interface Props {
   gridProps: React.ComponentProps<typeof GridSettings>;

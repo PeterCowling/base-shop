@@ -73,18 +73,5 @@
         "L’illuminazione varia: porta la torcia del telefono o una luce compatta per discese a tarda sera."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Galleria fotografica",
-    "items": [
-      {
-        "caption": "Terrazza di Chiesa Nuova",
-        "alt": "Tramonto dalla terrazza di Chiesa Nuova"
-      },
-      {
-        "caption": "Nocelle",
-        "alt": "Tramonto visto da Nocelle"
-      }
-    ]
-  }
+  ]
 }

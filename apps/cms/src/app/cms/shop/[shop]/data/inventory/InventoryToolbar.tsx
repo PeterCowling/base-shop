@@ -1,9 +1,12 @@
 "use client";
 
-import { Button } from "@/components/atoms/shadcn";
-import { Tag } from "@ui/components/atoms";
-import { cn } from "@ui/utils/style";
 import type { ChangeEvent, RefObject } from "react";
+
+import { Tag } from "@acme/design-system/atoms";
+import { cn } from "@acme/design-system/utils/style";
+
+import { Button } from "@/components/atoms/shadcn";
+
 import type { InventoryStatus } from "./hooks/useInventoryEditor";
 
 interface InventoryToolbarProps {

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import type { Locale } from "@/types/locale";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+
 import { withLocale } from "@/lib/routes";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
+import type { Locale } from "@/types/locale";
 
 type OpenGraphConfig = {
   title: string;

@@ -1,11 +1,14 @@
 // apps/cover-me-pretty/src/app/api/shipping-rate/route.ts
 import "@acme/zod-utils/initZod";
-import { getShippingRate } from "@platform-core/shipping/index";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
-import shop from "../../../../shop.json";
+
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { parseJsonBody } from "@shared-utils";
+
+import { parseJsonBody } from "@acme/lib/http/server";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
+import { getShippingRate } from "@acme/platform-core/shipping/index";
+
+import shop from "../../../../shop.json";
 
 // Accessing shop settings requires filesystem access via Node's `fs` module.
 // Switch to the Node.js runtime so these APIs are available during build and
@@ -72,9 +75,10 @@ export async function POST(req: Request) {
     });
     return NextResponse.json(rate);
   } catch (err) {
+    console.error("[api/shipping-rate] error:", err); // i18n-exempt -- ABC-360 ttl=2026-03-31
     return NextResponse.json(
-      { error: (err as Error).message },
-      { status: 500 }
+      { error: "Failed to calculate shipping rate" }, // i18n-exempt -- ABC-356 ttl=2026-03-31
+      { status: 500 },
     );
   }
 }

@@ -1,4 +1,5 @@
 import { type Meta, type StoryObj } from "@storybook/nextjs";
+
 import { CategoryCollectionTemplate } from "./CategoryCollectionTemplate";
 
 const meta: Meta<typeof CategoryCollectionTemplate> = {

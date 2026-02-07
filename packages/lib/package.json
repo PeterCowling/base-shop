@@ -8,13 +8,79 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js",
-      "/*": {
-        "types": "./dist/*.d.ts",
-        "import": "./dist/*.js",
-        "default": "./dist/*.js"
-      }
+      "import": "./dist/index.js"
+    },
+    "./server": {
+      "types": "./dist/server.d.ts",
+      "import": "./dist/server.js"
+    },
+    "./format": {
+      "types": "./dist/format/index.d.ts",
+      "import": "./dist/format/index.js"
+    },
+    "./string": {
+      "types": "./dist/string/index.d.ts",
+      "import": "./dist/string/index.js"
+    },
+    "./array": {
+      "types": "./dist/array/index.d.ts",
+      "import": "./dist/array/index.js"
+    },
+    "./json": {
+      "types": "./dist/json/index.d.ts",
+      "import": "./dist/json/index.js"
+    },
+    "./http": {
+      "types": "./dist/http/index.d.ts",
+      "import": "./dist/http/index.js"
+    },
+    "./http/server": {
+      "types": "./dist/http/index.server.d.ts",
+      "import": "./dist/http/index.server.js"
+    },
+    "./security": {
+      "types": "./dist/security/index.d.ts",
+      "import": "./dist/security/index.js"
+    },
+    "./context": {
+      "types": "./dist/context/index.server.d.ts",
+      "import": "./dist/context/index.server.js"
+    },
+    "./shop": {
+      "types": "./dist/shop/index.d.ts",
+      "import": "./dist/shop/index.js"
+    },
+    "./logger": {
+      "types": "./dist/logger/index.server.d.ts",
+      "import": "./dist/logger/index.server.js"
+    },
+    "./math": {
+      "types": "./dist/math/index.d.ts",
+      "import": "./dist/math/index.js"
+    },
+    "./math/*": {
+      "types": "./dist/math/*/index.d.ts",
+      "import": "./dist/math/*/index.js"
+    },
+    "./generateMeta": {
+      "types": "./dist/generateMeta.d.ts",
+      "import": "./dist/generateMeta.js"
+    },
+    "./seoAudit": {
+      "types": "./dist/seoAudit.d.ts",
+      "import": "./dist/seoAudit.js"
+    },
+    "./tryon": {
+      "types": "./dist/tryon/index.d.ts",
+      "import": "./dist/tryon/index.js"
+    },
+    "./tryon/*": {
+      "types": "./dist/tryon/*.d.ts",
+      "import": "./dist/tryon/*.js"
+    },
+    "./validateShopName": {
+      "types": "./dist/validateShopName.d.ts",
+      "import": "./dist/validateShopName.js"
     }
   },
   "files": [
@@ -23,16 +89,19 @@
   "sideEffects": false,
   "scripts": {
     "build": "tsc -b",
+    "dev": "tsc -b --watch",
     "clean": "rimraf dist *.tsbuildinfo",
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs",
     "lint": "eslint ."
   },
   "devDependencies": {
-    "next": "^15.3.5"
+    "next": "^15.3.9"
   },
   "dependencies": {
     "@acme/config": "workspace:^",
     "@acme/zod-utils": "workspace:^",
-    "@acme/platform-core": "workspace:^"
+    "pino": "^9.9.0",
+    "server-only": "^0.0.1",
+    "zod": "^3.25.73"
   }
 }

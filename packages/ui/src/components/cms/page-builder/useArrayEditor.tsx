@@ -1,9 +1,12 @@
 "use client"; // i18n-exempt: Next.js directive
 import type { ChangeEvent } from "react";
 import { useCallback, useRef } from "react";
-import { Button, Input } from "../../atoms/shadcn";
-import ImagePicker from "./ImagePicker";
+
 import { useTranslations } from "@acme/i18n";
+
+import { Button, Input } from "../../atoms/shadcn";
+
+import ImagePicker from "./ImagePicker";
 
 export function useArrayEditor<T>(
   onChange: (patch: Partial<T>) => void,

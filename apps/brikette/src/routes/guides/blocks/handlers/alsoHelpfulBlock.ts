@@ -1,0 +1,61 @@
+/**
+ * Also helpful block handler.
+ */
+import type { GuideSection } from "@/data/guides.index";
+
+import type { GuideSeoTemplateProps } from "../../guide-seo/types";
+import type { AlsoHelpfulBlockOptions } from "../types";
+
+import type { BlockAccumulator } from "./BlockAccumulator";
+
+function normaliseGuideSection(value: unknown): GuideSection | undefined {
+  // Accept new namespace values (experiences, assistance, howToGetHere)
+  // Also accept legacy "help" for backwards compatibility with older block configs
+  if (
+    value === "experiences" ||
+    value === "assistance" ||
+    value === "howToGetHere" ||
+    value === "help"
+  ) {
+    return value as GuideSection;
+  }
+  return undefined;
+}
+
+export function applyAlsoHelpfulBlock(acc: BlockAccumulator, options: AlsoHelpfulBlockOptions): void {
+  const exclude = Array.isArray(options.excludeGuide)
+    ? options.excludeGuide
+    : options.excludeGuide
+      ? [options.excludeGuide]
+      : undefined;
+
+  if (!Array.isArray(options.tags) || options.tags.length === 0) {
+    acc.warn("alsoHelpful block requires at least one tag");
+    return;
+  }
+
+  const config: GuideSeoTemplateProps["alsoHelpful"] = {
+    tags: [...options.tags],
+  };
+
+  if (Array.isArray(exclude)) {
+    config.excludeGuide = [...exclude];
+  }
+
+  if (options.includeRooms != null) {
+    config.includeRooms = options.includeRooms;
+  }
+
+  if (options.titleKey) {
+    config.titleKey = options.titleKey;
+  }
+
+  const normalizedSection = normaliseGuideSection(options.section);
+  if (normalizedSection) {
+    config.section = normalizedSection;
+  }
+
+  acc.mergeTemplate({
+    alsoHelpful: config,
+  });
+}

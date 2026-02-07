@@ -1,8 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import ProfileForm from "../ProfileForm";
 
-jest.mock("@acme/shared-utils", () => ({
+jest.mock("@acme/lib/security", () => ({
   __esModule: true,
   getCsrfToken: jest.fn(() => "csrf-token"),
 }));
@@ -29,7 +30,6 @@ describe("ProfileForm focus behavior", () => {
   });
 
   it("focuses email on 409 conflict error", async () => {
-    // @ts-expect-error — mocking global.fetch in tests
     global.fetch = jest.fn().mockResolvedValue({
       ok: false,
       status: 409,

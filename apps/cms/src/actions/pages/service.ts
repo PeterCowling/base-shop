@@ -1,11 +1,11 @@
 // apps/cms/src/actions/pages/service.ts
 
 import {
+  deletePage as repoDeletePage,
   getPages as repoGetPages,
   savePage as repoSavePage,
   updatePage as repoUpdatePage,
-  deletePage as repoDeletePage,
-} from "@platform-core/repositories/pages/index.server";
+} from "@acme/platform-core/repositories/pages/index.server";
 import type { Page } from "@acme/types";
 
 export function getPages(shop: string) {

@@ -1,9 +1,11 @@
 "use client";
 
-import { RangeInput } from "../index";
-import type { TokenInfo } from "../../../hooks/useTokenEditor";
-import { ReactElement } from "react";
+import { type ReactElement } from "react";
+
 import { useTranslations } from "@acme/i18n";
+
+import type { TokenInfo } from "../../../hooks/useTokenEditor";
+import { RangeInput } from "../index";
 
 interface RangeTokenProps extends Omit<TokenInfo, "key"> {
   tokenKey: TokenInfo["key"];
@@ -18,7 +20,7 @@ export function RangeToken({
   setToken,
 }: RangeTokenProps): ReactElement {
   const t = useTranslations();
-  // eslint-disable-next-line ds/no-hardcoded-copy -- DX-0002: utility classes are not user copy
+   
   const overrideClasses = isOverridden ? "border-s-2 border-s-info ps-2" : "";
   return (
     <label

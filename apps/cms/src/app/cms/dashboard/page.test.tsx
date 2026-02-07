@@ -1,5 +1,6 @@
-import { render, screen } from "@testing-library/react";
 import React from "react";
+import { render, screen } from "@testing-library/react";
+
 import { listShops } from "../../../lib/listShops";
 
 jest.mock("../../../lib/listShops", () => ({ listShops: jest.fn() }));
@@ -13,7 +14,7 @@ afterEach(() => {
 it("renders shop links", async () => {
   mockList.mockResolvedValue(["one", "two"]);
   const { default: Page } = await import("./page");
-  render(await Page());
+  render(await Page({}));
   expect(
     screen.getByRole("heading", { name: "Choose a storefront to inspect" })
   ).toBeInTheDocument();
@@ -26,7 +27,7 @@ it("renders shop links", async () => {
 it("shows message when no shops", async () => {
   mockList.mockResolvedValue([]);
   const { default: Page } = await import("./page");
-  render(await Page());
+  render(await Page({}));
   expect(
     screen.getByText(
       "No shops found. Create a shop in the configurator to unlock dashboards."

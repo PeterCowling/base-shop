@@ -1,9 +1,11 @@
 import "@testing-library/jest-dom";
-import { render, screen, fireEvent } from "@testing-library/react";
+
+import { fireEvent,render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import { FileSelector } from "../atoms/FileSelector";
-import ThemeToggle from "../ThemeToggle";
 import { Tag } from "../atoms/Tag";
+import ThemeToggle from "../ThemeToggle";
 
 let setThemeMock: jest.Mock | undefined;
 
@@ -16,17 +18,17 @@ const ensureSetThemeMock = () => {
 };
 
 jest.mock(
-  "@platform-core/contexts/ThemeContext",
+  "@acme/platform-core/contexts/ThemeModeContext",
   () => {
     const React = require("react");
     return {
-      useTheme: () => {
-        const [theme, setThemeState] = React.useState("base");
-        const setTheme = (t: string) => {
+      useThemeMode: () => {
+        const [mode, setModeState] = React.useState("light");
+        const setMode = (t: string) => {
           ensureSetThemeMock()(t);
-          setThemeState(t);
+          setModeState(t);
         };
-        return { theme, setTheme };
+        return { mode, setMode };
       },
     };
   },

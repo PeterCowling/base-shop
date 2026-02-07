@@ -84,23 +84,6 @@
       "note": "Pastelería famosa por la delizia al limone, babà al limoncello y dulces perfectos para un picnic en los acantilados."
     }
   ],
-  "gallery": {
-    "title": "Platos destacados",
-    "items": [
-      {
-        "alt": "Pasta de marisco con limones de la Costa Amalfitana",
-        "caption": "Clásicos marineros de las trattorias de Positano"
-      },
-      {
-        "alt": "Delizia al limone servida en un plato",
-        "caption": "Postres de limón para degustar"
-      },
-      {
-        "alt": "Amigos brindando con limoncello al atardecer",
-        "caption": "Digestivos con vistas"
-      }
-    ]
-  },
   "fallback": {
     "toc": [
       {

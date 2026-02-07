@@ -1,12 +1,12 @@
 import {
-  redisMock,
-  nodemailerMock,
-  sendGridMock,
-  resendMock,
-  sanitizeHtmlMock,
-  nextHeadersMock,
   nextCookiesMock,
+  nextHeadersMock,
+  nodemailerMock,
+  redisMock,
+  resendMock,
   resetExternalMocks,
+  sanitizeHtmlMock,
+  sendGridMock,
 } from "./external";
 
 describe("external mocks", () => {

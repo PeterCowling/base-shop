@@ -1,8 +1,9 @@
 "use client";
 
+import { useTranslations } from "@acme/i18n";
+
 import { Tooltip } from "@/components/atoms";
 import { Input, Textarea } from "@/components/atoms/shadcn";
-import { useTranslations } from "@acme/i18n";
 
 import type { SeoData } from "./useSeoEditor";
 
@@ -105,7 +106,7 @@ export function SeoAdvancedSettings({
             <Textarea
               rows={2}
               value={draft.offers ?? ""}
-              onChange={(event) => updateField("offers", event.target.value)}
+              onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => updateField("offers", event.target.value)}
               placeholder={t('{"@type":"Offer","price":10,"priceCurrency":"USD"}') as string}
             />
           </label>
@@ -114,7 +115,7 @@ export function SeoAdvancedSettings({
             <Textarea
               rows={2}
               value={draft.aggregateRating ?? ""}
-              onChange={(event) => updateField("aggregateRating", event.target.value)}
+              onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => updateField("aggregateRating", event.target.value)}
               placeholder={t('{"@type":"AggregateRating","ratingValue":4.5,"reviewCount":120}') as string}
             />
           </label>
@@ -125,7 +126,7 @@ export function SeoAdvancedSettings({
             <Textarea
               rows={4}
               value={draft.structuredData ?? ""}
-              onChange={(event) => updateField("structuredData", event.target.value)}
+              onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => updateField("structuredData", event.target.value)}
               placeholder={t("Paste full JSON-LD object to override") as string}
             />
           </label>

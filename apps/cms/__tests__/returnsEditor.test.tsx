@@ -1,6 +1,9 @@
 import "@testing-library/jest-dom";
+
 import React, { act } from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent,render, screen } from "@testing-library/react";
+
+import ReturnsEditor from "../src/app/cms/shop/[shop]/settings/returns/ReturnsEditor";
 
 const updateUpsReturns = jest.fn();
 jest.mock("@cms/actions/shops.server", () => ({ updateUpsReturns }));
@@ -25,8 +28,6 @@ jest.mock("@/components/atoms/shadcn", () => ({
   Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
   CardContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
 }));
-
-import ReturnsEditor from "../src/app/cms/shop/[shop]/settings/returns/ReturnsEditor";
 
 describe("ReturnsEditor", () => {
   it("submits form and updates state", async () => {

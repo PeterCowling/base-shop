@@ -1,6 +1,8 @@
 "use client";
 import * as React from "react";
+
 import { useTranslations } from "@acme/i18n";
+
 import { cn } from "../../utils/style";
 
 export interface ARViewerProps extends React.HTMLAttributes<HTMLElement> {
@@ -55,7 +57,7 @@ export function ARViewer({
 
   React.useEffect(() => {
     let mounted = true;
-    ensureModelViewer(process.env.NEXT_PUBLIC_MODEL_VIEWER_SRC)
+    ensureModelViewer(process.env["NEXT_PUBLIC_MODEL_VIEWER_SRC"])
       .then(() => {
         if (!mounted) return;
         setReady(true);

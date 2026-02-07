@@ -1,10 +1,12 @@
 'use client';
 
 import Image from "next/image";
-import { useTranslations } from "@i18n";
+
+import { useTranslations } from "@acme/i18n";
+
 import type { PersonDefinition } from "@/data/people";
-import type { Locale } from "@/lib/locales";
 import { CRISTIANA_WECHAT_QR_IMAGE } from "@/lib/assets";
+import type { Locale } from "@/lib/locales";
 import { MILAN_CLASSES } from "@/styles/milan";
 
 type PeopleCardProps = {
@@ -17,8 +19,8 @@ export default function PeopleCard({ definition, lang }: PeopleCardProps) {
   const isZh = lang === "zh";
   const isIt = lang === "it";
   const borderColor = isZh ? "border-accent/60" : "border-border";
-  const background = isZh ? "bg-zinc-900/80" : "bg-panel";
-  const textColor = isZh ? "text-zinc-100" : "text-fg";
+  const background = isZh ? "bg-panel/80" : "bg-panel";
+  const textColor = "text-fg";
   const accent = isZh ? "text-accent" : "text-fg";
   const contactEntries = [
     {

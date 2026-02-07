@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { localizedPath } from "@/lib/routes";
+
 import type { Locale } from "@/lib/locales";
+import { localizedPath } from "@/lib/routes";
+
 import type { Translator } from "./types";
 
 type Props = {

@@ -1,25 +1,27 @@
 "use client";
 
-import { memo, useState, useCallback, useEffect, useMemo } from "react";
-import { useTranslations } from "@acme/i18n";
+import { memo, useCallback, useEffect, useMemo,useState } from "react";
 import { usePathname } from "next/navigation";
-import { getShopFromPath } from "@acme/shared-utils";
-import PresetsModal from "./PresetsModal";
-import LibraryImportExport from "./LibraryImportExport";
+
+import { useTranslations } from "@acme/i18n";
+import { getShopFromPath } from "@acme/lib/shop";
+
 import type { ComponentType } from "./defaults";
-import type { PaletteProps } from "./palette.types";
 import useInstalledApps from "./hooks/useInstalledApps";
+import useLibraries from "./hooks/useLibraries";
+import useLiveMessage from "./hooks/useLiveMessage";
 import usePaletteCategories, { type PaletteMode } from "./hooks/usePaletteCategories";
 import usePaletteIndex from "./hooks/usePaletteIndex";
 import useRecents from "./hooks/useRecents";
-import useLibraries from "./hooks/useLibraries";
-import useLiveMessage from "./hooks/useLiveMessage";
 import useTextThemesPreview from "./hooks/useTextThemesPreview";
-import RecentsList from "./palette/RecentsList";
-import LibraryList from "./palette/LibraryList";
-import TextThemesList from "./palette/TextThemesList";
+import LibraryImportExport from "./LibraryImportExport";
+import type { PaletteProps } from "./palette.types";
 import CategoriesList from "./palette/CategoriesList";
+import LibraryList from "./palette/LibraryList";
+import RecentsList from "./palette/RecentsList";
 import SearchInput from "./palette/SearchInput";
+import TextThemesList from "./palette/TextThemesList";
+import PresetsModal from "./PresetsModal";
 
 const Palette = memo(function Palette({
   onAdd,

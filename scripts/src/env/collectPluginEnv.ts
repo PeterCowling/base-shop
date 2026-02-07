@@ -1,4 +1,5 @@
 import { execSync } from "node:child_process";
+
 import { prompt, selectProviders } from "../utils/prompts";
 import type { PluginMeta } from "../utils/providers";
 

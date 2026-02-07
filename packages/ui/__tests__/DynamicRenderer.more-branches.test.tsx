@@ -1,3 +1,10 @@
+import { render } from "@testing-library/react";
+
+import type { PageComponent } from "@acme/types";
+
+import { blockRegistry } from "../src/components/cms/blocks";
+import DynamicRenderer from "../src/components/DynamicRenderer";
+
 jest.mock("../src/components/cms/page-builder/scrollEffects", () => ({
   ensureScrollStyles: jest.fn(),
   ensureAnimationStyles: jest.fn(),
@@ -14,16 +21,10 @@ jest.mock("../src/components/cms/lightbox", () => ({
   initLightbox: jest.fn(),
 }));
 
-import React from "react";
-import { render } from "@testing-library/react";
-import DynamicRenderer from "../src/components/DynamicRenderer";
-import { blockRegistry } from "../src/components/cms/blocks";
-import type { PageComponent } from "@acme/types";
-
 describe("DynamicRenderer additional branches", () => {
   it("passes stackStrategy reverse as className to block component and adds orderMobile class to wrapper", () => {
     const spy = jest
-      .spyOn(blockRegistry.Text, "component")
+      .spyOn(blockRegistry.Text as any, "component")
       .mockImplementation(({ className }: any) => (
         <div data-cy="comp" className={className} />
       ));
@@ -46,13 +47,14 @@ describe("DynamicRenderer additional branches", () => {
     const wrapper = container.firstElementChild as HTMLElement;
     expect(wrapper.className).toMatch(/pb-order-mobile-3/);
     expect(spy).toHaveBeenCalled();
-    expect(spy.mock.calls[0][0].className).toContain("pb-stack-mobile-reverse");
+    const passed = spy.mock.calls[0]?.[0] as { className?: string } | undefined;
+    expect(passed?.className).toContain("pb-stack-mobile-reverse");
     spy.mockRestore();
   });
 
   it("uses static transform wrapper when only static transform is present (no hover)", () => {
     const spy = jest
-      .spyOn(blockRegistry.Text, "component")
+      .spyOn(blockRegistry.Text as any, "component")
       .mockImplementation(() => <div data-cy="inner" />);
 
     const styles = JSON.stringify({ effects: { transformRotate: "10deg" } });
@@ -77,7 +79,7 @@ describe("DynamicRenderer additional branches", () => {
 
   it("sets clickAction scroll-to and omits timeline when steps empty; hoverOpacity alone creates hover target", () => {
     const spy = jest
-      .spyOn(blockRegistry.Text, "component")
+      .spyOn(blockRegistry.Text as any, "component")
       .mockImplementation(() => <div data-cy="c" />);
 
     const components: PageComponent[] = [
@@ -103,4 +105,3 @@ describe("DynamicRenderer additional branches", () => {
     spy.mockRestore();
   });
 });
-

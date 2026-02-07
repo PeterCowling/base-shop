@@ -1,11 +1,13 @@
 "use client";
-import Image from "next/image";
 import { useId } from "react";
-import { Grid as DSGrid } from "../../atoms/primitives";
-import type { TranslatableText } from "@acme/types/i18n";
-import type { Locale } from "@acme/i18n/locales";
+import Image from "next/image";
+
 import { useTranslations } from "@acme/i18n";
-import { resolveText } from "@i18n/resolveText";
+import type { Locale } from "@acme/i18n/locales";
+import { resolveText } from "@acme/i18n/resolveText";
+import type { TranslatableText } from "@acme/types/i18n";
+
+import { Grid as DSGrid } from "../../atoms/primitives";
 
 export type GalleryImage = { src: string; alt?: TranslatableText; caption?: TranslatableText };
 

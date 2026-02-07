@@ -1,9 +1,11 @@
-import jwt from "jsonwebtoken";
-import * as fs from "fs";
 import * as childProcess from "child_process";
+import * as fs from "fs";
+import jwt from "jsonwebtoken";
+
+import { apiRequest } from "../../../test-utils";
+
 jest.mock("fs");
 jest.mock("child_process");
-import { apiRequest } from "../../../test-utils";
 
 describe("publish-upgrade route", () => {
   beforeAll(() => {

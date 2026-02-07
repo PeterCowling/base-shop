@@ -1,5 +1,5 @@
-import { jest } from "@jest/globals";
 import * as React from "react";
+import { jest } from "@jest/globals";
 
 describe("renderTemplate", () => {
   afterEach(() => {

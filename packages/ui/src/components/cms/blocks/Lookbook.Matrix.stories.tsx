@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/Lookbook.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import Lookbook from './Lookbook';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './Lookbook.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import Lookbook from './Lookbook';
+import fixture from './Lookbook.fixtures.json';
 
 const meta: Meta<typeof Lookbook> = {
   title: 'CMS Blocks/Lookbook/Matrix',

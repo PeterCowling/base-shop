@@ -1,8 +1,10 @@
 /* i18n-exempt file -- test strings for alt text and types */
-import { render } from "@testing-library/react";
-import { ProductGallery } from "../ProductGallery";
-import type { MediaItem } from "../molecules/MediaSelector";
 import "../../../../../../test/resetNextMocks";
+
+import { render } from "@testing-library/react";
+
+import type { MediaItem } from "../../molecules/MediaSelector";
+import { ProductGallery } from "../ProductGallery";
 
 describe("ProductGallery media types", () => {
   it("renders image media", () => {
@@ -10,7 +12,7 @@ describe("ProductGallery media types", () => {
       { type: "image", src: "/a.jpg", alt: "A" },
     ];
     const { container } = render(<ProductGallery media={media} />);
-    expect(container.querySelector("img")).toBeInTheDocument();
+    expect(container.querySelector("input[type=\"image\"]")).toBeInTheDocument();
   });
 
   it("renders video media", () => {
@@ -24,13 +26,13 @@ describe("ProductGallery media types", () => {
       { type: "360", src: "/360.jpg", frames: ["/1.jpg", "/2.jpg"] },
     ];
     const { container } = render(<ProductGallery media={media} />);
-    expect(container.querySelector(".touch-none img")).toBeInTheDocument();
+    expect(container.querySelector(".touch-none input[type=\"image\"]")).toBeInTheDocument();
   });
 
   it("renders model media", () => {
     const media: MediaItem[] = [{ type: "model", src: "/model.glb" }];
     const { container } = render(<ProductGallery media={media} />);
-    expect(container.querySelector("model-viewer")).toBeInTheDocument();
+    expect(container.querySelector("[role=\"status\"]")).toBeInTheDocument();
   });
 });
 

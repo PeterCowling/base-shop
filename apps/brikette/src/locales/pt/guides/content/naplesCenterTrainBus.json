@@ -1,0 +1,75 @@
+{
+  "seo": {
+    "title": "Centro de Nápoles para Positano de comboio e depois autocarro | Hostel Brikette",
+    "description": "Instruções passo a passo para viajar do centro de Nápoles ao Hostel Brikette pela linha Circumvesuviana e pelo autocarro SITA, com dicas de bilhetes e fotos da chegada a Positano."
+  },
+  "intro": {
+    "title": "Centro de Nápoles para Positano – comboio e depois autocarro",
+    "body": "Siga estas instruções para viajar do centro de Nápoles ao Hostel Brikette pela linha Circumvesuviana até Sorrento e pelo autocarro SITA até Positano. O guia inclui dicas de bilhetes, conselhos sobre horários e fotos da chegada ao hostel."
+  },
+  "callouts": {
+    "tip": "Precisa de outras rotas? Explore o conjunto completo de instruções de chegada na %HOWTO:how-to-get-here|página Como Chegar%."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Visão geral comboio + autocarro",
+      "body": "Esta viagem cobre a combinação mais rápida de transporte público a partir do centro de Nápoles: o comboio Circumvesuviana até Sorrento seguido do autocarro SITA até Positano. Não inclui deslocações a partir do Aeroporto de Nápoles."
+    },
+    {
+      "id": "naplesStation",
+      "title": "Estação de comboio de Nápoles",
+      "body": "Os serviços Circumvesuviana para Sorrento partem do nível inferior da estação Napoli Garibaldi (abaixo da Napoli Centrale). Compre o bilhete antes de descer às plataformas, confirme em que linha parte o seu serviço e embarque no comboio com direção a Sorrento."
+    },
+    {
+      "id": "sorrentoStation",
+      "title": "Estação de comboio de Sorrento",
+      "body": "Depois de chegar a Sorrento, saia da estação e compre o bilhete do autocarro SITA no bar, na banca de jornais ou na tabacaria próximas — os bilhetes não são vendidos a bordo. A paragem da SITA fica ao pé da escadaria exterior; aguarde o autocarro com destino a Amalfi e siga até Positano."
+    },
+    {
+      "id": "timetable",
+      "title": "Como ler o horário da SITA",
+      "body": "O horário do autocarro SITA pode ser confuso — use estas dicas rápidas para encontrar o serviço correto:"
+    },
+    {
+      "id": "positanoStop",
+      "title": "Paragem de autocarro em Positano",
+      "list": [
+        "A paragem mais próxima é Positano (Chiesa Nuova), a aproximadamente 140 metros (490 pés) do hostel.",
+        "Fica em frente ao café/bar Bar Internazionale.",
+        "O autocarro deixa-o ao nível da estrada — não há escadarias longas para chegar até nós."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Caminhada a partir da paragem de autocarro"
+    }
+  ],
+  "lastUpdated": "2026-01-31",
+  "faqs": [
+    {
+      "q": "Quanto custa ir do centro de Nápoles para Positano de trem e ônibus?",
+      "a": "O custo total é de cerca de €7.20: €4.60 pelo trem Circumvesuviana de Nápoles para Sorrento, mais €2.60 pelo ônibus SITA de Sorrento para Positano (preços de 2026). Esta é a opção de transporte público mais barata."
+    },
+    {
+      "q": "Quanto tempo leva a viagem de Nápoles para Positano?",
+      "a": "O tempo total de viagem é de 2.5-3 horas: 70 minutos de trem, 50 minutos de ônibus, mais 20-40 minutos esperando as conexões em Sorrento. Reserve 3-3.5 horas no total para possíveis atrasos."
+    },
+    {
+      "q": "Posso comprar bilhetes no trem ou ônibus?",
+      "a": "Você pode comprar bilhetes de trem na estação Napoli Garibaldi nas máquinas ou no balcão, mas deve validar antes de embarcar. Bilhetes de ônibus SITA não podem ser comprados a bordo — você deve comprá-los num bar, tabacaria ou banca de jornais perto da estação de Sorrento antes de entrar no ônibus."
+    },
+    {
+      "q": "Esta rota é adequada para viajantes com bagagem pesada?",
+      "a": "Sim, mas pode ser desafiador durante horários de pico. Tanto o trem quanto o ônibus têm espaço limitado para bagagem, então embarque cedo se tiver malas grandes. A caminhada da parada de ônibus Chiesa Nuova até o hostel é plana e leva menos de 2 minutos, então a bagagem é administrável ao chegar. Se preferir, considere usar nossos serviços de carregador ou transfer privado."
+    },
+    {
+      "q": "Qual é o horário do último ônibus de Sorrento para Positano?",
+      "a": "O último ônibus varia conforme a estação. No verão (julho-agosto), o último ônibus geralmente é por volta das 21h-22h. No inverno (novembro-março), pode ser tão cedo quanto 19h-20h. Sempre verifique o horário atual em sitasudtrasporti.it antes de viajar, especialmente aos domingos e feriados quando os serviços são reduzidos."
+    },
+    {
+      "q": "Existe um trem ou ônibus direto de Nápoles para Positano?",
+      "a": "Não existe trem direto — você deve fazer baldeação em Sorrento. O ônibus Curreri oferece uma conexão direta de Nápoles para Positano, mas os horários são limitados (geralmente 2-3 serviços por dia). A combinação trem-ônibus é mais frequente e mais barata."
+    }
+  ]
+}

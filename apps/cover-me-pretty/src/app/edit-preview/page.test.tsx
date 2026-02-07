@@ -1,11 +1,13 @@
 import "@testing-library/jest-dom";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+
 import type { FC } from "react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
 import EditPreviewPage from "./page";
 
 type ComponentPreviewProps = { component: { componentName: string } };
 
-jest.mock("@ui/components/ComponentPreview", () => {
+jest.mock("@acme/ui/components/ComponentPreview", () => {
   const MockComponentPreview: FC<ComponentPreviewProps> = ({ component }) => (
     <div data-cy={`preview-${component.componentName}`}>{component.componentName}</div>
   );

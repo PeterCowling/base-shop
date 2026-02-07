@@ -1,72 +1,72 @@
 {
   "seo": {
-    "title": "Fährausfälle und rauer Seegang",
-    "description": "Was tun, wenn Fähren wetterbedingt ausfallen, welche Alternativen es gibt und wo du den Status prüfst."
+    "title": "Fährausfälle und raue See",
+    "description": "Was zu tun ist, wenn Fähren aufgrund des Wetters ausfallen, Alternativen und wie man den Status überprüft."
   },
-  "linkLabel": "Fährausfälle und rauer Seegang",
+  "linkLabel": "Fährausfälle und raue See",
   "intro": [
-    "Raues Meer kann Fähren von und nach Positano kurzfristig stoppen.",
-    "Halte einen Plan B an Land bereit und beobachte Live-Meldungen, damit du deine Verbindung trotzdem erreichst."
+    "Raue See kann den Fährverkehr von und nach Positano kurzfristig aussetzen.",
+    "Halten Sie eine landbasierte Alternative bereit und überwachen Sie Live-Warnungen, damit Sie Ihre Verbindung dennoch erreichen."
   ],
   "sections": [
     {
       "id": "monitoring",
-      "title": "Live-Updates verfolgen",
+      "title": "Live-Updates überwachen",
       "body": [
-        "Prüfe Operator-Websites und Apps (Travelmar, NLG, Alilauro) sowie die Anzeigetafeln am Hafen an windigen Tagen alle 30 Minuten.",
-        "Aktiviere SMS/E-Mail-Benachrichtigungen oder folge lokalen Telegram-/Social-Kanälen, damit dich Absagen erreichen, auch wenn du gerade nicht am Pier bist."
+        "Überprüfen Sie die Websites und Apps der Betreiber (Travelmar, NLG, Alilauro) sowie die Anzeigetafeln im Hafen alle 30 Minuten an windigen Tagen.",
+        "Aktivieren Sie SMS-/E-Mail-Benachrichtigungen oder folgen Sie lokalen Telegram-/Social-Media-Kanälen, damit Stornierungen Sie auch dann erreichen, wenn Sie sich vom Pier entfernen."
       ]
     },
     {
       "id": "plan-b",
       "title": "Auf Landrouten umsteigen",
       "body": [
-        "Fallen Fahrten aus, wechsle auf Bus und Bahn: SITA nach Sorrent und weiter mit der Circumvesuviana nach Neapel/Pompeji oder Bus via Amalfi und Regionalzug ab Salerno.",
-        "Plane mindestens 60 Minuten Puffer für die letzten Verbindungen des Tages ein und entwerte Tickets vor dem Einsteigen."
+        "Wenn die Fahrten eingestellt werden, wechseln Sie zu Bussen und Zügen: SITA nach Sorrento, dann Circumvesuviana nach Neapel/Pompeji, oder Bus über Amalfi und Regionalzug von Salerno.",
+        "Planen Sie mindestens 60 Minuten Puffer für die letzten Abfahrten des Tages ein und validieren Sie Tickets vor dem Einsteigen."
       ]
     },
     {
       "id": "refunds",
-      "title": "Erstattungen & Gutscheine",
+      "title": "Rückerstattungen & Gutscheine",
       "body": [
-        "Bewahre Belege auf und screenshotte die Absage, damit der Betreiber Rückerstattungen, Umbuchungen oder Guthaben bearbeiten kann.",
-        "Teile dem Personal mit, ob du die nächste verfügbare Fahrt oder einen Saison-Gutschein möchtest, bevor du den Schalter verlässt."
+        "Bewahren Sie Quittungen auf und machen Sie einen Screenshot der Stornierungsmitteilung, damit der Betreiber Rückerstattungen, Umbuchungen oder Gutschriften bearbeiten kann.",
+        "Teilen Sie dem Personal mit, ob Sie die nächste verfügbare Fahrt oder einen Saisongutschein bevorzugen, bevor Sie den Schalter verlassen."
       ]
     },
     {
       "id": "overnight",
-      "title": "Über-Nacht-Verzögerungen",
+      "title": "Übernachtungsverzögerungen verwalten",
       "body": [
-        "Informiere Unterkunft oder Tourveranstalter sofort über Verzögerungen; viele passen Check-in oder Abfahrt an, wenn sie früh Bescheid wissen.",
-        "Frag am Hafen-Infopunkt nach Sammeltaxis, Ersatz-Shuttles oder Gepäckaufbewahrung, falls du bis zum nächsten Morgen warten musst."
+        "Informieren Sie Ihre Unterkunft oder Ihren Reiseleiter, sobald Verzögerungen angekündigt werden; viele passen Check-in oder Abreise an, wenn sie im Voraus gewarnt werden.",
+        "Fragen Sie am Hafeninfopoint nach Sammeltaxis, Ersatzshuttles oder Gepäckaufbewahrung, wenn Sie bis zum nächsten Morgen warten müssen."
       ]
     }
   ],
   "tips": [
-    "Zieh die Marinevorhersage heran – Winde über 20 Knoten oder Wellen über 1,5 Meter lösen häufig Ausfälle aus.",
-    "Eine Reiseversicherung mit Wetterschutz hilft, zusätzliche Hotelnächte oder Ersatztransfers erstattet zu bekommen.",
-    "Morgendliche Fahrten sind am zuverlässigsten; verlass dich bei Sturmprognosen nicht auf die letzte Fähre des Tages."
+    "Prüfen Sie die Seewettervorhersage—Winde über 20 Knoten oder Seegang über 1,5 Meter lösen oft Stornierungen aus.",
+    "Reiseversicherung, die Wetterverzögerungen abdeckt, hilft bei der Erstattung zusätzlicher Hotelnächte oder Ersatztransfers.",
+    "Morgenfahrten sind am zuverlässigsten; vermeiden Sie es, sich auf das letzte Boot des Tages zu verlassen, wenn Stürme vorhergesagt werden."
   ],
   "faqs": [
     {
-      "q": "Woher weiß ich, wann Fähren wieder fahren?",
+      "q": "Wie erfahre ich, wann die Fahrten wieder aufgenommen werden?",
       "a": [
-        "Aktualisiere die Website oder Social-Feeds des Betreibers und hör auf Lautsprecherdurchsagen am Pier – Entscheidungen werden meist binnen 30 Minuten nach geplanter Abfahrt veröffentlicht.",
-        "Das Schalterpersonal kann ebenfalls bestätigen, ob die nächste Fähre fährt, bevor du den Hafen verlässt."
+        "Aktualisieren Sie die Website oder Social-Media-Feeds des Betreibers und hören Sie auf Lautsprecherdurchsagen am Pier—Entscheidungen werden normalerweise innerhalb von 30 Minuten nach der geplanten Abfahrt veröffentlicht.",
+        "Das Personal am Ticketschalter kann auch bestätigen, ob das nächste Boot fährt, bevor Sie den Hafen verlassen."
       ]
     },
     {
       "q": "Was passiert mit meinem Ticket?",
       "a": [
-        "Zeig Beleg oder QR-Code vor, um Rückerstattung, Gutschein oder Umbuchung auf die nächste Fahrt zu beantragen.",
-        "Bei Online-Agenturen sende den Screenshot der Absage innerhalb von 24 Stunden per Mail, um die Erstattung anzustoßen."
+        "Zeigen Sie Ihre Quittung oder Ihren QR-Code, um eine Rückerstattung, einen Gutschein oder eine Umbuchung auf die nächste Fahrt zu beantragen.",
+        "Wenn Sie über eine Online-Agentur gebucht haben, senden Sie ihnen innerhalb von 24 Stunden den Screenshot der Stornierung per E-Mail, um den Rückerstattungsprozess zu starten."
       ]
     },
     {
-      "q": "Gibt es Fähren, die bei schlechtem Wetter garantiert fahren?",
+      "q": "Gibt es Fähren, die bei rauer See garantiert fahren?",
       "a": [
-        "Nein – schließt die Küstenwache den Hafen, pausieren alle Abfahrten. Habe eine Landroute bereit.",
-        "Einige private Charter fahren bei moderater See, sind aber teuer und abhängig vom Kapitän; Komfort und Kosten gut abwägen."
+        "Nein—wenn die Küstenwache den Hafen schließt, werden alle Abfahrten eingestellt. Halten Sie eine Landroute bereit.",
+        "Einige private Charter können bei mäßigem Seegang fahren, sind aber teuer und abhängig vom Ermessen des Kapitäns; wägen Sie Komfort und Kosten sorgfältig ab."
       ]
     }
   ]

@@ -1,12 +1,14 @@
+import { render } from "@testing-library/react";
+
+import type { PageComponent } from "@acme/types";
+
+import Block from "../src/components/cms/page-builder/Block";
+
 jest.mock("../src/components/cms/blocks", () => ({
   blockRegistry: {
     Dummy: { component: () => <div data-cy="inner">content</div> },
   },
 }));
-
-import { render } from "@testing-library/react";
-import Block from "../src/components/cms/page-builder/Block";
-import type { PageComponent } from "@acme/types";
 
 test("applies navigation and animation", () => {
   const component: PageComponent = {

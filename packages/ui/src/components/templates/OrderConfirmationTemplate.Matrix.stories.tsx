@@ -1,9 +1,12 @@
 // packages/ui/src/components/templates/OrderConfirmationTemplate.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
+
 import type { CartState } from '@acme/platform-core/cart';
-import { OrderConfirmationTemplate } from './OrderConfirmationTemplate';
+
 import { makeStateStory } from '../../story-utils/createStories';
+
+import { OrderConfirmationTemplate } from './OrderConfirmationTemplate';
 
 const cart: CartState = {
   line1: {

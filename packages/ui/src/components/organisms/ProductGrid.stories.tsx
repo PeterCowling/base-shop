@@ -1,6 +1,8 @@
 // i18n-exempt -- Storybook demo copy and labels
 import type { Meta, StoryObj } from "@storybook/nextjs";
+
 import type { SKU } from "@acme/types";
+
 import { ProductGrid } from "./ProductGrid";
 
 const products: SKU[] = Array.from({ length: 6 }).map((_, i) => ({

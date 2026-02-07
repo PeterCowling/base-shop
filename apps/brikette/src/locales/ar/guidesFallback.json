@@ -464,14 +464,14 @@
     ],
     "sections": [
       {
-        "title": "Why this route works",
+        "title": "لماذا هذا المسار مناسب",
         "body": [
           "تبلغ المسافة 120 مترًا (400 قدم) سيرًا من مدخل النزل إلى الموقف، على الطريق الرئيسي.",
           "إذا كنت متجهًا نحو أمالفي، فالموقف مقابل بار إنتيرناتسيونالي. اصطف في جانب الطريق المطلّ على البحر. وإذا كنت متجهًا نحو سورينتو، فستنتظر خارج البار مباشرة."
         ]
       },
       {
-        "title": "Tickets and timing",
+        "title": "التذاكر والتوقيت",
         "body": [
           "اشترِ تذكرة SITA من دكّان التبغ أو من داخل البار. لا تحاول ركوب الحافلة من دون تذكرة، إذ لا يمكنك شراؤها على متن الحافلة. قدّم تذكرتك للسائق عند الصعود. وإذا كنت ستلحق بأول حافلة في الصباح، فاشترِ تذكرتك في اليوم السابق وتعال إلينا في الاستقبال لترتيب تسجيل المغادرة.",
           "تمتلئ الحافلات في الصيف كثيرًا. خطّط وفقًا لذلك، خصوصًا في أوقات الذروة."
@@ -480,29 +480,29 @@
     ],
     "beforeList": [],
     "stepsList": [
-      "Exit Hostel Brikette, take the short staircase to Viale Pasitea, and turn left.",
+      "اخرج من Hostel Brikette، اصعد الدرج القصير إلى فياليه بازيتيا، ثم انعطف يسارًا.",
       "اتبع الرصيف لمسافة تقارب 120 مترًا (400 قدم) على طول الطريق الرئيسي حتى تصل إلى بار إنتيرناتسيونالي."
     ],
     "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sHostel+Brikette!4m1!2sBar+Internazionale",
     "kneesList": [],
-    "kneesDockPrefix": "Starting with luggage at the ferry dock? Use our",
-    "kneesDockLinkLabel": "Ferry dock luggage route",
-    "kneesPorterPrefix": "Need porter pricing or booking help? Check the",
-    "kneesPorterLinkLabel": "porter service guide",
+    "kneesDockPrefix": "هل تبدأ مع الأمتعة من رصيف العبّارات؟ استخدم",
+    "kneesDockLinkLabel": "مسار الأمتعة من رصيف العبّارات",
+    "kneesPorterPrefix": "هل تحتاج أسعار الحمالين أو المساعدة في الحجز؟ اطّلع على",
+    "kneesPorterLinkLabel": "دليل خدمة الحمالين",
     "faqs": [
       {
-        "q": "Do buses stop right outside the hostel?",
-        "a": "They stop at Bar Internazionale—about 120 metres (400 feet) downhill from the entrance."
+        "q": "هل تتوقف الحافلات مباشرة خارج النزل؟",
+        "a": "تتوقف عند بار إنتيرناتسيونالي، على بعد نحو 120 مترًا (400 قدم) نزولًا من المدخل."
       },
       {
-        "q": "Can I buy tickets at the last minute?",
-        "a": "Yes, the tabacchi next to the stop sells SITA tickets, but expect queues at peak times."
+        "q": "هل يمكنني شراء التذاكر في اللحظة الأخيرة؟",
+        "a": "نعم، يبيع متجر التبغ بجوار الموقف تذاكر SITA، لكن توقّع طوابير في أوقات الذروة."
       }
     ],
     "howtoSteps": [
-      "Leave Hostel Brikette and follow Viale Pasitea downhill",
-      "Join the queue at Bar Internazionale and validate on boarding"
+      "غادر Hostel Brikette واتبع فياليه بازيتيا نزولًا",
+      "انضم إلى الطابور عند بار إنتيرناتسيونالي وفعّل التذكرة عند الصعود"
     ],
-    "faqsTitle": "FAQs"
+    "faqsTitle": "الأسئلة الشائعة"
   }
 }

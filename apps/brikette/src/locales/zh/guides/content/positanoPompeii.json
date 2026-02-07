@@ -1,38 +1,14 @@
 {
   "seo": {
     "title": "波西塔诺到庞贝：怎么走",
-    "description": "公交＋火车，或（夏季）渡轮＋火车的分步说明。"
+    "description": "公交＋火车，或（夏季）渡轮＋火车的分步说明。",
+    "lastUpdated": "2026-01-31"
   },
   "linkLabel": "波西塔诺到庞贝：怎么走",
+  "lastUpdated": "2026-02-04",
   "intro": [
     "庞贝规模宏大、震撼人心，也很容易排得太满。这份计划能帮你在不把整天花在路上的情况下看完重点。",
     "夏季炎热、多尘且拥挤——记得携带水和防晒用品，并务实评估自己能走完多少区域。"
-  ],
-  "toc": [
-    {
-      "href": "#at-a-glance",
-      "label": "快速概览"
-    },
-    {
-      "href": "#entry-cost-and-hours",
-      "label": "门票与开放时间"
-    },
-    {
-      "href": "#other-facilities",
-      "label": "现场设施"
-    },
-    {
-      "href": "#getting-there",
-      "label": "如何抵达"
-    },
-    {
-      "href": "#self-guided-tour",
-      "label": "自助游路线"
-    },
-    {
-      "href": "#faqs",
-      "label": "常见问题"
-    }
   ],
   "sections": [
     {
@@ -84,32 +60,11 @@
       ]
     }
   ],
-  "howTo": {
-    "steps": [
-      {
-        "name": "搭乘巴士至索伦托",
-        "text": "在波西塔诺搭乘 SITA 巴士前往索伦托火车站，全程约 60 分钟。"
-      },
-      {
-        "name": "转乘 Circumvesuviana 列车",
-        "text": "上到 Circumvesuviana 月台，搭乘列车前往 “Pompei Scavi – Villa dei Misteri”。"
-      },
-      {
-        "name": "步行至入口",
-        "text": "走出车站右转，左手边约 50 米处就是 Porta Marina Superiore 入口。"
-      }
-    ]
-  },
   "tipsTitle": "当天实用提示",
   "tips": [
     "在通过闸门前先领取免费地图，方便规划支线而无需折返。",
     "随身携带足够的水，并把握每个补水点补充；夏季摊位常常排长队。",
     "把想再看的拍照点或壁画记下来，离开时就不会因为炎热而错过。"
-  ],
-  "warningsTitle": "重要提醒",
-  "warnings": [
-    "旺季时 SITA 巴士和 Circumvesuviana 列车可能各自多等 20–30 分钟，请在行程中预留缓冲时间。",
-    "遗址大部分区域缺乏遮蔽，若怕热请尽量避免正午时段参观。"
   ],
   "faqsTitle": "常见问题",
   "faqs": [
@@ -131,5 +86,52 @@
         "小件行李可在 Pompei Scavi 车站付费寄存，景区入口内也提供免费的寄物柜服务。"
       ]
     }
+  ],
+  "toc": [
+    {
+      "href": "#at-a-glance",
+      "label": "快速概览"
+    },
+    {
+      "href": "#entry-cost-and-hours",
+      "label": "门票与开放时间"
+    },
+    {
+      "href": "#other-facilities",
+      "label": "现场设施"
+    },
+    {
+      "href": "#getting-there",
+      "label": "如何抵达"
+    },
+    {
+      "href": "#self-guided-tour",
+      "label": "自助游路线"
+    },
+    {
+      "href": "#faqs",
+      "label": "常见问题"
+    }
+  ],
+  "howTo": {
+    "steps": [
+      {
+        "name": "搭乘巴士至索伦托",
+        "text": "在波西塔诺搭乘 SITA 巴士前往索伦托火车站，全程约 60 分钟。"
+      },
+      {
+        "name": "转乘 Circumvesuviana 列车",
+        "text": "上到 Circumvesuviana 月台，搭乘列车前往 “Pompei Scavi – Villa dei Misteri”。"
+      },
+      {
+        "name": "步行至入口",
+        "text": "走出车站右转，左手边约 50 米处就是 Porta Marina Superiore 入口。"
+      }
+    ]
+  },
+  "warningsTitle": "重要提醒",
+  "warnings": [
+    "旺季时 SITA 巴士和 Circumvesuviana 列车可能各自多等 20–30 分钟，请在行程中预留缓冲时间。",
+    "遗址大部分区域缺乏遮蔽，若怕热请尽量避免正午时段参观。"
   ]
 }

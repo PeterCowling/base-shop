@@ -5,7 +5,7 @@
   "version": "0.0.0",
   "files": [
     "dist",
-    "src/tokens.css"
+    "tokens.css"
   ],
   "main": "./dist/src/tailwind-tokens.js",
   "module": "./dist/src/tailwind-tokens.js",
@@ -21,7 +21,7 @@
       "import": "./dist/src/tailwind-tokens.js",
       "require": "./dist/src/tailwind-tokens.js"
     },
-    "./tokens.css": "./src/tokens.css"
+    "./tokens.css": "./tokens.css"
   },
   "sideEffects": false,
   "scripts": {

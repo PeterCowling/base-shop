@@ -1,10 +1,12 @@
 import React, { Fragment } from "react";
-import BaseAmaSection from "@acme/ui/organisms/AssistanceAmaSection";
-import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { getSlug } from "@/utils/slug";
-import { toAppLanguage } from "@/utils/lang";
+import Link from "next/link";
+
+import BaseAmaSection from "@acme/ui/organisms/AssistanceAmaSection";
+
 import type { AppLanguage } from "@/i18n.config";
+import { toAppLanguage } from "@/utils/lang";
+import { getSlug } from "@/utils/slug";
 
 type Props = { lang?: AppLanguage } & Record<string, unknown>;
 
@@ -28,8 +30,8 @@ export default function AmaSection(props: Props) {
       <BaseAmaSection {...props} lang={lang} />
       <div className="mt-6 text-center">
         <Link
-          to={linkHref}
-          prefetch="intent"
+          href={linkHref}
+          prefetch={true}
           className="inline-flex items-center gap-1 text-sm font-semibold text-brand-primary underline-offset-4 transition hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary dark:text-brand-secondary"
         >
           {linkLabel}

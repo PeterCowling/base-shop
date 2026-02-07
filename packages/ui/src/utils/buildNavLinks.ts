@@ -1,9 +1,10 @@
 // src/utils/buildNavLinks.ts
 // Helper to build navigation slugs and labels for all NAV_ITEMS
 
-import { NAV_ITEMS, type NavKey } from "@/config/navItems";
-import type { AppLanguage } from "@/i18n.config";
-import type { SlugMap } from "@/slug-map";
+import { NAV_ITEMS, type NavKey } from "../config/navItems";
+import type { AppLanguage } from "../i18n.config";
+import type { SlugMap } from "../slug-map";
+
 import { translatePath } from "./translate-path";
 
 export interface NavItem {

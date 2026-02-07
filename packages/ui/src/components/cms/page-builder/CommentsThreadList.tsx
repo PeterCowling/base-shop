@@ -3,11 +3,14 @@
 // i18n: This panel is editor-only, but strings are still localized for consistency with ds/no-hardcoded-copy
 
 import * as React from "react";
+
 import { useTranslations } from "@acme/i18n";
-import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
-import { Stack } from "../../atoms/primitives/Stack";
-import { Inline } from "../../atoms/primitives/Inline";
+
 import { Cluster } from "../../atoms/primitives/Cluster";
+import { Inline } from "../../atoms/primitives/Inline";
+import { Stack } from "../../atoms/primitives/Stack";
+import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
+
 import type { CommentThread, ThreadFilter } from "./CommentsDrawer";
 
 function formatTime(ts?: string) {

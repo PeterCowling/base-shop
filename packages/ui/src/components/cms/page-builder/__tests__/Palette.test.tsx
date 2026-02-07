@@ -1,11 +1,12 @@
 // packages/ui/src/components/cms/page-builder/__tests__/Palette.test.tsx
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent,render, screen } from "@testing-library/react";
+
 import Palette from "../Palette";
 
 // Provide a stable shop path
 jest.mock("next/navigation", () => ({ usePathname: () => "/cms/shop/s1/pages" }));
-jest.mock("@acme/shared-utils", () => ({ getShopFromPath: () => "s1" }));
+jest.mock("@acme/lib/shop", () => ({ getShopFromPath: () => "s1" }));
 
 // Avoid async state updates from library sync during tests to prevent act warnings
 jest.mock("../libraryStore", () => {

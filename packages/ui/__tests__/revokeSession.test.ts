@@ -1,7 +1,17 @@
 /** @jest-environment node */
-import { describe, it, expect, beforeEach, afterEach, jest } from "@jest/globals";
+import { revalidatePath } from "next/cache";
+import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 
-jest.mock("@auth", () => ({
+import {
+  getCustomerSession,
+  hasPermission,
+  listSessions,
+  revokeSession as authRevokeSession,
+} from "@acme/auth";
+
+import { revoke } from "../src/actions/revokeSession";
+
+jest.mock("@acme/auth", () => ({
   __esModule: true,
   getCustomerSession: jest.fn(),
   listSessions: jest.fn(),
@@ -12,15 +22,6 @@ jest.mock("@auth", () => ({
 jest.mock("next/cache", () => ({
   revalidatePath: jest.fn(),
 }));
-
-import {
-  getCustomerSession,
-  listSessions,
-  hasPermission,
-  revokeSession as authRevokeSession,
-} from "@auth";
-import { revalidatePath } from "next/cache";
-import { revoke } from "../src/actions/revokeSession";
 
 const session = { role: "admin", customerId: "cust" };
 const headers = { "Content-Type": "application/json" };
@@ -39,8 +40,10 @@ describe("revoke session action", () => {
   });
 
   it("sends request and resolves on success", async () => {
-    const fetchMock = jest.fn().mockResolvedValue({ ok: true });
-    global.fetch = fetchMock as any;
+    const fetchMock = jest
+      .fn<Promise<Response>, [RequestInfo, RequestInit?]>()
+      .mockResolvedValue({ ok: true } as Response);
+    global.fetch = fetchMock as typeof fetch;
     (authRevokeSession as jest.Mock).mockImplementation((id: string) =>
       fetch(`/api/sessions/${id}`, { method: "DELETE", headers })
     );
@@ -56,8 +59,10 @@ describe("revoke session action", () => {
   });
 
   it("propagates API errors", async () => {
-    const fetchMock = jest.fn().mockResolvedValue({ ok: false });
-    global.fetch = fetchMock as any;
+    const fetchMock = jest
+      .fn<Promise<Response>, [RequestInfo, RequestInit?]>()
+      .mockResolvedValue({ ok: false } as Response);
+    global.fetch = fetchMock as typeof fetch;
     (authRevokeSession as jest.Mock).mockImplementation((id: string) =>
       fetch(`/api/sessions/${id}`, { method: "DELETE", headers }).then((r) => {
         if (!r.ok) throw new Error("bad");

@@ -1,6 +1,6 @@
 /** @jest-environment jsdom */
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import React from "react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 describe("ComponentPreview", () => {
   beforeEach(() => {
@@ -11,16 +11,16 @@ describe("ComponentPreview", () => {
     delete (globalThis as any).__UPGRADE_MOCKS__;
   });
 
-  function registerMock(path: string, comp: React.ComponentType) {
+  function registerMock(path: string, comp: React.ComponentType<Record<string, unknown>>) {
     (globalThis as any).__UPGRADE_MOCKS__[path] = comp;
   }
 
   it("renders new component and supports compare + toggle modes", async () => {
-    const New = ({ label }: { label: string }) => <div>new:{label}</div>;
-    const Old = ({ label }: { label: string }) => <div>old:{label}</div>;
+    const New = ({ label }: Record<string, unknown>) => <div>new:{String(label)}</div>;
+    const Old = ({ label }: Record<string, unknown>) => <div>old:{String(label)}</div>;
 
-    registerMock("@ui/components/MyComp", New);
-    registerMock("@ui/components/MyComp.bak", Old);
+    registerMock("@acme/ui/components/MyComp", New);
+    registerMock("@acme/ui/components/MyComp.bak", Old);
 
     const { default: ComponentPreview } = await import("../ComponentPreview");
 
@@ -44,16 +44,15 @@ describe("ComponentPreview", () => {
   });
 
   it("shows error boundary fallback when new component throws", async () => {
-    const consoleErrorMock = console.error as jest.MockedFunction<typeof console.error>;
-    const originalConsoleImpl = consoleErrorMock.getMockImplementation();
+    const originalConsoleError = console.error;
+    const consoleErrorMock = jest.spyOn(console, "error").mockImplementation(() => {});
     const initialCallCount = consoleErrorMock.mock.calls.length;
-    consoleErrorMock.mockImplementation(() => {});
 
     try {
       const Boom = () => {
         throw new Error("boom");
       };
-      registerMock("@ui/components/Boomy", Boom);
+      registerMock("@acme/ui/components/Boomy", Boom);
 
       const { default: ComponentPreview } = await import("../ComponentPreview");
       render(
@@ -82,8 +81,8 @@ describe("ComponentPreview", () => {
         newCalls.some(([, error]) => error instanceof Error && error.message === "boom"),
       ).toBe(true);
     } finally {
-      consoleErrorMock.mockImplementation(originalConsoleImpl ?? (() => {}));
+      consoleErrorMock.mockRestore();
+      console.error = originalConsoleError;
     }
   });
 });
-

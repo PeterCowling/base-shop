@@ -1,8 +1,11 @@
 import React, { forwardRef } from "react";
-import type { NavItem } from "./NavigationEditor";
+
 // Use semantic lists to match tests and expected markup
 import { useTranslations } from "@acme/i18n";
+
 import { Inline, Stack } from "../atoms/primitives";
+
+import type { NavItem } from "./NavigationEditor";
 
 interface Props {
   items: NavItem[];

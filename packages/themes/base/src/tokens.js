@@ -4,6 +4,7 @@
  * Every token has a `light` value and may provide a `dark` variant.
  */
 import { EXTENDED_TOKENS } from './tokens.extensions';
+
 export const tokens = {
     // Neutral core
     "--color-bg": { light: "0 0% 100%", dark: "0 0% 4%" },

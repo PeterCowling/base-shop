@@ -1,10 +1,12 @@
 "use client";
 
 import * as React from "react";
-import OrderSummary from "../../organisms/OrderSummary";
-import { Grid as GridPrimitive } from "../../atoms/primitives/Grid";
-import { Button } from "../../atoms";
+
 import { useTranslations } from "@acme/i18n";
+
+import { Button } from "../../atoms";
+import { Grid as GridPrimitive } from "../../atoms/primitives/Grid";
+import OrderSummary from "../../organisms/OrderSummary";
 
 export interface CartSectionProps extends React.HTMLAttributes<HTMLDivElement> {
   showPromo?: boolean;

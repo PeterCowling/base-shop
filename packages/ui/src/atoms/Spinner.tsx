@@ -1,6 +1,6 @@
 // Copied from src/components/ui/Spinner.tsx
+import { type FC, memo, useMemo } from "react";
 import clsx from "clsx";
-import { FC, memo, useMemo } from "react";
 
 export interface SpinnerProps extends React.HTMLAttributes<HTMLDivElement> {
   label?: string;
@@ -31,7 +31,7 @@ const Spinner: FC<SpinnerProps> = ({ label = "loading", size = "md", className, 
       )}
       {...rest}
     >
-      <svg className={clsx("animate-spin", dimensions)} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <svg className={clsx("animate-spin motion-reduce:animate-none", dimensions)} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
         <circle
           className="opacity-25"
           cx="12"

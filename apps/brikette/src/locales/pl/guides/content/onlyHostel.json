@@ -69,7 +69,7 @@
     "whatToPack",
     "workCafes"
   ],
-  "arrivalText": "Jesteśmy ~80 m od przystanku SITA „Chiesa Nuova”, bez schodów po drodze. Przyjeżdżasz promem? Rozważ porterów lub autobus SITA pod górę.",
+  "arrivalText": "Jesteśmy ~80 m od przystanku SITA \\\"Chiesa Nuova”, bez schodów po drodze. Przyjeżdżasz promem? Rozważ porterów lub autobus SITA pod górę.",
   "arrivalLinks": [
     "chiesaNuovaArrivals",
     "ferryDockToBrikette",

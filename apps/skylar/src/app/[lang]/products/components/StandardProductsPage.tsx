@@ -1,8 +1,10 @@
 import Image from "next/image";
+
 import PageShell from "@/components/PageShell";
 import { Grid } from "@/components/primitives/Grid";
-import { localizedPath } from "@/lib/routes";
 import { joinClasses } from "@/lib/joinClasses";
+import { localizedPath } from "@/lib/routes";
+
 import type { ProductsPageComponentProps } from "../types";
 
 /* eslint-disable ds/no-hardcoded-copy -- STYLING-0001: Milan layout relies on CSS class tokens */
@@ -47,7 +49,7 @@ const IT_CATALOG_CARDS = [
 const IT_FIELD_KEYS = ["service", "output", "contact"] as const;
 
 const basePanel = ["rounded-3xl", "border", "p-6", "md:p-8"];
-const zhPanel = ["border-accent/50", "bg-zinc-900/60", "text-zinc-100"];
+const zhPanel = ["border-accent/50", "bg-panel/60", "text-fg"];
 const enPanel = ["border-border", "bg-panel", "text-fg"];
 const ctaLinkBase = [
   "inline-flex",
@@ -136,7 +138,7 @@ export function StandardProductsPage({ lang, translator }: ProductsPageComponent
 
   const contactEmailHref = `mailto:${translator("people.cristiana.contact.email")}`;
   const panelHeadingClass = "font-display text-xl uppercase skylar-subheading-tracking";
-  const panelBodyClass = `mt-4 font-body text-base leading-6 ${isZh ? "text-zinc-200" : "text-muted-foreground"}`;
+  const panelBodyClass = "mt-4 font-body text-base leading-6 text-muted-foreground";
   const basePanelClasses = joinClasses(...basePanel, ...(isZh ? zhPanel : enPanel));
   const baseCardClasses = joinClasses(...basePanel, "skylar-card", ...(isZh ? zhPanel : enPanel));
 
@@ -146,7 +148,7 @@ export function StandardProductsPage({ lang, translator }: ProductsPageComponent
         <p className="font-display text-4xl uppercase skylar-heading-tracking">
           {translator("products.heading")}
         </p>
-        <p className={`font-body text-base leading-6 ${isZh ? "text-zinc-200" : "text-muted-foreground"}`}>
+        <p className="font-body text-base leading-6 text-muted-foreground">
           {translator("products.intro")}
         </p>
       </section>
@@ -163,7 +165,7 @@ export function StandardProductsPage({ lang, translator }: ProductsPageComponent
           <p className="font-display text-2xl uppercase skylar-subheading-tracking">
             {translator("products.cta")}
           </p>
-          <p className={`mt-4 font-body text-base leading-6 ${isZh ? "text-zinc-200" : "text-muted-foreground"}`}>
+          <p className="mt-4 font-body text-base leading-6 text-muted-foreground">
             {translator("hero.copy")}
           </p>
           <div className="mt-6 flex gap-3">

@@ -1,10 +1,10 @@
+import { computeStageK } from "./stage-k";
 import type {
   SensitivityDefinition,
   StageKInput,
   StageKResult,
   StageKSensitivities,
 } from "./types";
-import { computeStageK } from "./stage-k";
 
 const defaultMetric = (result: StageKResult) =>
   result.annualizedCapitalReturnRate;

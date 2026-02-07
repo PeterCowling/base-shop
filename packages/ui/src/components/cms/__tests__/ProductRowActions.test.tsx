@@ -1,7 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import ProductRowActions from "../products/ProductRowActions";
+
 import { TranslationsProvider } from "@acme/i18n";
+
+import ProductRowActions from "../products/ProductRowActions";
 // Minimal i18n messages to avoid JSON import in Jest ESM mode
 const messages = {
   "cms.products.actions.edit": "Edit",

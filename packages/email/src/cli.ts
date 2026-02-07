@@ -1,11 +1,12 @@
 import { Command } from "commander";
+import { randomUUID } from "crypto";
 import { promises as fs } from "fs";
 import * as fsSync from "fs";
 import path from "path";
-import { randomUUID } from "crypto";
-import { nowIso } from "@date-utils";
-import { validateShopName } from "@acme/lib";
+
+import { nowIso } from "@acme/date-utils";
 import { useTranslations as loadTranslations } from "@acme/i18n/useTranslations.server";
+import { validateShopName } from "@acme/lib";
 
 interface Campaign {
   id: string;
@@ -89,7 +90,7 @@ export async function run(argv = process.argv): Promise<void> {
       };
       campaigns.push(item);
       await writeCampaigns(shop, campaigns);
-      console.log(t("email.cli.campaign.create.result", { id: item.id }));
+      console.info(t("email.cli.campaign.create.result", { id: item.id }));
     });
 
   campaign
@@ -97,7 +98,7 @@ export async function run(argv = process.argv): Promise<void> {
     .argument("<shop>")
     .action(async (shop) => {
       const campaigns = await readCampaigns(shop);
-      console.log(JSON.stringify(campaigns, null, 2));
+      console.info(JSON.stringify(campaigns, null, 2));
     });
 
   campaign
@@ -106,7 +107,7 @@ export async function run(argv = process.argv): Promise<void> {
     .action(async () => {
       const { sendDueCampaigns } = await import("./scheduler");
       await sendDueCampaigns();
-      console.log(t("email.cli.campaign.send.result"));
+      console.info(t("email.cli.campaign.send.result"));
     });
 
   await program.parseAsync(argv);

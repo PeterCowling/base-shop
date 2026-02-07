@@ -1,24 +1,27 @@
 // src: packages/ui/src/organisms/MobileMenu.tsx
-import { LanguageSwitcher } from "../molecules/LanguageSwitcher";
-import { ThemeToggle } from "../molecules/ThemeToggle";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { buildNavLinks, type TranslateFn } from "@/utils/buildNavLinks";
-import { translatePath } from "@/utils/translate-path";
+import { memo, useEffect, useMemo, useRef } from "react";
+import { useTranslation } from "react-i18next";
+import Link from "next/link";
 import clsx from "clsx";
 import FocusTrap, { type FocusTrapProps } from "focus-trap-react";
-import { memo, useEffect, useMemo, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Link, PrefetchPageLinks } from "react-router-dom";
-import type { AppLanguage } from "@/i18n.config";
-import { i18nConfig } from "@/i18n.config";
+
+import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
+import type { AppLanguage } from "../i18n.config";
+import { i18nConfig } from "../i18n.config";
+import { LanguageSwitcher } from "../molecules/LanguageSwitcher";
+import { ThemeToggle } from "../molecules/ThemeToggle";
+import { buildNavLinks, type TranslateFn } from "../utils/buildNavLinks";
 
 interface Props {
   menuOpen: boolean;
   setMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
   lang?: AppLanguage;
+  bannerHeight?: number;
 }
 
-function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang }: Props): JSX.Element {
+const MOBILE_NAV_HEIGHT = 64;
+
+function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 0 }: Props): JSX.Element {
   const fallbackLang = useCurrentLanguage();
   const { i18n } = useTranslation();
   const normalizedI18nLang = useMemo(() => {
@@ -41,14 +44,11 @@ function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang }: Props): JSX.E
   /* Paths & links ------------------------------------------------------ */
   // Build links on each render so labels reflect the active language
   // as soon as namespaces load.
-  const { slugs, navLinks } = buildNavLinks(lang, t as unknown as TranslateFn);
-  /* Silent pre-warm for Assistance and Apartment pages ---------------- */
-  const [prefetched, setPrefetched] = useState(false);
-  useEffect(() => {
-    if (menuOpen && !prefetched) setPrefetched(true);
-  }, [menuOpen, prefetched]);
+  const { navLinks } = buildNavLinks(lang, t as unknown as TranslateFn);
 
   /* Render ------------------------------------------------------------- */
+  const menuOffset = MOBILE_NAV_HEIGHT + bannerHeight;
+
   return (
     <FocusTrap
       {...({
@@ -65,11 +65,13 @@ function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang }: Props): JSX.E
         aria-labelledby="mobile-menu-title"
         className={clsx(
           /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
-          "fixed inset-x-0 top-16 z-40 h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain will-change-transform " +
+          "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform " +
             /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
             "transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg",
           menuOpen ? "translate-y-0" : "translate-y-full"
         )}
+        // eslint-disable-next-line react/forbid-dom-props -- UI-1000 ttl=2026-12-31 menu offset is runtime-calculated.
+        style={{ top: menuOffset, height: `calc(100dvh - ${menuOffset}px)` }}
       >
         <h2
           id={/* i18n-exempt -- ABC-123 [ttl=2026-12-31] id attribute */ "mobile-menu-title"}
@@ -82,8 +84,8 @@ function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang }: Props): JSX.E
             <li key={key}>
               <Link
                 ref={idx === 0 ? firstLinkRef : undefined}
-                to={`/${lang}${to}`}
-                prefetch="intent"
+                href={`/${lang}${to}`}
+                prefetch={true}
                 className="block py-2 text-xl font-medium underline-offset-4 text-brand-heading dark:text-brand-heading hover:underline focus-visible:underline"
                 onClick={close}
               >
@@ -98,12 +100,7 @@ function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang }: Props): JSX.E
             <LanguageSwitcher closeMenu={close} />
           </li>
         </ul>
-        {prefetched && (
-          <>
-            <PrefetchPageLinks page={`/${lang}${slugs.assistance}`} />
-            <PrefetchPageLinks page={`/${lang}/${translatePath("apartment", lang)}`} />
-          </>
-        )}
+        {/* Next.js handles prefetching automatically via Link prefetch prop */}
       </div>
     </FocusTrap>
   );

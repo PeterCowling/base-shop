@@ -9,7 +9,7 @@ jest.mock("@acme/platform-machine/maintenanceScheduler", () => ({
   runMaintenanceScan,
 }));
 
-jest.mock("@platform-core/utils", () => ({
+jest.mock("@acme/platform-core/utils", () => ({
   logger: { error: loggerError },
 }));
 

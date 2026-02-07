@@ -1,22 +1,32 @@
 {
   "seo": {
-    "title": "Thời điểm tốt nhất tới Positano",
-    "description": "Theo từng tháng: thời tiết, lượng khách và lịch phà."
+    "title": "Thời Điểm Tốt Nhất Tới Positano | Hướng Dẫn Thời Tiết & Đông Đúc",
+    "description": "Khi nào nên tới Positano? So sánh thời tiết, lượng khách, giá cả và lịch phà từng tháng để tìm thời điểm phù hợp nhất cho chuyến đi."
   },
   "linkLabel": "Thời điểm tốt nhất tới Positano",
   "intro": [
-    "Lên kế hoạch với kỳ vọng thực tế về thời tiết, lượng khách và lịch phà.",
-    "Dùng bảng mùa vụ và ghi chú từng tháng để chọn thời điểm Positano phù hợp ưu tiên của bạn."
+    "Thời điểm tốt nhất để tới Positano phụ thuộc vào điều gì quan trọng nhất với bạn: thời tiết, đông đúc, giá cả hay lịch phà. Sức hấp dẫn của thị trấn thay đổi theo mùa.",
+    "Cao điểm mùa hè (tháng 6–8) đảm bảo nắng và lịch phà đầy đủ, nhưng đi kèm với cái nóng gay gắt, đường phố chật cứng và giá cao. Mùa giao mùa (tháng 4–5 và 9–10) cân bằng thời tiết tốt với ít khách hơn và giá cả hợp lý hơn. Mùa đông (tháng 11–3) yên tĩnh và rẻ, nhưng nhiều dịch vụ đóng cửa và phà ngừng chạy.",
+    "Hướng dẫn này phân tích từng tháng để bạn có thể chọn đúng thời điểm cho ưu tiên của mình. Sử dụng bảng mùa vụ và ghi chú từng tháng để lập kế hoạch với kỳ vọng thực tế."
   ],
+  "lastUpdated": "2026-02-04",
   "tocTitle": "Trên trang này",
   "toc": [
+    {
+      "href": "#quickAnswer",
+      "label": "Trả lời nhanh"
+    },
     {
       "href": "#matrix",
       "label": "Bảng thời tiết/đông đúc/giá"
     },
     {
       "href": "#months",
-      "label": "Ghi chú từng tháng"
+      "label": "Phân tích từng tháng"
+    },
+    {
+      "href": "#considerations",
+      "label": "Điều cần cân nhắc"
     },
     {
       "href": "#faqs",
@@ -25,23 +35,62 @@
   ],
   "sections": [
     {
+      "id": "quickAnswer",
+      "title": "Trả lời nhanh: thời điểm tốt nhất theo ưu tiên",
+      "body": [
+        "Nếu bạn muốn cân bằng tổng thể tốt nhất về thời tiết, đông đúc và giá trị: tới thăm vào tháng 5 hoặc tháng 9. Những tháng này có nhiệt độ ấm, biển lặng, phà thường xuyên và giá thấp hơn cao điểm mùa hè.",
+        "Nếu bạn muốn đảm bảo thời tiết nóng và bơi lội: tới từ tháng 6 đến đầu tháng 9. Chuẩn bị cho đông đúc, giá cao và cần đặt trước phương tiện và chỗ ở từ rất sớm.",
+        "Nếu bạn muốn tránh đông đúc và tiết kiệm tiền: tới vào tháng 4 hoặc tháng 10. Thời tiết ít dự đoán hơn (mát hơn, có mưa rải rác), nhưng bạn sẽ có nhiều không gian hơn và ưu đãi tốt hơn. Phà vẫn chạy nhưng ít chuyến hơn.",
+        "Nếu bạn muốn giá thấp nhất và tĩnh lặng: tới từ tháng 11 đến tháng 3. Nhiều khách sạn, nhà hàng và điểm tham quan đóng cửa. Phà không chạy nên bạn sẽ phải dựa vào xe buýt. Thời tiết có thể mưa và lạnh, nhưng Positano yên bình và đích thực."
+      ],
+      "images": [
+        {
+          "src": "/img/hostel-coastal-horizon.webp",
+          "alt": "Tầm nhìn chân trời ven biển nhìn ra biển gần Positano.",
+          "caption": "Những ngày hè trong lành mang đến biển lặng và đông đúc cao điểm."
+        }
+      ]
+    },
+    {
       "id": "matrix",
       "title": "Bảng thời tiết / đông đúc / giá cả",
       "body": [
-        "Cao điểm (tháng 6–8): nóng, đông và giá cao nhất. Mùa giao mùa (tháng 4–5, 9–10): thời tiết dễ chịu, giá hợp lý. Mùa đông (tháng 11–3): yên tĩnh, dịch vụ giảm."
+        "Mùa cao điểm (tháng 6–8): Thời tiết nóng (25–32°C / 77–90°F), nắng gắt, biển lặng hoàn hảo cho bơi lội. Đường phố, bãi biển và phà đều đông. Giá chỗ ở cao nhất. Đặt trước mọi thứ — phà, câu lạc bộ bãi biển, nhà hàng.",
+        "Mùa giao mùa (tháng 4–5, 9–10): Thời tiết ôn hòa đến ấm (18–26°C / 64–79°F). Tháng 4 và 10 có thể có mưa. Ít đông hơn, giá giảm 20–40%, và thường có thể đặt phương tiện và ăn uống ngay lập tức. Phà chạy nhưng ít chuyến trong ngày hơn mùa hè.",
+        "Mùa thấp điểm (tháng 11–3): Mát và thường mưa (10–16°C / 50–61°F). Nhiều khách sạn, nhà hàng và công ty du lịch đóng cửa. Không có phà — xe buýt là lựa chọn giao thông công cộng duy nhất. Giá thấp nhất, và thị trấn giống một làng quê địa phương. Tốt nhất cho du khách muốn yên tĩnh và không quan tâm dịch vụ hạn chế."
+      ],
+      "images": [
+        {
+          "src": "/img/positano-panorama.avif",
+          "alt": "Tầm nhìn toàn cảnh Positano nằm trên vách đá phía trên biển.",
+          "caption": "Positano trong thời tiết trong lành — hình ảnh nhanh về điều kiện mùa cao điểm."
+        }
       ]
     },
     {
       "id": "months",
-      "title": "Ghi chú từng tháng",
+      "title": "Phân tích từng tháng",
       "body": [
-        "Tháng 4: phà bắt đầu, thời tiết mát và ít đông.",
-        "Tháng 5: thời tiết tuyệt, thêm chuyến phà, cuối tuần đông hơn.",
-        "Tháng 6–8: cao điểm; nắng nóng và xếp hàng — đặt trước phương tiện và hoạt động.",
-        "Tháng 9: biển còn ấm và đỡ đông hơn tháng 8 đôi chút.",
-        "Tháng 10: mùa giao mùa; phà giảm dần vào cuối tháng.",
-        "Tháng 11–3: mùa thấp điểm yên tĩnh, nhiều dịch vụ đóng cửa; xe buýt trở thành phương tiện chính.",
-        "Tần suất phà tăng dần qua mùa xuân, đạt đỉnh mùa hè và giảm từ cuối tháng 10."
+        "**Tháng 4:** Mùa phà bắt đầu (thường vào giữa tháng). Nhiệt độ ôn hòa (16–20°C / 61–68°F) và ít khách hơn. Một số khách sạn và nhà hàng vẫn đóng cửa đầu tháng. Mưa rải rác nhưng thường có nắng. Tốt cho leo núi %LINK:pathOfTheGods|Con Đường Các Vị Thần% mà không nóng.",
+        "**Tháng 5:** Thời tiết tuyệt vời (20–24°C / 68–75°F), đủ ấm để bơi vào cuối tháng 5. Chuyến phà tăng lên. Cuối tuần đông hơn khi du khách Ý và châu Âu tới. Giá ở mức vừa phải. Một trong những tháng tốt nhất cho trải nghiệm tổng thể.",
+        "**Tháng 6:** Mùa cao điểm bắt đầu. Nóng (24–28°C / 75–82°F), nắng và đông. Phà chạy thường xuyên. Giá tăng. Đặt trước chỗ ở, phương tiện và hoạt động. Vẫn ít căng thẳng hơn tháng 7–8.",
+        "**Tháng 7:** Tháng nóng nhất và đông nhất. Nhiệt độ có thể đạt 30–32°C (86–90°F). Đường phố, bãi biển và phà chật cứng. Giá cao nhất trong năm. Cần thiết phải đặt trước tất cả. Nếu bạn không chịu được nóng và đông, tránh tháng 7.",
+        "**Tháng 8:** Tương tự tháng 7 nhưng còn đông hơn vào giữa tháng 8 (Ferragosto, ngày lễ quốc gia Ý). Nhiều người Ý nghỉ, nên mọi thứ hoạt động hết công suất. Biển ấm nhất. Chuẩn bị xếp hàng, dịch vụ kín chỗ và giá cao cấp.",
+        "**Tháng 9:** Biển ấm (vẫn 24–26°C / 75–79°F) và hơi bớt đông hơn tháng 8. Thời tiết vẫn nóng đầu tháng, sau đó mát đến mức thoải mái. Đông đúc giảm sau giữa tháng 9. Tháng xuất sắc cho bơi lội và tham quan mà không căng thẳng cao điểm.",
+        "**Tháng 10:** Mùa giao mùa. Thời tiết ôn hòa (18–22°C / 64–72°F) nhưng biến đổi hơn — ngày nắng xen lẫn mưa. Phà giảm dần vào cuối tháng (dịch vụ thường kết thúc cuối tháng 10). Ít khách, giá thấp hơn. Tốt cho du khách tiết kiệm không ngại thời tiết mát hơn, ít dự đoán hơn.",
+        "**Tháng 11–3:** Mùa thấp điểm yên tĩnh. Mát (10–16°C / 50–61°F) và thường mưa. Nhiều khách sạn, nhà hàng và điểm tham quan đóng cửa. Không có phà — xe buýt chạy quanh năm nhưng có thể chậm và thưa. Positano giống một làng quê thực sự, không phải thị trấn du lịch. Tốt nhất cho du khách tìm tĩnh lặng, cuộc sống địa phương và giá thấp nhất. Không lý tưởng nếu muốn hoạt động bãi biển hay cuộc sống về đêm."
+      ]
+    },
+    {
+      "id": "considerations",
+      "title": "Điều cần cân nhắc khi chọn",
+      "body": [
+        "**Tình trạng phà:** Phà chạy từ tháng 4 đến cuối tháng 10. Nếu bạn muốn trải nghiệm phà cảnh đẹp (Positano đến Amalfi, Capri, v.v.), tránh tháng 11–3. Về lịch và tuyến phà, xem %LINK:ferrySchedules|hướng dẫn lịch phà của chúng tôi%.",
+        "**Bơi lội và bãi biển:** Biển đủ ấm để bơi thoải mái từ cuối tháng 5 đến tháng 9. Cao điểm ấm là tháng 7–8. Nếu bơi là ưu tiên, tới từ tháng 6 đến tháng 9. Về tiếp cận bãi biển và lựa chọn, xem %LINK:positanoBeaches|hướng dẫn bãi biển Positano của chúng tôi%.",
+        "**Đông đúc và đặt chỗ:** Tháng 7–8 yêu cầu đặt trước cho khách sạn, phà, câu lạc bộ bãi biển và nhà hàng nổi tiếng. Nếu bạn thích tự phát và ghét đông đúc, tới vào tháng 4–5 hoặc 9–10.",
+        "**Ngân sách:** Giá cao điểm vào tháng 7–8. Các tháng giao mùa (tháng 4–5, 9–10) tiết kiệm 20–40% cho chỗ ở. Mùa đông (tháng 11–3) có giá rẻ nhất nhưng dịch vụ hạn chế.",
+        "**Dự đoán thời tiết:** Tháng 6–8 có nắng đáng tin cậy nhất. Tháng 4, 5 và 10 có thời tiết tốt hầu hết ngày nhưng mưa rải rác. Tháng 11–3 có thể ẩm và nhiều mây.",
+        "**Lựa chọn phương tiện:** Vào mùa hè, phà thường xuyên và đáng tin cậy. Vào mùa thấp điểm (tháng 11–3), bạn sẽ hoàn toàn phụ thuộc vào %HOWTO:positano-amalfi-bus|xe buýt%, chậm hơn và ít hơn. Kiểm tra %HOWTO:how-to-get-here|hướng dẫn giao thông của chúng tôi% về khác biệt theo mùa."
       ]
     }
   ],
@@ -73,9 +122,27 @@
   ],
   "faqs": [
     {
-      "q": "Khi nào nước biển ấm nhất?",
+      "q": "Khi nào nước biển ấm nhất để bơi?",
       "a": [
-        "Cuối tháng 6 tới đầu tháng 9 thường là thời gian nước ấm nhất để tắm biển."
+        "Cuối tháng 6 đến đầu tháng 9 thường có nước ấm nhất để bơi, với nhiệt độ biển khoảng 24–26°C (75–79°F). Tháng 7 và 8 là cao điểm ấm."
+      ]
+    },
+    {
+      "q": "Tháng nào tốt nhất để tránh đông đúc?",
+      "a": [
+        "Tháng 4 và 10 ít đông đúc nhất trong khi vẫn có thời tiết khá và một số phà. Tháng 11–3 yên tĩnh nhất nhưng nhiều dịch vụ đóng cửa và phà không chạy."
+      ]
+    },
+    {
+      "q": "Tôi có thể tới Positano vào mùa đông không?",
+      "a": [
+        "Có, nhưng chuẩn bị cho dịch vụ hạn chế. Nhiều khách sạn, nhà hàng và công ty du lịch đóng cửa từ tháng 11 đến tháng 3. Phà không chạy nên bạn sẽ dựa vào xe buýt. Thời tiết mát và thường mưa. Tốt nhất cho du khách tìm bình yên và giá thấp, không phải hoạt động bãi biển."
+      ]
+    },
+    {
+      "q": "Tôi có cần đặt chỗ ở trước vào mùa giao mùa không?",
+      "a": [
+        "Vào tháng 4, 5, 9 và 10, bạn thường có thể tìm chỗ ở ngay, nhưng đặt trước 2–4 tuần an toàn hơn, đặc biệt cho cuối tuần và khách sạn nổi tiếng. Mùa cao điểm (tháng 6–8) cần đặt trước nhiều tháng."
       ]
     }
   ]

@@ -1,0 +1,94 @@
+{
+  "scenarios": {
+    "faq": {
+      "tone": "Friendly and concise",
+      "good_examples": [
+        "Thanks for reaching out! Check-in starts at 3pm, and you can store bags earlier if needed.",
+        "We’re happy to help—check-out is by 10am, and late storage is available for a small fee.",
+        "Breakfast is available daily at the bar from 7:30–10:30am; you can add it on arrival.",
+        "Private rooms are subject to availability—please book directly on our website for live options.",
+        "If you need directions, our website has a step-by-step guide with maps and ferry info."
+      ],
+      "bad_examples": [
+        "Here is everything you need to know about all policies and services in full.",
+        "Availability is confirmed for your dates.",
+        "We will charge your card now."
+      ],
+      "phrases_to_avoid": ["Availability is confirmed", "We will charge now"],
+      "preferred_phrases": ["Please check live availability on our website", "Happy to help"],
+      "attribution": { "scenario": "faq", "tone": "friendly" }
+    },
+    "policy": {
+      "tone": "Clear and precise",
+      "good_examples": [
+        "Our check-in time is from 3pm; early check-in depends on availability.",
+        "Non‑refundable bookings cannot be cancelled or refunded under any circumstances.",
+        "Please note our quiet hours begin at 11pm to respect all guests.",
+        "We accept guests 18+ only, per our hostel policy.",
+        "Pets are not allowed in the hostel."
+      ],
+      "bad_examples": [
+        "Rules are rules and there’s nothing we can do.",
+        "We can make exceptions if you ask nicely."
+      ],
+      "phrases_to_avoid": ["Nothing we can do", "Exception guaranteed"],
+      "preferred_phrases": ["Please note", "Per our policy"],
+      "attribution": { "scenario": "policy", "tone": "clear" }
+    },
+    "payment": {
+      "tone": "Firm but polite",
+      "good_examples": [
+        "It looks like the card attempt failed—could you try a different card or contact your bank?",
+        "To secure the booking, please complete the payment step from the link provided.",
+        "If you prefer, you can pay by bank transfer; let us know and we’ll send the details.",
+        "We can hold the booking for a short time—please complete payment as soon as possible.",
+        "Thanks for confirming—once payment is complete, your booking remains secured."
+      ],
+      "bad_examples": [
+        "We charged your card already.",
+        "No payment = no booking."
+      ],
+      "phrases_to_avoid": ["We charged your card", "No payment = no booking"],
+      "preferred_phrases": ["Please complete payment", "Let us know if you need help"],
+      "attribution": { "scenario": "payment", "tone": "firm" }
+    },
+    "cancellation": {
+      "tone": "Direct but respectful",
+      "good_examples": [
+        "This booking is non‑refundable and cannot be cancelled for a refund.",
+        "If your plans change, please notify us so we can update the reservation.",
+        "Refundable bookings can be cancelled up to the stated deadline without penalty.",
+        "We’re sorry your plans changed—let us know if we can help rebook.",
+        "Please review the cancellation terms in your confirmation email."
+      ],
+      "bad_examples": [
+        "We don’t do refunds."
+      ],
+      "phrases_to_avoid": ["We don’t do refunds"],
+      "preferred_phrases": ["Per the cancellation policy", "Let us know if we can help"],
+      "attribution": { "scenario": "cancellation", "tone": "direct" }
+    },
+    "complaint": {
+      "tone": "Empathetic and solution-focused",
+      "good_examples": [
+        "I’m sorry to hear about this—thank you for letting us know.",
+        "We’d like to make this right; could you share a few more details?",
+        "We appreciate your feedback and will address this with the team.",
+        "Thank you for your patience—we’ll follow up shortly.",
+        "Please accept our apologies for the inconvenience."
+      ],
+      "bad_examples": [
+        "That’s not our fault.",
+        "You should have read the policy."
+      ],
+      "phrases_to_avoid": ["That’s not our fault", "You should have read"],
+      "preferred_phrases": ["Thank you for letting us know", "We’d like to help"],
+      "attribution": { "scenario": "complaint", "tone": "empathetic" }
+    }
+  },
+  "global_phrases_to_avoid": [
+    "Availability confirmed",
+    "We will charge now",
+    "Internal note"
+  ]
+}

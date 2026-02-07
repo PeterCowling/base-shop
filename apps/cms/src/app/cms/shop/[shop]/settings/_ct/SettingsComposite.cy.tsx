@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'next/navigation';
+
 import ShopProvidersSection from '../sections/ShopProvidersSection';
 import ShopSeoSection from '../sections/ShopSeoSection';
 

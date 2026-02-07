@@ -7,8 +7,8 @@ providers and expose configuration hooks so apps can swap in bespoke content.
 ## Usage
 
 ```tsx
-import { AppShell, DashboardTemplate } from "@/components/templates";
-import { Header, Footer, SideNav } from "@/components/organisms";
+import { AppShell, DashboardTemplate } from "@ui/components/templates";
+import { Header, Footer, SideNav } from "@ui/components/organisms";
 
 export default function DashboardPage() {
   return (

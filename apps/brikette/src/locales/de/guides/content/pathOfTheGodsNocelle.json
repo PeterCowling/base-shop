@@ -22,7 +22,7 @@
       "id": "bus-to-nocelle",
       "title": "Mit dem Bus hinauf nach Nocelle",
       "body": [
-        "Warte vor der Bar Internazionale. Auf den Bussen steht \"Montepertuso - Nocelle\".",
+        "Warte vor der Bar Internazionale. Auf den Bussen steht \\\\\"Montepertuso - Nocelle\\\\\".",
         "Die Fahrt führt über Montepertuso und endet am kleinen Parkplatz in Nocelle. Bleib sitzen, bis der Bus oben wendet – dort steigst du aus.",
         "Entwerte dein Ticket beim Einsteigen und heb es für die Rückfahrt auf."
       ]
@@ -33,7 +33,7 @@
       "body": [
         "Vom Parkplatz gehst du die Fußtreppe hinunter zum Hauptweg und biegst links ab.",
         "Laufe etwa 175 Meter und halte dich an der wichtigen Kreuzung rechts, um die Treppe hinunter nach Positano zu vermeiden.",
-        "Folge dem Weg weiter, bis du die Schilder \"Sentiero degli Dei\" und den gepflasterten Weg aus dem Ort hinaus erreichst."
+        "Folge dem Weg weiter, bis du die Schilder \\\\\"Sentiero degli Dei\\\\\" und den gepflasterten Weg aus dem Ort hinaus erreichst."
       ]
     },
     {
@@ -110,7 +110,7 @@
       "text": "Geh zurück zur Haltestelle und nimm den Bus zur Bar Internazionale oder Chiesa Nuova."
     }
   ],
-  "faqsTitle": "FAQs",
+  "faqsTitle": "Häufige Fragen",
   "faqs": [
     {
       "q": "Wie lange sollte ich wandern, bevor ich umdrehe?",
@@ -137,6 +137,6 @@
     "costs": "Typische Kosten",
     "tips": "Routentipps",
     "warnings": "Darauf achten",
-    "faqs": "FAQs"
+    "faqs": "Häufige Fragen"
   }
 }

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { getCustomerSession } from "@auth";
+
+import { getCustomerSession } from "@acme/auth";
 
 export const runtime = "nodejs";
 

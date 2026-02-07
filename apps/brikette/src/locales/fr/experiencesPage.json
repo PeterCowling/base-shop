@@ -7,15 +7,7 @@
     "eyebrow": "Expériences",
     "title": "Couchers de soleil, matins doux et bons plans locaux",
     "description": "Associez votre séjour à des boissons en terrasse, des randonnées sélectionnées et une conciergerie numérique qui vous informe même avant votre arrivée.",
-    "supporting": "Toutes les activités sont ouvertes aux clients enregistrés ; écrivez‑nous si vous voyagez avec des amis logés ailleurs.",
-    "primaryCta": "Réserver votre séjour",
-    "secondaryCta": "Ouvrir la carte du bar",
-    "tertiaryCta": "Contacter la conciergerie numérique",
-    "primaryCtaAria": "Réserver votre séjour à l'Hostel Brikette",
-    "secondaryCtaAria": "Voir la carte du bar de l'Hostel Brikette",
-    "tertiaryCtaAria": "Envoyer un message à la conciergerie numérique de l'Hostel Brikette",
-    "breakfastCta": "Voir le menu du petit-déjeuner",
-    "breakfastCtaAria": "Voir le menu du petit-déjeuner"
+    "scrollNudge": "Découvrez les expériences par catégorie"
   },
   "sections": {
     "bar": {
@@ -90,6 +82,16 @@
     "clearFilter": "Afficher tous les guides d'expériences",
     "cardCta": "Explorez le guide d'expériences « {{guideTitle}} »",
     "directionsLabel": "Itinéraires",
+    "sections": {
+      "content": {
+        "title": "Guides d’expériences",
+        "description": "Guides détaillés sur les plages, randonnées, excursions d’une journée et activités"
+      },
+      "directions": {
+        "title": "S’y rendre",
+        "description": "Itinéraires pas à pas vers et depuis l’auberge"
+      }
+    },
     "directionLinks": {
       "capriDayTrip": {
         "positanoCapriFerry": "Positano → Capri en ferry",
@@ -125,14 +127,34 @@
     "filterDescription": "Choisissez une étiquette pour affiner les expériences mises en avant.",
     "grouped": {
       "beaches": {
-        "guides": {
-        "heading": "Guides des plages",
-        "description": "Choisissez la bonne portion de sable et planifiez votre journée."
-        },
-        "directions": {
-        "heading": "Itinéraires pour la plage",
-        "description": "Itinéraires pas à pas depuis Hostel Brikette jusqu'au rivage."
-        }
+        "title": "Plages",
+        "description": "Choisissez la bonne portion de sable et planifiez votre journée.",
+        "imageAlt": "Plage de Positano avec parasols colorés le long de la côte"
+      },
+      "hiking": {
+        "title": "Randonnées & Sentiers",
+        "description": "Itinéraires allant de promenades faciles à des randonnées sur la journée.",
+        "imageAlt": "Randonneur sur le Sentier des Dieux avec vue sur la côte"
+      },
+      "day-trip": {
+        "title": "Excursions d'une journée",
+        "description": "Capri, Amalfi, Ravello — comment s'y rendre et revenir.",
+        "imageAlt": "Ferry naviguant vers l'île de Capri"
+      },
+      "boat": {
+        "title": "Sorties en bateau",
+        "description": "Locations privées, sorties en groupe et croisières au coucher du soleil.",
+        "imageAlt": "Bateau traditionnel sur les eaux de la côte Amalfitaine"
+      },
+      "cuisine": {
+        "title": "Gastronomie",
+        "description": "Où bien manger sans trop dépenser.",
+        "imageAlt": "Plats italiens frais dans une trattoria locale"
+      },
+      "more": {
+        "title": "Autres guides",
+        "description": "Astuces transport, spots photo et événements locaux.",
+        "imageAlt": "Bus local sur la route côtière Amalfitaine"
       }
     }
   }

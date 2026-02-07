@@ -1,6 +1,7 @@
-import path from "node:path";
 import fs from "node:fs";
 import os from "node:os";
+import path from "node:path";
+
 import { getComponentNameMap } from "../src/component-names";
 
 describe("component name resolution", () => {
@@ -15,13 +16,12 @@ describe("component name resolution", () => {
       "components",
     );
     const map = getComponentNameMap(componentsDir);
-    expect(map[path.join("molecules", "Breadcrumbs.tsx").replace(/\\/g, "/")]).toBe(
-      "Breadcrumbs",
-    );
-    expect(map[path.join("molecules", "FormField.tsx").replace(/\\/g, "/")]).toBe(
-      "FormField",
+    // Test components that are exported with explicit default aliases
+    expect(map[path.join("molecules", "Accordion.tsx").replace(/\\/g, "/")]).toBe(
+      "AccordionMolecule",
     );
     expect(map["ThemeToggle.tsx"]).toBe("ThemeToggle");
+    expect(map["ComponentPreview.tsx"]).toBe("ComponentPreview");
   });
 
   it("infers names for default exports without alias", () => {

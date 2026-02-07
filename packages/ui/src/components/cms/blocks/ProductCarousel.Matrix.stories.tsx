@@ -1,13 +1,16 @@
 // packages/ui/src/components/cms/blocks/ProductCarousel.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { http, HttpResponse, delay } from 'msw';
-import type { SKU } from '@acme/types';
-import { PRODUCTS } from '@acme/platform-core/products/index';
-import CmsProductCarousel from './ProductCarousel';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './ProductCarousel.fixtures.json';
+import { delay,http, HttpResponse } from 'msw';
 import { z } from 'zod';
+
+import { PRODUCTS } from '@acme/platform-core/products/index';
+import type { SKU } from '@acme/types';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import CmsProductCarousel from './ProductCarousel';
+import fixture from './ProductCarousel.fixtures.json';
 
 const meta: Meta<typeof CmsProductCarousel> = {
   title: 'CMS Blocks/ProductCarousel/Matrix',

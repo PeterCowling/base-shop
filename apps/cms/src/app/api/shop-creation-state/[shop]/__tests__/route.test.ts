@@ -1,3 +1,5 @@
+import { NextRequest } from "next/server";
+
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 
 const setSession = (session: any) => {
@@ -9,7 +11,7 @@ const setSession = (session: any) => {
 
 const mockReadState = jest.fn();
 
-jest.mock("@platform-core/createShop", () => ({
+jest.mock("@acme/platform-core/createShop", () => ({
   readShopCreationState: (...args: unknown[]) => mockReadState(...args),
 }));
 
@@ -24,7 +26,7 @@ beforeEach(() => {
 });
 
 const makeRequest = () =>
-  new Request("http://test.local/cms/api/shop-creation-state/demo", {
+  new NextRequest("http://test.local/cms/api/shop-creation-state/demo", {
     method: "GET",
   });
 
@@ -68,3 +70,5 @@ describe("GET /cms/api/shop-creation-state/[shop]", () => {
   });
 });
 
+
+export {};

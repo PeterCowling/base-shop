@@ -7,3 +7,4 @@ export interface MediaItem {
     uploadedAt?: string;
     size?: number;
 }
+//# sourceMappingURL=MediaItem.d.ts.map

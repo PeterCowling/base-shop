@@ -1,5 +1,7 @@
 // Mock getServerSession, fs.promises, and resolveDataRoot
 
+import path from "path";
+
 const mkdirMock = jest.fn();
 const writeFileMock = jest.fn();
 const renameMock = jest.fn();
@@ -17,7 +19,7 @@ jest.mock("fs", () => {
   };
 });
 
-jest.mock("@platform-core/dataRoot", () => ({
+jest.mock("@acme/platform-core/dataRoot", () => ({
   resolveDataRoot: jest.fn(() => "/data-root"),
 }));
 
@@ -25,7 +27,6 @@ function setSession(session: any) {
   const { __setMockSession } = require('next-auth') as { __setMockSession: (s: any) => void };
   __setMockSession(session);
 }
-import path from "path";
 
 const buildRequest = (body: unknown) =>
   new Request("http://localhost/cms/api/configurator/init-shop", {

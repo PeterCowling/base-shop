@@ -1,16 +1,17 @@
 /** @jest-environment node */
 
 import {
-  resetMediaMocks,
-  restoreMediaMocks,
-} from './media.test.mocks';
-import {
   cleanTagsList,
-  parseTagsString,
   extractTagsFromFormData,
   normalizeTagsForStorage,
   normalizeTagsInput,
+  parseTagsString,
 } from '../media/tagUtils';
+
+import {
+  resetMediaMocks,
+  restoreMediaMocks,
+} from './media.test.mocks';
 
 describe('tag utilities', () => {
   beforeEach(resetMediaMocks);

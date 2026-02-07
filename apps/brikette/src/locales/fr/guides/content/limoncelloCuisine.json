@@ -1,69 +1,117 @@
 {
   "seo": {
-    "title": "Limoncello et cuisine locale",
-    "description": "Spécialités gastronomiques, où déguster les meilleurs plats et ateliers autour du limoncello."
+    "title": "Limoncello et cuisine locale sur la côte amalfitaine",
+    "description": "Guide budget pour le limoncello, la cuisine locale et les spécialités au citron de Positano. Où déguster gratuitement, trouver les bouteilles authentiques les moins chères et des restaurants locaux abordables."
   },
-  "linkLabel": "Limoncello et cuisine locale",
+  "linkLabel": "Saveurs de Positano : Limoncello, citrons et gastronomie locale",
   "intro": [
-    "Les citrons et le limoncello incarnent les saveurs de la côte amalfitaine — des dégustations aux douceurs finales.",
-    "Voici où siroter, quoi rapporter et comment les cuisiner une fois rentré."
+    "Le limoncello et tout ce qui est à base de citron définissent la côte amalfitaine — mais pas besoin d'un gros budget pour déguster le meilleur.",
+    "Voici où déguster gratuitement, quelles bouteilles offrent le meilleur rapport qualité-prix, et comment manger comme un local sans tomber dans les pièges à touristes."
   ],
   "tocTitle": "Sur cette page",
   "sections": [
     {
-      "id": "tasting",
-      "title": "Dégustation",
+      "id": "free-tasting",
+      "title": "Dégustations gratuites et où goûter",
       "body": [
-        "Visitez les petites botteghe pour du limoncello artisanal et demandez un échantillon afin de comparer les styles.",
-        "Accompagnez la dégustation d’un gelato au citron, d’un sorbet ou d’une pâtisserie pour évaluer douceur et équilibre."
+        "La plupart des petites boutiques de limoncello et des botteghe de Positano offrent des échantillons gratuits — c'est une pratique courante, pas un avantage touristique. Entrez dans n'importe quelle boutique artisanale et demandez poliment ; ils vous serviront généralement 2 à 3 styles pour que vous puissiez comparer.",
+        "Les meilleurs lieux de dégustation se trouvent sur la Via dei Mulini et dans les rues derrière Chiesa Nuova — loin des pièges à touristes du front de mer. Cherchez les boutiques familiales avec une enseigne simple et des locaux qui font leurs achats ; ils sont moins insistants et le limoncello est souvent plus fort et moins sucré.",
+        "Accompagnez votre dégustation d'échantillons gratuits de bonbons au citron (la plupart des boutiques en proposent) ou prenez une granita au citron à 1,50 € dans une gelateria pour vous rafraîchir le palais entre deux verres.",
+        "%IMAGE:limoncello-tasting-shop.jpg|Local limoncello shop offering free tasting samples in Positano%",
+        "Conseil de l'auberge : les boutiques de la Via Cristoforo Colombo (la route qui monte depuis Chiesa Nuova) ont souvent moins de touristes et servent des portions plus généreuses. Nous avons vu des locaux ramener leurs propres bouteilles pour des recharges aux prix de gros — un signe que vous avez trouvé la vraie affaire."
       ]
     },
     {
-      "id": "purchase",
-      "title": "Achat et transport",
+      "id": "buying-smart",
+      "title": "Acheter des bouteilles : quoi chercher et quoi éviter",
       "body": [
-        "Vérifiez les limites de liquides imposées par votre compagnie aérienne ; emballez les bouteilles soigneusement dans votre bagage en soute.",
-        "Recherchez les étiquettes IGP Costa d’Amalfi et des emballages recyclables issus de producteurs locaux."
+        "Un vrai limoncello doit indiquer des citrons Sorrento IGP (ou Costa d'Amalfi IGP) sur l'étiquette et avoir au moins 28-30 % d'alcool. S'il est d'un jaune néon éclatant ou étrangement bon marché (moins de 8 € pour 500 ml), il s'agit probablement d'arômes artificiels et de sirop de sucre.",
+        "Meilleur rapport qualité-prix : les bouteilles de 500 ml de producteurs locaux coûtent 10-15 € à Positano, 8-12 € à Praiano ou Amalfi. Ne payez pas plus de 15 € à moins qu'il ne s'agisse d'un mélange artisanal premium avec des agrumes inhabituels (bergamote, cédrat).",
+        "Les boutiques d'aéroport et de gare facturent 30 à 50 % de plus pour les mêmes bouteilles. Si vous partez de Naples en avion, achetez à Positano et emballez soigneusement dans les bagages enregistrés (enveloppez dans des vêtements + sac plastique).",
+        "Limites de liquides en avion : 100 ml maximum en bagage à main. Les bouteilles standard font 500 ml ou 750 ml, donc les bagages enregistrés sont votre seule option. Nous n'avons jamais eu de bouteille cassée lorsqu'elle était correctement enveloppée au centre d'un sac à dos.",
+        "%IMAGE:limoncello-bottles-local.jpg|Authentic limoncello bottles from local Amalfi Coast producers%"
       ]
     },
     {
-      "id": "cooking",
-      "title": "Cuisiner avec des citrons",
+      "id": "budget-eats",
+      "title": "Restauration locale bon marché : plats au citron à essayer",
       "body": [
-        "Utilisez le zeste et le jus pour illuminer salades, pâtes aux fruits de mer et desserts.",
-        "Conservez les citrons dans un endroit frais et sombre et réutilisez les écorces pour des sirops ou marinades."
+        "Évitez les menus touristiques à 25 € sur la plage principale. Rendez-vous plutôt chez Da Vincenzo (Via Pasitea 172) pour des plats de pâtes au citron à 8-12 € — leurs spaghetti al limone sont simples, lumineux et utilisent des citrons locaux. Espèces uniquement, pas de réservation, les locaux font la queue à 19h.",
+        "Pour le dessert, la delizia al limone (gâteau éponge au citron imbibé de crème au limoncello) coûte 4-6 € dans la plupart des pasticcerie. Notre préférée : Pasticceria La Zagara (Via dei Mulini) — 5 € pour une part généreuse, terrasse extérieure, recharges d'eau gratuites.",
+        "Petit-déjeuner économique : prenez une sfogliatella (2-3 €) et un espresso (1,20 €) dans n'importe quel bar, puis achetez un kilo de citrons frais chez un primeur (2-4 €) pour grignoter ou faire de la limonade fraîche de retour à l'auberge.",
+        "La terrasse de %LINK:chiesaNuovaArrivals|l'auberge% est parfaite pour composer vos propres repas à base de citron : achetez de la mozzarella fraîche (3-4 €), des tomates (2 €/kg), du basilic et des citrons au marché de Chiesa Nuova (jeudis matins), puis arrosez d'huile d'olive locale. Coût total : 10-12 € pour deux personnes.",
+        "%IMAGE:spaghetti-al-limone.jpg|Fresh spaghetti al limone with Amalfi lemons at local restaurant%"
+      ]
+    },
+    {
+      "id": "cooking-tips",
+      "title": "Cuisiner avec les citrons d'Amalfi",
+      "body": [
+        "Les citrons d'Amalfi (sfusato amalfitano) ont des écorces épaisses et parfumées et moins d'acidité que les citrons de supermarché — utilisez-les pour des plats où le zeste brille.",
+        "Utilisations classiques : râpez le zeste dans l'eau de cuisson des pâtes pour les spaghetti al limone, écrasez l'écorce avec du sucre pour faire du limoncello maison, ou confisez des lanières épaisses pour garnir les desserts.",
+        "Conservation : gardez les citrons dans un endroit frais et sombre (pas au réfrigérateur) jusqu'à 2 semaines. Si vous achetez un gros sac au marché, pressez la moitié et congelez le jus dans des bacs à glaçons pour une utilisation ultérieure.",
+        "Écorces restantes : faites mijoter avec de l'eau et du sucre pour faire du sirop de citron pour cocktails, ou séchez-les et ajoutez-les au thé. Zéro déchet, saveur maximale.",
+        "%IMAGE:amalfi-lemons-cooking.jpg|Fresh Amalfi Coast lemons (sfusato amalfitano) for cooking%"
+      ]
+    },
+    {
+      "id": "ordering-etiquette",
+      "title": "Étiquette de commande et comment éviter les pièges à touristes",
+      "body": [
+        "Si un restaurant a un menu en 6 langues et des photos de chaque plat, c'est un piège à touristes. Cherchez des menus manuscrits en italien avec 8 à 12 plats maximum — c'est là que les locaux mangent.",
+        "Le limoncello est traditionnellement servi glacé après un repas comme digestif, pas avant ou pendant. Si un endroit pousse les cocktails au limoncello avant le dîner, ils ciblent les touristes.",
+        "Le coperto (frais de couvert) est standard en Italie : 1,50-3 € par personne pour le pain et le service à table. S'il dépasse 3 €, vous payez trop cher. Vérifiez les prix du 'coperto' sur le menu avant de vous asseoir.",
+        "Eau : 'Acqua naturale' est de l'eau plate, 'frizzante' est gazeuse. L'eau du robinet est potable mais rarement servie dans les restaurants — commandez une bouteille à 2-3 € et remplissez gratuitement à la fontaine de l'auberge avant de sortir.",
+        "%IMAGE:local-italian-restaurant.jpg|Authentic local restaurant with handwritten Italian menu%",
+        "Culture du pourboire : les frais de service (servizio) sont parfois inclus dans l'addition. Sinon, laisser 1-2 € ou arrondir l'addition est poli mais pas obligatoire. Les Italiens ne donnent pas de pourboire de 15-20 % comme aux États-Unis — économisez vos euros pour plus de limoncello."
+      ]
+    },
+    {
+      "id": "market-shopping",
+      "title": "Achats au marché et ramener des citrons chez soi",
+      "body": [
+        "Le %LINK:chiesaNuovaArrivals|marché de Chiesa Nuova% (jeudi 8h-13h) vend des produits frais, y compris d'énormes citrons d'Amalfi pour 2-4 €/kg. Comparez avec 1-2 € par citron dans les boutiques de souvenirs touristiques.",
+        "Si vous voulez ramener des citrons chez vous : choisissez des fruits fermes et sans défaut et emballez-les au centre de votre sac enveloppés dans du papier absorbant. Ils dureront 5 à 7 jours s'ils sont gardés au frais. Les douanes de l'UE autorisent jusqu'à 2 kg de fruits frais ; vérifiez les règles de votre pays si vous voyagez hors de l'UE.",
+        "Pour les ingrédients de limoncello, achetez de l'alcool pur (alcool puro, 95 %) dans une pharmacie ou un grand supermarché à Salerne ou Naples — c'est 8-12 € pour 1L, contre 15-20 € dans les petites boutiques de Positano.",
+        "%IMAGE:chiesa-nuova-market-lemons.jpg|Fresh Amalfi lemons at Chiesa Nuova Thursday market%"
       ]
     }
   ],
   "tips": [
-    "Soutenez les petits producteurs — leurs arômes sont souvent plus intenses que ceux des boutiques attrape-touristes.",
-    "Évitez les souvenirs surfacturés près de la plage principale ; reculez de quelques rues pour de meilleurs prix."
+    "Les échantillons gratuits sont la norme — ne vous sentez pas obligé d'acheter après avoir goûté. Un poli 'grazie, ci penso' (merci, je vais y réfléchir) fonctionne très bien.",
+    "Achetez du limoncello et des citrons à Amalfi ou Praiano pour 20-30 % moins cher qu'à Positano.",
+    "Évitez les bouteilles en céramique en forme de citron (20-30 €) — elles sont fragiles, lourdes, et le limoncello à l'intérieur est médiocre. Prenez une bouteille en verre ordinaire et utilisez les économies pour un liquide de meilleure qualité.",
+    "La plupart des restaurants de Positano servent du limoncello gratuit après le dîner si vous commandez un repas complet. S'ils ne l'offrent pas, demandez — 'Limoncello offerto?' — et ils apporteront généralement un petit verre.",
+    "La %LINK:cheapEats|cuisine de l'auberge% est idéale pour composer des repas bon marché à base de citron. Achetez les ingrédients au marché du jeudi ou au Conad de Chiesa Nuova et économisez 50-70 % par rapport aux repas au restaurant."
   ],
   "faqs": [
     {
-      "q": "Puis-je transporter du limoncello en cabine ?",
+      "q": "Puis-je transporter du limoncello dans mon bagage à main ?",
       "a": [
-        "Pas au-delà de 100 ml — placez les bouteilles standard dans la soute avec une bonne protection."
+        "Non, pas dans des bouteilles de plus de 100 ml. Les bouteilles de limoncello standard font 500-750 ml, vous devez donc les emballer dans les bagages enregistrés.",
+        "Enveloppez les bouteilles dans des vêtements ou du papier bulle, scellez-les dans un sac plastique en cas de fuite, et placez-les au centre de votre sac loin des objets durs. Nous avons voyagé avec 4-5 bouteilles de cette façon sans problème."
       ]
     },
     {
-      "q": "Existe-t-il des alternatives sans alcool ?",
+      "q": "Quel est un prix juste pour le limoncello à Positano ?",
       "a": [
-        "Optez pour une limonade fraîche, une granita ou des sirops de citron si vous souhaitez éviter l’alcool."
+        "10-15 € pour une bouteille de 500 ml d'un producteur local est standard. Tout ce qui dépasse 18 € est trop cher sauf s'il s'agit d'un mélange spécial.",
+        "Moins cher à Amalfi (8-12 €) ou Praiano. Évitez les boutiques d'aéroport — elles facturent 20-25 € pour les mêmes bouteilles."
+      ]
+    },
+    {
+      "q": "Y a-t-il des spécialités au citron sans alcool ?",
+      "a": [
+        "Oui ! Essayez la granita au citron (2-3 €), la limonade fraîche (3-4 €), ou le sorbet au citron (2,50-4 €). Elles sont partout et tout aussi rafraîchissantes que le limoncello.",
+        "Pour cuisiner, l'huile d'olive infusée au citron et la marmelade de citron font d'excellents cadeaux et ne contiennent pas d'alcool."
+      ]
+    },
+    {
+      "q": "Où trouver le meilleur rapport qualité-prix pour les plats au citron ?",
+      "a": [
+        "Da Vincenzo (Via Pasitea 172) pour des plats de pâtes à 8-12 €. Pasticceria La Zagara (Via dei Mulini) pour une delizia al limone à 5 €.",
+        "Ou faites vos propres courses : achetez citrons, mozzarella, tomates et huile d'olive au marché de Chiesa Nuova et composez vos repas à l'auberge pour 5-6 € par personne."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Galerie photo",
-    "items": [
-      {
-        "alt": "Affiche vintage de Positano avec des citrons",
-        "caption": "Citrons vintage"
-      },
-      {
-        "alt": "Table en terrasse avec des verres de limoncello",
-        "caption": "Limoncello en terrasse"
-      }
-    ]
-  }
+  ]
 }

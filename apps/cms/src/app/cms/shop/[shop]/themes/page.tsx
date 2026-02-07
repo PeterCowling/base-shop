@@ -1,16 +1,18 @@
 "use server";
 
 // apps/cms/src/app/cms/shop/[shop]/themes/page.tsx
-import { listThemes } from "@platform-core/createShop";
-import { baseTokens, loadThemeTokens } from "@platform-core/themeTokens";
-import { readShop } from "@platform-core/repositories/shops.server";
+import Link from "next/link";
+
+import { listThemes } from "@acme/platform-core/createShop";
+import { readShop } from "@acme/platform-core/repositories/shops.server";
 import {
+  deleteThemePreset,
   getThemePresets,
   saveThemePreset,
-  deleteThemePreset,
-} from "@platform-core/repositories/themePresets.server";
+} from "@acme/platform-core/repositories/themePresets.server";
+import { baseTokens, loadThemeTokens } from "@acme/platform-core/themeTokens";
+
 import ThemeEditor from "./ThemeEditor";
-import Link from "next/link";
 
 export async function savePreset(
   shop: string,

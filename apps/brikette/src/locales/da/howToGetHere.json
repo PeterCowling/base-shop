@@ -17,15 +17,73 @@
       "experienceRoutes": "Oplevelsesruter"
     }
   },
+  "routePicker": {
+    "title": "Find den bedste rute til din ankomst",
+    "subtitle": "Svar på to hurtige spørgsmål — vi springer til det bedste match og fremhæver det.",
+    "placeLabel": "Hvor kommer du fra?",
+    "placePlaceholder": "Vælg et udgangspunkt",
+    "arrivalLabel": "Hvornår ankommer du?",
+    "arrival": {
+      "daytime": "Om dagen",
+      "evening": "Om aftenen",
+      "lateNight": "Sent om natten"
+    },
+    "preferencesLabel": "Præferencer",
+    "preferences": {
+      "none": "Ingen præference",
+      "fastest": "Hurtigst",
+      "cheapest": "Billigst",
+      "leastWalking": "Mindst gang",
+      "luggageFriendly": "Mest bagagevenlig"
+    },
+    "cta": "Vis min bedste rute",
+    "urlHint": "Filtrene opdaterer URL'en, så du kan dele linket.",
+    "lateNightHint": "Sen ankomst er ofte nemmest med taxi eller shuttle — brug kontaktmulighederne nedenfor, hvis busser/færger er sluttet."
+  },
+  "routeCard": {
+    "factsLabel": "Rutefakta",
+    "duration": "Varighed",
+    "cost": "Pris",
+    "walking": "Til fods",
+    "luggage": "Bagage",
+    "seasonality": "Sæson",
+    "seasonalityValues": {
+      "seasonal": "Sæsonbetonet",
+      "yearRound": "Hele året"
+    },
+    "cta": "Se trin for trin",
+    "direction": {
+      "to": "Til hostellet",
+      "from": "Fra hostellet"
+    }
+  },
   "preview": {
     "notPublished": "Kun forhåndsvisning – denne side er ikke publiceret"
+  },
+  "jumpTo": {
+    "label": "Gå til",
+    "arrival": "Ankomsthjælp",
+    "rome": "Rom",
+    "experiences": "Oplevelser"
   },
   "intro": {
     "taxi": "Hvis du vil bestille en taxa, kan du bruge WhatsApp til at kontakte dette nummer på engelsk eller italiensk: <Strong>{{contact}}</Strong>.",
     "shuttle": "Foretrækker du en shuttle? Sea Horse Car Service kører delte transfers. Reservér en plads via deres <Link>officielle shuttle-side</Link>.",
     "taxiContact": "+39 379 125 6222",
     "taxiEyebrow": "Hostel Brikette med taxa",
-    "shuttleEyebrow": "Hostel Brikette med shuttle"
+    "shuttleEyebrow": "Hostel Brikette med shuttle",
+    "whatsappTemplate": "Hej! Jeg bor på Hostel Brikette. Jeg vil gerne bestille en taxi til/fra Positano. Min ankomsttid er: ____",
+    "emailSubject": "Hjælp til ankomst",
+    "emailBody": "Hej Hostel Brikette-team — jeg ankommer i dag og har brug for hjælp til at vælge den bedste måde at komme frem på. Min forventede ankomsttid er: ____",
+    "whatsappCta": "WhatsApp-taxi",
+    "callCta": "Ring",
+    "taxiBestFor": "Bedst til: sene ankomster · tung bagage · hurtigste mulighed",
+    "shuttleCta": "Book shuttle",
+    "shuttleBestFor": "Bedst til: ankomster i lufthavnen · delt transfer · planlægning i god tid",
+    "helpEyebrow": "Brug for hjælp?",
+    "helpCopy": "Ankommer du sent eller har forsinkelser? Skriv til os, så vi kan planlægge din check-in og foreslå en alternativ rute.",
+    "emailCta": "Skriv til receptionen",
+    "helpBestFor": "Bedst til: forsinkelser · færgeaflysninger · sen check-in"
   },
   "destinations": {
     "filterLabel": "Sted",
@@ -37,7 +95,7 @@
         "image": {
           "src": "/img/positano-panorama.avif",
           "alt": "Panoramisk udsigt over Positanos huse på klippesiden",
-          "caption": "Positano is steep — plan for stairs, especially with luggage."
+          "caption": "Positano er stejl – planlæg for trapper, især med bagage."
         },
         "links": [
           {
@@ -46,10 +104,10 @@
             "internal": true,
             "facts": {
               "duration": "5–10 min",
-              "cost": "Free",
-              "walking": "~140 m + ~30 steps",
+              "cost": "Gratis",
+              "walking": "~140 m + ~30 trin",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Hele året"
             }
           },
           {
@@ -57,11 +115,23 @@
             "href": "ferry-dock-to-hostel-brikette-with-luggage",
             "internal": true,
             "facts": {
-              "duration": "20–45 min (depends on porters/Interno bus)",
-              "cost": "€2–€6 pp (+ optional porter)",
-              "walking": "Port stairs; porters reduce carrying",
+              "duration": "20–45 min (afhænger af portører/Interno-bus)",
+              "cost": "€2–€6 pr. person (+ valgfri portør)",
+              "walking": "Havnetrapper; portører reducerer bæring",
               "luggageFriendly": 1,
-              "seasonality": "Year-round"
+              "seasonality": "Hele året"
+            }
+          },
+          {
+            "label": "Hostel Brikette til færgelejet",
+            "href": "hostel-brikette-to-ferry-dock-with-luggage",
+            "internal": true,
+            "facts": {
+              "duration": "20–30 min (mere med bagage)",
+              "cost": "Gratis",
+              "walking": "Trapper + vejkrydsninger",
+              "luggageFriendly": 1,
+              "seasonality": "Året rundt"
             }
           },
           {
@@ -69,11 +139,11 @@
             "href": "hostel-brikette-to-chiesa-nuova-bar-internazionale",
             "internal": true,
             "facts": {
-              "duration": "5–10 min",
-              "cost": "Free",
-              "walking": "~140 m + ~30 steps (down)",
-              "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "duration": "20–30 min (mere med bagage)",
+              "cost": "Gratis",
+              "walking": "Trapper + vejkrydsninger",
+              "luggageFriendly": 1,
+              "seasonality": "Hele året"
             }
           }
         ]
@@ -83,7 +153,7 @@
         "image": {
           "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
           "alt": "SITA Sud-busstoppested i Amalfi til kystruter",
-          "caption": "Look for the SITA buses at Amalfi’s bus station."
+          "caption": "Kig efter SITA-busserne ved Amalfis busstation."
         },
         "links": [
           {
@@ -91,11 +161,11 @@
             "href": "amalfi-positano-bus",
             "internal": true,
             "facts": {
-              "duration": "45–90 min (traffic dependent)",
-              "cost": "€2–€4 pp",
-              "walking": "Short stairs at the end (~30 steps)",
+              "duration": "45–90 min (afhænger af trafikken)",
+              "cost": "€2–€4 pr. person",
+              "walking": "Korte trapper til sidst (~30 trin)",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Hele året"
             }
           },
           {
@@ -103,11 +173,11 @@
             "href": "positano-amalfi-bus",
             "internal": true,
             "facts": {
-              "duration": "45–90 min (traffic dependent)",
-              "cost": "€2–€4 pp",
-              "walking": "Short stairs at the start/end (~30 steps)",
+              "duration": "45–90 min (afhænger af trafikken)",
+              "cost": "€2–€4 pr. person",
+              "walking": "Korte trapper i start/slut (~30 trin)",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Hele året"
             }
           },
           {
@@ -115,11 +185,11 @@
             "href": "amalfi-positano-ferry",
             "internal": true,
             "facts": {
-              "duration": "25–45 min (sailing) + port transfer",
-              "cost": "€10–€20 pp",
-              "walking": "Stairs to/from the port",
+              "duration": "25–45 min (sejlads) + havnetransfer",
+              "cost": "€10–€20 pr. person",
+              "walking": "Trapper til/fra havnen",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Sæsonbetonet (apr–okt)"
             }
           },
           {
@@ -127,11 +197,11 @@
             "href": "positano-amalfi-ferry",
             "internal": true,
             "facts": {
-              "duration": "25–45 min (sailing) + port transfer",
-              "cost": "€10–€20 pp",
-              "walking": "Stairs to/from the port",
+              "duration": "25–45 min (sejlads) + havnetransfer",
+              "cost": "€10–€20 pr. person",
+              "walking": "Trapper til/fra havnen",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Sæsonbetonet (apr–okt)"
             }
           }
         ]
@@ -141,7 +211,7 @@
         "image": {
           "src": "/img/directions/positano-capri-ferry-img09.jpg",
           "alt": "Færge, der lægger til ved Marina Grande på Capri",
-          "caption": "Capri ferries depart from Marina Grande."
+          "caption": "Capri-færger afgår fra Marina Grande."
         },
         "links": [
           {
@@ -149,11 +219,11 @@
             "href": "capri-positano-ferry",
             "internal": true,
             "facts": {
-              "duration": "30–60 min (sailing) + port transfer",
-              "cost": "€20–€35 pp",
-              "walking": "Port access; stairs likely in Positano",
+              "duration": "30–60 min (sejlads) + havnetransfer",
+              "cost": "€20–€35 pr. person",
+              "walking": "Havneadgang; sandsynligvis trapper i Positano",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Sæsonbetonet (apr–okt)"
             }
           },
           {
@@ -161,11 +231,11 @@
             "href": "positano-capri-ferry",
             "internal": true,
             "facts": {
-              "duration": "30–60 min (sailing) + port transfer",
-              "cost": "€20–€35 pp",
-              "walking": "Port access; stairs likely in Positano",
+              "duration": "30–60 min (sejlads) + havnetransfer",
+              "cost": "€20–€35 pr. person",
+              "walking": "Havneadgang; sandsynligvis trapper i Positano",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Sæsonbetonet (apr–okt)"
             }
           }
         ]
@@ -175,7 +245,7 @@
         "image": {
           "src": "/img/tabacchi.webp",
           "alt": "Tabacchi-butik i centrum af Napoli",
-          "caption": "Buy bus tickets in tabacchi/newsstands before boarding."
+          "caption": "Køb busbilletter i tabacchi/kiosker før ombordstigning."
         },
         "links": [
           {
@@ -183,11 +253,11 @@
             "href": "naples-center-train-bus",
             "internal": true,
             "facts": {
-              "duration": "2–3.5 h (incl. transfers)",
-              "cost": "€15–€25 pp",
-              "walking": "Low; change in Sorrento",
+              "duration": "2–3,5 t (inkl. skift)",
+              "cost": "€15–€25 pr. person",
+              "walking": "Lille; skift i Sorrento",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Hele året"
             }
           },
           {
@@ -195,11 +265,11 @@
             "href": "positano-naples-center-bus-train",
             "internal": true,
             "facts": {
-              "duration": "2–3.5 h (incl. transfers)",
-              "cost": "€15–€25 pp",
-              "walking": "Short stairs at the start/end (~30 steps)",
+              "duration": "2–3,5 t (inkl. skift)",
+              "cost": "€15–€25 pr. person",
+              "walking": "Korte trapper i start/slut (~30 trin)",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Hele året"
             }
           },
           {
@@ -207,11 +277,11 @@
             "href": "naples-center-positano-ferry",
             "internal": true,
             "facts": {
-              "duration": "3–4.5 h (incl. port transfer)",
-              "cost": "€25–€45 pp",
-              "walking": "Transfer to port + stairs in Positano",
+              "duration": "3–4,5 t (inkl. havnetransfer)",
+              "cost": "€25–€45 pr. person",
+              "walking": "Transfer til havnen + trapper i Positano",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Sæsonbetonet (apr–okt)"
             }
           },
           {
@@ -219,11 +289,11 @@
             "href": "positano-naples-center-ferry",
             "internal": true,
             "facts": {
-              "duration": "3–4.5 h (incl. port transfer)",
-              "cost": "€25–€45 pp",
-              "walking": "Stairs in Positano + transfer from port",
+              "duration": "3–4,5 t (inkl. havnetransfer)",
+              "cost": "€25–€45 pr. person",
+              "walking": "Trapper i Positano + transfer fra havnen",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Sæsonbetonet (apr–okt)"
             }
           },
           {
@@ -231,11 +301,11 @@
             "href": "positano-to-naples-directions-by-ferry",
             "internal": true,
             "facts": {
-              "duration": "3–4.5 h (incl. port transfer)",
-              "cost": "€25–€45 pp",
-              "walking": "Stairs in Positano + transfer from port",
+              "duration": "3–4,5 t (inkl. havnetransfer)",
+              "cost": "€25–€45 pr. person",
+              "walking": "Trapper i Positano + transfer fra havnen",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Sæsonbetonet (apr–okt)"
             }
           }
         ]
@@ -245,7 +315,7 @@
         "image": {
           "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
           "alt": "Curreri-shuttlens opsamlingssted foran Napolis lufthavn",
-          "caption": "Curreri buses pick up outside arrivals (follow bus signs)."
+          "caption": "Sorrento togstation, hvor du skifter bus"
         },
         "links": [
           {
@@ -253,11 +323,11 @@
             "href": "positano-naples-airport-bus",
             "internal": true,
             "facts": {
-              "duration": "2–3.5 h (incl. change in Sorrento)",
-              "cost": "€15–€25 pp",
-              "walking": "Short stairs at the start/end (~30 steps)",
+              "duration": "2–3,5 t (inkl. skift i Sorrento)",
+              "cost": "€15–€25 pr. person",
+              "walking": "Korte trapper i start/slut (~30 trin)",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Hele året"
             }
           },
           {
@@ -265,11 +335,11 @@
             "href": "naples-airport-positano-bus",
             "internal": true,
             "facts": {
-              "duration": "2–3.5 h (incl. change in Sorrento)",
-              "cost": "€15–€25 pp",
-              "walking": "Short stairs at the end (~30 steps)",
+              "duration": "2–3,5 t (inkl. skift i Sorrento)",
+              "cost": "€15–€25 pr. person",
+              "walking": "Korte trapper til sidst (~30 trin)",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Hele året"
             }
           }
         ]
@@ -279,7 +349,7 @@
         "image": {
           "src": "/img/hostel-coastal-horizon.webp",
           "alt": "Udsigt langs Amalfikysten mod Salerno",
-          "caption": "Salerno connects by train + bus, or by seasonal ferries."
+          "caption": "Salerno forbinder med tog + bus eller med sæsonbaserede færger."
         },
         "links": [
           {
@@ -287,11 +357,11 @@
             "href": "salerno-positano-bus",
             "internal": true,
             "facts": {
-              "duration": "2.5–4 h (via Amalfi)",
-              "cost": "€6–€12 pp",
-              "walking": "Low; change buses in Amalfi",
+              "duration": "2,5–4 t (via Amalfi)",
+              "cost": "€6–€12 pr. person",
+              "walking": "Lille; skift bus i Amalfi",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Hele året"
             }
           },
           {
@@ -299,11 +369,11 @@
             "href": "positano-salerno-bus",
             "internal": true,
             "facts": {
-              "duration": "2.5–4 h (via Amalfi)",
-              "cost": "€6–€12 pp",
-              "walking": "Short stairs at the start/end (~30 steps)",
+              "duration": "2,5–4 t (via Amalfi)",
+              "cost": "€6–€12 pr. person",
+              "walking": "Korte trapper i start/slut (~30 trin)",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Hele året"
             }
           },
           {
@@ -311,11 +381,11 @@
             "href": "salerno-positano-ferry",
             "internal": true,
             "facts": {
-              "duration": "1–2 h (sailing) + port transfer",
-              "cost": "€15–€30 pp",
-              "walking": "Port stairs; porters recommended",
+              "duration": "1–2 t (sejlads) + havnetransfer",
+              "cost": "€15–€30 pr. person",
+              "walking": "Havnetrapper; portører anbefales",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Sæsonbetonet (apr–okt)"
             }
           },
           {
@@ -323,11 +393,11 @@
             "href": "positano-salerno-ferry",
             "internal": true,
             "facts": {
-              "duration": "1–2 h (sailing) + port transfer",
-              "cost": "€15–€30 pp",
-              "walking": "Port stairs; porters recommended",
+              "duration": "1–2 t (sejlads) + havnetransfer",
+              "cost": "€15–€30 pr. person",
+              "walking": "Havnetrapper; portører anbefales",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Sæsonbetonet (apr–okt)"
             }
           }
         ]
@@ -337,7 +407,7 @@
         "image": {
           "src": "/img/hostel-communal-terrace-lush-view.webp",
           "alt": "Klippehaver med udsigt over kysten nær Ravello",
-          "caption": "Ravello is reached via Amalfi by bus."
+          "caption": "Ravello nås via Amalfi med bus."
         },
         "links": [
           {
@@ -345,11 +415,11 @@
             "href": "ravello-positano-bus",
             "internal": true,
             "facts": {
-              "duration": "1.5–2.5 h (via Amalfi)",
-              "cost": "€4–€8 pp",
-              "walking": "Low; change in Amalfi",
+              "duration": "1,5–2,5 t (via Amalfi)",
+              "cost": "€4–€8 pr. person",
+              "walking": "Lille; skift i Amalfi",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Hele året"
             }
           },
           {
@@ -357,11 +427,11 @@
             "href": "positano-ravello-bus",
             "internal": true,
             "facts": {
-              "duration": "1.5–2.5 h (via Amalfi)",
-              "cost": "€4–€8 pp",
-              "walking": "Short stairs at the start/end (~30 steps)",
+              "duration": "1,5–2,5 t (via Amalfi)",
+              "cost": "€4–€8 pr. person",
+              "walking": "Korte trapper i start/slut (~30 trin)",
               "luggageFriendly": 2,
-              "seasonality": "Year-round"
+              "seasonality": "Hele året"
             }
           },
           {
@@ -369,11 +439,11 @@
             "href": "positano-ravello-ferry-bus",
             "internal": true,
             "facts": {
-              "duration": "2–3 h (ferry + bus)",
-              "cost": "€15–€30 pp",
-              "walking": "Port stairs + bus connection",
+              "duration": "2–3 t (færge + bus)",
+              "cost": "€15–€30 pr. person",
+              "walking": "Havnetrapper + busforbindelse",
               "luggageFriendly": 1,
-              "seasonality": "Seasonal (Apr–Oct)"
+              "seasonality": "Sæsonbetonet (apr–okt)"
             }
           }
         ]
@@ -381,6 +451,11 @@
     ]
   },
   "rome": {
+    "image": {
+      "src": "/img/directions/rome-forum.jpg",
+      "alt": "Colosseum i Rom",
+      "caption": "Forum Romanum og Kapitolmuseerne"
+    },
     "title": "Rom",
     "description": "Følg vejledningerne i vores skriftlige guide for at komme til Napoli eller Salerno, og tag derefter et tog fra en af disse byer.",
     "table": {
@@ -540,6 +615,11 @@
   },
   "sorrento": {
     "title": "Sorrento",
+    "image": {
+      "src": "/img/directions/sorrento-piazza-tasso.jpg",
+      "alt": "Havneudsigt i Sorrento",
+      "caption": "Sorrento fra Piazza Tasso"
+    },
     "links": [
       {
         "label": "Fra Sorrento med bus",
@@ -547,10 +627,10 @@
         "internal": true,
         "facts": {
           "duration": "45–75 min",
-          "cost": "€2–€4 pp",
-          "walking": "Short stairs at the end (~30 steps)",
+          "cost": "€2–€4 pr. person",
+          "walking": "Korte trapper til sidst (~30 trin)",
           "luggageFriendly": 2,
-          "seasonality": "Year-round"
+          "seasonality": "Hele året"
         }
       },
       {
@@ -559,10 +639,10 @@
         "internal": true,
         "facts": {
           "duration": "45–75 min",
-          "cost": "€2–€4 pp",
-          "walking": "Short stairs at the start/end (~30 steps)",
+          "cost": "€2–€4 pr. person",
+          "walking": "Korte trapper i start/slut (~30 trin)",
           "luggageFriendly": 2,
-          "seasonality": "Year-round"
+          "seasonality": "Hele året"
         }
       },
       {
@@ -570,11 +650,11 @@
         "href": "sorrento-positano-ferry",
         "internal": true,
         "facts": {
-          "duration": "30–45 min (sailing) + port stairs",
-          "cost": "€15–€25 pp",
-          "walking": "Port stairs; porters recommended",
+          "duration": "30–45 min (sejlads) + havnetrapper",
+          "cost": "€15–€25 pr. person",
+          "walking": "Havnetrapper; portører anbefales",
           "luggageFriendly": 1,
-          "seasonality": "Seasonal (Apr–Oct)"
+          "seasonality": "Sæsonbetonet (apr–okt)"
         }
       },
       {
@@ -582,11 +662,11 @@
         "href": "positano-sorrento-ferry",
         "internal": true,
         "facts": {
-          "duration": "30–45 min (sailing) + port stairs",
-          "cost": "€15–€25 pp",
-          "walking": "Port stairs; porters recommended",
+          "duration": "30–45 min (sejlads) + havnetrapper",
+          "cost": "€15–€25 pr. person",
+          "walking": "Havnetrapper; portører anbefales",
           "luggageFriendly": 1,
-          "seasonality": "Seasonal (Apr–Oct)"
+          "seasonality": "Sæsonbetonet (apr–okt)"
         }
       }
     ]
@@ -595,6 +675,7 @@
     "title": "Filtrér ruter",
     "resultsCount": "Resultater: {{count}} ruter",
     "editLabel": "Rediger filtre",
+    "shareHint": "Filtrene afspejles i URL'en for nem deling.",
     "transportLabel": "Transporttype",
     "transportAll": "Alle",
     "transportModes": {
@@ -844,8 +925,8 @@
     "defaultAlt": "Vejbeskrivelsesfoto"
   },
   "lightbox": {
-    "titleFallback": "Image",
-    "openAria": "Open image",
-    "openAriaWithCaption": "Open image: {{caption}}"
+    "titleFallback": "Billede",
+    "openAria": "Åbn billede",
+    "openAriaWithCaption": "Åbn billede: {{caption}}"
   }
 }

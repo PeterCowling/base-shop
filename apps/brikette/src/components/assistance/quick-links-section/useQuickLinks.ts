@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import type { TFunction } from "i18next";
 
 import type { AppLanguage } from "@/i18n.config";
-import { articleSlug } from "@/routes.assistance-helpers";
+import { guideSlug } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
 
 import { FALLBACK_EN_QUICK_LINKS } from "./fallbacks";
@@ -50,7 +50,25 @@ export function useQuickLinksWithHref(
     const basePath = `/${resolvedLang}/${assistanceSlug}`;
 
     return items.map((item) => {
-      const articlePath = `${basePath}/${articleSlug(sourceLang, item.slug)}`;
+      // If item has a custom href, use it (with special handling for area pages)
+      if (item.href) {
+        // Handle special area page hrefs like "how-to-get-here"
+        if (item.href === "how-to-get-here") {
+          const howToSlug = getSlug("howToGetHere", resolvedLang);
+          return {
+            ...item,
+            href: `/${resolvedLang}/${howToSlug}`,
+          } satisfies QuickLinkWithHref;
+        }
+        // Use href directly for absolute or external URLs
+        return {
+          ...item,
+          href: item.href,
+        } satisfies QuickLinkWithHref;
+      }
+
+      // Otherwise build from slug
+      const articlePath = item.slug ? `${basePath}/${guideSlug(sourceLang, item.slug)}` : "";
       return {
         ...item,
         href: articlePath,

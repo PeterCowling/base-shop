@@ -1,61 +1,53 @@
 {
   "seo": {
     "title": "Autobús de regreso al Hostel Brikette desde la playa de Arienzo",
-    "description": "Sube desde la orilla hasta la carretera, viaja unos 3 km hasta Chiesa Nuova y termina con un breve paseo de regreso al Hostel Brikette."
+    "description": "Sube desde la playa a la carretera, toma el autobús de regreso hacia Positano, bájate en Bar Internazionale/Chiesa Nuova y luego sigue las breves indicaciones de regreso al Hostel Brikette."
   },
-  "linkLabel": "Autobús de regreso desde la playa de Arienzo",
+  "linkLabel": "Autobús de regreso al Hostel Brikette desde la playa de Arienzo",
   "intro": [
-    "Evita subir todos los escalones tomando el autobús de la Costa Amalfitana desde Arienzo de regreso a Positano.",
-    "Compra el billete de vuelta en el pueblo antes de ir a la playa: en Arienzo no hay vendedores, así que planifica con antelación o usa el barco lanzadera de regreso a Spiaggia Grande."
+    "Escanear para compartir",
+    "Consejo: Horario de autobuses. Ten en cuenta que el horario incluye los tiempos de Positano, pero no los de Arienzo. La parada de autobús de Arienzo se encuentra aproximadamente 2-5 minutos antes de Sponda.",
+    "¡Importante! Si no tienes un billete de autobús para tu viaje de regreso, puedes caminar de vuelta a Sponda y tomar el autobús desde allí, o tomar la lanzadera acuática de regreso a la playa principal en Positano. Recuerda, no hay vendedores de billetes cerca de la playa de Arienzo, por lo que es importante planificar con anticipación y comprar tus billetes por adelantado para el viaje de regreso.",
+    "Consejo: Consulta nuestra %LINK:arienzoBeachClub|guía de la playa de Arienzo%",
+    "Consejo: Consulta nuestro %LINK:positanoBeaches|resumen de playas%"
   ],
   "sections": [
     {
       "id": "walk-to-stop",
-      "title": "Sube hasta la parada de autobús",
+      "title": "Sube a la parada de autobús",
       "body": [
-        "Sube las escaleras desde la playa hasta la carretera y cruza con cuidado al lado interior.",
-        "Busca la señal azul y blanca de SITA en el poste metálico frente al sendero de entrada y espera en el apartadero."
+        "Para tomar el autobús de regreso al hostel, sube las escaleras desde la playa hasta la carretera y busca la parada de autobús en el lado opuesto de la carretera. La señal de la parada de autobús es azul y blanca, montada en un poste metálico (consulta la imagen como referencia). Espera en la parada de autobús a que llegue el autobús."
       ]
     },
     {
       "id": "ride-the-bus",
-      "title": "Toma el autobús de la Costa Amalfitana",
+      "title": "Toma el autobús",
       "body": [
-        "Haz señas al autobús cuando se acerque y lleva tu billete validado listo.",
-        "El trayecto cubre unos 3 kilómetros (1,9 millas) con algunas paradas intermedias antes de Positano."
+        "El número de veces que el autobús se detendrá antes de que necesites bajarte variará. La distancia que necesitas recorrer es de aproximadamente 3 km / 1,9 millas."
       ]
     },
     {
       "id": "get-off-bus",
-      "title": "Bájate en Bar Internazionale / Chiesa Nuova",
+      "title": "Bájate del autobús",
       "body": [
-        "Escucha el aviso o busca el tabacchi Bar Internazionale: la parada está frente al hostel.",
-        "Pulsa el botón de parada con tiempo para que el conductor sepa que debe dejarte en Chiesa Nuova."
+        "Te bajarás en la parada de autobús Bar Internazionale/Chiesa Nuova."
       ]
     },
     {
       "id": "walk-to-hostel",
-      "title": "Camina de vuelta al Hostel Brikette",
+      "title": "Camina al hostel",
       "body": [
-        "Sigue en la misma dirección del autobús durante poco más de 100 metros (330 pies).",
-        "Toma la escalera a la derecha para subir a la entrada principal del Hostel Brikette."
+        "Indicaciones:",
+        "* Continúa en la dirección que toma el autobús del que acabas de bajar durante poco más de 100 m / 330 pies.",
+        "* Toma las escaleras hasta la puerta principal del hostel."
       ]
     }
   ],
   "tipsTitle": "Consejos para el autobús",
   "tips": [
-    "Los horarios impresos solo muestran las paradas de Positano; calcula que Arienzo aparece unos 2–5 minutos antes de Positano Sponda en el regreso.",
-    "En Arienzo no hay punto de venta de billetes. Compra el billete de vuelta en el pueblo o prepárate para caminar hasta Positano Sponda o tomar el barco lanzadera de regreso a Spiaggia Grande.",
-    "Consulta nuestra %LINK:arienzoBeachClub|guía de Arienzo Beach% para conocer servicios, lanzaderas y consejos de planificación.",
-    "Revisa el %LINK:beaches|resumen de playas de Positano% para comparar otras calas y planear futuras visitas."
-  ],
-  "gallery": {
-    "title": "Referencia de la parada en Arienzo",
-    "items": [
-      {
-        "alt": "Señal de parada de autobús SITA azul y blanca en un poste metálico",
-        "caption": "Busca la señal de la parada SITA en el lado interior de la carretera sobre Arienzo."
-      }
-    ]
-  }
+    "Los horarios impresos solo listan las paradas de Positano; espera que Arienzo aparezca alrededor de 2-5 minutos antes de Positano Sponda en el camino de regreso.",
+    "No hay vendedores de billetes cerca de la playa de Arienzo. Compra tu billete de regreso en el pueblo con anticipación, o camina a Sponda para abordar allí, o toma la lanzadera acuática de regreso a la playa principal en Positano.",
+    "Lee nuestra %LINK:arienzoBeachClub|guía de la playa de Arienzo% para conocer las instalaciones, lanzaderas y consejos de planificación.",
+    "Navega por el %LINK:positanoBeaches|resumen de playas% para comparar otras calas y planificar futuras visitas."
+  ]
 }

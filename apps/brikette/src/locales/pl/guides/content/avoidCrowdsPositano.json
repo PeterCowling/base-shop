@@ -1,55 +1,157 @@
 {
   "seo": {
-    "title": "Jak unikać tłumów w Positano (mniej znane miejsca)",
-    "description": "Planowanie czasu, ciche trasy, alternatywne miasteczka i sprytne miejscówki na zdjęcia bez kolejek."
+    "title": "Unikaj tłumów w Positano: przewodnik po czasie, trasach i ukrytych miejscach",
+    "description": "Unikaj tłumów w Positano dzięki mądremu planowaniu czasu, spokojnym trasom i ukrytym miejscom. Najlepsze godziny na plażę, alternatywne miasteczka i wskazówki od hostelu.",
+    "lastUpdated": "2026-01-31"
   },
-  "linkLabel": "Jak unikać tłumów w Positano (mniej znane miejsca)",
+  "linkLabel": "Unikaj tłumów w Positano: przewodnik po czasie, trasach i ukrytych miejscach",
   "intro": [
-    "Unikanie tłumów w Positano to kwestia dobrego planowania, korzystania z mniej uczęszczanych uliczek i wiedzy, kiedy przenieść się do spokojniejszej miejscowości."
+    "Chcesz uniknąć tłumów, które Positano przyciąga w szczycie sezonu? Ten przewodnik pokazuje Ci jak. W szczycie lata (lipiec-sierpień) Positano odwiedza tysiące jednodniowych turystów codziennie – pasażerowie statków wycieczkowych, autobusy turystyczne z Neapolu i Sorrento, przyjazdy promem z Capri i Amalfi. Główne ulice są zatłoczone do połowy poranka. Plaże zapełniają się do 10:00. Popularne miejsca do zdjęć wymagają stania w kolejce. Nauczenie się unikać tłumów w Positano wymaga strategii, ale opłaca się autentycznymi doświadczeniami. Ten przewodnik daje gościom hostelu Brikette praktyczne taktyki, aby doświadczyć miasta w najlepszym wydaniu, unikając przy tym najgorszych mas turystycznych.",
+    "Nocowanie w Hostelu Brikette w Chiesa Nuova daje Ci już przewagę – jesteś powyżej głównej strefy turystycznej. Większość jednodniowych turystów nigdy nie zapuszcza się poza Spiaggia Grande i Via dei Mulini. Z hostelu możesz odkrywać spokojniejsze uliczki, mniej fotografowane punkty widokowe i autentyczne dzielnice, których turyści z wycieczek nie widzą. Te strategie pomogą Ci zmaksymalizować tę przewagę."
   ],
   "sections": [
     {
-      "id": "timing",
-      "title": "Skuteczne planowanie czasu",
+      "id": "understanding-crowd-patterns",
+      "title": "Zrozumienie wzorców tłumów w Positano",
       "body": [
-        "Przybywaj na Spiaggia Grande lub główne punkty widokowe o wschodzie słońca albo podczas złotej godziny; późne lunche (po 14:30) omijają szczytowe obłożenie stolików.",
-        "Zrób przerwę w południe na cień lub sjestę — większość jednodniowych turystów zapełnia uliczki między 10:00 a 16:00."
+        "%IMAGE:positano-crowded-beach.jpg|Zatłoczona Spiaggia Grande podczas popołudnia w szczycie lata%",
+        "Tłumy w Positano podążają za przewidywalnymi wzorcami. Wiedza o tym, kiedy i gdzie tłumy osiągają szczyt, pomaga planować wokół nich. Najbardziej zatłoczone czasy to połowa poranka do późnego popołudnia (10:00–17:00), szczególnie lipiec-sierpień. Jednodniowi turyści przybywają promem (09:00–11:00) i autobusem SITA (09:30–12:00). Koncentrują się wokół Spiaggia Grande, Via dei Mulini (główna ulica handlowa dla pieszych) i Chiesa di Santa Maria Assunta (kościół z charakterystyczną zieloną kopułą). Większość wyjeżdża do 17:00–18:00, aby zdążyć na powrotny transport.",
+        "%IMAGE:tour-bus-positano.jpg|Autobusy turystyczne wysadzające tłumy w Positano w dzień statku wycieczkowego%",
+        "Dni rejsów wycieczkowych dramatycznie wzmacniają tłumy. Kiedy statki wycieczkowe cumują w Neapolu lub Salerno, setki pasażerów zalewa Wybrzeże Amalfitańskie autobusami turystycznymi. Positano może zobaczyć 3–4 autobusy turystyczne przybywające jednocześnie, wysadzające 150+ osób na wąskich ulicach. Te grupy zazwyczaj zostają 2–3 godziny (wystarczająco długo na lunch i zdjęcia), potem wyjeżdżają. Sprawdź harmonogramy statków wycieczkowych online, jeśli chcesz uniknąć najgorszych dni – strony takie jak CruiseMapper pokazują przyjazdy do Neapolu i Salerno.",
+        "Weekendy są bardziej zatłoczone niż dni powszednie przez cały rok. Włoskie rodziny z Neapolu i Rzymu przyjeżdżają na weekendowe wyjazdy na plażę. Piątkowe popołudnia i soboty są najgorsze. Niedziele są nieco lepsze, ponieważ rodziny zaczynają wracać do domu przed południem. Dni powszednie (wtorek–czwartek) mają najlżejsze tłumy, szczególnie poza lipcem–sierpniem.",
+        "Sezon przejściowy (maj, początek czerwca, wrzesień, październik) oferuje najlepszą równowagę – przyjemną pogodę, otwarte firmy, możliwe do opanowania tłumy. Listopad–kwiecień są najspokojniejsze, ale wiele restauracji i sklepów jest zamkniętych, połączenia promowe są ograniczone, a pogoda jest nieprzewidywalna. Dla gości hostelu szukających autentyczności bez chaosu, koniec maja lub wrzesień są idealne."
       ]
     },
     {
-      "id": "routes",
-      "title": "Trasy i spokojniejsze miejsca",
+      "id": "timing-strategies",
+      "title": "Strategie czasowe, aby wyprzedzić tłumy",
       "body": [
-        "Korzystaj z górnego deptaku między Chiesa Nuova a Sponda, aby mieć balkonowe widoki bez zatoru na Via dei Mulini.",
-        "Wybierz plażę Fornillo lub punkt widokowy Via Positanesi d’America, by spokojnie popływać i zrobić zdjęcia."
+        "%IMAGE:positano-sunrise-beach.jpg|Pusta Spiaggia Grande o wschodzie słońca zanim przybędą tłumy%",
+        "**Wczesny poranek (07:00–09:00) to Twoja tajna broń.** Positano budzi się powoli. Większość turystów sypia dłużej lub je spokojne hotelowe śniadania. Jeśli trafisz na Spiaggia Grande o 07:30–08:00, będziesz miał plażę prawie dla siebie. Światło jest miękkie i złociste – idealne do zdjęć bez obcych w kadrze. Pływacy cieszą się spokojną wodą zanim popołudniowe wiatry się podniosą. Kluby plażowe otwierają się około 08:30–09:00; możesz zająć miejsce przed szturmem. Wczesny poranek działa też dla głównych punktów widokowych – taras przy Via Cristoforo Colombo i punkt widokowy w pobliżu Chiesa di Santa Maria Assunta są puste przed 09:00.",
+        "**Późne popołudnie i wieczór (18:00–zachód słońca) odzyskują Positano.** Jednodniowi turyści wyjeżdżają, aby zdążyć na autobusy i promy. Do 18:30 główne ulice wyraźnie się oczyszczają. Restauracje przygotowują się do kolacji. Miasto zmienia się ze spektaklu turystycznego w lokalne życie. To jest najlepszy czas na spacer po Via dei Mulini bez przepychania się przez grupy zakupowe. Widoki zachodu słońca z Fornillo Beach lub górnych tarasów w pobliżu Chiesa Nuova są oszałamiające i niezatłoczone. Rezerwacje na kolację na 20:00–21:00 (standardowy włoski czas kolacji) pozwalają cieszyć się posiłkami bez pośpiechu przy obracaniu stołów.",
+        "%IMAGE:hostel-terrace-siesta.jpg|Spokojny taras hostelu podczas popołudniowego odpoczynku od tłumów%",
+        "**Strategia popołudniowego odpoczynku.** Między 11:00–15:00 tłumy osiągają szczyt. Zamiast walczyć o miejsce na plaży lub nawigować zatłoczonymi uliczkami, wycofaj się. Wróć do hostelu na sjestę, czytaj na tarasie, ugotuj lunch we wspólnej kuchni lub wędruj mniej zatłoczonymi szlakami (%LINK:pathOfTheGods|Ścieżka Bogów% z Nocelle jest spokojniejsza w południe niż plaże). Wielu gości hostelu przyjmuje śródziemnomorski rytm – aktywność wczesnym rankiem, popołudniowy odpoczynek, późnopopołudniowa/wieczorna eksploracja. To unika najgorszych tłumów i pasuje do lokalnego tempa.",
+        "**Planowanie poza sezonem (maj, wrzesień, październik).** Jeśli masz elastyczny harmonogram, odwiedzenie Positano w sezonie przejściowym całkowicie zmienia doświadczenie. Maj oferuje ciepłą pogodę (20–25°C), kwitnące kwiaty, otwarte firmy i połowę tłumów lipca. Wrzesień przynosi spokojniejsze morza, utrzymujące się letnie ciepło i postwakacyjną pogodę ducha. Październik grozi większą ilością deszczu, ale dostarcza oszałamiającego światła i niemal pustych plaż. Hostel pozostaje otwarty przez cały rok; możesz cieszyć się Positano w jego najbardziej autentycznej formie poza szczytem lata."
       ]
     },
     {
-      "id": "alternatives",
-      "title": "Alternatywne bazy",
+      "id": "quiet-routes-positano",
+      "title": "Spokojne trasy i ukryte miejsca w Positano",
       "body": [
-        "Praiano i Cetara zapewniają spokojniejsze wieczory, łatwe punkty na zachód słońca i tańsze posiłki bez utraty widoków na wybrzeże.",
-        "Ogrody Ravello lub górskie wsie Agerola to dobre kierunki na jednodniową ucieczkę, gdy Positano jest przepełnione."
+        "%IMAGE:positano-upper-path.jpg|Spokojna ścieżka spacerowa w Chiesa Nuova powyżej obszarów turystycznych%",
+        "Pionowy układ Positano tworzy naturalne przegrody dla tłumów. Większość turystów trzyma się obszarów na poziomie morza – Spiaggia Grande, Via dei Mulini, przystań promowa. Wspinanie się po schodach odsiewa przypadkowych odwiedzających. Im wyżej się wejdzie, tym spokojniej się robi. Hostel Brikette znajduje się w Chiesa Nuova, górnym mieście, gdzie życie mieszkańców toczy się w dużej mierze niezakłócone turystyką. Odkrywanie uliczek Chiesa Nuova, małych kościołów i lokalnych sklepów spożywczych daje Ci autentyczne Positano, którego turyści z wycieczek nigdy nie widzą.",
+        "**Górne przejścia między Chiesa Nuova a Sponda.** Zamiast schodzić bezpośrednio na Via dei Mulini (zatłoczoną główną ulicę), weź górne ścieżki biegnące równolegle. Via Pasitea ma odcinki z oszałamiającymi widokami, ale o wiele mniej pieszych. Ścieżka łącząca Chiesa Nuova ze Sponda (wschodnia dzielnica mieszkalna) oferuje balkonowe widoki na wybrzeże bez wąskiego gardła Via dei Mulini. Te trasy są mniej bezpośrednie, ale wykładniczo bardziej spokojne. Poproś personel hostelu, aby zaznaczył je na mapie – znają skróty, których używają lokalni.",
+        "**Fornillo Beach zamiast Spiaggia Grande.** %LINK:fornilloBeachGuide|Fornillo Beach% znajduje się 10 minut spacerem na zachód od Spiaggia Grande, za małym cyplem. Przyciąga może 30% tłumów Spiaggia Grande. Plaża jest mniejsza, ale czystsza, spokojniejsza i bardziej zrelaksowana. Ceny lido są nieco niższe. Jakość wody jest identyczna. Średniowieczna wieża strażnicza kotwi zachodni koniec, zapewniając malowniczy punkt orientacyjny. Spacer ze Spiaggia Grande do Fornillo podąża malowniczą nadmorską ścieżką – wspaniałą na spacery o zachodzie słońca, gdy główna plaża pustoszeje w kierunku czasu kolacji.",
+        "%IMAGE:via-positanesi-america-viewpoint.jpg|Niezatłoczony punkt widokowy z panoramicznym widokiem na Positano%",
+        "**Punkt widokowy Via Positanesi d'America.** Ten wzniesiony punkt widokowy nad Fornillo Beach oferuje jeden z najlepszych kątów fotograficznych Positano – pełną panoramę wybrzeża, wyspy Li Galli w oddali, pionowe miasto kaskadujące w dół klifu. To 5–7 minut wspinaczki z Fornillo Beach. Większość turystów nigdy nie robi tego wysiłku. Często będziesz miał punkt widokowy dla siebie, szczególnie wczesnym rankiem lub późnym popołudniem. Światło jest najlepsze do zdjęć około 17:00–18:30, kiedy słońce pada pod kątem przez zatokę.",
+        "**Uliczki mieszkalne w pobliżu Chiesa di Santa Maria Assunta.** Kościół z zieloną kopułą przyciąga tłumy na zdjęcia, ale uliczki mieszkalne bezpośrednio pod górę (za kościołem) są niemal wyludnione. Schody przyozdobione bugenwillą, wiszące pranie, małe kapliczki i miejscowi mieszkańcy prowadzący codzienne życie – to autentyczne Positano. Chodź z szacunkiem (to prawdziwa dzielnica, a nie park rozrywki), mów cicho, a doświadczysz miasta tak, jak znają je lokalsi."
+      ]
+    },
+    {
+      "id": "beach-strategies",
+      "title": "Strategie plażowe, aby uniknąć tłumów",
+      "body": [
+        "%IMAGE:fornillo-beach-quiet.jpg|Spokojniejsza Fornillo Beach z mniejszymi tłumami niż główna plaża%",
+        "Plaże Positano są małe i szybko się zapełniają. Jeśli chcesz czasu na plaży bez warunków puszki sardynek, zastosuj te strategie. **Przyjedź przed 08:30.** Poważni plażowicze to wiedzą. Lido zaczynają ustawiać leżaki około 08:00–08:30. Jeśli przyjedziesz wtedy, możesz wybrać najlepsze miejsca – pierwszy rząd, dobry cień, blisko wody. Do 10:00 lido wyprzedają się, a wolne sekcje są zatłoczone. Wysiłek wczesnego przyjazdu opłaca się 3–4 godzinami przyjemnego czasu na plaży zanim tłumy osiągną szczyt.",
+        "**Wybierz Fornillo zamiast Spiaggia Grande.** Wspomnieliśmy o tym wcześniej, ale warto powtórzyć. Fornillo Beach jest obiektywnie mniej zatłoczona. Spacer ze Spiaggia Grande trwa 10 minut malowniczą nadmorską ścieżką. Kompromis to mniej opcji restauracyjnych (Fornillo ma 2–3 kluby plażowe vs 8–10 Spiaggia Grande), ale korzyść to przestrzeń do oddychania. Jeśli cenisz spokój ponad wygodę, Fornillo wygrywa za każdym razem.",
+        "**Dni plażowe w środku tygodnia.** Plaże są zauważalnie spokojniejsze wtorek–czwartek w porównaniu do piątek–niedziela. Włoskie rodziny dominują weekendy. W środku tygodnia jesteś głównie wśród międzynarodowych turystów i garstki lokalnych. Ceny lido czasami spadają nieco w dni powszednie (25–30 € za dwa krzesła i parasol vs 35–40 € weekendy). Wolne sekcje plaży są łatwiejsze do nawigacji w środku tygodnia.",
+        "**Unikaj całkowicie %LINK:ferragostoPositano|Ferragosto% (15 sierpnia).** Największe włoskie wakacje letnie przynoszą absolutny chaos do Positano. Plaże osiągają niebezpieczne poziomy zatłoczenia. Każdy metr kwadratowy jest zajęty. Jeśli jesteś w Positano na Ferragosto, albo przyjmij atmosferę imprezy (fajerwerki o północy, muzyka plażowa przez cały dzień), albo wyjedź z miasta na dzień. Wędrówka %LINK:pathOfTheGods|Ścieżką Bogów% lub odwiedzenie spokojniejszych miast jak Ravello to dobre opcje ucieczki.",
+        "**Późnopopołudniowe sesje plażowe (17:00–19:30).** Większość plażowiczów wyjeżdża do 17:00, aby wziąć prysznic i przygotować się do kolacji. Ale plaża pozostaje otwarta do zachodu słońca (mniej więcej 19:30–20:30 w zależności od sezonu). Późnopopołudniowa kąpiel po wyjeździe jednodniowych turystów jest błoga – spokojna woda, złociste światło, pusty piasek. Przynieś ręcznik i ciesz się plażą w jej najbardziej spokojnej formie. Temperatura wody pozostaje ciepła wieczorem latem."
+      ]
+    },
+    {
+      "id": "alternative-towns",
+      "title": "Alternatywne miasta dla spokojniejszych doświadczeń",
+      "body": [
+        "%IMAGE:praiano-quiet-evening.jpg|Spokojny wieczór w Praiano z mniejszą liczbą turystów niż Positano%",
+        "Czasami najlepszym sposobem na uniknięcie tłumów Positano jest opuszczenie Positano. Kilka pobliskich miast oferuje podobne nadmorskie piękno z 10–20% gęstości turystów. Możesz pozostać w Hostelu Brikette i robić jednodniowe wycieczki lub planować pobyty na noc, jeśli chcesz dłuższych ucieczek. Wszystkie są dostępne autobusem SITA lub promem.",
+        "**Praiano (10 minut na wschód autobusem).** Praiano leży między Positano a Amalfi. Ma oszałamiające widoki zachodu słońca, spokojniejszą plażę (Marina di Praia), tańsze restauracje i bardziej lokalny klimat. Rodzinne trattorie serwują doskonałe owoce morza w połowie cen Positano. Praiano brakuje pionowego dramatu Positano, ale kompensuje autentycznością i spokojem. To świetna baza dla gości, którzy chcą piękna Wybrzeża Amalfitańskiego bez nasycenia turystycznego Positano. %LINK:chiesaNuovaArrivals|Autobusy SITA% kursują co 20–30 minut między Positano a Praiano.",
+        "%IMAGE:ravello-gardens-terrace.jpg|Spokojne wzgórza ogrodów w Ravello z widokami na wybrzeże%",
+        "**Ravello (30 minut autobusem przez Amalfi).** Ravello leży wysoko w górach nad Amalfi. Jest słynne z ogrodów na wzgórzu (Villa Rufolo, Villa Cimbrone), koncertów muzyki klasycznej i panoramicznych widoków na wybrzeże. Miasto jest małe, eleganckie i spokojne. Tłumy są możliwe do opanowania nawet w szczycie sezonu, ponieważ Ravello wymaga wysiłku, aby dotrzeć – większość jednodniowych turystów pomija je. Spędź poranek odkrywając ogrody i punkty widokowe, zjedz lunch z widokiem na zatokę, potem wróć do Positano odświeżony. Przejazd autobusem przez %LINK:amalfiPositanoBus|Amalfi% zajmuje 45–50 minut łącznie (Positano do Amalfi 25 minut, Amalfi do Ravello 20 minut).",
+        "**Furore i Agerola (20–30 minut autobusem).** Te górskie wioski leżą nad Wybrzeżem Amalfitańskim. Furore jest słynne ze swojego fiordu (wąska zatoczka z małą plażą) i pomalowanych domów przyczepionych do klifów. Agerola to punkt wyjścia do wędrówki %LINK:pathOfTheGods|Ścieżką Bogów%. Oba oferują górskie powietrze, tradycyjne restauracje, niższe ceny i niemal zerową turystykę międzynarodową. Stanowią dobre jednodniowe wycieczki, gdy Positano wydaje się przytłaczające. Agerola w szczególności ma kilka prowadzonych przez rodziny agriturismi (restauracji wiejskich) serwujących proste, pyszne górskie jedzenie – grillowane mięsa, świeży mozzarella, lokalne wino – w budżetowych cenach.",
+        "**Minori i Maiori (35–40 minut autobusem).** Te miasta na wschód od Amalfi mają prawdziwe piaszczyste plaże (rzadkie na Wybrzeżu Amalfitańskim, gdzie większość plaż jest kamienista lub żwirowa). Lokalni preferują je na rodzinne dni plażowe, ponieważ są tańsze i mniej zatłoczone niż Positano. Klimat jest bardziej robotniczy włoski niż luksusowy turystyczny. Jeśli chcesz doświadczyć, jak zwykli Włosi cieszą się wybrzeżem, Minori i Maiori dostarczą. Oba mają dobre restauracje, lodziarnie i nadmorskie promenady. Autobusy kursują regularnie; promy również zatrzymują się w Maiori latem."
+      ]
+    },
+    {
+      "id": "shopping-dining-timing",
+      "title": "Wskazówki dotyczące zakupów i jedzenia, aby uniknąć tłumów",
+      "body": [
+        "%IMAGE:positano-via-mulini-crowded.jpg|Zatłoczona ulica handlowa Via dei Mulini w godzinach szczytu%",
+        "**Rób zakupy wcześnie (08:30–10:00) lub późno (18:00–20:00).** Via dei Mulini staje się ludzkim korkiem od 11:00–17:00. Jeśli chcesz przeglądać butiki Positano, sklepy z ceramiką lub szewców bez bycia miażdżonym, idź wczesnym rankiem lub wieczorem. Sklepy otwierają się około 09:00 i pozostają otwarte do 20:00–21:00 latem. Wczesny poranek pozwala porozmawiać z właścicielami sklepów zanim zostaną przytłoczeni. Wieczorne zakupy są przyjemne – chłodniejsze temperatury, miększe światło, przestrzeń do poruszania się.",
+        "Sklepy z ceramiką są szczególnie warte odwiedzenia wcześnie lub późno. Rzemieślnicy często pracują rano zanim przybędą tłumy. Jeśli zrobisz zakupy o 09:00, możesz obserwować ich malowanie wzorów na kafelkach lub talerzach – bardziej osobiste doświadczenie niż przepychanie się przez popołudniowe tłumy. Wieczorne zakupy po 18:30 pozwalają przeglądać bez poczucia pośpiechu. Właściciele sklepów są bardziej zrelaksowani, chętni do wyjaśnienia technik i historii rodzinnej. Możesz negocjować lepsze ceny, gdy sklepy nie są przytłoczone.",
+        "**Zarezerwuj kolację na 20:00 lub później.** Włosi jedzą późno (21:00 to standard). Turyści jedzą wcześniej (18:30–19:30). Jeśli zarezerwujesz kolację na 20:00 lub 21:00, będziesz jadł obok lokalnych, a nie grup turystycznych. Obsługa jest bardziej zrelaksowana. Restauracje nie pędzą Cię przez dania. Atmosfera zmienia się z transakcyjnej na gościnną. Personel hostelu może polecić restauracje, które witają późnych gości i gdzie rezerwacje gwarantują dobre stoliki.",
+        "%IMAGE:positano-restaurant-evening.jpg|Spokojna wieczorna kolacja w restauracji w Positano%",
+        "Z doświadczeń gości hostelu różnica między rezerwacjami na kolację o 19:00 i 21:00 jest dramatyczna. Wczesne jedzenie wydaje się jak taśma produkcyjna – personel szybko sprząta stoły, aby obrócić je na drugie posiedzenia. Późne jedzenie wydaje się jak prawdziwy posiłek – dania przybywają w cywilizowanym tempie, kelnerzy rozmawiają między dostawami, jesteś zachęcany do zatrzymania się przy kawie i deserze. Jakość jedzenia jest identyczna, ale doświadczenie zmienia się całkowicie w zależności od czasu.",
+        "**Unikaj lunchu 12:30–14:00 jeśli to możliwe.** To szczytowa godzina lunchu dla jednodniowych turystów. Restauracje w pobliżu plaży są zalane. Kolejki formują się przy punktach z pizzą na wynos. Jeśli chcesz lunch na mieście, jedz wcześnie (11:30) lub późno (14:30+). Alternatywnie spakuj lunch piknikowy – kup chleb, ser, salami, pomidory i owoce z lokalnego sklepu spożywczego – i jedz w spokojnym miejscu na plaży lub tarasie. Kuchnia hostelu ma podstawy, jeśli chcesz przygotować tam jedzenie.",
+        "**Lokalne sklepy spożywcze vs sklepy turystyczne.** Positano ma małe alimentari (sklepy spożywcze) rozsiane po dzielnicach mieszkalnych. Są one zaopatrzone w te same produkty co sklepy zorientowane na turystów, ale pobierają lokalne ceny i mają zerowe tłumy. Zapytaj personel hostelu, gdzie robią zakupy lokalni. Zaoszczędzisz pieniądze i unikniesz cyrku handlowego Via dei Mulini. Chiesa Nuova (gdzie jest hostel) ma dwa małe sklepy spożywcze odwiedzane całkowicie przez lokalnych – możesz kupić świeży mozzarella, dojrzałe pomidory, lokalne wino i chrupiący chleb za ułamek cen obszarów turystycznych. Te sklepy zamykają się na sjestę (13:30–16:30) i w niedzielne popołudnia, więc planuj odpowiednio."
+      ]
+    },
+    {
+      "id": "transport-timing",
+      "title": "Wskazówki dotyczące transportu, aby uniknąć zatłoczonych autobusów i promów",
+      "body": [
+        "%IMAGE:sita-bus-crowded-positano.jpg|Zatłoczony autobus SITA w godzinach szczytu na Wybrzeżu Amalfitańskim%",
+        "**Planowanie autobusów SITA.** Autobusy szybko się zapełniają latem. Najgorsze czasy to poranne przyjazdy do Positano (09:00–11:00) i wieczorne odjazdy (17:00–19:00). Jeśli musisz złapać autobus, przyjedź na przystanek 15–20 minut wcześniej, aby zapewnić sobie miejsce. Alternatywnie podróżuj poza godzinami szczytu – przed 08:30 lub po 19:30. Wczesnoporanne autobusy rzadko są pełne. Późnowieczorne autobusy (ostatnie kursy około 22:00–23:00) również mają miejsce. Szczegółowe harmonogramy autobusów i wskazówki znajdują się w %LINK:chiesaNuovaArrivals|przyjeżdżanie do Chiesa Nuova autobusem%.",
+        "**Planowanie promów.** Promy są wygodniejsze niż autobusy, ale również się zapełniają. Najbardziej zatłoczone czasy promów to poranne odjazdy (09:00–11:00) i późnopopołudniowe powroty (16:00–18:00). Jeśli jedziesz %LINK:capriPositanoFerry|promem na Capri% lub %LINK:amalfiPositanoFerry|promem do Amalfi%, zarezerwuj bilety z wyprzedzeniem lub przyjedź 30 minut przed odjazdem. Wczesnoporanne promy (pierwsze kursy około 08:00) i późnopopołudniowe promy (po 18:00) mają więcej dostępności i spokojniejsze morza.",
+        "**Idź pieszo, gdy to możliwe.** Positano jest małe. Spacer z plaży do Chiesa Nuova (gdzie jest hostel) zajmuje 15–20 minut schodami. Tak, to wspinaczka, ale unikasz zatłoczonych autobusów, oszczędzasz 1,30 € na podróż i doświadczasz miasta pionowo – różne widoki co sto kroków. Dla gości o dobrej sprawności ruchowej, spacer pokonuje czekanie na autobusy. Usługi bagażowe mogą przewieźć bagaż, jeśli masz ciężkie torby."
       ]
     }
   ],
+  "tipsTitle": "Szybkie wskazówki unikania tłumów",
+  "tips": [
+    "Traf na Spiaggia Grande przed 08:30 na puste plaże i świetne światło do zdjęć.",
+    "Wybierz %LINK:fornilloBeachGuide|Fornillo Beach% zamiast Spiaggia Grande – 10 minut dalej, ale 50% mniej tłumów.",
+    "Unikaj Positano w dni rejsów wycieczkowych – sprawdź CruiseMapper dla harmonogramów Neapolu/Salerno.",
+    "Rób zakupy na Via dei Mulini wcześnie (przed 10:00) lub późno (po 18:00), aby uniknąć ludzkiego korka.",
+    "Zarezerwuj kolację na 20:00 lub później, aby jeść z lokalnymi zamiast grup turystycznych.",
+    "Odkrywaj górne uliczki Chiesa Nuova i dzielnice mieszkalne – autentyczne i niezatłoczone.",
+    "Weź późnopopołudniowe sesje plażowe (17:00–19:30) po wyjeździe jednodniowych turystów.",
+    "Odwiedź w sezonie przejściowym (maj, wrzesień, październik) dla połowy tłumów i pełnego nadmorskiego piękna.",
+    "Jedź na jednodniową wycieczkę do Praiano, Ravello lub Agerola, gdy Positano wydaje się przytłaczające.",
+    "Idź pieszo zamiast brać autobusy, gdy to możliwe – oszczędza pieniądze i unika zatłoczonego transportu."
+  ],
+  "faqsTitle": "FAQ",
   "faqs": [
     {
-      "q": "Kiedy Spiaggia Grande jest spokojna?",
+      "q": "Kiedy Positano jest najmniej zatłoczone?",
       "a": [
-        "Przed 9:00 lub po 18:30 znajdziesz wolne miejsce i łagodniejsze światło do zdjęć — zabierz ręcznik i przyjdź wcześniej."
+        "Wczesny poranek (07:00–09:00) i późne popołudnie (18:00–zachód słońca) to najspokojniejsze czasy codziennie. Pod względem sezonowego planowania, maj, wrzesień i październik mają możliwe do opanowania tłumy z dobrą pogodą. Listopad–kwiecień są bardzo spokojne, ale wiele firm zamyka się, a pogoda jest nieprzewidywalna. Dni powszednie (wtorek–czwartek) są spokojniejsze niż weekendy przez cały rok."
       ]
     },
     {
-      "q": "Gdzie zrobić zdjęcia bez tłumów?",
+      "q": "Czy Fornillo Beach jest mniej zatłoczona niż Spiaggia Grande?",
       "a": [
-        "Wejdź Via Cristoforo Colombo na tarasy widokowe lub pojedź autobusem do Nocelle po panoramę Ścieżki Bogów."
+        "Tak – znacznie. Fornillo Beach przyciąga mniej więcej 30% tłumów Spiaggia Grande. To 10 minut spacerem na zachód od głównej plaży malowniczą nadmorską ścieżką. Plaża jest mniejsza, ale czystsza i bardziej spokojna. Ceny lido są nieco niższe. Jakość wody jest identyczna. Jeśli cenisz spokój ponad wygodę, Fornillo wygrywa za każdym razem."
       ]
     },
     {
-      "q": "Czy warto nocować poza Positano dla spokoju?",
+      "q": "Czy powinienem unikać Positano w sierpniu?",
       "a": [
-        "Tak, jeśli wolisz spokojniejsze wieczory — Praiano, Minori lub Agerola oferują niższe ceny, a do Positano dojedziesz w ciągu dnia autobusem albo promem."
+        "Sierpień to najbardziej zatłoczony miesiąc, szczególnie w okolicach %LINK:ferragostoPositano|Ferragosto% (15 sierpnia). Jeśli nie lubisz tłumów, sierpień jest wyzwaniem. Jednak jeśli zastosujesz strategie z tego przewodnika – wczesne poranki, późne popołudnia, spokojniejsze plaże, transport poza szczytem – nadal możesz mieć dobre doświadczenia. Sezon przejściowy (maj, wrzesień) oferuje lepszą równowagę między pogodą a tłumami."
+      ]
+    },
+    {
+      "q": "Gdzie mogę robić zdjęcia bez tłumów?",
+      "a": [
+        "Punkt widokowy Via Positanesi d'America (nad Fornillo Beach), górne przejścia między Chiesa Nuova a Sponda i uliczki mieszkalne za Chiesa di Santa Maria Assunta oferują oszałamiające widoki z minimalnymi tłumami. Wczesny poranek (przed 09:00) w głównych punktach widokowych również działa – większość turystów nadal śpi lub je śniadanie."
+      ]
+    },
+    {
+      "q": "Jakie są dobre jednodniowe wycieczki, aby uciec od tłumów Positano?",
+      "a": [
+        "Praiano (10 minut autobusem) oferuje spokojne plaże i tańsze restauracje. Ravello (45 minut przez Amalfi) ma ogrody na wzgórzu i górskie widoki z możliwymi do opanowania tłumami. Furore i Agerola (20–30 minut) to górskie wioski z niemal zerową turystyką. Minori i Maiori (35–40 minut) mają piaszczyste plaże preferowane przez lokalne rodziny. Wszystkie są dostępne %LINK:chiesaNuovaArrivals|autobusem SITA%."
+      ]
+    },
+    {
+      "q": "Czy pobyt w Chiesa Nuova pomaga uniknąć tłumów?",
+      "a": [
+        "Tak. Chiesa Nuova (górne miasto, gdzie znajduje się Hostel Brikette) leży powyżej głównej strefy turystycznej. Większość jednodniowych turystów nigdy nie zapuszcza się poza Spiaggia Grande i Via dei Mulini. Z hostelu możesz odkrywać spokojne uliczki mieszkalne, lokalne sklepy spożywcze i autentyczne dzielnice, których turyści z wycieczek nie widzą. Schodzisz na plażę, kiedy chcesz, potem wycofujesz się pod górę do ciszy i spokoju."
+      ]
+    },
+    {
+      "q": "O której godzinie powinienem złapać autobus, aby uniknąć tłumów?",
+      "a": [
+        "Autobusy zapełniają się najszybciej podczas porannych przyjazdów (09:00–11:00) i wieczornych odjazdów (17:00–19:00). Podróżuj przed 08:30 lub po 19:30 dla najlepszej szansy na dostępne miejsca. Przyjedź na przystanek autobusowy 15–20 minut wcześniej, jeśli musisz podróżować w godzinach szczytu. Zobacz %LINK:chiesaNuovaArrivals|przyjeżdżanie do Chiesa Nuova autobusem% dla szczegółowych harmonogramów."
       ]
     }
   ]

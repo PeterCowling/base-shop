@@ -1,14 +1,14 @@
+import { getVariantById } from "@/lib/catalog";
 import type { CartItem, CartLineItem, CartState, CartTotals } from "@/types/cart";
-import type { CurrencyCode } from "@/types/product";
-import { getProducts, getVariantById } from "@/lib/catalog";
+import type { CurrencyCode, Product } from "@/types/product";
 
-export function getCartTotals(state: CartState): CartTotals {
+export function getCartTotals(state: CartState, products: Product[]): CartTotals {
   let itemCount = 0;
   let subtotal = 0;
   let currency: CurrencyCode = "USD";
 
   for (const item of state.items) {
-    const variant = getVariantById(item.variantId);
+    const variant = getVariantById(products, item.variantId);
     if (!variant) continue;
     itemCount += item.quantity;
     subtotal += item.quantity * variant.price;
@@ -18,8 +18,7 @@ export function getCartTotals(state: CartState): CartTotals {
   return { itemCount, subtotal, currency };
 }
 
-export function getCartLineItems(items: CartItem[]): CartLineItem[] {
-  const products = getProducts();
+export function getCartLineItems(items: CartItem[], products: Product[]): CartLineItem[] {
   const variantIndex = new Map<string, { product: CartLineItem["product"]; variant: CartLineItem["variant"] }>();
 
   for (const product of products) {

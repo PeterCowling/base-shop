@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 export declare const coverageCodeSchema: z.ZodEnum<["scuff", "tear", "lost"]>;
 export declare const coverageRuleSchema: z.ZodObject<{
     fee: z.ZodNumber;
@@ -23,3 +24,4 @@ export declare const coverageSchema: z.ZodRecord<z.ZodEnum<["scuff", "tear", "lo
 export type CoverageCode = z.infer<typeof coverageCodeSchema>;
 export type CoverageRule = z.infer<typeof coverageRuleSchema>;
 export type CoverageMatrix = z.infer<typeof coverageSchema>;
+//# sourceMappingURL=Coverage.d.ts.map

@@ -1,8 +1,8 @@
 import {
+  type HistoryState,
   historyStateSchema,
   pageComponentSchema,
   pageSchema,
-  type HistoryState,
 } from "..";
 
 describe("Page and History schemas", () => {

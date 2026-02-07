@@ -1,5 +1,12 @@
 "use client";
 
+import { type ChangeEvent,useCallback, useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+
+import { type Provider,providersByType } from "@acme/configurator/providers";
+import { Cluster,Inline } from "@acme/design-system/primitives";
+import { useTranslations } from "@acme/i18n";
+
 import {
   Button,
   Input,
@@ -9,14 +16,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/atoms/shadcn";
-import { useCallback, useEffect, useState, type ChangeEvent } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import type { ConfiguratorStepProps } from "@/types/configurator";
+
 import { useConfigurator } from "../ConfiguratorContext";
 import useStepCompletion from "../hooks/useStepCompletion";
-import { providersByType, type Provider } from "@acme/configurator/providers";
-import type { ConfiguratorStepProps } from "@/types/configurator";
-import { Inline, Cluster } from "@ui/components/atoms/primitives";
-import { useTranslations } from "@acme/i18n";
 
 export default function StepOptions(_: ConfiguratorStepProps): React.JSX.Element {
   const t = useTranslations();

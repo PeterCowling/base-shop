@@ -1,9 +1,10 @@
 import { GET } from "../../src/api/cart/route";
+
 import {
   createCartWithItem,
   createRequest,
-  encodeCartCookie,
   decodeCartCookie,
+  encodeCartCookie,
 } from "./helpers";
 
 afterEach(() => {

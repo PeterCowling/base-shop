@@ -1,8 +1,10 @@
 "use client";
 
 import React from "react";
+
+import type { HistoryState,PageComponent } from "@acme/types";
+
 import LayersPanel from "./LayersPanel";
-import type { PageComponent, HistoryState } from "@acme/types";
 import type { Action } from "./state";
 
 interface Props {
@@ -21,7 +23,7 @@ interface Props {
 const LayersSidebar = ({ width, onWidthChange, components, selectedIds, onSelectIds, dispatch, editor, viewport, crossNotices = true }: Props) => (
   <>
     {/* i18n-exempt -- test selector attribute */}
-    {/* eslint-disable-next-line react/forbid-dom-props, ds/no-hardcoded-copy -- PB-123 dynamic width for resizable sidebar; test selector attribute */}
+    {/* eslint-disable-next-line react/forbid-dom-props -- PB-123 dynamic width for resizable sidebar; test selector attribute */}
     <aside className="shrink-0" style={{ width }} data-cy="pb-layers-left">
       <div className="p-2">
         <LayersPanel
@@ -38,7 +40,7 @@ const LayersSidebar = ({ width, onWidthChange, components, selectedIds, onSelect
     <div
       role="separator"
       // i18n-exempt — editor-only control
-      // eslint-disable-next-line ds/no-hardcoded-copy -- PB-123 editor-only control
+       
       aria-label={(s => s)("Resize layers")}
       className="w-1 shrink-0 cursor-col-resize select-none bg-border/50 hover:bg-border"
       onPointerDown={(e) => {

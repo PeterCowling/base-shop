@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
 import { fn } from "storybook/test";
+
 import PublishLocationSelector from "./PublishLocationSelector";
 
 const meta: Meta<typeof PublishLocationSelector> = {

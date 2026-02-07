@@ -27,7 +27,16 @@
       "points": [
         "Køb billetter online på forhånd i højsæsonen eller i operatørernes boder ved molen.",
         "Ankom 15–20 minutter før afgang for at bytte vouchers og stille dig i kø til ombordstigning.",
-        "Hav billet eller QR-kode klar til kontrol fra personalet."
+        "Tag et screenshot af din QR-kode — signalet kan være ujævnt ved stranden og molen.",
+        "Hvis du rejser med stor bagage, så spørg personalet om bagageregler og hvor du kan opbevare tasker ombord."
+      ]
+    },
+    "gettingToPier": {
+      "title": "Sådan kommer du til molen fra Hostel Brikette",
+      "intro": "Hvis du starter fra hostellet, brug <dockWalk>vores trin-for-trin-guide til færgemolen</dockWalk> for at nå Spiaggia Grande uden at gætte.",
+      "points": [
+        "Afsæt ekstra tid til trapper, varme og langsom fodgængertrafik i byen.",
+        "Tag vand med og opbevar nødvendigheder (pas/pung/telefon) i en let tilgængelig lomme til tjek ved ombordstigning."
       ]
     },
     "positanoPier": {
@@ -44,6 +53,15 @@
         "Bådene anløber Amalfis moler ved Piazza Flavio Gioia.",
         "Den historiske bymidte og promenaden ligger lige ved havnen.",
         "For videre busser (fx Ravello eller Sorrento) følger du skiltene til SITA-stoppet nær vandet."
+      ]
+    },
+    "planB": {
+      "title": "Hvis færgen aflyses (alternativ plan der virker)",
+      "intro": "På blæsende dage kan havet stoppe bådene. Gå ikke i panik — skift til <bus>Positano → Amalfi-bussen</bus>, og læs <cancellations>vores guide til færgeaflysninger</cancellations> for timing og fejlfinding.",
+      "points": [
+        "Hvis du allerede er på stranden, gå tilbage til hovedvejen og tag den næste ledige bus eller taxa.",
+        "Afsæt ekstra tid: busserne kan ankomme fulde i højsæsonen, og forsinkelser er normale.",
+        "Hvis du rejser sent, bekræft tidligt den sidste mulige afgang (færge eller bus), så du ikke strander."
       ]
     }
   },

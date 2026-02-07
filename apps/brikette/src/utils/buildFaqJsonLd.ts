@@ -1,6 +1,8 @@
 // src/utils/buildFaqJsonLd.ts
 // Utilities for building FAQPage JSON-LD payloads from translation content.
 
+import { stripGuideMarkup } from "@/routes/guides/utils/linkTokens";
+
 import { ensureArray, ensureStringArray } from "./i18nContent";
 
 export type RawFaqEntry = {
@@ -13,6 +15,21 @@ export type RawFaqEntry = {
 export type NormalizedFaqEntry = {
   question: string;
   answer: string[];
+};
+
+export type FaqJsonLd = {
+  "@context": "https://schema.org";
+  "@type": "FAQPage";
+  inLanguage: string;
+  url: string;
+  mainEntity: Array<{
+    "@type": "Question";
+    name: string;
+    acceptedAnswer: {
+      "@type": "Answer";
+      text: string;
+    };
+  }>;
 };
 
 export function normalizeFaqEntries(raw: unknown): NormalizedFaqEntry[] {
@@ -40,19 +57,33 @@ export function faqEntriesToJsonLd(
   lang: string,
   url: string,
   entries: NormalizedFaqEntry[]
-): string {
+): FaqJsonLd | null {
   // Emit nothing when there are no entries to avoid empty FAQPage payloads.
   // Consumers use an empty string as a signal to skip injecting a <script> tag.
   const safeEntries = Array.isArray(entries) ? entries : [];
   if (safeEntries.length === 0) {
-    return "";
+    return null;
   }
-  return JSON.stringify({
+
+  const sanitized = safeEntries
+    .map((entry) => {
+      const question = stripGuideMarkup(entry.question).trim();
+      const answer = entry.answer
+        .map((value) => stripGuideMarkup(value).trim())
+        .filter((value) => value.length > 0);
+      if (question.length === 0 || answer.length === 0) return null;
+      return { question, answer };
+    })
+    .filter((value): value is { question: string; answer: string[] } => value !== null);
+
+  if (sanitized.length === 0) return null;
+
+  return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     inLanguage: lang,
     url,
-    mainEntity: safeEntries.map(({ question, answer }) => ({
+    mainEntity: sanitized.map(({ question, answer }) => ({
       "@type": "Question",
       name: question,
       acceptedAnswer: {
@@ -60,9 +91,9 @@ export function faqEntriesToJsonLd(
         text: answer.join("\n\n"),
       },
     })),
-  });
+  };
 }
 
-export function buildFaqJsonLd(lang: string, url: string, raw: unknown): string {
+export function buildFaqJsonLd(lang: string, url: string, raw: unknown): FaqJsonLd | null {
   return faqEntriesToJsonLd(lang, url, normalizeFaqEntries(raw));
 }

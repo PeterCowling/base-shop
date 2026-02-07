@@ -1,9 +1,10 @@
 import { NextRequest } from "next/server";
 import { __setMockSession } from "next-auth";
+
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 
 const getPages = jest.fn();
-jest.mock("@platform-core/repositories/pages/index.server", () => ({ getPages }));
+jest.mock("@acme/platform-core/repositories/pages/index.server", () => ({ getPages }));
 
 let GET: typeof import("../route").GET;
 

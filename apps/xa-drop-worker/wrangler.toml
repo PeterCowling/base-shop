@@ -1,0 +1,20 @@
+name = "xa-drop-worker"
+main = "src/index.ts"
+compatibility_date = "2025-12-26"
+
+[vars]
+# Shared secret used to validate signed upload links. Generate a unique value
+# per environment (>= 32 chars).
+UPLOAD_TOKEN_SECRET = "dev-xa-drop-upload-secret-32-chars-long!!"
+
+# R2 object key prefix for incoming submissions.
+R2_PREFIX = "submissions/"
+
+# Maximum accepted upload size in bytes (default 250MB).
+MAX_BYTES = "262144000"
+
+[[r2_buckets]]
+binding = "SUBMISSIONS_BUCKET"
+bucket_name = "xa-submissions"
+preview_bucket_name = "xa-submissions-preview"
+

@@ -1,9 +1,11 @@
 "use client";
 
-import { Button } from "../../atoms/shadcn";
-import type { ProductPublication } from "@acme/types";
 import Link from "next/link";
+
 import { useTranslations } from "@acme/i18n";
+import type { ProductPublication } from "@acme/types";
+
+import { Button } from "../../atoms/shadcn";
 
 interface Props {
   shop: string;

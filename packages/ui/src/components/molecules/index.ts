@@ -1,17 +1,21 @@
-export { default as Breadcrumbs } from "./Breadcrumbs";
-export { default as CurrencySwitcher } from "./CurrencySwitcher.client";
-export { default as CodeBlock } from "./CodeBlock";
-export { FormField } from "./FormField";
-export { Image360Viewer } from "./Image360Viewer";
-export { default as LanguageSwitcher } from "./LanguageSwitcher";
-export { MediaSelector } from "./MediaSelector";
-export { PaginationControl } from "./PaginationControl";
-export { PaymentMethodSelector } from "./PaymentMethodSelector";
-export { PriceCluster } from "./PriceCluster";
-export { PromoCodeInput } from "./PromoCodeInput";
-export { QuantityInput } from "./QuantityInput";
-export { RatingSummary } from "./RatingSummary";
-export { SearchBar } from "./SearchBar";
-export { SustainabilityBadgeCluster } from "./SustainabilityBadgeCluster";
-// Avoid name collision with atoms' primitive Accordion
+// Auto-generated export barrel for UI molecules (kept in source to avoid deprecated shims).
+export * from "./Accordion";
 export { default as AccordionMolecule } from "./Accordion";
+export * from "./Breadcrumbs";
+export * from "./CodeBlock";
+export { default as CodeBlock } from "./CodeBlock";
+export * from "./CurrencySwitcher.client";
+export { default as CurrencySwitcher } from "./CurrencySwitcher.client";
+export * from "./FormField";
+export * from "./Image360Viewer";
+export * from "./LanguageSwitcher";
+export { default as LanguageSwitcher } from "./LanguageSwitcher";
+export * from "./MediaSelector";
+export * from "./PaginationControl";
+export * from "./PaymentMethodSelector";
+export * from "./PriceCluster";
+export * from "./PromoCodeInput";
+export * from "./QuantityInput";
+export * from "./RatingSummary";
+export * from "./SearchBar";
+export * from "./SustainabilityBadgeCluster";

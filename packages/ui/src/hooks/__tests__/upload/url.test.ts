@@ -1,4 +1,4 @@
-import { isSafeHttpUrl, extractUrlFromText } from "../../upload/url";
+import { extractUrlFromText,isSafeHttpUrl } from "../../upload/url";
 
 describe("isSafeHttpUrl", () => { // i18n-exempt: test description
   it("accepts http and https", () => { // i18n-exempt: test description

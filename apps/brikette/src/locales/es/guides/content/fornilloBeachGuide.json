@@ -1,8 +1,9 @@
 {
   "seo": {
-    "title": "Fornillo Beach guide",
+    "title": "Guía de la playa de Fornillo",
     "description": "Mapa de distribución, secciones gratuitas y consejos sobre clubes de playa para Pupetto, Da Ferdinando, Grassi y La Marinella, además de accesos directos hacia y desde el albergue."
   },
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
   "linkLabel": "Guía de la playa de Fornillo: discotecas y lugares libres",
   "intro": [
     "La playa de Fornillo es una cala tranquila a pocos pasos del albergue. Los clubes de playa mantienen precios más bajos que Spiaggia Grande, las zonas públicas son generosas y el ambiente se mantiene discreto incluso en las semanas pico.",
@@ -45,6 +46,23 @@
       "body": [
         "Dos caminos principales alimentan Fornillo. El atajo desde %LINK:hostelBriketteToFornilloBeach|Hostal Brikette% llega por el lado izquierdo de la playa (de cara al mar); A la derecha llega el paseo marítimo de Spiaggia Grande.",
         "Los clubes de playa se encuentran en secuencia desde el punto de acceso al albergue hacia el camino principal de la playa: Pupetto, Da Ferdinando, Fratelli Grassi y La Marinella. Dos zonas públicas delimitan los lidos: un amplio tramo libre al lado de Pupetto y una cala más pequeña más allá de La Marinella."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/fornilloBeachGuide.webp",
+          "alt": "View of Fornillo Beach cove in Positano with the shoreline and cliffs",
+          "caption": "Fornillo Beach in Positano: a calmer alternative to the main beach, with free areas and several beach clubs"
+        },
+        {
+          "src": "/img/guides/fornillo-beach/02-main-free-section.jpg",
+          "alt": "Fornillo beach layout map showing paths from hostel and Spiaggia Grande, plus beach club locations",
+          "caption": "Fornillo layout: Path A from Hostel Brikette, Path B from Spiaggia Grande, with beach clubs numbered in sequence"
+        },
+        {
+          "src": "/img/guides/positano-beaches/positano-main-beach.webp",
+          "alt": "Positano main beach (Spiaggia Grande) with umbrellas and the town rising behind it",
+          "caption": "Spiaggia Grande: start here to walk the promenade to Fornillo, or return here to catch the internal bus uphill"
+        }
       ]
     },
     {
@@ -53,6 +71,13 @@
       "body": [
         "La sección libre más grande se encuentra justo enfrente del atajo desde el albergue. Llegue antes de las 10:30 para reclamar un lugar cerca de la línea de flotación; Los guijarros se calientan rápidamente, así que lleve una estera o una toalla gruesa.",
         "Pupetto y Da Ferdinando venden bebidas y panini para llevar, perfecto si quieres comida sin alquilar una tumbona. Esté atento a la marea en los meses intermedios; las tormentas de otoño pueden reducir la costa durante uno o dos días."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/01-beach-layout-map.jpg",
+          "alt": "Main free section at Fornillo beach with pebbles and waterfront access",
+          "caption": "The largest free area at Fornillo — arrive before 10:30 to secure waterfront space"
+        }
       ]
     },
     {
@@ -61,6 +86,13 @@
       "body": [
         "Pupetto ancla el lado izquierdo de Fornillo con hileras de tumbonas de color naranja, duchas y un restaurante de servicio completo. Reserva por WhatsApp o teléfono en verano si quieres asientos en primera fila; Las visitas sin cita previa normalmente están bien antes de las 09:30.",
         "Los huéspedes que utilicen el área gratuita aún pueden pedir comida para llevar en el bar, y los baños de Pupetto están abiertos para los clientes que pagan, lo cual es útil si decide mejorar a mitad del día."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/03-pupetto-beach-club.jpg",
+          "alt": "Pupetto Beach Club with orange loungers and restaurant on Fornillo beach",
+          "caption": "Pupetto Beach Club — orange loungers, full-service restaurant, and showers on the left side of Fornillo"
+        }
       ]
     },
     {
@@ -69,6 +101,13 @@
       "body": [
         "Da Ferdinando mantiene un ambiente relajado de bar en la playa con tumbonas azules, alquiler de tablas de remo y un menú de almuerzo popular (piense en la pesca del día a la parrilla, ensaladas y pasta). Espere precios un poco más altos que los de Pupetto, pero aún así razonables para Positano.",
         "Los taxis acuáticos a Laurito y Arienzo pasan por el embarcadero de Da Ferdinando, algo útil si planeas ir a la playa después de nadar por la mañana."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/04-da-ferdinando.jpg",
+          "alt": "Da Ferdinando beach bar with blue loungers and jetty at Fornillo",
+          "caption": "Da Ferdinando — beach-bar vibe with blue loungers, paddleboard rentals, and water taxi access"
+        }
       ]
     },
     {
@@ -77,6 +116,13 @@
       "body": [
         "Grassi es compacto con ordenadas hileras de tumbonas rojas y una barra con sombra para cócteles y granizado. El equipo ofrece bolsas secas para objetos de valor si alquila kayaks para explorar las cuevas cercanas.",
         "Debido a que el espacio es limitado, las reservas anticipadas ayudan los fines de semana. Por lo general, las visitas sin cita previa son posibles entre semana después de las 11:00 una vez que se liquidan las reservas anticipadas."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/05-fratelli-grassi.jpg",
+          "alt": "Fratelli Grassi Beach Bar with red loungers and shaded bar area at Fornillo",
+          "caption": "Fratelli Grassi — compact setup with red loungers, shaded cocktail bar, and kayak rentals"
+        }
       ]
     },
     {
@@ -85,6 +131,13 @@
       "body": [
         "La Marinella se encuentra más cerca de la pasarela de Spiaggia Grande y recibe el sol del mediodía. Espere un servicio atento, platos de almuerzo y la opción de reservar tumbonas en la cubierta superior con sombra adicional.",
         "En temporada baja, La Marinella a veces traslada algunas sillas a la cala vecina. El personal debe dejar espacio para el área pública, pero estar preparado para una huella más estrecha cuando el mar está agitado."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/06-la-marinella.jpg",
+          "alt": "La Marinella beach club with loungers and restaurant near Spiaggia Grande walkway",
+          "caption": "La Marinella — attentive service, upper-deck loungers, and closest to the Spiaggia Grande walkway"
+        }
       ]
     },
     {
@@ -93,8 +146,47 @@
       "body": [
         "Más allá de La Marinella, una pequeña cala ofrece una zona pública más tranquila con una plataforma de guijarros y aguas tranquilas. Lleve protector solar y zapatos para el agua aptos para los arrecifes: la entrada es rocosa y los erizos de mar pueden agruparse cerca de los bordes.",
         "En los días de tormenta, La Marinella instala aquí ocasionalmente tumbonas. La zona sigue siendo oficialmente libre, así que siéntete cómodo usando el espacio si llegas primero; simplemente deje espacio para devolver sillas o kayaks."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/07-secret-free-section.jpg",
+          "alt": "Hidden free cove beyond La Marinella with rocky entry and calm water",
+          "caption": "The 'secret' free section — a quieter cove beyond La Marinella with rocky entry and sea urchin areas"
+        }
+      ]
+    },
+    {
+      "id": "hostel-day-plan",
+      "title": "A hostel-friendly Fornillo day plan",
+      "body": [
+        "If you want an easy beach day that still leaves energy for the evening, this simple plan works well for most guests.",
+        "1) Leave after breakfast and take the %LINK:hostelBriketteToFornilloBeach|shortcut down to Fornillo%. Aim to arrive before 10:30 if you want a good free spot.",
+        "2) Swim first. The water is usually calmest earlier in the day, and the sun feels less intense. Then decide: stay free, or upgrade to a lido for shade.",
+        "3) Lunch: keep it simple. Grab takeaway from a beach bar, or split a plate if you are on a budget. Drink water throughout the day — the heat plus steps is a real combo.",
+        "4) Leave before you are exhausted. Walk the promenade back toward Spiaggia Grande, then use the internal bus uphill. Follow the %LINK:fornilloBeachToBrikette|return route% so you do not end up doing the steepest staircase by accident.",
+        "5) Back at the hostel: shower, rehydrate, and you are ready for aperitivo. If you want a second beach day with a different vibe, compare options in our %LINK:positanoBeaches|Positano beaches overview%."
+      ]
+    },
+    {
+      "id": "what-to-bring",
+      "title": "What to bring (so you do not overpack)",
+      "body": [
+        "A light pack is the secret to enjoying the walk back up later. Most guests are happiest with a small day bag and a few essentials.",
+        "Bring: water shoes, sunscreen, a hat, a thick towel (or mat), and a refillable bottle. Add a light shirt for the walk back in the afternoon sun.",
+        "Skip: passports and big cash. Keep valuables locked up at the hostel. If you are paying for a lido, card machines sometimes struggle, so carry a little cash as backup.",
+        "If you want shade in the free section, you can bring a small foldable umbrella, but it can be awkward in wind. In peak summer, the simplest “shade plan” is to rent a parasol for a few hours."
       ]
     }
+  ],
+  "essentialsTitle": "Lo imprescindible",
+  "essentials": [
+    "Protector solar",
+    "Gafas de sol",
+    "Toalla"
+  ],
+  "typicalCostsTitle": "Costes habituales",
+  "typicalCosts": [
+    "Entre 0 y 50 euros, según si alquilas tumbona, comes o bebes."
   ],
   "tipsTitle": "Consejos rápidos",
   "tips": [

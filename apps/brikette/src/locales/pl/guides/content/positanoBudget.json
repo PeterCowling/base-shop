@@ -5,15 +5,15 @@
   },
   "linkLabel": "Positano niskim kosztem",
   "intro": [
-    "Tłumaczenie w przygotowaniu."
+    "Rozciągnij euro, łącząc transport bez auta, tanie jedzenie i darmowe punkty widokowe bez rezygnacji z najważniejszych doświadczeń Positano."
   ],
   "sections": [
     {
       "id": "transport",
-      "title": "Transport on the cheap",
+      "title": "Transport niskim kosztem",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Skorzystaj z Alibusa lub shuttle’a Curreri do Sorrento, a potem autobusu SITA do Positano; kup bilety w blokach w tabacchi, by uniknąć przepłacania.",
+        "Gdy morze jest spokojne, połącz jeden rejs promem (Positano ↔ Amalfi) z autobusami w pozostałych trasach; rezerwuj tylko potrzebne odcinki."
       ]
     },
     {
@@ -26,44 +26,44 @@
     },
     {
       "id": "food",
-      "title": "Food & drink savings",
+      "title": "Oszczędności na jedzeniu",
       "body": [
-        "Kup panini, sfogliatelle i espresso z barów zamiast brunchu zasiadanego; przed wyruszeniem napełnij butelkę o pojemności 1 l (34 uncje) w kranach hostelu.",
-        "Tłumaczenie w przygotowaniu."
+        "Kup panini, sfogliatelle i espresso z barów zamiast siadać na brunch; przed wyjściem napełnij butelkę 1 l (34 oz) w kranach hostelu.",
+        "Dziel przystawki, omijaj opłaty cover i urządzaj pikniki z delikatesowymi zakupami na tarasach."
       ]
     },
     {
       "id": "experiences",
-      "title": "Low-cost experiences",
+      "title": "Tanie doświadczenia",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Postaw na darmowe wędrówki: Droga Bogów (autobus do Nocelle) albo zachodnia trasa Via Cristoforo Colombo.",
+        "Zainwestuj w jedną wyjątkową aktywność (np. wspólny rejs czy warsztaty), a resztę dni spędzaj na plażach i widokach."
       ]
     }
   ],
   "tips": [
-    "Podróżuj w miesiącach pobocznych (kwiecień – maj, koniec września), aby uzyskać niższe ceny i łatwiejsze miejsca na promach.",
-    "Tłumaczenie w przygotowaniu."
+    "Podróżuj poza sezonem (kwiecień–maj, koniec września), by trafić na niższe ceny i mniej zatłoczone promy.",
+    "Zapisuj wydatki w aplikacji — dzielenie kosztów z grupą pomaga utrzymać budżet."
   ],
   "faqs": [
     {
-      "q": "What daily budget should I plan?",
+      "q": "Jaki dzienny budżet zaplanować?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "70–90 € wystarczy na dorm, posiłki z delikatesów, bilety autobusowe i jedną płatną atrakcję; dorzuć 20–30 € na prywatne pokoje lub koktajle przy zachodzie."
       ]
     },
     {
-      "q": "Is tipping expected?",
+      "q": "Czy trzeba zostawiać napiwki?",
       "a": [
-        "Usługa jest wliczona w cenę; zaokrąglij 1–2 euro za świetną obsługę lub zostaw 10% w ekskluzywnych lokalach tylko wtedy, gdy czujesz, że doświadczenie na to zasługuje."
+        "Obsługa jest zwykle wliczona; zostaw 1–2 € za wyjątkową obsługę lub 10% tylko w eleganckich miejscach, jeśli naprawdę zrobiły wrażenie."
       ]
     }
   ],
-  "tocTitle": "On this page",
-  "faqsTitle": "FAQs",
-  "heroAlt": "Budget views over Positano from terrace",
+  "tocTitle": "Na tej stronie",
+  "faqsTitle": "Najczęściej zadawane pytania",
+  "heroAlt": "Tani widok na Positano z tarasu",
   "costBreakdown": {
-    "title": "Tłumaczenie w przygotowaniu.",
+    "title": "Dzienny podział kosztów (przykład)",
     "slices": [
       {
         "label": "Bed (dorm)",
@@ -82,15 +82,5 @@
         "value": 18
       }
     ]
-  },
-  "gallery": [
-    {
-      "alt": "Tłumaczenie w przygotowaniu.",
-      "caption": "Free viewpoints"
-    },
-    {
-      "alt": "Picnic with Positano view",
-      "caption": "Picnic to save on meals"
-    }
-  ]
+  }
 }

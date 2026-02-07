@@ -1,5 +1,5 @@
 // apps/cover-me-pretty/__tests__/account-profile.test.tsx
-jest.mock("@auth", () => ({
+jest.mock("@acme/auth", () => ({
   __esModule: true,
   getCustomerSession: jest.fn(),
   hasPermission: jest.fn(),
@@ -15,10 +15,10 @@ jest.mock("next/navigation", () => ({
   redirect: jest.fn(),
 }));
 
-import { getCustomerSession } from "@auth";
+import { getCustomerSession } from "@acme/auth";
 import { getCustomerProfile } from "@acme/platform-core/customerProfiles";
 import { render, screen } from "@testing-library/react";
-import { ProfilePage } from "@ui/account";
+import { ProfilePage } from "@acme/ui/account";
 import { redirect } from "next/navigation";
 
 describe("/account/profile", () => {

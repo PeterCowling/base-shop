@@ -1,10 +1,13 @@
 // packages/ui/src/components/cms/blocks/StickyBuyBar.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import StickyBuyBar from './StickyBuyBar';
-import { makeStateStory } from '../../../story-utils/createStories';
+
 import { PRODUCTS } from '@acme/platform-core/products/index';
 import type { SKU } from '@acme/types';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import StickyBuyBar from './StickyBuyBar';
 
 const meta: Meta<typeof StickyBuyBar> = {
   title: 'CMS Blocks/StickyBuyBar/Matrix',

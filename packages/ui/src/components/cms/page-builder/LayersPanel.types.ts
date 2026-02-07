@@ -1,4 +1,5 @@
-import type { PageComponent, HistoryState } from "@acme/types";
+import type { HistoryState,PageComponent } from "@acme/types";
+
 import type { Action } from "./state";
 
 export interface LayersPanelProps {

@@ -1,9 +1,19 @@
 import { promises as fs } from "fs";
+
 import { jsonInventoryRepository } from "../inventory.json.server";
 
-// Mock stock alert service
-const checkAndAlert = jest.fn();
-jest.mock("../../services/stockAlert.server", () => ({ checkAndAlert }));
+// Use globalThis to avoid Jest mock hoisting issues
+declare global {
+  var __inventoryTestCheckAndAlert: jest.Mock | undefined;
+}
+globalThis.__inventoryTestCheckAndAlert = jest.fn();
+
+// Mock stock alert service using globalThis
+jest.mock("../../services/stockAlert.server", () => ({
+  get checkAndAlert() {
+    return globalThis.__inventoryTestCheckAndAlert;
+  },
+}));
 
 describe("json inventory repository", () => {
   afterEach(() => {
@@ -99,7 +109,7 @@ describe("json inventory repository", () => {
         variantAttributes: { color: "red" },
       },
     ]);
-    expect(checkAndAlert).toHaveBeenCalledTimes(1);
+    expect(globalThis.__inventoryTestCheckAndAlert).toHaveBeenCalledTimes(1);
   });
 
   it("skips stock alert when disabled", async () => {
@@ -120,7 +130,7 @@ describe("json inventory repository", () => {
         variantAttributes: {},
       },
     ]);
-    expect(checkAndAlert).not.toHaveBeenCalled();
+    expect(globalThis.__inventoryTestCheckAndAlert).not.toHaveBeenCalled();
   });
 
   it("creates item when file missing and alerts on low stock", async () => {
@@ -157,7 +167,7 @@ describe("json inventory repository", () => {
       quantity: 0,
       lowStockThreshold: 1,
     });
-    expect(checkAndAlert).toHaveBeenCalledTimes(1);
+    expect(globalThis.__inventoryTestCheckAndAlert).toHaveBeenCalledTimes(1);
   });
 
   it("updates existing item without variant attributes", async () => {
@@ -193,7 +203,7 @@ describe("json inventory repository", () => {
       quantity: 2,
       variantAttributes: {},
     });
-    expect(checkAndAlert).not.toHaveBeenCalled();
+    expect(globalThis.__inventoryTestCheckAndAlert).not.toHaveBeenCalled();
   });
 
   it("removes item when mutate returns undefined", async () => {
@@ -222,7 +232,7 @@ describe("json inventory repository", () => {
     const data = JSON.parse(writeFile.mock.calls[0][1] as string);
     expect(data).toEqual([]);
     expect(result).toBeUndefined();
-    expect(checkAndAlert).not.toHaveBeenCalled();
+    expect(globalThis.__inventoryTestCheckAndAlert).not.toHaveBeenCalled();
   });
 
   it("cleans up stale lock files and proceeds", async () => {

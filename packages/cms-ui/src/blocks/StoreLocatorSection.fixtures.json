@@ -1,0 +1,10 @@
+{
+  "stores": [
+    { "id": "sfo", "label": "San Francisco", "lat": 37.7749, "lng": -122.4194, "address": "1 Market St, San Francisco, CA", "phone": "+1-415-555-0100", "openingHours": ["Mon-Fri 9-5"], "url": "/stores/sfo" },
+    { "id": "nyc", "label": "New York", "lat": 40.7128, "lng": -74.0060, "address": "123 Broadway, New York, NY", "phone": "+1-212-555-0100", "openingHours": ["Mon-Sat 10-6"], "url": "/stores/nyc" }
+  ],
+  "enableGeolocation": false,
+  "radiusKm": 100,
+  "emitLocalBusiness": false
+}
+

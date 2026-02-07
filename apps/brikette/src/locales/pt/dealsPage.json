@@ -12,27 +12,27 @@
     "stayDatesLabel": "Datas de estadia:",
     "badges": {
       "autoApplied": "Aplicado automaticamente",
-      "directOnly": "Apenas reservas diretas"
+      "directOnly": "Apenas direto"
     },
     "cta": {
       "bookDirect": "Reservar diretamente",
       "applyDeal": "Aplicar oferta"
     },
     "status": {
-      "upcoming": "Próxima oferta · Começa {{startDate}}",
+      "upcoming": "Em breve · Começa em {{startDate}}",
       "expired": "Terminada"
     }
   },
   "hero": {
-    "activeLabel": "Oferta atual",
+    "activeLabel": "Oferta ativa",
     "activeTitle": "Poupe {{percent}}",
     "activeDatesLabel": "Datas de estadia:",
     "activeSubtitle": "Aplicado automaticamente no checkout. Apenas reservas diretas."
   },
   "emptyState": {
-    "title": "Sem ofertas atuais",
-    "subtitle": "Reserve diretamente para o melhor preço e todos os benefícios.",
-    "secondaryCta": "Ver vantagens de reserva direta"
+    "title": "Sem ofertas ativas no momento",
+    "subtitle": "Reserve diretamente para obter as melhores tarifas e vantagens.",
+    "secondaryCta": "Ver vantagens da reserva direta"
   },
   "status": {
     "banner": {
@@ -80,13 +80,16 @@
   "perksIntroLink": "Ver todas as vantagens",
   "perksList": [
     {
-      "title": "Até 25 % de desconto sobre o preço normal ao aplicar o cupão"
+      "title": "Até 25 % de desconto sobre o preço normal ao aplicar o cupão",
+      "subtitle": "Aplicado automaticamente"
     },
     {
-      "title": "Pequeno-almoço gratuito"
+      "title": "Pequeno-almoço gratuito",
+      "subtitle": "Incluído diariamente"
     },
     {
-      "title": "Bebida de cortesia à noite"
+      "title": "Bebida de cortesia à noite",
+      "subtitle": "Seleção da casa"
     }
   ],
   "expired": {

@@ -1,11 +1,13 @@
+import type { ReactNode } from "react";
+
+import type { Locale } from "@acme/i18n/locales";
+
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "../atoms/shadcn";
-import type { Locale } from "@acme/i18n/locales";
-import type { ReactNode } from "react";
 
 export interface LocalePanelConfig {
   locale: Locale;

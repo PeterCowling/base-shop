@@ -1,13 +1,14 @@
 // apps/cms/src/actions/saveSanityConfig.ts
 "use server";
 
-import { verifyCredentials } from "@acme/plugin-sanity";
-import { getShopById, updateShopInRepo } from "@platform-core/repositories/shop.server";
+import { getShopById, updateShopInRepo } from "@acme/platform-core/repositories/shop.server";
 import {
-  setSanityConfig,
   setEditorialBlog,
-} from "@platform-core/shops";
+  setSanityConfig,
+} from "@acme/platform-core/shops";
+import { verifyCredentials } from "@acme/plugin-sanity";
 import type { Shop } from "@acme/types";
+
 import { ensureAuthorized } from "./common/auth";
 import { setupSanityBlog } from "./setupSanityBlog";
 
@@ -22,6 +23,9 @@ export async function saveSanityConfig(
   await ensureAuthorized();
 
   const shop = await getShopById(shopId);
+  if (!shop) {
+    return { error: `Shop ${shopId} not found` };
+  }
 
   const projectId = String(formData.get("projectId") ?? "");
   const dataset = String(formData.get("dataset") ?? "");
@@ -59,10 +63,10 @@ export async function saveSanityConfig(
       return { error: "Invalid Sanity credentials", errorCode: "INVALID_CREDENTIALS" };
     }
   }
-  const updated = setEditorialBlog(setSanityConfig(shop, config), {
+  const updated = setEditorialBlog(setSanityConfig(shop as any, config as any), {
     enabled: editorialEnabled,
     ...(promoteSchedule ? { promoteSchedule } : {}),
-  }) as Shop;
+  } as any) as unknown as Shop;
   updated.luxuryFeatures = {
     ...(updated.luxuryFeatures ?? {}),
     blog: editorialEnabled,

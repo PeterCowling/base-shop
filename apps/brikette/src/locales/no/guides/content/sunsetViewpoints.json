@@ -18,7 +18,7 @@
       "note": "Balkong over Fornillo; kom 30 minutter før solnedgang for varmt lys."
     },
     {
-      "name": "Nocelle (Path of the Gods start)",
+      "name": "Nocelle (start på Gudestien)",
       "note": "Vendt mot Li Galli-øyene – ta med et ekstra lag til returen."
     }
   ],
@@ -73,18 +73,5 @@
         "Gatebelysningen varierer – ta med mobillys eller en liten lommelykt for nedstigninger sent på kvelden."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Bildegalleri",
-    "items": [
-      {
-        "caption": "Chiesa Nuova terrace",
-        "alt": "Solnedgang sett fra terrassen ved Chiesa Nuova"
-      },
-      {
-        "caption": "Nocelle",
-        "alt": "Solnedgang sett fra Nocelle"
-      }
-    ]
-  }
+  ]
 }

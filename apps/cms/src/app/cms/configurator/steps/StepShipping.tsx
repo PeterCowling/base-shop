@@ -1,14 +1,17 @@
 "use client";
 
-import { Button } from "@/components/atoms/shadcn";
 import { useCallback, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+
+import { type Provider,providersByType } from "@acme/configurator/providers";
+import { Cluster,Inline } from "@acme/design-system/primitives";
+import { useTranslations } from "@acme/i18n";
+
+import { Button } from "@/components/atoms/shadcn";
+import type { ConfiguratorStepProps } from "@/types/configurator";
+
 import { useConfigurator } from "../ConfiguratorContext";
 import useStepCompletion from "../hooks/useStepCompletion";
-import { providersByType, type Provider } from "@acme/configurator/providers";
-import type { ConfiguratorStepProps } from "@/types/configurator";
-import { Inline, Cluster } from "@ui/components/atoms/primitives";
-import { useTranslations } from "@acme/i18n";
 
 export default function StepShipping(_: ConfiguratorStepProps): React.JSX.Element {
   const t = useTranslations();

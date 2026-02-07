@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+
 import * as configurator from "../src/configurator";
 
 jest.mock("../src/repositories/shops.server", () => ({

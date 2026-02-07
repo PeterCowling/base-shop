@@ -1,14 +1,17 @@
+import { ulid } from "ulid";
+
 import { coreEnv as env } from "@acme/config/env/core";
 import { nowIso } from "@acme/date-utils";
+import { incrementOperationalError } from "@acme/platform-core/shops/health";
+import { recordMetric } from "@acme/platform-core/utils";
 import type { Page } from "@acme/types";
-import { ulid } from "ulid";
+
 import { formDataToObject } from "../../utils/formData";
 import { ensureAuthorized } from "../common/auth";
-import { createSchema } from "./validation";
+
 import { getPages, savePage } from "./service";
 import { computeRevisionId, mapLocales, reportError } from "./utils";
-import { recordMetric } from "@platform-core/utils";
-import { incrementOperationalError } from "@platform-core/shops/health";
+import { createSchema } from "./validation";
 
 export async function createPage(
   shop: string,
@@ -53,7 +56,7 @@ export async function createPage(
     ...(data.status === "published"
       ? {
           publishedAt: now,
-          publishedBy: session.user.email ?? "unknown",
+          publishedBy: session.user?.email ?? "unknown",
           publishedRevisionId: computeRevisionId(data.components),
           lastPublishedComponents: data.components,
         }
@@ -63,7 +66,7 @@ export async function createPage(
     seo: { title, description, image },
     createdAt: now,
     updatedAt: now,
-    createdBy: session.user.email ?? "unknown",
+    createdBy: session.user?.email ?? "unknown",
   };
 
   const pages = await getPages(shop);

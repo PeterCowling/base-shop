@@ -1,10 +1,13 @@
 import { z } from "zod";
+
 import { authEnvSchema } from "@acme/config/env/auth";
+import { paymentsEnvSchema } from "@acme/config/env/payments";
+import { shippingEnvSchema } from "@acme/config/env/shipping";
+
 // Avoid importing cms/email modules which parse on import; use schemas directly.
 import { cmsEnvSchema } from "../cms.schema.js";
 import { emailEnvSchema } from "../email.schema.js";
-import { paymentsEnvSchema } from "@acme/config/env/payments";
-import { shippingEnvSchema } from "@acme/config/env/shipping";
+
 import { baseEnvSchema } from "./schema.base.js";
 
 const authInner = authEnvSchema.innerType().omit({ AUTH_TOKEN_TTL: true });

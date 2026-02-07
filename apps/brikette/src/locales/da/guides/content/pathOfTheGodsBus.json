@@ -11,7 +11,7 @@
   "sections": [
     {
       "id": "prep",
-      "title": "Buy tickets and plan your timing",
+      "title": "Køb billetter og planlæg timingen",
       "body": [
         "Du skal bruge tre busbilletter per person: Positano → Amalfi, Amalfi → Bomerano og Nocelle → Positano. Spørg personalet på Bar Internazionale om den bedste kombination (enkelt eller integreret).",
         "Tjek SITA-tidsplanen, der er slået op i baren eller via Unico Campania-appen. Sigt efter en morgenafgang for at undgå køer og middagssol på stien.",
@@ -20,7 +20,7 @@
     },
     {
       "id": "bus-to-amalfi",
-      "title": "Ride from Bar Internazionale to Amalfi",
+      "title": "Tag fra Bar Internazionale til Amalfi",
       "body": [
         "Forlad vandrerhjemmet, drej til venstre og nå Bar Internazionale på cirka to minutter. Køb billetter, og vent derefter på den modsatte side af vejen på den Amalfi-bussen.",
         "Valider din billet ved boarding. Turen tager 45-60 minutter afhængig af trafikken og inkluderer flere omskiftninger med flot havudsigt.",
@@ -29,7 +29,7 @@
     },
     {
       "id": "wait-in-amalfi",
-      "title": "Pause in Amalfi (optional)",
+      "title": "Pause i Amalfi (valgfrit)",
       "body": [
         "Hvis du har et hul før den næste bus, så gå et stykke ind til byen for at få kaffe eller kager. Vend tilbage til terminalen mindst 10 minutter før afgang.",
         "Stil dig i kø tidligt om sommeren, da bussen fyldes hurtigt. Føreren kan begrænse boarding, når alle sæder og sikker ståplads er optaget."
@@ -37,15 +37,15 @@
     },
     {
       "id": "bus-to-bomerano",
-      "title": "Bus uphill to Bomerano",
+      "title": "Bus opad til Bomerano",
       "body": [
-        "Gå ombord på bussen mærket \"Agerola/Bomerano\". Brug din anden billet og hold en hånd fri for at holde dig i snævre kurver.",
+        "Gå ombord på bussen mærket \\\\\"Agerola/Bomerano\\\\\". Brug din anden billet og hold en hånd fri for at holde dig i snævre kurver.",
         "Stå af ved Bomerano-stoppestedet overfor Ristorante Jerla. Kryds vejen, tag sidegaden til piazzaen, og følg derefter skiltene til Path of the Gods-stien."
       ]
     },
     {
       "id": "hike",
-      "title": "Hike to Nocelle",
+      "title": "Vandring til Nocelle",
       "body": [
         "Følg Sentiero degli Dei-skiltningen på tværs af terrasser og højdedrag. Tillad 2,5-3 timer til vandreturen med fotostop.",
         "Tag affald med dig og respekter privat landbrugsjord langs stien."
@@ -53,7 +53,7 @@
     },
     {
       "id": "nocelle",
-      "title": "Navigate Nocelle and reach the bus stop",
+      "title": "Find rundt i Nocelle og nå busstoppestedet",
       "body": [
         "Når stien bliver til beton, er du nået til Nocelle. Hold til højre ved det første kryds for at undgå den lange trappe ned til Positano.",
         "Gå ca. 175 meter til den lille parkeringsplads og busskur. Ankom tidligt; busser parkerer af og til lige før stoppestedet, når pladsen er fyldt."
@@ -61,7 +61,7 @@
     },
     {
       "id": "return",
-      "title": "Return to Positano",
+      "title": "Tilbage til Positano",
       "body": [
         "Brug din sidste billet til at køre med Nocelle/Montepertuso-bussen tilbage til Bar Internazionale eller Chiesa Nuova.",
         "Går du glip af bussen, kan du gå på vejen (ca. 4 km), men vær forberedt på en vedvarende nedkørsel med trafik."
@@ -69,32 +69,32 @@
     },
     {
       "id": "journey-planner",
-      "title": "Sample timetable",
+      "title": "Eksempel på køreplan",
       "body": [
         "07:00 forlader vandrerhjemmet → 07:15 bus til Amalfi → 08:10 ankommer Amalfi → 08:30 bus til Bomerano → 09:10 start vandretur → 12:00 ankommer Nocelle → 12:30 bus tilbage til Positano.",
         "Mulighed for senere morgen: 08:00 afgang returnerer stadig midt på eftermiddagen, hvis forbindelserne står i kø."
       ]
     }
   ],
-  "essentialsTitle": "Essentials",
+  "essentialsTitle": "Det vigtigste",
   "essentials": [
     "Tre SITA-billetter pr. person (Positano → Amalfi, Amalfi → Bomerano, Nocelle → Positano) plus en ekstra.",
     "Vand, snacks, solcreme og lag til en udsat bjergvandring.",
     "Komfortabelt fodtøj med greb og en opladet telefon med offline kort."
   ],
-  "typicalCostsTitle": "Typical costs",
+  "typicalCostsTitle": "Typiske omkostninger",
   "typicalCosts": [
     "SITA-busbilletter: €2–4 € pr. etape afhængigt af carnet eller integrerede priser.",
     "Kaffe eller snacks under Amalfi-forbindelsen: €2–6€.",
-    "Trail access: free."
+    "Adgang til stien: gratis."
   ],
-  "tipsTitle": "Route tips",
+  "tipsTitle": "Rutetips",
   "tips": [
     "Ankom 10-15 minutter for tidligt ved hvert stop - busserne kan fyldes før højsæsonens afgange.",
     "Sid på højre side og forlader Positano for en flot kystudsigt, og til venstre, når du vender tilbage fra Amalfi.",
     "Medbring småpenge, hvis du skal validere en ekstra billet om bord."
   ],
-  "warningsTitle": "Watch-outs",
+  "warningsTitle": "Vær opmærksom på",
   "warnings": [
     "Følg ikke den 1.700-trins trappe fra Nocelle, medmindre du er forberedt på en anstrengende, knæ-intensiv nedstigning.",
     "Weekendtjenester kan køre sent; hold snacks og vand ved hånden, hvis du venter længere end planlagt.",
@@ -102,57 +102,65 @@
   ],
   "steps": [
     {
-      "name": "Buy SITA tickets",
+      "name": "Køb SITA-billetter",
       "text": "Køb de nødvendige busbilletter i Bar Internazionale før afgang."
     },
     {
-      "name": "Bus to Amalfi",
+      "name": "Bus til Amalfi",
       "text": "Tag den Amalfi-bussen fra Bar Internazionale og bliv videre gennem kystlandsbyerne."
     },
     {
-      "name": "Transfer to the Agerola bus",
+      "name": "Skift til Agerola-bussen",
       "text": "Vent ved Amalfi-terminalen og gå ombord på tjenesten mærket Agerola/Bomerano."
     },
     {
-      "name": "Reach the trailhead",
+      "name": "Nå startpunktet",
       "text": "Gå fra borde ved Bomerano, følg skiltene gennem piazzaen, og slutt dig til Sentiero degli Dei."
     },
     {
-      "name": "Hike to Nocelle",
+      "name": "Vandring til Nocelle",
       "text": "Følg CAI-vejmærker hen over højderyggen, indtil du når den konkrete gangbro ind til byen."
     },
     {
-      "name": "Return by bus",
+      "name": "Retur med bus",
       "text": "Tag Nocelle/Montepertuso-bussen tilbage til Bar Internazionale eller Chiesa Nuova."
     }
   ],
-  "faqsTitle": "FAQs",
+  "faqsTitle": "FAQ",
   "faqs": [
     {
-      "q": "How crowded are the buses?",
+      "q": "Hvor fyldte er busserne?",
       "a": [
         "Morgentjenester fylder hurtigt om sommeren. Kom tidligt, kør roligt, og vær klar til at stå. Chauffører kan nægte boarding, når gangen er fuld."
       ]
     },
     {
-      "q": "Can I stop in Amalfi for sightseeing?",
+      "q": "Kan jeg stoppe i Amalfi for sightseeing?",
       "a": [
         "Ja – tillad mindst ét ​​fuldt businterval (30–60 minutter), så du har tid til at udforske og stadig slutte dig til køen inden næste Agerola-afgang."
       ]
     },
     {
-      "q": "What if I miss the Nocelle bus back?",
+      "q": "Hvad hvis jeg misser bussen tilbage fra Nocelle?",
       "a": [
         "Tjek den opslåede køreplan ved stoppestedet. Hvis den næste bus er over en time væk, kan du gå den asfalterede vej ned til Positano på cirka 45-60 minutter."
+      ]
+    },
+    {
+      "q": "Hvordan læser jeg SITA bus-køreplanen?",
+      "a": [
+        "**Læsning af rækkerne:** Rækkerne i den første kolonne repræsenterer forskellige busstoppesteder langs ruten.",
+        "**Læsning af kolonnerne:** Køreplanen tildeler et alfabetisk bogstav til hver planlagt rejse, som er angivet som overskrifter i hver kolonne. Hvis du rejser mandag til lørdag, skal du kigge efter kolonnerne 'F' og 'G'. Hvis du rejser på en søndag eller helligdag, skal du kigge efter kolonnerne 'G' og 'H'.",
+        "**Kombination af rækker og kolonner:** Vælg dine afgangs- og ankomststoppesteder, og tjek derefter kolonnerne for at se, hvornår busserne er tilgængelige, og hvornår de ankommer til din destination. For eksempel, for at se afgangstiden fra Sorrento, se på Sorrento-rækken. For at se ankomsttiden i Positano (Chiesa Nuova / Bar Internazionale), se på Positano (Chiesa Nuova)-rækken."
       ]
     }
   ],
   "toc": {
-    "onThisPage": "On this page",
-    "essentials": "Essentials",
-    "costs": "Typical costs",
-    "tips": "Route tips",
-    "warnings": "Watch-outs",
-    "faqs": "FAQs"
+    "onThisPage": "På denne side",
+    "essentials": "Det vigtigste",
+    "costs": "Typiske omkostninger",
+    "tips": "Rutetips",
+    "warnings": "Vær opmærksom på",
+    "faqs": "FAQ"
   }
 }

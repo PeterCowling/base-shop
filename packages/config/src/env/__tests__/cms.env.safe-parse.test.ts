@@ -20,6 +20,8 @@ describe("cms env – safeParse errors", () => {
       CMS_SPACE_URL: "https://cms.example.com",
       CMS_ACCESS_TOKEN: "token",
       SANITY_API_VERSION: "2024-01-01",
+      SANITY_API_TOKEN: "token",
+      SANITY_PREVIEW_SECRET: "preview-secret",
     } as NodeJS.ProcessEnv;
     jest.resetModules();
     const { cmsEnvSchema } = await import("../cms.ts");
@@ -60,6 +62,8 @@ describe("cms env – safeParse errors", () => {
       CMS_SPACE_URL: "https://cms.example.com",
       CMS_ACCESS_TOKEN: "token",
       SANITY_API_VERSION: "2024-01-01",
+      SANITY_API_TOKEN: "token",
+      SANITY_PREVIEW_SECRET: "preview-secret",
     } as NodeJS.ProcessEnv;
     jest.resetModules();
     const { cmsEnvSchema } = await import("../cms.ts");

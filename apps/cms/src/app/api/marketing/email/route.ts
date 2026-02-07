@@ -1,11 +1,21 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
+import { ensureShopAccess, ensureShopReadAccess } from "@cms/actions/common/auth";
+
 import type { Campaign } from "@acme/email";
-import { listEvents } from "@platform-core/repositories/analytics.server";
+import { listEvents } from "@acme/platform-core/repositories/analytics.server";
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const shop = req.nextUrl.searchParams.get("shop");
   if (!shop)
     return NextResponse.json({ error: "Missing shop" }, { status: 400 });
+
+  try {
+    await ensureShopReadAccess(shop);
+  } catch (err) {
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 401;
+    return NextResponse.json({ error: message === "Forbidden" ? "Forbidden" : "Unauthorized" }, { status });
+  }
   const { listCampaigns } = await import("@acme/email");
   const campaigns: Campaign[] = await listCampaigns(shop);
   const events = await listEvents();
@@ -47,6 +57,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const list = Array.isArray(recipients) ? recipients : to ? [to] : [];
   if (!shop || !subject || !body || (list.length === 0 && !segment)) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+  }
+
+  try {
+    await ensureShopAccess(shop);
+  } catch (err) {
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 401;
+    return NextResponse.json({ error: message === "Forbidden" ? "Forbidden" : "Unauthorized" }, { status });
   }
   const { createCampaign, renderTemplate } = await import("@acme/email");
   let html = body;

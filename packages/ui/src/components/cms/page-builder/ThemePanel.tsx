@@ -1,14 +1,17 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { DialogContent, DialogTitle } from "../../atoms/shadcn";
-import { useTranslations } from "@acme/i18n";
-import Tokens from "../style/Tokens";
-import ColorThemeSelector from "./ColorThemeSelector";
-import { type TokenMap } from "../../../hooks/useTokenEditor";
-import usePreviewTokens, { savePreviewTokens } from "./hooks/usePreviewTokens";
 import { usePathname } from "next/navigation";
-import { getShopFromPath } from "@acme/shared-utils";
+
+import { useTranslations } from "@acme/i18n";
+import { getShopFromPath } from "@acme/lib/shop";
+
+import { type TokenMap } from "../../../hooks/useTokenEditor";
+import { DialogContent, DialogTitle } from "../../atoms/shadcn";
+import Tokens from "../style/Tokens";
+
+import ColorThemeSelector from "./ColorThemeSelector";
+import usePreviewTokens, { savePreviewTokens } from "./hooks/usePreviewTokens";
 
 /**
  * Minimal ThemePanel that leverages Tokens + useTokenEditor to adjust color and font tokens.

@@ -23,11 +23,20 @@
     },
     "tickets": {
       "title": "Bilhetes e horários",
-      "intro": "Consulte horários e preços atualizados em <travelmar>Travelmar</travelmar> e <positano>Positano.com — Horários de ferry</positano>.",
+      "intro": "Consulte horários e preços atualizados em <travelmar>Travelmar</travelmar> e <positano>Positano.com — Horários de ferry</positano>. Para uma explicação rápida (operadores, épocas e erros comuns), consulte o <ferrySchedules>nosso guia de horários de ferries</ferrySchedules>.",
       "points": [
-        "Compre bilhetes online com antecedência na época alta ou nos balcões dos operadores junto ao cais.",
-        "Chegue 15–20 minutos antes da partida para trocar vouchers e aguardar na fila de embarque.",
-        "Mantenha o bilhete ou o código QR acessível para as verificações da equipa."
+        "Na época alta, compre online com antecedência (especialmente à tarde) ou nos balcões dos operadores junto à marginal.",
+        "Chegue 20–30 minutos antes da partida para formar fila com calma e trocar vouchers se necessário.",
+        "Tire uma captura de ecrã do código QR — o sinal pode ser fraco na praia e no cais.",
+        "Se viajar com bagagem volumosa, pergunte à equipa sobre as regras de bagagem e onde guardar as malas a bordo."
+      ]
+    },
+    "gettingToPier": {
+      "title": "Chegar ao cais a partir do Hostel Brikette",
+      "intro": "Se estiver a partir do hostel, use <dockWalk>o nosso guia passo a passo para o cais do ferry</dockWalk> para chegar à Spiaggia Grande sem confusões.",
+      "points": [
+        "Reserve tempo extra para as escadas, calor e trânsito pedonal lento na cidade.",
+        "Leve água e mantenha os essenciais (passaporte/carteira/telemóvel) num bolso de fácil acesso para as verificações de embarque."
       ]
     },
     "positanoPier": {
@@ -44,6 +53,15 @@
         "Os barcos chegam aos cais à beira-mar de Amalfi, perto da Piazza Flavio Gioia.",
         "O centro histórico e o passeio marítimo ficam imediatamente ao lado do porto.",
         "Para autocarros seguintes (por exemplo, Ravello ou Sorrento), siga a sinalização para a paragem da SITA junto à marginal."
+      ]
+    },
+    "planB": {
+      "title": "Se o ferry cancelar (plano B que funciona)",
+      "intro": "Em dias ventosos, o mar pode parar os barcos. Não entre em pânico — mude para o <bus>autocarro Positano → Amalfi</bus> e consulte o <cancellations>nosso guia de cancelamentos de ferry</cancellations> para horários e resolução de problemas.",
+      "points": [
+        "Se já estiver na praia, volte à estrada principal e apanhe o próximo autocarro ou táxi disponível.",
+        "Preveja tempo de segurança: nos meses de pico os autocarros podem chegar cheios e os atrasos são normais.",
+        "Se viajar tarde, confirme cedo a última partida viável (ferry ou autocarro) para não ficar preso."
       ]
     }
   },

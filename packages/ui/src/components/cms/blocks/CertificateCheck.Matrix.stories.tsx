@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/CertificateCheck.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import CertificateCheck from './CertificateCheck';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './CertificateCheck.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import CertificateCheck from './CertificateCheck';
+import fixture from './CertificateCheck.fixtures.json';
 
 const meta: Meta<typeof CertificateCheck> = {
   title: 'CMS Blocks/CertificateCheck/Matrix',

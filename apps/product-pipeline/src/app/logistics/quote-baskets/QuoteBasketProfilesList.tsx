@@ -1,7 +1,9 @@
 "use client";
 
+import { Cluster, Grid, Stack } from "@acme/design-system/primitives";
+
 import { formatNumber } from "@/lib/format";
-import { Cluster, Grid, Stack } from "@ui/components/atoms/primitives";
+
 import type { QuoteBasketProfile, QuoteBasketStrings } from "./types";
 
 function formatText(value: string | null | undefined, fallback: string): string {

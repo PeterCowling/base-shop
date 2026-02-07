@@ -1,10 +1,12 @@
-import { describe, it, expect, jest } from "@jest/globals";
+import { describe, expect, it, jest } from "@jest/globals";
+
 import { createExpectInvalidAuthEnv } from "../../../test/utils/expectInvalidAuthEnv";
+
 import {
   DEV_NEXTAUTH_SECRET,
   DEV_SESSION_SECRET,
-  REDIS_URL,
   REDIS_TOKEN,
+  REDIS_URL,
 } from "./authEnvTestUtils";
 
 const JWT_SECRET = "jwt-secret-32-chars-long-string!!!";

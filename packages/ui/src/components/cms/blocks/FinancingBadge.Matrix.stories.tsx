@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/FinancingBadge.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import FinancingBadge from './FinancingBadge';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './FinancingBadge.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import FinancingBadge from './FinancingBadge';
+import fixture from './FinancingBadge.fixtures.json';
 
 const meta: Meta<typeof FinancingBadge> = {
   title: 'CMS Blocks/FinancingBadge/Matrix',

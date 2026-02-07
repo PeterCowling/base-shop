@@ -1,61 +1,55 @@
 {
   "seo": {
-    "title": "A fordítás folyamatban van.",
-    "description": "Privát és csoportos túrák, szezon, árak és mire figyelj foglaláskor."
+    "title": "Hajós túrák Positanóban",
+    "description": "Privát és csoportos hajótúrák: mire számítson, árkategóriák és foglalási tippek a szezonban."
   },
-  "linkLabel": "Boat tours in Positano",
+  "linkLabel": "Hajótúrák: Napnyugtás körutazástól privát bérlésig",
   "intro": [
-    "A hajós kirándulásokkal végigkövetheti az Amalfi-part szikláit anélkül, hogy a közúti forgalommal küzdene – csúcsszezonban foglaljon előre, és legyen időjárási B-terve."
+    "A hajótúrák lehetővé teszik, hogy az Amalfi-part szikláit bejárja anélkül, hogy a közúti forgalommal küzdene; foglaljon előre a csúcshónapokban és tartson készen időjárási tartalékot."
   ],
   "sections": [
     {
       "id": "group-tours",
       "title": "Csoportos túrák és közös hajók",
       "body": [
-        "A 3 órás közös hajózások késő délelőtt indulnak Positanóból, úszómegállókat is tartalmaznak; július–augusztusban fejenként 85–120 euróval számoljon.",
-        "Vigyen vízi cipőt és könnyű felsőt – a szél a nyílt vízen hűvösebb, mint a teraszokon."
+        "A 3 órás közös körutazások délelőtt közepén indulnak Positanóból és úszómegállókat tartalmaznak; számítson €85–€120-ra személyenként július-augusztusban.",
+        "Hozzon vízi cipőt és könnyű réteget—a szél a tengeren hűvösebb, mint a teraszokon."
       ]
     },
     {
       "id": "private-charters",
       "title": "Privát bérlések",
       "body": [
-        "A kormányosok fél napos gozzo bérlésre (legfeljebb 6 fő) 550–850 eurót kérnek plusz üzemanyagot; egyeztesse, hogy jár-e prosecco vagy törölköző.",
-        "Alkudja ki a napkelte körüli vagy késő délutáni indulást, ha lágyabb fényeket és kevesebb komp-hullámot szeretne."
+        "A hajósok fél napos gozzo bérléséért (legfeljebb 6 fő) €550–€850-ot plusz üzemanyagot kérnek; erősítse meg a tartalmazott elemeket, mint a prosecco vagy törölközők.",
+        "Tárgyaljon a napkelte körüli vagy késő délutáni kezdési időkről, ha lágyabb fényt és kevesebb kompok hullámát szeretné."
       ]
     },
     {
       "id": "weather-backup",
       "title": "Időjárás és tartaléktervek",
       "body": [
-        "A szolgáltatók lemondják az utat, ha a szél meghaladja a 4-es fokozatot; legyen kéznél buszos vagy strandos alternatíva, hogy a nap laza maradjon.",
-        "Nyáron is lehet hullámos a tenger – vigyen tengeri betegséget enyhítő karkötőt, ha hajlamos a rosszullétre."
+        "Az üzemeltetők lemondják a túrát, amikor a szél meghaladja a 4-es erősséget; tartson készenlétben egy buszt vagy strand tervet, hogy a nap laza maradjon.",
+        "A tengerek nyáron is hullámosak lehetnek—csomagoljon be tengeribetegség-elleni karperecet, ha hajlamos rá."
       ]
     }
   ],
   "tips": [
-    "Indulás előtt 20 perccel érkezzen, hogy rendezze a fennmaradó díjat és felvegye a fedélzeti cipőt.",
-    "Legyen vízhatlan táskája a telefonhoz, valamint 1 literes (34 unciás) kulacsa; a fedélzeten kevés az árnyék."
+    "Érkezzen 20 perccel az indulás előtt, hogy rendezze az egyenleget és felvegye a biztosított fedélzeti cipőt.",
+    "Vigyen vízálló táskát a telefonokhoz és egy 1 literes (34 uncia) kulacsot; az árnyék korlátozott a fedélzeten."
   ],
   "faqs": [
     {
-      "q": "Muszáj előre foglalni?",
+      "q": "Előre kell foglalnom?",
       "a": [
-        "Május és szeptember között igen – a hajók gyakran napokkal előre betelnek, főleg a naplemente-idősávok."
+        "Igen májustól szeptemberig—a hajók gyakran néhány nappal előre megtelnek, különösen a napnyugtás időpontok."
       ]
     },
     {
-      "q": "Adnak törölközőt?",
+      "q": "Törölközőket biztosítanak?",
       "a": [
-        "A csoportos túrákon általában fejenként egyet biztosítanak; a privát kormányosoknál változó, ezért vigyen gyorsan száradó törölközőt biztos, ami biztos."
+        "A csoportos túrák általában személyenként egyet adnak; a privát hajósok változóak, ezért csomagoljon gyorsan száradó törölközőt a biztonság kedvéért."
       ]
     }
   ],
-  "galleryHeading": "Fotógaléria",
-  "gallery": {
-    "primaryAlt": "Hajó halad Positano partja mentén",
-    "primaryCaption": "Utazás a part mentén",
-    "secondaryAlt": "Fürdőzés megálló Positano sziklái mellett",
-    "secondaryCaption": "Úszómegálló"
-  }
+  "galleryHeading": "Fotógaléria"
 }

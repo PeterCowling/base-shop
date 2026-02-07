@@ -1,8 +1,8 @@
 /** @jest-environment node */
 import { afterEach, describe, expect, it } from "@jest/globals";
 
-let warnSpy: jest.SpyInstance;
-let errorSpy: jest.SpyInstance;
+let warnSpy: jest.SpiedFunction<typeof console.warn>;
+let errorSpy: jest.SpiedFunction<typeof console.error>;
 
 afterEach(() => {
   warnSpy?.mockRestore();

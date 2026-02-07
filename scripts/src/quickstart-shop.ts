@@ -4,15 +4,17 @@
 
 import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
-import { loadBaseTokens, type CreateShopOptions } from "@acme/platform-core/createShop";
-import { validateShopName } from "@acme/platform-core/shops";
+
 import { validateShopEnv } from "@acme/platform-core/configurator";
-import { prompt } from "./utils/prompts";
-import { generateThemeTokens } from "./generate-theme";
-import { ensureRuntime } from "./runtime";
+import { type CreateShopOptions,loadBaseTokens } from "@acme/platform-core/createShop";
+import { validateShopName } from "@acme/platform-core/shops";
+
 import { parseQuickstartArgs } from "./cli/parseQuickstartArgs";
 import { quickstartPrompts } from "./cli/quickstartPrompts";
+import { generateThemeTokens } from "./generate-theme";
+import { ensureRuntime } from "./runtime";
 import { createShopAndSeed } from "./shop/createShopAndSeed";
+import { prompt } from "./utils/prompts";
 
 async function main(): Promise<void> {
   const args = parseQuickstartArgs(process.argv.slice(2));
@@ -146,7 +148,7 @@ async function main(): Promise<void> {
   }
 
   if (args.presets) {
-    spawnSync("pnpm", ["ts-node", "scripts/setup-ci.ts", shopId!], {
+    spawnSync("pnpm", ["ts-node", "scripts/src/setup-ci.ts", shopId!], {
       stdio: "inherit",
     });
   }

@@ -1,7 +1,9 @@
 "use client";
 
-import { Button } from "../../../atoms/shadcn";
 import type { PageComponent } from "@acme/types";
+
+import { Button } from "../../../atoms/shadcn";
+
 import type { DiffSummary } from "./diff";
 import { replaceComponentById } from "./diff";
 

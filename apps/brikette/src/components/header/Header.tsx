@@ -4,14 +4,16 @@
 // Breakpoint raised to lg (1024 px) to reduce clutter.
 // --------------------------------------------------------------------------
 
+import { memo, useState } from "react";
+
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
 import { useTheme } from "@/hooks/useTheme";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { memo, useState } from "react";
+import type { AppLanguage } from "@/i18n.config";
+
 import DesktopHeader from "./DesktopHeader";
 import MobileMenu from "./MobileMenu";
 import MobileNav from "./MobileNav";
-import type { AppLanguage } from "@/i18n.config";
 
 function Header({ lang }: { lang?: AppLanguage }): JSX.Element {
   const { theme } = useTheme();

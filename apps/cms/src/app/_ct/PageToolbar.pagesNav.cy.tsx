@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { PageToolbar } from '@acme/page-builder-ui';
 
 describe('PageToolbar pagesNav (CT)', { tags: ['inspectors'] }, () => {

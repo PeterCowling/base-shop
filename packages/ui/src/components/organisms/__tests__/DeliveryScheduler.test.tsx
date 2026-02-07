@@ -1,5 +1,10 @@
 /* i18n-exempt file -- tests use literal copy for assertions */
 // Ensure human-friendly labels are used instead of i18n keys in tests
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+
+import { DeliveryScheduler } from "../DeliveryScheduler";
+
 jest.mock("@acme/i18n", () => ({
   __esModule: true,
   useTranslations: () => (key: string) =>
@@ -16,9 +21,6 @@ jest.mock("@acme/i18n", () => ({
       "deliveryScheduler.time.label": "Time",
     }[key] ?? key),
 }));
-import { render, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { DeliveryScheduler } from "../DeliveryScheduler";
 
 describe("DeliveryScheduler", () => {
   it("fires onChange when switching modes", async () => {

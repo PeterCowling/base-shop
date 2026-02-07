@@ -1,7 +1,8 @@
 // packages/ui/src/components/cms/CmsMetricTiles.tsx
 
 import type { ReactElement } from "react";
-import { cn } from "@ui/utils/style";
+
+import { cn } from "../../utils/style";
 
 export interface CmsMetricTile {
   id: string;

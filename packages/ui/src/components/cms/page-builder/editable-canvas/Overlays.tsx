@@ -1,18 +1,19 @@
 "use client";
 
-import SelectionBreadcrumb from "../SelectionBreadcrumb";
+import type { PresencePeer } from "../collab/usePresence";
 import CommentsHelpLauncher from "../CommentsHelpLauncher";
 import CommentsLayer from "../CommentsLayer";
-import PeerSelectionsOverlay from "../PeerSelectionsOverlay";
-import SoftLockBanner from "../SoftLockBanner";
-import RulersOverlay from "../RulersOverlay";
-import MultiSelectOverlay from "../MultiSelectOverlay";
 import GridOverlay from "../GridOverlay";
+import MultiSelectOverlay from "../MultiSelectOverlay";
+import PeerSelectionsOverlay from "../PeerSelectionsOverlay";
+import RulersOverlay from "../RulersOverlay";
+import SelectionBreadcrumb from "../SelectionBreadcrumb";
 import SnapLine from "../SnapLine";
+import SoftLockBanner from "../SoftLockBanner";
+import type { Rect } from "../utils/coords";
+
 import type { Props, Viewport } from "./types";
 import { t } from "./types";
-import type { PresencePeer } from "../collab/usePresence";
-import type { Rect } from "../utils/coords";
 
 export interface OverlaysProps {
   components: Props["components"];

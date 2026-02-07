@@ -1,12 +1,12 @@
 import {
   CUSTOM_DEVICES_KEY,
-  getCustomDevicePresets,
-  saveCustomDevicePresets,
-  getAllDevicePresets,
-  findDevicePresetById,
-  devicePresets,
   type DevicePreset,
+  devicePresets,
+  findDevicePresetById,
+  getAllDevicePresets,
+  getCustomDevicePresets,
   getLegacyPreset,
+  saveCustomDevicePresets,
 } from "../src/utils/devicePresets";
 
 describe("devicePresets utils", () => {

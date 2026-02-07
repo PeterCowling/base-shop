@@ -1,0 +1,160 @@
+{
+  "seo": {
+    "title": "Check-in és check-out útmutató a Hostel Brikette-ben (Positano)",
+    "description": "Lépésről lépésre útmutató az érkezési idők, azonosítási követelmények, csomagmegőrzés, kauciók és a check-out támogatás témájában a Hostel Brikette-ben, Positanóban."
+  },
+  "linkLabel": "Check-in és check-out útmutató a Hostel Brikette-ben",
+  "sections": [
+    {
+      "id": "checkInRequest",
+      "title": "Check-in kérés",
+      "body": [
+        "Érkezéskor keresd fel a recepciót, hogy elindítsd a check-in folyamatot és megkapd a szobabeosztást.",
+        "Ha komppal érkezel, kövesd %LINK:ferryDockToBrikette|a mólótól a hostelhez vezető útvonalat%. Ha busszal érkezel, használd a %LINK:chiesaNuovaArrivals|Chiesa Nuova érkezési útmutatót% a bejárathoz."
+      ],
+      "images": [
+        {
+          "src": "/img/checkin-desk.avif",
+          "alt": "Recepciós pult a hostel check-inhez.",
+          "caption": "A check-in a Hostel Brikette recepcióján kezdődik."
+        }
+      ]
+    },
+    {
+      "id": "earlyArrival",
+      "title": "Korai érkezés",
+      "body": [
+        "Ha a foglalásod napján 10:30 AM előtt érkezel, még nem tudsz belépni a hostelbe.",
+        "Használd ki ezt az időt reggelire, egy rövid sétára vagy a nap megtervezésére, amíg vársz a check-in időablakra."
+      ]
+    },
+    {
+      "id": "middayArrival",
+      "title": "Érkezés napközben",
+      "body": [
+        "Ha 10:30 AM és 3:00 PM között érkezel, jóváhagyás esetén ideiglenes vendégként beengedhetünk. Ebben az időszakban kérhetsz csomagmegőrzést, ha van hely. A csomagmegőrzés külön szolgáltatás a szobafoglalástól, és saját feltételei vannak.",
+        "Ha biztos megoldásra van szükséged, nézd meg %LINK:luggageStorage|a csomagmegőrzésről szóló útmutatónkat% érkezés előtt."
+      ]
+    },
+    {
+      "id": "checkInWindow",
+      "title": "Check-in időablak",
+      "body": [
+        "Minden nap 3:00 PM és 10:30 PM között tudsz check-inelni. Ez idő alatt a standard check-in folyamatot követed."
+      ]
+    },
+    {
+      "id": "lateArrival",
+      "title": "Késői érkezés",
+      "body": [
+        "Ha a recepció 10:30 PM-es zárása után érkeznél, előfordulhat, hogy elérhető önkiszolgáló késői check-in, a rendelkezésre állástól függően. Az utasításokat a foglaláskor megadott elérhetőségekre küldjük. Győződj meg róla, hogy a készüléked fel van töltve és az adatok helyesek, mert nem tudunk felelősséget vállalni a hibás információk vagy technikai problémák miatt.",
+        "Ha késői érkezést vársz, előre jelezd az ETA-t, hogy megerősíthessük a késői check-in lehetőségét."
+      ]
+    },
+    {
+      "id": "necessityOfProcess",
+      "title": "A teljes check-in folyamat szükségessége",
+      "body": [
+        "A hostelbe való belépéshez a teljes check-in folyamatot be kell fejezned. Ha nem tudod befejezni a check-int, a foglalásod törlődik és No Show-ként kezeljük."
+      ]
+    },
+    {
+      "id": "proofOfIdentity",
+      "title": "Személyazonosítás",
+      "body": [
+        "Érkezéskor érvényes, eredeti személyazonosító okmányt kell bemutatnod (útlevél, személyi igazolvány, vezetői engedély vagy katonai azonosító). Ha a tervezett check-in napon 10:30 PM-ig nem mutatsz be érvényes ID-t, a foglalás No Show-ként törlődik."
+      ]
+    },
+    {
+      "id": "paymentBalance",
+      "title": "Fennmaradó egyenleg",
+      "body": [
+        "A check-in befejezése előtt minden fennmaradó összeget ki kell egyenlítened elfogadott fizetési móddal. Ha nem tudod teljesen kifizetni, a foglalásod törlődik és No Show-ként kerül megjelölésre."
+      ]
+    },
+    {
+      "id": "keycardLinenDeposit",
+      "title": "Kártya és ágynemű kaució",
+      "body": [
+        "Check-inkor €10 készpénzes kauciót kell fizetned a kulcskártyáért és az ágyneműért. A kauciót check-outkor készpénzben teljesen visszatérítjük, ha mindkét tételt visszaadod. Ehhez a kaucióhoz nem fogadunk el bankkártyát vagy hitelkártyát."
+      ],
+      "images": [
+        {
+          "src": "https://www.retrotouch.co.uk/user/products/large/Boutique%20hotel%20range/Card%20Key/Key%20card%20white.jpg",
+          "alt": "Fehér hotelszobai kulcskártya.",
+          "caption": "Tartsd magadnál a kulcskártyát; add le check-outkor, hogy visszakapd a €10 kauciót készpénzben — Fotó: RetroTouch (retrotouch.co.uk). Átméretezve/levágva."
+        }
+      ]
+    },
+    {
+      "id": "checkoutWindow",
+      "title": "Check-out időablak",
+      "body": [
+        "A check-out 7:30 AM és 10:30 AM között van. Check-out után nem térhetsz vissza a szobába és nem hagyhatsz ott személyes tárgyakat."
+      ]
+    },
+    {
+      "id": "earlyCheckout",
+      "title": "Korai check-out",
+      "body": [
+        "Ha 7:30 AM előtt kell távoznod, intézd a korai check-outot a recepción előző este, hogy készpénzben megkapd a kauciót. A kulcskártya személyzeti visszaigazolás nélküli leadása a kaució elvesztését jelenti."
+      ]
+    },
+    {
+      "id": "lateCheckout",
+      "title": "Késői check-out",
+      "body": [
+        "Késői check-outot nem tudunk biztosítani. A check-outot 10:30 AM-ig be kell fejezni."
+      ]
+    },
+    {
+      "id": "failureToCheckout",
+      "title": "Elmaradt check-out",
+      "body": [
+        "A hostel nagyon gyakran teltházas, ezért a szobákat gyorsan ki kell üríteni, hogy a takarítás felkészítse az érkező vendégek számára.",
+        "Ha nem check-outoltál, és a holmid még a szobában van a check-out idő után, lehet, hogy felszabadítjuk a szobát. Igyekszünk először kapcsolatba lépni veled, de el is szállíthatjuk a holmidat és egy helyi hordárszolgálatnál tárolhatjuk. Minden tárolási és kezelési költség téged terhel."
+      ]
+    },
+    {
+      "id": "postCheckout",
+      "title": "Check-out után",
+      "body": [
+        "Check-out után a foglalásod hivatalosan véget ér. Ideiglenes vendégként 3:30 PM-ig a hostel területén maradhatsz, csak a közösségi terekhez férsz hozzá (szobákhoz nem). Csomagmegőrzés kérhető, a rendelkezésre állástól függően, és külön feltételek vonatkoznak rá.",
+        "Ha check-out után nehéz csomagot kell mozgatnod, válaszd a %LINK:porterServices|hordárszolgálatot% vagy nézd meg %LINK:luggageStorage|a csomagmegőrzésről szóló útmutatónkat%, hogy csomag nélkül fedezhesd fel a várost."
+      ]
+    }
+  ],
+  "lastUpdated": "2026-02-04T00:00:00.000Z",
+  "intro": [
+    "Ez az útmutató bemutatja a Hostel Brikette check-in és check-out lépéseit, hogy előre tervezhesd az érkezési időket, dokumentumokat és fizetéseket.",
+    "A legtöbb vendég 3:00 PM és 10:30 PM között check-inel, de korai érkezés esetén ideiglenes hozzáférés és csomagmegőrzés lehetséges a rendelkezésre állástól függően.",
+    "Érkezés előtt készítsd elő a érvényes okmányt, rendezd a fennmaradó összegeket, és ne feledd a €10 készpénzes kauciót a kulcskártyához és ágyneműhöz. A check-out 7:30–10:30 AM."
+  ],
+  "tipsTitle": "Gyors tippek",
+  "tips": [
+    "Tartsd kéznél az okmányt és a fizetési módot, mielőtt a recepcióhoz érsz, hogy gyorsabb legyen a check-in.",
+    "Ha korán érkezel, mentsd el %LINK:luggageStorage|a csomagmegőrzésről szóló útmutatót%, hogy csomag nélkül tervezhesd a napot.",
+    "Ha a mólótól nehéz csomaggal érkezel, a %LINK:porterServices|hordárszolgálat% elviheti a csomagokat, amíg te sétálsz."
+  ],
+  "faqsTitle": "Check-in és check-out GYIK",
+  "faqs": [
+    {
+      "q": "Be tudok jelentkezni 3:00 PM előtt?",
+      "a": [
+        "A korai belépés korlátozott és a rendelkezésre állástól függ. Kérhetsz ideiglenes hozzáférést és csomagmegőrzést, de a teljes check-in csak 3:00 PM-kor kezdődik."
+      ]
+    },
+    {
+      "q": "Mi történik, ha elfelejtem az okmányt?",
+      "a": [
+        "A check-in befejezéséhez érvényes, eredeti okmányra van szükség. Enélkül a foglalás No Show-ként törölhető."
+      ]
+    },
+    {
+      "q": "Tárolhatok csomagot check-out után?",
+      "a": [
+        "Általában korlátozott ideig tudunk csomagot tárolni a hely függvényében. Nézd meg %LINK:luggageStorage|a csomagmegőrzésről szóló útmutatónkat% a részletekért és alternatívákért."
+      ]
+    }
+  ]
+}

@@ -50,4 +50,13 @@
     background-color: hsl(var(--surface-2, var(--color-bg)) / 0.6);
     color: hsl(var(--color-fg) / 0.7);
   }
+
+  /* Forced-colors: ensure focus rings remain visible even when box-shadow is ignored */
+  @media (forced-colors: active) {
+    :where(button, [role="button"], a, input, select, textarea, [tabindex]:not([tabindex="-1"])):focus-visible {
+      outline: 2px solid CanvasText;
+      outline-offset: 2px;
+      box-shadow: none !important;
+    }
+  }
 }

@@ -1,16 +1,19 @@
 "use client";
 
+import { useMemo,useState } from "react";
+import { useRouter } from "next/navigation";
+
+import DeviceSelector from "@acme/cms-ui/DeviceSelector";
+import { type DevicePreset,devicePresets } from "@acme/ui/utils/devicePresets";
+
+import NavTemplateSelector from "@/app/cms/configurator/components/NavTemplateSelector";
 import { Button } from "@/components/atoms/shadcn";
 import NavigationEditor from "@/components/cms/NavigationEditor";
 import NavigationPreview from "@/components/cms/NavigationPreview";
+
 import { useConfigurator } from "../ConfiguratorContext";
 import useStepCompletion from "../hooks/useStepCompletion";
-import { useRouter } from "next/navigation";
 import { useThemeLoader } from "../hooks/useThemeLoader";
-import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
-import { useState, useMemo } from "react";
-import DeviceSelector from "@ui/components/cms/DeviceSelector";
-import NavTemplateSelector from "@/app/cms/configurator/components/NavTemplateSelector";
 
 interface NavItem {
   id: string;

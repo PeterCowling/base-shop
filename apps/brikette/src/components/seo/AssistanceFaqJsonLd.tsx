@@ -1,11 +1,16 @@
-/* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
+ 
 // src/components/seo/AssistanceFaqJsonLd.tsx
-import { memo, useMemo } from "react";
-import { useLocation } from "react-router-dom";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import { usePathname } from "next/navigation";
+
+import { buildCanonicalUrl } from "@acme/ui/lib/seo";
+
 import { BASE_URL } from "@/config/site";
-import { buildFaqJsonLd } from "@/utils/buildFaqJsonLd";
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import { buildFaqJsonLd, type FaqJsonLd } from "@/utils/buildFaqJsonLd";
+
+import FaqJsonLdScript from "./FaqJsonLdScript";
 
 type Props = {
   ns: string; // assistance article namespace, e.g. "arrivingByFerry"
@@ -13,26 +18,24 @@ type Props = {
 
 function AssistanceFaqJsonLd({ ns }: Props): JSX.Element | null {
   const lang = useCurrentLanguage();
-  const { pathname } = useLocation();
+  const pathname = usePathname() ?? "";
   const { t } = useTranslation(ns, { lng: lang });
   const raw = t("faq.items", { returnObjects: true }) as unknown;
 
-  const url = useMemo(() => `${BASE_URL}${pathname}`, [pathname]);
-  const payload = useMemo(() => buildFaqJsonLd(lang, url, raw), [lang, raw, url]);
+  const url = buildCanonicalUrl(BASE_URL, pathname);
+  const payload = buildFaqJsonLd(lang, url, raw);
 
   // Emit an explicit empty FAQPage payload when translations are missing or invalid
   // to keep test expectations stable and downstream parsers resilient.
-  const content = payload && payload.length > 0
-    ? payload
-    : JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        inLanguage: lang,
-        url,
-        mainEntity: [],
-      });
+  const fallback: FaqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    inLanguage: lang,
+    url,
+    mainEntity: [],
+  };
 
-  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: content }} />;
+  return <FaqJsonLdScript data={payload} fallback={fallback} />;
 }
 
 export default memo(AssistanceFaqJsonLd);

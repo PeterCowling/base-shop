@@ -1,54 +1,172 @@
 {
   "seo": {
-    "title": "What to pack for the Amalfi Coast",
-    "description": "Seasonal packing checklist for Positano and the Amalfi Coast: footwear, layers, sun protection, and extras."
+    "title": "What to Pack for the Amalfi Coast | Seasonal Packing Guide",
+    "description": "Complete packing checklist for Positano and the Amalfi Coast. Season-specific clothing, footwear for stairs, tech essentials, costs, and what you can buy locally."
   },
+  "lastUpdated": "2025-02-04",
   "linkLabel": "What to pack for the Amalfi Coast",
   "intro": [
-    "Seasonal packing checklist for Positano: stairs and sun define smart choices."
+    "The Amalfi Coast's dramatic stairs, seasonal weather, and Mediterranean sun shape what you should pack. This guide covers essentials for Positano and surrounding towns, with seasonal variations and practical costs for buying items locally.",
+    "**Key packing principles:** Prioritize comfortable walking shoes (stairs are everywhere), sun protection year-round, and layers for temperature changes between coastal and hillside areas.",
+    "**Luggage tip:** Backpacks and soft-sided bags handle stairs better than wheeled suitcases. If staying at Hostel Brikette or other hillside locations, you'll climb 100+ steps with your luggage. See our %LINK:checkinCheckout|check-in and arrival guide% for more details on getting to the hostel with bags."
   ],
   "sections": [
     {
+      "id": "seasonal-packing",
+      "title": "Seasonal packing: what changes by season",
+      "body": [
+        "The Amalfi Coast has four distinct seasons. Here's what to adjust for each:",
+        "**Spring (March–May):** Pack layers — mornings can be cool (12–15°C / 54–59°F), afternoons warm (18–22°C / 64–72°F). Bring a light rain jacket; April showers are common. Sunscreen is essential even in spring.",
+        "**Summer (June–September):** Hot and dry (25–32°C / 77–90°F). Lightweight, breathable clothing is critical. Pack a hat, sunglasses, and high-SPF sunscreen. Evenings stay warm, but bring one light layer for air-conditioned restaurants. This is peak season — expect crowds and higher prices.",
+        "**Fall (October–November):** Similar to spring but wetter. Pack waterproof shoes and a compact umbrella. Ocean stays swimmable through October. Temperatures range 15–23°C / 59–73°F.",
+        "**Winter (December–February):** Mild but rainy (8–15°C / 46–59°F). You'll need a proper rain jacket, warm layers, and closed-toe shoes with good grip for wet stairs. Many beach clubs close, but hiking is excellent in winter."
+      ]
+    },
+    {
       "id": "footwear",
-      "title": "Footwear",
+      "title": "Footwear (most important category)",
       "body": [
-        "Grippy shoes for stairs and hikes; sandals with tread for beaches.",
-        "Avoid slick soles — lanes can be steep and polished."
+        "Stairs define the Amalfi Coast. From the hostel to the beach, from bus stops to restaurants, expect 50–200 steps per journey. Your shoe choices matter more here than almost anywhere else.",
+        "**Essential: Walking shoes with grip** — Sneakers or hiking shoes with good tread for stairs and coastal paths. Avoid smooth-soled dress shoes or fashion sneakers with flat soles — polished stone steps are slippery, especially when wet.",
+        "**Beach footwear** — Water shoes or sturdy sandals with straps (not flip-flops). Beaches here are often pebbly, and some require walking on rocks to enter the water. Check our %LINK:positanoBeaches|Positano beaches guide% for details on each beach's terrain.",
+        "**Evening shoes (optional)** — If you want to dress up for dinner, bring one pair of smarter shoes, but make sure they still have grip for walking home on stairs.",
+        "**What to skip:** Heels (dangerous on stairs), pure flip-flops (uncomfortable for long walks), brand-new shoes (break them in before arriving)."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/what-to-pack/landscape-architecture-aesthetic.jpeg",
+          "alt": "Stone steps climbing through a narrow old-town lane with plants and shop signs",
+          "caption": "Stairs are the main terrain feature in Positano — pack shoes you trust",
+          "width": 735,
+          "height": 1105
+        }
       ]
     },
     {
-      "id": "layers",
-      "title": "Layers & sun",
+      "id": "clothing",
+      "title": "Clothing essentials",
       "body": [
-        "Light layers for evenings; hat and SPF for midday walks.",
-        "A light rain jacket in shoulder months."
+        "**Layering strategy:** The coast can be 5°C warmer than Positano's upper town. Pack clothes you can add or remove easily.",
+        "**Swimwear:** Bring at least 2 swimsuits so one can dry while you wear the other. Beach season runs April–October.",
+        "**Cover-ups:** A light dress or shirt to cover swimwear when walking to/from the beach. Restaurants and shops prefer you're not in just swimwear.",
+        "**Evening wear:** Smart-casual is the standard. Lightweight long pants or a dress for dinners. Italians tend to dress well even casually.",
+        "**Sun protection clothing:** Long-sleeve UV shirts, wide-brim hats, and sunglasses. The Mediterranean sun is intense, especially on boats and beaches.",
+        "**Rain gear:** A packable rain jacket works for all seasons. Skip umbrellas in summer unless you're visiting in shoulder season (April, October–November)."
       ]
     },
     {
-      "id": "bags",
+      "id": "bags-and-luggage",
       "title": "Bags & luggage",
       "body": [
-        "Backpacks beat big suitcases for stairs; keep valuables close.",
-        "Bring a refillable bottle; markets sell large bottles for refills."
+        "**Best luggage:** Backpacks or soft duffel bags. If you must bring a rolling suitcase, choose one with good wheels — you'll carry it up stairs frequently.",
+        "**Day bag:** A small backpack or crossbody bag for daily outings. Keep it under 15L for easy maneuvering on crowded buses and boats.",
+        "**Beach bag:** Bring a lightweight tote or mesh bag for beach gear. You can buy cheap beach bags locally (€5–10) if you forget.",
+        "**Anti-theft considerations:** Pickpocketing is rare in Positano but more common in Naples and on crowded ferries. Keep valuables in a bag you can keep in front of you."
+      ]
+    },
+    {
+      "id": "sun-protection",
+      "title": "Sun protection & health",
+      "body": [
+        "**Sunscreen:** Pack SPF 50+ for face and body. Local sunscreen costs €15–25 for a 200ml bottle (vs €8–12 at home). Reef-safe sunscreen is appreciated if you're swimming near marine areas.",
+        "**After-sun care:** Aloe vera gel or moisturizer. The sun here is stronger than northern Europe or North America.",
+        "**Insect repellent:** Mosquitoes are present April–October, especially near water. Bring a small bottle or buy locally (€8–12).",
+        "**Basic first aid:** Band-aids for blisters (stairs cause them), pain relievers, any prescription medications. Pharmacies are well-stocked but finding your exact medication brand may be difficult.",
+        "**Motion sickness:** If you're prone to seasickness, bring medication before taking ferries. Seas can be choppy, especially on the Capri routes."
+      ]
+    },
+    {
+      "id": "tech-and-adapters",
+      "title": "Tech, adapters & electronics",
+      "body": [
+        "**Power adapter:** Italy uses Type L plugs (3-prong) and Type C (2-prong European). Voltage is 230V. Bring a universal adapter or buy one locally (€5–10 at tabacchi).",
+        "**Phone and chargers:** Bring your phone charger and a portable power bank. Cell service is generally good, but battery drains faster when using GPS constantly for navigation.",
+        "**Camera:** The Amalfi Coast is incredibly photogenic. Bring a camera or ensure your phone storage is sufficient. A waterproof case is useful for boat trips.",
+        "**E-reader or tablet:** For beach reading. Local bookstores have limited English selections.",
+        "**Headphones:** Useful for ferry rides and bus journeys."
+      ]
+    },
+    {
+      "id": "toiletries-and-personal",
+      "title": "Toiletries & personal items",
+      "body": [
+        "**What to pack:** Basic toiletries (shampoo, soap, toothpaste, etc.) in travel sizes. Hostels and budget hotels may not provide these.",
+        "**What you can buy:** Supermarkets and pharmacies stock all major toiletry brands. Prices are 10–30% higher than northern Europe but comparable to other Italian tourist areas.",
+        "**Laundry:** Most hostels have laundry facilities (€3–5 per wash). Pack enough clothes for 3–4 days, then plan to do laundry.",
+        "**Menstrual products:** Available at supermarkets and pharmacies. Tampons and pads cost €3–6 per pack."
+      ]
+    },
+    {
+      "id": "money-and-documents",
+      "title": "Money, cards & documents",
+      "body": [
+        "**Cash:** Carry €50–100 in small notes (€5, €10, €20). Many small businesses, beach clubs, and buses are cash-only. ATMs are available but charge €3–5 per withdrawal.",
+        "**Cards:** Major credit cards (Visa, Mastercard) work in most places. Amex is less common. Notify your bank before traveling to avoid card blocks.",
+        "**Documents:** Passport (or EU ID card), travel insurance proof, any medical cards, and hostel/hotel confirmation emails. Download offline copies to your phone.",
+        "**Backup copies:** Scan your passport and keep a digital copy separate from the original."
+      ]
+    },
+    {
+      "id": "optional-extras",
+      "title": "Optional extras & nice-to-haves",
+      "body": [
+        "**Reusable water bottle:** Tap water is safe to drink. Refill at fountains (many towns have public fountains) or buy large bottles at supermarkets (€0.30–0.50 per liter) to refill.",
+        "**Dry bag:** Useful for protecting electronics and valuables on boat trips or at the beach.",
+        "**Compact towel:** Beach clubs rent towels (€3–5), but a microfiber travel towel saves money and dries quickly.",
+        "**Snorkel gear:** If you enjoy snorkeling. Rental is available (€10–15/day) but quality varies.",
+        "**Portable speaker:** For beach days (keep volume respectful).",
+        "**Italian phrasebook or language app:** Basic Italian helps. Many locals speak English, but effort is appreciated."
+      ]
+    },
+    {
+      "id": "what-to-leave-home",
+      "title": "What NOT to pack",
+      "body": [
+        "**Skip these items:**",
+        "• Heavy hard-shell suitcases (stairs make them miserable)",
+        "• More than 2 pairs of shoes (they take up too much space)",
+        "• Hair dryer (most accommodations provide them, and voltage differences can be an issue)",
+        "• Full-size toiletries (buy locally or bring travel sizes)",
+        "• Formal wear unless you have specific dinner plans",
+        "• Excessive electronics (keep it simple)",
+        "• Winter coats unless visiting December–February"
       ]
     }
   ],
   "tips": [
-    "Skip heavy hard-shell suitcases if your stay involves long stair climbs.",
-    "Carry small euro notes for beach umbrellas, buses, and quick snacks."
+    "Skip heavy hard-shell suitcases if your stay involves stair climbs — backpacks or soft duffels are much easier.",
+    "Carry small euro notes (€5, €10) for beach umbrellas, buses, and quick snacks. Many small vendors don't accept cards.",
+    "Buy sunscreen and insect repellent before arriving to save money — local prices are 50% higher than home.",
+    "Break in your walking shoes before the trip. Blisters from new shoes + stairs = misery.",
+    "Pack a small first aid kit with blister plasters, pain relievers, and any prescription meds. Pharmacies are helpful but may not stock your exact brand."
   ],
   "faqs": [
     {
-      "q": "Can I buy everything locally?",
-      "a": [
-        "Yes, but peak-season prices jump—pack essentials to avoid markups."
+      "question": "Can I buy everything I need locally?",
+      "answer": [
+        "Yes, but prices are significantly higher during peak season (June–September). Supermarkets and pharmacies stock most essentials, but expect to pay 20–50% more than at home for sunscreen, toiletries, and beach gear.",
+        "Budget tip: Pack essentials like sunscreen, insect repellent, and any specific medications from home to avoid markups."
       ]
     },
     {
-      "q": "Do I need to bring a bathrobe?",
-      "a": [
-        "Most accommodations supply towels; pack a lightweight cover-up only if you prefer one for the beach."
+      "question": "Do I need to bring beach towels?",
+      "answer": "Most accommodations provide bath towels but not beach towels. Beach clubs rent towels for €3–5, or you can pack a lightweight microfiber travel towel. Hostels sometimes have beach towels available for a small deposit."
+    },
+    {
+      "question": "What's the best luggage for Positano?",
+      "answer": "A backpack or soft-sided duffel bag is ideal. If staying at hillside locations like Hostel Brikette, you'll climb 100+ stairs with your luggage. Rolling suitcases are difficult on stairs and cobblestones. Pack light — aim for carry-on size if possible."
+    },
+    {
+      "question": "Should I pack an umbrella?",
+      "answer": [
+        "In summer (June–September): No, rain is rare. Pack a light rain jacket for evening breezes on boats.",
+        "In spring/fall (April–May, October–November): Yes, bring a compact umbrella. April and November are the wettest months.",
+        "In winter (December–February): Definitely bring an umbrella and waterproof jacket. Winter is the rainy season."
       ]
+    },
+    {
+      "question": "Do I need hiking boots for the Path of the Gods?",
+      "answer": "Proper hiking shoes with ankle support are recommended for the %LINK:pathOfTheGods|Path of the Gods% and other coastal trails. Trail runners or hiking boots work well. Regular sneakers are borderline — they'll work if you're experienced, but ankle support helps on rocky sections."
     }
   ]
 }

@@ -1,88 +1,233 @@
 {
   "seo": {
-    "title": "Ferjekaia → Hostel Brikette med bagasje",
-    "description": "Valgene fra kaia: portør eller SITA-buss til nærmeste stopp; praktiske tips og vanlige spørsmål."
+    "title": "Fergekai → Hostel Brikette, med bagasje",
+    "description": "Komplett 2026-guide: fergekai til Hostel Brikette med bagasje ved hjelp av bærere og Interno-buss. Kostnader, tidsbruk, trinn-for-trinn-veibeskrivelse og reisetips."
   },
-  "linkLabel": "Ferjekaia → Hostel Brikette med bagasje",
+  "lastUpdated": "2026-01-31",
+  "linkLabel": "Fergekai → Hostel Brikette, med bagasje",
   "intro": [
-    "Kommer du med ferje og kofferter? Kombiner Interno Positano-bussen med porterene i Positano for å nå Hostel Brikette uten å slepe bagasje i bratte trapper."
+    "Ankommer du med ferge med bagasje? Kombiner Interno Positano-bussen med Positanos bærere for å nå Hostel Brikette uten å måtte slepe vesker opp bratte trapper. Denne ruten tar 20-45 minutter avhengig av bærer- og busstiming, koster €2-6 per person pluss valgfrie bæreravgifter, og eliminerer mesteparten av Positanos beryktede trappeklatring.",
+    "Oppdatert for 2026-sesongen, denne guiden dekker eksakte kostnader, bussruter, bærerpriser og steg-for-steg ruten som vårt personale anbefaler til hundrevis av ankommende gjester. Enten du reiser alene med ryggsekk eller som gruppe med flere kofferter, finner du praktiske råd for en smidig ankomst."
   ],
   "beforeList": [
-    "Sjekk siste Interno Positano-rutetabell – her er [oppdatert rutetid og billettpriser](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
-    "Kjøp billetter til Interno Positano hos et hvilket som helst tabacchi/utsalg før du går om bord.",
-    "Vurder å overlate tung bagasje til porterene når de møter ferjen – si at du skal til Hostel Brikette."
+    "Sjekk siste Interno Positano-rutetabell — her er %URL:https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26|gjeldende rutetabell og billettpris%.",
+    "Kjøp Interno Positano-billetter hos enhver tabacchi/kiosk før påstigning.",
+    "Vurder å gi tung bagasje til bærerne som møter fergen – fortell dem at du skal bo på Hostel Brikette."
   ],
   "sections": [
     {
-      "id": "dock-to-mulini",
-      "title": "Fra kaia til Piazza dei Mulini",
+      "id": "ferry-dock-overview",
+      "title": "Hva du kan forvente ved Positanos fergekai",
       "body": [
-        "Gå fra hovedstranden opp til Piazza dei Mulini langs den skiltede promenaden – bruk [denne veibeskrivelsen](https://www.google.com/maps/dir/Positano+Spiaggia/2+Viale+Pasitea+Positano,+Campania/@40.6289096,14.4857482,18z/data=!4m14!4m13!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!3e2).",
-        "Bærer du kofferter, kan du leie porterene ved kaien så de frakter alt oppover for deg – vår [guide til portørtjenester](guide:porterServices) forklarer priser og bestilling."
+        "Positanos fergekai (offisielt Positano Spiaggia) ligger på strandnivå ved foten av byen. Når du går i land, går du ned en kort landgang til hovedstrandpromenaden. Hele havneområdet er kompakt — du kan se stranden, billettskurene og starten på oppoverbakken innen 100 meter.",
+        "Bæreretjenester møter hver fergeankomst. Du vil oppdage dem umiddelbart — de bærer lyse vester og venter med hjulvogner nær landgangen. Fra kaien har du tre hovedalternativer: leie bærere til å transportere veskene dine separat (anbefalt for tung bagasje), ta Interno Positano-bussen deler av veien opp (raskest og enklest), eller gå hele ruten (kun praktisk med lett dagssekk).",
+        "Strandområdet har toaletter (€1), noen få kafeer og billettkiosker hvor du kan kjøpe Interno-bussbilletter. De fleste ferger ankommer mellom 09:00-19:00 i sommersesongen (april-oktober), med de travleste periodene rundt 11:00-14:00. Hvis fergen din er forsinket, sjekk %LINK:ferrySchedules|gjeldende fergeruter% for oppdaterte ankomsttider.",
+        "Fergetjenester til Positano går fra flere havner langs Amalfikysten. Hvis du ankommer fra Salerno, Napoli eller Sorrento, legger ferger vanligvis til ved Positano Spiaggia mellom sen formiddag og tidlig kveld. Kaien håndterer både vannjetbåter (aliscafi) og langsommere tradisjonelle ferger (traghetti). Vannjetbåter er raskere men dyrere, mens tradisjonelle ferger tilbyr utendørssitteplasser og bedre utsikt. Begge ankommer ved samme kai og følger samme ilandstigningsprosedyre.",
+        "Vær kan påvirke fergerutene betydelig. Under urolig sjø eller sterk vind (vanlig om høsten og vinteren), kan ferger bli forsinket, omdirigert til alternative havner eller innstilt helt. Hvis du reiser i skuldersesongen (mars-april eller september-november), ha alltid en backup-plan. %LINK:amalfiPositanoBus|SITA-bussen fra Amalfi% eller andre kystbyer kan fungere som et alternativ hvis fergen din er innstilt, selv om du vil ankomme ved Chiesa Nuova i stedet for på strandnivået."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-positano-spiaggia-view.jpg",
+          "alt": "Positanos fergekai og strandpromenade med båter i bukten.",
+          "caption": "Fergekaien ved Positano Spiaggia — kompakt og lett å navigere fra ilandstigningen."
+        }
+      ]
+    },
+    {
+      "id": "porter-costs-timing",
+      "title": "Bærerkostnader og tidsbruk (2026-sesongen)",
+      "body": [
+        "Positanos offisielle bæreretjeneste tar €15-20 per veske avhengig av størrelse og vekt. En standard ryggsekk eller koffert (opptil 20 kg) koster €15, mens store vesker eller flere gjenstander koster €18-20. Betaling er kun kontant — ha euro klart ved kaien.",
+        "Bærere laster veskene dine på hjulvogner og leverer dem direkte til Hostel Brikettes inngang innen 30-45 minutter. Du gir fra deg bagasjen din, forteller dem 'Hostel Brikette' (de kjenner til det), betaler avgiften og tar med deg verdisaker. Bærerne tar en annen rute ved hjelp av servicestier og snarveier, så du vil ikke se veskene dine før du når hostellet — dette er normalt.",
+        "Fra vår erfaring med å være vert for hundrevis av fergeankomster: bærere er pålitelige og vesker ankommer alltid trygt, men vi anbefaler å ha medisiner, elektronikk og reisedokumenter i dagssekken din. Hvis du reiser som par eller gruppe, vurder å bruke bærere for tunge vesker mens dere beholder én liten veske hver for reisen. Soloreisende med én veske synes vanligvis bæreretjenesten er verdt hver euro — å ankomme avslappet i stedet for svett og utslitt gjør en enorm forskjell på dine første inntrykk av Positano.",
+        "Bæreretjenesten opererer året rundt og møter hver planlagte fergeankomst. I høysesongen om sommeren (juli-august) jobber flere bærerteam samtidig for å håndtere fergemengdene. Du trenger ikke å booke på forhånd — bare ta kontakt med dem ved kaien etter ilandstigningen. De aksepterer kun kontantbetaling (euro), så stopp ved en minibank før fergeavgangen om nødvendig. For fullstendige detaljer om booking og priser, se vår %LINK:porterServices|bæreretjenesteguide%."
+      ]
+    },
+    {
+      "id": "dock-to-mulini",
+      "title": "Havn til Piazza dei Mulini",
+      "body": [
+        "Gå fra hovedstranden opp til Piazza dei Mulini og følg skiltet promenade — bruk %URL:https://www.google.com/maps/dir/Positano+Spiaggia/2+Viale+Pasitea+Positano,+Campania/@40.6289096,14.4857482,18z/data=!4m14!4m13!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!3e2|disse veibeskrivelsene%.",
+        "Hvis du bærer vesker, vurder å leie en av Positanos bæreretjenester ved kaien slik at de transporterer alt oppover for deg — vår %LINK:porterServices|bæreretjenesteguide% dekker priser og hvordan du bestiller."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-promenade-to-mulini.jpg",
+          "alt": "Positanos strandpromenade med butikker og kafeer langs havnen.",
+          "caption": "Promenaden fra fergekaien mot Piazza dei Mulini — en kort oppoverbakke gjennom strandområdet."
+        }
       ]
     },
     {
       "id": "mulini-to-bus",
-      "title": "Piazza dei Mulini til Interno-busstoppet",
+      "title": "Piazza dei Mulini til Interno-bussholdeplassen",
       "body": [
-        "Når du kommer til Piazza dei Mulini, kjøper du en interno-billett i et av hjørneutsalgene eller tabacchi. Gå deretter til busstoppet ytterst på piazzaen der den møter veien.",
-        "Interno-bussen går omtrent hvert 30. minutt fra morgen til midnatt og følger [denne ruta oppover](https://www.google.com/maps/dir/2+Viale+Pasitea+Positano,+Campania/Viale+Pasitea,+323,+84017+Positano+SA/@40.6309188,14.4819138,16z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!1m5!1m1!1s0x133b97667312711d:0xa2b15bca59b377fa!2m2!1d14.4824389!2d40.6293416!3e0) mot hostellet."
+        "Piazza dei Mulini ligger i Positanos handledistrikt nær apoteket — det er det laveste trafikktilgjengelige punktet i byen, noe som gjør det til det naturlige knutepunktet for busstjenester.",
+        "Når du ankommer Piazza dei Mulini, kjøp en interno-bussbillett fra en av hjørnebutikkene eller 'tabacchi'. Og gå deretter til bussholdeplassen som er ved kanten av Piazzaen - hvor Piazzaen møter veien.",
+        "Interno-bussen går cirka hver 30. minutt fra morgen til midnatt. %URL:https://www.google.com/maps/dir/2+Viale+Pasitea+Positano,+Campania/Viale+Pasitea,+323,+84017+Positano+SA/@40.6309188,14.4819138,16z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!1m5!1m1!1s0x133b97667312711d:0xa2b15bca59b377fa!2m2!1d14.4824389!2d40.6293416!3e0|Se den komplette bussruten på Google Maps% for å se nøyaktig hvor bussen kjører oppover mot hostellet."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-piazza-mulini-bus-stop.jpg",
+          "alt": "Piazza dei Mulini bussholdeplass i Positanos sentrumshandledistrikt.",
+          "caption": "Interno-bussholdeplassen ved Piazza dei Mulini, plassert ved kanten av piazzaen hvor den møter hovedveien."
+        }
       ]
     },
     {
       "id": "identify-bus",
-      "title": "Slik kjenner du igjen Interno Positano-bussen",
+      "title": "Å gjenkjenne Interno Positano-bussen",
       "body": [
-        "Bussene varierer, men den elektroniske skiltet foran viser alltid «interno positano».",
-        "Forvent en kompakt bybuss med ståplasser; gå om bord ved fortauskanten og vis eller valider billetten hos sjåføren."
+        "Flåtekjøretøyene varierer, men det elektroniske skiltet på fronten vil alltid lese 'interno positano.'",
+        "Forvent en kompakt bybuss med ståplass; stig på ved fortauskanten og valider eller vis billetten din til sjåføren."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-interno-yellow.jpg",
+          "alt": "En liten Interno Positano-buss med 'INTERNO POSITANO' på det elektroniske frontskilt.",
+          "caption": "Se etter 'INTERNO POSITANO'-skiltet på fronten."
+        },
+        {
+          "src": "/img/directions/ferry-dock-interno-red.jpg",
+          "alt": "En Interno Positano-buss i Positano med 'INTERNO POSITANO' på det elektroniske frontskilt.",
+          "caption": "Bussene varierer, men skiltet er konsistent."
+        }
       ]
     },
     {
       "id": "bus-stop-to-hostel",
-      "title": "Fra holdeplassen til Hostel Brikette",
+      "title": "Fra lokal holdeplass til Hostel Brikette",
       "body": [
-        "Gå av ved tabacchi-butikken på holdeplassen «Chiesa Nuova». Gå ut på hovedveien og ta til venstre inn på Viale Pasitea.",
-        "Gå litt over 100 meter; hostellet dukker opp på høyre side. Se etter skiltet på terrassen i andre etasje, følg svingen og ta trappene opp på høyre hånd til inngangen.",
-        "Vil du se ruten? Følg [disse siste stegene](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Tabacchi+Cafiero+Emanuele,+Viale+Pasitea,+325a,+84017+Positano+SA/@40.6292434,14.4813669,19z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b97660ef186c1:0xc9eb9ab54d880307!2m2!1d14.4823321!2d40.6293865!3e2)."
+        "Gå av ved tabacchien ved 'Chiesa Nuova'-holdeplassen (se bildet nedenfor).",
+        "Gå ut av bussen, sving til høyre og gå til hovedveien.",
+        "Sving til venstre inn på Viale Pasitea og gå litt over 100 meter (330 fot).",
+        "Du vil se hostellet på høyre side — se etter vårt skilt på terrassen i andre etasje.",
+        "Gå forbi skiltet, sving rundt svingen og ta trappene opp på høyre side for å nå hostellinngangen.",
+        "Trenger du en visuell rute? Følg %URL:https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Tabacchi+Cafiero+Emanuele,+Viale+Pasitea,+325a,+84017+Positano+SA/@40.6292434,14.4813669,19z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b97660ef186c1:0xc9eb9ab54d880307!2m2!1d14.4823321!2d40.6293865!3e2|disse siste veibeskrivelsene%."
+      ],
+      "images": [
+        {
+          "src": "/img/tabacchi.webp",
+          "alt": "Tabacchi-butikken ved Chiesa Nuova-bussholdeplassen med en markise som viser 'TABACCHI' og 'ARTICOLI DA REGALO'.",
+          "caption": "Bussholdeplassen er rett utenfor denne tabacchien."
+        },
+        {
+          "src": "/img/directions/hostel-brikette-entrance-steps.png",
+          "alt": "Veien nær Hostel Brikette med hostellskiltet synlig og trappene til inngangen rundt svingen på høyre side.",
+          "caption": "Se etter vårt skilt, deretter ta trappene opp på høyre side."
+        }
+      ]
+    },
+    {
+      "id": "total-journey-timing",
+      "title": "Samlet reisetid og kostnadssammendrag",
+      "body": [
+        "**Med bærere + Interno-buss (anbefalt):** 20-30 minutter håndfri reise, €2-6 per person for bussbilletter, pluss €15-20 per veske for bærere. Total kostnad for én person med én veske: omtrent €17-26. Grupper på 2-3 kan dele bærerkostnader hvis dere deler bagasjevogner.",
+        "**Kun buss (ingen bærere):** 25-35 minutter med å bære egne vesker, €2-6 per person. Du må håndtere trapper ved havnen (kort trappeavsnitt), gå med bagasje til Piazza dei Mulini (5 minutter oppover), og bære vesker på/av bussen. Passer for reisende med én liten ryggsekk eller lett bagasje.",
+        "**Å gå hele ruten:** Ikke anbefalt med bagasje. Ruten innebærer 300+ trinn, bratte stigninger og tar 45-60 minutter. Vurder dette kun hvis du ankommer uten vesker eller med en veldig lett dagssekk. De fleste av våre gjester som prøver dette med bagasje ender opp utslitte eller må stoppe flere ganger.",
+        "Hvis du ankommer fra %LINK:chiesaNuovaArrivals|Chiesa Nuova bussholdeplass% i stedet for fergekaien, er den siste gåseksjonen (100 m + trapper) identisk med det som er beskrevet i siste seksjon ovenfor."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-capri-ferry-img05.jpg",
+          "alt": "Ferge som nærmer seg Positano med den fargerike skråningsbyen i bakgrunnen.",
+          "caption": "Ankommer med ferge — din reise til Hostel Brikette begynner ved kaien på strandnivå."
+        }
+      ]
+    },
+    {
+      "id": "alternative-options",
+      "title": "Alternative alternativer og når du skal bruke dem",
+      "body": [
+        "**Taxi fra kaien:** Koster €25-35 for opptil 4 personer med bagasje. Verdt å vurdere hvis du er en gruppe på 3-4 som deler prisen, ankommer veldig sent (etter midnatt når bussene stopper) eller under fergeinnstillinger når bæreretjenestene er overveldet. Ring eller WhatsApp +39 379 125 6222 for å bestille — si 'Hostel Brikette' og de kjenner til beliggenheten. Taxier kan ikke kjøre helt til hostellinngangen (ingen kjøretøytilgang), men de slipper deg av på det nærmeste veipunktet, cirka 50 meter fra våre trapper. Hvis du har mobilitetsproblemer, diskuter dette med taxisjåføren på forhånd.",
+        "**Sene ankomster (etter 23:00):** Interno-bussen går til cirka midnatt, men sjekk den eksakte rutetabellen for din ankomstdato. Hvis fergen din ankommer etter siste buss, er alternativene dine taxi (€25-35) eller å gå uten bagasje hvis du har sendt vesker i forveien. Ikke prøv å gå hele veien med tunge vesker i mørket — ruten har ujevne trapper og dårlig belysning i seksjoner. Vårt resepsjonsteam kan bli sent for å møte deg hvis du sender melding i forveien med ankomsttiden din.",
+        "**Hvis Interno-bussene er fulle eller forsinket:** I høysesongen (juli-august) kan Interno-bussen fylles opp raskt, spesielt rundt fergeankomsttider. Hvis du misser én buss, ankommer en annen innen 30 minutter. Alternativt kan du gå til Piazza dei Mulini og ta bussen der (den er vanligvis mindre full ved den holdeplassen), eller bruke taxi som backup. Noen gjester foretrekker å vente på andre eller tredje buss i stedet for å trenge seg inn i et overfylt kjøretøy med bagasje — dette er helt greit og de ekstra 30 minuttene vil ikke påvirke ankomsten din betydelig."
+      ]
+    },
+    {
+      "id": "staff-tips",
+      "title": "Tips fra vårt resepsjonsteam",
+      "body": [
+        "**Beste ankomststrategi ifølge vårt personale:** Gi hovedbagasjen din til bærere ved kaien (de fleste gjester bruker dette — det er verdt €15-20 per veske), ta med en liten dagssekk med nødvendigheter, kjøp Interno-bussbilletten din under gåturen til Piazza dei Mulini, og ta bussen til Chiesa Nuova. Slik ankommer du avslappet, veskefri og klar til å nyte Positano.",
+        "**Når bærere sparer mest innsats:** Hvis du har vesker over 15 kg, flere kofferter eller reiser i sommervarme, er bærere essensielle. Vi har sett for mange gjester ankomme utslitte fra å bære vesker oppover — €15-20-kostnaden er liten sammenlignet med å starte Positano-oppholdet ditt stresset og svett.",
+        "**Koordiner bærerleveringstiming:** Hvis du ankommer før rommene er klare, fortell bærerne når du forventer å nå hostellet slik at de kan time leveransen. Vesker ankommer vanligvis 30–45 minutter etter at du gir dem fra deg, noe som gir deg tid til å ta bussen og nå hostellinngangen. Hvis du ankommer tidlig, kan du vanligvis be om bagasjeoppbevaring og utforske byen mens du venter.",
+        "**Førstegangsbesøkende i Positano:** Ikke la deg skremme av trappene og bakkene — å kombinere bærere med Interno-bussen reduserer den fysiske utfordringen betydelig. De fleste av våre gjester forteller oss at denne ankomstruten er mye enklere enn de forventet, spesielt sammenlignet med skrekkhistorier de har hørt om Positanos trapper.",
+        "**Ha bussvekslepenger klare:** Interno-bussbilletter koster €2-6 avhengig av sesong og eksakt rute. Billettselgere hos tabacchi aksepterer kun kontanter (små sedler foretrukket — ikke forvent at de veksler en €50-seddel). Ha noen €5- eller €10-sedler klare ved kaien."
       ]
     }
   ],
   "stepsList": [
-    "Lever bagasjen til porterene ved kaien og kjøp Interno Positano-billetter hos tabacchi.",
-    "Gå fra hovedstranden til Piazza dei Mulini, og fortsett til Interno-busstoppet ved tabacchi-butikken i Viale Pasitea.",
-    "Gå om bord i Interno Positano-bussen (se etter skiltet «interno positano») og kjør oppover mot Viale Pasitea 325.",
-    "Gå av utenfor tabacchi, ta til venstre langs Viale Pasitea i litt over 100 m og ta trappene opp på høyre side til Hostel Brikette."
+    "Gi bagasje til bærerne ved kaien og kjøp Interno Positano bussbilletter hos tabacchi.",
+    "Gå fra hovedstranden til Piazza dei Mulini, fortsett deretter til Interno-bussholdeplassen ved siden av tabacchien på Viale Pasitea.",
+    "Gå om bord på Interno Positano-bussen (se etter 'interno positano'-skiltet) og kjør oppover mot Viale Pasitea 325.",
+    "Gå av utenfor tabacchien, sving til venstre langs Viale Pasitea i litt over 100 m, og gå opp trappene på høyre side for å nå Hostel Brikette."
   ],
   "kneesList": [
-    "Interno Positano-bussen sparer deg for hundrevis av bratte trappetrinn.",
-    "La porterene frakte de tunge koffertene så du har hendene fri på bussturen og den korte gåturen."
+    "Å ta Interno Positano-bussen reduserer hundrevis av bratte trinn fra reisen.",
+    "La bærerne flytte tunge vesker separat slik at du kan holde hendene fri på turen og den korte gåturen."
   ],
-  "kneesPorterPrefix": "Vil du ha mer informasjon om priser og bestilling? Les vår",
-  "kneesPorterLinkLabel": "guide til portørtjenester",
+  "kneesPorterPrefix": "Trenger du flere detaljer om bærerpriser og hvordan du bestiller? Les vår",
+  "kneesPorterLinkLabel": "bæreretjenesteguide",
   "faqs": [
     {
-      "q": "Hvor kjøper jeg Interno Positano-billetter?",
+      "q": "Hvor kjøper jeg Interno Positano bussbilletter?",
       "a": [
-        "Kjøp billetter hos et hvilket som helst tabacchi/utsalg i byen, inkludert kiosken ved busstoppet. Sjåførene selger ikke billetter om bord."
+        "Kjøp billetter hos enhver tabacchi/kiosk i byen, inkludert kiosken ved siden av bussholdeplassen. Sjåfører selger ikke billetter ombord."
       ]
     },
     {
       "q": "Hvor ofte går Interno Positano-bussen?",
       "a": [
-        "Avgangene er satt opp omtrent hvert 30. minutt fra rundt 08:00 til midnatt, med ekstra turer i høysesongen – sjekk alltid rutetabellen før du legger fra kai."
+        "Tjenester er planlagt omtrent hver 30. minutt fra cirka 08:00 til midnatt, med ekstra avganger i høysesongen — alltid bekreft rutetabellen før seiling."
       ]
     },
     {
-      "q": "Hvordan fungerer porterene på kaien?",
+      "q": "Hvordan fungerer bærerne ved kaien?",
       "a": [
-        "Porterene møter hver ferje, laster bagasjen din og leverer den oppover i byen. Si at du skal til Hostel Brikette, betal prisen de oppgir, og behold verdisaker og medisiner hos deg selv."
+        "Bærere møter hver ferge, laster veskene dine og leverer dem oppover. Fortell dem at du skal bo på Hostel Brikette, betal den oppgitte avgiften og ta med deg verdisaker eller medisin."
+      ]
+    },
+    {
+      "q": "Hvor mye koster bærere fra fergekaien?",
+      "a": [
+        "Offisielle bærerpriser for 2026-sesongen er €15 per standardveske (opptil 20 kg) og €18-20 for store eller tunge gjenstander. Betaling er kun kontant ved kaien. For to personer med to vesker, forvent å betale €30-40 totalt for bæreretjeneste."
+      ]
+    },
+    {
+      "q": "Hva hvis jeg ankommer etter midnatt når bussene ikke går?",
+      "a": [
+        "Interno-bussen går til cirka midnatt. For sene ankomster, bestill taxi på forhånd (€25-35 til hostellet, WhatsApp +39 379 125 6222) eller send melding til vårt resepsjonsteam slik at vi kan hjelpe med å ordne transport. Ikke prøv å gå med bagasje i mørket."
+      ]
+    },
+    {
+      "q": "Hva er innsjekkingstidene, og kan jeg oppbevare bagasje hvis jeg ankommer tidlig?",
+      "a": [
+        "Vanlig innsjekking er fra 15:00 til 22:30. Bagasjeoppbevaring er tilgjengelig fra 10:30 for gjester som sjekker inn (avhengig av plass). For fullstendige detaljer (ID-krav, depositum og alternativer for sen ankomst), se vår innsjekk- og utsjekkguide: %LINK:checkinCheckout|innsjekking & utsjekking%."
+      ]
+    },
+    {
+      "q": "Kan jeg gå fra fergekaien til hostellet med bagasje?",
+      "a": [
+        "Ikke anbefalt. Ruten innebærer 300+ trinn, bratte oppoverbakker og tar 45-60 minutter med vesker. Nesten alle våre gjester bruker enten bærere + Interno-buss (anbefalt) eller taxi. Å gå er kun praktisk med en lett dagssekk."
+      ]
+    },
+    {
+      "q": "Er denne ruten tilgjengelig for rullestoler eller barnevogner?",
+      "a": [
+        "Nei, denne ruten innebærer trapper og bratte stier uegnet for rullestoler eller barnevogner. Kontakt vårt resepsjonsteam før ankomst — vi kan ordne tilgjengelig taxitransport direkte fra fergekaien til hostellinngangen (€25-35)."
+      ]
+    },
+    {
+      "q": "Hva hvis fergen min er forsinket eller innstilt?",
+      "a": [
+        "Sjekk gjeldende fergestatus på fergekompaniets nettsted eller ved kaien. Hvis forsinket med 30+ minutter, kan Interno-bussruten flytte seg — spør hos tabacchien for oppdatert timing. Hvis fergen din er innstilt, inkluderer alternative alternativer å ta ferge til en annen havn (Amalfi, Sorrento) og bruke SITA-busser, eller ombestille til neste tilgjengelige avgang."
       ]
     }
   ],
   "howtoSteps": [
-    "Kjøp Interno-billetter og gi bagasjen til porterene ved kaien",
-    "Gå fra stranden til Piazza dei Mulini og Interno-busstoppet",
-    "Ta Interno Positano-bussen oppover (se etter skiltet «interno positano»)",
-    "Gå av ved tabacchi, gå 100 m og ta trappene opp til Hostel Brikette"
+    "Kjøp Interno-bussbilletter og gi bagasje til bærerne ved kaien",
+    "Gå fra stranden til Piazza dei Mulini og Interno-bussholdeplassen",
+    "Kjør med Interno Positano-bussen oppover (se etter 'interno positano'-skiltet)",
+    "Gå av ved tabacchien, gå 100 m og gå opp trappene til Hostel Brikette"
   ]
 }

@@ -38,7 +38,7 @@
       "id": "stays",
       "title": "Übernachten",
       "body": [
-        "Bleib in der Nähe der Haltestellen \"Chiesa Nuova\" oder \"Sponda\", um Gepäcktreppen zu sparen.",
+        "Bleib in der Nähe der Haltestellen \\\\\"Chiesa Nuova\\\\\" oder \\\\\"Sponda\\\\\", um Gepäcktreppen zu sparen.",
         "Mit kleinem Budget? In Sorrent/Meta übernachten und per Fähre/Bus für Tagestrips anreisen."
       ]
     }
@@ -61,18 +61,6 @@
     "intro": [
       "Positano ist vertikal, wunderschön und in der Hochsaison belebt. Dieser Abschnitt setzt auf praktische Entscheidungen: Wo du dich einquartierst, wann du reist, wie du dich bewegst und was du tatsächlich vor Ort unternimmst."
     ],
-    "gallery": {
-      "items": [
-        {
-          "alt": "Hostelterrasse mit Panoramablick",
-          "caption": "Sonnenuntergang von der Terrasse – nur wenige Schritte von der Haltestelle Chiesa Nuova."
-        },
-        {
-          "alt": "Positano panorama",
-          "caption": "Fornillo und Spiaggia Grande sind zu Fuß erreichbar; erwarte viele Stufen."
-        }
-      ]
-    },
     "sections": {
       "whereToStay": {
         "title": "Übernachten",
@@ -102,7 +90,7 @@
       }
     },
     "tipsTitle": "Spartipps",
-    "faqHeading": "FAQs",
+    "faqHeading": "Häufige Fragen",
     "faqs": [
       {
         "question": "Ist Positano mit kleinem Budget machbar?",

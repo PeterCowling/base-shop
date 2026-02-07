@@ -1,82 +1,104 @@
 {
   "seo": {
-    "title": "Hostel Brikette → Fähranleger mit Gepäck",
-    "description": "Schritt-für-Schritt-Route vom Hostel zum Fähranleger von Positano mit dem Interno-Bus und Gepäckträgern."
+    "title": "Hostel Brikette → Positano Fährhafen (Hafen)",
+    "description": "Schritt-für-Schritt-Gehweg zum Hafen von Positano mit Kartenorientierungspunkten, Tickettipps und Boarding-Hinweisen."
   },
-  "linkLabel": "Hostel Brikette → Fähranleger, mit Gepäck",
+  "linkLabel": "Hostel Brikette → Fährhafen (Hafen)",
   "intro": [
-    "Abreise vom Hostel Brikette mit Gepäck? Fahren Sie mit dem Interno Positano-Bus bergab und lassen Sie die Hafenarbeiter schwere Taschen transportieren, damit Sie die Fähre erreichen, ohne die Treppen von Positano zu überwinden."
+    "Unterwegs zum Hafen von Positano für eine Fähre? Dies ist der einfachste Weg, den wir vom Hostel Brikette zur Spiaggia Grande gefunden haben – mit einer schnellen Karte und Foto-Orientierungspunkten für die Punkte 1–5.",
+    "Planen Sie 20–30 Minuten zu Fuß ein (mehr mit Gepäck), und beachten Sie, dass Google Maps manchmal längere Umwege zum Strand vorschlägt – folgen Sie stattdessen der unten stehenden Route."
   ],
   "beforeList": [
-    "Sehen Sie sich den aktuellen Fahrplan des Interno Positano an – hier ist der [latest schedule and fares](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
-    "Holen Sie sich vor dem Einsteigen Tickets für den Interno Positano im Tabacchi neben der Chiesa Nuova (oder fragen Sie an der Rezeption nach der Verfügbarkeit).",
-    "Wenn Sie sperriges Gepäck haben, organisieren Sie die Hilfe eines Gepäckträgers – die Rezeption kann vorher anrufen oder sich an die [porter service guide](guide:porterServices) wenden, um Nummern und Preise zu erfahren."
+    "Überprüfen Sie Fährzeiten und Preise an den Betreiberschaltern am Hafen (sie listen die nächste Abfahrt auf dem Schild auf).",
+    "Lassen Sie einen Puffer, wenn Sie Gepäck haben – es gibt Treppen auf dieser Route und der Hafen wird zu Stoßzeiten voll.",
+    "Versuchen Sie, früh anzukommen, damit Sie Tickets kaufen, den richtigen Pier finden und bereit sein können, wenn das Boarding beginnt."
   ],
   "sections": [
     {
-      "id": "hostel-to-stop",
-      "title": "Eingang zum Hostel bis zur Haltestelle Chiesa Nuova",
+      "id": "getting-to-the-port",
+      "title": "Zum Hafen gelangen",
       "body": [
-        "Checken Sie aus, folgen Sie dann der Haupttreppe hinunter zur Viale Pasitea und biegen Sie links ab (bergab). Gehen Sie etwas mehr als 100 Meter (330 Fuß) bis zum Tabacchi/Zeitungsstand, den Sie bei Ihrer Ankunft genutzt haben.",
-        "Die Bushaltestelle Interno Positano liegt direkt neben den Tabacchi. Halten Sie Tickets bereit; Wenn Sie mehr benötigen, kaufen Sie diese vor der Ankunft des Busses."
+        "Beginnen Sie am Hostel und gehen Sie in Richtung Spiaggia Grande (Positanos Hauptstrand).",
+        "Der Hafen befindet sich auf der rechten Seite des Strandes.",
+        "Planen Sie 20–30 Minuten für den Weg vom Hostel zum Hafen ein.",
+        "Google Maps bietet möglicherweise nicht immer die direkteste Route zum Strand – verwenden Sie die Karte und die schrittweisen Anweisungen unten.",
+        "[Siehe hier, wenn Sie Kartenanweisungen bevorzugen](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2)."
       ]
     },
     {
-      "id": "bus-to-mulini",
-      "title": "Fahren Sie mit dem Interno Positano-Bus zur Piazza dei Mulini",
+      "id": "walking-route",
+      "title": "Weg vom Hostel Brikette zum Hafen (Punkte 1–5)",
       "body": [
-        "Steigen Sie in den Interno Positano-Bus – auf der Zieltafel steht „interno positano“. Bewahren Sie Ihr Gepäck entweder auf Ihrem Schoß oder in der Mitte auf, damit die Gänge frei bleiben.",
-        "Bleiben Sie etwa 10 Minuten bis zur Haltestelle Piazza dei Mulini (letzte große Haltestelle vor der Fußgängerzone). Wenn Sie sich nicht sicher sind, teilen Sie dem Fahrer mit, dass Sie zum Strand fahren."
+        "Kartenreferenz (Hostel → Hafen):",
+        "[[figure:map]]",
+        "Beginnen Sie, indem Sie das Hostel durch die Haupttür verlassen.",
+        "Gehen Sie die Treppen zur Straße hinunter.",
+        "Biegen Sie links ab und gehen Sie etwas über 100 Meter (330 Fuß), bis Sie Punkt 1 auf der Karte erreichen.",
+        "An Punkt 1 nehmen Sie die rechte Abbiegung.",
+        "[[figure:point-1]]",
+        "Sobald Sie an Punkt 1 rechts abbiegen, sehen Sie den Tabacchi auf der rechten Seite.",
+        "[[figure:tabacchi]]",
+        "Folgen Sie der Straße bergab.",
+        "An der ersten Serpentinenkurve haben Sie Punkt 2 auf der Karte erreicht.",
+        "An Punkt 2 verlassen Sie die Straße und gehen geradeaus weiter, nehmen die Treppe.",
+        "[[figure:point-2]]",
+        "Wenn Sie das Ende der Treppe erreichen, sind Sie an Punkt 3 auf der Karte angekommen.",
+        "Überqueren Sie die Straße und nehmen Sie den Weg geradeaus.",
+        "Folgen Sie den Treppen nach unten, bis Sie die nächste Ebene erreichen.",
+        "[[figure:point-3]]",
+        "Wenn Sie das Ende der Treppe erreichen, kommen Sie an der Straße an.",
+        "Überqueren Sie die Straße und biegen Sie links ab, gehen Sie 10 Meter (30 Fuß), bis Sie Punkt 4 auf der Karte erreichen.",
+        "An Punkt 4 biegen Sie rechts ab und nehmen die Treppen, die von der Straße abgehen und bergab führen.",
+        "[[figure:point-4]]",
+        "Folgen Sie den Treppen nach unten, bis Sie den Boden erreichen. Am Fuß der Treppe biegen Sie rechts ab.",
+        "Dies bringt Sie zu Punkt 5 auf der Karte.",
+        "Gehen Sie weiter unter dem Bogen auf der rechten Seite.",
+        "[[figure:point-5]]",
+        "Nach 50 Metern (160 Fuß) erreichen Sie den Hafen."
       ]
     },
     {
-      "id": "mulini-to-dock",
-      "title": "Piazza dei Mulini to the ferry dock",
+      "id": "buying-tickets",
+      "title": "Fährtickets kaufen",
       "body": [
-        "Steigen Sie aus dem Bus, treffen Sie die Gepäckträger, wenn Sie diese im Voraus gebucht haben, und gehen Sie direkt auf die Fußgängerzone, die zur Spiaggia Grande führt.",
-        "Folgen Sie der Promenade etwa 7 Minuten lang bergab – verwenden Sie [these directions](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2), um auf den glattesten Rampenabschnitten zu bleiben.",
-        "Melden Sie sich am Fähranleger bei Ihrem Betreiber. Gepäckträger liefern das Gepäck separat; Behalten Sie Reisepässe, Medikamente und Wertsachen bei sich."
+        "Am Hafen von Positano können Sie Fähren zu Orten wie Amalfi, Capri und darüber hinaus nehmen. Jeder Fährbetreiber hat einen Stand, und das Schild am Stand zeigt Informationen über die nächste Fähre, die sie fahren werden.",
+        "[[figure:tickets]]"
+      ]
+    },
+    {
+      "id": "boarding",
+      "title": "An Bord einer Fähre gehen",
+      "body": [
+        "Sobald Sie Ihr Ticket haben, gehen Sie zum Ende des Hafens und warten Sie, bis das Boarding der Fähre beginnt.",
+        "[[figure:port]]"
       ]
     }
   ],
   "stepsList": [
-    "Kaufen Sie Busfahrkarten für den Interno Positano in der Chiesa Nuova tabacchi und bestätigen Sie die Verfügbarkeit eines Gepäckträgers.",
-    "Gehen Sie von der Herberge aus 100 m bergab zur Bushaltestelle Chiesa Nuova und warten Sie am Meer der Viale Pasitea.",
-    "Fahren Sie mit dem Interno Positano-Bus zur Piazza dei Mulini (letzte große Haltestelle vor dem Strand).",
-    "Treffen Sie die Träger und folgen Sie der Promenade zum Fähranleger, während sie schwere Taschen transportieren."
+    "Verlassen Sie das Hostel und biegen Sie links entlang der Straße bis Punkt 1 auf der Karte ab, dann biegen Sie rechts ab.",
+    "Folgen Sie der Route hinunter über die Punkte 2–5 (Treppen und Übergänge), bis Sie den Hafen erreichen.",
+    "Kaufen Sie Tickets an den Betreiberschaltern und überprüfen Sie das Schild für die nächste Abfahrt.",
+    "Gehen Sie zum Ende des Hafens und warten Sie auf das Boarding."
   ],
-  "kneesList": [
-    "Wenn Sie den Interno Positano-Bus nutzen, müssen Sie Hunderte steile Stufen durch einen kurzen, ebenen Fußmarsch ersetzen.",
-    "Gepäckträger können Koffer auf separaten Trolleys mitnehmen, sodass Sie auf der Promenade nur einen Tagesrucksack benötigen."
-  ],
-  "kneesDockPrefix": "Benötigen Sie bei Ihrer Rückkehr die Uphill-Version? Lesen Sie unsere",
-  "kneesDockLinkLabel": "Chiesa Nuova arrival guide",
-  "kneesPorterPrefix": "Möchten Sie Preise für Gepäckträger und Buchungstipps? Überprüfen Sie die",
-  "kneesPorterLinkLabel": "porter service guide",
+  "kneesList": [],
   "faqs": [
     {
-      "q": "Wo kann ich Interno Positano-Tickets in der Nähe des Hostels kaufen?",
+      "q": "Wie lange dauert es, vom Hostel Brikette zum Hafen zu laufen?",
       "a": [
-        "Der Tabacchi-/Zeitungsstand neben der Haltestelle Chiesa Nuova hält Tickets auf Lager und die Rezeption kann die Verfügbarkeit am selben Tag bestätigen. Fahrer verkaufen an Bord keine Fahrkarten."
+        "Planen Sie 20–30 Minuten zu Fuß ein. Fügen Sie zusätzliche Zeit hinzu, wenn Sie Gepäck haben oder anhalten möchten, um vor dem Boarding Tickets zu kaufen."
       ]
     },
     {
-      "q": "Wie lange im Voraus sollte ich die Träger anfordern?",
+      "q": "Wo kaufe ich Fährtickets in Positano?",
       "a": [
-        "Rufen Sie im Sommer 30–45 Minuten vor Ihrer Abreise an, damit man Sie an der Piazza dei Mulini treffen kann. In ruhigeren Monaten reichen normalerweise 15 Minuten aus – die Rezeption kann in Ihrem Namen anrufen."
-      ]
-    },
-    {
-      "q": "Was passiert, wenn der Interno-Bus bei meiner Abreise nicht fährt?",
-      "a": [
-        "Wenn die Dienste spät in der Nacht unterbrochen werden, bitten Sie die Gepäckträger, Ihr Gepäck den ganzen Weg nach unten mitzunehmen und selbst die Promenade entlangzulaufen, oder nehmen Sie einen SITA-Bus in Richtung Sponda (fährt später) und gehen Sie zu Fuß bergab."
+        "Am Hafen sehen Sie Stände für jeden Fährbetreiber. Das Schild am Stand zeigt Informationen über die nächste Fähre, die sie fahren werden."
       ]
     }
   ],
   "howtoSteps": [
-    "Bestätigen Sie Tickets und Träger in Chiesa Nuova",
-    "Gehen Sie vom Hostel bergab zur Bushaltestelle Chiesa Nuova",
-    "Fahren Sie mit dem Interno Positano-Bus zur Piazza dei Mulini",
-    "Treffen Sie Träger und spazieren Sie über die Promenade zum Fähranleger"
+    "Folgen Sie der Kartenroute vom Hostel hinunter zum Hafen",
+    "Verwenden Sie Foto-Orientierungspunkte an den Punkten 1–5, um auf Kurs zu bleiben",
+    "Kaufen Sie Tickets an den Betreiberschaltern und bestätigen Sie die nächste Abfahrt",
+    "Warten Sie am Pier und gehen Sie an Bord, wenn aufgerufen wird"
   ]
 }

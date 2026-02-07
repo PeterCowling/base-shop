@@ -2,15 +2,16 @@
    src/components/header/NotificationBanner.tsx
    Offers banner – one interactive control (no nested buttons)
 ---------------------------------------------------------------- */
+import type { KeyboardEvent } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useRouter } from "next/navigation";
+import { X } from "@/icons";
+
 import { useSetBannerRef } from "@/context/NotificationBannerContext";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { translatePath } from "@/utils/translate-path";
-import { X } from "lucide-react";
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import type { KeyboardEvent } from "react";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router";
 import type { AppLanguage } from "@/i18n.config";
+import { translatePath } from "@/utils/translate-path";
 
 type NotificationBannerCopy = {
   message?: string;
@@ -113,17 +114,14 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
   const lang = explicitLang ?? fallbackLang;
   const { t, ready } = useTranslation("notificationBanner", { lng: lang });
   const { t: tModals } = useTranslation("modals", { lng: lang });
-  const navigate = useNavigate();
+  const router = useRouter();
   const setBannerRef = useSetBannerRef();
   const [isVisible, setIsVisible] = useState(true);
   const dismissButtonRef = useRef<HTMLButtonElement | null>(null);
   const dismissIconRef = useRef<HTMLSpanElement | null>(null);
-  const rawMessage = useMemo(() => (ready ? ((t("message") as string) || "").trim() : ""), [t, ready]);
-  const rawCta = useMemo(() => (ready ? ((t("cta") as string) || "").trim() : ""), [t, ready]);
-  const rawOpenLabel = useMemo(
-    () => (ready ? ((t("openOffersLabel") as string) || "").trim() : ""),
-    [t, ready]
-  );
+  const rawMessage = ready ? ((t("message") as string) || "").trim() : "";
+  const rawCta = ready ? ((t("cta") as string) || "").trim() : "";
+  const rawOpenLabel = ready ? ((t("openOffersLabel") as string) || "").trim() : "";
   const [ctaText, setCtaText] = useState<string>(() => readServerText(SERVER_CTA_SELECTOR, rawCta));
   const [messageText, setMessageText] = useState<string>(() =>
     readServerText(SERVER_MESSAGE_SELECTOR, rawMessage)
@@ -199,8 +197,8 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
   }, [lang, rawMessage, rawCta, rawOpenLabel]);
 
   const openDeals = useCallback(
-    () => navigate(`/${lang}/${translatePath("deals", lang)}`),
-    [navigate, lang]
+    () => router.push(`/${lang}/${translatePath("deals", lang)}`),
+    [router, lang]
   );
 
   const close = useCallback(() => {
@@ -209,7 +207,7 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
     setBannerRef(null);
   }, [setBannerRef]);
 
-  const closeLabel = useMemo(() => {
+  const closeLabel = (() => {
     const resolved = (t("closeLabel") as string) || "";
     if (resolved && resolved !== "closeLabel") {
       return resolved;
@@ -218,8 +216,8 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
     if (modalClose && modalClose !== "booking.close") {
       return modalClose;
     }
-    return resolved || modalClose || "closeLabel";
-  }, [t, tModals]);
+    return resolved || modalClose || "Close";
+  })();
 
   const stopDomPropagation = useCallback(
     (event: Event) => {

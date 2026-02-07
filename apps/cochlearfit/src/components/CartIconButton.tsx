@@ -2,10 +2,12 @@
 
 import React, { useMemo } from "react";
 import Link from "next/link";
+
 import { useTranslations } from "@acme/i18n";
+
+import { useCart } from "@/contexts/cart/CartContext";
 import { useLocale } from "@/contexts/LocaleContext";
 import { withLocale } from "@/lib/routes";
-import { useCart } from "@/contexts/cart/CartContext";
 
 const CartIconButton = React.memo(function CartIconButton() {
   const t = useTranslations();

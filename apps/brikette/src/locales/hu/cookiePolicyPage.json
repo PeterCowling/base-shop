@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "title": "Süti (cookie) szabályzat | Hostel Brikette",
+    "description": "Hogyan használja a Hostel Brikette a sütiket és hasonló technológiákat a weboldalunkon, és milyen választási lehetőségei vannak."
+  },
+  "headings": {
+    "pageTitle": "Süti (cookie) szabályzat",
+    "subtitle": "Sütik, helyi tárolás és harmadik fél szolgáltatások"
+  },
+  "lastUpdated": {
+    "label": "Utolsó frissítés",
+    "date": "2026-01-09"
+  },
+  "toc": {
+    "title": "Ezen az oldalon",
+    "aria": "A süti szabályzat tartalomjegyzéke"
+  },
+  "sections": {
+    "intro": {
+      "title": "Áttekintés",
+      "body": [
+        "Ez a süti szabályzat elmagyarázza, mik a sütik, használjuk‑e őket ezen a weboldalon, és hogyan használhatnak sütiket harmadik fél szolgáltatások, amikor a tartalmukkal interakcióba lép."
+      ]
+    },
+    "whatAreCookies": {
+      "title": "Mik a sütik",
+      "body": [
+        "A sütik kis szövegfájlok, amelyeket a weboldalak az eszközödön tárolhatnak, hogy információt őrizzenek meg a látogatások között. Hasonló technológiák a helyi tárolás és a munkamenet‑tárolás a böngésződben."
+      ]
+    },
+    "ourUse": {
+      "title": "Hogyan használjuk a sütiket ezen a weboldalon",
+      "body": [
+        "Arra törekszünk, hogy a sütiket minimálisra csökkentsük. Amikor lehetséges, a böngésző tárhelyét (helyi tárolás) használjuk egyszerű preferenciákhoz a sütik helyett.",
+        "Ha a jövőben bevezetünk sütiket (például alapvető biztonság, analitika vagy beágyazott szolgáltatások miatt), frissítjük ezt a szabályzatot."
+      ]
+    },
+    "localStorage": {
+      "title": "Helyi tárolás (preferenciák)",
+      "body": [
+        "A helyi tárolás lehetővé teszi, hogy a weboldal bizonyos preferenciákat megjegyezzen az eszközödön. Például használható a felület beállításainak megőrzésére az oldalak között.",
+        "A helyi tárolást a böngésződ beállításaiban törölheted."
+      ]
+    },
+    "thirdParties": {
+      "title": "Harmadik fél szolgáltatások",
+      "body": [
+        "Egyes linkek vagy beágyazott tartalmak harmadik felektől származhatnak (például térképek vagy foglalási szolgáltatók). Ezek a harmadik felek saját szabályzataik szerint állíthatnak be sütiket vagy használhatnak hasonló technológiákat.",
+        "Amikor egy harmadik fél weboldalára mutató linket követ, annak adatvédelmi és süti szabályzatai érvényesek."
+      ]
+    },
+    "choices": {
+      "title": "Az Ön választási lehetőségei",
+      "body": [
+        "A legtöbb böngésző lehetővé teszi a sütik blokkolását vagy törlését, valamint az olyan webhelyadatok törlését, mint a helyi tárolás. Bizonyos technológiák blokkolása hatással lehet a működésre.",
+        "A követés korlátozásához használhat privát böngészési módot vagy böngészőbővítményeket is."
+      ]
+    },
+    "contact": {
+      "title": "Kapcsolat",
+      "body": [
+        "Ha kérdése van ezzel a süti szabályzattal kapcsolatban, írjon nekünk a {{email}} címre."
+      ]
+    }
+  },
+  "footer": {
+    "backToTop": "Vissza a tetejére"
+  }
+}

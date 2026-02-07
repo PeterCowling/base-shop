@@ -1,0 +1,18 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": [
+    "src/primitives/index.ts",
+    "src/atoms/index.ts",
+    "src/molecules/index.ts",
+    "src/hooks/index.ts",
+    "src/utils/style/index.ts"
+  ],
+  "out": "../../docs/api/design-system",
+  "tsconfig": "./tsconfig.json",
+  "plugin": ["typedoc-plugin-markdown"],
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "skipErrorChecking": true,
+  "readme": "none",
+  "name": "@acme/design-system API Reference"
+}

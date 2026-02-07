@@ -1,11 +1,13 @@
 "use client";
 
 import * as React from "react";
+
+import { useTranslations } from "@acme/i18n";
 import type { SKU } from "@acme/types";
 import type { RecommendationPreset } from "@acme/types/recommendations";
-import { RecommendationCarousel } from "../../organisms/RecommendationCarousel";
+
 import { ProductCard } from "../../organisms/ProductCard";
-import { useTranslations } from "@acme/i18n";
+import { RecommendationCarousel } from "../../organisms/RecommendationCarousel";
 
 export interface ShowcaseSectionProps extends React.HTMLAttributes<HTMLDivElement> {
   preset?: RecommendationPreset;

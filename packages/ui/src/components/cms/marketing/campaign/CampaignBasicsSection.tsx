@@ -1,5 +1,8 @@
 "use client";
 
+import { useTranslations } from "@acme/i18n";
+
+import { Grid } from "../../../atoms/primitives";
 import {
   Card,
   CardContent,
@@ -11,11 +14,10 @@ import {
   SelectValue,
   Textarea,
 } from "../../../atoms/shadcn";
-import { Grid } from "../../../atoms/primitives";
-import { useTranslations } from "@acme/i18n";
+
 import {
-  campaignObjectives,
   type CampaignFormValues,
+  campaignObjectives,
 } from "./types";
 import type {
   CampaignErrors,

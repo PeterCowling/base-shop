@@ -1,11 +1,10 @@
 "use client";
 
-import { useCallback, useState, type FormEvent } from "react";
-
-import { Toast } from "@/components/atoms";
-import { Button, Card, CardContent, Input } from "@/components/atoms/shadcn";
-import { FormField } from "@ui/components/molecules";
+import { type FormEvent,useCallback, useState } from "react";
 import { updateReverseLogistics } from "@cms/actions/shops.server";
+
+import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
+import { Button, Card, CardContent, Input } from "@acme/design-system/shadcn";
 
 import { ErrorChips } from "../components/ErrorChips";
 import { ServiceToggleField } from "../components/ServiceToggleField";
@@ -34,9 +33,6 @@ export default function ReverseLogisticsEditor({ shop, initial }: Props) {
     errors,
     setErrors,
     submit,
-    toast,
-    toastClassName,
-    closeToast,
     announceError,
   } = useSettingsSaveForm<ReverseLogisticsResult>({
     action: (formData) => updateReverseLogistics(shop, formData),
@@ -125,13 +121,6 @@ export default function ReverseLogisticsEditor({ shop, initial }: Props) {
           </form>
         </CardContent>
       </Card>
-      <Toast
-        open={toast.open}
-        message={toast.message}
-        onClose={closeToast}
-        className={toastClassName}
-        role="status"
-      />
     </>
   );
 }

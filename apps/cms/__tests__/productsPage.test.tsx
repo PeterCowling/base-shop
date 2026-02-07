@@ -1,10 +1,14 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 
+import ProductsPage from "../src/app/cms/shop/[shop]/products/page";
+
 const checkShopExistsMock = jest.fn();
 jest.mock("@acme/lib", () => ({
   __esModule: true,
-  checkShopExists: checkShopExistsMock,
+  get checkShopExists() {
+    return checkShopExistsMock;
+  },
 }));
 
 // Centralized NextAuth mock control
@@ -19,9 +23,11 @@ jest.mock("@cms/auth/options", () => ({
 }));
 
 const readRepoMock = jest.fn();
-jest.mock("@platform-core/repositories/json.server", () => ({
+jest.mock("@acme/platform-core/repositories/json.server", () => ({
   __esModule: true,
-  readRepo: readRepoMock,
+  get readRepo() {
+    return readRepoMock;
+  },
 }));
 
 const createDraftMock = jest.fn();
@@ -29,15 +35,23 @@ const duplicateProductMock = jest.fn();
 const deleteProductMock = jest.fn();
 jest.mock("@cms/actions/products.server", () => ({
   __esModule: true,
-  createDraft: createDraftMock,
-  duplicateProduct: duplicateProductMock,
-  deleteProduct: deleteProductMock,
+  get createDraft() {
+    return createDraftMock;
+  },
+  get duplicateProduct() {
+    return duplicateProductMock;
+  },
+  get deleteProduct() {
+    return deleteProductMock;
+  },
 }));
 
 const notFoundMock = jest.fn();
 jest.mock("next/navigation", () => ({
   __esModule: true,
-  notFound: notFoundMock,
+  get notFound() {
+    return notFoundMock;
+  },
 }));
 
 jest.mock("next/link", () => {
@@ -63,7 +77,7 @@ const progressMock = jest.fn(
   ),
 );
 
-jest.mock("@ui/components/atoms", () => {
+jest.mock("@acme/design-system/atoms", () => {
   const React = require("react");
   return {
     __esModule: true,
@@ -76,6 +90,34 @@ jest.mock("@ui/components/atoms", () => {
     Progress: (props: any) => progressMock(props),
     Tag: ({ children, ...props }: any) =>
       React.createElement("span", props, children),
+  };
+});
+
+jest.mock("@acme/cms-ui", () => {
+  const React = require("react");
+  return {
+    __esModule: true,
+    CmsBuildHero: ({ tag, title, body }: any) =>
+      React.createElement(
+        "div",
+        { "data-testid": "cms-build-hero" },
+        React.createElement("span", null, tag),
+        React.createElement("h1", null, title),
+        React.createElement("p", null, body),
+      ),
+    CmsMetricTiles: ({ items }: any) =>
+      React.createElement(
+        "div",
+        { "data-testid": "cms-metric-tiles" },
+        items?.map((item: any) => React.createElement("div", { key: item.id }, item.label)),
+      ),
+    CmsLaunchChecklist: ({ heading, items }: any) =>
+      React.createElement(
+        "div",
+        { "data-testid": "cms-launch-checklist" },
+        React.createElement("h3", null, heading),
+        items?.map((item: any) => React.createElement("div", { key: item.id }, item.label)),
+      ),
   };
 });
 
@@ -97,12 +139,12 @@ jest.mock("@/components/atoms/shadcn", () => {
 const productsTableMock = jest.fn((props: any) => (
   <div data-testid="products-table" data-shop={props.shop} />
 ));
-jest.mock("@ui/components/cms/ProductsTable.client", () => ({
+jest.mock("@acme/cms-ui/ProductsTable.client", () => ({
   __esModule: true,
-  default: productsTableMock,
+  get default() {
+    return productsTableMock;
+  },
 }));
-
-import ProductsPage from "../src/app/cms/shop/[shop]/products/page";
 
 type FormAction = (...args: any[]) => unknown | Promise<unknown>;
 
@@ -118,11 +160,12 @@ function findFormAction(node: React.ReactNode): FormAction | undefined {
   }
 
   if (React.isValidElement(node)) {
-    if (node.type === "form" && typeof node.props.action === "function") {
-      return node.props.action;
+    const props = node.props as { action?: unknown; children?: React.ReactNode };
+    if (node.type === "form" && typeof props.action === "function") {
+      return props.action as FormAction;
     }
 
-    return findFormAction(React.Children.toArray(node.props.children));
+    return findFormAction(React.Children.toArray(props.children));
   }
 
   return undefined;

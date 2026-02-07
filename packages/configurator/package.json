@@ -23,6 +23,7 @@
   "sideEffects": false,
   "scripts": {
     "build": "tsc -b",
+    "dev": "tsc -b --watch",
     "clean": "rimraf dist *.tsbuildinfo",
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs packages/configurator",
     "lint": "eslint .",
@@ -33,9 +34,9 @@
     "dist"
   ],
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250702.0",
+    "@cloudflare/workers-types": "^4.20260120.0",
     "@types/node": "^24.0.10",
     "vite": "^7.0.0",
-    "wrangler": "^4.20.4"
+    "wrangler": "^4.59.1"
   }
 }

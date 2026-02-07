@@ -1,0 +1,167 @@
+"use client";
+
+import { type ReactElement } from "react";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@acme/design-system/shadcn";
+import { cn } from "@acme/design-system/utils/style/cn";
+import { useTranslations } from "@acme/i18n";
+import { ColorInput } from "@acme/ui/components/cms/ColorInput";
+import { useTokenColors } from "@acme/ui/hooks/useTokenColors";
+import type { TokenInfo, TokenMap } from "@acme/ui/hooks/useTokenEditor";
+import { hexToHsl, isHex } from "@acme/ui/utils/colorUtils";
+
+interface ColorTokenProps extends Omit<TokenInfo, "key"> {
+  tokenKey: string;
+  tokens: TokenMap;
+  baseTokens: TokenMap;
+  setToken: (key: string, value: string) => void;
+  onRenameToken?: (oldKey: string, nextKey: string) => void;
+  onReplaceColor?: (tokenKey: string, nextValue: string) => void;
+  /** Hide eyedropper and advanced actions when not needed */
+  showExtras?: boolean;
+}
+
+export function ColorToken({
+  tokenKey,
+  value,
+  defaultValue,
+  isOverridden,
+  tokens,
+  baseTokens,
+  setToken,
+  onRenameToken,
+  onReplaceColor,
+  showExtras = true,
+}: ColorTokenProps): ReactElement {
+  const t = useTranslations();
+  const warning = useTokenColors(tokenKey, value, tokens, baseTokens);
+  const supportsEyeDropper =
+    typeof window !== "undefined" && "EyeDropper" in window;
+
+  const handleEyeDropper = async () => {
+    try {
+      const ctor = (window as typeof window & {
+        EyeDropper?: new () => { open: () => Promise<{ sRGBHex: string }> };
+      }).EyeDropper;
+      if (!ctor) return;
+      const instance = new ctor();
+      const result = await instance.open();
+      if (result?.sRGBHex) {
+        setToken(tokenKey, hexToHsl(result.sRGBHex));
+      }
+    } catch (error) {
+      if ((error as { name?: string }).name === "AbortError") return;
+      // Swallow other errors – eyedropper is a progressive enhancement
+    }
+  };
+
+  const handleRename = () => {
+    if (!onRenameToken) return;
+    const next = typeof window !== "undefined"
+      ? window.prompt(
+          // i18n-exempt -- DS-1234 [ttl=2025-11-30] — developer tool prompt not user-facing
+          "Rename color token",
+          tokenKey,
+        )
+      : null;
+    const trimmed = next?.trim();
+    if (!trimmed || trimmed === tokenKey) return;
+    onRenameToken(tokenKey, trimmed);
+  };
+
+  const handleReplace = () => {
+    if (!onReplaceColor) return;
+    const next = typeof window !== "undefined"
+      ? window.prompt(
+          // i18n-exempt -- DS-1234 [ttl=2025-11-30] — developer tool prompt not user-facing
+          "Replace this color across tokens with (hex, HSL, or CSS value)",
+          value,
+        )
+      : null;
+    const trimmed = next?.trim();
+    if (!trimmed) return;
+    const normalized = isHex(trimmed) ? hexToHsl(trimmed) : trimmed;
+    onReplaceColor(tokenKey, normalized);
+  };
+
+  // Advanced menu disabled on this screen to avoid ref thrash in nested menus
+
+   
+  const overrideClasses = cn(isOverridden && "border-s-2 border-s-info ps-2");
+  // i18n-exempt: DS token reference, not user-facing copy
+  const DANGER_TOKEN = "--color-danger";
+
+  return (
+    <label
+      data-token-key={tokenKey}
+      className={cn("flex flex-col gap-1 text-sm", overrideClasses)}
+      data-token={isOverridden ? "--color-info" : undefined}
+    >
+      <span className="flex flex-wrap items-center gap-2 min-w-0">
+        <span className="basis-40 shrink-0 break-all">{tokenKey}</span>
+        <div className="flex items-center gap-2">
+          <ColorInput value={value} onChange={(val) => setToken(tokenKey, val)} />
+          {showExtras && supportsEyeDropper && (
+            <button
+              type="button"
+              className="rounded border px-2 py-1 text-xs min-h-11 min-w-11"
+              onClick={() => void handleEyeDropper()}
+            >
+              {t("cms.style.eyedropper") as string}
+            </button>
+          )}
+          {showExtras && (onRenameToken || onReplaceColor) && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  type="button"
+                  aria-label={`${t("cms.style.moreActions") as string} ${tokenKey}`}
+                  className="rounded border px-2 py-1 text-xs min-h-11 min-w-11"
+                >
+                  •••
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start">
+                {onRenameToken && (
+                  <DropdownMenuItem onSelect={() => handleRename()}>
+                    {t("cms.style.renameToken") as string}
+                  </DropdownMenuItem>
+                )}
+                {onReplaceColor && (
+                  <DropdownMenuItem onSelect={() => handleReplace()}>
+                    {t("cms.style.replaceAcrossTokens") as string}
+                  </DropdownMenuItem>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+        </div>
+        {isOverridden && (
+          <button
+            type="button"
+            className="rounded border px-2 py-1 text-xs min-h-11 min-w-11"
+            onClick={() => setToken(tokenKey, defaultValue ?? "")}
+          >
+            {t("actions.reset") as string}
+          </button>
+        )}
+        {/* Advanced menu hidden for stability */}
+      </span>
+      {defaultValue && (
+        <span className="text-xs text-muted-foreground">{t("cms.style.default", { value: defaultValue })}</span>
+      )}
+      {warning && (
+        // i18n-exempt: utility classes and DS token attribute are not user copy
+        <span className="text-xs text-danger" data-token={DANGER_TOKEN}>
+          {t("cms.style.lowContrast", { ratio: warning.contrast.toFixed(2) })}
+          {warning.suggestion ? ` – ${t("cms.style.try", { suggestion: warning.suggestion })}` : ""}
+        </span>
+      )}
+    </label>
+  );
+}

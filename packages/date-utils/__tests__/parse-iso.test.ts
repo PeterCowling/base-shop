@@ -1,4 +1,4 @@
-import { parseISO, format } from "../src";
+import { format,parseISO } from "../src";
 
 describe("parseISO", () => {
   test("parses valid YYYY-MM-DD string", () => {

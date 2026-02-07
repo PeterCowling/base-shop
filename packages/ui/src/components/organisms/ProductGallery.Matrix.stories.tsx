@@ -1,9 +1,11 @@
 // packages/ui/src/components/organisms/ProductGallery.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { ProductGallery } from './ProductGallery';
-import { makeStateStory } from '../../story-utils/createStories';
 import { expect, within } from '@storybook/test';
+
+import { makeStateStory } from '../../story-utils/createStories';
+
+import { ProductGallery } from './ProductGallery';
 
 const meta: Meta<typeof ProductGallery> = {
   title: 'Organisms/Product Gallery/Matrix',

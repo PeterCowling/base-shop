@@ -1,5 +1,5 @@
 const requirePermission = jest.fn();
-jest.mock("@auth", () => ({ requirePermission }));
+jest.mock("@acme/auth", () => ({ requirePermission }));
 
 const execFile = jest.fn();
 jest.mock("child_process", () => ({ execFile }));
@@ -32,7 +32,7 @@ describe("POST", () => {
       cb(null, { stdout: "", stderr: "" });
     });
 
-    const res = await POST(req(), { params: { shop: "shop1" } });
+    const res = await POST(req(), { params: Promise.resolve({ shop: "shop1" }) });
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ status: "ok" });
     expect(execFile).toHaveBeenCalled();
@@ -44,9 +44,11 @@ describe("POST", () => {
       cb(new Error("Invalid diff ID"), { stdout: "", stderr: "" });
     });
 
-    const res = await POST(req(), { params: { shop: "bad" } });
+    const res = await POST(req(), { params: Promise.resolve({ shop: "bad" }) });
     expect(res.status).toBe(500);
     expect(await res.json()).toEqual({ error: "Rollback failed" });
     expect(consoleErrorSpy).toHaveBeenCalled();
   });
 });
+
+export {};

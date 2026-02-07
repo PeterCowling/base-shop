@@ -1,0 +1,292 @@
+{
+  "examples": [
+    {
+      "id": "faq-availability-1",
+      "category": "faq",
+      "subject": "Private room availability",
+      "body": "Hi, do you have any private rooms available for May 10 to May 12?",
+      "classification_reason": "Direct availability question about rooms.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "faq-checkin-1",
+      "category": "faq",
+      "subject": "Check-in time",
+      "body": "What time is check in and can we arrive early?",
+      "classification_reason": "Asks about check-in timing and early arrival policy.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "faq-directions-1",
+      "category": "faq",
+      "subject": "How to get there",
+      "body": "Can you share directions from Naples to the hostel?",
+      "classification_reason": "Transportation and directions question.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "faq-luggage-1",
+      "category": "faq",
+      "subject": "Luggage storage",
+      "body": "Do you offer luggage storage before check-in?",
+      "classification_reason": "General FAQ about services and facilities.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "faq-breakfast-1",
+      "category": "faq",
+      "subject": "Breakfast included",
+      "body": "Is breakfast included in the price?",
+      "classification_reason": "Simple pricing-related FAQ about inclusions.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "policy-age-1",
+      "category": "policy",
+      "subject": "Age restrictions",
+      "body": "Do you have an age limit for dorm bookings?",
+      "classification_reason": "Explicit policy inquiry about age restrictions.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "policy-alcohol-1",
+      "category": "policy",
+      "subject": "Alcohol policy",
+      "body": "Can we bring alcohol from outside into the rooms?",
+      "classification_reason": "Asks about a specific property rule.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "policy-pets-1",
+      "category": "policy",
+      "subject": "Pets",
+      "body": "Are pets allowed in the hostel?",
+      "classification_reason": "Policy question on pet allowance.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "policy-cancellation-window-1",
+      "category": "policy",
+      "subject": "Cancellation policy",
+      "body": "What is your cancellation policy for refundable bookings?",
+      "classification_reason": "Policy explanation request.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "policy-quiet-hours-1",
+      "category": "policy",
+      "subject": "Quiet hours",
+      "body": "Do you have quiet hours at night?",
+      "classification_reason": "Question about house rules and quiet hours.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "payment-card-update-1",
+      "category": "payment",
+      "subject": "Update card details",
+      "body": "My card failed. How can I update my payment details?",
+      "classification_reason": "Payment method update request.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "payment-prepayment-1",
+      "category": "payment",
+      "subject": "Prepayment failed",
+      "body": "You said the prepayment did not go through. What should I do?",
+      "classification_reason": "Payment processing status question.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "payment-bank-transfer-1",
+      "category": "payment",
+      "subject": "Bank transfer option",
+      "body": "Can I pay via bank transfer instead of card?",
+      "classification_reason": "Alternative payment method request.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "payment-receipt-1",
+      "category": "payment",
+      "subject": "Payment receipt",
+      "body": "Can you send me a receipt for my payment?",
+      "classification_reason": "Payment confirmation/receipt request.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "payment-charge-1",
+      "category": "payment",
+      "subject": "When will you charge my card",
+      "body": "When do you charge the remaining balance?",
+      "classification_reason": "Payment timing question.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "cancellation-refund-1",
+      "category": "cancellation",
+      "subject": "Need to cancel",
+      "body": "I need to cancel my booking. Can I get a refund?",
+      "classification_reason": "Explicit cancellation request with refund mention.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "cancellation-noshow-1",
+      "category": "cancellation",
+      "subject": "No show",
+      "body": "I missed my arrival. What happens to my booking now?",
+      "classification_reason": "No-show scenario and cancellation handling.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "cancellation-change-dates-1",
+      "category": "cancellation",
+      "subject": "Change dates",
+      "body": "Can I cancel one night and change the dates for the rest?",
+      "classification_reason": "Partial cancellation request.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "cancellation-group-1",
+      "category": "cancellation",
+      "subject": "Group cancellation",
+      "body": "We are a group of 6 and need to cancel due to flight issues.",
+      "classification_reason": "Cancellation request with group context.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "cancellation-policy-ambiguous-1",
+      "category": "cancellation",
+      "subject": "Policy or cancellation?",
+      "body": "What happens if I cancel after the free cancellation period?",
+      "classification_reason": "Asks about consequences of cancellation; more about cancellation outcome.",
+      "is_ambiguous": true
+    },
+    {
+      "id": "complaint-noise-1",
+      "category": "complaint",
+      "subject": "Noise complaint",
+      "body": "There was loud noise in the hallway last night and we could not sleep.",
+      "classification_reason": "Customer complaint about experience.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "complaint-cleaning-1",
+      "category": "complaint",
+      "subject": "Room cleaning issue",
+      "body": "Our room was not cleaned today and the bathroom was dirty.",
+      "classification_reason": "Service quality complaint.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "complaint-staff-1",
+      "category": "complaint",
+      "subject": "Staff behavior",
+      "body": "One of the staff members was rude at check-in.",
+      "classification_reason": "Complaint about staff behavior.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "complaint-missing-1",
+      "category": "complaint",
+      "subject": "Missing item",
+      "body": "My charger went missing after housekeeping visited.",
+      "classification_reason": "Complaint about missing property.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "complaint-policy-ambiguous-1",
+      "category": "complaint",
+      "subject": "Policy frustration",
+      "body": "I am upset about the age restriction policy and want to complain.",
+      "classification_reason": "Complaint about policy impact, not a request for policy details.",
+      "is_ambiguous": true
+    },
+    {
+      "id": "multi-question-1",
+      "category": "multi-question",
+      "subject": "Multiple questions",
+      "body": "What time is check-in and do you have luggage storage?",
+      "classification_reason": "Contains more than one distinct question.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "multi-question-2",
+      "category": "multi-question",
+      "subject": "Directions and parking",
+      "body": "How do we get there from Naples and is there parking nearby?",
+      "classification_reason": "Transportation plus parking question.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "multi-question-3",
+      "category": "multi-question",
+      "subject": "Payment and policy",
+      "body": "When do you charge the card and what is the cancellation policy?",
+      "classification_reason": "Payment timing plus policy details.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "multi-question-4",
+      "category": "multi-question",
+      "subject": "Arrival and breakfast",
+      "body": "Can we arrive early and is breakfast included?",
+      "classification_reason": "Check-in timing plus amenities question.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "multi-question-ambiguous-1",
+      "category": "multi-question",
+      "subject": "Booking changes",
+      "body": "Can I change my dates and is there a fee if I cancel?",
+      "classification_reason": "Contains both modification and cancellation policy questions.",
+      "is_ambiguous": true
+    },
+    {
+      "id": "faq-wifi-1",
+      "category": "faq",
+      "subject": "WiFi",
+      "body": "Do you have free WiFi in the rooms?",
+      "classification_reason": "General facility question.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "policy-late-checkin-1",
+      "category": "policy",
+      "subject": "Late check-in",
+      "body": "Is late check-in allowed after 10:30 pm?",
+      "classification_reason": "Policy on late arrival.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "payment-deposit-1",
+      "category": "payment",
+      "subject": "Deposit question",
+      "body": "Is there a deposit for the keycard and how do I pay it?",
+      "classification_reason": "Payment inquiry about deposits.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "cancellation-nonrefundable-1",
+      "category": "cancellation",
+      "subject": "Non-refundable booking",
+      "body": "I booked non-refundable. Can I cancel anyway?",
+      "classification_reason": "Cancellation request with non-refundable context.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "complaint-room-type-1",
+      "category": "complaint",
+      "subject": "Wrong room",
+      "body": "We were assigned the wrong room type and want to complain.",
+      "classification_reason": "Service complaint about room assignment.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "multi-question-5",
+      "category": "multi-question",
+      "subject": "Check-in and directions",
+      "body": "What time is check-in and how do we reach you by ferry?",
+      "classification_reason": "Multiple distinct questions in one email.",
+      "is_ambiguous": false
+    }
+  ]
+}

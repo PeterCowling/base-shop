@@ -10,15 +10,15 @@
   "sections": [
     {
       "id": "stairs",
-      "title": "Stairs & walking routes",
+      "title": "Trapper og gangruter",
       "body": [
         "Kartlegg ruter med færre trinn (Chiesa Nuova eller Sponda) og del last mellom en ryggsekk og en lett vogn hvis du har kneproblemer.",
-        "Ta en pause på terrasseveggene eller bruk kompakte turstaver for lengre stigninger som Path of the Gods."
+        "Ta en pause på terrasseveggene eller bruk kompakte turstaver for lengre stigninger som Gudestien."
       ]
     },
     {
       "id": "transport",
-      "title": "Buses & ferries",
+      "title": "Busser og ferger",
       "body": [
         "Valider SITA-billetter, hold skinnen og oppbevar bagasjen i bagasjesonen – blinde kurver betyr plutselig oppbremsing.",
         "På ferger, ha verdisaker med deg og følg mannskapets instruksjoner når du oppbevarer tyngre kofferter."
@@ -26,7 +26,7 @@
     },
     {
       "id": "sea",
-      "title": "Sea & sun",
+      "title": "Hav og sol",
       "body": [
         "Sjekk strandsikkerhetsflagg, bruk vannsko på rullesteinstrender, og bruk revsikker SPF på nytt etter hver svømmetur.",
         "Fukt ofte: ta med minst 1 liter (34 oz) per person på varme dager og søk skygge mellom middag og 15:00."
@@ -34,7 +34,7 @@
     },
     {
       "id": "belongings",
-      "title": "Belongings & contacts",
+      "title": "Eiendeler og kontakter",
       "body": [
         "Del kontanter/kort mellom bagger og bruk herbergeskap eller safe for pass og elektronikk.",
         "Lagre nødnumre (112 general, Coast Guard 1530) og lokale apoteks åpningstider offline i tilfelle signalet faller."
@@ -47,13 +47,13 @@
   ],
   "faqs": [
     {
-      "q": "Is tap water safe to drink?",
+      "q": "Er springvann trygt å drikke?",
       "a": [
         "Ja, Positanos springvann kan drikkes – fyll på flasker for å redusere plast og holde seg hydrert."
       ]
     },
     {
-      "q": "Are there areas to avoid at night?",
+      "q": "Er det områder å unngå om natten?",
       "a": [
         "Byen er generelt rolig, men hold deg til opplyste ruter og bruk taxi hvis du kommer sent tilbake fra Amalfi, Sorrento eller Napoli."
       ]

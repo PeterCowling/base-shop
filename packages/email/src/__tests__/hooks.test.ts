@@ -1,6 +1,6 @@
 import type { HookPayload } from "../hooks";
 
-jest.mock("@platform-core/analytics", () => ({
+jest.mock("@acme/platform-core/analytics", () => ({
   trackEvent: jest.fn(),
 }));
 
@@ -47,7 +47,7 @@ describe("listener errors", () => {
     const error = new Error("listener error");
 
     on(async () => {
-      await new Promise((_, reject) =>
+      await new Promise((_resolve, reject) =>
         setTimeout(() => {
           order.push("rejected");
           reject(error);
@@ -71,7 +71,7 @@ describe("default analytics listeners", () => {
     ["emitClick", "email_click"],
   ])("forwards %s events", async (emitName, type) => {
     jest.resetModules();
-    const { trackEvent } = await import("@platform-core/analytics");
+    const { trackEvent } = await import("@acme/platform-core/analytics");
     (trackEvent as jest.Mock).mockClear();
 
     const { [emitName as string]: emit } = await import("../hooks");
@@ -88,7 +88,7 @@ describe("analytics errors", () => {
     async (emitName) => {
       jest.resetModules();
       const error = new Error("trackEvent error");
-      const { trackEvent } = await import("@platform-core/analytics");
+      const { trackEvent } = await import("@acme/platform-core/analytics");
       (trackEvent as jest.Mock).mockRejectedValue(error);
 
       const { [emitName as string]: emit } = await import("../hooks");

@@ -1,0 +1,65 @@
+name: Deploy XA (Stealth Staging)
+
+on:
+  push:
+    branches:
+      - staging
+    paths:
+      - "apps/xa/**"
+      - "packages/config/**"
+      - "packages/design-system/**"
+      - "packages/design-tokens/**"
+      - "packages/i18n/**"
+      - "packages/lib/**"
+      - "packages/next-config/**"
+      - "packages/platform-core/**"
+      - "packages/telemetry/**"
+      - "packages/theme/**"
+      - "packages/types/**"
+      - "packages/ui/**"
+      - "packages/zod-utils/**"
+      - "scripts/privacy/**"
+      - ".github/workflows/xa.yml"
+      - ".github/workflows/reusable-app.yml"
+  pull_request:
+    paths:
+      - "apps/xa/**"
+      - "packages/config/**"
+      - "packages/design-system/**"
+      - "packages/design-tokens/**"
+      - "packages/i18n/**"
+      - "packages/lib/**"
+      - "packages/next-config/**"
+      - "packages/platform-core/**"
+      - "packages/telemetry/**"
+      - "packages/theme/**"
+      - "packages/types/**"
+      - "packages/ui/**"
+      - "packages/zod-utils/**"
+      - "scripts/privacy/**"
+      - ".github/workflows/xa.yml"
+      - ".github/workflows/reusable-app.yml"
+  workflow_dispatch: {}
+
+concurrency:
+  group: xa-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  staging:
+    name: Deploy (staging)
+    uses: ./.github/workflows/reusable-app.yml
+    with:
+      app-filter: "@apps/xa-c"
+      build-cmd: >
+        pnpm --filter @apps/xa-c... build &&
+        node scripts/privacy/leakage-scan.mjs
+      deploy-cmd: >
+        cd apps/xa &&
+        pnpm exec next-on-pages deploy --project-name ${{ vars.XA_STAGING_PAGES_PROJECT || 'private-preview' }} --branch staging
+      project-name: ${{ vars.XA_STAGING_PAGES_PROJECT || 'private-preview' }}
+      environment-name: "xa-staging"
+      environment-url: ${{ format('https://staging.{0}.pages.dev', vars.XA_STAGING_PAGES_PROJECT || 'private-preview') }}
+      healthcheck-args: "--staging"
+    secrets: inherit
+

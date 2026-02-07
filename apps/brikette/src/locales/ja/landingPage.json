@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "翻訳を準備中です。",
+    "title": "ポジターノのBrikette Hostel - 手頃なアマルフィ海岸滞在",
     "description": "アマルフィ海岸の素晴らしい景色を間近に楽しめる、ポジターノ唯一の予算に優しいホステルです。",
     "ogImageAlt": "ホステルのテラスから望むポジターノの眺め"
   },
@@ -11,9 +11,9 @@
       "between": "美しい",
       "home": "宿"
     },
-    "paragraph1": "ホステル・ブリケットは<strong>ポジターノで唯一のホステル</strong>であり、<strong>手頃な価格</strong>でアマルフィ海岸の魅力をすぐそばで体験できます。",
-    "paragraph2": "崖の上に位置し、<strong>素晴らしい海の景色</strong>、実用的な設備、そして<strong>デジタルコンシェルジュ</strong>を通じて24時間いつでも地元の情報をご提供します。フェリーの時刻表、ハイキングコース、レストランなどをご案内します。",
-    "paragraph3": "ドミトリーでも個室でも、すべての部屋は<strong>快適さ</strong>と<strong>利便性</strong>を提供するよう設計されています。"
+    "paragraph1": "Hostel Briketteはポジターノ唯一のホステル - 手頃な価格で、美しい立地にあり、アマルフィ海岸の探索に最適です。",
+    "paragraph2": "忘れられない海の眺めと、本当に必要な実用的な快適さを組み合わせ、さらにデジタルコンシェルジュから24/7のローカル情報をお届けします。フェリーの時間、トレイルのアドバイス、レストランのおすすめ...必要なものはすべて。",
+    "paragraph3": "交流できるドミトリーか個室を選べます—どの部屋もシンプルで快適、滞在しやすいように設計されています。"
   },
   "facilitiesModal": {
     "title": "設備とアメニティ",
@@ -103,18 +103,35 @@
     "imageAlt": "ポジターノにあるホステル・ブリケットのテラスからのパノラマビュー",
     "brandName": "ホステル・ブリケット",
     "cityName": "ポジターノ",
-    "address": "翻訳を準備中です。",
+    "address": "Via G. Marconi, 358, 84017 Positano SA",
     "locationButton": "アクセスを見る",
     "contactButton": "問い合わせる",
     "helpButton": "サポートを確認",
-    "reserveNow": "今すぐ予約"
+    "reserveNow": "今すぐ予約",
+    "title": "Hostel Brikette, Positano",
+    "subtitle": "ポジターノ唯一のホステル—海の眺め、共有スペース、デジタルコンシェルジュ。",
+    "primaryCta": "空室を確認",
+    "selectDatesCta": "日付を選択",
+    "secondaryCta": "部屋を見る",
+    "trustItems": [
+      "SITAバス停まで100m",
+      "海が見えるテラス",
+      "デジタルコンシェルジュのヒント"
+    ]
   },
   "quickLinksSection": {
     "location": "場所",
     "photosAndVideos": "写真と動画",
     "facilitiesAndAmenities": "設備とアメニティ",
     "barMenu": "バーメニュー",
-    "breakfastMenu": "朝食メニュー"
+    "breakfastMenu": "朝食メニュー",
+    "rooms": "客室",
+    "roomsHint": "ドミトリーと個室",
+    "commonAreas": "共用エリア",
+    "commonAreasHint": "テラス、バー、共有スペース",
+    "locationHint": "バス停とビーチの情報",
+    "guides": "ガイド",
+    "guidesHint": "旅のためのローカル情報"
   },
   "destinationSlideshow": {
     "sectionTitle": "美しい共用エリア",
@@ -135,5 +152,41 @@
         "alt": "ホステルのテラスから望む広大な海の景色"
       }
     ]
+  },
+  "bookingWidget": {
+    "invalidDateRange": "チェックアウトはチェックイン後の日付を選んでください。"
+  },
+  "whyStaySection": {
+    "title": "ここに泊まる理由",
+    "items": [
+      {
+        "title": "デジタルコンシェルジュ",
+        "text": "フェリー、ハイキング、レストランの即時ヒント。"
+      },
+      {
+        "title": "海が見える共用エリア",
+        "text": "テラスやバーなど、交流のための共有スペース。"
+      },
+      {
+        "title": "予算に優しい滞在",
+        "text": "快適なドミトリーと個室で費用を抑えられます。"
+      }
+    ]
+  },
+  "locationSection": {
+    "title": "立地とアクセス",
+    "subtitle": "ポジターノの高台に位置し、バス・ビーチ・フェリーへすぐ。",
+    "nearbyBeach": "≈350m でビーチ",
+    "mapLabel": "Mapsで開く",
+    "mapHint": "Google Mapsのピンとルートを開きます。",
+    "mapCta": "地図を見る"
+  },
+  "socialProof": {
+    "title": "Briketteは好評",
+    "subtitle": "高評価と最新のレビュー。"
+  },
+  "faqSection": {
+    "title": "よくある質問",
+    "ctaLabel": "ヘルプセンターへ"
   }
 }

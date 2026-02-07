@@ -1,10 +1,12 @@
 import Link from "next/link";
+
+import { Cluster, Inline, Sidebar, Stack } from "@acme/design-system/primitives";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+
 import BuildStamp from "@/components/BuildStamp";
 import Container from "@/components/Container";
 import NavLink from "@/components/NavLink";
 import { NAV_PRIMARY, NAV_SECONDARY } from "@/lib/nav";
-import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
-import { Cluster, Inline, Sidebar, Stack } from "@ui/components/atoms/primitives";
 
 export default async function AppShell({
   children,

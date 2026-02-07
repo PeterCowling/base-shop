@@ -1,0 +1,8 @@
+{
+  "action": "/api/newsletter",
+  "placeholder": "Email",
+  "submitLabel": "Subscribe",
+  "text": "Get updates in your inbox",
+  "locale": "en"
+}
+

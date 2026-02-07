@@ -1,15 +1,16 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
+
 import ThemeToggle from "../src/components/ThemeToggle";
 
-const state: { theme: "base" | "dark" | "system" } = { theme: "base" };
-jest.mock("@platform-core/contexts/ThemeContext", () => ({
-  useTheme: () => ({ theme: state.theme, setTheme: () => {} }),
+const state: { mode: "light" | "dark" | "system" } = { mode: "light" };
+jest.mock("@acme/platform-core/contexts/ThemeModeContext", () => ({
+  useThemeMode: () => ({ mode: state.mode, setMode: () => {} }),
 }));
 
 describe("ThemeToggle aria-label next theme", () => {
-  it("base → dark", () => {
-    state.theme = "base";
+  it("light → dark", () => {
+    state.mode = "light";
     render(<ThemeToggle />);
     expect(screen.getByRole("button")).toHaveAttribute(
       "aria-label",
@@ -18,7 +19,7 @@ describe("ThemeToggle aria-label next theme", () => {
   });
 
   it("dark → system", () => {
-    state.theme = "dark";
+    state.mode = "dark";
     render(<ThemeToggle />);
     expect(screen.getByRole("button")).toHaveAttribute(
       "aria-label",
@@ -27,7 +28,7 @@ describe("ThemeToggle aria-label next theme", () => {
   });
 
   it("system → base", () => {
-    state.theme = "system";
+    state.mode = "system";
     render(<ThemeToggle />);
     expect(screen.getByRole("button")).toHaveAttribute(
       "aria-label",
@@ -35,4 +36,3 @@ describe("ThemeToggle aria-label next theme", () => {
     );
   });
 });
-

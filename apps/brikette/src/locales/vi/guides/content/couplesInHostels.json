@@ -1,33 +1,33 @@
 {
   "seo": {
-    "title": "Du lịch cặp đôi tại hostel",
-    "description": "Kỳ vọng thực tế, chọn giường/phòng hợp lý và mẹo giữ lịch trình nhẹ nhàng."
+    "title": "Du lịch theo cặp tại nhà trọ",
+    "description": "Lời khuyên cho phòng ngủ tập thể hoặc phòng riêng, tìm sự yên tĩnh và đặt kỳ vọng."
   },
-  "linkLabel": "Du lịch cặp đôi tại hostel",
+  "linkLabel": "Du lịch theo cặp tại nhà trọ",
   "intro": [
-    "Hostel vẫn hợp với các cặp đôi nếu bạn chọn loại phòng phù hợp, mang gọn nhẹ và thống nhất kỳ vọng cùng nhau."
+    "Nhà trọ phù hợp với các cặp đôi khi bạn chọn đúng loại phòng, đóng gói nhẹ nhàng và đặt kỳ vọng cùng nhau."
   ],
   "sections": [
     {
       "id": "room-types",
       "title": "Loại phòng",
       "body": [
-        "Đặt phòng riêng để có sự riêng tư; nếu cần tiết kiệm, chọn giường tầng cùng phòng dorm và mang hành lý gọn nhẹ để leo bậc dễ hơn."
+        "Đặt phòng riêng để có sự riêng tư; nếu bạn đang căng thẳng ngân sách, chia sẻ giường tầng trong cùng phòng ngủ tập thể và giữ hành lý nhẹ cho cầu thang."
       ]
     },
     {
       "id": "quiet",
-      "title": "Giữ không gian yên tĩnh",
+      "title": "Tìm sự yên tĩnh",
       "body": [
-        "Mang bịt tai và bịt mắt, chọn phòng xa quầy bar/khu sinh hoạt chung và ra ngoài tham quan sớm để tận hưởng đường phố yên bình."
+        "Mang theo nút tai và mặt nạ che mắt, chọn phòng xa quầy bar hoặc khu vực chung, và sử dụng buổi sáng sớm để tham quan yên tĩnh hơn."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "Hostel có phù hợp với cặp đôi không?",
+      "q": "Nhà trọ có phù hợp với các cặp đôi không?",
       "a": [
-        "Có — bạn vẫn được giá tốt và môi trường xã hội; phòng riêng giúp cân bằng thoải mái với chi phí."
+        "Có — bạn nhận được năng lượng xã hội và giá trị tốt; phòng riêng cân bằng giữa sự thoải mái và chi phí."
       ]
     }
   ]

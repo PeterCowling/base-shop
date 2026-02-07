@@ -1,61 +1,53 @@
 {
   "seo": {
     "title": "Buss tillbaka till Hostel Brikette från Arienzo Beach",
-    "description": "Climb from the shoreline to the road, ride three kilometres to Chiesa Nuova, and finish with a short walk back to Hostel Brikette."
+    "description": "Gå upp från stranden till vägen, ta bussen mot Positano, kliv av vid Bar Internazionale/Chiesa Nuova och följ sedan de korta anvisningarna tillbaka till Hostel Brikette."
   },
-  "linkLabel": "Bus back from Arienzo Beach",
+  "linkLabel": "Buss tillbaka till Hostel Brikette från Arienzo Beach",
   "intro": [
-    "Skip the full stair climb by catching the Amalfi Coast bus from Arienzo back toward Positano.",
-    "Buy your return ticket in town before heading to the beach — there is no vendor at Arienzo, so plan ahead or use the shuttle boat back to Spiaggia Grande."
+    "Skanna för att dela",
+    "Tips: Busstidtabell. Observera att tidtabellen inkluderar Positano-tider, men inte Arienzo-tider. Arienzos busshållplats ligger cirka 2–5 minuter före Sponda.",
+    "Viktigt! Om du inte har en bussbiljett för din returresa kan du antingen gå tillbaka till Sponda och åka buss därifrån, eller ta vattenshutteln tillbaka till huvudstranden i Positano. Kom ihåg att det inte finns några biljettförsäljare nära Arienzo Beach, så det är viktigt att planera i förväg och köpa dina biljetter i förväg för returresan.",
+    "Tips: Se vår %LINK:arienzoBeachClub|Arienzo Beach-guide%",
+    "Tips: Se vår %LINK:positanoBeaches|Strandöversikt%"
   ],
   "sections": [
     {
       "id": "walk-to-stop",
-      "title": "Walk up to the bus stop",
+      "title": "Gå upp till busshållplatsen",
       "body": [
-        "Climb the stairs from the beach to the road and cross carefully to the inland side.",
-        "Look for the blue-and-white SITA sign on the metal pole opposite the entrance path and wait on the lay-by."
+        "För att ta bussen tillbaka till vandrarhemmet, gå upp för trapporna från stranden till vägen och leta efter busshållplatsen på motsatt sida av vägen. Busshållplatsskylten är blå och vit, monterad på en metallstång (se bilden för referens). Vänta vid busshållplatsen på att bussen ska komma."
       ]
     },
     {
       "id": "ride-the-bus",
-      "title": "Ride the Amalfi Coast bus",
+      "title": "Ta bussen",
       "body": [
-        "Flag the coach as it approaches and have your validated ticket ready.",
-        "Expect the journey to cover about 3 kilometres (1.9 miles) with a few intermediate stops before Positano."
+        "Antalet gånger som bussen kommer att stanna innan du behöver kliva av kommer att variera. Avståndet du behöver resa är cirka 3 km / 1,9 miles."
       ]
     },
     {
       "id": "get-off-bus",
-      "title": "Get off at Bar Internazionale / Chiesa Nuova",
+      "title": "Kliv av bussen",
       "body": [
-        "Listen for the announcement or watch for the Bar Internazionale tabacchi — the stop sits opposite the hostel.",
-        "Press the stop button early so the driver knows to drop you at Chiesa Nuova."
+        "Du kommer att kliva av vid busshållplatsen Bar Internazionale/Chiesa Nuova."
       ]
     },
     {
       "id": "walk-to-hostel",
-      "title": "Walk back to Hostel Brikette",
+      "title": "Gå till vandrarhemmet",
       "body": [
-        "Continue in the direction the bus was heading for just over 100 metres (330 feet).",
-        "Take the staircase on your right back up to Hostel Brikette's main entrance."
+        "Vägbeskrivning:",
+        "* Fortsätt i riktningen som bussen du just klev av från tar i drygt 100 m / 330 fot.",
+        "* Ta trapporna upp till vandrarshemmets huvudentré."
       ]
     }
   ],
-  "tipsTitle": "Bus tips",
+  "tipsTitle": "Busstips",
   "tips": [
-    "Tryckt tidtabellslista endast Positano hållplatser; räkna med Arienzo cirka 2–5 minuter innan Positano Sponda på vägen tillbaka.",
-    "There is no ticket vendor at Arienzo. Buy your return ticket in town, or be ready to walk to Positano Sponda or take the water shuttle back to Spiaggia Grande.",
-    "Read our %LINK:arienzoBeachClub|Arienzo Beach guide% for facilities, shuttles, and planning tips.",
-    "Browse the %LINK:beaches|Positano beaches overview% to compare other coves and plan future visits."
-  ],
-  "gallery": {
-    "title": "Referens för busshållplatsen i Arienzo",
-    "items": [
-      {
-        "alt": "Blå-vit SITA-busshållplats-skylt på metallstolpe",
-        "caption": "Leta efter SITA-skylten på insidan av vägen ovanför Arienzo."
-      }
-    ]
-  }
+    "Tryckta tidtabeller listar endast Positano-hållplatser; förvänta dig Arienzo cirka 2–5 minuter före Positano Sponda på vägen tillbaka.",
+    "Det finns inga biljettförsäljare nära Arienzo Beach. Köp din returbiljett i staden i förväg, eller gå till Sponda för att åka därifrån, eller ta vattenshutteln tillbaka till huvudstranden i Positano.",
+    "Läs vår %LINK:arienzoBeachClub|Arienzo Beach-guide% för faciliteter, shuttlar och planeringstips.",
+    "Bläddra i %LINK:positanoBeaches|Strandöversikten% för att jämföra andra vikar och planera framtida besök."
+  ]
 }

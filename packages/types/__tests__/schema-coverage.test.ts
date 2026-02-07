@@ -1,13 +1,13 @@
-import { shopConfigSchema } from "../src/shop-config";
-import {
-  sectionPresetSchema,
-  sectionTemplateSchema,
-} from "../src/section/template";
+import { tabsAccordionContainerComponentSchema } from "../src/page/layouts/tabs-accordion-container";
 import {
   localeSchema,
   scaffoldSpecSchema,
 } from "../src/page/page";
-import { tabsAccordionContainerComponentSchema } from "../src/page/layouts/tabs-accordion-container";
+import {
+  sectionPresetSchema,
+  sectionTemplateSchema,
+} from "../src/section/template";
+import { shopConfigSchema } from "../src/shop-config";
 
 const baseSection = {
   id: "section-1",

@@ -1,16 +1,10 @@
 // .eslintrc.cjs  ── root of the monorepo
+const eslintIgnorePatterns = require("./tools/eslint-ignore-patterns.cjs");
+
 module.exports = {
   /* …your existing config… */
   plugins: ["@typescript-eslint", "security"],
-  ignorePatterns: [
-    "**/dist/**", // compiled packages
-    "packages/auth/dist/",
-    "**/.next/**", // Next.js build output
-    "**/storybook-static/**", // generated Storybook bundles
-    "**/index.js",
-    "**/*.d.ts.map",
-    "**/jest.config.*",
-  ],
+  ignorePatterns: eslintIgnorePatterns,
   rules: {
     "no-restricted-imports": [
       "error",

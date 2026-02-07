@@ -10,7 +10,7 @@
   "sections": [
     {
       "id": "spots",
-      "title": "Spots near Brikette",
+      "title": "Steder nær Brikette",
       "body": [
         "Små caféer på Via Pasitea og omkring Chiesa Nuova har ofte stabilt Wi-Fi.",
         "Medbring en batteripakke; strømudtag er begrænset i ældre spillesteder."
@@ -18,23 +18,16 @@
     },
     {
       "id": "backup",
-      "title": "Backup connectivity",
+      "title": "Backup-forbindelse",
       "body": [
         "Behold et eSIM som et alternativ; transportører varierer efter område - TIM/Vodafone er normalt stærke.",
         "Tether, når frokostrushet bremser café-netværk."
       ]
     }
   ],
-  "galleryTitle": "Gallery",
-  "gallery": {
-    "item1Alt": "Laptop on a café table",
-    "item1Caption": "A quiet corner for calls",
-    "item2Alt": "Espresso and notebook",
-    "item2Caption": "Rotate venues and order regularly"
-  },
   "faqs": [
     {
-      "q": "Is all‑day work OK?",
+      "q": "Er heldagsarbejde ok?",
       "a": [
         "Køb hvert 60.-90. minut og undgå spidsbelastningsfrokost; overveje at skifte spillesteder."
       ]

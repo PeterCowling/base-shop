@@ -10,15 +10,15 @@ const FLUSH_INTERVAL = 5000; // 5 seconds
 const MAX_RETRIES = 3;
 
 const rawRate = Number(
-  process.env.NEXT_PUBLIC_TELEMETRY_SAMPLE_RATE ?? "1"
+  process.env["NEXT_PUBLIC_TELEMETRY_SAMPLE_RATE"] ?? "1"
 );
 const SAMPLE_RATE = Number.isNaN(rawRate)
   ? 1
   : Math.min(1, Math.max(0, rawRate));
 const ENABLED =
-  process.env.NEXT_PUBLIC_ENABLE_TELEMETRY === "true" &&
-  (process.env.NODE_ENV === "production" || process.env.FORCE_TELEMETRY === "true");
-const ENDPOINT = process.env.NEXT_PUBLIC_TELEMETRY_ENDPOINT ?? "/api/telemetry";
+  process.env["NEXT_PUBLIC_ENABLE_TELEMETRY"] === "true" &&
+  (process.env.NODE_ENV === "production" || process.env["FORCE_TELEMETRY"] === "true");
+const ENDPOINT = process.env["NEXT_PUBLIC_TELEMETRY_ENDPOINT"] ?? "/api/telemetry";
 
 let timer: ReturnType<typeof setTimeout> | null = null;
 
@@ -70,6 +70,39 @@ export function track(name: string, payload: Record<string, unknown> = {}) {
   if (typeof navigator !== "undefined" && navigator.onLine === false) return;
   BUFFER.push({ name, payload: stripPII(payload), ts: Date.now() });
   scheduleFlush();
+}
+
+/**
+ * Capture and report an error to telemetry
+ * @param error - The error to capture
+ * @param context - Optional context about where/why the error occurred
+ */
+export function captureError(
+  error: unknown,
+  context?: {
+    scope?: string;
+    event?: string;
+    metadata?: Record<string, unknown>;
+    app?: string;
+    [key: string]: unknown;
+  }
+): void {
+  const errorInfo: Record<string, unknown> = {
+    scope: context?.scope ?? "unknown",
+    event: context?.event ?? "error",
+    metadata: context?.metadata,
+  };
+
+  if (error instanceof Error) {
+    errorInfo["message"] = error.message;
+    errorInfo["name"] = error.name;
+    // Don't include full stack in telemetry for security
+    errorInfo["stackPreview"] = error.stack?.split("\n").slice(0, 3).join("\n");
+  } else {
+    errorInfo["error"] = String(error);
+  }
+
+  track("error.captured", errorInfo);
 }
 
 // For testing purposes

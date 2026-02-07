@@ -1,0 +1,146 @@
+{
+  "seo": {
+    "title": "Guida ai Depositi e Pagamenti per Positano Hostel",
+    "description": "La tua guida completa su depositi, metodi di pagamento, conferme di prenotazione, modifiche, cancellazioni e cauzioni di sicurezza quando prenoti il tuo soggiorno al Positano Hostel."
+  },
+  "linkLabel": "Guida ai Depositi e Pagamenti per Positano Hostel",
+  "sections": [
+    {
+      "id": "submittingBookingRequest",
+      "title": "Come Inviare la Tua Richiesta di Prenotazione",
+      "body": [
+        "Inviaci la tua richiesta di prenotazione tramite un'Agenzia di Viaggi Online (OTA) autorizzata o direttamente sul nostro sito web - le chat o le visite dirette da sole non contano. Cliccando su 'Prenota', confermi che tutti i nomi, le date e la durata del soggiorno sono corretti e che accetti i nostri Termini e Condizioni."
+      ]
+    },
+    {
+      "id": "processingBookingRequest",
+      "title": "Come Elaboriamo la Tua Richiesta",
+      "body": [
+        "Iniziamo a elaborare la tua richiesta non appena riceviamo con successo qualsiasi deposito richiesto, pre-autorizzazione o pagamento utilizzando uno dei nostri metodi di pagamento accettati. Assicurati che la prenotazione mostri il nome del titolare della carta di credito che pagherà. Se il nome del pagatore è diverso, inviaci via email una breve autorizzazione dal titolare della carta prima che elaboriamo la tua richiesta."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Payment_terminal_at_the_Berlin_immigration_office.jpg/960px-Payment_terminal_at_the_Berlin_immigration_office.jpg",
+          "alt": "Tastiera e schermo del terminale di pagamento con carta.",
+          "caption": "Possiamo prendere un deposito, effettuare un pagamento o inserire una pre-autorizzazione per assicurare la tua prenotazione - Foto: Wikimedia Commons (CC0)."
+        }
+      ]
+    },
+    {
+      "id": "decliningBookingRequest",
+      "title": "Quando Potremmo Rifiutare una Richiesta",
+      "body": [
+        "Raramente rifiutiamo una prenotazione, ma ci riserviamo il diritto di farlo a nostra discrezione - ad esempio, se il pagamento fallisce, mancano informazioni richieste o la richiesta viola i nostri Termini e Condizioni."
+      ]
+    },
+    {
+      "id": "requestSizeLimit",
+      "title": "Limiti di Dimensione per Una Richiesta",
+      "body": [
+        "Una richiesta di prenotazione può coprire fino a sette (7) notti consecutive e un massimo di cinque (5) ospiti. Hai bisogno di un soggiorno più lungo o di un gruppo più grande? Dividilo semplicemente in richieste separate."
+      ]
+    },
+    {
+      "id": "counterOffer",
+      "title": "Cosa Succede se la Tua Camera Non È Disponibile",
+      "body": [
+        "Se la tua camera preferita è già occupata, ti invieremo via email una controproposta con l'alternativa più vicina. Accetta l'offerta e completa il pagamento o la pre-autorizzazione per bloccare il tuo soggiorno."
+      ]
+    },
+    {
+      "id": "prepaidNonRefundableBookingsPolicy",
+      "title": "Prenotazioni Prepagate Non Rimborsabili",
+      "body": [
+        "Scegliere una tariffa prepagata non rimborsabile ti fa risparmiare denaro ma richiede il pagamento completo anticipato. Proveremo la tua carta fino a tre volte. Se tutti i tentativi falliscono, annulleremo la richiesta. Queste prenotazioni non possono essere rimborsate o modificate."
+      ]
+    },
+    {
+      "id": "confirmationEmail",
+      "title": "La Tua Email di Conferma",
+      "body": [
+        "Una volta che il tuo pagamento viene elaborato, invieremo un'email di conferma all'indirizzo che ci hai fornito. Elenca il tuo riferimento di prenotazione, data di arrivo, durata del soggiorno ed eventuali extra. Leggila attentamente e dicci immediatamente se qualcosa sembra sbagliato."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Email_on_Phone_Flat_Icon.svg/960px-Email_on_Phone_Flat_Icon.svg.png",
+          "alt": "Icona email sullo schermo del telefono.",
+          "caption": "La tua email di conferma è il posto migliore per ricontrollare date, nomi e dettagli di pagamento - Foto: Wikimedia Commons (CC BY-SA 4.0)."
+        }
+      ]
+    },
+    {
+      "id": "numberOfGuestsIncluded",
+      "title": "Chi È Incluso nella Tua Prenotazione",
+      "body": [
+        "La tua prenotazione copre automaticamente quanto segue:",
+        "* 1 ospite per letto singolo\n* Fino a 2 ospiti per letto matrimoniale\n* Fino alla capacità pubblicizzata di qualsiasi appartamento tu prenoti",
+        "Per sicurezza e comfort non possiamo ospitare ospiti aggiuntivi oltre il limite della camera."
+      ]
+    },
+    {
+      "id": "scopeOfFacilitiesIncluded",
+      "title": "Cosa È Incluso nel Tuo Soggiorno",
+      "body": [
+        "Ogni ospite riceve:",
+        "* Biancheria fresca e una tessera magnetica\n* Uso delle docce condivise\n* Acqua calda durante gli orari programmati (circa 07:00-10:30 e 17:00-22:30)\n* Accesso alle nostre aree comuni",
+        "Altri vantaggi (colazione, Wi-Fi, deposito bagagli, ecc.) sono di cortesia e seguono le loro semplici regole."
+      ]
+    },
+    {
+      "id": "financialObligation",
+      "title": "La Tua Responsabilità Finanziaria",
+      "body": [
+        "Il titolare della carta di credito indicato sulla tua prenotazione è responsabile di tutte le spese - tariffe camera, danni, spese di pulizia, multe o sanzioni per violazione delle regole della casa. Gli importi non pagati possono essere addebitati direttamente sulla carta registrata."
+      ]
+    },
+    {
+      "id": "roomAllocation",
+      "title": "Come Vengono Assegnati Letti e Camere",
+      "body": [
+        "Ti garantiamo il tipo di letto e la categoria di camera che hai prenotato. Le prenotazioni in dormitorio garantiscono un letto nella categoria scelta, ma non possiamo prometterti che i gruppi condivideranno la stessa camera. I letti nei dormitori vengono scelti in base all'ordine di arrivo al check-in."
+      ]
+    },
+    {
+      "id": "allocatingUpgrades",
+      "title": "Upgrade di Camera",
+      "body": [
+        "A volte ti facciamo l'upgrade a una camera migliore gratuitamente, oppure puoi pagare per l'upgrade quando prenoti. Se l'upgrade gratuito diventa successivamente impraticabile, potremmo riportarti alla categoria che hai originariamente pagato."
+      ]
+    },
+    {
+      "id": "thirdPartyPayments",
+      "title": "Pagamento Tramite Siti di Terze Parti",
+      "body": [
+        "Quando prenoti tramite un'OTA, pagherai tramite il loro sistema secondo i loro termini. Non vediamo mai i dettagli della tua carta dall'OTA e non siamo responsabili per problemi sulla loro piattaforma. Controlla sempre che il tuo pagamento sia andato a buon fine e che tu abbia ricevuto una conferma."
+      ]
+    },
+    {
+      "id": "bookingRequestDeposits",
+      "title": "Depositi di Prenotazione",
+      "body": [
+        "Alcune tariffe richiedono un deposito per mantenere la camera. Le tariffe prepagate richiedono il 100% anticipato. I depositi non sono rimborsabili. Se non possiamo prendere il deposito, la richiesta di prenotazione viene automaticamente annullata."
+      ]
+    },
+    {
+      "id": "bookingRequestPreauthorisations",
+      "title": "Pre-autorizzazioni Carta",
+      "body": [
+        "Per tariffe flessibili potremmo pre-autorizzare la tua carta per la prima notte o il soggiorno completo per garantire la tua prenotazione. Se la pre-autorizzazione fallisce, rifiuteremo la richiesta."
+      ]
+    },
+    {
+      "id": "safeguardingProcess",
+      "title": "La Nostra Cauzione di Sicurezza",
+      "body": [
+        "Al check-in, potremmo inserire una cauzione di sicurezza pari a una notte per ospite per coprire possibili multe, spese, prolungamenti o danni. Se un blocco carta non è possibile, puoi lasciare lo stesso importo in contanti o usare la carta di un altro ospite. Se nessuna opzione funziona, purtroppo dobbiamo annullare la tua prenotazione."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Euro_coins_in_hand.jpg/960px-Euro_coins_in_hand.jpg",
+          "alt": "Una mano che tiene diverse monete euro.",
+          "caption": "Se un blocco carta non è possibile al check-in, potremmo chiedere un deposito in contanti equivalente - Foto: Wikimedia Commons (CC BY-SA 4.0)."
+        }
+      ]
+    }
+  ]
+}

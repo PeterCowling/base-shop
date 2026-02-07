@@ -1,12 +1,15 @@
 // packages/ui/src/components/cms/media/MediaDetailsPanel.tsx
 "use client";
 
-import { Cross2Icon } from "@radix-ui/react-icons";
-import type { MediaItem } from "@acme/types";
 import type { FormEvent, ReactElement } from "react";
 import { useEffect, useId, useMemo, useState } from "react";
-import { useTranslations } from "@acme/i18n";
+import { Cross2Icon } from "@radix-ui/react-icons";
 
+import { useTranslations } from "@acme/i18n";
+import type { MediaItem } from "@acme/types";
+
+import { cn } from "../../../utils/style";
+import { drawerWidthProps } from "../../../utils/style/drawerWidth";
 import { Spinner } from "../../atoms";
 import {
   Button,
@@ -19,8 +22,6 @@ import {
   Input,
   Textarea,
 } from "../../atoms/shadcn";
-import { cn } from "../../../utils/style";
-import { drawerWidthProps } from "../../../utils/style/drawerWidth";
 
 interface MediaItemWithUrl extends MediaItem {
   url: string;

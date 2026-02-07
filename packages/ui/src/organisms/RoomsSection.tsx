@@ -1,17 +1,19 @@
 // packages/ui/src/organisms/RoomsSection.tsx
 // Responsive list of room cards (moved from app src)
-import RoomCard from "@/molecules/RoomCard";
-import RoomFilters, { type RoomFilter } from "../molecules/RoomFilters";
-import { Section } from "@/atoms/Section";
-import { Grid } from "@/components/atoms/primitives/Grid";
-import { useModal } from "@/context/ModalContext";
-import { roomsData } from "@/data/roomsData";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { SLUGS } from "@/slug-map";
-import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
 import { memo, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useLocation, useSearchParams } from "react-router-dom";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+
+import { Section } from "../atoms/Section";
+import { Grid } from "../components/atoms/primitives/Grid";
+import { useModal } from "../context/ModalContext";
+import { roomsData } from "../data/roomsData";
+import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
+import RoomCard from "../molecules/RoomCard";
+import RoomFilters, { type RoomFilter } from "../molecules/RoomFilters";
+import { SLUGS } from "../slug-map";
+import { getDatePlusTwoDays, getTodayIso } from "../utils/dateUtils";
 
 function RoomsSection({ lang: explicitLang }: { lang?: string }): JSX.Element {
   const fallbackLang = useCurrentLanguage();
@@ -19,11 +21,11 @@ function RoomsSection({ lang: explicitLang }: { lang?: string }): JSX.Element {
   const { t } = useTranslation("roomsPage", { lng: lang });
   const { openModal } = useModal();
   const roomsSlug = SLUGS.rooms[lang as keyof typeof SLUGS.rooms] ?? SLUGS.rooms.en;
-  const [searchParams] = useSearchParams();
-  const location = useLocation();
-  const checkIn = searchParams.get("checkin") ?? getTodayIso();
-  const checkOut = searchParams.get("checkout") ?? getDatePlusTwoDays(checkIn);
-  const adults = parseInt(searchParams.get("pax") ?? "1", 10) || 1;
+  const searchParams = useSearchParams();
+  const checkIn = searchParams?.get("checkin") ?? getTodayIso();
+  const checkOut = searchParams?.get("checkout") ?? getDatePlusTwoDays(checkIn);
+  const adults = parseInt(searchParams?.get("pax") ?? "1", 10) || 1;
+  const searchString = searchParams?.toString() ? `?${searchParams.toString()}` : "";
 
   const [filter, setFilter] = useState<RoomFilter>("all");
 
@@ -96,7 +98,7 @@ function RoomsSection({ lang: explicitLang }: { lang?: string }): JSX.Element {
                   ]}
                 />
                 <Link
-                  to={{ pathname: href, search: location.search }}
+                  href={`${href}${searchString}`}
                   className="mt-2 self-start text-sm font-medium text-brand-primary underline hover:text-brand-bougainvillea"
                 >
                   {t("moreAboutThisRoom")}

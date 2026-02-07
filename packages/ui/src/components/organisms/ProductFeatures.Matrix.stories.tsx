@@ -1,8 +1,10 @@
 // packages/ui/src/components/organisms/ProductFeatures.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { ProductFeatures } from './ProductFeatures';
+
 import { makeStateStory } from '../../story-utils/createStories';
+
+import { ProductFeatures } from './ProductFeatures';
 
 const features = [
   { title: 'Waterproof shell', description: 'Sealed seams and DWR coating.' },

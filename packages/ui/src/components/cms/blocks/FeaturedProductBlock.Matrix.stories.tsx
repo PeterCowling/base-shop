@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/blocks/FeaturedProductBlock.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import FeaturedProductBlock from './FeaturedProductBlock';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './FeaturedProductBlock.fixtures.json';
 import { z } from 'zod';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import FeaturedProductBlock from './FeaturedProductBlock';
+import fixture from './FeaturedProductBlock.fixtures.json';
 
 const meta: Meta<typeof FeaturedProductBlock> = {
   title: 'CMS Blocks/FeaturedProductBlock/Matrix',

@@ -1,8 +1,9 @@
+import { updateMediaMetadata } from "@cms/actions/media.server";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import type { MediaItem } from "@acme/types";
 
-import { updateMediaMetadata } from "@cms/actions/media.server";
 import MediaManager from "../MediaManager";
 
 let libraryProps: any;

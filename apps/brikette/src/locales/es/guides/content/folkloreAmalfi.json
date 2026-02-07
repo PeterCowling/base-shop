@@ -1,62 +1,149 @@
 {
   "seo": {
-    "title": "Leyendas y folclore de la Costa Amalfitana",
-    "description": "Relatos populares de la costa y dónde descubrir sus huellas."
+    "title": "Folclore de la Costa Amalfitana: Leyendas, Mitos e Historias Locales",
+    "description": "Folclore y leyendas de la Costa Amalfitana: sirenas, santos, mitos marinos y tradiciones locales. Historias detrás de festivales, nombres de lugares y creencias culturales para viajeros curiosos.",
+    "lastUpdated": "2026-01-31"
   },
-  "linkLabel": "Leyendas y folclore de la Costa Amalfitana",
+  "linkLabel": "Folclore de la Costa Amalfitana: Leyendas, Mitos y Tradiciones Locales",
   "intro": [
-    "Sirenas, santos y marineros colorean las historias de la Costa Amalfitana y siguen presentes en fiestas, procesiones y nombres de lugares.",
-    "Estas leyendas añaden contexto cuando visitas iglesias costeras, miradores y eventos anuales."
+    "El folclore de la Costa Amalfitana da vida a la costa. ¿Ves las islas Li Galli desde las %LINK:positanoMainBeach|playas de Positano%? Esas son las legendarias islas de las Sirenas de la Odisea de Homero. ¿Asistes a un festival en %LINK:amalfiTownGuide|Amalfi%? Estás presenciando tradiciones de San Andrés que datan de hace 800 años. ¿Escuchas dichos de pescadores? Esas son supersticiones transmitidas por generaciones. Esta guía explica los mitos, leyendas y folclore que moldean lo que ves y experimentas en la costa.",
+    "Esta guía cubre las tradiciones folclóricas más ricas de la Costa Amalfitana. Algunas son mitos griegos y romanos antiguos. Algunas son leyendas de santos católicos de tiempos medievales. Algunas son supersticiones locales que los pescadores aún siguen. Todas ellas ayudan a explicar el carácter de la costa y por qué ciertas tradiciones persisten hoy."
   ],
   "sections": [
     {
-      "id": "fishermen",
-      "title": "Historias de pescadores",
+      "id": "sirens-li-galli",
+      "title": "Las Sirenas de las Islas Li Galli",
       "body": [
-        "Relatos de santos protectores, tormentas repentinas y rescates milagrosos explican procesiones marítimas y exvotos en las capillas costeras.",
-        "Pregunta por las festividades locales: muchas recrean estos episodios con fuegos artificiales y bendiciones en el puerto."
+        "%IMAGE:li-galli-islands-positano.jpg|Islas Li Galli frente a la costa de Positano, hogar legendario de las sirenas%",
+        "La leyenda más famosa de la Costa Amalfitana proviene de la Odisea de Homero. Las islas Li Galli (también llamadas Sirenuse), un pequeño archipiélago visible desde las playas de Positano, se decía que eran el hogar de las Sirenas: criaturas míticas que cantaban tan bellamente que los marineros navegaban hacia ellas y se estrellaban contra las rocas. En la Odisea, Odiseo hizo que su tripulación se tapara los oídos con cera y lo atara al mástil para que pudiera escuchar el canto de las Sirenas sin perder el control de su barco.",
+        "El mito dice que tres Sirenas vivían en estas islas: Parténope, Leucosia y Ligeia. Cuando Odiseo resistió su canto, las Sirenas humilladas se arrojaron al mar y se ahogaron. El cuerpo de Parténope llegó a la orilla donde ahora está Nápoles (el nombre antiguo de Nápoles era Parténope). Las islas permanecieron malditas, y los marineros las evitaron durante siglos.",
+        "Hoy, Li Galli son islas privadas. El bailarín de ballet ruso Rudolf Nureyev las poseyó en las décadas de 1980–1990. Puedes ver las islas desde %LINK:positanoMainBeach|Spiaggia Grande% y la %LINK:fornilloBeachGuide|Playa de Fornillo%: se asientan a pocos kilómetros de la costa, rocosas y con apariencia deshabitada. Los tours en bote alrededor de Positano a menudo pasan cerca de las islas, y los guías aman contar la historia de las Sirenas. Algunos tours afirman que aún puedes escuchar sonidos misteriosos de las rocas cuando el viento es el correcto (es solo viento a través de las cuevas, pero el mito persiste).",
+        "La leyenda de las Sirenas influye en la cultura de la Costa Amalfitana hoy. Los diseños de cerámica presentan sirenas y criaturas marinas. Los restaurantes usan imágenes de Sirenas en sus logos. Los artistas locales pintan interpretaciones del mito. La historia recuerda a locales y visitantes que el mar es poderoso e impredecible: la belleza puede ser peligrosa, y respetar el agua importa."
       ]
     },
     {
-      "id": "toponyms",
-      "title": "Mitos de topónimos",
+      "id": "saint-andrew",
+      "title": "San Andrés: Protector de Amalfi",
       "body": [
-        "Nombres como Positano, Li Galli o Praiano están ligados a sirenas, mercaderes y navegantes medievales.",
-        "Escucha a los guías locales o visita pequeños museos para descubrir cómo el folklore moldeó la identidad de cada pueblo."
+        "%IMAGE:amalfi-cathedral-saint-andrew.jpg|Catedral de Amalfi dedicada a San Andrés%",
+        "San Andrés es el santo patrón de Amalfi y una de las figuras más importantes en el folclore de la Costa Amalfitana. Según la leyenda, las reliquias de Andrés (huesos y restos) fueron traídas a Amalfi en 1206 desde Constantinopla durante la Cuarta Cruzada. Los comerciantes y marineros de Amalfi tenían fuertes lazos con el Imperio Bizantino, y traer las reliquias de Andrés a casa fue tanto un triunfo religioso como una declaración política del poder de Amalfi.",
+        "La catedral en el %LINK:amalfiTownGuide|pueblo de Amalfi% está dedicada a San Andrés. Sus reliquias se guardan en la cripta debajo del altar principal. Los locales creen que San Andrés protege a los pescadores, calma las tormentas y guarda la costa del peligro. Cuando el mal tiempo amenaza, algunos pescadores mayores todavía rezan a San Andrés antes de salir al mar. La tradición se está desvaneciendo, pero persiste en familias pesqueras.",
+        "Amalfi celebra el día festivo de San Andrés dos veces al año con grandes festivales. El 27 de junio (la fecha en que llegaron sus reliquias a Amalfi) y el 30 de noviembre (su día festivo oficial en el calendario católico), el pueblo celebra elaboradas procesiones. Una estatua de San Andrés es llevada por las calles desde la catedral hasta el paseo marítimo y de regreso. Bandas de metales tocan. Los fuegos artificiales iluminan el puerto. Todo el pueblo participa: es el evento cultural más grande de Amalfi después de %LINK:ferragostoPositano|Ferragosto%.",
+        "Se dice que un líquido milagroso llamado \\\\\"maná\\\\\" se filtra de las reliquias de San Andrés en la cripta. Esta sustancia oleosa aparece en la tumba de mármol periódicamente (el análisis científico sugiere que es condensación o depósitos minerales, pero los creyentes lo ven como divino). Los peregrinos visitan la cripta para presenciar el maná y pedir la intercesión de San Andrés. Puedes visitar la cripta como turista (pequeña tarifa de admisión): es oscura, ornamentada y atmosférica. Incluso si no eres religioso, la arquitectura barroca y la significancia histórica hacen que valga la pena verla.",
+        "La leyenda de San Andrés explica por qué las comunidades pesqueras en la Costa Amalfitana sienten una profunda conexión con el mar como proveedor y amenaza. El santo representa la esperanza de que la fe y el respeto puedan mantenerte a salvo en aguas peligrosas."
       ]
     },
     {
-      "id": "traditions",
-      "title": "Tradiciones vivas",
+      "id": "fishermen-superstitions",
+      "title": "Supersticiones de pescadores y tradición marina",
       "body": [
-        "La Luminaria de Praiano y las bendiciones pesqueras de Positano fusionan fe y folklore con rituales a la luz de las velas.",
-        "Los azulejos artesanales suelen representar santos, limones o leyendas marineras: fíjate en portales y escalinatas de iglesias."
+        "Los pescadores de la Costa Amalfitana tienen supersticiones transmitidas por generaciones. Muchas se están desvaneciendo a medida que las generaciones más jóvenes dejan la pesca por trabajos turísticos, pero los pescadores mayores todavía siguen algunas de estas creencias:",
+        "**Nunca digas \\\\\"cerdo\\\\\" (maiale) en un bote.** Los cerdos son animales terrestres y mala suerte en el mar. Si necesitas hacer referencia al cerdo, usa un eufemismo o gesto en lugar de decir la palabra. Esta superstición es tan fuerte que algunos pescadores se negarán a navegar si alguien rompe la regla.",
+        "**Cielo rojo de noche, deleite del marinero. Cielo rojo de mañana, advertencia del marinero.** Esta rima de predicción del clima (que funciona en italiano también: \\\\\"Rosso di sera, bel tempo si spera\\\\\") se basa en meteorología real: las puestas de sol rojas sugieren alta presión estable, mientras que los amaneceres rojos indican tormentas que se aproximan. Los pescadores todavía verifican el color del cielo antes de decidir si salir.",
+        "**Evita navegar los viernes.** El viernes se considera de mala suerte para las salidas, especialmente si cae en 13. Esta creencia proviene de la tradición cristiana (Jesús fue crucificado un viernes). Muchos pescadores mayores retrasarán un viaje en lugar de salir del puerto un viernes.",
+        "**No voltees el pan al revés.** El pan es sagrado (representa el cuerpo de Cristo en la creencia católica). Voltear el pan al revés sobre una mesa o bote es irrespetuoso e invita a la mala suerte. Esto se aplica también en tierra: verás a italianos mayores corregir a cualquiera que voltee el pan.",
+        "**Silbar en un bote convoca al viento.** Silbar está prohibido porque supuestamente invoca tormentas. Esta creencia existe en muchas culturas marítimas en todo el mundo. Si te unes a un tour en bote pesquero, no silbes: el capitán podría genuinamente pedirte que pares.",
+        "Estas supersticiones muestran cuán precaria era (y aún es) la vida para los pescadores. Cuando tu sustento y seguridad dependen del mar impredecible, los rituales y creencias proporcionan consuelo psicológico y cohesión comunitaria. Incluso si las generaciones más jóvenes no creen en los aspectos sobrenaturales, muchos respetan las tradiciones como patrimonio cultural."
+      ]
+    },
+    {
+      "id": "luminaria-praiano",
+      "title": "Luminaria di San Domenico (Praiano)",
+      "body": [
+        "Una de las tradiciones folclóricas más hermosas de la costa es la Luminaria di San Domenico en Praiano (el pueblo entre Positano y Amalfi). Cada año el primer domingo de agosto, los locales crean un camino de más de 2,000 faroles de papel desde la playa hasta las empinadas escaleras hacia la Iglesia de San Domenico. Las velas se encienden al atardecer, creando una serpiente brillante de luz serpenteando por la ladera de la montaña.",
+        "La tradición honra a San Domenico (Santo Domingo), quien los locales creen que protegió a Praiano de una epidemia de cólera en los años 1800. La Luminaria recrea las procesiones con antorchas que los aldeanos sostenían mientras rezaban por la intervención del santo. Hoy, mezcla devoción religiosa con celebración comunitaria: las familias elaboran a mano los faroles de papel, los niños ayudan a colocarlos y encenderlos, y todo el pueblo se reúne para caminar por el sendero iluminado.",
+        "Si estás en la Costa Amalfitana a principios de agosto, la Luminaria vale la pena experimentarla. El evento comienza alrededor de las 19:00–20:00 (verifica las fechas exactas con las oficinas de turismo locales o pregunta en el hostel). Puedes tomar el autobús SITA desde Positano a Praiano (10 minutos), caminar por las escaleras iluminadas con velas con los locales, asistir al servicio de la iglesia (opcional) y ver fuegos artificiales sobre el mar después. La atmósfera es mágica: íntima, centrada en la comunidad y visualmente impresionante.",
+        "La Luminaria representa la mezcla de fe católica y folclore local de la Costa Amalfitana. Los santos no son figuras distantes en el cielo: son protectores activos que intervienen en la vida del pueblo. Rituales como la Luminaria mantienen viva esa creencia y refuerzan los lazos comunitarios."
+      ]
+    },
+    {
+      "id": "lemon-folklore",
+      "title": "Folclore y tradiciones del limón",
+      "body": [
+        "%IMAGE:amalfi-lemon-grove-terraces.jpg|Limonares en terrazas en las laderas de la Costa Amalfitana%",
+        "Los limones no son solo agricultura en la Costa Amalfitana: llevan significancia simbólica y folclórica. Los limones gigantes de Amalfi (sfusato amalfitano) están protegidos por certificación IGP y aparecen en mitos y dichos locales.",
+        "**Limones como protección contra el mal de ojo.** En el folclore del sur de Italia, el \\\\\"mal de ojo\\\\\" (malocchio) es una maldición causada por envidia o miradas maliciosas. Se cree que los limones absorben energía negativa. Algunas casas y restaurantes antiguos cuelgan limones cerca de las entradas para alejar la mala suerte. Esto es menos común ahora, pero todavía lo ves ocasionalmente en negocios tradicionales familiares.",
+        "**Hojas de limón para la buena fortuna.** Las novias en bodas de la Costa Amalfitana a veces llevan flores de limón o tejen hojas de limón en sus ramos. Las flores blancas simbolizan pureza, y la fruta simboliza abundancia y fertilidad. Esta tradición se está desvaneciendo en bodas modernas pero persiste en familias rurales.",
+        "**Limoncello como medicina digestiva.** El limoncello (licor de limón) no es solo una bebida: es medicina folclórica tradicional. Después de comidas pesadas, los locales beben un vaso pequeño de limoncello helado para ayudar a la digestión. El alto contenido de alcohol y aceites de limón supuestamente calman el estómago. La evidencia científica es limitada, pero la tradición es fuerte. Muchos huéspedes de hostel en Brikette prueban limoncello por primera vez aquí y adoptan el ritual después de la cena.",
+        "**El dicho: \\\\\"Cuando la vida te da limones, haz limoncello.\\\\\"** Esta es una variación moderna de un antiguo dicho italiano, pero captura la filosofía de la costa. Los limones están en todas partes: bien podrías convertirlos en algo celebratorio. La economía de la Costa Amalfitana se construyó sobre limones (exportaciones al norte de Europa en los siglos XVIII–XIX), y los locales todavía ven los limones como símbolos de resiliencia y prosperidad."
+      ]
+    },
+    {
+      "id": "festivals-folklore",
+      "title": "Folclore de festivales y procesiones religiosas",
+      "body": [
+        "Muchos festivales de la Costa Amalfitana mezclan días de santos católicos con folclore precristiano. Las comunidades locales adaptaron antiguos festivales de cosecha paganos y rituales marinos en celebraciones cristianas cuando el Imperio Romano se convirtió al cristianismo. El resultado es una mezcla única de liturgia formal de iglesia y tradiciones folclóricas.",
+        "**Bendiciones de botes pesqueros.** Varios pueblos costeros bendicen la flota pesquera una vez al año (usualmente en mayo o junio, antes de la temporada de pesca de verano). Un sacerdote rema hacia el mar en un bote pequeño, y la flota pesquera sigue. Bendice los botes con agua bendita y oraciones a San Andrés o la Virgen. Este ritual pide protección contra tormentas y una buena captura. Después de la bendición, las familias hacen picnic en la playa y celebran con música y comida. El evento se siente más como una fiesta que un rito religioso solemne.",
+        "**Procesiones de la Asunción de María (Ferragosto).** El 15 de agosto, pueblos a lo largo de la costa llevan estatuas de la Virgen por las calles en procesiones solemnes. La tradición mezcla teología católica (la Asunción de María al cielo) con costumbres antiguas de festivales de cosecha. Los locales lanzan pétalos de flores desde balcones mientras pasa la estatua. Bandas de metales tocan himnos. Los fuegos artificiales cierran el día. Es la tradición más universal de la costa: cada pueblo celebra en alguna forma.",
+        "**Celebraciones del día del nombre.** En Italia, tu \\\\\"día del nombre\\\\\" (el día festivo del santo por el que te nombran) a menudo es más importante que tu cumpleaños. Las familias celebran con pastel, regalos y reuniones. Si tu nombre es Andrea (Andrés), el 27 de junio y el 30 de noviembre son tus días del nombre en Amalfi. Si te hospedas en el hostel y resulta ser tu día del nombre, menciónalo al personal: podrían organizar una pequeña celebración con otros huéspedes."
+      ]
+    },
+    {
+      "id": "supernatural-creatures",
+      "title": "Criaturas sobrenaturales e historias de fantasmas",
+      "body": [
+        "Más allá de las famosas Sirenas, el folclore de la Costa Amalfitana incluye otros seres sobrenaturales que los locales una vez creyeron (y algunos todavía medio creen) habitan el paisaje:",
+        "**Monachicchio (espíritus de pequeños monjes).** Estos son espíritus traviesos que supuestamente persiguen viejos monasterios e iglesias. Se ven como pequeños monjes en túnicas con capucha. Los monachicchio son embaucadores: mueven objetos, hacen ruidos por la noche y extravían a la gente en senderos de montaña. Las historias probablemente se originaron para explicar sonidos extraños en edificios antiguos (viento, cimientos que se asientan) y para evitar que los niños vagaran en ruinas peligrosas. Algunos locales mayores afirman haber visto monachicchio, pero ahora es principalmente un cuento para dormir para niños.",
+        "**Janara (brujas).** En el folclore del sur de Italia, las janare son brujas que vuelan por la noche y lanzan maldiciones. La Costa Amalfitana tiene menos historias de janara que la Campania interior (Benevento es la capital de brujas de Italia), pero la creencia existe. Se supone que cintas rojas atadas a puertas mantienen a las brujas afuera. Algunas personas mayores todavía atan cintas durante ciertos festivales, aunque la mayoría admite que es más tradición que creencia genuina.",
+        "**Barcos fantasma y marineros fantasmas.** Los pescadores ocasionalmente reportan ver luces misteriosas en el agua por la noche o escuchar voces cuando no hay botes visibles. Estos avistamientos se atribuyen a barcos fantasma: embarcaciones perdidas en tormentas cuyos tripulantes todavía persiguen la costa. Las historias sirven como cuentos de advertencia sobre respetar los peligros del mar. Las explicaciones modernas (bioluminiscencia, luces de botes distantes reflejándose en nubes) son menos románticas pero más precisas.",
+        "Estas historias sobrenaturales se están desvaneciendo rápidamente. Los italianos más jóvenes en gran medida las descartan como viejas supersticiones. Pero permanecen como parte del trasfondo cultural, y conocerlas te ayuda a entender las actitudes locales hacia el mar, edificios antiguos y rituales nocturnos."
       ]
     }
   ],
+  "tipsTitle": "Experimentar el folclore como viajero",
   "tips": [
-    "Consulta los calendarios municipales para identificar fiestas patronales y sumarte con respeto.",
-    "Lleva un chal ligero; muchos actos terminan en templos donde se agradece vestir con modestia."
+    "Asiste a una procesión religiosa si estás en la costa durante un día festivo: verifica calendarios de eventos municipales o pregunta en el Hostel Brikette por fechas próximas.",
+    "Visita la cripta de San Andrés en la %LINK:amalfiTownGuide|Catedral de Amalfi% para ver las reliquias y arquitectura barroca (pequeña tarifa de admisión, 10–15 minutos).",
+    "Si estás en Praiano a principios de agosto, no te pierdas la Luminaria di San Domenico: toma el autobús desde Positano (10 minutos) para experimentar las escaleras iluminadas con velas.",
+    "Busca arte de cerámica con sirenas, limones y santos en tiendas a lo largo de Via dei Mulini: estas son referencias folclóricas, no solo decoraciones turísticas.",
+    "Pregunta a locales mayores (especialmente pescadores o dueños de restaurantes) sobre sus tradiciones folclóricas familiares: muchos aman compartir historias si muestras interés genuino.",
+    "Lleva un chal ligero o bufanda si planeas entrar a iglesias durante festivales: vestimenta modesta (hombros y rodillas cubiertos) es requerida.",
+    "Prueba limoncello después de una comida grande para seguir la tradición folclórica de usarlo como ayuda digestiva: muchos restaurantes ofrecen un shot de cortesía.",
+    "Si visitas las islas Li Galli en un tour en bote, pide al capitán que comparta la leyenda de las Sirenas: todos la conocen y disfrutan contando la historia."
   ],
+  "faqsTitle": "Preguntas frecuentes",
   "faqs": [
     {
-      "q": "¿Dónde se pueden ver estas leyendas en acción?",
+      "q": "¿Cualquiera puede unirse a las procesiones religiosas y festivales?",
       "a": [
-        "Asiste a procesiones marítimas como la de Sant’Andrea en Amalfi o al desfile de sirenas de Positano durante Ferragosto para ver recreaciones vivas."
+        "Sí: los visitantes son bienvenidos a observar y participar respetuosamente. Párate a lo largo de la ruta de la procesión, aplaude o anima cuando sea apropiado, y permite que los locales que llevan estatuas o símbolos religiosos pasen primero. No bloquees el camino ni interrumpas oraciones. Si la procesión entra a una iglesia para misa, puedes asistir si estás vestido modestamente (hombros y rodillas cubiertos, sin ropa de playa). Trae cambio pequeño (monedas de €1–€2) si quieres encender una vela o hacer una donación."
       ]
     },
     {
-      "q": "¿Hay visitas guiadas centradas en el folklore?",
+      "q": "¿Dónde puedo escuchar música folclórica tradicional en la Costa Amalfitana?",
       "a": [
-        "Sí: museos cívicos de Amalfi y recorridos a pie por Praiano o Atrani incluyen relatos locales; reserva con guías certificados para asegurar disponibilidad en español."
+        "Los festivales de verano en Atrani, %LINK:ravelloGuide|Ravello% y Amalfi a veces presentan música tradicional de tarantela (música de danza folclórica de Campania). Verifica horarios de eventos de oficinas de turismo o carteles en paradas de autobús para fechas de conciertos. El Festival de Ravello (festival de música de verano) ocasionalmente incluye presentaciones folclóricas junto con conciertos clásicos. Algunos restaurantes familiares en pueblos más pequeños tocan música folclórica grabada durante el servicio de cena, aunque las presentaciones en vivo son raras fuera de festivales."
       ]
     },
     {
-      "q": "¿Es apropiado participar en rituales religiosos como visitante?",
+      "q": "¿Las supersticiones de los pescadores todavía se toman en serio?",
       "a": [
-        "Sí, siempre que sigas el código local: viste con respeto, guarda silencio durante las oraciones y espera a ser invitado antes de tocar estandartes o imágenes."
+        "Los pescadores mayores (60+) a menudo siguen supersticiones tradicionales como evitar los viernes, no decir \\\\\"cerdo\\\\\" en botes y verificar el color del cielo para predicción del clima. Los pescadores más jóvenes (menores de 40) mayormente tratan estas como tradiciones culturales en lugar de creencias literales. Sin embargo, incluso los escépticos a menudo respetan los rituales por hábito familiar o expectativa comunitaria. Si te unes a un tour en bote pesquero, es cortés seguir las supersticiones que el capitán mencione: no silbes, no voltees el pan al revés y evita decir palabras de mala suerte."
+      ]
+    },
+    {
+      "q": "¿El \\\\\"maná\\\\\" de las reliquias de San Andrés es real?",
+      "a": [
+        "El líquido oleoso que aparece en la tumba de San Andrés en la cripta de la Catedral de Amalfi es real (puedes verlo si visitas). El análisis científico sugiere que es condensación mineral o filtración a través del mármol, no un fenómeno sobrenatural. Sin embargo, los peregrinos católicos lo interpretan como milagroso: una señal de la presencia continua e intercesión del santo. Si crees en el milagro es personal. El fenómeno en sí está documentado y ocurre periódicamente."
+      ]
+    },
+    {
+      "q": "¿Cuál es el mejor festival folclórico para experimentar en la Costa Amalfitana?",
+      "a": [
+        "La Luminaria di San Domenico en Praiano (primer domingo de agosto) es la más visualmente impresionante y accesible para viajeros. Las escaleras iluminadas con velas, la atmósfera comunitaria y la escala íntima la hacen especial. Si estás en la costa a finales de junio o finales de noviembre, las procesiones de San Andrés en %LINK:amalfiTownGuide|Amalfi% son impresionantes: multitudes más grandes, bandas de metales, fuegos artificiales. %LINK:ferragostoPositano|Ferragosto% (15 de agosto) es la celebración más grande pero también la más concurrida y turística. Para sabor local auténtico, Luminaria gana."
+      ]
+    },
+    {
+      "q": "¿Los locales todavía creen en sirenas, brujas y barcos fantasma?",
+      "a": [
+        "La mayoría de los italianos modernos tratan estas como folclore e historias culturales, no creencias literales. Sin embargo, las generaciones mayores (especialmente en áreas rurales y familias pesqueras) a veces retienen una media creencia en fuerzas sobrenaturales: podrían no decir que creen en barcos fantasma, pero evitan ciertos comportamientos \\\\\"por si acaso\\\\\". Las personas más jóvenes (menores de 40) generalmente son escépticas y ven el folclore como patrimonio cultural en lugar de superstición activa. Las historias persisten en festivales, arte y dichos locales incluso si la creencia literal se ha desvanecido."
+      ]
+    },
+    {
+      "q": "¿Por qué los limones aparecen tan a menudo en el folclore y simbolismo de la Costa Amalfitana?",
+      "a": [
+        "Los limones fueron la fundación económica de la Costa Amalfitana durante siglos. Los limones gigantes sfusato amalfitano se exportaron por toda Europa en los siglos XVIII–XIX, trayendo riqueza a los pueblos costeros. Porque los limones eran tan importantes para la supervivencia y prosperidad, se convirtieron en símbolos de buena fortuna, protección y abundancia en el folclore local. Las tradiciones (usar limones para alejar el mal de ojo, incluir flores de limón en bodas, beber limoncello como medicina) reflejan cuán centrales eran los limones en la vida diaria. Aunque la economía del limón ha declinado, la significancia simbólica permanece."
       ]
     }
-  ],
-  "faqsTitle": "Preguntas frecuentes"
+  ]
 }

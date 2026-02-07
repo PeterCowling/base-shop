@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
+
 import PoliciesAccordion from "./PoliciesAccordion";
 
 const meta: Meta<typeof PoliciesAccordion> = {

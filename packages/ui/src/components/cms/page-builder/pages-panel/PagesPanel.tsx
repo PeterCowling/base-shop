@@ -2,14 +2,16 @@
 // i18n-exempt — editor-only Pages panel; copy pending i18n wiring
 
 import React, { useMemo } from "react";
-import { Drawer, DrawerContent, DrawerDescription, DrawerTitle, DrawerPortal } from "../../../atoms/primitives/drawer";
+
 import { OverlayScrim } from "../../../atoms";
+import { Drawer, DrawerContent, DrawerDescription, DrawerPortal,DrawerTitle } from "../../../atoms/primitives/drawer";
 import { Sidebar } from "../../../atoms/primitives/Sidebar";
 import { Stack } from "../../../atoms/primitives/Stack";
-import { deriveShopFromPath } from "./utils";
-import { usePagesState } from "./usePagesState";
-import { PagesList } from "./PagesList";
+
 import { PageSettings } from "./PageSettings";
+import { PagesList } from "./PagesList";
+import { usePagesState } from "./usePagesState";
+import { deriveShopFromPath } from "./utils";
 
 /* i18n-exempt */
 const t = (s: string) => s;

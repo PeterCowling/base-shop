@@ -28,7 +28,7 @@ describe("db fallbacks", () => {
   };
 
   it("uses in-memory stub in test env", async () => {
-    await jest.isolateModulesAsync(async () => {
+    await (jest as any).isolateModulesAsync(async () => {
       process.env.NODE_ENV = "test";
       jest.doMock("@acme/config/env/core", () => ({
         loadCoreEnv: () => ({ DATABASE_URL: "postgres://unused" }),
@@ -39,7 +39,7 @@ describe("db fallbacks", () => {
   });
 
   it("uses in-memory stub when DATABASE_URL is undefined", async () => {
-    await jest.isolateModulesAsync(async () => {
+    await (jest as any).isolateModulesAsync(async () => {
       process.env.NODE_ENV = "production";
       jest.doMock("@acme/config/env/core", () => ({
         loadCoreEnv: () => ({}),
@@ -50,7 +50,7 @@ describe("db fallbacks", () => {
   });
 
   it("constructs PrismaClient in production", async () => {
-    await jest.isolateModulesAsync(async () => {
+    await (jest as any).isolateModulesAsync(async () => {
       process.env.NODE_ENV = "production";
       jest.doMock("@acme/config/env/core", () => ({
         loadCoreEnv: () => ({ DATABASE_URL: "postgres://example" }),
@@ -67,7 +67,7 @@ describe("db fallbacks", () => {
   });
 
   it("falls back to stub when createRequire throws", async () => {
-    await jest.isolateModulesAsync(async () => {
+    await (jest as any).isolateModulesAsync(async () => {
       process.env.NODE_ENV = "production";
       jest.doMock("@acme/config/env/core", () => ({
         loadCoreEnv: () => ({ DATABASE_URL: "postgres://example" }),

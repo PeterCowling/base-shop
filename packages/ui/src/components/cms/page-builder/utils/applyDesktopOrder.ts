@@ -1,7 +1,8 @@
-import type { PageComponent, HistoryState } from "@acme/types";
+import type { HistoryState,PageComponent } from "@acme/types";
+
 import type { Action } from "../state";
-import { walkTree } from "../state/layout/utils";
 import type { EditorFlags } from "../state/layout/types";
+import { walkTree } from "../state/layout/utils";
 
 type Node = PageComponent & { children?: PageComponent[] };
 

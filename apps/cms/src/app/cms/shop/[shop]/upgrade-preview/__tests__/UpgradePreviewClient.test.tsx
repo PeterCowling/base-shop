@@ -1,9 +1,10 @@
-(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
-
 import { act, render, screen, waitFor } from "@testing-library/react";
+
 import UpgradePreviewClient from "../UpgradePreviewClient";
 
-jest.mock("@ui/components/ComponentPreview", () => {
+(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
+
+jest.mock("@acme/ui/components/ComponentPreview", () => {
   const MockComponentPreview = ({ component }: any) => (
     <div data-cy={`preview-${component.componentName}`}>{component.componentName}</div>
   );

@@ -1,10 +1,20 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [
+    ".turbo-cache-version",
+    "jest.coverage.cjs",
+    "jest.config.helpers.cjs",
+    "jest.moduleMapper.cjs",
+    "packages/config/jest.preset.cjs",
+    "packages/config/coverage-tiers.cjs",
+    "pnpm-lock.yaml"
+  ],
   "tasks": {
     "dev": {
       "cache": false,
+      "persistent": true,
       "dependsOn": [
-        "^dev"
+        "^build"
       ]
     },
     "build": {
@@ -13,7 +23,8 @@
       ],
       "outputs": [
         "dist/**",
-        ".next/**"
+        ".next/**",
+        "*.tsbuildinfo"
       ]
     },
     "lint": {
@@ -23,12 +34,25 @@
     },
     "typecheck": {
       "dependsOn": [
-        "^typecheck"
+        "^build"
       ],
       "outputs": []
     },
     "test": {
       "dependsOn": [],
+      "inputs": [
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "**/*.spec.ts",
+        "**/*.spec.tsx",
+        "test/**",
+        "__tests__/**",
+        "package.json",
+        "tsconfig*.json",
+        "jest.config.*"
+      ],
       "outputs": [
         "coverage/**"
       ],

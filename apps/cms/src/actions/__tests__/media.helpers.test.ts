@@ -2,13 +2,14 @@
 
 import path from 'path';
 
+import { metadataPath, readMetadata, uploadsDir, writeMetadata } from '../media.helpers';
+
 import {
   fsMock,
-  writeJsonFileMock,
   resetMediaMocks,
   restoreMediaMocks,
+  writeJsonFileMock,
 } from './media.test.mocks';
-import { uploadsDir, metadataPath, readMetadata, writeMetadata } from '../media.helpers';
 
 describe('media helpers', () => {
   beforeEach(resetMediaMocks);

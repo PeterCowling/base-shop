@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
+import { QueryProvider } from '../providers/QueryProvider';
 import '../styles/globals.css';
-import { Providers } from './providers';
 
 export const metadata: Metadata = {
   title: 'Prime Guest Portal',
@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Providers>{children}</Providers>
+        <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
   );

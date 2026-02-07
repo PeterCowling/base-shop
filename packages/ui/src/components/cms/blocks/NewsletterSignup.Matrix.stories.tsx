@@ -1,11 +1,14 @@
 // packages/ui/src/components/cms/blocks/NewsletterSignup.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import NewsletterSignup from './NewsletterSignup';
-import { makeStateStory } from '../../../story-utils/createStories';
-import fixture from './NewsletterSignup.fixtures.json';
 import { z } from 'zod';
+
 import type { Locale } from '@acme/i18n/locales';
+
+import { makeStateStory } from '../../../story-utils/createStories';
+
+import NewsletterSignup from './NewsletterSignup';
+import fixture from './NewsletterSignup.fixtures.json';
 
 const meta: Meta<typeof NewsletterSignup> = {
   title: 'CMS Blocks/NewsletterSignup/Matrix',

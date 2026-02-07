@@ -11,15 +11,21 @@
     "paths": {
       "@/*": [
         "./src/*",
-        "../ui/src/*",
-        "../i18n/src/*",
         "../ui/dist/src/*",
         "../i18n/dist/*",
+        "../ui/src/*",
         "./dist/*"
       ],
       "@ui/*": ["../ui/src/*", "../ui/dist/src/*"],
       "@ui/src/*": ["../ui/src/*", "../ui/dist/src/*"],
-      "@i18n/*": ["../i18n/src/*", "../i18n/dist/*"],
+      "@i18n/*": ["../i18n/dist/*", "../i18n/src/*"],
+      "@acme/i18n": [
+        "../i18n/dist/index.js",
+        "../i18n/dist/index.d.ts"
+      ],
+      "@acme/i18n/*": [
+        "../i18n/dist/*"
+      ],
       "@platform-core": [
         "../platform-core/src/index.ts",
         "../platform-core/dist/index.d.ts"
@@ -87,14 +93,6 @@
         "../stripe/src/*",
         "../stripe/dist/*"
       ],
-      "@acme/shared-utils": [
-        "../shared-utils/src/index.ts",
-        "../shared-utils/dist/index.d.ts"
-      ],
-      "@acme/shared-utils/*": [
-        "../shared-utils/src/*",
-        "../shared-utils/dist/*"
-      ],
       "@acme/page-builder-core": [
         "../page-builder-core/src/index.ts",
         "../page-builder-core/dist/index.d.ts"
@@ -102,6 +100,14 @@
       "@acme/page-builder-core/*": [
         "../page-builder-core/src/*",
         "../page-builder-core/dist/*"
+      ],
+      "@acme/page-builder-ui": [
+        "../page-builder-ui/src/index.ts",
+        "../page-builder-ui/dist/index.d.ts"
+      ],
+      "@acme/page-builder-ui/*": [
+        "../page-builder-ui/src/*",
+        "../page-builder-ui/dist/*"
       ]
     },
     "allowJs": true,
@@ -130,6 +136,7 @@
     { "path": "../date-utils" },
     { "path": "../i18n" },
     { "path": "../stripe" },
-    { "path": "../page-builder-core" }
+    { "path": "../page-builder-core" },
+    { "path": "../page-builder-ui" }
   ]
 }

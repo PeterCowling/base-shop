@@ -8,36 +8,36 @@
     "type": {
       "privateRoom": "Pokój prywatny",
       "mixedDorm": "Dorm mieszany",
-      "femaleDorm": "Dorm tylko dla kobiet",
-      "femaleRoom": "Pokój tylko dla kobiet"
+      "femaleDorm": "Dorm dla kobiet",
+      "femaleRoom": "Pokój dla kobiet"
     },
     "bathroom": {
       "bathroomEnsuite": "Łazienka w pokoju",
       "bathroomPrivate": "Prywatna łazienka",
-      "bathroomSharedFemale": "Wspólna łazienka dla kobiet"
+      "bathroomSharedFemale": "Wspólna łazienka"
     },
     "sleeps": "Dla {{count}} osób"
   },
   "detailsLine": {
     "beds": {
-      "doubleBedForTwo": "Jedno łóżko podwójne",
-      "threeSingleBedsThreeGuests": "Trzy łóżka pojedyncze",
-      "oneDormBedTwoGuests": "Jedno łóżko piętrowe",
-      "threeDormBedsSixGuests": "Trzy łóżka dormowe (6 miejsc)",
-      "threeDormBedsPlusSingleSevenGuests": "Trzy łóżka dormowe + pojedyncze (7 miejsc)",
-      "fourDormBedsEightGuests": "Cztery łóżka dormowe (8 miejsc)"
+      "doubleBedForTwo": "1 łóżko podwójne",
+      "threeSingleBedsThreeGuests": "3 łóżka pojedyncze",
+      "oneDormBedTwoGuests": "1 łóżko piętrowe",
+      "threeDormBedsSixGuests": "3 łóżka piętrowe",
+      "threeDormBedsPlusSingleSevenGuests": "3 łóżka piętrowe + 1 pojedyncze",
+      "fourDormBedsEightGuests": "4 łóżka piętrowe"
     },
     "views": {
-      "seaViewTerrace": "Widok na morze z tarasem",
-      "seaViewExtraLargeTerrace": "Widok na morze z dużym tarasem",
+      "seaViewTerrace": "Taras z widokiem na morze",
+      "seaViewExtraLargeTerrace": "Taras z widokiem na morze",
       "gardenView": "Widok na ogród",
       "courtyardView": "Widok na dziedziniec",
       "noView": "Brak widoku"
     }
   },
   "priceUnits": {
-    "perRoom": "za pokój",
-    "perBed": "za łóżko"
+    "perRoom": "pokój",
+    "perBed": "łóżko"
   },
   "facilities": {
     "privateRoom": "Pokój prywatny",
@@ -301,6 +301,6 @@
   "loadingPrice": "Cena ładowania…",
   "landingImageAlt": "Obraz tytułowy pokoju {{room}}",
   "priceNotes": {
-    "dorm": "Per night, per guest. One guest in one bunk bed."
+    "dorm": "Za noc, za gościa. Jeden gość w jednym łóżku piętrowym."
   }
 }

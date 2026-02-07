@@ -29,6 +29,41 @@
     "keycard": "Замок с картой-ключом",
     "linen": "Постельное бельё и полотенце включены"
   },
+  "facts": {
+    "type": {
+      "privateRoom": "Приватный номер",
+      "mixedDorm": "Смешанный дорм",
+      "femaleDorm": "Женский дорм",
+      "femaleRoom": "Женский номер"
+    },
+    "bathroom": {
+      "bathroomEnsuite": "Собственная ванная",
+      "bathroomPrivate": "Приватная ванная",
+      "bathroomSharedFemale": "Общая ванная"
+    },
+    "sleeps": "Вмещает {{count}} чел."
+  },
+  "detailsLine": {
+    "beds": {
+      "doubleBedForTwo": "1 двуспальная кровать",
+      "threeSingleBedsThreeGuests": "3 односпальные кровати",
+      "oneDormBedTwoGuests": "1 двухъярусная кровать",
+      "threeDormBedsSixGuests": "3 двухъярусные кровати",
+      "threeDormBedsPlusSingleSevenGuests": "3 двухъярусные + 1 односпальная",
+      "fourDormBedsEightGuests": "4 двухъярусные кровати"
+    },
+    "views": {
+      "seaViewTerrace": "Терраса с видом на море",
+      "seaViewExtraLargeTerrace": "Терраса с видом на море",
+      "gardenView": "Вид на сад",
+      "courtyardView": "Вид на внутренний двор",
+      "noView": "Без вида"
+    }
+  },
+  "priceUnits": {
+    "perRoom": "номер",
+    "perBed": "кровать"
+  },
   "rooms": {
     "title": "Наши номера",
     "double_room": {
@@ -266,6 +301,6 @@
   "loadingPrice": "Загрузка цены…",
   "landingImageAlt": "Фоновое изображение {{room}}",
   "priceNotes": {
-    "dorm": "Per night, per guest. One guest in one bunk bed."
+    "dorm": "За ночь, за гостя. Один гость на одном спальном месте."
   }
 }

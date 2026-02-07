@@ -1,5 +1,6 @@
 import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+
 import AssistanceArticleSection, { type MediaItem } from "./AssistanceArticleSection";
 
 const DEFAULT_MEDIA = {

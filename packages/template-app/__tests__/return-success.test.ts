@@ -1,5 +1,6 @@
-import { jest } from "@jest/globals";
 import type { NextRequest } from "next/server";
+import { jest } from "@jest/globals";
+
 import { setupReturnMocks } from "./helpers/return";
 
 afterEach(() => jest.resetModules());
@@ -7,13 +8,13 @@ afterEach(() => jest.resetModules());
 describe("/api/return success", () => {
   test("schedules valid home pickup", async () => {
     setupReturnMocks();
-    jest.doMock("@platform-core/returnLogistics", () => ({
+    jest.doMock("@acme/platform-core/returnLogistics", () => ({
       __esModule: true,
       getReturnBagAndLabel: jest
         .fn()
         .mockResolvedValue({ homePickupZipCodes: ["12345"] }),
     }));
-    jest.doMock("@platform-core/repositories/settings.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/settings.server", () => ({
       __esModule: true,
       getShopSettings: jest
         .fn()

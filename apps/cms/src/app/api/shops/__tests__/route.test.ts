@@ -2,7 +2,7 @@ const listShopSummaries = jest.fn();
 
 jest.mock("../../../../lib/listShops", () => ({ listShopSummaries }));
 
-jest.mock("@acme/shared-utils", () => ({
+jest.mock("@acme/lib/logger", () => ({
   logger: { error: jest.fn() },
 }));
 
@@ -27,10 +27,12 @@ describe("GET", () => {
   it("logs error and returns 500 when listShops fails", async () => {
     const err = new Error("fail");
     listShopSummaries.mockRejectedValue(err);
-    const { logger } = await import("@acme/shared-utils");
+    const { logger } = await import("@acme/lib/logger");
     const res = await GET();
     expect(res.status).toBe(500);
     await expect(res.json()).resolves.toEqual({ error: "fail" });
     expect(logger.error).toHaveBeenCalledWith("[api/shops:GET] error", { error: err });
   });
 });
+
+export {};

@@ -24,6 +24,7 @@
     },
     "timetable": {
       "title": "Cách đọc bảng giờ SITA",
+      "link": "Xem lịch cập nhật trên <link>Positano.com</link>.",
       "body": "Bảng giờ chính thức liệt kê các điểm dừng theo hàng và chuyến xe theo cột chữ cái. Chọn hàng Positano và Amalfi nằm cùng một cột chữ cái tương ứng với ngày bạn đi.",
       "list": [
         "Cột đầu tiên là danh sách từng điểm dừng trên tuyến.",
@@ -31,7 +32,6 @@
         "Đi từ thứ Hai tới thứ Bảy? Dùng cột ‘F’ và ‘G’.",
         "Đi vào Chủ nhật hoặc ngày lễ? Dùng cột ‘G’ và ‘H’."
       ],
-      "link": "Xem lịch cập nhật trên <link>Positano.com</link>.",
       "linkHref": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result"
     },
     "positanoStop": {

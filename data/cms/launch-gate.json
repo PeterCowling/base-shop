@@ -1,0 +1,9 @@
+{
+  "1": {
+    "stageTestsStatus": "not-run",
+    "stageTestsError": null,
+    "stageTestsAt": "2026-01-23T06:31:34.800Z",
+    "stageTestsVersion": "2026-01-23T06:31:34.800Z",
+    "stageSmokeDisabled": true
+  }
+}

@@ -1,22 +1,26 @@
 // apps/cms/src/app/cms/shop/[shop]/page.tsx
 
-import { checkShopExists } from "@acme/lib";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Button, StatCard } from "@ui/components/atoms";
-import { Grid as DSGrid } from "@ui/components/atoms/primitives";
-import { CmsBuildHero } from "@ui/components/cms"; // UI: @ui/components/cms/CmsBuildHero
-import UpgradeButton from "./UpgradeButton";
-import RollbackCard from "./RollbackCard";
-import CreationStatus from "./CreationStatus";
-import UpgradeState from "./UpgradeState";
-import HealthDetails from "./HealthDetails";
-import ReRunSmokeButton from "../ReRunSmokeButton.client";
+
+import { CmsBuildHero } from "@acme/cms-ui"; // UI: @acme/ui/components/cms/CmsBuildHero
+import { StatCard } from "@acme/design-system/atoms";
+import { Grid as DSGrid } from "@acme/design-system/primitives";
+import { Button } from "@acme/design-system/shadcn";
 import { useTranslations as serverUseTranslations } from "@acme/i18n/useTranslations.server";
-import { deriveShopHealth } from "../../../lib/shopHealth";
+import { checkShopExists } from "@acme/platform-core/shops";
+import { deriveOperationalHealth } from "@acme/platform-core/shops/health";
 import type { ConfiguratorProgress } from "@acme/types";
-import { deriveOperationalHealth } from "@platform-core/shops/health";
+
+import { deriveShopHealth } from "../../../lib/shopHealth";
+import ReRunSmokeButton from "../ReRunSmokeButton.client";
+
+import CreationStatus from "./CreationStatus";
+import HealthDetails from "./HealthDetails";
+import RollbackCard from "./RollbackCard";
+import UpgradeButton from "./UpgradeButton";
+import UpgradeState from "./UpgradeState";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await serverUseTranslations("en");

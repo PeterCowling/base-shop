@@ -1,12 +1,12 @@
 // apps/cover-me-pretty/__tests__/account-orders.test.tsx
-jest.mock("@ui/account", () => ({
+jest.mock("@acme/ui/account", () => ({
   __esModule: true,
   OrdersPage: jest.fn(() => null),
   ordersMetadata: { title: "Orders" },
 }));
 
 import OrdersPage, { metadata } from "../src/app/account/orders/page";
-import { OrdersPage as Orders } from "@ui/account";
+import { OrdersPage as Orders } from "@acme/ui/account";
 import shop from "../shop.json";
 
 describe("/account/orders page", () => {

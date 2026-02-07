@@ -1,7 +1,7 @@
 // apps/cms/src/app/cms/shop/[shop]/CreationStatus.tsx
 
-import { readShopCreationState } from "@platform-core/createShop";
-import { validateShopName } from "@platform-core/shops";
+import { readShopCreationState } from "@acme/platform-core/createShop";
+import { validateShopName } from "@acme/platform-core/shops";
 
 export const revalidate = 0;
 
@@ -13,7 +13,7 @@ export default async function CreationStatus({ shop }: { shop: string }) {
     return null;
   }
 
-  const state = readShopCreationState(safeId);
+  const state = await readShopCreationState(safeId);
   if (!state) return null;
 
   const { status, lastError } = state;

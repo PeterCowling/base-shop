@@ -1,7 +1,8 @@
+import { Cluster, Grid, Inline, Stack } from "@acme/design-system/primitives";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+
 import MetricCard from "@/components/MetricCard";
 import PageHeader from "@/components/PageHeader";
-import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
-import { Cluster, Grid, Inline, Stack } from "@ui/components/atoms/primitives";
 
 export default async function HomePage() {
   const t = await getTranslations("en");
@@ -110,7 +111,7 @@ export default async function HomePage() {
                 className="rounded-2xl border border-border-1 bg-surface-2 px-4 py-3"
               >
                 <Inline gap={3} alignY="center" className="min-w-0">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border-2 text-sm font-semibold">
+                  <span className="rounded-full border border-border-2 px-2 py-1 text-xs font-semibold uppercase text-foreground/70">
                     {stage.stage}
                   </span>
                   <Stack gap={1} className="min-w-0">

@@ -6,6 +6,16 @@
   },
   "quickLinks": [
     {
+      "label": "호스텔 자주 묻는 질문",
+      "description": "포지타노 Hostel Brikette에서의 숙박에 대해 자주 묻는 질문에 대한 답변을 빠르게 확인하세요.",
+      "slug": "hostelFaqs"
+    },
+    {
+      "label": "하우스 규칙",
+      "description": "외부 주류 반입 금지 정책과 주의 의무 가이드라인을 포함한 핵심 하우스 규칙을 읽어보세요.",
+      "slug": "rules"
+    },
+    {
       "label": "예약 변경 및 취소",
       "description": "변경 마감 시한과 추가 요금을 피하는 요령을 확인하세요.",
       "slug": "changingCancelling"
@@ -16,9 +26,9 @@
       "slug": "checkinCheckout"
     },
     {
-      "label": "포지타노 가는 길",
+      "label": "포지타노 가는 방법",
       "description": "페리, 버스, 택시를 비교할 수 있는 단계별 교통 가이드입니다.",
-      "slug": "travelHelp"
+      "href": "how-to-get-here"
     }
   ],
   "contactCta": {

@@ -1,10 +1,12 @@
 // packages/ui/src/components/layout/Header.tsx
 
+import { cookies } from "next/headers";
+
 import type { CartLine, CartState } from "@acme/platform-core/cart";
 import { CART_COOKIE, decodeCartCookie } from "@acme/platform-core/cartCookie";
 import { createCartStore } from "@acme/platform-core/cartStore";
 import { readShop } from "@acme/platform-core/repositories/json.server";
-import { cookies } from "next/headers";
+
 import HeaderClient from "./HeaderClient.client";
 
 /**

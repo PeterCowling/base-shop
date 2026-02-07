@@ -1,7 +1,9 @@
-import { render, screen, fireEvent } from "@testing-library/react";
 import React, { useState } from "react";
-import InteractionsPanel from "../InteractionsPanel";
+import { fireEvent,render, screen } from "@testing-library/react";
+
 import type { PageComponent } from "@acme/types";
+
+import InteractionsPanel from "../InteractionsPanel";
 
 // Provide minimal i18n so labels render as human-readable text in tests
 const translations: Record<string, string> = {

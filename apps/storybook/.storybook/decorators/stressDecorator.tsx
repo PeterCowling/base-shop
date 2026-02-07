@@ -1,5 +1,5 @@
-import type { Decorator } from "@storybook/react";
 import React, { useEffect } from "react";
+import type { Decorator } from "@storybook/react";
 
 type StressMode = "none" | "long-text" | "unbroken" | "empty";
 

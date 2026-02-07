@@ -1,6 +1,7 @@
 "use client";
 
 import { Toast } from "../../../atoms";
+
 import type { CampaignFormToastState } from "./useCampaignForm";
 
 interface CampaignFormToastProps extends CampaignFormToastState {

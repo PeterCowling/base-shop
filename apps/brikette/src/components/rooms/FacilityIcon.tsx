@@ -1,5 +1,5 @@
 /* /src/components/rooms/FacilityIcon.tsx */
-import type { FacilityKey } from "@/lib/facilities";
+import { memo } from "react";
 import {
   Archive,
   Bath,
@@ -8,11 +8,12 @@ import {
   HelpCircle,
   Home,
   KeyRound,
+  type LucideIcon,
   Sun,
   Users,
-  type LucideIcon,
-} from "lucide-react";
-import { memo } from "react";
+} from "@/icons";
+
+import type { FacilityKey } from "@/lib/facilities";
 
 const iconMap: Record<FacilityKey, LucideIcon> = {
   privateRoom: Home,

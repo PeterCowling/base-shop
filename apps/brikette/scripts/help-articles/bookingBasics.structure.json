@@ -1,0 +1,50 @@
+{
+  "$comment": "Maps legacy bookingBasics sections into grouped guide sections. Each legacy key must appear exactly once.",
+  "groups": [
+    {
+      "id": "aboutHostel",
+      "title": "About Our Hostel",
+      "legacyKeys": ["aboutOurHostel", "onlyHostelPositano", "communalAreas", "hostelRooms"]
+    },
+    {
+      "id": "bookingProcess",
+      "title": "How to Book",
+      "legacyKeys": ["roomBookingRequest", "creditCardHolder", "counteroffer", "confirmedRoomBooking", "ota"]
+    },
+    {
+      "id": "paymentsDeposits",
+      "title": "Payments and Deposits",
+      "legacyKeys": ["acceptedPaymentMethods", "preauthorization", "prepaidNonRefundableBookings", "refundableBookings"]
+    },
+    {
+      "id": "termsConditions",
+      "title": "Terms and Conditions",
+      "legacyKeys": ["termsAndConditions", "youCustomerGuest"]
+    },
+    {
+      "id": "cancellationsChanges",
+      "title": "Cancellations and Changes",
+      "legacyKeys": ["noShow", "roomCancellationRequest", "cancellationNoticePeriod", "cancellationAdministrationFee", "bookingChangeRequest", "bookingExtensionRequest"]
+    },
+    {
+      "id": "communication",
+      "title": "Communication",
+      "legacyKeys": ["hostelOfficialEmail", "designatedEmailAddress"]
+    },
+    {
+      "id": "checkIn",
+      "title": "Checking In",
+      "legacyKeys": ["checkInRequest", "proofOfIdentity", "assignedRoom", "keycard", "minor"]
+    },
+    {
+      "id": "duringStay",
+      "title": "During Your Stay",
+      "legacyKeys": ["linen", "roomUpgrade", "complimentaryService", "temporaryGuest", "firstComeFirstToChoose", "seriousDefect"]
+    },
+    {
+      "id": "checkOut",
+      "title": "Checking Out",
+      "legacyKeys": ["checkout"]
+    }
+  ]
+}

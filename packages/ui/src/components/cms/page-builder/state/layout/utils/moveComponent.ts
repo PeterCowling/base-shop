@@ -1,6 +1,7 @@
 import type { PageComponent } from "@acme/types";
-import { extractComponent } from "./extractComponent";
+
 import { addComponent } from "./addComponent";
+import { extractComponent } from "./extractComponent";
 
 export function moveComponent(
   list: PageComponent[],

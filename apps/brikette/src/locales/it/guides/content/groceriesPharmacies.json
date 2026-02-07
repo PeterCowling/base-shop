@@ -10,62 +10,52 @@
   "sections": [
     {
       "id": "mini-markets",
-      "title": "Mini-markets & delis",
+      "title": "Mini-market e gastronomia",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Le gastronomie su Via Pasitea e Via dei Mulini hanno pane fresco, formaggi e insalate pronte; scaffali ridotti ma consegne quotidiane.",
+        "Gli orari seguono la siesta: fai acquisti prima delle 13:00 o dopo le 16:30 per evitare saracinesche chiuse."
       ]
     },
     {
       "id": "produce",
-      "title": "Produce & markets",
+      "title": "Frutta, verdura e mercati",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Banchi di frutta e verdura si trovano vicino alla curva di Sponda e alla fermata Chiesa Nuova ogni mattina; porta monete per acquisti rapidi.",
+        "Il mercoledi a Montepertuso c'e un piccolo mercato (bus 13) con verdure di stagione, latticini e salumi."
       ]
     },
     {
       "id": "pharmacies",
-      "title": "Pharmacies & health items",
+      "title": "Farmacie e articoli sanitari",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Farmacia Positano (Via Pasitea) ha farmaci di base, solari e pillole per il mal di mare; porta ricette per articoli specialistici.",
+        "Il servizio notturno e a rotazione: controlla l'avviso sulla porta per il numero di reperibilita."
       ]
     },
     {
       "id": "late-hours",
-      "title": "Late-night essentials",
+      "title": "Essenziali di tarda sera",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Alcuni alimentari restano aperti fino alle 22:00 in alta stagione; altrimenti usa i distributori 24 ore vicino alle fermate bus.",
+        "Per urgenze, Sorrento (45-60 minuti in bus) ha supermercati piu grandi e un pronto soccorso."
       ]
-    }
-  ],
-  "gallery": [
-    {
-      "alt": "Positano main road shops",
-      "caption": "Traduzione in arrivo."
-    },
-    {
-      "alt": "Traduzione in arrivo.",
-      "caption": "Fruit and essentials"
     }
   ],
   "tips": [
-    "Traduzione in arrivo.",
-    "Traduzione in arrivo."
+    "Porta una borsa leggera o uno zaino per salire le scale senza affaticare una mano.",
+    "Tieni bottiglie riutilizzabili: molti negozi vendono ricariche da 1,5 L a poco e le terrazze dell'ostello hanno acqua filtrata."
   ],
   "faqs": [
     {
-      "q": "Traduzione in arrivo.",
+      "q": "Posso comprare prodotti senza glutine in paese?",
       "a": [
-        "Traduzione in arrivo."
+        "Si: cerca gli scaffali “senza glutine” nei mini-market o chiedi in farmacia; lo stock e limitato, quindi compra quando li trovi."
       ]
     },
     {
-      "q": "Traduzione in arrivo.",
+      "q": "Le farmacie sono aperte la domenica?",
       "a": [
-        "Traduzione in arrivo."
+        "Almeno una resta aperta con orari ridotti; controlla la rotazione esposta e chiama in anticipo per ricette."
       ]
     }
   ],

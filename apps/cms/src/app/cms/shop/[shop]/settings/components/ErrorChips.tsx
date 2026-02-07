@@ -1,7 +1,7 @@
 "use client";
 
-import { Chip } from "@ui/components/atoms";
-import { Inline } from "@ui/components/atoms/primitives/Inline";
+import { Chip } from "@acme/design-system/atoms";
+import { Inline } from "@acme/design-system/primitives/Inline";
 
 interface ErrorChipsProps {
   errors?: string[];

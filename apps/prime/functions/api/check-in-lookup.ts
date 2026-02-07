@@ -1,7 +1,10 @@
 /**
  * CF Pages Function: /api/check-in-lookup
  *
- * Staff can look up guest details by check-in code.
+ * Staff-only endpoint to look up guest details by check-in code.
+ * Returns minimal data for privacy (first name + last initial only).
+ *
+ * GET ?code=BRK-XXXXX
  */
 
 import { FirebaseRest, jsonResponse, errorResponse } from '../lib/firebase-rest';
@@ -11,22 +14,33 @@ interface Env {
   CF_FIREBASE_API_KEY?: string;
 }
 
-interface CodeLookup {
-  bookingId: string;
-  expiresAt: string;
+interface CheckInCodeRecord {
+  code: string;
+  uuid: string;
+  createdAt: number;
+  expiresAt: number;
 }
 
-interface Booking {
-  guestName: string;
-  roomAssignment: string;
-  checkInDate: string;
-  checkOutDate: string;
-  nights: number;
-  cityTaxDue: number;
-  depositDue: number;
-  etaWindow: string | null;
-  etaMethod: string | null;
-  [key: string]: unknown;
+interface OccupantData {
+  firstName?: string;
+  lastName?: string;
+  room?: string;
+  checkInDate?: string;
+  checkOutDate?: string;
+  nights?: number;
+  cityTax?: { totalDue?: number };
+}
+
+interface PreArrivalData {
+  etaWindow?: string | null;
+  etaMethod?: string | null;
+}
+
+const KEYCARD_DEPOSIT = 10; // EUR
+
+function formatGuestName(firstName: string, lastName: string): string {
+  if (!lastName) return firstName;
+  return `${firstName} ${lastName.charAt(0).toUpperCase()}.`;
 }
 
 export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
@@ -40,39 +54,61 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
   try {
     const firebase = new FirebaseRest(env);
 
-    // Look up bookingId by code
-    const codeLookup = await firebase.get<CodeLookup>(`checkInCodesByCode/${code.toUpperCase()}`);
+    // Look up code record
+    const codeRecord = await firebase.get<CheckInCodeRecord>(
+      `checkInCodes/byCode/${code.toUpperCase()}`,
+    );
 
-    if (!codeLookup) {
-      return errorResponse('Check-in code not found', 404);
+    if (!codeRecord) {
+      return errorResponse('Code not found', 404);
     }
 
     // Check if expired
-    if (new Date(codeLookup.expiresAt) < new Date()) {
-      return errorResponse('Check-in code has expired', 410);
+    if (codeRecord.expiresAt && codeRecord.expiresAt < Date.now()) {
+      return errorResponse('Code expired', 410);
     }
 
-    // Get booking details
-    const booking = await firebase.get<Booking>(`bookings/${codeLookup.bookingId}`);
+    const { uuid } = codeRecord;
 
-    if (!booking) {
+    // Search bookings for this guest UUID
+    const bookings = await firebase.get<Record<string, Record<string, unknown>>>('bookings');
+
+    if (!bookings) {
       return errorResponse('Booking not found', 404);
     }
 
-    // Return staff-friendly view
-    return jsonResponse({
-      guestName: booking.guestName || 'Unknown',
-      roomAssignment: booking.roomAssignment || 'TBD',
-      checkInDate: booking.checkInDate,
-      checkOutDate: booking.checkOutDate,
-      nights: booking.nights || 1,
-      cityTaxDue: booking.cityTaxDue || 0,
-      depositDue: booking.depositDue || 0,
-      etaWindow: booking.etaWindow || null,
-      etaMethod: booking.etaMethod || null,
-    });
+    // Find booking containing this occupant
+    for (const [bookingCode, bookingData] of Object.entries(bookings)) {
+      const occupants = bookingData.occupants as Record<string, boolean> | undefined;
+      if (occupants && occupants[uuid]) {
+        // Fetch occupant details
+        const occupant = await firebase.get<OccupantData>(`bookings/${bookingCode}/${uuid}`);
+
+        if (!occupant) continue;
+
+        // Fetch pre-arrival data for ETA
+        const preArrival = await firebase.get<PreArrivalData>(`preArrival/${uuid}`);
+
+        return jsonResponse({
+          guestName: formatGuestName(
+            occupant.firstName ?? 'Guest',
+            occupant.lastName ?? '',
+          ),
+          roomAssignment: occupant.room ?? 'Not assigned',
+          checkInDate: occupant.checkInDate ?? '',
+          checkOutDate: occupant.checkOutDate ?? '',
+          nights: occupant.nights ?? 1,
+          cityTaxDue: occupant.cityTax?.totalDue ?? 0,
+          depositDue: KEYCARD_DEPOSIT,
+          etaWindow: preArrival?.etaWindow ?? null,
+          etaMethod: preArrival?.etaMethod ?? null,
+        });
+      }
+    }
+
+    return errorResponse('Guest not found', 404);
   } catch (error) {
     console.error('Error looking up check-in code:', error);
-    return errorResponse('Failed to look up check-in code', 500);
+    return errorResponse('Lookup failed', 500);
   }
 };

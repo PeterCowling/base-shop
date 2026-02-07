@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
+
 import BlogListing from "./BlogListing";
 
 const meta: Meta<typeof BlogListing> = {

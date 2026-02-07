@@ -28,7 +28,7 @@ const domGlobal = globalThis as DomCompatGlobal;
 
 // WHATWG encoders/decoders used by various libs
 domGlobal.TextEncoder ||= TextEncoder;
-domGlobal.TextDecoder ||= TextDecoder;
+domGlobal.TextDecoder ||= TextDecoder as any;
 
 // Basic File and crypto availability
 domGlobal.File ||= NodeFile as unknown as typeof File;

@@ -8,13 +8,14 @@
 import {
   cpSync,
   existsSync,
+  mkdirSync,
+  readdirSync,
   readFileSync,
   writeFileSync,
-  readdirSync,
-  mkdirSync,
 } from "fs";
 import { dirname, join, parse, resolve } from "path";
 import { fileURLToPath } from "url";
+
 import { loadTokens } from "./themeUtils";
 
 // `__dirname` only exists in CommonJS builds; declare it so TypeScript allows
@@ -210,7 +211,13 @@ export function listThemes(): string[] {
       const themesDir = join(root, "packages", "themes");
       const entries = readdirSync(themesDir, { withFileTypes: true });
       return entries
-        .filter((e) => e.isDirectory())
+        .filter((e) => {
+          if (!e.isDirectory()) return false;
+          // A "theme package" must ship an importable tokens.css file.
+          // This keeps selection surfaces from offering incomplete placeholder dirs
+          // (for example, cached build artifacts without source).
+          return existsSync(join(themesDir, e.name, "tokens.css"));
+        })
         .map((e) => e.name);
     } catch {
       /* try next root */
@@ -270,7 +277,7 @@ export function syncTheme(shop: string, theme: string): Record<string, string> {
       : null;
     if (cssPath) {
       const css = readFileSync(cssPath, "utf8").replace(
-        /@themes\/[^/]+\/tokens.css/,
+        /@themes\/[^/]+\/(?:src\/)?tokens\.css/g,
         `@themes/${theme}/tokens.css`
       );
       for (const p of new Set([cssRel, cssAbs])) {

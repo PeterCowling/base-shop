@@ -1,7 +1,9 @@
 import { jest } from "@jest/globals";
-import { RedisCartStore } from "@platform-core/cartStore/redisStore";
-import { MemoryCartStore } from "@platform-core/cartStore/memoryStore";
+
+import { MemoryCartStore } from "@acme/platform-core/cartStore/memoryStore";
+import { RedisCartStore } from "@acme/platform-core/cartStore/redisStore";
 import type { SKU } from "@acme/types";
+
 import { MockRedis } from "./helpers/mockRedis";
 
 describe("RedisCartStore – success path + TTL", () => {

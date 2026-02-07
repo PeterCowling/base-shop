@@ -10,11 +10,11 @@ import "../../../apps/cms/src/types/next-auth.d.ts";
 const mockGetShopSettings = jest.fn();
 const mockSaveShopSettings = jest.fn();
 
-jest.mock("@platform-core/repositories/shops.server", () => ({
+jest.mock("@acme/platform-core/repositories/shops.server", () => ({
   getShopSettings: (...args: any[]) => mockGetShopSettings(...args),
   saveShopSettings: (...args: any[]) => mockSaveShopSettings(...args),
 }));
-jest.mock("@platform-core/repositories/json.server", () => ({}));
+jest.mock("@acme/platform-core/repositories/json.server", () => ({}));
 
 import { updateSeo } from "../../../apps/cms/src/actions/shops.server";
 import { getSeo } from "../../../packages/template-app/src/lib/seo";

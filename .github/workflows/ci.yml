@@ -176,6 +176,7 @@ jobs:
         id: bos_filter
         uses: dorny/paths-filter@v3
         with:
+          predicate-quantifier: 'every'
           filters: |
             bos_guarded:
               - 'docs/business-os/**'

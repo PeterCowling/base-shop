@@ -79,6 +79,7 @@ The `@acme/ui` package maintains backward-compatible shims that delegate to desi
 
 ## Related Documentation
 
+- [Component Catalog](../../docs/component-catalog.md) – **Searchable catalog of all components with decision tree**
 - [Architecture](../../docs/architecture.md) – Package layering and import rules
 - [Theme Customization Guide](../../docs/theming-customization-guide.md) – Token overrides and branding
 - [API Reference](../../docs/api/) – Generated TypeDoc reference (`pnpm doc:api`)

@@ -119,9 +119,13 @@ jobs:
             )"; then
               printf '%s\n' "$classification_json" > "$classification_file"
 
-              if is_deploy_only="$(jq -er '.isDeployOnly' "$classification_file")" \
-                && uncertain="$(jq -er '.uncertain' "$classification_file")" \
-                && reason="$(jq -er '.reason' "$classification_file")"; then
+              is_deploy_only="$(jq -r '.isDeployOnly // empty' "$classification_file")"
+              uncertain="$(jq -r '.uncertain // empty' "$classification_file")"
+              reason="$(jq -r '.reason // empty' "$classification_file")"
+
+              if [[ ("$is_deploy_only" == "true" || "$is_deploy_only" == "false") \
+                && ("$uncertain" == "true" || "$uncertain" == "false") \
+                && -n "$reason" ]]; then
                 if [[ "$is_deploy_only" == "true" && "$uncertain" == "false" ]]; then
                   run_validation="false"
                 else

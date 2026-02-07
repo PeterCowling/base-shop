@@ -1,16 +1,18 @@
 import "../../../../../../test/resetNextMocks";
 
 import { render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { Avatar } from "../Avatar";
 
 describe("Avatar", () => {
-  it("renders an image when src is provided", () => {
-    render(<Avatar src="/avatar.jpg" alt="User avatar" />);
+  it("renders an image when src is provided", async () => {
+    const { container } = render(<Avatar src="/avatar.jpg" alt="User avatar" />);
     const img = screen.getByAltText("User avatar");
     // In tests, next/image is mocked to render an <input type="image"> stub
     // for compatibility with lint rules; verify that element is present.
     expect(img.tagName).toBe("INPUT");
+
     expect(img).toHaveAttribute("src", "/avatar.jpg");
   });
 

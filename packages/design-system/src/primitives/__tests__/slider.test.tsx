@@ -2,15 +2,17 @@ import "../../../../../../../test/resetNextMocks";
 
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 
 import { Slider } from "../slider";
 
 describe("Slider", () => {
   // TC-01: Correct ARIA attributes
-  it("has correct ARIA attributes", () => {
+  it("has correct ARIA attributes", async () => {
     render(<Slider defaultValue={[50]} min={0} max={100} aria-label="Volume" />);
     const slider = screen.getByRole("slider");
     expect(slider).toHaveAttribute("aria-valuemin", "0");
+
     expect(slider).toHaveAttribute("aria-valuemax", "100");
     expect(slider).toHaveAttribute("aria-valuenow", "50");
   });
@@ -35,6 +37,7 @@ describe("Slider", () => {
     await user.click(slider);
     await user.keyboard("{ArrowRight}");
     expect(onValueChange).toHaveBeenCalled();
+
   });
 
   // TC-03: Range mode renders two thumbs

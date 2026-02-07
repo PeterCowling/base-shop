@@ -1,19 +1,21 @@
 import "../../../../../../../test/resetNextMocks";
 
 import { fireEvent,render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { Textarea } from "../textarea";
 
 describe("Textarea", () => {
-  it("applies wrapper class to outer div", () => {
+  it("applies wrapper class to outer div", async () => {
     const { container } = render(
       <Textarea wrapperClassName="custom-wrapper" />
     );
     const wrapper = container.firstChild as HTMLElement;
     expect(wrapper).toHaveClass("custom-wrapper");
+
   });
 
-  it("renders label above textarea in standard mode and merges className", () => {
+  it("renders label above textarea in standard mode and merges className", async () => {
     const { container } = render(
       <Textarea label="Notes" className="custom" />
     );
@@ -28,6 +30,7 @@ describe("Textarea", () => {
     expect(label).toHaveClass("text-sm", "font-medium", "text-foreground");
     expect(textarea).not.toBeNull();
     expect(textarea).toHaveClass("min-h-[6rem]", "custom");
+
   });
 
   it("omits label when floatingLabel is set without label", () => {
@@ -54,6 +57,7 @@ describe("Textarea", () => {
     const label = container.querySelector("label")!;
 
     expect(label).toHaveClass("absolute", "top-2", "left-3");
+
     expect(label).not.toHaveClass("-translate-y-3", "text-xs");
 
     fireEvent.focus(textarea);

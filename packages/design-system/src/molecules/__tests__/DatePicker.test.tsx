@@ -2,6 +2,7 @@ import "../../../../../../../test/resetNextMocks";
 
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 
 import { DatePicker } from "../DatePicker";
 
@@ -9,7 +10,7 @@ describe("DatePicker", () => {
   // TC-01: Calendar renders when DatePicker is focused/opened
   it("renders calendar when focused", async () => {
     const user = userEvent.setup();
-    render(
+    const { container } = render(
       <DatePicker
         selected={null}
         placeholderText="Select a date"
@@ -51,6 +52,7 @@ describe("DatePicker", () => {
     if (days.length > 0) {
       await user.click(days[14] as HTMLElement); // Click day 15
       expect(handleChange).toHaveBeenCalled();
+
       const callArg = handleChange.mock.calls[0][0];
       expect(callArg).toBeInstanceOf(Date);
     }

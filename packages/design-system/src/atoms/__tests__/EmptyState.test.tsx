@@ -1,6 +1,7 @@
 import "../../../../../../test/resetNextMocks";
 
 import { render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { TranslationsProvider } from "@acme/i18n";
 import en from "@acme/i18n/en.json";
@@ -8,14 +9,15 @@ import en from "@acme/i18n/en.json";
 import { EmptyState } from "../EmptyState";
 
 describe("EmptyState", () => {
-  it("TC-01: renders title as heading", () => {
-    render(
+  it("TC-01: renders title as heading", async () => {
+    const { container } = render(
       <TranslationsProvider messages={en}>
         <EmptyState title="No results found" />
       </TranslationsProvider>
     );
     const heading = screen.getByRole("heading", { name: /no results found/i });
     expect(heading).toBeInTheDocument();
+
   });
 
   it("TC-02: renders action button when provided", () => {

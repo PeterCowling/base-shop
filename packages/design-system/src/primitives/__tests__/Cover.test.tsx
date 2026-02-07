@@ -1,9 +1,10 @@
 import { render } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { Cover } from "../Cover";
 
 describe("Cover", () => {
-  it("applies a screen minimum height by default", () => {
+  it("applies a screen minimum height by default", async () => {
     const { container } = render(
       <Cover>
         <p>Content</p>
@@ -11,6 +12,7 @@ describe("Cover", () => {
     );
     const wrapper = container.firstElementChild as HTMLElement;
     expect(wrapper.className).toContain("min-h-screen");
+
   });
 
   it("applies alternate minimum heights", () => {

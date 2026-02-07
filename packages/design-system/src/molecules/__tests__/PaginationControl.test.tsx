@@ -1,17 +1,19 @@
 /// <reference types="@testing-library/jest-dom" />
 import { fireEvent, render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { PaginationControl } from "../PaginationControl";
 
 describe("PaginationControl", () => {
-  it("handles first page navigation and boundaries", () => {
+  it("handles first page navigation and boundaries", async () => {
     const onPageChange = jest.fn();
-    render(<PaginationControl page={1} pageCount={10} onPageChange={onPageChange} />);
+    const { container } = render(<PaginationControl page={1} pageCount={10} onPageChange={onPageChange} />);
 
     const prev = screen.getByRole("button", { name: /prev/i });
     const next = screen.getByRole("button", { name: /next/i });
 
     expect(prev).toBeDisabled();
+
     expect(next).not.toBeDisabled();
 
     fireEvent.click(prev);

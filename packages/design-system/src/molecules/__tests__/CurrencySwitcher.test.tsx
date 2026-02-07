@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom";
 
 import { fireEvent, render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import CurrencySwitcher from "../CurrencySwitcher.client";
 
@@ -20,8 +21,8 @@ jest.mock("@acme/platform-core/contexts/CurrencyContext", () => {
 });
 
 describe("CurrencySwitcher", () => {
-  it("calls setCurrency when selecting a new currency and shows it", () => {
-    render(<CurrencySwitcher />);
+  it("calls setCurrency when selecting a new currency and shows it", async () => {
+    const { container } = render(<CurrencySwitcher />);
 
     const trigger = screen.getByRole("combobox");
     fireEvent.click(trigger);
@@ -31,6 +32,7 @@ describe("CurrencySwitcher", () => {
     const gbpOption = screen.getByRole("option", { name: "GBP" });
 
     expect(eurOption).toBeInTheDocument();
+
     expect(usdOption).toBeInTheDocument();
     expect(gbpOption).toBeInTheDocument();
 

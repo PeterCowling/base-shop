@@ -2,6 +2,7 @@ import "../../../../../../../test/resetNextMocks";
 
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 
 import {
   Combobox,
@@ -79,6 +80,7 @@ describe("Combobox", () => {
     await user.click(bananaOption);
 
     expect(onValueChange).toHaveBeenCalledWith("banana");
+
   });
 
   // TC-04: Empty state shown when no match

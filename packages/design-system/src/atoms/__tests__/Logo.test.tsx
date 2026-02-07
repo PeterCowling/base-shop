@@ -1,6 +1,7 @@
 import "../../../../../../test/resetNextMocks";
 
 import { render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import useViewport from "../../hooks/useViewport";
 import { Logo } from "../Logo";
@@ -18,11 +19,12 @@ describe("Logo", () => {
     mockedUseViewport.mockReset();
   });
 
-  it("renders an image when src is provided", () => {
+  it("renders an image when src is provided", async () => {
     mockedUseViewport.mockReturnValue("desktop");
-    render(<Logo src="/logo.png" fallbackText="Acme" />);
+    const { container } = render(<Logo src="/logo.png" fallbackText="Acme" />);
     const img = screen.getByRole("img");
     expect(img).toBeInTheDocument();
+
     expect(img).toHaveAttribute("src", "/logo.png");
     expect(img).toHaveAttribute("alt", "Acme");
   });

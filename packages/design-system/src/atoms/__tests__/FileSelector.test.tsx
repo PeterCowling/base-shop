@@ -1,14 +1,15 @@
 import "../../../../../../test/resetNextMocks";
 
 import { configure,fireEvent, render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { FileSelector } from "../FileSelector";
 
 configure({ testIdAttribute: "data-testid" });
 
 describe("FileSelector", () => {
-  it("triggers file dialog when input is clicked", () => {
-    render(<FileSelector label="Upload files" />);
+  it("triggers file dialog when input is clicked", async () => {
+    const { container } = render(<FileSelector label="Upload files" />);
 
     const input = screen.getByLabelText("Upload files") as HTMLInputElement;
     const dialogMock = jest.fn();
@@ -17,6 +18,7 @@ describe("FileSelector", () => {
     fireEvent.click(input);
 
     expect(dialogMock).toHaveBeenCalled();
+
   });
 
   it("calls onFilesSelected with selected files and renders file names", () => {

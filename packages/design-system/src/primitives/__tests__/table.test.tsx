@@ -2,6 +2,7 @@ import "../../../../../../../test/resetNextMocks";
 
 import * as React from "react";
 import { render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import {
   Table,
@@ -13,7 +14,7 @@ import {
 } from "../table";
 
 describe("Table", () => {
-  it("renders with header and body and wraps table in overflow container", () => {
+  it("renders with header and body and wraps table in overflow container", async () => {
     const { container } = render(
       <Table>
         <TableHeader>
@@ -34,6 +35,7 @@ describe("Table", () => {
     const wrapper = container.firstChild as HTMLElement | null;
     expect(wrapper).not.toBeNull();
     expect(wrapper).toHaveClass("w-full", "overflow-x-auto");
+
   });
 
   it("merges classes and forwards ref for Table", () => {

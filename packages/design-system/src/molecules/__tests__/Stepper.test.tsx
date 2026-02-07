@@ -1,11 +1,12 @@
 /// <reference types="@testing-library/jest-dom" />
 import { render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { Stepper, StepperStep } from "../Stepper";
 
 describe("Stepper", () => {
-  it("TC-01: renders step labels with correct ARIA attributes", () => {
-    render(
+  it("TC-01: renders step labels with correct ARIA attributes", async () => {
+    const { container } = render(
       <Stepper currentStep={1}>
         <StepperStep step={0} label="Cart" />
         <StepperStep step={1} label="Shipping" />

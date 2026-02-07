@@ -2,6 +2,7 @@ import "../../../../../../../test/resetNextMocks";
 
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../tabs";
 
@@ -22,11 +23,12 @@ function renderTabs({ defaultValue = "tab1", disabled = false } = {}) {
 
 describe("Tabs", () => {
   // TC-01: Correct ARIA roles
-  it("has correct ARIA roles", () => {
-    renderTabs();
+  it("has correct ARIA roles", async () => {
+    const { container } = renderTabs();
     expect(screen.getByRole("tablist")).toBeInTheDocument();
     expect(screen.getAllByRole("tab")).toHaveLength(3);
     expect(screen.getByRole("tabpanel")).toBeInTheDocument();
+    expect(await axe(container)).toHaveNoViolations();
   });
 
   // TC-02: Arrow keys navigate triggers
@@ -86,5 +88,6 @@ describe("Tabs", () => {
 
     await user.click(screen.getByRole("tab", { name: "Tab 2" }));
     expect(onValueChange).toHaveBeenCalledWith("tab2");
+
   });
 });

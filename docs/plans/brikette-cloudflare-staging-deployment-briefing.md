@@ -1,16 +1,21 @@
 ---
 Type: Briefing
 Outcome: Understanding
-Status: Active
+Status: Superseded
 Domain: Deploy
 Created: 2026-01-27
-Last-updated: 2026-01-27
+Last-updated: 2026-02-06
 Topic-Slug: brikette-cloudflare-staging-deployment
 ---
 
 # Brikette Cloudflare Staging Deployment Briefing
 
-## Executive Summary
+> **SUPERSEDED**: This briefing was written before the static export approach was implemented.
+> For current deployment architecture, see **`docs/brikette-deploy-decisions.md`**.
+> Key changes since this doc: adapter switched from `@cloudflare/next-on-pages` to `@opennextjs/cloudflare`,
+> staging now uses `output: 'export'` (static HTML) instead of Worker deploy.
+
+## Executive Summary (OUTDATED)
 
 Brikette (`apps/brikette`) is now wired for Cloudflare Pages deployments via a dedicated workflow (`.github/workflows/brikette.yml`) that deploys a **staging** preview for user testing, plus an optional **manual publish** path to production. You still need a Cloudflare Pages project (likely already exists) and the standard Cloudflare credentials in GitHub Actions for deployments to succeed.
 

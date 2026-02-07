@@ -11,6 +11,20 @@
   ],
   "sections": [
     {
+      "id": "scan-to-share",
+      "title": "Scan to share",
+      "body": [
+        "Want to open this guide on another phone or share it with a hiking buddy? Scan the QR code below."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/santa-maria-castello/scan-to-share.png",
+          "alt": "QR code to open and share the Santa Maria del Castello hike guide.",
+          "caption": "Scan to open/share this guide."
+        }
+      ]
+    },
+    {
       "id": "what-is-santa-maria",
       "title": "Santa Maria del Castello란 무엇입니까?",
       "body": [
@@ -54,60 +68,56 @@
   ],
   "steps": [
     {
-      "name": "호스텔을 나와 오른쪽으로 도세요",
-      "text": "호스텔 입구에서 오른쪽으로 돌아 건물 옆의 계단을 오르세요."
+      "name": "Turn right and take the steps",
+      "text": "From the hostel, turn right and take the steps that lead up the side of the building."
     },
     {
-      "name": "보도를 계속 따라가세요",
-      "text": "초기 계단 상단에서 보도를 따라 위로 계속 이동하세요."
+      "name": "Continue on the footpath",
+      "text": "At the top of the steps, continue on the footpath."
     },
     {
-      "name": "교차로에서 왼쪽을 선택하세요",
-      "text": "교차로에 도착하면 계속 오르기 위해 왼쪽 오르막 옵션을 선택하세요."
+      "name": "Turn left at the junction",
+      "text": "At the junction, choose the left option to go uphill (not right/downhill)."
     },
     {
-      "name": "도로까지 계단을 따라가세요",
-      "text": "도로로 이어지는 계단이 있는 지점에 도달할 때까지 계단을 계속 따라가세요."
+      "name": "Turn right up more stairs",
+      "text": "Follow the steps until you reach a point where you can either turn right up more stairs that lead to a road, or continue left on the path. Choose to turn right and go up the stairs."
     },
     {
-      "name": "도로를 건너세요",
-      "text": "도로를 건너 반대편 집 옆을 따라 이어지는 계단을 찾으세요."
+      "name": "Cross the road to the next stairs",
+      "text": "At the top of the stairs, look across the road for a set of stairs leading alongside some houses. Cross the road and take those stairs."
     },
     {
-      "name": "집 뒤의 계단을 오르세요",
-      "text": "집 뒤를 구불구불 이어지는 이 계단을 따라 산길까지 가세요."
+      "name": "Follow stairs behind the houses",
+      "text": "Follow the stairs behind the houses until they lead you to a mountain trail."
     },
     {
-      "name": "산길을 계속 따라가세요",
-      "text": "마을을 향해 오르는 산길을 따라가세요. 여기서 길이 더 경치가 좋아집니다."
+      "name": "Continue on the mountain trail",
+      "text": "Continue on the mountain trail, which will take you to the village."
     },
     {
-      "name": "갈림길에서 오르막을 선택하세요",
-      "text": "도중의 두 트레일 갈림길에서 마을을 향해 계속 가기 위해 오르막 길을 선택하세요."
+      "name": "Take the uphill splits",
+      "text": "In two places the mountain trail splits in two directions. Choose the path that goes uphill."
     },
     {
-      "name": "마을 교차로에 도착하세요",
-      "text": "트레일이 평평해지는 교차로에 도착합니다. 이것은 Santa Maria del Castello 도착을 표시합니다."
+      "name": "Reach the crossroads",
+      "text": "You have reached the top when the mountain trail levels out and you reach a crossroads."
     },
     {
-      "name": "전망대를 향해 오른쪽으로 도세요 (선택사항)",
-      "text": "전망대에 도달하려면 교차로에서 오른쪽으로 도세요."
+      "name": "Turn right at the crossroads",
+      "text": "For the lookout point, turn right at the crossroads. Please note that cars do travel on this road."
     },
     {
-      "name": "교차로까지 오르막 도로를 따라가세요",
-      "text": "교차로에 도달할 때까지 오르막 도로를 따라가세요."
+      "name": "Take the road uphill",
+      "text": "Take the road uphill until you reach a junction."
     },
     {
-      "name": "교차로에서 오른쪽으로 도세요",
-      "text": "교차로에서 오른쪽으로 돌아 도로가 오른쪽으로 구부러지는 것을 따라가세요."
+      "name": "Turn right at the junction",
+      "text": "At the junction, turn right and follow the road around to the right."
     },
     {
-      "name": "잔디 구역까지 계속 가세요",
-      "text": "주요 도로 밖의 잔디 구역에 도달할 때까지 계속하세요."
-    },
-    {
-      "name": "전망 지점에 접근하세요",
-      "text": "전망 지점은 이 잔디 지역에서 접근할 수 있습니다. 극도로 주의하세요—수백 미터의 갑작스러운 낙차가 있습니다."
+      "name": "Head to the grassy section and viewpoints",
+      "text": "When you see a grassy section off the road, go there and proceed to the vantage points. Use extreme caution—there are sudden drop-offs of several hundred meters."
     }
   ],
   "warningsTitle": "안전 경고",

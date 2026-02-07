@@ -3,6 +3,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { loadGuideI18nBundle } from "@/app/_lib/guide-i18n-bundle";
 import { getTranslations,toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
@@ -109,5 +110,15 @@ export default async function GuidePage({ params }: Props) {
   // Load manifest overrides (includes audit results)
   const serverOverrides = loadGuideManifestOverridesFromFs();
 
-  return <GuideContent lang={validLang} guideKey={guideKey} serverOverrides={serverOverrides} />;
+  const { serverGuides, serverGuidesEn } = await loadGuideI18nBundle(validLang, guideKey);
+
+  return (
+    <GuideContent
+      lang={validLang}
+      guideKey={guideKey}
+      serverOverrides={serverOverrides}
+      serverGuides={serverGuides}
+      serverGuidesEn={serverGuidesEn}
+    />
+  );
 }

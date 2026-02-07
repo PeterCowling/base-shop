@@ -2,8 +2,6 @@
 set -euo pipefail
 
 # Enforce "single writer" commits/pushes in a shared checkout.
-#
-# Bypass (human only, emergency): SKIP_WRITER_LOCK=1 <git command>
 
 if [[ "${SKIP_WRITER_LOCK:-}" == "1" ]]; then
   exit 0
@@ -23,6 +21,20 @@ fi
 
 lock_dir="${common_dir}/base-shop-writer-lock"
 lock_meta="${lock_dir}/meta"
+
+print_lock_meta_redacted() {
+  if [[ ! -f "$lock_meta" ]]; then
+    return
+  fi
+
+  while IFS= read -r line; do
+    if [[ "$line" =~ ^token= ]]; then
+      echo "  token=<redacted>" >&2
+    else
+      echo "  ${line}" >&2
+    fi
+  done <"$lock_meta"
+}
 
 if [[ ! -d "$lock_dir" || ! -f "$lock_meta" ]]; then
   echo "------------------------------------------------------------------" >&2
@@ -52,16 +64,15 @@ if [[ -z "$token_actual" || "$token_actual" != "$token_expected" ]]; then
   echo "A writer lock exists, but your current shell does not own it." >&2
   echo "" >&2
   echo "Current lock:" >&2
-  sed 's/^/  /' "$lock_meta" >&2 || true
+  print_lock_meta_redacted
   echo "" >&2
-  echo "Resolve by waiting for the lock holder to finish, then acquire it:" >&2
+  echo "Resolve with lock recovery, then acquire it:" >&2
+  echo "  scripts/git/writer-lock.sh status" >&2
+  echo "  scripts/git/writer-lock.sh clean-stale   # only if holder PID is dead" >&2
   echo "  scripts/git/writer-lock.sh acquire --wait" >&2
   echo "  scripts/agents/with-writer-lock.sh" >&2
-  echo "" >&2
-  echo "Bypass (human only, emergency): SKIP_WRITER_LOCK=1 <git command>" >&2
   echo "" >&2
   exit 1
 fi
 
 exit 0
-

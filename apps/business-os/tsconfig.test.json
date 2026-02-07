@@ -2,6 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "types": ["node", "jest", "@testing-library/jest-dom"],
+    "jsx": "react-jsx",
     "outDir": "../../dist/out-tsc-test",
     "rootDir": "."
   },

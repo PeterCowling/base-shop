@@ -38,6 +38,15 @@
       "body": [
         "Resterna av den romerska villan ovanför poolen ramar in turkost vatten som strömmar in från havet genom ett naturligt valv. Kom tidigt så kan du flota under klipporna med bara ett fåtal lokalbor som sällskap.",
         "Till skillnad från Positanos lidoer är platsen gratis året runt. Ta med allt du behöver och var redo att klättra över klippor – belöningen är ett dramatiskt badställe som gör sig extra bra på bild vid solnedgång."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/reginaGiovannaBath.webp",
+          "width": 760,
+          "height": 516,
+          "alt": "Bagni della Regina Giovanna natural pool in Sorrento, seen from above with swimmers in clear turquoise water",
+          "caption": "This is the spot: a sheltered natural pool by the Roman ruins — best enjoyed early before the ledges fill up"
+        }
       ]
     },
     {
@@ -47,6 +56,56 @@
         "Från Hostel Brikette tar du SITA-bussen till Sorrento och byter till lokalbuss linje A eller C (drivs av EAV). Säg till föraren att du ska till \\\\\"Capo di Sorrento\\\\\" eller \\\\\"Regina Giovanna\\\\\" så vet de att du kliver av nära ledens början.",
         "Hållplatsen ligger cirka 15 minuter från Sorrentos station. Följ Via Capo tills du ser skyltar mot \\\\\"Bagni della Regina Giovanna\\\\\" och ta den asfalterade vägen nedför. Räkna med tio minuter till ruinerna och ytterligare fem minuter nedför stenstegen till viken.",
         "Returbussar går ungefär var 30:e minut fram till tidig kväll; håll koll på tidtabellen och planera att vara uppe vid vägen innan solnedgången."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image3.png",
+          "alt": "Bar Internazionale in Positano (Chiesa Nuova) on the roadside",
+          "caption": "Step 1: Start at the Chiesa Nuova bus stop outside Bar Internazionale (buy tickets here)"
+        },
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image5.png",
+          "alt": "Map screenshot showing the bus route from Positano toward Sorrento (Hotel Metropole stop)",
+          "caption": "Step 2: Ride to Sorrento and get off at the Hotel Metropole stop"
+        },
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image1.png",
+          "alt": "Map screenshot showing Hotel Metropole at the Via Capo junction in Sorrento",
+          "caption": "Step 3: From Hotel Metropole, continue via the Via Capo road"
+        },
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image2.png",
+          "alt": "Map screenshot showing the walking route along Via Capo toward the Bagni della Regina Giovanna area",
+          "caption": "Step 4: Walk along Via Capo (about 1.1 km / 0.7 mi) toward the turnoff"
+        },
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image4.png",
+          "alt": "Street view of the pedestrian lane entrance at 49 Via Capo in Sorrento",
+          "caption": "Step 5: At 49 Via Capo, turn into the pedestrian-only lane downhill"
+        },
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image7.png",
+          "alt": "Satellite view of the Bagni Regina Giovanna area and nearby paths above the swimming cove",
+          "caption": "Step 6: Follow the lane down to the ruins and the natural pool cove"
+        }
+      ]
+    },
+    {
+      "id": "best-time",
+      "title": "Best time to go (and a hostel-friendly day plan)",
+      "body": [
+        "If you only remember one thing: go early. The “beach” here is not a wide stretch of sand — it’s rock ledges. When a few groups arrive, it gets crowded fast, and it becomes harder to find a safe entry point into the water.",
+        "Season matters. In shoulder season, the water can be cold and the steps can stay damp; in mid-summer, the heat on the rocks is intense and shade is limited. Either way, stable weather makes the experience better: after storms the access route can be slippery with algae and debris.",
+        "A simple Brikette day plan: leave after breakfast, arrive for a morning swim, then head back to Sorrento for lunch and a walk. If you want a “big views” add-on, finish the day at a viewpoint or a waterfront aperitivo — and keep your return route in mind via %LINK:sorrentoPositanoBus|bus% or %LINK:sorrentoPositanoFerry|ferry%."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/hostelBriketteToReginaGiovannaBath.webp",
+          "width": 1332,
+          "height": 1000,
+          "alt": "The rocky natural pool at Bagni della Regina Giovanna with a low arch opening to the sea",
+          "caption": "Aim for calm sea and good light: you’ll enjoy safer entries, clearer water, and better photos"
+        }
       ]
     },
     {
@@ -73,6 +132,16 @@
       "body": [
         "Packa en picknick eller planera en sen lunch i Sorrentos historiska centrum efter badet. Bar Ruccio vid Marina Piccola och Da Emilia längs strandpromenaden serverar avslappnade fiskrätter med utsikt.",
         "Om du stannar till solnedgången, avsätt 20 minuter för att klättra tillbaka till busshållplatsen och ta bussen in till stan. Tåg och färjor mot Neapel och Amalfikusten glesas ut efter 20.30, så kontrollera tiderna innan du dröjer kvar."
+      ]
+    },
+    {
+      "id": "sources",
+      "title": "Sources and further reading",
+      "body": [
+        "Background on the site’s Roman-era villa ruins (often associated with Pollio Felice): %URL:https://aboutsorrento.com/cosa-vedere/sorrento/i-bagni-della-regina-giovanna/|About Sorrento — I Bagni della Regina Giovanna%.",
+        "Additional notes on the villa (history + practical info): %URL:https://www.museionline.info/tipologie-museo/villa-di-pollio-felice|MuseiOnline — Villa di Pollio Felice%.",
+        "Photo credit for the Sorrento coastline image used above: %URL:https://commons.wikimedia.org/wiki/File:Sorrento_2013_-_3_(9694522728).jpg|Wikimedia Commons (CC BY 2.0)%.",
+        "Always confirm transport times on the day (seasonal schedules change), and follow local signage and any access notices at the site."
       ]
     }
   ],

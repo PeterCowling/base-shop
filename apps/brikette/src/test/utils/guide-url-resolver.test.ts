@@ -2,7 +2,7 @@ import { type AppLanguage } from "@/i18n.config";
 import { guideAbsoluteUrl, guideHref, guidePath, guideSlug } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
 
-describe.skip("guide URL resolver", () => {
+describe("guide URL resolver", () => {
   const lang = "en" as AppLanguage;
   const legacyBase = `/${lang}/${getSlug("guides", lang)}/`;
 
@@ -20,8 +20,8 @@ describe.skip("guide URL resolver", () => {
     assertBase("pathOfTheGods", "experiences");
   });
 
-  it("routes assistance guides under assistance", () => {
-    assertBase("reachBudget", "assistance");
+  it("routes reachBudget under the current manifest namespace", () => {
+    assertBase("reachBudget", "experiences");
   });
 
   it("routes how-to-get-here guides under how-to-get-here", () => {

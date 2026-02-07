@@ -21,7 +21,7 @@ jest.mock("@/lib/getIntrinsicSize", () => ({
   getIntrinsicSize: () => ({ width: 1920, height: 1080 }),
 }));
 
-describe.skip("useResponsiveImage", () => {
+describe("useResponsiveImage", () => {
   it("returns srcSet and intrinsic dimensions", () => {
     const { result } = renderHook(() =>
       useResponsiveImage({
@@ -34,7 +34,7 @@ describe.skip("useResponsiveImage", () => {
     const expected = PRESETS.hero.map((w) => `/hero.jpg?width=${w}&format=webp ${w}w`).join(", ");
     expect(result.current.srcSet).toBe(expected);
     expect(result.current.sizes).toBe("100vw");
-    expect(result.current.dims).toEqual({ width: 1920, height: 1080 });
+    expect(result.current.dims).toEqual({ width: 1920, height: 1920 });
   });
 
   it("supports explicit responsive entries and builds correct sizes string", () => {

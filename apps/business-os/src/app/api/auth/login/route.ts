@@ -12,8 +12,6 @@ import { z } from "zod";
 
 import { USERS } from "@/lib/current-user";
 
-export const runtime = "edge";
-
 const LoginSchema = z.object({
   username: z.string().min(1),
   passcode: z.string().min(1),

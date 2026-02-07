@@ -16,9 +16,10 @@ import { canViewAllArchived } from "@/lib/current-user";
 import { getCurrentUserServer } from "@/lib/current-user.server-only";
 import { getDb } from "@/lib/d1.server";
 
+export const dynamic = "force-dynamic";
+
 /* eslint-disable ds/no-hardcoded-copy, ds/enforce-layout-primitives, ds/no-unsafe-viewport-units -- BOS-04 */
 // i18n-exempt -- BOS-04 [ttl=2026-03-01] Archive page scaffold; real UI in BOS-11+
-export const runtime = "edge";
 
 export default async function ArchivePage() {
   const currentUser = await getCurrentUserServer();

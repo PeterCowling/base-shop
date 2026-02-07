@@ -169,7 +169,7 @@ jobs:
 
       - name: Lint GitHub Actions workflows
         if: ${{ steps.filter.outputs.github_config == 'true' }}
-        uses: rhysd/actionlint@v1.7.1
+        uses: rhysd/actionlint@v1.7.10
 
       - name: Wait for required workflows
         if: ${{ github.event_name != 'push' }}

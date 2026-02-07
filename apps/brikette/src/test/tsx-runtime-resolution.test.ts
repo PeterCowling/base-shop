@@ -29,7 +29,7 @@ import path from "node:path";
 const APP_ROOT = path.resolve(process.cwd());
 const SCRIPTS_TSCONFIG = path.join(APP_ROOT, "tsconfig.scripts.json");
 
-describe.skip("tsx runtime resolution with scripts tsconfig", () => {
+describe("tsx runtime resolution with scripts tsconfig", () => {
   it("resolves @acme/guides-core to runtime code (not .d.ts)", () => {
     // Create minimal test script in temp directory
     const testDir = mkdtempSync(path.join(tmpdir(), "tsx-resolution-test-"));

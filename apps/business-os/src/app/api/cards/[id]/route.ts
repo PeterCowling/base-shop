@@ -1,3 +1,4 @@
+
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -12,8 +13,6 @@ import { canEditCard } from "@/lib/current-user";
 import { getCurrentUserServer } from "@/lib/current-user.server-only";
 import { getDb } from "@/lib/d1.server";
 import { computeEntitySha } from "@/lib/entity-sha";
-
-export const runtime = "edge";
 
 const UpdateCardSchema = z.object({
   title: z.string().min(1).optional(),

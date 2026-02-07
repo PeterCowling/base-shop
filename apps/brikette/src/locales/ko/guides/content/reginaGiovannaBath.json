@@ -1,9 +1,9 @@
 {
-  "lastUpdated": "2026-01-30T00:00:00.000Z",
   "seo": {
     "title": "Bagni della Regina Giovanna (Sorrento) 비치 가이드",
     "description": "호스텔 게스트를 위한 Bagni della Regina Giovanna (Sorrento) 가이드: bus로 가는 법, 준비물, 수영 안전, 간단한 하루 일정."
   },
+  "lastUpdated": "2026-01-30T00:00:00.000Z",
   "linkLabel": "Regina Giovanna: 로마 유적과 천연 풀",
   "intro": [
     "Bagni della Regina Giovanna는 Sorrento 반도에 있는 붕괴된 바다 동굴로, 맑은 바닷물이 보호된 천연 풀로 흘러 들어옵니다. 여기에는 beach clubs나 snack bars가 없고, 석회암 절벽과 에메랄드빛 얕은 물, 그리고 맑은 아침에 물빛을 빛나게 하는 자연 아치만 있습니다.",
@@ -38,6 +38,15 @@
       "body": [
         "풀 위쪽의 로마 빌라 유적이, 바다에서 자연 아치를 통해 들어오는 청록색 물을 감싸 줍니다. 바다가 잔잔하면 바깥 해안이 거칠어 보여도 풀은 비교적 보호되어, 석회암에 파인 비밀 “수영 방” 같은 느낌이 듭니다.",
         "Positano의 lidos와 달리 이곳은 연중 무료입니다. 대신 그만큼 불편함도 있어요: 그늘 대여 없음, 화장실 없음, 라이프가드 없음, 그리고 바위길 접근. 짐만 잘 챙기면, 보트 투어 없이도 Sorrento 근처에서 가장 기억에 남는 수영을 할 수 있습니다. Brikette staff 팁: 해 뜰 무렵이나 이른 아침 미션으로 생각하세요. 선반이 좁고, 단체가 오면 금방 붐빕니다. 들어가서 수영하고 사진 찍고, 정오 더위가 오르막을 벌로 만들기 전에 나오는 게 좋아요."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/reginaGiovannaBath.webp",
+          "width": 760,
+          "height": 516,
+          "alt": "Bagni della Regina Giovanna natural pool in Sorrento, seen from above with swimmers in clear turquoise water",
+          "caption": "This is the spot: a sheltered natural pool by the Roman ruins — best enjoyed early before the ledges fill up"
+        }
       ]
     },
     {
@@ -47,6 +56,56 @@
         "Hostel Brikette에서 SITA bus로 Sorrento까지 간 뒤, Capo di Sorrento 방향의 EAV 로컬 bus로 환승하세요. 어디서 환승해야 할지 헷갈리면 전체 루트 가이드 %LINK:hostelBriketteToReginaGiovannaBath|Hostel Brikette → Bagni della Regina Giovanna%를 사용하세요(환승 지점과 “마지막 1km” 도보 포함).",
         "Via Capo에 올라오면 “Bagni della Regina Giovanna” 표지판을 찾으세요. 내리막 길은 처음엔 포장되어 있지만 유적에 가까워질수록 더 거칠어집니다. 빌라 구역까지 약 10분, 돌계단을 내려 만으로 들어가는 데 추가 5분 정도 잡으세요.",
         "Brikette staff 팁: 물가로 내려가기 전에 귀가 옵션을 스크린샷 해두세요. 바위 근처는 신호가 약할 수 있어 해질녘에 헤매기 싫습니다. 저녁에는 bus가 뜸해지니, 특히 성수기 밖에는 여유 있게 도로로 돌아오는 계획을 세우세요."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image3.png",
+          "alt": "Bar Internazionale in Positano (Chiesa Nuova) on the roadside",
+          "caption": "Step 1: Start at the Chiesa Nuova bus stop outside Bar Internazionale (buy tickets here)"
+        },
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image5.png",
+          "alt": "Map screenshot showing the bus route from Positano toward Sorrento (Hotel Metropole stop)",
+          "caption": "Step 2: Ride to Sorrento and get off at the Hotel Metropole stop"
+        },
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image1.png",
+          "alt": "Map screenshot showing Hotel Metropole at the Via Capo junction in Sorrento",
+          "caption": "Step 3: From Hotel Metropole, continue via the Via Capo road"
+        },
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image2.png",
+          "alt": "Map screenshot showing the walking route along Via Capo toward the Bagni della Regina Giovanna area",
+          "caption": "Step 4: Walk along Via Capo (about 1.1 km / 0.7 mi) toward the turnoff"
+        },
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image4.png",
+          "alt": "Street view of the pedestrian lane entrance at 49 Via Capo in Sorrento",
+          "caption": "Step 5: At 49 Via Capo, turn into the pedestrian-only lane downhill"
+        },
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image7.png",
+          "alt": "Satellite view of the Bagni Regina Giovanna area and nearby paths above the swimming cove",
+          "caption": "Step 6: Follow the lane down to the ruins and the natural pool cove"
+        }
+      ]
+    },
+    {
+      "id": "best-time",
+      "title": "Best time to go (and a hostel-friendly day plan)",
+      "body": [
+        "If you only remember one thing: go early. The “beach” here is not a wide stretch of sand — it’s rock ledges. When a few groups arrive, it gets crowded fast, and it becomes harder to find a safe entry point into the water.",
+        "Season matters. In shoulder season, the water can be cold and the steps can stay damp; in mid-summer, the heat on the rocks is intense and shade is limited. Either way, stable weather makes the experience better: after storms the access route can be slippery with algae and debris.",
+        "A simple Brikette day plan: leave after breakfast, arrive for a morning swim, then head back to Sorrento for lunch and a walk. If you want a “big views” add-on, finish the day at a viewpoint or a waterfront aperitivo — and keep your return route in mind via %LINK:sorrentoPositanoBus|bus% or %LINK:sorrentoPositanoFerry|ferry%."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/hostelBriketteToReginaGiovannaBath.webp",
+          "width": 1332,
+          "height": 1000,
+          "alt": "The rocky natural pool at Bagni della Regina Giovanna with a low arch opening to the sea",
+          "caption": "Aim for calm sea and good light: you’ll enjoy safer entries, clearer water, and better photos"
+        }
       ]
     },
     {
@@ -73,6 +132,16 @@
       "body": [
         "이 수영은 Sorrento에서의 느긋한 오후와 잘 어울립니다: 구시가지에서 재충전하고, 전망 포인트를 짧게 돌고, Positano로 돌아가세요. 나중에 “해변 비교 데이”를 하고 싶다면 %LINK:positanoBeaches|Positano 해변 개요%를 저장해 “우리에게 맞는 만은?”을 고르세요.",
         "일몰까지 남는다면 도로로 다시 올라가 확실한 귀가편을 잡을 시간을 확보하세요. 바다가 거칠면 %LINK:sorrentoPositanoBus|bus%가 ferry보다 보통 더 안전합니다. 자료/추가 읽기: 로마 시대 빌라 유적(종종 Pollio Felice와 연관)의 배경: %URL:https://aboutsorrento.com/cosa-vedere/sorrento/i-bagni-della-regina-giovanna/|About Sorrento — I Bagni della Regina Giovanna%. 추가 정보(역사 + 실용): %URL:https://www.museionline.info/tipologie-museo/villa-di-pollio-felice|MuseiOnline — Villa di Pollio Felice%. 사진 크레딧: %URL:https://commons.wikimedia.org/wiki/File:Sorrento_2013_-_3_(9694522728).jpg|Wikimedia Commons (CC BY 2.0)%. 이동 시간은 당일 확인(계절에 따라 변동). 현장 표지와 접근 공지도 따르세요."
+      ]
+    },
+    {
+      "id": "sources",
+      "title": "Sources and further reading",
+      "body": [
+        "Background on the site’s Roman-era villa ruins (often associated with Pollio Felice): %URL:https://aboutsorrento.com/cosa-vedere/sorrento/i-bagni-della-regina-giovanna/|About Sorrento — I Bagni della Regina Giovanna%.",
+        "Additional notes on the villa (history + practical info): %URL:https://www.museionline.info/tipologie-museo/villa-di-pollio-felice|MuseiOnline — Villa di Pollio Felice%.",
+        "Photo credit for the Sorrento coastline image used above: %URL:https://commons.wikimedia.org/wiki/File:Sorrento_2013_-_3_(9694522728).jpg|Wikimedia Commons (CC BY 2.0)%.",
+        "Always confirm transport times on the day (seasonal schedules change), and follow local signage and any access notices at the site."
       ]
     }
   ],

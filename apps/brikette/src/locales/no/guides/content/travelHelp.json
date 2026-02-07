@@ -1,27 +1,110 @@
 {
   "lastUpdated": "2026-02-04T00:00:00.000Z",
   "seo": {
-    "title": "Reisehjelp | Brikette Hostel Positano",
-    "description": "En to-minutters oppsummering av hvordan du kommer hit og hvilke utflukter gjestene våre gjør, med lenker til de fullstendige transport- og opplevelsesguidene."
+    "title": "Reisehjelp Positano | Brikette Hostel",
+    "description": "To-minutters reisehjelp for Positano: hvordan du når Hostel Brikette, hva du gjør hvis du er forsinket, og lenker til våre transport- og dagsturveiledninger."
   },
-  "linkLabel": "Reisehjelp | Brikette Hostel Positano",
+  "linkLabel": "Reisehjelp Positano | Brikette Hostel",
   "intro": [
     "Reisehjelp Positano: de fleste rutene går via Sorrento. I Positano ankommer du vanligvis ved Chiesa Nuova (buss) eller Spiaggia Grande (ferge).",
     "Bruk denne siden til å velge riktig guide. Ruteguidene våre dekker billetter, stopp, bagasje og alternativruter. Opplevelseguidene våre dekker dør-til-dør-dagsutflukter."
   ],
   "sections": [
     {
-      "id": "overview",
-      "title": "Reisehjelp i korte trekk",
+      "id": "quick-start",
+      "title": "Hurtigstart (les dette først)",
       "body": [
-        "For detaljerte instruksjoner, start med våre steg-for-steg-guides Finn veien om tog, ferger, private transporter og hva du gjør ved forsinkelser. Her får du bare hovedpunktene: sett av omtrent 2 timer fra Napoli til Positano, kjøp SITA-billetter før du går om bord og send oss en melding hvis du blir sen, så planlegger vi innsjekken."
+        "**Standard ankomstplan:** Kom deg til Sorrento, og ta deretter SITA-bussen til Positano. Planlegg ~2 til 3,5 timer fra Napoli (tidene varierer etter sesong).",
+        "**Kjøp bussbilletter før påstigning:** SITA-bussene selger ikke alltid billetter om bord. I Sorrento, kjøp på en tabacchi/bar før du stiller deg i kø.",
+        "**Lagre det grunnleggende:** ta skjermbilder av tidtabeller og billettene dine. Skriv ned hostelladressen. Signalet kan falle ut på kystveien.",
+        "**Ankomst med ferge:** du ankommer ved Spiaggia Grande. Det siste trinnet er å gå oppover med bagasjen. Hvis du vil ha den enkleste ankomstdagen, bruk %LINK:porterServices|bærertjenester%.",
+        "**Kommer sent:** send oss melding så snart du vet ankomsttiden din slik at vi kan planlegge innsjekking: %LINK:checkinCheckout|Innsjekking og utsjekking%."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.webp",
+          "alt": "Lokalt bussholdeplassområde i Positano"
+        },
+        {
+          "src": "/img/directions/ferry-dock-interno-yellow.webp",
+          "alt": "Interno Positano lokalbuss ved fergekaien"
+        }
       ]
     },
     {
-      "id": "excursions",
-      "title": "Raske veibeskrivelser til populære utflukter",
+      "id": "travel-checklist",
+      "title": "Før du reiser (enkel sjekkliste)",
       "body": [
-        "Når du har kommet på plass, gir samlingen Opplevelser veibeskrivelser dør til dør til gjestenes favorittutflukter – Capri-ferger, innganger til Gudestien, busser til Amalfi og Ravello, tog til Pompeii og Vesuv og mer. Les guidene for første avganger, billettips og hva du bør pakke."
+        "- Lad telefonen eller ta med en powerbank.",
+        "- Ha med vann og en liten snack.",
+        "- Bær litt kontanter for små butikker og billettkasser.",
+        "- Ha billetten i en lett tilgjengelig lomme for kontroller.",
+        "- Ha på deg gode sko. Det er mange trapper.",
+        "- Hvis du har store vesker, planlegg for trapper. Bærere hjelper.",
+        "- Ta med en lett jakke. Nettene kan føles kjølige ved sjøen.",
+        "- Ha en kartlenke lagret. Det hjelper når du ankommer sent.",
+        "- Hvis du blir bilsyk, sett deg foran i bussen og se ut av vinduet."
+      ]
+    },
+    {
+      "id": "how-to-get-here",
+      "title": "Hvordan komme hit (hva ruteguidene dekker)",
+      "body": [
+        "Start med %HOWTO:how-to-get-here|Hvordan komme hit-siden% hvis du velger mellom buss, ferge eller en kombinasjon.",
+        "Hver ruteveiledning er trinn for trinn. Den dekker:",
+        "- hvor du kjøper billetter (og hva du skal ta skjermbilde av)",
+        "- hvilket stopp du skal bruke i Positano (ofte Chiesa Nuova, nærmest hostellet)",
+        "- bagasjetips for travle busser og ferger",
+        "- sesongnotater (sommerlinjer vs. vintertjeneste)",
+        "- en alternativrute for urolig sjø eller tapte forbindelser.",
+        "",
+        "**Mest brukte ankomstruter:**",
+        "- %HOWTO:naples-airport-positano-bus|Napoli lufthavn → Positano (buss via Sorrento)% — Curreri-shuttle til Sorrento, deretter SITA til Positano.",
+        "- %HOWTO:naples-center-train-bus|Napoli sentrum → Positano (tog + buss)% — tog til Sorrento, deretter SITA til Positano.",
+        "- %HOWTO:naples-center-positano-ferry|Napoli sentrum → Positano (ferge)% — flott når den går; ha en sjøværs-backup.",
+        "- %HOWTO:salerno-positano-ferry|Salerno → Positano (ferge)% — et godt alternativ i sesongen.",
+        "- %HOWTO:sorrento-positano-bus|Sorrento → Positano (buss)% — nøkkelforbindelsen for mange planer.",
+        "",
+        "**Forlate Positano etter oppholdet:**",
+        "- %HOWTO:positano-naples-airport-bus|Positano → Napoli lufthavn (offentlig transport)% — planlegg ekstra buffer for forbindelser.",
+        "- %HOWTO:positano-naples-center-bus-train|Positano → Napoli sentrum (buss + tog)% — vanlig når ferger ikke går.",
+        "- %HOWTO:positano-naples-center-ferry|Positano → Napoli sentrum (ferge)% — raskest når sjøen er rolig."
+      ]
+    },
+    {
+      "id": "last-10-minutes",
+      "title": "Dine siste 10 minutter: fergekai eller bussholdeplass → hostellet",
+      "body": [
+        "**Ankomst med buss:** de fleste bussene stopper ved Chiesa Nuova (ved Bar Internazionale). Derfra er det en kort spasertur til hostellet. Bruk: %LINK:chiesaNuovaArrivals|Chiesa Nuova → Hostel Brikette (ankomster)% og %LINK:chiesaNuovaDepartures|Hostel Brikette → Chiesa Nuova (avreiser)%.",
+        "",
+        "**Ankomst med ferge:** følg den bagasjevennlige ruten fra kaien. Hvis du ikke reiser lett, les dette før du begynner å klatre: %LINK:ferryDockToBrikette|Fergekai → Hostel Brikette (med bagasje)%.",
+        "",
+        "**Reiser med tunge vesker:** Positano er trapper og bratte smug. Hvis du vil ha den enkleste ankomstdagen, kombiner kai-/bussveibeskrivelsene ovenfor med %LINK:porterServices|bærertjenester%."
+      ]
+    },
+    {
+      "id": "delays-cancellations",
+      "title": "Hvis noe går galt (forsinkelser, urolig sjø, tapte forbindelser)",
+      "body": [
+        "**Fergeavlysninger:** hvis sjøen er urolig, kan ferger stoppe med lite varsel. Kjenn til alternativruten din på forhånd. Start her: %LINK:ferryCancellations|Fergeavlysninger og vær% og %HOWTO:how-to-get-here|Hvordan komme hit-oversikten%.",
+        "",
+        "**Gått glipp av en forbindelse i Sorrento:** du kan (1) vente på neste SITA-buss, (2) bytte til en ferge hvis den går, eller (3) dele taxi hvis dere er en gruppe. Ruteveiledningene ovenfor viser vanlige køpunkter og tidsbuffere.",
+        "",
+        "**Kommer sent til hostellet:** send oss melding så snart du vet ankomsttiden din slik at vi kan planlegge innsjekkingen din: %LINK:checkinCheckout|Innsjekking og utsjekking%."
+      ]
+    },
+    {
+      "id": "popular-excursions",
+      "title": "Populære dagsutflukter (dør-til-dør-veibeskrivelser)",
+      "body": [
+        "Disse Opplevelseguidene fokuserer på det grunnleggende: første avganger, hvilken kai/stopp du skal bruke, hva du skal pakke, og vanlige returfeil.",
+        "",
+        "- %LINK:capriDayTrip|Dagstur til Capri fra Positano% — reiserute + lenker til ut-/returfergeanvisninger.",
+        "- %LINK:pathOfTheGods|Gudenes sti (Sentiero degli Dei)% — velg din beste tilnærming (buss, ferge + buss, eller Nocelle-alternativet).",
+        "- %LINK:positanoPompeii|Positano → Pompeii-dagstur% — buss til Sorrento + lokaltog, med timing og folkemengdetips.",
+        "- %LINK:dayTripsAmalfi|Beste dagsutflukter fra Positano% — en rask velger for Capri, Pompeii, Amalfi/Ravello og Sorrento.",
+        "",
+        "For by-til-by-reiser hjelper disse transportveiledningene: %HOWTO:positano-amalfi-ferry|Positano → Amalfi (ferge)%, %HOWTO:positano-amalfi-bus|Positano → Amalfi (buss)%, %HOWTO:positano-ravello-ferry-bus|Positano → Ravello (ferge + buss)%."
       ]
     }
   ],

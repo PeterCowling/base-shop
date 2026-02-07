@@ -170,10 +170,8 @@ describe("MobileLanePicker", () => {
 
     const tabs = screen.getAllByRole("tab");
     tabs.forEach((tab) => {
-      // Implementation should ensure min-h-11 (44px) for touch targets
-      const styles = window.getComputedStyle(tab);
-      const minHeight = parseInt(styles.minHeight);
-      expect(minHeight).toBeGreaterThanOrEqual(44);
+      // jsdom doesn't resolve Tailwind styles, so assert the semantic utility class.
+      expect(tab).toHaveClass("min-h-11");
     });
   });
 });

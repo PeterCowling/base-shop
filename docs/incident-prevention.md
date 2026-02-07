@@ -15,8 +15,14 @@ Domain: Operations
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│  Layer 4: Claude Code Hooks (.claude/settings.json)             │
-│  └─ Blocks destructive commands before AI can execute them      │
+│  Layer 4: Claude Code Hooks (.claude/settings.json) - ACTIVE    │
+│  └─ PreToolUse hook fires for every Bash tool call              │
+│     SessionStart hook prepends agent git guard to PATH           │
+│     permissions.deny blocks destructive commands                 │
+│     permissions.ask gates bypass mechanisms                      │
+│     permissions.allow provides safe baseline                     │
+│     Git guard is now always active for Claude Code sessions     │
+│     (.claude/hooks/pre-tool-use-git-safety.sh)                   │
 ├─────────────────────────────────────────────────────────────────┤
 │  Layer 3: GitHub Branch Protection (server-side)                │
 │  └─ Requires PR and passing CI; auto-merge on green             │
@@ -42,10 +48,11 @@ These commands are blocked by one or more protection layers:
 | `git clean -fd` | Permanently deletes untracked files |
 | `git checkout -- .` / `git restore .` | Discards all local modifications |
 | `git restore -- <pathspec...>` / `git checkout -- <pathspec...>` | Bulk discards local modifications (multiple paths, directories, or globs) |
-| `git stash drop/clear` | Loses stashed work permanently |
+| `git stash drop/clear` | Permanently loses stashed work |
+| `git stash pop/apply` | Can cause merge conflicts (use list/show/push instead) |
 | `git push --force` / `-f` | Overwrites remote history |
 | `git rebase -i` | Can rewrite/lose history |
-| `--no-verify` | Bypasses safety hooks |
+| `--no-verify` | Bypasses safety hooks - hard-blocked by git guard |
 
 ---
 
@@ -81,7 +88,7 @@ These commands are blocked by one or more protection layers:
 | Documentation | ✅ Configured | [AGENTS.md](../AGENTS.md), [CLAUDE.md](../CLAUDE.md) |
 | Git Hooks | ✅ Configured | `pnpm exec simple-git-hooks` to install |
 | GitHub Protection | ✅ Configured | Settings → Rules → Rulesets |
-| Claude Code Hooks | ✅ Configured | [.claude/settings.json](../.claude/settings.json) |
+| Claude Code Hooks | ✅ ACTIVE | [.claude/settings.json](../.claude/settings.json), [pre-tool-use-git-safety.sh](../.claude/hooks/pre-tool-use-git-safety.sh), [tests](../scripts/__tests__/pre-tool-use-git-safety.test.ts) |
 
 ---
 

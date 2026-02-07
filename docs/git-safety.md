@@ -34,8 +34,10 @@ These commands can permanently destroy work:
 | `git checkout -- .`, `git restore .` | 🔴 HIGH | Discards all local modifications |
 | `git restore -- <pathspec...>`, `git checkout -- <pathspec...>` | 🔴 HIGH | Bulk discards local modifications (multiple paths, directories, or globs) |
 | `git checkout --theirs .` | 🔴 HIGH | Overwrites files during conflict resolution (can destroy local changes) |
-| `git stash drop` | 🟠 MEDIUM | Permanently loses stashed changes |
-| `git stash clear` | 🟠 MEDIUM | Loses all stashes |
+| `git stash drop` | 🟠 MEDIUM | Permanently loses stashed changes (blocked by git guard) |
+| `git stash clear` | 🟠 MEDIUM | Loses all stashes (blocked by git guard) |
+| `git stash pop` | 🟠 MEDIUM | Can cause merge conflicts (blocked by git guard; `list/show/push` allowed) |
+| `git stash apply` | 🟠 MEDIUM | Can cause merge conflicts (blocked by git guard; `list/show/push` allowed) |
 | `git push --force` | 🔴 HIGH | Overwrites remote history (affects team) |
 | `git push -f` | 🔴 HIGH | Same as above (shorthand) |
 | `git push --force-with-lease` | 🔴 HIGH | Safer force-push variant, but still rewrites remote history |
@@ -94,10 +96,11 @@ scripts/agents/integrator-shell.sh -- codex
 scripts/agents/integrator-shell.sh
 ```
 
-If the lock is held, wait:
+If the lock is held, recover safely, then wait:
 
 ```bash
 scripts/git/writer-lock.sh status
+scripts/git/writer-lock.sh clean-stale   # only if holder PID is dead on this host
 scripts/git/writer-lock.sh acquire --wait
 ```
 
@@ -193,19 +196,29 @@ GitHub should enforce these rules on `main` and `staging`:
 
 **Configuration:** GitHub → Settings → Rules → Rulesets → `main` / `staging`
 
-### Layer 4: Agent Runner Guardrails (Optional)
+### Layer 4: Agent Runner Guardrails (ACTIVE in Claude Code)
 
-Some agent tools can be configured to deny-list destructive commands (tool permissions, wrappers, command filters, etc.).
+Claude Code sessions now automatically inject the git guard onto PATH via SessionStart hooks (`.claude/settings.json`).
 
-**Do not rely on this layer.** Assume *no* tool will save you from a bad git command. Follow the rules above.
+**PreToolUse hooks are ACTIVE** - the git guard intercepts git commands before Claude Code executes them.
 
-If you run agents locally, you can optionally use integrator mode (writer lock + git guard):
+The git guard blocks:
+- Destructive commands (`git reset --hard`, `git clean -fd`)
+- History-rewriting commands (`git rebase`, `git commit --amend`, `git push --force`)
+- Bulk discard patterns (`git restore` / `git checkout --` with multiple paths, directories, or globs)
+- Stash operations that can lose work (`drop/clear/pop/apply` - `list/show/push` allowed)
+- `--no-verify` flag (prevents bypassing git hooks)
+
+**Script:** `.claude/hooks/pre-tool-use-git-safety.sh`
+**Tests:** `scripts/__tests__/pre-tool-use-git-safety.test.ts`
+
+The git guard is always active for Claude Code sessions (not just wrapper shells).
+
+If you run agents locally outside Claude Code, you can optionally use integrator mode (writer lock + git guard):
 
 ```bash
 scripts/agents/integrator-shell.sh -- <your-agent-command>
 ```
-
-The git guard blocks destructive/history-rewriting commands and bulk discard patterns (for example: bulk `git restore` / `git checkout --`).
 
 ---
 
@@ -301,10 +314,15 @@ git push --no-verify
 # Or: skip simple-git-hooks specifically
 SKIP_SIMPLE_GIT_HOOKS=1 git push origin HEAD
 
-# Or: skip only the writer-lock check
-SKIP_WRITER_LOCK=1 git commit -m "Emergency fix"
-
 # Never bypass in order to rewrite history or push to protected branches.
+```
+
+For writer-lock issues, fix lock state instead of bypassing:
+
+```bash
+scripts/git/writer-lock.sh status
+scripts/git/writer-lock.sh clean-stale   # only if holder PID is dead on this host
+scripts/git/writer-lock.sh acquire --wait
 ```
 
 **Document why hooks were bypassed and follow up to fix the root cause.**
@@ -388,6 +406,42 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 - [Git Hooks](./git-hooks.md) - Hook configuration details
 - [Contributing](./contributing.md) - Contribution guidelines
 - [Recovery Plan](./historical/RECOVERY-PLAN-2026-01-14.md) - Jan 14 incident details
+
+---
+
+## Maintenance
+
+### Test Harness
+
+The git safety system is tested against the Command Policy Matrix to prevent drift between documentation and enforcement scripts.
+
+**Test files:**
+- `scripts/__tests__/git-safety-policy.test.ts` - Tests git guard enforcement against the policy matrix
+- `scripts/__tests__/pre-tool-use-git-safety.test.ts` - Tests Claude Code PreToolUse hook integration
+
+Run tests:
+```bash
+pnpm test scripts/__tests__/git-safety-policy.test.ts
+pnpm test scripts/__tests__/pre-tool-use-git-safety.test.ts
+```
+
+The test harness ensures:
+- All blocked commands in the matrix are enforced by the git guard
+- All allowed commands in the matrix pass through
+- Enforcement scripts stay in sync with documented policies
+
+### Regular Checks
+
+Add to the maintenance checklist:
+
+1. Review forbidden patterns quarterly
+2. Audit exceptions list for unused entries
+3. Test hooks after major git or Node.js updates
+4. Update documentation when modifying hooks
+5. Run test harness to verify enforcement points match Command Policy Matrix
+6. Run the drift-detection test: `pnpm exec jest scripts/__tests__/git-safety-policy.test.ts`
+
+**Note:** The test harness at `scripts/__tests__/git-safety-policy.test.ts` validates both the PreToolUse hook and git guard against the Command Policy Matrix. If patterns diverge, tests fail.
 
 ---
 

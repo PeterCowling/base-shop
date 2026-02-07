@@ -25,7 +25,7 @@ Hooks run on `git commit` and `git push`. They do **not** protect you from losin
 
 | Hook | Script | Purpose |
 |------|--------|---------|
-| `pre-commit` | `pre-commit-check-env.sh` + `require-writer-lock.sh` + `no-partially-staged.js` + `lint-staged --no-stash` + `pnpm typecheck` + `pnpm lint` + `pnpm validate:agent-context` | Block secrets, enforce single-writer commits, block partial staging, lint staged files, then run typecheck + lint + agent context checks |
+| `pre-commit` | `pre-commit-check-env.sh` + `block-commit-on-protected-branches.sh` + `require-writer-lock.sh` + `no-partially-staged.js` + `lint-staged --no-stash` + `pnpm typecheck` + `pnpm lint` + `pnpm validate:agent-context` | Block secrets, block commits on protected branches (main/master/staging), enforce single-writer commits, block partial staging, lint staged files, then run typecheck + lint + agent context checks |
 | `prepare-commit-msg` | `prepare-commit-msg-safety.sh` | Block amend-style / commit-message-reuse workflows (reduces history rewrite pressure) |
 | `pre-rebase` | `pre-rebase-safety.sh` | Block `git rebase` (history rewrite) by default |
 | `pre-push` | `require-writer-lock.sh` + `pre-push-safety.sh` + `pnpm typecheck` + `pnpm lint` | Enforce single-writer pushes; block pushes to protected branches and any non-fast-forward push; run typecheck + lint before pushing |
@@ -94,6 +94,7 @@ The pre-push hook prevents dangerous push operations that could destroy work or 
 |-----------|--------|
 | Force push to `main` | ❌ **BLOCKED** - Prevents overwriting remote history |
 | Force push to `master` | ❌ **BLOCKED** - Same protection |
+| Force push to `staging` | ❌ **BLOCKED** - Same protection (now includes staging) |
 | Non-fast-forward push to protected branches | ❌ **BLOCKED** |
 
 ### What It Warns About
@@ -102,6 +103,7 @@ The pre-push hook prevents dangerous push operations that could destroy work or 
 |-----------|--------|
 | Direct push to `main` | ⚠️ **WARNING** - Recommends using PR instead |
 | Direct push to `master` | ⚠️ **WARNING** - Recommends using PR instead |
+| Direct push to `staging` | ⚠️ **WARNING** - Recommends using PR instead |
 
 ### Example Blocked Push
 
@@ -145,6 +147,8 @@ or:
 ```bash
 SKIP_SIMPLE_GIT_HOOKS=1 git push origin HEAD
 ```
+
+**Note:** In Claude Code sessions, `--no-verify` is hard-blocked by the git guard at PATH level (Layer 4 protection, belt-and-suspenders for the ask rule). The git guard intercepts git commands before they reach the shell.
 
 Do not bypass in order to push to protected branches; use the PR workflow instead.
 
@@ -202,6 +206,8 @@ ALLOWED_EXCEPTIONS=(
 ## Bypassing Hooks (Emergency Only)
 
 ⚠️ **Warning:** Only bypass hooks when it is certain this is safe.
+
+**Note:** In Claude Code sessions, `--no-verify` is hard-blocked by the git guard at PATH level (Layer 4 protection, belt-and-suspenders for the ask rule).
 
 ### Skip all git hooks temporarily:
 ```bash

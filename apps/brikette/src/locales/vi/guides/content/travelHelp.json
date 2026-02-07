@@ -1,27 +1,110 @@
 {
   "lastUpdated": "2026-02-04T00:00:00.000Z",
   "seo": {
-    "title": "Hỗ trợ hành trình | Hostel Brikette Positano",
-    "description": "Bản tóm tắt trong hai phút về cách đến với chúng tôi và những chuyến đi được khách yêu thích, kèm liên kết tới các hướng dẫn chi tiết về di chuyển và trải nghiệm."
+    "title": "Hỗ trợ hành trình Positano | Hostel Brikette",
+    "description": "Hướng dẫn hành trình hai phút đến Positano: cách đến Hostel Brikette, phải làm gì nếu bạn trễ giờ, và các liên kết đến hướng dẫn vận chuyển và chuyến đi trong ngày của chúng tôi."
   },
-  "linkLabel": "Hỗ trợ hành trình | Hostel Brikette Positano",
+  "linkLabel": "Hỗ trợ hành trình Positano | Hostel Brikette",
   "intro": [
     "Hỗ trợ hành trình Positano: hầu hết các tuyến đường đều đi qua Sorrento. Tại Positano, bạn thường đến Chiesa Nuova (xe buýt) hoặc Spiaggia Grande (phà).",
     "Sử dụng trang này để chọn hướng dẫn phù hợp. Hướng dẫn tuyến đường của chúng tôi bao gồm vé, điểm dừng, hành lý và tuyến đường dự phòng. Hướng dẫn Trải nghiệm của chúng tôi bao gồm các chuyến đi trong ngày từ cửa đến cửa."
   ],
   "sections": [
     {
-      "id": "overview",
-      "title": "Hỗ trợ hành trình trong nháy mắt",
+      "id": "quick-start",
+      "title": "Bắt đầu nhanh (đọc phần này trước)",
       "body": [
-        "Để xem hướng dẫn từng bước, hãy bắt đầu với chuỗi bài \\\\\"Đến đây như thế nào\\\\\" của chúng tôi — bao gồm tàu hỏa, phà, xe riêng và cách xử lý nếu bị trễ. Trang này chỉ nhắc những điều cốt lõi: dự trù khoảng 2 giờ từ Napoli tới Positano, mua vé SITA trước khi lên xe và nhắn cho chúng tôi nếu bạn đến muộn để chúng tôi sắp xếp nhận phòng."
+        "**Kế hoạch đến mặc định:** Đến Sorrento, sau đó đi xe buýt SITA đến Positano. Dự kiến ~2 đến 3,5 giờ từ Naples (thời gian thay đổi theo mùa).",
+        "**Mua vé xe buýt trước khi lên xe:** Xe buýt SITA không bán vé trên xe một cách đáng tin cậy. Tại Sorrento, mua vé ở quầy tabacchi/bar trước khi xếp hàng.",
+        "**Lưu những điều cơ bản:** chụp màn hình lịch trình và vé của bạn. Viết ra địa chỉ hostel. Tín hiệu có thể mất trên đường ven biển.",
+        "**Đến bằng phà:** bạn đổ bộ tại Spiaggia Grande. Bước cuối cùng là đi lên dốc với hành lý của bạn. Nếu bạn muốn ngày đến dễ dàng nhất, hãy sử dụng %LINK:porterServices|dịch vụ khuân vác%.",
+        "**Đến muộn:** nhắn tin cho chúng tôi ngay khi bạn biết thời gian đến dự kiến để chúng tôi có thể lên kế hoạch nhận phòng: %LINK:checkinCheckout|Nhận phòng & trả phòng%."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.webp",
+          "alt": "Khu vực trạm xe buýt địa phương ở Positano"
+        },
+        {
+          "src": "/img/directions/ferry-dock-interno-yellow.webp",
+          "alt": "Xe buýt địa phương Interno Positano tại bến phà"
+        }
       ]
     },
     {
-      "id": "excursions",
-      "title": "Chỉ đường nhanh tới các chuyến đi phổ biến",
+      "id": "travel-checklist",
+      "title": "Trước khi đi (danh sách kiểm tra đơn giản)",
       "body": [
-        "Khi đã ổn định, bộ sưu tập Trải nghiệm sẽ hướng dẫn chi tiết từ cửa hostel tới những chuyến đi trong ngày được yêu thích nhất: phà đi Capri, lối vào đường mòn Con Đường Của Các Vị Thần, xe buýt đến Amalfi và Ravello, tàu tới Pompeii và Vesuvius, v.v. Hãy đọc các bài viết đó để biết giờ khởi hành đầu tiên, mẹo mua vé và những gì nên mang theo."
+        "- Sạc điện thoại hoặc mang theo pin dự phòng.",
+        "- Mang theo nước và đồ ăn nhẹ.",
+        "- Mang theo một ít tiền mặt cho các cửa hàng nhỏ và quầy vé.",
+        "- Cất vé ở túi dễ lấy để kiểm tra.",
+        "- Đi giày tốt. Có rất nhiều cầu thang.",
+        "- Nếu bạn có túi lớn, hãy lên kế hoạch cho các bậc thang. Dịch vụ khuân vác sẽ giúp.",
+        "- Mang theo áo khoác nhẹ. Đêm có thể mát mẻ bên bờ biển.",
+        "- Lưu liên kết bản đồ. Nó giúp ích khi bạn đến muộn.",
+        "- Nếu bạn bị say xe, hãy ngồi gần phía trước xe buýt và nhìn ra ngoài cửa sổ."
+      ]
+    },
+    {
+      "id": "how-to-get-here",
+      "title": "Cách đến đây (những gì hướng dẫn tuyến đường bao gồm)",
+      "body": [
+        "Bắt đầu với %HOWTO:how-to-get-here|trang Đến đây như thế nào% nếu bạn đang chọn giữa xe buýt, phà hoặc kết hợp.",
+        "Mỗi hướng dẫn tuyến đường đều từng bước. Nó bao gồm:",
+        "- mua vé ở đâu (và chụp màn hình gì)",
+        "- điểm dừng nào sử dụng ở Positano (thường là Chiesa Nuova, gần hostel nhất)",
+        "- lời khuyên về hành lý cho xe buýt và phà đông đúc",
+        "- ghi chú theo mùa (tuyến mùa hè so với dịch vụ mùa đông)",
+        "- tuyến đường dự phòng cho biển động hoặc chuyến kết nối bị lỡ.",
+        "",
+        "**Các tuyến đường đến được sử dụng nhiều nhất:**",
+        "- %HOWTO:naples-airport-positano-bus|Sân bay Naples → Positano (xe buýt qua Sorrento)% — Xe đưa đón Curreri đến Sorrento, sau đó SITA đến Positano.",
+        "- %HOWTO:naples-center-train-bus|Trung tâm Naples → Positano (tàu + xe buýt)% — tàu đến Sorrento, sau đó SITA đến Positano.",
+        "- %HOWTO:naples-center-positano-ferry|Trung tâm Naples → Positano (phà)% — tuyệt vời khi hoạt động; giữ dự phòng thời tiết biển.",
+        "- %HOWTO:salerno-positano-ferry|Salerno → Positano (phà)% — lựa chọn tốt trong mùa.",
+        "- %HOWTO:sorrento-positano-bus|Sorrento → Positano (xe buýt)% — liên kết chính cho nhiều kế hoạch.",
+        "",
+        "**Rời Positano sau khi lưu trú:**",
+        "- %HOWTO:positano-naples-airport-bus|Positano → Sân bay Naples (phương tiện công cộng)% — lên kế hoạch thêm thời gian cho các chuyến kết nối.",
+        "- %HOWTO:positano-naples-center-bus-train|Positano → Trung tâm Naples (xe buýt + tàu)% — phổ biến khi phà không hoạt động.",
+        "- %HOWTO:positano-naples-center-ferry|Positano → Trung tâm Naples (phà)% — nhanh nhất khi biển lặng."
+      ]
+    },
+    {
+      "id": "last-10-minutes",
+      "title": "10 phút cuối cùng: bến phà hoặc trạm xe buýt → hostel",
+      "body": [
+        "**Đến bằng xe buýt:** hầu hết xe buýt dừng tại Chiesa Nuova (gần Bar Internazionale). Từ đó chỉ cần đi bộ ngắn đến hostel. Sử dụng: %LINK:chiesaNuovaArrivals|Chiesa Nuova → Hostel Brikette (đến)% và %LINK:chiesaNuovaDepartures|Hostel Brikette → Chiesa Nuova (đi)%.",
+        "",
+        "**Đến bằng phà:** đi theo tuyến đường thuận tiện cho hành lý từ bến tàu. Nếu bạn không đi nhẹ nhàng, hãy đọc phần này trước khi bắt đầu leo dốc: %LINK:ferryDockToBrikette|Bến phà → Hostel Brikette (có hành lý)%.",
+        "",
+        "**Di chuyển với túi nặng:** Positano là cầu thang và đường hẹp dốc. Nếu bạn muốn ngày đến dễ dàng nhất, hãy kết hợp hướng dẫn bến tàu/xe buýt ở trên với %LINK:porterServices|dịch vụ khuân vác%."
+      ]
+    },
+    {
+      "id": "delays-cancellations",
+      "title": "Nếu có sự cố (chậm trễ, biển động, chuyến kết nối bị lỡ)",
+      "body": [
+        "**Hủy phà:** nếu biển động, phà có thể ngừng với ít thông báo. Biết tuyến đường dự phòng của bạn trước. Bắt đầu ở đây: %LINK:ferryCancellations|Hủy phà & thời tiết% và %HOWTO:how-to-get-here|Tổng quan Đến đây như thế nào%.",
+        "",
+        "**Lỡ chuyến kết nối ở Sorrento:** bạn có thể (1) đợi xe buýt SITA tiếp theo, (2) chuyển sang phà nếu nó đang hoạt động, hoặc (3) chia taxi nếu bạn đi nhóm. Hướng dẫn tuyến đường ở trên cho thấy các điểm xếp hàng phổ biến và khoảng thời gian đệm.",
+        "",
+        "**Đến hostel muộn:** nhắn tin cho chúng tôi ngay khi bạn biết thời gian đến dự kiến để chúng tôi có thể lên kế hoạch nhận phòng của bạn: %LINK:checkinCheckout|Nhận phòng & trả phòng%."
+      ]
+    },
+    {
+      "id": "popular-excursions",
+      "title": "Chuyến đi trong ngày phổ biến (hướng dẫn từ cửa đến cửa)",
+      "body": [
+        "Các hướng dẫn Trải nghiệm này tập trung vào những điều cơ bản: chuyến đi đầu tiên, bến tàu/điểm dừng nào để sử dụng, mang gì, và những sai lầm phổ biến trong chuyến về.",
+        "",
+        "- %LINK:capriDayTrip|Chuyến đi trong ngày đến Capri từ Positano% — hành trình + liên kết đến hướng dẫn phà đi/về.",
+        "- %LINK:pathOfTheGods|Con đường của các vị thần (Sentiero degli Dei)% — chọn cách tiếp cận tốt nhất của bạn (xe buýt, phà + xe buýt, hoặc tùy chọn Nocelle).",
+        "- %LINK:positanoPompeii|Positano → Pompeii chuyến đi trong ngày% — xe buýt đến Sorrento + tàu địa phương, với lời khuyên về thời gian và đám đông.",
+        "- %LINK:dayTripsAmalfi|Chuyến đi trong ngày tốt nhất từ Positano% — lựa chọn nhanh cho Capri, Pompeii, Amalfi/Ravello, và Sorrento.",
+        "",
+        "Đối với di chuyển giữa các thị trấn, các hướng dẫn vận chuyển này giúp ích: %HOWTO:positano-amalfi-ferry|Positano → Amalfi (phà)%, %HOWTO:positano-amalfi-bus|Positano → Amalfi (xe buýt)%, %HOWTO:positano-ravello-ferry-bus|Positano → Ravello (phà + xe buýt)%."
       ]
     }
   ],

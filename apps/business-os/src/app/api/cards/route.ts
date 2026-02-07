@@ -1,3 +1,4 @@
+
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -12,8 +13,6 @@ import { BUSINESSES } from "@/lib/business-catalog";
 import { getCurrentUserServer } from "@/lib/current-user.server-only";
 import { getDb } from "@/lib/d1.server";
 import { computeEntitySha } from "@/lib/entity-sha";
-
-export const runtime = "edge";
 
 const CreateCardSchema = z.object({
   business: z.string().min(1),
@@ -140,4 +139,3 @@ export async function POST(request: Request) {
     );
   }
 }
-

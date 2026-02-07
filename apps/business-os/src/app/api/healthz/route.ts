@@ -9,8 +9,6 @@ import { NextResponse } from "next/server";
 
 import { getDb } from "@/lib/d1.server";
 
-export const runtime = "edge";
-
 export async function GET() {
   try {
     const db = getDb();

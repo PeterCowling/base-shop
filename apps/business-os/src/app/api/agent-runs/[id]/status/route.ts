@@ -1,7 +1,4 @@
 import { NextResponse } from "next/server";
-
-export const runtime = "edge";
-
 /**
  * GET /api/agent-runs/[id]/status
  * Read run log file and return status

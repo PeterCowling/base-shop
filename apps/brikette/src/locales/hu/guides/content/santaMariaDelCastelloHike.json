@@ -11,6 +11,20 @@
   ],
   "sections": [
     {
+      "id": "scan-to-share",
+      "title": "Scan to share",
+      "body": [
+        "Want to open this guide on another phone or share it with a hiking buddy? Scan the QR code below."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/santa-maria-castello/scan-to-share.png",
+          "alt": "QR code to open and share the Santa Maria del Castello hike guide.",
+          "caption": "Scan to open/share this guide."
+        }
+      ]
+    },
+    {
       "id": "what-is-santa-maria",
       "title": "Mi az a Santa Maria del Castello?",
       "body": [
@@ -54,60 +68,56 @@
   ],
   "steps": [
     {
-      "name": "Hagyd el a hostelt és fordulj jobbra",
-      "text": "A hostel bejáratától fordulj jobbra és menj fel a lépcsőn az épület mellett."
+      "name": "Turn right and take the steps",
+      "text": "From the hostel, turn right and take the steps that lead up the side of the building."
     },
     {
-      "name": "Folytasd a gyalogösvényen",
-      "text": "A kezdeti lépcsők tetején folytasd a gyalogösvényt felfelé."
+      "name": "Continue on the footpath",
+      "text": "At the top of the steps, continue on the footpath."
     },
     {
-      "name": "Válaszd a bal oldalt a kereszteződésnél",
-      "text": "Amikor elérsz egy kereszteződést, válaszd a bal felfelé vezető lehetőséget a mászás folytatásához."
+      "name": "Turn left at the junction",
+      "text": "At the junction, choose the left option to go uphill (not right/downhill)."
     },
     {
-      "name": "Kövesd a lépcsőket az útig",
-      "text": "Folytasd a lépcsők követését, amíg el nem érsz egy pontot, ahol lépcsők vezetnek le egy útra."
+      "name": "Turn right up more stairs",
+      "text": "Follow the steps until you reach a point where you can either turn right up more stairs that lead to a road, or continue left on the path. Choose to turn right and go up the stairs."
     },
     {
-      "name": "Kelj át az úton",
-      "text": "Kelj át az úton és találd meg a lépcsőket, amelyek a házak mellett futnak az ellenkező oldalon."
+      "name": "Cross the road to the next stairs",
+      "text": "At the top of the stairs, look across the road for a set of stairs leading alongside some houses. Cross the road and take those stairs."
     },
     {
-      "name": "Menj fel a lépcsőkön a házak mögött",
-      "text": "Kövesd ezeket a lépcsőket, ahogy kanyarognak a házak mögött, elvezetve téged a hegyi ösvényhez."
+      "name": "Follow stairs behind the houses",
+      "text": "Follow the stairs behind the houses until they lead you to a mountain trail."
     },
     {
-      "name": "Folytasd a hegyi ösvényen",
-      "text": "Kövesd a hegyi ösvényt, ahogy felkapaszkodik a falu felé. Az út itt festőibbé válik."
+      "name": "Continue on the mountain trail",
+      "text": "Continue on the mountain trail, which will take you to the village."
     },
     {
-      "name": "Válaszd a felfelé irányuló utat az elágazásoknál",
-      "text": "Két ösvényelágazásnál az út mentén válaszd a felfelé vezető ösvényeket a falu felé való folytatáshoz."
+      "name": "Take the uphill splits",
+      "text": "In two places the mountain trail splits in two directions. Choose the path that goes uphill."
     },
     {
-      "name": "Érkezz meg a falu kereszteződéséhez",
-      "text": "Elérsz egy kereszteződést, ahol az ösvény kiegyenlítődik. Ez jelzi az érkezésedet Santa Maria del Castellóba."
+      "name": "Reach the crossroads",
+      "text": "You have reached the top when the mountain trail levels out and you reach a crossroads."
     },
     {
-      "name": "Fordulj jobbra a kilátópont felé (opcionális)",
-      "text": "A kilátópont eléréséhez fordulj jobbra a kereszteződésnél."
+      "name": "Turn right at the crossroads",
+      "text": "For the lookout point, turn right at the crossroads. Please note that cars do travel on this road."
     },
     {
-      "name": "Vedd az utat felfelé a kereszteződésig",
-      "text": "Kövesd az utat felfelé, amíg el nem érsz egy kereszteződést."
+      "name": "Take the road uphill",
+      "text": "Take the road uphill until you reach a junction."
     },
     {
-      "name": "Fordulj jobbra a kereszteződésnél",
-      "text": "A kereszteződésnél fordulj jobbra és kövesd az utat, ahogy jobbra kanyarodik."
+      "name": "Turn right at the junction",
+      "text": "At the junction, turn right and follow the road around to the right."
     },
     {
-      "name": "Folytasd a füves szakaszig",
-      "text": "Folytasd, amíg el nem érsz egy füves szakaszt a főúton kívül."
-    },
-    {
-      "name": "Hozzáférés a kilátópontokhoz",
-      "text": "A kilátópontok ebből a füves területből érhetők el. Légy rendkívül óvatos—hirtelen több száz méteres esések vannak."
+      "name": "Head to the grassy section and viewpoints",
+      "text": "When you see a grassy section off the road, go there and proceed to the vantage points. Use extreme caution—there are sudden drop-offs of several hundred meters."
     }
   ],
   "warningsTitle": "Biztonsági figyelmeztetések",

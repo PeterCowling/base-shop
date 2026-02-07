@@ -3,6 +3,7 @@
     "title": "एरिएंज़ो बीच क्लब गाइड",
     "description": "लाउंजर पहले से बुक करें, 300 सीढ़ियों से उतरने या शटल बोट में बैठने के बीच निर्णय लें, और एरिएंज़ो बीच क्लब के लिए भोजन व परिवहन की योजना बनाएं।"
   },
+  "lastUpdated": "2026-01-30T00:00:00.000Z",
   "linkLabel": "एरिएंज़ो बीच क्लब गाइड",
   "intro": [
     "एरिएंज़ो पोसितानो के ठीक पूर्व में है, जहाँ लंबी दोपहर की धूप, फ़िरोज़ी पानी और अमाल्फी कोस्ट रोड से नीचे उतरती नाटकीय सीढ़ियाँ हैं। यह हॉस्टल ब्रिकेटे से आसानी से पहुँचने वाला सबसे चहल-पहल वाला लीडो है, लेकिन सीढ़ियों और केवल-आरक्षण नीति के बीच निकलने से पहले आपको पक्की योजना चाहिए।",
@@ -37,6 +38,29 @@
       "body": [
         "एरिएंज़ो स्पियाज्जा ग्रांदे की भीड़ से बाहर सबसे नज़दीकी पूर्ण-सेवा बीच क्लब है। चट्टान किनारे बने टैरेस शाम तक धूप पकड़े रहते हैं, पानी तैराकी के लिए साफ़ रहता है और बार बिना नाइटलाइफ़ जैसी हलचल के पार्टी माहौल बनाए रखता है।",
         "आप अपना समूह ऐसे पैकेजों में बाँट सकते हैं जिनमें लाउंजर और लंच शामिल हों या फिर किसी ख़ास दिन के लिए फ्रंट-रो डेक आरक्षित कर सकते हैं। थोड़ी योजना से आप कतारों से बचेंगे और फिर भी टैरेस पर सनसेट ड्रिंक्स से पहले हॉस्टल वापस पहुँच जाएंगे।"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/02-arienzo-cliffs.webp",
+          "alt": "View over Arienzo bay with pebble beach under steep cliffs near Positano",
+          "caption": "Arienzo sits under the coastal road east of Positano. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:84017_Arienzo_SA,_Italy_-_panoramio_(1).jpg|Luigi Biondi% (%URL:https://creativecommons.org/licenses/by/3.0/|CC BY 3.0%)."
+        }
+      ]
+    },
+    {
+      "id": "when-to-go",
+      "title": "Best time to go (and when to skip it)",
+      "body": [
+        "Arienzo gets long afternoon sun, so it’s perfect if you want a slow start and still have light late. If you’re choosing between “morning sunbed marathon” and “easy golden hour”, Arienzo is the golden‑hour pick.",
+        "Avoid very windy days with rough seas. Shuttle boats can pause and swimming gets choppy. If it looks wild, swap to a more sheltered plan (or do a town day and save Arienzo for a calm afternoon).",
+        "In high season, weekends sell out first. Book ahead and choose a vibe that matches your energy: early for more swim time, late for sunset feels."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/05-amalfi-coast-positano.webp",
+          "alt": "View along the Amalfi Coast near Positano with cliffs and sea in afternoon light",
+          "caption": "Afternoon light is the reason to choose this side of Positano. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Amalfi_Coast_(Positano).jpg|Ron Clausen% (%URL:https://creativecommons.org/licenses/by-sa/2.0/|CC BY-SA 2.0%)."
+        }
       ]
     },
     {
@@ -46,6 +70,27 @@
         "सबसे आसान रास्ता एरिएंज़ो बीच क्लब की शटल बोट है जो स्पियाज्जा ग्रांदे से चलती है। नावें लगभग हर 30 मिनट में 09:30 से चलती हैं और आख़िरी बाहर जाने वाली सवारी लगभग 13:30 बजे होती है। आपके आरक्षण पुष्टि में एक QR कोड शामिल होता है—उसे डेक पर दिखाएँ और वापसी का समय सारिणी साथ रखें।",
         "यदि आप नाव से बचना चाहते हैं तो पैदल चलना भी संभव है। हॉस्टल से 10 मिनट नीचे सोंडा स्टॉप पर SITA बस में अमाल्फी की दिशा में बैठें और संकेतित एरिएंज़ो स्टॉप पर उतरें। वहाँ से नींबू के बागों के बीच 300 सीढ़ियाँ उतरें और क्लब के प्रवेश द्वार तक पहुँचें।",
         "कार या स्कूटर से आने की सलाह नहीं दी जाती; पार्किंग बेहद सीमित है और यातायात पुलिस मोड़ों को अवरुद्ध करने वाले वाहनों पर जुर्माना लगाती है।"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/04-positano-beach.webp",
+          "alt": "Spiaggia Grande in Positano with colourful umbrellas and boats in the bay",
+          "caption": "Spiaggia Grande is often the shuttle boat’s starting point. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Positano_Beach_(42919362342).jpg|Chris% (%URL:https://creativecommons.org/licenses/by/2.0/|CC BY 2.0%)."
+        }
+      ]
+    },
+    {
+      "id": "stairs",
+      "title": "Stairs & accessibility (what 300 steps feels like)",
+      "body": [
+        "The stairs are real. They’re steep, uneven in places, and feel worse on the way up because you’re wet and salty. If you hate stairs or you’re carrying heavy, choose the boat and pack light.",
+        "Wear shoes with grip (trainers or sturdy sandals) and carry weight in a backpack. Take breaks on the landings — everyone does.",
+        "If someone has knee pain or an injury, make Arienzo a “boat‑only” day. Otherwise the steps can ruin your evening."
+      ],
+      "list": [
+        "Down: fine if you go slow and use the shade.",
+        "Up: allow 15–25 minutes depending on heat and fitness.",
+        "Late: feels harder — agree your return plan early."
       ]
     },
     {
@@ -55,6 +100,18 @@
         "मुख्य डेक एरिएंज़ो बीच क्लब के पास है जहाँ नारंगी लाउंजर, तौलिए की सेवा, मीठे पानी के शॉवर और जीवंत बार मौजूद हैं। नाव उतरने वाली जगह के पास दाईं ओर छोटा सा मुफ़्त क्षेत्र है, लेकिन 10:30 के बाद जगह नहीं बचती और तब भी आपको सारा सामान लेकर सीढ़ियाँ पार करनी पड़ती हैं।",
         "गर्मियों में लगभग 17:30 तक पहली दो कतारों तक धूप पहुँचती है, उसके बाद चट्टानें छाया डालने लगती हैं। जैसे-जैसे रोशनी बदलती है, स्टाफ़ से छाते का कोण समायोजित करने के लिए कहें, खासकर अगर आप पूरा दिन धूप सेंकना चाहते हैं।",
         "दिन के पैकेज में मीठे पानी के शॉवर, लॉकर और बदलने के केबिन शामिल हैं। वाई-फ़ाई अस्थिर है; आने से पहले अपनी प्लेलिस्ट या फ़ेरी अपडेट डाउनलोड कर लें।"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/01-beach-layout.webp",
+          "alt": "Layout diagram of Arienzo Beach Club with main deck and small free area near the boat landing",
+          "caption": "Layout: main deck (orange loungers, bar, and showers) + a small free area by the boat landing."
+        },
+        {
+          "src": "/img/guides/arienzo-beach/03-positano-umbrellas.webp",
+          "alt": "Rows of beach umbrellas on a pebble beach in Positano",
+          "caption": "Expect lido style: umbrellas, loungers, and table service. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Beach_Umbrellas_in_Positano_(41158690680).jpg|Chris% (%URL:https://creativecommons.org/licenses/by/2.0/|CC BY 2.0%)."
+        }
       ]
     },
     {
@@ -64,6 +121,37 @@
         "मानक डे बेड दो लोगों के लिए लगभग €70 से शुरू होते हैं और इसमें छाता, तौलिए, दो वेलकम ड्रिंक तथा शटल बोट शामिल होते हैं। फ्रंट-रो प्लेटफ़ॉर्म और प्रेस्टिज कबाना माह के अनुसार €120–€200 तक पहुँच जाते हैं।",
         "दोपहर का भोजन 12:30 से परोसा जाता है जिसमें सीफ़ूड पास्ता, सलाद और ग्रिल्ड मेन कोर्स शामिल होते हैं। प्रति डिश €18–€28 तक का अनुमान रखें; 14:00 की भीड़ से बचने के लिए चेक-इन करते ही टेबल आरक्षित कर लें।",
         "बुकिंग सीधे एरिएंज़ो की वेबसाइट या उनके व्हाट्सएप नंबर पर संदेश भेजकर की जाती है। भुगतान विवरण से आपकी सीट सुरक्षित होती है; 48 घंटों के भीतर रद्द करने पर आम तौर पर शुल्क लगता है, इसलिए पहले मौसम पूर्वानुमान और फ़ेरी योजनाएँ पक्का कर लें।"
+      ]
+    },
+    {
+      "id": "what-to-pack",
+      "title": "What to pack (so the stairs don’t punish you)",
+      "body": [
+        "Treat it like a mini hike to a beach club. The less you carry, the better the day feels — especially on the way back up.",
+        "If you’re taking the boat you can bring a bit more. If you’re taking the stairs, stick to essentials and avoid heavy or fragile stuff."
+      ],
+      "list": [
+        "Water shoes or grippy sandals (pebbles + wet steps).",
+        "Small dry bag / zip pouch (phone, cash, tickets).",
+        "Refillable bottle (the climb dehydrates).",
+        "Reef‑safe sunscreen + sunglasses (strong glare).",
+        "A light layer for the ride back (breeze after swimming)."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/06-positano-umbrellas-panorama.webp",
+          "alt": "Panoramic view of Positano’s umbrellas and the town climbing the cliffs",
+          "caption": "Pack light and plan your exit so you can enjoy the view without stress. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Positano_Beach_Umbrellas_-_panoramio.jpg|Mauro% (%URL:https://creativecommons.org/licenses/by-sa/3.0/|CC BY-SA 3.0%)."
+        }
+      ]
+    },
+    {
+      "id": "sea-conditions",
+      "title": "If the boat cancels (a Plan B that works)",
+      "body": [
+        "On windy days, rough seas can pause the shuttle boats. Don’t panic — switch to land logistics.",
+        "If you’re already at Arienzo, the safe option is to walk up to the road and take the next bus or a taxi. Build in buffer, especially later when buses may pass by full.",
+        "If you haven’t left yet and the sea looks rough, choose a beach with easier logistics (see %LINK:positanoBeaches|our beach overview%) or a “no boat needed” option like %LINK:fornilloBeachGuide|Fornillo Beach%."
       ]
     },
     {
@@ -121,6 +209,5 @@
       ]
     }
   ],
-  "galleryHeading": "एरिएंज़ो बीच की तस्वीरें",
-  "lastUpdated": "2026-01-30T00:00:00.000Z"
+  "galleryHeading": "Arienzo photo highlights"
 }

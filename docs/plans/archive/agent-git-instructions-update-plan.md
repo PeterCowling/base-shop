@@ -1,12 +1,12 @@
 ---
 Type: Plan
-Status: Draft
+Status: Complete
 Domain: Repo
-Last-reviewed: 2026-02-02
+Last-reviewed: 2026-02-07
 Relates-to charter: none
 Created: 2026-01-16
 Created-by: Codex
-Last-updated: 2026-02-02
+Last-updated: 2026-02-07
 Last-updated-by: Codex
 Feature-Slug: agent-git-instructions-update
 Overall-confidence: 82%
@@ -14,6 +14,10 @@ Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effo
 ---
 
 # Agent Git Instruction Updates Plan
+
+## Status Update (2026-02-07)
+
+This plan is complete. The broader guardrail and lock-safety work landed in `docs/plans/agent-safety-net-hardening-plan.md`, and the residual cleanup identified here (skill wording plus bulk pathspec blocking in `scripts/agent-bin/git`) is now complete.
 
 ## Summary
 
@@ -62,10 +66,10 @@ This plan focuses on documentation + local agent guardrails (not CI/CD infrastru
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on |
 |---|---|---|---:|---:|---|---|
-| TASK-01 | DECISION | Final policy: allow any worktree restore for agents? | 70% ⚠️ | S | Pending | - |
-| TASK-02 | IMPLEMENT | Update agent Git docs + checklists (PR/CI + no-discard) | 88% | M | Pending | TASK-01 |
-| TASK-03 | IMPLEMENT | Update guide-editing skills to avoid `git restore` guidance | 85% | S | Pending | TASK-02 |
-| TASK-04 | IMPLEMENT | Harden git guard wrapper to block worktree restore/checkout pathspec | 80% | M | Pending | TASK-01 |
+| TASK-01 | DECISION | Final policy: allow any worktree restore for agents? | 70% ⚠️ | S | Complete | - |
+| TASK-02 | IMPLEMENT | Update agent Git docs + checklists (PR/CI + no-discard) | 88% | M | Complete | TASK-01 |
+| TASK-03 | IMPLEMENT | Update guide-editing skills to avoid `git restore` guidance | 85% | S | Complete | TASK-02 |
+| TASK-04 | IMPLEMENT | Harden git guard wrapper to block worktree restore/checkout pathspec | 80% | M | Complete | TASK-01 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -168,13 +172,14 @@ This plan focuses on documentation + local agent guardrails (not CI/CD infrastru
 
 ## Acceptance Criteria (overall)
 
-- [ ] Agent docs make PR/CI workflow explicit and actionable.
-- [ ] Agent docs + skills do not recommend worktree discards via `git restore` / `git checkout --`.
-- [ ] Guarded shells block dangerous restore/checkout patterns by default.
+- [x] Agent docs make PR/CI workflow explicit and actionable.
+- [x] Agent docs + skills do not recommend worktree discards via `git restore` / `git checkout --`.
+- [x] Guarded shells block dangerous restore/checkout patterns by default.
 
 ## Decision Log
 
 - 2026-02-02: Plan expanded to address accidental work loss from bulk `git restore -- <paths>` operations (see fact-find brief).
+- 2026-02-07: Completed. Final policy outcome aligns with Option B: single-file restore pathspecs may pass in guarded flows; bulk, directory, glob, repo-wide, and force/worktree discard patterns are blocked.
 
 ## Risks and Mitigations
 - Risk: Instructions describe behavior that does not match actual CI/CD triggers.
@@ -186,4 +191,4 @@ This plan focuses on documentation + local agent guardrails (not CI/CD infrastru
 
 ## Active tasks
 
-- **GITDOCS-01** - Audit `AGENTS.md` for insertion points and draft updates
+None (complete; archived).

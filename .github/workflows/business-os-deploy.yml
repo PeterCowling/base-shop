@@ -1,0 +1,46 @@
+name: Deploy Business OS
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/business-os/**'
+      - 'packages/design-system/**'
+      - 'packages/next-config/**'
+      - 'packages/ui/**'
+      - '.github/workflows/business-os-deploy.yml'
+      - '.github/workflows/reusable-app.yml'
+  pull_request:
+    paths:
+      - 'apps/business-os/**'
+      - 'packages/design-system/**'
+      - 'packages/next-config/**'
+      - 'packages/ui/**'
+      - '.github/workflows/business-os-deploy.yml'
+      - '.github/workflows/reusable-app.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: business-os-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  production:
+    name: Deploy (production)
+    uses: ./.github/workflows/reusable-app.yml
+    with:
+      app-filter: "@apps/business-os"
+      build-cmd: >
+        pnpm exec turbo run build --filter=@apps/business-os^... &&
+        cd apps/business-os &&
+        pnpm exec opennextjs-cloudflare build
+      artifact-path: "apps/business-os/.open-next"
+      deploy-cmd: >
+        cd apps/business-os &&
+        pnpm exec wrangler deploy
+      project-name: "business-os"
+      environment-name: "production"
+      environment-url: "https://business-os.peter-cowling1976.workers.dev"
+      healthcheck-base-url: "https://business-os.peter-cowling1976.workers.dev"
+    secrets: inherit

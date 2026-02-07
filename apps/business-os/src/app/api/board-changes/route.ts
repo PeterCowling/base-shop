@@ -17,8 +17,6 @@ import {
 
 import { getDb } from "@/lib/d1.server";
 
-export const runtime = "edge";
-
 type AuditDeltaRow = {
   id: number;
   entity_type: "card" | "idea" | "stage_doc";

@@ -13,10 +13,9 @@ import { getDb } from "@/lib/d1.server";
 import type { Lane } from "@/lib/types";
 
 // BOS-D1-05 Phase 2: Edge runtime with D1 repositories
-export const runtime = "edge";
 
 // BOS-D1-05: Disable Next.js caching for board pages (real-time updates required)
-export const revalidate = 0;
+export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ businessCode: string }>;

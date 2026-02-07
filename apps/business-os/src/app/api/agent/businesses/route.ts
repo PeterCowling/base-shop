@@ -3,9 +3,6 @@ import { NextResponse } from "next/server";
 
 import { requireAgentAuth } from "@/lib/auth/middleware";
 import { BUSINESSES } from "@/lib/business-catalog";
-
-export const runtime = "edge";
-
 /**
  * GET /api/agent/businesses
  * List businesses for agents. Reads from in-memory catalog.

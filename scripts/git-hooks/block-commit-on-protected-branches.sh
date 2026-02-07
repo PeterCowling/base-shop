@@ -11,7 +11,7 @@ fi
 
 branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || true)"
 case "$branch" in
-  main|master)
+  main|master|staging)
     echo "------------------------------------------------------------------" >&2
     echo "COMMIT BLOCKED: protected branch '${branch}'" >&2
     echo "------------------------------------------------------------------" >&2

@@ -7,8 +7,6 @@ import { getCurrentUserServer } from "@/lib/current-user.server-only";
 import { getDb } from "@/lib/d1.server";
 import { isRecord } from "@/lib/json";
 
-export const runtime = "edge";
-
 const CreateCommentSchema = z.object({
   content: z.string().min(1),
   entityType: z.enum(["card", "idea"]),
@@ -96,4 +94,3 @@ export async function POST(request: Request) {
     );
   }
 }
-

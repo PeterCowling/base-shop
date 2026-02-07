@@ -153,7 +153,7 @@
     ]
   },
   "simple-git-hooks": {
-    "pre-commit": "scripts/git-hooks/pre-commit.sh",
+    "pre-commit": "scripts/git-hooks/block-commit-on-protected-branches.sh && scripts/git-hooks/pre-commit.sh",
     "prepare-commit-msg": "scripts/git-hooks/prepare-commit-msg-safety.sh",
     "pre-rebase": "scripts/git-hooks/pre-rebase-safety.sh",
     "pre-push": "scripts/git-hooks/require-writer-lock.sh && scripts/git-hooks/pre-push-safety.sh && pnpm typecheck && pnpm lint"

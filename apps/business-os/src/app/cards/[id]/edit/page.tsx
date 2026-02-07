@@ -7,6 +7,8 @@ import { CardEditorForm } from "@/components/card-editor/CardEditorForm";
 import { BUSINESSES } from "@/lib/business-catalog";
 import { getDb } from "@/lib/d1.server";
 
+export const dynamic = "force-dynamic";
+
 /* eslint-disable ds/no-hardcoded-copy, ds/no-unsafe-viewport-units, ds/container-widths-only-at -- BOS-32: Phase 0 scaffold UI (ttl: 2026-03-31) */
 
 interface PageProps {
@@ -19,7 +21,6 @@ interface PageProps {
  * Page: Edit Card
  * Phase 0: Pete-only card editing
  */
-export const runtime = "edge";
 
 export default async function EditCardPage({ params }: PageProps) {
   const { id } = await params;

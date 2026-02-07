@@ -73,7 +73,7 @@ function parseTasks(content: string): string[] {
   let inActive = false;
   for (const line of lines) {
     if (line.startsWith("## ")) {
-      inActive = line.trim().toLowerCase() === "## active tasks";
+      inActive = line.trim().toLowerCase().startsWith("## active tasks");
       continue;
     }
     if (!inActive) continue;
@@ -82,7 +82,11 @@ function parseTasks(content: string): string[] {
       continue;
     }
     // Accept both list-based tasks (- **ID: or - [x] ID:) and heading-based tasks (### ID:)
-    if (line.match(/^- (\[[ x]\] )?[A-Z0-9-]+-\d+/) || line.match(/^### [A-Z0-9-]+-\d+/)) {
+    // Allow optional markdown bold (**) around task IDs
+    if (
+      line.match(/^- (\[[ x]\] )?\*{0,2}[A-Z0-9-]+-\d+/) ||
+      line.match(/^### \*{0,2}[A-Z0-9-]+-\d+/)
+    ) {
       tasks.push(line);
     }
   }
@@ -93,8 +97,8 @@ function validateTaskLine(line: string, rel: string): string[] {
   const errors: string[] = [];
   // Task lines should already be filtered to have valid IDs by parseTasks()
   // This validation is mainly a sanity check
-  const listMatch = line.match(/^- (\[[ x]\] )?[A-Z0-9-]+-\d+/);
-  const headingMatch = line.match(/^### [A-Z0-9-]+-\d+/);
+  const listMatch = line.match(/^- (\[[ x]\] )?\*{0,2}[A-Z0-9-]+-\d+/);
+  const headingMatch = line.match(/^### \*{0,2}[A-Z0-9-]+-\d+/);
   if (!listMatch && !headingMatch) {
     errors.push(
       `[plans-lint] ${rel}: task line does not match expected format: ${line.trim()}`,
@@ -160,10 +164,35 @@ async function main() {
 
     const tasks = parseTasks(content);
     if (tasks.length === 0) {
-      console.warn(
-        `[plans-lint] ${rel}: Plan has no tasks under "## Active tasks"`,
-      );
-      // Not an error yet; just warn.
+      // Suppress warning for terminal-status plans and archived/historical paths —
+      // having no active tasks is expected for completed work.
+      const terminalStatuses = new Set([
+        "Historical",
+        "Complete",
+        "Superseded",
+        "Accepted",
+        "Archived",
+        "Done",
+      ]);
+      const isTerminal =
+        (header.status && terminalStatuses.has(header.status)) ||
+        rel.includes("/historical/") ||
+        rel.includes("/archive/");
+      // Also suppress when the section explicitly states there are no active tasks
+      const activeSection = content
+        .split(/^## Active tasks/m)[1]
+        ?.split(/^## /m)[0]
+        ?.toLowerCase();
+      const explicitlyEmpty =
+        activeSection &&
+        /no active tasks|all (tasks )?complete|see .* section/.test(
+          activeSection,
+        );
+      if (!isTerminal && !explicitlyEmpty) {
+        console.warn(
+          `[plans-lint] ${rel}: Plan has no tasks under "## Active tasks"`,
+        );
+      }
     }
     for (const line of tasks) {
       const errs = validateTaskLine(line, rel);

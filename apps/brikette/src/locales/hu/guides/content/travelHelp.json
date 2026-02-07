@@ -11,17 +11,100 @@
   ],
   "sections": [
     {
-      "id": "overview",
-      "title": "Utazási segítség röviden",
+      "id": "quick-start",
+      "title": "Gyors kezdés (először ezt olvasd)",
       "body": [
-        "A lépésről lépésre útmutatókért kezd a \\\"Hogyan jutsz ide” guide-jainkkal, amelyek lefedik a vonatokat, kompokat, privát transzfereket és azt is, mit tegyél késés esetén. Itt csak a lényeget emeljük ki: számolj nagyjából 2 órával Nápolytól Positanóig, vedd meg a SITA-jegyeket felszállás előtt, és írj nekünk, ha késel, hogy megszervezhessük a check-int."
+        "**Alapértelmezett érkezési terv:** Jutss el Sorrentóba, majd vedd a SITA buszt Positanóba. Számolj ~2-3,5 órával Nápolyból (az időpontok évszakonként változnak).",
+        "**Vedd meg a buszjegyet beszállás előtt:** A SITA buszok nem megbízhatóan árulnak jegyet a fedélzeten. Sorrentóban vásárolj egy tabacchi/bárban, mielőtt sorba állsz.",
+        "**Mentsd el az alapokat:** készíts képernyőképet a menetrendekről és a jegyeidről. Írd le a hostel címét. A tengerparti úton a jel gyenge lehet.",
+        "**Érkezés komppal:** a Spiaggia Grandénál szállsz le. Az utolsó lépés felfelé menni a csomagjaidkal. Ha a legkönnyebb érkezési napot szeretnéd, használd a %LINK:porterServices|hordár szolgáltatásokat%.",
+        "**Késés esetén:** üzenj nekünk, amint tudod a várható érkezési idődet, hogy megtervezhessük a bejelentkezést: %LINK:checkinCheckout|Bejelentkezés és kijelentkezés%."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.webp",
+          "alt": "Helyi buszmegálló terület Positanóban"
+        },
+        {
+          "src": "/img/directions/ferry-dock-interno-yellow.webp",
+          "alt": "Interno Positano helyi busz a kompkikötőnél"
+        }
       ]
     },
     {
-      "id": "excursions",
-      "title": "Gyors útmutató a népszerű kirándulásokhoz",
+      "id": "travel-checklist",
+      "title": "Utazás előtt (egyszerű ellenőrzőlista)",
       "body": [
-        "Miután megérkeztél, a \\\"Élményeink” gyűjtemény ajtótól ajtóig mutatja be a vendégeink kedvenc egynapos kirándulásait – Capri kompjai, az Istenek ösvényének kiindulópontjai, buszok Amalfi és Ravello felé, vonatok Pompejibe és a Vezúvhoz, és még sok más. Böngészd végig az útmutatókat a legkorábbi indulásokért, jegytippekért és pakolási tanácsokért."
+        "- Töltsd fel a telefonodat, vagy vigyél powerbank-ot.",
+        "- Tarts magadnál vizet és egy kis snacket.",
+        "- Vigyél készpénzt a kis boltokhoz és a jegypultokhoz.",
+        "- Tartsd a jegyedet egy könnyen elérhető zsebben az ellenőrzésekhez.",
+        "- Viselj jó cipőt. Rengeteg lépcső van.",
+        "- Ha nagy csomagjaid vannak, számolj a lépcsőkkel. A hordárok segítenek.",
+        "- Vigyél könnyű dzsekit. Az éjszakák hűvösnek érezhetők a tenger mellett.",
+        "- Ments el egy térképlinket. Segít, amikor későn érkezel.",
+        "- Ha autóbeteg vagy, ülj a busz elejénél, és nézz ki az ablakon."
+      ]
+    },
+    {
+      "id": "how-to-get-here",
+      "title": "Hogyan jutsz ide (mit takarnak az útvonal-útmutatók)",
+      "body": [
+        "Kezdd a %HOWTO:how-to-get-here|Hogyan jutsz ide oldallal%, ha a busz, komp vagy vegyesen választasz.",
+        "Minden útvonal-útmutató lépésről lépésre halad. Lefedi:",
+        "- hol vásárolj jegyeket (és miről készíts képernyőképet)",
+        "- melyik megállót használd Positanóban (gyakran Chiesa Nuova, a legközelebb a hostelhez)",
+        "- csomag tippek zsúfolt buszokhoz és kompokhoz",
+        "- évszak megjegyzések (nyári járatok vs téli szolgáltatás)",
+        "- tartalék útvonal háborgó tengerhez vagy lemaradott kapcsolatokhoz.",
+        "",
+        "**Leggyakrabban használt érkezési útvonalak:**",
+        "- %HOWTO:naples-airport-positano-bus|Nápolyi repülőtér → Positano (busz Sorrentón keresztül)% — Curreri shuttle Sorrentóba, majd SITA Positanóba.",
+        "- %HOWTO:naples-center-train-bus|Nápoly központ → Positano (vonat + busz)% — vonat Sorrentóba, majd SITA Positanóba.",
+        "- %HOWTO:naples-center-positano-ferry|Nápoly központ → Positano (komp)% — nagyszerű, amikor működik; tartsd kéznél a tengeri időjárás tartalékot.",
+        "- %HOWTO:salerno-positano-ferry|Salerno → Positano (komp)% — jó opció szezonban.",
+        "- %HOWTO:sorrento-positano-bus|Sorrento → Positano (busz)% — a kulcs kapcsolat sok tervhez.",
+        "",
+        "**Positano elhagyása a tartózkodás után:**",
+        "- %HOWTO:positano-naples-airport-bus|Positano → Nápolyi repülőtér (tömegközlekedés)% — tervezz extra időt a kapcsolatokra.",
+        "- %HOWTO:positano-naples-center-bus-train|Positano → Nápoly központ (busz + vonat)% — gyakori, amikor a kompok nem járnak.",
+        "- %HOWTO:positano-naples-center-ferry|Positano → Nápoly központ (komp)% — leggyorsabb, amikor a tenger nyugodt."
+      ]
+    },
+    {
+      "id": "last-10-minutes",
+      "title": "Az utolsó 10 perced: kompkikötő vagy buszmegálló → a hostel",
+      "body": [
+        "**Érkezés busszal:** a legtöbb busz Chiesa Nuovánál áll meg (a Bar Internazionale közelében). Onnan rövid séta a hostelhez. Használd: %LINK:chiesaNuovaArrivals|Chiesa Nuova → Hostel Brikette (érkezés)% és %LINK:chiesaNuovaDepartures|Hostel Brikette → Chiesa Nuova (indulás)%.",
+        "",
+        "**Érkezés komppal:** kövesd a csomagbarát útvonalat a kikötőtől. Ha nem könnyű csomaggal utazol, olvasd el ezt, mielőtt elkezdesz mászni: %LINK:ferryDockToBrikette|Kompkikötő → Hostel Brikette (csomaggal)%.",
+        "",
+        "**Utazás nehéz csomagokkal:** Positano lépcsők és meredek sikátorok. Ha a legkönnyebb érkezési napot szeretnéd, kombináld a fenti kikötő/busz útmutatásokat a %LINK:porterServices|hordár szolgáltatásokkal%."
+      ]
+    },
+    {
+      "id": "delays-cancellations",
+      "title": "Ha valami rosszul megy (késések, háborgó tenger, lemaradott kapcsolatok)",
+      "body": [
+        "**Komptörlések:** ha a tenger háborgó, a kompok rövid értesítéssel leállhatnak. Ismerd a tartalék útvonaladat előre. Kezdd itt: %LINK:ferryCancellations|Komptörlések és időjárás% és a %HOWTO:how-to-get-here|Hogyan jutsz ide áttekintés%.",
+        "",
+        "**Lemaradtál egy kapcsolatról Sorrentóban:** (1) várhatsz a következő SITA buszra, (2) átválthatasz kompra, ha jár, vagy (3) megoszthatsz egy taxit, ha csoport vagy. A fenti útvonal-útmutatók mutatják a közös sorok pontjait és az időpuffereket.",
+        "",
+        "**Későn érkezel a hostelhez:** üzenj nekünk, amint tudod a várható érkezési idődet, hogy megtervezhessük a bejelentkezésedet: %LINK:checkinCheckout|Bejelentkezés és kijelentkezés%."
+      ]
+    },
+    {
+      "id": "popular-excursions",
+      "title": "Népszerű egynapos kirándulások (ajtótól ajtóig irányok)",
+      "body": [
+        "Ezek az Élmény útmutatók az alapokra összpontosítanak: első indulások, melyik mólót/megállót használd, mit csomagolj, és a gyakori visszaút hibák.",
+        "",
+        "- %LINK:capriDayTrip|Egynapos kirándulás Capriba Positanóból% — útiterv + linkek az oda/vissza komp irányokhoz.",
+        "- %LINK:pathOfTheGods|Az istenek ösvénye (Sentiero degli Dei)% — válaszd ki a legjobb megközelítést (busz, komp + busz, vagy a Nocelle opció).",
+        "- %LINK:positanoPompeii|Positano → Pompeji egynapos kirándulás% — busz Sorrentóba + helyi vonat, időzítési és tömeg tippekkel.",
+        "- %LINK:dayTripsAmalfi|Legjobb egynapos kirándulások Positanóból% — gyors választó Capri, Pompeji, Amalfi/Ravello és Sorrento közül.",
+        "",
+        "Város-város közötti utazásokhoz ezek a közlekedési útmutatók segítenek: %HOWTO:positano-amalfi-ferry|Positano → Amalfi (komp)%, %HOWTO:positano-amalfi-bus|Positano → Amalfi (busz)%, %HOWTO:positano-ravello-ferry-bus|Positano → Ravello (komp + busz)%."
       ]
     }
   ],

@@ -5,12 +5,13 @@ import { BUSINESSES } from "@/lib/business-catalog";
 import { getCurrentUserServer } from "@/lib/current-user.server-only";
 import { getDb } from "@/lib/d1.server";
 
+export const dynamic = "force-dynamic";
+
 /**
  * /me route - "My Work" view
  * Shows cards assigned to current user
  * MVP-D3: Filtered view for non-admin users
  */
-export const runtime = "edge";
 
 export default async function MyWorkPage() {
   const db = getDb();

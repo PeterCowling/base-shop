@@ -11,6 +11,20 @@
   ],
   "sections": [
     {
+      "id": "scan-to-share",
+      "title": "Scan to share",
+      "body": [
+        "Want to open this guide on another phone or share it with a hiking buddy? Scan the QR code below."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/santa-maria-castello/scan-to-share.png",
+          "alt": "QR code to open and share the Santa Maria del Castello hike guide.",
+          "caption": "Scan to open/share this guide."
+        }
+      ]
+    },
+    {
       "id": "what-is-santa-maria",
       "title": "Santa Maria del Castello क्या है?",
       "body": [
@@ -54,60 +68,56 @@
   ],
   "steps": [
     {
-      "name": "हॉस्टल से बाहर निकलें और दाएं मुड़ें",
-      "text": "हॉस्टल के प्रवेश द्वार से, दाएं मुड़ें और इमारत के बगल में सीढ़ियां चढ़ें।"
+      "name": "Turn right and take the steps",
+      "text": "From the hostel, turn right and take the steps that lead up the side of the building."
     },
     {
-      "name": "फुटपाथ पर जारी रखें",
-      "text": "प्रारंभिक सीढ़ियों के शीर्ष पर, फुटपाथ को ऊपर की ओर जारी रखें।"
+      "name": "Continue on the footpath",
+      "text": "At the top of the steps, continue on the footpath."
     },
     {
-      "name": "चौराहे पर बाएं चुनें",
-      "text": "जब आप एक चौराहे पर पहुंचते हैं, तो चढ़ाई जारी रखने के लिए बाएं ऊपर की ओर विकल्प चुनें।"
+      "name": "Turn left at the junction",
+      "text": "At the junction, choose the left option to go uphill (not right/downhill)."
     },
     {
-      "name": "सड़क तक सीढ़ियों का अनुसरण करें",
-      "text": "सीढ़ियों का अनुसरण करते रहें जब तक कि आप एक बिंदु पर नहीं पहुंच जाते जहां से सड़क तक जाने वाली सीढ़ियां हैं।"
+      "name": "Turn right up more stairs",
+      "text": "Follow the steps until you reach a point where you can either turn right up more stairs that lead to a road, or continue left on the path. Choose to turn right and go up the stairs."
     },
     {
-      "name": "सड़क पार करें",
-      "text": "सड़क पार करें और विपरीत दिशा में घरों के साथ चलने वाली सीढ़ियों का पता लगाएं।"
+      "name": "Cross the road to the next stairs",
+      "text": "At the top of the stairs, look across the road for a set of stairs leading alongside some houses. Cross the road and take those stairs."
     },
     {
-      "name": "घरों के पीछे सीढ़ियां चढ़ें",
-      "text": "इन सीढ़ियों का अनुसरण करें क्योंकि वे घरों के पीछे घुमावदार हैं, आपको पहाड़ी पगडंडी तक ले जाती हैं।"
+      "name": "Follow stairs behind the houses",
+      "text": "Follow the stairs behind the houses until they lead you to a mountain trail."
     },
     {
-      "name": "पहाड़ी पगडंडी पर जारी रखें",
-      "text": "पहाड़ी पगडंडी का अनुसरण करें जैसे यह गांव की ओर चढ़ती है। यहां पथ अधिक सुंदर हो जाता है।"
+      "name": "Continue on the mountain trail",
+      "text": "Continue on the mountain trail, which will take you to the village."
     },
     {
-      "name": "ट्रेल विभाजन पर ऊपर चुनें",
-      "text": "रास्ते में दो ट्रेल विभाजनों पर, गांव की ओर जारी रखने के लिए ऊपर की ओर पथ चुनें।"
+      "name": "Take the uphill splits",
+      "text": "In two places the mountain trail splits in two directions. Choose the path that goes uphill."
     },
     {
-      "name": "गांव के चौराहे पर पहुंचें",
-      "text": "आप एक चौराहे पर पहुंचेंगे जहां ट्रेल समतल हो जाता है। यह Santa Maria del Castello में आपके आगमन को चिह्नित करता है।"
+      "name": "Reach the crossroads",
+      "text": "You have reached the top when the mountain trail levels out and you reach a crossroads."
     },
     {
-      "name": "व्यूपॉइंट की ओर दाएं मुड़ें (वैकल्पिक)",
-      "text": "व्यूपॉइंट तक पहुंचने के लिए, चौराहे पर दाएं मुड़ें।"
+      "name": "Turn right at the crossroads",
+      "text": "For the lookout point, turn right at the crossroads. Please note that cars do travel on this road."
     },
     {
-      "name": "चौराहे तक सड़क को ऊपर ले जाएं",
-      "text": "सड़क को ऊपर की ओर तब तक अनुसरण करें जब तक आप एक चौराहे पर नहीं पहुंच जाते।"
+      "name": "Take the road uphill",
+      "text": "Take the road uphill until you reach a junction."
     },
     {
-      "name": "चौराहे पर दाएं मुड़ें",
-      "text": "चौराहे पर, दाएं मुड़ें और सड़क का अनुसरण करें जैसे यह दाईं ओर मुड़ती है।"
+      "name": "Turn right at the junction",
+      "text": "At the junction, turn right and follow the road around to the right."
     },
     {
-      "name": "घास वाले खंड तक जारी रखें",
-      "text": "जारी रखें जब तक कि आप मुख्य सड़क के बाहर एक घास वाले खंड तक नहीं पहुंच जाते।"
-    },
-    {
-      "name": "व्यूपॉइंट्स तक पहुंचें",
-      "text": "व्यूपॉइंट्स इस घास वाले क्षेत्र से सुलभ हैं। अत्यधिक सावधानी बरतें—कई सौ मीटर की अचानक गिरावट होती है।"
+      "name": "Head to the grassy section and viewpoints",
+      "text": "When you see a grassy section off the road, go there and proceed to the vantage points. Use extreme caution—there are sudden drop-offs of several hundred meters."
     }
   ],
   "warningsTitle": "सुरक्षा चेतावनियां",

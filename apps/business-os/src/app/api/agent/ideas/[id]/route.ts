@@ -14,8 +14,6 @@ import { requireAgentAuth } from "@/lib/auth/middleware";
 import { getDb } from "@/lib/d1.server";
 import { computeEntitySha } from "@/lib/entity-sha";
 
-export const runtime = "edge";
-
 const PatchRequestSchema = z.object({
   baseEntitySha: z.string().min(1),
   patch: z.record(z.unknown()),

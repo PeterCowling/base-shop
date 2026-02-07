@@ -65,6 +65,11 @@ export function getCurrentUser(): User {
     }
   }
 
+  const envUserId = process.env.CURRENT_USER_ID;
+  if (envUserId && USERS[envUserId]) {
+    return USERS[envUserId];
+  }
+
   // Phase 0 fallback: default to Pete
   return USERS.pete;
 }

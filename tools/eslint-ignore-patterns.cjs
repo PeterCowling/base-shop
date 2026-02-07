@@ -43,7 +43,7 @@ module.exports = [
   "packages/config/jest.preset.cjs",
   "apps/api/jest.config.cjs",
   "apps/api/postcss.config.cjs",
-  // Prime app: exempt while in early development
+  // Prime app: exempt while in early development (362 pre-existing DS rule violations)
   "apps/prime/**",
   // Brikette: exempt temporarily (tsconfig extends chain resolution issue with import resolver)
   "apps/brikette/**",

@@ -5,36 +5,49 @@ import type { TFunction } from "i18next";
 
 import { HeaderSection } from "@/routes/how-to-get-here/components/HeaderSection";
 
-jest.mock("@acme/design-system/primitives", () => ({
-  Grid: ({ as: Component = "div", children, ...props }: any) => {
-    const { columns: _columns, gap: _gap, ...rest } = props;
-    return <Component data-testid="grid" {...rest}>{children}</Component>;
-  },
-  Button: ({ children, ...props }: any) => (
-    <button type="button" {...props}>{children}</button>
-  ),
-  Label: ({ children, ...props }: any) => (
-    <label {...props}>{children}</label>
-  ),
-  Select: ({ children, ...props }: any) => (
-    <select {...props}>{children}</select>
-  ),
-  SelectContent: ({ children }: any) => <>{children}</>,
-  SelectItem: ({ children, value }: any) => <option value={value}>{children}</option>,
-  SelectTrigger: ({ children }: any) => <>{children}</>,
-  SelectValue: ({ placeholder }: any) => <span>{placeholder}</span>,
-}));
-
-jest.mock("@acme/design-system/atoms/CfImage", () => ({
+jest.mock("@acme/ui/atoms/CfImage", () => ({
   CfImage: ({ alt }: { alt: string }) => <img data-testid="hero-image" alt={alt} />,
 }));
-
-jest.mock("@/routes/how-to-get-here/transport", () => ({
-  TRANSPORT_MODE_ICONS: {
-    bus: (props: any) => <svg data-testid="icon-bus" {...props} />,
-    ferry: (props: any) => <svg data-testid="icon-ferry" {...props} />,
-  },
-}));
+jest.mock("@/routes/how-to-get-here/components/RoutePicker", () => {
+  const React = require("react");
+  return {
+    RoutePicker: ({ t, places, onSubmit }: any) => {
+      const [placeId, setPlaceId] = React.useState("");
+      const [arrival, setArrival] = React.useState("evening");
+      const [preference, setPreference] = React.useState("fastest");
+      return (
+        <div>
+          <label htmlFor="route-place">{t("routePicker.placeLabel")}</label>
+          <select
+            id="route-place"
+            aria-label={t("routePicker.placeLabel")}
+            value={placeId}
+            onChange={(event) => setPlaceId(event.target.value)}
+          >
+            <option value="" />
+            {places.map((place: { id: string; name: string }) => (
+              <option key={place.id} value={place.id}>
+                {place.name}
+              </option>
+            ))}
+          </select>
+          <button type="button" onClick={() => setArrival("daytime")}>
+            {t("routePicker.arrival.daytime")}
+          </button>
+          <button type="button" onClick={() => setPreference("fastest")}>
+            {t("routePicker.preferences.fastest")}
+          </button>
+          <button
+            type="button"
+            onClick={() => onSubmit({ placeId, arrival, preference })}
+          >
+            {t("routePicker.cta")}
+          </button>
+        </div>
+      );
+    },
+  };
+});
 
 const t = ((key: string) => key) as unknown as TFunction<"howToGetHere">;
 
@@ -50,11 +63,7 @@ const places = [
   { id: "airport", name: "Airport" },
 ];
 
-// Note: These tests are currently skipped due to pre-existing mock issues
-// with RoutePicker dependencies. The mocks need to be updated to include
-// all design-system primitives used by RoutePicker.
-// TODO: Fix mock setup and unskip tests.
-describe.skip("HeaderSection", () => {
+describe("HeaderSection", () => {
   const handleRoutePick = jest.fn();
 
   beforeEach(() => {

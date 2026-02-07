@@ -15,6 +15,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Button, Input, Textarea } from "@acme/design-system/atoms";
 import {
   Dialog,
+  DialogDescription,
   DialogOverlay,
   DialogPortal,
   DialogTitle,
@@ -245,6 +246,9 @@ export function QuickCaptureModal({
             <DialogTitle className="text-xl font-semibold">
               Quick Capture
             </DialogTitle>
+            <DialogDescription className="sr-only">
+              Capture a new idea with title, business, priority, and optional notes.
+            </DialogDescription>
             <DialogPrimitive.Close
               className="inline-flex items-center justify-center min-h-10 min-w-10 text-muted-foreground hover:text-foreground transition-colors"
               aria-label="Close modal"

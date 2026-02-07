@@ -68,6 +68,11 @@ Only run full-repo `pnpm typecheck` / `pnpm lint` when:
     - `scripts/agents/integrator-shell.sh -- <command> [args...]`
   - Check status: `scripts/git/writer-lock.sh status` (token is redacted by default)
   - Show full token (human only): `scripts/git/writer-lock.sh status --print-token`
+  - If lock handling blocks your git write:
+    - `scripts/git/writer-lock.sh status`
+    - `scripts/git/writer-lock.sh clean-stale` (only if holder PID is dead on this host)
+    - `scripts/git/writer-lock.sh acquire --wait`
+  - Agents must not use `SKIP_WRITER_LOCK=1`; fix lock state instead
 - **Branch flow:** `dev` → `staging` → `main`
   - Commit locally on `dev`
   - Ship `dev` to staging (PR + auto-merge): `scripts/git/ship-to-staging.sh`
@@ -217,11 +222,11 @@ After completing significant work, consider capturing learnings to improve futur
 - Discovered gaps in documentation or skills
 
 **How to reflect:**
-1. Use `/session-reflection` (or read `.claude/skills/session-reflection/SKILL.md`)
-2. Create a learning file in `.agents/learnings/`
-3. Note problems, patterns that worked, skill gaps, tooling ideas
+1. Use `/session-reflect` (or read `.claude/skills/session-reflect/SKILL.md`)
+2. Follow the skill workflow: identify friction, classify by layer, propose atomic changes to existing docs/skills
+3. All improvements go into existing target files — no separate learnings store
 
-**Privacy:** Learnings are gitignored. Never include customer data, secrets, or PII.
+**Privacy:** Never include customer data, secrets, or PII in documentation updates.
 
 ---
 

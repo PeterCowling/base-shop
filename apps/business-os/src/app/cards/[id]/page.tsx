@@ -14,10 +14,9 @@ import { getCurrentUserServer } from "@/lib/current-user.server-only";
 import { getDb } from "@/lib/d1.server";
 
 // BOS-D1-05 Phase 2: Edge runtime with D1 repositories
-export const runtime = "edge";
 
 // BOS-D1-05: Cache card detail pages (1 minute acceptable for detail views)
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ id: string }>;

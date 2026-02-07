@@ -12,8 +12,6 @@ import {
 import { getDb } from "@/lib/d1.server";
 import { serializeCard, serializeIdea, serializeStageDoc } from "@/lib/export/serializer";
 
-export const runtime = "edge";
-
 const EXPORT_API_HEADER = "x-export-api-key";
 
 const ERROR_UNAUTHORIZED = "Unauthorized"; // i18n-exempt -- BOS-05 [ttl=2026-03-31]

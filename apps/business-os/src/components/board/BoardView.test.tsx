@@ -7,6 +7,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
+import type { User } from "@/lib/current-user";
 import type { Business, Card, Idea, Lane } from "@/lib/types";
 
 import { BoardView } from "./BoardView";
@@ -77,6 +78,13 @@ const mockLanes: Lane[] = [
   "Blocked",
 ];
 
+const mockCurrentUser: User = {
+  id: "pete",
+  name: "Pete",
+  email: "pete@business-os.local",
+  role: "admin",
+};
+
 const mockCardsByLane: Record<Lane, Card[]> = {
   Inbox: [mockCards[0]],
   "Fact-finding": [mockCards[1]],
@@ -93,8 +101,9 @@ describe("BoardView", () => {
       <BoardView
         businessCode="BRIK"
         businesses={mockBusinesses}
-          cardsByLane={mockCardsByLane}
+        cardsByLane={mockCardsByLane}
         inboxIdeas={mockIdeas}
+        currentUser={mockCurrentUser}
       />
     );
 
@@ -108,8 +117,9 @@ describe("BoardView", () => {
       <BoardView
         businessCode="BRIK"
         businesses={mockBusinesses}
-          cardsByLane={mockCardsByLane}
+        cardsByLane={mockCardsByLane}
         inboxIdeas={mockIdeas}
+        currentUser={mockCurrentUser}
       />
     );
 
@@ -121,8 +131,9 @@ describe("BoardView", () => {
       <BoardView
         businessCode="BRIK"
         businesses={mockBusinesses}
-          cardsByLane={mockCardsByLane}
+        cardsByLane={mockCardsByLane}
         inboxIdeas={mockIdeas}
+        currentUser={mockCurrentUser}
       />
     );
 
@@ -137,8 +148,9 @@ describe("BoardView", () => {
       <BoardView
         businessCode="BRIK"
         businesses={mockBusinesses}
-          cardsByLane={mockCardsByLane}
+        cardsByLane={mockCardsByLane}
         inboxIdeas={mockIdeas}
+        currentUser={mockCurrentUser}
       />
     );
 
@@ -153,8 +165,9 @@ describe("BoardView", () => {
       <BoardView
         businessCode="BRIK"
         businesses={mockBusinesses}
-          cardsByLane={mockCardsByLane}
+        cardsByLane={mockCardsByLane}
         inboxIdeas={mockIdeas}
+        currentUser={mockCurrentUser}
       />
     );
 
@@ -171,8 +184,9 @@ describe("BoardView", () => {
       <BoardView
         businessCode="BRIK"
         businesses={mockBusinesses}
-          cardsByLane={mockCardsByLane}
+        cardsByLane={mockCardsByLane}
         inboxIdeas={mockIdeas}
+        currentUser={mockCurrentUser}
       />
     );
 
@@ -192,8 +206,9 @@ describe("BoardView", () => {
       <BoardView
         businessCode="BRIK"
         businesses={mockBusinesses}
-          cardsByLane={mockCardsByLane}
+        cardsByLane={mockCardsByLane}
         inboxIdeas={mockIdeas}
+        currentUser={mockCurrentUser}
       />
     );
 

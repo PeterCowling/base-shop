@@ -2,7 +2,7 @@
 
 // src/app/[lang]/experiences/[slug]/GuideContent.tsx
 // Client component for guide pages (App Router version)
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 
@@ -22,9 +22,21 @@ type Props = {
   lang: AppLanguage;
   guideKey: GuideKey;
   serverOverrides?: ManifestOverrides;
+  serverGuides?: Record<string, unknown>;
+  serverGuidesEn?: Record<string, unknown>;
 };
 
-function GuideContent({ lang, guideKey, serverOverrides }: Props) {
+function GuideContent({ lang, guideKey, serverOverrides, serverGuides, serverGuidesEn }: Props) {
+  // Seed i18n store from server data BEFORE useTranslation reads it
+  const hydratedRef = useRef(false);
+  if (!hydratedRef.current && serverGuides) {
+    i18n.addResourceBundle(lang, "guides", serverGuides, true, true);
+    if (serverGuidesEn) {
+      i18n.addResourceBundle("en", "guides", serverGuidesEn, true, true);
+    }
+    hydratedRef.current = true;
+  }
+
   const { t } = useTranslation("guides", { lng: lang });
   const [loadError, setLoadError] = useState(false);
 

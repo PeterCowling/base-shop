@@ -15,8 +15,6 @@ import { requireAgentAuth } from "@/lib/auth/middleware";
 import { getDb } from "@/lib/d1.server";
 import { computeEntitySha } from "@/lib/entity-sha";
 
-export const runtime = "edge";
-
 const CreateStageDocSchema = z.object({
   cardId: z.string().min(1),
   stage: StageTypeSchema,

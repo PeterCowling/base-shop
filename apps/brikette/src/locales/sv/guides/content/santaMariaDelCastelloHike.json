@@ -11,6 +11,20 @@
   ],
   "sections": [
     {
+      "id": "scan-to-share",
+      "title": "Scan to share",
+      "body": [
+        "Want to open this guide on another phone or share it with a hiking buddy? Scan the QR code below."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/santa-maria-castello/scan-to-share.png",
+          "alt": "QR code to open and share the Santa Maria del Castello hike guide.",
+          "caption": "Scan to open/share this guide."
+        }
+      ]
+    },
+    {
       "id": "what-is-santa-maria",
       "title": "Vad är Santa Maria del Castello?",
       "body": [
@@ -54,60 +68,56 @@
   ],
   "steps": [
     {
-      "name": "Lämna vandrarhemmet och sväng höger",
-      "text": "Från vandrarhemsingen, sväng höger och gå uppför trapporna bredvid byggnaden."
+      "name": "Turn right and take the steps",
+      "text": "From the hostel, turn right and take the steps that lead up the side of the building."
     },
     {
-      "name": "Fortsätt på gångvägen",
-      "text": "Överst på de första trapporna, fortsätt följa gångvägen uppåt."
+      "name": "Continue on the footpath",
+      "text": "At the top of the steps, continue on the footpath."
     },
     {
-      "name": "Välj vänster vid korsningen",
-      "text": "När du når en korsning, välj vänster uppförsalternativ för att fortsätta uppåt."
+      "name": "Turn left at the junction",
+      "text": "At the junction, choose the left option to go uphill (not right/downhill)."
     },
     {
-      "name": "Följ trapporna till vägen",
-      "text": "Fortsätt följa trapporna tills du når en punkt med trappor som leder ner till en väg."
+      "name": "Turn right up more stairs",
+      "text": "Follow the steps until you reach a point where you can either turn right up more stairs that lead to a road, or continue left on the path. Choose to turn right and go up the stairs."
     },
     {
-      "name": "Korsa vägen",
-      "text": "Korsa vägen och lokalisera trapporna som löper längs husen på motsatt sida."
+      "name": "Cross the road to the next stairs",
+      "text": "At the top of the stairs, look across the road for a set of stairs leading alongside some houses. Cross the road and take those stairs."
     },
     {
-      "name": "Gå uppför trapporna bakom husen",
-      "text": "Följ dessa trappor när de slingrar sig bakom husen och leder dig till bergsstigen."
+      "name": "Follow stairs behind the houses",
+      "text": "Follow the stairs behind the houses until they lead you to a mountain trail."
     },
     {
-      "name": "Fortsätt på bergsstigen",
-      "text": "Följ bergsstigen när den klättrar mot byn. Vägen blir mer pittoresk här."
+      "name": "Continue on the mountain trail",
+      "text": "Continue on the mountain trail, which will take you to the village."
     },
     {
-      "name": "Välj uppförsbacke vid vägskäl",
-      "text": "Vid två stigvägskäl längs vägen, välj uppförsbackar för att fortsätta mot byn."
+      "name": "Take the uphill splits",
+      "text": "In two places the mountain trail splits in two directions. Choose the path that goes uphill."
     },
     {
-      "name": "Nå bykorsningen",
-      "text": "Du kommer att nå en korsning där stigen planar ut. Detta markerar din ankomst till Santa Maria del Castello."
+      "name": "Reach the crossroads",
+      "text": "You have reached the top when the mountain trail levels out and you reach a crossroads."
     },
     {
-      "name": "Sväng höger mot utsiktspunkten (valfritt)",
-      "text": "För att nå utsiktspunkten, sväng höger vid korsningen."
+      "name": "Turn right at the crossroads",
+      "text": "For the lookout point, turn right at the crossroads. Please note that cars do travel on this road."
     },
     {
-      "name": "Ta vägen uppför till korsningen",
-      "text": "Följ vägen uppför tills du når en korsning."
+      "name": "Take the road uphill",
+      "text": "Take the road uphill until you reach a junction."
     },
     {
-      "name": "Sväng höger vid korsningen",
-      "text": "Vid korsningen, sväng höger och följ vägen när den kurvar höger."
+      "name": "Turn right at the junction",
+      "text": "At the junction, turn right and follow the road around to the right."
     },
     {
-      "name": "Fortsätt till gräspartiet",
-      "text": "Fortsätt tills du når ett gräsparti utanför huvudvägen."
-    },
-    {
-      "name": "Tillgång till utsiktspunkterna",
-      "text": "Utsiktspunkterna är tillgängliga från detta gräsområde. Var extremt försiktig – det finns plötsliga fall på flera hundra meter."
+      "name": "Head to the grassy section and viewpoints",
+      "text": "When you see a grassy section off the road, go there and proceed to the vantage points. Use extreme caution—there are sudden drop-offs of several hundred meters."
     }
   ],
   "warningsTitle": "Säkerhetsvarningar",

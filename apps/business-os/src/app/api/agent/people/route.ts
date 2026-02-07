@@ -3,9 +3,6 @@ import { NextResponse } from "next/server";
 
 import { requireAgentAuth } from "@/lib/auth/middleware";
 import { USERS } from "@/lib/current-user";
-
-export const runtime = "edge";
-
 /** Person type returned by the people endpoint. Extends User with capacity info. */
 interface Person {
   id: string;

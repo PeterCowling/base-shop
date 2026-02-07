@@ -3,11 +3,13 @@ Type: Plan
 Status: Active
 Domain: Platform
 Created: 2026-02-06
-Last-updated: 2026-02-06
+Last-updated: 2026-02-07
+Last-reviewed: 2026-02-06
 Feature-Slug: kanban-sweep-agent
 Overall-confidence: 88%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Business-Unit: PLAT
+Relates-to charter: none
 ---
 
 # Kanban Sweep Agent Plan
@@ -95,14 +97,18 @@ The feature is built in 5 ordered tasks: two prerequisite API endpoints, the swe
 
 No alternatives considered — the approach was fully resolved during the fact-find critique walkthrough.
 
+## Active tasks
+
+- TASK-05: Run prototype sweep and validate output (Pending, depends on TASK-03, TASK-04)
+
 ## Task Summary
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on |
 |---|---|---|---:|---:|---|---|
-| TASK-01 | IMPLEMENT | Create `GET /api/agent/businesses` endpoint | 92% | S | Pending | - |
-| TASK-02 | IMPLEMENT | Create `GET /api/agent/people` endpoint | 88% | S | Pending | - |
-| TASK-03 | IMPLEMENT | Write `/kanban-sweep` SKILL.md | 85% | M | Pending | TASK-01, TASK-02 |
-| TASK-04 | IMPLEMENT | Create `docs/business-os/sweeps/` directory | 98% | S | Pending | - |
+| TASK-01 | IMPLEMENT | Create `GET /api/agent/businesses` endpoint | 92% | S | Complete (2026-02-06) | - |
+| TASK-02 | IMPLEMENT | Create `GET /api/agent/people` endpoint | 88% | S | Complete (2026-02-06) | - |
+| TASK-03 | IMPLEMENT | Write `/kanban-sweep` SKILL.md | 85% | M | Complete (2026-02-06) | TASK-01, TASK-02 |
+| TASK-04 | IMPLEMENT | Create `docs/business-os/sweeps/` directory | 98% | S | Complete (2026-02-06) | - |
 | TASK-05 | IMPLEMENT | Run prototype sweep and validate output | 80% | M | Pending | TASK-03, TASK-04 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
@@ -155,6 +161,23 @@ No alternatives considered — the approach was fully resolved during the fact-f
   - Types: `Business` from `@/lib/types` (lines 8-16)
   - Note: No D1 access needed — this endpoint reads from an in-memory array, not the database. No `getDb()` call required. Test does NOT need to mock `@/lib/d1.server` or `@acme/platform-core/repositories/businessOs.server`.
 
+#### Build Completion (2026-02-06)
+- **Status:** Complete
+- **Commits:** efaf3bb20e (bundled with concurrent session)
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03, TC-04
+  - Red-green cycles: 1 (ideal)
+  - Initial test run: FAIL (expected — route not implemented)
+  - Post-implementation: PASS
+- **Confidence reassessment:**
+  - Original: 92%
+  - Post-test: 92%
+  - Delta reason: Tests validated assumptions — no surprises
+- **Validation:**
+  - Ran: `npx jest --testPathPattern="agent/businesses"` — PASS (4 tests, 4 passed)
+- **Documentation updated:** None required
+- **Implementation notes:** Route reads from `BUSINESSES` array (3 entries: PLAT, BRIK, BOS). Status filter validates against `["active", "inactive", "archived"]`. No D1 mocking needed in tests — simpler setup than cards/ideas.
+
 ---
 
 ### TASK-02: Create `GET /api/agent/people` endpoint
@@ -200,6 +223,23 @@ No alternatives considered — the approach was fully resolved during the fact-f
   - Pattern: same as TASK-01 but reads from `USERS` record instead of `BUSINESSES` array
   - `Person` type: define inline in route file (or in `types.ts` if cleaner). Fields: `id`, `name`, `role`, `capacity: { maxActiveWip: number }`, `skills?: string[]`, `focusAreas?: string[]`
   - No D1 access needed — reads from in-memory data only
+
+#### Build Completion (2026-02-06)
+- **Status:** Complete
+- **Commits:** efaf3bb20e (bundled with concurrent session)
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03
+  - Red-green cycles: 1 (ideal)
+  - Initial test run: FAIL (expected — route not implemented)
+  - Post-implementation: PASS
+- **Confidence reassessment:**
+  - Original: 88%
+  - Post-test: 88%
+  - Delta reason: Tests validated assumptions — `Person` type with default capacity worked cleanly
+- **Validation:**
+  - Ran: `npx jest --testPathPattern="agent/people"` — PASS (3 tests, 3 passed)
+- **Documentation updated:** None required
+- **Implementation notes:** `Person` type defined inline in route file. Maps `USERS` record to `Person[]` with `capacity.maxActiveWip: 3` default. Optional `skills` and `focusAreas` fields available for future enrichment.
 
 ---
 
@@ -280,6 +320,22 @@ No alternatives considered — the approach was fully resolved during the fact-f
     - Previous sweep located by most-recent filename date sort
     - Skill invocations suggested in every recommendation
 
+#### Build Completion (2026-02-06)
+- **Status:** Complete
+- **Commits:** efaf3bb20e (bundled with concurrent session)
+- **TDD cycle:**
+  - Test cases executed: TC-01 through TC-08 (manual validation)
+  - Red-green cycles: 1
+  - Manual review: all 8 acceptance criteria verified present
+- **Confidence reassessment:**
+  - Original: 85%
+  - Post-test: 87%
+  - Delta reason: All draft pack content adapted successfully; 625-line SKILL.md covers all required sections
+- **Validation:**
+  - Manual checklist: TC-01 PASS (frontmatter), TC-02 PASS (operating mode), TC-03 PASS (6 API endpoints), TC-04 PASS (scoring formula), TC-05 PASS (7 bottleneck categories), TC-06 PASS (report template with frontmatter), TC-07 PASS (8 constitution invariants), TC-08 PASS (6 evaluation dimensions)
+- **Documentation updated:** None required (SKILL.md is self-documenting)
+- **Implementation notes:** 625-line SKILL.md adapts constitution (8 invariants), scoring rubric (formula + thresholds), 7 bottleneck categories, evaluation rubric (6 dimensions), 7 red flags, sweep report template with YAML frontmatter, 8-step workflow, edge cases, integration table, Phase 0 constraints. Drops: multi-skill structure, JSON schemas, role prompts, glossary.
+
 ---
 
 ### TASK-04: Create `docs/business-os/sweeps/` directory
@@ -314,6 +370,13 @@ No alternatives considered — the approach was fully resolved during the fact-f
 - **Documentation impact:** None
 - **Notes / references:**
   - Precedent: `docs/business-os/scans/` directory for scan output
+
+#### Build Completion (2026-02-06)
+- **Status:** Complete
+- **Commits:** efaf3bb20e (bundled with concurrent session)
+- **Validation:**
+  - Ran: `ls -la docs/business-os/sweeps/` — `.gitkeep` present
+- **Implementation notes:** Directory created with `.gitkeep`. Trivial.
 
 ---
 

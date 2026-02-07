@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 
+import { loadGuideI18nBundle } from "@/app/_lib/guide-i18n-bundle";
 import { toAppLanguage } from "@/app/_lib/i18n-server";
 import { listGuideManifestEntries, resolveDraftPathSegment } from "@/routes/guides/guide-manifest";
 import { loadGuideManifestOverridesFromFs } from "@/routes/guides/guide-manifest-overrides.node";
@@ -35,11 +36,15 @@ export default async function DraftGuidePage({ params }: Props) {
     notFound();
   }
 
+  const { serverGuides, serverGuidesEn } = await loadGuideI18nBundle(validLang, entry.key);
+
   return (
     <GuideContent
       lang={validLang}
       guideKey={entry.key}
       serverOverrides={manifestOverrides}
+      serverGuides={serverGuides}
+      serverGuidesEn={serverGuidesEn}
     />
   );
 }

@@ -37,6 +37,7 @@ const config: StorybookConfig = {
   // Find stories and MDX docs across UI package and local Storybook docs
   stories: [
     path.resolve(__dirname, "../../../packages/ui/**/*.stories.@(ts|tsx)"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
+    path.resolve(__dirname, "../../../packages/design-system/src/**/*.stories.@(ts|tsx)"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
     path.resolve(__dirname, "./stories/**/*.stories.@(ts|tsx)"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
     path.resolve(__dirname, "./stories/**/*.mdx"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
   ],

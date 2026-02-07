@@ -1,6 +1,9 @@
+'use client';
+
 import { Activity } from "lucide-react";
 
-import { OwnerKpiTile, StaffSignalBadgeGroup } from "@acme/ui";
+import { OwnerKpiTile } from "@acme/ui/components/hospitality/OwnerKpiTile";
+import { StaffSignalBadgeGroup } from "@acme/ui/components/hospitality/StaffSignalBadgeGroup";
 
 export default function HospitalityPreviewPage() {
   return (

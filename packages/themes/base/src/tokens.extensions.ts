@@ -81,6 +81,73 @@ export const coreZIndex = {
   max: '9999',
 } as const;
 
+/**
+ * Core opacity scale - percentage values as decimals
+ * Universal across all contexts
+ */
+export const coreOpacity = {
+  0: '0',
+  5: '0.05',
+  10: '0.1',
+  20: '0.2',
+  25: '0.25',
+  30: '0.3',
+  40: '0.4',
+  50: '0.5',
+  60: '0.6',
+  70: '0.7',
+  75: '0.75',
+  80: '0.8',
+  90: '0.9',
+  95: '0.95',
+  100: '1',
+} as const;
+
+/**
+ * Core letter-spacing scale
+ * Universal across all contexts
+ */
+export const coreLetterSpacing = {
+  tighter: '-0.05em',
+  tight: '-0.025em',
+  normal: '0em',
+  wide: '0.025em',
+  wider: '0.05em',
+  widest: '0.1em',
+} as const;
+
+/**
+ * Core size scale - max-width utilities
+ * Universal across all contexts
+ */
+export const coreSizes = {
+  xs: '20rem',
+  sm: '24rem',
+  md: '28rem',
+  lg: '32rem',
+  xl: '36rem',
+  '2xl': '42rem',
+  '3xl': '48rem',
+  '4xl': '56rem',
+  '5xl': '64rem',
+  '6xl': '72rem',
+  '7xl': '80rem',
+  full: '100%',
+  screen: '100vw',
+} as const;
+
+/**
+ * Core container widths - responsive container max-widths
+ * Universal across all contexts
+ */
+export const coreContainers = {
+  sm: '640px',
+  md: '768px',
+  lg: '1024px',
+  xl: '1280px',
+  '2xl': '1536px',
+} as const;
+
 export const EXTENDED_TOKENS: TokenRecord = {
   /* Typography scale */
   "--text-xs": coreFontSizes.xs,
@@ -158,4 +225,10 @@ export const EXTENDED_TOKENS: TokenRecord = {
   "--safe-right": "env(safe-area-inset-right, 0px)",
   "--safe-bottom": "env(safe-area-inset-bottom, 0px)",
   "--safe-left": "env(safe-area-inset-left, 0px)",
+
+  /* Disabled state colors */
+  "--disabled-text": "var(--color-muted-foreground)",
+  "--disabled-bg": "var(--color-muted)",
+  "--disabled-border": "var(--color-border)",
+  "--disabled-opacity": "0.5",
 };

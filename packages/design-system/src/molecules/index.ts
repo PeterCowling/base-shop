@@ -15,6 +15,7 @@ export { PromoCodeInput } from "./PromoCodeInput";
 export { QuantityInput } from "./QuantityInput";
 export { RatingSummary } from "./RatingSummary";
 export { SearchBar } from "./SearchBar";
+export { Stepper, type StepperProps, StepperStep, type StepperStepProps, type StepStatus } from "./Stepper";
 export { SustainabilityBadgeCluster } from "./SustainabilityBadgeCluster";
 // Avoid name collision with atoms' primitive Accordion
 export { default as AccordionMolecule } from "./Accordion";

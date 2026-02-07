@@ -112,12 +112,12 @@ This plan restructures work around **driving adoption** across five phases: make
 | DS-04 | IMPLEMENT | Form integration layer (react-hook-form + DS) | 82% | M | Pending | - | - |
 | DS-05 | IMPLEMENT | Add Tabs primitive (Radix) | 90% | M | Complete (2026-02-07) | - | DS-12 |
 | DS-06 | IMPLEMENT | Add RadioGroup primitive (Radix) | 90% | M | Complete (2026-02-07) | - | - |
-| DS-07 | IMPLEMENT | Add Combobox primitive (Radix/cmdk) | 85% | M | Pending | - | - |
+| DS-07 | IMPLEMENT | Add Combobox primitive (Radix/cmdk) | 85% | M | Complete (2026-02-07) | - | - |
 | DS-08 | IMPLEMENT | Add Slider/Range primitive (Radix) | 88% | M | Complete (2026-02-07) | - | - |
 | DS-09 | IMPLEMENT | Promote Separator to design-system primitive | 92% | S | Complete (2026-02-07) | - | - |
 | DS-10 | IMPLEMENT | Add ScrollArea primitive (Radix) | 90% | S | Complete (2026-02-07) | - | - |
-| DS-11 | IMPLEMENT | Wrap DatePicker with token styling | 85% | M | Pending | - | - |
-| DS-12 | IMPLEMENT | Add generic Stepper/Wizard molecule | 80% | M | Pending | DS-05 | - |
+| DS-11 | IMPLEMENT | Wrap DatePicker with token styling | 85% | M | Complete (2026-02-07) | - | - |
+| DS-12 | IMPLEMENT | Add generic Stepper/Wizard molecule | 80% | M | Complete (2026-02-07) | DS-05 | - |
 | DS-13 | IMPLEMENT | Add EmptyState atom | 90% | S | Complete (2026-02-07) | - | - |
 | DS-14 | IMPLEMENT | Add ConfirmDialog atom | 90% | S | Complete (2026-02-07) | - | - |
 | **Phase 3: Token Unification** | | | | | | | |
@@ -130,7 +130,7 @@ This plan restructures work around **driving adoption** across five phases: make
 | DS-20 | IMPLEMENT | Dependency version policy + remove pnpm.overrides | 85% | M | Pending | - | - |
 | DS-21 | IMPLEMENT | Replace brikette local layout primitives with DS imports | 60% ⚠️ | S→M | Blocked | - | - |
 | **Phase 5: Enforcement & Documentation** | | | | | | | |
-| DS-22 | IMPLEMENT | Theme customization guide | 85% | S | Pending | - | - |
+| DS-22 | IMPLEMENT | Theme customization guide | 85% | S | Complete (2026-02-07) | - | - |
 | DS-23 | IMPLEMENT | Activate jest-axe in design-system tests | 85% | M | Pending | - | - |
 | DS-24 | IMPLEMENT | Fix brikette ESLint project service configuration | 90% | S | Pending | - | DS-25, DS-29 |
 | DS-25 | IMPLEMENT | Auto-fix import sorting + migrate restricted imports | 85% | M | Pending | DS-24 | DS-29 |
@@ -401,7 +401,7 @@ _Fill the gaps that force apps to build custom UI. This is the core adoption dri
 
 ### DS-07: Add Combobox primitive
 
-- **Status:** Pending
+- **Status:** Complete (2026-02-07)
 - **Effort:** M
 - **Affects:**
   - Primary: `packages/design-system/src/primitives/combobox.tsx` (new)
@@ -435,6 +435,25 @@ _Fill the gaps that force apps to build custom UI. This is the core adoption dri
   - Refactor: Align popover styling with existing Select/DropdownMenu patterns
 - **Rollout / rollback:** New component. Rollback: remove files + dependency.
 - **Documentation impact:** Component catalog (DS-02)
+
+#### Build Completion (2026-02-07)
+- **Status:** Complete
+- **Commits:** f8097a9ffc
+- **TDD cycle:**
+  - Test cases executed: TC-01 through TC-05 + 2 additional (controlled value, keyword filtering)
+  - Red-green cycles: 1
+  - Initial test run: FAIL (expected — component not implemented)
+  - Post-implementation: PASS (7 tests)
+- **Confidence reassessment:**
+  - Original: 85%
+  - Post-test: 90%
+  - Delta reason: Tests validated approach; Radix Popover-based implementation works cleanly
+- **Validation:**
+  - Ran: `tsc --noEmit` — PASS
+  - Ran: `eslint` — PASS (1 acceptable warning: ds/enforce-layout-primitives on leaf flex)
+  - Ran: `jest combobox.test` — PASS (7 tests, 7 passed)
+- **Documentation updated:** None required (DS-02 pending)
+- **Implementation notes:** Built with Radix Popover instead of cmdk. Compound component pattern with context. Supports controlled/uncontrolled, keyword search, selectedvalue indication.
 
 ### DS-08: Add Slider/Range primitive
 
@@ -563,7 +582,7 @@ _Fill the gaps that force apps to build custom UI. This is the core adoption dri
 
 ### DS-11: Wrap DatePicker with token styling
 
-- **Status:** Pending (carried from v1)
+- **Status:** Complete (2026-02-07)
 - **Effort:** M
 - **Affects:**
   - Primary: `packages/design-system/src/molecules/DatePicker.tsx` (exists, needs token audit)
@@ -595,9 +614,28 @@ _Fill the gaps that force apps to build custom UI. This is the core adoption dri
 - **Rollout / rollback:** Backwards-compatible improvements. Rollback: revert CSS.
 - **Documentation impact:** Component catalog (DS-02)
 
+#### Build Completion (2026-02-07)
+- **Status:** Complete
+- **Commits:** e0510e2870
+- **TDD cycle:**
+  - Test cases executed: TC-01 through TC-05 + 5 additional (disabled, invalid, clearable, inline, className)
+  - Red-green cycles: 1
+  - Initial test run: FAIL (expected — tests didn't exist)
+  - Post-implementation: PASS (10 tests)
+- **Confidence reassessment:**
+  - Original: 85%
+  - Post-test: 92%
+  - Delta reason: Tests validated all token usage; found and fixed 2 hardcoded `color: white` → `var(--ds-datepicker-primary-fg)`
+- **Validation:**
+  - Ran: `tsc --noEmit` — PASS
+  - Ran: `eslint` — PASS
+  - Ran: `jest DatePicker.test` — PASS (10 tests, 10 passed)
+- **Documentation updated:** None required (DS-02 pending)
+- **Implementation notes:** Audited DatePicker.css — fixed 2 hardcoded color values (line 279: `background: white` → `var(--ds-datepicker-bg)`, line 310: `color: white` → `var(--ds-datepicker-primary-fg)`). Created comprehensive test suite and 8 Storybook stories.
+
 ### DS-12: Add generic Stepper/Wizard molecule
 
-- **Status:** Pending
+- **Status:** Complete (2026-02-07)
 - **Effort:** M
 - **Affects:**
   - Primary: `packages/design-system/src/molecules/Stepper.tsx` (new)
@@ -633,6 +671,26 @@ _Fill the gaps that force apps to build custom UI. This is the core adoption dri
   - Refactor: Align with CheckoutStepper patterns
 - **Rollout / rollback:** New component. Rollback: remove files.
 - **Documentation impact:** Component catalog (DS-02)
+
+#### Build Completion (2026-02-07)
+- **Status:** Complete
+- **Commits:** 13123244f9
+- **TDD cycle:**
+  - Test cases executed: TC-01 through TC-04 + 5 additional (className merge, descriptions, custom icons, status override, data-cy)
+  - Red-green cycles: 2 (complexity lint violation required refactoring into helper components)
+  - Initial test run: FAIL (expected — component not implemented)
+  - Post-implementation: PASS (9 tests)
+- **Confidence reassessment:**
+  - Original: 80%
+  - Post-test: 88%
+  - Delta reason: Tests validated API design; pure visual stepper was the right choice
+- **Validation:**
+  - Ran: `tsc --noEmit` — PASS
+  - Ran: `pnpm build` — PASS (dist files generated)
+  - Ran: `eslint` — PASS (no errors after complexity refactor)
+  - Ran: `jest Stepper.test` — PASS (9 tests, 9 passed)
+- **Documentation updated:** None required (DS-02 pending)
+- **Implementation notes:** Composable Stepper + StepperStep with React Context for parent-child communication. Supports horizontal/vertical, auto status calculation, custom icons, descriptions. Refactored to extract StepIndicator and StepContent helper components to meet complexity lint rule (max 20).
 
 ### DS-13: Add EmptyState atom
 
@@ -1002,7 +1060,7 @@ _Lock in the gains: enable linting for brikette, activate accessibility testing,
 
 ### DS-22: Theme customization guide
 
-- **Status:** Pending (carried from v1)
+- **Status:** Complete (2026-02-07)
 - **Effort:** S
 - **Affects:**
   - Primary: `docs/theming-customization-guide.md` (new)
@@ -1021,6 +1079,20 @@ _Lock in the gains: enable linting for brikette, activate accessibility testing,
 - **TDD execution plan:** N/A — documentation task
 - **Rollout / rollback:** New doc. Rollback: remove file.
 - **Documentation impact:** This IS the deliverable.
+
+#### Build Completion (2026-02-07)
+- **Status:** Complete
+- **Commits:** f091ca7497
+- **TDD cycle:** N/A — documentation task
+- **Confidence reassessment:**
+  - Original: 85%
+  - Post-test: 95%
+  - Delta reason: All token names verified against actual source files
+- **Validation:**
+  - All code examples reference real token names from source files
+  - Token architecture flow documented with actual file paths
+- **Documentation updated:** This is the deliverable (895 lines)
+- **Implementation notes:** Comprehensive guide covering token architecture, brand colors, typography, spacing, dark mode, custom theme creation, and 6 practical recipes. References DECISION-01 (.theme-dark), DECISION-07 (--text-* prefix), DECISION-08 (z-index 100 increments).
 
 ### DS-23: Activate jest-axe in design-system tests
 
@@ -1429,3 +1501,4 @@ This section outlines what each app would need to reach higher DS adoption. Thes
 - 2026-02-07: DS-21 blocked — API incompatibility discovered: brikette uses polymorphic `as` prop (38+ call sites), DS uses `asChild` pattern. Needs `/re-plan`.
 - 2026-02-07: Batch 2 build complete — DS-09 (`0b8dfdd05c`), DS-10 (`188d441489`), DS-05 (`c0afe274f3`), DS-06 (`c718b5b6c8`), DS-08 (`1db29685a2`). 23 new tests, all passing. 5 Radix deps added. Lint fixes: import sort autofix, transition-all → transition-colors.
 - 2026-02-07: Plan restructured to v4 — adoption-driven phases (Foundation/DX → Component Gaps → Token Unification → Consolidation → Enforcement). Added 3 new tasks: DS-04 (Form integration), DS-14 (ConfirmDialog), DS-21 (brikette layout dedup). Renumbered all tasks DS-01 through DS-29. Per-app adoption data added from fresh audit. Spinner task dropped (Loader/Spinner atom already exists).
+- 2026-02-07: Batch 3 build complete — DS-07 Combobox (`f8097a9ffc`), DS-11 DatePicker token audit (`e0510e2870`), DS-12 Stepper (`13123244f9`), DS-22 Theme guide (`f091ca7497`). 26 new tests across 3 suites, all passing. DatePicker: 2 hardcoded colors replaced with tokens. Stepper: complexity refactored to helpers. Theme guide: 895 lines covering full token architecture.

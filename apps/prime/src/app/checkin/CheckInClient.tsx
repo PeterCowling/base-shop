@@ -207,6 +207,7 @@ export default function CheckInPage() {
             <StaffReadinessBadges
               readiness={guestData.readiness}
               personalization={guestData.personalization}
+              operational={guestData.operational}
             />
 
             <div className="rounded-xl bg-green-50 p-4">

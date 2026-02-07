@@ -234,6 +234,7 @@ function StaffLookupContent() {
             <StaffReadinessBadges
               readiness={guestData.readiness}
               personalization={guestData.personalization}
+              operational={guestData.operational}
             />
 
             {/* Payment amounts */}

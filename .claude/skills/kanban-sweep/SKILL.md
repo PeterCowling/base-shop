@@ -42,7 +42,7 @@ When `--create-ideas` flag is passed: **READ-ONLY ANALYSIS + DRAFT IDEAS**
 The sweep requires the Business OS agent API to be running.
 
 **Environment variables:**
-- `BOS_AGENT_API_BASE_URL` — e.g., `http://localhost:3000` (local) or production URL
+- `BOS_AGENT_API_BASE_URL` — `https://business-os.peter-cowling1976.workers.dev` (prod) or `http://localhost:3020` (local)
 - `BOS_AGENT_API_KEY` — shared secret for agent auth
 
 **Header:** `X-Agent-API-Key: ${BOS_AGENT_API_KEY}`

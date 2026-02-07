@@ -279,7 +279,7 @@ jobs:
   build:
     name: Build
     needs: [validate, test, test-sharded]
-    if: ${{ needs.validate.result == 'success' && (needs.test.result == 'success' || needs.test.result == 'skipped') && (needs.test-sharded.result == 'success' || needs.test-sharded.result == 'skipped') }}
+    if: ${{ needs.validate.result == 'success' && (needs.test.result == 'success' || needs.test.result == 'skipped') && (needs['test-sharded'].result == 'success' || needs['test-sharded'].result == 'skipped') }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:

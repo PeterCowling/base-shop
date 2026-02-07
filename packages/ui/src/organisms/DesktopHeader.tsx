@@ -40,7 +40,7 @@ function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JS
     const base = raw.split("-")[0] as AppLanguage | undefined;
     return base && i18nConfig.supportedLngs.includes(base) ? base : undefined;
   }, [i18n.language]);
-  const lang = normalizedI18nLang ?? explicitLang ?? fallbackLang;
+  const lang = explicitLang ?? normalizedI18nLang ?? fallbackLang;
   useTranslation("header", { lng: lang });
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
   const headerT = useMemo(() => i18n.getFixedT(lang, "header"), [i18n, lang]);

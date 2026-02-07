@@ -1,5 +1,6 @@
 import type { TFunction } from "i18next";
 
+import { getGuideCardImageFallback } from "@/data/guideCardImageFallbacks";
 import type { AppLanguage } from "@/i18n.config";
 import type { GuideKey } from "@/guides/slugs";
 import { getGuideManifestEntry } from "@/routes/guides/guide-manifest";
@@ -46,7 +47,7 @@ function pickGuideImageFromSections(
 
 export function resolveGuideCardImage(
   guideKey: GuideKey,
-  resolvedLang: AppLanguage,
+  _resolvedLang: AppLanguage,
   tGuides: TFunction<"guides">,
   tGuidesEn: TFunction<"guides">,
 ): GuideCardImage | null {
@@ -67,6 +68,12 @@ export function resolveGuideCardImage(
     return { src: normaliseImageSrc(heroSrc), alt: undefined };
   }
 
+  // Prefer curated fallback sources over mutable locale section payloads.
+  // This keeps card media stable in static export builds when section image paths drift.
+  const imageFallback = getGuideCardImageFallback(contentKey);
+  if (imageFallback) {
+    return { src: normaliseImageSrc(imageFallback.src), alt: imageFallback.alt };
+  }
   const sectionImage = pickGuideImageFromSections(tGuides, tGuidesEn, contentKey);
   if (sectionImage) {
     return { src: normaliseImageSrc(sectionImage.src), alt: sectionImage.alt };

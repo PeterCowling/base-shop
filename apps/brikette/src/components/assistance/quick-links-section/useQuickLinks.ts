@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import type { TFunction } from "i18next";
 
+import { isGuidePublished } from "@/data/guides.index";
 import type { AppLanguage } from "@/i18n.config";
 import { guideSlug } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
@@ -49,30 +50,34 @@ export function useQuickLinksWithHref(
     const assistanceSlug = getSlug("assistance", sourceLang);
     const basePath = `/${resolvedLang}/${assistanceSlug}`;
 
-    return items.map((item) => {
+    return items.flatMap((item) => {
+      if (item.slug && !isGuidePublished(item.slug)) {
+        return [];
+      }
+
       // If item has a custom href, use it (with special handling for area pages)
       if (item.href) {
         // Handle special area page hrefs like "how-to-get-here"
         if (item.href === "how-to-get-here") {
-          const howToSlug = getSlug("howToGetHere", resolvedLang);
-          return {
+          const howToGetHereSlug = getSlug("howToGetHere", resolvedLang);
+          return [{
             ...item,
-            href: `/${resolvedLang}/${howToSlug}`,
-          } satisfies QuickLinkWithHref;
+            href: `/${resolvedLang}/${howToGetHereSlug}`,
+          } satisfies QuickLinkWithHref];
         }
         // Use href directly for absolute or external URLs
-        return {
+        return [{
           ...item,
           href: item.href,
-        } satisfies QuickLinkWithHref;
+        } satisfies QuickLinkWithHref];
       }
 
       // Otherwise build from slug
       const articlePath = item.slug ? `${basePath}/${guideSlug(sourceLang, item.slug)}` : "";
-      return {
+      return [{
         ...item,
         href: articlePath,
-      } satisfies QuickLinkWithHref;
+      } satisfies QuickLinkWithHref];
     });
   }, [quickLinks, resolvedLang]);
 }

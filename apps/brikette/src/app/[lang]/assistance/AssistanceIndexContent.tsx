@@ -14,7 +14,9 @@ import type { AssistanceQuickLinkRenderProps } from "@acme/ui/organisms/Assistan
 
 import AssistanceQuickLinksSection from "@/components/assistance/quick-links-section";
 import FaqStructuredData from "@/components/seo/FaqStructuredData";
+import { isGuidePublished } from "@/data/guides.index";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { guideHref, type GuideKey } from "@/routes.guides-helpers";
 import { getGuideManifestEntry } from "@/routes/guides/guide-manifest";
@@ -132,6 +134,11 @@ function buildGuideCardData(
 function AssistanceIndexContent({ lang }: Props): JSX.Element {
   const routeLang = useCurrentLanguage();
   const resolvedLang = routeLang ?? lang;
+  usePagePreload({
+    lang: resolvedLang,
+    namespaces: ["assistanceSection", "assistance", "guides", "howToGetHere"],
+    optional: true,
+  });
   const { t, i18n } = useTranslation("assistanceSection", { lng: resolvedLang });
   const { t: tGuides, i18n: guidesI18n } = useTranslation("guides", { lng: resolvedLang });
   const { t: tAssistance } = useTranslation("assistance", { lng: resolvedLang });
@@ -172,12 +179,18 @@ function AssistanceIndexContent({ lang }: Props): JSX.Element {
       : "Other Popular Guides";
 
   const helpfulGuideCards = useMemo(
-    () => HELPFUL_GUIDE_KEYS.map((key) => buildGuideCardData(key, resolvedLang, tGuides, tGuidesEn)),
+    () =>
+      HELPFUL_GUIDE_KEYS.filter((key) => isGuidePublished(key)).map((key) =>
+        buildGuideCardData(key, resolvedLang, tGuides, tGuidesEn),
+      ),
     [resolvedLang, tGuides, tGuidesEn],
   );
 
   const popularGuideCards = useMemo(
-    () => POPULAR_GUIDE_KEYS.map((key) => buildGuideCardData(key, resolvedLang, tGuides, tGuidesEn)),
+    () =>
+      POPULAR_GUIDE_KEYS.filter((key) => isGuidePublished(key)).map((key) =>
+        buildGuideCardData(key, resolvedLang, tGuides, tGuidesEn),
+      ),
     [resolvedLang, tGuides, tGuidesEn],
   );
 

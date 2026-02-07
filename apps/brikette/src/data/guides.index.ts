@@ -227,6 +227,15 @@ export const GUIDE_STATUS_BY_KEY = Object.freeze(
   ),
 ) as Readonly<Record<GuideKey, "draft" | "review" | "published">>;
 
+export function getGuideStatus(guideKey: GuideKey | string): "draft" | "review" | "published" {
+  const statusMap = GUIDE_STATUS_BY_KEY as Readonly<Record<string, "draft" | "review" | "published">>;
+  return statusMap[guideKey] ?? "published";
+}
+
+export function isGuidePublished(guideKey: GuideKey | string): boolean {
+  return getGuideStatus(guideKey) === "published";
+}
+
 // --- Guide Type Classification ---
 // Directions guides are about getting to/from places (routes, transport instructions)
 // Content guides are about the places/experiences themselves

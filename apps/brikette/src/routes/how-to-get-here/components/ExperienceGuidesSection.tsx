@@ -2,7 +2,7 @@ import Link from "next/link";
 import clsx from "clsx";
 import type { TFunction } from "i18next";
 
-import { EXPERIENCE_GUIDE_KEYS } from "@/data/guides.index";
+import { EXPERIENCE_GUIDE_KEYS, isGuidePublished } from "@/data/guides.index";
 import type { AppLanguage } from "@/i18n.config";
 import { guideHref, type GuideKey,guideSlug } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
@@ -53,11 +53,13 @@ const badgeClassName = clsx(
 );
 
 export function ExperienceGuidesSection({ content, lang, t }: ExperienceGuidesSectionProps) {
-  if (!content.items.length) {
+  const publishedItems = content.items.filter((item) => isGuidePublished(item.guideKey));
+
+  if (!publishedItems.length) {
     return null;
   }
 
-  const columns = (content.items.length >= 3 ? 3 : content.items.length === 2 ? 2 : 1) as 1 | 2 | 3;
+  const columns = (publishedItems.length >= 3 ? 3 : publishedItems.length === 2 ? 2 : 1) as 1 | 2 | 3;
   const columnsClass =
     columns === 1
       ? "md:grid-cols-1"
@@ -80,7 +82,7 @@ export function ExperienceGuidesSection({ content, lang, t }: ExperienceGuidesSe
       </header>
 
       <ul className={`mt-6 grid grid-cols-1 gap-5 ${columnsClass}`}>
-        {content.items.map((item) => {
+        {publishedItems.map((item) => {
           const href = resolveGuideHref(lang, item.guideKey);
           const [primaryMode] = item.transportModes;
           const PrimaryIcon = primaryMode ? TRANSPORT_MODE_ICONS[primaryMode] : null;

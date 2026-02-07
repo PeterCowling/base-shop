@@ -7,7 +7,7 @@ import { loadGuideI18nBundle } from "@/app/_lib/guide-i18n-bundle";
 import { getTranslations,toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
-import { GUIDES_INDEX } from "@/data/guides.index";
+import { GUIDES_INDEX, isGuidePublished } from "@/data/guides.index";
 import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 import { guideNamespace,guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
 import { loadGuideManifestOverridesFromFs } from "@/routes/guides/guide-manifest-overrides.node";
@@ -79,9 +79,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     format: "auto",
   });
 
-  // Check publish status from guides index
-  const guideMeta = GUIDES_INDEX.find((g) => g.key === guideKey);
-  const isPublished = (guideMeta?.status ?? "published") === "published";
+  const isPublished = isGuidePublished(guideKey);
 
   return buildAppMetadata({
     lang: validLang,
@@ -104,6 +102,9 @@ export default async function GuidePage({ params }: Props) {
   }
   const base = guideNamespace(validLang, guideKey);
   if (base.baseKey !== "experiences") {
+    notFound();
+  }
+  if (!isGuidePublished(guideKey)) {
     notFound();
   }
 

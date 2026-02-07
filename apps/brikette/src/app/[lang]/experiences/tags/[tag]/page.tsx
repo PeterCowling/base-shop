@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import { toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
-import { GUIDES_INDEX } from "@/data/guides.index";
+import { GUIDES_INDEX, isGuidePublished } from "@/data/guides.index";
 import { TAGS_SUMMARY } from "@/data/tags.index";
 import { getSlug } from "@/utils/slug";
 import { getTagMeta } from "@/utils/tags";
@@ -20,7 +20,7 @@ export async function generateStaticParams() {
   const langParams = generateLangParams();
   // Get all unique tags from the guides index
   const allTags = new Set<string>();
-  for (const guide of GUIDES_INDEX) {
+  for (const guide of GUIDES_INDEX.filter((entry) => isGuidePublished(entry.key))) {
     for (const tag of guide.tags) {
       allTags.add(tag);
     }
@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const path = `/${validLang}/${experiencesSlug}/${tagsSlug}/${encodeURIComponent(tag)}`;
 
   // Don't index tag pages with fewer than 3 guides
-  const itemCount = GUIDES_INDEX.filter((g) => g.tags.includes(tag)).length;
+  const itemCount = GUIDES_INDEX.filter((g) => g.tags.includes(tag) && isGuidePublished(g.key)).length;
   const isPublished = itemCount >= 3;
 
   return buildAppMetadata({

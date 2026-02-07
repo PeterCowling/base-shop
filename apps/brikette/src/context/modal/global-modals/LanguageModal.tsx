@@ -12,13 +12,71 @@ import type { LanguageModalCopy, LanguageOption } from "@acme/ui/organisms/modal
 import { IS_DEV } from "@/config/env";
 import { useTheme } from "@/hooks/useTheme";
 import { guideSlug, resolveGuideKeyFromSlug, type GuideKey } from "@/routes.guides-helpers";
-import { SLUG_KEYS, type SlugMap,SLUGS } from "@/slug-map";
+import { INTERNAL_SEGMENT_BY_KEY } from "@/routing/sectionSegments";
+import { SLUG_KEYS, SLUGS, type SlugMap } from "@/slug-map";
 import { preloadI18nNamespaces } from "@/utils/loadI18nNs";
 import { translatePath } from "@/utils/translate-path";
 
-import { type AppLanguage,CORE_LAYOUT_NAMESPACES, i18nConfig } from "../constants";
+import { CORE_LAYOUT_NAMESPACES, i18nConfig, type AppLanguage } from "../constants";
 import { useModal } from "../hooks";
 import { LanguageModal } from "../lazy-modals";
+
+type SlugMapKey = keyof SlugMap;
+
+function resolveSlugKeyFromSegment(segment: string | undefined, currentLang: AppLanguage): SlugMapKey | null {
+  if (!segment) return null;
+  const normalized = segment.toLowerCase();
+
+  const currentLangKey =
+    SLUG_KEYS.find((key) => SLUGS[key][currentLang].toLowerCase() === normalized) ?? null;
+  if (currentLangKey) return currentLangKey;
+
+  const anyLocalizedKey =
+    SLUG_KEYS.find((key) =>
+      i18nConfig.supportedLngs.some((lng) => SLUGS[key][lng].toLowerCase() === normalized),
+    ) ?? null;
+  if (anyLocalizedKey) return anyLocalizedKey;
+
+  const internalEntry =
+    (Object.entries(INTERNAL_SEGMENT_BY_KEY) as Array<[SlugMapKey, string]>).find(
+      ([, internalSegment]) => internalSegment.toLowerCase() === normalized,
+    ) ?? null;
+
+  return internalEntry?.[0] ?? null;
+}
+
+function resolveGuideKeyFromPathSegment(
+  segment: string | undefined,
+  preferredLang: AppLanguage,
+): GuideKey | null {
+  if (!segment) return null;
+  const candidateLangs = [
+    preferredLang,
+    i18nConfig.fallbackLng as AppLanguage,
+    ...((i18nConfig.supportedLngs ?? []) as AppLanguage[]),
+  ];
+  const visited = new Set<AppLanguage>();
+
+  for (const candidateLang of candidateLangs) {
+    if (visited.has(candidateLang)) continue;
+    visited.add(candidateLang);
+    const key = resolveGuideKeyFromSlug(segment, candidateLang);
+    if (key) return key;
+  }
+
+  return null;
+}
+
+function isGuidesTagSegment(segment: string | undefined): boolean {
+  if (!segment) return false;
+  const normalized = segment.toLowerCase();
+  if (normalized === INTERNAL_SEGMENT_BY_KEY.guidesTags.toLowerCase()) {
+    return true;
+  }
+  return i18nConfig.supportedLngs.some(
+    (lng) => SLUGS.guidesTags[lng].toLowerCase() === normalized,
+  );
+}
 
 export function LanguageGlobalModal(): JSX.Element | null {
   const { closeModal } = useModal();
@@ -52,19 +110,7 @@ export function LanguageGlobalModal(): JSX.Element | null {
       : (i18nConfig.fallbackLng as AppLanguage);
   })();
 
-  const slugKey: keyof SlugMap | null =
-    SLUG_KEYS.find((key) => i18nConfig.supportedLngs.some((lng) => SLUGS[key][lng] === pathSegments[1])) ??
-    null;
-
-  // Resolve guide key for assistance pages (null if on assistance index)
-  const assistanceGuideKey: GuideKey | null = (() => {
-    if (slugKey !== "assistance") return null;
-    const slugSegment = pathSegments[2];
-    // If no slug segment, we're on the assistance index — keep null to stay on index
-    if (!slugSegment) return null;
-    // Resolve the guide key from the slug
-    return resolveGuideKeyFromSlug(slugSegment, curLang) ?? null;
-  })();
+  const slugKey = resolveSlugKeyFromSegment(pathSegments[1], curLang);
 
   const candidates = [
     i18nConfig.fallbackLng as AppLanguage,
@@ -128,17 +174,26 @@ export function LanguageGlobalModal(): JSX.Element | null {
 
           const trailingSegments = remainder.slice(1);
 
-          // Handle assistance guides and other guide namespaces uniformly
-          if (slugKey === "assistance" && assistanceGuideKey) {
-            // On an assistance guide page — translate the guide slug
-            nextSegments.push(guideSlug(nextLang, assistanceGuideKey));
-            nextSegments.push(...trailingSegments.slice(1));
+          if (slugKey === "experiences" && trailingSegments.length > 0) {
+            const currentSecond = trailingSegments[0] ?? "";
+            if (isGuidesTagSegment(currentSecond)) {
+              nextSegments.push(translatePath("guidesTags", nextLang));
+              nextSegments.push(...trailingSegments.slice(1));
+              return nextSegments.length > 0 ? `/${nextSegments.filter(Boolean).join("/")}` : "/";
+            }
+            const matchedGuideKey = resolveGuideKeyFromPathSegment(currentSecond, curLang);
+            if (matchedGuideKey) {
+              nextSegments.push(guideSlug(nextLang, matchedGuideKey));
+              nextSegments.push(...trailingSegments.slice(1));
+            } else {
+              nextSegments.push(...trailingSegments);
+            }
           } else if (
-            (slugKey === "guides" || slugKey === "experiences" || slugKey === "howToGetHere") &&
+            (slugKey === "assistance" || slugKey === "guides" || slugKey === "howToGetHere") &&
             trailingSegments.length > 0
           ) {
             const currentSecond = trailingSegments[0] ?? "";
-            const matchedGuideKey = resolveGuideKeyFromSlug(currentSecond, curLang);
+            const matchedGuideKey = resolveGuideKeyFromPathSegment(currentSecond, curLang);
             if (matchedGuideKey) {
               nextSegments.push(guideSlug(nextLang, matchedGuideKey));
               nextSegments.push(...trailingSegments.slice(1));
@@ -159,7 +214,7 @@ export function LanguageGlobalModal(): JSX.Element | null {
       navigate(`${basePath}${location.search}${location.hash}`, { replace: true });
       closeModal();
     },
-    [assistanceGuideKey, closeModal, curLang, i18n, location, navigate, slugKey, warmLayoutNamespaces],
+    [closeModal, curLang, i18n, location, navigate, slugKey, warmLayoutNamespaces],
   );
 
   return (

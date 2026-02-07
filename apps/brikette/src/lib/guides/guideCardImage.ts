@@ -1,7 +1,5 @@
 import type { TFunction } from "i18next";
 
-import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
-
 import type { AppLanguage } from "@/i18n.config";
 import type { GuideKey } from "@/guides/slugs";
 import { getGuideManifestEntry } from "@/routes/guides/guide-manifest";
@@ -15,10 +13,10 @@ function isAbsoluteUrl(value: string): boolean {
   return /^https?:\/\//i.test(value);
 }
 
-function maybeResizeImage(src: string, width: number, height: number): string {
+function normaliseImageSrc(src: string): string {
   if (!src) return src;
   if (isAbsoluteUrl(src)) return src;
-  return buildCfImageUrl(src, { width, height, quality: 80, format: "auto" });
+  return src.startsWith("/") ? src : `/${src}`;
 }
 
 function pickGuideImageFromSections(
@@ -66,14 +64,13 @@ export function resolveGuideCardImage(
 
   const heroSrc = heroImage?.options?.image;
   if (typeof heroSrc === "string" && heroSrc.trim().length > 0) {
-    return { src: maybeResizeImage(heroSrc, 160, 120), alt: undefined };
+    return { src: normaliseImageSrc(heroSrc), alt: undefined };
   }
 
   const sectionImage = pickGuideImageFromSections(tGuides, tGuidesEn, contentKey);
   if (sectionImage) {
-    return { src: maybeResizeImage(sectionImage.src, 160, 120), alt: sectionImage.alt };
+    return { src: normaliseImageSrc(sectionImage.src), alt: sectionImage.alt };
   }
 
   return null;
 }
-

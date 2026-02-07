@@ -74,4 +74,5 @@ export const STATIC_EXPORT_SECTION_KEYS: readonly SlugKey[] = [
 export const STATIC_EXPORT_GUIDE_ALIAS_SECTION_KEYS: readonly SlugKey[] = [
   "assistance",
   "experiences",
+  "howToGetHere",
 ];

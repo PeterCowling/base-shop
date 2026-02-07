@@ -13,6 +13,10 @@ describe("buildLocalizedStaticAliasPairs", () => {
           sourceBasePath: "/es/experiencias",
           targetBasePath: "/es/experiences",
         },
+        {
+          sourceBasePath: "/fr/comment-venir",
+          targetBasePath: "/fr/how-to-get-here",
+        },
       ])
     );
   });

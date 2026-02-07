@@ -157,6 +157,29 @@ This checks:
 
 Use `pnpm preflight:brikette-deploy -- --json` for machine-readable output.
 
+## Brikette CI Test Sharding (Staging)
+
+Brikette staging CI now supports sharded Jest execution in the reusable deploy pipeline.
+
+- Shard mode: `3` shards (`1/3`, `2/3`, `3/3`)
+- Trigger: Brikette validation path when `run_validation=true`
+- Command per shard:
+  - `pnpm --filter @apps/brikette exec jest --ci --runInBand --passWithNoTests --shard=<n>/3`
+- Cache restore is enabled for shard jobs:
+  - `.ts-jest`
+  - `node_modules/.cache/jest`
+  - `apps/brikette/node_modules/.cache/jest`
+
+When diagnosing CI duration regressions, compare shard runtimes and overall `Validate & build` time using:
+
+```bash
+pnpm --filter scripts run collect-workflow-metrics -- \
+  --workflow "Deploy Brikette" \
+  --branch staging \
+  --event push \
+  --include-jobs
+```
+
 ---
 
 ## Prime Firebase Cost-Safety Gate

@@ -1,5 +1,5 @@
 Type: Plan
-Status: Active
+Status: Archive
 Domain: Repo
 Last-reviewed: 2026-01-23
 Relates-to charter: none

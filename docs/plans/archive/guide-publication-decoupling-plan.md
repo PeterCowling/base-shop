@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: CMS
 Created: 2026-02-08
 Last-updated: 2026-02-08
@@ -97,7 +97,7 @@ Add optional `sites?: Record<string, { status?: GuideStatus }>` field to `GuideM
 | TASK-04 | IMPLEMENT | Remove authoring utilities, env vars, override write ops, and clean up tests | 88% | M | Complete (2026-02-08) | TASK-03 | TASK-05 |
 | TASK-05 | IMPLEMENT | Simplify two-tier status to direct `live` check | 85% | M | Complete (2026-02-08) | TASK-01, TASK-04 | TASK-06 |
 | TASK-06 | IMPLEMENT | Filter non-live guide content from build bundle | 82% | M | Complete (2026-02-08) | TASK-05 | TASK-07 |
-| TASK-07 | IMPLEMENT | Add `sites` field to manifest schema for multi-site preparation | 85% | M | Pending | TASK-06 | - |
+| TASK-07 | IMPLEMENT | Add `sites` field to manifest schema for multi-site preparation | 85% | M | Complete (2026-02-08) | TASK-06 | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 

@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: Commerce
 Last-reviewed: 2025-12-29
 Relates-to charter: docs/commerce-charter.md

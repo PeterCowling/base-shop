@@ -2,7 +2,7 @@ import { Fragment, type ReactNode } from "react";
 import Link from "next/link";
 import clsx from "clsx";
 
-import { isGuidePublished } from "@/data/guides.index";
+import { isGuideLive } from "@/data/guides.index";
 import type { LinkBinding, LinkTarget } from "@/lib/how-to-get-here/definitions";
 import { guideHref, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
 
@@ -38,7 +38,7 @@ export function resolveLinkTarget(
     case "directions":
       return { type: "internal", to: `/${ctx.lang}/${ctx.howToSlug}/${target.slug}` };
     case "guide":
-      if (!isGuidePublished(target.guideKey)) {
+      if (!isGuideLive(target.guideKey)) {
         return null;
       }
       return { type: "internal", to: guideHref(ctx.lang, target.guideKey) };
@@ -46,7 +46,7 @@ export function resolveLinkTarget(
       {
         const key = resolveGuideKeyFromSlug(target.slug, ctx.lang);
         if (key) {
-          if (!isGuidePublished(key)) {
+          if (!isGuideLive(key)) {
             return null;
           }
           return { type: "internal", to: guideHref(ctx.lang, key) };

@@ -31,13 +31,13 @@ jest.mock("@/data/guides.index", () => ({
     {
       key: "pathOfTheGods",
       section: "experiences",
-      status: "published",
+      status: "live",
       tags: ["hiking", "positano"],
     },
     {
       key: "positanoBeaches",
       section: "experiences",
-      status: "published",
+      status: "live",
       tags: ["beaches", "positano"],
     },
   ],

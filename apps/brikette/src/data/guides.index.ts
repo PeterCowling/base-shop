@@ -36,14 +36,14 @@ export type GuideMeta = {
   tags: string[];
   /** Derived from guideNamespaceKey() - the canonical namespace for this guide */
   section: GuideNamespaceKey;
-  status?: "draft" | "review" | "published";
+  status?: "draft" | "review" | "live";
 };
 
 /** Internal type for declaring guide entries without section (section is derived) */
 type GuideIndexEntry = {
   key: GuideKey;
   tags: string[];
-  status?: "draft" | "review" | "published";
+  status?: "draft" | "review" | "live";
 };
 
 /**
@@ -75,7 +75,7 @@ const GUIDES_INDEX_BASE: GuideIndexEntry[] = [
   { key: "pathOfTheGodsBus", tags: ["hiking", "bus", "amalfi"] },
   { key: "pathOfTheGodsNocelle", tags: ["hiking", "nocelle", "positano"] },
   { key: "topOfTheMountainHike", tags: ["hiking", "positano", "viewpoints"] },
-  { key: "santaMariaDelCastelloHike", tags: ["hiking", "positano", "viewpoints", "village"], status: "published" },
+  { key: "santaMariaDelCastelloHike", tags: ["hiking", "positano", "viewpoints", "village"], status: "live" },
   { key: "sunriseHike", tags: ["hiking", "viewpoints", "positano"] },
   { key: "parking", tags: ["transport", "car", "positano"] },
   { key: "luggageStorage", tags: ["porters", "logistics", "positano"] },
@@ -101,7 +101,7 @@ const GUIDES_INDEX_BASE: GuideIndexEntry[] = [
   { key: "arienzoBeachBusBack", tags: ["beaches", "bus", "positano"] },
   { key: "hostelBriketteToArienzoBus", tags: ["beaches", "bus", "positano"] },
   { key: "fiordoDiFuroreBusReturn", tags: ["beaches", "bus", "amalfi"] },
-  { key: "fornilloBeachToBrikette", tags: ["beaches", "stairs", "positano", "bus"], status: "published" },
+  { key: "fornilloBeachToBrikette", tags: ["beaches", "stairs", "positano", "bus"], status: "live" },
   { key: "positanoPompeii", tags: ["day-trip", "pompeii", "transport"] },
   { key: "capriDayTrip", tags: ["day-trip", "capri", "ferry"] },
   { key: "sitaTickets", tags: ["transport", "bus"] },
@@ -119,10 +119,10 @@ const GUIDES_INDEX_BASE: GuideIndexEntry[] = [
   { key: "groceriesPharmacies", tags: ["logistics", "positano"] },
   { key: "laundryPositano", tags: ["laundry", "logistics", "positano"] },
   { key: "workCafes", tags: ["connectivity", "digital-nomads", "positano"] },
-  { key: "chiesaNuovaArrivals", tags: ["stairs", "logistics", "positano"], status: "published" },
-  { key: "chiesaNuovaDepartures", tags: ["stairs", "logistics", "positano"], status: "published" },
-  { key: "ferryDockToBrikette", tags: ["porters", "stairs", "logistics", "positano"], status: "published" },
-  { key: "briketteToFerryDock", tags: ["porters", "stairs", "logistics", "positano", "ferry"], status: "published" },
+  { key: "chiesaNuovaArrivals", tags: ["stairs", "logistics", "positano"], status: "live" },
+  { key: "chiesaNuovaDepartures", tags: ["stairs", "logistics", "positano"], status: "live" },
+  { key: "ferryDockToBrikette", tags: ["porters", "stairs", "logistics", "positano"], status: "live" },
+  { key: "briketteToFerryDock", tags: ["porters", "stairs", "logistics", "positano", "ferry"], status: "live" },
   { key: "naplesPositano", tags: ["transport", "naples", "positano", "ferry", "bus", "car"] },
   { key: "salernoPositano", tags: ["transport", "salerno", "positano", "ferry", "bus"] },
   { key: "positanoBudget", tags: ["budgeting", "positano", "travel-tips"] },
@@ -169,7 +169,7 @@ const GUIDES_INDEX_BASE: GuideIndexEntry[] = [
   ...HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS.map((key) => ({
     key: key as GuideKey,
     tags: [...HOW_TO_GET_HERE_ROUTE_GUIDES[key as HowToGetHereRouteGuideKey].tags],
-    status: "published" as const,
+    status: "live" as const,
   })),
   // --- End how-to-get-here transport routes ---
 ];
@@ -184,7 +184,7 @@ export const GUIDES_INDEX: GuideMeta[] = GUIDES_INDEX_BASE.map((entry) => ({
   // Derive section from canonical namespace routing
   section: guideNamespaceKey(entry.key),
   // Default to published unless explicitly overridden
-  status: entry.status ?? "published",
+  status: entry.status ?? "live",
 }));
 
 // --- Area-based guide collections ---
@@ -223,17 +223,17 @@ export const TAGS_BY_KEY = Object.fromEntries(
 
 export const GUIDE_STATUS_BY_KEY = Object.freeze(
   Object.fromEntries(
-    GUIDES_INDEX.map((guide) => [guide.key, (guide as { status?: string }).status ?? "published"]),
+    GUIDES_INDEX.map((guide) => [guide.key, (guide as { status?: string }).status ?? "live"]),
   ),
-) as Readonly<Record<GuideKey, "draft" | "review" | "published">>;
+) as Readonly<Record<GuideKey, "draft" | "review" | "live">>;
 
-export function getGuideStatus(guideKey: GuideKey | string): "draft" | "review" | "published" {
-  const statusMap = GUIDE_STATUS_BY_KEY as Readonly<Record<string, "draft" | "review" | "published">>;
-  return statusMap[guideKey] ?? "published";
+export function getGuideStatus(guideKey: GuideKey | string): "draft" | "review" | "live" {
+  const statusMap = GUIDE_STATUS_BY_KEY as Readonly<Record<string, "draft" | "review" | "live">>;
+  return statusMap[guideKey] ?? "draft";
 }
 
-export function isGuidePublished(guideKey: GuideKey | string): boolean {
-  return getGuideStatus(guideKey) === "published";
+export function isGuideLive(guideKey: GuideKey | string): boolean {
+  return getGuideStatus(guideKey) === "live";
 }
 
 // --- Guide Type Classification ---

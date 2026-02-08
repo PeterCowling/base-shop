@@ -1,5 +1,6 @@
 "use client";
 
+/* eslint-disable ds/no-hardcoded-copy, complexity, ds/container-widths-only-at -- PUB-05 pre-existing */
 // src/app/[lang]/experiences/ExperiencesPageContent.tsx
 // Client component for experiences listing page
 import { Fragment, memo, useCallback, useMemo } from "react";
@@ -34,7 +35,7 @@ type Props = {
 // Draft guides are excluded so category headers won't show for empty categories.
 function getExperienceGuides(): GuideMeta[] {
   return GUIDES_INDEX.filter(
-    (g) => g.section === "experiences" && g.status === "published"
+    (g) => g.section === "experiences" && g.status === "live"
   );
 }
 
@@ -166,7 +167,7 @@ function ExperiencesPageContent({ lang }: Props) {
   const guideFilterParam = isTagFilter ? "tag" : "topic";
   const guideFilterPredicate = isTagFilter ? undefined : matchesGuideTopic;
   const guideFilterOptions = isTagFilter ? undefined : topicOptions;
-  const showGuideFilters = !isTagFilter;
+  const _showGuideFilters = !isTagFilter;
 
   const faqTitle = readString(t, "faq.title", experiencesEnT);
   const faqItems = useMemo<GuideFaq[]>(

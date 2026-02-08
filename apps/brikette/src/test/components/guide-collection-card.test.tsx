@@ -1,10 +1,10 @@
 import "@testing-library/jest-dom";
 
-import { render, screen } from "@testing-library/react";
 import type { ImgHTMLAttributes, ReactNode } from "react";
+import { render, screen } from "@testing-library/react";
 
-import type { GuideMeta } from "@/data/guides.index";
 import { GuideCollectionCard } from "@/components/guides/GuideCollectionCard";
+import type { GuideMeta } from "@/data/guides.index";
 
 jest.mock("next/link", () => ({
   __esModule: true,
@@ -47,7 +47,7 @@ describe("GuideCollectionCard", () => {
     const guide: GuideMeta = {
       key: "positanoMainBeach",
       section: "experiences",
-      status: "published",
+      status: "live",
       tags: ["beaches"],
     };
 

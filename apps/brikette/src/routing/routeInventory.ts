@@ -43,7 +43,7 @@ export function listAppRouterUrls(): string[] {
 
     // Dynamic: Guides (namespace-aware)
     const experiencesSlug = getSlug("experiences", lang);
-    const publishedGuides = GUIDES_INDEX.filter((g) => g.status === "published");
+    const publishedGuides = GUIDES_INDEX.filter((g) => g.status === "live");
     for (const guide of publishedGuides) {
       urls.push(guidePath(lang, guide.key));
     }
@@ -82,11 +82,11 @@ export function getUrlCounts(): Record<string, number> {
     draft: langCount,
     rooms: langCount * roomsData.length,
     // NOTE: guides count now includes how-to-get-here routes (via GUIDES_INDEX)
-    guides: langCount * GUIDES_INDEX.filter((g) => g.status === "published").length,
+    guides: langCount * GUIDES_INDEX.filter((g) => g.status === "live").length,
     tags: langCount * new Set(GUIDES_INDEX.flatMap((g) => g.tags)).size,
     // howToGetHere now enumerated from guide key list (TASK-05)
     howToGetHere: langCount * HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS.length,
-    assistance: langCount * ASSISTANCE_GUIDES.filter((g) => g.status === "published").length,
+    assistance: langCount * ASSISTANCE_GUIDES.filter((g) => g.status === "live").length,
     total: listAppRouterUrls().length,
   };
 }

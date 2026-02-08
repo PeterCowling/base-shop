@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { LinkText } from "@acme/design-system/atoms";
 
-import { isGuidePublished } from "@/data/guides.index";
+import { isGuideLive } from "@/data/guides.index";
 import { guideHref, type GuideKey } from "@/routes.guides-helpers";
 import type { GuideSeoTemplateContext } from "@/routes/guides/_GuideSeoTemplate";
 
@@ -53,7 +53,7 @@ export function renderInlineLinks(
     if (href.startsWith(GUIDE_SCHEME_PREFIX)) {
       const guideKey = href.slice(GUIDE_SCHEME_PREFIX.length).trim();
       if (guideKey.length > 0) {
-        if (isGuidePublished(guideKey as GuideKey)) {
+        if (isGuideLive(guideKey as GuideKey)) {
           parts.push(
             <LinkText asChild key={key} className={INLINE_LINK_CLASSES}>
               <Link href={guideHref(context.lang, guideKey as GuideKey)} prefetch={true}>

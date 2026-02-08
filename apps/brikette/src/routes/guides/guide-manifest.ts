@@ -4503,26 +4503,6 @@ export function resolveDraftPathSegment(
   return slug.includes("/") ? slug : `guides/${slug}`;
 }
 
-export type GuidePublicationStatus = "draft" | "review" | "published";
-
-export function buildGuideStatusMap(
-  entries: Iterable<GuideManifestEntry>,
-): Record<GuideKey, GuidePublicationStatus> {
-  const map: Partial<Record<GuideKey, GuidePublicationStatus>> = {};
-  for (const entry of entries) {
-    let status: GuidePublicationStatus;
-    if (entry.status === "live") {
-      status = entry.draftOnly ? "review" : "published";
-    } else if (entry.status === "review") {
-      status = "review";
-    } else {
-      status = "draft";
-    }
-    map[entry.key] = status;
-  }
-  return map as Record<GuideKey, GuidePublicationStatus>;
-}
-
 export function formatGuideManifestEntry(
   entry: GuideManifestEntryInput,
   indent = 2,

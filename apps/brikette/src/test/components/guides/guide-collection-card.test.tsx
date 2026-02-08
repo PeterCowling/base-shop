@@ -50,7 +50,7 @@ describe("GuideCollectionCard", () => {
       key: "positanoMainBeach",
       tags: ["beaches"],
       section: "experiences",
-      status: "published",
+      status: "live",
     };
 
     renderWithProviders(

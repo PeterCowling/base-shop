@@ -209,10 +209,10 @@ describe("routeGuides", () => {
       }
     });
 
-    it("all GUIDES_INDEX entries have status published", () => {
+    it("all GUIDES_INDEX entries have status live", () => {
       for (const key of HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS) {
         const entry = GUIDES_INDEX.find((g) => g.key === key);
-        expect(entry?.status).toBe("published");
+        expect(entry?.status).toBe("live");
       }
     });
 

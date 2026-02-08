@@ -1,55 +1,50 @@
 /**
  * Regression baseline for guide status filtering.
  * Created as part of guide-publication-decoupling TASK-01.
- *
- * These tests snapshot the current publication status system so that
- * Phase 2 status changes (TASK-05) can be validated against a known baseline.
+ * Updated in TASK-05 to use canonical "live" status from manifest.
  */
 
 import {
   getGuideStatus,
   GUIDE_STATUS_BY_KEY,
   GUIDES_INDEX,
-  isGuidePublished,
+  isGuideLive,
 } from "@/data/guides.index";
 
-// --- TC-01: Known published guide returns true ---
 describe("guide status filtering", () => {
-  it("isGuidePublished returns true for a known published guide (TC-01)", () => {
-    // santaMaria has no explicit status → defaults to "published"
-    expect(isGuidePublished("santaMariaDelCastelloHike")).toBe(true);
+  // --- TC-21: Known live guide returns true ---
+  it("isGuideLive returns true for a known live guide (TC-21)", () => {
+    expect(isGuideLive("santaMariaDelCastelloHike")).toBe(true);
   });
 
-  // --- TC-02: Known draft guide returns false ---
-  it("isGuidePublished returns false for a known draft guide (TC-02)", () => {
-    expect(isGuidePublished("ageAccessibility")).toBe(false);
+  // --- TC-22: Known draft guide returns false ---
+  it("isGuideLive returns false for a known draft guide (TC-22)", () => {
+    expect(isGuideLive("ageAccessibility")).toBe(false);
   });
 
-  // --- TC-03: Unknown key defaults to "published" ---
-  it("getGuideStatus defaults to 'published' for unknown keys (TC-03)", () => {
-    expect(getGuideStatus("nonexistentGuideKey_xyz")).toBe("published");
+  // --- TC-23: Unknown key defaults to "draft" (not live) ---
+  it("getGuideStatus defaults to 'draft' for unknown keys (TC-23)", () => {
+    expect(getGuideStatus("nonexistentGuideKey_xyz")).toBe("draft");
   });
 
-  // --- TC-04: Published guide count snapshot ---
-  it("GUIDES_INDEX contains the expected count of published guides (TC-04)", () => {
-    const publishedCount = GUIDES_INDEX.filter(
-      (g) => g.status === "published",
+  // --- TC-24: Live guide count is identical to previous published count ---
+  it("GUIDES_INDEX contains the expected count of live guides (TC-24)", () => {
+    const liveCount = GUIDES_INDEX.filter(
+      (g) => g.status === "live",
     ).length;
 
-    // Baseline count — any change should be intentional.
-    // Update this number when guides are intentionally published or unpublished.
-    expect(publishedCount).toBe(119);
+    // Same count as before (119) — terminology changed, set unchanged.
+    expect(liveCount).toBe(119);
   });
 
-  // --- TC-05: Draft guide key set snapshot ---
+  // --- TC-05 (preserved): Non-live guide key set snapshot ---
   it("draft/review guide keys match known set (TC-05)", () => {
-    const nonPublished = Object.entries(GUIDE_STATUS_BY_KEY)
-      .filter(([, status]) => status !== "published")
+    const nonLive = Object.entries(GUIDE_STATUS_BY_KEY)
+      .filter(([, status]) => status !== "live")
       .map(([key]) => key)
       .sort();
 
-    // Snapshot the exact set of non-published guides
-    expect(nonPublished).toEqual([
+    expect(nonLive).toEqual([
       "ageAccessibility",
       "arrivingByFerry",
       "bookingBasics",

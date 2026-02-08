@@ -1,5 +1,6 @@
 "use client";
 
+/* eslint-disable ds/no-hardcoded-copy, max-lines-per-function -- PUB-05 pre-existing */
 // src/app/[lang]/how-to-get-here/HowToGetHereIndexContent.tsx
 // Client component for how-to-get-here index page
 import { Fragment, memo, useCallback, useMemo, useState } from "react";
@@ -8,7 +9,7 @@ import dynamic from "next/dynamic";
 
 import { Section } from "@acme/design-system/atoms";
 
-import { isGuidePublished } from "@/data/guides.index";
+import { isGuideLive } from "@/data/guides.index";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { guideHref } from "@/routes.guides-helpers";
@@ -124,7 +125,7 @@ function HowToGetHereIndexContent({ lang }: Props) {
   const [highlightedRouteSlug, setHighlightedRouteSlug] = useState<string | null>(null);
   const [isLateNight, setIsLateNight] = useState(false);
   const stickyOffset = useHeaderStickyOffset();
-  const parkingHref = isGuidePublished("parking") ? guideHref(lang, "parking") : undefined;
+  const parkingHref = isGuideLive("parking") ? guideHref(lang, "parking") : undefined;
 
   const handleRoutePick = useCallback((sel: RoutePickerSelection) => {
     // Track if user selected late-night arrival for taxi emphasis
@@ -214,7 +215,7 @@ function HowToGetHereIndexContent({ lang }: Props) {
     if (directionFilter && directionFilter !== "all") {
       chips.push({
         key: "direction",
-        label: directionFilter === "to" ? "To Positano" : "From Positano",
+                label: directionFilter === "to" ? "To Positano" : "From Positano",
         value: directionFilter,
       });
     }

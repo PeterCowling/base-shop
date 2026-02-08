@@ -2,7 +2,10 @@
  * Regression baseline for guide status filtering.
  * Created as part of guide-publication-decoupling TASK-01.
  * Updated in TASK-05 to use canonical "live" status from manifest.
+ * Updated in guide-status-single-source to add cross-validation tests.
  */
+
+import { getGuideManifestEntry, listGuideManifestEntries } from "@acme/guide-system";
 
 import {
   getGuideStatus,
@@ -58,5 +61,32 @@ describe("guide status filtering", () => {
       "security",
       "travelHelp",
     ]);
+  });
+});
+
+describe("single source of truth invariants", () => {
+  // TC-42: Every GUIDES_INDEX key has a manifest entry
+  it("every GUIDES_INDEX key has a corresponding manifest entry (TC-42)", () => {
+    for (const guide of GUIDES_INDEX) {
+      const entry = getGuideManifestEntry(guide.key);
+      expect(entry).toBeDefined();
+    }
+  });
+
+  // TC-43: No status divergence between index and manifest
+  it("GUIDES_INDEX status matches manifest status for every guide (TC-43)", () => {
+    for (const guide of GUIDES_INDEX) {
+      const entry = getGuideManifestEntry(guide.key);
+      if (entry) {
+        expect(guide.status).toBe(entry.status);
+      }
+    }
+  });
+
+  // TC-44: Manifest has at least as many entries as GUIDES_INDEX
+  it("manifest entry count >= GUIDES_INDEX entry count (TC-44)", () => {
+    const manifestCount = listGuideManifestEntries().length;
+    const indexCount = GUIDES_INDEX.length;
+    expect(manifestCount).toBeGreaterThanOrEqual(indexCount);
   });
 });

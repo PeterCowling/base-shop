@@ -211,6 +211,45 @@ describe("Reception database rules", () => {
     );
   });
 
+  // TC-11: drawerAlerts is append-only for any authenticated staff
+  it("enforces append-only drawerAlerts for staff", async () => {
+    const staffDb = testEnv.authenticatedContext(STAFF_UID).database();
+
+    // Staff can create a new drawer alert
+    await assertSucceeds(
+      set(ref(staffDb, "drawerAlerts/alert1"), {
+        user: "staff-uid",
+        shiftId: "shift-001",
+        amount: 1500,
+        limit: 1000,
+        timestamp: "2026-01-23T10:00:00Z",
+      })
+    );
+
+    // Staff cannot overwrite an existing drawer alert
+    await assertFails(
+      set(ref(staffDb, "drawerAlerts/alert1"), {
+        user: "staff-uid",
+        shiftId: "shift-001",
+        amount: 2000,
+        limit: 1000,
+        timestamp: "2026-01-23T11:00:00Z",
+      })
+    );
+  });
+
+  it("blocks unauthenticated writes to drawerAlerts", async () => {
+    const db = testEnv.unauthenticatedContext().database();
+    await assertFails(
+      set(ref(db, "drawerAlerts/alert1"), {
+        user: "anon",
+        amount: 1500,
+        limit: 1000,
+        timestamp: "2026-01-23T10:00:00Z",
+      })
+    );
+  });
+
   // Additional: inventory/ledger is append-only and restricted to manager+
   it("enforces append-only inventory ledger for manager roles", async () => {
     const staffDb = testEnv.authenticatedContext(STAFF_UID).database();

@@ -38,6 +38,7 @@ jobs:
         --project-name prime
         --branch ${{ github.ref_name }}
         --functions apps/prime/functions
+      deploy-enabled: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging') }}
       project-name: "prime"
       environment-name: "${{ github.ref_name == 'staging' && 'staging' || 'production' }}"
       environment-url: "${{ github.ref_name == 'staging' && 'https://staging.prime.pages.dev' || 'https://prime.pages.dev' }}"

@@ -57,9 +57,9 @@ jobs:
       deploy-cmd: >
         cd apps/xa &&
         pnpm exec next-on-pages deploy --project-name ${{ vars.XA_STAGING_PAGES_PROJECT || 'private-preview' }} --branch staging
+      deploy-enabled: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging') }}
       project-name: ${{ vars.XA_STAGING_PAGES_PROJECT || 'private-preview' }}
       environment-name: "xa-staging"
       environment-url: ${{ format('https://staging.{0}.pages.dev', vars.XA_STAGING_PAGES_PROJECT || 'private-preview') }}
       healthcheck-args: "--staging"
     secrets: inherit
-

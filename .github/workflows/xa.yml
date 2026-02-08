@@ -59,12 +59,12 @@ jobs:
         cd ../.. &&
         node scripts/privacy/leakage-scan.mjs
       artifact-path: "apps/xa/.open-next"
-      deploy-cmd: >
+      deploy_cmd: >
         cd apps/xa &&
         pnpm exec wrangler deploy
+      deploy_enabled: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging') }}
       project-name: ${{ vars.XA_STAGING_PROJECT || 'xa-site' }}
       environment-name: "xa-staging"
       environment-url: ${{ format('https://{0}.{1}.workers.dev', vars.XA_STAGING_PROJECT || 'xa-site', vars.CF_ACCOUNT_SUBDOMAIN || 'peter-cowling1976') }}
       healthcheck-args: "--staging"
     secrets: inherit
-

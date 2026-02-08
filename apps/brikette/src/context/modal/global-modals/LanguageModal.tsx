@@ -78,6 +78,33 @@ function isGuidesTagSegment(segment: string | undefined): boolean {
   );
 }
 
+function resolveAlternatePathForLanguage(nextLang: AppLanguage): string | null {
+  if (typeof document === "undefined") return null;
+
+  const selectors = [
+    `link[rel="alternate"][hreflang="${nextLang}"]`,
+    `link[rel="alternate"][hreflang="${nextLang.toLowerCase()}"]`,
+  ];
+
+  for (const selector of selectors) {
+    const candidate = document.head.querySelector(selector) as HTMLLinkElement | null;
+    const href = candidate?.getAttribute("href");
+    if (!href) continue;
+    try {
+      const parsed = new URL(href, window.location.origin);
+      const path = parsed.pathname;
+      const normalizedPath = path === "/" ? path : path.replace(/\/+$/, "");
+      if (normalizedPath === `/${nextLang}` || normalizedPath.startsWith(`/${nextLang}/`)) {
+        return normalizedPath;
+      }
+    } catch {
+      continue;
+    }
+  }
+
+  return null;
+}
+
 export function LanguageGlobalModal(): JSX.Element | null {
   const { closeModal } = useModal();
   const { isDark } = useTheme();
@@ -162,6 +189,11 @@ export function LanguageGlobalModal(): JSX.Element | null {
       }
 
       const basePath = (() => {
+        const alternatePath = resolveAlternatePathForLanguage(nextLang);
+        if (alternatePath) {
+          return alternatePath;
+        }
+
         const rawSegments = location.pathname.split("/").filter(Boolean);
         const hasLangPrefix = i18nConfig.supportedLngs.includes(rawSegments[0] as AppLanguage);
         const remainder = hasLangPrefix ? rawSegments.slice(1) : rawSegments;

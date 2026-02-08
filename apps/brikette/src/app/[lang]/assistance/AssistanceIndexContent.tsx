@@ -107,6 +107,8 @@ type GuideCardData = {
   image: ReturnType<typeof resolveGuideCardImage>;
 };
 
+const DEFAULT_GUIDE_CARD_IMAGE = "/img/hostel-communal-terrace-lush-view.webp";
+
 function buildGuideCardData(
   key: GuideKey,
   resolvedLang: AppLanguage,
@@ -201,7 +203,9 @@ function AssistanceIndexContent({ lang }: Props): JSX.Element {
         href: card.href,
         label: card.label,
         description: card.description || card.label,
-        image: card.image ? { src: card.image.src, alt: card.image.alt ?? card.label } : undefined,
+        image: card.image
+          ? { src: card.image.src, alt: card.image.alt ?? card.label }
+          : { src: DEFAULT_GUIDE_CARD_IMAGE, alt: card.label },
       })),
     [helpfulGuideCards],
   );
@@ -213,7 +217,9 @@ function AssistanceIndexContent({ lang }: Props): JSX.Element {
         href: card.href,
         label: card.label,
         description: card.description || card.label,
-        image: card.image ? { src: card.image.src, alt: card.image.alt ?? card.label } : undefined,
+        image: card.image
+          ? { src: card.image.src, alt: card.image.alt ?? card.label }
+          : { src: DEFAULT_GUIDE_CARD_IMAGE, alt: card.label },
       })),
     [popularGuideCards],
   );

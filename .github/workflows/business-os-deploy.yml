@@ -36,9 +36,10 @@ jobs:
         cd apps/business-os &&
         pnpm exec opennextjs-cloudflare build
       artifact-path: "apps/business-os/.open-next"
-      deploy-cmd: >
+      deploy_cmd: >
         cd apps/business-os &&
         pnpm exec wrangler deploy
+      deploy_enabled: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging') }}
       project-name: "business-os"
       environment-name: "production"
       environment-url: "https://business-os.peter-cowling1976.workers.dev"

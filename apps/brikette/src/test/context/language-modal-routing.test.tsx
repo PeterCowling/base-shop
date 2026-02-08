@@ -139,6 +139,7 @@ describe("LanguageGlobalModal routing", () => {
     replaceMock.mockClear();
     pushMock.mockClear();
     changeLanguageMock.mockClear();
+    document.head.innerHTML = "";
     window.history.replaceState({}, "", `${pathname}?from=language-modal#faq`);
   });
 
@@ -182,6 +183,60 @@ describe("LanguageGlobalModal routing", () => {
 
     await waitFor(() => {
       expect(replaceMock).toHaveBeenCalledWith("/fr/comment-venir");
+    });
+  });
+
+  it("translates assistance index routes", async () => {
+    pathname = "/en/assistance";
+    searchParams = new URLSearchParams("");
+    window.history.replaceState({}, "", pathname);
+
+    const user = userEvent.setup();
+    renderWithProviders(<LanguageGlobalModal />);
+
+    await user.click(screen.getByRole("button", { name: "select-fr" }));
+
+    await waitFor(() => {
+      expect(replaceMock).toHaveBeenCalledWith("/fr/aide");
+    });
+  });
+
+  it("translates experiences index routes", async () => {
+    pathname = "/en/experiences";
+    searchParams = new URLSearchParams("");
+    window.history.replaceState({}, "", pathname);
+
+    const user = userEvent.setup();
+    renderWithProviders(<LanguageGlobalModal />);
+
+    await user.click(screen.getByRole("button", { name: "select-it" }));
+
+    await waitFor(() => {
+      expect(replaceMock).toHaveBeenCalledWith("/it/esperienze");
+    });
+  });
+
+  it("prefers alternate hreflang path for guide detail locale switches", async () => {
+    pathname = "/en/help/what-to-pack-amalfi-coast";
+    searchParams = new URLSearchParams("");
+    window.history.replaceState({}, "", pathname);
+
+    const alternate = document.createElement("link");
+    alternate.setAttribute("rel", "alternate");
+    alternate.setAttribute("hreflang", "fr");
+    alternate.setAttribute(
+      "href",
+      "https://hostel-positano.com/fr/aide/que-mettre-dans-sa-valise-pour-la-cote-amalfitaine/",
+    );
+    document.head.appendChild(alternate);
+
+    const user = userEvent.setup();
+    renderWithProviders(<LanguageGlobalModal />);
+
+    await user.click(screen.getByRole("button", { name: "select-fr" }));
+
+    await waitFor(() => {
+      expect(replaceMock).toHaveBeenCalledWith("/fr/aide/que-mettre-dans-sa-valise-pour-la-cote-amalfitaine");
     });
   });
 });

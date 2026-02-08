@@ -4,7 +4,7 @@ import { getSlug } from "@/utils/slug";
 
 import {
   INTERNAL_SEGMENT_BY_KEY,
-  STATIC_EXPORT_GUIDE_ALIAS_SECTION_KEYS,
+  STATIC_EXPORT_SECTION_KEYS,
 } from "./sectionSegments";
 
 export type StaticAliasPair = {
@@ -26,12 +26,12 @@ function addPair(
   pairs.push({ sourceBasePath, targetBasePath });
 }
 
-function addGuideSectionAliasPairs(
+function addSectionAliasPairs(
   lang: AppLanguage,
   pairs: StaticAliasPair[],
   seen: Set<string>
 ): void {
-  for (const key of STATIC_EXPORT_GUIDE_ALIAS_SECTION_KEYS) {
+  for (const key of STATIC_EXPORT_SECTION_KEYS) {
     const localizedSection = getSlug(key, lang);
     const internalSection = INTERNAL_SEGMENT_BY_KEY[key];
     addPair(
@@ -68,7 +68,7 @@ export function buildLocalizedStaticAliasPairs(
   const seen = new Set<string>();
 
   for (const lang of languages) {
-    addGuideSectionAliasPairs(lang, pairs, seen);
+    addSectionAliasPairs(lang, pairs, seen);
     addLocalizedTagsAliasPair(lang, pairs, seen);
   }
 

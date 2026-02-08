@@ -82,6 +82,7 @@ jobs:
     outputs:
       run_validation: ${{ steps.classify.outputs.run_validation }}
       run_sharded_tests: ${{ steps.test-strategy.outputs.run_sharded_tests }}
+      should_deploy: ${{ steps.deploy-gate.outputs.should_deploy }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -196,6 +197,13 @@ jobs:
             echo "run_sharded_tests=false" >> "$GITHUB_OUTPUT"
             echo "::notice title=Test strategy::Using single test job."
           fi
+
+      - name: Determine deploy gate
+        id: deploy-gate
+        shell: bash
+        run: |
+          echo "should_deploy=${{ inputs['deploy-cmd'] != '' && inputs['deploy-enabled'] }}" >> "$GITHUB_OUTPUT"
+          echo "::notice title=Deploy gate::should_deploy=${{ inputs['deploy-cmd'] != '' && inputs['deploy-enabled'] }} deploy_enabled=${{ inputs['deploy-enabled'] }}"
 
       - name: Lint
         if: ${{ steps.classify.outputs.run_validation == 'true' }}
@@ -317,9 +325,9 @@ jobs:
 
   deploy:
     name: Deploy
-    # Deploy only when caller explicitly enables publish for this run.
-    if: ${{ inputs['deploy-cmd'] != '' && inputs['deploy-enabled'] }}
-    needs: build
+    # Deploy only when validate computed a true gate.
+    if: ${{ needs.validate.outputs.should_deploy == 'true' }}
+    needs: [build, validate]
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment:

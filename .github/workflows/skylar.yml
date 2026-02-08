@@ -42,9 +42,9 @@ jobs:
       # apps/skylar/out is fully compatible with Cloudflare Pages.
       build-cmd: OUTPUT_EXPORT=1 pnpm --filter @apps/skylar... build
       artifact-path: apps/skylar/out
-      deploy-cmd: >
+      deploy_cmd: >
         pnpm exec wrangler pages deploy apps/skylar/out --project-name skylar --branch ${{ github.ref_name }}
-      deploy-enabled: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging') }}
+      deploy_enabled: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging') }}
       project-name: "skylar"
       environment-name: "${{ github.ref_name == 'staging' && 'staging' || 'production' }}"
       environment-url: "${{ github.ref_name == 'staging' && 'https://staging.skylar.pages.dev' || 'https://skylar.pages.dev' }}"

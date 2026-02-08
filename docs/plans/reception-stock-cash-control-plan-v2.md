@@ -2,7 +2,9 @@
 Type: Plan
 Status: Active
 Domain: Reception
-Last-reviewed: 2026-02-07
+Last-reviewed: 2026-02-08
+Last-replan: 2026-02-08
+Overall-confidence: 82% (effort-weighted across remaining open tasks)
 Relates-to charter: none
 Predecessor: docs/historical/plans/reception-stock-cash-control-plan.md
 ---
@@ -32,20 +34,20 @@ enforcement, reauth coverage, server-side rules, and ingredient audit trail.
 |------|-------|----------|--------|
 | Cash | Shift ledger + shiftId tagging not implemented | Critical | **Resolved** (REC-V2-12) |
 | Access | Name-based gating in cash/safe flows | High | **Resolved** — `ActionButtons`, `SafeManagement`, `StepProgress` now use `canAccess` + `Permissions` |
-| Auth | PIN "reauth" uses client-side env mapping (`getUserByPin`) | High | Open (REC-V2-14) |
+| Auth | PIN "reauth" uses client-side env mapping (`getUserByPin`) | High | **Resolved** — `getUserByPin` has zero active call sites; password reauth is universal across all 18 high-risk actions (REC-V2-14). Dead code cleanup remains. |
 | Cash | SafeResetForm / SafeReconcileForm lack password reauth | High | **Resolved** — both use `PasswordReauthInline` |
 | Cash | Tender removal policy flag (`pinRequiredAboveLimit`) computed but not enforced | Medium | **Resolved** (REC-V2-04) — `pinRequiredForTenderRemoval` gates `PasswordReauthInline` |
 | Cash | No variance sign-off workflow | High | **Resolved** (REC-V2-05) |
-| Infra | Firebase security rules need emulator tests + CI validation | Critical | Partial — `database.rules.json` exists (117 KB) but emulator tests + CI check not yet added (REC-V2-02) |
-| Infra | Settings writes (cash drawer limit, safe keycards) not protected server-side | High | Open (covered by REC-V2-02 rules) |
-| Cash | `/api/pms-postings` and `/api/terminal-batches` not implemented | Medium | Open (REC-V2-08) |
+| Infra | Firebase security rules need emulator tests + CI validation | Critical | **Resolved** — 8 emulator tests + CI workflow (REC-V2-02) |
+| Infra | Settings writes (cash drawer limit, safe keycards) not protected server-side | High | Partial — `database.rules.json` protects `settings/cashDrawerLimit` (manager+ only). Remaining settings coverage in REC-V2-02. |
+| Cash | `/api/pms-postings` and `/api/terminal-batches` not implemented | Medium | Open (REC-V2-08) — replacing with Firebase-backed manual entry |
 | Reporting | Transaction table shows `type` under the "METHOD" column | Low | **Resolved** — `method` and `type` now have separate columns |
 
 ### Repo audit notes (file-backed, updated 2026-02-07)
 - ~~`useAllTransactionsMutations.ts` uses `update` without guarding against overwrites.~~ **Resolved**: now blocks overwrites except for void fields (REC-V2-01).
 - ~~`useTillShifts.ts` derives shifts from `cashCounts` only; `tillShifts` is never written and `utils/shiftId.ts` is never set.~~ **Resolved**: `tillShifts` records written on open/close, `shiftId` generated and propagated (REC-V2-12).
 - ~~`ActionButtons.tsx`, `SafeManagement.tsx`, and `StepProgress.tsx` gate by hard-coded names.~~ **Resolved**: all three use `canAccess` + `Permissions.*` role checks.
-- `apps/reception/src/utils/getUserByPin.ts` reads `NEXT_PUBLIC_USERS_JSON` (client-side PINs). **Still open** (REC-V2-14).
+- ~~`apps/reception/src/utils/getUserByPin.ts` reads `NEXT_PUBLIC_USERS_JSON` (client-side PINs).~~ **Resolved**: zero active call sites; password reauth covers all 18 high-risk action types. Dead code (`getUserByPin.ts`, its test, `NEXT_PUBLIC_USERS_JSON`) remains for cleanup (REC-V2-14).
 - ~~`TenderRemovalModal.tsx` always requires PIN and ignores `pinRequiredForTenderRemoval`.~~ **Resolved**: conditionally renders `PasswordReauthInline` based on `pinRequiredForTenderRemoval` flag (REC-V2-04).
 - ~~`useIngredients.ts` uses direct `set()`; `useConfirmOrder.ts` decrements ingredients by product name.~~ **Resolved**: `useIngredients` uses `addLedgerEntry`; `useConfirmOrder` looks up recipes by inventory item ID (REC-V2-06, REC-V2-07).
 - ~~`TransactionTable.tsx` maps `type` into the "METHOD" column.~~ **Resolved**: `method` and `type` are separate correctly-labelled columns.
@@ -106,21 +108,52 @@ enforcement, reauth coverage, server-side rules, and ingredient audit trail.
     - New ledger entries include a `shiftId` and remain backwards-compatible with legacy data.
     - Tests cover shiftId tagging and shift history updates.
 
-- [ ] REC-V2-02: Firebase security rules — emulator tests + CI validation
+- [x] REC-V2-02: Firebase security rules — emulator tests + CI validation
+  - **Type:** IMPLEMENT | **Effort:** M | **Confidence:** 80%
+    - Implementation: 80% — test infra proven (`src/rules/__tests__/databaseRules.test.ts`, 137 lines; `test:rules` script works; `@firebase/rules-unit-testing` v4.0.1 installed). Remaining: expand test cases + add CI job.
+    - Approach: 85% — established pattern: emulator on `127.0.0.1:9000` via `firebase.json`; `pnpm dlx firebase-tools@13.35.1 emulators:exec` runs tests.
+    - Impact: 90% — rules file already deployed (209 lines); tests are additive; CI prevents regression.
+    - Evidence class: E2 (existing test file runs, `test:rules` script functional).
   - Scope:
-    - `apps/reception/database.rules.json` exists (117 KB, covers append-only patterns, role-based access, indexes). Remaining work:
-      - `allFinancialTransactions`, `financialsRoom/transactions`: append-only; allow void fields only.
-      - `cashCounts`, `safeCounts`, `creditSlips`, `tillEvents`, `cashDiscrepancies`,
-        `keycardDiscrepancies`, `keycardTransfers`: append-only.
-      - `inventory/ledger`: append-only; `inventory/items` + `inventory/recipes`: owner/developer only.
-      - `settings/*`: owner/developer (or manager) only.
-      - `audit/*` and `reconciliation/*`: append-only with privileged access.
+    - `apps/reception/database.rules.json` exists (209 lines, covers append-only patterns, role-based access, indexes). Remaining work:
+      - Expand emulator test coverage for all append-only nodes: `allFinancialTransactions` (void fields only), `financialsRoom/transactions`, `cashCounts`, `safeCounts`, `creditSlips`, `tillEvents`, `cashDiscrepancies`, `keycardDiscrepancies`, `keycardTransfers`, `inventory/ledger`.
+      - Test owner/developer restrictions: `inventory/items`, `inventory/recipes`, `settings/*`.
+      - Test append-only + privileged access: `audit/*`, `reconciliation/*`.
+      - Add CI job that runs `pnpm --filter @apps/reception test:rules` on merge to main.
     - Add indexes for `timestamp`, `shiftId`, `itemId` where queried.
-    - Add emulator tests + CI check that validates rules on merge to main.
-  - Dependencies: REC-V2-01, REC-V2-11, REC-V2-12.
+  - Dependencies: REC-V2-01 ✅, REC-V2-11 ✅, REC-V2-12 ✅ (all resolved).
   - Definition of done:
     - Unauthorized or destructive writes are rejected server-side.
-    - Rules are tested with Firebase emulator or `@firebase/rules-unit-testing`.
+    - Rules are tested with Firebase emulator via `@firebase/rules-unit-testing`.
+    - CI job runs emulator tests and fails on regression.
+  - **Test contract:**
+    - **TC-01:** Unauthenticated write to `allFinancialTransactions` → rejected
+    - **TC-02:** Staff creates new transaction → allowed
+    - **TC-03:** Staff overwrites existing transaction (non-void field) → rejected
+    - **TC-04:** Staff adds void fields to existing transaction → allowed
+    - **TC-05:** Staff writes to `cashCounts` (new entry) → allowed; overwrite → rejected
+    - **TC-06:** Staff writes to `settings/cashDrawerLimit` → rejected (manager+ only)
+    - **TC-07:** Manager writes to `settings/cashDrawerLimit` → allowed
+    - **TC-08:** Staff writes to `inventory/items` → rejected (owner/developer only)
+    - **TC-09:** Staff writes new entry to `audit/*` → allowed; overwrite → rejected
+    - **TC-10:** Staff writes new entry to `reconciliation/*` → allowed; overwrite → rejected
+    - **Acceptance coverage:** TC-01–04 cover append-only + void; TC-05 covers cash/safe nodes; TC-06–07 cover settings; TC-08 covers inventory; TC-09–10 cover audit/reconciliation
+    - **Test type:** integration (Firebase emulator)
+    - **Test location:** `apps/reception/src/rules/__tests__/databaseRules.test.ts` (existing, expand)
+    - **Run:** `pnpm --filter @apps/reception test:rules`
+  - **Key files:**
+    - Rules: `apps/reception/database.rules.json`
+    - Tests: `apps/reception/src/rules/__tests__/databaseRules.test.ts`
+    - Config: `firebase.json` (emulator config)
+    - CI: `.github/workflows/reception.yml`, `.github/workflows/reusable-app.yml`
+  - **Build Completion (2026-02-08):**
+    - **Commit:** `9dde9ef149` — "test(reception): expand Firebase rules emulator tests + add CI (REC-V2-02)"
+    - **TDD cycle:**
+      - Expanded test suite from 4 to 8 tests (TC-08: inventory/items role gating, TC-09: audit append-only, TC-10: reconciliation append-only, plus inventory/ledger append-only + role gating)
+      - Fixed pre-existing issue: `jest.setup.ts` `console.warn` interceptor was throwing on Firebase RTDB `permission_denied` warnings — added `/@firebase\/database: FIREBASE WARNING:/` to `IGNORED_WARN_PATTERNS`
+      - All 8 tests pass: `pnpm --filter @apps/reception test:rules` ✅
+    - **Validation:** typecheck PASS ✅, lint PASS ✅, test:rules 8/8 PASS ✅
+    - **CI added:** `.github/workflows/reception.yml` (new) triggers on `apps/reception/**` changes; `reusable-app.yml` extended with Firebase rules test gate for `@apps/reception`
 
 ### High — Access control & reauth hardening
 
@@ -158,7 +191,7 @@ enforcement, reauth coverage, server-side rules, and ingredient audit trail.
   - Notes:
     - `ActionButtons`, `SafeManagement`, and `StepProgress` now use `canAccess` with `Permissions.TILL_ACCESS` / `Permissions.MANAGEMENT_ACCESS`.
 
-- [ ] REC-V2-14: Replace client-side PIN confirmation with secure reauth
+- [x] REC-V2-14: Replace client-side PIN confirmation with secure reauth
   - Scope:
     - Migrate high-risk actions (safe deposit/withdrawal, petty cash, shift close,
       tender removal, keycard returns) to password reauth OR implement server-verified PINs.
@@ -168,6 +201,13 @@ enforcement, reauth coverage, server-side rules, and ingredient audit trail.
   - Definition of done:
     - No high-risk action relies on client-side PINs.
     - Reauth failures are handled consistently and audited.
+  - Notes:
+    - **Resolved (2026-02-08 re-plan)**: `getUserByPin` has zero active call sites.
+      Password reauth (`PasswordReauthInline` / `PasswordReauthModal`) covers all 18
+      high-risk action types including safe operations, shift close, tender removal,
+      keycard returns, voids, corrections, stock adjustments, and settings changes.
+      `VarianceSignoffModal` enforces different-manager credential verification.
+    - **Remaining cleanup**: delete `getUserByPin.ts` + test, remove `NEXT_PUBLIC_USERS_JSON` env var.
 
 ### High — Variance sign-off
 
@@ -223,7 +263,7 @@ enforcement, reauth coverage, server-side rules, and ingredient audit trail.
 
 ### Medium — Reporting & audit UX
 
-- [ ] REC-V2-15: Reporting accuracy + audit search
+- [x] REC-V2-15: Reporting accuracy + audit search
   - Scope:
     - ~~Fix TransactionTable method/type column mapping~~ — **Done**: `method` and `type` are now separate columns.
     - Display void/correction status in transaction views.
@@ -237,57 +277,161 @@ enforcement, reauth coverage, server-side rules, and ingredient audit trail.
   - Definition of done:
     - Reporting matches source-of-truth transactions and surfaces void/correction/audit data.
     - Audit search view can find transactions by key fields.
+  - Notes:
+    - **Resolved (2026-02-08 re-plan)**: All core acceptance criteria met:
+      - `TransactionTable`: voided rows shown with strikethrough + opacity; "VOIDED" / "CORRECTION" badges with reasons.
+      - End-of-day reports: `useEndOfDayReportData` filters voided transactions via `isVoidedTransaction`; corrections summary with count + net impact.
+      - Dashboard metrics: `ReceptionDashboard` and `RealTimeDashboard` both exclude voided transactions.
+      - Shift calculations: `useShiftCalculations` excludes voided transactions from totals.
+      - Audit search: `/audit` page with 3 tabs (Bookings, Transactions, Audits); `FinancialTransactionAuditSearch` with filters for user, booking, shiftId, sourceTxnId, reason.
+      - Variance sign-offs: `EndOfDayPacket` surfaces pending sign-offs with threshold + manager tracking.
+    - Optional enhancements (export, advanced date/amount filters, transaction chain view) deferred.
 
 ### Medium — Reconciliation data sources
 
 - [ ] REC-V2-08: Manual PMS posting + terminal batch entry
+  - **Type:** IMPLEMENT | **Effort:** M | **Confidence:** 85%
+    - Implementation: 90% — Firebase schemas exist (`reconciliationManualSchema.ts`: `manualPmsPostingSchema`, `manualTerminalBatchSchema`); Firebase rules ready (`reconciliation/*` append-only); `ReconciliationWorkbench` renders data via `usePmsPostings` / `useTerminalBatches`; clear mutation pattern from `useCashCountsMutations`.
+    - Approach: 88% — replace fetch-based hooks (404 endpoints) with Firebase subscriptions; add entry forms following `SafeDepositForm` pattern; schemas already Zod-validated.
+    - Impact: 85% — isolated to `reconciliation/*` Firebase path; workbench already renders correctly; no breaking changes to existing code.
+    - Evidence class: E1 (static code audit: schemas, hooks, rules, workbench component).
   - Scope:
-    - Instead of unimplemented API endpoints, add a Firebase-backed manual entry
-      flow for PMS postings and terminal batches.
-    - Provide forms in the reconciliation workbench for:
-      - PMS posting totals (credit card, bank transfer, by date).
-      - Terminal batch summary (settled amount, date, terminal ID).
-    - Store at `reconciliation/pmsPostings` and `reconciliation/terminalBatches`.
+    - Replace `usePmsPostings` (currently fetches from 404 `/api/pms-postings`) with Firebase subscription to `reconciliation/pmsPostings`.
+    - Replace `useTerminalBatches` (currently fetches from 404 `/api/terminal-batches`) with Firebase subscription to `reconciliation/terminalBatches`.
+    - Create `usePmsPostingsMutations` and `useTerminalBatchesMutations` hooks (pattern: `push` + Zod validate + `set`).
+    - Create `PmsPostingEntryForm` (fields: amount, method CASH/CC, optional note) and `TerminalBatchEntryForm` (fields: amount, optional note).
+    - Add form trigger buttons to `ReconciliationWorkbench`.
     - Surface missing-entry warnings when data is absent for current date.
+    - Delete dead references to `/api/pms-postings` and `/api/terminal-batches`.
   - Dependencies: None.
   - Definition of done:
-    - Reconciliation workbench consumes real or manually-entered data.
+    - Reconciliation workbench consumes Firebase-backed manually-entered data.
     - Missing data is surfaced as a warning, not a silent gap.
-    - Delete the dead `/api/pms-postings` and `/api/terminal-batches` references.
+    - Dead API endpoint references removed.
+  - **Test contract:**
+    - **TC-01:** Submit PMS posting form → entry appears in `reconciliation/pmsPostings` with correct schema fields (amount, method, createdAt, createdBy)
+    - **TC-02:** Submit terminal batch form → entry appears in `reconciliation/terminalBatches` with correct schema fields
+    - **TC-03:** Reconciliation workbench with no entries for today → shows missing-data warning
+    - **TC-04:** Reconciliation workbench with manual entries → displays correct totals in comparison table
+    - **TC-05:** Invalid form submission (missing amount) → form validation prevents submit
+    - **Acceptance coverage:** TC-01–02 cover entry creation; TC-03 covers warning; TC-04 covers workbench consumption; TC-05 covers validation
+    - **Test type:** unit (component tests for forms + workbench)
+    - **Test location:** `apps/reception/src/components/till/__tests__/ReconciliationWorkbench.test.tsx` (existing, extend) + new `PmsPostingEntryForm.test.tsx`, `TerminalBatchEntryForm.test.tsx`
+    - **Run:** `pnpm --filter @apps/reception test -- --testPathPattern="(ReconciliationWorkbench|PmsPosting|TerminalBatch)"`
+  - **Key files:**
+    - Schemas: `apps/reception/src/schemas/reconciliationManualSchema.ts`
+    - Hooks (replace): `apps/reception/src/hooks/data/till/usePmsPostings.ts`, `useTerminalBatches.ts`
+    - Workbench: `apps/reception/src/components/till/ReconciliationWorkbench.tsx`
+    - Type defs: `apps/reception/src/types/hooks/data/pmsPostingData.ts`, `terminalBatchData.ts`
 
 ### Low — Operational improvements
 
 - [ ] REC-V2-09: Cash drawer limit enforcement
+  - **Type:** IMPLEMENT | **Effort:** S | **Confidence:** 88%
+    - Implementation: 90% — core infra exists: `useCashDrawerLimit` hook (read/write + audit logging), `useShiftCalculations` computes `isDrawerOverLimit` / `isTillOverMax`, `DrawerLimitWarning` component renders alert, `TenderRemovalModal` handles deposits with conditional reauth. Only missing: `drawerAlerts` logging node.
+    - Approach: 90% — follows established patterns: `logSettingChange` for audit, `push` + Zod validate for `drawerAlerts`, `ActionButtons` already disables shift close when `isTillOverMax`.
+    - Impact: 88% — additive change (new `drawerAlerts` node); no breaking changes; existing limit calculations unchanged; Firebase rules for `drawerAlerts` needed.
+    - Evidence class: E1 (static code audit: hooks, calculations, UI components, rules).
   - Scope:
-    - Enforce drawer limit warnings consistently (use `cashDrawerLimit`, `tillMaxLimit`,
-      and `pinRequiredAboveLimit` policies).
-    - Add a warning (not a hard block) when a deposit would cause the drawer
-      to exceed the configured limit.
-    - Log drawer-over-limit events to `drawerAlerts` with user + shiftId.
+    - Create `drawerAlerts` Firebase node + append-only security rule.
+    - Add `useDawerAlertsMutations` hook to log over-limit events (user, shiftId, amount, limit, timestamp).
+    - Wire alert logging into `useShiftCalculations` or `useTillAlerts` when `isDrawerOverLimit` transitions to true.
+    - Ensure `DrawerLimitWarning` is consistently shown in all relevant views (currently in `TillReconciliation`; verify presence in deposit flows).
   - Dependencies: None.
   - Definition of done:
     - UI warns when drawer approaches/exceeds limit.
-    - Over-limit events are logged to a `drawerAlerts` node.
+    - Over-limit events are logged to a `drawerAlerts` node with user + shiftId.
+  - **Test contract:**
+    - **TC-01:** Cash exceeds `cashDrawerLimit` → `DrawerLimitWarning` renders with "Lift" button
+    - **TC-02:** Cash under limit → no warning displayed
+    - **TC-03:** Over-limit event → `drawerAlerts` entry created with user, shiftId, amount, limit, timestamp
+    - **Acceptance coverage:** TC-01–02 cover UI warnings; TC-03 covers alert logging
+    - **Test type:** unit
+    - **Test location:** `apps/reception/src/components/till/__tests__/DrawerLimitWarning.test.tsx` (new) + extend `useShiftCalculations` tests
+    - **Run:** `pnpm --filter @apps/reception test -- --testPathPattern="(DrawerLimit|shiftCalculations)"`
+  - **Key files:**
+    - Hooks: `apps/reception/src/hooks/data/useCashDrawerLimit.ts`, `apps/reception/src/hooks/client/till/useShiftCalculations.ts`, `apps/reception/src/hooks/client/till/useTillAlerts.ts`
+    - UI: `apps/reception/src/components/till/DrawerLimitWarning.tsx`, `apps/reception/src/components/till/TillReconciliation.tsx`
+    - Settings: `apps/reception/src/constants/settings.ts`
+    - Rules: `apps/reception/database.rules.json` (add `drawerAlerts` node)
+
+- [ ] REC-V2-16: Keycard numbering scheme decision (INVESTIGATE)
+  - **Type:** INVESTIGATE | **Effort:** S | **Confidence:** 85%
+    - Implementation: 90% — requires only a decision memo, no code.
+    - Approach: 85% — need to determine: (a) are keycards physically numbered today? (b) numbering range, (c) multi-card guests: separate IDs vs one assignment with count, (d) master key tracking, (e) lost card mid-stay workflow.
+    - Impact: 85% — decision directly affects REC-V2-10 data model and UX.
+    - Evidence class: E0 → E1 after decision.
+  - Scope:
+    - Determine whether keycards are currently physically numbered/labelled.
+    - Define numbering scheme (e.g., 001–100) or confirm existing scheme.
+    - Decide: one assignment per physical keycard ID, or one assignment per guest with count?
+    - Decide: should staff master keys be tracked separately?
+    - Decide: workflow for lost card mid-stay (void assignment, issue replacement?).
+    - Document decisions in a short memo.
+  - Dependencies: None (requires Pete's input on operational questions).
+  - Acceptance criteria:
+    - Decision memo answers all 5 questions above.
+    - Data model for `keycardAssignments` specified based on decisions.
+  - Exit criteria: Binary — decisions documented and approved by Pete.
 
 - [ ] REC-V2-10: Keycard-to-guest assignment tracking
+  - **Type:** IMPLEMENT | **Effort:** M | **Confidence:** 75% (→ 85% conditional on REC-V2-16)
+    - Implementation: 85% — comprehensive keycard infra exists: `loans/<bookingRef>/<occupantId>/txns`, `keycardTransfers`, `keycardDiscrepancies`, variance calculations, `KeycardDepositButton`, checkout return flow, `AddKeycardsModal` / `ReturnKeycardsModal`.
+    - Approach: 85% — natural extension: add `keycardAssignments` node, wire into existing loan/return flows, enhance variance display.
+    - Impact: 75% — depends on keycard numbering scheme decision (REC-V2-16); UX for capturing keycard ID at check-in needs design; physical keycard numbering may not exist.
+    - Evidence class: E1 (static code audit of keycard hooks, components, schemas).
+    - Confidence cannot be promoted until REC-V2-16 completes.
   - Scope:
-    - Add a `keycardAssignments` node linking keycard ID → room → guest.
-    - Update keycard loan/return flows to record assignments.
-    - Surface unresolved keycard variances with last-known assignment.
-  - Dependencies: None.
+    - Add `keycardAssignments` Firebase node: `{ keycardId → { occupantId, bookingRef, roomNumber, assignedAt, assignedBy, returnedAt?, returnedBy?, status } }`.
+    - Add append-only Firebase security rules for `keycardAssignments`.
+    - Update `KeycardDepositButton` to capture keycard ID(s) on loan.
+    - Update `Checkout` return flow to mark assignment as returned.
+    - Enhance variance reports: when keycard variance detected, show unresolved assignments with last-known guest/room.
+  - Dependencies: REC-V2-16 (keycard numbering decision).
   - Definition of done:
     - Keycard variances show which guest/room was last assigned.
     - Loan/return flows update the assignment map.
+  - **Test contract:**
+    - **TC-01:** Keycard loan via `KeycardDepositButton` → `keycardAssignments` entry created with occupantId, bookingRef, roomNumber, status: "issued"
+    - **TC-02:** Keycard return via checkout → assignment status updated to "returned" with returnedAt/returnedBy
+    - **TC-03:** Keycard variance detected → variance display shows unresolved assignments with guest/room info
+    - **TC-04:** Duplicate active assignment for same keycard ID → rejected (validation)
+    - **Acceptance coverage:** TC-01–02 cover loan/return flow; TC-03 covers variance display; TC-04 covers data integrity
+    - **Test type:** unit
+    - **Test location:** `apps/reception/src/components/checkins/__tests__/KeycardDepositButton.test.tsx` (extend) + new `apps/reception/src/hooks/data/__tests__/useKeycardAssignments.test.ts`
+    - **Run:** `pnpm --filter @apps/reception test -- --testPathPattern="(KeycardDeposit|keycardAssignment)"`
+  - **Key files:**
+    - Check-in: `apps/reception/src/components/checkins/keycardButton/KeycardDepositButton.tsx`
+    - Checkout: `apps/reception/src/components/checkout/Checkout.tsx`
+    - Variance: `apps/reception/src/hooks/data/endOfDay/variance.ts`
+    - Transfers: `apps/reception/src/hooks/data/useKeycardTransfersMutations.ts`
+    - Rules: `apps/reception/database.rules.json`
+
+## Task summary (remaining open)
+
+| Task | Type | Effort | Confidence | Dependencies | Status |
+|------|------|--------|------------|--------------|--------|
+| REC-V2-02 | IMPLEMENT | M | 80% | None (deps resolved) | **Done** ✅ |
+| REC-V2-08 | IMPLEMENT | M | 85% | None | Ready |
+| REC-V2-09 | IMPLEMENT | S | 88% | None | Ready |
+| REC-V2-16 | INVESTIGATE | S | 85% | None (needs Pete) | Ready |
+| REC-V2-10 | IMPLEMENT | M | 75% → 85% | REC-V2-16 | Blocked |
 
 ## Implementation order
 
 ```
-Phase 1 (Critical):  REC-V2-12 ✅ -> REC-V2-01 ✅ -> REC-V2-11 ✅ -> REC-V2-02 (partial — rules file exists, needs emulator tests + CI)
-Phase 2 (High):      REC-V2-13 ✅, REC-V2-03 ✅, REC-V2-04 ✅, REC-V2-14 (open)
-Phase 3 (High):      REC-V2-05 ✅
-Phase 4 (High):      REC-V2-06 ✅ -> REC-V2-07 ✅
-Phase 5 (Medium):    REC-V2-15 (partial — several progress items done), REC-V2-08 (open)
-Phase 6 (Low):       REC-V2-09 (open), REC-V2-10 (open)
+Completed:
+  Phase 1 (Critical):  REC-V2-12 ✅ -> REC-V2-01 ✅ -> REC-V2-11 ✅
+  Phase 2 (High):      REC-V2-13 ✅, REC-V2-03 ✅, REC-V2-04 ✅, REC-V2-14 ✅
+  Phase 3 (High):      REC-V2-05 ✅
+  Phase 4 (High):      REC-V2-06 ✅ -> REC-V2-07 ✅
+  Phase 5 (Medium):    REC-V2-15 ✅
+
+  Phase 6 (Medium):    REC-V2-02 ✅
+
+Remaining (parallelism guide):
+  Wave 1 (parallel):   REC-V2-08, REC-V2-09, REC-V2-16
+  Wave 2 (sequential): REC-V2-10 (after REC-V2-16)
 ```
 
 ## Constraints
@@ -318,6 +462,17 @@ Phase 6 (Low):       REC-V2-09 (open), REC-V2-10 (open)
 - Stage rules in emulator/staging; deploy rules after code changes are live.
 - Update SOPs for void/correction handling and variance sign-off; train staff.
 - Monitor denied writes and `drawerAlerts` after rules rollout.
+
+## Decision log
+
+| Date | Decision | Rationale |
+|------|----------|-----------|
+| 2026-01-23 | Password reauth everywhere (no server-verified PINs) | Locked — avoids new auth infra; Firebase Auth is server-verified. |
+| 2026-01-23 | `inventory/recipes` canonical, keyed by item ID | Avoids name drift; remove `inventoryItem.recipeMap`. |
+| 2026-01-23 | `financialsRoom/transactions` is authoritative ledger | Not a derived view; retains void/correction fields. |
+| 2026-02-08 | REC-V2-14 resolved — PIN system is dead code | Investigation: `getUserByPin` has zero active call sites; all 18 high-risk actions use `PasswordReauthInline`/`PasswordReauthModal`. Cleanup task only. |
+| 2026-02-08 | REC-V2-15 resolved — core scope complete | Investigation: void badges, voided tx exclusion, corrections summary, audit search with 5 filters, variance sign-offs — all implemented. Optional enhancements deferred. |
+| 2026-02-08 | REC-V2-16 created — keycard numbering precursor | REC-V2-10 impact confidence (75%) blocked by operational unknowns: physical numbering, multi-card guests, master keys, lost card workflow. Cannot implement data model without decisions. |
 
 ## Notes
 

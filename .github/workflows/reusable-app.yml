@@ -325,12 +325,11 @@ jobs:
 
   deploy:
     name: Deploy
-    # Deploy only when caller inputs allow publishing and the build succeeded.
+    # Deploy only when validate computed a deploy gate and the build succeeded.
     if: >-
       ${{
         needs.build.result == 'success' &&
-        inputs.deploy_cmd != '' &&
-        inputs.deploy_enabled
+        needs.validate.outputs.should_deploy == 'true'
       }}
     needs: [build, validate]
     runs-on: ubuntu-latest

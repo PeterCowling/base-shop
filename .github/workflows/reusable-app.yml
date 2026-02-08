@@ -317,7 +317,6 @@ jobs:
     if: >-
       ${{
         inputs.deploy-cmd != '' &&
-        github.event.pull_request == null &&
         (
           github.event.ref == 'refs/heads/main' ||
           github.event.ref == 'refs/heads/staging' ||

@@ -311,13 +311,15 @@ jobs:
 
   deploy:
     name: Deploy
-    # Only deploy for push events targeting main/staging with a deploy command.
-    # `workflow_call` can surface ref values differently, so check both ref_name and ref.
+    # Only deploy for main/staging refs with a deploy command.
+    # In reusable `workflow_call` runs, `github.event_name` is "workflow_call",
+    # so key off workflow_ref plus ref/ref_name fallbacks.
     if: >-
       ${{
         inputs.deploy-cmd != '' &&
-        github.event_name == 'push' &&
         (
+          contains(github.workflow_ref, '@refs/heads/main') ||
+          contains(github.workflow_ref, '@refs/heads/staging') ||
           github.ref_name == 'main' ||
           github.ref_name == 'staging' ||
           github.ref == 'refs/heads/main' ||

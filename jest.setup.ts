@@ -325,6 +325,8 @@ const IGNORED_WARN_PATTERNS: ConsolePattern[] = [
   /\[WARN\] i18n parity\/quality issues found/,
   /\[WARN\] Guide content parity\/quality issues found/,
   /\[guide-manifest-overrides\] Malformed JSON, using empty defaults/,
+  // Firebase RTDB emits permission_denied warnings during security rules tests
+  /@firebase\/database: FIREBASE WARNING:/,
 ];
 
 const shouldIgnoreConsoleMessage = (

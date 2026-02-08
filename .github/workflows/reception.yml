@@ -1,0 +1,27 @@
+name: Validate Reception
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+    paths:
+      - 'apps/reception/**'
+      - 'firebase.json'
+      - '.github/workflows/reception.yml'
+  pull_request:
+    paths:
+      - 'apps/reception/**'
+      - 'firebase.json'
+      - '.github/workflows/reception.yml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    uses: ./.github/workflows/reusable-app.yml
+    with:
+      app-filter: "@apps/reception"
+      build-cmd: pnpm --filter @apps/reception... build
+      artifact-path: ""
+      deploy_enabled: false
+    secrets: inherit

@@ -247,6 +247,11 @@ jobs:
         run: pnpm --filter @apps/prime test:firebase-cost-gate
         shell: bash
 
+      - name: Firebase security rules test (Reception)
+        if: ${{ steps.classify.outputs.run_validation == 'true' && inputs.app-filter == '@apps/reception' }}
+        run: pnpm --filter @apps/reception test:rules
+        shell: bash
+
       - name: Prime critical E2E gate (release branches)
         if: ${{ steps.classify.outputs.run_validation == 'true' && inputs.app-filter == '@apps/prime' && (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/main') }}
         run: pnpm --filter @apps/prime test:e2e:critical

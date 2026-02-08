@@ -1,10 +1,10 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: Reception
 Last-reviewed: 2026-02-08
 Last-replan: 2026-02-08
-Overall-confidence: 85% (single remaining task: REC-V2-10 at 85%)
+Overall-confidence: 100% (all tasks complete)
 Relates-to charter: none
 Predecessor: docs/historical/plans/reception-stock-cash-control-plan.md
 ---
@@ -413,7 +413,7 @@ enforcement, reauth coverage, server-side rules, and ingredient audit trail.
     ```
   - **Exit criteria:** Met — all 5 questions answered by Pete (2026-02-08).
 
-- [ ] REC-V2-10: Keycard-to-guest assignment tracking
+- [x] REC-V2-10: Keycard-to-guest assignment tracking — **Done** ✅
   - **Type:** IMPLEMENT | **Effort:** M | **Confidence:** 85%
     - Implementation: 85% — comprehensive keycard infra exists: `loans/<bookingRef>/<occupantId>/txns`, `keycardTransfers`, `keycardDiscrepancies`, variance calculations, `KeycardDepositButton`, checkout return flow, `AddKeycardsModal` / `ReturnKeycardsModal`.
     - Approach: 85% — natural extension: add `keycardAssignments` node, wire into existing loan/return flows, enhance variance display. Data model specified in REC-V2-16 decision memo.
@@ -444,6 +444,11 @@ enforcement, reauth coverage, server-side rules, and ingredient audit trail.
     - Variance: `apps/reception/src/hooks/data/endOfDay/variance.ts`
     - Transfers: `apps/reception/src/hooks/data/useKeycardTransfersMutations.ts`
     - Rules: `apps/reception/database.rules.json`
+  - **Build Completion (2026-02-08):**
+    - Commit: `de3f47727a` — `feat(reception): add keycard-to-guest assignment tracking (REC-V2-10)`
+    - **New files (5):** `keycardAssignmentData.ts` (types), `keycardAssignmentSchema.ts` (Zod), `useKeycardAssignments.ts` (subscription hook), `useKeycardAssignmentsMutations.ts` (mutations with duplicate detection), `useKeycardAssignments.test.ts` (4 unit tests)
+    - **Modified (11):** `database.rules.json` (keycardAssignments node — staff+ write, no deletes), `KeycardDepositButton.tsx` (keycardNumber state + assignGuestKeycard), `KeycardDepositMenu.tsx` (keycard # input field), `Checkout.tsx` (auto-return on keycard loan removal), `VarianceSummary.tsx` (unresolved assignments display), `EndOfDayPacket.tsx` (passes active assignments to variance), `databaseRules.test.ts` (+3 emulator tests), `KeycardDepositMenu.test.tsx`, `EndOfDayPacket.test.tsx`, `Checkout.test.tsx` (mock updates)
+    - **Tests:** 4 unit tests + 3 emulator rules tests = 7 new tests. All 50 reception tests passing (37 unit + 13 emulator).
 
 ## Task summary (remaining open)
 
@@ -453,7 +458,7 @@ enforcement, reauth coverage, server-side rules, and ingredient audit trail.
 | REC-V2-08 | IMPLEMENT | M | 85% | None | **Done** ✅ |
 | REC-V2-09 | IMPLEMENT | S | 88% | None | **Done** ✅ |
 | REC-V2-16 | INVESTIGATE | S | 100% | None | **Done** ✅ |
-| REC-V2-10 | IMPLEMENT | M | 85% | REC-V2-16 ✅ | Ready |
+| REC-V2-10 | IMPLEMENT | M | 85% | REC-V2-16 ✅ | **Done** ✅ |
 
 ## Implementation order
 
@@ -471,8 +476,9 @@ Completed:
 
   Phase 8 (Low):       REC-V2-16 ✅
 
-Remaining (parallelism guide):
-  Wave 1:              REC-V2-10 (unblocked — REC-V2-16 done)
+  Phase 9 (Low):       REC-V2-10 ✅
+
+All tasks complete.
 ```
 
 ## Constraints
@@ -515,6 +521,7 @@ Remaining (parallelism guide):
 | 2026-02-08 | REC-V2-15 resolved — core scope complete | Investigation: void badges, voided tx exclusion, corrections summary, audit search with 5 filters, variance sign-offs — all implemented. Optional enhancements deferred. |
 | 2026-02-08 | REC-V2-16 created — keycard numbering precursor | REC-V2-10 impact confidence (75%) blocked by operational unknowns: physical numbering, multi-card guests, master keys, lost card workflow. Cannot implement data model without decisions. |
 | 2026-02-08 | REC-V2-16 resolved — keycard numbering decisions | Keycards physically numbered 001–100; one assignment per physical card; master keys tracked separately (M01+); lost card = void + replacement after €10 deposit; €10 deposit per keycard. Data model specified. REC-V2-10 unblocked (85%). |
+| 2026-02-08 | REC-V2-10 built — keycard assignment tracking | Full lifecycle tracking: issued/returned/lost/replaced. Firebase rules allow staff+ create+update (no deletes). Duplicate detection prevents double-issuing same physical keycard. Wired into check-in, checkout, and end-of-day variance reports. **Plan complete.** |
 
 ## Notes
 

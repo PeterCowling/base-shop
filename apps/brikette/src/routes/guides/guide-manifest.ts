@@ -759,8 +759,8 @@ const manifestSeed: GuideManifestEntry[] = [
     contentKey: "couplesInHostels",
     status: "draft",
     draftPathSegment: "guides/traveling-as-a-couple-in-hostels",
-    areas: ["experience"],
-    primaryArea: "experience",
+    areas: ["help"],
+    primaryArea: "help",
     structuredData: ["Article"],
     relatedGuides: ["onlyHostel", "positanoBudget"],
     blocks: [
@@ -828,8 +828,8 @@ const manifestSeed: GuideManifestEntry[] = [
     contentKey: "naplesPositano",
     status: "draft",
     draftPathSegment: "guides/naples-to-positano",
-    areas: ["experience"],
-    primaryArea: "experience",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
     structuredData: ["Article"],
     relatedGuides: ["ferrySchedules", "luggageStorage"],
     blocks: [
@@ -1934,8 +1934,8 @@ const manifestSeed: GuideManifestEntry[] = [
     contentKey: "parking",
     status: "draft",
     draftPathSegment: "guides/arriving-by-car",
-    areas: ["howToGetHere"],
-    primaryArea: "howToGetHere",
+    areas: ["help"],
+    primaryArea: "help",
     structuredData: ["Article", "FAQPage"],
     focusKeyword: "arriving by car Positano",
     relatedGuides: ["transportBudget", "publicTransportAmalfi", "scooterRentalPositano"],
@@ -1965,8 +1965,8 @@ const manifestSeed: GuideManifestEntry[] = [
     contentKey: "salernoPositano",
     status: "draft",
     draftPathSegment: "guides/salerno-to-positano",
-    areas: ["experience"],
-    primaryArea: "experience",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
     structuredData: ["Article"],
     relatedGuides: ["ferrySchedules", "reachBudget", "luggageStorage"],
     blocks: [
@@ -2808,8 +2808,8 @@ const manifestSeed: GuideManifestEntry[] = [
     contentKey: "budgetAccommodationBeyond",
     status: "draft",
     draftPathSegment: "guides/budget-accommodation-beyond-positano",
-    areas: ["experience"],
-    primaryArea: "experience",
+    areas: ["help"],
+    primaryArea: "help",
     structuredData: ["Article"],
     relatedGuides: ["positanoBudget", "transportBudget", "howToGetToPositano"],
     blocks: [
@@ -3446,8 +3446,8 @@ const manifestSeed: GuideManifestEntry[] = [
     contentKey: "groceriesPharmacies",
     status: "draft",
     draftPathSegment: "guides/groceries-and-pharmacies-positano",
-    areas: ["experience"],
-    primaryArea: "experience",
+    areas: ["help"],
+    primaryArea: "help",
     structuredData: ["Article"],
     relatedGuides: ["simsAtms", "whatToPack", "positanoBeaches"],
     blocks: [
@@ -4216,19 +4216,38 @@ const manifestSeed: GuideManifestEntry[] = [
 
 const existingManifestKeys = new Set(manifestSeed.map((entry) => entry.key));
 const fallbackKeys = (GUIDE_KEYS as GuideKey[]).filter((key) => !existingManifestKeys.has(key));
-const fallbackEntries = fallbackKeys.map((key) =>
-  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+
+// Area overrides for fallback entries — matches legacy GUIDE_BASE_KEY_OVERRIDES in namespaces.ts.
+// Cannot import directly due to circular dependency (namespaces.ts imports from this file).
+const FALLBACK_AREA_MAP: Partial<Record<GuideKey, GuideArea>> = {
+  fornilloBeachToBrikette: "howToGetHere",
+  drivingAmalfi: "help",
+  howToGetToPositano: "help",
+  offSeasonLongStay: "help",
+  onlyHostel: "help",
+  porterServices: "help",
+  positanoCostBreakdown: "help",
+  positanoCostComparison: "help",
+  reachBudget: "help",
+  salernoVsNaples: "help",
+  transportMoneySaving: "help",
+  workCafes: "help",
+};
+
+const fallbackEntries = fallbackKeys.map((key) => {
+  const area: GuideArea = FALLBACK_AREA_MAP[key] ?? "experience";
+  return GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key,
     slug: GUIDE_SLUGS[key]?.["en"] ?? slugify(key),
     contentKey: key,
     status: "draft",
-    areas: ["experience"],
-    primaryArea: "experience",
+    areas: [area],
+    primaryArea: area,
     structuredData: ["Article"],
     relatedGuides: [],
     blocks: [],
-  }),
-);
+  });
+});
 const allManifestEntries = [...manifestSeed, ...fallbackEntries];
 
 export const guideManifest: GuideManifest = allManifestEntries.reduce<GuideManifest>((acc, entry) => {

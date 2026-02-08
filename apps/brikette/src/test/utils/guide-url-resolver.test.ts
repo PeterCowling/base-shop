@@ -21,7 +21,7 @@ describe("guide URL resolver", () => {
   });
 
   it("routes reachBudget under the current manifest namespace", () => {
-    assertBase("reachBudget", "experiences");
+    assertBase("reachBudget", "assistance");
   });
 
   it("routes how-to-get-here guides under how-to-get-here", () => {

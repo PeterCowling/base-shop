@@ -24,7 +24,6 @@ const GLOBAL_IMPORTS: GlobalGuideImport[] = [
   { key: "fallbacks", ns: "guides/fallbacks" },
   { key: "indexRedirect", ns: "guides/indexRedirect" },
   { key: "labels", ns: "guides/labels" },
-  { key: "preview", ns: "guides/preview" },
   { key: "robots", ns: "guides/robots" },
   { key: "structured", ns: "guides/structured" },
   { key: "tagPage", ns: "guides/tagPage" },

@@ -94,7 +94,7 @@ Add optional `sites?: Record<string, { status?: GuideStatus }>` field to `GuideM
 | TASK-01 | IMPLEMENT | Add regression baseline tests for `generateStaticParams` and status filtering | 90% | M | Complete (2026-02-08) | - | TASK-05 |
 | TASK-02 | IMPLEMENT | Delete brikette draft routes and API routes | 92% | M | Complete (2026-02-08) | - | TASK-03 |
 | TASK-03 | IMPLEMENT | Remove editorial/preview components from guide templates | 88% | M | Complete (2026-02-08) | TASK-02 | TASK-04 |
-| TASK-04 | IMPLEMENT | Remove authoring utilities, env vars, override write ops, and clean up tests | 88% | M | Pending | TASK-03 | TASK-05 |
+| TASK-04 | IMPLEMENT | Remove authoring utilities, env vars, override write ops, and clean up tests | 88% | M | Complete (2026-02-08) | TASK-03 | TASK-05 |
 | TASK-05 | IMPLEMENT | Simplify two-tier status to direct `live` check | 85% | M | Pending | TASK-01, TASK-04 | TASK-06 |
 | TASK-06 | IMPLEMENT | Filter non-live guide content from build bundle | 82% | M | Pending | TASK-05 | TASK-07 |
 | TASK-07 | IMPLEMENT | Add `sites` field to manifest schema for multi-site preparation | 85% | M | Pending | TASK-06 | - |

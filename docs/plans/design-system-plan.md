@@ -128,7 +128,8 @@ This plan restructures work around **driving adoption** across five phases: make
 | DS-18 | IMPLEMENT | Remove CommandPalette re-export wrapper in cms-ui | 92% | S | Complete (2026-02-07) | - | - |
 | DS-19 | IMPLEMENT | Consolidate toast/notification system | 80% | M | Complete (2026-02-07) | - | - |
 | DS-20 | IMPLEMENT | Dependency version policy + remove pnpm.overrides | 85% | M | Complete (2026-02-07) | - | - |
-| DS-21 | IMPLEMENT | Replace brikette local layout primitives with DS imports | 60% ⚠️ | S→M | Blocked | - | - |
+| DS-21a | IMPLEMENT | Add tests + asChild support to DS layout primitives | 88% | M | Pending | - | DS-21b |
+| DS-21b | IMPLEMENT | Migrate brikette from local layout primitives to DS imports | 82% | M | Pending | DS-21a | - |
 | **Phase 5: Enforcement & Documentation** | | | | | | | |
 | DS-22 | IMPLEMENT | Theme customization guide | 85% | S | Complete (2026-02-07) | - | - |
 | DS-23 | IMPLEMENT | Activate jest-axe in design-system tests | 85% | M | Complete (2026-02-07) | - | - |
@@ -1163,47 +1164,116 @@ _Remove duplicated implementations and clean up unnecessary indirection._
   - Updated dependency-policy.md to reflect current state
   - Note: Full override removal was descoped; remaining 22 overrides are security patches for transitive deps (legitimate use)
 
-### DS-21: Replace brikette local layout primitives with DS imports
+### DS-21a: Add tests + asChild support to DS layout primitives
 
-- **Status:** Blocked — API incompatibility (see notes below)
-- **Effort:** S→M (reclassified)
+- **Status:** Pending
+- **Effort:** M
+- **Affects:**
+  - Primary: `packages/design-system/src/primitives/Cluster.tsx` (add `asChild` prop)
+  - Primary: `packages/design-system/src/primitives/__tests__/Stack.test.tsx` (new)
+  - Primary: `packages/design-system/src/primitives/__tests__/Cluster.test.tsx` (new)
+  - Primary: `packages/design-system/src/primitives/__tests__/Inline.test.tsx` (new)
+  - [readonly] `packages/design-system/src/primitives/Stack.tsx` (already has `asChild`)
+  - [readonly] `packages/design-system/src/primitives/Inline.tsx` (already has `asChild`)
+  - [readonly] `packages/design-system/src/primitives/slot.tsx` (Slot implementation)
+- **Depends on:** -
+- **Blocks:** DS-21b
+- **Confidence:** 88%
+  - Implementation: 92% — Stack/Inline already have `asChild`; Cluster just needs the same 3-line Slot pattern. Test patterns established by Button.test.tsx, tabs.test.tsx, etc.
+  - Approach: 90% — `asChild` is the DS-standard polymorphism pattern (Button, LinkText, Stack, Inline all use it). Adding to Cluster makes the layout primitives API-consistent.
+  - Impact: 85% — Additive: existing Cluster consumers (cms, xa, business-os) are unaffected. No breaking changes.
+- **Acceptance:**
+  - DS Cluster supports `asChild` prop using same Slot pattern as Stack/Inline
+  - All 3 layout primitives have comprehensive test suites
+  - Tests cover: default rendering, gap prop, alignment props, asChild rendering, className merging, ref forwarding
+  - All existing tests pass; `pnpm typecheck` passes
+- **Test contract:**
+  - TC-01: Stack renders `div` by default → `screen.getByTestId('stack').tagName === 'DIV'`
+  - TC-02: Stack with `asChild` renders child element → `<Stack asChild><section>...</section></Stack>` renders `<section>`
+  - TC-03: Stack merges className with child when `asChild` → child gets flex classes
+  - TC-04: Cluster renders `div` by default with flex-wrap
+  - TC-05: Cluster with `asChild` renders child element → `<Cluster asChild><ul>...</ul></Cluster>` renders `<ul>`
+  - TC-06: Cluster gap prop applies correct gap class
+  - TC-07: Inline renders `div` by default with inline-flex
+  - TC-08: Inline with `asChild` renders child element
+  - TC-09: All 3 primitives pass jest-axe accessibility check
+  - TC-10: All 3 primitives forward ref correctly
+  - Test type: unit
+  - Test location: `packages/design-system/src/primitives/__tests__/Stack.test.tsx` (new), `Cluster.test.tsx` (new), `Inline.test.tsx` (new)
+  - Run: `pnpm --filter @acme/design-system test -- --testPathPattern="(Stack|Cluster|Inline)"`
+- **TDD execution plan:**
+  - Red: Write tests for Cluster `asChild` — will fail because Cluster doesn't support it yet
+  - Green: Add `asChild` prop + Slot import to Cluster (3-line change, matching Stack/Inline pattern)
+  - Refactor: Add remaining test coverage for all 3 primitives (gap, alignment, className merging, ref, a11y)
+- **Planning validation:**
+  - Tests run: `pnpm --filter @acme/design-system test` — PASS (79 suites, 278 tests). No existing layout primitive tests to break.
+  - Code read: Stack.tsx (lines 1-25), Cluster.tsx (lines 1-20), Inline.tsx (lines 1-25), slot.tsx (full). Confirmed Cluster lacks `asChild`; Stack/Inline have it.
+  - Pattern confirmed: Button.tsx, LinkText.tsx use identical `asChild ? Slot : "div/button/a"` pattern.
+- **Rollout / rollback:** Additive prop + new test files. Rollback: git revert.
+- **Documentation impact:** Update `docs/component-catalog.md` (Cluster entry — add `asChild` prop)
+- **Notes:** Stack and Inline already have `asChild`. Only Cluster needs the code change. Tests are the main deliverable.
+
+### DS-21b: Migrate brikette from local layout primitives to DS imports
+
+- **Status:** Pending
+- **Effort:** M
 - **Affects:**
   - Primary: `apps/brikette/src/components/ui/flex/Stack.tsx` (delete)
   - Primary: `apps/brikette/src/components/ui/flex/Cluster.tsx` (delete)
   - Primary: `apps/brikette/src/components/ui/flex/Inline.tsx` (delete)
-  - Primary: all brikette files importing from `components/ui/flex/*` (update imports)
-  - [readonly] `packages/design-system/src/primitives/Stack.tsx` (DS Stack)
-  - [readonly] `packages/design-system/src/primitives/Cluster.tsx` (DS Cluster)
-  - [readonly] `packages/design-system/src/primitives/Inline.tsx` (DS Inline)
-- **Depends on:** -
+  - Primary: `apps/brikette/src/components/ui/flex/InlineItem.tsx` (delete)
+  - Primary: `apps/brikette/src/components/ui/flex/types.ts` (delete)
+  - Primary: 40 brikette files importing from `components/ui/flex/*` (update imports + refactor `as` → `asChild`)
+  - [readonly] `packages/design-system/src/primitives/Stack.tsx`
+  - [readonly] `packages/design-system/src/primitives/Cluster.tsx` (with `asChild` from DS-21a)
+  - [readonly] `packages/design-system/src/primitives/Inline.tsx`
+- **Depends on:** DS-21a
 - **Blocks:** -
-- **Confidence:** 60% ⚠️ BELOW THRESHOLD
-  - Implementation: 60% — brikette's Stack/Cluster/Inline use polymorphic `as` prop (25+ Cluster usages, 7+ Stack usages, 6+ Inline usages). DS primitives use `asChild` (Slot-based composition), a fundamentally different API. DS Cluster has NO polymorphism at all. Direct replacement is NOT possible without either: (a) adding `as` prop support to DS primitives, or (b) refactoring all 38+ brikette call sites.
-  - Approach: 65% — need to decide: add polymorphic `as` to DS primitives, or refactor brikette to use `asChild` pattern
-  - Impact: 55% — 38+ call sites across brikette; API change affects component composition patterns
+- **Confidence:** 82%
+  - Implementation: 85% — Mechanical refactoring at each site: `<Stack as="ul">` → `<Stack asChild><ul>`. 40 call sites, most are simple. Evidence: read all usage patterns — div (23), ul (9), section (3), span (2), header (1), a (1), nav (1). Sites using `as="div"` (23 sites, 57%) just drop the `as` prop entirely (div is the default).
+  - Approach: 85% — `asChild` is the established DS pattern. Refactoring to it is the correct long-term choice (avoids two competing polymorphism APIs).
+  - Impact: 80% — 40 call sites is medium-high volume, but changes are mechanical and type-safe. Risk: gap prop differences (brikette uses className `gap-2`, DS uses `gap={2}` numeric prop). Must verify each site.
+- **What would make this >=90%:** Migrate 5 representative sites first (div, ul, section, nav, a) and run full build + test to validate the pattern.
 - **Acceptance:**
-  - Local `components/ui/flex/Stack.tsx`, `Cluster.tsx`, `Inline.tsx` deleted
-  - All brikette imports updated to `@acme/design-system/primitives`
-  - Brikette builds and renders correctly
-  - No visual regressions (DS primitives produce equivalent layout)
+  - All 5 local flex files deleted (`Stack.tsx`, `Cluster.tsx`, `Inline.tsx`, `InlineItem.tsx`, `types.ts`)
+  - All 40 brikette imports updated to `@acme/design-system/primitives`
+  - All `as="element"` patterns converted to `asChild` + wrapper element (or `as` prop dropped for `div` default)
+  - Gap values mapped to DS numeric gap props where appropriate
+  - Brikette builds and all tests pass
+  - No visual regressions in layout
 - **Test contract:**
-  - TC-01: No imports from `components/ui/flex/` remain → grep returns empty
-  - TC-02: Brikette builds → `pnpm --filter @apps/brikette build` passes
-  - TC-03: Existing brikette tests pass → `pnpm --filter @apps/brikette test`
-  - Test type: build + unit
-  - Run: `pnpm --filter @apps/brikette build && pnpm --filter @apps/brikette test`
+  - TC-01: No imports from `components/ui/flex/` remain → `grep -r "components/ui/flex" apps/brikette/src/` returns empty
+  - TC-02: Brikette typecheck passes → `pnpm --filter @apps/brikette typecheck`
+  - TC-03: Brikette lint passes → `pnpm --filter @apps/brikette exec eslint src`
+  - TC-04: Brikette existing tests pass → `pnpm --filter @apps/brikette test`
+  - TC-05: No local flex directory remains → `ls apps/brikette/src/components/ui/flex/` fails (dir deleted)
+  - TC-06: `as="div"` sites (23) correctly use default div → spot-check 3 representative files
+  - TC-07: `as="ul"` sites (9) use `asChild` + `<ul>` wrapper → spot-check Footer.tsx, GuideEditorialPanel.tsx
+  - Test type: lint + typecheck + unit
+  - Test location: existing brikette test suite
+  - Run: `pnpm --filter @apps/brikette typecheck && pnpm --filter @apps/brikette exec eslint src && pnpm --filter @apps/brikette test`
 - **TDD execution plan:**
-  - Red: Grep all imports of local layout primitives, count usage sites
-  - Green: Replace imports with DS primitives; delete local files
-  - Refactor: Verify any prop differences are resolved (e.g., `as` prop, gap values)
+  - Red: Verify existing tests pass (baseline), then delete local flex files → imports break
+  - Green: Update all 40 import sites to DS primitives + refactor `as` → `asChild` pattern; fix gap props
+  - Refactor: Remove empty `components/ui/flex/` directory; verify no stale re-exports
+- **Planning validation:**
+  - Code read: All 3 brikette local primitives (Stack, Cluster, Inline) + types.ts. Confirmed `as` prop pattern.
+  - Usage mapped: 40 call sites across brikette. Element type distribution documented.
+  - Gap analysis: Brikette Cluster uses className `gap-2` (hardcoded); DS Cluster uses `gap={2}` prop (default). Compatible.
+  - Brikette Stack has no gap prop — uses className. DS Stack has `gap` prop with default 3. Need to set `gap={0}` or pass className for custom gaps.
 - **Rollout / rollback:** Import change + file deletion. Rollback: git revert.
 - **Documentation impact:** None
-- **Notes:** Originally classified as S-effort "quick win" but investigation revealed fundamental API incompatibility:
-  - Brikette locals use polymorphic `as` prop: `<Cluster as="nav">`, `<Stack as="section">`
-  - DS primitives use Radix `asChild` pattern (Slot-based composition) which requires wrapping: `<Stack asChild><nav>...</nav></Stack>`
-  - DS Cluster has NO polymorphism support at all
-  - 38+ call sites would need refactoring
-  - **Needs `/re-plan`** to decide approach before implementation can proceed.
+- **Notes:**
+  - **Migration pattern by element type:**
+    - `as="div"` (23 sites): Remove `as` prop, keep className → `<Stack className="...">` (simplest)
+    - `as="ul"` (9 sites): `<Stack as="ul">` → `<Stack asChild><ul className="...">` (Slot merges classes)
+    - `as="section"` (3 sites): Same as ul pattern
+    - `as="span"` (2 sites): Same pattern with Inline
+    - `as="nav"` (1 site): Same pattern with Inline
+    - `as="a"` (1 site): `<Stack as="a" href="...">` → `<Stack asChild><a href="...">` (Slot passes through href)
+    - `as="header"` (1 site): Same as section pattern
+  - **InlineItem** (renders `li` by default): Can be replaced with plain `<li>` since it's just a styled list item
+  - **Gap differences:** Brikette uses Tailwind className for gap; DS uses numeric prop. Must audit each site.
 
 ---
 
@@ -1637,7 +1707,7 @@ This section outlines what each app would need to reach higher DS adoption. Thes
 | **Reception** | 3.3% | 54 custom modals, 110+ raw inputs, 636 raw colors | ConfirmDialog (DS-14), Form integration (DS-04), Toast consolidation (DS-19) | Replace custom modals with DS Dialog/AlertDialog; replace raw inputs with DS Input; migrate colors to semantic tokens |
 | **Prime** | 12.9% | Custom PrimeButton/Input/Textarea wrappers, 638 raw colors | Form integration (DS-04), RadioGroup (DS-06), Stepper (DS-12) | Replace PrimeButton → DS Button, PrimeInput → DS Input; migrate colors |
 | **Business-OS** | 21.7% | 146 raw colors, some custom components | Tabs (DS-05), EmptyState (DS-13), Combobox (DS-07) | Migrate admin UI to DS components |
-| **Brikette** | 44.0% | Duplicate layout primitives, lint disabled | Layout dedup (DS-21), full lint chain (DS-24–29) | Already highest internal adoption; lint enforcement locks it in |
+| **Brikette** | 44.0% | Duplicate layout primitives, lint disabled | Layout dedup (DS-21a/21b), full lint chain (DS-24–29) | Already highest internal adoption; lint enforcement locks it in |
 | **CMS** | 49.8% | Near gold standard, 9 raw colors remaining | Already well-adopted | Minor cleanup |
 | **XA** | 51.0% | Good adoption, 6 raw colors | Already well-adopted | Minor cleanup |
 
@@ -1671,7 +1741,7 @@ This section outlines what each app would need to reach higher DS adoption. Thes
 - [x] Missing token scales added (opacity, letter-spacing, sizes, containers, disabled states) — DS-16/17
 - [x] CommandPalette re-export wrapper removed — DS-18
 - [x] Toast consolidated (reception → shared useToast) — DS-19
-- [ ] Brikette local layout primitives replaced with DS imports — DS-21 (Blocked: API incompatibility)
+- [ ] Brikette local layout primitives replaced with DS imports — DS-21a/21b (unblocked after re-plan)
 - [x] CarouselSlides consolidated (already complete as of 2026-02-07)
 - [x] jest-axe assertions in all design-system component tests — DS-23
 - [x] Brikette passes full ESLint sweep and lint re-enabled in CI — DS-24–29
@@ -1778,6 +1848,7 @@ This section outlines what each app would need to reach higher DS adoption. Thes
 ## Decision Log
 
 - 2026-02-07: All 29 active IMPLEMENT tasks completed (28 complete, 1 blocked). DS-21 blocked at 60% due to polymorphic `as` vs `asChild` API incompatibility — needs `/re-plan`. All 3 deferred tasks remain deferred. Brikette fully lint-enabled in CI.
+- 2026-02-07: DS-21 re-planned. Decision: refactor brikette to use `asChild` pattern (not add `as` prop to DS). Rationale: `asChild` is the established DS pattern (Button, LinkText, Stack, Inline); adding `as` would create two competing polymorphism APIs. Split into DS-21a (add asChild to Cluster + tests for all 3 primitives, 88%) and DS-21b (migrate 40 brikette call sites, 82%). Both now above 80% threshold. Evidence: E1 (code audit of all 6 primitives + 40 usage sites + cross-app usage).
 - **SearchBar refactor**: React audit Finding 2 — data transform in useEffect should be useMemo. Finding 3 — complex state structure
 - **DataGrid decomposition**: React audit Finding 4 — 417-line god component
 - **Context.Provider simplification**: React audit Finding 7 — accordion can use `<Context value={}>` (React 19)

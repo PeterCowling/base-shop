@@ -29,8 +29,8 @@ If uncertainty remains, do one of:
 | Evidence class | Typical source | Allowed confidence uplift |
 |----------------|----------------|---------------------------|
 | **E0: Assumption** | Opinion, intuition, "seems easy" | **0%** |
-| **E1: Static code/doc audit** | `rg`, file reads, call-site mapping | **small uplift only** (typically +0 to +5) |
-| **E2: Executable verification** | existing tests run, script outputs, runtime probes | **moderate uplift** (typically +5 to +15) |
+| **E1: Static code/doc audit** | `rg`, file reads, call-site mapping, official doc lookups | **small uplift only** (typically +0 to +5) |
+| **E2: Executable verification** | existing tests run, script outputs, runtime probes, **scout probe tests** | **moderate uplift** (typically +5 to +15) |
 | **E3: Precursor spike/prototype result** | dedicated spike task with measurable outcome | **major uplift** (typically +10 to +25) |
 
 ### Promotion gate (hard rule)
@@ -140,8 +140,38 @@ Run `/re-plan` when any of the following occurs:
 - New information invalidates assumptions, dependencies, or approach decisions.
 - Build was stopped due to uncertainty and needs a structured reset.
 - `/build-feature` rejected a task due to missing test contract.
+- **A CHECKPOINT task was reached during `/build-feature`** — triggers a mid-build reassessment of all remaining tasks using evidence from completed work.
 
 **Note:** `/re-plan` is not for generating a plan from scratch; that is `/plan-feature`. `/re-plan` operates on a specific plan and task IDs.
+
+### Checkpoint-Triggered Re-Assessment
+
+When `/re-plan` is invoked at a CHECKPOINT during `/build-feature`, it operates in **mid-build reassessment mode**:
+
+1. **Gather implementation evidence:** Read the completed tasks' build completion notes, commits, and confidence reassessments. This is E2/E3 evidence (executable verification from real implementation).
+
+2. **Validate horizon assumptions:** Each CHECKPOINT lists "Horizon assumptions to validate." Check each one against the evidence from completed tasks:
+   - **Confirmed:** The assumption held — downstream tasks can retain or increase confidence.
+   - **Partially confirmed:** Some aspects held, others were more complex than expected — downstream tasks need revision.
+   - **Disproved:** The assumption was wrong — downstream tasks that depend on it need major revision or abandonment.
+
+3. **Scout ahead for remaining tasks:** Before reassessing confidence, proactively validate assumptions that remaining tasks depend on:
+   - **Doc lookups:** Verify any library/API/framework capabilities the remaining tasks assume — check against the exact versions in use.
+   - **Probe tests:** Write small throwaway tests that exercise critical assumptions (e.g., "can Prisma do nested creates with this schema?", "does this API accept this payload shape?"). These are E2 evidence.
+   - **Contract checks:** Run `tsc` or schema validation against type/contract assumptions that downstream tasks depend on.
+   - **Integration boundary tests:** Run existing tests that cross boundaries the remaining tasks will depend on.
+
+   Scout results directly feed the reassessment — a failed scout disproves an assumption before you build on it.
+
+4. **Reassess remaining tasks:** For each task after the CHECKPOINT:
+   - Re-evaluate confidence using evidence from completed work AND scout results (not just static analysis)
+   - Split tasks that are now understood to be larger than planned
+   - Remove or defer tasks that are no longer viable
+   - Add new tasks discovered during implementation or scouting
+
+5. **Apply the standard re-plan workflow** (steps 1–7) to the remaining tasks, with the key difference that completed tasks and scout results provide E2/E3 evidence that was unavailable during initial planning.
+
+6. **After re-plan completes:** `/build-feature` will check the results and either continue building or stop if remaining tasks dropped below threshold.
 
 ## Workflow
 
@@ -488,3 +518,12 @@ Also add a short entry to the plan's **Decision Log** whenever an approach decis
 
 **Blocked / needs user input:**
 > "Re-plan complete but still blocked on <IDs> (<%>) due to <dimension>. Tasks re-sequenced where possible. I need the following decisions from you: <questions>."
+
+**Checkpoint-triggered — remaining tasks confirmed:**
+> "Checkpoint re-assessment complete. Horizon assumptions validated against completed work. N remaining tasks reassessed — all ≥80% with complete test contracts. Tasks re-sequenced. Resuming `/build-feature`."
+
+**Checkpoint-triggered — remaining tasks revised:**
+> "Checkpoint re-assessment complete. Found: <findings from completed work>. Revised N tasks, added M new tasks, deferred/removed K tasks. Updated plan re-sequenced into N execution waves. Resuming `/build-feature` for eligible tasks."
+
+**Checkpoint-triggered — approach invalidated:**
+> "Checkpoint re-assessment complete. Completed work revealed: <evidence>. Remaining approach is no longer viable because: <reason>. Recommend: <alternative approach or scope reduction>. Build paused pending direction."

@@ -206,6 +206,8 @@ Capture:
 - Key modules/files and responsibilities
 - Data/contracts touched (types, schemas, DB models)
 - Upstream dependencies and downstream dependents (blast radius)
+- **Performance patterns** (N+1 queries in affected data paths, caching layers, high-frequency code paths touched by the feature)
+- **Security boundaries** (auth/authorization on affected routes, data access controls, input validation points for untrusted data)
 - **Test landscape** (infrastructure, patterns, coverage gaps, testability, extinct tests)
 - Existing conventions/patterns to follow
 - Related docs/plans

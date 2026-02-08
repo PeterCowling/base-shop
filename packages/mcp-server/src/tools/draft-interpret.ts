@@ -251,11 +251,15 @@ function summarizeThreadContext(
   };
 }
 
+const SIGN_OFF_PATTERN = /^(thank|thanks|cheers|regards|kind regards|best|sincerely|looking forward)/i;
+
 function extractQuestions(text: string): IntentItem[] {
-  return text
-    .split("?")
+  const parts = text.split("?");
+  // Only segments followed by ? are questions; the last segment has no trailing ?
+  return parts
+    .slice(0, -1)
     .map(segment => segment.trim())
-    .filter(segment => segment.length > 0)
+    .filter(segment => segment.length > 0 && !SIGN_OFF_PATTERN.test(segment))
     .map(segment => ({
       text: `${segment}?`,
       evidence: segment,

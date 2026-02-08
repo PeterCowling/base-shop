@@ -1,5 +1,5 @@
 // src/data/guides.index.ts
-import { getGuideManifestEntry } from "@acme/guide-system";
+import { getGuideManifestEntry, resolveGuideStatusForSite } from "@acme/guide-system";
 
 import type { GuideKey } from "@/guides/slugs";
 import { guideNamespaceKey } from "@/guides/slugs/namespaces";
@@ -184,8 +184,11 @@ export const GUIDES_INDEX: GuideMeta[] = GUIDES_INDEX_BASE.map((entry) => ({
   tags: entry.tags,
   // Derive section from canonical namespace routing
   section: guideNamespaceKey(entry.key),
-  // Derive status from the manifest (single source of truth)
-  status: getGuideManifestEntry(entry.key)?.status ?? "draft",
+  // Derive status from the manifest (single source of truth), respecting per-site overrides
+  status: (() => {
+    const manifest = getGuideManifestEntry(entry.key);
+    return manifest ? resolveGuideStatusForSite(manifest, "brikette") : "draft";
+  })(),
 }));
 
 // --- Area-based guide collections ---

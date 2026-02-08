@@ -149,6 +149,8 @@ export type GuideManifestEntry = {
   focusKeyword?: string;
   primaryQuery?: string;
   timeSensitive?: boolean;
+  /** Per-site publication status overrides. Key is the site identifier (e.g. "brikette"). */
+  sites?: Record<string, { status?: GuideStatus }>;
 };
 
 /**
@@ -211,6 +213,12 @@ export function createManifestEntrySchema(guideKeys: readonly string[]) {
       focusKeyword: z.string().trim().min(3).optional(),
       primaryQuery: z.string().trim().min(3).optional(),
       timeSensitive: z.boolean().optional(),
+      sites: z
+        .record(
+          z.string(),
+          z.object({ status: z.enum(GUIDE_STATUS_VALUES).optional() }),
+        )
+        .optional(),
     })
     .superRefine((value, ctx) => {
       const ogType = value.options?.ogType?.trim();
@@ -237,6 +245,7 @@ export function createManifestEntrySchema(guideKeys: readonly string[]) {
       focusKeyword,
       primaryQuery,
       timeSensitive,
+      sites,
       ...rest
     } = value;
     const cleanOptions = options
@@ -266,6 +275,7 @@ export function createManifestEntrySchema(guideKeys: readonly string[]) {
       ...(typeof focusKeyword === "string" ? { focusKeyword } : {}),
       ...(typeof primaryQuery === "string" ? { primaryQuery } : {}),
       ...(typeof timeSensitive === "boolean" ? { timeSensitive } : {}),
+      ...(sites ? { sites } : {}),
       status: (value.status ?? "draft") as GuideStatus,
       structuredData: value.structuredData ?? [],
       relatedGuides: value.relatedGuides ?? [],
@@ -281,6 +291,17 @@ export type GuideManifestEntryInput = z.input<
 >;
 
 export type GuideManifest = Record<string, GuideManifestEntry>;
+
+/**
+ * Resolve the effective status of a guide for a specific site.
+ * Checks `entry.sites?.[siteKey]?.status` first, falls back to `entry.status`.
+ */
+export function resolveGuideStatusForSite(
+  entry: GuideManifestEntry,
+  siteKey: string,
+): GuideStatus {
+  return entry.sites?.[siteKey]?.status ?? entry.status;
+}
 
 // ── Checklist snapshot types (used by editorial sidebar) ──
 

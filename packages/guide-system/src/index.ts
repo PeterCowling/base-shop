@@ -67,6 +67,7 @@ export {
   type GuideRouteOptions,
   type GuideStatus,
   type GuideTemplate,
+  resolveGuideStatusForSite,
   STRUCTURED_DATA_TYPES,
   type StructuredDataDeclaration,
   type StructuredDataType,

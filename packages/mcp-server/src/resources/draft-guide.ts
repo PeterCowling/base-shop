@@ -1,15 +1,9 @@
 import { readFile } from "fs/promises";
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
+import { join } from "path";
+
+import { DATA_ROOT } from "../utils/data-root.js";
 
 import { clearBriketteCache } from "./brikette-knowledge.js";
-
-const DATA_ROOT = join(
-  dirname(fileURLToPath(import.meta.url)),
-  "..",
-  "..",
-  "data"
-);
 
 const CACHE_TTL_MS = 5 * 60 * 1000;
 const cache = new Map<string, { data: unknown; expires: number }>();

@@ -1,75 +1,53 @@
 #!/usr/bin/env node
-/* eslint-disable security/detect-non-literal-fs-filename -- CLI script reads guide content from known safe paths */
+/* eslint-disable security/detect-non-literal-fs-filename -- GS-001: CLI script reads guide content from known safe paths */
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-// Read guide keys from generated slugs file
-async function loadGuideKeys(): Promise<Set<string>> {
-  // Read GENERATED_GUIDE_SLUGS from generated file
-  const slugsPath = path.join(APP_ROOT, "src", "data", "generate-guide-slugs.ts");
-  const slugsContent = await readFile(slugsPath, "utf8");
-
-  // Extract keys from GENERATED_GUIDE_SLUGS object
-  const slugsMatch = slugsContent.match(/export const GENERATED_GUIDE_SLUGS[\s\S]*?= Object\.freeze\(\{([\s\S]*?)\}\)/);
-  if (!slugsMatch) {
-    throw new Error("Could not find GENERATED_GUIDE_SLUGS");
-  }
-
-  // Extract all keys (lines like: keyName: "slug",)
-  const keys = slugsMatch[1]
-    .split("\n")
-    .map(line => line.trim())
-    .filter(line => /^[a-zA-Z]/.test(line))
-    .map(line => {
-      const match = line.match(/^([a-zA-Z0-9_]+):/);
-      return match ? match[1] : null;
-    })
-    .filter((key): key is string => key !== null);
-
-  return new Set(keys);
-}
-
-async function loadHowToSlugs(): Promise<Set<string>> {
-  // Special-case: the how-to-get-here index page is a reserved slug used by
-  // %HOWTO:how-to-get-here|Label% tokens throughout the content.
-  // It is not a route definition key in routes.json.
-  const HOW_TO_GET_HERE_INDEX_SLUG = "how-to-get-here";
-
-  // Read route definitions from JSON
-  const routesPath = path.join(APP_ROOT, "src", "data", "how-to-get-here", "routes.json");
-  const routesContent = await readFile(routesPath, "utf8");
-  const routesData = JSON.parse(routesContent) as { routes: Record<string, unknown> };
-
-  const routeSlugs = Object.keys(routesData.routes);
-
-  // Also read guide slugs for howToGetHere
-  const slugsPath = path.join(APP_ROOT, "src", "guides", "slugs", "slugs.ts");
-  const slugsContent = await readFile(slugsPath, "utf8");
-
-  // Extract howToGetHere slugs from GUIDE_SLUGS
-  const howToMatch = slugsContent.match(/howToGetHere: \{([\s\S]*?)\},/);
-  const guideSlugs: string[] = [];
-
-  if (howToMatch) {
-    const slugLines = howToMatch[1].split("\n");
-    for (const line of slugLines) {
-      // Match patterns like: slug: { en: "value", ... }
-      const slugMatch = line.match(/["']?([a-z-]+)["']?: \{[\s\S]*?en: ["']([^"']+)["']/);
-      if (slugMatch && slugMatch[2]) {
-        guideSlugs.push(slugMatch[2]);
-      }
-    }
-  }
-
-  return new Set([HOW_TO_GET_HERE_INDEX_SLUG, ...routeSlugs, ...guideSlugs]);
-}
+import type { GuideManifestEntry } from "@acme/guide-system";
+import {
+  listGuideManifestEntries as _listGuideManifestEntries,
+  registerManifestEntries,
+  SUPPORTED_LANGUAGES,
+} from "@acme/guide-system";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const APP_ROOT = path.resolve(__dirname, "..");
 const LOCALES_ROOT = path.join(APP_ROOT, "src", "locales");
+
+// Load guide manifest from the JSON snapshot (typed imports, no regex)
+function loadManifestFromSnapshot(): GuideManifestEntry[] {
+  const snapshotPath = path.join(APP_ROOT, "src", "data", "guides", "guide-manifest-snapshot.json");
+  // eslint-disable-next-line @typescript-eslint/no-require-imports -- GS-001
+  const snapshot = require(snapshotPath) as { entries: GuideManifestEntry[] };
+  registerManifestEntries(snapshot.entries);
+  return snapshot.entries;
+}
+
+// Guide keys from manifest entries (replaces regex parsing of generate-guide-slugs.ts)
+function loadGuideKeys(entries: GuideManifestEntry[]): Set<string> {
+  return new Set(entries.map((e) => e.key));
+}
+
+// HOWTO slugs from route definitions (JSON) + manifest howToGetHere guides
+async function loadHowToSlugs(entries: GuideManifestEntry[]): Promise<Set<string>> {
+  const HOW_TO_GET_HERE_INDEX_SLUG = "how-to-get-here";
+
+  // Route definitions from JSON (unchanged)
+  const routesPath = path.join(APP_ROOT, "src", "data", "how-to-get-here", "routes.json");
+  const routesContent = await readFile(routesPath, "utf8");
+  const routesData = JSON.parse(routesContent) as { routes: Record<string, unknown> };
+  const routeSlugs = Object.keys(routesData.routes);
+
+  // Guide slugs for howToGetHere area (replaces regex parsing of slugs.ts)
+  const guideSlugs = entries
+    .filter((e) => e.primaryArea === "howToGetHere")
+    .map((e) => e.slug);
+
+  return new Set([HOW_TO_GET_HERE_INDEX_SLUG, ...routeSlugs, ...guideSlugs]);
+}
 
 // Parse CLI arguments
 const args = process.argv.slice(2);
@@ -122,7 +100,7 @@ function extractTokens(content: string): TokenMatch[] {
     const regex = new RegExp(TOKEN_PATTERN);
     let match;
     while ((match = regex.exec(line)) !== null) {
-      const [fullMatch, type, target, label] = match;
+      const [_fullMatch, type, target, label] = match;
       if (type && target && label) {
         tokens.push({
           type: type as TokenMatch["type"],
@@ -297,19 +275,10 @@ function extractStringsFromContent(obj: unknown): string[] {
 /**
  * Main validation function
  */
+// eslint-disable-next-line complexity -- GS-001: CLI validation script
 const main = async (): Promise<void> => {
-  // Load i18n config
-  const i18nConfigPath = path.join(APP_ROOT, "src", "i18n.config.ts");
-  const i18nContent = await readFile(i18nConfigPath, "utf8");
-  const localesMatch = i18nContent.match(/const SUPPORTED_LANGUAGES = \[([\s\S]*?)\] as const/);
-  const supportedLocales = localesMatch
-    ? localesMatch[1]
-        .split("\n")
-        .map(l => l.trim())
-        .filter(l => l.startsWith('"'))
-        .map(l => l.replace(/^"|",?$/g, ""))
-        .filter(Boolean)
-    : ["en", "de", "fr", "it", "es", "pt", "ru", "zh", "ja", "ko", "ar", "hi", "vi", "pl", "sv", "no", "da", "hu"];
+  // Locales from @acme/guide-system (replaces regex parsing of i18n.config.ts)
+  const supportedLocales = [...SUPPORTED_LANGUAGES];
 
   const locales = localeFilter
     ? supportedLocales.filter(loc => loc === localeFilter)
@@ -320,19 +289,20 @@ const main = async (): Promise<void> => {
     process.exit(1);
   }
 
-  // Build validation sets
-  console.log("Loading guide keys and slugs...");
-  const validGuideKeys = await loadGuideKeys();
-  const validHowToSlugs = await loadHowToSlugs();
+  // Build validation sets from manifest (typed imports, no regex)
+  console.info("Loading guide keys and slugs...");
+  const manifestEntries = loadManifestFromSnapshot();
+  const validGuideKeys = loadGuideKeys(manifestEntries);
+  const validHowToSlugs = await loadHowToSlugs(manifestEntries);
 
-  console.log("Validating guide link tokens...");
-  console.log(`Locales: ${locales.join(", ")}`);
-  console.log(`Valid guide keys: ${validGuideKeys.size}`);
-  console.log(`Valid HOWTO slugs: ${validHowToSlugs.size}`);
+  console.info("Validating guide link tokens...");
+  console.info(`Locales: ${locales.join(", ")}`);
+  console.info(`Valid guide keys: ${validGuideKeys.size}`);
+  console.info(`Valid HOWTO slugs: ${validHowToSlugs.size}`);
   if (guideFilter) {
-    console.log(`Guide filter: ${Array.from(guideFilter).sort().join(", ")}`);
+    console.info(`Guide filter: ${Array.from(guideFilter).sort().join(", ")}`);
   }
-  console.log("");
+  console.info("");
 
   const violations: LinkViolation[] = [];
   let totalFiles = 0;
@@ -345,7 +315,7 @@ const main = async (): Promise<void> => {
     let contentFiles: string[];
     try {
       contentFiles = await listJsonFiles(guidesContentDir);
-    } catch (error) {
+    } catch {
       if (verbose) {
         console.warn(`Warning: Could not read guides content directory for locale "${locale}"`);
       }
@@ -408,30 +378,30 @@ const main = async (): Promise<void> => {
   }
 
   // Report results
-  console.log("Validation Summary:");
-  console.log(`  Total files scanned: ${totalFiles}`);
-  console.log(`  Total tokens found: ${totalTokens}`);
-  console.log(`  Invalid tokens: ${violations.length}`);
-  console.log("");
+  console.info("Validation Summary:");
+  console.info(`  Total files scanned: ${totalFiles}`);
+  console.info(`  Total tokens found: ${totalTokens}`);
+  console.info(`  Invalid tokens: ${violations.length}`);
+  console.info("");
 
   if (violations.length > 0) {
-    console.log("Link Token Violations:");
-    console.log("");
+    console.info("Link Token Violations:");
+    console.info("");
 
     for (const violation of violations) {
-      console.log(`  ${violation.locale}/guides/content/${violation.file}`);
-      console.log(`    Line ${violation.token.line}: %${violation.token.type}:${violation.token.target}|${violation.token.label}%`);
-      console.log(`    Error: ${violation.error}`);
+      console.info(`  ${violation.locale}/guides/content/${violation.file}`);
+      console.info(`    Line ${violation.token.line}: %${violation.token.type}:${violation.token.target}|${violation.token.label}%`);
+      console.info(`    Error: ${violation.error}`);
       if (violation.suggestion) {
-        console.log(`    Suggestion: ${violation.suggestion}`);
+        console.info(`    Suggestion: ${violation.suggestion}`);
       }
-      console.log("");
+      console.info("");
     }
 
     console.error("Validation failed due to invalid link tokens.");
     process.exitCode = 1;
   } else {
-    console.log("✅ All link tokens validated successfully!");
+    console.info("✅ All link tokens validated successfully!");
   }
 };
 

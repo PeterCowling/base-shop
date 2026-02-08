@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, complexity, ds/no-hardcoded-copy -- GS-001: guide SEO template uses dynamic content types */
 import type { ReactNode } from "react";
 import dynamic from "next/dynamic";
 
 import { Section } from "@acme/design-system/atoms";
 
 import type { BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
-import { PREVIEW_TOKEN } from "@/config/env";
+import { IS_DEV, PREVIEW_TOKEN } from "@/config/env";
 import type { AppLanguage } from "@/i18n.config";
 import { isGuideAuthoringEnabled } from "@/routes/guides/guide-authoring/gate";
 import { buildGuideEditUrl } from "@/routes/guides/guide-authoring/urls";
@@ -96,6 +97,7 @@ export type GuideSeoTemplateBodyProps = {
   articleDescriptionForGeneric?: string;
   renderGenericWhenEmpty: boolean;
   preferGenericWhenFallback?: boolean;
+  fallbackInjectedForLocale: boolean;
   articleLeadNode: ReactNode | null;
   articleExtrasNode: ReactNode | null;
   afterArticleNode: ReactNode | null;
@@ -169,6 +171,7 @@ export function GuideSeoTemplateBody(props: GuideSeoTemplateBodyProps): JSX.Elem
     guideFaqFallback,
     alwaysProvideFaqFallback,
     suppressFaqWhenUnlocalized,
+    fallbackInjectedForLocale,
   } = props;
   const editUrl =
     isGuideAuthoringEnabled() && PREVIEW_TOKEN
@@ -209,6 +212,21 @@ export function GuideSeoTemplateBody(props: GuideSeoTemplateBodyProps): JSX.Elem
 
       <Section as="div" padding="none" className="mx-auto max-w-3xl px-4 pt-3 md:px-8 lg:px-10">
         <DevStatusPill guideKey={guideKey as any} />
+        {IS_DEV && fallbackInjectedForLocale && lang !== "en" && (
+          <div
+            className="mb-4 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-800"
+            suppressHydrationWarning
+          >
+            <p className="font-semibold">English fallback active</p>
+            <p className="mt-1 text-blue-700">
+              Showing English content for locale <code className="rounded bg-blue-100 px-1 font-mono text-xs">{lang}</code>.
+              {" "}Translation file: <code className="rounded bg-blue-100 px-1 font-mono text-xs">src/locales/{lang}/guides/content/{manifestEntry?.contentKey ?? guideKey}.json</code>
+            </p>
+            <p className="mt-1 text-xs text-blue-600">
+              Run: <code className="rounded bg-blue-100 px-1 font-mono">pnpm validate-content --locale={lang} --guides={manifestEntry?.contentKey ?? guideKey}</code>
+            </p>
+          </div>
+        )}
         <article className={`prose prose-slate prose-lg sm:prose-xl dark:prose-invert ${articleHeadingWeightClass} prose-headings:tracking-tight prose-headings:text-brand-heading dark:prose-headings:text-brand-surface prose-p:text-left prose-p:leading-relaxed prose-li:leading-relaxed prose-strong:font-semibold prose-strong:text-brand-heading prose-ul:list-disc prose-ol:list-decimal prose-ul:pl-6 prose-ol:pl-6 prose-li:my-1 prose-li:marker:text-brand-primary/70 space-y-10`}>
           {shouldShowEditorialPanel && manifestEntry ? (
             <GuideEditorialPanel

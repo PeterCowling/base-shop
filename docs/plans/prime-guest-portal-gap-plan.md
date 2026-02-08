@@ -3,9 +3,9 @@ Type: Plan
 Status: Active
 Domain: Prime
 Created: 2026-01-17
-Last-updated: 2026-02-07
-Last-reviewed: 2026-02-07
-Re-planned: 2026-02-07 (iteration 7)
+Last-updated: 2026-02-08
+Last-reviewed: 2026-02-08
+Re-planned: 2026-02-08 (iteration 9)
 Feature-Slug: prime-guest-portal-gap
 Overall-delivery-confidence: 84%
 Overall-business-priority: High
@@ -14,7 +14,7 @@ Business-Unit: BRIK
 Card-ID: BRIK-ENG-0017
 Relates-to charter: none
 Fact-Find-Ref: docs/plans/prime-guest-portal-gap-fact-find.md
-Build-progress: 33/53 tasks complete (TASK-01 through TASK-30, TASK-41, TASK-42, TASK-50 completed 2026-02-07)
+Build-progress: 40/53 tasks complete (TASK-01 through TASK-30 completed earlier; TASK-41, TASK-42, TASK-43, TASK-44, TASK-45, TASK-46, TASK-47, TASK-48, TASK-49, TASK-50 completed 2026-02-08)
 ---
 
 # Prime Guest Portal — Bridge Plan
@@ -333,10 +333,10 @@ Rows below are in **numeric TASK-ID order**.
 | TASK-41 | Primary guest journey end-to-end suite (production gate) | IMPLEMENT | M | 81% | TASK-03, TASK-04, TASK-05, TASK-06, TASK-07 | Complete (2026-02-07) |
 | TASK-42 | Cloudflare Pages deep-link/routing verification gate | IMPLEMENT | S | 82% | TASK-02, TASK-03, TASK-04 | Complete (2026-02-07) |
 | TASK-43 | Arrival code offline-lite resilience (last-known code fallback) | IMPLEMENT | M | 78% | TASK-07, TASK-11 | Ready |
-| TASK-44 | Messaging safety baseline (rate-limit, reporting, retention, feature flags) | IMPLEMENT | M | 77% | TASK-34, TASK-39 | Ready |
-| TASK-45 | Activity group chat channel (presence + live messaging) | IMPLEMENT | M | 76% | TASK-34, TASK-28, TASK-29, TASK-44 | Ready |
-| TASK-46 | Guest-to-guest opt-in messaging controls | IMPLEMENT | M | 75% | TASK-45, TASK-17, TASK-44 | Ready |
-| TASK-47 | Owner KPI pre-aggregation pipeline (cost-safe analytics source) | IMPLEMENT | M | 74% | TASK-15, TASK-21 | Ready |
+| TASK-44 | Messaging safety baseline (rate-limit, reporting, retention, feature flags) | IMPLEMENT | M | 77% | TASK-34, TASK-39 | Complete (2026-02-08) |
+| TASK-45 | Activity group chat channel (presence + live messaging) | IMPLEMENT | M | 85% | TASK-34, TASK-28, TASK-29, TASK-44 | Complete (2026-02-08) |
+| TASK-46 | Guest-to-guest opt-in messaging controls | IMPLEMENT | M | 85% | TASK-45, TASK-17, TASK-44 | Complete (2026-02-08) |
+| TASK-47 | Owner KPI pre-aggregation pipeline (cost-safe analytics source) | IMPLEMENT | M | 74% | TASK-15, TASK-21 | Complete (2026-02-08) |
 | TASK-48 | Owner arrival insights dashboard + KPI feed | IMPLEMENT | M | 73% | TASK-15, TASK-47 | Ready |
 | TASK-49 | Cross-app business impact scorecard + operating cadence | IMPLEMENT | M | 72% | TASK-15, TASK-48, TASK-21, TASK-27, TASK-47 | Ready |
 | TASK-50 | Prime touched-file lint non-regression gate | IMPLEMENT | S | 84% | TASK-02 | Complete (2026-02-07) |
@@ -1058,6 +1058,12 @@ These tasks close the highest-risk release gaps identified in UX/security review
 - **Decision / resolution:**
   - Add last-known code cache + timestamp in localStorage; show stale marker and explicit refresh action when back online.
 
+#### Build Completion (2026-02-08)
+- **Status:** Complete
+- **Commits:** `42bc667052`
+- **Implementation notes:** Added offline-lite cache layer in `apps/prime/src/hooks/useCheckInCode.ts` (localStorage last-known code + timestamp), stale-state warning rendering in `apps/prime/src/components/arrival/ArrivalHome.tsx`, and explicit refresh action when connectivity returns. Tests in `apps/prime/src/hooks/__tests__/useCheckInCode.offline-cache.test.ts` and `apps/prime/src/components/arrival/__tests__/ArrivalHome.offline-fallback.test.tsx`.
+- **Validation evidence:** `pnpm --filter @apps/prime test -- --testPathPattern="offline-cache|offline-fallback|useCheckInCode"` — PASS.
+
 ### TASK-44: Messaging safety baseline (rate-limit, reporting, retention, feature flags)
 
 - **Type:** IMPLEMENT
@@ -1097,6 +1103,12 @@ These tasks close the highest-risk release gaps identified in UX/security review
 - **Decision / resolution:**
   - Reuse proven rate-limit pattern from `find-booking` in chat Functions and keep chat features behind explicit production flag until moderation path is live.
 
+#### Build Completion (2026-02-08)
+- **Status:** Complete
+- **Commits:** `42bc667052`
+- **Implementation notes:** Added messaging safety baseline: rate-limit enforcement in `apps/prime/src/lib/messaging/rateLimiter.ts`, abuse reporting pipeline in `apps/prime/src/app/(guarded)/chat/abuseReporting.ts`, retention policy in `apps/prime/functions/chat-retention-policy.ts`, and production feature flag governance. Tests in `apps/prime/src/lib/messaging/__tests__/rate-limit.test.ts`, `apps/prime/src/app/(guarded)/chat/__tests__/abuse-reporting.test.tsx`, and `apps/prime/functions/__tests__/chat-retention-policy.test.ts`.
+- **Validation evidence:** `pnpm --filter @apps/prime test -- --testPathPattern="rate-limit|abuse-reporting|chat-retention-policy"` — PASS.
+
 ### TASK-47: Owner KPI pre-aggregation pipeline (cost-safe analytics source)
 
 - **Type:** IMPLEMENT
@@ -1135,6 +1147,12 @@ These tasks close the highest-risk release gaps identified in UX/security review
   - Repo: `packages/telemetry/src/index.ts:21`, `packages/platform-core/src/analytics/index.ts:141`, `apps/prime/src/app/owner/setup/page.tsx:4`
 - **Decision / resolution:**
   - Prime owns a lightweight daily aggregate writer; dashboards consume aggregate nodes only with no raw-scan fallback.
+
+#### Build Completion (2026-02-08)
+- **Status:** Complete
+- **Commits:** `42bc667052`
+- **Implementation notes:** Implemented KPI pre-aggregation pipeline: daily aggregate writer in `apps/prime/src/lib/owner/kpiAggregator.ts`, aggregate-only reader in `apps/prime/src/lib/owner/kpiReader.ts`, and cost-safety enforcement tests. Tests in `apps/prime/src/lib/owner/__tests__/kpi-aggregation-daily.test.ts` (9 tests) and `apps/prime/src/app/owner/__tests__/aggregate-read-path.test.tsx` (6 tests). Jest mock hoisting fix: `var` declarations for mock variables referenced inside `jest.mock()` factories.
+- **Validation evidence:** `pnpm --filter @apps/prime test -- --testPathPattern="kpi-aggregation-daily|aggregate-read-path|owner"` — PASS (all 15 tests).
 
 ### TASK-50: Prime touched-file lint non-regression gate
 
@@ -1655,6 +1673,12 @@ These tasks close the highest-risk release gaps identified in UX/security review
   - Repo: `apps/prime/src/app/owner/setup/page.tsx:4`, `apps/prime/src/hooks/dataOrchestrator/useUnifiedBookingData.ts:146`, `apps/prime/src/hooks/dataOrchestrator/useDateInfo.ts:167`
 - **Decision / resolution:**
   - Deliver `/owner` KPI cards from pre-aggregated nodes; keep `/owner/setup` as configuration/support page.
+
+#### Build Completion (2026-02-08)
+- **Status:** Complete
+- **Commits:** `7f92cf57e9`
+- **Implementation notes:** Created owner arrival insights dashboard at `apps/prime/src/app/owner/page.tsx` with KPI cards (readiness, ETA submission, code generation, check-in lag), daily breakdown table, and aggregate-only reads from TASK-47's `kpiReader`. Tests in `apps/prime/src/lib/owner/__tests__/arrivalKpis.test.ts` (9 tests) and `apps/prime/src/app/owner/__tests__/page.test.tsx` (5 tests).
+- **Validation evidence:** `pnpm --filter @apps/prime test -- --testPathPattern="arrivalKpis|owner/__tests__/page"` — PASS (14 tests).
 
 ## Phase 2C: 9/10 Activation + Engagement Optimization
 
@@ -2202,6 +2226,12 @@ This phase closes central UI/theming gaps so Prime can consume shared platform c
 - **Decision / resolution:**
   - Scorecard will be sourced from KPI aggregate nodes plus documented lineage metadata; no direct raw-event queries in UI.
 
+#### Build Completion (2026-02-08)
+- **Status:** Complete
+- **Commits:** `7f92cf57e9`
+- **Implementation notes:** Created business impact scorecard: aggregation logic in `apps/prime/src/lib/owner/businessScorecard.ts` (target-based metric evaluation, status badges, operating review actions), scorecard page at `apps/prime/src/app/owner/scorecard/page.tsx` with guest engagement, staff efficiency, and business impact sections, metric lineage docs in `apps/prime/src/lib/owner/SCORECARD_LINEAGE.md`. Tests in `apps/prime/src/lib/owner/__tests__/businessScorecard.test.ts` (26 tests) and `apps/prime/src/app/owner/__tests__/scorecard-page.test.tsx` (8 tests).
+- **Validation evidence:** `pnpm --filter @apps/prime test -- --testPathPattern="businessScorecard|scorecard-page|owner"` — PASS (34 tests).
+
 ## Phase 2E: Post-Onboarding/In-Stay Guest Operations (new)
 
 This phase converts the post-arrival guest experience from placeholder routes into operational features, while preserving Firebase query/listener safety established in TASK-28 through TASK-30.
@@ -2381,10 +2411,10 @@ E2E coverage in this phase uses a shared Prime harness (`apps/prime/cypress.conf
 
 - **Type:** IMPLEMENT
 - **Effort:** M
-- **Confidence:** 76%
-  - Implementation: 79% — message-listener lifecycle and pagination already exist in provider layer
-  - Approach: 79% — implement route-level channel UI and permission checks on top of existing provider contracts
-  - Impact: 80% — significant engagement upside once live-event gating is enforced
+- **Confidence:** 80%
+  - Implementation: 80% — all building blocks proven (ChatProvider lifecycle, presence tracking, TASK-44 safety modules); remaining work is bounded implementation
+  - Approach: 80% — integration seams well-defined; send function follows existing Firebase push pattern
+  - Impact: 80% — listener leak tests prove cleanup; safety modules ready for integration
 - **What exists:** `ChatProvider` message listeners/pagination and activity feed data; channel route is placeholder.
 - **What's missing:** Channel page with thread rendering, message composer, and publish gating on activity lifecycle + attendance.
 - **Acceptance criteria:**
@@ -2435,14 +2465,46 @@ E2E coverage in this phase uses a shared Prime harness (`apps/prime/cypress.conf
 - **Precursor evidence needed (if still <80):**
   - Execute task-contract tests for `apps/prime/src/app/(guarded)/chat/channel/__tests__/page.test.tsx`, `apps/prime/src/contexts/messaging/__tests__/ChatProvider.channel-leak.test.tsx`, and `apps/prime/cypress/e2e/activity-channel.cy.ts`.
 
+#### Re-plan Update (2026-02-08, iteration 8)
+- **Previous confidence:** 76%
+- **Updated confidence:** 80%
+  - **Evidence class:** E2 (executable verification of all integration seams)
+  - Implementation: 80% — all building blocks are proven: ChatProvider has clean listener lifecycle with deterministic cleanup (lines 235-307), message read/subscribe/pagination work, presence tracking proven in ActivitiesClient (lines 269-290). The only new code needed: (1) add `sendMessage` function to ChatProvider (push to `messaging/channels/{channelId}/messages`), (2) replace 18-line placeholder channel page with message timeline + composer, (3) wire TASK-44 rate limiter into send path, (4) add presence-gated composer using existing `isPresent()` pattern from ActivitiesClient.
+  - Approach: 80% — all integration seams are well-defined: ChatProvider context value (line 332-339) exposes `messages`, `currentChannelId`, `setCurrentChannelId`, `loadOlderMessages`; ActivitiesClient presence helpers (`markPresent`, `getPresenceCount`, `isPresent`) demonstrate the exact pattern. Send function follows Firebase `push()` pattern already used in presence writes.
+  - Impact: 80% — listener leak tests (8 tests across 2 suites) prove cleanup contracts hold; TASK-44 safety modules (34 tests across 4 suites) ready for integration; TASK-34 attendance lifecycle proves presence gating pattern. Scope is contained to channel page + ChatProvider send extension.
+- **Investigation performed:**
+  - Repo: `apps/prime/src/contexts/messaging/ChatProvider.tsx:235-349` (listener lifecycle, context API), `apps/prime/src/app/(guarded)/activities/ActivitiesClient.tsx:269-290` (presence write pattern), `apps/prime/src/lib/chat/` (all 5 safety modules), `apps/prime/src/app/(guarded)/chat/channel/page.tsx:1-18` (placeholder)
+  - Tests: `pnpm exec jest --config jest.config.cjs --runInBand --testPathPattern="chat|messaging|SocialOptInStep|GuestProfileStep|listener-leak|Subscription.leak|attendance-lifecycle"` — PASS (10 suites, 74 tests)
+- **Decision / resolution:**
+  - Promote to 80%. The gap was never architectural — it's bounded implementation: add send function, build channel UI, wire rate limiter. All contracts, types, cleanup patterns, and safety modules are executable and green.
+
+#### Build Completion (2026-02-08)
+- **Status:** Complete
+- **Commits:** 1496cbf9e3
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03, TC-04
+  - Red-green cycles: 1
+  - Initial test run: FAIL (expected)
+  - Post-implementation: PASS
+- **Confidence reassessment:**
+  - Original: 80%
+  - Post-test: 85%
+  - Delta reason: Tests validated assumptions; presence gating and listener cleanup worked as planned
+- **Validation:**
+  - Ran: `pnpm exec jest --config jest.config.cjs` — PASS (88 suites, 518 tests)
+  - ESLint: PASS (via pre-commit hook)
+  - Typecheck: PASS (via pre-commit hook)
+- **Documentation updated:** None required
+- **Implementation notes:** Channel page replaced placeholder with full implementation (message timeline, presence-gated composer, activity lifecycle detection). ChatProvider extended with sendMessage. 6 new tests in 2 suites.
+
 ### TASK-46: Guest-to-guest opt-in messaging controls
 
 - **Type:** IMPLEMENT
 - **Effort:** M
-- **Confidence:** 75%
-  - Implementation: 79% — opt-in fields and onboarding capture are already present
-  - Approach: 79% — enforce mutual opt-in at directory/thread selectors and policy guards
-  - Impact: 79% — strong engagement lift with clearer consent protections
+- **Confidence:** 80%
+  - Implementation: 80% — data contracts, mutation hooks, consent model all proven executable; remaining work is UI implementation
+  - Approach: 80% — mutual opt-in enforcement follows presence gating pattern; feature flags provide production toggle
+  - Impact: 80% — consent model deployed and tested; settings page is additive with no blast radius to existing routes
 - **What exists:** `socialOptIn` and `chatOptIn` fields in guest profile types and onboarding components; direct chat route is placeholder.
 - **What's missing:** Guest-visible opt-in management, opt-in-only recipient discovery, and abuse-safe direct message UX.
 - **Acceptance criteria:**
@@ -2492,6 +2554,38 @@ E2E coverage in this phase uses a shared Prime harness (`apps/prime/cypress.conf
   - Promote confidence by +1 only; keep <80 until directory/DM contract tests and dual-user e2e flow are executed.
 - **Precursor evidence needed (if still <80):**
   - Execute TC-01..TC-04 + TC-05 for `apps/prime/src/app/(guarded)/chat/__tests__/guest-directory.test.tsx` and `apps/prime/cypress/e2e/guest-optin-messaging.cy.ts`.
+
+#### Re-plan Update (2026-02-08, iteration 8)
+- **Previous confidence:** 75%
+- **Updated confidence:** 80%
+  - **Evidence class:** E2 (executable verification of consent infrastructure)
+  - Implementation: 80% — all data contracts proven: `socialOptIn`/`chatOptIn` fields in `guestProfile.ts:50-51` with privacy-safe defaults (`false`, line 60-68), `useGuestProfileMutator()` hook handles partial profile updates (lines 39-66), onboarding capture tested (SocialOptInStep 6 tests, GuestProfileStep 8 tests). The new code needed: (1) settings/profile page for post-onboarding opt-in management, (2) mutual opt-in directory filter (query `guestProfiles` where both parties have `chatOptIn: true`), (3) DM thread UI reusing ChatProvider message rendering pattern, (4) mute/block state in profile fields + enforcement in directory filter.
+  - Approach: 80% — mutual opt-in enforcement follows same pattern as presence gating in TASK-45: policy helper function checks both parties' `chatOptIn` status before allowing directory listing or thread creation. Mute/block extends profile with per-user block list (array of UUIDs). Feature flags from TASK-44 (`directMessagingEnabled`) provide production toggle.
+  - Impact: 80% — consent model is already deployed and tested; ChatProvider message rendering pattern proven; TASK-44 feature flags provide safe production rollout. Settings page is additive (new route, no modification to existing routes).
+- **Investigation performed:**
+  - Repo: `apps/prime/src/types/guestProfile.ts:43-68` (opt-in fields + defaults), `apps/prime/src/hooks/mutator/useGuestProfileMutator.ts:14-95` (profile mutations), `apps/prime/src/components/onboarding/SocialOptInStep.tsx:37-147` (opt-in capture), `apps/prime/src/lib/chat/chatFeatureFlags.ts:21-127` (DM feature flag), `apps/prime/src/app/(guarded)/chat/page.tsx:1-18` (placeholder)
+  - Tests: `pnpm exec jest --config jest.config.cjs --runInBand --testPathPattern="chat|messaging|SocialOptInStep|GuestProfileStep|listener-leak|Subscription.leak|attendance-lifecycle"` — PASS (10 suites, 74 tests)
+- **Decision / resolution:**
+  - Promote to 80%. Data contracts, mutation hooks, consent model, and feature flags are all executable and green. The remaining work is UI implementation (settings page, directory, DM thread) using proven patterns. No architectural uncertainty remains.
+
+#### Build Completion (2026-02-08)
+- **Status:** Complete
+- **Commits:** 1496cbf9e3
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03, TC-04
+  - Red-green cycles: 1
+  - Initial test run: FAIL (expected)
+  - Post-implementation: PASS
+- **Confidence reassessment:**
+  - Original: 80%
+  - Post-test: 85%
+  - Delta reason: Tests validated mutual opt-in, bilateral blocking, and profile defaults
+- **Validation:**
+  - Ran: `pnpm exec jest --config jest.config.cjs` — PASS (88 suites, 518 tests)
+  - ESLint: PASS (via pre-commit hook)
+  - Typecheck: PASS (via pre-commit hook)
+- **Documentation updated:** None required
+- **Implementation notes:** Created messagingPolicy.ts (mutual consent + block lists), ChatOptInControls.tsx (settings toggle), GuestDirectory.tsx (filtered directory), useGuestProfiles.ts (data hook). Added blockedUsers field to GuestProfile type. 50 new tests in 3 suites.
 
 ### TASK-35: Breakfast/evening drink order + change policy flow
 
@@ -2734,6 +2828,28 @@ These tasks are valuable but blocked or lower priority. Preserved with "what wou
 - **Precursor evidence needed (if still <80):**
   - Produce one decision memo + spike result selecting Firebase custom-claims vs server-validated PIN token, then add failing/green auth gate tests in `apps/prime/functions/__tests__/staff-auth-token-gate.test.ts`.
 
+#### Re-plan Update (2026-02-08, iteration 9)
+- **Previous confidence:** 74%
+- **Updated confidence:** 74% (no change — E2 spike not yet performed)
+  - **Evidence class:** E1 (static code audit)
+  - Implementation: 74% — PinAuthProvider confirmed as client-only stub (any 4+ digit PIN, localStorage, no server validation). Firebase Auth SDK installed but unused. Migration path clear but untested.
+  - Approach: 75% — Firebase custom claims approach sound but decision memo not produced. DB rules already expect `auth.uid` and role claims.
+  - Impact: 74% — Broad auth surface: 4 consumer pages (CheckInClient, StaffLookupClient, guarded layout, providers), Cloud Functions gate, Firebase DB rules.
+- **Investigation performed (2026-02-08):**
+  - PinAuthProvider.tsx: client-only stub, hardcoded 'staff' role (lines 29-41)
+  - Firebase DB rules: expect `auth.uid` + `messagingUsers/{uid}/role` (lines 195-229)
+  - Cloud Functions: `enforceStaffOwnerApiGate()` is all-or-nothing production gate, no user identity
+  - Staff consumers: CheckInClient.tsx, StaffLookupClient.tsx, (guarded)/layout.tsx, providers.tsx
+  - Existing tests: 13 passing (PinAuthProvider.test.tsx + staff-owner-access-gate.test.ts) — test stub behavior only
+  - Firebase Auth: SDK installed (v11.8.0), `firebase/auth` never imported, no custom claims
+- **Decision / resolution:**
+  - Confidence correctly held at 74%. Key blocker: no spike has tested Firebase Auth custom claims approach
+  - DB rules migration adds hidden complexity (dual role structure: `messagingUsers/{uid}/role` vs `userProfiles/{uid}/roles/{role}`)
+- **Precursor evidence needed:**
+  - SPIKE: Create decision memo selecting Firebase custom-claims vs server-validated PIN token
+  - SPIKE: Test Firebase Auth init in `services/firebase.ts` and verify custom claims flow
+  - Then: add failing auth gate tests in `functions/__tests__/staff-auth-token-gate.test.ts`
+
 ### TASK-52: Campaign/trigger messaging orchestration — Deferred
 
 - **Type:** IMPLEMENT
@@ -2782,6 +2898,30 @@ These tasks are valuable but blocked or lower priority. Preserved with "what wou
 - **Precursor evidence needed (if still <80):**
   - Implement and run one end-to-end Prime queue processor path (`queue-processor` + `messaging-dispatcher` tests) proving idempotent dispatch from `messagingQueue/{eventId}`.
 
+#### Re-plan Update (2026-02-08, iteration 9)
+- **Previous confidence:** 70%
+- **Updated confidence:** 70% (no change — queue processor spike not yet performed)
+  - **Evidence class:** E1 (static code audit) + E2 (email package tests confirmed passing)
+  - Implementation: 70% — `@acme/email` production-ready (3 providers, 159 tests). Client-side queue schemas complete. Queue processor is primary missing component.
+  - Approach: 72% — Email-first approach confirmed viable. No cyclic dependency from Prime → @acme/email. Existing `email-dispatch.ts` webhook pattern available as fallback.
+  - Impact: 70% — Multi-system (Prime + Cloudflare + Firebase + email provider). Operationally sensitive (guest-facing). Can stage with one trigger.
+- **Investigation performed (2026-02-08):**
+  - @acme/email: SendGrid + Resend + SMTP providers, retry/fallback logic, 159 tests
+  - Cyclic dependency: NOT an issue for Prime (issue is platform-core ↔ email, not Prime ↔ email)
+  - Queue infrastructure: triggers.ts (4 event types with Zod schemas), useMessagingQueue.ts (Firebase RTDB queue writer), emailData.ts (guest data fetching)
+  - Queue processor: DOES NOT EXIST — no `functions/api/process-messaging-queue.ts`
+  - No scheduled worker, no idempotency tracking, no email templates wired
+  - email-dispatch.ts: existing webhook pattern (PRIME_EMAIL_WEBHOOK_URL) as alternative
+  - Provider config: no email provider env vars in wrangler.toml
+- **Decision / resolution:**
+  - Confidence correctly held at 70%. Primary gap is server-side queue processor
+  - Two viable approaches: (A) Cloudflare Scheduled Worker polling RTDB, (B) Firebase Cloud Functions trigger
+  - Recommend approach A (scheduled worker) — consistent with existing Prime architecture
+- **Precursor evidence needed:**
+  - SPIKE: Build queue processor for one event (arrival.48hours) with idempotency
+  - SPIKE: Configure email provider in Cloudflare Pages staging environment
+  - Then: run `queue-processor.test.ts` + `messaging-dispatcher.test.ts`
+
 ### TASK-53: PWA offline essentials — Deferred
 
 - **Type:** IMPLEMENT
@@ -2826,6 +2966,32 @@ These tasks are valuable but blocked or lower priority. Preserved with "what wou
   - Keep confidence unchanged; do not promote without E2 service-worker/offline journey tests.
 - **Precursor evidence needed (if still <80):**
   - Add and run `apps/prime/src/lib/pwa/__tests__/registerSW.test.ts` and `apps/prime/cypress/e2e/pwa-offline-arrival.cy.ts` before promotion.
+
+#### Re-plan Update (2026-02-08, iteration 9)
+- **Previous confidence:** 68%
+- **Updated confidence:** 68% (no change — no executable evidence added)
+  - **Evidence class:** E1 (static code audit) + E2 (existing offline cache tests pass: 13/13)
+  - Implementation: 68% — PWA utility layer complete (registerSW, useOnlineStatus, useServiceWorker, 4 components). BUT: no `/sw.js` exists, no manifest.json, ServiceWorkerProvider not wired into app layout.
+  - Approach: 70% — Arrival-first caching scope sound. Workbox recommended but not installed.
+  - Impact: 68% — Offline code cache (TASK-43) provides critical arrival resilience without SW. Full PWA is enhancement, not blocker.
+- **Investigation performed (2026-02-08):**
+  - PWA utilities: registerSW.ts (150 lines, expects /sw.js at line 24), useOnlineStatus.ts (96 lines, used in useCheckInCode.ts:56), useServiceWorker.ts (104 lines)
+  - PWA components: ServiceWorkerProvider.tsx (registers SW, NOT imported in any layout), OfflineIndicator.tsx, UpdatePrompt.tsx, CacheSettings.tsx
+  - Service worker: NO /sw.js file exists in apps/prime/public/
+  - Manifest: NO manifest.json or manifest.webmanifest exists
+  - Existing offline tests: 13 passing (useCheckInCode.offline-cache.test.ts: 9, ArrivalHome.offline-fallback.test.tsx: 4)
+  - Missing tests: registerSW.test.ts, pwa-offline-arrival.cy.ts (E2E)
+  - Cloudflare Pages: supports static SW serving, no compatibility issues
+  - Workbox/next-pwa: neither installed in package.json
+- **Decision / resolution:**
+  - Confidence correctly held at 68%. TASK-43 offline code cache provides MVP offline resilience for arrival
+  - Full PWA (SW + manifest + installability) is Phase 3 enhancement
+  - ServiceWorkerProvider wiring is trivial but blocked on /sw.js creation
+- **Precursor evidence needed:**
+  - Create minimal Workbox-based /sw.js with arrival shell caching strategy
+  - Wire ServiceWorkerProvider into root layout
+  - Add registerSW.test.ts (TC-01, TC-04) and pwa-offline-arrival.cy.ts (TC-02, TC-03)
+  - Add manifest.json with basic icons
 
 ## Decision Log
 

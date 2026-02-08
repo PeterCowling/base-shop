@@ -72,6 +72,7 @@ function isUnresolvedGuideDescription(
   return candidates.has(normalized);
 }
 
+// eslint-disable-next-line max-lines-per-function, complexity -- GS-001: guide template composes many blocks
 function GuideSeoTemplate({
   guideKey,
   metaKey,
@@ -551,6 +552,7 @@ function GuideSeoTemplate({
       guideFaqFallback={guideFaqFallback}
       alwaysProvideFaqFallback={alwaysProvideFaqFallback}
       suppressFaqWhenUnlocalized={suppressFaqWhenUnlocalized}
+      fallbackInjectedForLocale={fallbackInjectedForLocale}
     />
   );
 }

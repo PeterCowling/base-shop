@@ -9,6 +9,7 @@ on:
       - "apps/brikette/**"
       - "packages/design-system/**"
       - "packages/design-tokens/**"
+      - "packages/guide-system/**"
       - "packages/guides-core/**"
       - "packages/next-config/**"
       - "packages/platform-core/**"
@@ -21,6 +22,7 @@ on:
       - "apps/brikette/**"
       - "packages/design-system/**"
       - "packages/design-tokens/**"
+      - "packages/guide-system/**"
       - "packages/guides-core/**"
       - "packages/next-config/**"
       - "packages/platform-core/**"
@@ -31,7 +33,7 @@ on:
   workflow_dispatch:
     inputs:
       publish_to_production:
-        description: "Publish to production (Cloudflare Workers custom domain)"
+        description: "Publish to production (Cloudflare Pages custom domain)"
         required: false
         type: boolean
         default: false
@@ -82,16 +84,29 @@ jobs:
     uses: ./.github/workflows/reusable-app.yml
     with:
       app-filter: "@apps/brikette"
+      # Static export — same approach as staging. Hide routes incompatible with
+      # output:'export', build, generate localized file aliases, then restore.
       build-cmd: >
         pnpm exec turbo run build --filter=@apps/brikette^... &&
         cd apps/brikette &&
-        pnpm exec opennextjs-cloudflare build
-      artifact-path: "apps/brikette/.open-next"
+        mv src/app/api src/app/_api-off &&
+        mv "src/app/[lang]/draft" "src/app/[lang]/_draft-off" &&
+        mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off" &&
+        (OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm exec next build &&
+        pnpm --filter @apps/brikette generate:static-aliases; e=$?;
+        mv src/app/_api-off src/app/api;
+        mv "src/app/[lang]/_draft-off" "src/app/[lang]/draft";
+        mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]";
+        exit $e)
+      artifact-path: "apps/brikette/out"
       deploy_cmd: >
         cd apps/brikette &&
-        pnpm exec wrangler deploy
+        pnpm exec wrangler pages deploy out
+        --project-name ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette-website' }}
+        --branch main
       deploy_enabled: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging') }}
-      project-name: "brikette-production"
+      test-shard-count: 3
+      project-name: ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette-website' }}
       environment-name: "production"
       environment-url: "https://www.hostel-positano.com"
       healthcheck-base-url: "https://www.hostel-positano.com"

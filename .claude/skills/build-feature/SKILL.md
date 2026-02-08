@@ -84,10 +84,15 @@ Before editing any code, verify all of the following:
 ### B) Eligibility gate
 
 Confirm:
-- Task Type = `IMPLEMENT`
+- Task Type = `IMPLEMENT`, `SPIKE`, or `INVESTIGATE`
 - Overall confidence ≥80%
 - All dependency tasks are complete (per plan status)
 - No open DECISION tasks gate this work
+
+**Task type differences:**
+- **IMPLEMENT:** Standard feature work. Full TDD cycle, validation, commit.
+- **SPIKE:** Produces a prototype or executable proof. Has a test contract. TDD applies. On completion, its output (evidence) may be used by `/re-plan` to promote downstream tasks.
+- **INVESTIGATE:** Produces a decision memo or analysis artifact — not code. No TDD cycle required. Validation is: the decision memo exists and answers the question. Commit the memo/notes, then mark complete. Skip steps 3a–3e (TDD cycle) and instead: perform investigation, produce artifact, verify exit criteria, commit artifact, update plan.
 
 **If not eligible → STOP → `/re-plan`.**
 

@@ -1,7 +1,19 @@
 // i18n-exempt file -- I18N-4521 [ttl=2026-12-31] Manifest metadata scheduled for localisation migration
 /* eslint-disable ds/no-hardcoded-copy -- GUIDES-2176 manifest requires inline editorial defaults */
 // src/routes/guides/guide-manifest.ts
-import { z } from "zod";
+import {
+  CHECKLIST_ITEM_IDS,
+  type ChecklistItemId,
+  type ChecklistStatus,
+  createManifestEntrySchema,
+  type GuideArea,
+  type GuideChecklistItem,
+  type GuideManifestEntry as GuideManifestEntryBase,
+  type GuideRouteExpectations,
+  type GuideRouteOptions,
+  type GuideStatus,
+  registerManifestEntries,
+} from "@acme/guide-system";
 
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
@@ -11,306 +23,70 @@ import { GUIDE_KEYS, GUIDE_KEYS_WITH_OVERRIDES } from "../../guides/slugs/keys";
 import { GUIDE_SLUGS } from "../../guides/slugs/slugs";
 import { slugify } from "../../utils/slugify";
 
-import {
-  GUIDE_BLOCK_DECLARATION_SCHEMA,
-  type GuideBlockDeclaration,
-} from "./blocks/types";
+import type { GuideBlockDeclaration } from "./blocks/types";
 import { analyzeDateValidation,analyzeGuideCompleteness, analyzeTranslationCoverage } from "./guide-diagnostics";
 import type { GuideChecklistDiagnostics } from "./guide-diagnostics.types";
 import type { ManifestOverrides } from "./guide-manifest-overrides";
 
-/**
- * Supported publish status values for guides. These power both routing (draft vs live)
- * and the editorial dashboard surfaces that display the current lifecycle state.
- */
-export const GUIDE_STATUS_VALUES = ["draft", "review", "live"] as const;
-export type GuideStatus = (typeof GUIDE_STATUS_VALUES)[number];
+// Re-export shared types for backward compatibility
+export {
+  CHECKLIST_ITEM_IDS,
+  CHECKLIST_STATUS_VALUES,
+  type ChecklistItemId,
+  type ChecklistStatus,
+  GUIDE_AREA_VALUES,
+  GUIDE_STATUS_VALUES,
+  GUIDE_TEMPLATE_VALUES,
+  type GuideArea,
+  type GuideAreaSlugKey,
+  guideAreaToSlugKey,
+  type GuideChecklistItem,
+  type GuideRouteExpectations,
+  type GuideRouteOptions,
+  type GuideStatus,
+  type GuideTemplate,
+  STRUCTURED_DATA_TYPES,
+  type StructuredDataDeclaration,
+  type StructuredDataType,
+} from "@acme/guide-system";
 
 /**
- * Guides can surface in one or more primary navigation areas. Manifest entries declare
- * every area they are eligible for so the publishing UI can present toggle chips instead
- * of requiring bespoke route components.
+ * Brikette-specific manifest entry type, narrowed to concrete GuideKey.
  */
-export const GUIDE_AREA_VALUES = ["howToGetHere", "help", "experience"] as const;
-export type GuideArea = (typeof GUIDE_AREA_VALUES)[number];
-
-export type GuideAreaSlugKey = "howToGetHere" | "assistance" | "experiences";
-
-export function guideAreaToSlugKey(area: GuideArea): GuideAreaSlugKey {
-  switch (area) {
-    case "help":
-      return "assistance";
-    case "experience":
-      return "experiences";
-    case "howToGetHere":
-    default:
-      return "howToGetHere";
-  }
-}
-
-/**
- * Manifest-driven checklists let editors see — directly in the CMS/preview — which pieces
- * of a guide still need attention before promotion. Items intentionally stay generic so
- * we can derive them from content analysis in a follow-up iteration.
- */
-export const CHECKLIST_ITEM_IDS = ["translations", "jsonLd", "faqs", "content", "seoAudit"] as const;
-export type ChecklistItemId = (typeof CHECKLIST_ITEM_IDS)[number];
-
-export const CHECKLIST_STATUS_VALUES = ["missing", "inProgress", "complete"] as const;
-export type ChecklistStatus = (typeof CHECKLIST_STATUS_VALUES)[number];
-
-export type GuideChecklistItem = {
-  id: ChecklistItemId;
-  status: ChecklistStatus;
-  note?: string;
+export type GuideManifestEntry = GuideManifestEntryBase & {
+  key: GuideKey;
+  relatedGuides: GuideKey[];
 };
 
-const CHECKLIST_ITEM_SCHEMA = z.object({
-  id: z.enum(CHECKLIST_ITEM_IDS),
-  status: z.enum(CHECKLIST_STATUS_VALUES),
-  note: z.string().trim().optional(),
-});
+// Create schema with brikette's concrete guide keys
+const { schema: GUIDE_MANIFEST_ENTRY_SCHEMA_INNER } = createManifestEntrySchema(GUIDE_KEYS_WITH_OVERRIDES);
 
-/**
- * Structured data needs more than a boolean flag. Using a declarative manifest allows us to
- * express both the schema type and any typed parameters the generator should consume.
- */
-export const STRUCTURED_DATA_TYPES = [
-  "Article",
-  "FAQPage",
-  "BreadcrumbList",
-  "Service",
-  "ItemList",
-  "HowTo",
-] as const;
-export type StructuredDataType = (typeof STRUCTURED_DATA_TYPES)[number];
-
-export type StructuredDataDeclaration =
-  | StructuredDataType
-  | {
-      type: StructuredDataType;
-      options?: Record<string, unknown> | undefined;
-    };
-
-export const GUIDE_TEMPLATE_VALUES = ["help", "experience", "localGuide", "pillar"] as const;
-export type GuideTemplate = (typeof GUIDE_TEMPLATE_VALUES)[number];
-
-const STRUCTURED_DATA_SCHEMA = z.union([
-  z.enum(STRUCTURED_DATA_TYPES),
-  z.object({
-    type: z.enum(STRUCTURED_DATA_TYPES),
-    options: z.record(z.unknown()).optional(),
-  }),
-]);
-
-const ARTICLE_LIKE_STRUCTURED_TYPES = new Set<StructuredDataType>([
-  "Article",
-  "HowTo",
-  "FAQPage",
-]);
-
-function extractStructuredDataType(
-  declaration: StructuredDataDeclaration | undefined,
-): StructuredDataType | undefined {
-  if (!declaration) return undefined;
-  if (typeof declaration === "string") return declaration;
-  if (typeof declaration === "object" && declaration !== null) {
-    const candidate = (declaration as { type?: unknown }).type;
-    if (typeof candidate === "string") {
-      return candidate as StructuredDataType;
-    }
-  }
-  return undefined;
-}
-
-function hasArticleLikeStructuredData(
-  structured: StructuredDataDeclaration[] | undefined,
-): boolean {
-  if (!structured || structured.length === 0) return true;
-  return structured.some((entry) => {
-    const type = extractStructuredDataType(entry);
-    return Boolean(type && ARTICLE_LIKE_STRUCTURED_TYPES.has(type));
-  });
-}
-
-/**
- * Route behaviour knobs that map closely to GuideSeoTemplate props. These stay optional so
- * most entries can rely on sensible defaults while bespoke routes can opt-in to overrides.
- */
-export type GuideRouteOptions = {
-  allowEnglishFallback?: boolean;
-  showPlanChoice?: boolean;
-  showTransportNotice?: boolean;
-  showTagChips?: boolean;
-  showTocWhenUnlocalized?: boolean;
-  suppressTocTitle?: boolean;
-  suppressUnlocalizedFallback?: boolean;
-  preferManualWhenUnlocalized?: boolean;
-  renderGenericWhenEmpty?: boolean;
-  preferGenericWhenFallback?: boolean;
-  showRelatedWhenLocalized?: boolean;
-  suppressFaqWhenUnlocalized?: boolean;
-  fallbackToEnTocTitle?: boolean;
-  ogType?: string;
+// Cast to preserve the brikette-specific GuideManifestEntry type
+export const GUIDE_MANIFEST_ENTRY_SCHEMA = GUIDE_MANIFEST_ENTRY_SCHEMA_INNER as unknown as {
+  parse: (input: GuideManifestEntryInput) => GuideManifestEntry;
 };
 
-export type GuideRouteExpectations = {
-  redirectOnly?: boolean;
-};
-
-const GUIDE_ROUTE_OPTIONS_SCHEMA = z
-  .object({
-    allowEnglishFallback: z.boolean().optional(),
-    showPlanChoice: z.boolean().optional(),
-    showTransportNotice: z.boolean().optional(),
-    showTagChips: z.boolean().optional(),
-    showTocWhenUnlocalized: z.boolean().optional(),
-    suppressTocTitle: z.boolean().optional(),
-    suppressUnlocalizedFallback: z.boolean().optional(),
-    preferManualWhenUnlocalized: z.boolean().optional(),
-    renderGenericWhenEmpty: z.boolean().optional(),
-    preferGenericWhenFallback: z.boolean().optional(),
-    showRelatedWhenLocalized: z.boolean().optional(),
-    suppressFaqWhenUnlocalized: z.boolean().optional(),
-    fallbackToEnTocTitle: z.boolean().optional(),
-    ogType: z.string().trim().optional(),
-  })
-  .partial()
-  .optional();
-
-const GUIDE_ROUTE_EXPECTATIONS_SCHEMA = z
-  .object({
-    redirectOnly: z.boolean().optional(),
-  })
-  .partial()
-  .optional();
-
-/**
- * Helpers to constrain manifest entries to known guide keys at runtime without losing type safety.
- */
-const GUIDE_KEY_SET = new Set<GuideKey>(GUIDE_KEYS_WITH_OVERRIDES);
-const guideKeySchema = z.custom<GuideKey>(
-  (value) => typeof value === "string" && GUIDE_KEY_SET.has(value as GuideKey),
-  {
-    message: "Invalid guide key",
-  },
-);
-
-export type GuideManifestEntry = {
+export type GuideManifestEntryInput = {
   key: GuideKey;
   slug: string;
   contentKey: string;
-  status: GuideStatus;
-  /**
-   * When true, the route should only be available under /{lang}/draft/* until promoted.
-   */
-  draftOnly?: boolean | undefined;
+  status?: string;
+  draftOnly?: boolean;
   draftPathSegment?: string;
-  areas: GuideArea[];
-  primaryArea: GuideArea;
+  areas: readonly string[];
+  primaryArea: string;
   metaKey?: string;
-  structuredData: StructuredDataDeclaration[];
-  relatedGuides: GuideKey[];
-  blocks: GuideBlockDeclaration[];
+  structuredData?: unknown[];
+  relatedGuides?: GuideKey[];
+  blocks?: GuideBlockDeclaration[];
   options?: GuideRouteOptions;
   expectations?: GuideRouteExpectations;
-  checklist?: GuideChecklistItem[];
-  /**
-   * Optional SEO/content auditing hints.
-   * These are intentionally non-blocking fields that can be rolled out incrementally.
-   */
-  template?: GuideTemplate;
+  checklist?: Array<{ id: string; status: string; note?: string }>;
+  template?: string;
   focusKeyword?: string;
   primaryQuery?: string;
   timeSensitive?: boolean;
 };
-
-const GUIDE_MANIFEST_ENTRY_SCHEMA_BASE = z
-  .object({
-    key: guideKeySchema,
-    slug: z.string().min(1),
-    contentKey: z.string().min(1),
-    status: z.enum(GUIDE_STATUS_VALUES).optional(),
-    draftOnly: z.boolean().optional(),
-    draftPathSegment: z.string().min(1).optional(),
-    areas: z.array(z.enum(GUIDE_AREA_VALUES)).nonempty(),
-    primaryArea: z.enum(GUIDE_AREA_VALUES),
-    metaKey: z.string().min(1).optional(),
-    structuredData: z.array(STRUCTURED_DATA_SCHEMA).optional(),
-    relatedGuides: z.array(guideKeySchema).optional(),
-    blocks: z.array(GUIDE_BLOCK_DECLARATION_SCHEMA).optional(),
-    options: GUIDE_ROUTE_OPTIONS_SCHEMA,
-    expectations: GUIDE_ROUTE_EXPECTATIONS_SCHEMA,
-    checklist: z.array(CHECKLIST_ITEM_SCHEMA).optional(),
-    template: z.enum(GUIDE_TEMPLATE_VALUES).optional(),
-    focusKeyword: z.string().trim().min(3).optional(),
-    primaryQuery: z.string().trim().min(3).optional(),
-    timeSensitive: z.boolean().optional(),
-  })
-  .superRefine((value, ctx) => {
-    const ogType = value.options?.ogType?.trim();
-    if (!ogType) return;
-    if (hasArticleLikeStructuredData(value.structuredData)) {
-      if (ogType.toLowerCase() !== "article") {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ["options", "ogType"],
-          message: 'Guides with article-like content must set og:type="article".',
-        });
-      }
-    }
-  });
-
-export type GuideManifestEntryInput = z.input<typeof GUIDE_MANIFEST_ENTRY_SCHEMA_BASE>;
-
-export const GUIDE_MANIFEST_ENTRY_SCHEMA: z.ZodEffects<
-  typeof GUIDE_MANIFEST_ENTRY_SCHEMA_BASE,
-  GuideManifestEntry
-> = GUIDE_MANIFEST_ENTRY_SCHEMA_BASE.transform((value) => {
-  const {
-    draftPathSegment,
-    metaKey,
-    options,
-    expectations,
-    checklist,
-    template,
-    focusKeyword,
-    primaryQuery,
-    timeSensitive,
-    ...rest
-  } = value;
-  const cleanOptions = options
-    ? (Object.fromEntries(Object.entries(options).filter(([, v]) => typeof v !== "undefined")) as GuideRouteOptions)
-    : undefined;
-  const cleanExpectations = expectations
-    ? (Object.fromEntries(Object.entries(expectations).filter(([, v]) => typeof v !== "undefined")) as GuideRouteExpectations)
-    : undefined;
-  const cleanChecklist = Array.isArray(checklist)
-    ? checklist.map((item) => {
-        const { note, ...rest } = item;
-        return {
-          ...rest,
-          ...(typeof note === "string" ? { note } : {}),
-        };
-      })
-    : undefined;
-  return {
-    ...rest,
-    ...(typeof draftPathSegment === "string" ? { draftPathSegment } : {}),
-    ...(typeof metaKey === "string" ? { metaKey } : {}),
-    ...(typeof cleanOptions !== "undefined" ? { options: cleanOptions } : {}),
-    ...(typeof cleanExpectations !== "undefined" ? { expectations: cleanExpectations } : {}),
-    ...(Array.isArray(cleanChecklist) ? { checklist: cleanChecklist } : {}),
-    ...(typeof template === "string" ? { template } : {}),
-    ...(typeof focusKeyword === "string" ? { focusKeyword } : {}),
-    ...(typeof primaryQuery === "string" ? { primaryQuery } : {}),
-    ...(typeof timeSensitive === "boolean" ? { timeSensitive } : {}),
-    status: (value.status ?? "draft") as GuideStatus,
-    structuredData: value.structuredData ?? [],
-    relatedGuides: value.relatedGuides ?? [],
-    blocks: value.blocks ?? [],
-  } satisfies GuideManifestEntry;
-});
 
 export function createGuideManifestEntry(input: GuideManifestEntryInput): GuideManifestEntry {
   return GUIDE_MANIFEST_ENTRY_SCHEMA.parse(input);
@@ -4460,6 +4236,9 @@ export const guideManifest: GuideManifest = allManifestEntries.reduce<GuideManif
   return acc;
 }, {} as GuideManifest);
 
+// Register entries in the shared registry so other apps (business-os) can access them
+registerManifestEntries(allManifestEntries);
+
 export function getGuideManifestEntry(key: GuideKey): GuideManifestEntry | undefined {
   return guideManifest[key];
 }
@@ -4587,6 +4366,7 @@ export function buildGuideChecklist(
   })();
 
   // Auto-infer status based on diagnostics and declarations
+  // eslint-disable-next-line complexity -- GS-001: manifest validation
   const inferStatus = (id: ChecklistItemId): ChecklistStatus => {
     if (id === "jsonLd" && entry.structuredData.length > 0) {
       return "complete";

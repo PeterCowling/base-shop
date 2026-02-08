@@ -2,3 +2,8 @@
 # Serves the static page for any subpath under these routes
 /checkin/* /checkin/index.html 200
 /staff-lookup/* /staff-lookup/index.html 200
+
+# Guest token deep-link safety net (TASK-42)
+# Ensures /g/<token> paths work even if Pages Function fails
+# (Function at functions/g/[token].ts normally handles redirect)
+/g/* /g/index.html 200

@@ -1,20 +1,22 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import ArrivalHome from '../arrival/ArrivalHome';
-import KeycardStatus from '../arrival/KeycardStatus';
-import ReadinessDashboard from '../pre-arrival/ReadinessDashboard';
-import { recordActivationFunnelEvent } from '../../lib/analytics/activationFunnel';
+import { useRouter } from 'next/navigation';
+
 import { useUnifiedBookingData } from '../../hooks/dataOrchestrator/useUnifiedBookingData';
 import { useCheckInCode } from '../../hooks/useCheckInCode';
 import { usePreArrivalState } from '../../hooks/usePreArrivalState';
-import type { ChecklistProgress } from '../../types/preArrival';
-import { deriveGuestKeycardStatus } from '../../lib/preArrival/keycardStatus';
+import { recordActivationFunnelEvent } from '../../lib/analytics/activationFunnel';
 import {
   readLastCompletedChecklistItem,
   writeLastCompletedChecklistItem,
 } from '../../lib/preArrival/completionFeedback';
+import { deriveGuestKeycardStatus } from '../../lib/preArrival/keycardStatus';
+import type { ChecklistProgress } from '../../types/preArrival';
+import ArrivalHome from '../arrival/ArrivalHome';
+import KeycardStatus from '../arrival/KeycardStatus';
+import ReadinessDashboard from '../pre-arrival/ReadinessDashboard';
+
 import HomePage from './HomePage';
 
 export default function GuardedHomeExperience() {
@@ -50,6 +52,9 @@ export default function GuardedHomeExperience() {
   const {
     code: checkInCode,
     isLoading: isCodeLoading,
+    isStale: isCodeStale,
+    isOffline,
+    refetch: refetchCheckInCode,
   } = useCheckInCode({
     checkOutDate,
     enabled: arrivalState === 'arrival-day',
@@ -165,6 +170,9 @@ export default function GuardedHomeExperience() {
             firstName={firstName}
             checkInCode={checkInCode}
             isCodeLoading={isCodeLoading}
+            isCodeStale={isCodeStale}
+            isOffline={isOffline}
+            onRefreshCode={refetchCheckInCode}
             preArrivalData={preArrivalData}
             cashAmounts={cashAmounts}
             nights={nights}

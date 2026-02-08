@@ -5,25 +5,28 @@
  * Displays the check-in QR code prominently along with important reminders.
  */
 
+import { type FC, memo, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   AlertTriangle,
   Banknote,
-  CheckCircle2,
-  CreditCard,
   CalendarDays,
+  CheckCircle2,
+  ChevronRight,
+  Clock,
+  CreditCard,
   MapPin,
   MessageCircle,
   Sparkles,
-  Clock,
-  ChevronRight,
 } from 'lucide-react';
+
 import { ArrivalCodePanel, UtilityActionStrip } from '@acme/ui';
-import { FC, memo, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
+
 import { recordActivationFunnelEvent } from '../../lib/analytics/activationFunnel';
-import { CheckInQR } from '../check-in/CheckInQR';
-import type { PreArrivalData, ChecklistProgress } from '../../types/preArrival';
 import type { GuestKeycardStatus } from '../../lib/preArrival/keycardStatus';
+import type { ChecklistProgress,PreArrivalData } from '../../types/preArrival';
+import { CheckInQR } from '../check-in/CheckInQR';
+
 import KeycardStatus from './KeycardStatus';
 
 interface ArrivalHomeProps {
@@ -33,6 +36,12 @@ interface ArrivalHomeProps {
   checkInCode: string | null;
   /** Whether check-in code is loading */
   isCodeLoading: boolean;
+  /** Whether the code is stale (from cache) */
+  isCodeStale?: boolean;
+  /** Whether the device is offline */
+  isOffline?: boolean;
+  /** Handler to refresh the code */
+  onRefreshCode?: () => void;
   /** Pre-arrival data */
   preArrivalData: PreArrivalData;
   /** Cash amounts for display */
@@ -78,6 +87,9 @@ export const ArrivalHome: FC<ArrivalHomeProps> = memo(function ArrivalHome({
   firstName,
   checkInCode,
   isCodeLoading,
+  isCodeStale = false,
+  isOffline = false,
+  onRefreshCode,
   preArrivalData,
   cashAmounts,
   nights,
@@ -164,14 +176,47 @@ export const ArrivalHome: FC<ArrivalHomeProps> = memo(function ArrivalHome({
       </div>
 
       {/* Check-in QR section */}
-      <ArrivalCodePanel
-        title={t('arrival.showAtReception')}
-        isLoading={isCodeLoading}
-        code={checkInCode}
-        loadingLabel={t('arrival.generatingCode')}
-        unavailableLabel={t('arrival.codeUnavailable')}
-        renderCode={(code) => <CheckInQR code={code} />}
-      />
+      <div>
+        {/* Stale warning banner */}
+        {isCodeStale && checkInCode && (
+          <div className="mb-3 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800">
+            <div className="flex items-center gap-2">
+              <AlertTriangle className="h-4 w-4 flex-shrink-0" />
+              <span>{t('arrival.codeStaleWarning')}</span>
+            </div>
+          </div>
+        )}
+
+        {/* Offline no cache message */}
+        {isOffline && !checkInCode && !isCodeLoading && (
+          <div className="mb-3 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-800">
+            <div className="flex items-center gap-2">
+              <AlertTriangle className="h-4 w-4 flex-shrink-0" />
+              <span>{t('arrival.offlineNoCache')}</span>
+            </div>
+          </div>
+        )}
+
+        <ArrivalCodePanel
+          title={t('arrival.showAtReception')}
+          isLoading={isCodeLoading}
+          code={checkInCode}
+          loadingLabel={t('arrival.generatingCode')}
+          unavailableLabel={t('arrival.codeUnavailable')}
+          renderCode={(code) => <CheckInQR code={code} />}
+        />
+
+        {/* Refresh button when back online with stale code */}
+        {!isOffline && isCodeStale && checkInCode && onRefreshCode && (
+          <button
+            type="button"
+            onClick={onRefreshCode}
+            className="mt-3 w-full rounded-lg bg-blue-600 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+          >
+            {t('arrival.refreshCode')}
+          </button>
+        )}
+      </div>
 
       <UtilityActionStrip actions={utilityActions} />
 

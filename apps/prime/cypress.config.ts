@@ -1,4 +1,3 @@
-/* eslint-disable ds/no-hardcoded-copy -- BRIK-ENG-0017 Cypress config literals */
 import { defineConfig } from 'cypress';
 
 export default defineConfig({
@@ -6,6 +5,8 @@ export default defineConfig({
     baseUrl: process.env.CYPRESS_BASE_URL || 'http://127.0.0.1:3015',
     specPattern: 'cypress/e2e/**/*.cy.{ts,tsx,js,jsx}',
     supportFile: 'cypress/support/e2e.ts',
+    viewportWidth: 375,
+    viewportHeight: 812,
     video: false,
     screenshotOnRunFailure: true,
     defaultCommandTimeout: 10000,

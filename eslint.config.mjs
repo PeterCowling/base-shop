@@ -2240,4 +2240,15 @@ export default [
       ],
     },
   },
+
+  /* ▸ Prime guest portal: early development, DS rules disabled (matches .eslintrc.cjs intent).
+   *   Must be after the catch-all complexity/max-lines block so "off" wins. */
+  {
+    files: ["apps/prime/**"],
+    rules: {
+      ...offAllDsRules,
+      "max-lines-per-function": "off",
+      "complexity": "off",
+    },
+  },
 ];

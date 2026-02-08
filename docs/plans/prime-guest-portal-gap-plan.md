@@ -555,9 +555,10 @@ This `/re-plan` pass targeted the remaining active work after `TASK-40`:
 - Owner analytics track is not aggregate-backed yet:
   - Only `apps/prime/src/app/owner/setup/page.tsx` exists.
   - No `apps/prime/src/app/owner/page.tsx`, no `apps/prime/src/lib/owner/*` aggregation contracts, and current summary reads localStorage funnel events (`apps/prime/src/components/owner/ActivationFunnelSummary.tsx`).
-- Prime touched-file lint gate is not implemented:
-  - No `scripts/src/ci/prime-lint-changed-files.ts` / matching tests.
-  - `@apps/prime` lint script remains exempt (`apps/prime/package.json`).
+- Prime touched-file lint gate is COMPLETE (TASK-50):
+  - `scripts/src/ci/prime-lint-changed-files.ts` exists with full test coverage (`scripts/src/ci/__tests__/prime-lint-gate.test.ts`).
+  - `@apps/prime` lint script now runs changed-file lint via wrapper (`apps/prime/scripts/lint-wrapper.sh`).
+  - CI workflow already has "Prime changed-file lint gate" step wired in `.github/workflows/reusable-app.yml`.
 
 ### Confidence Deltas Applied
 
@@ -570,7 +571,7 @@ This `/re-plan` pass targeted the remaining active work after `TASK-40`:
 - `TASK-47`: 80% -> 74% (no aggregate writer/reader contracts exist yet)
 - `TASK-48`: 80% -> 73% (owner insight page still not present; blocked on TASK-47 aggregates)
 - `TASK-49`: 80% -> 72% (no scorecard pipeline or UI contracts yet)
-- `TASK-50`: 81% -> 78% (reuse path exists via CI classifiers, but no Prime changed-file lint gate implementation yet)
+- `TASK-50`: 81% -> 84% (touched-file lint gate fully implemented with tests and CI integration)
 
 ### What Would Raise Confidence to >=80
 
@@ -582,7 +583,7 @@ This `/re-plan` pass targeted the remaining active work after `TASK-40`:
   - feature-flag-off UI contract
 - `TASK-45`/`TASK-46`: ship non-placeholder route surfaces with TC contracts before confidence uplift.
 - `TASK-47`/`TASK-48`/`TASK-49`: introduce one canonical aggregate schema and writer/reader contract in `apps/prime/src/lib/owner/*`, then wire one owner page against aggregate-only reads.
-- `TASK-50`: implement `scripts/src/ci/prime-lint-changed-files.ts` + tests and wire to `reusable-app.yml` Prime validation path.
+- `TASK-50`: **COMPLETE (2026-02-08)** — touched-file lint gate implemented with full test coverage and CI integration.
 
 ## Re-plan Iteration 7 (2026-02-07)
 

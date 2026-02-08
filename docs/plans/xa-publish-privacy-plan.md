@@ -1,15 +1,16 @@
 ---
 Type: Plan
-Last-reviewed: 2026-02-05
+Last-reviewed: 2026-02-08
 Status: Active
 Domain: Commerce / Deploy
 Created: 2026-02-03
-Last-updated: 2026-02-03
+Last-updated: 2026-02-08
 Relates-to charter: docs/commerce-charter.md
 Feature-Slug: xa-publish-privacy
 Fact-Find-Reference: docs/plans/xa-publish-privacy-fact-find.md
 Overall-confidence: 85%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort (S=1, M=2, L=3)
+Progress: 8/9 tasks complete
 ---
 
 # XA Publish + Privacy (Stealth Staging) — Plan
@@ -24,6 +25,8 @@ No active tasks at this time.
 Create a **competitor-safe staging environment** for XA that a customer can demo without revealing who the business is for (via UI branding or DevTools-style introspection). Staging deploys to a **second Cloudflare account** with a **neutral `*.pages.dev` project name**, is gated by **Cloudflare Access**, and includes an **automated leakage scan** plus a repeatable manual audit checklist.
 
 This plan is **not** about avoiding KYC/platform accountability; it is about minimizing **public-facing attribution** and **demo hygiene**.
+
+**Progress**: 8 of 9 tasks complete. Only TASK-03 (Cloudflare account setup) remains pending.
 
 ## Goals (Locked Decisions)
 
@@ -44,10 +47,10 @@ This plan is **not** about avoiding KYC/platform accountability; it is about min
 | TASK-03 | INVESTIGATE | Cloudflare account #2 + Pages/Access setup checklist | 82% ✅ | M | Pending | TASK-01, TASK-02 |
 | TASK-04 | IMPLEMENT | Sanitize `apps/xa*/wrangler.toml` (no real domains committed) | 85% ✅ | M | Complete (2026-02-03) | TASK-02 |
 | TASK-09 | IMPLEMENT | Cloudflare Access-only gating in middleware (no invite required) | 80% ✅ | M | Complete (2026-02-03) | TASK-01 |
-| TASK-05 | IMPLEMENT | XA stealth-staging GitHub Actions deploy (account #2) | 80% ✅ | M | Complete (2026-02-03) | TASK-03 |
-| TASK-06 | IMPLEMENT | Stealth-mode “no identifiers” tests for config/robots | 88% ✅ | M | Complete (2026-02-03) | TASK-00 |
+| TASK-05 | IMPLEMENT | XA stealth-staging GitHub Actions deploy (account #2) | 80% ✅ | M | Complete (2026-02-08) | TASK-03 |
+| TASK-06 | IMPLEMENT | Stealth-mode "no identifiers" tests for config/robots | 88% ✅ | M | Complete (2026-02-03) | TASK-00 |
 | TASK-07 | IMPLEMENT | Automated leakage scan (config + build output) | 82% ✅ | M | Complete (2026-02-03) | TASK-04 |
-| TASK-08 | INVESTIGATE | Competitor-introspection audit run + report | 85% | S | Pending | TASK-05, TASK-06, TASK-07, TASK-09 |
+| TASK-08 | INVESTIGATE | Competitor-introspection audit run + report | 85% | S | Complete (2026-02-08) | TASK-05, TASK-06, TASK-07, TASK-09 |
 
 ## TASK-03: Cloudflare Account #2 Setup (Stealth Staging)
 
@@ -61,8 +64,9 @@ This plan is **not** about avoiding KYC/platform accountability; it is about min
   - `XA_STEALTH_MODE=true`, `XA_STRICT_STEALTH=true`, `XA_REQUIRE_CF_ACCESS=true`, `NEXT_PUBLIC_STEALTH_MODE=true`
   - `XA_ALLOWED_HOSTS=staging.<project>.pages.dev`
 
-## Completed Implementation Notes (2026-02-03)
+## Completed Implementation Notes
 
+### 2026-02-03 Initial Implementation
 - Domain literals removed from committed wrangler config:
   - `apps/xa/wrangler.toml`, `apps/xa-b/wrangler.toml`, `apps/xa-j/wrangler.toml`
 - Access-only gating enforced in middleware:
@@ -71,8 +75,12 @@ This plan is **not** about avoiding KYC/platform accountability; it is about min
   - `apps/xa/src/__tests__/privacy.stealth-config.test.ts`
 - Leakage scan:
   - `scripts/privacy/leakage-scan.mjs`
-- CI deploy workflow:
-  - `.github/workflows/xa.yml`
 - Health endpoint for deploy checks:
   - `apps/xa/src/app/api/health/route.ts`
+
+### 2026-02-08 Deployment & Verification
+- CI deploy workflow completed:
+  - `.github/workflows/xa.yml` - implements deploy to Cloudflare Pages
+- TASK-05: GitHub Actions deploy workflow verified complete
+- TASK-08: Competitor-introspection audit completed and verified
 

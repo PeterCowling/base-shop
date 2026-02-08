@@ -14,7 +14,7 @@ Business-Unit: BRIK
 Card-ID: BRIK-ENG-0017
 Relates-to charter: none
 Fact-Find-Ref: docs/plans/prime-guest-portal-gap-fact-find.md
-Build-progress: 40/53 tasks complete (TASK-01 through TASK-30 completed earlier; TASK-41, TASK-42, TASK-43, TASK-44, TASK-45, TASK-46, TASK-47, TASK-48, TASK-49, TASK-50 completed 2026-02-08)
+Build-progress: 49/53 tasks complete (TASK-01 through TASK-37 complete; TASK-38 not started; TASK-39 through TASK-50 complete; TASK-51, TASK-52, TASK-53 deferred)
 ---
 
 # Prime Guest Portal — Bridge Plan
@@ -2773,11 +2773,14 @@ E2E coverage in this phase uses a shared Prime harness (`apps/prime/cypress.conf
 - **Decision / resolution:**
   - Add a dedicated request queue model in Reception and keep canonical booking/preorder/checkin/check-out nodes as source-of-truth.
 
-#### Build Completion (2026-02-07)
-- **Status:** Complete
-- **Implementation notes:** Added Reception Prime request ingestion/resolution stack in `apps/reception/src/hooks/data/usePrimeRequestsData.ts`, `apps/reception/src/hooks/mutations/usePrimeRequestResolution.ts`, `apps/reception/src/components/prime-requests/PrimeRequestsBoard.tsx`, and `apps/reception/src/app/prime-requests/page.tsx`.
-- **Validation evidence:** `pnpm --filter @apps/reception exec jest --config jest.config.cjs --runInBand src/components/prime-requests/__tests__/queue.test.tsx` — PASS.
-- **E2E note:** Task contract TC-05 remains gated on Phase 2E cross-app Cypress harness tasks.
+#### Implementation Status (2026-02-08)
+- **Status:** Not started
+- **Reason:** Code verification (2026-02-08) found that none of the implementation files exist in the reception codebase:
+  - `apps/reception/src/hooks/data/usePrimeRequestsData.ts` — NOT FOUND
+  - `apps/reception/src/hooks/mutations/usePrimeRequestResolution.ts` — NOT FOUND
+  - `apps/reception/src/components/prime-requests/` — NOT FOUND
+  - `apps/reception/src/app/prime-requests/` — NOT FOUND
+- **Note:** This task was previously marked complete (2026-02-07) but the implementation was not actually completed. The Prime-side request generation (TASK-32, TASK-37) is complete, but the Reception operational ingest workflow remains to be built.
 
 ## Phase 3: Deferred (Staff Auth, Campaign Messaging, PWA)
 

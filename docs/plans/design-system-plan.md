@@ -191,7 +191,7 @@ _Make what already exists discoverable and modern. This is the highest-leverage 
 
 ### DS-02: Create component catalog + import decision tree
 
-- **Status:** Pending
+- **Status:** Complete (2026-02-07)
 - **Effort:** M
 - **Affects:**
   - Primary: `docs/component-catalog.md` (new)
@@ -227,7 +227,7 @@ _Make what already exists discoverable and modern. This is the highest-leverage 
 
 ### DS-03: Migrate forwardRef → ref-as-prop (React 19)
 
-- **Status:** Pending
+- **Status:** Complete (2026-02-07)
 - **Effort:** M
 - **Affects:**
   - Primary: 53 files across `packages/design-system/src/` (primitives, atoms, molecules)

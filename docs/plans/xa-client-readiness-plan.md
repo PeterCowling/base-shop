@@ -150,42 +150,37 @@ Variants can be mentioned but won't be demoed. They share 95%+ code with the mai
 
 7. **XA-READY-06a** ✅ - Install OpenNext adapter and remove edge runtime
    - **Status:** Complete (2026-02-08)
-   - **Commits:** (pending commit)
+   - **Commits:** `0f785adadc`
    - Added `@opennextjs/cloudflare` ^1.16.3 to `apps/xa/package.json` devDependencies
    - Removed `export const runtime = "edge"` from `robots.ts` and `search/sync/route.ts`
    - Validation: typecheck PASS, lint PASS, no edge runtime declarations remain
 
-8. **XA-READY-06b** - Rewrite wrangler.toml to Worker format
-   - **Status:** Pending
-   - **Confidence:** 92% | **Effort:** S
+8. **XA-READY-06b** ✅ - Rewrite wrangler.toml to Worker format
+   - **Status:** Complete (2026-02-08)
    - **Affects:** `apps/xa/wrangler.toml`
-   - **Depends on:** XA-READY-06a ✅
-   - Rewrite from Pages format (`pages_build_output_dir`) to Worker format (`main` + `[assets]`)
-   - Preserve `[vars]` (stealth config); drop `[env.preview]`/`[env.backup]` (configured in CF dashboard)
-   - Template: `apps/brikette/wrangler.toml`
+   - Rewrote from Pages format (`pages_build_output_dir`) to Worker format (`main` + `[assets]`)
+   - Preserved `[vars]` (stealth config); dropped `[env.preview]`/`[env.backup]` (configured in CF dashboard)
 
-9. **XA-READY-06c** - Update build script for OpenNext
-   - **Status:** Pending
-   - **Confidence:** 88% | **Effort:** S
-   - **Affects:** `apps/xa/scripts/build-xa.mjs` OR handled in workflow `build-cmd`
-   - **Depends on:** XA-READY-06a ✅
-   - **Recommended:** Handle OpenNext build in workflow `build-cmd` (like Brikette); keep `build-xa.mjs` as-is for local dev
+9. **XA-READY-06c** ✅ - Update build script for OpenNext
+   - **Status:** Complete (2026-02-08)
+   - **Affects:** `.github/workflows/xa.yml` (build-cmd)
+   - OpenNext build handled in workflow `build-cmd` (like Brikette production); `build-xa.mjs` unchanged for local dev
+   - Build chain: `turbo build deps` → `build-xa.mjs` (Next.js + SW version) → `opennextjs-cloudflare build` → `leakage-scan.mjs`
 
 10. **XA-READY-06d** - Configure GitHub environment and Cloudflare secrets (MANUAL)
     - **Status:** Pending
     - **Confidence:** 85% | **Effort:** S
-    - **Depends on:** XA-READY-06b
+    - **Depends on:** XA-READY-06b ✅
     - Create GitHub `xa-staging` environment with secrets
     - Configure Cloudflare Worker env vars (`XA_ALLOWED_HOSTS`, `XA_REQUIRE_CF_ACCESS=false`, `XA_STEALTH_INVITE_CODES`)
 
-11. **XA-READY-07** - Update CI workflow for Worker deploy
-    - **Status:** Pending
-    - **Confidence:** 88% | **Effort:** M
+11. **XA-READY-07** ✅ - Update CI workflow for Worker deploy
+    - **Status:** Complete (2026-02-08)
     - **Affects:** `.github/workflows/xa.yml`
-    - **Depends on:** XA-READY-06b, XA-READY-06c
-    - Update `build-cmd` to chain: `pnpm build` → `opennextjs-cloudflare build` → `leakage-scan.mjs`
-    - Add `artifact-path: "apps/xa/.open-next"`
-    - Change `deploy-cmd` to `wrangler deploy` (not `next-on-pages deploy`)
+    - Updated `build-cmd` to chain: `turbo build deps` → `build-xa.mjs` → `opennextjs-cloudflare build` → `leakage-scan.mjs`
+    - Added `artifact-path: "apps/xa/.open-next"`
+    - Changed `deploy-cmd` to `cd apps/xa && pnpm exec wrangler deploy`
+    - Updated `project-name` and `environment-url` for Workers (not Pages)
 
 12. **XA-READY-08** - Deploy to Cloudflare staging and verify
     - **Status:** Pending
@@ -274,10 +269,10 @@ These tasks improve quality but don't block client review:
 | XA-READY-04 | INVESTIGATE | Verify core user flows | — | S | Pending | 03 | 05 |
 | XA-READY-05 | IMPLEMENT | Fix flow-blocking issues | — | M | Pending | 04 | 08 |
 | XA-READY-06a | IMPLEMENT | Install OpenNext + remove edge runtime | 95% | S | Complete (2026-02-08) | - | 06b, 06c, 02 |
-| XA-READY-06b | IMPLEMENT | Rewrite wrangler.toml to Worker format | 92% | S | Pending | 06a | 06c, 07 |
-| XA-READY-06c | IMPLEMENT | Update build script for OpenNext | 88% | S | Pending | 06a | 07 |
+| XA-READY-06b | IMPLEMENT | Rewrite wrangler.toml to Worker format | 92% | S | Complete (2026-02-08) | 06a | 06c, 07 |
+| XA-READY-06c | IMPLEMENT | Update build script for OpenNext | 88% | S | Complete (2026-02-08) | 06a | 07 |
 | XA-READY-06d | IMPLEMENT | Configure GH env + CF secrets (MANUAL) | 85% | S | Pending | 06b | 08 |
-| XA-READY-07 | IMPLEMENT | Update CI workflow for Worker deploy | 88% | M | Pending | 06b, 06c | 08 |
+| XA-READY-07 | IMPLEMENT | Update CI workflow for Worker deploy | 88% | M | Complete (2026-02-08) | 06b, 06c | 08 |
 | XA-READY-08 | IMPLEMENT | Deploy to staging + verify | 82% | M | Pending | 07, 06d | 09 |
 
 > Phase 2 overall confidence: 87% (effort-weighted). All tasks ≥80%.
@@ -287,8 +282,8 @@ These tasks improve quality but don't block client review:
 | Wave | Tasks | Prerequisites | Notes |
 |------|-------|---------------|-------|
 | 0 | ~~XA-READY-06a~~ ✅, XA-READY-00, XA-READY-01 | - | Discovery + adapter install |
-| 1 | XA-READY-06b, XA-READY-06c | 06a ✅ | Wrangler + build script in parallel |
-| 2 | XA-READY-02, XA-READY-07, XA-READY-06d | 01+06a, 06b+06c, 06b | Local build test + CI workflow + secrets in parallel |
+| 1 | ~~XA-READY-06b~~ ✅, ~~XA-READY-06c~~ ✅ | 06a ✅ | Wrangler + build script |
+| 2 | XA-READY-02, ~~XA-READY-07~~ ✅, XA-READY-06d | 01+06a, 06b+06c, 06b | Local build test + secrets |
 | 3 | XA-READY-03 | 01, 02 | Fix runtime errors |
 | 4 | XA-READY-04 | 03 | Verify flows |
 | 5 | XA-READY-05 | 04 | Fix flow issues |
@@ -302,10 +297,11 @@ These tasks improve quality but don't block client review:
 |------|--------|------------|
 | XA-READY-00 | Pending | - |
 | XA-READY-01 | Pending | - |
-| XA-READY-06b | Pending | - (06a complete) |
-| XA-READY-06c | Pending | - (06a complete) |
+| XA-READY-06d | Pending (MANUAL) | - (06b complete) |
+| XA-READY-02 | Pending | 01 |
+| XA-READY-08 | Pending | 07 ✅, 06d |
 
-Next: Wave 1 — rewrite wrangler.toml (XA-READY-06b) and update build script (XA-READY-06c) in parallel.
+Next: Wave 2 — XA-READY-06d (MANUAL: configure GH environment + CF secrets) unblocks XA-READY-08 (deploy + verify). Discovery tasks (00, 01) can proceed in parallel.
 
 ## Decision Log
 
@@ -314,4 +310,5 @@ Next: Wave 1 — rewrite wrangler.toml (XA-READY-06b) and update build script (X
 - 2026-02-08: Fact-check corrected outdated claims (CI workflow exists, `XA_ALLOWED_HOSTS` not set)
 - 2026-02-08: Fact-find completed (`xa-deploy-readiness-fact-find.md`) — compared Brikette production deploy with XA gaps
 - 2026-02-08: **Approach decision:** Use `@opennextjs/cloudflare` Worker deploy (matching Brikette production). Phase 2 tasks rewritten with concrete, evidence-based acceptance criteria.
-- 2026-02-08: **XA-READY-06a complete.** Installed `@opennextjs/cloudflare`, removed edge runtime from `robots.ts` and `search/sync/route.ts`. Typecheck + lint pass.
+- 2026-02-08: **XA-READY-06a complete.** Installed `@opennextjs/cloudflare`, removed edge runtime from `robots.ts` and `search/sync/route.ts`. Typecheck + lint pass. Commit: `0f785adadc`.
+- 2026-02-08: **XA-READY-06b, 06c, 07 complete.** Rewrote `wrangler.toml` to Worker format, updated CI workflow with OpenNext build chain + artifact handoff + `wrangler deploy`.

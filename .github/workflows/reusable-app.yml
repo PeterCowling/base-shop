@@ -82,7 +82,7 @@ jobs:
     outputs:
       run_validation: ${{ steps.classify.outputs.run_validation }}
       run_sharded_tests: ${{ steps.test-strategy.outputs.run_sharded_tests }}
-      should_deploy: ${{ steps.deploy-gate.outputs.should_deploy }}
+      should_deploy: ${{ steps.deploy_gate.outputs.should_deploy }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -199,7 +199,7 @@ jobs:
           fi
 
       - name: Determine deploy gate
-        id: deploy-gate
+        id: deploy_gate
         shell: bash
         run: |
           echo "should_deploy=${{ inputs['deploy-cmd'] != '' && inputs['deploy-enabled'] }}" >> "$GITHUB_OUTPUT"

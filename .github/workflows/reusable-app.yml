@@ -20,6 +20,12 @@ on:
       deploy-cmd:
         required: false
         type: string
+      # Caller-controlled deploy gate. Callers should pass true only for
+      # branch/event combinations that are intended to publish.
+      deploy-enabled:
+        required: false
+        type: boolean
+        default: false
       # Cloudflare project name (for environment context or logs)
       project-name:
         required: false
@@ -311,21 +317,8 @@ jobs:
 
   deploy:
     name: Deploy
-    # Only deploy for main/staging refs with a deploy command.
-    # In reusable `workflow_call` runs, prefer event payload ref (push/webhook source),
-    # and guard out PR-triggered calls.
-    if: >-
-      ${{
-        inputs.deploy-cmd != '' &&
-        (
-          github.event.ref == 'refs/heads/main' ||
-          github.event.ref == 'refs/heads/staging' ||
-          github.ref_name == 'main' ||
-          github.ref_name == 'staging' ||
-          github.ref == 'refs/heads/main' ||
-          github.ref == 'refs/heads/staging'
-        )
-      }}
+    # Deploy only when caller explicitly enables publish for this run.
+    if: ${{ inputs.deploy-cmd != '' && inputs.deploy-enabled }}
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 15

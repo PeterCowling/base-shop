@@ -67,6 +67,7 @@ jobs:
         pnpm exec wrangler pages deploy out
         --project-name ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette-website' }}
         --branch staging
+      deploy-enabled: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging') }}
       # Run Brikette Jest validation in three shards via reusable workflow.
       test-shard-count: 3
       project-name: ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette-website' }}
@@ -89,6 +90,7 @@ jobs:
       deploy-cmd: >
         cd apps/brikette &&
         pnpm exec wrangler deploy
+      deploy-enabled: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging') }}
       project-name: "brikette-production"
       environment-name: "production"
       environment-url: "https://www.hostel-positano.com"

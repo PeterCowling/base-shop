@@ -143,43 +143,55 @@ Variants can be mentioned but won't be demoed. They share 95%+ code with the mai
    - DoD: All 5 flows complete without errors
    - Depends on: XA-READY-04
 
-### Phase 2: Cloudflare Preview + CI (blocking for client review)
+### Phase 2: Cloudflare Worker Deploy + CI (blocking for client review)
 
-7. **XA-READY-06** - Cloudflare Pages preflight (project + env + Access)
-   - Status: Pending
-   - Scope: Lock the Cloudflare deployment path and remove access blockers:
-     - Confirm Cloudflare Pages is the target (matches repo CI + `next-on-pages` usage).
-     - Create/confirm Pages project (name: `xa-site` or `xa-preview`).
-     - Set Preview env vars in Pages:
-       - Required secrets: `NEXTAUTH_SECRET`, `SESSION_SECRET`, `CART_COOKIE_SECRET`, `XA_ACCESS_COOKIE_SECRET`
-       - Stealth access: `XA_STEALTH_MODE`, `XA_STEALTH_INVITE_CODES` (demo key)
-       - Access gating: decide `XA_REQUIRE_CF_ACCESS` (true with Access policy, or false for preview)
-       - Host allowlist: set `XA_ALLOWED_HOSTS` to include preview domain(s)
-       - Canonical URLs: `NEXT_PUBLIC_SITE_DOMAIN` for preview domain
-     - Decide how to set `NEXT_PUBLIC_XA_SW_VERSION` in CI (use build script or env var)
-   - DoD:
-     - Pages project exists with preview env vars configured
-     - Access policy or access bypass decision recorded
-     - Preview domain passes host allowlist
-   - Depends on: XA-READY-05
+> **Approach decision (2026-02-08):** Use `@opennextjs/cloudflare` Worker deploy, matching Brikette production.
+> See `docs/plans/xa-deploy-readiness-fact-find.md` for evidence. Old XA-READY-06/07/08 superseded by 06a–06d/07/08.
 
-8. **XA-READY-07** - CI workflow for XA preview deploys
-   - Status: Pending
-   - Scope: Add `.github/workflows/xa.yml` (or reuse `reusable-app.yml`) with:
-     - `pnpm --filter @apps/xa-c lint`, `typecheck`, `test`
-     - Cloudflare build/deploy via `next-on-pages`
-     - `scripts/validate-deploy-env.sh` and `scripts/post-deploy-health-check.sh`
-     - Path filters for `apps/xa/**` + shared deps
-   - DoD: Workflow runs on PRs; deploys on `main` or `workflow_dispatch`.
-   - Depends on: XA-READY-06
+7. **XA-READY-06a** ✅ - Install OpenNext adapter and remove edge runtime
+   - **Status:** Complete (2026-02-08)
+   - **Commits:** (pending commit)
+   - Added `@opennextjs/cloudflare` ^1.16.3 to `apps/xa/package.json` devDependencies
+   - Removed `export const runtime = "edge"` from `robots.ts` and `search/sync/route.ts`
+   - Validation: typecheck PASS, lint PASS, no edge runtime declarations remain
 
-9. **XA-READY-08** - Deploy to Cloudflare preview
-   - Status: Pending
-   - Scope: Trigger the workflow (or deploy manually if CI is deferred), capture preview URL, and re-run core flows on preview.
-   - DoD:
-     - Preview URL accessible (with Access as configured)
-     - Same flows work on preview as local
-   - Depends on: XA-READY-07
+8. **XA-READY-06b** - Rewrite wrangler.toml to Worker format
+   - **Status:** Pending
+   - **Confidence:** 92% | **Effort:** S
+   - **Affects:** `apps/xa/wrangler.toml`
+   - **Depends on:** XA-READY-06a ✅
+   - Rewrite from Pages format (`pages_build_output_dir`) to Worker format (`main` + `[assets]`)
+   - Preserve `[vars]` (stealth config); drop `[env.preview]`/`[env.backup]` (configured in CF dashboard)
+   - Template: `apps/brikette/wrangler.toml`
+
+9. **XA-READY-06c** - Update build script for OpenNext
+   - **Status:** Pending
+   - **Confidence:** 88% | **Effort:** S
+   - **Affects:** `apps/xa/scripts/build-xa.mjs` OR handled in workflow `build-cmd`
+   - **Depends on:** XA-READY-06a ✅
+   - **Recommended:** Handle OpenNext build in workflow `build-cmd` (like Brikette); keep `build-xa.mjs` as-is for local dev
+
+10. **XA-READY-06d** - Configure GitHub environment and Cloudflare secrets (MANUAL)
+    - **Status:** Pending
+    - **Confidence:** 85% | **Effort:** S
+    - **Depends on:** XA-READY-06b
+    - Create GitHub `xa-staging` environment with secrets
+    - Configure Cloudflare Worker env vars (`XA_ALLOWED_HOSTS`, `XA_REQUIRE_CF_ACCESS=false`, `XA_STEALTH_INVITE_CODES`)
+
+11. **XA-READY-07** - Update CI workflow for Worker deploy
+    - **Status:** Pending
+    - **Confidence:** 88% | **Effort:** M
+    - **Affects:** `.github/workflows/xa.yml`
+    - **Depends on:** XA-READY-06b, XA-READY-06c
+    - Update `build-cmd` to chain: `pnpm build` → `opennextjs-cloudflare build` → `leakage-scan.mjs`
+    - Add `artifact-path: "apps/xa/.open-next"`
+    - Change `deploy-cmd` to `wrangler deploy` (not `next-on-pages deploy`)
+
+12. **XA-READY-08** - Deploy to Cloudflare staging and verify
+    - **Status:** Pending
+    - **Confidence:** 82% | **Effort:** M
+    - **Depends on:** XA-READY-07, XA-READY-06d
+    - Trigger CI workflow, verify staging URL responds, health check passes, invite flow works
 
 ### Phase 3: Presentation Polish (nice to have)
 
@@ -251,11 +263,55 @@ These tasks improve quality but don't block client review:
 - [ ] What is the demo invite code (XA_STEALTH_INVITE_CODES)?
 - [ ] Who is the client contact for scheduling the review?
 
+## Task Summary
+
+| Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
+|---|---|---|---:|---:|---|---|---|
+| XA-READY-00 | INVESTIGATE | Audit file completeness | — | S | Pending | - | XA-READY-03 |
+| XA-READY-01 | INVESTIGATE | Start dev server, document state | — | S | Pending | - | XA-READY-02, 03 |
+| XA-READY-02 | INVESTIGATE | OpenNext Worker build (local) | — | M | Pending | 01, 06a | 03 |
+| XA-READY-03 | IMPLEMENT | Fix blocking runtime errors | — | M | Pending | 01, 02 | 04 |
+| XA-READY-04 | INVESTIGATE | Verify core user flows | — | S | Pending | 03 | 05 |
+| XA-READY-05 | IMPLEMENT | Fix flow-blocking issues | — | M | Pending | 04 | 08 |
+| XA-READY-06a | IMPLEMENT | Install OpenNext + remove edge runtime | 95% | S | Complete (2026-02-08) | - | 06b, 06c, 02 |
+| XA-READY-06b | IMPLEMENT | Rewrite wrangler.toml to Worker format | 92% | S | Pending | 06a | 06c, 07 |
+| XA-READY-06c | IMPLEMENT | Update build script for OpenNext | 88% | S | Pending | 06a | 07 |
+| XA-READY-06d | IMPLEMENT | Configure GH env + CF secrets (MANUAL) | 85% | S | Pending | 06b | 08 |
+| XA-READY-07 | IMPLEMENT | Update CI workflow for Worker deploy | 88% | M | Pending | 06b, 06c | 08 |
+| XA-READY-08 | IMPLEMENT | Deploy to staging + verify | 82% | M | Pending | 07, 06d | 09 |
+
+> Phase 2 overall confidence: 87% (effort-weighted). All tasks ≥80%.
+
+## Parallelism Guide
+
+| Wave | Tasks | Prerequisites | Notes |
+|------|-------|---------------|-------|
+| 0 | ~~XA-READY-06a~~ ✅, XA-READY-00, XA-READY-01 | - | Discovery + adapter install |
+| 1 | XA-READY-06b, XA-READY-06c | 06a ✅ | Wrangler + build script in parallel |
+| 2 | XA-READY-02, XA-READY-07, XA-READY-06d | 01+06a, 06b+06c, 06b | Local build test + CI workflow + secrets in parallel |
+| 3 | XA-READY-03 | 01, 02 | Fix runtime errors |
+| 4 | XA-READY-04 | 03 | Verify flows |
+| 5 | XA-READY-05 | 04 | Fix flow issues |
+| 6 | XA-READY-08 | 07, 06d, 05 | Deploy and verify |
+
+**Max parallelism:** 3 | **Critical path:** 7 waves | **Phase 2 tasks:** 6 (XA-READY-06a through 08)
+
 ## Active Tasks
 
 | Task | Status | Blocked by |
 |------|--------|------------|
 | XA-READY-00 | Pending | - |
 | XA-READY-01 | Pending | - |
+| XA-READY-06b | Pending | - (06a complete) |
+| XA-READY-06c | Pending | - (06a complete) |
 
-Next: Complete discovery (Phase 0), including the Cloudflare parity build, before proceeding to fixes.
+Next: Wave 1 — rewrite wrangler.toml (XA-READY-06b) and update build script (XA-READY-06c) in parallel.
+
+## Decision Log
+
+- 2026-01-21: Plan created with generic deployment approach
+- 2026-02-03: `.github/workflows/xa.yml` added (uses `next-on-pages`)
+- 2026-02-08: Fact-check corrected outdated claims (CI workflow exists, `XA_ALLOWED_HOSTS` not set)
+- 2026-02-08: Fact-find completed (`xa-deploy-readiness-fact-find.md`) — compared Brikette production deploy with XA gaps
+- 2026-02-08: **Approach decision:** Use `@opennextjs/cloudflare` Worker deploy (matching Brikette production). Phase 2 tasks rewritten with concrete, evidence-based acceptance criteria.
+- 2026-02-08: **XA-READY-06a complete.** Installed `@opennextjs/cloudflare`, removed edge runtime from `robots.ts` and `search/sync/route.ts`. Typecheck + lint pass.

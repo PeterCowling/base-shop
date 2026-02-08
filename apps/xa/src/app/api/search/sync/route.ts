@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 
 import { XA_PRODUCTS } from "../../../../lib/demoData";
 
-export const runtime = "edge";
-
 function fnv1a(input: string) {
   let hash = 0x811c9dc5;
   for (let i = 0; i < input.length; i += 1) {

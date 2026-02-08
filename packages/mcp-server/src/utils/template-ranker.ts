@@ -38,9 +38,9 @@ export interface TemplateRankResult {
 
 const DEFAULT_LIMIT = 3;
 const AUTO_THRESHOLD = 80;
-const SUGGEST_THRESHOLD = 50;
+const SUGGEST_THRESHOLD = 25;
 
-const SYNONYMS: Record<string, string[]> = {
+export const SYNONYMS: Record<string, string[]> = {
   arrival: ["check-in", "check in", "arrive"],
   checkin: ["check-in", "arrival", "arrive"],
   checkout: ["check-out", "departure", "leaving"],
@@ -57,6 +57,15 @@ const SYNONYMS: Record<string, string[]> = {
   lost: ["found", "missing", "left behind", "forgot", "forgotten"],
   laundry: ["washing", "clothes", "facilities"],
   room: ["capacity", "beds", "dorm", "private", "occupancy"],
+  fee: ["cost", "charge", "price", "expense"],
+  cost: ["fee", "charge", "price", "expense"],
+  price: ["cost", "fee", "charge", "rate"],
+  add: ["include", "purchase", "buy"],
+  include: ["add", "purchase", "buy"],
+  transfer: ["bank transfer", "wire", "IBAN"],
+  age: ["restriction", "policy", "limit", "years old"],
+  restriction: ["age", "policy", "limit"],
+  allowed: ["permitted", "possible", "available", "can"],
 };
 
 const PHRASE_EXPANSIONS = [

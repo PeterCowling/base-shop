@@ -1,6 +1,13 @@
 import { z } from "zod";
 
+import { stemmedTokenizer } from "@acme/lib";
+
+import { SYNONYMS } from "../utils/template-ranker.js";
 import { errorResult, formatError, jsonResult } from "../utils/validation.js";
+
+function tokenize(text: string): string[] {
+  return stemmedTokenizer.tokenize(text);
+}
 
 type QualityResult = {
   passed: boolean;
@@ -12,7 +19,8 @@ type QualityResult = {
 type EmailActionPlanInput = {
   language: "EN" | "IT" | "ES" | "UNKNOWN";
   intents: {
-    questions: Array<{ text: string }>; 
+    questions: Array<{ text: string }>;
+    requests?: Array<{ text: string }>;
   };
   workflow_triggers: {
     booking_monitor: boolean;
@@ -35,6 +43,7 @@ const qualityCheckSchema = z.object({
     language: z.enum(["EN", "IT", "ES", "UNKNOWN"]),
     intents: z.object({
       questions: z.array(z.object({ text: z.string().min(1) })).default([]),
+      requests: z.array(z.object({ text: z.string().min(1) })).default([]),
     }),
     workflow_triggers: z.object({
       booking_monitor: z.boolean().optional().default(false),
@@ -117,7 +126,8 @@ function hasSignature(text: string): boolean {
   return (
     lower.includes("hostel brikette") ||
     lower.includes("brikette") ||
-    lower.includes("best regards")
+    lower.includes("regards") ||
+    lower.includes("team")
   );
 }
 
@@ -139,23 +149,44 @@ function hasLink(text: string): boolean {
   return /(https?:\/\/\S+)/i.test(text);
 }
 
+const STOP_WORDS = new Set([
+  "that", "this", "from", "with", "what", "when", "where", "which",
+  "have", "does", "will", "would", "could", "should", "there", "their",
+  "they", "them", "been", "being", "also", "just", "about", "than",
+  "your", "some", "each", "were", "more", "very",
+]);
+
 function extractQuestionKeywords(question: string): string[] {
   return question
     .replace(/\?/g, "")
     .split(/\s+/)
-    .map(word => word.toLowerCase())
-    .filter(word => word.length > 3)
-    .slice(0, 3);
+    .map(w => w.toLowerCase())
+    .filter(w => w.length > 2 && !STOP_WORDS.has(w))
+    .slice(0, 5);
 }
 
 function answersQuestions(body: string, questions: Array<{ text: string }>): boolean {
-  const lower = body.toLowerCase();
+  const bodyTokens = tokenize(body.toLowerCase());
+  const bodySet = new Set(bodyTokens);
+
   return questions.every(question => {
     const keywords = extractQuestionKeywords(question.text);
     if (keywords.length === 0) {
       return true;
     }
-    return keywords.some(keyword => lower.includes(keyword));
+    return keywords.some(keyword => {
+      // Direct stem match
+      const stems = tokenize(keyword);
+      if (stems.some(s => bodySet.has(s))) return true;
+
+      // Synonym match
+      const syns = SYNONYMS[keyword] ?? [];
+      for (const syn of syns) {
+        const synStems = tokenize(syn);
+        if (synStems.some(s => bodySet.has(s))) return true;
+      }
+      return false;
+    });
   });
 }
 
@@ -181,7 +212,11 @@ function runChecks(actionPlan: EmailActionPlanInput, draft: DraftCandidateInput)
   const failed_checks: string[] = [];
   const warnings: string[] = [];
 
-  if (!answersQuestions(draft.bodyPlain, actionPlan.intents.questions)) {
+  const allIntents = [
+    ...actionPlan.intents.questions,
+    ...(actionPlan.intents.requests ?? []),
+  ];
+  if (!answersQuestions(draft.bodyPlain, allIntents)) {
     failed_checks.push("unanswered_questions");
   }
 

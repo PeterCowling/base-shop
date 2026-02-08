@@ -728,6 +728,10 @@ describe("TASK-18: Stage 2+3 — Full Pipeline", () => {
         }
       }
       console.info("=== End Results ===\n");
+
+      // Enforce minimum quality gate pass rate
+      const passRate = results.filter((r) => r.qualityPassed).length / results.length;
+      expect(passRate).toBeGreaterThanOrEqual(0.9);
     });
 
     it.each(customerFixtures.map((f) => [f.id, f.description, f]))(

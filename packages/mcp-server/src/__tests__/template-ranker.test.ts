@@ -53,6 +53,16 @@ const templates = [
     body: "Quiet hours from 11:45 PM to 8:00 AM.",
     category: "house-rules",
   },
+  {
+    subject: "Luggage Storage — After Checkout",
+    body: "After checkout, luggage storage free until 3:30 PM. Porter service available at a cost of €15 per bag.",
+    category: "luggage",
+  },
+  {
+    subject: "Age Restriction",
+    body: "Our age restriction policy applies during peak seasons to maintain a comfortable environment.",
+    category: "policies",
+  },
 ];
 
 describe("template ranker", () => {
@@ -165,5 +175,23 @@ describe("template ranker", () => {
     });
 
     expect(result.candidates[0]?.template.category).toBe("house-rules");
+  });
+
+  it("expands fee synonym to match cost in template body", () => {
+    const result = rankTemplates(templates, {
+      subject: "Extra fee",
+      body: "Is there an extra fee for late luggage pickup?",
+    });
+
+    expect(result.candidates[0]?.template.category).toBe("luggage");
+  });
+
+  it("expands age synonym to match restriction in template body", () => {
+    const result = rankTemplates(templates, {
+      subject: "Age policy",
+      body: "Do you have an age limit?",
+    });
+
+    expect(result.candidates[0]?.template.category).toBe("policies");
   });
 });

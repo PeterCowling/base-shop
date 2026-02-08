@@ -16,6 +16,7 @@
 import fs from "fs";
 import path from "path";
 
+import { isGuideLive } from "../../data/guides.index";
 import type { GuidesNamespace } from "../guides";
 
 function createScopedPathResolver(baseDir: string) {
@@ -130,6 +131,7 @@ function readSplitNamespace(baseDir: string): GuidesNamespace | undefined {
     slugs.sort((a, b) => a.localeCompare(b));
     for (const file of slugs) {
       const slug = file.replace(/\.json$/u, "");
+      if (!isGuideLive(slug)) continue;
       const filePath = resolveScopedPath("guides", "content", file);
       result.content[slug] = readJson(filePath);
     }

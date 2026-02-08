@@ -5,13 +5,15 @@
 // -----------------------------------------------------------------------------
 
 import { GENERATED_GUIDE_SLUGS } from "../data/generate-guide-slugs";
+import { isGuideLive } from "../data/guides.index";
 
 import type { GuidesNamespace } from "./guides.types";
 import { isRecord } from "./guides.util";
 import { loadGuidesLocaleResource } from "./locale-loader.guides";
 
-// All guide keys from the generated manifest - used to load content files
-const CONTENT_KEYS = Object.keys(GENERATED_GUIDE_SLUGS);
+// Only load content for live guides — draft/review content is excluded from the bundle
+const ALL_KEYS = Object.keys(GENERATED_GUIDE_SLUGS);
+const CONTENT_KEYS = ALL_KEYS.filter((key) => isGuideLive(key));
 
 type GlobalGuideImport = {
   key: string;

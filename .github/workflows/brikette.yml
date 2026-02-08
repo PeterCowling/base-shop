@@ -71,7 +71,7 @@ jobs:
       # Run Brikette Jest validation in three shards via reusable workflow.
       test-shard-count: 3
       project-name: ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette-website' }}
-      environment-name: "staging"
+      environment-name: "staging-pages"
       environment-url: ${{ format('https://staging.{0}.pages.dev', vars.BRIKETTE_PAGES_PROJECT || 'brikette-website') }}
       healthcheck-args: "--staging"
     secrets: inherit

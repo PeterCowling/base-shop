@@ -91,6 +91,10 @@ export default async function AssistanceArticlePage({ params }: Props) {
   if (!guideKey || !guideBase) notFound();
   if (!isGuidePublished(guideKey)) notFound();
   if (guideBase.baseKey !== "assistance") permanentRedirect(guidePath(validLang, guideKey));
+  const localizedSlug = guideSlug(validLang, guideKey);
+  if (article.toLowerCase() !== localizedSlug.toLowerCase()) {
+    permanentRedirect(guidePath(validLang, guideKey));
+  }
 
   const { serverGuides, serverGuidesEn } = await loadGuideI18nBundle(validLang, guideKey);
 

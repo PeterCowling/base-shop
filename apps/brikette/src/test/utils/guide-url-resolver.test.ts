@@ -1,5 +1,11 @@
 import { type AppLanguage } from "@/i18n.config";
-import { guideAbsoluteUrl, guideHref, guidePath, guideSlug } from "@/routes.guides-helpers";
+import {
+  guideAbsoluteUrl,
+  guideHref,
+  guidePath,
+  guideSlug,
+  resolveGuideKeyFromSlug,
+} from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
 
 describe("guide URL resolver", () => {
@@ -26,5 +32,10 @@ describe("guide URL resolver", () => {
 
   it("routes how-to-get-here guides under how-to-get-here", () => {
     assertBase("ferryDockToBrikette", "howToGetHere");
+  });
+
+  it("resolves compact legacy key slugs to guide keys", () => {
+    expect(resolveGuideKeyFromSlug("positanomainbeach", "it")).toBe("positanoMainBeach");
+    expect(resolveGuideKeyFromSlug("positanomainbeachwalkdown", "it")).toBe("positanoMainBeachWalkDown");
   });
 });

@@ -30,7 +30,7 @@ jest.mock("@/app/_lib/i18n-server", () => ({
 jest.mock("@/routes.guides-helpers", () => ({
   guideNamespace: (...args: unknown[]) => mockGuideNamespace(...args),
   guidePath: (...args: unknown[]) => mockGuidePath(...args),
-  guideSlug: (_lang: string, key: string) => key,
+  guideSlug: (_lang: string, key: string) => key.replace(/([a-z\d])([A-Z])/g, "$1-$2").toLowerCase(),
   resolveGuideKeyFromSlug: (...args: unknown[]) => mockResolveGuideKeyFromSlug(...args),
 }));
 

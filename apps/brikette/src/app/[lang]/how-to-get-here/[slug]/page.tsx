@@ -1,7 +1,7 @@
 // src/app/[lang]/how-to-get-here/[slug]/page.tsx
 // How to get here dynamic route - App Router version (guide system only)
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 
 import { loadGuideI18nBundle } from "@/app/_lib/guide-i18n-bundle";
 import { getTranslations, toAppLanguage } from "@/app/_lib/i18n-server";
@@ -10,7 +10,7 @@ import { generateLangParams } from "@/app/_lib/static-params";
 import { GUIDES_INDEX, isGuidePublished } from "@/data/guides.index";
 import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 import { listHowToSlugs } from "@/lib/how-to-get-here/definitions";
-import { guideNamespace, guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
+import { guideNamespace, guidePath, guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
 import { loadGuideManifestOverridesFromFs } from "@/routes/guides/guide-manifest-overrides.node";
 import { OG_IMAGE } from "@/utils/headConstants";
 
@@ -97,11 +97,18 @@ export default async function HowToGetHerePage({ params }: Props) {
   const guideKey = resolveGuideKeyFromSlug(slug, validLang);
   const guideBase = guideKey ? guideNamespace(validLang, guideKey) : null;
 
-  if (!guideKey || guideBase?.baseKey !== "howToGetHere") {
+  if (!guideKey || !guideBase) {
     notFound();
+  }
+  if (guideBase.baseKey !== "howToGetHere") {
+    permanentRedirect(guidePath(validLang, guideKey));
   }
   if (!isGuidePublished(guideKey)) {
     notFound();
+  }
+  const localizedSlug = guideSlug(validLang, guideKey);
+  if (slug.toLowerCase() !== localizedSlug.toLowerCase()) {
+    permanentRedirect(guidePath(validLang, guideKey));
   }
 
   // Load manifest overrides (includes audit results)

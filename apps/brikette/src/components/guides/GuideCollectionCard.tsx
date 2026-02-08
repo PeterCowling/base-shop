@@ -12,6 +12,16 @@ import { guideHref, type GuideKey } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
 import { getGuideLinkLabels } from "@/guides/slugs/labels";
 
+function humanizeGuideLabelKey(labelKey: string): string {
+  const withSpaces = labelKey
+    .replace(/([a-z\d])([A-Z])/g, "$1 $2")
+    .replace(/[_-]+/g, " ")
+    .trim();
+
+  if (!withSpaces) return labelKey;
+  return withSpaces.charAt(0).toUpperCase() + withSpaces.slice(1);
+}
+
 // Card with optional thumbnail - overflow hidden for image
 const CARD_CLASSES = [
   "group",
@@ -153,11 +163,12 @@ export const GuideCollectionCard = ({
     const guideLinkLabels = getGuideLinkLabels(lang);
 
     return directionLinks.map((link) => {
-      const resolvedLabel = link.label ?? guideLinkLabels[link.labelKey] ?? link.labelKey;
-      const linkType = link.type ?? 'guide';
+      const resolvedLabel =
+        link.label ?? guideLinkLabels[link.labelKey] ?? humanizeGuideLabelKey(link.labelKey);
+      const linkType = link.type ?? "guide";
 
       let href: string;
-      if (linkType === 'howToGetHere') {
+      if (linkType === "howToGetHere") {
         href = `${howToBase}/${link.slug}`;
       } else {
         // Link to guide page using guide key

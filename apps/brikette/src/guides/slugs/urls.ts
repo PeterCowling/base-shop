@@ -2,7 +2,7 @@ import { createGuideUrlHelpers } from "@acme/guides-core";
 
 import { BASE_URL } from "../../config/site";
 import type { AppLanguage } from "../../i18n.config";
-import { GUIDE_COMPONENT_OVERRIDES,GUIDE_SLUG_FALLBACKS } from "./components";
+import { GUIDE_COMPONENT_OVERRIDES, GUIDE_SLUG_FALLBACKS } from "./components";
 import type { GuideKey } from "./keys";
 import { GUIDE_KEYS_WITH_OVERRIDES } from "./keys";
 import { guideNamespace } from "./namespaces";
@@ -59,8 +59,46 @@ const guideUrlHelpers = createGuideUrlHelpers<AppLanguage, GuideKey>({
   fallbackSlugFromKey,
 });
 
-export const { guidePath, guideHref, guideAbsoluteUrl, resolveGuideKeyFromSlug, slugLookupsByLang } =
-  guideUrlHelpers;
+const {
+  guidePath,
+  guideHref,
+  guideAbsoluteUrl,
+  resolveGuideKeyFromSlug: resolveGuideKeyFromSlugCore,
+  slugLookupsByLang,
+} = guideUrlHelpers;
+
+const LEGACY_KEY_LOOKUP = Object.freeze(
+  GUIDE_KEYS_WITH_OVERRIDES.reduce<Record<string, GuideKey>>((acc, key) => {
+    const compactKey = key.toLowerCase();
+    if (!acc[compactKey]) {
+      acc[compactKey] = key;
+    }
+
+    const dashedKey = fallbackSlugFromKey(key);
+    if (!acc[dashedKey]) {
+      acc[dashedKey] = key;
+    }
+
+    const compactDashedKey = dashedKey.replace(/-/g, "");
+    if (!acc[compactDashedKey]) {
+      acc[compactDashedKey] = key;
+    }
+
+    return acc;
+  }, {}),
+);
+
+export function resolveGuideKeyFromSlug(slug: string, lang?: AppLanguage): GuideKey | undefined {
+  const resolved = resolveGuideKeyFromSlugCore(slug, lang);
+  if (resolved) return resolved;
+
+  const normalized = slug.trim().toLowerCase();
+  if (!normalized) return undefined;
+
+  return LEGACY_KEY_LOOKUP[normalized] ?? LEGACY_KEY_LOOKUP[normalized.replace(/-/g, "")];
+}
+
+export { guideAbsoluteUrl, guideHref, guidePath, slugLookupsByLang };
 
 export function guideComponentPath(key: GuideKey): string {
   const override = GUIDE_COMPONENT_OVERRIDES[key];

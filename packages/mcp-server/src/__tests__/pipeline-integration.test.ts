@@ -397,6 +397,98 @@ const fixtures: TestFixture[] = [
     scenarioType: "prepayment",
   },
 
+  // ======================== BREAKFAST ========================
+  {
+    id: "BRK-01",
+    description: "Breakfast eligibility question",
+    from: "Breakfast Guest <breakfast@example.com>",
+    subject: "Breakfast included?",
+    body: "Hi, is breakfast included in our booking? What time is it served?",
+    expectedCategory: "faq",
+    requiresResponse: true,
+    scenarioType: "breakfast",
+  },
+  {
+    id: "BRK-02",
+    description: "OTA breakfast question",
+    from: "OTA Guest <ota@example.com>",
+    subject: "Breakfast for Hostelworld booking",
+    body: "I booked through Hostelworld. Do I get breakfast? If not, can I add it?",
+    expectedCategory: "faq",
+    requiresResponse: true,
+    scenarioType: "breakfast",
+  },
+
+  // ======================== LUGGAGE ========================
+  {
+    id: "LUG-01",
+    description: "Luggage storage before check-in",
+    from: "Early Arrival <early@example.com>",
+    subject: "Luggage storage",
+    body: "We arrive at 9am. Can we store our bags somewhere before check-in?",
+    expectedCategory: "faq",
+    requiresResponse: true,
+    scenarioType: "luggage",
+  },
+  {
+    id: "LUG-02",
+    description: "Late luggage pickup after checkout",
+    from: "Late Departure <late@example.com>",
+    subject: "Bags after checkout",
+    body: "Our ferry doesn't leave until 7pm. Can we collect our bags that late? Is there an extra fee?",
+    expectedCategory: "faq",
+    requiresResponse: true,
+    scenarioType: "luggage",
+  },
+
+  // ======================== WIFI ========================
+  {
+    id: "WIFI-01",
+    description: "WiFi availability and speed",
+    from: "Remote Worker <worker@example.com>",
+    subject: "Internet at hostel",
+    body: "Do you have WiFi? I need to do some work calls. Is the connection reliable?",
+    expectedCategory: "faq",
+    requiresResponse: true,
+    scenarioType: "wifi",
+  },
+
+  // ======================== BOOKING CHANGES ========================
+  {
+    id: "CHG-01",
+    description: "Date change request",
+    from: "Date Changer <changer@example.com>",
+    subject: "Change booking dates",
+    body: "Hi, can I change my reservation from July 10-12 to July 15-17? The original dates no longer work for us.",
+    expectedCategory: "faq",
+    requiresResponse: true,
+    scenarioType: "booking-changes",
+  },
+
+  // ======================== CHECKOUT ========================
+  {
+    id: "CO-01",
+    description: "Late checkout request",
+    from: "Late Guest <latecheck@example.com>",
+    subject: "Late checkout",
+    body: "Is it possible to check out at noon instead of 10am? We have a late flight.",
+    expectedCategory: "faq",
+    requiresResponse: true,
+    scenarioType: "checkout",
+  },
+
+  // ======================== HOUSE RULES ========================
+  {
+    id: "HR-01",
+    description: "Visitor policy question",
+    from: "Social Guest <visitor@example.com>",
+    subject: "Can friends visit?",
+    body: "My friend is staying at another hotel in Positano. Can they come hang out at the hostel bar with me?",
+    expectedCategory: "faq",
+    requiresResponse: true,
+    scenarioType: "house-rules",
+  },
+
   // ======================== MODIFICATION ========================
   {
     id: "MOD-01",

@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * Baseline Email Sample Collection Script
+ * Email Sample Collection Script
  *
- * Collects up to 50 inbox threads for email autodraft baseline measurement.
+ * Collects inbox emails for email autodraft analysis with pagination and filtering.
  *
  * Notes:
  * - Writes the sample to stdout (redirect to a *gitignored* location).
@@ -10,7 +10,15 @@
  *
  * Usage:
  *   cd packages/mcp-server
- *   pnpm exec tsx scripts/collect-baseline-sample.ts > ../../.agents/private/email-autodraft-consolidation-baseline-sample.txt
+ *   pnpm exec tsx scripts/collect-baseline-sample.ts --max 200 --after 2025/06/01 --before 2025/09/01 --stage 1
+ *   pnpm exec tsx scripts/collect-baseline-sample.ts --max 200 --after 2025/09/01 --before 2025/12/01 --stage 2
+ *
+ * CLI args:
+ *   --max <n>        Maximum emails to collect (default: 50)
+ *   --after <date>   Gmail date filter start (YYYY/MM/DD)
+ *   --before <date>  Gmail date filter end (YYYY/MM/DD)
+ *   --stage <n>      Stage number for output filename (default: 1)
+ *   --exclude <domains>  Comma-separated sender domains to exclude
  */
 
 import { getGmailClient } from "../src/clients/gmail.js";
@@ -18,6 +26,58 @@ import { getGmailClient } from "../src/clients/gmail.js";
 interface EmailHeader {
   name: string;
   value: string;
+}
+
+interface CliArgs {
+  max: number;
+  after: string;
+  before: string;
+  stage: number;
+  exclude: string[];
+}
+
+const DEFAULT_EXCLUSIONS = [
+  "octorate.com",
+  "hostelworld.com",
+  "expediagroup.com",
+  "booking.com",
+  "revolut.com",
+  "smtp.octorate.com",
+  "google.com",
+  "ikea.it",
+];
+
+function parseArgs(): CliArgs {
+  const args = process.argv.slice(2);
+  const result: CliArgs = {
+    max: 50,
+    after: "2025/06/01",
+    before: "2025/09/01",
+    stage: 1,
+    exclude: [],
+  };
+
+  for (let i = 0; i < args.length; i++) {
+    switch (args[i]) {
+      case "--max":
+        result.max = parseInt(args[++i], 10);
+        break;
+      case "--after":
+        result.after = args[++i];
+        break;
+      case "--before":
+        result.before = args[++i];
+        break;
+      case "--stage":
+        result.stage = parseInt(args[++i], 10);
+        break;
+      case "--exclude":
+        result.exclude = args[++i].split(",").map(d => d.trim());
+        break;
+    }
+  }
+
+  return result;
 }
 
 function getHeader(headers: EmailHeader[], name: string): string {
@@ -60,10 +120,26 @@ function extractBody(payload: GmailPayloadPart): { plain: string; html?: string 
   return result;
 }
 
+function extractDomain(from: string): string {
+  const match = from.match(/<([^>]+)>/);
+  const email = match ? match[1] : from;
+  const parts = email.split("@");
+  return parts.length > 1 ? parts[1].toLowerCase() : "";
+}
+
+function isExcluded(from: string, exclusions: string[]): boolean {
+  const domain = extractDomain(from);
+  return exclusions.some(excluded => domain === excluded || domain.endsWith(`.${excluded}`));
+}
+
 async function main(): Promise<void> {
-  console.error("[Baseline] Starting baseline sample collection…");
-  console.error("[Baseline] Query: in:inbox after:2025/11/02 before:2026/02/03");
-  console.error("[Baseline] Limit: 50 messages");
+  const config = parseArgs();
+  const allExclusions = [...DEFAULT_EXCLUSIONS, ...config.exclude];
+
+  console.error(`[Collect] Starting email collection (stage ${config.stage})…`);
+  console.error(`[Collect] Query: in:inbox after:${config.after} before:${config.before}`);
+  console.error(`[Collect] Target: ${config.max} emails`);
+  console.error(`[Collect] Excluded domains: ${allExclusions.join(", ")}`);
   console.error("");
 
   const writeLine = (line = ""): void => {
@@ -84,18 +160,7 @@ async function main(): Promise<void> {
   }
 
   const gmail = clientResult.client;
-
-  console.error("[Baseline] Fetching email list…");
-  const listResponse = await gmail.users.messages.list({
-    userId: "me",
-    q: "in:inbox after:2025/11/02 before:2026/02/03",
-    maxResults: 50,
-  });
-
-  const messages = listResponse.data.messages ?? [];
-  console.error(`[Baseline] Found ${messages.length} messages`);
-
-  if (messages.length === 0) return;
+  const query = `in:inbox after:${config.after} before:${config.before}`;
 
   type ThreadContextItem = { from: string; date: string; snippet: string };
   type EmailSummary = {
@@ -109,15 +174,51 @@ async function main(): Promise<void> {
     threadContext: ThreadContextItem[];
   };
 
+  // Paginated message ID collection
+  const messageIds: Array<{ id: string }> = [];
+  let pageToken: string | undefined;
+  const pageSize = 100; // Gmail max per page
+
+  console.error("[Collect] Fetching email list (paginated)…");
+
+  while (messageIds.length < config.max) {
+    const listResponse = await gmail.users.messages.list({
+      userId: "me",
+      q: query,
+      maxResults: Math.min(pageSize, config.max - messageIds.length),
+      pageToken,
+    });
+
+    const page = listResponse.data.messages ?? [];
+    for (const msg of page) {
+      if (msg.id) {
+        messageIds.push({ id: msg.id });
+      }
+    }
+
+    console.error(`[Collect] Page fetched: ${page.length} messages (total: ${messageIds.length})`);
+
+    pageToken = listResponse.data.nextPageToken ?? undefined;
+    if (!pageToken || messageIds.length >= config.max) break;
+  }
+
+  console.error(`[Collect] Total message IDs: ${messageIds.length}`);
+
+  if (messageIds.length === 0) {
+    console.error("[Collect] No messages found.");
+    return;
+  }
+
+  // Fetch details and filter
   const emails: EmailSummary[] = [];
+  let skippedSystem = 0;
 
-  console.error("[Baseline] Fetching email details…\n");
+  console.error("[Collect] Fetching email details…\n");
 
-  for (let i = 0; i < messages.length; i++) {
-    const msg = messages[i];
-    if (!msg.id) continue;
+  for (let i = 0; i < messageIds.length; i++) {
+    const msg = messageIds[i];
 
-    console.error(`[Baseline] Processing ${i + 1}/${messages.length}: ${msg.id}`);
+    console.error(`[Collect] Processing ${i + 1}/${messageIds.length}: ${msg.id}`);
 
     try {
       const detail = await gmail.users.messages.get({
@@ -130,6 +231,12 @@ async function main(): Promise<void> {
       const from = getHeader(headers, "From");
       const subject = getHeader(headers, "Subject") || "(no subject)";
       const date = getHeader(headers, "Date");
+
+      // Filter out system/excluded senders
+      if (isExcluded(from, allExclusions)) {
+        skippedSystem++;
+        continue;
+      }
 
       const body = extractBody((detail.data.payload ?? {}) as GmailPayloadPart);
 
@@ -173,7 +280,18 @@ async function main(): Promise<void> {
     }
   }
 
-  console.error("\n[Baseline] Writing output…\n");
+  console.error(`\n[Collect] Skipped ${skippedSystem} system/excluded emails`);
+  console.error(`[Collect] Collected ${emails.length} customer emails`);
+  console.error("[Collect] Writing output…\n");
+
+  // Output header
+  writeLine(`STAGE: ${config.stage}`);
+  writeLine(`QUERY: ${query}`);
+  writeLine(`DATE: ${new Date().toISOString()}`);
+  writeLine(`TOTAL_FETCHED: ${messageIds.length}`);
+  writeLine(`SYSTEM_EXCLUDED: ${skippedSystem}`);
+  writeLine(`CUSTOMER_EMAILS: ${emails.length}`);
+  writeLine("");
 
   writeLine("SAMPLE_LIST");
   emails.forEach((email, i) => {
@@ -202,11 +320,10 @@ async function main(): Promise<void> {
     }
   });
 
-  console.error(`\n[Baseline] Done. Collected ${emails.length} messages.`);
+  console.error(`\n[Collect] Done. Stage ${config.stage}: ${emails.length} customer emails collected.`);
 }
 
 main().catch(error => {
   console.error("[Fatal]", error);
   process.exit(1);
 });
-

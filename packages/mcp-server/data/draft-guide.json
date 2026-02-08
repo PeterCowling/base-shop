@@ -5,7 +5,16 @@
     "payment": { "min_words": 100, "max_words": 150 },
     "cancellation": { "min_words": 80, "max_words": 140 },
     "complaint": { "min_words": 120, "max_words": 180 },
-    "general": { "min_words": 80, "max_words": 140 }
+    "general": { "min_words": 80, "max_words": 140 },
+    "breakfast": { "min_words": 50, "max_words": 100 },
+    "luggage": { "min_words": 50, "max_words": 100 },
+    "wifi": { "min_words": 50, "max_words": 100 },
+    "booking-changes": { "min_words": 80, "max_words": 140 },
+    "checkout": { "min_words": 50, "max_words": 100 },
+    "house-rules": { "min_words": 80, "max_words": 120 },
+    "promotions": { "min_words": 40, "max_words": 80 },
+    "employment": { "min_words": 60, "max_words": 120 },
+    "lost-found": { "min_words": 60, "max_words": 120 }
   },
   "content_rules": {
     "always": [
@@ -16,7 +25,14 @@
     "if": [
       "If payment issues, acknowledge and provide next steps.",
       "If policy questions, cite policy summary and link to policies.",
-      "If cancellation, explain policy and required actions."
+      "If cancellation, explain policy and required actions.",
+      "If breakfast question, clarify eligibility (direct bookings only) and hours.",
+      "If luggage question, state hours and mention porter service for late collection.",
+      "If booking change, confirm subject to availability and link to guide.",
+      "If house rules, cite specific rule and link to rules page.",
+      "If coupon/promotion, confirm discount applied and thank for booking direct.",
+      "If job application, acknowledge receipt and mention typical recruitment timeline.",
+      "If lost item, ask for item description, room number, and checkout date."
     ],
     "never": [
       "Never confirm availability.",
@@ -40,7 +56,16 @@
     "payment": "Firm but polite",
     "complaint": "Empathetic and solution-focused",
     "faq": "Friendly and concise",
-    "policy": "Clear and precise"
+    "policy": "Clear and precise",
+    "breakfast": "Friendly and informative",
+    "luggage": "Helpful and precise",
+    "wifi": "Friendly and straightforward",
+    "booking-changes": "Accommodating and clear",
+    "checkout": "Warm and helpful",
+    "house-rules": "Polite but firm",
+    "promotions": "Warm and appreciative",
+    "employment": "Professional and encouraging",
+    "lost-found": "Empathetic and action-oriented"
   },
   "quality_checklist": [
     "All questions answered",

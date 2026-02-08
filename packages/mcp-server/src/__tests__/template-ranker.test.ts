@@ -23,6 +23,36 @@ const templates = [
     body: "Directions via bus, ferry, or taxi.",
     category: "transportation",
   },
+  {
+    subject: "Breakfast — Eligibility and Hours",
+    body: "Breakfast is served daily from 8:00 AM to 10:30 AM for direct bookings.",
+    category: "breakfast",
+  },
+  {
+    subject: "Luggage Storage — Before Check-in",
+    body: "Free luggage storage from 10:30 AM on arrival day.",
+    category: "luggage",
+  },
+  {
+    subject: "WiFi Information",
+    body: "Complimentary WiFi available from check-in to checkout.",
+    category: "wifi",
+  },
+  {
+    subject: "Booking Change — Date Modification",
+    body: "Date changes subject to availability.",
+    category: "booking-changes",
+  },
+  {
+    subject: "Checkout Reminder",
+    body: "Checkout is by 10:00 AM. Luggage storage available until 3:30 PM.",
+    category: "checkout",
+  },
+  {
+    subject: "Quiet Hours Reminder",
+    body: "Quiet hours from 11:45 PM to 8:00 AM.",
+    category: "house-rules",
+  },
 ];
 
 describe("template ranker", () => {
@@ -81,5 +111,59 @@ describe("template ranker", () => {
     expect(result.candidates[0]?.template.subject).toBe(
       "Arriving before check-in time"
     );
+  });
+
+  it("ranks breakfast template for food/meal queries", () => {
+    const result = rankTemplates(templates, {
+      subject: "Is breakfast included?",
+      body: "We wanted to know about the morning meal.",
+    });
+
+    expect(result.candidates[0]?.template.category).toBe("breakfast");
+  });
+
+  it("ranks luggage template for bag storage queries", () => {
+    const result = rankTemplates(templates, {
+      subject: "Luggage storage",
+      body: "Is there luggage storage at the hostel?",
+    });
+
+    expect(result.candidates[0]?.template.category).toBe("luggage");
+  });
+
+  it("ranks wifi template for internet queries", () => {
+    const result = rankTemplates(templates, {
+      subject: "Internet",
+      body: "Do you have wifi at the hostel?",
+    });
+
+    expect(result.candidates[0]?.template.category).toBe("wifi");
+  });
+
+  it("ranks booking-changes template for modification queries", () => {
+    const result = rankTemplates(templates, {
+      subject: "Change dates",
+      body: "I need to modify my booking dates.",
+    });
+
+    expect(result.candidates[0]?.template.category).toBe("booking-changes");
+  });
+
+  it("ranks checkout template for departure queries", () => {
+    const result = rankTemplates(templates, {
+      subject: "Checkout reminder",
+      body: "When is checkout? Do we return the keycard at reception?",
+    });
+
+    expect(result.candidates[0]?.template.category).toBe("checkout");
+  });
+
+  it("ranks house-rules template for quiet hours queries", () => {
+    const result = rankTemplates(templates, {
+      subject: "Noise",
+      body: "What are the quiet hours?",
+    });
+
+    expect(result.candidates[0]?.template.category).toBe("house-rules");
   });
 });

@@ -76,6 +76,10 @@ function wordCount(text: string): number {
 function scenarioTarget(category: string): { min: number; max: number } {
   switch (category) {
     case "faq":
+    case "breakfast":
+    case "luggage":
+    case "wifi":
+    case "checkout":
       return { min: 50, max: 100 };
     case "policy":
     case "payment":
@@ -84,6 +88,15 @@ function scenarioTarget(category: string): { min: number; max: number } {
       return { min: 80, max: 140 };
     case "complaint":
       return { min: 120, max: 180 };
+    case "booking-changes":
+      return { min: 80, max: 140 };
+    case "house-rules":
+      return { min: 80, max: 120 };
+    case "promotions":
+      return { min: 40, max: 80 };
+    case "employment":
+    case "lost-found":
+      return { min: 60, max: 120 };
     default:
       return { min: 80, max: 140 };
   }

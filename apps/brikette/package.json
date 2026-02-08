@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_OPTIONS=\"--require ./scripts/ssr-polyfills.cjs\" next dev -p 3012",
-    "prebuild": "pnpm --filter @acme/telemetry clean && pnpm --filter @acme/telemetry build",
+    "prebuild": "pnpm run generate:guide-link-labels && pnpm --filter @acme/telemetry clean && pnpm --filter @acme/telemetry build",
     "postbuild": "pnpm exec tsx --tsconfig tsconfig.scripts.json scripts/generate-public-seo.ts",
     "build": "cross-env NODE_OPTIONS=\"--require ./scripts/ssr-polyfills.cjs\" next build",
     "start": "cross-env NODE_OPTIONS=\"--require ./scripts/ssr-polyfills.cjs\" next start -p 3012",
@@ -23,6 +23,7 @@
     "validate-manifest": "pnpm exec tsx ./scripts/validate-guide-manifest.ts",
     "report-coverage": "pnpm exec tsx ./scripts/report-guide-coverage.ts",
     "check-i18n-coverage": "pnpm exec tsx ./scripts/check-i18n-coverage.ts",
+    "generate:guide-link-labels": "pnpm exec tsx --tsconfig tsconfig.scripts.json scripts/generate-guide-link-labels.ts",
     "translate-guides": "pnpm exec tsx ./scripts/translate-guides.ts",
     "perf:check-layout-chunk": "node ./scripts/perf/check-layout-chunk.mjs",
     "test:content-readiness": "pnpm exec jest --testPathPattern 'test/content-readiness/' --maxWorkers=2"

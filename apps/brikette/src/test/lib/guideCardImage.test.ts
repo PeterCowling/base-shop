@@ -60,4 +60,20 @@ describe("resolveGuideCardImage", () => {
 
     expect(result).toEqual({ src: "https://example.com/hero.jpg", alt: undefined });
   });
+
+  it("prefers section images over hero images for stable card thumbnails", () => {
+    getGuideManifestEntryMock.mockReturnValue({
+      contentKey: "travelHelp",
+      blocks: [{ type: "hero", options: { image: "/img/cards/hero.jpg" } }],
+    } as never);
+
+    const result = resolveGuideCardImage(
+      "travelHelp",
+      "en",
+      createTranslator("img/cards/from-section.jpg"),
+      createTranslator("img/cards/from-section.jpg"),
+    );
+
+    expect(result).toEqual({ src: "/img/cards/from-section.jpg", alt: "Section image alt" });
+  });
 });

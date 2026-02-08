@@ -1,3 +1,4 @@
+import { GENERATED_GUIDE_LINK_LABELS } from "../../data/generated-guide-link-labels";
 import { getGuidesBundle } from "../../locales/guides";
 
 type GuideContentEntry = { linkLabel?: unknown } | undefined;
@@ -32,10 +33,21 @@ function readLegacyLinkLabels(bundle: { links?: Record<string, unknown> } | unde
 }
 
 export function getGuideLinkLabels(locale: string): Record<string, string> {
+  const generatedLabels = (() => {
+    const exact = GENERATED_GUIDE_LINK_LABELS[locale];
+    if (exact) return exact;
+    const base = locale.split("-")[0];
+    if (base) {
+      const baseMatch = GENERATED_GUIDE_LINK_LABELS[base];
+      if (baseMatch) return baseMatch;
+    }
+    return GENERATED_GUIDE_LINK_LABELS["en"] ?? {};
+  })();
+
   const bundle = getGuidesBundle(locale) as
     | ({ content?: Record<string, GuideContentEntry> } & { links?: Record<string, unknown> })
     | undefined;
-  if (!bundle) return {};
+  if (!bundle) return { ...generatedLabels };
 
   const contentLabels = readContentLinkLabels(bundle.content as Record<string, GuideContentEntry>);
   const legacyLabels = readLegacyLinkLabels(bundle);
@@ -51,7 +63,7 @@ export function getGuideLinkLabels(locale: string): Record<string, string> {
     if (title) seoTitleLabels[key] = title;
   }
 
-  return { ...legacyLabels, ...contentLabels, ...seoTitleLabels };
+  return { ...generatedLabels, ...legacyLabels, ...contentLabels, ...seoTitleLabels };
 }
 
 const PLACEHOLDER_LABEL_PATTERNS: readonly (readonly RegExp[])[] = Object.freeze([
@@ -64,4 +76,3 @@ export const isPlaceholderGuideLabel = (label: string | undefined | null): boole
   if (!label) return false;
   return PLACEHOLDER_LABEL_PATTERNS.some((patterns) => patterns.every((pattern) => pattern.test(label)));
 };
-

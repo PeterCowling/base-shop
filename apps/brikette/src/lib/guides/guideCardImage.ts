@@ -46,12 +46,19 @@ function pickGuideImageFromSections(
 
 export function resolveGuideCardImage(
   guideKey: GuideKey,
-  resolvedLang: AppLanguage,
+  _resolvedLang: AppLanguage,
   tGuides: TFunction<"guides">,
   tGuidesEn: TFunction<"guides">,
 ): GuideCardImage | null {
   const entry = getGuideManifestEntry(guideKey);
   const contentKey = entry?.contentKey ?? guideKey;
+
+  // Guide card thumbnails should prefer content-backed section images so cards
+  // remain stable even when manifest hero paths use legacy relative forms.
+  const sectionImage = pickGuideImageFromSections(tGuides, tGuidesEn, contentKey);
+  if (sectionImage) {
+    return { src: normaliseImageSrc(sectionImage.src), alt: sectionImage.alt };
+  }
 
   const heroImage = entry?.blocks?.find((block) => {
     const candidate = block as unknown as { type?: string; options?: { image?: unknown } };
@@ -65,11 +72,6 @@ export function resolveGuideCardImage(
   const heroSrc = heroImage?.options?.image;
   if (typeof heroSrc === "string" && heroSrc.trim().length > 0) {
     return { src: normaliseImageSrc(heroSrc), alt: undefined };
-  }
-
-  const sectionImage = pickGuideImageFromSections(tGuides, tGuidesEn, contentKey);
-  if (sectionImage) {
-    return { src: normaliseImageSrc(sectionImage.src), alt: sectionImage.alt };
   }
 
   return null;

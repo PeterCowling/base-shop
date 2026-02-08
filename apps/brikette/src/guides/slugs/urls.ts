@@ -60,8 +60,24 @@ const guideUrlHelpers = createGuideUrlHelpers<AppLanguage, GuideKey>({
   fallbackSlugFromKey,
 });
 
-export const { guidePath, guideHref, guideAbsoluteUrl, resolveGuideKeyFromSlug, slugLookupsByLang } =
+const LEGACY_GUIDE_KEY_LOOKUP = Object.freeze(
+  GUIDE_KEYS_WITH_OVERRIDES.reduce<Record<string, GuideKey>>((acc, key) => {
+    acc[key.toLowerCase()] = key;
+    return acc;
+  }, {}),
+);
+
+export const { guidePath, guideHref, guideAbsoluteUrl, resolveGuideKeyFromSlug: resolveGuideKeyFromSlugBase, slugLookupsByLang } =
   guideUrlHelpers;
+
+export function resolveGuideKeyFromSlug(slug: string, lang?: AppLanguage): GuideKey | undefined {
+  const resolved = resolveGuideKeyFromSlugBase(slug, lang);
+  if (resolved) return resolved;
+
+  const normalized = slug.trim().toLowerCase();
+  if (!normalized) return undefined;
+  return LEGACY_GUIDE_KEY_LOOKUP[normalized];
+}
 
 export function guideComponentPath(key: GuideKey): string {
   const override = GUIDE_COMPONENT_OVERRIDES[key];

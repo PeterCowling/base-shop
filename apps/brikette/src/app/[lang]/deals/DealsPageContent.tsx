@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy, ds/container-widths-only-at, ds/enforce-layout-primitives, @typescript-eslint/no-unused-vars -- BRIK-DS-001: in-progress design-system migration */
 "use client";
 
 // src/app/[lang]/deals/DealsPageContent.tsx

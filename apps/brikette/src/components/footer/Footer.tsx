@@ -23,6 +23,7 @@ const FOOTER_PREFETCH = true;
 const SAFE_BOTTOM_PADDING_STYLE = {
   paddingBottom: "calc(var(--safe-bottom) + var(--space-3))",
 } as const;
+// eslint-disable-next-line max-lines-per-function -- BRIK-DS-001: large component pending refactor
 const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { lang?: AppLanguage }): JSX.Element {
   const fallbackLang = useCurrentLanguage();
   const { i18n } = useTranslation();

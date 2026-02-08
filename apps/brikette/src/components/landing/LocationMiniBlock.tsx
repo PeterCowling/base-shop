@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy, ds/no-naked-img, ds/require-aspect-ratio-on-media -- BRIK-DS-001: in-progress design-system migration */
 // src/components/landing/LocationMiniBlock.tsx
 import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";

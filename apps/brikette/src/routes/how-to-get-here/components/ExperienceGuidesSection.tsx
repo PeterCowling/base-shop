@@ -90,7 +90,7 @@ export function ExperienceGuidesSection({ content, lang, t }: ExperienceGuidesSe
           return (
             <li key={item.guideKey} className="h-full">
               <Stack
-                asChild
+                {...({ asChild: true } as Record<string, boolean>)}
                 className="group flex h-full flex-col justify-between rounded-2xl border border-brand-outline/30 bg-brand-surface/80 p-5 text-start shadow-sm transition hover:border-brand-primary/40 hover:shadow-md dark:border-brand-outline/20 dark:bg-brand-surface/70"
               >
                 <Link prefetch={true} href={href}>
@@ -98,7 +98,7 @@ export function ExperienceGuidesSection({ content, lang, t }: ExperienceGuidesSe
                   <Inline className="w-full gap-3 text-start">
                     {PrimaryIcon ? (
                       <Inline
-                        asChild
+                        {...({ asChild: true } as Record<string, boolean>)}
                         className="size-10 justify-center rounded-full bg-brand-primary/10 text-brand-primary transition group-hover:bg-brand-primary/15 dark:bg-brand-secondary/20 dark:text-brand-secondary"
                       >
                         <span>

@@ -318,7 +318,7 @@ jobs:
   deploy:
     name: Deploy
     # Deploy only when caller explicitly enables publish for this run.
-    if: ${{ inputs.deploy-cmd != '' && inputs.deploy-enabled }}
+    if: ${{ inputs['deploy-cmd'] != '' && inputs['deploy-enabled'] }}
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 15

@@ -1,11 +1,5 @@
 import { type AppLanguage } from "@/i18n.config";
-import {
-  guideAbsoluteUrl,
-  guideHref,
-  guidePath,
-  guideSlug,
-  resolveGuideKeyFromSlug,
-} from "@/routes.guides-helpers";
+import { guideAbsoluteUrl, guideHref, guidePath, guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
 
 describe("guide URL resolver", () => {
@@ -34,8 +28,13 @@ describe("guide URL resolver", () => {
     assertBase("ferryDockToBrikette", "howToGetHere");
   });
 
-  it("resolves compact legacy key slugs to guide keys", () => {
+  it("resolves legacy compact top-level slug keys", () => {
     expect(resolveGuideKeyFromSlug("positanomainbeach", "it")).toBe("positanoMainBeach");
-    expect(resolveGuideKeyFromSlug("positanomainbeachwalkdown", "it")).toBe("positanoMainBeachWalkDown");
+  });
+
+  it("generates locale slugs from guide labels instead of compact key names", () => {
+    const localizedSlug = guideSlug("it", "positanoMainBeach");
+    expect(localizedSlug).not.toBe("positanomainbeach");
+    expect(resolveGuideKeyFromSlug(localizedSlug, "it")).toBe("positanoMainBeach");
   });
 });

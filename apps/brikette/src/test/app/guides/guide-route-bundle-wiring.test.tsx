@@ -9,6 +9,9 @@ const mockLoadGuideManifestOverridesFromFs = jest.fn();
 const mockListGuideManifestEntries = jest.fn();
 const mockResolveDraftPathSegment = jest.fn();
 
+const fallbackSlugFromKey = (key: string): string =>
+  key.replace(/([a-z\d])([A-Z])/g, "$1-$2").replace(/_/g, "-").toLowerCase();
+
 jest.mock("next/navigation", () => ({
   notFound: jest.fn(() => {
     throw new Error("notFound");
@@ -30,7 +33,7 @@ jest.mock("@/app/_lib/i18n-server", () => ({
 jest.mock("@/routes.guides-helpers", () => ({
   guideNamespace: (...args: unknown[]) => mockGuideNamespace(...args),
   guidePath: (...args: unknown[]) => mockGuidePath(...args),
-  guideSlug: (_lang: string, key: string) => key.replace(/([a-z\d])([A-Z])/g, "$1-$2").toLowerCase(),
+  guideSlug: (_lang: string, key: string) => fallbackSlugFromKey(key),
   resolveGuideKeyFromSlug: (...args: unknown[]) => mockResolveGuideKeyFromSlug(...args),
 }));
 

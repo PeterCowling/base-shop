@@ -11,8 +11,8 @@ type PerLang = Readonly<Record<string, string>>;
 
 function buildSlugMap(key: GuideKey, fallbackSlug: string): PerLang {
   const overrides = GUIDE_SLUG_OVERRIDES[key];
-  const englishLabels = getGuideLinkLabels("en");
-  const fallbackLabel = englishLabels[key] ?? ENGLISH_SLUGS[key] ?? fallbackSlug;
+  const labels = getGuideLinkLabels("en");
+  const fallbackLabel = labels[key] ?? ENGLISH_SLUGS[key] ?? key;
   const perLang = {} as Record<string, string>;
 
   for (const lang of SUPPORTED_LANGS) {
@@ -26,10 +26,7 @@ function buildSlugMap(key: GuideKey, fallbackSlug: string): PerLang {
       continue;
     }
 
-    const localizedLabel = getGuideLinkLabels(lang)?.[key];
-    const label = typeof localizedLabel === "string" && localizedLabel.trim().length > 0
-      ? localizedLabel
-      : fallbackLabel;
+    const label = getGuideLinkLabels(lang)?.[key] ?? fallbackLabel;
     if (isPlaceholderGuideLabel(label)) {
       perLang[lang] = fallbackSlug;
       continue;

@@ -32,22 +32,22 @@ function readLegacyLinkLabels(bundle: { links?: Record<string, unknown> } | unde
   return result;
 }
 
-function readGeneratedLinkLabels(locale: string): Record<string, string> {
-  const normalized = locale.trim().toLowerCase();
-  const baseLanguage = normalized.split("-")[0];
-  return (
-    GENERATED_GUIDE_LINK_LABELS[normalized] ??
-    GENERATED_GUIDE_LINK_LABELS[baseLanguage] ??
-    {}
-  );
-}
-
 export function getGuideLinkLabels(locale: string): Record<string, string> {
-  const generatedLabels = readGeneratedLinkLabels(locale);
+  const generatedLabels = (() => {
+    const exact = GENERATED_GUIDE_LINK_LABELS[locale];
+    if (exact) return exact;
+    const base = locale.split("-")[0];
+    if (base) {
+      const baseMatch = GENERATED_GUIDE_LINK_LABELS[base];
+      if (baseMatch) return baseMatch;
+    }
+    return GENERATED_GUIDE_LINK_LABELS["en"] ?? {};
+  })();
+
   const bundle = getGuidesBundle(locale) as
     | ({ content?: Record<string, GuideContentEntry> } & { links?: Record<string, unknown> })
     | undefined;
-  if (!bundle) return generatedLabels;
+  if (!bundle) return { ...generatedLabels };
 
   const contentLabels = readContentLinkLabels(bundle.content as Record<string, GuideContentEntry>);
   const legacyLabels = readLegacyLinkLabels(bundle);

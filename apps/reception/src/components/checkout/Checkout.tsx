@@ -13,10 +13,12 @@ import { useCheckouts } from "../../hooks/data/useCheckouts";
 import useFinancialsRoom from "../../hooks/data/useFinancialsRoom";
 import useGuestByRoom from "../../hooks/data/useGuestByRoom";
 import useGuestDetails from "../../hooks/data/useGuestDetails";
+import { useKeycardAssignments } from "../../hooks/data/useKeycardAssignments";
 import useLoans from "../../hooks/data/useLoans";
 import useActivitiesMutations from "../../hooks/mutations/useActivitiesMutations";
 import useAllTransactions from "../../hooks/mutations/useAllTransactionsMutations";
 import { useCheckoutsMutation } from "../../hooks/mutations/useCheckoutsMutation";
+import { useKeycardAssignmentsMutations } from "../../hooks/mutations/useKeycardAssignmentsMutations";
 import { type FirebaseBookings } from "../../types/hooks/data/bookingsData";
 import { type LoanItem, type LoanMethod } from "../../types/hooks/data/loansData";
 import { getItalyIsoString, getLocalToday } from "../../utils/dateUtils";
@@ -137,6 +139,8 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
   const { saveActivity, removeLastActivity } = useActivitiesMutations();
   const { saveCheckout } = useCheckoutsMutation();
   const { addToAllTransactions } = useAllTransactions();
+  const { assignmentsRecord } = useKeycardAssignments();
+  const { returnKeycard } = useKeycardAssignmentsMutations();
 
   // Remove a single loan item
   const handleRemoveLoanItem = useCallback(
@@ -174,8 +178,20 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
           showToast("Failed to remove loan item", "error");
         }
       );
+
+      if (item === "Keycard") {
+        const match = Object.entries(assignmentsRecord).find(
+          ([, a]) =>
+            a.status === "issued" &&
+            a.occupantId === guestId &&
+            a.bookingRef === bookingRef
+        );
+        if (match) {
+          returnKeycard(match[0]);
+        }
+      }
     },
-    [addToAllTransactions, removeLoanItem]
+    [addToAllTransactions, assignmentsRecord, removeLoanItem, returnKeycard]
   );
 
   // Mark or un-mark a checkout as completed

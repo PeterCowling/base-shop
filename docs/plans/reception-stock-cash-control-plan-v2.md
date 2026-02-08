@@ -4,7 +4,7 @@ Status: Active
 Domain: Reception
 Last-reviewed: 2026-02-08
 Last-replan: 2026-02-08
-Overall-confidence: 82% (effort-weighted across remaining open tasks)
+Overall-confidence: 85% (single remaining task: REC-V2-10 at 85%)
 Relates-to charter: none
 Predecessor: docs/historical/plans/reception-stock-cash-control-plan.md
 ---
@@ -378,32 +378,47 @@ enforcement, reauth coverage, server-side rules, and ingredient audit trail.
       - Existing UI tests (DrawerLimitWarning, TillReconciliation) already cover TC-01 and TC-02
     - **Validation:** typecheck PASS ✅, lint PASS ✅, test:rules 10/10 PASS ✅
 
-- [ ] REC-V2-16: Keycard numbering scheme decision (INVESTIGATE)
-  - **Type:** INVESTIGATE | **Effort:** S | **Confidence:** 85%
-    - Implementation: 90% — requires only a decision memo, no code.
-    - Approach: 85% — need to determine: (a) are keycards physically numbered today? (b) numbering range, (c) multi-card guests: separate IDs vs one assignment with count, (d) master key tracking, (e) lost card mid-stay workflow.
-    - Impact: 85% — decision directly affects REC-V2-10 data model and UX.
-    - Evidence class: E0 → E1 after decision.
-  - Scope:
-    - Determine whether keycards are currently physically numbered/labelled.
-    - Define numbering scheme (e.g., 001–100) or confirm existing scheme.
-    - Decide: one assignment per physical keycard ID, or one assignment per guest with count?
-    - Decide: should staff master keys be tracked separately?
-    - Decide: workflow for lost card mid-stay (void assignment, issue replacement?).
-    - Document decisions in a short memo.
-  - Dependencies: None (requires Pete's input on operational questions).
-  - Acceptance criteria:
-    - Decision memo answers all 5 questions above.
-    - Data model for `keycardAssignments` specified based on decisions.
-  - Exit criteria: Binary — decisions documented and approved by Pete.
+- [x] REC-V2-16: Keycard numbering scheme decision (INVESTIGATE) ✅
+  - **Type:** INVESTIGATE | **Effort:** S | **Confidence:** 100%
+  - **Decision memo (2026-02-08):**
+    - **(a) Physical numbering:** Yes — keycards are physically numbered today.
+    - **(b) Numbering range:** 001–100.
+    - **(c) Multi-card guests:** One assignment record per physical keycard. When a couple in the same room gets 2 keycards (e.g., #042 and #043), we create 2 separate assignment records. This follows naturally from physical numbering and per-card deposits — each card has its own lifecycle (issued → returned/lost/replaced).
+    - **(d) Master keys:** Yes — tracked separately with their own numbering (e.g., M01–M10). Assigned to staff, not guests.
+    - **(e) Lost card workflow:** Void the original assignment (status: "lost"), issue a replacement keycard only after a new €10 deposit is received. **Note:** all keycards carry a €10 deposit (cash or document hold).
+  - **Data model for `keycardAssignments/<pushId>`:**
+    ```
+    {
+      keycardNumber: string;       // "001"–"100" for guest keys, "M01"+ for master keys
+      isMasterKey: boolean;        // false for guest keys, true for master keys
+      // Guest key fields:
+      occupantId?: string;         // Guest occupant ID
+      bookingRef?: string;         // Booking reference
+      roomNumber?: string;         // Room number
+      depositMethod?: string;      // "CASH" | "PASSPORT" | "LICENSE" | "ID" | "NO_CARD"
+      depositAmount?: number;      // 10 for cash, 0 for document hold
+      // Master key fields:
+      assignedToStaff?: string;    // Staff user_name (master keys only)
+      // Common fields:
+      assignedAt: string;          // Italy ISO timestamp
+      assignedBy: string;          // Staff user_name who issued
+      returnedAt?: string;         // Italy ISO timestamp
+      returnedBy?: string;         // Staff user_name who processed return
+      status: "issued" | "returned" | "lost" | "replaced";
+      replacedByAssignmentId?: string;  // Points to replacement assignment (lost cards)
+      replacesAssignmentId?: string;    // Points to original assignment (replacements)
+      loanTxnId?: string;         // Links to loans/<bookingRef>/<occupantId>/txns/<txnId>
+      shiftId?: string;           // Shift during which assignment was created
+    }
+    ```
+  - **Exit criteria:** Met — all 5 questions answered by Pete (2026-02-08).
 
 - [ ] REC-V2-10: Keycard-to-guest assignment tracking
-  - **Type:** IMPLEMENT | **Effort:** M | **Confidence:** 75% (→ 85% conditional on REC-V2-16)
+  - **Type:** IMPLEMENT | **Effort:** M | **Confidence:** 85%
     - Implementation: 85% — comprehensive keycard infra exists: `loans/<bookingRef>/<occupantId>/txns`, `keycardTransfers`, `keycardDiscrepancies`, variance calculations, `KeycardDepositButton`, checkout return flow, `AddKeycardsModal` / `ReturnKeycardsModal`.
-    - Approach: 85% — natural extension: add `keycardAssignments` node, wire into existing loan/return flows, enhance variance display.
-    - Impact: 75% — depends on keycard numbering scheme decision (REC-V2-16); UX for capturing keycard ID at check-in needs design; physical keycard numbering may not exist.
-    - Evidence class: E1 (static code audit of keycard hooks, components, schemas).
-    - Confidence cannot be promoted until REC-V2-16 completes.
+    - Approach: 85% — natural extension: add `keycardAssignments` node, wire into existing loan/return flows, enhance variance display. Data model specified in REC-V2-16 decision memo.
+    - Impact: 85% — REC-V2-16 resolved: keycards are physically numbered (001–100), one assignment per physical card, master keys separate, €10 deposit per card, lost card = void + replacement after deposit.
+    - Evidence class: E1 (static code audit) + E1 (REC-V2-16 decision memo with operational confirmation).
   - Scope:
     - Add `keycardAssignments` Firebase node: `{ keycardId → { occupantId, bookingRef, roomNumber, assignedAt, assignedBy, returnedAt?, returnedBy?, status } }`.
     - Add append-only Firebase security rules for `keycardAssignments`.
@@ -437,8 +452,8 @@ enforcement, reauth coverage, server-side rules, and ingredient audit trail.
 | REC-V2-02 | IMPLEMENT | M | 80% | None (deps resolved) | **Done** ✅ |
 | REC-V2-08 | IMPLEMENT | M | 85% | None | **Done** ✅ |
 | REC-V2-09 | IMPLEMENT | S | 88% | None | **Done** ✅ |
-| REC-V2-16 | INVESTIGATE | S | 85% | None (needs Pete) | Ready |
-| REC-V2-10 | IMPLEMENT | M | 75% → 85% | REC-V2-16 | Blocked |
+| REC-V2-16 | INVESTIGATE | S | 100% | None | **Done** ✅ |
+| REC-V2-10 | IMPLEMENT | M | 85% | REC-V2-16 ✅ | Ready |
 
 ## Implementation order
 
@@ -454,9 +469,10 @@ Completed:
 
   Phase 7 (Medium):    REC-V2-08 ✅, REC-V2-09 ✅
 
+  Phase 8 (Low):       REC-V2-16 ✅
+
 Remaining (parallelism guide):
-  Wave 1:              REC-V2-16 (needs Pete's input)
-  Wave 2 (sequential): REC-V2-10 (after REC-V2-16)
+  Wave 1:              REC-V2-10 (unblocked — REC-V2-16 done)
 ```
 
 ## Constraints
@@ -498,6 +514,7 @@ Remaining (parallelism guide):
 | 2026-02-08 | REC-V2-14 resolved — PIN system is dead code | Investigation: `getUserByPin` has zero active call sites; all 18 high-risk actions use `PasswordReauthInline`/`PasswordReauthModal`. Cleanup task only. |
 | 2026-02-08 | REC-V2-15 resolved — core scope complete | Investigation: void badges, voided tx exclusion, corrections summary, audit search with 5 filters, variance sign-offs — all implemented. Optional enhancements deferred. |
 | 2026-02-08 | REC-V2-16 created — keycard numbering precursor | REC-V2-10 impact confidence (75%) blocked by operational unknowns: physical numbering, multi-card guests, master keys, lost card workflow. Cannot implement data model without decisions. |
+| 2026-02-08 | REC-V2-16 resolved — keycard numbering decisions | Keycards physically numbered 001–100; one assignment per physical card; master keys tracked separately (M01+); lost card = void + replacement after €10 deposit; €10 deposit per keycard. Data model specified. REC-V2-10 unblocked (85%). |
 
 ## Notes
 

@@ -250,6 +250,69 @@ describe("Reception database rules", () => {
     );
   });
 
+  // TC-12: keycardAssignments — staff can create and update (status transitions)
+  it("allows staff to create and update keycardAssignments", async () => {
+    const staffDb = testEnv.authenticatedContext(STAFF_UID).database();
+
+    // Staff can create a new assignment
+    await assertSucceeds(
+      set(ref(staffDb, "keycardAssignments/assign1"), {
+        keycardNumber: "042",
+        isMasterKey: false,
+        occupantId: "O1",
+        bookingRef: "BR1",
+        roomNumber: "5",
+        depositMethod: "CASH",
+        depositAmount: 10,
+        assignedAt: "2026-01-23T10:00:00Z",
+        assignedBy: "staff-uid",
+        status: "issued",
+      })
+    );
+
+    // Staff can update status fields (return)
+    await assertSucceeds(
+      update(ref(staffDb, "keycardAssignments/assign1"), {
+        returnedAt: "2026-01-23T18:00:00Z",
+        returnedBy: "staff-uid",
+        status: "returned",
+      })
+    );
+  });
+
+  it("blocks unauthenticated writes to keycardAssignments", async () => {
+    const db = testEnv.unauthenticatedContext().database();
+    await assertFails(
+      set(ref(db, "keycardAssignments/assign1"), {
+        keycardNumber: "042",
+        isMasterKey: false,
+        assignedAt: "2026-01-23T10:00:00Z",
+        assignedBy: "anon",
+        status: "issued",
+      })
+    );
+  });
+
+  it("blocks deletion of keycardAssignments entries", async () => {
+    const staffDb = testEnv.authenticatedContext(STAFF_UID).database();
+
+    // Seed an assignment
+    await testEnv.withSecurityRulesDisabled(async (context) => {
+      await set(ref(context.database(), "keycardAssignments/assign1"), {
+        keycardNumber: "042",
+        isMasterKey: false,
+        assignedAt: "2026-01-23T10:00:00Z",
+        assignedBy: "staff-uid",
+        status: "issued",
+      });
+    });
+
+    // Staff cannot delete an assignment (newData must exist)
+    await assertFails(
+      set(ref(staffDb, "keycardAssignments/assign1"), null)
+    );
+  });
+
   // Additional: inventory/ledger is append-only and restricted to manager+
   it("enforces append-only inventory ledger for manager roles", async () => {
     const staffDb = testEnv.authenticatedContext(STAFF_UID).database();

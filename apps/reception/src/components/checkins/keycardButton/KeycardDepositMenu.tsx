@@ -12,10 +12,12 @@ interface KeycardDepositMenuProps {
   menuPosition: { top: number; left: number };
   payType: KeycardPayType;
   docType: DocumentType;
+  keycardNumber: string;
   buttonDisabled: boolean;
   setPayType: React.Dispatch<React.SetStateAction<KeycardPayType>>;
   setDocType: React.Dispatch<React.SetStateAction<DocumentType>>;
-  handleConfirm: () => Promise<void>; // Must return a Promise<void>
+  setKeycardNumber: React.Dispatch<React.SetStateAction<string>>;
+  handleConfirm: () => Promise<void>;
   closeMenu: () => void;
 }
 
@@ -29,9 +31,11 @@ function KeycardDepositMenu({
   menuPosition,
   payType,
   docType,
+  keycardNumber,
   buttonDisabled,
   setPayType,
   setDocType,
+  setKeycardNumber,
   handleConfirm,
   closeMenu,
 }: KeycardDepositMenuProps) {
@@ -65,7 +69,23 @@ function KeycardDepositMenu({
         <DocumentTypeSelector docType={docType} setDocType={setDocType} />
       )}
 
-      {/* We omit any card-count input because we only do 1 card or NO_CARD */}
+      {payType !== KeycardPayType.NO_CARD && (
+        <div className="mt-3">
+          <label htmlFor="keycardNumber" className="block font-semibold mb-1">
+            Keycard #
+          </label>
+          <input
+            id="keycardNumber"
+            type="text"
+            inputMode="numeric"
+            placeholder="e.g. 042"
+            maxLength={3}
+            value={keycardNumber}
+            onChange={(e) => setKeycardNumber(e.target.value)}
+            className="w-full border rounded px-2 py-1 dark:bg-darkBg dark:border-darkSurface dark:text-darkAccentGreen"
+          />
+        </div>
+      )}
 
       <div className="mt-4">
         <span className="block font-semibold mb-1">Deposit Preview:</span>

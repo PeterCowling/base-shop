@@ -3,6 +3,15 @@ import React from "react";
 
 import { formatEuro } from "../../utils/format";
 
+interface UnresolvedAssignment {
+  keycardNumber: string;
+  roomNumber?: string;
+  occupantId?: string;
+  bookingRef?: string;
+  assignedToStaff?: string;
+  isMasterKey: boolean;
+}
+
 interface VarianceSummaryProps {
   openingCash: number;
   expectedCash: number;
@@ -13,6 +22,7 @@ interface VarianceSummaryProps {
   closingKeycards: number;
   keycardVariance: number;
   keycardVarianceMismatch: boolean;
+  unresolvedAssignments?: UnresolvedAssignment[];
   beginningSafeBalance: number;
   endingSafeBalance: number;
   expectedSafeVariance: number;
@@ -30,6 +40,7 @@ const VarianceSummary: React.FC<VarianceSummaryProps> = ({
   closingKeycards,
   keycardVariance,
   keycardVarianceMismatch,
+  unresolvedAssignments,
   beginningSafeBalance,
   endingSafeBalance,
   expectedSafeVariance,
@@ -72,6 +83,23 @@ const VarianceSummary: React.FC<VarianceSummaryProps> = ({
             <strong>Keycard Variance:</strong> {keycardVariance}
           </li>
         </ul>
+        {keycardVarianceMismatch &&
+          unresolvedAssignments &&
+          unresolvedAssignments.length > 0 && (
+            <div className="mt-2 p-2 bg-warning-light/10 border border-warning-main rounded text-xs">
+              <strong>Unresolved keycard assignments:</strong>
+              <ul className="mt-1 space-y-0.5">
+                {unresolvedAssignments.map((a) => (
+                  <li key={a.keycardNumber}>
+                    #{a.keycardNumber}
+                    {a.isMasterKey
+                      ? ` (master key — ${a.assignedToStaff ?? "unknown staff"})`
+                      : ` — Room ${a.roomNumber ?? "?"}, Guest ${a.occupantId ?? "?"} (${a.bookingRef ?? "?"})`}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
       </div>
       <div>
         <h4 className="font-semibold">Safe</h4>

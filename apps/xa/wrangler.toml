@@ -10,9 +10,12 @@ binding = "ASSETS"
 
 [vars]
 XA_STEALTH_MODE = "true"
-XA_REQUIRE_CF_ACCESS = "true"
-XA_STRICT_STEALTH = "true"
+XA_REQUIRE_CF_ACCESS = "false"
+XA_STRICT_STEALTH = "false"
 NEXT_PUBLIC_STEALTH_MODE = "true"
-# NOTE: Do not commit real hostnames/domains. Configure these per-environment in Cloudflare dashboard:
-# - XA_ALLOWED_HOSTS
+# NOTE: Configure these per-environment in Cloudflare dashboard:
+# - XA_ALLOWED_HOSTS (real hostnames/domains)
 # - NEXT_PUBLIC_SITE_DOMAIN
+# Post-deploy, set secrets via: wrangler secret put <NAME>
+# - SESSION_SECRET (signs invite cookies — falls back to NEXTAUTH_SECRET)
+# - XA_STEALTH_INVITE_CODES (comma-separated invite codes)

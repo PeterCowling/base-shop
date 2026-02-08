@@ -167,12 +167,14 @@ Variants can be mentioned but won't be demoed. They share 95%+ code with the mai
    - OpenNext build handled in workflow `build-cmd` (like Brikette production); `build-xa.mjs` unchanged for local dev
    - Build chain: `turbo build deps` → `build-xa.mjs` (Next.js + SW version) → `opennextjs-cloudflare build` → `leakage-scan.mjs`
 
-10. **XA-READY-06d** - Configure GitHub environment and Cloudflare secrets (MANUAL)
-    - **Status:** Pending
-    - **Confidence:** 85% | **Effort:** S
+10. **XA-READY-06d** ✅ - Configure GitHub environment and Cloudflare secrets
+    - **Status:** Complete (2026-02-08)
     - **Depends on:** XA-READY-06b ✅
-    - Create GitHub `xa-staging` environment with secrets
-    - Configure Cloudflare Worker env vars (`XA_ALLOWED_HOSTS`, `XA_REQUIRE_CF_ACCESS=false`, `XA_STEALTH_INVITE_CODES`)
+    - `xa-staging` GitHub environment already existed; verified repo-level secrets present (`CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `NEXTAUTH_SECRET`, `SESSION_SECRET`, `CART_COOKIE_SECRET`)
+    - Set `XA_STAGING_PROJECT=xa-site` as repo + env variable
+    - Set `XA_STEALTH_INVITE_CODES` as `xa-staging` env secret
+    - Updated wrangler.toml: `XA_REQUIRE_CF_ACCESS=false`, `XA_STRICT_STEALTH=false` (invite-gate only, non-strict redirect)
+    - Post-deploy TODO: `wrangler secret put SESSION_SECRET` + `wrangler secret put XA_STEALTH_INVITE_CODES` for Worker runtime
 
 11. **XA-READY-07** ✅ - Update CI workflow for Worker deploy
     - **Status:** Complete (2026-02-08)
@@ -271,7 +273,7 @@ These tasks improve quality but don't block client review:
 | XA-READY-06a | IMPLEMENT | Install OpenNext + remove edge runtime | 95% | S | Complete (2026-02-08) | - | 06b, 06c, 02 |
 | XA-READY-06b | IMPLEMENT | Rewrite wrangler.toml to Worker format | 92% | S | Complete (2026-02-08) | 06a | 06c, 07 |
 | XA-READY-06c | IMPLEMENT | Update build script for OpenNext | 88% | S | Complete (2026-02-08) | 06a | 07 |
-| XA-READY-06d | IMPLEMENT | Configure GH env + CF secrets (MANUAL) | 85% | S | Pending | 06b | 08 |
+| XA-READY-06d | IMPLEMENT | Configure GH env + CF secrets | 85% | S | Complete (2026-02-08) | 06b | 08 |
 | XA-READY-07 | IMPLEMENT | Update CI workflow for Worker deploy | 88% | M | Complete (2026-02-08) | 06b, 06c | 08 |
 | XA-READY-08 | IMPLEMENT | Deploy to staging + verify | 82% | M | Pending | 07, 06d | 09 |
 
@@ -297,11 +299,10 @@ These tasks improve quality but don't block client review:
 |------|--------|------------|
 | XA-READY-00 | Pending | - |
 | XA-READY-01 | Pending | - |
-| XA-READY-06d | Pending (MANUAL) | - (06b complete) |
 | XA-READY-02 | Pending | 01 |
-| XA-READY-08 | Pending | 07 ✅, 06d |
+| XA-READY-08 | Pending | 07 ✅, 06d ✅ — ready to deploy |
 
-Next: Wave 2 — XA-READY-06d (MANUAL: configure GH environment + CF secrets) unblocks XA-READY-08 (deploy + verify). Discovery tasks (00, 01) can proceed in parallel.
+Next: XA-READY-08 — deploy to staging and verify. Discovery tasks (00, 01) can proceed in parallel.
 
 ## Decision Log
 
@@ -312,3 +313,4 @@ Next: Wave 2 — XA-READY-06d (MANUAL: configure GH environment + CF secrets) un
 - 2026-02-08: **Approach decision:** Use `@opennextjs/cloudflare` Worker deploy (matching Brikette production). Phase 2 tasks rewritten with concrete, evidence-based acceptance criteria.
 - 2026-02-08: **XA-READY-06a complete.** Installed `@opennextjs/cloudflare`, removed edge runtime from `robots.ts` and `search/sync/route.ts`. Typecheck + lint pass. Commit: `0f785adadc`.
 - 2026-02-08: **XA-READY-06b, 06c, 07 complete.** Rewrote `wrangler.toml` to Worker format, updated CI workflow with OpenNext build chain + artifact handoff + `wrangler deploy`.
+- 2026-02-08: **XA-READY-06d complete.** GitHub env verified, `XA_STAGING_PROJECT` + `XA_STEALTH_INVITE_CODES` configured. Wrangler.toml updated for staging defaults (`CF_ACCESS=false`, `STRICT=false`).

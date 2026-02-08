@@ -1,8 +1,7 @@
 import type { TFunction } from "i18next";
 
-import { getGuideCardImageFallback } from "@/data/guideCardImageFallbacks";
-import type { AppLanguage } from "@/i18n.config";
 import type { GuideKey } from "@/guides/slugs";
+import type { AppLanguage } from "@/i18n.config";
 import { getGuideManifestEntry } from "@/routes/guides/guide-manifest";
 
 export type GuideCardImage = {
@@ -54,6 +53,13 @@ export function resolveGuideCardImage(
   const entry = getGuideManifestEntry(guideKey);
   const contentKey = entry?.contentKey ?? guideKey;
 
+  // Guide card thumbnails should prefer content-backed section images so cards
+  // remain stable even when manifest hero paths use legacy relative forms.
+  const sectionImage = pickGuideImageFromSections(tGuides, tGuidesEn, contentKey);
+  if (sectionImage) {
+    return { src: normaliseImageSrc(sectionImage.src), alt: sectionImage.alt };
+  }
+
   const heroImage = entry?.blocks?.find((block) => {
     const candidate = block as unknown as { type?: string; options?: { image?: unknown } };
     return (
@@ -66,17 +72,6 @@ export function resolveGuideCardImage(
   const heroSrc = heroImage?.options?.image;
   if (typeof heroSrc === "string" && heroSrc.trim().length > 0) {
     return { src: normaliseImageSrc(heroSrc), alt: undefined };
-  }
-
-  // Prefer curated fallback sources over mutable locale section payloads.
-  // This keeps card media stable in static export builds when section image paths drift.
-  const imageFallback = getGuideCardImageFallback(contentKey);
-  if (imageFallback) {
-    return { src: normaliseImageSrc(imageFallback.src), alt: imageFallback.alt };
-  }
-  const sectionImage = pickGuideImageFromSections(tGuides, tGuidesEn, contentKey);
-  if (sectionImage) {
-    return { src: normaliseImageSrc(sectionImage.src), alt: sectionImage.alt };
   }
 
   return null;

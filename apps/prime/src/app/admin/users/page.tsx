@@ -1,7 +1,13 @@
 import { Users } from 'lucide-react';
 import Link from 'next/link';
+import StaffOwnerDisabledNotice from '../../../components/security/StaffOwnerDisabledNotice';
+import { canAccessStaffOwnerRoutes } from '../../../lib/security/staffOwnerGate';
 
 export default function AdminUsersPage() {
+  if (!canAccessStaffOwnerRoutes()) {
+    return <StaffOwnerDisabledNotice />;
+  }
+
   return (
     <main className="min-h-screen bg-gray-50 p-4">
       <div className="mx-auto max-w-4xl">

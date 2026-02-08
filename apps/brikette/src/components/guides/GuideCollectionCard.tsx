@@ -1,16 +1,36 @@
 // src/components/guides/GuideCollectionCard.tsx
+import { useMemo } from "react";
 import Link from "next/link";
 import clsx from "clsx";
-import { useMemo } from "react";
 
 import { CfImage } from "@acme/ui/atoms/CfImage";
 
+import { Cluster } from "@/components/ui/flex";
 import { GUIDE_DIRECTION_LINKS } from "@/data/guideDirectionLinks";
 import type { GuideMeta } from "@/data/guides.index";
+import { getGuideLinkLabels } from "@/guides/slugs/labels";
 import type { AppLanguage } from "@/i18n.config";
 import { guideHref, type GuideKey } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
-import { getGuideLinkLabels } from "@/guides/slugs/labels";
+
+function humanizeGuideLabel(value: string): string {
+  const spaced = value
+    .replace(/_/g, " ")
+    .replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2")
+    .replace(/([a-z\d])([A-Z])/g, "$1 $2")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (!spaced) return value;
+  return spaced
+    .split(" ")
+    .filter(Boolean)
+    .map((word) => {
+      if (/^[A-Z0-9]{2,}$/.test(word)) return word;
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    })
+    .join(" ");
+}
 
 // Card with optional thumbnail - overflow hidden for image
 const CARD_CLASSES = [
@@ -153,7 +173,8 @@ export const GuideCollectionCard = ({
     const guideLinkLabels = getGuideLinkLabels(lang);
 
     return directionLinks.map((link) => {
-      const resolvedLabel = link.label ?? guideLinkLabels[link.labelKey] ?? link.labelKey;
+      const resolvedLabel =
+        link.label ?? guideLinkLabels[link.labelKey] ?? humanizeGuideLabel(link.labelKey);
       const linkType = link.type ?? 'guide';
 
       let href: string;
@@ -209,7 +230,7 @@ export const GuideCollectionCard = ({
           {resolvedDirectionLinks?.length && directionsLabel ? (
             <div className={clsx(DIRECTION_WRAPPER_CLASSES)}>
               <p className={clsx(DIRECTION_LABEL_CLASSES)}>{directionsLabel}</p>
-              <div className="flex flex-wrap gap-2">
+              <Cluster className="gap-2">
                 {resolvedDirectionLinks.map((link) => (
                   <Link
                     key={`${guide.key}-${link.labelKey}`}
@@ -220,7 +241,7 @@ export const GuideCollectionCard = ({
                     {link.label}
                   </Link>
                 ))}
-              </div>
+              </Cluster>
             </div>
           ) : null}
         </div>

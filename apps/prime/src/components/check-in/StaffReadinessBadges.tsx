@@ -5,6 +5,9 @@ import type { StaffPersonalizationSignals, StaffReadinessSignals } from '../../t
 interface StaffReadinessBadgesProps {
   readiness: StaffReadinessSignals;
   personalization?: StaffPersonalizationSignals;
+  operational?: {
+    bagDropRequested: boolean;
+  };
   className?: string;
 }
 
@@ -24,6 +27,7 @@ const BADGE_CONFIG: ReadinessBadgeConfig[] = [
 export const StaffReadinessBadges: FC<StaffReadinessBadgesProps> = memo(function StaffReadinessBadges({
   readiness,
   personalization,
+  operational,
   className = '',
 }) {
   const signals = BADGE_CONFIG.map((badge) => ({
@@ -50,6 +54,12 @@ export const StaffReadinessBadges: FC<StaffReadinessBadgesProps> = memo(function
           Context:
           {personalization.arrivalMethodPreference && ` method ${personalization.arrivalMethodPreference}`}
           {personalization.arrivalConfidence && `, confidence ${personalization.arrivalConfidence}`}
+        </p>
+      )}
+
+      {operational?.bagDropRequested && (
+        <p className="mt-2 text-xs font-medium text-amber-700">
+          Post-checkout bag-drop request is active.
         </p>
       )}
     </section>

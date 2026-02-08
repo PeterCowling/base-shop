@@ -12,7 +12,7 @@ type PerLang = Readonly<Record<string, string>>;
 function buildSlugMap(key: GuideKey, fallbackSlug: string): PerLang {
   const overrides = GUIDE_SLUG_OVERRIDES[key];
   const labels = getGuideLinkLabels("en");
-  const fallbackLabel = labels[key] ?? key;
+  const fallbackLabel = labels[key] ?? ENGLISH_SLUGS[key] ?? key;
   const perLang = {} as Record<string, string>;
 
   for (const lang of SUPPORTED_LANGS) {

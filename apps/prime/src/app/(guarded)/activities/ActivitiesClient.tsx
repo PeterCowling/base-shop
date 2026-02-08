@@ -9,10 +9,16 @@
 
 import { Calendar, Clock, MapPin, MessageCircle, Users } from 'lucide-react';
 import Link from 'next/link';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useChat } from '@/contexts/messaging/ChatProvider';
+import { MSG_ROOT } from '@/utils/messaging/dbRoot';
+import useUuid from '@/hooks/useUuid';
+import { readGuestSession } from '@/lib/auth/guestSessionGuard';
+import { evaluateSdkAccess, isSdkFlowFeatureEnabled } from '@/lib/security/dataAccessModel';
+import { useFirebaseDatabase } from '@/services/useFirebase';
 import type { ActivityInstance } from '@/types/messenger/activity';
+import { off, onValue, ref, set } from '@/services/firebase';
 
 function formatActivityTime(startTime: number): string {
   return new Intl.DateTimeFormat(undefined, {
@@ -43,39 +49,95 @@ function formatRelativeTime(startTime: number): string {
   return 'starting now';
 }
 
-interface ActivityCardProps {
-  activity: ActivityInstance;
-  isLive: boolean;
+function formatFinishTime(startTime: number): string {
+  const finish = new Date(startTime + 2 * 60 * 60 * 1000);
+  return new Intl.DateTimeFormat(undefined, {
+    hour: 'numeric',
+    minute: '2-digit',
+  }).format(finish);
 }
 
-function ActivityCard({ activity, isLive }: ActivityCardProps) {
+type ActivityLifecycle = 'upcoming' | 'live' | 'ended';
+
+function resolveLifecycle(activity: ActivityInstance, now: number): ActivityLifecycle {
+  const start = activity.startTime;
+  const end = start + 2 * 60 * 60 * 1000;
+  if (now >= end || activity.status === 'archived') {
+    return 'ended';
+  }
+  if (now >= start || activity.status === 'live') {
+    return 'live';
+  }
+  return 'upcoming';
+}
+
+interface ActivityCardProps {
+  activity: ActivityInstance;
+  lifecycle: ActivityLifecycle;
+  presenceCount: number;
+  isPresent: boolean;
+  onMarkPresent: (activityId: string) => Promise<void>;
+}
+
+function ActivityCard({
+  activity,
+  lifecycle,
+  presenceCount,
+  isPresent,
+  onMarkPresent,
+}: ActivityCardProps) {
   const { t } = useTranslation('Activities');
+  const isLive = lifecycle === 'live';
+  const isEnded = lifecycle === 'ended';
 
   return (
     <div className="rounded-xl bg-white p-4 shadow-sm border border-gray-100">
-      {/* Status badge */}
-      {isLive && (
-        <div className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-green-100 px-2.5 py-1 text-xs font-medium text-green-700">
-          <span className="h-2 w-2 animate-pulse rounded-full bg-green-500" />
-          {t('status.live', 'Live now')}
+      <div className="mb-3 flex items-center justify-between">
+        <div
+          className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${
+            isLive
+              ? 'bg-green-100 text-green-700'
+              : isEnded
+                ? 'bg-slate-200 text-slate-700'
+                : 'bg-blue-100 text-blue-700'
+          }`}
+        >
+          {!isEnded && (
+            <span className={`h-2 w-2 rounded-full ${isLive ? 'animate-pulse bg-green-500' : 'bg-blue-500'}`} />
+          )}
+          {isLive
+            ? t('status.live', 'Live now')
+            : isEnded
+              ? t('status.ended', 'Ended')
+              : t('status.upcoming', 'Upcoming')}
         </div>
-      )}
+        <span className="inline-flex items-center gap-1 text-xs text-gray-500">
+          <Users className="h-3.5 w-3.5" />
+          {presenceCount}
+        </span>
+      </div>
 
-      {/* Activity title */}
       <h3 className="mb-2 text-lg font-semibold text-gray-900">
         {activity.title}
       </h3>
 
-      {/* Activity details */}
       <div className="mb-3 space-y-1.5">
         <div className="flex items-center gap-2 text-sm text-gray-600">
           <Calendar className="h-4 w-4 text-gray-400" />
           <span>{formatActivityTime(activity.startTime)}</span>
         </div>
+        <div className="flex items-center gap-2 text-sm text-gray-600">
+          <Clock className="h-4 w-4 text-gray-400" />
+          <span>
+            {new Intl.DateTimeFormat(undefined, { hour: 'numeric', minute: '2-digit' }).format(new Date(activity.startTime))}
+            {' - '}
+            {formatFinishTime(activity.startTime)}
+          </span>
+        </div>
         {!isLive && (
           <div className="flex items-center gap-2 text-sm text-emerald-600">
             <Clock className="h-4 w-4" />
-            <span>{formatRelativeTime(activity.startTime)}</span>
+            <span>{isEnded ? 'Event finished' : formatRelativeTime(activity.startTime)}</span>
           </div>
         )}
         {activity.meetUpPoint && (
@@ -93,16 +155,33 @@ function ActivityCard({ activity, isLive }: ActivityCardProps) {
         </p>
       )}
 
-      {/* Action button */}
-      <Link
-        href={`/chat/channel?id=${activity.id}`}
-        className="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-500 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-emerald-600"
-      >
-        <MessageCircle className="h-4 w-4" />
-        {isLive
-          ? t('actions.joinNow', 'Join now')
-          : t('actions.seeDetails', 'See details')}
-      </Link>
+      <div className="space-y-2">
+        <button
+          type="button"
+          onClick={() => void onMarkPresent(activity.id)}
+          disabled={!isLive || isPresent}
+          className="w-full rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm font-medium text-emerald-700 disabled:opacity-60 disabled:cursor-not-allowed"
+        >
+          {isPresent ? 'You are marked present' : isLive ? "I'm here" : 'Available once live'}
+        </button>
+
+        <Link
+          href={`/chat/channel?id=${activity.id}`}
+          className={`flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-white transition-colors ${
+            isEnded
+              ? 'bg-slate-400 pointer-events-none'
+              : 'bg-emerald-500 hover:bg-emerald-600'
+          }`}
+          aria-disabled={isEnded}
+        >
+          <MessageCircle className="h-4 w-4" />
+          {isLive
+            ? t('actions.joinNow', 'Join now')
+            : isEnded
+              ? t('actions.eventEnded', 'Event ended')
+              : t('actions.seeDetails', 'See details')}
+        </Link>
+      </div>
     </div>
   );
 }
@@ -110,24 +189,105 @@ function ActivityCard({ activity, isLive }: ActivityCardProps) {
 export default function ActivitiesClient() {
   const { t } = useTranslation('Activities');
   const { activities, hasMoreActivities, loadMoreActivities } = useChat();
+  const db = useFirebaseDatabase();
+  const uuid = useUuid();
+  const [isMarkingPresent, setIsMarkingPresent] = useState<string | null>(null);
+  const [presenceMap, setPresenceMap] = useState<Record<string, Record<string, { at: number }>>>({});
+  const session = readGuestSession();
+
+  const sdkDecision = evaluateSdkAccess('activities_presence', {
+    hasGuestToken: Boolean(session.token),
+    isGuestAuthReady: Boolean(uuid),
+    flowFlagEnabled:
+      process.env.NODE_ENV !== 'production' || isSdkFlowFeatureEnabled('activities_presence'),
+  });
+
+  // Work around for strong fail-closed UX when SDK preconditions are not met.
+  if (!sdkDecision.allowed) {
+    return (
+      <main className="min-h-screen bg-gray-50 p-4">
+        <div className="mx-auto max-w-md rounded-xl bg-white p-6 text-center shadow-sm">
+          <h1 className="mb-2 text-xl font-semibold text-gray-900">
+            {t('title', 'Activities')}
+          </h1>
+          <p className="text-sm text-gray-600">
+            Activities are temporarily unavailable until your secure session is ready.
+          </p>
+          <Link href="/" className="mt-4 inline-block text-blue-600 hover:underline">
+            Return Home
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
+  useEffect(() => {
+    const presenceRef = ref(db, `${MSG_ROOT}/activities/presence`);
+    const unsubscribe = onValue(
+      presenceRef,
+      (snapshot) => {
+        if (!snapshot.exists()) {
+          setPresenceMap({});
+          return;
+        }
+        setPresenceMap(snapshot.val() as Record<string, Record<string, { at: number }>>);
+      },
+      () => {
+        setPresenceMap({});
+      },
+    );
+
+    return () => {
+      off(presenceRef);
+      unsubscribe();
+    };
+  }, [db]);
 
   // Sort and categorize activities
-  const { liveActivities, upcomingActivities } = useMemo(() => {
+  const { liveActivities, upcomingActivities, endedActivities } = useMemo(() => {
     const all = Object.values(activities || {});
     const now = Date.now();
 
     const live = all
-      .filter((a) => a.status === 'live')
+      .filter((a) => resolveLifecycle(a, now) === 'live')
       .sort((a, b) => a.startTime - b.startTime);
 
     const upcoming = all
-      .filter((a) => a.status === 'upcoming' && a.startTime > now)
+      .filter((a) => resolveLifecycle(a, now) === 'upcoming')
       .sort((a, b) => a.startTime - b.startTime);
 
-    return { liveActivities: live, upcomingActivities: upcoming };
+    const ended = all
+      .filter((a) => resolveLifecycle(a, now) === 'ended')
+      .sort((a, b) => b.startTime - a.startTime);
+
+    return { liveActivities: live, upcomingActivities: upcoming, endedActivities: ended };
   }, [activities]);
 
-  const hasActivities = liveActivities.length > 0 || upcomingActivities.length > 0;
+  const hasActivities =
+    liveActivities.length > 0 || upcomingActivities.length > 0 || endedActivities.length > 0;
+
+  async function markPresent(activityId: string): Promise<void> {
+    if (!uuid) {
+      return;
+    }
+    setIsMarkingPresent(activityId);
+    try {
+      const { db, ref: dbRef } = await import('@/services/firebase');
+      await set(dbRef(db, `${MSG_ROOT}/activities/presence/${activityId}/${uuid}`), {
+        at: Date.now(),
+      });
+    } finally {
+      setIsMarkingPresent(null);
+    }
+  }
+
+  function getPresenceCount(activityId: string): number {
+    return Object.keys(presenceMap?.[activityId] ?? {}).length;
+  }
+
+  function isPresent(activityId: string): boolean {
+    return Boolean(uuid && presenceMap?.[activityId]?.[uuid]);
+  }
 
   return (
     <main className="min-h-screen bg-gray-50 pb-24">
@@ -161,7 +321,10 @@ export default function ActivitiesClient() {
                     <ActivityCard
                       key={activity.id}
                       activity={activity}
-                      isLive={true}
+                      lifecycle="live"
+                      presenceCount={getPresenceCount(activity.id)}
+                      isPresent={isPresent(activity.id)}
+                      onMarkPresent={markPresent}
                     />
                   ))}
                 </div>
@@ -179,7 +342,31 @@ export default function ActivitiesClient() {
                     <ActivityCard
                       key={activity.id}
                       activity={activity}
-                      isLive={false}
+                      lifecycle="upcoming"
+                      presenceCount={getPresenceCount(activity.id)}
+                      isPresent={isPresent(activity.id)}
+                      onMarkPresent={markPresent}
+                    />
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Ended activities */}
+            {endedActivities.length > 0 && (
+              <section>
+                <h2 className="mb-3 text-sm font-medium text-gray-500">
+                  {t('sections.ended', 'Ended')}
+                </h2>
+                <div className="space-y-3">
+                  {endedActivities.map((activity) => (
+                    <ActivityCard
+                      key={activity.id}
+                      activity={activity}
+                      lifecycle="ended"
+                      presenceCount={getPresenceCount(activity.id)}
+                      isPresent={isPresent(activity.id)}
+                      onMarkPresent={markPresent}
                     />
                   ))}
                 </div>
@@ -192,6 +379,7 @@ export default function ActivitiesClient() {
                 <button
                   type="button"
                   onClick={loadMoreActivities}
+                  disabled={isMarkingPresent !== null}
                   className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50"
                 >
                   {t('actions.loadMore', 'Load more activities')}

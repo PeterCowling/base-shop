@@ -66,6 +66,11 @@ describe('/api/check-in-lookup readiness signals', () => {
           },
         };
       }
+      if (path === 'bagStorage/occ_1234567890123') {
+        return {
+          requestStatus: 'pending',
+        };
+      }
 
       return null;
     });
@@ -91,6 +96,9 @@ describe('/api/check-in-lookup readiness signals', () => {
         arrivalMethodPreference: string | null;
         arrivalConfidence: string | null;
       };
+      operational: {
+        bagDropRequested: boolean;
+      };
     };
 
     expect(response.status).toBe(200);
@@ -105,6 +113,9 @@ describe('/api/check-in-lookup readiness signals', () => {
     expect(payload.personalization).toEqual({
       arrivalMethodPreference: 'ferry',
       arrivalConfidence: 'confident',
+    });
+    expect(payload.operational).toEqual({
+      bagDropRequested: true,
     });
   });
 

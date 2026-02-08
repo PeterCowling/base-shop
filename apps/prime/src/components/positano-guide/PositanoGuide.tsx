@@ -44,6 +44,7 @@ const EVENING_GUIDES: GuideConfig[] = [
 ];
 
 interface GuideSectionProps {
+  sectionId: string;
   title: string;
   subtitle: string;
   guides: GuideConfig[];
@@ -53,6 +54,7 @@ interface GuideSectionProps {
 }
 
 const GuideSection: FC<GuideSectionProps> = memo(function GuideSection({
+  sectionId,
   title,
   subtitle,
   guides,
@@ -61,7 +63,7 @@ const GuideSection: FC<GuideSectionProps> = memo(function GuideSection({
   icon: Icon,
 }) {
   return (
-    <section className="mb-8">
+    <section id={sectionId} className="mb-8 scroll-mt-24">
       <div className="mb-4 flex items-center gap-2">
         <Icon className="h-5 w-5 text-amber-500" />
         <div>
@@ -143,6 +145,30 @@ const PositanoGuide: FC = memo(function PositanoGuide() {
     return supportedLangs.includes(currentLang) ? currentLang : 'en';
   }, [i18n.language]);
 
+  useEffect(() => {
+    const topic = searchParams?.get('topic');
+    if (!topic) {
+      return;
+    }
+
+    const topicMap: Record<string, string> = {
+      transport: 'guide-morning',
+      activities: 'guide-afternoon',
+      local_tips: 'guide-evening',
+      neighborhoods: 'guide-afternoon',
+      food: 'guide-evening',
+    };
+    const targetId = topicMap[topic];
+    if (!targetId) {
+      return;
+    }
+
+    const target = document.getElementById(targetId);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [searchParams]);
+
   // Track guidebook visit on first render
   useEffect(() => {
     const hasVisited = occupantData?.completedTasks?.guidebookVisited === 'true';
@@ -190,6 +216,7 @@ const PositanoGuide: FC = memo(function PositanoGuide() {
 
         {/* Morning section */}
         <GuideSection
+          sectionId="guide-morning"
           title={t('sections.morning.title')}
           subtitle={t('sections.morning.subtitle')}
           guides={MORNING_GUIDES}
@@ -200,6 +227,7 @@ const PositanoGuide: FC = memo(function PositanoGuide() {
 
         {/* Afternoon section */}
         <GuideSection
+          sectionId="guide-afternoon"
           title={t('sections.afternoon.title')}
           subtitle={t('sections.afternoon.subtitle')}
           guides={AFTERNOON_GUIDES}
@@ -210,6 +238,7 @@ const PositanoGuide: FC = memo(function PositanoGuide() {
 
         {/* Evening section */}
         <GuideSection
+          sectionId="guide-evening"
           title={t('sections.evening.title')}
           subtitle={t('sections.evening.subtitle')}
           guides={EVENING_GUIDES}

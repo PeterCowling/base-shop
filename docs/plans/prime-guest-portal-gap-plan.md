@@ -5,7 +5,7 @@ Domain: Prime
 Created: 2026-01-17
 Last-updated: 2026-02-07
 Last-reviewed: 2026-02-07
-Re-planned: 2026-02-07 (iteration 4)
+Re-planned: 2026-02-07 (iteration 5)
 Feature-Slug: prime-guest-portal-gap
 Overall-delivery-confidence: 84%
 Overall-business-priority: High
@@ -14,7 +14,7 @@ Business-Unit: BRIK
 Card-ID: BRIK-ENG-0017
 Relates-to charter: none
 Fact-Find-Ref: docs/plans/prime-guest-portal-gap-fact-find.md
-Build-progress: 19/53 tasks complete (TASK-01 through TASK-19 completed 2026-02-07)
+Build-progress: 30/53 tasks complete (TASK-01 through TASK-30 completed 2026-02-07)
 ---
 
 # Prime Guest Portal — Bridge Plan
@@ -320,28 +320,28 @@ Rows below are in **numeric TASK-ID order**.
 | TASK-28 | Firebase query-budget contract tests (guest-critical flows) | IMPLEMENT | M | 90% | TASK-04 | Complete (2026-02-07) |
 | TASK-29 | Firebase listener lifecycle leak tests | IMPLEMENT | M | 88% | TASK-28 | Complete (2026-02-07) |
 | TASK-30 | Firebase cost regression CI gate + baseline budgets | IMPLEMENT | M | 86% | TASK-28, TASK-29 | Complete (2026-02-07) |
-| TASK-31 | Booking details + lifecycle status surface | IMPLEMENT | M | 84% | TASK-04, TASK-13 | Ready |
-| TASK-32 | Extension request email workflow (`hostelbrikette@gmail.com`) | IMPLEMENT | M | 80% | TASK-31, TASK-01 | Ready |
-| TASK-33 | Digital assistant answer + further-reading link model | IMPLEMENT | M | 80% | TASK-14, TASK-16 | Ready |
-| TASK-34 | Experiences schedule + attendance lifecycle | IMPLEMENT | M | 81% | TASK-04 | Ready |
-| TASK-35 | Breakfast/evening drink order + change policy flow | IMPLEMENT | M | 82% | TASK-31, TASK-28 | Ready |
-| TASK-36 | Transport + local guide hub with Brikette canonical links | IMPLEMENT | M | 85% | TASK-14, TASK-33 | Ready |
-| TASK-37 | Post-checkout bag-drop request flow | IMPLEMENT | M | 80% | TASK-31, TASK-15 | Ready |
-| TASK-38 | Reception operational ingest for Prime request data | IMPLEMENT | M | 81% | TASK-32, TASK-35, TASK-37 | Ready |
-| TASK-39 | Data access model convergence + guest auth boundary hardening | IMPLEMENT | M | 80% | TASK-04, TASK-28 | Ready |
-| TASK-40 | Production safety gate for staff/owner routes | IMPLEMENT | M | 82% | TASK-39, TASK-02 | Ready |
+| TASK-31 | Booking details + lifecycle status surface | IMPLEMENT | M | 84% | TASK-04, TASK-13 | Complete (2026-02-07) |
+| TASK-32 | Extension request email workflow (`hostelbrikette@gmail.com`) | IMPLEMENT | M | 80% | TASK-31, TASK-01 | Complete (2026-02-07) |
+| TASK-33 | Digital assistant answer + further-reading link model | IMPLEMENT | M | 80% | TASK-14, TASK-16 | Complete (2026-02-07) |
+| TASK-34 | Experiences schedule + attendance lifecycle | IMPLEMENT | M | 81% | TASK-04 | Complete (2026-02-07) |
+| TASK-35 | Breakfast/evening drink order + change policy flow | IMPLEMENT | M | 82% | TASK-31, TASK-28 | Complete (2026-02-07) |
+| TASK-36 | Transport + local guide hub with Brikette canonical links | IMPLEMENT | M | 85% | TASK-14, TASK-33 | Complete (2026-02-07) |
+| TASK-37 | Post-checkout bag-drop request flow | IMPLEMENT | M | 80% | TASK-31, TASK-15 | Complete (2026-02-07) |
+| TASK-38 | Reception operational ingest for Prime request data | IMPLEMENT | M | 81% | TASK-32, TASK-35, TASK-37 | Complete (2026-02-07) |
+| TASK-39 | Data access model convergence + guest auth boundary hardening | IMPLEMENT | M | 80% | TASK-04, TASK-28 | Complete (2026-02-07) |
+| TASK-40 | Production safety gate for staff/owner routes | IMPLEMENT | M | 82% | TASK-39, TASK-02 | Complete (2026-02-07) |
 | TASK-41 | Primary guest journey end-to-end suite (production gate) | IMPLEMENT | M | 80% | TASK-03, TASK-04, TASK-05, TASK-06, TASK-07 | Ready |
 | TASK-42 | Cloudflare Pages deep-link/routing verification gate | IMPLEMENT | S | 80% | TASK-02, TASK-03, TASK-04 | Ready |
 | TASK-43 | Arrival code offline-lite resilience (last-known code fallback) | IMPLEMENT | M | 80% | TASK-07, TASK-11 | Ready |
 | TASK-44 | Messaging safety baseline (rate-limit, reporting, retention, feature flags) | IMPLEMENT | M | 80% | TASK-34, TASK-39 | Ready |
 | TASK-45 | Activity group chat channel (presence + live messaging) | IMPLEMENT | M | 79% | TASK-34, TASK-28, TASK-29, TASK-44 | Ready |
-| TASK-46 | Guest-to-guest opt-in messaging controls | IMPLEMENT | M | 78% | TASK-45, TASK-17, TASK-44 | Ready |
+| TASK-46 | Guest-to-guest opt-in messaging controls | IMPLEMENT | M | 79% | TASK-45, TASK-17, TASK-44 | Ready |
 | TASK-47 | Owner KPI pre-aggregation pipeline (cost-safe analytics source) | IMPLEMENT | M | 80% | TASK-15, TASK-21 | Ready |
 | TASK-48 | Owner arrival insights dashboard + KPI feed | IMPLEMENT | M | 80% | TASK-15, TASK-47 | Ready |
 | TASK-49 | Cross-app business impact scorecard + operating cadence | IMPLEMENT | M | 80% | TASK-15, TASK-48, TASK-21, TASK-27, TASK-47 | Ready |
 | TASK-50 | Prime touched-file lint non-regression gate | IMPLEMENT | S | 81% | TASK-02 | Ready |
-| TASK-51 | Staff auth replacement (PinAuthProvider) | IMPLEMENT | M | 70% | — | Deferred (Phase 3) |
-| TASK-52 | Campaign/trigger messaging orchestration | IMPLEMENT | L | 62% | TASK-51 | Deferred (Phase 3) |
+| TASK-51 | Staff auth replacement (PinAuthProvider) | IMPLEMENT | M | 74% | — | Deferred (Phase 3) |
+| TASK-52 | Campaign/trigger messaging orchestration | IMPLEMENT | L | 70% | TASK-51 | Deferred (Phase 3) |
 | TASK-53 | PWA offline essentials | IMPLEMENT | M | 68% | TASK-07 | Deferred (Phase 3) |
 
 ## Re-plan Iteration 2 (2026-02-07)
@@ -477,6 +477,60 @@ This `/re-plan` pass focused on the previously sub-80 tasks in the TASK-20..TASK
 
 - `TASK-45` (79%) live channel permission model details
 - `TASK-46` (78%) two-party consent lifecycle + moderation depth
+
+## Re-plan Iteration 5 (2026-02-07)
+
+### Scope Selected
+
+This `/re-plan` pass targeted the remaining low-confidence social/deferred tracks:
+
+- `TASK-45`, `TASK-46`
+- `TASK-51`, `TASK-52`, `TASK-53`
+
+### Uncertainty Statements and Falsifiable Checks
+
+- `TASK-45` uncertainty: can route-level channel UI be added without breaking listener lifecycle guarantees?
+  - Falsifiable check: existing listener lifecycle suites remain green while channel route is still placeholder.
+  - Evidence target: E2.
+- `TASK-46` uncertainty: are consent defaults and opt-in persistence seams stable enough to layer mutual-opt-in directory/DM guards?
+  - Falsifiable check: onboarding/profile tests demonstrate stable social/chat opt-in writes and intent-linked defaults.
+  - Evidence target: E2.
+- `TASK-51` uncertainty: does current PinAuth behavior provide a deterministic baseline for server-validated replacement?
+  - Falsifiable check: PinAuthProvider auth/persistence tests remain green.
+  - Evidence target: E2.
+- `TASK-52` uncertainty: can provider-layer error/idempotency handling support an email-first queue processor rollout?
+  - Falsifiable check: provider mapping and error-path suites in `@acme/email` pass as-is.
+  - Evidence target: E2.
+- `TASK-53` uncertainty: is there executable offline/PWA coverage already proving arrival-safe cache behavior?
+  - Falsifiable check: locate and execute PWA/offline suites for service worker + offline arrival UX.
+  - Evidence target: E2 (not achieved in this pass).
+
+### Executable Evidence Summary (E2)
+
+- `pnpm --filter @apps/prime test -- --runInBand --testPathPattern "SocialOptInStep|GuestProfileStep|PinAuthProvider|listener-leak|Subscription.leak"`:
+  - PASS 5 suites / 37 tests.
+  - Includes listener lifecycle suites and onboarding opt-in/profile suites.
+- `pnpm --filter @acme/email test -- --runInBand --testPathPattern "provider|queue|dispatch"`:
+  - PASS 35 suites / 163 tests.
+  - Confirms provider dispatch and failure-path behavior in the current adapter layer.
+- `rg -n "registerSW|useOnlineStatus|OfflineIndicator|service worker|offline" apps/prime --glob "**/*.test.ts" --glob "**/*.test.tsx"`:
+  - No dedicated PWA/offline test coverage found for service worker/offline arrival behavior.
+
+### Confidence Deltas Applied
+
+- `TASK-45`: 79% -> 79% (no uplift; key route-level integration unknown remains)
+- `TASK-46`: 78% -> 79% (E2 uplift from consent/persistence test evidence)
+- `TASK-51`: 70% -> 74% (E2 uplift from PinAuthProvider executable baseline)
+- `TASK-52`: 62% -> 70% (E2 uplift from provider dispatch/error-path executable coverage)
+- `TASK-53`: 68% -> 68% (no uplift; E2 gap remains)
+
+### Remaining Precursor Evidence Needed (<80 tasks)
+
+- `TASK-45`: implement and run channel-page + channel-leak + e2e TC suite in task contract before promoting to ≥80.
+- `TASK-46`: implement and run guest-directory + opt-out transition e2e TC suite before promoting to ≥80.
+- `TASK-51`: run a focused auth-architecture spike (Firebase custom-claims vs server-validated PIN token) with one chosen path and failing contract tests first.
+- `TASK-52`: prototype one end-to-end event (`booking.confirmed` or `arrival.48hours`) through Prime queue processor in Functions with idempotency assertions.
+- `TASK-53`: add first executable PWA contract (service worker registration + offline arrival shell render) and run it in CI.
 
 ## Post-Onboarding Capability Audit (Code Truth, 2026-02-07)
 
@@ -695,6 +749,11 @@ These tasks close the highest-risk release gaps identified in UX/security review
 - **Decision / resolution:**
   - Keep hybrid model but codify explicit access matrix and fail-closed behavior for any SDK path lacking guest auth.
 
+#### Build Completion (2026-02-07)
+- **Status:** Complete
+- **Implementation notes:** Added canonical access-matrix/security utilities in `apps/prime/src/lib/security/dataAccessModel.ts` and `apps/prime/src/lib/security/guestCriticalFlowEndpoints.ts`, aligned guest-critical flows to Function endpoints, and added fail-closed contracts in `apps/prime/src/lib/security/__tests__/data-access-model.contract.test.ts` plus `apps/prime/src/app/(guarded)/__tests__/sdk-auth-failclosed.test.tsx`.
+- **Validation evidence:** `cd apps/prime && pnpm exec jest --config jest.config.cjs --runInBand --runTestsByPath '/Users/petercowling/base-shop/apps/prime/src/lib/security/__tests__/data-access-model.contract.test.ts' '/Users/petercowling/base-shop/apps/prime/src/app/(guarded)/__tests__/sdk-auth-failclosed.test.tsx'` — PASS.
+
 ### TASK-40: Production safety gate for staff/owner routes
 
 - **Type:** IMPLEMENT
@@ -732,6 +791,11 @@ These tasks close the highest-risk release gaps identified in UX/security review
   - Repo: `apps/prime/src/app/staff-lookup/page.tsx:7`, `apps/prime/src/app/checkin/CheckInClient.tsx:51`, `apps/prime/functions/api/check-in-lookup.ts:46`
 - **Decision / resolution:**
   - Introduce one shared production gate utility used by staff/owner routes and corresponding APIs.
+
+#### Build Completion (2026-02-07)
+- **Status:** Complete
+- **Implementation notes:** Added shared staff/owner production gate helpers in `apps/prime/src/lib/security/staffOwnerGate.ts` and `apps/prime/functions/lib/staff-owner-gate.ts`, enforced deny-by-default route behavior in staff/owner pages, and applied server-side gate checks to `apps/prime/functions/api/check-in-lookup.ts`.
+- **Validation evidence:** `cd apps/prime && pnpm exec jest --config jest.config.cjs --runInBand --runTestsByPath '/Users/petercowling/base-shop/apps/prime/src/app/staff-lookup/__tests__/production-gate.test.tsx' '/Users/petercowling/base-shop/apps/prime/functions/__tests__/staff-owner-access-gate.test.ts'` — PASS.
 
 ### TASK-41: Primary guest journey end-to-end suite (production gate)
 
@@ -1992,6 +2056,12 @@ E2E coverage in this phase uses a shared Prime harness (`apps/prime/cypress.conf
   - **Green:** Implement status-first booking details rendering using canonical lifecycle resolver and action gating.
   - **Refactor:** Extract shared status badge/action mapping helpers to keep page logic thin and deterministic.
 
+#### Build Completion (2026-02-07)
+- **Status:** Complete
+- **Implementation notes:** Replaced booking details placeholder with status-first guest summary in `apps/prime/src/app/(guarded)/booking-details/page.tsx`, added canonical booking snapshot hook `apps/prime/src/hooks/dataOrchestrator/useGuestBookingSnapshot.ts`, and implemented Function-backed booking snapshot endpoint in `apps/prime/functions/api/guest-booking.ts`.
+- **Validation evidence:** `cd apps/prime && pnpm exec jest --config jest.config.cjs --runInBand --runTestsByPath '/Users/petercowling/base-shop/apps/prime/src/app/(guarded)/booking-details/__tests__/page.test.tsx' '/Users/petercowling/base-shop/apps/prime/functions/__tests__/guest-booking.test.ts'` — PASS.
+- **E2E note:** Task contract TC-05 remains gated on TASK-41 Cypress harness.
+
 ### TASK-32: Extension request email workflow (`hostelbrikette@gmail.com`)
 
 - **Type:** IMPLEMENT
@@ -2022,6 +2092,12 @@ E2E coverage in this phase uses a shared Prime harness (`apps/prime/cypress.conf
   - **Red:** Write function + form tests (`TC-01`..`TC-05`) expecting no dispatch, missing validations, and missing confirmation flow.
   - **Green:** Implement request schema validation, throttle/dedupe logic, email dispatch adapter, and confirmation UI.
   - **Refactor:** Consolidate payload mapping/rate-limit utilities and normalize user-facing error copy.
+
+#### Build Completion (2026-02-07)
+- **Status:** Complete
+- **Implementation notes:** Added guest extension Function endpoint `apps/prime/functions/api/extension-request.ts`, shared email dispatch adapter `apps/prime/functions/lib/email-dispatch.ts`, and booking-details extension submission UX in `apps/prime/src/app/(guarded)/booking-details/page.tsx`.
+- **Validation evidence:** `cd apps/prime && pnpm exec jest --config jest.config.cjs --runInBand --runTestsByPath '/Users/petercowling/base-shop/apps/prime/functions/__tests__/extension-request.test.ts' '/Users/petercowling/base-shop/apps/prime/src/app/(guarded)/booking-details/__tests__/extension-request.test.tsx'` — PASS.
+- **E2E note:** Task contract TC-05 remains gated on TASK-41 Cypress harness.
 
 ### TASK-33: Digital assistant answer + further-reading link model
 
@@ -2065,6 +2141,12 @@ E2E coverage in this phase uses a shared Prime harness (`apps/prime/cypress.conf
 - **Decision / resolution:**
   - Implement assistant as a constrained answer composer backed by allowlisted Brikette/website links before any generative expansion.
 
+#### Build Completion (2026-02-07)
+- **Status:** Complete
+- **Implementation notes:** Replaced assistant placeholder with working Q&A page in `apps/prime/src/app/(guarded)/digital-assistant/page.tsx`, implemented allowlisted answer composer in `apps/prime/src/lib/assistant/answerComposer.ts`, and wired canonical "further reading" behavior.
+- **Validation evidence:** `cd apps/prime && pnpm exec jest --config jest.config.cjs --runInBand --runTestsByPath '/Users/petercowling/base-shop/apps/prime/src/lib/assistant/__tests__/answerComposer.test.ts' '/Users/petercowling/base-shop/apps/prime/src/app/(guarded)/digital-assistant/__tests__/page.test.tsx' '/Users/petercowling/base-shop/apps/prime/src/data/__tests__/guide-links.contract.test.ts'` — PASS.
+- **E2E note:** Task contract TC-05 remains gated on TASK-41 Cypress harness.
+
 ### TASK-34: Experiences schedule + attendance lifecycle
 
 - **Type:** IMPLEMENT
@@ -2106,6 +2188,12 @@ E2E coverage in this phase uses a shared Prime harness (`apps/prime/cypress.conf
   - Repo: `apps/prime/src/app/(guarded)/activities/ActivitiesClient.tsx:51`, `apps/prime/src/app/(guarded)/activities/ActivitiesClient.tsx:120`, `apps/prime/src/contexts/messaging/ChatProvider.tsx:197`
 - **Decision / resolution:**
   - Keep activity lifecycle source-of-truth in `ChatProvider`, and implement presence UI/state gates in activities + channel surfaces.
+
+#### Build Completion (2026-02-07)
+- **Status:** Complete
+- **Implementation notes:** Implemented lifecycle-aware attendance/presence UX in `apps/prime/src/app/(guarded)/activities/ActivitiesClient.tsx` and added lifecycle test coverage in `apps/prime/src/app/(guarded)/activities/__tests__/attendance-lifecycle.test.tsx`.
+- **Validation evidence:** `cd apps/prime && pnpm exec jest --config jest.config.cjs --runInBand --runTestsByPath '/Users/petercowling/base-shop/apps/prime/src/app/(guarded)/activities/__tests__/attendance-lifecycle.test.tsx'` — PASS.
+- **E2E note:** Task contract TC-05 remains gated on TASK-41 Cypress harness.
 
 ### TASK-45: Activity group chat channel (presence + live messaging)
 
@@ -2149,13 +2237,29 @@ E2E coverage in this phase uses a shared Prime harness (`apps/prime/cypress.conf
 - **Decision / resolution:**
   - Reuse provider data/loading contracts and keep send permissions in a dedicated channel policy helper.
 
+#### Re-plan Update (2026-02-07, iteration 5)
+- **Previous confidence:** 79%
+- **Updated confidence:** 79%
+  - **Evidence class:** E2 + E1
+  - Implementation: 79% — listener cleanup contracts remain executable (`apps/prime/src/services/__tests__/useFirebaseSubscription.leak.test.tsx:64`, `apps/prime/src/hooks/pureData/__tests__/useFetchCompletedTasks.listener-leak.test.tsx:69`), but the channel route is still placeholder (`apps/prime/src/app/(guarded)/chat/channel/page.tsx:12`).
+  - Approach: 79% — provider lifecycle seams are stable (`apps/prime/src/contexts/messaging/ChatProvider.tsx:235`, `apps/prime/src/contexts/messaging/ChatProvider.tsx:293`), yet route-level permission orchestration is still unproven.
+  - Impact: 80% — engagement upside remains high once live/presence gating is implemented.
+- **Investigation performed:**
+  - Repo: `apps/prime/src/app/(guarded)/chat/channel/page.tsx:12`, `apps/prime/src/contexts/messaging/ChatProvider.tsx:244`, `apps/prime/src/contexts/messaging/ChatProvider.tsx:309`
+  - Tests: `apps/prime/src/services/__tests__/useFirebaseSubscription.leak.test.tsx`, `apps/prime/src/hooks/pureData/__tests__/useFetchCompletedTasks.listener-leak.test.tsx`
+  - Command: `pnpm --filter @apps/prime test -- --runInBand --testPathPattern "SocialOptInStep|GuestProfileStep|PinAuthProvider|listener-leak|Subscription.leak"` (PASS 5 suites / 37 tests)
+- **Decision / resolution:**
+  - Keep confidence unchanged until channel-page red tests (TC-01..TC-04) and e2e TC-05 are executed against the new route implementation.
+- **Precursor evidence needed (if still <80):**
+  - Execute task-contract tests for `apps/prime/src/app/(guarded)/chat/channel/__tests__/page.test.tsx`, `apps/prime/src/contexts/messaging/__tests__/ChatProvider.channel-leak.test.tsx`, and `apps/prime/cypress/e2e/activity-channel.cy.ts`.
+
 ### TASK-46: Guest-to-guest opt-in messaging controls
 
 - **Type:** IMPLEMENT
 - **Effort:** M
-- **Confidence:** 78%
-  - Implementation: 78% — opt-in fields and onboarding capture are already present
-  - Approach: 78% — enforce mutual opt-in at directory/thread selectors and policy guards
+- **Confidence:** 79%
+  - Implementation: 79% — opt-in fields and onboarding capture are already present
+  - Approach: 79% — enforce mutual opt-in at directory/thread selectors and policy guards
   - Impact: 79% — strong engagement lift with clearer consent protections
 - **What exists:** `socialOptIn` and `chatOptIn` fields in guest profile types and onboarding components; direct chat route is placeholder.
 - **What's missing:** Guest-visible opt-in management, opt-in-only recipient discovery, and abuse-safe direct message UX.
@@ -2190,6 +2294,22 @@ E2E coverage in this phase uses a shared Prime harness (`apps/prime/cypress.conf
   - Repo: `apps/prime/src/types/guestProfile.ts:43`, `apps/prime/src/components/onboarding/SocialOptInStep.tsx:53`, `apps/prime/src/app/(guarded)/chat/page.tsx:12`
 - **Decision / resolution:**
   - Keep DM routing behind mutual-opt-in checks and add policy helpers shared by directory + thread pages.
+
+#### Re-plan Update (2026-02-07, iteration 5)
+- **Previous confidence:** 78%
+- **Updated confidence:** 79%
+  - **Evidence class:** E2 + E1
+  - Implementation: 79% — consent data model and defaults are validated in code and tests (`apps/prime/src/types/guestProfile.ts:50`, `apps/prime/src/types/guestProfile.ts:66`, `apps/prime/src/components/onboarding/__tests__/SocialOptInStep.test.tsx:107`, `apps/prime/src/components/onboarding/__tests__/GuestProfileStep.test.tsx:177`).
+  - Approach: 79% — current onboarding/profile flows prove stable write seams for mutual-opt-in policy layer, while the direct chat route remains placeholder (`apps/prime/src/app/(guarded)/chat/page.tsx:12`).
+  - Impact: 79% — consent-safe messaging remains high-value but still depends on new directory/thread UX.
+- **Investigation performed:**
+  - Repo: `apps/prime/src/components/onboarding/SocialOptInStep.tsx:53`, `apps/prime/src/types/guestProfile.ts:50`, `apps/prime/src/app/(guarded)/chat/page.tsx:12`
+  - Tests: `apps/prime/src/components/onboarding/__tests__/SocialOptInStep.test.tsx`, `apps/prime/src/components/onboarding/__tests__/GuestProfileStep.test.tsx`
+  - Command: `pnpm --filter @apps/prime test -- --runInBand --testPathPattern "SocialOptInStep|GuestProfileStep|PinAuthProvider|listener-leak|Subscription.leak"` (PASS 5 suites / 37 tests)
+- **Decision / resolution:**
+  - Promote confidence by +1 only; keep <80 until directory/DM contract tests and dual-user e2e flow are executed.
+- **Precursor evidence needed (if still <80):**
+  - Execute TC-01..TC-04 + TC-05 for `apps/prime/src/app/(guarded)/chat/__tests__/guest-directory.test.tsx` and `apps/prime/cypress/e2e/guest-optin-messaging.cy.ts`.
 
 ### TASK-35: Breakfast/evening drink order + change policy flow
 
@@ -2233,6 +2353,12 @@ E2E coverage in this phase uses a shared Prime harness (`apps/prime/cypress.conf
 - **Decision / resolution:**
   - Keep policy enforcement centralized in shared eligibility/date guards and reuse across breakfast + evening drink routes.
 
+#### Build Completion (2026-02-07)
+- **Status:** Complete
+- **Implementation notes:** Replaced breakfast/drink placeholders with shared meal order surface via `apps/prime/src/components/meal-orders/MealOrderPage.tsx`, and enforced same-day policy + exception queueing in `apps/prime/functions/api/firebase/preorders.ts`.
+- **Validation evidence:** `cd apps/prime && pnpm exec jest --config jest.config.cjs --runInBand --runTestsByPath '/Users/petercowling/base-shop/apps/prime/src/components/meal-orders/__tests__/MealOrderPage.test.tsx' '/Users/petercowling/base-shop/apps/prime/functions/api/firebase/__tests__/preorders.test.ts'` — PASS.
+- **E2E note:** Task contract TC-05 remains gated on TASK-41 Cypress harness.
+
 ### TASK-36: Transport + local guide hub with Brikette canonical links
 
 - **Type:** IMPLEMENT
@@ -2274,6 +2400,12 @@ E2E coverage in this phase uses a shared Prime harness (`apps/prime/cypress.conf
   - Repo: `apps/prime/src/components/positano-guide/PositanoGuide.tsx:104`, `apps/prime/src/components/positano-guide/PositanoGuide.tsx:192`, `apps/prime/src/app/(guarded)/positano-guide/page.tsx:6`
 - **Decision / resolution:**
   - Wire `/(guarded)/positano-guide` directly to `PositanoGuide` and enforce canonical-link contract tests.
+
+#### Build Completion (2026-02-07)
+- **Status:** Complete
+- **Implementation notes:** Replaced guide route placeholder with live guide component in `apps/prime/src/app/(guarded)/positano-guide/page.tsx` and added deep-link topic support in `apps/prime/src/components/positano-guide/PositanoGuide.tsx`.
+- **Validation evidence:** `cd apps/prime && pnpm exec jest --config jest.config.cjs --runInBand --runTestsByPath '/Users/petercowling/base-shop/apps/prime/src/data/__tests__/guide-links.contract.test.ts'` — PASS.
+- **E2E note:** Task contract TC-05 remains gated on TASK-41 Cypress harness.
 
 ### TASK-37: Post-checkout bag-drop request flow
 
@@ -2317,6 +2449,12 @@ E2E coverage in this phase uses a shared Prime harness (`apps/prime/cypress.conf
 - **Decision / resolution:**
   - Use shared `bagStorage/{uuid}` lineage for request/status with explicit request-state fields instead of creating a second parallel node.
 
+#### Build Completion (2026-02-07)
+- **Status:** Complete
+- **Implementation notes:** Implemented bag-drop Function endpoint `apps/prime/functions/api/bag-drop-request.ts`, replaced bag-storage page placeholder in `apps/prime/src/app/(guarded)/bag-storage/page.tsx`, and extended staff arrival payload coverage in `apps/prime/functions/api/check-in-lookup.ts`.
+- **Validation evidence:** `cd apps/prime && pnpm exec jest --config jest.config.cjs --runInBand --runTestsByPath '/Users/petercowling/base-shop/apps/prime/src/app/(guarded)/bag-storage/__tests__/page.test.tsx' '/Users/petercowling/base-shop/apps/prime/functions/__tests__/bag-drop-request.test.ts' '/Users/petercowling/base-shop/apps/prime/functions/__tests__/arrival-signals.test.ts'` — PASS.
+- **E2E note:** Task contract TC-05 remains gated on TASK-41 Cypress harness.
+
 ### TASK-38: Reception operational ingest for Prime request data
 
 - **Type:** IMPLEMENT
@@ -2359,6 +2497,12 @@ E2E coverage in this phase uses a shared Prime harness (`apps/prime/cypress.conf
 - **Decision / resolution:**
   - Add a dedicated request queue model in Reception and keep canonical booking/preorder/checkin/check-out nodes as source-of-truth.
 
+#### Build Completion (2026-02-07)
+- **Status:** Complete
+- **Implementation notes:** Added Reception Prime request ingestion/resolution stack in `apps/reception/src/hooks/data/usePrimeRequestsData.ts`, `apps/reception/src/hooks/mutations/usePrimeRequestResolution.ts`, `apps/reception/src/components/prime-requests/PrimeRequestsBoard.tsx`, and `apps/reception/src/app/prime-requests/page.tsx`.
+- **Validation evidence:** `pnpm --filter @apps/reception exec jest --config jest.config.cjs --runInBand src/components/prime-requests/__tests__/queue.test.tsx` — PASS.
+- **E2E note:** Task contract TC-05 remains gated on Phase 2E cross-app Cypress harness tasks.
+
 ## Phase 3: Deferred (Staff Auth, Campaign Messaging, PWA)
 
 These tasks are valuable but blocked or lower priority. Preserved with "what would make this ≥90%" notes.
@@ -2367,10 +2511,10 @@ These tasks are valuable but blocked or lower priority. Preserved with "what wou
 
 - **Type:** IMPLEMENT
 - **Effort:** M
-- **Confidence:** 70%
-  - Implementation: 70% — role and PIN primitives already exist, but migration touches both UI guards and API boundaries.
-  - Approach: 72% — staged replacement (interim secure gate first, then full auth provider swap) is clear.
-  - Impact: 70% — broad auth surface requires careful rollout.
+- **Confidence:** 74%
+  - Implementation: 74% — role and PIN primitives already exist, but migration touches both UI guards and API boundaries.
+  - Approach: 75% — staged replacement (interim secure gate first, then full auth provider swap) is clear.
+  - Impact: 74% — broad auth surface requires careful rollout.
 - **Test contract:**
   - **TC-01:** Valid staff PIN hash comparison returns authenticated staff session with role claims
   - **TC-02:** Invalid PIN attempt returns deterministic auth failure and preserves lockout counters
@@ -2392,14 +2536,30 @@ These tasks are valuable but blocked or lower priority. Preserved with "what wou
 - **Decision / resolution:**
   - Keep deferred, but test contract is now explicit and ready for `/re-plan` follow-up before implementation starts.
 
+#### Re-plan Update (2026-02-07, iteration 5)
+- **Previous confidence:** 70%
+- **Updated confidence:** 74%
+  - **Evidence class:** E2 + E1
+  - Implementation: 74% — baseline auth/session behavior is executable in tests (`apps/prime/src/contexts/messaging/__tests__/PinAuthProvider.test.tsx:58`, `apps/prime/src/contexts/messaging/__tests__/PinAuthProvider.test.tsx:130`) and matches current provider implementation (`apps/prime/src/contexts/messaging/PinAuthProvider.tsx:29`).
+  - Approach: 75% — role helper constraints remain explicit (`apps/prime/src/lib/checkin/helpers.ts:8`) and can be preserved during server-validated auth transition.
+  - Impact: 74% — still cross-cutting (UI guards + API auth), but baseline behavior is now better bounded.
+- **Investigation performed:**
+  - Repo: `apps/prime/src/contexts/messaging/PinAuthProvider.tsx:29`, `apps/prime/src/lib/checkin/helpers.ts:8`
+  - Tests: `apps/prime/src/contexts/messaging/__tests__/PinAuthProvider.test.tsx`
+  - Command: `pnpm --filter @apps/prime test -- --runInBand --testPathPattern "SocialOptInStep|GuestProfileStep|PinAuthProvider|listener-leak|Subscription.leak"` (PASS 5 suites / 37 tests)
+- **Decision / resolution:**
+  - Keep deferred with moderate uplift; no promotion to ≥80 until a concrete auth architecture spike and server token-validation contract tests are complete.
+- **Precursor evidence needed (if still <80):**
+  - Produce one decision memo + spike result selecting Firebase custom-claims vs server-validated PIN token, then add failing/green auth gate tests in `apps/prime/functions/__tests__/staff-auth-token-gate.test.ts`.
+
 ### TASK-52: Campaign/trigger messaging orchestration — Deferred
 
 - **Type:** IMPLEMENT
 - **Effort:** L
-- **Confidence:** 62%
-  - Implementation: 62% — trigger/event schemas exist and `@acme/email` provider stack is available in-repo.
-  - Approach: 64% — start email-first with one trigger path; defer SMS/WhatsApp fanout.
-  - Impact: 62% — still multi-system and operationally sensitive.
+- **Confidence:** 70%
+  - Implementation: 70% — trigger/event schemas exist and `@acme/email` provider stack is available in-repo.
+  - Approach: 72% — start email-first with one trigger path; defer SMS/WhatsApp fanout.
+  - Impact: 70% — still multi-system and operationally sensitive.
 - **Test contract:**
   - **TC-01:** `booking.confirmed` queue record validates schema and enqueues once per booking
   - **TC-02:** Worker processes `arrival.48hours` queue event and dispatches one email via provider adapter
@@ -2423,6 +2583,22 @@ These tasks are valuable but blocked or lower priority. Preserved with "what wou
   - Repo: `apps/prime/src/lib/messaging/useMessagingQueue.ts:47`, `apps/prime/src/lib/messaging/triggers.ts:134`, `packages/email/src/index.ts:7`
 - **Decision / resolution:**
   - Prioritize transactional email pipeline using existing `@acme/email` adapters; defer SMS/WhatsApp until email path is production-stable.
+
+#### Re-plan Update (2026-02-07, iteration 5)
+- **Previous confidence:** 62%
+- **Updated confidence:** 70%
+  - **Evidence class:** E2 + E1
+  - Implementation: 70% — queue/event schema + writer seam remain in place (`apps/prime/src/lib/messaging/triggers.ts:121`, `apps/prime/src/lib/messaging/useMessagingQueue.ts:47`) and provider adapter layer has broad executable coverage.
+  - Approach: 72% — email-first sequencing is strengthened by passing provider mapping and error-path suites in `@acme/email`.
+  - Impact: 70% — operational complexity remains, but dispatch reliability assumptions are now evidence-backed.
+- **Investigation performed:**
+  - Repo: `apps/prime/src/lib/messaging/triggers.ts:121`, `apps/prime/src/lib/messaging/useMessagingQueue.ts:47`, `packages/email/src/__tests__/providerFunctions.test.ts:86`
+  - Tests: `packages/email/src/__tests__/providerFunctions.test.ts` plus provider dispatch/error suites
+  - Command: `pnpm --filter @acme/email test -- --runInBand --testPathPattern "provider|queue|dispatch"` (PASS 35 suites / 163 tests)
+- **Decision / resolution:**
+  - Keep deferred but raise to 70 with executable adapter confidence; next step is single-trigger end-to-end queue processor prototype before ≥80.
+- **Precursor evidence needed (if still <80):**
+  - Implement and run one end-to-end Prime queue processor path (`queue-processor` + `messaging-dispatcher` tests) proving idempotent dispatch from `messagingQueue/{eventId}`.
 
 ### TASK-53: PWA offline essentials — Deferred
 
@@ -2453,6 +2629,21 @@ These tasks are valuable but blocked or lower priority. Preserved with "what wou
   - Repo: `apps/prime/src/lib/pwa/registerSW.ts:137`, `apps/prime/src/components/pwa/OfflineIndicator.tsx:22`, `apps/prime/public/_redirects:1`
 - **Decision / resolution:**
   - Keep deferred; when started, implement cache/version tests before enabling any production service worker registration.
+
+#### Re-plan Update (2026-02-07, iteration 5)
+- **Previous confidence:** 68%
+- **Updated confidence:** 68%
+  - **Evidence class:** E1
+  - Implementation: 68% — utilities and UI primitives still exist (`apps/prime/src/lib/pwa/registerSW.ts:17`, `apps/prime/src/lib/pwa/useOnlineStatus.ts:42`, `apps/prime/src/components/pwa/OfflineIndicator.tsx:24`).
+  - Approach: 70% — staged arrival-first offline scope remains sound.
+  - Impact: 68% — production risk unchanged without executable offline proof.
+- **Investigation performed:**
+  - Repo: `apps/prime/src/lib/pwa/registerSW.ts:24`, `apps/prime/src/lib/pwa/useOnlineStatus.ts:63`, `apps/prime/src/components/pwa/OfflineIndicator.tsx:29`
+  - Tests: `rg -n "registerSW|useOnlineStatus|OfflineIndicator|service worker|offline" apps/prime --glob "**/*.test.ts" --glob "**/*.test.tsx"` (no dedicated PWA/offline service-worker suites found)
+- **Decision / resolution:**
+  - Keep confidence unchanged; do not promote without E2 service-worker/offline journey tests.
+- **Precursor evidence needed (if still <80):**
+  - Add and run `apps/prime/src/lib/pwa/__tests__/registerSW.test.ts` and `apps/prime/cypress/e2e/pwa-offline-arrival.cy.ts` before promotion.
 
 ## Decision Log
 
@@ -2487,6 +2678,9 @@ These tasks are valuable but blocked or lower priority. Preserved with "what wou
 | 2026-02-07 | Gate staff/owner surfaces with shared production default-deny utility | Current route checks are UX-only and must be backed by server-side enforcement. |
 | 2026-02-07 | Run Prime e2e as a minimal three-journey release gate | No-dead-end funnel and expiry recovery require integration proof beyond unit tests. |
 | 2026-02-07 | Adopt email-first campaign orchestration path for deferred messaging automation | Existing `@acme/email` package materially reduces unknowns versus multi-channel rollout in first implementation pass. |
+| 2026-02-07 | Keep TASK-45 and TASK-46 below 80 until route-level + e2e chat proofs exist | Listener/consent seams are stable, but channel and DM surfaces remain placeholders and need direct executable coverage. |
+| 2026-02-07 | Promote TASK-51 and TASK-52 with E2 evidence only, not narrative optimism | PinAuth baseline tests and `@acme/email` provider suites passed; confidence increased only where executable uncertainty was reduced. |
+| 2026-02-07 | Hold TASK-53 confidence flat pending first offline/PWA executable contract | Existing utilities are static evidence only; no service-worker/offline journey test currently exists. |
 
 ## Risks and Open Questions
 

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import GuardedHomeExperience from '../components/homepage/GuardedHomeExperience';
 import { clearGuestSession, readGuestSession, validateGuestToken } from '../lib/auth/guestSessionGuard';
+import { canAccessStaffOwnerRoutes } from '../lib/security/staffOwnerGate';
 
 type RootMode = 'checking' | 'guest' | 'public';
 
@@ -72,12 +73,14 @@ export default function HomePage() {
           >
             Find My Stay
           </Link>
-          <Link
-            href="/staff-lookup"
-            className="block w-full rounded-lg border border-gray-300 px-6 py-3 text-gray-700 hover:bg-gray-100"
-          >
-            Staff Lookup
-          </Link>
+          {canAccessStaffOwnerRoutes() && (
+            <Link
+              href="/staff-lookup"
+              className="block w-full rounded-lg border border-gray-300 px-6 py-3 text-gray-700 hover:bg-gray-100"
+            >
+              Staff Lookup
+            </Link>
+          )}
         </div>
       </div>
     </main>

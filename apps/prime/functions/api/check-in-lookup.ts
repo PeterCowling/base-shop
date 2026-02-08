@@ -8,11 +8,15 @@
  */
 
 import { FirebaseRest, jsonResponse, errorResponse } from '../lib/firebase-rest';
+import { enforceStaffOwnerApiGate } from '../lib/staff-owner-gate';
 
 interface Env {
   CF_FIREBASE_DATABASE_URL: string;
   CF_FIREBASE_API_KEY?: string;
   RATE_LIMIT?: KVNamespace;
+  NODE_ENV?: string;
+  PRIME_ENABLE_STAFF_OWNER_ROUTES?: string;
+  PRIME_STAFF_OWNER_GATE_TOKEN?: string;
 }
 
 interface CheckInCodeRecord {
@@ -47,6 +51,10 @@ interface PreArrivalData {
     rulesReviewed?: boolean;
     locationSaved?: boolean;
   };
+}
+
+interface BagStorageData {
+  requestStatus?: string;
 }
 
 const KEYCARD_DEPOSIT = 10; // EUR
@@ -99,6 +107,11 @@ function buildReadinessSignals(preArrival: PreArrivalData | null) {
 }
 
 export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
+  const gateResponse = enforceStaffOwnerApiGate(request, env);
+  if (gateResponse) {
+    return gateResponse;
+  }
+
   const clientIP = request.headers.get('CF-Connecting-IP') || 'unknown';
   const rateLimitKey = `check-in-lookup:${clientIP}`;
 
@@ -158,6 +171,10 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
         // Fetch pre-arrival data for ETA + readiness context
         const preArrival = await firebase.get<PreArrivalData>(`preArrival/${uuid}`);
         const readiness = buildReadinessSignals(preArrival);
+        const bagStorage = await firebase.get<BagStorageData>(`bagStorage/${uuid}`);
+        const bagDropRequested = Boolean(
+          bagStorage?.requestStatus && bagStorage.requestStatus !== 'completed',
+        );
 
         return jsonResponse({
           guestName: formatGuestName(
@@ -176,6 +193,9 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
           personalization: {
             arrivalMethodPreference: preArrival?.arrivalMethodPreference ?? null,
             arrivalConfidence: preArrival?.arrivalConfidence ?? null,
+          },
+          operational: {
+            bagDropRequested,
           },
         });
       }

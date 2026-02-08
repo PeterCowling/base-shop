@@ -75,6 +75,9 @@ export interface StaffCheckInView {
   etaMethod: string | null;
   readiness: StaffReadinessSignals;
   personalization: StaffPersonalizationSignals;
+  operational?: {
+    bagDropRequested: boolean;
+  };
 }
 
 /**

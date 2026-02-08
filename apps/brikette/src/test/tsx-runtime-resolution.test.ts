@@ -63,9 +63,9 @@ process.exit(typeof createGuideUrlHelpers === 'function' ? 0 : 1);`
   });
 
   it("documents original tsconfig runtime behavior", () => {
-    // This test originally asserted that tsconfig.json resolved
-    // @acme/guides-core to .d.ts (undefined at runtime). Some branches now
-    // carry runtime-safe path updates in tsconfig.json as well.
+    // The original tsconfig previously resolved @acme/guides-core to .d.ts and
+    // produced "undefined" at runtime. Some branches now carry runtime-safe
+    // path updates in tsconfig.json as well.
     //
     // Keep this as a behavior contract that accepts both valid states:
     // - legacy mapping: undefined + exit 1
@@ -83,6 +83,7 @@ process.exit(typeof createGuideUrlHelpers === 'function' ? 0 : 1);`
       );
 
       // Run with ORIGINAL tsconfig (should resolve to .d.ts → undefined)
+      let threw = false;
       let exitCode = 0;
       let output = "";
 
@@ -96,17 +97,20 @@ process.exit(typeof createGuideUrlHelpers === 'function' ? 0 : 1);`
           }
         );
       } catch (error) {
+        threw = true;
         exitCode = (error as { status?: number }).status ?? 0;
         output = (error as { stdout?: string }).stdout ?? "";
       }
 
       const resolvedType = output.trim();
-      expect(["undefined", "function"]).toContain(resolvedType);
+      expect(["function", "undefined"]).toContain(resolvedType);
 
-      if (resolvedType === "undefined") {
-        expect(exitCode).toBe(1);
-      } else {
+      if (resolvedType === "function") {
+        expect(threw).toBe(false);
         expect(exitCode).toBe(0);
+      } else {
+        expect(threw).toBe(true);
+        expect(exitCode).toBe(1);
       }
     } finally {
       // Cleanup

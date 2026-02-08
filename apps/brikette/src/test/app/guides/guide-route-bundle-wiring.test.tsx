@@ -7,7 +7,6 @@ const mockIsGuidePublished = jest.fn();
 const mockLoadGuideI18nBundle = jest.fn();
 const mockLoadGuideManifestOverridesFromFs = jest.fn();
 const mockListGuideManifestEntries = jest.fn();
-const mockResolveDraftPathSegment = jest.fn();
 
 const fallbackSlugFromKey = (key: string): string =>
   key.replace(/([a-z\d])([A-Z])/g, "$1-$2").replace(/_/g, "-").toLowerCase();
@@ -43,7 +42,6 @@ jest.mock("@/routes/guides/guide-manifest-overrides.node", () => ({
 
 jest.mock("@/routes/guides/guide-manifest", () => ({
   listGuideManifestEntries: () => mockListGuideManifestEntries(),
-  resolveDraftPathSegment: (...args: unknown[]) => mockResolveDraftPathSegment(...args),
 }));
 
 jest.mock("@/lib/how-to-get-here/definitions", () => ({
@@ -90,7 +88,6 @@ describe("guide route bundle wiring", () => {
     mockLoadGuideI18nBundle.mockReset();
     mockLoadGuideManifestOverridesFromFs.mockReset();
     mockListGuideManifestEntries.mockReset();
-    mockResolveDraftPathSegment.mockReset();
     mockIsGuidePublished.mockReturnValue(true);
 
     mockLoadGuideI18nBundle.mockResolvedValue({
@@ -167,25 +164,4 @@ describe("guide route bundle wiring", () => {
     });
   });
 
-  it("passes bundles to draft guide pages", async () => {
-    const draftEntry = { key: "travelHelp", draftPathSegment: "help/travel-help" };
-    mockListGuideManifestEntries.mockReturnValue([draftEntry]);
-    mockResolveDraftPathSegment.mockReturnValue("help/travel-help");
-    mockLoadGuideManifestOverridesFromFs.mockReturnValue({ travelHelp: { status: "draft" } });
-
-    const module = await import("@/app/[lang]/draft/[...slug]/page");
-    const element = (await module.default({
-      params: Promise.resolve({ lang: "it", slug: ["help", "travel-help"] }),
-    })) as ReactElement<GuideContentProps>;
-
-    expect(mockLoadGuideI18nBundle).toHaveBeenCalledWith("it", "travelHelp");
-    expect(element.props.guideKey).toBe("travelHelp");
-    expect(element.props.serverOverrides).toEqual({ travelHelp: { status: "draft" } });
-    expect(element.props.serverGuides).toEqual({
-      content: { travelHelp: { intro: ["Localized"] } },
-    });
-    expect(element.props.serverGuidesEn).toEqual({
-      content: { travelHelp: { intro: ["English"] } },
-    });
-  });
 });

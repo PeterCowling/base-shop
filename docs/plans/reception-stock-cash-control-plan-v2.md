@@ -40,7 +40,7 @@ enforcement, reauth coverage, server-side rules, and ingredient audit trail.
 | Cash | No variance sign-off workflow | High | **Resolved** (REC-V2-05) |
 | Infra | Firebase security rules need emulator tests + CI validation | Critical | **Resolved** — 8 emulator tests + CI workflow (REC-V2-02) |
 | Infra | Settings writes (cash drawer limit, safe keycards) not protected server-side | High | Partial — `database.rules.json` protects `settings/cashDrawerLimit` (manager+ only). Remaining settings coverage in REC-V2-02. |
-| Cash | `/api/pms-postings` and `/api/terminal-batches` not implemented | Medium | Open (REC-V2-08) — replacing with Firebase-backed manual entry |
+| Cash | `/api/pms-postings` and `/api/terminal-batches` not implemented | Medium | **Resolved** — Firebase subscriptions + manual entry forms (REC-V2-08) |
 | Reporting | Transaction table shows `type` under the "METHOD" column | Low | **Resolved** — `method` and `type` now have separate columns |
 
 ### Repo audit notes (file-backed, updated 2026-02-07)
@@ -289,7 +289,7 @@ enforcement, reauth coverage, server-side rules, and ingredient audit trail.
 
 ### Medium — Reconciliation data sources
 
-- [ ] REC-V2-08: Manual PMS posting + terminal batch entry
+- [x] REC-V2-08: Manual PMS posting + terminal batch entry
   - **Type:** IMPLEMENT | **Effort:** M | **Confidence:** 85%
     - Implementation: 90% — Firebase schemas exist (`reconciliationManualSchema.ts`: `manualPmsPostingSchema`, `manualTerminalBatchSchema`); Firebase rules ready (`reconciliation/*` append-only); `ReconciliationWorkbench` renders data via `usePmsPostings` / `useTerminalBatches`; clear mutation pattern from `useCashCountsMutations`.
     - Approach: 88% — replace fetch-based hooks (404 endpoints) with Firebase subscriptions; add entry forms following `SafeDepositForm` pattern; schemas already Zod-validated.
@@ -320,13 +320,26 @@ enforcement, reauth coverage, server-side rules, and ingredient audit trail.
     - **Run:** `pnpm --filter @apps/reception test -- --testPathPattern="(ReconciliationWorkbench|PmsPosting|TerminalBatch)"`
   - **Key files:**
     - Schemas: `apps/reception/src/schemas/reconciliationManualSchema.ts`
-    - Hooks (replace): `apps/reception/src/hooks/data/till/usePmsPostings.ts`, `useTerminalBatches.ts`
+    - Hooks (replaced): `apps/reception/src/hooks/data/till/usePmsPostings.ts`, `useTerminalBatches.ts`
+    - Mutation hooks (new): `apps/reception/src/hooks/mutations/usePmsPostingsMutations.ts`, `useTerminalBatchesMutations.ts`
     - Workbench: `apps/reception/src/components/till/ReconciliationWorkbench.tsx`
     - Type defs: `apps/reception/src/types/hooks/data/pmsPostingData.ts`, `terminalBatchData.ts`
+  - **Build Completion (2026-02-08):**
+    - **Commit:** `2dad0a57db` — "feat(reception): replace dead API hooks with Firebase subscriptions + entry forms (REC-V2-08)"
+    - **TDD cycle:**
+      - Replaced fetch-based hooks with Firebase `useFirebaseSubscription` pattern
+      - Created `usePmsPostingsMutations` and `useTerminalBatchesMutations` (push + Zod validate + set)
+      - Added inline `PmsPostingForm` and `TerminalBatchForm` to ReconciliationWorkbench
+      - Added missing-data warnings when no entries exist
+      - Updated type schemas from array to record format with metadata fields
+      - Expanded test suite from 3 to 10 tests covering TC-01 through TC-05
+      - All 10 tests pass
+    - **Validation:** typecheck PASS ✅, lint PASS ✅, tests 10/10 PASS ✅
+    - **Dead code removed:** no more references to `/api/pms-postings` or `/api/terminal-batches`
 
 ### Low — Operational improvements
 
-- [ ] REC-V2-09: Cash drawer limit enforcement
+- [x] REC-V2-09: Cash drawer limit enforcement
   - **Type:** IMPLEMENT | **Effort:** S | **Confidence:** 88%
     - Implementation: 90% — core infra exists: `useCashDrawerLimit` hook (read/write + audit logging), `useShiftCalculations` computes `isDrawerOverLimit` / `isTillOverMax`, `DrawerLimitWarning` component renders alert, `TenderRemovalModal` handles deposits with conditional reauth. Only missing: `drawerAlerts` logging node.
     - Approach: 90% — follows established patterns: `logSettingChange` for audit, `push` + Zod validate for `drawerAlerts`, `ActionButtons` already disables shift close when `isTillOverMax`.
@@ -353,7 +366,17 @@ enforcement, reauth coverage, server-side rules, and ingredient audit trail.
     - Hooks: `apps/reception/src/hooks/data/useCashDrawerLimit.ts`, `apps/reception/src/hooks/client/till/useShiftCalculations.ts`, `apps/reception/src/hooks/client/till/useTillAlerts.ts`
     - UI: `apps/reception/src/components/till/DrawerLimitWarning.tsx`, `apps/reception/src/components/till/TillReconciliation.tsx`
     - Settings: `apps/reception/src/constants/settings.ts`
-    - Rules: `apps/reception/database.rules.json` (add `drawerAlerts` node)
+    - Rules: `apps/reception/database.rules.json` (`drawerAlerts` node added)
+    - Alert hook (new): `apps/reception/src/hooks/mutations/useDrawerAlertsMutations.ts`
+  - **Build Completion (2026-02-08):**
+    - **Commit:** `46e1cce63d` — "feat(reception): add drawerAlerts Firebase node + alert logging on over-limit (REC-V2-09)"
+    - **TDD cycle:**
+      - Added `drawerAlerts` append-only node to `database.rules.json` (staff+ can create, no overwrites, unauthenticated blocked)
+      - Created `useDrawerAlertsMutations` hook (push + set with user, shiftId, amount, limit, timestamp)
+      - Wired alert logging in `useTillShifts` via `useEffect` with `useRef` transition detection (fires only when `isDrawerOverLimit` becomes true)
+      - Added 2 emulator tests (append-only + unauth blocked), total emulator tests now 10/10
+      - Existing UI tests (DrawerLimitWarning, TillReconciliation) already cover TC-01 and TC-02
+    - **Validation:** typecheck PASS ✅, lint PASS ✅, test:rules 10/10 PASS ✅
 
 - [ ] REC-V2-16: Keycard numbering scheme decision (INVESTIGATE)
   - **Type:** INVESTIGATE | **Effort:** S | **Confidence:** 85%
@@ -412,8 +435,8 @@ enforcement, reauth coverage, server-side rules, and ingredient audit trail.
 | Task | Type | Effort | Confidence | Dependencies | Status |
 |------|------|--------|------------|--------------|--------|
 | REC-V2-02 | IMPLEMENT | M | 80% | None (deps resolved) | **Done** ✅ |
-| REC-V2-08 | IMPLEMENT | M | 85% | None | Ready |
-| REC-V2-09 | IMPLEMENT | S | 88% | None | Ready |
+| REC-V2-08 | IMPLEMENT | M | 85% | None | **Done** ✅ |
+| REC-V2-09 | IMPLEMENT | S | 88% | None | **Done** ✅ |
 | REC-V2-16 | INVESTIGATE | S | 85% | None (needs Pete) | Ready |
 | REC-V2-10 | IMPLEMENT | M | 75% → 85% | REC-V2-16 | Blocked |
 
@@ -429,8 +452,10 @@ Completed:
 
   Phase 6 (Medium):    REC-V2-02 ✅
 
+  Phase 7 (Medium):    REC-V2-08 ✅, REC-V2-09 ✅
+
 Remaining (parallelism guide):
-  Wave 1 (parallel):   REC-V2-08, REC-V2-09, REC-V2-16
+  Wave 1:              REC-V2-16 (needs Pete's input)
   Wave 2 (sequential): REC-V2-10 (after REC-V2-16)
 ```
 

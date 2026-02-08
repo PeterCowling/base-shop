@@ -33,9 +33,9 @@ jobs:
       app-filter: "@apps/product-pipeline"
       build-cmd: OUTPUT_EXPORT=1 pnpm --filter @apps/product-pipeline... build
       artifact-path: apps/product-pipeline/out
-      deploy-cmd: >
+      deploy_cmd: >
         pnpm exec wrangler pages deploy apps/product-pipeline/out --project-name product-pipeline --branch ${{ github.ref_name }} --config apps/product-pipeline/wrangler.toml
-      deploy-enabled: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging') }}
+      deploy_enabled: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging') }}
       project-name: "product-pipeline"
       environment-name: "${{ github.ref_name == 'staging' && 'staging' || 'production' }}"
       environment-url: "${{ github.ref_name == 'staging' && 'https://staging.product-pipeline.pages.dev' || 'https://product-pipeline.pages.dev' }}"

@@ -17,12 +17,12 @@ on:
         required: false
         type: string
       # Command to deploy, e.g. "pnpm exec wrangler pages deploy ..."
-      deploy-cmd:
+      deploy_cmd:
         required: false
         type: string
       # Caller-controlled deploy gate. Callers should pass true only for
       # branch/event combinations that are intended to publish.
-      deploy-enabled:
+      deploy_enabled:
         required: false
         type: boolean
         default: false
@@ -202,8 +202,8 @@ jobs:
         id: deploy_gate
         shell: bash
         run: |
-          echo "should_deploy=${{ inputs['deploy-cmd'] != '' && inputs['deploy-enabled'] }}" >> "$GITHUB_OUTPUT"
-          echo "::notice title=Deploy gate::should_deploy=${{ inputs['deploy-cmd'] != '' && inputs['deploy-enabled'] }} deploy_enabled=${{ inputs['deploy-enabled'] }}"
+          echo "should_deploy=${{ inputs.deploy_cmd != '' && inputs.deploy_enabled }}" >> "$GITHUB_OUTPUT"
+          echo "::notice title=Deploy gate::should_deploy=${{ inputs.deploy_cmd != '' && inputs.deploy_enabled }} deploy_enabled=${{ inputs.deploy_enabled }}"
 
       - name: Lint
         if: ${{ steps.classify.outputs.run_validation == 'true' }}
@@ -329,8 +329,8 @@ jobs:
     if: >-
       ${{
         needs.build.result == 'success' &&
-        inputs['deploy-cmd'] != '' &&
-        inputs['deploy-enabled']
+        inputs.deploy_cmd != '' &&
+        inputs.deploy_enabled
       }}
     needs: [build, validate]
     runs-on: ubuntu-latest
@@ -381,7 +381,7 @@ jobs:
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
           SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
           CART_COOKIE_SECRET: ${{ secrets.CART_COOKIE_SECRET }}
-        run: ${{ inputs.deploy-cmd }}
+        run: ${{ inputs.deploy_cmd }}
         shell: bash
 
       - name: Post-Deploy Health Check

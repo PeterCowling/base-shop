@@ -330,13 +330,7 @@ jobs:
       ${{
         needs.build.result == 'success' &&
         inputs.deploy_cmd != '' &&
-        (
-          needs.validate.outputs.should_deploy == 'true' ||
-          (
-            (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
-            (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging')
-          )
-        )
+        fromJSON(needs.validate.outputs.should_deploy || 'false')
       }}
     needs: [build, validate]
     runs-on: ubuntu-latest

@@ -329,7 +329,6 @@ jobs:
     if: >-
       ${{
         needs.build.result == 'success' &&
-        inputs.deploy_cmd != '' &&
         fromJSON(needs.validate.outputs.should_deploy || 'false')
       }}
     needs: [build, validate]

@@ -1,3 +1,5 @@
+> **Status: Superseded** — Absorbed into the [Unified Guide System Plan](../../.claude/plans/vivid-scribbling-pumpkin.md). All tasks from this plan are either completed or tracked there.
+
 ---
 Type: Plan
 Status: Active

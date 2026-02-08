@@ -105,8 +105,7 @@ function GuideSeoTemplate({
   renderGenericWhenEmpty = false,
   fallbackToEnTocTitle = true,
   preferLocalizedSeoTitle = false,
-  serverOverrides,
-}: GuideSeoTemplateProps): JSX.Element {
+}: GuideSeoTemplateProps) {
   const isExperiencesGuide = GUIDE_SECTION_BY_KEY[guideKey] === "experiences";
   const articleHeadingWeightClass = isExperiencesGuide
     ? "prose-headings:font-bold"
@@ -130,19 +129,10 @@ function GuideSeoTemplate({
     }
     return undefined;
   })();
-  const {
-    manifestEntry,
-    resolvedStatus,
-    checklistSnapshot,
-    draftUrl,
-    isDraftRoute,
-    shouldShowEditorialPanel,
-  } = useGuideManifestState({
+  const { manifestEntry } = useGuideManifestState({
     guideKey,
     lang,
-    canonicalPathname,
     preferManualWhenUnlocalized,
-    serverOverrides,
   });
 
   // TASK-01 + GUIDE-XREF-01: Wire manifest blocks into template
@@ -478,10 +468,6 @@ function GuideSeoTemplate({
     lang,
   });
 
-  const previewBannerLabel = t("preview.unpublishedBanner", {
-    defaultValue: "Preview only – this guide is not published",
-  }) as string;
-
   const articleHeaderDebug = {
     lang: lang as any,
     guideKey: guideKey as any,
@@ -500,18 +486,12 @@ function GuideSeoTemplate({
       description={description as string}
       canonicalUrl={canonicalUrl}
       ogImageUrl={ogImageUrl}
-      previewBannerLabel={previewBannerLabel}
       breadcrumb={breadcrumb}
       howToJson={howToJson ?? null}
       additionalScripts={additionalScriptsNode}
       hasAnyLocalized={hasAnyLocalized}
       faqHasLocalizedContent={faqHasLocalizedContent}
-      shouldShowEditorialPanel={shouldShowEditorialPanel}
       manifestEntry={manifestEntry ?? null}
-      resolvedStatus={resolvedStatus}
-      isDraftRoute={isDraftRoute}
-      checklistSnapshot={checklistSnapshot}
-      draftUrl={draftUrl}
       articleHeadingWeightClass={articleHeadingWeightClass}
       subtitleText={subtitleText}
       lastUpdated={lastUpdated}

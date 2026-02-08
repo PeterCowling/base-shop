@@ -12,7 +12,7 @@ import type { GuideSection } from "@/data/guides.index";
 import type { AppLanguage } from "@/i18n.config";
 import type { GuideKey } from "@/routes.guides-helpers";
 
-import type { ManifestOverrides } from "../guide-manifest-overrides";
+
 
 export type GuideSeoGenericContentOptions = Record<string, unknown> & {
   showToc?: boolean;
@@ -141,10 +141,4 @@ export interface GuideSeoTemplateProps {
    * that need the H1 to reflect whichever content block is active.
    */
   preferLocalizedSeoTitle?: boolean;
-  /**
-   * Server-loaded manifest overrides (includes SEO audit results).
-   * When provided, these are used as the initial state for client-side overrides,
-   * ensuring audit scores are available immediately on first render.
-   */
-  serverOverrides?: ManifestOverrides;
 }

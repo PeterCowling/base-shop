@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable ds/container-widths-only-at, ds/no-hardcoded-copy -- GS-001 [ttl=2026-12-31] Guide content wrapper uses inline layout; error text is non-UI */
 
 // src/app/[lang]/experiences/[slug]/GuideContent.tsx
 // Client component for guide pages (App Router version)
@@ -14,19 +15,17 @@ import type { AppLanguage } from "@/i18n.config";
 import type { GuideKey } from "@/routes.guides-helpers";
 import { guideNamespace } from "@/routes.guides-helpers";
 import GuideSeoTemplate from "@/routes/guides/_GuideSeoTemplate";
-import type { ManifestOverrides } from "@/routes/guides/guide-manifest-overrides";
 import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
 import { resolveLabel, useEnglishFallback } from "@/utils/translation-fallback";
 
 type Props = {
   lang: AppLanguage;
   guideKey: GuideKey;
-  serverOverrides?: ManifestOverrides;
   serverGuides?: Record<string, unknown>;
   serverGuidesEn?: Record<string, unknown>;
 };
 
-function GuideContent({ lang, guideKey, serverOverrides, serverGuides, serverGuidesEn }: Props) {
+function GuideContent({ lang, guideKey, serverGuides, serverGuidesEn }: Props) {
   // Seed i18n store from server data BEFORE useTranslation reads it
   const hydratedRef = useRef(false);
   if (!hydratedRef.current && serverGuides) {
@@ -39,37 +38,6 @@ function GuideContent({ lang, guideKey, serverOverrides, serverGuides, serverGui
 
   const { t } = useTranslation("guides", { lng: lang });
   const [loadError, setLoadError] = useState(false);
-
-  // Auto-append audit cache-bust parameter in dev if audit results exist
-  useEffect(() => {
-    if (!IS_DEV || typeof window === "undefined") {
-      console.debug("[GuideContent] Audit auto-append skipped:", { IS_DEV, hasWindow: typeof window !== "undefined" });
-      return;
-    }
-
-    // Check if audit results exist
-    const hasAuditResults = serverOverrides?.[guideKey]?.auditResults != null;
-    console.debug("[GuideContent] Audit check:", {
-      guideKey,
-      hasServerOverrides: serverOverrides != null,
-      hasAuditResults,
-      auditScore: serverOverrides?.[guideKey]?.auditResults?.score,
-    });
-
-    if (!hasAuditResults) return;
-
-    // Check if URL already has the audit parameter
-    const url = new URL(window.location.href);
-    const hasParam = url.searchParams.has("_audit");
-    console.debug("[GuideContent] URL check:", { currentUrl: url.toString(), hasParam });
-
-    if (hasParam) return;
-
-    // Add audit timestamp to force fresh data
-    url.searchParams.set("_audit", Date.now().toString());
-    console.debug("[GuideContent] Appending audit parameter:", url.toString());
-    window.history.replaceState({}, "", url.toString());
-  }, [guideKey, serverOverrides]);
 
   // Preload guide namespaces on mount
   useEffect(() => {
@@ -123,7 +91,6 @@ function GuideContent({ lang, guideKey, serverOverrides, serverGuides, serverGui
           <GuideSeoTemplate
             guideKey={guideKey}
             metaKey={metaKey}
-            serverOverrides={serverOverrides}
           />
         </GuideBoundary>
       )}

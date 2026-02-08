@@ -93,7 +93,7 @@ Add optional `sites?: Record<string, { status?: GuideStatus }>` field to `GuideM
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Add regression baseline tests for `generateStaticParams` and status filtering | 90% | M | Complete (2026-02-08) | - | TASK-05 |
 | TASK-02 | IMPLEMENT | Delete brikette draft routes and API routes | 92% | M | Complete (2026-02-08) | - | TASK-03 |
-| TASK-03 | IMPLEMENT | Remove editorial/preview components from guide templates | 88% | M | Pending | TASK-02 | TASK-04 |
+| TASK-03 | IMPLEMENT | Remove editorial/preview components from guide templates | 88% | M | Complete (2026-02-08) | TASK-02 | TASK-04 |
 | TASK-04 | IMPLEMENT | Remove authoring utilities, env vars, override write ops, and clean up tests | 88% | M | Pending | TASK-03 | TASK-05 |
 | TASK-05 | IMPLEMENT | Simplify two-tier status to direct `live` check | 85% | M | Pending | TASK-01, TASK-04 | TASK-06 |
 | TASK-06 | IMPLEMENT | Filter non-live guide content from build bundle | 82% | M | Pending | TASK-05 | TASK-07 |
@@ -277,6 +277,14 @@ _Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - `GuideSeoTemplateBody.tsx` lines: 8 (PREVIEW_TOKEN), 10-11 (authoring imports), 15 (DevStatusPill), 33-41 (GuideEditorialPanel dynamic import), 176-179 (editUrl), 214 (DevStatusPill render), 231-241 (GuideEditorialPanel render)
   - `_GuideSeoTemplate.tsx` lines: 19 (useGuideManifestState), 133-146 (destructuring), 509-514 (props passed)
   - `useGuideManifestState.ts`: lines 36-77 (override fetch → remove), 116-134 (checklist → remove), 136-140 (draftUrl → remove), 142-143 (isDraftRoute/shouldShow → remove)
+- **Implementation notes (2026-02-08):**
+  - Deleted 9 files: GuideEditorialPanel.tsx (907 lines), DiagnosticDetails.tsx (390 lines), PreviewBanner.tsx, DevStatusPill.tsx, SeoAuditBadge.tsx, SeoAuditDetails.tsx, useTranslationCoverage.ts, preview.ts, preview-guide-hydration.test.tsx
+  - Rewrote `useGuideManifestState.ts` from 154 lines to 22 lines — returns only `{ manifestEntry }`
+  - Removed `serverOverrides` plumbing: GuideSeoTemplateProps, _GuideSeoTemplate.tsx, GuideContent.tsx, both page.tsx files, and test assertions
+  - Removed `previewBannerLabel` from HeadSection and all hydration test fixtures
+  - Removed audit cache-bust useEffect from GuideContent.tsx
+  - Removed inline PreviewBanner from HowToGetHereContent.tsx
+  - Validation: typecheck clean, 6 test suites / 22 tests pass
 
 ---
 

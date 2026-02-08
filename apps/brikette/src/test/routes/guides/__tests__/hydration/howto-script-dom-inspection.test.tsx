@@ -1,3 +1,4 @@
+/* eslint-disable no-console -- investigation test uses console.log for findings */
 /**
  * TASK-07 Investigation: Inspect actual DOM structure to understand HowTo script
  * rendering and confirm whether suppressHydrationWarning masks structural divergence.
@@ -14,7 +15,6 @@ describe("HowTo script DOM structure inspection (TASK-07)", () => {
     const lang = "en" as const;
     const pageTitle = "Path of the Gods Hike Guide"; // i18n-exempt -- TEST-000 [ttl=2026-12-31] Test fixture data, non-UI
     const description = "Complete hiking guide for Path of the Gods"; // i18n-exempt -- TEST-000 [ttl=2026-12-31] Test fixture data, non-UI
-    const previewBannerLabel = "Preview"; // i18n-exempt -- TEST-000 [ttl=2026-12-31] Test fixture data, non-UI
     const breadcrumb = {
       "@context": "https://schema.org" as const, // i18n-exempt -- TEST-000 [ttl=2026-12-31] Schema.org context URL, non-UI
       "@type": "BreadcrumbList" as const, // i18n-exempt -- TEST-000 [ttl=2026-12-31] Schema.org type, non-UI
@@ -40,7 +40,6 @@ describe("HowTo script DOM structure inspection (TASK-07)", () => {
       search: "",
       pageTitle,
       description,
-      previewBannerLabel,
       breadcrumb,
       howToJson: null,
       howToJsonType: "application/ld+json" as const, // i18n-exempt -- TEST-000 [ttl=2026-12-31] MIME type, non-UI
@@ -102,7 +101,6 @@ describe("HowTo script DOM structure inspection (TASK-07)", () => {
     const lang = "en" as const;
     const pageTitle = "Path of the Gods Hike Guide"; // i18n-exempt -- TEST-000 [ttl=2026-12-31] Test fixture data, non-UI
     const description = "Complete hiking guide for Path of the Gods"; // i18n-exempt -- TEST-000 [ttl=2026-12-31] Test fixture data, non-UI
-    const previewBannerLabel = "Preview"; // i18n-exempt -- TEST-000 [ttl=2026-12-31] Test fixture data, non-UI
     const breadcrumb = {
       "@context": "https://schema.org" as const, // i18n-exempt -- TEST-000 [ttl=2026-12-31] Schema.org context URL, non-UI
       "@type": "BreadcrumbList" as const, // i18n-exempt -- TEST-000 [ttl=2026-12-31] Schema.org type, non-UI
@@ -121,7 +119,6 @@ describe("HowTo script DOM structure inspection (TASK-07)", () => {
       search: "",
       pageTitle,
       description,
-      previewBannerLabel,
       breadcrumb,
       howToJson: null,
       howToJsonType: "application/ld+json" as const, // i18n-exempt -- TEST-000 [ttl=2026-12-31] MIME type, non-UI

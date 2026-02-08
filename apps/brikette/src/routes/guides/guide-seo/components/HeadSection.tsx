@@ -8,8 +8,6 @@ import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
 import type { GuideKey } from "@/routes.guides-helpers";
 
-import PreviewBanner from "./PreviewBanner";
-
 const META_NAME_DESCRIPTION = "description" as const; // i18n-exempt -- TECH-000 [ttl=2026-12-31] Meta attribute name, non-UI
 const META_NAME_TWITTER_TITLE = "twitter:title" as const; // i18n-exempt -- TECH-000 [ttl=2026-12-31] Meta attribute name, non-UI
 const META_NAME_TWITTER_CARD = "twitter:card" as const; // i18n-exempt -- TECH-000 [ttl=2026-12-31] Meta attribute name, non-UI
@@ -25,7 +23,6 @@ interface HeadSectionProps {
   search: string;
   pageTitle: string;
   description: string;
-  previewBannerLabel: string;
   /** Absolute og:image URL to mirror route meta() in tests */
   ogImageUrl?: string;
   breadcrumb: BreadcrumbList;
@@ -42,11 +39,10 @@ export default function HeadSection({
   // lang is currently unused; route-level meta()/links() handle head tags
   // and language semantics. Keep for potential future use.
   lang: _lang,
-  guideKey,
-  search,
+  guideKey: _guideKey,
+  search: _search,
   pageTitle,
   description,
-  previewBannerLabel,
   ogImageUrl,
   breadcrumb,
   howToJson,
@@ -54,10 +50,11 @@ export default function HeadSection({
   additionalScripts,
   canonicalUrl: _canonicalUrl,
   suppressTwitterCardResolve,
-}: HeadSectionProps): JSX.Element {
+}: HeadSectionProps) {
   // Move all document.head mutations to useEffect to follow React patterns and avoid
   // hydration issues. Render-time side effects violate React expectations.
   // These mutations are primarily for test environments where route-level meta() isn't applied.
+  // eslint-disable-next-line complexity -- GS-001: test-only DOM fallback handler with many meta tags
   useEffect(() => {
     // In App Router, Next.js metadata is responsible for head tags. We only
     // apply these DOM fallbacks in tests (where route-level meta()/links() and
@@ -190,7 +187,6 @@ export default function HeadSection({
     <>
       {/* Head tags are provided via route meta()/links() exports; render content-only here. */}
 
-      <PreviewBanner guideKey={guideKey} search={search} label={previewBannerLabel} />
       {(
         // Tests assert exact prop shapes (headline/description only) for
         // ArticleStructuredData. Avoid passing an `image` prop here; route

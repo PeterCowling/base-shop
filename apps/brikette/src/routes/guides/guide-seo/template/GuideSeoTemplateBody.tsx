@@ -1,18 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, complexity, ds/no-hardcoded-copy -- GS-001: guide SEO template uses dynamic content types */
+/* eslint-disable @typescript-eslint/no-explicit-any, ds/no-hardcoded-copy -- GS-001: guide SEO template uses dynamic content types */
 import type { ReactNode } from "react";
-import dynamic from "next/dynamic";
 
 import { Section } from "@acme/design-system/atoms";
 
 import type { BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
-import { IS_DEV, PREVIEW_TOKEN } from "@/config/env";
+import { IS_DEV } from "@/config/env";
 import type { AppLanguage } from "@/i18n.config";
-import { isGuideAuthoringEnabled } from "@/routes/guides/guide-authoring/gate";
-import { buildGuideEditUrl } from "@/routes/guides/guide-authoring/urls";
 
-import type { ChecklistSnapshot, GuideChecklistItem, GuideManifestEntry } from "../../guide-manifest";
+import type { GuideManifestEntry } from "../../guide-manifest";
 import ArticleHeader from "../components/ArticleHeader";
-import DevStatusPill from "../components/DevStatusPill";
 import FaqStructuredDataBlock from "../components/FaqStructuredDataBlock";
 import FooterWidgets from "../components/FooterWidgets";
 import GenericOrFallbackContent from "../components/GenericOrFallbackContent";
@@ -30,16 +26,6 @@ import type {
 import type { StructuredFallback } from "../utils/fallbacks";
 import { isOffSeasonLongStayGuide } from "../utils/templatePolicies";
 
-// Dynamically import GuideEditorialPanel to avoid SSR hydration mismatches
-// Note: Even with server-side override loading, this component fetches translation
-// coverage client-side (useTranslationCoverage), which would cause hydration errors.
-// The server-side override loading still helps by providing initial data immediately
-// when the component mounts on the client.
-const GuideEditorialPanel = dynamic(
-  () => import("../components/GuideEditorialPanel"),
-  { ssr: false }
-);
-
 export type GuideSeoTemplateBodyProps = {
   lang: AppLanguage;
   guideKey: GuideSeoTemplateProps["guideKey"];
@@ -48,18 +34,12 @@ export type GuideSeoTemplateBodyProps = {
   description?: string;
   canonicalUrl: string;
   ogImageUrl?: string;
-  previewBannerLabel: string;
   breadcrumb: BreadcrumbList;
   howToJson: string | null;
   additionalScripts: ReactNode | null;
   hasAnyLocalized: boolean;
   faqHasLocalizedContent: boolean;
-  shouldShowEditorialPanel: boolean;
   manifestEntry: GuideManifestEntry | null;
-  resolvedStatus: GuideManifestEntry["status"];
-  isDraftRoute: boolean;
-  checklistSnapshot?: ChecklistSnapshot | GuideChecklistItem[];
-  draftUrl?: string;
   articleHeadingWeightClass: string;
   subtitleText: string;
   lastUpdated?: string;
@@ -119,18 +99,12 @@ export function GuideSeoTemplateBody(props: GuideSeoTemplateBodyProps): JSX.Elem
     description,
     canonicalUrl,
     ogImageUrl,
-    previewBannerLabel,
     breadcrumb,
     howToJson,
     additionalScripts,
     hasAnyLocalized,
     faqHasLocalizedContent,
-    shouldShowEditorialPanel,
     manifestEntry,
-    resolvedStatus,
-    isDraftRoute,
-    checklistSnapshot,
-    draftUrl,
     articleHeadingWeightClass,
     subtitleText,
     lastUpdated,
@@ -173,10 +147,6 @@ export function GuideSeoTemplateBody(props: GuideSeoTemplateBodyProps): JSX.Elem
     suppressFaqWhenUnlocalized,
     fallbackInjectedForLocale,
   } = props;
-  const editUrl =
-    isGuideAuthoringEnabled() && PREVIEW_TOKEN
-      ? buildGuideEditUrl(lang, guideKey as any)
-      : undefined;
 
   return (
     <>
@@ -189,7 +159,6 @@ export function GuideSeoTemplateBody(props: GuideSeoTemplateBodyProps): JSX.Elem
         canonicalUrl={canonicalUrl}
         // Surface og:image to the head fallback helper in tests
         ogImageUrl={ogImageUrl}
-        previewBannerLabel={previewBannerLabel}
         breadcrumb={breadcrumb}
         howToJson={howToJson ?? null}
         howToJsonType={HOW_TO_JSON_TYPE}
@@ -211,7 +180,6 @@ export function GuideSeoTemplateBody(props: GuideSeoTemplateBodyProps): JSX.Elem
       />
 
       <Section as="div" padding="none" className="mx-auto max-w-3xl px-4 pt-3 md:px-8 lg:px-10">
-        <DevStatusPill guideKey={guideKey as any} />
         {IS_DEV && fallbackInjectedForLocale && lang !== "en" && (
           <div
             className="mb-4 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-800"
@@ -228,17 +196,6 @@ export function GuideSeoTemplateBody(props: GuideSeoTemplateBodyProps): JSX.Elem
           </div>
         )}
         <article className={`prose prose-slate prose-lg sm:prose-xl dark:prose-invert ${articleHeadingWeightClass} prose-headings:tracking-tight prose-headings:text-brand-heading dark:prose-headings:text-brand-surface prose-p:text-left prose-p:leading-relaxed prose-li:leading-relaxed prose-strong:font-semibold prose-strong:text-brand-heading prose-ul:list-disc prose-ol:list-decimal prose-ul:pl-6 prose-ol:pl-6 prose-li:my-1 prose-li:marker:text-brand-primary/70 space-y-10`}>
-          {shouldShowEditorialPanel && manifestEntry ? (
-            <GuideEditorialPanel
-              manifest={manifestEntry}
-              status={resolvedStatus}
-              isDraftRoute={isDraftRoute}
-              dashboardUrl={`/${lang}/draft`}
-              {...(editUrl ? { editUrl } : {})}
-              {...(checklistSnapshot ? { checklist: checklistSnapshot as ChecklistSnapshot } : {})}
-              {...(draftUrl ? { draftUrl } : {})}
-            />
-          ) : null}
           <ArticleHeader
             displayTitle={resolvedDisplayTitle}
             subtitle={subtitleText}

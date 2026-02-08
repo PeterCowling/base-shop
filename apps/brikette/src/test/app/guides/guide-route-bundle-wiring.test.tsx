@@ -5,7 +5,6 @@ const mockGuidePath = jest.fn();
 const mockResolveGuideKeyFromSlug = jest.fn();
 const mockIsGuidePublished = jest.fn();
 const mockLoadGuideI18nBundle = jest.fn();
-const mockLoadGuideManifestOverridesFromFs = jest.fn();
 const mockListGuideManifestEntries = jest.fn();
 
 const fallbackSlugFromKey = (key: string): string =>
@@ -34,10 +33,6 @@ jest.mock("@/routes.guides-helpers", () => ({
   guidePath: (...args: unknown[]) => mockGuidePath(...args),
   guideSlug: (_lang: string, key: string) => fallbackSlugFromKey(key),
   resolveGuideKeyFromSlug: (...args: unknown[]) => mockResolveGuideKeyFromSlug(...args),
-}));
-
-jest.mock("@/routes/guides/guide-manifest-overrides.node", () => ({
-  loadGuideManifestOverridesFromFs: () => mockLoadGuideManifestOverridesFromFs(),
 }));
 
 jest.mock("@/routes/guides/guide-manifest", () => ({
@@ -76,7 +71,6 @@ type GuideContentProps = {
   guideKey: string;
   serverGuides?: Record<string, unknown>;
   serverGuidesEn?: Record<string, unknown>;
-  serverOverrides?: Record<string, unknown>;
 };
 
 describe("guide route bundle wiring", () => {
@@ -86,7 +80,6 @@ describe("guide route bundle wiring", () => {
     mockResolveGuideKeyFromSlug.mockReset();
     mockIsGuidePublished.mockReset();
     mockLoadGuideI18nBundle.mockReset();
-    mockLoadGuideManifestOverridesFromFs.mockReset();
     mockListGuideManifestEntries.mockReset();
     mockIsGuidePublished.mockReturnValue(true);
 
@@ -119,7 +112,6 @@ describe("guide route bundle wiring", () => {
   it("passes bundles to how-to-get-here guide pages", async () => {
     mockResolveGuideKeyFromSlug.mockReturnValue("salernoPositano");
     mockGuideNamespace.mockReturnValue({ baseKey: "howToGetHere", baseSlug: "how-to-get-here" });
-    mockLoadGuideManifestOverridesFromFs.mockReturnValue({ salernoPositano: { status: "live" } });
     mockLoadGuideI18nBundle.mockResolvedValue({
       serverGuides: { content: { salernoPositano: { intro: ["Localized"] } } },
       serverGuidesEn: { content: { salernoPositano: { intro: ["English"] } } },
@@ -131,7 +123,6 @@ describe("guide route bundle wiring", () => {
     })) as ReactElement<GuideContentProps>;
 
     expect(mockLoadGuideI18nBundle).toHaveBeenCalledWith("fr", "salernoPositano");
-    expect(element.props.serverOverrides).toEqual({ salernoPositano: { status: "live" } });
     expect(element.props.serverGuides).toEqual({
       content: { salernoPositano: { intro: ["Localized"] } },
     });
@@ -143,7 +134,6 @@ describe("guide route bundle wiring", () => {
   it("passes bundles to experiences guide pages", async () => {
     mockResolveGuideKeyFromSlug.mockReturnValue("pathOfTheGods");
     mockGuideNamespace.mockReturnValue({ baseKey: "experiences", baseSlug: "experiences" });
-    mockLoadGuideManifestOverridesFromFs.mockReturnValue({ pathOfTheGods: { status: "live" } });
     mockLoadGuideI18nBundle.mockResolvedValue({
       serverGuides: { content: { pathOfTheGods: { intro: ["Localized"] } } },
       serverGuidesEn: { content: { pathOfTheGods: { intro: ["English"] } } },
@@ -155,7 +145,6 @@ describe("guide route bundle wiring", () => {
     })) as ReactElement<GuideContentProps>;
 
     expect(mockLoadGuideI18nBundle).toHaveBeenCalledWith("es", "pathOfTheGods");
-    expect(element.props.serverOverrides).toEqual({ pathOfTheGods: { status: "live" } });
     expect(element.props.serverGuides).toEqual({
       content: { pathOfTheGods: { intro: ["Localized"] } },
     });

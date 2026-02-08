@@ -12,7 +12,6 @@ import { generateLangParams } from "@/app/_lib/static-params";
 import { GUIDES_INDEX, isGuidePublished } from "@/data/guides.index";
 import { listHowToSlugs } from "@/lib/how-to-get-here/definitions";
 import { guideNamespace, guidePath, guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
-import { loadGuideManifestOverridesFromFs } from "@/routes/guides/guide-manifest-overrides.node";
 import { OG_IMAGE } from "@/utils/headConstants";
 
 import GuideContent from "../../experiences/[slug]/GuideContent";
@@ -109,16 +108,12 @@ export default async function HowToGetHerePage({ params }: Props) {
     permanentRedirect(guidePath(validLang, guideKey));
   }
 
-  // Load manifest overrides (includes audit results)
-  const serverOverrides = loadGuideManifestOverridesFromFs();
-
   const { serverGuides, serverGuidesEn } = await loadGuideI18nBundle(validLang, guideKey);
 
   return (
     <GuideContent
       lang={validLang}
       guideKey={guideKey}
-      serverOverrides={serverOverrides}
       serverGuides={serverGuides}
       serverGuidesEn={serverGuidesEn}
     />

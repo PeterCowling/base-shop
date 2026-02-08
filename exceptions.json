@@ -145,6 +145,28 @@
     "HAND-0005": {},
     "HAND-0006": {},
     "HAND-0007": {},
+    "HAND-0008": {
+      "allow": [
+        "apps/handbag-configurator/src/viewer/**",
+        "apps/handbag-configurator/scripts/**"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Handbag configurator 3D rendering color exceptions."
+    },
+    "HAND-0009": {
+      "allow": [
+        "apps/handbag-configurator/src/viewer/**"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Handbag configurator 3D overlay positioning exceptions."
+    },
+    "HAND-0010": {
+      "allow": [
+        "apps/handbag-configurator/src/app/api/**"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Handbag configurator API non-UI copy exceptions."
+    },
     "HAND-001": {},
     "INT-1010": {},
     "INTL-000": {},

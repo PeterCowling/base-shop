@@ -64,8 +64,12 @@ process.exit(typeof createGuideUrlHelpers === 'function' ? 0 : 1);`
 
   it("documents original tsconfig runtime behavior", () => {
     // The original tsconfig previously resolved @acme/guides-core to .d.ts and
-    // produced "undefined" at runtime. In newer environments it may also
-    // resolve to runtime code. Keep this tolerant and only assert known states.
+    // produced "undefined" at runtime. Some branches now carry runtime-safe
+    // path updates in tsconfig.json as well.
+    //
+    // Keep this as a behavior contract that accepts both valid states:
+    // - legacy mapping: undefined + exit 1
+    // - runtime-safe mapping: function + exit 0
 
     const testDir = mkdtempSync(path.join(tmpdir(), "tsx-resolution-negative-"));
     const testScriptPath = path.join(testDir, "test-resolution.js");

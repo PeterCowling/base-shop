@@ -4,6 +4,7 @@ import { act,render, screen } from "@testing-library/react";
 import i18next, { type i18n as I18nInstance } from "i18next";
 
 import DesktopHeader from "../src/organisms/DesktopHeader";
+import Footer from "../src/organisms/Footer";
 import MobileNav from "../src/organisms/MobileNav";
 
 jest.mock("next/link", () => ({
@@ -85,7 +86,7 @@ describe("Brikette header CTA translation", () => {
     const i18n = await createI18n();
     render(
       <I18nextProvider i18n={i18n}>
-        <DesktopHeader lang="en" />
+        <DesktopHeader />
       </I18nextProvider>
     );
 
@@ -100,6 +101,18 @@ describe("Brikette header CTA translation", () => {
     expect(
       screen.getByRole("button", { name: "Comprobar disponibilidad" })
     ).toBeInTheDocument();
+  });
+
+  it("uses explicit route language for desktop navigation links", async () => {
+    const i18n = await createI18n();
+    render(
+      <I18nextProvider i18n={i18n}>
+        <DesktopHeader lang="fr" />
+      </I18nextProvider>
+    );
+
+    const localizedRoomsLink = screen.getByRole("link", { name: "Chambres" });
+    expect(localizedRoomsLink).toHaveAttribute("href", "/fr/chambres");
   });
 
   it("updates the mobile CTA label when the language changes", async () => {
@@ -121,5 +134,17 @@ describe("Brikette header CTA translation", () => {
     expect(
       screen.getByRole("button", { name: "Comprobar disponibilidad" })
     ).toBeInTheDocument();
+  });
+
+  it("uses explicit route language for footer navigation links", async () => {
+    const i18n = await createI18n();
+    render(
+      <I18nextProvider i18n={i18n}>
+        <Footer lang="fr" />
+      </I18nextProvider>
+    );
+
+    const localizedRoomsLink = screen.getByRole("link", { name: "Rooms" });
+    expect(localizedRoomsLink).toHaveAttribute("href", "/fr/chambres");
   });
 });

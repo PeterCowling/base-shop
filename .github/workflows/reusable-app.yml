@@ -17,9 +17,15 @@ on:
         required: false
         type: string
       # Command to deploy, e.g. "pnpm exec wrangler pages deploy ..."
-      deploy-cmd:
+      deploy_cmd:
         required: false
         type: string
+      # Caller-controlled deploy gate. Callers should pass true only for
+      # branch/event combinations that are intended to publish.
+      deploy_enabled:
+        required: false
+        type: boolean
+        default: false
       # Cloudflare project name (for environment context or logs)
       project-name:
         required: false
@@ -76,6 +82,7 @@ jobs:
     outputs:
       run_validation: ${{ steps.classify.outputs.run_validation }}
       run_sharded_tests: ${{ steps.test-strategy.outputs.run_sharded_tests }}
+      should_deploy: ${{ steps.deploy_gate.outputs.should_deploy }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -191,6 +198,13 @@ jobs:
             echo "::notice title=Test strategy::Using single test job."
           fi
 
+      - name: Determine deploy gate
+        id: deploy_gate
+        shell: bash
+        run: |
+          echo "should_deploy=${{ inputs.deploy_cmd != '' && inputs.deploy_enabled }}" >> "$GITHUB_OUTPUT"
+          echo "::notice title=Deploy gate::should_deploy=${{ inputs.deploy_cmd != '' && inputs.deploy_enabled }} deploy_enabled=${{ inputs.deploy_enabled }}"
+
       - name: Lint
         if: ${{ steps.classify.outputs.run_validation == 'true' }}
         run: pnpm --filter ${{ inputs.app-filter }}... lint
@@ -279,7 +293,13 @@ jobs:
   build:
     name: Build
     needs: [validate, test, test-sharded]
-    if: ${{ needs.validate.result == 'success' && (needs.test.result == 'success' || needs.test.result == 'skipped') && (needs.test-sharded.result == 'success' || needs.test-sharded.result == 'skipped') }}
+    if: >-
+      ${{
+        always() &&
+        needs.validate.result == 'success' &&
+        !contains(fromJSON('["failure","cancelled"]'), needs.test.result) &&
+        !contains(fromJSON('["failure","cancelled"]'), needs['test-sharded'].result)
+      }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -305,9 +325,14 @@ jobs:
 
   deploy:
     name: Deploy
-    # Only deploy if a deploy command is provided AND we are on main or staging
-    if: ${{ inputs.deploy-cmd != '' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging') }}
-    needs: build
+    # Keep job scheduling simple; evaluate deploy gate inside job steps.
+    if: >-
+      ${{
+        always() &&
+        needs.build.result == 'success' &&
+        needs.validate.result == 'success'
+      }}
+    needs: [build, validate]
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment:
@@ -322,8 +347,19 @@ jobs:
           turbo-token: ${{ secrets.TURBO_TOKEN }}
           turbo-team: ${{ vars.TURBO_TEAM }}
 
+      - name: Evaluate deploy gate
+        id: deploy_gate
+        shell: bash
+        run: |
+          should_deploy="${{ needs.validate.outputs.should_deploy }}"
+          if [[ "$should_deploy" != "true" ]]; then
+            should_deploy="false"
+          fi
+          echo "should_deploy=$should_deploy" >> "$GITHUB_OUTPUT"
+          echo "::notice title=Deploy gate (job)::should_deploy=$should_deploy"
+
       - name: Download Artifact
-        if: ${{ inputs.artifact-path != '' }}
+        if: ${{ inputs.artifact-path != '' && steps.deploy_gate.outputs.should_deploy == 'true' }}
         uses: actions/download-artifact@v4
         with:
           name: build-artifact-${{ inputs.project-name }}
@@ -331,6 +367,7 @@ jobs:
 
       # ADMIN-04: Decrypt SOPS secrets before deploy
       - name: Decrypt secrets
+        if: ${{ steps.deploy_gate.outputs.should_deploy == 'true' }}
         uses: ./.github/actions/decrypt-secrets
         with:
           sops-age-key: ${{ secrets.SOPS_AGE_KEY }}
@@ -338,6 +375,7 @@ jobs:
 
       # ADMIN-05: Validate environment before deploy
       - name: Validate deploy environment
+        if: ${{ steps.deploy_gate.outputs.should_deploy == 'true' }}
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -350,17 +388,18 @@ jobs:
         shell: bash
 
       - name: Deploy
+        if: ${{ steps.deploy_gate.outputs.should_deploy == 'true' }}
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
           SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
           CART_COOKIE_SECRET: ${{ secrets.CART_COOKIE_SECRET }}
-        run: ${{ inputs.deploy-cmd }}
+        run: ${{ inputs.deploy_cmd }}
         shell: bash
 
       - name: Post-Deploy Health Check
-        if: success() && inputs.project-name != ''
+        if: success() && steps.deploy_gate.outputs.should_deploy == 'true' && inputs.project-name != ''
         run: |
           chmod +x scripts/post-deploy-health-check.sh
           ./scripts/post-deploy-health-check.sh ${{ inputs.project-name }} ${{ inputs.healthcheck-args }}
@@ -377,7 +416,7 @@ jobs:
           RETRY_DELAY: "6"
 
       - name: Post-Deploy Cache Headers Check (Brikette)
-        if: success() && inputs.app-filter == '@apps/brikette' && inputs.project-name != '' && inputs.environment-name == 'production'
+        if: success() && steps.deploy_gate.outputs.should_deploy == 'true' && inputs.app-filter == '@apps/brikette' && inputs.project-name != '' && inputs.environment-name == 'production'
         run: |
           chmod +x scripts/post-deploy-brikette-cache-check.sh
           ./scripts/post-deploy-brikette-cache-check.sh ${{ inputs.project-name }} ${{ inputs.healthcheck-args }}

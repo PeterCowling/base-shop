@@ -24,7 +24,7 @@ function FooterComponent({ lang: explicitLang }: { lang?: AppLanguage }): JSX.El
     const base = raw.split("-")[0] as AppLanguage | undefined;
     return base && i18nConfig.supportedLngs.includes(base) ? base : undefined;
   }, [i18n.language]);
-  const lang = normalizedI18nLang ?? explicitLang ?? fallbackLang;
+  const lang = explicitLang ?? normalizedI18nLang ?? fallbackLang;
   // Use explicit namespaces: footer copy from `footer`, nav labels from `header`.
   const { t: tFooter } = useTranslation("footer", { lng: lang });
   const { t: tHeader } = useTranslation("header", { lng: lang });

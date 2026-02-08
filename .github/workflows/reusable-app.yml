@@ -311,8 +311,19 @@ jobs:
 
   deploy:
     name: Deploy
-    # Only deploy if a deploy command is provided AND we are on main or staging
-    if: ${{ inputs.deploy-cmd != '' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging') }}
+    # Only deploy for push events targeting main/staging with a deploy command.
+    # `workflow_call` can surface ref values differently, so check both ref_name and ref.
+    if: >-
+      ${{
+        inputs.deploy-cmd != '' &&
+        github.event_name == 'push' &&
+        (
+          github.ref_name == 'main' ||
+          github.ref_name == 'staging' ||
+          github.ref == 'refs/heads/main' ||
+          github.ref == 'refs/heads/staging'
+        )
+      }}
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 15

@@ -325,8 +325,13 @@ jobs:
 
   deploy:
     name: Deploy
-    # Deploy only when validate computed a true gate.
-    if: ${{ needs.validate.outputs.should_deploy == 'true' }}
+    # Deploy only when caller inputs allow publishing and the build succeeded.
+    if: >-
+      ${{
+        needs.build.result == 'success' &&
+        inputs['deploy-cmd'] != '' &&
+        inputs['deploy-enabled']
+      }}
     needs: [build, validate]
     runs-on: ubuntu-latest
     timeout-minutes: 15

@@ -328,7 +328,9 @@ jobs:
     # Keep job scheduling simple; evaluate deploy gate inside job steps.
     if: >-
       ${{
-        needs.build.result == 'success'
+        always() &&
+        needs.build.result == 'success' &&
+        needs.validate.result == 'success'
       }}
     needs: [build, validate]
     runs-on: ubuntu-latest

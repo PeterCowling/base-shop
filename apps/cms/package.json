@@ -9,7 +9,8 @@
     "start": "next start -p 3006",
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --passWithNoTests --coverage --config ./jest.config.cjs",
+    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --passWithNoTests --config ./jest.config.cjs",
+    "test:coverage": "pnpm exec jest --ci --runInBand --detectOpenHandles --passWithNoTests --coverage --config ./jest.config.cjs",
     "dev:debug": "cross-env NODE_OPTIONS='--enable-source-maps --trace-uncaught --inspect' next dev -p 3006",
     "build:worker": "opennextjs-cloudflare build"
   },

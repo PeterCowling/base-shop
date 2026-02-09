@@ -315,8 +315,9 @@
     "dev": "tsc -b --watch",
     "clean": "rimraf dist *.tsbuildinfo",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs --coverage",
-    "test:pkg": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs --coverage",
+    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs",
+    "test:pkg": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs",
+    "test:coverage": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs --coverage",
     "test:quick": "JEST_DISABLE_COVERAGE_THRESHOLD=1 pnpm exec jest --runInBand --detectOpenHandles --config ./jest.config.cjs",
     "lint": "eslint ."
   },

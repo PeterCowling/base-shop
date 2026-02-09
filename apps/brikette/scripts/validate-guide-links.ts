@@ -1,6 +1,5 @@
 #!/usr/bin/env node
-/* eslint-disable security/detect-non-literal-fs-filename -- GS-001: CLI script reads guide content from known safe paths */
-import { readdir, readFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -10,6 +9,11 @@ import {
   registerManifestEntries,
   SUPPORTED_LANGUAGES,
 } from "@acme/guide-system";
+import {
+  extractStringsFromContent,
+  listJsonFiles,
+  readJson,
+} from "@acme/guides-core";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -220,56 +224,6 @@ function validateUrlToken(target: string): ValidationResult {
   }
 
   return { valid: true };
-}
-
-/**
- * List all JSON files in a directory recursively
- */
-const listJsonFiles = async (rootDir: string, relativeDir = ""): Promise<string[]> => {
-  const entries = await readdir(path.join(rootDir, relativeDir), { withFileTypes: true });
-  const files: string[] = [];
-
-  for (const entry of entries) {
-    const nextRelative = relativeDir ? path.join(relativeDir, entry.name) : entry.name;
-    if (entry.isDirectory()) {
-      files.push(...await listJsonFiles(rootDir, nextRelative));
-      continue;
-    }
-    if (entry.isFile() && entry.name.endsWith(".json")) {
-      files.push(nextRelative);
-    }
-  }
-
-  return files.sort();
-};
-
-/**
- * Read and parse JSON file
- */
-const readJson = async (filePath: string): Promise<unknown> => {
-  const raw = await readFile(filePath, "utf8");
-  return JSON.parse(raw) as unknown;
-};
-
-/**
- * Recursively extract all string values from content JSON
- */
-function extractStringsFromContent(obj: unknown): string[] {
-  const strings: string[] = [];
-
-  if (typeof obj === "string") {
-    strings.push(obj);
-  } else if (Array.isArray(obj)) {
-    for (const item of obj) {
-      strings.push(...extractStringsFromContent(item));
-    }
-  } else if (obj && typeof obj === "object") {
-    for (const value of Object.values(obj)) {
-      strings.push(...extractStringsFromContent(value));
-    }
-  }
-
-  return strings;
 }
 
 /**

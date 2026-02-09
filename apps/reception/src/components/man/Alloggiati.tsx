@@ -1,4 +1,6 @@
 /* File: /src/components/man/Alloggiati.tsx */
+"use client";
+
 import { type FC, memo, useEffect, useMemo, useState } from "react";
 
 import useActivitiesByCodeData from "../../hooks/data/useActivitiesByCodeData";

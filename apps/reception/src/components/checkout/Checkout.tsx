@@ -1,4 +1,5 @@
 // File: /src/components/checkout/Checkout.tsx
+"use client";
 
 import React, { useCallback, useMemo, useState } from "react";
 

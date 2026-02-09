@@ -1,4 +1,6 @@
 // File: src/components/prepare/PrepareDashboard.tsx
+"use client";
+
 import { memo, useMemo, useState } from "react";
 
 import { useAuth } from "../../context/AuthContext";

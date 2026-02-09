@@ -1,4 +1,5 @@
 // src/components/till/ReconciliationWorkbench.tsx
+"use client";
 
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { z } from "zod";

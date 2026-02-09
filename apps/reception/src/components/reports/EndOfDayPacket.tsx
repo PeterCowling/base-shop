@@ -1,4 +1,6 @@
 /* src/components/reports/EndOfDayPacket.tsx */
+"use client";
+
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   endAt as fbEndAt,

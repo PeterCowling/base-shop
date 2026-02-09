@@ -1,3 +1,5 @@
+"use client";
+
 import LoansComp from "@/components/loans/Loans";
 import Providers from "@/components/Providers";
 import { useLegacyAuth } from "@/context/AuthContext";

@@ -61,17 +61,22 @@ function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 
         id="mobile-menu"
         data-testid="mobile-menu"
         role="dialog"
-        aria-modal="true"
+        aria-modal={menuOpen ? "true" : undefined}
+        aria-hidden={!menuOpen}
         aria-labelledby="mobile-menu-title"
         className={clsx(
           /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
           "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform " +
             /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
             "transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg",
-          menuOpen ? "translate-y-0" : "translate-y-full"
+          menuOpen ? "translate-y-0 visible pointer-events-auto" : "translate-y-full invisible pointer-events-none"
         )}
         // eslint-disable-next-line react/forbid-dom-props -- UI-1000 ttl=2026-12-31 menu offset is runtime-calculated.
-        style={{ top: menuOffset, height: `calc(100dvh - ${menuOffset}px)` }}
+        style={{
+          top: menuOffset,
+          height: `calc(100dvh - ${menuOffset}px)`,
+          transform: `translate3d(0, ${menuOpen ? "0%" : "100%"}, 0)`,
+        }}
       >
         <h2
           id={/* i18n-exempt -- ABC-123 [ttl=2026-12-31] id attribute */ "mobile-menu-title"}
@@ -86,7 +91,8 @@ function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 
                 ref={idx === 0 ? firstLinkRef : undefined}
                 href={`/${lang}${to}`}
                 prefetch={true}
-                className="block py-2 text-xl font-medium underline-offset-4 text-brand-heading dark:text-brand-heading hover:underline focus-visible:underline"
+                tabIndex={menuOpen ? 0 : -1}
+                className="block min-h-11 min-w-11 px-2 py-2 text-xl font-medium underline-offset-4 text-brand-heading dark:text-brand-heading hover:underline focus-visible:underline"
                 onClick={close}
               >
                 {label}

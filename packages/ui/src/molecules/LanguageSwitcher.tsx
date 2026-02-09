@@ -49,7 +49,7 @@ function LanguageSwitcher({ closeMenu }: Props): React.JSX.Element {
     <button
       type="button"
       onClick={handleClick}
-      className={`lang-option lang-pill ${themeClass}`}
+      className={`lang-option lang-pill inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border px-4 py-2 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary ${themeClass}`}
       data-testid={LANGUAGE_BUTTON_TEST_ID}
     >
       {LABELS[lang] ?? lang.toUpperCase()}

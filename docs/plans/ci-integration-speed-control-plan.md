@@ -30,9 +30,10 @@ Priority gate: CI-SC-04 is the highest-leverage investigation because it is the 
 Complete:
 - CI-SC-01
 - CI-SC-02
+- CI-SC-07
 
 Executable now (`>=80%`, complete test contracts):
-- CI-SC-07
+- (none — all eligible IMPLEMENT tasks complete)
 
 Needs re-plan/investigation before build:
 - CI-SC-03 (conditional on CI-SC-09 spike)
@@ -129,7 +130,7 @@ Merge-order prerequisite:
 | CI-SC-04 | INVESTIGATE | Enumerate and validate all `paths-filter` semantics and edge cases | 88% | M | Pending | - | N/A |
 | CI-SC-05 | IMPLEMENT | Repo-local classifier replacing `dorny/paths-filter` | 74% (→ 84% conditional on CI-SC-04) | L | Pending | CI-SC-04 | Blocked |
 | CI-SC-06 | INVESTIGATE | CI cache behavior audit and optimization proposal | 82% | M | Pending | - | N/A |
-| CI-SC-07 | IMPLEMENT | Speed up `validate-changes.sh` related-test discovery | 82% | M | Pending | - | Eligible |
+| CI-SC-07 | IMPLEMENT | Speed up `validate-changes.sh` related-test discovery | 82% | M | Complete | - | Done |
 | CI-SC-08 | INVESTIGATE | Dynamic sharding thresholds and reliability study | 75% | M | Pending | - | N/A |
 | CI-SC-09 | SPIKE | Verify CMS tests complete within nightly job timeout without sharding | 85% | S | Complete (FAIL) | - | N/A |
 
@@ -441,7 +442,8 @@ Merge order:
 - **Affects:** `scripts/validate-changes.sh:259-298`
 - **Depends on:** -
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete
+- **Completed:** 2026-02-09
 - **Confidence:** 82% (Implementation 84%, Approach 82%, Impact 82%)
 - **Acceptance:**
   - Reduce repeated `jest --listTests` calls for large file sets (batch per package instead of per file).
@@ -478,6 +480,22 @@ Merge order:
   - Use conservative batch approach for v1 (batch per package, coarse missing-test detection). This preserves STRICT=1 safety while delivering the speed improvement.
 - **Changes to task:**
   - Test contract: added TC-01 through TC-06
+
+#### Build Completion (2026-02-09)
+- **Status:** Complete
+- **Commits:** `f56b017a70`
+- **Execution cycle:**
+  - Validation cases executed: TC-02 (2 source files, single jest probe, single execution — confirmed via `VALIDATE_RANGE` run on packages/ui commit), TC-06 (no TS/TSX → skip message)
+  - Cycles: 1 (direct implementation)
+  - Final validation: PASS (`VALIDATE_RANGE="2cc8fd1f58~1..2cc8fd1f58"` — 2 source files, 10 related tests found and run in single batch)
+- **Confidence reassessment:**
+  - Original: 82%
+  - Post-validation: 84%
+  - Delta reason: Validation confirmed batch approach works correctly. Conservative missing-test detection is sound.
+- **Validation:**
+  - Ran: `VALIDATE_RANGE="2cc8fd1f58~1..2cc8fd1f58" ALLOW_TEST_PROCS=1 ./scripts/validate-changes.sh` — PASS (1 package, 2 source files, 10 tests, 0 missing)
+- **Documentation updated:** None required
+- **Implementation notes:** Replaced per-file `jest --listTests` loop (lines 265-289) with single batched probe per package. Conservative missing-test detection: if batch returns empty, all files in package marked missing. Execution path unchanged (single `jest --findRelatedTests` call with all source files).
 
 ### CI-SC-08: Investigate dynamic affected-test sharding thresholds
 - **Type:** INVESTIGATE
@@ -580,6 +598,7 @@ Merge order:
 - 2026-02-09 (build): CI-SC-01 completed. Archive/historical plans now exempt from metadata checks. 8 tests added (TC-01–TC-08), all passing. Duplicate `terminalStatuses` definition removed.
 - 2026-02-09 (spike): CI-SC-09 completed with FAIL result. Unsharded `--runInBand` CMS tests exceeded 21min (384/421 suites). CI-SC-03 needs re-plan: approach (a) not viable, consider approach (b) shard support in nightly or (c) unsharded with Jest parallelism.
 - 2026-02-09 (build): CI-SC-02 completed. Removed `--coverage` from `test` scripts in 4 packages, added `test:coverage` scripts. Note: CMS config-level `collectCoverage: true` is redundant with CLI flag — config-level change is CI-SC-03 scope.
+- 2026-02-09 (build): CI-SC-07 completed. Batched per-package jest probe replaces per-file loop. Validated with 2-file diff (10 related tests found in single probe).
 
 ## Scope Extraction
 The following item is intentionally excluded from this plan and should be tracked separately:

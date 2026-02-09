@@ -269,7 +269,7 @@ function RoomCardComponent({
       )}
 
       <div className="flex flex-1 flex-col p-4">
-        <h3 className="mb-1 text-lg font-semibold uppercase tracking-wide text-brand-terra">{title}</h3>
+        <h3 className="mb-1 text-lg font-semibold uppercase tracking-wide text-brand-primary">{title}</h3>
 
         <PriceBlock price={price} />
 

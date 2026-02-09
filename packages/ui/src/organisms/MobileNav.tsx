@@ -65,7 +65,7 @@ function MobileNav({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 0
         <Link
           href={`/${lang}`}
           prefetch={true}
-          className="flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+          className="flex min-h-11 min-w-11 items-center gap-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
         >
           {/* eslint-disable-next-line @next/next/no-img-element -- UI-1000 [ttl=2026-12-31] UI package is not Next-only; icon is a local static asset */}
           <img
@@ -91,7 +91,7 @@ function MobileNav({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 0
           <button
             type="button"
             onClick={openBooking}
-            className={`min-h-10 min-w-10 whitespace-nowrap px-3 py-2 text-xs font-semibold ${ctaClass} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary sm:px-4 sm:text-sm`}
+            className={`min-h-11 min-w-11 whitespace-nowrap px-3 py-2 text-xs font-semibold ${ctaClass} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary sm:px-4 sm:text-sm`}
           >
             {primaryCtaLabel}
           </button>
@@ -111,7 +111,7 @@ function MobileNav({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 0
           aria-controls="mobile-menu"
           data-testid="menu-toggle"
           onClick={toggleMenu}
-          className="justify-self-end size-10 rounded p-2 transition hover:bg-brand-bg/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+          className="justify-self-end size-11 rounded p-2 transition hover:bg-brand-bg/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
         >
           {menuOpen ? (
             <X className="size-6 text-brand-heading" data-testid="lucide-x" aria-hidden />

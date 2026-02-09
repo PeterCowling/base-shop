@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
+import Image from "next/image";
 import Link from "next/link";
 
+import { isGuideLive } from "@/data/guides.index";
 import type { AppLanguage } from "@/i18n.config";
 import type { GuideKey } from "@/routes.guides-helpers";
 import { guideHref } from "@/routes.guides-helpers";
@@ -12,6 +14,20 @@ const MUSTACHE_TOKEN_PATTERN = /\{\{guide:([^|}]+)\|([^}]+)\}\}/gi;
 
 const ESCAPABLE = new Set(["\\", "`", "*", "~", "[", "]", "_", "#", "+", ">", ".", "-"]);
 const BULLET_LINE = /^\s*\*\s+/u;
+const EXTERNAL_REL_PARTS = ["noopener", "noreferrer"] as const;
+const EXTERNAL_REL = EXTERNAL_REL_PARTS.join(" ");
+const INLINE_LINK_CLASS =
+  "inline-flex min-h-10 min-w-10 items-center font-medium text-primary-700 underline decoration-primary-300 underline-offset-2 transition-colors hover:text-primary-900 hover:decoration-primary-500 dark:text-primary-400 dark:decoration-primary-600 dark:hover:text-primary-300 dark:hover:decoration-primary-400";
+
+type EmphasisDelimiter = "***" | "**" | "*";
+type ParseResult = { endIndex: number; closed: boolean; children: ReactNode[] };
+type PercentTokenHeader = { tokenType: string; indexAfterColon: number };
+type PercentTokenPayload = { key: string; label: string; endIndex: number };
+type PercentTokenContext = {
+  lang: AppLanguage;
+  howToBase: string;
+  guideKey?: string;
+};
 
 /**
  * Convert camelCase to kebab-case for guide folder names.
@@ -87,15 +103,8 @@ function isEscaped(text: string, index: number): boolean {
   return typeof current === "string" && ESCAPABLE.has(current);
 }
 
-function tryParsePercentToken(
-  text: string,
-  startIndex: number,
-  lang: AppLanguage,
-  howToBase: string,
-  guideKey?: string,
-): TokenParseResult | null {
+function parsePercentTokenHeader(text: string, startIndex: number): PercentTokenHeader | null {
   if (text[startIndex] !== "%") return null;
-  // %TYPE:key|label%
   let i = startIndex + 1;
   let type = "";
   while (i < text.length) {
@@ -104,14 +113,17 @@ function tryParsePercentToken(
     type += ch;
     i += 1;
   }
-  if (type.length === 0) return null;
-  if (text[i] !== ":") return null;
-  i += 1;
+  if (type.length === 0 || text[i] !== ":") return null;
+  return { tokenType: type.toUpperCase(), indexAfterColon: i + 1 };
+}
 
+function parsePercentTokenPayload(
+  text: string,
+  startIndex: number,
+  tokenType: string,
+): PercentTokenPayload | null {
+  let i = startIndex;
   const keyStart = i;
-  const tokenType = type.toUpperCase();
-  // For URL tokens, allow % characters in the key (for percent-encoded URLs like %20, %3D, etc.)
-  // For other tokens (LINK, HOWTO), stop at % as before
   const allowPercentInKey = tokenType === "URL";
   while (i < text.length && text[i] !== "|") {
     if (!allowPercentInKey && text[i] === "%") break;
@@ -124,45 +136,72 @@ function tryParsePercentToken(
   const labelStart = i;
   while (i < text.length && text[i] !== "%") i += 1;
   if (i >= text.length || text[i] !== "%") return null;
-  const rawLabel = text.slice(labelStart, i);
-  const endIndex = i + 1;
 
   const key = rawKey.trim();
-  const label = normalizeTokenLabel(rawLabel);
-  if (key.length === 0 || label.length === 0) return null;
+  const label = normalizeTokenLabel(text.slice(labelStart, i));
+  if (!key || !label) return null;
+  return { key, label, endIndex: i + 1 };
+}
 
-  if (tokenType === "LINK") {
-    const href = guideHref(lang, key as GuideKey);
-    return { kind: "link", href, label, endIndex };
+function toGuideLinkOrText(key: string, label: string, lang: AppLanguage, endIndex: number): TokenParseResult {
+  if (!isGuideLive(key as GuideKey)) {
+    return { kind: "text", text: label, endIndex };
   }
+  return { kind: "link", href: guideHref(lang, key as GuideKey), label, endIndex };
+}
+
+function buildPercentTokenResult(
+  tokenType: string,
+  key: string,
+  label: string,
+  endIndex: number,
+  context: PercentTokenContext,
+): TokenParseResult {
+  const { lang, howToBase, guideKey } = context;
+  if (tokenType === "LINK") {
+    return toGuideLinkOrText(key, label, lang, endIndex);
+  }
+
   if (tokenType === "HOWTO") {
     if (howToBase.length === 0) return { kind: "text", text: label, endIndex };
-    const href = `/${lang}/${howToBase}/${key}`;
-    return { kind: "link", href, label, endIndex };
+    return { kind: "link", href: `/${lang}/${howToBase}/${key}`, label, endIndex };
   }
+
   if (tokenType === "URL") {
-    // External URL token: %URL:https://example.com|Label% or %URL:mailto:test@example.com|Email%
-    // Only allow safe protocols (http, https, mailto)
-    if (isSafeUrl(key)) {
-      return { kind: "externalLink", href: key.trim(), label, endIndex };
-    }
-    // Unsafe URL: render as plain text for security
-    return { kind: "text", text: label, endIndex };
+    return isSafeUrl(key)
+      ? { kind: "externalLink", href: key.trim(), label, endIndex }
+      : { kind: "text", text: label, endIndex };
   }
 
   if (tokenType === "IMAGE") {
-    // Image token: %IMAGE:filename.jpg|alt text% or %IMAGE:/full/path.jpg|alt%
-    // If key starts with '/', treat it as a full path; otherwise construct from guideKey
     let src = key.trim();
     if (!src.startsWith("/") && guideKey) {
-      const folderName = toKebabCase(guideKey);
-      src = `/img/guides/${folderName}/${src}`;
+      src = `/img/guides/${toKebabCase(guideKey)}/${src}`;
     }
     return { kind: "image", src, alt: label, endIndex };
   }
 
-  // Unknown token types: fall back to the label.
   return { kind: "text", text: label, endIndex };
+}
+
+function tryParsePercentToken(
+  text: string,
+  startIndex: number,
+  lang: AppLanguage,
+  howToBase: string,
+  guideKey?: string,
+): TokenParseResult | null {
+  const header = parsePercentTokenHeader(text, startIndex);
+  if (!header) return null;
+  const payload = parsePercentTokenPayload(text, header.indexAfterColon, header.tokenType);
+  if (!payload) return null;
+  return buildPercentTokenResult(
+    header.tokenType,
+    payload.key,
+    payload.label,
+    payload.endIndex,
+    { lang, howToBase, guideKey },
+  );
 }
 
 function tryParseLegacyToken(text: string, startIndex: number, lang: AppLanguage): TokenParseResult | null {
@@ -185,6 +224,9 @@ function tryParseLegacyToken(text: string, startIndex: number, lang: AppLanguage
   const key = rawKey.trim();
   const label = normalizeTokenLabel(rawLabel);
   if (!key || !label) return null;
+  if (!isGuideLive(key as GuideKey)) {
+    return { kind: "text", text: label, endIndex };
+  }
   const href = guideHref(lang, key as GuideKey);
   return { kind: "link", href, label, endIndex };
 }
@@ -209,8 +251,38 @@ function tryParseMustacheToken(text: string, startIndex: number, lang: AppLangua
   const key = rawKey.trim();
   const label = normalizeTokenLabel(rawLabel);
   if (!key || !label) return null;
+  if (!isGuideLive(key as GuideKey)) {
+    return { kind: "text", text: label, endIndex };
+  }
   const href = guideHref(lang, key as GuideKey);
   return { kind: "link", href, label, endIndex };
+}
+
+function parseDelimitedToken(text: string, index: number, lang: AppLanguage, howToBase: string, guideKey?: string): TokenParseResult | null {
+  const ch = text[index];
+  const next = text[index + 1];
+  if (ch === "%") return tryParsePercentToken(text, index, lang, howToBase, guideKey);
+  if (ch === "[" && next === "[") return tryParseLegacyToken(text, index, lang);
+  if (ch === "{" && next === "{") return tryParseMustacheToken(text, index, lang);
+  return null;
+}
+
+function renderEmphasisNode(delim: EmphasisDelimiter, key: string, children: ReactNode[]): ReactNode {
+  if (delim === "***") {
+    return (
+      <strong key={key}>
+        <em>{children}</em>
+      </strong>
+    );
+  }
+  if (delim === "**") return <strong key={key}>{children}</strong>;
+  return <em key={key}>{children}</em>;
+}
+
+function parseEmphasisDelimiter(text: string, index: number): { delim: EmphasisDelimiter; length: number } {
+  if (text.startsWith("***", index)) return { delim: "***", length: 3 };
+  if (text.startsWith("**", index)) return { delim: "**", length: 2 };
+  return { delim: "*", length: 1 };
 }
 
 function renderInline(text: string, lang: AppLanguage, keyBase: string, guideKey?: string): ReactNode[] {
@@ -220,7 +292,7 @@ function renderInline(text: string, lang: AppLanguage, keyBase: string, guideKey
 
   const nextElementKey = () => `${keyBase}-el-${elementIndex++}`;
 
-  const parse = (startIndex: number, endDelim?: "***" | "**" | "*"): { endIndex: number; closed: boolean; children: ReactNode[] } => {
+  const parse = (startIndex: number, endDelim?: EmphasisDelimiter): ParseResult => {
     const out: ReactNode[] = [];
     let i = startIndex;
     let localBuffer = "";
@@ -248,8 +320,8 @@ function renderInline(text: string, lang: AppLanguage, keyBase: string, guideKey
           <a
             key={`${keyBase}-extlink-${linkIndex}`}
             href={href}
-            className="font-medium text-primary-700 underline decoration-primary-300 underline-offset-2 transition-colors hover:text-primary-900 hover:decoration-primary-500 dark:text-primary-400 dark:decoration-primary-600 dark:hover:text-primary-300 dark:hover:decoration-primary-400"
-            {...(isMailto ? {} : { target: "_blank", rel: "noopener noreferrer" })}
+            className={INLINE_LINK_CLASS}
+            {...(isMailto ? {} : { target: "_blank", rel: EXTERNAL_REL })}
           >
             {label}
           </a>,
@@ -259,7 +331,7 @@ function renderInline(text: string, lang: AppLanguage, keyBase: string, guideKey
           <Link
             key={`${keyBase}-link-${linkIndex}`}
             href={href}
-            className="font-medium text-primary-700 underline decoration-primary-300 underline-offset-2 transition-colors hover:text-primary-900 hover:decoration-primary-500 dark:text-primary-400 dark:decoration-primary-600 dark:hover:text-primary-300 dark:hover:decoration-primary-400"
+            className={INLINE_LINK_CLASS}
           >
             {label}
           </Link>,
@@ -283,78 +355,48 @@ function renderInline(text: string, lang: AppLanguage, keyBase: string, guideKey
         continue;
       }
 
-      if (ch === "%") {
-        const parsed = tryParsePercentToken(text, i, lang, howToBase, guideKey);
-        if (parsed) {
+      const parsed = parseDelimitedToken(text, i, lang, howToBase, guideKey);
+      if (parsed) {
+        if (parsed.kind === "text") {
+          localBuffer += parsed.text;
+        } else {
+          flushLocal();
           if (parsed.kind === "link") {
             appendLinkLocal(parsed.href, parsed.label);
           } else if (parsed.kind === "externalLink") {
             appendLinkLocal(parsed.href, parsed.label, true);
           } else if (parsed.kind === "image") {
-            flushLocal();
             out.push(
-              <img
+              <Image
                 key={`${keyBase}-img-${linkIndex++}`}
                 src={parsed.src}
                 alt={parsed.alt}
-                className="my-6 rounded-lg"
+                width={1200}
+                height={900}
+                className="my-6 h-auto w-full rounded-lg"
+                data-aspect="4/3"
                 loading="lazy"
               />,
             );
-          } else if (parsed.kind === "text") {
-            localBuffer += parsed.text;
           }
-          i = parsed.endIndex;
-          continue;
         }
-      }
-
-      if (ch === "[" && next === "[") {
-        const parsed = tryParseLegacyToken(text, i, lang);
-        if (parsed) {
-          if (parsed.kind === "link") appendLinkLocal(parsed.href, parsed.label);
-          else if (parsed.kind === "text") localBuffer += parsed.text;
-          i = parsed.endIndex;
-          continue;
-        }
-      }
-
-      if (ch === "{" && next === "{") {
-        const parsed = tryParseMustacheToken(text, i, lang);
-        if (parsed) {
-          if (parsed.kind === "link") appendLinkLocal(parsed.href, parsed.label);
-          else if (parsed.kind === "text") localBuffer += parsed.text;
-          i = parsed.endIndex;
-          continue;
-        }
+        i = parsed.endIndex;
+        continue;
       }
 
       // Markdown-lite emphasis parsing (well-nested only).
       if (ch === "*" && !isEscaped(text, i)) {
-        // Prefer longest delimiter first so "***" doesn't get consumed as "**" + "*".
-        const candidate = text.startsWith("***", i) ? "***" : text.startsWith("**", i) ? "**" : "*";
-        const delimLen = candidate.length as 1 | 2 | 3;
-        const delim = candidate as "***" | "**" | "*";
-        const inner = parse(i + delimLen, delim);
+        const { delim, length } = parseEmphasisDelimiter(text, i);
+        const inner = parse(i + length, delim);
         if (inner.closed && inner.children.length > 0) {
           flushLocal();
-          if (delim === "***") {
-            out.push(
-              <strong key={nextElementKey()}>
-                <em>{inner.children}</em>
-              </strong>,
-            );
-          } else if (delim === "**") {
-            out.push(<strong key={nextElementKey()}>{inner.children}</strong>);
-          } else {
-            out.push(<em key={nextElementKey()}>{inner.children}</em>);
-          }
+          out.push(renderEmphasisNode(delim, nextElementKey(), inner.children));
           i = inner.endIndex;
           continue;
         }
         // No closing delimiter (or empty span): treat marker as literal.
         localBuffer += delim;
-        i += delimLen;
+        i += length;
         continue;
       }
 

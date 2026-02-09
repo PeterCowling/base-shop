@@ -169,6 +169,23 @@ describe("middleware", () => {
       expect(response?.status).toBe(301);
       expect(response?.headers.get("location")).toContain("/fr/aide/ferry-guide/");
     });
+
+    it("rewrites /en/help.txt → /en/assistance.txt without redirect", () => {
+      const request = createRequest("/en/help.txt");
+      const response = middleware(request);
+
+      expect(response?.status).not.toBe(301);
+      expect(response?.status).not.toBe(302);
+      expect(response?.headers.get("x-middleware-rewrite")).toContain("/en/assistance.txt");
+    });
+
+    it("redirects /de/help.txt → /de/hilfe.txt (preserve .txt suffix)", () => {
+      const request = createRequest("/de/help.txt");
+      const response = middleware(request);
+
+      expect(response?.status).toBe(301);
+      expect(response?.headers.get("location")).toContain("/de/hilfe.txt");
+    });
   });
 
   describe("no redirect loops (single hop)", () => {

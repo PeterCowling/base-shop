@@ -72,8 +72,14 @@ const app: FirebaseApp = getApps().length
 setLogLevel('error');
 
 export const firebaseApp = app;
-export const db = getDatabase(app);
-export const storage = getStorage(app);
+// Defer RTDB/Storage init to client — getDatabase() fails during static export
+// prerendering when NEXT_PUBLIC_FIREBASE_DATABASE_URL is absent.
+export const db: Database = typeof window !== 'undefined'
+  ? getDatabase(app)
+  : (null as unknown as Database);
+export const storage: FirebaseStorage = typeof window !== 'undefined'
+  ? getStorage(app)
+  : (null as unknown as FirebaseStorage);
 
 /* -------------------------------------------------------------------------- */
 /*                            Firebase Metrics (OPT-07)                       */

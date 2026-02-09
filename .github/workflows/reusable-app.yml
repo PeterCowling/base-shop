@@ -84,7 +84,19 @@ jobs:
       run_sharded_tests: ${{ steps.test-strategy.outputs.run_sharded_tests }}
       should_deploy: ${{ steps.deploy_gate.outputs.should_deploy }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        id: checkout_validate_primary
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Wait before checkout retry
+        if: ${{ steps.checkout_validate_primary.outcome == 'failure' }}
+        run: sleep 15
+        shell: bash
+      - name: Checkout repository (retry)
+        if: ${{ steps.checkout_validate_primary.outcome == 'failure' }}
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: ./.github/actions/setup-repo
@@ -282,7 +294,19 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        id: checkout_test_primary
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Wait before checkout retry
+        if: ${{ steps.checkout_test_primary.outcome == 'failure' }}
+        run: sleep 15
+        shell: bash
+      - name: Checkout repository (retry)
+        if: ${{ steps.checkout_test_primary.outcome == 'failure' }}
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: ./.github/actions/setup-repo
@@ -304,7 +328,19 @@ jobs:
       matrix:
         shard: [1, 2, 3]
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        id: checkout_test_sharded_primary
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Wait before checkout retry
+        if: ${{ steps.checkout_test_sharded_primary.outcome == 'failure' }}
+        run: sleep 15
+        shell: bash
+      - name: Checkout repository (retry)
+        if: ${{ steps.checkout_test_sharded_primary.outcome == 'failure' }}
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: ./.github/actions/setup-repo
@@ -340,7 +376,19 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        id: checkout_build_primary
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Wait before checkout retry
+        if: ${{ steps.checkout_build_primary.outcome == 'failure' }}
+        run: sleep 15
+        shell: bash
+      - name: Checkout repository (retry)
+        if: ${{ steps.checkout_build_primary.outcome == 'failure' }}
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: ./.github/actions/setup-repo
@@ -376,7 +424,19 @@ jobs:
       name: ${{ inputs.environment-name }}
       url: ${{ inputs.environment-url != '' && inputs.environment-url || format('https://{0}.pages.dev', inputs.project-name) }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        id: checkout_deploy_primary
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Wait before checkout retry
+        if: ${{ steps.checkout_deploy_primary.outcome == 'failure' }}
+        run: sleep 15
+        shell: bash
+      - name: Checkout repository (retry)
+        if: ${{ steps.checkout_deploy_primary.outcome == 'failure' }}
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: ./.github/actions/setup-repo

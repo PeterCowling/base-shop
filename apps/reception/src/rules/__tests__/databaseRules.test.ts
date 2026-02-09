@@ -20,12 +20,13 @@ const MANAGER_UID = "manager-uid";
 let testEnv: RulesTestEnvironment;
 
 async function seedUser(uid: string, roles: string[]) {
+  const roleMap = Object.fromEntries(roles.map((role) => [role, true]));
   await testEnv.withSecurityRulesDisabled(async (context) => {
     await set(ref(context.database(), `userProfiles/${uid}`), {
       uid,
       email: `${uid}@test.com`,
       user_name: uid,
-      roles,
+      roles: roleMap,
     });
   });
 }

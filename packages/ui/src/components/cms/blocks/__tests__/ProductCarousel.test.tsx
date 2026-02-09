@@ -53,7 +53,7 @@ describe("CmsProductCarousel", () => {
   it("uses skus without fetching", async () => {
     const skus = [{ id: "a" }];
 
-    render(<CmsProductCarousel skus={skus} />);
+    render(<CmsProductCarousel skus={skus as any} />);
 
     await waitFor(() => expect(setProducts).toHaveBeenCalledWith(skus));
     expect(fetchCollection).not.toHaveBeenCalled();

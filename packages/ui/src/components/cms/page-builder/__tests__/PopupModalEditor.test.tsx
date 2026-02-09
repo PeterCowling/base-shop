@@ -12,7 +12,7 @@ describe("PopupModalEditor", () => {
           type: "PopupModal",
           width: "",
           height: "",
-          trigger: "",
+          trigger: "" as any,
           delay: undefined,
           content: "",
         }}

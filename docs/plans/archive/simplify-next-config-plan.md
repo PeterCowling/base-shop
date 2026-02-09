@@ -1,14 +1,16 @@
 ---
 Type: Plan
-Status: Draft
+Status: Historical
 Domain: Build
 Last-reviewed: 2026-01-19
+Last-updated: 2026-02-09
+Audit-Ref: daac6a9110
 Relates-to charter: none
 ---
 
 # Plan: Simplify Next.js Webpack Configuration
 
-**Status:** Draft — requires review before implementation
+**Status:** Historical — archived
 
 ## Problem Statement
 
@@ -21,11 +23,11 @@ The root cause is **over-engineered webpack configuration** that conflicts with 
 
 ## Known Issues with This Plan
 
-> **Warning:** This plan has unresolved issues identified during review. Do not implement until addressed.
+> **Review notes:** Historical review findings are tracked below; current unresolved work is listed in "Active tasks".
 
 | Severity | Issue | Status |
 |----------|-------|--------|
-| ~~**High**~~ | ~~Option A Step 5 still adds `@acme/*` TS paths which can permit deep imports and TS/runtime mismatches~~ | **RESOLVED** — Decision #4 set to A.1 (remove `@acme/*` paths) |
+| ~~**High**~~ | ~~Option A Step 5 still adds `@acme/*` TS paths which can permit deep imports and TS/runtime mismatches~~ | **RESOLVED** — Decision #4 updated (2026-02-09): remove shorthand aliases only; keep canonical `@acme/*` mappings per repo tsconfig guidance |
 | **Medium** | Option B bypasses conditional exports and RSC boundary detection | **MITIGATED** — Option B demoted to rollback-only escape hatch |
 | ~~**High**~~ | ~~Shorthand aliases kept but Step 5 only updates TS paths for `@acme/*`~~ | **RESOLVED** — Step 5 now shows both Option A and B paths |
 | ~~**High**~~ | ~~Re-adding aliases into `node_modules` bypasses conditional exports~~ | **RESOLVED** — Option A removes shorthand aliases; Option B demoted to rollback-only |
@@ -38,35 +40,25 @@ The root cause is **over-engineered webpack configuration** that conflicts with 
 
 ### Webpack Aliases (next.config.mjs)
 
+> **Fact-check (2026-02-09):** Most aliases from the original audit have already been removed. Only 4 workspace-related aliases remain. The table below reflects the current state.
+
 | Alias | Points To | In transpilePackages? | Conflict? |
 |-------|-----------|----------------------|-----------|
 | `@` | template-app/src | N/A | No - legitimate app alias |
-| `@i18n` | i18n/dist (or src) | Yes | **Yes** - bypasses transpilation |
-| `@acme/i18n` | i18n/dist | Yes | **Yes** - bypasses transpilation |
-| `@acme/types` | types/dist (or src) | No | No - types-only package |
-| `@ui` | ui/dist | Yes | **Yes** - bypasses transpilation |
-| `@platform-core` | platform-core/dist | Yes | **Yes** - bypasses transpilation |
-| `@acme/config` | config/dist | Yes | **Yes** - bypasses transpilation |
-| `@acme/date-utils` | date-utils/src | No | No |
-| `@acme/email` | email/src | No | No |
-| `@acme/shared-utils` | shared-utils/src | Yes | **Yes** - should use dist |
-| `@auth` | auth/src | Yes | **Yes** - should use dist |
+| `@acme/i18n` | i18n/dist | No | No - resolved via alias to dist |
 | `drizzle-orm` | false (disabled) | No | No - intentional |
 | `@themes-local` | ../themes | No | No - fixture path |
 
+Aliases removed since original audit: `@i18n`, `@acme/types`, `@ui`, `@platform-core`, `@acme/config`, `@acme/date-utils`, `@acme/email`, `@acme/shared-utils`, `@auth`.
+
 ### transpilePackages (index.mjs)
+
+> **Fact-check (2026-02-09):** The transpilePackages list has already been reduced from 9 entries to 2. The list below reflects the current state.
 
 ```javascript
 transpilePackages: [
-  "@acme/config",
   "@acme/template-app",
-  "@acme/shared-utils",
-  "@acme/ui",
-  "@acme/i18n",
-  "@acme/platform-core",
-  "@acme/page-builder-core",
-  "@acme/page-builder-ui",
-  "@acme/auth",
+  "@acme/lib",
 ]
 ```
 
@@ -109,7 +101,7 @@ Since packages *should* have proper `exports` fields pointing to `dist/`, we sho
 2. **Migrate shorthand imports OR add matching TS paths** (see decision needed below)
 3. **Remove packages from transpilePackages** that don't need transpilation (already built)
 
-> **DECISION (RESOLVED):** Shorthand aliases (`@i18n`, `@ui`, `@platform-core`, `@auth`, `@shared-utils`)
+> **DECISION (RESOLVED):** Shorthand aliases (`@i18n`, `@ui`, `@platform-core`, `@auth`)
 >
 > **Option A (chosen):** Migrate all imports to `@acme/*` package names — this is the only approach that preserves conditional exports and RSC boundary detection.
 >
@@ -135,16 +127,20 @@ Since packages *should* have proper `exports` fields pointing to `dist/`, we sho
 
 **Need transpilation (no dist, or app code):**
 - `@acme/template-app` - the app itself
+- `@acme/lib` - utility library currently in transpilePackages
 
-**Kept in transpilePackages (source transpilation needed):**
-- `@acme/shared-utils` - simple utils without dist build; stays in `transpilePackages` so Next.js compiles from source via package `main` field
+**~~Kept in transpilePackages (source transpilation needed):~~**
+- ~~`@acme/shared-utils` - simple utils without dist build~~ — **Obsolete (2026-02-09):** `@acme/shared-utils` no longer has a `package.json` (deleted in `4d9325702e`). The directory contains only orphaned `dist/` output. Superseded by `@acme/lib`.
 
 #### Step 2: Update index.mjs
 
+> **Fact-check (2026-02-09):** This step is already done. The current transpilePackages is `["@acme/template-app", "@acme/lib"]`. `@acme/shared-utils` no longer exists as a package.
+
 ```javascript
+// CURRENT STATE — already applied
 transpilePackages: [
   "@acme/template-app",
-  "@acme/shared-utils",
+  "@acme/lib",
 ],
 ```
 
@@ -152,9 +148,12 @@ transpilePackages: [
 
 **Option A (Preferred): Remove shorthand aliases entirely**
 
+> **Fact-check (2026-02-09):** This step is mostly done. The current config only has `@`, `@acme/i18n`, `drizzle-orm`, and `@themes-local`. The remaining `@acme/i18n` alias still points to `i18n/dist` and could be removed to let Node resolution handle it via exports.
+
 After migrating imports to `@acme/*` names:
 
 ```javascript
+// TARGET STATE — remove the remaining @acme/i18n alias
 config.resolve.alias = {
   ...config.resolve.alias,
   // App source shorthand (keep - this is app-specific)
@@ -190,7 +189,7 @@ config.resolve.alias = {
   "@ui": path.resolve(__dirname, "../../node_modules/@acme/ui"),
   "@platform-core": path.resolve(__dirname, "../../node_modules/@acme/platform-core"),
   "@auth": path.resolve(__dirname, "../../node_modules/@acme/auth"),
-  "@shared-utils": path.resolve(__dirname, "../../node_modules/@acme/shared-utils"),
+  // @shared-utils removed — package no longer exists
 
   "@themes-local": path.resolve(__dirname, "../themes"),
   "drizzle-orm": false,
@@ -201,10 +200,12 @@ config.resolve.alias = {
 
 > **CRITICAL:** Without `transpilePackages`, changes to package source won't be picked up until `dist` is rebuilt. This affects dev experience.
 
-**Production builds:** Add turbo dependency to ensure packages are built before template-app:
+**Production builds:** Ensure turbo dependency so packages are built before template-app:
+
+> **Fact-check (2026-02-09):** Already configured. `turbo.json` already has `"dependsOn": ["^build"]` on the build task.
 
 ```json
-// turbo.json
+// turbo.json — ALREADY IN PLACE
 {
   "tasks": {
     "build": {
@@ -239,62 +240,33 @@ config.resolve.alias = {
 
 > **Note:** The `dev:template-app` script scopes both the package watcher and the Next.js dev server to the template-app context. This avoids ambiguity about which app is being run.
 
-> **Note:** `concurrently` must be installed as a dev dependency. If not present:
-> ```bash
-> pnpm add -D concurrently -w
-> ```
-> Alternatively, use shell background processes: `pnpm dev:packages & pnpm --filter @acme/template-app dev`
+> **Note:** `concurrently` is already installed as a dev dependency (`^9.2.1`). The `dev:template-app` script is already present in root `package.json`.
 
 #### Step 5: Update tsconfig.json Paths
 
-The tsconfig paths must match webpack aliases — **including shorthand aliases if kept (Option B)**.
+> **Fact-check (2026-02-09):** This step is complete. Shorthand alias paths (`@ui/*`, `@i18n/*`, `@platform-core/*`, `@auth/*`, `@date-utils/*`) were removed from `packages/template-app/tsconfig.json`; canonical `@acme/*` mappings were retained.
 
-**Option A (after migrating imports):**
+> **Decision update (2026-02-09):** Do **not** remove canonical `@acme/*` workspace resolution. Repo guidance requires apps to resolve workspace packages through `src` + `dist` mappings (see `docs/tsconfig-paths.md`, `README.md`). This plan now targets shorthand cleanup only.
 
-> **DECISION #4 (RESOLVED):** Use Option A.1 — remove `@acme/*` TS paths and let TypeScript resolve via `node_modules` `exports`.
-
-**Option A.1 — No TS paths (let exports resolve):**
-
-```json
-{
-  "paths": {
-    "@/*": ["./src/*"]
-    // No @acme/* paths — TypeScript uses node_modules resolution
-  }
-}
-```
-
-**Option A.2 — Explicit TS paths (rejected):**
-
-> Not chosen. This permits deep imports and can diverge from runtime resolution.
-
-**Option B (rollback only — if reverting to shorthand aliases):**
-
-> **ROLLBACK ONLY** — Use this configuration only if Option A causes issues requiring temporary reversion.
+**Target state:**
+- Keep app-local `@/*` alias with current compatibility fallbacks used by template-app
+- Remove shorthand aliases: `@i18n/*`, `@platform-core/*`, `@ui/*`, `@auth/*`, `@date-utils/*`
+- Keep canonical `@acme/*` mapping (src + dist)
 
 ```json
 {
   "paths": {
-    "@/*": ["./src/*"],
-    // Shorthand aliases — MUST match webpack aliases
-    "@i18n": ["../../packages/i18n/dist/index.d.ts"],
-    "@i18n/*": ["../../packages/i18n/dist/*"],
-    "@ui": ["../../packages/ui/dist/index.d.ts"],
-    "@ui/*": ["../../packages/ui/dist/*"],
-    "@platform-core": ["../../packages/platform-core/dist/index.d.ts"],
-    "@platform-core/*": ["../../packages/platform-core/dist/*"],
-    "@auth": ["../../packages/auth/dist/index.d.ts"],
-    "@auth/*": ["../../packages/auth/dist/*"],
-    "@shared-utils": ["../../packages/shared-utils/dist/index.d.ts"],
-    "@shared-utils/*": ["../../packages/shared-utils/dist/*"],
-    // Also keep @acme/* for any imports using full names
-    "@acme/i18n": ["../../packages/i18n/dist/index.d.ts"],
-    // ...
+    "@/*": [
+      "./src/*",
+      "../ui/dist/src/*",
+      "../i18n/dist/*",
+      "../ui/src/*",
+      "./dist/*"
+    ]
+    // No shorthand package aliases.
   }
 }
 ```
-
-> **Note:** Pointing TS paths to `dist` means types are only available after build. For better DX, consider pointing to `src` during development and `dist` in CI, or use TypeScript project references.
 
 ## Verification
 
@@ -305,7 +277,7 @@ The tsconfig paths must match webpack aliases — **including shorthand aliases 
 pnpm typecheck && pnpm lint
 ```
 
-> **Test audit (2026-01-19):** Searched for `*{build,config,next}*.test.{ts,tsx,js}` — no tests exist in `packages/next-config/` or `apps/template-app/` for build configuration. Matches found were in unrelated packages (shared-utils, platform-machine, email, etc.) or node_modules.
+> **Test audit (2026-01-19):** Searched for `*{build,config,next}*.test.{ts,tsx,js}` — no tests exist in `packages/next-config/` or `apps/template-app/` for build configuration. Matches found were in unrelated packages (platform-machine, email, etc.) or node_modules.
 
 **Manual build verification:**
 
@@ -335,15 +307,36 @@ If issues arise, we can:
 
 ## Files to Modify
 
-**Required:**
-1. `packages/next-config/index.mjs` — reduce transpilePackages (Step 2)
-2. `packages/next-config/next.config.mjs` — remove shorthand aliases (Step 3, Option A)
-3. `packages/template-app/tsconfig.json` — update or remove paths (Step 5, depends on Decision #4)
-4. `turbo.json` — ensure `dependsOn: ["^build"]` for build task (Step 4)
+> **Fact-check (2026-02-09):** Updated to reflect current completion status.
 
-**Required if using turbo watch dev workflow:**
-5. `package.json` (root) — add `dev:packages` and `dev:template-app` scripts (Step 4)
-6. `package.json` (root) — add `concurrently` as dev dependency: `pnpm add -D concurrently -w`
+**Already done:**
+1. ~~`packages/next-config/index.mjs` — reduce transpilePackages (Step 2)~~ — Done (now `["@acme/template-app", "@acme/lib"]`)
+2. ~~`packages/next-config/next.config.mjs` — remove shorthand aliases (Step 3, Option A)~~ — Mostly done (only `@acme/i18n` alias remains)
+3. ~~`turbo.json` — ensure `dependsOn: ["^build"]` for build task (Step 4)~~ — Already configured
+4. ~~`package.json` (root) — add `dev:packages` and `dev:template-app` scripts (Step 4)~~ — Already present
+5. ~~`package.json` (root) — add `concurrently` as dev dependency~~ — Already installed (`^9.2.1`)
+
+**Remaining:**
+1. `packages/next-config/next.config.mjs` — investigate and remove `@acme/i18n` alias only after proving template-app and brikette builds pass without it (currently blocked by runtime regression; see Active tasks)
+
+## Blast Radius: Brikette
+
+> **Added 2026-02-09.** The shared `packages/next-config` is imported by brikette (`apps/brikette/next.config.mjs` line 5: `import sharedConfig from "@acme/next-config/next.config.mjs"`). Changes to the shared config affect both template-app and brikette.
+
+| Remaining Task | Affects Brikette? | Detail |
+|----------------|-------------------|--------|
+| Migrate 7 shorthand imports in `template-app/src/` | No | **Done (2026-02-09)** |
+| Remove `@acme/i18n` alias from `next.config.mjs` | **Yes** | **Blocked** — currently causes template-app build failure; requires follow-up investigation |
+| Remove shorthand TS paths from `template-app/tsconfig.json` | No | **Done (2026-02-09)** |
+| Test with app build (NEXT-CONFIG-06) | N/A | **Done (2026-02-09)** |
+
+**Mitigation update (2026-02-09):** The expected safe removal did not hold in practice. Removing the alias caused template-app build failures; the alias has been restored pending root-cause analysis.
+
+**Required:** NEXT-CONFIG-06 must build **both** apps:
+```bash
+pnpm --filter @acme/template-app build
+pnpm --filter brikette build
+```
 
 ## Open Questions
 
@@ -358,19 +351,21 @@ If issues arise, we can:
 | 1 | Migrate shorthand imports or add TS paths? | **A chosen** — migrate to `@acme/*` (Option B is rollback-only) | Determines Step 3 and Step 5 |
 | 2 | Which packages have conditional exports? | **None found** (audit 2026-01-19) | Confirms rollback risk is theoretical, not observed |
 | 3 | Dev workflow for keeping dist current? | **turbo watch chosen** — `turbo watch build --filter=@acme/template-app^...` | Keeps dev in sync with template-app deps |
-| 4 | Remove `@acme/*` TS paths entirely (Option A)? | **A.1 chosen** — remove paths, let exports resolve | Improves TS/runtime parity and prevents deep-import drift |
+| 4 | Remove shorthand TS paths while preserving canonical `@acme/*` mapping? | **Chosen** — remove shorthand only; keep canonical workspace mappings | Preserves TS/runtime parity without diverging from repo tsconfig guidance |
 
 ## Pre-Implementation Checklist
 
 - [x] **NEXT-CONFIG-00:** Audit all package `exports` fields (especially `@acme/config`, `@acme/types`, `@acme/page-builder-ui`) — completed 2026-01-20
 - [x] **NEXT-CONFIG-01:** Identify packages with conditional exports (`react-server`, `browser`) — none found in `packages/*/package.json` (2026-01-19)
 - [x] **NEXT-CONFIG-02:** Decide on shorthand alias strategy — **Decision #1 set to Option A** (2026-01-19)
-- [x] **NEXT-CONFIG-03:** Codemod to update shorthand imports to `@acme/*` (2026-01-19)
-- [x] **NEXT-CONFIG-04:** Decide on TS paths strategy — **Decision #4 set to A.1 (remove paths)** (2026-01-19)
+- [x] **NEXT-CONFIG-03:** Codemod to update shorthand imports to `@acme/*` — completed 2026-02-09 (migrated 7 imports across `packages/template-app/src/app/[lang]/success/page.tsx`, `packages/template-app/src/lib/requestContext.ts`, `packages/template-app/src/api/order-status/route.ts`, `packages/template-app/src/app/success/status/route.ts`)
+- [x] **NEXT-CONFIG-04:** Decide on TS paths strategy — **Decision #4 updated:** remove shorthand only; keep canonical `@acme/*` mapping (2026-02-09)
 - [x] **NEXT-CONFIG-05:** Added `concurrently` dev dependency (2026-01-19)
-- [ ] **NEXT-CONFIG-06:** Test with representative app build (not just typecheck)
+- [x] **NEXT-CONFIG-06:** Test with representative app build (not just typecheck) — completed 2026-02-09 (`pnpm --filter @acme/template-app build`, `pnpm --filter brikette build`)
 
 
 ## Active tasks
 
-No active tasks at this time.
+> **Updated 2026-02-09 (implementation):** NEXT-CONFIG-03 and Step 5 are complete. NEXT-CONFIG-06 validation is complete. One item remains.
+
+1. **Step 3 (blocked):** Removing `@acme/i18n` alias from `packages/next-config/next.config.mjs` currently breaks template-app build with `Module not found: Can't resolve '@acme/i18n'` in `src/app/[lang]/layout.tsx` and `src/app/[lang]/checkout/layout.tsx`. Keep alias in place until root-cause is resolved.

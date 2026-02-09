@@ -16,21 +16,14 @@
         "../ui/src/*",
         "./dist/*"
       ],
-      "@ui/*": ["../ui/src/*", "../ui/dist/src/*"],
-      "@ui/src/*": ["../ui/src/*", "../ui/dist/src/*"],
-      "@i18n/*": ["../i18n/dist/*", "../i18n/src/*"],
       "@acme/i18n": [
-        "../i18n/dist/index.js",
+        "../i18n/src/index.ts",
         "../i18n/dist/index.d.ts"
       ],
       "@acme/i18n/*": [
+        "../i18n/src/*",
         "../i18n/dist/*"
       ],
-      "@platform-core": [
-        "../platform-core/src/index.ts",
-        "../platform-core/dist/index.d.ts"
-      ],
-      "@platform-core/*": ["../platform-core/src/*", "../platform-core/dist/*"],
       "@acme/platform-core": [
         "../platform-core/src/index.ts",
         "../platform-core/dist/index.d.ts"
@@ -47,20 +40,6 @@
         "../config/src/*",
         "../config/dist/*"
       ],
-      "@auth": [
-        "../auth/src/index.ts",
-        "../auth/src",
-        "../auth/dist/index.d.ts",
-        "../auth/dist"
-      ],
-      "@auth/*": ["../auth/src/*", "../auth/dist/*"],
-      "@date-utils": [
-        "../date-utils/src/index.ts",
-        "../date-utils/src",
-        "../date-utils/dist/index.d.ts",
-        "../date-utils/dist"
-      ],
-      "@date-utils/*": ["../date-utils/src/*", "../date-utils/dist/*"],
       "@acme/date-utils": [
         "../date-utils/src/index.ts",
         "../date-utils/dist/index.d.ts"

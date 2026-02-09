@@ -156,7 +156,7 @@ Even a good product fails if the operations are broken.
 
 For each business in `businesses.json`, execute a sequential multi-lens pass to generate ideas:
 
-**Sub-experts in order:**
+**Sub-experts in order (generic — all businesses except BRIK):**
 1. `musk` (Musk lens — feasibility)
 2. `bezos` (Bezos lens — customer-backwards)
 3. `hopkins` (Marketing lens — scientific advertising)
@@ -170,8 +170,36 @@ For each business in `businesses.json`, execute a sequential multi-lens pass to 
 11. `fung` (Sourcing lens — trading networks)
 12. `ohno` (Sourcing lens — lean/quality)
 
+**BRIK-specific sub-experts (replaces sourcing with brikette lens):**
+1. `musk` (Musk lens — feasibility)
+2. `bezos` (Bezos lens — customer-backwards)
+3. `hopkins` (Marketing lens — scientific advertising)
+4. `ogilvy` (Marketing lens — brand)
+5. `reeves` (Marketing lens — USP)
+6. `lafley` (Marketing lens — consumer insight)
+7. `patterson` (Sales lens — systematic selling)
+8. `ellison` (Sales lens — competitive positioning)
+9. `chambers` (Sales lens — partner ecosystems)
+10. `crawford` (Brikette lens — interior/lived comfort)
+11. `starck` (Brikette lens — interior/bold identity)
+12. `nakajima` (Brikette lens — maintenance/TPM)
+13. `deming` (Brikette lens — maintenance/quality systems)
+14. `kroc` (Brikette lens — cleaning/standards)
+15. `gawande` (Brikette lens — cleaning/checklists)
+16. `schulze` (Brikette lens — cleaning/culture)
+17. `hopkins` (Brikette lens — hostel promotion/scientific advertising)
+18. `ogilvy` (Brikette lens — hostel promotion/brand)
+19. `sutherland` (Brikette lens — hostel promotion/behavioral economics)
+20. `meyer` (Brikette lens — F&B/hospitality)
+21. `degroff` (Brikette lens — F&B/bar program)
+22. `schrager` (Brikette lens — events/atmosphere)
+23. `jones` (Brikette lens — events/community)
+24. `generator` (Brikette lens — events/hostel-native ops)
+
+**Note:** Hopkins and Ogilvy appear twice for BRIK — once under Marketing lens (generic frameworks) and once under Brikette lens (hostel-specific framing). Distinguished by `Originator-Lens: marketing` vs `Originator-Lens: brikette`. Clustering (Stage 3) handles any duplicate ideas.
+
 **For each sub-expert:**
-1. Read the persona file from `.claude/skills/_shared/cabinet/<lens>-<expert>.md`
+1. Read the persona file from `.claude/skills/_shared/cabinet/lens-<lens>.md` (each lens file contains all its sub-experts)
 2. Apply stance-specific diagnostic questions to the business:
    - Under `improve-data`: Focus on measurement, data quality, knowledge gaps
    - Under `grow-business`: Focus on revenue, acquisition, conversion, retention
@@ -446,7 +474,7 @@ Body: {
 
 **Tracking:**
 - Track context budget informally (no hard limit enforcement, just monitor output length)
-- Priority order for context allocation: Musk > Bezos > Marketing > Sales > Sourcing
+- Priority order for context allocation: Musk > Bezos > Marketing > Sales > Sourcing (non-BRIK) / Brikette (BRIK only)
 
 ---
 
@@ -516,7 +544,7 @@ Context-Discipline: Full | Summary-Block | Degraded
 
 ### Missing Persona Files
 - Skip that lens
-- Note in sweep report: "Persona file missing: [lens-expert].md — skipped this sub-expert"
+- Note in sweep report: "Persona file missing: lens-[lens].md — skipped this sub-expert"
 
 ### API Errors
 - Fail-closed: stop sweep, surface error
@@ -639,5 +667,6 @@ If any of these are true, the sweep report is **invalid** and must be revised:
 
 ## Version History
 
+- **v2.1** (2026-02-09): Added BRIK-specific lens routing — Brikette lens (15 sub-experts across 6 hostel domains) replaces sourcing lens for BRIK. Hopkins/Ogilvy run twice for BRIK (marketing + brikette framing).
 - **v2.0** (2026-02-09): Cabinet Secretary orchestrator with 7-stage pipeline, multi-lens composite generation, confidence gating, clustering, Munger/Buffett filter, Drucker/Porter priority, fact-find seeding. Replaces v1 constraint-diagnostic approach.
 - **v1.0** (2026-02-06): Original constraint-diagnostic sweep (preserved in `SKILL.md.pre-cabinet`)

@@ -7,7 +7,7 @@ Relates-to charter: none
 Created: 2026-01-19
 Created-by: Claude (Opus 4.5)
 Last-updated: 2026-02-09
-Last-updated-by: Claude (Opus 4.6)
+Last-updated-by: Codex (GPT-5)
 ---
 
 # Plan: Administrative & Infrastructure Debt
@@ -175,7 +175,7 @@ These items primarily affect:
 
 ### ADMIN-07: Deploy Firebase Security Rules Fix (Security P0)
 
-- **Status**: ☐
+- **Status**: ☐ (code complete; manual migration + deployment pending)
 - **Priority**: P0 (SECURITY CRITICAL)
 - **Estimated effort**: Medium (upgraded from Small — scope expanded)
 
@@ -185,6 +185,43 @@ These items primarily affect:
 - **Critical finding #2:** `apps/reception/database.rules.json` contains 39 occurrences of the vulnerable `child('0')`, `child('1')` pattern (Critical #3). Reception is using the same Firebase project and its rules file is the one actually configured for deployment.
 - **Critical finding #3:** No `.firebaserc` file exists — no Firebase project ID is configured for CLI deployment.
 - **Open question:** Do prime and reception share the same Firebase Realtime Database? If yes, one rules file must cover both. If no, each needs separate deployment config.
+
+#### Build Progress (2026-02-09)
+- **Shared topology confirmed:** Prime + Reception use the same Firebase project/database (`prime-f3652`), so one deployed rules file must secure both.
+- **Rules reconciliation completed:** `apps/reception/database.rules.json` was rewritten to map-only role checks (`roles.<role> == true`) and all index checks (`child('0')` ... `child('5')`) were removed.
+- **Project targeting added:** `.firebaserc` now exists with `default`, `prime`, and `reception` aliases all targeting `prime-f3652`.
+- **Migration hardening completed:** `apps/prime/scripts/migrate-user-roles.ts` now preserves all active roles (`owner`, `developer`, `admin`, `manager`, `staff`, `viewer`) during array/index → map conversion.
+- **Runtime compatibility completed:** Reception auth parsing now accepts map-based and legacy role payloads and normalizes to app role arrays.
+- **Rules tests updated:** `apps/reception/src/rules/__tests__/databaseRules.test.ts` now seeds map-based roles to match the secure schema.
+
+#### O/S Manual Work (Required to Close ADMIN-07)
+1. **Run migration dry-run and review output**
+   ```bash
+   cd apps/prime
+   FIREBASE_SERVICE_ACCOUNT_KEY=/path/to/service-account.json \
+   FIREBASE_DATABASE_URL=https://prime-f3652-default-rtdb.europe-west1.firebasedatabase.app \
+   pnpm exec tsx scripts/migrate-user-roles.ts --dry-run
+   ```
+2. **Run live migration**
+   ```bash
+   cd apps/prime
+   FIREBASE_SERVICE_ACCOUNT_KEY=/path/to/service-account.json \
+   FIREBASE_DATABASE_URL=https://prime-f3652-default-rtdb.europe-west1.firebasedatabase.app \
+   pnpm exec tsx scripts/migrate-user-roles.ts
+   ```
+3. **Deploy reconciled rules**
+   ```bash
+   cd /Users/petercowling/base-shop
+   pnpm dlx firebase-tools@13.35.1 deploy --only database:rules --project prime-f3652
+   ```
+4. **Post-deploy verification (live)**
+   - Confirm unauthenticated write is denied.
+   - Confirm staff operations still work.
+   - Confirm manager/admin operations still work.
+5. **Capture evidence in this plan**
+   - Migration summary counts (`total`, `migrated`, `skipped`, `errors`)
+   - Deployment timestamp and operator
+   - Verification results (pass/fail for unauth/staff/manager checks)
 
 - **Scope**:
 
@@ -198,11 +235,11 @@ These items primarily affect:
   - `apps/prime/database.rules.json` — New secure Firebase rules (39 secure role checks)
   - `apps/prime/scripts/migrate-user-roles.ts` — Data migration script
 
-  **Pre-deployment investigation required**:
-  1. **Determine Firebase project structure** — are prime and reception sharing one database?
-  2. **Reconcile rules files** — `apps/reception/database.rules.json` (222 lines, vulnerable) vs `apps/prime/database.rules.json` (232 lines, secure). If shared database, merge into one authoritative file.
-  3. **Create `.firebaserc`** with correct project ID(s)
-  4. **Update `firebase.json`** to reference the secure rules file
+  **Pre-deployment investigation results**:
+  1. ✅ Prime and Reception share one database (`prime-f3652`).
+  2. ✅ Reception rules reconciled to secure map-based role checks.
+  3. ✅ `.firebaserc` created with `prime-f3652` aliases.
+  4. ✅ `firebase.json` points to the reconciled Reception rules file.
 
   **Deployment steps**:
   1. **Run data migration first** (before deploying rules, or existing users lose access):
@@ -212,20 +249,19 @@ These items primarily affect:
      # Review output carefully, then run without --dry-run to apply
      FIREBASE_SERVICE_ACCOUNT_KEY=/path/to/service-account.json npx tsx scripts/migrate-user-roles.ts
      ```
-  2. **Deploy new rules** to Firebase Console:
-     - Go to Firebase Console → Realtime Database → Rules
-     - Copy contents of the reconciled secure rules file
-     - Paste and publish
+  2. **Deploy new rules**:
+     - Preferred: `firebase deploy --only database:rules --project prime-f3652`
+     - Alternative: Firebase Console → Realtime Database → Rules → paste reconciled rules and publish
 
-- **Dependencies**: Firebase Console access, service account key, **clarity on prime/reception Firebase project topology**
+- **Dependencies**: Firebase Console access, service account key
 - **Reference**: [docs/security-audit-2026-01.md](../security-audit-2026-01.md) Critical #2 and #3
 - **Definition of done**:
-  - All existing user profiles migrated to new role format
-  - New rules deployed to Firebase Console
-  - Unauthenticated requests to Firebase are rejected
-  - Users with appropriate roles can still access their data
-  - `firebase.json` points to secure rules file
-  - Reception's vulnerable rules file updated or removed
+  - ⏳ All existing user profiles migrated to new role format
+  - ⏳ New rules deployed to Firebase Console
+  - ⏳ Unauthenticated requests to Firebase are rejected
+  - ⏳ Users with appropriate roles can still access their data
+  - ✅ `firebase.json` points to secure rules file
+  - ✅ Reception's vulnerable rules file updated
 
 ### ADMIN-08: Rotate Exposed Secrets (Security P0)
 
@@ -462,3 +498,5 @@ After completing all tasks, verify:
 | 2026-02-09 | Claude (Opus 4.6) | Fact-check audit at `7dad9cc`. Marked ADMIN-01 as COMPLETE (Turbo cache already configured in CI). Marked ADMIN-11 as COMPLETE (pnpm audit already in ci.yml). Added partial-completion note to ADMIN-02 (CART_KV has real IDs). Flagged ADMIN-10 deployment target issue (CMS requires dynamic server, not static Pages). |
 | 2026-02-09 | Claude (Opus 4.6) | Re-plan of all 8 remaining tasks. **Marked ADMIN-03 COMPLETE** (Cloudflare secrets already in GitHub, apps deploying). **ADMIN-07 scope expanded** (reception rules also vulnerable, no `.firebaserc`, needs reconciliation). **ADMIN-08 exposure confirmed** (NEXTAUTH_SECRET in commit `6639161ca1`). **ADMIN-02 downgraded P0→P1** and scope narrowed (dormant apps deferred). **ADMIN-10 rewritten** (Workers+OpenNext, not Pages; CI has broken `next-on-pages` command). **ADMIN-09** dependency updated (ADMIN-03 done, still needs ADMIN-02). **ADMIN-12** dependencies now satisfied. Net: 7 open → 5 complete + 7 open. |
 | 2026-02-09 | Claude (Opus 4.6) | Completed ADMIN-12 (GitHub setup docs, `6f7ac68a71`), ADMIN-06 (TruffleHog secret scanning, `8f842a5af3`), ADMIN-10 (CMS Workers+OpenNext migration, `c86b266304`). Net: 8 complete, 4 remaining. |
+| 2026-02-09 | Codex (GPT-5) | Advanced ADMIN-07 to code-complete/manual-pending: rewrote `apps/reception/database.rules.json` to map-based checks (removed index checks), added `.firebaserc` for `prime-f3652`, expanded role migration coverage, updated Reception role normalization + rules tests. |
+| 2026-02-09 | Codex (GPT-5) | Added explicit ADMIN-07 O/S manual runbook (dry-run, live migration, deploy command, post-deploy checks, evidence capture) and marked pre-deployment investigation items complete. |

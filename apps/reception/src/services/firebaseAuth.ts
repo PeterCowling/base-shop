@@ -17,7 +17,7 @@ import type { Database } from "firebase/database";
 import { get,ref } from "firebase/database";
 
 import type { User, UserProfile, UserRole } from "../types/domains/userDomain";
-import { userProfileSchema } from "../types/domains/userDomain";
+import { normalizeRoles, userProfileSchema } from "../types/domains/userDomain";
 
 let authInstance: Auth | null = null;
 
@@ -128,7 +128,14 @@ export async function loadUserWithProfile(
       return null;
     }
 
-    const profile: UserProfile = parseResult.data;
+    const parsedProfile = parseResult.data;
+    const profile: UserProfile = {
+      uid: parsedProfile.uid,
+      email: parsedProfile.email,
+      user_name: parsedProfile.user_name,
+      displayName: parsedProfile.displayName,
+      roles: normalizeRoles(parsedProfile.roles),
+    };
 
     return {
       uid: firebaseUser.uid,

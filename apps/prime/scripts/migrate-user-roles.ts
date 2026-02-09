@@ -21,14 +21,16 @@
  *   - Report any issues
  */
 
+import { readFile } from 'node:fs/promises';
+
 import * as admin from 'firebase-admin';
 
-const VALID_ROLES = ['owner', 'developer', 'staff'] as const;
+const VALID_ROLES = ['owner', 'developer', 'admin', 'manager', 'staff', 'viewer'] as const;
 type ValidRole = (typeof VALID_ROLES)[number];
 
 interface OldUserProfile {
   displayName: string;
-  roles: string[] | Record<string, string>;
+  roles: string[] | Record<string, unknown>;
   createdAt?: number;
   updatedAt?: number;
 }
@@ -41,7 +43,7 @@ interface NewUserProfile {
 }
 
 function convertRoles(
-  oldRoles: string[] | Record<string, string>,
+  oldRoles: string[] | Record<string, unknown>,
 ): Partial<Record<ValidRole, true>> {
   const newRoles: Partial<Record<ValidRole, true>> = {};
 
@@ -92,8 +94,8 @@ function isAlreadyMigrated(roles: unknown): boolean {
 }
 
 async function migrateUserRoles(dryRun: boolean): Promise<void> {
-  console.log(`\n=== User Roles Migration ===`);
-  console.log(`Mode: ${dryRun ? 'DRY RUN (no changes will be made)' : 'LIVE'}\n`);
+  console.info(`\n=== User Roles Migration ===`);
+  console.info(`Mode: ${dryRun ? 'DRY RUN (no changes will be made)' : 'LIVE'}\n`);
 
   // Initialize Firebase Admin
   const serviceAccountPath = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
@@ -103,8 +105,15 @@ async function migrateUserRoles(dryRun: boolean): Promise<void> {
     process.exit(1);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const serviceAccount = require(serviceAccountPath);
+  let serviceAccount: { databaseURL?: string };
+  try {
+    const serviceAccountRaw = await readFile(serviceAccountPath, 'utf8');
+    serviceAccount = JSON.parse(serviceAccountRaw) as { databaseURL?: string };
+  } catch (error) {
+    console.error(`Error: Unable to read service account JSON at "${serviceAccountPath}"`);
+    console.error(error);
+    process.exit(1);
+  }
 
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
@@ -114,17 +123,17 @@ async function migrateUserRoles(dryRun: boolean): Promise<void> {
   const db = admin.database();
   const userProfilesRef = db.ref('userProfiles');
 
-  console.log('Fetching all user profiles...');
+  console.info('Fetching all user profiles...');
   const snapshot = await userProfilesRef.once('value');
   const profiles = snapshot.val() as Record<string, OldUserProfile> | null;
 
   if (!profiles) {
-    console.log('No user profiles found. Nothing to migrate.');
+    console.info('No user profiles found. Nothing to migrate.');
     return;
   }
 
   const userIds = Object.keys(profiles);
-  console.log(`Found ${userIds.length} user profiles\n`);
+  console.info(`Found ${userIds.length} user profiles\n`);
 
   let migratedCount = 0;
   let skippedCount = 0;
@@ -132,27 +141,27 @@ async function migrateUserRoles(dryRun: boolean): Promise<void> {
 
   for (const uid of userIds) {
     const profile = profiles[uid];
-    console.log(`Processing user: ${uid}`);
+    console.info(`Processing user: ${uid}`);
 
     if (!profile.roles) {
-      console.log(`  Skipping: No roles defined`);
+      console.info(`  Skipping: No roles defined`);
       skippedCount++;
       continue;
     }
 
     if (isAlreadyMigrated(profile.roles)) {
-      console.log(`  Skipping: Already migrated`);
+      console.info(`  Skipping: Already migrated`);
       skippedCount++;
       continue;
     }
 
     try {
       const newRoles = convertRoles(profile.roles);
-      console.log(`  Old roles:`, profile.roles);
-      console.log(`  New roles:`, newRoles);
+      console.info(`  Old roles:`, profile.roles);
+      console.info(`  New roles:`, newRoles);
 
       if (Object.keys(newRoles).length === 0) {
-        console.log(`  Warning: No valid roles after conversion, skipping`);
+        console.info(`  Warning: No valid roles after conversion, skipping`);
         skippedCount++;
         continue;
       }
@@ -164,9 +173,9 @@ async function migrateUserRoles(dryRun: boolean): Promise<void> {
           updatedAt: Date.now(),
         };
         await userProfilesRef.child(uid).set(newProfile);
-        console.log(`  Migrated successfully`);
+        console.info(`  Migrated successfully`);
       } else {
-        console.log(`  Would migrate (dry run)`);
+        console.info(`  Would migrate (dry run)`);
       }
       migratedCount++;
     } catch (error) {
@@ -175,14 +184,14 @@ async function migrateUserRoles(dryRun: boolean): Promise<void> {
     }
   }
 
-  console.log(`\n=== Migration Summary ===`);
-  console.log(`Total profiles: ${userIds.length}`);
-  console.log(`Migrated: ${migratedCount}`);
-  console.log(`Skipped: ${skippedCount}`);
-  console.log(`Errors: ${errorCount}`);
+  console.info(`\n=== Migration Summary ===`);
+  console.info(`Total profiles: ${userIds.length}`);
+  console.info(`Migrated: ${migratedCount}`);
+  console.info(`Skipped: ${skippedCount}`);
+  console.info(`Errors: ${errorCount}`);
 
   if (dryRun && migratedCount > 0) {
-    console.log(`\nTo apply changes, run without --dry-run flag`);
+    console.info(`\nTo apply changes, run without --dry-run flag`);
   }
 
   await admin.app().delete();

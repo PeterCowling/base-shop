@@ -7,6 +7,8 @@
 - **Fung** (`fung`) — Trading/sourcing networks: global sourcing, relationship-based procurement
 - **Ohno** (`ohno`) — Lean/quality: waste elimination, continuous improvement, quality at source (representing Ohno/Toyoda lean manufacturing principles)
 
+**Business Scope:** Excludes BRIK — Brikette has a dedicated hostel-specific lens (`lens-brikette.md`) that replaces sourcing for hostel operations. This lens applies to PIPE, PLAT, BOS, and any future product/e-commerce businesses.
+
 **Owner:** CS-09
 **Created:** 2026-02-09
 **Status:** Active
@@ -330,4 +332,5 @@ The Sourcing lens diagnoses supplier feasibility, quality risk, cost structure, 
 
 ## Version History
 
+- **v1.1** (2026-02-09): Added BRIK exclusion — Brikette uses dedicated hostel-specific lens instead
 - **v1.0** (2026-02-09): Initial Sourcing lens persona for Cabinet System CS-09

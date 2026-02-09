@@ -1,5 +1,3 @@
-"use client";
-
 import PrepareDashboard from "@/components/prepare/PrepareDashboard";
 import Providers from "@/components/Providers";
 

@@ -1,5 +1,3 @@
-"use client";
-
 import DocInsertPage from "@/components/checkins/docInsert/DocInsertPage";
 import Providers from "@/components/Providers";
 

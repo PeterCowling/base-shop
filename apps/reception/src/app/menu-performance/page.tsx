@@ -1,5 +1,3 @@
-"use client";
-
 import MenuPerformanceDashboard from "@/components/analytics/MenuPerformanceDashboard";
 import Providers from "@/components/Providers";
 

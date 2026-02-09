@@ -1,5 +1,3 @@
-"use client";
-
 import Providers from "@/components/Providers";
 import BookingSearch from "@/components/search/Search";
 

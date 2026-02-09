@@ -1,5 +1,3 @@
-"use client";
-
 import Alloggiati from "@/components/man/Alloggiati";
 import Providers from "@/components/Providers";
 

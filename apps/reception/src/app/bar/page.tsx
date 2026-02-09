@@ -1,5 +1,3 @@
-"use client";
-
 import BarRoot from "@/components/bar/Bar";
 import Providers from "@/components/Providers";
 

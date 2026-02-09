@@ -1,5 +1,3 @@
-"use client";
-
 import Live from "@/components/live/Live";
 import Providers from "@/components/Providers";
 

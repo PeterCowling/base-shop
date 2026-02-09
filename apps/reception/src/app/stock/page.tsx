@@ -1,5 +1,3 @@
-"use client";
-
 import Stock from "@/components/man/Stock";
 import Providers from "@/components/Providers";
 

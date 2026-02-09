@@ -1,5 +1,3 @@
-"use client";
-
 import Prepayments from "@/components/prepayments/PrepaymentsContainer";
 import Providers from "@/components/Providers";
 

@@ -1,5 +1,3 @@
-"use client";
-
 import CheckoutComponent from "@/components/checkout/Checkout";
 import Providers from "@/components/Providers";
 

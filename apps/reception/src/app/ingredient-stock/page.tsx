@@ -1,5 +1,3 @@
-"use client";
-
 import IngredientStock from "@/components/inventory/IngredientStock";
 import Providers from "@/components/Providers";
 

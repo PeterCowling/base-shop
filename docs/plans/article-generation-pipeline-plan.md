@@ -3,7 +3,7 @@ Type: Plan
 Status: Active
 Domain: Platform
 Created: 2026-02-06
-Last-updated: 2026-02-06
+Last-updated: 2026-02-09
 Last-reviewed: 2026-02-06
 Feature-Slug: article-generation-pipeline
 Overall-confidence: 84%
@@ -117,7 +117,7 @@ apps/brikette                        ← Switches from local content to readGuid
 
 ## Active tasks
 
-- TASK-01: Define guide types in `@acme/types` (Pending)
+- TASK-01: Define guide types in `@acme/types` (Complete, 2026-02-09)
 - TASK-02: Create `GuidesRepository` interface (Pending, depends on TASK-01)
 - TASK-03: Implement JSON backend (`guides.json.server.ts`) (Pending, depends on TASK-02)
 - TASK-04: Create server facade (`guides.server.ts`) (Pending, depends on TASK-03)
@@ -131,7 +131,7 @@ apps/brikette                        ← Switches from local content to readGuid
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on |
 |---|---|---|---:|---:|---|---|
-| TASK-01 | IMPLEMENT | Define guide types in `@acme/types` | 90% | S | Pending | - |
+| TASK-01 | IMPLEMENT | Define guide types in `@acme/types` | 90% | S | Complete (2026-02-09) | - |
 | TASK-02 | IMPLEMENT | Create `GuidesRepository` interface | 92% | S | Pending | TASK-01 |
 | TASK-03 | IMPLEMENT | Implement JSON backend (`guides.json.server.ts`) | 85% | M | Pending | TASK-02 |
 | TASK-04 | IMPLEMENT | Create server facade (`guides.server.ts`) | 90% | S | Pending | TASK-03 |
@@ -184,6 +184,26 @@ apps/brikette                        ← Switches from local content to readGuid
   - Pattern: `packages/types/src/Product.ts` lines 78-119
   - Content schema source: `apps/brikette/src/routes/guides/content-schema.ts`
   - Status enum resolution: fact-find "Resolved Questions" section
+
+#### Build Completion (2026-02-09)
+- **Status:** Complete
+- **Commits:** `00e38c243e`
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04, TC-05, TC-06, TC-07
+  - Cycles: 1
+  - Initial validation: FAIL (lint import-sort)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 90%
+  - Post-validation: 90%
+  - Delta reason: Validation confirmed assumptions after a minor lint correction.
+- **Validation:**
+  - Ran: `pnpm --filter @acme/types lint && pnpm --filter @acme/types build && pnpm --filter @acme/types test -- packages/types/src/__tests__/Guide.test.ts` — PASS
+- **Documentation updated:** None required
+- **Implementation notes:**
+  - Added `packages/types/src/Guide.ts` with `GuideCore`, `GuidePublication`, `GuidePublicationStatus`, and exported `guideContentSchema` / `GuideContentInput`.
+  - Added `packages/types/src/__tests__/Guide.test.ts` covering schema behavior and compile-time guardrails via `@ts-expect-error`.
+  - Re-exported guide types from `packages/types/src/index.ts`.
 
 ---
 

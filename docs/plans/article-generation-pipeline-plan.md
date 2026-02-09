@@ -3,10 +3,10 @@ Type: Plan
 Status: Active
 Domain: Platform
 Created: 2026-02-06
-Last-updated: 2026-02-09
+Last-updated: 2026-02-09 (re-plan)
 Last-reviewed: 2026-02-06
 Feature-Slug: article-generation-pipeline
-Overall-confidence: 84%
+Overall-confidence: 87%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Business-Unit: PLAT
 Relates-to charter: none
@@ -124,8 +124,8 @@ apps/brikette                        ← Switches from local content to readGuid
 - TASK-05: Add to barrel export and Prisma passthrough (Complete, 2026-02-09; depends on TASK-04)
 - TASK-06: Write migration script: Brikette → centralised store (Complete, 2026-02-09; depends on TASK-03)
 - TASK-07: Wire Brikette storefront to read from centralised store (Complete, 2026-02-09; depends on TASK-04, TASK-06)
-- TASK-08: Validate migration data integrity (Pending, depends on TASK-06)
-- TASK-09: Confirm Slice 2-4 scope and sequencing (Pending, depends on TASK-07)
+- TASK-08: Validate migration data integrity (Complete, 2026-02-09; integrity gate failed, follow-up required; depends on TASK-06)
+- TASK-09: Confirm Slice 2-4 scope and sequencing (Complete, 2026-02-09; depends on TASK-07)
 
 ## Task Summary
 
@@ -138,8 +138,8 @@ apps/brikette                        ← Switches from local content to readGuid
 | TASK-05 | IMPLEMENT | Add to barrel export and Prisma passthrough | 92% | S | Complete (2026-02-09) | TASK-04 |
 | TASK-06 | IMPLEMENT | Write migration script: Brikette → centralised store | 80% | M | Complete (2026-02-09) | TASK-03 |
 | TASK-07 | IMPLEMENT | Wire Brikette storefront to read from centralised store | 82% | M | Complete (2026-02-09) | TASK-04, TASK-06 |
-| TASK-08 | INVESTIGATE | Validate migration data integrity | 75% ⚠️ | S | Pending | TASK-06 |
-| TASK-09 | DECISION | Confirm Slice 2-4 scope and sequencing | 70% ⚠️ | S | Pending | TASK-07 |
+| TASK-08 | INVESTIGATE | Validate migration data integrity | 82% | S | Complete (2026-02-09; integrity gate failed, follow-up required) | TASK-06 |
+| TASK-09 | DECISION | Confirm Slice 2-4 scope and sequencing | 90% | S | Complete (2026-02-09) | TASK-07 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -651,24 +651,83 @@ apps/brikette                        ← Switches from local content to readGuid
 - **Type:** INVESTIGATE
 - **Affects:** `data/shops/brikette/guides.json`, `data/shops/brikette/guides/content/`
 - **Depends on:** TASK-06
-- **Confidence:** 75% ⚠️
-  - Implementation: 80% — Validation logic is straightforward (compare counts, spot-check content)
-  - Approach: 75% — Need to determine what "correct" means for 168 × 18 = 3,024 content files
-  - Impact: 70% — If migration is wrong, Brikette renders broken content to real users when the flag is enabled
-- **Blockers / questions to answer:**
-  - How many of the 168 guides actually have content in all 18 locales? (Some may have fewer)
-  - Are there manifest overrides that change status for specific guides? (Must verify override merging)
-  - Do any content files have passthrough fields not in the Zod schema? (Must verify `.passthrough()` preserves them)
+- **Confidence:** 82%
+  - Implementation: 85% — Validation steps are now concrete: run migration, compare counts, spot-check 10 guides, verify status mapping
+  - Approach: 82% — Dry-run evidence (E2) resolved key unknowns: 165 guides (not 168), all 18 locales covered, 0 validation failures
+  - Impact: 80% — Dual-read feature flag (TASK-07) means migration errors are not user-facing until flag is enabled; git-committed output is trivially reversible
+
+#### Re-plan Update (2026-02-09)
+- **Previous confidence:** 75%
+- **Updated confidence:** 82%
+  - **Evidence class:** E2 (executable verification — dry-run output from TASK-06 build)
+  - Implementation: 80% → 85% — Dry-run output provides concrete validation targets (165 guides, 2970 content writes, 0 failures)
+  - Approach: 75% → 82% — All three blocking questions resolved (see below)
+  - Impact: 70% → 80% — Feature-flag gating (TASK-07) means migration errors are non-user-facing until explicit activation; git revert is trivial rollback
+- **Investigation performed:**
+  - Repo: `scripts/migrate-guides-to-central.ts` (status mapping at lines 85-93, override handling at lines 95-113, idempotency at lines 190-198)
+  - Repo: `apps/brikette/src/data/guides/guide-manifest-snapshot.json` (165 entries, generated 2026-02-08)
+  - Repo: `apps/brikette/src/locales/*/guides/content/` (168 content files per locale × 18 locales)
+  - Repo: `packages/types/src/Guide.ts` lines 100-113 (`.passthrough()` on content schema)
+  - Repo: `data/shops/` (14 shops exist but NO brikette — migration not yet run)
+  - Tests: `scripts/__tests__/migrate-guides-to-central.test.ts` — all TC-01 through TC-08 PASS
+  - Build output: TASK-06 dry-run: `guides=165, locales=18, contentWrites=2970, missingContent=0, validationFailures=0`
+  - Content samples: `rules.json`, `amalfiPositanoBus.json` — standard fields only, no passthrough extras
+- **Resolution of blocking questions:**
+  - **Q1 (locale coverage):** All 168 content files exist in all 18 locales. Dry-run reports `missingContent=0`. ✅
+  - **Q2 (manifest overrides):** Migration script reads overrides at lines 138-153 and merges at lines 95-113. TC-08 validates this. ✅
+  - **Q3 (passthrough fields):** Content schema uses `.passthrough()` but spot-checked files contain only standard fields. No data loss risk. ✅
+- **Remaining uncertainty:** 168 content files exist per locale but only 165 are in the manifest snapshot. Need to identify which 3 content files have no manifest entry and document the discrepancy (likely orphaned or test content files).
+- **Changes to task:**
+  - Acceptance criteria updated with concrete counts (165 not 168)
+  - Added explicit step to resolve 168 vs 165 discrepancy
+  - Added step to run actual migration (not dry-run)
+
+- **Blockers / questions resolved:**
+  - ~~How many of the 168 guides actually have content in all 18 locales?~~ → All 168 content files exist in all 18 locales. Migration processes 165 (manifest-driven).
+  - ~~Are there manifest overrides that change status for specific guides?~~ → Yes, override merging is tested (TC-08). Script handles correctly.
+  - ~~Do any content files have passthrough fields not in the Zod schema?~~ → No. Spot-checked samples contain only standard fields.
+  - **New question (self-serve):** Which 3 content files have no manifest entry? (Diff content filenames vs snapshot keys to identify orphans)
 - **Acceptance:**
-  - Guide count matches: `guides.json` has exactly as many entries as `listGuideManifestEntries()` (minus any explicitly excluded)
+  - Migration output contains exactly 165 guides (matching manifest snapshot count)
+  - Discrepancy between 168 content files and 165 manifest entries is documented (identify 3 orphan content files)
   - Every guide in `guides.json` has a corresponding content directory under `guides/content/{key}/`
-  - Content locale count per guide matches the original locale file count
-  - Spot-check 10 guides: content roundtrips correctly (read from centralised store, compare to original)
-  - No Zod validation failures in the migration output
+  - Content locale count per guide: 18 locales each
+  - Spot-check 10 guides: content roundtrips correctly (read from centralised store via `getGuideContent()`, compare to original locale file)
+  - No Zod validation failures in the migration output (confirmed by dry-run: 0 failures)
   - Status mapping is correct for all guides (no "live" status in output)
+  - Migration is idempotent: running twice produces identical output
 - **Notes / references:**
   - This task gates TASK-07's feature flag activation
-  - Use `--dry-run` mode to validate without committing files
+  - Dry-run already validated: `pnpm exec tsx scripts/migrate-guides-to-central.ts --dry-run`
+  - To execute: `pnpm exec tsx scripts/migrate-guides-to-central.ts` (creates `data/shops/brikette/`)
+  - Rollback: `git checkout -- data/shops/brikette/`
+
+#### Build Completion (2026-02-09)
+- **Status:** Complete (investigation complete; integrity gate failed)
+- **Execution cycle:**
+  - Validation cases executed: all TASK-08 checks
+  - Cycles: 1
+  - Initial validation: PASS (structure, counts, idempotency, status mapping)
+  - Final validation: FAIL (content fidelity parity)
+- **Validation evidence:**
+  - Migration execution: `scripts/agents/integrator-shell.sh -- pnpm exec tsx scripts/migrate-guides-to-central.ts` → `guides=165 | locales=18 | contentWrites=2970 | missingContent=0 | validationFailures=0`
+  - Manifest parity: `guide-manifest-snapshot.json` count = `165`; EN source content files = `168`; orphan files identified: `beaches`, `stayingFitAmalfi`, `stayingSafePositano`
+  - Structure parity: `guides.json` contains `165` entries; `missingDirs=0`; `localeCountMismatch=0` across all manifest keys
+  - Status mapping: no `live` statuses in migrated metadata
+  - Idempotency: tree hash before/after rerun is unchanged (`49c27e14334ec379e49e7f5a25d99e79d1845e76`)
+  - Fidelity audit (all `165 * 18 = 2970` guide-locale pairs): `123` mismatches across `14` guide keys
+  - Top mismatch paths:
+    - `root.seo.lastUpdated` missing in migrated output (`97` files)
+    - `root.sections[*].images[*].aspectRatio` missing in migrated output (`54` files across paths)
+    - `root.sections[*].lastUpdated` missing in migrated output (`13` files)
+    - Rare field/value drift in FAQ/title fields (`5` files total)
+  - Affected guide keys: `avoidCrowdsPositano`, `ferragostoPositano`, `folkloreAmalfi`, `historyPositano`, `positanoCapriFerry`, `positanoMainBeachWalkDown`, `positanoPompeii`, `salernoPositanoFerry`, `sorrentoPositanoBus`, `sorrentoPositanoFerry`, `stayingFitPositano`, `topViewpointsAmalfi`, `travelTipsFirstTime`, `workCafes`
+- **Acceptance outcome:**
+  - PASS: manifest count parity (165), orphan-file documentation, per-guide content directory presence, 18-locale coverage, no `live` statuses, idempotency
+  - FAIL: content roundtrip fidelity is not exact (`123/2970` mismatches)
+- **Decision:**
+  - Keep `USE_CENTRAL_GUIDES=0` in all environments.
+  - Do not treat Slice 1 migration as activation-ready until parity fix + rerun closes mismatches to `0`.
 
 ---
 
@@ -679,21 +738,47 @@ apps/brikette                        ← Switches from local content to readGuid
 - **Depends on:** TASK-07
 - **Confidence:** 70% ⚠️
   - Implementation: 80% — Slice boundaries are well-defined in fact-find
-  - Approach: 65% — Sequencing between Slice 2 (translation tooling) and Slice 3 (CMS authoring) could go either way
+  - Approach: 65% — Requires user input on business priority
   - Impact: 65% — Wrong sequencing wastes effort; correct sequencing maximises value per slice
-- **Options:**
-  - **Option A:** Slice 2 (translation tooling) next — shared translation scripts unblock multi-locale publishing for any shop before CMS exists
-  - **Option B:** Slice 3 (CMS authoring) next — gives non-developer guide editing capability sooner; translation stays script-based temporarily
-  - **Option C:** Slice 2 and 3 in parallel — possible if well-coordinated, maximises throughput
-- **Recommendation:** Option A — translation tooling is lower risk, smaller scope, and immediately useful for XA shops. CMS authoring is larger and benefits from having shared tooling already extracted.
-- **Question for user:**
-  - After Slice 1 lands, what's the priority: shared translation tooling (Slice 2) or CMS guide editor (Slice 3)?
-  - Why it matters: determines which plan to write next
-  - Default if no answer: Slice 2 first (lower risk, smaller scope)
+
+#### Re-plan Update (2026-02-09)
+- **Previous confidence:** 70%
+- **Updated confidence:** 70% (cannot promote without user input — this is a business priority decision)
+  - **Evidence class:** E1 (static code/doc audit of CMS, translation scripts, XA shop state)
+  - Implementation: 80% — unchanged (slice boundaries clear)
+  - Approach: 65% — unchanged (requires user preference)
+  - Impact: 65% — unchanged (requires user decision)
+- **Investigation performed:**
+  - Repo: `apps/brikette/scripts/` — 11 translation-related scripts inventoried; 2 readily extractable, 3 parameterisable, 2 need architecture work, 2 need rewriting
+  - Repo: `apps/cms/` — zero guide management pages; product pages pattern at `cms/shop/[shop]/products/page.tsx` is the reference
+  - Repo: `data/shops/` — 14 shops exist, none are XA; XA apps have zero guides or locales directories
+  - Repo: CMS blog system is Sanity-based (`getSanityConfig`), limited to post title + status
+  - Docs: Fact-find recommends Option A (Slice 2 next)
+- **Evidence summary for each option:**
+  - **Option A (Slice 2 — translation tooling):** Lower risk (scripts, no UI). Smaller scope (~7 tasks, M effort). No dependencies. XA shops can translate as soon as first guide is written. CMS can later reuse extracted tooling.
+  - **Option B (Slice 3 — CMS authoring):** Higher risk (new editor, TipTap integration, SEO audit extraction). Larger scope (7+ tasks, L effort). Blocked by SEO audit engine extraction. Pete gets guide editor sooner.
+  - **Option C (parallel):** Maximises throughput but requires coordination. CMS might duplicate validation/translation logic that Slice 2 would extract as shared.
+- **Strengthened recommendation:** Option A — additional evidence:
+  - CMS has zero guide functionality (greenfield build, estimated 4-6 weeks)
+  - Translation scripts have ready extractables (`download-commons-image.ts`, `backfill-guides-from-en.ts`)
+  - CMS guide editor is blocked by SEO audit engine extraction (300+ lines from Brikette)
+  - XA shops at L1 need translation capability before guide authoring
+  - Slice 2 establishes `@acme/guides-core` package that Slice 3 can consume
+- **Options evaluated:**
+  - **Option A (recommended → chosen):** Slice 2 (translation tooling) next — shared translation scripts unblock multi-locale publishing for any shop before CMS exists. ~7 tasks, M effort, 2-3 weeks.
+  - **Option B:** Slice 3 (CMS authoring) next — gives non-developer guide editing capability sooner; translation stays script-based temporarily. 7+ tasks, L effort, 4-6 weeks. Blocked by SEO audit extraction.
+  - **Option C:** Slice 2 and 3 in parallel — possible if well-coordinated, maximises throughput. Risk of duplicated validation/translation logic.
 - **Acceptance:**
-  - User confirms next slice priority
-  - Plan updated with sequencing decision
-  - Next slice's `/plan-feature` is scoped accordingly
+  - ~~User confirms next slice priority~~ ✅ User chose Option A (Slice 2 first) on 2026-02-09
+  - Plan updated with sequencing decision ✅
+  - Decision logged in Decision Log ✅
+  - Next slice's `/plan-feature` is scoped accordingly — run `/plan-feature` for Slice 2 when ready
+
+#### Build Completion (2026-02-09)
+- **Status:** Complete
+- **Decision:** Slice 2 (Translation + Validation as Shared Tooling) is the next slice after Slice 1.
+- **Sequencing confirmed:** Slice 2 → Slice 3 → Slice 4 (sequential)
+- **Next action:** Run `/plan-feature` for Slice 2 and open a parity-fix follow-on before enabling `USE_CENTRAL_GUIDES`.
 
 ---
 
@@ -747,7 +832,7 @@ These are carried over from the fact-find brief. Each will get its own `/plan-fe
 
 - [ ] `GuidePublication` type exists in `@acme/types` with unified status enum
 - [ ] `GuidesRepository` interface and JSON backend exist in `@acme/platform-core`
-- [ ] `readGuideRepo("brikette")` returns all 168 guides
+- [ ] `readGuideRepo("brikette")` returns all 165 guides (manifest count; 3 orphan content files documented)
 - [ ] `getGuideContent("brikette", key, locale)` returns correct content for any guide/locale
 - [ ] Migration script produces `data/shops/brikette/` with correct structure
 - [ ] Brikette storefront renders guides identically from centralised store (behind feature flag)
@@ -761,3 +846,7 @@ These are carried over from the fact-find brief. Each will get its own `/plan-fe
 - 2026-02-06: Block types stay app-specific (`blocks: unknown[]` at platform level) — avoids coupling all businesses to Brikette's 14-block vocabulary. Each app validates blocks on read.
 - 2026-02-06: Split content storage chosen (metadata in `guides.json`, content in `guides/content/{key}/{locale}.json`) — single file would be too large for 168 guides × 18 locales.
 - 2026-02-06: Slice 1 scoped to read path + data model only — CMS authoring (Slice 3) and AI pipeline (Slice 4) planned separately to contain risk.
+- 2026-02-09: Re-plan corrected guide count from 168 to 165. Manifest snapshot has 165 entries; 168 content files exist per locale (3 orphan content files with no manifest entry). Migration processes manifest-driven 165 guides correctly.
+- 2026-02-09: TASK-08 promoted from 75% to 82% based on E2 evidence (dry-run output: 0 validation failures, 0 missing content, complete locale coverage). Remaining work: run actual migration, spot-check 10 guides, identify 3 orphan content files.
+- 2026-02-09: TASK-08 execution completed. Migration structure and idempotency checks passed, but full-fidelity audit found `123/2970` mismatches (mainly missing optional fields such as `seo.lastUpdated` and image `aspectRatio`). Central guides remain behind flag until parity fix and revalidation.
+- 2026-02-09: Slice sequencing confirmed: Slice 2 (Translation Tooling) → Slice 3 (CMS Authoring) → Slice 4 (AI Pipeline). User chose Option A. Rationale: lower risk, smaller scope, unblocks XA shops, creates shared `@acme/guides-core` for Slice 3 to consume.

@@ -118,7 +118,7 @@ apps/brikette                        ← Switches from local content to readGuid
 ## Active tasks
 
 - TASK-01: Define guide types in `@acme/types` (Complete, 2026-02-09)
-- TASK-02: Create `GuidesRepository` interface (Pending, depends on TASK-01)
+- TASK-02: Create `GuidesRepository` interface (Complete, 2026-02-09; depends on TASK-01)
 - TASK-03: Implement JSON backend (`guides.json.server.ts`) (Pending, depends on TASK-02)
 - TASK-04: Create server facade (`guides.server.ts`) (Pending, depends on TASK-03)
 - TASK-05: Add to barrel export and Prisma passthrough (Pending, depends on TASK-04)
@@ -132,7 +132,7 @@ apps/brikette                        ← Switches from local content to readGuid
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on |
 |---|---|---|---:|---:|---|---|
 | TASK-01 | IMPLEMENT | Define guide types in `@acme/types` | 90% | S | Complete (2026-02-09) | - |
-| TASK-02 | IMPLEMENT | Create `GuidesRepository` interface | 92% | S | Pending | TASK-01 |
+| TASK-02 | IMPLEMENT | Create `GuidesRepository` interface | 92% | S | Complete (2026-02-09) | TASK-01 |
 | TASK-03 | IMPLEMENT | Implement JSON backend (`guides.json.server.ts`) | 85% | M | Pending | TASK-02 |
 | TASK-04 | IMPLEMENT | Create server facade (`guides.server.ts`) | 90% | S | Pending | TASK-03 |
 | TASK-05 | IMPLEMENT | Add to barrel export and Prisma passthrough | 92% | S | Pending | TASK-04 |
@@ -246,6 +246,27 @@ apps/brikette                        ← Switches from local content to readGuid
 - **Notes / references:**
   - Pattern: `packages/platform-core/src/repositories/products.types.ts`
   - Additional methods (`getByKey`, `getContent`, `writeContent`) diverge from product pattern — justified by guide's key-based access pattern and split content storage
+
+#### Build Completion (2026-02-09)
+- **Status:** Complete
+- **Commits:** `e92cb2c6ec`
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02
+  - Cycles: 1
+  - Initial validation: FAIL (package-wide lint blocked by pre-existing unrelated `businessOs.server.ts` export-order issue)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 92%
+  - Post-validation: 92%
+  - Delta reason: Interface implementation and compile-path validation matched planning assumptions.
+- **Validation:**
+  - Ran: `pnpm exec eslint packages/platform-core/src/repositories/guides.types.ts` — PASS
+  - Ran: `pnpm --filter @acme/platform-core build` — PASS
+  - Ran: `pnpm --filter @acme/platform-core test -- packages/platform-core/src/repositories/__tests__/repoResolver.test.ts` — PASS
+- **Documentation updated:** None required
+- **Implementation notes:**
+  - Added `packages/platform-core/src/repositories/guides.types.ts` with `GuidesRepository` contract and type-only imports from `@acme/types`.
+  - Package-wide lint in this workspace is currently blocked by unrelated existing changes in `packages/platform-core/src/repositories/businessOs.server.ts`; task validation used scoped lint/build/test evidence.
 
 ---
 

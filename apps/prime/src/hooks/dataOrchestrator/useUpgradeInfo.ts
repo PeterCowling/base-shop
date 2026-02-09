@@ -5,7 +5,8 @@
  */
 
 import { useMemo } from 'react';
-import { TFunction } from 'i18next';
+import { type TFunction } from 'i18next';
+
 import { getRoomDetails } from '../../utils/roomUtils';
 
 export interface UpgradeInfo {

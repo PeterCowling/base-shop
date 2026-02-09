@@ -6,10 +6,12 @@
  */
 
 import { get, ref } from 'firebase/database';
+
 import { db } from '@/services/firebase';
-import { computeReadinessScore } from '../preArrival';
+
 import type { PreArrivalData } from '../../types/preArrival';
 import { DEFAULT_PRE_ARRIVAL } from '../../types/preArrival';
+import { computeReadinessScore } from '../preArrival';
 
 /**
  * Default values for calculations.

@@ -1,10 +1,11 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { FormField } from "../FormField";
 
 describe("FormField", () => {
-  it("renders the provided label", () => {
+  it("renders the provided label", async () => {
     render(
       <FormField label="Username">
         <input id="username" />
@@ -23,6 +24,7 @@ describe("FormField", () => {
 
     const asterisk = screen.getByText("*");
     expect(asterisk).toBeInTheDocument();
+
     expect(asterisk).toHaveAttribute("aria-hidden", "true");
   });
 

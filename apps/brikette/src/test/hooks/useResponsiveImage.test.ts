@@ -2,9 +2,10 @@ import "@testing-library/jest-dom";
 
 import { renderHook } from "@testing-library/react";
 
-import { PRESETS } from "@/config/imagePresets";
 import { useResponsiveImage } from "@acme/ui/hooks/useResponsiveImage";
 import type { BuildCfImageOptions } from "@acme/ui/lib/buildCfImageUrl";
+
+import { PRESETS } from "@/config/imagePresets";
 
 jest.mock("@acme/ui/lib/buildCfImageUrl", () => {
   const buildCfImageUrl = (src: string, opts: BuildCfImageOptions) =>

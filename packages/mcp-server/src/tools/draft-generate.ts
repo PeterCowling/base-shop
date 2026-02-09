@@ -22,6 +22,11 @@ const DATA_ROOT = join(process.cwd(), "packages", "mcp-server", "data");
 const CACHE_TTL_MS = 5 * 60 * 1000;
 const templateCache = new Map<string, { data: EmailTemplate[]; expires: number }>();
 
+/** @internal — exposed for test isolation */
+export function clearTemplateCache(): void {
+  templateCache.clear();
+}
+
 const draftGenerateSchema = z.object({
   actionPlan: z.object({
     normalized_text: z.string().min(1),
@@ -160,6 +165,45 @@ function parseToolResult<T>(result: { content: Array<{ text: string }> }): T {
   return JSON.parse(result.content[0].text) as T;
 }
 
+function stripGreeting(body: string): string {
+  return body.replace(/^Dear\s+\w+[\s\S]*?\r?\n\r?\n/i, "");
+}
+
+function stripSignature(body: string): string {
+  return body.replace(/\r?\n\r?\n\s*(Best\s+regards|Kind\s+regards|Regards)[\s\S]*$/i, "");
+}
+
+function stripThankYouOpener(body: string): string {
+  return body.replace(/^(Thank\s+you\s+for\s+[\s\S]*?\.\s*\r?\n\r?\n)/i, "");
+}
+
+function extractContentBody(body: string): string {
+  let content = stripGreeting(body);
+  content = stripSignature(content);
+  content = stripThankYouOpener(content);
+  return content.trim();
+}
+
+function assembleCompositeBody(
+  templates: EmailTemplate[],
+): string {
+  if (templates.length === 0) {
+    return "";
+  }
+
+  // Use the first template's greeting
+  const firstBody = templates[0].body;
+  const greetingMatch = firstBody.match(/^(Dear\s+\w+[\s\S]*?\r?\n\r?\n)/i);
+  const greeting = greetingMatch?.[1] ?? "Dear Guest,\r\n\r\n";
+
+  // Extract content from each template
+  const contentParts = templates.map((t) => extractContentBody(t.body));
+
+  // Combine with the first template's greeting and a single signature
+  const combined = `${greeting.trimEnd()}\n\nThank you for your email.\n\n${contentParts.join("\n\n")}\n\nBest regards,\n\nHostel Brikette`;
+  return combined;
+}
+
 export async function handleDraftGenerateTool(name: string, args: unknown) {
   if (name !== "draft_generate") {
     return errorResult(`Unknown draft generate tool: ${name}`);
@@ -185,10 +229,20 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
     });
 
     const selectedTemplate =
-      rankResult.selection === "auto" ? rankResult.candidates[0]?.template : undefined;
+      rankResult.selection !== "none" ? rankResult.candidates[0]?.template : undefined;
 
-    let bodyPlain = selectedTemplate?.body ??
-      `Thanks for your email. We will review your request and respond shortly.`;
+    const isComposite =
+      actionPlan.intents.questions.length >= 2 &&
+      rankResult.candidates.length >= 2;
+
+    let bodyPlain: string;
+    if (isComposite) {
+      const candidateTemplates = rankResult.candidates.map((c) => c.template);
+      bodyPlain = assembleCompositeBody(candidateTemplates);
+    } else {
+      bodyPlain = selectedTemplate?.body ??
+        `Thanks for your email. We will review your request and respond shortly.`;
+    }
 
     bodyPlain = ensureSignature(ensureLength(bodyPlain, actionPlan.scenario.category));
 
@@ -208,7 +262,10 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
     const qualityResponse = await handleDraftQualityTool("draft_quality_check", {
       actionPlan: {
         language: actionPlan.language,
-        intents: { questions: actionPlan.intents.questions },
+        intents: {
+          questions: actionPlan.intents.questions,
+          requests: actionPlan.intents.requests,
+        },
         workflow_triggers: { booking_monitor: actionPlan.workflow_triggers.booking_monitor },
         scenario: { category: actionPlan.scenario.category },
         thread_summary: actionPlan.thread_summary,
@@ -221,6 +278,7 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
     );
 
     return jsonResult({
+      composite: isComposite,
       draft: {
         bodyPlain,
         bodyHtml,

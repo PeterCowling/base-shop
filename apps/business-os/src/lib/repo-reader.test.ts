@@ -8,6 +8,15 @@ import { createRepoReader } from "./repo-reader";
 import { mkdirWithinRoot, writeFileWithinRoot } from "./safe-fs";
 import type { CardFrontmatter, IdeaFrontmatter } from "./types";
 
+// Mock crypto.subtle for JSDOM environment
+Object.defineProperty(globalThis, "crypto", {
+  value: {
+    subtle: {
+      digest: jest.fn().mockResolvedValue(new ArrayBuffer(32)),
+    },
+  },
+});
+
 /* eslint-disable max-lines-per-function -- BOS-08: comprehensive test coverage requires extended setup */
 describe("RepoReader", () => {
   let tempDir: string;

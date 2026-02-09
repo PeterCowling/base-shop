@@ -1,7 +1,9 @@
 import "@testing-library/jest-dom";
+
 import { renderHook } from '@testing-library/react';
-import type { ProcessedPreorder } from './useOccupantTransform';
+
 import { PREPAID_MEAL_PLANS, useMealPlanEligibility } from './useMealPlanEligibility';
+import type { ProcessedPreorder } from './useOccupantTransform';
 
 describe('useMealPlanEligibility', () => {
   const createPreorder = (

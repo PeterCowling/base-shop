@@ -16,11 +16,6 @@ import type { GuideSeoTemplateContext } from "@/routes/guides/guide-seo/types";
 jest.mock("@/routes/guides/guide-seo/template/useGuideManifestState", () => ({
   useGuideManifestState: jest.fn(() => ({
     manifestEntry: null,
-    resolvedStatus: "published",
-    checklistSnapshot: null,
-    draftUrl: null,
-    isDraftRoute: false,
-    shouldShowEditorialPanel: false,
   })),
 }));
 
@@ -97,11 +92,6 @@ describe("GuideSeoTemplate block wiring (TASK-01)", () => {
           relatedGuides: [],
           contentKey: "testGuide",
         } satisfies Partial<GuideManifestEntry>,
-        resolvedStatus: "published",
-        checklistSnapshot: null,
-        draftUrl: null,
-        isDraftRoute: false,
-        shouldShowEditorialPanel: false,
       });
 
       const { container } = render(
@@ -132,11 +122,6 @@ describe("GuideSeoTemplate block wiring (TASK-01)", () => {
 
       useGuideManifestState.mockReturnValue({
         manifestEntry: testManifestEntry,
-        resolvedStatus: "published",
-        checklistSnapshot: null,
-        draftUrl: null,
-        isDraftRoute: false,
-        shouldShowEditorialPanel: false,
       });
 
       // planChoice block sets showPlanChoice: true
@@ -177,11 +162,6 @@ describe("GuideSeoTemplate block wiring (TASK-01)", () => {
 
       useGuideManifestState.mockReturnValue({
         manifestEntry: testManifestEntry,
-        resolvedStatus: "published",
-        checklistSnapshot: null,
-        draftUrl: null,
-        isDraftRoute: false,
-        shouldShowEditorialPanel: false,
       });
 
       const { container } = render(
@@ -210,11 +190,6 @@ describe("GuideSeoTemplate block wiring (TASK-01)", () => {
 
       useGuideManifestState.mockReturnValue({
         manifestEntry: testManifestEntry,
-        resolvedStatus: "published",
-        checklistSnapshot: null,
-        draftUrl: null,
-        isDraftRoute: false,
-        shouldShowEditorialPanel: false,
       });
 
       const { container } = render(
@@ -239,11 +214,6 @@ describe("GuideSeoTemplate block wiring (TASK-01)", () => {
 
       useGuideManifestState.mockReturnValue({
         manifestEntry: testManifestEntry,
-        resolvedStatus: "published",
-        checklistSnapshot: null,
-        draftUrl: null,
-        isDraftRoute: false,
-        shouldShowEditorialPanel: false,
       });
 
       const { container } = render(
@@ -274,11 +244,6 @@ describe("GuideSeoTemplate block wiring (TASK-01)", () => {
 
       useGuideManifestState.mockReturnValue({
         manifestEntry: testManifestEntry,
-        resolvedStatus: "published",
-        checklistSnapshot: null,
-        draftUrl: null,
-        isDraftRoute: false,
-        shouldShowEditorialPanel: false,
       });
 
       const { container } = render(

@@ -2240,4 +2240,29 @@ export default [
       ],
     },
   },
+
+  /* ▸ Prime guest portal: early development, DS rules disabled (matches .eslintrc.cjs intent).
+   *   Must be after the catch-all complexity/max-lines block so "off" wins. */
+  {
+    files: ["apps/prime/**"],
+    rules: {
+      ...offAllDsRules,
+      "max-lines-per-function": "off",
+      "complexity": "off",
+    },
+  },
+  /* ▸ Business OS guide authoring: internal tool — relax DS rules.
+   *   Must be after catch-all blocks so "off" wins. */
+  {
+    files: [
+      "apps/business-os/src/app/guides/**/*.{ts,tsx}",
+      "apps/business-os/src/app/api/guides/**/*.{ts,tsx}",
+      "apps/business-os/src/lib/guide-authoring/**/*.{ts,tsx}",
+    ],
+    rules: {
+      ...offAllDsRules,
+      "max-lines-per-function": "off",
+      "complexity": "off",
+    },
+  },
 ];

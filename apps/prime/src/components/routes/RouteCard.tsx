@@ -4,6 +4,8 @@
  * Card displaying a route option with transport mode, duration, and cost.
  */
 
+import { type FC, memo, type ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   AlertTriangle,
   Anchor,
@@ -15,8 +17,7 @@ import {
   Star,
   Train,
 } from 'lucide-react';
-import { FC, memo, ReactNode } from 'react';
-import { useTranslation } from 'react-i18next';
+
 import type { Route, TransportMode } from '../../types/routes';
 
 interface RouteCardProps {

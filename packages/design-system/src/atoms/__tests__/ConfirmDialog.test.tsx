@@ -2,6 +2,7 @@ import "../../../../../../test/resetNextMocks";
 
 import { configure, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 
 import { TranslationsProvider } from "@acme/i18n";
 import en from "@acme/i18n/en.json";
@@ -12,8 +13,8 @@ configure({ testIdAttribute: "data-testid" });
 
 describe("ConfirmDialog", () => {
   // TC-01: Dialog renders when open=true → title and buttons visible
-  it("renders dialog when open is true", () => {
-    render(
+  it("renders dialog when open is true", async () => {
+    const { container } = render(
       <TranslationsProvider messages={en}>
         <ConfirmDialog
           open={true}
@@ -51,6 +52,7 @@ describe("ConfirmDialog", () => {
     await userEvent.click(confirmButton);
 
     expect(handleConfirm).toHaveBeenCalledTimes(1);
+
   });
 
   // TC-03: Cancel button fires onOpenChange(false) → dialog closes
@@ -73,6 +75,7 @@ describe("ConfirmDialog", () => {
     await userEvent.click(cancelButton);
 
     expect(handleOpenChange).toHaveBeenCalledWith(false);
+
   });
 
   // TC-04: Escape key cancels → dialog closes without firing onConfirm

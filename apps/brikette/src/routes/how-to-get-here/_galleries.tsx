@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
-import { ZoomIn } from "@/icons";
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@acme/design-system/primitives";
-
 import { CfResponsiveImage } from "@acme/ui/atoms/CfResponsiveImage";
+
+import { ZoomIn } from "@/icons";
 import type { RouteDefinition } from "@/lib/how-to-get-here/definitions";
 import type { RouteContent } from "@/lib/how-to-get-here/schema";
 

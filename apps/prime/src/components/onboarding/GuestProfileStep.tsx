@@ -11,20 +11,23 @@
  * - Pace: relaxed or active
  */
 
-import { Button } from '@acme/design-system/primitives';
-import logger from '@/utils/logger';
-import { Check, Moon, Sparkles, Sun, Users, Zap } from 'lucide-react';
-import { FC, useCallback, useState } from 'react';
+import { type FC, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useGuestProgressData } from '../../hooks/dataOrchestrator/useGuestProgressData';
-import { useGuestProfileMutator } from '../../hooks/mutator/useGuestProfileMutator';
+import { Check, Moon, Sparkles, Sun, Users, Zap } from 'lucide-react';
+
+import { Button } from '@acme/design-system/primitives';
+
+import logger from '@/utils/logger';
+
 import { useCompletedTaskMutator } from '../../hooks/mutator/useCompletedTaskMutator';
+import { useGuestProfileMutator } from '../../hooks/mutator/useGuestProfileMutator';
 import type {
   GuestIntent,
   GuestPace,
   GuestProfile,
 } from '../../types/guestProfile';
 import { DEFAULT_GUEST_PROFILE } from '../../types/guestProfile';
+
 import OnboardingLayout from './OnboardingLayout';
 
 interface GuestProfileStepProps {
@@ -99,6 +102,7 @@ const GuestProfileStep: FC<GuestProfileStepProps> = ({
         pace,
         socialOptIn: intent !== 'quiet',
         chatOptIn: false,
+        blockedUsers: [],
         createdAt: now,
         updatedAt: now,
       };

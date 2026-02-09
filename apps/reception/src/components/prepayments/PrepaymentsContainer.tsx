@@ -1,4 +1,6 @@
 // src/components/prepayments/PrepaymentsContainer.tsx
+"use client";
+
 import { memo, useCallback, useMemo, useState } from "react";
 
 import { useAuth } from "../../context/AuthContext";

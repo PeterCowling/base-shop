@@ -1,8 +1,9 @@
-import { describe, expect, it } from "@jest/globals";
 import { execSync } from "node:child_process";
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
+
+import { describe, expect, it } from "@jest/globals";
 
 /**
  * Regression test for tsx runtime resolution of workspace packages.

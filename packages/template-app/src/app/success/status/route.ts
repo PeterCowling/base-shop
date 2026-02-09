@@ -1,14 +1,15 @@
 // packages/template-app/src/app/success/status/route.ts
 import { type NextRequest, NextResponse } from "next/server";
+
 import {
   readOrderById,
   readOrderBySessionId,
-} from "@platform-core/repositories/rentalOrders.server";
+} from "@acme/platform-core/repositories/rentalOrders.server";
 import {
   getOrCreateRequestId,
   getShopIdFromHeaders,
   REQUEST_ID_HEADER,
-} from "@platform-core/shopContext";
+} from "@acme/platform-core/shopContext";
 
 export const runtime = "nodejs";
 

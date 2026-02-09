@@ -4,6 +4,8 @@
  * Component for confirming guest arrival time and travel method.
  */
 
+import { type FC, memo, type ReactNode, useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   AlertTriangle,
   Anchor,
@@ -16,8 +18,7 @@ import {
   Plane,
   Train,
 } from 'lucide-react';
-import { FC, memo, ReactNode, useCallback, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+
 import type { EtaMethod } from '../../types/preArrival';
 
 interface EtaConfirmationProps {

@@ -3,7 +3,7 @@
 // Single-purpose stub: Path of the Gods
 // -----------------------------------------------------------------------------
 
-/* eslint-disable ds/no-hardcoded-copy -- TECH-000 */
+ 
 
 export const pathOfTheGods = {
   linkLabel: "Path of the Gods from Positano",
@@ -13,5 +13,5 @@ export const pathOfTheGods = {
   },
 } as const;
 
-/* eslint-enable ds/no-hardcoded-copy -- TECH-000 */
+ 
 

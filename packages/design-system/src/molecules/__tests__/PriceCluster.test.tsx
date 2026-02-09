@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom";
 
 import { render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { PriceCluster } from "../PriceCluster";
 
@@ -9,11 +10,12 @@ jest.mock("@acme/platform-core/contexts/CurrencyContext", () => ({
 }));
 
 describe("PriceCluster", () => {
-  it("renders price without discount when compare is missing or lower", () => {
-    const { rerender } = render(<PriceCluster price={100} />);
+  it("renders price without discount when compare is missing or lower", async () => {
+    const { container,  rerender } = render(<PriceCluster price={100} />);
 
     expect(screen.getByText("€100.00")).toBeInTheDocument();
     expect(screen.queryByText(/-\d+%/)).toBeNull();
+    expect(await axe(container)).toHaveNoViolations();
 
     rerender(<PriceCluster price={100} compare={80} />);
 

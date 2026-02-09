@@ -1,6 +1,7 @@
 import { renderHook, waitFor } from '@testing-library/react';
-import { useFetchCompletedTasks } from '../useFetchCompletedTasksData';
+
 import useUuid from '../../useUuid';
+import { useFetchCompletedTasks } from '../useFetchCompletedTasksData';
 
 type MockSnapshot = {
   exists: () => boolean;

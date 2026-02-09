@@ -52,14 +52,19 @@ jobs:
     with:
       app-filter: "@apps/xa-c"
       build-cmd: >
-        pnpm --filter @apps/xa-c... build &&
+        pnpm exec turbo run build --filter=@apps/xa-c^... &&
+        cd apps/xa &&
+        node scripts/build-xa.mjs &&
+        pnpm exec opennextjs-cloudflare build &&
+        cd ../.. &&
         node scripts/privacy/leakage-scan.mjs
+      artifact-path: "apps/xa/.open-next"
       deploy_cmd: >
         cd apps/xa &&
-        pnpm exec next-on-pages deploy --project-name ${{ vars.XA_STAGING_PAGES_PROJECT || 'private-preview' }} --branch staging
+        pnpm exec wrangler deploy
       deploy_enabled: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging') }}
-      project-name: ${{ vars.XA_STAGING_PAGES_PROJECT || 'private-preview' }}
+      project-name: ${{ vars.XA_STAGING_PROJECT || 'xa-site' }}
       environment-name: "xa-staging"
-      environment-url: ${{ format('https://staging.{0}.pages.dev', vars.XA_STAGING_PAGES_PROJECT || 'private-preview') }}
+      environment-url: ${{ format('https://{0}.{1}.workers.dev', vars.XA_STAGING_PROJECT || 'xa-site', vars.CF_ACCOUNT_SUBDOMAIN || 'peter-cowling1976') }}
       healthcheck-args: "--staging"
     secrets: inherit

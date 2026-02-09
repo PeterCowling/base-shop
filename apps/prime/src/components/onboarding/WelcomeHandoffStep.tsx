@@ -6,12 +6,16 @@
  * and smoothly hands off to the main app experience.
  */
 
-import { Button } from '@acme/design-system/primitives';
-import logger from '@/utils/logger';
-import { CheckCircle, Compass, MessageCircle, Sparkles } from 'lucide-react';
-import { FC, useCallback, useState } from 'react';
+import { type FC, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { CheckCircle, Compass, MessageCircle, Sparkles } from 'lucide-react';
+
+import { Button } from '@acme/design-system/primitives';
+
+import logger from '@/utils/logger';
+
 import { useCompletedTaskMutator } from '../../hooks/mutator/useCompletedTaskMutator';
+
 import OnboardingLayout from './OnboardingLayout';
 
 interface WelcomeHandoffStepProps {

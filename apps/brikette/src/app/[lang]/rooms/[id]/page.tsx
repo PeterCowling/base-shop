@@ -3,11 +3,12 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
+import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
+
 import { toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
 import roomsData, { type RoomId } from "@/data/roomsData";
-import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { getSlug } from "@/utils/slug";
 

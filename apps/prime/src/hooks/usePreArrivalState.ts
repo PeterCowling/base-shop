@@ -6,6 +6,7 @@
  */
 
 import { useCallback, useMemo } from 'react';
+
 import { getGuestArrivalState, shouldShowPreArrivalDashboard } from '../lib/preArrival';
 import type {
   ArrivalConfidence,
@@ -15,6 +16,7 @@ import type {
   PreArrivalData,
 } from '../types/preArrival';
 import { DEFAULT_PRE_ARRIVAL } from '../types/preArrival';
+
 import { usePreArrivalMutator } from './mutator/usePreArrivalMutator';
 import { useFetchPreArrivalData } from './pureData/useFetchPreArrivalData';
 

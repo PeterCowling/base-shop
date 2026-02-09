@@ -3,8 +3,9 @@
 // Component for lazy loading i18n namespaces
 // Wraps route components to load required translations on-demand
 
-import { loadNamespaceGroup, NAMESPACE_GROUPS } from '@/i18n.optimized';
 import { useEffect, useState } from 'react';
+
+import { loadNamespaceGroup, type NAMESPACE_GROUPS } from '@/i18n.optimized';
 
 interface LazyTranslationsProps {
   namespaceGroup: keyof typeof NAMESPACE_GROUPS;

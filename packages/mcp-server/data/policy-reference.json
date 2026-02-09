@@ -1,0 +1,120 @@
+{
+  "version": "2026-02-08",
+  "documents": {
+    "room_booking": {
+      "title": "Room Booking Terms & Conditions",
+      "sections": {
+        "check_in": {
+          "time": "3:00 PM – 10:00 PM",
+          "early_arrival": "Guests may arrive from 10:30 AM for pre-check-in (bag drop, WiFi, bar/terrace access)",
+          "late_check_in": "After 10:30 PM by prior arrangement; out-of-hours check-in process provided"
+        },
+        "check_out": {
+          "time": "10:00 AM",
+          "late_checkout": "Available until 12:00 PM for €40 fee, subject to availability",
+          "post_checkout_amenities": "Bag storage and facilities available until 3:30 PM on departure day"
+        },
+        "booking_limits": {
+          "max_nights": 7,
+          "max_guests_per_room": 5
+        },
+        "cancellation": {
+          "refundable": "Free cancellation up to 72 hours before 3:00 PM on check-in day",
+          "non_refundable": "Pre-paid, non-refundable bookings cannot be cancelled or refunded",
+          "admin_fee": "Administrative fee may apply for cancellations"
+        },
+        "no_show": {
+          "charge": "Maximum of first night rate or deposit amount",
+          "booking_status": "Booking cancelled; cannot be reinstated"
+        },
+        "modifications": {
+          "date_change": "Subject to availability; contact hostel to request",
+          "room_change": "Subject to availability; contact hostel to request",
+          "extension": "Subject to availability and 7-night maximum stay limit"
+        },
+        "deposit": {
+          "keycard_linen": "€10 deposit collected at check-in, refundable at checkout"
+        },
+        "city_tax": {
+          "note": "Collected at check-in as per local regulations"
+        }
+      }
+    },
+    "luggage_storage": {
+      "title": "Luggage Storage Terms & Conditions",
+      "sections": {
+        "general": {
+          "cost": "Free of charge",
+          "liability": "Hostel accepts no liability for stored luggage"
+        },
+        "departure_day": {
+          "hours": "7:30 AM – 3:30 PM",
+          "after_hours": "Porter service available after 3:30 PM at €15 per bag"
+        },
+        "arrival_day": {
+          "hours": "10:30 AM – 10:00 PM",
+          "note": "Guests may store bags before check-in time"
+        },
+        "porter_service": {
+          "cost": "€15 per bag",
+          "availability": "After 3:30 PM on departure day"
+        }
+      }
+    },
+    "breakfast": {
+      "title": "Breakfast Terms & Conditions",
+      "sections": {
+        "eligibility": {
+          "rule": "Direct bookings only",
+          "ota_excluded": "Bookings via OTAs (Hostelworld, Booking.com, etc.) do not include breakfast"
+        },
+        "hours": {
+          "service": "8:00 AM – 10:30 AM daily"
+        },
+        "allowance": {
+          "per_guest": "1 breakfast per guest per day"
+        },
+        "ordering": {
+          "method": "Order via the hostel system",
+          "collection": "Must be collected within 30 minutes of ordering"
+        },
+        "restrictions": {
+          "on_site_only": true,
+          "no_takeaway": true
+        }
+      }
+    },
+    "wifi": {
+      "title": "WiFi Terms & Conditions",
+      "sections": {
+        "availability": {
+          "period": "From check-in to checkout",
+          "cost": "Free of charge"
+        },
+        "usage": {
+          "supported": "Web browsing, email, and general internet use",
+          "not_guaranteed": "Streaming, video calls, or high-bandwidth activities",
+          "note": "Connection speeds may vary; no minimum speed guaranteed"
+        },
+        "security": {
+          "disclaimer": "Hostel does not guarantee network security; guests use at own risk"
+        }
+      }
+    }
+  },
+  "house_rules": {
+    "quiet_hours": {
+      "start": "23:45",
+      "end": "08:00"
+    },
+    "visitors": {
+      "allowed_areas": "Communal areas only",
+      "hours": "10:30 AM – 11:00 PM",
+      "id_required": true
+    },
+    "alcohol": {
+      "rule": "Outside alcohol not permitted on premises",
+      "reason": "Licensed property; alcohol must be purchased on-site"
+    }
+  }
+}

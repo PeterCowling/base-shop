@@ -1,5 +1,7 @@
 import { render, screen } from '@testing-library/react';
 
+import SocialHighlightsCard from '../SocialHighlightsCard';
+
 // Mock activities store
 let mockActivities: Record<string, any> = {};
 
@@ -19,8 +21,6 @@ jest.mock('next/link', () => ({
     </a>
   ),
 }));
-
-import SocialHighlightsCard from '../SocialHighlightsCard';
 
 describe('SocialHighlightsCard', () => {
   beforeEach(() => {

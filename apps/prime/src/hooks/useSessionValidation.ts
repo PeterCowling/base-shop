@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+
 import { validateGuestToken } from '../lib/auth/guestSessionGuard';
 
 interface UseSessionValidationOptions {

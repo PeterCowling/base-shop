@@ -3,6 +3,31 @@ import { describe, expect, it } from "@jest/globals";
 
 import { generateFingerprint, trimStack } from "../fingerprint";
 
+// Mock crypto.subtle for JSDOM environment with realistic hash function
+Object.defineProperty(globalThis, "crypto", {
+  value: {
+    subtle: {
+      digest: jest.fn().mockImplementation(async (_algorithm: string, data: BufferSource) => {
+        // Simple hash based on input data to ensure different inputs produce different outputs
+        const view = new Uint8Array(data as ArrayBuffer);
+        let hash = 0;
+        for (let i = 0; i < view.length; i++) {
+          hash = ((hash << 5) - hash) + view[i];
+          hash = hash & hash; // Convert to 32bit integer
+        }
+
+        // Create a 32-byte buffer filled with values derived from the hash
+        const result = new ArrayBuffer(32);
+        const resultView = new Uint8Array(result);
+        for (let i = 0; i < 32; i++) {
+          resultView[i] = (hash + i) & 0xff;
+        }
+        return result;
+      }),
+    },
+  },
+});
+
 describe("generateFingerprint", () => {
   it("generates stable fingerprints for same error", async () => {
     const error = new Error("Test error");

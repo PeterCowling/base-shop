@@ -1,15 +1,17 @@
 import "../../../../../../../test/resetNextMocks";
 
 import { render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { Separator } from "../separator";
 
 describe("Separator", () => {
   // TC-01: Horizontal by default
-  it("renders horizontal by default", () => {
-    render(<Separator data-cy="sep" />);
+  it("renders horizontal by default", async () => {
+    const { container } = render(<Separator data-cy="sep" />);
     const el = screen.getByTestId("sep");
     expect(el).toHaveAttribute("data-orientation", "horizontal");
+
     expect(el).toHaveClass("h-[1px]", "w-full");
   });
 

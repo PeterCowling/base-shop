@@ -2,6 +2,7 @@ import { memo, useEffect, useState } from "react";
 import Link from "next/link";
 import clsx from "clsx";
 import type { TFunction } from "i18next";
+
 import { ChevronRight } from "@/icons";
 
 import { resolveHref } from "../richText";

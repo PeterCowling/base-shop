@@ -7,9 +7,10 @@
 
 'use client';
 
-import { FC, memo, useCallback, useState } from 'react';
+import { type FC, memo, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { downloadIcs, type CheckInEventData } from '../../lib/calendar';
+
+import { type CheckInEventData,downloadIcs } from '../../lib/calendar';
 
 interface AddToCalendarButtonProps {
   /** Check-in date (ISO format YYYY-MM-DD) */

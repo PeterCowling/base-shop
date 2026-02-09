@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
-import { Bus, CalendarDays, Clock, CreditCard, FileText, IdCard, Info, MapPin, Scale, ShieldCheck, Undo2, Wrench } from "@/icons";
 
 import HelpCentreNavUI, { type AssistanceNavItem } from "@acme/ui/organisms/HelpCentreNav";
 
@@ -14,7 +13,8 @@ import { ASSISTANCE_GUIDE_KEYS } from "@/data/assistanceGuideKeys";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { useHelpDrawer } from "@/hooks/useHelpDrawer";
 import type { AppLanguage } from "@/i18n.config";
-import { guideSlug, type GuideKey } from "@/routes.guides-helpers";
+import { Bus, CalendarDays, Clock, CreditCard, FileText, IdCard, Info, MapPin, Scale, ShieldCheck, Undo2, Wrench } from "@/icons";
+import { type GuideKey,guideSlug } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
 
 /* ── static helpers ─────────────────────────────────────────── */

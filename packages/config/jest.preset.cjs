@@ -32,6 +32,7 @@ const {
 } = require(path.join(workspaceRoot, "jest.config.helpers.cjs"));
 const baseModuleNameMapper = require(path.join(workspaceRoot, "jest.moduleMapper.cjs"));
 const coverageDefaults = require(path.join(workspaceRoot, "jest.coverage.cjs"));
+const { getTier } = require(path.join(__dirname, "coverage-tiers.cjs"));
 
 // Prevent Browserslist from resolving config files in temporary Jest paths.
 process.env.BROWSERSLIST = process.env.BROWSERSLIST || "defaults";
@@ -165,6 +166,39 @@ function createJestPreset(options = {}) {
     }
   }
 
+  // Reorder platform-core mappings to ensure specific patterns come before catch-all
+  {
+    const platformCoreOverrides = {};
+    const platformCoreCatchAll = {};
+
+    for (const key of [
+      "^@acme/platform-core$",
+      "^@acme/platform-core/repositories/pages$",
+      "^@acme/platform-core/repositories/pages/index.server$",
+      "^@acme/platform-core/contexts/CurrencyContext$",
+    ]) {
+      if (key in moduleNameMapper) platformCoreOverrides[key] = moduleNameMapper[key];
+    }
+
+    const catchAllJsKey = "^@acme/platform-core/(.*)\\.js$";
+    const catchAllKey = "^@acme/platform-core/(.*)$";
+    if (catchAllJsKey in moduleNameMapper) {
+      platformCoreCatchAll[catchAllJsKey] = moduleNameMapper[catchAllJsKey];
+    }
+    if (catchAllKey in moduleNameMapper) {
+      platformCoreCatchAll[catchAllKey] = moduleNameMapper[catchAllKey];
+    }
+
+    if (Object.keys(platformCoreOverrides).length > 0 || Object.keys(platformCoreCatchAll).length > 0) {
+      const pruned = Object.fromEntries(
+        Object.entries(moduleNameMapper).filter(
+          ([key]) => !(key in platformCoreOverrides) && !(key in platformCoreCatchAll),
+        ),
+      );
+      moduleNameMapper = { ...platformCoreOverrides, ...pruned, ...platformCoreCatchAll };
+    }
+  }
+
   // Build coverage configuration
   const collectCoverageFrom = [...coverageDefaults.collectCoverageFrom];
   const coveragePathIgnorePatterns = [
@@ -178,9 +212,22 @@ function createJestPreset(options = {}) {
   const collectCoverage = wantsCoverage
     ? coverageDefaults.collectCoverage
     : false;
-  let coverageThreshold = customCoverageThreshold
-    ? JSON.parse(JSON.stringify(customCoverageThreshold))
-    : JSON.parse(JSON.stringify(coverageDefaults.coverageThreshold));
+  // Auto-detect coverage tier from package.json name if no custom threshold provided
+  let coverageThreshold;
+  if (customCoverageThreshold) {
+    coverageThreshold = JSON.parse(JSON.stringify(customCoverageThreshold));
+  } else {
+    let detectedTier;
+    try {
+      const pkg = require(path.join(process.cwd(), "package.json"));
+      if (pkg && typeof pkg.name === "string" && pkg.name.trim()) {
+        detectedTier = getTier(pkg.name.trim());
+      }
+    } catch {
+      // fall back to default
+    }
+    coverageThreshold = JSON.parse(JSON.stringify(detectedTier || coverageDefaults.coverageThreshold));
+  }
 
   // Relax coverage if requested or for targeted runs
   const isTargetedRun =

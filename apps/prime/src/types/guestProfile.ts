@@ -37,6 +37,7 @@ export type ProfileStatus = 'complete' | 'skipped' | 'partial';
  * @property pace - Relaxed vs active preference
  * @property socialOptIn - Opted into hostel activities/chat
  * @property chatOptIn - Opted into group chat specifically
+ * @property blockedUsers - UUIDs of guests blocked from direct messaging
  * @property createdAt - Timestamp when profile was created
  * @property updatedAt - Timestamp of last update
  */
@@ -49,6 +50,7 @@ export interface GuestProfile {
   pace: GuestPace;
   socialOptIn: boolean;
   chatOptIn: boolean;
+  blockedUsers: string[];
   createdAt: number;
   updatedAt: number;
 }
@@ -65,6 +67,7 @@ export const DEFAULT_GUEST_PROFILE: Omit<GuestProfile, 'bookingId' | 'createdAt'
   pace: 'relaxed',
   socialOptIn: false,
   chatOptIn: false,
+  blockedUsers: [],
 };
 
 /**

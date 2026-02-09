@@ -1,12 +1,13 @@
 import "../../../../../../../test/resetNextMocks";
 
 import { render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { ScrollArea } from "../scroll-area";
 
 describe("ScrollArea", () => {
   // TC-01: Renders children
-  it("renders children content", () => {
+  it("renders children content", async () => {
     render(
       <ScrollArea>
         <p>Scrollable content</p>
@@ -24,6 +25,7 @@ describe("ScrollArea", () => {
     );
     const root = container.firstChild as HTMLElement;
     expect(root).toHaveClass("relative", "overflow-hidden", "h-48", "w-full");
+
   });
 
   // TC-03: Has viewport element

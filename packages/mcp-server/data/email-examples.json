@@ -287,6 +287,214 @@
       "body": "What time is check-in and how do we reach you by ferry?",
       "classification_reason": "Multiple distinct questions in one email.",
       "is_ambiguous": false
+    },
+    {
+      "id": "breakfast-eligibility-1",
+      "category": "breakfast",
+      "subject": "Breakfast question",
+      "body": "Hi, is breakfast included in my booking? What time is it served?",
+      "classification_reason": "Question about breakfast eligibility and hours.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "breakfast-ota-1",
+      "category": "breakfast",
+      "subject": "Breakfast not showing",
+      "body": "I booked through Hostelworld and it doesn't mention breakfast. Is it included?",
+      "classification_reason": "OTA booking asking about breakfast inclusion.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "breakfast-hours-1",
+      "category": "breakfast",
+      "subject": "Morning meal",
+      "body": "What time does breakfast start and end? We have an early bus to catch.",
+      "classification_reason": "Specific question about breakfast service hours.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "luggage-before-1",
+      "category": "luggage",
+      "subject": "Bag storage",
+      "body": "We arrive at 9am but check-in isn't until 3pm. Can we leave our bags somewhere?",
+      "classification_reason": "Pre-check-in luggage storage question.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "luggage-after-1",
+      "category": "luggage",
+      "subject": "Luggage after checkout",
+      "body": "Our ferry doesn't leave until 6pm. Can we store our suitcases after we check out?",
+      "classification_reason": "Post-checkout luggage storage with late collection.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "luggage-porter-1",
+      "category": "luggage",
+      "subject": "Late bag pickup",
+      "body": "Is there someone who can bring our bags down after 4pm? We're happy to pay extra.",
+      "classification_reason": "Porter service inquiry for late luggage collection.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "wifi-1",
+      "category": "wifi",
+      "subject": "Internet access",
+      "body": "Do you have WiFi at the hostel? I need to do some remote work during my stay.",
+      "classification_reason": "WiFi availability question.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "wifi-streaming-1",
+      "category": "wifi",
+      "subject": "WiFi speed",
+      "body": "Is the internet fast enough for video calls and streaming?",
+      "classification_reason": "WiFi capability question about bandwidth.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "booking-change-dates-1",
+      "category": "booking-changes",
+      "subject": "Change dates",
+      "body": "Hi, I need to change my booking from June 15-18 to June 20-23. Is that possible?",
+      "classification_reason": "Date modification request.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "booking-change-room-1",
+      "category": "booking-changes",
+      "subject": "Room upgrade",
+      "body": "Can I switch from a dorm bed to a private room? Happy to pay the difference.",
+      "classification_reason": "Room type change request.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "booking-extension-1",
+      "category": "booking-changes",
+      "subject": "Extend stay",
+      "body": "We're loving Positano! Can we add two more nights to our booking?",
+      "classification_reason": "Booking extension request.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "checkout-late-1",
+      "category": "checkout",
+      "subject": "Late checkout",
+      "body": "Is it possible to check out later than 10am? Our train isn't until 2pm.",
+      "classification_reason": "Late checkout request.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "checkout-process-1",
+      "category": "checkout",
+      "subject": "Checkout procedure",
+      "body": "What do we need to do at checkout? Where do we return the keycard?",
+      "classification_reason": "Checkout process question.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "house-rules-quiet-1",
+      "category": "house-rules",
+      "subject": "Noise complaint",
+      "body": "What are the quiet hours? The room next door was loud until 2am last night.",
+      "classification_reason": "Quiet hours inquiry combined with noise issue.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "house-rules-visitors-1",
+      "category": "house-rules",
+      "subject": "Visiting friends",
+      "body": "Can my friend who isn't staying at the hostel come visit me? Are there visiting hours?",
+      "classification_reason": "Visitor policy question.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "promotions-coupon-1",
+      "category": "promotions",
+      "subject": "Coupon BRIK2025",
+      "body": "Hi, I've just booked my stay and would like to claim the extra 15% discount with coupon BRIK2025. My reservation reference is: QY3JM7. Thanks!",
+      "classification_reason": "Coupon code redemption request with reservation reference.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "promotions-coupon-2",
+      "category": "promotions",
+      "subject": "Discount code",
+      "body": "I saw a discount code on your website. How do I apply it to my booking?",
+      "classification_reason": "Coupon/discount inquiry.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "employment-application-1",
+      "category": "employment",
+      "subject": "Job Application",
+      "body": "Hello, I'm a 23-year-old from Sweden and I'd love to work at your hostel this summer. I have hospitality experience and speak English and Swedish.",
+      "classification_reason": "Unsolicited job application.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "employment-volunteer-1",
+      "category": "employment",
+      "subject": "Voluntary work July",
+      "body": "Hello! I'm looking for a work exchange opportunity at your hostel for July. I can help with reception or cleaning.",
+      "classification_reason": "Volunteer/work exchange request.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "employment-reception-1",
+      "category": "employment",
+      "subject": "Application – 2026 Season",
+      "body": "Dear Team, I would love to introduce myself. I am interested in a receptionist position for the 2026 season. Please find my CV attached.",
+      "classification_reason": "Formal job application for seasonal position.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "lost-found-1",
+      "category": "lost-found",
+      "subject": "Lost item",
+      "body": "Hi, I left my right AirPod there. Can you let me know if you find it please.",
+      "classification_reason": "Lost item report from departed guest.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "lost-found-shipping-1",
+      "category": "lost-found",
+      "subject": "Ship lost item",
+      "body": "Is there any way you can ship my wallet to me? I will pay for shipping.",
+      "classification_reason": "Request to ship a lost item.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "booking-inquiry-1",
+      "category": "faq",
+      "subject": "Booking Inquiry!",
+      "body": "Hi there! I am planning a trip to Italy next summer and am interested in staying at your hostel. When do bookings open?",
+      "classification_reason": "Pre-booking availability inquiry.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "room-capacity-1",
+      "category": "faq",
+      "subject": "Room capacity",
+      "body": "Just to confirm - I can fit 8 people in this one room correct? I booked a dorm and it says the entire room.",
+      "classification_reason": "Room capacity and booking clarification.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "facilities-laundry-1",
+      "category": "faq",
+      "subject": "Laundry",
+      "body": "Is laundry available at the hostel?",
+      "classification_reason": "Facilities question about laundry.",
+      "is_ambiguous": false
+    },
+    {
+      "id": "facilities-general-1",
+      "category": "faq",
+      "subject": "Hostel amenities",
+      "body": "What facilities do you have at the hostel? Is there a kitchen or common area?",
+      "classification_reason": "General facilities inquiry.",
+      "is_ambiguous": false
     }
   ]
 }

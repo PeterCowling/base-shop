@@ -1,7 +1,7 @@
 // packages/template-app/src/app/[lang]/success/page.tsx
-import type { Locale } from "@i18n/locales";
-import { resolveLocale } from "@i18n/locales";
-import { useTranslations as getServerTranslations } from "@i18n/useTranslations.server";
+import type { Locale } from "@acme/i18n/locales";
+import { resolveLocale } from "@acme/i18n/locales";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 
 import SuccessFinalization from "../../success/SuccessFinalization.client";
 

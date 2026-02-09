@@ -2,6 +2,7 @@ import "@testing-library/jest-dom";
 
 import React from "react";
 import { render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import type { Currency } from "@acme/platform-core/contexts/CurrencyContext";
 
@@ -29,7 +30,7 @@ jest.mock("@acme/platform-core/contexts/CurrencyContext", () => ({
 
 describe("Price", () => {
   it("uses context currency when no currency prop provided", () => {
-    render(
+    const { container } = render(
       <MockCurrencyProvider currency="EUR">
         <Price amount={1234.56} />
       </MockCurrencyProvider>,

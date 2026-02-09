@@ -1,14 +1,16 @@
 import "../../../../../../test/resetNextMocks";
 
 import { render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { ColorSwatch } from "../ColorSwatch";
 
 describe("ColorSwatch", () => {
-  it("applies background color", () => {
-    render(<ColorSwatch color="red" data-cy="swatch" />);
+  it("applies background color", async () => {
+    const { container } = render(<ColorSwatch color="red" data-cy="swatch" />);
     const button = screen.getByTestId("swatch");
     expect(button).toHaveStyle({ backgroundColor: "red" });
+
   });
 
   it("applies ring styles when selected", () => {

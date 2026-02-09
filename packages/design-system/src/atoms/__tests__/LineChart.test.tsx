@@ -1,6 +1,7 @@
 import "../../../../../../test/resetNextMocks";
 
 import { configure,render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { LineChart } from "../LineChart";
 
@@ -21,10 +22,11 @@ describe("LineChart", () => {
   };
   const options = { responsive: true };
 
-  it("renders line chart with provided props", () => {
-    render(<LineChart data={data} options={options} className="custom" />);
+  it("renders line chart with provided props", async () => {
+    const { container } = render(<LineChart data={data} options={options} className="custom" />);
     const chart = screen.getByTestId("line-chart");
     expect(chart).toBeInTheDocument();
+
     expect(chart).toHaveClass("custom");
     expect(chart).toHaveAttribute("data-testid", "line-chart");
     expect(chart).toHaveAttribute("data-cy", "line-chart");

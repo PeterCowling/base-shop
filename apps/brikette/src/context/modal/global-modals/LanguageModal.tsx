@@ -11,13 +11,13 @@ import type { LanguageModalCopy, LanguageOption } from "@acme/ui/organisms/modal
 
 import { IS_DEV } from "@/config/env";
 import { useTheme } from "@/hooks/useTheme";
-import { guideSlug, resolveGuideKeyFromSlug, type GuideKey } from "@/routes.guides-helpers";
+import { type GuideKey,guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
 import { INTERNAL_SEGMENT_BY_KEY } from "@/routing/sectionSegments";
-import { SLUG_KEYS, SLUGS, type SlugMap } from "@/slug-map";
+import { SLUG_KEYS, type SlugMap,SLUGS } from "@/slug-map";
 import { preloadI18nNamespaces } from "@/utils/loadI18nNs";
 import { translatePath } from "@/utils/translate-path";
 
-import { CORE_LAYOUT_NAMESPACES, i18nConfig, type AppLanguage } from "../constants";
+import { type AppLanguage,CORE_LAYOUT_NAMESPACES, i18nConfig } from "../constants";
 import { useModal } from "../hooks";
 import { LanguageModal } from "../lazy-modals";
 

@@ -3,9 +3,8 @@ import { useMemo } from "react";
 import Link from "next/link";
 import clsx from "clsx";
 
+import { Cluster } from "@acme/design-system/primitives";
 import { CfImage } from "@acme/ui/atoms/CfImage";
-
-import { Cluster } from "@/components/ui/flex";
 import { GUIDE_DIRECTION_LINKS } from "@/data/guideDirectionLinks";
 import type { GuideMeta } from "@/data/guides.index";
 import { getGuideLinkLabels } from "@/guides/slugs/labels";

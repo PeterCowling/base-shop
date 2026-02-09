@@ -2,14 +2,16 @@ import "@testing-library/jest-dom";
 
 import React from "react";
 import { render } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { Loader } from "../Loader";
 
 describe("Loader", () => {
-  it("applies default size classes", () => {
+  it("applies default size classes", async () => {
     const { container } = render(<Loader />);
     const div = container.firstChild as HTMLElement;
     expect(div).toHaveStyle({ width: "20px", height: "20px" });
+
     expect(div).toHaveAttribute("role", "status");
   });
 

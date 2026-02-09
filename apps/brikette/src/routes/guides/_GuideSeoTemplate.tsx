@@ -9,9 +9,9 @@ import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { debugGuide } from "@/utils/debug";
 import { isGuideContentFallback } from "@/utils/guideContentFallbackRegistry";
 
-import { DEFAULT_OG_IMAGE } from "./guide-seo/constants";
-import type { GuideManifestEntry, StructuredDataDeclaration } from "./guide-manifest";
 import { buildBlockTemplate } from "./blocks";
+import type { GuideManifestEntry, StructuredDataDeclaration } from "./guide-manifest";
+import { DEFAULT_OG_IMAGE } from "./guide-seo/constants";
 import { GuideSeoTemplateBody } from "./guide-seo/template/GuideSeoTemplateBody";
 import { resolveShouldRenderGenericContent } from "./guide-seo/template/resolveShouldRenderGenericContent";
 import { resetAdditionalScriptsCache,useAdditionalScripts } from "./guide-seo/template/useAdditionalScripts";
@@ -72,6 +72,7 @@ function isUnresolvedGuideDescription(
   return candidates.has(normalized);
 }
 
+// eslint-disable-next-line max-lines-per-function, complexity -- GS-001: guide template composes many blocks
 function GuideSeoTemplate({
   guideKey,
   metaKey,
@@ -104,8 +105,7 @@ function GuideSeoTemplate({
   renderGenericWhenEmpty = false,
   fallbackToEnTocTitle = true,
   preferLocalizedSeoTitle = false,
-  serverOverrides,
-}: GuideSeoTemplateProps): JSX.Element {
+}: GuideSeoTemplateProps) {
   const isExperiencesGuide = GUIDE_SECTION_BY_KEY[guideKey] === "experiences";
   const articleHeadingWeightClass = isExperiencesGuide
     ? "prose-headings:font-bold"
@@ -129,19 +129,10 @@ function GuideSeoTemplate({
     }
     return undefined;
   })();
-  const {
-    manifestEntry,
-    resolvedStatus,
-    checklistSnapshot,
-    draftUrl,
-    isDraftRoute,
-    shouldShowEditorialPanel,
-  } = useGuideManifestState({
+  const { manifestEntry } = useGuideManifestState({
     guideKey,
     lang,
-    canonicalPathname,
     preferManualWhenUnlocalized,
-    serverOverrides,
   });
 
   // TASK-01 + GUIDE-XREF-01: Wire manifest blocks into template
@@ -477,10 +468,6 @@ function GuideSeoTemplate({
     lang,
   });
 
-  const previewBannerLabel = t("preview.unpublishedBanner", {
-    defaultValue: "Preview only – this guide is not published",
-  }) as string;
-
   const articleHeaderDebug = {
     lang: lang as any,
     guideKey: guideKey as any,
@@ -499,18 +486,12 @@ function GuideSeoTemplate({
       description={description as string}
       canonicalUrl={canonicalUrl}
       ogImageUrl={ogImageUrl}
-      previewBannerLabel={previewBannerLabel}
       breadcrumb={breadcrumb}
       howToJson={howToJson ?? null}
       additionalScripts={additionalScriptsNode}
       hasAnyLocalized={hasAnyLocalized}
       faqHasLocalizedContent={faqHasLocalizedContent}
-      shouldShowEditorialPanel={shouldShowEditorialPanel}
       manifestEntry={manifestEntry ?? null}
-      resolvedStatus={resolvedStatus}
-      isDraftRoute={isDraftRoute}
-      checklistSnapshot={checklistSnapshot}
-      draftUrl={draftUrl}
       articleHeadingWeightClass={articleHeadingWeightClass}
       subtitleText={subtitleText}
       lastUpdated={lastUpdated}
@@ -551,6 +532,7 @@ function GuideSeoTemplate({
       guideFaqFallback={guideFaqFallback}
       alwaysProvideFaqFallback={alwaysProvideFaqFallback}
       suppressFaqWhenUnlocalized={suppressFaqWhenUnlocalized}
+      fallbackInjectedForLocale={fallbackInjectedForLocale}
     />
   );
 }

@@ -2,6 +2,7 @@ import "../../../../../../test/resetNextMocks";
 
 import { configure,render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 
 import { Popover, PopoverContent, PopoverTrigger } from "../Popover";
 
@@ -12,7 +13,7 @@ describe("Popover (container)", () => {
     portal.setAttribute("data-testid", "portal");
     document.body.appendChild(portal);
 
-    render(
+    const { container } = render(
       <Popover>
         <PopoverTrigger>Open</PopoverTrigger>
         <PopoverContent data-testid="content" container={portal}>

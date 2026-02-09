@@ -5,10 +5,10 @@
  * Staff can scan the QR or type the code to look up the guest.
  */
 
-import { Copy, QrCode, CheckCircle2 } from 'lucide-react';
-import QRCode from 'qrcode';
-import { FC, memo, useCallback, useEffect, useState } from 'react';
+import { type FC, memo, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { CheckCircle2,Copy, QrCode } from 'lucide-react';
+import QRCode from 'qrcode';
 
 interface CheckInQRProps {
   /** The check-in code (e.g., "BRK-A7K9M") */
@@ -82,6 +82,7 @@ export const CheckInQR: FC<CheckInQRProps> = memo(function CheckInQR({
       {/* QR Code */}
       <div className="rounded-2xl bg-white p-4 shadow-lg">
         {qrDataUrl && !qrError ? (
+          // eslint-disable-next-line @next/next/no-img-element
           <img
             src={qrDataUrl}
             alt={t('checkIn.qrAlt', { code })}

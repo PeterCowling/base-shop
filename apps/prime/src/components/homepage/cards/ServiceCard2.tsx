@@ -5,8 +5,8 @@
  * Image stacked above the description.
  */
 
-import Link from 'next/link';
 import { memo } from 'react';
+import Link from 'next/link';
 
 export interface ServiceCardProps {
   title: string;
@@ -57,6 +57,7 @@ export const ServiceCard2 = memo(function ServiceCard2({
       <div className="flex flex-col items-center p-4 gap-4 w-full">
         {image && (
           <Link href={to}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={image}
               alt={alt || ''}

@@ -6,8 +6,8 @@ import clsx from "clsx";
 
 import { CfImage } from "@acme/ui/atoms/CfImage";
 
-import type { GuideMeta } from "@/data/guides.index";
 import { getGuideImage } from "@/data/guideImages";
+import type { GuideMeta } from "@/data/guides.index";
 import type { AppLanguage } from "@/i18n.config";
 
 import { GuideCollectionCard } from "./GuideCollectionCard";

@@ -29,5 +29,6 @@
   "houseRules": "Regulamin domu",
   "cancellationPolicy": "Polityka anulowania",
   "privacy": "Polityka prywatności",
-  "cookies": "Polityka plików cookie"
+  "cookies": "Polityka plików cookie",
+  "navAriaLabel": "Footer navigation"
 }

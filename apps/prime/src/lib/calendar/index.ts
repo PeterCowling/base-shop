@@ -2,11 +2,10 @@
  * Calendar module exports.
  */
 
-export {
-  generateCheckInIcs,
-  generateIcsDataUrl,
-  generateIcsBlobUrl,
-  downloadIcs,
-} from './generateIcs';
-
 export type { CheckInEventData } from './generateIcs';
+export {
+  downloadIcs,
+  generateCheckInIcs,
+  generateIcsBlobUrl,
+  generateIcsDataUrl,
+} from './generateIcs';

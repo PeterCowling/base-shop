@@ -1,15 +1,16 @@
 ---
 Type: Plan
-Last-reviewed: 2026-02-05
+Last-reviewed: 2026-02-08
 Status: Active
 Domain: Brikette
 Created: 2026-02-05
-Last-updated: 2026-02-05
+Last-updated: 2026-02-09
 Feature-Slug: brikette-live-delivery-speed
-Overall-confidence: 86%
-Remaining-confidence: 86%
+Overall-confidence: 82%
+Remaining-confidence: 80%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Relates-to charter: none
+Tasks-complete: 12/19
 ---
 
 # Brikette — Live Delivery Speed Plan
@@ -21,19 +22,29 @@ No active tasks at this time.
 
 ## Summary
 
+**Progress:** 12 of 19 tasks complete (63%)
+
 **Completed P0 work:**
-- Removed always-on i18n bundle bloat (layout 12MB→28KB via TASK-05)
-- Eliminated global namespace preload (TASK-03)
-- Gated interactive prefetch (TASK-01)
-- Lazy-loaded rates.json (TASK-02) — implemented, needs production verification
-- Reduced prefetch fan-out on experiences/assistance/how-to (TASK-07, TASK-11) — implemented, needs production verification
-- Consolidated icon imports (TASK-17)
+- ✅ TASK-01: Gated interactive prefetch (removed always-on modal/swiper downloads)
+- ✅ TASK-02: Lazy-loaded rates.json (on-demand fetch, not always-on)
+- ✅ TASK-03: Eliminated global namespace preload (core-only preload in AppLayout)
+- ✅ TASK-04: Investigated layout chunk bloat root cause (locale-loader context split)
+- ✅ TASK-05: Removed always-on i18n bundle bloat (layout 12MB→28KB, 99.8% reduction)
+- ✅ TASK-07: Reduced prefetch fan-out on experiences collections
+- ✅ TASK-08: Diagnosed chunk explosion (3,982 JSON chunks = 97.4% of total)
+- ✅ TASK-10: Decided on GA-only Web Vitals (no RUM endpoint)
+- ✅ TASK-11: Reduced prefetch fan-out on assistance/how-to-get-here
+- ✅ TASK-12: Implemented GA-only Web Vitals (removed /api/rum fallback)
+- ✅ TASK-17: Consolidated icon imports (single barrel export)
 
 **Remaining work:**
-1. **Deploy + verify caching** (TASK-06): headers implemented, needs production curl verification to unblock truthful caching claims
-2. **Translation chunk explosion** (TASK-15): 3,982 JSON chunks → target <200 via locale bundling (per-language bundles)
-3. **LHCI budgets** (TASK-09): add Lighthouse CI with budgets derived from post-fix baselines (depends on TASK-06)
-4. **Production verification loop** (TASK-13 + verification table): close the loop on deployed changes
+1. **Fix `_headers` deployment** (TASK-06A): Staging has 311-rule `_headers` exceeding CF Pages' 100-rule limit (silently ignored). Condensed 22-rule version exists on `dev` — needs merging to staging.
+2. **Verify production cache headers** (TASK-06B): curl verification after TASK-06A fix is deployed.
+3. **Translation chunk investigation** (TASK-15): investigate chunking approach given CF free-tier constraints, guide draft→publish flow, and i18n architecture complexity. Stop before implementing.
+4. **GA setup + verification** (TASK-13): expanded — create GA4 property, configure env vars in Cloudflare Pages, then verify Web Vitals + booking events.
+5. **LHCI budgets** (TASK-09): add Lighthouse CI with budgets derived from post-fix baselines (depends on TASK-06B).
+6. **Telemetry decision** (TASK-14): keep disabled (user decision made).
+7. **Optional stopgap** (TASK-16): webpack splitChunks config (only if TASK-15 investigation recommends it).
 
 **TASK-05 Success:** Layout bundle reduced from ~12MB to 28KB (99.8% reduction) by splitting locale loaders into "core" vs "guides" and deferring guides-only imports.
 
@@ -89,10 +100,10 @@ Proposed solutions: namespace bundling by language (TASK-15, target <200 chunks)
   - `apps/brikette/src/components/layout/AppLayout.tsx` — global providers + i18n preloading + `prefetchInteractiveBundles()`
 - i18n loading:
   - `apps/brikette/src/i18n.ts` — `i18next-resources-to-backend` loader; guides namespace special-casing
-  - `apps/brikette/src/locales/locale-loader.ts` — dynamic JSON loader; current context is recursive over `src/locales` (`apps/brikette/src/locales/locale-loader.ts:37-59`)
+  - `apps/brikette/src/locales/locale-loader.ts` — dynamic JSON loader; context is top-level only (non-recursive, `/^\.\/[a-z]{2}\/[^/]+\.json$/`) after TASK-05 split (`apps/brikette/src/locales/locale-loader.ts:37-40`)
   - `apps/brikette/src/hooks/usePagePreload.ts` — existing page-level namespace preloading pattern (preferred)
 - Pricing:
-  - `packages/ui/src/context/RatesContext.tsx` — fetches `/data/rates.json` in a mount `useEffect()`
+  - `packages/ui/src/context/RatesContext.tsx` — fetches `/data/rates.json` on-demand when a consumer calls `useRates()` (lazy, not on provider mount; changed in TASK-02)
   - `apps/brikette/src/hooks/useRoomPricing.ts` — consumes `useRates()`
 - Prefetch fan-out:
   - Multiple `<Link prefetch={true}>` call sites (guide cards, also-helpful sections, how-to-get-here route groups)
@@ -139,23 +150,31 @@ This plan intentionally treats caching as a correctness problem first (avoid cac
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on |
 |---|---|---|---:|---:|---|---|
-| TASK-01 | IMPLEMENT | Gate/remove always-on `prefetchInteractiveBundles()` | 82% | S | Complete (2026-02-05) | - |
-| TASK-02 | IMPLEMENT | Lazy-load `/data/rates.json` on first `useRates()` consumer (with intent-based prefetch option) | 80% | M | Complete (2026-02-05) | - |
-| TASK-03 | IMPLEMENT | Replace AppLayout global i18n preload (54 namespaces) with core-only | 85% | S | Complete (2026-02-05) | - |
-| TASK-04 | INVESTIGATE | Confirm best fix for ~12MB `layout.js` (locale-loader context split) | 90% | M | Complete (2026-02-05) | TASK-03 |
-| TASK-05 | IMPLEMENT | Implement i18n loader split so guide JSON context is not always-on | 80% | L | Complete (2026-02-05) | TASK-04 |
-| TASK-06 | IMPLEMENT | Add Cloudflare Pages `_headers` caching policy | 92% | S | Complete (merged) | - |
-| TASK-07 | IMPLEMENT | Reduce Next `<Link prefetch>` fan-out on `/[lang]/experiences` collections | 82% | M | Complete (2026-02-05) | - |
-| TASK-11 | IMPLEMENT | Reduce Next `<Link prefetch>` fan-out on assistance + how-to-get-here | 90% | M | Complete (2026-02-05) | - |
-| TASK-08 | INVESTIGATE | Diagnose chunk explosion + propose split strategy changes (post TASK-05) | 95% | M | Complete (2026-02-05) | TASK-05 |
-| TASK-09 | IMPLEMENT | Add Brikette to Lighthouse CI (budgets + workflow) | 84% | M | Pending | TASK-05, TASK-06 |
-| TASK-10 | DECISION | Decide: implement `/api/rum` vs remove fallback | 95% | S | Complete (2026-02-05) | - |
-| TASK-12 | IMPLEMENT | GA-only Web Vitals: remove `/api/rum` fallback + ensure GA script wiring | 90% | M | Complete (2026-02-05) | TASK-10 |
-| TASK-13 | INVESTIGATE | Verify GA Web Vitals + booking events in production (user-confirmed) | 90% | S | Needs-Input | TASK-12 |
-| TASK-14 | DECISION | Decide: wire Brikette `@acme/telemetry` to a collector vs keep disabled | 85% | S | Needs-Input | - |
-| TASK-15 | IMPLEMENT | Implement namespace bundling codegen to reduce JSON chunks | 85% | M | Pending | TASK-08 |
-| TASK-16 | INVESTIGATE/EXPERIMENT | Add webpack splitChunks config to group JSON by language (stopgap fallback) | 70% ⚠️ | S | Optional Fallback | TASK-08 |
-| TASK-17 | IMPLEMENT | Consolidate icon imports to reduce icon chunk count | 90% | S | Complete (2026-02-05) | TASK-08 |
+| TASK-01 | IMPLEMENT | Gate/remove always-on `prefetchInteractiveBundles()` | 82% | S | ✅ Complete (2026-02-05) | - |
+| TASK-02 | IMPLEMENT | Lazy-load `/data/rates.json` on first `useRates()` consumer (with intent-based prefetch option) | 80% | M | ✅ Complete (2026-02-05) | - |
+| TASK-03 | IMPLEMENT | Replace AppLayout global i18n preload (54 namespaces) with core-only | 85% | S | ✅ Complete (2026-02-05) | - |
+| TASK-04 | INVESTIGATE | Confirm best fix for ~12MB `layout.js` (locale-loader context split) | 90% | M | ✅ Complete (2026-02-05) | TASK-03 |
+| TASK-05 | IMPLEMENT | Implement i18n loader split so guide JSON context is not always-on | 80% | L | ✅ Complete (2026-02-05) | TASK-04 |
+| TASK-06 | IMPLEMENT | Add Cloudflare Pages `_headers` caching policy | 75% ⚠️ | S | ⚠️ Reopened — 311-rule `_headers` exceeds CF 100-rule limit (see TASK-06A) | - |
+| TASK-06A | IMPLEMENT | Merge condensed 22-rule `_headers` from `dev` to staging + fix SEO file timing | 92% | S | ⬜ Pending (blocker) | TASK-06 |
+| TASK-06B | INVESTIGATE | Verify cache headers working in production (curl checks) | 90% | S | ⬜ Pending | TASK-06A |
+| TASK-07 | IMPLEMENT | Reduce Next `<Link prefetch>` fan-out on `/[lang]/experiences` collections | 82% | M | ✅ Complete (2026-02-05) | - |
+| TASK-08 | INVESTIGATE | Diagnose chunk explosion + propose split strategy changes (post TASK-05) | 95% | M | ✅ Complete (2026-02-05) | TASK-05 |
+| TASK-09 | IMPLEMENT | Add Brikette to Lighthouse CI (budgets + workflow) | 84% | M | ⬜ Pending | TASK-05, TASK-06B |
+| TASK-10 | DECISION | Decide: implement `/api/rum` vs remove fallback | 95% | S | ✅ Complete (2026-02-05) | - |
+| TASK-11 | IMPLEMENT | Reduce Next `<Link prefetch>` fan-out on assistance + how-to-get-here | 90% | M | ✅ Complete (2026-02-05) | - |
+| TASK-12 | IMPLEMENT | GA-only Web Vitals: remove `/api/rum` fallback + ensure GA script wiring | 90% | M | ✅ Complete (2026-02-05) | TASK-10 |
+| TASK-13 | IMPLEMENT | Set up GA4 property + configure env vars + verify Web Vitals in production | 85% | M | ⬜ Pending (expanded) | TASK-12, TASK-06A |
+| TASK-14 | DECISION | Decide: wire Brikette `@acme/telemetry` to a collector vs keep disabled | 95% | S | ✅ Complete (keep disabled) | - |
+| TASK-15 | INVESTIGATE | Investigate chunk reduction approach given CF free-tier, guide publishing, i18n complexity | 88% | M | ⬜ Pending (highest priority) | TASK-08 |
+| TASK-16 | INVESTIGATE/EXPERIMENT | Add webpack splitChunks config to group JSON by language (stopgap fallback) | 70% ⚠️ | S | ⬜ Optional Fallback | TASK-15 |
+| TASK-17 | IMPLEMENT | Consolidate icon imports to reduce icon chunk count | 90% | S | ✅ Complete (2026-02-05) | TASK-08 |
+
+**Completion Status:** 12 of 19 tasks complete (✅)
+- Complete: TASK-01, TASK-02, TASK-03, TASK-04, TASK-05, TASK-07, TASK-08, TASK-10, TASK-11, TASK-12, TASK-14, TASK-17
+- Reopened: TASK-06 (311-rule `_headers` exceeds CF 100-rule limit — see TASK-06A)
+- Pending: TASK-06A (blocker), TASK-06B, TASK-09, TASK-13, TASK-15
+- Optional: TASK-16
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -383,11 +402,11 @@ This plan intentionally treats caching as a correctness problem first (avoid cac
 - **Type:** IMPLEMENT
 - **Affects:** `apps/brikette/public/_headers`
 - **Depends on:** -
-- **Status:** Complete (merged), awaiting production verification
-- **Confidence:** 92%
-  - Implementation: 95% — implementation complete; `_headers` file created with comprehensive route coverage and mirrored into Next.js `headers()` config.
-  - Approach: 92% — correctly handles Next-on-Pages Worker runtime by mirroring headers into origin responses.
-  - Impact: 90% — implementation verified locally; awaiting production deployment to validate edge behavior.
+- **Status:** ⚠️ Reopened — staging `_headers` has 311 rules, exceeding CF Pages 100-rule limit (see TASK-06A)
+- **Confidence:** 75% ⚠️ (downgraded — CF rule-count limit)
+  - Implementation: 95% — the condensed 22-rule `_headers` on `dev` is correct and within CF Pages limits.
+  - Approach: 75% ⚠️ — staging `_headers` has **311 rules**, exceeding CF Pages' **100-rule limit**. CF silently ignores the entire file when over 100 rules. The fix (condensed to 22 rules via `/*` catch-all) exists on `dev` but hasn't been merged to staging/main.
+  - Impact: 60% ⚠️ — cache headers have never taken effect in production or staging due to the rule-count violation.
 - **Acceptance:**
   - `_headers` is deployed from the correct build output root (i.e. the headers actually apply in production).
   - Cache-Control headers match the route classification in "Cache Policy Model" (HTML vs booking vs static assets vs JSON), with deterministic patterns:
@@ -456,6 +475,76 @@ This plan intentionally treats caching as a correctness problem first (avoid cac
   - Rollout: deploy; validate via curl + browser repeat-visit.
   - Rollback: remove `_headers` file or revert policy.
 - **Documentation impact:** None
+
+#### Re-plan Update (2026-02-09)
+- **Previous confidence:** 92%
+- **Updated confidence:** 75% ⚠️
+  - **Evidence class:** E2 (live curl checks against staging + git history of `_headers` file)
+  - Implementation: 95% — the condensed 22-rule `_headers` on `dev` is correct and within CF Pages limits.
+  - Approach: 75% ⚠️ — the deployed staging `_headers` has **311 rules**, exceeding CF Pages' **100-rule limit**. CF silently ignores the entire file when over 100 rules. The fix (condensed to 22 rules via `/*` catch-all) exists on `dev` but hasn't been merged to staging/main.
+  - Impact: 60% ⚠️ — cache headers have never taken effect in production or staging due to the rule-count violation.
+- **Investigation performed:**
+  - `git show staging:apps/brikette/public/_headers | grep -c "^/"` → **311 rules** (CF Pages limit: 100).
+  - `curl -I https://staging.brikette-website.pages.dev/en/book` → `public, max-age=0, must-revalidate` (should be `no-store` if `_headers` was applied).
+  - `curl -I https://staging.brikette-website.pages.dev/data/rates.json` → `public, max-age=0, must-revalidate` (should have `s-maxage=300`).
+  - Commit `c68b59f774` titled "move _headers to config/ to avoid 100-rule limit" — confirms this was a known issue. The fix condensed `public/_headers` to 22 rules using `/*` catch-all.
+  - Next.js `output: 'export'` DOES copy `public/` to `out/` correctly — earlier claim that `_headers` wasn't in `out/` was incorrect (local `out/` was stale from a pre-`_headers` build).
+  - **Separate issue:** `postbuild` script writes `robots.txt`/`sitemap.xml` to `public/` AFTER `next build` copies `public/` to `out/`. These SEO files are missing from deployments.
+- **Decision / resolution:**
+  - Task reopened but root cause corrected. Not a deployment mechanism issue — it's a CF Pages rule-count limit.
+  - Created TASK-06A (merge fixed 22-rule `_headers` to staging + fix SEO timing) and TASK-06B (verify in production).
+- **Root cause:** CF Pages silently ignores `_headers` files with >100 rules. Staging has 311 rules. Fix (22 rules) is on `dev` but not yet merged.
+
+### TASK-06A: Deploy the fixed 22-rule `_headers` to staging/main + fix SEO file timing
+- **Type:** IMPLEMENT
+- **Affects:** deployment (merge `dev` → `staging`/`main`), `apps/brikette/package.json` (postbuild → prebuild for SEO files)
+- **Depends on:** TASK-06
+- **Status:** Pending (blocker)
+- **Confidence:** 92%
+  - Implementation: 95% — the 22-rule `_headers` fix already exists on `dev`. The SEO timing fix is a simple script rename.
+  - Approach: 92% — root cause confirmed: staging has the 311-rule `_headers` (exceeds CF Pages 100-rule limit → silently ignored). `dev` has the condensed 22-rule version using `/*` catch-all.
+  - Impact: 90% — deploying the fix enables cache headers for the first time on staging/production.
+- **Root cause (confirmed via investigation):**
+  - Staging branch `_headers` has **311 rules** (645 lines) — listing every locale route individually.
+  - Cloudflare Pages has a **100-rule limit** on `_headers` files. Rules beyond 100 are silently dropped (no error, no warning).
+  - Commit `c68b59f774` ("move _headers to config/ to avoid 100-rule limit") created the condensed 22-rule version on `dev`, but it hasn't been merged to staging/main yet.
+  - Next.js `output: 'export'` DOES copy `public/` to `out/` correctly — the earlier re-plan claim that `_headers` wasn't deployed was wrong. It IS deployed, just ignored due to rule count.
+  - **Separate issue:** `postbuild` script writes `robots.txt`/`sitemap.xml` to `public/` AFTER Next.js has already copied `public/` to `out/`. These SEO files are missing from deployments.
+- **Acceptance:**
+  - 22-rule `_headers` (from `dev` branch) deployed to staging.
+  - `generate-public-seo.ts` runs as `prebuild` (or SEO files are copied to `out/` after build) so `robots.txt`/`sitemap.xml` are deployed.
+  - Staging curl shows `s-maxage` on cacheable HTML routes.
+- **Test contract:**
+  - **TC-01:** After staging deploy: `curl -I https://staging.brikette-website.pages.dev/en/experiences` → response includes `s-maxage=600` and `stale-while-revalidate`.
+  - **TC-02:** After staging deploy: `curl -I https://staging.brikette-website.pages.dev/en/book` → `cache-control: no-store`.
+  - **TC-03:** After staging deploy: `curl -I https://staging.brikette-website.pages.dev/data/rates.json` → includes `s-maxage=300`.
+  - **TC-04:** After staging deploy: `curl https://staging.brikette-website.pages.dev/robots.txt` → returns valid robots.txt content.
+  - **Acceptance coverage:** TC-01/TC-03 cover caching; TC-02 covers booking no-store; TC-04 covers SEO files.
+  - **Test type:** contract
+  - **Test location:** staging URL
+  - **Run:** merge dev → staging, wait for deploy, then curl checks
+- **Rollout / rollback:**
+  - Rollout: merge `dev` → `staging`/`main`; staging deploy is automatic on push.
+  - Rollback: revert to 311-rule `_headers` (which is effectively the same as no caching since CF ignores it).
+
+### TASK-06B: Verify cache headers working in production (curl checks)
+- **Type:** INVESTIGATE
+- **Affects:** production deployment
+- **Depends on:** TASK-06A
+- **Status:** Pending
+- **Confidence:** 90%
+  - Implementation: 90% — curl checks are straightforward.
+  - Approach: 90% — same test contract as TASK-06 TC-01 through TC-06.
+  - Impact: 90% — confirms the fix works end-to-end.
+- **Acceptance:**
+  - `curl -I https://www.hostel-positano.com/en/` (repeat twice) → `cf-cache-status` transitions to `HIT` or `REVALIDATED`.
+  - `curl -I https://www.hostel-positano.com/en/book` → `cache-control: no-store`.
+  - `curl -I https://www.hostel-positano.com/data/rates.json` (repeat twice) → `cf-cache-status` transitions away from `DYNAMIC`.
+- **Test contract:**
+  - Uses TASK-06 TC-01 through TC-06 (same curl checks against production).
+  - **Test type:** contract
+  - **Test location:** production URL
+  - **Run:** `BASE_URL=https://www.hostel-positano.com sh scripts/post-deploy-brikette-cache-check.sh` or manual curls per TASK-06 TCs.
 
 ### TASK-07: Reduce Next `<Link prefetch>` fan-out on `/[lang]/experiences` collections
 - **Type:** IMPLEMENT
@@ -635,7 +724,7 @@ Webpack creates a separate chunk for each dynamically imported JSON file when us
 ### TASK-09: Add Brikette to Lighthouse CI (budgets + workflow)
 - **Type:** IMPLEMENT
 - **Affects:** `.github/workflows/ci-lighthouse.yml`, `lighthouserc.brikette.json`, `lighthouserc.brikette.desktop.json`
-- **Depends on:** TASK-05, TASK-06
+- **Depends on:** TASK-05, TASK-06B
 - **Confidence:** 84%
   - Implementation: 88% — workflow + config patterns exist (`.github/workflows/ci-lighthouse.yml:12-85`, `lighthouserc.shop.json:1-50`); Brikette’s start port is pinned (`apps/brikette/package.json:5-9`).
   - Approach: 84% — budgets can be strict on script-size (error) while keeping performance score thresholds as warn initially to avoid flake.
@@ -676,6 +765,19 @@ Webpack creates a separate chunk for each dynamically imported JSON file when us
   - Rollout: merge; observe CI run time and flake rate.
   - Rollback: remove brikette from matrix/filters.
 - **Documentation impact:** None
+
+#### Re-plan Update (2026-02-09)
+- **Previous confidence:** 84%
+- **Updated confidence:** 84% (no change)
+  - **Evidence class:** E1 (audit of existing LHCI infrastructure)
+- **Investigation performed:**
+  - Existing LHCI configs verified: `lighthouserc.shop.json`, `lighthouserc.shop.desktop.json`, `lighthouserc.skylar.json`, `lighthouserc.skylar.desktop.json` — clear pattern to follow.
+  - CI workflow: `.github/workflows/ci-lighthouse.yml` uses matrix-based execution, `pnpm dlx @lhci/cli@0.15.1`, path-based filtering. Brikette not yet included.
+  - Merge gate: `.github/workflows/merge-gate.yml:163-227` integrates LHCI as conditional requirement.
+  - Brikette port confirmed: 3012 (`apps/brikette/package.json:5`). No auth needed (public site).
+  - Existing perf tooling: `perf:check-layout-chunk` script already catches layout regressions — LHCI is complementary for broader page-level budgets.
+- **Dependency updated:** TASK-06 → TASK-06B (production cache header verification must complete first so LHCI baselines reflect production-like performance).
+- **Assessment:** Task is ready to build once TASK-06B confirms cache headers are working. No methodology changes needed.
 
 ### TASK-10: Decide: implement `/api/rum` collector vs remove fallback
 - **Type:** DECISION
@@ -748,33 +850,50 @@ Webpack creates a separate chunk for each dynamically imported JSON file when us
   - **Test location:** `apps/brikette/src/performance/reportWebVitals.ts`, `apps/brikette/src/app/layout.tsx`
   - **Run:** `pnpm --filter @apps/brikette dev` (or `build && start`) + browser DevTools Network/Console verification
 
-### TASK-13: Verify GA Web Vitals + booking events in production (user-confirmed)
-- **Type:** INVESTIGATE
-- **Affects:** production configuration (GA property + tags), `apps/brikette/src/app/layout.tsx` GA script injection, `apps/brikette/src/performance/reportWebVitals.ts` emitter
-- **Depends on:** TASK-12
-- **Confidence:** 90%
-  - Implementation: 90% — verification steps are straightforward but require GA access.
-  - Approach: 90% — ensures “GA-only” actually yields usable data and no silent regressions.
-  - Impact: 90% — no code changes; purely validation and confirmation.
+### TASK-13: Set up GA4 property + configure env vars + verify Web Vitals in production
+- **Type:** IMPLEMENT
+- **Affects:** GA4 admin (external), Cloudflare Pages env vars (external), production deployment
+- **Depends on:** TASK-12, TASK-06A
+- **Status:** Pending (expanded from verify-only to include GA setup)
+- **Confidence:** 85%
+  - Implementation: 85% — GA property creation and env var configuration are well-documented steps. Code is already complete (TASK-12).
+  - Approach: 90% — GA4 is the standard approach; brikette code already supports it via `NEXT_PUBLIC_GA_MEASUREMENT_ID`.
+  - Impact: 80% — requires Cloudflare Pages redeploy to pick up env vars. Depends on TASK-06A so that `_headers` are also deployed correctly in the same redeploy.
 - **Acceptance:**
-  - GA DebugView (or Realtime) shows `web_vitals` events arriving from `https://www.hostel-positano.com/` after a page view.
-  - Booking flow still emits `begin_checkout` when clicking confirm link on the booking page.
-  - No production requests to `/api/rum` are observed (Network tab / server logs).
+  - GA4 property exists for `www.hostel-positano.com`.
+  - Custom dimensions registered: `metric_id`, `metric_value`, `metric_delta`, `metric_rating`, `navigation_type`.
+  - `NEXT_PUBLIC_GA_MEASUREMENT_ID` configured in Cloudflare Pages env vars (production scope).
+  - After redeploy: `view-source:https://www.hostel-positano.com/en/` shows `gtag.js` script tag with correct measurement ID.
+  - GA4 Realtime shows `web_vitals` events arriving from production.
+  - Booking flow `begin_checkout` event fires (`apps/brikette/src/app/[lang]/book/BookPageContent.tsx:118-126`).
+  - No `/api/rum` requests observed in Network tab.
+- **Step-by-step:**
+  1. Create GA4 property at analytics.google.com (Property name: "Hostel Brikette", timezone: Europe/Rome, currency: EUR).
+  2. Create Web data stream for `https://www.hostel-positano.com` (enable Enhanced Measurement).
+  3. Copy Measurement ID (format: `G-XXXXXXXXXX`).
+  4. Register custom dimensions in GA4 Admin > Data display > Custom definitions: `metric_id`, `metric_value`, `metric_delta`, `metric_rating`, `navigation_type` (all Event scope).
+  5. In Cloudflare Pages dashboard for `brikette-website`: Settings > Environment variables > add `NEXT_PUBLIC_GA_MEASUREMENT_ID = G-XXXXXXXXXX` (Production scope).
+  6. Trigger production redeploy (push to `main` or manual workflow dispatch with `publish_to_production: true`).
+  7. Verify: visit production site, check GA4 Realtime for `web_vitals` and `begin_checkout` events.
 - **Test contract:**
-  - **TC-01:** Visit `https://www.hostel-positano.com/en/` with GA DebugView enabled → observe a `web_vitals` event within ~60s.
-  - **TC-02:** Visit `https://www.hostel-positano.com/en/book` (or equivalent) and trigger confirm click → observe `begin_checkout` event.
-  - **TC-03:** In DevTools Network, filter `rum` → zero `/api/rum` requests during the session.
+  - **TC-01:** `view-source:https://www.hostel-positano.com/en/` → contains `googletagmanager.com/gtag/js?id=G-` script tag.
+  - **TC-02:** Visit `/en/` with GA DebugView enabled → observe `web_vitals` event within ~60s.
+  - **TC-03:** Visit `/en/book` and trigger confirm click → observe `begin_checkout` event in GA4 Realtime.
+  - **TC-04:** In DevTools Network, filter `rum` → zero `/api/rum` requests.
+  - **Acceptance coverage:** TC-01 covers env var + script injection; TC-02 covers Web Vitals; TC-03 covers booking events; TC-04 covers RUM removal.
   - **Test type:** contract
-  - **Test location:** GA property (DebugView/Realtime) + live site
+  - **Test location:** GA4 property (DebugView/Realtime) + live site
   - **Run:** manual verification (Chrome DevTools + GA DebugView)
-- **Notes:**
-  - This task is intentionally “do until complete”: keep verifying until you can see `web_vitals` in GA and confirm there are no `/api/rum` calls.
+- **Privacy note:** Current implementation has no consent mechanism. GDPR (Italy) requires explicit consent before loading GA. Consider adding cookie banner as follow-up work (not blocking this task — MVP first).
+- **Rollout / rollback:**
+  - Rollout: configure env var → redeploy → verify.
+  - Rollback: remove env var from Cloudflare Pages → redeploy (GA stops loading).
 
 ### TASK-14: Decide: wire Brikette `@acme/telemetry` to a collector vs keep disabled
 - **Type:** DECISION
 - **Affects:** `packages/telemetry/src/index.ts`, `apps/brikette/src/utils/errors.ts`
 - **Depends on:** -
-- **Status:** Needs-Input (user decision: enable telemetry or keep disabled)
+- **Status:** ✅ Complete (2026-02-09) — Decision: keep disabled
 - **Confidence:** 85% (for DECISION task with explicit user-input dependency)
   - Implementation: 80% — implementation paths are clear (either add `/api/telemetry` route or configure external endpoint).
   - Approach: 85% — decision framing is correct; this is genuinely a product/user decision, not a technical uncertainty.
@@ -805,70 +924,74 @@ Webpack creates a separate chunk for each dynamically imported JSON file when us
   - Raising to 85% clarifies that the only "low confidence" aspect was the decision framing, which is now resolved.
   - This task does NOT need to be ≥80% to proceed; DECISION tasks have different acceptance criteria than IMPLEMENT tasks.
 
-### TASK-15: Implement namespace bundling by language to reduce JSON chunks
-- **Type:** IMPLEMENT
-- **Affects:** `apps/brikette/scripts/generate-locale-bundles.ts` (new), `apps/brikette/src/locales/locale-loader.ts`, `apps/brikette/src/locales/locale-loader.guides.ts`, `apps/brikette/package.json` (prebuild hook)
+#### Re-plan Update (2026-02-09)
+- **Previous confidence:** 85%
+- **Updated confidence:** 95%
+  - **Evidence class:** E1 (user decision)
+- **Decision:** Keep telemetry disabled. No action needed.
+  - Telemetry code remains wired (`captureError()` calls exist in `apps/brikette/src/utils/errors.ts`) but dormant — no env vars set, no `/api/telemetry` route, no external collector configured.
+  - Static export (staging) cannot support API routes anyway; telemetry would only work in production Worker mode.
+  - Revisit if/when error visibility becomes a priority.
+- **Status:** Complete (2026-02-09).
+
+### TASK-15: Investigate chunk reduction approach given CF free-tier, guide publishing, and i18n complexity
+- **Type:** INVESTIGATE
+- **Affects:** `apps/brikette/src/locales/locale-loader.ts`, `apps/brikette/src/locales/locale-loader.guides.ts`, `apps/brikette/src/locales/guides.*.ts`, `apps/brikette/src/routes/how-to-get-here/content-modules.ts`, `apps/brikette/next.config.mjs`
 - **Depends on:** TASK-08
 - **Status:** Pending (highest remaining priority)
-- **Confidence:** 85%
-  - Implementation: 85% — codegen pattern is well-understood; loaders require modification to use bundled imports instead of dynamic regex-based imports.
-  - Approach: 85% — language-level bundling maintains lazy-loading semantics while dramatically reducing chunk count; aligns with webpack best practices.
-  - Impact: 85% — broad change to i18n loading but measurable via chunk count + manual smoke testing; regressions catchable via build artifact checks.
+- **Confidence:** 88%
+  - Implementation: 88% — investigation scope is clear; key constraint areas identified (CF limits, guide publishing, i18n architecture).
+  - Approach: 90% — investigate-before-implement is the right approach given the complexity revealed by re-plan.
+  - Impact: 85% — investigation output directly determines whether TASK-16 (splitChunks) or a new codegen IMPLEMENT task is the right next step.
 - **Acceptance:**
-  - Total chunk count < 200 (baseline: 4,088).
-  - JSON chunks grouped by language, not by namespace.
-  - Each language gets: core bundle (layout + common namespaces), guides bundle (guide content), routes bundle (how-to-get-here).
-  - Logical bundles (conceptual naming): `en.core`, `en.guides`, `en.routes` (and equivalents for all 18 locales). Actual webpack chunk names may differ; use `webpackChunkName` comments on dynamic imports to ensure inspectable names for validation.
-  - **Critical:** For a single-locale session (e.g., `/en/...`), translation transfers must NOT include non-en payloads.
-  - **Critical:** On non-guide routes (e.g., `/en/assistance`), the guides bundle must NOT load unless a guide namespace is explicitly requested.
-  - Build generates bundled locale modules for all languages (top-level + guides content + routes).
-  - Loaders import from bundled modules instead of using dynamic `import()` with `webpackInclude`.
-  - Guide pages load translations correctly across representative locales (`en`, `de`, `ar`).
-  - No missing translation errors on smoke routes (`/en/experiences`, `/en/assistance`, one guide content page).
+  - Produce a written investigation document (or section in this plan) covering:
+    1. **Cloudflare Pages free-tier constraints:** 20K file limit, current file count, headroom analysis.
+    2. **Guide draft→publish flow compatibility:** How Business OS writes individual guide JSON → whether bundling at build time preserves this workflow.
+    3. **i18n loading architecture map:** Full chain from `i18n.ts` → backends → loaders → webpack context, including the 3-tier guides loading chain and how-to-get-here routes.
+    4. **Candidate approaches (ranked):** At minimum: (a) codegen bundling, (b) webpack splitChunks, (c) hybrid. For each: pros, cons, estimated chunk reduction, complexity, compatibility with guide publishing.
+    5. **Recommended approach with rationale.**
+  - Investigation must stop before implementing. Output feeds a new IMPLEMENT task (or TASK-16 if splitChunks is recommended).
 - **Test contract:**
-  - **TC-01:** `pnpm --filter @apps/brikette build && node apps/brikette/scripts/perf/analyze-chunks.mjs` → total chunk count <200 and JSON chunk count <60 (18 locales × ~3 bundles each).
-  - **TC-02:** `rg "webpackInclude" apps/brikette/src/locales/locale-loader.ts apps/brikette/src/locales/locale-loader.guides.ts` → zero matches (loaders no longer use dynamic regex imports).
-  - **TC-03:** `ls apps/brikette/src/locales/*.bundle.ts` → bundled locale modules exist for all languages (e.g., `en.core.bundle.ts`, `en.guides.bundle.ts`, `en.routes.bundle.ts`).
-  - **TC-04:** Network inspection on `/en/experiences` → only `en.*` translation bundles are loaded; no `de.*`, `fr.*`, etc. payloads are transferred during a single-locale session.
-  - **TC-05:** Network inspection on `/en/assistance` → no request for the guides bundle (or no guide-namespace payload transferred). Only core/assistance bundles should load on non-guide routes.
-  - **TC-06:** `pnpm --filter @apps/brikette start` + manual smoke on `/en/experiences` (loads guide cards), `/en/assistance` (loads help content), one guide content page (loads guide copy) → all translations render without missing keys.
-  - **TC-07:** Build script in `apps/brikette/scripts/generate-locale-bundles.ts` runs successfully and regenerates bundles when locale JSON changes.
-  - **Acceptance coverage:** TC-01 covers criterion 1; TC-02 covers criterion 8; TC-03 covers criteria 2–4; TC-04 covers criterion 5 (critical no-cross-locale-payload check); TC-05 covers criterion 6 (no guides bundle on non-guide routes); TC-06 covers criteria 9–10; TC-07 validates codegen workflow.
-  - **Test type:** contract
-  - **Test location:** `apps/brikette/scripts/generate-locale-bundles.ts`, `apps/brikette/src/locales/locale-loader.ts`, `apps/brikette/src/locales/locale-loader.guides.ts`
-  - **Run:** `pnpm --filter @apps/brikette build && find apps/brikette/.next/static/chunks -type f | wc -l && pnpm --filter @apps/brikette start` (then smoke routes + Network inspection)
-- **What would make this ≥90%:**
-  - Add automated E2E test that validates translation loading across multiple locales instead of manual smoke.
-  - Add CI guardrail script that enforces chunk count <250 (with headroom).
-- **Rollout / rollback:**
-  - Rollout: land codegen + loader changes together; validate on staging with representative locales before production.
-  - Rollback: revert to dynamic regex-based loaders (accept chunk explosion regression).
-- **Documentation impact:** Add comment in loaders explaining bundled import strategy.
-- **Notes / references:** Investigation findings in TASK-08; target <200 chunks (from 4,088 baseline).
+  - **TC-01:** Investigation document addresses all 5 acceptance items above.
+  - **TC-02:** Each candidate approach includes a chunk count estimate (target vs baseline 4,088).
+  - **TC-03:** Guide publishing compatibility confirmed with evidence (file paths, API routes, write patterns).
+  - **Test type:** contract (document review)
+  - **Test location:** This plan document (TASK-15 section)
+  - **Run:** Review investigation output against acceptance criteria.
+- **Constraints to investigate:**
+  - CF Pages free-tier 20K file limit (current: ~4K chunks, trajectory with more guides/locales).
+  - Guide JSON files are source-of-truth for Business OS editing (`apps/business-os/src/app/api/guides/[guideKey]/route.ts` writes individual files).
+  - `locale-loader.guides.ts` uses `fs.readFileSync` (server-only, SSG build time) — NOT a webpack context, so bundling doesn't apply to it.
+  - `guides.imports.ts` uses 3-tier loading: webpack context → dynamic imports → FS fallback.
+  - `content-modules.ts` (how-to-get-here routes) uses separate `webpackInclude` pattern.
+  - 4,419 JSON files across 18 locales (168 guide content files per locale + ~37 core namespaces per locale).
+- **Notes / references:** Investigation findings in TASK-08; baseline 4,088 chunks (27.1 MB).
 
-#### Re-plan Update (2026-02-05)
+#### Re-plan Update (2026-02-05 — original)
 - **Previous confidence:** 85%
-- **Updated confidence:** 85% (no change; test contract is complete)
-  - Implementation: 85% — codegen pattern well-understood; loader modifications clear from TASK-08 investigation.
-  - Approach: 85% — language-level bundling is the recommended structural fix (vs TASK-16 stopgap).
-  - Impact: 85% — broad i18n surface but mitigated via deterministic chunk-count checks + manual smoke.
-- **Investigation performed:**
-  - Test contract review: TC-01 through TC-07 provide comprehensive coverage with explicit type/location/run commands.
-  - Acceptance coverage: all 10 acceptance criteria mapped to specific test cases.
-  - Critical checks: TC-04 (no cross-locale payloads) and TC-05 (no guides bundle on non-guide routes) correctly guard the most important correctness properties.
+- **Updated confidence:** 85% (no change; test contract was complete for IMPLEMENT scope)
+
+#### Re-plan Update (2026-02-09)
+- **Previous confidence:** 85% (was IMPLEMENT)
+- **Updated confidence:** 88% (now INVESTIGATE)
+  - **Evidence class:** E1 (code audit of i18n loading chain, CF limits research, guide API inspection)
+- **Type changed:** IMPLEMENT → INVESTIGATE
+  - User requested: "investigate and set out your best ideas, but then stop, and do not implement anything."
+  - The i18n loading architecture is more complex than the original plan assumed (3-tier guides loading, separate how-to-get-here loader, 4,419 JSON files). Investigation-first is the correct approach.
+- **Investigation performed (pre-investigation findings from re-plan):**
+  - **CF Pages free-tier:** 20K file limit confirmed. Current ~4K chunks are well within limit. Bundling would reduce to <200 (massive headroom). Not a blocker either way.
+  - **Guide publishing:** Business OS writes individual JSON files via `apps/business-os/src/app/api/guides/[guideKey]/route.ts:119` → `writeGuidesNamespaceToFs()` → `writeContentFiles()` which writes per-guide JSON. Bundling at build time does NOT break this because: (a) writes target individual files, (b) bundling is build-time codegen reading those files, (c) status is managed via manifest overrides, not content files.
+  - **i18n complexity:** `locale-loader.ts` (client, top-level only, one `webpackInclude`), `locale-loader.guides.ts` (server, `fs.readFileSync`, NO webpack), `guides.imports.ts` (client, 3-tier: webpack context → imports → FS), `content-modules.ts` (client, separate `webpackInclude` for how-to-get-here). Two `webpackInclude` sites that generate chunks: `locale-loader.ts:65` and `content-modules.ts:11`.
+  - **Scale:** 4,419 JSON files, 168 guide content × 18 locales = 3,024 guide chunks, 39 namespaces × 18 = 702 core chunks, ~24 routes × 18 = ~432 route chunks.
 - **Decision / resolution:**
-  - Test contract is complete and meets TDD requirements (≥5 cases with explicit type/location/run + acceptance coverage).
-  - No re-planning needed; task is ready to build.
-- **Assessment:**
-  - This task has the highest remaining priority (after TASK-06 deployment).
-  - Confidence remains at 85% (appropriate for this complexity and scope).
-  - No blocking gaps identified.
+  - Task retyped to INVESTIGATE. The output will be a ranked list of approaches with recommendations, which will feed a new IMPLEMENT task.
+  - TASK-16 (webpack splitChunks) now depends on TASK-15 investigation outcome rather than TASK-08 directly.
 
 ### TASK-16: Add webpack splitChunks config to group JSON by language (stopgap fallback)
 - **Type:** INVESTIGATE/EXPERIMENT
-- **Status:** Optional fallback (only if TASK-15 stalls)
+- **Status:** Optional fallback (pending TASK-15 investigation outcome)
 - **Affects:** `apps/brikette/next.config.mjs`
-- **Depends on:** TASK-08
+- **Depends on:** TASK-15
 - **Confidence:** 70%
   - Implementation: 75% — standard webpack `splitChunks` config; pattern is documented and testable.
   - Approach: 70% — grouping by language reduces chunk count but may bundle more than strictly needed per route; tradeoff is acceptable as a stopgap before TASK-15.
@@ -934,26 +1057,37 @@ Webpack creates a separate chunk for each dynamically imported JSON file when us
 
 ## Recommended Execution Priority
 
-Based on current status (TASK-02/07/11/17 complete, TASK-06 implemented), the highest-leverage sequence is:
+**Current Status (2026-02-09):** 11 of 19 tasks complete
 
-**Immediate (Unblock Caching + Baselines):**
-1. **Deploy + verify TASK-06** (Cloudflare headers production curl checks) — unblocks truthful caching claims and makes perf data less noisy
+Based on re-plan findings, the highest-leverage sequence is:
 
-**Next (Structural Fix - P0):**
-2. **Execute TASK-15** (locale bundling: per-language bundles) — dominant remaining perf lever (3,982→<200 chunks)
+**Wave 1 — Blockers (parallel):**
+1. **TASK-06A** (fix `_headers` deployment) — blocker for cache headers + GA setup. Small fix to build-cmd.
+2. **TASK-15** (investigate chunk reduction) — highest-priority investigation. Determine the right approach before implementing.
 
-**Then (CI Guardrails):**
-3. **TASK-09** (LHCI budgets) — derived from the new baseline; enforce layout regression + chunk budgets
+**Wave 2 — After TASK-06A deploys (parallel):**
+3. **TASK-06B** (verify production cache headers) — curl checks after TASK-06A fix deploys.
+4. **TASK-13** (GA4 setup + verify) — create GA property, configure env vars, verify Web Vitals in production.
 
-**Finally (Close the Loop):**
-4. **Production verification** — staging/prod verification for TASK-01/02/03/05/07/11/12/17 (see Production Verification Status table)
-5. **TASK-13** (GA verification) — user confirms web_vitals events in GA DebugView
+**Wave 3 — CI Guardrails:**
+5. **TASK-09** (LHCI budgets) — add Brikette to Lighthouse CI with baselines from verified production. Depends on TASK-06B.
 
-**Optional Fallback:**
-- **TASK-16** (splitChunks) — only if TASK-15 stalls or proves too invasive
+**Wave 4 — Chunk Implementation (after TASK-15 investigation):**
+6. New IMPLEMENT task (TBD from TASK-15 output) or **TASK-16** (splitChunks stopgap).
 
-**Awaiting User Decision:**
-- **TASK-14** (telemetry decision) — user must decide: enable telemetry (and specify collector) or keep disabled
+**Completed (12 tasks, including decisions):**
+- ✅ TASK-01: Gated interactive prefetch
+- ✅ TASK-02: Lazy-loaded rates.json
+- ✅ TASK-03: Core-only i18n preload
+- ✅ TASK-04: Investigated layout chunk bloat
+- ✅ TASK-05: Fixed layout chunk (12MB→28KB)
+- ✅ TASK-07: Reduced experiences prefetch
+- ✅ TASK-08: Diagnosed chunk explosion
+- ✅ TASK-10: Decided on GA-only vitals
+- ✅ TASK-11: Reduced assistance/how-to prefetch
+- ✅ TASK-12: Implemented GA-only vitals
+- ✅ TASK-14: Decided to keep telemetry disabled
+- ✅ TASK-17: Consolidated icon imports
 
 ## Risks & Mitigations
 - **i18n regressions (missing namespaces / flicker):** keep a small core preload; validate on `en`, `de`, `ar` + one guide page; add LHCI budgets to catch regressions early.
@@ -966,15 +1100,20 @@ Based on current status (TASK-02/07/11/17 complete, TASK-06 implemented), the hi
 - Secondary: GA4 Web Vitals (TASK-12 + user confirmation in TASK-13); optional error telemetry if a collector is wired (TASK-14 decision).
 
 ## Acceptance Criteria (overall)
-- [x] `layout.js` uncompressed size < 1MB (down from ~12MB). **✅ Complete: 28KB**
-- [ ] Production HTML and `rates.json` are edge-cached (Cloudflare HIT on repeats).
-- [ ] No eager `/data/rates.json` on non-booking pages.
-- [ ] No always-on modal/swiper prefetch on non-booking pages.
-- [ ] Total chunk count < 500 (baseline: 4,088; target <200 with namespace bundling).
-- [ ] Brikette is covered by LHCI with enforced script-size budgets.
+- [x] `layout.js` uncompressed size < 1MB (down from ~12MB). **✅ Complete: 28KB (TASK-05)**
+- [ ] Production HTML and `rates.json` caching headers deployed and verified. **⚠️ Reopened (TASK-06A + TASK-06B — staging `_headers` exceeds CF 100-rule limit)**
+- [x] No eager `/data/rates.json` on non-booking pages. **✅ Complete (TASK-02)**
+- [x] No always-on modal/swiper prefetch on non-booking pages. **✅ Complete (TASK-01)**
+- [x] Prefetch fan-out reduced on experiences/assistance/how-to. **✅ Complete (TASK-07, TASK-11)**
+- [x] Icon imports consolidated. **✅ Complete (TASK-17)**
+- [x] GA Web Vitals wired correctly (no /api/rum). **✅ Complete (TASK-12)**
+- [ ] Total chunk count < 500 (baseline: 4,088; target <200 with namespace bundling). **⬜ Pending (TASK-15)**
+- [ ] Brikette is covered by LHCI with enforced script-size budgets. **⬜ Pending (TASK-09)**
 
 ## Decision Log
 - 2026-02-05: Decision (TASK-10) — GA-only for Web Vitals; remove `/api/rum` fallback and avoid implementing a collector.
+- 2026-02-09: Decision (TASK-14) — Keep `@acme/telemetry` disabled. No action needed. Revisit if error visibility becomes a priority.
+- 2026-02-09: Decision (TASK-15) — Changed from IMPLEMENT to INVESTIGATE. I18n loading is more complex than assumed; investigate approach before implementing. Must consider CF free-tier limits, guide draft→publish flow from Business OS, and multi-tier loading architecture.
 
 ## Plan Changelog
 - 2026-02-05: Plan created from fact-find; i18n bundle fix requires investigation before implementation.
@@ -984,6 +1123,15 @@ Based on current status (TASK-02/07/11/17 complete, TASK-06 implemented), the hi
 - 2026-02-05: Expert review — updated plan with deterministic script results (analyze-chunks.mjs), fixed TASK-15 bundling strategy (bundle by language, not namespace), reclassified TASK-16 as INVESTIGATE/EXPERIMENT fallback (70% violates ≥80% rule for IMPLEMENT), removed brittle test heuristics from TASK-16/17, added Set-Cookie check to TASK-06, added LHCI guidance to TASK-09, added recommended execution priority section, added production verification tracking table.
 - 2026-02-05: Consistency fixes — clarified 27.1 MB chunk size vs total static output; updated TASK-08 acceptance percentages to match analyze-chunks.mjs output (97.4% JSON, not 97.6%); changed all chunk count measurements to use analyze-chunks.mjs as single source of truth; added "no guides bundle on non-guide routes" check to TASK-15; added explicit booking non-caching check to TASK-06; made LHCI baseline measurement non-optional in TASK-09; updated P2 to reflect TASK-08 completion; separated Decision Log from Plan Changelog.
 - 2026-02-05: Re-plan (scope: TASK-06, TASK-11, TASK-14, TASK-15) — verified TASK-06 implementation complete (92% confidence, awaiting deployment for production curl verification); verified TASK-11 implementation complete (90% confidence, status changed to Complete); corrected TASK-14 confidence framing (85% appropriate for DECISION task awaiting user input); verified TASK-15 test contract is complete and ready to build (85% confidence, no gaps). Overall remaining confidence increased from 82% → 87%.
+- 2026-02-08: Documentation update — updated plan to reflect completion status (12 of 17 tasks complete, 71% overall progress). Updated Summary, Task Summary table with visual completion indicators (✅/⬜), Acceptance Criteria with completed items, and Recommended Execution Priority to reflect current state. No code changes, documentation only.
+- 2026-02-09: Re-plan (scope: all remaining tasks TASK-06/09/13/14/15/16) — Major findings:
+  - **TASK-06 REOPENED:** Staging `_headers` has 311 rules, exceeding CF Pages' 100-rule limit (silently ignored). Cache headers have never taken effect. Condensed 22-rule version exists on `dev`. Created TASK-06A (merge fix to staging) and TASK-06B (verify in production). Confidence dropped 92%→75%.
+  - **TASK-13 EXPANDED:** From verify-only to full GA setup (create GA4 property, configure env vars, verify). No `NEXT_PUBLIC_GA_MEASUREMENT_ID` configured anywhere.
+  - **TASK-14 COMPLETE:** User decision — keep telemetry disabled. Confidence 85%→95%.
+  - **TASK-15 RETYPED:** IMPLEMENT→INVESTIGATE. I18n loading architecture is more complex than assumed (3-tier guides loading, 4,419 JSON files, Business OS guide publishing workflow). Must investigate approach before implementing.
+  - **TASK-09 DEPENDENCY UPDATED:** Now depends on TASK-06B (was TASK-06).
+  - **TASK-16 DEPENDENCY UPDATED:** Now depends on TASK-15 (was TASK-08).
+  - Plan expanded from 17→19 tasks; completion 12/17→11/19.
 
 ## Production Verification Status
 
@@ -993,62 +1141,63 @@ Based on current status (TASK-02/07/11/17 complete, TASK-06 implemented), the hi
 | TASK-02 | ✅ | ⬜ | ⬜ | Network: no `/data/rates.json` on `/en/experiences` |
 | TASK-03 | ✅ | ⬜ | ⬜ | Check header/footer translations render |
 | TASK-05 | ✅ | ⬜ | ⬜ | Confirm layout chunk <100KB in prod |
-| TASK-06 | ✅ | ⬜ | ⬜ | Curl verification: cf-cache-status transitions from DYNAMIC |
+| TASK-06 | ⚠️ Reopened | ⬜ | ⬜ | 311-rule `_headers` exceeds CF 100-rule limit — needs TASK-06A merge |
 | TASK-07 | ✅ | ⬜ | ⬜ | Network: no bulk prefetch on `/en/experiences` guide cards |
 | TASK-11 | ✅ | ⬜ | ⬜ | Network: no bulk prefetch on assistance/how-to |
 | TASK-12 | ✅ | ⬜ | ⬜ | GA web_vitals events arriving |
 | TASK-17 | ✅ | ⬜ | ⬜ | Visual smoke: icons render correctly |
 
-## Re-plan Summary (2026-02-05)
+## Re-plan Summary (2026-02-09)
 
-### Tasks Re-planned
+### Tasks Re-planned (2026-02-09)
+1. **TASK-06** (Cloudflare headers) — 92% → 75% ⚠️ REOPENED — 311 rules exceed CF 100-rule limit
+2. **TASK-06A** (NEW) — Merge condensed 22-rule `_headers` to staging — 92%
+3. **TASK-06B** (NEW) — Verify production cache headers — 90%
+4. **TASK-09** (LHCI) — 84% (no change, dependency updated to TASK-06B)
+5. **TASK-13** (GA setup) — EXPANDED from verify-only to full GA setup — 85%
+6. **TASK-14** (Telemetry) — 85% → 95% ✅ COMPLETE — keep disabled
+7. **TASK-15** (Chunk reduction) — RETYPED from IMPLEMENT to INVESTIGATE — 88%
+8. **TASK-16** (splitChunks) — 70% (no change, dependency updated to TASK-15)
+
+### Critical Finding: TASK-06 `_headers` Silently Ignored by CF Pages
+
+**Root cause:** Staging `_headers` has **311 rules** (645 lines), listing every locale route individually. Cloudflare Pages has a **100-rule limit** — rules beyond 100 are silently dropped (no error, no warning). The file IS deployed to `out/` correctly (Next.js `output: 'export'` copies `public/` to `out/`), but CF Pages ignores it entirely due to the rule count.
+
+**Evidence:**
+- `git show staging:apps/brikette/public/_headers | grep -c "^/"` → 311 rules (CF limit: 100)
+- `curl -I https://staging.brikette-website.pages.dev/en/book` → `public, max-age=0, must-revalidate` (should be `no-store`)
+- Commit `c68b59f774` ("move _headers to config/ to avoid 100-rule limit") — confirms known issue; condensed 22-rule version exists on `dev` but wasn't merged
+
+**Separate issue:** `postbuild` writes `robots.txt`/`sitemap.xml` to `public/` AFTER Next.js copies `public/` to `out/`, so SEO files are missing from deployments.
+
+**Impact:** All cache header work (TASK-06) is correct but has had zero production effect. Fix is straightforward (TASK-06A: merge the condensed 22-rule `_headers` from `dev` to staging).
+
+### Plan State Classification
+
+**Wave 1 — Ready to build (parallel):**
+- TASK-06A (merge 22-rule `_headers` to staging): 92%, merge from `dev`
+- TASK-15 (investigate chunk approach): 88%, investigation task
+
+**Wave 2 — After TASK-06A deploys (parallel):**
+- TASK-06B (verify production headers): 90%, curl checks
+- TASK-13 (GA setup + verify): 85%, external config + verification
+
+**Wave 3 — After TASK-06B:**
+- TASK-09 (LHCI budgets): 84%, depends on verified baselines
+
+**Wave 4 — After TASK-15 investigation:**
+- New IMPLEMENT task or TASK-16, depending on investigation outcome
+
+### Previous Re-plan Summary (2026-02-05)
+<details>
+<summary>Click to expand</summary>
+
 1. **TASK-06** (Cloudflare headers) — 88% → 92%
 2. **TASK-11** (Prefetch reduction) — 82% → 90%
 3. **TASK-14** (Telemetry decision) — 60% → 85%
 4. **TASK-15** (Namespace bundling) — 85% (verified complete test contract)
 
-### Key Findings
-
-**TASK-06: Implementation Complete, Awaiting Deployment**
-- Status: correctly marked "Needs-Input" but implementation is 100% complete
-- Evidence: `_headers` file exists with comprehensive route coverage (646 lines, all 18 locales)
-- Mitigation: Next.js `headers()` config mirrors rules into origin responses (addresses Next-on-Pages Worker limitation)
-- Blocker: production curl verification requires deployment (not implementation gaps)
-- Confidence increased to 92% based on complete local verification
-
-**TASK-11: Implementation Complete**
-- Status changed: Needs-Input → Complete (2026-02-05)
-- Evidence: verified `prefetch={false}` implementation across all 4 target files (5 total instances)
-- Typecheck: passing
-- Remaining work: manual Network inspection (TC-02/TC-03) is non-blocking for merge
-- Confidence increased to 90%
-
-**TASK-14: Confidence Framing Corrected**
-- Type: DECISION (not IMPLEMENT) — different confidence semantics apply
-- Previous 60% was conflating "awaiting user input" with "technical uncertainty"
-- Confidence raised to 85%: decision framing is correct, implementation paths are clear
-- Status remains "Needs-Input" (appropriate for user decision)
-- Assessment: 60% confidence for a DECISION task is acceptable when genuinely awaiting user preference; raised to 85% to clarify the only uncertainty was decision framing (now resolved)
-
-**TASK-15: Test Contract Complete**
-- Confidence remains 85% (no change needed)
-- Verification: test contract has 7 cases (TC-01 through TC-07) with explicit type/location/run commands
-- Acceptance coverage: all 10 criteria mapped to specific test cases
-- Critical checks present: TC-04 (no cross-locale payloads), TC-05 (no guides bundle on non-guide routes)
-- Assessment: ready to build; highest remaining priority
-
-### Plan State Classification
-
-**Ready to build:**
-- TASK-15 (namespace bundling): 85% confidence, complete test contract, highest priority
-
-**Implementation complete, awaiting verification:**
-- TASK-06 (Cloudflare headers): 92% confidence, awaiting production deployment for curl verification
-- TASK-11 (prefetch reduction): 90% confidence, awaiting manual Network inspection (non-blocking)
-
-**Awaiting user input:**
-- TASK-13 (GA verification): user must confirm web_vitals events in GA DebugView
-- TASK-14 (telemetry decision): user must decide enable vs keep disabled
+</details>
 
 **Confidence Summary:**
 - Overall confidence: 84% → 86%

@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+
 import StaffReadinessBadges from '../../../components/check-in/StaffReadinessBadges';
 
 describe('StaffReadinessBadges', () => {

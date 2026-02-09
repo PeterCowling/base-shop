@@ -14,8 +14,8 @@
  */
 
 import { useCallback } from 'react';
+
 import type { BagStorageRecord } from '../../types/bagStorage';
-import type { BookingDetails } from '../pureData/useFetchBookingsData.client';
 import type { CityTaxRecord } from '../../types/cityTax';
 import type { OccupantCompletedTasks } from '../../types/completedTasks';
 import type { FinancialsRoomRecord } from '../../types/financialsRoom';
@@ -24,6 +24,7 @@ import type { GuestDetailsRecord } from '../../types/guestsDetails';
 import type { LoanOccupantRecord } from '../../types/loans';
 import type { PreorderNightData } from '../../types/preorder';
 import { useFetchBagStorageData } from '../pureData/useFetchBagStorageData';
+import type { BookingDetails } from '../pureData/useFetchBookingsData.client';
 import { useFetchBookingsData } from '../pureData/useFetchBookingsData.client';
 import { useFetchCityTax } from '../pureData/useFetchCityTax';
 import { useFetchCompletedTasks } from '../pureData/useFetchCompletedTasksData';

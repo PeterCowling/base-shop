@@ -1,7 +1,8 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import GuidedOnboardingFlow from '../GuidedOnboardingFlow';
+
 import { usePreArrivalMutator } from '../../../hooks/mutator/usePreArrivalMutator';
 import { useFetchPreArrivalData } from '../../../hooks/pureData/useFetchPreArrivalData';
+import GuidedOnboardingFlow from '../GuidedOnboardingFlow';
 
 jest.mock('../../../hooks/mutator/usePreArrivalMutator', () => ({
   usePreArrivalMutator: jest.fn(),

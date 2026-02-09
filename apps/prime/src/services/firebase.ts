@@ -1,48 +1,49 @@
 // src/services/firebase.ts
-/* eslint-disable import/order */
+ 
 
-import logger from '@/utils/logger';
 import {
+  type FirebaseApp,
   getApp,
   getApps,
   initializeApp,
   setLogLevel,
-  type FirebaseApp,
 } from 'firebase/app';
 import {
+  type Database,
+  type DataSnapshot,
   endAt,
   endBefore,
   equalTo,
   get as fbGet,
-  onValue as fbOnValue,
   getDatabase,
   limitToFirst,
   limitToLast,
+  type ListenOptions,
   off,
   onChildAdded,
   onChildChanged,
   onChildRemoved,
+  onValue as fbOnValue,
   orderByChild,
   push,
+  type Query,
   query,
   ref,
   set,
   startAt,
-  update,
-  type Database,
-  type DataSnapshot,
-  type ListenOptions,
-  type Query,
   type Unsubscribe,
+  update,
 } from 'firebase/database';
 import {
   deleteObject,
+  type FirebaseStorage,
   getDownloadURL,
   getStorage,
   ref as storageRef,
   uploadBytes,
-  type FirebaseStorage,
 } from 'firebase/storage';
+
+import logger from '@/utils/logger';
 
 /* -------------------------------------------------------------------------- */
 /*                              Firebase config                               */
@@ -71,8 +72,14 @@ const app: FirebaseApp = getApps().length
 setLogLevel('error');
 
 export const firebaseApp = app;
-export const db = getDatabase(app);
-export const storage = getStorage(app);
+// Defer RTDB/Storage init to client — getDatabase() fails during static export
+// prerendering when NEXT_PUBLIC_FIREBASE_DATABASE_URL is absent.
+export const db: Database = typeof window !== 'undefined'
+  ? getDatabase(app)
+  : (null as unknown as Database);
+export const storage: FirebaseStorage = typeof window !== 'undefined'
+  ? getStorage(app)
+  : (null as unknown as FirebaseStorage);
 
 /* -------------------------------------------------------------------------- */
 /*                            Firebase Metrics (OPT-07)                       */

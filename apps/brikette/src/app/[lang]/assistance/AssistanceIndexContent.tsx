@@ -1,5 +1,6 @@
 "use client";
 
+/* eslint-disable ds/no-hardcoded-copy -- PUB-05 pre-existing */
 // src/app/[lang]/assistance/AssistanceIndexContent.tsx
 // Client component for assistance landing page
 import { type ComponentProps, memo, useCallback, useMemo } from "react";
@@ -9,19 +10,19 @@ import clsx from "clsx";
 import type { TFunction } from "i18next";
 
 import { Button } from "@acme/design-system/primitives";
-import { AssistanceQuickLinksSection as AssistanceQuickLinksSectionUi } from "@acme/ui/organisms/AssistanceQuickLinksSection";
 import type { AssistanceQuickLinkRenderProps } from "@acme/ui/organisms/AssistanceQuickLinksSection";
+import { AssistanceQuickLinksSection as AssistanceQuickLinksSectionUi } from "@acme/ui/organisms/AssistanceQuickLinksSection";
 
 import AssistanceQuickLinksSection from "@/components/assistance/quick-links-section";
 import FaqStructuredData from "@/components/seo/FaqStructuredData";
-import { isGuidePublished } from "@/data/guides.index";
+import { isGuideLive } from "@/data/guides.index";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
+import { resolveGuideCardImage } from "@/lib/guides/guideCardImage";
 import { guideHref, type GuideKey } from "@/routes.guides-helpers";
 import { getGuideManifestEntry } from "@/routes/guides/guide-manifest";
 import { getGuideLinkLabel } from "@/utils/translationFallbacks";
-import { resolveGuideCardImage } from "@/lib/guides/guideCardImage";
 
 type Props = {
   lang: AppLanguage;
@@ -178,11 +179,11 @@ function AssistanceIndexContent({ lang }: Props): JSX.Element {
     popularGuidesHeadingRaw.trim().length > 0 &&
     popularGuidesHeadingRaw !== popularGuidesHeadingKey
       ? popularGuidesHeadingRaw
-      : "Other Popular Guides";
+            : "Other Popular Guides";
 
   const helpfulGuideCards = useMemo(
     () =>
-      HELPFUL_GUIDE_KEYS.filter((key) => isGuidePublished(key)).map((key) =>
+      HELPFUL_GUIDE_KEYS.filter((key) => isGuideLive(key)).map((key) =>
         buildGuideCardData(key, resolvedLang, tGuides, tGuidesEn),
       ),
     [resolvedLang, tGuides, tGuidesEn],
@@ -190,7 +191,7 @@ function AssistanceIndexContent({ lang }: Props): JSX.Element {
 
   const popularGuideCards = useMemo(
     () =>
-      POPULAR_GUIDE_KEYS.filter((key) => isGuidePublished(key)).map((key) =>
+      POPULAR_GUIDE_KEYS.filter((key) => isGuideLive(key)).map((key) =>
         buildGuideCardData(key, resolvedLang, tGuides, tGuidesEn),
       ),
     [resolvedLang, tGuides, tGuidesEn],

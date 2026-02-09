@@ -1,5 +1,5 @@
 /* File: /src/components/onboarding/ProgressBar.tsx */
-import { FC, memo } from 'react';
+import { type FC, memo } from 'react';
 
 interface ProgressBarProps {
   currentStep: number;

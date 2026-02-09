@@ -1,8 +1,8 @@
 import {
+  type ActivationExperimentExposure,
   aggregateActivationExperimentMetrics,
   assignActivationVariants,
   resolveActivationExperimentConfig,
-  type ActivationExperimentExposure,
 } from '../activationExperiments';
 
 describe('activation experiments', () => {

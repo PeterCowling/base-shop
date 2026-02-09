@@ -5,7 +5,7 @@ import { readFile } from "fs/promises";
 import { handleBriketteResourceRead } from "../resources/brikette-knowledge.js";
 import { handleDraftGuideRead } from "../resources/draft-guide.js";
 import { handleVoiceExamplesRead } from "../resources/voice-examples.js";
-import { handleDraftGenerateTool } from "../tools/draft-generate";
+import { clearTemplateCache, handleDraftGenerateTool } from "../tools/draft-generate";
 
 jest.mock("fs/promises", () => ({
   readFile: jest.fn(),
@@ -64,6 +64,7 @@ const baseActionPlan = {
 describe("draft_generate tool", () => {
   beforeEach(() => {
     jest.resetAllMocks();
+    clearTemplateCache();
     handleBriketteResourceReadMock.mockResolvedValue({
       contents: [
         {
@@ -143,5 +144,128 @@ describe("draft_generate tool", () => {
     expect(payload.draft.bodyPlain.length).toBeGreaterThan(0);
     expect(payload.draft.bodyHtml).toContain("<!DOCTYPE html>");
     expect(payload.quality).toHaveProperty("passed");
+  });
+
+  it("TC-05: single-question email uses single template (no composite)", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Breakfast — Eligibility and Hours",
+          body: "Dear Guest,\r\n\r\nThank you for your question about breakfast.\r\n\r\nBreakfast is served daily from 8:00 AM to 10:30 AM.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+          category: "breakfast",
+        },
+      ])
+    );
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Is breakfast included?",
+        intents: {
+          questions: [{ text: "Is breakfast included?" }],
+          requests: [],
+          confirmations: [],
+        },
+      },
+      subject: "Breakfast question",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error(result.content[0].text);
+    }
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.composite).toBe(false);
+  });
+
+  it("TC-06: multi-topic email produces composite body from multiple templates", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Breakfast — Eligibility and Hours",
+          body: "Dear Guest,\r\n\r\nThank you for your question about breakfast.\r\n\r\nBreakfast is served daily from 8:00 AM to 10:30 AM.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+          category: "breakfast",
+        },
+        {
+          subject: "Luggage Storage — Before Check-in",
+          body: "Dear Guest,\r\n\r\nThank you for your email.\r\n\r\nYes, we offer free luggage storage on your arrival day.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+          category: "luggage",
+        },
+        {
+          subject: "WiFi Information",
+          body: "Dear Guest,\r\n\r\nThank you for your question.\r\n\r\nComplimentary WiFi is available throughout the hostel.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+          category: "wifi",
+        },
+      ])
+    );
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Is breakfast included? Can we store luggage? Do you have WiFi?",
+        intents: {
+          questions: [
+            { text: "Is breakfast included?" },
+            { text: "Can we store luggage?" },
+            { text: "Do you have WiFi?" },
+          ],
+          requests: [],
+          confirmations: [],
+        },
+      },
+      subject: "Questions about our stay",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error(result.content[0].text);
+    }
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.composite).toBe(true);
+    // Body should contain content from multiple templates
+    const body = payload.draft.bodyPlain.toLowerCase();
+    expect(body).toContain("breakfast");
+    expect(body).toContain("luggage");
+    expect(body).toContain("wifi");
+  });
+
+  it("TC-07: composite body has exactly one signature", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Breakfast — Eligibility and Hours",
+          body: "Dear Guest,\r\n\r\nBreakfast is served daily.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+          category: "breakfast",
+        },
+        {
+          subject: "WiFi Information",
+          body: "Dear Guest,\r\n\r\nComplimentary WiFi is available.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+          category: "wifi",
+        },
+      ])
+    );
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Is breakfast included? Do you have WiFi?",
+        intents: {
+          questions: [
+            { text: "Is breakfast included?" },
+            { text: "Do you have WiFi?" },
+          ],
+          requests: [],
+          confirmations: [],
+        },
+      },
+      subject: "Questions",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error(result.content[0].text);
+    }
+
+    const payload = JSON.parse(result.content[0].text);
+    const body = payload.draft.bodyPlain;
+    // Count occurrences of "regards" — should appear exactly once (at end)
+    const regardsMatches = body.toLowerCase().match(/regards/g) || [];
+    expect(regardsMatches.length).toBe(1);
   });
 });

@@ -2,6 +2,7 @@ import "../../../../../../../test/resetNextMocks";
 
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 
 import { RadioGroup, RadioGroupItem } from "../radio-group";
 
@@ -26,7 +27,7 @@ function renderRadioGroup({ disabled = false } = {}) {
 
 describe("RadioGroup", () => {
   // TC-01: Correct ARIA roles
-  it("has correct ARIA roles", () => {
+  it("has correct ARIA roles", async () => {
     renderRadioGroup();
     expect(screen.getByRole("radiogroup")).toBeInTheDocument();
     expect(screen.getAllByRole("radio")).toHaveLength(3);

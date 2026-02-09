@@ -1,4 +1,6 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+
+import WelcomeHandoffStep from '../WelcomeHandoffStep';
 
 // Mock hooks
 const mockCompleteTask = jest.fn().mockResolvedValue(undefined);
@@ -42,8 +44,6 @@ jest.mock('../OnboardingLayout', () => ({
     </div>
   ),
 }));
-
-import WelcomeHandoffStep from '../WelcomeHandoffStep';
 
 describe('WelcomeHandoffStep', () => {
   const onContinue = jest.fn();

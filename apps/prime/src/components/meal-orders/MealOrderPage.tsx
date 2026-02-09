@@ -1,8 +1,9 @@
 'use client';
 
-import { CalendarDays, UtensilsCrossed } from 'lucide-react';
-import Link from 'next/link';
 import { useMemo, useState } from 'react';
+import Link from 'next/link';
+import { CalendarDays, UtensilsCrossed } from 'lucide-react';
+
 import { useGuestBookingSnapshot } from '../../hooks/dataOrchestrator/useGuestBookingSnapshot';
 import { GUEST_CRITICAL_FLOW_ENDPOINTS } from '../../lib/security/guestCriticalFlowEndpoints';
 

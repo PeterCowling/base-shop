@@ -5,9 +5,10 @@
  * Score is computed from checklist progress (0-100).
  */
 
-import { CheckCircle2 } from 'lucide-react';
-import { FC, memo } from 'react';
+import { type FC, memo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { CheckCircle2 } from 'lucide-react';
+
 import type { ReadinessLevel } from '../../lib/preArrival';
 
 interface ReadinessScoreProps {

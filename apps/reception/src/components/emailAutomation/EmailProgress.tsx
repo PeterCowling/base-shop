@@ -1,3 +1,5 @@
+"use client";
+
 import React, { type ChangeEvent, useMemo, useState } from "react";
 
 import useEmailProgressData, {

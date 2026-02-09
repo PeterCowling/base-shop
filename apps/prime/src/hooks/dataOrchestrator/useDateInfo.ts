@@ -9,8 +9,10 @@
  * - Order dates for each night
  */
 
-import logger from '@/utils/logger';
 import { useMemo } from 'react';
+
+import logger from '@/utils/logger';
+
 import {
   computeOrderDate,
   formatDateToDDMM,

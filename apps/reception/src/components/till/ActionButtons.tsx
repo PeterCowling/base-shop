@@ -1,3 +1,5 @@
+"use client";
+
 import { type FC, useMemo, useState } from "react";
 
 import { canAccess, Permissions } from "../../lib/roles";

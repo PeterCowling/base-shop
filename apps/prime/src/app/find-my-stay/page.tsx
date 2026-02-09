@@ -1,8 +1,9 @@
 'use client';
 
-import { ArrowLeft, Search } from 'lucide-react';
-import Link from 'next/link';
 import { useState } from 'react';
+import Link from 'next/link';
+import { ArrowLeft, Search } from 'lucide-react';
+
 import { recordActivationFunnelEvent } from '../../lib/analytics/activationFunnel';
 
 export default function FindMyStayPage() {
@@ -46,7 +47,7 @@ export default function FindMyStayPage() {
         route: '/find-my-stay',
       });
       window.location.assign(data.redirectUrl);
-    } catch (err) {
+    } catch {
       setError('Connection error. Please try again.');
     } finally {
       setIsLoading(false);

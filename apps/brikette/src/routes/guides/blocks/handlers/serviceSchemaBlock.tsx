@@ -3,8 +3,9 @@
  */
 import type { ComponentProps } from "react";
 
-import ServiceStructuredData from "@/components/seo/ServiceStructuredData";
 import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
+
+import ServiceStructuredData from "@/components/seo/ServiceStructuredData";
 import getGuideResource from "@/routes/guides/utils/getGuideResource";
 
 import type { GuideSeoTemplateContext } from "../../guide-seo/types";

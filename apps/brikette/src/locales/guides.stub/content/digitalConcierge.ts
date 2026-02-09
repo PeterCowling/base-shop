@@ -3,7 +3,7 @@
 // Single-purpose stub: Digital Concierge Service
 // -----------------------------------------------------------------------------
 
-/* eslint-disable ds/no-hardcoded-copy -- TECH-000 */
+ 
 
 export const digitalConcierge = {
   seo: {
@@ -45,4 +45,4 @@ export const digitalConcierge = {
   },
 } as const;
 
-/* eslint-enable ds/no-hardcoded-copy -- TECH-000 */
+ 

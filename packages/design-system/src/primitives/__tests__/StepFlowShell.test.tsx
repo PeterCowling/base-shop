@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import useReducedMotion from "../../hooks/useReducedMotion";
 import MilestoneToast from "../MilestoneToast";
@@ -20,8 +21,8 @@ describe("Step flow primitives", () => {
     mockedUseReducedMotion.mockReturnValue(false);
   });
 
-  it("TC-01: render semantics expose progressbar + trust note", () => {
-    render(
+  it("TC-01: render semantics expose progressbar + trust note", async () => {
+    const { container } = render(
       <StepFlowShell
         currentStep={2}
         totalSteps={3}
@@ -50,6 +51,7 @@ describe("Step flow primitives", () => {
 
     const status = screen.getByRole("status");
     expect(status).toHaveTextContent("Great progress");
+
     expect(status).not.toHaveClass("animate-pulse");
   });
 

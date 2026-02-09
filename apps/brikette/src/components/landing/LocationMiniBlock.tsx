@@ -1,7 +1,7 @@
+/* eslint-disable ds/no-hardcoded-copy, ds/no-naked-img, ds/require-aspect-ratio-on-media -- BRIK-DS-001: in-progress design-system migration */
 // src/components/landing/LocationMiniBlock.tsx
 import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { MapPin } from "@/icons";
 
 import { Section } from "@acme/design-system/atoms";
 
@@ -9,6 +9,7 @@ import { Cluster, Inline, Stack } from "@/components/ui/flex";
 import hotel from "@/config/hotel";
 import { useOptionalModal } from "@/context/ModalContext";
 import type { AppLanguage } from "@/i18n.config";
+import { MapPin } from "@/icons";
 
 const LocationMiniBlock = memo(function LocationMiniBlock({ lang }: { lang?: AppLanguage }): JSX.Element {
   const translationOptions = lang ? { lng: lang } : undefined;

@@ -1,17 +1,19 @@
 import "../../../../../../test/resetNextMocks";
 
 import { render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { locales } from "@acme/i18n/locales";
 
 import LanguageSwitcher from "../LanguageSwitcher";
 
 describe("LanguageSwitcher", () => {
-  it("highlights the current locale", () => {
+  it("highlights the current locale", async () => {
     const current = locales[0];
-    render(<LanguageSwitcher current={current} />);
+    const { container } = render(<LanguageSwitcher current={current} />);
     const active = screen.getByRole("link", { name: current.toUpperCase() });
     expect(active).toHaveClass("font-semibold");
+
     expect(active).toHaveClass("underline");
 
     if (locales.length > 1) {

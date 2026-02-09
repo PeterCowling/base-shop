@@ -1,5 +1,6 @@
 // src/components/footer/FooterLegalRow.tsx
 import { memo } from "react";
+
 import { Cluster, Stack } from "@/components/ui/flex";
 
 import { FooterTextLink } from "./FooterLinks";

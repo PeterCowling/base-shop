@@ -1,8 +1,10 @@
 'use client';
 
+import { useCallback, useState } from 'react';
+
 import { ref, update } from '@/services/firebase';
 import logger from '@/utils/logger';
-import { useCallback, useState } from 'react';
+
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { OccupantCompletedTasks } from '../../types/completedTasks';
 import useUuid from '../useUuid';

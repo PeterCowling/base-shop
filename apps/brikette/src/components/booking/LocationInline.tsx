@@ -2,11 +2,11 @@
 import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import type { FallbackLng, FallbackLngObjList } from "i18next";
-import { Bus, MapPin } from "@/icons";
 
 import { Button } from "@acme/design-system/primitives";
 
 import { useModal } from "@/context/ModalContext";
+import { Bus, MapPin } from "@/icons";
 
 function LocationInline({ lang }: { lang?: string }): JSX.Element {
   const translationOptions = lang ? { lng: lang } : undefined;

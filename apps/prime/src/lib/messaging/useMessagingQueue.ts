@@ -5,10 +5,13 @@
  * Events are processed by Cloud Functions.
  */
 
+import { useCallback, useState } from 'react';
+
 import { ref, set } from '@/services/firebase';
 import logger from '@/utils/logger';
-import { useCallback, useState } from 'react';
+
 import { useFirebaseDatabase } from '../../services/useFirebase';
+
 import {
   createQueueRecord,
   type MessagingEventType,

@@ -6,8 +6,7 @@
 ---------------------------------------------------------------- */
 import { memo } from "react";
 
-import { buildBreadcrumbList } from "@/utils/seo/jsonld";
-import { serializeJsonLdValue } from "@/utils/seo/jsonld";
+import { buildBreadcrumbList , serializeJsonLdValue } from "@/utils/seo/jsonld";
 
 /** Minimal BreadcrumbList shape we generate in `utils/seo.ts` */
 export interface BreadcrumbList {

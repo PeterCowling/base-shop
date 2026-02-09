@@ -1,5 +1,6 @@
+import { type FC,memo } from 'react';
 import { AlertTriangle, CheckCircle2, CreditCard } from 'lucide-react';
-import { memo, type FC } from 'react';
+
 import type { GuestKeycardStatus } from '../../lib/preArrival/keycardStatus';
 
 interface KeycardStatusProps {

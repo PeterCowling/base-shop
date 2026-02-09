@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
-import BookingDetailsPage from "../page";
 import { useGuestBookingSnapshot } from "../../../../hooks/dataOrchestrator/useGuestBookingSnapshot";
+import BookingDetailsPage from "../page";
 
 jest.mock("../../../../hooks/dataOrchestrator/useGuestBookingSnapshot", () => ({
   useGuestBookingSnapshot: jest.fn(),
@@ -45,7 +45,7 @@ describe("BookingDetailsPage extension request", () => {
         message: "Extension request sent.",
       }),
     });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     (global as any).fetch = fetchMock;
 
     render(<BookingDetailsPage />);

@@ -10,9 +10,10 @@
  */
 
 import { describe, expect, it } from "@jest/globals";
-import { transformRouteToGuide } from "@/routes/how-to-get-here/transformRouteToGuide";
+
 import type { RouteDefinition } from "@/lib/how-to-get-here/definitions";
 import type { RouteContent } from "@/lib/how-to-get-here/schema";
+import { transformRouteToGuide } from "@/routes/how-to-get-here/transformRouteToGuide";
 
 describe("transportMigration", () => {
   describe("linkBindings.placeholder pattern", () => {

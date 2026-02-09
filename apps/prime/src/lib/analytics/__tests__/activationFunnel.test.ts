@@ -1,7 +1,7 @@
 import {
+  type ActivationFunnelEvent,
   aggregateActivationFunnel,
   buildActivationFunnelEvent,
-  type ActivationFunnelEvent,
 } from '../activationFunnel';
 
 describe('activation funnel analytics', () => {

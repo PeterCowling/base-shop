@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy, ds/container-widths-only-at, ds/enforce-layout-primitives, @typescript-eslint/no-unused-vars -- BRIK-DS-001: in-progress design-system migration */
 "use client";
 
 // src/app/[lang]/deals/DealsPageContent.tsx
@@ -5,10 +6,9 @@
 import { Fragment, memo, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
-import { ChevronDown } from "@/icons";
 
-import { Button } from "@acme/design-system/primitives";
 import { Section } from "@acme/design-system/atoms";
+import { Button } from "@acme/design-system/primitives";
 
 import DealsStructuredData from "@/components/seo/DealsStructuredData";
 import { Cluster, Inline, InlineItem, Stack } from "@/components/ui/flex";
@@ -16,6 +16,7 @@ import { useOptionalModal } from "@/context/ModalContext";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
+import { ChevronDown } from "@/icons";
 import { formatMonthDay, formatPercent, isoDateToLocalStart, shouldIncludeYear } from "@/routes/deals/dates";
 import DealCard from "@/routes/deals/DealCard";
 import { DEALS, PRIMARY_DEAL } from "@/routes/deals/deals";

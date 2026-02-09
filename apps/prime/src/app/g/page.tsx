@@ -1,8 +1,9 @@
 'use client';
 
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Suspense, useEffect, useMemo, useState } from 'react';
+
 import { recordActivationFunnelEvent } from '../../lib/analytics/activationFunnel';
 
 type Status = 'loading' | 'ready' | 'error' | 'verified';

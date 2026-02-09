@@ -8,13 +8,13 @@ import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { guideSlug } from "@/routes.guides-helpers";
 import NEARBY from "@/schema/travel-help/en-nearby.jsonld?raw";
-import { HOTEL_ID } from "@/utils/schema";
-import { getSlug } from "@/utils/slug";
 import { buildFaqJsonLd } from "@/utils/buildFaqJsonLd";
+import { HOTEL_ID } from "@/utils/schema";
 import { serializeJsonLdValue } from "@/utils/seo/jsonld";
+import { getSlug } from "@/utils/slug";
+import { parseTravelHelpResource, type TravelHelpResource } from "@/utils/travelHelp";
 
 import FaqJsonLdScript from "./FaqJsonLdScript";
-import { parseTravelHelpResource, type TravelHelpResource } from "@/utils/travelHelp";
 
 export default function TravelHelpStructuredData() {
   const lang = useCurrentLanguage();

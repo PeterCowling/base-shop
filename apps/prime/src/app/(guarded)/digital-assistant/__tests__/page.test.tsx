@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 
-import DigitalAssistantPage from "../page";
 import { recordActivationFunnelEvent } from "../../../../lib/analytics/activationFunnel";
+import DigitalAssistantPage from "../page";
 
 jest.mock("../../../../lib/analytics/activationFunnel", () => ({
   recordActivationFunnelEvent: jest.fn(),

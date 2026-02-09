@@ -1,10 +1,8 @@
 'use client';
 
-import { MSG_ROOT } from '@/utils/messaging/dbRoot';
-import { push } from 'firebase/database';
 import {
   createContext,
-  ReactNode,
+  type ReactNode,
   useCallback,
   useContext,
   useEffect,
@@ -12,7 +10,12 @@ import {
   useRef,
   useState,
 } from 'react';
+import { push } from 'firebase/database';
+
+import { MSG_ROOT } from '@/utils/messaging/dbRoot';
+
 import {
+  type DataSnapshot,
   endAt,
   endBefore,
   equalTo,
@@ -30,7 +33,6 @@ import {
   set,
   startAt,
   update,
-  type DataSnapshot,
 } from '../../services/firebase';
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { ActivityInstance } from '../../types/messenger/activity';
@@ -50,6 +52,7 @@ interface ChatContextValue extends ChatState {
   loadOlderMessages: (channelId: string) => Promise<void>;
   loadMoreActivities: () => void;
   hasMoreActivities: boolean;
+  sendMessage: (channelId: string, content: string) => Promise<void>;
 }
 
 type ChatAction =
@@ -329,6 +332,32 @@ export function ChatProvider({ children }: ChatProviderProps) {
     [db, state.messages],
   );
 
+  const sendMessage = useCallback(
+    async (channelId: string, content: string) => {
+      if (!content.trim()) return;
+
+      // Get guest session info
+      const { readGuestSession: readSession } = await import('@/lib/auth/guestSessionGuard');
+      const session = readSession();
+
+      if (!session.uuid) {
+        throw new Error('Guest session not found');
+      }
+
+      const messageRef = push(ref(db, `${MSG_ROOT}/channels/${channelId}/messages`));
+      const message: Omit<Message, 'id'> = {
+        content: content.trim(),
+        senderId: session.uuid,
+        senderRole: 'guest',
+        senderName: session.firstName ?? undefined,
+        createdAt: Date.now(),
+      };
+
+      await set(messageRef, message);
+    },
+    [db],
+  );
+
   const value: ChatContextValue = {
     ...state,
     currentChannelId,
@@ -336,6 +365,7 @@ export function ChatProvider({ children }: ChatProviderProps) {
     loadOlderMessages,
     loadMoreActivities,
     hasMoreActivities,
+    sendMessage,
   };
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
 }

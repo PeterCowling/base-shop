@@ -8,9 +8,11 @@
 */
 
 import { useQuery } from '@tanstack/react-query';
+
 import type { Database } from '@/services/firebase';
 import { get, ref } from '@/services/firebase';
 import logger from '@/utils/logger';
+
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { GuestProfile } from '../../types/guestProfile';
 import { DEFAULT_GUEST_PROFILE } from '../../types/guestProfile';
@@ -110,6 +112,7 @@ export function useFetchGuestProfile(
           pace: data.pace,
           socialOptIn: data.socialOptIn,
           chatOptIn: data.chatOptIn,
+          blockedUsers: data.blockedUsers,
         }
       : DEFAULT_GUEST_PROFILE;
 

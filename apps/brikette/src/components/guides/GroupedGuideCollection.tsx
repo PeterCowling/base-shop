@@ -9,13 +9,13 @@ import type { TFunction } from "i18next";
 import type { GuideMeta } from "@/data/guides.index";
 import { splitGuidesByType } from "@/data/guides.index";
 import { matchesGuideTopic } from "@/data/guideTopics";
-import type { AppLanguage } from "@/i18n.config";
 import appI18n from "@/i18n";
+import type { AppLanguage } from "@/i18n.config";
 
-import { GuideCollectionFilters } from "./GuideCollectionFilters";
 import GroupedGuideSection, { type TopicConfig } from "./GroupedGuideSection";
-import { useGuideSummaryResolver } from "./useGuideSummaryResolver";
+import { GuideCollectionFilters } from "./GuideCollectionFilters";
 import type { GuideFilterOption } from "./useGuideFilterOptions";
+import { useGuideSummaryResolver } from "./useGuideSummaryResolver";
 
 // Topic display order and minimum guide threshold
 const MAIN_TOPICS = ["beaches", "hiking", "day-trip", "boat", "cuisine"] as const;

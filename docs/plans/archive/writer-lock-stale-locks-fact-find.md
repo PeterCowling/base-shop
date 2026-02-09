@@ -1,3 +1,10 @@
+---
+Type: Fact-Find
+Status: Historical
+Domain: Repo
+Last-reviewed: 2026-02-09
+---
+
 # Writer Lock Stale Locks from Subagents - Fact Find
 
 **Status:** Completed and archived

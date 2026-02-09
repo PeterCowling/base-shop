@@ -1,5 +1,6 @@
 "use client";
 
+/* eslint-disable ds/no-hardcoded-copy, complexity, ds/container-widths-only-at -- PUB-05 pre-existing */
 // src/app/[lang]/experiences/ExperiencesPageContent.tsx
 // Client component for experiences listing page
 import { Fragment, memo, useCallback, useMemo } from "react";
@@ -8,10 +9,12 @@ import { useSearchParams } from "next/navigation";
 
 import { Section } from "@acme/design-system/atoms";
 
-import GuideFaqSection, { type GuideFaq } from "@/components/guides/GuideFaqSection";
-import GuideCollection from "@/components/guides/GuideCollection";
 import GroupedGuideCollection from "@/components/guides/GroupedGuideCollection";
+import GuideCollection from "@/components/guides/GuideCollection";
+import GuideFaqSection, { type GuideFaq } from "@/components/guides/GuideFaqSection";
+import { useGuideTopicOptions } from "@/components/guides/useGuideTopicOptions";
 import ExperiencesStructuredData from "@/components/seo/ExperiencesStructuredData";
+import { useOptionalModal } from "@/context/ModalContext";
 import { type GuideMeta, GUIDES_INDEX } from "@/data/guides.index";
 import { matchesGuideTopic, resolveGuideTopicId } from "@/data/guideTopics";
 import { usePagePreload } from "@/hooks/usePagePreload";
@@ -19,8 +22,6 @@ import type { AppLanguage } from "@/i18n.config";
 import { getSlug } from "@/utils/slug";
 import { getTagMeta } from "@/utils/tags";
 import { resolveLabel, useEnglishFallback } from "@/utils/translation-fallback";
-import { useGuideTopicOptions } from "@/components/guides/useGuideTopicOptions";
-import { useOptionalModal } from "@/context/ModalContext";
 
 import ExperiencesCtaSection from "./ExperiencesCtaSection";
 import ExperiencesHero from "./ExperiencesHero";
@@ -34,8 +35,74 @@ type Props = {
 // Draft guides are excluded so category headers won't show for empty categories.
 function getExperienceGuides(): GuideMeta[] {
   return GUIDES_INDEX.filter(
-    (g) => g.section === "experiences" && g.status === "published"
+    (g) => g.section === "experiences" && g.status === "live"
   );
+}
+
+function parseFaqItems(t: ReturnType<typeof useTranslation>["t"], experiencesEnT: ReturnType<typeof useEnglishFallback> | undefined): GuideFaq[] {
+  type FaqItem = { question?: string; answer?: string[] };
+
+  const parseFaqArray = (items: unknown): GuideFaq[] => {
+    const candidates = Array.isArray(items) ? (items as FaqItem[]) : [];
+    return candidates
+      .map((item) => ({
+        question: normalizeString(item?.question),
+        answers: Array.isArray(item?.answer)
+          ? item.answer.filter((a): a is string => typeof a === "string").map((a) => a.trim()).filter(Boolean)
+          : [],
+      }))
+      .filter((item) => item.question && item.answers.length);
+  };
+
+  // Try primary translation first
+  const raw = (() => {
+    try {
+      return t("faq.items", { returnObjects: true }) as unknown;
+    } catch {
+      return undefined;
+    }
+  })();
+
+  const normalized = parseFaqArray(raw);
+  if (normalized.length) return normalized;
+
+  // Fallback to English
+  if (!experiencesEnT) return [];
+  try {
+    const fallback = experiencesEnT("faq.items", { returnObjects: true }) as unknown;
+    return parseFaqArray(fallback);
+  } catch {
+    return [];
+  }
+}
+
+function buildGuideCopy(
+  t: ReturnType<typeof useTranslation>["t"],
+  experiencesEnT: ReturnType<typeof useEnglishFallback> | undefined,
+  activeFilterLabel: string
+) {
+  const taggedHeading = activeFilterLabel
+    ? readString(t, "guideCollections.taggedHeading", experiencesEnT, { tag: activeFilterLabel })
+    : readString(t, "guideCollections.taggedHeading", experiencesEnT, { tag: "" });
+  const taggedDescription = activeFilterLabel
+    ? readString(t, "guideCollections.taggedDescription", experiencesEnT, { tag: activeFilterLabel })
+    : readString(t, "guideCollections.taggedDescription", experiencesEnT, { tag: "" });
+  const emptyMessage = activeFilterLabel
+    ? readString(t, "guideCollections.empty", experiencesEnT, { tag: activeFilterLabel })
+    : readString(t, "guideCollections.empty", experiencesEnT, { tag: "" });
+
+  return {
+    heading: readString(t, "guideCollections.heading", experiencesEnT) || "",
+    description: readString(t, "guideCollections.description", experiencesEnT) || "",
+    ...(taggedHeading ? { taggedHeading } : {}),
+    ...(taggedDescription ? { taggedDescription } : {}),
+    ...(emptyMessage ? { emptyMessage } : {}),
+    clearFilterLabel: readString(t, "guideCollections.clearFilter", experiencesEnT) || "",
+    cardCta: readString(t, "guideCollections.cardCta", experiencesEnT) || "",
+    directionsLabel: readString(t, "guideCollections.directionsLabel", experiencesEnT) || "",
+    filterHeading: readString(t, "guideCollections.filterHeading", experiencesEnT) || "",
+    filterDescription: readString(t, "guideCollections.filterDescription", experiencesEnT) || "",
+  };
 }
 
 function ExperiencesPageContent({ lang }: Props) {
@@ -84,30 +151,10 @@ function ExperiencesPageContent({ lang }: Props) {
   const barMenuHref = `/${lang}/${getSlug("barMenu", lang)}`;
   const breakfastMenuHref = `/${lang}/${getSlug("breakfastMenu", lang)}`;
 
-  const guideCopy = useMemo(() => {
-    const taggedHeading = activeFilterLabel
-      ? readString(t, "guideCollections.taggedHeading", experiencesEnT, { tag: activeFilterLabel })
-      : readString(t, "guideCollections.taggedHeading", experiencesEnT, { tag: "" });
-    const taggedDescription = activeFilterLabel
-      ? readString(t, "guideCollections.taggedDescription", experiencesEnT, { tag: activeFilterLabel })
-      : readString(t, "guideCollections.taggedDescription", experiencesEnT, { tag: "" });
-    const emptyMessage = activeFilterLabel
-      ? readString(t, "guideCollections.empty", experiencesEnT, { tag: activeFilterLabel })
-      : readString(t, "guideCollections.empty", experiencesEnT, { tag: "" });
-
-    return {
-      heading: readString(t, "guideCollections.heading", experiencesEnT) || "",
-      description: readString(t, "guideCollections.description", experiencesEnT) || "",
-      ...(taggedHeading ? { taggedHeading } : {}),
-      ...(taggedDescription ? { taggedDescription } : {}),
-      ...(emptyMessage ? { emptyMessage } : {}),
-      clearFilterLabel: readString(t, "guideCollections.clearFilter", experiencesEnT) || "",
-      cardCta: readString(t, "guideCollections.cardCta", experiencesEnT) || "",
-      directionsLabel: readString(t, "guideCollections.directionsLabel", experiencesEnT) || "",
-      filterHeading: readString(t, "guideCollections.filterHeading", experiencesEnT) || "",
-      filterDescription: readString(t, "guideCollections.filterDescription", experiencesEnT) || "",
-    };
-  }, [activeFilterLabel, experiencesEnT, t]);
+  const guideCopy = useMemo(
+    () => buildGuideCopy(t, experiencesEnT, activeFilterLabel),
+    [activeFilterLabel, experiencesEnT, t]
+  );
 
   const topicOptions = useGuideTopicOptions(allExperienceGuides, lang);
 
@@ -120,46 +167,13 @@ function ExperiencesPageContent({ lang }: Props) {
   const guideFilterParam = isTagFilter ? "tag" : "topic";
   const guideFilterPredicate = isTagFilter ? undefined : matchesGuideTopic;
   const guideFilterOptions = isTagFilter ? undefined : topicOptions;
-  const showGuideFilters = !isTagFilter;
+  const _showGuideFilters = !isTagFilter;
 
-  type FaqItem = { question?: string; answer?: string[] };
   const faqTitle = readString(t, "faq.title", experiencesEnT);
-  const faqItems = useMemo<GuideFaq[]>(() => {
-    const raw = (() => {
-      try {
-        return t("faq.items", { returnObjects: true }) as unknown;
-      } catch {
-        return undefined;
-      }
-    })();
-    const candidates = Array.isArray(raw) ? (raw as FaqItem[]) : [];
-    const normalized = candidates
-      .map((item) => ({
-        question: normalizeString(item?.question),
-        answers: Array.isArray(item?.answer)
-          ? item.answer.filter((a): a is string => typeof a === "string").map((a) => a.trim()).filter(Boolean)
-          : [],
-      }))
-      .filter((item) => item.question && item.answers.length);
-
-    if (normalized.length) return normalized;
-
-    if (!experiencesEnT) return [];
-    try {
-      const fallback = experiencesEnT("faq.items", { returnObjects: true }) as unknown;
-      const fallbackCandidates = Array.isArray(fallback) ? (fallback as FaqItem[]) : [];
-      return fallbackCandidates
-        .map((item) => ({
-          question: normalizeString(item?.question),
-          answers: Array.isArray(item?.answer)
-            ? item.answer.filter((a): a is string => typeof a === "string").map((a) => a.trim()).filter(Boolean)
-            : [],
-        }))
-        .filter((item) => item.question && item.answers.length);
-    } catch {
-      return [];
-    }
-  }, [experiencesEnT, t]);
+  const faqItems = useMemo<GuideFaq[]>(
+    () => parseFaqItems(t, experiencesEnT),
+    [experiencesEnT, t]
+  );
 
   const ctaTitle = readString(t, "cta.title", experiencesEnT);
   const ctaSubtitle = readString(t, "cta.subtitle", experiencesEnT);

@@ -29,8 +29,8 @@ If uncertainty remains, do one of:
 | Evidence class | Typical source | Allowed confidence uplift |
 |----------------|----------------|---------------------------|
 | **E0: Assumption** | Opinion, intuition, "seems easy" | **0%** |
-| **E1: Static code/doc audit** | `rg`, file reads, call-site mapping | **small uplift only** (typically +0 to +5) |
-| **E2: Executable verification** | existing tests run, script outputs, runtime probes | **moderate uplift** (typically +5 to +15) |
+| **E1: Static code/doc audit** | `rg`, file reads, call-site mapping, official doc lookups | **small uplift only** (typically +0 to +5) |
+| **E2: Executable verification** | existing tests run, script outputs, runtime probes, **scout probe tests** | **moderate uplift** (typically +5 to +15) |
 | **E3: Precursor spike/prototype result** | dedicated spike task with measurable outcome | **major uplift** (typically +10 to +25) |
 
 ### Promotion gate (hard rule)
@@ -41,12 +41,42 @@ A task should not be promoted from **<80%** to **≥80%** unless at least one is
 
 ### Precursor task pattern
 
-When evidence is insufficient, add a precursor task before the blocked task:
-- **Type:** `INVESTIGATE` (or narrow `IMPLEMENT` spike when code execution is required)
+When evidence is insufficient to promote a task above 80%, **create formal precursor tasks in the plan** — not inline notes.
+
+**Precursor tasks are first-class plan tasks.** They get their own TASK-ID, full confidence assessment, acceptance criteria, test contract (if IMPLEMENT type), and appear in the task summary table. The blocked downstream task explicitly `Depends on` the precursor TASK-ID.
+
+**Why formal tasks, not notes:** Inline "precursor evidence needed" notes hide real work behind a single confidence number. A task at 70% with "needs spike" looks like one task — but it's actually two: the spike and the implementation. Making precursors formal tasks means:
+- The dependency chain is visible and sequenceable
+- Precursor tasks get their own confidence assessment (they may themselves be blocked)
+- `/build-feature` can build the precursor independently
+- `/sequence-plan` correctly orders the full chain
+- Progress tracking reflects actual work remaining
+
+**Precursor task requirements:**
+- **Type:** `INVESTIGATE` (research/decision) or `SPIKE` (code prototype with measurable outcome)
 - **Purpose:** resolve exactly one uncertainty class (Implementation/Approach/Impact)
 - **Outputs:** concrete artifact (`decision memo`, `call-site map`, `test/probe output`, `prototype result`)
 - **Exit criteria:** binary pass/fail statement tied to evidence
-- **Dependency:** blocked task depends on precursor task ID
+- **Confidence:** assessed using the same min-of-dimensions rule as any other task
+- **Dependency:** the blocked downstream task `Depends on` this precursor's TASK-ID
+- **Test contract:** SPIKE tasks that produce code require a test contract; INVESTIGATE tasks that produce only a decision memo do not
+
+**Recursive decomposition:** If a precursor task is itself below 80% confidence, it may need its own precursors. Work backwards from the blocked task until every task in the chain is ≥80%. This may produce a chain of 2-3 tasks — that's fine. The alternative (one task with hidden precursors) masks the true confidence.
+
+**Example chain:**
+```
+TASK-54 (INVESTIGATE, 85%): Decision memo — Firebase custom claims vs PIN token
+  ↓ unblocks
+TASK-55 (SPIKE, 82%): Prototype Firebase Auth init + custom claims flow
+  ↓ unblocks
+TASK-51 (IMPLEMENT, 74% → conditional 82%): Staff auth replacement
+  (confidence promotable to 82% only after TASK-54 + TASK-55 complete)
+```
+
+**Conditional confidence:** When a blocked task's confidence depends on precursor completion, record it as:
+> **Confidence:** 74% (→ 82% conditional on TASK-54, TASK-55)
+
+This makes the confidence chain transparent. The task stays at 74% until precursors are done.
 
 ## TDD Compliance Requirement
 
@@ -110,8 +140,38 @@ Run `/re-plan` when any of the following occurs:
 - New information invalidates assumptions, dependencies, or approach decisions.
 - Build was stopped due to uncertainty and needs a structured reset.
 - `/build-feature` rejected a task due to missing test contract.
+- **A CHECKPOINT task was reached during `/build-feature`** — triggers a mid-build reassessment of all remaining tasks using evidence from completed work.
 
 **Note:** `/re-plan` is not for generating a plan from scratch; that is `/plan-feature`. `/re-plan` operates on a specific plan and task IDs.
+
+### Checkpoint-Triggered Re-Assessment
+
+When `/re-plan` is invoked at a CHECKPOINT during `/build-feature`, it operates in **mid-build reassessment mode**:
+
+1. **Gather implementation evidence:** Read the completed tasks' build completion notes, commits, and confidence reassessments. This is E2/E3 evidence (executable verification from real implementation).
+
+2. **Validate horizon assumptions:** Each CHECKPOINT lists "Horizon assumptions to validate." Check each one against the evidence from completed tasks:
+   - **Confirmed:** The assumption held — downstream tasks can retain or increase confidence.
+   - **Partially confirmed:** Some aspects held, others were more complex than expected — downstream tasks need revision.
+   - **Disproved:** The assumption was wrong — downstream tasks that depend on it need major revision or abandonment.
+
+3. **Scout ahead for remaining tasks:** Before reassessing confidence, proactively validate assumptions that remaining tasks depend on:
+   - **Doc lookups:** Verify any library/API/framework capabilities the remaining tasks assume — check against the exact versions in use.
+   - **Probe tests:** Write small throwaway tests that exercise critical assumptions (e.g., "can Prisma do nested creates with this schema?", "does this API accept this payload shape?"). These are E2 evidence.
+   - **Contract checks:** Run `tsc` or schema validation against type/contract assumptions that downstream tasks depend on.
+   - **Integration boundary tests:** Run existing tests that cross boundaries the remaining tasks will depend on.
+
+   Scout results directly feed the reassessment — a failed scout disproves an assumption before you build on it.
+
+4. **Reassess remaining tasks:** For each task after the CHECKPOINT:
+   - Re-evaluate confidence using evidence from completed work AND scout results (not just static analysis)
+   - Split tasks that are now understood to be larger than planned
+   - Remove or defer tasks that are no longer viable
+   - Add new tasks discovered during implementation or scouting
+
+5. **Apply the standard re-plan workflow** (steps 1–7) to the remaining tasks, with the key difference that completed tasks and scout results provide E2/E3 evidence that was unavailable during initial planning.
+
+6. **After re-plan completes:** `/build-feature` will check the results and either continue building or stop if remaining tasks dropped below threshold.
 
 ## Workflow
 
@@ -279,14 +339,28 @@ Update `docs/plans/<feature-slug>-plan.md` as follows:
   - Updated dependencies/order (if changed)
   - Updated acceptance criteria/test plan/rollout notes as needed
 
-**If the task remains complex:**
-- Split into:
-  - an INVESTIGATE task (to remove remaining unknowns), and
-  - one or more IMPLEMENT tasks that become ≥80% once the investigation is done.
+**If confidence remains <80% after investigation — create formal precursor tasks:**
 
-**If confidence remains <80% after investigation:**
-- Add explicit precursor task(s) and set dependency ordering so numerical task execution cannot skip them.
-- Add a short **"Precursor evidence needed"** note in the task body.
+Do NOT add inline "Precursor evidence needed" notes. Instead:
+
+1. **Create a new task section** in the plan with the next available TASK-ID
+2. **Full task definition** — same structure as any IMPLEMENT task:
+   - Type (INVESTIGATE or SPIKE)
+   - Effort (S/M/L)
+   - Confidence (min-of-dimensions, assessed normally)
+   - Acceptance criteria (what artifact is produced, what question is answered)
+   - Test contract (for SPIKE tasks that produce code)
+   - Exit criteria (binary pass/fail)
+   - Affects (files to read/modify)
+3. **Add to task summary table** with confidence, effort, and dependencies
+4. **Update the blocked task's `Depends on`** to include the new precursor TASK-ID
+5. **Record conditional confidence** on the blocked task:
+   > **Confidence:** 70% (→ 84% conditional on TASK-XX, TASK-YY)
+6. **Recursively assess** — if the precursor itself is <80%, it needs its own precursors
+
+**The blocked task's confidence stays at its current value** until precursors are completed and provide E2/E3 evidence. Do not speculatively raise it.
+
+**After creating precursor tasks, re-assess the full dependency graph** — new tasks may unblock or reorder existing work.
 
 **Also update:**
 - `Last-updated` in frontmatter
@@ -341,7 +415,7 @@ Identify any tasks whose confidence should change due to:
 
 Update those tasks' confidence (and notes) if materially affected.
 
-### 6a) Sequence the plan (automatic)
+### 6a) Sequence the plan (mandatory when precursor tasks are created)
 
 After updating tasks and re-assessing knock-on effects, run `/sequence-plan` on the plan. This:
 
@@ -350,7 +424,9 @@ After updating tasks and re-assessing knock-on effects, run `/sequence-plan` on 
 - Updates all `Depends on` and `Blocks` fields with new IDs
 - Regenerates the **Parallelism Guide** to reflect the current dependency graph
 
-**Skip conditions:** Only skip if re-plan touched a single task with no dependency changes.
+**Mandatory when:** precursor tasks were created or dependencies changed. The new tasks must appear in the correct execution order — precursors before the tasks they unblock.
+
+**Skip conditions:** Only skip if re-plan touched a single task with no dependency changes and no new tasks were created.
 
 **Note:** `/sequence-plan` does not change task scope, confidence, or acceptance — it only reorders, renumbers, and maps dependencies. All substantive changes were made in steps 1–6.
 
@@ -389,12 +465,25 @@ Add this block inside the task section:
 - **Decision / resolution:**
   - <what was decided and why>
 - **Changes to task:**
-  - Dependencies: <updated TASK-IDs>
+  - Dependencies: <updated TASK-IDs (including new precursor tasks)>
   - Acceptance: <updated bullets if changed>
   - Test plan: <updated bullets if changed>
   - Rollout/rollback: <updated notes if changed>
-- **Precursor evidence needed (if still <80):**
-  - <TASK-ID or verification step that must complete before confidence can be promoted>
+```
+
+**When confidence remains <80%, use the conditional confidence pattern instead of inline precursor notes:**
+
+```markdown
+#### Re-plan Update (YYYY-MM-DD)
+- **Previous confidence:** 70%
+- **Updated confidence:** 70% (→ 84% conditional on TASK-54, TASK-55)
+  - Confidence cannot be promoted until precursor tasks complete and provide E2/E3 evidence
+- **Investigation performed:**
+  - <what was investigated>
+- **Precursor tasks created:**
+  - TASK-54 (INVESTIGATE): <description> — resolves <uncertainty>
+  - TASK-55 (SPIKE): <description> — resolves <uncertainty>
+- **Dependencies updated:** Now depends on TASK-54, TASK-55
 ```
 
 Also add a short entry to the plan's **Decision Log** whenever an approach decision is made or reversed.
@@ -411,7 +500,9 @@ Also add a short entry to the plan's **Decision Log** whenever an approach decis
 - [ ] **TDD compliance:** Every IMPLEMENT task has a complete test contract with TC-XX enumeration.
 - [ ] **Test contract validation:** All items in 5b) checklist pass for every IMPLEMENT task.
 - [ ] **Scientific uplift compliance:** each confidence increase is tied to E1/E2/E3 evidence and uncertainty reduction.
-- [ ] **Precursor compliance:** unresolved unknowns are represented as explicit precursor tasks, not hidden in optimism.
+- [ ] **Precursor compliance:** unresolved unknowns are represented as formal precursor tasks (with TASK-ID, confidence, acceptance) — not inline notes or "precursor evidence needed" bullets.
+- [ ] **Precursor confidence:** each precursor task has its own min-of-dimensions confidence assessment. If a precursor is <80%, it has its own precursors (recursive decomposition).
+- [ ] **Dependency chain:** blocked tasks have explicit `Depends on` referencing precursor TASK-IDs. Conditional confidence recorded on the blocked task.
 - [ ] **Sequencing applied:** `/sequence-plan` has been run — tasks reordered, renumbered, `Blocks` fields updated, Parallelism Guide regenerated.
 
 ## Completion Messages
@@ -422,8 +513,17 @@ Also add a short entry to the plan's **Decision Log** whenever an approach decis
 **Confidence ≥80% but missing test contracts:**
 > "Re-plan complete. Updated plan. Tasks <IDs> are ≥80% confidence but missing test contracts (TC-XX). Tasks re-sequenced. Run `/re-plan` again to add test contracts before proceeding to build."
 
-**Some caution tasks (60–79%) but none <60%:**
-> "Re-plan complete. Updated plan. Tasks <IDs> remain 60–79% with explicit precursor/verification steps. Tasks re-sequenced. Recommend completing precursor tasks before promoting confidence."
+**Some tasks <80% with precursor chain created:**
+> "Re-plan complete. Updated plan. Tasks <IDs> remain <80% with conditional confidence pending precursor completion. Created N new precursor tasks (TASK-XX, TASK-YY) — all ≥80% and ready for `/build-feature`. Tasks re-sequenced into N execution waves. Build precursor tasks first, then `/re-plan` to promote blocked tasks."
 
 **Blocked / needs user input:**
 > "Re-plan complete but still blocked on <IDs> (<%>) due to <dimension>. Tasks re-sequenced where possible. I need the following decisions from you: <questions>."
+
+**Checkpoint-triggered — remaining tasks confirmed:**
+> "Checkpoint re-assessment complete. Horizon assumptions validated against completed work. N remaining tasks reassessed — all ≥80% with complete test contracts. Tasks re-sequenced. Resuming `/build-feature`."
+
+**Checkpoint-triggered — remaining tasks revised:**
+> "Checkpoint re-assessment complete. Found: <findings from completed work>. Revised N tasks, added M new tasks, deferred/removed K tasks. Updated plan re-sequenced into N execution waves. Resuming `/build-feature` for eligible tasks."
+
+**Checkpoint-triggered — approach invalidated:**
+> "Checkpoint re-assessment complete. Completed work revealed: <evidence>. Remaining approach is no longer viable because: <reason>. Recommend: <alternative approach or scope reduction>. Build paused pending direction."

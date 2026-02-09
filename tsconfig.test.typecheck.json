@@ -2,7 +2,7 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "jsx": "react-jsx",
-    "types": ["node", "jest", "@testing-library/jest-dom"],
+    "types": ["node", "jest", "@testing-library/jest-dom", "react", "react-dom"],
     "allowJs": true,
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
@@ -61,11 +61,16 @@
       "@acme/telemetry": ["test/__mocks__/telemetryMock.ts"],
       "@acme/plugin-sanity": ["test/__mocks__/pluginSanityStub.ts"],
       "@acme/plugin-sanity/*": ["test/__mocks__/pluginSanityStub.ts"],
-      "@prisma/client": ["__mocks__/@prisma/client.ts"]
+      "@prisma/client": ["__mocks__/@prisma/client.ts"],
+      "@acme/cms-ui": ["packages/cms-ui/src/index.ts", "packages/cms-ui/dist/index.d.ts"],
+      "@acme/cms-ui/*": ["packages/cms-ui/src/*", "packages/cms-ui/dist/*"],
+      "@acme/design-system": ["packages/design-system/src/index.ts", "packages/design-system/dist/index.d.ts"],
+      "@acme/design-system/*": ["packages/design-system/src/*", "packages/design-system/dist/*"]
     }
   },
   "include": [
     "jest.setup.ts",
+    "test/global.d.ts",
     "test/**/*.ts",
     "test/**/*.tsx",
     "test/**/*.js",

@@ -38,23 +38,50 @@ export interface TemplateRankResult {
 
 const DEFAULT_LIMIT = 3;
 const AUTO_THRESHOLD = 80;
-const SUGGEST_THRESHOLD = 50;
+const SUGGEST_THRESHOLD = 25;
 
-const SYNONYMS: Record<string, string[]> = {
+export const SYNONYMS: Record<string, string[]> = {
   arrival: ["check-in", "check in", "arrive"],
   checkin: ["check-in", "arrival", "arrive"],
-  checkout: ["check-out", "departure", "leave"],
+  checkout: ["check-out", "departure", "leaving"],
   cancel: ["cancellation", "refund"],
   payment: ["card", "charge", "prepayment", "bank transfer"],
   door: ["access", "entry", "code"],
   directions: ["transportation", "bus", "ferry", "taxi"],
+  breakfast: ["food", "meal", "morning", "colazione"],
+  luggage: ["bags", "suitcase", "storage", "belongings", "bagagli"],
+  wifi: ["internet", "connection", "network"],
+  modification: ["change", "modify", "reschedule", "extend"],
+  coupon: ["discount", "code", "promo", "promotion", "voucher"],
+  job: ["application", "employment", "work", "position", "receptionist", "volunteer"],
+  lost: ["found", "missing", "left behind", "forgot", "forgotten"],
+  laundry: ["washing", "clothes", "facilities"],
+  room: ["capacity", "beds", "dorm", "private", "occupancy"],
+  fee: ["cost", "charge", "price", "expense"],
+  cost: ["fee", "charge", "price", "expense"],
+  price: ["cost", "fee", "charge", "rate"],
+  add: ["include", "purchase", "buy"],
+  include: ["add", "purchase", "buy"],
+  transfer: ["bank transfer", "wire", "IBAN"],
+  age: ["restriction", "policy", "limit", "years old"],
+  restriction: ["age", "policy", "limit"],
+  allowed: ["permitted", "possible", "available", "can"],
 };
 
 const PHRASE_EXPANSIONS = [
   { phrase: "check in", expansions: ["check-in", "arrival time", "early arrival"] },
-  { phrase: "check out", expansions: ["check-out", "departure time"] },
+  { phrase: "check out", expansions: ["check-out", "departure time", "checkout"] },
   { phrase: "arrival time", expansions: ["check-in", "early arrival"] },
   { phrase: "late check", expansions: ["late arrival", "out of hours"] },
+  { phrase: "luggage storage", expansions: ["bags", "bag drop", "suitcase"] },
+  { phrase: "bag drop", expansions: ["luggage", "luggage storage"] },
+  { phrase: "change dates", expansions: ["date modification", "reschedule", "booking change"] },
+  { phrase: "extend stay", expansions: ["extension", "extra nights", "booking change"] },
+  { phrase: "quiet hours", expansions: ["noise", "house rules", "quiet time"] },
+  { phrase: "late checkout", expansions: ["late check-out", "checkout extension"] },
+  { phrase: "coupon code", expansions: ["discount", "promo code", "voucher"] },
+  { phrase: "job application", expansions: ["work exchange", "volunteer", "employment", "receptionist"] },
+  { phrase: "lost item", expansions: ["left behind", "forgot", "missing", "lost property"] },
 ];
 
 const HARD_RULE_CATEGORIES = new Set(["prepayment", "cancellation"]);

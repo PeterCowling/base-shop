@@ -258,7 +258,54 @@ for pkg_file in "$PKG_MAP"/*; do
     TESTED_PKGS=$((TESTED_PKGS + 1))
 done
 
-# 6. Summary
+# 6. Guide validation (brikette-specific)
+# Detect guide content/manifest changes and run validate-content + validate-links.
+GUIDE_CONTENT_ALL=""
+if git diff --cached --quiet 2>/dev/null; then
+    GUIDE_CONTENT_ALL=$(git diff --name-only HEAD 2>/dev/null || true)
+else
+    GUIDE_CONTENT_ALL=$(git diff --cached --name-only 2>/dev/null || true)
+fi
+
+GUIDE_JSON_CHANGED=$(echo "$GUIDE_CONTENT_ALL" | grep -E '^apps/brikette/src/locales/.*/guides/content/.*\.json$' || true)
+GUIDE_INFRA_CHANGED=$(echo "$GUIDE_CONTENT_ALL" | grep -E '^apps/brikette/src/routes/guides/(guide-manifest|content-schema)\.ts$' || true)
+
+if [ -n "$GUIDE_JSON_CHANGED" ] || [ -n "$GUIDE_INFRA_CHANGED" ]; then
+    echo ""
+    echo "> Guide validation (brikette)"
+
+    # Extract changed guide keys from JSON paths
+    GUIDE_KEYS=""
+    if [ -n "$GUIDE_JSON_CHANGED" ]; then
+        GUIDE_KEYS=$(echo "$GUIDE_JSON_CHANGED" | sed 's|.*/||;s|\.json$||' | sort -u | tr '\n' ',' | sed 's/,$//')
+    fi
+
+    # If only content files changed, scope validation to those guides.
+    # If infrastructure changed (manifest/schema), validate all guides.
+    GUIDE_FILTER=""
+    if [ -z "$GUIDE_INFRA_CHANGED" ] && [ -n "$GUIDE_KEYS" ]; then
+        GUIDE_FILTER="--guides=$GUIDE_KEYS"
+        echo "  Validating changed guides: $GUIDE_KEYS"
+    else
+        echo "  Validating all guides (infrastructure changed)"
+    fi
+
+    echo "  Running validate-content..."
+    if ! pnpm --filter ./apps/brikette validate-content --fail-on-violation $GUIDE_FILTER 2>&1; then
+        echo "  FAIL: Guide content validation failed"
+        exit 1
+    fi
+
+    echo "  Running validate-links..."
+    if ! pnpm --filter ./apps/brikette validate-links $GUIDE_FILTER 2>&1; then
+        echo "  FAIL: Guide link validation failed"
+        exit 1
+    fi
+
+    echo "  OK: Guide validation passed"
+fi
+
+# 7. Summary
 echo ""
 echo "========================================"
 echo "Summary:"

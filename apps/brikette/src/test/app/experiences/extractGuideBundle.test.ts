@@ -1,4 +1,6 @@
 // Mock i18next before importing the module under test
+import { extractGuideBundle } from "@/utils/extractGuideBundle";
+
 const store: Record<string, Record<string, unknown>> = {};
 
 jest.mock("i18next", () => ({
@@ -7,8 +9,6 @@ jest.mock("i18next", () => ({
     getResourceBundle: (lang: string, ns: string) => store[`${lang}/${ns}`],
   },
 }));
-
-import { extractGuideBundle } from "@/utils/extractGuideBundle";
 
 function seed(lang: string, ns: string, data: Record<string, unknown>) {
   store[`${lang}/${ns}`] = data;

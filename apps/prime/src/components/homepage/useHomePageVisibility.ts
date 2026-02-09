@@ -8,14 +8,16 @@
 
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { DoListTask } from './DoList';
+
 import {
   getServicesConfig,
   type ServiceCardData,
 } from '../../config/homepage/servicesConfig';
 import { getTasks, type TaskItem } from '../../config/homepage/tasksConfig';
-import { useUnifiedBookingData, type UnifiedOccupantData } from '../../hooks/dataOrchestrator/useUnifiedBookingData';
+import { type UnifiedOccupantData,useUnifiedBookingData } from '../../hooks/dataOrchestrator/useUnifiedBookingData';
 import { useCompletedTaskMutator } from '../../hooks/mutator/useCompletedTaskMutator';
+
+import type { DoListTask } from './DoList';
 
 function transformTasks(rawTasks: TaskItem[]): DoListTask[] {
   return rawTasks.map((task) => ({
@@ -50,7 +52,7 @@ export interface UseHomePageVisibilityReturn {
  * Returns loading/error states, occupant data, and computed arrays for tasks/services.
  */
 export function useHomePageVisibility(): UseHomePageVisibilityReturn {
-  const { t } = useTranslation('Homepage');
+  const { t: _t } = useTranslation('Homepage');
 
   // 1) Fetch occupant data from the unified booking data hook
   const {

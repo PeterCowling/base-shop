@@ -76,6 +76,24 @@ const RAW_BUDGET_BASELINES: unknown = {
       rationale:
         'Cached revisit inside stale window should use React Query cache and avoid new database reads/listeners.',
     },
+    owner_kpi_dashboard_7day: {
+      maxReads: 7,
+      maxActiveListeners: 0,
+      maxReadsByPath: {
+        ownerKpis: 7,
+      },
+      rationale:
+        'Owner KPI dashboard 7-day view reads from pre-aggregated ownerKpis/{date} nodes only. One read per day, never scans raw bookings or preArrival data.',
+    },
+    owner_kpi_dashboard_30day: {
+      maxReads: 30,
+      maxActiveListeners: 0,
+      maxReadsByPath: {
+        ownerKpis: 30,
+      },
+      rationale:
+        'Owner KPI dashboard 30-day view reads from pre-aggregated ownerKpis/{date} nodes only. One read per day, never scans raw bookings or preArrival data.',
+    },
   },
 };
 

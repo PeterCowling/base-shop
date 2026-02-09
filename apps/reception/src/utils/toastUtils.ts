@@ -1,21 +1,12 @@
 /* src/utils/toastUtils.ts */
-import { toast } from "react-toastify";
+import { toast } from "@acme/ui/components/organisms/operations/NotificationCenter/NotificationCenter";
 
 export type ToastMessageType = "success" | "error" | "info" | "warning";
 
 /**
- * Default Toastify options shared across all toast calls.
- * Adjust these to match your preferred styling and behavior.
+ * Default toast options to match previous react-toastify behavior.
  */
-const DEFAULT_TOAST_OPTIONS = {
-  position: "top-center" as const,
-  autoClose: 1500,
-  hideProgressBar: false,
-  closeOnClick: true,
-  pauseOnHover: true,
-  draggable: true,
-  progress: undefined,
-};
+const DEFAULT_DURATION = 1500;
 
 /**
  * Shows a toast message with a predefined style.
@@ -23,20 +14,22 @@ const DEFAULT_TOAST_OPTIONS = {
  * @param type - One of "success", "error", "info", or "warning".
  */
 export const showToast = (message: string, type: ToastMessageType): void => {
+  const options = { duration: DEFAULT_DURATION };
+
   switch (type) {
     case "success":
-      toast.success(message, DEFAULT_TOAST_OPTIONS);
+      toast.success(message, options);
       break;
     case "error":
-      toast.error(message, DEFAULT_TOAST_OPTIONS);
+      toast.error(message, options);
       break;
     case "info":
-      toast.info(message, DEFAULT_TOAST_OPTIONS);
+      toast.info(message, options);
       break;
     case "warning":
-      toast.warning(message, DEFAULT_TOAST_OPTIONS);
+      toast.warning(message, options);
       break;
     default:
-      toast(message, DEFAULT_TOAST_OPTIONS);
+      toast.info(message, options);
   }
 };

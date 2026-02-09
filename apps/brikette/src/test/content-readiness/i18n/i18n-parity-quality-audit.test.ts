@@ -1,10 +1,10 @@
 /* eslint-disable security/detect-non-literal-fs-filename -- TEST-1001: Reads repo-local locale fixtures under src/locales. [ttl=2026-12-31] */
-import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
 
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
-
 import { PLACEHOLDER_PHRASES } from "@tests/utils/detectRenderedI18nPlaceholders";
+
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
 
 import { resolveGuideContentFileAllowlist } from "../helpers/guideFilters";
 
@@ -564,7 +564,7 @@ describe("i18n parity & quality audit (non-guide content)", () => {
       throw new Error(message);
     }
 
-    // eslint-disable-next-line no-console
+     
     console.warn("[WARN] " + message);
     expect(true).toBe(true);
   });
@@ -603,7 +603,7 @@ describe("i18n parity & quality audit (guide content structure)", () => {
       throw new Error(message);
     }
 
-    // eslint-disable-next-line no-console
+     
     console.warn("[WARN] " + message);
     expect(true).toBe(true);
   });

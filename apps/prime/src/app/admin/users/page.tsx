@@ -1,5 +1,6 @@
-import { Users } from 'lucide-react';
 import Link from 'next/link';
+import { Users } from 'lucide-react';
+
 import StaffOwnerDisabledNotice from '../../../components/security/StaffOwnerDisabledNotice';
 import { canAccessStaffOwnerRoutes } from '../../../lib/security/staffOwnerGate';
 

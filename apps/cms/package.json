@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --passWithNoTests --coverage --config ./jest.config.cjs",
-    "dev:debug": "cross-env NODE_OPTIONS='--enable-source-maps --trace-uncaught --inspect' next dev -p 3006"
+    "dev:debug": "cross-env NODE_OPTIONS='--enable-source-maps --trace-uncaught --inspect' next dev -p 3006",
+    "build:worker": "opennextjs-cloudflare build"
   },
   "dependencies": {
     "@acme/cms-ui": "workspace:*",
@@ -36,15 +37,16 @@
     "dompurify": "^3.2.6",
     "file-type": "^21.0.0",
     "lucide-react": "^0.540.0",
-    "validator": "^13.15.15"
+    "validator": "^13.15.22"
   },
   "devDependencies": {
     "axe-core": "^4.10.3",
     "@types/busboy": "^1.5.4",
     "cross-env": "^7.0.3",
-    "next": "15.3.9",
+    "next": "^15.3.9",
     "react": "19.2.1",
     "react-dom": "19.2.1",
+    "@opennextjs/cloudflare": "^1.16.3",
     "supertest": "^6.3.3"
   }
 }

@@ -1,21 +1,25 @@
 ---
 name: plan-feature
-description: Create a confidence-gated implementation plan for a feature. Planning only - produces a plan doc with atomic tasks, acceptance criteria, and per-task confidence assessments. Build is gated at ≥80% confidence; Confidence ≥90% is a motivation, not a quota.
+description: Create a confidence-gated implementation plan for a feature, then auto-continue to build if eligible. Produces a plan doc with atomic tasks, acceptance criteria, and per-task confidence assessments. Build is gated at ≥80% confidence; Confidence ≥90% is a motivation, not a quota.
 ---
 
 # Plan Feature
 
-Create a confidence-gated implementation plan for a feature. Planning only: produce a plan doc with atomic tasks, acceptance criteria, and per-task confidence assessments.
+Create a confidence-gated implementation plan for a feature, then auto-continue to build when eligible. Produces a plan doc with atomic tasks, acceptance criteria, and per-task confidence assessments.
 
-**CI policy:** CI≥90 is a motivation/diagnostic, not a quota. Preserve breadth by phasing/deferment and by adding “What would make this ≥90%” notes. The **build gate** is still confidence-based: only IMPLEMENT tasks ≥80% proceed to `/build-feature`.
+**CI policy:** CI≥90 is a motivation/diagnostic, not a quota. Preserve breadth by phasing/deferment and by adding "What would make this ≥90%" notes. The **build gate** is still confidence-based: only IMPLEMENT tasks ≥80% proceed to `/build-feature`.
+
+**Auto-continue:** After planning completes, if there are no open questions and ≥1 IMPLEMENT task at ≥80% confidence, this skill automatically invokes `/build-feature` on the plan. No user intervention required for the handoff.
 
 ## Operating Mode
 
-**PLANNING ONLY**
+**PLANNING → AUTO-BUILD**
 
-**Allowed:** read files, search repo, inspect tests, trace dependencies, run tests (for validation), run read-only commands (e.g., `rg`, `ls`, `cat`, `npm test -- --listTests`), consult existing `docs/plans`, consult external docs if needed, write test stubs for L-effort tasks.
+**Planning phase:** read files, search repo, inspect tests, trace dependencies, run tests (for validation), run read-only commands (e.g., `rg`, `ls`, `cat`, `npm test -- --listTests`), consult existing `docs/plans`, consult external docs if needed, write test stubs for L-effort tasks.
 
-**Not allowed:** implementation code changes, refactors, migrations applied, running destructive commands, opening PRs.
+**Not allowed during planning:** implementation code changes, refactors, migrations applied, running destructive commands, opening PRs.
+
+**Auto-continue phase:** After the plan is persisted and sequenced, if auto-continue criteria are met (see step 12), invoke `/build-feature` which transitions to full build mode.
 
 **Commits allowed:**
 - Plan file (`docs/plans/<slug>-plan.md`)
@@ -175,6 +179,8 @@ Do enough repo study to justify task confidence. Minimum checklist:
 - Identify entry points for the feature (routes/controllers/handlers/commands/UI components).
 - Identify data models touched (DB schema, domain models, API contracts).
 - Identify integration points (external services, queues, caches, auth).
+- Identify performance-sensitive paths (N+1 queries, missing caching, high-frequency code paths the feature touches).
+- Identify security boundaries (auth/authorization on affected routes, data access controls, input validation for untrusted data).
 - Identify test coverage and the correct test layer(s) (unit/integration/e2e).
 - Identify configuration/feature-flag patterns already used.
 - Identify observability patterns (logging, metrics, tracing, error reporting).
@@ -239,6 +245,30 @@ describe('Feature: <feature-name>', () => {
 - Adjust confidence scores based on evidence
 - Create INVESTIGATION tasks for areas that need deeper understanding
 
+#### Assumption scouting (proactive dead-end prevention)
+
+Beyond running existing tests, **actively probe risky assumptions** before they become embedded in the plan. The goal is to discover dead ends during planning (cheap) rather than during build (expensive).
+
+**What to scout:**
+- **API/library feasibility:** If the plan depends on a library or framework supporting X, look up the official docs and verify. Write a minimal probe test if the docs are ambiguous.
+- **Contract compatibility:** If task N depends on a data shape or interface from task N-1, write a type-level or schema-level test that verifies the contract exists or can be created.
+- **Integration seams:** If two systems need to connect, verify both sides of the seam exist and are compatible. Run existing integration tests that cross the boundary.
+- **Platform constraints:** If deploying to a specific environment (Cloudflare Workers, static export, etc.), verify the feature is supported in that runtime.
+
+**How to scout:**
+- **Doc lookup:** Check official docs for the exact version in use (verify against `package.json` / lockfile). Cite the doc URL and version.
+- **Probe test:** Write a small, throwaway test that exercises the assumption. If it passes, you have E2 evidence. If it fails, you've caught a dead end before planning around it.
+- **Existing test run:** Run tests that exercise the contract or boundary you'll depend on.
+- **Type-level check:** Run `tsc` against a minimal type assertion to verify a contract holds.
+
+**Scout results feed confidence:**
+- Scout passes → E2 evidence → confidence can increase
+- Scout fails → assumption disproved → create INVESTIGATION task or revise approach
+- Scout inconclusive → flag as risk, keep confidence where it is
+
+**Where scouts appear in the plan:**
+Each IMPLEMENT task that depends on a non-obvious assumption should include a `Scouts` field listing what was probed and what was found. This is distinct from the test contract (which tests the feature) — scouts test the assumptions the feature depends on.
+
 ### 5) Decide the approach (with alternatives when warranted)
 
 - Write the proposed approach as a concise architecture description.
@@ -249,9 +279,57 @@ describe('Feature: <feature-name>', () => {
 
 ### 6) Break work into atomic tasks
 
+#### Planning Horizon & Risk Front-Loading
+
+Plans with many tasks in a dependency chain carry **compounding uncertainty** — task 8 depends on assumptions from tasks 1–7, any of which could prove wrong. Mitigate this:
+
+**Front-load risk validation:**
+- Order tasks so the riskiest assumptions are tested first. If the whole feature depends on "X is possible," task 1 should prove X.
+- Early tasks should be the ones most likely to reveal dead ends. If task 1 fails, you've wasted one task, not eight.
+- Each task should leave the codebase in a valid state — no task should be a "point of no return" that commits you to the full plan.
+
+**Keep tasks independently valuable:**
+- Prefer tasks that deliver incremental value even if later tasks are abandoned or replanned.
+- Avoid tasks that only make sense if all subsequent tasks also land (unless truly unavoidable).
+- If a task creates a new abstraction, it should be usable even if the planned consumers change.
+
+**Insert CHECKPOINT tasks at horizon boundaries:**
+- When a plan has **>3 IMPLEMENT tasks in a dependency chain**, insert a `CHECKPOINT` task after the first 2–3 IMPLEMENT tasks.
+- A CHECKPOINT is a lightweight re-assessment gate: "Given what we've built so far, does the rest of the plan still make sense?"
+- CHECKPOINTs don't produce code — they produce an updated plan (via `/re-plan`).
+- Auto-continue builds up to the first CHECKPOINT, then pauses for re-assessment before continuing.
+
+**CHECKPOINT task format:**
+```markdown
+### TASK-XX: Horizon checkpoint — reassess remaining plan
+- **Type:** CHECKPOINT
+- **Depends on:** <last IMPLEMENT task before the boundary>
+- **Blocks:** <first IMPLEMENT task after the boundary>
+- **Confidence:** 95%
+- **Acceptance:**
+  - Run `/re-plan` on all tasks after this checkpoint
+  - Reassess remaining task confidence using evidence from completed tasks
+  - Confirm or revise the approach for remaining work
+  - Update plan with any new findings, splits, or abandoned tasks
+- **Horizon assumptions to validate:**
+  - <assumption 1 that later tasks depend on — should now be verified by completed work>
+  - <assumption 2>
+```
+
+**When to insert CHECKPOINTs:**
+- After the first 2–3 tasks that validate the core approach
+- At natural phase boundaries (e.g., data layer done → UI layer starts)
+- Before any task that depends on assumptions not yet proven by completed work
+- When the dependency chain crosses 3+ waves in the Parallelism Guide
+
+**When NOT to insert CHECKPOINTs:**
+- Plans with ≤3 total IMPLEMENT tasks (too short to need them)
+- All tasks are independent (no dependency chain to compound uncertainty)
+- All tasks follow well-established patterns with E2+ evidence
+
 **Rules:**
 - One logical unit per task (typically one file or one cohesive change set).
-- Order tasks by prerequisites (infra/contracts before consumers). This is an initial authoring heuristic — `/sequence-plan` (step 10a) will formalize the ordering, renumber tasks, and add blocker metadata.
+- Order tasks so riskiest assumptions are validated first, then by prerequisites (infra/contracts before consumers). This is an initial authoring heuristic — `/sequence-plan` (step 10a) will formalize the ordering, renumber tasks, and add blocker metadata.
 - Each task must include:
   - **Affects** (file paths/modules — see format below)
   - **Dependencies** (TASK-IDs)
@@ -282,6 +360,8 @@ Use `[readonly]` prefix for files that must be read to understand contracts but 
 - If a task defines a user-facing flow, include at least one **e2e scenario** that validates the flow end-to-end.
 
 If something is uncertain, create an explicit **INVESTIGATION** task (to raise confidence) or a **DECISION** task (to choose between alternatives). Do not bury uncertainty inside implementation tasks.
+
+If the planning horizon is long, insert a **CHECKPOINT** task at natural boundaries (see "Planning Horizon & Risk Front-Loading" above). CHECKPOINTs force a re-assessment before committing to deep implementation.
 
 ### 7) Classify effort honestly (no gaming)
 
@@ -489,6 +569,8 @@ _Generated by `/sequence-plan` (step 10a). Shows which tasks can run concurrentl
   - **Red:** <tests to write/enable first and expected failing assertion>
   - **Green:** <minimal implementation change to satisfy Red>
   - **Refactor:** <cleanup/improvement after Green while tests stay passing>
+- **Scouts:** (include when task depends on non-obvious assumptions)
+  - <assumption> → <how validated: doc lookup / probe test / existing test / type check> → <result: confirmed / disproved / inconclusive>
 - **Planning validation:** (required for M/L effort)
   - Tests run: `<commands>` — <pass/fail, count>
   - Test stubs written: <file paths, or "N/A" for S effort>
@@ -580,6 +662,7 @@ A plan is considered complete only if:
 - [ ] `/sequence-plan` has been run: tasks are topologically sorted, renumbered, `Blocks` fields added, and Parallelism Guide generated.
 - [ ] Risks and mitigations are documented.
 - [ ] User questions were asked only when genuinely unavoidable.
+- [ ] Auto-continue criteria evaluated: no open questions + ≥1 task ≥80% → `/build-feature` invoked; otherwise reason for stopping documented.
 
 ### TDD Quality Checks
 
@@ -606,18 +689,66 @@ Before planning tasks, verify the fact-find brief includes:
 
 | Situation | Action |
 |-----------|--------|
-| All IMPLEMENT tasks ≥80% | Proceed to `/build-feature` |
-| Some tasks 60–79% | Build ≥80% tasks first; create verification steps for 60–79%; re-assess after prerequisite tasks land |
+| All IMPLEMENT tasks ≥80%, no open questions | **Auto-continue:** invoke `/build-feature` immediately |
+| Some tasks ≥80%, others 60–79%, no open questions | **Auto-continue:** invoke `/build-feature` for eligible tasks; note remaining tasks need `/re-plan` |
+| ≥1 IMPLEMENT task ≥80% but open DECISION/Needs-Input tasks exist | **Stop and ask:** present open questions to user; do NOT auto-continue |
+| All IMPLEMENT tasks <80% | Do NOT build. Recommend `/re-plan` |
 | Any IMPLEMENT task <60% | Do NOT build it. Convert to INVESTIGATE/DECISION and run `/re-plan` for that area |
 | Genuine product/UX ambiguity | Ask the user only after repo/doc investigation |
 
+## Auto-Continue to Build (Step 12)
+
+After the completion message (step 11), evaluate whether to auto-continue:
+
+### Auto-continue criteria (ALL must be true)
+
+1. **No open questions:** No DECISION tasks with status `Needs-Input`, no unresolved user questions
+2. **≥1 eligible task:** At least one IMPLEMENT task has confidence ≥80%
+3. **Plan status is Active:** The plan was set to `Active` (not left as `Draft`)
+
+### Auto-continue scope (CHECKPOINT-bounded)
+
+Auto-continue builds only up to the **first CHECKPOINT task** in the plan. This prevents committing to deep implementation before validating near-horizon assumptions.
+
+- If the plan has no CHECKPOINTs: auto-continue builds all eligible tasks (plan is short enough that horizon risk is acceptable)
+- If the plan has CHECKPOINTs: auto-continue builds eligible tasks up to the first CHECKPOINT, then the CHECKPOINT triggers `/re-plan` on remaining tasks before continuing
+
+This means a plan with 8 tasks and a CHECKPOINT after task 3 will:
+1. Auto-continue → build tasks 1–3
+2. Hit CHECKPOINT → run `/re-plan` on tasks 5–8 using evidence from tasks 1–3
+3. If re-plan confirms remaining tasks → continue building
+4. If re-plan reveals problems → revise before wasting more effort
+
+### When criteria are met
+
+- Output the completion message (step 11) noting auto-continuation
+- Invoke `/build-feature <feature-slug>` immediately
+- The build skill takes over from here with its own operating mode
+- Build will automatically pause at the first CHECKPOINT for re-assessment
+
+### When criteria are NOT met
+
+- Output the completion message (step 11) with the blocking reason
+- Do NOT invoke `/build-feature`
+- Recommend the appropriate next action (`/re-plan`, answer DECISION tasks, etc.)
+
+### Override
+
+If the user explicitly says the plan should remain Draft or asks NOT to auto-build, respect that and stop after the completion message.
+
 ## Completion Output (what to say to the user)
 
-**If all ≥80%:**
-> "Plan ready. All implementation tasks are ≥80% confidence. Tasks sequenced into N execution waves (max parallelism: P). Proceed to `/build-feature`."
+**If all ≥80% and auto-continuing:**
+> "Plan ready. All implementation tasks are ≥80% confidence. Tasks sequenced into N execution waves (max parallelism: P). Auto-continuing to `/build-feature`..."
 
-**If some below threshold:**
-> "Plan ready with blockers. Tasks <IDs> are below threshold (<%>). Tasks sequenced into N execution waves. Recommend `/re-plan` for blocked tasks before implementation; remaining tasks can proceed."
+**If some ≥80% and auto-continuing (others below threshold):**
+> "Plan ready with blockers. Tasks <IDs> are below threshold (<%>). Tasks sequenced into N execution waves. Auto-continuing to `/build-feature` for eligible tasks. Recommend `/re-plan` for blocked tasks after initial build completes."
+
+**If blocked from auto-continue (open questions):**
+> "Plan ready but has open questions. Tasks <IDs> need decisions before build can proceed. Please resolve DECISION tasks, then run `/build-feature`."
+
+**If blocked from auto-continue (all tasks <80%):**
+> "Plan ready with blockers. No tasks are above the 80% build threshold. Recommend `/re-plan` to raise confidence before building."
 
 ---
 
@@ -737,7 +868,7 @@ If all IMPLEMENT tasks are >=80% confidence, propose the lane transition.
 
 ### Completion Message (with Business OS)
 
-When Card-ID is present:
+When Card-ID is present and auto-continuing:
 
 > "Plan ready. All implementation tasks are ≥80% confidence.
 >
@@ -748,11 +879,22 @@ When Card-ID is present:
 > - **Suggested lane transition:** Fact-finding -> Planned
 > - Run `/propose-lane-move <Card-ID> Planned` to formally propose transition
 >
-> Proceed to `/build-feature`."
+> Auto-continuing to `/build-feature`..."
 
-When Card-ID is present but some tasks below threshold:
+When Card-ID is present but some tasks below threshold (still auto-continuing for eligible tasks):
 
 > "Plan ready with blockers. Tasks <IDs> are below threshold (<%>).
+>
+> **Business OS Integration:**
+> - Card: `<Card-ID>`
+> - Planned stage doc created via API: `plan`
+> - Card updated with Plan-Link via API
+>
+> Auto-continuing to `/build-feature` for eligible tasks. Recommend `/re-plan` for blocked tasks after initial build."
+
+When Card-ID is present but auto-continue is blocked (open questions or all tasks <80%):
+
+> "Plan ready but cannot auto-continue. <reason>.
 >
 > **Business OS Integration:**
 > - Card: `<Card-ID>`

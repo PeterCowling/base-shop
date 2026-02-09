@@ -5,9 +5,9 @@
  * Shows different layouts for incomplete vs completed tasks.
  */
 
-import { CheckCircle } from 'lucide-react';
-import Link from 'next/link';
 import { memo } from 'react';
+import Link from 'next/link';
+import { CheckCircle } from 'lucide-react';
 
 export interface TaskCardProps {
   title: string;
@@ -75,6 +75,7 @@ export const TaskCard = memo(function TaskCard({
             {image &&
               (link ? (
                 <Link href={link}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={image}
                     alt={alt || ''}
@@ -82,11 +83,14 @@ export const TaskCard = memo(function TaskCard({
                   />
                 </Link>
               ) : (
-                <img
-                  src={image}
-                  alt={alt || ''}
-                  className="max-w-[200px] h-auto object-cover rounded"
-                />
+                <>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={image}
+                    alt={alt || ''}
+                    className="max-w-[200px] h-auto object-cover rounded"
+                  />
+                </>
               ))}
             {note && (
               <p className="w-full text-gray-600 text-base text-center">

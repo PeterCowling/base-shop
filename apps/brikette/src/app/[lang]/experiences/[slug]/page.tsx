@@ -9,9 +9,8 @@ import { loadGuideI18nBundle } from "@/app/_lib/guide-i18n-bundle";
 import { getTranslations,toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
-import { GUIDES_INDEX, isGuidePublished } from "@/data/guides.index";
+import { GUIDES_INDEX, isGuideLive } from "@/data/guides.index";
 import { guideNamespace,guidePath, guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
-import { loadGuideManifestOverridesFromFs } from "@/routes/guides/guide-manifest-overrides.node";
 import { OG_IMAGE } from "@/utils/headConstants";
 
 import GuideContent from "./GuideContent";
@@ -22,7 +21,7 @@ type Props = {
 
 export async function generateStaticParams() {
   const langParams = generateLangParams();
-  const publishedGuideKeys = GUIDES_INDEX.filter((guide) => guide.status === "published").map(
+  const publishedGuideKeys = GUIDES_INDEX.filter((guide) => guide.status === "live").map(
     (guide) => guide.key,
   );
   // Generate params for all guide keys across all languages
@@ -79,7 +78,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     format: "auto",
   });
 
-  const isPublished = isGuidePublished(guideKey);
+  const isPublished = isGuideLive(guideKey);
 
   return buildAppMetadata({
     lang: validLang,
@@ -104,7 +103,7 @@ export default async function GuidePage({ params }: Props) {
   if (base.baseKey !== "experiences") {
     notFound();
   }
-  if (!isGuidePublished(guideKey)) {
+  if (!isGuideLive(guideKey)) {
     notFound();
   }
   const localizedSlug = guideSlug(validLang, guideKey);
@@ -112,16 +111,12 @@ export default async function GuidePage({ params }: Props) {
     permanentRedirect(guidePath(validLang, guideKey));
   }
 
-  // Load manifest overrides (includes audit results)
-  const serverOverrides = loadGuideManifestOverridesFromFs();
-
   const { serverGuides, serverGuidesEn } = await loadGuideI18nBundle(validLang, guideKey);
 
   return (
     <GuideContent
       lang={validLang}
       guideKey={guideKey}
-      serverOverrides={serverOverrides}
       serverGuides={serverGuides}
       serverGuidesEn={serverGuidesEn}
     />

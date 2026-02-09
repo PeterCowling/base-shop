@@ -1,7 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
+
 import GuardedHomeExperience from '../components/homepage/GuardedHomeExperience';
 import { clearGuestSession, readGuestSession, validateGuestToken } from '../lib/auth/guestSessionGuard';
 import { canAccessStaffOwnerRoutes } from '../lib/security/staffOwnerGate';

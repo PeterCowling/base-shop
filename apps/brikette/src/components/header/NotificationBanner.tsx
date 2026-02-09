@@ -6,11 +6,11 @@ import type { KeyboardEvent } from "react";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
-import { X } from "@/icons";
 
 import { useSetBannerRef } from "@/context/NotificationBannerContext";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import type { AppLanguage } from "@/i18n.config";
+import { X } from "@/icons";
 import { translatePath } from "@/utils/translate-path";
 
 type NotificationBannerCopy = {

@@ -29,5 +29,6 @@
   "houseRules": "ハウスルール",
   "cancellationPolicy": "キャンセルポリシー",
   "privacy": "プライバシーポリシー",
-  "cookies": "クッキーポリシー"
+  "cookies": "クッキーポリシー",
+  "navAriaLabel": "Footer navigation"
 }

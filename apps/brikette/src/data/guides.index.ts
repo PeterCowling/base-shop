@@ -1,4 +1,6 @@
 // src/data/guides.index.ts
+import { getGuideManifestEntry, resolveGuideStatusForSite } from "@acme/guide-system";
+
 import type { GuideKey } from "@/guides/slugs";
 import { guideNamespaceKey } from "@/guides/slugs/namespaces";
 
@@ -36,34 +38,33 @@ export type GuideMeta = {
   tags: string[];
   /** Derived from guideNamespaceKey() - the canonical namespace for this guide */
   section: GuideNamespaceKey;
-  status?: "draft" | "review" | "published";
+  status?: "draft" | "review" | "live";
 };
 
-/** Internal type for declaring guide entries without section (section is derived) */
+/** Internal type for declaring guide entries without section or status (both derived) */
 type GuideIndexEntry = {
   key: GuideKey;
   tags: string[];
-  status?: "draft" | "review" | "published";
 };
 
 /**
- * Base guide index entries - section is derived from guideNamespaceKey() to ensure
- * consistency with URL routing. Only tags and status are declared here.
+ * Base guide index entries — section and status are both derived from the manifest
+ * at module init time. Only tags are declared here.
  */
 const GUIDES_INDEX_BASE: GuideIndexEntry[] = [
-  // --- Assistance articles (converted from legacy help system) ---
-  { key: "rules", tags: ["policies", "hostel-life"], status: "draft" },
-  { key: "ageAccessibility", tags: ["policies", "accessibility"], status: "draft" },
-  { key: "arrivingByFerry", tags: ["transport", "ferry", "arrivals"], status: "draft" },
-  { key: "changingCancelling", tags: ["booking", "cancellation"], status: "draft" },
-  { key: "checkinCheckout", tags: ["booking", "hostel-life"], status: "draft" },
-  { key: "defectsDamages", tags: ["policies", "hostel-life"], status: "draft" },
-  { key: "depositsPayments", tags: ["booking", "payments"], status: "draft" },
-  { key: "legal", tags: ["policies", "legal"], status: "draft" },
-  { key: "naplesAirportBus", tags: ["transport", "bus", "naples"], status: "draft" },
-  { key: "security", tags: ["policies", "safety", "hostel-life"], status: "draft" },
-  { key: "travelHelp", tags: ["transport", "assistance"], status: "draft" },
-  { key: "bookingBasics", tags: ["booking", "policies", "hostel-life"], status: "draft" },
+  // --- Assistance articles (status: draft in manifest) ---
+  { key: "rules", tags: ["policies", "hostel-life"] },
+  { key: "ageAccessibility", tags: ["policies", "accessibility"] },
+  { key: "arrivingByFerry", tags: ["transport", "ferry", "arrivals"] },
+  { key: "changingCancelling", tags: ["booking", "cancellation"] },
+  { key: "checkinCheckout", tags: ["booking", "hostel-life"] },
+  { key: "defectsDamages", tags: ["policies", "hostel-life"] },
+  { key: "depositsPayments", tags: ["booking", "payments"] },
+  { key: "legal", tags: ["policies", "legal"] },
+  { key: "naplesAirportBus", tags: ["transport", "bus", "naples"] },
+  { key: "security", tags: ["policies", "safety", "hostel-life"] },
+  { key: "travelHelp", tags: ["transport", "assistance"] },
+  { key: "bookingBasics", tags: ["booking", "policies", "hostel-life"] },
   // --- End assistance articles ---
 
   { key: "onlyHostel", tags: ["accommodation", "hostel-life", "positano"] },
@@ -75,7 +76,7 @@ const GUIDES_INDEX_BASE: GuideIndexEntry[] = [
   { key: "pathOfTheGodsBus", tags: ["hiking", "bus", "amalfi"] },
   { key: "pathOfTheGodsNocelle", tags: ["hiking", "nocelle", "positano"] },
   { key: "topOfTheMountainHike", tags: ["hiking", "positano", "viewpoints"] },
-  { key: "santaMariaDelCastelloHike", tags: ["hiking", "positano", "viewpoints", "village"], status: "published" },
+  { key: "santaMariaDelCastelloHike", tags: ["hiking", "positano", "viewpoints", "village"] },
   { key: "sunriseHike", tags: ["hiking", "viewpoints", "positano"] },
   { key: "parking", tags: ["transport", "car", "positano"] },
   { key: "luggageStorage", tags: ["porters", "logistics", "positano"] },
@@ -101,7 +102,7 @@ const GUIDES_INDEX_BASE: GuideIndexEntry[] = [
   { key: "arienzoBeachBusBack", tags: ["beaches", "bus", "positano"] },
   { key: "hostelBriketteToArienzoBus", tags: ["beaches", "bus", "positano"] },
   { key: "fiordoDiFuroreBusReturn", tags: ["beaches", "bus", "amalfi"] },
-  { key: "fornilloBeachToBrikette", tags: ["beaches", "stairs", "positano", "bus"], status: "published" },
+  { key: "fornilloBeachToBrikette", tags: ["beaches", "stairs", "positano", "bus"] },
   { key: "positanoPompeii", tags: ["day-trip", "pompeii", "transport"] },
   { key: "capriDayTrip", tags: ["day-trip", "capri", "ferry"] },
   { key: "sitaTickets", tags: ["transport", "bus"] },
@@ -119,10 +120,10 @@ const GUIDES_INDEX_BASE: GuideIndexEntry[] = [
   { key: "groceriesPharmacies", tags: ["logistics", "positano"] },
   { key: "laundryPositano", tags: ["laundry", "logistics", "positano"] },
   { key: "workCafes", tags: ["connectivity", "digital-nomads", "positano"] },
-  { key: "chiesaNuovaArrivals", tags: ["stairs", "logistics", "positano"], status: "published" },
-  { key: "chiesaNuovaDepartures", tags: ["stairs", "logistics", "positano"], status: "published" },
-  { key: "ferryDockToBrikette", tags: ["porters", "stairs", "logistics", "positano"], status: "published" },
-  { key: "briketteToFerryDock", tags: ["porters", "stairs", "logistics", "positano", "ferry"], status: "published" },
+  { key: "chiesaNuovaArrivals", tags: ["stairs", "logistics", "positano"] },
+  { key: "chiesaNuovaDepartures", tags: ["stairs", "logistics", "positano"] },
+  { key: "ferryDockToBrikette", tags: ["porters", "stairs", "logistics", "positano"] },
+  { key: "briketteToFerryDock", tags: ["porters", "stairs", "logistics", "positano", "ferry"] },
   { key: "naplesPositano", tags: ["transport", "naples", "positano", "ferry", "bus", "car"] },
   { key: "salernoPositano", tags: ["transport", "salerno", "positano", "ferry", "bus"] },
   { key: "positanoBudget", tags: ["budgeting", "positano", "travel-tips"] },
@@ -166,10 +167,10 @@ const GUIDES_INDEX_BASE: GuideIndexEntry[] = [
 
   // --- How-to-get-here transport routes ---
   // Tags are derived from the canonical routeGuides.ts mapping (single source of truth).
+  // Status is derived from the manifest (like all other entries).
   ...HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS.map((key) => ({
     key: key as GuideKey,
     tags: [...HOW_TO_GET_HERE_ROUTE_GUIDES[key as HowToGetHereRouteGuideKey].tags],
-    status: "published" as const,
   })),
   // --- End how-to-get-here transport routes ---
 ];
@@ -183,8 +184,11 @@ export const GUIDES_INDEX: GuideMeta[] = GUIDES_INDEX_BASE.map((entry) => ({
   tags: entry.tags,
   // Derive section from canonical namespace routing
   section: guideNamespaceKey(entry.key),
-  // Default to published unless explicitly overridden
-  status: entry.status ?? "published",
+  // Derive status from the manifest (single source of truth), respecting per-site overrides
+  status: (() => {
+    const manifest = getGuideManifestEntry(entry.key);
+    return manifest ? resolveGuideStatusForSite(manifest, "brikette") : "draft";
+  })(),
 }));
 
 // --- Area-based guide collections ---
@@ -223,17 +227,17 @@ export const TAGS_BY_KEY = Object.fromEntries(
 
 export const GUIDE_STATUS_BY_KEY = Object.freeze(
   Object.fromEntries(
-    GUIDES_INDEX.map((guide) => [guide.key, (guide as { status?: string }).status ?? "published"]),
+    GUIDES_INDEX.map((guide) => [guide.key, (guide as { status?: string }).status ?? "live"]),
   ),
-) as Readonly<Record<GuideKey, "draft" | "review" | "published">>;
+) as Readonly<Record<GuideKey, "draft" | "review" | "live">>;
 
-export function getGuideStatus(guideKey: GuideKey | string): "draft" | "review" | "published" {
-  const statusMap = GUIDE_STATUS_BY_KEY as Readonly<Record<string, "draft" | "review" | "published">>;
-  return statusMap[guideKey] ?? "published";
+export function getGuideStatus(guideKey: GuideKey | string): "draft" | "review" | "live" {
+  const statusMap = GUIDE_STATUS_BY_KEY as Readonly<Record<string, "draft" | "review" | "live">>;
+  return statusMap[guideKey] ?? "draft";
 }
 
-export function isGuidePublished(guideKey: GuideKey | string): boolean {
-  return getGuideStatus(guideKey) === "published";
+export function isGuideLive(guideKey: GuideKey | string): boolean {
+  return getGuideStatus(guideKey) === "live";
 }
 
 // --- Guide Type Classification ---

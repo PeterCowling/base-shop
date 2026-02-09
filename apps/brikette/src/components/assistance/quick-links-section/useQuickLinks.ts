@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import type { TFunction } from "i18next";
 
-import { isGuidePublished } from "@/data/guides.index";
+import { isGuideLive } from "@/data/guides.index";
 import type { AppLanguage } from "@/i18n.config";
 import { guideSlug } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
@@ -51,7 +51,7 @@ export function useQuickLinksWithHref(
     const basePath = `/${resolvedLang}/${assistanceSlug}`;
 
     return items.flatMap((item) => {
-      if (item.slug && !isGuidePublished(item.slug)) {
+      if (item.slug && !isGuideLive(item.slug)) {
         return [];
       }
 

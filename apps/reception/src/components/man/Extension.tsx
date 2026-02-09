@@ -1,4 +1,6 @@
 // src/components/Extension.tsx
+"use client";
+
 import React, { useCallback, useMemo, useState } from "react";
 
 import useRoomConfigs from "../../hooks/client/checkin/useRoomConfigs";

@@ -1,12 +1,13 @@
 import "../../../../../../test/resetNextMocks";
 
 import { render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { Radio } from "../Radio";
 
 describe("Radio", () => {
   it("renders label text when label prop is provided", () => {
-    render(<Radio label="A" />);
+    const { container } = render(<Radio label="A" />);
     expect(screen.getByText("A")).toBeInTheDocument();
   });
 

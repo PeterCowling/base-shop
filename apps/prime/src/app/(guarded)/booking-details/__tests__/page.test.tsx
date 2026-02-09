@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 
-import BookingDetailsPage from "../page";
 import { useGuestBookingSnapshot } from "../../../../hooks/dataOrchestrator/useGuestBookingSnapshot";
+import BookingDetailsPage from "../page";
 
 jest.mock("../../../../hooks/dataOrchestrator/useGuestBookingSnapshot", () => ({
   useGuestBookingSnapshot: jest.fn(),

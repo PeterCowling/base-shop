@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { getOrderById } from "@platform-core/orders";
 
 import { requireShopIdFromHeaders } from "@acme/lib/shop";
+import { getOrderById } from "@acme/platform-core/orders";
 
 export const runtime = "nodejs";
 

@@ -3,6 +3,7 @@ import "../../../../../../../test/resetNextMocks";
 import * as React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 
 import { Button } from "../button";
 import {
@@ -16,7 +17,7 @@ import {
 
 describe("DropdownMenu visuals", () => {
   it("uses panel surface and border tokens", async () => {
-    render(
+    const { container } = render(
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button>Open</Button>
@@ -34,6 +35,7 @@ describe("DropdownMenu visuals", () => {
     const content = await screen.findByTestId("content");
     const cls = content.className;
     expect(cls).toMatch(/bg-panel/);
+
     expect(cls).toMatch(/border-border-2/);
     expect(cls).toMatch(/shadow-elevation/);
   });

@@ -1,11 +1,12 @@
 import "../../../../../../test/resetNextMocks";
 
 import { render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { StatCard } from "../StatCard";
 
 describe("StatCard", () => {
-  it("displays label and value", () => {
+  it("displays label and value", async () => {
     render(<StatCard label="Orders" value="10" />);
     expect(screen.getByText("Orders")).toBeInTheDocument();
     expect(screen.getByText("10")).toBeInTheDocument();
@@ -17,5 +18,6 @@ describe("StatCard", () => {
     );
     const card = container.firstElementChild;
     expect(card).toHaveClass("my-card");
+
   });
 });

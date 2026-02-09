@@ -2,13 +2,15 @@ import "../../../../../../test/resetNextMocks";
 
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 
 import { Toast } from "../Toast";
 
 describe("Toast", () => {
-  it("renders message when open", () => {
-    render(<Toast open message="Saved" />);
+  it("renders message when open", async () => {
+    const { container } = render(<Toast open message="Saved" />);
     expect(screen.getByText("Saved")).toBeInTheDocument();
+
   });
 
   it("supports placement and action", async () => {
@@ -26,6 +28,7 @@ describe("Toast", () => {
     );
     const toast = screen.getByRole("alert");
     expect(toast.className).toContain("top-4");
+
     expect(toast.className).toContain("end-4");
     await userEvent.click(screen.getByText("Undo"));
     expect(handleAction).toHaveBeenCalled();

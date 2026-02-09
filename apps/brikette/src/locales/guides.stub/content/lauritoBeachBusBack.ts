@@ -3,7 +3,7 @@
 // Single-purpose stub: Bus back from Laurito Beach
 // -----------------------------------------------------------------------------
 
-/* eslint-disable ds/no-hardcoded-copy -- TECH-000 */
+ 
 
 export const lauritoBeachBusBack = {
   seo: {
@@ -28,4 +28,4 @@ export const lauritoBeachBusBack = {
   },
 } as const;
 
-/* eslint-enable ds/no-hardcoded-copy -- TECH-000 */
+ 

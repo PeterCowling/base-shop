@@ -8,10 +8,11 @@
  * for static export compatibility.
  */
 
-import { AlertCircle, ArrowLeft, Calendar, Clock, CreditCard, MapPin, Search, User } from 'lucide-react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState, Suspense } from 'react';
+import { Suspense,useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { AlertCircle, ArrowLeft, Calendar, Clock, CreditCard, MapPin, Search, User } from 'lucide-react';
+
 import StaffReadinessBadges from '../../components/check-in/StaffReadinessBadges';
 import { usePinAuth } from '../../contexts/messaging/PinAuthProvider';
 import { recordActivationFunnelEvent } from '../../lib/analytics/activationFunnel';

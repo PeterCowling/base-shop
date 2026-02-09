@@ -1,15 +1,16 @@
 'use client';
 
+import { type ReactNode, useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ReactNode, useCallback, useEffect, useState } from 'react';
+
 import { ChatProvider } from '../../contexts/messaging/ChatProvider';
 import { PinAuthProvider, usePinAuth } from '../../contexts/messaging/PinAuthProvider';
+import { useSessionValidation } from '../../hooks/useSessionValidation';
 import {
   clearGuestSession,
   readGuestSession,
   validateGuestToken,
 } from '../../lib/auth/guestSessionGuard';
-import { useSessionValidation } from '../../hooks/useSessionValidation';
 
 type GateState = 'checking' | 'allowed' | 'denied';
 

@@ -29,5 +29,6 @@
   "houseRules": "Правила проживания",
   "cancellationPolicy": "Политика отмены",
   "privacy": "Политика конфиденциальности",
-  "cookies": "Политика файлов cookie"
+  "cookies": "Политика файлов cookie",
+  "navAriaLabel": "Footer navigation"
 }

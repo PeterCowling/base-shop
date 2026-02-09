@@ -35,3 +35,27 @@ export const Grid = ({ children, ...props }: any) => {
 
 export const Section = ({ as: Comp = "section", children, ...props }: any) =>
   React.createElement(Comp, props, children);
+
+export const Stack = ({ children, asChild, ...props }: any) => {
+  const { gap: _g, align: _a, ...rest } = props;
+  if (asChild && React.isValidElement(children)) {
+    return React.cloneElement(children, rest);
+  }
+  return React.createElement("div", { "data-testid": "stack", ...rest }, children);
+};
+
+export const Cluster = ({ children, asChild, ...props }: any) => {
+  const { gap: _g, alignY: _ay, justify: _j, wrap: _w, ...rest } = props;
+  if (asChild && React.isValidElement(children)) {
+    return React.cloneElement(children, rest);
+  }
+  return React.createElement("div", { "data-testid": "cluster", ...rest }, children);
+};
+
+export const Inline = ({ children, asChild, ...props }: any) => {
+  const { gap: _g, align: _a, ...rest } = props;
+  if (asChild && React.isValidElement(children)) {
+    return React.cloneElement(children, rest);
+  }
+  return React.createElement("div", { "data-testid": "inline", ...rest }, children);
+};

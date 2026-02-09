@@ -1,3 +1,4 @@
+/* eslint-disable no-console -- investigation test uses console.log for findings */
 /**
  * TASK-07 Investigation: Test whether i18n content timing can cause HowTo script
  * divergence between SSR and client, creating structural hydration errors.
@@ -14,7 +15,6 @@ describe("HowTo script structural divergence (TASK-07 investigation)", () => {
     const lang = "en" as const;
     const pageTitle = "Path of the Gods Hike Guide"; // i18n-exempt -- TEST-000 [ttl=2026-12-31] Test fixture data, non-UI
     const description = "Complete hiking guide for Path of the Gods"; // i18n-exempt -- TEST-000 [ttl=2026-12-31] Test fixture data, non-UI
-    const previewBannerLabel = "Preview"; // i18n-exempt -- TEST-000 [ttl=2026-12-31] Test fixture data, non-UI
     const breadcrumb = {
       "@context": "https://schema.org" as const, // i18n-exempt -- TEST-000 [ttl=2026-12-31] Schema.org context URL, non-UI
       "@type": "BreadcrumbList" as const, // i18n-exempt -- TEST-000 [ttl=2026-12-31] Schema.org type, non-UI
@@ -28,7 +28,6 @@ describe("HowTo script structural divergence (TASK-07 investigation)", () => {
       search: "",
       pageTitle,
       description,
-      previewBannerLabel,
       breadcrumb,
       howToJson: null, // No HowTo script on SSR
       suppressTwitterCardResolve: true,
@@ -98,7 +97,6 @@ describe("HowTo script structural divergence (TASK-07 investigation)", () => {
     const lang = "en" as const;
     const pageTitle = "Path of the Gods Hike Guide"; // i18n-exempt -- TEST-000 [ttl=2026-12-31] Test fixture data, non-UI
     const description = "Complete hiking guide for Path of the Gods"; // i18n-exempt -- TEST-000 [ttl=2026-12-31] Test fixture data, non-UI
-    const previewBannerLabel = "Preview"; // i18n-exempt -- TEST-000 [ttl=2026-12-31] Test fixture data, non-UI
     const breadcrumb = {
       "@context": "https://schema.org" as const, // i18n-exempt -- TEST-000 [ttl=2026-12-31] Schema.org context URL, non-UI
       "@type": "BreadcrumbList" as const, // i18n-exempt -- TEST-000 [ttl=2026-12-31] Schema.org type, non-UI
@@ -124,7 +122,6 @@ describe("HowTo script structural divergence (TASK-07 investigation)", () => {
       search: "",
       pageTitle,
       description,
-      previewBannerLabel,
       breadcrumb,
       howToJson: mockHowToJson, // Script present on both SSR and client
       suppressTwitterCardResolve: true,
@@ -150,7 +147,6 @@ describe("HowTo script structural divergence (TASK-07 investigation)", () => {
     const lang = "en" as const;
     const pageTitle = "Path of the Gods Hike Guide"; // i18n-exempt -- TEST-000 [ttl=2026-12-31] Test fixture data, non-UI
     const description = "Complete hiking guide for Path of the Gods"; // i18n-exempt -- TEST-000 [ttl=2026-12-31] Test fixture data, non-UI
-    const previewBannerLabel = "Preview"; // i18n-exempt -- TEST-000 [ttl=2026-12-31] Test fixture data, non-UI
     const breadcrumb = {
       "@context": "https://schema.org" as const, // i18n-exempt -- TEST-000 [ttl=2026-12-31] Schema.org context URL, non-UI
       "@type": "BreadcrumbList" as const, // i18n-exempt -- TEST-000 [ttl=2026-12-31] Schema.org type, non-UI
@@ -163,7 +159,6 @@ describe("HowTo script structural divergence (TASK-07 investigation)", () => {
       search: "",
       pageTitle,
       description,
-      previewBannerLabel,
       breadcrumb,
       howToJson: null, // No script on SSR or client
       suppressTwitterCardResolve: true,

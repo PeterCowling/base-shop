@@ -5,11 +5,13 @@
  * Displays readiness score, checklist progress, and next action card.
  */
 
-import { CalendarDays, MapPin, MessageCircle, Sparkles } from 'lucide-react';
-import { ReadinessSignalCard, UtilityActionStrip } from '@acme/ui';
-import Link from 'next/link';
-import { FC, memo, useCallback, useMemo } from 'react';
+import { type FC, memo, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import Link from 'next/link';
+import { CalendarDays, MapPin, MessageCircle, Sparkles } from 'lucide-react';
+
+import { ReadinessSignalCard, UtilityActionStrip } from '@acme/ui';
+
 import { recordActivationFunnelEvent } from '../../lib/analytics/activationFunnel';
 import {
   computeReadinessScore,
@@ -17,8 +19,8 @@ import {
   getCompletedCount,
   getTotalChecklistItems,
 } from '../../lib/preArrival';
-import type { ChecklistProgress, PreArrivalData } from '../../types/preArrival';
-import type { GuestArrivalState } from '../../types/preArrival';
+import type { ChecklistProgress, GuestArrivalState,PreArrivalData  } from '../../types/preArrival';
+
 import ChecklistItem from './ChecklistItem';
 import NextActionCard from './NextActionCard';
 
@@ -49,7 +51,7 @@ interface ReadinessDashboardProps {
 /**
  * Format check-in date for display.
  */
-function formatCheckInDate(dateStr: string, t: (key: string) => string): string {
+function formatCheckInDate(dateStr: string, _t: (key: string) => string): string {
   try {
     const date = new Date(dateStr);
     return date.toLocaleDateString(undefined, {

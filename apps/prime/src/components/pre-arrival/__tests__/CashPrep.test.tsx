@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+
 import ArrivalHome from '../../arrival/ArrivalHome';
 import CashPrep from '../CashPrep';
 

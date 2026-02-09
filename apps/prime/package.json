@@ -6,10 +6,11 @@
     "dev": "next dev -p 3015",
     "build": "next build",
     "start": "next start -p 3015",
-    "lint": "echo 'Prime lint skipped — exempt in eslint-ignore-patterns.cjs (early development)'",
+    "lint": "./scripts/lint-wrapper.sh",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "jest --config jest.config.cjs --passWithNoTests",
-    "test:firebase-cost-gate": "jest --config jest.config.cjs --runInBand --testPathPattern=\"firebase-query-budget|firebaseMetrics.budget|listener-leak|Subscription.leak|budget-regression-gate\""
+    "test:firebase-cost-gate": "jest --config jest.config.cjs --runInBand --testPathPattern=\"firebase-query-budget|firebaseMetrics.budget|listener-leak|Subscription.leak|budget-regression-gate\"",
+    "test:e2e:critical": "CYPRESS_BASE_URL=http://127.0.0.1:3015 start-server-and-test \"OUTPUT_EXPORT=1 pnpm build && pnpm exec wrangler pages dev out --port 3015 --ip 127.0.0.1 --compatibility-date 2025-06-20\" http://127.0.0.1:3015 \"pnpm exec cypress run --config-file cypress.config.ts --spec cypress/e2e/guest-primary-journey.cy.ts,cypress/e2e/arrival-day-journey.cy.ts,cypress/e2e/expired-token-recovery.cy.ts,cypress/e2e/pages-routing-deeplink.cy.ts\""
   },
   "dependencies": {
     "@acme/date-utils": "workspace:*",

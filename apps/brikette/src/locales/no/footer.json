@@ -29,5 +29,6 @@
   "houseRules": "Husregler",
   "cancellationPolicy": "Avbestillingspolicy",
   "privacy": "Personvernerklæring",
-  "cookies": "Retningslinjer for informasjonskapsler"
+  "cookies": "Retningslinjer for informasjonskapsler",
+  "navAriaLabel": "Footer navigation"
 }

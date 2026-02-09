@@ -2,9 +2,9 @@ import "@testing-library/jest-dom";
 
 import React from "react";
 import { screen } from "@testing-library/react";
+import { renderWithProviders } from "@tests/renderers";
 
 import GenericContent from "@/components/guides/GenericContent";
-import { renderWithProviders } from "@tests/renderers";
 
 describe("GenericContent section images", () => {
   it("renders section images inline via ImageGallery", () => {

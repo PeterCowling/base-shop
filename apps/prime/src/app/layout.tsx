@@ -1,6 +1,8 @@
-import type { Metadata } from 'next';
-import { QueryProvider } from '../providers/QueryProvider';
 import '../styles/globals.css';
+
+import type { Metadata } from 'next';
+
+import { QueryProvider } from '../providers/QueryProvider';
 
 export const metadata: Metadata = {
   title: 'Prime Guest Portal',

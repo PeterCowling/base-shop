@@ -1,5 +1,5 @@
 import { firebaseBudgetBaselines } from '../../lib/firebase/budgetBaselines';
-import { evaluateFirebaseFlowBudget, buildMetricsSnapshot } from '../../lib/firebase/budgetGate';
+import { buildMetricsSnapshot,evaluateFirebaseFlowBudget } from '../../lib/firebase/budgetGate';
 
 describe('firebase metrics budget baselines', () => {
   it('TC-01: pre-arrival budget tracks path-level read counts', () => {

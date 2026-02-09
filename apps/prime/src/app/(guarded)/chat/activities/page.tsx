@@ -1,7 +1,7 @@
 'use client';
 
-import { Calendar } from 'lucide-react';
 import Link from 'next/link';
+import { Calendar } from 'lucide-react';
 
 export default function ActivitiesPage() {
   return (

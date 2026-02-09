@@ -1,43 +1,20 @@
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 
 import {
   type PmsPosting,
   pmsPostingsSchema,
 } from "../../../types/hooks/data/pmsPostingData";
+import useFirebaseSubscription from "../useFirebaseSubscription";
 
 export default function usePmsPostings() {
-  const [postings, setPostings] = useState<PmsPosting[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<unknown>(null);
+  const { data, loading, error } = useFirebaseSubscription<
+    Record<string, PmsPosting>
+  >("reconciliation/pmsPostings", pmsPostingsSchema);
 
-  useEffect(() => {
-    const controller = new AbortController();
-
-    async function fetchPostings() {
-      try {
-        const resp = await fetch("/api/pms-postings", {
-          signal: controller.signal,
-        });
-        if (!resp.ok) throw new Error("Failed to fetch PMS postings");
-        const json = await resp.json();
-        const result = pmsPostingsSchema.safeParse(json);
-        if (!result.success) {
-          setError(result.error);
-          return;
-        }
-        setPostings(result.data);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchPostings();
-
-    return () => {
-      controller.abort();
-    };
-  }, []);
+  const postings = useMemo<PmsPosting[]>(
+    () => (data ? Object.values(data) : []),
+    [data]
+  );
 
   return { postings, loading, error };
 }

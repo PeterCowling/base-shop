@@ -1,4 +1,5 @@
-# Brikette Cloudflare Workers deployment config (via @opennextjs/cloudflare)
+# Brikette Cloudflare Workers deployment config (legacy — production now uses Pages)
+# Kept for reference. Production and staging both deploy via `wrangler pages deploy`.
 name = "brikette-staging"
 main = ".open-next/worker.js"
 compatibility_date = "2025-06-20"

@@ -1,3 +1,4 @@
+"use client";
 /* src/components/till/CloseShiftForm.tsx */
 
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";

@@ -1,7 +1,7 @@
 'use client';
 
-import { Globe } from 'lucide-react';
 import Link from 'next/link';
+import { Globe } from 'lucide-react';
 
 export default function LanguageSelectorPage() {
   return (

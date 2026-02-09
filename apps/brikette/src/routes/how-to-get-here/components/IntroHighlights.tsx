@@ -1,9 +1,9 @@
 import { Trans } from "react-i18next";
 import clsx from "clsx";
 import type { TFunction } from "i18next";
-import { AlertTriangle } from "@/icons";
 
 import { CONTACT_EMAIL } from "@/config/hotel";
+import { AlertTriangle } from "@/icons";
 
 import { IntroHighlightCard } from "../IntroHighlightCard";
 import { SEA_HORSE_SHUTTLE_URL } from "../styles";

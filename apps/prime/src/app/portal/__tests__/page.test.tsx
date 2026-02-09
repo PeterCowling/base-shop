@@ -1,11 +1,12 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import GuestPortalPage from '../page';
+
 import {
   buildGuestHomeUrl,
   clearGuestSession,
   readGuestSession,
   validateGuestToken,
 } from '../../../lib/auth/guestSessionGuard';
+import GuestPortalPage from '../page';
 
 const mockReplace = jest.fn();
 

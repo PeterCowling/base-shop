@@ -7,20 +7,15 @@
  */
 import { GUIDE_KEYS } from "@/guides/slugs/keys";
 import { guideNamespaceKey } from "@/guides/slugs/namespaces";
-import { getGuideManifestEntryWithOverrides } from "@/routes/guides/guide-manifest";
-import { loadGuideManifestOverridesFromFs } from "@/routes/guides/guide-manifest-overrides.node";
+import { getGuideManifestEntry } from "@/routes/guides/guide-manifest";
 
 describe("guide namespace migration", () => {
-  // Load overrides once for all tests
-  const overrides = loadGuideManifestOverridesFromFs();
-
   it("preserves namespace assignment for all guides", () => {
     const namespaceMap: Record<string, string> = {};
 
     for (const key of GUIDE_KEYS) {
-      // Get merged manifest entry with JSON overrides applied
-      const mergedEntry = getGuideManifestEntryWithOverrides(key, overrides);
-      namespaceMap[key] = guideNamespaceKey(key, mergedEntry);
+      const entry = getGuideManifestEntry(key);
+      namespaceMap[key] = guideNamespaceKey(key, entry);
     }
 
     // Snapshot the entire namespace assignment
@@ -39,8 +34,8 @@ describe("guide namespace migration", () => {
     ];
 
     for (const key of howToGetHereGuides) {
-      const mergedEntry = getGuideManifestEntryWithOverrides(key as never, overrides);
-      expect(guideNamespaceKey(key as never, mergedEntry)).toBe("howToGetHere");
+      const entry = getGuideManifestEntry(key as never);
+      expect(guideNamespaceKey(key as never, entry)).toBe("howToGetHere");
     }
   });
 
@@ -64,8 +59,8 @@ describe("guide namespace migration", () => {
     ];
 
     for (const key of assistanceGuides) {
-      const mergedEntry = getGuideManifestEntryWithOverrides(key as never, overrides);
-      expect(guideNamespaceKey(key as never, mergedEntry)).toBe("assistance");
+      const entry = getGuideManifestEntry(key as never);
+      expect(guideNamespaceKey(key as never, entry)).toBe("assistance");
     }
   });
 
@@ -81,8 +76,8 @@ describe("guide namespace migration", () => {
     for (const key of sampleExperienceGuides) {
       // Only test if the key exists in GUIDE_KEYS
       if (GUIDE_KEYS.includes(key as never)) {
-        const mergedEntry = getGuideManifestEntryWithOverrides(key as never, overrides);
-        expect(guideNamespaceKey(key as never, mergedEntry)).toBe("experiences");
+        const entry = getGuideManifestEntry(key as never);
+        expect(guideNamespaceKey(key as never, entry)).toBe("experiences");
       }
     }
   });

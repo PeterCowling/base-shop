@@ -97,4 +97,70 @@ describe("draft_quality_check", () => {
     const payload = parseResult(result);
     expect(payload.warnings).toContain("length_out_of_range");
   });
+
+  it("TC-07: request keywords in draft body pass quality check", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [],
+          requests: [{ text: "Please let us know if 3 guests are allowed in the room" }],
+        },
+        workflow_triggers: { booking_monitor: false },
+        scenario: { category: "faq" },
+      },
+      draft: {
+        bodyPlain:
+          "Thank you for your email. Our rooms can accommodate multiple guests. Private rooms are available for groups. We look forward to welcoming you to the hostel. Best regards, Hostel Brikette",
+        bodyHtml:
+          '<!DOCTYPE html><html><body><p>Our rooms can accommodate multiple guests.</p></body></html>',
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.failed_checks).not.toContain("unanswered_questions");
+  });
+
+  it("TC-08: missing request keywords triggers failed check", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [],
+          requests: [{ text: "Please confirm the room capacity for 3 guests" }],
+        },
+        workflow_triggers: { booking_monitor: false },
+        scenario: { category: "faq" },
+      },
+      draft: {
+        bodyPlain:
+          "We appreciate your inquiry. Breakfast is served daily. Best regards, Hostel Brikette",
+        bodyHtml:
+          '<!DOCTYPE html><html><body><p>We appreciate your inquiry.</p></body></html>',
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.failed_checks).toContain("unanswered_questions");
+  });
+
+  it("TC-09: empty requests array has no impact", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [],
+          requests: [],
+        },
+        workflow_triggers: { booking_monitor: false },
+        scenario: { category: "faq" },
+      },
+      draft: {
+        bodyPlain:
+          "Thank you for your email. We look forward to seeing you soon. Best regards, Hostel Brikette",
+        bodyHtml:
+          '<!DOCTYPE html><html><body><p>Thank you.</p></body></html>',
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.failed_checks).not.toContain("unanswered_questions");
+  });
 });

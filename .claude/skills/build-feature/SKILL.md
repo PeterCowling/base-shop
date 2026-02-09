@@ -84,10 +84,16 @@ Before editing any code, verify all of the following:
 ### B) Eligibility gate
 
 Confirm:
-- Task Type = `IMPLEMENT`
+- Task Type = `IMPLEMENT`, `SPIKE`, or `INVESTIGATE`
 - Overall confidence ≥80%
 - All dependency tasks are complete (per plan status)
 - No open DECISION tasks gate this work
+
+**Task type differences:**
+- **IMPLEMENT:** Standard feature work. Full TDD cycle, validation, commit.
+- **SPIKE:** Produces a prototype or executable proof. Has a test contract. TDD applies. On completion, its output (evidence) may be used by `/re-plan` to promote downstream tasks.
+- **INVESTIGATE:** Produces a decision memo or analysis artifact — not code. No TDD cycle required. Validation is: the decision memo exists and answers the question. Commit the memo/notes, then mark complete. Skip steps 3a–3e (TDD cycle) and instead: perform investigation, produce artifact, verify exit criteria, commit artifact, update plan.
+- **CHECKPOINT:** Horizon re-assessment gate — not code. See "CHECKPOINT Handling" below.
 
 **If not eligible → STOP → `/re-plan`.**
 
@@ -125,6 +131,18 @@ Before implementing, verify the task has a complete test contract:
 
 A task without enumerated test cases cannot be built, regardless of its stated confidence.
 
+### F) Scout verification gate (when Scouts field is present)
+
+If the task has a `Scouts` field, verify each scouted assumption still holds before building:
+
+- **Re-run any probe tests** from planning — if they now fail, the assumption has changed. STOP → `/re-plan`.
+- **Re-check doc lookups** if a dependency version has changed since planning.
+- **Verify type-level scouts** by running `tsc` on any type assertions from planning.
+
+If scouts were marked "inconclusive" during planning, treat them as risks — proceed cautiously but be ready to stop if the assumption proves false during implementation.
+
+**If any scout fails → treat as confidence drop → STOP → `/re-plan`.**
+
 ## Build Loop (One Task per Cycle)
 
 ### 1) Select the next eligible task
@@ -133,6 +151,7 @@ A task without enumerated test cases cannot be built, regardless of its stated c
 - Only one IMPLEMENT task at a time.
 - Only tasks ≥80% confidence.
 - Dependencies must be done.
+- **If the next task is a CHECKPOINT → execute the checkpoint protocol (see below) instead of the normal build loop.**
 
 ### 2) Restate the task constraints (from the plan)
 
@@ -198,6 +217,7 @@ test('should return 409 when entity was modified', async () => {
 - Write only what's needed to make tests green
 - Keep changes tightly scoped to the task
 - Follow established patterns referenced in the plan (or discovered during file-reading)
+- If implementation duplicates existing code, use the existing pattern or extract a shared utility — note any new shared abstractions in the commit message
 - Do not "sneak in" refactors or over-engineer; if refactor is required, add a new task via `/re-plan`
 
 **e) Refactor if needed (tests stay green)**
@@ -338,6 +358,46 @@ Add under the task:
 
 Move to the next eligible IMPLEMENT task and repeat the cycle.
 
+## CHECKPOINT Handling
+
+When the next task in sequence is a `CHECKPOINT` task, execute this protocol instead of the normal build loop:
+
+### 1) Gather evidence from completed tasks
+
+Summarize what was learned during the build so far:
+- Which tasks completed successfully and what they revealed
+- Any unexpected findings, scope changes, or confidence adjustments
+- Whether the "Horizon assumptions to validate" listed in the CHECKPOINT have been confirmed or disproved
+
+### 2) Run `/re-plan` on remaining tasks
+
+Invoke `/re-plan` targeting all tasks that come **after** the CHECKPOINT in the plan. This re-assessment uses evidence from completed tasks (E2/E3 class) to:
+- Reassess confidence on remaining tasks using real implementation evidence
+- Split tasks that are too large or depend on unproven assumptions
+- Abandon or defer tasks that are no longer viable given what was learned
+- Insert new tasks discovered during implementation
+- Update the plan with any new findings
+
+### 3) Evaluate re-plan results
+
+After `/re-plan` completes:
+
+- **If remaining tasks are ≥80% and no open questions:** Mark the CHECKPOINT as complete, then continue the build loop with the next eligible task.
+- **If some tasks were revised but are still ≥80%:** Mark CHECKPOINT complete, continue building the revised tasks.
+- **If remaining tasks dropped below 80%:** Mark CHECKPOINT complete, then follow the normal below-threshold protocol (stop building those tasks, report to user).
+- **If the approach was fundamentally invalidated:** Mark CHECKPOINT complete, stop building, and report the dead end with evidence for what went wrong and what alternatives exist.
+
+### 4) Update the plan
+
+Mark the CHECKPOINT task as `Complete (YYYY-MM-DD)` with a note summarizing:
+- Assumptions validated / invalidated
+- Tasks revised, added, or removed
+- Decision to continue, revise, or stop
+
+### Why CHECKPOINTs matter
+
+Without CHECKPOINTs, a plan with 8 dependent tasks could build all 8 before discovering task 2's assumption was wrong — wasting tasks 3–8. With a CHECKPOINT after task 3, the re-assessment catches the problem after 3 tasks instead of 8. The cost of a CHECKPOINT (one `/re-plan` invocation) is far less than the cost of a dead-end deep in implementation.
+
 ## Stopping Conditions (Hard Stops)
 
 | Condition | Action |
@@ -349,6 +409,7 @@ Move to the next eligible IMPLEMENT task and repeat the cycle.
 | Validation fails and fix is non-obvious | Stop → `/re-plan` |
 | A DECISION is required (product/UX preference) | Stop → ask user via DECISION task in plan |
 | Baseline repo is failing unrelated checks | Stop → document and resolve via separate planned work |
+| Next task is a CHECKPOINT | Pause build → execute CHECKPOINT protocol → `/re-plan` remaining tasks → resume if still viable |
 
 ## Rules
 

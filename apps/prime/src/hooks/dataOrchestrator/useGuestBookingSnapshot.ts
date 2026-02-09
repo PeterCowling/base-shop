@@ -1,6 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
+
 import { readGuestSession } from '@/lib/auth/guestSessionGuard';
 import { GUEST_CRITICAL_FLOW_ENDPOINTS } from '@/lib/security/guestCriticalFlowEndpoints';
 

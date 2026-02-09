@@ -10,7 +10,11 @@ import {
 } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
-import CustomToastContainer from "./components/appNav/CustomToastContainer";
+import {
+  NotificationContainer,
+  NotificationProviderWithGlobal,
+} from "@acme/ui/components/organisms/operations/NotificationCenter/NotificationCenter";
+
 import AuthenticatedApp from "./components/AuthenticatedApp";
 import LoadingSpinner from "./components/LoadingSpinner";
 import Login from "./components/Login";
@@ -127,16 +131,16 @@ function App({ children }: AppProps) {
   // Show loading spinner while checking auth state
   if (status === "loading") {
     return (
-      <>
-        <CustomToastContainer />
+      <NotificationProviderWithGlobal defaultDuration={1500}>
+        <NotificationContainer position="top-center" />
         <LoadingSpinner />
-      </>
+      </NotificationProviderWithGlobal>
     );
   }
 
   return (
-    <>
-      <CustomToastContainer />
+    <NotificationProviderWithGlobal defaultDuration={1500}>
+      <NotificationContainer position="top-center" />
       {user && legacyUser ? (
         <AuthenticatedApp
           user={legacyUser}
@@ -149,7 +153,7 @@ function App({ children }: AppProps) {
       ) : (
         <Login onLoginSuccess={handleLoginSuccess} />
       )}
-    </>
+    </NotificationProviderWithGlobal>
   );
 }
 

@@ -7,7 +7,6 @@ describe("package root exports", () => {
 
   it("re-exports helpers from their source modules", async () => {
     const validateModule = await import("../validateShopName");
-    const generateModule = await import("../generateMeta");
 
     const zodExports = {
       applyFriendlyZodMessages: jest.fn(),
@@ -26,7 +25,8 @@ describe("package root exports", () => {
     expect(pkg.SHOP_NAME_RE).toBe(validateModule.SHOP_NAME_RE);
     expect(pkg.applyFriendlyZodMessages).toBe(zodExports.applyFriendlyZodMessages);
     expect(pkg.friendlyErrorMap).toBe(zodExports.friendlyErrorMap);
-    expect(pkg.generateMeta).toBe(generateModule.generateMeta);
+    // generateMeta is server-only (uses fs) and must NOT be in the barrel export
+    expect(pkg).not.toHaveProperty("generateMeta");
   });
 
   it("re-exports initZod helpers", async () => {

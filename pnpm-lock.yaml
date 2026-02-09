@@ -24,7 +24,6 @@ overrides:
   diff: '>=5.2.2'
   jws: '>=3.2.3'
   qs: '>=6.14.1'
-  validator: '>=13.15.22'
   undici: '>=6.23.0'
   tar: '>=7.5.7'
   axios: '>=1.12.0'
@@ -672,6 +671,9 @@ importers:
       '@acme/design-system':
         specifier: workspace:*
         version: link:../../packages/design-system
+      '@acme/guide-system':
+        specifier: workspace:*
+        version: link:../../packages/guide-system
       '@acme/guides-core':
         specifier: workspace:*
         version: link:../../packages/guides-core
@@ -768,6 +770,9 @@ importers:
       '@acme/design-system':
         specifier: workspace:*
         version: link:../../packages/design-system
+      '@acme/guide-system':
+        specifier: workspace:*
+        version: link:../../packages/guide-system
       '@acme/next-config':
         specifier: workspace:*
         version: link:../../packages/next-config
@@ -780,6 +785,21 @@ importers:
       '@opennextjs/cloudflare':
         specifier: ^1.16.3
         version: 1.16.3(encoding@0.1.13)(next@15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(wrangler@4.60.0(@cloudflare/workers-types@4.20260123.0))
+      '@tiptap/core':
+        specifier: ^2.24.1
+        version: 2.24.1(@tiptap/pm@2.24.1)
+      '@tiptap/extension-placeholder':
+        specifier: ^2.27.2
+        version: 2.27.2(@tiptap/core@2.24.1(@tiptap/pm@2.24.1))(@tiptap/pm@2.24.1)
+      '@tiptap/pm':
+        specifier: ^2.24.1
+        version: 2.24.1
+      '@tiptap/react':
+        specifier: ^2.24.1
+        version: 2.24.1(@tiptap/core@2.24.1(@tiptap/pm@2.24.1))(@tiptap/pm@2.24.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+      '@tiptap/starter-kit':
+        specifier: ^2.24.1
+        version: 2.24.1
       bcryptjs:
         specifier: ^2.4.3
         version: 2.4.3
@@ -798,6 +818,9 @@ importers:
       lucide-react:
         specifier: ^0.540.0
         version: 0.540.0(react@19.2.1)
+      markdown-it:
+        specifier: ^14.1.0
+        version: 14.1.0
       next:
         specifier: 15.3.9
         version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
@@ -847,6 +870,9 @@ importers:
       '@types/js-cookie':
         specifier: ^3.0.6
         version: 3.0.6
+      '@types/markdown-it':
+        specifier: ^14.1.2
+        version: 14.1.2
       '@types/node':
         specifier: ^22.10.6
         version: 22.19.6
@@ -941,9 +967,12 @@ importers:
         specifier: ^0.540.0
         version: 0.540.0(react@19.2.1)
       validator:
-        specifier: '>=13.15.22'
+        specifier: ^13.15.22
         version: 13.15.26
     devDependencies:
+      '@opennextjs/cloudflare':
+        specifier: ^1.16.3
+        version: 1.16.3(encoding@0.1.13)(next@15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(wrangler@4.60.0(@cloudflare/workers-types@4.20260123.0))
       '@types/busboy':
         specifier: ^1.5.4
         version: 1.5.4
@@ -1318,9 +1347,6 @@ importers:
       react-dom:
         specifier: 19.2.1
         version: 19.2.1(react@19.2.1)
-      react-toastify:
-        specifier: ^11.0.5
-        version: 11.0.5(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       react-transition-group:
         specifier: ^4.4.5
         version: 4.4.5(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
@@ -1423,6 +1449,9 @@ importers:
         specifier: 19.2.1
         version: 19.2.1(react@19.2.1)
     devDependencies:
+      '@opennextjs/cloudflare':
+        specifier: ^1.16.3
+        version: 1.16.3(encoding@0.1.13)(next@15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(wrangler@4.60.0(@cloudflare/workers-types@4.20260123.0))
       next:
         specifier: 15.3.9
         version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
@@ -1843,6 +1872,9 @@ importers:
       react-dom:
         specifier: '>=19 <20'
         version: 19.2.1(react@19.2.1)
+      react-hook-form:
+        specifier: ^7.62.0
+        version: 7.62.0(react@19.2.1)
       tailwind-merge:
         specifier: ^2.5.5
         version: 2.6.0
@@ -1859,6 +1891,9 @@ importers:
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
+      zod:
+        specifier: ^3.25.73
+        version: 3.25.73
 
   packages/design-tokens:
     dependencies:
@@ -1962,6 +1997,12 @@ importers:
       eslint:
         specifier: ^9
         version: 9.30.1(jiti@2.4.2)
+
+  packages/guide-system:
+    dependencies:
+      zod:
+        specifier: ^3.25.73
+        version: 3.25.73
 
   packages/guides-core: {}
 
@@ -2520,7 +2561,7 @@ importers:
     dependencies:
       '@modelcontextprotocol/sdk':
         specifier: ^1.0.0
-        version: 1.25.2(hono@4.11.4)(zod@3.25.76)
+        version: 1.25.2(hono@4.11.4)(zod@4.3.6)
     devDependencies:
       '@types/node':
         specifier: ^20.19.4
@@ -14412,12 +14453,6 @@ packages:
     peerDependencies:
       react: ^19.2.1
 
-  react-toastify@11.0.5:
-    resolution: {integrity: sha512-EpqHBGvnSTtHYhCPLxML05NLY2ZX0JURbAdNYa6BUkk+amz4wbKBQvoKQAB0ardvSarUBuY4Q4s1sluAzZwkmA==}
-    peerDependencies:
-      react: ^18 || ^19
-      react-dom: ^18 || ^19
-
   react-transition-group@4.4.5:
     resolution: {integrity: sha512-pZcd1MCJoiKiBR2NRxeCRg13uCXbydPnmB4EOeRrY7480qNWO8IIgQG6zlDkm6uRMsURXPuKq0GWtiM59a5Q6g==}
     peerDependencies:
@@ -16531,6 +16566,9 @@ packages:
 
   zod@3.25.76:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
+
+  zod@4.3.6:
+    resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
 
   zustand@4.5.7:
     resolution: {integrity: sha512-CHOUy7mu3lbD6o6LJLfllpjkzhHXSBlX8B9+qPddUsIfeF5S/UZ5q0kmCsnRqT1UHFQZchNFDDzMbQsuesHWlw==}
@@ -20319,7 +20357,7 @@ snapshots:
       - hono
       - supports-color
 
-  '@modelcontextprotocol/sdk@1.25.2(hono@4.11.4)(zod@3.25.76)':
+  '@modelcontextprotocol/sdk@1.25.2(hono@4.11.4)(zod@4.3.6)':
     dependencies:
       '@hono/node-server': 1.19.9(hono@4.11.4)
       ajv: 8.17.1
@@ -20335,8 +20373,8 @@ snapshots:
       json-schema-typed: 8.0.2
       pkce-challenge: 5.0.1
       raw-body: 3.0.2
-      zod: 3.25.76
-      zod-to-json-schema: 3.25.1(zod@3.25.76)
+      zod: 4.3.6
+      zod-to-json-schema: 3.25.1(zod@4.3.6)
     transitivePeerDependencies:
       - hono
       - supports-color
@@ -31713,12 +31751,6 @@ snapshots:
       react-is: 19.2.3
       scheduler: 0.27.0
 
-  react-toastify@11.0.5(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
-    dependencies:
-      clsx: 2.1.1
-      react: 19.2.1
-      react-dom: 19.2.1(react@19.2.1)
-
   react-transition-group@4.4.5(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
     dependencies:
       '@babel/runtime': 7.27.6
@@ -34198,15 +34230,17 @@ snapshots:
     dependencies:
       zod: 3.25.73
 
-  zod-to-json-schema@3.25.1(zod@3.25.76):
+  zod-to-json-schema@3.25.1(zod@4.3.6):
     dependencies:
-      zod: 3.25.76
+      zod: 4.3.6
 
   zod@3.23.8: {}
 
   zod@3.25.73: {}
 
   zod@3.25.76: {}
+
+  zod@4.3.6: {}
 
   zustand@4.5.7(@types/react@19.1.8)(immer@10.1.1)(react@19.2.1):
     dependencies:

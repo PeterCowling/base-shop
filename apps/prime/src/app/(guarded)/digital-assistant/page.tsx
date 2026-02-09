@@ -1,8 +1,9 @@
 'use client';
 
-import { Bot, ExternalLink, Sparkles } from 'lucide-react';
-import Link from 'next/link';
 import { useState } from 'react';
+import Link from 'next/link';
+import { Bot, ExternalLink, Sparkles } from 'lucide-react';
+
 import { recordActivationFunnelEvent } from '../../../lib/analytics/activationFunnel';
 import { composeAssistantAnswer, validateAssistantLinks } from '../../../lib/assistant/answerComposer';
 

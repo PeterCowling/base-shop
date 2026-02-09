@@ -5,6 +5,8 @@
  * Can be interactive (clickable) or informational.
  */
 
+import { type FC, memo, type ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Check,
   ChevronRight,
@@ -14,8 +16,7 @@ import {
   MapPin,
   Navigation,
 } from 'lucide-react';
-import { FC, memo, ReactNode } from 'react';
-import { useTranslation } from 'react-i18next';
+
 import type { ChecklistProgress } from '../../types/preArrival';
 
 export type ChecklistItemType = keyof ChecklistProgress;

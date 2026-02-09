@@ -1,13 +1,14 @@
+/* eslint-disable ds/enforce-layout-primitives -- BRIK-DS-001: in-progress design-system migration */
 // src/components/landing/SocialProofSection.tsx
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
-import { Star } from "@/icons";
 
 import { Section } from "@acme/design-system/atoms";
 
 import { Cluster, Inline, Stack } from "@/components/ui/flex";
 import hotel from "@/config/hotel";
 import type { AppLanguage } from "@/i18n.config";
+import { Star } from "@/icons";
 
 type Testimonial = {
   rating?: number;

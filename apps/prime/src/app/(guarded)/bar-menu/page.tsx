@@ -1,7 +1,7 @@
 'use client';
 
-import { Wine } from 'lucide-react';
 import Link from 'next/link';
+import { Wine } from 'lucide-react';
 
 export default function BarMenuPage() {
   return (

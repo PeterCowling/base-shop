@@ -1,5 +1,6 @@
 /* File: /src/components/onboarding/OnboardingLayout.tsx */
-import { FC, PropsWithChildren } from 'react';
+import { type FC, type PropsWithChildren } from 'react';
+
 import ProgressBar from './ProgressBar';
 
 export interface OnboardingLayoutProps extends PropsWithChildren {
@@ -33,11 +34,14 @@ const OnboardingLayout: FC<OnboardingLayoutProps> = ({
     <header className="w-full max-w-[400px] mt-0 mb-0 text-center">
       {/* Hide logo when hideProgress is true */}
       {!hideProgress && (
-        <img
-          className="h-[80px] w-auto object-contain cursor-pointer mx-auto block"
-          src="/hostel_brikette_logo_cb_white.jpg"
-          alt="Hostel Brikette, Positano"
-        />
+        <>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="h-[80px] w-auto object-contain cursor-pointer mx-auto block"
+            src="/hostel_brikette_logo_cb_white.jpg"
+            alt="Hostel Brikette, Positano"
+          />
+        </>
       )}
       {title && (
         <h1 className="text-2xl font-semibold text-[#333] mb-2">{title}</h1>

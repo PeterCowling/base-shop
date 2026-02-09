@@ -4,6 +4,7 @@ import * as React from "react";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 
 import { Button } from "../button";
 import {
@@ -36,7 +37,7 @@ describe("DropdownMenu accessibility helpers", () => {
       });
 
     try {
-      render(
+      const { container } = render(
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button>Open</Button>
@@ -54,6 +55,7 @@ describe("DropdownMenu accessibility helpers", () => {
       await user.click(screen.getByRole("button", { name: /open/i }));
       const content = await screen.findByTestId("menu-content");
       expect(content).toBeInTheDocument();
+
       expect(portalCalls[0]?.container).toBe(portalContainer);
     } finally {
       portalSpy.mockRestore();

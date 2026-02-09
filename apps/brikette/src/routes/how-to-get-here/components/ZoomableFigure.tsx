@@ -1,7 +1,6 @@
 import { memo } from "react";
 import clsx from "clsx";
 import type { TFunction } from "i18next";
-import { ZoomIn } from "@/icons";
 
 import {
   Dialog,
@@ -11,8 +10,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@acme/design-system/primitives";
-
 import { CfImage } from "@acme/ui/atoms/CfImage";
+
+import { ZoomIn } from "@/icons";
 
 export type ZoomableFigureProps = {
   t: TFunction<"howToGetHere">;

@@ -5,8 +5,8 @@
  * Horizontal layout with image on one side and description on the other.
  */
 
-import Link from 'next/link';
 import { memo } from 'react';
+import Link from 'next/link';
 
 export interface ServiceCardProps {
   title: string;
@@ -56,6 +56,7 @@ export const ServiceCard = memo(function ServiceCard({
       <div className="flex flex-row items-center p-4 w-full gap-4">
         {image && (
           <Link href={to}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={image}
               alt={alt || ''}

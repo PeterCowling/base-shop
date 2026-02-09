@@ -3,9 +3,9 @@
  */
 
 import {
+  getArrivalStateLabel,
   getGuestArrivalState,
   shouldShowPreArrivalDashboard,
-  getArrivalStateLabel,
 } from '../arrivalState';
 
 // Note: These tests use actual date comparisons. For reliable testing,

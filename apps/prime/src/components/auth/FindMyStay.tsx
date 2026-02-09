@@ -8,7 +8,7 @@
 
 'use client';
 
-import { FC, FormEvent, memo, useCallback, useState } from 'react';
+import { type FC, type FormEvent, memo, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/navigation';
 

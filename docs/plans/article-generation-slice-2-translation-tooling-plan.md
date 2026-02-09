@@ -3,7 +3,7 @@ Type: Plan
 Status: Active
 Domain: Platform/i18n
 Created: 2026-02-09
-Last-updated: 2026-02-09 (build)
+Last-updated: 2026-02-09 (re-plan)
 Last-reviewed: 2026-02-09
 Relates-to charter: none
 Feature-Slug: article-generation-slice-2-translation-tooling
@@ -69,6 +69,8 @@ Gap noted:
 - S2-06: Add drift detection + schemaVersion migration support scaffolding. (Complete, 2026-02-09)
 - S2-07: Implement translation drift manifest + check command.
 - S2-08: Implement guide content schema migration runner.
+- S2-09: Decide translation execution policy + provider contract for generic runner.
+- S2-10: Spike generic runner parity using mock provider and token fixtures.
 
 ## Task Summary
 
@@ -76,12 +78,14 @@ Gap noted:
 |---|---|---|---:|---:|---|---|---|
 | S2-01 | IMPLEMENT | Add `listJsonFiles`/`readJson`/`extractStringsFromContent` to `@acme/guides-core` with tests | 88% | M | Complete (2026-02-09) | - | Eligible |
 | S2-02 | IMPLEMENT | Replace local utility copies in core Brikette scripts with shared package imports | 84% | M | Complete (2026-02-09) | S2-01 | Eligible |
-| S2-03 | IMPLEMENT | Extract reusable validation runner with injected schema and path config | 79% | M | Pending | S2-01 | Blocked (<80) |
+| S2-03 | IMPLEMENT | Extract reusable validation runner with injected schema and path config | 83% | M | Pending | S2-02 | Eligible |
 | S2-04 | IMPLEMENT | Refactor `backfill-guides-from-en.ts` to CLI-configurable locale sourcing | 82% | M | Complete (2026-02-09) | S2-01 | Eligible |
-| S2-05 | IMPLEMENT | Rewrite `translate-guides.ts` to generic runner (`promptBuilder`, target config, token policy) | 74% | L | Pending | S2-01 | Blocked (<80) |
+| S2-05 | IMPLEMENT | Rewrite `translate-guides.ts` to generic runner (`promptBuilder`, target config, token policy) | 74% (→ 83% conditional on S2-09, S2-10) | L | Pending | S2-01, S2-09, S2-10 | Blocked (<80) |
 | S2-06 | INVESTIGATE | Define drift detection + schemaVersion migration contracts for Slice 2.5 | 78% | M | Complete (2026-02-09) | S2-02 | N/A |
 | S2-07 | IMPLEMENT | Build translation drift manifest/check workflow for guide content and namespace files | 83% | M | Pending | S2-02, S2-06 | Eligible |
 | S2-08 | IMPLEMENT | Build schemaVersion migration runner for guide content payloads | 81% | M | Pending | S2-01, S2-06 | Eligible |
+| S2-09 | INVESTIGATE | Resolve translation execution policy and provider abstraction contract | 86% | S | Pending | S2-02 | N/A |
+| S2-10 | SPIKE | Prove generic translation runner parity with fixture-driven mock provider | 82% | M | Pending | S2-09 | N/A |
 
 ## Tasks
 
@@ -175,9 +179,38 @@ Gap noted:
 
 - **Type:** IMPLEMENT
 - **Execution-Skill:** `build-feature`
-- **Depends on:** S2-01
-- **Status:** Blocked (confidence <80; requires `/re-plan` before build)
-- **Confidence:** 79%
+- **Depends on:** S2-02
+- **Confidence:** 83%
+  - Implementation: 84% — current `validate-guide-content.ts` logic is already isolated (file walk + schema parse + opt-out handling), requiring extraction not redesign.
+  - Approach: 83% — `@acme/guides-core` now has shared FS utilities and package consumers; injection boundary (schema + locale list + root path) is clear.
+  - Impact: 83% — primary consumer remains Brikette script; change can be rolled out behind CLI wrapper preserving existing command contract.
+- **Acceptance:**
+  - Add reusable validation runner in shared package (`@acme/guides-core`) that accepts:
+    - schema validator (`safeParse` compatible),
+    - content root path,
+    - locale list,
+    - optional guide key filter,
+    - opt-out key handling.
+  - `apps/brikette/scripts/validate-guide-content.ts` becomes a thin wrapper around the shared runner.
+  - Existing CLI output semantics (`--verbose`, `--fail-on-violation`) remain unchanged.
+- **Test contract:**
+  - TC-01: valid fixture content across one locale returns `violations=0`.
+  - TC-02: invalid fixture content returns deterministic violation entries.
+  - TC-03: opt-out marker (`_schemaValidation=false`) skips schema failure for that file.
+  - TC-04: guide filter only validates specified guide keys.
+  - Test type: unit + script integration.
+  - Test location: `packages/guides-core/__tests__/contentValidationRunner.test.ts` (new), plus script smoke on Brikette wrapper.
+  - Run: `pnpm --filter @acme/guides-core test -- contentValidationRunner.test.ts` and `pnpm exec tsx scripts/validate-guide-content.ts --locale=en --guides=rules`.
+
+#### Re-plan Update (2026-02-09)
+- **Previous confidence:** 79%
+- **Updated confidence:** 83%
+  - **Evidence class:** E2 (executable verification + static seam audit)
+  - Executed: `pnpm exec tsx scripts/validate-guide-content.ts --locale=en --guides=rules --fail-on-violation` — PASS
+  - Confirmed script seam after S2-02:
+    - shared FS utilities now imported from `@acme/guides-core`,
+    - Brikette-specific logic limited to schema + locale sourcing + output formatting.
+  - Confidence promoted above gate because blocking unknown ("can this be extracted without behavior drift?") is now closed by runnable current behavior and clear extraction seam.
 
 ### S2-04: Generalize backfill script locale sourcing
 
@@ -209,9 +242,65 @@ Gap noted:
 
 - **Type:** IMPLEMENT
 - **Execution-Skill:** `build-feature`
-- **Depends on:** S2-01
-- **Status:** Blocked (confidence <80; requires `/re-plan` before build)
-- **Confidence:** 74%
+- **Depends on:** S2-01, S2-09, S2-10
+- **Status:** Blocked (confidence <80; requires precursor completion)
+- **Confidence:** 74% (→ 83% conditional on S2-09, S2-10)
+  - Implementation: 76% — current script is hardcoded to fixed guide list/locales/provider model and writes directly to Brikette locale tree.
+  - Approach: 74% — unresolved policy conflict: script currently requires `ANTHROPIC_API_KEY`, while in-repo translation docs explicitly state no external API key workflow.
+  - Impact: 74% — token preservation and JSON-structure parity are high-risk; no fixture-based parity harness exists yet.
+- **Acceptance (post-precursor):**
+  - Generic runner supports pluggable provider via interface (`translate({ text, locale, context })`).
+  - Runner supports fixture/dry provider mode for deterministic CI validation without external services.
+  - Token policy (`%LINK`, `%IMAGE`, `%COMPONENT`) enforced with explicit invariant checks.
+  - Runner is configurable for source paths, guide selection, locales, and output root.
+- **Test contract (post-precursor):**
+  - TC-01: fixture provider translates deterministic payload and preserves JSON validity.
+  - TC-02: token invariants fail fast when provider output mutates token ids.
+  - TC-03: unchanged source + locale selection yields stable file writes (idempotent output).
+  - TC-04: provider error surfaces actionable per-locale failure without aborting full batch.
+  - TC-05: dry-run mode emits planned writes with zero file mutation.
+  - Test type: integration + contract tests.
+  - Test location: `apps/brikette/scripts/__tests__/translate-guides-runner.test.ts` (new) or shared runner tests in package.
+  - Run: `pnpm --filter @apps/brikette test -- --testPathPattern=translate-guides-runner`.
+
+#### Re-plan Update (2026-02-09)
+- **Previous confidence:** 74%
+- **Updated confidence:** 74% (→ 83% conditional on S2-09, S2-10)
+  - **Evidence class:** E2 + E1
+  - Executed: `pnpm exec tsx scripts/translate-guides.ts` (from `apps/brikette`) — hard-fails without `ANTHROPIC_API_KEY`.
+  - Static conflict evidence:
+    - `apps/brikette/scripts/translate-guides.ts` is API-key hardcoded.
+    - `apps/brikette/scripts/README-translate-guides.md` documents "Do not obtain or use external API keys".
+  - Decision: preserve blocked status and add formal precursors instead of forcing a confidence uplift.
+
+### S2-09: Decide translation execution policy + provider contract for generic runner
+
+- **Type:** INVESTIGATE
+- **Execution-Skill:** `re-plan`
+- **Depends on:** S2-02
+- **Confidence:** 86%
+- **Acceptance:**
+  - Resolve single canonical execution policy for Slice 2 translation runner (API-backed, in-house/manual, or dual-mode with explicit default).
+  - Define provider interface contract and failure semantics.
+  - Document security/compliance guardrails for translation execution in-script docs.
+- **Validation contract:**
+  - Evidence artifact in plan Decision Log with explicit command/runtime implications.
+
+### S2-10: Spike generic translation runner parity using mock provider and token fixtures
+
+- **Type:** SPIKE
+- **Execution-Skill:** `build-feature`
+- **Depends on:** S2-09
+- **Confidence:** 82%
+- **Acceptance:**
+  - Implement throwaway or guarded prototype runner that accepts a mock provider.
+  - Run parity fixtures demonstrating token preservation and JSON structure integrity.
+  - Produce measured output: pass/fail matrix for token + parse invariants across representative guides/locales.
+- **Test contract:**
+  - TC-01: fixture with `%LINK` tokens preserves `guideKey` ids.
+  - TC-02: fixture with mixed `%IMAGE` and `%COMPONENT` tokens preserves non-translatable segments.
+  - TC-03: malformed provider output fails parse and is reported.
+  - Run: `pnpm --filter @apps/brikette test -- --testPathPattern=translate-guides-spike`.
 
 ### S2-06: Drift detection + schemaVersion migration support scaffolding
 
@@ -275,14 +364,16 @@ Gap noted:
 | S2-01 complete and validated | Proceed to S2-02 |
 | S2-02 reveals shared utility API gaps | Update S2-01 API via additive patch + revalidate |
 | S2-06 complete | Proceed to S2-07 and S2-08 |
+| S2-09 + S2-10 complete | Promote S2-05 to build-eligible (83%) |
 
 ## Risks and Mitigations
 
 | Risk | Severity | Mitigation |
 |---|---|---|
 | Shared utility behavior drift breaks scripts | Medium | Add focused package tests and preserve sorted path semantics |
-| Scope creep into full translation engine rewrite | High | Keep S2-05 blocked until explicit re-plan and fixture contract |
+| Scope creep into full translation engine rewrite | High | Keep S2-05 blocked until S2-09 policy decision and S2-10 parity spike complete |
 | Sparse script tests hide regressions | Medium | Add targeted script execution checks per task |
+| Provider-policy mismatch causes rework | High | Resolve policy first (S2-09) and codify contract before implementation |
 
 ## Decision Log
 
@@ -293,3 +384,5 @@ Gap noted:
 - 2026-02-09: S2-02 completed; four Brikette scripts now consume shared file/content utilities from `@acme/guides-core`.
 - 2026-02-09: S2-04 completed; backfill script no longer imports app runtime i18n config and now supports `--dry-run`.
 - 2026-02-09: S2-06 completed; investigation created S2-07 (drift manifest/check) and S2-08 (schemaVersion migration runner) as implementation follow-ons.
+- 2026-02-09 (re-plan): S2-03 promoted from 79% to 83% based on executable seam verification and is now build-eligible.
+- 2026-02-09 (re-plan): S2-05 remains blocked at 74%; added S2-09 (policy decision) and S2-10 (parity spike) as formal precursors.

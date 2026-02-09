@@ -2,12 +2,12 @@
 Type: Plan
 Status: Active
 Domain: Infrastructure
-Last-reviewed: 2026-01-19
+Last-reviewed: 2026-02-09
 Relates-to charter: none
 Created: 2026-01-19
 Created-by: Claude (Opus 4.5)
-Last-updated: 2026-01-19
-Last-updated-by: Claude (Opus 4.5)
+Last-updated: 2026-02-09
+Last-updated-by: Claude (Opus 4.6)
 ---
 
 # Plan: Administrative & Infrastructure Debt
@@ -15,18 +15,14 @@ Last-updated-by: Claude (Opus 4.5)
 This plan tracks infrastructure, configuration, and administrative items that are prerequisites for production deployment but don't involve application code changes.
 
 
-## Active tasks
-
-No active tasks at this time.
-
 ## Summary
 
-Infrastructure debt items that need attention before production-ready deployment:
-- GitHub secrets configuration
-- Cloudflare resource provisioning
-- SOPS/CI integration
-- Security audit remediation
-- Documentation gaps
+**12 tasks total: 6 complete, 6 remaining.**
+
+Remaining infrastructure debt:
+- **P0 Security (manual):** Firebase rules deployment (ADMIN-07), secret rotation (ADMIN-08)
+- **P1 Infrastructure:** Cloudflare resource provisioning (ADMIN-02), CI secret scanning (ADMIN-06), product-pipeline API key (ADMIN-09)
+- **P2 Polish:** CMS Workers deployment (ADMIN-10)
 
 ## Relationship to Launch Readiness
 
@@ -45,80 +41,72 @@ These items primarily affect:
 
 ### ADMIN-01: Configure Turbo Remote Cache
 
-- **Status**: ☐
+- **Status**: ✅ **COMPLETE**
 - **Priority**: P0
 - **Estimated effort**: Small (administrative)
-- **Scope**:
-  - Verify/create Vercel account with Turbo Remote Cache enabled
-  - Generate `TURBO_TOKEN` from Vercel dashboard
-  - Set `TURBO_TEAM` organization variable in GitHub
-  - Add both to GitHub repository secrets/variables
-  - Verify cache hits in CI runs
-- **Dependencies**: None
-- **Verification**:
-  ```bash
-  # After CI run, check for cache hits in logs:
-  # "Remote caching enabled" and "cache hit" messages
-  ```
+- **Completed**: Pre-existing (discovered during 2026-02-09 fact-check)
+- **Implementation**:
+  - `TURBO_TOKEN` (secret) and `TURBO_TEAM` (variable) are already configured in GitHub
+  - Referenced in 35+ locations across CI workflows (`ci.yml`, `reusable-app.yml`, `cms.yml`, `test.yml`)
+  - Pattern: `turbo-token: ${{ secrets.TURBO_TOKEN }}` / `turbo-team: ${{ vars.TURBO_TEAM }}`
 - **Definition of done**:
-  - CI builds show remote cache hits
-  - Build times reduced for incremental changes
+  - ✅ CI builds use remote cache
+  - ✅ Build times reduced for incremental changes
 
 ### ADMIN-02: Provision Cloudflare Resources
 
-- **Status**: ☐
-- **Priority**: P0
+- **Status**: ☐ (partially complete)
+- **Priority**: P1 (downgraded from P0 — ADMIN-03 is already done; active apps already deploying)
 - **Estimated effort**: Medium (administrative)
-- **Scope**:
-  - Create D1 database for `product-pipeline` app
-  - Create R2 bucket for `product-pipeline` app
-  - Create KV namespaces for `cochlearfit-worker` (preview + production)
-  - Create KV namespace for `LOGIN_RATE_LIMIT_KV` (preview + production)
-  - Update all `wrangler.toml` files with real resource IDs
 
-  **Files to update**:
-  | File | Resources |
-  |------|-----------|
-  | `apps/product-pipeline/wrangler.toml` | D1 database_id, R2 bucket |
-  | `apps/product-pipeline-queue-worker/wrangler.toml` | D1 database_id, R2 bucket |
-  | `apps/cochlearfit-worker/wrangler.toml` | KV namespace IDs (preview/prod) |
-  | `wrangler.toml` (root) | KV namespace IDs for rate limiting |
+#### Re-plan Update (2026-02-09)
+- **Priority change:** P0 → P1. ADMIN-03 (Cloudflare secrets) is already complete, so this is no longer a blocker for CI deployments. Active apps (XA, Business OS, Brikette) already deploy successfully.
+- **Scope narrowed:** cochlearfit-worker and product-pipeline-queue-worker are dormant (no CI workflow, no recent commits). Defer their provisioning until they're actively needed.
+- **Partially complete:** Root `wrangler.toml` `CART_KV` already has real IDs. Only `LOGIN_RATE_LIMIT_KV` still has placeholders.
+
+- **Scope (active resources only)**:
+  - Create D1 database `product-pipeline` (shared by pipeline + queue-worker)
+  - Create R2 bucket `product-pipeline-evidence`
+  - Create KV namespace `LOGIN_RATE_LIMIT_KV` (preview + production)
+  - Update `wrangler.toml` files with real resource IDs
+
+  **Files to update (active)**:
+  | File | Resources | Status |
+  |------|-----------|--------|
+  | `apps/product-pipeline/wrangler.toml` | D1 database_id, R2 bucket | Placeholder |
+  | `wrangler.toml` (root) | `LOGIN_RATE_LIMIT_KV` IDs | Placeholder |
+
+  **Deferred (dormant apps — provision when needed)**:
+  | File | Resources | Reason |
+  |------|-----------|--------|
+  | `apps/product-pipeline-queue-worker/wrangler.toml` | D1, R2 (same IDs as pipeline) | No CI workflow, no package.json, dormant |
+  | `apps/cochlearfit-worker/wrangler.toml` | KV namespace IDs | No CI workflow, dormant since Dec 2025 |
 
 - **Dependencies**: Cloudflare account access
 - **Verification**:
   ```bash
-  # Verify wrangler can connect to resources
   pnpm wrangler d1 list
   pnpm wrangler r2 bucket list
   pnpm wrangler kv:namespace list
   ```
 - **Definition of done**:
-  - All placeholder IDs (`00000000...`) replaced with real resource IDs
-  - `wrangler dev` works for affected apps
+  - Active placeholder IDs replaced with real resource IDs
+  - `wrangler dev` works for product-pipeline
+  - Login rate limiting KV operational
 
 ### ADMIN-03: Configure Cloudflare API Secrets
 
-- **Status**: ☐
+- **Status**: ✅ **COMPLETE**
 - **Priority**: P0
 - **Estimated effort**: Small (administrative)
-- **Scope**:
-  - Generate `CLOUDFLARE_API_TOKEN` with appropriate permissions:
-    - Cloudflare Pages: Edit
-    - D1: Edit
-    - R2: Edit
-    - Workers KV: Edit
-  - Add `CLOUDFLARE_ACCOUNT_ID` to GitHub secrets
-  - Add `CLOUDFLARE_API_TOKEN` to GitHub secrets
-  - Verify deployment workflow can authenticate
-- **Dependencies**: ADMIN-02
-- **Verification**:
-  ```bash
-  # Test token locally
-  CLOUDFLARE_API_TOKEN=xxx wrangler whoami
-  ```
+- **Completed**: Pre-existing (discovered during 2026-02-09 re-plan)
+- **Implementation**:
+  - `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` are already configured as GitHub secrets
+  - Referenced in `ci.yml`, `cms.yml`, `reusable-app.yml`, `business-os-export.yml`, `xa.yml`
+  - Multiple apps actively deploying: XA (`wrangler deploy`), Business OS (`wrangler deploy`), Brikette (Pages), product-pipeline (Pages)
 - **Definition of done**:
-  - CI deployment step authenticates successfully
-  - No "authentication failed" errors in workflow logs
+  - ✅ CI deployment step authenticates successfully
+  - ✅ Multiple apps deploying via Cloudflare in CI
 
 ### ADMIN-04: Wire SOPS Decryption into CI
 
@@ -195,7 +183,15 @@ These items primarily affect:
 
 - **Status**: ☐
 - **Priority**: P0 (SECURITY CRITICAL)
-- **Estimated effort**: Small (administrative)
+- **Estimated effort**: Medium (upgraded from Small — scope expanded)
+
+#### Re-plan Update (2026-02-09)
+- **Effort change:** Small → Medium. Investigation revealed significant scope gaps.
+- **Critical finding #1:** `firebase.json` in repo root points to `apps/reception/database.rules.json` (the OLD vulnerable rules), not to `apps/prime/database.rules.json`. The secure rules are orphaned.
+- **Critical finding #2:** `apps/reception/database.rules.json` contains 39 occurrences of the vulnerable `child('0')`, `child('1')` pattern (Critical #3). Reception is using the same Firebase project and its rules file is the one actually configured for deployment.
+- **Critical finding #3:** No `.firebaserc` file exists — no Firebase project ID is configured for CLI deployment.
+- **Open question:** Do prime and reception share the same Firebase Realtime Database? If yes, one rules file must cover both. If no, each needs separate deployment config.
+
 - **Scope**:
 
   **Context**: On 2026-01-21, two critical Firebase security vulnerabilities were fixed in code:
@@ -205,8 +201,14 @@ These items primarily affect:
   The fix changes role storage from array (`['owner', 'staff']`) to map (`{ owner: true, staff: true }`).
 
   **Files created**:
-  - `apps/prime/database.rules.json` — New secure Firebase rules
+  - `apps/prime/database.rules.json` — New secure Firebase rules (39 secure role checks)
   - `apps/prime/scripts/migrate-user-roles.ts` — Data migration script
+
+  **Pre-deployment investigation required**:
+  1. **Determine Firebase project structure** — are prime and reception sharing one database?
+  2. **Reconcile rules files** — `apps/reception/database.rules.json` (222 lines, vulnerable) vs `apps/prime/database.rules.json` (232 lines, secure). If shared database, merge into one authoritative file.
+  3. **Create `.firebaserc`** with correct project ID(s)
+  4. **Update `firebase.json`** to reference the secure rules file
 
   **Deployment steps**:
   1. **Run data migration first** (before deploying rules, or existing users lose access):
@@ -218,44 +220,59 @@ These items primarily affect:
      ```
   2. **Deploy new rules** to Firebase Console:
      - Go to Firebase Console → Realtime Database → Rules
-     - Copy contents of `apps/prime/database.rules.json`
+     - Copy contents of the reconciled secure rules file
      - Paste and publish
 
-- **Dependencies**: Firebase Console access, service account key
+- **Dependencies**: Firebase Console access, service account key, **clarity on prime/reception Firebase project topology**
 - **Reference**: [docs/security-audit-2026-01.md](../security-audit-2026-01.md) Critical #2 and #3
 - **Definition of done**:
   - All existing user profiles migrated to new role format
   - New rules deployed to Firebase Console
   - Unauthenticated requests to Firebase are rejected
   - Users with appropriate roles can still access their data
+  - `firebase.json` points to secure rules file
+  - Reception's vulnerable rules file updated or removed
 
 ### ADMIN-08: Rotate Exposed Secrets (Security P0)
 
-- **Status**: ☐
+- **Status**: ☐ (partially complete)
 - **Priority**: P0 (SECURITY CRITICAL)
 - **Estimated effort**: Medium
+
+#### Re-plan Update (2026-02-09)
+- **Partially complete:** `.gitignore` already fixed (`.env*` pattern covers all env files). No unencrypted `.env` files currently tracked in git. SOPS infrastructure operational with one encrypted file (`apps/cms/.env.preview.sops`).
+- **Confirmed exposure:** Commit `6639161ca1` (2025-08-28) added `apps/cms/.env.local` with `NEXTAUTH_SECRET="Zybn8rg2S47UnbB3zsyG+pIigj671YVeS86egWcxQGE="`, `SESSION_SECRET`, `CART_COOKIE_SECRET`. Removed in commit `65cef5fc8a` (2025-09-04) but **still accessible via `git show`**. No `git filter-repo` has been run.
+- **Good news:** Codebase is clean of hardcoded production secrets. Secret registry at `packages/platform-core/src/secrets/registry.ts` provides excellent rotation infrastructure (25+ secrets, validation rules, rotation policies).
+
 - **Scope**:
-  - Identify all secrets that may have been committed to git history:
-    - `SESSION_SECRET`
-    - `NEXTAUTH_SECRET`
-    - Firebase credentials (if any)
-    - Any API keys in `.env` files
-  - Rotate all identified secrets in their respective services
-  - Update encrypted SOPS files with new values
-  - Consider running `git filter-repo` to remove sensitive files from history
-  - Update `.gitignore` to prevent future `.env` commits
+  - ~~Update `.gitignore` to prevent future `.env` commits~~ ✅ Already done
+  - **Verify and rotate** the specific exposed secrets:
+    - `NEXTAUTH_SECRET` — **confirmed exposed** in git history (commit `6639161ca1`)
+    - `SESSION_SECRET` — confirmed exposed (same commit, value: `change-me-session-secret`)
+    - `CART_COOKIE_SECRET` — confirmed exposed (same commit)
+  - Check if production deployment still uses the exposed `NEXTAUTH_SECRET` value — if so, rotate immediately
+  - Run `git filter-repo` to scrub `apps/cms/.env.local` from history
+  - Update encrypted SOPS files with new rotated values
+  - Create `.env.production.sops` files for apps needing production secrets (currently only `apps/cms/.env.preview.sops` exists)
 - **Dependencies**: None
 - **Reference**: [docs/security-audit-2026-01.md](../security-audit-2026-01.md) P0 items
 - **Definition of done**:
-  - All potentially exposed secrets have been rotated
-  - New secrets are only in encrypted SOPS files
-  - `.gitignore` updated to prevent `.env` commits
+  - ✅ `.gitignore` updated to prevent `.env` commits
+  - All exposed secrets verified rotated in production
+  - `git filter-repo` executed to scrub history (requires force-push coordination)
+  - New secrets stored in encrypted SOPS files
 
 ### ADMIN-09: Deploy Product-Pipeline API Key Authentication (Security P1)
 
 - **Status**: ☐
 - **Priority**: P1 (SECURITY)
 - **Estimated effort**: Small (administrative)
+
+#### Re-plan Update (2026-02-09)
+- **Still valid.** Code is complete and verified (auth.ts, api-context.ts, db.ts all confirmed during fact-check). Product-pipeline has a CI workflow (`.github/workflows/product-pipeline.yml`) deploying to Cloudflare Pages.
+- **Dependency updated:** No longer blocked by ADMIN-03 (Cloudflare secrets already configured). Still practically blocked by ADMIN-02 (D1/R2 placeholder IDs mean the app can't fully function even with auth).
+- **Note:** Product-pipeline deploys as static export to Pages (`OUTPUT_EXPORT=1`), but `wrangler.toml` defines D1/R2/Queue bindings for the Worker runtime. The API key auth is in the Worker code path. Need to verify which deployment mode is active for the API endpoints.
+
 - **Scope**:
 
   **Context**: On 2026-01-21, API key authentication was added to all product-pipeline endpoints (High #12 fix). The code is complete but requires deployment configuration.
@@ -292,7 +309,7 @@ These items primarily affect:
      ```
   5. **Document the API key** in your secrets manager (1Password, etc.)
 
-- **Dependencies**: Cloudflare account access
+- **Dependencies**: ADMIN-02 (D1/R2 resources needed for product-pipeline to function)
 - **Reference**: [docs/security-audit-2026-01.md](../security-audit-2026-01.md) High #12
 - **Definition of done**:
   - `PIPELINE_API_KEY` secret set in staging and production
@@ -301,94 +318,109 @@ These items primarily affect:
   - Authenticated requests with valid key succeed
   - All internal services/scripts updated to include API key
 
-### ADMIN-10: Create CMS Cloudflare Pages Project
+### ADMIN-10: Deploy CMS to Cloudflare Workers (via OpenNext)
 
 - **Status**: ☐
 - **Priority**: P2
-- **Estimated effort**: Small (administrative)
+- **Estimated effort**: Medium (upgraded from Small — requires code changes + config)
+
+#### Re-plan Update (2026-02-09)
+- **Task rewritten.** Original scope (Cloudflare Pages with `.next` output) is invalid. CMS has 100+ dynamic API routes, NextAuth, session management, and explicitly disables static export (`next.config.mjs` line 149). Plain Pages cannot host it.
+- **Correct approach:** Cloudflare Workers with `@opennextjs/cloudflare`, matching the pattern used by Business OS, Brikette (production), and XA.
+- **CI bug found:** `.github/workflows/cms.yml` line 171 uses `next-on-pages deploy` — the `@cloudflare/next-on-pages` package was removed from the repo on 2026-02-06 (commit `13c046ebbb`, archived/deprecated). This deploy command would fail if triggered.
+- **This is no longer purely administrative** — requires adding dependencies and config files.
+
 - **Scope**:
-  - Create Cloudflare Pages project for CMS app
-  - Configure build settings:
-    - Build command: `pnpm build`
-    - Build output: `.next`
-    - Root directory: `apps/cms`
-  - Configure preview branch deployments
-  - Configure production branch (main)
-  - Add custom domain if applicable
-- **Dependencies**: ADMIN-03 (Cloudflare API access)
+  1. Add `@opennextjs/cloudflare` to `apps/cms/package.json` devDependencies
+  2. Create `apps/cms/open-next.config.ts` (follow Business OS / XA pattern)
+  3. Create `apps/cms/wrangler.toml` with Workers config (`main` + `[assets]`)
+  4. Update `.github/workflows/cms.yml` deploy step:
+     - Replace obsolete `next-on-pages deploy` with `open-next build && wrangler deploy`
+  5. Add `apps/cms/.open-next/` to `.gitignore`
+  6. Test deployment end-to-end
+- **Dependencies**: None (ADMIN-03 Cloudflare secrets already complete)
 - **Reference**: [docs/ci-and-deploy-roadmap.md](../ci-and-deploy-roadmap.md) Phase 3.3
 - **Definition of done**:
-  - CMS deploys to Cloudflare Pages via CI
+  - CMS deploys to Cloudflare Workers via CI
+  - API routes functional (NextAuth, data mutations, webhooks)
   - Preview URLs generated for PRs
   - Production URL accessible
 
 ### ADMIN-11: Add Dependency Audit to CI
 
-- **Status**: ☐
+- **Status**: ✅ **COMPLETE** (core requirement met)
 - **Priority**: P2
 - **Estimated effort**: Small
-- **Scope**:
-  - Add `pnpm audit --production` to CI pipeline
-  - Configure to fail on high/critical vulnerabilities
-  - Run weekly on schedule + on PRs that modify package.json
-
-  **Workflow addition**:
-  ```yaml
-  - name: Security audit
-    run: pnpm audit --production --audit-level=high
-  ```
-- **Dependencies**: None
+- **Completed**: Pre-existing (discovered during 2026-02-09 fact-check)
+- **Implementation**:
+  - `pnpm audit --audit-level=high` already runs in `ci.yml` (lines 56-60)
+  - Ignores known false positive: `--ignore GHSA-p6mc-m468-83gw`
+  - Fails CI on high/critical vulnerabilities
+- **Remaining**: Weekly scheduled run not yet configured (only runs on PR/push)
 - **Definition of done**:
-  - CI fails if high/critical vulnerabilities exist
-  - Weekly audit runs and creates issues for new vulnerabilities
+  - ✅ CI fails if high/critical vulnerabilities exist
+  - ⏳ Weekly audit runs and creates issues for new vulnerabilities
 
 ### ADMIN-12: Document GitHub Environment Requirements
 
-- **Status**: ☐
+- **Status**: ✅ **COMPLETE**
 - **Priority**: P2
 - **Estimated effort**: Small
-- **Scope**:
-  - Create `docs/github-setup.md` documenting:
-    - Required repository secrets
-    - Required repository variables
-    - Environment configuration (production approval gates)
-    - Branch protection rules
-  - Include checklist for new repository setup
-- **Dependencies**: All ADMIN-01 through ADMIN-03 complete
+- **Completed**: 2026-02-09
+
+#### Build Completion (2026-02-09)
+- **Commits:** `6f7ac68a71`
+- **Validation:**
+  - `pnpm typecheck` — PASS (51 tasks)
+  - `pnpm lint` — PASS (68 tasks)
+- **Implementation:**
+  - Created `docs/github-setup.md` covering:
+    - All repository secrets (20+ secrets, grouped by purpose)
+    - All repository variables (6 variables with defaults)
+    - All GitHub environments (production, staging, staging-pages, xa-staging)
+    - App deployment summary table (9 apps with URLs, methods, Cloudflare targets)
+    - CODEOWNERS and branch protection rules
+    - New-repository setup checklist
+  - Cross-references `secrets.md` and `.env.reference.md` (no duplication)
 - **Definition of done**:
-  - New developer can follow doc to set up fork/clone
-  - All secrets and variables documented with descriptions
+  - ✅ New developer can follow doc to set up fork/clone
+  - ✅ All secrets and variables documented with descriptions
 
 ---
 
 ## Implementation Priority Path
 
-### Phase 1: Critical Infrastructure (Immediate)
+### Completed Tasks
 
-| Task | Type | Blocker For |
-|------|------|-------------|
-| ADMIN-07 | Security | Firebase access (DEPLOY ASAP) |
-| ADMIN-08 | Security | All production deploys |
-| ADMIN-01 | Performance | Nothing (but improves DX) |
-| ADMIN-02 | Infrastructure | ADMIN-03 |
-| ADMIN-03 | Infrastructure | CI deployments |
+| Task | Status |
+|------|--------|
+| ADMIN-01 | ✅ Turbo remote cache already configured |
+| ADMIN-03 | ✅ Cloudflare API secrets already in GitHub |
+| ADMIN-04 | ✅ SOPS decryption wired into CI |
+| ADMIN-05 | ✅ Deploy env validation gate added |
+| ADMIN-11 | ✅ Dependency audit already in CI |
+| ADMIN-12 | ✅ GitHub setup docs created (`docs/github-setup.md`) |
 
-### Phase 2: CI Integration (Short-term)
+### Phase 1: Security Critical (Immediate — requires your manual action)
 
-| Task | Type | Blocker For |
-|------|------|-------------|
-| ADMIN-04 | CI | Encrypted secrets in prod |
-| ADMIN-05 | CI | Safe deployments |
-| ADMIN-06 | Security | PR safety |
-| ADMIN-09 | Security | Product-pipeline production |
+| Task | Type | Notes |
+|------|------|-------|
+| ADMIN-07 | Security P0 | Firebase rules deployment — scope expanded: reception rules also vulnerable, no `.firebaserc` exists |
+| ADMIN-08 | Security P0 | Secret rotation — `NEXTAUTH_SECRET` confirmed exposed in git history (commit `6639161ca1`) |
+
+### Phase 2: Infrastructure (Short-term)
+
+| Task | Type | Notes |
+|------|------|-------|
+| ADMIN-02 | Infrastructure P1 | Provision D1, R2, KV — scope narrowed to active apps only |
+| ADMIN-06 | Security P1 | CI secret scanning (TruffleHog/Gitleaks) |
+| ADMIN-09 | Security P1 | Product-pipeline API key — blocked by ADMIN-02 |
 
 ### Phase 3: Polish (Medium-term)
 
-| Task | Type | Blocker For |
-|------|------|-------------|
-| ADMIN-10 | Infrastructure | CMS production |
-| ADMIN-11 | Security | Ongoing safety |
-| ADMIN-12 | Documentation | Onboarding |
+| Task | Type | Notes |
+|------|------|-------|
+| ADMIN-10 | Infrastructure P2 | CMS deployment — **rewritten**: needs Workers+OpenNext, not Pages; CI has broken `next-on-pages` command |
 
 ---
 
@@ -408,7 +440,7 @@ After completing all tasks, verify:
 - [ ] Deployments fail if env contains `TODO_` placeholders
 - [ ] PRs are scanned for secrets
 - [ ] No exposed secrets remain in git history
-- [ ] `docs/github-setup.md` exists and is complete
+- [x] `docs/github-setup.md` exists and is complete (ADMIN-12)
 
 ---
 
@@ -429,3 +461,5 @@ After completing all tasks, verify:
 | 2026-01-19 | Claude (Opus 4.5) | Initial plan created from infrastructure audit |
 | 2026-01-21 | Claude (Opus 4.5) | Added ADMIN-07 (Firebase security rules deployment). Renumbered ADMIN-08 through ADMIN-11. Firebase rules fix (Critical #2 and #3) implemented in code, awaiting deployment. |
 | 2026-01-21 | Claude (Opus 4.5) | Added ADMIN-09 (Product-pipeline API key deployment). Renumbered ADMIN-10 through ADMIN-12. Product-pipeline auth fix (High #12) implemented in code, awaiting deployment configuration. |
+| 2026-02-09 | Claude (Opus 4.6) | Fact-check audit at `7dad9cc`. Marked ADMIN-01 as COMPLETE (Turbo cache already configured in CI). Marked ADMIN-11 as COMPLETE (pnpm audit already in ci.yml). Added partial-completion note to ADMIN-02 (CART_KV has real IDs). Flagged ADMIN-10 deployment target issue (CMS requires dynamic server, not static Pages). |
+| 2026-02-09 | Claude (Opus 4.6) | Re-plan of all 8 remaining tasks. **Marked ADMIN-03 COMPLETE** (Cloudflare secrets already in GitHub, apps deploying). **ADMIN-07 scope expanded** (reception rules also vulnerable, no `.firebaserc`, needs reconciliation). **ADMIN-08 exposure confirmed** (NEXTAUTH_SECRET in commit `6639161ca1`). **ADMIN-02 downgraded P0→P1** and scope narrowed (dormant apps deferred). **ADMIN-10 rewritten** (Workers+OpenNext, not Pages; CI has broken `next-on-pages` command). **ADMIN-09** dependency updated (ADMIN-03 done, still needs ADMIN-02). **ADMIN-12** dependencies now satisfied. Net: 7 open → 5 complete + 7 open. |

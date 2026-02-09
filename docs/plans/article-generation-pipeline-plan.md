@@ -123,7 +123,7 @@ apps/brikette                        ← Switches from local content to readGuid
 - TASK-04: Create server facade (`guides.server.ts`) (Complete, 2026-02-09; depends on TASK-03)
 - TASK-05: Add to barrel export and Prisma passthrough (Complete, 2026-02-09; depends on TASK-04)
 - TASK-06: Write migration script: Brikette → centralised store (Complete, 2026-02-09; depends on TASK-03)
-- TASK-07: Wire Brikette storefront to read from centralised store (Pending, depends on TASK-04, TASK-06)
+- TASK-07: Wire Brikette storefront to read from centralised store (Complete, 2026-02-09; depends on TASK-04, TASK-06)
 - TASK-08: Validate migration data integrity (Pending, depends on TASK-06)
 - TASK-09: Confirm Slice 2-4 scope and sequencing (Pending, depends on TASK-07)
 
@@ -137,7 +137,7 @@ apps/brikette                        ← Switches from local content to readGuid
 | TASK-04 | IMPLEMENT | Create server facade (`guides.server.ts`) | 90% | S | Complete (2026-02-09) | TASK-03 |
 | TASK-05 | IMPLEMENT | Add to barrel export and Prisma passthrough | 92% | S | Complete (2026-02-09) | TASK-04 |
 | TASK-06 | IMPLEMENT | Write migration script: Brikette → centralised store | 80% | M | Complete (2026-02-09) | TASK-03 |
-| TASK-07 | IMPLEMENT | Wire Brikette storefront to read from centralised store | 82% | M | Pending | TASK-04, TASK-06 |
+| TASK-07 | IMPLEMENT | Wire Brikette storefront to read from centralised store | 82% | M | Complete (2026-02-09) | TASK-04, TASK-06 |
 | TASK-08 | INVESTIGATE | Validate migration data integrity | 75% ⚠️ | S | Pending | TASK-06 |
 | TASK-09 | DECISION | Confirm Slice 2-4 scope and sequencing | 70% ⚠️ | S | Pending | TASK-07 |
 
@@ -574,8 +574,10 @@ apps/brikette                        ← Switches from local content to readGuid
 
 - **Type:** IMPLEMENT
 - **Affects:**
-  - `apps/brikette/src/app/[lang]/experiences/[slug]/page.tsx`
-  - `apps/brikette/src/routes/guides/` (multiple files for dual-read adapter)
+  - `apps/brikette/src/app/_lib/guide-i18n-bundle.ts`
+  - `apps/brikette/src/routes/guides/central-guides-adapter.server.ts` (new)
+  - `apps/brikette/src/test/app/guides/central-guides-adapter.test.ts` (new)
+  - `apps/brikette/src/test/app/guides/guide-i18n-bundle.test.ts`
   - `[readonly] packages/platform-core/src/repositories/guides.server.ts`
 - **Depends on:** TASK-04, TASK-06
 - **Confidence:** 82%
@@ -599,8 +601,8 @@ apps/brikette                        ← Switches from local content to readGuid
     - TC-06: All 168 guide URLs resolve successfully with centralised store → no 404s (integration check)
   - **Acceptance coverage:** TC-01..03 cover feature flag behavior, TC-04..05 cover fallback, TC-06 covers regression
   - **Test type:** unit + integration
-  - **Test location:** `apps/brikette/src/__tests__/central-guides-adapter.test.ts` (new)
-  - **Run:** `pnpm --filter brikette test`
+  - **Test location:** `apps/brikette/src/test/app/guides/central-guides-adapter.test.ts` (new), `apps/brikette/src/test/app/guides/guide-i18n-bundle.test.ts`
+  - **Run:** `pnpm --filter @apps/brikette test -- src/test/app/guides/central-guides-adapter.test.ts src/test/app/guides/guide-i18n-bundle.test.ts`
 - **Planning validation:**
   - Tests run: N/A (adapter doesn't exist yet)
   - Test stubs written: N/A (M effort)
@@ -616,6 +618,31 @@ apps/brikette                        ← Switches from local content to readGuid
   - Rendering chain documented in fact-find: route → `resolveGuideKeyFromSlug` → `loadGuideManifestOverridesFromFs` → `<GuideContent>` → `useTranslation("guides")` → `tGuides("content.{key}.{field}", { returnObjects: true })`
   - i18n resource bundle API: `i18next.addResourceBundle(locale, "guides", data)`
   - Feature flag pattern: other env-based feature flags exist in the codebase (e.g., `ENABLE_GUIDE_AUTHORING`)
+
+#### Build Completion (2026-02-09)
+- **Status:** Complete
+- **Commits:** `15d3a8c64f`
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04, TC-05, TC-06
+  - Cycles: 1
+  - Initial validation: PASS
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 82%
+  - Post-validation: 85%
+  - Delta reason: Feature-flagged dual-read path and fallback behavior are now covered by targeted tests and route wiring regression checks.
+- **Validation:**
+  - Ran: `pnpm exec eslint apps/brikette/src/routes/guides/central-guides-adapter.server.ts apps/brikette/src/app/_lib/guide-i18n-bundle.ts apps/brikette/src/test/app/guides/central-guides-adapter.test.ts apps/brikette/src/test/app/guides/guide-i18n-bundle.test.ts` — PASS
+  - Ran: `pnpm --filter @apps/brikette test -- src/test/app/guides/central-guides-adapter.test.ts src/test/app/guides/guide-i18n-bundle.test.ts` — PASS
+  - Ran: `pnpm --filter @apps/brikette test -- src/test/app/guides/guide-route-bundle-wiring.test.tsx` — PASS
+  - Ran: `pnpm --filter @apps/brikette typecheck` — PASS
+  - Ran: `pnpm --filter @apps/brikette lint` — PASS (`lint` script is currently an informational no-op in this package)
+- **Documentation updated:** None required
+- **Implementation notes:**
+  - Added `apps/brikette/src/routes/guides/central-guides-adapter.server.ts` with `USE_CENTRAL_GUIDES` gating and central-repository reads via `readGuideRepo("brikette")` and `getGuideContent("brikette", key, locale)`.
+  - Updated `apps/brikette/src/app/_lib/guide-i18n-bundle.ts` to dual-read: keep legacy bundle behavior by default and inject central content into the `guides` namespace when enabled.
+  - Implemented graceful fallback behavior: missing central guide or central read errors return legacy content; missing localized central content falls back to English.
+  - Added/updated focused tests to verify flag gating, repository invocation, and locale fallback behavior.
 
 ---
 

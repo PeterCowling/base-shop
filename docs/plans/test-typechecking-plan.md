@@ -278,27 +278,36 @@ Per-app configs avoid this by inheriting each app's path resolution. The trade-o
 | 2026-01-18 | Phase 4 | Fixed TS2540 (process.env readonly) across 34 files, fixed SpyInstance type mismatches. Errors: 1,797 → 1,618 (62% reduction). |
 | 2026-01-18 | Phase 4 | Removed unused @ts-expect-error directives (TS2578). Errors: 1,618 → 1,539 (64% reduction). |
 | 2026-01-18 | Phase 4 | Loosened env override typing in auth env tests, guarded safeParse errors, fixed env symbol casts. Errors: 1,539 → 1,506 (65% reduction). |
+| 2026-02-09 | Phase 4 | Created `test/types/jest-axe.d.ts` — eliminates 76 TS7016 errors. Created `test/types/jest-globals.d.ts` — eliminates 63 TS2551 errors. Created `test/global.d.ts` + tsconfig types update — eliminates 32 TS2503 errors. Added `@acme/cms-ui`, `@acme/design-system` path mappings. Minor test file fixes. Errors: 1,227 → 1,044 (76% cumulative reduction from 4,279). |
+| 2026-02-09 | Fact-check | Corrected test file count, jest.moduleMapper line ref, tsconfig exclude claim, noted existing jest-globals.d.ts workarounds. |
 
 ## Current Status
 
-**Packages typecheck** (`tsconfig.test.typecheck.json`): 1,506 errors (down from 4,279)
-**CMS typecheck** (`apps/cms/tsconfig.test.typecheck.json`): 756 errors (not re-run in this update)
+**Packages typecheck** (`tsconfig.test.typecheck.json`): 1,044 errors (down from 4,279 → 1,506 → 1,227 → 1,044)
+**CMS typecheck** (`apps/cms/tsconfig.test.typecheck.json`): not re-run
 
-### Error Breakdown (Packages)
+### Error Breakdown (Packages — 2026-02-09)
 
 | Error Code | Count | Category | Fix Pattern |
 |------------|-------|----------|-------------|
-| TS2345 | 407 | Argument type mismatch | Update function signatures, add generics |
-| TS2339 | 201 | Property doesn't exist | Add type assertions or fix mocks |
-| TS2322 | 125 | Type not assignable | Fix return types |
-| TS2352 | 114 | Type conversion | Add explicit casts |
-| TS2741 | 100 | Missing property | Add required properties |
-| TS2551 | 77 | Jest async methods | `@jest/globals` lacks `isolateModulesAsync`, etc. |
-| TS18048 | 59 | Possibly undefined | Add null checks or assertions |
-| TS18046 | 52 | Unknown type | Add type assertions |
-| TS2353 | 50 | Object literal | Add index signature or use type assertion |
-| TS7006 | 45 | Implicit any | Add type annotations |
-| TS2307 | 36 | Cannot find module | Fix path aliases |
+| TS2345 | 246 | Argument type mismatch | `as any` cast, `jest.fn() as jest.Mock` |
+| TS2339 | 154 | Property doesn't exist | `(obj as any).prop` |
+| TS2352 | 102 | Type conversion | `as unknown as TargetType` |
+| TS2322 | 102 | Type not assignable | `as any` or `as unknown as Type` |
+| TS2741 | 88 | Missing property | Add required properties or `as jest.Mock` |
+| TS2540 | 58 | process.env readonly | `(process.env as Record<string, string \| undefined>)` |
+| TS2353 | 45 | Object literal excess | Cast object `as any` |
+| TS18048 | 40 | Possibly undefined | Add `!` non-null assertion |
+| TS7006 | 24 | Implicit any | Add `: any` annotation |
+
+### Eliminated error categories (2026-02-09)
+
+| Error Code | Was | Fix |
+|------------|-----|-----|
+| TS7016 | 76 | Created `test/types/jest-axe.d.ts` type declarations |
+| TS2551 | 63 | Created `test/types/jest-globals.d.ts` (isolateModulesAsync, advanceTimersByTimeAsync, runAllTimersAsync) |
+| TS2503 | 32 | Created `test/global.d.ts` for global JSX namespace; added `"react"`, `"react-dom"` to tsconfig types |
+| TS5097 | 12 | Added `allowImportingTsExtensions` (prior session) |
 
 ### Common Fix Patterns
 
@@ -317,7 +326,7 @@ Per-app configs avoid this by inheriting each app's path resolution. The trade-o
 
 4. **Unused @ts-expect-error (TS2578)**: ✅ Fixed — Removed 47 obsolete directives across test files.
 
-5. **Jest async methods (TS2551)**: ⏳ Deferred — `@jest/globals` types don't include newer async methods like `isolateModulesAsync` and `advanceTimersByTimeAsync`. These are runtime-available but not typed. Consider upgrading `@jest/globals` or using type assertions.
+5. **Jest async methods (TS2551)**: ✅ Fixed — Created `test/types/jest-globals.d.ts` with type augmentation for `isolateModulesAsync`, `advanceTimersByTimeAsync`, and `runAllTimersAsync`.
 
 6. **Env override typing (TS2345)**: ✅ Fixed — Use `Record<string, string | undefined>` for test env overrides and cast when calling loaders, preserving runtime defaults.
 
@@ -325,6 +334,9 @@ Per-app configs avoid this by inheriting each app's path resolution. The trade-o
 
 - `tsconfig.test.typecheck.json` — Packages-only typecheck config
 - `apps/cms/tsconfig.test.typecheck.json` — CMS app typecheck config
+- `test/types/jest-axe.d.ts` — Type declarations for jest-axe (eliminates 76 TS7016 errors)
+- `test/types/jest-globals.d.ts` — Type augmentation for isolateModulesAsync etc. (eliminates 63 TS2551 errors)
+- `test/global.d.ts` — Global JSX namespace declaration (eliminates 32 TS2503 errors)
 
 ### Files Modified
 

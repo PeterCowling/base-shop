@@ -17,11 +17,11 @@ This plan tracks infrastructure, configuration, and administrative items that ar
 
 ## Summary
 
-**12 tasks total: 6 complete, 6 remaining.**
+**12 tasks total: 7 complete, 5 remaining.**
 
 Remaining infrastructure debt:
 - **P0 Security (manual):** Firebase rules deployment (ADMIN-07), secret rotation (ADMIN-08)
-- **P1 Infrastructure:** Cloudflare resource provisioning (ADMIN-02), CI secret scanning (ADMIN-06), product-pipeline API key (ADMIN-09)
+- **P1 Infrastructure:** Cloudflare resource provisioning (ADMIN-02), product-pipeline API key (ADMIN-09)
 - **P2 Polish:** CMS Workers deployment (ADMIN-10)
 
 ## Relationship to Launch Readiness
@@ -156,28 +156,23 @@ These items primarily affect:
 
 ### ADMIN-06: Implement CI Secret Scanning
 
-- **Status**: ☐
+- **Status**: ✅ **COMPLETE**
 - **Priority**: P1
 - **Estimated effort**: Medium
-- **Scope**:
-  - Add TruffleHog or Gitleaks to CI pipeline
-  - Run on all PRs and pushes to main
-  - Create allowlist for known false positives (test fixtures, etc.)
+- **Completed**: 2026-02-09
 
-  **Workflow example** (TruffleHog):
-  ```yaml
-  - name: Secret scanning
-    uses: trufflesecurity/trufflehog@main
-    with:
-      path: ./
-      base: ${{ github.event.repository.default_branch }}
-      extra_args: --only-verified
-  ```
-- **Dependencies**: None
+#### Build Completion (2026-02-09)
+- **Commits:** `8f842a5af3`
+- **Implementation:**
+  - Added `secret-scanning` job to `ci.yml` (runs on all PRs and pushes — catches secrets before merge)
+  - Added `secret-scanning` job to `test.yml` (runs nightly at 3am UTC + pushes to main — catches secrets in history)
+  - Uses `trufflesecurity/trufflehog@v3.93.1` with `--only-verified` (reduces false positives) and `--fail` (blocks PRs)
+  - Full history scan via `fetch-depth: 0`
+  - No allowlist needed yet — `--only-verified` only flags confirmed-real secrets
 - **Definition of done**:
-  - PR checks include secret scanning
-  - Known test secrets are allowlisted
-  - Real secrets trigger PR failure
+  - ✅ PR checks include secret scanning (`ci.yml`)
+  - ✅ Real secrets trigger PR failure (`--fail` flag)
+  - ✅ Nightly scanning covers git history (`test.yml`)
 
 ### ADMIN-07: Deploy Firebase Security Rules Fix (Security P0)
 
@@ -399,6 +394,7 @@ These items primarily affect:
 | ADMIN-04 | ✅ SOPS decryption wired into CI |
 | ADMIN-05 | ✅ Deploy env validation gate added |
 | ADMIN-11 | ✅ Dependency audit already in CI |
+| ADMIN-06 | ✅ TruffleHog secret scanning in CI + nightly |
 | ADMIN-12 | ✅ GitHub setup docs created (`docs/github-setup.md`) |
 
 ### Phase 1: Security Critical (Immediate — requires your manual action)
@@ -413,7 +409,7 @@ These items primarily affect:
 | Task | Type | Notes |
 |------|------|-------|
 | ADMIN-02 | Infrastructure P1 | Provision D1, R2, KV — scope narrowed to active apps only |
-| ADMIN-06 | Security P1 | CI secret scanning (TruffleHog/Gitleaks) |
+| ~~ADMIN-06~~ | ~~Security P1~~ | ✅ TruffleHog added to CI + nightly |
 | ADMIN-09 | Security P1 | Product-pipeline API key — blocked by ADMIN-02 |
 
 ### Phase 3: Polish (Medium-term)
@@ -438,7 +434,7 @@ After completing all tasks, verify:
 - [ ] CI can deploy to Cloudflare Pages
 - [ ] Encrypted secrets are decrypted in CI before build
 - [ ] Deployments fail if env contains `TODO_` placeholders
-- [ ] PRs are scanned for secrets
+- [x] PRs are scanned for secrets (ADMIN-06, TruffleHog in ci.yml + test.yml)
 - [ ] No exposed secrets remain in git history
 - [x] `docs/github-setup.md` exists and is complete (ADMIN-12)
 

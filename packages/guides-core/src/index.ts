@@ -3,6 +3,12 @@ export type SlugsByKey<Lang extends string, Key extends string> = Readonly<
 >;
 
 export {
+  type GuideContentValidationResult,
+  type GuideContentValidationViolation,
+  type SafeParseValidator,
+  validateGuideContentFiles,
+} from "./contentValidationRunner";
+export {
   extractStringsFromContent,
   listJsonFiles,
   readJson,

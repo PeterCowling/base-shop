@@ -3,7 +3,7 @@ Type: Plan
 Status: Active
 Domain: Platform/i18n
 Created: 2026-02-09
-Last-updated: 2026-02-09 (re-plan)
+Last-updated: 2026-02-09 (build)
 Last-reviewed: 2026-02-09
 Relates-to charter: none
 Feature-Slug: article-generation-slice-2-translation-tooling
@@ -63,7 +63,7 @@ Gap noted:
 
 - S2-01: Extract shared JSON/content traversal utilities to `@acme/guides-core`. (Complete, 2026-02-09)
 - S2-02: Adopt shared utilities in validation/report scripts. (Complete, 2026-02-09)
-- S2-03: Extract schema-injected guide content validation runner.
+- S2-03: Extract schema-injected guide content validation runner. (Complete, 2026-02-09)
 - S2-04: Generalize backfill script to remove Brikette runtime dependency. (Complete, 2026-02-09)
 - S2-05: Rewrite translation runner into configurable engine.
 - S2-06: Add drift detection + schemaVersion migration support scaffolding. (Complete, 2026-02-09)
@@ -78,7 +78,7 @@ Gap noted:
 |---|---|---|---:|---:|---|---|---|
 | S2-01 | IMPLEMENT | Add `listJsonFiles`/`readJson`/`extractStringsFromContent` to `@acme/guides-core` with tests | 88% | M | Complete (2026-02-09) | - | Eligible |
 | S2-02 | IMPLEMENT | Replace local utility copies in core Brikette scripts with shared package imports | 84% | M | Complete (2026-02-09) | S2-01 | Eligible |
-| S2-03 | IMPLEMENT | Extract reusable validation runner with injected schema and path config | 83% | M | Pending | S2-02 | Eligible |
+| S2-03 | IMPLEMENT | Extract reusable validation runner with injected schema and path config | 83% | M | Complete (2026-02-09) | S2-02 | Eligible |
 | S2-04 | IMPLEMENT | Refactor `backfill-guides-from-en.ts` to CLI-configurable locale sourcing | 82% | M | Complete (2026-02-09) | S2-01 | Eligible |
 | S2-05 | IMPLEMENT | Rewrite `translate-guides.ts` to generic runner (`promptBuilder`, target config, token policy) | 74% (→ 83% conditional on S2-09, S2-10) | L | Pending | S2-01, S2-09, S2-10 | Blocked (<80) |
 | S2-06 | INVESTIGATE | Define drift detection + schemaVersion migration contracts for Slice 2.5 | 78% | M | Complete (2026-02-09) | S2-02 | N/A |
@@ -211,6 +211,26 @@ Gap noted:
     - shared FS utilities now imported from `@acme/guides-core`,
     - Brikette-specific logic limited to schema + locale sourcing + output formatting.
   - Confidence promoted above gate because blocking unknown ("can this be extracted without behavior drift?") is now closed by runnable current behavior and clear extraction seam.
+
+#### Build Completion (2026-02-09)
+- **Status:** Complete
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04
+  - Cycles: 1
+  - Initial validation: PASS
+  - Final validation: PASS
+- **Validation:**
+  - Ran: `pnpm --filter @acme/guides-core lint` — PASS (0 errors; non-blocking existing warnings)
+  - Ran: `pnpm --filter @acme/guides-core build` — PASS
+  - Ran: `pnpm --filter @acme/guides-core test -- packages/guides-core/__tests__/contentValidationRunner.test.ts` — PASS
+  - Ran: `pnpm --filter @apps/brikette typecheck` — PASS
+  - Ran: `pnpm --filter @apps/brikette lint` — PASS (`lint` script is currently an informational no-op)
+  - Ran: `pnpm exec tsx scripts/validate-guide-content.ts --locale=en --guides=rules` (from `apps/brikette`) — PASS
+- **Implementation notes:**
+  - Added reusable validator runner: `packages/guides-core/src/contentValidationRunner.ts`.
+  - Added focused runner tests: `packages/guides-core/__tests__/contentValidationRunner.test.ts`.
+  - Exported runner and related types from `packages/guides-core/src/index.ts`.
+  - Refactored Brikette CLI wrapper to delegate to shared runner while keeping current flags and reporting behavior.
 
 ### S2-04: Generalize backfill script locale sourcing
 
@@ -386,3 +406,4 @@ Gap noted:
 - 2026-02-09: S2-06 completed; investigation created S2-07 (drift manifest/check) and S2-08 (schemaVersion migration runner) as implementation follow-ons.
 - 2026-02-09 (re-plan): S2-03 promoted from 79% to 83% based on executable seam verification and is now build-eligible.
 - 2026-02-09 (re-plan): S2-05 remains blocked at 74%; added S2-09 (policy decision) and S2-10 (parity spike) as formal precursors.
+- 2026-02-09 (build): S2-03 completed with shared schema-injected validation runner extraction and wrapper-preserving CLI behavior.

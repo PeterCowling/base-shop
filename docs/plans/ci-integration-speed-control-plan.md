@@ -12,7 +12,7 @@ Deliverable-Type: code-change
 Execution-Track: code
 Primary-Execution-Skill: build-feature
 Supporting-Skills: re-plan, safe-commit-push-ci
-Overall-confidence: 82%
+Overall-confidence: 79%
 Confidence-Method: min(Implementation,Approach,Impact); weighted by effort, dependency risk, and unresolved audit inputs
 Business-Unit: PLAT
 Card-ID:
@@ -43,8 +43,8 @@ Investigations (no test contract required):
 - CI-SC-06
 - CI-SC-08
 
-New precursor task (created during re-plan):
-- CI-SC-09 (SPIKE: CMS nightly timeout verification)
+Spikes complete:
+- CI-SC-09 (SPIKE: CMS nightly timeout verification — **FAIL**, needs re-plan of CI-SC-03)
 
 ## Goals
 - Reduce deterministic false-red integration failures.
@@ -131,7 +131,7 @@ Merge-order prerequisite:
 | CI-SC-06 | INVESTIGATE | CI cache behavior audit and optimization proposal | 82% | M | Pending | - | N/A |
 | CI-SC-07 | IMPLEMENT | Speed up `validate-changes.sh` related-test discovery | 82% | M | Pending | - | Eligible |
 | CI-SC-08 | INVESTIGATE | Dynamic sharding thresholds and reliability study | 75% | M | Pending | - | N/A |
-| CI-SC-09 | SPIKE | Verify CMS tests complete within nightly job timeout without sharding | 85% | S | Pending | - | N/A |
+| CI-SC-09 | SPIKE | Verify CMS tests complete within nightly job timeout without sharding | 85% | S | Complete (FAIL) | - | N/A |
 
 ## Parallelism Guide
 Development waves:
@@ -499,7 +499,8 @@ Merge order:
 - **Affects:** `apps/cms/` (read-only probe)
 - **Depends on:** -
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (FAIL)
+- **Completed:** 2026-02-09
 - **Confidence:** 85% (Implementation 88%, Approach 85%, Impact 85%)
 - **Acceptance:**
   - Run CMS test suite without `--shard` flag and with `--coverage` locally or in CI.
@@ -507,15 +508,21 @@ Merge order:
   - Pass criterion: completes in <15 minutes (nightly job timeout is 20 minutes, 5-minute buffer).
   - Fail criterion: exceeds 15 minutes or OOMs.
 - **Test contract:**
-  - **TC-01:** `pnpm --filter ./apps/cms exec jest --ci --runInBand --detectOpenHandles --passWithNoTests --coverage --config apps/cms/jest.config.cjs` → completes within 15 minutes
+  - **TC-01:** `pnpm --filter ./apps/cms exec jest --ci --runInBand --detectOpenHandles --passWithNoTests --coverage --config jest.config.cjs` → completes within 15 minutes
   - **TC-02:** Coverage output is produced (not empty) — confirms full-source coverage works without `--shard`
   - **Test type:** integration (probe execution)
   - **Test location:** manual execution / CI probe run
-  - **Run:** `time pnpm --filter ./apps/cms exec jest --ci --runInBand --detectOpenHandles --passWithNoTests --coverage --config apps/cms/jest.config.cjs`
+  - **Run:** `time pnpm --filter ./apps/cms exec jest --ci --runInBand --detectOpenHandles --passWithNoTests --coverage --config jest.config.cjs`
 - **Exit criteria:**
   - **Pass:** CMS tests complete in <15 minutes with coverage → CI-SC-03 approach (a) is viable, promote CI-SC-03 confidence to 84%
   - **Fail:** CMS tests exceed 15 minutes or fail → CI-SC-03 needs approach (b) with shard support in nightly, re-plan CI-SC-03
 - **Rollout/Rollback:** Read-only spike, no rollback needed.
+- **Spike Result (2026-02-09):**
+  - **Outcome: FAIL** — Unsharded `--runInBand` run exceeded 21 minutes (384/421 suites at 21min mark, still running). 421 total test files.
+  - **Environment:** Local Mac, `--runInBand` (single-threaded), `--coverage` enabled.
+  - **Implication:** CI-SC-03 approach (a) — unsharded nightly without parallelism — is not viable within 15-minute budget.
+  - **Nuance:** Without `--runInBand` (i.e., with Jest default parallelism), unsharded execution may still fit. A follow-up probe without `--runInBand` on CI hardware would refine the decision.
+  - **CI-SC-03 action:** Re-plan needed. Options: (b) add shard support to nightly lane, or (c) run unsharded with default Jest parallelism (needs second probe).
 
 ## Risks and Mitigations
 | Risk | Severity | Mitigation |
@@ -554,6 +561,7 @@ Merge order:
 - 2026-02-09 (re-plan): CI-SC-03 confidence recorded as conditional: 79% → 84% on CI-SC-09 completion.
 - 2026-02-09 (re-plan): CI-SC-05 confidence recorded as conditional: 74% → 84% on CI-SC-04 completion.
 - 2026-02-09 (build): CI-SC-01 completed. Archive/historical plans now exempt from metadata checks. 8 tests added (TC-01–TC-08), all passing. Duplicate `terminalStatuses` definition removed.
+- 2026-02-09 (spike): CI-SC-09 completed with FAIL result. Unsharded `--runInBand` CMS tests exceeded 21min (384/421 suites). CI-SC-03 needs re-plan: approach (a) not viable, consider approach (b) shard support in nightly or (c) unsharded with Jest parallelism.
 
 ## Scope Extraction
 The following item is intentionally excluded from this plan and should be tracked separately:
@@ -561,16 +569,16 @@ The following item is intentionally excluded from this plan and should be tracke
 
 ## Overall-confidence calculation
 - Buildable now (≥80%, test contracts complete): CI-SC-01 (91%), CI-SC-02 (84%), CI-SC-07 (82%).
-- Buildable spike: CI-SC-09 (85%).
+- Completed spike: CI-SC-09 (FAIL — unsharded CMS exceeds 15min with `--runInBand`).
 - Blocked implement (conditional): CI-SC-03 (79%), CI-SC-05 (74%).
 - Investigations: CI-SC-04 (88%), CI-SC-06 (82%), CI-SC-08 (75%).
 - Arithmetic:
-  - Buildable average = `(91 + 84 + 82 + 85) / 4 = 85.5`.
-  - Blocked implement average = `(79 + 74) / 2 = 76.5`.
+  - Buildable average = `(84 + 82) / 2 = 83.0`.
+  - Blocked implement average = `(79 + 74) / 2 = 76.5`. CI-SC-03 stays at 79% pending re-plan with spike FAIL data.
   - Investigation average = `(88 + 82 + 75) / 3 = 81.7`.
-  - Weighted base = `0.35*85.5 + 0.35*76.5 + 0.30*81.7 = 81.2`.
-  - Risk adjustment (`-0.2`) for CMS timeout uncertainty (mitigated by spike).
-- Plan overall confidence: `81.0` (rounded to 81% → reported as 82% due to spike mitigation).
+  - Weighted base = `0.35*83.0 + 0.35*76.5 + 0.30*81.7 = 80.3`.
+  - Risk adjustment (`-1.0`) for spike FAIL: CI-SC-03 approach needs re-plan.
+- Plan overall confidence: `79%` (down from 82% due to spike FAIL; recoverable via CI-SC-03 re-plan with approach (b) or (c)).
 
 ## What Would Make This >=90%
 - Complete CI-SC-01, CI-SC-02, CI-SC-07 and measure against baseline targets.

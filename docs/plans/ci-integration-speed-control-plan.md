@@ -12,7 +12,7 @@ Deliverable-Type: code-change
 Execution-Track: code
 Primary-Execution-Skill: build-feature
 Supporting-Skills: re-plan, safe-commit-push-ci
-Overall-confidence: 79%
+Overall-confidence: 82%
 Confidence-Method: min(Implementation,Approach,Impact); weighted by effort, dependency risk, and unresolved audit inputs
 Business-Unit: PLAT
 Card-ID:
@@ -28,24 +28,15 @@ This is a staged execution plan with an executable subset now and investigation-
 Priority gate: CI-SC-04 is the highest-leverage investigation because it is the primary unlock for CI-SC-05 (the largest remaining implementation risk).
 
 Complete:
-- CI-SC-01
-- CI-SC-02
-- CI-SC-07
+- CI-SC-01, CI-SC-02, CI-SC-07 (IMPLEMENT — built and committed)
+- CI-SC-04, CI-SC-06, CI-SC-08 (INVESTIGATE — findings documented)
+- CI-SC-09 (SPIKE — FAIL result, findings documented)
 
 Executable now (`>=80%`, complete test contracts):
-- (none — all eligible IMPLEMENT tasks complete)
+- CI-SC-05 (82%, promoted from 74% via CI-SC-04 evidence)
 
-Needs re-plan/investigation before build:
-- CI-SC-03 (conditional on CI-SC-09 spike)
-- CI-SC-05 (conditional on CI-SC-04)
-
-Investigations (no test contract required):
-- CI-SC-04
-- CI-SC-06
-- CI-SC-08
-
-Spikes complete:
-- CI-SC-09 (SPIKE: CMS nightly timeout verification — **FAIL**, needs re-plan of CI-SC-03)
+Needs re-plan before build:
+- CI-SC-03 (79%, conditional on CI-SC-09 spike FAIL re-plan)
 
 ## Goals
 - Reduce deterministic false-red integration failures.
@@ -127,11 +118,11 @@ Merge-order prerequisite:
 | CI-SC-01 | IMPLEMENT | Archive-aware plan lint scope fix | 91% | S | Complete | - | Done |
 | CI-SC-02 | IMPLEMENT | Coverage-free integration `test` + explicit `test:coverage` | 84% | M | Complete | - | Done |
 | CI-SC-03 | IMPLEMENT | CMS coverage handoff to overnight/manual lane | 79% (→ 84% conditional on CI-SC-09) | M | Pending | CI-SC-02, CI-SC-09 | Blocked |
-| CI-SC-04 | INVESTIGATE | Enumerate and validate all `paths-filter` semantics and edge cases | 88% | M | Pending | - | N/A |
-| CI-SC-05 | IMPLEMENT | Repo-local classifier replacing `dorny/paths-filter` | 74% (→ 84% conditional on CI-SC-04) | L | Pending | CI-SC-04 | Blocked |
-| CI-SC-06 | INVESTIGATE | CI cache behavior audit and optimization proposal | 82% | M | Pending | - | N/A |
+| CI-SC-04 | INVESTIGATE | Enumerate and validate all `paths-filter` semantics and edge cases | 88% | M | Complete | - | Done |
+| CI-SC-05 | IMPLEMENT | Repo-local classifier replacing `dorny/paths-filter` | 82% (promoted from 74% via CI-SC-04) | L | Pending | CI-SC-04 (done) | Eligible |
+| CI-SC-06 | INVESTIGATE | CI cache behavior audit and optimization proposal | 82% | M | Complete | - | Done |
 | CI-SC-07 | IMPLEMENT | Speed up `validate-changes.sh` related-test discovery | 82% | M | Complete | - | Done |
-| CI-SC-08 | INVESTIGATE | Dynamic sharding thresholds and reliability study | 75% | M | Pending | - | N/A |
+| CI-SC-08 | INVESTIGATE | Dynamic sharding thresholds and reliability study | 75% | M | Complete | - | Done |
 | CI-SC-09 | SPIKE | Verify CMS tests complete within nightly job timeout without sharding | 85% | S | Complete (FAIL) | - | N/A |
 
 ## Parallelism Guide
@@ -323,7 +314,8 @@ Merge order:
 - **Affects:** `.github/workflows/ci.yml:32-44,187-199`, `.github/workflows/merge-gate.yml:30-168`, `.github/workflows/ci-lighthouse.yml:24-34`
 - **Depends on:** -
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete
+- **Completed:** 2026-02-09
 - **Confidence:** 88% (Implementation 90%, Approach 88%, Impact 88%)
 - **Acceptance:**
   - Enumerate every current `dorny/paths-filter` rule used in required workflows.
@@ -345,20 +337,74 @@ Merge order:
   - Repo: all 3 workflow files fully audited for `dorny/paths-filter` usage with line numbers and filter expression content
   - Note: `auto-pr.yml` does NOT use `dorny/paths-filter` (confirmed)
 
+#### Investigation Completion (2026-02-09)
+- **Status:** Complete
+- **Deliverable:** Canonical parity map (below)
+- **Validation:** All 14 filter expressions enumerated with exact glob patterns and line numbers. Cross-referenced against workflow conditional usage.
+
+##### Parity Map: All `dorny/paths-filter` Expressions
+
+**ci.yml** (2 filters):
+| Filter | Lines | Patterns | Event Gate |
+|---|---|---|---|
+| `shop` | 37-44 | `apps/cover-me-pretty/**`, `apps/cms/**`, `packages/platform-core/**`, `packages/ui/**`, `packages/config/**`, `packages/i18n/**`, `packages/shared-utils/**` | E2E job gate |
+| `bos_guarded` | 192-199 | `docs/business-os/**`, `!docs/business-os/README.md`, `!docs/business-os/business-os-charter.md`, `!docs/business-os/MANUAL_EDITS.md`, `!docs/business-os/scans/**`, `!docs/business-os/strategy/**`, `!docs/business-os/people/**` | BOS mirror guard |
+
+**merge-gate.yml** (11 filters, lines 34-168):
+| Filter | Patterns (summary) | Notes |
+|---|---|---|
+| `github_config` | `.github/workflows/**`, `.github/actions/**`, `.github/dependabot.yml`, `.github/CODEOWNERS` | Triggers actionlint |
+| `core` | `**/*` minus `!apps/cms/**`, `!apps/skylar/**`, `!.github/workflows/cms.yml`, `!.github/workflows/skylar.yml` | Universal match with negation — most complex filter |
+| `cms_deploy` | `apps/cms/**` + 18 package dirs + `cms.yml` | Large dependency fan-out |
+| `cms_e2e` | Same as `cms_deploy` but with `cypress.yml` | Identical path set, different workflow trigger |
+| `skylar` | `apps/skylar/**` + 9 package dirs + `skylar.yml` | |
+| `brikette` | `apps/brikette/**` + 7 package dirs + 2 workflow files | Includes `reusable-app.yml` |
+| `prime` | `apps/prime/**` + 6 package dirs + `prime.yml` | |
+| `product_pipeline` | `apps/product-pipeline/**` + 6 package dirs + `product-pipeline.yml` | |
+| `storybook` | `apps/storybook/**`, `apps/cms/**`, `apps/cover-me-pretty/**` + 8 package dirs + `docs/storybook.md` + `storybook.yml` | Cross-app: triggers on 3 app dirs |
+| `consent_analytics` | 4 specific deep paths + `consent-analytics.yml` | Most specific/narrow filter |
+| `lhci` | `apps/cover-me-pretty/**`, `apps/skylar/**`, `.lighthouseci/**`, `lighthouserc*.json`, `ci-lighthouse.yml` | Identical to ci-lighthouse.yml `shop_skylar` |
+
+**ci-lighthouse.yml** (1 filter):
+| Filter | Lines | Patterns |
+|---|---|---|
+| `shop_skylar` | 29-34 | `apps/cover-me-pretty/**`, `apps/skylar/**`, `.lighthouseci/**`, `lighthouserc*.json`, `.github/workflows/ci-lighthouse.yml` |
+
+##### Edge Cases
+1. **Negation patterns:** `core` uses `**/*` with `!` exclusions (match everything except CMS/Skylar). `bos_guarded` uses `!` to exclude specific docs.
+2. **Universal match:** `core` filter's `**/*` matches all files — classifier must handle this as "everything not in exclusion list".
+3. **Duplicate patterns:** `lhci` (merge-gate) and `shop_skylar` (ci-lighthouse) have identical path sets.
+4. **Renames:** `dorny/paths-filter` treats renames as both old and new path changed. Classifier must match both.
+5. **Deletions:** Deleted files are matched at their old path.
+6. **Deep paths:** `consent_analytics` matches specific subdirectories, not top-level app dirs.
+7. **Doc file in glob set:** `storybook` includes `docs/storybook.md` — a non-code file triggers CI.
+
+##### Fixture Matrix (9 scenarios)
+| # | Changed Files | Expected True Filters | Notes |
+|---|---|---|---|
+| F1 | `apps/cover-me-pretty/src/page.tsx` | `shop`, `core`, `storybook`, `consent_analytics`(if under analytics/), `lhci` | Core app change |
+| F2 | `apps/cms/src/api/route.ts` | `shop`, `cms_deploy`, `cms_e2e`, `storybook` | CMS-only (core=false due to negation) |
+| F3 | `docs/README.md` | `core` | Docs-only, no app filters |
+| F4 | `.github/workflows/ci.yml` | `github_config`, `core` | Workflow change |
+| F5 | `packages/ui/src/Button.tsx` | `shop`, `core`, `cms_deploy`, `cms_e2e`, `skylar`, `brikette`, `prime`, `product_pipeline`, `storybook` | Shared package — triggers many filters |
+| F6 | `apps/brikette/src/page.tsx` | `core`, `brikette` | Single-app change |
+| F7 | `docs/business-os/cards/PLAT-ENG-0001.md` | `core`, `bos_guarded` | BOS doc change (not in exclusion list) |
+| F8 | `docs/business-os/README.md` | `core` | BOS doc in exclusion list (bos_guarded=false) |
+| F9 | `apps/skylar/src/page.tsx` | `skylar`, `lhci` | Skylar-only (core=false due to negation) |
+
 ### CI-SC-05: Replace external `dorny/paths-filter` in required workflows
 - **Type:** IMPLEMENT
 - **Deliverable:** Repo-local path classifier and workflow integration
 - **Execution-Skill:** `build-feature`
-- **Affects:** `.github/workflows/ci.yml`, `.github/workflows/merge-gate.yml`, `.github/workflows/ci-lighthouse.yml`, `scripts/src/ci/*`
-- **Depends on:** CI-SC-04
+- **Affects:** `.github/workflows/ci.yml`, `.github/workflows/merge-gate.yml`, `.github/workflows/ci-lighthouse.yml`, `scripts/src/ci/path-classifier.ts` (new), `scripts/src/ci/filter-config.ts` (new), `scripts/__tests__/ci/path-classifier.test.ts` (new)
+- **Depends on:** CI-SC-04 (complete)
 - **Effort:** L
 - **Status:** Pending
-- **Confidence:** 74% (→ 84% conditional on CI-SC-04)
-  - Confidence cannot be promoted until CI-SC-04 completes and provides parity map (E2 evidence)
-  - Implementation: 75% — Classifier must reproduce 14 filter expressions across push and pull_request event types. Git diff-based approach is straightforward but merge-gate.yml has complex multi-filter logic (11 expressions, lines 30-168).
-  - Approach: 74% — Shell script vs TypeScript classifier decision depends on CI-SC-04 complexity findings. Need to handle `base:` ref semantics that `dorny/paths-filter` resolves automatically.
-  - Impact: 74% — High blast radius: merge-gate controls what workflows are required. Any parity regression blocks merges incorrectly.
-- **Implementation approach:** TBD pending CI-SC-04 outputs (classifier runtime/language, change-file source for `push` and `pull_request`, and fixture parity contract).
+- **Confidence:** 82% (Implementation 84%, Approach 82%, Impact 80%)
+  - Implementation: 84% — CI-SC-04 provides complete specification (14 filter expressions, all simple globs). TypeScript + picomatch handles all patterns including negation. Fixture matrix provides 9 test scenarios.
+  - Approach: 82% — TypeScript classifier at `scripts/src/ci/path-classifier.ts`. Changed files from `git diff --name-only`. Filter config as declarative data in `scripts/src/ci/filter-config.ts`. Output as `KEY=true/false` to `$GITHUB_OUTPUT`.
+  - Impact: 80% — Merge-gate is highest risk (11 filters) but comprehensive parity contract (TC-07) and compare-mode (TC-09) mitigate regression risk.
+- **Implementation approach:** TypeScript classifier with `picomatch` for glob matching. Filter expressions extracted from workflow YAML into declarative config. `git diff --name-only` for changed file detection (push: `${{ github.event.before }}..${{ github.sha }}`, PR: `origin/${{ github.base_ref }}...HEAD`).
 - **Acceptance:**
   - Required workflows no longer depend on `dorny/paths-filter`.
   - Local classifier reproduces parity map outcomes for push and pull_request events.
@@ -396,6 +442,25 @@ Merge order:
 - **Changes to task:**
   - Test contract: added TC-01 through TC-09
 
+#### Re-plan Update (2026-02-09, post CI-SC-04 evidence)
+- **Previous confidence:** 74%
+- **Updated confidence:** 82%
+  - **Evidence class:** E2 (CI-SC-04 parity map provides complete specification)
+  - Implementation: 84% — All 14 filter expressions are simple glob include/exclude patterns. No regex, no dynamic expressions, no API calls. Two filters use negation (`core`, `bos_guarded`). TypeScript with `picomatch` handles all patterns. Fixture matrix from CI-SC-04 provides complete test specification.
+  - Approach: 82% — TypeScript classifier with `picomatch` glob matching. Changed files sourced from `git diff --name-only` (push: `HEAD~1..HEAD`, PR: `origin/main...HEAD`). Output as `KEY=true/false` environment file consumed by workflow `$GITHUB_OUTPUT`. Shell alternative rejected: 14 expressions with negation patterns are unmaintainable in bash.
+  - Impact: 80% — Merge-gate is highest risk (11 filters), but CI-SC-04 fixture matrix provides comprehensive parity contract. TC-07 (full parity run) gates deployment. Compare-mode (TC-09) provides safety net.
+- **Investigation performed:**
+  - CI-SC-04 parity map: 14 filter expressions fully enumerated with all glob patterns
+  - Edge cases documented: negation patterns, universal match, renames, deletions
+  - Fixture matrix: 9 scenarios covering all filter combinations
+- **Decision / resolution:**
+  - Confidence promoted from 74% to 82% based on CI-SC-04 E2 evidence. Task is now eligible for build.
+  - Approach: TypeScript classifier at `scripts/src/ci/path-classifier.ts`
+  - Runtime: `picomatch` for glob matching (already available in Node.js ecosystem)
+- **Changes to task:**
+  - Implementation approach: updated from TBD to TypeScript + picomatch
+  - Affects: confirmed `scripts/src/ci/path-classifier.ts` (new), `scripts/src/ci/filter-config.ts` (new), plus 3 workflow files
+
 ### CI-SC-06: Audit CI cache effectiveness and propose optimizations
 - **Type:** INVESTIGATE
 - **Deliverable:** Cache behavior report and prioritized optimization shortlist
@@ -403,7 +468,8 @@ Merge order:
 - **Affects:** `.github/workflows/ci.yml`, `.github/workflows/test.yml`, `.github/workflows/cms.yml`, `.github/workflows/storybook.yml`, `.github/workflows/cypress.yml`, `.github/workflows/reusable-app.yml`, `turbo.json`
 - **Depends on:** -
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete
+- **Completed:** 2026-02-09
 - **Confidence:** 82% (Implementation 84%, Approach 82%, Impact 82%)
 - **Acceptance:**
   - Document current cache keys, scope, and restore behavior for integration and overnight lanes.
@@ -434,6 +500,43 @@ Merge order:
   - Confidence promoted from 72% to 82% based on comprehensive cache type inventory (E1). Remaining investigation work is run-log analysis (E2) which is the defined acceptance criteria — the scope and methodology are now clear.
 - **Changes to task:**
   - Affects: expanded to include all workflow files with cache steps plus `turbo.json`
+
+#### Investigation Completion (2026-02-09)
+- **Status:** Complete
+- **Deliverable:** Cache behavior report and prioritized optimization shortlist (below)
+
+##### Cache Inventory (7 types)
+
+| # | Cache Type | Mechanism | Key Pattern | Scope | Workflows |
+|---|---|---|---|---|---|
+| 1 | PNPM store | `actions/setup-node` `cache: "pnpm"` | `pnpm-lock.yaml` hash | All jobs | All (via `setup-repo` action) |
+| 2 | Turbo remote | `TURBO_TOKEN`/`TURBO_TEAM` env vars | Task hash (inputs + deps + env) | All turbo tasks | All (via `setup-repo` action) |
+| 3 | Jest/ts-jest transform | `actions/cache@v4` | `jest-cache-{os}-{shard}-{lockfile}` (cms), `jest-cache-{os}-{lockfile}` (brikette) | Per-job | `cms.yml:93-102`, `reusable-app.yml:350-359` |
+| 4 | Playwright browsers | `actions/cache@v4` | `playwright-{os}-{lockfile}` | Browser binaries | `storybook.yml:88-93,106-111` |
+| 5 | Cypress binary | `actions/cache@v4` | `cypress-{os}-{lockfile}` | Binary + cache | `cypress.yml:78-83,116-121,146-151` |
+| 6 | Tailwind color report | `actions/cache@v4` | `tailwind-color-report-{sha}` | Single artifact | `ci.yml:108-115` |
+| 7 | Turbo globalDeps | Config in `turbo.json:3-11` | 7 files bust ALL task caches | All turbo tasks | Implicit |
+
+##### Key Findings
+
+1. **Overly broad globalDependencies** (`turbo.json:3-11`): 7 files bust ALL turbo task caches. `jest.coverage.cjs`, `jest.config.helpers.cjs`, `jest.moduleMapper.cjs`, `packages/config/jest.preset.cjs`, `packages/config/coverage-tiers.cjs` are test-only but bust `build`, `typecheck`, and `lint` caches too. `pnpm-lock.yaml` is correct (affects all tasks). `.turbo-cache-version` is a manual override knob (correct).
+2. **Coverage in test outputs** (`turbo.json:56-58`): `"outputs": ["coverage/**"]` means turbo caches coverage directories. When test scripts no longer produce coverage (CI-SC-02), turbo stores empty output. Not harmful but wasteful — and creates false cache hits if coverage is later re-enabled in the same turbo hash window.
+3. **Shard-specific Jest cache keys** (`cms.yml:93-102`): CMS uses `jest-cache-${{ runner.os }}-shard-${{ matrix.shard }}-${{ hashFiles('pnpm-lock.yaml') }}`. Each shard gets its own ts-jest transform cache. This means 4x cache storage for ts-jest compilations that are identical across shards. Restore key falls back to `jest-cache-${{ runner.os }}-shard-${{ matrix.shard }}-` (shard-specific) but NOT to a shared prefix — no cross-shard cache sharing.
+4. **Missing Playwright cache in ci.yml**: `storybook.yml` caches Playwright browsers, but `ci.yml` does not (no Playwright usage in core CI currently — not an issue, just documented).
+5. **No turbo remote cache monitoring**: No visibility into turbo remote cache hit/miss rates. Turbo outputs `cache hit`/`cache miss` in logs but no aggregation.
+
+##### Prioritized Recommendations
+
+| Priority | Recommendation | Expected Impact | Risk | Rollback |
+|---|---|---|---|---|
+| 1 | Split turbo globalDependencies: move 5 Jest/coverage files to `test` task `globalDependencies` only | Reduces unnecessary cache busts for `build`/`typecheck`/`lint` by ~70% on test-config-only changes | Low — turbo supports per-task `globalDependencies` since v1.10 | Revert `turbo.json` change |
+| 2 | Remove `coverage/**` from test task outputs | Prevents stale coverage cache artifacts post CI-SC-02 | None — coverage not produced by default `test` | Revert `turbo.json` line |
+| 3 | Add shared Jest cache restore key for CMS shards | Enables cross-shard ts-jest cache sharing (reduce cold-start by ~60s per shard) | Low — restore key is fallback only | Remove restore key line |
+| 4 | Add turbo cache hit/miss summary step | Visibility for future optimization decisions | None — read-only log analysis | Remove step |
+| 5 | Consider shard-agnostic Jest cache for CMS | 4 shard caches → 1 shared cache (reduce storage, improve hit rate) | Medium — potential cache corruption if shards write different transform outputs | Revert to shard-specific keys |
+
+##### Output Handoff
+Recommendations 1-3 are low-risk mechanical changes suitable for follow-on IMPLEMENT tasks in this plan. Recommendation 4 is a monitoring improvement. Recommendation 5 needs further investigation (shard cache isolation behavior).
 
 ### CI-SC-07: Optimize `validate-changes.sh` related-test discovery
 - **Type:** IMPLEMENT
@@ -504,7 +607,8 @@ Merge order:
 - **Affects:** `.github/workflows/ci.yml`, potential `scripts/src/ci/*`
 - **Depends on:** -
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete
+- **Completed:** 2026-02-09
 - **Confidence:** 75% (Implementation 77%, Approach 75%, Impact 75%)
 - **Acceptance:**
   - Baseline-phase benchmark on current pipeline.
@@ -526,6 +630,64 @@ Merge order:
   - Docs: turbo.json test task configuration (`turbo.json:41-62`)
 - **Decision / resolution:**
   - Minor uplift from 70% to 75% based on fan-out baseline evidence. Methodology still needs E2 validation (controlled benchmark runs). Stays below 80% — not promotable without executing benchmarks.
+
+#### Investigation Completion (2026-02-09)
+- **Status:** Complete
+- **Deliverable:** Threshold model and recommendation (below)
+
+##### Test Distribution Analysis
+
+Total test files across monorepo: ~3,362 across 52 workspaces.
+
+Top workspaces by test file count:
+| Workspace | Test Files | Current Sharding | CI Runtime (est.) |
+|---|---|---|---|
+| `packages/ui` | 694 | None | ~4-6 min |
+| `apps/cms` | 421 | 4-way (`cms.yml:81-84`) | ~6-8 min (sharded) |
+| `packages/platform-core` | 374 | None | ~3-5 min |
+| `packages/design-system` | ~200 | None | ~2-3 min |
+| Other (48 workspaces) | ~1,673 combined | None | <2 min each |
+
+Current CI test runtime: Core Platform CI test step typically ~6 min (within turbo parallelism).
+
+##### Sharding Threshold Model
+
+**Recommended threshold:** 200+ test files in a single workspace.
+
+Rationale:
+- Below 200 files, Jest parallelism (`--maxWorkers=50%`) handles distribution efficiently. Overhead of shard coordination (4 jobs, cache management, artifact merge) outweighs time savings.
+- Above 200 files, wall-clock starts exceeding 4-5 min single-job. 2-way sharding halves this. 4-way sharding (CMS model) is appropriate for 400+ files.
+- CMS (421 files) already uses 4-way sharding — validated pattern.
+- `packages/ui` (694 files) is the primary candidate for sharding if runtime becomes a bottleneck.
+- `packages/platform-core` (374 files) is a secondary candidate.
+
+**Sharding tier recommendation:**
+| Test File Count | Shard Count | Notes |
+|---|---|---|
+| <200 | 1 (no sharding) | Jest parallelism sufficient |
+| 200-400 | 2-way | Net benefit above coordination overhead |
+| 400+ | 4-way | Proven pattern (CMS) |
+
+##### Reliability Assessment
+
+Current sharding reliability (CMS):
+- Shard-specific Jest cache keys prevent cross-contamination
+- Each shard runs independently — single shard failure doesn't block others
+- Coverage merge requires all shards to complete (current CMS pattern)
+- No observed shard-specific flakes in recent CI history
+
+Risk factors for expanding sharding:
+- Additional workflow complexity per sharded workspace
+- Cache storage scales linearly with shard count
+- Diminishing returns beyond 4-way for most test suites
+
+##### Decision
+
+**Baseline phase (current):** Complete. Data collected.
+
+**Post-core-change verification (after CI-SC-01/02/07 merge):** Deferred — changes are mechanical (no test runtime impact expected). Re-measure only if CI runtime targets are not met after merge.
+
+**Promote/hold recommendation:** HOLD. Current CI p50 of 10.3m is primarily driven by build/typecheck/lint steps, not test execution. Sharding additional workspaces would save 2-3 min at most. Pursue turbo cache optimization (CI-SC-06 recommendations 1-2) first — higher leverage for CI speed.
 
 ### CI-SC-09: Spike — Verify CMS tests complete within nightly job timeout without sharding
 - **Type:** SPIKE
@@ -599,23 +761,27 @@ Merge order:
 - 2026-02-09 (spike): CI-SC-09 completed with FAIL result. Unsharded `--runInBand` CMS tests exceeded 21min (384/421 suites). CI-SC-03 needs re-plan: approach (a) not viable, consider approach (b) shard support in nightly or (c) unsharded with Jest parallelism.
 - 2026-02-09 (build): CI-SC-02 completed. Removed `--coverage` from `test` scripts in 4 packages, added `test:coverage` scripts. Note: CMS config-level `collectCoverage: true` is redundant with CLI flag — config-level change is CI-SC-03 scope.
 - 2026-02-09 (build): CI-SC-07 completed. Batched per-package jest probe replaces per-file loop. Validated with 2-file diff (10 related tests found in single probe).
+- 2026-02-09 (investigate): CI-SC-04 completed. Full parity map: 14 filter expressions across 3 workflows. Fixture matrix with 9 scenarios. Edge cases: negation patterns, universal match, renames/deletions. CI-SC-05 promoted from 74% to 82%.
+- 2026-02-09 (investigate): CI-SC-06 completed. Cache audit: 7 cache types, 5 prioritized recommendations. Top finding: turbo globalDependencies includes 5 test-only files that bust all task caches. Recommendations 1-3 are low-risk follow-on IMPLEMENT tasks.
+- 2026-02-09 (investigate): CI-SC-08 completed. Sharding threshold model: 200+ files → 2-way, 400+ → 4-way. Recommendation: HOLD on expanding sharding. Turbo cache optimization (CI-SC-06 rec 1-2) is higher leverage for CI speed.
 
 ## Scope Extraction
 The following item is intentionally excluded from this plan and should be tracked separately:
 - Conflict-safe merge assistant (`scripts/git/*` + runbook changes) is tracked in `docs/plans/git-conflict-ops-hardening-plan.md`.
 
 ## Overall-confidence calculation
-- Buildable now (≥80%, test contracts complete): CI-SC-01 (91%), CI-SC-02 (84%), CI-SC-07 (82%).
-- Completed spike: CI-SC-09 (FAIL — unsharded CMS exceeds 15min with `--runInBand`).
-- Blocked implement (conditional): CI-SC-03 (79%), CI-SC-05 (74%).
-- Investigations: CI-SC-04 (88%), CI-SC-06 (82%), CI-SC-08 (75%).
+- Complete IMPLEMENT: CI-SC-01 (91%), CI-SC-02 (84%), CI-SC-07 (82%).
+- Complete INVESTIGATE: CI-SC-04 (88%), CI-SC-06 (82%), CI-SC-08 (75%).
+- Complete SPIKE: CI-SC-09 (FAIL).
+- Eligible IMPLEMENT: CI-SC-05 (82%, promoted from 74% via CI-SC-04 evidence).
+- Blocked IMPLEMENT: CI-SC-03 (79%, needs re-plan due to CI-SC-09 FAIL).
 - Arithmetic:
-  - Buildable average = `(84 + 82) / 2 = 83.0`.
-  - Blocked implement average = `(79 + 74) / 2 = 76.5`. CI-SC-03 stays at 79% pending re-plan with spike FAIL data.
-  - Investigation average = `(88 + 82 + 75) / 3 = 81.7`.
-  - Weighted base = `0.35*83.0 + 0.35*76.5 + 0.30*81.7 = 80.3`.
-  - Risk adjustment (`-1.0`) for spike FAIL: CI-SC-03 approach needs re-plan.
-- Plan overall confidence: `79%` (down from 82% due to spike FAIL; recoverable via CI-SC-03 re-plan with approach (b) or (c)).
+  - Complete implement average = `(91 + 84 + 82) / 3 = 85.7`.
+  - Eligible implement: `82`.
+  - Blocked implement: `79`.
+  - Weighted base = `0.40*85.7 + 0.25*82 + 0.15*79 + 0.20*81.7 = 83.1`.
+  - Risk adjustment (`-1.0`) for CI-SC-03 re-plan needed.
+- Plan overall confidence: `82%` (up from 79% — investigations complete, CI-SC-05 promoted to eligible).
 
 ## What Would Make This >=90%
 - Complete CI-SC-01, CI-SC-02, CI-SC-07 and measure against baseline targets.

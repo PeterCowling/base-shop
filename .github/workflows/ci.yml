@@ -59,6 +59,18 @@ jobs:
           pnpm audit --audit-level=high --ignore GHSA-p6mc-m468-83gw
           echo "::endgroup::"
 
+  secret-scanning:
+    name: Secret Scanning
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: trufflesecurity/trufflehog@v3.93.1
+        with:
+          extra_args: --only-verified --fail
+
   dep-alignment:
     name: Dependency Alignment
     runs-on: ubuntu-latest

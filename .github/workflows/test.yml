@@ -80,6 +80,18 @@ jobs:
           path: ${{ matrix.workspace }}/coverage
           if-no-files-found: ignore
 
+  secret-scanning:
+    name: Secret scanning
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: trufflesecurity/trufflehog@v3.93.1
+        with:
+          extra_args: --only-verified --fail
+
   i18n-coverage:
     name: Check i18n Coverage
     runs-on: ubuntu-latest

@@ -1,3 +1,4 @@
+"use client";
 // src/context/SafeDataContext.tsx
 import React, {
   createContext,

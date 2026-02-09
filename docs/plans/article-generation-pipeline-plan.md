@@ -121,7 +121,7 @@ apps/brikette                        ← Switches from local content to readGuid
 - TASK-02: Create `GuidesRepository` interface (Complete, 2026-02-09; depends on TASK-01)
 - TASK-03: Implement JSON backend (`guides.json.server.ts`) (Complete, 2026-02-09; depends on TASK-02)
 - TASK-04: Create server facade (`guides.server.ts`) (Complete, 2026-02-09; depends on TASK-03)
-- TASK-05: Add to barrel export and Prisma passthrough (Pending, depends on TASK-04)
+- TASK-05: Add to barrel export and Prisma passthrough (Complete, 2026-02-09; depends on TASK-04)
 - TASK-06: Write migration script: Brikette → centralised store (Pending, depends on TASK-03)
 - TASK-07: Wire Brikette storefront to read from centralised store (Pending, depends on TASK-04, TASK-06)
 - TASK-08: Validate migration data integrity (Pending, depends on TASK-06)
@@ -135,7 +135,7 @@ apps/brikette                        ← Switches from local content to readGuid
 | TASK-02 | IMPLEMENT | Create `GuidesRepository` interface | 92% | S | Complete (2026-02-09) | TASK-01 |
 | TASK-03 | IMPLEMENT | Implement JSON backend (`guides.json.server.ts`) | 85% | M | Complete (2026-02-09) | TASK-02 |
 | TASK-04 | IMPLEMENT | Create server facade (`guides.server.ts`) | 90% | S | Complete (2026-02-09) | TASK-03 |
-| TASK-05 | IMPLEMENT | Add to barrel export and Prisma passthrough | 92% | S | Pending | TASK-04 |
+| TASK-05 | IMPLEMENT | Add to barrel export and Prisma passthrough | 92% | S | Complete (2026-02-09) | TASK-04 |
 | TASK-06 | IMPLEMENT | Write migration script: Brikette → centralised store | 80% | M | Pending | TASK-03 |
 | TASK-07 | IMPLEMENT | Wire Brikette storefront to read from centralised store | 82% | M | Pending | TASK-04, TASK-06 |
 | TASK-08 | INVESTIGATE | Validate migration data integrity | 75% ⚠️ | S | Pending | TASK-06 |
@@ -457,6 +457,28 @@ apps/brikette                        ← Switches from local content to readGuid
 - **Notes / references:**
   - Barrel file: `packages/platform-core/src/repositories/json.server.ts` lines 26-37
   - Existing barrel test: `packages/platform-core/src/repositories/__tests__/json.server.test.ts`
+
+#### Build Completion (2026-02-09)
+- **Status:** Complete
+- **Commits:** `198e3bfa3a`
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02
+  - Cycles: 1
+  - Initial validation: PASS
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 92%
+  - Post-validation: 93%
+  - Delta reason: Barrel export and lazy backend-load behavior validated directly from the public import surface.
+- **Validation:**
+  - Ran: `pnpm --filter @acme/platform-core test -- packages/platform-core/src/repositories/__tests__/guides.barrel.test.ts` — PASS
+  - Ran: `pnpm exec eslint packages/platform-core/src/repositories/json.server.ts packages/platform-core/src/repositories/__tests__/guides.barrel.test.ts` — PASS
+  - Ran: `pnpm --filter @acme/platform-core build` — PASS
+- **Documentation updated:** None required
+- **Implementation notes:**
+  - Added `export * from "./guides.server"` to `packages/platform-core/src/repositories/json.server.ts`.
+  - Added `packages/platform-core/src/repositories/__tests__/guides.barrel.test.ts` to validate importability and first-call backend lazy-load behavior through the JSON barrel.
+  - Package-wide lint in `@acme/platform-core` remains blocked by unrelated existing changes in `packages/platform-core/src/repositories/businessOs.server.ts`; task validation used scoped lint/build/test evidence.
 
 ---
 

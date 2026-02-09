@@ -204,15 +204,21 @@ The current `/ideas-go-faster` skill (730 lines, just rewritten) provides:
 
 | File/Area | Role | Change Type |
 |---|---|---|
-| `.claude/skills/ideas-go-faster/SKILL.md` | Current sweep skill | REPLACE with Cabinet Secretary orchestrator |
-| `.claude/skills/_shared/cabinet/` | Expert lens definitions (new) | CREATE |
-| `.claude/skills/_shared/cabinet/persona-*.md` | Per-expert persona definitions (new) | CREATE |
-| `.claude/skills/cabinet-filter/SKILL.md` | Munger+Buffett filter skill (new, optional) | CREATE |
-| `.claude/skills/cabinet-prioritize/SKILL.md` | Drucker+Porter prioritization skill (new, optional) | CREATE |
-| `.claude/skills/cabinet-code-review/SKILL.md` | Technical code-review cabinet (new) | CREATE |
+| `.claude/skills/ideas-go-faster/SKILL.md` | Current sweep skill | REPLACE with Cabinet Secretary orchestrator (accepts `--stance` parameter) |
+| `.claude/skills/_shared/cabinet/` | Expert lens definitions library (new) | CREATE |
+| `.claude/skills/_shared/cabinet/lens-musk.md` | Musk persona (feasibility/constraint) | CREATE |
+| `.claude/skills/_shared/cabinet/lens-bezos.md` | Bezos persona (customer-backwards) | CREATE |
+| `.claude/skills/_shared/cabinet/lens-marketing.md` | Hopkins/Ogilvy/Reeves/Lafley personas (positioning/proof) | CREATE |
+| `.claude/skills/_shared/cabinet/lens-sales.md` | Patterson/Ellison/Chambers personas (route-to-revenue) | CREATE |
+| `.claude/skills/_shared/cabinet/lens-sourcing.md` | Cook/Fung/Ohno/Toyoda personas (supply/quality) | CREATE |
+| `.claude/skills/_shared/cabinet/lens-code-review.md` | Fowler/Beck/Kim/Gregg/Schneier etc. (technical cabinet) | CREATE |
+| `.claude/skills/_shared/cabinet/filter-munger-buffett.md` | Munger+Buffett gatekeeping persona | CREATE |
+| `.claude/skills/_shared/cabinet/prioritize-drucker-porter.md` | Drucker+Porter plan-weighted prioritization persona | CREATE |
+| `.claude/skills/_shared/cabinet/stances.md` | Stance definitions and per-lens behavior modifications | CREATE |
+| `.claude/skills/_shared/cabinet/dossier-template.md` | Idea Dossier format with provenance/confidence/rivalry | CREATE |
 | `docs/business-os/strategy/<BIZ>/plan.user.md` | Business plans (must be bootstrapped) | CREATE |
 | `docs/business-os/people/people.user.md` | People profiles (must be bootstrapped) | CREATE |
-| Agent API (ideas schema) | Attribution + confidence fields | EXTEND (future) |
+| Agent API (ideas schema) | Attribution + confidence fields | EXTEND (Phase 1) |
 
 ---
 
@@ -246,63 +252,86 @@ The current `/ideas-go-faster` skill (730 lines, just rewritten) provides:
   - A: Not strictly — the current skill already handles missing plans/profiles gracefully. But the Cabinet system's Drucker/Porter stage and task assignment realism depend heavily on them. They should be bootstrapped in parallel or as a prerequisite.
   - Evidence: `ideas-go-faster/SKILL.md:396-425` handles missing plans/profiles.
 
-### Open (User Input Needed)
+### Resolved (User Decisions — 2026-02-09)
 
 - Q: **How many expert lenses in Phase 0?**
-  - Why it matters: 18+ expert personas is a lot of content to write and maintain. Should Phase 0 start with a subset (e.g., Musk + Bezos + Munger/Buffett only) and expand incrementally?
-  - Default assumption: Start with 4-6 core lenses + filter stage. Add marketing/sales/sourcing/code-review lenses in Phase 1. Low risk — phased approach.
-
-- Q: **Single skill vs multi-skill architecture?**
-  - Why it matters: A single monolithic SKILL.md will be 2000+ lines. Multiple smaller skills are more maintainable but add orchestration complexity. Option B (orchestrator + lens files in `_shared/cabinet/`) or Option D (hybrid) seem strongest.
-  - Default assumption: Option D — orchestrator SKILL.md + persona definitions in `_shared/cabinet/` + separate skills for heavy stages (filter, code-review). Medium risk — needs careful prompt architecture.
-
-- Q: **Attribution in data model vs in content?**
-  - Why it matters: Schema-level fields (D1 migration) enable querying and filtering. Content-level attribution (structured markdown) is simpler to implement but harder to query. Phase 0 probably uses content-level; Phase 1 migrates to schema.
-  - Default assumption: Phase 0 uses structured markdown in the `content` field. Phase 1 adds D1 fields. Low risk.
+  - A: **All of them.** No phased subset — implement all 6 composite generators + filter + prioritization + code-review from the start.
+  - Evidence: User direction: "answer all of them."
+  - Impact: Significantly increases implementation scope. Every persona must be defined in depth before the system can run.
 
 - Q: **Should the code-review cabinet run as part of every sweep, or as a separate invocation?**
-  - Why it matters: The code-review cabinet has a fundamentally different input (the codebase) than the business cabinet (API data + plans). Running them together makes sweeps very long. Running them separately means two invocations.
-  - Default assumption: Separate skill (`/cabinet-code-review`) invoked independently. The business sweep can recommend code-review when software-heavy ideas are generated. Low risk.
+  - A: **Integrated.** Code-review cabinet runs as part of the main sweep, not as a separate skill.
+  - Evidence: User direction: "Code-review cabinet - integrated."
+  - Impact: Single invocation covers all lenses including technical. Sweeps will be longer but comprehensive.
 
 - Q: **How deep should persona definitions go in Phase 0?**
-  - Why it matters: Full persona specs (principles, signature questions, failure modes, domain boundaries, tone constraints, fidelity scores, regression tests) for 18+ experts is weeks of work. Minimal specs (principles + 3-5 signature questions + domain boundaries) could be done in days.
-  - Default assumption: Phase 0 uses minimal persona specs. Fidelity scoring and regression tests are Phase 1. The system needs to run before it can be calibrated. Low risk.
+  - A: **In depth.** Full persona specs from the start — principles, signature questions, failure modes, domain boundaries, preferred artifacts, tone constraints.
+  - Evidence: User direction: "in depth."
+  - Impact: Substantial content creation work. Each of the 18+ expert personas needs a comprehensive definition.
+
+- Q: **Cabinet "stance" mode — NEW CONCEPT (user-added)**
+  - A: The cabinet has a **stance** parameter that shifts the focus of ALL expert lenses. The stance is not a filter — it changes what the lenses look for and prioritize.
+  - Evidence: User direction: "we need to have a 'stance' ability for the cabinet, whereupon the idea generators shift their interests."
+  - Defined stances:
+    - **`improve-data`** (default starting stance): All lenses focus on filling gaps in current data — improving business plans, tools, people profiles, measurement infrastructure, knowledge bases. Ideas should be about building the information foundation.
+    - **`grow-business`**: All lenses focus on developing the business — customer acquisition, revenue growth, product development, market expansion. Ideas should be about business outcomes.
+    - (Additional stances may be defined later)
+  - Impact: Every persona definition must describe how it behaves under each stance. The orchestrator must accept a stance parameter and propagate it to all lenses. This is a multiplier on persona definition complexity but makes the system significantly more useful.
+  - Design implication: The stance shifts the diagnostic questions each lens asks, not just the ranking of outputs. A Musk lens under `improve-data` asks "what's the constraint on our data quality?" while under `grow-business` it asks "what's the constraint on our revenue growth?"
+
+### Open (User Input Needed)
+
+- Q: **Single skill vs multi-skill architecture?**
+  - Why it matters: With ALL lenses + code-review integrated + in-depth personas, a single SKILL.md will be very large (3000+ lines). The alternative is an orchestrator + persona files in `_shared/cabinet/`.
+  - Default assumption: Option D — orchestrator SKILL.md + persona definitions in `_shared/cabinet/` + all stages inline. The orchestrator reads persona files as needed. Medium risk — needs careful prompt architecture.
+
+- Q: **Attribution in data model vs in content?**
+  - Why it matters: Schema-level fields (D1 migration) enable querying and filtering. Content-level attribution (structured markdown) is simpler to implement but harder to query.
+  - Default assumption: Phase 0 uses structured markdown in the `content` field. Phase 1 adds D1 fields. Low risk.
 
 - Q: **Idea Dossier format — how structured?**
-  - Why it matters: The spec describes a rich dossier format (provenance, confidence ledger, rivalry record). This is the core artifact. If it's too heavy, the system creates bureaucracy; if too light, it loses the team-of-rivals effect.
-  - Default assumption: Start with the minimum sections (Provenance, Confidence Tier, Key Evidence, Best Argument For/Against) and expand based on experience. Low risk.
+  - Why it matters: The spec describes a rich dossier format (provenance, confidence ledger, rivalry record). This is the core artifact.
+  - Default assumption: Implement the full format from the spec (provenance, confidence ledger, rivalry record). Given the "in depth" direction, no reason to start minimal.
 
 - Q: **Should Munger/Buffett and Drucker/Porter be separate skills or inline stages?**
-  - Why it matters: Separate skills allow independent invocation and testing. Inline stages keep the pipeline compact but harder to debug/iterate on individual stages.
-  - Default assumption: Inline stages in Phase 0 (keeps it to one invocation). Extract to separate skills if the orchestrator SKILL.md exceeds ~1000 lines. Low risk.
+  - Why it matters: Separate skills allow independent invocation. Inline keeps it compact.
+  - Default assumption: Inline stages (keeps single invocation). Low risk.
 
 - Q: **How are the business "tooling" analogs (lint/typecheck/test) implemented?**
-  - Why it matters: These could be checklists in the skill prompt (cheapest), structured validation functions (needs TypeScript), or separate skills. The spec describes them as systematic but doesn't define implementation.
-  - Default assumption: Phase 0 implements as checklist sections in the Idea Dossier template. The orchestrator verifies each dossier passes the "lint" checks before routing onward. Low risk.
+  - Why it matters: Implementation format matters given the "in depth" direction.
+  - Default assumption: Checklist sections in the Idea Dossier template, verified by the orchestrator. Low risk.
+
+- Q: **How many stances should be defined initially?**
+  - Why it matters: Each stance multiplies persona definition work (every lens needs stance-specific behavior).
+  - Default assumption: Start with 2 stances (`improve-data`, `grow-business`). Add more as patterns emerge. The starting stance is `improve-data`.
+
+- Q: **What triggers a stance change?**
+  - Why it matters: Should the stance be a parameter to the skill invocation (e.g., `/ideas-go-faster --stance=grow-business`), or should it be stored as state that persists across sweeps?
+  - Default assumption: Parameter to the invocation, defaulting to `improve-data`. No persistent state. Low risk.
 
 ---
 
 ## Confidence Inputs (for /plan-feature)
 
-- **Implementation:** 65%
-  - Strong: Skill orchestration pattern exists (improve-guide precedent). Single SKILL.md architecture proven at 900+ lines (plan-feature). Expert framework embedding proven (Musk algorithm in ideas-go-faster).
-  - Weak: No persona definition pattern exists. Scale of content creation (18+ expert personas) is unprecedented. Multi-stage pipeline with gates hasn't been done in this repo. Attribution requires either content-level convention or D1 schema changes.
-  - What would raise to 80%: Write 2-3 persona definitions and test them in a dry-run sweep. Validate the orchestrator can step through lenses sequentially without losing coherence or context.
+- **Implementation:** 60%
+  - Strong: Skill orchestration pattern exists (improve-guide precedent). Single SKILL.md architecture proven at 900+ lines (plan-feature). Expert framework embedding proven (Musk algorithm in ideas-go-faster). Shared resource pattern (`_shared/`) supports modular persona files.
+  - Weak: ALL lenses from day one + in-depth personas = massive content creation scope (18+ expert personas with full specs under multiple stances). Multi-stage pipeline with gates hasn't been done in this repo. Attribution requires content-level convention. Stance system adds a multiplier to persona definitions (each lens under each stance). Context window pressure — loading orchestrator + all persona files + all data sources in one session.
+  - What would raise to 80%: Write 3 persona definitions (Musk, Bezos, Munger) with stance variants and test them in a dry-run. Validate context window can hold orchestrator + persona library + business data without degradation.
 
-- **Approach:** 70%
-  - Strong: Clear user direction on philosophy (team of rivals, confidence gating, attribution). The 10-section spec is extremely detailed. MACRO framework and Musk algorithm prove the pattern works.
-  - Weak: The spec describes a large system. Phasing is not yet defined. Risk of over-engineering in Phase 0 (building the full cabinet when 4 lenses would suffice). The relationship between Cabinet output and existing kanban pipeline needs clarification.
-  - What would raise to 80%: Define explicit Phase 0 scope (which lenses, which stages, minimal dossier format). Validate with a hand-run example: manually walk one business through all stages and check whether the output is materially better than current single-lens sweep.
+- **Approach:** 75%
+  - Strong: Clear user direction — all lenses, in depth, integrated code-review, stance system with `improve-data` as default. The 10-section spec is extremely detailed. MACRO framework and Musk algorithm prove the pattern works. Stance concept elegantly solves "what should the system focus on" without needing separate skills.
+  - Weak: Scope is very large. Risk that in-depth personas produce diminishing returns (20 lines of Hopkins principles may perform as well as 200). The stance multiplier on persona definitions could make the system unwieldy. Unclear how stance interacts with the Munger/Buffett filter (does stance affect their criteria too?).
+  - What would raise to 85%: Define the stance mechanism precisely (how does it propagate to each stage?). Validate with a hand-run example under `improve-data` stance.
 
-- **Impact:** 85%
-  - Strong: The current single-lens sweep is demonstrably limited (only Musk perspective, no customer validation, no marketing/sales thinking). Multi-lens ideation should produce more diverse, better-tested ideas. Confidence gating prevents low-quality ideas from consuming review bandwidth.
-  - Weak: Complexity may slow sweeps from <5 minutes to 15-20 minutes. More output to review (multiple dossiers, decision logs). Risk that expert personas feel like theater rather than adding genuine analytical value.
-  - What would raise to 90%: Run a comparative test — same business state, current sweep vs Cabinet sweep — and verify Cabinet produces materially different/better recommendations.
+- **Impact:** 88%
+  - Strong: Multi-lens ideation with stance control is a significant upgrade. `improve-data` stance directly addresses the #1 finding from the ideas-go-faster redesign (no analytics, no plans, no profiles). Full technical cabinet integrated means repo improvements are systematically identified. Confidence gating prevents noise.
+  - Weak: Complexity may slow sweeps to 20-30 minutes. Volume of output may overwhelm review. Expert personas need fidelity to be useful — low-fidelity personas add noise, not signal.
+  - What would raise to 90%: Comparative test showing Cabinet under `improve-data` stance identifies gaps the current single-lens sweep misses.
 
 - **Testability:** 50%
-  - Strong: Persona regression tests are part of the spec (scenario tests with expected outputs). Business tooling analogs (lint/typecheck) are inherently testable.
-  - Weak: Output quality is highly subjective ("does this sound like Munger?"). No baseline data for prediction accuracy. Skill is prompt-only — can't unit test. Persona fidelity scoring doesn't have clear benchmarks.
-  - What would raise to 70%: Define 5 scenario tests with expected expert outputs. Define measurable quality dimensions (e.g., "every dossier has at least one steelman argument against").
+  - Strong: Persona regression tests are part of the spec. Business tooling analogs (lint/typecheck) are inherently testable. Stance gives a clear axis to test against (same business state, different stances → different idea focus).
+  - Weak: Output quality is highly subjective. No baseline data. Persona fidelity scoring doesn't have clear benchmarks. Stance behavior is hard to test (how do you verify a lens "shifted its interests" correctly?).
+  - What would raise to 70%: Define 5 scenario tests per stance with expected expert outputs. Define measurable quality dimensions (e.g., "under improve-data stance, >70% of ideas relate to measurement/data gaps").
 
 ---
 
@@ -314,9 +343,9 @@ The current `/ideas-go-faster` skill (730 lines, just rewritten) provides:
   - Existing kanban pipeline (Cabinet feeds in, doesn't replace)
   - Existing skill naming conventions
 - Rollout expectations:
-  - Phase 0: Minimal viable cabinet (subset of lenses, inline stages, content-level attribution)
-  - Phase 1: Full lens library, separate filter/prioritization skills, D1 schema extensions
-  - Phase 2: Persona fidelity scoring, regression tests, continuous improvement loop
+  - Phase 0: Full cabinet — all lenses, in-depth personas, integrated code-review, stance system, content-level attribution, inline stages. Starting stance: `improve-data`.
+  - Phase 1: D1 schema extensions for attribution, persona fidelity scoring, continuous improvement loop
+  - Phase 2: Additional stances, regression test suite, prediction accuracy tracking
 - Observability:
   - Decision logs in dossiers (who decided what and why)
   - Sweep reports show which lenses contributed which ideas
@@ -326,25 +355,27 @@ The current `/ideas-go-faster` skill (730 lines, just rewritten) provides:
 
 ## Suggested Task Seeds (Non-binding)
 
-1. **Define Phase 0 scope** — Which lenses, stages, and dossier format constitute the minimum viable cabinet? This is a DECISION task.
+1. **Design the Idea Dossier schema** — Define the markdown template for dossiers with full provenance, confidence ledger, rivalry record, and decision log sections. This is the core artifact that makes the system real.
 
-2. **Design the Idea Dossier schema** — Define the markdown template for dossiers with provenance, confidence ledger, and rivalry record sections. This is the core artifact that makes the system real.
+2. **Design the stance system** — Define how `improve-data` and `grow-business` stances propagate to each lens, each filter stage, and the orchestrator. Define what each lens looks for under each stance.
 
-3. **Write persona definitions for Phase 0 lenses** — Minimum: principles, signature questions, domain boundaries. Start with Musk (already exists), Bezos, Munger/Buffett (the filter pair).
+3. **Write in-depth persona definitions: Composite generators** — Full specs for all 6 idea-generating lenses (Musk, Bezos, Marketing, Sales, China-facing, Code-review sub-cabinet) with stance-specific behavior. Principles, signature questions, failure modes, domain boundaries, preferred artifacts, tone.
 
-4. **Write the Cabinet Secretary orchestrator skill** — Replaces ideas-go-faster SKILL.md. Dispatches to lenses, enforces confidence gate, routes dossiers through filter and prioritization stages.
+4. **Write in-depth persona definitions: Gatekeepers and prioritizers** — Full specs for Munger+Buffett (filter) and Drucker+Porter (plan-weighted prioritization) with stance-specific behavior.
 
-5. **Bootstrap business plans** — The Cabinet system needs plans as inputs. Bootstrap BRIK and PIPE plans via `/update-business-plan`.
+5. **Write in-depth persona definitions: Technical code-review cabinet** — Full specs for all technical experts (Fowler, Beck, Martin, Kim, Gregg, Schneier, etc.) with stance-specific behavior.
 
-6. **Bootstrap people profiles** — Same dependency. Bootstrap via `/update-people`.
+6. **Write the Cabinet Secretary orchestrator skill** — Replaces ideas-go-faster SKILL.md. Accepts stance parameter. Dispatches to all lenses, enforces confidence gate, routes dossiers through filter and prioritization stages. Reads persona definitions from `_shared/cabinet/`.
 
-7. **Design business linting checklist** — Automated checks for missing/inconsistent fields in dossiers.
+7. **Design business linting/typechecking/testing checklists** — Business tooling analogs that systematically validate dossiers before routing.
 
-8. **Write 3 persona regression test scenarios** — Define expected outputs for Musk, Bezos, and Munger given a known business state. These become the "CI" for the cabinet.
+8. **Bootstrap business plans** — The Cabinet system needs plans as inputs. Bootstrap BRIK, PIPE, PLAT, BOS plans via `/update-business-plan`.
 
-9. **Design the code-review cabinet skill** — Separate skill for technical experts reviewing the codebase.
+9. **Bootstrap people profiles** — Same dependency. Bootstrap via `/update-people`.
 
-10. **Comparative test: Single-lens sweep vs Cabinet sweep** — Run both against current business state and compare output quality.
+10. **Write persona regression test scenarios** — Define expected outputs per lens per stance given a known business state. These become the "CI" for the cabinet.
+
+11. **Validation run: Cabinet sweep under `improve-data` stance** — Run the full cabinet against current business state and verify output quality.
 
 ---
 

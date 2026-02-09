@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Guide til scooterleje i Positano",
+    "description": "Hvor du lejer, regler, sikkerhed og hvornår du bør droppe scooteren."
+  },
+  "linkLabel": "Guide til scooterleje (Positano)",
+  "intro": [
+    "Scootere ser fristende ud omkring Positano, men vejer tilgængelighed, papirarbejde og klippevejssikkerhed, før de lejes."
+  ],
+  "sections": [
+    {
+      "id": "where",
+      "title": "Hvor kan du leje",
+      "body": [
+        "Tilgængeligheden i Positano svinger, og priserne er høje; Sorrento tilbyder normalt flere valgmuligheder og mere stabile priser."
+      ]
+    },
+    {
+      "id": "rules",
+      "title": "Regler og dokumenter",
+      "body": [
+        "Medbring din licens (plus en IDP, hvis det kræves) og et kreditkort, og dobbelttjek, hvad forsikringen rent faktisk dækker."
+      ]
+    },
+    {
+      "id": "safety",
+      "title": "Sikkerhed og hvornår du bør lade være",
+      "body": [
+        "Kystvejene er smalle med blinde sving og busser; hvis du er uerfaren, er færger og busser det sikreste bud."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Bør begyndere leje scooter her?",
+      "a": [
+        "Ikke rigtig - uden solide scooterfærdigheder er disse klippeveje stressende, så hold dig til offentlig transport."
+      ]
+    }
+  ]
+}

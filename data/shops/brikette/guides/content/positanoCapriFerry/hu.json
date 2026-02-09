@@ -1,0 +1,201 @@
+{
+  "seo": {
+    "title": "Positanóból Caprira komppal | Hostel Brikette",
+    "description": "Sétálj a Hostel Brikette-től a positanói kikötőig, vásárolj kompjegyet és utazz Caprira. Lépésről lépésre útmutató időzítéssel, árakkal és beszállási tippekkel."
+  },
+  "lastUpdated": "2025-02-04",
+  "intro": [
+    "Ez az útmutató megmutatja, hogyan sétálj a Hostel Brikette-től Positano kikötőjéig (15-20 perc lefelé, főleg lépcsők), hogyan vásárolj kompjegyet és hogyan szállj fel a Caprira induló kompra.",
+    "**Utazási idő:** 30-60 perc komppal, az üzemeltetőtől és a hajótól függően. Séta a kikötőig: 15-20 perc.",
+    "**Költség:** A kompjegyek jellemzően €18-€25 egy irányba (változik az üzemeltető és az évszak szerint). Ellenőrizd az aktuális árakat foglaláskor.",
+    "**Foglalás:** Ajánlott legalább 24 órával előre foglalni a csúcsidőszakban (május-szeptember). Az alacsony szezonban általában vannak azonnal vásárolható jegyek.",
+    "**Időjárási figyelmeztetés:** A kompokat viharos tengeren rövid értesítéssel törölhetik. Ha még aznap tovább utaznál, tervezz be 3 órás puffert, vagy nézd meg a %LINK:positanoCapriFerry|Sorrenton keresztüli alternatív buszútvonalat%."
+  ],
+  "sections": [
+    {
+      "id": "journey-overview",
+      "title": "Kompmenetrend és üzemeltetők",
+      "body": [
+        "A Positano és Capri közötti kompok leggyakrabban tavasszal és kora ősszel (április-október) közlekednek, és télen vagy viharos tengeren csökkenthetik vagy törölhetik őket. Több üzemeltető is kiszolgálja ezt az útvonalat.",
+        "Hasonlítsd össze a menetrendeket és foglalj jegyet:",
+        "• [Capri.net – Capri ↔ Positano](https://www.capri.net/en/t/capri/positano)",
+        "• [Positano.com (összesített menetrend)](https://www.positano.com/en/ferry-schedule)"
+      ]
+    },
+    {
+      "id": "walk-to-port",
+      "title": "Séta a Hostel Brikette-től a positanói kikötőig",
+      "body": "A séta 15-20 percet vesz igénybe, és majdnem teljes egészében lefelé vezető lépcsők. Kövesd ezeket a lépéseket:",
+      "list": [
+        "Lépj ki a hostelből a főbejáraton.",
+        "Menj le a lépcsőkön az útig, fordulj balra és sétálj valamivel több mint 100 métert (≈330 láb).",
+        "Az első kereszteződésnél (1. pont) fordulj jobbra a Tabacchi mellett (első épület jobbra).",
+        "Folytasd lefelé; az első kanyarnál (2. pont) hagyd el az utat és menj egyenesen a lépcsőkön.",
+        "A lépcső aljánál érj az úthoz (3. pont); kelj át és folytasd egyenesen a következő lépcsőn.",
+        "Amikor ezek a lépcsők az útnál érnek véget, kelj át, fordulj balra, sétálj ~10 métert (≈30 láb) a 4. pontig.",
+        "Fordulj jobbra az útról és kövesd a lépcsőket lefelé.",
+        "Alul fordulj jobbra, hogy elérj az 5. ponthoz, majd folytasd a boltív alatt jobbra.",
+        "A kikötő (Spiaggia Grande móló) körülbelül 50 méterrel (≈160 láb) előrébb van a strand jobb oldalán."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-capri-ferry-img02.jpg",
+          "alt": "Térképáttekintés a Hostel Brikette-től a positanói kikötőig vezető sétaútról",
+          "caption": "Térképáttekintés: Hosteltől Positano kikötőjéig",
+          "aspectRatio": "4/3"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img06.jpg",
+          "alt": "1. pont: kereszteződés a Tabacchi mellett a Via G. Marconi-n a Hostel Brikette közelében",
+          "caption": "1. pont: Tabacchi kereszteződés (fordulj jobbra)",
+          "aspectRatio": "4/3"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img07.jpg",
+          "alt": "2. pont: első visszakanyarodó, ahol elhagyod az utat és a lépcsőt veszed",
+          "caption": "2. pont: hagyd el az utat, vedd a lépcsőt",
+          "aspectRatio": "4/3"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img08.jpg",
+          "alt": "3. pont: a lépcső vége az útnál, átkelés előtt",
+          "caption": "3. pont: lépcső vége az útnál",
+          "aspectRatio": "4/3"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img09.jpg",
+          "alt": "4. pont: kelj át az úton, fordulj röviden balra, majd vedd a lépcsőt",
+          "caption": "4. pont: kelj át az úton, fordulj balra, lépcső",
+          "aspectRatio": "4/3"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img10.jpg",
+          "alt": "5. pont: boltíves átjáró, amely a strand és a kikötő felé vezet",
+          "caption": "5. pont: boltív a kikötőhöz",
+          "aspectRatio": "4/3"
+        }
+      ]
+    },
+    {
+      "id": "tickets-and-boarding",
+      "title": "Vásárolj kompjegyet és szállj fel",
+      "body": "A positanói kikötőben minden kompüzemeltetőnek van saját jegypultja a móló mellett.",
+      "list": [
+        "A minden pult melletti tábla mutatja a következő indulási időt az adott üzemeltetőnél.",
+        "Vásárolj jegyeket közvetlenül az üzemeltető pultjánál (készpénzt vagy kártyát elfogadnak).",
+        "Érkezz 20-30 perccel az indulás előtt, hogy beválthasd az előre foglalt utalványokat és sorba állhass a beszálláshoz.",
+        "A jegy megvásárlása után sétálj a móló végére és várj a beszállás megkezdésére (a személyzet bejelenti, mikor kell beszállni)."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-capri-ferry-img03.jpg",
+          "alt": "Fotó Positano Spiaggia Grande-jának és a turista kikötőnek a megközelítéséről",
+          "caption": "Megközelítés a Spiaggia Grande-hoz (turista kikötő)",
+          "aspectRatio": "4/3"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img04.png",
+          "alt": "Részletes térkép, amely kiemeli a Spiaggia Grande jobb oldalát, ahol a kikötő található",
+          "caption": "Részletes térkép: kikötő helye a Spiaggia Grande-n",
+          "aspectRatio": "4/3"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img05.jpg",
+          "alt": "Kompüzemeltetők jegypultjai a positanói kikötőben, a következő indulások jelzésével",
+          "caption": "Kompüzemeltetők jegypultjai",
+          "aspectRatio": "4/3"
+        }
+      ]
+    },
+    {
+      "id": "timing-and-weather",
+      "title": "Legjobb utazási idők és időjárási megfontolások",
+      "body": [
+        "A kompmenetrend jelentősen változik az évszak szerint. Április és október között a leggyakoribb a szolgáltatás, óránkénti indulásokkal a csúcs nyári hónapokban (június-szeptember). A reggeli kompok (körülbelül 09:00-10:00) népszerűek az egynapos kirándulóknál, míg a délutáni indulások (14:00-16:00) általában nyugodtabbak.",
+        "**Időjárási hatás:** A Positano-Capri útvonal nyílt vizet keresztez, és viharossá válhat, amikor felerősödik a szél. Az őszi és téli átkelések (október-március) a leginkább érintettek. A hostelből láttuk, hogy a törlések akár 90 perces értesítéssel is megtörténnek, amikor a körülmények romlanak.",
+        "**Tengeri körülmények:** Ha hajlamosak vagy a tengeribetegségre, vegyél be gyógyszert 30-60 perccel a beszállás előtt. Az átkelés általában nyugodt kora reggel és este; a déli tenger zavarosabb lehet, különösen nyáron, amikor délutáni termikus szelek alakulnak ki.",
+        "**Tervezési tipp:** Ha egynapos kirándulásként látogatod meg Caprit Positanóból, és szűk az ütemezésed (repülők, csatlakozó vonatok stb.), foglalj egy reggeli oda kompot és igyekezz 16:00-17:00-ig visszatérni. Ez puffer időt ad, ha az utolsó néhány kompot törlik."
+      ]
+    },
+    {
+      "id": "what-to-expect-onboard",
+      "title": "Mire számíthatsz a kompon",
+      "body": [
+        "A legtöbb komp ezen az útvonalon gyors utasszállító hajó (nem nagy autókomp). Az ülőhelyek általában先到先得 elvűek; érkezz korán ablakos ülésekért vagy fedett területekért, ha az időjárás bizonytalannak tűnik.",
+        "Az utazás 30-60 percet vesz igénybe az üzemeltetőtől és a hajótól függően. A gyorsabb hidroszárnyasok körülbelül 30-40 perc alatt teljesítik az utat, míg a normál kompok közel egy órát is igénybe vehetnek, és további megállókat tehetnek.",
+        "**Fedélzeti létesítmények:** A kisebb hajóknak korlátozott létesítményei vannak - általában egy vécé és egy kis felfrissítő pult. A nagyobb kompokon lehet beltéri ülés, de a legtöbb utas inkább a kültéri fedélzetet részesíti előnyben az Amalfi-part és a Li Galli-szigetek látványáért.",
+        "**Kilátások:** Tiszta napokon látni fogod az egész positanói tengerpartot, Praiano fjordját és a drámai sziklákat Capri megközelítésekor. Ülj a jobb oldalon (jobbra) Positanóból való induláskor a legjobb tengerparti kilátásokért."
+      ]
+    },
+    {
+      "id": "arrival-capri",
+      "title": "Érkezéskor Capriban",
+      "body": [
+        "Szállj le Capri turista kikötőjében (Marina Grande). A kikötő egy kompakt terület kompgyárakat, taxiállomásokat és a siklóállomást mind 100 méteren belül egymástól.",
+        "**Feljutás Capri városba:** A legtöbb látogató a siklót veszi (€2 egy irányba, 15 percenként jár) Capri főterére (Piazzetta) való eljutáshoz. Magas szezonban (június-szeptember) a sikló sorai 30-45 percesek lehetnek 10:00-14:00 között. Alternatívaként a taxik körülbelül €15-20-t számolnak fel ugyanerre az útra, és a buszok rendszeresen járnak €2-ért.",
+        "**Visszajegyek:** Ha egynapos kirándulást teszel, vásárolj visszajegyet hamarosan Capriba érkezés után (vagy a kikötőben, vagy online). A népszerű visszatérési idők (16:00-18:00) gyorsan elfogynak nyáron, és nem akarsz utolsó pillanatban kapacitást keresni.",
+        "**Poggyász:** Ha van csomagod, a Marina Grande kikötőben fizetős poggyászmegőrző szolgáltatások vannak (körülbelül €5-8 tétlenként). Ez hasznos, ha Capri városát fedezed fel egy esti Positanóba visszatérő komp előtt."
+      ]
+    },
+    {
+      "id": "return-journey",
+      "title": "Visszautazás Positanóba Capriból",
+      "body": [
+        "A visszaútra ellenőrizd a kompmenetrendeket a Marina Grande kikötőben, vagy kérdezd meg a jegypult személyzetét. A késő délutáni kompok (16:00-18:00) a legforgalmasabbak; ha lehetséges, vegyél egy korábbi vagy későbbi járatot a tömeg elkerülésére.",
+        "**Időjárási tanácsok:** Visszaindulás előtt ellenőrizd az időjárás-előrejelzést és a törlési értesítéseket a kikötőben. Ha a délutáni tenger viharosnak tűnik, fontold meg egy korábbi kompon való visszatérést vagy a látogatásod egy nappal való meghosszabbítását (vannak költségvetési vendégházak a Marina Grande közelében).",
+        "**Alternatív útvonal:** Ha a Positanóba induló kompok teljesen foglaltak vagy töröltek, vehetsz egy kompot Sorrentóba, majd foghatsz egy %LINK:sorrentoPositanoBus|SITA buszt Positanóba% (teljes utazás: körülbelül 90-120 perc). Ez időigényesebb, de megbízható tartalék.",
+        "**Visszasétálás a hostellhez:** Positanóban való partraszállás után a visszasétálás a Hostel Brikette-hez meredek (15-20 perc, minden felfelé lépcső). Ha fáradt vagy, vagy bevásárló táskákat cipelsz, fontold meg egy taxi felvételét a kikötőből (körülbelül €10-15). Nézd meg a %LINK:ferryDockToBrikette|Kompmóló a Hostel Brikette-ig% útmutatónkat a felfelé vezető sétaúthoz."
+      ]
+    },
+    {
+      "id": "practical-tips",
+      "title": "Gyakorlati tippek a kompúthoz",
+      "body": [
+        "**Napvédelem:** A kompfedélzet nagyon forró lesz nyáron (június-augusztus). Hozz napvédőt, kalapot és vizet. A fedett ülések korlátozottak, ezért ha könnyen leégsz, szállj fel korán, hogy árnyékos helyet foglalj.",
+        "**Mit hozz:** Tartsd a telefonodat feltöltve fotókhoz (a tengerparti kilátások látványosak). Hozz könnyű kabátot nyáron is - a tengeri szellők hűvösek lehetnek, különösen a gyorsabb hajókon. Ha hajlamos vagy a tengeribetegségre, hozz gyógyszert, és kerüld a hajó leghátulsó részén való ülést, ahol a mozgás a legerősebb.",
+        "**Készpénz és kártyák:** A legtöbb kompüzemeltető elfogadja a kártyás fizetést a jegypultoknál, de bölcs dolog €50-100 készpénzt vinni tartalékként. Capri drágább, mint Positano; számíts €8-12 fizetésére egy egyszerű ebédért és €4-6-ra egy kávéért a Piazzettán.",
+        "**Fényképezés:** A legjobb fotókhoz ülj a jobb oldalon (jobbra) Positanóból való távozáskor és a bal oldalon (balra) visszatéréskor. A kora reggeli és késő délutáni fény a legjobb a tengerparti felvételekhez.",
+        "**Maradj tájékozott:** Ellenőrizd a positanói kikötő hirdetőtábláját (a jegypultok mellett) valós idejű időjárási frissítésekért és törlésekért. Bizonytalan időjárásban a személyzet 08:00-09:00 körül és ismét 13:00-14:00 körül tesz közzé frissítéseket."
+      ]
+    },
+    {
+      "id": "luggage-tip",
+      "title": "Visszatérés csomaggal",
+      "body": "Ha Capriból Positanóba érkezel nehéz táskákkal, nézd meg a %LINK:ferryDockToBrikette|Kompmóló → Hostel Brikette, csomaggal% útmutatót a legjobb felfelé vezető sétaúthoz (ez különbözik az itt bemutatott lefelé vezető útvonaltól)."
+    }
+  ],
+  "faqs": [
+    {
+      "question": "Vásárolhatok kompjegyet aznap?",
+      "answer": [
+        "Igen, de a kapacitás az évszaktól függ. Csúcsidőszakban (május-szeptember) a kompok gyakran elfogynak, különösen a délelőtti indulások (09:00-11:00). A hostelből azt ajánljuk, hogy legalább 24 órával előre foglalj, ha nyáron utazol.",
+        "Alacsony szezonban (október-április) az aznapi jegyek általában elérhetők a kikötői pultoknál. Azonban a szolgáltatások csökkenthetők napi 2-3 indulásra, és a törlések gyakoribbak viharos időben."
+      ]
+    },
+    {
+      "question": "Mi történik, ha a kompot törlik?",
+      "answer": [
+        "A kompokat viharos tengeren törölhetik, néha csak 1-2 órás értesítéssel. Láttuk ezt leggyakrabban ősszel és télen, amikor a délutáni szelek erősödnek.",
+        "Ha a kompod törölve van:",
+        "• Ellenőrizd a jegypult személyzetével a következő elérhető járatot (gyakran 2-3 órával később, ha a körülmények javulnak).",
+        "• Fontold meg a %LINK:sorrentoPositanoBus|buszt Sorrentóba%, majd kompot Caprira (hosszabb útvonal, de a buszok minden időben járnak).",
+        "• Ha van továbbutazásod, tervezz be 3 órás puffert vagy tervezz tartalék útvonalat előre."
+      ]
+    },
+    {
+      "question": "Nehéz a kikötőig való séta?",
+      "answer": "A hostelből a positanói kikötőig való séta 15-20 perc lefelé, főleg lépcsőkön. Lefelé egyszerű, de a visszaút felfelé meredek és fárasztó lehet, különösen a nyári melegben. Ha bevásárló táskákkal vagy csomaggal térsz vissza, azt javasoljuk, vegyél taxit a kikötőből a hostellhez (körülbelül €10-15, vagy kérd meg a hostelt, hogy szervezzen transzfert)."
+    },
+    {
+      "question": "Mennyi időt kellene Capriban töltenem?",
+      "answer": [
+        "Egy egynapos kiránduláshoz célozz meg 5-7 órát a szigeten. Ez időt ad neked a sikló felvételére Capri városba, a Piazzetta felfedezésére, a Gardens of Augustus-hoz való sétára és az ebédre - puffer idővel a sorokra és kompkésésekre.",
+        "Népszerű egynapos kirándulási program: Indulás Positanóból körülbelül 09:30-10:00-kor, Capri felfedezése 11:00-16:00, visszakomp körülbelül 17:00-18:00. Ez elkerüli a legrosszabb tömegeket és rugalmasságot ad, ha a visszakompok késnek.",
+        "Ha meg akarod látogatni a Kék Barlangot, Anacaprit vagy a Villa Jovist, fontold meg egy éjszaka eltöltését Capriban (a Marina Grande közelében lévő költségvetési szállodák körülbelül €80-100-tól kezdődnek alacsony szezonban)."
+      ]
+    }
+  ],
+  "callouts": {
+    "tip": "Tartalék lehetőségekre van szükséged, ha a tenger viharos? Nézd meg a %LINK:travelHelp|utazási segítség útmutatót% alternatív útvonalakért Sorrenton keresztül."
+  }
+}

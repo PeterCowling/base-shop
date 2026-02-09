@@ -1,0 +1,56 @@
+{
+  "seo": {
+    "title": "Acampar en la Costa Amalfitana",
+    "description": "Opciones de camping y consejos de acceso en toda la costa."
+  },
+  "linkLabel": "Acampar en la Costa Amalfitana",
+  "intro": [
+    "Acampar cerca de la Costa Amalfitana implica usar campings oficiales fuera del centro de Positano.",
+    "Reserva con antelación en verano y revisa normas locales sobre barbacoas y silencio nocturno."
+  ],
+  "sections": [
+    {
+      "id": "where",
+      "title": "Dónde acampar",
+      "body": [
+        "Los campings más cercanos están en Sorrento, Piano di Sorrento y Agerola; ofrecen parcelas para tienda y furgoneta.",
+        "Algunos bungalows incluyen cocina básica; confirma ropa de cama y toallas si no llevas propias."
+      ]
+    },
+    {
+      "id": "access",
+      "title": "Acceso y transporte",
+      "body": [
+        "Desde Sorrento conecta con bus SITA o ferry para bajar a Positano en el día.",
+        "Las carreteras son estrechas; si viajas en camper asegúrate de reservar plaza con anticipación y confirmar altura máxima."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Normas y seguridad",
+      "body": [
+        "Respeta horarios de silencio (generalmente 23:00–07:00) y prohibiciones de fuego abierto.",
+        "Recoge toda la basura y usa puntos de reciclaje; no acampes en playas o miradores sin autorización."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Se permite acampada libre?",
+      "a": [
+        "No, está prohibida en toda la costa; limita tu estancia a campings autorizados.",
+        "Las multas por acampar en playas o senderos protegidos son elevadas."
+      ]
+    },
+    {
+      "q": "¿Necesito reservar con mucha antelación?",
+      "a": [
+        "En julio y agosto sí: hazlo con 2–3 meses de margen. En primavera u otoño basta con unas semanas."
+      ]
+    }
+  ],
+  "tips": [
+    "Lleva adaptador de corriente europeo (tipo L/F) y alargador: los enchufes pueden quedar lejos de la tienda.",
+    "Un toldo o tarp ayuda a crear sombra extra en parcelas soleadas."
+  ]
+}

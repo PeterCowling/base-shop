@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "Billets de bus SITA et conseils",
+    "description": "Où acheter les billets SITA, règles de validation, gestion des bagages et astuces files d'attente sur la côte."
+  },
+  "linkLabel": "Billets de bus SITA et conseils",
+  "intro": [
+    "Achetez vos billets SITA avant de monter et prévoyez du temps supplémentaire en été. Gardez-les jusqu'à la fin du trajet."
+  ],
+  "sections": [
+    {
+      "id": "where",
+      "title": "Où acheter",
+      "body": [
+        "Achetez-les dans les tabacchi ou kiosques le long de la route principale. Faites le plein quand la file est courte."
+      ]
+    },
+    {
+      "id": "validate",
+      "title": "Validation",
+      "body": [
+        "Validez en montant lorsqu'une machine est disponible et gardez le billet jusqu'à la descente."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Puis-je acheter à bord ?",
+      "a": [
+        "En général non ; achetez avant de monter pour éviter les retards."
+      ]
+    }
+  ]
+}

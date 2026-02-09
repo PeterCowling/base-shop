@@ -1,0 +1,128 @@
+{
+  "seo": {
+    "title": "Z Positano do Ravello: jak dojechać",
+    "description": "Najlepsze połączenia z Positano do Ravello przez Amalfi — autobus lub prom + autobus."
+  },
+  "linkLabel": "Z Positano do Ravello: jak dojechać",
+  "intro": [
+    "Positano → Ravello przez Amalfi: autobusy działają cały rok, prom + autobus w sezonie.",
+    "Zaplanuj czas na przesiadkę w Amalfi i wróć przed zachodem słońca, jeśli polegasz na ostatnich promach."
+  ],
+  "toc": [
+    {
+      "href": "#via-amalfi",
+      "label": "Przez Amalfi"
+    },
+    {
+      "href": "#gardens",
+      "label": "Ogrodowe atrakcje"
+    },
+    {
+      "href": "#timing",
+      "label": "Czas i powrót"
+    }
+  ],
+  "sections": [
+    {
+      "id": "via-amalfi",
+      "title": "Przez Amalfi",
+      "body": [
+        "Autobus SITA lub sezonowy prom do Amalfi; kup bilety przed wejściem i zostaw zapas na kolejkę.",
+        "W Amalfi (peron 5) przesiądź się do autobusu do Ravello, następnie około 10 minut spaceru do Willi Rufolo i Cimbrone."
+      ]
+    },
+    {
+      "id": "gardens",
+      "title": "Ogrodowe atrakcje",
+      "body": [
+        "Villa Rufolo słynie z koncertów i tarasów nad zatoką; Villa Cimbrone ma słynny Taras Nieskończoności.",
+        "Latem rezerwuj bilety online, by ominąć kolejki."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Czas i powrót",
+      "body": [
+        "Wyjedź rano z Positano, by uniknąć największych upałów i tłoku na przesiadkach.",
+        "Wracaj przed zachodem słońca, jeśli potrzebujesz światła do zejścia schodami lub pewnego promu."
+      ]
+    }
+  ],
+  "tipsTitle": "Wskazówki",
+  "tips": [
+    "Miej przy sobie wodę i przekąski — okolice dworca autobusowego w Amalfi są ograniczone i drogie.",
+    "Załóż wygodne buty z dobrą przyczepnością na strome podejścia Ravello i spacer między willami."
+  ],
+  "faqsTitle": "FAQ",
+  "faqs": [
+    {
+      "q": "Czy trasa nadaje się dla rodzin?",
+      "a": [
+        "Tak, jeśli zaplanujesz przystanki i elastyczne tempo; wózki sprawdzą się tylko w Amalfi, nie na schodach Ravello."
+      ]
+    },
+    {
+      "q": "Czy da się połączyć to z Capri tego samego dnia?",
+      "a": [
+        "Możliwe, ale bardzo napięte — lepiej zaplanować osobne dni na każde miejsce."
+      ]
+    }
+  ],
+  "howTo": {
+    "steps": [
+      {
+        "name": "Positano → Amalfi",
+        "text": "Autobus SITA lub sezonowy prom do Amalfi."
+      },
+      {
+        "name": "Amalfi → Ravello",
+        "text": "Przesiądź się na autobus Rabelloski w Amalfi; bilety kup wcześniej."
+      }
+    ]
+  },
+  "fallback": {
+    "intro": [
+      "Podróżuj przez Amalfi. Latem prom do Amalfi i szybki autobus do Ravello mogą skrócić czas."
+    ],
+    "toc": [
+      {
+        "href": "#via-amalfi",
+        "label": "Przez Amalfi (autobus + autobus)"
+      },
+      {
+        "href": "#ferry",
+        "label": "Prom do Amalfi (sezonowo)"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQ"
+      }
+    ],
+    "sections": [
+      {
+        "id": "via-amalfi",
+        "title": "Przez Amalfi (autobus + autobus)",
+        "body": [
+          "Wsiądź do autobusu do Ravello w Amalfi; kup bilety wcześniej i ustaw się w kolejce odpowiednio wcześnie."
+        ]
+      },
+      {
+        "id": "ferry",
+        "title": "Prom do Amalfi (sezonowo)",
+        "body": [
+          "Rozważ poranny prom do Amalfi, a potem autobus do Ravello; sprawdź ostatnie kursy."
+        ]
+      }
+    ],
+    "tipsTitle": "Wskazówki",
+    "faqsTitle": "FAQ",
+    "faqs": [
+      {
+        "q": "Ile czasu potrzeba na Ravello?",
+        "a": [
+          "Zaplanuj co najmniej 3–4 godziny na wille i widoki; więcej, jeśli bierzesz udział w wydarzeniach."
+        ]
+      }
+    ]
+  }
+}

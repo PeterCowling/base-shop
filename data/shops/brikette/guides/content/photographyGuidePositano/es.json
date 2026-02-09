@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Guía fotográfica de Positano: mejores lugares",
+    "description": "Mapea los ángulos, mejores momentos y etiqueta para conseguir grandes fotos."
+  },
+  "linkLabel": "Guía fotográfica de Positano",
+  "intro": [
+    "Positano cambia con la luz: programa tus fotos para el amanecer y la golden hour y así evitar multitudes.",
+    "Lleva baterías extra y paño para la lente: la brisa marina y las escaleras lo agradecen."
+  ],
+  "sections": [
+    {
+      "id": "sunrise",
+      "title": "Amanecer y primeras luces",
+      "body": [
+        "Empieza en el mirador de Via Cristoforo Colombo para capturar las casas iluminadas.",
+        "Baja a Spiaggia Grande antes de las 7:00 para fotos sin barcos turísticos."
+      ]
+    },
+    {
+      "id": "midday",
+      "title": "Luz dura e interiores",
+      "body": [
+        "Usa el mediodía para detalles en iglesias o compras en callejones sombreados.",
+        "Juega con reflejos en escaparates y ventanas para captar la paleta pastel."
+      ]
+    },
+    {
+      "id": "sunset",
+      "title": "Golden hour y azul profundo",
+      "body": [
+        "Sube a la terraza del hostel o a Nocelle para planos amplios al atardecer.",
+        "Tras anochecer, prueba largas exposiciones con trípode compacto en Fornillo."
+      ]
+    }
+  ],
+  "tips": [
+    "Usa un filtro polarizador para controlar los reflejos del agua a mediodía.",
+    "Planifica tus rutas foto por barrio para aprovechar la luz y reducir escaleras repetidas."
+  ],
+  "faqs": [
+    {
+      "q": "¿Se permite usar trípode?",
+      "a": [
+        "Los trípodes pequeños se toleran fuera de las horas punta. En zonas privadas pide permiso."
+      ]
+    },
+    {
+      "q": "¿Puedo volar dron?",
+      "a": [
+        "No: Positano está en zona de vuelo restringida. Usa cámaras convencionales."
+      ]
+    }
+  ]
+}

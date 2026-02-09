@@ -23,6 +23,7 @@ export async function readShop(shop: string): Promise<Shop> {
 }
 
 // Alias getShopSettings → readSettings so existing callers keep working.
+export * from "./guides.server";
 export * from "./inventory.server";
 export * from "./pricing.server";
 export * from "./products.server";

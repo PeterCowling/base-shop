@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Så håller du dig säker i Positano och på Amalfikusten",
+    "description": "Praktiska säkerhetstips: bussar, färjor, trappor, sol och nödkontakter – allt att veta innan resan."
+  },
+  "linkLabel": "Så håller du dig säker i Positano och på Amalfikusten",
+  "intro": [
+    "Håll dig säker på Positanos trappor, bussar och stränder med några enkla vanor."
+  ],
+  "sections": [
+    {
+      "id": "stairs",
+      "title": "Stairs & walking routes",
+      "body": [
+        "Kartlägg rutter med färre steg (Chiesa Nuova eller Sponda) och dela last mellan en ryggsäck och en lätt vagn om du har knäproblem.",
+        "Pausa på terrassens väggar eller använd kompakta vandringsstavar för längre klättringar som Path of the Gods."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Buses & ferries",
+      "body": [
+        "Validera SITA-biljetter, håll skenan och förvara väskor i bagagezonen – blinda kurvor innebär plötslig inbromsning.",
+        "På färjor, ha värdesaker med dig och följ besättningens instruktioner när du stuvar tyngre resväskor."
+      ]
+    },
+    {
+      "id": "sea",
+      "title": "Sea & sun",
+      "body": [
+        "Kontrollera strandsäkerhetsflaggor, bär vattenskor på stenstränder och applicera revsäker SPF igen efter varje simtur.",
+        "Återfukta ofta: ta med minst 1 liter (34 oz) per person under varma dagar och sök skugga mellan middag och 15:00."
+      ]
+    },
+    {
+      "id": "belongings",
+      "title": "Belongings & contacts",
+      "body": [
+        "Dela kontanter/kort mellan väskor och använd vandrarhemsskåp eller kassaskåp för pass och elektronik.",
+        "Spara nödnummer (112 general, Coast Guard 1530) och lokala apoteks öppettider offline om signalen sjunker."
+      ]
+    }
+  ],
+  "tips": [
+    "Berätta för en vän eller vandrarhemsdisken din planerade återkomsttid innan långa vandringar och dubbelkolla vädervarningsnivån.",
+    "Bär en liten ficklampa för sena trappor – vissa körfält har ojämn belysning efter midnatt."
+  ],
+  "faqs": [
+    {
+      "q": "Is tap water safe to drink?",
+      "a": [
+        "Ja, Positanos kranvatten är drickbart – fyll på flaskor för att minska plasten och förbli hydrerad."
+      ]
+    },
+    {
+      "q": "Are there areas to avoid at night?",
+      "a": [
+        "Staden är i allmänhet lugn, men håll dig till upplysta vägar och använd taxi om du kommer tillbaka sent från Amalfi, Sorrento eller Neapel."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,146 @@
+{
+  "seo": {
+    "title": "Positano avec un budget de routard : itinéraires sur 1-3 jours",
+    "description": "Plans simples sur 1-3 jours avec plages, points de vue et excursions à petit budget."
+  },
+  "linkLabel": "Positano avec un budget de routard : itinéraires sur 1-3 jours",
+  "intro": [
+    "Choisissez un plan sur 1, 2 ou 3 jours qui limite les coûts tout en couvrant les vues incontournables, les plages et les excursions."
+  ],
+  "toc": [
+    {
+      "href": "#day1",
+      "label": "Jour 1 : essentiels de Positano"
+    },
+    {
+      "href": "#day2",
+      "label": "Jour 2 : Sentier des Dieux + plage"
+    },
+    {
+      "href": "#day3",
+      "label": "Jour 3 : Capri ou Amalfi + Ravello"
+    },
+    {
+      "href": "#savings",
+      "label": "Astuces économies"
+    },
+    {
+      "href": "#food",
+      "label": "Bonnes adresses économiques"
+    },
+    {
+      "href": "#transport",
+      "label": "Conseils transport"
+    }
+  ],
+  "sections": [
+    {
+      "id": "pacing",
+      "title": "Commencer par les grosses montées",
+      "body": [
+        "Utilisez le jour d'arrivée pour des balades dans le bas (Spiaggia Grande, Fornillo) et gardez les grosses journées d'escaliers (Sentier des Dieux, marches d'Arienzo) pour après une bonne nuit.",
+        "Regroupez les étapes par altitude pour rester sur un même niveau ; terminez les points de vue du haut avant de redescendre vers la marina."
+      ]
+    },
+    {
+      "id": "budget-mix",
+      "title": "Un temps fort payant par jour",
+      "body": [
+        "Prévoyez une activité payante par jour (ferry pour Capri, bateau partagé, entrée de jardins), puis complétez avec des balades gratuites et la plage.",
+        "Faites le plein d'encas et d'eau près de Chiesa Nuova ; les cafés du front de mer font grimper la note."
+      ]
+    },
+    {
+      "id": "viewpoints",
+      "title": "Points de vue sans billet",
+      "body": [
+        "Via Cristoforo Colombo offre la vue carte postale au lever du soleil ou à l'heure dorée, sans entrée.",
+        "Pour des photos plus calmes, faites un détour par la cour carrelée de Chiesa Nuova ou le petit belvédère au-dessus de Fornillo avant 08:30."
+      ]
+    },
+    {
+      "id": "swim-breaks",
+      "title": "Baignades petit budget",
+      "body": [
+        "Fornillo a une zone publique gratuite ; empruntez le sentier côtier depuis Spiaggia Grande et ne louez que le nécessaire.",
+        "Pour l'ambiance beach club d'Arienzo, descendez les marches avant 10 h 30 pour avoir une place en zone publique, puis pique-niquez avec focaccia et fruits."
+      ]
+    },
+    {
+      "id": "evenings",
+      "title": "Soirées petit budget",
+      "body": [
+        "Le coucher de soleil depuis la terrasse de l'auberge est gratuit ; préparez un spritz simple avec un prosecco de supermarché et partagez des encas.",
+        "Consultez le tableau de l'auberge pour les soirées ; si vous sortez, arrivez tard quand l'entrée est moins chère et prenez une pièce d'identité."
+      ]
+    }
+  ],
+  "day1Title": "1 jour : essentiels de Positano",
+  "day1": [
+    "Matin : belvédères de Spiaggia Grande, puis le sentier côtier jusqu'à Fornillo pour une baignade.",
+    "Déjeuner : pizza al taglio ou panini près de Chiesa Nuova ; mangez en terrasse.",
+    "Coucher de soleil : Via Cristoforo Colombo ou la terrasse de l'auberge."
+  ],
+  "day2Title": "2 jours : ajouter le Sentier des Dieux",
+  "day2": [
+    "Matin : %LINK:pathOfTheGodsNocelle|Sentiero degli Dei / Path of the Gods% (bus pour Nocelle, descente à pied jusqu'à Positano).",
+    "Après-midi : %LINK:fornilloBeachGuide|se rafraîchir à la plage de Fornillo% ou déjeuner tard en ville."
+  ],
+  "day3Title": "3 jours : Capri ou Amalfi + Ravello",
+  "day3": [
+    "Option A : %LINK:capriDayTrip|excursion à Capri% - prenez le premier ferry, prévoyez une boucle en autonomie et emportez des encas.",
+    "Option B : %LINK:positanoRavello|Amalfi + Ravello% - bus ou ferry jusqu'à Amalfi, puis montée vers Villa Rufolo ou Villa Cimbrone."
+  ],
+  "savingsTitle": "Astuces économies",
+  "savings": [
+    "Voyagez en intersaison (avril-mai, fin septembre) pour des prix plus bas et moins de monde.",
+    "Utilisez les bus SITA pour la plupart des trajets ; ajoutez un ferry si vous voulez la vue.",
+    "Dormez en dortoir ou partagez une chambre près de Chiesa Nuova pour réduire les frais de porteurs et d'escaliers.",
+    "Remplissez vos bouteilles à l'auberge ou aux fontaines publiques avant de partir.",
+    "Si vous avez réservé en direct, profitez du petit-déjeuner et de la boisson du soir offerts pour couvrir un repas.",
+    "Marchez entre les points de vue plutôt que de prendre le bus ; les escaliers sont gratuits et panoramiques."
+  ],
+  "foodTitle": "Bonnes adresses économiques",
+  "foodText": "Pensez à la pizza al taglio, aux panini et aux salades de deli autour de Via dei Mulini et Chiesa Nuova. Faites des achats en mini-marchés pour un pique-nique et gardez les repas assis pour un seul extra.",
+  "transportTitle": "Conseils transport",
+  "transportCompareLabel": "Comparez les trajets :",
+  "transportCompareLinks": [
+    {
+      "key": "naplesPositano",
+      "label": "Naples → Positano"
+    },
+    {
+      "key": "salernoPositano",
+      "label": "Salerne → Positano"
+    }
+  ],
+  "transportFerryPrefix": "Consultez ",
+  "transportFerryLinkLabel": "les horaires de ferry",
+  "transportFerrySuffix": " et la météo ; les bus restent moins chers.",
+  "faqs": [
+    {
+      "q": "Quel est le meilleur programme sur 1 jour ?",
+      "a": [
+        "Commencez à Spiaggia Grande, marchez le sentier côtier jusqu'à Fornillo, puis regardez le coucher de soleil depuis Via Cristoforo Colombo ou la terrasse de l'auberge."
+      ]
+    },
+    {
+      "q": "Comment réduire les coûts de transport ?",
+      "a": [
+        "Utilisez les bus SITA pour la plupart des trajets et ajoutez un ferry pour la vue ; achetez les billets avant de monter pour éviter les surprises."
+      ]
+    },
+    {
+      "q": "Un itinéraire sur deux jours ?",
+      "a": [
+        "Le premier jour couvre l'essentiel de Positano ; le second ajoute le Sentier des Dieux via Nocelle plus une baignade."
+      ]
+    },
+    {
+      "q": "Et sur trois jours ?",
+      "a": [
+        "Choisissez : une excursion à Capri ou un combo Amalfi + Ravello ; partez tôt et emportez des encas pour économiser."
+      ]
+    }
+  ]
+}

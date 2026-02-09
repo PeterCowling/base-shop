@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Backpacking i Syditalien: rute inkl. Amalfikysten",
+    "description": "Forslag til rute med stop i Napoli, Amalfi, Salerno og videre sydpå."
+  },
+  "linkLabel": "Backpacking i Syditalien: rute inkl. Amalfikysten",
+  "intro": [
+    "Planlæg en rute gennem Syditalien, hvor Positano forbliver i centrum uden at budgettet stikker af."
+  ],
+  "sections": [
+    {
+      "id": "route",
+      "title": "Forslået rundtur",
+      "body": [
+        "Start i Napoli for fly og tog, brug 2–3 nætter i Positano eller nærliggende Praiano, fortsæt til Salerno og drej derefter ind i landet mod Matera eller Puglia før du vender tilbage.",
+        "Brug regionale tog og busser til de lange stræk for små penge; book 4–6 uger i forvejen for sæder til €15–€25."
+      ]
+    },
+    {
+      "id": "arrivals",
+      "title": "Ankomst og pakning",
+      "body": [
+        "Rejs med en 40 L rygsæk, så du nemt klarer trapper og bagagereoler i busser.",
+        "Pak hurtigtørrende lag, et kompakt håndklæde og sandaler til hostelbrusere; vaskerier i Positano tager €12–€15 for vask og tørring."
+      ]
+    },
+    {
+      "id": "budget",
+      "title": "Budgettricks",
+      "body": [
+        "Kombinér supermarkedsindkøb (focaccia, frugt, mozzarella) med picnic på terrassen; budgettér €8 til frokost i stedet for €18 på restaurant.",
+        "Del dagsture med hostelvenner: del taxa til stier eller lej scootere i Salerno/Praiano, hvor priserne falder til ca. €35 pr. dag."
+      ]
+    }
+  ],
+  "tips": [
+    "Aktiver et regionalt SIM eller eSIM (TIM/Vodafone), så du kan hente busplaner og hostel-check-in på farten.",
+    "Book hostel eller guesthouse til første og sidste nat på turen, og hold midterdelen fleksibel, så du kan tilpasse dig vejret."
+  ],
+  "faqs": [
+    {
+      "q": "Skal jeg leje bil?",
+      "a": [
+        "Nej. Tog, busser og færger dækker ruten. En scooter på korte stræk kan være sjovt, men trafikken omkring Amalfi kræver rutine."
+      ]
+    },
+    {
+      "q": "Hvor mange dage skal jeg afsætte til Positano?",
+      "a": [
+        "Mindst tre nætter: én til selve Positano, én til Gudernes Sti eller en båddag og en fleksdag til Amalfi/Ravello eller dårligt vejr."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,251 @@
+{
+  "seo": {
+    "title": "Bate-voltas a partir de Positano: Capri, Pompeia, Ravello, Amalfi",
+    "description": "Bate-voltas económicos saindo de Positano—Capri, Pompeia, Amalfi, Ravello e Sorrento com horários de ferries e autocarros, custos e dicas para mochileiros."
+  },
+  "linkLabel": "Melhores bate-voltas: Capri, Amalfi, Pompeia e mais",
+  "intro": [
+    "Positano funciona brilhantemente como base para bate-voltas—ferries e autocarros ligam-no a Capri, Pompeia, Amalfi, Ravello e Sorrento em 30-90 minutos. A maioria das viagens custa €15-35 para transporte mais entrada, e evitará carregar bagagem ou trocar de alojamento.",
+    "Comece cedo para evitar multidões de cruzeiros, reserve antecipadamente bilhetes para Pompeia e ferries populares, e tenha sempre um plano B para o tempo (ferries cancelam com mar agitado). Leve lanches, água, protetor solar e um casaco impermeável leve—cafés perto de locais turísticos cobram preços premium."
+  ],
+  "sections": [
+    {
+      "id": "quick-comparison",
+      "title": "Comparação rápida de bate-voltas",
+      "body": [
+        "Capri: Mais caro (€20 ferry cada sentido, ~€35-40 total com funicular/teleférico), mais cénico, precisa de dia inteiro. Melhor para: vistas icónicas, fotos, caminhadas até Arco Naturale ou Villa Jovis. %LINK:capriDayTrip|Guia completo de bate-volta a Capri%",
+        "Pompeia: Melhor custo-benefício (€9 autocarro para Sorrento, €2.50 comboio, €18 entrada = ~€32 total), rica em história, 3-4 horas no local. Melhor para: entusiastas de arqueologia, madrugadores que querem a tarde de volta em Positano. %LINK:positanoPompeii|Direções Positano para Pompeia%",
+        "Amalfi + Ravello: Combinação fácil (€8 ferry ou €4 autocarro para Amalfi, €2.50 autocarro até Ravello), comida e jardins. Melhor para: viagens mais curtas de meio dia, vistas do pôr do sol da Villa Cimbrone. %LINK:positanoAmalfi|Transporte Positano para Amalfi%",
+        "Sorrento: Ambiente relaxado (€12 ferry ou €4 autocarro), limoeiros, limoncello, marisco, miradouro Villa Comunale. Melhor para: compras no mercado, provas de comida, partidas de fim de manhã. %LINK:naplesPositano|Ligações Nápoles-Positano via Sorrento%",
+        "Herculano: Mais pequeno que Pompeia (€9 autocarro para Sorrento, €2.50 comboio, €13 entrada = ~€27 total), mosaicos melhor preservados, 2-3 horas no local. Melhor para: ver ruínas sem as multidões de Pompeia."
+      ]
+    },
+    {
+      "id": "capri",
+      "title": "Capri: Escapada à ilha de dia inteiro",
+      "body": [
+        "Porquê ir: Vistas icónicas de falésias, pilhas de rocha Faraglioni, Gruta Azul (se o tempo permitir), compras de boutique na cidade de Capri, trilhos para caminhadas e jardins de encosta. Capri é o bate-volta mais fotogénico, mas também o mais caro—espere gastar €50-70 no total incluindo transporte, funicular/teleférico e um almoço modesto.",
+        "Melhor para: Dias de tempo limpo quando quer paisagem costeira dramática e não se importa com multidões de turistas. Fotógrafos devem visar luz da manhã ou fim da tarde.",
+        "Como chegar: Apanhe o primeiro ferry de Positano (geralmente 08:15-09:00, €20 cada sentido, 40 minutos, %LINK:ferryCancellations|verifique estado do ferry% na doca de ferry de Positano ou online). Reserve um dia ou dois antes no verão—navegações matinais esgotam. Ferries de regresso operam até 18:00-19:00 dependendo da época. %LINK:briketteToFerryDock|Caminhada do hostel à doca de ferry% demora 10-15 minutos.",
+        "Truques para poupar dinheiro: Pule a Gruta Azul (€18 entrada mais €15-20 para o barco a remos, frequentemente fechada devido às ondas)—as vistas de terra são deslumbrantes e grátis. Traga almoço empacotado de supermercados de Positano (evite cafés da ilha com preços inflacionados). Caminhe entre a cidade de Capri e Anacapri em vez de apanhar o autocarro (íngreme mas poupa €4 ida e volta).",
+        "Itinerário sugerido: Chegue cedo, apanhe o funicular até à cidade de Capri (€2 cada sentido, incluído em alguns pacotes de ferry), caminhe até Giardini di Augusto (€1 entrada) para vistas Faraglioni antes das 10:00 quando grupos de turismo chegam. Autocarro ou caminhada até Anacapri (€2 autocarro cada sentido), viaje no teleférico Monte Solaro (€13 ida e volta, abre 09:30) para panoramas 360°. Explore Villa San Michele ou caminhe até Arco Naturale (grátis, 20 minutos da cidade de Capri), depois apanhe o ferry 17:00-18:00 de volta. Plano B: Se ferries cancelarem, explore Sorrento ou apanhe o autocarro para Amalfi.",
+        "Dicas locais do hostel: Leve fato de banho—há locais rochosos para nadar perto de Faraglioni e Marina Piccola se tiver tempo extra. Evite fins de semana de pico de verão (sábados julho-agosto) quando visitantes de dia triplicam. Verifique %LINK:ferryCancellations|horários de ferry% na noite anterior e tire screenshot—sinal móvel é irregular nos penhascos de Capri."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/dayTripsAmalfi.jpg",
+          "alt": "Litoral e barcos para bate-voltas de Positano.",
+          "caption": "Comece cedo e tenha um plano B para bate-voltas populares."
+        },
+        {
+          "src": "/img/guides/topics/capriFaraglioni.jpg",
+          "alt": "Pilhas de rocha Faraglioni ao largo da costa de Capri.",
+          "caption": "As icónicas rochas Faraglioni—a vista mais fotografada de Capri."
+        },
+        {
+          "src": "/img/guides/topics/capriMonteSolaro.jpg",
+          "alt": "Teleférico Monte Solaro com vistas panorâmicas sobre Capri e a costa.",
+          "caption": "Teleférico Monte Solaro—vistas 360° que valem os €13."
+        }
+      ]
+    },
+    {
+      "id": "pompeii",
+      "title": "Pompeia ou Herculano: Ruínas antigas",
+      "body": [
+        "Porquê ir: Caminhe por ruas, casas, padarias e balneários com 2000 anos congelados pela erupção do Vesúvio em 79 d.C. Pompeia é vasta e movimentada; Herculano é mais pequeno, melhor preservado e mais tranquilo. Ambos são sítios arqueológicos de classe mundial e fáceis no orçamento.",
+        "Melhor para: Amantes de história, madrugadores (locais abrem às 09:00, chegue então para evitar autocarros de turismo), qualquer um que queira uma viagem de meio dia com tarde de volta em Positano.",
+        "Como chegar: Apanhe o autocarro %LINK:sitaTickets|SITA% de Positano para Sorrento (€4, 50 minutos, parte de %LINK:chiesaNuovaDepartures|Chiesa Nuova% ou paragem Positano Sponda dependendo da sua localização). De Sorrento, apanhe o comboio Circumvesuviana em direção a Nápoles e desça em Pompei Scavi-Villa dei Misteri (€2.50, 35 minutos, comboios a cada 30 minutos) ou Ercolano Scavi para Herculano (€2.50, 20 minutos). Caminhe 5-10 minutos de cada estação para a entrada do local.",
+        "Custos: Entrada Pompeia €18 (reserve online para saltar fila de bilhetes), Herculano €13, mais ~€13 transporte ida e volta de Positano. Total: €31-32 para Pompeia, €26-27 para Herculano.",
+        "Truques para poupar dinheiro: Compre bilhetes de Pompeia online com pelo menos um dia de antecedência (www.ticketone.it ou site oficial de Pompeia) para evitar fila de 30-60 minutos na época alta. Traga sua própria água (1,5L por pessoa) e lanches—há um café dentro de Pompeia cobrando €5 por uma sanduíche. Use chapéu e protetor solar—escavações têm zero sombra e temperaturas de verão atingem 35°C. Se tem menos de 25 anos e é residente da UE, verifique descontos para jovens.",
+        "Itinerário sugerido (Pompeia): Apanhe o autocarro 07:30 ou 08:00 de Positano, chegue a Pompeia às 09:30, passe 3-4 horas a caminhar pelo Fórum, Banhos Stabianos, Casa do Fauno, Villa dos Mistérios e Anfiteatro. Volte a Sorrento cerca de 13:30, almoce lá ou regresse a Positano até 15:00. Também pode subir o Vesúvio (€10 entrada, 20 minutos de Pompeia por autocarro Vesuvio Express €10 ida e volta) se tiver energia—vistas são espectaculares mas adicionam 2-3 horas ao seu dia.",
+        "Itinerário sugerido (Herculano): Local mais pequeno significa 2-3 horas são suficientes. Chegue até 10:00, explore os mosaicos perfeitamente preservados, acessórios de madeira e casas de dois andares, depois regresse a Positano no início da tarde. Combine com uma paragem em Sorrento no caminho de volta para almoço e caminhadas em limoeiros.",
+        "Dicas locais do hostel: Comboios Circumvesuviana são básicos (sem AC, grafites, carteiristas em carruagens lotadas)—mantenha objetos de valor no bolso da frente ou mochila no peito. Descarregue mapas offline para Pompeia (é enorme e confuso). Se for um dia escaldante (35°C+), passarelas cobertas de Herculano tornam-no mais suportável."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/pompeiiForum.jpg",
+          "alt": "Ruínas do Fórum antigo no sítio arqueológico de Pompeia.",
+          "caption": "Chegue cedo para explorar Pompeia antes de grupos de turismo e calor."
+        },
+        {
+          "src": "/img/guides/topics/vesuviusFromPompeii.jpg",
+          "alt": "Monte Vesúvio visto das escavações de Pompeia.",
+          "caption": "Vesúvio paira sobre as ruínas—pode escalá-lo depois de Pompeia."
+        }
+      ]
+    },
+    {
+      "id": "amalfi-ravello",
+      "title": "Combo Amalfi & Ravello: Cultura costeira",
+      "body": [
+        "Porquê ir: Duomo dramática de Amalfi, cafés à beira-mar e museu do papel; jardins de encosta de Ravello (Villa Cimbrone e Villa Rufolo), locais de música clássica e panoramas do pôr do sol sobre a costa. Fácil de juntar ambos num dia, e a viagem de autocarro 5110 até Ravello é uma experiência de curvas apertadas de tirar o fôlego.",
+        "Melhor para: Viagens mais curtas (meio dia ou dia inteiro), amantes de jardins, caçadores de pôr do sol, qualquer um que queira uma mistura de ambiente à beira-mar e aldeia de montanha sem o preço de Capri.",
+        "Como chegar: Ferry de Positano para Amalfi (€8, 20-30 minutos, múltiplas partidas 08:00-18:00, mais frequente abril-outubro) ou autocarro %LINK:sitaTickets|SITA% (€4, 40 minutos, mais lento mas mais barato). Do porto ou paragem de autocarro de Amalfi, caminhe até à praça principal e apanhe o autocarro SITA 5110 até Ravello (€2.50, 25 minutos, curvas em gancho, parte de hora a hora). Regresse via autocarro para Amalfi e depois ferry ou autocarro de volta a Positano. %LINK:positanoAmalfi|Guia completo de transporte%",
+        "Custos: €8-16 transporte ida e volta (ferry é mais rápido, autocarro é mais barato), mais €10 entrada Villa Cimbrone ou €7 para Villa Rufolo. Total: €18-26 dependendo de escolhas.",
+        "Truques para poupar dinheiro: Pule as vilas se tiver orçamento apertado—terraços públicos de Ravello (Piazza Duomo, belvedere perto da igreja principal) têm vistas amplas gratuitas. Leve almoço de piquenique de Positano e coma nos jardins de Ravello ou num banco com vista para os penhascos. Apanhe o autocarro em ambos os sentidos para poupar €8 vs ferry ida e volta—apenas orçamente tempo extra para estradas sinuosas e filas potenciais.",
+        "Itinerário sugerido: Apanhe o ferry ou autocarro 09:00-10:00 para Amalfi, explore a Duomo (entrada gratuita para nave principal, €3 para Claustro do Paraíso), passeie pelas vielas da cidade velha, depois apanhe o autocarro 12:00 ou 13:00 até Ravello. Visite Villa Cimbrone (o Terraço do Infinito é o destaque—chegue a meio da tarde para luz mais suave), passeie pela Piazza Duomo de Ravello e apanhe o autocarro 17:00-18:00 de volta a Amalfi. Apanhe um ferry crepuscular de volta a Positano (filas encolhem depois das 18:00) ou o último autocarro cerca de 19:30-20:00.",
+        "Plano B: Se ferries são cancelados, apanhe o autocarro—funciona em quase todas as condições. Se só tem 2-3 horas, visite Amalfi sozinha e pule Ravello (ou inverta e vá direto a Ravello para vistas do pôr do sol).",
+        "Dicas locais do hostel: Ravello acolhe concertos de música clássica de verão (Festival de Ravello, junho-setembro) nos jardins da Villa Rufolo—verifique o programa se quiser ficar até tarde. O autocarro 5110 fica lotado no verão; faça fila cedo ou fique perto da frente da linha. Se é propenso a enjoos de movimento, sente-se perto da frente e mantenha os olhos no horizonte."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/ravelloTerrace.jpg",
+          "alt": "Terraço do Infinito na Villa Cimbrone em Ravello com vista para a Costa Amalfitana.",
+          "caption": "Terraço do Infinito da Villa Cimbrone—vale os €10 de entrada."
+        },
+        {
+          "src": "/img/guides/topics/amalfiDuomo.jpg",
+          "alt": "Fachada da Catedral de Amalfi com grande escadaria.",
+          "caption": "A dramática Duomo de Amalfi domina a praça da cidade."
+        }
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "Sorrento: Comida, mercados e limoeiros",
+      "body": [
+        "Porquê ir: Sorrento é o bate-volta mais relaxado—menos pressão turística que Capri, menos ruínas que Pompeia, e cheio de limoeiros, lojas de limoncello, marisco fresco, mercados artesanais e um passeio marítimo ventoso no penhasco (Villa Comunale) com vistas do pôr do sol sobre a Baía de Nápoles.",
+        "Melhor para: Amantes de comida, compradores de mercado, qualquer um que queira uma partida de fim de manhã (não precisa apressar-se), viajantes que juntam Sorrento com Pompeia ou usam-no como centro de transporte.",
+        "Como chegar: Ferry de Positano (€12, 30 minutos, múltiplas partidas 08:00-18:00) ou autocarro %LINK:sitaTickets|SITA% (€4, 50 minutos, parte de %LINK:chiesaNuovaDepartures|Chiesa Nuova% ou Positano Sponda). Ferry é mais rápido e mais cénico; autocarro é mais barato e funciona mesmo quando o mar está agitado. %LINK:naplesPositano|Guia de rota Nápoles-Positano% cobre ligações de Sorrento.",
+        "Custos: €8-24 transporte ida e volta dependendo de ferry vs autocarro, mais custos de comida/bebida (orçamento €10-20 para almoço, €5-10 para prova de limoncello). Total: €20-40 dependendo de quanto come/bebe.",
+        "Truques para poupar dinheiro: Pule lojas de limoncello com preços inflacionados na praça principal—caminhe 10 minutos até alimentari locais (mercearias) para garrafas €8-10 vs €15-20 preços turísticos. Coma em trattorie familiares em ruas laterais (Via Fuoro, vielas Via Tasso) em vez de restaurantes à beira-mar—mesma comida, metade do preço. O terraço Villa Comunale e a praia Marina Grande são grátis e perfeitos para piqueniques.",
+        "Itinerário sugerido: Apanhe o ferry ou autocarro 10:00-11:00, chegue a Sorrento até 11:30, explore o mercado matinal (se for quinta-feira), passeie por limoeiros perto do centro da cidade (alguns oferecem provas gratuitas), visite Sedil Dominova (edifício histórico gratuito com tetos frescos), almoce numa trattoria de rua lateral, depois caminhe até Villa Comunale para vistas de penhasco e fotos. Apanhe o ferry 16:00-17:00 ou autocarro 18:00 de volta a Positano. Se juntar isto com Pompeia, visite as ruínas primeiro (manhã cedo) e chegue a Sorrento cerca de 13:00-14:00 para almoço tardio e pôr do sol.",
+        "Plano B: Sorrento é acessível por autocarro mesmo se ferries são cancelados—é o bate-volta mais fiável para dias de mau tempo.",
+        "Dicas locais do hostel: Marina Grande (pequena praia de pesca de Sorrento) é 10 minutos a descer escadas íngremes da cidade—vale a pena por barcos coloridos, menos turistas e almoço de marisco decente. Se está a comprar limoncello ou cerâmica, peça ao hostel recomendações de lojas não turísticas. Gelado de Sorrento (I Giardini di Cataldo, Davide Gelato) é dos melhores da costa—orçamente €3-4 por um cone."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/sorrentoLemonGrove.jpg",
+          "alt": "Limoeiro em Sorrento com jardins em socalcos.",
+          "caption": "Os famosos limoeiros de Sorrento oferecem provas gratuitas."
+        },
+        {
+          "src": "/img/guides/topics/sorrentoVillaComunale.jpg",
+          "alt": "Terraço da Villa Comunale no penhasco em Sorrento com vista da Baía de Nápoles.",
+          "caption": "Terraço Villa Comunale—vistas gratuitas do pôr do sol sobre a baía."
+        }
+      ]
+    },
+    {
+      "id": "planning-tips",
+      "title": "Planeamento geral e dicas para poupar dinheiro",
+      "body": [
+        "Comece cedo: Primeiras partidas (08:00-09:00) dão-lhe os locais antes de grupos de turismo e passageiros de cruzeiros chegarem. Capri, Pompeia e Ravello são visivelmente mais tranquilos antes das 11:00.",
+        "Reserve quando necessário: Bilhetes de Pompeia, ferries matinais populares para Capri (especialmente fins de semana julho-agosto) e qualquer entrada de vila em Ravello podem esgotar ou ter longas filas. Reserve 1-2 dias antes. %LINK:transportMoneySaving|Dicas para poupar dinheiro em transporte%",
+        "Planos B: %LINK:ferryCancellations|Cancelamentos de ferry% são comuns em tempestades primavera/outono. Tenha sempre uma alternativa de autocarro pronta, ou troque viagens costeiras (Capri, Amalfi via ferry) por continentais (Pompeia, Sorrento via autocarro) se o mar está agitado. Verifique estado do ferry na noite anterior e manhã da sua viagem—pergunte no hostel ou verifique horários online.",
+        "Embale inteligentemente: Água (1L+ por pessoa), lanches (cafés de locais turísticos são caros), protetor solar, chapéu, casaco impermeável leve (tempestades de verão chegam rápido) e uma pequena mochila diária. Use sapatos confortáveis para caminhar—Pompeia e Capri envolvem 2-4 horas de caminhada em pedra irregular.",
+        "Mapas offline e horários: Descarregue áreas offline do Google Maps para Pompeia, Capri, Amalfi e Sorrento. Tire screenshots de horários de autocarro e ferry—sinal móvel é fraco em comboios Circumvesuviana, penhascos de Capri e estradas de montanha para Ravello.",
+        "Custos de comida e bebida: Orçamente €10-15 para almoço se comer em locais, €5-7 para pausa café/gelado e leve sua própria água. Evite restaurantes à beira-mar e praça principal a menos que se esteja a presentear—caminhe 5-10 minutos para o interior para refeições 30-50% mais baratas.",
+        "Junte viagens inteligentemente: Amalfi + Ravello (combinação fácil, mesma direção). Sorrento + Pompeia ou Herculano (na mesma linha de comboio). Capri é melhor sozinha—é um dia inteiro e não pode ser apressada. Evite juntar Capri com mais nada a menos que faça apenas uma volta rápida na ilha.",
+        "Descontos para estudantes e jovens: Se tem menos de 25 anos e é residente da UE, traga ID para entrada com desconto em Pompeia, Herculano e algumas vilas. Estudantes não-UE com cartões ISIC podem obter descontos em Pompeia—pergunte no balcão de bilhetes.",
+        "Timing de transporte de regresso: Verifique últimos horários de ferry/autocarro antes de deixar Positano. Ferries param cerca de 18:00-19:00 (mais cedo fora de época), autocarros funcionam mais tarde mas são mais lentos. Perder o último ferry significa uma viagem de autocarro de 50-90 minutos de volta—não é desastre mas corta na sua noite."
+      ]
+    },
+    {
+      "id": "budget-breakdown",
+      "title": "Discriminação de orçamento de bate-volta",
+      "body": [
+        "Aqui está o que esperar para custos, incluindo transporte, taxas de entrada, comida e extras opcionais. Todos os preços são por pessoa e baseados em tarifas de 2025 (podem variar ligeiramente por época).",
+        "Capri dia inteiro: Ferry ida e volta €40, funicular para cidade de Capri €4, teleférico Monte Solaro €13, entrada Giardini di Augusto €1, almoço €10-15 (embalado) ou €20-30 (café), gelado/bebida €5-7. Total: €53-70 orçamento, €73-100 se comer fora e adicionar extras como Gruta Azul (€33-38). Formas de poupar: Caminhe em vez de funicular (íngreme mas grátis), pule Gruta Azul, leve almoço.",
+        "Pompeia: Autocarro para Sorrento €9, comboio Circumvesuviana €5 ida e volta, entrada Pompeia €18, água/lanches de casa €0, almoço em Sorrento €10-12. Total: €42-44. Adicione Vesúvio (€20 para autocarro + entrada) se tiver tempo. Formas de poupar: Reserve bilhetes de Pompeia online para saltar fila, traga toda comida/água de Positano (poupe €10-15 vs café do local).",
+        "Amalfi + Ravello: Ferry ou autocarro ida e volta €8-16, autocarro Amalfi-Ravello-Amalfi €5, entrada Villa Cimbrone €10 (ou pule para vistas grátis), almoço/gelado €8-12. Total: €21-43 dependendo de transporte e escolhas de vila. Formas de poupar: Apanhe autocarro em ambos os sentidos (€8 vs €16 ferry), pule vilas e desfrute de terraços grátis, almoço de piquenique de Positano.",
+        "Sorrento: Ferry ou autocarro ida e volta €8-24, almoço em trattoria €10-15, prova de limoncello €5-8, gelado €3-4, todas as atrações grátis (Villa Comunale, Marina Grande, mercados, limoeiros). Total: €26-51 dependendo de transporte. Formas de poupar: Apanhe autocarro (€8 vs €24 ferry), compre limoncello em mercearia (€8-10 vs €15-20 lojas turísticas), piquenique na Villa Comunale.",
+        "Herculano: Autocarro para Sorrento €9, Circumvesuviana €5 ida e volta, entrada €13, almoço/lanches €8-10. Total: €35-37. Formas de poupar: Junte com paragem Sorrento no caminho de volta para valor de duplo destino, leve lanches, chegue cedo antes do calor.",
+        "Estratégias gerais de poupança: Apanhe sempre o autocarro sobre ferry se o orçamento está apertado (poupa €8-16 por viagem). Pré-carregue lanches/água de supermercados de Positano (poupa €10-20 por dia vs cafés turísticos). Use descontos estudante/jovem onde elegível (Pompeia, Herculano, algumas vilas). Peça ao hostel dicas de insider sobre miradouros gratuitos, locais de almoço não turísticos e ofertas de transporte atuais. Tire screenshots de horários e use mapas offline para evitar taxas de roaming de dados."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/budgetDayTrips.jpg",
+          "alt": "Planeamento de viagem económica com moedas e bilhetes de ferry.",
+          "caption": "A maioria dos bate-voltas custa €20-45 total se orçamentar de forma inteligente."
+        }
+      ]
+    },
+    {
+      "id": "transport-logistics",
+      "title": "Logística de transporte e dicas de insider",
+      "body": [
+        "Autocarros (SITA): Compre bilhetes a bordo (dinheiro) ou em lojas tabacchi antes de embarcar. Tenha notas pequenas prontas—motoristas às vezes não podem trocar notas €20+. Filas formam-se cedo em Chiesa Nuova para rotas populares como Positano-Sorrento (07:30-09:00) e Amalfi-Ravello (10:00-12:00). Fique perto da frente da fila ou arrisque ficar de pé por 40-90 minutos em estradas sinuosas. %LINK:sitaTickets|Guia completo de bilheteira SITA%",
+        "Ferries: Compre bilhetes no quiosque do cais (terminal de ferry de Positano) no mesmo dia ou 1-2 dias antes para lugares garantidos em navegações matinais populares (Capri 08:15-09:00). Verifique tempo na noite anterior—mar agitado (Forza 4-5+) cancela ferries. Se cancelado, pivote para destinos acessíveis por autocarro. %LINK:ferryCancellations|Guia de cancelamento de ferry%",
+        "Comboios (Circumvesuviana): Comboios regionais básicos sem AC, grafites e carteiristas ocasionais. Mantenha objetos de valor em bolsos dianteiros ou mochila no peito. Valide bilhetes em máquinas amarelas em plataformas antes de embarcar (multa €50 se apanhado sem validação). Comboios Sorrento-Pompeia-Ercolano-Nápoles correm a cada 30 minutos, primeira partida ~06:00, última ~22:30. Compre bilhetes em balcões de estação ou tabacchi perto de estações (não a bordo).",
+        "Caminhada do hostel para centros de transporte: %LINK:chiesaNuovaDepartures|Paragem de autocarro Chiesa Nuova% fica ~5 minutos subida do Hostel Brikette (paragem SITA principal para rotas Sorrento, Amalfi, Ravello). %LINK:briketteToFerryDock|Cais de ferry% fica 10-15 minutos descida via escadas (use carregadores se tiver bagagem). Pergunte à equipe do hostel na noite anterior sobre filas/atrasos atuais na sua rota planeada.",
+        "Pico vs fora de pico: Fins de semana julho-agosto são os piores para filas e multidões—tudo demora 30-50% mais tempo. Abril-junho e setembro-outubro são ideais (bom tempo, menos turistas, preços mais baixos). Novembro-março vê horários de ferry reduzidos e alguns locais (teleférico Capri, vilas) fecham ou têm horas limitadas—verifique antes. Época de ombro (abril-maio, setembro-outubro) oferece o melhor equilíbrio de tempo, multidões e custo.",
+        "Armazenamento de bagagem: Hostel Brikette oferece armazenamento gratuito de bagagem em dias de check-in/check-out. Pompeia, Sorrento e Amalfi têm armazenamento pago perto de estações/terminais de ferry (€5-8 por saco). Não arraste malas em bate-voltas—guarde-as no hostel ou num cacifo de estação.",
+        "Apps móveis e ferramentas offline: Descarregue áreas offline do Google Maps para Pompeia, Capri, Amalfi, Sorrento antes de partir. Tire screenshots de horários de ferry (cais de Positano publica-os, ou verifique online). Use app Trenitalia para atrasos Circumvesuviana em tempo real (comboios atrasam às vezes). Verifique apps de tempo na noite anterior—tempestades súbitas cancelam ferries e tornam Pompeia miserável.",
+        "Perguntar no hostel: A receção conhece condições atuais (cancelamentos de ferry, atrasos de autocarro, filas de Pompeia, peculiaridades de tempo). Pergunte sobre: bate-volta recomendado para tempo de amanhã, problemas de transporte atuais, locais de almoço não turísticos, melhor hora para fazer fila para autocarros. Veem 100+ viajantes por semana e têm informação em tempo real."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/sitaBusPositano.jpg",
+          "alt": "Autocarro SITA na paragem Chiesa Nuova em Positano.",
+          "caption": "Autocarros SITA ligam Positano a todos os destinos de bate-volta."
+        }
+      ]
+    },
+    {
+      "id": "which-trip-when",
+      "title": "Que viagem quando?",
+      "body": [
+        "Bom tempo, céu limpo: Capri (vistas de ferry e panoramas de penhasco são a atração principal) ou Amalfi + Ravello via ferry (navegação costeira é metade da experiência).",
+        "Mar agitado ou previsão de chuva: Pompeia ou Herculano (passarelas cobertas, sem ferry necessário), Sorrento via autocarro, ou Ravello via autocarro de Amalfi (autocarros funcionam em quase todas as condições).",
+        "Tempo limitado (meio dia): Amalfi sozinha (manhã), Ravello sozinha (tarde/pôr do sol), ou Sorrento (início de manhã tardio). Todas são 3-4 horas ida e volta de Positano.",
+        "Prioridade de orçamento: Pompeia ou Herculano (melhor valor, €31-32 total), Amalfi via autocarro (€8 ida e volta se pular vilas), ou Sorrento via autocarro com almoço de piquenique (€15-20 total).",
+        "Foco de fotografia: Capri (Faraglioni, Monte Solaro, Arco Naturale), Terraço do Infinito de Ravello, ou praias/miradouros do próprio Positano ao nascer/pôr do sol.",
+        "Prioridades de primeira vez: Capri (icónica), Pompeia (mundialmente famosa), e Amalfi + Ravello (combinação costeira clássica). Sorrento e Herculano são excelentes mas menos obrigatórios a menos que tenha dias extra."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/positanoFerryDock.jpg",
+          "alt": "Cais de ferry de Positano com barcos partindo para bate-voltas.",
+          "caption": "Comece bate-voltas cedo do cais de ferry de Positano—10-15 minutos do hostel."
+        }
+      ]
+    }
+  ],
+  "tips": [
+    "Pré-carregue mapas offline e horários—dados móveis mergulham dentro de túneis de comboio Circumvesuviana, em penhascos de Capri e em estradas de montanha para Ravello.",
+    "Embale um casaco impermeável leve—tempestades de verão rolam rápido e ferries param durante relâmpagos.",
+    "Traga sua própria água e lanches—cafés perto de locais turísticos cobram €5+ por uma sanduíche e €3-4 por água engarrafada.",
+    "Verifique horários de ferry na noite anterior e tire screenshot deles—algumas rotas reduzem frequência fora de época ou cancelam com mau tempo.",
+    "Pergunte no hostel sobre atualizações de transporte atuais, dicas de insider sobre quais viagens priorizar e recomendações para locais de almoço não turísticos."
+  ],
+  "faqs": [
+    {
+      "q": "Qual bate-volta precisa do início mais cedo?",
+      "a": [
+        "Capri e Pompeia beneficiam mais de primeiras partidas—ambas ficam movimentadas a meio da manhã e envolvem mais tempo de viagem. Vise deixar Positano até 08:00-08:30 para estas. Amalfi, Ravello e Sorrento são mais flexíveis e funcionam bem com partidas 10:00-11:00."
+      ]
+    },
+    {
+      "q": "Posso encaixar duas cidades num dia?",
+      "a": [
+        "Sim—Amalfi e Ravello juntam-se perfeitamente (mesma direção, autocarro de 25 minutos entre elas). Sorrento e Pompeia ou Herculano também funcionam bem (mesma linha de comboio). Evite empilhar Capri com mais nada—dê-lhe um dia inteiro. Se tentar espremer dois destinos não relacionados (ex. Capri + Pompeia), passará o dia todo em trânsito e perderá as melhores partes de ambos."
+      ]
+    },
+    {
+      "q": "E se ferries são cancelados devido ao tempo?",
+      "a": [
+        "Apanhe o autocarro SITA em vez—funciona em quase todas as condições. Troque Capri (acesso só por ferry) por uma viagem acessível por autocarro como Pompeia, Sorrento ou Amalfi/Ravello. Verifique estado do ferry na noite anterior e manhã da sua viagem perguntando no hostel ou verificando horários online. Tenha sempre um plano B."
+      ]
+    },
+    {
+      "q": "Qual bate-volta é mais barato?",
+      "a": [
+        "Pompeia ou Herculano são o melhor valor (€26-32 total incluindo transporte e entrada). Amalfi via autocarro (€8 ida e volta se pular entradas de vila) e Sorrento via autocarro com almoço de piquenique (€15-20 total) também são amigáveis ao orçamento. Capri é o mais caro (€50-70+ incluindo ferry, funicular/teleférico e comida)."
+      ]
+    },
+    {
+      "q": "Preciso reservar transporte ou bilhetes de local com antecedência?",
+      "a": [
+        "Reserve bilhetes de Pompeia online para saltar filas (30-60 minutos na época alta). Reserve ferries Capri 1-2 dias antes em julho-agosto—navegações matinais esgotam. Bilhetes de autocarro para rotas SITA (Positano-Sorrento, Amalfi-Ravello) são comprados a bordo ou em lojas tabacchi e não precisam de reserva antecipada. Bilhetes de ferry para Amalfi ou Sorrento podem geralmente ser comprados no mesmo dia no cais, mas verifique disponibilidade se for fim de semana de verão."
+      ]
+    },
+    {
+      "q": "Posso armazenar bagagem em algum lado se estou a fazer um bate-volta antes/depois de check-in ou check-out?",
+      "a": [
+        "Sim—Hostel Brikette oferece armazenamento gratuito de bagagem para hóspedes em dias de chegada/partida. Se está a fazer check-out e fazendo um bate-volta antes de deixar a costa, guarde as suas malas no hostel e apanhe-as quando regressar. Pompeia, Sorrento e Amalfi também têm serviços de armazenamento de bagagem pagos (€5-8 por saco por dia) perto de terminais de comboio/ferry se necessário."
+      ]
+    }
+  ]
+}

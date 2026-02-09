@@ -1,0 +1,20 @@
+{
+  "seo": {
+    "title": "Salernóból Positanóba busszal – Hostelek, megállók és menetrendi tippek",
+    "description": "Lépésről lépésre útmutató Salernóból Positanóba SITA Sud busszal Amalfin keresztül. Tudj meg mindent a jegyvásárlásról, a menetrend olvasásáról és a Hostel Brikette-hez legközelebbi megállóról."
+  },
+  "lastUpdated": "2026-01-31",
+  "faqs": [
+    {
+      "q": "Hogyan olvassam a SITA buszmenetrendet?",
+      "a": [
+        "**Sorok olvasása:** Az első oszlopban lévő sorok az útvonal mentén található különböző buszmegállókat jelölik.",
+        "**Oszlopok olvasása:** A menetrend minden ütemezett járathoz egy betűt rendel, amelyek az egyes oszlopok fejlécében szerepelnek. Ha hétfőtől szombatig utazik, keresse az 'F' és 'G' oszlopokat. Ha vasárnap vagy ünnepnapon utazik, használja a 'G' és 'H' oszlopokat.",
+        "**Sorok és oszlopok kombinálása:** Válassza ki az indulási és érkezési megállókat, majd ellenőrizze az oszlopokban, hogy mikor közlekednek a buszok, és mikor érkeznek meg a célállomásra. Például a sorrentói indulási időt a Sorrento sorban találja. A positanói (Chiesa Nuova / Bar Internazionale) érkezési időt a Positano (Chiesa Nuova) sorban láthatja."
+      ]
+    }
+  ],
+  "callouts": {
+    "tip": "Szeretnéd látni az összes közlekedési lehetőséget? Nyisd meg a %HOWTO:how-to-get-here|Hogyan juthatsz el hozzánk áttekintést% kompokért, taxikért és kombinált útvonalakért."
+  }
+}

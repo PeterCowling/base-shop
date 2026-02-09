@@ -1,0 +1,219 @@
+{
+  "seo": {
+    "title": "Sentier des Dieux via ferry pour Amalfi",
+    "description": "Prenez le ferry de Positano à Amalfi, le bus jusqu'à Bomerano, puis randonnez sur le Sentiero degli Dei jusqu'à Nocelle avec des conseils billets et horaires."
+  },
+  "linkLabel": "Sentier des Dieux via Amalfi (ferry + randonnée)",
+  "intro": [
+    "Cet itinéraire associe une traversée panoramique en ferry vers Amalfi à la classique portion Bomerano → Nocelle du Sentiero degli Dei. Depuis l'Hostel Brikette, c'est l'expérience la plus complète : vous admirez d'abord les falaises depuis la mer avant de les parcourir à pied.",
+    "Prévoyez une matinée entière ou un début d'après-midi. Les ferries affichent complet en haute saison : achetez vos billets dès votre arrivée au port et gardez un horaire de bus de secours si la mer se dégrade."
+  ],
+  "sections": [
+    {
+      "id": "prep",
+      "title": "Avant de quitter l'auberge",
+      "body": [
+        "Emportez eau, encas, crème solaire et une couche supplémentaire. Il n'y a aucun service entre Bomerano et Nocelle une fois les villages dépassés.",
+        "Vérifiez les horaires de ferry (Travelmar ou Lucibello) et ceux des bus SITA. Partez le matin pour éviter la chaleur de midi sur la crête exposée.",
+        "Gardez trois billets SITA par personne : Amalfi → Bomerano, Nocelle → Positano, plus un de secours en cas d'imprévu."
+      ]
+    },
+    {
+      "id": "walk-to-port",
+      "title": "Descendre au port de Positano et acheter les billets de bus",
+      "body": [
+        "Sortez de l'auberge, tournez à gauche et marchez environ 100 mètres jusqu'au Bar Internazionale. Achetez vos billets SITA au comptoir du tabac avant de continuer la descente.",
+        "Empruntez les escaliers raccourcis vers Spiaggia Grande. Comptez 20 à 30 minutes de marche ; prévoyez plus de temps les jours de forte affluence.",
+        "À la plage, tournez à droite pour atteindre le petit port où les compagnies de ferry disposent de guichets côte à côte."
+      ]
+    },
+    {
+      "id": "buy-ferry-ticket",
+      "title": "Assurer un ferry pour Amalfi",
+      "body": [
+        "Consultez les tableaux devant Lucibello et Travelmar pour connaître le prochain départ. En saison, les bateaux du matin partent toutes les 30 à 60 minutes.",
+        "Achetez un aller simple pour Amalfi et gardez-le à portée de main pour l'embarquement ; chaque opérateur appelle les passagers quelques minutes avant le départ.",
+        "Les files se forment vite : arrivez au moins 15 minutes avant le ferry choisi pour garantir une place sur le pont."
+      ]
+    },
+    {
+      "id": "sail-to-amalfi",
+      "title": "Traverser en ferry et profiter d'Amalfi",
+      "body": [
+        "La traversée dure environ 25 minutes. Placez-vous côté tribord pour admirer Positano et Praiano en s'éloignant.",
+        "À l'accostage, débarquez sans tarder et avancez tout droit vers la gare routière, à gauche de la piazza du port.",
+        "S'il vous reste du temps avant le bus, explorez la place de la cathédrale d'Amalfi ou prenez un espresso — gardez simplement un œil sur le quai du bus pour Agerola."
+      ]
+    },
+    {
+      "id": "bus-to-bomerano",
+      "title": "Prendre le bus pour Bomerano",
+      "body": [
+        "Repérez le bus SITA affichant \\\\\" Agerola/Bomerano \\\\\". Validez votre billet en montant et installez-vous vers l'avant pour limiter les virages.",
+        "Après environ 45 minutes, descendez à l'arrêt de Bomerano, à côté du Ristorante Jerla. Traversez la route et suivez la petite rue en descente vers la piazza.",
+        "Poursuivez sur la gauche en traversant la place, puis suivez les panneaux \\\\\" Sentiero degli Dei \\\\\" jusqu'au panneau d'information du départ de sentier."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/12-nav.jpg",
+          "alt": "Side street from Bomerano bus stop descending toward the piazza",
+          "caption": "2. Traversez la route depuis l'arrêt de bus et suivez cette petite rue en descente vers la piazza"
+        }
+      ]
+    },
+    {
+      "id": "hike",
+      "title": "Randonner de Bomerano à Nocelle",
+      "body": [
+        "Le sentier ondule sur environ 6 kilomètres. Attendez-vous à des marches en pierre, des corniches étroites et des balcons spectaculaires sur la côte.",
+        "Faites des pauses aux belvédères signalés et ramenez tous vos déchets. Respectez les agriculteurs locaux et restez sur l'itinéraire balisé.",
+        "Lorsque le chemin de terre rejoint la passerelle en béton menant à Nocelle, la randonnée est terminée."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/13-nav.jpg",
+          "alt": "Town square (piazza) in Bomerano with left-hand route markers",
+          "caption": "3. Poursuivez sur la gauche à travers la piazza en suivant les panneaux 'Sentiero degli Dei'"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/14-nav.jpg",
+          "alt": "Wooden steps ascending along the hiking trail ridge",
+          "caption": "4. Après avoir traversé la piazza, cherchez le panneau d'information et tournez à gauche ; c'est ici que commence le sentier. Suivez le chemin jusqu'à une section avec des marches en bois."
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/15-nav.jpg",
+          "alt": "Concrete paved walkway marking entry into Nocelle village",
+          "caption": "Lorsque le chemin de terre rejoint cette passerelle en béton, vous avez atteint Nocelle"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/16-nav.jpg",
+          "alt": "Nocelle village navigation map showing route to bus stop and staircase warning",
+          "caption": "Plan de Nocelle — en traversant le village, assurez-vous de tourner à droite à la bifurcation pour atteindre l'arrêt de bus ; évitez l'escalier de 1 700 marches vers Positano à tout prix !"
+        }
+      ]
+    },
+    {
+      "id": "nocelle",
+      "title": "Traverser Nocelle",
+      "body": [
+        "Suivez la voie pavée vers le village en restant sur la droite à la première bifurcation pour éviter l'escalier de 1 700 marches vers Positano.",
+        "Marchez environ 175 mètres jusqu'à l'arrêt de bus près du petit parking. Le kiosque près de l'église vend des boissons fraîches en saison.",
+        "Arrivez au moins 10 minutes en avance ; lorsque le parking est plein, les bus s'arrêtent parfois juste avant l'abri."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/17-nav.jpg",
+          "alt": "Directional signpost in Nocelle showing the stairs-to-Positano option to avoid",
+          "caption": "CRITIQUE : NE suivez PAS les panneaux vers 'Positano' en descendant les escaliers — tournez plutôt à droite ici"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/18-nav.jpg",
+          "alt": "Stone steps ascending through Nocelle streets toward the bus stop",
+          "caption": "Montez ces marches sur environ 175 mètres pour atteindre l'arrêt de bus au parking"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/19-nav.jpg",
+          "alt": "Bus stop arrival point in Nocelle",
+          "caption": "Vous avez atteint l'arrêt de bus."
+        }
+      ]
+    },
+    {
+      "id": "return",
+      "title": "Revenir à Positano",
+      "body": [
+        "Montez dans le bus Montepertuso/Nocelle en direction de Positano et descendez à Bar Internazionale ou Chiesa Nuova pour réduire la marche jusqu'à l'auberge.",
+        "Si vous préférez redescendre à pied par la route, comptez 45 à 60 minutes et restez vigilant aux virages fréquentés.",
+        "Une fois de retour en ville, offrez-vous une granita ou un déjeuner tardif — le plus dur de la journée est derrière vous."
+      ]
+    },
+    {
+      "id": "journey-planner",
+      "title": "Exemples d'horaires",
+      "body": [
+        "06 h 30 départ de l'auberge → 07 h 10 ferry → 08 h 40 arrivée à Bomerano → randonnée de 3 h → 12 h 30 bus retour → 13 h 00 arrivée à Positano.",
+        "Un départ à 08 h 00 tient encore avant le déjeuner : 08 h 00 quitter l'auberge, 08 h 40 ferry, 10 h 15 arrivée au sentier, 14 h 30 retour en ville.",
+        "Des départs plus tardifs fonctionnent en basse saison, mais vérifiez toujours le dernier bus de Nocelle avant d'opter pour un départ d'après-midi."
+      ]
+    }
+  ],
+  "essentialsTitle": "Indispensables",
+  "essentials": [
+    "Billet de ferry Positano ⇄ Amalfi et trois billets de bus SITA par personne (Amalfi → Bomerano, Nocelle → Positano, plus un).",
+    "1,5 à 2 litres d'eau, encas ou panino, crème solaire et chapeau.",
+    "Chaussures confortables avec bonne adhérence pour les marches irrégulières et les corniches rocheuses."
+  ],
+  "typicalCostsTitle": "Coûts indicatifs",
+  "typicalCosts": [
+    "Ferry Positano → Amalfi : 12–16 € l'aller selon l'opérateur et la saison.",
+    "Bus SITA Amalfi → Bomerano et Nocelle → Positano : 2–4 € par trajet si achetés à l'avance.",
+    "En-cas ou panini pris au mini-market en route : 4–8 €."
+  ],
+  "tipsTitle": "Conseils de parcours",
+  "tips": [
+    "Partez tôt pour éviter la chaleur et garantir des places sur le ferry — les premiers départs sont les plus calmes.",
+    "Achetez un panino à emporter au deuxième mini-market de Viale Pasitea pour un déjeuner économique sur le sentier.",
+    "Gardez vos billets de ferry et de bus ensemble dans une pochette étanche pour les présenter rapidement à l'embarquement."
+  ],
+  "warningsTitle": "À surveiller",
+  "warnings": [
+    "Ne suivez pas les escaliers indiqués vers Positano depuis Nocelle sauf si vous voulez descendre 1 700 marches et arriver loin de l'auberge.",
+    "La mer agitée peut annuler les ferries sans préavis — vérifiez les conditions au port et basculez sur l'itinéraire tout-bus si besoin.",
+    "Les après-midis d'été sont très exposés ; si vous manquez le ferry du matin, privilégiez un départ en fin de journée plutôt qu'une marche sous le soleil au zénith."
+  ],
+  "steps": [
+    {
+      "name": "Rejoindre le port",
+      "text": "Quittez l'Hostel Brikette, achetez les billets de bus au Bar Internazionale et descendez vers Spiaggia Grande."
+    },
+    {
+      "name": "Acheter les billets de ferry",
+      "text": "Choisissez le prochain départ Travelmar ou Lucibello pour Amalfi et faites la queue 15 minutes à l'avance."
+    },
+    {
+      "name": "Traverser vers Amalfi",
+      "text": "Profitez de la traversée de 25 minutes et dirigez-vous directement vers les quais de bus à côté du port."
+    },
+    {
+      "name": "Bus pour Bomerano",
+      "text": "Prenez le bus SITA marqué Agerola/Bomerano et suivez la rue latérale jusqu'au départ du sentier."
+    },
+    {
+      "name": "Randonner jusqu'à Nocelle",
+      "text": "Suivez les balises du Sentiero degli Dei sur la crête jusqu'à l'arrivée de la passerelle en béton."
+    },
+    {
+      "name": "Retourner à Positano",
+      "text": "Attrapez le bus de Nocelle vers le Bar Internazionale ou redescendez par la route si les bus sont pleins."
+    }
+  ],
+  "faqsTitle": "FAQ",
+  "faqs": [
+    {
+      "q": "Où acheter les billets de transport ?",
+      "a": [
+        "Achetez les billets de bus SITA au Bar Internazionale avant de descendre, puis prenez votre billet de ferry directement auprès de Lucibello ou Travelmar aux guichets du port."
+      ]
+    },
+    {
+      "q": "Combien de temps prévoir à Amalfi ?",
+      "a": [
+        "Prévoyez une marge de 20 à 30 minutes pour passer du ferry au bus d'Agerola. Profitez-en pour un café rapide, mais restez en vue des quais afin de ne pas manquer l'embarquement."
+      ]
+    },
+    {
+      "q": "Que faire si le ferry est annulé ?",
+      "a": [
+        "Vérifiez la situation au port. Si les bateaux sont suspendus, basculez sur l'itinéraire en bus via Amalfi — une fois à Bomerano, le sentier reste identique."
+      ]
+    }
+  ],
+  "toc": {
+    "onThisPage": "Sur cette page",
+    "essentials": "Indispensables",
+    "costs": "Coûts indicatifs",
+    "tips": "Conseils de parcours",
+    "warnings": "À surveiller",
+    "faqs": "FAQ"
+  }
+}

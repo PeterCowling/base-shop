@@ -1,0 +1,93 @@
+{
+  "seo": {
+    "title": "Rejseguide til Ravello",
+    "description": "Villaer, koncerter og haver — med transport fra Amalfi/Positano."
+  },
+  "linkLabel": "Rejseguide til Ravello",
+  "intro": [
+    "Ravello ligger højt over Amalfi med villahaver, klassiske koncerter og vidstrakte terrasser. Brug guiden her til at planlægge et glidende besøg."
+  ],
+  "sections": [
+    {
+      "id": "villas",
+      "title": "Villaer og haver",
+      "body": [
+        "Villa Rufolo byder på panoramiske terrasser og den ikoniske koncertscene, der svæver ud over havet.",
+        "Villa Cimbrones Infinity-terrasse er et must til fotos; kom tidligt for at undgå kø på den smalle gangbro."
+      ]
+    },
+    {
+      "id": "music",
+      "title": "Musik og events",
+      "body": [
+        "Tjek kalenderen for Ravello Festival (juni–september) for aften-koncerter; billetter koster €25–€70 afhængigt af pladser.",
+        "Medbring et let ekstra lag – natteluften i 365 meters højde kan føles kølig, selv om sommeren."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Sådan kommer du dertil",
+      "body": [
+        "Tag SITA-bussen fra Amalfi (25 minutter op ad bakke), eller del en taxi, hvis du vil være fremme på cirka 15 minutter.",
+        "Sæt ekstra tid af til returbussen; eftermiddagsafgange fyldes hurtigt, så stil dig i kø 20 minutter før."
+      ]
+    }
+  ],
+  "tips": [
+    "Brug komfortable sko – Ravellos gader er brostensbelagte og har blide stigninger.",
+    "Kombinér Ravello med et stop i Minori for kager fra Sal De Riso på vej tilbage til Positano."
+  ],
+  "faqs": [
+    {
+      "q": "Kan jeg gå til Ravello fra Amalfi?",
+      "a": [
+        "Det er en stejl 5 km opstigning via gamle trapper. Gør det kun, hvis du er i form, starter tidligt og har vand med."
+      ]
+    },
+    {
+      "q": "Skal jeg forudbestille billetter til villaerne?",
+      "a": [
+        "Billetter sælges ved indgangen. I højsæsonens eftermiddage kan der være korte køer, så sigt efter morgenbesøg for at glide igennem."
+      ]
+    }
+  ],
+  "fallback": {
+    "toc": [
+      {
+        "href": "#villas",
+        "label": "Villaer og haver"
+      },
+      {
+        "href": "#concerts",
+        "label": "Koncerter"
+      },
+      {
+        "href": "#getting",
+        "label": "Sådan kommer du dertil"
+      }
+    ],
+    "sections": [
+      {
+        "id": "villas",
+        "title": "Villaer og haver",
+        "body": [
+          "Villa Rufolo og Villa Cimbrone giver ikoniske udsigter. Kom tidligt for at undgå køer."
+        ]
+      },
+      {
+        "id": "concerts",
+        "title": "Koncerter",
+        "body": [
+          "Ravello Festival kører om sommeren – tjek den officielle programliste, og klæd dig varmt til blæsende aftener."
+        ]
+      },
+      {
+        "id": "getting",
+        "title": "Sådan kommer du dertil",
+        "body": [
+          "Bus fra Amalfi, men returer bliver sjældnere sent. Sæt ekstra tid af til aftenturen tilbage."
+        ]
+      }
+    ]
+  }
+}

@@ -3,7 +3,7 @@
 /* eslint-disable ds/no-hardcoded-copy, max-lines-per-function -- PUB-05 pre-existing */
 // src/app/[lang]/how-to-get-here/HowToGetHereIndexContent.tsx
 // Client component for how-to-get-here index page
-import { Fragment, memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import dynamic from "next/dynamic";
 
@@ -223,7 +223,7 @@ function HowToGetHereIndexContent({ lang }: Props) {
   })();
 
   return (
-    <Fragment>
+    <div className="overflow-x-clip">
       {/* Header */}
       <HeaderSection
         header={content.header}
@@ -303,7 +303,7 @@ function HowToGetHereIndexContent({ lang }: Props) {
         filtersHelper={content.filtersHelper}
         filters={filtersState}
       />
-    </Fragment>
+    </div>
   );
 }
 

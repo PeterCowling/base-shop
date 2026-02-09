@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Transport przy ograniczonym budżecie",
+    "description": "Jak tanio podróżować po Wybrzeżu Amalfi: bilety łączone, karnety i sprytne przesiadki."
+  },
+  "linkLabel": "Transport przy ograniczonym budżecie",
+  "intro": [
+    "Obniżaj koszty transportu, mieszając karnety, odjazdy poza szczytem i współdzielone transfery, gdy się opłaca."
+  ],
+  "sections": [
+    {
+      "id": "passes",
+      "title": "Wybierz odpowiedni karnet",
+      "body": [
+        "Skorzystaj z jednodniowego karnetu UNICO Costiera (12,40 €) na nieograniczone autobusy SITA między Sorrento a Salerno — skasuj przy pierwszym kursie i miej bilet pod ręką dla kontrolerów.",
+        "Jeśli planujesz dwa lub więcej rejsów promem dziennie, porównaj bilety łączone od operatorów takich jak Travelmar; oferują kursy Amalfi i Positano ze zniżką."
+      ]
+    },
+    {
+      "id": "combo-routes",
+      "title": "Combine modes smartly",
+      "body": [
+        "Połącz jeden rejs promem z autobusami, aby zaoszczędzić pieniądze, ale nadal ciesz się widokami — wypłyń rano i powróć autobusem, gdy ceny wzrosną.",
+        "Udostępniaj taksówki w przypadku powrotów późno w nocy, gdy autobusy się zatrzymują; Podział 80 euro na cztery części może skrócić godziny oczekiwania na kolejną transzę."
+      ]
+    },
+    {
+      "id": "advance",
+      "title": "Buy ahead when it helps",
+      "body": [
+        "Zarezerwuj bilety Trenitalia lub Italo z Rzymu/Neapolu wcześniej, aby uzyskać najniższe ceny; regionalne dodatki do Sorrento pozostają w stałej cenie.",
+        "Zarezerwuj transfer lotniskowy (Curreri, Pintour) online, aby zarezerwować miejsca w weekendy w godzinach szczytu."
+      ]
+    },
+    {
+      "id": "last-mile",
+      "title": "Last-mile savings",
+      "body": [
+        "Po przyjeździe jedź autobusem SITA do Chiesa Nuova i schodź pieszo zamiast korzystać z bagażowego — przy lekkim bagażu to około 15 minut.",
+        "Skorzystaj z przechowalni przy przystani zamiast prywatnego transferu, jeśli masz późne wymeldowanie — 7–10 € to mniej niż dodatkowa taksówka."
+      ]
+    }
+  ],
+  "tips": [
+    "Podróżuj przed 8:30 lub po 19:00 — autobusy są spokojniejsze i łatwiej wsiąść.",
+    "Zrób zrzut ekranu lub wydruku biletu; Wi-Fi może paść w chwili, gdy wsiadają kontrolerzy."
+  ],
+  "faqs": [
+    {
+      "q": "Czy karnety autobusowe opłacają się poza sezonem?",
+      "a": [
+        "Tak, jeśli robisz trzy lub więcej kursów dziennie. W przeciwnym razie kup pojedyncze bilety — rozkłady są rzadsze, ale ceny ciągle niskie."
+      ]
+    },
+    {
+      "q": "Czy trzeba kasować bilety promowe?",
+      "a": [
+        "Większość operatorów skanuje kody QR, ale miej wydrukowaną kopię na wypadek, gdyby mokra pogoda utrudniła odczyt."
+      ]
+    }
+  ]
+}

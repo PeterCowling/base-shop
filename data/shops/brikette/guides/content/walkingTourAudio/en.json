@@ -1,0 +1,65 @@
+{
+  "seo": {
+    "title": "Free Walking Tour Audio: Positano",
+    "description": "DIY audio loop from Chiesa Nuova to the beach with highlights."
+  },
+  "linkLabel": "Free Audio Walking Tour: Discover Positano's Hidden Stories",
+  "intro": [
+    "Download our free Positano audio walk: start at Chiesa Nuova, weave through the old town, and finish on Spiaggia Grande.",
+    "Follow the route and listening tips below, and save the files over Wi-Fi before you step outside."
+  ],
+  "tocTitle": "On this page",
+  "toc": [
+    {
+      "href": "#route",
+      "label": "Route"
+    },
+    {
+      "href": "#listen",
+      "label": "How to listen"
+    },
+    {
+      "href": "#faqs",
+      "label": "FAQs"
+    }
+  ],
+  "sections": [
+    {
+      "id": "route",
+      "title": "Route",
+      "body": [
+        "Start at the Chiesa Nuova bus stop → pause at the Via Pasitea viewpoints → wind through the alleys → arrive at Spiaggia Grande.",
+        "Take your time on terraces, but stay mindful of locals and porters using the staircases for deliveries."
+      ]
+    },
+    {
+      "id": "listen",
+      "title": "How to listen",
+      "body": [
+        "Download the audio on hostel Wi-Fi or stream at known hotspots along the route.",
+        "Keep volume low on stairs and pop one earbud out when crossing roads or passing other walkers."
+      ]
+    }
+  ],
+  "faqHeading": "FAQs",
+  "faqs": [
+    {
+      "q": "Is the loop steep?",
+      "a": [
+        "Yes — expect stairs. Reverse the loop or use the SITA bus uphill if your knees need a break."
+      ]
+    },
+    {
+      "q": "Can I listen offline?",
+      "a": [
+        "Absolutely. Save the files to your phone so you’re not relying on patchy mobile data in the alleys."
+      ]
+    },
+    {
+      "q": "How long does it take?",
+      "a": [
+        "Plan for 45–60 minutes including photo stops and terrace breaks."
+      ]
+    }
+  ]
+}

@@ -30,7 +30,7 @@ export function HeaderSection({
       />
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 relative items-start">
         <div>
-          <span className="tracking-eyebrow rounded-full border border-brand-outline/10 bg-brand-surface/70 px-3 py-1 text-xs font-semibold uppercase text-brand-secondary shadow-sm backdrop-blur dark:border-brand-outline/30 dark:bg-brand-surface/50 dark:text-brand-text/80">
+          <span className="tracking-eyebrow rounded-full border border-brand-outline/10 bg-brand-surface/70 px-3 py-1 text-xs font-semibold uppercase text-brand-primary shadow-sm backdrop-blur dark:border-brand-outline/30 dark:bg-brand-surface/50 dark:text-brand-text/80">
             {header.eyebrow}
           </span>
           <h1 className="mt-4 text-4xl font-bold tracking-tight text-brand-heading dark:text-brand-text">

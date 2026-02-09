@@ -1,0 +1,61 @@
+{
+  "seo": {
+    "title": "Horarios de ferry para Positano",
+    "description": "Cuándo operan los ferris, cómo consultar horarios en tiempo real, temporada, compañías y consejos para embarcar sin estrés."
+  },
+  "linkLabel": "Horarios de ferry para Positano",
+  "intro": [
+    "Los ferris son estacionales (abril–octubre aprox.). Consulta operadores y llega con antelación en temporada alta."
+  ],
+  "sections": [
+    {
+      "id": "timing",
+      "title": "Temporada y horarios",
+      "body": [
+        "Más salidas en verano; última vuelta variable; revisa el día anterior y el mismo día.",
+        "En meses de media temporada suelen recortar la primera y última salida; confirma el horario la noche anterior."
+      ]
+    },
+    {
+      "id": "operators",
+      "title": "Operadores y consulta",
+      "body": [
+        "Revisa NLG, Travelmar, Alilauro; en verano también agregadores (DirectFerries).",
+        "Haz capturas de los horarios y activa alertas por email/SMS para recibir avisos meteorológicos aunque no tengas datos locales."
+      ]
+    },
+    {
+      "id": "tips",
+      "title": "Consejos rápidos",
+      "body": [
+        "Llega 20–30 minutos antes; en cancelaciones por mar, cambia a bus; para llegar al hostel con escaleras mínimas, considera bus a ‘Chiesa Nuova’.",
+        "Guarda margen antes de la última conexión del día por si tienes que cambiar a bus o taxi cuando el mar se complica."
+      ]
+    }
+  ],
+  "tips": [
+    "Supervisa el parte marítimo: vientos por encima de 20 nudos o oleaje mayor a 1,5 m suelen implicar cancelaciones.",
+    "Si debes cambiar de puerto, consulta los horarios de bus con antelación para enlazar sin estrés."
+  ],
+  "faqs": [
+    {
+      "q": "¿Dónde consulto horarios en vivo?",
+      "a": [
+        "Revisa webs/apps de operadores (Travelmar, NLG, Alilauro) o paneles en los muelles."
+      ]
+    },
+    {
+      "q": "¿Cómo confirmo una cancelación en el día?",
+      "a": [
+        "Actualiza la web o redes sociales del operador y busca avisos impresos en el muelle; el personal también anuncia cambios por megafonía.",
+        "Ten a mano el horario del bus SITA o el contacto de un taxi por si necesitas cambiar de ruta al momento."
+      ]
+    },
+    {
+      "q": "¿Puedo llevar equipaje voluminoso?",
+      "a": [
+        "Sí, aunque puede aplicarse un pequeño suplemento; llega con tiempo para que la tripulación etiquete y estibe las maletas mientras mantienes los objetos de valor contigo."
+      ]
+    }
+  ]
+}

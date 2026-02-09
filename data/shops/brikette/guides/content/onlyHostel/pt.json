@@ -1,0 +1,98 @@
+{
+  "seo": {
+    "title": "Único hostel em Positano: o que esperar (e como economizar)",
+    "description": "Aproveite nossa exclusividade: vistas do terraço, proximidade ao ponto de ônibus, bar e café da manhã — além de dicas de reserva direta para poupar."
+  },
+  "linkLabel": "Único hostel em Positano: o que esperar (e como economizar)",
+  "intro": "Bem-vindo ao único hostel de Positano. Espere ambiente amigável, terraço panorâmico para o café da manhã e uma localização imbatível ao lado da paragem SITA em Chiesa Nuova.",
+  "sections": [
+    {
+      "id": "rooms",
+      "title": "Tipos de quarto e camas",
+      "body": [
+        "Dormitórios acolhem 4–8 pessoas com luzes individuais, tomadas e cacifos — traga cadeado TSA ou compre na receção.",
+        "Quartos privados existem com casa de banho privativa ou partilhada; peça varanda ou vista mar por e-mail, se for importante."
+      ]
+    },
+    {
+      "id": "common-areas",
+      "title": "Áreas comuns e serviços",
+      "body": [
+        "O terraço tem mesas, espreguiçadeiras e tomadas para comer, planear rotas ou curtir o aperitivo ao pôr do sol sem sair da propriedade.",
+        "O bar do átrio serve café, spritz e vinhos locais; o pequeno-almoço sazonal decorre entre ~07:30–10:00 — veja o quadro para o menu diário."
+      ]
+    },
+    {
+      "id": "booking",
+      "title": "Reservas e políticas",
+      "body": [
+        "Reserve direto em hostelbrikette.com para desbloquear a tarifa flexível mais baixa; OTAs cobram mais e têm regras de alteração rígidas.",
+        "Um pequeno sinal garante a cama; cancelamentos são gratuitos até ao prazo publicado — avise a equipa se os planos mudarem para ajustarem a limpeza."
+      ]
+    },
+    {
+      "id": "neighbourhood",
+      "title": "O que há por perto",
+      "body": [
+        "A menos de 2 minutos há minimercado, padaria e a paragem SITA Chiesa Nuova; compre snacks antes do último autocarro.",
+        "Desça a Via Pasitea para restaurantes e gelatarias; conte 10–12 minutos até à Spiaggia Grande pela estrada principal, com escadas mínimas."
+      ]
+    }
+  ],
+  "highlightsTitle": "Destaques",
+  "highlights": [
+    "Terraços com vistas amplas da Costa Amalfitana",
+    "~80 m da paragem de autocarro, sem escadas",
+    "Bar descontraído e pequeno-almoço sazonal",
+    "Dormitórios e privados acessíveis"
+  ],
+  "saveTitle": "Como poupar",
+  "save": [
+    "Reserve direto para melhores tarifas e políticas flexíveis",
+    "Viaje fora dos fins de semana de pico sempre que possível",
+    "Escolha dormitórios e viaje leve para evitar porteiros"
+  ],
+  "toc": {
+    "onThisPage": "Nesta página",
+    "rooms": "Quartos & instalações",
+    "arrival": "Chegar aqui",
+    "etiquette": "Regras & etiqueta",
+    "faqs": "Perguntas frequentes"
+  },
+  "roomsList": [
+    "Terraços comuns com vista panorâmica — café ao nascer do sol e golden hour são favoritos.",
+    "Bar com preços justos e pequeno-almoço sazonal.",
+    "Cacifos nos dormitórios; veja a lista de bagagem.",
+    "Wi-Fi fiável; para pontos de foco consulte cafés para trabalhar."
+  ],
+  "roomsLinks": [
+    "whatToPack",
+    "workCafes"
+  ],
+  "arrivalText": "Estamos a ~80 m da paragem ‘Chiesa Nuova’ sem escadas pelo caminho. Chega de ferry? Considere porteiro ou o autocarro SITA encosta acima.",
+  "arrivalLinks": [
+    "chiesaNuovaArrivals",
+    "ferryDockToBrikette",
+    "ferrySchedules"
+  ],
+  "arrivalRoutesLabel": "Rotas:",
+  "arrivalRoutes": [
+    "naplesPositano",
+    "salernoPositano"
+  ],
+  "etiquetteList": [
+    "Horas de silêncio: seja atento em dormitórios tarde da noite e cedo de manhã.",
+    "Identifique itens no frigorífico; limpe mesas após uso; mantenha áreas comuns acolhedoras.",
+    "Use cacifos para valores; tampões de ouvidos/mascara de dormir recomendados nos dormitórios."
+  ],
+  "faq": [
+    {
+      "q": "Há quartos privados?",
+      "a": "Sim — raros em meses de pico. Reserve cedo para melhores tarifas."
+    },
+    {
+      "q": "Posso chegar tarde?",
+      "a": "Sim — contacte a receção para combinar check-in tardio. Se chegar de ferry tarde, avalie porteiro desde o cais."
+    }
+  ]
+}

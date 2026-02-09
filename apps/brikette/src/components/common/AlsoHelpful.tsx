@@ -6,7 +6,7 @@ import clsx from "clsx";
 
 import { Section } from "@acme/design-system/atoms";
 
-import type { GuideSection } from "@/data/guides.index";
+import { type GuideSection,isGuideLive } from "@/data/guides.index";
 import type { AppLanguage } from "@/i18n.config";
 import { guideHref, type GuideKey } from "@/routes.guides-helpers";
 import type { TFunction } from "@/utils/i18nSafe";
@@ -125,6 +125,10 @@ const FEATURED_CARD_VARIANTS = [
   "dark:hover:bg-brand-secondary/35",
 ] as const;
 
+const STANDARD_TITLE_CLASS =
+  "dark:text-brand-text group-hover:text-brand-primary dark:group-hover:text-brand-secondary";
+const FEATURED_TITLE_CLASS = "group-hover:text-brand-primary dark:group-hover:text-brand-secondary";
+
 type AlsoHelpfulCardProps = {
   href: string;
   ariaLabel: string;
@@ -207,6 +211,7 @@ function AlsoHelpful({
       limit: 3,
     });
   }, [excludeGuide, section, tags]);
+  const liveRelated = useMemo(() => related.filter((key) => isGuideLive(key)), [related]);
 
   const heading = (() => {
     if (!titleKey) {
@@ -240,7 +245,7 @@ function AlsoHelpful({
     return "Book";
   })();
 
-  const hasAny = includeRooms || related.length > 0;
+  const hasAny = includeRooms || liveRelated.length > 0;
   if (!hasAny) return null;
 
   return (
@@ -290,7 +295,7 @@ function AlsoHelpful({
           </div>
 
           <ul className={clsx(GRID_BASE_CLASSES, "gap-4")}>
-            {related.map((key, index) => {
+            {liveRelated.map((key, index) => {
               const label = getGuideLinkLabel(guidesT, guidesEnT, key);
               const labelText = normaliseForAria(label);
               const ctaText = buildSeoCta(exploreCtaPrefix, labelText);
@@ -303,7 +308,7 @@ function AlsoHelpful({
                     ariaLabel={ariaLabel}
                     title={label}
                     ctaText={ctaText}
-                    titleClassName="dark:text-brand-text group-hover:text-brand-primary dark:group-hover:text-brand-secondary"
+                    titleClassName={STANDARD_TITLE_CLASS}
                   />
                 </li>
               );
@@ -329,7 +334,7 @@ function AlsoHelpful({
                     title={roomsLabel}
                     ctaText={roomsCtaText}
                     variant="featured"
-                    titleClassName="group-hover:text-brand-primary dark:group-hover:text-brand-secondary"
+                    titleClassName={FEATURED_TITLE_CLASS}
                   />
                 </li>
               );

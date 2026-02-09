@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Strandhopping på Amalfikusten",
+    "description": "Vilka stränder att kombinera på en dag, tillgångstips och kostnader."
+  },
+  "linkLabel": "Strandhopping på Amalfikusten",
+  "intro": [
+    "Planera en strandhoppardag som balanserar färjeturer, klippiga vyer och tid i sanden."
+  ],
+  "sections": [
+    {
+      "id": "morning",
+      "title": "Morgon: Positano till Fornillo",
+      "body": [
+        "Starta tidigt på Spiaggia Grande för ett snabbt dopp och gå sedan kuststigen till Fornillo senast 09:30 för lugnare vatten.",
+        "Boka solstolar i förväg om du vill ha skugga; annars packa ett lätt parasoll."
+      ]
+    },
+    {
+      "id": "midday",
+      "title": "Mitt på dagen: Amalfi eller Atrani",
+      "body": [
+        "Ta en färja vid sen förmiddag till Amalfi och ät lunch på kajen innan du badar på stadsstranden eller i Atranis lilla vik.",
+        "Lämna väskor i Amalfis bagageförvaring så kan du utforska med fria händer."
+      ]
+    },
+    {
+      "id": "group-tours",
+      "title": "Gruppresor och delade båtar",
+      "body": [
+        "Se vår %LINK:boatTours|guide till båtturer i Positano% om du hellre vill hoppa mellan stränder på en delad båt istället för färjor.",
+        "Operatörer avgår från Positanos huvudbrygga; kom 15 minuter tidigt och bekräfta simstopp i Laurito eller Arienzo vid bokning."
+      ]
+    },
+    {
+      "id": "evening",
+      "title": "Kväll: Solnedgångsbad",
+      "body": [
+        "Avsluta vid Laurito eller Arienzo för gyllene timmens ljus; båda vetter västerut och blir lugnare efter 17:00.",
+        "Ta sista färjan eller boka retur-taxi så slipper du gå uppför i mörker."
+      ]
+    }
+  ],
+  "tips": [
+    "Ha med en snabbtorkande handduk och ombyte så är du bekväm på färjorna.",
+    "Packa snacks och minst 1 L / 34 oz vatten—strandkiosker kan få slut under intensiva dagar."
+  ],
+  "faqs": [
+    {
+      "q": "Behöver jag förboka solstolar?",
+      "a": [
+        "Ja i juli–augusti. Kontakta strandklubbar via WhatsApp dagen innan för att säkra främsta rader."
+      ]
+    },
+    {
+      "q": "Får jag ta med egen mat?",
+      "a": [
+        "De fria avsnitten tillåter oftast picknick. Strandklubbar brukar acceptera små snacks men ser gärna att du köper dryck i deras bar."
+      ]
+    }
+  ]
+}

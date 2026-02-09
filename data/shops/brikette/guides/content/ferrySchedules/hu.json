@@ -1,0 +1,61 @@
+{
+  "seo": {
+    "title": "Positano kompmenetrend",
+    "description": "Mikor járnak a kompok, hol ellenőrizd az élő menetrendet, szezonális különbségek és megállási tippek."
+  },
+  "linkLabel": "Positano kompmenetrend",
+  "intro": [
+    "Kompjáratok Positano és környéke között: hol láthatod az élő indulásokat, hogyan működnek a szezonális menetrendek és hogyan legyen tartalék terved."
+  ],
+  "sections": [
+    {
+      "id": "seasonality",
+      "title": "Mikor járnak a kompok",
+      "body": [
+        "A fő szezon nagyjából április és október között zajlik, a csúcsidőszak május közepétől szeptemberig tart; télen ritkán közlekednek, és az időjárástól függnek.",
+        "Az átmeneti hónapokban a legelső és legutolsó járatok gyakran kiesnek – mindig nézd meg a menetrendet előző este."
+      ]
+    },
+    {
+      "id": "live-updates",
+      "title": "Élő frissítések",
+      "body": [
+        "Használd az üzemeltetők oldalait és alkalmazásait (Travelmar, NLG, Alilauro, Positano Jet) és a kikötői kijelzőket a késések és kapuváltások nyomon követésére.",
+        "Készíts képernyőmentést a menetrendekről, és állíts be email/SMS riasztást, hogy az időjárási figyelmeztetések akkor is eljussanak hozzád, ha nincs olasz SIM-ed."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Jegyek és tartalékidő",
+      "body": [
+        "A csúcsszezonban a kompok órákkal az indulás előtt is betelhetnek – vásárolj online vagy előző napon, és érkezz 30 perccel korábban igazolvánnyal és csomaggal, hogy felcímkézzék.",
+        "Tarts fen a tartalékidőt aznap az utolsó csatlakozás előtt, hogy szükség esetén buszra vagy taxira tudj átállni, ha a tenger felkavarodik."
+      ]
+    }
+  ],
+  "tips": [
+    "Kövesd a tengerészeti előrejelzéseket (20 csomó feletti szél vagy 1,5 méternél magasabb hullám gyakran lemondást jelent).",
+    "Ha váltanod kell kikötőt, nézd meg előre a helyi buszok menetrendjét, hogy a csatlakozás nyugodt maradjon."
+  ],
+  "faqs": [
+    {
+      "q": "Mikor jelennek meg a nyári menetrendek?",
+      "a": [
+        "A legtöbb üzemeltető február és március között jelenti be a csúcsszezon menetrendjét; az őszi frissítések augusztus végén érkeznek."
+      ]
+    },
+    {
+      "q": "Hogyan tudom megerősíteni az aznapi lemondást?",
+      "a": [
+        "Frissítsd az üzemeltető weboldalát vagy közösségi feedjét, és figyeld a nyomtatott értesítéseket a mólónál; a személyzet hangosan is bejelenti a változásokat.",
+        "Legyen kéznél a SITA busz menetrendje vagy egy taxi elérhetősége arra az esetre, ha azonnal másik útvonalra kell váltanod."
+      ]
+    },
+    {
+      "q": "Utazhatok nagy csomaggal?",
+      "a": [
+        "Igen, de a túlméretes csomagokra kis felárat számíthatnak; érkezz hamar, hogy a személyzet felcímkézhesse és biztonságosan elhelyezhesse, miközben az értéket magadnál tartod."
+      ]
+    }
+  ]
+}

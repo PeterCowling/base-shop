@@ -1,0 +1,70 @@
+{
+  "seo": {
+    "title": "Porady dla osób odwiedzających Positano po raz pierwszy",
+    "description": "Najważniejsze wskazówki dotyczące dojazdu, etykiety, pakowania i unikania pułapek — z myślą o gościach hostelu."
+  },
+  "linkLabel": "Porady dla osób odwiedzających Positano po raz pierwszy",
+  "intro": [
+    "Pierwszy raz w Positano? Zebraliśmy wskazówki dotyczące dojazdu, bagażu, płatności i łączności, by ograniczyć stres."
+  ],
+  "sections": [
+    {
+      "id": "arrivals",
+      "title": "Sprytne przyjazdy",
+      "body": [
+        "Gdy to możliwe, rezerwuj z wyprzedzeniem odcinki pociąg + autobus lub prom; poranne połączenia wygrywają z upałem i kolejkami.",
+        "Masz ciężkie walizki? Połącz autobus SITA do Chiesa Nuova z porterem z mola, żeby najstromsze schody pokonał za Ciebie."
+      ]
+    },
+    {
+      "id": "bags",
+      "title": "Bagaż i schody",
+      "body": [
+        "Pakuj się lekko w miękkie torby lub plecaki, które poradzą sobie z wąskimi schodami i bagażnikami shuttle.",
+        "Przyjeżdżasz wcześnie? Skorzystaj z przechowalni przy Via dei Mulini, żeby zwiedzać bez bagażu do czasu zameldowania."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Timing i rezerwacje",
+      "body": [
+        "Plażowanie i długie spacery planuj przed 10:00 lub po 16:00, kiedy jest chłodniej na ulicach i w transporcie.",
+        "Restauracje, rejsy łodzią i shuttle na Ścieżkę Bogów rezerwuj co najmniej dzień wcześniej w szczytowym sezonie."
+      ]
+    },
+    {
+      "id": "payments",
+      "title": "Płatności i gotówka",
+      "body": [
+        "Karty są powszechnie akceptowane, ale wiele kawiarni i tabacchi ma minimalny limit — miej przy sobie banknoty 5–10 €.",
+        "Bankomaty działają, lecz prowizje się różnią; wypłać jednorazowo średnią kwotę i rozdziel gotówkę po kieszeniach."
+      ]
+    },
+    {
+      "id": "connectivity",
+      "title": "Łączność i zapasowe rozwiązania",
+      "body": [
+        "Kup włoską eSIM (TIM/Vodafone) lub upewnij się, że masz roaming; najlepszy zasięg jest na wyższych partiach miasteczka.",
+        "Pobierz offline mapy, rozkłady promów i wskazówki do hostelu na wypadek przerw w transmisji danych."
+      ]
+    }
+  ],
+  "tips": [
+    "Zapisz offline rozkłady autobusów/promów i instrukcje dojazdu do hostelu na wypadek braku sygnału.",
+    "Noś butelkę wielokrotnego użytku (ok. 750 ml) i lekką warstwę — dni są gorące, a wieczory na wzgórzach potrafią być wietrzne."
+  ],
+  "faqs": [
+    {
+      "q": "Czy wystarczy bagaż podręczny?",
+      "a": [
+        "Tak — spakuj szybkoschnące ubrania, zaplanuj skorzystanie z prania w hostelu i zabierz mini kosmetyki zgodne z limitami linii lotniczych."
+      ]
+    },
+    {
+      "q": "Czy potrzebuję adaptera?",
+      "a": [
+        "We Włoszech używa się gniazdek 230V typu F/L; jeśli Twoje wtyczki różnią się od standardu UE, zabierz uniwersalny adapter."
+      ]
+    }
+  ]
+}

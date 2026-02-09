@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Interrail/pases de tren para visitar la Costa Amalfitana",
+    "description": "Cómo usar pases ferroviarios para llegar a la costa y detalles del último tramo hasta Positano."
+  },
+  "linkLabel": "Interrail/pases de tren para la Costa Amalfitana",
+  "intro": [
+    "Cómo aprovechar un pase Interrail/Italia para llegar a la Costa Amalfitana: qué líneas tomar, suplementos necesarios y cómo cubrir el último tramo a Positano."
+  ],
+  "sections": [
+    {
+      "id": "routes",
+      "title": "Rutas principales",
+      "body": [
+        "Roma → Nápoles/Salerno en alta velocidad; trenes locales a Sorrento; buses a Positano."
+      ]
+    },
+    {
+      "id": "supplements",
+      "title": "Suplementos y reservas",
+      "body": [
+        "Frecciarossa/Italo suelen requerir reserva de asiento; los trenes regionales no, pero pueden ir llenos."
+      ]
+    },
+    {
+      "id": "last-mile",
+      "title": "Último tramo hasta Positano",
+      "body": [
+        "Desde Nápoles: Circumvesuviana hasta Sorrento y luego bus SITA. Desde Salerno: ferry o bus en temporada."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Compensa un pase?",
+      "a": [
+        "Solo compensa si tomas suficientes trayectos de larga distancia; si no, los billetes punto a punto pueden ser más baratos."
+      ]
+    }
+  ]
+}

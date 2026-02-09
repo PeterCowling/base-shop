@@ -1,0 +1,158 @@
+{
+  "seo": {
+    "title": "Miejsca na Instagram w Positano (bez tłumów)",
+    "description": "Zdjęcia bez tłumów: najlepsze miejscówki i pory dnia dla spokojnych kadrów."
+  },
+  "linkLabel": "Miejsca na Instagram w Positano (bez tłumów)",
+  "intro": [
+    "Zabezpiecz klasyczne kadry Positano, planując lekki sprzęt, kąty i etykietę, żeby nie blokować mieszkańców ani innych podróżnych."
+  ],
+  "sections": [
+    {
+      "id": "classics",
+      "title": "Klasyczne pocztówki",
+      "body": [
+        "Strzelaj ze schodów kościoła Santa Maria Assunta tuż po wschodzie słońca; plaża jest pusta, a kopuła świeci ciepłem.",
+        "Idź na przystań promową, by uchwycić szeroki kąt w kierunku klifu — bądź tam przed 09:00, zanim ustawią się kolejki jednodniowych turystów."
+      ]
+    },
+    {
+      "id": "hidden",
+      "title": "Zaskakujące kąty",
+      "body": [
+        "Wspiąć się na punkt widokowy przy Via Trara Genoino nad Fornillo, by uchwycić warstwowe kadry łodzi i pastelowych domów.",
+        "Wsiądź do lokalnego autobusu do Nocelle, a potem sfotografuj wybrzeże z tarasu Szlaku Bogów; panorama jest nie do pobicia przy czystym niebie."
+      ]
+    },
+    {
+      "id": "sunset",
+      "title": "Golden hour setups",
+      "body": [
+        "Zajmij miejsce na ławkach przy Via Cristoforo Colombo około 45 minut przed zachodem słońca; latem słońce zachodzi za wyspami Li Galli.",
+        "Wybierz Laurito, by złapać sylwetki Positano w konturach skyline'u — schody bywają strome, więc zakładaj antypoślizgowe buty i zabierz latarkę na powrót."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Photo etiquette",
+      "body": [
+        "Trzymaj statywy kompaktowe i odsuń się po zrobieniu ramy, aby klatki schodowe były przejezdne.",
+        "Unikaj dronów w centrum; włoskie przepisy wymagają pozwoleń, a mandaty bywają wysokie, gdy strażnicy zauważą nielegalny lot."
+      ]
+    }
+  ],
+  "tips": [
+    "Zabierz mikrofibrową ściereczkę na zachlapania od morza i rozmazany filtr przeciwsłoneczny na obiektywie.",
+    "Zapisz swoje ulubione kąty offline w Mapach Google; recepcja może zanurzyć się na tarasach i ścieżkach."
+  ],
+  "faqs": [
+    {
+      "q": "Is sunrise or sunset better for photos?",
+      "a": [
+        "Wschód słońca daje pustsze ulice i delikatniejsze światło na Spiaggia Grande; zachody rozświetlają klif od zachodu, ale przyciągają więcej ludzi."
+      ]
+    },
+    {
+      "q": "Czy mogę pozować na hotelowych tarasach, jeśli nie jestem gościem?",
+      "a": [
+        "Nie — tarasy są prywatne. Zarezerwuj stolik w restauracji, jeśli chcesz mieć tę perspektywę, i zapytaj obsługę przed ustawieniem sprzętu."
+      ]
+    }
+  ],
+  "fallback": {
+    "intro": "Positano fotografuje się praktycznie z każdej perspektywy, lecz najpopularniejsze miejsca są zajęte przez większość dnia. Oto jak uchwycić klasyczne widoki bez kolejek i gdzie szukać mniej znanych kadrów.",
+    "toc": [
+      {
+        "href": "#classics",
+        "label": "The classics (timing matters)"
+      },
+      {
+        "href": "#alternatives",
+        "label": "Underrated alternatives"
+      },
+      {
+        "href": "#sunset",
+        "label": "Sunset choices"
+      },
+      {
+        "href": "#etiquette",
+        "label": "Etiquette & local tips"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQs"
+      }
+    ],
+    "classics": {
+      "heading": "Klasyczne miejsca (czas ma znaczenie)",
+      "items": [
+        {
+          "title": "Spiaggia Grande",
+          "description": "Przybądź o wschodzie słońca, aby zobaczyć puste doki i spokojną wodę; unikaj porannych kolejek."
+        },
+        {
+          "title": "Fornillo path",
+          "description": "Łagodna nadbrzeżna ścieżka z warstwowym widokiem na klif; najlepiej wczesnym rankiem lub zaraz po zachodzie."
+        },
+        {
+          "title": "Via Pasitea bends",
+          "description": "Podwyższone zakręty dają pocztówkową perspektywę bez tłumów — pozostań z dala od ruchu i nie stój na jezdni."
+        }
+      ]
+    },
+    "alternatives": {
+      "heading": "Niedoceniane alternatywy",
+      "items": [
+        {
+          "title": "Chiesa Nuova terraces",
+          "description": "Złota godzina nad Fornillo; minimalne tłumy i krótki spacer od hostelu."
+        },
+        {
+          "link": {
+            "guideKey": "pathOfTheGods"
+          },
+          "description": "Linie grzbietów robią wrażenie, światło jest najlepsze rano."
+        },
+        {
+          "link": {
+            "guideKey": "sunsetViewpoints"
+          },
+          "description": "Lista miejsc do zróżnicowanych kompozycji."
+        }
+      ]
+    },
+    "sunset": {
+      "heading": "Miejsca na zachód słońca",
+      "paragraphs": [
+        "By uniknąć tłumów podczas złotej godziny, wybierz górne zjazdy z Via Pasitea lub tarasy przy Chiesa Nuova.",
+        "Jeśli wolisz sylwetki na plaży, przyjedź do Fornillo 30–45 minut przed zachodem słońca."
+      ]
+    },
+    "etiquette": {
+      "heading": "Etykieta i lokalne wskazówki",
+      "items": [
+        "Nie blokuj wąskich schodów ani dróg; oddaj strzał i odsuń się.",
+        "Uszanuj prywatną własność i nie wspinaj się na murki lub dachy.",
+        "Poza szczytem używaj małego statywu; unikaj ruchliwych ścieżek w południe."
+      ]
+    },
+    "faqs": {
+      "heading": "Najczęściej zadawane pytania",
+      "items": [
+        {
+          "summary": "What’s the best time for photos?",
+          "body": "Wschód słońca w przypadku bardziej pustych scen; złota godzina dla ciepłych tonów i delikatniejszych cieni."
+        }
+      ]
+    },
+    "drone": {
+      "summary": "Czy potrzebuję pozwolenia na drona?",
+      "body": "Włochy mają surowe zasady dotyczące dronów i wiele stref zakazu lotów. Sprawdź wskazówki ENAC i lokalne regulacje; unikaj lotów nad tłumami."
+    },
+    "galleryAlt": [
+      "Positano from above",
+      "Coastal panorama"
+    ],
+    "galleryFallbackAlt": "Malowniczy widok na wybrzeże Positano"
+  }
+}

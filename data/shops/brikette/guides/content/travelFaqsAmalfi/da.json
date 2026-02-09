@@ -1,0 +1,66 @@
+{
+  "seo": {
+    "title": "Ofte stillede rejsespørgsmål om Amalfikysten",
+    "description": "Hurtige svar på spørgsmål om transport, økonomi, sikkerhed og sæson."
+  },
+  "linkLabel": "Ofte stillede rejsespørgsmål om Amalfikysten",
+  "intro": [
+    "Hurtige svar på logistik langs Amalfikysten: transport, reservationer, budgetter og alternativer til regnvejrsdage."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Transport – det vigtigste",
+      "body": [
+        "Tjek officielle bus- og færgetider aftenen før, og læg 30 minutters buffer ind for skift i højsæsonen.",
+        "Få taxinumre fra dit overnatningssted til sene hjemture, så du har en backup, hvis den sidste bus er fuld."
+      ]
+    },
+    {
+      "id": "booking",
+      "title": "Booking og budget",
+      "body": [
+        "Reserver restauranter, strandklubber og ture mindst 24 timer i forvejen om sommeren; nogle beder om et lille kortdepositum.",
+        "Vælg fleksible priser eller rejseforsikring, så vind eller høj sø ikke vælter budgettet, når planer ændres."
+      ]
+    },
+    {
+      "id": "weather",
+      "title": "Vejr og plan B",
+      "body": [
+        "Skift til indendørs oplevelser som MAR Positano, papir-museet i Amalfi eller en dagsudflugt med tog til Napoli/Salerno, hvis det regner.",
+        "Bliver havet uroligt, så brug busser eller delte taxaer, og tjek for stenfald eller vejafspærringer på SS163, før du kører."
+      ]
+    }
+  ],
+  "tips": [
+    "Gem alarmnumre offline (112 og kystvagten 1530) sammen med kontaktinfo til dit overnatningssted.",
+    "Køb busbilletter hos tabacchi eller online på forhånd; chauffører sælger sjældent billetter, og kontrollører laver stikprøver."
+  ],
+  "faqs": [
+    {
+      "q": "Hvornår sejler de sidste færger?",
+      "a": [
+        "Om sommeren sejler den sidste Positano ↔ Amalfi-afgang normalt omkring kl. 20; i forår/efterår nærmere kl. 18 – bekræft aftenen før."
+      ]
+    },
+    {
+      "q": "Skal jeg reservere restauranter eller strandklubber?",
+      "a": [
+        "Ja fra juni til september: book mindst en dag i forvejen, og en uge i forvejen til weekendbesøg på strandklubber."
+      ]
+    },
+    {
+      "q": "Hvad gør jeg, hvis det regner hele dagen?",
+      "a": [
+        "Besøg museer, tag et madlavningskursus eller hop på toget til Napoli/Salerno; medbring en let regnjakke til transporten."
+      ]
+    },
+    {
+      "q": "Er hæveautomater pålidelige?",
+      "a": [
+        "Større byer har hæveautomater, men gebyrerne varierer – hæv et mellemstort beløb ad gangen og gem små sedler til busser og caféer."
+      ]
+    }
+  ]
+}

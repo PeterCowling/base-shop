@@ -1,0 +1,44 @@
+{
+  "seo": {
+    "title": "Juridisk information og politikker",
+    "description": "Læs om juridiske vilkår, ansvarsbegrænsning, gældende lov, brug af website‑indhold samt retningslinjer for sundhed og sikkerhed."
+  },
+  "linkLabel": "Juridisk information og politikker",
+  "sections": [
+    {
+      "id": "modificationOfTerms",
+      "title": "Ændringer af vilkårene",
+      "body": [
+        "Disse vilkår og betingelser udgør hele aftalen mellem dig og Positano Hostel og erstatter alle tidligere løfter eller forståelser. Vi kan til enhver tid opdatere eller ændre vilkårene, og den nye version gælder, så snart den offentliggøres online."
+      ]
+    },
+    {
+      "id": "scopeOfLiability",
+      "title": "Vores ansvarsområde",
+      "body": [
+        "Vores ansvar over for dig omfatter kun de ydelser og elementer, der er nævnt i disse vilkår. Eventuel kompensation er begrænset til det samlede beløb, du har betalt for din booking. Vi er ikke ansvarlige for indirekte eller økonomiske tab som f.eks. fortjeneste, goodwill eller mistede muligheder – heller ikke ved uagtsomhed eller force majeure. Du kan bruge sikre skabe til værdigenstande, men vi kan ikke påtage os økonomisk ansvar for genstande, der opbevares dér, og vi kan flytte ejendele under rutinemæssig rengøring uden varsel."
+      ]
+    },
+    {
+      "id": "governingLaw",
+      "title": "Gældende lov og jurisdiktion",
+      "body": [
+        "Dit ophold – og disse vilkår – er udelukkende underlagt italiensk lovgivning. Eventuelle tvister skal indbringes for de italienske domstole."
+      ]
+    },
+    {
+      "id": "websiteInformation",
+      "title": "Website‑information og brug af indhold",
+      "body": [
+        "Vi gør vores bedste for at holde websitet korrekt, men fejl kan forekomme, og detaljer kan ændre sig uden varsel. Fotos viser den generelle stil på vores faciliteter og afspejler ikke nødvendigvis præcise indretninger eller features. Alt indhold (tekst, billeder, varemærker) tilhører Positano Hostel og må ikke bruges uden skriftlig tilladelse. Eksterne links gives for nemheds skyld; vi påtager os intet ansvar for deres indhold. Læs venligst vores privatlivspolitik for at se, hvordan vi behandler dine data."
+      ]
+    },
+    {
+      "id": "healthAndSafetyPolicy",
+      "title": "Sundheds‑ og sikkerhedspolitik",
+      "body": [
+        "Af hensyn til alles sikkerhed bedes du informere os, hvis du for nylig har været udsat for en smitsom sygdom, herunder influenza eller lignende virus. Forudbetalte, ikke-refunderbare reservationer forbliver ikke-refunderbare i sådanne tilfælde, så vi anbefaler kraftigt en rejseforsikring, der dækker sundhedsrelaterede ændringer i dine planer."
+      ]
+    }
+  ]
+}

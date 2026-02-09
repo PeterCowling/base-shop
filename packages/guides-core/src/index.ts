@@ -2,6 +2,12 @@ export type SlugsByKey<Lang extends string, Key extends string> = Readonly<
   Record<Key, Readonly<Partial<Record<Lang, string>>>>
 >;
 
+export {
+  extractStringsFromContent,
+  listJsonFiles,
+  readJson,
+} from "./fsContent";
+
 export interface GuidesCoreConfig<Lang extends string, Key extends string> {
   baseUrl: string;
   keys: readonly Key[];

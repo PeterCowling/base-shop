@@ -1,0 +1,67 @@
+{
+  "seo": {
+    "title": "Offbeat Amalfi Coast Villages",
+    "description": "Cetara, Minori/Maiori, Atrani, Vietri, Furore – encantos mais silenciosos."
+  },
+  "linkLabel": "Vilarejos pouco conhecidos na Costa Amalfitana",
+  "intro": [
+    "Cinco vilas discretas no Amalfi worth a visita, com dicas de acesso para cada uma."
+  ],
+  "tocTitle": "Nesta página",
+  "sections": [
+    {
+      "id": "cetara",
+      "title": "Cetara",
+      "body": [
+        "Tradição das anchovas e praia tranquila com barcos de pesca em atividade.",
+        "Chegue de autocarro SITA ou ferries sazonais desde Amalfi ou Salerno."
+      ]
+    },
+    {
+      "id": "minori",
+      "title": "Minori/Maiori",
+      "body": [
+        "Passeios planos à beira-mar e pastelarias famosas para ritmo mais calmo.",
+        "Vá de autocarro ou ferry; combine com o trilho do limão entre as duas."
+      ]
+    },
+    {
+      "id": "atrani",
+      "title": "Atrani",
+      "body": [
+        "Pequena praça charmosa a leste de Amalfi com ruelas e acesso à praia.",
+        "Caminhe desde Amalfi em minutos ou apanhe um autocarro local."
+      ]
+    },
+    {
+      "id": "vietri",
+      "title": "Vietri sul Mare",
+      "body": [
+        "Capital da cerâmica perto de Salerno, com oficinas ao longo das ruas.",
+        "Apanhe comboio até Salerno e depois autocarro curto ou ferry."
+      ]
+    },
+    {
+      "id": "furore",
+      "title": "Furore",
+      "body": [
+        "Fiorde dramático com pouca areia — chegue cedo para fotos sem multidões.",
+        "Use autocarros SITA rumo a Amalfi; no verão alguns ferries param nas proximidades."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Posso visitar várias num só dia?",
+      "a": [
+        "Sim — ligue Cetara, Vietri e Minori de ferry ou autocarro. Comece cedo e acompanhe os horários de regresso."
+      ]
+    },
+    {
+      "q": "As vilas pequenas aceitam cartão?",
+      "a": [
+        "Tenha numerário para cafés e quiosques; muitos mantêm mínimos de 10 € ou funcionam só com dinheiro."
+      ]
+    }
+  ]
+}

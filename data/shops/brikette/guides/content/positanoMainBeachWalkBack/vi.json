@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Đi bộ về Hostel Brikette từ Spiaggia Grande",
+    "description": "Đi theo các điểm kiểm tra cầu thang của nhà trọ để leo lên khoảng 30–45 phút."
+  },
+  "linkLabel": "Walk back from Positano's main beach",
+  "intro": [
+    "Chuyến leo núi trở lại từ Spiaggia Grande đến Hostel Brikette mất khoảng 30–45 phút tùy thuộc vào tốc độ, điểm dừng chân chụp ảnh và nhiệt độ.",
+    "Các bước này phản chiếu năm ảnh điểm kiểm tra của khách sạn giá rẻ để bạn có thể ở trên tuyến cầu thang nhanh nhất trên toàn bộ hành trình."
+  ],
+  "sections": [
+    {
+      "id": "before-you-climb",
+      "title": "Trước khi bạn leo núi",
+      "body": [
+        "Đổ đầy nước và cho mình thời gian nghỉ ngơi — không có cửa hàng nào trên cầu thang cho đến khi bạn đến các con đường phía trên.",
+        "Lấy ảnh tham khảo từ quầy lễ tân hoặc nhân viên trợ giúp kỹ thuật số để bạn có thể ghép các điểm 4 và 5 trong quá trình đi lên."
+      ]
+    },
+    {
+      "id": "route",
+      "title": "Từng bước đi bộ trở lại khách sạn giá rẻ",
+      "body": [
+        "1. Bắt đầu ở phía bên trái của Spiaggia Grande (quay mặt ra khỏi mặt nước) và đi qua dưới cổng vòm bên cạnh cảng.",
+        "2. Tiếp tục đi thẳng qua làn đường mua sắm cho đến khi bạn đến sân trong mở tại điểm bản đồ 5 — xác nhận tầm nhìn phù hợp với ảnh của nhà trọ.",
+        "3. Đi cầu thang bên trái của bạn, đi theo nó lên dốc khi nó cong sang phải và leo lên đỉnh.",
+        "4. Rẽ phải ở phía trên, sau đó ngay lập tức đi cầu thang tiếp theo hướng lên dốc để đến điểm bản đồ 4.",
+        "5. Từ điểm 4, rẽ trái vào đường, đi bộ khoảng 10 mét (30 feet), băng qua và đi cầu thang ngay trước mặt bạn.",
+        "6. Đi theo cầu thang cho đến khi họ gặp một con đường khác. Nếu bạn nhìn lại, cảnh phải khớp với ảnh điểm 3. Đi thẳng lên cầu thang tiếp theo và tiếp tục leo.",
+        "7. Khi cầu thang hoàn thiện, hãy đi lên con đường phía trước, rẽ trái và tiếp tục đi lên dốc chỉ hơn 100 mét (330 feet).",
+        "8. Rẽ phải vào cầu thang quen thuộc dẫn thẳng trở lại cửa chính của Hostel Brikette."
+      ]
+    }
+  ],
+  "tipsTitle": "Mẹo nhanh",
+  "tips": [
+    "Nếu cảm thấy quá căng thẳng, hãy chuyển sang %LINK:positanoMainBeachBusBack|xe buýt trở về ký túc xá% khi bạn đến Piazza dei Mulini.",
+    "Bắt đầu đi bộ trước giữa trưa hoặc sau khi mặt trời lặn để tránh thời điểm nóng nhất trong ngày.",
+    "Tạm dừng trong các cuộc đổ bộ trong bóng râm để hít thở và chụp ảnh chế độ xem — bạn đã kiếm được chúng."
+  ]
+}

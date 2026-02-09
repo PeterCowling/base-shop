@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Kulinarne odkrycia: Neapol i Wybrzeże Amalfi",
+    "description": "Przewodnik po lokalnych smakach: co zjeść, gdzie i jak planować rezerwacje."
+  },
+  "linkLabel": "Kulinarne odkrycia: Neapol i Wybrzeże Amalfi",
+  "intro": [
+    "Przeglądaj najlepsze przekąski między Neapolem a wybrzeżem Amalfi, oferując dania, których trzeba spróbować, targi i lokalne napoje."
+  ],
+  "sections": [
+    {
+      "id": "naples",
+      "title": "Naples essentials",
+      "body": [
+        "Spróbuj klasycznej pizzy Margherita, smażonej pizzy i sfogliatelli w ciągu jednego dnia — rób sobie przerwy na espresso.",
+        "Odwiedź targ Pignasecca po owoce morza, sery i świeże produkty, które zabierzesz ze sobą na wybrzeże."
+      ]
+    },
+    {
+      "id": "amalfi",
+      "title": "Amalfi Coast specialties",
+      "body": [
+        "Zamów scialatielli ai frutti di mare, delizia al limone i lokalnie robione limoncello, by poczuć pełen wachlarz smaków.",
+        "Szukaj caseificio (seryjne sklepy) po mozzarellę, wędzoną provolę i caciocavallo, które zjesz na tarasie hostelu."
+      ]
+    },
+    {
+      "id": "street",
+      "title": "Street food & markets",
+      "body": [
+        "Złap cuoppo fritto w rożkach, smażone anchois lub arancini za 4–6 €, by zaspokoić głód między promami.",
+        "Niedzielne targi w Positano i Praiano sprzedają sezonowe owoce i słodkości — zabierz wielorazowe torby."
+      ]
+    }
+  ],
+  "tips": [
+    "Zarezerwuj zajęcia kulinarne wcześnie, jeśli chcesz samodzielnie lepić makaron i desery — miejsca szybko znikają latem.",
+    "Poinformuj o diecie przy rezerwacji; wielu gospodarzy może dostosować menu przy wcześniejszym zawiadomieniu."
+  ],
+  "faqs": [
+    {
+      "q": "Can I do a food tour from Positano?",
+      "a": [
+        "Tak. Dołącz do degustacji w Neapolu lub Sorrento; większość zaczyna się przed południem, więc dojedziesz wcześnie pociągiem lub promem."
+      ]
+    },
+    {
+      "q": "Do restaurants cater to vegetarians?",
+      "a": [
+        "Jak najbardziej. Szukaj parmigiany z bakłażana, gnocchi alla sorrentina, sałatek i warzywnych antipasti w całym regionie."
+      ]
+    }
+  ]
+}

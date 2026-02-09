@@ -1,0 +1,53 @@
+{
+  "seo": {
+    "title": "Busz vissza a Hostel Brikette-be az Arienzo Beachről",
+    "description": "Sétáljon fel a strandról az útra, utazzon busszal vissza Positano felé, szálljon le a Bar Internazionale/Chiesa Nuova megállónál, majd kövesse a rövid útvonalat a Hostel Brikette-hez."
+  },
+  "linkLabel": "Busz vissza a Hostel Brikette-be az Arienzo Beachről",
+  "intro": [
+    "Szkennelés megosztáshoz",
+    "Tipp: Buszmenetrend. Vegye figyelembe, hogy a menetrend tartalmazza a Positano időket, de nem az Arienzo időket. Az Arienzo buszmegálló körülbelül 2-5 perccel Sponda előtt található.",
+    "Fontos! Ha nincs buszjegye a visszaútra, vagy sétálhat vissza Spondába és onnan szállhat fel a buszra, vagy veheti a vízi kompot vissza Positano főstrandjára. Ne feledje, az Arienzo Beach közelében nincsenek jegyárusok, ezért fontos előre tervezni és előzetesen megvásárolni a jegyeket a visszaútra.",
+    "Tipp: Tekintse meg %LINK:arienzoBeachClub|Arienzo Beach útmutatónkat%",
+    "Tipp: Tekintse meg %LINK:positanoBeaches|Strandok áttekintését%"
+  ],
+  "sections": [
+    {
+      "id": "walk-to-stop",
+      "title": "Sétáljon fel a buszmegállóhoz",
+      "body": [
+        "Hogy elkapja a buszt vissza a hostelhoz, sétáljon fel a lépcsőn a strandról az útra, és keresse meg a buszmegállót az út másik oldalán. A buszmegálló tábla kék és fehér, fém oszlopra szerelve (lásd a képen). Várja a buszt a megállóban."
+      ]
+    },
+    {
+      "id": "ride-the-bus",
+      "title": "Utazzon a busszal",
+      "body": [
+        "A megállók száma, mielőtt le kellene szállnia, változó lesz. A megtett távolság körülbelül 3 km / 1,9 mérföld."
+      ]
+    },
+    {
+      "id": "get-off-bus",
+      "title": "Szálljon le a buszról",
+      "body": [
+        "A Bar Internazionale/Chiesa Nuova buszmegállónál fog leszállni."
+      ]
+    },
+    {
+      "id": "walk-to-hostel",
+      "title": "Sétáljon a hostellhez",
+      "body": [
+        "Útvonal:",
+        "* Folytassa abba az irányba, amerre a busz ment, valamivel több mint 100 m / 330 láb távolságra.",
+        "* Vegye fel a lépcsőt a hostel főbejáratához."
+      ]
+    }
+  ],
+  "tipsTitle": "Busz tippek",
+  "tips": [
+    "A nyomtatott menetrendek csak a Positano megállókat sorolják fel; várja Arienzót körülbelül 2-5 perccel Positano Sponda előtt a visszaúton.",
+    "Az Arienzo Beach közelében nincs jegyárus. Vásárolja meg a visszaút jegyét előre a városban, vagy sétáljon Spondáig és onnan szálljon fel, vagy vegye a vízi kompot vissza Positano főstrandjára.",
+    "Olvassa el %LINK:arienzoBeachClub|Arienzo Beach útmutatónkat% a létesítményekről, kompokról és tervezési tippekről.",
+    "Böngésszen a %LINK:positanoBeaches|Strandok áttekintésében% más öblök összehasonlításához és jövőbeli látogatások tervezéséhez."
+  ]
+}

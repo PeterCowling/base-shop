@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Mit Haustieren an der Amalfiküste unterwegs",
+    "description": "Tierfreundliche Logistik, Fähren und Unterkünfte, auf die du dich einstellen kannst."
+  },
+  "linkLabel": "Mit Haustieren an der Amalfiküste reisen",
+  "intro": [
+    "Reise mit Haustieren entlang der Amalfiküste – mit den passenden Dokumenten, tierfreundlichen Unterkünften und lokalem Etikette-Wissen."
+  ],
+  "sections": [
+    {
+      "id": "prep",
+      "title": "Vor der Anreise",
+      "body": [
+        "EU-Standard-Mikrochipnachweis, Tollwutimpfbescheinigung und ggf. Bandwurmdokumentation (je nach Herkunftsland) bereithalten.",
+        "Faltbare Näpfe, leichte Matte und Kotbeutel einpacken – viele Orte haben nur begrenztes Haustier-Zubehör."
+      ]
+    },
+    {
+      "id": "getting",
+      "title": "Unterwegs",
+      "body": [
+        "Kleine Tiere fahren in SITA-Bussen kostenlos, solange sie angeleint oder in der Box sind; größere Hunde benötigen Maulkorb und ermäßigte Tickets.",
+        "Auf Fähren sind Haustiere an Außendecks erlaubt – kurze Leine mitbringen und früh ankommen, um Schattenplätze zu sichern."
+      ]
+    },
+    {
+      "id": "where",
+      "title": "Wo Haustiere willkommen sind",
+      "body": [
+        "Viele Unterkünfte akzeptieren kleine Hunde nach Voranmeldung – Gebühren und Hausregeln unbedingt vor der Buchung klären.",
+        "Haustierfreundliche Strände sind u. a. Bau Bau Beach in Maiori und Abschnitte der Marina di Praia außerhalb der Stoßzeiten."
+      ]
+    }
+  ],
+  "tips": [
+    "Wasser und klappbare Näpfe dabeihaben – Hitze und Stufen strengen im Sommer schnell an.",
+    "Haustiere von Kirchentreppen fernhalten und nur auf Einladung ins Café-Innere; Außenterrassen sind meist tierfreundlich."
+  ],
+  "faqs": [
+    {
+      "q": "Sprechen Tierärzte Englisch?",
+      "a": [
+        "Viele ja, besonders in Sorrent und Salerno. Liste mit nahegelegenen Kliniken und Notrufnummern vorab speichern."
+      ]
+    },
+    {
+      "q": "Sind Taxis haustierfreundlich?",
+      "a": [
+        "Die meisten Fahrer akzeptieren kleine Tiere, wenn du es bei der Buchung erwähnst. Eine Decke schützt die Sitze; ein kleines Trinkgeld für Extra-Reinigung einplanen."
+      ]
+    }
+  ]
+}

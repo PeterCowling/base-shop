@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Állatbarát Amalfi",
+    "description": "Hol fogadják a kutyákat és macskákat, milyen szabályok vannak, és hogyan kövesd a strandok házirendjét."
+  },
+  "linkLabel": "Állatbarát Amalfi",
+  "intro": [
+    "Ha négylábú társaddal utazol, tudj meg mindent az Amalfi-parti szállásokról, közlekedésről és strandokról."
+  ],
+  "sections": [
+    {
+      "id": "checkin",
+      "title": "Bejelentkezés",
+      "body": [
+        "Mindig jelezd előre a szállásnak, hogy állattal érkezel, és tudd meg a méret- vagy számbeli korlátozásokat.",
+        "Sok hostel és apartman külön csomagot kínál takarítással és etetőhelyekkel."
+      ]
+    },
+    {
+      "id": "onTheGo",
+      "title": "Út közbeni tippek",
+      "body": [
+        "Tarts magadnál itatótálat és kutyaszalvétát — a partok többségén kérik, hogy tartsd tisztán a környezetet.",
+        "A buszokon pórázzal és szájkosárral utazhatsz, de mindig kérdezz rá a sofőrnél, mert néhány járat szigorúbb."
+      ]
+    },
+    {
+      "id": "beaches",
+      "title": "Strandok és zöld területek",
+      "body": [
+        "Néhány strand (például Marina di Praia) engedélyezi a kutyákat, de nézd meg a szezonális szabályokat.",
+        "A közelben lévő parkok és pázsitok ideálisak rövid sétákhoz, ha a tengerpart túl zsúfoltnak tűnik."
+      ]
+    }
+  ],
+  "tips": [
+    "Mindig legyen nálad közösségi értesítési címke vagy mikrochip adat, ha a kutya elszökne.",
+    "Keress helyi állatorvost a napirend megtervezésekor, hátha hirtelen szükség lesz rá."
+  ],
+  "faqs": [
+    {
+      "q": "Milyen doksikat kérnek a szállások?",
+      "a": [
+        "Szükség lehet oltási könyvre és kis állatútlevélre, ha külföldről érkezel."
+      ]
+    },
+    {
+      "q": "Le lehet sétáltatni a kutyát a parton?",
+      "a": [
+        "Néhány helyen reggel vagy délután engedélyezett; tartsd be a helyi táblákat és a szagra érzékeny helyiek nyugalmát."
+      ]
+    }
+  ]
+}

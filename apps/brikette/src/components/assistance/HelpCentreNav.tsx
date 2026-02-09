@@ -10,6 +10,7 @@ import clsx from "clsx";
 import HelpCentreNavUI, { type AssistanceNavItem } from "@acme/ui/organisms/HelpCentreNav";
 
 import { ASSISTANCE_GUIDE_KEYS } from "@/data/assistanceGuideKeys";
+import { isGuideLive } from "@/data/guides.index";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { useHelpDrawer } from "@/hooks/useHelpDrawer";
 import type { AppLanguage } from "@/i18n.config";
@@ -89,13 +90,15 @@ function HelpCentreNav({ currentKey, className = "lg:w-80", lang: explicitLang }
 
   const root = `/${lang}/${getSlug("assistance", lang)}`;
 
-  const items = ASSISTANCE_GUIDE_KEYS.map((key) => ({
-    key,
-    label: translate(`nav.${key}`, () => defaultLabel(key)),
-    href: `${root}/${guideSlug(lang, key)}`,
-    icon: ICONS[key],
-    isActive: currentKey === key,
-  }));
+  const items = ASSISTANCE_GUIDE_KEYS
+    .filter((key) => isGuideLive(key))
+    .map((key) => ({
+      key,
+      label: translate(`nav.${key}`, () => defaultLabel(key)),
+      href: `${root}/${guideSlug(lang, key)}`,
+      icon: ICONS[key],
+      isActive: currentKey === key,
+    }));
 
   const linkClasses = useCallback(
     (highlighted: boolean): string =>

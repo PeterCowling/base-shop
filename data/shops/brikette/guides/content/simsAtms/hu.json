@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "SIM/eSIM és ATM-ek Positanóban",
+    "description": "Hol vásárolj SIM-et, hogyan használj eSIM-et, és melyik ATM számít megbízhatónak."
+  },
+  "linkLabel": "SIM/eSIM és ATM-ek Positanóban",
+  "intro": [
+    "Maradjon online és készpénzzel ellátva: állítsa be a SIM-csomagot indulás előtt, és tervezzen alacsony díjú ATM megállókat."
+  ],
+  "sections": [
+    {
+      "id": "esim",
+      "title": "eSIM aktiválása",
+      "body": [
+        "Töltsön le olasz eSIM-et (TIM, Vodafone vagy megbízható utazási szolgáltató) még a hostel Wi-Fi-jén vagy indulás előtt; a lefedettség a teraszokon és az SS163 mentén a legerősebb.",
+        "Ha zenét streamel vagy fotókat tölt fel, válasszon legalább 10 GB-os csomagot egy hétre; figyelje a felhasználást, mert a feltöltési lehetőségek a városban korlátozottak."
+      ]
+    },
+    {
+      "id": "physical-sim",
+      "title": "Fizikai SIM beszerzése",
+      "body": [
+        "Tegyen kitérőt Szorrentóba, Salernóba vagy a Nápoly Centrale állomásra szolgáltatói üzletekért; vigye a útlevelét, és készüljön 10–20 €-s kezdőcsomagra személyazonosítással.",
+        "A tabacchi boltok a főszezonban néha előre aktiválható SIM-et árulnak, de hektikus a készlet – vegye meg, amikor látja."
+      ]
+    },
+    {
+      "id": "atm",
+      "title": "ATM stratégia",
+      "body": [
+        "Részesítse előnyben a bankautomatákat, például az Intesa Sanpaolót, ahol 2–3 € a díj; a strandi független automaták akár dupla díjat és rossz árfolyamot számolhatnak.",
+        "Egyszerre 100–150 €-t vegyen fel, és ossza el a bankjegyeket a napi táskában és a csomag egy biztonságos zsebében."
+      ]
+    }
+  ],
+  "tips": [
+    "Készítsen képernyőmentést a QR-kódokról és aktiválási adatokról, mielőtt elhagyja a Wi-Fi-t, így újratelepítheti az eSIM-et, ha a telefon újraindul.",
+    "Legyen kéznél hordozható akkumulátor – a gyenge térerő miatt a telefon antennája többet dolgozik, és gyorsabban merül."
+  ],
+  "faqs": [
+    {
+      "q": "Elér a lefedettség Caprira és Amalfiba?",
+      "a": [
+        "Igen, de a nyílt vízen lassabb sebességre számítson; a lejátszási listákat és térképeket még a komp előtt töltse le."
+      ]
+    },
+    {
+      "q": "Megbízhatóak az ATM-ek késő este?",
+      "a": [
+        "A bankfiókok előtere 0–24 nyitva van, de ha kiürül a gép, másnap reggel lehet, hogy Amalfiig vagy Szorrentóig kell utaznia."
+      ]
+    }
+  ]
+}

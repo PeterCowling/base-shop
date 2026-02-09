@@ -1,0 +1,73 @@
+{
+  "seo": {
+    "title": "Färjeinställningar och stormigt hav",
+    "description": "Vad du ska göra när färjor ställs in på grund av vädret, alternativ och hur du kontrollerar status."
+  },
+  "linkLabel": "Färjeinställningar och stormigt hav",
+  "intro": [
+    "Stormigt hav kan ställa in färjor till och från Positano med kort varsel.",
+    "Ha en landbaserad backup redo och övervaka live-varningar så att du fortfarande hinner med din anslutning."
+  ],
+  "sections": [
+    {
+      "id": "monitoring",
+      "title": "Övervaka live-uppdateringar",
+      "body": [
+        "Kontrollera operatörssidor och appar (Travelmar, NLG, Alilauro) plus hamnens informationstavlor var 30:e minut på blåsiga dagar.",
+        "Aktivera SMS/e-postvarningar eller följ lokala Telegram/sociala kanaler så att inställningar når dig även om du går från kajen."
+      ]
+    },
+    {
+      "id": "plan-b",
+      "title": "Byt till landvägar",
+      "body": [
+        "Om sjöresor stannar, byt till bussar och tåg: SITA till Sorrento sedan Circumvesuviana för Neapel/Pompeii, eller buss via Amalfi och regionaltåg från Salerno.",
+        "Tillåt minst 60 minuters marginal för dagens sista avgångar och validera biljetter före påstigning."
+      ]
+    },
+    {
+      "id": "refunds",
+      "title": "Återbetalningar och vouchers",
+      "body": [
+        "Spara kvitton och ta en skärmdump av avbokningsmeddelandet så att operatören kan behandla återbetalningar, ombokning eller krediter.",
+        "Låt personalen veta om du föredrar nästa tillgängliga resa eller en säsongsvoucher innan du lämnar disken."
+      ]
+    },
+    {
+      "id": "overnight",
+      "title": "Hantering av förseningar över natten",
+      "body": [
+        "Meddela ditt boende eller turguide så snart förseningar meddelas; många kommer att justera incheckning eller avresa om de varnas i förväg.",
+        "Fråga hamnens informationspunkt om delade taxibilar, ersättningsskyttlar eller bagageförvaring om du behöver vänta till nästa morgon."
+      ]
+    }
+  ],
+  "tips": [
+    "Kontrollera den marina prognosen—vind över 20 knop eller dyning över 1,5 meter (cirka 5 fot) utlöser ofta inställningar.",
+    "Reseförsäkring som täcker väderförseningar hjälper till att täcka extra hotellnätter eller ersättningstransporter.",
+    "Morgonresor är mest tillförlitliga; undvik att förlita dig på dagens sista båt när stormar är förutspådda."
+  ],
+  "faqs": [
+    {
+      "q": "Hur vet jag när sjöresor återupptas?",
+      "a": [
+        "Uppdatera operatörens webbplats eller sociala flöden och lyssna efter högtalarutrop vid kajen—beslut publiceras vanligtvis inom 30 minuter efter planerad avgång.",
+        "Biljettdiskpersonal kan också bekräfta om nästa båt går innan du lämnar hamnen."
+      ]
+    },
+    {
+      "q": "Vad händer med min biljett?",
+      "a": [
+        "Visa ditt kvitto eller QR-kod för att begära återbetalning, voucher eller ombokning till nästa resa.",
+        "Om du bokade via en onlinebyrå, maila dem avbokningsskärmdumpen inom 24 timmar för att starta återbetalningsprocessen."
+      ]
+    },
+    {
+      "q": "Finns det några färjor garanterade i hårt väder?",
+      "a": [
+        "Nej—när kustbevakningen stänger hamnen stannar alla avgångar. Ha en landväg redo.",
+        "Några få privata chartrar kan segla i måttlig sjö men de är dyra och beror på kaptenens gottfinnande; väg bekvämlighet och kostnad noga."
+      ]
+    }
+  ]
+}

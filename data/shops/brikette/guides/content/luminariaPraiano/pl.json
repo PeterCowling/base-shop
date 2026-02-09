@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Luminaria di San Domenico (Praiano)",
+    "description": "Świecący festiwal Praiano na początku sierpnia: daty, dojazd, miejsca oglądania i etykieta fotografowania."
+  },
+  "linkLabel": "Luminaria Praiano: tysiące świec w nocy",
+  "intro": [
+    "Zaplanuj odwiedziny na Luminarii di San Domenico w Praiano: świecące uliczki, pokazy sztucznych ogni i szacunek dla lokalnego klimatu."
+  ],
+  "sections": [
+    {
+      "id": "basics",
+      "title": "Podstawy festiwalu",
+      "body": [
+        "Impreza trwa podczas pierwszego tygodnia sierpnia, a najwięcej świec pali się między 1 a 4 sierpnia na Piazza San Gennaro.",
+        "Przyjedź przed zachodem słońca, żeby zobaczyć, jak wolontariusze układają świece i złapać dobre miejsce do oglądania."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Jak dojechać i wrócić",
+      "body": [
+        "Skorzystaj z autobusu SITA z Positano (20 minut) lub wspólnego shuttle’a; ostatnie kursy wracające są około północy, ale sprawdź rozkład w dniu wydarzenia.",
+        "Jeśli zostajesz dłużej, zarezerwuj taksówkę z wyprzedzeniem albo nocleg w Praiano, by uniknąć długiego oczekiwania po pokazie ogni."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etykieta oglądania",
+      "body": [
+        "Nie ruszaj świec ustawionych przez mieszkańców i nie wchodź za kordony ani nie blokuj przejść statywami.",
+        "Użyj statywu lub stabilnej powierzchni do długich ekspozycji, ale trzymaj się z daleka od wejść do kościołów i dróg ratunkowych."
+      ]
+    }
+  ],
+  "tips": [
+    "Noś bidon (500 ml / 17 oz) i latarkę kieszonkową na spacer po ciemnych uliczkach Praiano.",
+    "Szanuj ciszę po pokazach — mieszkańcy sprzątają wosk jeszcze późno w nocy."
+  ],
+  "faqs": [
+    {
+      "q": "Czy festiwal jest darmowy?",
+      "a": [
+        "Tak, oglądanie jest bezpłatne. Wsparcie lokalnych straganów, zakup przekąski lub darowizna przy kościele pomaga opłacić świece na kolejne lata."
+      ]
+    },
+    {
+      "q": "Co jeśli pada deszcz?",
+      "a": [
+        "Silny deszcz może przełożyć wystawienie świec; organizatorzy informują o tym na stronie Facebook gminy Praiano. Miej zapasowy wieczór na wizytę."
+      ]
+    }
+  ],
+  "event": {
+    "date": "1–4 sierpnia (szczytowe noce)",
+    "location": "Piazza San Gennaro, Praiano",
+    "tips": [
+      "Przybądź przed zachodem słońca, by obserwować ustawianie świec przez wolontariuszy.",
+      "Weź ze sobą latarkę lub światło telefonu na powrót po ciemnych uliczkach."
+    ]
+  }
+}

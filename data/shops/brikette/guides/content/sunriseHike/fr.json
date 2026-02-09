@@ -1,0 +1,139 @@
+{
+  "seo": {
+    "title": "Randonnée au lever du soleil depuis Hostel Brikette (Positano)",
+    "description": "Une courte randonnée avant l'aube depuis Hostel Brikette jusqu'à un point de vue tranquille au-dessus de Positano, avec des photos de navigation dans le bon ordre."
+  },
+  "linkLabel": "Randonnée au lever du soleil : Admirez l'aube sur Positano",
+  "lastUpdated": "2026-02-04",
+  "intro": [
+    "Si vous souhaitez le lever de soleil le plus simple, vous pouvez observer l'aube depuis la terrasse commune de l'auberge, le soleil se levant à gauche (lorsque vous regardez vers la mer).",
+    "Si vous souhaitez un panorama plus large et un moment plus calme au-dessus de la ville, suivez cette courte randonnée dans les collines jusqu'à un point de vue sur une falaise au-dessus de Positano."
+  ],
+  "sections": [
+    {
+      "id": "what-is",
+      "title": "Qu'est-ce que la randonnée au lever du soleil ?",
+      "body": [
+        "Il s'agit d'une courte randonnée aller-retour avant l'aube depuis Hostel Brikette jusqu'à un petit point de vue au-dessus de Positano.",
+        "Si vous souhaitez une option de montagne plus longue, %LINK:santaMariaDelCastelloHike|Santa Maria del Castello% est une excellente alternative, mais l'itinéraire ci-dessous est le moyen le plus rapide d'obtenir une vue spectaculaire sur le lever du soleil sans s'engager dans une randonnée d'une journée complète."
+      ]
+    },
+    {
+      "id": "before-you-go",
+      "title": "Avant de partir (il fera noir)",
+      "body": [
+        "Apportez une lampe de téléphone ou une lampe frontale, et gardez vos mains libres (surtout dans les escaliers).",
+        "Portez des chaussures avec adhérence — la première partie est pavée, mais le sentier forestier peut être meuble ou humide.",
+        "Partez suffisamment tôt pour arriver 10 à 15 minutes avant le lever du soleil afin de pouvoir vous installer, trouver votre place et profiter de la première lumière."
+      ]
+    },
+    {
+      "id": "step-1",
+      "title": "Étape 1 : Marchez de l'auberge jusqu'à l'escalier (≈350 m)",
+      "body": [
+        "Sortez de l'auberge par la porte principale et descendez jusqu'à la route.",
+        "Tournez vers Sorrento et marchez environ **350 mètres** le long de la route principale jusqu'à ce que vous atteigniez un escalier qui monte depuis la route."
+      ]
+    },
+    {
+      "id": "step-2",
+      "title": "Étape 2 : Montez jusqu'à la maison, puis tournez à gauche",
+      "body": [
+        "Montez l'escalier jusqu'en haut jusqu'à atteindre la vieille maison blanche illustrée ci-dessous.",
+        "À la maison, **tournez à gauche** pour rejoindre le sentier forestier."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/02-house.jpg",
+          "alt": "Vieille maison blanche à côté de l'escalier sur l'itinéraire de randonnée au lever du soleil au-dessus de Positano",
+          "caption": "Ce bâtiment marque la fin de la montée de l'escalier ; tournez à gauche ici pour entrer dans le sentier forestier.",
+          "width": 876,
+          "height": 530
+        }
+      ]
+    },
+    {
+      "id": "step-3",
+      "title": "Étape 3 : Suivez le sentier forestier jusqu'au point de vue",
+      "body": [
+        "Suivez le sentier forestier qui monte doucement en s'éloignant de la maison.",
+        "Lorsque le sentier bifurque, prenez la branche de **droite**.",
+        "Vous atteindrez finalement un point où les arbres s'ouvrent et vous pouvez voir la mer droit devant vous. De là, dirigez-vous vers votre **gauche**.",
+        "Ce chemin de gauche vous amène au point de vue. Vous pouvez grimper prudemment sur les rochers pour obtenir un perchoir plus haut, ou rester à l'endroit principal pour une vue stable."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/03-viewpoint.jpg",
+          "alt": "Vue de carte aérienne montrant les derniers virages sur l'itinéraire de randonnée au lever du soleil vers le point de vue au-dessus de Positano",
+          "caption": "Utilisez cette vue aérienne pour confirmer le dernier virage à gauche vers le point de vue après que le sentier s'ouvre sur la mer.",
+          "width": 677,
+          "height": 600
+        }
+      ]
+    },
+    {
+      "id": "share",
+      "title": "Partagez ce guide (QR)",
+      "body": [
+        "Si vous partez avec des amis, vous pouvez utiliser ce code QR pour partager rapidement le guide sur un autre téléphone."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/01-qr.png",
+          "alt": "Code QR liant au guide de randonnée au lever du soleil de Hostel Brikette",
+          "width": 450,
+          "height": 450
+        }
+      ]
+    }
+  ],
+  "essentialsTitle": "L'essentiel",
+  "essentials": [
+    "Lampe frontale ou lampe de téléphone (plus une batterie chargée).",
+    "Chaussures avec adhérence et une couche légère — il peut faire frais et venteux avant l'aube.",
+    "Eau et une petite collation si vous prévoyez de vous asseoir et de regarder le lever du soleil."
+  ],
+  "tipsTitle": "Timing intelligent",
+  "tips": [
+    "Faites une vérification rapide des prévisions : le vent et les nuages bas peuvent cacher le lever du soleil même lors de journées par ailleurs claires.",
+    "Si vous n'êtes pas sûr d'un carrefour dans l'obscurité, arrêtez-vous et confirmez votre orientation plutôt que de deviner."
+  ],
+  "warningsTitle": "Notes de sécurité",
+  "warnings": [
+    "Allez lentement dans les escaliers et gardez vos mains libres — il est facile de faire un faux pas en faible lumière.",
+    "Si le sentier semble glissant après la pluie, envisagez de regarder depuis la terrasse de l'auberge à la place."
+  ],
+  "steps": [
+    {
+      "name": "Marchez jusqu'à l'escalier",
+      "text": "De l'auberge, marchez ~350 m vers Sorrento sur la route principale jusqu'à ce que vous repériez l'escalier qui monte."
+    },
+    {
+      "name": "Montez jusqu'à la maison",
+      "text": "Suivez les escaliers jusqu'à la vieille maison blanche, puis tournez à gauche sur le sentier forestier."
+    },
+    {
+      "name": "Prenez la branche de droite",
+      "text": "Lorsque le sentier forestier bifurque, restez à droite et continuez jusqu'à ce que vous puissiez voir la mer."
+    },
+    {
+      "name": "Tournez à gauche vers le point de vue",
+      "text": "Après que le sentier s'ouvre sur la mer, dirigez-vous à gauche pour atteindre le point de vue (grimpez prudemment si vous voulez un perchoir plus haut)."
+    }
+  ],
+  "faqsTitle": "FAQ",
+  "faqs": [
+    {
+      "q": "Puis-je simplement regarder le lever du soleil depuis l'auberge ?",
+      "a": [
+        "Oui — la terrasse de l'auberge est l'option la plus simple et le soleil se lève à gauche du bâtiment lorsque vous faites face à la mer."
+      ]
+    },
+    {
+      "q": "Combien de temps dure la randonnée ?",
+      "a": [
+        "C'est un itinéraire court, mais le timing dépend de votre rythme et du temps que vous passez au point de vue. Prévoyez suffisamment de temps pour arriver 10 à 15 minutes avant le lever du soleil."
+      ]
+    }
+  ]
+}

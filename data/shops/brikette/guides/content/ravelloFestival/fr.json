@@ -1,0 +1,70 @@
+{
+  "seo": {
+    "title": "Guide du festival de musique de Ravello",
+    "description": "Programme, billets, transport et conseils pour profiter de la Ravello Festival depuis Positano."
+  },
+  "linkLabel": "Guide du festival de musique de Ravello",
+  "intro": [
+    "Le festival de Ravello combine concerts orchestraux et vues vertigineuses ; anticipez vos billets, la tenue et le retour tardif vers Positano."
+  ],
+  "sections": [
+    {
+      "id": "tickets",
+      "title": "Obtenir ses billets",
+      "body": [
+        "Réservez sur le site officiel du Ravello Festival dès que les dates sont publiées, en général au printemps ; imprimez ou téléchargez le QR code avant de quitter le Wi-Fi de Positano.",
+        "Choisissez des sièges numérotés proches des allées si vous comptez prendre le bus de minuit pour redescendre à Amalfi."
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "S'y rendre",
+      "body": [
+        "Prenez un ferry ou un bus en fin d'après-midi jusqu'à Amalfi (30 à 45 minutes), puis enchaînez avec le bus SITA qui monte à Ravello en prévoyant 25 minutes d'ascension.",
+        "Si les bus sont pleins, réservez à l'avance une navette partagée ou un taxi depuis Amalfi ; partagez le coût avec vos compagnons de voyage pour rester dans votre budget."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Code et bonnes manières",
+      "body": [
+        "Une tenue chic mais décontractée suffit : superposez des couches légères pour les terrasses ventilées et portez des chaussures confortables pour les marches en pierre.",
+        "Arrivez au minimum 30 minutes avant pour passer la sécurité, repérer les toilettes et vous installer sans gêner les autres."
+      ]
+    },
+    {
+      "id": "late-return",
+      "title": "Retour tardif",
+      "body": [
+        "Le dernier bus SITA vers Amalfi part vers 00 h 15 en haute saison ; validez les horaires dans la journée et mettez-vous dans la file 20 minutes avant.",
+        "Si les correspondances semblent serrées, organisez un taxi vers Amalfi ou directement Positano (environ 120 à 140 €) et partagez le tarif avec votre groupe."
+      ]
+    }
+  ],
+  "tips": [
+    "Glissez un foulard léger ou une veste compressible : la température descend à 18 °C (64 °F) sur la terrasse même en août.",
+    "Gardez du liquide pour un espresso ou une collation rapide à Amalfi en attendant le bus de nuit."
+  ],
+  "faqs": [
+    {
+      "q": "Les concerts sont-ils annulés en cas de pluie ?",
+      "a": [
+        "Une pluie fine provoque généralement un léger retard, mais de fortes averses peuvent déplacer le concert en intérieur ou l'annuler : surveillez vos e-mails et les réseaux du festival."
+      ]
+    },
+    {
+      "q": "Puis-je rentrer à Positano après minuit ?",
+      "a": [
+        "Oui, mais les options se raréfient. Organisez un taxi à partager ou prévoyez de dormir à Amalfi/Ravello si les horaires semblent incertains."
+      ]
+    }
+  ],
+  "eventSchema": {
+    "name": "Ravello Festival",
+    "startDate": "2025-07-01",
+    "endDate": "2025-09-15",
+    "locationName": "Ravello Festival venues",
+    "addressLocality": "Ravello",
+    "description": "Festival de musique classique estivale surplombant la côte amalfitaine. Consultez le programme officiel pour les dates et les billets."
+  }
+}

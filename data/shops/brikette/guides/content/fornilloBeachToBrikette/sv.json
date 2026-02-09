@@ -1,0 +1,63 @@
+{
+  "seo": {
+    "title": "Returväg: Fornillo Beach → Hostel Brikette",
+    "description": "Följ strandpromenaden till Spiaggia Grande, kika i butikerna och ta interno-bussen tillbaka upp till hostelet."
+  },
+  "linkLabel": "Returväg: Fornillo Beach → Hostel Brikette",
+  "intro": [
+    "Att gå tillbaka till Hostel Brikette från Fornillo Beach är lättast om du följer vattnet till Spiaggia Grande och åker Interno -bussen från centrum. Denna rutt byter de flesta av uppförsbackarna för nivåpromenader och en kort stigning bredvid vandrarhemmet."
+  ],
+  "sections": [
+    {
+      "id": "plan-your-return",
+      "title": "Planera din återkomst",
+      "body": [
+        "Tillåt extra tid för fotostopp eller bläddra i butikerna runt Spiaggia Grande innan du går ombord på bussen.",
+        "Denna returväg är längre än att klättra på genvägs trappan, men den förblir svalare på eftermiddagen och ger dig en mildare finish efter en stranddag."
+      ]
+    },
+    {
+      "id": "route-steps",
+      "title": "Väg från Fornillo Beach till Hostel Brikette",
+      "body": [
+        "1. Gå längst till vänster av Fornillo -stranden (till vänster när du vetter mot havet).",
+        "2. Följ kustvägen mot Spiaggia Grande tills du når huvudstranden och hamnområdet.",
+        "3. Passera genom hamnporten, lämna bryggan och fortsätt rakt längs strandpromenaden.",
+        "4. Ta vägen direkt framåt vid stranden och fortsätt inåt landet.",
+        "5. Sväng höger vid den första gränden mellan butikerna.",
+        "6. Klättra upp trappan som leder upp till Chiesa di Santa Maria Assunta.",
+        "7. På toppen av körfältet, sväng vänster och följ den uppåt.",
+        "8. När körfältet möter envägsvägen vid korsningen har du nått Interno-busshållplatsen för Chiesa Nuova. Rida upp ett stopp för Hostel Brikette."
+      ]
+    },
+    {
+      "id": "bus-connection",
+      "title": "Fånga Interno -bussen",
+      "body": [
+        "Från Chiesa Nuova -stoppet tappar Orange Interno Positano -bussen dig en kort promenad från vandrarhem Brikette - perfekt om du vill undvika hela trappklättringen.",
+        "Biljetter säljs på Tabacchi/NewsAgent -kiosker i hela staden, så köp dem innan du går ner eller kontrollerar med mottagning för tillgänglighet."
+      ]
+    }
+  ],
+  "tips": [
+    "Köp Interno Bus -biljetter på alla Tabacchi/NewsAgent innan du åker till stranden.",
+    "Spara trapptunga genvägar för morgnar; Denna natursköna återkomst är lugnare efter en lång dopp.",
+    "Länk det till vår Fornillo Beach Guide för Beach Club -detaljer och tysta platser.",
+    "Granska Positano stränderöversikt för att planera var du annars ska simma under din vistelse."
+  ],
+  "faqsTitle": "Vanliga frågor",
+  "faqs": [
+    {
+      "q": "Hur lång tid tar avkastningen?",
+      "a": [
+        "Att gå tillbaka via Spiaggia Grande lägger till cirka 10 extra minuter jämfört med den direkta trappan, men du undviker det mesta av den branta stigningen innan du går ombord på bussen."
+      ]
+    },
+    {
+      "q": "Var fångar jag bussen?",
+      "a": [
+        "Rida Orange Interno Positano -bussen från Chiesa Nuova -stoppet på toppen av körfältet. Det tappar dig nära vandrarhemmet, och biljetter kommer från Tabacchi/NewsAgent -kiosker."
+      ]
+    }
+  ]
+}

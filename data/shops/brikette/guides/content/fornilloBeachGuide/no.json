@@ -1,0 +1,226 @@
+{
+  "seo": {
+    "title": "Fornillo-strandguide",
+    "description": "Layoutkart, gratis seksjoner og strandklubbtips for Pupetto, Da Ferdinando, Grassi og La Marinella – pluss snarveier til og fra vandrerhjemmet."
+  },
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
+  "linkLabel": "Fornillo-strandguide: klubber og gratissteder",
+  "intro": [
+    "Fornillo-stranden er en avslappet vik, en kort spasertur fra vandrerhjemmet. Strandklubbene holder prisene mildere enn Spiaggia Grande, de offentlige sonene er sjenerøse, og atmosfæren holder seg lavmælt selv i høye uker.",
+    "Bruk kystgangen for å bevege deg mellom strandseksjoner, ta mat fra barene og sløyfe tilbake til Spiaggia Grande hvis du vil ha Interno -bussen oppover."
+  ],
+  "toc": [
+    {
+      "href": "#layout",
+      "label": "Oppsett og tilgang"
+    },
+    {
+      "href": "#main-free",
+      "label": "Hovedsone (gratis)"
+    },
+    {
+      "href": "#pupetto",
+      "label": "Pupetto strandklubb"
+    },
+    {
+      "href": "#ferdinando",
+      "label": "Da Ferdinando"
+    },
+    {
+      "href": "#grassi",
+      "label": "Fratelli Grassi"
+    },
+    {
+      "href": "#marinella",
+      "label": "La Marinella"
+    },
+    {
+      "href": "#secret-free",
+      "label": "Skjult gratis vik"
+    }
+  ],
+  "sections": [
+    {
+      "id": "layout",
+      "title": "Oppsett og strandoperatører",
+      "body": [
+        "To hovedstier fører til Fornillo. Snarveien fra __link0__ kommer ut på venstre side av stranden (med havet foran deg); strandpromenaden fra Spiaggia Grande når høyre side.",
+        "Strandklubbene ligger i rekkefølge fra vandrerhjemmets adkomstpunkt mot hovedstrandstien: Pupetto, Da Ferdinando, Fratelli Grassi og La Marinella. To offentlige soner rammer inn lidoene – en bred gratis strekning ved siden av Pupetto og en mindre vik utenfor La Marinella."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/fornilloBeachGuide.webp",
+          "alt": "View of Fornillo Beach cove in Positano with the shoreline and cliffs",
+          "caption": "Fornillo Beach in Positano: a calmer alternative to the main beach, with free areas and several beach clubs"
+        },
+        {
+          "src": "/img/guides/fornillo-beach/02-main-free-section.jpg",
+          "alt": "Fornillo beach layout map showing paths from hostel and Spiaggia Grande, plus beach club locations",
+          "caption": "Fornillo layout: Path A from Hostel Brikette, Path B from Spiaggia Grande, with beach clubs numbered in sequence"
+        },
+        {
+          "src": "/img/guides/positano-beaches/positano-main-beach.webp",
+          "alt": "Positano main beach (Spiaggia Grande) with umbrellas and the town rising behind it",
+          "caption": "Spiaggia Grande: start here to walk the promenade to Fornillo, or return here to catch the internal bus uphill"
+        }
+      ]
+    },
+    {
+      "id": "main-free",
+      "title": "Hovedsone (gratis)",
+      "body": [
+        "Den største gratis sonen ligger rett foran snarveien fra vandrerhjemmet. Ankom før 10:30 for å sikre deg et sted nær vannlinjen; rullesteinene varmer raskt, så pakk en matte eller et tykt håndkle.",
+        "Pupetto og Da Ferdinando selger begge takeaway-drinker og panini – perfekt hvis du vil spise uten å leie solseng. Hold øye med tidevannet i skuldersesongen; høststormer kan krympe strandlinjen i en dag eller to."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/01-beach-layout-map.jpg",
+          "alt": "Main free section at Fornillo beach with pebbles and waterfront access",
+          "caption": "The largest free area at Fornillo — arrive before 10:30 to secure waterfront space"
+        }
+      ]
+    },
+    {
+      "id": "pupetto",
+      "title": "Pupetto strandklubb",
+      "body": [
+        "Pupetto forankrer venstre side av Fornillo med rader med oransje solsenger, dusjer og en restaurant med full service. Reserver via WhatsApp eller telefon om sommeren hvis du vil ha seter i første rad; drop-in går normalt fint før 09:30.",
+        "Gjester som bruker det gratis området kan fremdeles bestille takeaway fra baren, og Pupettos bad er åpne for betalende kunder – praktisk hvis du bestemmer deg for å oppgradere midtveis gjennom dagen."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/03-pupetto-beach-club.jpg",
+          "alt": "Pupetto Beach Club with orange loungers and restaurant on Fornillo beach",
+          "caption": "Pupetto Beach Club — orange loungers, full-service restaurant, and showers on the left side of Fornillo"
+        }
+      ]
+    },
+    {
+      "id": "ferdinando",
+      "title": "Da Ferdinando",
+      "body": [
+        "Da Ferdinando har en avslappet strandvibe med blå solsenger, paddleboard-utleie og en populær lunsjmeny (tenk grillet fangst av dagen, salater og pasta). Forvent priser litt høyere enn Pupetto, men fortsatt rimelige for Positano.",
+        "Vanntaxier til Laurito og Arienzo svinger innom Da Ferdinandos brygge – nyttig hvis du planlegger å strandhoppe etter en morgensvømmetur."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/04-da-ferdinando.jpg",
+          "alt": "Da Ferdinando beach bar with blue loungers and jetty at Fornillo",
+          "caption": "Da Ferdinando — beach-bar vibe with blue loungers, paddleboard rentals, and water taxi access"
+        }
+      ]
+    },
+    {
+      "id": "grassi",
+      "title": "Fratelli Grassi strandbar",
+      "body": [
+        "Grassi er kompakt med pene rader med røde solsenger og en skyggelagt bar for cocktailer og granita. Teamet tilbyr tørre poser for verdisaker hvis du leier kajakker for å utforske hulene i nærheten.",
+        "Fordi plassen er begrenset, hjelper forhåndsbestillinger i helgene. Drop-in er vanligvis mulig midtuke etter 11:00 når de tidlige reservasjonene roer seg."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/05-fratelli-grassi.jpg",
+          "alt": "Fratelli Grassi Beach Bar with red loungers and shaded bar area at Fornillo",
+          "caption": "Fratelli Grassi — compact setup with red loungers, shaded cocktail bar, and kayak rentals"
+        }
+      ]
+    },
+    {
+      "id": "marinella",
+      "title": "La Marinella",
+      "body": [
+        "La Marinella sitter nærmest Spiaggia Grande-gangveien og fanger middagssolen. Forvent oppmerksom service, lunsjfat og muligheten til å bestille solsenger på øvre dekk med ekstra skygge.",
+        "I skuldersesongen flytter La Marinella noen ganger noen få stoler inn i den nærliggende viken. Personalet bør la plass til det offentlige området, men vær forberedt på mindre plass når havet er grovt."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/06-la-marinella.jpg",
+          "alt": "La Marinella beach club with loungers and restaurant near Spiaggia Grande walkway",
+          "caption": "La Marinella — attentive service, upper-deck loungers, and closest to the Spiaggia Grande walkway"
+        }
+      ]
+    },
+    {
+      "id": "secret-free",
+      "title": "'Hemmelig' gratis seksjon",
+      "body": [
+        "Utover La Marinella tilbyr en liten vik et roligere offentlig område med rullesteinhylle og rolig vann. Ta med revvennlig solkrem og vannsko; inngangen er steinete og kråkeboller kan klynge seg nær kantene.",
+        "La Marinella setter tidvis ekstra solsenger her på stormdager. Sonen er fortsatt offisielt gratis, så bruk plassen hvis du ankommer først; bare gi plass til returstoler eller kajakker."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/07-secret-free-section.jpg",
+          "alt": "Hidden free cove beyond La Marinella with rocky entry and calm water",
+          "caption": "The 'secret' free section — a quieter cove beyond La Marinella with rocky entry and sea urchin areas"
+        }
+      ]
+    },
+    {
+      "id": "hostel-day-plan",
+      "title": "A hostel-friendly Fornillo day plan",
+      "body": [
+        "If you want an easy beach day that still leaves energy for the evening, this simple plan works well for most guests.",
+        "1) Leave after breakfast and take the %LINK:hostelBriketteToFornilloBeach|shortcut down to Fornillo%. Aim to arrive before 10:30 if you want a good free spot.",
+        "2) Swim first. The water is usually calmest earlier in the day, and the sun feels less intense. Then decide: stay free, or upgrade to a lido for shade.",
+        "3) Lunch: keep it simple. Grab takeaway from a beach bar, or split a plate if you are on a budget. Drink water throughout the day — the heat plus steps is a real combo.",
+        "4) Leave before you are exhausted. Walk the promenade back toward Spiaggia Grande, then use the internal bus uphill. Follow the %LINK:fornilloBeachToBrikette|return route% so you do not end up doing the steepest staircase by accident.",
+        "5) Back at the hostel: shower, rehydrate, and you are ready for aperitivo. If you want a second beach day with a different vibe, compare options in our %LINK:positanoBeaches|Positano beaches overview%."
+      ]
+    },
+    {
+      "id": "what-to-bring",
+      "title": "What to bring (so you do not overpack)",
+      "body": [
+        "A light pack is the secret to enjoying the walk back up later. Most guests are happiest with a small day bag and a few essentials.",
+        "Bring: water shoes, sunscreen, a hat, a thick towel (or mat), and a refillable bottle. Add a light shirt for the walk back in the afternoon sun.",
+        "Skip: passports and big cash. Keep valuables locked up at the hostel. If you are paying for a lido, card machines sometimes struggle, so carry a little cash as backup.",
+        "If you want shade in the free section, you can bring a small foldable umbrella, but it can be awkward in wind. In peak summer, the simplest “shade plan” is to rent a parasol for a few hours."
+      ]
+    }
+  ],
+  "essentialsTitle": "Dette kan du forvente",
+  "essentials": [
+    "15–20 minutters gange fra Hostel Brikette ned trapper og brolagte gater.",
+    "Stor offentlig seksjon med rullesteinsstrand; bring egen matte eller håndkle.",
+    "Fire strandklubber tilbyr solsenger, mat og drikke til ulike priser."
+  ],
+  "typicalCostsTitle": "Typiske kostnader",
+  "typicalCosts": [
+    "Solseng + parasoll på Pupetto eller Da Ferdinando: €20–€30 for to personer.",
+    "Lunsjretter på strandklubbene: €12–€22 avhengig av valg.",
+    "Interno-buss tilbake til Chiesa Nuova: €1,50 per person."
+  ],
+  "tipsTitle": "Raske tips",
+  "tips": [
+    "Følg __link0__ ned for den raskeste nedstigningen (15–20 minutter).",
+    "Når du er klar til å dra, ta __link0__ langs promenaden og ta Interno-bussen opp til Chiesa Nuova.",
+    "Sammenlign priser og alternative viker i våre __link0__ før du bestiller solsenger."
+  ],
+  "warningsTitle": "Godt å vite",
+  "warnings": [
+    "Fornillo er rullestein – pakk vannsko eller sandaler til strandlinjen.",
+    "Skygge er begrenset etter sent på morgenen, så planlegg å leie en parasoll eller ta med en hatt og solkrem.",
+    "Kortmaskiner går av og til offline; ta med litt kontanter til barregninger og solsengsoppgjør."
+  ],
+  "faqsTitle": "Fornillo vanlige spørsmål",
+  "faqs": [
+    {
+      "q": "Må jeg reservere en solseng?",
+      "a": [
+        "Reservasjoner hjelper på sommerhelger. Pupetto og La Marinella svarer på telefon eller WhatsApp; Da Ferdinando og Grassi følger også med på Instagram-DM-er. Tidlige ankomster før 09:30 kan vanligvis ta drop-in-plasser."
+      ]
+    },
+    {
+      "q": "Kan jeg ta med min egen mat?",
+      "a": [
+        "Piknik er velkomne i gratis seksjoner. Hvis du leier solsenger, hold deg til små snacks og vannflasker med mindre klubben bekrefter noe annet. Hver operatør har en bar eller restaurant for større måltider."
+      ]
+    },
+    {
+      "q": "Hvor kan jeg dusje eller bruke badet?",
+      "a": [
+        "Fasiliteter tilhører hver strandklubb. Spør i baren før du bruker dem hvis du er i den offentlige sonen - mange tillater raske besøk mot en liten avgift eller når du kjøper mat eller drikke."
+      ]
+    }
+  ]
+}

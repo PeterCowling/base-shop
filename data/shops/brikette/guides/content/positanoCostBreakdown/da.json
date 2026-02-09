@@ -1,0 +1,68 @@
+{
+  "seo": {
+    "title": "Budget for Positano: omkostningsoversigt",
+    "description": "Daglige udgifter fordelt på transport, mad, attraktioner og skjulte poster."
+  },
+  "linkLabel": "Budget for Positano: omkostningsoversigt",
+  "intro": [
+    "Få styr på daglige udgifter i Positano, og se hvor du kan spare uden at gå glip af højdepunkterne."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Transportudgifter",
+      "body": [
+        "Lufthavnsbus til Sorrento koster typisk €10–€12; læg €2–€3 oveni for SITA-bussen til Positano. Færger mellem byerne ligger på €8–€20 alt efter afstand.",
+        "Sæt cirka €5 (ca. 40 kr.) af pr. dag til lokale busser; taxier starter omkring €20 for korte natteturer op ad bakken."
+      ]
+    },
+    {
+      "id": "stay",
+      "title": "Sådan fordeles dit overnatningsbudget",
+      "body": [
+        "Senge i Hostel Brikettes sovesale ligger omkring €30–€55 afhængigt af sæson; private værelser starter nær €110.",
+        "Lejligheder og boutiquehoteller i centrum rammer nemt €200+ pr. nat. Overvej Praiano eller Sorrento for billigere lejlighedsbaser."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Mad og drikke",
+      "body": [
+        "Morgenbrød og kaffe koster €4–€6; en enkel panini-frokost omkring €8.",
+        "Aftensmad på en mellemklasse-trattoria ligger på €20–€30 pr. person uden vin; del forretter for at smage mere uden at fordoble regningen."
+      ]
+    },
+    {
+      "id": "activities",
+      "title": "Aktiviteter og ekstra",
+      "body": [
+        "Bådture spænder fra €40 for solnedgangsture i små grupper til €120+ for private charter. Billigt alternativ: tag færgen til Amalfi og udforsk for €9.",
+        "Afsæt €5–€10 til gelato, granita eller drikkepenge til gadeartister, så budgettet føles generøst men kontrolleret."
+      ]
+    }
+  ],
+  "tips": [
+    "Rejs i april, maj, slutningen af september eller oktober for skuldersæsonens priser, mens færgerne stadig sejler ofte.",
+    "Brug hæveautomater i Sorrento eller Napoli for lavere gebyrer, og fordel kontanter i daglige kuverter for at holde styr på forbruget."
+  ],
+  "faqs": [
+    {
+      "q": "Hvad er et realistisk dagsbudget?",
+      "a": [
+        "Backpackere kan klare sig for €70–€90 om dagen med sovesal, måltider og én betalt aktivitet. Komfortniveauet ligger nærmere €140."
+      ]
+    },
+    {
+      "q": "Kan jeg betale alt med kort?",
+      "a": [
+        "De fleste restauranter tager kort, men busser, små delikatessebutikker og souvenirboder foretrækker ofte kontanter. Hav €20 i små sedler klar."
+      ]
+    }
+  ],
+  "labels": {
+    "atAGlance": "Kort fortalt",
+    "tocTitle": "På denne side",
+    "tipsTitle": "Sådan sparer du",
+    "faqsTitle": "FAQ"
+  }
+}

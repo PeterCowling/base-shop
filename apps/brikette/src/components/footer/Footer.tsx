@@ -7,10 +7,11 @@ import { Section } from "@acme/design-system/atoms";
 
 import { Cluster } from "@/components/ui/flex";
 import hotel, { CONTACT_EMAIL } from "@/config/hotel";
+import { isGuideLive } from "@/data/guides.index";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import { Facebook, Instagram } from "@/icons";
-import { guideHref, guideSlug } from "@/routes.guides-helpers";
+import { guideHref } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
 
 import FooterLegalRow from "./FooterLegalRow";
@@ -123,26 +124,42 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
           label: tFooter("assistance", { lng: lang }) as string,
           href: `/${lang}/${getSlug("assistance", lang)}`,
         },
-        {
-          key: "faq",
-          label: tFooter("faq", { lng: lang }) as string,
-          href: guideHref(lang, "travelFaqsAmalfi"),
-        },
-        {
-          key: "checkinCheckout",
-          label: tFooter("checkinCheckout", { lng: lang }) as string,
-          href: `/${lang}/${getSlug("assistance", lang)}/${guideSlug(lang, "checkinCheckout")}`,
-        },
-        {
-          key: "houseRules",
-          label: tFooter("houseRules", { lng: lang }) as string,
-          href: `/${lang}/${getSlug("assistance", lang)}/${guideSlug(lang, "rules")}`,
-        },
-        {
-          key: "cancellationPolicy",
-          label: tFooter("cancellationPolicy", { lng: lang }) as string,
-          href: `/${lang}/${getSlug("assistance", lang)}/${guideSlug(lang, "changingCancelling")}`,
-        },
+        ...(isGuideLive("travelFaqsAmalfi")
+          ? [
+              {
+                key: "faq",
+                label: tFooter("faq", { lng: lang }) as string,
+                href: guideHref(lang, "travelFaqsAmalfi"),
+              },
+            ]
+          : []),
+        ...(isGuideLive("checkinCheckout")
+          ? [
+              {
+                key: "checkinCheckout",
+                label: tFooter("checkinCheckout", { lng: lang }) as string,
+                href: guideHref(lang, "checkinCheckout"),
+              },
+            ]
+          : []),
+        ...(isGuideLive("rules")
+          ? [
+              {
+                key: "houseRules",
+                label: tFooter("houseRules", { lng: lang }) as string,
+                href: guideHref(lang, "rules"),
+              },
+            ]
+          : []),
+        ...(isGuideLive("changingCancelling")
+          ? [
+              {
+                key: "cancellationPolicy",
+                label: tFooter("cancellationPolicy", { lng: lang }) as string,
+                href: guideHref(lang, "changingCancelling"),
+              },
+            ]
+          : []),
       ],
     },
     {

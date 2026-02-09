@@ -1,0 +1,42 @@
+{
+  "seo": {
+    "title": "Salerne - Positano : comment y aller",
+    "description": "Ferries et bus entre Salerne et Positano, heures clés, achat de billets et plans B."
+  },
+  "linkLabel": "Salerne - Positano : comment y aller",
+  "intro": [
+    "Salerne → Positano : le ferry est le plus simple en saison (même avec bagages) ; le bus via Amalfi fonctionne toute l'année comme option économique."
+  ],
+  "sections": [
+    {
+      "id": "ferry",
+      "title": "Ferry (recommandé avec bagages)",
+      "body": [
+        "Embarquez à Molo Manfredi/Concordia selon l'opérateur et prévoyez environ une heure de navigation selon l'état de la mer.",
+        "Vérifiez la météo et les horaires en direct ; les places partent vite le week-end — arrivez en avance."
+      ]
+    },
+    {
+      "id": "bus",
+      "title": "Bus via Amalfi (toute l'année)",
+      "body": [
+        "Bus SITA vers Amalfi → correspondance pour Positano ; plus long mais disponible hors saison.",
+        "Prévoyez de la monnaie, validez vos billets et gardez une marge à Amalfi pour consulter le tableau des départs suivants."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Le ferry est-il fiable au printemps ?",
+      "a": [
+        "Oui, mais les coups de mer de début de saison peuvent annuler les traversées. Vérifiez toujours le jour même."
+      ]
+    },
+    {
+      "q": "Où ranger les bagages ?",
+      "a": [
+        "Utilisez les racks à bord ; gardez vos objets de valeur avec vous."
+      ]
+    }
+  ]
+}

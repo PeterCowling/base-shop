@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Salerno: az Amalfi-part másik kapuja",
+    "description": "Miért jó választás Salerno érkezésre főszezonban; kompkapcsolatok és logisztika."
+  },
+  "linkLabel": "Salerno: az Amalfi-part másik kapuja",
+  "intro": [
+    "Salerno az Amalfi-part egyik legpraktikusabb érkezési pontja: jobb vasúti kapcsolatokkal és nyugodtabb utcákkal, mint Nápoly."
+  ],
+  "sections": [
+    {
+      "id": "why",
+      "title": "Miért érdemes Salernón keresztül érkezni",
+      "body": [
+        "A nagysebességű vonatok Rómából vagy Milánóból itt végállomásoznak, így percek alatt leszállhat a Frecciarossáról és átsétálhat a kompkikötőbe.",
+        "A szállások és éttermek olcsóbbak, mint Positanóban, ezért ideális az első vagy az utolsó éjszakára."
+      ]
+    },
+    {
+      "id": "connections",
+      "title": "Továbbutazási lehetőségek",
+      "body": [
+        "Időszakos kompok kb. 70 perc alatt elérik Positanót. A buszok egész évben járnak a part mentén; a felszállás előtt vegyen UnicoCampania jegyet.",
+        "Reptéri transzferek 60 perc alatt érnek a nápolyi Capodichino repülőtérre, ha a hazautazás előtt van rá szüksége."
+      ]
+    },
+    {
+      "id": "staying",
+      "title": "Salernói tartózkodás",
+      "body": [
+        "Sétáljon végig a tengerparti sétányon, fedezze fel a középkori belvárost és az Arechi várat naplemente idején.",
+        "Foglaljon asztalt a Via Roma környéki trattoriákban, ahol kiváló tenger gyümölcsei várják positanói árak nélkül."
+      ]
+    }
+  ],
+  "tips": [
+    "Ha későn érkezik, töltsön egy éjszakát Salernóban, és másnap reggel az első komppal vagy busszal utazzon tovább Positanóba a zökkenőmentes csatlakozásért.",
+    "Használja az állomás közeli csomagmegőrzőket (5–7 € / táska), így a vonat és a komp között szabadon felfedezheti a várost."
+  ],
+  "faqs": [
+    {
+      "q": "Megbízhatóak a salernói kompok?",
+      "a": [
+        "Nyáron igen. Az átmeneti hónapokban előfordulhatnak időjárási miatti törlések, ezért tartsa készenlétben a buszt tartalék opciónak."
+      ]
+    },
+    {
+      "q": "Mikor érkezzek a vonathoz?",
+      "a": [
+        "Indulás előtt legalább 15 perccel érkezzen, hogy megtalálja a peront és – ha szükséges – érvényesítse a regionális jegyeket."
+      ]
+    }
+  ]
+}

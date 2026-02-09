@@ -1,0 +1,40 @@
+{
+  "seo": {
+    "title": "Phrases italiennes utiles en Campanie",
+    "description": "Italien indispensable (et un soupçon de dialecte) pour les bus, ferries, cafés et échanges courtois sur la côte."
+  },
+  "linkLabel": "Phrases italiennes utiles en Campanie",
+  "intro": [
+    "Italien pratique (avec une touche de dialecte) pour les bus, ferries, cafés et demandes polies en Campanie."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Notions de transport",
+      "body": [
+        "\\\\\"Un biglietto per Positano, per favore\\\\\" (un billet pour Positano, s'il vous plaît) ou \\\\\"Dove si convalida?\\\\\" (Où valider ?) couvrent l'essentiel au guichet.",
+        "Gardez \\\\\"Scendo alla prossima\\\\\" (je descends au prochain arrêt) et \\\\\"A che ora parte l'ultima corsa?\\\\\" (À quelle heure est le dernier départ ?) sous la main."
+      ]
+    },
+    {
+      "id": "cafe",
+      "title": "Cafés & restaurants",
+      "body": [
+        "Commandez avec \\\\\"Prendo un espresso al banco\\\\\" ou \\\\\"Possiamo avere il conto, per favore?\\\\\" et ajoutez toujours un grazie.",
+        "Demandez des recommandations (\\\\\"Cosa consiglia oggi?\\\\\") ou précisez un régime : \\\\\"È possibile senza glutine?\\\\\"."
+      ]
+    },
+    {
+      "id": "emergency",
+      "title": "Urgences & courtoisie",
+      "body": [
+        "\\\\\"Ho bisogno di aiuto\\\\\" (j'ai besoin d'aide) et \\\\\"Può chiamare un taxi?\\\\\" (Pouvez-vous appeler un taxi ?) suffisent dans la plupart des situations.",
+        "Couleur locale : \\\\\"Guagliò\\\\\" est un salut amical informel, tandis que \\\\\"Statt' bbuon\\\\\" est un au revoir chaleureux que vous entendrez en dialecte."
+      ]
+    }
+  ],
+  "tips": [
+    "Téléchargez une application de phrases hors ligne pour écouter rapidement la prononciation quand le réseau décroche.",
+    "Un simple \\\\\"Grazie mille\\\\\" et \\\\\"Buona giornata\\\\\" garde les échanges cordiaux même en pleine saison."
+  ]
+}

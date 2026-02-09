@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Camping på Amalfikysten",
+    "description": "Hvor du kan campere, faciliteter, og hvordan du kommer dertil fra Positano."
+  },
+  "linkLabel": "Camping på Amalfikysten",
+  "intro": [
+    "Camping nær Amalfikysten betyder udpegede pladser uden for det centrale Positano; tjek regler og ledig kapacitet."
+  ],
+  "sections": [
+    {
+      "id": "where",
+      "title": "Hvor du kan campere",
+      "body": [
+        "Der findes officielle campingpladser uden for centrum af Positano; undersøg lokale regler og book i god tid."
+      ]
+    },
+    {
+      "id": "access",
+      "title": "Adgang og transport",
+      "body": [
+        "Planlæg med busser eller gåture fra campingpladserne; kystvejene er smalle, og parkering er begrænset."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etikette og sikkerhed",
+      "body": [
+        "Respekter stilleperioder og brandregler; tag dit affald med; undgå klippekante og uafmærkede områder."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Er vild camping tilladt?",
+      "a": [
+        "Normalt ikke; brug officielle campingpladser og følg de opsatte regler."
+      ]
+    }
+  ]
+}

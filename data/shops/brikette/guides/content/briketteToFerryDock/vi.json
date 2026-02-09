@@ -1,0 +1,104 @@
+{
+  "seo": {
+    "title": "Hostel Brikette → bến phà Positano (cảng)",
+    "description": "Tuyến đường đi bộ từng bước đến cảng Positano với các mốc bản đồ, mẹo mua vé và hướng dẫn lên tàu."
+  },
+  "linkLabel": "Hostel Brikette → bến phà (cảng)",
+  "intro": [
+    "Đang đến cảng Positano để đi phà? Đây là tuyến đường đi bộ dễ nhất mà chúng tôi tìm thấy từ Hostel Brikette đến Spiaggia Grande — với bản đồ nhanh và các mốc ảnh cho các điểm 1-5.",
+    "Dành 20-30 phút đi bộ (nhiều hơn nếu có hành lý), và lưu ý rằng Google Maps đôi khi gợi ý các tuyến đường dài hơn đến bãi biển — hãy làm theo tuyến đường bên dưới thay vào đó."
+  ],
+  "beforeList": [
+    "Kiểm tra thời gian và giá phà tại các quầy điều hành ở cảng (họ liệt kê chuyến khởi hành tiếp theo trên biển báo).",
+    "Để lại thời gian dự phòng nếu bạn có hành lý — có cầu thang trên tuyến đường này và cảng trở nên đông đúc vào giờ cao điểm.",
+    "Hãy cố gắng đến sớm để bạn có thể mua vé, tìm bến đúng và sẵn sàng khi bắt đầu lên tàu."
+  ],
+  "sections": [
+    {
+      "id": "getting-to-the-port",
+      "title": "Đến cảng",
+      "body": [
+        "Bắt đầu từ nhà trọ và đi về phía Spiaggia Grande (bãi biển chính của Positano).",
+        "Cảng nằm ở phía bên phải của bãi biển.",
+        "Dành 20-30 phút cho việc đi bộ từ nhà trọ đến cảng.",
+        "Google Maps có thể không luôn cung cấp tuyến đường trực tiếp nhất đến bãi biển — sử dụng bản đồ và hướng dẫn từng bước bên dưới.",
+        "[Xem tại đây nếu bạn thích hướng dẫn bản đồ](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2)."
+      ]
+    },
+    {
+      "id": "walking-route",
+      "title": "Đi bộ từ Hostel Brikette đến cảng (điểm 1-5)",
+      "body": [
+        "Tham chiếu bản đồ (Nhà trọ → Cảng):",
+        "[[figure:map]]",
+        "Bắt đầu bằng cách rời khỏi nhà trọ qua cửa chính.",
+        "Đi xuống bậc thang đến đường.",
+        "Rẽ trái và đi hơn 100 mét (330 feet) cho đến khi bạn đến điểm 1 trên bản đồ.",
+        "Tại điểm 1, rẽ phải.",
+        "[[figure:point-1]]",
+        "Ngay khi bạn rẽ phải tại điểm 1, bạn sẽ thấy tabacchi ở bên phải.",
+        "[[figure:tabacchi]]",
+        "Đi theo đường xuống dốc.",
+        "Tại khúc cua ngoằn ngoèo đầu tiên, bạn sẽ đến điểm 2 trên bản đồ.",
+        "Tại điểm 2, rời đường và đi thẳng về phía trước, đi xuống cầu thang.",
+        "[[figure:point-2]]",
+        "Khi bạn đến cuối cầu thang, bạn đã đến điểm 3 trên bản đồ.",
+        "Băng qua đường và đi theo con đường thẳng về phía trước.",
+        "Đi theo cầu thang xuống cho đến khi bạn đến tầng tiếp theo.",
+        "[[figure:point-3]]",
+        "Khi bạn đến cuối cầu thang, bạn sẽ đến đường.",
+        "Băng qua đường và rẽ trái, đi 10 mét (30 feet) cho đến khi bạn đến điểm 4 trên bản đồ.",
+        "Tại điểm 4, rẽ phải và đi xuống cầu thang rời đường và xuống dốc.",
+        "[[figure:point-4]]",
+        "Đi theo cầu thang xuống cho đến khi bạn đến đáy. Ở đáy cầu thang, rẽ phải.",
+        "Điều này sẽ đưa bạn đến điểm 5 trên bản đồ.",
+        "Tiếp tục đi dưới vòm bên phải.",
+        "[[figure:point-5]]",
+        "Sau 50 mét (160 feet), bạn sẽ đến cảng."
+      ]
+    },
+    {
+      "id": "buying-tickets",
+      "title": "Mua vé phà",
+      "body": [
+        "Tại cảng Positano, bạn có thể bắt phà đến những nơi như Amalfi, Capri và xa hơn. Mỗi nhà điều hành phà có một quầy, và biển báo trên quầy hiển thị thông tin về chuyến phà tiếp theo họ sẽ chạy.",
+        "[[figure:tickets]]"
+      ]
+    },
+    {
+      "id": "boarding",
+      "title": "Lên tàu phà",
+      "body": [
+        "Khi bạn có vé, hãy đi đến cuối cảng và đợi phà bắt đầu lên tàu.",
+        "[[figure:port]]"
+      ]
+    }
+  ],
+  "stepsList": [
+    "Rời nhà trọ và rẽ trái dọc theo đường đến điểm 1 trên bản đồ, sau đó rẽ phải.",
+    "Đi theo tuyến đường xuống qua các điểm 2-5 (cầu thang và các chỗ băng qua) cho đến khi bạn đến cảng.",
+    "Mua vé tại các quầy điều hành và kiểm tra biển báo cho chuyến đi tiếp theo.",
+    "Đi đến cuối cảng và đợi lên tàu."
+  ],
+  "kneesList": [],
+  "faqs": [
+    {
+      "q": "Mất bao lâu để đi bộ từ Hostel Brikette đến cảng?",
+      "a": [
+        "Dự kiến 20-30 phút đi bộ. Thêm thời gian nếu bạn có hành lý hoặc muốn dừng lại để mua vé trước khi lên tàu."
+      ]
+    },
+    {
+      "q": "Tôi mua vé phà ở đâu ở Positano?",
+      "a": [
+        "Tại cảng, bạn sẽ thấy các quầy cho mỗi nhà điều hành phà. Biển báo trên quầy hiển thị thông tin về chuyến phà tiếp theo họ sẽ chạy."
+      ]
+    }
+  ],
+  "howtoSteps": [
+    "Đi theo tuyến đường bản đồ từ nhà trọ xuống cảng",
+    "Sử dụng các mốc ảnh tại điểm 1-5 để giữ đúng hướng",
+    "Mua vé tại các quầy điều hành và xác nhận chuyến đi tiếp theo",
+    "Đợi tại bến và lên tàu khi được gọi"
+  ]
+}

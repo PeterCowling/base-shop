@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Sztuka i rękodzieło: zakupy w Positano",
+    "description": "Rzemieślnicy z Positano: sandały, ceramika, grafiki i jak kupować odpowiedzialnie."
+  },
+  "linkLabel": "Sztuka i rękodzieło: zakupy w Positano",
+  "intro": [
+    "Zakupy u rzemieślników w Positano bez przepłacania: sandały, ceramika, grafiki i sposoby wysyłki do domu."
+  ],
+  "sections": [
+    {
+      "id": "sandals",
+      "title": "Sandały na zamówienie",
+      "body": [
+        "Obserwuj, jak szewcy ręcznie wykonują skórzane sandały w 30 minut; ceny zaczynają się od około 80 € za parę szytą na miarę.",
+        "Weź odrys stopy lub zrób go na miejscu — wielu rzemieślników wysyła zamówienia na cały świat, gdy ma Twoje wymiary."
+      ]
+    },
+    {
+      "id": "ceramics",
+      "title": "Ceramika i sztuka",
+      "body": [
+        "Odwiedzaj rodzinne pracownie ceramiki z ręcznie malowanymi płytkami i zastawą; zapytaj o szkliwa bez ołowiu, jeśli będziesz serwować jedzenie.",
+        "Lokalni artyści sprzedają grafiki i akwarele przy Via Cristoforo Colombo — tuby transportowe chronią je w drodze."
+      ]
+    },
+    {
+      "id": "shipping",
+      "title": "Płatność i wysyłka",
+      "body": [
+        "Większość sklepów akceptuje karty, ale oferuje rabaty przy płatności gotówką. Miej przy sobie dokument tożsamości do zwrotu podatku przy zakupach powyżej 154,94 €.",
+        "Delikatne przedmioty wysyłaj ubezpieczonym kurierem (DHL/UPS) i poproś o podwójne opakowanie; stawki zaczynają się od około 40 € w zależności od wagi."
+      ]
+    }
+  ],
+  "tips": [
+    "Rób zdjęcia paragonów i danych pracowni, aby pamiętać, kto wykonał każdy przedmiot.",
+    "Spakuj folię bąbelkową, jeśli chcesz przewozić ceramikę w walizce — hostele często mają zapas wypełnień z dostaw."
+  ],
+  "faqs": [
+    {
+      "q": "Czy rzemieślnicy personalizują zamówienia?",
+      "a": [
+        "Tak. Wielu wytłacza inicjały na sandałach lub dostosowuje kolory ceramiki przy kilku dniach wyprzedzenia."
+      ]
+    },
+    {
+      "q": "Jak uzyskać zwrot VAT?",
+      "a": [
+        "Poproś o formularz tax free przy zakupie, podbij go na lotnisku lub w porcie promowym i złóż w ciągu trzech miesięcy, aby otrzymać zwrot."
+      ]
+    }
+  ]
+}

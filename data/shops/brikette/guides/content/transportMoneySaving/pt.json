@@ -1,0 +1,49 @@
+{
+  "seo": {
+    "title": "Dicas para economizar no transporte pela Costa Amalfitana",
+    "description": "Compare passes, compre bilhetes com antecedência e combine rotas para reduzir custos de deslocamento."
+  },
+  "linkLabel": "Dicas para economizar no transporte pela Costa Amalfitana",
+  "intro": [
+    "Formas práticas de cortar custos de transporte: passes, horários, combinação de autocarro com ferry e planos para mau tempo."
+  ],
+  "sections": [
+    {
+      "id": "passes",
+      "title": "Passes vs. bilhetes simples",
+      "body": [
+        "Use passes diários apenas se fizer várias viagens; caso contrário, os bilhetes simples ficam mais baratos. Valide sempre."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Horários e percursos",
+      "body": [
+        "Viaje fora das 10:00–16:00 nos dias de pico; prefira autocarros diretos para as aldeias no alto e ferries para saltos panorâmicos."
+      ]
+    },
+    {
+      "id": "mixing",
+      "title": "Misturar autocarro e ferry",
+      "body": [
+        "Escolha um trecho de ferry pago (Positano ↔ Amalfi) e use autocarros no resto para poupar mantendo conforto."
+      ]
+    },
+    {
+      "id": "contingency",
+      "title": "Plano B para o clima",
+      "body": [
+        "Mar agitado cancela ferries: tenha sempre um backup com autocarro e margem antes da última partida do dia."
+      ]
+    }
+  ],
+  "faqsTitle": "Perguntas frequentes",
+  "faqs": [
+    {
+      "q": "Os bilhetes combinados compensam?",
+      "a": [
+        "Às vezes, em dias com vários saltos de ferry; compare com as tarifas simples."
+      ]
+    }
+  ]
+}

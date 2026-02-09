@@ -1,0 +1,279 @@
+{
+  "seo": {
+    "title": "Plage de Laurito, Positano : Da Adolfo, Tre Ville et Conseils",
+    "description": "Guide de la plage de Laurito pour les voyageurs d'auberge : Da Adolfo vs Villa Tre Ville, réservations, navettes en bateau, bus + escaliers de secours, coûts et quoi emporter."
+  },
+  "linkLabel": "Plage de Laurito : Joyau Caché Sous les Falaises",
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
+  "intro": [
+    "Laurito est une petite crique nichée entre Positano et Praiano. Deux clubs de plage — Da Adolfo et Villa Tre Ville — dominent le rivage, ne laissant qu'un mince filet de sable public. La récompense : un soleil orienté à l'ouest, des spots déjeuner emblématiques et une atmosphère plus calme qu'à Spiaggia Grande.",
+    "Pour les clients d'auberge, Laurito est la journée plage \"faites-vous plaisir\" : vous pouvez nager dans une baie tranquille, profiter d'un long déjeuner et toujours être de retour en ville pour les boissons au coucher du soleil — tant que vous planifiez le retour.",
+    "Utilisez ce guide pour choisir entre Da Adolfo et Villa Tre Ville, comprendre le fonctionnement des navettes en bateau et construire un plan de secours fiable avec %LINK:lauritoBeachBusDown|l'itinéraire en bus% et %LINK:lauritoBeachBusBack|le guide de retour%."
+  ],
+  "toc": [
+    {
+      "href": "#quick-plan",
+      "label": "Plan rapide (depuis l'auberge)"
+    },
+    {
+      "href": "#why-go",
+      "label": "Pourquoi visiter Laurito"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Comment s'y rendre (bateau vs bus)"
+    },
+    {
+      "href": "#layout",
+      "label": "Aménagement et services"
+    },
+    {
+      "href": "#tre-ville",
+      "label": "Club de plage Villa Tre Ville"
+    },
+    {
+      "href": "#da-adolfo",
+      "label": "Club de plage Da Adolfo"
+    },
+    {
+      "href": "#returns",
+      "label": "Horaires et retour"
+    },
+    {
+      "href": "#pack",
+      "label": "Quoi emporter"
+    },
+    {
+      "href": "#image-credits",
+      "label": "Crédits images"
+    }
+  ],
+  "sections": [
+    {
+      "id": "quick-plan",
+      "title": "Plan rapide depuis Hostel Brikette (résumé de 2 minutes)",
+      "body": [
+        "Si vous voulez la version facile : choisissez un \"itinéraire principal\" et un \"itinéraire de secours\" avant de quitter l'auberge. Laurito est petit, et la journée est géniale quand vous arrivez détendu — pas quand vous improvisez sur la jetée sans signal.",
+        "Conseil du personnel : aux mois de pointe, les deux choses qui font dérailler les plans sont (1) les bateaux complets et (2) la mer agitée qui met les navettes en pause. Si vous planifiez pour ces deux points, le reste est facile."
+      ],
+      "list": [
+        "Choisissez votre ambiance : Da Adolfo pour une journée classique déjeuner-et-transat, ou Villa Tre Ville pour une terrasse premium et un service plus calme. Si vous voulez juste la crique, visez la petite bande publique tôt et apportez votre propre ombre.",
+        "Itinéraire principal (plus pratique) : navette en bateau depuis Spiaggia Grande. Confirmez où faire la queue et demandez le dernier retour à votre arrivée.",
+        "Itinéraire de secours (plus fiable) : %LINK:lauritoBeachBusDown|bus jusqu'à Laurito% + escaliers ; puis %LINK:lauritoBeachBusBack|bus de retour% plus tard dans la journée.",
+        "Fixez votre heure \"go/no-go\" : si vous n'avez pas de réservation, partir plus tôt augmente vos chances. Si c'est déjà en fin de matinée et que vous voyez des files d'attente de bateaux, envisagez une alternative comme %LINK:positanoBeaches|une autre plage de Positano% au lieu de forcer Laurito.",
+        "Emportez l'essentiel : chaussures d'eau, espèces/carte, crème solaire et une couche légère pour le trajet en bateau de retour (la brise augmente en fin d'après-midi)."
+      ]
+    },
+    {
+      "id": "why-go",
+      "title": "Pourquoi Laurito vaut le détour",
+      "body": [
+        "Laurito se trouve juste à l'extérieur du centre de Positano, donc la foule se disperse par rapport à Spiaggia Grande. Le soleil atteint la crique jusqu'en début de soirée, l'eau est généralement calme pour la baignade et les falaises encadrent la baie pour des photos classiques de la côte amalfitaine.",
+        "C'est aussi l'un des endroits les plus faciles pour transformer une journée plage en une mémorable journée \"long déjeuner\". Les deux clubs ont de vraies cuisines (pas seulement des snacks), vous pouvez donc nager, manger et vous détendre sans retourner en ville.",
+        "Le compromis est l'accès : la majeure partie du rivage est contrôlée par les clubs, et la bande publique est vraiment petite. Si vous arrivez sans plan, Laurito peut ressembler à une impasse. Si vous arrivez avec une réservation ou un itinéraire de secours clair, c'est l'une des excursions d'une demi-journée les plus relaxantes depuis Hostel Brikette.",
+        "Si Laurito semble trop serré ce jour-là (files d'attente, bateaux complets ou vous voulez plus d'espace libre), comparez-le avec les alternatives dans notre %LINK:positanoBeaches|aperçu des plages de Positano%."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/02-beach-overview.jpg",
+          "alt": "Crique de la plage de Laurito avec falaises en arrière-plan et clubs de plage le long du rivage",
+          "caption": "Aménagement de la plage de Laurito : 1. Zone gratuite 2. Club de plage TreVilla 3. Da Adolfo",
+          "width": 403,
+          "height": 500
+        }
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "Comment s'y rendre : navette en bateau vs bus + escaliers",
+      "body": [
+        "Il existe deux moyens réalistes pour atteindre Laurito : en navette en bateau depuis Spiaggia Grande (plus pratique) ou en bus SITA suivi d'escaliers (plus fiable quand la mer est agitée ou les bateaux sont complets).",
+        "Itinéraire en bateau (meilleur quand vous avez une réservation) : dirigez-vous vers Spiaggia Grande et trouvez la petite jetée/point d'embarquement utilisé par les navettes de plage. Les files peuvent se former rapidement, surtout les jours calmes et ensoleillés. Si vous n'êtes pas sûr, demandez au quai et montrez le nom du club que vous visez pour embarquer dans le bon bateau.",
+        "Itinéraire en bus (meilleur secours) : suivez %LINK:lauritoBeachBusDown|notre guide du bus étape par étape% pour atteindre l'arrêt de Laurito, puis descendez les escaliers signalisés. C'est plus lent que le bateau, mais c'est aussi le plan qui fonctionne encore quand les taxis nautiques s'arrêtent.",
+        "Plan de retour : même si vous arrivez en bateau, gardez %LINK:lauritoBeachBusBack|le guide de retour en bus% enregistré sur votre téléphone. C'est le \"plan B\" le plus simple si vous manquez la dernière navette ou si la mer se lève.",
+        "Les horaires changent. Pour le dernier horaire SITA, consultez %URL:https://www.positano.com/en/bus-schedule|l'horaire des bus de Positano.com% avant de vous engager à un retour tardif."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/06-amalfi-coast-sita-bus.jpg",
+          "alt": "Bus SITA bleu roulant le long de la route de la côte amalfitaine au-dessus de la mer",
+          "caption": "Votre secours fiable quand les bateaux sont en pause : le bus SITA le long de la route côtière",
+          "width": 1920,
+          "height": 1080
+        }
+      ]
+    },
+    {
+      "id": "layout",
+      "title": "Aménagement et qui gère quoi",
+      "body": [
+        "La crique se divise en trois zones. Une étroite zone publique se trouve à l'extrême droite pour ceux qui apportent leurs propres serviettes. Le club de Villa Tre Ville occupe les terrasses centrales avec des transats en terre cuite, tandis que Da Adolfo exploite le côté gauche avec des lits en bois et la terrasse restaurant.",
+        "Tous les clients arrivent en bateau ou par l'escalier abrupt depuis l'arrêt du bus SITA. Attendez-vous à faire la queue aux heures de pointe car les deux clubs contrôlent l'accès à la majeure partie du rivage.",
+        "Note pratique : si vous visez la bande publique, arrivez tôt, emportez votre propre eau et ombre, et soyez prêt pour des galets/dalles de roche plutôt que du sable doux. Si vous réservez un club, confirmez si les serviettes sont incluses et si vous avez besoin d'espèces pour les extras."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/01-beach-layout-map.jpg",
+          "alt": "Diagramme d'aménagement de la plage de Laurito montrant trois zones : section libre, Villa Tre Ville et Da Adolfo",
+          "caption": "Aménagement de Laurito : bande publique étroite (extrême droite), terrasses centrales de Villa Tre Ville et terrasse de Da Adolfo (gauche)",
+          "width": 1500,
+          "height": 1000
+        }
+      ]
+    },
+    {
+      "id": "tre-ville",
+      "title": "Club de plage Villa Tre Ville",
+      "body": [
+        "Villa Tre Ville accueille un club boutique avec un nombre limité de transats, un service attentionné et des tarifs en conséquence. Attendez-vous à des lits de jour premium, un déjeuner à la carte et du prosecco servi à votre chaise.",
+        "Les réservations passent par le concierge de l'hôtel. Les prix changent selon la saison et la rangée, mais c'est l'option \"premium\" à Laurito : prévoyez une dépense minimale plus élevée et moins de possibilités d'entrée de dernière minute.",
+        "Ce qui en vaut la peine : moins de chaos, meilleur espacement entre les transats et une ambiance plus calme si vous voulez lire, faire une sieste ou surmonter une gueule de bois en paix. Si vous voyagez en couple ou en petit groupe et voulez une journée prévisible, c'est généralement le choix le plus fluide.",
+        "La fin d'après-midi est particulièrement pittoresque. Demandez au personnel l'heure du dernier bateau de retour quand vous vous enregistrez, et ne supposez pas qu'il fonctionnera tard juste parce que le soleil est encore dehors."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg",
+          "alt": "Club de plage Villa Tre Ville avec transats en terre cuite et service premium",
+          "caption": "Villa Tre Ville — club de plage boutique avec lits de jour premium et service style concierge",
+          "width": 1280,
+          "height": 1600
+        }
+      ]
+    },
+    {
+      "id": "da-adolfo",
+      "title": "Club de plage Da Adolfo",
+      "body": [
+        "Da Adolfo est célèbre pour sa mozzarella grillée sur feuilles de citronnier et son ambiance bohème décontractée. La réservation est notoirement difficile — ils répondent lentement et les créneaux du jour même vont d'abord aux clients fidèles.",
+        "Si vous ne pouvez pas obtenir une réservation, vous pouvez essayer l'attente : arrivez tôt à Spiaggia Grande, demandez à rejoindre le taxi nautique Da Adolfo et soyez poli concernant la liste d'attente. Plus vous commencez tôt, plus il est probable qu'une absence s'ouvre.",
+        "Attendez-vous à une ambiance \"déjeuner d'abord\" ici : les gens viennent pour la nourriture et l'atmosphère autant que pour la baignade. Si vous avez une réservation, prévoyez de vous installer et de rester un moment plutôt que d'essayer de le presser dans une matinée précipitée.",
+        "Les prix varient selon la saison et la disponibilité. Comme référence, les forfaits transats sont souvent dans la fourchette de 50 à 70 € pour deux personnes incluant la navette, avec les plats principaux du déjeuner généralement dans la fourchette de 18 à 30 €. Traitez-les comme des estimations et confirmez à l'arrivée."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg",
+          "alt": "Quai du club de plage Da Adolfo et terrasse de restaurant avec atmosphère bohème",
+          "caption": "Da Adolfo — célèbre pour une ambiance déjeuner décontractée et accès en taxi nautique depuis Spiaggia Grande",
+          "width": 512,
+          "height": 215
+        }
+      ]
+    },
+    {
+      "id": "returns",
+      "title": "Horaires, conditions de mer et retour à l'auberge",
+      "body": [
+        "La plupart du stress de Laurito se produit à la fin de la journée, pas au début. Décidez de votre itinéraire de retour tôt, puis confirmez l'heure du \"dernier bateau\" dès votre arrivée (elle peut changer avec les conditions de mer et la saison).",
+        "Les taxis nautiques des clubs partent de Spiaggia Grande. Si la mer devient agitée, les navettes peuvent s'arrêter. Quand cela arrive, votre meilleur coup est de passer au plan bus-et-escaliers plutôt que d'attendre indéfiniment au quai.",
+        "Vous préférez les transports publics dès le départ ? Suivez %LINK:lauritoBeachBusDown|notre guide du bus% pour le voyage aller et %LINK:lauritoBeachBusBack|le guide de retour% pour la montée de retour. Achetez vos billets de bus avant de quitter la ville — il n'y a nulle part pour les acheter à Laurito.",
+        "Si vous retournez après un long déjeuner, prévoyez du temps tampon. Les bus peuvent être bondés et lents, et il est plus facile d'attraper un bus plus tôt que de sauver un dernier manqué. Si vous vous retrouvez dehors après la tombée de la nuit, les taxis sont possibles mais chers — demandez à l'auberge la meilleure option ce jour-là."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/05-positano-view.jpg",
+          "alt": "Vue sur Positano et la mer avec des bateaux près du rivage",
+          "caption": "Spiaggia Grande est le principal point de départ pour de nombreuses navettes de plage et bateaux",
+          "width": 1280,
+          "height": 1707
+        }
+      ]
+    },
+    {
+      "id": "pack",
+      "title": "Quoi emporter (liste de contrôle pour auberge)",
+      "body": [
+        "Laurito est une journée \"petite crique\", ce qui signifie que vous devez supposer des installations limitées en dehors des clubs. Même si vous avez une réservation, emporter intelligemment rend la journée plus fluide.",
+        "Apportez : chaussures d'eau (galets/dalles de roche), crème solaire sans danger pour les récifs, une couche légère pour le trajet en bateau de retour et une petite quantité d'espèces/carte pour les extras. Si vous prévoyez d'essayer la bande publique, ajoutez votre propre serviette/tapis et ombre.",
+        "Le signal téléphonique peut être peu fiable au quai. Capturez en écran toute confirmation de réservation et gardez %LINK:lauritoBeachBusBack|les étapes de retour en bus% enregistrées comme secours."
+      ]
+    },
+    {
+      "id": "image-credits",
+      "title": "Crédits images",
+      "body": [
+        "Certaines photos de ce guide sont utilisées sous licences Creative Commons :"
+      ],
+      "list": [
+        "Côte de Positano — Crédit photo : %URL:https://commons.wikimedia.org/wiki/File:Positano_sea.jpg|Alexis Lours% (%URL:https://creativecommons.org/licenses/by/4.0/|CC BY 4.0%).",
+        "Bus SITA — Crédit photo : %URL:https://commons.wikimedia.org/wiki/File:Amalfi_Drive_Sita_Bus.jpeg|Robot8A% (%URL:https://creativecommons.org/licenses/by-sa/4.0/|CC BY-SA 4.0%)."
+      ]
+    }
+  ],
+  "images": {
+    "whyGo": {
+      "src": "/img/guides/laurito-beach/02-beach-overview.jpg",
+      "alt": "Crique de la plage de Laurito avec clubs de plage le long du rivage",
+      "caption": "La crique de Laurito adossée aux falaises est plus calme et plus silencieuse que la plage principale."
+    },
+    "layout": {
+      "src": "/img/guides/laurito-beach/01-beach-layout-map.jpg",
+      "alt": "Terrasses de plage et aménagement du rivage à Laurito",
+      "caption": "Trois zones partagent la crique : bande publique, terrasses de Villa Tre Ville et terrasse de Da Adolfo."
+    },
+    "treVille": {
+      "src": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg",
+      "alt": "Transats du club de plage Villa Tre Ville et vues sur la mer",
+      "caption": "Villa Tre Ville se concentre sur des transats premium et un service style concierge."
+    },
+    "daAdolfo": {
+      "src": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg",
+      "alt": "Quai du club de plage Da Adolfo et zone de sièges",
+      "caption": "La navette de Da Adolfo dépose les clients à côté de la terrasse du restaurant."
+    },
+    "positanoView": {
+      "src": "/img/guides/laurito-beach/05-positano-view.jpg",
+      "alt": "Vue sur Positano et la mer avec des bateaux près du rivage",
+      "caption": "Spiaggia Grande est le principal point de départ pour de nombreuses navettes de plage et bateaux."
+    },
+    "sitaBus": {
+      "src": "/img/guides/laurito-beach/06-amalfi-coast-sita-bus.jpg",
+      "alt": "Bus SITA bleu roulant le long de la route de la côte amalfitaine au-dessus de la mer",
+      "caption": "Le bus SITA côtier est un secours utile quand les bateaux sont en pause."
+    }
+  },
+  "essentialsTitle": "À quoi s'attendre",
+  "essentials": [
+    "Les réservations sont essentielles pour les deux clubs en été ; les entrées sans réservation ne réussissent qu'avant 10:00.",
+    "La petite section publique se remplit rapidement — arrivez avec votre propre parasol et tapis si vous prévoyez de l'utiliser.",
+    "Les bateaux de retour partent en milieu d'après-midi ; ayez le secours du bus prêt pour les plans du soir."
+  ],
+  "typicalCostsTitle": "Coûts typiques",
+  "typicalCosts": [
+    "Set de transats Da Adolfo pour deux : 50 à 70 € incluant la navette en bateau.",
+    "Terrasse premium de Villa Tre Ville pour deux : 180 à 220 € avec serviettes et service concierge.",
+    "Plats principaux du déjeuner dans les deux clubs : 18 à 30 €, cocktails 12 à 15 €, eau en bouteille 3 à 4 €."
+  ],
+  "tipsTitle": "Conseils rapides",
+  "tips": [
+    "Capturez en écran les e-mails de confirmation — le signal mobile s'estompe près du quai.",
+    "Emportez de la crème solaire sans danger pour les récifs et des chaussures d'eau ; le rivage mélange galets et dalles de roche.",
+    "Consultez notre %LINK:positanoBeaches|aperçu des plages de Positano% pour comparer Laurito avec d'autres criques."
+  ],
+  "warningsTitle": "Bon à savoir",
+  "warnings": [
+    "Les mers agitées mettent en pause les navettes en bateau ; le personnel enverra des mises à jour par texto mais le bus pourrait être votre seule route de retour.",
+    "Pas de distributeurs automatiques ni de magasins à la crique — apportez de l'argent ou des cartes pour les repas et extras.",
+    "L'escalier est raide avec des marches inégales ; prévoyez des pauses et portez des chaussures adhérentes."
+  ],
+  "faqsTitle": "FAQ sur la plage de Laurito",
+  "faqs": [
+    {
+      "q": "Ai-je besoin d'une réservation ?",
+      "a": [
+        "Oui. Les deux clubs privilégient les clients avec des réservations confirmées. Da Adolfo accepte les visiteurs en attente sur une liste d'attente, mais seulement après que les clients préréservés soient assis."
+      ]
+    },
+    {
+      "q": "Puis-je utiliser la section publique ?",
+      "a": [
+        "Vous pouvez, mais l'espace est extrêmement limité. Apportez tout ce dont vous avez besoin, y compris l'ombre et l'eau, et arrivez avant 09:30 pour réclamer une place."
+      ]
+    },
+    {
+      "q": "Jusqu'à quelle heure les bateaux fonctionnent-ils ?",
+      "a": [
+        "La plupart des navettes de retour se terminent à 18:00 en été, plus tôt en saison intermédiaire. Confirmez toujours le dernier départ à l'arrivée et ayez l'horaire des bus enregistré comme secours."
+      ]
+    }
+  ]
+}

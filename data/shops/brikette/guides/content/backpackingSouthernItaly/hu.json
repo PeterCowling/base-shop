@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Hátizsákos körút Dél-Olaszországban az Amalfi-parttal",
+    "description": "Útvonaljavaslatok, időzítés, közlekedési kombinációk és költségkeret."
+  },
+  "linkLabel": "Hátizsákkal Dél-Olaszországban: Útvonal incl. Amalfi",
+  "intro": [
+    "Tervezzen egy Dél-Olaszországot bejáró körtúrát, amelyben Positano marad a középpontban, mégsem szaladnak el a költségek."
+  ],
+  "sections": [
+    {
+      "id": "route",
+      "title": "Ajánlott útvonal",
+      "body": [
+        "Induljon Nápolyból a kiváló repülő- és vasúti kapcsolatok miatt, töltsön 2–3 éjszakát Positanóban vagy a közeli Praianóban, folytassa Salernóba, majd kanyarodjon be Matera vagy Puglia felé, mielőtt visszatérne.",
+        "Használja a regionális vonatokat és távolsági buszokat a hosszabb szakaszokra: 4–6 héttel előre foglalva 15–25 eurós jegyárakkal számolhat."
+      ]
+    },
+    {
+      "id": "arrivals",
+      "title": "Érkezés és csomagolás",
+      "body": [
+        "Utazzon legfeljebb 40 literes hátizsákkal, így könnyebben boldogul a lépcsőkön és a buszok csomagtartójában.",
+        "Pakoljon gyorsan száradó ruharétegeket, kompakt törölközőt és papucsot a hostelzuhanyokhoz; Positanóban a mosodák 12–15 euróért vállalják a mosás-szárítást."
+      ]
+    },
+    {
+      "id": "budget",
+      "title": "Pénztárcabarát tippek",
+      "body": [
+        "Vásároljon focacciát, gyümölcsöt és mozzarellát, majd tartson teraszos pikniket: így egy ebéd kijön 8 euróból a 18 eurós éttermi árak helyett.",
+        "Szervezzen közös kirándulásokat a hosteltársakkal: osszák meg a taxiköltséget a túraösvényekhez, vagy béreljenek robogót Salernóban/Praianóban, ahol 35 euró/nap körül indulnak az árak."
+      ]
+    }
+  ],
+  "tips": [
+    "Aktiváljon regionális SIM-et vagy eSIM-et (TIM/Vodafone), hogy menet közben is elérje a menetrendeket és a hostelbejelentkezéseket.",
+    "Foglalja le előre az első és az utolsó éjszakára a hostelt vagy vendégházat, a köztes napokra pedig maradjon rugalmas az időjárás miatt."
+  ],
+  "faqs": [
+    {
+      "q": "Szükség van autóbérlésre?",
+      "a": [
+        "Nem. A vonatok, buszok és kompok lefedik az útvonalat. Rövidebb szakaszokra egy robogó izgalmas lehet, de az Amalfi környéki forgalom rutint igényel."
+      ]
+    },
+    {
+      "q": "Hány napot szánjak Positanóra?",
+      "a": [
+        "Legalább három éjszakát: egyet magára Positanóra, egyet az Istenek ösvényére vagy hajózásra, és egy tartalék napot Amalfi/Ravello vagy az időjárás miatt."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "seo": {
+    "title": "波西塔诺露台日落（简单省钱）",
+    "description": "Hostel Brikette 露台日落：什么时候到更省心。"
+  },
+  "linkLabel": "露台日落",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": [
+    "不想付昂贵长时间晚餐？青旅露台最省心。"
+  ],
+  "sections": [
+    {
+      "id": "timing",
+      "title": "几点到",
+      "body": [
+        "旺季：日落前30–45分钟到。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/terraceSunsets.webp",
+          "alt": "从露台看波西塔诺的日落光"
+        }
+      ]
+    }
+  ],
+  "fallback": "稍早到，一杯就好，之后简单吃点。"
+}

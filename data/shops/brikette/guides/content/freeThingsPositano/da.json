@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Gratis og billige oplevelser i Positano",
+    "description": "Aktiviteter, udsigtspunkter og DIY-ruter, der ikke koster alverden."
+  },
+  "linkLabel": "Gratis og billige oplevelser i Positano",
+  "intro": [
+    "Positano belønner morgenfriske og nysgerrige — du kan fylde dagene med udsigter, badeture og kultur uden at bruge mere end få euro."
+  ],
+  "sections": [
+    {
+      "id": "viewpoints",
+      "title": "Udsigtspunkter der er turen værd",
+      "body": [
+        "Start på terrassen ved Chiesa Nuova for solopgangsfarver over bugten; medbring en 500 ml flaske, der er ingen vandpost tæt på.",
+        "Gå Via Cristoforo Colombo og altanerne langs Viale Pasitea ved gyldentime for postkortvinkler uden restaurantbooking."
+      ]
+    },
+    {
+      "id": "beaches",
+      "title": "Gratis strandtid",
+      "body": [
+        "Spiaggia Grande har en offentlig strimmel i højre side — pak et let håndklæde og sæt dig tæt ved vandkanten for at undgå lido-rækkerne.",
+        "Følg kyststien til Fornillo-stranden for en roligere bugt; turen tager ca. 12 minutter med moderate trapper, og det offentlige område forbliver gratis."
+      ]
+    },
+    {
+      "id": "walks",
+      "title": "Gåture du selv kan lave",
+      "body": [
+        "Udforsk de smalle gader i Liparlati-kvarteret og kig ind i små gårdrum og keramikklædte trapper mellem Via dei Mulini og Via Pasitea.",
+        "Tag den gratis shuttle til Montepertuso og gå de gamle stentrapper ned til Positano på 25–35 minutter med stop ved den naturlige bue."
+      ]
+    },
+    {
+      "id": "culture",
+      "title": "Kultur uden billet",
+      "body": [
+        "Træd ind i Santa Maria Assunta for at se den byzantinske ikon og majolicakuplen; dækkede skuldre er nok dresscode.",
+        "Tjek opslagstavlen ved Piazza dei Mulini for aften-koncerter eller filmvisninger på stranden i sommerugerne."
+      ]
+    }
+  ],
+  "tips": [
+    "Medbring en genopfyldelig flaske og fyld den ved fontænen nær Chiesa Nuova, før du går mod udsigtspunkter.",
+    "Pak rev-sikker solcreme og et sarong; det fungerer både som strandunderlag og let dække i kirker."
+  ],
+  "faqs": [
+    {
+      "q": "Findes der gratis brusere på strandene?",
+      "a": [
+        "Ja — Spiaggia Grande har koldtvandsbrusere ved det offentlige område. Brug klipklappere; gulvet bliver varmt om formiddagen."
+      ]
+    },
+    {
+      "q": "Skal jeg købe billet til Gudernes Sti?",
+      "a": [
+        "Selve stien er gratis året rundt. Læg €2,40 til SITA-bussen op til Nocelle og retur, hvis du ikke vil gå begge veje."
+      ]
+    }
+  ]
+}

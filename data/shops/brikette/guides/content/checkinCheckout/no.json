@@ -1,0 +1,160 @@
+{
+  "seo": {
+    "title": "Guide til check-in og check-out på Hostel Brikette (Positano)",
+    "description": "Trinn-for-trinn-instruksjoner om ankomsttider, legitimasjon, bagasjeoppbevaring, depositum og hjelp ved check-out på Hostel Brikette i Positano."
+  },
+  "linkLabel": "Guide til check-in og check-out på Hostel Brikette",
+  "sections": [
+    {
+      "id": "checkInRequest",
+      "title": "Check-in forespørsel",
+      "body": [
+        "Når du ankommer, gå til resepsjonen for å starte check-in og få romtildeling.",
+        "Hvis du ankommer med ferge, følg %LINK:ferryDockToBrikette|ruten fra fergeleiet til hostellet%. Hvis du ankommer med buss, bruk %LINK:chiesaNuovaArrivals|ankomstguiden til Chiesa Nuova% for å komme til inngangen."
+      ],
+      "images": [
+        {
+          "src": "/img/checkin-desk.avif",
+          "alt": "Resepsjonsdisk for check-in på hostellet.",
+          "caption": "Check-in starter i resepsjonen på Hostel Brikette."
+        }
+      ]
+    },
+    {
+      "id": "earlyArrival",
+      "title": "Tidlig ankomst",
+      "body": [
+        "Hvis du ankommer før 10:30 AM på bookedagen, kan du ennå ikke gå inn på hostellet.",
+        "Bruk tiden på frokost, en kort gåtur eller å planlegge dagen mens du venter på check-in-vinduet."
+      ]
+    },
+    {
+      "id": "middayArrival",
+      "title": "Ankomst midt på dagen",
+      "body": [
+        "Hvis du ankommer mellom 10:30 AM og 3:00 PM, kan du få adgang som Midlertidig Gjest, avhengig av godkjenning. I denne perioden kan du be om bagasjeoppbevaring, hvis det er plass. Bagasjeoppbevaring er separat fra rombestillingen og har egne vilkår.",
+        "Hvis du trenger en garantert løsning, se %LINK:luggageStorage|guiden vår for bagasjeoppbevaring% før ankomst."
+      ]
+    },
+    {
+      "id": "checkInWindow",
+      "title": "Check-in tidsrom",
+      "body": [
+        "Du kan sjekke inn fra 3:00 PM til 10:30 PM hver dag. I dette tidsrommet følger du standard check-in-prosess."
+      ]
+    },
+    {
+      "id": "lateArrival",
+      "title": "Sen ankomst",
+      "body": [
+        "Hvis du planlegger å ankomme etter at resepsjonen stenger kl. 10:30 PM, kan vi tilby selvbetjent sen check-in, avhengig av tilgjengelighet. Vi sender instruksjoner til kontaktopplysningene du oppga ved bestilling. Sørg for at enheten din er ladet og opplysningene er riktige, siden vi ikke kan holdes ansvarlige for problemer som skyldes feil informasjon eller tekniske feil.",
+        "Hvis du forventer sen ankomst, del forventet ankomsttid på forhånd slik at vi kan bekrefte om sen check-in er mulig."
+      ]
+    },
+    {
+      "id": "necessityOfProcess",
+      "title": "Krav om full check-in-prosess",
+      "body": [
+        "Du må fullføre hele check-in-prosessen for å komme inn på hostellet. Hvis du ikke kan fullføre check-in, blir reservasjonen din kansellert og behandlet som No Show."
+      ]
+    },
+    {
+      "id": "proofOfIdentity",
+      "title": "Legitimasjon",
+      "body": [
+        "Du må fremvise gyldig original legitimasjon (pass, nasjonalt ID-kort, førerkort eller militær ID) ved ankomst. Hvis du ikke leverer gyldig ID innen 10:30 PM på planlagt check-in-dag, blir reservasjonen din kansellert som No Show."
+      ]
+    },
+    {
+      "id": "paymentBalance",
+      "title": "Utestående saldo",
+      "body": [
+        "Du må betale eventuelt utestående beløp med en godkjent betalingsmetode før check-in fullføres. Hvis du ikke kan betale hele beløpet, blir reservasjonen din kansellert og merket som No Show."
+      ]
+    },
+    {
+      "id": "keycardLinenDeposit",
+      "title": "Depositum for nøkkelkort og sengetøy",
+      "body": [
+        "Ved check-in må du betale et kontant depositum på €10 for nøkkelkort og sengetøy. Depositumet refunderes fullt ut kontant ved check-out når du leverer begge deler. Kreditt- eller debetkort kan ikke brukes til dette depositumet."
+      ],
+      "images": [
+        {
+          "src": "https://www.retrotouch.co.uk/user/products/large/Boutique%20hotel%20range/Card%20Key/Key%20card%20white.jpg",
+          "alt": "Hvitt hotellnøkkelkort.",
+          "caption": "Ta vare på nøkkelkortet; lever det tilbake ved check-out for å få €10-depositumet tilbake i kontanter — Foto: RetroTouch (retrotouch.co.uk). Tilpasset/beskåret."
+        }
+      ]
+    },
+    {
+      "id": "checkoutWindow",
+      "title": "Check-out tidsrom",
+      "body": [
+        "Check-out er fra 7:30 AM til 10:30 AM. Etter check-out kan du ikke gå tilbake til rommet eller etterlate personlige eiendeler."
+      ]
+    },
+    {
+      "id": "earlyCheckout",
+      "title": "Tidlig check-out",
+      "body": [
+        "Hvis du må dra før 7:30 AM, avtal tidlig check-out i resepsjonen kvelden før for å få depositumet tilbake i kontanter. Å etterlate nøkkelkortet uten bekreftelse fra personalet medfører tap av depositum."
+      ]
+    },
+    {
+      "id": "lateCheckout",
+      "title": "Sen check-out",
+      "body": [
+        "Vi tilbyr ikke sen check-out. Check-out må være fullført innen 10:30 AM."
+      ]
+    },
+    {
+      "id": "failureToCheckout",
+      "title": "Manglende check-out",
+      "body": [
+        "Hostellet er ofte fullt, så rommene må frigjøres raskt slik at rengjøring kan klargjøre for ankommende gjester.",
+        "Hvis du ikke har sjekket ut og eiendelene dine fortsatt er på rommet etter check-out-tiden, kan vi måtte frigjøre rommet. Vi vil gjøre vårt beste for å kontakte deg først, men vi kan fjerne tingene dine og plassere dem i oppbevaring hos en lokal portørtjeneste. Eventuelle oppbevarings- og håndteringskostnader vil bli belastet deg."
+      ]
+    },
+    {
+      "id": "postCheckout",
+      "title": "Etter check-out",
+      "body": [
+        "Når du har sjekket ut, avsluttes reservasjonen din offisielt. Du kan bli på hostellets område som Midlertidig Gjest til 3:30 PM, med tilgang kun til fellesområder (ingen romtilgang). Bagasjeoppbevaring kan forespørres, avhengig av tilgjengelighet, og egne vilkår gjelder.",
+        "Hvis du må flytte tung bagasje etter check-out, vurder %LINK:porterServices|portørtjenester% eller se %LINK:luggageStorage|guiden vår for bagasjeoppbevaring% for å utforske byen uten bagasje."
+      ]
+    }
+  ],
+  "lastUpdated": "2026-02-04T00:00:00.000Z",
+  "intro": [
+    "Denne guiden forklarer check-in og check-out på Hostel Brikette slik at du kan planlegge ankomsttider, dokumenter og betalinger på forhånd.",
+    "De fleste gjester sjekker inn mellom 3:00 PM og 10:30 PM, men tidlige ankomster kan få midlertidig tilgang og bagasjeoppbevaring avhengig av plass.",
+    "Før ankomst, ha gyldig legitimasjon klar, betal eventuell restsaldo og husk kontant depositum på €10 for nøkkelkort og sengetøy. Check-out er fra 7:30–10:30 AM."
+  ],
+  "tipsTitle": "Korte tips",
+  "tips": [
+    "Ha ID og betalingsmetode klare før du kommer til resepsjonen for raskere check-in.",
+    "Hvis du ankommer tidlig, lagre %LINK:luggageStorage|guiden for bagasjeoppbevaring% for å planlegge dagen uten bagasje.",
+    "Hvis du reiser med tung bagasje fra kaien, kan %LINK:porterServices|portørtjenester% bære baggene mens du går."
+  ],
+  "faqsTitle": "Spørsmål og svar om check-in og check-out",
+  "faqs": [
+    {
+      "q": "Kan jeg sjekke inn før 3:00 PM?",
+      "a": [
+        "Tidlig adgang er begrenset og avhenger av tilgjengelighet. Du kan be om tilgang som Midlertidig Gjest og bagasjeoppbevaring, men full check-in starter først kl. 3:00 PM."
+      ]
+    },
+    {
+      "q": "Hva skjer hvis jeg glemmer ID?",
+      "a": [
+        "Vi trenger gyldig original legitimasjon for å fullføre check-in. Uten den kan reservasjonen din bli kansellert som No Show."
+      ]
+    },
+    {
+      "q": "Kan jeg oppbevare bagasje etter check-out?",
+      "a": [
+        "Vi kan vanligvis oppbevare bagasje i en begrenset periode avhengig av plass. Se %LINK:luggageStorage|guiden vår for bagasjeoppbevaring% for detaljer og alternativer."
+      ]
+    }
+  ]
+}

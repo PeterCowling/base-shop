@@ -1,0 +1,117 @@
+{
+  "seo": {
+    "title": "Đi bộ lên đỉnh núi từ Hostel Brikette",
+    "description": "Hãy đến Monte Sant'Angelo, điểm cao nhất của Bờ biển Amalfi với những chỉ đường, mẹo chuẩn bị và cảnh báo này."
+  },
+  "linkLabel": "Đi bộ lên đỉnh núi từ Hostel Brikette",
+  "lastUpdated": "2026-02-04",
+  "intro": [
+    "Monte Sant'Angelo towers above the Amalfi Coast and rewards hikers with sweeping 360-degree views stretching from Capri to the Sorrentine Peninsula.",
+    "This itinerary starts from Hostel Brikette, guides you up to Santa Maria del Castello, and explains the final push to the summit so you know exactly what to expect before committing."
+  ],
+  "sections": [
+    {
+      "id": "why-go",
+      "title": "Why tackle this hike",
+      "body": [
+        "Views from the summit sweep across the peninsula towards Capri and down the Lattari mountains, making the grind worthwhile for photographers and hikers alike.",
+        "Reaching the Amalfi Coast's highest point is a satisfying physical challenge and a story you will trade with other travellers back at the hostel.",
+        "The long ascent doubles as a serious cardio session, especially if you are training for bigger treks later in your trip."
+      ]
+    },
+    {
+      "id": "getting-to-santa-maria",
+      "title": "Getting to Santa Maria del Castello",
+      "body": [
+        "Follow our standard hostel-to-Santa-Maria directions until you arrive in the village; that climb covers just over one third of the total elevation for the day.",
+        "Take a breather in the square, refill water if the bar is open, and check that everyone in your group still feels strong before committing to the exposed upper trail."
+      ]
+    },
+    {
+      "id": "santa-maria-to-summit",
+      "title": "From Santa Maria to the summit",
+      "body": [
+        "From the crossroads at the top of the village, turn right up the paved lane until a junction, then turn left and continue past the restaurant until the road bends sharply left.",
+        "Leave the road on the right-hand side, following the side path that drops slightly between houses. It will feel like private property at first, but you are still on the right track.",
+        "Stay on the mountain trail for an extended stretch until you reach a signed crossroads. Ignore the downhill options and take the steeply rising path.",
+        "The ascent quickly zig-zags before easing into a long, flatter traverse along the left-hand side of the mountain face. When you spot stone-cut steps on your right, follow them around the back of the peak for the final push.",
+        "Those rock steps lead to the last ramp of the day—keep climbing and you will emerge on the summit plateau with panoramic views in every direction."
+      ]
+    }
+  ],
+  "essentialsTitle": "Essentials",
+  "essentials": [
+    "Ít nhất 2 lít nước/người và đồ ăn nhẹ có muối; không có lần nạp tiền đáng tin cậy nào sau Santa Maria del Castello.",
+    "Giày đi bộ đường dài chắc chắn có độ bám—các đoạn đường phía trên đầy đá, lỏng lẻo và lộ ra ngoài.",
+    "Chống nắng và tạo lớp cho đỉnh; gió có thể thổi qua sườn núi ngay cả trong những ngày ấm áp."
+  ],
+  "typicalCostsTitle": "Typical costs",
+  "typicalCosts": [
+    "Truy cập đường mòn là miễn phí; ngân sách €5–€10 nếu bạn định tự thưởng cho mình đồ uống hoặc đồ ăn nhẹ ở Santa Maria del Castello.",
+    "Trả lại vé xe buýt SITA hoặc vé phà nếu bạn quyết định đi xuống qua một ngôi làng khác thay vì đi bộ suốt chặng đường về."
+  ],
+  "tipsTitle": "Smart timing",
+  "tips": [
+    "Bắt đầu vào lúc bình minh vào mùa hè để tránh leo núi dưới cái nóng đỉnh điểm; những buổi chiều cuối thu và mùa xuân mang lại ánh sáng dịu hơn, không còn nắng gắt.",
+    "Kiểm tra dự báo bão – đám mây che phủ có thể xóa tầm nhìn và đá ướt khiến các bậc thang lên đỉnh trơn trượt.",
+    "Hãy cho ai đó ở ký túc xá biết kế hoạch của bạn và thời gian trở về dự kiến ​​trước khi bạn khởi hành."
+  ],
+  "warningsTitle": "When to reconsider",
+  "warnings": [
+    "Bỏ qua chuyến đi bộ đường dài nếu bạn thiếu kinh nghiệm leo núi hoặc thể lực tốt; mức tăng độ cao bền vững đang bị trừng phạt và có rất ít điểm cứu trợ.",
+    "Tránh tuyến đường nếu độ cao khiến bạn lo lắng—những gờ đá lộ ra ngoài và những đoạn dốc cao thách thức ngay cả những người đi bộ đường dài tự tin.",
+    "Đừng cố gắng leo lên đỉnh vào những buổi chiều mùa hè cao điểm khi sức nóng và nhu cầu mang thêm nước càng làm tăng thêm căng thẳng."
+  ],
+  "steps": [
+    {
+      "name": "Climb to Santa Maria del Castello",
+      "text": "Sử dụng tuyến đường của nhà trọ đến Santa Maria del Castello; đến hình vuông có nghĩa là bạn đã hoàn thành khoảng một phần ba độ cao."
+    },
+    {
+      "name": "Join the mountain trail",
+      "text": "Từ ngã tư làng, rẽ phải, rồi rẽ trái qua nhà hàng và rẽ vào con đường bên phải chạy dọc theo các ngôi nhà."
+    },
+    {
+      "name": "Commit to the upper ascent",
+      "text": "Đi theo con đường mòn gồ ghề đến ngã tư có biển báo và chọn con đường đi thẳng lên đỉnh núi."
+    },
+    {
+      "name": "Navigate the zig-zags",
+      "text": "Vượt qua những đoạn lùi dốc cho đến khi con đường bằng phẳng dọc theo sườn trái của ngọn núi."
+    },
+    {
+      "name": "Take the rock-cut stairs",
+      "text": "Leo lên các bậc đá ở bên phải, vòng ra sau mặt núi để đến đoạn đường dốc cuối cùng."
+    },
+    {
+      "name": "Reach the summit",
+      "text": "Đi theo chặng leo núi cuối cùng lên đỉnh và tận hưởng toàn cảnh trước khi quay trở lại Santa Maria."
+    }
+  ],
+  "faqsTitle": "FAQs",
+  "faqs": [
+    {
+      "q": "How long does the full hike take?",
+      "a": [
+        "Dành 6–7 giờ cho chuyến đi khứ hồi từ Hostel Brikette, bao gồm cả thời gian nghỉ ở Santa Maria và thời gian lên đỉnh."
+      ]
+    },
+    {
+      "q": "Is the trail marked?",
+      "a": [
+        "Các điểm đánh dấu thưa thớt ngoài Santa Maria; mang theo bản đồ ngoại tuyến và chú ý đến đường mòn và biển chỉ dẫn rõ ràng ở các nút giao thông."
+      ]
+    },
+    {
+      "q": "Can I turn back early?",
+      "a": [
+        "Đúng. Nếu phần phía trên cảm thấy quá lộ liễu, hãy tận hưởng khung cảnh từ Santa Maria hoặc những đoạn lùi phía dưới và quay trở lại con đường bạn đã đến."
+      ]
+    }
+  ],
+  "toc": {
+    "labels": {
+      "warnings": "When to reconsider"
+    }
+  }
+}

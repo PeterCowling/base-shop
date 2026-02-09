@@ -1,0 +1,160 @@
+{
+  "seo": {
+    "title": "Przewodnik check-in i check-out w Hostel Brikette (Positano)",
+    "description": "Instrukcje krok po kroku dotyczące godzin przyjazdu, dokumentów tożsamości, przechowalni bagażu, kaucji i wsparcia przy check-out w Hostel Brikette w Positano."
+  },
+  "linkLabel": "Przewodnik check-in i check-out w Hostel Brikette",
+  "sections": [
+    {
+      "id": "checkInRequest",
+      "title": "Prośba o check-in",
+      "body": [
+        "Po przyjeździe udaj się do recepcji, aby rozpocząć check-in i otrzymać przydział pokoju.",
+        "Jeśli przypływasz promem, skorzystaj z %LINK:ferryDockToBrikette|trasy z przystani do hostelu%. Jeśli przyjeżdżasz autobusem, użyj %LINK:chiesaNuovaArrivals|poradnika przyjazdu do Chiesa Nuova%, aby dotrzeć do wejścia."
+      ],
+      "images": [
+        {
+          "src": "/img/checkin-desk.avif",
+          "alt": "Recepcja check-in w hostelu.",
+          "caption": "Check-in zaczyna się w recepcji Hostel Brikette."
+        }
+      ]
+    },
+    {
+      "id": "earlyArrival",
+      "title": "Wczesny przyjazd",
+      "body": [
+        "Jeśli przyjedziesz przed 10:30 AM w dniu rezerwacji, nie będziesz jeszcze mógł wejść do hostelu.",
+        "Wykorzystaj ten czas na śniadanie, krótki spacer lub zaplanowanie dnia, czekając na okno check-in."
+      ]
+    },
+    {
+      "id": "middayArrival",
+      "title": "Przyjazd w południe",
+      "body": [
+        "Jeśli przyjedziesz między 10:30 AM a 3:00 PM, możesz zostać wpuszczony jako Gość Tymczasowy, po uzyskaniu zgody. W tym czasie możesz poprosić o przechowanie bagażu, jeśli jest miejsce. Przechowalnia bagażu jest niezależna od rezerwacji pokoju i ma własne warunki.",
+        "Jeśli potrzebujesz gwarantowanej opcji, sprawdź %LINK:luggageStorage|nasz przewodnik po przechowalni bagażu% przed przyjazdem."
+      ]
+    },
+    {
+      "id": "checkInWindow",
+      "title": "Godziny check-in",
+      "body": [
+        "Check-in jest możliwy codziennie od 3:00 PM do 10:30 PM. W tym czasie przechodzisz standardowy proces check-in."
+      ]
+    },
+    {
+      "id": "lateArrival",
+      "title": "Późny przyjazd",
+      "body": [
+        "Jeśli planujesz przyjechać po zamknięciu recepcji o 10:30 PM, możemy zaoferować samodzielny późny check-in, zależnie od dostępności. Wyślemy instrukcje na dane kontaktowe podane przy rezerwacji. Upewnij się, że Twoje urządzenie jest naładowane i dane są poprawne, ponieważ nie odpowiadamy za problemy spowodowane błędnymi informacjami lub awariami technicznymi.",
+        "Jeśli spodziewasz się późnego przyjazdu, podaj wcześniej szacowaną godzinę, aby potwierdzić możliwość późnego check-in."
+      ]
+    },
+    {
+      "id": "necessityOfProcess",
+      "title": "Konieczność pełnego procesu check-in",
+      "body": [
+        "Musisz przejść pełny proces check-in, aby wejść do hostelu. Jeśli nie możesz dokończyć check-in, Twoja rezerwacja zostanie anulowana i potraktowana jako No Show."
+      ]
+    },
+    {
+      "id": "proofOfIdentity",
+      "title": "Dokument tożsamości",
+      "body": [
+        "Musisz okazać ważny oryginał dokumentu tożsamości (paszport, dowód osobisty, prawo jazdy lub wojskowy ID) przy przyjeździe. Jeśli nie okażesz ważnego ID do 10:30 PM w dniu planowanego check-in, rezerwacja zostanie anulowana jako No Show."
+      ]
+    },
+    {
+      "id": "paymentBalance",
+      "title": "Pozostała kwota",
+      "body": [
+        "Przed zakończeniem check-in musisz uregulować wszelkie zaległości przy użyciu akceptowanej metody płatności. Jeśli nie możesz zapłacić pełnej kwoty, rezerwacja zostanie anulowana i oznaczona jako No Show."
+      ]
+    },
+    {
+      "id": "keycardLinenDeposit",
+      "title": "Kaucja za kartę i pościel",
+      "body": [
+        "Przy check-in musisz wpłacić kaucję w gotówce €10 za kartę i komplet pościeli. Kaucja jest w pełni zwracana gotówką przy check-out po oddaniu obu rzeczy. Nie przyjmujemy kart kredytowych ani debetowych na tę kaucję."
+      ],
+      "images": [
+        {
+          "src": "https://www.retrotouch.co.uk/user/products/large/Boutique%20hotel%20range/Card%20Key/Key%20card%20white.jpg",
+          "alt": "Biała hotelowa karta.",
+          "caption": "Zachowaj kartę przy sobie; oddaj ją przy check-out, aby odzyskać kaucję €10 w gotówce — Foto: RetroTouch (retrotouch.co.uk). Przeskalowane/przycięte."
+        }
+      ]
+    },
+    {
+      "id": "checkoutWindow",
+      "title": "Godziny check-out",
+      "body": [
+        "Check-out odbywa się od 7:30 AM do 10:30 AM. Po check-out nie możesz wrócić do pokoju ani zostawić rzeczy osobistych."
+      ]
+    },
+    {
+      "id": "earlyCheckout",
+      "title": "Wczesny check-out",
+      "body": [
+        "Jeśli musisz wyjechać przed 7:30 AM, umów wczesny check-out w recepcji wieczorem poprzedniego dnia, aby otrzymać zwrot kaucji w gotówce. Pozostawienie karty bez potwierdzenia personelu skutkuje utratą kaucji."
+      ]
+    },
+    {
+      "id": "lateCheckout",
+      "title": "Późny check-out",
+      "body": [
+        "Nie oferujemy późnego check-out. Check-out musi zostać zakończony do 10:30 AM."
+      ]
+    },
+    {
+      "id": "failureToCheckout",
+      "title": "Brak check-out",
+      "body": [
+        "Hostel jest bardzo często w pełni zarezerwowany, dlatego pokoje muszą zostać szybko opróżnione, aby sprzątanie mogło przygotować je dla nowych gości.",
+        "Jeśli nie wymeldowałeś się, a Twoje rzeczy są nadal w pokoju po czasie check-out, możemy być zmuszeni zwolnić pokój. Postaramy się najpierw skontaktować, ale możemy usunąć Twoje rzeczy i przekazać je do przechowania u lokalnej firmy tragarzy. Wszelkie koszty przechowania i obsługi zostaną Ci naliczone."
+      ]
+    },
+    {
+      "id": "postCheckout",
+      "title": "Po check-out",
+      "body": [
+        "Po check-out Twoja rezerwacja oficjalnie się kończy. Możesz pozostać na terenie hostelu jako Gość Tymczasowy do 3:30 PM, z dostępem tylko do części wspólnych (bez dostępu do pokoi). Przechowalnia bagażu może być dostępna w zależności od miejsca, a obowiązują osobne zasady.",
+        "Jeśli po check-out musisz przenosić ciężki bagaż, rozważ %LINK:porterServices|usługi tragarzy% lub sprawdź %LINK:luggageStorage|nasz przewodnik po przechowalni bagażu%, aby zwiedzać miasto bez obciążeń."
+      ]
+    }
+  ],
+  "lastUpdated": "2026-02-04T00:00:00.000Z",
+  "intro": [
+    "Ten przewodnik wyjaśnia check-in i check-out w Hostel Brikette, abyś mógł z wyprzedzeniem zaplanować godziny przyjazdu, dokumenty i płatności.",
+    "Większość gości melduje się między 3:00 PM a 10:30 PM, ale wczesne przyjazdy mogą otrzymać tymczasowy dostęp i przechowanie bagażu w zależności od dostępności.",
+    "Przed przyjazdem przygotuj ważny dokument, ureguluj zaległości i pamiętaj o kaucji €10 w gotówce za kartę i pościel. Check-out jest od 7:30 do 10:30 AM."
+  ],
+  "tipsTitle": "Szybkie wskazówki",
+  "tips": [
+    "Miej dokument i metodę płatności pod ręką przed podejściem do recepcji, aby przyspieszyć check-in.",
+    "Jeśli przyjeżdżasz wcześnie, zapisz %LINK:luggageStorage|przewodnik po przechowalni bagażu%, aby zaplanować dzień bez walizek.",
+    "Jeśli masz ciężki bagaż od przystani, %LINK:porterServices|usługi tragarzy% mogą go przenieść, gdy Ty idziesz."
+  ],
+  "faqsTitle": "FAQ check-in i check-out",
+  "faqs": [
+    {
+      "q": "Czy mogę zrobić check-in przed 3:00 PM?",
+      "a": [
+        "Wczesny dostęp jest ograniczony i zależy od dostępności. Możesz poprosić o dostęp jako Gość Tymczasowy i przechowanie bagażu, ale pełny check-in zaczyna się dopiero o 3:00 PM."
+      ]
+    },
+    {
+      "q": "Co się stanie, jeśli zapomnę dokumentu?",
+      "a": [
+        "Potrzebujemy ważnego, oryginalnego dokumentu, aby zakończyć check-in. Bez niego rezerwacja może zostać anulowana jako No Show."
+      ]
+    },
+    {
+      "q": "Czy mogę przechować bagaż po check-out?",
+      "a": [
+        "Zwykle możemy przechować bagaż przez ograniczony czas w zależności od miejsca. Sprawdź %LINK:luggageStorage|nasz przewodnik po przechowalni bagażu% po szczegóły i alternatywy."
+      ]
+    }
+  ]
+}

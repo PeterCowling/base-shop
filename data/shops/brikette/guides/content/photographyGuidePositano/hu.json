@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Positano fotós útmutató: legjobb helyek",
+    "description": "Térképezd fel a nézőpontokat, időzíts okosan és tartsd tiszteletben a helyieket."
+  },
+  "linkLabel": "Positano fotós útmutató",
+  "intro": [
+    "Fogd meg Positanót profi módon: ikonikus nézőpontok, fényszervezés és respektáló fotózási etikett."
+  ],
+  "sections": [
+    {
+      "id": "classic",
+      "title": "Klasszikus szögek",
+      "body": [
+        "Fotózz a komp kikötőjéből, hogy teljes sziklafal-lavinát kapj – széles látószöget használj, hogy a Santa Maria Assunta kupolája is beleférjen.",
+        "Sétálj végig a Via Cristoforo Colombón, ahol réteges erkélyek és bugenvillaszín keretezi a tengert."
+      ]
+    },
+    {
+      "id": "light",
+      "title": "Fény és időzítés",
+      "body": [
+        "A napfelkelte (nyáron kb. 06:00) meleg fényt ad a sziklákra – érkezz korán, hogy elkerüld a hajóforgalmat a képen.",
+        "A kék óra naplemente után ragyogóvá teszi a várost; vigyél mini állványt vagy konzolt a hosszú expozíciókhoz."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etikett és tartalék",
+      "body": [
+        "Tiszteld a privát teraszokat, és ne blokkolj lépcsőket – készítsd el a képet, aztán gyorsan lépj félre.",
+        "Másold fel a képeket felhőbe vagy hordozható meghajtóra esténként; a párás levegő gyorsan bepárásíthatja az objektíveket, így vigyél szilikagél tasakot."
+      ]
+    }
+  ],
+  "tips": [
+    "Használj polarizációs szűrőt a délutáni fényvisszaverődések kezelésére a vízen.",
+    "Tarts mindig mikroszálas kendőt kéznél – a tengeri permet vagy a páratartalom hamar koszosítja az optikát."
+  ],
+  "faqs": [
+    {
+      "q": "Drónt is használhatok?",
+      "a": [
+        "A drónhasználat korlátozott; kérj engedélyt jó előre és tartsd tiszteletben a no-fly zónákat a város és a Li Galli-szigetek közelében."
+      ]
+    },
+    {
+      "q": "Hol tudok helyben képet nyomtatni?",
+      "a": [
+        "Sorrentóban és Amalfiban található fotó laborok kínálnak aznapi nyomtatást; vigyél képeket USB-n vagy SD-kártyán."
+      ]
+    }
+  ]
+}

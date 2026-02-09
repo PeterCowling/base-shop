@@ -1,0 +1,73 @@
+{
+  "seo": {
+    "title": "Ônibus de volta ao Hostel Brikette saindo de Laurito Beach",
+    "description": "Climb to the Laurito bus stop, ride the Amalfi Coast service to Chiesa Nuova, and finish with a short walk to Hostel Brikette."
+  },
+  "linkLabel": "Bus back from Laurito Beach",
+  "intro": [
+    "Skip the full stair climb from Laurito by boarding the Amalfi Coast bus that stops beside the beach access road and runs back up to Chiesa Nuova.",
+    "Buy your return ticket in town before heading down to the cove — there is nowhere near Laurito to purchase one, and without it you'll need to take the shuttle boat back to Positano."
+  ],
+  "sections": [
+    {
+      "id": "walk-to-stop",
+      "title": "Walk up to the Laurito bus stop",
+      "body": [
+        "Follow the stairs from the beach up to the coastal road and cross carefully to the uphill side.",
+        "Look for the blue-and-white SITA sign mounted on the metal pole and wait on the lay-by so the driver can see you."
+      ]
+    },
+    {
+      "id": "board-the-bus",
+      "title": "Board the Amalfi Coast bus",
+      "body": [
+        "Flag the driver as the Amalfi- or Positano-bound coach approaches and have your validated ticket ready.",
+        "The ride covers roughly 4.1 kilometres (2.5 miles) with several village stops; hold on as the bus climbs the hairpins toward Positano."
+      ]
+    },
+    {
+      "id": "arrive-chiesa-nuova",
+      "title": "Get off at Bar Internazionale / Chiesa Nuova",
+      "body": [
+        "Listen for the announcement or watch for the Bar Internazionale tabacchi — it is the first major stop once you re-enter Positano.",
+        "Press the stop button in advance and step off beside the tabacchi corner opposite Hostel Brikette."
+      ]
+    },
+    {
+      "id": "final-steps",
+      "title": "Walk back to Hostel Brikette",
+      "body": [
+        "Continue in the same direction as the bus for just over 100 metres (330 feet) along Viale Pasitea.",
+        "Take the staircase on your right to return directly to Hostel Brikette's main entrance."
+      ]
+    }
+  ],
+  "tipsTitle": "Bus tips",
+  "tips": [
+    "The printed timetable lists Positano times, not Laurito; expect the Laurito stop about 10 minutes before the Positano Sponda arrival.",
+    "If you run out of tickets, use the Laurito shuttle boat back to Spiaggia Grande so you can buy more at the tabacchi before trying again.",
+    "Confira nosso %LINK:praias|Visão geral das praias de Positano% para obter mais detalhes sobre as instalações e opções de transporte de Laurito."
+  ],
+  "faqs": [
+    {
+      "q": "Onde posso validar minha passagem de ônibus Laurito?",
+      "a": [
+        "Valide os bilhetes SITA antes de embarcar na máquina do ônibus ou na tabacchi Chiesa Nuova no momento da compra.",
+        "Caso o validador esteja fora de serviço, escreva a data e hora no bilhete com caneta para mostrar aos inspetores."
+      ]
+    },
+    {
+      "q": "E se o ônibus de volta para Positano estiver lotado?",
+      "a": [
+        "Os ônibus podem lotar após o horário de praia. Avise ao motorista que você está esperando; se não houver espaço, aguarde o próximo serviço, que geralmente chega a cada 20-30 minutos no verão.",
+        "Alternativamente, pegue o barco Laurito para Spiaggia Grande e faça conexão com os ônibus locais de lá."
+      ]
+    }
+  ],
+  "articleLead": {
+    "rideAlt": "Amalfi Coast bus en route from Laurito",
+    "rideCaption": "Ride from Laurito toward Positano",
+    "stopAlt": "Ponto de ônibus Bar Internazionale / Chiesa Nuova",
+    "stopCaption": "Bar Internazionale / Chiesa Nuova stop"
+  }
+}

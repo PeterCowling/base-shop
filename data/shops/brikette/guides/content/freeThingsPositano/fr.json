@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Activités gratuites ou peu coûteuses à Positano",
+    "description": "Balades, points de vue, plages et expériences accessibles gratuitement ou à faible coût."
+  },
+  "linkLabel": "Activités gratuites ou peu coûteuses à Positano",
+  "intro": [
+    "Positano récompense les lève-tôt et les curieux : remplissez vos journées de panoramas, de baignades et de culture sans dépenser plus que quelques euros."
+  ],
+  "sections": [
+    {
+      "id": "viewpoints",
+      "title": "Belvédères à ne pas manquer",
+      "body": [
+        "Commencez sur la terrasse devant Chiesa Nuova pour admirer les couleurs du lever de soleil sur la baie ; emportez une bouteille de 500 ml car il n'y a pas de fontaine à proximité.",
+        "Parcourez Via Cristoforo Colombo et les balcons de Viale Pasitea à l'heure dorée pour des angles carte postale sans devoir réserver de table."
+      ]
+    },
+    {
+      "id": "beaches",
+      "title": "Plages gratuites",
+      "body": [
+        "Spiaggia Grande réserve une bande publique sur la droite — prenez une serviette légère et asseyez-vous près de l'eau pour éviter les rangées de lidos.",
+        "Suivez le sentier côtier jusqu'à la plage de Fornillo pour une crique plus calme ; la marche dure environ 12 minutes avec quelques escaliers et la zone publique reste gratuite."
+      ]
+    },
+    {
+      "id": "walks",
+      "title": "Balades en autonomie",
+      "body": [
+        "Explorez les ruelles étroites du quartier Liparlati, entrez dans les petites cours et les escaliers décorés de céramiques entre Via dei Mulini et Via Pasitea.",
+        "Prenez la navette gratuite jusqu'à l'arrêt de Montepertuso puis descendez les marches en pierre vers Positano en 25 à 35 minutes, en vous arrêtant à l'arche naturelle."
+      ]
+    },
+    {
+      "id": "culture",
+      "title": "Culture sans billet",
+      "body": [
+        "Entrez dans Santa Maria Assunta pour voir l'icône byzantine et le dôme en majolique ; couvrir les épaules suffit comme tenue.",
+        "Consultez le panneau municipal près de Piazza dei Mulini pour connaître les concerts ou projections sur la plage pendant l'été."
+      ]
+    }
+  ],
+  "tips": [
+    "Emportez une gourde et remplissez-la à la fontaine publique près de Chiesa Nuova avant de partir vers les belvédères.",
+    "Prenez une crème solaire respectueuse de la mer et un paréo ; il servira à la fois de tapis de plage et de couvrant léger dans les églises."
+  ],
+  "faqs": [
+    {
+      "q": "Y a-t-il des douches gratuites sur les plages ?",
+      "a": [
+        "Oui, Spiaggia Grande dispose de douches à eau froide près de la zone publique. Portez des tongs : le sol chauffe vite à midi."
+      ]
+    },
+    {
+      "q": "Faut-il un billet pour le Sentier des Dieux ?",
+      "a": [
+        "Le sentier est gratuit toute l'année. Prévoyez simplement 2,40 € pour le bus SITA jusqu'à Nocelle si vous ne voulez pas faire l'aller-retour à pied."
+      ]
+    }
+  ]
+}

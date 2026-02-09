@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "Voyager en couple dans les auberges",
+    "description": "Conseils pour les dortoirs ou chambres privées, trouver le calme et établir les attentes."
+  },
+  "linkLabel": "Voyager en couple dans les auberges",
+  "intro": [
+    "Les auberges fonctionnent pour les couples quand vous choisissez le bon type de chambre, voyagez léger et établissez les attentes ensemble."
+  ],
+  "sections": [
+    {
+      "id": "room-types",
+      "title": "Types de chambres",
+      "body": [
+        "Réservez une chambre privée pour l'intimité ; si vous limitez le budget, partagez des lits superposés dans le même dortoir et gardez les bagages légers pour les escaliers."
+      ]
+    },
+    {
+      "id": "quiet",
+      "title": "Trouver le calme",
+      "body": [
+        "Emportez des bouchons d'oreilles et un masque pour les yeux, choisissez des chambres loin du bar ou des espaces communs, et utilisez les petits matins pour des visites plus calmes."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Une auberge convient-elle aux couples ?",
+      "a": [
+        "Oui — vous obtenez une énergie sociale et un bon rapport qualité-prix ; les chambres privées équilibrent confort et coût."
+      ]
+    }
+  ]
+}

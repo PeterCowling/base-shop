@@ -1,0 +1,47 @@
+{
+  "seo": {
+    "title": "Lokalna etykieta: co robić i czego unikać (Włochy, przykłady Amalfi)",
+    "description": "Uprzejme zachowanie w restauracjach, kościołach i w wąskich uliczkach."
+  },
+  "linkLabel": "Lokalna etykieta: co robić i czego unikać",
+  "intro": [
+    "Praktyczna etykieta przy jedzeniu, odwiedzaniu kościołów i dzieleniu wąskich uliczek w Positano i na wybrzeżu Amalfi."
+  ],
+  "sections": [
+    {
+      "id": "dining",
+      "title": "Jedzenie",
+      "body": [
+        "Rezerwuj stoliki w sezonie, cierpliwie czekaj między daniami, proś o rachunek, gdy jesteś gotowy, i zostaw niewielki napiwek za wyjątkową obsługę."
+      ]
+    },
+    {
+      "id": "churches",
+      "title": "Kościoły i strój",
+      "body": [
+        "Zakrywaj ramiona w środku świątyń i nie przechodź przez sklepy w stroju kąpielowym."
+      ]
+    },
+    {
+      "id": "lanes",
+      "title": "Wspólne trasy",
+      "body": [
+        "Trzymaj się prawej na wąskich schodach, pozwól przejść innym i szybko zmieniaj miejsce przy popularnych punktach fotograficznych."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Czy trzeba zostawiać napiwek?",
+      "a": [
+        "To kwestia dobrowolna; zostaw 1–2 € za wyjątkową obsługę lub zaokrągl rachunek. Coperto już pokrywa pieczywo i nakrycia."
+      ]
+    },
+    {
+      "q": "Co ubrać do kościoła?",
+      "a": [
+        "Zakryj ramiona i kolana, zdejmij czapkę i zachowaj cichy ton głosu. Noś lekką chustę na wierzch, jeśli masz top bez rękawów."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "seo": {
+    "title": "Sorrento: Porten till Amalfikusten",
+    "description": "Varför börja i Sorrento, exakta transportkostnader och tidtabeller till Positano, Amalfi och Capri, och vad du ska se om du baserar dig här eller passerar igenom."
+  },
+  "linkLabel": "Sorrento: Porten till Amalfikusten",
+  "lastUpdated": "2026-02-04",
+  "intro": [
+    "Sorrento erbjuder frekventa bussar och färjor till Amalfikusten, direkta tåg till Neapel och Pompeji, och fler boendealternativ än Positano—vilket gör det till en praktisk port oavsett om du passerar igenom eller baserar dig här några dagar."
+  ],
+  "sections": [
+    {
+      "id": "transport-costs-schedules",
+      "title": "Transportkostnader och tidtabeller",
+      "body": [
+        "**SITA-bussar** går året runt till Positano (€2,50, 40-50 min) och Amalfi (€3,60, 90 min). Bussar avgår var 30-60:e minut från Circumvesuviana-stationen; köp biljetter i stationsbaren eller tobaksaffären före ombordstigning. Högsäsongens rutter kan bli fulla, så kom tidigt.",
+        "**Färjor till Positano och Amalfi** går april–oktober, väder medgivande. Positano kostar €18–22 (35 min), Amalfi €20–24 (50 min). Morgonavgångar börjar runt 08:30; sista återkomsten är vanligtvis 17:00–18:00. Boka i förväg under högsäsongsdagar via %LINK:ferrySchedules|färjeoperatörer%.",
+        "**Tåg till Neapel** (Circumvesuviana-linjen) kostar €3,90 och går varje timme till ~22:30 (70 min). Tågen är långsammare än bussar men undviker kusttrafik och kopplar dig direkt till Pompeji (€2,90, 30 min).",
+        "**Capri-färjor** avgår frekvent under säsongen (€20–25 enkel resa, 20 min). Lågsäsongens tjänster minskar men stannar aldrig helt."
+      ]
+    },
+    {
+      "id": "why-base-or-pass-through",
+      "title": "Basera dig här eller bara passera igenom?",
+      "body": [
+        "**Om du baserar dig i Sorrento:** Förvänta dig besparingar på boende på €30–€60 per natt jämfört med Positano, plus fler matalternativ till medelpriser. Avvägningen är färre klippvyer och en mer traditionell stadskänsla snarare än vykortslandskapet i Positano.",
+        "**Om du passerar igenom:** Sorrento är ett enkelt första eller sista stopp. Anländ från Neapels flygplats via %LINK:naplesAirportPositanoBus|Curreri-buss% (€10, 75 min, direkt till Sorrento), ta sedan vidare transport till Positano samma dag eller nästa morgon.",
+        "Bagageförvaring finns på tågstationen (€6–8 per väska per dag) om du vill utforska staden mellan förbindelser."
+      ]
+    },
+    {
+      "id": "what-to-see",
+      "title": "Vad du ska se i Sorrento",
+      "body": [
+        "Den historiska stadskärnan har gågator kantade med citronproduktbutiker, lokal keramik och inläggningsträartisaner. Piazza Tasso är huvudtorget; Marina Grande och Marina Piccola är hamnområdena med klippvyer. Via San Cesareo är huvudshoppinggatan—undvik att köpa limoncello nära Piazza Tasso där priserna är 2-3x högre.",
+        "De flesta resenärer behandlar Sorrento som en utgångspunkt snarare än ett mål, och tillbringar 1-2 timmar med att gå genom centrum innan de reser vidare. Om du stannar över natten är solnedgången från Villa Comunale-parken värd (gratis inträde, öppet till sent), och matpriserna sjunker avsevärt bort från huvudtorget—gå inåt två kvarter för autentiska trattorias till halva kostnaden för turistzonen.",
+        "Duomo (katedralen) är värt en snabb titt om du passerar förbi; gratis inträde och vanligtvis tom. Chiostro di San Francesco har en fridfull klosterträdgård (gratis) som är en bra viloplatts om du väntar på transportförbindelser.",
+        "För en stranddag från Sorrento är %LINK:reginaGiovannaBath|Regina Giovanna-badet% en 30 minuters bussresa (€1,40) och erbjuder en avskild vik med romerska ruiner—färre folkmassor än Positanos huvudstrand och ingen inträdesavgift. Ta med vatten och snacks eftersom det inte finns några faciliteter."
+      ]
+    },
+    {
+      "id": "booking-ahead",
+      "title": "När du ska boka transport i förväg",
+      "body": [
+        "**Boka färjor i förväg** om du reser juli–augusti eller på helger. Båtar säljer slut, särskilt de direkta Capri-ruterna. Bussbiljetter kan inte reserveras, så kom 15-20 minuter tidigt under högsäsong.",
+        "Tågbiljetter till Neapel behöver inte förbokas (köp på stationen), men om du ansluter till ett flyg, tillåt minst 2,5 timmar från Sorrento till Neapels flygplats—tågen går sent men bussar kan få trafikstockningar."
+      ]
+    },
+    {
+      "id": "sorrento-vs-positano",
+      "title": "Sorrento vs Positano: vilken bas?",
+      "body": [
+        "**Välj Sorrento om:** Du vill ha lägre kostnader, enkel tågåtkomst till Neapel/Pompeji, eller föredrar en funktionell stad framför vykortslandskap. Sorrento fungerar bra för resenärer som täcker flera destinationer (Capri, Pompeji, Amalfikusten) på en resa.",
+        "**Välj Positano om:** Du vill ha den ikoniska klippsidan och inte bryr dig om högre priser eller trappor. Positano är mer naturskönt men mindre praktiskt för dagsutflykter bortom kusten.",
+        "Många resenärer delar sin tid: 1-2 nätter i Sorrento för ankomster/dagsutflykter, flyttar sedan till %LINK:onlyHostel|Positano% för kustupplevelsen. %LINK:sorrentoPositanoBus|Sorrento till Positano med buss% är enkelt (40 min, €2,50)."
+      ]
+    },
+    {
+      "id": "practical-tips",
+      "title": "Praktiska tips för Sorrento",
+      "body": [
+        "**Bankomater och kontanter:** Tillgängliga nära Piazza Tasso och tågstationen. Många små butiker och bussbiljettförsäljare accepterar endast kontanter, så ta ut €50-100 vid ankomst.",
+        "**Bästa tid att besöka:** April–juni och september–oktober erbjuder idealiskt väder (18-25°C) med färre folkmassor. Juli–augusti är varmast och mest trafikerad—färjor och bussar fylls snabbt. November–mars är tyst men många färjor slutar gå.",
+        "**Förflytta dig i staden:** Sorrento är gångbart men kuperat. Stadskärnan är kompakt; tillåt 10-15 minuters promenad från tågstationen till Marina Piccola (färjebrygga). Bussar till Marina Grande-stranden avgår från Piazza Tasso (€1,40, var 30:e min).",
+        "**Wi-Fi och anslutning:** De flesta kaféer och boenden erbjuder gratis Wi-Fi. Mobilnättäckning är bra genom hela staden. Tågstationen har laddningspunkter om du behöver vänta på förbindelser."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Är Sorrento billigare än Positano?",
+      "a": [
+        "Ja—förvänta dig besparingar på boende på €30–€60 per natt och fler matalternativ till medelpriser. En pizza i Sorrento kostar €8–12 vs €15–20 i Positano; vandrarhemsängar €25–35 vs €40–60."
+      ]
+    },
+    {
+      "q": "Hur sent går tågen tillbaka till Neapel?",
+      "a": [
+        "Circumvesuviana går till runt 22:30 från Sorrento till Neapel. Efter det, använd Curreri- eller SITA-bussar (sista bussen ~20:30–21:00) eller planera att övernatta om du har ett sent flyg."
+      ]
+    },
+    {
+      "q": "Kan jag göra Sorrento som en dagsutflykt från Positano?",
+      "a": [
+        "Ja—ta %LINK:positanoSorrentoBus|SITA-bussen% (€2,50, 40 min) eller säsongsvis %LINK:positanoSorrentoFerry|färja% (€18–22, 25 min). Tillåt 4-5 timmar totalt för ett snabbt Sorrento-besök, mer om du fortsätter till Pompeji eller Capri."
+      ]
+    },
+    {
+      "q": "Behöver jag tala italienska i Sorrento?",
+      "a": [
+        "Engelska talas allmänt i turistområden. Tåg- och busspersonal kan ha begränsad engelska, så lär dig grundläggande fraser eller använd en översättningsapp för biljettdiskar och för att fråga om vägbeskrivningar."
+      ]
+    }
+  ]
+}

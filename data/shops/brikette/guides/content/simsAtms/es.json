@@ -1,0 +1,58 @@
+{
+  "seo": {
+    "title": "SIM/eSIM y cajeros automáticos en Positano",
+    "description": "Dónde conseguir SIM/eSIM, notas de cobertura y disponibilidad de cajeros con sus comisiones en Positano."
+  },
+  "linkLabel": "SIM/eSIM y cajeros automáticos en Positano",
+  "intro": [
+    "SIM, eSIM y cajeros en Positano: cómo conectarte y pagar sin sobresaltos.",
+    "Elige el plan según tu estancia y controla las comisiones al retirar efectivo."
+  ],
+  "sections": [
+    {
+      "id": "esim",
+      "title": "eSIM",
+      "body": [
+        "Compra y activa la eSIM antes de volar; confirma que tu móvil acepta eSIM.",
+        "Activa los datos solo al aterrizar para no consumir el bono por error."
+      ]
+    },
+    {
+      "id": "physical",
+      "title": "SIM física",
+      "body": [
+        "Si te quedas varias semanas o necesitas más datos, acude a tiendas TIM/Vodafone en Nápoles o Sorrento.",
+        "Lleva pasaporte y guarda la SIM original en un sobre para reinstalarla al volver."
+      ]
+    },
+    {
+      "id": "atms",
+      "title": "Cajeros automáticos",
+      "body": [
+        "Prioriza bancos grandes (Intesa, UniCredit, Banco BPM) para reducir recargos adicionales.",
+        "Rechaza la conversión dinámica y retira importes más altos de una sola vez para no repetir la comisión fija."
+      ]
+    }
+  ],
+  "tips": [
+    "Avisa a tu banco del viaje y activa alertas de operaciones internacionales.",
+    "Lleva una tarjeta de respaldo y algo de efectivo pequeño por si falla el TPV."
+  ],
+  "faqs": [
+    {
+      "q": "¿La conexión en Positano es rápida?",
+      "a": [
+        "Suficiente para correo, videollamadas ligeras y trabajo remoto; por la noche puede ir más lenta si hay mucha gente.",
+        "Contrata un paquete 4G extra si necesitas subir archivos pesados."
+      ]
+    },
+    {
+      "q": "¿Necesito llevar mucho efectivo?",
+      "a": [
+        "La mayoría de restaurantes y tiendas aceptan tarjeta.",
+        "Aun así, lleva monedas y billetes pequeños para el bus, helados o propinas."
+      ]
+    }
+  ],
+  "faqsTitle": "Preguntas frecuentes"
+}

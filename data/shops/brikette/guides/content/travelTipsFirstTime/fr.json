@@ -1,0 +1,70 @@
+{
+  "seo": {
+    "title": "Conseils de voyage à Positano pour une première visite",
+    "description": "Accès, étiquette, bagages et pièges à éviter — avec des astuces pensées pour les voyageurs en auberge."
+  },
+  "linkLabel": "Conseils de voyage à Positano pour une première visite",
+  "intro": [
+    "Première visite à Positano ? Ces conseils couvrent l’arrivée, les bagages, les paiements et la connexion sans stress."
+  ],
+  "sections": [
+    {
+      "id": "arrivals",
+      "title": "Arriver futé",
+      "body": [
+        "Réservez à l’avance les segments train + bus ou ferry quand c’est possible ; les premiers départs du matin devancent chaleur et files.",
+        "Bagages lourds ? Combinez le bus SITA jusqu’à Chiesa Nuova avec un porteur depuis le quai pour laisser les escaliers les plus raides à l’équipe."
+      ]
+    },
+    {
+      "id": "bags",
+      "title": "Bagages & escaliers",
+      "body": [
+        "Voyagez léger avec des sacs souples ou des backpacks qui se faufilent dans les escaliers et les coffres des navettes.",
+        "Arrivez trop tôt ? Laissez vos valises dans une consigne autour de la Via dei Mulini pour explorer les mains libres avant le check-in."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Timing & réservations",
+      "body": [
+        "Planifiez plage et grandes marches avant 10 h ou après 16 h, quand les ruelles sont plus fraîches et les transports plus calmes.",
+        "Réservez restaurants, sorties en bateau et navettes du Sentier des Dieux au moins la veille en haute saison."
+      ]
+    },
+    {
+      "id": "payments",
+      "title": "Paiements & espèces",
+      "body": [
+        "Les cartes sont largement acceptées, mais beaucoup de cafés ou tabacchi imposent un minimum — gardez des billets de 5 à 10 €.",
+        "Les distributeurs fonctionnent mais les frais varient ; retirez une somme moyenne en une fois et répartissez la monnaie."
+      ]
+    },
+    {
+      "id": "connectivity",
+      "title": "Connectivité & recours",
+      "body": [
+        "Prenez une eSIM italienne (TIM/Vodafone) ou vérifiez votre roaming ; la couverture est meilleure en hauteur.",
+        "Téléchargez cartes hors ligne, horaires de ferry et itinéraire de l’auberge pour les zones où la data décroche."
+      ]
+    }
+  ],
+  "tips": [
+    "Enregistrez hors ligne horaires bus/ferry et instructions d’arrivée à l’auberge pour les moments sans réseau.",
+    "Emportez une gourde (750 ml / 25 oz) et une petite couche chaude : journées ensoleillées, soirées plus fraîches au-dessus de la plage."
+  ],
+  "faqs": [
+    {
+      "q": "Puis-je voyager avec un simple bagage cabine ?",
+      "a": [
+        "Oui — privilégiez les tenues qui sèchent vite, prévoyez d’utiliser la laverie de l’auberge et emportez des formats voyage pour rester dans les limites aériennes."
+      ]
+    },
+    {
+      "q": "Dois-je apporter un adaptateur électrique ?",
+      "a": [
+        "L’Italie utilise du 230 V avec prises de type F/L ; prenez un adaptateur universel si vos fiches diffèrent du standard européen."
+      ]
+    }
+  ]
+}

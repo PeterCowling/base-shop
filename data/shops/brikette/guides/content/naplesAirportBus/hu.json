@@ -1,0 +1,58 @@
+{
+  "seo": {
+    "title": "Nápoly repülőtér Positanóba busszal – lépésről lépésre",
+    "description": "Utazzon a Curreri transzferrel Sorrentóba, majd a SITA busszal Positanóba (Chiesa Nuova). Fotók, menetrendi tippek és gyalogos útmutató a Hostel Brikette-hez."
+  },
+  "linkLabel": "Nápoly repülőtér Positanóba busszal – lépésről lépésre",
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Curreri transzfer + SITA busz áttekintése",
+      "body": [
+        "1. tipp: A Sorrento–Positano menetrendért %URL:https://www.positano.com/en/bus-schedule?route=sorrento_positano_amalfi|nézze meg a hivatalos menetrendet%.2. tipp: A nápolyi repülőtértől Sorrentóig tartó útra %URL:https://www.curreriviaggi.it/it/navetta-aeroporto-di-napoli|keresse fel a Curreri Viaggi oldalát% (válassza a \\\\\"Da Napoli Aeroporto - Per Sorrento\\\\\" opciót). A transzferjegyet ott is megvásárolhatja."
+      ]
+    },
+    {
+      "id": "naplesAirport",
+      "title": "Indulás a nápolyi repülőtérről",
+      "body": [
+        "Lépjen ki az érkezési csarnokból közvetlenül a buszállásokhoz. Vegyen Curreri Viaggi jegyet Sorrentóba (online vagy a kioszkban), és várakozzon a kijelölt megállóban. A buszok nagyjából 60–90 percenként indulnak; a csúcsidőszakban érkezzen 15 perccel korábban, hogy biztosan legyen hely."
+      ]
+    },
+    {
+      "id": "sorrentoStation",
+      "title": "A szorrentói buszpályaudvaron",
+      "body": [
+        "- Szálljon le Sorrento fő állomásán, amely egyben a vasúti és buszcsomópont.- A tér felől szálljon fel a SITA buszra Amalfi irányába (Positano köztes megálló).- Jegyre van szüksége? A sorba állás előtt vegye meg a közeli bárban vagy újságosnál.- Felszálláskor a sofőr érvényesíti vagy letépi a jegyét. Tartsa kéznél az ellenőrzéshez."
+      ]
+    },
+    {
+      "id": "timetable",
+      "title": "A SITA menetrend olvasása",
+      "body": [
+        "A SITA menetrend a megállókat sorokban, a járatokat betűjelű oszlopokban mutatja. Párosítsa az indulási megállóját az utazási naphoz tartozó oszlopbetűvel: hétfőtől szombatig az F és G, vasárnap és munkaszüneti napokon a G és H oszlopban találja a járatokat."
+      ]
+    },
+    {
+      "id": "positanoStop",
+      "title": "Érkezés Positanóba (Chiesa Nuova)",
+      "body": [
+        "Maradjon a buszon a positanói Chiesa Nuova megállóig. Körülbelül 140 méterre (450 láb) van a hosteltől, a Bar Internazionale előtt. A leszállás előtt nézze meg a fotót, hogy biztosan jó helyen van."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Séta a Chiesa Nuova megállótól a hostelhez",
+      "body": [
+        "A megállótól valamivel több mint 100 m / 330 láb a Via G. Marconi mentén.Forduljon jobbra a kis sikátornál, és kövesse a lépcsőket fel a főbejáratig.Részletes, lépésről lépésre útmutató kell? %URL:https://www.google.com/maps/dir/bar+internazionale/hostel+brikette/@40.6295534,14.479394,17z/data=!3m1!4b1!4m13!4m12!1m5!1m1!1s0x133b976673927785:0x5187a720325ee588!2m2!1d14.482264!2d40.629495!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634|Nyissa meg ugyanazt az útvonalat a Google Térképen%."
+      ]
+    },
+    {
+      "id": "spotSign",
+      "title": "Tipp: így ismeri fel a hostel bejáratát",
+      "body": [
+        "Ahogy közeledik, figyelje a Hostel Brikette táblát a második emeleti terasznál. Haladjon el mellette, kövesse az út kanyarját, majd másszon fel a jobb oldali lépcsőn a recepcióhoz."
+      ]
+    }
+  ]
+}

@@ -15,6 +15,7 @@ set -e
 
 STRICT="${STRICT:-0}"
 ALLOW_TEST_PROCS="${ALLOW_TEST_PROCS:-0}"
+VALIDATE_RANGE="${VALIDATE_RANGE:-}"
 
 echo "========================================"
 echo "  Validation Gate"
@@ -37,44 +38,86 @@ if [ "$ALLOW_TEST_PROCS" != "1" ]; then
     fi
 fi
 
-# 1. Typecheck
-echo ""
-echo "> Typecheck"
-if ! pnpm typecheck; then
-    echo "FAIL: Typecheck failed"
-    exit 1
-fi
-echo "OK: Typecheck passed"
-
-# 2. Lint
-echo ""
-echo "> Lint"
-if ! pnpm lint; then
-    echo "FAIL: Lint failed"
-    exit 1
-fi
-echo "OK: Lint passed"
-
-# 3. Find changed files
+# 1. Find changed files
 echo ""
 echo "> Finding changed files..."
 
-CHANGED=""
-if git diff --cached --quiet 2>/dev/null; then
-    CHANGED=$(git diff --name-only HEAD 2>/dev/null | grep -E '\.(ts|tsx)$' || true)
+ALL_CHANGED=""
+if [ -n "$VALIDATE_RANGE" ]; then
+    echo "  Mode: git range ($VALIDATE_RANGE)"
+    ALL_CHANGED=$(git diff --name-only --diff-filter=ACMRTUXB "$VALIDATE_RANGE" 2>/dev/null || true)
+elif git diff --cached --quiet 2>/dev/null; then
+    echo "  Mode: working tree vs HEAD"
+    ALL_CHANGED=$(git diff --name-only --diff-filter=ACMRTUXB HEAD 2>/dev/null || true)
 else
-    CHANGED=$(git diff --cached --name-only 2>/dev/null | grep -E '\.(ts|tsx)$' || true)
+    echo "  Mode: staged changes"
+    ALL_CHANGED=$(git diff --cached --name-only --diff-filter=ACMRTUXB 2>/dev/null || true)
 fi
 
-if [ -z "$CHANGED" ]; then
-    echo "INFO: No changed TS/TSX files detected"
+if [ -z "$ALL_CHANGED" ]; then
+    echo "INFO: No changed files detected"
     echo ""
-    echo "OK: All checks passed (no tests to run)"
+    echo "OK: All checks passed (nothing to validate)"
     exit 0
 fi
 
-echo "Changed files:"
-echo "$CHANGED" | sed 's/^/  /'
+echo "Changed files (all):"
+echo "$ALL_CHANGED" | sed 's/^/  /'
+
+# 2. Typecheck + lint (scoped to changed workspace packages)
+echo ""
+echo "> Typecheck + lint (changed packages)"
+
+WORKSPACE_DIRS=$(echo "$ALL_CHANGED" \
+    | grep -E '^(apps|packages)/' \
+    | awk -F/ '{print $1"/"$2}' \
+    | sort -u || true)
+
+if [ -z "$WORKSPACE_DIRS" ]; then
+    echo "INFO: No changed workspace packages detected; skipping package typecheck/lint."
+else
+    FILTERS=""
+    FILTER_COUNT=0
+    for dir in $WORKSPACE_DIRS; do
+        if [ -f "$dir/package.json" ]; then
+            PKG_NAME=$(node -e "console.log(require('./$dir/package.json').name)" 2>/dev/null || true)
+            if [ -n "$PKG_NAME" ]; then
+                FILTERS="$FILTERS --filter=$PKG_NAME"
+                FILTER_COUNT=$((FILTER_COUNT + 1))
+            fi
+        fi
+    done
+
+    if [ "$FILTER_COUNT" -eq 0 ]; then
+        echo "INFO: No package filters resolved from changed paths; skipping package typecheck/lint."
+    else
+        echo "Typecheck filters:$FILTERS"
+        if ! pnpm exec turbo run typecheck $FILTERS; then
+            echo "FAIL: Typecheck failed in changed packages"
+            exit 1
+        fi
+        echo "OK: Typecheck passed"
+
+        echo "Lint filters:$FILTERS"
+        if ! pnpm exec turbo run lint $FILTERS; then
+            echo "FAIL: Lint failed in changed packages"
+            exit 1
+        fi
+        echo "OK: Lint passed"
+    fi
+fi
+
+# 3. Find changed TS/TSX files for targeted tests
+CHANGED=$(echo "$ALL_CHANGED" | grep -E '\.(ts|tsx)$' || true)
+
+if [ -z "$CHANGED" ]; then
+    echo ""
+    echo "INFO: No changed TS/TSX files detected (skipping targeted test lookup)"
+else
+    echo ""
+    echo "Changed TS/TSX files:"
+    echo "$CHANGED" | sed 's/^/  /'
+fi
 
 # 4. Group files by package (using type__name to avoid packages/foo vs apps/foo collision)
 echo ""
@@ -217,38 +260,34 @@ for pkg_file in "$PKG_MAP"/*; do
     if [ -n "$SOURCE_FILES" ]; then
         echo "    Source files:$SOURCE_FILES"
 
-        # Collect all source files that have related tests, and track missing
-        FILES_WITH_TESTS=""
+        # Build absolute paths for all source files in this package
+        ABS_SOURCE_FILES=""
         for sf in $SOURCE_FILES; do
-            ABS_FILE="$(pwd)/$sf"
+            ABS_SOURCE_FILES="$ABS_SOURCE_FILES $(pwd)/$sf"
+        done
 
-            # Probe for related tests
-            # Note: Jest --listTests outputs file paths (one per line) on success,
-            # but may also output messages like "No tests found" or warnings.
-            # We filter to only lines that look like file paths (start with /).
-            # Use --passWithNoTests to avoid non-zero exit on empty results.
-            if ! RAW_RELATED=$(pnpm --filter "$PKG_PATH" exec jest --listTests --findRelatedTests "$ABS_FILE" --passWithNoTests 2>&1); then
-                echo "    ERROR: Jest failed while probing tests for: $sf"
-                echo "    Output: $RAW_RELATED"
-                exit 1
-            fi
+        # Single batched probe: find related tests for ALL source files at once
+        # (replaces per-file jest --listTests loop for speed)
+        if ! RAW_RELATED=$(pnpm --filter "$PKG_PATH" exec jest --listTests --findRelatedTests $ABS_SOURCE_FILES --passWithNoTests 2>&1); then
+            echo "    ERROR: Jest failed while probing tests for package: $PKG_PATH"
+            echo "    Output: $RAW_RELATED"
+            exit 1
+        fi
 
-            # Filter to only actual file paths (lines starting with /)
-            RELATED=$(echo "$RAW_RELATED" | grep '^/' || true)
+        # Filter to only actual file paths (lines starting with /)
+        RELATED=$(echo "$RAW_RELATED" | grep '^/' || true)
 
-            if [ -z "$RELATED" ]; then
+        if [ -z "$RELATED" ]; then
+            # No tests found for any file in this package batch
+            for sf in $SOURCE_FILES; do
                 echo "    WARN: No tests found for: $sf"
                 MISSING_TESTS=$((MISSING_TESTS + 1))
                 MISSING_FILES="$MISSING_FILES $sf"
-            else
-                FILES_WITH_TESTS="$FILES_WITH_TESTS $ABS_FILE"
-            fi
-        done
-
-        # Run one Jest invocation for all source files that have related tests
-        if [ -n "$FILES_WITH_TESTS" ]; then
+            done
+        else
+            # Tests found — run them (coverage thresholds relaxed)
             echo "    Running related tests for files (coverage thresholds relaxed)..."
-            if ! JEST_ALLOW_PARTIAL_COVERAGE=1 JEST_DISABLE_COVERAGE_THRESHOLD=1 pnpm --filter "$PKG_PATH" exec jest --findRelatedTests $FILES_WITH_TESTS --maxWorkers=2 2>&1; then
+            if ! JEST_ALLOW_PARTIAL_COVERAGE=1 JEST_DISABLE_COVERAGE_THRESHOLD=1 pnpm --filter "$PKG_PATH" exec jest --findRelatedTests $ABS_SOURCE_FILES --maxWorkers=2 2>&1; then
                 echo "    FAIL: Tests failed in $PKG_PATH"
                 exit 1
             fi
@@ -260,12 +299,7 @@ done
 
 # 6. Guide validation (brikette-specific)
 # Detect guide content/manifest changes and run validate-content + validate-links.
-GUIDE_CONTENT_ALL=""
-if git diff --cached --quiet 2>/dev/null; then
-    GUIDE_CONTENT_ALL=$(git diff --name-only HEAD 2>/dev/null || true)
-else
-    GUIDE_CONTENT_ALL=$(git diff --cached --name-only 2>/dev/null || true)
-fi
+GUIDE_CONTENT_ALL="$ALL_CHANGED"
 
 GUIDE_JSON_CHANGED=$(echo "$GUIDE_CONTENT_ALL" | grep -E '^apps/brikette/src/locales/.*/guides/content/.*\.json$' || true)
 GUIDE_INFRA_CHANGED=$(echo "$GUIDE_CONTENT_ALL" | grep -E '^apps/brikette/src/routes/guides/(guide-manifest|content-schema)\.ts$' || true)

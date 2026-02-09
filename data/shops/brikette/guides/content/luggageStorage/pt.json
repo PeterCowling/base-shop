@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Depósitos de bagagem em Positano",
+    "description": "Opções com e sem reserva perto do píer, horários de funcionamento e preços médios."
+  },
+  "linkLabel": "Depósitos de bagagem em Positano",
+  "intro": [
+    "Onde guardar bagagem em Positano: opções junto ao cais e ao longo da Via dei Mulini."
+  ],
+  "sections": [
+    {
+      "id": "near-dock",
+      "title": "Junto ao cais",
+      "body": [
+        "Guarda-volumes com tarifa à hora/diária mediante bilhete; conte com filas na época alta — reserve antecipadamente se puder."
+      ]
+    },
+    {
+      "id": "aggregators",
+      "title": "Plataformas agregadoras",
+      "body": [
+        "Bounce / Radical Storage: confirme morada exata e horários antes de pagar online."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etiqueta e dicas",
+      "body": [
+        "Mantenha objetos de valor consigo; identifique as malas claramente; fotografe o comprovativo."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Funcionam ao fim da tarde?",
+      "a": [
+        "Os horários variam; verifique encerramentos antecipados fora de época e os horários do último ferry."
+      ]
+    }
+  ],
+  "tocTitle": "Nesta página",
+  "faqsTitle": "Perguntas frequentes",
+  "heroAlt": "Carregador a guiar um carrinho de bagagem pelas escadas de Positano",
+  "serviceType": "Guarda-volumes",
+  "areaServed": "Positano",
+  "gallery": {
+    "primaryAlt": "Casas na encosta de Positano com vista para o mar",
+    "primaryCaption": "Panorâmica de Positano",
+    "secondaryAlt": "Carregador a empurrar um carrinho de bagagem junto ao cais de Positano",
+    "secondaryCaption": "Porteiros perto do cais"
+  }
+}

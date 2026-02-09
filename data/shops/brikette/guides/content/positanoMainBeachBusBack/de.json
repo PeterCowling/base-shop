@@ -1,0 +1,66 @@
+{
+  "seo": {
+    "title": "Bus zurück zum Hostel Brikette vom Hauptstrand von Positano",
+    "description": "Catch the interno bus at Piazza dei Mulini and ride up to the tabacchi beside Hostel Brikette."
+  },
+  "linkLabel": "Bus zurück zum Hostel Brikette von Spiaggia Grande",
+  "intro": [
+    "Überspringen Sie nach einem Strandtag die über 600 Treppen und fahren Sie mit dem orangefarbenen Interno Positano-Bus zurück zum Hostel Brikette.",
+    "Tickets sind in beide Richtungen gültig, so dass Sie sie an den Tabacchi kaufen können, bevor Sie zum Strand fahren, oder sie auf dem Rückweg kaufen können, wenn es der Vorrat erlaubt."
+  ],
+  "sections": [
+    {
+      "id": "walk-to-stop",
+      "title": "Spaziergang zur Piazza dei Mulini",
+      "body": [
+        "Verlassen Sie die Spiaggia Grande durch den Torbogen neben dem Hafen und folgen Sie der Einkaufsstraße zur Piazza dei Mulini.",
+        "Die Bushaltestelle interno befindet sich neben der Apotheke und dem gleichen Tabacchi/Kiosk, der für Tickets verwendet wird."
+      ]
+    },
+    {
+      "id": "wait-for-the-bus",
+      "title": "Warten Sie an der Piazza dei Mulini",
+      "body": [
+        "Überprüfen Sie den Fahrplan im Tierheim oder über den digitalen Concierge. Der Service wird spät in der Nacht und in der Nebensaison ausgedünnt.",
+        "Stellen Sie sich neben die Apotheke und Tabacchi, damit Sie einsteigen können, sobald der orangefarbene Interno Positano-Bus ankommt."
+      ]
+    },
+    {
+      "id": "ride-uphill",
+      "title": "Fahren Sie mit dem interno-Bus bergauf",
+      "body": [
+        "Steigen Sie in den orangefarbenen Bus mit der Aufschrift \\\\\"Interno Positano\\\\\" und fahren Sie durch die Stadt in Richtung Chiesa Nuova.",
+        "Achten Sie auf den Stoppanruf oder achten Sie auf die Tabacchi-Ecke, in der Sie früher am Tag an Bord gegangen sind."
+      ]
+    },
+    {
+      "id": "final-steps",
+      "title": "Letzte Schritte zum Hostel",
+      "body": [
+        "Steigen Sie an der Tabacchi-Haltestelle aus, biegen Sie links auf die Viale Pasitea ab und gehen Sie etwa 100 Meter bergauf.",
+        "Nehmen Sie die Treppe auf der rechten Seite, um direkt zum Haupteingang des Hostels Brikette zurückzukehren."
+      ]
+    }
+  ],
+  "tipsTitle": "Bus-Tipps",
+  "tips": [
+    "Nehmen Sie ein Ersatzticket mit, damit Sie sofort einsteigen können, wenn der Bus besetzt ist.",
+    "Wenn der Service vorzeitig endet, gehen Sie zurück zum %LINK:positanoMainBeachWalkBack|Wanderweg% — es folgt den Kontrollpunkten des Treppenhauses des Hostels.",
+    "Informiere die Rezeption, wenn du Änderungen am Fahrplan feststellst, damit der digitale Concierge für andere Gäste auf dem Laufenden bleibt."
+  ],
+  "extras": {
+    "photos": {
+      "title": "Fotos",
+      "items": {
+        "busInterior": {
+          "alt": "Interno Positano-Bus an der Haltestelle am Strand",
+          "caption": "Interno Positano-Bus – Fahrzeuge variieren, aber die Streckenbezeichnung bleibt gleich."
+        },
+        "barInternazionaleStop": {
+          "alt": "Bushaltestelle Chiesa Nuova / Bar Internazionale",
+          "caption": "Chiesa Nuova (Bar Internazionale) – nächstgelegene Haltestelle zum Hostel Brikette."
+        }
+      }
+    }
+  }
+}

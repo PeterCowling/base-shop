@@ -1,0 +1,98 @@
+{
+  "seo": {
+    "title": "Positanos enda hostel: vad du kan förvänta dig (och hur du sparar)",
+    "description": "Ta vara på det unika: terrassutsikt, nära busshållplats, bar och frukost – plus tips för att spara genom direktbokning."
+  },
+  "linkLabel": "Positanos enda hostel: vad du kan förvänta dig (och hur du sparar)",
+  "intro": "Välkommen till Positanos enda hostel. Räkna med avslappnad stämning, en panoramaterrass för morgonkaffet och ett oslagbart läge precis vid SITA-hållplatsen Chiesa Nuova.",
+  "sections": [
+    {
+      "id": "rooms",
+      "title": "Rumstyper och sängar",
+      "body": [
+        "Delade sovsalar rymmer 4–8 personer med egna läslampor, eluttag och skåp – ta med ett TSA-hänglås eller köp ett i receptionen.",
+        "Privata rum finns med eget badrum eller delat bad; önska balkong eller havsutsikt när du mejlar teamet om det är viktigt för dig."
+      ]
+    },
+    {
+      "id": "common-areas",
+      "title": "Gemensamma ytor och service",
+      "body": [
+        "Terrassen har bord, solstolar och eluttag så att du kan äta, planera utflykter eller delta i aperitivo vid solnedgången utan att lämna huset.",
+        "Lobbybaren serverar kaffe, spritz och lokala viner; en säsongsbetonad frukostbuffé pågår ungefär 07.30–10.00 – kolla griffeltavlan för dagens meny."
+      ]
+    },
+    {
+      "id": "booking",
+      "title": "Bokning och villkor",
+      "body": [
+        "Boka direkt på hostelbrikette.com för att få lägsta flexibla pris; tredjeparts-sajter tar mer betalt och har strängare ändringsregler.",
+        "En liten deposition säkrar din säng; avbokningar är gratis fram till angiven tidsgräns – meddela teamet om dina planer ändras så kan de justera städningen."
+      ]
+    },
+    {
+      "id": "neighbourhood",
+      "title": "I närheten",
+      "body": [
+        "Inom två minuter har du en minimarket, ett bageri och SITA-hållplatsen vid Chiesa Nuova; plocka upp snacks innan de sista bussarna blir fulla.",
+        "Följ Via Pasitea nedför för restauranger och gelato; räkna med 10–12 minuter till Spiaggia Grande via huvudvägen med minimalt med trappor."
+      ]
+    }
+  ],
+  "highlightsTitle": "Höjdpunkter",
+  "highlights": [
+    "Terrasser med vida vyer över Amalfikusten",
+    "~80 m från busshållplatsen, inga trappor",
+    "Avslappnad bar på plats och säsongsfrukost",
+    "Prisvärda sängar och privata rum"
+  ],
+  "saveTitle": "Så sparar du",
+  "save": [
+    "Boka direkt för bästa pris och flexibla villkor",
+    "Res utanför de mest intensiva helgerna när det går",
+    "Välj sovsalar och packa lätt för att slippa bäraravgifter"
+  ],
+  "toc": {
+    "onThisPage": "På den här sidan",
+    "rooms": "Rum & faciliteter",
+    "arrival": "Så tar du dig hit",
+    "etiquette": "Husregler & etikett",
+    "faqs": "Vanliga frågor"
+  },
+  "roomsList": [
+    "Gemensamma terrasser med panoramavy – morgonkaffe och solnedgång är gästfavoriter.",
+    "Bar (schyssta priser) och säsongsfrukost.",
+    "Skåp i sovsalarna; se vår packlista.",
+    "Stabilt Wi‑Fi; för fokuserade arbetsplatser, kolla våra arbetsvänliga kaféer."
+  ],
+  "roomsLinks": [
+    "whatToPack",
+    "workCafes"
+  ],
+  "arrivalText": "Vi ligger ~80 m från SITA-hållplatsen \\\\\"Chiesa Nuova\\\\\" utan trappor på vägen. Kommer du med färja? Överväg en bärare eller SITA-bussen uppför backen.",
+  "arrivalLinks": [
+    "chiesaNuovaArrivals",
+    "ferryDockToBrikette",
+    "ferrySchedules"
+  ],
+  "arrivalRoutesLabel": "Rutter:",
+  "arrivalRoutes": [
+    "naplesPositano",
+    "salernoPositano"
+  ],
+  "etiquetteList": [
+    "Tyst tid: visa hänsyn i sovsalar sent på kvällen och tidigt på morgonen.",
+    "Märk saker i kylen, städa av borden efter dig och håll gemensamma ytor trevliga.",
+    "Förvara värdesaker i skåpen; öronproppar och sovmask rekommenderas i sovsalar."
+  ],
+  "faq": [
+    {
+      "q": "Har ni privata rum?",
+      "a": "Ja – fåtal under högsäsong. Boka tidigt för bästa pris."
+    },
+    {
+      "q": "Kan jag anlända sent?",
+      "a": "Ja – kontakta receptionen för att ordna sen incheckning. Vid sena färjeankomster, överväg en bärare från kajen."
+    }
+  ]
+}

@@ -42,6 +42,18 @@ function resolveTopLevelKey(lang: AppLanguage, segment: string): SlugKey | null 
   return null;
 }
 
+type SegmentWithSuffix = {
+  core: string;
+  suffix: "" | ".txt";
+};
+
+function splitSegmentSuffix(segment: string): SegmentWithSuffix {
+  if (segment.toLowerCase().endsWith(".txt")) {
+    return { core: segment.slice(0, -4), suffix: ".txt" };
+  }
+  return { core: segment, suffix: "" };
+}
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
@@ -58,17 +70,18 @@ export function middleware(request: NextRequest) {
   const appLang = lang as AppLanguage;
 
   const nextParts = [...parts];
+  const originalTopSegment = nextParts[1] ?? "";
+  const { core: topSegmentCore, suffix: topSegmentSuffix } = splitSegmentSuffix(originalTopSegment);
 
   // Rewrite the first segment (after lang) if it's a localized slug.
-  const key = resolveTopLevelKey(appLang, nextParts[1] ?? "");
+  const key = resolveTopLevelKey(appLang, topSegmentCore);
   if (key) {
-    nextParts[1] = INTERNAL_SEGMENT_BY_KEY[key];
+    nextParts[1] = `${INTERNAL_SEGMENT_BY_KEY[key]}${topSegmentSuffix}`;
   } else {
     // TASK-SEO-3: Detect English slug or internal segment in wrong locale
     // If the first segment is NOT a localized slug for this language, check if
     // it's an English slug or internal segment that should be redirected.
-    const segment = nextParts[1] ?? "";
-    const normalizedSegment = segment.toLowerCase();
+    const normalizedSegment = topSegmentCore.toLowerCase();
 
     // Check if this is an English slug (e.g., /de/rooms should redirect to /de/zimmer)
     let wrongKey: SlugKey | undefined = ENGLISH_SLUG_TO_KEY.get(normalizedSegment);
@@ -82,9 +95,12 @@ export function middleware(request: NextRequest) {
     if (wrongKey) {
       const correctSlug = SLUGS[wrongKey][appLang];
       if (correctSlug.toLowerCase() !== normalizedSegment) {
-        // Build redirect URL with correct localized slug + trailing slash
+        // Build redirect URL with correct localized slug. Preserve .txt suffixes
+        // used by framework prefetch probes (e.g. /en/help.txt).
+        const correctedSegment = `${correctSlug}${topSegmentSuffix}`;
+        const trailingSlash = topSegmentSuffix ? "" : "/";
         const remainingPath = nextParts.slice(2).join("/");
-        const redirectPath = `/${appLang}/${correctSlug}${remainingPath ? `/${remainingPath}` : ""}/`;
+        const redirectPath = `/${appLang}/${correctedSegment}${remainingPath ? `/${remainingPath}` : ""}${trailingSlash}`;
 
         // Construct redirect URL preserving query params and hash
         const redirectUrl = new URL(

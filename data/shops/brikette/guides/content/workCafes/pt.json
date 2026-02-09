@@ -1,0 +1,36 @@
+{
+  "seo": {
+    "title": "Cafés com Wi-Fi perto do Brikette",
+    "description": "Locais com rede estável, etiqueta para trabalhar, disponibilidade de tomadas e plano B com eSIM."
+  },
+  "linkLabel": "Cafés com Wi-Fi e espaços para trabalhar perto do Brikette",
+  "intro": [
+    "Cafés perto do hostel com Wi-Fi utilizável. Etiqueta: consuma com frequência, evite chamadas longas em ambientes fechados e ocupe pouco espaço."
+  ],
+  "sections": [
+    {
+      "id": "spots",
+      "title": "Spots perto do Brikette",
+      "body": [
+        "Cafés pequenos na Via Pasitea e ao redor de Chiesa Nuova costumam ter Wi-Fi estável.",
+        "Leve power bank — pontos de energia são limitados em prédios antigos."
+      ]
+    },
+    {
+      "id": "backup",
+      "title": "Conectividade de backup",
+      "body": [
+        "Mantenha um eSIM como plano B; a cobertura varia, mas TIM/Vodafone costumam ser mais fortes.",
+        "Compartilhe internet quando o movimento do almoço deixar a rede do café lenta."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Posso ficar o dia inteiro?",
+      "a": [
+        "Consuma algo a cada 60–90 minutos, evite o pico do almoço e considere alternar entre cafés."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "seo": {
+    "title": "Cancelamentos de balsas e mar agitado",
+    "description": "O que fazer quando as balsas são canceladas devido ao clima, alternativas e como verificar o status."
+  },
+  "linkLabel": "Cancelamentos de balsas e mar agitado",
+  "intro": [
+    "O mar agitado pode suspender as balsas de e para Positano com pouco aviso prévio.",
+    "Mantenha um backup terrestre pronto e monitore alertas ao vivo para ainda conseguir fazer sua conexão."
+  ],
+  "sections": [
+    {
+      "id": "monitoring",
+      "title": "Monitorar atualizações ao vivo",
+      "body": [
+        "Verifique os sites e aplicativos dos operadores (Travelmar, NLG, Alilauro) mais os painéis de informação do porto a cada 30 minutos em dias ventosos.",
+        "Ative alertas por SMS/e-mail ou siga canais locais do Telegram/redes sociais para que os cancelamentos cheguem até você mesmo se você se afastar do cais."
+      ]
+    },
+    {
+      "id": "plan-b",
+      "title": "Mudar para rotas terrestres",
+      "body": [
+        "Se as navegações pararem, mude para ônibus e trens: SITA até Sorrento e depois Circumvesuviana para Nápoles/Pompeia, ou ônibus via Amalfi e trem regional de Salerno.",
+        "Reserve pelo menos 60 minutos de margem para as últimas partidas do dia e valide os bilhetes antes de embarcar."
+      ]
+    },
+    {
+      "id": "refunds",
+      "title": "Reembolsos e vouchers",
+      "body": [
+        "Guarde recibos e faça uma captura de tela do aviso de cancelamento para que o operador possa processar reembolsos, remarcação ou créditos.",
+        "Informe a equipe se você prefere a próxima navegação disponível ou um voucher de temporada antes de deixar o balcão."
+      ]
+    },
+    {
+      "id": "overnight",
+      "title": "Gerenciando atrasos noturnos",
+      "body": [
+        "Avise sua acomodação ou anfitrião do passeio assim que os atrasos forem anunciados; muitos ajustarão o check-in ou a partida se avisados com antecedência.",
+        "Pergunte no ponto de informação do porto sobre táxis compartilhados, transportes substitutos ou armazenamento de bagagem se você precisar esperar até a manhã seguinte."
+      ]
+    }
+  ],
+  "tips": [
+    "Verifique a previsão marítima—ventos acima de 20 nós ou ondulação acima de 1,5 metros (cerca de 5 pés) frequentemente causam cancelamentos.",
+    "Seguro viagem que cobre atrasos climáticos ajuda a recuperar noites extras de hotel ou transferências de substituição.",
+    "Navegações matinais são as mais confiáveis; evite depender do último barco do dia quando tempestades estão previstas."
+  ],
+  "faqs": [
+    {
+      "q": "Como sei quando as navegações são retomadas?",
+      "a": [
+        "Atualize o site do operador ou feeds sociais e ouça anúncios de alto-falante no cais—decisões são geralmente publicadas dentro de 30 minutos da partida programada.",
+        "A equipe da bilheteria também pode confirmar se o próximo barco está operando antes de você deixar o porto."
+      ]
+    },
+    {
+      "q": "O que acontece com meu bilhete?",
+      "a": [
+        "Mostre seu recibo ou código QR para solicitar reembolso, voucher ou remarcação na próxima navegação.",
+        "Se você reservou via agência online, envie a eles a captura de tela do cancelamento por e-mail dentro de 24 horas para iniciar o processo de reembolso."
+      ]
+    },
+    {
+      "q": "Existem balsas garantidas em tempo ruim?",
+      "a": [
+        "Não—quando a Guarda Costeira fecha o porto, todas as partidas param. Tenha uma rota terrestre pronta.",
+        "Alguns charters privados podem navegar em mar moderado, mas são caros e dependem da discrição do capitão; considere cuidadosamente conforto e custo."
+      ]
+    }
+  ]
+}

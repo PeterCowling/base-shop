@@ -1,0 +1,70 @@
+{
+  "seo": {
+    "title": "Positano-Tipps für Erstbesucher",
+    "description": "Wichtige Hinweise zu Anreise, Etikette, Packliste und typischen Stolperfallen – mit hostelgerechten Empfehlungen."
+  },
+  "linkLabel": "Positano-Tipps für Erstbesucher",
+  "intro": [
+    "Zum ersten Mal in Positano? Diese Tipps decken Anreise, Gepäck, Zahlungen und Verbindung ohne Stress ab."
+  ],
+  "sections": [
+    {
+      "id": "arrivals",
+      "title": "Clever ankommen",
+      "body": [
+        "Buche Zug plus Bus- oder Fährabschnitte nach Möglichkeit im Voraus; die ersten Abfahrten am Morgen schlagen Hitze und Warteschlangen.",
+        "Schweres Gepäck? Kombiniere den SITA-Bus bis Chiesa Nuova mit einem Porter vom Hafen, damit die steilsten Stufen für dich erledigt werden."
+      ]
+    },
+    {
+      "id": "bags",
+      "title": "Gepäck & Treppen",
+      "body": [
+        "Pack leicht mit weichen Taschen oder Rucksäcken, die schmale Treppen und Shuttle-Kofferräume gut mitmachen.",
+        "Frühe Anreise? Nutz die Gepäckaufbewahrung entlang der Via dei Mulini, um bis zum Check-in freihändig zu erkunden."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Timing & Reservierungen",
+      "body": [
+        "Plane Strandzeit und längere Spaziergänge vor 10:00 Uhr oder nach 16:00 Uhr, wenn Gassen kühler und der Verkehr ruhiger sind.",
+        "Reserviere Restaurants, Bootstouren und Path-of-the-Gods-Shuttles in der Hochsaison mindestens einen Tag im Voraus."
+      ]
+    },
+    {
+      "id": "payments",
+      "title": "Zahlungen & Bargeld",
+      "body": [
+        "Karten werden weit akzeptiert, aber viele Cafés und Tabacchi setzen Mindestumsätze – halte 5–10-€-Scheine bereit.",
+        "Geldautomaten funktionieren, Gebühren schwanken; heb mittelgroße Beträge auf einmal ab und verteile das Bargeld."
+      ]
+    },
+    {
+      "id": "connectivity",
+      "title": "Verbindung & Backups",
+      "body": [
+        "Hol dir eine italienische eSIM (TIM/Vodafone) oder bestätige dein Roaming; die Abdeckung ist weiter oben am Hang am besten.",
+        "Lade Offline-Karten, Fährfahrpläne und Hostel-Anleitungen herunter für Phasen mit schwachem Datenempfang."
+      ]
+    }
+  ],
+  "tips": [
+    "Speichere Bus- und Fährfahrpläne sowie Anreiseinfos des Hostels offline für Momente ohne Signal.",
+    "Trag eine wiederbefüllbare Flasche (750 ml) und eine leichte Schicht – Tage sind heiß, Abende oberhalb des Strands luftig."
+  ],
+  "faqs": [
+    {
+      "q": "Komme ich nur mit Handgepäck zurecht?",
+      "a": [
+        "Ja – pack schnell trocknende Outfits, plane die Hostel-Wäscherei ein und nimm Reisegrößen mit, damit du Airline-Limits einhältst."
+      ]
+    },
+    {
+      "q": "Brauche ich einen Stromadapter?",
+      "a": [
+        "Italien nutzt 230-V-Steckdosen vom Typ F/L; bring einen Universaladapter mit, wenn deine Stecker nicht dem EU-Standard entsprechen."
+      ]
+    }
+  ]
+}

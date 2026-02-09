@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Bãi biển Fiordo di Furore → Hostel Brikette bằng xe buýt",
+    "description": "Làm theo các bước này để tới điểm dừng SITA phía trên Fiordo di Furore, đi về Positano và hoàn tất đoạn đi bộ ngắn tới Hostel Brikette."
+  },
+  "linkLabel": "Bãi biển Fiordo di Furore → Hostel Brikette bằng xe buýt",
+  "intro": [
+    "Fiordo di Furore nằm dưới đường ven biển Amalfi và không có quầy vé hay cửa hàng khi bạn xuống nước. Hãy dùng hướng dẫn quay về này để leo lại lên đường, bắt xe buýt SITA về Positano và đi bộ tới Hostel Brikette một cách chủ động."
+  ],
+  "warningsTitle": "Trước khi rời bãi biển",
+  "warnings": [
+    "Mua vé SITA trước — gần bãi không có nơi bán vé và tài xế có thể từ chối nếu bạn không có vé đã đóng dấu."
+  ],
+  "sections": [
+    {
+      "id": "walk-to-road",
+      "title": "Leo lại lên đường",
+      "body": [
+        "Theo cầu thang từ bãi sỏi lên đường ven biển Amalfi.",
+        "Điểm dừng xe buýt SITA nằm ngay nơi cầu thang gặp khu vực đỗ xe nhỏ; chờ ở phía núi của con đường."
+      ]
+    },
+    {
+      "id": "ride-the-bus",
+      "title": "Đi xe buýt SITA về hướng Positano",
+      "body": [
+        "Lên xe SITA đi hướng Positano — tuyến này dừng theo yêu cầu nên số điểm dừng trung gian phụ thuộc vào hành khách khác.",
+        "Hành trình men theo bờ biển khoảng 10,8 km trước khi tới Positano."
+      ]
+    },
+    {
+      "id": "get-off",
+      "title": "Xuống tại Bar Internazionale / Chiesa Nuova",
+      "body": [
+        "Bấm chuông dừng ngay sau khi xe buýt rời đường hầm phía trên Positano và để ý quán tabacchi Bar Internazionale.",
+        "Xuống ở điểm dừng Chiesa Nuova; đây là điểm SITA gần Hostel Brikette nhất."
+      ]
+    },
+    {
+      "id": "walk-to-hostel",
+      "title": "Đi bộ đoạn cuối tới Hostel Brikette",
+      "body": [
+        "Tiếp tục đi cùng chiều với xe buýt hơn 100 mét.",
+        "Rẽ phải vào cầu thang cạnh quán bar và leo lên cửa chính của hostel."
+      ]
+    }
+  ],
+  "tipsTitle": "Mẹo khi quay về",
+  "tips": [
+    "Kiểm tra lịch mới nhất trên concierge số của hostel để biết chuyến SITA kế tiếp.",
+    "Dùng %LINK:positanoBeaches|tổng quan bãi biển Positano% để lên lịch các lần tắm biển khác phù hợp với hành trình Fiordo di Furore.",
+    "Nếu xe buýt đầy hoặc bị hủy, hãy sẵn sàng vẫy taxi được cấp phép ngay tại khu vực đỗ xe."
+  ],
+  "faqsTitle": "Câu hỏi thường gặp",
+  "faqs": [
+    {
+      "q": "Tôi nên chờ xe ở đâu?",
+      "a": [
+        "Đứng ở phía sát núi của con đường trên đỉnh cầu thang — xe buýt hướng Positano dừng ngay cạnh lan can chắn."
+      ]
+    },
+    {
+      "q": "Nếu tôi không có vé thì sao?",
+      "a": [
+        "Tài xế yêu cầu vé SITA đã đóng dấu trước khi lên xe. Hãy mua vé khứ hồi tại Positano hoặc hỏi lễ tân về tình trạng vé trước khi rời hostel."
+      ]
+    }
+  ]
+}

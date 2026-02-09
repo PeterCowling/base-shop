@@ -1,0 +1,117 @@
+{
+  "seo": {
+    "title": "A hegycsúcs túra a Hostel Brikette-től",
+    "description": "Érje el Monte Sant'Angelót, az Amalfi-part legmagasabb pontját ezekkel az útmutatásokkal, felkészülési tippekkel és figyelmeztetésekkel."
+  },
+  "linkLabel": "Túra a hegy tetején a Hostel Brikette-től",
+  "lastUpdated": "2026-02-04",
+  "intro": [
+    "Monte Sant'Angelo towers above the Amalfi Coast and rewards hikers with sweeping 360-degree views stretching from Capri to the Sorrentine Peninsula.",
+    "This itinerary starts from Hostel Brikette, guides you up to Santa Maria del Castello, and explains the final push to the summit so you know exactly what to expect before committing."
+  ],
+  "sections": [
+    {
+      "id": "why-go",
+      "title": "Why tackle this hike",
+      "body": [
+        "Views from the summit sweep across the peninsula towards Capri and down the Lattari mountains, making the grind worthwhile for photographers and hikers alike.",
+        "Reaching the Amalfi Coast's highest point is a satisfying physical challenge and a story you will trade with other travellers back at the hostel.",
+        "The long ascent doubles as a serious cardio session, especially if you are training for bigger treks later in your trip."
+      ]
+    },
+    {
+      "id": "getting-to-santa-maria",
+      "title": "Getting to Santa Maria del Castello",
+      "body": [
+        "Follow our standard hostel-to-Santa-Maria directions until you arrive in the village; that climb covers just over one third of the total elevation for the day.",
+        "Take a breather in the square, refill water if the bar is open, and check that everyone in your group still feels strong before committing to the exposed upper trail."
+      ]
+    },
+    {
+      "id": "santa-maria-to-summit",
+      "title": "From Santa Maria to the summit",
+      "body": [
+        "From the crossroads at the top of the village, turn right up the paved lane until a junction, then turn left and continue past the restaurant until the road bends sharply left.",
+        "Leave the road on the right-hand side, following the side path that drops slightly between houses. It will feel like private property at first, but you are still on the right track.",
+        "Stay on the mountain trail for an extended stretch until you reach a signed crossroads. Ignore the downhill options and take the steeply rising path.",
+        "The ascent quickly zig-zags before easing into a long, flatter traverse along the left-hand side of the mountain face. When you spot stone-cut steps on your right, follow them around the back of the peak for the final push.",
+        "Those rock steps lead to the last ramp of the day—keep climbing and you will emerge on the summit plateau with panoramic views in every direction."
+      ]
+    }
+  ],
+  "essentialsTitle": "Essentials",
+  "essentials": [
+    "Személyenként legalább 2 liter víz plusz sós harapnivalók; Santa Maria del Castello után nincs megbízható utántöltés.",
+    "Masszív túracipő markolattal – a felső ösvény szakaszai sziklásak, lazak és kilátszottak.",
+    "Napvédelem és rétegek a csúcsra; a szél még meleg napokon is átcsaphat a gerincen."
+  ],
+  "typicalCostsTitle": "Typical costs",
+  "typicalCosts": [
+    "A túraútvonal ingyenes; költségvetése 5–10 euró, ha azt tervezi, hogy megjutalmazza magát egy itallal vagy harapnivalóval a Santa Maria del Castellóban.",
+    "Ha úgy dönt, hogy egy másik falun keresztül ereszkedik le, ahelyett, hogy visszafelé gyalogolna, adja vissza a SITA buszjegyeit vagy a komp viteldíjait."
+  ],
+  "tipsTitle": "Smart timing",
+  "tips": [
+    "Nyáron hajnalban kezdje, hogy elkerülje a csúcshő alatti mászást; a késő őszi és tavaszi délutánok lágyabb fényt kínálnak tűző nap nélkül.",
+    "Ellenőrizze a vihar-előrejelzést – a felhőtakaró eltörölheti a kilátást, a nedves szikla pedig csúszóssá teszi a csúcs lépcsőit.",
+    "Tájékoztassa valaki a hostelben a tervét és a várható visszatérési idejét, mielőtt elindulna."
+  ],
+  "warningsTitle": "When to reconsider",
+  "warnings": [
+    "Hagyja ki a túrát, ha nem rendelkezik hegyi tapasztalattal vagy erős erőnléttel; a tartós szintemelkedés büntető, és kevés a mentőpont.",
+    "Kerülje el az útvonalat, ha a magasságok nyugtalanítanak – a szabaddá vált párkányok és meredek esések még a magabiztos túrázókat is kihívás elé állítják.",
+    "Ne próbálja meg feljutni a csúcsra a csúcs nyári délutánokon, amikor a hőség és az extra víz szállításának szükségessége fokozza a feszültséget."
+  ],
+  "steps": [
+    {
+      "name": "Climb to Santa Maria del Castello",
+      "text": "Használja a szálló Santa Maria del Castello felé vezető útvonalát; a tér elérése azt jelenti, hogy a magasság nagyjából egyharmadát teljesítette."
+    },
+    {
+      "name": "Join the mountain trail",
+      "text": "A falu kereszteződésétől jobbra, majd balra az étterem mellett, és hagyja el az utat a házakat körülvevő jobb oldali úton."
+    },
+    {
+      "name": "Commit to the upper ascent",
+      "text": "Kövesse a zord ösvényt a jelzett kereszteződéshez, és válassza ki azt az utat, amely egyenesen felfelé tart a csúcs felé."
+    },
+    {
+      "name": "Navigate the zig-zags",
+      "text": "Hajtson át meredek váltásokon, amíg az ösvény ellaposodik a hegy bal oldalán."
+    },
+    {
+      "name": "Take the rock-cut stairs",
+      "text": "Mássz fel a jobb oldali kőlépcsőkön, a hegyoldal mögé hurkolva az utolsó rámpa felé."
+    },
+    {
+      "name": "Reach the summit",
+      "text": "Kövesse az utolsó emelkedőt a csúcsra, és élvezze a panorámát, mielőtt visszamenne a Santa Maria felé."
+    }
+  ],
+  "faqsTitle": "FAQs",
+  "faqs": [
+    {
+      "q": "How long does the full hike take?",
+      "a": [
+        "Hagyjon 6–7 órát az oda-vissza útra a Hostel Brikette-től, beleértve a Santa Maria-i szüneteket és a csúcson eltöltött időt."
+      ]
+    },
+    {
+      "q": "Is the trail marked?",
+      "a": [
+        "A jelzők ritkák a Santa Marián túl; vigyen magával egy offline térképet, és figyeljen a nyilvánvalóan kopott ösvényekre és a csomópontoknál lévő útjelző táblákra."
+      ]
+    },
+    {
+      "q": "Can I turn back early?",
+      "a": [
+        "Igen. Ha a felső rész túlságosan kitettnek tűnik, élvezze a kilátást a Santa Maria-ból vagy az alsó átjárókból, és térjen vissza arra az útra, ahol jött."
+      ]
+    }
+  ],
+  "toc": {
+    "labels": {
+      "warnings": "When to reconsider"
+    }
+  }
+}

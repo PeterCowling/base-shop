@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Bázisok összehasonlítása: Positano vs Sorrento vs Amalfi",
+    "description": "Kompromisszumok, közlekedés, árak, és hogy kinek melyik helyszín illik."
+  },
+  "linkLabel": "Bázisok összehasonlítása: Positano vs Sorrento vs Amalfi",
+  "intro": [
+    "Hasonlítsd össze Positano, Sorrento és Amalfi előnyeit, mielőtt kiválasztod a bázisodat."
+  ],
+  "tocTitle": "Tartalom",
+  "sections": [
+    {
+      "id": "positano",
+      "title": "Positano",
+      "body": [
+        "Ikonikus látkép és lépcsők; akkor ideális, ha képeslapba illő reggelekre vágysz.",
+        "A közlekedéshez több tervezés kell, így a kompok és buszok köré hagyj szabad pufferidőt."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "Sorrento",
+      "body": [
+        "A legjobb vasút- és buszkapcsolatok, széles szálláskínálattal.",
+        "A kilátás kevésbé drámai, mint Positanóban, de az érték és kényelem jó arányt ad."
+      ]
+    },
+    {
+      "id": "amalfi",
+      "title": "Amalfi",
+      "body": [
+        "Komp- és buszközpont, könnyű kirándulások Ravellóba és a környező falvakba.",
+        "Vegyes szállásstílusokra számíts, és tervezd a terveidet az esti korlátozott közlekedéshez."
+      ]
+    },
+    {
+      "id": "who",
+      "title": "Kinek melyik",
+      "body": [
+        "Positano: látvány és hostel társaság a prémium élményért.",
+        "Sorrento: költségkontroll és gyors átjutás.",
+        "Amalfi: kiegyensúlyozott hozzáférés az egész partszakaszhoz."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Melyik bázis jó az első látogatóknak?",
+      "a": [
+        "Positano a klasszikus kilátásért, Sorrento a könnyű közlekedésért, Amalfi pedig köztes megoldás katedrális-közeli hozzáféréssel."
+      ]
+    },
+    {
+      "q": "Szükség van autóra, ha Positanón kívül szállsz meg?",
+      "a": [
+        "Nem. Kompok és buszok kötik össze mindhárom várost; az autó csak akkor kell, ha belföldi kirándulásokra mész."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "seo": {
+    "title": "Hospedagem econômica além de Positano",
+    "description": "Ideias em Praiano, Sorrento, Salerno e Nápoles com prós, contras e tempo de deslocamento até Positano."
+  },
+  "linkLabel": "Hospedagem econômica além de Positano",
+  "intro": [
+    "Bases económicas fora de Positano com compromissos de transporte realistas."
+  ],
+  "sections": [
+    {
+      "id": "sorrento",
+      "title": "Sorrento",
+      "body": [
+        "Base com boa relação qualidade-preço, comboios e ferries frequentes; facilita chegadas tardias."
+      ]
+    },
+    {
+      "id": "salerno",
+      "title": "Salerno",
+      "body": [
+        "Acessível e bem ligada; ferries sazonais seguem para Amalfi e Positano."
+      ]
+    },
+    {
+      "id": "amalfi-area",
+      "title": "Zona de Amalfi",
+      "body": [
+        "Vilas pequenas oferecem oportunidades na baixa temporada; vigie as frequências dos autocarros."
+      ]
+    },
+    {
+      "id": "tradeoffs",
+      "title": "Prós e contras",
+      "body": [
+        "Trajetos mais longos em troca de tarifas mais baixas. Para estadias curtas, pernoite em Positano para poupar tempo."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Vale a pena deslocar-me diariamente?",
+      "a": [
+        "Se prioriza preço e aguenta transfers mais demorados, sim — sobretudo na meia estação."
+      ]
+    }
+  ]
+}

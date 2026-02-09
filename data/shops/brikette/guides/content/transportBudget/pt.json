@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Transporte com orçamento limitado (Costa Amalfitana)",
+    "description": "Estratégias para gastar menos em ônibus, ferries e transfers — passes, horários econômicos e combinações inteligentes."
+  },
+  "linkLabel": "Transporte com orçamento limitado",
+  "intro": [
+    "Mantenha os custos de transporte baixos combinando passes, partidas fora de pico e transfers partilhados quando fizer sentido."
+  ],
+  "sections": [
+    {
+      "id": "passes",
+      "title": "Escolha o passe certo",
+      "body": [
+        "Use o passe UNICO Costiera (€12,40) para viagens ilimitadas nos autocarros SITA entre Sorrento e Salerno — valide na primeira viagem e mantenha o bilhete visível para fiscalizações.",
+        "Se planeia dois ou mais trajetos de ferry no mesmo dia, compare bilhetes combinados de operadores como a Travelmar; incluem saltos Amalfi + Positano com desconto."
+      ]
+    },
+    {
+      "id": "combo-routes",
+      "title": "Combine modos com inteligência",
+      "body": [
+        "Junte um trecho de ferry a autocarros para poupar e ainda aproveitar as vistas — vá de barco de manhã e volte de autocarro quando os preços disparam.",
+        "Partilhe táxis nos regressos tardios quando os autocarros terminam; dividir 80 € por quatro pessoas supera esperar horas pela próxima carreira."
+      ]
+    },
+    {
+      "id": "advance",
+      "title": "Comprar antecipadamente",
+      "body": [
+        "Reserve bilhetes Trenitalia ou Italo de Roma/Nápoles com antecedência para tarifas mais baixas; os regionais até Sorrento têm preço fixo.",
+        "Garanta lugar em shuttles de aeroporto (Curreri, Pintour) online para fins de semana de pico."
+      ]
+    },
+    {
+      "id": "last-mile",
+      "title": "Poupanças no último trecho",
+      "body": [
+        "À chegada, apanhe o autocarro SITA até Chiesa Nuova e desça a pé em vez de contratar porteiro; conte 15 minutos com bagagem manejável.",
+        "Use guarda-volumes perto do cais em vez de transfers privados se tiver check-out tardio — 7–10 € é mais barato do que outro táxi."
+      ]
+    }
+  ],
+  "tips": [
+    "Viaje antes das 08:30 ou depois das 19:00, quando os autocarros estão mais vazios e embarca sem empurrões.",
+    "Guarde capturas ou impressões dos bilhetes; o Wi-Fi pode falhar exatamente quando entram os fiscais."
+  ],
+  "faqs": [
+    {
+      "q": "Os passes valem a pena na baixa temporada?",
+      "a": [
+        "Sim se fizer três viagens ou mais num dia. Caso contrário, pague bilhetes simples; os horários são mais leves mas as tarifas mantêm-se baixas."
+      ]
+    },
+    {
+      "q": "Preciso validar bilhetes de ferry?",
+      "a": [
+        "A maioria dos operadores lê o QR code digitalmente, mas leve uma cópia impressa se houver risco de chuva atrapalhar o ecrã."
+      ]
+    }
+  ]
+}

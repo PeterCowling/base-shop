@@ -1,0 +1,139 @@
+{
+  "seo": {
+    "title": "Napkeltetúra a Hostel Brikette-ből (Positano)",
+    "description": "Rövid hajnal előtti túra a Hostel Brikette-ből egy csendes kilátóponthoz Positano felett, helyes sorrendben lévő navigációs fotókkal."
+  },
+  "linkLabel": "Napkeltetúra: Nézd meg a hajnalt Positano felett",
+  "lastUpdated": "2026-02-04",
+  "intro": [
+    "Ha a legegyszerűbb napkeltét szeretnéd, akkor a hostel közös teraszáról nézheted a hajnalt, ahogy a nap balra kel (amikor a tenger felé nézel).",
+    "Ha szélesebb panorámát és egy csendesebb pillanatot szeretnél a város felett, kövesd ezt a rövid túrát a hegyekbe egy sziklatetői kilátóponthoz Positano felett."
+  ],
+  "sections": [
+    {
+      "id": "what-is",
+      "title": "Mi a napkeltetúra?",
+      "body": [
+        "Ez egy rövid, hajnal előtti oda-vissza séta a Hostel Brikette-ből egy kis kilátópontig Positano felett.",
+        "Ha hosszabb hegyi lehetőséget szeretnél, a %LINK:santaMariaDelCastelloHike|Santa Maria del Castello% nagyszerű alternatíva, de az alábbi útvonal a leggyorsabb módja egy drámai napkeltenézet megszerzésének anélkül, hogy egy egész napos túrára kötelezd el magad."
+      ]
+    },
+    {
+      "id": "before-you-go",
+      "title": "Mielőtt elindulsz (sötét lesz)",
+      "body": [
+        "Vigyél telefonlámpát vagy fejlámpát, és tartsd szabadon a kezeidet (különösen a lépcsőkön).",
+        "Viselj tapadós cipőt — az első rész burkolt, de az erdei ösvény lehet laza vagy nedves.",
+        "Indulj elég korán, hogy 10-15 perccel a napkelte előtt érkezz, így le tudsz telepedni, megtalálod a helyedet és élvezheted az első fényt."
+      ]
+    },
+    {
+      "id": "step-1",
+      "title": "1. lépés: Gyalogolj a hostelből a lépcsőhöz (≈350 m)",
+      "body": [
+        "Lépj ki a hostelből a főbejáraton és menj le az útra.",
+        "Fordulj Sorrento felé és gyalogolj kb. **350 métert** a főúton, amíg el nem érsz egy lépcsőhöz, amely felmászik az útról."
+      ]
+    },
+    {
+      "id": "step-2",
+      "title": "2. lépés: Mássz fel a házhoz, majd fordulj balra",
+      "body": [
+        "Menj fel a lépcsőn egészen addig, amíg el nem éred az alább látható régi fehér házat.",
+        "A háznál **fordulj balra**, hogy csatlakozz az erdei ösvényhez."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/02-house.jpg",
+          "alt": "Régi fehér ház a lépcső mellett a napkeltetúra útvonalon Positano felett",
+          "caption": "Ez az épület jelzi a lépcsőmászás végét; fordulj itt balra, hogy belépj az erdei ösvényre.",
+          "width": 876,
+          "height": 530
+        }
+      ]
+    },
+    {
+      "id": "step-3",
+      "title": "3. lépés: Kövesd az erdei ösvényt a kilátóponthoz",
+      "body": [
+        "Kövesd az erdei ösvényt, ahogy finoman emelkedik a háztól távolodva.",
+        "Amikor az ösvény elágazik, válaszd a **jobb** ágat.",
+        "Végül elérsz egy pontot, ahol a fák megnyílnak, és egyenesen előtted láthatod a tengert. Onnan fordulj **balra**.",
+        "Ez a bal ösvény elvezet a kilátóponthoz. Óvatosan felmászhatsz a sziklákra magasabb pozícióért, vagy maradhatsz a főhelyen egy stabil kilátásért."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/03-viewpoint.jpg",
+          "alt": "Felülnézeti térkép az utolsó kanyarokkal a napkeltetúra útvonalon a Positano feletti kilátópontig",
+          "caption": "Használd ezt a felülnézetet az utolsó balkanyar megerősítésére a kilátópont felé, miután az ösvény megnyílik a tenger felé.",
+          "width": 677,
+          "height": 600
+        }
+      ]
+    },
+    {
+      "id": "share",
+      "title": "Oszd meg ezt az útmutatót (QR)",
+      "body": [
+        "Ha barátokkal indulsz, használhatod ezt a QR-kódot az útmutató gyors megosztásához egy másik telefonon."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/01-qr.png",
+          "alt": "QR-kód a Hostel Brikette napkeltetúra útmutatójához",
+          "width": 450,
+          "height": 450
+        }
+      ]
+    }
+  ],
+  "essentialsTitle": "Alapvető dolgok",
+  "essentials": [
+    "Fejlámpa vagy telefonlámpa (plusz töltött akkumulátor).",
+    "Tapadós cipő és egy könnyű réteg — hajnal előtt hűvösnek és szeles lehet.",
+    "Víz és egy kis snack, ha ülve nézed a napkeltét."
+  ],
+  "tipsTitle": "Okos időzítés",
+  "tips": [
+    "Végezz egy gyors előrejelzés-ellenőrzést: a szél és az alacsony felhők elrejthetik a napkeltét még tiszta napokon is.",
+    "Ha bizonytalanság van egy csomópontnál a sötétben, állj meg és erősítsd meg az irányt, ahelyett, hogy találgatnál."
+  ],
+  "warningsTitle": "Biztonsági megjegyzések",
+  "warnings": [
+    "Menj lassan a lépcsőkön és tartsd szabadon a kezeidet — könnyen tévedhetsz gyenge fényben.",
+    "Ha az ösvény csúszósnak érződik eső után, fontold meg a nézést a hostel teraszáról helyette."
+  ],
+  "steps": [
+    {
+      "name": "Gyalogolj a lépcsőhöz",
+      "text": "A hostelből gyalogolj ~350 m-t Sorrento felé a főúton, amíg meg nem pillantod a felfelé mászszó lépcsőt."
+    },
+    {
+      "name": "Mássz fel a házhoz",
+      "text": "Kövesd a lépcsőt a régi fehér házig, majd fordulj balra az erdei ösvényre."
+    },
+    {
+      "name": "Válaszd a jobb ágat",
+      "text": "Amikor az erdei ösvény elágazik, maradj jobbra és folytasd, amíg nem látod a tengert."
+    },
+    {
+      "name": "Fordulj balra a kilátóponthoz",
+      "text": "Miután az ösvény kinyílik a tenger felé, fordulj balra, hogy elérje a kilátópontot (mássz fel óvatosan, ha magasabb pozíciót szeretnél)."
+    }
+  ],
+  "faqsTitle": "GYIK",
+  "faqs": [
+    {
+      "q": "Nézhetem a napkeltét csak a hostelből?",
+      "a": [
+        "Igen — a hostel terasza a legegyszerűbb lehetőség, és a nap az épület bal oldalán kel fel, amikor a tenger felé nézel."
+      ]
+    },
+    {
+      "q": "Mennyi ideig tart a túra?",
+      "a": [
+        "Ez egy rövid útvonal, de az időzítés függ a tempódtól és attól, mennyi időt töltesz a kilátóponton. Hagyj elég időt, hogy 10-15 perccel a napkelte előtt érkezz."
+      ]
+    }
+  ]
+}

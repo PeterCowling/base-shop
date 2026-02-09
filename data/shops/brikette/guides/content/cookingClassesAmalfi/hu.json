@@ -1,0 +1,107 @@
+{
+  "seo": {
+    "title": "Főzőkurzusok az Amalfi-parton",
+    "description": "Milyen egy kurzus, mit főzöl és hogyan válassz."
+  },
+  "linkLabel": "Főzőkurzusok az Amalfi-parton",
+  "intro": [
+    "Az Amalfi-parti főzőkurzusok felfűzik az sfusato citromokat, friss tésztát és családi recepteket kis konyhákban panorámával.",
+    "Ez az útmutató segít kiválasztani a költségvetésedhez és időbeosztásodhoz megfelelő kurzust, és ellenőrizni a részleteket, mielőtt leteszed az előleget."
+  ],
+  "sections": [
+    {
+      "id": "flow",
+      "title": "Így zajlik egy tipikus kurzus",
+      "body": [
+        "A házigazdák kávéval vagy proseccóval köszöntenek, majd bemutatják a hozzávalókat: friss citromhéjat, szezonális zöldségeket és a saját készítésű tésztát.",
+        "Két–három fogást főztök: friss tészta, szósz és citromos desszert, majd közösen megvacsoráztok; a foglalkozás 2,5–4 órát tart az étkezéssel együtt."
+      ]
+    },
+    {
+      "id": "choose",
+      "title": "Hogy válassz",
+      "body": [
+        "Nézd meg a csoport méretét és hogy a konyha Positanóban, egy domboldali farmon vagy szomszédos településen van-e; az utazás lehet benne az árban vagy külön fizetendő.",
+        "Tudd meg, mi jár az árban: alapanyagok, borpárosítás, nyomtatott receptek, takaró és maradék hazavitel."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Logisztika és időzítés",
+      "body": [
+        "A főszezonban hetekre előre fogynak a kurzusok; biztosítsd a helyed még az utazás előtt, különösen az esti programokra.",
+        "Ha a helyszín Positanón kívül van, erősítsd meg a felvételi pontot, vagy számolj taxival; a lépcsők miatt kényelmes cipő ajánlott."
+      ]
+    },
+    {
+      "id": "dietary",
+      "title": "Diéta és etikett",
+      "body": [
+        "Közöld az allergiákat, vegetáriánus vagy gluténmentes igényeket foglaláskor; sokan képesek a menüt módosítani.",
+        "Viselj zárt cipőt, kösd hátra a hosszú hajadat, és kerüld a túl erős parfümöt – a konyhák kicsik, a friss hozzávalók közel vannak."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Kezdőknek való?",
+      "a": [
+        "Igen. Az oktatók minden lépést bemutatnak, javítanak menet közben, és felosztják a feladatokat, így senki sem érezheti kapkodónak."
+      ]
+    },
+    {
+      "q": "Kell beszélnem olaszul?",
+      "a": [
+        "Nem. A legtöbb kurzus angolul vagy kétnyelvűen zajlik, és a vizuális bemutatók megkönnyítik a követést."
+      ]
+    },
+    {
+      "q": "Mit vigyek?",
+      "a": [
+        "Hozz egy kis jegyzetfüzetet, ha szeretsz tippeket leírni, töltsd fel a telefonod fotókhoz, és tarts készpénzt a további fizetésekre vagy közlekedésre."
+      ]
+    }
+  ],
+  "fallback": {
+    "intro": [
+      "Kézzel gyúrt tészta, szószok, citromos desszert és kis csoportos konyhák."
+    ],
+    "toc": [
+      {
+        "href": "#what",
+        "label": "Mit várhatsz"
+      },
+      {
+        "href": "#choose",
+        "label": "Hogyan válassz"
+      },
+      {
+        "href": "#tips",
+        "label": "Tippek"
+      }
+    ],
+    "sections": [
+      {
+        "id": "what",
+        "title": "Mit várhatsz",
+        "body": [
+          "Kézmunka tészta, szósz és citromos desszert; kis csoport és szép konyha."
+        ]
+      },
+      {
+        "id": "choose",
+        "title": "Hogyan válassz",
+        "body": [
+          "Nézd meg a csoport méretét, időtartamát, mit tartalmaz és hogyan jutok oda."
+        ]
+      },
+      {
+        "id": "tips",
+        "title": "Tippek",
+        "body": [
+          "Foglalj előre a csúcsszezonban; jelezd a diétás igényeket."
+        ]
+      }
+    ]
+  }
+}

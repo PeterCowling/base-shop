@@ -1,0 +1,100 @@
+{
+  "seo": {
+    "title": "Hostel Brikette → Fiordo di Furore by bus",
+    "description": "Instruções passo a passo para chegar ao Fiordo di Furore desde o Hostel Brikette com o autocarro SITA, incluindo onde comprar bilhetes e como aceder à praia."
+  },
+  "linkLabel": "Hostel Brikette → Fiordo di Furore by bus",
+  "intro": [
+    "Siga esta rota para viajar de Hostel Brikette para Fiordo di Furore no ônibus SITA sem perder uma parada ou chegar despreparado.",
+    "O fiorde não tem bilheteria ou lojas, então essas etapas cobrem as passagens, o ponto de ônibus mais próximo e a escada que leva até a praia."
+  ],
+  "warningsTitle": "Before you leave the hostel",
+  "warnings": [
+    "Buy a round-trip SITA ticket in Positano — there is no way to purchase or validate tickets once you reach the beach.",
+    "Buses fill quickly in peak months and may skip the stop when full, so allow extra time for your journey."
+  ],
+  "sections": [
+    {
+      "id": "walk-to-bus-stop",
+      "title": "Walk to the Chiesa Nuova bus stop",
+      "body": [
+        "The closest SITA stop is in the Chiesa Nuova area, about 140 metres (490 feet) from the hostel entrance.",
+        "Exit through the main door, walk down the stairs to Via Pasitea, turn left, and continue roughly 100 metres (330 feet).",
+        "Look for Bar Internazionale on the left-hand side; the bus stop sits directly outside the café."
+      ]
+    },
+    {
+      "id": "buy-bus-tickets",
+      "title": "Buy round-trip bus tickets",
+      "body": [
+        "Go into Bar Internazionale and ask for SITA tickets to Fiordo di Furore.",
+        "Staff may suggest one-way or return tickets depending on the price that day — buy a return so you are covered for the ride back."
+      ]
+    },
+    {
+      "id": "wait-for-bus",
+      "title": "Wait on the seaward side of the road",
+      "body": [
+        "Cross Via Pasitea to the opposite side from the bar and wait at the marked SITA stop.",
+        "Arrive early and give yourself time for a second bus in case the first one is already full."
+      ]
+    },
+    {
+      "id": "ride-the-bus",
+      "title": "Ride the SITA bus towards Amalfi",
+      "body": [
+        "Board a bus heading for Amalfi or Agerola and tell the driver you need the Fiordo di Furore stop so they know to pull over.",
+        "The ride covers about 10.8 kilometres (6.7 miles); intermediate stops depend on other passengers requesting them.",
+        "If you have mobile data, track the stop by searching for \\\\\"JH73+PQ Furore, Province of Salerno\\\\\" on Google Maps."
+      ]
+    },
+    {
+      "id": "walk-to-beach",
+      "title": "Take the stairs down to the beach",
+      "body": [
+        "Get off beside the bridge, cross the road, and take the staircase that leads away from the traffic toward the cliffside walkway.",
+        "Follow the stairs up and over the bridge, then descend the final flights to reach the shingle beach at the bottom.",
+        "Use a mesma escada para retornar à estrada quando estiver pronto para sair."
+      ]
+    }
+  ],
+  "tipsTitle": "Extra tips",
+  "tips": [
+    "Check the latest SITA timetable posted at reception before you set out so you know when the next buses run.",
+    "Read our %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore beach guide% for packing tips and on-site expectations.",
+    "Salve o %LINK:fiordoDiFuroreBusReturn|Fiordo di Furore → Hostel Brikette guia de retorno% para sua viagem de volta.",
+    "Jump to the %LINK:positanoBeaches|Positano beaches overview% to compare other swim spots for the same day."
+  ],
+  "essentialsTitle": "O que esperar",
+  "essentials": [
+    "Compre bilhetes de ida e volta em Positano — não há onde comprá-los no fiorde.",
+    "Avise o motorista que pretende sair no Fiordo di Furore para que ele pare.",
+    "Escadaria íngreme leva à praia de seixos sob o arco da ponte."
+  ],
+  "typicalCostsTitle": "Custos típicos",
+  "typicalCosts": [
+    "Bilhete de autocarro SITA de ida e volta: cerca de €5–€7 por pessoa.",
+    "Táxi de emergência até à estrada: €15–€25 para distâncias curtas."
+  ],
+  "faqsTitle": "Perguntas frequentes",
+  "faqs": [
+    {
+      "q": "Eu realmente preciso comprar uma passagem de volta com antecedência?",
+      "a": [
+        "Sim. Os motoristas esperam bilhetes SITA validados e não há máquinas ou lojas na praia, então compre os dois trechos em Positano antes de embarcar."
+      ]
+    },
+    {
+      "q": "O que devo fazer se o ônibus estiver lotado quando chegar?",
+      "a": [
+        "Aguarde o próximo serviço programado e fique de olho nos horários — na alta temporada é normal que um ou dois ônibus passem antes de abrirem vagas."
+      ]
+    },
+    {
+      "q": "How will I recognise the right stop?",
+      "a": [
+        "Depois que o ônibus cruzar a ponte em arco sobre o fiorde, ele irá parar ao lado da barreira de segurança. Observe as vistas da ponte, ouça o motorista e use o pino \\\\\"JH73 + PQ Furore\\\\\" do Google Maps como backup."
+      ]
+    }
+  ]
+}

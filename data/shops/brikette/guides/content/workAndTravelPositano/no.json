@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Jobb og reis: balanser fjernarbeid i Positano",
+    "description": "Wi-Fi, kafeer, rutiner og realistiske tidsplaner for produktive dager på kysten."
+  },
+  "linkLabel": "Jobb og reise: balansere fjernarbeid",
+  "intro": [
+    "Balanser fokusert arbeid med å utforske Positano: realistisk tilkobling, hvor du skal jobbe og en dagsrytme som passer folkemengdene."
+  ],
+  "sections": [
+    {
+      "id": "wifi",
+      "title": "Wi‑Fi og backup",
+      "body": [
+        "Bruk eSIM-sikkerhetskopier; test hastigheter; unngå kritiske anløp under lossetider for ferge på hovedfeltene."
+      ]
+    },
+    {
+      "id": "cafes",
+      "title": "Arbeidsvennlige kafeer",
+      "body": [
+        "Se guiden vår for Wi‑Fi og arbeidsvennlige kafeer; bestill og kjøp regelmessig."
+      ]
+    },
+    {
+      "id": "routines",
+      "title": "Rutiner som fungerer",
+      "body": [
+        "Arbeid blokkerer tidlig og sent; utforske midt på dagen når folkemengdene topper seg eller etter solnedgang."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Er fjernarbeid realistisk her?",
+      "a": [
+        "Ja med planlegging — hold deg i nærheten av Chiesa Nuova, bruk sikkerhetskopier og hold fleksible åpningstider."
+      ]
+    }
+  ]
+}

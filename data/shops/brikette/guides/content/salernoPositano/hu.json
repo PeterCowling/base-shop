@@ -1,0 +1,42 @@
+{
+  "seo": {
+    "title": "Salernóból Positanóba",
+    "description": "Komp, busz és kombinált útvonalak Positanóba, plusz szempontrendszer szezon szerint."
+  },
+  "linkLabel": "Salernóból Positanóba – hogyan juthatsz el",
+  "intro": [
+    "Salerno → Positano: szezonban poggyásszal is a komp a legkényelmesebb; az Amalfin át közlekedő busz egész évben jár olcsóbb alternatívaként."
+  ],
+  "sections": [
+    {
+      "id": "ferry",
+      "title": "Komp (poggyásszal ajánlott)",
+      "body": [
+        "A társaságtól függően a Molo Manfredi vagy a Molo Concordia mólóról indul; számítson közel egy órára a vízen, a tengeri viszonyoktól függően.",
+        "Indulás előtt ellenőrizze a tenger állapotát és a friss menetrendet; hétvégén a helyek gyorsan elfogynak, ezért érkezzen időben."
+      ]
+    },
+    {
+      "id": "bus",
+      "title": "Busz Amalfin keresztül (egész évben)",
+      "body": [
+        "SITA busszal Amalfiba, ott átszállás a Positano járatra; hosszabb út, de szezonon kívül is elérhető.",
+        "Legyen Önnél apró készpénz, érvényesítse a jegyet, és hagyjon tartalék időt az amalfi átszállásnál, amíg megnézi a továbbutazási menetrendet."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Megbízható a komp tavasszal?",
+      "a": [
+        "Igen, de kora tavasszal a viharok lemondhatják a járatokat. Mindig ellenőrizze aznap."
+      ]
+    },
+    {
+      "q": "Hol tegyem a csomagokat?",
+      "a": [
+        "A kompokon használja a csomagtartó állványokat, az értékeket pedig tartsa magánál."
+      ]
+    }
+  ]
+}

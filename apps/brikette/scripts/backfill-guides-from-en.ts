@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-/* eslint-disable security/detect-non-literal-fs-filename -- CLI script reads/writes guide content from known safe paths */
+/* eslint-disable no-console, security/detect-non-literal-fs-filename -- GS-001 [ttl=2026-12-31] CLI backfill script intentionally logs and writes locale content paths. */
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { i18nConfig } from "../src/i18n.config";
+import { SUPPORTED_LANGUAGES } from "@acme/guide-system";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -16,6 +16,7 @@ type Args = {
   guides: string[];
   locales?: string[];
   backupDir?: string;
+  dryRun?: boolean;
 };
 
 const parseArgs = (): Args => {
@@ -38,8 +39,9 @@ const parseArgs = (): Args => {
     : undefined;
 
   const backupDir = args.find(a => a.startsWith("--backup-dir="))?.slice("--backup-dir=".length);
+  const dryRun = args.includes("--dry-run");
 
-  return { guides, locales, backupDir };
+  return { guides, locales, backupDir, dryRun };
 };
 
 const readJson = async (absolutePath: string): Promise<unknown> => {
@@ -53,9 +55,9 @@ const writeJson = async (absolutePath: string, data: unknown): Promise<void> => 
 };
 
 const main = async (): Promise<void> => {
-  const { guides, locales: localeOverride, backupDir } = parseArgs();
+  const { guides, locales: localeOverride, backupDir, dryRun } = parseArgs();
 
-  const supportedLocales = (i18nConfig.supportedLngs ?? []) as string[];
+  const supportedLocales = [...SUPPORTED_LANGUAGES];
   const locales = localeOverride ?? supportedLocales.filter(l => l !== "en");
 
   if (locales.length === 0) {
@@ -63,7 +65,7 @@ const main = async (): Promise<void> => {
     return;
   }
 
-  if (backupDir) {
+  if (backupDir && !dryRun) {
     await mkdir(backupDir, { recursive: true });
   }
 
@@ -77,7 +79,7 @@ const main = async (): Promise<void> => {
     for (const locale of locales) {
       const targetPath = path.join(LOCALES_ROOT, locale, "guides", "content", `${guideKey}.json`);
 
-      if (backupDir) {
+      if (backupDir && !dryRun) {
         const backupPath = path.join(
           backupDir,
           locale,
@@ -90,19 +92,21 @@ const main = async (): Promise<void> => {
         await writeFile(backupPath, existing, "utf8");
       }
 
-      await writeJson(targetPath, enContent);
+      if (!dryRun) {
+        await writeJson(targetPath, enContent);
+      }
       changed++;
-      console.log(`✓ ${locale}/guides/content/${guideKey}.json ← en`);
+      console.log(`${dryRun ? "⊘" : "✓"} ${locale}/guides/content/${guideKey}.json ← en${dryRun ? " (dry-run)" : ""}`);
     }
 
     skipped++;
   }
 
   console.log("");
-  console.log("Backfill complete.");
+  console.log(`Backfill ${dryRun ? "dry-run " : ""}complete.`);
   console.log(`Guides processed: ${skipped}`);
-  console.log(`Files written: ${changed}`);
-  if (backupDir) {
+  console.log(`${dryRun ? "Files planned" : "Files written"}: ${changed}`);
+  if (backupDir && !dryRun) {
     console.log(`Backup dir: ${backupDir}`);
   }
 };
@@ -112,4 +116,3 @@ main().catch((error) => {
   console.error(error);
   process.exitCode = 1;
 });
-

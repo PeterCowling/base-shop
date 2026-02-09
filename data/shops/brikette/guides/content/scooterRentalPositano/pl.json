@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Wypożyczenie skutera (Positano)",
+    "description": "Gdzie wypożyczyć, jakie obowiązują zasady i kiedy lepiej zrezygnować z jazdy."
+  },
+  "linkLabel": "Przewodnik: skuter w Positano",
+  "intro": [
+    "Skutery kuszą w Positano, ale przed wynajmem warto uwzględnić dostępność, formalności i bezpieczeństwo na skalistych drogach."
+  ],
+  "sections": [
+    {
+      "id": "where",
+      "title": "Gdzie wypożyczyć",
+      "body": [
+        "W Positano dostępność waha się, a ceny są wysokie; Sorrento zwykle oferuje więcej firm i stabilniejsze stawki."
+      ]
+    },
+    {
+      "id": "rules",
+      "title": "Zasady i dokumenty",
+      "body": [
+        "Zabierz prawo jazdy (w razie potrzeby międzynarodowe) oraz kartę kredytową i dokładnie sprawdź, co obejmuje ubezpieczenie."
+      ]
+    },
+    {
+      "id": "safety",
+      "title": "Bezpieczeństwo i kiedy odpuścić",
+      "body": [
+        "Nadmorskie drogi są wąskie, z ograniczoną widocznością i kursującymi autobusami; jeśli nie jeździsz pewnie, lepiej korzystać z promów lub autobusów."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Czy początkujący powinni wypożyczać skuter?",
+      "a": [
+        "Raczej nie — bez pewnych umiejętności jazda po klifowych drogach może być stresująca, więc lepiej korzystać z transportu publicznego."
+      ]
+    }
+  ]
+}

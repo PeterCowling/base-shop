@@ -1,0 +1,56 @@
+{
+  "seo": {
+    "title": "Positano zimą oszczędnie",
+    "description": "Co działa, jak się przemieszczać i jak cieszyć się Positano zimą bez przepłacania."
+  },
+  "linkLabel": "Positano zimą oszczędnie",
+  "intro": [
+    "Zima w Positano jest spokojna, bardziej przystępna cenowo i chłodniejsza. Skorzystaj z przewodnika, by znaleźć otwarte miejsca, poruszać się po zawieszonych promach i zaplanować przytulne doświadczenia bez nadmiernego wydatku.",
+    "Spakuj warstwy (lekka puchówka plus nieprzemakalna kurtka) i buty z przyczepnością — schody bywają śliskie po deszczu."
+  ],
+  "sections": [
+    {
+      "id": "open",
+      "title": "Co pozostaje otwarte",
+      "body": [
+        "Sklepy spożywcze, kawiarnie przy Piazza dei Mulini i bar hostelu działają przez cały rok — godziny są krótsze, ale usługa pewna.",
+        "Promy przez wybrzeże zwykle zatrzymują się od listopada do marca, ale autobusy SITA i wybrane prywatne shuttle’e kursują według ograniczonych rozkładów."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Zimowe podróże",
+      "body": [
+        "Skorzystaj z pociągów regionalnych do Sorrento lub Salerno, a potem autobusem SITA; dolicz 20–30 minut na opóźnienia przy mokrej pogodzie.",
+        "Zabierz gotówkę na bilety autobusowe (2–3 € w jedną stronę) i miej aplikację UnicoCampania, gdy burze nagle zmieniają rozkład."
+      ]
+    },
+    {
+      "id": "budget",
+      "title": "Dni przyjazne budżetowi",
+      "body": [
+        "W deszczowe prognozy zaplanuj wycieczki do muzeów w Neapolu lub Salerno; bilety w obie strony kosztują około 10 €.",
+        "Przejdź Szlak Bogów z Nocelle przy przejrzystym niebie — świeże powietrze, puste punkty widokowe i brak latających upałów."
+      ]
+    }
+  ],
+  "tips": [
+    "Wybierz nocleg z ogrzewaniem i śniadaniem w cenie, by nie dokładać wydatków na kawę rano.",
+    "Zmierzch zapada wcześniej (około 16:45 w grudniu) — zaplanuj czas na tarasie późnym popołudniem i zabierz ciepłą warstwę."
+  ],
+  "faqs": [
+    {
+      "q": "Czy restauracje działają zimą?",
+      "a": [
+        "Tak, choć wybór się kurczy. Rodzinne trattorie i pizzerie są otwarte w weekendy; wysoka kuchnia zwykle wraca do działania koło Wielkanocy.",
+        "Zadzwoń lub napisz przez WhatsApp przed zejściem w dół zbocza, by potwierdzić godziny."
+      ]
+    },
+    {
+      "q": "Jak zimno jest w Positano?",
+      "a": [
+        "W dzień temperatury sięgają 12–14°C. Wieczorami spada do około 8°C, więc zabierz ciepłą warstwę i skarpetki na kafelki."
+      ]
+    }
+  ]
+}

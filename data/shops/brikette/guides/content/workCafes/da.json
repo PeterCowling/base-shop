@@ -1,0 +1,36 @@
+{
+  "seo": {
+    "title": "Wi-fi og arbejdsvenlige caféer nær Brikette",
+    "description": "Caféer med stabilt wi-fi, stik og hvornår det er bedst at arbejde der."
+  },
+  "linkLabel": "Wi-fi og arbejdsvenlige caféer nær Brikette",
+  "intro": [
+    "Caféer i nærheden af ​​vandrerhjemmet med brugbar Wi-Fi. Etikette: køb regelmæssigt, undgå lange opkald indendørs, og hold et lille fodaftryk."
+  ],
+  "sections": [
+    {
+      "id": "spots",
+      "title": "Steder nær Brikette",
+      "body": [
+        "Små caféer på Via Pasitea og omkring Chiesa Nuova har ofte stabilt Wi-Fi.",
+        "Medbring en batteripakke; strømudtag er begrænset i ældre spillesteder."
+      ]
+    },
+    {
+      "id": "backup",
+      "title": "Backup-forbindelse",
+      "body": [
+        "Behold et eSIM som et alternativ; transportører varierer efter område - TIM/Vodafone er normalt stærke.",
+        "Tether, når frokostrushet bremser café-netværk."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Er heldagsarbejde ok?",
+      "a": [
+        "Køb hvert 60.-90. minut og undgå spidsbelastningsfrokost; overveje at skifte spillesteder."
+      ]
+    }
+  ]
+}

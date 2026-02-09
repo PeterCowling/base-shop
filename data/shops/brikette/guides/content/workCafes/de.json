@@ -1,0 +1,36 @@
+{
+  "seo": {
+    "title": "WLAN- & Laptopfreundliche Cafés nahe Brikette",
+    "description": "Typische Geschwindigkeiten, Etikette, Backup-eSIMs und Ausrüstungstipps für Arbeiten im Café."
+  },
+  "linkLabel": "WLAN- & Laptopfreundliche Cafés nahe Brikette",
+  "intro": [
+    "Cafés in Hostelnähe mit verlässlichem WLAN. Etikette: regelmäßig bestellen, lange Calls nach draußen verlagern und nur wenig Platz blockieren."
+  ],
+  "sections": [
+    {
+      "id": "spots",
+      "title": "Spots nahe Brikette",
+      "body": [
+        "Kleine Cafés an der Via Pasitea und rund um Chiesa Nuova bieten oft stabiles WLAN.",
+        "Nimm eine Powerbank mit – Steckdosen sind in älteren Lokalen knapp."
+      ]
+    },
+    {
+      "id": "backup",
+      "title": "Backup-Verbindung",
+      "body": [
+        "Halte eine eSIM als Fallback bereit; die Netzqualität variiert je nach Lage – TIM und Vodafone sind meist stark.",
+        "Tether auf mobile Daten, wenn der Mittagsansturm das Café-WLAN bremst."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Kann ich den ganzen Tag arbeiten?",
+      "a": [
+        "Bestelle alle 60–90 Minuten, meide die Mittags-Spitzenzeit und wechsle gelegentlich den Standort."
+      ]
+    }
+  ]
+}

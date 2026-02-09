@@ -1,0 +1,56 @@
+{
+  "seo": {
+    "title": "Positano om vinteren på budsjett",
+    "description": "Hva som holder åpent, hvordan du kommer deg rundt og måter å nyte Positano om vinteren uten å bruke for mye."
+  },
+  "linkLabel": "Positano om vinteren på budsjett",
+  "intro": [
+    "Vinteren i Positano er rolig, rimelig og kjøligere. Bruk denne guiden til å finne hva som holder åpent, komme seg rundt når fergene stopper, og planlegge koselige opplevelser uten å bruke for mye penger.",
+    "Pakk lag (en lett dunjakke pluss et vanntett skall) og sko med grep – trapper kan være glatte etter regn."
+  ],
+  "sections": [
+    {
+      "id": "open",
+      "title": "Hva holder åpent",
+      "body": [
+        "Kjerne dagligvarebutikker, kafeer rundt Piazza dei Mulini og vandrerhjemmets bar opererer hele året – forvent kortere timer, men pålitelig service.",
+        "Kyst-til-kyst-ferger stopper stort sett november–mars, men SITA-busser og utvalgte private skyttelbusser fortsetter å gå med reduserte rutetider."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Transport om vinteren",
+      "body": [
+        "Bruk regionale tog til Sorrento eller Salerno, deretter SITA-bussen; la 20–30 minutter ekstra for nedgang i vått vær.",
+        "Ta med kontanter for bussbilletter (€2–€3 hver vei) og bokmerk UnicoCampania-appen for endringer i siste liten når stormene slår gjennom."
+      ]
+    },
+    {
+      "id": "budget",
+      "title": "Budsjettvennlige dager",
+      "body": [
+        "Planlegg museumsdager i Napoli eller Salerno på våte værmeldinger; togpriser tur-retur svinger rundt €10 (ca. US$11).",
+        "Gå på Gudestien fra Nocelle når himmelen er klar: skarp luft, tomme utsiktspunkter og ingen sommervarme."
+      ]
+    }
+  ],
+  "tips": [
+    "Velg overnatting med oppvarming og frokost inkludert, så slipper du ekstra kafébruk på kalde morgener.",
+    "Solnedgang er tidligere (rundt 16:45 i desember) – planlegg terrassetid for sen ettermiddag og pakk et varmt lag."
+  ],
+  "faqs": [
+    {
+      "q": "Er restauranter åpne om vinteren?",
+      "a": [
+        "Ja, men utvalget smalner. Familiedrevne trattoriaer og pizzeriaer holder åpent i helgene; fine dining åpner ofte igjen rundt påske.",
+        "Ring eller send melding via WhatsApp for å bekrefte timer før du går nedover bakken."
+      ]
+    },
+    {
+      "q": "Hvor kaldt blir det?",
+      "a": [
+        "Dagtemperaturer er rundt 12–14 °C (54–57 °F). Om natten synker du til 8 °C (46 °F), så ta med et varmt mellomlag og sokker for flislagte gulv."
+      ]
+    }
+  ]
+}

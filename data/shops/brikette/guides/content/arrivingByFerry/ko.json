@@ -1,0 +1,51 @@
+{
+  "seo": {
+    "title": "포지타노 페리 선착장에서 호스텔 브리케테로 가는 법 – 단계별 안내",
+    "description": "포지타노 페리 선착장에서 호스텔 브리케테까지 15분 안에 이동하는 방법을 안내합니다. 도보 경로, 인테르노 포지타노 버스 이용 요령, 수하물 팁과 접근성 정보를 모두 확인하세요."
+  },
+  "linkLabel": "포지타노 페리 선착장에서 호스텔 브리케테로 가는 법 – 단계별 안내",
+  "sections": [
+    {
+      "id": "overview",
+      "title": "포지타노 항구 → 인테르노 버스로 호스텔 가기",
+      "body": [
+        "**팁 1:** %URL:https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26|인테르노 버스 시간표와 요금%. **팁 2:** 모든 *Tabacchi* / 신문 가판대에서 티켓을 구매하세요. **팁 3:** 짐이 많다면 부두의 포터에게 부탁해 짐을 호스텔까지 바로 배송받을 수 있습니다."
+      ]
+    },
+    {
+      "id": "portToPiazza",
+      "title": "항구에서 피아차 데이 물리니까지",
+      "body": [
+        "%URL:https://www.google.com/maps/dir/Positano+Spiaggia/2+Viale+Pasitea+Positano,+Campania/@40.6289096,14.4857482,18z/data=!4m14!4m13!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!3e2|이 도보 경로%를 따라 메인 비치에서 피아차 데이 물리니까지 이동하세요."
+      ]
+    },
+    {
+      "id": "piazzaToStop",
+      "title": "피아차 데이 물리니 → 시내 버스 정류장",
+      "body": [
+        "* 계단을 피하고 싶다면 인테르노 버스를 이용하세요.\n* 버스는 오전 8시경부터 자정까지 약 30분 간격으로 운행합니다.\n* 노선은 %URL:https://www.google.com/maps/dir/2+Viale+Pasitea+Positano,+Campania/Viale+Pasitea,+323,+84017+Positano+SA/@40.6309188,14.4819138,16z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!1m5!1m1!1s0x133b97667312711d:0xa2b15bca59b377fa!2m2!1d14.4824389!2d40.6293416!3e0|Google 지도%에서 확인할 수 있습니다."
+      ]
+    },
+    {
+      "id": "busLook",
+      "title": "버스는 어떤 모습인가요?",
+      "body": [
+        "차량 형태는 다양하지만 LED 표지에는 항상 *“Interno Positano”*라고 표시됩니다."
+      ]
+    },
+    {
+      "id": "stopToHostel",
+      "title": "시내 버스 정류장 → 호스텔",
+      "body": [
+        "* 버스는 아래 사진에 있는 타바키 앞에 정차합니다.\n* 하차 후 **오른쪽**으로 돌아 메인 도로로 나가세요.\n* **왼쪽**으로 돌아 약 100m(330피트) 정도 직진합니다.\n* 오른편에 호스텔이 보이면 계단을 올라 리셉션으로 이동하세요.\n* 길 안내가 더 필요하신가요? %URL:https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Tabacchi+Cafiero+Emanuele,+Viale+Pasitea,+325a,+84017+Positano+SA/@40.6292434,14.4813669,19z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b97660ef186c1:0xc9eb9ab54d880307!2m2!1d14.4823321!2d40.6293865!3e2|Google 지도를 열어보세요%."
+      ]
+    },
+    {
+      "id": "approach",
+      "title": "팁: 호스텔에 다가갈 때",
+      "body": [
+        "* 호스텔이 가까워지면 2층 테라스에 있는 간판이 보입니다.\n* 간판을 지나 도로의 굽이를 따라가면 오른쪽에 있는 계단을 통해 리셉션으로 올라갈 수 있습니다."
+      ]
+    }
+  ]
+}

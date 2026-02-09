@@ -1,0 +1,67 @@
+{
+  "seo": {
+    "title": "Uvanlige landsbyer på Amalfikysten",
+    "description": "Cetara, Minori/Maiori, Atrani, Vietri, Furore – roligere perler."
+  },
+  "linkLabel": "Uvanlige landsbyer på Amalfikysten",
+  "intro": [
+    "Fem roligere landsbyer på Amalfikysten verdt en omvei, pluss hvordan du kan nå hver enkelt."
+  ],
+  "tocTitle": "På denne siden",
+  "sections": [
+    {
+      "id": "cetara",
+      "title": "Cetara",
+      "body": [
+        "Ansjos-tradisjoner og en rolig strand med fungerende fiskebåter.",
+        "Nå via SITA-buss eller sesongferger fra Amalfi eller Salerno."
+      ]
+    },
+    {
+      "id": "minori",
+      "title": "Minori/Maiori",
+      "body": [
+        "Flate strandpromenader og kjære konditorier for et roligere tempo.",
+        "Ankomst med buss eller ferge; kombinere med sitronsporet mellom tvillingene."
+      ]
+    },
+    {
+      "id": "atrani",
+      "title": "Atrani",
+      "body": [
+        "Sjarmerende lommepiazza like øst for Amalfi med smale gater og tilgang til stranden.",
+        "Gå fra Amalfi på minutter eller kjør ett stopp med lokalbussen."
+      ]
+    },
+    {
+      "id": "vietri",
+      "title": "Vietri sul Mare",
+      "body": [
+        "Keramikkhovedstad nær Salerno, hvor verksteder langs gatene.",
+        "Ta toget til Salerno, deretter et kort buss- eller fergehopp."
+      ]
+    },
+    {
+      "id": "furore",
+      "title": "Furore",
+      "body": [
+        "Dramatisk fjord med begrenset strandplass — kom tidlig for rolige bilder.",
+        "Bruk SITA-busser mot Amalfi; sommerferger stopper noen ganger i nærheten."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Kan jeg besøke flere landsbyer på en dag?",
+      "a": [
+        "Ja – koble til Cetara, Vietri og Minori via ferge eller buss. Start tidlig og hold øye med returplanene."
+      ]
+    },
+    {
+      "q": "Tar små landsbyer kort?",
+      "a": [
+        "Ta med kontanter til kafeer og kiosker; mange setter fortsatt minimum €10 eller forblir kun kontanter."
+      ]
+    }
+  ]
+}

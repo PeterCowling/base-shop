@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Work & Travel: Remote-Arbeit in Positano",
+    "description": "WLAN, Cafés, Routinen und realistische Tagespläne für produktive Küstentage."
+  },
+  "linkLabel": "Work & Travel: Remote-Arbeit in Positano",
+  "intro": [
+    "Balanciere fokussiertes Arbeiten mit Positano-Entdeckungen: realistische Konnektivität, passende Arbeitsorte und ein Tagesrhythmus, der zu den Besucherströmen passt."
+  ],
+  "sections": [
+    {
+      "id": "wifi",
+      "title": "WLAN & Backups",
+      "body": [
+        "eSIM-Backups nutzen, Geschwindigkeit testen und kritische Calls vermeiden, wenn Fähren an den Hauptgassen anlegen."
+      ]
+    },
+    {
+      "id": "cafes",
+      "title": "Arbeitsfreundliche Cafés",
+      "body": [
+        "Siehe unseren Guide zu WLAN- & arbeitsfreundlichen Cafés; auf Steckdosen achten und regelmäßig konsumieren."
+      ]
+    },
+    {
+      "id": "routines",
+      "title": "Bewährte Routinen",
+      "body": [
+        "Arbeitsblöcke früh oder spät legen, mittags (wenn es voll wird) oder nach Sonnenuntergang erkunden."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Ist Remote-Arbeit hier machbar?",
+      "a": [
+        "Ja, mit Planung – nahe Chiesa Nuova bleiben, Backups nutzen und flexible Zeiten einhalten."
+      ]
+    }
+  ]
+}

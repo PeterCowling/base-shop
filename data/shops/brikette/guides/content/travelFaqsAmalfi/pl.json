@@ -1,0 +1,66 @@
+{
+  "seo": {
+    "title": "FAQ podróżnicze wybrzeża Amalfi",
+    "description": "Szybkie odpowiedzi na pytania o transport, pieniądze, bezpieczeństwo i pogodę."
+  },
+  "linkLabel": "FAQ podróżnicze wybrzeża Amalfi",
+  "intro": [
+    "Błyskawiczne odpowiedzi na logistykę wybrzeża Amalfi: transport, rezerwacje, budżet i plany awaryjne na deszcz."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Podstawy transportu",
+      "body": [
+        "Sprawdź oficjalne rozkłady autobusów i promów wieczorem poprzedniego dnia i zostaw 30 minut zapasu na przesiadki w sezonie.",
+        "Zapisz numery taksówek w swoim zakwaterowaniu na późne powroty, by mieć plan B, gdy ostatni bus będzie pełny."
+      ]
+    },
+    {
+      "id": "booking",
+      "title": "Rezerwacje i budżet",
+      "body": [
+        "Rezerwuj restauracje, kluby plażowe i atrakcje co najmniej 24 godziny wcześniej latem; niektóre wymagają kaucji kartą.",
+        "Wybierz elastyczne stawki lub ubezpieczenie podróżne, by wiatr lub wzburzone morze nie pozbawiły Cię pieniędzy przy zmianie planów."
+      ]
+    },
+    {
+      "id": "weather",
+      "title": "Pogoda i plan B",
+      "body": [
+        "Wybierz opcje wnętrzowe, np. MAR Positano, muzeum papieru w Amalfi albo wycieczkę pociągiem do Neapolu/Salerno, gdy pada.",
+        "Gdy morze się wzburzy, przesiądź się na autobusy lub wspólne taksówki i sprawdź ostrzeżenia o osunięciach lub zamknięciach drogi SS163 przed wyjściem."
+      ]
+    }
+  ],
+  "tips": [
+    "Zapisz offline numery alarmowe (112 i Straż Przybrzeżna 1530) razem z kontaktem do zakwaterowania.",
+    "Kup bilety autobusowe w tabaczeriach lub online z wyprzedzeniem; kierowcy rzadko sprzedają je na pokładzie, a kontrolerzy zdarzają się bez zapowiedzi."
+  ],
+  "faqs": [
+    {
+      "q": "O której odjeżdżają ostatnie promy?",
+      "a": [
+        "Latem ostatni kurs Positano ↔ Amalfi jest zwykle około 20:00; wiosną i jesienią bliżej 18:00 — potwierdź wieczorem przed podróżą."
+      ]
+    },
+    {
+      "q": "Czy trzeba rezerwować restauracje i kluby plażowe?",
+      "a": [
+        "Tak od czerwca do września: rezerwuj co najmniej dzień wcześniej, a w weekendy nawet tydzień."
+      ]
+    },
+    {
+      "q": "Co jeśli cały dzień pada?",
+      "a": [
+        "Wybierz muzea, warsztaty kulinarne lub dzienną wycieczkę do Neapolu/Salerno pociągiem; noś lekki nieprzemakalny płaszcz na transfery."
+      ]
+    },
+    {
+      "q": "Czy bankomaty działają?",
+      "a": [
+        "Większe miejscowości mają bankomaty, ale prowizje są różne — wypłacaj średnie kwoty i miej drobne euro na autobusy i kawiarnie."
+      ]
+    }
+  ]
+}

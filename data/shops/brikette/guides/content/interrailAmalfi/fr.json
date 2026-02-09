@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Pass Interrail/Italy Rail : côte amalfitaine",
+    "description": "Utiliser un pass ferroviaire pour rejoindre la côte : réservations, suppléments et dernières étapes."
+  },
+  "linkLabel": "Pass Interrail/Italy Rail : côte amalfitaine",
+  "intro": [
+    "Utiliser un pass Interrail/Italia Rail pour rejoindre la Côte Amalfitaine : lignes à privilégier, suppléments requis et dernière étape vers Positano."
+  ],
+  "sections": [
+    {
+      "id": "routes",
+      "title": "Itinéraires principaux",
+      "body": [
+        "Rome → Naples/Salerne en grande vitesse, trains locaux vers Sorrente, puis bus vers Positano."
+      ]
+    },
+    {
+      "id": "supplements",
+      "title": "Suppléments & réservations",
+      "body": [
+        "Les Frecciarossa/Italo requièrent souvent une réservation de siège ; les trains régionaux n'en demandent pas mais peuvent être bondés."
+      ]
+    },
+    {
+      "id": "last-mile",
+      "title": "Derniers kilomètres vers Positano",
+      "body": [
+        "Depuis Naples : Circumvesuviana jusqu'à Sorrente puis bus SITA. Depuis Salerne : ferry ou bus en saison."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Le pass vaut-il le coup ?",
+      "a": [
+        "Uniquement si vous enchaînez suffisamment de trajets longue distance ; sinon, les billets à l'unité reviennent parfois moins cher."
+      ]
+    }
+  ]
+}

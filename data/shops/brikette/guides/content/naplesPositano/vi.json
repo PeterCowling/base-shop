@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Bản dịch đang được chuẩn bị.",
+    "description": "Bản dịch đang được chuẩn bị."
+  },
+  "linkLabel": "Naples to Positano: how to go",
+  "intro": [
+    "Bản dịch đang được chuẩn bị."
+  ],
+  "toc": [
+    {
+      "href": "#train-bus",
+      "label": "Train + bus (year-round)"
+    },
+    {
+      "href": "#ferry",
+      "label": "Ferry (summer)"
+    },
+    {
+      "href": "#transfer",
+      "label": "Late arrivals & transfers"
+    },
+    {
+      "href": "#faqs",
+      "label": "FAQs"
+    }
+  ],
+  "sections": [
+    {
+      "id": "train-bus",
+      "title": "Train + bus (year-round)",
+      "body": [
+        "Bản dịch đang được chuẩn bị.",
+        "Bản dịch đang được chuẩn bị."
+      ]
+    },
+    {
+      "id": "ferry",
+      "title": "Ferry (summer)",
+      "body": [
+        "Bản dịch đang được chuẩn bị.",
+        "Bản dịch đang được chuẩn bị."
+      ]
+    },
+    {
+      "id": "transfer",
+      "title": "Late arrivals & transfers",
+      "body": [
+        "Bản dịch đang được chuẩn bị.",
+        "Bản dịch đang được chuẩn bị."
+      ]
+    }
+  ],
+  "faqsTitle": "FAQs",
+  "faqs": [
+    {
+      "q": "Bản dịch đang được chuẩn bị.",
+      "a": [
+        "Bản dịch đang được chuẩn bị."
+      ]
+    },
+    {
+      "q": "Bản dịch đang được chuẩn bị.",
+      "a": [
+        "Bản dịch đang được chuẩn bị."
+      ]
+    }
+  ]
+}

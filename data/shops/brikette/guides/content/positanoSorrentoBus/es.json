@@ -1,0 +1,78 @@
+{
+  "seo": {
+    "title": "Positano a Sorrento en autobús | Hostel Brikette",
+    "description": "Indicaciones paso a paso desde el Hostel Brikette hasta Sorrento en autobús SITA, con información sobre billetes, horarios y la parada Chiesa Nuova."
+  },
+  "intro": {
+    "title": "Positano a Sorrento – Autobús (SITA)",
+    "body": "Utiliza esta guía cuando viajes desde el Hostel Brikette a Sorrento en el autobús SITA. Incluye billetes, cómo leer el horario y dónde abordar en Positano (Chiesa Nuova)."
+  },
+  "callouts": {
+    "tip": "¿Necesitas todas las opciones de transporte? Abre el %HOWTO:how-to-get-here|Resumen de Cómo llegar% para ver ferris, taxis e itinerarios combinados."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Resumen del trayecto",
+      "body": "Los autobuses hacia Sorrento circulan con frecuencia en temporada. Sube en Positano (Chiesa Nuova) y viaja directamente hasta la terminal combinada de tren y autobús de Sorrento. Reserva tiempo adicional en horas punta."
+    },
+    {
+      "id": "tickets",
+      "title": "Autobuses SITA y billetes",
+      "body": "Los autobuses los opera SITA Sud. Compra los billetes en quioscos o estancos (incluido el Bar Internazionale). Ten el billete listo al subir para que el conductor pueda validarlo."
+    },
+    {
+      "id": "timetable",
+      "title": "Cómo leer el horario",
+      "body": "Consulta el horario más reciente en %URL:https://www.positano.com/en/bus-schedule|Positano.com%.",
+      "list": [
+        "Las filas de la primera columna enumeran cada parada del recorrido.",
+        "Las columnas corresponden a viajes programados identificados con letras.",
+        "¿Viajas de lunes a sábado? Usa las columnas \\\\\"F\\\\\" y \\\\\"G\\\\\".",
+        "¿Viajas en domingo o festivo? Usa las columnas \\\\\"G\\\\\" y \\\\\"H\\\\\"."
+      ]
+    },
+    {
+      "id": "positanoStop",
+      "title": "Parada Positano (Chiesa Nuova)",
+      "list": [
+        "La parada más cercana está en la zona de \\\\\"Chiesa Nuova\\\\\" de Positano.",
+        "Se encuentra aproximadamente a 140 metros (490 pies) del hostal.",
+        "La parada está frente al café/bar llamado \\\\\"Bar Internazionale\\\\\"."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Camina del hostal a la parada",
+      "list": [
+        "Sal del hostal por la puerta principal y baja las escaleras hasta la carretera.",
+        "Gira a la izquierda y camina unos 100 metros (330 pies).",
+        "Verás el \\\\\"Bar Internazionale\\\\\" a la izquierda; la parada de SITA está afuera."
+      ]
+    },
+    {
+      "id": "wait",
+      "title": "Compra tu billete y espera para embarcar",
+      "list": [
+        "Compra un billete para el autobús a Sorrento (dentro del bar/quiosco).",
+        "Espera fuera del bar al autobús con destino a Sorrento.",
+        "Comprueba que el letrero del autobús indique \\\\\"Sorrento\\\\\"."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Llegada a Sorrento",
+      "body": "El autobús SITA te deja en la terminal combinada de tren y autobús de Sorrento. Desde allí puedes continuar en Circumvesuviana hacia Nápoles o explorar el centro histórico de Sorrento justo al salir de la estación."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Cómo leo el horario de autobuses SITA?",
+      "a": [
+        "**Lectura de las filas:** Las filas en la primera columna representan diferentes paradas de autobús a lo largo de la ruta.",
+        "**Lectura de las columnas:** El horario asigna una letra alfabética a cada viaje programado, que se enumeran como encabezados en cada columna. Si viaja de lunes a sábado, busque las columnas 'F' y 'G'. Si viaja en domingo o en un día festivo, busque las columnas 'G' y 'H'.",
+        "**Combinación de filas y columnas:** Elija sus paradas de salida y llegada, luego verifique las columnas para ver cuándo hay autobuses disponibles y a qué hora llegarán a su destino. Por ejemplo, para ver la hora de salida desde Sorrento, mire la fila de Sorrento. Para ver la hora de llegada a Positano (Chiesa Nuova / Bar Internazionale), mire la fila de Positano (Chiesa Nuova)."
+      ]
+    }
+  ]
+}

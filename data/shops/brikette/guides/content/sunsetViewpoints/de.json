@@ -1,0 +1,77 @@
+{
+  "seo": {
+    "title": "Beste Sonnenuntergangs-Spots in Positano",
+    "description": "Top-Plätze für den Sonnenuntergang und wie du sie zu Fuß oder per Bus erreichst."
+  },
+  "linkLabel": "Beste Sonnenuntergangs-Spots in Positano",
+  "intro": [
+    "Die Sonnenuntergänge in Positano sind dramatisch – mit dem richtigen Platz und Timing gelingt das Foto.",
+    "Nutze diese verlässlichen Blickwinkel und Ankunftszeiten, um den größten Andrang zu umgehen."
+  ],
+  "itemList": [
+    {
+      "name": "Terrasse Chiesa Nuova",
+      "note": "Leicht zugänglich nahe der SITA-Haltestelle mit weitem Blick auf die Bucht."
+    },
+    {
+      "name": "Aussichtspunkt Via Positanesi d’America",
+      "note": "Balkon oberhalb von Fornillo; 30 Minuten vor Sonnenuntergang für warmes Licht eintreffen."
+    },
+    {
+      "name": "Nocelle (Start des Pfads der Götter)",
+      "note": "Blick auf die Li-Galli-Inseln – eine zusätzliche Schicht für die Rückfahrt einpacken."
+    }
+  ],
+  "sections": [
+    {
+      "id": "classics",
+      "title": "Klassische Aussichtspunkte",
+      "body": [
+        "Die Terrasse der Chiesa Nuova bietet wenige Schritte von der SITA-Haltestelle entfernt einen weiten Blick über die Bucht.",
+        "Die Via Positanesi d’America ist ein Balkon über Fornillo – sei 30 Minuten vor Sonnenuntergang dort, um warmes Licht einzufangen."
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Ruhigere Alternativen",
+      "body": [
+        "Nocelle am Einstieg des Path of the Gods blickt auf die Li-Galli-Inseln; pack eine zusätzliche Schicht für die Rückfahrt ein.",
+        "Der Strand Fornillo bleibt außerhalb der Hochsaison ruhiger; die Sonne verschwindet hinter der Steilküste, also bau früh auf."
+      ]
+    },
+    {
+      "id": "sunset",
+      "title": "Timing für dein Setup",
+      "body": [
+        "Sei 20 Minuten vor der Golden Hour vor Ort, um einen Platz zu sichern und deine Einstellungen zu testen.",
+        "Im Sommer liegt der Sonnenuntergang um etwa 20:30 Uhr – prüfe die Busfahrpläne, damit du nach Einbruch der Dunkelheit nicht feststeckst."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etikette",
+      "body": [
+        "Halte Treppen und private Eingänge frei, während du fotografierst – geh weiter, sobald du die Aufnahme hast.",
+        "Nimm deinen Müll wieder mit und schalte auf lautlos, wenn in der Nähe Abendkonzerte oder Events stattfinden."
+      ]
+    }
+  ],
+  "tips": [
+    "Komm 20–30 Minuten früher, um dir in Ruhe einen Platz zu sichern und das Stativ aufzubauen.",
+    "Ein leichtes Reisestativ oder eine Klemme hilft bei Blaue-Stunde-Belichtungen, wenn das Licht schwindet."
+  ],
+  "faqs": [
+    {
+      "q": "Brauche ich eine Reservierung?",
+      "a": [
+        "Bars und Dachterrassen verlangen im Sommer oft Reservierungen; öffentliche Aussichtspunkte bleiben nach dem Prinzip Wer zuerst kommt, mahlt zuerst."
+      ]
+    },
+    {
+      "q": "Ist der Rückweg ausreichend beleuchtet?",
+      "a": [
+        "Die Straßenbeleuchtung variiert – nimm eine Handy-Taschenlampe oder ein kleines Licht für späte Abstiege mit."
+      ]
+    }
+  ]
+}

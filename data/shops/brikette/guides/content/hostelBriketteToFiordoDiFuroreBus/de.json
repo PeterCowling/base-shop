@@ -1,0 +1,99 @@
+{
+  "seo": {
+    "title": "Hostel Brikette → Fiordo di Furore mit dem Bus",
+    "description": "Schritt-für-Schritt von Hostel Brikette nach Fiordo di Furore mit dem SITA-Bus: wo du Tickets kaufst und wie du zum Strand gelangst."
+  },
+  "linkLabel": "Hostel Brikette → Fiordo di Furore mit dem Bus",
+  "intro": [
+    "Folge dieser Route, um mit dem SITA-Bus vom Hostel Brikette nach Fiordo di Furore zu reisen, ohne eine Haltestelle zu verpassen oder unvorbereitet anzukommen.",
+    "Am Fjord gibt es keine Ticketverkaufsstellen oder Geschäfte, daher deckt diese Anleitung die Tickets, die nächste Bushaltestelle und die Treppe ab, die zum Strand hinunterführt."
+  ],
+  "warningsTitle": "Bevor du das Hostel verlässt",
+  "warnings": [
+    "Wichtig: Kauf ein Hin- und Rückfahrtticket für den SITA-Bus in Positano – am Strand gibt es keine Möglichkeit, Tickets zu kaufen oder zu entwerten.",
+    "Wichtig: In der Hochsaison können Busse voll sein und die Haltestelle überspringen – plane extra Zeit ein, falls du auf den nächsten Bus warten musst."
+  ],
+  "sections": [
+    {
+      "id": "walk-to-bus-stop",
+      "title": "1. Geh zur nächsten Bushaltestelle",
+      "body": [
+        "Die nächste SITA-Haltestelle ist im Bereich Chiesa Nuova in Positano, etwa 140 Meter vom Hosteleingang entfernt.",
+        "Verlasse das Hostel durch den Haupteingang und geh die Treppen zur Straße hinunter. Biege links ab und laufe etwa 100 Meter.",
+        "Du siehst das Café/die Bar namens Bar Internazionale auf der linken Seite. Die Bushaltestelle ist direkt davor."
+      ]
+    },
+    {
+      "id": "buy-bus-tickets",
+      "title": "2. Kaufe Hin- und Rückfahrttickets",
+      "body": [
+        "Geh in die Bar Internazionale und kaufe SITA-Tickets nach Fiordo di Furore.",
+        "Je nach Tagespreis bekommst du eventuell Einzel- oder Rückfahrttickets angeboten – kauf auf jeden Fall ein Rückfahrtticket, damit du für die Rückfahrt versorgt bist."
+      ]
+    },
+    {
+      "id": "wait-for-bus",
+      "title": "3. Warte auf der Meerseite der Straße",
+      "body": [
+        "Überquere die Via Pasitea auf die gegenüberliegende Seite von der Bar und warte an der markierten SITA-Haltestelle.",
+        "Komm ein bisschen früher und plane Zeit für einen zweiten Bus ein, falls der erste schon voll ist."
+      ]
+    },
+    {
+      "id": "ride-the-bus",
+      "title": "4. Nimm den SITA-Bus Richtung Amalfi",
+      "body": [
+        "Steig in einen Bus Richtung Amalfi oder Agerola und sag dem Fahrer, dass du an der Haltestelle Fiordo di Furore aussteigen musst, damit er weiß, dass er halten soll.",
+        "Die Fahrt ist etwa 10,8 Kilometer (6,7 Meilen) lang; Zwischenstopps hängen davon ab, ob andere Fahrgäste sie anfordern.",
+        "Wenn du mobile Daten hast, kannst du die Haltestelle in Google Maps mit \\\\\"JH73+PQ Furore, Provinz Salerno\\\\\" finden."
+      ]
+    },
+    {
+      "id": "walk-to-beach",
+      "title": "5. Geh die Treppen zum Strand hinunter",
+      "body": [
+        "Steig neben der Brücke aus, überquere die Straße und nimm die Treppe, die von der Straße weg zum Klippenpfad führt.",
+        "Folge der Treppe über die Brücke und steig dann die letzten Stufen hinunter zum Kiesstrand.",
+        "Benutze dieselbe Treppe, um zur Straße zurückzukehren, wenn du bereit bist zu gehen."
+      ]
+    }
+  ],
+  "essentialsTitle": "Das Wichtigste",
+  "essentials": [
+    "Sonnencreme.",
+    "Handtuch.",
+    "Sonnenbrille."
+  ],
+  "typicalCostsTitle": "Typische Kosten",
+  "typicalCosts": [
+    "Busticket: 10 Euro."
+  ],
+  "tipsTitle": "Extra-Tipps",
+  "tips": [
+    "Prüfe vor dem Aufbruch den aktuellen SITA-Fahrplan an der Rezeption, damit du weißt, wann die nächsten Busse fahren.",
+    "Lies unseren %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore Strand-Guide% für Packtipps und was dich vor Ort erwartet.",
+    "Speichere den %LINK:fiordoDiFuroreBusReturn|Fiordo di Furore → Hostel Brikette Rückweg-Guide% für deine Rückreise.",
+    "Spring zum %LINK:positanoBeaches|Strandüberblick Positano%, um andere Badestellen für denselben Tag zu vergleichen."
+  ],
+  "faqsTitle": "Häufige Fragen",
+  "faqs": [
+    {
+      "q": "Muss ich wirklich im Voraus ein Rückfahrtticket kaufen?",
+      "a": [
+        "Ja. Fahrer erwarten entwertete SITA-Tickets und es gibt keine Automaten oder Geschäfte am Strand, also kaufe beide Strecken in Positano, bevor du einsteigst."
+      ]
+    },
+    {
+      "q": "Was soll ich tun, wenn der Bus bei der Ankunft voll ist?",
+      "a": [
+        "Warte auf den nächsten Linienbus und behalte den Fahrplan im Auge – in der Hochsaison ist es normal, dass ein oder zwei Busse vorbeifahren, bevor Plätze frei werden."
+      ]
+    },
+    {
+      "q": "Wie erkenne ich die richtige Haltestelle?",
+      "a": [
+        "Nachdem der Bus die Bogenbrücke über den Fjord überquert hat, hält er neben der Leitplanke. Achte auf die Brückenansichten, hör auf den Fahrer und nutze die Google Maps PIN \\\\\"JH73+PQ Furore\\\\\" als Backup."
+      ]
+    }
+  ]
+}

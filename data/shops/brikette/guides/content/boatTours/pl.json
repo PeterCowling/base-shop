@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Rejsy łodzią w Positano",
+    "description": "Rodzaje rejsów, sezonowość, co obejmują i kiedy warto zarezerwować z wyprzedzeniem."
+  },
+  "linkLabel": "Rejsy Łodzią: od Rejsów o Zachodzie Słońca po Czartery Prywatne",
+  "intro": [
+    "Rejsy łodzią pozwalają podziwiać klify Wybrzeża Amalfi bez walki z ruchem drogowym; rezerwuj z wyprzedzeniem w szczycie sezonu i miej plan awaryjny na pogodę."
+  ],
+  "sections": [
+    {
+      "id": "group-tours",
+      "title": "Wycieczki grupowe i łodzie współdzielone",
+      "body": [
+        "3-godzinne rejsy współdzielone wypływają z Positano późnym rankiem i obejmują postoje na kąpiel; w lipcu–sierpniu kosztują €85–€120 za osobę.",
+        "Weź buty do pływania i lekką warstwę – na morzu bryza jest chłodniejsza niż na tarasach."
+      ]
+    },
+    {
+      "id": "private-charters",
+      "title": "Czartery prywatne",
+      "body": [
+        "Sternicy wyceniają półdniowy czarter łodzi typu gozzo (do 6 osób) na €550–€850 plus paliwo; potwierdź, czy cena obejmuje prosecco lub ręczniki.",
+        "Ustal start na wschód słońca lub późne popołudnie, jeśli zależy Ci na łagodnym świetle i mniejszej fali od promów."
+      ]
+    },
+    {
+      "id": "weather-backup",
+      "title": "Pogoda i plany awaryjne",
+      "body": [
+        "Operatorzy odwołują rejsy, gdy wiatr przekracza siłę 4; miej gotowy plan na autobus lub plażę, żeby dzień pozostał udany.",
+        "Nawet latem morze bywa wzburzone — zabierz opaski przeciw chorobie morskiej, jeśli masz skłonności."
+      ]
+    }
+  ],
+  "tips": [
+    "Przyjdź 20 minut wcześniej, by uregulować płatność i założyć zapewnione obuwie pokładowe.",
+    "Weź wodoszczelną torbę na telefon i butelkę 1 l wody; na pokładzie jest niewiele cienia."
+  ],
+  "faqs": [
+    {
+      "q": "Czy muszę rezerwować z wyprzedzeniem?",
+      "a": [
+        "Tak, od maja do września — łodzie często wyprzedają się z kilkudniowym wyprzedzeniem, szczególnie rejsy o zachodzie słońca."
+      ]
+    },
+    {
+      "q": "Czy ręczniki są w cenie?",
+      "a": [
+        "Wycieczki grupowe zwykle zapewniają po jednym ręczniku na osobę; prywatni skipperzy mają różne zasady, więc zabierz szybkoschnący ręcznik na wszelki wypadek."
+      ]
+    }
+  ],
+  "galleryHeading": "Galeria zdjęć"
+}

@@ -1,0 +1,73 @@
+{
+  "seo": {
+    "title": "Bus tilbage til Hostel Brikette fra Laurito Beach",
+    "description": "Gå op til Laurito-busstoppestedet, tag Amalfikystens bus til Chiesa Nuova, og afslut med en kort gåtur til Hostel Brikette."
+  },
+  "linkLabel": "Bus tilbage fra Laurito Beach",
+  "intro": [
+    "Spring hele trappeklatringen fra Laurito over ved at tage Amalfikystens bus, der stopper ved strandvejen og kører tilbage op til Chiesa Nuova.",
+    "Køb din returbillet i byen, før du går ned til bugten — der er ingen steder nær Laurito, hvor du kan købe den, og uden billet skal du tage shuttlebåden tilbage til Positano."
+  ],
+  "sections": [
+    {
+      "id": "walk-to-stop",
+      "title": "Gå op til Laurito-busstoppestedet",
+      "body": [
+        "Følg trappen fra stranden op til kystvejen, og kryds forsigtigt til siden op ad bakke.",
+        "Se efter det blå-hvide SITA-skilt på metalstolpen og vent i buslommen, så chaufføren kan se dig."
+      ]
+    },
+    {
+      "id": "board-the-bus",
+      "title": "Stig på Amalfikystens bus",
+      "body": [
+        "Giv tegn til chaufføren, når bussen mod Amalfi eller Positano nærmer sig, og hav din validerede billet klar.",
+        "Turen er ca. 4,1 kilometer med flere landsby-stop; hold godt fast, når bussen kører op ad hårnålesvingene mod Positano."
+      ]
+    },
+    {
+      "id": "arrive-chiesa-nuova",
+      "title": "Stå af ved Bar Internazionale / Chiesa Nuova",
+      "body": [
+        "Lyt efter annonceringen eller hold øje med tabacchi ved Bar Internazionale — det er første større stop, når du er tilbage i Positano.",
+        "Tryk på stopknappen i god tid og stå af ved tabacchi-hjørnet overfor Hostel Brikette."
+      ]
+    },
+    {
+      "id": "final-steps",
+      "title": "Gå tilbage til Hostel Brikette",
+      "body": [
+        "Fortsæt i samme retning som bussen i lidt over 100 meter langs Viale Pasitea.",
+        "Tag trappen til højre for at gå direkte tilbage til Hostel Brikettes hovedindgang."
+      ]
+    }
+  ],
+  "tipsTitle": "Busstips",
+  "tips": [
+    "Den trykte køreplan viser Positano-tider, ikke Laurito; forvent Laurito-stoppet ca. 10 minutter før Positano Sponda.",
+    "Hvis du løber tør for billetter, så tag Laurito-shuttlebåden tilbage til Spiaggia Grande, så du kan købe flere på tabacchi, før du prøver igen.",
+    "Se vores %LINK:strande|Positano strande oversigt% for flere detaljer om Laurito faciliteter og shuttle muligheder."
+  ],
+  "faqs": [
+    {
+      "q": "Hvor kan jeg validere min Laurito-busbillet?",
+      "a": [
+        "Valider SITA-billetter, før du går ombord med maskinen på bussen eller på Chiesa Nuova tabacchi, når du køber dem.",
+        "Hvis validatoren er ude af drift, skal du skrive dato og klokkeslæt på billetten med kuglepen for at vise inspektørerne."
+      ]
+    },
+    {
+      "q": "Hvad hvis bussen tilbage til Positano er fuld?",
+      "a": [
+        "Busser kan fyldes op efter strandtid. Lad chaufføren vide, at du venter; hvis der ikke er plads, så vent på den næste service, som normalt ankommer hvert 20.-30. minut om sommeren.",
+        "Alternativt kan du tage Laurito-shuttlebåden til Spiaggia Grande og forbinde med lokale busser derfra."
+      ]
+    }
+  ],
+  "articleLead": {
+    "rideAlt": "Amalfikystens bus på vej fra Laurito",
+    "rideCaption": "Tur fra Laurito mod Positano",
+    "stopAlt": "Bar Internazionale / Chiesa Nuova busstoppested",
+    "stopCaption": "Bar Internazionale / Chiesa Nuova-stoppested"
+  }
+}

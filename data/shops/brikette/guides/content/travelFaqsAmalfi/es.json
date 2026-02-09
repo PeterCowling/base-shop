@@ -1,0 +1,67 @@
+{
+  "seo": {
+    "title": "FAQ de viaje por la Costa Amalfitana",
+    "description": "Respuestas rápidas sobre transporte, alojamiento económico, ferris y buses en la Costa Amalfitana para planificar tu viaje."
+  },
+  "linkLabel": "Preguntas frecuentes sobre la Costa Amalfitana",
+  "intro": [
+    "Las preguntas más comunes sobre la Costa Amalfitana: transporte, dinero, temporada y seguridad.",
+    "Consulta esta hoja rápida antes de preparar tu itinerario definitivo."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Cómo moverse",
+      "body": [
+        "Los buses SITA y los ferris son la base; compra los billetes con margen y toma nota del último servicio.",
+        "Conducir solo compensa si dominas las carreteras de montaña; revisa las restricciones de matrícula en verano."
+      ]
+    },
+    {
+      "id": "money",
+      "title": "Dinero y pagos",
+      "body": [
+        "Los cajeros cobran 2–3 € fijos; retira una cantidad razonable cada vez para no acumular comisiones.",
+        "Lleva efectivo pequeño para cafés, buses y propinas."
+      ]
+    },
+    {
+      "id": "season",
+      "title": "Temporada y clima",
+      "body": [
+        "El verano es caluroso y lleno; la primavera y el otoño ofrecen clima suave y menos gente.",
+        "En invierno hay tranquilidad, pero el servicio de ferris se reduce y muchos restaurantes cierran: planifica con antelación."
+      ]
+    }
+  ],
+  "tips": [
+    "Guarda los números de emergencia offline (112 y Guardia Costera 1530) junto al contacto de tu alojamiento.",
+    "Compra los billetes de bus en estancos o en línea con antelación; los conductores apenas venden y los revisores pasan con frecuencia."
+  ],
+  "faqs": [
+    {
+      "q": "¿Hace falta alquilar coche?",
+      "a": [
+        "No, salvo que quieras explorar pueblos altos o lleves mucho equipaje. Con buses y ferris llegarás a casi todo."
+      ]
+    },
+    {
+      "q": "¿Se habla inglés?",
+      "a": [
+        "En zonas turísticas sí, pero aprender un par de frases en italiano facilita las conversaciones."
+      ]
+    },
+    {
+      "q": "¿Cuándo hay menos gente?",
+      "a": [
+        "Entre noviembre y marzo encontrarás el ambiente más tranquilo, aunque con horarios reducidos."
+      ]
+    },
+    {
+      "q": "¿Funcionan bien los cajeros automáticos?",
+      "a": [
+        "En los pueblos principales sí, pero las comisiones varían: retira una cantidad media de una vez y lleva billetes pequeños para buses y cafés."
+      ]
+    }
+  ]
+}

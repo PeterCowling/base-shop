@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Positano nach Salerno mit dem Bus – Schritt für Schritt",
+    "description": "Tür-zu-Tür-Anleitung vom Hostel Brikette nach Salerno über Amalfi: Wo du einsteigst, Tickets kaufst, Fahrpläne liest und in Amalfi umsteigst."
+  },
+  "sections": [
+    {
+      "id": "journey",
+      "title": "Reiseüberblick"
+    },
+    {
+      "id": "tickets",
+      "title": "SITA-Busse und Tickets"
+    },
+    {
+      "id": "timetable",
+      "title": "Fahrplan und Planung",
+      "body": "Prüfe die aktuellen Zeiten auf %URL:https://www.positano.com/en/bus-schedule|Positano.com%. Suche beide Etappen und plane Pufferzeit für den Umstieg in Amalfi ein."
+    },
+    {
+      "id": "positanoStop",
+      "title": "Positano (Chiesa Nuova) – Bushaltestelle"
+    },
+    {
+      "id": "walk",
+      "title": "Zu Fuß vom Hostel zur Haltestelle"
+    },
+    {
+      "id": "wait",
+      "title": "Ticket kaufen und aufs Boarding warten"
+    },
+    {
+      "id": "transfer",
+      "title": "In Amalfi umsteigen"
+    },
+    {
+      "id": "arrival",
+      "title": "Ankunft in Salerno"
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Wie lese ich den SITA-Busfahrplan?",
+      "a": [
+        "**Zeilen lesen:** Die Zeilen in der ersten Spalte zeigen die einzelnen Bushaltestellen entlang der Strecke.",
+        "**Spalten lesen:** Der Fahrplan ordnet jeder geplanten Fahrt einen Buchstaben zu, der als Überschrift in jeder Spalte steht. Wenn Sie Montag bis Samstag reisen, nutzen Sie die Spalten 'F' und 'G'. Bei Reisen am Sonntag oder an Feiertagen verwenden Sie die Spalten 'G' und 'H'.",
+        "**Zeilen und Spalten kombinieren:** Wählen Sie Ihre Abfahrts- und Zielhaltestelle und prüfen Sie dann in den Spalten, wann Busse verfügbar sind und wann sie an Ihrem Ziel ankommen. Um etwa die Abfahrtszeit in Sorrent zu sehen, schauen Sie in die Sorrent-Zeile. Für die Ankunftszeit in Positano (Chiesa Nuova / Bar Internazionale) nutzen Sie die Zeile Positano (Chiesa Nuova)."
+      ]
+    }
+  ],
+  "callouts": {
+    "tip": "Du brauchst andere Transportoptionen? Öffne die %HOWTO:how-to-get-here|Übersicht \\\"So kommst du zu uns“% für Fähren, Taxis und kombinierte Routen."
+  }
+}

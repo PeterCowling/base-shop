@@ -1,0 +1,44 @@
+{
+  "seo": {
+    "title": "Salerno vs Neapel: ankomster",
+    "description": "Jämförelse mellan att anlända via Salerno eller Neapel – kostnader, restid och bekvämlighet."
+  },
+  "linkLabel": "Salerno vs Neapel: ankomster",
+  "intro": [
+    "Båda gateways fungerar. På sommaren vinner Salerno ofta tyst tack vare extra färjor och lugnare köer."
+  ],
+  "sections": [
+    {
+      "id": "when-salerno",
+      "title": "When Salerno wins",
+      "body": [
+        "Säsongsbetonade färjor går direkt till Positano eller Amalfi med lättare folkmassor än Neapels bryggor.",
+        "Koppla ihop flygplatsen Salerno Costa d'Amalfi (QSR) med Airlink-bussen för att göra överföringen enkel."
+      ]
+    },
+    {
+      "id": "when-naples",
+      "title": "When Naples wins",
+      "body": [
+        "Tillförlitlighet under lågsäsong: höghastighetståg plus SITA via Sorrento fortsätter att gå när färjorna pausar.",
+        "Sena ankomster hittar fler boendealternativ och vidare transportalternativ runt Neapel."
+      ]
+    },
+    {
+      "id": "luggage",
+      "title": "Luggage & stairs",
+      "body": [
+        "Anländer till Chiesa Nuova för att minimera trappan upp till vandrarhemmet.",
+        "Landa med färja? Boka en portier vid kajen eller åk SITA-bussen uppför istället för att dra väskor."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Is Salerno Airport (QSR) worth it?",
+      "a": [
+        "Allt fler ja för sommaren: kombinera QSR-flyg med Airlink-bussen och färjan när havet är lugnt, och fall tillbaka till bussar om vädret vänder."
+      ]
+    }
+  ]
+}

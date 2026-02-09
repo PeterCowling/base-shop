@@ -1,0 +1,51 @@
+{
+  "seo": {
+    "title": "Positano para o Aeroporto de Nápoles de autocarro | Hostel Brikette",
+    "description": "De Positano ao Aeroporto de Nápoles via autocarro SITA até Sorrento e shuttle Curreri. Bilhetes, paragens, dicas do horário SITA e caminhada até ao Hostel Brikette."
+  },
+  "intro": {
+    "title": "Positano para o Aeroporto de Nápoles — Autocarro",
+    "body": "Este guia passo a passo leva-o de Positano ao Aeroporto de Nápoles usando o autocarro SITA até Sorrento e depois o shuttle Curreri para o aeroporto. Inclui bilhetes, onde mudar, como ler o horário da SITA e como chegar ao Hostel Brikette a partir da paragem mais próxima."
+  },
+  "callouts": {
+    "aside": "Precisa de todas as opções de transporte? Abra a %HOWTO:how-to-get-here|visão geral de Como Chegar% para ferries, táxis e rotas alternativas."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Resumo da viagem",
+      "list": [
+        "Caminhe até à paragem Positano (Chiesa Nuova) junto ao Bar Internazionale.",
+        "Apanhe o autocarro SITA até ao terminal rodoviário de Sorrento.",
+        "Mude para o autocarro Curreri Viaggi em direção ao Aeroporto de Nápoles (Capodichino)."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Caminhada até à paragem de Positano",
+      "list": [
+        "Saia do hostel e desça as escadas até à estrada principal.",
+        "Vire à esquerda e continue cerca de 100 metros (330 ft).",
+        "O Bar Internazionale fica do lado esquerdo; a paragem SITA está mesmo à porta."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Bilhetes e espera",
+      "list": [
+        "Compre um bilhete SITA para Sorrento no Bar Internazionale ou num quiosque nas proximidades.",
+        "Guarde o bilhete depois de embarcar; o motorista pode carimbar ou rasgar um canto.",
+        "Para o autocarro Curreri, compre online ou no terminal quando houver disponibilidade."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "No terminal de Sorrento",
+      "body": "Saia no terminal principal de autocarros e comboios de Sorrento. A partir das baias, apanhe o autocarro %URL:https://www.curreriviaggi.it/|Curreri Viaggi% com destino ao Aeroporto de Nápoles (Capodichino). Consulte o horário mais recente e considere comprar os bilhetes online antecipadamente durante a época alta."
+    },
+    {
+      "id": "timetables",
+      "title": "Horários"
+    }
+  ]
+}

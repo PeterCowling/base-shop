@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Gratis och billiga saker att göra i Positano",
+    "description": "Aktiviteter utan eller med låg kostnad: promenader, utsiktspunkter, stränder och lokala evenemang."
+  },
+  "linkLabel": "Gratis och billiga saker att göra i Positano",
+  "intro": [
+    "Positano belönar morgonpigga och nyfikna vandrare; du kan fylla dagar med vyer, bad och kultur utan att spendera mer än några euro."
+  ],
+  "sections": [
+    {
+      "id": "viewpoints",
+      "title": "Viewpoints worth the climb",
+      "body": [
+        "Börja på terrassen utanför Chiesa Nuova för soluppgångens färger som sköljer över bukten; ta med en 500 ml (17 oz) flaska eftersom det inte finns några kranar i närheten.",
+        "Gå Via Cristoforo Colombo och Viale Pasiteas balkonger runt Golden hour för vykortsvinklar utan att boka bord."
+      ]
+    },
+    {
+      "id": "beaches",
+      "title": "Free beach time",
+      "body": [
+        "Spiaggia Grande reserverar en offentlig remsa på höger sida - packa en lätt handduk och sitt nära vattenlinjen för att undvika lido rader.",
+        "Följ kustvägen till Fornillo Beach för en lugnare vik; promenaden tar cirka 12 minuter med blygsamma trappor och den offentliga delen är gratis."
+      ]
+    },
+    {
+      "id": "walks",
+      "title": "DIY walking routes",
+      "body": [
+        "Utforska de smala gränderna i Liparlati-distriktet, ducka in i små innergårdar och keramikkantade trappor mellan Via dei Mulini och Via Pasitea.",
+        "Ta den kostnadsfria pendelbussen till Montepertusos hållplats och gå ner för de gamla stentrapporna tillbaka till Positano på cirka 25–35 minuter, och pausa vid utsiktspunkten för den naturliga bågen."
+      ]
+    },
+    {
+      "id": "culture",
+      "title": "Culture without a ticket",
+      "body": [
+        "Gå in i Santa Maria Assunta för att se den bysantinska ikonen och majolikakupolen; axlar täckta är tillräckligt med klädkod.",
+        "Kolla kommunens anslagstavla nära Piazza dei Mulini för kvällskonserter eller filmer som anordnas på stranden under sommarveckorna."
+      ]
+    }
+  ],
+  "tips": [
+    "Bär en återanvändbar flaska och fyll på vid den offentliga fontänen nära Chiesa Nuova innan du beger dig till utsiktspunkter.",
+    "Packa revsäker solskyddsmedel och en sarong; de fungerar som strandmatta och lätt täcke i kyrkor."
+  ],
+  "faqs": [
+    {
+      "q": "Are there free showers on the beaches?",
+      "a": [
+        "Ja—Spiaggia Grande har kallvattenduschar nära den offentliga delen. Ta med flipflops eftersom golvet blir varmt vid middagstid."
+      ]
+    },
+    {
+      "q": "Behöver jag biljetter till The Path of the Gods?",
+      "a": [
+        "Själva leden är gratis året runt. Budget för €2,40 SITA-bussresan upp till Nocelle och tillbaka om du inte vill vandra åt båda hållen."
+      ]
+    }
+  ]
+}

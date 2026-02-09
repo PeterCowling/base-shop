@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Découvrir Praiano : voisine paisible",
+    "description": "Ambiance de Praiano, comment y aller, plages, restaurants et vues à ne pas manquer."
+  },
+  "linkLabel": "Découvrir Praiano : voisine paisible",
+  "intro": [
+    "Praiano est le voisin décontracté de Positano, avec des couchers de soleil splendides, des prix plus doux et des plages tranquilles."
+  ],
+  "sections": [
+    {
+      "id": "why",
+      "title": "Pourquoi visiter",
+      "body": [
+        "Admirez des couchers de soleil panoramiques depuis la Piazza San Gennaro sans foule compacte.",
+        "Les hébergements coûtent 20 à 40 € de moins par nuit qu'à Positano tout en conservant l'accès aux bus."
+      ]
+    },
+    {
+      "id": "beaches",
+      "title": "Plages et baignade",
+      "body": [
+        "Marina di Praia offre une crique spectaculaire avec clubs de plage et location de kayaks ; arrivez avant 11 h pour décrocher les premiers transats.",
+        "La plage de Gavitella est orientée à l'ouest pour des baignades dorées ; comptez 400 marches, prévoyez collations et eau."
+      ]
+    },
+    {
+      "id": "dining",
+      "title": "Gastronomie et soirées",
+      "body": [
+        "Réservez Il Pirata ou Kasai pour un dîner de fruits de mer avec vue sur la terrasse ; en été, bloquez une table au coucher du soleil quelques jours à l'avance.",
+        "Les bars de plage de Praiano programment de la musique live le week-end — consultez les affiches près de l'arrêt SITA pour connaître les horaires."
+      ]
+    }
+  ],
+  "tips": [
+    "Prenez la navette interne pour éviter les sections les plus raides entre le haut et le bas de Praiano.",
+    "Emportez une lampe frontale pour remonter les escaliers vers votre hébergement la nuit."
+  ],
+  "faqs": [
+    {
+      "q": "Combien dure le trajet en bus depuis Positano ?",
+      "a": [
+        "Environ 15 minutes en bus SITA, plus pendant les heures de pointe. Les départs ont lieu toutes les 30 minutes environ en été."
+      ]
+    },
+    {
+      "q": "Puis-je loger à Praiano et visiter Positano chaque jour ?",
+      "a": [
+        "Oui. Beaucoup de voyageurs font l'aller-retour en bus ou en scooter, profitant de soirées plus calmes tout en accédant à Positano dans la journée."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "seo": {
+    "title": "Guide des transports publics de la côte amalfitaine",
+    "description": "Se déplacer sans voiture : bus, ferries et trains — billets, horaires et remarques saisonnières."
+  },
+  "linkLabel": "Guide des transports publics de la côte amalfitaine",
+  "intro": [
+    "Comment se déplacer sur la côte amalfitaine sans voiture : bus fiables toute l'année, ferries en été et trains pour les longues distances."
+  ],
+  "sections": [
+    {
+      "id": "buses",
+      "title": "Bus SITA",
+      "body": [
+        "Achetez vos billets chez les buralistes ou kiosques avant de monter et validez-les à l'intérieur du bus.",
+        "Attendez-vous à des files en période de pointe. Partez tôt et envisagez le ferry pour éviter la foule."
+      ]
+    },
+    {
+      "id": "ferries",
+      "title": "Ferries (saisonniers)",
+      "body": [
+        "Rapides et panoramiques entre les principales villes du printemps à l'automne ; les annulations météo restent possibles.",
+        "Consultez les horaires en direct sur les sites des opérateurs et prévoyez une marge pour les dernières traversées."
+      ]
+    },
+    {
+      "id": "trains",
+      "title": "Trains (pour les portes d'entrée)",
+      "body": [
+        "Prenez Trenitalia ou Italo pour rejoindre Sorrente, Salerne ou Naples, puis enchaînez en bus ou en ferry.",
+        "Les Intercity font gagner du temps sur les liaisons Rome/Naples/Salerne ; la Circumvesuviana dessert Sorrente."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Horaires et stratégie",
+      "body": [
+        "Partez avant 9 h pour devancer les files ; pour rentrer au coucher du soleil, privilégiez les ferries si la mer est calme.",
+        "Prévoyez de la petite monnaie pour les billets et un chapeau avec de l'eau pour les arrêts exposés."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Puis-je monter avec des bagages dans les bus ?",
+      "a": [
+        "Autorisé mais peu pratique aux heures de pointe ; privilégiez les ferries ou des porteurs pour les valises lourdes."
+      ]
+    },
+    {
+      "q": "Existe-t-il des services de nuit ?",
+      "a": [
+        "Très limités ; repérez l'heure du dernier bus ou ferry pour éviter les taxis coûteux."
+      ]
+    }
+  ]
+}

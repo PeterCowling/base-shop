@@ -1,0 +1,77 @@
+{
+  "seo": {
+    "title": "Melhores mirantes para o pôr do sol em Positano",
+    "description": "Pontos clássicos e alternativos para ver o pôr do sol — incluindo como chegar, horários e etiqueta para escadas estreitas."
+  },
+  "linkLabel": "Melhores mirantes para o pôr do sol em Positano",
+  "intro": [
+    "O pôr do sol em Positano é dramático — escolher o miradouro e timing certos faz toda a diferença.",
+    "Use estes ângulos fiáveis e horários de chegada para evitar as maiores multidões."
+  ],
+  "itemList": [
+    {
+      "name": "Terraço da Chiesa Nuova",
+      "note": "Acesso fácil perto da paragem SITA com vista ampla da baía."
+    },
+    {
+      "name": "Miradouro Via Positanesi d’America",
+      "note": "Varanda sobre Fornillo; chegue 30 minutos antes para luz dourada."
+    },
+    {
+      "name": "Nocelle (início do Caminho dos Deuses)",
+      "note": "Voltado para as ilhas Li Galli — leve agasalho para o regresso."
+    }
+  ],
+  "sections": [
+    {
+      "id": "classics",
+      "title": "Miradouros clássicos",
+      "body": [
+        "O terraço da Chiesa Nuova oferece vista abrangente da baía a passos da paragem SITA.",
+        "A Via Positanesi d’America tem varanda sobre Fornillo — chegue 30 minutos antes do pôr do sol para luz quente."
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Alternativas tranquilas",
+      "body": [
+        "Nocelle, no início do Caminho dos Deuses, enfrenta as ilhas Li Galli; leve um agasalho para a viagem de volta.",
+        "A praia de Fornillo fora de pico mantém-se calma; o sol desaparece atrás da falésia, prepare-se cedo."
+      ]
+    },
+    {
+      "id": "sunset",
+      "title": "Timing",
+      "body": [
+        "Esteja no local 20 minutos antes da golden hour para garantir espaço e acertar definições.",
+        "No verão, o pôr do sol ronda as 20:30 — confirme horários de autocarro para não ficar preso após escurecer."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etiqueta",
+      "body": [
+        "Mantenha escadas e entradas privadas desimpedidas — fotografe e dê passagem.",
+        "Leve o lixo consigo e use modo silencioso durante concertos ou eventos ao entardecer."
+      ]
+    }
+  ],
+  "tips": [
+    "Chegue 20–30 minutos antes para montar tripés com calma.",
+    "Um tripé leve ou grampo ajuda nas exposições de blue hour quando a luz cai."
+  ],
+  "faqs": [
+    {
+      "q": "Preciso de reserva?",
+      "a": [
+        "Bares e rooftops pedem reserva no verão; miradouros públicos funcionam por ordem de chegada."
+      ]
+    },
+    {
+      "q": "Há iluminação suficiente para o regresso?",
+      "a": [
+        "A iluminação varia — leve lanterna do telemóvel ou luz pequena para descidas tardias."
+      ]
+    }
+  ]
+}

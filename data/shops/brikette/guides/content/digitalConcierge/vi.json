@@ -1,0 +1,32 @@
+{
+  "seo": {
+    "title": "Lễ tân kỹ thuật số (đề xuất + đặt chỗ)",
+    "description": "Sử dụng lễ tân kỹ thuật số của Hostel Brikette để nhận đề xuất địa phương nhanh chóng, cập nhật giao thông và hỗ trợ đặt trải nghiệm - đặc biệt khi kế hoạch thay đổi."
+  },
+  "linkLabel": "Lễ tân kỹ thuật số",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": [
+    "Đây là cho các kế hoạch hoạt động hôm nay - không phải danh sách chung chung.",
+    "Gửi khung thời gian, ngân sách và ưu tiên của bạn. Đặt thời hạn ở dòng đầu tiên."
+  ],
+  "sections": [
+    {
+      "id": "how-to-access",
+      "title": "Cách truy cập",
+      "body": [
+        "Hỏi lễ tân về liên hệ/QR mới nhất và kênh tốt nhất (thường là WhatsApp).",
+        "Bao gồm: ngày tháng, điểm xuất phát, khung thời gian, ngân sách và ưu tiên #1."
+      ]
+    },
+    {
+      "id": "templates",
+      "title": "Mẫu sao chép/dán",
+      "body": [
+        "\\\\\"Chúng tôi có 6 giờ, không có xe, chúng tôi muốn (A) bơi + (B) hoàng hôn, ngân sách €40 mỗi người. Kế hoạch đơn giản nhất và kế hoạch B là gì nếu phà bị hủy?\\\\\"",
+        "Ngân sách cơ bản: %LINK:positanoBudget|Positano tiết kiệm% + %LINK:terraceSunsets|Hoàng hôn sân thượng%.",
+        "Nếu giao thông nhạy cảm: %LINK:ferryCancellations|hủy phà + thời tiết%."
+      ]
+    }
+  ],
+  "fallback": "Lễ tân kỹ thuật số: đề xuất nhanh, cập nhật giao thông và hỗ trợ đặt chỗ."
+}

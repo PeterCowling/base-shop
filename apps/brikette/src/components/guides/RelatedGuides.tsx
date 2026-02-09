@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import type { TFunction } from "i18next";
 
+import { isGuideLive } from "@/data/guides.index";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import type { AppLanguage } from "@/i18n.config";
 import type { GuideKey } from "@/routes.guides-helpers";
@@ -49,7 +50,7 @@ function RelatedGuides({
   className,
   listClassName,
   listLayout = "default",
-}: Props): JSX.Element {
+}: Props): JSX.Element | null {
   const fallbackLang = useCurrentLanguage();
   const lang = explicitLang ?? fallbackLang;
   const translation = useTranslation("guides", { lng: lang });
@@ -60,6 +61,11 @@ function RelatedGuides({
   const sectionClassName = [...BASE_SECTION_CLASS, resolvedSectionClass].filter(Boolean).join(" ");
   const layoutTokens = LIST_LAYOUT_CLASS_TOKENS[listLayout] ?? LIST_LAYOUT_CLASS_TOKENS.default;
   const listClassNameValue = listClassName ?? layoutTokens.join(" ");
+  const publishedItems = items.filter(({ key }) => isGuideLive(key));
+
+  if (publishedItems.length === 0) {
+    return null;
+  }
 
   return (
     <section className={sectionClassName}>
@@ -67,7 +73,7 @@ function RelatedGuides({
         {title ?? t(titleKey)}
       </h2>
       <ul className={listClassNameValue}>
-        {items.map(({ key }) => {
+        {publishedItems.map(({ key }) => {
           const resolvedLabel = getGuideLinkLabel(t, fallbackGuides, key);
           const ariaLabel = resolvedLabel.replace(/→/g, "to");
           const computedSlug =

@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Rejseplaner for Amalfikysten uden bil",
+    "description": "2-, 3- og 7-dages forslag med fokus på offentlig transport og færre trapper."
+  },
+  "linkLabel": "Rejseplaner for Amalfikysten (uden bil)",
+  "intro": [
+    "Planlæg en Amalfi-rute uden bil ved at kæde færger og busser sammen i en logisk løkke med plads til langsomme morgener og vejromlægninger."
+  ],
+  "sections": [
+    {
+      "id": "two-day",
+      "title": "2-dages snapshot",
+      "body": [
+        "Dag 1: Ankom tidligt, udforsk Positanos stræder, slap af på Fornillo-stranden, og se solnedgang fra Via Cristoforo Colombo.",
+        "Dag 2: Morgenfærge til Amalfi for domkirken og citron-granita, eftermiddagsbus op til Ravello, og retur til Positano til middag."
+      ]
+    },
+    {
+      "id": "four-day",
+      "title": "3–4 dages tempo",
+      "body": [
+        "Tilføj en Capri-dag på dag 3 – første færge, Anacapri-stolelift og aftentur tilbage.",
+        "Brug dag 4 på Gudernes sti eller en bådtur; hav en regnvejrsplan klar som Pompeji."
+      ]
+    },
+    {
+      "id": "five-day",
+      "title": "5–6 dages slow roll",
+      "body": [
+        "Mix en food crawl i Salerno eller Sorrento ind for markeder og proviantering.",
+        "Planlæg en strandhop-dag mellem Arienzo, Laurito og Marina di Praia med kystfærger eller vandtaxier."
+      ]
+    },
+    {
+      "id": "seven-day",
+      "title": "7-dages loop",
+      "body": [
+        "Forankr ugen med to rolige Positano-dage, to udflugtsdage (Capri + Pompeji) og to langsommere eventyr (Tramonti-vin eller Paestum-ruiner).",
+        "Lad den sidste dag være fleksibel til gentagelser eller hvile før videre rejse."
+      ]
+    }
+  ],
+  "tips": [
+    "Forudbestil de lange stræk (Capri-færger, Pompeji-tog), men behold mindst én bufferdag til vejr.",
+    "Grupper aktiviteter efter geografi, så du kun tager de store trappeafsnit én gang om dagen."
+  ],
+  "faqs": [
+    {
+      "q": "Hvor mange nætter bør jeg blive i Positano?",
+      "a": [
+        "Fire nætter giver tid til Positano plus to store dagsudflugter uden stress; tilføj flere, hvis du vil have rolige morgener."
+      ]
+    },
+    {
+      "q": "Kan jeg bytte færger ud med busser i dårligt vejr?",
+      "a": [
+        "Ja – busser kører året rundt. Start tidligt, køb billetter på forhånd, og regn med 20–30 minutter længere rejsetid."
+      ]
+    }
+  ]
+}

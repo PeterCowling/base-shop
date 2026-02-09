@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Reiseplaner for Amalfikysten (uten bil)",
+    "description": "Planer på 2–7 dager i Positano, Amalfi, Ravello og Capri/Sorrento med ferjer og busser."
+  },
+  "linkLabel": "Reiseplaner for Amalfikysten (uten bil)",
+  "intro": [
+    "Bygg en reiserute uten bil til Amalfikysten ved å lenke ferger og busser i en logisk sløyfe, slik at det er tid til langsomme morgener og væromdreininger."
+  ],
+  "sections": [
+    {
+      "id": "two-day",
+      "title": "2-dagers oversikt",
+      "body": [
+        "Dag 1: Kom tidlig, utforsk Positanos baner, slapp av på Fornillo-stranden og se solnedgangen fra Via Cristoforo Colombo.",
+        "Dag 2: Morgenferge til Amalfi for Duomo og sitrongranita, ettermiddagsbuss opp til Ravello, deretter tilbake til Positano for middag."
+      ]
+    },
+    {
+      "id": "four-day",
+      "title": "3–4 dager",
+      "body": [
+        "Legg til en Capri-dagstur på dag 3 – første ferge ut, Anacapri stolheis og retur om kvelden.",
+        "Bruk dag 4 til Gudestien eller en båttur; hold en regnværsdagsbytte som Pompeii klar."
+      ]
+    },
+    {
+      "id": "five-day",
+      "title": "5–6 dager i rolig tempo",
+      "body": [
+        "Bland inn en matkryp fra Salerno eller Sorrento for å prøve markeder og fylle opp forsyninger.",
+        "Planlegg en strand-hop-dag mellom Arienzo, Laurito og Marina di Praia ved å bruke kystferger eller vanntaxier."
+      ]
+    },
+    {
+      "id": "seven-day",
+      "title": "7-dagers rundtur",
+      "body": [
+        "Anker uken med to avslappede Positano-dager, to utfluktsdager (Capri + Pompeii) og to langsommere eventyr (Tramonti-vingårder eller Paestum-ruinene).",
+        "La den siste dagen være fleksibel for gjentakelser eller en hviledag før du reiser videre."
+      ]
+    }
+  ],
+  "tips": [
+    "Forhåndsbestill lange etapper (Capri-ferger, Pompeii-tog), men hold minst én bufferdag for værforstyrrelser.",
+    "Grupper aktiviteter etter geografi slik at du bare klatrer store trappesett én gang om dagen."
+  ],
+  "faqs": [
+    {
+      "q": "Hvor mange netter bør jeg bo i Positano?",
+      "a": [
+        "Fire netter gir deg tid til selve Positano pluss to store dagsturer uten å stresse; legg til mer hvis du foretrekker tregere morgener."
+      ]
+    },
+    {
+      "q": "Kan jeg bytte ferge med buss i dårlig vær?",
+      "a": [
+        "Ja, busser går hele året. Start tidlig, kjøp billetter på forhånd, og forvent at reisene tar 20–30 minutter lenger."
+      ]
+    }
+  ]
+}

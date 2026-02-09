@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Guide gastronomique de Naples et de la côte amalfitaine",
+    "description": "Spécialités à goûter, marchés, cours de cuisine et recommandations de restaurants."
+  },
+  "linkLabel": "Guide gastronomique de Naples et de la côte amalfitaine",
+  "intro": [
+    "Savourez le meilleur entre Naples et la Côte Amalfitaine : plats incontournables, marchés et boissons locales."
+  ],
+  "sections": [
+    {
+      "id": "naples",
+      "title": "Incontournables à Naples",
+      "body": [
+        "Goûtez pizza Margherita classique, pizza frite et sfogliatella dans la même journée — faites des pauses espresso pour tenir la cadence.",
+        "Visitez le marché de Pignasecca pour les fruits de mer, fromages et produits frais à emporter sur la côte."
+      ]
+    },
+    {
+      "id": "amalfi",
+      "title": "Spécialités de la Côte Amalfitaine",
+      "body": [
+        "Commandez des scialatielli aux fruits de mer, une delizia al limone et du limoncello artisanal pour une dégustation complète.",
+        "Repérez les caseifici pour acheter mozzarella, provola fumée et caciocavallo à savourer sur la terrasse de l'auberge."
+      ]
+    },
+    {
+      "id": "street",
+      "title": "Street food & marchés",
+      "body": [
+        "Emportez des cornets de cuoppo fritto, des anchois frits ou des arancini à 4–6 € pour patienter entre deux traversées.",
+        "Les marchés fermiers du dimanche à Positano et Praiano vendent fruits de saison et pâtisseries — pensez à prendre des sacs réutilisables."
+      ]
+    }
+  ],
+  "tips": [
+    "Réservez les cours de cuisine en avance si vous voulez préparer pâtes et desserts : les places partent vite en été.",
+    "Précisez vos besoins alimentaires lors de la réservation ; beaucoup d'hôtes adaptent les menus si on les prévient."
+  ],
+  "faqs": [
+    {
+      "q": "Puis-je faire un food tour depuis Positano ?",
+      "a": [
+        "Oui. Participez aux dégustations guidées à Naples ou Sorrente ; la plupart commencent en fin de matinée, ce qui laisse le temps d'arriver en train ou en ferry."
+      ]
+    },
+    {
+      "q": "Les restaurants proposent-ils des options végétariennes ?",
+      "a": [
+        "Absolument : cherchez la parmigiana d'aubergines, les gnocchi alla sorrentina, les salades et antipasti de légumes dans toute la région."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "So kommst du nach Positano: alle Optionen im Vergleich",
+    "description": "Vergleiche Fähre, Zug+Bus, Shuttle und private Transfers – mit Saisonhinweisen und Gepäcktipps."
+  },
+  "linkLabel": "So kommst du nach Positano (Entscheidungshilfe)",
+  "intro": "Vergleiche Bus, Bahn, Fähre und private Transfers nach Positano – mit Dauer, Kosten und Saison-Tipps für jede Variante.",
+  "toc": {
+    "onThisPage": "Auf dieser Seite",
+    "naples": "Route über Neapel",
+    "salerno": "Route über Salerno",
+    "ferry": "Sommerfähren",
+    "private": "Privater Transfer",
+    "faqs": "FAQ"
+  },
+  "labels": {
+    "whenHeading": "Wann wählen?",
+    "cheapestHeading": "Günstigste Route",
+    "seasonalHeading": "Saisonhinweise"
+  },
+  "sections": [
+    {
+      "id": "naples",
+      "title": "Über Neapel",
+      "body": [
+        "Vom Flughafen mit Alibus oder Taxi nach Napoli Centrale, weiter mit Circumvesuviana/Campania Express nach Sorrent und SITA-Bus nach Positano (Gesamtdauer ca. 2–2,5 Stunden).",
+        "Im Sommer fahren Fähren ab Molo Beverello direkt nach Positano – vorab buchen und Wettermeldungen prüfen."
+      ]
+    },
+    {
+      "id": "salerno",
+      "title": "Über Salerno",
+      "body": [
+        "Schnelle Züge verbinden Rom/Neapel mit Salerno; von dort per Fähre (April–Oktober) oder SITA-Bus über Amalfi weiter.",
+        "Salerno eignet sich für preiswerte Zwischenstopps und hat späte Zugverbindungen zurück nach Rom/Neapel."
+      ]
+    },
+    {
+      "id": "private",
+      "title": "Privater Transfer",
+      "body": [
+        "Tür-zu-Tür-Fahrten ab Neapel/Salerno kosten 120–160 € pro Wagen (1–3 Personen) und sparen Treppen & Umsteigen. Buche vorab, bestätige Flug-/Zugdaten und frage nach inkludierten Maut-, Nacht- oder Gepäckgebühren."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Was ist in der Hochsaison am schnellsten?",
+      "a": [
+        "Fähren (bei ruhiger See) oder privater Transfer. Plane Bus & Bahn als Backup bei Wetterwarnungen."
+      ]
+    },
+    {
+      "q": "Welche Route ist am günstigsten?",
+      "a": [
+        "Alibus/Campania Express + SITA kostet rund 16–20 €. Vorab-Tickets sichern und Zeitpuffer einplanen."
+      ]
+    }
+  ]
+}

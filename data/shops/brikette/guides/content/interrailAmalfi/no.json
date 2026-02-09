@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Interrail/Italy Rail Pass: besøk Amalfikysten",
+    "description": "Slik bruker du togreisepass for å nå kysten, samt siste etappe videre til Positano."
+  },
+  "linkLabel": "Interrail/Italy Rail Pass: Amalfikysten",
+  "intro": [
+    "Bruk av et Interrail/Italy Rail Pass for å nå Amalfikysten: hvilke linjer du skal ta, nødvendige tillegg og hvordan du dekker den siste etappen til Positano."
+  ],
+  "sections": [
+    {
+      "id": "routes",
+      "title": "Kjernelinjer",
+      "body": [
+        "Roma → Napoli/Salerno høyhastighets; lokaltog til Sorrento; busser til Positano."
+      ]
+    },
+    {
+      "id": "supplements",
+      "title": "Tillegg og reservasjoner",
+      "body": [
+        "Frecciarossa/Italo krever ofte setereservasjoner; regionale tog gjør det ikke, men kan være overfylt."
+      ]
+    },
+    {
+      "id": "last-mile",
+      "title": "Siste etappe til Positano",
+      "body": [
+        "Fra Napoli: Circumvesuviana til Sorrento og deretter SITA-buss. Fra Salerno: ferge/buss i sesong."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Lønner et pass seg?",
+      "a": [
+        "Bare hvis du tar nok langdistansesegmenter; ellers kan punkt-til-punkt være billigere."
+      ]
+    }
+  ]
+}

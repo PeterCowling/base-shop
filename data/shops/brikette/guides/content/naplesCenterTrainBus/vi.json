@@ -1,0 +1,83 @@
+{
+  "seo": {
+    "title": "Từ trung tâm Naples đến Positano bằng tàu rồi xe buýt | Hostel Brikette",
+    "description": "Hướng dẫn từng bước đi từ trung tâm Naples tới Hostel Brikette bằng tàu Circumvesuviana và xe buýt SITA, kèm mẹo mua vé và ảnh khi đến Positano."
+  },
+  "lastUpdated": "2026-01-31",
+  "intro": {
+    "title": "Trung tâm Naples đến Positano – Tàu rồi xe buýt",
+    "body": "Làm theo hướng dẫn này để đi từ trung tâm Naples tới Hostel Brikette bằng tàu Circumvesuviana đến Sorrento và xe buýt SITA tới Positano. Bài viết có mẹo mua vé, tư vấn đọc lịch xe buýt và ảnh đoạn đường cuối đến hostel."
+  },
+  "callouts": {
+    "tip": "Cần tuyến khác? Xem toàn bộ hướng dẫn đến nơi tại %HOWTO:how-to-get-here|trang Cách đến đây%."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Tổng quan tàu rồi xe buýt",
+      "body": "Hành trình này là phương án giao thông công cộng nhanh nhất từ trung tâm Naples: tàu Circumvesuviana tới Sorrento rồi xe buýt SITA đến Positano. Không áp dụng cho việc di chuyển từ sân bay Naples."
+    },
+    {
+      "id": "naplesStation",
+      "title": "Ga tàu Naples",
+      "body": "Các chuyến Circumvesuviana đi Sorrento khởi hành từ tầng dưới của ga Napoli Garibaldi (bên dưới Napoli Centrale). Mua vé trước khi xuống sân ga, kiểm tra số đường ray tàu của bạn rồi lên chuyến hướng Sorrento."
+    },
+    {
+      "id": "sorrentoStation",
+      "title": "Ga Sorrento",
+      "body": "Đến Sorrento, ra khỏi ga và mua vé xe buýt SITA tại quán bar, sạp báo hoặc cửa hàng thuốc lá gần đó — xe buýt không bán vé. Điểm dừng SITA nằm ở chân cầu thang ngoài ga; đợi xe hướng Amalfi và đi đến Positano."
+    },
+    {
+      "id": "timetable",
+      "title": "Cách đọc lịch SITA",
+      "body": "Lịch xe buýt SITA có thể gây rối — dùng các gợi ý sau để tìm đúng chuyến:"
+    },
+    {
+      "id": "positanoStop",
+      "title": "Điểm dừng Positano",
+      "list": [
+        "Điểm gần nhất là Positano (Chiesa Nuova), cách hostel khoảng 140 mét (490 feet).",
+        "Nằm ngay trước quán Bar Internazionale.",
+        "Xe buýt trả khách ở mặt đường — không cần leo cầu thang dài để tới chúng tôi."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Đi bộ từ điểm dừng"
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Chi phí từ trung tâm Naples tới Positano bằng tàu và xe buýt là bao nhiêu?",
+      "a": "Tổng chi phí khoảng €7.20: €4.60 cho tàu Circumvesuviana từ Naples đến Sorrento, cộng €2.60 cho xe buýt SITA từ Sorrento tới Positano (giá 2026). Đây là lựa chọn giao thông công cộng rẻ nhất."
+    },
+    {
+      "q": "Hành trình từ Naples tới Positano mất bao lâu?",
+      "a": "Tổng thời gian 2.5-3 giờ: 70 phút trên tàu, 50 phút trên xe buýt, cộng 20-40 phút chờ chuyển tuyến tại Sorrento. Dành 3-3.5 giờ để tính đến khả năng trễ."
+    },
+    {
+      "q": "Tôi có thể mua vé trên tàu hoặc xe buýt không?",
+      "a": "Bạn có thể mua vé tàu tại ga Napoli Garibaldi từ máy bán vé hoặc quầy bán vé, nhưng phải đóng dấu trước khi lên tàu. Vé xe buýt SITA không bán trên xe — bạn phải mua từ quán bar, tabacchi hoặc quầy báo gần ga Sorrento trước khi lên xe."
+    },
+    {
+      "q": "Tuyến này có phù hợp cho người có hành lý nặng không?",
+      "a": "Có, nhưng có thể khó khăn vào giờ cao điểm. Cả tàu và xe buýt đều có khoảng chứa hành lý hạn chế, vì vậy hãy lên xe sớm nếu bạn có túi lớn. Đoạn đi bộ từ điểm dừng Chiesa Nuova tới hostel là đường bằng và dưới 2 phút, nên hành lý dễ xách một khi bạn đã tới. Nếu muốn, hãy cân nhắc dùng dịch vụ khuân vác hoặc xe chuyên dụng của chúng tôi."
+    },
+    {
+      "q": "Xe buýt cuối từ Sorrento tới Positano là lúc nào?",
+      "a": "Xe buýt cuối cùng thay đổi theo mùa. Vào mùa hè (tháng 7-8), xe buýt cuối thường vào khoảng 9-10 giờ tối. Vào mùa đông (tháng 11-3), có thể sớm tới 7-8 giờ tối. Luôn kiểm tra lịch trình hiện tại tại sitasudtrasporti.it trước khi đi, đặc biệt vào Chủ nhật và ngày lễ khi dịch vụ giảm."
+    },
+    {
+      "q": "Có tàu hoặc xe buýt trực tiếp từ Naples tới Positano không?",
+      "a": "Không có tàu trực tiếp — bạn phải chuyển tại Sorrento. Xe buýt Curreri có kết nối trực tiếp từ Naples tới Positano, nhưng lịch trình hạn chế (thường 2-3 chuyến mỗi ngày). Kết hợp tàu-xe buýt chạy thường xuyên hơn và rẻ hơn."
+    },
+    {
+      "q": "Làm thế nào để đọc lịch trình xe buýt SITA?",
+      "a": [
+        "**Đọc các hàng:** Các hàng trong cột đầu tiên đại diện cho các trạm xe buýt khác nhau dọc theo tuyến đường.",
+        "**Đọc các cột:** Lịch trình gán một chữ cái theo thứ tự bảng chữ cái cho mỗi chuyến đi đã lên lịch, được liệt kê dưới dạng tiêu đề trong mỗi cột. Nếu bạn đi du lịch từ thứ Hai đến thứ Bảy, hãy tìm các cột 'F' và 'G'. Nếu bạn đi du lịch vào Chủ nhật hoặc ngày lễ, hãy tìm các cột 'G' và 'H'.",
+        "**Kết hợp các hàng và cột:** Chọn các trạm khởi hành và đến của bạn, sau đó kiểm tra các cột để xem xe buýt có sẵn khi nào và chúng sẽ đến điểm đến của bạn vào lúc mấy giờ. Ví dụ, để xem thời gian khởi hành từ Sorrento, hãy xem hàng Sorrento. Để xem thời gian đến Positano (Chiesa Nuova / Bar Internazionale), hãy xem hàng Positano (Chiesa Nuova)."
+      ]
+    }
+  ]
+}

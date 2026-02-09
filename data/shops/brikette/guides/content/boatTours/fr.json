@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Excursions en bateau à Positano",
+    "description": "Tours privés et collectifs : à quoi s'attendre, fourchettes de prix et conseils de réservation en saison."
+  },
+  "linkLabel": "Tours en bateau : Croisières au coucher de soleil aux charters privés",
+  "intro": [
+    "Les excursions en bateau permettent de longer les falaises de la côte amalfitaine sans subir la circulation routière ; réservez à l'avance pendant les mois de pointe et prévoyez un plan de secours météo."
+  ],
+  "sections": [
+    {
+      "id": "group-tours",
+      "title": "Tours collectifs & bateaux partagés",
+      "body": [
+        "Les croisières partagées de 3 heures quittent Positano en milieu de matinée et incluent des arrêts baignade ; comptez 85 à 120 € par personne en juillet-août.",
+        "Apportez des chaussures d'eau et une couche légère — la brise est plus fraîche au large qu'en terrasse."
+      ]
+    },
+    {
+      "id": "private-charters",
+      "title": "Charters privés",
+      "body": [
+        "Les skippers facturent 550 à 850 € pour les charters de gozzo d'une demi-journée (jusqu'à 6 personnes) plus carburant ; confirmez les inclusions comme le prosecco ou les serviettes.",
+        "Négociez des heures de départ autour du lever du soleil ou en fin d'après-midi si vous voulez une lumière plus douce et moins de sillage des ferries."
+      ]
+    },
+    {
+      "id": "weather-backup",
+      "title": "Météo & plans de secours",
+      "body": [
+        "Les opérateurs annulent lorsque les vents dépassent la force 4 ; gardez un plan bus ou plage prêt pour que la journée reste détendue.",
+        "Les mers peuvent être agitées même en été — emportez des bracelets anti-mal de mer si vous y êtes sujet."
+      ]
+    }
+  ],
+  "tips": [
+    "Arrivez 20 minutes avant le départ pour régler le solde et enfiler les chaussures de pont fournies.",
+    "Emportez un sac étanche pour les téléphones et une bouteille d'eau d'1 L (34 oz) ; l'ombre est limitée à bord."
+  ],
+  "faqs": [
+    {
+      "q": "Dois-je réserver à l'avance ?",
+      "a": [
+        "Oui en mai-septembre — les bateaux affichent souvent complet quelques jours à l'avance, surtout les créneaux coucher de soleil."
+      ]
+    },
+    {
+      "q": "Les serviettes sont-elles incluses ?",
+      "a": [
+        "Les tours collectifs en fournissent généralement une par personne ; les skippers privés varient, alors emportez une serviette à séchage rapide par sécurité."
+      ]
+    }
+  ],
+  "galleryHeading": "Galerie photo"
+}

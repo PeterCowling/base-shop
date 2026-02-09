@@ -1,12 +1,15 @@
 #!/usr/bin/env node
-/* eslint-disable security/detect-non-literal-fs-filename -- CLI script reads guide content from known safe paths */
-import { readdir, readFile } from "node:fs/promises";
+/* eslint-disable no-console -- GS-001 [ttl=2026-12-31] CLI validator intentionally writes terminal output. */
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { ZodError } from "zod";
 
-import { guideContentSchema } from "../src/routes/guides/content-schema";
+import {
+  listJsonFiles,
+  readJson,
+} from "@acme/guides-core";
+
 import { i18nConfig } from "../src/i18n.config";
+import { guideContentSchema } from "../src/routes/guides/content-schema";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -44,35 +47,6 @@ type ValidationResult = {
   validated: number;
   skipped: number;
   violations: ValidationViolation[];
-};
-
-/**
- * List all JSON files in a directory recursively
- */
-const listJsonFiles = async (rootDir: string, relativeDir = ""): Promise<string[]> => {
-  const entries = await readdir(path.join(rootDir, relativeDir), { withFileTypes: true });
-  const files: string[] = [];
-
-  for (const entry of entries) {
-    const nextRelative = relativeDir ? path.join(relativeDir, entry.name) : entry.name;
-    if (entry.isDirectory()) {
-      files.push(...await listJsonFiles(rootDir, nextRelative));
-      continue;
-    }
-    if (entry.isFile() && entry.name.endsWith(".json")) {
-      files.push(nextRelative);
-    }
-  }
-
-  return files.sort();
-};
-
-/**
- * Read and parse JSON file
- */
-const readJson = async (filePath: string): Promise<unknown> => {
-  const raw = await readFile(filePath, "utf8");
-  return JSON.parse(raw) as unknown;
 };
 
 /**
@@ -149,7 +123,7 @@ const main = async (): Promise<void> => {
     let contentFiles: string[];
     try {
       contentFiles = await listJsonFiles(guidesContentDir);
-    } catch (error) {
+    } catch {
       if (verbose) {
         console.warn(`Warning: Could not read guides content directory for locale "${locale}"`);
       }

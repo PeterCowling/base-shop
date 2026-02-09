@@ -292,13 +292,13 @@ export async function migrateGuidesToCentral(
         continue;
       }
 
-      const parsed = guideContentSchema.safeParse(payload);
-      if (!parsed.success) {
+      const validation = guideContentSchema.safeParse(payload);
+      if (!validation.success) {
         validationFailures.push({
           key: entry.key,
           locale,
           sourcePath,
-          error: parsed.error.message,
+          error: validation.error.message,
         });
         continue;
       }
@@ -315,7 +315,9 @@ export async function migrateGuidesToCentral(
       contentWrites += 1;
 
       if (!dryRun) {
-        await writeJson(targetPath, parsed.data);
+        // Preserve source payload exactly (including nested passthrough keys and
+        // non-normalized strings) while still enforcing schema validity.
+        await writeJson(targetPath, payload);
       }
     }
 

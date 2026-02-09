@@ -254,6 +254,61 @@ describe("migrate-guides-to-central", () => {
       }),
     );
   });
+
+  it("preserves nested optional fields and string whitespace in migrated content", async () => {
+    const sourcePayload = {
+      seo: {
+        title: "  Ferry Times  ",
+        description: "  Latest crossing updates  ",
+        lastUpdated: "2026-02-01",
+      },
+      sections: [
+        {
+          id: "transport",
+          title: "  Getting There  ",
+          lastUpdated: "2026-01-31",
+          images: [
+            {
+              src: "/img/ferry.jpg",
+              alt: "Ferry at dock",
+              aspectRatio: "16:9",
+            },
+          ],
+        },
+      ],
+      faqs: [
+        {
+          q: "  Is this route seasonal?  ",
+          a: "Yes, with reduced winter service.",
+          linkLabel: "Read timetable",
+        },
+      ],
+    };
+
+    writeContentFile(sourceRoot, "en", "guideA", sourcePayload);
+
+    await migrateGuidesToCentral({
+      sourceRoot,
+      targetRoot,
+      manifestEntries: [baseEntry],
+      locales: ["en"],
+      timestamp,
+      logger: () => undefined,
+    });
+
+    const migrated = readJson<unknown>(
+      path.join(
+        targetRoot,
+        "brikette",
+        "guides",
+        "content",
+        "guideA",
+        "en.json",
+      ),
+    );
+
+    expect(migrated).toEqual(sourcePayload);
+  });
 });
 
 describe("mapGuideStatus", () => {

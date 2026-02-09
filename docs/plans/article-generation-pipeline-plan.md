@@ -124,7 +124,7 @@ apps/brikette                        ← Switches from local content to readGuid
 - TASK-05: Add to barrel export and Prisma passthrough (Complete, 2026-02-09; depends on TASK-04)
 - TASK-06: Write migration script: Brikette → centralised store (Complete, 2026-02-09; depends on TASK-03)
 - TASK-07: Wire Brikette storefront to read from centralised store (Complete, 2026-02-09; depends on TASK-04, TASK-06)
-- TASK-08: Validate migration data integrity (Complete, 2026-02-09; integrity gate failed, follow-up required; depends on TASK-06)
+- TASK-08: Validate migration data integrity (Complete, 2026-02-09; depends on TASK-06)
 - TASK-09: Confirm Slice 2-4 scope and sequencing (Complete, 2026-02-09; depends on TASK-07)
 
 ## Task Summary
@@ -138,7 +138,7 @@ apps/brikette                        ← Switches from local content to readGuid
 | TASK-05 | IMPLEMENT | Add to barrel export and Prisma passthrough | 92% | S | Complete (2026-02-09) | TASK-04 |
 | TASK-06 | IMPLEMENT | Write migration script: Brikette → centralised store | 80% | M | Complete (2026-02-09) | TASK-03 |
 | TASK-07 | IMPLEMENT | Wire Brikette storefront to read from centralised store | 82% | M | Complete (2026-02-09) | TASK-04, TASK-06 |
-| TASK-08 | INVESTIGATE | Validate migration data integrity | 82% | S | Complete (2026-02-09; integrity gate failed, follow-up required) | TASK-06 |
+| TASK-08 | INVESTIGATE | Validate migration data integrity | 82% | S | Complete (2026-02-09) | TASK-06 |
 | TASK-09 | DECISION | Confirm Slice 2-4 scope and sequencing | 90% | S | Complete (2026-02-09) | TASK-07 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
@@ -703,31 +703,25 @@ apps/brikette                        ← Switches from local content to readGuid
   - Rollback: `git checkout -- data/shops/brikette/`
 
 #### Build Completion (2026-02-09)
-- **Status:** Complete (investigation complete; integrity gate failed)
+- **Status:** Complete
 - **Execution cycle:**
   - Validation cases executed: all TASK-08 checks
-  - Cycles: 1
-  - Initial validation: PASS (structure, counts, idempotency, status mapping)
-  - Final validation: FAIL (content fidelity parity)
+  - Cycles: 2
+  - Cycle 1 result: FAIL (`123/2970` fidelity mismatches)
+  - Cycle 2 result: PASS (parity fix + rerun)
 - **Validation evidence:**
   - Migration execution: `scripts/agents/integrator-shell.sh -- pnpm exec tsx scripts/migrate-guides-to-central.ts` → `guides=165 | locales=18 | contentWrites=2970 | missingContent=0 | validationFailures=0`
   - Manifest parity: `guide-manifest-snapshot.json` count = `165`; EN source content files = `168`; orphan files identified: `beaches`, `stayingFitAmalfi`, `stayingSafePositano`
   - Structure parity: `guides.json` contains `165` entries; `missingDirs=0`; `localeCountMismatch=0` across all manifest keys
   - Status mapping: no `live` statuses in migrated metadata
   - Idempotency: tree hash before/after rerun is unchanged (`49c27e14334ec379e49e7f5a25d99e79d1845e76`)
-  - Fidelity audit (all `165 * 18 = 2970` guide-locale pairs): `123` mismatches across `14` guide keys
-  - Top mismatch paths:
-    - `root.seo.lastUpdated` missing in migrated output (`97` files)
-    - `root.sections[*].images[*].aspectRatio` missing in migrated output (`54` files across paths)
-    - `root.sections[*].lastUpdated` missing in migrated output (`13` files)
-    - Rare field/value drift in FAQ/title fields (`5` files total)
-  - Affected guide keys: `avoidCrowdsPositano`, `ferragostoPositano`, `folkloreAmalfi`, `historyPositano`, `positanoCapriFerry`, `positanoMainBeachWalkDown`, `positanoPompeii`, `salernoPositanoFerry`, `sorrentoPositanoBus`, `sorrentoPositanoFerry`, `stayingFitPositano`, `topViewpointsAmalfi`, `travelTipsFirstTime`, `workCafes`
+  - Fidelity audit (all `165 * 18 = 2970` guide-locale pairs): `mismatchPairs=0`
+  - Fix applied: `scripts/migrate-guides-to-central.ts` now validates payload with `guideContentSchema` but persists original JSON payload to avoid trimming/field stripping
+  - Regression test added: `scripts/__tests__/migrate-guides-to-central.test.ts` covers nested optional fields and whitespace preservation
 - **Acceptance outcome:**
-  - PASS: manifest count parity (165), orphan-file documentation, per-guide content directory presence, 18-locale coverage, no `live` statuses, idempotency
-  - FAIL: content roundtrip fidelity is not exact (`123/2970` mismatches)
+  - PASS: manifest count parity (165), orphan-file documentation, per-guide content directory presence, 18-locale coverage, no `live` statuses, idempotency, full roundtrip fidelity parity
 - **Decision:**
-  - Keep `USE_CENTRAL_GUIDES=0` in all environments.
-  - Do not treat Slice 1 migration as activation-ready until parity fix + rerun closes mismatches to `0`.
+  - TASK-08 gate is satisfied; migration output is activation-ready from a data-integrity perspective.
 
 ---
 
@@ -778,7 +772,7 @@ apps/brikette                        ← Switches from local content to readGuid
 - **Status:** Complete
 - **Decision:** Slice 2 (Translation + Validation as Shared Tooling) is the next slice after Slice 1.
 - **Sequencing confirmed:** Slice 2 → Slice 3 → Slice 4 (sequential)
-- **Next action:** Run `/plan-feature` for Slice 2 and open a parity-fix follow-on before enabling `USE_CENTRAL_GUIDES`.
+- **Next action:** Run `/plan-feature` for Slice 2.
 
 ---
 
@@ -848,5 +842,5 @@ These are carried over from the fact-find brief. Each will get its own `/plan-fe
 - 2026-02-06: Slice 1 scoped to read path + data model only — CMS authoring (Slice 3) and AI pipeline (Slice 4) planned separately to contain risk.
 - 2026-02-09: Re-plan corrected guide count from 168 to 165. Manifest snapshot has 165 entries; 168 content files exist per locale (3 orphan content files with no manifest entry). Migration processes manifest-driven 165 guides correctly.
 - 2026-02-09: TASK-08 promoted from 75% to 82% based on E2 evidence (dry-run output: 0 validation failures, 0 missing content, complete locale coverage). Remaining work: run actual migration, spot-check 10 guides, identify 3 orphan content files.
-- 2026-02-09: TASK-08 execution completed. Migration structure and idempotency checks passed, but full-fidelity audit found `123/2970` mismatches (mainly missing optional fields such as `seo.lastUpdated` and image `aspectRatio`). Central guides remain behind flag until parity fix and revalidation.
+- 2026-02-09: TASK-08 execution initially failed fidelity (`123/2970` mismatches). Root cause: migration wrote Zod-parsed content, which normalized/stripped nested optional fields. Migration updated to validate but persist original payload; rerun achieved `0/2970` mismatches.
 - 2026-02-09: Slice sequencing confirmed: Slice 2 (Translation Tooling) → Slice 3 (CMS Authoring) → Slice 4 (AI Pipeline). User chose Option A. Rationale: lower risk, smaller scope, unblocks XA shops, creates shared `@acme/guides-core` for Slice 3 to consume.
